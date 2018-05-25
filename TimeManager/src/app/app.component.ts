@@ -15,6 +15,7 @@ export class MyApp {
   // make HelloIonicPage the root (or first) page
   rootPage:any;// = 'UserLoginPage';
   pages: Array<{title: string, component: any}>;
+  backButtonPressed: boolean = false; //返回键是否已c触发
 
   constructor(
     public platform: Platform,
@@ -28,7 +29,7 @@ export class MyApp {
       console.log('firstIn is', result);
       result = false;
       if (result) {
-        this.rootPage = 'UserLoginPage';
+        this.rootPage = ' ';
       } else {
         this.storage.set('firstIn', true);
         this.rootPage = 'WelcomePage';

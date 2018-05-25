@@ -17,12 +17,12 @@
   <ion-list>
     <ion-item>
       <ion-label no-lines>用户名</ion-label>
-      <ion-input type="text" placeholder="请输入手机号/用户名" #accountName></ion-input>
+      <ion-input type="text" placeholder="请输入手机号/用户名" [(ngModel)]="accountMobile"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label no-lines>密码</ion-label>
-      <ion-input type="password" placeholder="请输入密码" #password></ion-input>
+      <ion-input type="password" placeholder="请输入密码" [(ngModel)]="password"></ion-input>
     </ion-item>
 
     <ion-item no-lines>
