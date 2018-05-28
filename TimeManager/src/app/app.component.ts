@@ -29,7 +29,7 @@ export class MyApp {
       console.log('firstIn is', result);
       result = false;
       if (result) {
-        this.rootPage = ' ';
+        this.rootPage = 'UserLoginPage';
       } else {
         this.storage.set('firstIn', true);
         this.rootPage = 'WelcomePage';

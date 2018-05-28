@@ -32,8 +32,8 @@ export class HomeMenuPage {
 
     // set our app's pages
     this.pages = [
-      {title: 'Hello Ionic', component: 'HomePage'},
-      {title: 'My First List', component: 'HomeMenuListPage'}
+      {title: 'Hello Ionic', component: 'UserDetailPage'},
+      {title: 'My First List', component: 'ScheduleHistoryPage'}
     ];
   }
 
@@ -50,6 +50,6 @@ export class HomeMenuPage {
     // close the menu when clicking a link from the menu
     this.menu.close();
     // navigate to the new page if it is not the current page
-    this.nav.setRoot(page.component);
+    this.nav.push(page.component);
   }
 }

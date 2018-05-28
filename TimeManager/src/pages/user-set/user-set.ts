@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
- * Generated class for the FooterPage page.
+ * Generated class for the UserSetPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -10,16 +10,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-footer',
-  templateUrl: 'footer.html',
+  selector: 'page-user-set',
+  templateUrl: 'user-set.html',
 })
-export class FooterPage {
+export class UserSetPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad FooterPage');
+    console.log('ionViewDidLoad UserSetPage');
   }
 
 }

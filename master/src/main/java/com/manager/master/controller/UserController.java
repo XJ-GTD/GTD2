@@ -36,9 +36,9 @@ public class UserController {
     @ResponseBody
     public BaseOutDto login(@RequestBody UserInfoInDto inDto) {
         BaseOutDto outBean = new BaseOutDto();
-        Map<String, UserAccountBean> data = new HashMap<>();
+        Map<String, UserInfoOutDto> data = new HashMap<>();
 
-        UserAccountBean userAccountBean = userService.loginUser(inDto.getAccountMobile(),inDto.getAccountPassword());
+        UserInfoOutDto userAccountBean = userService.loginUser(inDto.getAccountMobile(),inDto.getAccountPassword());
 
         if (userAccountBean != null) {
             data.put("userInfo", userAccountBean);

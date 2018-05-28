@@ -33,9 +33,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserAccountBean loginUser(String mobile, String passWord) {
+    public UserInfoOutDto loginUser(String mobile, String passWord) {
 
-        UserAccountBean userInfo =  userDao.loginUser(mobile, passWord);
+        UserInfoOutDto userInfo =  userDao.loginUser(mobile, passWord);
         //判断用户账号是否存在
         if(userInfo != null){
             return userInfo;

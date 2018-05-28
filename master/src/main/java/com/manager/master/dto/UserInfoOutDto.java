@@ -5,6 +5,7 @@ package com.manager.master.dto;
  */
 public class UserInfoOutDto {
     private String accountMobile;      //手机号
+    private String accountName;        //账户名
     private int userId;                //用户ID
     private int accountId;     //账户ID
     private String userName;	    //昵称
@@ -93,5 +94,13 @@ public class UserInfoOutDto {
 
     public void setUserBirthday(String userBirthday) {
         this.userBirthday = userBirthday;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 }

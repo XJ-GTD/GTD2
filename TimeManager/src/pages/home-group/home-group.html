@@ -7,7 +7,10 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>home-group</ion-title>
+    <button ion-button menuToggle icon-only>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>群组</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,4 +18,14 @@
 
 <ion-content padding>
 
+  <ion-list>
+    <button ion-item *ngFor="let g of groupList" (click)="groupDetailShow()">
+      <ion-avatar item-start>
+        <img src="{{g.groupHeadImg}}">
+      </ion-avatar>
+      <h2>{{g.groupName}}</h2>
+      <p>{{g.scheduleName}}</p>
+      <ion-note item-end>{{g.scheduleCreateDate}}</ion-note>
+    </button>
+  </ion-list>
 </ion-content>

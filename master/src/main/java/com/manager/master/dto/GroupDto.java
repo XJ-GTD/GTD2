@@ -14,7 +14,8 @@ public class GroupDto {
     private String groupName;//群组名
     private String roleName;//角色
     private String scheduleName;//事件名
-    private Date scheduleCreateDate;//创建时间
+    private String groupHeadImg;        //群组头像
+    private Date scheduleCreateDate;//最新事件创建时间
 
     public String getGroupId() {
         return groupId;
@@ -78,5 +79,13 @@ public class GroupDto {
 
     public void setScheduleCreateDate(Date scheduleCreateDate) {
         this.scheduleCreateDate = scheduleCreateDate;
+    }
+
+    public String getGroupHeadImg() {
+        return groupHeadImg;
+    }
+
+    public void setGroupHeadImg(String groupHeadImg) {
+        this.groupHeadImg = groupHeadImg;
     }
 }

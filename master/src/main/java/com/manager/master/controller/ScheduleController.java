@@ -102,7 +102,7 @@ public class ScheduleController {
      * @param
      * @return
      */
-    @RequestMapping(value = "/find", method = RequestMethod.POST)
+    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto find(@RequestBody ScheduleInDto inDto) {
         BaseOutDto outBean = new BaseOutDto();

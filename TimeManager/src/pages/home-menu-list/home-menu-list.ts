@@ -16,7 +16,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class HomeMenuListPage {
   icons: string[];
   items: Array<{title: string, note: string, icon: string}>;
-
+  rootPage = 'FooterPage';
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',

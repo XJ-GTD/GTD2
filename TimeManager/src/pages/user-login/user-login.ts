@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, NavParams, ToastController } from 'ionic-angular';
 import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
+import {User} from "../../model/user.model";
 
 /**
  * Generated class for the UserLoginPage page.
@@ -16,15 +17,18 @@ import { HttpClient } from "@angular/common/http";
   templateUrl: 'user-login.html',
 })
 export class UserLoginPage {
+
+  data: any;
+  user: User;
   accountMobile: string;
-  password: string;
+  accountPassword: string;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
-    private http: HttpClient) {
-
+    private http: HttpClient,
+    public toastCtrl: ToastController) {
   }
 
   ionViewDidLoad() {
@@ -38,10 +42,15 @@ export class UserLoginPage {
       duration: 1500
     });
     loader.present();
+    let loginMessage = this.toastCtrl.create({
+      message: "",
+      duration: 3000,
+      position: "middle"
+    });
 
     this.http.post(AppConfig.USER_LOGIN_URL, {
       accountMobile: this.accountMobile,
-      accountPassword: this.password
+      accountPassword: this.accountPassword
     },{
       headers: {
         "Content-Type": "application/json"
@@ -50,11 +59,15 @@ export class UserLoginPage {
     })
       .subscribe(data => {
         console.log(data);
-        if (data.code == "0") {
-          loader.present(loader.setContent(data.message));
-          this.navCtrl.push('HomeMenuPage');
+        this.data = data;
+        this.user = this.data;
+
+        if (this.user.code == "0") {
+
+          loginMessage.present(loginMessage.setMessage(this.user.message));
+          this.navCtrl.push('HomeMenuPage', {userInfo: this.user.data});
         } else {
-          loader.present(loader.setContent(data.message));
+          loginMessage.present(loginMessage.setMessage(this.user.message));
         }
 
       })

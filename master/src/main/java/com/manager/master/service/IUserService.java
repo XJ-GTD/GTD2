@@ -21,7 +21,7 @@ public interface IUserService {
      * @param mobile  登录账号
      * @param passWord    登录密码
      */
-    UserAccountBean loginUser(String mobile, String passWord);
+    UserInfoOutDto loginUser(String mobile, String passWord);
 
     /**
      * 根据用户ID查询用户号码

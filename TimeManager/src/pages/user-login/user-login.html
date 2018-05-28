@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>user-login</ion-title>
+    <ion-title>用户登陆</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -16,13 +16,13 @@
 <ion-content padding>
   <ion-list>
     <ion-item>
-      <ion-label no-lines>用户名</ion-label>
-      <ion-input type="text" placeholder="请输入手机号/用户名" [(ngModel)]="accountMobile"></ion-input>
+      <ion-label no-lines floating>用户名/手机号</ion-label>
+      <ion-input type="text" [(ngModel)]="accountMobile"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label no-lines>密码</ion-label>
-      <ion-input type="password" placeholder="请输入密码" [(ngModel)]="password"></ion-input>
+      <ion-label no-lines floating>密码</ion-label>
+      <ion-input type="password" [(ngModel)]="accountPassword"></ion-input>
     </ion-item>
 
     <ion-item no-lines>
@@ -34,10 +34,8 @@
       <button ion-button block color="danger" (click)="signIn()">
         登陆
       </button>
+      <button ion-button clear>忘记密码？</button><span>|</span><button ion-button clear>注册</button>
     </div>
 
-    <div text-center>
-      <ion-input value="忘记密码?"></ion-input><ion-input value="注册"></ion-input>
-    </div>
   </ion-list>
 </ion-content>
