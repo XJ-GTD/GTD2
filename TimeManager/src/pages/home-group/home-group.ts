@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HttpClient } from "@angular/common/http";
 import { Group } from "../../model/group.model";
 import { AppConfig } from "../../app/app.config";
+import {ParamsService} from "../../service/params.service";
 
 /**
  * Generated class for the HomeGroupPage page.
@@ -15,6 +16,7 @@ import { AppConfig } from "../../app/app.config";
 @Component({
   selector: 'page-home-group',
   templateUrl: 'home-group.html',
+  providers: []
 })
 export class HomeGroupPage {
 
@@ -24,12 +26,12 @@ export class HomeGroupPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private http: HttpClient,
-              public params: NavParams) {
-    this.data = this.http.get(AppConfig.GROUP_FIND_URL + this.params.get('userId'))
+              private paramsService: ParamsService) {
+    this.data = this.http.get(AppConfig.GROUP_FIND_URL + "/" + this.paramsService.data)
       .subscribe(data => {
         console.log(data);
         this.data = data;
-        this.groupList = this.data;
+        this.groupList = this.data.data.groupInfoList;
       })
   }
 

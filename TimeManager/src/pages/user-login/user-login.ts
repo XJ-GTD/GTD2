@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, LoadingController, NavController, NavParams, ToastController } from 'ionic-angular';
 import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
-import {User} from "../../model/user.model";
+import { User } from "../../model/user.model";
+import {ParamsService} from "../../service/params.service";
 
 /**
  * Generated class for the UserLoginPage page.
@@ -15,11 +16,11 @@ import {User} from "../../model/user.model";
 @Component({
   selector: 'page-user-login',
   templateUrl: 'user-login.html',
+  providers: []
 })
 export class UserLoginPage {
 
-  data: any;
-  user: User;
+  user: any = new User();
   accountMobile: string;
   accountPassword: string;
 
@@ -28,7 +29,8 @@ export class UserLoginPage {
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
     private http: HttpClient,
-    public toastCtrl: ToastController) {
+    public toastCtrl: ToastController,
+    private paramsService: ParamsService) {
   }
 
   ionViewDidLoad() {
@@ -59,13 +61,12 @@ export class UserLoginPage {
     })
       .subscribe(data => {
         console.log(data);
-        this.data = data;
-        this.user = this.data;
+        this.user = data;
 
         if (this.user.code == "0") {
-
+          this.paramsService.data = this.user.data.userInfo.userId;
           loginMessage.present(loginMessage.setMessage(this.user.message));
-          this.navCtrl.push('HomeMenuPage', {userInfo: this.user.data});
+          this.navCtrl.push('HomeMenuPage');
         } else {
           loginMessage.present(loginMessage.setMessage(this.user.message));
         }

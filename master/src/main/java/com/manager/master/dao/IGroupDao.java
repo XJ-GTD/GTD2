@@ -13,7 +13,7 @@ public interface IGroupDao {
     //<script>select * from user <if test=\"id !=null \">where id = #{id} </if></script>
     @Select(" select  " +
             " GG.GROUP_ID,gg.USER_ID,gg.ROLE_ID,gg.GROUP_NAME, " +
-            " gr.ROLE_NAME, " +
+            " gr.ROLE_NAME, GG.GROUP_HEADIMG," +
             " GS.SCHEDULE_NAME,GS.SCHEDULE_CREATE_DATE " +
             " FROM GTD_GROUP GG " +
             " LEFT JOIN gtd_role GR ON gr.ROLE_ID=gg.ROLE_ID  " +

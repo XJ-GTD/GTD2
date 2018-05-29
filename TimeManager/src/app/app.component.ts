@@ -5,9 +5,11 @@ import {Platform, MenuController, Nav} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from "@ionic/storage";
+import {ParamsService} from "../service/params.service";
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  providers: [ParamsService]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
