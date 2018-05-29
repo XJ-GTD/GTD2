@@ -6,6 +6,7 @@
 export class Group {
   groupId: string;//群组ID
   roleName: string;//角色ID 1群主 2成员 3发布人 4执行人
+  issuerName: string;//发布人姓名
   groupName: string;//群组名
   groupHeadImg: string;//群组头像
   scheduleName: string;//事件名

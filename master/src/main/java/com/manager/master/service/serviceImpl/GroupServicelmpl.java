@@ -7,6 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 @Service
 @Transactional
@@ -17,8 +22,24 @@ public class GroupServicelmpl implements IGroupService {
 
     @Override
     public List<GroupDto> findGroup(int userId) {
+        DateFormat df2= new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        List<GroupDto> dataList = groupDao.findGroup(userId);
+        List<GroupDto> outData = new ArrayList<>();
+        try {
 
-        return groupDao.findGroup(userId);
+            for (GroupDto groupDao:dataList) {
+                if (groupDao.getScheduleCreateDate() != null) {
+                    Date date = df2.parse(groupDao.getScheduleCreateDate());
+                    groupDao.setScheduleCreateDate(df2.format(date));
+                }
+                outData.add(groupDao);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return dataList;
     }
 
     @Override

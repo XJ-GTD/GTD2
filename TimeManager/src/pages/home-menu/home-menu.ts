@@ -2,6 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {IonicPage, MenuController, Nav, Platform} from 'ionic-angular';
 import {SplashScreen} from "@ionic-native/splash-screen";
 import {StatusBar} from "@ionic-native/status-bar";
+import {ParamsService} from "../../service/params.service";
 
 /**
  * Generated class for the HomeMenuPage page.
@@ -21,14 +22,17 @@ export class HomeMenuPage {
   // make HelloIonicPage the root (or first) page
   rootPage = 'HomePage';
   pages: Array<{ title: string, component: any }>;
+  userInfo: any;
 
   constructor(
     public platform: Platform,
     public menu: MenuController,
     public statusBar: StatusBar,
-    public splashScreen: SplashScreen
+    public splashScreen: SplashScreen,
+    private paramsService: ParamsService
   ) {
     this.initializeApp();
+    this.userInfo = this.paramsService.data;
 
     // set our app's pages
     this.pages = [

@@ -21,13 +21,15 @@ import {ParamsService} from "../../service/params.service";
 export class HomeGroupPage {
 
   data: any;
+  userInfo: any;
   groupList: Array<Group>;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private http: HttpClient,
               private paramsService: ParamsService) {
-    this.data = this.http.get(AppConfig.GROUP_FIND_URL + "/" + this.paramsService.data)
+    this.userInfo = this.paramsService.data;
+    this.data = this.http.get(AppConfig.GROUP_FIND_URL + "/" + this.userInfo.userId)
       .subscribe(data => {
         console.log(data);
         this.data = data;

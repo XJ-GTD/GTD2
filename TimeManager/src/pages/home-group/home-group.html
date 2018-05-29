@@ -19,13 +19,21 @@
 <ion-content padding>
 
   <ion-list>
-    <button ion-item *ngFor="let g of groupList" (click)="groupDetailShow()">
-      <ion-avatar item-start>
-        <img src="{{g.groupHeadImg}}">
-      </ion-avatar>
-      <h2>{{g.groupName}}</h2>
-      <p>{{g.scheduleName}}</p>
-      <ion-note item-end>{{g.scheduleCreateDate}}</ion-note>
-    </button>
+    <ion-item-sliding *ngFor="let g of groupList">
+      <button ion-item (click)="groupDetailShow()">
+        <ion-avatar item-start>
+          <img src="{{g.groupHeadImg}}">
+        </ion-avatar>
+        <h2>{{g.groupName}}</h2>
+        <p *ngIf="g.issuerName!==null">{{g.issuerName}}发布了{{g.scheduleName}}</p>
+        <ion-note item-end>{{g.scheduleCreateDate}}</ion-note>
+      </button>
+      <ion-item-options>
+        <button ion-button color="light" ion-start>
+          <ion-icon name="delete"></ion-icon>
+          删除
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 </ion-content>

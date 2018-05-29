@@ -14,16 +14,17 @@ public interface IGroupDao {
     @Select(" select  " +
             " GG.GROUP_ID,gg.USER_ID,gg.ROLE_ID,gg.GROUP_NAME, " +
             " gr.ROLE_NAME, GG.GROUP_HEADIMG," +
-            " GS.SCHEDULE_NAME,GS.SCHEDULE_CREATE_DATE " +
+            " GS.SCHEDULE_NAME,GS.SCHEDULE_CREATE_DATE, GU.USER_NAME issuerName " +
             " FROM GTD_GROUP GG " +
             " LEFT JOIN gtd_role GR ON gr.ROLE_ID=gg.ROLE_ID  " +
             " LEFT JOIN  " +
             " ( SELECT  " +
-            " GROUP_ID,SCHEDULE_NAME,SCHEDULE_CREATE_DATE " +
+            " GROUP_ID,SCHEDULE_NAME,SCHEDULE_CREATE_DATE, SCHEDULE_ISSUER" +
             " FROM gtd_schedule  " +
             " group by GROUP_ID  " +
             " ORDER BY SCHEDULE_CREATE_DATE DESC   ) GS  " +
             " ON GS.GROUP_ID = GG.GROUP_ID  " +
+            " LEFT JOIN gtd_user GU ON GS.SCHEDULE_ISSUER = GU.USER_ID  " +
             " where gg.user_id = #{userId} ")
     List<GroupDto> findGroup(@Param("userId") int userId);
     /**

@@ -64,7 +64,7 @@ export class UserLoginPage {
         this.user = data;
 
         if (this.user.code == "0") {
-          this.paramsService.data = this.user.data.userInfo.userId;
+          this.paramsService.data = this.user.data.userInfo;
           loginMessage.present(loginMessage.setMessage(this.user.message));
           this.navCtrl.push('HomeMenuPage');
         } else {

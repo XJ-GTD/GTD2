@@ -12,10 +12,11 @@ public class GroupDto {
     private int roleId;//角色ID 1群主 2成员 3发布人 4执行人
     private int groupNumber;//自增主键
     private String groupName;//群组名
+    private String issuerName;//发布人
     private String roleName;//角色
     private String scheduleName;//事件名
     private String groupHeadImg;        //群组头像
-    private Date scheduleCreateDate;//最新事件创建时间
+    private String scheduleCreateDate;//最新事件创建时间
 
     public String getGroupId() {
         return groupId;
@@ -73,11 +74,11 @@ public class GroupDto {
         this.scheduleName = scheduleName;
     }
 
-    public Date getScheduleCreateDate() {
+    public String getScheduleCreateDate() {
         return scheduleCreateDate;
     }
 
-    public void setScheduleCreateDate(Date scheduleCreateDate) {
+    public void setScheduleCreateDate(String scheduleCreateDate) {
         this.scheduleCreateDate = scheduleCreateDate;
     }
 
@@ -87,5 +88,13 @@ public class GroupDto {
 
     public void setGroupHeadImg(String groupHeadImg) {
         this.groupHeadImg = groupHeadImg;
+    }
+
+    public String getIssuerName() {
+        return issuerName;
+    }
+
+    public void setIssuerName(String issuerName) {
+        this.issuerName = issuerName;
     }
 }

@@ -37,7 +37,7 @@ public class GroupController {
         Map<String, List<GroupDto>> data = new HashMap<>();
         List<GroupDto> groupDataList= IGroupService.findGroup(userId);
 
-        if (groupDataList.size() != 0) {
+        if (groupDataList != null && groupDataList.size() != 0 ) {
             data.put("groupInfoList", groupDataList);
             outBean.setData(data);
             outBean.setCode("0");
