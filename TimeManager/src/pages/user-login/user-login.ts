@@ -74,4 +74,11 @@ export class UserLoginPage {
       })
   }
 
+  signUp() {
+    this.navCtrl.push('UserRegisterPage');
+  }
+
+  forgetPassword() {
+    this.navCtrl.push('UserForgetPasswordPage');
+  }
 }

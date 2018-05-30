@@ -29,8 +29,7 @@ export class MyApp {
     //通过key，判断是否曾进入过引导页
     this.storage.get('firstIn').then((result) => {
       console.log('firstIn is', result);
-      
-      if (result) {
+      if (result != null && result) {
         this.rootPage = 'UserLoginPage';
       } else {
         this.storage.set('firstIn', true);
