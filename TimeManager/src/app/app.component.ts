@@ -15,7 +15,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   // make HelloIonicPage the root (or first) page
-  rootPage:any;// = 'UserLoginPage';
+  rootPage:any;
   pages: Array<{title: string, component: any}>;
   backButtonPressed: boolean = false; //返回键是否已c触发
 
@@ -29,7 +29,7 @@ export class MyApp {
     //通过key，判断是否曾进入过引导页
     this.storage.get('firstIn').then((result) => {
       console.log('firstIn is', result);
-      result = false;
+      
       if (result) {
         this.rootPage = 'UserLoginPage';
       } else {
