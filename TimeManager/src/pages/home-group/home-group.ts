@@ -33,7 +33,11 @@ export class HomeGroupPage {
       .subscribe(data => {
         console.log(data);
         this.data = data;
-        this.groupList = this.data.data.groupInfoList;
+        if (this.data.code == "0") {
+          this.groupList = this.data.data.groupInfoList;
+        } else {
+          this.groupList = null;
+        }
       })
   }
 
@@ -42,6 +46,10 @@ export class HomeGroupPage {
   }
 
   groupDetailShow() {
+    this.navCtrl.push('HomeGroupDetailPage');
+  }
 
+  addSchedule() {
+    this.navCtrl.push('ScheduleAddPage');
   }
 }

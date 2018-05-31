@@ -3,7 +3,7 @@ import { IonicPage, LoadingController, NavController, NavParams, ToastController
 import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
 import { User } from "../../model/user.model";
-import {ParamsService} from "../../service/params.service";
+import { ParamsService } from "../../service/params.service";
 
 /**
  * Generated class for the UserLoginPage page.
@@ -27,7 +27,7 @@ export class UserLoginPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public loadingCtrl: LoadingController,
+    /*public loadingCtrl: LoadingController,*/
     private http: HttpClient,
     public toastCtrl: ToastController,
     private paramsService: ParamsService) {
@@ -39,11 +39,11 @@ export class UserLoginPage {
 
   signIn() {
 
-    let loader = this.loadingCtrl.create({
+    /*let loader = this.loadingCtrl.create({
       content: "登陆中...",
       duration: 1500
     });
-    loader.present();
+    loader.present();*/
     let loginMessage = this.toastCtrl.create({
       message: "",
       duration: 3000,
