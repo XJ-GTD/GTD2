@@ -15,11 +15,17 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class HomeGroupDetailPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  groupHeadImg: any;
+
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomeGroupDetailPage');
   }
 
+  addScheduleByGroup() {
+
+  }
 }

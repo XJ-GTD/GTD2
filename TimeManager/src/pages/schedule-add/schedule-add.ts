@@ -15,7 +15,12 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ScheduleAddPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  groupId: any;
+
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams) {
+    this.groupId = navParams.get("groupId");
+    console.log(this.groupId);
   }
 
   ionViewDidLoad() {

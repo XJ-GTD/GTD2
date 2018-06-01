@@ -1,10 +1,9 @@
 /**
  * create by wzy on 2018/05/28
  */
-import {baseModel} from "./base.model";
 
 //用户类
-export class User extends baseModel {
+export class User {
   accountId: number;    //账户ID
   userId: number;   //用户ID
   accountMobile: string;    //手机号

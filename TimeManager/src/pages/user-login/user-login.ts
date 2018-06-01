@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, LoadingController, NavController, NavParams, ToastController } from 'ionic-angular';
+import {IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
 import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
-import { User } from "../../model/user.model";
 import { ParamsService } from "../../service/params.service";
 
 /**
@@ -20,14 +19,15 @@ import { ParamsService } from "../../service/params.service";
 })
 export class UserLoginPage {
 
-  user: any = new User();
+  data: any;
+  user: any;
   accountMobile: string;
   accountPassword: string;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    /*public loadingCtrl: LoadingController,*/
+    public loadingCtrl: LoadingController,
     private http: HttpClient,
     public toastCtrl: ToastController,
     private paramsService: ParamsService) {
@@ -39,11 +39,6 @@ export class UserLoginPage {
 
   signIn() {
 
-    /*let loader = this.loadingCtrl.create({
-      content: "登陆中...",
-      duration: 1500
-    });
-    loader.present();*/
     let loginMessage = this.toastCtrl.create({
       message: "",
       duration: 3000,
@@ -61,14 +56,19 @@ export class UserLoginPage {
     })
       .subscribe(data => {
         console.log(data);
-        this.user = data;
+        this.data = data;
 
-        if (this.user.code == "0") {
-          this.paramsService.data = this.user.data.userInfo;
-          loginMessage.present(loginMessage.setMessage(this.user.message));
+        if (this.data.code == "0") {
+          this.paramsService.user = this.data.data.userInfo;
+          // loginMessage.present(loginMessage.setMessage(this.data.message));
+          let loader = this.loadingCtrl.create({
+            content: this.data.message,
+            duration: 1500
+          });
+          loader.present();
           this.navCtrl.push('HomeMenuPage');
         } else {
-          loginMessage.present(loginMessage.setMessage(this.user.message));
+          loginMessage.present(loginMessage.setMessage(this.data.message));
         }
 
       })

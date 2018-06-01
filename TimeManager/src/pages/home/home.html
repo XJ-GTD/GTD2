@@ -5,8 +5,32 @@
   Ionic pages and navigation.
 -->
 
-<ion-tabs>
+<ion-content padding>
+  <ion-nav [root]="tab1Root" ></ion-nav>
+  <div style="position: absolute;width: 220px;bottom: 10px;height:  20px;">
+    <div style="position: absolute; width: 100px; margin-left: 50%;">
+
+      <ion-fab bottom center style="left: -5%">
+        <button ion-button color="light" round ><ion-icon name="home"></ion-icon></button>
+      </ion-fab>
+
+      <ion-fab bottom center style="left: 80%">
+        <button ion-button color="light" round ><ion-icon name="happy"></ion-icon></button>
+      </ion-fab>
+
+      <ion-fab bottom center >
+        <button ion-fab color="primary">⏱</button>
+      </ion-fab>
+
+    </div>
+  </div>
+
+
+
+</ion-content>
+
+<!--<ion-tabs>
   <ion-tab [root]="tab1Root" tabTitle="首页" tabIcon="home"></ion-tab>
   <ion-tab [root]="tab2Root" tabTitle="语音" tabIcon="information-circle"></ion-tab>
   <ion-tab [root]="tab3Root" tabTitle="预留btn" tabIcon="contacts"></ion-tab>
-</ion-tabs>
+</ion-tabs>-->

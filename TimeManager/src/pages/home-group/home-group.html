@@ -18,18 +18,9 @@
 
 <ion-content padding>
 
-  <ion-item *ngIf="groupList == null" no-lines>
-    <img src="./assets/imgs/while.png" class="slide-image"/>
-    <h1 style="text-align: center">就是管理人生</h1>
-    <button ion-button large clear color="primary" (click)="addSchedule()">
-      创建日程
-      <ion-icon name="arrow-forward"></ion-icon>
-    </button>
-  </ion-item>
-
-  <ion-list>
+  <ion-list *ngIf="groupList != null; else group">
     <ion-item-sliding *ngFor="let g of groupList">
-      <button ion-item (click)="groupDetailShow()">
+      <button ion-item (click)="groupDetailShow(g.groupId)">
         <ion-avatar item-start>
           <img src="{{g.groupHeadImg}}">
         </ion-avatar>
@@ -45,5 +36,16 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+
+  <ng-template #group>
+    <ion-item no-lines >
+      <img src="./assets/imgs/while.png" class="slide-image"/>
+      <h1 style="text-align: center">就是管理人生</h1>
+      <button ion-button large clear color="primary" (click)="addSchedule()">
+        创建日程
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </ion-item>
+  </ng-template>
 
 </ion-content>

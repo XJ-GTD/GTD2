@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { User } from "../model/user.model";
 
 /**
  * 页面ts传值
@@ -6,6 +7,14 @@ import { Injectable } from '@angular/core';
  */
 @Injectable()
 export class ParamsService {
+  get user(): User {
+    return this._user;
+  }
+
+  set user(value: User) {
+    this._user = value;
+  }
+
   get data(): string {
     return this._data;
   }
@@ -13,7 +22,8 @@ export class ParamsService {
   set data(value: string) {
     this._data = value;
   }
-  private _data: string;
 
+  private _data: string;
+  private _user: User;
 
 }

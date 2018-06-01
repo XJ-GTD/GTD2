@@ -15,4 +15,22 @@
 
 <ion-content padding>
 
+  <ion-fab bottom right>
+    <button ion-fab>+</button>
+    <ion-fab-list side="top">
+      <button ion-fab (click)="addScheduleByGroup()" color="primary">add</button>
+    </ion-fab-list>
+    <ion-fab-list side="left">
+      <button ion-fab>♡</button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-item no-lines>
+    <img [src]="groupHeadImg">
+  </ion-item>
+
+  <!--<ion-item *ngIf="" *ngFor=""></ion-item>
+
+  <ng-template #groupSchedule></ng-template>-->
+
 </ion-content>

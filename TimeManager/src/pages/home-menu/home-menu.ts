@@ -32,7 +32,7 @@ export class HomeMenuPage {
     private paramsService: ParamsService
   ) {
     this.initializeApp();
-    this.userInfo = this.paramsService.data;
+    this.userInfo = this.paramsService.user;
 
     // set our app's pages
     this.pages = [
