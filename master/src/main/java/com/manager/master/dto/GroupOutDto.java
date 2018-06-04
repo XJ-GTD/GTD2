@@ -6,12 +6,13 @@ import java.util.Date;
  * 群组
  * create  zy
  */
-public class GroupDto {
+public class GroupOutDto {
     private String groupId;//群组ID
-    private int userId;//用户ID
+    private int groupMasterId;//用户ID
     private int roleId;//角色ID 1群主 2成员 3发布人 4执行人
     private int groupNumber;//自增主键
     private String groupName;//群组名
+    private String groupMaster;//群主名
     private String issuerName;//发布人
     private String roleName;//角色
     private String scheduleName;//事件名
@@ -24,14 +25,6 @@ public class GroupDto {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public int getRoleId() {
@@ -96,5 +89,21 @@ public class GroupDto {
 
     public void setIssuerName(String issuerName) {
         this.issuerName = issuerName;
+    }
+
+    public String getGroupMaster() {
+        return groupMaster;
+    }
+
+    public void setGroupMaster(String groupMaster) {
+        this.groupMaster = groupMaster;
+    }
+
+    public int getGroupMasterId() {
+        return groupMasterId;
+    }
+
+    public void setGroupMasterId(int groupMasterId) {
+        this.groupMasterId = groupMasterId;
     }
 }

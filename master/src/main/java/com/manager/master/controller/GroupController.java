@@ -1,7 +1,7 @@
 package com.manager.master.controller;
 
 import com.manager.master.dto.BaseOutDto;
-import com.manager.master.dto.GroupDto;
+import com.manager.master.dto.GroupOutDto;
 import com.manager.master.service.IGroupService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,8 +34,8 @@ public class GroupController {
     public BaseOutDto find(@PathVariable int userId) {
 
         BaseOutDto outBean = new BaseOutDto();
-        Map<String, List<GroupDto>> data = new HashMap<>();
-        List<GroupDto> groupDataList= IGroupService.findGroup(userId);
+        Map<String, List<GroupOutDto>> data = new HashMap<>();
+        List<GroupOutDto> groupDataList= IGroupService.findGroup(userId);
 
         if (groupDataList != null && groupDataList.size() != 0 ) {
             data.put("groupInfoList", groupDataList);

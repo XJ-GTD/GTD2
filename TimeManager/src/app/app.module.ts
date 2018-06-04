@@ -14,7 +14,9 @@ import { HttpClientModule } from "@angular/common/http";
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      tabsHideOnSubPages: 'true'
+    }),
     IonicStorageModule.forRoot(),
     HttpClientModule
   ],

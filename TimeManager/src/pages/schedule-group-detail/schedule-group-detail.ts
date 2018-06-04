@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
- * Generated class for the HomePage page.
+ * Generated class for the ScheduleGroupDetailPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -10,23 +10,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html',
+  selector: 'page-schedule-group-detail',
+  templateUrl: 'schedule-group-detail.html',
 })
-export class HomePage {
-  tab1Root = 'HomeGroupPage';
-  tab2Root = 'SpeechPage';
-  tab3Root = 'HomeCalendarPage';
+export class ScheduleGroupDetailPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad HomePage');
+    console.log('ionViewDidLoad ScheduleGroupDetailPage');
   }
 
-  switchPage(page) {
-    this.navCtrl.push(page);
-  }
 }

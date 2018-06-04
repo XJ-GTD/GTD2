@@ -29,7 +29,7 @@ export class HomeGroupPage {
               private http: HttpClient,
               private paramsService: ParamsService) {
     this.userInfo = this.paramsService.user;
-    this.data = this.http.get(AppConfig.GROUP_FIND_URL + "/" + this.userInfo.userId)
+    this.http.get(AppConfig.GROUP_FIND_URL + "/" + this.userInfo.userId)
       .subscribe(data => {
         console.log(data);
         this.data = data;
@@ -45,11 +45,11 @@ export class HomeGroupPage {
     console.log('ionViewDidLoad HomeGroupPage');
   }
 
-  groupDetailShow() {
-    this.navCtrl.push('HomeGroupDetailPage');
+  groupDetailShow(group) {
+    this.navCtrl.push('HomeGroupDetailPage', {"group": group});
   }
 
-  addSchedule(groupId) {
-    this.navCtrl.push('ScheduleAddPage', {"groupId": groupId});
+  addSchedule() {
+    this.navCtrl.push('ScheduleAddPage');
   }
 }

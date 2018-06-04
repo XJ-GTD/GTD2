@@ -20,7 +20,7 @@
 
   <ion-list *ngIf="groupList != null; else group">
     <ion-item-sliding *ngFor="let g of groupList">
-      <button ion-item (click)="groupDetailShow(g.groupId)">
+      <button ion-item (click)="groupDetailShow(g)">
         <ion-avatar item-start>
           <img src="{{g.groupHeadImg}}">
         </ion-avatar>

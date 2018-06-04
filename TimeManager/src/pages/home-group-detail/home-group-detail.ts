@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Group} from "../../model/group.model";
+import {HttpClient} from "@angular/common/http";
+import {AppConfig} from "../../app/app.config";
 
 /**
  * Generated class for the HomeGroupDetailPage page.
@@ -11,14 +14,28 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 @IonicPage()
 @Component({
   selector: 'page-home-group-detail',
-  templateUrl: 'home-group-detail.html',
+  templateUrl: 'home-group-detail.html'
 })
 export class HomeGroupDetailPage {
 
-  groupHeadImg: any;
+  data: any;
+  groupDetail: Group;
+  groupScheduleList: any;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams) {
+              public navParams: NavParams,
+              private http: HttpClient) {
+    this.groupDetail = this.navParams.get("group");
+    this.http.get(AppConfig.SCHEDULE_GROUP_ALL_URL + "/" + this.groupDetail.groupId)
+      .subscribe(data => {
+       console.log(data);
+        this.data =data;
+        if (this.data.code == "0") {
+
+        } else {
+
+        }
+      })
   }
 
   ionViewDidLoad() {
@@ -26,6 +43,6 @@ export class HomeGroupDetailPage {
   }
 
   addScheduleByGroup() {
-
+    this.navCtrl.push('ScheduleGroupAddPage', {'groupId': this.groupDetail.groupId})
   }
 }

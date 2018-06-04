@@ -1,14 +1,13 @@
 package com.manager.master.service.serviceImpl;
 
 import com.manager.master.dao.IGroupDao;
-import com.manager.master.dto.GroupDto;
+import com.manager.master.dto.GroupOutDto;
 import com.manager.master.service.IGroupService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,13 +20,13 @@ public class GroupServicelmpl implements IGroupService {
     private IGroupDao groupDao;
 
     @Override
-    public List<GroupDto> findGroup(int userId) {
+    public List<GroupOutDto> findGroup(int userId) {
         DateFormat df2= new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        List<GroupDto> dataList = groupDao.findGroup(userId);
-        List<GroupDto> outData = new ArrayList<>();
+        List<GroupOutDto> dataList = groupDao.findGroup(userId);
+        List<GroupOutDto> outData = new ArrayList<>();
         try {
 
-            for (GroupDto groupDao:dataList) {
+            for (GroupOutDto groupDao:dataList) {
                 if (groupDao.getScheduleCreateDate() != null) {
                     Date date = df2.parse(groupDao.getScheduleCreateDate());
                     groupDao.setScheduleCreateDate(df2.format(date));
