@@ -8,7 +8,7 @@ public class ScheduleOutDto {
     private int scheduleId;         //事件id
     private String scheduleName;         //事件名
     private String scheduleDetail;       //事件详情
-    private int scheduleIssuer;       //发布人
+    private int scheduleIssuerId;       //发布人
 
     private String scheduleIssuerName;       //发布人姓名
 
@@ -30,13 +30,13 @@ public class ScheduleOutDto {
     private String executorRemindDate;    //提醒时间-执行事件表
     private String executorRemindRepeat;     //重复提醒-执行事件表
     private String executorRemindRepeatType;     //重复提醒类型-执行事件表（1 每日 2 每月 3每年）
-    private String userId;//执行人ID  USER_ID
+    private String executorId;//执行人ID  USER_ID
     private String executorEditDate;    //修改时间SCHEDULE_EDIT_DATE
 
     //事件ID
     private int executorState;//事件状态 EXECUTOR_STATE
     //用户表
-    private String userName;//执行人姓名（用户表里的用户名）
+    private String executorName;//执行人姓名（用户表里的用户名）
 
     public int getScheduleId() {
         return scheduleId;
@@ -60,14 +60,6 @@ public class ScheduleOutDto {
 
     public void setScheduleDetail(String scheduleDetail) {
         this.scheduleDetail = scheduleDetail;
-    }
-
-    public int getScheduleIssuer() {
-        return scheduleIssuer;
-    }
-
-    public void setScheduleIssuer(int scheduleIssuer) {
-        this.scheduleIssuer = scheduleIssuer;
     }
 
     public String getScheduleIssuerName() {
@@ -158,28 +150,12 @@ public class ScheduleOutDto {
         this.scheduleRemindRepeatType = scheduleRemindRepeatType;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public String getScheduleEditDate() {
         return scheduleEditDate;
     }
 
     public void setScheduleEditDate(String scheduleEditDate) {
         this.scheduleEditDate = scheduleEditDate;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public int getExecutorState() {
@@ -236,5 +212,29 @@ public class ScheduleOutDto {
 
     public void setExecutorEditDate(String executorEditDate) {
         this.executorEditDate = executorEditDate;
+    }
+
+    public String getExecutorName() {
+        return executorName;
+    }
+
+    public void setExecutorName(String executorName) {
+        this.executorName = executorName;
+    }
+
+    public String getExecutorId() {
+        return executorId;
+    }
+
+    public void setExecutorId(String executorId) {
+        this.executorId = executorId;
+    }
+
+    public int getScheduleIssuerId() {
+        return scheduleIssuerId;
+    }
+
+    public void setScheduleIssuerId(int scheduleIssuerId) {
+        this.scheduleIssuerId = scheduleIssuerId;
     }
 }

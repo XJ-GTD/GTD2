@@ -26,9 +26,31 @@
   </ion-fab>
 
   <ion-item no-lines>
-    <img src="{{groupDetail.groupHeadImg}}">
-    <
+    <ion-avatar item-start>
+      <img src="{{groupDetail.groupHeadImg}}">
+    </ion-avatar>
+    <h2>{{groupDetail.groupName}}</h2>
+    <h3>群主：{{groupDetail.groupMaster}}</h3>
   </ion-item>
+
+  <ion-list *ngIf="groupScheduleList != null; else scheduleList">
+    <ion-item-sliding *ngFor="let gs of groupScheduleList">
+      <button ion-item (click)="updateSchedule(gs.scheduleId)">
+        <h2 item-start>{{gs.scheduleName}}</h2>
+        <p *ngIf="gs.scheduleIssuerName!==null" >发布人：{{gs.scheduleIssuerName}}</p>
+        <ion-note item-end>{{gs.scheduleCreateDate}}</ion-note>
+      </button>
+      <ion-item-options>
+        <button ion-button color="light" ion-start>
+          <ion-icon name="delete"></ion-icon>
+          删除
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ng-template #scheduleList>
+  </ng-template>
 
   <!--<ion-item *ngIf="" *ngFor=""></ion-item>
 

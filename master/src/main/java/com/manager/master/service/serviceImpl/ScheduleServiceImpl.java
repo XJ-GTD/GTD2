@@ -264,7 +264,7 @@ public class ScheduleServiceImpl implements IScheduleService {
             List<ScheduleOutDto> sodAndUser =  scheduleDao.findScheduleAndUserName(groupId);
             //拼接执行人姓名
             for (ScheduleOutDto sodUser : sodAndUser) {
-                String userName = sodUser.getUserName();
+                String userName = sodUser.getExecutorName();
                 if ("".equals(result) || result==null){
                     result = userName;
                 }else {
@@ -272,7 +272,7 @@ public class ScheduleServiceImpl implements IScheduleService {
                 }
 
             }
-            sod.setUserName(result);
+            sod.setExecutorName(result);
         }
 
         return schList;

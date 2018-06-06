@@ -31,9 +31,9 @@ export class HomeGroupDetailPage {
        console.log(data);
         this.data =data;
         if (this.data.code == "0") {
-
+          this.groupScheduleList = this.data.data.scheduleInfoList;
         } else {
-
+          this.groupScheduleList = null;
         }
       })
   }
@@ -44,5 +44,9 @@ export class HomeGroupDetailPage {
 
   addScheduleByGroup() {
     this.navCtrl.push('ScheduleGroupAddPage', {'groupId': this.groupDetail.groupId})
+  }
+
+  updateSchedule(scheduleId) {
+
   }
 }

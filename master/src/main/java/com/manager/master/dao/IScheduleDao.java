@@ -155,7 +155,7 @@ public interface IScheduleDao {
             " GS.SCHEDULE_REMIND_DATE, " +
             " GS.SCHEDULE_REMIND_REPEAT, " +
             " GS.SCHEDULE_REMIND_REPEAT_TYPE, " +
-            " gu.user_name " +
+            " GU.USER_NAME executorName" +
             " from gtd_schedule GS  " +
             " LEFT JOIN GTD_EXECUTOR_SCHEDULE GES ON GS.SCHEDULE_ID = GES.SCHEDULE_ID " +
             " LEFT JOIN GTD_USER GU ON GU.USER_ID = GES.USER_ID " +

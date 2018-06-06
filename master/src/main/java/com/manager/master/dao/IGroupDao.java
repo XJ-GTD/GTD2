@@ -23,7 +23,7 @@ public interface IGroupDao {
     //<script>select * from user <if test=\"id !=null \">where id = #{id} </if></script>
     @Select(" select  " +
             " GG.GROUP_ID, GG.USER_ID groupMasterId ,gg.ROLE_ID, gg.GROUP_NAME, " +
-            " GG.GROUP_HEADIMG, GM.USER_NAME groupMaster" +
+            " GG.GROUP_HEADIMG, GM.USER_NAME groupMaster," +
             " GS.SCHEDULE_NAME,GS.SCHEDULE_CREATE_DATE, GU.USER_NAME issuerName " +
             " FROM GTD_GROUP GG " +
             " LEFT JOIN gtd_user GM ON GM.USER_ID = GG.USER_ID  " +

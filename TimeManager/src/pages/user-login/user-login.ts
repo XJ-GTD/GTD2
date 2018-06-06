@@ -39,12 +39,6 @@ export class UserLoginPage {
 
   signIn() {
 
-    let loginMessage = this.toastCtrl.create({
-      message: "",
-      duration: 3000,
-      position: "middle"
-    });
-
     this.http.post(AppConfig.USER_LOGIN_URL, {
       accountMobile: this.accountMobile,
       accountPassword: this.accountPassword
@@ -57,18 +51,19 @@ export class UserLoginPage {
       .subscribe(data => {
         console.log(data);
         this.data = data;
+        let loader = this.loadingCtrl.create({
+          content: this.data.message,
+          duration: 1500
+        });
 
         if (this.data.code == "0") {
           this.paramsService.user = this.data.data.userInfo;
           // loginMessage.present(loginMessage.setMessage(this.data.message));
-          let loader = this.loadingCtrl.create({
-            content: this.data.message,
-            duration: 1500
-          });
+
           loader.present();
           this.navCtrl.push('HomeMenuPage');
         } else {
-          loginMessage.present(loginMessage.setMessage(this.data.message));
+          loader.present();
         }
 
       })
