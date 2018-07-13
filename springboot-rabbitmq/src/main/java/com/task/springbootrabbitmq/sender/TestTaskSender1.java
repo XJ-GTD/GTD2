@@ -14,13 +14,13 @@ import java.util.Date;
  * create by wzy on 2018/07/11
  */
 @Component
-public class TaskSender1 {
+public class TestTaskSender1 {
 
     private final AmqpAdmin amqpAdmin;
     private final AmqpTemplate rabbitTemplate;
 
     @Autowired
-    public TaskSender1(AmqpAdmin amqpAdmin, AmqpTemplate rabbitTemplate) {
+    public TestTaskSender1(AmqpAdmin amqpAdmin, AmqpTemplate rabbitTemplate) {
         this.amqpAdmin = amqpAdmin;
         this.rabbitTemplate = rabbitTemplate;
     }

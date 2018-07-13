@@ -88,7 +88,7 @@ public class RabbitProducerConfig {
     }
 
     /**
-     *
+     * 广播模式/订阅模式
      * @param AMessage
      * @param fanoutExchange
      * @return

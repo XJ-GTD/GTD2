@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
  * create by wzy on 2018/07/12
  */
 @Component
-public class TaskTopicSender {
+public class TestTaskTopicSender {
 
     private final AmqpTemplate amqpTemplate;
 
     @Autowired
-    public TaskTopicSender(AmqpTemplate amqpTemplate) {
+    public TestTaskTopicSender(AmqpTemplate amqpTemplate) {
         this.amqpTemplate = amqpTemplate;
     }
 
@@ -25,10 +25,10 @@ public class TaskTopicSender {
      * @param sendMsg2
      */
     public void send(String sendMsg1, String sendMsg2) {
-        System.out.println("sender1 : "+ sendMsg1);
+        System.out.println("topicSender1 : "+ sendMsg1);
         this.amqpTemplate.convertAndSend("exchange","topic.message",sendMsg1);
 
-        System.out.println("sender2 : "+ sendMsg2);
+        System.out.println("topicSender2 : "+ sendMsg2);
         this.amqpTemplate.convertAndSend("exchange","topic.messages",sendMsg2);
     }
 }

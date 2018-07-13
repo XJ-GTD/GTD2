@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
  * create by wzy on 2018/07/12
  */
 @Component
-public class TaskSender2 {
+public class TestTaskSender2 {
 
     private final AmqpTemplate rabbitTemplate;
 
     @Autowired
-    public TaskSender2(AmqpTemplate rabbitTemplate) {
+    public TestTaskSender2(AmqpTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 

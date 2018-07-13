@@ -7,7 +7,7 @@ import java.io.Serializable;
  *
  * create by wzy on 2018/07/12
  */
-public class UserTaskDto implements Serializable {
+public class TestUserTaskDto implements Serializable {
     private String userName;    //用户昵称
     private String headImg;     //头像
     private String taskName;    //任务名

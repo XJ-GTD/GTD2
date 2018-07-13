@@ -12,6 +12,7 @@
 
 ### IntelliJ IDEA ###
 .idea
+.mvn
 *.iws
 *.iml
 *.ipr
@@ -22,4 +23,3 @@
 /nbbuild/
 /dist/
 /nbdist/
-/.nb-gradle/
