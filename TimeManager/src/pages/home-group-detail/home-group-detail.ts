@@ -43,7 +43,7 @@ export class HomeGroupDetailPage {
   }
 
   addScheduleByGroup() {
-    this.navCtrl.push('ScheduleGroupAddPage', {'groupId': this.groupDetail.groupId})
+    this.navCtrl.push('ScheduleAddPage', {'groupId': this.groupDetail.groupId})
   }
 
   updateSchedule(scheduleId) {
