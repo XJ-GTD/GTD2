@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {ParamsService} from "../../service/params.service";
 import {WebsocketService} from "../../service/websocket.service";
 import 'rxjs/add/operator/map';
+import {HttpClient} from "@angular/common/http";
 
 /**
  * Generated class for the ScheduleAddPage page.
@@ -19,13 +20,13 @@ import 'rxjs/add/operator/map';
 })
 export class ScheduleAddPage {
 
-  public dataList = [];
+  data: any;
   groupId: any;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private paramsService: ParamsService,
-              private webSocket: WebsocketService) {
+              private http: HttpClient,
+              private paramsService: ParamsService) {
 
     this.groupId = navParams.get("groupId");
     this.init();
@@ -33,17 +34,21 @@ export class ScheduleAddPage {
   }
 
   init() {
-    const url = "ws:127.0.0.1:8081/webSocket";
-    const nodeid = '{ "userName": "吴大大", "taskName": "今日任务", "taskContent": "5km往返跑" }';
-    this.webSocket.create(url, nodeid).map((response: MessageEvent): string => {
-      let data = response.data;
-      return data;
+    this.http.post("http://192.168.99.101:8080/gtd/schedule/test", {
+      scheduleName: "我发布了任务！"
+    },{
+      headers: {
+        "Content-Type": "application/json"
+      },
+      responseType: 'json'
     })
-      .subscribe(msg => {
-        let data = eval('(' + msg + ')');
-        this.dataList.push(data);
+      .subscribe(data => {
+        console.log(data);
+        this.data = data;
+
       });
   }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad ScheduleAddPage');
   }

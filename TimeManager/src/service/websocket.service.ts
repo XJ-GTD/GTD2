@@ -14,18 +14,22 @@ export class WebsocketService {
   public create(url: string, nodeid:string): Subject<MessageEvent> {
     let ws = new WebSocket(url);
     ws.onopen = function() {
-      ws.send(nodeid);
+      console.log("已经建立连接");
     };
 
+    ws.onmessage = function (evt) {
+      return evt.data;
+    }
+
     // 如果想要断开websocket连接，调用websocket.service.ts的closeWs函数即可。
-    this.closeWs = function() {
-      ws.close();
-      console.log("webSocket已经断开连接");
-    };
+    // this.closeWs = function() {
+    //   ws.close();
+    //   console.log("webSocket已经断开连接");
+    // };
 
     let observable = Observable.create(
       (obs: Observer<MessageEvent>) => {
-        ws.onmessage = obs.next.bind(obs);
+        // ws.onmessage = obs.next.bind(obs);
         ws.onerror   = obs.error.bind(obs);
         ws.onclose   = obs.complete.bind(obs);
         return ws.close.bind(ws);
@@ -33,7 +37,9 @@ export class WebsocketService {
     let observer = {
       next: (data: Object) => {
         if (ws.readyState === WebSocket.OPEN) {
-          ws.send(data);
+          ws.onmessage = function (evt) {
+            return evt.data;
+          }
         }
       }
     };

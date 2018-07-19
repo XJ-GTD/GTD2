@@ -5,6 +5,7 @@ import com.manager.master.dto.PersonScheduleDto;
 import com.manager.master.dto.ScheduleInDto;
 import com.manager.master.dto.ScheduleOutDto;
 import com.manager.master.service.IScheduleService;
+import com.manager.util.ProducerUtil;
 import com.manager.util.UUIDUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,6 +27,18 @@ public class ScheduleController {
     private Logger logger = LogManager.getLogger(this.getClass());
     @Autowired
     IScheduleService scheduleService;
+
+    @Autowired
+    private ProducerUtil producerUtil;
+    /**
+     * test 稍后删除
+     */
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    @ResponseBody
+    public void test(@RequestBody ScheduleInDto inDto) {
+
+        producerUtil.callbackSend(inDto.getScheduleName());
+    }
 
     /**
      * 日程创建
