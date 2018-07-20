@@ -24,12 +24,18 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/schedule")
 public class ScheduleController {
+
     private Logger logger = LogManager.getLogger(this.getClass());
-    @Autowired
-    IScheduleService scheduleService;
+    private final IScheduleService scheduleService;
+
+    private final ProducerUtil producerUtil;
 
     @Autowired
-    private ProducerUtil producerUtil;
+    public ScheduleController(IScheduleService scheduleService, ProducerUtil producerUtil) {
+        this.scheduleService = scheduleService;
+        this.producerUtil = producerUtil;
+    }
+
     /**
      * test 稍后删除
      */
@@ -37,7 +43,7 @@ public class ScheduleController {
     @ResponseBody
     public void test(@RequestBody ScheduleInDto inDto) {
 
-        producerUtil.callbackSend(inDto.getScheduleName());
+        producerUtil.send(inDto.getScheduleName());
     }
 
     /**

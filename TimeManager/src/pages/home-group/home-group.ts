@@ -42,7 +42,6 @@ export class HomeGroupPage {
           this.groupList = null;
         }
       })
-    this.customer();
   }
 
   ionViewDidLoad() {
@@ -55,19 +54,5 @@ export class HomeGroupPage {
 
   addSchedule() {
     this.navCtrl.push('ScheduleAddPage');
-  }
-
-  customer() {
-    const url = "ws:192.168.0.176:8081/customer";
-    const nodeid = '{ "userName": "吴大大", "taskName": "今日任务", "taskContent": "5km往返跑" }';
-    this.webSocket.create(url, nodeid).map((request: MessageEvent): string => {
-      let data = request.data;
-      return data;
-    })
-      .subscribe(msg => {
-        let data = eval('(' + msg + ')');
-        this.dataList.push(data);
-        alert(this.dataList[0]);
-      });
   }
 }

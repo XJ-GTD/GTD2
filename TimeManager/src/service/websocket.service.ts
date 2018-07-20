@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
-import {Observer} from "rxjs/Observer";
-import {Subject} from "rxjs/Subject";
-import {Observable} from "rxjs/Observable";
+import {SockJS} from 'sockjs-client';
+import Stomp from "@stomp/stompjs";
+import {AppConfig} from "../app/app.config";
 
 /**
  * WebSocket连接Rabbitmq服务器
@@ -9,41 +9,45 @@ import {Observable} from "rxjs/Observable";
 @Injectable()
 export class WebsocketService {
 
-  public closeWs:any;
+  /**
+   * 监听消息队列
+   */
+  public connect(queueName: string) {
 
-  public create(url: string, nodeid:string): Subject<MessageEvent> {
-    let ws = new WebSocket(url);
-    ws.onopen = function() {
-      console.log("已经建立连接");
+    let ws = new WebSocket(AppConfig.RABBITMQ_WS_URL);
+
+    //建立连接
+    let client = Stomp.over(ws);
+
+    //呼吸
+    client.heartbeat.outgoing = 0;
+    client.heartbeat.incoming = 0;
+
+    //登陆账户
+    const login = "admin";
+    const password = "admin";
+
+    // 连接成功回调 on_connect
+    let on_connect = function(x) {
+      console.log(client);
+      client.subscribe("/queue" + queueName, function(data) {
+        console.log("on_connect回调成功:" + data);
+      });
     };
 
-    ws.onmessage = function (evt) {
-      return evt.data;
+    //连接失败回调
+    let on_error = function() {
+      console.log('error!');
     }
 
-    // 如果想要断开websocket连接，调用websocket.service.ts的closeWs函数即可。
-    // this.closeWs = function() {
-    //   ws.close();
-    //   console.log("webSocket已经断开连接");
-    // };
+    //关闭回调
+    // let on_close = function() {
+    //
+    // }
 
-    let observable = Observable.create(
-      (obs: Observer<MessageEvent>) => {
-        // ws.onmessage = obs.next.bind(obs);
-        ws.onerror   = obs.error.bind(obs);
-        ws.onclose   = obs.complete.bind(obs);
-        return ws.close.bind(ws);
-      });
-    let observer = {
-      next: (data: Object) => {
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.onmessage = function (evt) {
-            return evt.data;
-          }
-        }
-      }
-    };
-    return Subject.create(observer, observable);
+    // 连接消息服务器
+    client.connect(login, password, on_connect, on_error, null,'/');
+
   }
 
 }
