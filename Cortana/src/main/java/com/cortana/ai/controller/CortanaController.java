@@ -1,7 +1,8 @@
 package com.cortana.ai.controller;
 
-import com.cortana.ai.bean.VoiceBean;
-import com.cortana.ai.service.AiuiService;
+import com.cortana.ai.bean.VoiceInBean;
+import com.cortana.ai.bean.VoiceOutBean;
+import com.cortana.ai.service.AiUiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,12 +16,43 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/cortana")
 public class CortanaController {
 
-    @Autowired
-    private AiuiService aiuiService;
+    private final AiUiService aiUiService;
 
-    @RequestMapping(value = "/receiver")
-    public String parseVoice(@RequestBody VoiceBean voiceBean) {
+    @Autowired
+    public CortanaController(AiUiService aiUiService) {
+        this.aiUiService = aiUiService;
+    }
+
+    /**
+     * 语音解析，带答案回传
+     * @param voiceInBean
+     * @return
+     */
+    @RequestMapping(value = "/answer_audio", method = RequestMethod.POST)
+    public String answerAudio(@RequestBody VoiceInBean voiceInBean) {
+
+        return aiUiService.answerAudio(voiceInBean.getContent());
+    }
+
+    /**
+     * 语音解析，原文回传
+     * @param voiceInBean
+     * @return
+     */
+    @RequestMapping(value = "/audio_translate", method = RequestMethod.POST)
+    public String audioTranslate(@RequestBody VoiceInBean voiceInBean) {
 
         return null;
+    }
+
+    /**
+     * 文本解析，答案回传
+     * @param voiceInBean
+     * @return
+     */
+    @RequestMapping(value = "/answer_text", method = RequestMethod.POST)
+    public String answerText(@RequestBody VoiceInBean voiceInBean) {
+
+        return aiUiService.answerText(voiceInBean.getContent());
     }
 }

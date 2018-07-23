@@ -1,86 +1,59 @@
-/*
+
 package com.cortana.ai.config;
 
-import com.iflytek.cloud.speech.SpeechRecognizer;
-import com.iflytek.cloud.speech.SpeechSynthesizer;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Scanner;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
 
-*/
+
 /**
  * 语音相关配置
- *//*
-
-@Component
+ */
 public class AiUiConfig {
 
-    @Value("${aiui.url}")
-    private String URL;
+    private static final String URL = "http://openapi.xfyun.cn/v2/aiui";
+    private static final String DATA_TYPE_TEXT = "text";
+    private static final String DATA_TYPE_AUDIO = "text";
+    private static final String SCENE = "main";
+    //配置1
+    private static final String APP_ID = "5b554446";
+    private static final String API_KEY = "880d370a20234c95a33e961c70de3ed5";
+    private static final String AUTH_ID = "acc4eef79429322f3083fb04ba52f4c3";
 
-    @Value("${aiui.appid}")
-    private String APPID;
-
-    @Value("${aiui.apikey}")
-    private String API_KEY;
-
-    @Value("${aiui.datatype}")
-    private String DATA_TYPE;
-
-    @Value("${aiui.scene}")
-    private String SCENE;
-
-    @Value("${aiui.authid}")
-    private String AUTH_ID;
-
-    // 语音听写对象
-    private static SpeechRecognizer mIat;
-    private static AiUiConfig mObject;
-    private boolean mIsLoop = true;
-
-    private static StringBuffer mResult = new StringBuffer();
-    private static String ask = "";
-
-    // 语音合成对象
-    private static SpeechSynthesizer mTts;
-
-
-
-    private static AiUiConfig getMscObj() {
-        if (mObject == null)
-            mObject = new AiUiConfig();
-        return mObject;
+    public static String URL() {
+        return URL;
     }
 
-
-    private boolean onLoop() {
-        boolean isWait = true;
-        DebugLog.Log("*********************************");
-        DebugLog.Log("输入任意字符，开始你的问题，你只有3秒哦：）");
-
-        Scanner in = new Scanner(System.in);
-        String command = in.nextLine();
-
-        DebugLog.Log("You input " + command);
-
-        Recognize();
-
-        return isWait;
+    public static String DATA_TYPE_TEXT() {
+        return DATA_TYPE_TEXT;
     }
 
-    public void loop() {
-        while (mIsLoop) {
-            try {
-                if (onLoop()) {
-                    synchronized(this){
-                        this.wait();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    public static String DATA_TYPE_AUDIO() {
+        return DATA_TYPE_AUDIO;
+    }
+
+    public static String SCENE() {
+        return SCENE;
+    }
+
+    public static String APP_ID() {
+        return APP_ID;
+    }
+
+    public static String API_KEY() {
+        return API_KEY;
+    }
+
+    public static String AUTH_ID() {
+        return AUTH_ID;
     }
 }
-*/
+
