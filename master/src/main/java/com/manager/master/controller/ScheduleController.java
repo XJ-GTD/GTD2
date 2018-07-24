@@ -40,7 +40,6 @@ public class ScheduleController {
      * test 稍后删除
      */
     @RequestMapping(value = "/test", method = RequestMethod.POST)
-    @ResponseBody
     public void test(@RequestBody ScheduleInDto inDto) {
 
         producerUtil.send(inDto.getScheduleName());
@@ -52,7 +51,6 @@ public class ScheduleController {
      * @return
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    @ResponseBody
     public BaseOutDto create(@RequestBody ScheduleInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 

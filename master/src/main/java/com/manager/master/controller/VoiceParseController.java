@@ -9,14 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-/**语音处理
+/**
+ * 语音处理
  * @Author: tzx ;
  * @Date: Created in 16:18 2018/4/27
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/readAudio")
-public class ReadAudioController {
+@RequestMapping(value = "/voice_parse")
+public class VoiceParseController {
 
     @Autowired
     IReadAudioService readAudioService;
@@ -34,5 +35,7 @@ public class ReadAudioController {
         outBean.setMessage("解析成功！");
         return outBean;
     }
+
+    
 
 }
