@@ -42,7 +42,7 @@ public class CortanaController {
     @RequestMapping(value = "/audio_translate", method = RequestMethod.POST)
     public String audioTranslate(@RequestBody VoiceInBean voiceInBean) {
 
-        return null;
+        return aiUiService.answerAudio(voiceInBean.getContent());
     }
 
     /**

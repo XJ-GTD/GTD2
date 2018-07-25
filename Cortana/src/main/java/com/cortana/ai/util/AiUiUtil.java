@@ -52,10 +52,10 @@ public class AiUiUtil {
     }
 
     /**
-     * http请求 Text
+     * 讯飞语音AIUI http请求 POST
      * @return
      */
-    public static String httpPost(String body) {
+    public static String httpPost(String body, int flag) {
 
         String result = "";
         BufferedReader in = null;
@@ -63,7 +63,7 @@ public class AiUiUtil {
 
         try {
 
-            Map<String, String> header = buildHeader(1);
+            Map<String, String> header = buildHeader(flag);
 
             URL realUrl = new URL(AiUiConfig.URL());
             HttpURLConnection connection = (HttpURLConnection)realUrl.openConnection();
@@ -99,94 +99,5 @@ public class AiUiUtil {
         }
         return result;
     }
-
-    /**
-     * http请求 Text
-     * @return
-     */
-    public static String httpPost(byte[] body) {
-
-        String result = "";
-        BufferedReader in = null;
-        OutputStream out = null;
-
-        try {
-
-            Map<String, String> header = buildHeader(0);
-
-            URL realUrl = new URL(AiUiConfig.URL());
-            HttpURLConnection connection = (HttpURLConnection)realUrl.openConnection();
-            for (String key : header.keySet()) {
-                connection.setRequestProperty(key, header.get(key));
-            }
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-
-            connection.setConnectTimeout(20000);
-            connection.setReadTimeout(20000);
-            try {
-                out = connection.getOutputStream();
-                out.write(body);
-                out.flush();
-                out.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String line;
-                while ((line = in.readLine()) != null) {
-                    result += line;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    public static byte[] readFile(String filePath) throws IOException {
-//        InputStream in = new FileInputStream(filePath);
-//        ByteArrayOutputStream out = new ByteArrayOutputStream();
-//        byte[] buffer = new byte[1024 * 4];
-//        int n = 0;
-//        while ((n = in.read(buffer)) != -1) {
-//            out.write(buffer, 0, n);
-//        }
-//        byte[] data = out.toByteArray();
-//        in.close();
-//        return data;
-        try{
-//            URL urlfile = new URL(filePath);
-//            // 下载网络文件
-            int bytesum = 0;
-            int byteread = 0;
-//            URLConnection conn = urlfile.openConnection();
-//            InputStream inStream = conn.getInputStream();
-            InputStream inStream = new FileInputStream(filePath);
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024 * 4];
-            String str = "";
-            while ((byteread = inStream.read(buffer)) != -1) {
-//                inStream.read(buffer);
-//                inStream.close();
-                out.write(buffer, 0, byteread);
-
-            }
-            str = new BASE64Encoder().encode(out.toByteArray());
-            inStream.close();
-            return str.getBytes("UTF8");
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return null;
-
-    }
-
 
 }

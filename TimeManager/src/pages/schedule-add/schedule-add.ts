@@ -20,6 +20,7 @@ import {HttpClient} from "@angular/common/http";
 })
 export class ScheduleAddPage {
 
+  dataList = [];
   data: any;
   groupId: any;
 
@@ -34,8 +35,8 @@ export class ScheduleAddPage {
   }
 
   init() {
-    this.http.post("http://192.168.99.101:8080/gtd/schedule/test", {
-      scheduleName: "我发布了任务！"
+    this.http.post("http://192.168.0.176:8080/gtd/schedule/test", {
+      "scheduleName": "我发布了任务！"
     },{
       headers: {
         "Content-Type": "application/json"
@@ -44,7 +45,7 @@ export class ScheduleAddPage {
     })
       .subscribe(data => {
         console.log(data);
-        this.data = data;
+        alert(data);
 
       });
   }

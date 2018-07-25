@@ -32,12 +32,17 @@ export class WebsocketService {
       console.log(client);
       client.subscribe("/queue" + queueName, function(data) {
         console.log("on_connect回调成功:" + data);
+        if (data == null) {
+          alert("暂无新消息");
+        }
+        alert(data);
       });
     };
 
     //连接失败回调
     let on_error = function() {
       console.log('error!');
+      client.connect(login, password, on_connect, on_error, null,'/');
     }
 
     //关闭回调

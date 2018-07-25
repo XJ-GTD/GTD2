@@ -33,23 +33,19 @@ public class AiUiService {
      */
     public String answerText(String data) {
 
-        return AiUiUtil.httpPost(data);
+        return AiUiUtil.httpPost(data, 1);
 
     }
 
     /**
      * 音频方法
-     * @param filePath
+     * @param data
      * @return
      */
-    public String answerAudio(String filePath) {
+    public String answerAudio(String data) {
 
-        try {
-            return AiUiUtil.httpPost(AiUiUtil.readFile(filePath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return AiUiUtil.httpPost(data, 0);
+
     }
 
 }

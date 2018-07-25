@@ -83,6 +83,8 @@
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.11" />
     <plugin name="cordova-sqlite-storage" spec="^2.3.1" />
     <plugin name="cordova-plugin-advanced-http" spec="^1.11.1" />
-    <engine name="android" spec="7.0.0" />
     <engine name="browser" spec="5.0.3" />
+    <engine name="android" spec="~6.4.0" />
+    <allow-navigation href="http://192.168.99.43:8100" />
+    <plugin name="com.plugin.voicePlugin" spec="C:\IdeaProjects\GTD2\TimeManager\plugins\VoicePlugin" />
 </widget>

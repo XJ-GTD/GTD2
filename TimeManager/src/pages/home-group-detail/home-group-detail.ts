@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {Group} from "../../model/group.model";
 import {HttpClient} from "@angular/common/http";
 import {AppConfig} from "../../app/app.config";
 
+
+declare let cordova: any;
 /**
  * Generated class for the HomeGroupDetailPage page.
  *
@@ -24,6 +26,7 @@ export class HomeGroupDetailPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              public loadingCtrl: LoadingController,
               private http: HttpClient) {
     this.groupDetail = this.navParams.get("group");
     this.http.get(AppConfig.SCHEDULE_GROUP_ALL_URL + "/" + this.groupDetail.groupId)
@@ -48,5 +51,46 @@ export class HomeGroupDetailPage {
 
   updateSchedule(scheduleId) {
 
+  }
+
+  callVoicePlugin() {
+    alert("插件开启");
+
+    try {
+      cordova.plugins.VoicePlugin.coolMethod("今天好运气，一老狼请吃鸡呀！",result=>{
+        alert(result);
+        alert("插件ing");
+      },error=>{
+        alert(error);
+      });
+    } catch (e) {
+      alert("问题："+ e)
+    }
+
+    alert("插件关闭");
+  }
+
+  callvoice() {
+    try {
+      cordova.plugins.VoicePlugin.numSum(4,6,result=>{
+      alert(result);
+    },error=>{
+      alert(error);
+    });
+  } catch (e) {
+    alert("问题："+ e)
+  }
+  }
+
+  iflyspeech() {
+    try {
+      cordova.plugins.VoicePlugin.startListen(result => {
+        alert(result);
+      }, error => {
+        alert(error);
+      }, true, 'xiao');
+    }catch (e) {
+      alert("问题："+ e)
+    }
   }
 }

@@ -21,7 +21,7 @@
       <button ion-fab (click)="addScheduleByGroup()" color="primary">add</button>
     </ion-fab-list>
     <ion-fab-list side="left">
-      <button ion-fab>♡</button>
+      <button ion-fab (click)="callVoicePlugin()">♡</button>
     </ion-fab-list>
   </ion-fab>
 
@@ -48,7 +48,8 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
-
+  <button ion-item (click)="callvoice()"></button>
+  <button ion-item (click)="callVoicePlugin()"></button>
   <ng-template #scheduleList>
   </ng-template>
 

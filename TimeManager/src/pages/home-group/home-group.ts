@@ -21,7 +21,6 @@ import {WebsocketService} from "../../service/websocket.service";
 })
 export class HomeGroupPage {
 
-  dataList = [];
   data: any;
   userInfo: any;
   groupList: Array<Group> = [];
@@ -55,4 +54,5 @@ export class HomeGroupPage {
   addSchedule() {
     this.navCtrl.push('ScheduleAddPage');
   }
+
 }

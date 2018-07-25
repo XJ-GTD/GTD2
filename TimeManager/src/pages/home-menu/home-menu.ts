@@ -36,7 +36,7 @@ export class HomeMenuPage {
     this.initializeApp();
     this.userInfo = this.paramsService.user;
     //消息队列接收
-    this.webSocketService.connect("/taskQueue")
+    this.webSocketService.connect("/taskQueue");
     // set our app's pages
     this.pages = [
       {title: 'Hello Ionic', component: 'UserDetailPage'},
