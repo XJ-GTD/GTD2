@@ -23,6 +23,7 @@ export class HomeGroupDetailPage {
   data: any;
   groupDetail: Group;
   groupScheduleList: any;
+  speechText: string;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -70,27 +71,40 @@ export class HomeGroupDetailPage {
     alert("插件关闭");
   }
 
-  callvoice() {
+  listenText() {
     try {
-      cordova.plugins.VoicePlugin.numSum(4,6,result=>{
-      alert(result);
-    },error=>{
-      alert(error);
-    });
-  } catch (e) {
-    alert("问题："+ e)
-  }
-  }
-
-  iflyspeech() {
-    try {
-      cordova.plugins.VoicePlugin.startListen(result => {
-        alert(result);
-      }, error => {
-        alert(error);
-      }, true, 'xiao');
-    }catch (e) {
+      cordova.plugins.XunfeiListenSpeaking.startListen(result=>{
+        alert("成功:" + result);
+      },error=>{
+        alert("报错:" + error);
+      },true,true);
+    } catch (e) {
       alert("问题："+ e)
     }
   }
+
+  speakText() {
+    try {
+      cordova.plugins.XunfeiListenSpeaking.startSpeak(result=>{
+        alert("成功:" + result);
+      },error=>{
+        alert("报错:" + error);
+      }, this.speechText);
+    } catch (e) {
+      alert("问题："+ e)
+    }
+  }
+
+  callvoice() {
+    try {
+      cordova.plugins.VoicePlugin.numSum(4,6,result=>{
+          alert("成功:" + result);
+        },error=>{
+          alert("报错:" + error);
+        });
+    } catch (e) {
+      alert("问题："+ e)
+    }
+  }
+
 }
