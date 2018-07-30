@@ -20,6 +20,9 @@ export class AppConfig {
   /* RabbitMq SockJs */
   public static RABBITMQ_SJ_URL: string = "http://192.168.0.219:15674/stomp";
 
+  /* 讯飞语音*/
+  public static XUNFEI_URL: string = "http://192.168.0.176:8081/cortana/answer_text";
+
   /* Controller */
   private static USER_URL: string = AppConfig.REQUEST_URL + "/user";    //用户类
 

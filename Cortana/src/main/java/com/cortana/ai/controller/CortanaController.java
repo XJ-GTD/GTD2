@@ -1,10 +1,13 @@
 package com.cortana.ai.controller;
 
 import com.cortana.ai.bean.VoiceInBean;
-import com.cortana.ai.bean.VoiceOutBean;
 import com.cortana.ai.service.AiUiService;
+import com.cortana.ai.util.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 语音助手
@@ -51,8 +54,12 @@ public class CortanaController {
      * @return
      */
     @RequestMapping(value = "/answer_text", method = RequestMethod.POST)
-    public String answerText(@RequestBody VoiceInBean voiceInBean) {
+    public Map answerText(@RequestBody VoiceInBean voiceInBean) {
+        Map<String, String> data = new HashMap<>();
 
-        return aiUiService.answerText(voiceInBean.getContent());
+        String speechText = JsonParser.parse(aiUiService.answerText(voiceInBean.getContent()));
+
+        data.put("speechText", speechText);
+        return data;
     }
 }

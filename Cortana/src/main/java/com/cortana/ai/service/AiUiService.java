@@ -33,7 +33,7 @@ public class AiUiService {
      */
     public String answerText(String data) {
 
-        return AiUiUtil.httpPost(data, 1);
+        return AiUiUtil.readAudio(data);
 
     }
 
@@ -44,7 +44,7 @@ public class AiUiService {
      */
     public String answerAudio(String data) {
 
-        return AiUiUtil.httpPost(data, 0);
+        return AiUiUtil.readAudio(data);
 
     }
 

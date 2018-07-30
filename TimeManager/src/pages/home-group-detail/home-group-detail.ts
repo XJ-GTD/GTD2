@@ -24,6 +24,7 @@ export class HomeGroupDetailPage {
   groupDetail: Group;
   groupScheduleList: any;
   speechText: string;
+  content: string;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -73,19 +74,42 @@ export class HomeGroupDetailPage {
 
   listenText() {
     try {
-      cordova.plugins.XunfeiListenSpeaking.startListen(result=>{
+      cordova.plugins.xunfeiListenSpeaking.startListen(result=>{
         alert("成功:" + result);
+        this.content = result;
+        this.connetXunfei()
       },error=>{
         alert("报错:" + error);
       },true,true);
     } catch (e) {
       alert("问题："+ e)
     }
+
   }
+
+  connetXunfei() {
+    alert("调用成功:" + this.content);
+    this.http.post(AppConfig.XUNFEI_URL, {
+      content: this.content
+    },{
+      headers: {
+        "Content-Type": "application/json"
+      },
+      responseType: 'json'
+    })
+      .subscribe(data => {
+        console.log(data);
+        this.data = data;
+        this.speechText = this.data;
+        alert("成功:" + this.speechText);
+        this.speakText();
+      })
+  }
+
 
   speakText() {
     try {
-      cordova.plugins.XunfeiListenSpeaking.startSpeak(result=>{
+      cordova.plugins.xunfeiListenSpeaking.startSpeak(result=>{
         alert("成功:" + result);
       },error=>{
         alert("报错:" + error);

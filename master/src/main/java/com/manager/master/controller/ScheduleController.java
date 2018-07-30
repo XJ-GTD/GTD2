@@ -28,21 +28,9 @@ public class ScheduleController {
     private Logger logger = LogManager.getLogger(this.getClass());
     private final IScheduleService scheduleService;
 
-    private final ProducerUtil producerUtil;
-
     @Autowired
     public ScheduleController(IScheduleService scheduleService, ProducerUtil producerUtil) {
         this.scheduleService = scheduleService;
-        this.producerUtil = producerUtil;
-    }
-
-    /**
-     * test 稍后删除
-     */
-    @RequestMapping(value = "/test", method = RequestMethod.POST)
-    public void test(@RequestBody ScheduleInDto inDto) {
-
-        producerUtil.send(inDto.getScheduleName());
     }
 
     /**

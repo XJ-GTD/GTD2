@@ -9,6 +9,18 @@ import org.json.JSONTokener;
  */
 public class JsonParser {
 
+	public static String parse(String json) {
+
+		JSONObject joResult = new JSONObject(json);
+		JSONArray jsonData = joResult.getJSONArray("data");
+		JSONObject jsonArray = jsonData.getJSONObject(0);
+		JSONObject jsonIntent = jsonArray.getJSONObject("intent");
+		JSONObject jsonAnswer = jsonIntent.getJSONObject("answer");
+		String jsonText = jsonAnswer.getString("text");
+
+		return jsonText;
+	}
+
 	public static String parseIatResult(String json) {
 		StringBuffer ret = new StringBuffer();
 		try {
