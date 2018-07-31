@@ -23,7 +23,8 @@ public class AiUiUtil {
     private static final String URL = "http://openapi.xfyun.cn/v2/aiui";
     private static final String APPID = "5b554446";
     private static final String API_KEY = "880d370a20234c95a33e961c70de3ed5";
-    private static final String DATA_TYPE = "text";
+    private static final String DATA_TYPE_TEXT = "text";
+    private static final String DATA_TYPE_AUDIO = "audio";
     private static final String SCENE = "main";
     private static final String SAMPLE_RATE = "16000";
     private static final String AUTH_ID = "8b9133b8519875127034d7c3cb70a383";
@@ -33,25 +34,57 @@ public class AiUiUtil {
     // 个性化参数，需转义
     private static final String PERS_PARAM = "{\\\"auth_id\\\":\\\"2894c985bf8b1111c6728db79d3479ae\\\"}";
 
-    public static String readAudio(String audio){
+    /**
+     *
+     * @param audio
+     * @param flag 0: 音频  1：文本
+     * @return
+     */
+    public static String readAudio(String audio, int flag){
         try {
-            Map<String, String> header = buildHeader();
+            Map<String, String> header = null;
+            String result = "";
+            if (flag == 0) {
+                header = buildHeader_audio();
+                result = httpPost(URL, header, readFile(audio));
+            } else if (flag == 1) {
+                header = buildHeader_text();
+                result = httpPost(URL, header, audio.getBytes());
+            }
 //        byte[] dataByteArray = readFile(FILE_PATH);
-            String result = httpPost(URL, header, audio.getBytes());
+            httpPost(URL, header, audio.getBytes());
             System.out.println(result);
             return result;
         } catch (ParseException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return null;
     }
 
-    private static Map<String, String> buildHeader() throws UnsupportedEncodingException, ParseException {
+    private static Map<String, String> buildHeader_audio() throws UnsupportedEncodingException, ParseException {
         String curTime = System.currentTimeMillis() / 1000L + "";
-        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE+"\",\"scene\":\""+SCENE+"\"}";
+        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_AUDIO+"\",\"scene\":\""+SCENE+"\"}";
+        //使用个性化参数时参数格式如下：
+        //String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE+"\",\"scene\":\""+SCENE+"\",\"pers_param\":\""+PERS_PARAM+"\"}";
+        String paramBase64 = new String(Base64.encodeBase64(param.getBytes("UTF-8")));
+        String checkSum = DigestUtils.md5Hex(API_KEY + curTime + paramBase64);
+
+        Map<String, String> header = new HashMap<String, String>();
+        header.put("X-Param", paramBase64);
+        header.put("X-CurTime", curTime);
+        header.put("X-CheckSum", checkSum);
+        header.put("X-Appid", APPID);
+        return header;
+    }
+
+    private static Map<String, String> buildHeader_text() throws UnsupportedEncodingException, ParseException {
+        String curTime = System.currentTimeMillis() / 1000L + "";
+        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_TEXT+"\",\"scene\":\""+SCENE+"\"}";
         //使用个性化参数时参数格式如下：
         //String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE+"\",\"scene\":\""+SCENE+"\",\"pers_param\":\""+PERS_PARAM+"\"}";
         String paramBase64 = new String(Base64.encodeBase64(param.getBytes("UTF-8")));
