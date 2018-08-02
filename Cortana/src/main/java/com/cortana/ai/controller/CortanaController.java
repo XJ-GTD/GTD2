@@ -3,9 +3,11 @@ package com.cortana.ai.controller;
 import com.cortana.ai.bean.VoiceInBean;
 import com.cortana.ai.service.AiUiService;
 import com.cortana.ai.util.JsonParser;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +36,7 @@ public class CortanaController {
     @RequestMapping(value = "/answer_audio", method = RequestMethod.POST)
     public String answerAudio(@RequestBody VoiceInBean voiceInBean) {
 
-        return aiUiService.answerAudio(voiceInBean.getContent());
+        return null;
     }
 
     /**
@@ -57,9 +59,19 @@ public class CortanaController {
     public Map answerText(@RequestBody VoiceInBean voiceInBean) {
         Map<String, String> data = new HashMap<>();
 
-        String speechText = JsonParser.parse(aiUiService.answerText(voiceInBean.getContent()));
+        String speechText = "";
+        if (voiceInBean.getContent().equals("") && voiceInBean.getContent() != null) {
 
-        data.put("speechText", speechText);
+            speechText = JsonParser.parse(aiUiService.answerText(voiceInBean.getContent()));
+            data.put("speechText", speechText);
+            data.put("code", "0");
+            data.put("message", "分析成功");
+        } else {
+            data.put("code", "-1");
+            data.put("message", "缺少入参");
+        }
+
+
         return data;
     }
 }
