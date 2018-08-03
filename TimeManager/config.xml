@@ -85,5 +85,7 @@
     <plugin name="cordova-plugin-advanced-http" spec="^1.11.1" />
     <engine name="browser" spec="5.0.3" />
     <allow-navigation href="http://192.168.99.43:8100" />
+    <plugin name="com-badrit-base64" spec="~0.2.0" />
     <plugin name="cordova-plugin-xunfeiListenSpeaking" spec="C:\Users\scarecrow\Downloads\cordova-plugin-IFlyspeech-master" />
+    <engine name="android" spec="~6.4.0" />
 </widget>

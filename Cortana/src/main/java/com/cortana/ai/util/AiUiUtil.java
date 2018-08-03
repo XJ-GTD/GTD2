@@ -1,14 +1,12 @@
 package com.cortana.ai.util;
 
-import com.cortana.ai.config.AiUiConfig;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
-import sun.misc.BASE64Encoder;
+import sun.misc.BASE64Decoder;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,7 +44,8 @@ public class AiUiUtil {
             String result = "";
             if (flag == 0) {
                 header = buildHeader_audio();
-                result = httpPost(URL, header, readFile(audio));
+                result = httpPost(URL, header, base64Audio(audio));
+
             } else if (flag == 1) {
                 header = buildHeader_text();
                 result = httpPost(URL, header, audio.getBytes());
@@ -96,6 +95,12 @@ public class AiUiUtil {
         header.put("X-CheckSum", checkSum);
         header.put("X-Appid", APPID);
         return header;
+    }
+
+    private static byte[] base64Audio(String filePath) throws IOException {
+        String audio = filePath.replace("data:image/*;charset=utf-8;base64,", "");
+        byte[] body = Base64.decodeBase64(audio);
+        return body;
     }
 
     private static byte[] readFile(String filePath) throws IOException {

@@ -16,15 +16,20 @@
 
 
 ###### <ionic3 调用原生方式>
-#####ionic platform add android/ios（添加android/ios平台）
+##### ionic cordova platform add android/ios（添加android/ios平台）
 ######<ionic3创建自定义插件>
-#####plugman create --name <pluginName> --plugin_id <pluginID> --plugin_version <version> [--path <directory>] [--variable NAME=VALUE]
-#####ionic cordova plugin add file_path (注册插件，file_path为插件所在目录)
-#####ionic cordova plugin remove name (移除插件，name为插件id)
+##### plugman create --name <pluginName> --plugin_id <pluginID> --plugin_version <version> [--path <directory>] [--variable NAME=VALUE]
+##### ionic cordova plugin add file_path (注册插件，file_path为插件所在目录)
+##### ionic cordova plugin remove name (移除插件，name为插件id)
 #####
 ###### <安装语音录入插件>
-#####ionic cordova plugin add cordova-plugin-media (注册插件)
-#####npm install --save @ionic-native/media (ionic中使用)
+##### ionic cordova plugin add cordova-plugin-media (注册插件)
+##### npm install --save @ionic-native/media (ionic中使用)
+###### <安装文件上传插件>
+##### cordova plugin add cordova-plugin-file-transfer (注册插件)
+##### npm install --save @ionic-native/file-transfer (ionic中使用)
+##### cordova plugin add cordova-plugin-file-opener2 (注册插件)
+##### npm install --save @ionic-native/file-opener (ionic中使用)
 #####
 #####
 

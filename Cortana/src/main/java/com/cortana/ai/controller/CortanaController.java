@@ -34,9 +34,23 @@ public class CortanaController {
      * @return
      */
     @RequestMapping(value = "/answer_audio", method = RequestMethod.POST)
-    public String answerAudio(@RequestBody VoiceInBean voiceInBean) {
+    public Map answerAudio(@RequestBody VoiceInBean voiceInBean) {
+        Map<String, String> data = new HashMap<>();
 
-        return null;
+        String speechText = "";
+        if (voiceInBean.getContent().equals("") && voiceInBean.getContent() != null) {
+
+            speechText = JsonParser.parse(aiUiService.answerAudio(voiceInBean.getContent()));
+            data.put("speechText", speechText);
+            data.put("code", "0");
+            data.put("message", "分析成功");
+        } else {
+            data.put("code", "-1");
+            data.put("message", "缺少入参");
+        }
+
+
+        return data;
     }
 
     /**
@@ -45,9 +59,23 @@ public class CortanaController {
      * @return
      */
     @RequestMapping(value = "/audio_translate", method = RequestMethod.POST)
-    public String audioTranslate(@RequestBody VoiceInBean voiceInBean) {
+    public Map audioTranslate(@RequestBody VoiceInBean voiceInBean) {
+        Map<String, String> data = new HashMap<>();
 
-        return aiUiService.answerAudio(voiceInBean.getContent());
+        String speechText = "";
+        if (voiceInBean.getContent().equals("") && voiceInBean.getContent() != null) {
+
+            speechText = JsonParser.parse(aiUiService.answerAudio(voiceInBean.getContent()));
+            data.put("speechText", speechText);
+            data.put("code", "0");
+            data.put("message", "分析成功");
+        } else {
+            data.put("code", "-1");
+            data.put("message", "缺少入参");
+        }
+
+
+        return data;
     }
 
     /**

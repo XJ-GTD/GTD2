@@ -10,7 +10,7 @@ import { WebsocketService } from "../service/websocket.service";
 
 @Component({
   templateUrl: 'app.html',
-  providers: [ParamsService, WebsocketService]
+  providers: [ ParamsService, WebsocketService ]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;

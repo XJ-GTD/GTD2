@@ -21,7 +21,7 @@ export class AppConfig {
   public static RABBITMQ_SJ_URL: string = "http://192.168.0.219:15674/stomp";
 
   /* 讯飞语音*/
-  public static XUNFEI_URL: string = "http://192.168.0.176:8081/cortana/answer_text";
+  private static XUNFEI_URL: string = "http://192.168.0.176:8081/cortana";
 
   /* Controller */
   private static USER_URL: string = AppConfig.REQUEST_URL + "/user";    //用户类
@@ -58,4 +58,9 @@ export class AppConfig {
 
   public static SCHEDULE_FIND_DATA_URL: string = AppConfig.SCHEDULE_URL + "/createschbycalendar";    //个人日历查询 GET
 
+
+  //讯飞语音
+  public static XUNFEI_URL_TEXT: string = AppConfig.XUNFEI_URL + "/answer_text";    //文本回传 POST
+  public static XUNFEI_URL_AUDIO: string = AppConfig.XUNFEI_URL + "/answer_audio";    //语音文件带答案回传 POST
+  public static XUNFEI_URL_AUDIO_TRANSLATE: string = AppConfig.XUNFEI_URL + "/audio_translate";    //语音文件原文回传 POST
 }
