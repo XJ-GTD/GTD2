@@ -8,7 +8,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from "@ionic/storage";
 import { HttpClientModule } from "@angular/common/http";
 import { File } from "@ionic-native/file";
-import {Base64} from "@ionic-native/base64";
+import { Base64 } from "@ionic-native/base64";
 
 @NgModule({
   declarations: [

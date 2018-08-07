@@ -3,7 +3,6 @@ import {IonicPage, MenuController, Nav, Platform} from 'ionic-angular';
 import {SplashScreen} from "@ionic-native/splash-screen";
 import {StatusBar} from "@ionic-native/status-bar";
 import {ParamsService} from "../../service/params.service";
-import {WebsocketService} from "../../service/websocket.service";
 
 /**
  * Generated class for the HomeMenuPage page.
@@ -30,13 +29,11 @@ export class HomeMenuPage {
     public menu: MenuController,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    private paramsService: ParamsService,
-    private webSocketService: WebsocketService
+    private paramsService: ParamsService
   ) {
     this.initializeApp();
     this.userInfo = this.paramsService.user;
-    //消息队列接收
-    this.webSocketService.connect("/taskQueue");
+
     // set our app's pages
     this.pages = [
       {title: 'Hello Ionic', component: 'UserDetailPage'},

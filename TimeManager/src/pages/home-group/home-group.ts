@@ -28,8 +28,7 @@ export class HomeGroupPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private http: HttpClient,
-              private paramsService: ParamsService,
-              private webSocket: WebsocketService) {
+              private paramsService: ParamsService) {
     this.userInfo = this.paramsService.user;
     this.http.get(AppConfig.GROUP_FIND_URL + "/" + this.userInfo.userId)
       .subscribe(data => {

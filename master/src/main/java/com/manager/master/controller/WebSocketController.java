@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -32,9 +29,9 @@ public class WebSocketController {
     }
 
     /**
-     * test 稍后删除
+     * 推送任务日程给目标用户
      */
-    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    @PostMapping(value = "/task")
     public void test(@RequestBody ScheduleInDto inDto) {
 
         producerUtil.send(inDto.getScheduleName());

@@ -3,8 +3,7 @@ import { IonicPage, LoadingController, NavController, NavParams, Platform } from
 import { Group } from "../../model/group.model";
 import { HttpClient } from "@angular/common/http";
 import { AppConfig } from "../../app/app.config";
-import { File } from "@ionic-native/file";
-import { Base64 } from "@ionic-native/base64";
+import { ParamsService } from "../../service/params.service";
 
 
 declare let cordova: any;
@@ -34,9 +33,8 @@ export class HomeGroupDetailPage {
               public navParams: NavParams,
               public loadingCtrl: LoadingController,
               private http: HttpClient,
-              public platform: Platform,
-              public file: File,
-              public base64: Base64) {
+              private paramsService: ParamsService,
+              public platform: Platform) {
     this.groupDetail = this.navParams.get("group");
     this.http.get(AppConfig.SCHEDULE_GROUP_ALL_URL + "/" + this.groupDetail.groupId)
       .subscribe(data => {
@@ -62,35 +60,12 @@ export class HomeGroupDetailPage {
 
   }
 
- /* callVoicePlugin() {
-    alert("插件开启");
-
-    try {
-      cordova.plugins.VoicePlugin.coolMethod("今天好运气，一老狼请吃鸡呀！",result=>{
-        alert(result);
-        alert("插件ing");
-      },error=>{
-        alert(error);
-      });
-    } catch (e) {
-      alert("问题："+ e)
-    }
-
-    alert("插件关闭");
-  }*/
-
   listenText() {
     try {
       cordova.plugins.xunfeiListenSpeaking.startListen(result=>{
         alert("成功:" + result);
-        this.filePath = this.file.externalRootDirectory + "/msc/iat.wav";
-        alert(this.filePath);
-        this.base64.encodeFile(this.filePath).then((base64File: string) => {
-          this.content = base64File;
-          this.connetXunfei();
-        }, (err) => {
-          alert(err);
-        });
+
+        this.connetXunfei();
 
       },error=>{
         alert("报错:" + error);
@@ -103,7 +78,7 @@ export class HomeGroupDetailPage {
 
   connetXunfei() {
     alert("调用成功:" + this.content);
-    this.http.post(AppConfig.XUNFEI_URL_TEXT, {
+    this.http.post(AppConfig.XUNFEI_URL_AUDIO, {
       content: this.content
     },{
       headers: {
@@ -133,16 +108,5 @@ export class HomeGroupDetailPage {
     }
   }
 
-  /*callvoice() {
-    try {
-      cordova.plugins.VoicePlugin.numSum(4,6,result=>{
-          alert("成功:" + result);
-        },error=>{
-          alert("报错:" + error);
-        });
-    } catch (e) {
-      alert("问题："+ e)
-    }
-  }*/
 
 }

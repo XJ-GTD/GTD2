@@ -3,7 +3,7 @@
  */
 
 //日程类
-export class schedule {
+export class ScheduleModel {
   scheduleId: string;         //事件id
   scheduleName: string;         //事件名
   scheduleDetail: string;       //事件详情

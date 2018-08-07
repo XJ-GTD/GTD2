@@ -54,31 +54,6 @@ public class CortanaController {
     }
 
     /**
-     * 语音解析，原文回传
-     * @param voiceInBean
-     * @return
-     */
-    @RequestMapping(value = "/audio_translate", method = RequestMethod.POST)
-    public Map audioTranslate(@RequestBody VoiceInBean voiceInBean) {
-        Map<String, String> data = new HashMap<>();
-
-        String speechText = "";
-        if (voiceInBean.getContent().equals("") && voiceInBean.getContent() != null) {
-
-            speechText = JsonParser.parse(aiUiService.answerAudio(voiceInBean.getContent()));
-            data.put("speechText", speechText);
-            data.put("code", "0");
-            data.put("message", "分析成功");
-        } else {
-            data.put("code", "-1");
-            data.put("message", "缺少入参");
-        }
-
-
-        return data;
-    }
-
-    /**
      * 文本解析，答案回传
      * @param voiceInBean
      * @return

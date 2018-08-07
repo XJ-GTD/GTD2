@@ -30,6 +30,8 @@ export class AppConfig {
 
   private static SCHEDULE_URL: string = AppConfig.REQUEST_URL + "/schedule";    //日程类
 
+  private static WEB_SOCKET_URL: string = AppConfig.REQUEST_URL + "/push";    //webSocket推送
+
   /* Connect */
   //用户类
   public static USER_LOGIN_URL: string = AppConfig.USER_URL + "/login";   //登陆 POST
@@ -42,6 +44,8 @@ export class AppConfig {
   public static GROUP_ADD_URL: string = AppConfig.GROUP_URL + "/";    //群组添加 POST
 
   //日程类
+  public static SCHEDULE_TASK_ISSUE: string = AppConfig.SCHEDULE_URL + "/task_announcement";    //发布任务 POST
+
   public static SCHEDULE_ADD_URL: string = AppConfig.SCHEDULE_URL + "/create";    //添加（新增）日程 POST
 
   public static SCHEDULE_GROUP_ADD_URL: string = AppConfig.SCHEDULE_URL + "/createII";    //群组内添加日程 POST
@@ -58,9 +62,11 @@ export class AppConfig {
 
   public static SCHEDULE_FIND_DATA_URL: string = AppConfig.SCHEDULE_URL + "/createschbycalendar";    //个人日历查询 GET
 
+  //webSocket推送
+  public static WEB_SOCKET_TASK_URL: string = AppConfig.WEB_SOCKET_URL + "/task";    //个人日历查询 GET
+
 
   //讯飞语音
   public static XUNFEI_URL_TEXT: string = AppConfig.XUNFEI_URL + "/answer_text";    //文本回传 POST
   public static XUNFEI_URL_AUDIO: string = AppConfig.XUNFEI_URL + "/answer_audio";    //语音文件带答案回传 POST
-  public static XUNFEI_URL_AUDIO_TRANSLATE: string = AppConfig.XUNFEI_URL + "/audio_translate";    //语音文件原文回传 POST
 }

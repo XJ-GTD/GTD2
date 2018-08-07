@@ -1,21 +1,20 @@
 <!--
-  Generated template for the ScheduleAddPage page.
+  Generated template for the UserMessagePage page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
-
-  create by wzy on 2018/06/01
 -->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>新建日程</ion-title>
+    <ion-title>收到邀请</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
   <ion-list>
     <ion-item>
       <ion-label floating>事件名</ion-label>
@@ -42,13 +41,8 @@
       <ion-input type="text" [(ngModel)]=""></ion-input>
     </ion-item>
 
-    <ion-item>
-      <ion-label floating>备注</ion-label>
-      <ion-input type="text" [(ngModel)]=""></ion-input>
-    </ion-item>
-
     <div>
-      <button ion-button (click)="" ></button>
+      <button ion-button clear (click)="acceptTask()">接受</button><button ion-button clear (click)="refuseTask()">拒绝</button>
     </div>
   </ion-list>
 </ion-content>

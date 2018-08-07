@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { WebsocketService } from "../../service/websocket.service";
 
 /**
  * Generated class for the HomePage page.
@@ -12,13 +13,18 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
+  providers: []
 })
 export class HomePage {
   tab1Root = 'HomeGroupPage';
   tab2Root = 'SpeechPage';
   tab3Root = 'HomeCalendarPage';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private webSocketService: WebsocketService) {
+    //消息队列接收
+    this.webSocketService.connect("/taskQueue");
+
 
   }
 

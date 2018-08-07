@@ -79,4 +79,10 @@ public interface IScheduleService {
      */
     int  updateScheduleByScheduleIdAndUserId(ScheduleInDto inDto);
 
+    /**
+     * 发布新任务
+     * @param inDto
+     * @return
+     */
+    public int taskAnnouncement(ScheduleInDto inDto);
 }

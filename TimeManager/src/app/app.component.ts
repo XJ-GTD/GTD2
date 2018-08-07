@@ -7,10 +7,11 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from "@ionic/storage";
 import { ParamsService } from "../service/params.service";
 import { WebsocketService } from "../service/websocket.service";
+import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
 
 @Component({
   templateUrl: 'app.html',
-  providers: [ ParamsService, WebsocketService ]
+  providers: [ ParamsService, WebsocketService, XiaojiAssistantService ]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;

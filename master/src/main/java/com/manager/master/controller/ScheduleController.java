@@ -34,6 +34,33 @@ public class ScheduleController {
     }
 
     /**
+     * 发布任务入库
+     * @param inDto
+     * @return
+     */
+    @PostMapping("/task_announcement")
+    public BaseOutDto newProjects(@RequestBody ScheduleInDto inDto) {
+        BaseOutDto outDto = new BaseOutDto();
+
+
+        //获取群编号
+        String uuid =UUIDUtil.getUUID();
+        inDto.setGroupId(uuid);//给群组id加上关联号
+
+        int flag = scheduleService.taskAnnouncement(inDto);
+
+        if (flag == 0) {
+            outDto.setCode("0");
+            outDto.setMessage("发布成功");
+        } else if (flag == 1){
+            outDto.setCode("-1");
+            outDto.setMessage("发布失败，后台异常");
+        }
+
+
+        return outDto;
+    }
+    /**
      * 日程创建
      * @parame
      * @return
