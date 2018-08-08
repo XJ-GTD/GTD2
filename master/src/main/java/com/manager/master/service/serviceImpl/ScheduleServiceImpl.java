@@ -499,7 +499,7 @@ public class ScheduleServiceImpl implements IScheduleService {
                 scheduleRemindRepeatType);
 
         int  userId = 0;
-        int scheduledId = inDto.getScheduleId();         //执行事件IDSCHEDULE_ID
+        int scheduledId = scheduleDao.selectScheduleId();         //执行事件IDSCHEDULE_ID
         String userMobile = inDto.getUserId();         //执行人电话（执行人id）String  ,拼写字符串
         Date executorFinishDate= null;     //完成时间-执行事件表
         Date executorRemindDate=null;       //提醒时间-执行事件表

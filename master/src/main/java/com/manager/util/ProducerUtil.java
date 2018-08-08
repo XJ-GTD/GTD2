@@ -81,4 +81,14 @@ public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
     public void confirm(CorrelationData correlationData, boolean b, String s) {
         System.out.println("callback confirm: " + correlationData.getId());
     }
+
+    /**
+     * 测试点对点 routing_key: taskQueue
+     * @param sendMsg
+     */
+    public void sendTheTarget(String sendMsg) {
+        System.out.println("Sender1 : " + sendMsg);
+        this.rabbitTemplate.convertAndSend("taskQueue", sendMsg);
+    }
+
 }

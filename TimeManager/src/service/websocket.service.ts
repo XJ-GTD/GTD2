@@ -54,7 +54,8 @@ export class WebsocketService {
     //对成功回调数据进行操作,放入全局变量中
     subject.asObservable().subscribe( data=> {
       this.paramsService.voice = data.body;
-      this.navCtrl.push('UserMessagePage');
+      alert("推送成功")
+      // this.navCtrl.push('UserMessagePage');
     });
 
     //连接失败回调
