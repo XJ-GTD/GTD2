@@ -54,7 +54,7 @@ export class WebsocketService {
     //对成功回调数据进行操作,放入全局变量中
     subject.asObservable().subscribe( data=> {
       this.paramsService.voice = data.body;
-      alert("收到消息");
+      alert("收到消息" + data.body);
       let activeNav: NavController = this.appCtrl.getActiveNav();
       activeNav.push('UserMessagePage');
     });

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { WebsocketService } from "../../service/websocket.service";
+import {ParamsService} from "../../service/params.service";
 
 /**
  * Generated class for the HomePage page.
@@ -21,9 +22,11 @@ export class HomePage {
   tab3Root = 'HomeCalendarPage';
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private webSocketService: WebsocketService) {
+              private webSocketService: WebsocketService,
+              private paramsService: ParamsService) {
+
     //消息队列接收
-    this.webSocketService.connect("/taskQueue");
+    this.webSocketService.connect(this.paramsService.user.accountMobile);
 
   }
 

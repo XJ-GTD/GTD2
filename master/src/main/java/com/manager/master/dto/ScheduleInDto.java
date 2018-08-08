@@ -139,14 +139,6 @@ public class ScheduleInDto {
         this.scheduleId = scheduleId;
     }
 
-    public String getUserId() {
-        return scheduleExecutor;
-    }
-
-    public void setUserId(String scheduleExecutor) {
-        this.scheduleExecutor = scheduleExecutor;
-    }
-
     public String getExecutorFinishDate() {
         return ExecutorFinishDate;
     }
@@ -252,5 +244,13 @@ public class ScheduleInDto {
 
     public void setTarget(String target) {
         this.target = target;
+    }
+
+    public String getScheduleExecutor() {
+        return scheduleExecutor;
+    }
+
+    public void setScheduleExecutor(String scheduleExecutor) {
+        this.scheduleExecutor = scheduleExecutor;
     }
 }

@@ -39,10 +39,10 @@ export class UserLoginPage {
 
   signIn() {
     this.http.post(AppConfig.USER_LOGIN_URL, {
-      // accountMobile: this.accountMobile,
-      // accountPassword: this.accountPassword
-      accountMobile: "admin",
-      accountPassword: "admin"
+      accountMobile: this.accountMobile,
+      accountPassword: this.accountPassword
+      // accountMobile: "admin",
+      // accountPassword: "admin"
     },{
       headers: {
         "Content-Type": "application/json"

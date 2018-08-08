@@ -69,7 +69,7 @@ export class ScheduleAddPage {
             duration: 1500
           });
           loader.present();
-          // this.pushSchedule();
+          this.pushSchedule();
         } else {
           console.log("发布失败");
         }
