@@ -103,7 +103,7 @@ public class ScheduleServiceImpl implements IScheduleService {
 
         int  userId = 0;
         int scheduledId = inDto.getScheduleId();         //执行事件IDSCHEDULE_ID
-        String userMobile = inDto.getUserId();         //执行人电话（执行人id）String  ,拼写字符串
+        String userMobile = inDto.getScheduleExecutor();         //执行人电话（执行人id）String  ,拼写字符串
         Date executorFinishDate= null;     //完成时间-执行事件表
         Date executorRemindDate=null;       //提醒时间-执行事件表
         try {
@@ -370,7 +370,7 @@ public class ScheduleServiceImpl implements IScheduleService {
 
         int  userId = 0;
         int scheduledId = inDto.getScheduleId();         //执行事件IDSCHEDULE_ID
-        String userMobile = inDto.getUserId();         //执行人电话（执行人id）String  ,拼写字符串
+        String userMobile = inDto.getScheduleExecutor();         //执行人电话（执行人id）String  ,拼写字符串
 
         String scheduledState=inDto.getScheduleState();//事件状态(-1 未完成 1完成)
         String executorRemindRepeat=inDto.getExecutorRemindRepeat();     //重复提醒-执行事件表
@@ -439,7 +439,7 @@ public class ScheduleServiceImpl implements IScheduleService {
      */
     @Override
     public int updateScheduleByScheduleIdAndUserId(ScheduleInDto inDto) {
-        String  userId = inDto.getUserId();
+        String  userId = inDto.getScheduleExecutor();
         int scheduleId = inDto.getScheduleId();
         String executorFinishDate = inDto.getExecutorFinishDate();
         String executorState = inDto.getScheduleState();
@@ -500,7 +500,7 @@ public class ScheduleServiceImpl implements IScheduleService {
 
         int  userId = 0;
         int scheduledId = scheduleDao.selectScheduleId();         //执行事件IDSCHEDULE_ID
-        String userMobile = inDto.getUserId();         //执行人电话（执行人id）String  ,拼写字符串
+        String userMobile = inDto.getScheduleExecutor();         //执行人电话（执行人id）String  ,拼写字符串
         Date executorFinishDate= null;     //完成时间-执行事件表
         Date executorRemindDate=null;       //提醒时间-执行事件表
         try {

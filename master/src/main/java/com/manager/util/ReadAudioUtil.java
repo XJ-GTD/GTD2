@@ -1,13 +1,11 @@
 package com.manager.util;
 
-import com.iflytek.cloud.speech.*;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.net.URL;
