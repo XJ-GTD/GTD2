@@ -1,5 +1,6 @@
 package com.manager.util;
 
+import com.manager.config.RabbitProducerConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -21,12 +22,13 @@ public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
     private Logger logger = LogManager.getLogger(this.getClass());
     private final RabbitTemplate rabbitTemplate;
     private final AmqpTemplate amqpTemplate;
-
+    private final RabbitProducerConfig rabbitProducerConfig;
 
     @Autowired
-    public ProducerUtil(AmqpTemplate amqpTemplate, RabbitTemplate rabbitTemplate) {
+    public ProducerUtil(AmqpTemplate amqpTemplate, RabbitTemplate rabbitTemplate, RabbitProducerConfig rabbitProducerConfig) {
         this.amqpTemplate = amqpTemplate;
         this.rabbitTemplate = rabbitTemplate;
+        this.rabbitProducerConfig = rabbitProducerConfig;
     }
 
     /**
@@ -90,9 +92,11 @@ public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
      * @param sendMsg
      */
     public void sendTheTarget(String sendMsg, String target) {
+        logger.info("target" + target);
         logger.info("Sender1 : " + sendMsg);
         String[] mobile = target.split(",");
         for (String str: mobile) {
+            rabbitProducerConfig.setQueueName_t(str);
             this.rabbitTemplate.convertAndSend(str, sendMsg);
         }
 
