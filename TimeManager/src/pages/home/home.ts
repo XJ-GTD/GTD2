@@ -25,7 +25,6 @@ export class HomePage {
     //消息队列接收
     this.webSocketService.connect("/taskQueue");
 
-
   }
 
   ionViewDidLoad() {

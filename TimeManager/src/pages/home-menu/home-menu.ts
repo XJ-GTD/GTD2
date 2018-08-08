@@ -1,8 +1,8 @@
-import {Component, ViewChild} from '@angular/core';
-import {IonicPage, MenuController, Nav, Platform} from 'ionic-angular';
-import {SplashScreen} from "@ionic-native/splash-screen";
-import {StatusBar} from "@ionic-native/status-bar";
-import {ParamsService} from "../../service/params.service";
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, MenuController, Nav, NavController, Platform } from 'ionic-angular';
+import { SplashScreen } from "@ionic-native/splash-screen";
+import { StatusBar } from "@ionic-native/status-bar";
+import { ParamsService } from "../../service/params.service";
 
 /**
  * Generated class for the HomeMenuPage page.
@@ -15,6 +15,7 @@ import {ParamsService} from "../../service/params.service";
 @Component({
   selector: 'page-home-menu',
   templateUrl: 'home-menu.html',
+  providers: []
 })
 export class HomeMenuPage {
   @ViewChild(Nav) nav: Nav;
@@ -25,6 +26,7 @@ export class HomeMenuPage {
   userInfo: any;
 
   constructor(
+    public navCtrl: NavController,
     public platform: Platform,
     public menu: MenuController,
     public statusBar: StatusBar,

@@ -232,4 +232,15 @@ public class ScheduleInDto {
     public void setScheduleRemindDate(String scheduleRemindDate) {
         this.scheduleRemindDate = scheduleRemindDate;
     }
+
+    @Override
+    public String toString() {
+        return "{ scheduleName='" + scheduleName + '\'' +
+                ", scheduleDetail='" + scheduleDetail + '\'' +
+                ", scheduleIssuer=" + scheduleIssuer +
+                ", scheduleStartDate='" + scheduleStartDate + '\'' +
+                ", scheduleEndDate='" + scheduleEndDate + '\'' +
+                ", scheduleExecutor='" + scheduleExecutor + '\'' +
+                '}';
+    }
 }

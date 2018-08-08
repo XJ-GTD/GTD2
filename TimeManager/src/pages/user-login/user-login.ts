@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, NavParams, ToastController } from 'ionic-angular';
 import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
 import { ParamsService } from "../../service/params.service";
-import { WebsocketService } from "../../service/websocket.service";
 
 /**
  * Generated class for the UserLoginPage page.

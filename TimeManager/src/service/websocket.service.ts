@@ -1,10 +1,10 @@
-import {Component, Injectable} from "@angular/core";
-import {SockJS} from 'sockjs-client';
+import { Injectable, ViewChild } from "@angular/core";
+import { SockJS } from 'sockjs-client';
 import Stomp from "@stomp/stompjs";
-import {AppConfig} from "../app/app.config";
-import {ParamsService} from "./params.service";
-import {Subject} from "rxjs/Subject";
-import {NavController} from "ionic-angular";
+import { AppConfig } from "../app/app.config";
+import { ParamsService } from "./params.service";
+import { Subject } from "rxjs/Subject";
+import { NavController, App } from "ionic-angular";
 
 /**
  * WebSocket连接Rabbitmq服务器
@@ -14,8 +14,8 @@ import {NavController} from "ionic-angular";
 @Injectable()
 export class WebsocketService {
 
-  constructor(public navCtrl: NavController,
-              private paramsService?: ParamsService){
+  constructor(public appCtrl : App,
+    private paramsService?: ParamsService){
 
   }
 
@@ -54,8 +54,9 @@ export class WebsocketService {
     //对成功回调数据进行操作,放入全局变量中
     subject.asObservable().subscribe( data=> {
       this.paramsService.voice = data.body;
-      alert("推送成功")
-      // this.navCtrl.push('UserMessagePage');
+      alert("收到消息");
+      let activeNav: NavController = this.appCtrl.getActiveNav();
+      activeNav.push('UserMessagePage');
     });
 
     //连接失败回调

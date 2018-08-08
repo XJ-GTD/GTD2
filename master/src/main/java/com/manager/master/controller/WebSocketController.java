@@ -34,8 +34,7 @@ public class WebSocketController {
     @PostMapping(value = "/task")
     public void test(@RequestBody ScheduleInDto inDto) {
 
-
-        producerUtil.send(inDto.getScheduleName());
+        producerUtil.send(inDto.toString());
     }
 
 

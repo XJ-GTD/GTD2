@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {ParamsService} from "../../service/params.service";
+import { ParamsService } from "../../service/params.service";
 
 /**
  * Generated class for the UserMessagePage page.
