@@ -14,16 +14,6 @@ public class RabbitProducerConfig {
 
     final static String queueName = "GTD";
 
-    public String getQueueName_t() {
-        return queueName_t;
-    }
-
-    public void setQueueName_t(String queueName_t) {
-        this.queueName_t = queueName_t;
-    }
-
-    private String queueName_t = "user";
-
     @Bean
     public Queue gtdQueue() {
         return new Queue("GTD");
@@ -116,11 +106,6 @@ public class RabbitProducerConfig {
     @Bean
     Binding bindingExchangeC(Queue CMessage, FanoutExchange fanoutExchange) {
         return BindingBuilder.bind(CMessage).to(fanoutExchange);
-    }
-
-    @Bean
-    public Queue createQueue() {
-        return new Queue(this.getQueueName_t());
     }
 
 }

@@ -96,7 +96,6 @@ public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
         logger.info("Sender1 : " + sendMsg);
         String[] mobile = target.split(",");
         for (String str: mobile) {
-            rabbitProducerConfig.setQueueName_t(str);
             this.rabbitTemplate.convertAndSend(str, sendMsg);
         }
 

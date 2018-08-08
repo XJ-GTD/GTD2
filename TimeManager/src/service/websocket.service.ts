@@ -43,7 +43,7 @@ export class WebsocketService {
     // 连接成功回调 on_connect
     let on_connect = function(x) {
       console.log(client);
-      client.subscribe("/queue" + queueName, function(data) {
+      client.subscribe("/queue/" + queueName, function(data) {
         console.log("on_connect回调成功:" + data);
 
         subject.next(data); //能够在let变量方法内使用this方法

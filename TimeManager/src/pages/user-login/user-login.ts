@@ -50,8 +50,8 @@ export class UserLoginPage {
       responseType: 'json'
     })
       .subscribe(data => {
-        console.log(data);
         this.data = data;
+        console.log( this.data);
         let loader = this.loadingCtrl.create({
           content: this.data.message,
           duration: 1500

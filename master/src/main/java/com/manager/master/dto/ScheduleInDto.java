@@ -229,12 +229,12 @@ public class ScheduleInDto {
 
     @Override
     public String toString() {
-        return "{ scheduleName='" + scheduleName + '\'' +
-                ", scheduleDetail='" + scheduleDetail + '\'' +
-                ", scheduleIssuer=" + scheduleIssuer +
-                ", scheduleStartDate='" + scheduleStartDate + '\'' +
-                ", scheduleEndDate='" + scheduleEndDate + '\'' +
-                ", scheduleExecutor='" + scheduleExecutor + '\'' +
+        return "{ \"scheduleName\":\"" + scheduleName + '\"' +
+                ", \"scheduleDetail\":\"" + scheduleDetail + '\"' +
+                ", \"scheduleIssuer\":\"" + scheduleIssuer + '\"' +
+                ", \"scheduleStartDate\":\"" + scheduleStartDate + '\"' +
+                ", \"scheduleEndDate\":\"" + scheduleEndDate + '\"' +
+                ", \"scheduleExecutor\":\"" + scheduleExecutor + '\"' +
                 '}';
     }
 

@@ -25,7 +25,9 @@ export class UserMessagePage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private http: HttpClient,
               private paramsService: ParamsService) {
-    this.schedule = this.paramsService.schedule;
+    alert("跳转了");
+    this.schedule = this.paramsService.voice;
+    alert(this.schedule);
   }
 
   ionViewDidLoad() {
