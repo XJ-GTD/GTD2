@@ -26,8 +26,9 @@ export class UserMessagePage {
               private http: HttpClient,
               private paramsService: ParamsService) {
     alert("跳转了");
-    this.schedule = this.paramsService.voice;
-    alert(this.schedule);
+    this.schedule = JSON.parse(this.paramsService.voice)
+    alert(this.schedule.scheduleStartDate);
+    alert(this.schedule.scheduleEndDate);
   }
 
   ionViewDidLoad() {
@@ -37,7 +38,7 @@ export class UserMessagePage {
   //接受任务
   acceptTask() {
     this.http.post(AppConfig.WEB_SOCKET_TASK_URL, {
-      target: "15000",
+      target: "15000,",
       scheduleName: "接受任务"
     },{
       headers: {
@@ -55,7 +56,7 @@ export class UserMessagePage {
   //拒绝任务
   refuseTask() {
     this.http.post(AppConfig.WEB_SOCKET_TASK_URL, {
-      target: "15000",
+      target: "15000,",
       scheduleName: "拒绝任务"
     },{
       headers: {
