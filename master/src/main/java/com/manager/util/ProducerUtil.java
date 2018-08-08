@@ -1,5 +1,7 @@
 package com.manager.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
@@ -16,6 +18,7 @@ import java.util.UUID;
 @Component
 public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
 
+    private Logger logger = LogManager.getLogger(this.getClass());
     private final RabbitTemplate rabbitTemplate;
     private final AmqpTemplate amqpTemplate;
 
@@ -86,9 +89,13 @@ public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
      * 测试点对点 routing_key: taskQueue
      * @param sendMsg
      */
-    public void sendTheTarget(String sendMsg) {
-        System.out.println("Sender1 : " + sendMsg);
-        this.rabbitTemplate.convertAndSend("taskQueue", sendMsg);
+    public void sendTheTarget(String sendMsg, String target) {
+        logger.info("Sender1 : " + sendMsg);
+        String[] mobile = target.split(",");
+        for (String str: mobile) {
+            this.rabbitTemplate.convertAndSend(str, sendMsg);
+        }
+
     }
 
 }

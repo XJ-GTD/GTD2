@@ -14,36 +14,34 @@
 
 
 <ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label floating>事件名</ion-label>
+      <ion-input type="text" [(ngModel)]="schedule.scheduleName"></ion-input>
+    </ion-item>
 
-  <p>我是收到消息界面</p>
-  <!--<ion-list>-->
-    <!--<ion-item>-->
-      <!--<ion-label floating>事件名</ion-label>-->
-      <!--<ion-input type="text" [(ngModel)]=""></ion-input>-->
-    <!--</ion-item>-->
+    <ion-item>
+      <ion-label floating>备注</ion-label>
+      <ion-input type="text" [(ngModel)]="schedule.scheduleDetail"></ion-input>
+    </ion-item>
 
-    <!--<ion-item>-->
-      <!--<ion-label floating>发布人</ion-label>-->
-      <!--<ion-input type="text" [(ngModel)]=""></ion-input>-->
-    <!--</ion-item>-->
+    <ion-item>
+      <ion-label floating>执行人</ion-label>
+      <ion-input type="text" [(ngModel)]="schedule.scheduleExecutor"></ion-input>
+    </ion-item>
 
-    <!--<ion-item>-->
-      <!--<ion-label floating>执行人</ion-label>-->
-      <!--<ion-input type="text" [(ngModel)]=""></ion-input>-->
-    <!--</ion-item>-->
+    <ion-item>
+      <ion-label floating>开始时间</ion-label>
+      <ion-datetime displayFormat="yyyy-MM-dd HH:mm" [(ngModel)]="schedule.scheduleStartDate"></ion-datetime>
+    </ion-item>
 
-    <!--<ion-item>-->
-      <!--<ion-label floating>开始时间</ion-label>-->
-      <!--<ion-input type="text" [(ngModel)]=""></ion-input>-->
-    <!--</ion-item>-->
+    <ion-item>
+      <ion-label floating>结束时间</ion-label>
+      <ion-datetime displayFormat="yyyy-MM-dd HH:mm" [(ngModel)]="schedule.scheduleEndDate"></ion-datetime>
+    </ion-item>
 
-    <!--<ion-item>-->
-      <!--<ion-label floating>结束时间</ion-label>-->
-      <!--<ion-input type="text" [(ngModel)]=""></ion-input>-->
-    <!--</ion-item>-->
-
-    <!--<div>-->
-      <!--<button ion-button clear (click)="acceptTask()">接受</button><button ion-button clear (click)="refuseTask()">拒绝</button>-->
-    <!--</div>-->
-  <!--</ion-list>-->
+    <div>
+      <button ion-button outline (click)="acceptTask()">接受</button><button ion-button outline (click)="refuseTask()">拒绝</button>
+    </div>
+  </ion-list>
 </ion-content>

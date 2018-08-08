@@ -90,7 +90,8 @@ export class ScheduleAddPage {
       scheduleRemindRepeat: this.schedule.scheduleRemindRepeat,
       scheduleRemindRepeatType: this.schedule.scheduleRemindRepeatType,
       flagCreateGroup: "0",
-      scheduleExecutor: this.schedule.scheduleExecutor
+      scheduleExecutor: this.schedule.scheduleExecutor,
+      target: this.schedule.scheduleExecutor
     },{
       headers: {
         "Content-Type": "application/json"

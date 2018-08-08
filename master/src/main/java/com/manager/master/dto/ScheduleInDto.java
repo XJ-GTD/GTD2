@@ -39,6 +39,8 @@ public class ScheduleInDto {
     private String schedulePhoneNum;//发布人电话号码
     private String scheduleFinishDateString;//完成时间(String)
 
+    private String target;
+
     public Date getScheduleEditDate() {
         return scheduleEditDate;
     }
@@ -242,5 +244,13 @@ public class ScheduleInDto {
                 ", scheduleEndDate='" + scheduleEndDate + '\'' +
                 ", scheduleExecutor='" + scheduleExecutor + '\'' +
                 '}';
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
     }
 }
