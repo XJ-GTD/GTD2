@@ -37,6 +37,7 @@ public class AiUiService {
      */
     public String answerText(String data) {
 
+
         return AiUiUtil.readAudio(data, 1);
 
     }
@@ -48,6 +49,9 @@ public class AiUiService {
      */
     public String answerAudio(String data) {
 
-        return AiUiUtil.readAudio(data, 0);
+        String outData = AiUiUtil.readAudio(data, 0);
+
+
+        return outData;
     }
 }

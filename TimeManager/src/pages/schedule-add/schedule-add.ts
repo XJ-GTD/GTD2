@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import { ParamsService } from "../../service/params.service";
 import { HttpClient } from "@angular/common/http";
 import { ScheduleModel } from "../../model/schedule.model";
@@ -28,8 +28,10 @@ export class ScheduleAddPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private http: HttpClient,
+              public loadingCtrl: LoadingController,
               private paramsService: ParamsService) {
     this.init();
+
   }
 
   init() {
@@ -49,7 +51,12 @@ export class ScheduleAddPage {
     })
       .subscribe(data => {
         this.data = data;
-        if (this.data == 0) {
+        if (this.data.code == 0) {
+          let loader = this.loadingCtrl.create({
+            content: this.data.message,
+            duration: 1500
+          });
+          loader.present();
           this.pushSchedule();
         } else {
           console.log("发布失败");

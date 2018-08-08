@@ -30,7 +30,7 @@ public class ScheduleInDto {
     private Date scheduleEditDate;//修改时间SCHEDULE_EDIT_DATE
     //执行事件表(日程关联表)
     private int scheduleId;          //执行事件IDSCHEDULE_ID
-    private String userId;         //执行人电话（执行人id）  String  ,拼写字符串
+    private String scheduleExecutor;         //执行人电话（执行人id）  String  ,拼写字符串
     private String ExecutorFinishDate;     //完成时间-执行事件表
     private String ExecutorRemindDate;    //提醒时间-执行事件表
     private String ExecutorRemindRepeat;     //重复提醒-执行事件表
@@ -138,11 +138,11 @@ public class ScheduleInDto {
     }
 
     public String getUserId() {
-        return userId;
+        return scheduleExecutor;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserId(String scheduleExecutor) {
+        this.scheduleExecutor = scheduleExecutor;
     }
 
     public String getExecutorFinishDate() {

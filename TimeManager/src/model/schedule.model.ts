@@ -7,7 +7,7 @@ export class ScheduleModel {
   scheduleId: string;         //事件id
   scheduleName: string;         //事件名
   scheduleDetail: string;       //事件详情
-  scheduleIssuerId: string;       //发布人Id
+  scheduleIssuer: string;       //发布人Id
 
   scheduleIssuerName: string;       //发布人姓名
 
