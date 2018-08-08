@@ -38,7 +38,7 @@ public class CortanaController {
         Map<String, String> data = new HashMap<>();
 
         String speechText = "";
-        if (voiceInBean.getContent().equals("") && voiceInBean.getContent() != null) {
+        if (!voiceInBean.getContent().equals("") && voiceInBean.getContent() != null) {
 
             speechText = JsonParser.parse(aiUiService.answerAudio(voiceInBean.getContent()));
             data.put("speechText", speechText);
@@ -63,7 +63,7 @@ public class CortanaController {
         Map<String, String> data = new HashMap<>();
 
         String speechText = "";
-        if (voiceInBean.getContent().equals("") && voiceInBean.getContent() != null) {
+        if (!voiceInBean.getContent().equals("") && voiceInBean.getContent() != null) {
 
             speechText = JsonParser.parse(aiUiService.answerText(voiceInBean.getContent()));
             data.put("speechText", speechText);

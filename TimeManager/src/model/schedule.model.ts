@@ -23,6 +23,7 @@ export class ScheduleModel {
   scheduleRemindRepeat: string;     //重复提醒SCHEDULE_REMIND_REPEAT
   scheduleRemindRepeatType: string;     //重复提醒类型SCHEDULE_REMIND_REPEAT_TYPE（1 每日 2 每月 3每年）
   scheduleEditDate: any;//修改时间SCHEDULE_EDIT_DATE
+  flagCreateGroup: string;
 
   //执行事件表(日程关联表)
   executorFinishDate: any;     //完成时间-执行事件表

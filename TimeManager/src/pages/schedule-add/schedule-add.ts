@@ -24,6 +24,7 @@ export class ScheduleAddPage {
   data: any;
   groupId: any;
   schedule: ScheduleModel;
+  flag: boolean = true;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -42,7 +43,18 @@ export class ScheduleAddPage {
   newProject() {
 
     this.http.post(AppConfig.SCHEDULE_TASK_ISSUE, {
-
+      scheduleName: this.schedule.scheduleName,
+      scheduleDetail: this.schedule.scheduleDetail,
+      scheduleIssuer: this.paramsService.user.userId,
+      scheduleCreateDate: new Date("yyyy-MM-dd HH:mm"),
+      scheduleStartDate: this.schedule.scheduleStartDate,
+      scheduleEndDate: this.schedule.scheduleEndDate,
+      scheduleState: "-1",
+      scheduleRemindDate: this.schedule.scheduleRemindDate,
+      scheduleRemindRepeat: this.schedule.scheduleRemindRepeat,
+      scheduleRemindRepeatType: this.schedule.scheduleRemindRepeatType,
+      flagCreateGroup: "0",
+      scheduleExecutor: this.schedule.scheduleExecutor
     }, {
       headers: {
         "Content-Type": "application/json"
@@ -57,7 +69,7 @@ export class ScheduleAddPage {
             duration: 1500
           });
           loader.present();
-          this.pushSchedule();
+          // this.pushSchedule();
         } else {
           console.log("发布失败");
         }
@@ -67,7 +79,18 @@ export class ScheduleAddPage {
   //发布任务推送给目标用户
   pushSchedule() {
     this.http.post(AppConfig.WEB_SOCKET_TASK_URL, {
-      scheduleName: this.schedule.scheduleName
+      scheduleName: this.schedule.scheduleName,
+      scheduleDetail: this.schedule.scheduleDetail,
+      scheduleIssuer: this.paramsService.user.userId,
+      scheduleCreateDate: new Date("yyyy-MM-dd HH:mm"),
+      scheduleStartDate: this.schedule.scheduleStartDate,
+      scheduleEndDate: this.schedule.scheduleEndDate,
+      scheduleState: "-1",
+      scheduleRemindDate: this.schedule.scheduleRemindDate,
+      scheduleRemindRepeat: this.schedule.scheduleRemindRepeat,
+      scheduleRemindRepeatType: this.schedule.scheduleRemindRepeatType,
+      flagCreateGroup: "0",
+      scheduleExecutor: this.schedule.scheduleExecutor
     },{
       headers: {
         "Content-Type": "application/json"
@@ -85,4 +108,16 @@ export class ScheduleAddPage {
     console.log('ionViewDidLoad ScheduleAddPage');
   }
 
+  remind_change() {
+    this.flag = !this.flag;
+    if (this.flag) {
+      document.getElementById("remind_change").style.display = "none";
+    } else {
+      document.getElementById("remind_change").style.display = "block";
+    }
+  }
+
+  onBack() {
+    this.navCtrl.pop(); /*返回上一个页面*/
+  }
 }
