@@ -13,7 +13,16 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitProducerConfig {
 
     final static String queueName = "GTD";
-    private String queueName_t;
+
+    public String getQueueName_t() {
+        return queueName_t;
+    }
+
+    public void setQueueName_t(String queueName_t) {
+        this.queueName_t = queueName_t;
+    }
+
+    private String queueName_t = "user";
 
     @Bean
     public Queue gtdQueue() {
@@ -111,10 +120,7 @@ public class RabbitProducerConfig {
 
     @Bean
     public Queue createQueue() {
-        return new Queue(queueName_t);
+        return new Queue(this.getQueueName_t());
     }
 
-    public void setQueueName_t(String queueName_t) {
-        this.queueName_t = queueName_t;
-    }
 }
