@@ -5,6 +5,7 @@ import { AppConfig } from "../app/app.config";
 import { ParamsService } from "./params.service";
 import { Subject } from "rxjs/Subject";
 import { NavController, App } from "ionic-angular";
+import { XiaojiAssistantService } from "./xiaoji-assistant.service";
 
 /**
  * WebSocket连接Rabbitmq服务器
@@ -15,7 +16,8 @@ import { NavController, App } from "ionic-angular";
 export class WebsocketService {
 
   constructor(public appCtrl : App,
-    private paramsService?: ParamsService){
+              private xiaojiSpeech: XiaojiAssistantService,
+              private paramsService?: ParamsService){
 
   }
 
@@ -58,10 +60,12 @@ export class WebsocketService {
       console.log( this.paramsService.schedule);
       if (this.paramsService.schedule.code == "0") {
         alert("收到消息" + this.paramsService.schedule.scheduleName);
+        this.xiaojiSpeech.speakText(this.paramsService.schedule.scheduleName);
         let activeNav: NavController = this.appCtrl.getActiveNav();
         activeNav.push('UserMessagePage');
       } else if (this.paramsService.schedule.code == "1") {
         alert("收到消息" + this.paramsService.schedule.scheduleName);
+        this.xiaojiSpeech.speakText(this.paramsService.schedule.scheduleName);
       } else if (this.paramsService.schedule.code == "-1") {
 
       }
