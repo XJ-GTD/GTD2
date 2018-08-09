@@ -41,6 +41,8 @@ public class ScheduleInDto {
 
     private String userId;
     private String target;
+    private String code;
+
 
     public Date getScheduleEditDate() {
         return scheduleEditDate;
@@ -236,6 +238,7 @@ public class ScheduleInDto {
                 ", \"scheduleStartDate\":\"" + scheduleStartDate + '\"' +
                 ", \"scheduleEndDate\":\"" + scheduleEndDate + '\"' +
                 ", \"scheduleExecutor\":\"" + scheduleExecutor + '\"' +
+                ", \"code\":\"" + code + '\"' +
                 '}';
     }
 
@@ -261,5 +264,13 @@ public class ScheduleInDto {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

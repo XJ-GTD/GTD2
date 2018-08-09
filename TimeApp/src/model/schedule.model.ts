@@ -37,4 +37,5 @@ export class ScheduleModel {
   //用户表
   executorId: string;//执行人ID
   executorName: string;//执行人姓名（用户表里的用户名）
+  code: string;
 }

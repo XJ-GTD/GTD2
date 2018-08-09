@@ -18,6 +18,10 @@
 
 <ion-content padding>
 
+  <ion-fab bottom right>
+    <button ion-fab (click)="addSchedule()">+</button>
+  </ion-fab>
+
   <ion-list *ngIf="groupList != null; else group">
     <ion-item-sliding *ngFor="let g of groupList">
       <button ion-item (click)="groupDetailShow(g)">

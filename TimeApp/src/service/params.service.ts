@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from "../model/user.model";
 import {ScheduleModel} from "../model/schedule.model";
+import {BaseModel} from "../model/base.model";
 
 /**
  * 页面ts传值
@@ -8,6 +9,12 @@ import {ScheduleModel} from "../model/schedule.model";
  */
 @Injectable()
 export class ParamsService {
+
+  private _data: string;
+  private _user: User;
+  private _voice: any;
+  private _schedule: ScheduleModel;
+
   get schedule(): ScheduleModel {
     return this._schedule;
   }
@@ -38,9 +45,6 @@ export class ParamsService {
     this._data = value;
   }
 
-  private _data: string;
-  private _user: User;
-  private _voice: any;
-  private _schedule: ScheduleModel;
+
 
 }

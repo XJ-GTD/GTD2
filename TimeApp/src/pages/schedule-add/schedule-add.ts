@@ -36,7 +36,11 @@ export class ScheduleAddPage {
   }
 
   init() {
-    this.schedule = this.paramsService.schedule;
+    if (this.paramsService.schedule != null) {
+      this.schedule = this.paramsService.schedule;
+    } else {
+      this.schedule = new ScheduleModel();
+    }
   }
 
   //发布任务入库
@@ -80,6 +84,8 @@ export class ScheduleAddPage {
   //发布任务推送给目标用户
   pushSchedule() {
     this.http.post(AppConfig.WEB_SOCKET_TASK_URL, {
+
+      code: "0",
       scheduleId: this.schedule.scheduleId,
       scheduleName: this.schedule.scheduleName,
       scheduleDetail: this.schedule.scheduleDetail,
@@ -94,6 +100,7 @@ export class ScheduleAddPage {
       flagCreateGroup: "0",
       scheduleExecutor: this.schedule.scheduleExecutor,
       target: this.schedule.scheduleExecutor
+
     },{
       headers: {
         "Content-Type": "application/json"
@@ -109,15 +116,6 @@ export class ScheduleAddPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ScheduleAddPage');
-  }
-
-  remind_change() {
-    this.flag = !this.flag;
-    if (this.flag) {
-      document.getElementById("remind_change").style.display = "none";
-    } else {
-      document.getElementById("remind_change").style.display = "block";
-    }
   }
 
   onBack() {

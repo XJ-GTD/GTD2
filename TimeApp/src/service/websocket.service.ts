@@ -53,10 +53,19 @@ export class WebsocketService {
 
     //对成功回调数据进行操作,放入全局变量中
     subject.asObservable().subscribe( data=> {
-      this.paramsService.voice = data.body;
-      alert("收到消息" + data.body);
-      let activeNav: NavController = this.appCtrl.getActiveNav();
-      activeNav.push('UserMessagePage');
+      console.log(data.body);
+      this.paramsService.schedule = JSON.parse(data.body);
+      console.log( this.paramsService.schedule);
+      if (this.paramsService.schedule.code == "0") {
+        alert("收到消息" + this.paramsService.schedule.scheduleName);
+        let activeNav: NavController = this.appCtrl.getActiveNav();
+        activeNav.push('UserMessagePage');
+      } else if (this.paramsService.schedule.code == "1") {
+        alert("收到消息" + this.paramsService.schedule.scheduleName);
+      } else if (this.paramsService.schedule.code == "-1") {
+
+      }
+
     });
 
     //连接失败回调
