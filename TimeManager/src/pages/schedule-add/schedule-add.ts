@@ -69,6 +69,7 @@ export class ScheduleAddPage {
             duration: 1500
           });
           loader.present();
+          this.schedule.scheduleId = this.data.data.scheduleId;
           this.pushSchedule();
         } else {
           console.log("发布失败");
@@ -79,6 +80,7 @@ export class ScheduleAddPage {
   //发布任务推送给目标用户
   pushSchedule() {
     this.http.post(AppConfig.WEB_SOCKET_TASK_URL, {
+      scheduleId: this.schedule.scheduleId,
       scheduleName: this.schedule.scheduleName,
       scheduleDetail: this.schedule.scheduleDetail,
       scheduleIssuer: this.paramsService.user.userId,

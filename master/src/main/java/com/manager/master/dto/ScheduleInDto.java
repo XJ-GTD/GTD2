@@ -39,6 +39,7 @@ public class ScheduleInDto {
     private String schedulePhoneNum;//发布人电话号码
     private String scheduleFinishDateString;//完成时间(String)
 
+    private String userId;
     private String target;
 
     public Date getScheduleEditDate() {
@@ -252,5 +253,13 @@ public class ScheduleInDto {
 
     public void setScheduleExecutor(String scheduleExecutor) {
         this.scheduleExecutor = scheduleExecutor;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

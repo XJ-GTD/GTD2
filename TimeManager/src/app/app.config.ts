@@ -62,6 +62,8 @@ export class AppConfig {
 
   public static SCHEDULE_FIND_DATA_URL: string = AppConfig.SCHEDULE_URL + "/createschbycalendar";    //个人日历查询 GET
 
+  public static SCHEDULE_UPDATE_STATE_URL: string = AppConfig.SCHEDULE_URL + "/update_state";  //更新日程状态
+
   //webSocket推送
   public static WEB_SOCKET_TASK_URL: string = AppConfig.WEB_SOCKET_URL + "/task";    //个人日历查询 GET
 

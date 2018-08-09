@@ -12,17 +12,17 @@ export class ScheduleModel {
   scheduleIssuerName: string;       //发布人姓名
 
   scheduleExecutor: string;       //执行人EXECUTOR
-  scheduleCreateDate: any;     //创建时间SCHEDULE_CREATE_DATE
-  scheduleStartDate: any;     //开始时间SCHEDULE_START_DATE
-  scheduleFinishDate: any;     //完成时间SCHEDULE_FINISH_DATE
-  scheduleEndDate: any;     //截止时间SCHEDULE_END_DATE
+  scheduleCreateDate: string;     //创建时间SCHEDULE_CREATE_DATE
+  scheduleStartDate: string;     //开始时间SCHEDULE_START_DATE
+  scheduleFinishDate: string;     //完成时间SCHEDULE_FINISH_DATE
+  scheduleEndDate: string;     //截止时间SCHEDULE_END_DATE
   scheduleState: number;     //事件状态SCHEDULE_STATE(-1 未完成 1完成)
   groupId: string;          //组群idGROUP_ID
   scheduleMap: string;     //位置SCHEDULE_MAP
-  scheduleRemindDate: any;     //提醒时间SCHEDULE_REMIND_DATE
+  scheduleRemindDate: string;     //提醒时间SCHEDULE_REMIND_DATE
   scheduleRemindRepeat: string;     //重复提醒SCHEDULE_REMIND_REPEAT
   scheduleRemindRepeatType: string;     //重复提醒类型SCHEDULE_REMIND_REPEAT_TYPE（1 每日 2 每月 3每年）
-  scheduleEditDate: any;//修改时间SCHEDULE_EDIT_DATE
+  scheduleEditDate: string;//修改时间SCHEDULE_EDIT_DATE
   flagCreateGroup: string;
 
   //执行事件表(日程关联表)

@@ -41,18 +41,20 @@ public class ScheduleController {
     @PostMapping("/task_announcement")
     public BaseOutDto newProjects(@RequestBody ScheduleInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
-
+        Map<String, String> data = new HashMap<>();
+        ScheduleOutDto scheduleId = new ScheduleOutDto();
 
         //获取群编号
         String uuid =UUIDUtil.getUUID();
         inDto.setGroupId(uuid);//给群组id加上关联号
 
-        int flag = scheduleService.taskAnnouncement(inDto);
-
-        if (flag == 0) {
+        scheduleId = scheduleService.taskAnnouncement(inDto);
+        if (scheduleId != null) {
+            data.put("scheduleId", String.valueOf(scheduleId.getScheduleId()));
+            outDto.setData(data);
             outDto.setCode("0");
             outDto.setMessage("发布成功");
-        } else if (flag == 1){
+        } else {
             outDto.setCode("-1");
             outDto.setMessage("发布失败，后台异常");
         }
@@ -297,4 +299,21 @@ public class ScheduleController {
         return outBean;
     }
 
+    /**
+     * 接受任务更改状态
+     * @param inDto
+     * @return
+     */
+    @PostMapping("update_state")
+    public BaseOutDto updateState(@RequestBody ScheduleInDto inDto) {
+        BaseOutDto outBean = new BaseOutDto();
+
+        scheduleService.updateState(inDto.getScheduleId(), inDto.getUserId(), Integer.parseInt(inDto.getScheduleState()));
+
+        outBean.setCode("0");
+        outBean.setMessage("[修改成功]");
+        logger.info("[修改成功]");
+
+        return outBean;
+    }
 }
