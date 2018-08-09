@@ -40,7 +40,6 @@
     "cordova-plugin-ionic-webview": "^1.2.1",
     "cordova-plugin-splashscreen": "^4.1.0",
     "cordova-plugin-whitelist": "^1.3.3",
-    "cordova-plugin-xunfeiListenSpeaking": "C:\\Users\\scarecrow\\Downloads\\cordova-plugin-IFlyspeech-master",
     "cordova-sqlite-storage": "^2.3.3",
     "ionic-angular": "3.9.2",
     "ionic-plugin-keyboard": "^2.2.1",
@@ -65,8 +64,7 @@
       "cordova-plugin-ionic-webview": {},
       "cordova-sqlite-storage": {},
       "cordova-plugin-advanced-http": {},
-      "com-badrit-base64": {},
-      "cordova-plugin-xunfeiListenSpeaking": {}
+      "com-badrit-base64": {}
     },
     "platforms": [
       "browser",
