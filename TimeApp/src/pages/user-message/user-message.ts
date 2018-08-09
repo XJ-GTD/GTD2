@@ -25,9 +25,15 @@ export class UserMessagePage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private http: HttpClient,
               private paramsService: ParamsService) {
+    this.init();
+
+  }
+
+  init() {
     alert("跳转了");
-    this.schedule = this.paramsService.voice;
-    alert(this.schedule);
+    this.schedule = JSON.parse(this.paramsService.voice);
+    this.schedule.scheduleStartDate = this.schedule.scheduleStartDate.replace(" ", "T");
+    this.schedule.scheduleEndDate = this.schedule.scheduleEndDate.replace(" ", "T");
   }
 
   ionViewDidLoad() {
@@ -36,9 +42,12 @@ export class UserMessagePage {
 
   //接受任务
   acceptTask() {
-    this.http.post(AppConfig.WEB_SOCKET_TASK_URL, {
-      target: "15000",
-      scheduleName: "接受任务"
+
+    this.http.post(AppConfig.SCHEDULE_UPDATE_STATE_URL, {
+      userId: this.paramsService.user.userId,
+      scheduleState: "1",
+      scheduleId: this.schedule.scheduleId
+
     },{
       headers: {
         "Content-Type": "application/json"
@@ -48,15 +57,19 @@ export class UserMessagePage {
       .subscribe(data => {
         console.log(data);
         alert("推送成功" + data);
-
+        this.goBackInfo(this.paramsService.user.userName + "接受了任务");
       });
   }
 
   //拒绝任务
   refuseTask() {
+    this.goBackInfo(this.paramsService.user.userName + "拒绝了任务");
+  }
+
+  goBackInfo(data) {
     this.http.post(AppConfig.WEB_SOCKET_TASK_URL, {
-      target: "15000",
-      scheduleName: "拒绝任务"
+      target: "15000,",
+      scheduleName: data
     },{
       headers: {
         "Content-Type": "application/json"

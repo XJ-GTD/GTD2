@@ -252,7 +252,9 @@ public interface IScheduleDao {
 //    @Param("scheduleId") int scheduleId,@Param("userId")int userId
 
 
-
-
+    @Update("UPDATE GTD_EXECUTOR_SCHEDULE SET " +
+            " EXECUTOR_STATE = #{executorState}" +
+            " WHERE SCHEDULE_ID = #{scheduleId} and USER_ID = #{userId}")
+    void updateState(@Param("scheduleId")int scheduleId,@Param("userId")String userId,@Param("executorState")int executorState);
 
 }

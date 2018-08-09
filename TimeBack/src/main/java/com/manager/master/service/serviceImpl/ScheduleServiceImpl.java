@@ -453,7 +453,9 @@ public class ScheduleServiceImpl implements IScheduleService {
     }
 
     @Override
-    public int taskAnnouncement(ScheduleInDto inDto) {
+    public ScheduleOutDto taskAnnouncement(ScheduleInDto inDto) {
+
+        ScheduleOutDto outDto = new ScheduleOutDto();
 
         DateFormat df2= new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -487,7 +489,7 @@ public class ScheduleServiceImpl implements IScheduleService {
             }
         } catch (ParseException e) {
             e.printStackTrace();
-            return -1;
+            return null;
         }
 
         String scheduleRemindRepeat = inDto.getScheduleRemindRepeat();//重复提醒
@@ -500,6 +502,7 @@ public class ScheduleServiceImpl implements IScheduleService {
 
         int  userId = 0;
         int scheduledId = scheduleDao.selectScheduleId();         //执行事件IDSCHEDULE_ID
+        outDto.setScheduleId(scheduledId);
         String userMobile = inDto.getScheduleExecutor();         //执行人电话（执行人id）String  ,拼写字符串
         Date executorFinishDate= null;     //完成时间-执行事件表
         Date executorRemindDate=null;       //提醒时间-执行事件表
@@ -512,7 +515,7 @@ public class ScheduleServiceImpl implements IScheduleService {
             }
         } catch (ParseException e) {
             e.printStackTrace();
-            return -1;
+            return null;
         }
 
         String scheduledState=inDto.getScheduleState();//事件状态(-1 未接受 1未完成 0完成)
@@ -557,6 +560,12 @@ public class ScheduleServiceImpl implements IScheduleService {
             scheduleDao.createExecutorScheduleId(userId,scheduledId,executorFinishDate,scheduledState,executorRemindDate,executorRemindRepeat,executorRemindRepeatType);
         }
 
+        return outDto;
+    }
+
+    @Override
+    public int updateState(int scheduleId, String userId, int state) {
+        scheduleDao.updateState(scheduleId, userId, state);
         return 0;
     }
 

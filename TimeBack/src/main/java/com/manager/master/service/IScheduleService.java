@@ -84,5 +84,14 @@ public interface IScheduleService {
      * @param inDto
      * @return
      */
-    public int taskAnnouncement(ScheduleInDto inDto);
+    public ScheduleOutDto taskAnnouncement(ScheduleInDto inDto);
+
+    /**
+     * 接受任务更改状态
+     * @param scheduleId
+     * @param userId
+     * @param state -1 拒绝 1接受未完成 0完成
+     * @return
+     */
+    public int updateState(int scheduleId, String userId, int state);
 }
