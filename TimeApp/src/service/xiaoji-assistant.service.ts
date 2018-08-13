@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { ParamsService } from "./params.service";
 import { Base64 } from "@ionic-native/base64";
 import { File } from "@ionic-native/file";
+import {App, NavController} from "ionic-angular";
 
 declare var cordova: any;
 
@@ -19,8 +20,10 @@ export class XiaojiAssistantService {
   private fileContent: any;
   private filePath: string;
   private speechText: any;
+  private redirect: string;
 
-  constructor(private base64: Base64,
+  constructor(public appCtrl : App,
+                private base64: Base64,
                 private http: HttpClient,
                 private file: File,
                 private paramsService: ParamsService) {
@@ -31,7 +34,8 @@ export class XiaojiAssistantService {
   /**
    * 语音助手录音录入 AUDIO
    */
-  public listenAudio() {
+  public listenAudio(redirect: string) {
+    this.redirect = redirect;
     try {
       cordova.plugins.xjvoicefromXF.startListen(result=>{
         alert("成功:" + result);
@@ -100,6 +104,8 @@ export class XiaojiAssistantService {
 
         alert("成功:" + this.speechText);
         this.speakText(this.speechText);
+        let activeNav: NavController = this.appCtrl.getActiveNav();
+        activeNav.push(this.redirect);
       })
   }
 

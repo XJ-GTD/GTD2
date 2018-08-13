@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+declare var cordova: any;
+
 /**
  * Generated class for the HomeCalendarPage page.
  *
@@ -20,6 +22,10 @@ export class HomeCalendarPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomeCalendarPage');
+  }
+
+  setAlarmClock() {
+
   }
 
 }
