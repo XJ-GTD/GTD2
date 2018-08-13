@@ -74,7 +74,10 @@ export class WebsocketService {
 
     //连接失败回调
     let on_error = function() {
-      console.log('error!');
+      console.log('error!:' + ws.readyState);
+      client = Stomp.over(new WebSocket(AppConfig.RABBITMQ_WS_URL));
+      client.connect(login, password, on_connect, on_error, null,'/');
+      console.log('error!:' + ws.readyState);
     }
 
     //关闭回调

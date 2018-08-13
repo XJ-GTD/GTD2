@@ -1,6 +1,6 @@
 var exec = require('cordova/exec');
 
-var xiaojiAssistant = {
+var xjvoicefromXF = {
 	startListen:function (success,error,isShowDialog,isShowPunc){
 		exec(success,error,"XunfeiListenSpeaking","startListen",[isShowDialog,isShowPunc]);
 	},
@@ -23,4 +23,4 @@ var xiaojiAssistant = {
 
 };
 
-module.exports = xiaojiAssistant;
+module.exports = xjvoicefromXF;

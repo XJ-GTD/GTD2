@@ -62,7 +62,7 @@ export class HomeGroupDetailPage {
 
   listenText() {
     try {
-      cordova.plugins.xiaojiAssistant.startListen(result=>{
+      cordova.plugins.xjvoicefromXF.startListen(result=>{
         alert("成功:" + result);
 
         this.connetXunfei();
@@ -98,7 +98,7 @@ export class HomeGroupDetailPage {
 
   speakText() {
     try {
-      cordova.plugins.xiaojiAssistant.startSpeak(result=>{
+      cordova.plugins.xjvoicefromXF.startSpeak(result=>{
         alert("成功:" + result);
       },error=>{
         alert("报错:" + error);

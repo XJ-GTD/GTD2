@@ -86,6 +86,6 @@
     <allow-navigation href="http://192.168.99.43:8100" />
     <plugin name="com-badrit-base64" spec="~0.2.0" />
     <engine name="browser" spec="5.0.3" />
-    <engine name="android" spec="7.0.0" />
     <plugin name="cordova-plugin-xjvoicefromXF" spec="../xjvoicefromXF" />
+    <engine name="android" spec="~6.4.0" />
 </widget>

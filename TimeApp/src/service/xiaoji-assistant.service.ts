@@ -33,7 +33,7 @@ export class XiaojiAssistantService {
    */
   public listenAudio() {
     try {
-      cordova.plugins.xiaojiAssistant.startListen(result=>{
+      cordova.plugins.xjvoicefromXF.startListen(result=>{
         alert("成功:" + result);
         //讯飞语音录音设置默认存储路径
         this.filePath = this.file.externalRootDirectory + "/msc/iat.wav";
@@ -96,7 +96,7 @@ export class XiaojiAssistantService {
         this.paramsService.schedule = JSON.parse(this.data.schedule);
 
         //分离出需要语音播报的内容
-        this.speechText = this.data;
+        this.speechText = "收到消息:" + this.paramsService.schedule.scheduleName;
 
         alert("成功:" + this.speechText);
         this.speakText(this.speechText);
@@ -108,7 +108,7 @@ export class XiaojiAssistantService {
    */
   public speakText(speechText: string) {
     try {
-      cordova.plugins.xiaojiAssistant.startSpeak(result=>{
+      cordova.plugins.xjvoicefromXF.startSpeak(result=>{
         alert("成功:" + result);
       },error=>{
         alert("报错:" + error);
