@@ -88,4 +88,5 @@
     <engine name="browser" spec="5.0.3" />
     <plugin name="cordova-plugin-xjvoicefromXF" spec="../xjvoicefromXF" />
     <engine name="android" spec="~6.4.0" />
+    <plugin name="org.nypr.cordova.wakeupplugin" spec="C:\Users\scarecrow\Desktop\cordova-plugin-wakeuptimer-master" />
 </widget>

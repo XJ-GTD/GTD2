@@ -14,10 +14,27 @@
 
 
 <ion-content padding>
-  <p text-center >
+
+  <ion-list>
+    <ion-item>
+      <ion-label no-lines floating>hour</ion-label>
+      <ion-input type="number" [(ngModel)]="hour" ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label no-lines floating>minute</ion-label>
+      <ion-input type="number" [(ngModel)]="minute"></ion-input>
+    </ion-item>
+
     <button ion-button outline icon-start (click)="setAlarmClock()">
       <ion-icon name="ionitron"></ion-icon>
       设置闹钟
     </button>
-  </p>
+
+    <ion-item>
+      <ion-label no-lines floating>success</ion-label>
+      <ion-input type="number" [(ngModel)]="success"></ion-input>
+    </ion-item>
+  </ion-list>
+
 </ion-content>
