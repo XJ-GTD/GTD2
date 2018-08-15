@@ -54,6 +54,7 @@
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-core</artifactId>
         </dependency>
+
         <!-- mysql 依赖-->
         <dependency>
             <groupId>mysql</groupId>
@@ -70,6 +71,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <!-- log4j依赖 -->
         <!--去除exclude默认logging依赖-->
         <dependency>
@@ -105,6 +107,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
+
         <!--websocket-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -115,33 +118,33 @@
             <artifactId>amqp-client</artifactId>
         </dependency>
 
-        <!-- 语音识别引用jar -->
-        <!-- https://mvnrepository.com/artifact/com.hp.hpl.jena/json-jena -->
+        <!--&lt;!&ndash; 语音识别引用jar &ndash;&gt;
+        &lt;!&ndash; https://mvnrepository.com/artifact/com.hp.hpl.jena/json-jena &ndash;&gt;
         <dependency>
             <groupId>com.hp.hpl.jena</groupId>
             <artifactId>json-jena</artifactId>
             <version>1.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+        &lt;!&ndash; https://mvnrepository.com/artifact/commons-codec/commons-codec &ndash;&gt;
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.10</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        &lt;!&ndash; https://mvnrepository.com/artifact/commons-io/commons-io &ndash;&gt;
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+        &lt;!&ndash; https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload &ndash;&gt;
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
             <version>1.3.1</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        &lt;!&ndash; https://mvnrepository.com/artifact/org.slf4j/slf4j-api &ndash;&gt;
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -150,7 +153,7 @@
 
 
 
-        <!-- FNLP语义分析 -->
+        &lt;!&ndash; FNLP语义分析 &ndash;&gt;
         <dependency>
             <groupId>net.sf.trove4j</groupId>
             <artifactId>trove4j</artifactId>
@@ -165,7 +168,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
-        </dependency>
+        </dependency>-->
 
 
     </dependencies>

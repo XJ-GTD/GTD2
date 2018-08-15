@@ -250,10 +250,16 @@ public class WakeupPlugin extends CordovaPlugin {
 		now.setTime(new Date());
 		calendar.setTime(new Date());
 
+		int year=(time.has("year")) ? time.getInt("year") : -1;
+		int month=(time.has("month")) ? time.getInt("month") : -1;
+		int day=(time.has("day")) ? time.getInt("day") : -1;
 		int hour=(time.has("hour")) ? time.getInt("hour") : -1;
 		int minute=(time.has("minute")) ? time.getInt("minute") : 0;
 
 		if(hour>=0){
+//			calendar.set(Calendar.YEAR, year);
+//			calendar.set(Calendar.MONTH, month);
+//			calendar.set(Calendar.DATE, day);
 			calendar.set(Calendar.HOUR_OF_DAY, hour);
 			calendar.set(Calendar.MINUTE, minute);
 			calendar.set(Calendar.SECOND, 0);

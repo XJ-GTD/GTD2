@@ -8,10 +8,12 @@ import { Storage } from "@ionic/storage";
 import { ParamsService } from "../service/params.service";
 import { WebsocketService } from "../service/websocket.service";
 import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
+import { XiaojiAlarmclockService } from "../service/xiaoji-alarmclock.service";
+
 
 @Component({
   templateUrl: 'app.html',
-  providers: [ ParamsService, WebsocketService, XiaojiAssistantService ]
+  providers: [ ParamsService, WebsocketService, XiaojiAssistantService, XiaojiAlarmclockService ]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;

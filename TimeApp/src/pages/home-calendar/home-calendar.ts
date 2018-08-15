@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { XiaojiAlarmclockService } from "../../service/xiaoji-alarmclock.service";
+import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification';
+
 
 declare var cordova: any;
 
@@ -14,14 +17,15 @@ declare var cordova: any;
 @Component({
   selector: 'page-home-calendar',
   templateUrl: 'home-calendar.html',
+  providers: []
 })
 export class HomeCalendarPage {
 
-  private hour: any;
-  private minute: any;
-  private success: any;
+  private date: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private xiaojiAlarmclockService: XiaojiAlarmclockService,
+              private localNotification: PhonegapLocalNotification) {
   }
 
   ionViewDidLoad() {
@@ -29,32 +33,30 @@ export class HomeCalendarPage {
   }
 
   setAlarmClock() {
-    // set wakeup timer
-    cordova.plugins.wakeuptimer.wakeup( result => {
-      if (result != "OK") {
-        alert("设定成功1: " + result);
-        this.success = JSON.stringify(result);
-        alert("设定成功3: " + this.success);
-      } else {
+    this.localNotification.requestPermission().then(
+      (permission) => {
+        if (permission === 'granted') {
 
-        alert("设定成功2: " + result);
-      }
+          let notification = new Notification("My title", {
+            tag: "message1",
+            body: "My body"
+          });
+          notification.onclick = function() { alert("phonegap") };
+          // // Create the notification
+          // this.localNotification.create('My Title', {
+          //   tag: 'message1',
+          //   body: 'My body',
+          //   icon: 'assets/icon/favicon.ico'
+          // });
 
-
-      },
-      err => {
-        alert("设定失败: " + err.toString());
-      },
-      // a list of alarms to set
-      {
-        alarms : [{
-          type : 'onetime',
-          time : { hour : this.hour, minute : this.minute },
-          extra : { message : '不能调用声音吗' },
-          message : 'Alarm has expired!'
-        }]
+        }
       }
     );
+
+    this.date = this.date.replace("T", " ");
+    alert(this.date);
+    this.xiaojiAlarmclockService.setAlarmClock(this.date);
+
   }
 
 }

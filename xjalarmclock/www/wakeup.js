@@ -3,7 +3,7 @@ var exec = require("cordova/exec");
 /**
  * This is a global variable called wakeup exposed by cordova
  */    
-var xjalarmclock = function(){};
+var Wakeup = function(){};
 
 Wakeup.prototype.wakeup = function(success, error, options) {
     exec(success, error, "WakeupPlugin", "wakeup", [options]);
@@ -13,4 +13,4 @@ Wakeup.prototype.snooze = function(success, error, options) {
     exec(success, error, "WakeupPlugin", "snooze", [options]);
 };
 
-module.exports = new xjalarmclock();
+module.exports = new Wakeup();

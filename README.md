@@ -16,22 +16,34 @@
 
 
 ###### <ionic3 调用原生方式>
-##### ionic cordova platform add android/ios（添加android/ios平台）
+##### ionic cordova platform add android/ios@<version>（添加android/ios平台@）
+.
+###### <ionic3 plugman安装>
+##### npm install -g plugman
 ######<ionic3创建自定义插件>
 ##### plugman create --name <pluginName> --plugin_id <pluginID> --plugin_version <version> [--path <directory>] [--variable NAME=VALUE]
 ##### ionic cordova plugin add file_path (注册插件，file_path为插件所在目录)
 ##### ionic cordova plugin remove name (移除插件，name为插件id)
 #####
-###### <安装语音录入插件>
-##### ionic cordova plugin add cordova-plugin-media (注册插件)
-##### npm install --save @ionic-native/media (ionic中使用)
-###### <安装文件上传插件>
-##### cordova plugin add cordova-plugin-file-transfer (注册插件)
-##### npm install --save @ionic-native/file-transfer (ionic中使用)
-##### cordova plugin add cordova-plugin-file-opener2 (注册插件)
-##### npm install --save @ionic-native/file-opener (ionic中使用)
+###### <安装文件插件>
+##### cordova plugin add cordova-plugin-file （注册插件)
+##### npm install --save @ionic-native/file (ionic中使用)
 #####
+###### <安装系统通知栏插件>
+##### ionic cordova plugin add cordova-plugin-local-notification
+##### npm install --save @ionic-native/local-notifications
 #####
+###### <安装系统弹窗插件>
+##### ionic cordova plugin add cordova-plugin-dialogs
+##### npm install --save @ionic-native/dialogs
+#####
+###### <安装系统声音插件>
+##### ionic cordova plugin add cordova-plugin-nativeaudio
+##### npm install --save @ionic-native/native-audio
+#####
+###### <安装系统震动插件>
+##### ionic cordova plugin add cordova-plugin-vibration
+##### npm install --save @ionic-native/vibration
 
 ## springboot
 
