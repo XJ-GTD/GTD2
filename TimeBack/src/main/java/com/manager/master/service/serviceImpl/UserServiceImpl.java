@@ -4,6 +4,7 @@ import com.manager.master.bean.UserAccountBean;
 import com.manager.master.dao.IUserDao;
 import com.manager.master.dto.UserInfoInDto;
 import com.manager.master.dto.UserInfoOutDto;
+import com.manager.master.repository.UserRepository;
 import com.manager.master.service.IUserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -26,6 +28,9 @@ public class UserServiceImpl implements IUserService {
     private Logger logger = LogManager.getLogger(this.getClass());
     @Resource
     private IUserDao userDao;
+
+    @Resource
+    private UserRepository userRepository;
 
     @Override
     public UserInfoOutDto findUser(String mobile) {
@@ -95,6 +100,12 @@ public class UserServiceImpl implements IUserService {
             userDao.createUser(accountId,userName,userSex,userBirthday,email,realName,idNumber,userHead);
         }
         return 0;
+    }
+
+    @Override
+    public List<UserAccountBean> findAll() {
+        List<UserAccountBean> userList = userRepository.findAll();
+        return userList;
     }
 
 

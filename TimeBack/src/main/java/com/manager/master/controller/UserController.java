@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -105,6 +106,19 @@ public class UserController {
             logger.info("[注册成功]");
         }
 
+        return outBean;
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto test(@RequestBody UserInfoInDto inDto) {
+
+        BaseOutDto outBean = new BaseOutDto();
+        Map<String, List<UserAccountBean>> data = new HashMap<>();
+        List<UserAccountBean> userAccountBeanList = userService.findAll();
+        data.put("accountInfo", userAccountBeanList);
+        outBean.setData(data);
+        ;
         return outBean;
     }
 }

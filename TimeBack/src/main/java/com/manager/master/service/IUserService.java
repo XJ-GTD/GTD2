@@ -5,6 +5,8 @@ import com.manager.master.dto.UserInfoInDto;
 import com.manager.master.dto.UserInfoOutDto;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
+
 /**
  * create by wzy on 2018/04/24.
  * 用户管理
@@ -41,4 +43,6 @@ public interface IUserService {
      * @param
      */
     int createUser( @RequestBody UserInfoInDto inDto );
+
+    List<UserAccountBean> findAll();
 }
