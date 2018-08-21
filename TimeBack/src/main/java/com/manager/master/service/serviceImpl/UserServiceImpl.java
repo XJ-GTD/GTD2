@@ -102,11 +102,5 @@ public class UserServiceImpl implements IUserService {
         return 0;
     }
 
-    @Override
-    public List<UserAccountBean> findAll() {
-        List<UserAccountBean> userList = userRepository.findAll();
-        return userList;
-    }
-
 
 }

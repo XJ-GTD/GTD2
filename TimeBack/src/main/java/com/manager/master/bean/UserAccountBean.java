@@ -10,24 +10,12 @@ import java.util.Set;
  * create by wzy on 2018/04/24.
  * 用户账户类
  */
-@Entity(name = "gtd_account")
 public class UserAccountBean {
 
-    @Id
-    @Column(name = "ACCOUNT_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int accountId;             //账户ID
-
-    @Column(name = "ACCOUNT_NAME")
     private String accountName;        //账户名
-
-    @Column(name = "ACCOUNT_PASSWORD")
     private String accountPassword;    //账户密码
-
-    @Column(name = "ACCOUNT_MOBILE")
     private String accountMobile;      //手机号
-
-    @Column(name = "USER_ID")
     private Integer userId;                //用户ID
 
 

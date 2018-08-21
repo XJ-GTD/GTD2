@@ -109,16 +109,4 @@ public class UserController {
         return outBean;
     }
 
-    @RequestMapping(value = "/test", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseOutDto test(@RequestBody UserInfoInDto inDto) {
-
-        BaseOutDto outBean = new BaseOutDto();
-        Map<String, List<UserAccountBean>> data = new HashMap<>();
-        List<UserAccountBean> userAccountBeanList = userService.findAll();
-        data.put("accountInfo", userAccountBeanList);
-        outBean.setData(data);
-        ;
-        return outBean;
-    }
 }

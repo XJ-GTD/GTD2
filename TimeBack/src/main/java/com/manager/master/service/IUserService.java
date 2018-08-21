@@ -44,5 +44,4 @@ public interface IUserService {
      */
     int createUser( @RequestBody UserInfoInDto inDto );
 
-    List<UserAccountBean> findAll();
 }

@@ -6,8 +6,12 @@
 
 
 ## ionic3 
+###### 启动前端服务
 #### ionic serve
+###### 创建新页面
+##### ionic g page NewPage
 
+###### 测试命令
 ##### ionic cordova run android -1 -c (真机在线调试)
 ##### ionic cordova build android 【debug版本，无需签名】
 ##### ionic cordova build android --release 【发布版，需要签名（要使用jarsigner签名必须用release版本）】
