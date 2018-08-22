@@ -1,16 +1,33 @@
 package com.manager.master.entity;
 
-import javax.persistence.*;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Objects;
+import java.util.Set;
+
+/**
+ *
+ *
+ * create by wzy on 2018/08/22
+ */
 @Entity
-@Table(name = "gtd_account", schema = "gtd", catalog = "")
-public class GtdAccountEntity {
+@Table(name = "gtd_account", schema = "gtd")
+public class GtdAccountEntity implements Serializable {
     private int accountId;
-    private String accountName;
+    private int userId;
     private String accountPassword;
+    private String accountName;
     private String accountMobile;
-    private Integer userId;
+    private String accountWechat;
+    private String accountQq;
+    private String accountEmail;
+    private Integer createId;
+    private Timestamp createDate;
+    private Integer updateId;
+    private Timestamp updateDate;
 
     @Id
     @Column(name = "ACCOUNT_ID")
@@ -23,13 +40,13 @@ public class GtdAccountEntity {
     }
 
     @Basic
-    @Column(name = "ACCOUNT_NAME")
-    public String getAccountName() {
-        return accountName;
+    @Column(name = "USER_ID")
+    public int getUserId() {
+        return userId;
     }
 
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Basic
@@ -43,6 +60,16 @@ public class GtdAccountEntity {
     }
 
     @Basic
+    @Column(name = "ACCOUNT_NAME")
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    @Basic
     @Column(name = "ACCOUNT_MOBILE")
     public String getAccountMobile() {
         return accountMobile;
@@ -53,13 +80,73 @@ public class GtdAccountEntity {
     }
 
     @Basic
-    @Column(name = "USER_ID")
-    public Integer getUserId() {
-        return userId;
+    @Column(name = "ACCOUNT_WECHAT")
+    public String getAccountWechat() {
+        return accountWechat;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setAccountWechat(String accountWechat) {
+        this.accountWechat = accountWechat;
+    }
+
+    @Basic
+    @Column(name = "ACCOUNT_QQ")
+    public String getAccountQq() {
+        return accountQq;
+    }
+
+    public void setAccountQq(String accountQq) {
+        this.accountQq = accountQq;
+    }
+
+    @Basic
+    @Column(name = "ACCOUNT_EMAIL")
+    public String getAccountEmail() {
+        return accountEmail;
+    }
+
+    public void setAccountEmail(String accountEmail) {
+        this.accountEmail = accountEmail;
+    }
+
+    @Basic
+    @Column(name = "CREATE_ID")
+    public Integer getCreateId() {
+        return createId;
+    }
+
+    public void setCreateId(Integer createId) {
+        this.createId = createId;
+    }
+
+    @Basic
+    @Column(name = "CREATE_DATE")
+    public Timestamp getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Timestamp createDate) {
+        this.createDate = createDate;
+    }
+
+    @Basic
+    @Column(name = "UPDATE_ID")
+    public Integer getUpdateId() {
+        return updateId;
+    }
+
+    public void setUpdateId(Integer updateId) {
+        this.updateId = updateId;
+    }
+
+    @Basic
+    @Column(name = "UPDATE_DATE")
+    public Timestamp getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Timestamp updateDate) {
+        this.updateDate = updateDate;
     }
 
     @Override
@@ -68,15 +155,22 @@ public class GtdAccountEntity {
         if (o == null || getClass() != o.getClass()) return false;
         GtdAccountEntity that = (GtdAccountEntity) o;
         return accountId == that.accountId &&
-                Objects.equals(accountName, that.accountName) &&
+                userId == that.userId &&
                 Objects.equals(accountPassword, that.accountPassword) &&
+                Objects.equals(accountName, that.accountName) &&
                 Objects.equals(accountMobile, that.accountMobile) &&
-                Objects.equals(userId, that.userId);
+                Objects.equals(accountWechat, that.accountWechat) &&
+                Objects.equals(accountQq, that.accountQq) &&
+                Objects.equals(accountEmail, that.accountEmail) &&
+                Objects.equals(createId, that.createId) &&
+                Objects.equals(createDate, that.createDate) &&
+                Objects.equals(updateId, that.updateId) &&
+                Objects.equals(updateDate, that.updateDate);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(accountId, accountName, accountPassword, accountMobile, userId);
+        return Objects.hash(accountId, userId, accountPassword, accountName, accountMobile, accountWechat, accountQq, accountEmail, createId, createDate, updateId, updateDate);
     }
 }

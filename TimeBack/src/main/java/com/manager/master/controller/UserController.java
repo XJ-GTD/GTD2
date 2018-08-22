@@ -1,6 +1,5 @@
 package com.manager.master.controller;
 
-import com.manager.master.bean.UserAccountBean;
 import com.manager.master.dto.BaseOutDto;
 import com.manager.master.dto.UserInfoInDto;
 import com.manager.master.dto.UserInfoOutDto;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -89,7 +87,7 @@ public class UserController {
      * @parame
      * @return
      */
-    @RequestMapping(value = "/signin", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto create(@RequestBody UserInfoInDto inDto) {
         BaseOutDto outBean = new BaseOutDto();

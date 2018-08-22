@@ -1,6 +1,5 @@
 package com.manager.master.dao;
 
-import com.manager.master.bean.UserAccountBean;
 import com.manager.master.dto.UserInfoOutDto;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

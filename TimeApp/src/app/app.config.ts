@@ -36,7 +36,7 @@ export class AppConfig {
   //用户类
   public static USER_LOGIN_URL: string = AppConfig.USER_URL + "/login";   //登陆 POST
 
-  public static USER_REGISTER_URL: string = AppConfig.USER_URL + "/signin";   //注册 POST
+  public static USER_REGISTER_URL: string = AppConfig.USER_URL + "/sign_up";   //注册 POST
 
   //群组类
   public static GROUP_FIND_URL: string = AppConfig.GROUP_URL + "/find";    //全部群组查询 GET
