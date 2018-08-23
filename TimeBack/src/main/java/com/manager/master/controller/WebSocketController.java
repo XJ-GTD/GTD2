@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * 消息派送
+ * 消息推送
  *
  * @Author: tzx ;
- * @Date: Created in 18:53 2018/5/3
+ * @Date: Create by wzy on 2018/7/27
  */
 @RestController
 @RequestMapping(value = "push")

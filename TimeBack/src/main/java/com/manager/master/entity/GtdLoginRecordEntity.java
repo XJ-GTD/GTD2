@@ -4,8 +4,12 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+/**
+ *
+ * create by wzy on 2018/08/22
+ */
 @Entity
-@Table(name = "gtd_login_record", schema = "gtd")
+@Table(name = "gtd_login_record", schema = "gtd", catalog = "")
 public class GtdLoginRecordEntity {
     private int loginRecordId;
     private int accountId;

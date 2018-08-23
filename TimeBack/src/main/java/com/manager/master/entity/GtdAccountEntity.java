@@ -3,21 +3,18 @@ package com.manager.master.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
-import java.util.Set;
 
 /**
- *
  *
  * create by wzy on 2018/08/22
  */
 @Entity
 @Table(name = "gtd_account", schema = "gtd")
-public class GtdAccountEntity implements Serializable {
-    private int accountId;
-    private int userId;
+public class GtdAccountEntity {
+    private Integer accountId;
+    private Integer userId;
     private String accountPassword;
     private String accountName;
     private String accountMobile;
@@ -28,24 +25,26 @@ public class GtdAccountEntity implements Serializable {
     private Timestamp createDate;
     private Integer updateId;
     private Timestamp updateDate;
+    private GtdUserEntity user;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ACCOUNT_ID")
-    public int getAccountId() {
+    public Integer getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(Integer accountId) {
         this.accountId = accountId;
     }
 
     @Basic
     @Column(name = "USER_ID")
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -154,8 +153,8 @@ public class GtdAccountEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GtdAccountEntity that = (GtdAccountEntity) o;
-        return accountId == that.accountId &&
-                userId == that.userId &&
+        return Objects.equals(accountId, that.accountId) &&
+                Objects.equals(userId, that.userId) &&
                 Objects.equals(accountPassword, that.accountPassword) &&
                 Objects.equals(accountName, that.accountName) &&
                 Objects.equals(accountMobile, that.accountMobile) &&
@@ -172,5 +171,15 @@ public class GtdAccountEntity implements Serializable {
     public int hashCode() {
 
         return Objects.hash(accountId, userId, accountPassword, accountName, accountMobile, accountWechat, accountQq, accountEmail, createId, createDate, updateId, updateDate);
+    }
+
+    @OneToOne(mappedBy = "account")
+    @JsonIgnore
+    public GtdUserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(GtdUserEntity user) {
+        this.user = user;
     }
 }

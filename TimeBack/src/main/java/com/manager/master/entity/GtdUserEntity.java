@@ -1,11 +1,17 @@
 package com.manager.master.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.Set;
 
+/**
+ *
+ * create by wzy on 2018/08/22
+ */
 @Entity
 @Table(name = "gtd_user", schema = "gtd")
 public class GtdUserEntity {
@@ -20,8 +26,12 @@ public class GtdUserEntity {
     private Timestamp createDate;
     private Integer updateId;
     private Timestamp updateDate;
+    private GtdAccountEntity account;
+    private Set<GtdScheduleEntity> schedules;
+    private Set<GtdGroupEntity> groups;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
     public int getUserId() {
         return userId;
@@ -155,4 +165,33 @@ public class GtdUserEntity {
         return Objects.hash(userId, userName, headimgUrl, brithday, userSex, userContact, userType, createId, createDate, updateId, updateDate);
     }
 
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "gtd_account", schema = "gtd", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = false))
+    public GtdAccountEntity getAccount() {
+        return account;
+    }
+
+    public void setAccount(GtdAccountEntity account) {
+        this.account = account;
+    }
+
+    @ManyToMany(mappedBy = "relatedParty")
+    public Set<GtdScheduleEntity> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(Set<GtdScheduleEntity> schedules) {
+        this.schedules = schedules;
+    }
+
+    @OneToMany(mappedBy = "user_groups", cascade = CascadeType.ALL)
+    @JsonIgnore
+    public Set<GtdGroupEntity> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<GtdGroupEntity> groups) {
+        this.groups = groups;
+    }
 }

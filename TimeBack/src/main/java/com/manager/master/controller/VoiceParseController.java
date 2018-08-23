@@ -11,20 +11,25 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 语音处理
  * @Author: tzx ;
- * @Date: Created in 16:18 2018/4/27
+ * @Date: Create by wzy on 2018/4/27
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/voice_parse")
+@RequestMapping(value = "/xiaoji")
 public class VoiceParseController {
 
-    @RequestMapping(value = "/read", method = RequestMethod.POST)
+    @RequestMapping(value = "/audio", method = RequestMethod.POST)
     public BaseOutDto readAudio(HttpServletRequest request){
         BaseOutDto outBean = new BaseOutDto();
 
         return outBean;
     }
 
-    
+    @RequestMapping(value = "/text", method = RequestMethod.POST)
+    public BaseOutDto readText(HttpServletRequest request){
+        BaseOutDto outBean = new BaseOutDto();
+
+        return outBean;
+    }
 
 }

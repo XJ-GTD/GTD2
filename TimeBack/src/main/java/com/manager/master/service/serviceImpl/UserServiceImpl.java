@@ -1,9 +1,10 @@
 package com.manager.master.service.serviceImpl;
 
-import com.manager.master.bean.UserAccountBean;
 import com.manager.master.dao.IUserDao;
 import com.manager.master.dto.UserInfoInDto;
 import com.manager.master.dto.UserInfoOutDto;
+import com.manager.master.entity.GtdAccountEntity;
+import com.manager.master.entity.GtdUserEntity;
 import com.manager.master.repository.UserRepository;
 import com.manager.master.service.IUserService;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -100,6 +100,27 @@ public class UserServiceImpl implements IUserService {
             userDao.createUser(accountId,userName,userSex,userBirthday,email,realName,idNumber,userHead);
         }
         return 0;
+    }
+
+    @Override
+    public void registerUser(UserInfoInDto inDto) {
+        GtdAccountEntity accountEntity = new GtdAccountEntity();
+        GtdUserEntity user = new GtdUserEntity();
+
+        user.setUserName(inDto.getUserName());
+        user.setUserType(0);
+
+        //获取自增主键
+        user = userRepository.saveAndFlush(user);
+
+        accountEntity.setAccountMobile(inDto.getAccountMobile());
+        accountEntity.setAccountName(inDto.getAccountName());
+        accountEntity.setAccountPassword(inDto.getAccountPassword());
+        accountEntity.setUserId(user.getUserId());
+
+        user.setAccount(accountEntity);
+
+        userRepository.save(user);
     }
 
 

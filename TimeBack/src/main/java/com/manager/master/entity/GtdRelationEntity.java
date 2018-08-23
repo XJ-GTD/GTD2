@@ -4,8 +4,12 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+/**
+ *
+ * create by wzy on 2018/08/22
+ */
 @Entity
-@Table(name = "gtd_relation", schema = "gtd")
+@Table(name = "gtd_relation", schema = "gtd", catalog = "")
 public class GtdRelationEntity {
     private int relatedId;
     private String relatedName;

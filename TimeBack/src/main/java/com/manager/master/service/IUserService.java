@@ -1,11 +1,7 @@
 package com.manager.master.service;
 
-import com.manager.master.bean.UserAccountBean;
 import com.manager.master.dto.UserInfoInDto;
 import com.manager.master.dto.UserInfoOutDto;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.List;
 
 /**
  * create by wzy on 2018/04/24.
@@ -42,6 +38,7 @@ public interface IUserService {
      * 用户注册
      * @param
      */
-    int createUser( @RequestBody UserInfoInDto inDto );
+    int createUser(UserInfoInDto inDto );
 
+    void registerUser(UserInfoInDto inDto);
 }

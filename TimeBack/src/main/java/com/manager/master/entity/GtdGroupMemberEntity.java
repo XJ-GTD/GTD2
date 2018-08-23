@@ -6,11 +6,10 @@ import java.util.Objects;
 
 /**
  *
- *
  * create by wzy on 2018/08/22
  */
 @Entity
-@Table(name = "gtd_group_member", schema = "gtd")
+@Table(name = "gtd_group_member", schema = "gtd", catalog = "")
 public class GtdGroupMemberEntity {
     private int groupMemberId;
     private int groupId;

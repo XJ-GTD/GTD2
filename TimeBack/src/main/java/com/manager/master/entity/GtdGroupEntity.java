@@ -3,9 +3,9 @@ package com.manager.master.entity;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.Set;
 
 /**
- *
  *
  * create by wzy on 2018/08/22
  */
@@ -21,8 +21,11 @@ public class GtdGroupEntity {
     private Timestamp createDate;
     private Integer updateId;
     private Timestamp updateDate;
+    private Set<GtdScheduleEntity> schedules;
+    private GtdUserEntity user_groups;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "GROUP_ID")
     public int getGroupId() {
         return groupId;
@@ -132,5 +135,24 @@ public class GtdGroupEntity {
     public int hashCode() {
 
         return Objects.hash(groupId, groupName, groupLabel, groupType, groupCreator, createId, createDate, updateId, updateDate);
+    }
+
+    @ManyToMany(mappedBy = "relevance")
+    public Set<GtdScheduleEntity> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(Set<GtdScheduleEntity> schedules) {
+        this.schedules = schedules;
+    }
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "groups")
+    public GtdUserEntity getUser_groups() {
+        return user_groups;
+    }
+
+    public void setUser_groups(GtdUserEntity user_groups) {
+        this.user_groups = user_groups;
     }
 }
