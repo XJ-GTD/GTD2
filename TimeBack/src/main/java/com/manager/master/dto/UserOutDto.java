@@ -3,7 +3,7 @@ package com.manager.master.dto;
 /**
  * 用户登陆信息输出类
  */
-public class UserInfoOutDto {
+public class UserOutDto {
     private String accountMobile;      //手机号
     private String accountName;        //账户名
     private int userId;                //用户ID

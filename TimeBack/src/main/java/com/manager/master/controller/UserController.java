@@ -1,16 +1,12 @@
 package com.manager.master.controller;
 
 import com.manager.master.dto.BaseOutDto;
-import com.manager.master.dto.UserInfoInDto;
-import com.manager.master.dto.UserInfoOutDto;
+import com.manager.master.dto.UserInDto;
 import com.manager.master.service.IUserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 用户controller
@@ -34,7 +30,7 @@ public class UserController {
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto register(@RequestBody UserInfoInDto inDto) {
+    public BaseOutDto register(@RequestBody UserInDto inDto) {
         BaseOutDto outBean = new BaseOutDto();
 
         int flag = userService.registerUser(inDto);
@@ -59,7 +55,7 @@ public class UserController {
      */
     @PostMapping(value = "/login")
     @ResponseBody
-    public BaseOutDto login(UserInfoInDto inDto) {
+    public BaseOutDto login(UserInDto inDto) {
         BaseOutDto outBean = new BaseOutDto();
 
         return outBean;

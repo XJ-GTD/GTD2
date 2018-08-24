@@ -1,6 +1,6 @@
 package com.manager.master.service;
 
-import com.manager.master.dto.UserInfoInDto;
+import com.manager.master.dto.UserInDto;
 
 /**
  * create by wzy on 2018/04/24.
@@ -13,5 +13,5 @@ public interface IUserService {
      * @param inDto
      * @return
      */
-    int registerUser(UserInfoInDto inDto);
+    int registerUser(UserInDto inDto);
 }

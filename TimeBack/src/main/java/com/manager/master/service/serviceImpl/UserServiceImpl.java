@@ -1,6 +1,6 @@
 package com.manager.master.service.serviceImpl;
 
-import com.manager.master.dto.UserInfoInDto;
+import com.manager.master.dto.UserInDto;
 import com.manager.master.entity.GtdAccountEntity;
 import com.manager.master.entity.GtdUserEntity;
 import com.manager.master.repository.UserJpaRepository;
@@ -36,7 +36,7 @@ public class UserServiceImpl implements IUserService {
      * @return
      */
     @Override
-    public int registerUser(UserInfoInDto inDto) {
+    public int registerUser(UserInDto inDto) {
         GtdAccountEntity accountEntity = new GtdAccountEntity();
         GtdUserEntity user = new GtdUserEntity();
 
@@ -52,7 +52,17 @@ public class UserServiceImpl implements IUserService {
         //获取自增主键
         user = userJpaRepository.saveAndFlush(user);
 
-        accountEntity.setAccountMobile(inDto.getAccountMobile());
+        switch (inDto.getLoginType()) {
+            case 0:
+                accountEntity.setAccountMobile(inDto.getAccountMobile());
+                break;
+            case 1:
+                accountEntity.setAccountWechat(inDto.getAccountWechat());
+                break;
+            case 2:
+                accountEntity.setAccountQq(inDto.getAccountQq());
+                break;
+        }
         accountEntity.setAccountName(inDto.getAccountName());
         accountEntity.setAccountPassword(inDto.getAccountPassword());
         accountEntity.setUserId(user.getUserId());
