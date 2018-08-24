@@ -1,16 +1,12 @@
 package com.manager.master.controller;
 
-import com.manager.master.dto.BaseOutDto;
-import com.manager.master.dto.GroupOutDto;
 import com.manager.master.service.IGroupService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 群组Controller
