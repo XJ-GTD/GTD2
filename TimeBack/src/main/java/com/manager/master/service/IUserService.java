@@ -1,6 +1,7 @@
 package com.manager.master.service;
 
 import com.manager.master.dto.UserInDto;
+import com.manager.master.entity.GtdUserEntity;
 
 /**
  * create by wzy on 2018/04/24.
@@ -14,4 +15,5 @@ public interface IUserService {
      * @return
      */
     int registerUser(UserInDto inDto);
+
 }
