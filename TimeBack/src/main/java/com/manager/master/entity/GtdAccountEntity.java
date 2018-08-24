@@ -183,28 +183,5 @@ public class GtdAccountEntity {
         this.user = user;
     }
 
-    /*
 
-    private Set<GtdScheduleEntity> schedules;
-    private GtdUserEntity user_groups;
-
-    @ManyToMany(mappedBy = "relevance")
-    public Set<GtdScheduleEntity> getSchedules() {
-        return schedules;
-    }
-
-    public void setSchedules(Set<GtdScheduleEntity> schedules) {
-        this.schedules = schedules;
-    }
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "groups")
-    public GtdUserEntity getUser_groups() {
-        return user_groups;
-    }
-
-    public void setUser_groups(GtdUserEntity user_groups) {
-        this.user_groups = user_groups;
-    }
-     */
 }
