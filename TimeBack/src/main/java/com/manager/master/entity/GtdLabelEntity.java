@@ -19,6 +19,7 @@ public class GtdLabelEntity {
     private Timestamp updateDate;
     private Set<GtdGroupEntity> group;
     private GtdRuleEntity rule;
+    private GtdScheduleEntity schedule;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -130,5 +131,17 @@ public class GtdLabelEntity {
 
     public void setRule(GtdRuleEntity rule) {
         this.rule = rule;
+    }
+
+    @ManyToOne
+    @JoinTable(name = "gtd_schedule_label",schema = "gtd",
+            joinColumns = @JoinColumn(name = "LABEL_ID", referencedColumnName = "LABEL_ID", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "SCHEDULE_ID", referencedColumnName = "SCHEDULE_ID", nullable = false))
+    public GtdScheduleEntity getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(GtdScheduleEntity schedule) {
+        this.schedule = schedule;
     }
 }

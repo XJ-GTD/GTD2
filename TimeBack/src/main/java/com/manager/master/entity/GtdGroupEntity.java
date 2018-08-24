@@ -17,6 +17,7 @@ public class GtdGroupEntity {
     private Integer updateId;
     private Timestamp updateDate;
     private Set<GtdLabelEntity> label;
+    private Set<GtdScheduleEntity> schedule;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -130,5 +131,14 @@ public class GtdGroupEntity {
 
     public void setLabel(Set<GtdLabelEntity> label) {
         this.label = label;
+    }
+
+    @ManyToMany(mappedBy = "group")
+    public Set<GtdScheduleEntity> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Set<GtdScheduleEntity> schedule) {
+        this.schedule = schedule;
     }
 }
