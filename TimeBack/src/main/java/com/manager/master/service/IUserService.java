@@ -1,7 +1,6 @@
 package com.manager.master.service;
 
 import com.manager.master.dto.UserInfoInDto;
-import com.manager.master.dto.UserInfoOutDto;
 
 /**
  * create by wzy on 2018/04/24.
@@ -10,35 +9,9 @@ import com.manager.master.dto.UserInfoOutDto;
 public interface IUserService {
 
     /**
-     * 根据手机号码询用户信息
-     * @return
-     */
-    UserInfoOutDto findUser(String mobile);
-    /**
-     * 用户登录
-     * @param mobile  登录账号
-     * @param passWord    登录密码
-     */
-    UserInfoOutDto loginUser(String mobile, String passWord);
-
-    /**
-     * 根据用户ID查询用户号码
-     * @param userId
-     * @return
-     */
-    String findMobileById(int userId);
-
-    /**
-     * 获取上次添加的userId
-     * @param
-     */
-    int selectPKId();
-
-    /**
      * 用户注册
-     * @param
+     * @param inDto
+     * @return
      */
-    int createUser(UserInfoInDto inDto );
-
-    void registerUser(UserInfoInDto inDto);
+    int registerUser(UserInfoInDto inDto);
 }

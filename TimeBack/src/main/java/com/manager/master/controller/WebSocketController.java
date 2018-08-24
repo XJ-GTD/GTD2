@@ -1,14 +1,7 @@
 package com.manager.master.controller;
 
 import com.manager.master.dto.ScheduleInDto;
-import com.manager.master.dto.ServerMessageDto;
-import com.manager.master.dto.ToUserMessageDto;
-import com.manager.master.service.IWebSocketService;
 import com.manager.util.ProducerUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 

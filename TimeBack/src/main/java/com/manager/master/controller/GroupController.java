@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 组群  zy 2018/5/7
+ * 群组Controller
+ *
+ * create by wzy on 2018/08/24
  */
 @CrossOrigin
 @RestController
@@ -24,31 +26,5 @@ public class GroupController {
 
     @Autowired
     IGroupService IGroupService;
-    /**
-     * 组群查询
-     * @param
-     * @return
-     */
-    @RequestMapping(value = "/find/{userId}", method = RequestMethod.GET)
-    @ResponseBody
-    public BaseOutDto find(@PathVariable int userId) {
 
-        BaseOutDto outBean = new BaseOutDto();
-        Map<String, List<GroupOutDto>> data = new HashMap<>();
-        List<GroupOutDto> groupDataList= IGroupService.findGroup(userId);
-
-        if (groupDataList != null && groupDataList.size() != 0 ) {
-            data.put("groupInfoList", groupDataList);
-            outBean.setData(data);
-            outBean.setCode("0");
-            outBean.setMessage("[查询成功]");
-            logger.info("[查询成功]"+ data.toString());
-        } else {
-            outBean.setCode("1");
-            outBean.setMessage("[查询失败]数据库无数据");
-            logger.info("[查询失败]数据库无数据"+ data.toString());
-        }
-
-        return outBean;
-    }
 }

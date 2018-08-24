@@ -13,8 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * create by wzy on 2018/04/24.
- * 用户类
+ * 用户controller
+ *
+ * create by wzy on 2018/08/24
  */
 @CrossOrigin
 @RestController
@@ -27,22 +28,41 @@ public class UserController {
     IUserService userService;
 
     /**
-     *
+     * 用户注册
      * @param inDto
      * @return
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto test(@RequestBody UserInfoInDto inDto) {
+    public BaseOutDto register(@RequestBody UserInfoInDto inDto) {
         BaseOutDto outBean = new BaseOutDto();
 
-        userService.registerUser(inDto);
+        int flag = userService.registerUser(inDto);
 
-        outBean.setCode("0");
-        outBean.setMessage("[注册成功]");
-        logger.info("[注册成功]");
+        if (flag == 0) {
+            outBean.setCode("0");
+            outBean.setMessage("[注册成功]");
+            logger.info("[注册成功]");
+        } else if (flag == 1) {
+            outBean.setCode("1");
+            outBean.setMessage("[注册失败]：手机号已注册");
+            logger.info("[注册失败]：手机号已注册");
+        }
+
         return outBean;
     }
 
+    /**
+     * 用户登录
+     * @param inDto
+     * @return
+     */
+    @PostMapping(value = "/login")
+    @ResponseBody
+    public BaseOutDto login(UserInfoInDto inDto) {
+        BaseOutDto outBean = new BaseOutDto();
+
+        return outBean;
+    }
 
 }
