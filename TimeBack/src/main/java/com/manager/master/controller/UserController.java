@@ -55,7 +55,7 @@ public class UserController {
      */
     @PostMapping(value = "/login")
     @ResponseBody
-    public BaseOutDto login(UserInDto inDto) {
+    public BaseOutDto login(@RequestBody UserInDto inDto) {
         BaseOutDto outBean = new BaseOutDto();
 
         return outBean;
