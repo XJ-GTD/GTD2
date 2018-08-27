@@ -177,7 +177,7 @@ public class GtdUserEntity {
         this.account = account;
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     public Set<GtdScheduleEntity> getSchedule() {
         return schedule;
     }
