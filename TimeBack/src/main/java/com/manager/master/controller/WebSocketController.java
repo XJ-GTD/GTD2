@@ -27,9 +27,9 @@ public class WebSocketController {
     @PostMapping(value = "/task")
     public void test(@RequestBody ScheduleInDto inDto) {
 
-        String dataMessage = inDto.toString();
-        String target = inDto.getTarget();
-        producerUtil.sendTheTarget(dataMessage, target);
+//        String dataMessage = inDto.toString();
+//        String target = inDto.getTarget();
+//        producerUtil.sendTheTarget(dataMessage, target);
     }
 
 

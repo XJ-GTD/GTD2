@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
 @SpringBootApplication
-@MapperScan("com.manager.master.dao")
+@MapperScan("com.manager.master.entity")
 public class MasterApplication {
 
     public static void main(String[] args) {
