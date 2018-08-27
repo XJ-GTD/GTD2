@@ -1,4 +1,4 @@
-package com.manager.config;
+package com.manager.config.interceptor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
