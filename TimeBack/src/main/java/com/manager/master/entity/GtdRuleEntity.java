@@ -19,6 +19,7 @@ public class GtdRuleEntity {
     private GtdLabelEntity label;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RULE_ID")
     public int getRuleId() {
         return ruleId;
@@ -117,4 +118,5 @@ public class GtdRuleEntity {
     public void setLabel(GtdLabelEntity label) {
         this.label = label;
     }
+
 }

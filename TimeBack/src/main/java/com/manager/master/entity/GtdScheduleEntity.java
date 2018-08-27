@@ -26,9 +26,45 @@ public class GtdScheduleEntity {
     private Timestamp createDate;
     private Integer updateId;
     private Timestamp updateDate;
+    private Set<GtdGroupEntity> groupschedule;
     private GtdUserEntity user;
-    private Set<GtdGroupEntity> group;
     private Set<GtdLabelEntity> label;
+
+    @OneToMany(mappedBy = "schedule")
+    public Set<GtdLabelEntity> getLabel() {
+        return label;
+    }
+
+    public void setLabel(Set<GtdLabelEntity> label) {
+        this.label = label;
+    }
+
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinTable(name = "gtd_user_shcedule", schema = "gtd",
+            joinColumns = @JoinColumn(name = "SCHEDULE_ID", referencedColumnName = "SCHEDULE_ID", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = false))
+    public GtdUserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(GtdUserEntity user) {
+        this.user = user;
+    }
+
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(name = "gtd_group_schedule", schema = "gtd",
+            joinColumns = @JoinColumn(name = "SCHEDULE_ID", referencedColumnName = "SCHEDULE_ID", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "GROUP_ID", referencedColumnName = "GROUP_ID", nullable = false))
+
+    public Set<GtdGroupEntity> getGroupschedule() {
+        return groupschedule;
+    }
+
+    public void setGroupschedule(Set<GtdGroupEntity> groupschedule) {
+        this.groupschedule = groupschedule;
+    }
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -152,38 +188,5 @@ public class GtdScheduleEntity {
     public int hashCode() {
 
         return Objects.hash(scheduleId, scheduleName, scheduleStarttime, scheduleDeadline, scheduleRepeatType, scheduleStatus, createId, createDate, updateId, updateDate);
-    }
-
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinTable(name = "gtd_user_shcedule", schema = "gtd",
-            joinColumns = @JoinColumn(name = "CREATE_ID", referencedColumnName = "CREATE_ID"),
-            inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = false))
-    public GtdUserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(GtdUserEntity user) {
-        this.user = user;
-    }
-
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(name = "gtd_group_schedule", schema = "gtd",
-            joinColumns = @JoinColumn(name = "SCHEDULE_ID", referencedColumnName = "SCHEDULE_ID", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "GROUP_ID", referencedColumnName = "GROUP_ID", nullable = false))
-    public Set<GtdGroupEntity> getGroup() {
-        return group;
-    }
-
-    public void setGroup(Set<GtdGroupEntity> group) {
-        this.group = group;
-    }
-
-    @OneToMany(mappedBy = "schedule")
-    public Set<GtdLabelEntity> getLabel() {
-        return label;
-    }
-
-    public void setLabel(Set<GtdLabelEntity> label) {
-        this.label = label;
     }
 }

@@ -17,9 +17,21 @@ public class GtdLabelEntity {
     private Timestamp createDate;
     private Integer updateId;
     private Timestamp updateDate;
-    private Set<GtdGroupEntity> group;
+    private GtdGroupEntity group;
     private GtdRuleEntity rule;
     private GtdScheduleEntity schedule;
+
+    @ManyToOne
+    @JoinTable(name = "gtd_schedule_label",schema = "gtd",
+            joinColumns = @JoinColumn(name = "LABEL_ID", referencedColumnName = "LABEL_ID", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "SCHEDULE_ID", referencedColumnName = "SCHEDULE_ID", nullable = false))
+    public GtdScheduleEntity getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(GtdScheduleEntity schedule) {
+        this.schedule = schedule;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -112,21 +124,21 @@ public class GtdLabelEntity {
         return Objects.hash(labelId, labelName, labelType, createId, createDate, updateId, updateDate);
     }
 
-
-    @ManyToOne(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
-    @JoinTable(name = "gtd_group_label",
-            joinColumns = {@JoinColumn(name="LABEL_ID",referencedColumnName = "LABEL_ID",nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name="GROUP_ID",referencedColumnName = "GROUP_ID",nullable = false)})
-    public Set<GtdGroupEntity> getGroup() {
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinTable(name = "gtd_group_label", schema = "gtd",
+            joinColumns = @JoinColumn(name = "LABEL_ID", referencedColumnName = "LABEL_ID"),
+            inverseJoinColumns = @JoinColumn(name = "GROUP_ID", referencedColumnName = "GROUP_ID", nullable = false))
+    public GtdGroupEntity getGroup() {
         return group;
     }
 
-    public void setGroup(Set<GtdGroupEntity> group) {
+    public void setGroup(GtdGroupEntity grouplabel) {
         this.group = group;
     }
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "gtd_label_rule", schema = "gtd", joinColumns = @JoinColumn(name = "LABEL_ID", referencedColumnName = "LABEL_ID", nullable = false),
+    @JoinTable(name = "gtd_label_rule", schema = "gtd",
+            joinColumns = @JoinColumn(name = "LABEL_ID", referencedColumnName = "LABEL_ID", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "RULE_ID", referencedColumnName = "RULE_ID", nullable = false))
     public GtdRuleEntity getRule() {
         return rule;
@@ -134,17 +146,5 @@ public class GtdLabelEntity {
 
     public void setRule(GtdRuleEntity rule) {
         this.rule = rule;
-    }
-
-    @ManyToOne
-    @JoinTable(name = "gtd_schedule_label",schema = "gtd",
-            joinColumns = @JoinColumn(name = "LABEL_ID", referencedColumnName = "LABEL_ID", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "SCHEDULE_ID", referencedColumnName = "SCHEDULE_ID", nullable = false))
-    public GtdScheduleEntity getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(GtdScheduleEntity schedule) {
-        this.schedule = schedule;
     }
 }

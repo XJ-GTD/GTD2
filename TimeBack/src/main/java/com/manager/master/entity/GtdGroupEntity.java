@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -19,7 +20,25 @@ public class GtdGroupEntity {
     private Integer updateId;
     private Timestamp updateDate;
     private Set<GtdLabelEntity> label;
-    private Set<GtdScheduleEntity> schedule;
+    private Set<GtdScheduleEntity> groupschedule;
+
+    @OneToMany(mappedBy = "group")
+    public Set<GtdLabelEntity> getLabel() {
+        return label;
+    }
+
+    public void setLabel(Set<GtdLabelEntity> label) {
+        this.label = label;
+    }
+
+    @ManyToMany(mappedBy = "groupschedule")
+    public Set<GtdScheduleEntity> getSchedule() {
+        return groupschedule;
+    }
+
+    public void setSchedule(Set<GtdScheduleEntity> groupschedule) {
+        this.groupschedule = groupschedule;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -121,24 +140,5 @@ public class GtdGroupEntity {
     public int hashCode() {
 
         return Objects.hash(groupId, groupName, userId, groupHeadimgUrl, createId, createDate, updateId, updateDate);
-    }
-
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "group")
-    @JsonIgnore
-    public Set<GtdLabelEntity> getLabel() {
-        return label;
-    }
-
-    public void setLabel(Set<GtdLabelEntity> label) {
-        this.label = label;
-    }
-
-    @ManyToMany(mappedBy = "group")
-    public Set<GtdScheduleEntity> getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Set<GtdScheduleEntity> schedule) {
-        this.schedule = schedule;
     }
 }
