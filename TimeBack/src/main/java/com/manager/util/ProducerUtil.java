@@ -1,6 +1,6 @@
 package com.manager.util;
 
-import com.manager.config.RabbitProducerConfig;
+import com.manager.config.rabbitmq.RabbitProducerConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.AmqpTemplate;

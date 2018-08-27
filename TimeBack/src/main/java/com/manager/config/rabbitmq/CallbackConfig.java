@@ -1,4 +1,4 @@
-package com.manager.config;
+package com.manager.config.rabbitmq;
 
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;

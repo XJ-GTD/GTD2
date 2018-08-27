@@ -1,5 +1,6 @@
 package com.manager.config;
 
+import com.manager.config.interceptor.InterceptorConfig;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
