@@ -112,8 +112,11 @@ public class GtdLabelEntity {
         return Objects.hash(labelId, labelName, labelType, createId, createDate, updateId, updateDate);
     }
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "label")
-    @JsonIgnore
+
+    @ManyToOne(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    @JoinTable(name = "gtd_group_label",
+            joinColumns = {@JoinColumn(name="LABEL_ID",referencedColumnName = "LABEL_ID",nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name="GROUP_ID",referencedColumnName = "GROUP_ID",nullable = false)})
     public Set<GtdGroupEntity> getGroup() {
         return group;
     }
@@ -123,7 +126,7 @@ public class GtdLabelEntity {
     }
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "gtd_rule", schema = "gtd", joinColumns = @JoinColumn(name = "RULE_ID", referencedColumnName = "LABEL_ID", nullable = false),
+    @JoinTable(name = "gtd_label_rule", schema = "gtd", joinColumns = @JoinColumn(name = "LABEL_ID", referencedColumnName = "LABEL_ID", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "RULE_ID", referencedColumnName = "RULE_ID", nullable = false))
     public GtdRuleEntity getRule() {
         return rule;
