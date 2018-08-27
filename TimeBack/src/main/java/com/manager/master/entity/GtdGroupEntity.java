@@ -1,5 +1,7 @@
 package com.manager.master.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -121,10 +123,8 @@ public class GtdGroupEntity {
         return Objects.hash(groupId, groupName, userId, groupHeadimgUrl, createId, createDate, updateId, updateDate);
     }
 
-    @ManyToOne(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
-    @JoinTable(name = "gtd_group_label",
-            joinColumns = {@JoinColumn(name="GROUP_ID",referencedColumnName = "GROUP_ID",nullable = false)},
-    inverseJoinColumns = {@JoinColumn(name="LABEL_ID",referencedColumnName = "LABEL_ID",nullable = false)})
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "group")
+    @JsonIgnore
     public Set<GtdLabelEntity> getLabel() {
         return label;
     }
