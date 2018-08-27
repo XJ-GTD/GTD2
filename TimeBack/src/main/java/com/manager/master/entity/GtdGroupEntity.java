@@ -3,6 +3,7 @@ package com.manager.master.entity;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "gtd_group", schema = "gtd")
@@ -15,6 +16,8 @@ public class GtdGroupEntity {
     private Timestamp createDate;
     private Integer updateId;
     private Timestamp updateDate;
+    private Set<GtdLabelEntity> label;
+    private Set<GtdScheduleEntity> schedule;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -116,5 +119,26 @@ public class GtdGroupEntity {
     public int hashCode() {
 
         return Objects.hash(groupId, groupName, userId, groupHeadimgUrl, createId, createDate, updateId, updateDate);
+    }
+
+    @ManyToOne(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    @JoinTable(name = "gtd_group_label",
+            joinColumns = {@JoinColumn(name="GROUP_ID",referencedColumnName = "GROUP_ID",nullable = false)},
+    inverseJoinColumns = {@JoinColumn(name="LABEL_ID",referencedColumnName = "LABEL_ID",nullable = false)})
+    public Set<GtdLabelEntity> getLabel() {
+        return label;
+    }
+
+    public void setLabel(Set<GtdLabelEntity> label) {
+        this.label = label;
+    }
+
+    @ManyToMany(mappedBy = "group")
+    public Set<GtdScheduleEntity> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Set<GtdScheduleEntity> schedule) {
+        this.schedule = schedule;
     }
 }

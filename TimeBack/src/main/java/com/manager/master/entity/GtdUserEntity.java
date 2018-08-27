@@ -6,7 +6,9 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  *
@@ -27,19 +29,7 @@ public class GtdUserEntity {
     private Integer updateId;
     private Timestamp updateDate;
     private GtdAccountEntity account;
-    private GtdScheduleEntity schedule;
-
-    @OneToMany(mappedBy="user") // 将控制权交由用户表
-    @JsonIgnore
-    public GtdScheduleEntity getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(GtdScheduleEntity schedule) {
-        this.schedule = schedule;
-    }
-
-
+    private Set<GtdScheduleEntity> schedule;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -187,4 +177,12 @@ public class GtdUserEntity {
         this.account = account;
     }
 
+    @OneToMany(mappedBy = "user")
+    public Set<GtdScheduleEntity> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Set<GtdScheduleEntity> schedule) {
+        this.schedule = schedule;
+    }
 }
