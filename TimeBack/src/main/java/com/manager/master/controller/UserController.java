@@ -1,5 +1,6 @@
 package com.manager.master.controller;
 
+import com.manager.config.exception.ServiceException;
 import com.manager.master.dto.BaseOutDto;
 import com.manager.master.dto.UserInDto;
 import com.manager.master.entity.GtdUserEntity;
@@ -37,18 +38,21 @@ public class UserController {
     public BaseOutDto register(@RequestBody UserInDto inDto) {
         BaseOutDto outBean = new BaseOutDto();
 
-        int flag = userService.registerUser(inDto);
+        try {
+            int flag = userService.registerUser(inDto);
 
-        if (flag == 0) {
-            outBean.setCode("0");
-            outBean.setMessage("[注册成功]");
-            logger.info("[注册成功]");
-        } else if (flag == 1) {
-            outBean.setCode("1");
-            outBean.setMessage("[注册失败]：手机号已注册");
-            logger.info("[注册失败]：手机号已注册");
+            if (flag == 0) {
+                outBean.setCode(0);
+                outBean.setMessage("[注册成功]");
+                logger.info("[注册成功]");
+            } else if (flag == 1) {
+                outBean.setCode(1);
+                outBean.setMessage("[注册失败]：手机号已注册");
+                logger.info("[注册失败]：手机号已注册");
+            }
+        }catch (Exception ex){
+            new ServiceException();
         }
-
         return outBean;
     }
 
