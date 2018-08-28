@@ -34,7 +34,7 @@ public class ScheduleController {
     @Autowired
     IScheduleService scheduleService;
 
-    @RequestMapping(value = "/editor", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto updateSchedule(@RequestBody ScheduleInDto inDto) {
         BaseOutDto baseOutDto = new BaseOutDto();
