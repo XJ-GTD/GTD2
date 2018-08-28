@@ -1,11 +1,16 @@
 package com.manager.master.service;
 
+import com.manager.master.dto.ScheduleInDto;
+import com.manager.master.dto.ScheduleOutDto;
+import com.manager.master.entity.GtdScheduleEntity;
+
+import java.util.List;
+
 /**
  * 日程Service
- *
- * create by wzy on 2018/08/24
+ * @author cp
+ * @since 2018/8/28
  */
 public interface IScheduleService {
-
-
+    int addSchedule(ScheduleInDto inDto);
 }
