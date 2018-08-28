@@ -37,8 +37,8 @@ public class AiUiService {
      */
     public String answerText(String data) {
 
-
-        return AiUiUtil.readAudio(data, 1);
+        String outData = AiUiUtil.readAudio(data, 1);
+        return outData;
 
     }
 

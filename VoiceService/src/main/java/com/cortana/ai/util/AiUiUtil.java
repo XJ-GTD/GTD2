@@ -51,7 +51,7 @@ public class AiUiUtil {
                 result = httpPost(URL, header, audio.getBytes());
             }
 //        byte[] dataByteArray = readFile(FILE_PATH);
-            httpPost(URL, header, audio.getBytes());
+//            httpPost(URL, header, audio.getBytes());
             System.out.println(result);
             return result;
         } catch (ParseException e) {
