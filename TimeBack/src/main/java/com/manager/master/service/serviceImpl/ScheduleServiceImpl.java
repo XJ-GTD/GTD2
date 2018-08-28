@@ -40,6 +40,7 @@ public class ScheduleServiceImpl implements IScheduleService {
 
     @Override
     public int addSchedule(ScheduleInDto inDto){
+        GtdUserEntity userEntity = new GtdUserEntity();         // 用户表
         GtdUserShceduleEntity userShceduleEntity = new GtdUserShceduleEntity(); // 用户日程表
         GtdGroupEntity groupEntity = new GtdGroupEntity();  // 群组表
         Set<GtdScheduleEntity> Setschedule = new HashSet<GtdScheduleEntity>();    // 群组 Set 集合
@@ -62,16 +63,6 @@ public class ScheduleServiceImpl implements IScheduleService {
         schedule.setScheduleId(scheduleId.getScheduleId()); // 主键赋值绑定
         Setschedule.add(schedule);  // Set 群组绑定日程事件ID
 
-        // 日程事件表插入
-        scheduleJpaRepository.save(schedule); // 插入
-
-        // 用户日程表插入
-        userShceduleEntity.setUserId(inDto.getUserId());
-        userShceduleEntity.setScheduleId(schedule.getScheduleId());
-        userShceduleEntity.setCreateId(inDto.getCreateId());
-        userShceduleEntity.setCreateDate(CommonMethods.dateToStamp(inDto.getCreateDate()));
-
-        userShceduleRepository.save(userShceduleEntity);
 
         List groupIds = inDto.getGroupIds();                 // 群组
         List labelId = inDto.getLabelIds();                         // 标签
@@ -87,6 +78,22 @@ public class ScheduleServiceImpl implements IScheduleService {
         groupEntity.setCreateId(3);
         groupEntity.setGroupId(1);
         groupEntity.setSchedule(Setschedule);
+
+        // 日程事件表插入
+        scheduleJpaRepository.save(schedule); // 插入
+
+        userEntity.setUserId(inDto.getUserId());
+        // 用户日程表插入
+        userShceduleEntity.setUserId(userEntity.getUserId());
+        userShceduleEntity.setScheduleId(schedule.getScheduleId());
+        userShceduleEntity.setCreateId(inDto.getCreateId());
+        userShceduleEntity.setCreateDate(CommonMethods.dateToStamp(inDto.getCreateDate()));
+
+        // 获取自增主键
+        GtdUserShceduleEntity userScheduleId = userShceduleRepository.saveAndFlush(userShceduleEntity);
+
+        userShceduleRepository.save(userShceduleEntity);
+
 
         return 0;
     }
