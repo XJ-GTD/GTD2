@@ -2,10 +2,10 @@ package com.manager.config;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
-import org.springframework.http.MediaType;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.manager.config.interceptor.InterceptorConfig;
 import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -36,7 +36,7 @@ public class WebAppConfig extends WebMvcConfigurationSupport {
      */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        FastJsonHttpMessageConverter4 converter = new FastJsonHttpMessageConverter4();
+        FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
         converter.setSupportedMediaTypes(getSupportedMediaTypes());
         FastJsonConfig config = new FastJsonConfig();
         config.setSerializerFeatures(

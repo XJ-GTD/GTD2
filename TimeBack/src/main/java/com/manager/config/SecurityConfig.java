@@ -1,4 +1,4 @@
-package com.manager.config.security;
+package com.manager.config;
 
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
