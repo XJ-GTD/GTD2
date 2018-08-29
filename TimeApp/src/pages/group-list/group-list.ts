@@ -23,7 +23,7 @@ export class GroupListPage {
   }
 
   xiangqing(){
-    this.navCtrl.push('GroupEditPage')
+    this.navCtrl.push('GroupDetailPage')
   }
 
 }
