@@ -13,6 +13,7 @@ import java.util.List;
  * @author cp
  * @since 2018/8/28
  */
+@Transactional
 public interface CenterUserShceduleRepository extends JpaRepository<GtdUserShceduleEntity, Integer> {
     /**
      * 用户关联查询

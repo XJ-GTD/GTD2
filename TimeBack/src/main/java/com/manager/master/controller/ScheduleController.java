@@ -54,8 +54,7 @@ public class ScheduleController {
                 baseOutDto.setCode(ResultCode.FAIL).setMessage("操作数据库异常");
                 return baseOutDto;
             }
-            ex.printStackTrace();
-            throw new ServiceException();
+            throw new ServiceException(ex.getMessage());
         }
         return baseOutDto;
     }
@@ -80,8 +79,7 @@ public class ScheduleController {
                 baseOutDto.setCode(ResultCode.FAIL).setMessage("操作数据库异常");
                 return baseOutDto;
             }
-            ex.printStackTrace();
-            throw new ServiceException();
+            throw new ServiceException(ex.getMessage());
         }
         return baseOutDto;
     }
@@ -106,8 +104,7 @@ public class ScheduleController {
                 baseOutDto.setCode(ResultCode.FAIL).setMessage("操作数据库异常");
                 return baseOutDto;
             }
-            ex.printStackTrace();
-            throw new ServiceException();
+            throw new ServiceException(ex.getMessage());
         }
         return baseOutDto;
     }
