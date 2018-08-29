@@ -34,7 +34,7 @@ export class MyApp {
     this.storage.get('firstIn').then((result) => {
       console.log('firstIn is', result);
       if (result != null && result) {
-        this.rootPage = 'GroupEditPage';
+        this.rootPage = 'UserLoginPage';
       } else {
         this.storage.set('firstIn', true);
         this.rootPage = 'WelcomePage';
