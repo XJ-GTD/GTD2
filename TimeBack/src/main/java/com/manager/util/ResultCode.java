@@ -3,9 +3,9 @@ package com.manager.util;
 public enum ResultCode {
     // 成功
     SUCCESS(0),
-
     // 失败
-    FAIL(400),
+    FAIL(-1),
+
     // 未认证（签名错误）
     NOT_FOUND(401),
     // 未认证（签名错误）

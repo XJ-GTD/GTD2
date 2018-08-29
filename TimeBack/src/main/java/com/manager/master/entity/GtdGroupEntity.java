@@ -22,7 +22,7 @@ public class GtdGroupEntity {
     private Set<GtdLabelEntity> label;
     private Set<GtdScheduleEntity> groupschedule;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group",fetch=FetchType.EAGER)
     public Set<GtdLabelEntity> getLabel() {
         return label;
     }
@@ -31,7 +31,7 @@ public class GtdGroupEntity {
         this.label = label;
     }
 
-    @ManyToMany(mappedBy = "groupschedule")
+    @ManyToMany(mappedBy = "groupschedule",fetch=FetchType.EAGER)
     public Set<GtdScheduleEntity> getSchedule() {
         return groupschedule;
     }

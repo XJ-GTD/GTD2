@@ -1,7 +1,7 @@
 # GTD2
 
-# 前端使用 ionic + cordova + typescript
-# 后端使用 springBoot + mybatis + mysql
+# 前端使用 ionic3 + cordova + typescript
+# 后端使用 springBoot + JPA + Shiro + redis + mysql
 # 服务器 rabbitMQ消息队列 + 讯飞语音AIUI
 
 
