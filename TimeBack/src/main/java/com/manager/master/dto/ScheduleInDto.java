@@ -12,6 +12,7 @@ import java.util.List;
 public class ScheduleInDto {
 
     private int userId;                             // 用户ID
+    private int scheduleId;                        // 日程事件ID
     private String scheduleName;                    // 日程事件名称
     private String scheduleStartTime;              // 开始时间
     private String scheduleDeadline;               // 截止时间
@@ -53,6 +54,14 @@ public class ScheduleInDto {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getScheduleId() {
+        return scheduleId;
+    }
+
+    public void setScheduleId(int scheduleId) {
+        this.scheduleId = scheduleId;
     }
 
     public String getScheduleName() {
