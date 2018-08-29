@@ -169,7 +169,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         List groupIds = inDto.getGroupIds();                          		// 群组 List
         List labelIds = inDto.getLabelIds();                          		// 标签 List
         // 入参检查     // 入参必须项检查
-        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户名不能为空");
+        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
         if (scheduleName == null || "".equals(scheduleName)) throw new ServiceException("日程事件名称不能为空");
         else scheduleName = scheduleName.replace(" ", "");
         if (scheduleStartTime == null || "".equals(scheduleStartTime)) throw new ServiceException("开始时间不能为空");
@@ -307,6 +307,25 @@ public class ScheduleServiceImpl implements IScheduleService {
      */
     @Override
     public int deleteSchedule(ScheduleInDto inDto) {
+        // 接收参数
+        int scheduleId = inDto.getScheduleId();     // 日程事件ID
+        GtdScheduleEntity scheduleEntity = new GtdScheduleEntity();
+        scheduleEntity.setScheduleId(scheduleId);
+
+        // 入参检查     // 入参必须项检查
+        if (scheduleId == 0 || "".equals(scheduleId)) throw new ServiceException("日程事件ID不能为空");
+
+        // 入参类型检查
+        // 入参长度检查
+        // 入参关联检查
+
+        // 业务处理
+        userShceduleRepository.deleteConnectionByScheduleId(scheduleId);    // 用户日程表 删除
+        scheduleLabelRepository.deleteConnectionByScheduleId(scheduleId);   // 日程标签表 删除
+        groupScheduleRepository.deleteConnectionByScheduleId(scheduleId);   // 群组标签表 删除
+        schedulePlayersRepository.deleteConnectionByScheduleId(scheduleId); // 日程参与人表 删除
+        scheduleJpaRepository.delete(scheduleEntity);
+
         return 0;
     }
 }
