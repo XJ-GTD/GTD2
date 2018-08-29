@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 日程Service实现类
+ * 用户日程表 Repository
  * @author cp
  * @since 2018/8/28
  */

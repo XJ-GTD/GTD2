@@ -3,6 +3,8 @@ package com.manager.util;
 public enum ResultCode {
     // 成功
     SUCCESS(0),
+    // 重复信息
+    REPEAT(1),
     // 失败
     FAIL(-1),
 

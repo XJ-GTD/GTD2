@@ -5,9 +5,9 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- * 日程Service实现类
- * @author cp
- * @since 2018/8/28
+ *  用户日程表
+ *  @author cp
+ *  @since 2018/8/28
  */
 @Entity
 @Table(name = "gtd_user_shcedule", schema = "gtd")
