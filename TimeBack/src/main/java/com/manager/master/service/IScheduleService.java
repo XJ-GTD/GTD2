@@ -13,4 +13,8 @@ import java.util.List;
  */
 public interface IScheduleService {
     int addSchedule(ScheduleInDto inDto);
+
+    int updateSchedule(ScheduleInDto inDto);
+
+    int deleteSchedule(ScheduleInDto inDto);
 }

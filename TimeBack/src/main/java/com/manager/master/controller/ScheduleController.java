@@ -34,16 +34,73 @@ public class ScheduleController {
     @Autowired
     IScheduleService scheduleService;
 
+    /**
+     * 新增日程
+     * @param inDto
+     * @return
+     */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto updateSchedule(@RequestBody ScheduleInDto inDto) {
+    public BaseOutDto addSchedule(@RequestBody ScheduleInDto inDto) {
         BaseOutDto baseOutDto = new BaseOutDto();
         int flag;
         try{
             flag = scheduleService.addSchedule(inDto);
             if (flag == 0){
-                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("");
+                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("成功");
+            }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("新增日程信息失败");
+        }catch (Exception ex){
+            if (ex instanceof JpaSystemException){
+                baseOutDto.setCode(ResultCode.FAIL).setMessage("操作数据库异常");
+                return baseOutDto;
             }
+            ex.printStackTrace();
+            throw new ServiceException();
+        }
+        return baseOutDto;
+    }
+
+    /**
+     * 更新日程
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/editor", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto updateSchedule(@RequestBody ScheduleInDto inDto) {
+        BaseOutDto baseOutDto = new BaseOutDto();
+        int flag;
+        try{
+            flag = scheduleService.updateSchedule(inDto);
+            if (flag == 0){
+                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("成功");
+            }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("更新日程信息失败");
+        }catch (Exception ex){
+            if (ex instanceof JpaSystemException){
+                baseOutDto.setCode(ResultCode.FAIL).setMessage("操作数据库异常");
+                return baseOutDto;
+            }
+            ex.printStackTrace();
+            throw new ServiceException();
+        }
+        return baseOutDto;
+    }
+
+    /**
+     * 删除日程
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto deleteSchedule(@RequestBody ScheduleInDto inDto) {
+        BaseOutDto baseOutDto = new BaseOutDto();
+        int flag;
+        try{
+            flag = scheduleService.deleteSchedule(inDto);
+            if (flag == 0){
+                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("成功");
+            }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("删除日程信息失败");
         }catch (Exception ex){
             if (ex instanceof JpaSystemException){
                 baseOutDto.setCode(ResultCode.FAIL).setMessage("操作数据库异常");
