@@ -39,8 +39,8 @@ public interface CenterUserShceduleRepository extends JpaRepository<GtdUserShced
      * ③ @Transactional 建议还是在 Service 层中加上，不要在 Controller 层中
      */
     @Modifying
-    @Query(value="delete from gtd_user_shcedule where SCHEDULE_ID=?1",nativeQuery=true)
-    void deleteConnectionByScheduleId(Integer teacherId);
+    @Query(value="delete from gtd_user_shcedule where USER_ID=?1",nativeQuery=true)
+    void deleteConnectionByScheduleId(Integer userId);
 
     /**
      * 通过日程 schedule_id 删除关系
@@ -49,7 +49,7 @@ public interface CenterUserShceduleRepository extends JpaRepository<GtdUserShced
      * ③ @Transactional 建议还是在 Service 层中加上，不要在 Controller 层中
      */
     @Modifying
-    @Query(value="delete from gtd_user_shcedule where USER_ID=?1",nativeQuery=true)
-    void deleteConnectionByUserId(Integer studentId);
+    @Query(value="delete from gtd_user_shcedule where SCHEDULE_ID=?1",nativeQuery=true)
+    void deleteConnectionByUserId(Integer scheduleId);
 
 }

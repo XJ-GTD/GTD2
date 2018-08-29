@@ -2,6 +2,8 @@ package com.manager.master.repository;
 
 import com.manager.master.entity.GtdScheduleLabelEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -11,4 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface CenterScheduleLabelRepository extends JpaRepository<GtdScheduleLabelEntity, Integer> {
+    @Modifying
+    @Query(value="delete from gtd_schedule_label where SCHEDULE_ID=?1",nativeQuery=true)
+    void deleteConnectionByScheduleId(Integer scheduleId);
 }
