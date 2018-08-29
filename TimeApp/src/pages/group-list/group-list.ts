@@ -22,4 +22,8 @@ export class GroupListPage {
     console.log('ionViewDidLoad GroupListPage');
   }
 
+  xiangqing(){
+    this.navCtrl.push('GroupEditPage')
+  }
+
 }

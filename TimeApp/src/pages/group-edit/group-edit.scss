@@ -1,3 +1,21 @@
 page-group-edit {
-
+  .row1{
+    flex-direction: row;
+    border:1px solid #a1a1a1;
+    padding:10px 15px;
+    margin-bottom: 10px;
+  }
+  .biaoqian1{
+    border:1px solid #a1a1a1;
+    border-radius:10px;
+    text-align: center;
+    width: 100px;
+    margin-left: 20px;
+  }
+  .qunchengyuan{
+    border-top:1px solid #a1a1a1;border-bottom:1px solid #a1a1a1;margin-top: 5px;margin-bottom: 5px
+  }
+  .pmingcheng{
+    margin-left: 20px;margin-right: 80px
+  }
 }
