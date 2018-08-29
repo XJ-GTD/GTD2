@@ -3,18 +3,21 @@ package com.manager.master.entity;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.Set;
 
 /**
- *  群组日程表
+ *  日程参与人表
  *  @author cp
  *  @since 2018/8/29
  */
 @Entity
-@Table(name = "gtd_group_schedule", schema = "gtd")
-public class GtdGroupScheduleEntity {
-    private Integer groupScheduleId;
-    private Integer groupId;
+@Table(name = "gtd_schedule_players")
+public class GtdSchedulePlayersEntity {
+    private Integer playersId;
     private Integer scheduleId;
+    private Integer playersStatus;
+    private Timestamp playersFinishDate;
+    private Integer userId;
     private Integer createId;
     private Timestamp createDate;
     private Integer updateId;
@@ -22,23 +25,13 @@ public class GtdGroupScheduleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "GROUP_SCHEDULE_ID")
-    public Integer getGroupScheduleId() {
-        return groupScheduleId;
+    @Column(name = "PLAYERS_ID")
+    public Integer getPlayersId() {
+        return playersId;
     }
 
-    public void setGroupScheduleId(Integer groupScheduleId) {
-        this.groupScheduleId = groupScheduleId;
-    }
-
-    @Basic
-    @Column(name = "GROUP_ID")
-    public Integer getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
+    public void setPlayersId(Integer playersId) {
+        this.playersId = playersId;
     }
 
     @Basic
@@ -49,6 +42,36 @@ public class GtdGroupScheduleEntity {
 
     public void setScheduleId(Integer scheduleId) {
         this.scheduleId = scheduleId;
+    }
+
+    @Basic
+    @Column(name = "PLAYERS_STATUS")
+    public Integer getPlayersStatus() {
+        return playersStatus;
+    }
+
+    public void setPlayersStatus(Integer playersStatus) {
+        this.playersStatus = playersStatus;
+    }
+
+    @Basic
+    @Column(name = "PLAYERS_FINISH_DATE")
+    public Timestamp getPlayersFinishDate() {
+        return playersFinishDate;
+    }
+
+    public void setPlayersFinishDate(Timestamp playersFinishDate) {
+        this.playersFinishDate = playersFinishDate;
+    }
+
+    @Basic
+    @Column(name = "USER_ID")
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Basic
@@ -95,10 +118,12 @@ public class GtdGroupScheduleEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GtdGroupScheduleEntity that = (GtdGroupScheduleEntity) o;
-        return Objects.equals(groupScheduleId, that.groupScheduleId) &&
-                Objects.equals(groupId, that.groupId) &&
+        GtdSchedulePlayersEntity that = (GtdSchedulePlayersEntity) o;
+        return Objects.equals(playersId, that.playersId) &&
                 Objects.equals(scheduleId, that.scheduleId) &&
+                Objects.equals(playersStatus, that.playersStatus) &&
+                Objects.equals(playersFinishDate, that.playersFinishDate) &&
+                Objects.equals(userId, that.userId) &&
                 Objects.equals(createId, that.createId) &&
                 Objects.equals(createDate, that.createDate) &&
                 Objects.equals(updateId, that.updateId) &&
@@ -108,6 +133,6 @@ public class GtdGroupScheduleEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(groupScheduleId, groupId, scheduleId, createId, createDate, updateId, updateDate);
+        return Objects.hash(playersId, scheduleId, playersStatus, playersFinishDate, userId, createId, createDate, updateId, updateDate);
     }
 }

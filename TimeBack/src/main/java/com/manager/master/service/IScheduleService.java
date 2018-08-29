@@ -12,9 +12,24 @@ import java.util.List;
  * @since 2018/8/28
  */
 public interface IScheduleService {
+    /**
+     * 新增日程
+     * @param inDto
+     * @return
+     */
     int addSchedule(ScheduleInDto inDto);
 
+    /**
+     * 更新日程
+     * @param inDto
+     * @return
+     */
     int updateSchedule(ScheduleInDto inDto);
 
+    /**
+     * 删除日程
+     * @param inDto
+     * @return
+     */
     int deleteSchedule(ScheduleInDto inDto);
 }
