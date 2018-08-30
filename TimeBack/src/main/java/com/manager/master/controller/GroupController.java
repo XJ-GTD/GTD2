@@ -34,7 +34,7 @@ public class GroupController {
     /**
      * 查询所有群组
      */
-    @RequestMapping(value = "/findAll")
+    @RequestMapping(value = "/findall")
     @ResponseBody
     public BaseOutDto findAll(){
         BaseOutDto outBean = new BaseOutDto();
@@ -55,7 +55,7 @@ public class GroupController {
     /**
      * 根据群组名字查询
      */
-    @RequestMapping(value = "/findByGname")
+    @RequestMapping(value = "/findbygname")
     @ResponseBody
     public BaseOutDto findByGroupName(String name){
         BaseOutDto outBean = new BaseOutDto();

@@ -5,16 +5,16 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- *  群组日程表
+ *  群组成员表
  *  @author cp
  *  @since 2018/8/29
  */
 @Entity
-@Table(name = "gtd_group_schedule", schema = "gtd")
-public class GtdGroupScheduleEntity {
-    private Integer groupScheduleId;
+@Table(name = "gtd_group_member", schema = "gtd")
+public class GtdGroupMemberEntity {
+    private Integer groupMemberId;
     private Integer groupId;
-    private Integer scheduleId;
+    private Integer userId;
     private Integer createId;
     private Timestamp createDate;
     private Integer updateId;
@@ -22,13 +22,13 @@ public class GtdGroupScheduleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "GROUP_SCHEDULE_ID")
-    public Integer getGroupScheduleId() {
-        return groupScheduleId;
+    @Column(name = "GROUP_MEMBER_ID")
+    public Integer getGroupMemberId() {
+        return groupMemberId;
     }
 
-    public void setGroupScheduleId(Integer groupScheduleId) {
-        this.groupScheduleId = groupScheduleId;
+    public void setGroupMemberId(Integer groupMemberId) {
+        this.groupMemberId = groupMemberId;
     }
 
     @Basic
@@ -42,13 +42,13 @@ public class GtdGroupScheduleEntity {
     }
 
     @Basic
-    @Column(name = "SCHEDULE_ID")
-    public Integer getScheduleId() {
-        return scheduleId;
+    @Column(name = "USER_ID")
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setScheduleId(Integer scheduleId) {
-        this.scheduleId = scheduleId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Basic
@@ -95,10 +95,10 @@ public class GtdGroupScheduleEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GtdGroupScheduleEntity that = (GtdGroupScheduleEntity) o;
-        return Objects.equals(groupScheduleId, that.groupScheduleId) &&
+        GtdGroupMemberEntity that = (GtdGroupMemberEntity) o;
+        return Objects.equals(groupMemberId, that.groupMemberId) &&
                 Objects.equals(groupId, that.groupId) &&
-                Objects.equals(scheduleId, that.scheduleId) &&
+                Objects.equals(userId, that.userId) &&
                 Objects.equals(createId, that.createId) &&
                 Objects.equals(createDate, that.createDate) &&
                 Objects.equals(updateId, that.updateId) &&
@@ -108,6 +108,6 @@ public class GtdGroupScheduleEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(groupScheduleId, groupId, scheduleId, createId, createDate, updateId, updateDate);
+        return Objects.hash(groupMemberId, groupId, userId, createId, createDate, updateId, updateDate);
     }
 }

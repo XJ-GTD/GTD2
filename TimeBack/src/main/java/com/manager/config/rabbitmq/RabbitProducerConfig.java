@@ -1,15 +1,15 @@
 package com.manager.config.rabbitmq;
 
 import org.springframework.amqp.core.*;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * 生产者工厂配置类
  * 对生产者生产规则做出配置
  * create by wzy on 2018/07/12
  */
-@Configuration
+@SpringBootConfiguration
 public class RabbitProducerConfig {
 
     final static String queueName = "GTD";

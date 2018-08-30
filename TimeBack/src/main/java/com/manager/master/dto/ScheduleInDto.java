@@ -11,7 +11,8 @@ import java.util.List;
  */
 public class ScheduleInDto {
 
-    private int userId;                           // 用户ID
+    private int userId;                             // 用户ID
+    private int scheduleId;                        // 日程事件ID
     private String scheduleName;                    // 日程事件名称
     private String scheduleStartTime;              // 开始时间
     private String scheduleDeadline;               // 截止时间
@@ -22,8 +23,10 @@ public class ScheduleInDto {
     private int updateId;                          // 更新人
     private String updateDate;                     // 更新时间
 
-    private List groupIds;                          // 群组
-    private List labelIds;                          // 标签
+    private List groupIds;                          // 群组 List
+    private List labelIds;                          // 标签 List
+    private List groupScheduleIds;                 // 群组日程 List
+    private List scheduleLabelIds;                 // 日程标签 List
 
     @Override
     public String toString() {
@@ -40,6 +43,8 @@ public class ScheduleInDto {
                 ", updateDate='" + updateDate + '\'' +
                 ", groupIds=" + groupIds +
                 ", labelIds=" + labelIds +
+                ", groupScheduleIds=" + groupScheduleIds +
+                ", scheduleLabelIds=" + scheduleLabelIds +
                 '}';
     }
 
@@ -49,6 +54,14 @@ public class ScheduleInDto {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getScheduleId() {
+        return scheduleId;
+    }
+
+    public void setScheduleId(int scheduleId) {
+        this.scheduleId = scheduleId;
     }
 
     public String getScheduleName() {
@@ -137,5 +150,21 @@ public class ScheduleInDto {
 
     public void setLabelIds(List labelIds) {
         this.labelIds = labelIds;
+    }
+
+    public List getGroupScheduleIds() {
+        return groupScheduleIds;
+    }
+
+    public void setGroupScheduleIds(List groupScheduleIds) {
+        this.groupScheduleIds = groupScheduleIds;
+    }
+
+    public List getScheduleLabelIds() {
+        return scheduleLabelIds;
+    }
+
+    public void setScheduleLabelIds(List scheduleLabelIds) {
+        this.scheduleLabelIds = scheduleLabelIds;
     }
 }
