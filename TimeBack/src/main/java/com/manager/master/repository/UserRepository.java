@@ -19,10 +19,10 @@ public class UserRepository {
     @PersistenceContext
     private EntityManager em;
 
-    public GtdAccountEntity findByMobile(String mobile) {
+    public Object findByMobile(String mobile) {
 
         String sql = "select count(*) from GTD_ACCOUNT where ACCOUNT_MOBILE = " + mobile;
 
-        return (GtdAccountEntity) em.createNativeQuery(sql).getSingleResult();
+        return em.createNativeQuery(sql).getSingleResult();
     }
 }
