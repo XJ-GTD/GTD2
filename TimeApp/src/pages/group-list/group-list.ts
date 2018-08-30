@@ -26,4 +26,8 @@ export class GroupListPage {
     this.navCtrl.push('GroupDetailPage')
   }
 
+  addORedit(){
+    this.navCtrl.push('GroupEditPage')
+  }
+
 }

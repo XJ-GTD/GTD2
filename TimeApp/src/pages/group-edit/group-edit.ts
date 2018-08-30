@@ -15,11 +15,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class GroupEditPage {
 
+  public name1
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    console.log(this.name1)
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad GroupEditPage');
+    this.name1 = this.navParams.get('username');
   }
-
 }
