@@ -21,7 +21,7 @@ export class UserLoginPage {
 
   data: any;
   user: any;
-  accountMobile: string;
+  accountName: string;
   accountPassword: string;
 
   constructor(
@@ -39,10 +39,12 @@ export class UserLoginPage {
 
   signIn() {
     this.http.post(AppConfig.USER_LOGIN_URL, {
-      accountMobile: this.accountMobile,
-      accountPassword: this.accountPassword
-      // accountMobile: "admin",
-      // accountPassword: "admin"
+      // accountName: this.accountName,
+      // accountPassword: this.accountPassword,
+      accountMobile: "admin",
+      accountPassword: "admin",
+      loginType: 0
+      
     },{
       headers: {
         "Content-Type": "application/json"

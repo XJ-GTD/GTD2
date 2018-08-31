@@ -34,20 +34,32 @@ public class GroupController {
 
     /**
      * 查询群组
+     * @param userId 用户ID
      */
-    @RequestMapping(value = "/select")
+    @RequestMapping(value = "/selectAll",method = RequestMethod.POST)
+    @ResponseBody
+    public GroupOutDto seleteAll(int userId){
+        GroupOutDto outDto=new GroupOutDto();
+        List<GtdGroupEntity> list=IGroupService.selectAll(userId);
+        Map<String,Object> map=new HashMap<String,Object>();
+        map.put("data",list);
+        outDto.setData(map);
+        return outDto;
+    }
+
+
+    /**
+     * 查询群组
+     * @param inDto
+     *  标签名 labelName/群组ID groupId/群组名 groupName
+     */
+    @RequestMapping(value = "/select",method = RequestMethod.POST)
     @ResponseBody
     public GroupOutDto selectG(GroupInDto inDto){
         GroupOutDto outDto=new GroupOutDto();
         List<GtdGroupEntity> list=IGroupService.select(inDto);
         Map<String,Object> map=new HashMap<String,Object>();
-        for(GtdGroupEntity g : list){
-            map.put("groupId",g.getGroupId());
-            map.put("groupName",g.getGroupName());
-            //map.put("user",g.getGroupmember());
-            map.put("label",g.getLabel());
-
-        }
+        map.put("data",list);
         outDto.setData(map);
         return outDto;
     }
@@ -56,74 +68,42 @@ public class GroupController {
 
 
     /**
-     * 添加群组
+     * 群组创建
+     * @param inDto
+     *   GroupName群组名称 CreateId UserId
      */
     @RequestMapping(value = "/addgroup",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto add(GroupInDto inDto){
-        BaseOutDto outBean = new BaseOutDto();
+    public GroupOutDto add(GroupInDto inDto){
+        GroupOutDto outBean = new GroupOutDto();
         int code=IGroupService.addGroup(inDto);
         outBean.setCode(code);
         return outBean;
     }
 
     /**
-     * 修改群名称
-     * @param inDto
+     * 群组编辑 修改群名称/增删标签
+     * @param inDto 群组ID，群组名称/标签ID
      * @return
      */
     @RequestMapping(value = "/updatename",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto updateGname(GroupInDto inDto){
-        BaseOutDto outBean = new BaseOutDto();
+    public GroupOutDto updateGname(GroupInDto inDto){
+        GroupOutDto outBean = new GroupOutDto();
         IGroupService.updateGname(inDto);
         return outBean;
     }
 
-    /**
-     *增加群组标签
-     */
-    @RequestMapping(value = "/addlabel",method = RequestMethod.POST)
-    @ResponseBody
-    public BaseOutDto addlabel(GroupInDto inDto){
-        BaseOutDto outBean = new BaseOutDto();
-        IGroupService.addLabel(inDto);
-        return outBean;
-    }
-
-    /**
-     * 删除群组标签，权限标签无法删除
-     * @param inDto
-     * @return
-     */
-    @RequestMapping(value = "/dellabel",method = RequestMethod.POST)
-    @ResponseBody
-    public BaseOutDto delLabel(GroupInDto inDto){
-        BaseOutDto outBean = new BaseOutDto();
-        IGroupService.delLabel(inDto);
-        return outBean;
-    }
-
-    /**
-     * 根据群组ID删除群组
-     * @param inDto
-     * @return
-     */
-    @RequestMapping(value = "/delgroup",method = RequestMethod.POST)
-    @ResponseBody
-    public BaseOutDto delGroup(GroupInDto inDto){
-        BaseOutDto outBean = new BaseOutDto();
-        IGroupService.delGroup(inDto);
-        return outBean;
-    }
 
     /**
      * 删除/添加群成员
-     * @param inDto
-     * @return
+     * @param inDto 删除/添加群成员的ID userId
+     * @retur
      */
-    public BaseOutDto member(GroupInDto inDto){
-        BaseOutDto outBean = new BaseOutDto();
+    @RequestMapping(value = "/upmember",method = RequestMethod.POST)
+    @ResponseBody
+    public GroupOutDto member(GroupInDto inDto){
+        GroupOutDto outBean = new GroupOutDto();
         String message=IGroupService.member(inDto);
         outBean.setMessage(message);
         return outBean;

@@ -39,6 +39,11 @@ public class GroupServicelmpl implements IGroupService {
     private GroupMemberRepository groupMemberRepository;
 
 
+    @Override
+    public List<GtdGroupEntity> selectAll(int userId) {
+        return groupJpaRepository.findByUserId(userId);
+    }
+
     /**
      * 查询接口
      * @param inDto
@@ -123,6 +128,17 @@ public class GroupServicelmpl implements IGroupService {
     @Override
     public void updateGname(GroupInDto inDto) {
         groupRepository.updateGroup(inDto);
+        GtdGroupLabel groupLabel=new GtdGroupLabel();
+        List<Integer> ids=inDto.getLabelId();
+        int  count=0;
+        for(int i=0;i<ids.size();i++) {
+            groupLabel.setGroupId(inDto.getGroupId());
+            groupLabel.setLabelId(ids.get(i));
+            groupLabel.setCreateId(inDto.getCreateId());
+            groupLabelJpa.save(groupLabel);
+            count++;
+        }
+
     }
 
     @Override

@@ -31,6 +31,7 @@ public class GtdUserEntity {
     private Timestamp updateDate;
     private GtdAccountEntity account;
     private Set<GtdScheduleEntity> schedule;
+    private Set<GtdGroupEntity> group;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -167,6 +168,7 @@ public class GtdUserEntity {
         return Objects.hash(userId, userName, headimgUrl, brithday, userSex, userContact, userType, createId, createDate, updateId, updateDate);
     }
 
+    @JSONField(serialize=false)
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinTable(name = "gtd_account", schema = "gtd", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = false))
@@ -179,6 +181,7 @@ public class GtdUserEntity {
     }
 
 
+    @JSONField(serialize=false)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     public Set<GtdScheduleEntity> getSchedule() {
         return schedule;
@@ -188,5 +191,16 @@ public class GtdUserEntity {
         this.schedule = schedule;
     }
 
+    @JSONField(serialize=false)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "gtd_group_member",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "GROUP_ID", referencedColumnName ="GROUP_ID")})
+    public Set<GtdGroupEntity> getGroup() {
+        return group;
+    }
 
+    public void setGroup(Set<GtdGroupEntity> group) {
+        this.group = group;
+    }
 }
