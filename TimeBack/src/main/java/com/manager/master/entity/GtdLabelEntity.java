@@ -1,5 +1,6 @@
 package com.manager.master.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class GtdLabelEntity {
     private GtdScheduleEntity schedule;
 
     @ManyToOne
+    @JSONField(serialize=false)
     @JoinTable(name = "gtd_schedule_label",schema = "gtd",
             joinColumns = @JoinColumn(name = "LABEL_ID", referencedColumnName = "LABEL_ID", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "SCHEDULE_ID", referencedColumnName = "SCHEDULE_ID", nullable = false))
@@ -125,6 +127,7 @@ public class GtdLabelEntity {
     }
 
     @ManyToOne(cascade=CascadeType.ALL)
+    @JSONField(serialize=false)
     @JoinTable(name = "gtd_group_label", schema = "gtd",
             joinColumns = @JoinColumn(name = "LABEL_ID", referencedColumnName = "LABEL_ID"),
             inverseJoinColumns = @JoinColumn(name = "GROUP_ID", referencedColumnName = "GROUP_ID", nullable = false))
@@ -132,11 +135,12 @@ public class GtdLabelEntity {
         return group;
     }
 
-    public void setGroup(GtdGroupEntity grouplabel) {
+    public void setGroup(GtdGroupEntity group) {
         this.group = group;
     }
 
     @OneToOne(cascade = CascadeType.PERSIST)
+    @JSONField(serialize=false)
     @JoinTable(name = "gtd_label_rule", schema = "gtd",
             joinColumns = @JoinColumn(name = "LABEL_ID", referencedColumnName = "LABEL_ID", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "RULE_ID", referencedColumnName = "RULE_ID", nullable = false))

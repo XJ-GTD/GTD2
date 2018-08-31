@@ -1,34 +1,28 @@
 package com.manager.master.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "gtd_group_member", schema = "gtd")
-public class GtdGroupMemberEntity {
-    private int groupMemberId;
+@Table(name = "gtd_group_label", schema = "gtd")
+public class GtdGroupLabel {
+    private int groupLabelId;
     private int groupId;
-    private Integer userId;
-    private String userName;
-    private String userContact;
+    private int labelId;
     private Integer createId;
     private Timestamp createDate;
     private Integer updateId;
     private Timestamp updateDate;
-    //private GtdGroupMemberEntity groupMember;
-
 
     @Id
-    @Column(name = "GROUP_MEMBER_ID")
-    public int getGroupMemberId() {
-        return groupMemberId;
+    @Column(name = "GROUP_LABEL_ID")
+    public int getGroupLabelId() {
+        return groupLabelId;
     }
 
-    public void setGroupMemberId(int groupMemberId) {
-        this.groupMemberId = groupMemberId;
+    public void setGroupLabelId(int groupLabelId) {
+        this.groupLabelId = groupLabelId;
     }
 
     @Basic
@@ -42,33 +36,13 @@ public class GtdGroupMemberEntity {
     }
 
     @Basic
-    @Column(name = "USER_ID")
-    public Integer getUserId() {
-        return userId;
+    @Column(name = "LABEL_ID")
+    public int getLabelId() {
+        return labelId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    @Basic
-    @Column(name = "USER_NAME")
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    @Basic
-    @Column(name = "USER_CONTACT")
-    public String getUserContact() {
-        return userContact;
-    }
-
-    public void setUserContact(String userContact) {
-        this.userContact = userContact;
+    public void setLabelId(int labelId) {
+        this.labelId = labelId;
     }
 
     @Basic
@@ -115,12 +89,10 @@ public class GtdGroupMemberEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GtdGroupMemberEntity that = (GtdGroupMemberEntity) o;
-        return groupMemberId == that.groupMemberId &&
+        GtdGroupLabel that = (GtdGroupLabel) o;
+        return groupLabelId == that.groupLabelId &&
                 groupId == that.groupId &&
-                Objects.equals(userId, that.userId) &&
-                Objects.equals(userName, that.userName) &&
-                Objects.equals(userContact, that.userContact) &&
+                labelId == that.labelId &&
                 Objects.equals(createId, that.createId) &&
                 Objects.equals(createDate, that.createDate) &&
                 Objects.equals(updateId, that.updateId) &&
@@ -130,6 +102,6 @@ public class GtdGroupMemberEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(groupMemberId, groupId, userId, userName, userContact, createId, createDate, updateId, updateDate);
+        return Objects.hash(groupLabelId, groupId, labelId, createId, createDate, updateId, updateDate);
     }
 }
