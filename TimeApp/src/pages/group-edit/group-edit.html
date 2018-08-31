@@ -7,12 +7,25 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>GroupEdit</ion-title>
+    <ion-title style="text-align: center" >{{name1}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <ion-list class="">
+    <div>
+      <input style="width: 100%;height: 30px;padding-left: 10px;margin-bottom: 50px" placeholder="群组名" type="text">
+    </div>
+    <button class="divbiaoqian" style="background-color: white;width: 100%">
+      <input style="width: 85%;padding-left: 10px;height: 30px" placeholder="点击添加标签" type="text">
+    </button>
+  </ion-list>
+  <div class="divqunchengyuan">
+    <div *ngFor="let item of ['张三','李四']" class="row qunchengyuan"><p class="pmingcheng">{{item}}</p><p>群成员联系方式:1303132xxxx</p></div>
+    <button style="width: 100%;background-color: white">
+    <div class="row qunchengyuan"><p class="pmingcheng">点击添加新成员</p></div>
+    </button>
+  </div>
 </ion-content>

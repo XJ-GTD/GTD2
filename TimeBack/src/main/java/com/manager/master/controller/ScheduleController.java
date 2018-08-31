@@ -4,7 +4,10 @@ import com.manager.config.exception.ServiceException;
 import com.manager.master.dto.BaseOutDto;
 import com.manager.master.dto.ScheduleInDto;
 import com.manager.master.dto.ScheduleOutDto;
+import com.manager.master.entity.GtdGroupEntity;
+import com.manager.master.entity.GtdLabelEntity;
 import com.manager.master.entity.GtdScheduleEntity;
+import com.manager.master.entity.GtdUserEntity;
 import com.manager.master.service.IScheduleService;
 import com.manager.util.ProducerUtil;
 import com.manager.util.ResultCode;
@@ -14,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 日程Controller
@@ -35,6 +35,62 @@ public class ScheduleController {
     IScheduleService scheduleService;
 
     /**
+     * 日程首页详情
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto selectAllSchedule(@RequestBody ScheduleInDto inDto) {
+        BaseOutDto baseOutDto = new BaseOutDto();
+        Map<String,List<GtdScheduleEntity>> map = new HashMap<>();
+        List<GtdScheduleEntity> listSchedule = new ArrayList<>();
+
+        try{
+                scheduleService.findAll(inDto);
+            if (listSchedule != null){
+                map.put("scheduleList",listSchedule);
+                baseOutDto.setData(map);
+            }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("日程首页查询失败");
+        }catch (Exception ex){
+            throw new ServiceException(ex.getMessage());
+        }
+        return baseOutDto;
+    }
+
+    /**
+     * 日程详情
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/details", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto detailsSchedule(@RequestBody ScheduleInDto inDto) {
+        BaseOutDto baseOutDto = new BaseOutDto();
+        Map<String,GtdScheduleEntity> map = new HashMap<>();
+        GtdScheduleEntity scheduleEntity = new GtdScheduleEntity();
+        try{
+            scheduleEntity = scheduleService.findOne(inDto);
+            Set<GtdGroupEntity> group = null;
+            Set<GtdLabelEntity> label = null;
+            GtdUserEntity user = null;
+
+            scheduleEntity.setGroupSchedule(group);
+            scheduleEntity.setLabel(label);
+            scheduleEntity.setUser(user);
+
+            if (scheduleEntity != null){
+                map.put("data".toString(),scheduleEntity);
+                baseOutDto.setData(map);
+            }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("日程详情查询失败");
+        }catch (Exception ex){
+            throw new ServiceException(ex.getMessage());
+        }
+        return baseOutDto;
+    }
+
+
+    /**
      * 新增日程
      * @param inDto
      * @return
@@ -48,19 +104,19 @@ public class ScheduleController {
             flag = scheduleService.addSchedule(inDto);
             if (flag == 0){
                 baseOutDto.setCode(ResultCode.SUCCESS).setMessage("成功");
+                // TODO 创建日程发布
+//        String dataMessage = inDto.toString();
+//        String target = inDto.getTarget();
+//        producerUtil.sendTheTarget(dataMessage, target);
             }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("新增日程信息失败");
         }catch (Exception ex){
-            if (ex instanceof JpaSystemException){
-                baseOutDto.setCode(ResultCode.FAIL).setMessage("操作数据库异常");
-                return baseOutDto;
-            }
             throw new ServiceException(ex.getMessage());
         }
         return baseOutDto;
     }
 
     /**
-     * 更新日程
+     * 编辑日程
      * @param inDto
      * @return
      */
@@ -75,10 +131,27 @@ public class ScheduleController {
                 baseOutDto.setCode(ResultCode.SUCCESS).setMessage("成功");
             }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("更新日程信息失败");
         }catch (Exception ex){
-            if (ex instanceof JpaSystemException){
-                baseOutDto.setCode(ResultCode.FAIL).setMessage("操作数据库异常");
-                return baseOutDto;
-            }
+            throw new ServiceException(ex.getMessage());
+        }
+        return baseOutDto;
+    }
+
+    /**
+     * 日程发布撤回参与人
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/withdraw", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto releaseToWithdrawSchedule(@RequestBody ScheduleInDto inDto) {
+        BaseOutDto baseOutDto = new BaseOutDto();
+        int flag;
+        try{
+            flag = scheduleService.releaseToWithdrawSchedule(inDto);
+            if (flag == 0){
+                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("成功");
+            }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("日程发布撤回失败");
+        }catch (Exception ex){
             throw new ServiceException(ex.getMessage());
         }
         return baseOutDto;
@@ -100,10 +173,6 @@ public class ScheduleController {
                 baseOutDto.setCode(ResultCode.SUCCESS).setMessage("成功");
             }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("删除日程信息失败");
         }catch (Exception ex){
-            if (ex instanceof JpaSystemException){
-                baseOutDto.setCode(ResultCode.FAIL).setMessage("操作数据库异常");
-                return baseOutDto;
-            }
             throw new ServiceException(ex.getMessage());
         }
         return baseOutDto;

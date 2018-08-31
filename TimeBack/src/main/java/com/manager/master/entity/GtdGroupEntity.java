@@ -1,5 +1,6 @@
 package com.manager.master.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -19,9 +20,24 @@ public class GtdGroupEntity {
     private Timestamp createDate;
     private Integer updateId;
     private Timestamp updateDate;
+    private Set<GtdUserEntity> groupUser;
     private Set<GtdLabelEntity> label;
-    private Set<GtdScheduleEntity> groupschedule;
+    private Set<GtdScheduleEntity> schedule;
 
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "gtd_group_member",
+            joinColumns = {@JoinColumn(name = "GROUP_ID", referencedColumnName = "GROUP_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName ="USER_ID")})
+    public Set<GtdUserEntity> getGroupUser() {
+        return groupUser;
+    }
+
+    public void setGroupUser(Set<GtdUserEntity> groupUser) {
+        this.groupUser = groupUser;
+    }
+
+    @JSONField(serialize=false)
     @OneToMany(mappedBy = "group",fetch=FetchType.EAGER)
     public Set<GtdLabelEntity> getLabel() {
         return label;
@@ -31,13 +47,14 @@ public class GtdGroupEntity {
         this.label = label;
     }
 
-    @ManyToMany(mappedBy = "groupschedule",fetch=FetchType.EAGER)
+    @JSONField(serialize=false)
+    @ManyToMany(mappedBy = "groupSchedule",fetch=FetchType.EAGER)
     public Set<GtdScheduleEntity> getSchedule() {
-        return groupschedule;
+        return schedule;
     }
 
-    public void setSchedule(Set<GtdScheduleEntity> groupschedule) {
-        this.groupschedule = groupschedule;
+    public void setSchedule(Set<GtdScheduleEntity> schedule) {
+        this.schedule = schedule;
     }
 
     @Id
@@ -140,5 +157,21 @@ public class GtdGroupEntity {
     public int hashCode() {
 
         return Objects.hash(groupId, groupName, userId, groupHeadimgUrl, createId, createDate, updateId, updateDate);
+    }
+
+    @Override
+    public String toString() {
+        return "GtdGroupEntity{" +
+                "groupId=" + groupId +
+                ", groupName='" + groupName + '\'' +
+                ", userId=" + userId +
+                ", groupHeadimgUrl='" + groupHeadimgUrl + '\'' +
+                ", createId=" + createId +
+                ", createDate=" + createDate +
+                ", updateId=" + updateId +
+                ", updateDate=" + updateDate +
+                ", label=" + label +
+                ", schedule=" + schedule +
+                '}';
     }
 }

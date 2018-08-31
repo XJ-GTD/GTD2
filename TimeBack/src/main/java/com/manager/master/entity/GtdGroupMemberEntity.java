@@ -15,6 +15,8 @@ public class GtdGroupMemberEntity {
     private Integer groupMemberId;
     private Integer groupId;
     private Integer userId;
+    private String userName;
+    private String userContact;
     private Integer createId;
     private Timestamp createDate;
     private Integer updateId;
@@ -49,6 +51,26 @@ public class GtdGroupMemberEntity {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    @Basic
+    @Column(name = "USER_NAME")
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    @Basic
+    @Column(name = "USER_CONTACT")
+    public String getUserContact() {
+        return userContact;
+    }
+
+    public void setUserContact(String userContact) {
+        this.userContact = userContact;
     }
 
     @Basic
@@ -99,6 +121,8 @@ public class GtdGroupMemberEntity {
         return Objects.equals(groupMemberId, that.groupMemberId) &&
                 Objects.equals(groupId, that.groupId) &&
                 Objects.equals(userId, that.userId) &&
+                Objects.equals(userName, that.userName) &&
+                Objects.equals(userContact, that.userContact) &&
                 Objects.equals(createId, that.createId) &&
                 Objects.equals(createDate, that.createDate) &&
                 Objects.equals(updateId, that.updateId) &&
@@ -108,6 +132,6 @@ public class GtdGroupMemberEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(groupMemberId, groupId, userId, createId, createDate, updateId, updateDate);
+        return Objects.hash(groupMemberId, groupId, userId, createId,userName,userContact, createDate, updateId, updateDate);
     }
 }

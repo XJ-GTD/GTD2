@@ -22,4 +22,11 @@ export class GroupDetailPage {
     console.log('ionViewDidLoad GroupDetailPage');
   }
 
+  editgroup(){
+    let data: object = {
+      username:'张三sansansansansansansan'
+    };
+    this.navCtrl.push('GroupEditPage',data)
+  }
+
 }

@@ -22,4 +22,12 @@ export class GroupListPage {
     console.log('ionViewDidLoad GroupListPage');
   }
 
+  xiangqing(){
+    this.navCtrl.push('GroupDetailPage')
+  }
+
+  addORedit(){
+    this.navCtrl.push('GroupEditPage')
+  }
+
 }

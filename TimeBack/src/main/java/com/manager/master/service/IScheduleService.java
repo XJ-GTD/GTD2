@@ -12,6 +12,20 @@ import java.util.List;
  * @since 2018/8/28
  */
 public interface IScheduleService {
+
+    /**
+     * 日程查询
+     * @param inDto
+     * @return
+     */
+    List<GtdScheduleEntity> findAll(ScheduleInDto inDto);
+
+    /**
+     * 日程详情
+     * @param inDto
+     * @return
+     */
+    GtdScheduleEntity findOne(ScheduleInDto inDto);
     /**
      * 新增日程
      * @param inDto
@@ -32,4 +46,11 @@ public interface IScheduleService {
      * @return
      */
     int deleteSchedule(ScheduleInDto inDto);
+
+    /**
+     * 日程发布撤回参与人
+     * @param inDto
+     * @return
+     */
+    int releaseToWithdrawSchedule(ScheduleInDto inDto);
 }
