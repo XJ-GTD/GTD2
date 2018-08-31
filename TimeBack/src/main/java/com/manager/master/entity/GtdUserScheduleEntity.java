@@ -10,7 +10,7 @@ import java.util.Objects;
  *  @since 2018/8/29
  */
 @Entity
-@Table(name = "gtd_user_shcedule", schema = "gtd")
+@Table(name = "gtd_user_schedule", schema = "gtd")
 public class GtdUserScheduleEntity {
     private Integer userScheduleId;
     private int userId;
