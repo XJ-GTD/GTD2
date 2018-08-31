@@ -1,10 +1,7 @@
 package com.manager.master.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -40,7 +37,7 @@ public class GtdScheduleEntity {
     }
 
     @ManyToOne(cascade=CascadeType.ALL)
-    @JoinTable(name = "gtd_user_shcedule", schema = "gtd",
+    @JoinTable(name = "gtd_user_schedule", schema = "gtd",
             joinColumns = @JoinColumn(name = "SCHEDULE_ID", referencedColumnName = "SCHEDULE_ID", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = false))
     public GtdUserEntity getUser() {

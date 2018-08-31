@@ -2,7 +2,6 @@ package com.manager.master.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Objects;
 
 /**
  *  用户日程表
@@ -10,7 +9,7 @@ import java.util.Objects;
  *  @since 2018/8/28
  */
 @Entity
-@Table(name = "gtd_user_shcedule", schema = "gtd")
+@Table(name = "gtd_user_schedule", schema = "gtd")
 public class GtdUserShceduleEntity {
     private Integer userScheduleId;
     private int userId;
