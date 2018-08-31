@@ -1,5 +1,6 @@
 package com.manager.master.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -111,6 +112,7 @@ public class GtdRuleEntity {
 
     @OneToOne(mappedBy = "rule")
     @JsonIgnore
+    @JSONField(serialize=false)
     public GtdLabelEntity getLabel() {
         return label;
     }

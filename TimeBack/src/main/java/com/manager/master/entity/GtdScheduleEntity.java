@@ -26,7 +26,7 @@ public class GtdScheduleEntity {
     private Timestamp createDate;
     private Integer updateId;
     private Timestamp updateDate;
-    private Set<GtdGroupEntity> groupschedule;
+    private Set<GtdGroupEntity> groupSchedule;
     private GtdUserEntity user;
     private Set<GtdLabelEntity> label;
 
@@ -55,13 +55,12 @@ public class GtdScheduleEntity {
     @JoinTable(name = "gtd_group_schedule", schema = "gtd",
             joinColumns = @JoinColumn(name = "SCHEDULE_ID", referencedColumnName = "SCHEDULE_ID", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "GROUP_ID", referencedColumnName = "GROUP_ID", nullable = false))
-
-    public Set<GtdGroupEntity> getGroupschedule() {
-        return groupschedule;
+    public Set<GtdGroupEntity> getGroupSchedule() {
+        return groupSchedule;
     }
 
-    public void setGroupschedule(Set<GtdGroupEntity> groupschedule) {
-        this.groupschedule = groupschedule;
+    public void setGroupSchedule(Set<GtdGroupEntity> groupSchedule) {
+        this.groupSchedule = groupSchedule;
     }
 
 

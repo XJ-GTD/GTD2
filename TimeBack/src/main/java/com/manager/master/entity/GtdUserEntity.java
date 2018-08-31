@@ -1,5 +1,6 @@
 package com.manager.master.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.ibatis.annotations.One;
 import org.hibernate.annotations.Cascade;
@@ -177,6 +178,7 @@ public class GtdUserEntity {
         this.account = account;
     }
 
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     public Set<GtdScheduleEntity> getSchedule() {
         return schedule;
@@ -185,4 +187,6 @@ public class GtdUserEntity {
     public void setSchedule(Set<GtdScheduleEntity> schedule) {
         this.schedule = schedule;
     }
+
+
 }
