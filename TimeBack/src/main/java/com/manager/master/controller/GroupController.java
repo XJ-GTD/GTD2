@@ -36,7 +36,7 @@ public class GroupController {
      * 查询群组
      * @param userId 用户ID
      */
-    @RequestMapping(value = "/selectAll")
+    @RequestMapping(value = "/selectAll",method = RequestMethod.POST)
     @ResponseBody
     public GroupOutDto seleteAll(int userId){
         GroupOutDto outDto=new GroupOutDto();
@@ -53,7 +53,7 @@ public class GroupController {
      * @param inDto
      *  标签名 labelName/群组ID groupId/群组名 groupName
      */
-    @RequestMapping(value = "/select")
+    @RequestMapping(value = "/select",method = RequestMethod.POST)
     @ResponseBody
     public GroupOutDto selectG(GroupInDto inDto){
         GroupOutDto outDto=new GroupOutDto();
@@ -100,6 +100,8 @@ public class GroupController {
      * @param inDto 删除/添加群成员的ID userId
      * @retur
      */
+    @RequestMapping(value = "/upmember",method = RequestMethod.POST)
+    @ResponseBody
     public GroupOutDto member(GroupInDto inDto){
         GroupOutDto outBean = new GroupOutDto();
         String message=IGroupService.member(inDto);
