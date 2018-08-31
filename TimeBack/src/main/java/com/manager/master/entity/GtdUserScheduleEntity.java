@@ -2,15 +2,16 @@ package com.manager.master.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 /**
- *  用户日程表
+ *  日程标签表
  *  @author cp
- *  @since 2018/8/28
+ *  @since 2018/8/29
  */
 @Entity
 @Table(name = "gtd_user_schedule", schema = "gtd")
-public class GtdUserShceduleEntity {
+public class GtdUserScheduleEntity {
     private Integer userScheduleId;
     private int userId;
     private int scheduleId;

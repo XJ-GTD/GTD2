@@ -1,7 +1,6 @@
 package com.manager.master.dto;
 
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,13 +10,13 @@ import java.util.List;
  */
 public class ScheduleInDto {
 
-    private int userId;                             // 用户ID
+    private int userId;                            // 用户ID
     private int scheduleId;                        // 日程事件ID
-    private String scheduleName;                    // 日程事件名称
-    private String scheduleStartTime;              // 开始时间
-    private String scheduleDeadline;               // 截止时间
-    private int scheduleRepeatType;               // 日程重复类型
-    private String scheduleStatus;                 // 完成状态
+    private String scheduleName;                   // 日程事件名称
+    private String scheduleStartTime;             // 开始时间
+    private String scheduleDeadline;              // 截止时间
+    private Integer scheduleRepeatType;           // 日程重复类型
+    private Integer scheduleStatus;                // 完成状态
     private int createId;                          // 创建人
     private String createDate;                     // 创建日期
     private int updateId;                          // 更新人
@@ -28,15 +27,18 @@ public class ScheduleInDto {
     private List groupScheduleIds;                 // 群组日程 List
     private List scheduleLabelIds;                 // 日程标签 List
 
+    private Integer playersStatus;                     // 参与人状态ID
+
     @Override
     public String toString() {
         return "ScheduleInDto{" +
                 "userId=" + userId +
+                ", scheduleId=" + scheduleId +
                 ", scheduleName='" + scheduleName + '\'' +
                 ", scheduleStartTime='" + scheduleStartTime + '\'' +
                 ", scheduleDeadline='" + scheduleDeadline + '\'' +
                 ", scheduleRepeatType=" + scheduleRepeatType +
-                ", scheduleStatus='" + scheduleStatus + '\'' +
+                ", scheduleStatus=" + scheduleStatus +
                 ", createId=" + createId +
                 ", createDate='" + createDate + '\'' +
                 ", updateId=" + updateId +
@@ -45,6 +47,7 @@ public class ScheduleInDto {
                 ", labelIds=" + labelIds +
                 ", groupScheduleIds=" + groupScheduleIds +
                 ", scheduleLabelIds=" + scheduleLabelIds +
+                ", playersStatus=" + playersStatus +
                 '}';
     }
 
@@ -88,19 +91,19 @@ public class ScheduleInDto {
         this.scheduleDeadline = scheduleDeadline;
     }
 
-    public int getScheduleRepeatType() {
+    public Integer getScheduleRepeatType() {
         return scheduleRepeatType;
     }
 
-    public void setScheduleRepeatType(int scheduleRepeatType) {
+    public void setScheduleRepeatType(Integer scheduleRepeatType) {
         this.scheduleRepeatType = scheduleRepeatType;
     }
 
-    public String getScheduleStatus() {
+    public Integer getScheduleStatus() {
         return scheduleStatus;
     }
 
-    public void setScheduleStatus(String scheduleStatus) {
+    public void setScheduleStatus(Integer scheduleStatus) {
         this.scheduleStatus = scheduleStatus;
     }
 
@@ -166,5 +169,13 @@ public class ScheduleInDto {
 
     public void setScheduleLabelIds(List scheduleLabelIds) {
         this.scheduleLabelIds = scheduleLabelIds;
+    }
+
+    public Integer getPlayersStatus() {
+        return playersStatus;
+    }
+
+    public void setPlayersStatus(Integer playersStatus) {
+        this.playersStatus = playersStatus;
     }
 }

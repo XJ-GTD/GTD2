@@ -1,5 +1,6 @@
 package com.manager.master.repository;
 
+import com.manager.master.dto.ScheduleOutDto;
 import com.manager.master.entity.GtdScheduleEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,17 @@ public class ScheduleRepository {
     @PersistenceContext
     private EntityManager em;
 
-    public GtdScheduleEntity findByName(String name) {
+    public ScheduleOutDto findByScheduleId(Integer id) {
+
+        String sql = "SELECT SCHEDULE_ID scheduleId,SCHEDULE_NAME scheduleName,SCHEDULE_STARTTIME scheduleStartTime," +
+                "SCHEDULE_DEADLINE scheduleDeadline,SCHEDULE_REPEAT_TYPE scheduleRepeatType,SCHEDULE_STATUS scheduleStatus" +
+                " from gtd_schedule where SCHEDULE_ID = " + id;
+
+        return (ScheduleOutDto) em.createNativeQuery(sql).getSingleResult();
+    }
+
+
+    public GtdScheduleEntity findByScheduleId(String name) {
 
         String sql = "select count(*) from gtd_schedule where SCHEDULE_NAME = " + name;
 
