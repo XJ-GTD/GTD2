@@ -9,10 +9,10 @@
 //public class LoginProperties {
 //
 //    private String loginPage = "UserLoginPage";               //未认证时，跳转的认证页面
-//    private String loginProcessingUrl = "/toLogin";      //认证请求的URL
-//    private String usernameParameter = "admin";       //认证请求的用户名
-//    private String passwordParameter = "admin";       //认证请求的密码
-//    private String defaultSuccessUrl = "/index";       //认证成功后跳转
+//    private String loginProcessingUrl = "/user/login";      //认证请求的URL
+//    private String usernameParameter = "NM";       //认证请求的用户名
+//    private String passwordParameter = "PW";       //认证请求的密码
+//    private String defaultSuccessUrl = "/user/success";       //认证成功后跳转
 //
 //
 //    public String getLoginPage() {
