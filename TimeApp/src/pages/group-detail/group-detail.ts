@@ -15,6 +15,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class GroupDetailPage {
 
+  // data1: object
   data1: object = {
     groupId:1,
     groupName:'开发一组',
@@ -56,7 +57,6 @@ export class GroupDetailPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad GroupDetailPage');
-    console.log(this.data1);
   }
 
   editgroup(){
