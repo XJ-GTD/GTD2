@@ -8,6 +8,7 @@ import com.manager.master.dto.BaseOutDto;
 import com.manager.util.ResultCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.exception.SQLGrammarException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,6 +27,7 @@ public class GlobalExceptionResolver {
         e.printStackTrace();
         BaseOutDto baseOutDto= new BaseOutDto();
         baseOutDto.setCode(ResultCode.FAIL).setMessage(e.getMessage());
+        if (e.getMessage() == null || "".equals(e.getMessage()))  baseOutDto.setMessage("请求异常，请检查后重新请求");
         LOGGER.info("--------ServiceException--------");
         responseResult(response, baseOutDto);
     }

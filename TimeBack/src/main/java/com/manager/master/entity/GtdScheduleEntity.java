@@ -21,7 +21,7 @@ public class GtdScheduleEntity {
     private Timestamp scheduleStarttime;
     private Timestamp scheduleDeadline;
     private Integer scheduleRepeatType;
-    private String scheduleStatus;
+    private Integer scheduleStatus;
     private Integer createId;
     private Timestamp createDate;
     private Integer updateId;
@@ -118,11 +118,11 @@ public class GtdScheduleEntity {
 
     @Basic
     @Column(name = "SCHEDULE_STATUS")
-    public String getScheduleStatus() {
+    public Integer getScheduleStatus() {
         return scheduleStatus;
     }
 
-    public void setScheduleStatus(String scheduleStatus) {
+    public void setScheduleStatus(Integer scheduleStatus) {
         this.scheduleStatus = scheduleStatus;
     }
 

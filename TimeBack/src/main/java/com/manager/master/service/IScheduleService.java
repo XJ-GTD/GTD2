@@ -53,4 +53,11 @@ public interface IScheduleService {
      * @return
      */
     int releaseToWithdrawSchedule(ScheduleInDto inDto);
+
+    /**
+     * 日程参与人状态修改
+     * @param inDto
+     * @return
+     */
+    int statusSchedule(ScheduleInDto inDto);
 }
