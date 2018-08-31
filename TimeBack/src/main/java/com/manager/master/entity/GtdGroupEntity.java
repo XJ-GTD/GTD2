@@ -1,5 +1,6 @@
 package com.manager.master.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -19,9 +20,11 @@ public class GtdGroupEntity {
     private Timestamp createDate;
     private Integer updateId;
     private Timestamp updateDate;
+    //private Set<GtdGroupMemberEntity> groupmember;
     private Set<GtdLabelEntity> label;
     private Set<GtdScheduleEntity> groupschedule;
 
+    @JSONField(serialize=false)
     @OneToMany(mappedBy = "group",fetch=FetchType.EAGER)
     public Set<GtdLabelEntity> getLabel() {
         return label;
@@ -31,6 +34,7 @@ public class GtdGroupEntity {
         this.label = label;
     }
 
+    @JSONField(serialize=false)
     @ManyToMany(mappedBy = "groupschedule",fetch=FetchType.EAGER)
     public Set<GtdScheduleEntity> getSchedule() {
         return groupschedule;
@@ -39,6 +43,7 @@ public class GtdGroupEntity {
     public void setSchedule(Set<GtdScheduleEntity> groupschedule) {
         this.groupschedule = groupschedule;
     }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -140,5 +145,21 @@ public class GtdGroupEntity {
     public int hashCode() {
 
         return Objects.hash(groupId, groupName, userId, groupHeadimgUrl, createId, createDate, updateId, updateDate);
+    }
+
+    @Override
+    public String toString() {
+        return "GtdGroupEntity{" +
+                "groupId=" + groupId +
+                ", groupName='" + groupName + '\'' +
+                ", userId=" + userId +
+                ", groupHeadimgUrl='" + groupHeadimgUrl + '\'' +
+                ", createId=" + createId +
+                ", createDate=" + createDate +
+                ", updateId=" + updateId +
+                ", updateDate=" + updateDate +
+                ", label=" + label +
+                ", groupschedule=" + groupschedule +
+                '}';
     }
 }
