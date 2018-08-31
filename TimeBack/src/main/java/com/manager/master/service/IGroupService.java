@@ -13,19 +13,27 @@ import java.util.List;
  */
 public interface IGroupService {
 
+    //该用户所有群组
+    List<GtdGroupEntity> selectAll(int userId);
 
-
+    //查询群组
     List<GtdGroupEntity> select(GroupInDto inDto);
 
+    //添加群组
     int addGroup(GroupInDto inDto);
 
+    //添加标签
     int addLabel(GroupInDto inDto);
 
+    //删除群组
     void delGroup(GroupInDto inDto);
 
+    //编辑群组
     void updateGname(GroupInDto inDto);
 
+    //删除标签，权限标签不能删除
     void delLabel(GroupInDto inDto);
 
+    //编辑群成员
     String member(GroupInDto inDto);
 }
