@@ -1,6 +1,7 @@
 package com.manager.master.service;
 
 import com.manager.master.dto.UserInDto;
+import com.manager.master.dto.UserOutDto;
 import com.manager.master.entity.GtdUserEntity;
 
 /**
@@ -16,4 +17,10 @@ public interface IUserService {
      */
     int registerUser(UserInDto inDto);
 
+    /**
+     * 用户登录
+     * @param inDto
+     * @return
+     */
+    UserOutDto login(UserInDto inDto);
 }

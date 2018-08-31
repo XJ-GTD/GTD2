@@ -21,6 +21,8 @@ public class GtdAccountEntity {
     private String accountWechat;
     private String accountQq;
     private String accountEmail;
+    private String accountUuid;
+    private String accountQueue;
     private Integer createId;
     private Timestamp createDate;
     private Integer updateId;
@@ -109,6 +111,26 @@ public class GtdAccountEntity {
     }
 
     @Basic
+    @Column(name = "ACCOUNT_UUID")
+    public String getAccountUuid() {
+        return accountUuid;
+    }
+
+    public void setAccountUuid(String accountUuid) {
+        this.accountUuid = accountUuid;
+    }
+
+    @Basic
+    @Column(name = "ACCOUNT_QUEUE")
+    public String getAccountQueue() {
+        return accountQueue;
+    }
+
+    public void setAccountQueue(String accountQueue) {
+        this.accountQueue = accountQueue;
+    }
+
+    @Basic
     @Column(name = "CREATE_ID")
     public Integer getCreateId() {
         return createId;
@@ -182,6 +204,5 @@ public class GtdAccountEntity {
     public void setUser(GtdUserEntity user) {
         this.user = user;
     }
-
 
 }

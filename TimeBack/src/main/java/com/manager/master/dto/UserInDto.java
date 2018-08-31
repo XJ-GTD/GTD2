@@ -4,16 +4,17 @@ import java.util.Date;
 
 /**
  * create by wzy on 201/05/03
- * 用户登陆返回信息类
+ * 用户登陆信息入参类
  */
 public class UserInDto {
 
     private String accountMobile;       //手机号
     private String accountWechat;       //微信
-    private String accountQq;           // QQ
+    private String accountQq;            //QQ
     private String accountPassword;     //登陆密码
-    private String accountName;         //唯一标识码
-    private int loginType;           //登陆类型
+    private String accountName;         //登陆名(登陆可输入手机号可为账户名)
+    private String accountUuid;         //唯一标识码
+    private int loginType;           //登陆类型 0:手机或账户名登陆， 1：微信登陆， 2：QQ登陆
     private String userName;            //用户昵称
 
     public String getAccountMobile() {
@@ -70,5 +71,13 @@ public class UserInDto {
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
+    }
+
+    public String getAccountUuid() {
+        return accountUuid;
+    }
+
+    public void setAccountUuid(String accountUuid) {
+        this.accountUuid = accountUuid;
     }
 }
