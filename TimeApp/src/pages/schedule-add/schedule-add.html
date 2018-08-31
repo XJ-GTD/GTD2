@@ -18,17 +18,12 @@
 <ion-content padding>
   <ion-list>
     <ion-item>
-      <ion-label floating>事件名</ion-label>
+      <ion-label floating>日程标题</ion-label>
       <ion-input type="text" [(ngModel)]="schedule.scheduleName"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label floating>备注</ion-label>
-      <ion-input type="text" [(ngModel)]="schedule.scheduleDetail"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label floating>执行人</ion-label>
+      <ion-label floating>参与人</ion-label>
       <ion-input type="text" [(ngModel)]="schedule.scheduleExecutor"></ion-input>
     </ion-item>
 
@@ -42,9 +37,9 @@
       <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleEndDate"></ion-datetime>
     </ion-item>
 
-    <ion-item id="remind_change" disabled>
-      <ion-label floating>提醒时间</ion-label>
-      <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleRemindDate"></ion-datetime>
+    <ion-item>
+      <ion-label floating>标签</ion-label>
+
     </ion-item>
 
     <div>
