@@ -5,13 +5,13 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- *  用户日程表
+ *  日程标签表
  *  @author cp
- *  @since 2018/8/28
+ *  @since 2018/8/29
  */
 @Entity
-@Table(name = "gtd_user_shcedule", schema = "gtd")
-public class GtdUserShceduleEntity {
+@Table(name = "gtd_user_schedule", schema = "gtd")
+public class GtdUserScheduleEntity {
     private Integer userScheduleId;
     private int userId;
     private int scheduleId;
@@ -89,5 +89,23 @@ public class GtdUserShceduleEntity {
 
     public void setUpdateDate(Timestamp updateDate) {
         this.updateDate = updateDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GtdUserScheduleEntity that = (GtdUserScheduleEntity) o;
+        return Objects.equals(userScheduleId, that.userScheduleId) &&
+                Objects.equals(createId, that.createId) &&
+                Objects.equals(createDate, that.createDate) &&
+                Objects.equals(updateId, that.updateId) &&
+                Objects.equals(updateDate, that.updateDate);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(userScheduleId, createId, createDate, updateId, updateDate);
     }
 }

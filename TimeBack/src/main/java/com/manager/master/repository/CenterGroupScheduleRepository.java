@@ -13,6 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface CenterGroupScheduleRepository extends JpaRepository<GtdGroupScheduleEntity, Integer> {
+
+    /**
+     * 根据日程事件Id 删除 日程群组中间表
+     * @param scheduleId
+     */
     @Modifying
     @Query(value="delete from gtd_group_schedule where SCHEDULE_ID=?1",nativeQuery=true)
     void deleteConnectionByScheduleId(Integer scheduleId);

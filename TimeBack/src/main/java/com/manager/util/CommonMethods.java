@@ -36,13 +36,13 @@ public class CommonMethods {
      * @return
      */
     public static String trimAllBlanks(String str){
+
         String result = "";
-        if ( null != str && "".equals(str)){
-            result = str.replaceAll("^[　*| *| *|\\s*]*", "").replaceAll("[　*| *| *|\\s*]*$", "");   // 去两边全角半角空格
-            result = result.replaceAll("[\\s\\p{Zs}]"," "); // 将中间全角空格转为" "
-            result = result.replaceAll("\\s+"," ");         // 将中间多个" " 转为一个 " "
-        }
-        return "";
+        result = str.replaceAll("^[　*| *| *|\\s*]*", "").replaceAll("[　*| *| *|\\s*]*$", "");   // 去两边全角半角空格
+        result = result.replaceAll("[\\s\\p{Zs}]"," "); // 将中间全角空格转为" "
+        result = result.replaceAll("\\s+"," ");         // 将中间多个" " 转为一个 " "
+
+        return result;
     }
 
     /**

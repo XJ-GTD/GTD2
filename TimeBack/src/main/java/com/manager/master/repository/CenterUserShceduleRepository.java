@@ -1,6 +1,6 @@
 package com.manager.master.repository;
 
-import com.manager.master.entity.GtdUserShceduleEntity;
+import com.manager.master.entity.GtdUserScheduleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,42 +14,21 @@ import java.util.List;
  * @since 2018/8/28
  */
 @Transactional
-public interface CenterUserShceduleRepository extends JpaRepository<GtdUserShceduleEntity, Integer> {
-    /**
-     * 用户关联查询
-     * @param id
-     * @return
-     */
-    @Query(value = "select * from gtd_user_shcedule where USER_ID=?1", nativeQuery = true)
-    List<GtdUserShceduleEntity> getUserShceduleByUserId(Integer id);
+public interface CenterUserShceduleRepository extends JpaRepository<GtdUserScheduleEntity, Integer> {
 
     /**
-     * 日程关联查询
-     * @param id
-     * @return
-     */
-    @Query(value = "select * from gtd_user_shcedule where SCHEDULE_ID=?1", nativeQuery = true)
-    List<GtdUserShceduleEntity> getUserShceduleByScheduleId(Integer id);
-
-
-    /**
-     * 通过用户 user_id 删除关系
-     * ① 在 dao 层中加上 @Modifying
-     * ② 注意添加 @Transactional，否则 TransactionRequiredException
-     * ③ @Transactional 建议还是在 Service 层中加上，不要在 Controller 层中
-     */
-    @Modifying
-    @Query(value="delete from gtd_user_shcedule where USER_ID=?1",nativeQuery=true)
-    void deleteConnectionByScheduleId(Integer userId);
-
-    /**
-     * 通过日程 schedule_id 删除关系
-     * ① 在 dao 层中加上 @Modifying，否则 SQLException
-     * ② 注意添加 @Transactional，否则 TransactionRequiredException
-     * ③ @Transactional 建议还是在 Service 层中加上，不要在 Controller 层中
+     *  根据日程事件Id 删除 日程事件中间表
+     * @param scheduleId
      */
     @Modifying
     @Query(value="delete from gtd_user_shcedule where SCHEDULE_ID=?1",nativeQuery=true)
-    void deleteConnectionByUserId(Integer scheduleId);
+    void deleteConnectionByScheduleId(Integer scheduleId);
 
+    /**
+     *  根据用户Id 删除 日程事件中间表
+     * @param userId
+     */
+    @Modifying
+    @Query(value="delete from gtd_user_shcedule where USER_ID=?1",nativeQuery=true)
+    void deleteConnectionByUserId(Integer userId);
 }

@@ -75,12 +75,16 @@ public class ScheduleController {
             Set<GtdLabelEntity> label = null;
             GtdUserEntity user = null;
 
+            if (scheduleEntity.getUser() != null){
+                user = scheduleEntity.getUser();
+            }
+
             scheduleEntity.setGroupSchedule(group);
             scheduleEntity.setLabel(label);
             scheduleEntity.setUser(user);
 
             if (scheduleEntity != null){
-                map.put("data".toString(),scheduleEntity);
+                map.put("data",scheduleEntity);
                 baseOutDto.setData(map);
             }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("日程详情查询失败");
         }catch (Exception ex){
@@ -103,7 +107,7 @@ public class ScheduleController {
         try{
             flag = scheduleService.addSchedule(inDto);
             if (flag == 0){
-                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("成功");
+                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("创建日程成功");
                 // TODO 创建日程发布
 //        String dataMessage = inDto.toString();
 //        String target = inDto.getTarget();
@@ -128,7 +132,7 @@ public class ScheduleController {
         try{
             flag = scheduleService.updateSchedule(inDto);
             if (flag == 0){
-                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("成功");
+                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("编辑日程成功");
             }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("更新日程信息失败");
         }catch (Exception ex){
             throw new ServiceException(ex.getMessage());
@@ -149,7 +153,7 @@ public class ScheduleController {
         try{
             flag = scheduleService.releaseToWithdrawSchedule(inDto);
             if (flag == 0){
-                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("成功");
+                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("成功撤回");
             }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("日程发布撤回失败");
         }catch (Exception ex){
             throw new ServiceException(ex.getMessage());
@@ -170,8 +174,29 @@ public class ScheduleController {
         try{
             flag = scheduleService.deleteSchedule(inDto);
             if (flag == 0){
-                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("成功");
+                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("成功删除日程");
             }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("删除日程信息失败");
+        }catch (Exception ex){
+            throw new ServiceException(ex.getMessage());
+        }
+        return baseOutDto;
+    }
+
+    /**
+     * 日程状态修改
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/status", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto statusSchedule(@RequestBody ScheduleInDto inDto) {
+        BaseOutDto baseOutDto = new BaseOutDto();
+        int flag;
+        try{
+            flag = scheduleService.statusSchedule(inDto);
+            if (flag == 0){
+                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("日程状态修改成功");
+            }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("日程状态修改失败");
         }catch (Exception ex){
             throw new ServiceException(ex.getMessage());
         }
