@@ -46,6 +46,25 @@ public class CommonMethods {
     }
 
     /**
+     * 判断数字num是否在数字arr里面
+     * @param arr     一维数组
+     * @param num        整数
+     * @return 在则返回true,否则返回false
+     */
+    public static boolean isInArray(int[] arr, int num) {
+        if (null == arr) {
+            return false;
+        }
+
+        for (int index = 0; index < arr.length; index++) {
+            if (arr[index] == num) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 日期比较大小
      * @param str1 起始日期
      * @param str2 结束日期
@@ -83,25 +102,6 @@ public class CommonMethods {
         return convertSuccess;
     }
 
-    /**
-     * 判断数字num是否在数字arr里面
-     * @param arr     一维数组
-     * @param num        整数
-     * @return 在则返回true,否则返回false
-     */
-    public static boolean isInArray(int[] arr, int num) {
-        if (null == arr) {
-            return false;
-        }
-
-        for (int index = 0; index < arr.length; index++) {
-            if (arr[index] == num) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /*
      * 将时间转换为时间戳
      */
@@ -123,13 +123,34 @@ public class CommonMethods {
     /*
      * 将时间戳转换为时间
      */
-    public static String stampToDate(String s){
-        String res;
+    public static String stampToDate(Timestamp str){
+        String res = "";
         // 指定日期格式
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        long lt = new Long(s);
-        Date date = new Date(lt);
-        res = simpleDateFormat.format(date);
+        if (str != null){
+            res = simpleDateFormat.format(str);
+            return res;
+        }
         return res;
+    }
+
+    /**
+     * 判断距当前日期差
+     * @param date 数据库时间 createDate 请求时间
+     * @return 日期格式返回true
+     */
+    public static boolean getPastTime(String date,String createDate) {
+        // 指定日期格式
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try{
+            Date date1 = simpleDateFormat.parse(date);   // 数据库时间
+            Date date2 = simpleDateFormat.parse(createDate);    // 系统时间
+            if (date2.getTime()-date1.getTime() <= 60000*5  && 0 <= date2.getTime()-date1.getTime() ){
+                return true;
+            }
+            else return false;
+        }catch (Exception e){
+            return false;
+        }
     }
 }

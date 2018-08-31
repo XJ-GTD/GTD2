@@ -1,16 +1,19 @@
 package com.manager.master.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+/**
+ *  群组成员表
+ *  @author cp
+ *  @since 2018/8/29
+ */
 @Entity
 @Table(name = "gtd_group_member", schema = "gtd")
 public class GtdGroupMemberEntity {
-    private int groupMemberId;
-    private int groupId;
+    private Integer groupMemberId;
+    private Integer groupId;
     private Integer userId;
     private String userName;
     private String userContact;
@@ -18,26 +21,25 @@ public class GtdGroupMemberEntity {
     private Timestamp createDate;
     private Integer updateId;
     private Timestamp updateDate;
-    //private GtdGroupMemberEntity groupMember;
-
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "GROUP_MEMBER_ID")
-    public int getGroupMemberId() {
+    public Integer getGroupMemberId() {
         return groupMemberId;
     }
 
-    public void setGroupMemberId(int groupMemberId) {
+    public void setGroupMemberId(Integer groupMemberId) {
         this.groupMemberId = groupMemberId;
     }
 
     @Basic
     @Column(name = "GROUP_ID")
-    public int getGroupId() {
+    public Integer getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(int groupId) {
+    public void setGroupId(Integer groupId) {
         this.groupId = groupId;
     }
 
@@ -116,8 +118,8 @@ public class GtdGroupMemberEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GtdGroupMemberEntity that = (GtdGroupMemberEntity) o;
-        return groupMemberId == that.groupMemberId &&
-                groupId == that.groupId &&
+        return Objects.equals(groupMemberId, that.groupMemberId) &&
+                Objects.equals(groupId, that.groupId) &&
                 Objects.equals(userId, that.userId) &&
                 Objects.equals(userName, that.userName) &&
                 Objects.equals(userContact, that.userContact) &&
@@ -130,6 +132,6 @@ public class GtdGroupMemberEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(groupMemberId, groupId, userId, userName, userContact, createId, createDate, updateId, updateDate);
+        return Objects.hash(groupMemberId, groupId, userId, createId,userName,userContact, createDate, updateId, updateDate);
     }
 }

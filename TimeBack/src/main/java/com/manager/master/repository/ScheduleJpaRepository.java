@@ -11,4 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface ScheduleJpaRepository extends JpaRepository<GtdScheduleEntity,Integer> {
+    GtdScheduleEntity findByScheduleId(Integer schedule);
 }

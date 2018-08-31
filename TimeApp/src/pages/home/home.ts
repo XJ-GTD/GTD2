@@ -17,9 +17,7 @@ import {ParamsService} from "../../service/params.service";
   providers: []
 })
 export class HomePage {
-  tab1Root = 'HomeGroupPage';
-  tab2Root = 'SpeechPage';
-  tab3Root = 'HomeCalendarPage';
+  tab1Root = 'SpeechPage';
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private webSocketService: WebsocketService,

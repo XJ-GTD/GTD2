@@ -17,6 +17,9 @@ import java.util.List;
 public interface GroupMemberRepository extends JpaRepository<GtdGroupMemberEntity,Integer>,JpaSpecificationExecutor<GtdGroupMemberEntity> {
     List<GtdGroupMemberEntity> findAllByGroupId(int groupId);
 
+    GtdGroupMemberEntity findByGroupIdAndUserId(Integer groupId,Integer userId);
+
+
     List<GtdGroupMemberEntity> findByUserIdAndGroupId(int userId,int groupId);
 
     List<GtdGroupMemberEntity> findByUserNameLike(String userName);

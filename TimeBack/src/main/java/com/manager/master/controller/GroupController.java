@@ -44,7 +44,7 @@ public class GroupController {
         for(GtdGroupEntity g : list){
             map.put("groupId",g.getGroupId());
             map.put("groupName",g.getGroupName());
-            //map.put("user",g.getGroupmember());
+            map.put("user",g.getGroupUser());
             map.put("label",g.getLabel());
 
         }

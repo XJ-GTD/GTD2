@@ -1,6 +1,8 @@
 package com.manager.master.service.serviceImpl;
 
+import com.manager.config.exception.ServiceException;
 import com.manager.master.dto.UserInDto;
+import com.manager.master.dto.UserOutDto;
 import com.manager.master.entity.GtdAccountEntity;
 import com.manager.master.entity.GtdUserEntity;
 import com.manager.master.repository.UserJpaRepository;
@@ -21,7 +23,7 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl implements IUserService{
 
     private Logger logger = LogManager.getLogger(this.getClass());
     @Resource
@@ -44,7 +46,7 @@ public class UserServiceImpl implements IUserService {
         //检测是否存在
         Object count = userRepository.findByMobile(inDto.getAccountMobile());
         if (!count.equals("0")) {
-            return 1;
+            throw new ServiceException("该手机号已被注册！");
         }
 
         user.setUserName(inDto.getUserName());
@@ -72,6 +74,44 @@ public class UserServiceImpl implements IUserService {
 
         userJpaRepository.save(user);
         return 0;
+    }
+
+    /**
+     * 用户登录
+     * @param inDto
+     * @return
+     */
+    @Override
+    public UserOutDto login(UserInDto inDto) {
+        UserOutDto user = new UserOutDto();
+
+        int typeFlag = inDto.getLoginType();
+        if (typeFlag != 0 && typeFlag != 1 && typeFlag != 2 ) {
+            throw new ServiceException("登陆类型出错！");
+        }
+
+        String accountName = "";
+        if (inDto.getLoginType() == 0) {
+            accountName = inDto.getAccountName();
+        }
+        if (inDto.getLoginType() == 1) {
+            accountName = inDto.getAccountWechat();
+        }
+        if (inDto.getLoginType() == 2) {
+            accountName = inDto.getAccountQq();
+        }
+
+        Object[] object = (Object[]) userRepository.login(inDto.getLoginType(), accountName, inDto.getAccountPassword());
+
+        if (object != null) {
+            user.setUserId((Integer) object[0]);
+            user.setUserName((String) object[1]);
+            user.setAccountQueue((String) object[10]);
+        } else {
+            throw new ServiceException("用户名或密码错误！");
+        }
+
+        return user;
     }
 
 }
