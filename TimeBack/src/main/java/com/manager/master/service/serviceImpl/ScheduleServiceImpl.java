@@ -50,7 +50,7 @@ public class ScheduleServiceImpl implements IScheduleService {
 
     @Override
     public List<GtdScheduleEntity> findAll(ScheduleInDto inDto) {
-        return null;
+        return scheduleJpaRepository.findAll();
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         String scheduleName = inDto.getScheduleName();                    	// 日程事件名称
         String scheduleStartTime = inDto.getScheduleStartTime();            // 开始时间
         String scheduleDeadline = inDto.getScheduleDeadline();              // 截止时间
-        int scheduleRepeatType = inDto.getScheduleRepeatType();             // 日程重复类型
+        //int scheduleRepeatType = inDto.getScheduleRepeatType();             // 日程重复类型
         Integer scheduleStatus = inDto.getScheduleStatus();                  // 完成状态
         int updateId = inDto.getUpdateId();                          		// 更新人
         String updateDate = inDto.getUpdateDate();                     		// 更新时间
@@ -91,11 +91,11 @@ public class ScheduleServiceImpl implements IScheduleService {
         if (groupIds == null || "".equals(groupIds)) throw new ServiceException("群组不能为空");
         if (labelIds == null || "".equals(labelIds)) throw new ServiceException("标签名称不能为空");
         // 入参类型检查
-        // 日程重复类型 判断
+       /* // 日程重复类型 判断
         int[] types = new int[] { 0, 1, 2, 3 };
         if (!CommonMethods.isInArray(types,scheduleRepeatType)){
             throw new ServiceException("日程重复类型不在‘0-3’范围内");
-        }
+        }*/
         // 完成状态 判断
         int[] status = new int[] { 0,1, 2 };
         if (!CommonMethods.isInArray(status,scheduleStatus)){
