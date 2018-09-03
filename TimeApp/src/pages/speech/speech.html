@@ -15,11 +15,22 @@
 
 <ion-content padding>
 
-  <p text-center >
-    <button ion-button outline icon-start (click)="startXiaoJi()">
-      <ion-icon name="ionitron"></ion-icon>
-      启动语音助手
-    </button>
-  </p>
+  <ion-card>
+    <ion-card-content>
+      
+    </ion-card-content>
+
+    <ion-item>
+      <button ion-button clear item-start>发布</button>
+      <button ion-button clear item-end>取消</button>
+    </ion-item>
+  </ion-card>
+
+
+  <button id="start" ion-button outline icon-start (click)="startXiaoJi()">
+    <ion-icon name="ionitron"></ion-icon>
+    启动语音助手
+  </button>
+
 
 </ion-content>

@@ -90,22 +90,4 @@ public class GtdUserScheduleEntity {
     public void setUpdateDate(Timestamp updateDate) {
         this.updateDate = updateDate;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        GtdUserScheduleEntity that = (GtdUserScheduleEntity) o;
-        return Objects.equals(userScheduleId, that.userScheduleId) &&
-                Objects.equals(createId, that.createId) &&
-                Objects.equals(createDate, that.createDate) &&
-                Objects.equals(updateId, that.updateId) &&
-                Objects.equals(updateDate, that.updateDate);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(userScheduleId, createId, createDate, updateId, updateDate);
-    }
 }

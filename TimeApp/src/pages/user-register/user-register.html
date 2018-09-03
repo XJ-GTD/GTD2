@@ -17,16 +17,6 @@
   <form [formGroup]="RegisterForm" (ngSubmit)="register(RegisterForm.value)" novalidate>
 
     <ion-item>
-      <ion-label fixed>用户名</ion-label>
-      <ion-input type="text" placeholder="请输入用户名" [formControl]="accountName" clearInput=true pattern="[0-9a-zA-Z]*"></ion-input>
-    </ion-item>
-    <div *ngIf="accountName.hasError('required') && accountName.touched"   class="error-message" color="danger">请输入用户名</div>
-    <div *ngIf="accountName.hasError('pattern') && accountName.touched"   class="error-message" color="danger">请输入只含有字母和数字的用户名！</div>
-    <div *ngIf="(accountName.hasError('minlength') || accountName.hasError('maxlength')) && accountName.touched" class="error-message" color="danger">
-      请输入4到12位用户名
-    </div>
-
-    <ion-item>
       <ion-label fixed>手机号</ion-label>
       <ion-input type="number" placeholder="请输入手机号" [formControl]="accountMobile" clearInput=true pattern="[0-9]*"></ion-input>
     </ion-item>

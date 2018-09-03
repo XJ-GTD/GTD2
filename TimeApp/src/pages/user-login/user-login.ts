@@ -38,13 +38,14 @@ export class UserLoginPage {
   }
 
   signIn() {
+    // this.navCtrl.push('GroupListPage')
     this.http.post(AppConfig.USER_LOGIN_URL, {
       // accountName: this.accountName,
       // accountPassword: this.accountPassword,
-      accountMobile: "admin",
+      accountName: "admin",
       accountPassword: "admin",
       loginType: 0
-      
+
     },{
       headers: {
         "Content-Type": "application/json"

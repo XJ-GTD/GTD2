@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title style="text-align: center">群组名<button style="position: absolute;left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;" (click)="editgroup()">编辑</button></ion-title>
+    <ion-title style="text-align: center">{{data1.groupName}}<button style="position: absolute;left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;" (click)="editgroup()">编辑</button></ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,17 +15,11 @@
 
 <ion-content padding>
   <div class="row row1">
-    <div class="biaoqian1">
-      <p>标签</p>
-    </div>
-    <div class="biaoqian1">
-      <p>标签</p>
-    </div>
-    <div class="biaoqian1">
-      <p>标签</p>
+    <div class="biaoqian1" *ngFor="let item of data1.groupLabel">
+      <p>{{item.labelName}}</p>
     </div>
   </div>
   <div style=" border:1px solid #a1a1a1;">
-    <div *ngFor="let item of ['张三','李四','王五三','赵六']" class="row qunchengyuan1"><p class="pmingcheng1">{{item}}</p><p>群成员联系方式:1303132xxxx</p></div>
+    <div *ngFor="let item of data1.gtdGroupMember" class="row qunchengyuan1"><p class="pmingcheng1">{{item.userName}}</p><p>群成员联系方式:{{item.userContact}}</p></div>
   </div>
 </ion-content>

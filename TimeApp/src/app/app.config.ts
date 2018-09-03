@@ -39,7 +39,7 @@ export class AppConfig {
   public static USER_REGISTER_URL: string = AppConfig.USER_URL + "/sign_up";   //注册 POST
 
   //群组类
-  public static GROUP_FIND_URL: string = AppConfig.GROUP_URL + "/find";    //全部群组查询 GET
+  public static GROUP_FIND_URL: string = AppConfig.GROUP_URL + "/selectAll";    //全部群组查询 POST
 
   public static GROUP_ADD_URL: string = AppConfig.GROUP_URL + "/";    //群组添加 POST
 

@@ -32,7 +32,7 @@ export class HomePage {
     console.log('ionViewDidLoad HomePage');
   }
 
-  switchPage(page) {
-    this.navCtrl.push(page);
+  openVoice() {
+    this.navCtrl.push(this.tab1Root);
   }
 }
