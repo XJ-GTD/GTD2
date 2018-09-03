@@ -44,7 +44,22 @@ public class ScheduleController {
         List<GtdScheduleEntity> listSchedule = new ArrayList<>();
 
         try{
-                scheduleService.findAll(inDto);
+            listSchedule = scheduleService.findAll(inDto);
+
+            for (GtdScheduleEntity scheduleEntity:listSchedule){
+                Set<GtdGroupEntity> group = null;
+                Set<GtdLabelEntity> label = null;
+                GtdUserEntity user = null;
+
+                if (scheduleEntity.getUser() != null){
+                    user = scheduleEntity.getUser();
+                }
+
+                scheduleEntity.setGroupSchedule(group);
+                scheduleEntity.setLabel(label);
+                scheduleEntity.setUser(user);
+            }
+
             if (listSchedule != null){
                 map.put("scheduleList",listSchedule);
                 baseOutDto.setData(map);
