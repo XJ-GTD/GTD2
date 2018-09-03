@@ -47,18 +47,6 @@ export class ScheduleAddPage {
   newProject() {
 
     this.http.post(AppConfig.SCHEDULE_TASK_ISSUE, {
-      scheduleName: this.schedule.scheduleName,
-      scheduleDetail: this.schedule.scheduleDetail,
-      scheduleIssuer: this.paramsService.user.userId,
-      scheduleCreateDate: new Date("yyyy-MM-dd HH:mm"),
-      scheduleStartDate: this.schedule.scheduleStartDate,
-      scheduleEndDate: this.schedule.scheduleEndDate,
-      scheduleState: "-1",
-      scheduleRemindDate: this.schedule.scheduleRemindDate,
-      scheduleRemindRepeat: this.schedule.scheduleRemindRepeat,
-      scheduleRemindRepeatType: this.schedule.scheduleRemindRepeatType,
-      flagCreateGroup: "0",
-      scheduleExecutor: this.schedule.scheduleExecutor
     }, {
       headers: {
         "Content-Type": "application/json"
@@ -73,7 +61,7 @@ export class ScheduleAddPage {
             duration: 1500
           });
           loader.present();
-          this.schedule.scheduleId = this.data.data.scheduleId;
+          // this.schedule.scheduleId = this.data.data.scheduleId;
           this.pushSchedule();
         } else {
           console.log("发布失败");
@@ -85,21 +73,7 @@ export class ScheduleAddPage {
   pushSchedule() {
     this.http.post(AppConfig.WEB_SOCKET_TASK_URL, {
 
-      code: "0",
-      scheduleId: this.schedule.scheduleId,
-      scheduleName: this.schedule.scheduleName,
-      scheduleDetail: this.schedule.scheduleDetail,
-      scheduleIssuer: this.paramsService.user.userId,
-      scheduleCreateDate: new Date("yyyy-MM-dd HH:mm"),
-      scheduleStartDate: this.schedule.scheduleStartDate,
-      scheduleEndDate: this.schedule.scheduleEndDate,
-      scheduleState: "-1",
-      scheduleRemindDate: this.schedule.scheduleRemindDate,
-      scheduleRemindRepeat: this.schedule.scheduleRemindRepeat,
-      scheduleRemindRepeatType: this.schedule.scheduleRemindRepeatType,
-      flagCreateGroup: "0",
-      scheduleExecutor: this.schedule.scheduleExecutor,
-      target: this.schedule.scheduleExecutor
+
 
     },{
       headers: {

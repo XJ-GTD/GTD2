@@ -19,6 +19,7 @@ public class GtdScheduleEntity {
     private Timestamp scheduleDeadline;
     private Integer scheduleRepeatType;
     private Integer scheduleStatus;
+    private Timestamp scheduleFinishDate;
     private Integer createId;
     private Timestamp createDate;
     private Integer updateId;
@@ -124,6 +125,16 @@ public class GtdScheduleEntity {
     }
 
     @Basic
+    @Column(name = "SCHEDULE_FINISH_DATE")
+    public Timestamp getScheduleFinishDate() {
+        return scheduleFinishDate;
+    }
+
+    public void setScheduleFinishDate(Timestamp scheduleFinishDate) {
+        this.scheduleFinishDate = scheduleFinishDate;
+    }
+
+    @Basic
     @Column(name = "CREATE_ID")
     public Integer getCreateId() {
         return createId;
@@ -185,4 +196,5 @@ public class GtdScheduleEntity {
 
         return Objects.hash(scheduleId, scheduleName, scheduleStarttime, scheduleDeadline, scheduleRepeatType, scheduleStatus, createId, createDate, updateId, updateDate);
     }
+
 }

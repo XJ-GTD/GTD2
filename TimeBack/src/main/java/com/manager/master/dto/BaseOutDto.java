@@ -11,11 +11,10 @@ import java.util.Map;
  * 基本输出类
  */
 public class BaseOutDto{
-    private int code;
-    // 响应消息
-    private String message;
-    // 响应中的数据
-    private Map<String, ?> data;
+    private int code;           //响应状态值
+    private String message;     // 响应消息
+    private Map<String, ?> data;        // 响应的数据
+    private String speech;      //讯飞语音播报字段
 
     public String getMessage() {
         return message;
@@ -50,5 +49,13 @@ public class BaseOutDto{
     @Override
     public String toString() {
         return JSON.toJSONString(this);
+    }
+
+    public String getSpeech() {
+        return speech;
+    }
+
+    public void setSpeech(String speech) {
+        this.speech = speech;
     }
 }
