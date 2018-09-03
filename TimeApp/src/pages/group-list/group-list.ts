@@ -78,7 +78,7 @@ export class GroupListPage {
         qunzu:{
           groupList:[{
             groupId:1,
-            groupName:'李四',
+            groupName:'赵六',
             groupLabel:[{
               labelId:1,
               labelName:'娱乐',
@@ -99,11 +99,12 @@ export class GroupListPage {
 
   xiangqing(groupORindividual){
     console.log(groupORindividual)
-    this.navCtrl.push('GroupDetailPage',groupORindividual)
+    this.navCtrl.push('GroupDetailPage',{name:groupORindividual})
   }
 
-  gerenxiangqing(){
-    this.navCtrl.push('GroupPersonalEditPage')
+  gerenxiangqing(individual){
+    console.log(individual)
+    this.navCtrl.push('GroupPersonalEditPage',{datas:individual})
   }
 
   addORedit(){

@@ -20,7 +20,7 @@
   <!--<div *ngIf="true; else elseBlock">-->
   <p style="text-align: center">----------群组----------</p>
     <div *ngFor="let item1 of data22[0].qunzu.groupList">
-      <button class="row" style="width: 100%;background-color: #ffffff;" (click)="xiangqing(item1.groupId)">
+      <button class="row" style="width: 100%;background-color: #ffffff;" (click)="xiangqing(item1)">
         <div class="p2div">
           <p>{{item1.groupName}}</p>
         </div>
@@ -29,11 +29,11 @@
         </div>
       </button>
     </div>
-  <p>----------个人----------</p>
-    <div *ngFor="let item1 of data22[1].qunzu.groupList">
-      <button style="width: 100%;background-color: #ffffff;" (click)="gerenxiangqing()">
-        <div class="row" *ngFor="let item2 of item1.groupLabel">
-          <p class="p2div">{{item2.userName}}</p>
+  <p style="text-align: center">----------个人----------</p>
+    <div *ngFor="let item of data22[1].qunzu.groupList">
+      <button style="width: 100%;background-color: #ffffff;" (click)="gerenxiangqing(item)">
+        <div class="row" *ngFor="let item2 of item.groupLabel">
+          <p class="p2div">{{item2.groupName}}</p>
           <p>{{item2.userContact}}</p>
         </div>
       </button>
