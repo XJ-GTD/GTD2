@@ -4,60 +4,30 @@ Grouplist传出接口
 	message：string，
 	speech: string，
 	data：{
-		[
+		groupList： [
 			{
-			labelId:int,//群组 int!=8
-			qunzu:{
-				groupList: [
+				groupId: int,
+				groupName: String,
+				groupHeadImg: String,
+				groupCreateId: int,
+				groupLabel: [
 					{
-						groupId:int，
-						groupName:String,
-						groupLabel:{[
-							{
-								labelId:int，
-								labelName:String,
-								labelType:int,
-								userId:int,
-								userName:String,
-								userContact:String
-							},{
-								labelId:int，
-								labelName:String,
-								labelType:int,
-								userId:int,
-								userName:String,
-								userContact:String
-							},{
-								labelId:int，
-								labelName:String,
-								labelType:int,
-								userId:int,
-								userName:String,
-								userContact:String
-							}
-						]}
-					}
-				]}
-			},{
-			labelId:int,//个人 int=8
-			qunzu：{
-				groupList:[
-					{
-						groupId:int,
-						groupName:String,
-						groupLabel:{[
-							{
-								labelId:int，
-								labelName:String,
-								labelType:int
-								userId:int,
-								userName:String,
-								userContact:String
-							}
-						]}
+						labelId: int,
+						labelName: String
 					}
 				]
-			}
+			},
+			{
+				groupId: int,
+				groupName: String,
+				groupHeadImg: String,
+				groupCreateId: int,
+				groupLabel: [
+					{
+						labelId: int,
+						labelName: String
+					}
+				]
 			}
 		]
 	}
@@ -70,40 +40,42 @@ Grouplist传出接口
 	message：string，
 	speech: string，
 	data：{
-		groupId:int,
-		groupName:String,
-		
-		groupLabel:[//标签
-			{
-				labelId:int，
-				labelName:String,
-			},{
-				labelId:int，
-				labelName:String,
-			},{
-				labelId:int，
-				labelName:String,
-			}
-		],
-		gtdGroupMember:[//群成员
-			{
-				userId:int,
-				userName:String,
-				userContact:String
-			},{
-				userId:int,
-				userName:String,
-				userContact:String
-			},{
-				userId:int,
-				userName:String,
-				userContact:String
-			},{
-				userId:int,
-				userName:String,
-				userContact:String
-			}
-		]
+		group: {
+			groupId:int,
+			groupName:String,
+			
+			groupLabel:[//标签
+				{
+					labelId:int，
+					labelName:String,
+				},{
+					labelId:int，
+					labelName:String,
+				},{
+					labelId:int，
+					labelName:String,
+				}
+			],
+			gtdGroupMember:[//群成员
+				{
+					userId:int,
+					userName:String,
+					userContact:String
+				},{
+					userId:int,
+					userName:String,
+					userContact:String
+				},{
+					userId:int,
+					userName:String,
+					userContact:String
+				},{
+					userId:int,
+					userName:String,
+					userContact:String
+				}
+			]
+		}
 	}
 }
 
