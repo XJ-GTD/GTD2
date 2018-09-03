@@ -3,18 +3,15 @@ package com.manager.master.controller;
 import com.manager.config.exception.ServiceException;
 import com.manager.master.dto.BaseOutDto;
 import com.manager.master.dto.ScheduleInDto;
-import com.manager.master.dto.ScheduleOutDto;
 import com.manager.master.entity.GtdGroupEntity;
 import com.manager.master.entity.GtdLabelEntity;
 import com.manager.master.entity.GtdScheduleEntity;
 import com.manager.master.entity.GtdUserEntity;
 import com.manager.master.service.IScheduleService;
-import com.manager.util.ProducerUtil;
 import com.manager.util.ResultCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
