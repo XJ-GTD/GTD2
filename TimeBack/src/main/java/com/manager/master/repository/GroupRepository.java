@@ -2,8 +2,6 @@ package com.manager.master.repository;
 
 import com.manager.master.dto.GroupInDto;
 import com.manager.master.entity.GtdGroupEntity;
-import com.manager.master.entity.GtdGroupLabel;
-import com.manager.master.entity.GtdLabelRule;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

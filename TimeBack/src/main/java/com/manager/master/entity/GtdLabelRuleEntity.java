@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "gtd_label_rule", schema = "gtd")
-public class GtdLabelRule {
+public class GtdLabelRuleEntity {
     private int labelRuleId;
     private int ruleId;
     private int labelId;
@@ -89,7 +89,7 @@ public class GtdLabelRule {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GtdLabelRule that = (GtdLabelRule) o;
+        GtdLabelRuleEntity that = (GtdLabelRuleEntity) o;
         return labelRuleId == that.labelRuleId &&
                 ruleId == that.ruleId &&
                 labelId == that.labelId &&
