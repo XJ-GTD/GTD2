@@ -15,7 +15,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class GroupPersonalEditPage {
 
-  data3: string
+  data3: string;
+  isEdit: boolean = true;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.data3 = navParams.data.datas;
 
@@ -24,4 +25,13 @@ export class GroupPersonalEditPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad GroupPersonalEditPage');
   }
+
+  personaledit(){
+    if(this.isEdit==true){
+      this.isEdit=false;
+    }else {
+      this.isEdit=true;
+    }
+  }
+
 }

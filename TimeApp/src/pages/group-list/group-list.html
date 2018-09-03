@@ -7,7 +7,10 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title style="text-align: center">参与人列表<button style="position: absolute;left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;" (click)="addORedit()">添加</button></ion-title>
+    <ion-title style="text-align: center">
+      <button style="left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;" (click)="edit()">{{groupORperson?'群组':'个人'}}</button>
+      <button style="position: absolute;left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;" (click)="addORedit()">添加</button>
+    </ion-title>
 
   </ion-navbar>
 
@@ -15,12 +18,10 @@
 
 
 <ion-content padding>
-
-
-  <!--<div *ngIf="true; else elseBlock">-->
-  <p style="text-align: center">----------群组----------</p>
+  <div *ngIf="groupORperson; else elseBlock">
+    <div style="text-align: center"><p>点击头部群组切换个人</p></div>
     <div *ngFor="let item1 of data22[0].qunzu.groupList">
-      <button class="row" style="width: 100%;background-color: #ffffff;" (click)="xiangqing(item1)">
+      <button class="row" style="width: 100%;background-color: #ffffff;" (click)="xiangqing(item1.groupId)">
         <div class="p2div">
           <p>{{item1.groupName}}</p>
         </div>
@@ -29,28 +30,17 @@
         </div>
       </button>
     </div>
-  <p style="text-align: center">----------个人----------</p>
-    <div *ngFor="let item of data22[1].qunzu.groupList">
-      <button style="width: 100%;background-color: #ffffff;" (click)="gerenxiangqing(item)">
-        <div class="row" *ngFor="let item2 of item.groupLabel">
-          <p class="p2div">{{item2.groupName}}</p>
+  </div>
+  <ng-template #elseBlock>
+    <div style="text-align: center"><p>点击头部个人切换群组</p></div>
+    <div *ngFor="let item1 of data22[1].qunzu.groupList">
+      <button style="width: 100%;background-color: #ffffff;" (click)="gerenxiangqing(item1,item1.groupId)">
+        <div class="row" *ngFor="let item2 of item1.groupLabel">
+          <p class="p2div">{{item2.userName}}</p>
           <p>{{item2.userContact}}</p>
         </div>
       </button>
     </div>
-  <!--</div>-->
-
-
-
-  <!--<ng-template #elseBlock>-->
-    <!--<div *ngFor="let item1 of data22[1].qunzu.groupList">-->
-      <!--<button style="width: 100%;background-color: #ffffff;" (click)="xiangqing(item1)">-->
-        <!--<div class="row" *ngFor="let item2 of item1.groupLabel">-->
-          <!--<p class="p2div">{{item2.userName}}</p>-->
-          <!--<p>{{item2.userContact}}</p>-->
-        <!--</div>-->
-      <!--</button>-->
-    <!--</div>-->
-  <!--</ng-template>-->
+  </ng-template>
 
 </ion-content>
