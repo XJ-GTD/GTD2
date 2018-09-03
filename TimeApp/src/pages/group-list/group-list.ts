@@ -102,6 +102,10 @@ export class GroupListPage {
     this.navCtrl.push('GroupDetailPage',groupORindividual)
   }
 
+  gerenxiangqing(){
+    this.navCtrl.push('GroupPersonalEditPage')
+  }
+
   addORedit(){
     this.navCtrl.push('GroupEditPage')
   }

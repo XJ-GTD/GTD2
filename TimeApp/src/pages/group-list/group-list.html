@@ -17,10 +17,8 @@
 <ion-content padding>
 
 
-
-
-
-  <div *ngIf="true; else elseBlock">
+  <!--<div *ngIf="true; else elseBlock">-->
+  <p style="text-align: center">----------群组----------</p>
     <div *ngFor="let item1 of data22[0].qunzu.groupList">
       <button class="row" style="width: 100%;background-color: #ffffff;" (click)="xiangqing(item1.groupId)">
         <div class="p2div">
@@ -31,16 +29,28 @@
         </div>
       </button>
     </div>
-  </div>
-  <ng-template #elseBlock>
+  <p>----------个人----------</p>
     <div *ngFor="let item1 of data22[1].qunzu.groupList">
-      <button style="width: 100%;background-color: #ffffff;" (click)="xiangqing(item1)">
+      <button style="width: 100%;background-color: #ffffff;" (click)="gerenxiangqing()">
         <div class="row" *ngFor="let item2 of item1.groupLabel">
           <p class="p2div">{{item2.userName}}</p>
           <p>{{item2.userContact}}</p>
         </div>
       </button>
     </div>
-  </ng-template>
+  <!--</div>-->
+
+
+
+  <!--<ng-template #elseBlock>-->
+    <!--<div *ngFor="let item1 of data22[1].qunzu.groupList">-->
+      <!--<button style="width: 100%;background-color: #ffffff;" (click)="xiangqing(item1)">-->
+        <!--<div class="row" *ngFor="let item2 of item1.groupLabel">-->
+          <!--<p class="p2div">{{item2.userName}}</p>-->
+          <!--<p>{{item2.userContact}}</p>-->
+        <!--</div>-->
+      <!--</button>-->
+    <!--</div>-->
+  <!--</ng-template>-->
 
 </ion-content>
