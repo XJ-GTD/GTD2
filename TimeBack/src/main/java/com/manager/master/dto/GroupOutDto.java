@@ -1,6 +1,10 @@
 package com.manager.master.dto;
 
+import com.manager.master.entity.GtdLabelEntity;
+import com.manager.master.entity.GtdUserEntity;
+
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -8,55 +12,65 @@ import java.util.Map;
  * create  zy
  */
 public class GroupOutDto{
+    private int groupId;
+    private String groupName;
+    private String groupHeadImg;
+    private int groupCreateId;
+    private List<LabelDto> groupLabel;
+//    private List<GtdUserEntity> gtdGroupMember;
+//    private int labelId;
+//    private String labelName;
+//    private int labelType;
+//    private int userId;
+//    private String userName;
+//    private String userContact;
 
-    private int code;
-    // 响应消息
-    private String message;
-    //
-    private String speech;
-    // 响应中的数据
-    private Map<String, Object> data;
-
-    public int getCode() {
-        return code;
+    public int getGroupId() {
+        return groupId;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
-    public String getMessage() {
-        return message;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
-    public String getSpeech() {
-        return speech;
+    public String getGroupHeadImg() {
+        return groupHeadImg;
     }
 
-    public void setSpeech(String speech) {
-        this.speech = speech;
+    public void setGroupHeadImg(String groupHeadImg) {
+        this.groupHeadImg = groupHeadImg;
     }
 
-    public Map<String, Object> getData() {
-        return data;
+    public int getGroupCreateId() {
+        return groupCreateId;
     }
 
-    public void setData(Map<String, Object> data) {
-        this.data = data;
+    public void setGroupCreateId(int groupCreateId) {
+        this.groupCreateId = groupCreateId;
     }
 
-
-    @Override
-    public String toString() {
-        return "GroupOutDto{" +
-                "code=" + code +
-                ", message='" + message + '\'' +
-                ", speech='" + speech + '\'' +
-                ", data=" + data +
-                '}';
+    public List<LabelDto> getGroupLabel() {
+        return groupLabel;
     }
+
+    public void setGroupLabel(List<LabelDto> groupLabel) {
+        this.groupLabel = groupLabel;
+    }
+
+//    public List<GtdUserEntity> getGtdGroupMember() {
+//        return gtdGroupMember;
+//    }
+//
+//    public void setGtdGroupMember(List<GtdUserEntity> gtdGroupMember) {
+//        this.gtdGroupMember = gtdGroupMember;
+//    }
+
 }

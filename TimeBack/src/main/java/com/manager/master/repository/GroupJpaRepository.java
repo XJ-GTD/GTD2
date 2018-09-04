@@ -1,5 +1,6 @@
 package com.manager.master.repository;
 
+import com.manager.master.dto.GroupOutDto;
 import com.manager.master.entity.GtdGroupEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
