@@ -38,7 +38,7 @@
     <ng-template #elseBlock>
       <div style="text-align: center"><p>点击头部个人可切换成群组</p></div>
       <div *ngFor="let item1 of data22.data.groupList">
-        <button class="row" style="width: 100%;background-color: #ffffff;" (click)="gerenxiangqing(item1,item1.groupId)">
+        <button class="row" style="width: 100%;background-color: #ffffff;" (click)="gerenxiangqing(item1.groupId)">
           <div class="p2div">
             <p>{{item1.groupName}}</p>
           </div>

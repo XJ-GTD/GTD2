@@ -18,7 +18,7 @@ export class GroupPersonalEditPage {
   data3: string;
   isEdit: boolean = true;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.data3 = navParams.data.datas;
+    this.data3 = navParams.data.groupId;
 
   }
 

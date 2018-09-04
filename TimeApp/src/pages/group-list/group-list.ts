@@ -18,7 +18,7 @@ import {ParamsService} from "../../service/params.service";
 })
 export class GroupListPage {
   data22:any;
-  findType:String = "2";
+  findType: number = 2;
   groupORperson: boolean = true;
   groupORpersonname:String;
   constructor(public navCtrl: NavController,
@@ -31,7 +31,7 @@ export class GroupListPage {
 
   connectors(findType){
     this.http.post(AppConfig.GROUP_FIND_URL,{
-        userId:1,
+        userId:2,
         findType:findType
       }
     ).subscribe(data => {
@@ -56,12 +56,12 @@ export class GroupListPage {
 
   xiangqing(groupORindividual){
     console.log(groupORindividual)
-    this.navCtrl.push('GroupDetailPage',{name:groupORindividual})
+    this.navCtrl.push('GroupDetailPage',{groupId:groupORindividual})
   }
 
   gerenxiangqing(individual){
     console.log(individual)
-    this.navCtrl.push('GroupPersonalEditPage',{datas:individual})
+    this.navCtrl.push('GroupPersonalEditPage',{groupId:individual})
   }
 
   addORedit(){
@@ -72,11 +72,11 @@ export class GroupListPage {
     if(this.groupORperson==false){
       this.groupORperson=true;
       this.groupORpersonname='群组'
-      this.findType = "2";
+      this.findType = 2;
     }else {
       this.groupORperson=false;
       this.groupORpersonname='个人'
-      this.findType = "1";
+      this.findType = 1;
     }
     this.connectors(this.findType)
   }
