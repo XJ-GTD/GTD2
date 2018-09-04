@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
+import {ParamsService} from "../../service/params.service";
 
 /**
  * Generated class for the GroupListPage page.
@@ -16,103 +17,37 @@ import { HttpClient } from "@angular/common/http";
   templateUrl: 'group-list.html',
 })
 export class GroupListPage {
-  data22:object;
+  data22:any;
+  findType:String = "2";
   groupORperson: boolean = true;
   groupORpersonname:String;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient,) {
-    this.http.post(AppConfig.GROUP_FIND_URL,1
-    ).subscribe(data => {
-      // this.data22 = data;
-      console.log(data);
-    })
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              public loadingCtrl: LoadingController,
+              private http: HttpClient,
+              private paramsService: ParamsService) {
+    this.connectors(this.findType);
+  }
 
-
-    this.data22 = [
-      {
-        labelId:2,
-        qunzu:{
-          groupList:[{
-            groupId:1,
-						groupName:'开发1组',
-            groupLabel:[{
-              labelId:1,
-              labelName:'工作',
-              labelType:2,
-              userId:2,
-              userName:'李四',
-              userContact:'13255876092'
-            },{
-              labelId:1,
-              labelName:'生活',
-              labelType:2,
-              userId:2,
-              userName:'李四',
-              userContact:'13255876092'
-            },{
-              labelId:1,
-              labelName:'娱乐',
-              labelType:2,
-              userId:2,
-              userName:'李四',
-              userContact:'13255876092'
-            }]
-          },{
-            groupId:1,
-            groupName:'开发2组',
-            groupLabel:[{
-              labelId:1,
-              labelName:'工作',
-              labelType:2,
-              userId:2,
-              userName:'李四',
-              userContact:'13255876092'
-            },{
-              labelId:1,
-              labelName:'生活',
-              labelType:2,
-              userId:2,
-              userName:'李四',
-              userContact:'13255876092'
-            },{
-              labelId:1,
-              labelName:'娱乐',
-              labelType:2,
-              userId:2,
-              userName:'李四',
-              userContact:'13255876092'
-            }]
-          }]
-        }
-      },
-      {
-        labelId:8,
-        qunzu:{
-          groupList:[{
-            groupId:1,
-            groupName:'赵六',
-            groupLabel:[{
-              labelId:1,
-              labelName:'娱乐',
-              labelType:2,
-              userId:4,
-              userName:'赵六',
-              userContact:'13255876092'
-            }]
-          },{
-            groupId:3,
-            groupName:'李四',
-            groupLabel:[{
-              labelId:1,
-              labelName:'娱乐',
-              labelType:2,
-              userId:4,
-              userName:'李四',
-              userContact:'13255876092'
-            }]
-          }]
-        }
+  connectors(findType){
+    this.http.post(AppConfig.GROUP_FIND_URL,{
+        userId:1,
+        findType:findType
       }
-    ]
+    ).subscribe(data => {
+      this.data22 = data;
+      console.log(this.data22);
+      let loader = this.loadingCtrl.create({
+        content: this.data22.message,
+        duration: 1500
+      });
+      if (this.data22.code == "0") {
+        loader.present();
+              // this.navCtrl.push('HomePage');
+      } else {
+        loader.present();
+      }
+    })
   }
 
   ionViewDidLoad() {
@@ -137,11 +72,13 @@ export class GroupListPage {
     if(this.groupORperson==false){
       this.groupORperson=true;
       this.groupORpersonname='群组'
+      this.findType = "2";
     }else {
       this.groupORperson=false;
       this.groupORpersonname='个人'
+      this.findType = "1";
     }
-    console.log(this.groupORperson)
+    this.connectors(this.findType)
   }
 
 }
