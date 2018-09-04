@@ -10,6 +10,7 @@ import java.io.IOException;
  */
 @Component
 public class CreateQueueUtil  {
+
     //动态创建queue
     public  void createQueue(RabbitTemplate rabbitTemplate, String queueName, String exchangeName) throws IOException {
 
