@@ -2,6 +2,8 @@ package com.manager.master.service.serviceImpl;
 
 import com.manager.config.exception.ServiceException;
 import com.manager.master.dto.GroupInDto;
+import com.manager.master.dto.GroupOutDto;
+import com.manager.master.dto.LabelDto;
 import com.manager.master.entity.*;
 import com.manager.master.repository.*;
 import com.manager.master.service.IGroupService;
@@ -11,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 群组Service实现类
@@ -40,8 +40,28 @@ public class GroupServicelmpl implements IGroupService {
 
 
     @Override
-    public List<GtdGroupEntity> selectAll(int userId) {
-        return groupJpaRepository.findByUserId(userId);
+    public List<GroupOutDto> selectAll(int userId) {
+        List<GtdGroupEntity> list=groupJpaRepository.findByUserId(userId);
+        List<GroupOutDto> result=new ArrayList<>();
+        GroupOutDto group=new GroupOutDto();
+        for(GtdGroupEntity g:list){
+            group.setGroupId(g.getGroupId());
+            group.setGroupName(g.getGroupName());
+            group.setGroupHeadImg(g.getGroupHeadimgUrl());
+            group.setGroupCreateId(g.getCreateId());
+            Set<GtdLabelEntity> set=g.getLabel();
+            List<LabelDto> labelOut=new ArrayList<LabelDto>();
+            for(GtdLabelEntity label:set){
+                LabelDto l=new LabelDto();
+                l.setLabelId(label.getLabelId());
+                l.setLabelName(label.getLabelName());
+                labelOut.add(l);
+            }
+            group.setGroupLabel(labelOut);
+           // group.setGtdGroupMember(new ArrayList<GtdUserEntity>(g.getUser()));
+            result.add(group);
+        }
+        return result;
     }
 
     /**
@@ -81,8 +101,7 @@ public class GroupServicelmpl implements IGroupService {
         GtdGroupEntity group=new GtdGroupEntity();
         GtdGroupLabel groupLabel=new GtdGroupLabel();
         group.setGroupName(inDto.getGroupName());
-        group.setCreateId(inDto.getCreateId());
-        group.setUserId(inDto.getCreateId());
+
         //group.setCreateDate();
         groupJpaRepository.save(group);
 
@@ -91,30 +110,24 @@ public class GroupServicelmpl implements IGroupService {
 //        groupLabel.setGroupId(groupId);
 //        groupLabel.setLabelId(2);
 //        groupLabel.setCreateId(inDto.getCreateId());
-       List<Integer> labelId=inDto.getLabelId();
-        for(int i=0;i<labelId.size();i++){
-            groupLabel.setGroupId(groupId);
-            int id=labelId.get(i);
-            groupLabel.setLabelId(id);
-//            //groupLabel.setUserId();
-//            //groupLabel.setCreateDate();
-        groupLabelJpa.save(groupLabel);
-        }
+
+//        for(int i=0;i<labelId.size();i++){
+//            groupLabel.setGroupId(groupId);
+//            int id=labelId.get(i);
+//            groupLabel.setLabelId(id);
+////            //groupLabel.setUserId();
+////            //groupLabel.setCreateDate();
+//        groupLabelJpa.save(groupLabel);
+//        }
         return 0;
     }
 
     @Override
     public int addLabel(GroupInDto inDto) {
         GtdGroupLabel groupLabel=new GtdGroupLabel();
-        List<Integer> ids=inDto.getLabelId();
+
         int  count=0;
-        for(int i=0;i<ids.size();i++) {
-            groupLabel.setGroupId(inDto.getGroupId());
-            groupLabel.setLabelId(ids.get(i));
-            groupLabel.setCreateId(inDto.getCreateId());
-            groupLabelJpa.save(groupLabel);
-            count++;
-        }
+
         return count;
 
     }
@@ -126,52 +139,52 @@ public class GroupServicelmpl implements IGroupService {
     }
 
     @Override
-    public void updateGname(GroupInDto inDto) {
-        groupRepository.updateGroup(inDto);
+    public int updateGname(GroupInDto inDto) {
+        int code=groupRepository.updateGroup(inDto);
         GtdGroupLabel groupLabel=new GtdGroupLabel();
-        List<Integer> ids=inDto.getLabelId();
+     //   List<Integer> ids=inDto.getLabelId();
         int  count=0;
-        for(int i=0;i<ids.size();i++) {
-            groupLabel.setGroupId(inDto.getGroupId());
-            groupLabel.setLabelId(ids.get(i));
-            groupLabel.setCreateId(inDto.getCreateId());
-            groupLabelJpa.save(groupLabel);
-            count++;
-        }
-
+//        for(int i=0;i<ids.size();i++) {
+//            groupLabel.setGroupId(inDto.getGroupId());
+//            groupLabel.setLabelId(ids.get(i));
+//            groupLabel.setCreateId(inDto.getCreateId());
+//            groupLabelJpa.save(groupLabel);
+//            count++;
+//        }
+        return code;
     }
 
     @Override
     public void delLabel(GroupInDto inDto) {
-        List<Integer> labelIds=inDto.getLabelId();
-        int groupId=inDto.getGroupId();
-        for(int i=0;i<labelIds.size();i++){
-            //判断是否为权限标签
-            if(labelIds.get(i)!=1){
-                List<GtdGroupLabel> groupLabel=groupLabelJpa.findByLabelIdAndAndGroupId(labelIds.get(i),groupId);
-                groupLabelJpa.deleteAll(groupLabel);
-            }
-        }
+//        List<Integer> labelIds=inDto.getLabelId();
+//        int groupId=inDto.getGroupId();
+//        for(int i=0;i<labelIds.size();i++){
+//            //判断是否为权限标签
+//            if(labelIds.get(i)!=1){
+//                List<GtdGroupLabel> groupLabel=groupLabelJpa.findByLabelIdAndAndGroupId(labelIds.get(i),groupId);
+//                groupLabelJpa.deleteAll(groupLabel);
+//            }
+//        }
     }
 
     @Override
     public String member(GroupInDto inDto) {
-        List<Integer> userIds=inDto.getUserId();
-        String str="删除成功";
-        for(int i=0;i<userIds.size();i++){
-            List<GtdGroupMemberEntity> groupMembers=groupMemberRepository.findByUserIdAndGroupId(userIds.get(i),inDto.getGroupId());
-            if(groupMembers.size()!=0){
-                for(GtdGroupMemberEntity gtdGroupMember:groupMembers) {
-                    groupMemberRepository.delete(gtdGroupMember);
-                }
-            }else{
-                GtdGroupMemberEntity groupMember=new GtdGroupMemberEntity();
-                groupMember.setGroupId(inDto.getGroupId());
-                groupMember.setUserId(userIds.get(i));
-                groupMemberRepository.save(groupMember);
-                str="添加成功";
-            }
-        }
-        return str;
+//        List<Integer> userIds=inDto.getUserId();
+//        String str="删除成功";
+//        for(int i=0;i<userIds.size();i++){
+//            List<GtdGroupMemberEntity> groupMembers=groupMemberRepository.findByUserIdAndGroupId(userIds.get(i),inDto.getGroupId());
+//            if(groupMembers.size()!=0){
+//                for(GtdGroupMemberEntity gtdGroupMember:groupMembers) {
+//                    groupMemberRepository.delete(gtdGroupMember);
+//                }
+//            }else{
+//                GtdGroupMemberEntity groupMember=new GtdGroupMemberEntity();
+//                groupMember.setGroupId(inDto.getGroupId());
+//                groupMember.setUserId(userIds.get(i));
+//                groupMemberRepository.save(groupMember);
+//                str="添加成功";
+//            }
+//        }
+        return null;
     }
 }

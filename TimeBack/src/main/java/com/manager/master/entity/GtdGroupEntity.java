@@ -20,7 +20,7 @@ public class GtdGroupEntity {
     private Timestamp createDate;
     private Integer updateId;
     private Timestamp updateDate;
-    private Set<GtdUserEntity> groupUser;
+    private Set<GtdUserEntity> user;
     private Set<GtdLabelEntity> label;
     private Set<GtdScheduleEntity> schedule;
 
@@ -29,16 +29,19 @@ public class GtdGroupEntity {
     @JoinTable(name = "gtd_group_member",
             joinColumns = {@JoinColumn(name = "GROUP_ID", referencedColumnName = "GROUP_ID")},
             inverseJoinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName ="USER_ID")})
-    public Set<GtdUserEntity> getGroupUser() {
-        return groupUser;
+    public Set<GtdUserEntity> getUser() {
+        return user;
     }
 
-    public void setGroupUser(Set<GtdUserEntity> groupUser) {
-        this.groupUser = groupUser;
+    public void setUser(Set<GtdUserEntity> user) {
+        this.user = user;
     }
 
-    @JSONField(serialize=false)
-    @OneToMany(mappedBy = "group",fetch=FetchType.EAGER)
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "gtd_group_label",
+            joinColumns = {@JoinColumn(name = "GROUP_ID", referencedColumnName = "GROUP_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "LABEL_ID", referencedColumnName ="LABEL_ID")})
     public Set<GtdLabelEntity> getLabel() {
         return label;
     }

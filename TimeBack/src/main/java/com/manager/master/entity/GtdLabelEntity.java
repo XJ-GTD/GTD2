@@ -13,12 +13,18 @@ import java.util.Set;
 public class GtdLabelEntity {
     private int labelId;
     private String labelName;
+    @JsonIgnore
     private int labelType;
+    @JsonIgnore
     private Integer createId;
+    @JsonIgnore
     private Timestamp createDate;
+    @JsonIgnore
     private Integer updateId;
+    @JsonIgnore
     private Timestamp updateDate;
-    private GtdGroupEntity group;
+
+    private Set<GtdGroupEntity> group;
     private GtdRuleEntity rule;
     private GtdScheduleEntity schedule;
 
@@ -126,16 +132,16 @@ public class GtdLabelEntity {
         return Objects.hash(labelId, labelName, labelType, createId, createDate, updateId, updateDate);
     }
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToMany(cascade=CascadeType.ALL)
     @JSONField(serialize=false)
     @JoinTable(name = "gtd_group_label", schema = "gtd",
             joinColumns = @JoinColumn(name = "LABEL_ID", referencedColumnName = "LABEL_ID"),
             inverseJoinColumns = @JoinColumn(name = "GROUP_ID", referencedColumnName = "GROUP_ID", nullable = false))
-    public GtdGroupEntity getGroup() {
+    public Set<GtdGroupEntity> getGroup() {
         return group;
     }
 
-    public void setGroup(GtdGroupEntity group) {
+    public void setGroup(Set<GtdGroupEntity> group) {
         this.group = group;
     }
 

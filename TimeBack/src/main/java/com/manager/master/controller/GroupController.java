@@ -1,5 +1,6 @@
 package com.manager.master.controller;
 
+import com.manager.config.exception.ServiceException;
 import com.manager.master.dto.BaseOutDto;
 import com.manager.master.dto.GroupFindInDto;
 import com.manager.master.dto.GroupInDto;
@@ -39,14 +40,26 @@ public class GroupController {
      */
     @RequestMapping(value = "/find_all",method = RequestMethod.POST)
     @ResponseBody
-    public GroupOutDto findAll(@RequestBody GroupFindInDto inDto){
-        GroupOutDto outDto=new GroupOutDto();
-        List<GtdGroupEntity> list=IGroupService.selectAll(inDto.getUserId());
-        Map<String,Object> map=new HashMap<String,Object>();
-        map.put("data",list);
-        outDto.setData(map);
+    public BaseOutDto findAll(@RequestBody GroupFindInDto inDto){
+        BaseOutDto outDto=new BaseOutDto();
+        Map<String,List<GroupOutDto>> map=new HashMap<String, List<GroupOutDto>>();
+        try {
+            List<GroupOutDto> list= IGroupService.selectAll(inDto.getUserId());
+            for(GroupOutDto g:list){
+                System.out.println(g.toString());
+            }
+            if(list!=null) {
+                map.put("groupList", list);
+                outDto.setData(map);
+            }else outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
+        }catch (Exception ex){
+            throw new ServiceException(ex.getMessage());
+        }
         return outDto;
     }
+
+
+
 
     /**
      * 群组创建
@@ -55,11 +68,19 @@ public class GroupController {
      */
     @RequestMapping(value = "/addgroup",method = RequestMethod.POST)
     @ResponseBody
-    public GroupOutDto add(GroupInDto inDto){
-        GroupOutDto outBean = new GroupOutDto();
-        int code=IGroupService.addGroup(inDto);
-        outBean.setCode(code);
-        return outBean;
+    public BaseOutDto add(GroupInDto inDto){
+        BaseOutDto outDto = new BaseOutDto();
+        try {
+            int code = IGroupService.addGroup(inDto);
+            if (code == 0) {
+                outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
+            } else {
+                outDto.setCode(ResultCode.SUCCESS).setMessage("插入成功");
+            }
+        }catch (Exception e){
+            throw new ServiceException(e.getMessage());
+        }
+        return outDto;
     }
 
     /**
@@ -69,10 +90,19 @@ public class GroupController {
      */
     @RequestMapping(value = "/updatename",method = RequestMethod.POST)
     @ResponseBody
-    public GroupOutDto updateGname(GroupInDto inDto){
-        GroupOutDto outBean = new GroupOutDto();
-        IGroupService.updateGname(inDto);
-        return outBean;
+    public BaseOutDto updateGname(GroupInDto inDto){
+        BaseOutDto outDto = new BaseOutDto();
+        try{
+        int code=IGroupService.updateGname(inDto);
+        if (code == 0) {
+            outDto.setCode(ResultCode.REPEAT).setMessage("信息修改失败");
+        } else {
+            outDto.setCode(ResultCode.SUCCESS).setMessage("修改成功");
+        }
+    }catch (Exception e){
+        throw new ServiceException(e.getMessage());
+    }
+        return outDto;
     }
 
 
@@ -83,8 +113,8 @@ public class GroupController {
      */
     @RequestMapping(value = "/upmember",method = RequestMethod.POST)
     @ResponseBody
-    public GroupOutDto member(GroupInDto inDto){
-        GroupOutDto outBean = new GroupOutDto();
+    public BaseOutDto member(GroupInDto inDto){
+        BaseOutDto outBean = new BaseOutDto();
         String message=IGroupService.member(inDto);
         outBean.setMessage(message);
         return outBean;
