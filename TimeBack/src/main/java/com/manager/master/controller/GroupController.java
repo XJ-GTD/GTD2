@@ -36,7 +36,7 @@ public class GroupController {
 
     /**
      * 查询群组
-     * @param userId 用户ID
+     * @param inDto 用户ID&类型
      */
     @RequestMapping(value = "/find_all",method = RequestMethod.POST)
     @ResponseBody
@@ -44,7 +44,7 @@ public class GroupController {
         BaseOutDto outDto=new BaseOutDto();
         Map<String,List<GroupOutDto>> map=new HashMap<String, List<GroupOutDto>>();
         try {
-            List<GroupOutDto> list= IGroupService.selectAll(inDto.getUserId());
+            List<GroupOutDto> list= IGroupService.selectAll(inDto);
             for(GroupOutDto g:list){
                 System.out.println(g.toString());
             }
@@ -58,7 +58,22 @@ public class GroupController {
         return outDto;
     }
 
-
+    @RequestMapping(value ="/find_single",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto findMessage(@RequestBody GroupFindInDto inDto){
+        BaseOutDto outDto=new BaseOutDto();
+        Map<String,GroupOutDto> map=new HashMap<String, GroupOutDto>();
+        try{
+            GroupOutDto list= IGroupService.selectMessage(inDto);
+            if(list!=null) {
+                map.put("groupList", list);
+                outDto.setData(map);
+            }else outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
+        }catch (Exception e){
+            throw new ServiceException(e.getMessage());
+        }
+        return outDto;
+    }
 
 
     /**

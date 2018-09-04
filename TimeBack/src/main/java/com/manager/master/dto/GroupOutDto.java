@@ -17,13 +17,7 @@ public class GroupOutDto{
     private String groupHeadImg;
     private int groupCreateId;
     private List<LabelDto> groupLabel;
-//    private List<GtdUserEntity> gtdGroupMember;
-//    private int labelId;
-//    private String labelName;
-//    private int labelType;
-//    private int userId;
-//    private String userName;
-//    private String userContact;
+    private List<GroupMemberDto> gtdGroupMember;
 
     public int getGroupId() {
         return groupId;
@@ -65,12 +59,11 @@ public class GroupOutDto{
         this.groupLabel = groupLabel;
     }
 
-//    public List<GtdUserEntity> getGtdGroupMember() {
-//        return gtdGroupMember;
-//    }
-//
-//    public void setGtdGroupMember(List<GtdUserEntity> gtdGroupMember) {
-//        this.gtdGroupMember = gtdGroupMember;
-//    }
+    public List<GroupMemberDto> getGtdGroupMember() {
+        return gtdGroupMember;
+    }
 
+    public void setGtdGroupMember(List<GroupMemberDto> gtdGroupMember) {
+        this.gtdGroupMember = gtdGroupMember;
+    }
 }
