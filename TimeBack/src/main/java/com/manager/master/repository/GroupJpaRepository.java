@@ -31,6 +31,21 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     List<GtdGroupEntity> findByUserId(Integer userId);
 
     /**
+     *根据群组Id查询群组
+     * @param groupId
+     * @return
+     */
+    GtdGroupEntity findByGroupId(Integer groupId);
+
+    /**
+     *根据用户Id和群组Id查询所有的群组
+     * @param userId
+     * @param groupId
+     * @return
+     */
+    GtdGroupEntity findByUserIdAndGroupId(Integer userId,Integer groupId);
+
+    /**
      *根据群组ID查询群组
      * @param list
      * @return
