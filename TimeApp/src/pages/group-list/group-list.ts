@@ -15,6 +15,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class GroupListPage {
   data22:object;
+  groupORperson: boolean = true;
+  groupORpersonname:String;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.data22 = [
       {
@@ -78,13 +80,24 @@ export class GroupListPage {
         qunzu:{
           groupList:[{
             groupId:1,
-            groupName:'李四',
+            groupName:'赵六',
             groupLabel:[{
               labelId:1,
               labelName:'娱乐',
               labelType:2,
               userId:4,
               userName:'赵六',
+              userContact:'13255876092'
+            }]
+          },{
+            groupId:3,
+            groupName:'李四',
+            groupLabel:[{
+              labelId:1,
+              labelName:'娱乐',
+              labelType:2,
+              userId:4,
+              userName:'李四',
               userContact:'13255876092'
             }]
           }]
@@ -99,11 +112,27 @@ export class GroupListPage {
 
   xiangqing(groupORindividual){
     console.log(groupORindividual)
-    this.navCtrl.push('GroupDetailPage',groupORindividual)
+    this.navCtrl.push('GroupDetailPage',{name:groupORindividual})
+  }
+
+  gerenxiangqing(individual){
+    console.log(individual)
+    this.navCtrl.push('GroupPersonalEditPage',{datas:individual})
   }
 
   addORedit(){
     this.navCtrl.push('GroupEditPage')
+  }
+
+  edit(){
+    if(this.groupORperson==false){
+      this.groupORperson=true;
+      this.groupORpersonname='群组'
+    }else {
+      this.groupORperson=false;
+      this.groupORpersonname='个人'
+    }
+    console.log(this.groupORperson)
   }
 
 }
