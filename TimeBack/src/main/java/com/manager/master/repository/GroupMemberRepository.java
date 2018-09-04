@@ -19,6 +19,7 @@ public interface GroupMemberRepository extends JpaRepository<GtdGroupMemberEntit
 
     GtdGroupMemberEntity findByGroupIdAndUserId(Integer groupId,Integer userId);
 
+    
 
     List<GtdGroupMemberEntity> findByUserIdAndGroupId(int userId,int groupId);
 

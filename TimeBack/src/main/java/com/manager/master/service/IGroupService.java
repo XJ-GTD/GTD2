@@ -1,5 +1,6 @@
 package com.manager.master.service;
 
+import com.manager.master.dto.GroupFindInDto;
 import com.manager.master.dto.GroupInDto;
 import com.manager.master.dto.GroupOutDto;
 import com.manager.master.entity.GtdGroupEntity;
@@ -15,7 +16,10 @@ import java.util.List;
 public interface IGroupService {
 
     //该用户所有群组
-    List<GroupOutDto> selectAll(int userId);
+    List<GroupOutDto> selectAll(GroupFindInDto inDto);
+
+    //群组参与人详情
+    GroupOutDto selectMessage(GroupFindInDto inDto);
 
     //查询群组
     List<GtdGroupEntity> select(GroupInDto inDto);
