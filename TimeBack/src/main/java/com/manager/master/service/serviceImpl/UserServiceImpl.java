@@ -70,6 +70,7 @@ public class UserServiceImpl implements IUserService{
         accountEntity.setAccountPassword(inDto.getAccountPassword());
         accountEntity.setUserId(user.getUserId());
 
+        //一对一关系添加
         user.setAccount(accountEntity);
 
         userJpaRepository.save(user);
