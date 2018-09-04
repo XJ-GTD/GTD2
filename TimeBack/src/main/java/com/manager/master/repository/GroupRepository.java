@@ -46,8 +46,8 @@ public class GroupRepository {
     }
 
 
-    public void updateGroup(GroupInDto inDto){
+    public int  updateGroup(GroupInDto inDto){
         String sql="UPDATE gtd_group SET GROUP_NAME="+inDto.getGroupName()+" WHERE GROUP_ID="+inDto.getGroupId();
-        em.createNativeQuery(sql).executeUpdate();
+        return em.createNativeQuery(sql).executeUpdate();
     }
 }

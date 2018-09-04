@@ -1,6 +1,7 @@
 package com.manager.master.service;
 
 import com.manager.master.dto.GroupInDto;
+import com.manager.master.dto.GroupOutDto;
 import com.manager.master.entity.GtdGroupEntity;
 import com.manager.master.repository.GroupJpaRepository;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public interface IGroupService {
 
     //该用户所有群组
-    List<GtdGroupEntity> selectAll(int userId);
+    List<GroupOutDto> selectAll(int userId);
 
     //查询群组
     List<GtdGroupEntity> select(GroupInDto inDto);
@@ -29,7 +30,7 @@ public interface IGroupService {
     void delGroup(GroupInDto inDto);
 
     //编辑群组
-    void updateGname(GroupInDto inDto);
+    int updateGname(GroupInDto inDto);
 
     //删除标签，权限标签不能删除
     void delLabel(GroupInDto inDto);
