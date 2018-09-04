@@ -11,8 +11,6 @@ public class MasterApplicationTests {
 
     @Test
     public void contextLoads() {
-
-
     }
 
 }
