@@ -22,7 +22,7 @@ public class GtdAccountEntity {
     private String accountQq;
     private String accountEmail;
     private String accountUuid;
-    private String accountQueue;
+    private String accountQueue;  //队列名称
     private Integer createId;
     private Timestamp createDate;
     private Integer updateId;
