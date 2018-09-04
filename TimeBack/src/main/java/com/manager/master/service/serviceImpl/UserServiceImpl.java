@@ -32,8 +32,8 @@ import java.util.List;
 public class UserServiceImpl implements IUserService{
 
     private Logger logger = LogManager.getLogger(this.getClass());
-
-    private final CreateQueueService createQueueService;
+    @Autowired
+    CreateQueueService createQueueService;
     private final RabbitTemplate rabbitTemplate;
 
     @Resource
@@ -86,11 +86,15 @@ public class UserServiceImpl implements IUserService{
         accountEntity.setAccountName(inDto.getAccountName());
         accountEntity.setAccountPassword(inDto.getAccountPassword());
         accountEntity.setUserId(user.getUserId());
-
+        String queueName="";
         try {
-            createQueueService.createQueue(rabbitTemplate,user.getUserId(),"exchange") ;
+            queueName=createQueueService.createQueue(user.getUserId(),"exchange") ;
         } catch (IOException e) {
             e.printStackTrace();
+            throw new ServiceException("服务器异常，请稍后再试！");
+        }
+        if(!"".equals(queueName)){
+            accountEntity.setAccountQueue(queueName);
         }
         //一对一关系添加
         user.setAccount(accountEntity);

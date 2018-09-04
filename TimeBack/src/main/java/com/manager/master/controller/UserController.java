@@ -107,7 +107,7 @@ public class UserController {
        System.out.print("开始创建对列");
 
         try {
-            createQueueService.createQueue(rabbitTemplate,189,"exchange");
+            createQueueService.createQueue(189,"exchange");
         } catch (IOException e) {
             e.printStackTrace();
         }
