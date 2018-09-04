@@ -34,7 +34,7 @@ public class UserServiceImpl implements IUserService{
     private Logger logger = LogManager.getLogger(this.getClass());
     @Autowired
     CreateQueueService createQueueService;
-    private final RabbitTemplate rabbitTemplate;
+
 
     @Resource
     private UserRepository userRepository;
@@ -42,11 +42,6 @@ public class UserServiceImpl implements IUserService{
     @Resource
     private UserJpaRepository userJpaRepository;
 
-    @Autowired
-    public UserServiceImpl(RabbitTemplate rabbitTemplate, CreateQueueService createQueueService) {
-        this.rabbitTemplate = rabbitTemplate;
-        this.createQueueService = createQueueService;
-    }
 
 
     /**
