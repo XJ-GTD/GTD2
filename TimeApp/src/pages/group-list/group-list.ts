@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AppConfig } from "../../app/app.config";
+import { HttpClient } from "@angular/common/http";
 
 /**
  * Generated class for the GroupListPage page.
@@ -17,7 +19,14 @@ export class GroupListPage {
   data22:object;
   groupORperson: boolean = true;
   groupORpersonname:String;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient,) {
+    this.http.post(AppConfig.GROUP_FIND_URL,1
+    ).subscribe(data => {
+      // this.data22 = data;
+      console.log(data);
+    })
+
+
     this.data22 = [
       {
         labelId:2,
