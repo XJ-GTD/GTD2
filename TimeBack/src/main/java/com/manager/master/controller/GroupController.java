@@ -2,11 +2,10 @@ package com.manager.master.controller;
 
 import com.manager.config.exception.ServiceException;
 import com.manager.master.dto.BaseOutDto;
+import com.manager.master.dto.GroupFindInDto;
 import com.manager.master.dto.GroupInDto;
 import com.manager.master.dto.GroupOutDto;
 import com.manager.master.entity.GtdGroupEntity;
-import com.manager.master.entity.GtdLabelEntity;
-import com.manager.master.entity.GtdUserEntity;
 import com.manager.master.service.IGroupService;
 import com.manager.util.ResultCode;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +13,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -37,13 +38,13 @@ public class GroupController {
      * 查询群组
      * @param userId 用户ID
      */
-    @RequestMapping(value = "/selectAll",method = RequestMethod.POST)
+    @RequestMapping(value = "/find_all",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto seleteAll(int userId){
+    public BaseOutDto findAll(@RequestBody GroupFindInDto inDto){
         BaseOutDto outDto=new BaseOutDto();
         Map<String,List<GroupOutDto>> map=new HashMap<String, List<GroupOutDto>>();
         try {
-            List<GroupOutDto> list= IGroupService.selectAll(userId);
+            List<GroupOutDto> list= IGroupService.selectAll(inDto.getUserId());
             for(GroupOutDto g:list){
                 System.out.println(g.toString());
             }
@@ -53,30 +54,6 @@ public class GroupController {
             }else outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
         }catch (Exception ex){
             throw new ServiceException(ex.getMessage());
-        }
-
-        return outDto;
-    }
-
-
-    /**
-     * 查询群组
-     * @param inDto
-     *  标签名 labelName/群组ID groupId/群组名 groupName
-     */
-    @RequestMapping(value = "/select",method = RequestMethod.POST)
-    @ResponseBody
-    public BaseOutDto selectG(GroupInDto inDto){
-        BaseOutDto outDto=new BaseOutDto();
-        Map<String,Object> map=new HashMap<String,Object>();
-        try {
-            List<GtdGroupEntity> list = IGroupService.select(inDto);
-            if (list != null) {
-                map.put("data", list);
-                outDto.setData(map);
-            } else outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
-        }catch (Exception e){
-            throw new ServiceException(e.getMessage());
         }
         return outDto;
     }
