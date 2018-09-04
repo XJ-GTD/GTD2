@@ -21,11 +21,10 @@ public class ScheduleInDto {
     private String createDate;                     // 创建日期
     private int updateId;                          // 更新人
     private String updateDate;                     // 更新时间
-
-    private List groupIds;                          // 群组 List
-    private List labelIds;                          // 标签 List
-    private List groupScheduleIds;                 // 群组日程 List
-    private List scheduleLabelIds;                 // 日程标签 List
+    private List<Integer> groupIds;                          // 群组 List
+    private List<Integer> labelIds;                          // 标签 List
+    private List<Integer> groupScheduleIds;                 // 群组日程 List
+    private List<Integer> scheduleLabelIds;                 // 日程标签 List
 
     private Integer playersStatus;                     // 参与人状态ID
 
@@ -139,37 +138,38 @@ public class ScheduleInDto {
         this.updateDate = updateDate;
     }
 
-    public List getGroupIds() {
+    public List<Integer> getGroupIds() {
         return groupIds;
     }
 
-    public void setGroupIds(List groupIds) {
+    public void setGroupIds(List<Integer> groupIds) {
         this.groupIds = groupIds;
     }
 
-    public List getLabelIds() {
+    public List<Integer> getLabelIds() {
         return labelIds;
     }
 
-    public void setLabelIds(List labelIds) {
+    public void setLabelIds(List<Integer> labelIds) {
         this.labelIds = labelIds;
     }
 
-    public List getGroupScheduleIds() {
+    public List<Integer> getGroupScheduleIds() {
         return groupScheduleIds;
     }
 
-    public void setGroupScheduleIds(List groupScheduleIds) {
+    public void setGroupScheduleIds(List<Integer> groupScheduleIds) {
         this.groupScheduleIds = groupScheduleIds;
     }
 
-    public List getScheduleLabelIds() {
+    public List<Integer> getScheduleLabelIds() {
         return scheduleLabelIds;
     }
 
-    public void setScheduleLabelIds(List scheduleLabelIds) {
+    public void setScheduleLabelIds(List<Integer> scheduleLabelIds) {
         this.scheduleLabelIds = scheduleLabelIds;
     }
+
 
     public Integer getPlayersStatus() {
         return playersStatus;

@@ -58,6 +58,11 @@ public class GroupController {
         return outDto;
     }
 
+    /**
+     * 查询参与人详情
+     * @param inDto
+     * @return
+     */
     @RequestMapping(value ="/find_single",method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto findMessage(@RequestBody GroupFindInDto inDto){
@@ -66,7 +71,7 @@ public class GroupController {
         try{
             GroupOutDto list= IGroupService.selectMessage(inDto);
             if(list!=null) {
-                map.put("groupList", list);
+                map.put("group", list);
                 outDto.setData(map);
             }else outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
         }catch (Exception e){
@@ -83,7 +88,7 @@ public class GroupController {
      */
     @RequestMapping(value = "/addgroup",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto add(GroupInDto inDto){
+    public BaseOutDto add(@RequestBody GroupInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try {
             int code = IGroupService.addGroup(inDto);

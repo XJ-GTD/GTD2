@@ -4,13 +4,17 @@ import com.manager.config.exception.ServiceException;
 import com.manager.master.dto.BaseOutDto;
 import com.manager.master.dto.UserInDto;
 import com.manager.master.dto.UserOutDto;
+import com.manager.master.service.CreateQueueService;
 import com.manager.master.service.IUserService;
+import com.manager.util.CreateQueueUtil;
 import com.manager.util.ResultCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -28,6 +32,10 @@ public class UserController {
 
     @Autowired
     IUserService userService;
+    @Autowired
+    RabbitTemplate rabbitTemplate;
+    @Autowired
+    CreateQueueService createQueueService;
 
     /**
      * 用户注册
@@ -87,4 +95,22 @@ public class UserController {
         return outBean;
     }
 
+    /**
+     * 调用创建对列测试样式
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseOutDto test() {
+        BaseOutDto outBean = new BaseOutDto();
+       System.out.print("开始创建对列");
+
+        try {
+            createQueueService.createQueue(189,"exchange");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return outBean;
+    }
 }

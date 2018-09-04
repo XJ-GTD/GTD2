@@ -4,6 +4,8 @@ import com.manager.master.dto.UserInDto;
 import com.manager.master.dto.UserOutDto;
 import com.manager.master.entity.GtdUserEntity;
 
+import java.io.IOException;
+
 /**
  * create by wzy on 2018/04/24.
  * 用户管理
@@ -15,7 +17,7 @@ public interface IUserService {
      * @param inDto
      * @return
      */
-    int registerUser(UserInDto inDto);
+    int registerUser(UserInDto inDto) throws IOException;
 
     /**
      * 用户登录

@@ -44,41 +44,49 @@ public class GroupServicelmpl implements IGroupService {
         int typeId=inDto.getFindType();
         if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
         if (typeId == 0 || "".equals(typeId)) throw new ServiceException("类型ID不能为空");
-            List<GtdGroupEntity> list = groupJpaRepository.findByUserId(userId);
-            List<GroupOutDto> result = new ArrayList<>();
-            List<GroupOutDto> results = new ArrayList<>();
+        List<GtdGroupEntity> list=null;
+        try {
+            list = groupJpaRepository.findByUserId(userId);
+        }catch (Exception e){
+            throw new ServiceException("语法错误");
+        }
+
+        List<GroupOutDto> result = new ArrayList<>();
+        List<GroupOutDto> results = new ArrayList<>();
+        for (GtdGroupEntity g : list) {
             GroupOutDto group = new GroupOutDto();
-            for (GtdGroupEntity g : list) {
-                group.setGroupId(g.getGroupId());
-                group.setGroupName(g.getGroupName());
-                group.setGroupHeadImg(g.getGroupHeadimgUrl());
-                group.setGroupCreateId(g.getCreateId());
-                Set<GtdLabelEntity> set = g.getLabel();
-                List<LabelDto> labelOut = new ArrayList<LabelDto>();
-                boolean flag=true;
-                for (GtdLabelEntity label : set) {
-                    LabelDto l = new LabelDto();
-                    l.setLabelId(label.getLabelId());
-                    l.setLabelName(label.getLabelName());
-                    labelOut.add(l);
-                    if(set.size()==1&&label.getLabelId()==8){
-                        flag=false;
-                    }
+            group.setGroupId(g.getGroupId());
+            group.setGroupName(g.getGroupName());
+            group.setGroupHeadImg(g.getGroupHeadimgUrl());
+            group.setGroupCreateId(g.getCreateId());
+
+            Set<GtdLabelEntity> set = g.getLabel();
+            List<LabelDto> labelOut = new ArrayList<LabelDto>();
+            List<LabelDto> labelOuts = new ArrayList<LabelDto>();
+            boolean flag=false;
+            for (GtdLabelEntity label : set) {
+                if(set.size()==1&&label.getLabelId()==8){
+                    //单人
+                    flag=true;
                 }
-                group.setGroupLabel(labelOut);
-                if(flag) {
-                    results.add(group);
-                }else{
-                    result.add(group);
-                }
+                LabelDto l = new LabelDto();
+                l.setLabelId(label.getLabelId());
+                l.setLabelName(label.getLabelName());
+                labelOut.add(l);
             }
-            if(typeId==1){
-                return result;
+            group.setGroupLabel(labelOut);
+            if(flag) {
+                result.add(group);
             }
-            if(typeId==2){
-                return results;
+            if(!flag){
+                results.add(group);
             }
-            return null;
+        }
+        if(typeId==1) {
+            return result;
+        }else{
+            return results;
+        }
     }
 
     @Override
@@ -87,11 +95,23 @@ public class GroupServicelmpl implements IGroupService {
         int groupId=inDto.getGroupId();
         if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
         if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
-        List<GtdGroupMemberEntity> g=groupMemberRepository.findAllByGroupId(groupId);
+        List<GtdGroupMemberEntity> g=null;
+        try {
+             g=groupMemberRepository.findAllByGroupId(groupId);
+        }catch (Exception e){
+            throw new ServiceException("语法错误");
+        }
+
 //        for(GtdGroupMemberEntity d:g) {
 //            System.out.println(d.getUserName());
 //        }
-        GtdGroupEntity groupEntity=groupJpaRepository.findByGroupId(groupId);
+        GtdGroupEntity groupEntity=null;
+        try {
+            groupEntity=groupJpaRepository.findByGroupId(groupId);
+        }catch (Exception e){
+            throw new ServiceException("语法错误");
+        }
+
         GroupOutDto group = new GroupOutDto();
             group.setGroupId(groupId);
             group.setGroupName(groupEntity.getGroupName());
@@ -151,59 +171,59 @@ public class GroupServicelmpl implements IGroupService {
 
     @Override
     public int addGroup(GroupInDto inDto) {
-//        GtdGroupEntity group=new GtdGroupEntity();
-//        GtdGroupLabel groupLabel=new GtdGroupLabel();
-//        GtdGroupMemberEntity groupMember=new GtdGroupMemberEntity();
-//        int userId=inDto.getUserId();
-//        List<Integer> labels=inDto.getLabelId();
-//        String groupName=inDto.getGroupName();
-//        String groupHeadImgUrl=inDto.getGroupHeadimgUrl();
-//        List<GroupMemberDto> groupMembers=inDto.getMember();
-//        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
-//        if (labels.size() == 0 || labels==null) throw new ServiceException("标签不能为空");
-//        if (groupName == null || "".equals(groupName)) throw new ServiceException("群组名不能为空");
-//        if (groupHeadImgUrl == null || "".equals(groupHeadImgUrl)) throw new ServiceException("群头像不能为空");
-//        if (groupMembers.size() == 0 || groupMembers==null) throw new ServiceException("群员不能为空");
-//        if(labels.size()==1&&labels.get(0)==8){
-//            group.setGroupName(groupName);
-//            group.setGroupHeadimgUrl(groupHeadImgUrl);
-//            group.setCreateId(userId);
-//            group.setUserId(userId);
-//            group.setCreateDate((Timestamp) new Date());
-//            groupJpaRepository.save(group);
-//            int groupId=groupJpaRepository.saveAndFlush(group).getGroupId();
-//            if(groupId==0) throw new ServiceException("群组Id为空");
-//            groupLabel.setLabelId(labels.get(0));
-//            groupLabel.setGroupId(groupId);
-//            groupLabel.setCreateId(userId);
-//            groupLabel.setCreateDate((Timestamp) new Date());
-//            groupLabelJpa.save(groupLabel);
-//            groupMember.setUserId(userId);
-//            groupMember.setGroupId(groupId);
-//            for(GroupMemberDto g:groupMembers){
-//                groupMember.setUserName(g.getUserName());
-//                groupMember.setUserContact(g.getUserContact());
-//                groupMemberRepository.save(groupMember);
-//            }
-//        }else{
-//            group.setGroupName(groupName);
-//            group.setGroupHeadimgUrl(groupHeadImgUrl);
-//            group.setCreateId(userId);
-//            group.setUserId(userId);
-//            group.setCreateDate((Timestamp) new Date());
-//            boolean flag=true;
-//            for(Integer i:labels){
-//                if(i==1){
-//                    flag=false;
-//                }
-//            }
-//            if(flag){
-//                groupJpaRepository.save(group);
-//            }else{
-//                //发送通知确认之后添加
-//            }
-//
-//        }
+        GtdGroupEntity group=new GtdGroupEntity();
+        GtdGroupLabel groupLabel=new GtdGroupLabel();
+        GtdGroupMemberEntity groupMember=new GtdGroupMemberEntity();
+        int userId=inDto.getUserId();
+        List<Integer> labels=inDto.getLabelId();
+        String groupName=inDto.getGroupName();
+        String groupHeadImgUrl=inDto.getGroupHeadimgUrl();
+        List<GroupMemberDto> groupMembers=inDto.getMember();
+        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
+        if (labels.size() == 0 || labels==null) throw new ServiceException("标签不能为空");
+        if (groupName == null || "".equals(groupName)) throw new ServiceException("群组名不能为空");
+        if (groupHeadImgUrl == null || "".equals(groupHeadImgUrl)) throw new ServiceException("群头像不能为空");
+        if (groupMembers.size() == 0 || groupMembers==null) throw new ServiceException("群员不能为空");
+        if(labels.size()==1&&labels.get(0)==8){
+            group.setGroupName(groupName);
+            group.setGroupHeadimgUrl(groupHeadImgUrl);
+            group.setCreateId(userId);
+            group.setUserId(userId);
+            group.setCreateDate((Timestamp) new Date());
+            groupJpaRepository.save(group);
+            int groupId=groupJpaRepository.saveAndFlush(group).getGroupId();
+            if(groupId==0) throw new ServiceException("群组Id为空");
+            groupLabel.setLabelId(labels.get(0));
+            groupLabel.setGroupId(groupId);
+            groupLabel.setCreateId(userId);
+            groupLabel.setCreateDate((Timestamp) new Date());
+            groupLabelJpa.save(groupLabel);
+            groupMember.setUserId(userId);
+            groupMember.setGroupId(groupId);
+            for(GroupMemberDto g:groupMembers){
+                groupMember.setUserName(g.getUserName());
+                groupMember.setUserContact(g.getUserContact());
+                groupMemberRepository.save(groupMember);
+            }
+        }else{
+            group.setGroupName(groupName);
+            group.setGroupHeadimgUrl(groupHeadImgUrl);
+            group.setCreateId(userId);
+            group.setUserId(userId);
+            group.setCreateDate((Timestamp) new Date());
+            boolean flag=true;
+            for(Integer i:labels){
+                if(i==1){
+                    flag=false;
+                }
+            }
+            if(flag){
+                groupJpaRepository.save(group);
+            }else{
+                //发送通知确认之后添加
+            }
+
+        }
         return 0;
     }
 

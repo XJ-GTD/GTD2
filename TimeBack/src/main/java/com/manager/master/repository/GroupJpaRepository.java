@@ -23,6 +23,9 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
      */
     List<GtdGroupEntity> findByGroupNameIsLike(String groupName);
 
+
+
+
     /**
      *根据用户Id查询所有的群组
      * @param userId
