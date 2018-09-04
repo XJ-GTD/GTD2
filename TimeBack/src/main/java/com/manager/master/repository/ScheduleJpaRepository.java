@@ -2,7 +2,11 @@ package com.manager.master.repository;
 
 import com.manager.master.entity.GtdScheduleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Timestamp;
 
 /**
  *  日程事件表实现类
@@ -12,4 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface ScheduleJpaRepository extends JpaRepository<GtdScheduleEntity,Integer> {
     GtdScheduleEntity findByScheduleId(Integer schedule);
+
+    @Modifying
+    @Query(value="UPDATE gtd_schedule SET SCHEDULE_NAME = ?1,SCHEDULE_STARTTIME = ?2,SCHEDULE_DEADLINE = ?3,UPDATE_DATE = ?4,UPDATE_ID = ?5 WHERE SCHEDULE_ID = ?6",nativeQuery=true)
+    void updateScheduleByScheduleid(String scheduleName, Timestamp scheduleStartDate, Timestamp scheduleEndDate, Timestamp scheduleUpdate,Integer scheduleUpId,Integer scheduleId);
 }

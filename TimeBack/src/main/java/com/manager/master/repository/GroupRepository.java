@@ -1,12 +1,14 @@
 package com.manager.master.repository;
 
 import com.manager.master.dto.GroupInDto;
+import com.manager.master.dto.GroupScheduleInDto;
 import com.manager.master.entity.GtdGroupEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 /**
@@ -50,4 +52,36 @@ public class GroupRepository {
         String sql="UPDATE gtd_group SET GROUP_NAME="+inDto.getGroupName()+" WHERE GROUP_ID="+inDto.getGroupId();
         return em.createNativeQuery(sql).executeUpdate();
     }
+
+    /**
+     * 根据 日程事件表ID 查询不包含在新群组ID列表里的 自增主键
+     * @param list
+     * @param scheduleId
+     * @return
+     */
+    public List<Integer> findGroupScheduleIdByScheduleId(List<Integer> list,Integer scheduleId){
+        String sql = "SELECT GROUP_SCHEDULE_ID FROM gtd_group_schedule WHERE SCHEDULE_ID = "+scheduleId+" and GROUP_ID not in("+list+")";
+        return (List<Integer>) em.createNativeQuery(sql).getResultList();
+    }
+
+    /**
+     * 根据 日程事件表ID 查询群组ID
+     * @param scheduleId
+     * @return
+     */
+    public List<Integer> findGroupIdByScheduleId(Integer scheduleId){
+        String sql = "SELECT GROUP_ID FROM gtd_group_schedule WHERE SCHEDULE_ID = " + scheduleId;
+        return (List<Integer>) em.createNativeQuery(sql).getResultList();
+    }
+
+    /**
+     * 更新群组日程时间中间表时间
+     * @param indto
+     * @return
+     */
+    public int updateUpDateByGroupId(GroupScheduleInDto indto){
+        String sql = "UPDATE gtd_group_schedule SET UPDATE_ID = "+indto.getUpdateId()+",UPDATE_DATE = "+indto.getUpdateDt()+" WHERE GROUP_ID = "+indto.getGroupId()+" and SCHEDULE_ID = "+indto.getScheduleId();
+        return em.createNativeQuery(sql).executeUpdate();
+    }
+
 }
