@@ -21,6 +21,7 @@ public class GtdGroupMemberEntity {
     private Timestamp createDate;
     private Integer updateId;
     private Timestamp updateDate;
+    private Integer groupMemberStatus;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -111,6 +112,16 @@ public class GtdGroupMemberEntity {
 
     public void setUpdateDate(Timestamp updateDate) {
         this.updateDate = updateDate;
+    }
+
+    @Basic
+    @Column(name="GROUP_MEMBER_STATUS")
+    public Integer getGroupMemberStatus() {
+        return groupMemberStatus;
+    }
+
+    public void setGroupMemberStatus(Integer groupMemberStatus) {
+        this.groupMemberStatus = groupMemberStatus;
     }
 
     @Override
