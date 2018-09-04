@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * HTTP请求工具类
+ * 讯飞WEB API请求工具类
  *
  * create by wzy on 2018/07/23
  */
@@ -50,8 +50,7 @@ public class AiUiUtil {
                 header = buildHeader_text();
                 result = httpPost(URL, header, audio.getBytes());
             }
-//        byte[] dataByteArray = readFile(FILE_PATH);
-//            httpPost(URL, header, audio.getBytes());
+
             System.out.println(result);
             return result;
         } catch (ParseException e) {
@@ -65,6 +64,12 @@ public class AiUiUtil {
         return null;
     }
 
+    /**
+     * 语音转义
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws ParseException
+     */
     private static Map<String, String> buildHeader_audio() throws UnsupportedEncodingException, ParseException {
         String curTime = System.currentTimeMillis() / 1000L + "";
         String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_AUDIO+"\",\"scene\":\""+SCENE+"\"}";
@@ -81,6 +86,12 @@ public class AiUiUtil {
         return header;
     }
 
+    /**
+     * 文本转义
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws ParseException
+     */
     private static Map<String, String> buildHeader_text() throws UnsupportedEncodingException, ParseException {
         String curTime = System.currentTimeMillis() / 1000L + "";
         String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_TEXT+"\",\"scene\":\""+SCENE+"\"}";
@@ -97,12 +108,24 @@ public class AiUiUtil {
         return header;
     }
 
+    /**
+     * 解码64
+     * @param filePath
+     * @return
+     * @throws IOException
+     */
     private static byte[] base64Audio(String filePath) throws IOException {
         String audio = filePath.replace("data:image/*;charset=utf-8;base64,", "");
         byte[] body = Base64.decodeBase64(audio);
         return body;
     }
 
+    /**
+     * 文件读取
+     * @param filePath
+     * @return
+     * @throws IOException
+     */
     private static byte[] readFile(String filePath) throws IOException {
         InputStream in = new FileInputStream(filePath);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -116,6 +139,13 @@ public class AiUiUtil {
         return data;
     }
 
+    /**
+     * 请求webAPI
+     * @param url
+     * @param header
+     * @param body
+     * @return
+     */
     private static String httpPost(String url, Map<String, String> header, byte[] body) {
         String result = "";
         BufferedReader in = null;

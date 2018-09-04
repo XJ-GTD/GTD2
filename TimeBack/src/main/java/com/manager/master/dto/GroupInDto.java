@@ -7,17 +7,15 @@ import java.util.List;
 import java.util.Set;
 
 public class GroupInDto {
+    private int userId;
     private int groupId;
-    //private int createId;
-    //private List<Integer> userId;
-    private List<Integer> labelId;
     private String labelName;
     private String groupName;
-    private String userName;
     private String groupHeadimgUrl;
-    //private Date createDate;
-    //private int updateId;
-   // private Date updateDate;
+    private List<Integer> labelId;
+    private List<GroupMemberDto> member;
+
+
 
     public int getGroupId() {
         return groupId;
@@ -35,8 +33,6 @@ public class GroupInDto {
         this.groupName = groupName;
     }
 
-
-
     public String getLabelName() {
         return labelName;
     }
@@ -45,11 +41,36 @@ public class GroupInDto {
         this.labelName = labelName;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getGroupHeadimgUrl() {
+        return groupHeadimgUrl;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setGroupHeadimgUrl(String groupHeadimgUrl) {
+        this.groupHeadimgUrl = groupHeadimgUrl;
     }
+
+    public List<Integer> getLabelId() {
+        return labelId;
+    }
+
+    public void setLabelId(List<Integer> labelId) {
+        this.labelId = labelId;
+    }
+
+    public List<GroupMemberDto> getMember() {
+        return member;
+    }
+
+    public void setMember(List<GroupMemberDto> member) {
+        this.member = member;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
 }

@@ -43,7 +43,7 @@ Grouplist传出接口
 		group: {
 			groupId:int,
 			groupName:String,
-			
+
 			groupLabel:[//标签
 				{
 					labelId:int，
