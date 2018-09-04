@@ -17,10 +17,10 @@ import java.util.List;
 public interface CreateQueueService {
     /**
      * 创建队列
-     * @param rabbitTemplate
+     *
      * @param userId 用户id
      * @param exchangeName 交换机名
      */
-      String createQueue(RabbitTemplate rabbitTemplate, int userId, String exchangeName) throws IOException;
+      String createQueue(int userId, String exchangeName) throws IOException;
 
 }
