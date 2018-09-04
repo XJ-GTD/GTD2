@@ -1,6 +1,7 @@
 package com.manager.master.controller;
 
 import com.manager.master.dto.BaseOutDto;
+import com.manager.master.dto.GroupFindInDto;
 import com.manager.master.dto.GroupInDto;
 import com.manager.master.dto.GroupOutDto;
 import com.manager.master.entity.GtdGroupEntity;
@@ -36,36 +37,16 @@ public class GroupController {
      * 查询群组
      * @param userId 用户ID
      */
-    @RequestMapping(value = "/selectAll",method = RequestMethod.POST)
+    @RequestMapping(value = "/find_all",method = RequestMethod.POST)
     @ResponseBody
-    public GroupOutDto seleteAll(int userId){
+    public GroupOutDto findAll(@RequestBody GroupFindInDto inDto){
         GroupOutDto outDto=new GroupOutDto();
-        List<GtdGroupEntity> list=IGroupService.selectAll(userId);
+        List<GtdGroupEntity> list=IGroupService.selectAll(inDto.getUserId());
         Map<String,Object> map=new HashMap<String,Object>();
         map.put("data",list);
         outDto.setData(map);
         return outDto;
     }
-
-
-    /**
-     * 查询群组
-     * @param inDto
-     *  标签名 labelName/群组ID groupId/群组名 groupName
-     */
-    @RequestMapping(value = "/select",method = RequestMethod.POST)
-    @ResponseBody
-    public GroupOutDto selectG(GroupInDto inDto){
-        GroupOutDto outDto=new GroupOutDto();
-        List<GtdGroupEntity> list=IGroupService.select(inDto);
-        Map<String,Object> map=new HashMap<String,Object>();
-        map.put("data",list);
-        outDto.setData(map);
-        return outDto;
-    }
-
-
-
 
     /**
      * 群组创建
