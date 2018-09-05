@@ -1,6 +1,7 @@
 package com.manager.master.service.serviceImpl;
 
 import com.manager.config.exception.ServiceException;
+import com.manager.master.dto.GroupScheduleInDto;
 import com.manager.master.dto.ScheduleInDto;
 import com.manager.master.entity.*;
 import com.manager.master.repository.*;
@@ -50,6 +51,12 @@ public class ScheduleServiceImpl implements IScheduleService {
     @Resource
     SchedulePlayersRepository schedulePlayersRepository;
 
+    @Resource
+    CenterScheduleLabelRepository centerScheduleLabelRepository;
+
+    @Resource
+    private GroupRepository groupRepository;
+
     @Override
     public List<GtdScheduleEntity> findAll(ScheduleInDto inDto) {
         return scheduleJpaRepository.findAll();
@@ -78,8 +85,8 @@ public class ScheduleServiceImpl implements IScheduleService {
         int updateId = inDto.getUpdateId();                          		// 更新人
         String updateDate = inDto.getUpdateDate();                     		// 更新时间
 
-        List groupIds = inDto.getGroupIds();                          		// 群组 List
-        List labelIds = inDto.getLabelIds();                          		// 标签 List
+        List<Integer> groupIds = inDto.getGroupIds();                          		// 群组 List
+        List<Integer> labelIds = inDto.getLabelIds();                          		// 标签 List
         Date date = new Date();
         // 入参检查     // 入参必须项检查
         if (userId == 0 || "".equals(userId)) throw new ServiceException("用户名ID不能为空");
@@ -90,8 +97,8 @@ public class ScheduleServiceImpl implements IScheduleService {
         if (scheduleDeadline == null || "".equals(scheduleDeadline)) throw new ServiceException("截止时间不能为空");
         if (updateId == 0 || "".equals(updateId)) updateId = userId;
         if (updateDate == null || "".equals(updateDate)) updateDate =date.toString();
-        if (groupIds == null || "".equals(groupIds)) throw new ServiceException("群组不能为空");
-        if (labelIds == null || "".equals(labelIds)) throw new ServiceException("标签名称不能为空");
+        if (groupIds.size() == 0) throw new ServiceException("群组不能为空");
+        if (labelIds.size() == 0) throw new ServiceException("标签名称不能为空");
         // 入参类型检查
        /* // 日程重复类型 判断
         int[] types = new int[] { 0, 1, 2, 3 };
@@ -120,6 +127,91 @@ public class ScheduleServiceImpl implements IScheduleService {
         GtdScheduleEntity scheduleEntity = scheduleJpaRepository.getOne(scheduleId);
 
         if (scheduleEntity.getCreateId().equals(userId)) {     // 发布人 日程编辑
+            //  更新日程事件表
+            try {
+                scheduleJpaRepository.updateScheduleByScheduleid(scheduleName,CommonMethods.dateToStamp(scheduleStartTime),CommonMethods.dateToStamp(scheduleDeadline),
+                        CommonMethods.dateToStamp(updateDate),userId,scheduleId);
+            } catch (Exception ex){
+                throw new ServiceException("---- updateScheduleByScheduleid 语法错误");
+            }
+
+            // 新传入日程标签
+            Integer scheduleLabel = CommonMethods.getscheduleLabel(labelIds);
+            //  查询 日程标签中间表: 获取标签
+            List<GtdScheduleLabelEntity> dbScheduleLabel= new ArrayList<GtdScheduleLabelEntity>();
+            try {
+                dbScheduleLabel = centerScheduleLabelRepository.findLabelIdByScheduleId(scheduleId);
+            } catch (Exception ex){
+                throw new ServiceException("---- findLabelIdByScheduleId 语法错误");
+            }
+            Integer scheduleLabelId = 0;
+            Integer dbscheduleLabel = 4;
+            for(GtdScheduleLabelEntity gtdScheduleLabelEntity : dbScheduleLabel){
+                Integer id = gtdScheduleLabelEntity.getScheduleLabelId();
+                Integer label = gtdScheduleLabelEntity.getLabelId();
+                if(label == 4){
+                    dbscheduleLabel = 4;
+                    scheduleLabelId = id;
+                } else if(label == 5){
+                    dbscheduleLabel = 5;
+                    scheduleLabelId = id;
+                } else if(label == 6){
+                    dbscheduleLabel = 6;
+                    scheduleLabelId = id;
+                }
+            }
+            if(scheduleLabel != dbscheduleLabel){   // 标签发生改变
+                //  更新 日程标签中间表
+                try {
+                    centerScheduleLabelRepository.updateScheduleLabelById(scheduleLabel,userId,CommonMethods.dateToStamp(updateDate),scheduleLabelId);
+                }  catch (Exception ex){
+                    throw new ServiceException("---- updateScheduleLabelById 语法错误");
+                }
+                // TODO 重新定义提醒时间
+            }
+            //  查询 日程群组中间表: 群组ID不包含在新群组List中，获取自增主键
+            List<Integer> groupScheduleId = new ArrayList<>();
+            try{
+                groupScheduleId = groupRepository.findGroupScheduleIdByScheduleId(groupIds,scheduleId);
+            }  catch (Exception ex){
+                throw new ServiceException("---- findGroupScheduleIdByScheduleId 语法错误");
+            }
+
+            if(groupScheduleId.size()>0){   // 结果不为空
+                //  删除该记录
+                for(Integer id : groupScheduleId){
+                    try{
+                        centerScheduleLabelRepository.deleteGroupScheduleById(id);
+                    }  catch (Exception ex){
+                        throw new ServiceException("---- deleteGroupScheduleById 语法错误");
+                    }
+                }
+            }
+            //  查询 日程群组中间表: 获取所有群组ID
+            List<Integer> dbGroupIdList = new ArrayList<>();
+            try{
+                dbGroupIdList = groupRepository.findGroupIdByScheduleId(scheduleId);
+            }  catch (Exception ex){
+                throw new ServiceException("---- findGroupIdByScheduleId 语法错误");
+            }
+            for(int i = 0; i < groupIds.size(); i++){
+                Integer groupId = groupIds.get(i);
+                for(int j = 0; j < dbGroupIdList.size(); j++){
+                    Integer dbGroupId = dbGroupIdList.get(j);
+                    if(groupId == dbGroupId){
+                        //  更新 日程群组中间表: 更新日期
+                        GroupScheduleInDto inDto1 = new GroupScheduleInDto();
+                        inDto1.setScheduleId(scheduleId);
+                        inDto1.setGroupId(dbGroupId);
+                        inDto1.setUpdateId(userId);
+                        inDto1.setUpdateDt(updateDate);
+                        int code = groupRepository.updateUpDateByGroupId(inDto1);
+                    } else if(j == dbGroupIdList.size()-1){
+                        // TODO 新增 日程群组中间表数据
+
+                    }
+                }
+            }
 
         }
 

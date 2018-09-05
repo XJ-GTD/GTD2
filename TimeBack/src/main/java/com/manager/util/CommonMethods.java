@@ -3,6 +3,7 @@ package com.manager.util;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -152,5 +153,22 @@ public class CommonMethods {
         }catch (Exception e){
             return false;
         }
+    }
+
+    /**
+     *  获取 日程标签
+     * @param list
+     * @return 4：一般； 5：重要； 6：紧急
+     */
+    public static Integer getscheduleLabel(List<Integer> list){
+        Integer scheduleLabel = 4;
+        for(Integer label : list){
+            if(label == 5){
+                scheduleLabel = 5;
+            } else if(label == 6){
+                scheduleLabel = 6;
+            }
+        }
+        return scheduleLabel;
     }
 }

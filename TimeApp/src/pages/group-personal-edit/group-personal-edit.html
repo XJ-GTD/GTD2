@@ -7,21 +7,32 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title style="text-align: center" >
-      {{data3.groupName}}
+    <ion-title style="text-align: center" *ngIf="data3!=null">
+      {{data3.data.group.groupName}}
       <button style="position: absolute;left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;" (click)="personaledit()">编辑</button>
     </ion-title>
   </ion-navbar>
-
+  <ng-template #elseBlock>
+  </ng-template>
 </ion-header>
 
 
-<ion-content padding>
-  <div *ngIf="isEdit; else elseBlock">
-    <p>{{data3.groupLabel[0].userContact}}</p>
+<ion-content padding  style="margin-top: 10%">
+  <!--<div class="row row11">-->
+    <!--<div class="biaoqian1" *ngFor="let item of data3.data.group.groupLabel">-->
+      <!--<p>{{item.labelName}}</p>-->
+    <!--</div>-->
+  <!--</div>-->
+  <div *ngIf="data3!=null">
+    <div *ngFor="let item of data3.data.group.gtdGroupMember">
+      <!--<div class="row qunchengyuan1" style=" border:1px solid #a1a1a1;">-->
+        <!--<p class="pmingcheng1">{{item.userName}}</p>-->
+      <!--</div>-->
+      <div class="row qunchengyuan1" style=" border:1px solid #a1a1a1;">
+        <p>群成员联系方式:{{item.userContact}}</p>
+      </div>
+    </div>
   </div>
-  <ng-template #elseBlock>
-    <input type="text" value="{{data3.groupLabel[0].userContact}}">
-  </ng-template>
+
 
 </ion-content>
