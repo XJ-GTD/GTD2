@@ -12,7 +12,7 @@
 export class AppConfig {
 
   /* 环境URL 头部 */
-  private static REQUEST_URL: string = "http://192.168.0.176:8080/gtd";
+  private static REQUEST_URL: string = "http://localhost:8080/gtd";
 
   /* RabbitMq WebSocket */
   public static RABBITMQ_WS_URL: string = "ws://192.168.0.219:15674/ws";
@@ -39,7 +39,9 @@ export class AppConfig {
   public static USER_REGISTER_URL: string = AppConfig.USER_URL + "/sign_up";   //注册 POST
 
   //群组类
-  public static GROUP_FIND_URL: string = AppConfig.GROUP_URL + "/selectAll";    //全部群组查询 POST
+  public static GROUP_FIND_URL: string = AppConfig.GROUP_URL + "/find_all";    //全部群组查询 POST
+
+  public static GROUP_FIND_SINGLE_URL: string = AppConfig.GROUP_URL + "/find_single";    //群组详情查询 POST
 
   public static GROUP_ADD_URL: string = AppConfig.GROUP_URL + "/";    //群组添加 POST
 
