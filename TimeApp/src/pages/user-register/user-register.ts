@@ -91,7 +91,7 @@ export class UserRegisterPage {
               if (this.user.code == "0") {
                 this.paramsService.data = this.user.data.userInfo;
                 registerMessage.present(registerMessage.setMessage(this.user.message));
-                this.navCtrl.push('HomeMenuPage');
+                this.navCtrl.push('HomePage');
               } else {
                 registerMessage.present(registerMessage.setMessage(this.user.message));
               }
