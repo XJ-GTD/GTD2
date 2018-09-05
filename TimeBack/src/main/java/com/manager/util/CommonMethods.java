@@ -1,7 +1,9 @@
 package com.manager.util;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -170,5 +172,41 @@ public class CommonMethods {
             }
         }
         return scheduleLabel;
+    }
+
+    /**
+     * 获取某个时间之前的时间
+     * @param dateStr   目标时间
+     * @param times     提前时间（ms）
+     * @return
+     */
+    public static String getBeforeTime(String dateStr,Long times){
+        String aDateStr = null;
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = sdf.parse(dateStr);
+            date.setTime(date.getTime()-times);
+            aDateStr = sdf.format(date);
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
+        return aDateStr;
+    }
+
+    /**
+     *  将 sourceList 中与 targetList 中不相同的元素添加进 targetList 中
+     * @param targetList
+     * @param sourceList
+     * @return
+     */
+    public static List<Integer> addNoRepetitionToList(List<Integer> targetList,List<Integer> sourceList){
+        List<Integer> list = new ArrayList<>();
+        list = targetList;
+        for(int i=0; i<sourceList.size(); i++){
+            if(!list.contains(sourceList.get(i))){
+                list.add(sourceList.get(i));
+            }
+        }
+        return list;
     }
 }

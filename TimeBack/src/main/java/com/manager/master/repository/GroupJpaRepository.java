@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -54,6 +55,21 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
      * @return
      */
     List<GtdGroupEntity> findByGroupIdIn(List<Integer> list);
+
+    /**
+     * 更新群组日程时间中间表时间
+     * @param userid
+     * @param updateDt
+     * @param groupid
+     * @param scheduleid
+     */
+    @Modifying
+    @Query(value = "UPDATE gtd_group_schedule SET UPDATE_ID = ?1,UPDATE_DATE = ?2 WHERE GROUP_ID = ?3 and SCHEDULE_ID = ?4",nativeQuery = true)
+    void updateUpDateByGroupId(Integer userid, Timestamp updateDt,Integer groupid,Integer scheduleid);
+
+    @Modifying
+    @Query(value = "INSERT INTO gtd_group_schedule(GROUP_ID,SCHEDULE_ID,CREATE_ID,CREATE_DATE,UPDATE_ID,UPDATE_DATE) VALUES (?1,?2,?3,?4,?5,?6)",nativeQuery = true)
+    void insertIntoGroupSchedule(Integer groupId,Integer shceduleId,Integer createId,Timestamp createDt,Integer updateId,Timestamp updateDt);
 
 
 //    @Modifying

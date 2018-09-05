@@ -4,6 +4,8 @@ import com.manager.master.entity.GtdGroupMemberEntity;
 import org.hibernate.type.IntegerType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -24,4 +26,8 @@ public interface GroupMemberRepository extends JpaRepository<GtdGroupMemberEntit
     List<GtdGroupMemberEntity> findByUserIdAndGroupId(int userId,int groupId);
 
     List<GtdGroupMemberEntity> findByUserNameLike(String userName);
+
+    @Modifying
+    @Query(value = "SELECT USER_ID FROM gtd_group_member WHERE GROUP_ID = ?1",nativeQuery = true)
+    List<Integer> findAllUserIdByGroupId(Integer groupId);
 }

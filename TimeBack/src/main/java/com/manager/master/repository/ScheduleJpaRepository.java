@@ -20,4 +20,8 @@ public interface ScheduleJpaRepository extends JpaRepository<GtdScheduleEntity,I
     @Modifying
     @Query(value="UPDATE gtd_schedule SET SCHEDULE_NAME = ?1,SCHEDULE_STARTTIME = ?2,SCHEDULE_DEADLINE = ?3,UPDATE_DATE = ?4,UPDATE_ID = ?5 WHERE SCHEDULE_ID = ?6",nativeQuery=true)
     void updateScheduleByScheduleid(String scheduleName, Timestamp scheduleStartDate, Timestamp scheduleEndDate, Timestamp scheduleUpdate,Integer scheduleUpId,Integer scheduleId);
+
+    @Modifying
+    @Query(value = "SELECT SCHEDULE_STARTTIME FROM gtd_schedule WHERE SCHEDULE_ID = ?1",nativeQuery = true)
+    String findschedulStartT(Integer scheduleId);
 }
