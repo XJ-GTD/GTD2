@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.CriteriaBuilder;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,6 +58,12 @@ public class ScheduleServiceImpl implements IScheduleService {
 
     @Resource
     private GroupRepository groupRepository;
+
+    @Resource
+    GroupJpaRepository groupJpaRepository;
+
+    @Resource
+    RemindJpaRepository remindJpaRepository;
 
     @Override
     public List<GtdScheduleEntity> findAll(ScheduleInDto inDto) {
@@ -127,6 +135,29 @@ public class ScheduleServiceImpl implements IScheduleService {
         GtdScheduleEntity scheduleEntity = scheduleJpaRepository.getOne(scheduleId);
 
         if (scheduleEntity.getCreateId().equals(userId)) {     // 发布人 日程编辑
+            // 查询开始时间
+            String dbStartTime = null;
+            boolean timeFlag = false;
+            try{
+                dbStartTime = scheduleJpaRepository.findschedulStartT(scheduleId);
+            } catch (Exception ex){
+                throw new ServiceException("---- findschedulStartT 语法错误");
+            }
+            if(!scheduleStartTime.equals(dbStartTime)){ // 开始时间发生改变
+                timeFlag = true;
+            }
+
+            // 开始前 10分钟
+            String tenMinutes = CommonMethods.getBeforeTime(scheduleStartTime,10*60*1000L);
+            // 开始前 半小时
+            String halfHour = CommonMethods.getBeforeTime(scheduleStartTime,30*60*1000L);
+            // 开始前 一小时
+            String oneHour = CommonMethods.getBeforeTime(scheduleStartTime,60*60*1000L);
+            // 开始前 两小时
+            String twoHour = CommonMethods.getBeforeTime(scheduleStartTime,2*60*60*1000L);
+            // 开始前 一天
+            String oneDay =  CommonMethods.getBeforeTime(scheduleStartTime,24*60*60*1000L);
+
             //  更新日程事件表
             try {
                 scheduleJpaRepository.updateScheduleByScheduleid(scheduleName,CommonMethods.dateToStamp(scheduleStartTime),CommonMethods.dateToStamp(scheduleDeadline),
@@ -144,6 +175,7 @@ public class ScheduleServiceImpl implements IScheduleService {
             } catch (Exception ex){
                 throw new ServiceException("---- findLabelIdByScheduleId 语法错误");
             }
+            List<Timestamp> remindList = new ArrayList<>(); // 提醒时间列表
             Integer scheduleLabelId = 0;
             Integer dbscheduleLabel = 4;
             for(GtdScheduleLabelEntity gtdScheduleLabelEntity : dbScheduleLabel){
@@ -152,22 +184,32 @@ public class ScheduleServiceImpl implements IScheduleService {
                 if(label == 4){
                     dbscheduleLabel = 4;
                     scheduleLabelId = id;
+                    remindList.add(CommonMethods.dateToStamp(oneHour));
                 } else if(label == 5){
                     dbscheduleLabel = 5;
                     scheduleLabelId = id;
+                    remindList.add(CommonMethods.dateToStamp(tenMinutes));
+                    remindList.add(CommonMethods.dateToStamp(twoHour));
+                    remindList.add(CommonMethods.dateToStamp(oneDay));
                 } else if(label == 6){
                     dbscheduleLabel = 6;
                     scheduleLabelId = id;
+                    remindList.add(CommonMethods.dateToStamp(tenMinutes));
+                    remindList.add(CommonMethods.dateToStamp(halfHour));
+                    remindList.add(CommonMethods.dateToStamp(oneHour));
+                    remindList.add(CommonMethods.dateToStamp(twoHour));
+                    remindList.add(CommonMethods.dateToStamp(oneDay));
                 }
             }
+            boolean labelFlag = false;  // 标签是否改变标志
             if(scheduleLabel != dbscheduleLabel){   // 标签发生改变
+                labelFlag = true;
                 //  更新 日程标签中间表
                 try {
                     centerScheduleLabelRepository.updateScheduleLabelById(scheduleLabel,userId,CommonMethods.dateToStamp(updateDate),scheduleLabelId);
                 }  catch (Exception ex){
                     throw new ServiceException("---- updateScheduleLabelById 语法错误");
                 }
-                // TODO 重新定义提醒时间
             }
             //  查询 日程群组中间表: 群组ID不包含在新群组List中，获取自增主键
             List<Integer> groupScheduleId = new ArrayList<>();
@@ -177,7 +219,9 @@ public class ScheduleServiceImpl implements IScheduleService {
                 throw new ServiceException("---- findGroupScheduleIdByScheduleId 语法错误");
             }
 
+            boolean groupFlag = false;  // 日程群组是否改变标志
             if(groupScheduleId.size()>0){   // 结果不为空
+                groupFlag = true;
                 //  删除该记录
                 for(Integer id : groupScheduleId){
                     try{
@@ -189,6 +233,10 @@ public class ScheduleServiceImpl implements IScheduleService {
             }
             //  查询 日程群组中间表: 获取所有群组ID
             List<Integer> dbGroupIdList = new ArrayList<>();
+            // 更新群组集合
+            List<Integer> updateGroupId = new ArrayList<>();
+            // 新增群组集合
+            List<Integer> newGroupId = new ArrayList<>();
             try{
                 dbGroupIdList = groupRepository.findGroupIdByScheduleId(scheduleId);
             }  catch (Exception ex){
@@ -199,18 +247,103 @@ public class ScheduleServiceImpl implements IScheduleService {
                 for(int j = 0; j < dbGroupIdList.size(); j++){
                     Integer dbGroupId = dbGroupIdList.get(j);
                     if(groupId == dbGroupId){
+                        updateGroupId.add(groupId);
                         //  更新 日程群组中间表: 更新日期
-                        GroupScheduleInDto inDto1 = new GroupScheduleInDto();
-                        inDto1.setScheduleId(scheduleId);
-                        inDto1.setGroupId(dbGroupId);
-                        inDto1.setUpdateId(userId);
-                        inDto1.setUpdateDt(updateDate);
-                        int code = groupRepository.updateUpDateByGroupId(inDto1);
+                        try{
+                            groupJpaRepository.updateUpDateByGroupId(userId,CommonMethods.dateToStamp(updateDate),dbGroupId,scheduleId);
+                        }  catch (Exception ex){
+                            throw new ServiceException("---- updateUpDateByGroupId 语法错误");
+                        }
                     } else if(j == dbGroupIdList.size()-1){
-                        // TODO 新增 日程群组中间表数据
-
+                        groupFlag = true;
+                        newGroupId.add(groupId);
+                        //  新增 日程群组中间表数据
+                        try{
+                            groupJpaRepository.insertIntoGroupSchedule(groupId,scheduleId,userId,CommonMethods.dateToStamp(updateDate),userId,CommonMethods.dateToStamp(updateDate));
+                        }  catch (Exception ex){
+                            throw new ServiceException("---- insertIntoGroupSchedule 语法错误");
+                        }
                     }
                 }
+            }
+            // 查询 日程参与人表ID
+            List<Integer> playersList = new ArrayList<>();
+            try{
+                playersList = schedulePlayersRepository.findAllPlayersId(scheduleId);
+            }  catch (Exception ex){
+                throw new ServiceException("---- insertIntoGroupSchedule 语法错误");
+            }
+            if(!groupFlag && !labelFlag && timeFlag){  // 参与人与标签未发生改变，且开始时间发生改变
+                for(int i=0; i<playersList.size();i++){
+                    Integer playersId = playersList.get(i);
+                    // 参与人表ID 对应 提醒时间ID 查询
+                    List<Integer> remindIdList = new ArrayList<>();
+                    try{
+                        remindIdList =  remindJpaRepository.findAllRemindIdByPlayersId(playersId);
+                    } catch (Exception ex){
+                        throw new ServiceException("---- findAllRemindIdByPlayersId 语法错误");
+                    }
+                    for(int j=0; j<remindIdList.size(); j++){
+                        // 更新 提醒时间表 相关数据
+                        try{
+                            remindJpaRepository.updateRemindDate(remindList.get(j),userId,CommonMethods.dateToStamp(updateDate),remindIdList.get(j));
+                        } catch (Exception ex){
+                            throw new ServiceException("---- updateRemindDate 语法错误");
+                        }
+                    }
+                }
+            } else if(!groupFlag && labelFlag){ // 参与人未发生改变，标签发生改变
+                // 删除 提醒时间表 相关数据
+                for(Integer playersId : playersList){
+                    try{
+                        remindJpaRepository.deleteAllByPlayersId(playersId);
+                    } catch (Exception ex){
+                        throw new ServiceException("---- deleteAllByPlayersId 语法错误");
+                    }
+                }
+                // 重新添加 提醒时间表相关数据
+                for(int i=0; i< playersList.size(); i++){
+                    Integer playersId = playersList.get(i);
+                    for(int j=0; j<remindList.size();j++){
+                        Timestamp remindDt = remindList.get(j);
+                        try{
+                            remindJpaRepository.insertIntoRemind(playersId,remindDt,userId,CommonMethods.dateToStamp(updateDate),userId,CommonMethods.dateToStamp(updateDate));
+                        } catch (Exception ex){
+                            throw new ServiceException("---- insertIntoRemind 语法错误");
+                        }
+                    }
+                }
+            } else if(groupFlag){   // 参与人发生改变
+//                for(int i=0; i< playersList.size(); i++) {
+//                    Integer playersId = playersList.get(i);
+//                    // 删除 提醒时间表 相关数据
+//                    try{
+//                        remindJpaRepository.deleteAllByPlayersId(playersId);
+//                    } catch (Exception ex){
+//                        throw new ServiceException("---- deleteAllByPlayersId 语法错误");
+//                    }
+//                    // 删除 日程参与人表 相关数据
+//                    try{
+//                        schedulePlayersRepository.deleteSchedulePlayersByPlayersId(playersId);
+//                    } catch (Exception ex){
+//                        throw new ServiceException("---- deleteSchedulePlayersByPlayersId 语法错误");
+//                    }
+//                }
+                // 重新添加 日程参与人表、提醒时间表 相关数据
+                // 查询 所有群成员
+//                List<Integer> useridList = new ArrayList<>();
+//                for(int i=0; i<groupIds.size(); i++){
+//                    Integer groupid = groupIds.get(i);
+//                    List<Integer> userid = new ArrayList<>();
+//                    try{
+//                        userid = groupMemberRepository.findAllUserIdByGroupId(groupid);
+//                    }catch (Exception ex){
+//                        throw new ServiceException("---- findAllUserIdByGroupId 语法错误");
+//                    }
+//                    useridList = CommonMethods.addNoRepetitionToList(useridList,userid);
+//                }
+                // 重新添加 日程参与人员表
+
             }
 
         }

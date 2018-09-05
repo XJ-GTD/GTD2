@@ -59,4 +59,35 @@ public interface SchedulePlayersRepository extends JpaRepository<GtdSchedulePlay
      * @return
      */
     List<GtdSchedulePlayersEntity> findAllByScheduleId(Integer scheduleId);
+
+    /**
+     * 查询日程参与人表ID
+     * @param schedulId
+     * @return
+     */
+    @Modifying
+    @Query(value = "SELECT PLAYERS_ID FROM gtd_schedule_players WHERE SCHEDULE_ID = ?1",nativeQuery = true)
+    List<Integer> findAllPlayersId(Integer schedulId);
+
+    /**
+     * 根据 日程参与人表ID 删除表数据
+     * @param playersId
+     */
+    @Modifying
+    @Query(value = "DELETE FROM gtd_schedule_players WHERE PLAYERS_ID = ?1",nativeQuery = true)
+    void deleteSchedulePlayersByPlayersId(Integer playersId);
+
+    /**
+     * 插入新数据到日程参与人表
+     * @param scheduleId
+     * @param playersStatus
+     * @param userId
+     * @param createId
+     * @param createDt
+     * @param updateId
+     * @param updateDt
+     */
+    @Modifying
+    @Query(value = "",nativeQuery = true)
+    void insertSchedulePlayers(Integer scheduleId,Integer playersStatus,Integer userId,Integer createId,Timestamp createDt,Integer updateId,Timestamp updateDt);
 }
