@@ -5,31 +5,45 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title style="text-align: center" >{{name1}}</ion-title>
-  </ion-navbar>
-
-  <ng-template #elseBlock>
+  <div *ngIf="data1!=null ; else elseBlock1">
+    <ion-navbar>
+      <ion-title style="text-align: center" >{{data1.data.group.groupName}}</ion-title>
+    </ion-navbar>
+  </div>
+  <ng-template #elseBlock1>
+    <ion-navbar>
+      <ion-title style="text-align: center" >添加新群组</ion-title>
+    </ion-navbar>
   </ng-template>
 </ion-header>
 
 
 <ion-content padding>
-  <ion-list class="">
-    <div>
-      <input style="width: 100%;height: 30px;padding-left: 10px;margin-bottom: 50px" placeholder="群组名" type="text">
+    <div *ngIf="data1!=null; else elseBlock3">
+      <input style="width: 100%;height: 30px;padding-left: 10px;margin-bottom: 50px" placeholder="{{data1.data.group.groupName}}" #groupName type="text">
     </div>
+    <ng-template #elseBlock3>
+      <input style="width: 100%;height: 30px;padding-left: 10px;margin-bottom: 50px" placeholder="群名称" #groupName type="text">
+    </ng-template>
     <button class="divbiaoqian" style="background-color: white;width: 100%">
-      <input style="width: 85%;padding-left: 10px;height: 30px" placeholder="点击添加标签" type="text">
+      <button style="width: 85%;padding-left: 10px;height: 30px" (click)="showLabelCheckbox()">点击添加标签</button>
     </button>
-  </ion-list>
-  <div class="divqunchengyuan">
-    <div *ngFor="let item of ['张三','李四']" class="row qunchengyuan"><p class="pmingcheng">{{item}}</p><p>群成员联系方式:1303132xxxx</p></div>
+  <div class="divqunchengyuan"  *ngIf="data1!=null; else elseBlock">
+    <div *ngFor="let item of data1.data.group.gtdGroupMember" class="row qunchengyuan">
+      <p class="pmingcheng">{{item.userName}}</p><p>群成员联系方式:{{item.userContact}}</p>
+    </div>
     <button style="width: 100%;background-color: white">
-    <div class="row qunchengyuan"><p class="pmingcheng">点击添加新成员</p></div>
+      <button class="divbiaoqian" style="background-color: white;width: 100%">
+        <button style="width: 85%;padding-left: 10px;height: 50%" (click)="showMemberCheckbok()">点击添加新成员</button>
+      </button>
     </button>
   </div>
   <ng-template #elseBlock>
+    <button style="width: 100%;background-color: white">
+      <button class="divbiaoqian" style="background-color: white;width: 100%">
+        <button style="width: 85%;padding-left: 10px;height: 50%" (click)="showMemberCheckbok()">点击添加新成员</button>
+      </button>
+    </button>
+    <button (click)="savegroup(groupName)">保存</button>
   </ng-template>
 </ion-content>
