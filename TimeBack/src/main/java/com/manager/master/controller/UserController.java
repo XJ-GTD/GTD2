@@ -111,6 +111,9 @@ public class UserController {
             return outBean;
         }
         //入参关联检查
+        //密码加密
+        accountPassword=BaseUtil.encryption(accountPassword);
+        inDto.setAccountPassword(accountPassword);
         //业务逻辑
         try {
             int flag = userService.registerUser(inDto);
@@ -160,6 +163,10 @@ public class UserController {
                 return outBean;
             }
         }
+
+        //密码加密
+        password=BaseUtil.encryption(password);
+        inDto.setAccountPassword(password);
         //业务逻辑
         try {
 
