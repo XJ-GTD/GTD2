@@ -74,14 +74,5 @@ public class GroupRepository {
         return (List<Integer>) em.createNativeQuery(sql).getResultList();
     }
 
-    /**
-     * 更新群组日程时间中间表时间
-     * @param indto
-     * @return
-     */
-    public int updateUpDateByGroupId(GroupScheduleInDto indto){
-        String sql = "UPDATE gtd_group_schedule SET UPDATE_ID = "+indto.getUpdateId()+",UPDATE_DATE = "+indto.getUpdateDt()+" WHERE GROUP_ID = "+indto.getGroupId()+" and SCHEDULE_ID = "+indto.getScheduleId();
-        return em.createNativeQuery(sql).executeUpdate();
-    }
 
 }

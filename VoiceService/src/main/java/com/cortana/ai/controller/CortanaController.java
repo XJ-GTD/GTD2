@@ -77,4 +77,12 @@ public class CortanaController {
 
         return data;
     }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String update(@RequestBody VoiceInBean voiceInBean) {
+
+        String date = aiUiService.update();
+
+        return date;
+    }
 }

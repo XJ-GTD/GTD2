@@ -1,9 +1,13 @@
 package com.cortana.ai.service;
 
 import com.cortana.ai.util.AiUiUtil;
+import com.cortana.ai.util.DynamicEntityUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.text.ParseException;
 
 @Service
 public class AiUiService {
@@ -34,4 +38,23 @@ public class AiUiService {
 
         return outData;
     }
+
+    /**
+     * 上传资源
+     * @return
+     */
+    public String update(){
+        try {
+            String outData = DynamicEntityUtil.update();
+            return outData;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

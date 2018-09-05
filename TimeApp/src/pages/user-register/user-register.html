@@ -37,7 +37,7 @@
     </ion-item>
     <div *ngIf="accountPassword.hasError('required') && accountPassword.touched"  color="danger" class="error-message">请输入密码</div>
     <div *ngIf="(accountPassword.hasError('minlength')) && accountPassword.touched"  color="danger" class="error-message">密码长度最少为六位</div>
-    <div *ngIf="(accountPassword.hasError('maxlength')) && accountPassword.touched"  color="danger" class="error-message">密码长度最多为十六位</div>
+    <div *ngIf="(accountPassword.hasError('maxlength')) && accountPassword.touched"  color="danger" class="error-message">密码长度最多为二十位</div>
 
     <ion-item>
       <ion-label fixed>确认密码</ion-label>
@@ -46,6 +46,11 @@
     <div *ngIf="reAccountPassword.hasError('required') && reAccountPassword.touched" color="danger" class="error-message">请输入确认密码</div>
 
     <div *ngIf="!reAccountPassword.hasError('required')&&!reAccountPassword.hasError('minlength')&&accountPassword.value!=reAccountPassword.value" color="danger" class="error-message">两次输入的密码不一致</div>
+
+    <ion-item>
+      <ion-label fixed>昵称（选填，推荐使用真实姓名）</ion-label>
+      <ion-input type="text" [formControl]="userName" clearInput=true ></ion-input>
+    </ion-item>
 
     <div style="text-align: center; margin-left: 30px; margin-right: 30px;">
       <button ion-button block color="danger" type="submit" [disabled]="!RegisterForm.valid||(accountPassword.value!=reAccountPassword.value)">

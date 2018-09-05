@@ -25,6 +25,7 @@ export class UserRegisterPage {
   accountName: any;
   accountPassword: any;
   accountMobile: any;
+  userName: any;
   reAccountPassword: any;
 
   constructor(public navCtrl: NavController,
@@ -36,13 +37,14 @@ export class UserRegisterPage {
     this.RegisterForm = this.formBuilder.group({
       accountName: ['', Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(12)])],
       accountMobile:['',Validators.compose([Validators.required, Validators.minLength(11), Validators.maxLength(11)])],
-      accountPassword: ['', Validators.compose([Validators.required, Validators.minLength(6),Validators.maxLength(16)])],
+      accountPassword: ['', Validators.compose([Validators.required, Validators.minLength(6),Validators.maxLength(20)])],
       reAccountPassword:['',Validators.compose([Validators.required])]
     })
-    this.accountName = this.RegisterForm.controls['accountName'];
+    this.accountName = "100" + this.RegisterForm.controls['accountMobile'];
     this.accountMobile=this.RegisterForm.controls['accountMobile'];
     this.accountPassword = this.RegisterForm.controls['accountPassword'];
-    this.reAccountPassword=this.RegisterForm.controls['reAccountPassword']
+    this.reAccountPassword=this.RegisterForm.controls['reAccountPassword'];
+    this.userName = this.RegisterForm.controls['userName'];
   }
 
   ionViewDidLoad() {
@@ -58,9 +60,10 @@ export class UserRegisterPage {
 
     //用户注册
     this.http.post(AppConfig.USER_REGISTER_URL, {
-      accountName: form.accountName,
+      accountName: this.accountName,
       accountPassword: form.accountPassword,
-      accountMobile: form.accountMobile
+      accountMobile: form.accountMobile,
+      userName: this.userName
     }, {
       headers: {
         "Content-Type": "application/json"
@@ -73,7 +76,7 @@ export class UserRegisterPage {
           registerMessage.present(registerMessage.setMessage(this.data.message));
           //注册成功后登陆
           this.http.post(AppConfig.USER_LOGIN_URL, {
-            accountMobile: form.accountName,
+            accountName: form.accountName,
             accountPassword: form.accountPassword
           },{
             headers: {
@@ -88,7 +91,7 @@ export class UserRegisterPage {
               if (this.user.code == "0") {
                 this.paramsService.data = this.user.data.userInfo;
                 registerMessage.present(registerMessage.setMessage(this.user.message));
-                this.navCtrl.push('HomeMenuPage');
+                this.navCtrl.push('HomePage');
               } else {
                 registerMessage.present(registerMessage.setMessage(this.user.message));
               }

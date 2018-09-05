@@ -30,7 +30,7 @@ public class AiUiUtil {
     private static final String FILE_PATH = "";
 
     // 个性化参数，需转义
-    private static final String PERS_PARAM = "{\\\"auth_id\\\":\\\"2894c985bf8b1111c6728db79d3479ae\\\"}";
+    private static final String PERS_PARAM = "{\"auth_id\":\"2894c985bf8b1111c6728db79d3479ae\"}";
 
     /**
      *
