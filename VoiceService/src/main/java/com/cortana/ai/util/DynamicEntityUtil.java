@@ -69,9 +69,8 @@ public class DynamicEntityUtil {
         //每条数据之间用换行符隔开
 //        String data = "{\"name\":\"张三\",\"phoneNumber\":\"13888888888\"}" + "\r\n"
 //                + "{\"name\":\"李四\",\"phoneNumber\":\"13666666666\"}";
-        String data = "{\"person\": \"张金洋\",\"alias\": \"老张\",\"company\": {\"post\": \"张总\"}}" + "\r\n"
-                + "{\"person\": \"席理加\",\"alias\": \"老席\",\"company\": {\"post\": \"席总\"}}" + "\r\n"
-                + "{\"person\": \"许兆平\",\"alias\": \"老许\",\"company\": {\"post\": \"shopping\"}}";
+        String data = "{\"schedule_name\": \"开会\"}" + "\r\n" + "{\"schedule_name\": \"买材料\"}" + "\r\n"
+                + "{\"schedule_name\": \"浇花\"}" + "\r\n" + "{\"schedule_name\": \"吃饭\"}" + "\r\n";
         Map<String, String> map = new HashMap<String, String>();
         map.put("appid", APPID);
         map.put("res_name", RES_NAME);
