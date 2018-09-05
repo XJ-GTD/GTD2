@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
+import { IonicPage, LoadingController, ModalController, NavController, NavParams } from 'ionic-angular';
 import { ParamsService } from "../../service/params.service";
 import { HttpClient } from "@angular/common/http";
 import { ScheduleModel } from "../../model/schedule.model";
-import {AppConfig} from "../../app/app.config";
+import { AppConfig } from "../../app/app.config";
+import { Group } from "../../model/group.model";
+import {ModalPlayersPage} from "../modal-players/modal-players";
 
 /**
  * Generated class for the ScheduleAddPage page.
@@ -20,16 +22,17 @@ import {AppConfig} from "../../app/app.config";
 })
 export class ScheduleAddPage {
 
-  dataList = [];
   data: any;
-  groupId: any;
   schedule: ScheduleModel;
+  groupIds: Array<number>;
+  groupList: Array<Group>;
   flag: boolean = true;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private http: HttpClient,
               public loadingCtrl: LoadingController,
+              public modalCtrl: ModalController,
               private paramsService: ParamsService) {
     this.init();
 
@@ -41,6 +44,11 @@ export class ScheduleAddPage {
     } else {
       this.schedule = new ScheduleModel();
     }
+  }
+
+  checkContact() {
+    let modal = this.modalCtrl.create(ModalPlayersPage);
+    modal.present()
   }
 
   //发布任务入库
