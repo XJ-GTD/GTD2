@@ -5,7 +5,7 @@ import { HttpClient } from "@angular/common/http";
 import { ScheduleModel } from "../../model/schedule.model";
 import { AppConfig } from "../../app/app.config";
 import {ScheduleOutModel} from "../../model/out/schedule.out.model";
-import {GroupFindOutModel} from "../../model/out/groupFind.Out.model";
+import {GroupFindOutModel} from "../../model/out/groupFind.out.model";
 
 /**
  * Generated class for the ScheduleAddPage page.
