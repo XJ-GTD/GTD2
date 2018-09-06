@@ -57,7 +57,7 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     List<GtdGroupEntity> findByGroupIdIn(List<Integer> list);
 
     /**
-     * 更新群组日程时间中间表时间
+     * 更新群组日程事件中间表时间
      * @param userid
      * @param updateDt
      * @param groupid
@@ -67,6 +67,15 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     @Query(value = "UPDATE gtd_group_schedule SET UPDATE_ID = ?1,UPDATE_DATE = ?2 WHERE GROUP_ID = ?3 and SCHEDULE_ID = ?4",nativeQuery = true)
     void updateUpDateByGroupId(Integer userid, Timestamp updateDt,Integer groupid,Integer scheduleid);
 
+    /**
+     * 插入群组日程事件中间表
+     * @param groupId
+     * @param shceduleId
+     * @param createId
+     * @param createDt
+     * @param updateId
+     * @param updateDt
+     */
     @Modifying
     @Query(value = "INSERT INTO gtd_group_schedule(GROUP_ID,SCHEDULE_ID,CREATE_ID,CREATE_DATE,UPDATE_ID,UPDATE_DATE) VALUES (?1,?2,?3,?4,?5,?6)",nativeQuery = true)
     void insertIntoGroupSchedule(Integer groupId,Integer shceduleId,Integer createId,Timestamp createDt,Integer updateId,Timestamp updateDt);

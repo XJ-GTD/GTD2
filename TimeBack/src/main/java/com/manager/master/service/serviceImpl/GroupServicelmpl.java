@@ -84,9 +84,13 @@ public class GroupServicelmpl implements IGroupService {
         }
         if(typeId==1) {
             return result;
-        }else{
+        }else if (typeId == 2){
+            return results;
+        } else if (typeId == 3) {
+            results.addAll(result);
             return results;
         }
+        return null;
     }
 
     @Override

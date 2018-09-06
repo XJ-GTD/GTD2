@@ -33,8 +33,8 @@ export class UserMessagePage {
   init() {
     alert("跳转了");
     this.schedule = this.paramsService.schedule;
-    this.schedule.scheduleStartDate = this.schedule.scheduleStartDate.replace(" ", "T");
-    this.schedule.scheduleEndDate = this.schedule.scheduleEndDate.replace(" ", "T");
+    // this.schedule.scheduleStartDate = this.schedule.scheduleStartDate.replace(" ", "T");
+    // this.schedule.scheduleEndDate = this.schedule.scheduleEndDate.replace(" ", "T");
   }
 
   ionViewDidLoad() {

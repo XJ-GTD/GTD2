@@ -14,6 +14,7 @@ export class ParamsService {
   private _user: User;
   private _voice: any;
   private _schedule: ScheduleModel;
+  private _contactList: Array<number>;
 
   get schedule(): ScheduleModel {
     return this._schedule;
@@ -45,6 +46,12 @@ export class ParamsService {
     this._data = value;
   }
 
+  get contactList(): Array<number> {
+    return this._contactList;
+  }
 
+  set contactList(value: Array<number>) {
+    this._contactList = value;
+  }
 
 }

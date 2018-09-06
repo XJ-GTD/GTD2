@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, LoadingController, NavController, NavParams, ToastController } from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
 import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
 import { ParamsService } from "../../service/params.service";
@@ -28,6 +28,7 @@ export class UserLoginPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
+    private alertCtrl: AlertController,
     private http: HttpClient,
     public toastCtrl: ToastController,
     private paramsService: ParamsService) {
@@ -57,7 +58,12 @@ export class UserLoginPage {
         console.log( this.data);
         let loader = this.loadingCtrl.create({
           content: this.data.message,
-          duration: 1500
+          duration: 1000
+        });
+        let alert = this.alertCtrl.create({
+          title:'提示信息',
+          subTitle: this.data.message,
+          buttons:['确定']
         });
 
         if (this.data.code == "0") {
@@ -67,7 +73,7 @@ export class UserLoginPage {
           loader.present();
           this.navCtrl.push('HomePage');
         } else {
-          loader.present();
+          alert.present();
         }
 
       })

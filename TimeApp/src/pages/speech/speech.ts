@@ -28,6 +28,10 @@ export class SpeechPage {
     console.log('ionViewDidLoad SpeechPage');
   }
 
+  addSchedule() {
+    this.navCtrl.push("ScheduleAddPage")
+  }
+
   //启动语音助手
   startXiaoJi() {
 

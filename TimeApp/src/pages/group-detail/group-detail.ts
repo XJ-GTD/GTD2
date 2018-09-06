@@ -81,7 +81,7 @@ export class GroupDetailPage {
   }
 
   editgroup(){
-    this.navCtrl.push('GroupEditPage',{"data1":this.data1})
+    this.navCtrl.push('GroupEditPage',this.data1)
   }
 
 }

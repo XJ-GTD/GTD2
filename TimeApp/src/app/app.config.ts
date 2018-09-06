@@ -47,7 +47,7 @@ export class AppConfig {
   public static GROUP_ADD_URL: string = AppConfig.GROUP_URL + "/";    //群组添加 POST
 
   //日程类
-  public static SCHEDULE_TASK_ISSUE: string = AppConfig.SCHEDULE_URL + "/task_announcement";    //发布任务 POST
+  // public static SCHEDULE_TASK_ISSUE: string = AppConfig.SCHEDULE_URL + "/task_announcement";    //发布任务 POST
 
   public static SCHEDULE_ADD_URL: string = AppConfig.SCHEDULE_URL + "/create";    //添加（新增）日程 POST
 

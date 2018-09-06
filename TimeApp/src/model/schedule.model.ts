@@ -5,6 +5,7 @@
  */
 export class ScheduleModel {
 
+  private _code: number;                              //消息状态值
   private _scheduleId: number;                        // 日程事件ID
   private _scheduleName: string;                    // 日程事件名称
   private _scheduleStartTime: string;              // 开始时间
@@ -46,4 +47,11 @@ export class ScheduleModel {
     this._scheduleId = value;
   }
 
+  get code(): number {
+    return this._code;
+  }
+
+  set code(value: number) {
+    this._code = value;
+  }
 }
