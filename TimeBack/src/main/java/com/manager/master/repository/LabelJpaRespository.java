@@ -13,4 +13,5 @@ import javax.transaction.Transactional;
 @Transactional
 public interface LabelJpaRespository extends JpaRepository<GtdLabelEntity,Integer>{
 
+    GtdLabelEntity findByLabelId(int labelId);
 }

@@ -86,16 +86,17 @@ public class GroupController {
      * @param inDto
      *   GroupName群组名称 CreateId UserId
      */
-    @RequestMapping(value = "/addgroup",method = RequestMethod.POST)
+    @RequestMapping(value = "/add_group",method = RequestMethod.POST)
     @ResponseBody
+
     public BaseOutDto add(@RequestBody GroupInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try {
             int code = IGroupService.addGroup(inDto);
             if (code == 0) {
-                outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
+                outDto.setCode(ResultCode.SUCCESS).setMessage("群组创建成功");
             } else {
-                outDto.setCode(ResultCode.SUCCESS).setMessage("插入成功");
+                outDto.setCode(ResultCode.REPEAT).setMessage("群组创建失败");
             }
         }catch (Exception e){
             throw new ServiceException(e.getMessage());
@@ -104,20 +105,20 @@ public class GroupController {
     }
 
     /**
-     * 群组编辑 修改群名称/增删标签
+     * 群组编辑
      * @param inDto 群组ID，群组名称/标签ID
      * @return
      */
-    @RequestMapping(value = "/updatename",method = RequestMethod.POST)
+    @RequestMapping(value = "/update_group",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto updateGname(GroupInDto inDto){
+    public BaseOutDto updateGname(@RequestBody GroupInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try{
         int code=IGroupService.updateGname(inDto);
         if (code == 0) {
-            outDto.setCode(ResultCode.REPEAT).setMessage("信息修改失败");
+            outDto.setCode(ResultCode.REPEAT).setMessage("修改成功");
         } else {
-            outDto.setCode(ResultCode.SUCCESS).setMessage("修改成功");
+            outDto.setCode(ResultCode.SUCCESS).setMessage("修改失败");
         }
     }catch (Exception e){
         throw new ServiceException(e.getMessage());
@@ -127,18 +128,69 @@ public class GroupController {
 
 
     /**
-     * 删除/添加群成员
-     * @param inDto 删除/添加群成员的ID userId
+     * 删除群组
+     * @param inDto
      * @retur
      */
-    @RequestMapping(value = "/upmember",method = RequestMethod.POST)
+    @RequestMapping(value = "/delete_group",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto member(GroupInDto inDto){
+    public BaseOutDto delete(@RequestBody GroupInDto inDto){
         BaseOutDto outBean = new BaseOutDto();
-        String message=IGroupService.member(inDto);
-        outBean.setMessage(message);
+
         return outBean;
     }
 
+    /**
+     * 退出群组
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/exit_group",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto exit(@RequestBody GroupInDto inDto){
+        BaseOutDto outBean = new BaseOutDto();
+
+        return outBean;
+    }
+
+    /**
+     * 添加群成员
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/add_member",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto addMember(@RequestBody GroupInDto inDto){
+        BaseOutDto outBean = new BaseOutDto();
+
+        return outBean;
+    }
+
+    /**
+     * 删除群成员
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/delete_member",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto delMember(@RequestBody GroupInDto inDto){
+        BaseOutDto outBean = new BaseOutDto();
+
+        return outBean;
+    }
+
+
+    /**
+     * 群成员编辑
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/update_groupmember",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto updateMember(@RequestBody GroupInDto inDto){
+        BaseOutDto outBean = new BaseOutDto();
+
+        return outBean;
+    }
 }
 

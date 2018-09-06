@@ -87,7 +87,7 @@ public interface SchedulePlayersRepository extends JpaRepository<GtdSchedulePlay
      * @param updateId
      * @param updateDt
      */
-    @Modifying
-    @Query(value = "",nativeQuery = true)
-    void insertSchedulePlayers(Integer scheduleId,Integer playersStatus,Integer userId,Integer createId,Timestamp createDt,Integer updateId,Timestamp updateDt);
+//    @Modifying
+//    @Query(value = "",nativeQuery = true)
+//    void insertSchedulePlayers(Integer scheduleId,Integer playersStatus,Integer userId,Integer createId,Timestamp createDt,Integer updateId,Timestamp updateDt);
 }
