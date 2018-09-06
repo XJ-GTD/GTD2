@@ -12,7 +12,8 @@
 export class AppConfig {
 
   /* 环境URL 头部 */
-  private static REQUEST_URL: string = "http://localhost:8080/gtd";
+  private static REQUEST_URL: string = "http://192.168.176:8080/gtd";
+  // private static REQUEST_URL: string = "http://localhost:8080/gtd";//连接本地数据库
 
   /* RabbitMq WebSocket */
   public static RABBITMQ_WS_URL: string = "ws://192.168.0.219:15674/ws";
@@ -46,7 +47,7 @@ export class AppConfig {
   public static GROUP_ADD_URL: string = AppConfig.GROUP_URL + "/";    //群组添加 POST
 
   //日程类
-  public static SCHEDULE_TASK_ISSUE: string = AppConfig.SCHEDULE_URL + "/task_announcement";    //发布任务 POST
+  // public static SCHEDULE_TASK_ISSUE: string = AppConfig.SCHEDULE_URL + "/task_announcement";    //发布任务 POST
 
   public static SCHEDULE_ADD_URL: string = AppConfig.SCHEDULE_URL + "/create";    //添加（新增）日程 POST
 
