@@ -116,9 +116,9 @@ public class GroupController {
         try{
         int code=IGroupService.updateGname(inDto);
         if (code == 0) {
-            outDto.setCode(ResultCode.REPEAT).setMessage("修改成功");
+            outDto.setCode(ResultCode.SUCCESS).setMessage("修改成功");
         } else {
-            outDto.setCode(ResultCode.SUCCESS).setMessage("修改失败");
+            outDto.setCode(ResultCode.REPEAT).setMessage("修改失败");
         }
     }catch (Exception e){
         throw new ServiceException(e.getMessage());
@@ -126,6 +126,27 @@ public class GroupController {
         return outDto;
     }
 
+    /**
+     * 修改群成员状态
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/update_member_status",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto update_memberstatus(@RequestBody GroupInDto inDto){
+        BaseOutDto outDto = new BaseOutDto();
+        try{
+            int code=IGroupService.updateStatus(inDto);
+            if (code == 0) {
+                outDto.setCode(ResultCode.SUCCESS).setMessage("修改成功");
+            } else {
+                outDto.setCode(ResultCode.REPEAT).setMessage("修改失败");
+            }
+        }catch (Exception e){
+            throw new ServiceException(e.getMessage());
+        }
+        return outDto;
+    }
 
     /**
      * 删除群组
@@ -135,9 +156,18 @@ public class GroupController {
     @RequestMapping(value = "/delete_group",method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto delete(@RequestBody GroupInDto inDto){
-        BaseOutDto outBean = new BaseOutDto();
-
-        return outBean;
+        BaseOutDto outDto = new BaseOutDto();
+        try{
+            int code=IGroupService.delGroup(inDto);
+            if (code == 0) {
+                outDto.setCode(ResultCode.SUCCESS).setMessage("删除成功");
+            } else {
+                outDto.setCode(ResultCode.REPEAT).setMessage("删除失败");
+            }
+        }catch (Exception e){
+            throw new ServiceException(e.getMessage());
+        }
+        return outDto;
     }
 
     /**
@@ -148,36 +178,42 @@ public class GroupController {
     @RequestMapping(value = "/exit_group",method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto exit(@RequestBody GroupInDto inDto){
-        BaseOutDto outBean = new BaseOutDto();
-
-        return outBean;
+        BaseOutDto outDto = new BaseOutDto();
+        try{
+            int code=IGroupService.exitGroup(inDto);
+            if (code == 0) {
+                outDto.setCode(ResultCode.SUCCESS).setMessage("退出成功");
+            } else {
+                outDto.setCode(ResultCode.REPEAT).setMessage("退出失败");
+            }
+        }catch (Exception e){
+            throw new ServiceException(e.getMessage());
+        }
+        return outDto;
     }
 
     /**
-     * 添加群成员
+     * 添加/删除群成员
      * @param inDto
      * @return
      */
-    @RequestMapping(value = "/add_member",method = RequestMethod.POST)
+    @RequestMapping(value = "/add_del_member",method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto addMember(@RequestBody GroupInDto inDto){
-        BaseOutDto outBean = new BaseOutDto();
-
-        return outBean;
+        BaseOutDto outDto = new BaseOutDto();
+        try{
+            int code=IGroupService.addOrDelMember(inDto);
+            if (code == 0) {
+                outDto.setCode(ResultCode.SUCCESS).setMessage("操作成功");
+            } else {
+                outDto.setCode(ResultCode.REPEAT).setMessage("操作失败");
+            }
+        }catch (Exception e){
+            throw new ServiceException(e.getMessage());
+        }
+        return outDto;
     }
 
-    /**
-     * 删除群成员
-     * @param inDto
-     * @return
-     */
-    @RequestMapping(value = "/delete_member",method = RequestMethod.POST)
-    @ResponseBody
-    public BaseOutDto delMember(@RequestBody GroupInDto inDto){
-        BaseOutDto outBean = new BaseOutDto();
-
-        return outBean;
-    }
 
 
     /**
@@ -188,9 +224,18 @@ public class GroupController {
     @RequestMapping(value = "/update_groupmember",method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto updateMember(@RequestBody GroupInDto inDto){
-        BaseOutDto outBean = new BaseOutDto();
-
-        return outBean;
+        BaseOutDto outDto = new BaseOutDto();
+        try{
+            int code=IGroupService.member(inDto);
+            if (code == 0) {
+                outDto.setCode(ResultCode.SUCCESS).setMessage("修改成功");
+            } else {
+                outDto.setCode(ResultCode.REPEAT).setMessage("修改失败");
+            }
+        }catch (Exception e){
+            throw new ServiceException(e.getMessage());
+        }
+        return outDto;
     }
 }
 

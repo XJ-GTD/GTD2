@@ -16,6 +16,7 @@ public class GtdLabelRuleEntity {
     private Timestamp updateDate;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "LABEL_RULE_ID")
     public int getLabelRuleId() {
         return labelRuleId;

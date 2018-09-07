@@ -48,10 +48,10 @@ public class GroupRepository {
     }
 
 
-    public int  updateGroup(GroupInDto inDto){
-        String sql="UPDATE gtd_group SET GROUP_NAME="+inDto.getGroupName()+" WHERE GROUP_ID="+inDto.getGroupId();
-        return em.createNativeQuery(sql).executeUpdate();
-    }
+   public List<Integer> findScheduleId(int groupId){
+        String sql="SELECT SCHEDULE_ID FROM GTD_GROUP_SCHEDULE WHERE GROUP_ID="+groupId;
+       return (List<Integer>) em.createNativeQuery(sql).getResultList();
+   }
 
     /**
      * 根据 日程事件表ID 查询不包含在新群组ID列表里的 自增主键
@@ -82,6 +82,45 @@ public class GroupRepository {
     public int  findUserId(String contact){
         String sql="SELECT USER_ID FROM GTD_USER WHERE USER_CONTACT="+contact;
         return (int) em.createNativeQuery(sql).getSingleResult();
+    }
+
+    /**
+     * 查询群成员状态
+     * @param userId
+     * @param groupId
+     * @return
+     */
+    public int findMemberStatus(int userId,int groupId){
+        String sql="SELECT GROUP_MEMBER_STATUS FROM GTD_GROUP_MEMBER WHERE USER_ID="+userId+" AND GROUP_ID="+groupId;
+        return (int)em.createNativeQuery(sql).getSingleResult();
+    }
+
+    /**
+     * 根据群组Id删除 本地
+     * @param groupId
+     */
+    public void deleteByGroupId(int groupId){
+        String sql="delete from gtd_group_label where group_id="+groupId;
+        String sql2="delete from gtd_group_member where group_id="+groupId;
+        String sql3="delete from gtd_group_schedule where group_id="+groupId;
+        String sql4="delete from gtd_group where group_id="+groupId;
+        em.createNativeQuery(sql).executeUpdate();
+        em.createNativeQuery(sql2).executeUpdate();
+        em.createNativeQuery(sql3).executeUpdate();
+        em.createNativeQuery(sql4).executeUpdate();
+    }
+
+    /**
+     * 根据群组Id删除 权限群组
+     * @param groupId
+     */
+    public void deleteByGroupId2(int groupId){
+        String sql="delete from gtd_group_label where group_id="+groupId;
+        String sql2="delete from gtd_group_member where group_id="+groupId;
+        String sql3="delete from gtd_group where group_id="+groupId;
+        em.createNativeQuery(sql).executeUpdate();
+        em.createNativeQuery(sql2).executeUpdate();
+        em.createNativeQuery(sql3).executeUpdate();
     }
 
 }

@@ -26,21 +26,23 @@ public interface IGroupService {
     List<GtdGroupEntity> select(GroupInDto inDto);
 
     //添加群组
-
     int addGroup(GroupInDto inDto);
 
-    //添加标签
-    int addLabel(GroupInDto inDto);
-
     //删除群组
-    void delGroup(GroupInDto inDto);
+    int delGroup(GroupInDto inDto);
+
+    //退出群组
+    int exitGroup(GroupInDto inDto);
 
     //编辑群组
     int updateGname(GroupInDto inDto);
 
-    //删除标签，权限标签不能删除
-    void delLabel(GroupInDto inDto);
+    //删除/添加群成员
+    int addOrDelMember(GroupInDto inDto);
 
     //编辑群成员
-    String member(GroupInDto inDto);
+    int member(GroupInDto inDto);
+
+    //群成员状态改变
+    int updateStatus(GroupInDto inDto);
 }
