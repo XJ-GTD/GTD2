@@ -59,6 +59,7 @@ export class ScheduleAddPage {
 
   //查询系统标签
   findLabel() {
+    this.labelFind = new LabelOutModel();
     this.labelFind.userId = this.paramsService.user.userId;
     this.labelFind.findType = 0;
     let alert = this.alertCtrl.create();
