@@ -338,7 +338,7 @@ public class GroupServicelmpl implements IGroupService {
             throw new ServiceException("群组不存在");
         }
         int createId=group.getCreateId();
-        if(userId==createId) {
+        if(userId==createId) {//判断是否为群组创建人
             boolean flag = false; //判断是否为权限群组
             Set<GtdLabelEntity> labels = group.getLabel();
             for (GtdLabelEntity label : labels) {
@@ -347,24 +347,38 @@ public class GroupServicelmpl implements IGroupService {
                 }
             }
             if (flag) {//TODO 权限群组发送通知 删除群组
+                //根据群组ID获得该群组的日程
                 List<GtdGroupScheduleEntity> groupSchedules=groupScheduleJpaRepository.findAllByGroupId(groupId);
                 for(GtdGroupScheduleEntity g:groupSchedules){
-                    int scheduleId=g.getScheduleId();
-                    List<Integer> playerIds=schedulePlayersJpaRepository.findAllPlayersId(scheduleId);
-                    for(Integer i:playerIds) {
-                        remindJpaRepository.deleteAllByPlayersId(i);//删除提醒时间表
+                    int scheduleId=g.getScheduleId();//获取日程ID
+
+                    boolean boo=true;
+                    //根据日程ID获取有该日程的所有群组 判断这些群组中有没有此用户
+                    List<GtdGroupScheduleEntity> groups=groupScheduleJpaRepository.findAllByGroupId(scheduleId);
+                    for(GtdGroupScheduleEntity gs:groups){
+                        if(gs.getGroupId()!=groupId){
+                            List<GtdGroupMemberEntity> groupMembers=groupMemberRepository.findAllByGroupId(gs.getGroupId());
+                            for(GtdGroupMemberEntity member:groupMembers){
+                                if(member.getUserId()==userId){
+                                    boo=false;
+                                }
+                            }
+                        }
                     }
-                    userShceduleRepository.deleteConnectionByScheduleId(scheduleId);    // 用户日程表 删除
-                    scheduleLabelRepository.deleteConnectionByScheduleId(scheduleId);   // 日程标签表 删除
-                    groupScheduleRepository.deleteConnectionByScheduleId(scheduleId);   // 群组标签表 删除
-                   // schedulePlayersRepository.deleteConnectionByScheduleId(scheduleId); // 日程参与人表 删除
-                    schedulePlayersJpaRepository.deleteConnectionByScheduleId(scheduleId);//删除参与人表
-                    scheduleJpaRepository.deleteById(scheduleId);
+
+                    //在其他此日程群组不存在就删除
+                    if(boo) {
+                        List<Integer> playerIds = schedulePlayersJpaRepository.findAllPlayersId(scheduleId);
+                        for(Integer i:playerIds) {
+                            remindJpaRepository.deleteAllByPlayersId(i);//删除提醒时间表
+                        }
+                        schedulePlayersJpaRepository.deleteConnectionByScheduleId(scheduleId);//删除参与人表
+                    }
                 }
-               groupRepository.deleteByGroupId2(groupId);//删除群组、标签、群成员
+               groupRepository.deleteByGroupId(groupId);//删除群组、群组标签、群成员、群组日程
             } else {
                 //本地群组直接删除
-                groupRepository.deleteByGroupId(groupId);
+                groupRepository.deleteByGroupId(groupId);//删除群组、群组标签、群成员、群组日程
 
             }
         }else {
@@ -404,6 +418,48 @@ public class GroupServicelmpl implements IGroupService {
             }
         }else{
             //删除群组
+            boolean flag = false; //判断是否为权限群组
+            Set<GtdLabelEntity> labels = group.getLabel();
+            for (GtdLabelEntity label : labels) {
+                if (label.getLabelId() == 1) {
+                    flag = true;
+                }
+            }
+            if (flag) {//TODO 权限群组发送通知 删除群组
+                //根据群组ID获得该群组的日程
+                List<GtdGroupScheduleEntity> groupSchedules=groupScheduleJpaRepository.findAllByGroupId(groupId);
+                for(GtdGroupScheduleEntity g:groupSchedules){
+                    int scheduleId=g.getScheduleId();//获取日程ID
+
+                    boolean boo=true;
+                    //根据日程ID获取有该日程的所有群组 判断这些群组中有没有此用户
+                    List<GtdGroupScheduleEntity> groups=groupScheduleJpaRepository.findAllByGroupId(scheduleId);
+                    for(GtdGroupScheduleEntity gs:groups){
+                        if(gs.getGroupId()!=groupId){
+                            List<GtdGroupMemberEntity> groupMembers=groupMemberRepository.findAllByGroupId(gs.getGroupId());
+                            for(GtdGroupMemberEntity member:groupMembers){
+                                if(member.getUserId()==userId){
+                                    boo=false;
+                                }
+                            }
+                        }
+                    }
+
+                    //在其他此日程群组不存在就删除
+                    if(boo) {
+                        List<Integer> playerIds = schedulePlayersJpaRepository.findAllPlayersId(scheduleId);
+                        for(Integer i:playerIds) {
+                            remindJpaRepository.deleteAllByPlayersId(i);//删除提醒时间表
+                        }
+                        schedulePlayersJpaRepository.deleteConnectionByScheduleId(scheduleId);//删除参与人表
+                    }
+                }
+                groupRepository.deleteByGroupId(groupId);//删除群组、群组标签、群成员、群组日程
+            } else {
+                //本地群组直接删除
+                groupRepository.deleteByGroupId(groupId);//删除群组、群组标签、群成员、群组日程
+
+            }
         }
         return 0;
     }
