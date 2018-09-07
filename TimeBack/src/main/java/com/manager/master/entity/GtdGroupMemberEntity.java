@@ -12,7 +12,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "gtd_group_member", schema = "gtd")
 public class GtdGroupMemberEntity {
-
     private Integer groupMemberId;
     private Integer groupId;
     private Integer userId;

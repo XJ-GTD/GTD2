@@ -11,7 +11,7 @@ public class GroupInDto {
     private int groupId;
     private String labelName;
     private String groupName;
-    private String groupHeadImgUrl;
+    private String groupHeadimgUrl;
     private List<Integer> labelId;
     private List<GroupMemberDto> member;
 
@@ -41,12 +41,12 @@ public class GroupInDto {
         this.labelName = labelName;
     }
 
-    public String getGroupHeadImgUrl() {
-        return groupHeadImgUrl;
+    public String getGroupHeadimgUrl() {
+        return groupHeadimgUrl;
     }
 
-    public void setGroupHeadImgUrl(String groupHeadImgUrl) {
-        this.groupHeadImgUrl = groupHeadImgUrl;
+    public void setGroupHeadimgUrl(String groupHeadimgUrl) {
+        this.groupHeadimgUrl = groupHeadimgUrl;
     }
 
     public List<Integer> getLabelId() {

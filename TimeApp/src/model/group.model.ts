@@ -1,35 +1,16 @@
 /**
- * 群组类
- *
  * create by wzy on 2018/05/28
  */
+
+//群组类
 export class Group {
-
-  private _groupId: string;//群组ID
-  private _groupName: string;//群组名
-  private _groupHeadImg: string;//群组头像
-
-
-  get groupName(): string {
-    return this._groupName;
-  }
-
-  set groupName(value: string) {
-    this._groupName = value;
-  }
-  get groupId(): string {
-    return this._groupId;
-  }
-
-  set groupId(value: string) {
-    this._groupId = value;
-  }
-  get groupHeadImg(): string {
-    return this._groupHeadImg;
-  }
-
-  set groupHeadImg(value: string) {
-    this._groupHeadImg = value;
-  }
-
+  groupId: string;//群组ID
+  roleName: string;//角色名 对应ID：1群主 2成员 3发布人 4执行人
+  groupName: string;//群组名
+  groupHeadImg: string;//群组头像
+  groupMaster: string;//群主
+  groupMasterId: string;//群主ID
+  issuerName: string;//发布人姓名 [最新一条]
+  scheduleName: string;//事件名 [最新一条]
+  scheduleCreateDate: any;//事件创建时间 [最新一条]
 }

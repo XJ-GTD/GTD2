@@ -5,7 +5,6 @@ import com.manager.master.dto.GroupInDto;
 import com.manager.master.dto.GroupOutDto;
 import com.manager.master.entity.GtdGroupEntity;
 import com.manager.master.repository.GroupJpaRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

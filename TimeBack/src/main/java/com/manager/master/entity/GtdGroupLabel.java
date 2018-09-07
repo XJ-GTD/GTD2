@@ -7,7 +7,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "gtd_group_label", schema = "gtd")
 public class GtdGroupLabel {
-
     private int groupLabelId;
     private int groupId;
     private int labelId;
@@ -17,7 +16,6 @@ public class GtdGroupLabel {
     private Timestamp updateDate;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "GROUP_LABEL_ID")
     public int getGroupLabelId() {
         return groupLabelId;

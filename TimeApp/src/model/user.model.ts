@@ -6,12 +6,12 @@
 export class User {
   accountId: number;    //账户ID
   userId: number;   //用户ID
+  accountUuid: string;
+  headimgUrl: string;          //头像URL
+  accountQq: string;           //账户QQ
+  accountWechat: string;       //账户微信
+  accountName: string;         //账户名
   accountMobile: string;    //手机号
   userName: string;   //昵称
-  email: string;        //邮箱
-  realName: string; 	  //姓名
-  idNumber: string; 	  //身份证号
-  userHead: string; 	  //头像URL
-  userSex: string;      //性别
-  userBirthday: string;        //生日
+  accountQueue: string;    //消息队列
 }

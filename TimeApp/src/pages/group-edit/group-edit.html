@@ -19,15 +19,15 @@
 
 
 <ion-content padding>
-    <div *ngIf="data1!=null; else elseBlock3">
-      <input style="width: 100%;height: 30px;padding-left: 10px;margin-bottom: 50px" placeholder="{{data1.data.group.groupName}}" #groupName type="text">
-    </div>
-    <ng-template #elseBlock3>
-      <input style="width: 100%;height: 30px;padding-left: 10px;margin-bottom: 50px" placeholder="群名称" #groupName type="text">
-    </ng-template>
-    <button class="divbiaoqian" style="background-color: white;width: 100%">
-      <button style="width: 85%;padding-left: 10px;height: 30px" (click)="showLabelCheckbox()">点击添加标签</button>
-    </button>
+  <div *ngIf="data1!=null; else elseBlock3">
+    <input style="width: 100%;height: 30px;padding-left: 10px;margin-bottom: 50px" placeholder="{{data1.data.group.groupName}}" #groupName type="text">
+  </div>
+  <ng-template #elseBlock3>
+    <input style="width: 100%;height: 30px;padding-left: 10px;margin-bottom: 50px" placeholder="群名称" #groupName type="text">
+  </ng-template>
+  <button class="divbiaoqian" style="background-color: white;width: 100%">
+    <button style="width: 85%;padding-left: 10px;height: 30px" (click)="showLabelCheckbox()">点击添加标签</button>
+  </button>
   <div class="divqunchengyuan"  *ngIf="data1!=null; else elseBlock">
     <div *ngFor="let item of data1.data.group.gtdGroupMember" class="row qunchengyuan">
       <p class="pmingcheng">{{item.userName}}</p><p>群成员联系方式:{{item.userContact}}</p>

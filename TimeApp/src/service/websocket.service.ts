@@ -1,6 +1,6 @@
 import { Injectable, ViewChild } from "@angular/core";
 import { SockJS } from 'sockjs-client';
-import Stomp from "@stomp/stompjs";
+import  Stomp from "@stomp/stompjs";
 import { AppConfig } from "../app/app.config";
 import { ParamsService } from "./params.service";
 import { Subject } from "rxjs/Subject";
@@ -58,15 +58,15 @@ export class WebsocketService {
       console.log(data.body);
       this.paramsService.schedule = JSON.parse(data.body);
       console.log( this.paramsService.schedule);
-      if (this.paramsService.schedule.code == "0") {
+      if (this.paramsService.schedule.code == 0) {
         alert("收到消息" + this.paramsService.schedule.scheduleName);
         this.xiaojiSpeech.speakText(this.paramsService.schedule.scheduleName);
         let activeNav: NavController = this.appCtrl.getActiveNav();
         activeNav.push('UserMessagePage');
-      } else if (this.paramsService.schedule.code == "1") {
+      } else if (this.paramsService.schedule.code == 1) {
         alert("收到消息" + this.paramsService.schedule.scheduleName);
         this.xiaojiSpeech.speakText(this.paramsService.schedule.scheduleName);
-      } else if (this.paramsService.schedule.code == "-1") {
+      } else if (this.paramsService.schedule.code == -1) {
 
       }
 
@@ -77,7 +77,6 @@ export class WebsocketService {
       console.log('error!:' + ws.readyState);
       client = Stomp.over(new WebSocket(AppConfig.RABBITMQ_WS_URL));
       client.connect(login, password, on_connect, on_error, null,'/');
-      console.log('error!:' + ws.readyState);
     }
 
     //关闭回调

@@ -111,7 +111,6 @@ public class UserController {
             return outBean;
         }
         //入参关联检查
-
         //密码加密
         accountPassword=BaseUtil.encryption(accountPassword);
         inDto.setAccountPassword(accountPassword);
