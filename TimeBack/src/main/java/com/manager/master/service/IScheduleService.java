@@ -1,5 +1,7 @@
 package com.manager.master.service;
 
+import com.manager.master.dto.LabelInDto;
+import com.manager.master.dto.LabelOutDto;
 import com.manager.master.dto.ScheduleInDto;
 import com.manager.master.entity.GtdScheduleEntity;
 
@@ -59,4 +61,5 @@ public interface IScheduleService {
      * @return
      */
     int statusSchedule(ScheduleInDto inDto);
+
 }

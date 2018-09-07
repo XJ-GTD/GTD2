@@ -1,6 +1,12 @@
 package com.manager.master.dto;
 
-public class LabelDto {
+/**
+ * 标签列表
+ *
+ * CREATE BY WZY ON 2018/09/07
+ */
+public class LabelOutDto {
+
     private int labelId;
     private String labelName;
 

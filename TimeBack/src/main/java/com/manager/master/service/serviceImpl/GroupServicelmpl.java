@@ -61,15 +61,15 @@ public class GroupServicelmpl implements IGroupService {
             group.setGroupCreateId(g.getCreateId());
 
             Set<GtdLabelEntity> set = g.getLabel();
-            List<LabelDto> labelOut = new ArrayList<LabelDto>();
-            List<LabelDto> labelOuts = new ArrayList<LabelDto>();
+            List<LabelOutDto> labelOut = new ArrayList<LabelOutDto>();
+            List<LabelOutDto> labelOuts = new ArrayList<LabelOutDto>();
             boolean flag=false;
             for (GtdLabelEntity label : set) {
                 if(set.size()==1&&label.getLabelId()==8){
                     //单人
                     flag=true;
                 }
-                LabelDto l = new LabelDto();
+                LabelOutDto l = new LabelOutDto();
                 l.setLabelId(label.getLabelId());
                 l.setLabelName(label.getLabelName());
                 labelOut.add(l);
@@ -120,9 +120,9 @@ public class GroupServicelmpl implements IGroupService {
             group.setGroupId(groupId);
             group.setGroupName(groupEntity.getGroupName());
             Set<GtdLabelEntity> set = groupEntity.getLabel();
-            List<LabelDto> labelOut = new ArrayList<LabelDto>();
+            List<LabelOutDto> labelOut = new ArrayList<LabelOutDto>();
             for (GtdLabelEntity label : set) {
-                LabelDto l = new LabelDto();
+                LabelOutDto l = new LabelOutDto();
                 l.setLabelId(label.getLabelId());
                 l.setLabelName(label.getLabelName());
                 labelOut.add(l);

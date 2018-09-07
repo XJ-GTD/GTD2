@@ -6,6 +6,8 @@ import { ScheduleModel } from "../../model/schedule.model";
 import { AppConfig } from "../../app/app.config";
 import {ScheduleOutModel} from "../../model/out/schedule.out.model";
 import {GroupFindOutModel} from "../../model/out/groupFind.out.model";
+import {LabelOutModel} from "../../model/out/label.out.model";
+import {LabelModel} from "../../model/label.model";
 
 /**
  * Generated class for the ScheduleAddPage page.
@@ -29,6 +31,8 @@ export class ScheduleAddPage {
   schedule: any;
   scheduleOut: ScheduleOutModel;
   groupFind: GroupFindOutModel;
+  labelFind: LabelOutModel;
+  labelList: LabelModel;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -36,7 +40,8 @@ export class ScheduleAddPage {
               public loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
               private paramsService: ParamsService) {
-    this.groupFind.userId = this.paramsService.user.userId;
+    this.groupFind = new GroupFindOutModel();
+    this.groupFind.userId= this.paramsService.user.userId;
     this.init();
 
   }
@@ -49,6 +54,36 @@ export class ScheduleAddPage {
     } else {
       this.schedule = new ScheduleOutModel();
     }
+    this.findLabel();
+  }
+
+  //查询系统标签
+  findLabel() {
+    this.labelFind.userId = this.paramsService.user.userId;
+    this.labelFind.findType = 0;
+    let alert = this.alertCtrl.create();
+    this.http.post(AppConfig.SCHEDULE_LABEL_URL, this.labelFind, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      responseType: 'json'
+    })
+      .subscribe(data => {
+        this.data = data;
+        if (this.data.code == 0) {
+          this.labelList = new LabelModel();
+          this.labelList = this.data.data.labelList;
+          alert.setTitle('参与人');
+          for (this.contactDetail of this.data.data.groupList) {
+            alert.addInput({
+              type: 'checkbox',
+              label: this.contactDetail.groupName,
+              value: this.contactDetail
+            })
+          }
+          alert.addButton('取消');
+        }
+      })
   }
 
   /**
@@ -56,7 +91,7 @@ export class ScheduleAddPage {
    */
   addContact() {
     let alert = this.alertCtrl.create();
-    this.groupFind.findType = 2;        //暂为硬代码，默认群组
+    this.groupFind.findType = 3;        //暂为硬代码，默认群组
     this.http.post(AppConfig.GROUP_FIND_URL, this.groupFind, {
       headers: {
         "Content-Type": "application/json"
