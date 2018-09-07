@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * 群组日程表 Repository
  * @author cp
@@ -21,4 +23,11 @@ public interface CenterGroupScheduleRepository extends JpaRepository<GtdGroupSch
     @Modifying
     @Query(value="delete from gtd_group_schedule where SCHEDULE_ID=?1",nativeQuery=true)
     void deleteConnectionByScheduleId(Integer scheduleId);
+
+    /**
+     * 根据群组Id查询所有日程
+     * @param groupId
+     * @return
+     */
+    List<GtdGroupScheduleEntity> findAllByGroupId(int groupId);
 }

@@ -21,4 +21,6 @@ public interface GroupLabelJpaRepository extends JpaRepository<GtdGroupLabel,Int
      *根据标签和群组id查找
      */
     List<GtdGroupLabel> findByLabelIdAndAndGroupId(int labelId,int groupId);
+
+    void deleteAllByGroupId(int groupId);
 }

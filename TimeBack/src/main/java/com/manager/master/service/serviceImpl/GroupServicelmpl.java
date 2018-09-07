@@ -37,37 +37,78 @@ public class GroupServicelmpl implements IGroupService {
     @Resource
     private GroupMemberRepository groupMemberRepository;
 
+    @Resource
+    private LabelJpaRespository labelJpaRespository;
+
+    @Resource
+    private CenterGroupScheduleRepository groupScheduleJpaRepository;
+
+    @Resource
+    private SchedulePlayersRepository schedulePlayersJpaRepository;
+
+    @Resource
+    private ScheduleJpaRepository scheduleJpaRepository;
+
+    @Resource
+    private RemindJpaRepository remindJpaRepository;
+
+    @Resource
+    CenterUserShceduleRepository userShceduleRepository;
+
+    @Resource
+    CenterScheduleLabelRepository scheduleLabelRepository;
+
+    @Resource
+    CenterGroupScheduleRepository groupScheduleRepository;
 
     @Override
-    public List<GroupOutDto> selectAll( GroupFindInDto inDto) {
-        int userId=inDto.getUserId();
-        int typeId=inDto.getFindType();
+    public List<GroupOutDto> selectAll(GroupFindInDto inDto) {
+        int userId = inDto.getUserId();
+        int typeId = inDto.getFindType();
         if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
         if (typeId == 0 || "".equals(typeId)) throw new ServiceException("类型ID不能为空");
-        List<GtdGroupEntity> list=null;
+        List<GtdGroupEntity> list = null;
         try {
             list = groupJpaRepository.findByUserId(userId);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new ServiceException("语法错误");
         }
 
-        List<GroupOutDto> result = new ArrayList<>();
-        List<GroupOutDto> results = new ArrayList<>();
+        List<GroupOutDto> result = new ArrayList<>();//单人
+        List<GroupOutDto> results = new ArrayList<>();//群组
         for (GtdGroupEntity g : list) {
             GroupOutDto group = new GroupOutDto();
             group.setGroupId(g.getGroupId());
             group.setGroupName(g.getGroupName());
             group.setGroupHeadImg(g.getGroupHeadimgUrl());
             group.setGroupCreateId(g.getCreateId());
+            Set<GtdUserEntity> users = g.getUser();
+            List<GroupMemberDto> memberDtos = new ArrayList<>();
+            for (GtdUserEntity user : users) {
+                GroupMemberDto memberDto = new GroupMemberDto();
+                memberDto.setUserId(user.getUserId());
+                memberDto.setUserName(user.getUserName());
+                memberDto.setUserContact(user.getUserContact());
+                int status;
+                try {
+                    status = groupRepository.findMemberStatus(user.getUserId(), g.getGroupId());
+                } catch (Exception e) {
+                    throw new ServiceException("查询群成员状态出错");
+                }
+                if (status != 2 || status != 3) { //用户状态不为拒绝或未接受才显示
+                    memberDtos.add(memberDto);
+                }
+            }
+            group.setGtdGroupMember(memberDtos);
 
             Set<GtdLabelEntity> set = g.getLabel();
             List<LabelOutDto> labelOut = new ArrayList<LabelOutDto>();
             List<LabelOutDto> labelOuts = new ArrayList<LabelOutDto>();
-            boolean flag=false;
+            boolean flag = false;
             for (GtdLabelEntity label : set) {
-                if(set.size()==1&&label.getLabelId()==8){
+                if (set.size() == 1 && label.getLabelId() == 8) {
                     //单人
-                    flag=true;
+                    flag = true;
                 }
                 LabelOutDto l = new LabelOutDto();
                 l.setLabelId(label.getLabelId());
@@ -75,14 +116,14 @@ public class GroupServicelmpl implements IGroupService {
                 labelOut.add(l);
             }
             group.setGroupLabel(labelOut);
-            if(flag) {
+            if (flag) {
                 result.add(group);
             }
-            if(!flag){
+            if (!flag) {
                 results.add(group);
             }
         }
-        if(typeId==1) {
+        if (typeId == 1) {
             return result;
         }else if (typeId == 2){
             return results;
@@ -93,49 +134,55 @@ public class GroupServicelmpl implements IGroupService {
         return null;
     }
 
+    /**
+     * 查询参与人详情
+     *
+     * @param inDto
+     * @return
+     */
     @Override
     public GroupOutDto selectMessage(GroupFindInDto inDto) {
-        int userId=inDto.getUserId();
-        int groupId=inDto.getGroupId();
+        int userId = inDto.getUserId();
+        int groupId = inDto.getGroupId();
         if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
         if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
-        List<GtdGroupMemberEntity> g=null;
+        List<GtdGroupMemberEntity> g = null;
         try {
-             g=groupMemberRepository.findAllByGroupId(groupId);
-        }catch (Exception e){
+            g = groupMemberRepository.findAllByGroupId(groupId); //获取该群组所有群成员
+        } catch (Exception e) {
             throw new ServiceException("语法错误");
         }
 
 //        for(GtdGroupMemberEntity d:g) {
 //            System.out.println(d.getUserName());
 //        }
-        GtdGroupEntity groupEntity=null;
+        GtdGroupEntity groupEntity = null;
         try {
-            groupEntity=groupJpaRepository.findByGroupId(groupId);
-        }catch (Exception e){
+            groupEntity = groupJpaRepository.findByGroupId(groupId);//获取当前群组
+        } catch (Exception e) {
             throw new ServiceException("语法错误");
         }
 
         GroupOutDto group = new GroupOutDto();
-            group.setGroupId(groupId);
-            group.setGroupName(groupEntity.getGroupName());
-            Set<GtdLabelEntity> set = groupEntity.getLabel();
-            List<LabelOutDto> labelOut = new ArrayList<LabelOutDto>();
-            for (GtdLabelEntity label : set) {
-                LabelOutDto l = new LabelOutDto();
-                l.setLabelId(label.getLabelId());
-                l.setLabelName(label.getLabelName());
-                labelOut.add(l);
-            }
-            group.setGroupLabel(labelOut);
-            List<GroupMemberDto> members=new ArrayList<>();
-            for(GtdGroupMemberEntity member:g){
-                GroupMemberDto groupMember = new GroupMemberDto();
-                groupMember.setUserId(member.getUserId());
-                groupMember.setUserName(member.getUserName());
-                groupMember.setUserContact(member.getUserContact());
-                members.add(groupMember);
-            }
+        group.setGroupId(groupId);
+        group.setGroupName(groupEntity.getGroupName());
+        Set<GtdLabelEntity> set = groupEntity.getLabel();
+        List<LabelOutDto> labelOut = new ArrayList<LabelOutDto>();
+        for (GtdLabelEntity label : set) { //标签信息
+            LabelOutDto l = new LabelOutDto();
+            l.setLabelId(label.getLabelId());
+            l.setLabelName(label.getLabelName());
+            labelOut.add(l);
+        }
+        group.setGroupLabel(labelOut);
+        List<GroupMemberDto> members = new ArrayList<>();
+        for (GtdGroupMemberEntity member : g) { //群成员信息
+            GroupMemberDto groupMember = new GroupMemberDto();
+            groupMember.setUserId(member.getUserId());
+            groupMember.setUserName(member.getUserName());
+            groupMember.setUserContact(member.getUserContact());
+            members.add(groupMember);
+        }
         group.setGtdGroupMember(members);
         return group;
     }
@@ -143,18 +190,19 @@ public class GroupServicelmpl implements IGroupService {
 
     /**
      * 查询接口
+     *
      * @param inDto
      * @return
      */
     @Override
     public List<GtdGroupEntity> select(GroupInDto inDto) {
-        String groupName=inDto.getGroupName();
-        String labelName=inDto.getLabelName();
-       // String userName=inDto.getUserName();
-        if(groupName!=null&&!"".equals(groupName)){
-            return groupJpaRepository.findByGroupNameIsLike("%"+groupName+"%");
+        String groupName = inDto.getGroupName();
+        String labelName = inDto.getLabelName();
+        // String userName=inDto.getUserName();
+        if (groupName != null && !"".equals(groupName)) {
+            return groupJpaRepository.findByGroupNameIsLike("%" + groupName + "%");
         }
-        if(labelName!=null&&!"".equals(labelName)) {
+        if (labelName != null && !"".equals(labelName)) {
             List<Integer> li = groupRepository.findByLabelLike(labelName);
             List<GtdGroupEntity> list = groupJpaRepository.findByGroupIdIn(li);
             return list;
@@ -172,128 +220,477 @@ public class GroupServicelmpl implements IGroupService {
     }
 
 
-
+    /**
+     * 添加群组
+     *
+     * @param inDto
+     * @return
+     */
     @Override
     public int addGroup(GroupInDto inDto) {
-        GtdGroupEntity group=new GtdGroupEntity();
-        GtdGroupLabel groupLabel=new GtdGroupLabel();
-        GtdGroupMemberEntity groupMember=new GtdGroupMemberEntity();
-        int userId=inDto.getUserId();
-        List<Integer> labels=inDto.getLabelId();
-        String groupName=inDto.getGroupName();
-        String groupHeadImgUrl=inDto.getGroupHeadimgUrl();
-        List<GroupMemberDto> groupMembers=inDto.getMember();
+        int userId = inDto.getUserId();
+        List<Integer> labelId = inDto.getLabelId();
+        String groupName = inDto.getGroupName();
+        String groupHeadImgUrl = inDto.getGroupHeadImgUrl();
+        List<GroupMemberDto> member = inDto.getMember();
         if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
-        if (labels.size() == 0 || labels==null) throw new ServiceException("标签不能为空");
+        if (labelId.size() == 0 || labelId == null) throw new ServiceException("标签不能为空");
         if (groupName == null || "".equals(groupName)) throw new ServiceException("群组名不能为空");
         if (groupHeadImgUrl == null || "".equals(groupHeadImgUrl)) throw new ServiceException("群头像不能为空");
-        if (groupMembers.size() == 0 || groupMembers==null) throw new ServiceException("群员不能为空");
-        if(labels.size()==1&&labels.get(0)==8){
+        if (member.size() == 0 || member == null) throw new ServiceException("群员不能为空");
+        Date date = new Date();
+        List<GtdGroupMemberEntity> groupMembers = new ArrayList<>();
+        List<GtdGroupLabel> groupLabels = new ArrayList<>();
+        if (labelId.size() == 1 && labelId.get(0) == 8) {
+            GtdGroupEntity group = new GtdGroupEntity();
             group.setGroupName(groupName);
             group.setGroupHeadimgUrl(groupHeadImgUrl);
             group.setCreateId(userId);
             group.setUserId(userId);
-            group.setCreateDate((Timestamp) new Date());
-            groupJpaRepository.save(group);
-            int groupId=groupJpaRepository.saveAndFlush(group).getGroupId();
-            if(groupId==0) throw new ServiceException("群组Id为空");
-            groupLabel.setLabelId(labels.get(0));
-            groupLabel.setGroupId(groupId);
-            groupLabel.setCreateId(userId);
-            groupLabel.setCreateDate((Timestamp) new Date());
-            groupLabelJpa.save(groupLabel);
-            groupMember.setUserId(userId);
-            groupMember.setGroupId(groupId);
-            for(GroupMemberDto g:groupMembers){
+            group.setCreateDate(new Timestamp(date.getTime()));
+            int groupId = groupJpaRepository.saveAndFlush(group).getGroupId();
+            if (groupId == 0) throw new ServiceException("群组Id为空");
+            for (Integer i : labelId) {
+                GtdGroupLabel groupLabel = new GtdGroupLabel();
+                groupLabel.setLabelId(i);
+                groupLabel.setGroupId(groupId);
+                groupLabel.setCreateId(userId);
+                groupLabel.setCreateDate(new Timestamp(date.getTime()));
+                groupLabelJpa.saveAndFlush(groupLabel);
+            }
+
+            for (GroupMemberDto g : member) {
+                GtdGroupMemberEntity groupMember = new GtdGroupMemberEntity();
+                groupMember.setUserId(groupRepository.findUserId(g.getUserContact()));
+                groupMember.setGroupId(groupId);
                 groupMember.setUserName(g.getUserName());
                 groupMember.setUserContact(g.getUserContact());
-                groupMemberRepository.save(groupMember);
+                groupMember.setCreateId(userId);
+                groupMember.setCreateDate(new Timestamp(date.getTime()));
+                groupMemberRepository.saveAndFlush(groupMember);
             }
-        }else{
+        } else {
+            GtdGroupEntity group = new GtdGroupEntity();
             group.setGroupName(groupName);
             group.setGroupHeadimgUrl(groupHeadImgUrl);
             group.setCreateId(userId);
             group.setUserId(userId);
-            group.setCreateDate((Timestamp) new Date());
-            boolean flag=true;
-            for(Integer i:labels){
-                if(i==1){
-                    flag=false;
+            group.setCreateDate(new Timestamp(date.getTime()));
+            boolean flag = true;
+            for (Integer i : labelId) {
+                if (i == 1) {//判断是否含有权限标签
+                    flag = false;
                 }
             }
-            if(flag){
-                groupJpaRepository.save(group);
-            }else{
-                //发送通知确认之后添加
+
+
+            GtdGroupEntity groupEntity = groupJpaRepository.saveAndFlush(group);
+            int groupId = groupEntity.getGroupId();
+            if (groupId == 0) throw new ServiceException("群组Id为空");
+
+            for (Integer i : labelId) {
+                GtdGroupLabel groupLabel = new GtdGroupLabel();
+                groupLabel.setLabelId(i);
+                groupLabel.setGroupId(groupId);
+                groupLabel.setCreateId(userId);
+                groupLabel.setCreateDate(new Timestamp(date.getTime()));
+                groupLabelJpa.save(groupLabel);
+            }
+
+            for (GroupMemberDto g : member) {
+                GtdGroupMemberEntity groupMember = new GtdGroupMemberEntity();
+                int id = groupRepository.findUserId(g.getUserContact());
+                groupMember.setUserId(id);
+                groupMember.setGroupId(groupId);
+                groupMember.setUserName(g.getUserName());
+                groupMember.setUserContact(g.getUserContact());
+                groupMember.setCreateId(userId);
+                groupMember.setCreateDate(new Timestamp(date.getTime()));
+                if (!flag) { //权限群组 群成员默认状态为未接受 2
+                    groupMember.setGroupMemberStatus(2);
+                } else {//本地群组
+                    groupMember.setGroupMemberStatus(0);
+                }
+                groupMemberRepository.save(groupMember);
             }
 
         }
         return 0;
     }
 
+
+    /**
+     * 删除群组
+     *
+     * @param inDto
+     * @return
+     */
     @Override
-    public int addLabel(GroupInDto inDto) {
-        GtdGroupLabel groupLabel=new GtdGroupLabel();
+    public int delGroup(GroupInDto inDto) {
+        int userId = inDto.getUserId();
+        int groupId = inDto.getGroupId();
+        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
+        if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
+        GtdGroupEntity group = null;
+        try {
+            group = groupJpaRepository.findByGroupId(groupId);
+        } catch (Exception e) {
+            throw new ServiceException("群组不存在");
+        }
+        int createId=group.getCreateId();
+        if(userId==createId) {//判断是否为群组创建人
+            boolean flag = false; //判断是否为权限群组
+            Set<GtdLabelEntity> labels = group.getLabel();
+            for (GtdLabelEntity label : labels) {
+                if (label.getLabelId() == 1) {
+                    flag = true;
+                }
+            }
+            if (flag) {//TODO 权限群组发送通知 删除群组
+                //根据群组ID获得该群组的日程
+                List<GtdGroupScheduleEntity> groupSchedules=groupScheduleJpaRepository.findAllByGroupId(groupId);
+                for(GtdGroupScheduleEntity g:groupSchedules){
+                    int scheduleId=g.getScheduleId();//获取日程ID
 
-        int  count=0;
+                    boolean boo=true;
+                    //根据日程ID获取有该日程的所有群组 判断这些群组中有没有此用户
+                    List<GtdGroupScheduleEntity> groups=groupScheduleJpaRepository.findAllByGroupId(scheduleId);
+                    for(GtdGroupScheduleEntity gs:groups){
+                        if(gs.getGroupId()!=groupId){
+                            List<GtdGroupMemberEntity> groupMembers=groupMemberRepository.findAllByGroupId(gs.getGroupId());
+                            for(GtdGroupMemberEntity member:groupMembers){
+                                if(member.getUserId()==userId){
+                                    boo=false;
+                                }
+                            }
+                        }
+                    }
 
-        return count;
+                    //在其他此日程群组不存在就删除
+                    if(boo) {
+                        List<Integer> playerIds = schedulePlayersJpaRepository.findAllPlayersId(scheduleId);
+                        for(Integer i:playerIds) {
+                            remindJpaRepository.deleteAllByPlayersId(i);//删除提醒时间表
+                        }
+                        schedulePlayersJpaRepository.deleteConnectionByScheduleId(scheduleId);//删除参与人表
+                    }
+                }
+               groupRepository.deleteByGroupId(groupId);//删除群组、群组标签、群成员、群组日程
+            } else {
+                //本地群组直接删除
+                groupRepository.deleteByGroupId(groupId);//删除群组、群组标签、群成员、群组日程
 
+            }
+        }else {
+            throw new ServiceException("没有删除权限");
+        }
+        return 0;
     }
 
+    /**
+     * 退出群组
+     * @param inDto
+     * @return
+     */
     @Override
-    public void delGroup(GroupInDto inDto) {
-        int id=inDto.getGroupId();
-        groupJpaRepository.deleteById(id);
+    public int exitGroup(GroupInDto inDto) {
+        int userId = inDto.getUserId();
+        int groupId = inDto.getGroupId();
+        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
+        if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
+        GtdGroupEntity group = null;
+        try {
+            group = groupJpaRepository.findByGroupId(groupId);
+        } catch (Exception e) {
+            throw new ServiceException("群组不存在");
+        }
+        int createId=group.getCreateId();
+        if(userId!=createId) {
+            //不是群组创建人
+            List<GtdGroupScheduleEntity> groupSchedules=groupScheduleJpaRepository.findAllByGroupId(groupId);
+            for(GtdGroupScheduleEntity g:groupSchedules) {
+                int scheduleId = g.getScheduleId();
+                List<Integer> playerIds = schedulePlayersJpaRepository.findAllPlayersId(scheduleId);
+                for (Integer i : playerIds) {
+                    remindJpaRepository.deleteAllByPlayersId(i);//删除提醒时间表
+                }
+                schedulePlayersJpaRepository.deleteConnectionByScheduleId(scheduleId);//删除参与人表
+            }
+        }else{
+            //删除群组
+            boolean flag = false; //判断是否为权限群组
+            Set<GtdLabelEntity> labels = group.getLabel();
+            for (GtdLabelEntity label : labels) {
+                if (label.getLabelId() == 1) {
+                    flag = true;
+                }
+            }
+            if (flag) {//TODO 权限群组发送通知 删除群组
+                //根据群组ID获得该群组的日程
+                List<GtdGroupScheduleEntity> groupSchedules=groupScheduleJpaRepository.findAllByGroupId(groupId);
+                for(GtdGroupScheduleEntity g:groupSchedules){
+                    int scheduleId=g.getScheduleId();//获取日程ID
+
+                    boolean boo=true;
+                    //根据日程ID获取有该日程的所有群组 判断这些群组中有没有此用户
+                    List<GtdGroupScheduleEntity> groups=groupScheduleJpaRepository.findAllByGroupId(scheduleId);
+                    for(GtdGroupScheduleEntity gs:groups){
+                        if(gs.getGroupId()!=groupId){
+                            List<GtdGroupMemberEntity> groupMembers=groupMemberRepository.findAllByGroupId(gs.getGroupId());
+                            for(GtdGroupMemberEntity member:groupMembers){
+                                if(member.getUserId()==userId){
+                                    boo=false;
+                                }
+                            }
+                        }
+                    }
+
+                    //在其他此日程群组不存在就删除
+                    if(boo) {
+                        List<Integer> playerIds = schedulePlayersJpaRepository.findAllPlayersId(scheduleId);
+                        for(Integer i:playerIds) {
+                            remindJpaRepository.deleteAllByPlayersId(i);//删除提醒时间表
+                        }
+                        schedulePlayersJpaRepository.deleteConnectionByScheduleId(scheduleId);//删除参与人表
+                    }
+                }
+                groupRepository.deleteByGroupId(groupId);//删除群组、群组标签、群成员、群组日程
+            } else {
+                //本地群组直接删除
+                groupRepository.deleteByGroupId(groupId);//删除群组、群组标签、群成员、群组日程
+
+            }
+        }
+        return 0;
     }
 
+
+    /**
+     * 编辑群组
+     *
+     * @param inDto
+     * @return
+     */
     @Override
     public int updateGname(GroupInDto inDto) {
-        int code=groupRepository.updateGroup(inDto);
-        GtdGroupLabel groupLabel=new GtdGroupLabel();
-     //   List<Integer> ids=inDto.getLabelId();
-        int  count=0;
-//        for(int i=0;i<ids.size();i++) {
-//            groupLabel.setGroupId(inDto.getGroupId());
-//            groupLabel.setLabelId(ids.get(i));
-//            groupLabel.setCreateId(inDto.getCreateId());
-//            groupLabelJpa.save(groupLabel);
-//            count++;
-//        }
-        return code;
+        int userId = inDto.getUserId();
+        int groupId = inDto.getGroupId();
+        List<Integer> labelId = inDto.getLabelId();
+        String groupName = inDto.getGroupName();
+        String groupHeadImgUrl = inDto.getGroupHeadImgUrl();
+        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
+        if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
+        if (labelId.size() == 0 || labelId == null) throw new ServiceException("标签不能为空");
+        if (groupName == null || "".equals(groupName)) throw new ServiceException("群组名不能为空");
+        if (groupHeadImgUrl == null || "".equals(groupHeadImgUrl)) throw new ServiceException("群头像不能为空");
+        GtdGroupEntity group = groupJpaRepository.findByGroupId(groupId);
+        //GtdGroupLabel groupLabel=
+        int createId = group.getCreateId();
+        Set<GtdLabelEntity> labels = group.getLabel();//群组原标签
+        if (createId == userId) {
+            boolean flag = true;
+            int type = 0;//本地群
+            for (GtdLabelEntity g : labels) {
+                if (g.getLabelId() == 1) { //判断群组标签中是否含有权限标签
+                    flag = false;
+                    type = 1;//权限群
+                    for (int i = 0; i < labelId.size(); i++) {
+                        if (labelId.get(i) == g.getLabelId()) { //判断原权限标签是否存在
+                            flag = true; //存在
+                        }
+                    }
+                    if (!flag) {
+                        throw new ServiceException("权限标签不能删除");
+                    }
+                }
+            }
+            group.setGroupName(groupName);
+            group.setGroupHeadimgUrl(groupHeadImgUrl);
+            Set<GtdLabelEntity> set = new HashSet<>();
+            boolean status = false;
+            for (Integer i : labelId) {
+                GtdLabelEntity labelEntity = labelJpaRespository.findByLabelId(i);
+                set.add(labelEntity);
+                if (i == 1) {//判断新增有没有权限标签
+                    status = true;
+                }
+            }
+            Date date = new Date();
+            group.setLabel(set);
+            group.setUpdateId(userId);
+            group.setUpdateDate(new Timestamp(date.getTime()));
+            if (type == 0) {//本地群
+                if (!status) {//不加权限标签
+                    groupJpaRepository.save(group);
+                } else {//添加权限标签
+                    // TODO 变为权限群组 给群员发通知 组成员状态默认为未接受(2)
+                    groupJpaRepository.save(group);
+                    List<GtdGroupMemberEntity> list = groupMemberRepository.findAllByGroupId(groupId);
+                    for (GtdGroupMemberEntity g : list) {
+                        g.setGroupMemberStatus(2);
+                    }
+                    groupMemberRepository.saveAll(list);
+                }
+            } else {//权限群
+                if (!status) {//不加权限标签
+                    groupJpaRepository.save(group);
+                } else {//添加权限标签
+                    // TODO 发送通知
+                    groupJpaRepository.save(group);
+                }
+            }
+        } else {
+            throw new ServiceException("权限不足");
+        }
+        return 0;
     }
 
+    /**
+     * 添加/删除群成员
+     *
+     * @param inDto
+     * @return
+     */
     @Override
-    public void delLabel(GroupInDto inDto) {
-//        List<Integer> labelIds=inDto.getLabelId();
-//        int groupId=inDto.getGroupId();
-//        for(int i=0;i<labelIds.size();i++){
-//            //判断是否为权限标签
-//            if(labelIds.get(i)!=1){
-//                List<GtdGroupLabel> groupLabel=groupLabelJpa.findByLabelIdAndAndGroupId(labelIds.get(i),groupId);
-//                groupLabelJpa.deleteAll(groupLabel);
-//            }
-//        }
+    public int addOrDelMember(GroupInDto inDto) {
+        int userId = inDto.getUserId();
+        int groupId = inDto.getGroupId();
+        List<GroupMemberDto> member = inDto.getMember();
+        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
+        if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
+        if (member.size() == 0 || member == null) throw new ServiceException("群员不能为空");
+        GtdGroupEntity group = groupJpaRepository.findByGroupId(groupId);
+
+        boolean flag = false; //判断是否为权限群组
+        Set<GtdLabelEntity> labels = group.getLabel();
+        for (GtdLabelEntity label : labels) {
+            if (label.getLabelId() == 1) {
+                flag = true;
+            }
+        }
+
+        for (GroupMemberDto g : member) {
+            int uId = g.getUserId();
+            String name = g.getUserName();
+            String contact = g.getUserContact();
+            GtdGroupMemberEntity groupMember = groupMemberRepository.findByGroupIdAndUserId(groupId, uId);
+            if (groupMember != null) {
+                if (flag) {
+                    // TODO 权限群组 发送通知后删除群成员
+                    groupMemberRepository.delete(groupMember);
+                } else {
+                    //直接删除群成员
+                    groupMemberRepository.delete(groupMember);
+                }
+            } else {
+                //群成员不存在 添加
+                if (name == null || "".equals(name)) throw new ServiceException("群员姓名不能为空");
+                if (contact == null || "".equals(contact)) throw new ServiceException("群员联系方式不能为空");
+                GtdGroupMemberEntity ggm = new GtdGroupMemberEntity();
+                ggm.setUserId(groupRepository.findUserId(contact));
+                ggm.setUserName(name);
+                ggm.setGroupId(groupId);
+                ggm.setUserContact(contact);
+                ggm.setCreateId(userId);
+                ggm.setCreateDate(new Timestamp(new Date().getTime()));
+                if(flag) {
+                    ggm.setGroupMemberStatus(2);
+                    //TODO 发通知 修改状态
+                }else{
+                    ggm.setGroupMemberStatus(0);
+                }
+                groupMemberRepository.save(ggm);
+            }
+        }
+
+        return 0;
     }
 
+
+    /**
+     * 编辑群成员
+     *
+     * @param inDto
+     * @return
+     */
     @Override
-    public String member(GroupInDto inDto) {
-//        List<Integer> userIds=inDto.getUserId();
-//        String str="删除成功";
-//        for(int i=0;i<userIds.size();i++){
-//            List<GtdGroupMemberEntity> groupMembers=groupMemberRepository.findByUserIdAndGroupId(userIds.get(i),inDto.getGroupId());
-//            if(groupMembers.size()!=0){
-//                for(GtdGroupMemberEntity gtdGroupMember:groupMembers) {
-//                    groupMemberRepository.delete(gtdGroupMember);
-//                }
-//            }else{
-//                GtdGroupMemberEntity groupMember=new GtdGroupMemberEntity();
-//                groupMember.setGroupId(inDto.getGroupId());
-//                groupMember.setUserId(userIds.get(i));
-//                groupMemberRepository.save(groupMember);
-//                str="添加成功";
-//            }
-//        }
-        return null;
+    public int member(GroupInDto inDto) {
+        int userId = inDto.getUserId();
+        int groupId = inDto.getGroupId();
+        List<GroupMemberDto> member = inDto.getMember();
+        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
+        if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
+        if (member.size() == 0 || member == null) throw new ServiceException("群员不能为空");
+
+        GtdGroupEntity group = groupJpaRepository.findByGroupId(groupId);
+        boolean flag = false; //判断是否为权限群组
+        Set<GtdLabelEntity> labels = group.getLabel();
+        for (GtdLabelEntity label : labels) {
+            if (label.getLabelId() == 1) {
+                flag = true;
+            }
+        }
+
+        if (!flag) {
+            for (GroupMemberDto gmDto : member) {
+                if (gmDto.getUserId() == 0 || "".equals(gmDto.getUserId())) throw new ServiceException("群员ID不能为空");
+                if (gmDto.getUserContact() == null || "".equals(gmDto.getUserContact()))
+                    throw new ServiceException("群员联系方式不能为空");
+                if (gmDto.getUserName() == null || "".equals(gmDto.getUserName()))
+                    throw new ServiceException("群员姓名不能为空");
+                GtdGroupMemberEntity groupMember = groupMemberRepository.findByGroupIdAndUserId(groupId, gmDto.getUserId());
+                //GtdGroupMemberEntity groupMember =new GtdGroupMemberEntity();
+                groupMember.setUserId(gmDto.getUserId());
+                groupMember.setUserName(gmDto.getUserName());
+                groupMember.setUserContact(gmDto.getUserContact());
+                groupMember.setCreateId(userId);
+                groupMember.setUpdateDate(new Timestamp(new Date().getTime()));
+                groupMemberRepository.save(groupMember);
+            }
+        } else {
+            throw new ServiceException("权限群不可编辑");
+        }
+        return 0;
+    }
+
+    /**
+     * 修改群成员状态
+     * @param inDto
+     * @return
+     */
+    @Override
+    public int updateStatus(GroupInDto inDto) {
+        int userId = inDto.getUserId();
+        int groupId = inDto.getGroupId();
+        List<GroupMemberDto> member = inDto.getMember();
+        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
+        if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
+        if (member.size() == 0 || member == null) throw new ServiceException("群员不能为空");
+        GtdGroupEntity group = groupJpaRepository.findByGroupId(groupId);
+        boolean flag = false; //判断是否为权限群组
+        Set<GtdLabelEntity> labels = group.getLabel();
+        for (GtdLabelEntity label : labels) {
+            if (label.getLabelId() == 1) {
+                flag = true;
+            }
+        }
+        if (flag) {
+            for (GroupMemberDto gmDto : member) {
+                if (gmDto.getUserId() == 0 || "".equals(gmDto.getUserId())) throw new ServiceException("群员ID不能为空");
+                if (gmDto.getUserContact() == null || "".equals(gmDto.getUserContact())) throw new ServiceException("群员联系方式不能为空");
+                if (gmDto.getUserName() == null || "".equals(gmDto.getUserName())) throw new ServiceException("群员姓名不能为空");
+                GtdGroupMemberEntity groupMember = groupMemberRepository.findByGroupIdAndUserId(groupId, gmDto.getUserId());
+                //GtdGroupMemberEntity groupMember =new GtdGroupMemberEntity();
+                //修改群成员状态
+                //TODO 获取群成员状态
+                groupMember.setGroupMemberStatus(3);
+                groupMember.setUpdateId(userId);
+                groupMember.setUpdateDate(new Timestamp(new Date().getTime()));
+                groupMemberRepository.save(groupMember);
+            }
+        } else {
+            throw new ServiceException("本地群成员无法修改");
+        }
+        return 0;
     }
 }
