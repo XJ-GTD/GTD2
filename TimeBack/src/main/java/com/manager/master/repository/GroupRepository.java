@@ -74,6 +74,15 @@ public class GroupRepository {
         return (List<Integer>) em.createNativeQuery(sql).getResultList();
     }
 
+    /**
+     * 根据联系方式查询UserId
+     * @param contact
+     * @return
+     */
+    public int  findUserId(String contact){
+        String sql="SELECT USER_ID FROM GTD_USER WHERE USER_CONTACT="+contact;
+        return (int) em.createNativeQuery(sql).getSingleResult();
+    }
 
     /**
      * 查询群成员状态
