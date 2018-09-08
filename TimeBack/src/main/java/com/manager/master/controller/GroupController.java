@@ -256,9 +256,9 @@ public class GroupController {
             if (groupList != null) {
                 data.put("groupList", groupList);
                 outDto.setData(data);
-                outDto.setCode(ResultCode.SUCCESS).setMessage("修改成功");
+                outDto.setCode(ResultCode.SUCCESS).setMessage("查询成功");
             } else {
-                outDto.setCode(ResultCode.REPEAT).setMessage("修改失败");
+                outDto.setCode(ResultCode.REPEAT).setMessage("查询失败");
             }
         }catch (Exception e){
             throw new ServiceException(e.getMessage());
