@@ -95,7 +95,7 @@ public class GroupServicelmpl implements IGroupService {
                 } catch (Exception e) {
                     throw new ServiceException("查询群成员状态出错");
                 }
-                if (status != 2 || status != 3) { //用户状态不为拒绝或未接受才显示
+                if (status != 2 && status != 3) { //用户状态不为拒绝或未接受才显示
                     memberDtos.add(memberDto);
                 }
             }

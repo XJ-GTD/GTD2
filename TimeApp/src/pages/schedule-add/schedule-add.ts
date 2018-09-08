@@ -32,7 +32,10 @@ export class ScheduleAddPage {
   scheduleOut: ScheduleOutModel;
   groupFind: GroupFindOutModel;
   labelFind: LabelOutModel;
-  labelList: LabelModel;
+  labelDetail: any;
+  labelNames: Array<string>;
+  labelIds: Array<number>;
+  label: LabelModel;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -54,7 +57,6 @@ export class ScheduleAddPage {
     } else {
       this.schedule = new ScheduleOutModel();
     }
-    this.findLabel();
   }
 
   //查询系统标签
@@ -63,7 +65,7 @@ export class ScheduleAddPage {
     this.labelFind.userId = this.paramsService.user.userId;
     this.labelFind.findType = 0;
     let alert = this.alertCtrl.create();
-    this.http.post(AppConfig.SCHEDULE_LABEL_URL, this.labelFind, {
+    this.http.post(AppConfig.USER_LABEL_URL, this.labelFind, {
       headers: {
         "Content-Type": "application/json"
       },
@@ -72,17 +74,34 @@ export class ScheduleAddPage {
       .subscribe(data => {
         this.data = data;
         if (this.data.code == 0) {
-          this.labelList = new LabelModel();
-          this.labelList = this.data.data.labelList;
-          alert.setTitle('参与人');
-          for (this.contactDetail of this.data.data.groupList) {
+          this.label = new LabelModel();
+          alert.setTitle('标签');
+          for (this.labelDetail of this.data.data.labelList) {
             alert.addInput({
               type: 'checkbox',
-              label: this.contactDetail.groupName,
-              value: this.contactDetail
+              label: this.labelDetail.labelName,
+              value: this.labelDetail
             })
           }
           alert.addButton('取消');
+          alert.addButton({
+            text: '确定',
+            handler: (data => {
+              console.log('checkbox data:' + data);
+              this.labelIds = [];
+              this.labelNames = [];
+              for (this.labelDetail of data) {
+                this.labelIds.push(this.labelDetail.labelId);         //上传数据
+                this.labelNames.push(this.labelDetail.labelName);   //显示用
+              }
+            })
+          })
+          alert.present();
+        } else {
+          alert.setTitle(this.data.message);
+          alert.addButton({
+            text: '确定'
+          });
         }
       })
   }
