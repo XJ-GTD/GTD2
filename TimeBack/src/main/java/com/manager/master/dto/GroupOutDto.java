@@ -11,8 +11,8 @@ public class GroupOutDto{
     private String groupName;
     private String groupHeadImg;
     private int groupCreateId;
-    private List<LabelOutDto> groupLabel;
-    private List<GroupMemberDto> gtdGroupMember;
+    private List<LabelOutDto> labelList;
+    private List<GroupMemberDto> groupMembers;
 
     public int getGroupId() {
         return groupId;
@@ -46,19 +46,19 @@ public class GroupOutDto{
         this.groupCreateId = groupCreateId;
     }
 
-    public List<LabelOutDto> getGroupLabel() {
-        return groupLabel;
+    public List<LabelOutDto> getLabelList() {
+        return labelList;
     }
 
-    public void setGroupLabel(List<LabelOutDto> groupLabel) {
-        this.groupLabel = groupLabel;
+    public void setLabelList(List<LabelOutDto> labelList) {
+        this.labelList = labelList;
     }
 
-    public List<GroupMemberDto> getGtdGroupMember() {
-        return gtdGroupMember;
+    public List<GroupMemberDto> getGroupMembers() {
+        return groupMembers;
     }
 
-    public void setGtdGroupMember(List<GroupMemberDto> gtdGroupMember) {
-        this.gtdGroupMember = gtdGroupMember;
+    public void setGroupMembers(List<GroupMemberDto> groupMembers) {
+        this.groupMembers = groupMembers;
     }
 }

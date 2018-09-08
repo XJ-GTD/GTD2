@@ -8,7 +8,7 @@
 
   <ion-navbar>
     <ion-title style="text-align: center">
-      <button style="left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;" (click)="edit()">{{groupORperson?'群组':'个人'}}</button>
+      <button style="left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;" (click)="findGroupList()">{{findFlag?'群组':'个人'}}</button>
 
       <button style="position: absolute;left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;" (click)="addORedit()">添加</button>
     </ion-title>
@@ -19,11 +19,10 @@
 
 
 <ion-content padding>
-  <div *ngIf="data!=null">
+  <ion-list>
 
     <!-- 展示群组 -->
-    <div *ngIf="groupORperson; else elseBlock">
-      <div style="text-align: center"><p>点击头部群组可切换成个人</p>
+      <div style="text-align: center"><p>点击头部名称可进行类型切换</p>
         <div *ngFor="let gl of groupList">
           <button class="row" style="width: 100%;background-color: #ffffff;" (click)="groupShowDetail(gl)">
             <div class="p2div">
@@ -35,20 +34,6 @@
           </button>
         </div>
       </div>
-    </div>
-    <!-- 展示个人 -->
-    <ng-template #elseBlock>
-      <div style="text-align: center"><p>点击头部个人可切换成群组</p></div>
-      <div *ngFor="let gl of groupList">
-        <button class="row" style="width: 100%;background-color: #ffffff;" (click)="groupShowDetail(gl)">
-          <div class="p2div">
-            <p>{{gl.groupName}}</p>
-          </div>
-          <div class="biaoqian" *ngFor="let lb of gl.labelList">
-            <p>{{lb.labelName}}</p>
-          </div>
-        </button>
-      </div>
-    </ng-template>
-  </div>
+
+  </ion-list>
 </ion-content>

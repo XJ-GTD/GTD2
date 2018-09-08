@@ -62,15 +62,19 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     @Query(value = "INSERT INTO gtd_group_schedule(GROUP_ID,SCHEDULE_ID,CREATE_ID,CREATE_DATE,UPDATE_ID,UPDATE_DATE) VALUES (?1,?2,?3,?4,?5,?6)",nativeQuery = true)
     void insertIntoGroupSchedule(Integer groupId,Integer shceduleId,Integer createId,Timestamp createDt,Integer updateId,Timestamp updateDt);
 
-
-    List<GtdGroupEntity> findDistinctByLabelIdNot(int labelId);
-
     /**
-     * 查询参与人 个人类型列表
+     * 查询参与人 群组类型列表
      * @param labelId
      * @return
      */
-    List<GtdGroupEntity> findByLabelId(int labelId);
+    List<GtdGroupEntity> findDistinctByUserIdAndLabelNot(int labelId, GtdLabelEntity labelEntity);
+
+    /**
+     * 查询参与人 个人类型列表
+     * @param labelEntity
+     * @return
+     */
+    List<GtdGroupEntity> findByLabelAndUserId(GtdLabelEntity labelEntity, int userId);
 
     /**
      * 查询用户所有参与人

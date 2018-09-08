@@ -65,17 +65,21 @@ public class GroupServicelmpl implements IGroupService {
 
         List<GtdGroupEntity> list = null;
         try {
+            GtdLabelEntity gle = labelJpaRespository.findByLabelId(FIND_GROUP_LABELTYPE);
             if(typeId==1) {
-                list = groupJpaRepository.findByLabelId(FIND_GROUP_LABELTYPE);//查询个人
+                list = groupJpaRepository.findByLabelAndUserId(gle, userId);//查询个人
             }else if(typeId==2){
-                list= groupJpaRepository.findDistinctByLabelIdNot(FIND_GROUP_LABELTYPE);//查询非个人群组
+                list= groupJpaRepository.findDistinctByUserIdAndLabelNot(userId, gle );//查询非个人群组
             }else if (typeId == 3) {
 
             } else {
                 throw new ServiceException("请输入正确的查询类型");
             }
+            if (list == null || list.size() == 0 ) {
+                throw new ServiceException("用户参与人数据为空");
+            }
         } catch (Exception e) {
-            throw new ServiceException("语法错误");
+            throw new ServiceException("服务器异常");
         }
 
         List<GtdGroupEntity>  res=new ArrayList<>();
@@ -119,7 +123,7 @@ public class GroupServicelmpl implements IGroupService {
                     memberDtos.add(memberDto);
                 }
             }
-            group.setGtdGroupMember(memberDtos);
+            group.setGroupMembers(memberDtos);
             Set<GtdLabelEntity> set = g.getLabel();
             List<LabelOutDto> labelOut = new ArrayList<LabelOutDto>();
 
@@ -130,7 +134,7 @@ public class GroupServicelmpl implements IGroupService {
                 l.setLabelName(label.getLabelName());
                 labelOut.add(l);
             }
-            group.setGroupLabel(labelOut);
+            group.setLabelList(labelOut);
             result.add(group);
         }
             return result;
@@ -177,7 +181,7 @@ public class GroupServicelmpl implements IGroupService {
             l.setLabelName(label.getLabelName());
             labelOut.add(l);
         }
-        group.setGroupLabel(labelOut);
+        group.setLabelList(labelOut);
         List<GroupMemberDto> members = new ArrayList<>();
         for (GtdGroupMemberEntity member : g) { //群成员信息
             GroupMemberDto groupMember = new GroupMemberDto();
@@ -186,7 +190,7 @@ public class GroupServicelmpl implements IGroupService {
             groupMember.setUserContact(member.getUserContact());
             members.add(groupMember);
         }
-        group.setGtdGroupMember(members);
+        group.setGroupMembers(members);
         return group;
     }
 
@@ -605,7 +609,7 @@ public class GroupServicelmpl implements IGroupService {
             Set<GtdLabelEntity> set = new HashSet<>();
             boolean status = false;
             for (Integer i : labelId) {
-                GtdLabelEntity labelEntity = labelJpaRespository.findGtdLabelEntityByLabelId(i);
+                GtdLabelEntity labelEntity = labelJpaRespository.findByLabelId(i);
                 set.add(labelEntity);
                 if (i == 1) {//判断新增有没有权限标签
                     status = true;

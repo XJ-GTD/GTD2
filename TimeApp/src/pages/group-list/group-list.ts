@@ -36,11 +36,11 @@ export class GroupListPage {
   }
 
   ionViewDidLoad() {
-    this.init();
+    this.findGroupList();
   }
 
   //调用查询群组/个人接口
-  init(){
+  findGroupList(){
     this.groupFind = new FindOutModel();
     this.groupFind.userId = this.paramsService.user.userId;
     this.edit();
@@ -54,7 +54,7 @@ export class GroupListPage {
         if (this.data.code == 0) {
           this.groupList = [];
           this.groupList = this.data.data.groupList;
-
+          console.log("groupList:" + this.groupList);
         } else if (this.data.code == -1) {
           loader.present();
           console.log(this.data.message);
