@@ -112,7 +112,7 @@ public class GroupServicelmpl implements IGroupService {
                 //添加群组用户信息
                 memberDto.setUserId(user.getUserId());
                 memberDto.setUserName(user.getUserName());
-                memberDto.setUserContact(user.getAccount().getAccountMobile());
+                memberDto.setUserContact(user.getUserContact());
                 int status;
                 try {
                     status = groupRepository.findMemberStatus(user.getUserId(), g.getGroupId());

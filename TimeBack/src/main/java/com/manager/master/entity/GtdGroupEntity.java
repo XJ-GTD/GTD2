@@ -25,8 +25,8 @@ public class GtdGroupEntity {
     private Set<GtdLabelEntity> label;
     private Set<GtdScheduleEntity> schedule;
 
-
-    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE},mappedBy="group")
+    @JsonIgnore
+    @OneToMany(fetch=FetchType.LAZY,cascade={CascadeType.REMOVE},mappedBy="group")
     public Set<GtdGroupMemberEntity> getGroupMember() {
         return groupMember;
     }

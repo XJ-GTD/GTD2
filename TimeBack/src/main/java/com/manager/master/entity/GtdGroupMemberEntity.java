@@ -25,8 +25,8 @@ public class GtdGroupMemberEntity {
     private GtdGroupEntity group;
 
 
-//    @JoinColumn(name="GROUP_ID")//外键列的列名
-    @ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name="GROUP_ID", nullable = false, insertable = false, updatable = false)//外键列的列名
+    @ManyToOne(fetch=FetchType.EAGER)
     public GtdGroupEntity getGroup() {
         return group;
     }
