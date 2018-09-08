@@ -16,7 +16,12 @@ import java.util.Map;
 @Transactional
 public interface LabelJpaRespository extends JpaRepository<GtdLabelEntity,Integer>{
 
-    GtdLabelEntity findByLabelId(int labelId);
+    /**
+     * 根据标签id查询标签
+     * @param labelId
+     * @return
+     */
+    GtdLabelEntity findGtdLabelEntityByLabelId(int labelId);
 
     /**
      * 根据类型查询标签列表

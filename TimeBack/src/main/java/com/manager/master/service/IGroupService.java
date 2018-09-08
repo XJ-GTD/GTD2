@@ -2,11 +2,13 @@ package com.manager.master.service;
 
 import com.manager.master.dto.GroupFindInDto;
 import com.manager.master.dto.GroupInDto;
+import com.manager.master.dto.GroupMemberOutDto;
 import com.manager.master.dto.GroupOutDto;
 import com.manager.master.entity.GtdGroupEntity;
 import com.manager.master.repository.GroupJpaRepository;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 群组Service
@@ -23,6 +25,9 @@ public interface IGroupService {
 
     //查询群组
     List<GtdGroupEntity> select(GroupInDto inDto);
+
+    //查詢群成員
+    Set<GroupMemberOutDto> findMember(GroupInDto inDto);
 
     //添加群组
     int addGroup(GroupInDto inDto);

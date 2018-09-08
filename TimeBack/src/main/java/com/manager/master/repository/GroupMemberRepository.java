@@ -18,10 +18,10 @@ import java.util.List;
 @Transactional
 public interface GroupMemberRepository extends JpaRepository<GtdGroupMemberEntity,Integer>{
 
-    @Query(value = "SELECT g FROM gtd_group_member AS g WHERE g.GROUP_ID=?1",nativeQuery = true)
+    @Query(value = "SELECT GROUP_MEMBER_ID,GROUP_ID,USER_ID,USER_NAME,USER_CONTACT,GROUP_MEMBER_STATUS,CREATE_ID,CREATE_DATE,UPDATE_ID,UPDATE_DATE FROM gtd_group_member WHERE GROUP_ID=?1",nativeQuery = true)
     List<GtdGroupMemberEntity> findMemberByGroupId(int groupId);
 
-    @Query(value = "SELECT g FROM gtd_group_member AS g WHERE g.GROUP_ID=?1 AND g.userId=?2",nativeQuery = true)
+    @Query(value = "SELECT GROUP_MEMBER_ID,GROUP_ID,USER_ID,USER_NAME,USER_CONTACT,GROUP_MEMBER_STATUS,CREATE_ID,CREATE_DATE,UPDATE_ID,UPDATE_DATE FROM gtd_group_member WHERE GROUP_ID=?1 AND USER_ID=?2",nativeQuery = true)
     GtdGroupMemberEntity findMemberByGroupIdAndUserId(Integer groupId,Integer userId);
 
 

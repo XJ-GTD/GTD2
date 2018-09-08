@@ -1,21 +1,16 @@
 package com.manager.master.controller;
 
 import com.manager.config.exception.ServiceException;
-import com.manager.master.dto.BaseOutDto;
-import com.manager.master.dto.GroupFindInDto;
-import com.manager.master.dto.GroupInDto;
-import com.manager.master.dto.GroupOutDto;
+import com.manager.master.dto.*;
 import com.manager.master.service.IGroupService;
 import com.manager.util.ResultCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * 群组Controller
@@ -83,6 +78,27 @@ public class GroupController {
         return outDto;
     }
 
+    /**
+     * 群成员查询
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/find_group_member",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto findGroupMember(@RequestBody GroupInDto inDto){
+        BaseOutDto outDto=new BaseOutDto();
+        Map<String,Set<GroupMemberOutDto>> map=new HashMap<String, Set<GroupMemberOutDto>>();
+        try{
+            Set<GroupMemberOutDto> set= groupService.findMember(inDto);
+            if(set!=null) {
+                map.put("groupMemberList", set);
+                outDto.setData(map);
+            }else outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
+        }catch (Exception e){
+            throw new ServiceException(e.getMessage());
+        }
+        return outDto;
+    }
 
     /**
      * 群组创建
