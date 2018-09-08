@@ -1,8 +1,10 @@
 package com.manager.master.controller;
 
 import com.manager.config.exception.ServiceException;
-import com.manager.master.dto.*;
-import com.manager.master.entity.GtdGroupEntity;
+import com.manager.master.dto.BaseOutDto;
+import com.manager.master.dto.GroupFindInDto;
+import com.manager.master.dto.GroupInDto;
+import com.manager.master.dto.GroupOutDto;
 import com.manager.master.service.IGroupService;
 import com.manager.util.ResultCode;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
+import java.util.TreeMap;
 
 /**
  * 群组Controller
@@ -27,8 +29,12 @@ public class GroupController {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
+    private final IGroupService groupService;
+
     @Autowired
-    IGroupService IGroupService;
+    public GroupController(IGroupService groupService) {
+        this.groupService = groupService;
+    }
 
 
     /**
@@ -41,7 +47,7 @@ public class GroupController {
         BaseOutDto outDto=new BaseOutDto();
         Map<String,List<GroupOutDto>> map=new HashMap<String, List<GroupOutDto>>();
         try {
-            List<GroupOutDto> list= IGroupService.selectAll(inDto);
+            List<GroupOutDto> list= groupService.selectAll(inDto);
             for(GroupOutDto g:list){
                 System.out.println(g.toString());
             }
@@ -66,7 +72,7 @@ public class GroupController {
         BaseOutDto outDto=new BaseOutDto();
         Map<String,GroupOutDto> map=new HashMap<String, GroupOutDto>();
         try{
-            GroupOutDto list= IGroupService.selectMessage(inDto);
+            GroupOutDto list= groupService.selectMessage(inDto);
             if(list!=null) {
                 map.put("group", list);
                 outDto.setData(map);
@@ -89,7 +95,7 @@ public class GroupController {
     public BaseOutDto add(@RequestBody GroupInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try {
-            int code = IGroupService.addGroup(inDto);
+            int code = groupService.addGroup(inDto);
             if (code == 0) {
                 outDto.setCode(ResultCode.SUCCESS).setMessage("群组创建成功");
             } else {
@@ -111,7 +117,7 @@ public class GroupController {
     public BaseOutDto updateGname(@RequestBody GroupInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try{
-        int code=IGroupService.updateGname(inDto);
+        int code=groupService.updateGname(inDto);
         if (code == 0) {
             outDto.setCode(ResultCode.SUCCESS).setMessage("修改成功");
         } else {
@@ -133,7 +139,7 @@ public class GroupController {
     public BaseOutDto update_memberstatus(@RequestBody GroupInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try{
-            int code=IGroupService.updateStatus(inDto);
+            int code=groupService.updateStatus(inDto);
             if (code == 0) {
                 outDto.setCode(ResultCode.SUCCESS).setMessage("修改成功");
             } else {
@@ -155,7 +161,7 @@ public class GroupController {
     public BaseOutDto delete(@RequestBody GroupInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try{
-            int code=IGroupService.delGroup(inDto);
+            int code=groupService.delGroup(inDto);
             if (code == 0) {
                 outDto.setCode(ResultCode.SUCCESS).setMessage("删除成功");
             } else {
@@ -177,7 +183,7 @@ public class GroupController {
     public BaseOutDto exit(@RequestBody GroupInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try{
-            int code=IGroupService.exitGroup(inDto);
+            int code=groupService.exitGroup(inDto);
             if (code == 0) {
                 outDto.setCode(ResultCode.SUCCESS).setMessage("退出成功");
             } else {
@@ -199,7 +205,7 @@ public class GroupController {
     public BaseOutDto addMember(@RequestBody GroupInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try{
-            int code=IGroupService.addOrDelMember(inDto);
+            int code=groupService.addOrDelMember(inDto);
             if (code == 0) {
                 outDto.setCode(ResultCode.SUCCESS).setMessage("操作成功");
             } else {
@@ -223,7 +229,7 @@ public class GroupController {
     public BaseOutDto updateMember(@RequestBody GroupInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try{
-            int code=IGroupService.member(inDto);
+            int code=groupService.member(inDto);
             if (code == 0) {
                 outDto.setCode(ResultCode.SUCCESS).setMessage("修改成功");
             } else {
@@ -236,25 +242,29 @@ public class GroupController {
     }
 
     /**
-     * 查询全部标签
-     * @param
+     * 临时： 创建/编辑日程时添加参与人用
+     * @param inDto
      * @return
      */
-    @RequestMapping(value = "/selectLabelAll",method = RequestMethod.POST)
+    @RequestMapping(value = "/find_all_players",method = RequestMethod.POST)
     @ResponseBody
-    public LabelDto updateMember(){
-        LabelDto outDto = new LabelDto();
+    public BaseOutDto findAllPlayers(@RequestBody GroupFindInDto inDto){
+        BaseOutDto outDto = new BaseOutDto();
+        Map<String, List<GroupOutDto>> data = new TreeMap<>();
         try{
-            int code=IGroupService.member(inDto);
-            if (code == 0) {
-                outDto.setCode(ResultCode.SUCCESS).setMessage("修改成功");
+            List<GroupOutDto> groupList = groupService.createSchedule(inDto);
+            if (groupList != null) {
+                data.put("groupList", groupList);
+                outDto.setData(data);
+                outDto.setCode(ResultCode.SUCCESS).setMessage("查询成功");
             } else {
-                outDto.setCode(ResultCode.REPEAT).setMessage("修改失败");
+                outDto.setCode(ResultCode.REPEAT).setMessage("查询失败");
             }
         }catch (Exception e){
             throw new ServiceException(e.getMessage());
         }
         return outDto;
+
     }
 }
 
