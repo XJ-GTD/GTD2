@@ -80,7 +80,8 @@ public class GroupServicelmpl implements IGroupService {
 
         List<GtdGroupEntity>  res=new ArrayList<>();
         for(GtdGroupEntity g : list){
-            List<Integer> ints=groupMemberRepository.findAllUserIdByGroupId(g.getGroupId());
+          //  List<Integer> ints=groupMemberRepository.findAllUserIdByGroupId(g.getGroupId());\
+            List<Integer> ints=groupJpaRepository.findAllGroupIdByUserId(g.getGroupId());
             if(ints.indexOf(userId)!=-1){
                 res.add(g); //把当前用户所属群组添加
             }

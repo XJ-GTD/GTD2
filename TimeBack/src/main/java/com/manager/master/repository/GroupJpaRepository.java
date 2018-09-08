@@ -75,5 +75,9 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     @Query(value = " SELECT GROUP_ID, GROUP_NAME, USER_ID FROM GTD_GROUP WHERE USER_ID = ?1 ", nativeQuery = true)
     List<Map> findAllPlayers(int userId);
 
+
+    @Query(value = " SELECT USER_ID FROM GTD_GROUP WHERE GROUP_ID = ?1 ", nativeQuery = true)
+    List<Integer> findAllGroupIdByUserId(int userId);
+
 }
 
