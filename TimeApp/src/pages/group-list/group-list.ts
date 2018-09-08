@@ -32,11 +32,12 @@ export class GroupListPage {
               private loadingCtrl: LoadingController,
               private http: HttpClient,
               private paramsService: ParamsService) {
-
+    this.findGroupList();
   }
 
   ionViewDidLoad() {
-    this.findGroupList();
+    console.log('ionViewDidLoad GroupListPage');
+
   }
 
   //调用查询群组/个人接口

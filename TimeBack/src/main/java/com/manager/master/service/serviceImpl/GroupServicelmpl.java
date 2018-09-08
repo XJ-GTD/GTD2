@@ -84,8 +84,8 @@ public class GroupServicelmpl implements IGroupService {
 
         List<GtdGroupEntity>  res=new ArrayList<>();
         for(GtdGroupEntity g : list){
-          //  List<Integer> ints=groupMemberRepository.findAllUserIdByGroupId(g.getGroupId());\
-            List<Integer> ints=groupJpaRepository.findAllGroupIdByUserId(g.getGroupId());
+          //  List<Integer> ints=groupMemberRepository.findAllUserIdByGroupId(g.getGroupId());
+            List<Integer> ints = groupJpaRepository.findAllGroupIdByUserId(g.getGroupId());
             if(ints.indexOf(userId)!=-1){
                 res.add(g); //把当前用户所属群组添加
             }
@@ -112,7 +112,7 @@ public class GroupServicelmpl implements IGroupService {
                 //添加群组用户信息
                 memberDto.setUserId(user.getUserId());
                 memberDto.setUserName(user.getUserName());
-                memberDto.setUserContact(user.getUserContact());
+                memberDto.setUserContact(user.getAccount().getAccountMobile());
                 int status;
                 try {
                     status = groupRepository.findMemberStatus(user.getUserId(), g.getGroupId());

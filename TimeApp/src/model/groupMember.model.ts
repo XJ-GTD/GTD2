@@ -4,9 +4,9 @@
  */
 export class GroupMemberModel {
 
-  private _userId:number;//群成员Id
-  private _userName:string;//群成员名字
-  private _userContact:string;//群成员联系方式
+  private _userId: number;//群成员Id
+  private _userName: string;//群成员名字
+  private _userContact: string;//群成员联系方式
 
 
   get userId(): number {

@@ -5,6 +5,7 @@ import { AppConfig } from "../../app/app.config";
 import {HttpClient} from "@angular/common/http";
 import {ParamsService} from "../../service/params.service";
 import {FindOutModel} from "../../model/out/find.out.model";
+import {LabelOutModel} from "../../model/out/label.out.model";
 
 /**
  * Generated class for the GroupEditPage page.
@@ -20,9 +21,12 @@ import {FindOutModel} from "../../model/out/find.out.model";
 })
 export class GroupEditPage {
 
+  data: any;
   data1: any;//上个页面传过来的数据
   labeldata:any;
   member:any;
+  labelFind: LabelOutModel;
+  label: Array<number>;
   testCheckboxOpen:boolean = false;//判断组件是否展示
   testCheckboxLabel:any;//选择的标签
   testCheckboxMember:any;//选择的成员
@@ -47,6 +51,34 @@ export class GroupEditPage {
     this.selectLabelAll();
     this.selectMemberAll();
     console.log(this.data1)
+  }
+
+  //查询系统标签
+  findLabel() {
+    this.labelFind = new LabelOutModel();
+    this.labelFind.userId = this.paramsService.user.userId;
+    this.labelFind.findType = 1;  //暂为硬代码，默认日程
+
+    this.http.post(AppConfig.USER_LABEL_URL, this.labelFind, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      responseType: 'json'
+    })
+      .subscribe(data => {
+        this.data = data;
+        if (this.data.code == 0) {
+          this.label = [];
+          this.label = this.data.data.labelList;
+
+        } else {
+          let loader = this.loadingCtrl.create({
+            content: "服务器繁忙，请稍后再试",
+            duration: 1000
+          });
+          loader.present();
+        }
+      })
   }
 
   //获取label标签方法
