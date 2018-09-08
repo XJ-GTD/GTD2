@@ -31,7 +31,7 @@ public class GtdUserEntity {
     private Timestamp updateDate;
     private GtdAccountEntity account;
     private Set<GtdScheduleEntity> schedule;
-    private Set<GtdGroupEntity> group;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -191,16 +191,5 @@ public class GtdUserEntity {
         this.schedule = schedule;
     }
 
-    @JSONField(serialize=false)
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "gtd_group_member",
-            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "GROUP_ID", referencedColumnName ="GROUP_ID")})
-    public Set<GtdGroupEntity> getGroup() {
-        return group;
-    }
 
-    public void setGroup(Set<GtdGroupEntity> group) {
-        this.group = group;
-    }
 }
