@@ -68,8 +68,10 @@ public class GroupServicelmpl implements IGroupService {
             if(typeId==1) {
                 list = groupJpaRepository.findByLabel(labels);//查询个人
             }else if(typeId==2){
-                list=groupJpaRepository.findDistinctByLabelNot(labels);//查询非个人群组
-            }else{
+                list= groupJpaRepository.findDistinctByLabelNot(labels);//查询非个人群组
+            }else if (typeId == 3) {
+
+            } else {
                 throw new ServiceException("请输入正确的查询类型");
             }
         } catch (Exception e) {
@@ -96,7 +98,7 @@ public class GroupServicelmpl implements IGroupService {
             group.setGroupId(g.getGroupId());
             group.setGroupName(g.getGroupName());
             group.setGroupHeadImg(g.getGroupHeadimgUrl());
-            group.setGroupCreateId(g.getCreateId());
+            group.setGroupCreateId(g.getUserId());          //创建人
 
             Set<GtdUserEntity> users = g.getUser();
             List<GroupMemberDto> memberDtos = new ArrayList<>();
@@ -704,5 +706,34 @@ public class GroupServicelmpl implements IGroupService {
             throw new ServiceException("本地群成员无法修改");
         }
         return 0;
+    }
+
+    /**
+     * 创建/编辑日程添加参与人用
+     * @param inDto
+     * @return
+     */
+    public List<GroupOutDto> createSchedule(GroupFindInDto inDto) {
+        int userId = inDto.getUserId();
+        int typeId = inDto.getFindType();
+        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
+        if (typeId == 0 || "".equals(typeId)) throw new ServiceException("类型ID不能为空");
+        if (typeId != 3)throw new ServiceException("类型ID参数错误");
+        List<Map> allList = groupJpaRepository.findAllPlayers(userId);
+        if (allList != null && allList.size() != 0){
+            List<GroupOutDto> list = new ArrayList<>();
+            for (Map gle: allList) {
+                GroupOutDto outDto = new GroupOutDto();
+                outDto.setGroupId((Integer) gle.get("GROUP_ID"));
+                outDto.setGroupName((String) gle.get("GROUP_NAME"));
+                outDto.setGroupCreateId((Integer) gle.get("USER_ID"));
+                list.add(outDto);
+            }
+            return list;
+        } else {
+            throw new ServiceException("未查询到参与人数据");
+        }
+
+
     }
 }
