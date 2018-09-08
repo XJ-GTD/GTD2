@@ -271,9 +271,9 @@ public class GroupServicelmpl implements IGroupService {
                     }else if(findType==2){
                         if(groupMemberEntities.indexOf(groupMember)==-1){
                         //if(groupMemberRepository.findMemberByGroupIdAndUserId(groupId,groupMember.getUserId())!=null){
-                            outDto.setMemberStatus(1);
-                        }else{
                             outDto.setMemberStatus(0);
+                        }else{
+                            outDto.setMemberStatus(1);
                         }
                         System.out.println(groupMemberEntities.indexOf(groupMember));
                         boolean flag=true;
