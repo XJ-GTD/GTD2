@@ -27,7 +27,7 @@ public interface IGroupService {
     List<GtdGroupEntity> select(GroupInDto inDto);
 
     //查詢群成員
-    Set<GroupMemberOutDto> findMember(GroupInDto inDto);
+    List<GroupMemberOutDto> findMember(GroupFindInDto inDto);
 
     //添加群组
     int addGroup(GroupInDto inDto);

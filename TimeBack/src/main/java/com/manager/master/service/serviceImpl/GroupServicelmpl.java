@@ -222,50 +222,76 @@ public class GroupServicelmpl implements IGroupService {
     }
 
     @Override
-    public Set<GroupMemberOutDto> findMember(GroupInDto inDto) {
+    public List<GroupMemberOutDto> findMember(GroupFindInDto inDto) {
         int userId = inDto.getUserId();
         int groupId = inDto.getGroupId();
+        int findType=inDto.getFindType();
         if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
-        if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
-
+        if (findType == 0 || "".equals(findType)) throw new ServiceException("类型不能为空");
+        if(findType==2){
+            if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
+        }
+        if(findType==1){
+            if (groupId != 0 || !("".equals(groupId))) throw new ServiceException("参数错误");
+        }
         List<Integer> groupIds=null;
         try {
-             groupIds=groupJpaRepository.findGroupIdByUserId(userId);//获取用户下所有群组ID
+             groupIds=groupMemberRepository.findGroupIdByUserId(userId);//获取用户下所有群组ID
         }catch (Exception e){
             throw new ServiceException("查询群组ID失败");
         }
+        List<GtdGroupMemberEntity> groupMemberEntities=null;
+        if(findType==2) {
+            groupMemberEntities = groupMemberRepository.findMemberByGroupId(groupId);
+        }
 
-        List<GtdGroupMemberEntity> groupMemberEntities=groupMemberRepository.findMemberByGroupId(groupId);
+        List<GroupMemberOutDto> list=new ArrayList<>();
 
-        Set<GroupMemberOutDto> set=new HashSet<>();
-        for(Integer i:groupIds){
+        for(Integer index:groupIds){
             //获取每个群组下面全部群成员
-            List<GtdGroupMemberEntity> groupMembers=groupMemberRepository.findMemberByGroupId(i);
+            List<GtdGroupMemberEntity> groupMembers=groupMemberRepository.findMemberByGroupId(index);
+
             for(GtdGroupMemberEntity groupMember:groupMembers){
                 if(groupMember.getGroupMemberStatus()!=2||groupMember.getGroupMemberStatus()!=3) {
                     GroupMemberOutDto outDto = new GroupMemberOutDto();
                     outDto.setMemberId(groupMember.getUserId());
                     outDto.setMemeberName(groupMember.getUserName());
                     outDto.setMemeberContact(groupMember.getUserContact());
-                    int type = 0;//不存在
-                    GtdGroupMemberEntity group=groupMemberRepository.findMemberByGroupIdAndUserId(groupId, groupMember.getUserId());
-                    if (groupMemberEntities.indexOf(group)!=-1) {//判断群成员是否存在于用户当前群组
-                        type = 1;//存在
-                    }
-                    outDto.setMemberStatus(type);
-                    boolean flag=true;
-                    for(GroupMemberOutDto outDto1:set) {
-                        if(outDto1.getMemberId()==groupMember.getUserId()&&outDto1.getMemberStatus()==1) {
-                            flag = false;
+                    if(findType==1){
+                        outDto.setMemberStatus(0);
+                        boolean flag=true;
+                        for(int i=0;i<list.size();i++){
+                            if(list.get(i).getMemberId()==groupMember.getUserId()){
+                                flag=false;
+                            }
                         }
-                    }
-                    if(flag) {
-                        set.add(outDto);
+                        if(flag){
+                            list.add(outDto);
+                        }
+                    }else if(findType==2){
+                        if(groupMemberEntities.indexOf(groupMember)==-1){
+                        //if(groupMemberRepository.findMemberByGroupIdAndUserId(groupId,groupMember.getUserId())!=null){
+                            outDto.setMemberStatus(0);
+                        }else{
+                            outDto.setMemberStatus(1);
+                        }
+                        System.out.println(groupMemberEntities.indexOf(groupMember));
+                        boolean flag=true;
+                        for(int i=0;i<list.size();i++){
+                            if(list.get(i).getMemberId()==groupMember.getUserId()){
+                                flag=false;
+                            }
+                        }
+                        if(flag){
+                            list.add(outDto);
+                        }
+                    }else{
+                        throw new ServiceException("请输入正确的类型");
                     }
                 }
             }
         }
-        return set;
+        return list;
     }
 
 
