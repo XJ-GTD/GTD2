@@ -21,21 +21,9 @@ public class GroupRepository {
     private EntityManager em;
 
 
-//    public List<GtdGroupEntity> findByUserId(int userId){
-//        String sql="";
-//    }
 
 
 
-    /**
-     * 根据群名称模糊查询
-     * @param groupName
-     * @return
-     */
-   public List<GtdGroupEntity> findByGroupNameLike(String groupName){
-       String sql="select gr from gtd_group gr where GROUP_NAME LIKE '%"+groupName+"%'";
-       return (List<GtdGroupEntity>) em.createNativeQuery(sql).getResultList();
-   }
 
     /**
      * 根据标签名查出群组ID
@@ -110,17 +98,5 @@ public class GroupRepository {
         em.createNativeQuery(sql4).executeUpdate();
     }
 
-    /**
-     * 根据群组Id删除 权限群组
-     * @param groupId
-     */
-    public void deleteByGroupId2(int groupId){
-        String sql="delete from gtd_group_label where group_id="+groupId;
-        String sql2="delete from gtd_group_member where group_id="+groupId;
-        String sql3="delete from gtd_group where group_id="+groupId;
-        em.createNativeQuery(sql).executeUpdate();
-        em.createNativeQuery(sql2).executeUpdate();
-        em.createNativeQuery(sql3).executeUpdate();
-    }
 
 }

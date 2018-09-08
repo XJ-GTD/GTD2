@@ -20,43 +20,21 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
 
 
     /**
-     *根据群组名称查询
-     * @param groupName
-     * @return
-     */
-    List<GtdGroupEntity> findByGroupNameIsLike(String groupName);
-
-
-
-
-    /**
-     *根据用户Id查询所有的群组
-     * @param userId
-     * @return
-     */
-    List<GtdGroupEntity> findByUserId(Integer userId);
-
-    /**
-     *根据群组Id查询群组
+     * 根据群组ID查询群组
      * @param groupId
      * @return
      */
-    GtdGroupEntity findByGroupId(Integer groupId);
+    GtdGroupEntity findGtdGroupEntityByGroupId(Integer groupId);
+
 
     /**
-     *根据用户Id和群组Id查询所有的群组
+     *
      * @param userId
-     * @param groupId
      * @return
      */
-    GtdGroupEntity findByUserIdAndGroupId(Integer userId,Integer groupId);
+    @Query(value ="SELECT GROUP_ID FROM GTD_GROUP WHERE USER_ID=?1" ,nativeQuery = true)
+    List<Integer> findGroupIdByUserId(int userId);
 
-    /**
-     *根据群组ID查询群组
-     * @param list
-     * @return
-     */
-    List<GtdGroupEntity> findByGroupIdIn(List<Integer> list);
 
     /**
      * 更新群组日程事件中间表时间
@@ -82,12 +60,6 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     @Query(value = "INSERT INTO gtd_group_schedule(GROUP_ID,SCHEDULE_ID,CREATE_ID,CREATE_DATE,UPDATE_ID,UPDATE_DATE) VALUES (?1,?2,?3,?4,?5,?6)",nativeQuery = true)
     void insertIntoGroupSchedule(Integer groupId,Integer shceduleId,Integer createId,Timestamp createDt,Integer updateId,Timestamp updateDt);
 
-
-//    @Modifying
-//    @Query("update GtdGroupEntity g set g.groupName=:groupName")
-//    int updateGroupName(String groupName);
-
-    //List<GtdGroupEntity> findByUserIdOrGroupName();
 
     List<GtdGroupEntity> findDistinctByLabelNot(GtdLabelEntity labelEntity);
 
