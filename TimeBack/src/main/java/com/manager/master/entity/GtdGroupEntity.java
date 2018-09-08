@@ -2,6 +2,7 @@ package com.manager.master.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.ibatis.annotations.One;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -20,22 +21,20 @@ public class GtdGroupEntity {
     private Timestamp createDate;
     private Integer updateId;
     private Timestamp updateDate;
-    private Set<GtdUserEntity> user;
+    private Set<GtdGroupMemberEntity> groupMember;
     private Set<GtdLabelEntity> label;
     private Set<GtdScheduleEntity> schedule;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "gtd_group_member",
-            joinColumns = {@JoinColumn(name = "GROUP_ID", referencedColumnName = "GROUP_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName ="USER_ID")})
-    public Set<GtdUserEntity> getUser() {
-        return user;
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE},mappedBy="group")
+    public Set<GtdGroupMemberEntity> getGroupMember() {
+        return groupMember;
     }
 
-    public void setUser(Set<GtdUserEntity> user) {
-        this.user = user;
+    public void setGroupMember(Set<GtdGroupMemberEntity> groupMember) {
+        this.groupMember = groupMember;
     }
+
 
 
     @ManyToMany(fetch = FetchType.EAGER)

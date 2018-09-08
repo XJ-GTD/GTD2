@@ -101,9 +101,9 @@ public class GroupServicelmpl implements IGroupService {
             group.setGroupHeadImg(g.getGroupHeadimgUrl());
             group.setGroupCreateId(g.getUserId());          //创建人
 
-            Set<GtdUserEntity> users = g.getUser();
+            Set<GtdGroupMemberEntity> users = g.getGroupMember();
             List<GroupMemberDto> memberDtos = new ArrayList<>();
-            for (GtdUserEntity user : users) {
+            for (GtdGroupMemberEntity user : users) {
                 GroupMemberDto memberDto = new GroupMemberDto();
                 //添加群组用户信息
                 memberDto.setUserId(user.getUserId());
@@ -275,8 +275,8 @@ public class GroupServicelmpl implements IGroupService {
                             list.add(outDto);
                         }
                     }else if(findType==2){
-                        if(groupMemberEntities.indexOf(groupMember)==-1){
-                        //if(groupMemberRepository.findMemberByGroupIdAndUserId(groupId,groupMember.getUserId())!=null){
+                        //if(groupMemberEntities.indexOf(groupMember)==-1){
+                        if(groupMemberRepository.findMemberByGroupIdAndUserId(groupId,groupMember.getUserId())==null){
                             outDto.setMemberStatus(0);
                         }else{
                             outDto.setMemberStatus(1);

@@ -22,6 +22,18 @@ public class GtdGroupMemberEntity {
     private Integer updateId;
     private Timestamp updateDate;
     private Integer groupMemberStatus;
+    private GtdGroupEntity group;
+
+
+//    @JoinColumn(name="GROUP_ID")//外键列的列名
+    @ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+    public GtdGroupEntity getGroup() {
+        return group;
+    }
+
+    public void setGroup(GtdGroupEntity group) {
+        this.group = group;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
