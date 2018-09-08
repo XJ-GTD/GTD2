@@ -18,11 +18,11 @@
 
 
 <ion-content padding>
-  <div *ngIf="data22!=null">
+  <div *ngIf="data!=null">
     <!-- 展示群组 -->
     <div *ngIf="groupORperson; else elseBlock">
       <div style="text-align: center"><p>点击头部群组可切换成个人</p>
-        <div *ngFor="let item1 of data22.data.groupList">
+        <div *ngFor="let item1 of data.data.groupList">
           <button class="row" style="width: 100%;background-color: #ffffff;" (click)="xiangqing(item1.groupId)">
             <div class="p2div">
               <p>{{item1.groupName}}</p>
@@ -37,7 +37,7 @@
     <!-- 展示个人 -->
     <ng-template #elseBlock>
       <div style="text-align: center"><p>点击头部个人可切换成群组</p></div>
-      <div *ngFor="let item1 of data22.data.groupList">
+      <div *ngFor="let item1 of data.data.groupList">
         <button class="row" style="width: 100%;background-color: #ffffff;" (click)="gerenxiangqing(item1.groupId)">
           <div class="p2div">
             <p>{{item1.groupName}}</p>

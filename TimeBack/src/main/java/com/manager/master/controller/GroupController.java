@@ -1,10 +1,7 @@
 package com.manager.master.controller;
 
 import com.manager.config.exception.ServiceException;
-import com.manager.master.dto.BaseOutDto;
-import com.manager.master.dto.GroupFindInDto;
-import com.manager.master.dto.GroupInDto;
-import com.manager.master.dto.GroupOutDto;
+import com.manager.master.dto.*;
 import com.manager.master.entity.GtdGroupEntity;
 import com.manager.master.service.IGroupService;
 import com.manager.util.ResultCode;
@@ -225,6 +222,28 @@ public class GroupController {
     @ResponseBody
     public BaseOutDto updateMember(@RequestBody GroupInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
+        try{
+            int code=IGroupService.member(inDto);
+            if (code == 0) {
+                outDto.setCode(ResultCode.SUCCESS).setMessage("修改成功");
+            } else {
+                outDto.setCode(ResultCode.REPEAT).setMessage("修改失败");
+            }
+        }catch (Exception e){
+            throw new ServiceException(e.getMessage());
+        }
+        return outDto;
+    }
+
+    /**
+     * 查询全部标签
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/selectLabelAll",method = RequestMethod.POST)
+    @ResponseBody
+    public LabelDto updateMember(){
+        LabelDto outDto = new LabelDto();
         try{
             int code=IGroupService.member(inDto);
             if (code == 0) {

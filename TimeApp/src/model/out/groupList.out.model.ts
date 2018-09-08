@@ -1,16 +1,19 @@
 /**
  * 查询全部群组数据
  *
- * create by wzy on 2018/09/06
+ * create by hwc on 2018/09/07
  */
+import {groupLabel} from "./groupLabel.out.model";
+import {groupMembers} from "./groupMembers.out.model";
+
 export class groupList {
 
   private _groupId: number;//群组Id
   private _groupName: string;//群组名称
   private _groupHeadImg: string;//群组头像
   private _groupCreateId: number;//创建人Id
-  private _groupLabel:any;//标签[list]
-  private _gtdGroupMember:any;//群成员[list]
+  private _groupLabel:Array<groupLabel>;//标签[list]
+  private _gtdGroupMember:Array<groupMembers>;//群成员[list]
 
   get groupId(): number {
     return this._groupId;
