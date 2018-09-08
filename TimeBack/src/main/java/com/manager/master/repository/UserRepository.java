@@ -37,8 +37,9 @@ public class UserRepository {
             condition = " AND B.ACCOUNT_QQ = " + accountName;
         }
 
-        String sql = "SELECT A.USER_ID, A.USER_NAME, A.HEADIMG_URL, A.BRITHDAY, A.USER_SEX, A.USER_CONTACT, " +
-                " B.ACCOUNT_NAME, B.ACCOUNT_MOBILE, B.ACCOUNT_QQ, B.ACCOUNT_QUEUE, B.ACCOUNT_WECHAT, B.ACCOUNT_UUID " +
+        String sql = "SELECT A.USER_ID, A.USER_NAME, A.HEADIMG_URL, A.BRITHDAY, A.USER_SEX, " +
+                "A.USER_CONTACT, B.ACCOUNT_NAME, B.ACCOUNT_MOBILE, B.ACCOUNT_QQ, B.ACCOUNT_QUEUE, " +
+                "B.ACCOUNT_WECHAT, B.ACCOUNT_UUID " +
                 " FROM gtd_account B " +
                 " INNER JOIN gtd_user A ON B.USER_ID = A.USER_ID " + condition;
 

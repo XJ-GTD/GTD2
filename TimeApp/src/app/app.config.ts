@@ -12,8 +12,8 @@
 export class AppConfig {
 
   /* 环境URL 头部 */
-  private static REQUEST_URL: string = "http://192.168.176:8080/gtd";
-  // private static REQUEST_URL: string = "http://localhost:8080/gtd";//连接本地数据库
+  // private static REQUEST_URL: string = "http://192.168.176:8080/gtd";
+  private static REQUEST_URL: string = "http://localhost:8080/gtd";//连接本地数据库
 
   /* RabbitMq WebSocket */
   public static RABBITMQ_WS_URL: string = "ws://192.168.0.219:15674/ws";
@@ -37,7 +37,7 @@ export class AppConfig {
   //用户类
   public static USER_LOGIN_URL: string = AppConfig.USER_URL + "/login";   //登陆 POST
 
-  public static USER_REGISTER_URL: string = AppConfig.USER_URL + "/sign_up";   //注册 POST
+  public static USER_REGISTER_URL: string = AppConfig.USER_URL + "/register";   //注册 POST
 
   public static USER_LABEL_URL: string = AppConfig.USER_URL + "/find_label";           //查询标签
 

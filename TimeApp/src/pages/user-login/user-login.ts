@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
+import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
 import { ParamsService } from "../../service/params.service";
@@ -30,7 +30,6 @@ export class UserLoginPage {
     public loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private http: HttpClient,
-    public toastCtrl: ToastController,
     private paramsService: ParamsService) {
   }
 

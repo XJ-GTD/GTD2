@@ -277,6 +277,7 @@ public class GroupController {
                 outDto.setCode(ResultCode.REPEAT).setMessage("查询失败");
             }
         }catch (Exception e){
+            outDto.setCode(ResultCode.FAIL).setMessage(e.getMessage());
             throw new ServiceException(e.getMessage());
         }
         return outDto;
