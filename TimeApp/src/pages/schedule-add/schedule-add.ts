@@ -112,7 +112,7 @@ export class ScheduleAddPage {
   addContact() {
     let alert = this.alertCtrl.create();
     this.groupFind.findType = 3;        //暂为硬代码，默认群组
-    this.http.post(AppConfig.GROUP_FIND_URL, this.groupFind, {
+    this.http.post(AppConfig.GROUP_ALL_SHOW_URL, this.groupFind, {
       headers: {
         "Content-Type": "application/json"
       },
