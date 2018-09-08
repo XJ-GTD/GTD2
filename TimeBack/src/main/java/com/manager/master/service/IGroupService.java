@@ -44,4 +44,11 @@ public interface IGroupService {
 
     //群成员状态改变
     int updateStatus(GroupInDto inDto);
+
+    /**
+     * 创建编辑日程添加参与人用
+     * @param inDto
+     * @return
+     */
+    public List<GroupOutDto> createSchedule(GroupFindInDto inDto);
 }

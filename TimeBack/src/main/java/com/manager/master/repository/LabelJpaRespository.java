@@ -1,18 +1,29 @@
 package com.manager.master.repository;
 
+import com.manager.master.dto.LabelOutDto;
 import com.manager.master.entity.GtdLabelEntity;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 标签实现类
  */
 @Transactional
 public interface LabelJpaRespository extends JpaRepository<GtdLabelEntity,Integer>{
-    @Query(value = "SELECT g FROM gtd_label AS g WHERE g.LABEL_ID=?1",nativeQuery = true)
-    GtdLabelEntity findLabelById(int labelId);
 
+    GtdLabelEntity findByLabelId(int labelId);
+
+    /**
+     * 根据类型查询标签列表
+     * @param labelType
+     * @return
+     */
+    @Modifying
+    @Query(value = " SELECT LABEL_ID, LABEL_NAME FROM GTD_LABEL WHERE LABEL_TYPE = ?1 ", nativeQuery=true)
+    List<Map> findLabelList(int labelType);
 }

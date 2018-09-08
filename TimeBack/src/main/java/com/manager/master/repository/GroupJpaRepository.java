@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 /**
  *群组实现类
@@ -81,6 +82,14 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     List<GtdGroupEntity> findDistinctByLabelNot(GtdLabelEntity labelEntity);
 
     List<GtdGroupEntity> findByLabel(GtdLabelEntity labelEntity);
+
+    /**
+     * 查询用户所有参与人
+     * @param userId
+     * @return
+     */
+    @Query(value = " SELECT GROUP_ID, GROUP_NAME, USER_ID FROM GTD_GROUP WHERE USER_ID = ?1 ", nativeQuery = true)
+    List<Map> findAllPlayers(int userId);
 
 }
 

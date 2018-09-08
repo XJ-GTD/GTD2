@@ -11,6 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "gtd_label", schema = "gtd")
 public class GtdLabelEntity {
+
     private int labelId;
     private String labelName;
     @JsonIgnore

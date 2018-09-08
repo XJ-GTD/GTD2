@@ -16,7 +16,6 @@ public class GroupInDto {
     private List<GroupMemberDto> member;
 
 
-
     public int getGroupId() {
         return groupId;
     }

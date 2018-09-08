@@ -23,7 +23,8 @@ export class GroupEditPage {
 
   groupMember:any=[{'userContact':12345678,'userId':1,'userName':"scarecrow"},{'userContact':321321,'userId':1,'userName':"admin"}]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              public alertCtrl: AlertController) {
     this.data1 = this.navParams.get('data1');
   }
 
