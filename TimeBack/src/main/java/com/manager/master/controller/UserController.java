@@ -1,13 +1,10 @@
 package com.manager.master.controller;
 
 import com.manager.config.exception.ServiceException;
-import com.manager.master.dto.BaseOutDto;
-import com.manager.master.dto.UserInDto;
-import com.manager.master.dto.UserOutDto;
+import com.manager.master.dto.*;
 import com.manager.master.service.CreateQueueService;
 import com.manager.master.service.IUserService;
 import com.manager.util.BaseUtil;
-import com.manager.util.CreateQueueUtil;
 import com.manager.util.ResultCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -31,12 +29,16 @@ public class UserController {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
+    private final IUserService userService;
+    private final RabbitTemplate rabbitTemplate;
+    private final CreateQueueService createQueueService;
+
     @Autowired
-    IUserService userService;
-    @Autowired
-    RabbitTemplate rabbitTemplate;
-    @Autowired
-    CreateQueueService createQueueService;
+    public UserController(IUserService userService, RabbitTemplate rabbitTemplate, CreateQueueService createQueueService) {
+        this.userService = userService;
+        this.rabbitTemplate = rabbitTemplate;
+        this.createQueueService = createQueueService;
+    }
 
     /**
      * 用户注册
@@ -203,5 +205,28 @@ public class UserController {
             e.printStackTrace();
         }
         return outBean;
+    }
+
+    /**
+     * 标签查询
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/find_label", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto findLabel(@RequestBody LabelInDto inDto) {
+        BaseOutDto baseOutDto = new BaseOutDto();
+        Map<String, List<LabelOutDto>> data = new TreeMap<>();
+        try{
+            List<LabelOutDto> labelList = userService.findLabel(inDto);
+            if (labelList != null && labelList.size() != 0){
+                data.put("labelList", labelList);
+                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("标签查询成功");
+                baseOutDto.setData(data);
+            }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("标签查询失败");
+        }catch (Exception ex){
+            throw new ServiceException(ex.getMessage());
+        }
+        return baseOutDto;
     }
 }
