@@ -80,7 +80,8 @@ public class GroupServicelmpl implements IGroupService {
 
         List<GtdGroupEntity>  res=new ArrayList<>();
         for(GtdGroupEntity g : list){
-            List<Integer> ints=groupMemberRepository.findAllUserIdByGroupId(g.getGroupId());
+          //  List<Integer> ints=groupMemberRepository.findAllUserIdByGroupId(g.getGroupId());\
+            List<Integer> ints=groupJpaRepository.findAllGroupIdByUserId(g.getGroupId());
             if(ints.indexOf(userId)!=-1){
                 res.add(g); //把当前用户所属群组添加
             }
@@ -221,6 +222,11 @@ public class GroupServicelmpl implements IGroupService {
         return null;
     }
 
+    /**
+     * 查询群成员
+     * @param inDto
+     * @return
+     */
     @Override
     public List<GroupMemberOutDto> findMember(GroupFindInDto inDto) {
         int userId = inDto.getUserId();
@@ -347,7 +353,9 @@ public class GroupServicelmpl implements IGroupService {
             for (GroupMemberDto g : member) {
                 //添加群成员信息
                 GtdGroupMemberEntity groupMember = new GtdGroupMemberEntity();
-                groupMember.setUserId(groupRepository.findUserId(g.getUserContact()));
+                Integer id=groupRepository.findUserId(g.getUserContact());
+                if(id==0)id=null;
+                groupMember.setUserId(id);
                 groupMember.setGroupId(groupId);
                 groupMember.setUserName(g.getUserName());
                 groupMember.setUserContact(g.getUserContact());
@@ -386,7 +394,8 @@ public class GroupServicelmpl implements IGroupService {
 
             for (GroupMemberDto g : member) {
                 GtdGroupMemberEntity groupMember = new GtdGroupMemberEntity();
-                int id = groupRepository.findUserId(g.getUserContact());
+                Integer id=groupRepository.findUserId(g.getUserContact());
+                if(id==0)id=null;
                 groupMember.setUserId(id);
                 groupMember.setGroupId(groupId);
                 groupMember.setUserName(g.getUserName());
@@ -674,7 +683,9 @@ public class GroupServicelmpl implements IGroupService {
                 if (name == null || "".equals(name)) throw new ServiceException("群员姓名不能为空");
                 if (contact == null || "".equals(contact)) throw new ServiceException("群员联系方式不能为空");
                 GtdGroupMemberEntity ggm = new GtdGroupMemberEntity();
-                ggm.setUserId(groupRepository.findUserId(contact));
+                Integer id=groupRepository.findUserId(g.getUserContact());
+                if(id==0)id=null;
+                ggm.setUserId(id);
                 ggm.setUserName(name);
                 ggm.setGroupId(groupId);
                 ggm.setUserContact(contact);
