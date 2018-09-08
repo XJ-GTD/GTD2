@@ -29,6 +29,7 @@ public class GroupServicelmpl implements IGroupService {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
+    private static int FIND_GROUP_LABELTYPE = 8;    //查询参与人类型：个人
     @Resource
     private GroupJpaRepository groupJpaRepository;
 
@@ -64,11 +65,10 @@ public class GroupServicelmpl implements IGroupService {
 
         List<GtdGroupEntity> list = null;
         try {
-            GtdLabelEntity labels=labelJpaRespository.findGtdLabelEntityByLabelId(8);
             if(typeId==1) {
-                list = groupJpaRepository.findByLabel(labels);//查询个人
+                list = groupJpaRepository.findByLabelId(FIND_GROUP_LABELTYPE);//查询个人
             }else if(typeId==2){
-                list= groupJpaRepository.findDistinctByLabelNot(labels);//查询非个人群组
+                list= groupJpaRepository.findDistinctByLabelIdNot(FIND_GROUP_LABELTYPE);//查询非个人群组
             }else if (typeId == 3) {
 
             } else {
@@ -318,12 +318,12 @@ public class GroupServicelmpl implements IGroupService {
         List<GtdGroupLabel> groupLabels = new ArrayList<>();
 
         for(Integer i:labelId){
-            if(labelId.size()!=1&&i==8){
+            if(labelId.size()!=1&&i== FIND_GROUP_LABELTYPE){
                 throw new ServiceException("群组不能添加单人标签");
             }
         }
 
-        if (labelId.size() == 1 && labelId.get(0) == 8) {
+        if (labelId.size() == 1 && labelId.get(0) == FIND_GROUP_LABELTYPE) {
             //创建单人
             GtdGroupEntity group = new GtdGroupEntity();
             group.setGroupName(groupName);

@@ -1,19 +1,18 @@
 /**
  * create by wzy on 2018/05/28
  */
+import {LabelModel} from "./label.model";
+import {GroupMemberModel} from "./groupMember.model";
 
-//群组类
+//参与人类
 export class GroupModel {
 
   private _groupId: string;//群组ID
-  private _roleName: string;//角色名 对应ID：1群主 2成员 3发布人 4执行人
   private _groupName: string;//群组名
-  private _groupHeadImg: string;//群组头像
-  private _groupMaster: string;//群主
-  private _groupMasterId: string;//群主ID
-  private _issuerName: string;//发布人姓名 [最新一条]
-  private _scheduleName: string;//事件名 [最新一条]
-  private _scheduleCreateDate: any;//事件创建时间 [最新一条]
+  private _labelList: Array<LabelModel>;//标签
+  private _groupHeadImg: string;//群头像
+  private _groupCreateId: number;//群创建人
+  private _groupMembers: Array<GroupMemberModel>;//群成员
 
   get groupId(): string {
     return this._groupId;
@@ -21,14 +20,6 @@ export class GroupModel {
 
   set groupId(value: string) {
     this._groupId = value;
-  }
-
-  get roleName(): string {
-    return this._roleName;
-  }
-
-  set roleName(value: string) {
-    this._roleName = value;
   }
 
   get groupName(): string {
@@ -39,6 +30,14 @@ export class GroupModel {
     this._groupName = value;
   }
 
+  get labelList(): Array<LabelModel> {
+    return this._labelList;
+  }
+
+  set labelList(value: Array<LabelModel>) {
+    this._labelList = value;
+  }
+
   get groupHeadImg(): string {
     return this._groupHeadImg;
   }
@@ -47,44 +46,19 @@ export class GroupModel {
     this._groupHeadImg = value;
   }
 
-  get groupMaster(): string {
-    return this._groupMaster;
+  get groupCreateId(): number {
+    return this._groupCreateId;
   }
 
-  set groupMaster(value: string) {
-    this._groupMaster = value;
+  set groupCreateId(value: number) {
+    this._groupCreateId = value;
   }
 
-  get groupMasterId(): string {
-    return this._groupMasterId;
+  get groupMembers(): Array<GroupMemberModel> {
+    return this._groupMembers;
   }
 
-  set groupMasterId(value: string) {
-    this._groupMasterId = value;
+  set groupMembers(value: Array<GroupMemberModel>) {
+    this._groupMembers = value;
   }
-
-  get issuerName(): string {
-    return this._issuerName;
-  }
-
-  set issuerName(value: string) {
-    this._issuerName = value;
-  }
-
-  get scheduleName(): string {
-    return this._scheduleName;
-  }
-
-  set scheduleName(value: string) {
-    this._scheduleName = value;
-  }
-
-  get scheduleCreateDate(): any {
-    return this._scheduleCreateDate;
-  }
-
-  set scheduleCreateDate(value: any) {
-    this._scheduleCreateDate = value;
-  }
-
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UserModel} from "../model/user.model";
 import { ScheduleModel } from "../model/schedule.model";
+import {GroupModel} from "../model/group.model";
 
 /**
  * 页面ts传值
@@ -10,10 +11,11 @@ import { ScheduleModel } from "../model/schedule.model";
 export class ParamsService {
 
   private _data: string;
-  private _user: UserModel;
+  private _user: UserModel;               //用户数据
   private _voice: any;
-  private _schedule: ScheduleModel;
-  private _contactList: Array<number>;
+  private _schedule: ScheduleModel;       //日程数据
+  private _group: GroupModel;                //群组数据
+  private _contactList: Array<number>;   //联系人数据
 
   get schedule(): ScheduleModel {
     return this._schedule;
@@ -53,4 +55,11 @@ export class ParamsService {
     this._contactList = value;
   }
 
+  get group(): GroupModel {
+    return this._group;
+  }
+
+  set group(value: GroupModel) {
+    this._group = value;
+  }
 }

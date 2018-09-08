@@ -5,6 +5,7 @@ import { HttpClient } from "@angular/common/http";
 import {ParamsService} from "../../service/params.service";
 import {groupList} from "../../model/out/groupList.out.model";
 import {FindOutModel} from "../../model/out/find.out.model";
+import {GroupModel} from "../../model/group.model";
 
 /**
  * Generated class for the GroupListPage page.
@@ -19,59 +20,70 @@ import {FindOutModel} from "../../model/out/find.out.model";
   templateUrl: 'group-list.html',
 })
 export class GroupListPage {
+
   data:any;//数据源
   groupFind:FindOutModel;//用户Id
-  groupORperson: boolean = true;//判断是群组还是个人
+  findFlag: boolean = false;//判断是群组还是个人
   groupORpersonname:String;//界面显示
+  groupList: Array<GroupModel>;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public loadingCtrl: LoadingController,
+              private loadingCtrl: LoadingController,
               private http: HttpClient,
               private paramsService: ParamsService) {
-    this.groupFind = new FindOutModel();
-    this.groupFind.userId = this.paramsService.user.userId;
-    this.groupFind.findType = 2;//默认查询群组
+
+  }
+
+  ionViewDidLoad() {
+    this.init();
   }
 
   //调用查询群组/个人接口
-  connectors(){
-    this.http.post(AppConfig.GROUP_FIND_URL,{
-        userId:this.groupFind.userId,
-        findType:this.groupFind.findType,
-      }
-    ).subscribe(data => {
-      if(this.groupFind.userId==0&&this.groupFind.userId==null){
-        console.log("登陆或网络出错   请重新登陆！")
-      }else {
+  init(){
+    this.groupFind = new FindOutModel();
+    this.groupFind.userId = this.paramsService.user.userId;
+    this.edit();
+    this.http.post(AppConfig.GROUP_FIND_URL, this.groupFind)
+      .subscribe(data => {
         this.data = data;
         let loader = this.loadingCtrl.create({
           content: this.data.message,
           duration: 1500
         });
-        if (this.data.code == "0") {
+        if (this.data.code == 0) {
+          this.groupList = [];
+          this.groupList = this.data.data.groupList;
+
+        } else if (this.data.code == -1) {
           loader.present();
-          // this.navCtrl.push('HomePage');
+          console.log(this.data.message);
         } else {
           loader.present();
+          console.log(this.data.message);
         }
-      }
-    })
+        /*if(this.groupFind.userId == 0 && this.groupFind.userId == null){
+          console.log("登陆或网络出错   请重新登陆！")
+        }else {
+          this.data = data;
+
+          if (this.data.code == "0") {
+            loader.present();
+            // this.navCtrl.push('HomePage');
+          } else {
+            loader.present();
+          }
+        }*/
+      })
 
   }
 
-  ionViewDidLoad() {
-    this.connectors();
+  //带参数跳转详情页面
+  groupShowDetail(groupDetail){
+    this.paramsService.group = groupDetail;
+    this.navCtrl.push('GroupDetailPage');
   }
 
-  //带参数跳转群组详情页面
-  xiangqing(groupORindividual){
-    this.navCtrl.push('GroupDetailPage',{groupId:groupORindividual})
-  }
-
-  //带参数跳转个人页面
-  gerenxiangqing(individual){
-    this.navCtrl.push('GroupPersonalEditPage',{groupId:individual})
-  }
 
   //跳转修改页面
   addORedit(){
@@ -80,16 +92,15 @@ export class GroupListPage {
 
 
   edit(){
-    if(this.groupORperson==false){
-      this.groupORperson=true;
-      this.groupORpersonname='群组'
+    if(this.findFlag == false){
+      this.findFlag = true;
+      this.groupORpersonname='群组';
       this.groupFind.findType = 2;
     }else {
-      this.groupORperson=false;
-      this.groupORpersonname='个人'
+      this.findFlag = false;
+      this.groupORpersonname='个人';
       this.groupFind.findType = 1;
     }
-    this.connectors()
   }
 
 }

@@ -49,6 +49,8 @@ public class GroupController {
             if(list!=null) {
                 map.put("groupList", list);
                 outDto.setData(map);
+                outDto.setCode(ResultCode.SUCCESS).setMessage("查询参与人列表成功");
+                logger.info("查询参与人列表成功：" + list.toString());
             }else outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
         }catch (Exception ex){
             throw new ServiceException(ex.getMessage());
