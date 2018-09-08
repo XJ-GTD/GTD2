@@ -36,6 +36,8 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     List<Integer> findGroupIdByUserId(int userId);
 
 
+
+
     /**
      * 更新群组日程事件中间表时间
      * @param userid

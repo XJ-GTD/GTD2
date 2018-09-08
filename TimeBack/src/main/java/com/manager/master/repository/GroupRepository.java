@@ -68,8 +68,13 @@ public class GroupRepository {
      * @return
      */
     public int  findUserId(String contact){
-        String sql="SELECT USER_ID FROM GTD_USER WHERE USER_CONTACT="+contact;
-        return (int) em.createNativeQuery(sql).getSingleResult();
+        try {
+            String sql="SELECT USER_ID FROM GTD_USER WHERE USER_CONTACT="+contact;
+            return (int) em.createNativeQuery(sql).getSingleResult();
+        }catch (Exception e){
+            return 0;
+        }
+
     }
 
     /**
