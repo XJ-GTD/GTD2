@@ -25,7 +25,11 @@
 
     <ion-item>
       <ion-label floating>参与人</ion-label>
-      <ion-input type="text" (focus)="addContact()" [(ngModel)]="groupNames"></ion-input>
+      <ion-select [(ngModel)]="schedule.groupIds" multiple="true">
+        <div *ngFor="let gp of group">
+          <ion-option value="{{gp.groupId}}">{{gp.groupName}}</ion-option>
+        </div>
+      </ion-select>
     </ion-item>
 
     <ion-item>
@@ -40,7 +44,11 @@
 
     <ion-item>
       <ion-label floating>标签</ion-label>
-      <ion-input type="text" (focus)="findLabel()" [(ngModel)]="labelNames"></ion-input>
+      <ion-select (focus)="findLabel()" [(ngModel)]="schedule.labelIds" multiple="true">
+        <div *ngFor="let lb of label">
+          <ion-option value="{{lb.labelId}}">{{lb.labelName}}</ion-option>
+        </div>
+      </ion-select>
     </ion-item>
 
     <div>

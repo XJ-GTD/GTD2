@@ -3,7 +3,7 @@
  *
  * create by wzy on 2018/09/06
  */
-export class GroupFindOutModel {
+export class FindOutModel {
 
   private _userId: number;    //用户ID
   private _findType: number;  //查询类型

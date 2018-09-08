@@ -11,6 +11,7 @@ export class ScheduleOutModel {
   private _scheduleDeadline: string;    //截止时间
   private _labelIds: Array<number>;   //标签ID List
   private _groupIds: Array<number>;   //参与人ID List
+  private s
 
   get groupIds(): Array<number> {
     return this._groupIds;

@@ -4,10 +4,11 @@ import { ParamsService } from "../../service/params.service";
 import { HttpClient } from "@angular/common/http";
 import { ScheduleModel } from "../../model/schedule.model";
 import { AppConfig } from "../../app/app.config";
-import {ScheduleOutModel} from "../../model/out/schedule.out.model";
-import {GroupFindOutModel} from "../../model/out/groupFind.out.model";
-import {LabelOutModel} from "../../model/out/label.out.model";
-import {LabelModel} from "../../model/label.model";
+import { ScheduleOutModel } from "../../model/out/schedule.out.model";
+import { FindOutModel } from "../../model/out/find.out.model";
+import { LabelOutModel } from "../../model/out/label.out.model";
+import { LabelModel } from "../../model/label.model";
+import { GroupModel } from "../../model/group.model";
 
 /**
  * Generated class for the ScheduleAddPage page.
@@ -24,18 +25,15 @@ import {LabelModel} from "../../model/label.model";
 })
 export class ScheduleAddPage {
 
-  data: any;
-  contactDetail: any;
-  groupNames: Array<string>;
+  private data: any;
   groupIds: Array<number>;
+  group: Array<GroupModel>;
   schedule: any;
   scheduleOut: ScheduleOutModel;
-  groupFind: GroupFindOutModel;
+  groupFind: FindOutModel;
   labelFind: LabelOutModel;
-  labelDetail: any;
-  labelNames: Array<string>;
   labelIds: Array<number>;
-  label: LabelModel;
+  label: Array<LabelModel>;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -43,8 +41,7 @@ export class ScheduleAddPage {
               public loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
               private paramsService: ParamsService) {
-    this.groupFind = new GroupFindOutModel();
-    this.groupFind.userId= this.paramsService.user.userId;
+
     this.init();
 
   }
@@ -55,16 +52,19 @@ export class ScheduleAddPage {
       this.schedule = new ScheduleModel();
       this.schedule = this.paramsService.schedule;
     } else {
-      this.schedule = new ScheduleOutModel();
+      this.scheduleOut =  new ScheduleOutModel();
+      this.schedule = this.scheduleOut;
     }
+    this.addContact();
+    this.findLabel();
   }
 
   //查询系统标签
   findLabel() {
     this.labelFind = new LabelOutModel();
     this.labelFind.userId = this.paramsService.user.userId;
-    this.labelFind.findType = 0;
-    let alert = this.alertCtrl.create();
+    this.labelFind.findType = 0;  //暂为硬代码，默认日程
+
     this.http.post(AppConfig.USER_LABEL_URL, this.labelFind, {
       headers: {
         "Content-Type": "application/json"
@@ -74,34 +74,15 @@ export class ScheduleAddPage {
       .subscribe(data => {
         this.data = data;
         if (this.data.code == 0) {
-          this.label = new LabelModel();
-          alert.setTitle('标签');
-          for (this.labelDetail of this.data.data.labelList) {
-            alert.addInput({
-              type: 'checkbox',
-              label: this.labelDetail.labelName,
-              value: this.labelDetail
-            })
-          }
-          alert.addButton('取消');
-          alert.addButton({
-            text: '确定',
-            handler: (data => {
-              console.log('checkbox data:' + data);
-              this.labelIds = [];
-              this.labelNames = [];
-              for (this.labelDetail of data) {
-                this.labelIds.push(this.labelDetail.labelId);         //上传数据
-                this.labelNames.push(this.labelDetail.labelName);   //显示用
-              }
-            })
-          })
-          alert.present();
+          this.label = [];
+          this.label = this.data.data.labelList;
+
         } else {
-          alert.setTitle(this.data.message);
-          alert.addButton({
-            text: '确定'
+          let loader = this.loadingCtrl.create({
+            content: "服务器繁忙，请稍后再试",
+            duration: 1000
           });
+          loader.present();
         }
       })
   }
@@ -110,7 +91,8 @@ export class ScheduleAddPage {
    * 选择参与人
    */
   addContact() {
-    let alert = this.alertCtrl.create();
+    this.groupFind = new FindOutModel();
+    this.groupFind.userId= this.paramsService.user.userId;
     this.groupFind.findType = 3;        //暂为硬代码，默认群组
     this.http.post(AppConfig.GROUP_ALL_SHOW_URL, this.groupFind, {
       headers: {
@@ -121,33 +103,15 @@ export class ScheduleAddPage {
       .subscribe(data => {
         this.data = data;
         if (this.data.code == 0) {
-          alert.setTitle('参与人');
-          for (this.contactDetail of this.data.data.groupList) {
-            alert.addInput({
-              type: 'checkbox',
-              label: this.contactDetail.groupName,
-              value: this.contactDetail
-            })
-          }
-          alert.addButton('取消');
-          alert.addButton({
-            text: '确定',
-            handler: (data => {
-              console.log('checkbox data:' + data);
-              this.groupIds = [];
-              this.groupNames = [];
-              for (this.contactDetail of data) {
-                this.groupIds.push(this.contactDetail.groupId);         //上传数据
-                this.groupNames.push(this.contactDetail.groupName);   //显示用
-              }
-            })
-          })
-          alert.present();
+          this.group = [];
+          this.group = this.data.data.groupList;
+
         } else {
-          alert.setTitle(this.data.message);
-          alert.addButton({
-            text: '确定'
+          let loader = this.loadingCtrl.create({
+            content: "服务器繁忙，请稍后再试",
+            duration: 1000
           });
+          loader.present();
         }
 
       })
@@ -157,7 +121,17 @@ export class ScheduleAddPage {
 
   //发布任务入库
   newProject() {
-    this.http.post(AppConfig.SCHEDULE_ADD_URL, this.scheduleOut, {
+    this.scheduleOut = new ScheduleOutModel();
+    this.schedule.userId = this.paramsService.user.userId;
+    /*时间格式规整*/
+    this.schedule.scheduleStartTime = this.schedule.scheduleStartTime.replace("T", " ");
+    this.schedule.scheduleStartTime = this.schedule.scheduleStartTime.replace(":00Z", "");
+    this.schedule.scheduleDeadline = this.schedule.scheduleDeadline.replace("T", " ");
+    this.schedule.scheduleDeadline = this.schedule.scheduleDeadline.replace(":00Z", "");
+    //事件默认状态：1
+    this.schedule
+    console.log("groupIds:" + this.schedule.groupIds + " labelIds: " + this.schedule.labelIds);
+    this.http.post(AppConfig.SCHEDULE_ADD_URL, this.schedule, {
       headers: {
         "Content-Type": "application/json"
       },
@@ -165,15 +139,16 @@ export class ScheduleAddPage {
     })
       .subscribe(data => {
         this.data = data;
+        let loader = this.loadingCtrl.create({
+          content: this.data.message,
+          duration: 1500
+        });
         if (this.data.code == 0) {
-          let loader = this.loadingCtrl.create({
-            content: this.data.message,
-            duration: 1500
-          });
           loader.present();
-          // this.schedule.scheduleId = this.data.data.scheduleId;
+          console.log("发布成功");
         } else {
-          console.log("发布失败");
+          loader.present();
+          console.log("发布失败" + this.data.message);
         }
       });
   }
