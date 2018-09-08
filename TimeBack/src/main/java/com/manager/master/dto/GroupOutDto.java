@@ -1,11 +1,6 @@
 package com.manager.master.dto;
 
-import com.manager.master.entity.GtdLabelEntity;
-import com.manager.master.entity.GtdUserEntity;
-
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 群组
@@ -16,7 +11,7 @@ public class GroupOutDto{
     private String groupName;
     private String groupHeadImg;
     private int groupCreateId;
-    private List<LabelDto> groupLabel;
+    private List<LabelOutDto> groupLabel;
     private List<GroupMemberDto> gtdGroupMember;
 
     public int getGroupId() {
@@ -51,11 +46,11 @@ public class GroupOutDto{
         this.groupCreateId = groupCreateId;
     }
 
-    public List<LabelDto> getGroupLabel() {
+    public List<LabelOutDto> getGroupLabel() {
         return groupLabel;
     }
 
-    public void setGroupLabel(List<LabelDto> groupLabel) {
+    public void setGroupLabel(List<LabelOutDto> groupLabel) {
         this.groupLabel = groupLabel;
     }
 

@@ -24,7 +24,7 @@ export class HomePage {
               private paramsService: ParamsService) {
 
     //消息队列接收
-    this.webSocketService.connect(this.paramsService.user.accountQueue);
+    // this.webSocketService.connect(this.paramsService.user.accountQueue);
 
   }
 

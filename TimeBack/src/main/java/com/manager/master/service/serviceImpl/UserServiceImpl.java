@@ -1,10 +1,15 @@
 package com.manager.master.service.serviceImpl;
 
 import com.manager.config.exception.ServiceException;
+import com.manager.master.dto.LabelInDto;
+import com.manager.master.dto.LabelOutDto;
 import com.manager.master.dto.UserInDto;
 import com.manager.master.dto.UserOutDto;
 import com.manager.master.entity.GtdAccountEntity;
+import com.manager.master.entity.GtdLabelEntity;
 import com.manager.master.entity.GtdUserEntity;
+import com.manager.master.repository.LabelJpaRespository;
+import com.manager.master.repository.LabelRespository;
 import com.manager.master.repository.UserJpaRepository;
 import com.manager.master.repository.UserRepository;
 import com.manager.master.service.CreateQueueService;
@@ -20,7 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -34,13 +41,12 @@ public class UserServiceImpl implements IUserService{
     private Logger logger = LogManager.getLogger(this.getClass());
     @Autowired
     CreateQueueService createQueueService;
-
-
     @Resource
     private UserRepository userRepository;
-
     @Resource
     private UserJpaRepository userJpaRepository;
+    @Resource
+    private LabelJpaRespository labelJpaRespository;
 
 
 
@@ -136,4 +142,37 @@ public class UserServiceImpl implements IUserService{
         return user;
     }
 
+    /**
+     * 查询标签列表
+     * @param inDto
+     * @return
+     */
+    @Override
+    public List<LabelOutDto> findLabel(LabelInDto inDto) {
+
+        List<LabelOutDto> labelOutDtoList = null;
+        int userId = inDto.getUserId();
+        int labelType = inDto.getFindType();
+        if (userId == 0){
+            throw new ServiceException("用户ID不能为空");
+        }
+        if (labelType != 0 && labelType != 1){
+            throw new ServiceException("标签类型不能为空");
+        }
+        List<Map> labelList = labelJpaRespository.findLabelList(labelType);
+
+        if (labelList != null && labelList.size() != 0) {
+            labelOutDtoList = new ArrayList<>();
+            for (Map gle: labelList) {
+                LabelOutDto outDto = new LabelOutDto();
+                outDto.setLabelId((Integer) gle.get("LABEL_ID"));
+                outDto.setLabelName((String) gle.get("LABEL_NAME"));
+                labelOutDtoList.add(outDto);
+            }
+        } else {
+            throw new ServiceException("未查询到标签数据");
+        }
+
+        return labelOutDtoList;
+    }
 }

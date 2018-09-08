@@ -57,4 +57,12 @@ public interface RemindJpaRepository extends JpaRepository<GtdSchedulePlayersEnt
     @Modifying
     @Query(value = "INSERT INTO gtd_remind(PLAYERS_ID,REMIND_DATE,CREATE_ID,CREATE_DATE,UPDATE_ID,UPDATE_DATE) VALUES (?1,?2,?3,?4,?5,?6)",nativeQuery = true)
     void insertIntoRemind(Integer playersId,Timestamp remindDate,Integer userid,Timestamp createDt,Integer updateId,Timestamp updateDt);
+
+    /**
+     * 根据参与人ID删除 提醒时间表数据
+     * @param playersId
+     */
+    @Modifying
+    @Query(value = "DELETE FROM gtd_remind WHERE PLAYERS_ID IN ?1",nativeQuery = true)
+    void deleteAllByPlayersIds(List<Integer> playersId);
 }

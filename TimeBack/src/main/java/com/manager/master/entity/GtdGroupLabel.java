@@ -16,6 +16,7 @@ public class GtdGroupLabel {
     private Timestamp updateDate;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "GROUP_LABEL_ID")
     public int getGroupLabelId() {
         return groupLabelId;

@@ -6,6 +6,8 @@ import { ScheduleModel } from "../../model/schedule.model";
 import { AppConfig } from "../../app/app.config";
 import {ScheduleOutModel} from "../../model/out/schedule.out.model";
 import {GroupFindOutModel} from "../../model/out/groupFind.out.model";
+import {LabelOutModel} from "../../model/out/label.out.model";
+import {LabelModel} from "../../model/label.model";
 
 /**
  * Generated class for the ScheduleAddPage page.
@@ -29,6 +31,11 @@ export class ScheduleAddPage {
   schedule: any;
   scheduleOut: ScheduleOutModel;
   groupFind: GroupFindOutModel;
+  labelFind: LabelOutModel;
+  labelDetail: any;
+  labelNames: Array<string>;
+  labelIds: Array<number>;
+  label: LabelModel;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -36,7 +43,8 @@ export class ScheduleAddPage {
               public loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
               private paramsService: ParamsService) {
-    this.groupFind.userId = this.paramsService.user.userId;
+    this.groupFind = new GroupFindOutModel();
+    this.groupFind.userId= this.paramsService.user.userId;
     this.init();
 
   }
@@ -51,12 +59,59 @@ export class ScheduleAddPage {
     }
   }
 
+  //查询系统标签
+  findLabel() {
+    this.labelFind = new LabelOutModel();
+    this.labelFind.userId = this.paramsService.user.userId;
+    this.labelFind.findType = 0;
+    let alert = this.alertCtrl.create();
+    this.http.post(AppConfig.USER_LABEL_URL, this.labelFind, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      responseType: 'json'
+    })
+      .subscribe(data => {
+        this.data = data;
+        if (this.data.code == 0) {
+          this.label = new LabelModel();
+          alert.setTitle('标签');
+          for (this.labelDetail of this.data.data.labelList) {
+            alert.addInput({
+              type: 'checkbox',
+              label: this.labelDetail.labelName,
+              value: this.labelDetail
+            })
+          }
+          alert.addButton('取消');
+          alert.addButton({
+            text: '确定',
+            handler: (data => {
+              console.log('checkbox data:' + data);
+              this.labelIds = [];
+              this.labelNames = [];
+              for (this.labelDetail of data) {
+                this.labelIds.push(this.labelDetail.labelId);         //上传数据
+                this.labelNames.push(this.labelDetail.labelName);   //显示用
+              }
+            })
+          })
+          alert.present();
+        } else {
+          alert.setTitle(this.data.message);
+          alert.addButton({
+            text: '确定'
+          });
+        }
+      })
+  }
+
   /**
    * 选择参与人
    */
   addContact() {
     let alert = this.alertCtrl.create();
-    this.groupFind.findType = 2;        //暂为硬代码，默认群组
+    this.groupFind.findType = 3;        //暂为硬代码，默认群组
     this.http.post(AppConfig.GROUP_FIND_URL, this.groupFind, {
       headers: {
         "Content-Type": "application/json"
