@@ -2,6 +2,7 @@ package com.manager.master.repository;
 
 import com.manager.master.dto.GroupOutDto;
 import com.manager.master.entity.GtdGroupEntity;
+import com.manager.master.entity.GtdLabelEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -86,6 +87,10 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
 //    int updateGroupName(String groupName);
 
     //List<GtdGroupEntity> findByUserIdOrGroupName();
+
+    List<GtdGroupEntity> findDistinctByLabelNot(GtdLabelEntity labelEntity);
+
+    List<GtdGroupEntity> findByLabel(GtdLabelEntity labelEntity);
 
 }
 
