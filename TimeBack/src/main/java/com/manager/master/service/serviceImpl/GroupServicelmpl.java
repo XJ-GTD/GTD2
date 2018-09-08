@@ -67,8 +67,10 @@ public class GroupServicelmpl implements IGroupService {
             GtdLabelEntity labels=labelJpaRespository.findByLabelId(8);
             if(typeId==1) {
                 list = groupJpaRepository.findByLabel(labels);//查询个人
-            }else {
+            }else if(typeId==2){
                 list=groupJpaRepository.findDistinctByLabelNot(labels);//查询非个人群组
+            }else{
+                throw new ServiceException("请输入正确的查询类型");
             }
         } catch (Exception e) {
             throw new ServiceException("语法错误");
@@ -116,11 +118,11 @@ public class GroupServicelmpl implements IGroupService {
             }
             group.setGtdGroupMember(memberDtos);
             Set<GtdLabelEntity> set = g.getLabel();
-            List<LabelDto> labelOut = new ArrayList<LabelDto>();
+            List<LabelOutDto> labelOut = new ArrayList<LabelOutDto>();
 
             for (GtdLabelEntity label : set) {
                 //添加群组标签信息
-                LabelDto l = new LabelDto();
+                LabelOutDto l = new LabelOutDto();
                 l.setLabelId(label.getLabelId());
                 l.setLabelName(label.getLabelName());
                 labelOut.add(l);
@@ -165,9 +167,9 @@ public class GroupServicelmpl implements IGroupService {
         group.setGroupId(groupId);
         group.setGroupName(groupEntity.getGroupName());
         Set<GtdLabelEntity> set = groupEntity.getLabel();
-        List<LabelDto> labelOut = new ArrayList<LabelDto>();
+        List<LabelOutDto> labelOut = new ArrayList<LabelOutDto>();
         for (GtdLabelEntity label : set) { //标签信息
-            LabelDto l = new LabelDto();
+            LabelOutDto l = new LabelOutDto();
             l.setLabelId(label.getLabelId());
             l.setLabelName(label.getLabelName());
             labelOut.add(l);
