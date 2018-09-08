@@ -39,5 +39,8 @@ export class SpeechPage {
 
   }
 
+  groupListShow() {
+    this.navCtrl.push('GroupListPage');
+  }
 
 }

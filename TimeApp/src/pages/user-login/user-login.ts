@@ -39,44 +39,43 @@ export class UserLoginPage {
   }
 
   signIn() {
-    this.navCtrl.push('GroupListPage')
-    // this.http.post(AppConfig.USER_LOGIN_URL, {
-    //   // accountName: this.accountName,
-    //   // accountPassword: this.accountPassword,
-    //   accountName: "admin",
-    //   accountPassword: "admin",
-    //   loginType: 0
-    //
-    // },{
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   responseType: 'json'
-    // })
-    //   .subscribe(data => {
-    //     this.data = data;
-    //     console.log( this.data);
-    //     let loader = this.loadingCtrl.create({
-    //       content: this.data.message,
-    //       duration: 1000
-    //     });
-    //     let alert = this.alertCtrl.create({
-    //       title:'提示信息',
-    //       subTitle: this.data.message,
-    //       buttons:['确定']
-    //     });
-    //
-    //     if (this.data.code == "0") {
-    //       this.paramsService.user = this.data.data.userInfo;
-    //       // loginMessage.present(loginMessage.setMessage(this.data.message));
-    //
-    //       loader.present();
-    //       this.navCtrl.push('HomePage');
-    //     } else {
-    //       alert.present();
-    //     }
-    //
-    //   })
+    this.http.post(AppConfig.USER_LOGIN_URL, {
+      // accountName: this.accountName,
+      // accountPassword: this.accountPassword,
+      accountName: "admin",
+      accountPassword: "admin",
+      loginType: 0
+
+    },{
+      headers: {
+        "Content-Type": "application/json"
+      },
+      responseType: 'json'
+    })
+      .subscribe(data => {
+        this.data = data;
+        console.log( this.data);
+        let loader = this.loadingCtrl.create({
+          content: this.data.message,
+          duration: 1000
+        });
+        let alert = this.alertCtrl.create({
+          title:'提示信息',
+          subTitle: this.data.message,
+          buttons:['确定']
+        });
+
+        if (this.data.code == "0") {
+          this.paramsService.user = this.data.data.userInfo;
+          // loginMessage.present(loginMessage.setMessage(this.data.message));
+
+          loader.present();
+          this.navCtrl.push('HomePage');
+        } else {
+          alert.present();
+        }
+
+      })
   }
 
   signUp() {
