@@ -85,13 +85,13 @@ public class GroupController {
      */
     @RequestMapping(value = "/find_group_member",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto findGroupMember(@RequestBody GroupInDto inDto){
+    public BaseOutDto findGroupMember(@RequestBody GroupFindInDto inDto){
         BaseOutDto outDto=new BaseOutDto();
-        Map<String,Set<GroupMemberOutDto>> map=new HashMap<String, Set<GroupMemberOutDto>>();
+        Map<String,List<GroupMemberOutDto>> map=new HashMap<String,List<GroupMemberOutDto>>();
         try{
-            Set<GroupMemberOutDto> set= groupService.findMember(inDto);
-            if(set!=null) {
-                map.put("groupMemberList", set);
+            List<GroupMemberOutDto> list= groupService.findMember(inDto);
+            if(list!=null) {
+                map.put("groupMemberList", list);
                 outDto.setData(map);
             }else outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
         }catch (Exception e){
