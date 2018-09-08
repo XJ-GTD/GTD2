@@ -3,6 +3,7 @@ import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angu
 import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
 import {ParamsService} from "../../service/params.service";
+import {groupList} from "../../model/out/groupList.out.model";
 
 /**
  * Generated class for the GroupListPage page.
@@ -17,15 +18,14 @@ import {ParamsService} from "../../service/params.service";
   templateUrl: 'group-list.html',
 })
 export class GroupListPage {
-  data22:any;
+  data:any;
   findType: number = 2;
   groupORperson: boolean = true;
   groupORpersonname:String;
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public loadingCtrl: LoadingController,
-              private http: HttpClient,
-              private paramsService: ParamsService) {
+              private http: HttpClient,) {
     this.connectors(this.findType);
   }
 
@@ -35,19 +35,21 @@ export class GroupListPage {
         findType:findType
       }
     ).subscribe(data => {
-      this.data22 = data;
-      console.log(this.data22);
+      this.data = data;
+      console.log(this.data.data.Grouplist)
       let loader = this.loadingCtrl.create({
-        content: this.data22.message,
+        content: this.data.message,
         duration: 1500
       });
-      if (this.data22.code == "0") {
+      if (this.data.code == "0") {
         loader.present();
               // this.navCtrl.push('HomePage');
       } else {
         loader.present();
       }
     })
+
+    // console.log(this.group.groupName)
   }
 
   ionViewDidLoad() {

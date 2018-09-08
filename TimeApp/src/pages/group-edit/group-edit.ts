@@ -34,11 +34,13 @@ export class GroupEditPage {
 
   showLabelCheckbox(){
     if(this.data1==null){
-      alert('123')
+      alert('新增')
       //查询所有标签
     }else {
       let alert = this.alertCtrl.create();
       alert.setTitle('添加新标签');
+
+
 
       for (let item of this.data1.data.group.groupLabel){
         console.log(item.labelId);
@@ -66,7 +68,7 @@ export class GroupEditPage {
     // alert(123);
     if(this.data1==null){
       //调用查询个人
-      alert('保存成功')
+      console.log('保存成功')
     }else {
       let alert = this.alertCtrl.create();
       alert.setTitle('添加新成员')
@@ -95,7 +97,7 @@ export class GroupEditPage {
   savegroup(groupName:HTMLInputElement){
     //调用保存接口
     // console.log(groupName.value)
-    alert('保存成功')
+    console.log('保存成功')
   }
 
 }
@@ -105,4 +107,3 @@ export class GroupEditPage {
 //2 查询群成员,获取名字和手机号赋值给
 //3 把选择的标签和群成员调用接口 传进去
 //4根据返回的数据跳转对应的界面
-//

@@ -48,6 +48,8 @@ export class AppConfig {
 
   public static GROUP_ADD_URL: string = AppConfig.GROUP_URL + "/";    //群组添加 POST
 
+  public static GROUP_ALL_SHOW_URL: string = AppConfig.GROUP_URL + "/find_all_players";   //全部参与人展示
+
   //日程类
   // public static SCHEDULE_TASK_ISSUE: string = AppConfig.SCHEDULE_URL + "/task_announcement";    //发布任务 POST
 
