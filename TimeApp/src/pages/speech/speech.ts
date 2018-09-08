@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {XiaojiAssistantService} from "../../service/xiaoji-assistant.service";
-import {ScheduleAddPage} from "../schedule-add/schedule-add";
-import {ParamsService} from "../../service/params.service";
+import { XiaojiAssistantService } from "../../service/xiaoji-assistant.service";
+import { ParamsService } from "../../service/params.service";
 
 /**
  * Generated class for the SpeechPage page.
@@ -28,6 +27,12 @@ export class SpeechPage {
     console.log('ionViewDidLoad SpeechPage');
   }
 
+  //展示日程列表
+  scheduleShow() {
+
+  }
+
+  //添加日程
   addSchedule() {
     this.navCtrl.push("ScheduleAddPage")
   }

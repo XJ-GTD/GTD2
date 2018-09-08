@@ -102,15 +102,19 @@ export class ScheduleAddPage {
     })
       .subscribe(data => {
         this.data = data;
+        let loader = this.loadingCtrl.create({
+          content: this.data.message,
+          duration: 1000
+        });
         if (this.data.code == 0) {
           this.group = [];
           this.group = this.data.data.groupList;
 
-        } else {
-          let loader = this.loadingCtrl.create({
-            content: "服务器繁忙，请稍后再试",
-            duration: 1000
-          });
+        } else if (this.data.code == 1) {
+          loader.setContent("暂未找到参与人，请尝试创建参与人吧");
+          loader.present();
+        } else if (this.data.code == -1) {
+          loader.setContent("服务器繁忙，请稍后再试");
           loader.present();
         }
 
@@ -129,7 +133,7 @@ export class ScheduleAddPage {
     this.schedule.scheduleDeadline = this.schedule.scheduleDeadline.replace("T", " ");
     this.schedule.scheduleDeadline = this.schedule.scheduleDeadline.replace(":00Z", "");
     //事件默认状态：1
-    this.schedule
+    this.schedule.scheduleStatus = 1;
     console.log("groupIds:" + this.schedule.groupIds + " labelIds: " + this.schedule.labelIds);
     this.http.post(AppConfig.SCHEDULE_ADD_URL, this.schedule, {
       headers: {
@@ -145,6 +149,7 @@ export class ScheduleAddPage {
         });
         if (this.data.code == 0) {
           loader.present();
+          this.onBack();
           console.log("发布成功");
         } else {
           loader.present();

@@ -11,7 +11,7 @@ export class ScheduleOutModel {
   private _scheduleDeadline: string;    //截止时间
   private _labelIds: Array<number>;   //标签ID List
   private _groupIds: Array<number>;   //参与人ID List
-  private s
+  private _scheduleStatus: number;   //日程状态 0是完成，1是未完成，2是过期
 
   get groupIds(): Array<number> {
     return this._groupIds;
@@ -56,5 +56,11 @@ export class ScheduleOutModel {
     this._userId = value;
   }
 
+  get scheduleStatus(): number {
+    return this._scheduleStatus;
+  }
 
+  set scheduleStatus(value: number) {
+    this._scheduleStatus = value;
+  }
 }
