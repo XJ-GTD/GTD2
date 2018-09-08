@@ -396,7 +396,7 @@ public class ScheduleServiceImpl implements IScheduleService {
                 // 根据groupId 查询群成员信息
                 List<GtdGroupMemberEntity> groupMemberList = null;
                 try {
-                    groupMemberList = groupMemberRepository.findAllByGroupId(Integer.parseInt(id.toString()));
+                    groupMemberList = groupMemberRepository.findMemberByGroupId(Integer.parseInt(id.toString()));
                 }catch (Exception ex){
                     throw new ServiceException("语法错误");
                 }
@@ -443,7 +443,7 @@ public class ScheduleServiceImpl implements IScheduleService {
             for (Object id : groupIds) {
                 // 根据groupId 查询群成员信息
                 try {
-                    groupMember = groupMemberRepository.findByGroupIdAndUserId(Integer.parseInt(id.toString()),i.getUserId());
+                    groupMember = groupMemberRepository.findMemberByGroupIdAndUserId(Integer.parseInt(id.toString()),i.getUserId());
                 }catch (Exception ex){
                     throw new ServiceException("语法错误");
                 }
@@ -576,7 +576,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         if (groupIds != null) {
             for (Object id : groupIds) {
                 // 根据groupId 查询群成员信息
-                List<GtdGroupMemberEntity> groupMemberList = groupMemberRepository.findAllByGroupId(Integer.parseInt(id.toString()));
+                List<GtdGroupMemberEntity> groupMemberList = groupMemberRepository.findMemberByGroupId(Integer.parseInt(id.toString()));
                 for (GtdGroupMemberEntity entity:groupMemberList){
                     list.add(entity);
                 }

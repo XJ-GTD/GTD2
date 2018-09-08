@@ -12,5 +12,7 @@ import javax.transaction.Transactional;
  */
 @Transactional
 public interface LabelJpaRespository extends JpaRepository<GtdLabelEntity,Integer>{
-    GtdLabelEntity findByLabelId(int labelId);
+    @Query(value = "SELECT g FROM gtd_label AS g WHERE g.LABEL_ID=?1",nativeQuery = true)
+    GtdLabelEntity findLabelById(int labelId);
+
 }

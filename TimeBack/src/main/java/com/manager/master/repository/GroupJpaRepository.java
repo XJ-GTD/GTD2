@@ -40,15 +40,10 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
      * @param groupId
      * @return
      */
-    GtdGroupEntity findByGroupId(Integer groupId);
+    @Modifying
+    @Query(value = "SELECT g FROM gtd_group AS g WHERE g.GROUP_ID=?1",nativeQuery = true)
+    GtdGroupEntity findGroupById(Integer groupId);
 
-    /**
-     *根据用户Id和群组Id查询所有的群组
-     * @param userId
-     * @param groupId
-     * @return
-     */
-    GtdGroupEntity findByUserIdAndGroupId(Integer userId,Integer groupId);
 
     /**
      *根据群组ID查询群组
@@ -82,11 +77,6 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     void insertIntoGroupSchedule(Integer groupId,Integer shceduleId,Integer createId,Timestamp createDt,Integer updateId,Timestamp updateDt);
 
 
-//    @Modifying
-//    @Query("update GtdGroupEntity g set g.groupName=:groupName")
-//    int updateGroupName(String groupName);
-
-    //List<GtdGroupEntity> findByUserIdOrGroupName();
 
     List<GtdGroupEntity> findDistinctByLabelNot(GtdLabelEntity labelEntity);
 

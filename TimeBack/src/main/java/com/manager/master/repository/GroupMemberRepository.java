@@ -16,18 +16,15 @@ import java.util.List;
  *  @since 2018/8/29
  */
 @Transactional
-public interface GroupMemberRepository extends JpaRepository<GtdGroupMemberEntity,Integer>,JpaSpecificationExecutor<GtdGroupMemberEntity> {
-    List<GtdGroupMemberEntity> findAllByGroupId(int groupId);
+public interface GroupMemberRepository extends JpaRepository<GtdGroupMemberEntity,Integer>{
 
-    GtdGroupMemberEntity findByGroupIdAndUserId(Integer groupId,Integer userId);
+    @Query(value = "SELECT g FROM gtd_group_member AS g WHERE g.GROUP_ID=?1",nativeQuery = true)
+    List<GtdGroupMemberEntity> findMemberByGroupId(int groupId);
 
-    void deleteAllByGroupId(int groupId);
+    @Query(value = "SELECT g FROM gtd_group_member AS g WHERE g.GROUP_ID=?1 AND g.userId=?2",nativeQuery = true)
+    GtdGroupMemberEntity findMemberByGroupIdAndUserId(Integer groupId,Integer userId);
 
-    List<GtdGroupMemberEntity> findByUserIdAndGroupId(int userId,int groupId);
 
-    List<GtdGroupMemberEntity> findByUserNameLike(String userName);
-
-    @Modifying
     @Query(value = "SELECT USER_ID FROM gtd_group_member WHERE GROUP_ID = ?1",nativeQuery = true)
     List<Integer> findAllUserIdByGroupId(Integer groupId);
 }
