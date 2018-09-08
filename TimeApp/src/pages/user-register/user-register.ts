@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
-import {AppConfig} from "../../app/app.config";
-import {ParamsService} from "../../service/params.service";
+import {IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { FormBuilder, Validators, FormGroup } from "@angular/forms";
+import { HttpClient } from "@angular/common/http";
+import { ParamsService } from "../../service/params.service";
+import { AppConfig } from "../../app/app.config";
 
 /**
  * Generated class for the UserRegisterPage page.
@@ -19,32 +19,30 @@ import {ParamsService} from "../../service/params.service";
   providers: []
 })
 export class UserRegisterPage {
+
   RegisterForm: FormGroup;
   data: any;
-  user: any;
   accountName: any;
   accountPassword: any;
   accountMobile: any;
   userName: any;
   reAccountPassword: any;
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
+  constructor(public navCtrl: NavController, public navParams: NavParams,
               private formBuilder: FormBuilder,
               private http: HttpClient,
-              public toastCtrl: ToastController,
+              private loadingCtrl: LoadingController,
               private paramsService: ParamsService) {
+
     this.RegisterForm = this.formBuilder.group({
-      accountName: ['', Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(12)])],
       accountMobile:['',Validators.compose([Validators.required, Validators.minLength(11), Validators.maxLength(11)])],
       accountPassword: ['', Validators.compose([Validators.required, Validators.minLength(6),Validators.maxLength(20)])],
       reAccountPassword:['',Validators.compose([Validators.required])]
-    })
-    this.accountName = "100" + this.RegisterForm.controls['accountMobile'];
-    this.accountMobile=this.RegisterForm.controls['accountMobile'];
+
+    });
+    this.accountMobile = this.RegisterForm.controls['accountMobile'];
     this.accountPassword = this.RegisterForm.controls['accountPassword'];
-    this.reAccountPassword=this.RegisterForm.controls['reAccountPassword'];
-    this.userName = this.RegisterForm.controls['userName'];
+    this.reAccountPassword = this.RegisterForm.controls['reAccountPassword'];
   }
 
   ionViewDidLoad() {
@@ -52,18 +50,14 @@ export class UserRegisterPage {
   }
 
   register(form) {
-    let registerMessage = this.toastCtrl.create({
-      message: "",
-      duration: 3000,
-      position: "middle"
-    });
 
     //用户注册
     this.http.post(AppConfig.USER_REGISTER_URL, {
       accountName: this.accountName,
       accountPassword: form.accountPassword,
       accountMobile: form.accountMobile,
-      userName: this.userName
+      userName: this.userName,
+      loginType: 0
     }, {
       headers: {
         "Content-Type": "application/json"
@@ -72,12 +66,17 @@ export class UserRegisterPage {
     })
       .subscribe(data => {
         this.data = data;
+        let loader = this.loadingCtrl.create({
+          content: this.data.message,
+          duration: 1000
+        });
         if (this.data.code == "0") {
-          registerMessage.present(registerMessage.setMessage(this.data.message));
+          loader.present();
           //注册成功后登陆
           this.http.post(AppConfig.USER_LOGIN_URL, {
-            accountName: form.accountName,
-            accountPassword: form.accountPassword
+            accountName: form.accountMobile,
+            accountPassword: form.accountPassword,
+            loginType: 0
           },{
             headers: {
               "Content-Type": "application/json"
@@ -86,22 +85,26 @@ export class UserRegisterPage {
           })
             .subscribe(data => {
               console.log(data);
-              this.user = data;
-
-              if (this.user.code == "0") {
-                this.paramsService.data = this.user.data.userInfo;
-                registerMessage.present(registerMessage.setMessage(this.user.message));
+              this.data = data;
+              let loader = this.loadingCtrl.create({
+                content: this.data.message,
+                duration: 1000
+              });
+              if (this.data.code == "0") {
+                this.paramsService.user = this.data.data.userInfo;
+                loader.present();
                 this.navCtrl.push('HomePage');
               } else {
-                registerMessage.present(registerMessage.setMessage(this.user.message));
+                loader.present();
               }
 
             })
         } else {
-          registerMessage.present(registerMessage.setMessage(this.data.message));
+          loader.present();
         }
 
       })
 
   }
+
 }

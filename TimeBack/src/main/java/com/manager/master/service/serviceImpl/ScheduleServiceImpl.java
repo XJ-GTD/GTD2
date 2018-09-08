@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -94,7 +95,7 @@ public class ScheduleServiceImpl implements IScheduleService {
 
         List<Integer> groupIds = inDto.getGroupIds();                          		// 群组 List
         List<Integer> labelIds = inDto.getLabelIds();                          		// 标签 List
-        Date date = new Date();
+        String date = dateFormat();
         // 入参检查     // 入参必须项检查
         if (userId == 0 || "".equals(userId)) throw new ServiceException("用户名ID不能为空");
         if (scheduleId == 0 || "".equals(scheduleId)) throw new ServiceException("日程事件ID不能为空");
@@ -103,7 +104,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         if (scheduleStartTime == null || "".equals(scheduleStartTime)) throw new ServiceException("开始时间不能为空");
         if (scheduleDeadline == null || "".equals(scheduleDeadline)) throw new ServiceException("截止时间不能为空");
         if (updateId == 0 || "".equals(updateId)) updateId = userId;
-        if (updateDate == null || "".equals(updateDate)) updateDate =date.toString();
+        if (updateDate == null || "".equals(updateDate)) updateDate =date;
         if (groupIds.size() == 0) throw new ServiceException("群组不能为空");
         if (labelIds.size() == 0) throw new ServiceException("标签名称不能为空");
         // 入参类型检查
@@ -368,12 +369,12 @@ public class ScheduleServiceImpl implements IScheduleService {
         int createId = inDto.getCreateId();                      		    // 创建人
         String createDate = inDto.getCreateDate();                 		    // 创建日期
         List groupIds = inDto.getGroupIds();                          		// 群组 List
-        Date date = new Date();
+        String date = dateFormat();
         // 入参检查     // 入参必须项检查
         if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
         if (scheduleId == 0 || "".equals(scheduleId)) throw new ServiceException("日程事件ID不能为空");
         if (createId == 0 || "".equals(createId)) createId = userId;
-        if (createDate == null || "".equals(createDate)) createDate = date.toString();
+        if (createDate == null || "".equals(createDate)) createDate = date;
         if (groupIds == null || "".equals(groupIds)) throw new ServiceException("群组不能为空");
         // 入参类型检查
         // 入参长度检查
@@ -480,15 +481,15 @@ public class ScheduleServiceImpl implements IScheduleService {
         List groupIds = inDto.getGroupIds();                          		// 群组 List
         List labelIds = inDto.getLabelIds();                          		// 标签 List
 
-        Date date = new Date();
+        String date = dateFormat();
         // 入参检查     // 入参必须项检查
         if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
         if (scheduleName == null || "".equals(scheduleName)) throw new ServiceException("日程事件名称不能为空");
         else scheduleName = CommonMethods.trimAllBlanks(scheduleName);
-        if (scheduleStartTime == null || "".equals(scheduleStartTime)) scheduleStartTime = date.toString();
+        if (scheduleStartTime == null || "".equals(scheduleStartTime)) scheduleStartTime = date;
         if (scheduleDeadline == null || "".equals(scheduleDeadline)) throw new ServiceException("截止时间不能为空");
         if (createId == 0 || "".equals(createId)) createId = userId;
-        if (createDate == null || "".equals(createDate)) createDate = date.toString();
+        if (createDate == null || "".equals(createDate)) createDate = date;
         if (groupIds == null || "".equals(groupIds)) throw new ServiceException("群组不能为空");
         if (labelIds == null || "".equals(labelIds)) throw new ServiceException("标签名称不能为空");
         // 入参类型检查
@@ -503,9 +504,9 @@ public class ScheduleServiceImpl implements IScheduleService {
             throw new ServiceException("完成状态不在‘0-2’范围内");
         }
         // 判断是否为日期类型
-        if (!CommonMethods.checkIsDate(scheduleStartTime)) throw new ServiceException("开始时间不是日期类型");
-        if (!CommonMethods.checkIsDate(scheduleDeadline)) throw new ServiceException("截止时间不是日期类型");
-        if (!CommonMethods.checkIsDate(createDate)) throw new ServiceException("更新时间不是日期类型");
+//        if (!CommonMethods.checkIsDate(scheduleStartTime)) throw new ServiceException("开始时间不是日期类型");
+//        if (!CommonMethods.checkIsDate(scheduleDeadline)) throw new ServiceException("截止时间不是日期类型");
+//        if (!CommonMethods.checkIsDate(createDate)) throw new ServiceException("更新时间不是日期类型");
         // 入参长度检查
         // 入参关联检查
         if (!CommonMethods.compareDate(scheduleStartTime,scheduleDeadline)){
@@ -686,12 +687,12 @@ public class ScheduleServiceImpl implements IScheduleService {
         int updateId = inDto.getUpdateId();                          		// 更新人
         String updateDate = inDto.getUpdateDate();                     		// 更新时间
 
-        Date date = new Date();
+        String date = dateFormat();
         // 入参检查     // 入参必须项检查
         if ("".equals(userId)) throw new ServiceException("用户ID不能为空");
         if ("".equals(scheduleId)) throw new ServiceException("日程事件ID不能为空");
         if (updateId == 0 || "".equals(updateId)) updateId = userId;
-        if (updateDate == null || "".equals(updateDate)) updateDate = date.toString();
+        if (updateDate == null || "".equals(updateDate)) updateDate = date;
         // 入参类型检查
         // 入参长度检查
         // 入参关联检查
@@ -704,5 +705,9 @@ public class ScheduleServiceImpl implements IScheduleService {
         return 0;
     }
 
-
+    private String dateFormat() {
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String date = sf.format(new Date());
+        return date;
+    }
 }

@@ -75,7 +75,7 @@ public class CommonMethods {
      */
     public static boolean compareDate(String str1,String str2) {
         // 指定日期格式
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try{
             Date date1 = simpleDateFormat.parse(str1);
             Date date2 = simpleDateFormat.parse(str2);
@@ -96,7 +96,7 @@ public class CommonMethods {
     public static boolean checkIsDate(String str) {
         boolean convertSuccess = true;
         // 指定日期格式
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try{
             simpleDateFormat.parse(str);
         }catch (Exception e){
@@ -110,7 +110,7 @@ public class CommonMethods {
      */
     public static Timestamp dateToStamp(String str) {
         // 指定日期格式
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try {
             Date date = simpleDateFormat.parse(str);
             if (date != null){
@@ -129,7 +129,7 @@ public class CommonMethods {
     public static String stampToDate(Timestamp str){
         String res = "";
         // 指定日期格式
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         if (str != null){
             res = simpleDateFormat.format(str);
             return res;
@@ -144,7 +144,7 @@ public class CommonMethods {
      */
     public static boolean getPastTime(String date,String createDate) {
         // 指定日期格式
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try{
             Date date1 = simpleDateFormat.parse(date);   // 数据库时间
             Date date2 = simpleDateFormat.parse(createDate);    // 系统时间
@@ -183,7 +183,7 @@ public class CommonMethods {
     public static String getBeforeTime(String dateStr,Long times){
         String aDateStr = null;
         try{
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             Date date = sdf.parse(dateStr);
             date.setTime(date.getTime()-times);
             aDateStr = sdf.format(date);

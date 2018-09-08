@@ -55,5 +55,5 @@ public interface IGroupService {
      * @param inDto
      * @return
      */
-    public List<GroupOutDto> createSchedule(GroupFindInDto inDto);
+    List<GroupOutDto> createSchedule(GroupFindInDto inDto);
 }

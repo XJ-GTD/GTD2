@@ -6,26 +6,25 @@ import com.manager.master.dto.LabelOutDto;
 import com.manager.master.dto.UserInDto;
 import com.manager.master.dto.UserOutDto;
 import com.manager.master.entity.GtdAccountEntity;
-import com.manager.master.entity.GtdLabelEntity;
 import com.manager.master.entity.GtdUserEntity;
 import com.manager.master.repository.LabelJpaRespository;
-import com.manager.master.repository.LabelRespository;
 import com.manager.master.repository.UserJpaRepository;
 import com.manager.master.repository.UserRepository;
 import com.manager.master.service.CreateQueueService;
 import com.manager.master.service.IUserService;
-import com.manager.master.service.IWebSocketService;
+import com.manager.util.UUIDUtil;
+import javafx.scene.input.DataFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -67,8 +66,14 @@ public class UserServiceImpl implements IUserService{
             return 1;
         }
 
-        user.setUserName(inDto.getUserName());
+        String accountName = inDto.getAccountName();
+        String userName = inDto.getUserName();
+        if ("".equals(userName) || userName == null) {
+            userName = "用户" + inDto.getAccountMobile();
+        }
+        user.setUserName(userName);
         user.setUserType(0);
+
 
         //获取自增主键
         user = userJpaRepository.saveAndFlush(user);
@@ -76,6 +81,8 @@ public class UserServiceImpl implements IUserService{
         switch (inDto.getLoginType()) {
             case 0:
                 accountEntity.setAccountMobile(inDto.getAccountMobile());
+                SimpleDateFormat sf = new SimpleDateFormat("MMdd");
+                accountName = "gtd" + sf.format(new Date()) + inDto.getAccountMobile();
                 break;
             case 1:
                 accountEntity.setAccountWechat(inDto.getAccountWechat());
@@ -84,9 +91,10 @@ public class UserServiceImpl implements IUserService{
                 accountEntity.setAccountQq(inDto.getAccountQq());
                 break;
         }
-        accountEntity.setAccountName(inDto.getAccountName());
+        accountEntity.setAccountName(accountName);
         accountEntity.setAccountPassword(inDto.getAccountPassword());
         accountEntity.setUserId(user.getUserId());
+        accountEntity.setAccountUuid(UUIDUtil.getUUID());       //唯一标识码
         String queueName="";
         try {
             queueName=createQueueService.createQueue(user.getUserId(),"exchange") ;
@@ -134,7 +142,17 @@ public class UserServiceImpl implements IUserService{
         if (object != null) {
             user.setUserId((Integer) object[0]);
             user.setUserName((String) object[1]);
-            user.setAccountQueue((String) object[10]);
+            user.setHeadimgUrl((String) object[2]);
+            user.setBrithday((String) object[3]);
+            user.setUserSex((Integer) object[4]);
+            user.setUserContact((String) object[5]);
+            user.setAccountName((String) object[6]);
+            user.setAccountMobile((String) object[7]);
+            user.setAccountQq((String) object[8]);
+            user.setAccountQueue((String) object[9]);
+            user.setAccountWechat((String) object[10]);
+            user.setAccountUuid((String) object[11]);
+
         } else {
             throw new ServiceException("用户名或密码错误！");
         }

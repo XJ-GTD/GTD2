@@ -163,6 +163,8 @@ public class UserController {
                 outBean.setMessage("[登陆失败]：请输入用户名");
                 logger.info("[登陆失败]：请输入用户名");
                 return outBean;
+            } else {
+                inDto.setAccountName(accountMobile);
             }
         }
 
