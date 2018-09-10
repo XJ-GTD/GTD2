@@ -12,6 +12,7 @@ public class GroupInDto {
     private String labelName;
     private String groupName;
     private String groupHeadImgUrl;
+    private String condition;
     private List<Integer> labelId;
     private List<GroupMemberDto> member;
 
@@ -72,4 +73,11 @@ public class GroupInDto {
         this.userId = userId;
     }
 
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
 }
