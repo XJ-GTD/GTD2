@@ -109,7 +109,6 @@ public class GroupController {
      */
     @RequestMapping(value = "/add_group",method = RequestMethod.POST)
     @ResponseBody
-
     public BaseOutDto add(@RequestBody GroupInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try {
