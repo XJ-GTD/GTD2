@@ -782,7 +782,7 @@ public class GroupServicelmpl implements IGroupService {
 
         if (!flag) {
             for (GroupMemberDto gmDto : member) {
-               // if (gmDto.getUserId() == 0 || "".equals(gmDto.getUserId())) throw new ServiceException("群员ID不能为空");
+                if (gmDto.getUserId() == 0 || "".equals(gmDto.getUserId())) throw new ServiceException("群员ID不能为空");
                 if (gmDto.getUserContact() == null || "".equals(gmDto.getUserContact()))
                     throw new ServiceException("群员联系方式不能为空");
                 if (gmDto.getUserName() == null || "".equals(gmDto.getUserName()))
@@ -841,6 +841,8 @@ public class GroupServicelmpl implements IGroupService {
                     groupMember.setUpdateId(userId);
                     groupMember.setUpdateDate(new Timestamp(new Date().getTime()));
                     groupMemberRepository.save(groupMember);
+                }else{
+                    throw new ServiceException("该群组没有此成员");
                 }
             }
         } else {
