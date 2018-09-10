@@ -11,20 +11,13 @@ import java.util.Set;
 @Entity
 @Table(name = "gtd_label", schema = "gtd")
 public class GtdLabelEntity {
-
     private int labelId;
     private String labelName;
-    @JsonIgnore
     private int labelType;
-    @JsonIgnore
     private Integer createId;
-    @JsonIgnore
     private Timestamp createDate;
-    @JsonIgnore
     private Integer updateId;
-    @JsonIgnore
     private Timestamp updateDate;
-
     private Set<GtdGroupEntity> group;
     private GtdRuleEntity rule;
     private GtdScheduleEntity schedule;
