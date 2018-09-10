@@ -14,6 +14,16 @@ export class GroupModel {
   private _groupCreateId: number;//群创建人
   private _groupMembers: Array<GroupMemberModel>;//群成员
 
+  private _isaddORedit:boolean = false;
+
+  get isaddORedit(): boolean {
+    return this._isaddORedit;
+  }
+
+  set isaddORedit(value: boolean) {
+    this._isaddORedit = value;
+  }
+
   get groupId(): string {
     return this._groupId;
   }
