@@ -65,11 +65,11 @@ public class GroupServicelmpl implements IGroupService {
 
         List<GtdGroupEntity> list = null;
         try {
-            GtdLabelEntity gle = labelJpaRespository.findByLabelId(FIND_GROUP_LABELTYPE);
+//            GtdLabelEntity gle = labelJpaRespository.findByLabelId(FIND_GROUP_LABELTYPE);
             if(typeId==1) {
-                list = groupJpaRepository.findByLabelAndUserId(gle, userId);//查询个人
+                list = groupJpaRepository.findAllSingle(userId,FIND_GROUP_LABELTYPE);//查询个人
             }else if(typeId==2){
-                list= groupJpaRepository.findDistinctByUserIdAndLabelNot(userId, gle );//查询非个人群组
+                list=groupJpaRepository.findAllGroup(userId,FIND_GROUP_LABELTYPE);
             }else if (typeId == 3) {
 
             } else {
@@ -242,11 +242,12 @@ public class GroupServicelmpl implements IGroupService {
             if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
         }
         if(findType==1){
-            if (groupId != 0 || !("".equals(groupId))) throw new ServiceException("参数错误");
+            if (groupId != 0 && !("".equals(groupId))) throw new ServiceException("参数错误");
         }
         List<Integer> groupIds=null;
         try {
              groupIds=groupMemberRepository.findGroupIdByUserId(userId);//获取用户下所有群组ID
+            if(groupIds==null) throw new ServiceException("该用户下没有群组");
         }catch (Exception e){
             throw new ServiceException("查询群组ID失败");
         }
@@ -610,6 +611,10 @@ public class GroupServicelmpl implements IGroupService {
             boolean status = false;
             for (Integer i : labelId) {
                 GtdLabelEntity labelEntity = labelJpaRespository.findByLabelId(i);
+                labelEntity.setUpdateId(userId);
+                labelEntity.setUpdateDate(new Timestamp(new Date(
+
+                ).getTime()));
                 set.add(labelEntity);
                 if (i == 1) {//判断新增有没有权限标签
                     status = true;
