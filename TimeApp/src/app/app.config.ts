@@ -50,7 +50,7 @@ export class AppConfig {
 
   public static GROUP_FIND_GROUPMEMBER_URL: string = AppConfig.GROUP_URL + "/find_group_member";    //查询群成员全部 POST
 
-  public static GROUP_ADD_URL: string = AppConfig.GROUP_URL + "/";    //群组添加 POST
+  public static GROUP_ADD_DEL_URL: string = AppConfig.GROUP_URL + "/add_del_member";    //群组添加 POST
 
   public static GROUP_ALL_SHOW_URL: string = AppConfig.GROUP_URL + "/find_all_players";   //全部参与人展示
 

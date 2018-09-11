@@ -44,7 +44,7 @@ export class GroupDetailPage {
     this.groupFind.userId = this.paramsService.user.userId;   //获取当前用户Id
     this.groupDetail = new GroupModel();
     this.groupDetail = this.paramsService.group;            //获取上个页面点击的群组Id
-
+    this.groupDetail.isaddORedit = true;
   }
 
   editgroup(){

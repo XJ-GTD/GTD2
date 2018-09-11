@@ -64,17 +64,24 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
 
     /**
      * 查询参与人 群组类型列表
-     * @param labelId
+     * @param
      * @return
      */
-    List<GtdGroupEntity> findDistinctByUserIdAndLabelNot(int labelId, GtdLabelEntity labelEntity);
+    @Query(value = "SELECT DISTINCT gtd_label.LABEL_NAME,gtd_group.GROUP_NAME,gtd_group.GROUP_HEADIMG_URL,gtd_group_member.USER_ID,gtd_group_member.USER_NAME,gtd_group_member.USER_CONTACT,gtd_group.GROUP_ID,gtd_group.USER_ID,gtd_group.CREATE_ID,gtd_group.CREATE_DATE,gtd_group.UPDATE_ID,gtd_group.UPDATE_DATE,gtd_group_label.LABEL_ID\n" +
+            "FROM gtd_group INNER JOIN gtd_group_label ON gtd_group_label.GROUP_ID = gtd_group.GROUP_ID INNER JOIN gtd_group_member ON gtd_group_member.GROUP_ID = gtd_group.GROUP_ID AND gtd_group_member.GROUP_ID = gtd_group.GROUP_ID INNER JOIN gtd_label ON gtd_group_label.LABEL_ID = gtd_label.LABEL_ID " +
+            "WHERE  gtd_group.USER_ID =?1 AND gtd_group_label.LABEL_ID != ?2 " +
+            "GROUP BY gtd_group.GROUP_ID",nativeQuery = true)
+    List<GtdGroupEntity> findAllGroup(int userId,int labelId);
 
     /**
      * 查询参与人 个人类型列表
-     * @param labelEntity
+     * @param
      * @return
      */
-    List<GtdGroupEntity> findByLabelAndUserId(GtdLabelEntity labelEntity, int userId);
+    @Query(value = "SELECT DISTINCT gtd_label.LABEL_NAME,gtd_group.GROUP_NAME,gtd_group.GROUP_HEADIMG_URL,gtd_group_member.USER_ID,gtd_group_member.USER_NAME,gtd_group_member.USER_CONTACT,gtd_group.GROUP_ID,gtd_group.USER_ID,gtd_group.CREATE_ID,gtd_group.CREATE_DATE,gtd_group.UPDATE_ID,gtd_group.UPDATE_DATE,gtd_group_label.LABEL_ID\n" +
+            "FROM gtd_group INNER JOIN gtd_group_label ON gtd_group_label.GROUP_ID = gtd_group.GROUP_ID INNER JOIN gtd_group_member ON gtd_group_member.GROUP_ID = gtd_group.GROUP_ID AND gtd_group_member.GROUP_ID = gtd_group.GROUP_ID INNER JOIN gtd_label ON gtd_group_label.LABEL_ID = gtd_label.LABEL_ID " +
+            "WHERE  gtd_group.USER_ID =?1 AND gtd_group_label.LABEL_ID= ?2",nativeQuery = true)
+    List<GtdGroupEntity> findAllSingle(int userId,int labelId);
 
     /**
      * 查询用户所有参与人
@@ -87,6 +94,7 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
 
     @Query(value = " SELECT USER_ID FROM GTD_GROUP WHERE GROUP_ID = ?1 ", nativeQuery = true)
     List<Integer> findAllGroupIdByUserId(int userId);
+
 
 }
 

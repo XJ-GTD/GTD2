@@ -5,7 +5,8 @@ import { AppConfig } from "../../app/app.config";
 import {HttpClient} from "@angular/common/http";
 import {ParamsService} from "../../service/params.service";
 import {FindOutModel} from "../../model/out/find.out.model";
-import {LabelOutModel} from "../../model/out/label.out.model";
+import {groupMembers} from "../../model/out/groupMembers.out.model";
+import {GroupModel} from "../../model/group.model";
 
 /**
  * Generated class for the GroupEditPage page.
@@ -21,18 +22,21 @@ import {LabelOutModel} from "../../model/out/label.out.model";
 })
 export class GroupEditPage {
 
-  data: any;
   data1: any;//上个页面传过来的数据
   labeldata:any;
-  member:any;
-  labelFind: LabelOutModel;
-  label: Array<number>;
+  memberdata:any;
   testCheckboxOpen:boolean = false;//判断组件是否展示
   testCheckboxLabel:any;//选择的标签
   testCheckboxMember:any;//选择的成员
   groupFind:FindOutModel;//群组成员
+  groupMembers:groupMembers;
 
-  groupMember:any=[{'userContact':12345678,'userId':1,'userName':"scarecrow"},{'userContact':321321,'userId':1,'userName':"admin"}]//死数据，等接口
+
+  groupDetail: GroupModel;//群组数据
+  groupName:string;//新增群名
+  groupMemberName:string;//新增群员名字
+  groupMemberContact:string;//新增群员联系方式
+
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -40,45 +44,21 @@ export class GroupEditPage {
               public loadingCtrl: LoadingController,
               private http: HttpClient,
               private paramsService: ParamsService) {
+    this.init();
+  }
+
+  init(){
     this.groupFind = new FindOutModel();
     this.groupFind.userId = this.paramsService.user.userId;
     this.groupFind.findType = 1;
-    this.data1 = this.navParams.get('data1');
+    this.groupDetail = new GroupModel();
+    this.groupDetail = this.paramsService.group;
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad GroupEditPage');
     this.selectLabelAll();
     this.selectMemberAll();
-    console.log(this.data1)
-  }
-
-  //查询系统标签
-  findLabel() {
-    this.labelFind = new LabelOutModel();
-    this.labelFind.userId = this.paramsService.user.userId;
-    this.labelFind.findType = 1;  //暂为硬代码，默认日程
-
-    this.http.post(AppConfig.USER_LABEL_URL, this.labelFind, {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      responseType: 'json'
-    })
-      .subscribe(data => {
-        this.data = data;
-        if (this.data.code == 0) {
-          this.label = [];
-          this.label = this.data.data.labelList;
-
-        } else {
-          let loader = this.loadingCtrl.create({
-            content: "服务器繁忙，请稍后再试",
-            duration: 1000
-          });
-          loader.present();
-        }
-      })
   }
 
   //获取label标签方法
@@ -87,7 +67,6 @@ export class GroupEditPage {
       userId:this.groupFind.userId,
       findType:this.groupFind.findType
     }).subscribe(data => {
-      // console.log(data)
       if(this.groupFind.userId==0&&this.groupFind.userId==null){
         console.log("登陆或网络出错   请重新登陆！")
       }else {
@@ -108,28 +87,61 @@ export class GroupEditPage {
 
   //获取Member成员方法
   selectMemberAll(){
-    // console.log(this.groupFind.userId,this.data1.data.group.groupId)
-    // this.http.post(AppConfig.GROUP_FIND_GROUPMEMBER_URL,{
-    //   uesrId:this.groupFind.userId,
-    //   groupId:this.data1.data.group.groupId,
-    //   findType:2
-    // }).subscribe(data => {
-    //   console.log(data)
-    //   // if(this.groupFind.userId==0&&this.groupFind.userId==null){
-    //   //   console.log("登陆或网络出错   请重新登陆！")
-    //   // }else {
-    //     this.member = data;
-    //     let loader = this.loadingCtrl.create({
-    //       content: this.member.message,
-    //       duration: 1500
-    //     });
-    //     if (this.labeldata.code == "0") {
-    //       loader.present();
-    //     } else {
-    //       loader.present();
-    //     }
-    //   // }
-    // })
+    if(this.groupDetail==null){
+      //新增页面，调用保存接口
+      this.http.post(AppConfig.GROUP_FIND_GROUPMEMBER_URL,{
+        userId:this.groupFind.userId,
+        findType:1
+      }).subscribe(data => {
+        // console.log(data)
+        // if(this.groupFind.userId==0&&this.groupFind.userId==null){
+        //   console.log("登陆或网络出错   请重新登陆！")
+        // }else {
+        this.data1 = data;
+        // this.memberdata=this.data1.data.groupMemberList;
+        console.log("输出群成员",data)
+        let loader = this.loadingCtrl.create({
+          content: this.data1.message,
+          duration: 1500
+        });
+        if (this.data1.code == "0") {
+          loader.present();
+          this
+        } else {
+          loader.present();
+        }
+        // }
+        console.log(this.memberdata)
+      })
+    }else {
+      //修改页面，调用修改接口
+      this.http.post(AppConfig.GROUP_FIND_GROUPMEMBER_URL,{
+        userId:this.groupFind.userId,
+        groupId:this.groupDetail.groupId,
+        findType:2
+      }).subscribe(data => {
+        // console.log(data)
+        // if(this.groupFind.userId==0&&this.groupFind.userId==null){
+        //   console.log("登陆或网络出错   请重新登陆！")
+        // }else {
+        this.data1 = data;
+        this.memberdata=this.data1.data.groupMemberList;
+        console.log("输出群成员",data)
+        let loader = this.loadingCtrl.create({
+          content: this.data1.message,
+          duration: 1500
+        });
+        if (this.data1.code == "0") {
+          loader.present();
+          this
+        } else {
+          loader.present();
+        }
+        // }
+        console.log(this.memberdata)
+      })
+    }
+
 
   }
 
@@ -139,8 +151,8 @@ export class GroupEditPage {
     if(this.data1==null){
       //查询所有标签
       this.selectLabelAll()
-
     }
+
     let alert = this.alertCtrl.create();
       alert.setTitle('添加新标签');
 
@@ -169,19 +181,27 @@ export class GroupEditPage {
 
   //弹出成员方法
   showMemberCheckbok(){
-    if(this.data1==null){
-      //调用查询个人
-      console.log('保存成功')
-    }else {
+    this.selectMemberAll()
       let alert = this.alertCtrl.create();
       alert.setTitle('添加新成员')
-
-      for (let item of this.groupMember) {
-        alert.addInput({
-          type:'checkbox',
-          label:item.userName,
-          value:item
-        });
+      if(this.memberdata==null){
+        console.log('无成员，请在下方添加成员');
+      }else {
+      for (let item of this.memberdata) {
+        if(item.memberStatus==1){
+          alert.addInput({
+            type:'checkbox',
+            label:item.memeberName,
+            value:item,
+            checked:true
+          });
+        }else{
+          alert.addInput({
+            type:'checkbox',
+            label:item.memeberName,
+            value:item
+          });
+        }
       }
       alert.addButton('取消');
       alert.addButton({
@@ -190,27 +210,37 @@ export class GroupEditPage {
           console.log('Checkbox data:', data);
           this.testCheckboxOpen = false;
           this.testCheckboxMember = data;
-          // console.log(this.testCheckboxMember);
         }
       });
       alert.present();
-    }
+    // }
+      }
   }
 
   //添加/删除成员方法
-  savegroup(groupName1:HTMLInputElement){
+  savegroup(){
+
+    console.log("添加获取的数据",this.groupName,this.groupMemberName,this.groupMemberContact)
+
+    if(this.groupDetail.isaddORedit==false){
+      //新增页面，调用保存接口
+      console.log("保存接口")
+      // this.save();
+    }else {
+      //修改页面，调用修改接口
+      console.log("修改接口")
+      // this.edit();
+    }
+  }
+
+  save(){
     //调用保存接口
-    // console.log(groupName1.value)
     this.http.post(AppConfig.GROUP_ADD_GROUP_URL,{
-      "userId":"1",
-        "labelId":[1],
-        "groupName":"工作群",
-        "groupHeadImgUrl":"123",
-        "member":[{
-          "userId":"1",
-          "userName":"scarecrow",
-          "userContact":"13721123456"
-      }]
+      "userId":this.groupFind.userId,
+      "labelId":this.testCheckboxLabel,
+      "groupName":this.groupName,
+      "groupHeadImgUrl":"123",
+      "member":[{"userName":this.groupMemberName,"userContact":this.groupMemberContact}]
     }).subscribe(data => {
       // console.log(data)
       if(this.groupFind.userId==0&&this.groupFind.userId==null){
@@ -223,13 +253,41 @@ export class GroupEditPage {
         });
         if (this.labeldata.code == "0") {
           loader.present();
+          console.log('保存成功')
           // this.navCtrl.push('HomePage');
         } else {
           loader.present();
         }
       }
     })
-    // console.log('保存成功')
+  }
+
+  //修改
+  edit(){
+
+    this.http.post(AppConfig.GROUP_ADD_DEL_URL,{
+      userId:this.groupFind.userId,
+      groupId:this.groupDetail.groupId,
+      member:this.testCheckboxMember //{"userId":"1","userName":"用户名","userContact":"13006119208"}
+    }).subscribe(data => {
+      // console.log(data)
+      if(this.groupFind.userId==0&&this.groupFind.userId==null){
+        console.log("登陆或网络出错   请重新登陆！")
+      }else {
+        this.data1 = data;
+        let loader = this.loadingCtrl.create({
+          content: this.labeldata.message,
+          duration: 1500
+        });
+        if (this.data1.code == "0") {
+          loader.present();
+          console.log('修改成功')
+          // this.navCtrl.push('HomePage');
+        } else {
+          loader.present();
+        }
+      }
+    })
   }
 
 }
