@@ -97,7 +97,7 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
      * @return
      */
     @Query(value = " SELECT USER_ID FROM GTD_GROUP WHERE GROUP_ID = ?1 ", nativeQuery = true)
-    List<Integer> findAllGroupIdByUserId(int userId);
+    List<Integer> findAllUserIdByGroupId(int userId);
 
     /**
      * 查询用户的消息队列
