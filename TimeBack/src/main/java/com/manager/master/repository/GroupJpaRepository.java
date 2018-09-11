@@ -28,7 +28,7 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
 
 
     /**
-     *
+     *根据userId获取用户的所有群组ID
      * @param userId
      * @return
      */
@@ -67,7 +67,7 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
      * @param
      * @return
      */
-    @Query(value = "SELECT DISTINCT gtd_label.LABEL_NAME,gtd_group.GROUP_NAME,gtd_group.GROUP_HEADIMG_URL,gtd_group_member.USER_ID,gtd_group_member.USER_NAME,gtd_group_member.USER_CONTACT,gtd_group.GROUP_ID,gtd_group.USER_ID,gtd_group.CREATE_ID,gtd_group.CREATE_DATE,gtd_group.UPDATE_ID,gtd_group.UPDATE_DATE,gtd_group_label.LABEL_ID" +
+    @Query(value = "SELECT DISTINCT gtd_label.LABEL_NAME,gtd_group.GROUP_NAME,gtd_group.GROUP_HEADIMG_URL,gtd_group_member.USER_ID,gtd_group_member.USER_NAME,gtd_group_member.USER_CONTACT,gtd_group.GROUP_ID,gtd_group.USER_ID,gtd_group.CREATE_ID,gtd_group.CREATE_DATE,gtd_group.UPDATE_ID,gtd_group.UPDATE_DATE,gtd_group_label.LABEL_ID\n" +
             "FROM gtd_group INNER JOIN gtd_group_label ON gtd_group_label.GROUP_ID = gtd_group.GROUP_ID INNER JOIN gtd_group_member ON gtd_group_member.GROUP_ID = gtd_group.GROUP_ID AND gtd_group_member.GROUP_ID = gtd_group.GROUP_ID INNER JOIN gtd_label ON gtd_group_label.LABEL_ID = gtd_label.LABEL_ID " +
             "WHERE  gtd_group.USER_ID =?1 AND gtd_group_label.LABEL_ID != ?2 " +
             "GROUP BY gtd_group.GROUP_ID",nativeQuery = true)
@@ -78,7 +78,7 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
      * @param
      * @return
      */
-    @Query(value = "SELECT DISTINCT gtd_label.LABEL_NAME,gtd_group.GROUP_NAME,gtd_group.GROUP_HEADIMG_URL,gtd_group_member.USER_ID,gtd_group_member.USER_NAME,gtd_group_member.USER_CONTACT,gtd_group.GROUP_ID,gtd_group.USER_ID,gtd_group.CREATE_ID,gtd_group.CREATE_DATE,gtd_group.UPDATE_ID,gtd_group.UPDATE_DATE,gtd_group_label.LABEL_ID" +
+    @Query(value = "SELECT DISTINCT gtd_label.LABEL_NAME,gtd_group.GROUP_NAME,gtd_group.GROUP_HEADIMG_URL,gtd_group_member.USER_ID,gtd_group_member.USER_NAME,gtd_group_member.USER_CONTACT,gtd_group.GROUP_ID,gtd_group.USER_ID,gtd_group.CREATE_ID,gtd_group.CREATE_DATE,gtd_group.UPDATE_ID,gtd_group.UPDATE_DATE,gtd_group_label.LABEL_ID\n" +
             "FROM gtd_group INNER JOIN gtd_group_label ON gtd_group_label.GROUP_ID = gtd_group.GROUP_ID INNER JOIN gtd_group_member ON gtd_group_member.GROUP_ID = gtd_group.GROUP_ID AND gtd_group_member.GROUP_ID = gtd_group.GROUP_ID INNER JOIN gtd_label ON gtd_group_label.LABEL_ID = gtd_label.LABEL_ID " +
             "WHERE  gtd_group.USER_ID =?1 AND gtd_group_label.LABEL_ID= ?2",nativeQuery = true)
     List<GtdGroupEntity> findAllSingle(int userId,int labelId);
@@ -91,9 +91,21 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     @Query(value = " SELECT GROUP_ID, GROUP_NAME, USER_ID FROM GTD_GROUP WHERE USER_ID = ?1 ", nativeQuery = true)
     List<Map> findAllPlayers(int userId);
 
-
+    /**
+     * 查询群组所有参与人
+     * @param userId
+     * @return
+     */
     @Query(value = " SELECT USER_ID FROM GTD_GROUP WHERE GROUP_ID = ?1 ", nativeQuery = true)
-    List<Integer> findAllGroupIdByUserId(int userId);
+    List<Integer> findAllUserIdByGroupId(int userId);
+
+    /**
+     * 查询用户的消息队列
+     * @param userId
+     * @return
+     */
+    @Query(value = " SELECT ACCOUNT_QUEUE FROM gtd_account WHERE USER_ID = ?1 ", nativeQuery = true)
+    String findAccountQueue(int userId);
 
     /**
      * 根据 日程ID 查询 群组信息
@@ -103,7 +115,6 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     @Modifying
     @Query(value = "SELECT group_tabel.GROUP_ID groupId,group_tabel.GROUP_NAME groupName FROM gtd_group group_tabel LEFT JOIN gtd_group_schedule group_sch ON group_tabel.GROUP_ID = group_sch.GROUP_ID WHERE group_sch.SCHEDULE_ID = ?1",nativeQuery = true)
     List<GroupOutDto> findGroupByScheduleId(Integer scheduleId);
-
 
 
 }

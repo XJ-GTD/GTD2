@@ -57,7 +57,6 @@ export class GroupEditPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad GroupEditPage');
-    console.log(this.groupDetail.isaddORedit)
     this.selectLabelAll();
     this.selectMemberAll();
   }
@@ -88,7 +87,7 @@ export class GroupEditPage {
 
   //获取Member成员方法
   selectMemberAll(){
-    if(this.groupDetail.isaddORedit==false){
+    if(this.groupDetail==null){
       //新增页面，调用保存接口
       this.http.post(AppConfig.GROUP_FIND_GROUPMEMBER_URL,{
         userId:this.groupFind.userId,
@@ -99,7 +98,7 @@ export class GroupEditPage {
         //   console.log("登陆或网络出错   请重新登陆！")
         // }else {
         this.data1 = data;
-        this.memberdata=this.data1.data.groupMemberList;
+        // this.memberdata=this.data1.data.groupMemberList;
         console.log("输出群成员",data)
         let loader = this.loadingCtrl.create({
           content: this.data1.message,
@@ -185,7 +184,9 @@ export class GroupEditPage {
     this.selectMemberAll()
       let alert = this.alertCtrl.create();
       alert.setTitle('添加新成员')
-
+      if(this.memberdata==null){
+        console.log('无成员，请在下方添加成员');
+      }else {
       for (let item of this.memberdata) {
         if(item.memberStatus==1){
           alert.addInput({
@@ -213,6 +214,7 @@ export class GroupEditPage {
       });
       alert.present();
     // }
+      }
   }
 
   //添加/删除成员方法

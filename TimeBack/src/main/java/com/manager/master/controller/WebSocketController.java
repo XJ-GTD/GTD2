@@ -1,5 +1,6 @@
 package com.manager.master.controller;
 
+import com.manager.master.dto.PushInDto;
 import com.manager.master.dto.ScheduleInDto;
 import com.manager.util.ProducerUtil;
 import org.springframework.web.bind.annotation.*;
@@ -15,21 +16,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "push")
 public class WebSocketController {
 
-    private final ProducerUtil producerUtil;
-
-    public WebSocketController(ProducerUtil producerUtil) {
-        this.producerUtil = producerUtil;
-    }
-
     /**
      * 推送任务日程给目标用户
      */
     @PostMapping(value = "/task")
-    public void test(@RequestBody ScheduleInDto inDto) {
+    public void test(@RequestBody PushInDto inDto) {
 
-//        String dataMessage = inDto.toString();
-//        String target = inDto.getTarget();
-//        producerUtil.sendTheTarget(dataMessage, target);
+
     }
 
 

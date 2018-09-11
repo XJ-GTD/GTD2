@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.cortana.ai.bean.AiUiInBean;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -26,17 +27,15 @@ import com.alibaba.fastjson.JSONObject;
 public class DynamicEntityUtil {
     private static final String UPLOAD_URL = "https://openapi.xfyun.cn/v2/aiui/entity/upload-resource";
     private static final String CHECK_URL = "https://openapi.xfyun.cn/v2/aiui/entity/check-resource";
-    private static final String X_NONCE = "616";
+    private static final String X_NONCE = "616818";
     private static final String APPID = "5b554446";
     private static final String X_NAMESPACE = "SCARECROW";
     private static final String ACCOUNTKEY = "e7e466235f9545ee93b8d82ece084415";
-    private static final String RES_NAME = "SCARECROW.schedule_add";
+//    private static final String RES_NAME = "SCARECROW.contact_main";
 
-    private static final String PERS_PARAM = "{\"auth_id\":\"2894c985bf8b1111c6728db79d3479ae\"}";
-
-    public static String update() throws IOException,ParseException, InterruptedException{
+    public static String update(AiUiInBean inBean) throws IOException,ParseException, InterruptedException{
         Map<String, String> header = buildHeader();
-        String uploadBody = buildUploadBody();
+        String uploadBody = buildUploadBody(inBean);
         String result = httpPost(UPLOAD_URL, header, uploadBody);
         System.out.println(result);
         JSONObject uploadJo = JSON.parseObject(result);
@@ -52,7 +51,7 @@ public class DynamicEntityUtil {
         return result;
     }
 
-
+    //请求头
     private static Map<String, String> buildHeader() {
         String curTime = System.currentTimeMillis() / 1000L + "";
         String checkSum = DigestUtils.md5Hex(ACCOUNTKEY + X_NONCE + curTime);
@@ -64,17 +63,19 @@ public class DynamicEntityUtil {
         return header;
     }
 
-    private static String buildUploadBody() throws UnsupportedEncodingException {
+    //上传数据
+    private static String buildUploadBody(AiUiInBean inBean) throws UnsupportedEncodingException {
         String body = "";
+        String persParam = getPersParam(inBean.getUuid());
+        String resName = getResName(inBean.getResName());
         //每条数据之间用换行符隔开
 //        String data = "{\"name\":\"张三\",\"phoneNumber\":\"13888888888\"}" + "\r\n"
 //                + "{\"name\":\"李四\",\"phoneNumber\":\"13666666666\"}";
-        String data = "{\"schedule_name\": \"开会\"}" + "\r\n" + "{\"schedule_name\": \"买材料\"}" + "\r\n"
-                + "{\"schedule_name\": \"浇花\"}" + "\r\n" + "{\"schedule_name\": \"吃饭\"}" + "\r\n";
+        String data = inBean.getData();
         Map<String, String> map = new HashMap<String, String>();
         map.put("appid", APPID);
-        map.put("res_name", RES_NAME);
-        map.put("pers_param", PERS_PARAM);
+        map.put("res_name", resName);
+        map.put("pers_param", persParam);
         map.put("data",  new String(Base64.encodeBase64(data.getBytes("UTF-8"))));
         for (String key : map.keySet()) {
             body += key + "=" + URLEncoder.encode(map.get(key),"utf-8")+"&";
@@ -127,4 +128,21 @@ public class DynamicEntityUtil {
         return result;
     }
 
+    //自定义参数： auth_id 用户级 | appid 应用级
+    private static String getPersParam(String uuid) {
+//        private static final String PERS_PARAM = "{\"auth_id\":\"8b9133b8519875127034d7c3cb70a383\"}";
+//        private static final String PERS_PARAM = "{\"appid\":\"5b554446\"}";
+        String persParam = "";
+        if (uuid != null && !"".equals(uuid)) {
+            persParam = "{\"auth_id\":\"" + uuid + "\"}";
+        } else {
+            persParam = "{\"appid\":\"" + APPID + "\"}";
+        }
+        return persParam;
+    }
+
+    //上传资源名
+    private static String getResName(String resource) {
+        return X_NAMESPACE + "." + resource;
+    }
 }
