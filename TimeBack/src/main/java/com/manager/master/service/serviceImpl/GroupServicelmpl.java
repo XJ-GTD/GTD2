@@ -257,7 +257,7 @@ public class GroupServicelmpl implements IGroupService {
         }
         List<Integer> groupIds=null;
         try {
-             groupIds=groupMemberRepository.findGroupIdByUserId(userId);//获取用户下所有群组ID
+             groupIds=groupJpaRepository.findGroupIdByUserId(userId);//获取用户下所有群组ID
             if(groupIds==null) throw new ServiceException("该用户下没有群组");
         }catch (Exception e){
             throw new ServiceException("查询群组ID失败");
