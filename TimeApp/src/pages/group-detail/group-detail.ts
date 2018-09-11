@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, LoadingController, Navbar, NavController, NavParams} from 'ionic-angular';
 import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
 import {ParamsService} from "../../service/params.service";
@@ -19,9 +19,8 @@ import {GroupModel} from "../../model/group.model";
   templateUrl: 'group-detail.html',
 })
 export class GroupDetailPage {
+  @ViewChild(Navbar) navBar: Navbar;
 
-  groupId:number;//
-  data1: any;
   groupFind:FindOutModel;
   groupDetail: GroupModel;
 
@@ -35,9 +34,17 @@ export class GroupDetailPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad GroupDetailPage');
-
+    this.navBar.backButtonClick = this.backButtonClick;
+    console.log('GroupDetailPage',this.groupDetail)
   }
 
+  backButtonClick = (e: UIEvent) => {
+    // 重写返回方法
+    this.paramsService.group=null;
+    this.navCtrl.pop();
+  }
+
+  //默认页面初始化
   init() {
     this.groupFind = new FindOutModel();
     this.groupFind.userId = this.paramsService.user.userId;   //获取当前用户Id
@@ -46,6 +53,7 @@ export class GroupDetailPage {
     this.groupDetail.isaddORedit = true;
   }
 
+  //跳转修改页面
   editgroup(){
     this.navCtrl.push('GroupEditPage')
   }

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, LoadingController, Navbar, NavController, NavParams} from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { AppConfig } from "../../app/app.config";
 import {HttpClient} from "@angular/common/http";
@@ -28,12 +28,12 @@ export class GroupEditPage {
   testCheckboxOpen:boolean = false;//判断组件是否展示
   testCheckboxLabel:any;//选择的标签
   testCheckboxMember:any;//选择的成员
-  groupFind:FindOutModel;//群组成员
-  groupMembers:groupMembers;
+  groupFind:FindOutModel;//登陆用户信息
+  groupMembers:groupMembers;//群成员信息
 
 
   groupDetail: GroupModel;//群组数据
-  groupName:string;//新增群名
+  groupName:string;//新增的群名
   groupMemberName:string;//新增群员名字
   groupMemberContact:string;//新增群员联系方式
 
@@ -93,13 +93,9 @@ export class GroupEditPage {
         userId:this.groupFind.userId,
         findType:1
       }).subscribe(data => {
-        // console.log(data)
-        // if(this.groupFind.userId==0&&this.groupFind.userId==null){
-        //   console.log("登陆或网络出错   请重新登陆！")
-        // }else {
         this.data1 = data;
-        // this.memberdata=this.data1.data.groupMemberList;
-        console.log("输出群成员",data)
+        this.memberdata=this.data1.data.groupMemberList;
+        console.log("输出群成员",this.memberdata)
         let loader = this.loadingCtrl.create({
           content: this.data1.message,
           duration: 1500
@@ -185,35 +181,35 @@ export class GroupEditPage {
       let alert = this.alertCtrl.create();
       alert.setTitle('添加新成员')
       if(this.memberdata==null){
+        alert.setTitle("无成员，请在下方输入框添加成员");
         console.log('无成员，请在下方添加成员');
       }else {
-      for (let item of this.memberdata) {
-        if(item.memberStatus==1){
-          alert.addInput({
-            type:'checkbox',
-            label:item.memeberName,
-            value:item,
-            checked:true
-          });
-        }else{
-          alert.addInput({
-            type:'checkbox',
-            label:item.memeberName,
-            value:item
-          });
+        for (let item of this.memberdata) {
+          if(item.memberStatus==1){
+            alert.addInput({
+              type:'checkbox',
+              label:item.memeberName,
+              value:item,
+              checked:true
+            });
+          }else{
+            alert.addInput({
+              type:'checkbox',
+              label:item.memeberName,
+              value:item
+            });
+          }
         }
-      }
-      alert.addButton('取消');
-      alert.addButton({
-        text: '确定',
-        handler: data => {
-          console.log('Checkbox data:', data);
-          this.testCheckboxOpen = false;
-          this.testCheckboxMember = data;
-        }
-      });
-      alert.present();
-    // }
+        alert.addButton('取消');
+        alert.addButton({
+          text: '确定',
+          handler: data => {
+            console.log('Checkbox data:', data);
+            this.testCheckboxOpen = false;
+            this.testCheckboxMember = data;
+          }
+        });
+        alert.present();
       }
   }
 
@@ -264,33 +260,36 @@ export class GroupEditPage {
 
   //修改
   edit(){
-
-    this.http.post(AppConfig.GROUP_ADD_DEL_URL,{
-      userId:this.groupFind.userId,
-      groupId:this.groupDetail.groupId,
-      member:this.testCheckboxMember //{"userId":"1","userName":"用户名","userContact":"13006119208"}
-    }).subscribe(data => {
-      // console.log(data)
-      if(this.groupFind.userId==0&&this.groupFind.userId==null){
-        console.log("登陆或网络出错   请重新登陆！")
-      }else {
-        this.data1 = data;
-        let loader = this.loadingCtrl.create({
-          content: this.labeldata.message,
-          duration: 1500
-        });
-        if (this.data1.code == "0") {
-          loader.present();
-          console.log('修改成功')
-          // this.navCtrl.push('HomePage');
-        } else {
-          loader.present();
-        }
-      }
-    })
+    if(this.groupMemberName!=undefined){
+      console.log('groupeditpage //修改',);
+    }
+  //   this.http.post(AppConfig.GROUP_ADD_DEL_URL,{
+  //     userId:this.groupFind.userId,
+  //     groupId:this.groupDetail.groupId,
+  //     member:this.testCheckboxMember //{"userId":"1","userName":"用户名","userContact":"13006119208"}
+  //   }).subscribe(data => {
+  //     // console.log(data)
+  //     if(this.groupFind.userId==0&&this.groupFind.userId==null){
+  //       console.log("登陆或网络出错   请重新登陆！")
+  //     }else {
+  //       this.data1 = data;
+  //       let loader = this.loadingCtrl.create({
+  //         content: this.labeldata.message,
+  //         duration: 1500
+  //       });
+  //       if (this.data1.code == "0") {
+  //         loader.present();
+  //         console.log('修改成功')
+  //         // this.navCtrl.push('HomePage');
+  //       } else {
+  //         loader.present();
+  //       }
+  //     }
+  //   })
   }
 
 }
+
 
 
 //1 查询所有标签.赋值给value
