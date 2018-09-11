@@ -30,7 +30,7 @@ public class AiUiUtil {
     private static final String FILE_PATH = "";
 
     // 个性化参数，需转义
-    private static final String PERS_PARAM = "{\"auth_id\":\"2894c985bf8b1111c6728db79d3479ae\"}";
+    private static final String PERS_PARAM = "{\"auth_id\":\"\"}";
 
     /**
      *
@@ -72,9 +72,9 @@ public class AiUiUtil {
      */
     private static Map<String, String> buildHeader_audio() throws UnsupportedEncodingException, ParseException {
         String curTime = System.currentTimeMillis() / 1000L + "";
-        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_AUDIO+"\",\"scene\":\""+SCENE+"\"}";
+//        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_AUDIO+"\",\"scene\":\""+SCENE+"\"}";
         //使用个性化参数时参数格式如下：
-        //String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE+"\",\"scene\":\""+SCENE+"\",\"pers_param\":\""+PERS_PARAM+"\"}";
+        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_AUDIO+"\",\"scene\":\""+SCENE+"\",\"pers_param\":\""+PERS_PARAM+"\"}";
         String paramBase64 = new String(Base64.encodeBase64(param.getBytes("UTF-8")));
         String checkSum = DigestUtils.md5Hex(API_KEY + curTime + paramBase64);
 
@@ -94,9 +94,9 @@ public class AiUiUtil {
      */
     private static Map<String, String> buildHeader_text() throws UnsupportedEncodingException, ParseException {
         String curTime = System.currentTimeMillis() / 1000L + "";
-        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_TEXT+"\",\"scene\":\""+SCENE+"\"}";
+//        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_TEXT+"\",\"scene\":\""+SCENE+"\"}";
         //使用个性化参数时参数格式如下：
-        //String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE+"\",\"scene\":\""+SCENE+"\",\"pers_param\":\""+PERS_PARAM+"\"}";
+        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_TEXT+"\",\"scene\":\""+SCENE+"\",\"pers_param\":\""+PERS_PARAM+"\"}";
         String paramBase64 = new String(Base64.encodeBase64(param.getBytes("UTF-8")));
         String checkSum = DigestUtils.md5Hex(API_KEY + curTime + paramBase64);
 
