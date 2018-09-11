@@ -18,13 +18,13 @@ import java.util.Set;
 @Entity
 @Table(name = "gtd_user", schema = "gtd")
 public class GtdUserEntity {
-    private int userId;
+    private Integer userId;
     private String userName;
     private String headimgUrl;
     private String brithday;
     private Integer userSex;
     private String userContact;
-    private int userType;
+    private Integer userType;
     private Integer createId;
     private Timestamp createDate;
     private Integer updateId;

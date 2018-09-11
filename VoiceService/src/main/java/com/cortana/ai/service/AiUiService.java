@@ -1,5 +1,6 @@
 package com.cortana.ai.service;
 
+import com.cortana.ai.bean.AiUiInBean;
 import com.cortana.ai.util.AiUiUtil;
 import com.cortana.ai.util.DynamicEntityUtil;
 import org.apache.logging.log4j.LogManager;
@@ -43,9 +44,9 @@ public class AiUiService {
      * 上传资源
      * @return
      */
-    public String update(){
+    public String update(AiUiInBean inBean){
         try {
-            String outData = DynamicEntityUtil.update();
+            String outData = DynamicEntityUtil.update(inBean);
             return outData;
         } catch (IOException e) {
             e.printStackTrace();

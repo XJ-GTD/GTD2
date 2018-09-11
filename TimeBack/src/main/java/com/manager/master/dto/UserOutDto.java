@@ -7,7 +7,7 @@ package com.manager.master.dto;
  */
 public class UserOutDto {
 
-    private int userId;                 //用户ID
+    private Integer userId;                 //用户ID
     private String userName;            //昵称
     private String headimgUrl;          //头像URL
     private String brithday;            //生日

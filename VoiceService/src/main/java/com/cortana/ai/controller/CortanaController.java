@@ -1,5 +1,6 @@
 package com.cortana.ai.controller;
 
+import com.cortana.ai.bean.AiUiInBean;
 import com.cortana.ai.bean.VoiceInBean;
 import com.cortana.ai.service.AiUiService;
 import com.cortana.ai.util.JsonParser;
@@ -79,9 +80,9 @@ public class CortanaController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String update(@RequestBody VoiceInBean voiceInBean) {
+    public String update(@RequestBody AiUiInBean inBean) {
 
-        String date = aiUiService.update();
+        String date = aiUiService.update(inBean);
 
         return date;
     }
