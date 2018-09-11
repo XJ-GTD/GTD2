@@ -28,7 +28,7 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
 
 
     /**
-     *
+     *根据userId获取用户的所有群组ID
      * @param userId
      * @return
      */
@@ -91,10 +91,20 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     @Query(value = " SELECT GROUP_ID, GROUP_NAME, USER_ID FROM GTD_GROUP WHERE USER_ID = ?1 ", nativeQuery = true)
     List<Map> findAllPlayers(int userId);
 
-
+    /**
+     * 查询群组所有参与人
+     * @param userId
+     * @return
+     */
     @Query(value = " SELECT USER_ID FROM GTD_GROUP WHERE GROUP_ID = ?1 ", nativeQuery = true)
-    List<Integer> findAllGroupIdByUserId(int userId);
+    List<Integer> findAllUserIdByGroupId(int userId);
 
-
+    /**
+     * 查询用户的消息队列
+     * @param userId
+     * @return
+     */
+    @Query(value = " SELECT ACCOUNT_QUEUE FROM gtd_account WHERE USER_ID = ?1 ", nativeQuery = true)
+    String findAccountQueue(int userId);
 }
 

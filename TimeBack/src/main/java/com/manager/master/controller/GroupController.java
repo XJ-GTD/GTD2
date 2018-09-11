@@ -219,7 +219,7 @@ public class GroupController {
      */
     @RequestMapping(value = "/add_del_member",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto addMember(@RequestBody GroupInDto inDto){
+    public BaseOutDto addMember(@RequestBody GroupMemberInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try{
             int code=groupService.addOrDelMember(inDto);
@@ -284,5 +284,7 @@ public class GroupController {
         return outDto;
 
     }
+
+
 }
 

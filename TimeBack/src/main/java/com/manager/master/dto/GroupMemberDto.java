@@ -1,15 +1,15 @@
 package com.manager.master.dto;
 
 public class GroupMemberDto {
-    private int userId;
+    private Integer userId;
     private String userName;
     private String userContact;
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

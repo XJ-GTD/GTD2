@@ -1,9 +1,6 @@
 package com.manager.master.service;
 
-import com.manager.master.dto.GroupFindInDto;
-import com.manager.master.dto.GroupInDto;
-import com.manager.master.dto.GroupMemberOutDto;
-import com.manager.master.dto.GroupOutDto;
+import com.manager.master.dto.*;
 import com.manager.master.entity.GtdGroupEntity;
 import com.manager.master.repository.GroupJpaRepository;
 
@@ -42,7 +39,7 @@ public interface IGroupService {
     int updateGname(GroupInDto inDto);
 
     //删除/添加群成员
-    int addOrDelMember(GroupInDto inDto);
+    int addOrDelMember(GroupMemberInDto inDto);
 
     //编辑群成员
     int member(GroupInDto inDto);
