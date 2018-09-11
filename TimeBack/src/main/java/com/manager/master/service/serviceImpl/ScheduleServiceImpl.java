@@ -1,10 +1,7 @@
 package com.manager.master.service.serviceImpl;
 
 import com.manager.config.exception.ServiceException;
-import com.manager.master.dto.GroupScheduleInDto;
-import com.manager.master.dto.LabelInDto;
-import com.manager.master.dto.LabelOutDto;
-import com.manager.master.dto.ScheduleInDto;
+import com.manager.master.dto.*;
 import com.manager.master.entity.*;
 import com.manager.master.repository.*;
 import com.manager.master.service.IScheduleService;
@@ -65,14 +62,135 @@ public class ScheduleServiceImpl implements IScheduleService {
     @Resource
     RemindJpaRepository remindJpaRepository;
 
+    @Resource
+    LabelRespository labelRespository;
+
+    /**
+     * 查询自己创建的日程
+     *
+     * @param inDto
+     * @return
+     */
     @Override
-    public List<GtdScheduleEntity> findAll(ScheduleInDto inDto) {
-        return scheduleJpaRepository.findAll();
+    public List<FindScheduleOutDto> findCreateSchedule(FindScheduleInDto inDto) {
+        List<FindScheduleOutDto> resultList = new ArrayList<>();
+        // 接受参数
+        Integer userId = inDto.getUserId();
+        Integer scheduleId = inDto.getScheduleId();
+        String scheduleName = inDto.getScheduleName();
+        String scheduleStarttime = inDto.getScheduleStarttime();
+        String scheduleDeadline = inDto.getScheduleDeadline();
+        Integer labelId = inDto.getLabelId();
+        String groupName = inDto.getGroupName();
+        Integer groupId = inDto.getGroupId();
+
+        // 入参检查
+        if(userId == null || userId ==0 || "".equals(userId)) throw new ServiceException("用户名ID不能为空");
+        // 入参必须项检查
+
+        // 入参类型检查
+        if (!CommonMethods.checkIsDate(scheduleStarttime)) throw new ServiceException("开始时间不是日期类型");
+        if (!CommonMethods.checkIsDate(scheduleDeadline)) throw new ServiceException("截止时间不是日期类型");
+        // 入参长度检查
+        // 入参关联检查
+        if (!CommonMethods.compareDate(scheduleStarttime,scheduleDeadline)){
+            throw new ServiceException("开始时间必须小于截止时间");
+        }
+        if (CommonMethods.checkMySqlReservedWords(scheduleName)){
+            throw new ServiceException("日程主题包含关键字");
+        }
+        // 业务处理
+        try{
+            resultList = scheduleRepository.findSchedule(inDto);
+        } catch (Exception ex){
+            throw new ServiceException("---- findSchedule 语法错误");
+        }
+        if(resultList.size()>0){
+            for(FindScheduleOutDto outDto : resultList){
+                Integer scheduleIdN = outDto.getScheduleId();
+                // 获取标签名称
+                List<String> labelList = new ArrayList<>();
+                try{
+                    labelList = labelRespository.findLabelNameByScheduleId(scheduleIdN);
+                } catch (Exception ex){
+                    throw new ServiceException("---- findLabelNameByScheduleId 语法错误");
+                }
+                // 获取参与群组信息
+                List<GroupOutDto> groupList = new ArrayList<>();
+                try{
+                    groupList = groupJpaRepository.findGroupByScheduleId(scheduleIdN);
+                } catch (Exception ex){
+                    throw new ServiceException("---- findGroupByScheduleId 语法错误");
+                }
+                outDto.setLabelName(labelList);
+                outDto.setGroup(groupList);
+            }
+        }
+        return resultList;
     }
 
+    /**
+     * 查询自己参与的日程
+     *
+     * @param inDto
+     * @return
+     */
     @Override
-    public GtdScheduleEntity findOne(ScheduleInDto inDto) {
-        return scheduleJpaRepository.findByScheduleId(inDto.getScheduleId());
+    public List<FindScheduleOutDto> findJoinSchedule(FindScheduleInDto inDto) {
+        List<FindScheduleOutDto> resultList = new ArrayList<>();
+        // 接受参数
+        Integer userId = inDto.getUserId();
+        Integer scheduleId = inDto.getScheduleId();
+        String scheduleName = inDto.getScheduleName();
+        String scheduleStarttime = inDto.getScheduleStarttime();
+        String scheduleDeadline = inDto.getScheduleDeadline();
+        Integer labelId = inDto.getLabelId();
+        String groupName = inDto.getGroupName();
+        Integer groupId = inDto.getGroupId();
+
+        // 入参检查
+        if(userId == null || userId ==0 || "".equals(userId)) throw new ServiceException("用户名ID不能为空");
+        // 入参必须项检查
+
+        // 入参类型检查
+        if (!CommonMethods.checkIsDate(scheduleStarttime)) throw new ServiceException("开始时间不是日期类型");
+        if (!CommonMethods.checkIsDate(scheduleDeadline)) throw new ServiceException("截止时间不是日期类型");
+        // 入参长度检查
+        // 入参关联检查
+        if (!CommonMethods.compareDate(scheduleStarttime,scheduleDeadline)){
+            throw new ServiceException("开始时间必须小于截止时间");
+        }
+        if (CommonMethods.checkMySqlReservedWords(scheduleName)){
+            throw new ServiceException("日程主题包含关键字");
+        }
+        // 业务处理
+        try{
+            resultList = scheduleRepository.findJoinSchedule(inDto);
+        } catch (Exception ex){
+            throw new ServiceException("---- findJoinSchedule 语法错误");
+        }
+        if(resultList.size()>0){
+            for(FindScheduleOutDto outDto : resultList){
+                Integer scheduleIdN = outDto.getScheduleId();
+                // 获取标签名称
+                List<String> labelList = new ArrayList<>();
+                try{
+                    labelList = labelRespository.findLabelNameByScheduleId(scheduleIdN);
+                } catch (Exception ex){
+                    throw new ServiceException("---- findLabelNameByScheduleId 语法错误");
+                }
+                // 获取提醒时间列表
+                List<RemindOutDto> remind = new ArrayList<>();
+                try{
+                    remind = remindJpaRepository.findRemindByUserIDAndScheId(userId,scheduleIdN);
+                } catch (Exception ex){
+                    throw new ServiceException("---- findRemindByUserIDAndScheId 语法错误");
+                }
+                outDto.setLabelName(labelList);
+                outDto.setRemind(remind);
+            }
+        }
+        return resultList;
     }
 
     /**

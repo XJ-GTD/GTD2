@@ -97,7 +97,7 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
      * @return
      */
     @Query(value = " SELECT USER_ID FROM GTD_GROUP WHERE GROUP_ID = ?1 ", nativeQuery = true)
-    List<Integer> findAllGroupIdByUserId(int userId);
+    List<Integer> findAllUserIdByGroupId(int userId);
 
     /**
      * 查询用户的消息队列
@@ -106,5 +106,16 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
      */
     @Query(value = " SELECT ACCOUNT_QUEUE FROM gtd_account WHERE USER_ID = ?1 ", nativeQuery = true)
     String findAccountQueue(int userId);
+
+    /**
+     * 根据 日程ID 查询 群组信息
+     * @param scheduleId
+     * @return
+     */
+    @Modifying
+    @Query(value = "SELECT group_tabel.GROUP_ID groupId,group_tabel.GROUP_NAME groupName FROM gtd_group group_tabel LEFT JOIN gtd_group_schedule group_sch ON group_tabel.GROUP_ID = group_sch.GROUP_ID WHERE group_sch.SCHEDULE_ID = ?1",nativeQuery = true)
+    List<GroupOutDto> findGroupByScheduleId(Integer scheduleId);
+
+
 }
 
