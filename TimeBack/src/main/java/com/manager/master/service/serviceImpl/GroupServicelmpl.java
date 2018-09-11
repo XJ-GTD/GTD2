@@ -161,6 +161,9 @@ public class GroupServicelmpl implements IGroupService {
         List<GtdGroupMemberEntity> g = null;
         try {
             g = groupMemberRepository.findMemberByGroupId(groupId); //获取该群组所有群成员
+            if(g==null||g.size()==0){
+                throw new ServiceException("该群组下没有成员");
+            }
         } catch (Exception e) {
             throw new ServiceException("语法错误");
         }
@@ -171,6 +174,9 @@ public class GroupServicelmpl implements IGroupService {
         GtdGroupEntity groupEntity = null;
         try {
             groupEntity = groupJpaRepository.findGtdGroupEntityByGroupId(groupId);//获取当前群组
+            if(groupEntity==null){
+                throw new ServiceException("群组不存在");
+            }
         } catch (Exception e) {
             throw new ServiceException("语法错误");
         }
