@@ -17,6 +17,7 @@ import {GroupModel} from "../../model/group.model";
 @Component({
   selector: 'page-group-detail',
   templateUrl: 'group-detail.html',
+  providers: []
 })
 export class GroupDetailPage {
   @ViewChild(Navbar) navBar: Navbar;

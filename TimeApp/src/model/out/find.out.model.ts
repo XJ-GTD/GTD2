@@ -7,6 +7,7 @@ export class FindOutModel {
 
   private _userId: number;    //用户ID
   private _findType: number;  //查询类型
+  private _groupId: number;    //群组ID
 
   get findType(): number {
     return this._findType;
@@ -23,5 +24,12 @@ export class FindOutModel {
     this._userId = value;
   }
 
+  get groupId(): number {
+    return this._groupId;
+  }
+
+  set groupId(value: number) {
+    this._groupId = value;
+  }
 
 }
