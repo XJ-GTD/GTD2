@@ -225,7 +225,7 @@ export class GroupEditPage {
     }else {
       //修改页面，调用修改接口
       console.log("修改接口")
-      // this.edit();
+      this.edit();
     }
   }
 
@@ -250,7 +250,7 @@ export class GroupEditPage {
         if (this.labeldata.code == "0") {
           loader.present();
           console.log('保存成功')
-          // this.navCtrl.push('HomePage');
+          this.navCtrl.push('HomePage');
         } else {
           loader.present();
         }
@@ -260,32 +260,29 @@ export class GroupEditPage {
 
   //修改
   edit(){
-    if(this.groupMemberName!=undefined){
-      console.log('groupeditpage //修改',);
-    }
-  //   this.http.post(AppConfig.GROUP_ADD_DEL_URL,{
-  //     userId:this.groupFind.userId,
-  //     groupId:this.groupDetail.groupId,
-  //     member:this.testCheckboxMember //{"userId":"1","userName":"用户名","userContact":"13006119208"}
-  //   }).subscribe(data => {
-  //     // console.log(data)
-  //     if(this.groupFind.userId==0&&this.groupFind.userId==null){
-  //       console.log("登陆或网络出错   请重新登陆！")
-  //     }else {
-  //       this.data1 = data;
-  //       let loader = this.loadingCtrl.create({
-  //         content: this.labeldata.message,
-  //         duration: 1500
-  //       });
-  //       if (this.data1.code == "0") {
-  //         loader.present();
-  //         console.log('修改成功')
-  //         // this.navCtrl.push('HomePage');
-  //       } else {
-  //         loader.present();
-  //       }
-  //     }
-  //   })
+    this.http.post(AppConfig.GROUP_ADD_DEL_URL,{
+      userId:this.groupFind.userId,
+      groupId:this.groupDetail.groupId,
+      member:this.testCheckboxMember //{"userId":"1","userName":"用户名","userContact":"13006119208"}
+    }).subscribe(data => {
+      // console.log(data)
+      if(this.groupFind.userId==0&&this.groupFind.userId==null){
+        console.log("登陆或网络出错   请重新登陆！")
+      }else {
+        this.data1 = data;
+        let loader = this.loadingCtrl.create({
+          content: this.labeldata.message,
+          duration: 1500
+        });
+        if (this.data1.code == "0") {
+          loader.present();
+          console.log('修改成功')
+          this.navCtrl.push('HomePage');
+        } else {
+          loader.present();
+        }
+      }
+    })
   }
 
 }
