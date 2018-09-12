@@ -112,8 +112,7 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
      * @param scheduleId
      * @return
      */
-    @Modifying
-    @Query(value = "SELECT group_tabel.GROUP_ID groupId,group_tabel.GROUP_NAME groupName FROM gtd_group group_tabel LEFT JOIN gtd_group_schedule group_sch ON group_tabel.GROUP_ID = group_sch.GROUP_ID WHERE group_sch.SCHEDULE_ID = ?1",nativeQuery = true)
+    @Query(value = "SELECT group_tabel.GROUP_ID groupId,group_tabel.GROUP_NAME groupName FROM gtd_group group_tabel LEFT JOIN gtd_group_schedule group_sch ON group_tabel.GROUP_ID = group_sch.GROUP_ID WHERE group_sch.SCHEDULE_ID = ?1 ",nativeQuery = true)
     List<GroupOutDto> findGroupByScheduleId(Integer scheduleId);
 
 

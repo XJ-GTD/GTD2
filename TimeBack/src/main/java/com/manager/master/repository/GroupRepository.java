@@ -103,5 +103,16 @@ public class GroupRepository {
         em.createNativeQuery(sql4).executeUpdate();
     }
 
+    public List<Object[]> findGroupByScheduleId(Integer scheduleId){
+        String sql = "SELECT " +
+                "group_tabel.GROUP_ID groupId," +
+                "group_tabel.GROUP_NAME groupName " +
+                "FROM gtd_group group_tabel " +
+                "LEFT JOIN gtd_group_schedule group_sch " +
+                "ON group_tabel.GROUP_ID = group_sch.GROUP_ID " +
+                "WHERE group_sch.SCHEDULE_ID = " + scheduleId;
+        return em.createNativeQuery(sql).getResultList();
+    }
+
 
 }
