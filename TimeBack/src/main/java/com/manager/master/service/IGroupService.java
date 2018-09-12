@@ -45,7 +45,7 @@ public interface IGroupService {
     int member(GroupInDto inDto);
 
     //群成员状态改变
-    int updateStatus(GroupInDto inDto);
+    int updateStatus(InformInDto inDto);
 
     /**
      * 创建编辑日程添加参与人用
