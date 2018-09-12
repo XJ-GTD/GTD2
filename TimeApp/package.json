@@ -23,6 +23,7 @@
     "@ionic-native/base64": "^4.11.0",
     "@ionic-native/core": "4.3.2",
     "@ionic-native/file": "^4.11.0",
+    "@ionic-native/file-transfer": "^4.12.2",
     "@ionic-native/http": "^4.7.0",
     "@ionic-native/local-notifications": "^4.11.0",
     "@ionic-native/phonegap-local-notification": "^4.11.0",
