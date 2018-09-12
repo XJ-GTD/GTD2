@@ -141,4 +141,14 @@ public class ScheduleRepository {
         }
         return  em.createNativeQuery(sql).getResultList();
     }
+
+    /**
+     * 通过 日程ID 查找 开始时间
+     * @param scheduleId
+     * @return
+     */
+    public String findschedulStartT(Integer scheduleId){
+        String  sql = "SELECT SCHEDULE_STARTTIME FROM gtd_schedule WHERE SCHEDULE_ID = " + scheduleId;
+        return  em.createNativeQuery(sql).getSingleResult().toString();
+    }
 }
