@@ -68,6 +68,9 @@ public class ScheduleServiceImpl implements IScheduleService {
     @Resource
     RemindRepository remindRepository;
 
+    @Resource
+    SchedulePlayersNewRepository schedulePlayersNewRepository;
+
     /**
      * 查询自己创建的日程
      *
@@ -270,7 +273,8 @@ public class ScheduleServiceImpl implements IScheduleService {
         List<Integer> groupIds = inDto.getGroupIds();                          		// 群组 List
         List<Integer> labelIds = inDto.getLabelIds();                          		// 标签 List
         String date = dateFormat();
-        // 入参检查     // 入参必须项检查
+        // 入参检查
+        // 入参必须项检查
         if (userId == 0 || "".equals(userId)) throw new ServiceException("用户名ID不能为空");
         if (scheduleId == 0 || "".equals(scheduleId)) throw new ServiceException("日程事件ID不能为空");
         if (scheduleName == null || "".equals(scheduleName)) throw new ServiceException("日程事件名称不能为空");
@@ -281,6 +285,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         if (updateDate == null || "".equals(updateDate)) updateDate =date;
         if (groupIds.size() == 0) throw new ServiceException("群组不能为空");
         if (labelIds.size() == 0) throw new ServiceException("标签名称不能为空");
+        if(scheduleStatus == null || "".equals(scheduleStatus)) scheduleStatus = 1;
         // 入参类型检查
        /* // 日程重复类型 判断
         int[] types = new int[] { 0, 1, 2, 3 };
@@ -313,7 +318,7 @@ public class ScheduleServiceImpl implements IScheduleService {
             String dbStartTime = null;
             boolean timeFlag = false;
             try{
-                dbStartTime = scheduleJpaRepository.findschedulStartT(scheduleId);
+                dbStartTime = scheduleRepository.findschedulStartT(scheduleId);
             } catch (Exception ex){
                 throw new ServiceException("---- findschedulStartT 语法错误");
             }
@@ -343,10 +348,20 @@ public class ScheduleServiceImpl implements IScheduleService {
             Integer scheduleLabel = CommonMethods.getscheduleLabel(labelIds);
             //  查询 日程标签中间表: 获取标签
             List<GtdScheduleLabelEntity> dbScheduleLabel= new ArrayList<GtdScheduleLabelEntity>();
+            List<Object[]> dbScheduleLabelO = new ArrayList<>();
             try {
-                dbScheduleLabel = centerScheduleLabelRepository.findLabelIdByScheduleId(scheduleId);
+//                dbScheduleLabel = centerScheduleLabelRepository.findLabelIdByScheduleId(scheduleId);
+                dbScheduleLabelO = labelRespository.findLabelIdByScheduleId(scheduleId);
             } catch (Exception ex){
                 throw new ServiceException("---- findLabelIdByScheduleId 语法错误");
+            }
+            if(dbScheduleLabelO.size()>0){
+                for(Object[] dbLabelO : dbScheduleLabelO){
+                    GtdScheduleLabelEntity G = new GtdScheduleLabelEntity();
+                    G.setScheduleLabelId((Integer) dbLabelO[0]);
+                    G.setLabelId((Integer) dbLabelO[1]);
+                    dbScheduleLabel.add(G);
+                }
             }
             List<Timestamp> remindList = new ArrayList<>(); // 提醒时间列表
             Integer scheduleLabelId = 0;
@@ -437,7 +452,8 @@ public class ScheduleServiceImpl implements IScheduleService {
             for(Integer user : oldUserIdList){
                 Integer playerId = 0;
                 try{
-                    playerId = schedulePlayersRepository.findPlayersIdByUserIdAndScheduleId(scheduleId,user);
+//                    playerId = schedulePlayersRepository.findPlayersIdByUserIdAndScheduleId(scheduleId,user);
+                    playerId = schedulePlayersNewRepository.findPlayersIdByUserIdAndScheduleId(scheduleId,user);
                 } catch (Exception ex){
                     throw new ServiceException("---- findPlayersIdByUserIdAndScheduleId 语法错误");
                 }
