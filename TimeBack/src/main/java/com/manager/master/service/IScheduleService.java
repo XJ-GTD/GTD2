@@ -1,8 +1,6 @@
 package com.manager.master.service;
 
-import com.manager.master.dto.LabelInDto;
-import com.manager.master.dto.LabelOutDto;
-import com.manager.master.dto.ScheduleInDto;
+import com.manager.master.dto.*;
 import com.manager.master.entity.GtdScheduleEntity;
 
 import java.util.List;
@@ -15,18 +13,19 @@ import java.util.List;
 public interface IScheduleService {
 
     /**
-     * 日程查询
+     * 查询自己创建的日程
      * @param inDto
      * @return
      */
-    List<GtdScheduleEntity> findAll(ScheduleInDto inDto);
+    List<FindScheduleOutDto> findCreateSchedule(FindScheduleInDto inDto);
 
     /**
-     * 日程详情
+     * 查询自己参与的日程
      * @param inDto
      * @return
      */
-    GtdScheduleEntity findOne(ScheduleInDto inDto);
+    List<FindScheduleOutDto> findJoinSchedule(FindScheduleInDto inDto);
+
     /**
      * 新增日程
      * @param inDto
