@@ -43,7 +43,7 @@ public class CortanaController {
         if (!voiceInBean.getContent().equals("") && voiceInBean.getContent() != null) {
 
 //            speechText = JsonParser.parse(aiUiService.answerAudio(voiceInBean.getContent()));
-            JSONObject joResult = new JSONObject(aiUiService.answerText(voiceInBean.getContent()));;
+            JSONObject joResult = new JSONObject(aiUiService.answerAudio(voiceInBean.getContent()));;
             speechText = joResult.toString();
             data.put("speechText", speechText);
             data.put("code", "0");
