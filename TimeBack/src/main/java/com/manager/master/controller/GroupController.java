@@ -153,7 +153,7 @@ public class GroupController {
      */
     @RequestMapping(value = "/update_member_status",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto update_memberstatus(@RequestBody GroupInDto inDto){
+    public BaseOutDto update_memberstatus(@RequestBody InformInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try{
             int code=groupService.updateStatus(inDto);
