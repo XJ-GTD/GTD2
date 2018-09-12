@@ -20,7 +20,8 @@
 
 <ion-content padding>
   <div *ngIf="groupDetail!=null; else elseBlock3">
-    <input style="width: 100%;height: 30px;padding-left: 10px;margin-bottom: 50px" placeholder="{{groupDetail.groupName}}" [(ngModel)]="groupName" type="text" />
+    <ion-input style="padding-left: 5%; margin-bottom: 5%;  border:1px solid #a1a1a1;" value="{{groupDetail.groupName}}" [(ngModel)]="groupName"></ion-input>
+    <!--<input style="width: 100%;height: 30px;padding-left: 10px;margin-bottom: 50px" placeholder="{{groupDetail.groupName}}" [(ngModel)]="groupName" type="text" />-->
   </div>
   <ng-template #elseBlock3>
     <input style="width: 100%;height: 30px;padding-left: 10px;margin-bottom: 50px" placeholder="请输入群名称" [(ngModel)]="groupName" type="text" />
@@ -55,5 +56,7 @@
     <ion-input style="border:1px solid #a1a1a1;" placeholder="请输入联系方式"  [(ngModel)]="groupMemberContact"></ion-input>
   </ion-title>
 
-  <ion-buttons style="width: 20%;height: 10%" (click)="savegroup()">保存</ion-buttons>
+  <ion-buttons style="width: 20%;height: 10%" >
+    <button (click)="savegroup()">保存</button>
+  </ion-buttons>
 </ion-content>
