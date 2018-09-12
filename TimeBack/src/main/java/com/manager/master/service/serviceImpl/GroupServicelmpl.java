@@ -453,7 +453,7 @@ public class GroupServicelmpl implements IGroupService {
                     pushOutDto.setMessageContent("请注意加入该群后将会自动同意群主的日程邀请");
                     pushOutDto.setType(2);
                     pushInDto.setData(JSONObject.toJSONString(pushOutDto));
-                    iWebSocketService.pushToUser(pushInDto);
+                    //iWebSocketService.pushToUser(pushInDto);
                 }
             }
 
@@ -542,7 +542,7 @@ public class GroupServicelmpl implements IGroupService {
                         pushOutDto.setMessageContent("请注意加入该群后将会自动同意群主的日程邀请");
                         pushOutDto.setType(2);
                         pushInDto.setData(JSONObject.toJSONString(pushOutDto));
-                        iWebSocketService.pushToUser(pushInDto);
+                       // iWebSocketService.pushToUser(pushInDto);
                     }
                 }
             } else {
@@ -649,7 +649,7 @@ public class GroupServicelmpl implements IGroupService {
                         pushOutDto.setMessageContent("请注意加入该群后将会自动同意群主的日程邀请");
                         pushOutDto.setType(2);
                         pushInDto.setData(JSONObject.toJSONString(pushOutDto));
-                        iWebSocketService.pushToUser(pushInDto);
+                       // iWebSocketService.pushToUser(pushInDto);
                     }
                 }
             } else {
@@ -787,7 +787,7 @@ public class GroupServicelmpl implements IGroupService {
                                 pushOutDto.setMessageContent("请注意加入该群后将会自动同意群主的日程邀请");
                                 pushOutDto.setType(2);
                                 pushInDto.setData(JSONObject.toJSONString(pushOutDto));
-                                iWebSocketService.pushToUser(pushInDto);
+                              //  iWebSocketService.pushToUser(pushInDto);
                             }
                         }
                         groupMemberRepository.save(ggm);
@@ -810,7 +810,7 @@ public class GroupServicelmpl implements IGroupService {
                                 pushOutDto.setMessageContent("你已经被踢出该群");
                                 pushOutDto.setType(2);
                                 pushInDto.setData(JSONObject.toJSONString(pushOutDto));
-                                iWebSocketService.pushToUser(pushInDto);
+                                //iWebSocketService.pushToUser(pushInDto);
                             }
                         }
                     }
@@ -826,10 +826,10 @@ public class GroupServicelmpl implements IGroupService {
                             PushOutDto pushOutDto=new PushOutDto();
                             pushOutDto.setMessageId(group.getGroupId());
                             pushOutDto.setMessageName(group.getGroupName());
-                            pushOutDto.setMessageContent("请注意该群会自动同意群主的日程邀请");
+                            pushOutDto.setMessageContent("请注意加入该群后将会自动同意群主的日程邀请");
                             pushOutDto.setType(2);
                             pushInDto.setData(JSONObject.toJSONString(pushOutDto));
-                            iWebSocketService.pushToUser(pushInDto);
+                            //iWebSocketService.pushToUser(pushInDto);
                         }
                         if(type==0){ //本地群转权限群 将群成员状态设置为2
                             GtdGroupMemberEntity groupMember = groupMemberRepository.findMemberByGroupIdAndUserId(groupId, i);
@@ -961,7 +961,7 @@ public class GroupServicelmpl implements IGroupService {
                     pushInDto.setUserId(g.getMemberId());
                     pushInDto.setAccountQueue(groupJpaRepository.findAccountQueue(g.getMemberId()));
                     pushInDto.setData(JSONObject.toJSONString(g));
-                    iWebSocketService.pushToUser(pushInDto);
+                    //iWebSocketService.pushToUser(pushInDto);
                 }else{
                     ggm.setGroupMemberStatus(0);
                 }
@@ -983,7 +983,7 @@ public class GroupServicelmpl implements IGroupService {
 //                        groupOutDto.setGroupCreateId(group.getCreateId());
 //                        groupOutDto.setGroupHeadImg(group.getGroupHeadimgUrl());
                     pushInDto.setData(JSONObject.toJSONString(g));
-                    iWebSocketService.pushToUser(pushInDto);
+                    //iWebSocketService.pushToUser(pushInDto);
                 } else {
                     //直接删除群成员
                     groupMemberRepository.delete(g);
