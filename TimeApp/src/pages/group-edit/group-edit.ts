@@ -205,7 +205,7 @@ export class GroupEditPage {
   }
 
   //保存方法
-  savegroup(){
+  saveGroup(){
     if(this.groupDetail.isaddORedit==false&&this.groupDetail.isaddORedit){
       //新增页面，调用保存接口
       console.log("保存接口")
@@ -218,7 +218,7 @@ export class GroupEditPage {
   }
 
   save(){
-    //调用保存接口
+    //调用添加群组接口
     this.http.post(AppConfig.GROUP_ADD_GROUP_URL,{
       "userId":this.groupFind.userId,
       "labelId":this.testCheckboxLabel,
@@ -226,13 +226,9 @@ export class GroupEditPage {
       "groupHeadImgUrl":"123",
       "member":[{"userName":this.groupMemberName,"userContact":this.groupMemberContact}]
     }).subscribe(data => {
-      // console.log(data)
-      if(this.groupFind.userId==0&&this.groupFind.userId==null){
-        console.log("登陆或网络出错   请重新登陆！")
-      }else {
-        this.labeldata = data;
+        this.data1 = data;
         let loader = this.loadingCtrl.create({
-          content: this.labeldata.message,
+          content: this.data1.message,
           duration: 1500
         });
         if (this.labeldata.code == "0") {
@@ -242,7 +238,6 @@ export class GroupEditPage {
         } else {
           loader.present();
         }
-      }
     })
   }
 
@@ -264,7 +259,7 @@ export class GroupEditPage {
     }).subscribe(data => {
         this.data1 = data;
         let loader = this.loadingCtrl.create({
-          content: this.labeldata.message,
+          content: this.data1.message,
           duration: 1500
         });
         if (this.data1.code == "0") {
@@ -277,11 +272,25 @@ export class GroupEditPage {
     })
   }
 
+  //删除群组方法
+  delGroup(){
+    console.log('删除群组方法 输出用户ID+群组ID',this.groupFind.userId,this.groupDetail.groupId)
+    this.http.post(AppConfig.GROUP_DEL_GROUP_URL,{
+      userId:this.groupFind.userId,
+      groupId:this.groupDetail.groupId
+    }).subscribe(data=>{
+      this.data1 = data;
+      let loader = this.loadingCtrl.create({
+        content:this.data1.message,
+        duration:1000
+      });
+      if(this.data1.code == "0"){
+        loader.present();
+        console.log('删除群组')
+        this.navCtrl.push('HomePage')
+      }else {
+        loader.present();
+      }
+    })
+  }
 }
-
-
-
-//1 查询所有标签.赋值给value
-//2 查询群成员,获取名字和手机号赋值给
-//3 把选择的标签和群成员调用接口 传进去
-//4 根据返回的数据跳转对应的界面

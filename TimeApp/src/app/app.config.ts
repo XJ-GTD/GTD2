@@ -52,7 +52,11 @@ export class AppConfig {
 
   public static GROUP_ADD_DEL_URL: string = AppConfig.GROUP_URL + "/add_del_member";    //群组添加 POST
 
-  public static GROUP_UPDATE_GROUP_URL:string = AppConfig.GROUP_URL + "/update_group" //群组编辑
+  public static GROUP_UPDATE_GROUP_URL:string = AppConfig.GROUP_URL + "/update_group" //群组编辑 POST
+
+  public static GROUP_DEL_GROUP_URL:string = AppConfig.GROUP_URL + "/delete_group" //删除群组 POST
+
+  public static GROUP_UPD_MEMBER_STATUS_URL:string = AppConfig.GROUP_URL + "/update_member_status" //修改群成员状态 POST
 
   public static GROUP_ALL_SHOW_URL: string = AppConfig.GROUP_URL + "/find_all_players";   //全部参与人展示
 
