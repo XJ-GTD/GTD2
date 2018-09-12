@@ -6,11 +6,11 @@
 -->
 <ion-header>
 
-    <ion-item *ngIf="groupDetail!=null;else elseBlock1">
-      <ion-title>{{groupDetail.groupName}}</ion-title>
-    </ion-item>
+  <ion-navbar *ngIf="groupDetail!=null;else elseBlock1">
+    <ion-title>{{groupDetail.groupName}}</ion-title>
+  </ion-navbar>
   <ng-template #elseBlock1>
-    <ion-navbar>
+    <ion-navbar backButtonClick >
       <ion-title style="text-align: center" >添加新群组</ion-title>
     </ion-navbar>
   </ng-template>
@@ -30,30 +30,30 @@
   <button class="divbiaoqian" style="background-color: white;width: 100%">
     <button style="width: 85%;padding-left: 10px;height: 30px" (click)="showLabelCheckbox()">点击添加标签</button>
   </button>
-  <div class="divqunchengyuan"  *ngIf="memberdata!=null; else elseBlock">
-    <div *ngFor="let item of memberdata" class="row qunchengyuan">
-      <p class="pmingcheng">{{item.userName}}</p><p>群成员联系方式:{{item.userContact}}</p>
+  <div class="divqunchengyuan"  *ngIf="groupDetail!=null; else elseBlock">
+    <div *ngFor="let item of groupDetail.groupMembers" class="row qunchengyuan">
+      <p class="pmingcheng">{{item.userName}}</p><p>联系方式:{{item.userContact}}</p>
     </div>
     <button style="width: 100%;background-color: white">
       <button class="divbiaoqian" style="background-color: white;width: 100%">
-        <button style="width: 85%;padding-left: 10px;height: 50%" (click)="showMemberCheckbok()">点击添加新成员</button>
+        <button style="width: 85%;padding-left: 10px;height: 50%" (click)="showMemberCheckbok()">点击添加成员</button>
       </button>
     </button>
   </div>
   <ng-template #elseBlock>
     <button style="width: 100%;background-color: white">
       <button class="divbiaoqian" style="background-color: white;width: 100%">
-        <button style="width: 85%;padding-left: 10px;height: 50%" (click)="showMemberCheckbok()">点击添加新成员</button>
+        <button style="width: 85%;padding-left: 10px;height: 50%" (click)="showMemberCheckbok()">点击添加成员</button>
       </button>
     </button>
   </ng-template>
 
   <ion-title>
-    <ion-input placeholder="请输入名称"  [(ngModel)]="groupMemberName"></ion-input>
+    <ion-input style="border:1px solid #a1a1a1;" placeholder="请输入名称"  [(ngModel)]="groupMemberName"></ion-input>
   </ion-title>
   <ion-title>
-    <ion-input placeholder="请输入联系方式"  [(ngModel)]="groupMemberContact"></ion-input>
+    <ion-input style="border:1px solid #a1a1a1;" placeholder="请输入联系方式"  [(ngModel)]="groupMemberContact"></ion-input>
   </ion-title>
 
-  <button (click)="savegroup()">保存</button>
+  <ion-buttons style="width: 20%;height: 10%" (click)="savegroup()">保存</ion-buttons>
 </ion-content>

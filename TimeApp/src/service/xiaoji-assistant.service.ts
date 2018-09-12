@@ -42,15 +42,17 @@ export class XiaojiAssistantService {
         //讯飞语音录音设置默认存储路径
         this.filePath = this.file.externalRootDirectory + "/msc/iat.wav";
         alert(this.filePath);
+        this.fileContent = this.file.readAsText(this.file.externalRootDirectory, "/msc/iat.wav");
+        alert(this.fileContent);
         // 读取录音进行base64转码
-        this.base64.encodeFile(this.filePath).then((base64File: string) => {
-          this.fileContent = base64File;
-          alert(this.fileContent);
+        // this.base64.encodeFile(this.filePath).then((base64File: string) => {
+        //   this.fileContent = base64File;
+        //   alert(this.fileContent);
           let url = AppConfig.XUNFEI_URL_AUDIO;
           this.connetXunfei(url);
-        }, (err) => {
-          alert("异常" + err.toString());
-        });
+        // }, (err) => {
+        //   alert("异常" + err.toString());
+        // });
 
       },error=>{
         alert("报错:" + error);

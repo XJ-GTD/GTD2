@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {AppConfig} from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
+import {FindOutModel} from "../../model/out/find.out.model";
+import {GroupModel} from "../../model/group.model";
+import {ParamsService} from "../../service/params.service";
 
 /**
  * Generated class for the GroupEditPage page.
@@ -18,30 +21,28 @@ import { HttpClient } from "@angular/common/http";
 export class GroupPersonalEditPage {
   groupId:number;
   data3: any;
+  groupFind:FindOutModel;
+  groupDetail: GroupModel;
   isEdit: boolean = true;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient, public loadingCtrl: LoadingController) {
-    this.groupId = navParams.data.groupId;
-    this.http.post(AppConfig.GROUP_FIND_SINGLE_URL,{
-      userId:2,
-      groupId:this.groupId
-    }).subscribe(data => {
-      this.data3 = data
-      console.log(this.data3);
-      let loader = this.loadingCtrl.create({
-        content: this.data3.message,
-        duration: 1500
-      });
-      if (this.data3.code == "0") {
-        loader.present();
-        // this.navCtrl.push('HomePage');
-      } else {
-        loader.present();
-      }
-    })
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private http: HttpClient,
+              public loadingCtrl: LoadingController,
+              private paramsService: ParamsService) {
+    this.init();
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad GroupPersonalEditPage');
+  }
+
+  init() {
+    this.groupFind = new FindOutModel();
+    this.groupFind.userId = this.paramsService.user.userId;   //获取当前用户Id
+    this.groupDetail = new GroupModel();
+    this.groupDetail = this.paramsService.group;            //获取上个页面点击的群组Id
+    this.groupDetail.isaddORedit = true;
   }
 
   personaledit(){
@@ -50,6 +51,11 @@ export class GroupPersonalEditPage {
     }else {
       this.isEdit=true;
     }
+  }
+
+  //获取个人详情
+  getGroup(){
+
   }
 
 }

@@ -34,4 +34,5 @@ public class PushInDto {
     public void setAccountQueue(String accountQueue) {
         this.accountQueue = accountQueue;
     }
+
 }
