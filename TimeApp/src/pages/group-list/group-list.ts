@@ -80,25 +80,38 @@ export class GroupListPage {
 
   //带参数跳转详情页面
   groupShowDetail(groupDetail){
-    this.paramsService.group = groupDetail;
-    this.navCtrl.push('GroupDetailPage');
+    console.log(this.groupFind.findType)
+    if(this.groupFind.findType==2){
+      this.paramsService.group = groupDetail;
+      this.navCtrl.push('GroupDetailPage');
+    }else if (this.groupFind.findType==1){
+      this.paramsService.group = groupDetail;
+      this.navCtrl.push('GroupPersonalEditPage')
+    }
   }
 
 
   //跳转修改页面
   addORedit(){
-    this.navCtrl.push('GroupEditPage')
+    if(this.groupFind.findType==2){
+      //跳转至添加群组页面
+      console.log('群组修改')
+      this.navCtrl.push('GroupEditPage')
+    }else if (this.groupFind.findType==1){
+      //跳转至添加个人页面
+      console.log('个人修改')
+      this.navCtrl.push('GroupPersonalEditPage')
+    }
+
   }
 
 
   edit(){
     if(this.findFlag == false){
       this.findFlag = true;
-      this.groupORpersonname='群组';
       this.groupFind.findType = 2;
     }else {
       this.findFlag = false;
-      this.groupORpersonname='个人';
       this.groupFind.findType = 1;
     }
   }

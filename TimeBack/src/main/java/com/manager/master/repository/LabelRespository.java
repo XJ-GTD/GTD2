@@ -37,4 +37,19 @@ public class LabelRespository {
 
         return em.createNativeQuery(sql).getResultList();
     }
+
+    /**
+     *  通过 日程ID 查询相关 标签名
+     * @param scheduleId
+     * @return
+     */
+    public List<String> findLabelNameByScheduleId(Integer scheduleId){
+        String sql = "SELECT\n" +
+                "label_table.LABEL_NAME\n" +
+                "FROM gtd_label label_table\n" +
+                "LEFT JOIN gtd_schedule_label sche_label\n" +
+                "ON label_table.LABEL_ID = sche_label.LABEL_ID\n" +
+                "WHERE sche_label.SCHEDULE_ID = "+scheduleId;
+        return (List<String>) em.createNativeQuery(sql).getResultList();
+    }
 }

@@ -7,32 +7,33 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title style="text-align: center" *ngIf="data3!=null">
-      {{data3.data.group.groupName}}
+    <ion-title style="text-align: center" *ngIf="groupDetail!=null;else elseBlock">
+      {{groupDetail.groupName}}
       <button style="position: absolute;left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;" (click)="personaledit()">编辑</button>
     </ion-title>
   </ion-navbar>
   <ng-template #elseBlock>
+    <ion-navbar>
+      <ion-title>新增联系人</ion-title>
+    </ion-navbar>
   </ng-template>
 </ion-header>
 
 
 <ion-content padding  style="margin-top: 10%">
-  <!--<div class="row row11">-->
-    <!--<div class="biaoqian1" *ngFor="let item of data3.data.group.groupLabel">-->
-      <!--<p>{{item.labelName}}</p>-->
-    <!--</div>-->
-  <!--</div>-->
-  <div *ngIf="data3!=null">
-    <div *ngFor="let item of data3.data.group.gtdGroupMember">
-      <!--<div class="row qunchengyuan1" style=" border:1px solid #a1a1a1;">-->
-        <!--<p class="pmingcheng1">{{item.userName}}</p>-->
-      <!--</div>-->
+  <div *ngIf="groupDetail!=null;else elseBlock1">
+    <div *ngFor="let item of groupDetail.groupMembers">
       <div class="row qunchengyuan1" style=" border:1px solid #a1a1a1;">
-        <p>群成员联系方式:{{item.userContact}}</p>
+        <ion-item>联系方式</ion-item>
+      </div>
+      <div class="row qunchengyuan1" style="margin-top: 10%; text-align: center; border:1px solid #a1a1a1;">
+        <ion-input value="{{item.userContact}}"></ion-input>
       </div>
     </div>
   </div>
+  <ng-template #elseBlock>
+    <ion-input></ion-input>
+  </ng-template>
 
 
 </ion-content>

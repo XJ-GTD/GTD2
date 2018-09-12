@@ -1,9 +1,7 @@
 package com.manager.master.controller;
 
 import com.manager.config.exception.ServiceException;
-import com.manager.master.dto.BaseOutDto;
-import com.manager.master.dto.LabelInDto;
-import com.manager.master.dto.ScheduleInDto;
+import com.manager.master.dto.*;
 import com.manager.master.entity.GtdGroupEntity;
 import com.manager.master.entity.GtdLabelEntity;
 import com.manager.master.entity.GtdScheduleEntity;
@@ -32,80 +30,34 @@ public class ScheduleController {
     @Autowired
     IScheduleService scheduleService;
 
-    /**
-     * 日程首页详情
-     * @param inDto
-     * @return
-     */
-    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
+    @RequestMapping(value = "/find",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto selectAllSchedule(@RequestBody ScheduleInDto inDto) {
+    public BaseOutDto findSchedule(@RequestBody FindScheduleInDto indto){
         BaseOutDto baseOutDto = new BaseOutDto();
-        Map<String,List<GtdScheduleEntity>> map = new HashMap<>();
-        List<GtdScheduleEntity> listSchedule = new ArrayList<>();
-
+        Map<String,List> map = new HashMap<>();
         try{
-            listSchedule = scheduleService.findAll(inDto);
+            // 查询自己创建的日程
+            List<FindScheduleOutDto> scheduleCreateList = scheduleService.findCreateSchedule(indto);
+            // 查询自己参与的日程
+            List<FindScheduleOutDto> scheduleJoinList = scheduleService.findJoinSchedule(indto);
 
-            for (GtdScheduleEntity scheduleEntity:listSchedule){
-                Set<GtdGroupEntity> group = null;
-                Set<GtdLabelEntity> label = null;
-                GtdUserEntity user = null;
+            map.put("scheduleCreateList",scheduleCreateList);
+            map.put("scheduleJoinList",scheduleJoinList);
 
-                if (scheduleEntity.getUser() != null){
-                    user = scheduleEntity.getUser();
-                }
-
-                scheduleEntity.setGroupSchedule(group);
-                scheduleEntity.setLabel(label);
-                scheduleEntity.setUser(user);
-            }
-
-            if (listSchedule != null){
-                map.put("scheduleList",listSchedule);
-                baseOutDto.setData(map);
-            }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("日程首页查询失败");
-        }catch (Exception ex){
-            throw new ServiceException(ex.getMessage());
+            baseOutDto.setData(map);
+            baseOutDto.setCode(ResultCode.SUCCESS);
+            baseOutDto.setMessage("[查询完成]");
+        } catch (Exception e){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[查询失败]：请联系技术人员");
+            logger.info(e.getMessage());
+            throw new ServiceException("[查询失败]：请联系技术人员");
         }
+
+
+
         return baseOutDto;
     }
-
-    /**
-     * 日程详情
-     * @param inDto
-     * @return
-     */
-    @RequestMapping(value = "/details", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseOutDto detailsSchedule(@RequestBody ScheduleInDto inDto) {
-        BaseOutDto baseOutDto = new BaseOutDto();
-        Map<String,GtdScheduleEntity> map = new HashMap<>();
-        GtdScheduleEntity scheduleEntity = new GtdScheduleEntity();
-        try{
-            scheduleEntity = scheduleService.findOne(inDto);
-            Set<GtdGroupEntity> group = null;
-            Set<GtdLabelEntity> label = null;
-            GtdUserEntity user = null;
-
-            if (scheduleEntity.getUser() != null){
-                user = scheduleEntity.getUser();
-            }
-
-            scheduleEntity.setGroupSchedule(group);
-            scheduleEntity.setLabel(label);
-            scheduleEntity.setUser(user);
-
-            if (scheduleEntity != null){
-                map.put("data",scheduleEntity);
-                baseOutDto.setData(map);
-            }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("日程详情查询失败");
-        }catch (Exception ex){
-            throw new ServiceException(ex.getMessage());
-        }
-        return baseOutDto;
-    }
-
 
     /**
      * 新增日程

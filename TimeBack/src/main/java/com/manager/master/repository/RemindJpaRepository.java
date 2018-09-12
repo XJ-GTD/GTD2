@@ -1,5 +1,6 @@
 package com.manager.master.repository;
 
+import com.manager.master.dto.RemindOutDto;
 import com.manager.master.entity.GtdSchedulePlayersEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -65,4 +66,14 @@ public interface RemindJpaRepository extends JpaRepository<GtdSchedulePlayersEnt
     @Modifying
     @Query(value = "DELETE FROM gtd_remind WHERE PLAYERS_ID IN ?1",nativeQuery = true)
     void deleteAllByPlayersIds(List<Integer> playersId);
+
+    /**
+     * 根据 参与人ID + 日程ID 查询 提醒时间ID + 提醒时间
+     * @param userId
+     * @param scheduleId
+     * @return
+     */
+    @Modifying
+    @Query(value = "SELECT remind_table.REMIND_ID remindId,remind_table.REMIND_DATE remindDate FROM gtd_remind remind_table LEFT JOIN gtd_schedule_players players_table ON remind_table.PLAYERS_ID = players_table.PLAYERS_ID WHERE players_table.USER_ID = ?1 AND players_table.SCHEDULE_ID = ?2",nativeQuery = true)
+    List<RemindOutDto> findRemindByUserIDAndScheId(Integer userId,Integer scheduleId);
 }
