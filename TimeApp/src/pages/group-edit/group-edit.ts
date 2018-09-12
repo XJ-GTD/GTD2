@@ -116,14 +116,13 @@ export class GroupEditPage {
       }).subscribe(data => {
         this.data1 = data;
         this.memberdata=this.data1.data.groupMemberList;
-        console.log("输出群成员",data)
+        console.log("输出群成员",data);
         let loader = this.loadingCtrl.create({
           content: this.data1.message,
           duration: 1500
         });
         if (this.data1.code == "0") {
           loader.present();
-          this
         } else {
           loader.present();
         }
@@ -205,12 +204,9 @@ export class GroupEditPage {
       }
   }
 
-  //添加/删除成员方法
+  //保存方法
   savegroup(){
-
-    console.log("添加获取的数据",this.groupName,this.groupMemberName,this.groupMemberContact)
-
-    if(this.groupDetail.isaddORedit==false){
+    if(this.groupDetail.isaddORedit==false&&this.groupDetail.isaddORedit){
       //新增页面，调用保存接口
       console.log("保存接口")
       // this.save();
@@ -252,8 +248,12 @@ export class GroupEditPage {
 
   //修改
   edit(){
-    console.log(this.memberdata);
-    console.log(this.testCheckboxMember);
+    if(this.testCheckboxLabel==undefined&&this.testCheckboxLabel==null){
+      this.testCheckboxLabel = [];
+      for (let item of this.groupDetail.labelList){
+        this.testCheckboxLabel.push( item.labelId);
+      }
+    }
     this.http.post(AppConfig.GROUP_UPDATE_GROUP_URL,{
       userId:this.groupFind.userId,
       groupId:this.groupDetail.groupId,
