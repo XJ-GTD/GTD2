@@ -88,7 +88,6 @@ export class GroupEditPage {
   //获取Member成员方法
   selectMemberAll(){
     if(this.groupDetail==null){
-      //新增页面，调用保存接口
       this.http.post(AppConfig.GROUP_FIND_GROUPMEMBER_URL,{
         userId:this.groupFind.userId,
         findType:1
@@ -110,31 +109,23 @@ export class GroupEditPage {
         console.log(this.memberdata)
       })
     }else {
-      //修改页面，调用修改接口
       this.http.post(AppConfig.GROUP_FIND_GROUPMEMBER_URL,{
         userId:this.groupFind.userId,
         groupId:this.groupDetail.groupId,
         findType:2
       }).subscribe(data => {
-        // console.log(data)
-        // if(this.groupFind.userId==0&&this.groupFind.userId==null){
-        //   console.log("登陆或网络出错   请重新登陆！")
-        // }else {
         this.data1 = data;
         this.memberdata=this.data1.data.groupMemberList;
-        console.log("输出群成员",data)
+        console.log("输出群成员",data);
         let loader = this.loadingCtrl.create({
           content: this.data1.message,
           duration: 1500
         });
         if (this.data1.code == "0") {
           loader.present();
-          this
         } else {
           loader.present();
         }
-        // }
-        console.log(this.memberdata)
       })
     }
 
@@ -213,12 +204,9 @@ export class GroupEditPage {
       }
   }
 
-  //添加/删除成员方法
+  //保存方法
   savegroup(){
-
-    console.log("添加获取的数据",this.groupName,this.groupMemberName,this.groupMemberContact)
-
-    if(this.groupDetail.isaddORedit==false){
+    if(this.groupDetail.isaddORedit==false&&this.groupDetail.isaddORedit){
       //新增页面，调用保存接口
       console.log("保存接口")
       // this.save();
@@ -260,15 +248,20 @@ export class GroupEditPage {
 
   //修改
   edit(){
-    this.http.post(AppConfig.GROUP_ADD_DEL_URL,{
+    if(this.testCheckboxLabel==undefined&&this.testCheckboxLabel==null){
+      this.testCheckboxLabel = [];
+      for (let item of this.groupDetail.labelList){
+        this.testCheckboxLabel.push( item.labelId);
+      }
+    }
+    this.http.post(AppConfig.GROUP_UPDATE_GROUP_URL,{
       userId:this.groupFind.userId,
       groupId:this.groupDetail.groupId,
+      labelId:this.testCheckboxLabel,
+      groupName:this.groupName,
+      groupHeadImgUrl:"233333",
       member:this.testCheckboxMember //{"userId":"1","userName":"用户名","userContact":"13006119208"}
     }).subscribe(data => {
-      // console.log(data)
-      if(this.groupFind.userId==0&&this.groupFind.userId==null){
-        console.log("登陆或网络出错   请重新登陆！")
-      }else {
         this.data1 = data;
         let loader = this.loadingCtrl.create({
           content: this.labeldata.message,
@@ -281,7 +274,6 @@ export class GroupEditPage {
         } else {
           loader.present();
         }
-      }
     })
   }
 

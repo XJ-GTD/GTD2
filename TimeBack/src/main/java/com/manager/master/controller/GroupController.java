@@ -131,7 +131,7 @@ public class GroupController {
      */
     @RequestMapping(value = "/update_group",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto updateGname(@RequestBody GroupInDto inDto){
+    public BaseOutDto updateGname(@RequestBody GroupMemberInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try{
         int code=groupService.updateGname(inDto);
