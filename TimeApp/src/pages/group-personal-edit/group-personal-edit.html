@@ -6,17 +6,20 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title style="text-align: center" *ngIf="groupDetail!=null;else elseBlock">
-      {{groupDetail.groupName}}
-      <button style="position: absolute;left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;" (click)="personaledit()">编辑</button>
-    </ion-title>
-  </ion-navbar>
-  <ng-template #elseBlock>
-    <ion-navbar>
-      <ion-title>新增联系人</ion-title>
+    <ion-navbar *ngIf="groupDetail!=null;else elseBlock">
+      <ion-title>
+        {{groupDetail.groupName}}
+        <button style="position: absolute;left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;" (click)="personaledit()">保存</button>
+      </ion-title>
     </ion-navbar>
-  </ng-template>
+    <ng-template #elseBlock>
+      <ion-navbar backButtonClick >
+        <ion-title style="text-align: center" >新增联系人
+          <button style="position: absolute;left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;">保存</button>
+        </ion-title>
+      </ion-navbar>
+    </ng-template>
+
 </ion-header>
 
 
@@ -24,15 +27,20 @@
   <div *ngIf="groupDetail!=null;else elseBlock1">
     <div *ngFor="let item of groupDetail.groupMembers">
       <div class="row qunchengyuan1" style=" border:1px solid #a1a1a1;">
-        <ion-item>联系方式</ion-item>
+        <ion-input style="margin-left: 10%" value="{{item.userName}}" [(ngModel)]="item.groupName" [(ngModel)]="groupDetail.groupName"></ion-input>
       </div>
       <div class="row qunchengyuan1" style="margin-top: 10%; text-align: center; border:1px solid #a1a1a1;">
-        <ion-input value="{{item.userContact}}"></ion-input>
+        <ion-input style="margin-left: 10%" value="{{item.userContact}}" [(ngModel)]="item.userContact"></ion-input>
       </div>
     </div>
   </div>
-  <ng-template #elseBlock>
-    <ion-input></ion-input>
+  <ng-template #elseBlock1>
+    <div style=" border:1px solid #a1a1a1;">
+      <ion-input style="margin-left: 10%" placeholder="请输入联系人名称" [(ngModel)]="groupName"></ion-input>
+    </div>
+    <div style="margin-top: 10%; border:1px solid #a1a1a1;">
+      <ion-input style="margin-left: 10%" placeholder="请输入手机号" [(ngModel)]="userContact"></ion-input>
+    </div>
   </ng-template>
 
 

@@ -65,6 +65,12 @@ public class ScheduleServiceImpl implements IScheduleService {
     @Resource
     LabelRespository labelRespository;
 
+    @Resource
+    RemindRepository remindRepository;
+
+    @Resource
+    SchedulePlayersNewRepository schedulePlayersNewRepository;
+
     /**
      * 查询自己创建的日程
      *
@@ -74,6 +80,7 @@ public class ScheduleServiceImpl implements IScheduleService {
     @Override
     public List<FindScheduleOutDto> findCreateSchedule(FindScheduleInDto inDto) {
         List<FindScheduleOutDto> resultList = new ArrayList<>();
+        List<Object[]> selectList = new ArrayList<>();
         // 接受参数
         Integer userId = inDto.getUserId();
         Integer scheduleId = inDto.getScheduleId();
@@ -89,24 +96,35 @@ public class ScheduleServiceImpl implements IScheduleService {
         // 入参必须项检查
 
         // 入参类型检查
-        if (!CommonMethods.checkIsDate(scheduleStarttime)) throw new ServiceException("开始时间不是日期类型");
-        if (!CommonMethods.checkIsDate(scheduleDeadline)) throw new ServiceException("截止时间不是日期类型");
+        if (scheduleStarttime != null && !"".equals(scheduleStarttime) && !CommonMethods.checkIsDate(scheduleStarttime)) throw new ServiceException("开始时间不是日期类型");
+        if (scheduleDeadline != null && !"".equals(scheduleDeadline) && !CommonMethods.checkIsDate(scheduleDeadline)) throw new ServiceException("截止时间不是日期类型");
         // 入参长度检查
         // 入参关联检查
-        if (!CommonMethods.compareDate(scheduleStarttime,scheduleDeadline)){
-            throw new ServiceException("开始时间必须小于截止时间");
+        if(scheduleStarttime != null && !"".equals(scheduleStarttime)
+                && scheduleDeadline != null && !"".equals(scheduleDeadline)){
+            if (!CommonMethods.compareDate(scheduleStarttime,scheduleDeadline)){
+                throw new ServiceException("开始时间必须小于截止时间");
+            }
         }
         if (CommonMethods.checkMySqlReservedWords(scheduleName)){
             throw new ServiceException("日程主题包含关键字");
         }
         // 业务处理
         try{
-            resultList = scheduleRepository.findSchedule(inDto);
+            selectList = scheduleRepository.findSchedule(inDto);
         } catch (Exception ex){
             throw new ServiceException("---- findSchedule 语法错误");
         }
-        if(resultList.size()>0){
-            for(FindScheduleOutDto outDto : resultList){
+        if(selectList.size()>0){
+            for(Object[] s : selectList){
+                FindScheduleOutDto outDto = new FindScheduleOutDto();
+                outDto.setScheduleId((Integer)s[0]);
+                outDto.setScheduleName((String)s[1]);
+                outDto.setScheduleStarttime(s[2].toString());
+                outDto.setScheduleDeadline(s[3].toString());
+                outDto.setScheduleStatus((Integer)s[4]);
+                outDto.setScheduleFinishDate((String)s[5]);
+
                 Integer scheduleIdN = outDto.getScheduleId();
                 // 获取标签名称
                 List<String> labelList = new ArrayList<>();
@@ -115,15 +133,29 @@ public class ScheduleServiceImpl implements IScheduleService {
                 } catch (Exception ex){
                     throw new ServiceException("---- findLabelNameByScheduleId 语法错误");
                 }
+                outDto.setLabelName(labelList);
+
                 // 获取参与群组信息
-                List<GroupOutDto> groupList = new ArrayList<>();
+                List<Object[]> groupList = new ArrayList<>();
+                List<GroupOutDto> gruopListO = new ArrayList<>();
                 try{
-                    groupList = groupJpaRepository.findGroupByScheduleId(scheduleIdN);
+//                    groupList = groupJpaRepository.findGroupByScheduleId(scheduleIdN);
+                    groupList = groupRepository.findGroupByScheduleId(scheduleIdN);
                 } catch (Exception ex){
                     throw new ServiceException("---- findGroupByScheduleId 语法错误");
                 }
-                outDto.setLabelName(labelList);
-                outDto.setGroup(groupList);
+                if(groupList.size()>0){
+                    for(Object[] gro : groupList){
+                        GroupOutDto groOut = new GroupOutDto();
+                        groOut.setGroupId((Integer)gro[0]);
+                        groOut.setGroupName((String)gro[1]);
+
+                        gruopListO.add(groOut);
+                    }
+                }
+                outDto.setGroup(gruopListO);
+
+                resultList.add(outDto);
             }
         }
         return resultList;
@@ -138,6 +170,7 @@ public class ScheduleServiceImpl implements IScheduleService {
     @Override
     public List<FindScheduleOutDto> findJoinSchedule(FindScheduleInDto inDto) {
         List<FindScheduleOutDto> resultList = new ArrayList<>();
+        List<Object[]> selectList = new ArrayList<>();
         // 接受参数
         Integer userId = inDto.getUserId();
         Integer scheduleId = inDto.getScheduleId();
@@ -153,24 +186,36 @@ public class ScheduleServiceImpl implements IScheduleService {
         // 入参必须项检查
 
         // 入参类型检查
-        if (!CommonMethods.checkIsDate(scheduleStarttime)) throw new ServiceException("开始时间不是日期类型");
-        if (!CommonMethods.checkIsDate(scheduleDeadline)) throw new ServiceException("截止时间不是日期类型");
+        if (scheduleStarttime != null && !"".equals(scheduleStarttime) && !CommonMethods.checkIsDate(scheduleStarttime)) throw new ServiceException("开始时间不是日期类型");
+        if (scheduleDeadline != null && !"".equals(scheduleDeadline) && !CommonMethods.checkIsDate(scheduleDeadline)) throw new ServiceException("截止时间不是日期类型");
         // 入参长度检查
         // 入参关联检查
-        if (!CommonMethods.compareDate(scheduleStarttime,scheduleDeadline)){
-            throw new ServiceException("开始时间必须小于截止时间");
+        if(scheduleStarttime != null && !"".equals(scheduleStarttime)
+                && scheduleDeadline != null && !"".equals(scheduleDeadline)){
+            if (!CommonMethods.compareDate(scheduleStarttime,scheduleDeadline)){
+                throw new ServiceException("开始时间必须小于截止时间");
+            }
         }
         if (CommonMethods.checkMySqlReservedWords(scheduleName)){
             throw new ServiceException("日程主题包含关键字");
         }
         // 业务处理
         try{
-            resultList = scheduleRepository.findJoinSchedule(inDto);
+            selectList = scheduleRepository.findJoinSchedule(inDto);
         } catch (Exception ex){
             throw new ServiceException("---- findJoinSchedule 语法错误");
         }
-        if(resultList.size()>0){
-            for(FindScheduleOutDto outDto : resultList){
+        if(selectList.size()>0){
+            for(Object[] s : selectList){
+                FindScheduleOutDto outDto = new FindScheduleOutDto();
+                outDto.setScheduleId(Integer.valueOf(s[0].toString()));
+                outDto.setScheduleId((Integer)s[0]);
+                outDto.setScheduleName((String)s[1]);
+                outDto.setScheduleStarttime(s[2].toString());
+                outDto.setScheduleDeadline(s[3].toString());
+                outDto.setScheduleStatus((Integer)s[4]);
+                outDto.setScheduleFinishDate((String)s[5]);
+
                 Integer scheduleIdN = outDto.getScheduleId();
                 // 获取标签名称
                 List<String> labelList = new ArrayList<>();
@@ -179,15 +224,29 @@ public class ScheduleServiceImpl implements IScheduleService {
                 } catch (Exception ex){
                     throw new ServiceException("---- findLabelNameByScheduleId 语法错误");
                 }
+                outDto.setLabelName(labelList);
+
                 // 获取提醒时间列表
                 List<RemindOutDto> remind = new ArrayList<>();
+                List<Object[]> remindS = new ArrayList<>();
                 try{
-                    remind = remindJpaRepository.findRemindByUserIDAndScheId(userId,scheduleIdN);
+//                    remind = remindJpaRepository.findRemindByUserIDAndScheId(userId,scheduleIdN);
+                    remindS = remindRepository.findRemindByUserIDAndScheId(userId,scheduleIdN);
                 } catch (Exception ex){
                     throw new ServiceException("---- findRemindByUserIDAndScheId 语法错误");
                 }
-                outDto.setLabelName(labelList);
+                if(remindS.size()>0){
+                    for(Object[] re : remindS){
+                        RemindOutDto out = new RemindOutDto();
+                        out.setRemindId((Integer)re[0]);
+                        out.setRemindDate(re[1].toString());
+
+                        remind.add(out);
+                    }
+                }
                 outDto.setRemind(remind);
+
+                resultList.add(outDto);
             }
         }
         return resultList;
@@ -214,7 +273,8 @@ public class ScheduleServiceImpl implements IScheduleService {
         List<Integer> groupIds = inDto.getGroupIds();                          		// 群组 List
         List<Integer> labelIds = inDto.getLabelIds();                          		// 标签 List
         String date = dateFormat();
-        // 入参检查     // 入参必须项检查
+        // 入参检查
+        // 入参必须项检查
         if (userId == 0 || "".equals(userId)) throw new ServiceException("用户名ID不能为空");
         if (scheduleId == 0 || "".equals(scheduleId)) throw new ServiceException("日程事件ID不能为空");
         if (scheduleName == null || "".equals(scheduleName)) throw new ServiceException("日程事件名称不能为空");
@@ -225,6 +285,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         if (updateDate == null || "".equals(updateDate)) updateDate =date;
         if (groupIds.size() == 0) throw new ServiceException("群组不能为空");
         if (labelIds.size() == 0) throw new ServiceException("标签名称不能为空");
+        if(scheduleStatus == null || "".equals(scheduleStatus)) scheduleStatus = 1;
         // 入参类型检查
        /* // 日程重复类型 判断
         int[] types = new int[] { 0, 1, 2, 3 };
@@ -257,7 +318,7 @@ public class ScheduleServiceImpl implements IScheduleService {
             String dbStartTime = null;
             boolean timeFlag = false;
             try{
-                dbStartTime = scheduleJpaRepository.findschedulStartT(scheduleId);
+                dbStartTime = scheduleRepository.findschedulStartT(scheduleId);
             } catch (Exception ex){
                 throw new ServiceException("---- findschedulStartT 语法错误");
             }
@@ -287,10 +348,20 @@ public class ScheduleServiceImpl implements IScheduleService {
             Integer scheduleLabel = CommonMethods.getscheduleLabel(labelIds);
             //  查询 日程标签中间表: 获取标签
             List<GtdScheduleLabelEntity> dbScheduleLabel= new ArrayList<GtdScheduleLabelEntity>();
+            List<Object[]> dbScheduleLabelO = new ArrayList<>();
             try {
-                dbScheduleLabel = centerScheduleLabelRepository.findLabelIdByScheduleId(scheduleId);
+//                dbScheduleLabel = centerScheduleLabelRepository.findLabelIdByScheduleId(scheduleId);
+                dbScheduleLabelO = labelRespository.findLabelIdByScheduleId(scheduleId);
             } catch (Exception ex){
                 throw new ServiceException("---- findLabelIdByScheduleId 语法错误");
+            }
+            if(dbScheduleLabelO.size()>0){
+                for(Object[] dbLabelO : dbScheduleLabelO){
+                    GtdScheduleLabelEntity G = new GtdScheduleLabelEntity();
+                    G.setScheduleLabelId((Integer) dbLabelO[0]);
+                    G.setLabelId((Integer) dbLabelO[1]);
+                    dbScheduleLabel.add(G);
+                }
             }
             List<Timestamp> remindList = new ArrayList<>(); // 提醒时间列表
             Integer scheduleLabelId = 0;
@@ -381,7 +452,8 @@ public class ScheduleServiceImpl implements IScheduleService {
             for(Integer user : oldUserIdList){
                 Integer playerId = 0;
                 try{
-                    playerId = schedulePlayersRepository.findPlayersIdByUserIdAndScheduleId(scheduleId,user);
+//                    playerId = schedulePlayersRepository.findPlayersIdByUserIdAndScheduleId(scheduleId,user);
+                    playerId = schedulePlayersNewRepository.findPlayersIdByUserIdAndScheduleId(scheduleId,user);
                 } catch (Exception ex){
                     throw new ServiceException("---- findPlayersIdByUserIdAndScheduleId 语法错误");
                 }
