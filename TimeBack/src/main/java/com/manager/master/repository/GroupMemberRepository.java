@@ -30,4 +30,8 @@ public interface GroupMemberRepository extends JpaRepository<GtdGroupMemberEntit
 
     @Query(value = "SELECT USER_ID FROM gtd_group_member WHERE GROUP_ID = ?1",nativeQuery = true)
     List<Integer> findAllUserIdByGroupId(Integer groupId);
+
+    @Modifying
+    @Query(value = "DELETE FROM gtd_group_member WHERE USER_ID=?1 AND GROUP_ID=?2",nativeQuery = true)
+    void deleteGroupMember(int userId,int groupId);
 }

@@ -21,7 +21,8 @@ public interface LabelJpaRespository extends JpaRepository<GtdLabelEntity,Intege
      * @param labelId
      * @return
      */
-    GtdLabelEntity findByLabelId(int labelId);
+
+    GtdLabelEntity findGtdLabelEntityByLabelId(int labelId);
 
     /**
      * 根据类型查询标签列表
