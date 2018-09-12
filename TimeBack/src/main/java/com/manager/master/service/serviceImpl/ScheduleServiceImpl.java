@@ -65,6 +65,9 @@ public class ScheduleServiceImpl implements IScheduleService {
     @Resource
     LabelRespository labelRespository;
 
+    @Resource
+    RemindRepository remindRepository;
+
     /**
      * 查询自己创建的日程
      *
@@ -74,6 +77,7 @@ public class ScheduleServiceImpl implements IScheduleService {
     @Override
     public List<FindScheduleOutDto> findCreateSchedule(FindScheduleInDto inDto) {
         List<FindScheduleOutDto> resultList = new ArrayList<>();
+        List<Object[]> selectList = new ArrayList<>();
         // 接受参数
         Integer userId = inDto.getUserId();
         Integer scheduleId = inDto.getScheduleId();
@@ -89,24 +93,35 @@ public class ScheduleServiceImpl implements IScheduleService {
         // 入参必须项检查
 
         // 入参类型检查
-        if (!CommonMethods.checkIsDate(scheduleStarttime)) throw new ServiceException("开始时间不是日期类型");
-        if (!CommonMethods.checkIsDate(scheduleDeadline)) throw new ServiceException("截止时间不是日期类型");
+        if (scheduleStarttime != null && !"".equals(scheduleStarttime) && !CommonMethods.checkIsDate(scheduleStarttime)) throw new ServiceException("开始时间不是日期类型");
+        if (scheduleDeadline != null && !"".equals(scheduleDeadline) && !CommonMethods.checkIsDate(scheduleDeadline)) throw new ServiceException("截止时间不是日期类型");
         // 入参长度检查
         // 入参关联检查
-        if (!CommonMethods.compareDate(scheduleStarttime,scheduleDeadline)){
-            throw new ServiceException("开始时间必须小于截止时间");
+        if(scheduleStarttime != null && !"".equals(scheduleStarttime)
+                && scheduleDeadline != null && !"".equals(scheduleDeadline)){
+            if (!CommonMethods.compareDate(scheduleStarttime,scheduleDeadline)){
+                throw new ServiceException("开始时间必须小于截止时间");
+            }
         }
         if (CommonMethods.checkMySqlReservedWords(scheduleName)){
             throw new ServiceException("日程主题包含关键字");
         }
         // 业务处理
         try{
-            resultList = scheduleRepository.findSchedule(inDto);
+            selectList = scheduleRepository.findSchedule(inDto);
         } catch (Exception ex){
             throw new ServiceException("---- findSchedule 语法错误");
         }
-        if(resultList.size()>0){
-            for(FindScheduleOutDto outDto : resultList){
+        if(selectList.size()>0){
+            for(Object[] s : selectList){
+                FindScheduleOutDto outDto = new FindScheduleOutDto();
+                outDto.setScheduleId((Integer)s[0]);
+                outDto.setScheduleName((String)s[1]);
+                outDto.setScheduleStarttime(s[2].toString());
+                outDto.setScheduleDeadline(s[3].toString());
+                outDto.setScheduleStatus((Integer)s[4]);
+                outDto.setScheduleFinishDate((String)s[5]);
+
                 Integer scheduleIdN = outDto.getScheduleId();
                 // 获取标签名称
                 List<String> labelList = new ArrayList<>();
@@ -115,15 +130,29 @@ public class ScheduleServiceImpl implements IScheduleService {
                 } catch (Exception ex){
                     throw new ServiceException("---- findLabelNameByScheduleId 语法错误");
                 }
+                outDto.setLabelName(labelList);
+
                 // 获取参与群组信息
-                List<GroupOutDto> groupList = new ArrayList<>();
+                List<Object[]> groupList = new ArrayList<>();
+                List<GroupOutDto> gruopListO = new ArrayList<>();
                 try{
-                    groupList = groupJpaRepository.findGroupByScheduleId(scheduleIdN);
+//                    groupList = groupJpaRepository.findGroupByScheduleId(scheduleIdN);
+                    groupList = groupRepository.findGroupByScheduleId(scheduleIdN);
                 } catch (Exception ex){
                     throw new ServiceException("---- findGroupByScheduleId 语法错误");
                 }
-                outDto.setLabelName(labelList);
-                outDto.setGroup(groupList);
+                if(groupList.size()>0){
+                    for(Object[] gro : groupList){
+                        GroupOutDto groOut = new GroupOutDto();
+                        groOut.setGroupId((Integer)gro[0]);
+                        groOut.setGroupName((String)gro[1]);
+
+                        gruopListO.add(groOut);
+                    }
+                }
+                outDto.setGroup(gruopListO);
+
+                resultList.add(outDto);
             }
         }
         return resultList;
@@ -138,6 +167,7 @@ public class ScheduleServiceImpl implements IScheduleService {
     @Override
     public List<FindScheduleOutDto> findJoinSchedule(FindScheduleInDto inDto) {
         List<FindScheduleOutDto> resultList = new ArrayList<>();
+        List<Object[]> selectList = new ArrayList<>();
         // 接受参数
         Integer userId = inDto.getUserId();
         Integer scheduleId = inDto.getScheduleId();
@@ -153,24 +183,36 @@ public class ScheduleServiceImpl implements IScheduleService {
         // 入参必须项检查
 
         // 入参类型检查
-        if (!CommonMethods.checkIsDate(scheduleStarttime)) throw new ServiceException("开始时间不是日期类型");
-        if (!CommonMethods.checkIsDate(scheduleDeadline)) throw new ServiceException("截止时间不是日期类型");
+        if (scheduleStarttime != null && !"".equals(scheduleStarttime) && !CommonMethods.checkIsDate(scheduleStarttime)) throw new ServiceException("开始时间不是日期类型");
+        if (scheduleDeadline != null && !"".equals(scheduleDeadline) && !CommonMethods.checkIsDate(scheduleDeadline)) throw new ServiceException("截止时间不是日期类型");
         // 入参长度检查
         // 入参关联检查
-        if (!CommonMethods.compareDate(scheduleStarttime,scheduleDeadline)){
-            throw new ServiceException("开始时间必须小于截止时间");
+        if(scheduleStarttime != null && !"".equals(scheduleStarttime)
+                && scheduleDeadline != null && !"".equals(scheduleDeadline)){
+            if (!CommonMethods.compareDate(scheduleStarttime,scheduleDeadline)){
+                throw new ServiceException("开始时间必须小于截止时间");
+            }
         }
         if (CommonMethods.checkMySqlReservedWords(scheduleName)){
             throw new ServiceException("日程主题包含关键字");
         }
         // 业务处理
         try{
-            resultList = scheduleRepository.findJoinSchedule(inDto);
+            selectList = scheduleRepository.findJoinSchedule(inDto);
         } catch (Exception ex){
             throw new ServiceException("---- findJoinSchedule 语法错误");
         }
-        if(resultList.size()>0){
-            for(FindScheduleOutDto outDto : resultList){
+        if(selectList.size()>0){
+            for(Object[] s : selectList){
+                FindScheduleOutDto outDto = new FindScheduleOutDto();
+                outDto.setScheduleId(Integer.valueOf(s[0].toString()));
+                outDto.setScheduleId((Integer)s[0]);
+                outDto.setScheduleName((String)s[1]);
+                outDto.setScheduleStarttime(s[2].toString());
+                outDto.setScheduleDeadline(s[3].toString());
+                outDto.setScheduleStatus((Integer)s[4]);
+                outDto.setScheduleFinishDate((String)s[5]);
+
                 Integer scheduleIdN = outDto.getScheduleId();
                 // 获取标签名称
                 List<String> labelList = new ArrayList<>();
@@ -179,15 +221,29 @@ public class ScheduleServiceImpl implements IScheduleService {
                 } catch (Exception ex){
                     throw new ServiceException("---- findLabelNameByScheduleId 语法错误");
                 }
+                outDto.setLabelName(labelList);
+
                 // 获取提醒时间列表
                 List<RemindOutDto> remind = new ArrayList<>();
+                List<Object[]> remindS = new ArrayList<>();
                 try{
-                    remind = remindJpaRepository.findRemindByUserIDAndScheId(userId,scheduleIdN);
+//                    remind = remindJpaRepository.findRemindByUserIDAndScheId(userId,scheduleIdN);
+                    remindS = remindRepository.findRemindByUserIDAndScheId(userId,scheduleIdN);
                 } catch (Exception ex){
                     throw new ServiceException("---- findRemindByUserIDAndScheId 语法错误");
                 }
-                outDto.setLabelName(labelList);
+                if(remindS.size()>0){
+                    for(Object[] re : remindS){
+                        RemindOutDto out = new RemindOutDto();
+                        out.setRemindId((Integer)re[0]);
+                        out.setRemindDate(re[1].toString());
+
+                        remind.add(out);
+                    }
+                }
                 outDto.setRemind(remind);
+
+                resultList.add(outDto);
             }
         }
         return resultList;

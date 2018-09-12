@@ -136,7 +136,7 @@ public class DynamicEntityUtil {
         if (uuid != null && !"".equals(uuid)) {
             persParam = "{\"auth_id\":\"" + uuid + "\"}";
         } else {
-            persParam = "{\"appid\":\"" + APPID + "\"}";
+            persParam = "{\"appid\":\"\"}";
         }
         return persParam;
     }
