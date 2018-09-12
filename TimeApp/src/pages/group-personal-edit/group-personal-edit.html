@@ -24,10 +24,10 @@
   <div *ngIf="groupDetail!=null;else elseBlock1">
     <div *ngFor="let item of groupDetail.groupMembers">
       <div class="row qunchengyuan1" style=" border:1px solid #a1a1a1;">
-        <ion-item>联系方式</ion-item>
+        <ion-label  style="margin-left: 10%">联系方式</ion-label>
       </div>
       <div class="row qunchengyuan1" style="margin-top: 10%; text-align: center; border:1px solid #a1a1a1;">
-        <ion-input value="{{item.userContact}}"></ion-input>
+        <ion-input style="margin-left: 10%" value="{{item.userContact}}"></ion-input>
       </div>
     </div>
   </div>
