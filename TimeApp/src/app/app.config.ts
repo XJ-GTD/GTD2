@@ -52,6 +52,8 @@ export class AppConfig {
 
   public static GROUP_ADD_DEL_URL: string = AppConfig.GROUP_URL + "/add_del_member";    //群组添加 POST
 
+  public static GROUP_UPDATE_GROUP_URL:string = AppConfig.GROUP_URL + "/update_group" //群组编辑
+
   public static GROUP_ALL_SHOW_URL: string = AppConfig.GROUP_URL + "/find_all_players";   //全部参与人展示
 
   //日程类
