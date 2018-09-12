@@ -44,6 +44,12 @@ export class SpeechPage {
 
   }
 
+  //启动语音助手手动输入模式
+  startXiaojiText() {
+
+  }
+
+  //群组详情
   groupListShow() {
     this.navCtrl.push('GroupListPage');
   }

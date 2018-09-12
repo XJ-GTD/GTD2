@@ -1,6 +1,7 @@
 package com.manager.master.repository;
 
 import com.manager.master.entity.GtdLabelEntity;
+import com.manager.master.entity.GtdScheduleLabelEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -51,5 +52,15 @@ public class LabelRespository {
                 "ON label_table.LABEL_ID = sche_label.LABEL_ID\n" +
                 "WHERE sche_label.SCHEDULE_ID = "+scheduleId;
         return (List<String>) em.createNativeQuery(sql).getResultList();
+    }
+
+    /**
+     * 根据 日程事件ID 查询 中间表自增ID、标签ID
+     * @param scheduleId
+     * @return
+     */
+    public List<Object[]> findLabelIdByScheduleId(Integer scheduleId){
+        String sql = "SELECT SCHEDULE_LABEL_ID,LABEL_ID FROM gtd_schedule_label WHERE SCHEDULE_ID =" + scheduleId;
+        return em.createNativeQuery(sql).getResultList();
     }
 }

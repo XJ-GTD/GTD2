@@ -72,9 +72,9 @@ public class AiUiUtil {
      */
     private static Map<String, String> buildHeader_audio() throws UnsupportedEncodingException, ParseException {
         String curTime = System.currentTimeMillis() / 1000L + "";
-//        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_AUDIO+"\",\"scene\":\""+SCENE+"\"}";
+        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_AUDIO+"\",\"scene\":\""+SCENE+"\"}";
         //使用个性化参数时参数格式如下：
-        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_AUDIO+"\",\"scene\":\""+SCENE+"\",\"pers_param\":"+PERS_PARAM+"}";
+//        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_AUDIO+"\",\"scene\":\""+SCENE+"\",\"pers_param\":"+PERS_PARAM+"}";
         String paramBase64 = new String(Base64.encodeBase64(param.getBytes("UTF-8")));
         String checkSum = DigestUtils.md5Hex(API_KEY + curTime + paramBase64);
 
@@ -94,13 +94,11 @@ public class AiUiUtil {
      */
     private static Map<String, String> buildHeader_text() throws UnsupportedEncodingException, ParseException {
         String curTime = System.currentTimeMillis() / 1000L + "";
-//        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_TEXT+"\",\"scene\":\""+SCENE+"\"}";
+        String param = "{\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_TEXT+"\",\"scene\":\""+SCENE+"\"}";
         //使用个性化参数时参数格式如下：
-        String param = "{\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_TEXT+"\",\"scene\":\""+SCENE+"\",\"pers_param\":"+PERS_PARAM+"}";
+//        String param = "{\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_TEXT+"\",\"scene\":\""+SCENE+"\",\"pers_param\":"+PERS_PARAM+"}";
         String paramBase64 = new String(Base64.encodeBase64(param.getBytes("UTF-8")));
         String checkSum = DigestUtils.md5Hex(API_KEY + curTime + paramBase64);
-        String str = "eyJhdXRoX2lkIjoiOGI5MTMzYjg1MTk4NzUxMjcwMzRkN2MzY2I3MGEzODMiLCJkYXRhX3R5cGUiOiJ0ZXh0Iiwic2NlbmUiOiJtYWluIn0=";
-        System.out.println(new String(Base64.decodeBase64(str.getBytes("UTF-8"))));
         Map<String, String> header = new HashMap<String, String>();
         header.put("X-Param", paramBase64);
         header.put("X-CurTime", curTime);

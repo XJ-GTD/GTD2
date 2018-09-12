@@ -4,7 +4,8 @@ import { HttpClient } from "@angular/common/http";
 import { ParamsService } from "./params.service";
 import { Base64 } from "@ionic-native/base64";
 import { File } from "@ionic-native/file";
-import {App, NavController} from "ionic-angular";
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+import { App, NavController } from "ionic-angular";
 
 declare var cordova: any;
 
@@ -23,10 +24,11 @@ export class XiaojiAssistantService {
   private redirect: string;
 
   constructor(public appCtrl : App,
-                private base64: Base64,
-                private http: HttpClient,
-                private file: File,
-                private paramsService: ParamsService) {
+              private base64: Base64,
+              private http: HttpClient,
+              private file: File,
+              private transfer: FileTransfer,
+              private paramsService: ParamsService) {
 
   }
 
@@ -40,16 +42,32 @@ export class XiaojiAssistantService {
       cordova.plugins.xjvoicefromXF.startListen(result=>{
         alert("成功:" + result);
         //讯飞语音录音设置默认存储路径
-        this.filePath = this.file.externalRootDirectory + "/msc/iat.wav";
+        this.filePath = this.file.externalRootDirectory + "/msc/";
+        this.file.resolveDirectoryUrl(this.file.externalRootDirectory).then(directoryUrl=>{
+          this.file.getFile(directoryUrl,"iat.wav",{}).then((file)=>{
+            // let b = new Blob(ret);
+          })
+        });
+
         alert(this.filePath);
-        this.fileContent = this.file.readAsText(this.file.externalRootDirectory, "/msc/iat.wav");
-        alert(this.fileContent);
+        this.file.readAsText(this.filePath,"iat.wav").then(fileSrc=>{
+          let b = new Blob([fileSrc]);
+          let ff = new FormData();
+          ff.append('file',b);
+          this.http.post(url,ff).subscribe(data=>{
+            alert(data);
+          })
+        })
+
+
+        alert(this.filePath);
+        let url = AppConfig.XUNFEI_URL_AUDIO;
+        this.fileUpload(this.filePath, url);
         // 读取录音进行base64转码
         // this.base64.encodeFile(this.filePath).then((base64File: string) => {
         //   this.fileContent = base64File;
         //   alert(this.fileContent);
-          let url = AppConfig.XUNFEI_URL_AUDIO;
-          this.connetXunfei(url);
+        //   this.connetXunfei(url);
         // }, (err) => {
         //   alert("异常" + err.toString());
         // });
@@ -76,6 +94,39 @@ export class XiaojiAssistantService {
     } catch (e) {
       alert("问题："+ e)
     }
+
+  }
+
+  //文件上传
+  fileUpload(filePath, url) {
+
+    const fileTransfer: FileTransferObject = this.transfer.create();
+    /*  this.file
+
+      this.http.post(url, {
+        content: this.fileContent
+      },{
+        headers: {
+          "Content-Type": "application/json"
+        },
+        responseType: 'json'
+      })*/
+
+    fileTransfer.upload(filePath, url, {
+      fileKey: 'file',
+      fileName: 'iat.wav',
+      mimeType: 'audio/wav',
+      headers:{
+        "Content-Type":"multipart/form-data;boundary=----WebKitFormBoundaryOYfIlq2tLIjhsanZ"
+      }
+
+    }).then(data => {
+      console.log(data);
+      this.data = data;
+      alert(this.data.message);
+    }, err => {
+      alert(err.toString());
+    });
 
   }
 
