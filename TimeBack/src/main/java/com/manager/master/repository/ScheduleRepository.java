@@ -92,7 +92,7 @@ public class ScheduleRepository {
             sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') >= DATE_FORMAT('"+scheduleStarttime+"','%Y-%m-%d %H:%i')";
         }
         if(scheduleDeadline != null && !"".equals(scheduleDeadline)){
-            sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_FINISH_DATE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('"+scheduleDeadline+"','%Y-%m-%d %H:%i')";
+            sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('"+scheduleDeadline+"','%Y-%m-%d %H:%i')";
         }
         return em.createNativeQuery(sql).getResultList();
     }
@@ -137,7 +137,7 @@ public class ScheduleRepository {
             sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') >= DATE_FORMAT('"+scheduleStarttime+"','%Y-%m-%d %H:%i')";
         }
         if(scheduleDeadline != null && !"".equals(scheduleDeadline)){
-            sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_FINISH_DATE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('"+scheduleDeadline+"','%Y-%m-%d %H:%i')";
+            sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('"+scheduleDeadline+"','%Y-%m-%d %H:%i')";
         }
         return  em.createNativeQuery(sql).getResultList();
     }
