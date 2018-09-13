@@ -3,13 +3,10 @@ package com.cortana.ai.controller;
 import com.cortana.ai.bean.AiUiInBean;
 import com.cortana.ai.bean.VoiceInBean;
 import com.cortana.ai.service.AiUiService;
-import com.cortana.ai.util.JsonParser;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +39,6 @@ public class CortanaController {
         String speechText = "";
         if (!voiceInBean.getContent().equals("") && voiceInBean.getContent() != null) {
 
-//            speechText = JsonParser.parse(aiUiService.answerAudio(voiceInBean.getContent()));
             JSONObject joResult = new JSONObject(aiUiService.answerAudio(voiceInBean.getContent()));;
             speechText = joResult.toString();
             data.put("speechText", speechText);
@@ -69,7 +65,6 @@ public class CortanaController {
         String speechText = "";
         if (!voiceInBean.getContent().equals("") && voiceInBean.getContent() != null) {
 
-//            speechText = JsonParser.parse(aiUiService.answerText(voiceInBean.getContent()));
             JSONObject joResult = new JSONObject(aiUiService.answerText(voiceInBean.getContent()));;
             speechText = joResult.toString();
             data.put("speechText", speechText);

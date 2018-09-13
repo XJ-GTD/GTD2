@@ -3,12 +3,15 @@ package com.cortana.ai.service;
 import com.cortana.ai.bean.AiUiInBean;
 import com.cortana.ai.util.AiUiUtil;
 import com.cortana.ai.util.DynamicEntityUtil;
+import com.cortana.ai.util.JsonParserUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 public class AiUiService {
@@ -23,6 +26,7 @@ public class AiUiService {
     public String answerText(String data) {
 
         String outData = AiUiUtil.readAudio(data, 1);
+
         return outData;
 
     }
@@ -32,12 +36,12 @@ public class AiUiService {
      * @param data
      * @return
      */
-    public String answerAudio(String data) {
-
+    public Map answerAudio(String data) {
+        Map<String, Object> aiuiData = new TreeMap<>();
         String outData = AiUiUtil.readAudio(data, 0);
+        aiuiData = JsonParserUtil.parse(outData);
 
-
-        return outData;
+        return aiuiData;
     }
 
     /**

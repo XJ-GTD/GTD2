@@ -51,7 +51,6 @@ public class AiUiUtil {
                 result = httpPost(URL, header, audio.getBytes());
             }
 
-            System.out.println(result);
             return result;
         } catch (ParseException e) {
             e.printStackTrace();

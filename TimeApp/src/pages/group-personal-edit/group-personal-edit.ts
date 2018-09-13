@@ -94,7 +94,7 @@ export class GroupPersonalEditPage {
         });
         if (this.data.code == "0") {
           loader.present();
-          console.log('保存成功')
+          console.log('保存成功');
           this.navCtrl.push('HomePage');
         } else {
           loader.present();
