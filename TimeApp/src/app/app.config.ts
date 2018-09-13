@@ -57,31 +57,18 @@ export class AppConfig {
   public static GROUP_ALL_SHOW_URL: string = AppConfig.GROUP_URL + "/find_all_players";   //全部参与人展示
 
   //日程类
-  // public static SCHEDULE_TASK_ISSUE: string = AppConfig.SCHEDULE_URL + "/task_announcement";    //发布任务 POST
+  public static SCHEDULE_ADD_URL: string = AppConfig.SCHEDULE_URL + "/create";    //添加（发布）日程 POST
 
-  public static SCHEDULE_ADD_URL: string = AppConfig.SCHEDULE_URL + "/create";    //添加（新增）日程 POST
-
-  public static SCHEDULE_GROUP_ADD_URL: string = AppConfig.SCHEDULE_URL + "/createII";    //群组内添加日程 POST
-
-  public static SCHEDULE_FIND_URL: string = AppConfig.SCHEDULE_URL + "/findAll";    //查询日程列表 POST
-
-  public static SCHEDULE_FIND_SINGLE_URL: string = AppConfig.SCHEDULE_URL + "/findScheduleByOne";    //查询单个日程 GET
-
-  public static SCHEDULE_GROUP_ALL_URL: string = AppConfig.SCHEDULE_URL + "/findSchByGroup";    //查询群组全部日程 GET
-
-  public static SCHEDULE_MINE_GROUP_URL: string = AppConfig.SCHEDULE_URL + "/findSchAndExcu";    //查询群组内日程是否自己执行 GET
-
-  public static SCHEDULE_EDIT_EXECUTOR_URL: string = AppConfig.SCHEDULE_URL + "/updateExecutorSchedule";    //编辑个人执行日程 POST
-
-  public static SCHEDULE_FIND_DATA_URL: string = AppConfig.SCHEDULE_URL + "/createschbycalendar";    //个人日历查询 GET
+  public static SCHEDULE_FIND_URL: string = AppConfig.SCHEDULE_URL + "/find";    //查询日程 POST
 
   public static SCHEDULE_UPDATE_STATE_URL: string = AppConfig.SCHEDULE_URL + "/update_state";  //更新日程状态
 
-  //webSocket推送
-  public static WEB_SOCKET_TASK_URL: string = AppConfig.WEB_SOCKET_URL + "/task";    //个人日历查询 GET
+  //webSocket
+  public static WEB_SOCKET_TASK_URL: string = AppConfig.WEB_SOCKET_URL + "/task";    //mq消息接收
 
 
   //讯飞语音
   public static XUNFEI_URL_TEXT: string = AppConfig.XUNFEI_URL + "/answer_text";    //文本回传 POST
   public static XUNFEI_URL_AUDIO: string = AppConfig.XUNFEI_URL + "/answer_audio";    //语音文件带答案回传 POST
+
 }

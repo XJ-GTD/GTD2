@@ -48,7 +48,7 @@ public class ScheduleRepository {
         Integer userId = inDto.getUserId();
         Integer scheduleId = inDto.getScheduleId();
         String scheduleName = inDto.getScheduleName();
-        String scheduleStarttime = inDto.getScheduleStarttime();
+        String scheduleStarttime = inDto.getScheduleStartTime();
         String scheduleDeadline = inDto.getScheduleDeadline();
         Integer labelId = inDto.getLabelId();
         String groupName = inDto.getGroupName();
@@ -106,7 +106,7 @@ public class ScheduleRepository {
         Integer userId = inDto.getUserId();
         Integer scheduleId = inDto.getScheduleId();
         String scheduleName = inDto.getScheduleName();
-        String scheduleStarttime = inDto.getScheduleStarttime();
+        String scheduleStarttime = inDto.getScheduleStartTime();
         String scheduleDeadline = inDto.getScheduleDeadline();
         Integer labelId = inDto.getLabelId();
         String groupName = inDto.getGroupName();

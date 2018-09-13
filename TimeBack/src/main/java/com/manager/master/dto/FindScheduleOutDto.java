@@ -10,7 +10,7 @@ import java.util.List;
 public class FindScheduleOutDto {
     private Integer scheduleId;         // 日程ID
     private String scheduleName;        // 日程主题
-    private String scheduleStarttime;   // 开始时间
+    private String scheduleStartTime;   // 开始时间
     private String scheduleDeadline;    // 截止时间
     private Integer scheduleStatus;     // 完成状态
     private String scheduleFinishDate;  // 完成时间
@@ -34,12 +34,12 @@ public class FindScheduleOutDto {
         this.scheduleName = scheduleName;
     }
 
-    public String getScheduleStarttime() {
-        return scheduleStarttime;
+    public String getScheduleStartTime() {
+        return scheduleStartTime;
     }
 
-    public void setScheduleStarttime(String scheduleStarttime) {
-        this.scheduleStarttime = scheduleStarttime;
+    public void setScheduleStartTime(String scheduleStartTime) {
+        this.scheduleStartTime = scheduleStartTime;
     }
 
     public String getScheduleDeadline() {
@@ -95,7 +95,7 @@ public class FindScheduleOutDto {
         return "FindScheduleOutDto{" +
                 "scheduleId=" + scheduleId +
                 ", scheduleName='" + scheduleName + '\'' +
-                ", scheduleStarttime='" + scheduleStarttime + '\'' +
+                ", scheduleStartTime='" + scheduleStartTime + '\'' +
                 ", scheduleDeadline='" + scheduleDeadline + '\'' +
                 ", scheduleStatus=" + scheduleStatus +
                 ", scheduleFinishDate='" + scheduleFinishDate + '\'' +
