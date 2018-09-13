@@ -22,21 +22,20 @@
 
     <ion-item-sliding *ngFor="let sd of scheduleList">
       <ion-item>
-        <ion-avatar>
-          <img>
-        </ion-avatar>
-        <h2>{{sd.scheduleName}}</h2>
-        <p *ngIf="sd.scheduleDeadline != null && sd.scheduleDeadline != '' ;else deadLine">
-          {{sd.scheduleStartTime}}开始
-        </p>
-        <ng-template #deadLine>
-          <p *ngIf="sd.scheduleStartTime != null && sd.scheduleStartTime != '' ;else allTime">
-            截止于{{sd.scheduleDeadline}}
+        <button ion-button (click)="" >
+          <h2>{{sd.scheduleName}}</h2>
+          <p *ngIf="sd.scheduleDeadline != null && sd.scheduleDeadline != '' ;else deadLine">
+            {{sd.scheduleStartTime}} - {{sd.scheduleDeadline}}
           </p>
-          <ng-template #allTime>
-            <p>{{sd.scheduleStartTime}} - {{sd.scheduleDeadline}}</p>
+          <ng-template #deadLine>
+            <p *ngIf="sd.scheduleStartTime == null || sd.scheduleStartTime == '' ;else startTime">
+              截止于{{sd.scheduleDeadline}}
+            </p>
+            <ng-template #startTime>
+              <p>{{sd.scheduleStartTime}}开始</p>
+            </ng-template>
           </ng-template>
-        </ng-template>
+        </button>
       </ion-item>
       <ion-item-options>
         <button ion-button icon-start>

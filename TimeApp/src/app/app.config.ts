@@ -12,8 +12,8 @@
 export class AppConfig {
 
   /* 环境URL 头部 */
-  private static REQUEST_URL: string = "http://192.168.176:8080/gtd";
-  // private static REQUEST_URL: string = "http://localhost:8080/gtd";//连接本地数据库
+  // private static REQUEST_URL: string = "http://192.168.176:8080/gtd";
+  private static REQUEST_URL: string = "http://localhost:8080/gtd";//连接本地数据库
 
   /* RabbitMq WebSocket */
   public static RABBITMQ_WS_URL: string = "ws://192.168.0.219:15674/ws";

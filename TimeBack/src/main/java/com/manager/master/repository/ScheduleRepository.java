@@ -19,6 +19,7 @@ import java.util.List;
 @Transactional
 @Repository
 public class ScheduleRepository {
+
     @PersistenceContext
     private EntityManager em;
 
@@ -133,11 +134,16 @@ public class ScheduleRepository {
         if(scheduleName != null && !"".equals(scheduleName)){
             sql += " AND schedule_table.SCHEDULE_NAME like concat('%','"+ scheduleName +"','%')";
         }
-        if(scheduleStarttime != null && !"".equals(scheduleStarttime)){
+        if(scheduleStarttime != null && !"".equals(scheduleStarttime) && (scheduleDeadline == null || "".equals(scheduleDeadline))){
             sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') >= DATE_FORMAT('"+scheduleStarttime+"','%Y-%m-%d %H:%i')";
         }
-        if(scheduleDeadline != null && !"".equals(scheduleDeadline)){
+        if(scheduleDeadline != null && !"".equals(scheduleDeadline) && (scheduleStarttime == null || "".equals(scheduleStarttime))){
             sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('"+scheduleDeadline+"','%Y-%m-%d %H:%i')";
+        }
+        if (scheduleStarttime != null && !"".equals(scheduleStarttime) && scheduleDeadline != null && !"".equals(scheduleDeadline)) {
+            sql += " AND ( DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') <= DATE_FORMAT('"+scheduleDeadline+"','%Y-%m-%d %H:%i') AND DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') >= DATE_FORMAT('" + scheduleStarttime + "','%Y-%m-%d %H:%i')\n " +
+                    " OR \n" +
+                    " DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('" + scheduleDeadline + "','%Y-%m-%d %H:%i') AND DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') >= DATE_FORMAT('" + scheduleStarttime + "','%Y-%m-%d %H:%i'))";
         }
         return  em.createNativeQuery(sql).getResultList();
     }

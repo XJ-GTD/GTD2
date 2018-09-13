@@ -128,10 +128,14 @@ export class ScheduleAddPage {
     this.scheduleOut = new ScheduleOutModel();
     this.schedule.userId = this.paramsService.user.userId;
     /*时间格式规整*/
-    this.schedule.scheduleStartTime = this.schedule.scheduleStartTime.replace("T", " ");
-    this.schedule.scheduleStartTime = this.schedule.scheduleStartTime.replace(":00Z", "");
-    this.schedule.scheduleDeadline = this.schedule.scheduleDeadline.replace("T", " ");
-    this.schedule.scheduleDeadline = this.schedule.scheduleDeadline.replace(":00Z", "");
+    if (this.schedule.scheduleStartTime != null && this.schedule.scheduleStartTime != "") {
+      this.schedule.scheduleStartTime = this.schedule.scheduleStartTime.replace("T", " ");
+      this.schedule.scheduleStartTime = this.schedule.scheduleStartTime.replace(":00Z", "");
+    }
+    if (this.schedule.scheduleDeadline != null && this.schedule.scheduleDeadline != "") {
+      this.schedule.scheduleDeadline = this.schedule.scheduleDeadline.replace("T", " ");
+      this.schedule.scheduleDeadline = this.schedule.scheduleDeadline.replace(":00Z", "");
+    }
     //事件默认状态：1
     this.schedule.scheduleStatus = 1;
     console.log("groupIds:" + this.schedule.groupIds + " labelIds: " + this.schedule.labelIds);

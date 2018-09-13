@@ -702,7 +702,7 @@ public class GroupServicelmpl implements IGroupService {
         if (createId == userId) {
             boolean flag = true;
             int type = 0;//本地群
-            for (GtdLabelEntity g : labels) {
+            for (GtdLabelEntity g: labels) {
                 if (g.getLabelId() == 1) { //判断群组标签中是否含有权限标签
                     flag = false;
                     type = 1;//权限群
@@ -716,6 +716,7 @@ public class GroupServicelmpl implements IGroupService {
                     }
                 }
             }
+            /*******************************          缺少入参检测，将null付给了group.groupname            ******************************************************/
             if(!group.getGroupName().equals(groupName)) {
                 group.setGroupName(groupName);
             }

@@ -155,7 +155,7 @@ public class GroupController {
     }catch (Exception e){
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("修改失败");
-            logger.info(e.getMessage());
+            logger.info("error:" + e);
             throw new ServiceException("修改失败");
     }
         return outDto;

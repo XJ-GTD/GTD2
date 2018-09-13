@@ -695,8 +695,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
         if (scheduleName == null || "".equals(scheduleName)) throw new ServiceException("日程事件名称不能为空");
         else scheduleName = CommonMethods.trimAllBlanks(scheduleName);
-        if (scheduleStartTime == null || "".equals(scheduleStartTime)) scheduleStartTime = date;
-        if (scheduleDeadline == null || "".equals(scheduleDeadline)) throw new ServiceException("截止时间不能为空");
+        if ((scheduleStartTime == null || "".equals(scheduleStartTime)) && (scheduleDeadline == null || "".equals(scheduleDeadline)))throw new ServiceException("开始和截止时间不能都为空");
         if (createId == 0 || "".equals(createId)) createId = userId;
         if (createDate == null || "".equals(createDate)) createDate = date;
         if (groupIds == null || "".equals(groupIds)) throw new ServiceException("群组不能为空");
@@ -718,9 +717,12 @@ public class ScheduleServiceImpl implements IScheduleService {
 //        if (!CommonMethods.checkIsDate(createDate)) throw new ServiceException("更新时间不是日期类型");
         // 入参长度检查
         // 入参关联检查
-        if (!CommonMethods.compareDate(scheduleStartTime,scheduleDeadline)){
-            throw new ServiceException("开始时间必须小于截止时间");
+        if ((!"".equals(scheduleStartTime) && scheduleStartTime != null) && (!"".equals(scheduleDeadline) && scheduleDeadline != null)) {
+            if (!CommonMethods.compareDate(scheduleStartTime,scheduleDeadline)){
+                throw new ServiceException("开始时间必须小于截止时间");
+            }
         }
+
         if (CommonMethods.checkMySqlReservedWords(scheduleName)){
             throw new ServiceException("用户名包含关键字");
         }
@@ -731,8 +733,12 @@ public class ScheduleServiceImpl implements IScheduleService {
 
         // 日程信息 绑定
         scheduleEntity.setScheduleName(scheduleName);
-        scheduleEntity.setScheduleStarttime(CommonMethods.dateToStamp(scheduleStartTime));
-        scheduleEntity.setScheduleDeadline(CommonMethods.dateToStamp(scheduleDeadline));
+        if (!"".equals(scheduleStartTime) && scheduleStartTime != null) {
+            scheduleEntity.setScheduleStarttime(CommonMethods.dateToStamp(scheduleStartTime));
+        }
+        if (!"".equals(scheduleDeadline) && scheduleDeadline != null) {
+            scheduleEntity.setScheduleDeadline(CommonMethods.dateToStamp(scheduleDeadline));
+        }
         //scheduleEntity.setScheduleRepeatType(scheduleRepeatType);
         scheduleEntity.setScheduleStatus(scheduleStatus);
         scheduleEntity.setCreateId(createId);
