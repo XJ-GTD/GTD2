@@ -4,7 +4,7 @@ import  Stomp from "@stomp/stompjs";
 import { AppConfig } from "../app/app.config";
 import { ParamsService } from "./params.service";
 import { Subject } from "rxjs/Subject";
-import {NavController, App,AlertController} from "ionic-angular";
+import {NavController, App, AlertController, LoadingController} from "ionic-angular";
 import { XiaojiAssistantService } from "./xiaoji-assistant.service";
 import {HttpClient} from "@angular/common/http";
 import {FindOutModel} from "../model/out/find.out.model";
@@ -21,6 +21,7 @@ export class WebsocketService {
   constructor(public appCtrl : App,
               public alertCtrl: AlertController,
               private http: HttpClient,
+              public loadingCtrl: LoadingController,
               private xiaojiSpeech: XiaojiAssistantService,
               private paramsService?: ParamsService){
     this.init();
@@ -111,8 +112,8 @@ export class WebsocketService {
   //弹出消息框
   showConfirm(successData) {
     const confirm = this.alertCtrl.create({
-      title: successData.messageName,
-      message: successData.messageMaster+''+successData.messageContent,
+      title: successData.messageName,   //推送群组名称
+      message: successData.messageMaster+''+successData.messageContent,   //群主名称+推送内容
       buttons: [
         {
           text: '接受',
@@ -123,7 +124,7 @@ export class WebsocketService {
               //调用日程方法
             }else {
               //调用群组方法
-              // this.invite(successData.messageId);
+              this.invite(successData.messageId);
             }
           }
         },
@@ -139,25 +140,24 @@ export class WebsocketService {
   }
 
   //调用修改群成员状态接口
-  // invite(messageId){
-  //   this.http.post(AppConfig.GROUP_UPD_MEMBER_STATUS_URL,{
-  //     userId:this.groupFind.userId,
-  //     groupId:messageId,
-  //   }).subscribe(data => {
-  //
-  //         let subdata = data;
-  //         let loader = this.loadingCtrl.create({
-  //           content: subdata.message,
-  //           duration: 1500
-  //         });
-  //         if (subdata.code == "0") {
-  //           loader.present();
-  //           // this.navCtrl.push('HomePage');
-  //         } else {
-  //           loader.present();
-  //         }
-  //
-  //     })
-  // }
+  invite(messageId){
+    this.http.post(AppConfig.GROUP_UPD_MEMBER_STATUS_URL,{
+      userId:this.groupFind.userId,
+      groupId:messageId,
+    }).subscribe(data => {
+      let subData:any;
+      subData = data;
+      let loader = this.loadingCtrl.create({
+        content: subData.message,
+        duration: 1500
+      });
+      if (subData.code == "0") {
+        loader.present();
+        // this.navCtrl.push('HomePage');
+      } else {
+        loader.present();
+      }
+    })
+  }
 
 }
