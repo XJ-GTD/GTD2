@@ -433,6 +433,7 @@ public class GroupServicelmpl implements IGroupService {
                 groupLabelJpa.save(groupLabel);
             }
 
+            List<Integer> memberUserId=new ArrayList<>();
             for (GroupMemberDto g : member) {
                 GtdGroupMemberEntity groupMember = new GtdGroupMemberEntity();
                 Integer id=groupRepository.findUserId(g.getUserContact());
@@ -449,20 +450,23 @@ public class GroupServicelmpl implements IGroupService {
                 } else {//本地群组
                     groupMember.setGroupMemberStatus(0);
                 }
+                memberUserId.add(id);
                 groupMemberRepository.save(groupMember);
-                if(!flag&&id!=null) {
-                    //TODO 发送通知
-                    PushInDto pushInDto = new PushInDto();
-                    pushInDto.setUserId(id);
-                    pushInDto.setAccountQueue(groupJpaRepository.findAccountQueue(id));
-                    PushOutDto pushOutDto=new PushOutDto();
-                    pushOutDto.setMessageId(groupId);
-                    pushOutDto.setMessageName(groupName);
-                    pushOutDto.setMessageContent("请注意加入该群后将会自动同意群主的日程邀请");
-                    pushOutDto.setType(2);
-                    pushInDto.setData(JSONObject.toJSONString(pushOutDto));
-                    //iWebSocketService.pushToUser(pushInDto);
-                }
+
+            }
+
+            if(!flag) {//为权限群组
+                //TODO 发送通知
+                PushInDto pushInDto = new PushInDto();
+                pushInDto.setUserId(userId);
+                pushInDto.setMemberUserId(memberUserId);
+                PushOutDto pushOutDto=new PushOutDto();
+                pushOutDto.setMessageId(groupId);
+                pushOutDto.setMessageName(groupName);
+                //pushOutDto.setUserName();
+                pushOutDto.setMessageContent(PUSH_MESSAGE_GROUP_CREATE);
+                pushOutDto.setType(2);
+                //iWebSocketService.pushToUser(pushInDto);
             }
 
         }
@@ -539,21 +543,18 @@ public class GroupServicelmpl implements IGroupService {
                 }
                groupRepository.deleteByGroupId(groupId);//删除群组、群组标签、群成员、群组日程
                 // TODO 权限群组给群成员发送通知 删除群组
-                for(Integer id:userIds){
-                    if(id!=null) {
-                        PushInDto pushInDto = new PushInDto();
-                        pushInDto.setUserId(id);
-                        pushInDto.setAccountQueue(groupJpaRepository.findAccountQueue(id));
-                        PushOutDto pushOutDto=new PushOutDto();
-                        pushOutDto.setMessageId(group.getGroupId());
-                        pushOutDto.setMessageName(group.getGroupName());
-                        pushOutDto.setMessageContent("该群组已解散");
-                        pushOutDto.setType(2);
-                        pushInDto.setData(JSONObject.toJSONString(pushOutDto));
-                        System.out.println("该群组已解散");
-                       // iWebSocketService.pushToUser(pushInDto);
-                    }
-                }
+
+                    PushInDto pushInDto = new PushInDto();
+                    pushInDto.setUserId(userId);
+                    pushInDto.setMemberUserId(userIds);
+                    PushOutDto pushOutDto=new PushOutDto();
+                    pushOutDto.setMessageId(groupId);
+                    //pushOutDto.setMessageName(groupName);
+                    //pushOutDto.setUserName();
+                    pushOutDto.setMessageContent(PUSH_MESSAGE_GROUP_CREATE);
+                    pushOutDto.setType(2);
+                    //iWebSocketService.pushToUser(pushInDto);
+
             } else {
                 //本地群组直接删除
                 groupRepository.deleteByGroupId(groupId);//删除群组、群组标签、群成员、群组日程
@@ -648,21 +649,16 @@ public class GroupServicelmpl implements IGroupService {
                 }
                 groupRepository.deleteByGroupId(groupId);//删除群组、群组标签、群成员、群组日程
                 //TODO 权限群组发送通知 删除群组
-                for(Integer id:userIds){
-                    if(id!=null) {
-                        PushInDto pushInDto = new PushInDto();
-                        pushInDto.setUserId(id);
-                        pushInDto.setAccountQueue(groupJpaRepository.findAccountQueue(id));
-                        PushOutDto pushOutDto=new PushOutDto();
-                        pushOutDto.setMessageId(group.getGroupId());
-                        pushOutDto.setMessageName(group.getGroupName());
-                        pushOutDto.setMessageContent("该群组已解散");
-                        pushOutDto.setType(2);
-                        pushInDto.setData(JSONObject.toJSONString(pushOutDto));
-                        System.out.println("该群组已解散");
-                       // iWebSocketService.pushToUser(pushInDto);
-                    }
-                }
+                PushInDto pushInDto = new PushInDto();
+                pushInDto.setUserId(userId);
+                pushInDto.setMemberUserId(userIds);
+                PushOutDto pushOutDto=new PushOutDto();
+                pushOutDto.setMessageId(groupId);
+                //pushOutDto.setMessageName(groupName);
+                //pushOutDto.setUserName();
+                pushOutDto.setMessageContent(PUSH_MESSAGE_GROUP_DELETE);
+                pushOutDto.setType(2);
+                //iWebSocketService.pushToUser(pushInDto);
             } else {
                 //本地群组直接删除
                 groupRepository.deleteByGroupId(groupId);//删除群组、群组标签、群成员、群组日程
@@ -728,7 +724,7 @@ public class GroupServicelmpl implements IGroupService {
             Set<GtdLabelEntity> set = new HashSet<>();
             boolean status = false;
             for (Integer i : labelId) {
-                GtdLabelEntity labelEntity = labelJpaRespository.findGtdLabelEntityByLabelId(i);
+                GtdLabelEntity labelEntity = labelJpaRespository.findlabelByLabelId(i);
                 labelEntity.setUpdateId(userId);
                 labelEntity.setUpdateDate(new Timestamp(new Date().getTime()));
                 set.add(labelEntity);
@@ -788,18 +784,16 @@ public class GroupServicelmpl implements IGroupService {
                             ggm.setGroupMemberStatus(2);
                             //TODO 给新成员发送通知
                             System.out.println("通知通知");
-                            if(id!=null) {
-                                PushInDto pushInDto = new PushInDto();
-                                pushInDto.setUserId(id);
-                                pushInDto.setAccountQueue(groupJpaRepository.findAccountQueue(id));
-                                PushOutDto pushOutDto=new PushOutDto();
-                                pushOutDto.setMessageId(group.getGroupId());
-                                pushOutDto.setMessageName(group.getGroupName());
-                                pushOutDto.setMessageContent("请注意加入该群后将会自动同意群主的日程邀请");
-                                pushOutDto.setType(2);
-                                pushInDto.setData(JSONObject.toJSONString(pushOutDto));
-                              //  iWebSocketService.pushToUser(pushInDto);
-                            }
+                            PushInDto pushInDto = new PushInDto();
+                            pushInDto.setUserId(userId);
+                            //pushInDto.setMemberUserId(memberUserId);
+                            PushOutDto pushOutDto=new PushOutDto();
+                            pushOutDto.setMessageId(groupId);
+                            pushOutDto.setMessageName(groupName);
+                            //pushOutDto.setUserName();
+                            pushOutDto.setMessageContent(PUSH_MESSAGE_GROUP_CREATE);
+                            pushOutDto.setType(2);
+                            //iWebSocketService.pushToUser(pushInDto);
                         }
                         groupMemberRepository.save(ggm);
                     }
@@ -811,35 +805,35 @@ public class GroupServicelmpl implements IGroupService {
                         if(type==1) {//删除权限群组的成员
                             //TODO 发送通知给删除的群员
                             System.out.println("通知通知");
-                            if(i!=null) {
-                                PushInDto pushInDto = new PushInDto();
-                                pushInDto.setUserId(i);
-                                pushInDto.setAccountQueue(groupJpaRepository.findAccountQueue(i));
-                                PushOutDto pushOutDto=new PushOutDto();
-                                pushOutDto.setMessageId(group.getGroupId());
-                                pushOutDto.setMessageName(group.getGroupName());
-                                pushOutDto.setMessageContent("你已经被踢出该群");
-                                pushOutDto.setType(2);
-                                pushInDto.setData(JSONObject.toJSONString(pushOutDto));
-                                //iWebSocketService.pushToUser(pushInDto);
-                            }
+
                         }
                     }
                 }
+                PushInDto pushInDto = new PushInDto();
+                pushInDto.setUserId(userId);
+                //pushInDto.setMemberUserId(memberUserId);
+                PushOutDto pushOutDto=new PushOutDto();
+                pushOutDto.setMessageId(groupId);
+                pushOutDto.setMessageName(groupName);
+                //pushOutDto.setUserName();
+                pushOutDto.setMessageContent(PUSH_MESSAGE_GROUP_CREATE);
+                pushOutDto.setType(2);
+                //iWebSocketService.pushToUser(pushInDto);
+
                 if(status) {//群组新添了权限标签
                     for (Integer i : userIns) {
                         //TODO 给所有群成员发送通知
                         System.out.println("通知通知");
                         if(i!=null) {
-                            PushInDto pushInDto = new PushInDto();
-                            pushInDto.setUserId(i);
-                            pushInDto.setAccountQueue(groupJpaRepository.findAccountQueue(i));
-                            PushOutDto pushOutDto=new PushOutDto();
-                            pushOutDto.setMessageId(group.getGroupId());
-                            pushOutDto.setMessageName(group.getGroupName());
-                            pushOutDto.setMessageContent("请注意加入该群后将会自动同意群主的日程邀请");
+                          //  PushInDto pushInDto = new PushInDto();
+                            pushInDto.setUserId(userId);
+                            pushInDto.setMemberUserId(userIns);
+                         //   PushOutDto pushOutDto=new PushOutDto();
+                            pushOutDto.setMessageId(groupId);
+                            pushOutDto.setMessageName(groupName);
+                            //pushOutDto.setUserName();
+                            pushOutDto.setMessageContent(PUSH_MESSAGE_GROUP_CREATE);
                             pushOutDto.setType(2);
-                            pushInDto.setData(JSONObject.toJSONString(pushOutDto));
                             //iWebSocketService.pushToUser(pushInDto);
                         }
                         if(type==0){ //本地群转权限群 将群成员状态设置为2
