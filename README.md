@@ -17,6 +17,10 @@
 ##### ionic cordova build android --release 【发布版，需要签名（要使用jarsigner签名必须用release版本）】
 ##### ionic cordova build android --release --prod => 优化启动速度，解决启动白屏
 
+
+###### 安装 phonegap 插件
+##### npm install -- global phonegap
+
 ###### 安装 plugman 插件
 ##### npm --registry https://registry.npm.taobao.org install -g plugman
 
