@@ -48,7 +48,7 @@ public class ScheduleRepository {
         Integer userId = inDto.getUserId();
         Integer scheduleId = inDto.getScheduleId();
         String scheduleName = inDto.getScheduleName();
-        String scheduleStarttime = inDto.getScheduleStarttime();
+        String scheduleStarttime = inDto.getScheduleStartTime();
         String scheduleDeadline = inDto.getScheduleDeadline();
         Integer labelId = inDto.getLabelId();
         String groupName = inDto.getGroupName();
@@ -76,7 +76,7 @@ public class ScheduleRepository {
             if(groupName != null && !"".equals(groupName)){
                 sql += " INNER JOIN gtd_group group_t\n" +
                         " ON group_t.USER_ID = schedule_table.CREATE_ID\n"+
-                        " AND group_t.GROUP_NAME like ('%',"+ groupName +",'%')\n " +
+                        " AND group_t.GROUP_NAME like ('%','"+ groupName +"','%')\n " +
                         " AND group_t.GROUP_ID = group_table.GROUP_ID\n";
             }
         }
@@ -89,10 +89,10 @@ public class ScheduleRepository {
             sql += " AND schedule_table.SCHEDULE_NAME like concat('%','"+ scheduleName +"','%')";
         }
         if(scheduleStarttime != null && !"".equals(scheduleStarttime)){
-            sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') <= DATE_FORMAT("+scheduleStarttime+",'%Y-%m-%d %H:%i')";
+            sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') >= DATE_FORMAT('"+scheduleStarttime+"','%Y-%m-%d %H:%i')";
         }
         if(scheduleDeadline != null && !"".equals(scheduleDeadline)){
-            sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_FINISH_DATE,'%Y-%m-%d %H:%i') >= DATE_FORMAT("+scheduleDeadline+",'%Y-%m-%d %H:%i')";
+            sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('"+scheduleDeadline+"','%Y-%m-%d %H:%i')";
         }
         return em.createNativeQuery(sql).getResultList();
     }
@@ -106,7 +106,7 @@ public class ScheduleRepository {
         Integer userId = inDto.getUserId();
         Integer scheduleId = inDto.getScheduleId();
         String scheduleName = inDto.getScheduleName();
-        String scheduleStarttime = inDto.getScheduleStarttime();
+        String scheduleStarttime = inDto.getScheduleStartTime();
         String scheduleDeadline = inDto.getScheduleDeadline();
         Integer labelId = inDto.getLabelId();
         String groupName = inDto.getGroupName();
@@ -134,10 +134,10 @@ public class ScheduleRepository {
             sql += " AND schedule_table.SCHEDULE_NAME like concat('%','"+ scheduleName +"','%')";
         }
         if(scheduleStarttime != null && !"".equals(scheduleStarttime)){
-            sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') <= DATE_FORMAT("+scheduleStarttime+",'%Y-%m-%d %H:%i')";
+            sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') >= DATE_FORMAT('"+scheduleStarttime+"','%Y-%m-%d %H:%i')";
         }
         if(scheduleDeadline != null && !"".equals(scheduleDeadline)){
-            sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_FINISH_DATE,'%Y-%m-%d %H:%i') >= DATE_FORMAT("+scheduleDeadline+",'%Y-%m-%d %H:%i')";
+            sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('"+scheduleDeadline+"','%Y-%m-%d %H:%i')";
         }
         return  em.createNativeQuery(sql).getResultList();
     }

@@ -158,6 +158,11 @@ export class ScheduleAddPage {
       });
   }
 
+  //编辑完成提交
+  editFinish() {
+
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad ScheduleAddPage');
   }
