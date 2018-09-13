@@ -119,5 +119,20 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     List<GroupOutDto> findGroupByScheduleId(Integer scheduleId);
 
 
+    /**
+     * 根据用户ID查询用户用户名
+     * @param userId
+     * @return
+     */
+    @Query(value = "SELECT USER_NAME FROM gtd_user WHERE USER_ID=?1",nativeQuery = true)
+    String findUNameByUserId(int userId);
+
+    /**
+     * 根据用户ID查询用户用户名
+     * @param groupId
+     * @return
+     */
+    @Query(value = "SELECT GROUP_NAME FROM gtd_group WHERE GROUP_ID=?1",nativeQuery = true)
+    String findGNameByUserId(int groupId);
 }
 
