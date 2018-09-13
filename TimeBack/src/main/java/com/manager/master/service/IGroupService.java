@@ -39,10 +39,10 @@ public interface IGroupService {
     int updateGname(GroupMemberInDto inDto);
 
     //删除/添加群成员
-    int addOrDelMember(GroupMemberInDto inDto);
+    //int addOrDelMember(GroupMemberInDto inDto);
 
     //编辑群成员
-    int member(GroupInDto inDto);
+    //int member(GroupInDto inDto);
 
     //群成员状态改变
     int updateStatus(InformInDto inDto);

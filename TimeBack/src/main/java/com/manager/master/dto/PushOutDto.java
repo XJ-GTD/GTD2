@@ -10,6 +10,7 @@ public class PushOutDto {
     private String messageName;     //新消息主题： schedule Name日程主题 / groupName  群族名
     private Integer messageId;      //新消息ID： scheduleId / groupId
     private String messageContent;      //新消息内容： 告知用户邀请详详情
+    private String userName;        //发布人名称
     private Integer type;       //新消息类型： 1 日程  /  2 群组
 
     public String getMessageName() {
@@ -42,5 +43,13 @@ public class PushOutDto {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

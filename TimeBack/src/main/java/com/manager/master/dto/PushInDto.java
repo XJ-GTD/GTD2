@@ -1,5 +1,7 @@
 package com.manager.master.dto;
 
+import java.util.List;
+
 /**
  * 推送给目标用户类
  *
@@ -8,8 +10,8 @@ package com.manager.master.dto;
 public class PushInDto {
 
     private Integer userId;         //用户ID
-    private String data;            //推送数据 要求JSON格式字符串
-    private String accountQueue;    //目标用户消息队列
+    private List<Integer> memberUserId; //参与人ID List
+    private PushOutDto data;            //推送数据
 
     public Integer getUserId() {
         return userId;
@@ -19,20 +21,20 @@ public class PushInDto {
         this.userId = userId;
     }
 
-    public String getData() {
+    public List<Integer> getMemberUserId() {
+        return memberUserId;
+    }
+
+    public void setMemberUserId(List<Integer> memberUserId) {
+        this.memberUserId = memberUserId;
+    }
+
+    public PushOutDto getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(PushOutDto data) {
         this.data = data;
-    }
-
-    public String getAccountQueue() {
-        return accountQueue;
-    }
-
-    public void setAccountQueue(String accountQueue) {
-        this.accountQueue = accountQueue;
     }
 
 }
