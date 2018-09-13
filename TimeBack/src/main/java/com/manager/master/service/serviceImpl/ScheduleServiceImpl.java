@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 public class ScheduleServiceImpl implements IScheduleService {
 
     private static final String PUSH_MESSAGE_SCHEDULE_CREATE = "接受要注意守约哦";       //创建日程/添加参与人 推送
+    private static final String PUSH_MESSAGE_SCHEDULE_UPDATE = "日程内容已经改变，请注意查看";       //创建日程/添加参与人 推送
     private static final String PUSH_MESSAGE_SCHEDULE_DELETE = "参与人已删除日程";       //删除日常推送
     private Logger logger = LogManager.getLogger(this.getClass());
 
