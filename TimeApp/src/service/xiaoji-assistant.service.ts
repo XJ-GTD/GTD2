@@ -43,6 +43,7 @@ export class XiaojiAssistantService {
         // alert("成功:" + result);
         //讯飞语音录音设置默认存储路径
         this.filePath = this.file.externalRootDirectory + "/msc/iat.wav";
+        console.log("文件路径：" + this.filePath);
         // this.file.resolveDirectoryUrl(this.file.externalRootDirectory).then(directoryUrl=>{
         //   this.file.getFile(directoryUrl,"iat.wav",{}).then((file)=>{
         //     // let b = new Blob(ret);
@@ -66,17 +67,17 @@ export class XiaojiAssistantService {
         // 读取录音进行base64转码
         this.base64.encodeFile(this.filePath).then((base64File: string) => {
           this.fileContent = base64File;
-          alert(this.fileContent);
+          console.log("base64:" + this.fileContent);
           this.connetXunfei(url);
         }, (err) => {
-          alert("异常" + err.toString());
+          console.log("异常" + err.toString());
         });
 
       },error=>{
-        alert("报错:" + error);
+        console.log("报错:" + error);
       },true,true);
     } catch (e) {
-      alert("问题："+ e)
+      console.log("问题："+ e)
     }
 
   }
@@ -92,7 +93,7 @@ export class XiaojiAssistantService {
       this.connetXunfei(url);
 
     } catch (e) {
-      alert("问题："+ e)
+      console.log("问题："+ e)
     }
 
   }
@@ -123,9 +124,9 @@ export class XiaojiAssistantService {
     }).then(data => {
       console.log(data);
       this.data = data;
-      alert(this.data.message);
+      console.log("响应消息:" + this.data.message);
     }, err => {
-      alert(err.toString());
+      console.log(err.toString());
     });
 
   }
@@ -135,7 +136,7 @@ export class XiaojiAssistantService {
    * @param {string} url 后台服务路径
    */
   private connetXunfei(url: string) {
-    alert("调用成功:" + this.fileContent);
+    console.log("调用成功:" + this.fileContent);
     //调用讯飞语音服务
     this.http.post(url, {
       content: this.fileContent
@@ -155,7 +156,7 @@ export class XiaojiAssistantService {
         //分离出需要语音播报的内容
         this.speechText = "收到消息:" + this.paramsService.schedule.scheduleName;
 
-        alert("成功:" + this.speechText);
+        console.log("成功:" + this.speechText);
         this.speakText(this.speechText);
         let activeNav: NavController = this.appCtrl.getActiveNav();
         activeNav.push(this.redirect);
@@ -168,12 +169,12 @@ export class XiaojiAssistantService {
   public speakText(speechText: string) {
     try {
       cordova.plugins.xjvoicefromXF.startSpeak(result=>{
-        alert("成功:" + result);
+        console.log("成功:" + result);
       },error=>{
-        alert("报错:" + error);
+        console.log("报错:" + error);
       }, speechText);
     } catch (e) {
-      alert("问题："+ e)
+      console.log("问题："+ e)
     }
   }
 

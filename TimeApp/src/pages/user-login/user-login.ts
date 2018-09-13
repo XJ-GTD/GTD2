@@ -27,7 +27,7 @@ export class UserLoginPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public loadingCtrl: LoadingController,
+    private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private http: HttpClient,
     private paramsService: ParamsService) {
