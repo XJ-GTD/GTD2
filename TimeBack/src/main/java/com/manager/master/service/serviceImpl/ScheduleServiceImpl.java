@@ -109,6 +109,9 @@ public class ScheduleServiceImpl implements IScheduleService {
         if (CommonMethods.checkMySqlReservedWords(scheduleName)){
             throw new ServiceException("日程主题包含关键字");
         }
+        if (CommonMethods.checkMySqlReservedWords(groupName)){
+            throw new ServiceException("参与人名称包含关键字");
+        }
         // 业务处理
         try{
             selectList = scheduleRepository.findSchedule(inDto);
