@@ -306,7 +306,7 @@ public class ScheduleServiceImpl implements IScheduleService {
             throw new ServiceException("日程重复类型不在‘0-3’范围内");
         }*/
         // 完成状态 判断
-        int[] status = new int[] { 0,1, 2 };
+        int[] status = new int[] { 0,1,2 };
         if (!CommonMethods.isInArray(status,scheduleStatus)){
             throw new ServiceException("完成状态不在‘0-2’范围内");
         }
