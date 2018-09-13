@@ -22,8 +22,8 @@ public interface LabelJpaRespository extends JpaRepository<GtdLabelEntity,Intege
      * @return
      */
 
-    @Query(value = "SELECT gtd_label.LABEL_ID,gtd_label.LABEL_NAME,gtd_label.LABEL_TYPE,gtd_label.CREATE_ID,gtd_label.CREATE_DATE,gtd_label.UPDATE_ID,gtd_label.UPDATE_DATE FROM gtd_label WHERE gtd_label.LABEL_ID =?1",nativeQuery = true)
-    GtdLabelEntity findlabelByLabelId(int labelId);
+    //@Query(value = "SELECT gtd_label.LABEL_ID,gtd_label.LABEL_NAME,gtd_label.LABEL_TYPE,gtd_label.CREATE_ID,gtd_label.CREATE_DATE,gtd_label.UPDATE_ID,gtd_label.UPDATE_DATE FROM gtd_label WHERE gtd_label.LABEL_ID =?1",nativeQuery = true)
+    GtdLabelEntity findGtdLabelEntityByLabelId(int labelId);
 
     /**
      * 根据类型查询标签列表

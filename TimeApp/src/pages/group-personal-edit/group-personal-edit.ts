@@ -21,12 +21,12 @@ import {ParamsService} from "../../service/params.service";
 })
 export class GroupPersonalEditPage {
   data:any;//接口返回数据
-  member:any;
+  member:any;//接收群成员
 
-  groupFind:FindOutModel;
-  groupDetail: GroupModel;
-  groupName:string;
-  userContact:string;
+  groupFind:FindOutModel;//用户信息传入
+  groupDetail: GroupModel;//群组信息传入
+  groupName:string;//用户输入的联系人名称
+  userContact:string;//用户输入的联系人电话
 
   @ViewChild(Navbar) navBar: Navbar;
   constructor(public navCtrl: NavController,
@@ -82,7 +82,7 @@ export class GroupPersonalEditPage {
     this.http.post(AppConfig.GROUP_ADD_GROUP_URL,{
       "userId":this.groupFind.userId,
       "labelId":8,
-      "groupName":this.groupDetail.groupName,
+      "groupName":this.groupName,
       "groupHeadImgUrl":"123",
       "member":[{"userName":this.groupName,"userContact":this.userContact}]
     }).subscribe(data => {
@@ -104,13 +104,14 @@ export class GroupPersonalEditPage {
 
   // 修改接口
   updatePersonal(){
+    console.log(this.member)
     this.http.post(AppConfig.GROUP_UPDATE_GROUP_URL,{
       userId:this.groupFind.userId,
       groupId:this.groupDetail.groupId,
       labelId:8,
       groupName:this.groupName,
       groupHeadImgUrl:"233333",
-      member:this.groupDetail.groupMembers
+      member:this.member
     }).subscribe(data => {
       this.data = data;
       let loader = this.loadingCtrl.create({
@@ -129,23 +130,26 @@ export class GroupPersonalEditPage {
 
   //获取成员
   getPersonal(){
-    this.http.post(AppConfig.GROUP_FIND_GROUPMEMBER_URL,{
-      userId:this.groupFind.userId,
-      groupId:this.groupDetail.groupId,
-      findType:2
-    }).subscribe(data => {
-      this.data = data;
-      console.log("输出群成员",data)
-      let loader = this.loadingCtrl.create({
-        content: this.data.message,
-        duration: 1500
-      });
-      if (this.data.code == "0") {
-        loader.present();
-        this.member= this.data.data.groupMemberList;
-      } else {
-        loader.present();
-      }
-    })
+
+    if(this.groupDetail!=null&&this.groupDetail!=undefined){
+      this.http.post(AppConfig.GROUP_FIND_GROUPMEMBER_URL,{
+        userId:this.groupFind.userId,
+        groupId:this.groupDetail.groupId,
+        findType:2
+      }).subscribe(data => {
+        this.data = data;
+        console.log("输出群成员",data)
+        let loader = this.loadingCtrl.create({
+          content: this.data.message,
+          duration: 1500
+        });
+        if (this.data.code == "0") {
+          loader.present();
+          this.member= this.data.data.groupMemberList;
+        } else {
+          loader.present();
+        }
+      })
+    }
   }
 }

@@ -4,8 +4,10 @@ import  Stomp from "@stomp/stompjs";
 import { AppConfig } from "../app/app.config";
 import { ParamsService } from "./params.service";
 import { Subject } from "rxjs/Subject";
-import { NavController, App } from "ionic-angular";
+import {NavController, App, AlertController, LoadingController} from "ionic-angular";
 import { XiaojiAssistantService } from "./xiaoji-assistant.service";
+import {HttpClient} from "@angular/common/http";
+import {FindOutModel} from "../model/out/find.out.model";
 
 /**
  * WebSocket连接Rabbitmq服务器
@@ -15,10 +17,19 @@ import { XiaojiAssistantService } from "./xiaoji-assistant.service";
 @Injectable()
 export class WebsocketService {
 
+  groupFind:FindOutModel;
   constructor(public appCtrl : App,
+              public alertCtrl: AlertController,
+              private http: HttpClient,
+              public loadingCtrl: LoadingController,
               private xiaojiSpeech: XiaojiAssistantService,
               private paramsService?: ParamsService){
+    this.init();
+  }
 
+  init(){
+    this.groupFind = new FindOutModel();
+    this.groupFind.userId = this.paramsService.user.userId;
   }
 
   /**
@@ -55,20 +66,29 @@ export class WebsocketService {
 
     //对成功回调数据进行操作,放入全局变量中
     subject.asObservable().subscribe( data=> {
-      console.log(data.body);
-      this.paramsService.schedule = JSON.parse(data.body);
-      console.log( this.paramsService.schedule);
-      if (this.paramsService.schedule.code == 0) {
-        alert("收到消息" + this.paramsService.schedule.scheduleName);
-        this.xiaojiSpeech.speakText(this.paramsService.schedule.scheduleName);
-        let activeNav: NavController = this.appCtrl.getActiveNav();
-        activeNav.push('UserMessagePage');
-      } else if (this.paramsService.schedule.code == 1) {
-        alert("收到消息" + this.paramsService.schedule.scheduleName);
-        this.xiaojiSpeech.speakText(this.paramsService.schedule.scheduleName);
-      } else if (this.paramsService.schedule.code == -1) {
+      let returningData = JSON.parse(data.body)
+      // console.log(data.body);
+      // this.paramsService.schedule = JSON.parse(data.body);
+      // console.log( this.paramsService.schedule);
+      // if (this.paramsService.schedule.code == 0) {
+      //   alert("收到消息" + this.paramsService.schedule.scheduleName);
+      //   this.xiaojiSpeech.speakText(this.paramsService.schedule.scheduleName);
+      //   let activeNav: NavController = this.appCtrl.getActiveNav();
+      //   activeNav.push('UserMessagePage');
+      // } else if (this.paramsService.schedule.code == 1) {
+      //   alert("收到消息" + this.paramsService.schedule.scheduleName);
+      //   this.xiaojiSpeech.speakText(this.paramsService.schedule.scheduleName);
+      // } else if (this.paramsService.schedule.code == -1) {
+      //
+      // }
 
+
+      if(returningData.code == 0){
+        //接收成功
+        let successData = returningData.data
+        this.showConfirm(successData);
       }
+
 
     });
 
@@ -89,6 +109,55 @@ export class WebsocketService {
 
   }
 
+  //弹出消息框
+  showConfirm(successData) {
+    const confirm = this.alertCtrl.create({
+      title: successData.messageName,   //推送群组名称
+      message: successData.messageMaster+''+successData.messageContent,   //群主名称+推送内容
+      buttons: [
+        {
+          text: '接受',
+          handler: () => {
+            console.log('接受了');
+            //此处填写调用方法
+            if (successData.type == 1) {
+              //调用日程方法
+            }else {
+              //调用群组方法
+              this.invite(successData.messageId);
+            }
+          }
+        },
+        {
+          text: '取消',
+          handler: () => {
+            console.log('没接受');
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
 
+  //调用修改群成员状态接口
+  invite(messageId){
+    this.http.post(AppConfig.GROUP_UPD_MEMBER_STATUS_URL,{
+      userId:this.groupFind.userId,
+      groupId:messageId,
+    }).subscribe(data => {
+      let subData:any;
+      subData = data;
+      let loader = this.loadingCtrl.create({
+        content: subData.message,
+        duration: 1500
+      });
+      if (subData.code == "0") {
+        loader.present();
+        // this.navCtrl.push('HomePage');
+      } else {
+        loader.present();
+      }
+    })
+  }
 
 }
