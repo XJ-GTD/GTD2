@@ -16,33 +16,44 @@
 <ion-content padding>
 
   <ion-list>
+
     <ion-item>
       <ion-label floating>日程标题</ion-label>
-      <ion-input type="text" [(ngModel)]="schedule.scheduleName"></ion-input>
+      <ion-input type="text" disabled [(ngModel)]="schedule.scheduleName"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label floating>参与人</ion-label>
-      <ion-input type="text" [(ngModel)]="schedule.scheduleExecutor"></ion-input>
+      <ion-select disabled [(ngModel)]="schedule.groupIds" multiple="true">
+        <div *ngFor="let gp of group">
+          <ion-option value="{{gp.groupId}}">{{gp.groupName}}</ion-option>
+        </div>
+      </ion-select>
     </ion-item>
 
     <ion-item>
       <ion-label floating>开始时间</ion-label>
-      <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleStartDate"></ion-datetime>
+      <ion-datetime disabled displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleStartTime"></ion-datetime>
     </ion-item>
 
     <ion-item>
       <ion-label floating>结束时间</ion-label>
-      <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleEndDate"></ion-datetime>
+      <ion-datetime disabled displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleDeadline"></ion-datetime>
     </ion-item>
 
     <ion-item>
       <ion-label floating>标签</ion-label>
-
+      <ion-select disabled (focus)="findLabel()" [(ngModel)]="schedule.labelIds" multiple="true">
+        <div *ngFor="let lb of label">
+          <ion-option value="{{lb.labelId}}">{{lb.labelName}}</ion-option>
+        </div>
+      </ion-select>
     </ion-item>
 
     <div>
       <button ion-button outline (click)="newProject()">确认</button><button ion-button outline (click)="onBack()">取消</button>
     </div>
+
   </ion-list>
+
 </ion-content>

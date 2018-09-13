@@ -12,6 +12,11 @@ export class ScheduleOutModel {
   private _labelIds: Array<number>;   //标签ID List
   private _groupIds: Array<number>;   //参与人ID List
   private _scheduleStatus: number;   //日程状态 0是完成，1是未完成，2是过期
+  private _groupId: number;            //查询群相关事件
+  private _scheduleId: number;         //查询单个事件详情
+  private _labelId: number;            //查询单个标签相关事件
+  private _groupName: string;          //查询参与人相关事件
+  private _groupMemberName: string;    //查询参与群组成员相关日程
 
   get groupIds(): Array<number> {
     return this._groupIds;
@@ -62,5 +67,41 @@ export class ScheduleOutModel {
 
   set scheduleStatus(value: number) {
     this._scheduleStatus = value;
+  }
+
+  get groupMemberName(): string {
+    return this._groupMemberName;
+  }
+
+  set groupMemberName(value: string) {
+    this._groupMemberName = value;
+  }
+  get groupName(): string {
+    return this._groupName;
+  }
+
+  set groupName(value: string) {
+    this._groupName = value;
+  }
+  get labelId(): number {
+    return this._labelId;
+  }
+
+  set labelId(value: number) {
+    this._labelId = value;
+  }
+  get scheduleId(): number {
+    return this._scheduleId;
+  }
+
+  set scheduleId(value: number) {
+    this._scheduleId = value;
+  }
+  get groupId(): number {
+    return this._groupId;
+  }
+
+  set groupId(value: number) {
+    this._groupId = value;
   }
 }
