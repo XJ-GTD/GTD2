@@ -27,10 +27,10 @@
   <div *ngIf="groupDetail!=null;else elseBlock1">
     <div *ngFor="let item of groupDetail.groupMembers">
       <div class="row qunchengyuan1" style=" border:1px solid #a1a1a1;">
-        <ion-input style="margin-left: 10%" value="{{item.userName}}" [(ngModel)]="item.groupName" [(ngModel)]="groupDetail.groupName"></ion-input>
+        <ion-input style="margin-left: 10%" value="{{item.userName}}" [(ngModel)]="groupName" [(ngModel)]="groupDetail.groupName"></ion-input>
       </div>
       <div class="row qunchengyuan1" style="margin-top: 10%; text-align: center; border:1px solid #a1a1a1;">
-        <ion-input style="margin-left: 10%" value="{{item.userContact}}" [(ngModel)]="item.userContact"></ion-input>
+        <ion-input style="margin-left: 10%" value="{{item.userContact}}" [(ngModel)]="userContact" [(ngModel)]="item.userContact"></ion-input>
       </div>
     </div>
   </div>

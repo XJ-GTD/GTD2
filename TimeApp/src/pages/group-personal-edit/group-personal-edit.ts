@@ -53,7 +53,7 @@ export class GroupPersonalEditPage {
     this.groupFind.userId = this.paramsService.user.userId;   //获取当前用户Id
     this.groupDetail = new GroupModel();
     this.groupDetail = this.paramsService.group;            //获取上个页面点击的群组Id
-    // this.getPersonal();
+    this.getPersonal();
   }
 
   //点击事件方法
@@ -104,13 +104,14 @@ export class GroupPersonalEditPage {
 
   // 修改接口
   updatePersonal(){
+    console.log(this.member)
     this.http.post(AppConfig.GROUP_UPDATE_GROUP_URL,{
       userId:this.groupFind.userId,
       groupId:this.groupDetail.groupId,
       labelId:8,
       groupName:this.groupName,
       groupHeadImgUrl:"233333",
-      member:this.groupDetail.groupMembers
+      member:this.member
     }).subscribe(data => {
       this.data = data;
       let loader = this.loadingCtrl.create({

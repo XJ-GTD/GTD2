@@ -49,22 +49,26 @@ export class GroupListPage {
   //调用查询群组/个人接口
   findGroupList(){
     this.edit();
-    this.http.post(AppConfig.GROUP_FIND_URL, this.groupFind)
+    this.http.post(AppConfig.GROUP_FIND_URL, {
+      userId:this.groupFind.userId,
+      findType:this.groupFind.findType
+    })
       .subscribe(data => {
         this.data = data;
         let loader = this.loadingCtrl.create({
-          content: this.data.message,
+          content: "服务器繁忙,请稍后再试",
           duration: 1500
         });
         if (this.data.code == 0) {
           this.groupList = [];
           this.groupList = this.data.data.groupList;
-          console.log("groupList:" + this.groupList);
+          console.log("groupList:" + this.data.data.groupList);
         } else if (this.data.code == -1) {
-          loader.present();
+
+          // loader.present();
           console.log(this.data.message);
-        } else {
-          loader.present();
+        } else if(this.data.code == 1) {
+          loader.present();  //空白页展示
           console.log(this.data.message);
         }
         /*if(this.groupFind.userId == 0 && this.groupFind.userId == null){
