@@ -40,37 +40,37 @@ export class XiaojiAssistantService {
     this.redirect = redirect;
     try {
       cordova.plugins.xjvoicefromXF.startListen(result=>{
-        alert("成功:" + result);
+        // alert("成功:" + result);
         //讯飞语音录音设置默认存储路径
-        this.filePath = this.file.externalRootDirectory + "/msc/";
-        this.file.resolveDirectoryUrl(this.file.externalRootDirectory).then(directoryUrl=>{
-          this.file.getFile(directoryUrl,"iat.wav",{}).then((file)=>{
-            // let b = new Blob(ret);
-          })
-        });
-
-        alert(this.filePath);
-        this.file.readAsText(this.filePath,"iat.wav").then(fileSrc=>{
-          let b = new Blob([fileSrc]);
-          let ff = new FormData();
-          ff.append('file',b);
-          this.http.post(url,ff).subscribe(data=>{
-            alert(data);
-          })
-        })
-
-
-        alert(this.filePath);
-        let url = AppConfig.XUNFEI_URL_AUDIO;
-        this.fileUpload(this.filePath, url);
-        // 读取录音进行base64转码
-        // this.base64.encodeFile(this.filePath).then((base64File: string) => {
-        //   this.fileContent = base64File;
-        //   alert(this.fileContent);
-        //   this.connetXunfei(url);
-        // }, (err) => {
-        //   alert("异常" + err.toString());
+        this.filePath = this.file.externalRootDirectory + "/msc/iat.wav";
+        // this.file.resolveDirectoryUrl(this.file.externalRootDirectory).then(directoryUrl=>{
+        //   this.file.getFile(directoryUrl,"iat.wav",{}).then((file)=>{
+        //     // let b = new Blob(ret);
+        //   })
         // });
+
+        // alert(this.filePath);
+        // this.file.readAsText(this.filePath,"iat.wav").then(fileSrc=>{
+        //   let b = new Blob([fileSrc]);
+        //   let ff = new FormData();
+        //   ff.append('file',b);
+        //   this.http.post(url,ff).subscribe(data=>{
+        //     alert(data);
+        //   })
+        // });
+
+
+        // alert(this.filePath);
+        let url = AppConfig.XUNFEI_URL_AUDIO;
+        // this.fileUpload(this.filePath, url);
+        // 读取录音进行base64转码
+        this.base64.encodeFile(this.filePath).then((base64File: string) => {
+          this.fileContent = base64File;
+          alert(this.fileContent);
+          this.connetXunfei(url);
+        }, (err) => {
+          alert("异常" + err.toString());
+        });
 
       },error=>{
         alert("报错:" + error);

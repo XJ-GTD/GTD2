@@ -3,6 +3,9 @@
  *
  * create by wzy on 2018/05/28
  */
+import {GroupModel} from "./group.model";
+import {RemindModel} from "./remind.model";
+
 export class ScheduleModel {
 
   private _code: number;                              //消息状态值
@@ -11,6 +14,10 @@ export class ScheduleModel {
   private _scheduleStartTime: string;              // 开始时间
   private _scheduleDeadline: string;               // 截止时间
   private _scheduleStatus: string;                 // 完成状态
+  private _scheduleFinishDate: string;              // 完成时间
+  private _labelName: Array<string>;               //标签名称
+  private _group: Array<GroupModel>;                 //参与人
+  private _remind: Array<RemindModel>;              //提醒时间
 
   get scheduleStatus(): string {
     return this._scheduleStatus;
@@ -53,5 +60,34 @@ export class ScheduleModel {
 
   set code(value: number) {
     this._code = value;
+  }
+
+  get remind(): Array<RemindModel> {
+    return this._remind;
+  }
+
+  set remind(value: Array<RemindModel>) {
+    this._remind = value;
+  }
+  get group(): Array<GroupModel> {
+    return this._group;
+  }
+
+  set group(value: Array<GroupModel>) {
+    this._group = value;
+  }
+  get labelName(): Array<string> {
+    return this._labelName;
+  }
+
+  set labelName(value: Array<string>) {
+    this._labelName = value;
+  }
+  get scheduleFinishDate(): string {
+    return this._scheduleFinishDate;
+  }
+
+  set scheduleFinishDate(value: string) {
+    this._scheduleFinishDate = value;
   }
 }

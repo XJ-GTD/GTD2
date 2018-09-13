@@ -85,7 +85,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         Integer userId = inDto.getUserId();
         Integer scheduleId = inDto.getScheduleId();
         String scheduleName = inDto.getScheduleName();
-        String scheduleStarttime = inDto.getScheduleStarttime();
+        String scheduleStarttime = inDto.getScheduleStartTime();
         String scheduleDeadline = inDto.getScheduleDeadline();
         Integer labelId = inDto.getLabelId();
         String groupName = inDto.getGroupName();
@@ -128,7 +128,7 @@ public class ScheduleServiceImpl implements IScheduleService {
                 FindScheduleOutDto outDto = new FindScheduleOutDto();
                 outDto.setScheduleId((Integer)s[0]);
                 outDto.setScheduleName((String)s[1]);
-                outDto.setScheduleStarttime(s[2].toString());
+                outDto.setScheduleStartTime(s[2].toString());
                 outDto.setScheduleDeadline(s[3].toString());
                 outDto.setScheduleStatus((Integer)s[4]);
                 outDto.setScheduleFinishDate((String)s[5]);
@@ -183,7 +183,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         Integer userId = inDto.getUserId();
         Integer scheduleId = inDto.getScheduleId();
         String scheduleName = inDto.getScheduleName();
-        String scheduleStarttime = inDto.getScheduleStarttime();
+        String scheduleStarttime = inDto.getScheduleStartTime();
         String scheduleDeadline = inDto.getScheduleDeadline();
         Integer labelId = inDto.getLabelId();
         String groupName = inDto.getGroupName();
@@ -221,7 +221,7 @@ public class ScheduleServiceImpl implements IScheduleService {
                 outDto.setScheduleId(Integer.valueOf(s[0].toString()));
                 outDto.setScheduleId((Integer)s[0]);
                 outDto.setScheduleName((String)s[1]);
-                outDto.setScheduleStarttime(s[2].toString());
+                outDto.setScheduleStartTime(s[2].toString());
                 outDto.setScheduleDeadline(s[3].toString());
                 outDto.setScheduleStatus((Integer)s[4]);
                 outDto.setScheduleFinishDate((String)s[5]);

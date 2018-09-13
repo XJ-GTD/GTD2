@@ -9,7 +9,7 @@ public class FindScheduleInDto {
     private Integer userId;             // 用户ID
     private Integer scheduleId;         // 日程ID
     private String scheduleName;        // 日程主题
-    private String scheduleStarttime;   // 开始时间
+    private String scheduleStartTime;   // 开始时间
     private String scheduleDeadline;    // 截止时间
     private Integer labelId;             // 标签ID
     private String groupName;           // 参与人名称
@@ -40,12 +40,12 @@ public class FindScheduleInDto {
         this.scheduleName = scheduleName;
     }
 
-    public String getScheduleStarttime() {
-        return scheduleStarttime;
+    public String getScheduleStartTime() {
+        return scheduleStartTime;
     }
 
-    public void setScheduleStarttime(String scheduleStarttime) {
-        this.scheduleStarttime = scheduleStarttime;
+    public void setScheduleStartTime(String scheduleStartTime) {
+        this.scheduleStartTime = scheduleStartTime;
     }
 
     public String getScheduleDeadline() {
@@ -94,7 +94,7 @@ public class FindScheduleInDto {
                 "userId=" + userId +
                 ", scheduleId=" + scheduleId +
                 ", scheduleName='" + scheduleName + '\'' +
-                ", scheduleStarttime='" + scheduleStarttime + '\'' +
+                ", scheduleStartTime='" + scheduleStartTime + '\'' +
                 ", scheduleDeadline='" + scheduleDeadline + '\'' +
                 ", labelId=" + labelId +
                 ", groupName='" + groupName + '\'' +
