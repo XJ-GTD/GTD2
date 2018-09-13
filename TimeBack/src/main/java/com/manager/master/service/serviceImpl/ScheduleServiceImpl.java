@@ -85,7 +85,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         Integer userId = inDto.getUserId();
         Integer scheduleId = inDto.getScheduleId();
         String scheduleName = inDto.getScheduleName();
-        String scheduleStarttime = inDto.getScheduleStarttime();
+        String scheduleStarttime = inDto.getScheduleStartTime();
         String scheduleDeadline = inDto.getScheduleDeadline();
         Integer labelId = inDto.getLabelId();
         String groupName = inDto.getGroupName();
@@ -106,9 +106,17 @@ public class ScheduleServiceImpl implements IScheduleService {
                 throw new ServiceException("开始时间必须小于截止时间");
             }
         }
-        if (CommonMethods.checkMySqlReservedWords(scheduleName)){
-            throw new ServiceException("日程主题包含关键字");
+        if(scheduleName != null && !"".equals(scheduleName)){
+            if (CommonMethods.checkMySqlReservedWords(scheduleName)){
+                throw new ServiceException("日程主题包含关键字");
+            }
         }
+       if(groupName != null && !"".equals(groupName)){
+           if (CommonMethods.checkMySqlReservedWords(groupName)){
+               throw new ServiceException("参与人名称包含关键字");
+           }
+       }
+
         // 业务处理
         try{
             selectList = scheduleRepository.findSchedule(inDto);
@@ -120,7 +128,7 @@ public class ScheduleServiceImpl implements IScheduleService {
                 FindScheduleOutDto outDto = new FindScheduleOutDto();
                 outDto.setScheduleId((Integer)s[0]);
                 outDto.setScheduleName((String)s[1]);
-                outDto.setScheduleStarttime(s[2].toString());
+                outDto.setScheduleStartTime(s[2].toString());
                 outDto.setScheduleDeadline(s[3].toString());
                 outDto.setScheduleStatus((Integer)s[4]);
                 outDto.setScheduleFinishDate((String)s[5]);
@@ -175,7 +183,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         Integer userId = inDto.getUserId();
         Integer scheduleId = inDto.getScheduleId();
         String scheduleName = inDto.getScheduleName();
-        String scheduleStarttime = inDto.getScheduleStarttime();
+        String scheduleStarttime = inDto.getScheduleStartTime();
         String scheduleDeadline = inDto.getScheduleDeadline();
         Integer labelId = inDto.getLabelId();
         String groupName = inDto.getGroupName();
@@ -196,8 +204,10 @@ public class ScheduleServiceImpl implements IScheduleService {
                 throw new ServiceException("开始时间必须小于截止时间");
             }
         }
-        if (CommonMethods.checkMySqlReservedWords(scheduleName)){
-            throw new ServiceException("日程主题包含关键字");
+        if(scheduleName != null && !"".equals(scheduleName)){
+            if (CommonMethods.checkMySqlReservedWords(scheduleName)){
+                throw new ServiceException("日程主题包含关键字");
+            }
         }
         // 业务处理
         try{
@@ -211,7 +221,7 @@ public class ScheduleServiceImpl implements IScheduleService {
                 outDto.setScheduleId(Integer.valueOf(s[0].toString()));
                 outDto.setScheduleId((Integer)s[0]);
                 outDto.setScheduleName((String)s[1]);
-                outDto.setScheduleStarttime(s[2].toString());
+                outDto.setScheduleStartTime(s[2].toString());
                 outDto.setScheduleDeadline(s[3].toString());
                 outDto.setScheduleStatus((Integer)s[4]);
                 outDto.setScheduleFinishDate((String)s[5]);
@@ -298,16 +308,22 @@ public class ScheduleServiceImpl implements IScheduleService {
             throw new ServiceException("完成状态不在‘0-2’范围内");
         }
         // 判断是否为日期类型
-        if (!CommonMethods.checkIsDate(scheduleStartTime)) throw new ServiceException("开始时间不是日期类型");
-        if (!CommonMethods.checkIsDate(scheduleDeadline)) throw new ServiceException("截止时间不是日期类型");
-        if (!CommonMethods.checkIsDate(updateDate)) throw new ServiceException("更新时间不是日期类型");
+        if (scheduleStartTime != null && !"".equals(scheduleStartTime) && !CommonMethods.checkIsDate(scheduleStartTime)) throw new ServiceException("开始时间不是日期类型");
+        if (scheduleDeadline != null && !"".equals(scheduleDeadline) && !CommonMethods.checkIsDate(scheduleDeadline)) throw new ServiceException("截止时间不是日期类型");
+        if (updateDate != null && !"".equals(updateDate) && !CommonMethods.checkIsDate(updateDate)) throw new ServiceException("更新时间不是日期类型");
         // 入参长度检查
         // 入参关联检查
-        if (!CommonMethods.compareDate(scheduleStartTime,scheduleDeadline)){
-            throw new ServiceException("开始时间必须小于截止时间");
+        if(scheduleStartTime != null && !"".equals(scheduleStartTime)
+                && scheduleDeadline != null && !"".equals(scheduleDeadline)){
+            if (!CommonMethods.compareDate(scheduleStartTime,scheduleDeadline)){
+                throw new ServiceException("开始时间必须小于截止时间");
+            }
         }
-        if (CommonMethods.checkMySqlReservedWords(scheduleName)){
-            throw new ServiceException("用户名包含关键字");
+
+        if(scheduleName != null && !"".equals(scheduleName)){
+            if (CommonMethods.checkMySqlReservedWords(scheduleName)){
+                throw new ServiceException("日程事件名称包含关键字");
+            }
         }
 
         // 业务处理
