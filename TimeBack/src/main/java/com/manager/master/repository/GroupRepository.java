@@ -79,12 +79,12 @@ public class GroupRepository {
 
     /**
      * 查询群成员状态
-     * @param userId
+     * @param userContact
      * @param groupId
      * @return
      */
-    public int findMemberStatus(int userId,int groupId){
-        String sql="SELECT GROUP_MEMBER_STATUS FROM GTD_GROUP_MEMBER WHERE USER_ID="+userId+" AND GROUP_ID="+groupId;
+    public int findMemberStatus(String userContact,int groupId){
+        String sql="SELECT GROUP_MEMBER_STATUS FROM GTD_GROUP_MEMBER WHERE USER_CONTACT="+userContact+" AND GROUP_ID="+groupId;
         return (int)em.createNativeQuery(sql).getSingleResult();
     }
 

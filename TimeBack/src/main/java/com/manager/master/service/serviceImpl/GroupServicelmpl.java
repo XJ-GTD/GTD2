@@ -131,10 +131,10 @@ public class GroupServicelmpl implements IGroupService {
                 }
                 memberDto.setUserName(user.getUserName());
                 memberDto.setUserContact(user.getUserContact());
-                int status=5;
+                int status=0;
                 try {
                     if(user.getUserId()!=null)
-                    status = groupRepository.findMemberStatus(user.getUserId(), g.getGroupId());
+                    status = groupRepository.findMemberStatus(user.getUserContact(), g.getGroupId());
                 } catch (Exception e) {
                     throw new ServiceException("查询群成员状态出错");
                 }
@@ -539,9 +539,10 @@ public class GroupServicelmpl implements IGroupService {
                         PushOutDto pushOutDto=new PushOutDto();
                         pushOutDto.setMessageId(group.getGroupId());
                         pushOutDto.setMessageName(group.getGroupName());
-                        pushOutDto.setMessageContent("请注意加入该群后将会自动同意群主的日程邀请");
+                        pushOutDto.setMessageContent("该群组已解散");
                         pushOutDto.setType(2);
                         pushInDto.setData(JSONObject.toJSONString(pushOutDto));
+                        System.out.println("该群组已解散");
                        // iWebSocketService.pushToUser(pushInDto);
                     }
                 }
@@ -646,9 +647,10 @@ public class GroupServicelmpl implements IGroupService {
                         PushOutDto pushOutDto=new PushOutDto();
                         pushOutDto.setMessageId(group.getGroupId());
                         pushOutDto.setMessageName(group.getGroupName());
-                        pushOutDto.setMessageContent("请注意加入该群后将会自动同意群主的日程邀请");
+                        pushOutDto.setMessageContent("该群组已解散");
                         pushOutDto.setType(2);
                         pushInDto.setData(JSONObject.toJSONString(pushOutDto));
+                        System.out.println("该群组已解散");
                        // iWebSocketService.pushToUser(pushInDto);
                     }
                 }
