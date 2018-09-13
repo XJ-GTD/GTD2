@@ -213,52 +213,6 @@ public class GroupController {
     }
 
     /**
-     * 添加/删除群成员
-     * @param inDto
-     * @return
-     */
-    @RequestMapping(value = "/add_del_member",method = RequestMethod.POST)
-    @ResponseBody
-    public BaseOutDto addMember(@RequestBody GroupMemberInDto inDto){
-        BaseOutDto outDto = new BaseOutDto();
-        try{
-            int code=groupService.addOrDelMember(inDto);
-            if (code == 0) {
-                outDto.setCode(ResultCode.SUCCESS).setMessage("操作成功");
-            } else {
-                outDto.setCode(ResultCode.REPEAT).setMessage("操作失败");
-            }
-        }catch (Exception e){
-            throw new ServiceException(e.getMessage());
-        }
-        return outDto;
-    }
-
-
-
-    /**
-     * 群成员编辑
-     * @param inDto
-     * @return
-     */
-    @RequestMapping(value = "/update_groupmember",method = RequestMethod.POST)
-    @ResponseBody
-    public BaseOutDto updateMember(@RequestBody GroupInDto inDto){
-        BaseOutDto outDto = new BaseOutDto();
-        try{
-            int code=groupService.member(inDto);
-            if (code == 0) {
-                outDto.setCode(ResultCode.SUCCESS).setMessage("修改成功");
-            } else {
-                outDto.setCode(ResultCode.REPEAT).setMessage("修改失败");
-            }
-        }catch (Exception e){
-            throw new ServiceException(e.getMessage());
-        }
-        return outDto;
-    }
-
-    /**
      * 临时： 创建/编辑日程时添加参与人用
      * @param inDto
      * @return
