@@ -104,4 +104,5 @@ export class ScheduleOutModel {
   set groupId(value: number) {
     this._groupId = value;
   }
+
 }
