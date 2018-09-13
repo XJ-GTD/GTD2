@@ -36,4 +36,5 @@ public class PushInDto {
     public void setData(PushOutDto data) {
         this.data = data;
     }
+
 }

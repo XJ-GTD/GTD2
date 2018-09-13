@@ -30,6 +30,8 @@ import java.util.*;
 @Transactional
 public class GroupServicelmpl implements IGroupService {
 
+    private static final String PUSH_MESSAGE_GROUP_CREATE = "请注意加入该群后将会自动同意群主的日程邀请";       //权限群 添加群成员 推送
+    private static final String PUSH_MESSAGE_GROUP_DELETE = "当前用户群已被群主删除";       //删除权限群 推送
     private Logger logger = LogManager.getLogger(this.getClass());
 
     private static int FIND_GROUP_LABELTYPE = 8;    //查询参与人类型：个人
