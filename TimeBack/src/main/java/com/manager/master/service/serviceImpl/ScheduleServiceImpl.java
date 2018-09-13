@@ -106,9 +106,17 @@ public class ScheduleServiceImpl implements IScheduleService {
                 throw new ServiceException("开始时间必须小于截止时间");
             }
         }
-        if (CommonMethods.checkMySqlReservedWords(scheduleName)){
-            throw new ServiceException("日程主题包含关键字");
+        if(scheduleName != null && !"".equals(scheduleName)){
+            if (CommonMethods.checkMySqlReservedWords(scheduleName)){
+                throw new ServiceException("日程主题包含关键字");
+            }
         }
+       if(groupName != null && !"".equals(groupName)){
+           if (CommonMethods.checkMySqlReservedWords(groupName)){
+               throw new ServiceException("参与人名称包含关键字");
+           }
+       }
+
         // 业务处理
         try{
             selectList = scheduleRepository.findSchedule(inDto);
@@ -196,8 +204,10 @@ public class ScheduleServiceImpl implements IScheduleService {
                 throw new ServiceException("开始时间必须小于截止时间");
             }
         }
-        if (CommonMethods.checkMySqlReservedWords(scheduleName)){
-            throw new ServiceException("日程主题包含关键字");
+        if(scheduleName != null && !"".equals(scheduleName)){
+            if (CommonMethods.checkMySqlReservedWords(scheduleName)){
+                throw new ServiceException("日程主题包含关键字");
+            }
         }
         // 业务处理
         try{
