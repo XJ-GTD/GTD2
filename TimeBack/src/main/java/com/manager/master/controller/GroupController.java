@@ -76,7 +76,7 @@ public class GroupController {
             if(list!=null) {
                 map.put("group", list);
                 outDto.setData(map);
-            }else outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
+            }else outDto.setCode(ResultCode.REPEAT).setMessage("数据为空");
         }catch (Exception e){
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("信息查询失败");
@@ -123,15 +123,15 @@ public class GroupController {
         try {
             int code = groupService.addGroup(inDto);
             if (code == 0) {
-                outDto.setCode(ResultCode.SUCCESS).setMessage("群组创建成功");
+                outDto.setCode(ResultCode.SUCCESS).setMessage("创建成功");
             } else {
-                outDto.setCode(ResultCode.REPEAT).setMessage("群组创建失败");
+                outDto.setCode(ResultCode.REPEAT).setMessage("创建失败");
             }
         }catch (Exception e){
             outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("群组创建失败");
+            outDto.setMessage("创建失败");
             logger.info(e.getMessage());
-            throw new ServiceException("群组创建失败");
+            throw new ServiceException("创建失败");
         }
         return outDto;
     }

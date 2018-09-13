@@ -131,10 +131,10 @@ public class ScheduleServiceImpl implements IScheduleService {
                 FindScheduleOutDto outDto = new FindScheduleOutDto();
                 outDto.setScheduleId((Integer)s[0]);
                 outDto.setScheduleName((String)s[1]);
-                outDto.setScheduleStartTime(s[2].toString());
-                outDto.setScheduleDeadline(s[3].toString());
+                outDto.setScheduleStartTime(CommonMethods.stampToDate((Timestamp) s[2]));
+                outDto.setScheduleDeadline(CommonMethods.stampToDate((Timestamp) s[3]));
                 outDto.setScheduleStatus((Integer)s[4]);
-                outDto.setScheduleFinishDate((String)s[5]);
+                outDto.setScheduleFinishDate(CommonMethods.stampToDate((Timestamp) s[5]));
 
                 Integer scheduleIdN = outDto.getScheduleId();
                 // 获取标签名称
@@ -224,10 +224,10 @@ public class ScheduleServiceImpl implements IScheduleService {
                 outDto.setScheduleId(Integer.valueOf(s[0].toString()));
                 outDto.setScheduleId((Integer)s[0]);
                 outDto.setScheduleName((String)s[1]);
-                outDto.setScheduleStartTime(s[2].toString());
-                outDto.setScheduleDeadline(s[3].toString());
+                outDto.setScheduleStartTime(CommonMethods.stampToDate((Timestamp) s[2]));
+                outDto.setScheduleDeadline(CommonMethods.stampToDate((Timestamp) s[3]));
                 outDto.setScheduleStatus((Integer)s[4]);
-                outDto.setScheduleFinishDate((String)s[5]);
+                outDto.setScheduleFinishDate(CommonMethods.stampToDate((Timestamp) s[5]));
 
                 Integer scheduleIdN = outDto.getScheduleId();
                 // 获取标签名称

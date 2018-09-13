@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import { XiaojiAssistantService } from "../../service/xiaoji-assistant.service";
 import { ParamsService } from "../../service/params.service";
 import {ScheduleOutModel} from "../../model/out/schedule.out.model";
+import {HttpClient} from "@angular/common/http";
+import {AppConfig} from "../../app/app.config";
 
 /**
  * Generated class for the SpeechPage page.
@@ -19,10 +21,14 @@ import {ScheduleOutModel} from "../../model/out/schedule.out.model";
 })
 export class SpeechPage {
 
+  data: any;
   findSchedule: ScheduleOutModel; //查询日程条件
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private paramsService: ParamsService,
+              private http: HttpClient,
+              private loadingCtrl: LoadingController,
+              private alert: AlertController,
               private xiaojiSpeech: XiaojiAssistantService) {
   }
 
@@ -33,8 +39,32 @@ export class SpeechPage {
   //展示日程列表
   scheduleShow() {
     this.findSchedule = new ScheduleOutModel();
-    this.paramsService.findSchedule = this.findSchedule;
-    this.navCtrl.push("ScheduleListPage");
+    this.findSchedule.scheduleStartTime = "2018-09-01 00:00";
+    this.findSchedule.scheduleDeadline = "2018-09-13 00:00";
+    this.findSchedule.userId = this.paramsService.user.userId;
+    this.http.post(AppConfig.SCHEDULE_FIND_URL, this.findSchedule, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      responseType: 'json'
+    })
+      .subscribe(data => {
+        this.data = data;
+        console.log("data:" + this.data.toString());
+        let loader = this.loadingCtrl.create({
+          content: this.data.message,
+          duration: 1000
+        });
+
+        if (this.data.code == 0) {
+          this.paramsService.scheduleList = this.data.data.scheduleJoinList;
+          console.log("data:" + this.data.data);
+          this.navCtrl.push("ScheduleListPage");
+        } else {
+          console.log("error message:" + this.data.message);
+          loader.present();
+        }
+      })
   }
 
   //添加日程

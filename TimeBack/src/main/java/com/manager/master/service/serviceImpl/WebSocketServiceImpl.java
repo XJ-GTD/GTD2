@@ -49,7 +49,6 @@ public class WebSocketServiceImpl implements IWebSocketService {
             producerUtil.sendTheTarget(data, accountQueue);
         }
 
-
         return 0;
     }
 }

@@ -29,7 +29,8 @@ export class ScheduleListPage {
   }
 
   init() {
-
+    this.scheduleList = [];
+    this.scheduleList = this.paramsService.scheduleList;
 
   }
 

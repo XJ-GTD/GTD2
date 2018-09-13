@@ -20,13 +20,23 @@
       今日日程
     </ion-list-header>
 
-    <ion-item-sliding *ngFor="">
+    <ion-item-sliding *ngFor="let sd of scheduleList">
       <ion-item>
         <ion-avatar>
           <img>
         </ion-avatar>
-        <h2>日程主题</h2>
-        <p>日程时间</p>
+        <h2>{{sd.scheduleName}}</h2>
+        <p *ngIf="sd.scheduleDeadline != null && sd.scheduleDeadline != '' ;else deadLine">
+          {{sd.scheduleStartTime}}开始
+        </p>
+        <ng-template #deadLine>
+          <p *ngIf="sd.scheduleStartTime != null && sd.scheduleStartTime != '' ;else allTime">
+            截止于{{sd.scheduleDeadline}}
+          </p>
+          <ng-template #allTime>
+            <p>{{sd.scheduleStartTime}} - {{sd.scheduleDeadline}}</p>
+          </ng-template>
+        </ng-template>
       </ion-item>
       <ion-item-options>
         <button ion-button icon-start>

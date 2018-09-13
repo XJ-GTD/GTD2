@@ -15,6 +15,7 @@ export class ParamsService {
   private _voice: any;
   private _user: UserModel;               //用户数据
   private _schedule: ScheduleModel;       //日程数据
+  private _scheduleList: Array<ScheduleModel>;  //数据list
   private _group: GroupModel;                //群组数据
   private _contactList: Array<number>;   //联系人数据
   private _findSchedule: ScheduleOutModel;    //查询日程
@@ -71,5 +72,13 @@ export class ParamsService {
 
   set findSchedule(value: ScheduleOutModel) {
     this._findSchedule = value;
+  }
+
+  get scheduleList(): Array<ScheduleModel> {
+    return this._scheduleList;
+  }
+
+  set scheduleList(value: Array<ScheduleModel>) {
+    this._scheduleList = value;
   }
 }
