@@ -725,7 +725,7 @@ public class GroupServicelmpl implements IGroupService {
             Set<GtdLabelEntity> set = new HashSet<>();
             boolean status = false;
             for (Integer i : labelId) {
-                GtdLabelEntity labelEntity = labelJpaRespository.findlabelByLabelId(i);
+                GtdLabelEntity labelEntity = labelJpaRespository.findGtdLabelEntityByLabelId(i);
                 labelEntity.setUpdateId(userId);
                 labelEntity.setUpdateDate(new Timestamp(new Date().getTime()));
                 set.add(labelEntity);
