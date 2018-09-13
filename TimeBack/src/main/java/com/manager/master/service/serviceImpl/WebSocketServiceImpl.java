@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @Author: tzx ;
  * @Date: Created in 14:25 2018/5/8
@@ -26,8 +28,11 @@ public class WebSocketServiceImpl implements IWebSocketService {
     public int pushToUser(PushInDto inDto) {
 
         Integer userId = inDto.getUserId();
+        List<Integer> memberUserIds = inDto.getMemberUserId();
         String data = inDto.getData();
-        String target = inDto.getAccountQueue();
+        String target = "";
+
+
 
         producerUtil.sendTheTarget(data, target);
 
