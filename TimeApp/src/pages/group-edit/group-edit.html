@@ -21,29 +21,28 @@
 <ion-content padding>
   <div *ngIf="groupDetail!=null; else elseBlock3">
     <ion-input style="padding-left: 5%; margin-bottom: 5%;  border:1px solid #a1a1a1;" value="{{groupDetail.groupName}}" [(ngModel)]="groupName"></ion-input>
-    <!--<input style="width: 100%;height: 30px;padding-left: 10px;margin-bottom: 50px" placeholder="{{groupDetail.groupName}}" [(ngModel)]="groupName" type="text" />-->
   </div>
   <ng-template #elseBlock3>
     <input style="width: 100%;height: 30px;padding-left: 10px;margin-bottom: 50px" placeholder="请输入群名称" [(ngModel)]="groupName" type="text" />
   </ng-template>
 
 
-  <button class="divbiaoqian" style="background-color: white;width: 100%">
+  <button class="editLabelsStype" style="">
     <button style="width: 85%;padding-left: 10px;height: 30px" (click)="showLabelCheckbox()">点击添加标签</button>
   </button>
-  <div class="divqunchengyuan"  *ngIf="groupDetail!=null; else elseBlock">
-    <div *ngFor="let item of groupDetail.groupMembers" class="row qunchengyuan">
-      <p class="pmingcheng">{{item.userName}}</p><p>联系方式:{{item.userContact}}</p>
+  <div class="maxMembersContactStyle"  *ngIf="groupDetail!=null; else elseBlock">
+    <div *ngFor="let item of groupDetail.groupMembers" class="row membersContactStyle">
+      <p class="contactStyle">{{item.userName}}</p><p>联系方式:{{item.userContact}}</p>
     </div>
     <button style="width: 100%;background-color: white">
-      <button class="divbiaoqian" style="background-color: white;width: 100%">
+      <button class="editLabelsStype" style="background-color: white;width: 100%">
         <button style="width: 85%;padding-left: 10px;height: 50%" (click)="showMemberCheckbok()">点击添加成员</button>
       </button>
     </button>
   </div>
   <ng-template #elseBlock>
     <button style="width: 100%;background-color: white">
-      <button class="divbiaoqian" style="background-color: white;width: 100%">
+      <button class="editLabelsStype" style="background-color: white;width: 100%">
         <button style="width: 85%;padding-left: 10px;height: 50%" (click)="showMemberCheckbok()">点击添加成员</button>
       </button>
     </button>
