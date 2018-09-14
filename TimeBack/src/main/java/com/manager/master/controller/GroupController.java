@@ -90,9 +90,9 @@ public class GroupController {
     @ResponseBody
     public BaseOutDto findGroupLike(@RequestBody GroupInDto inDto){
         BaseOutDto outDto=new BaseOutDto();
-        Map<String, List<GtdGroupEntity>> map=new HashMap<String, List<GtdGroupEntity>>();
+        Map<String, List<GroupOutDto>> map=new HashMap<String, List<GroupOutDto>>();
         try{
-            List<GtdGroupEntity> list= groupService.select(inDto);
+            List<GroupOutDto> list= groupService.select(inDto);
             if(list!=null) {
                 map.put("groupList", list);
                 outDto.setData(map);

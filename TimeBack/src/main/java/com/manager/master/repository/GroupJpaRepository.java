@@ -137,31 +137,39 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     String findGNameByUserId(int groupId);
 
 
-//    @Query(value = "SELECT\n" +
-//            "gtd_group.GROUP_ID,\n" +
-//            "gtd_group.GROUP_NAME,\n" +
-//            "gtd_group.GROUP_HEADIMG_URL,\n" +
-//            "gtd_group.USER_ID,\n" +
-//            "gtd_group.CREATE_ID,\n" +
-//            "gtd_group.CREATE_DATE,\n" +
-//            "gtd_group.UPDATE_ID,\n" +
-//            "gtd_group.UPDATE_DATE,\n" +
-//            "gtd_label.LABEL_ID,\n" +
-//            "gtd_label.LABEL_NAME,\n" +
-//            "gtd_label.LABEL_TYPE,\n" +
-//            "gtd_group_member.USER_ID,\n" +
-//            "gtd_group_member.USER_NAME,\n" +
-//            "gtd_group_member.USER_CONTACT\n" +
-//            "FROM\n" +
-//            "gtd_group\n" +
-//            "LEFT JOIN gtd_group_label ON gtd_group_label.GROUP_ID = gtd_group.GROUP_ID\n" +
-//            "LEFT JOIN gtd_group_member ON gtd_group_member.GROUP_ID = gtd_group.GROUP_ID\n" +
-//            "LEFT JOIN gtd_label ON gtd_group_label.LABEL_ID = gtd_label.LABEL_ID\n" +
-//            "WHERE\n" +
-//            "gtd_group.GROUP_NAME LIKE %?1%\n" +
-//            "GROUP BY\n" +
-//            "gtd_group.GROUP_ID\n",nativeQuery = true)
-//    List<GtdGroupEntity> getGroups( String groupName);
+    /**
+     * 根据用户ID查询用户用户名
+     * @param groupName
+     * @return
+     */
+    @Query(value = "SELECT GROUP_ID FROM gtd_group WHERE GROUP_NAME LIKE %?1%",nativeQuery = true)
+    List<Integer> getGroupIds(String groupName);
+
+    @Query(value = "SELECT\n" +
+            "gtd_group.GROUP_ID,\n" +
+            "gtd_group.GROUP_NAME,\n" +
+            "gtd_group.GROUP_HEADIMG_URL,\n" +
+            "gtd_group.USER_ID,\n" +
+            "gtd_group.CREATE_ID,\n" +
+            "gtd_group.CREATE_DATE,\n" +
+            "gtd_group.UPDATE_ID,\n" +
+            "gtd_group.UPDATE_DATE,\n" +
+            "gtd_label.LABEL_ID,\n" +
+            "gtd_label.LABEL_NAME,\n" +
+            "gtd_label.LABEL_TYPE,\n" +
+            "gtd_group_member.USER_ID\n" +
+            "gtd_group_member.USER_NAME,\n" +
+            "gtd_group_member.USER_CONTACT\n" +
+            "FROM\n" +
+            "gtd_group\n" +
+            "LEFT JOIN gtd_group_label ON gtd_group_label.GROUP_ID = gtd_group.GROUP_ID\n" +
+            "LEFT JOIN gtd_group_member ON gtd_group_member.GROUP_ID = gtd_group.GROUP_ID\n" +
+            "LEFT JOIN gtd_label ON gtd_group_label.LABEL_ID = gtd_label.LABEL_ID\n" +
+            "WHERE\n" +
+            "gtd_group.GROUP_NAME LIKE %?1%\n" +
+            "GROUP BY\n" +
+            "gtd_group.GROUP_ID\n",nativeQuery = true)
+    List<GtdGroupEntity> getGroups( String groupName);
 
     List<GtdGroupEntity> findGtdGroupEntitiesByGroupNameLike(String groupName);
 }

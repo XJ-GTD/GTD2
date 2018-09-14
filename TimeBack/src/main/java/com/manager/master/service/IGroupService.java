@@ -21,7 +21,7 @@ public interface IGroupService {
     GroupOutDto selectMessage(GroupFindInDto inDto);
 
     //查询群组
-    List<GtdGroupEntity> select(GroupInDto inDto);
+    List<GroupOutDto> select(GroupInDto inDto);
 
     //查詢群成員
     List<GroupMemberOutDto> findMember(GroupFindInDto inDto);

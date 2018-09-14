@@ -235,12 +235,38 @@ public class GroupServicelmpl implements IGroupService {
      * @return
      */
     @Override
-    public List<GtdGroupEntity> select(GroupInDto inDto) {
+    public List<GroupOutDto> select(GroupInDto inDto) {
         String groupName = inDto.getGroupName();
-
-        // String userName=inDto.getUserName();
+        if(groupName==null||"".equals(groupName))throw new ServiceException("请传入查询参数");
+        List<GroupOutDto> groupOutDtos=new ArrayList<>();
         if (groupName != null && !"".equals(groupName)) {
-            return groupJpaRepository.findGtdGroupEntitiesByGroupNameLike("%"+groupName+"%");
+            List<Integer> groupIds=groupJpaRepository.getGroupIds(groupName);
+            for(Integer i:groupIds){
+                GtdGroupEntity groupEntity=groupJpaRepository.getOne(i);
+                GroupOutDto group = new GroupOutDto();
+                group.setGroupId(i);
+                group.setGroupName(groupEntity.getGroupName());
+                Set<GtdLabelEntity> set = groupEntity.getLabel();
+                List<LabelOutDto> labelOut = new ArrayList<LabelOutDto>();
+                for (GtdLabelEntity label : set) { //标签信息
+                    LabelOutDto l = new LabelOutDto();
+                    l.setLabelId(label.getLabelId());
+                    l.setLabelName(label.getLabelName());
+                    labelOut.add(l);
+                }
+                group.setLabelList(labelOut);
+                List<GroupMemberDto> members = new ArrayList<>();
+                for (GtdGroupMemberEntity member : groupEntity.getGroupMember()) { //群成员信息
+                    GroupMemberDto groupMember = new GroupMemberDto();
+                    groupMember.setUserId(groupRepository.findUserId(member.getUserContact()));
+                    groupMember.setUserName(member.getUserName());
+                    groupMember.setUserContact(member.getUserContact());
+                    members.add(groupMember);
+                }
+                group.setGroupMembers(members);
+                groupOutDtos.add(group);
+            }
+            return groupOutDtos;
         }
 //        if (labelName != null && !"".equals(labelName)) {
 //            List<Integer> li = groupRepository.findByLabelLike(labelName);
