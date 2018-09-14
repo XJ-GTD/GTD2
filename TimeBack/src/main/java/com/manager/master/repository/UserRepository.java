@@ -53,4 +53,14 @@ public class UserRepository {
 
         return em.createNativeQuery(sql).getSingleResult();
     }
+
+    /**
+     *  通过 用户ID 查找 用户名
+     * @param userId
+     * @return
+     */
+    public String findUserNameByUserId(Integer userId){
+        String sql = "SELECT USER_NAME FROM gtd_user WHERE USER_ID = " + userId;
+        return (String) em.createNativeQuery(sql).getSingleResult();
+    }
 }
