@@ -26,6 +26,7 @@ public class GtdGroupEntity {
     private Set<GtdScheduleEntity> schedule;
 
     @JsonIgnore
+    @JSONField(serialize=false)
     @OneToMany(fetch=FetchType.LAZY,cascade={CascadeType.REMOVE},mappedBy="group")
     public Set<GtdGroupMemberEntity> getGroupMember() {
         return groupMember;

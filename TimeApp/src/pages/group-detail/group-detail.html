@@ -9,7 +9,7 @@
   <ion-navbar backButtonClick>
     <ion-title style="text-align: center">
       {{groupDetail.groupName}}
-      <button style="position: absolute;left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;" (click)="editgroup()">编辑</button>
+      <button class="buttonsStyle" (click)="editgroup()">编辑</button>
     </ion-title>
   </ion-navbar>
   <ng-template #elseBlock>
@@ -19,14 +19,14 @@
 
 
 <ion-content padding style="margin-top: 10%">
-  <div class="row row11">
-    <div class="biaoqian1" *ngFor="let lb of groupDetail.labelList">
+  <div class="row maxDiv">
+    <div class="labelStyle" *ngFor="let lb of groupDetail.labelList">
       <p>{{lb.labelName}}</p>
     </div>
   </div>
   <div style=" border:1px solid #a1a1a1;">
-    <div *ngFor="let gm of groupDetail.groupMembers" class="row qunchengyuan1">
-      <p class="pmingcheng1">{{gm.userName}}</p>
+    <div *ngFor="let gm of groupDetail.groupMembers" class="row membersStyle">
+      <p class="membersNameStyle">{{gm.userName}}</p>
       <p>群成员联系方式:{{gm.userContact}}</p>
     </div>
   </div>

@@ -115,4 +115,25 @@ public class GroupRepository {
     }
 
 
+    public List<GtdGroupEntity> getGroups(String groupName){
+        String sql="SELECT\n" +
+                "gtd_group.GROUP_ID AS groupId,\n" +
+                "gtd_group.GROUP_NAME AS groupName,\n" +
+                "gtd_group.GROUP_HEADIMG_URL AS groupHeadImgUrl,\n" +
+                "gtd_label.LABEL_ID AS lebelId,\n" +
+                "gtd_label.LABEL_NAME AS labelName,\n" +
+                "gtd_label.LABEL_TYPE AS labelType,\n" +
+                "gtd_group_member.USER_ID AS memberId,\n" +
+                "gtd_group_member.USER_NAME AS memberName,\n" +
+                "gtd_group_member.USER_CONTACT AS memberContact\n" +
+                "FROM\n" +
+                "gtd_group\n" +
+                "LEFT JOIN gtd_group_label ON gtd_group_label.GROUP_ID = gtd_group.GROUP_ID\n" +
+                "LEFT JOIN gtd_group_member ON gtd_group_member.GROUP_ID = gtd_group.GROUP_ID\n" +
+                "LEFT JOIN gtd_label ON gtd_group_label.LABEL_ID = gtd_label.LABEL_ID\n" +
+                "WHERE\n" +
+                "gtd_group.GROUP_NAME LIKE '"+groupName+"'GROUP BY gtd_group.GROUP_ID";
+        return em.createNativeQuery(sql).getResultList();
+    }
+
 }
