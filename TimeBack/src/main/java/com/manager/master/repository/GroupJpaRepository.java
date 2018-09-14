@@ -3,6 +3,7 @@ package com.manager.master.repository;
 import com.manager.master.dto.GroupOutDto;
 import com.manager.master.entity.GtdGroupEntity;
 import com.manager.master.entity.GtdLabelEntity;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -134,5 +135,34 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
      */
     @Query(value = "SELECT GROUP_NAME FROM gtd_group WHERE GROUP_ID=?1",nativeQuery = true)
     String findGNameByUserId(int groupId);
+
+
+//    @Query(value = "SELECT\n" +
+//            "gtd_group.GROUP_ID,\n" +
+//            "gtd_group.GROUP_NAME,\n" +
+//            "gtd_group.GROUP_HEADIMG_URL,\n" +
+//            "gtd_group.USER_ID,\n" +
+//            "gtd_group.CREATE_ID,\n" +
+//            "gtd_group.CREATE_DATE,\n" +
+//            "gtd_group.UPDATE_ID,\n" +
+//            "gtd_group.UPDATE_DATE,\n" +
+//            "gtd_label.LABEL_ID,\n" +
+//            "gtd_label.LABEL_NAME,\n" +
+//            "gtd_label.LABEL_TYPE,\n" +
+//            "gtd_group_member.USER_ID,\n" +
+//            "gtd_group_member.USER_NAME,\n" +
+//            "gtd_group_member.USER_CONTACT\n" +
+//            "FROM\n" +
+//            "gtd_group\n" +
+//            "LEFT JOIN gtd_group_label ON gtd_group_label.GROUP_ID = gtd_group.GROUP_ID\n" +
+//            "LEFT JOIN gtd_group_member ON gtd_group_member.GROUP_ID = gtd_group.GROUP_ID\n" +
+//            "LEFT JOIN gtd_label ON gtd_group_label.LABEL_ID = gtd_label.LABEL_ID\n" +
+//            "WHERE\n" +
+//            "gtd_group.GROUP_NAME LIKE %?1%\n" +
+//            "GROUP BY\n" +
+//            "gtd_group.GROUP_ID\n",nativeQuery = true)
+//    List<GtdGroupEntity> getGroups( String groupName);
+
+    List<GtdGroupEntity> findGtdGroupEntitiesByGroupNameLike(String groupName);
 }
 
