@@ -195,7 +195,7 @@ public class GroupServicelmpl implements IGroupService {
 //        }
         GtdGroupEntity groupEntity = null;
         try {
-            groupEntity = groupJpaRepository.findGroupByGroupId(groupId);//获取当前群组
+            groupEntity = groupJpaRepository.getOne(groupId);//获取当前群组
             if(groupEntity==null){
                 throw new ServiceException("群组不存在");
             }
@@ -241,7 +241,7 @@ public class GroupServicelmpl implements IGroupService {
         //接收返回结果
         List<GroupOutDto> groupOutDtos=new ArrayList<>();
         //查询群组ID集合
-        List<Integer> groupIds=new ArrayList<>();
+        Set<Integer> groupIds=new HashSet<>();
         //根据群名模糊查询群ID
         List<Integer> groupIdByGroupName=groupJpaRepository.getGroupIdsForGroupName(message);
         //根据标签名模糊查询群ID
@@ -513,11 +513,10 @@ public class GroupServicelmpl implements IGroupService {
         if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
         GtdGroupEntity group = null;
         try {
-            group = groupJpaRepository.findGroupByGroupId(groupId);
+            group = groupJpaRepository.getOne(groupId);
             if (group == null) {
                 throw new ServiceException("该群组数据为空");
             }
-
         } catch (Exception e) {
             throw new ServiceException("群组不存在");
         }
@@ -604,7 +603,7 @@ public class GroupServicelmpl implements IGroupService {
         if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
         GtdGroupEntity group = null;
         try {
-            group = groupJpaRepository.findGroupByGroupId(groupId);
+            group = groupJpaRepository.getOne(groupId);
             if (group == null) {
                 throw new ServiceException("该群组数据为空");
             }
@@ -713,7 +712,7 @@ public class GroupServicelmpl implements IGroupService {
         if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
         if (labelId.size() == 0 || labelId == null) throw new ServiceException("标签不能为空");
         //查询该群组
-        GtdGroupEntity group = groupJpaRepository.findGroupByGroupId(groupId);
+        GtdGroupEntity group = groupJpaRepository.getOne(groupId);
         System.out.println(group.toString());
         if (group == null) {
             throw new ServiceException("该群组数据为空");
