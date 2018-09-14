@@ -9,6 +9,7 @@ import java.util.Set;
 public class GroupInDto {
     private int userId;
     private int groupId;
+    private String message;
     private String labelName;
     private String groupName;
     private String groupHeadImgUrl;
@@ -79,5 +80,13 @@ public class GroupInDto {
 
     public void setCondition(String condition) {
         this.condition = condition;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

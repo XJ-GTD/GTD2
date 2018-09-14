@@ -236,53 +236,51 @@ public class GroupServicelmpl implements IGroupService {
      */
     @Override
     public List<GroupOutDto> select(GroupInDto inDto) {
-        String groupName = inDto.getGroupName();
-        if(groupName==null||"".equals(groupName))throw new ServiceException("请传入查询参数");
+        String message = inDto.getMessage();
+        if(message==null||"".equals(message))throw new ServiceException("请传入查询参数");
+        //接收返回结果
         List<GroupOutDto> groupOutDtos=new ArrayList<>();
-        if (groupName != null && !"".equals(groupName)) {
-            List<Integer> groupIds=groupJpaRepository.getGroupIds(groupName);
-            for(Integer i:groupIds){
-                GtdGroupEntity groupEntity=groupJpaRepository.getOne(i);
-                GroupOutDto group = new GroupOutDto();
-                group.setGroupId(i);
-                group.setGroupName(groupEntity.getGroupName());
-                Set<GtdLabelEntity> set = groupEntity.getLabel();
-                List<LabelOutDto> labelOut = new ArrayList<LabelOutDto>();
-                for (GtdLabelEntity label : set) { //标签信息
-                    LabelOutDto l = new LabelOutDto();
-                    l.setLabelId(label.getLabelId());
-                    l.setLabelName(label.getLabelName());
-                    labelOut.add(l);
-                }
-                group.setLabelList(labelOut);
-                List<GroupMemberDto> members = new ArrayList<>();
-                for (GtdGroupMemberEntity member : groupEntity.getGroupMember()) { //群成员信息
-                    GroupMemberDto groupMember = new GroupMemberDto();
-                    groupMember.setUserId(groupRepository.findUserId(member.getUserContact()));
-                    groupMember.setUserName(member.getUserName());
-                    groupMember.setUserContact(member.getUserContact());
-                    members.add(groupMember);
-                }
-                group.setGroupMembers(members);
-                groupOutDtos.add(group);
+        //查询群组ID集合
+        List<Integer> groupIds=new ArrayList<>();
+        //根据群名模糊查询群ID
+        List<Integer> groupIdByGroupName=groupJpaRepository.getGroupIdsForGroupName(message);
+        //根据标签名模糊查询群ID
+        List<Integer> groupIdByLabelName=groupJpaRepository.getGroupIdsForLabelName(message);
+        //根据用户名模糊查询群ID
+        List<Integer> groupIdByUserName=groupJpaRepository.getGroupIdsForUserName(message);
+        if(groupIdByGroupName!=null)groupIds.addAll(groupIdByGroupName);
+        if(groupIdByLabelName!=null)groupIds.addAll(groupIdByLabelName);
+        if(groupIdByUserName!=null)groupIds.addAll(groupIdByUserName);
+        //遍历所有群组
+        for(Integer i:groupIds){
+            GtdGroupEntity groupEntity=groupJpaRepository.getOne(i);
+            GroupOutDto group = new GroupOutDto();
+            group.setGroupId(i);
+            group.setGroupName(groupEntity.getGroupName());
+            Set<GtdLabelEntity> set = groupEntity.getLabel();
+            //群组标签
+            List<LabelOutDto> labelOut = new ArrayList<LabelOutDto>();
+            for (GtdLabelEntity label : set) {
+                LabelOutDto l = new LabelOutDto();
+                l.setLabelId(label.getLabelId());
+                l.setLabelName(label.getLabelName());
+                labelOut.add(l);
             }
-            return groupOutDtos;
+            group.setLabelList(labelOut);//添加群组标签
+            //群组成员
+            List<GroupMemberDto> members = new ArrayList<>();
+            for (GtdGroupMemberEntity member : groupEntity.getGroupMember()) { //群成员信息
+                GroupMemberDto groupMember = new GroupMemberDto();
+                groupMember.setUserId(groupRepository.findUserId(member.getUserContact()));
+                groupMember.setUserName(member.getUserName());
+                groupMember.setUserContact(member.getUserContact());
+                members.add(groupMember);
+            }
+            group.setGroupMembers(members);//添加群成员
+            //接收结果
+            groupOutDtos.add(group);
         }
-//        if (labelName != null && !"".equals(labelName)) {
-//            List<Integer> li = groupRepository.findByLabelLike(labelName);
-//            List<GtdGroupEntity> list = groupJpaRepository.findByGroupIdIn(li);
-//            return list;
-//        }
-//        if(userName!=null&&!"".equals(userName)) {
-//            List<GtdGroupMemberEntity> ids=groupMemberRepository.findByUserNameLike("%"+userName+"%");
-//            List<Integer> li=new ArrayList<>();
-//            for(int i=0;i<ids.size();i++){
-//                li.add(ids.get(i).getGroupId());
-//            }
-//            List<GtdGroupEntity> list = groupJpaRepository.findByGroupIdIn(li);
-//            return list;
-//        }
-        return null;
+        return groupOutDtos;
     }
 
     /**
