@@ -25,10 +25,10 @@
       <div style="text-align: center"><p>点击头部名称可进行类型切换</p>
         <div *ngFor="let gl of groupList">
           <button class="row" style="width: 100%;background-color: #ffffff;" (click)="groupShowDetail(gl)">
-            <div class="p2div">
+            <div class="listGroupNameStyle">
               <p>{{gl.groupName}}</p>
             </div>
-            <div class="biaoqian" *ngFor="let lb of gl.labelList">
+            <div class="listLabelNameStyle" *ngFor="let lb of gl.labelList">
               <p>{{lb.labelName}}</p>
             </div>
           </button>
