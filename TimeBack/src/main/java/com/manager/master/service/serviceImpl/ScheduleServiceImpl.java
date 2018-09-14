@@ -779,7 +779,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         }
 
         if (CommonMethods.checkMySqlReservedWords(scheduleName)){
-            throw new ServiceException("用户名包含关键字");
+            throw new ServiceException("日程事件名称包含关键字");
         }
 
         // 业务处理
@@ -887,6 +887,40 @@ public class ScheduleServiceImpl implements IScheduleService {
                 throw new ServiceException("语法错误");
             }
         }
+
+        //  查询发布人名称
+        String createName = null;
+        try {
+            createName = userRepository.findUserNameByUserId(userId);
+        } catch (Exception ex){
+            throw new ServiceException("----  语法错误");
+        }
+        // 参与用户ID集合
+        List<Integer> playersIdList = new ArrayList<>();
+        for(Integer playerId : setGroupUserId){
+            playersIdList.add(playerId);
+        }
+        // 发送提醒 - 用户日程添加提醒
+        PushOutDto pushOutDto = new PushOutDto();   // 推送消息
+        PushInDto pushInDto = new PushInDto();      // 推送目标
+        // 推送信息设置
+        pushOutDto.setMessageId(scheduleEntity.getScheduleId());
+        pushOutDto.setMessageName(scheduleName);
+        pushOutDto.setMessageContent(PUSH_MESSAGE_SCHEDULE_CREATE);
+        pushOutDto.setUserName(createName);
+        pushOutDto.setType(1);
+        // 推送目标设置
+        pushInDto.setData(pushOutDto);
+        pushInDto.setUserId(userId);
+        pushInDto.setMemberUserId(playersIdList);
+        // 发送日程修改信息
+        int modifyMessage = webSocketService.pushToUser(pushInDto);
+        if(modifyMessage != 0){
+            logger.error("日程添加 ------ 推送失败！");
+        } else {
+            logger.info("日程添加 ------ 推送成功");
+        }
+
         return 0;
     }
 
