@@ -21,8 +21,7 @@
     </ion-list-header>
 
     <ion-item-sliding *ngFor="let sd of scheduleList">
-      <ion-item>
-        <button ion-button (click)="" >
+      <button ion-item (click)="showScheduleDetail(sd)">
           <h2>{{sd.scheduleName}}</h2>
           <p *ngIf="sd.scheduleDeadline != null && sd.scheduleDeadline != '' ;else deadLine">
             {{sd.scheduleStartTime}} - {{sd.scheduleDeadline}}
@@ -35,8 +34,7 @@
               <p>{{sd.scheduleStartTime}}开始</p>
             </ng-template>
           </ng-template>
-        </button>
-      </ion-item>
+      </button>
       <ion-item-options>
         <button ion-button icon-start>
           <ion-icon name="text"></ion-icon>

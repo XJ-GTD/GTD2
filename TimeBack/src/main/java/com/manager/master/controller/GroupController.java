@@ -2,6 +2,7 @@ package com.manager.master.controller;
 
 import com.manager.config.exception.ServiceException;
 import com.manager.master.dto.*;
+import com.manager.master.entity.GtdGroupEntity;
 import com.manager.master.service.IGroupService;
 import com.manager.util.ResultCode;
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +34,7 @@ public class GroupController {
 
 
     /**
-     * 查询群组
+     * 参与人列表查询
      * @param inDto 用户ID&类型
      */
     @RequestMapping(value = "/find_all",method = RequestMethod.POST)
@@ -43,20 +44,15 @@ public class GroupController {
         Map<String,List<GroupOutDto>> map=new HashMap<String, List<GroupOutDto>>();
         try {
             List<GroupOutDto> list= groupService.selectAll(inDto);
-            for(GroupOutDto g:list){
-                System.out.println(g.toString());
-            }
-            if(list!=null) {
+
+            if(list!=null&&list.size()!=0) {
                 map.put("groupList", list);
                 outDto.setData(map);
                 outDto.setCode(ResultCode.SUCCESS).setMessage("查询参与人列表成功");
                 logger.info("查询参与人列表成功：" + list.toString());
-            }else outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
+            }else outDto.setCode(ResultCode.REPEAT).setMessage("参与人列表为空");
         }catch (Exception e){
-            outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("信息查询失败");
-            logger.info(e.getMessage());
-            throw new ServiceException("信息查询失败");
+             throw new ServiceException(e.getMessage());
         }
         return outDto;
     }
@@ -78,10 +74,29 @@ public class GroupController {
                 outDto.setData(map);
             }else outDto.setCode(ResultCode.REPEAT).setMessage("数据为空");
         }catch (Exception e){
-            outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("信息查询失败");
-            logger.info(e.getMessage());
-            throw new ServiceException("信息查询失败");
+            throw new ServiceException(e.getMessage());
+        }
+        return outDto;
+    }
+
+    /**
+     * 根据条件查询群组
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value ="/find_group",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto getListGroupsByMessage(@RequestBody GroupInDto inDto){
+        BaseOutDto outDto=new BaseOutDto();
+        Map<String, List<GroupOutDto>> map=new HashMap<String, List<GroupOutDto>>();
+        try{
+            List<GroupOutDto> list= groupService.getListGroupByMessage(inDto);
+            if(list!=null) {
+                map.put("groupList", list);
+                outDto.setData(map);
+            }else outDto.setCode(ResultCode.REPEAT).setMessage("数据为空");
+        }catch (Exception e){
+            throw new ServiceException(e.getMessage());
         }
         return outDto;
     }
@@ -103,15 +118,12 @@ public class GroupController {
                 outDto.setData(map);
             }else outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
         }catch (Exception e){
-            outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("信息查询失败");
-            logger.info(e.getMessage());
-            throw new ServiceException("信息查询失败");
+            throw new ServiceException(e.getMessage());
         }
         return outDto;
     }
 
-    /**
+    /**,
      * 群组创建
      * @param inDto
      *   GroupName群组名称 CreateId UserId
@@ -128,10 +140,7 @@ public class GroupController {
                 outDto.setCode(ResultCode.REPEAT).setMessage("创建失败");
             }
         }catch (Exception e){
-            outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("创建失败");
-            logger.info(e.getMessage());
-            throw new ServiceException("创建失败");
+            throw new ServiceException(e.getMessage());
         }
         return outDto;
     }
@@ -153,10 +162,7 @@ public class GroupController {
             outDto.setCode(ResultCode.REPEAT).setMessage("修改失败");
         }
     }catch (Exception e){
-            outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("修改失败");
-            logger.info("error:" + e);
-            throw new ServiceException("修改失败");
+            throw new ServiceException(e.getMessage());
     }
         return outDto;
     }
@@ -178,10 +184,7 @@ public class GroupController {
                 outDto.setCode(ResultCode.REPEAT).setMessage("修改失败");
             }
         }catch (Exception e){
-            outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("修改失败");
-            logger.info(e.getMessage());
-            throw new ServiceException("修改失败");
+            throw new ServiceException(e.getMessage());
         }
         return outDto;
     }
@@ -203,10 +206,7 @@ public class GroupController {
                 outDto.setCode(ResultCode.REPEAT).setMessage("删除失败");
             }
         }catch (Exception e){
-            outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("删除失败");
-            logger.info(e.getMessage());
-            throw new ServiceException("删除失败");
+            throw new ServiceException(e.getMessage());
         }
         return outDto;
     }
@@ -228,10 +228,7 @@ public class GroupController {
                 outDto.setCode(ResultCode.REPEAT).setMessage("退出失败");
             }
         }catch (Exception e){
-            outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("退出群组失败");
-            logger.info(e.getMessage());
-            throw new ServiceException("退出群组失败");
+            throw new ServiceException(e.getMessage());
         }
         return outDto;
     }

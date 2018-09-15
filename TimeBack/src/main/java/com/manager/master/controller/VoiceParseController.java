@@ -1,12 +1,21 @@
 package com.manager.master.controller;
 
+import com.manager.config.exception.ServiceException;
+import com.manager.master.dto.AiUiDataDto;
+import com.manager.master.dto.AiUiInDto;
 import com.manager.master.dto.BaseOutDto;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.manager.master.dto.FindScheduleOutDto;
+import com.manager.master.service.IAiUiService;
+import com.manager.util.ResultCode;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 语音处理
@@ -18,15 +27,56 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(value = "/xiaoji")
 public class VoiceParseController {
 
-    @RequestMapping(value = "/audio", method = RequestMethod.POST)
-    public BaseOutDto readAudio(HttpServletRequest request){
+    private Logger logger = LogManager.getLogger(this.getClass());
+
+    private final IAiUiService aiUiService;
+
+    @Autowired
+    public VoiceParseController(IAiUiService aiUiService) {
+        this.aiUiService = aiUiService;
+    }
+
+    /**
+     * 语义解析：音频方法
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/answer_audio", method = RequestMethod.POST)
+    public BaseOutDto readAudio(@RequestBody AiUiInDto inDto){
         BaseOutDto outBean = new BaseOutDto();
+        Map<String, AiUiDataDto> data = new HashMap<>();
+        try{
+            AiUiDataDto dataDto = aiUiService.answerAudio(inDto);
+            if (dataDto != null) {
+                data.put("aiuiData", dataDto);
+                outBean.setData(data);
+                outBean.setCode(ResultCode.SUCCESS);
+                outBean.setMessage("[语音交互完成]");
+            } else {
+                data.put("aiuiData", dataDto);
+                outBean.setData(data);
+                outBean.setCode(ResultCode.REPEAT);
+                outBean.setMessage("[数据库无数据]");
+                logger.info("[数据库无数据]");
+            }
+
+        } catch (Exception e){
+            outBean.setCode(ResultCode.FAIL);
+            outBean.setMessage("[语音交互失败]：请联系技术人员");
+            logger.info(e.getMessage());
+            throw new ServiceException("[语音交互失败]：请联系技术人员");
+        }
 
         return outBean;
     }
 
-    @RequestMapping(value = "/text", method = RequestMethod.POST)
-    public BaseOutDto readText(HttpServletRequest request){
+    /**
+     * 语义解析：文本方法
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/answer_text", method = RequestMethod.POST)
+    public BaseOutDto readText(AiUiInDto request){
         BaseOutDto outBean = new BaseOutDto();
 
         return outBean;

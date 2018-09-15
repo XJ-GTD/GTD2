@@ -3,6 +3,7 @@ package com.manager.master.repository;
 import com.manager.master.dto.GroupOutDto;
 import com.manager.master.entity.GtdGroupEntity;
 import com.manager.master.entity.GtdLabelEntity;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,17 +18,6 @@ import java.util.Map;
  */
 @Transactional
 public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer> {
-
-
-    /**
-     * 根据群组ID查询群组
-     * @param groupId
-     * @return
-     */
-    @Query(value = "SELECT DISTINCT gtd_label.LABEL_NAME,gtd_group.GROUP_NAME,gtd_group.GROUP_HEADIMG_URL,gtd_group_member.USER_ID,gtd_group_member.USER_NAME,gtd_group_member.USER_CONTACT,gtd_group.GROUP_ID,gtd_group.USER_ID,gtd_group.CREATE_ID,gtd_group.CREATE_DATE,gtd_group.UPDATE_ID,gtd_group.UPDATE_DATE,gtd_group_label.LABEL_ID\n" +
-            "FROM gtd_group INNER JOIN gtd_group_label ON gtd_group_label.GROUP_ID = gtd_group.GROUP_ID INNER JOIN gtd_group_member ON gtd_group_member.GROUP_ID = gtd_group.GROUP_ID AND gtd_group_member.GROUP_ID = gtd_group.GROUP_ID INNER JOIN gtd_label ON gtd_group_label.LABEL_ID = gtd_label.LABEL_ID " +
-            "WHERE  gtd_group.GROUP_ID =?1",nativeQuery = true)
-    GtdGroupEntity findGroupByGroupId(Integer groupId);
 
 
     /**
@@ -134,5 +124,32 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
      */
     @Query(value = "SELECT GROUP_NAME FROM gtd_group WHERE GROUP_ID=?1",nativeQuery = true)
     String findGNameByUserId(int groupId);
+
+
+    /**
+     * 根据群组名模糊查询群组ID
+     * @param groupName
+     * @return
+     */
+    @Query(value = "SELECT GROUP_ID FROM gtd_group WHERE GROUP_NAME LIKE %?1% ",nativeQuery = true)
+    List<Integer> getGroupIdsForGroupName(String groupName);
+
+    /**
+     * 根据标签名模糊查询群组ID
+     * @param labelName
+     * @return
+     */
+    @Query(value = "SELECT GROUP_ID FROM gtd_label INNER JOIN gtd_group_label ON gtd_label.LABEL_ID=gtd_group_label.LABEL_ID WHERE LABEL_NAME LIKE %?1% ",nativeQuery = true)
+    List<Integer> getGroupIdsForLabelName(String labelName);
+
+    /**
+     * 根据用户名模糊查询群组ID
+     * @param userName
+     * @return
+     */
+    @Query(value = "SELECT GROUP_ID FROM gtd_group_member WHERE USER_NAME LIKE %?1% ",nativeQuery = true)
+    List<Integer> getGroupIdsForUserName(String userName);
+
+
 }
 

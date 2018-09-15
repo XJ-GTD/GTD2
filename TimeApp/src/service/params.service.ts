@@ -13,6 +13,7 @@ export class ParamsService {
 
   private _data: string;
   private _voice: any;
+  private _speech: string;               //语音播报
   private _user: UserModel;               //用户数据
   private _schedule: ScheduleModel;       //日程数据
   private _scheduleList: Array<ScheduleModel>;  //数据list
@@ -80,5 +81,13 @@ export class ParamsService {
 
   set scheduleList(value: Array<ScheduleModel>) {
     this._scheduleList = value;
+  }
+
+  get speech(): string {
+    return this._speech;
+  }
+
+  set speech(value: string) {
+    this._speech = value;
   }
 }
