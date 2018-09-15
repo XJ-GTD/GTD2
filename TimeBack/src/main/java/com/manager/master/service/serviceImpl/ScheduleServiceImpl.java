@@ -963,6 +963,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         int modifyMessage = webSocketService.pushToUser(pushInDto);
         if(modifyMessage != 0){
             logger.error("日程添加 ------ 推送失败！");
+            return 1;
         } else {
             logger.info("日程添加 ------ 推送成功");
         }

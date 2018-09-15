@@ -42,7 +42,7 @@ public class JsonParserUtil {
 			if (flag == 0) {
 
 				//用户语音
-				String userText = jsonArray.getString("text");
+				String userText = jsonIntent.getString("text");
 				aiUiData.setUserText(userText);
 				//语音播报字段
 				JSONObject jsonAnswer = jsonIntent.getJSONObject("answer");

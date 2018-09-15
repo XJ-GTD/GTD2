@@ -234,22 +234,22 @@ public class GroupServicelmpl implements IGroupService {
      */
     @Override
     public List<GroupOutDto> getListGroupByMessage(GroupInDto inDto) {
-        String message = inDto.getMessage();
-        logger.info("根据条件查询 message"+message);
-        if(message==null||"".equals(message))throw new ServiceException("请传入查询参数");
-        //接收返回结果
+        String message = inDto.getGroupName();
+//        logger.info("根据条件查询 message"+message);
+//        if(message==null||"".equals(message))throw new ServiceException("请传入查询参数");
+//        //接收返回结果
         List<GroupOutDto> groupOutDtos=new ArrayList<>();
-        //查询群组ID集合
+//        //查询群组ID集合
         Set<Integer> groupIds=new HashSet<>();
-        //根据群名模糊查询群ID
+//        //根据群名模糊查询群ID
         List<Integer> groupIdByGroupName=groupJpaRepository.getGroupIdsForGroupName(message);
-        //根据标签名模糊查询群ID
-        List<Integer> groupIdByLabelName=groupJpaRepository.getGroupIdsForLabelName(message);
-        //根据用户名模糊查询群ID
-        List<Integer> groupIdByUserName=groupJpaRepository.getGroupIdsForUserName(message);
+//        //根据标签名模糊查询群ID
+//        List<Integer> groupIdByLabelName=groupJpaRepository.getGroupIdsForLabelName(message);
+//        //根据用户名模糊查询群ID
+//        List<Integer> groupIdByUserName=groupJpaRepository.getGroupIdsForUserName(message);
         if(groupIdByGroupName!=null)groupIds.addAll(groupIdByGroupName);
-        if(groupIdByLabelName!=null)groupIds.addAll(groupIdByLabelName);
-        if(groupIdByUserName!=null)groupIds.addAll(groupIdByUserName);
+//        if(groupIdByLabelName!=null)groupIds.addAll(groupIdByLabelName);
+//        if(groupIdByUserName!=null)groupIds.addAll(groupIdByUserName);
         if(groupIds.size()==0||groupIds==null){
             return null;
         }
