@@ -47,10 +47,16 @@ public class VoiceParseController {
         Map<String, AiUiDataDto> data = new HashMap<>();
         try{
             AiUiDataDto dataDto = aiUiService.answerAudio(inDto);
-            data.put("aiuiData", dataDto);
-            outBean.setData(data);
-            outBean.setCode(ResultCode.SUCCESS);
-            outBean.setMessage("[语音交互完成]");
+            if (dataDto != null) {
+                data.put("aiuiData", dataDto);
+                outBean.setData(data);
+                outBean.setCode(ResultCode.SUCCESS);
+                outBean.setMessage("[语音交互完成]");
+            } else {
+                outBean.setCode(ResultCode.REPEAT);
+                outBean.setMessage("[数据库无数据]");
+            }
+
         } catch (Exception e){
             outBean.setCode(ResultCode.FAIL);
             outBean.setMessage("[语音交互失败]：请联系技术人员");

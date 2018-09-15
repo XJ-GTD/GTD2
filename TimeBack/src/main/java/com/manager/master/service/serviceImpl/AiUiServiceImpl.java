@@ -54,11 +54,19 @@ public class AiUiServiceImpl implements IAiUiService {
     public AiUiDataDto answerAudio(AiUiInDto inDto) {
 
         AiUiDataDto aiuiData = null;
+        //入参检测
+        //非空检测
+        if (inDto.getContent() == null || "".equals(inDto.getContent()))throw new ServiceException("缺少语音输入");
+        if (inDto.getUserId() == null || "".equals(inDto.getUserId()))throw new ServiceException("缺少用户ID");
+
+        //调用讯飞API
         String outData = AiUiUtil.readAudio(inDto.getContent(), 0);
 
         if ("".equals(outData) || outData == null) {
             throw new ServiceException("语音交互失败");
         }
+
+        //解析讯飞回传数据
         aiuiData = JsonParserUtil.parse(outData);
 
         if (aiuiData == null || "".equals(aiuiData)) {
@@ -66,8 +74,22 @@ public class AiUiServiceImpl implements IAiUiService {
             return  null;
         }
 
+        //时间格式规整
+        String scheduleStartTime = aiuiData.getScheduleStartTime();
+        String scheduleDeadline = aiuiData.getScheduleDeadline();
+        if (scheduleStartTime != null && scheduleStartTime.length() < 11 && !"".equals(scheduleStartTime)) {
+            scheduleStartTime += " 00:00";
+        } else if (scheduleStartTime != null && scheduleStartTime.length() > 11){
+            scheduleStartTime = scheduleStartTime.replace("T", " ");
+        }
+        if (scheduleDeadline != null && scheduleDeadline.length() < 11 && !"".equals(scheduleDeadline)) {
+            scheduleDeadline += " 00:00";
+        } else if (scheduleDeadline != null && scheduleDeadline.length() > 11){
+            scheduleDeadline = scheduleDeadline.replace("T", " ");
+        }
+
         //根据动作做出对应业务逻辑
-        // 1:发布 2:查找
+        // 1:发布日程 2:查找日程
         if (aiuiData.getCode() == 1) {
             ScheduleInDto scheduleData = new ScheduleInDto();
             GroupInDto groupFind = new GroupInDto();
@@ -81,25 +103,14 @@ public class AiUiServiceImpl implements IAiUiService {
             for (String str: aiuiData.getUserNameList()) {
                 groupFind.setGroupName(str);
                 List<GroupOutDto> groupList = groupService.select(groupFind);
-                for (GroupOutDto god: groupList) {
-                    groupIds.add(god.getGroupId());
+                if (groupList != null && groupList.size() != 0) {
+                    for (GroupOutDto god: groupList) {
+                        groupIds.add(god.getGroupId());
+                    }
+                } else {
+
                 }
             }
-
-            //时间格式规整
-            String scheduleStartTime = aiuiData.getScheduleStartTime();
-            String scheduleDeadline = aiuiData.getScheduleDeadline();
-            if (scheduleStartTime != null && scheduleStartTime.length() < 11 && !"".equals(scheduleStartTime)) {
-                scheduleStartTime += " 00:00";
-            } else if (scheduleStartTime != null && scheduleStartTime.length() > 11){
-                scheduleStartTime = scheduleStartTime.replace("T", " ");
-            }
-            if (scheduleDeadline != null && scheduleDeadline.length() < 11 && !"".equals(scheduleDeadline)) {
-                scheduleDeadline += " 00:00";
-            } else if (scheduleDeadline != null && scheduleDeadline.length() > 11){
-                scheduleDeadline = scheduleDeadline.replace("T", " ");
-            }
-
 
             scheduleData.setGroupIds(groupIds);
             scheduleData.setUserId(inDto.getUserId());
@@ -115,8 +126,8 @@ public class AiUiServiceImpl implements IAiUiService {
 
         } else if (aiuiData.getCode() == 2) {
             FindScheduleInDto findSchedule = new FindScheduleInDto();
-            findSchedule.setScheduleStartTime(aiuiData.getScheduleStartTime());
-            findSchedule.setScheduleDeadline(aiuiData.getScheduleDeadline());
+            findSchedule.setScheduleStartTime(scheduleStartTime);
+            findSchedule.setScheduleDeadline(scheduleDeadline);
             findSchedule.setUserId(inDto.getUserId());
 
             // 查询自己创建的日程
