@@ -151,7 +151,6 @@ export class GroupEditPage {
           type: 'radio',
           label: item.labelName,
           value: item.labelId,
-          // checked: true
         });
       }
       alert.addButton('取消');
@@ -206,10 +205,15 @@ export class GroupEditPage {
 
   //保存方法
   saveGroup(){
-    if(this.groupDetail.isaddORedit==false&&this.groupDetail.isaddORedit){
+    if(this.groupDetail==undefined&&this.groupDetail==null){
       //新增页面，调用保存接口
       console.log("保存接口")
-      // this.save();
+      if(this.testCheckboxLabel==undefined&&this.testCheckboxLabel==null){
+        let labelAbnormity = '请先选择标签!'
+        this.showAlert(labelAbnormity);
+      }else {
+        this.save();
+      }
     }else {
       //修改页面，调用修改接口
       console.log("修改接口")
@@ -217,7 +221,19 @@ export class GroupEditPage {
     }
   }
 
+  //弹出确认框 传入要展示的错误信息
+  showAlert(labelAbnormity) {
+    const alert = this.alertCtrl.create({
+      title: '出错了！',
+      subTitle: labelAbnormity,
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+
   save(){
+
     //调用添加群组接口
     this.http.post(AppConfig.GROUP_ADD_GROUP_URL,{
       "userId":this.groupFind.userId,
@@ -231,24 +247,31 @@ export class GroupEditPage {
           content: this.data1.message,
           duration: 1500
         });
-        if (this.labeldata.code == "0") {
-          loader.present();
+        if (this.data1.code == "0") {
           console.log('保存成功')
-          this.navCtrl.push('HomePage');
+          this.navCtrl.push('GroupListPage');
         } else {
-          loader.present();
+          this.showAlert(this.data1.message);
+
         }
     })
   }
 
   //修改
   edit(){
+    //判断又没有修改标签
     if(this.testCheckboxLabel==undefined&&this.testCheckboxLabel==null){
       this.testCheckboxLabel = [];
       for (let item of this.groupDetail.labelList){
         this.testCheckboxLabel.push( item.labelId);
       }
     }
+    //判断有没有修改群成员
+    if(this.testCheckboxMember==undefined&&this.testCheckboxMember==null){
+      this.testCheckboxMember = [];
+      this.testCheckboxMember = this.memberdata;
+    }
+    if(this.testCheckboxMember==undefined&&this.testCheckboxMember==null){}
     this.http.post(AppConfig.GROUP_UPDATE_GROUP_URL,{
       userId:this.groupFind.userId,
       groupId:this.groupDetail.groupId,
@@ -265,9 +288,9 @@ export class GroupEditPage {
         if (this.data1.code == "0") {
           loader.present();
           console.log('修改成功')
-          this.navCtrl.push('HomePage');
+          this.navCtrl.push('GroupDetailPage');
         } else {
-          loader.present();
+          this.showAlert(this.data1.message);
         }
     })
   }
@@ -287,9 +310,9 @@ export class GroupEditPage {
       if(this.data1.code == "0"){
         loader.present();
         console.log('删除群组')
-        this.navCtrl.push('HomePage')
+        this.navCtrl.push('GroupListPage')
       }else {
-        loader.present();
+        this.showAlert(this.data1.message);
       }
     })
   }
