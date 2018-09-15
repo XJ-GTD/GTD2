@@ -135,12 +135,13 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     List<Integer> getGroupIdsForGroupName(String groupName);
 
     /**
-     * 根据标签名模糊查询群组ID
-     * @param labelName
+     * 根据标签ID查询群组ID
+     * @param labelId
      * @return
      */
-    @Query(value = "SELECT GROUP_ID FROM gtd_label INNER JOIN gtd_group_label ON gtd_label.LABEL_ID=gtd_group_label.LABEL_ID WHERE LABEL_NAME LIKE %?1% ",nativeQuery = true)
-    List<Integer> getGroupIdsForLabelName(String labelName);
+    @Query(value = "SELECT GROUP_ID FROM gtd_group_label WHERE LABEL_ID= ?1 ",nativeQuery = true)
+    List<Integer> getGroupIdsForLabelId(int labelId);
+
 
     /**
      * 根据用户名模糊查询群组ID
