@@ -137,9 +137,11 @@ export class XiaojiAssistantService {
    */
   private connetXunfei(url: string) {
     console.log("调用成功:" + this.fileContent);
+    console.log("调用URL:" + url);
     //调用讯飞语音服务
     this.http.post(url, {
-      content: this.fileContent
+      content: this.fileContent,
+      userId: this.paramsService.user.userId
     },{
       headers: {
         "Content-Type": "application/json"
@@ -147,19 +149,18 @@ export class XiaojiAssistantService {
       responseType: 'json'
     })
       .subscribe(data => {
-        console.log(data);
+        console.log("data" + data);
         this.data = data;
         //接收Object JSON数据
-        this.paramsService.voice = this.data.voice;
-        this.paramsService.schedule = JSON.parse(this.data.schedule);
+        this.paramsService.voice = this.data.data.aiuiData;
 
         //分离出需要语音播报的内容
-        this.speechText = "收到消息:" + this.paramsService.schedule.scheduleName;
+        this.speechText = this.paramsService.voice.speech;
 
         console.log("成功:" + this.speechText);
         this.speakText(this.speechText);
-        let activeNav: NavController = this.appCtrl.getActiveNav();
-        activeNav.push(this.redirect);
+        // let activeNav: NavController = this.appCtrl.getActiveNav();
+        // activeNav.push(this.redirect);
       })
   }
 

@@ -68,7 +68,7 @@ public class ScheduleController {
     @ResponseBody
     public BaseOutDto addSchedule(@RequestBody ScheduleInDto inDto) {
         BaseOutDto baseOutDto = new BaseOutDto();
-        int flag;
+        Integer flag;
         try{
             flag = scheduleService.addSchedule(inDto);
             if (flag == 0){
