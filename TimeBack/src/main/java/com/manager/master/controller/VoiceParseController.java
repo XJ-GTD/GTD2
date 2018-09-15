@@ -53,8 +53,11 @@ public class VoiceParseController {
                 outBean.setCode(ResultCode.SUCCESS);
                 outBean.setMessage("[语音交互完成]");
             } else {
+                data.put("aiuiData", dataDto);
+                outBean.setData(data);
                 outBean.setCode(ResultCode.REPEAT);
                 outBean.setMessage("[数据库无数据]");
+                logger.info("[数据库无数据]");
             }
 
         } catch (Exception e){

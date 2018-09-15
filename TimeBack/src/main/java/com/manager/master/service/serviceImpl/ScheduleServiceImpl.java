@@ -31,6 +31,11 @@ public class ScheduleServiceImpl implements IScheduleService {
     private static final String PUSH_MESSAGE_SCHEDULE_CREATE = "接受要注意守约哦";       //创建日程/添加参与人 推送
     private static final String PUSH_MESSAGE_SCHEDULE_UPDATE = "日程内容已经改变，请注意查看";       //创建日程/添加参与人 推送
     private static final String PUSH_MESSAGE_SCHEDULE_DELETE = "参与人已删除日程";       //删除日常推送
+
+    private static final Integer DB_LABEL_GENERAL = 4;       //一般
+    private static final Integer DB_LABEL_IMPORT = 5;       //重要
+    private static final Integer DB_LABEL_URGENCY = 6;       //紧急
+
     private Logger logger = LogManager.getLogger(this.getClass());
 
     @Resource
@@ -391,22 +396,22 @@ public class ScheduleServiceImpl implements IScheduleService {
             }
             List<Timestamp> remindList = new ArrayList<>(); // 提醒时间列表
             Integer scheduleLabelId = 0;
-            Integer dbscheduleLabel = 4;
+            Integer dbscheduleLabel = DB_LABEL_GENERAL;
             for(GtdScheduleLabelEntity gtdScheduleLabelEntity : dbScheduleLabel){
                 Integer id = gtdScheduleLabelEntity.getScheduleLabelId();
                 Integer label = gtdScheduleLabelEntity.getLabelId();
-                if(label == 4){
-                    dbscheduleLabel = 4;
+                if(label == DB_LABEL_GENERAL){
+                    dbscheduleLabel = DB_LABEL_GENERAL;
                     scheduleLabelId = id;
                     remindList.add(CommonMethods.dateToStamp(oneHour));
-                } else if(label == 5){
-                    dbscheduleLabel = 5;
+                } else if(label == DB_LABEL_IMPORT){
+                    dbscheduleLabel = DB_LABEL_IMPORT;
                     scheduleLabelId = id;
                     remindList.add(CommonMethods.dateToStamp(tenMinutes));
                     remindList.add(CommonMethods.dateToStamp(twoHour));
                     remindList.add(CommonMethods.dateToStamp(oneDay));
-                } else if(label == 6){
-                    dbscheduleLabel = 6;
+                } else if(label == DB_LABEL_URGENCY){
+                    dbscheduleLabel = DB_LABEL_URGENCY;
                     scheduleLabelId = id;
                     remindList.add(CommonMethods.dateToStamp(tenMinutes));
                     remindList.add(CommonMethods.dateToStamp(halfHour));
@@ -742,8 +747,8 @@ public class ScheduleServiceImpl implements IScheduleService {
         int createId = inDto.getCreateId();                      		    // 更新人
         String createDate = inDto.getCreateDate();                 		    // 更新时间
 
-        List groupIds = inDto.getGroupIds();                          		// 群组 List
-        List labelIds = inDto.getLabelIds();                          		// 标签 List
+        List<Integer> groupIds = inDto.getGroupIds();                          		// 群组 List
+        List<Integer> labelIds = inDto.getLabelIds();                          		// 标签 List
 
         String date = dateFormat();
         // 入参检查     // 入参必须项检查
@@ -872,14 +877,48 @@ public class ScheduleServiceImpl implements IScheduleService {
         Set<Integer> setGroupUserId = list.stream().map(GtdGroupMemberEntity::getUserId).collect(Collectors.toSet());
         //setGroupUserId.forEach(e -> logger.info(e));   // 打印
 
+        //添加提醒时间
+        //设置时间
+        // 开始前 10分钟
+        String tenMinutes = CommonMethods.getBeforeTime(scheduleStartTime,10*60*1000L);
+        // 开始前 半小时
+        String halfHour = CommonMethods.getBeforeTime(scheduleStartTime,30*60*1000L);
+        // 开始前 一小时
+        String oneHour = CommonMethods.getBeforeTime(scheduleStartTime,60*60*1000L);
+        // 开始前 两小时
+        String twoHour = CommonMethods.getBeforeTime(scheduleStartTime,2*60*60*1000L);
+        // 开始前 一天
+        String oneDay =  CommonMethods.getBeforeTime(scheduleStartTime,24*60*60*1000L);
+
+        // 新传入日程标签
+        List<Timestamp> remindList = new ArrayList<>(); // 提醒时间列表
+        for(Integer labelList : labelIds){
+            if(labelList.equals(DB_LABEL_GENERAL)){
+                remindList.add(CommonMethods.dateToStamp(oneHour));
+            } else if(labelList.equals(DB_LABEL_IMPORT)){
+                remindList.add(CommonMethods.dateToStamp(tenMinutes));
+                remindList.add(CommonMethods.dateToStamp(twoHour));
+                remindList.add(CommonMethods.dateToStamp(oneDay));
+            } else if(labelList.equals(DB_LABEL_URGENCY)){
+                remindList.add(CommonMethods.dateToStamp(tenMinutes));
+                remindList.add(CommonMethods.dateToStamp(halfHour));
+                remindList.add(CommonMethods.dateToStamp(oneHour));
+                remindList.add(CommonMethods.dateToStamp(twoHour));
+                remindList.add(CommonMethods.dateToStamp(oneDay));
+            }
+        }
+        //插入参与人表
         for (Integer i:setGroupUserId){
             GtdSchedulePlayersEntity schedulePlayersEntity = new GtdSchedulePlayersEntity();// 日程参与人表
+
             // 日程参与人 绑定
             schedulePlayersEntity.setScheduleId(scheduleEntity.getScheduleId());
             schedulePlayersEntity.setCreateId(createId);
             schedulePlayersEntity.setPlayersStatus(3);
             schedulePlayersEntity.setUserId(i);
             schedulePlayersEntity.setCreateDate(CommonMethods.dateToStamp(createDate));
+
+            schedulePlayersEntity = schedulePlayersRepository.saveAndFlush(schedulePlayersEntity);
             try{
                 // 日程参与人插入
                 schedulePlayersRepository.save(schedulePlayersEntity);
@@ -887,7 +926,16 @@ public class ScheduleServiceImpl implements IScheduleService {
             }catch (Exception e){
                 throw new ServiceException("语法错误");
             }
+
+            for (Timestamp ts: remindList) {
+                remindJpaRepository.insertIntoRemind(schedulePlayersEntity.getPlayersId(), ts, userId, CommonMethods.dateToStamp(createDate),null, null);
+            }
         }
+
+
+
+
+
 
         //  查询发布人名称
         String createName = null;
@@ -897,10 +945,7 @@ public class ScheduleServiceImpl implements IScheduleService {
             throw new ServiceException("----  语法错误");
         }
         // 参与用户ID集合
-        List<Integer> playersIdList = new ArrayList<>();
-        for(Integer playerId : setGroupUserId){
-            playersIdList.add(playerId);
-        }
+        List<Integer> playersIdList = new ArrayList<>(setGroupUserId);
         // 发送提醒 - 用户日程添加提醒
         PushOutDto pushOutDto = new PushOutDto();   // 推送消息
         PushInDto pushInDto = new PushInDto();      // 推送目标

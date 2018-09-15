@@ -16,6 +16,7 @@ public class AiUiDataDto {
     private String scheduleStartTime;					//开始时间
     private String scheduleDeadline;					//结束时间
     private String speech;      //讯飞语音播报字段
+    private String userText;      //用户语音播报字段
 
     private List<FindScheduleOutDto> scheduleCreateList;       // 查询自己创建的日程
     private List<FindScheduleOutDto> scheduleJoinList;      // 查询自己参与的日程
@@ -82,5 +83,13 @@ public class AiUiDataDto {
 
     public void setScheduleJoinList(List<FindScheduleOutDto> scheduleJoinList) {
         this.scheduleJoinList = scheduleJoinList;
+    }
+
+    public String getUserText() {
+        return userText;
+    }
+
+    public void setUserText(String userText) {
+        this.userText = userText;
     }
 }

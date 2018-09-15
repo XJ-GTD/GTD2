@@ -8,6 +8,8 @@ import com.manager.master.service.IScheduleService;
 import com.manager.util.AiUiUtil;
 import com.manager.util.JsonParserUtil;
 import com.manager.util.ResultCode;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,8 @@ import java.util.*;
 @Service
 @Transactional
 public class AiUiServiceImpl implements IAiUiService {
+
+    private Logger logger = LogManager.getLogger(this.getClass());
 
     private final IScheduleService scheduleService;
     private final IGroupService groupService;
@@ -63,6 +67,7 @@ public class AiUiServiceImpl implements IAiUiService {
         String outData = AiUiUtil.readAudio(inDto.getContent(), 0);
 
         if ("".equals(outData) || outData == null) {
+            logger.info("调用讯飞API失败");
             throw new ServiceException("语音交互失败");
         }
 
@@ -70,8 +75,8 @@ public class AiUiServiceImpl implements IAiUiService {
         aiuiData = JsonParserUtil.parse(outData);
 
         if (aiuiData == null || "".equals(aiuiData)) {
-//            throw new ServiceException("语音数据解析失败");
-            return  null;
+            logger.info("语音数据解析失败");
+            throw new ServiceException("服务器出错");
         }
 
         //时间格式规整
@@ -108,7 +113,9 @@ public class AiUiServiceImpl implements IAiUiService {
                         groupIds.add(god.getGroupId());
                     }
                 } else {
-
+                    aiuiData.setSpeech("没有找到该参与人，请尝试添加参与后重新发布");
+                    logger.info("[数据库无数据]");
+                    return aiuiData;
                 }
             }
 

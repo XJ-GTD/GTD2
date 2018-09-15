@@ -43,10 +43,11 @@ public class JsonParserUtil {
 
 				//用户语音
 				String userText = jsonArray.getString("text");
+				aiUiData.setUserText(userText);
 				//语音播报字段
 				JSONObject jsonAnswer = jsonIntent.getJSONObject("answer");
-				String answer = jsonAnswer.getString("text");
-				aiUiData.setSpeech(answer);
+				String speech = jsonAnswer.getString("text");
+				aiUiData.setSpeech(speech);
 
 
 				//获取语义目的动作
