@@ -46,6 +46,9 @@ public class WebSocketServiceImpl implements IWebSocketService {
 
         for (Integer id: memberUserIds) {
             String accountQueue = groupJpaRepository.findAccountQueue(id);
+            if (accountQueue == null || "".equals(accountQueue)) {
+                return 1;
+            }
             producerUtil.sendTheTarget(data, accountQueue);
         }
 

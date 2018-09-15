@@ -7,14 +7,14 @@ import com.manager.master.service.IGroupService;
 import com.manager.master.service.IScheduleService;
 import com.manager.util.AiUiUtil;
 import com.manager.util.JsonParserUtil;
-import com.manager.util.ResultCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 语义解析方法接口实现类
@@ -107,13 +107,13 @@ public class AiUiServiceImpl implements IAiUiService {
             List<Integer> groupIds = new ArrayList<>();
             for (String str: aiuiData.getUserNameList()) {
                 groupFind.setGroupName(str);
-                List<GroupOutDto> groupList = groupService.select(groupFind);
+                List<GroupOutDto> groupList = groupService.getListGroupByMessage(groupFind);
                 if (groupList != null && groupList.size() != 0) {
                     for (GroupOutDto god: groupList) {
                         groupIds.add(god.getGroupId());
                     }
                 } else {
-                    aiuiData.setSpeech("没有找到该参与人，请尝试添加参与后重新发布");
+                    aiuiData.setSpeech("没有找到该参与人，请尝试添加参与人后重新发布");
                     logger.info("[数据库无数据]");
                     return aiuiData;
                 }
@@ -126,9 +126,14 @@ public class AiUiServiceImpl implements IAiUiService {
             scheduleData.setScheduleDeadline(scheduleDeadline);
             scheduleData.setLabelIds(labelIds);
 
+
             Integer flag = scheduleService.addSchedule(scheduleData);
-            if (flag != 0){
-                throw new ServiceException("创建失败");
+            if (flag == 1){
+                aiuiData.setSpeech("参与人尚未注册，发布失败");
+                logger.info("创建成功");
+                return aiuiData;
+            } else if (flag == 0) {
+                logger.info("创建成功");
             }
 
         } else if (aiuiData.getCode() == 2) {
