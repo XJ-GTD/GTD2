@@ -97,10 +97,9 @@ public class GroupServicelmpl implements IGroupService {
             } else {
                 throw new ServiceException("请输入正确的查询类型");
             }
-            if (list == null || list.size() == 0 ) {
-               return null;
-            }
-
+//            if (list == null || list.size() == 0 ) {
+//               return null;
+//            }
 
         List<GtdGroupEntity>  res=new ArrayList<>();
         for(GtdGroupEntity g : list){
@@ -184,28 +183,23 @@ public class GroupServicelmpl implements IGroupService {
         logger.info("参与人详情查询 用户Id " + userId + "群组ID :" + groupId);
         if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
         if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
-        List<GtdGroupMemberEntity> g = null;
+
+        GtdGroupEntity groupEntity=null;
         try {
-            g = groupMemberRepository.findMemberByGroupId(groupId); //获取该群组所有群成员
+            groupEntity = groupJpaRepository.getOne(groupId);//获取当前群组
+            if(groupEntity==null)throw new ServiceException();
+        }catch (Exception e){
+            throw new ServiceException("该群组不存在");
+        }
+
+        List<GtdGroupMemberEntity> g = groupMemberRepository.findMemberByGroupId(groupId); //获取该群组所有群成员
             if(g==null||g.size()==0){
                 throw new ServiceException("该群组下没有成员");
             }
-        } catch (Exception e) {
-            throw new ServiceException("查询失败");
-        }
 
 //        for(GtdGroupMemberEntity d:g) {
 //            System.out.println(d.getUserName());
 //        }
-        GtdGroupEntity groupEntity = null;
-        try {
-            groupEntity = groupJpaRepository.getOne(groupId);//获取当前群组
-            if(groupEntity==null){
-                throw new ServiceException("群组不存在");
-            }
-        } catch (Exception e) {
-            throw new ServiceException("语法错误");
-        }
 
         GroupOutDto group = new GroupOutDto();
         group.setGroupId(groupId);
@@ -233,13 +227,13 @@ public class GroupServicelmpl implements IGroupService {
 
 
     /**
-     * 根据条件查询
+     * 根据条件模糊查询群组
      *
      * @param inDto
      * @return
      */
     @Override
-    public List<GroupOutDto> select(GroupInDto inDto) {
+    public List<GroupOutDto> getListGroupByMessage(GroupInDto inDto) {
         String message = inDto.getMessage();
         logger.info("根据条件查询 message"+message);
         if(message==null||"".equals(message))throw new ServiceException("请传入查询参数");
@@ -256,6 +250,9 @@ public class GroupServicelmpl implements IGroupService {
         if(groupIdByGroupName!=null)groupIds.addAll(groupIdByGroupName);
         if(groupIdByLabelName!=null)groupIds.addAll(groupIdByLabelName);
         if(groupIdByUserName!=null)groupIds.addAll(groupIdByUserName);
+        if(groupIds.size()==0||groupIds==null){
+            return null;
+        }
         //遍历所有群组
         for(Integer i:groupIds){
             GtdGroupEntity groupEntity=groupJpaRepository.getOne(i);
@@ -307,19 +304,16 @@ public class GroupServicelmpl implements IGroupService {
         if(findType==1){
             if (groupId != 0 && !("".equals(groupId))) throw new ServiceException("参数错误");
         }
-        List<Integer> groupIds=null;
-        try {
-             groupIds=groupJpaRepository.findGroupIdByUserId(userId);//获取用户下所有群组ID
-            if(groupIds==null||groupIds.size()==0) throw new ServiceException("该用户下没有群组");
-        }catch (Exception e){
-            throw new ServiceException("查询群组ID失败");
-        }
+
+        List<Integer> groupIds=groupJpaRepository.findGroupIdByUserId(userId);//获取用户下所有群组ID
+        if(groupIds==null||groupIds.size()==0) throw new ServiceException("该用户下没有群组");
+
         List<GtdGroupMemberEntity> groupMemberEntities=null;
         if(findType==2) {
             //获取该群组下所有群成员
             groupMemberEntities = groupMemberRepository.findMemberByGroupId(groupId);
             if (groupMemberEntities == null || groupMemberEntities.size() == 0 ) {
-                throw new ServiceException("该群组群成员数据为空");
+                findType=1;
             }
         }
 

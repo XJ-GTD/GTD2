@@ -20,8 +20,8 @@ public interface IGroupService {
     //群组参与人详情
     GroupOutDto selectMessage(GroupFindInDto inDto);
 
-    //查询群组
-    List<GroupOutDto> select(GroupInDto inDto);
+    //按条件模糊查询群组
+    List<GroupOutDto> getListGroupByMessage(GroupInDto inDto);
 
     //查詢群成員
     List<GroupMemberOutDto> findMember(GroupFindInDto inDto);
