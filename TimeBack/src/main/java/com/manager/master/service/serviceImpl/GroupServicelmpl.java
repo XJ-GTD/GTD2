@@ -229,7 +229,7 @@ public class GroupServicelmpl implements IGroupService {
      */
     @Override
     public List<GroupOutDto> getListGroupByMessage(GroupInDto inDto) {
-        List<Integer> labelId=inDto.getLabelId();
+        Integer labelId=inDto.getLabelId();
         String groupName=inDto.getGroupName();
         logger.info("根据条件查询 labelId:"+labelId+"groupName:"+groupName);
         if(labelId==null){
@@ -248,7 +248,7 @@ public class GroupServicelmpl implements IGroupService {
         if(labelId==null) {
              groupIds = groupJpaRepository.getGroupIdsForGroupName(groupName);
         }else {
-             groupIds = groupJpaRepository.getGroupIdsForLabelId(labelId.get(0));
+             groupIds = groupJpaRepository.getGroupIdsForLabelId(labelId);
         }
         if(groupIds.size()==0){
             return null;
@@ -376,7 +376,7 @@ public class GroupServicelmpl implements IGroupService {
     @Override
     public int addGroup(GroupInDto inDto) {
         int userId = inDto.getUserId();
-        List<Integer> labelId = inDto.getLabelId();
+        List<Integer> labelId = inDto.getLabelIds();
         String groupName = inDto.getGroupName();
         String groupHeadImgUrl = inDto.getGroupHeadImgUrl();
         List<GroupMemberDto> member = inDto.getMember();
