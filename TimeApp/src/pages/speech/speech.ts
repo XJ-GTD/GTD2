@@ -89,7 +89,7 @@ export class SpeechPage {
 
   //启动语音助手
   startXiaoJi() {
-
+    this.navCtrl.push('CharPage');
     this.xiaojiSpeech.listenAudio('ScheduleAddPage');
 
   }

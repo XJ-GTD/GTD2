@@ -15,21 +15,79 @@
 
 <ion-content padding>
 
-  <div *ngFor="let message of messages" class="message-wrapper" on-hold="onMessageHold($event, $index, message)">
-    <!-- 判断消息是发送 -->
+  <!-- 绑定需要用到的数据 this.messages = data  -->
+  <!--<div *ngIf="message !=undefined&&message!=null" on-hold="onMessageHold($event, $index, message)">-->
+    <!--&lt;!&ndash; 判断无数据对话 &ndash;&gt;-->
+    <!--<div *ngIf="dataType==0">-->
+
+      <!--&lt;!&ndash; 展示用户语音播报字段 &ndash;&gt;-->
+      <!--<div class="chat-bubble right slide-right">-->
+        <!--<div class="message" [innerHTML]="message.userText" autolinker></div>-->
+      <!--</div>-->
+
+      <!--&lt;!&ndash; 展示讯飞语音播报字段 &ndash;&gt;-->
+      <!--<div class="chat-bubble right slide-right">-->
+        <!--<div class="message" [innerHTML]="message.speech" autolinker></div>-->
+      <!--</div>-->
+
+    <!--</div>-->
+    <!--&lt;!&ndash; 判断单个详情 &ndash;&gt;-->
+    <!--<div *ngIf="dataType==1">-->
+      <!--&lt;!&ndash; 展示用户语音播报字段 &ndash;&gt;-->
+      <!--<div class="message" [innerHTML]="message.userText" autolinker></div>-->
+      <!--<div class="chat-bubble right slide-right">-->
+        <!--<div class="message" [innerHTML]="message.speech" autolinker></div>-->
+        <!--<div class="message" [innerHTML]="message.scheduleName"></div>-->
+      <!--</div>-->
+
+
+    <!--</div>-->
+    <!--&lt;!&ndash; 判断列表list &ndash;&gt;-->
+    <!--<div *ngiv>"dataType==2">-->
+      <!--&lt;!&ndash; 展示用户语音播报字段 &ndash;&gt;-->
+      <!--<div class="message" [innerHTML]="message.userText" autolinker></div>-->
+      <!--&lt;!&ndash; 展示讯飞语音播报字段 &ndash;&gt;-->
+      <!--<div class="message" [innerHTML]="message.speech" autolinker></div>-->
+
+      <!--<ion-label>{{message.scheduleName}}</ion-label>&lt;!&ndash; 日程后面写返回数据头 &ndash;&gt;-->
+      <!--<button ion-item *ngFor="let scheduleList of scheduleJoinList">-->
+        <!--<h2>{{scheduleList.scheduleName}}</h2>-->
+        <!--<p *ngIf="scheduleList.scheduleDeadline != null && scheduleList.scheduleDeadline != '' ;else deadLine">-->
+          <!--{{scheduleList.scheduleStartTime}} - {{scheduleList.scheduleDeadline}}-->
+        <!--</p>-->
+        <!--<ng-template #deadLine>-->
+          <!--<p *ngIf="scheduleList.scheduleStartTime == null || scheduleList.scheduleStartTime == '' ;else startTime">-->
+            <!--截止于{{scheduleList.scheduleDeadline}}-->
+          <!--</p>-->
+          <!--<ng-template #startTime>-->
+            <!--<p>{{scheduleList.scheduleStartTime}}开始</p>-->
+          <!--</ng-template>-->
+        <!--</ng-template>-->
+      <!--</button>-->
+    <!--</div>-->
+
+  <!--</div>-->
+
+
+  <!-- 分隔符 -->
+
+  <div *ngFor="let message of messages" on-hold="onMessageHold($event, $index, message)">
+
+
+
+
+     <!--判断消息是发送-->
     <div *ngIf="user._id !== message.userId">
-      <!--  wave-->
       <div class="chat-bubble left slide-left">
-        <div class="message" [innerHTML]="message.text" autolinker></div>
-        <div class="message-detail">
-          <span (click)="viewProfile(message)" class="bold"></span>
+        <div>
+          <div class="message" [innerHTML]="message.speech" autolinker></div>
         </div>
 
 
         <!--  做if判断是否显示日历 -->
-        <div>
+        <div *ngIf="dataType==2">
           <ion-label>今日日程</ion-label><!-- 日程后面写返回数据头 -->
-          <button ion-item *ngFor="let scheduleList of scheduleList">
+          <button ion-item *ngFor="let scheduleList of scheduleJoinList">
             <h2>{{scheduleList.scheduleName}}</h2>
             <p *ngIf="scheduleList.scheduleDeadline != null && scheduleList.scheduleDeadline != '' ;else deadLine">
               {{scheduleList.scheduleStartTime}} - {{scheduleList.scheduleDeadline}}
@@ -46,14 +104,36 @@
         </div>
 
         <!--  做if判断是否显示群组 -->
-        <ion-card>
+        <ion-card *ngIf="dataType==1">
           <ion-card-content>
+            <ion-item>
+              <ion-label floating>日程标题</ion-label>
+              <ion-input type="text" disabled [(ngModel)]="schedule.scheduleName"></ion-input>
+            </ion-item>
 
+            <ion-item>
+              <ion-label floating>参与人</ion-label>
+              <ion-select disabled [(ngModel)]="schedule.groupIds" multiple="true">
+                <div *ngFor="let gp of group">
+                  <ion-option value="{{gp.groupId}}">{{gp.groupName}}</ion-option>
+                </div>
+              </ion-select>
+            </ion-item>
+
+            <ion-item>
+              <ion-label floating>开始时间</ion-label>
+              <ion-datetime disabled displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleStartTime"></ion-datetime>
+            </ion-item>
+
+            <ion-item>
+              <ion-label floating>结束时间</ion-label>
+              <ion-datetime disabled displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleDeadline"></ion-datetime>
+            </ion-item>
           </ion-card-content>
 
           <!--<ion-item>-->
-            <!--<button ion-button clear item-start>发布</button>-->
-            <!--<button ion-button clear item-end>取消</button>-->
+          <!--<button ion-button clear item-start>发布</button>-->
+          <!--<button ion-button clear item-end>取消</button>-->
           <!--</ion-item>-->
         </ion-card>
 
@@ -64,10 +144,7 @@
     <!-- 判断消息是发送 -->
     <div *ngIf="user._id === message.userId">
       <div class="chat-bubble right slide-right">
-        <div class="message" [innerHTML]="message.text" autolinker></div>
-        <div class="message-detail">
-          <span (click)="viewProfile(message)" class="bold"></span>
-        </div>
+        <div class="message" [innerHTML]="message.userText" autolinker></div>
       </div>
     </div>
     <div class="cf"></div>

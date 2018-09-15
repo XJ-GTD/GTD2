@@ -3,6 +3,7 @@ import {Content, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {FormBuilder, FormControl} from "@angular/forms";
 import {ScheduleModel} from "../../model/schedule.model";
 import {ParamsService} from "../../service/params.service";
+import {XiaojiAssistantService} from "../../service/xiaoji-assistant.service";
 
 /**
  * Generated class for the CharPage page.
@@ -32,7 +33,7 @@ export class CharPage {
 
   doneLoading = false;
 
-  messages = [ //要展示的数据系统和用户
+  messages = [ //获取到的数据
     // {
     //   _id: 1,
     //   date: new Date(),
@@ -91,7 +92,8 @@ export class CharPage {
   constructor(public navParams: NavParams,
               public navCtrl: NavController,
               public formBuilder: FormBuilder,
-              private paramsService: ParamsService) {
+              private paramsService: ParamsService,
+              private xiaojiSpeech: XiaojiAssistantService) {
     this.messageForm = formBuilder.group({
       message: new FormControl('')
     });
@@ -117,6 +119,12 @@ export class CharPage {
   send(message) {
     if (message && message !== '') {
       // this.messageService.sendMessage(chatId, message);
+
+      this.xiaojiSpeech.listenText(message);
+       this.messages = this.paramsService.voice;
+
+
+
 
       const messageData =
         {
