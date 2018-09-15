@@ -15,7 +15,15 @@
 
 <ion-content padding>
 
-  <button ion-button (click)="groupListShow()">参与人列表</button>
+  <ion-fab top right edge #fab1>
+    <button ion-fab mini ><ion-icon name="add"></ion-icon></button>
+    <ion-fab-list>
+      <button ion-fab (click)="openSocial(1, fab1)"><ion-icon name="contacts"></ion-icon></button>
+      <button ion-fab (click)="openSocial(2, fab1)"><ion-icon name="logo-twitter"></ion-icon></button>
+      <button ion-fab (click)="openSocial(3, fab1)"><ion-icon name="logo-vimeo"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
+
   <ion-card>
     <ion-card-content>
 
@@ -27,8 +35,6 @@
     </ion-item>
   </ion-card>
 
-  <button ion-button (click)="scheduleShow()">查询日程</button>
-  <button ion-button (click)="addSchedule()">添加日程</button>
 
   <button id="start" ion-button outline icon-start (click)="startXiaoJi()">
     <ion-icon name="ionitron"></ion-icon>

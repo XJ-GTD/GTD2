@@ -24,9 +24,9 @@
 
     <ion-item>
       <ion-label floating>参与人</ion-label>
-      <ion-select disabled [(ngModel)]="schedule.groupIds" multiple="true">
-        <div *ngFor="let gp of group">
-          <ion-option value="{{gp.groupId}}">{{gp.groupName}}</ion-option>
+      <ion-select disabled [(ngModel)]="schedule.group" multiple="true">
+        <div *ngFor="let gp of schedule.group">
+          <ion-option value="{{gp.groupId}}" >{{gp.groupName}}</ion-option>
         </div>
       </ion-select>
     </ion-item>
@@ -43,16 +43,19 @@
 
     <ion-item>
       <ion-label floating>标签</ion-label>
-      <ion-select disabled (focus)="findLabel()" [(ngModel)]="schedule.labelIds" multiple="true">
-        <div *ngFor="let lb of label">
-          <ion-option value="{{lb.labelId}}">{{lb.labelName}}</ion-option>
+      <ion-select disabled (focus)="findLabel()" [(ngModel)]="schedule.labelName" multiple="true">
+        <div *ngFor="let lb of schedule.labelName">
+          <ion-option value="{{lb}}">{{lb}}</ion-option>
         </div>
       </ion-select>
     </ion-item>
 
-    <div>
-      <button ion-button outline (click)="newProject()">确认</button><button ion-button outline (click)="onBack()">取消</button>
-    </div>
+    <button ion-button (click)="setAlarm()">设置提醒闹钟</button>
+
+    <!--
+        <div>
+          <button ion-button outline (click)="newProject()">确认</button><button ion-button outline (click)="onBack()">取消</button>
+        </div>-->
 
   </ion-list>
 

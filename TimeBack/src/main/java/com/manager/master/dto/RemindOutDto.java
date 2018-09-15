@@ -8,6 +8,7 @@ package com.manager.master.dto;
 public class RemindOutDto {
     private Integer remindId;   // 提醒时间ID
     private String remindDate;  // 提醒时间日期
+    private String scheduleName;  //日程主题
 
     public Integer getRemindId() {
         return remindId;
@@ -31,5 +32,13 @@ public class RemindOutDto {
                 "remindId=" + remindId +
                 ", remindDate='" + remindDate + '\'' +
                 '}';
+    }
+
+    public String getScheduleName() {
+        return scheduleName;
+    }
+
+    public void setScheduleName(String scheduleName) {
+        this.scheduleName = scheduleName;
     }
 }

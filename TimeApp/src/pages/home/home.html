@@ -16,22 +16,19 @@
   <div class="row" style="width: 100%;height: 100%">
     <div style="width: 100%;height: 40%">
       <table style="width: 100%;height: 100%">
-        <caption class="text-center" style="background:#d9edf7;height: 15%;font-weight:900;color:black;">九月日历</caption>
+        <caption class="text-center" style="background:#d9edf7;height: 15%;font-weight:900;color:black;">{{year}}年{{month}}月{{day}}</caption>
         <thead>
-          <tr>
-            <th>Week</th>
-            <th>Mon</th>
-            <th>Tue</th>
-            <th>Wed</th>
-            <th>Thu</th>
-            <th>Fri</th>
-            <th>Sat</th>
+          <tr *ngFor="let w of weekDay">
+            <th>{{w}}</th>
           </tr>
         </thead>
         <tbody style="text-align: center">
-          <tr>
+          <tr *ngFor="let day of monthDay">
             <td style="background: #d9edf7">
 
+            </td>
+            <td style="background: #d9edf7">
+              5
             </td>
             <td style="background: #d9edf7">
               5
@@ -52,121 +49,9 @@
               10
             </td>
           </tr>
-          <tr >
-            <td style="background: #d9edf7">
-              11
-            </td>
-            <td style="background: #d9edf7">
-              12
-            </td>
-            <td style="background: #d9edf7">
-              13
-            </td>
-            <td style="background: #d9edf7">
-              14
-            </td>
-            <td style="background: #d9edf7">
-              15
-            </td>
-            <td style="background: #d9edf7">
-              16
-            </td>
-            <td style="background: #d9edf7">
-              17
-            </td>
 
-          </tr>
-          <tr >
-            <td style="background: #d9edf7">
-              11
-            </td>
-            <td style="background: #d9edf7">
-              12
-            </td>
-            <td style="background: #d9edf7">
-              13
-            </td>
-            <td style="background: #d9edf7">
-              14
-            </td>
-            <td style="background: #d9edf7">
-              15
-            </td>
-            <td style="background: #d9edf7">
-              16
-            </td>
-            <td style="background: #d9edf7">
-              17
-            </td>
-
-          </tr>
-          <tr >
-            <td style="background: #d9edf7">
-              11
-            </td>
-            <td style="background: #d9edf7">
-              12
-            </td>
-            <td style="background: #d9edf7">
-              13
-            </td>
-            <td style="background: #d9edf7">
-              14
-            </td>
-            <td style="background: #d9edf7">
-              15
-            </td>
-            <td style="background: #d9edf7">
-              16
-            </td>
-            <td style="background: #d9edf7">
-              17
-            </td>
-
-          </tr>
-          <tr >
-            <td style="background: #d9edf7">
-              11
-            </td>
-            <td style="background: #d9edf7">
-              12
-            </td>
-            <td style="background: #d9edf7">
-              13
-            </td>
-            <td style="background: #d9edf7">
-              14
-            </td>
-            <td style="background: #d9edf7">
-
-            </td>
-            <td style="background: #d9edf7">
-
-            </td>
-            <td style="background: #d9edf7">
-
-            </td>
-
-          </tr>
         </tbody>
       </table>
-      <!--<div class="row" style="width: 100%">-->
-        <!--<div class="col" style="background: blue;border: 1px solid black">-->
-          <!--法定假日-->
-        <!--</div>-->
-        <!--<div class="col" style="background:yellow;border:1px solid black;">-->
-          <!--补班-->
-        <!--</div>-->
-        <!--<div class="col" style="background:violet;border:1px solid black;">-->
-          <!--休假-->
-        <!--</div>-->
-        <!--<div class="col" style="background:red;border:1px solid black;">-->
-          <!--星期六日-->
-        <!--</div>-->
-        <!--<div class="col" style="background:#d9edf7;border:1px solid black;">-->
-          <!--周数-->
-        <!--</div>-->
-      <!--</div>-->
     </div>
   </div>
 

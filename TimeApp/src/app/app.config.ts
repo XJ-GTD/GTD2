@@ -21,9 +21,6 @@ export class AppConfig {
   /* RabbitMq SockJs */
   public static RABBITMQ_SJ_URL: string = "http://192.168.0.219:15674/stomp";
 
-  /* 讯飞语音*/
-  // private static XUNFEI_URL: string = "http://192.168.0.176:8081/xiaoji";
-
   /* Controller */
   private static USER_URL: string = AppConfig.REQUEST_URL + "/user";    //用户类
 
@@ -68,6 +65,8 @@ export class AppConfig {
   public static SCHEDULE_FIND_URL: string = AppConfig.SCHEDULE_URL + "/find";    //查询日程 POST
 
   public static SCHEDULE_UPDATE_STATE_URL: string = AppConfig.SCHEDULE_URL + "/update_state";  //更新日程状态
+
+  public static SCHEDULE_TODAY_REMIND_URL: string = AppConfig.SCHEDULE_URL + "/find_today_remind";  //查询今天所有提醒时间
 
   //webSocket
   public static WEB_SOCKET_TASK_URL: string = AppConfig.WEB_SOCKET_URL + "/task";    //mq消息接收

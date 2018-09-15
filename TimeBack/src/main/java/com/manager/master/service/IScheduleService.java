@@ -61,4 +61,10 @@ public interface IScheduleService {
      */
     int statusSchedule(ScheduleInDto inDto);
 
+    /**
+     * 查询用户当天的所有提醒时间
+     * @param userId
+     * @return
+     */
+    List<RemindOutDto> findAllRemindTime(ScheduleInDto userId);
 }

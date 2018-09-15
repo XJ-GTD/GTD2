@@ -2,14 +2,10 @@ package com.manager.util;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.manager.master.dto.AiUiDataDto;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
-import org.json.JSONTokener;
+import com.manager.master.dto.AiUiDataOutDto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Json结果解析类
@@ -24,8 +20,8 @@ public class JsonParserUtil {
 	 * @param json
 	 * @return
 	 */
-	public static AiUiDataDto parse(String json) {
-		AiUiDataDto aiUiData = new AiUiDataDto();
+	public static AiUiDataOutDto parse(String json) {
+		AiUiDataOutDto aiUiData = new AiUiDataOutDto();
 
 		try {
 

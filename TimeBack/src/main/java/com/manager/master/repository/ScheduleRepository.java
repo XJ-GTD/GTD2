@@ -157,4 +157,20 @@ public class ScheduleRepository {
         String  sql = "SELECT SCHEDULE_STARTTIME FROM gtd_schedule WHERE SCHEDULE_ID = " + scheduleId;
         return  em.createNativeQuery(sql).getSingleResult().toString();
     }
+
+    /**
+     * 查询用户所有提醒时间
+     * @param userId
+     * @return
+     */
+    public List<Object[]> findAllRemindTime(Integer userId, String startTime, String deadline) {
+        String sql = " SELECT RM.REMIND_DATE, SS.SCHEDULE_NAME " +
+                " FROM gtd_remind RM " +
+                " INNER JOIN gtd_schedule_players SP ON RM.PLAYERS_ID = SP.PLAYERS_ID " +
+                " INNER JOIN gtd_schedule SS ON SS.SCHEDULE_ID = SP.SCHEDULE_ID " +
+                " WHERE DATE_FORMAT(REMIND_DATE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('"+ deadline +"','%Y-%m-%d %H:%i') " +
+                " AND DATE_FORMAT(REMIND_DATE,'%Y-%m-%d %H:%i') >= DATE_FORMAT('"+ startTime +"','%Y-%m-%d %H:%i')";
+
+        return em.createNativeQuery(sql).getResultList();
+    }
 }

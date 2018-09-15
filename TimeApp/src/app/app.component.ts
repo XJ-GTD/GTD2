@@ -22,7 +22,6 @@ export class MyApp {
   // make HelloIonicPage the root (or first) page
   rootPage:any;
   pages: Array<{title: string, component: any}>;
-  backButtonPressed: boolean = false; //返回键是否已c触发
 
   constructor(
     public platform: Platform,

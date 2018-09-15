@@ -1,5 +1,5 @@
-import {Injectable} from "@angular/core";
-import {LocalNotifications} from "@ionic-native/local-notifications";
+import { Injectable } from "@angular/core";
+import { LocalNotifications } from "@ionic-native/local-notifications";
 
 declare var cordova: any;
 
@@ -23,20 +23,22 @@ export class XiaojiAlarmclockService {
 
   constructor(private localNotifications: LocalNotifications){}
 
-  public setAlarmClock(date: string) {
+  public setAlarmClock(date: string, scheduleName: string) {
 
+    //data 入参格式 yyyy-MM-dd HH:ss
     this.formatDate(date);
 
-    alert("开始设定");
+    console.log("开始设定");
     // set wakeup timer
     cordova.plugins.xjalarmclock.wakeup( result => {
         if (result != "OK") {
           this.success = JSON.stringify(result);
 
+          //通知栏消息
           this.localNotifications.schedule({
             id: 1,//将来清除，取消，更新或检索本地通知所需的唯一标识符默认值：0
             title:"消息通知",
-            text: '新的任务：'+ this.success,
+            text: "来自"+ scheduleName + "的提醒",
             trigger: {at: new Date(new Date().getTime())},//何时触发通知
             //声音设置了无效
             sound: null,//显示警报时包含播放声音的文件的Uri默认值：res：// platform_default
@@ -47,13 +49,13 @@ export class XiaojiAlarmclockService {
 
         } else {
 
-          alert("设定成功2: " + result);
+          console.log("设定成功2: " + result);
         }
 
 
       },
       err => {
-        alert("设定失败: " + err.toString());
+        console.log("设定失败: " + err.toString());
       },
       // a list of alarms to set
       {
@@ -88,7 +90,7 @@ export class XiaojiAlarmclockService {
     this.hour = parseInt(this.dateOfHM[0]);
     this.minute = parseInt(this.dateOfHM[1]);
 
-    alert("format 完成:" + this.year +" "+ this.month +" "+ this.day +" "+ this.hour +" "+ this.minute);
+    console.log("format 完成:" + this.year +" "+ this.month +" "+ this.day +" "+ this.hour +" "+ this.minute);
   }
 
 

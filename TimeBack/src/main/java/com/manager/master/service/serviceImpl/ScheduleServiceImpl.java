@@ -807,6 +807,7 @@ public class ScheduleServiceImpl implements IScheduleService {
 
         try{
             // 获取自增主键
+
             // 日程事件表插入
             scheduleJpaRepository.save(scheduleEntity);
             logger.info("日程事件表 成功添加");
@@ -1056,6 +1057,46 @@ public class ScheduleServiceImpl implements IScheduleService {
         return 0;
     }
 
+    /**
+     * 查询用户所有的提醒时间
+     * @param inDto
+     * @return
+     */
+    @Override
+    public List<RemindOutDto> findAllRemindTime(ScheduleInDto inDto) {
+
+        int userId = inDto.getUserId();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        String startTime = sdf.format(date) + " 00:00";
+        String deadline = sdf.format(date) + " 23:59";
+
+        //入参检测
+        //非空检测
+        if (userId == 0)throw new ServiceException("用户ID入参为空");
+
+        List<RemindOutDto> remindTimeList = null;
+
+        List<Object[]> dataList = scheduleRepository.findAllRemindTime(userId, startTime, deadline);
+        if (dataList != null && dataList.size() != 0) {
+            remindTimeList = new ArrayList<>();
+            for (Object[] obj: dataList) {
+                RemindOutDto rod = new RemindOutDto();
+                rod.setRemindDate(CommonMethods.stampToDate((Timestamp) obj[0]));
+                rod.setScheduleName((String) obj[1]);
+                remindTimeList.add(rod);
+            }
+        } else {
+            return  null;
+        }
+
+        return remindTimeList;
+    }
+
+    /**
+     * 时间格式规整
+     * @return
+     */
     private String dateFormat() {
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String date = sf.format(new Date());

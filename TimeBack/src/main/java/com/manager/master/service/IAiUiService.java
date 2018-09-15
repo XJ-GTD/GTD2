@@ -1,9 +1,7 @@
 package com.manager.master.service;
 
-import com.manager.master.dto.AiUiDataDto;
+import com.manager.master.dto.AiUiDataOutDto;
 import com.manager.master.dto.AiUiInDto;
-
-import java.util.Map;
 
 /**
  * 语义解析方法接口
@@ -17,14 +15,14 @@ public interface IAiUiService {
      * @param inDto
      * @return
      */
-    public AiUiDataDto answerText(AiUiInDto inDto);
+    public AiUiDataOutDto answerText(AiUiInDto inDto);
 
     /**
      * 音频方法
      * @param inDto
      * @return
      */
-    public AiUiDataDto answerAudio(AiUiInDto inDto);
+    public AiUiDataOutDto answerAudio(AiUiInDto inDto);
 
 
 

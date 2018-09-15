@@ -8,15 +8,17 @@ import java.util.List;
  *
  * create by wzy on 2018/09/14
  */
-public class AiUiDataDto {
+public class AiUiDataOutDto {
 
-    private Integer code;
+    private Integer code;                       //动作判断flag
     private List<String> userNameList;		//参与人
     private String scheduleName;						//日程主题
     private String scheduleStartTime;					//开始时间
     private String scheduleDeadline;					//结束时间
     private String speech;      //讯飞语音播报字段
     private String userText;      //用户语音播报字段
+
+    private String dataType;       //数据类型 0：无数据对话 1：单个详情  2：列表list
 
     private List<FindScheduleOutDto> scheduleCreateList;       // 查询自己创建的日程
     private List<FindScheduleOutDto> scheduleJoinList;      // 查询自己参与的日程
@@ -91,5 +93,13 @@ public class AiUiDataDto {
 
     public void setUserText(String userText) {
         this.userText = userText;
+    }
+
+    public String getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
     }
 }

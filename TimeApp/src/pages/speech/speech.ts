@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
+import {AlertController, FabContainer, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import { XiaojiAssistantService } from "../../service/xiaoji-assistant.service";
 import { ParamsService } from "../../service/params.service";
 import {ScheduleOutModel} from "../../model/out/schedule.out.model";
@@ -65,6 +65,21 @@ export class SpeechPage {
           loader.present();
         }
       })
+  }
+
+  //扩展按钮
+  openSocial(flag: number, fab: FabContainer) {
+    console.log('Share in ' + flag);
+    if (flag == 1) {
+      this.groupListShow();
+    }
+    if (flag == 2) {
+      this.scheduleShow();
+    }
+    if (flag == 3) {
+      this.addSchedule();
+    }
+    fab.close();
   }
 
   //添加日程

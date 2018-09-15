@@ -168,5 +168,26 @@ public class ScheduleController {
         return baseOutDto;
     }
 
-
+    /**
+     * 查询用户当天全部提醒时间
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/find_today_remind", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto findAllRemindTime(@RequestBody ScheduleInDto inDto) {
+        BaseOutDto baseOutDto = new BaseOutDto();
+        Map<String,List> data = new HashMap<>();
+        try{
+            List<RemindOutDto> remindList = scheduleService.findAllRemindTime(inDto);
+            if (remindList != null && remindList.size() != 0){
+                data.put("remindList", remindList);
+                baseOutDto.setData(data);
+                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("提醒时间查询成功");
+            }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("提醒时间查询失败");
+        }catch (Exception ex){
+            throw new ServiceException(ex.getMessage());
+        }
+        return baseOutDto;
+    }
 }
