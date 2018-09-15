@@ -1,0 +1,86 @@
+<!--
+  Generated template for the CharPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>chat</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <div *ngFor="let message of messages" class="message-wrapper" on-hold="onMessageHold($event, $index, message)">
+    <!-- 判断消息是发送 -->
+    <div *ngIf="user._id !== message.userId">
+      <!--  wave-->
+      <div class="chat-bubble left slide-left">
+        <div class="message" [innerHTML]="message.text" autolinker></div>
+        <div class="message-detail">
+          <span (click)="viewProfile(message)" class="bold"></span>
+        </div>
+
+
+        <!--  做if判断是否显示日历 -->
+        <div>
+          <ion-label>今日日程</ion-label><!-- 日程后面写返回数据头 -->
+          <button ion-item *ngFor="let scheduleList of scheduleList">
+            <h2>{{scheduleList.scheduleName}}</h2>
+            <p *ngIf="scheduleList.scheduleDeadline != null && scheduleList.scheduleDeadline != '' ;else deadLine">
+              {{scheduleList.scheduleStartTime}} - {{scheduleList.scheduleDeadline}}
+            </p>
+            <ng-template #deadLine>
+              <p *ngIf="scheduleList.scheduleStartTime == null || scheduleList.scheduleStartTime == '' ;else startTime">
+                截止于{{scheduleList.scheduleDeadline}}
+              </p>
+              <ng-template #startTime>
+                <p>{{scheduleList.scheduleStartTime}}开始</p>
+              </ng-template>
+            </ng-template>
+          </button>
+        </div>
+
+        <!--  做if判断是否显示群组 -->
+        <ion-card>
+          <ion-card-content>
+
+          </ion-card-content>
+
+          <!--<ion-item>-->
+            <!--<button ion-button clear item-start>发布</button>-->
+            <!--<button ion-button clear item-end>取消</button>-->
+          <!--</ion-item>-->
+        </ion-card>
+
+
+      </div>
+    </div>
+
+    <!-- 判断消息是发送 -->
+    <div *ngIf="user._id === message.userId">
+      <div class="chat-bubble right slide-right">
+        <div class="message" [innerHTML]="message.text" autolinker></div>
+        <div class="message-detail">
+          <span (click)="viewProfile(message)" class="bold"></span>
+        </div>
+      </div>
+    </div>
+    <div class="cf"></div>
+  </div>
+
+</ion-content>
+
+<!-- 底部输入框 -->
+<ion-footer>
+  <form [formGroup]="messageForm" (submit)="send(chatBox)" novalidate>
+    <ion-item>
+      <ion-input formControlName="message" [(ngModel)]="chatBox"></ion-input>
+      <button ion-button clear (click)="send(chatBox)" item-end><ion-icon class="footer-btn" name="send"></ion-icon></button>
+    </ion-item>
+  </form>
+</ion-footer>

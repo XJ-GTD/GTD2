@@ -39,10 +39,10 @@ export class UserLoginPage {
 
   signIn() {
     this.http.post(AppConfig.USER_LOGIN_URL, {
-      // accountName: this.accountName,
-      // accountPassword: this.accountPassword,
-      accountName: "admin",
-      accountPassword: "admin",
+      accountName: this.accountName,
+      accountPassword: this.accountPassword,
+      // accountName: "admin",
+      // accountPassword: "admin",
       loginType: 0
 
     },{

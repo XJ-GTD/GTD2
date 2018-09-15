@@ -13,7 +13,7 @@ export class AppConfig {
 
   /* 环境URL 头部 */
   // private static REQUEST_URL: string = "http://192.168.176:8080/gtd";
-  private static REQUEST_URL: string = "http://localhost:8080/gtd";//连接本地数据库
+  private static REQUEST_URL: string = "http://192.168.99.54:8080/gtd";//连接本地数据库
 
   /* RabbitMq WebSocket */
   public static RABBITMQ_WS_URL: string = "ws://192.168.0.219:15674/ws";
@@ -22,7 +22,7 @@ export class AppConfig {
   public static RABBITMQ_SJ_URL: string = "http://192.168.0.219:15674/stomp";
 
   /* 讯飞语音*/
-  private static XUNFEI_URL: string = "http://192.168.0.176:8081/cortana";
+  // private static XUNFEI_URL: string = "http://192.168.0.176:8081/xiaoji";
 
   /* Controller */
   private static USER_URL: string = AppConfig.REQUEST_URL + "/user";    //用户类
@@ -32,6 +32,8 @@ export class AppConfig {
   private static SCHEDULE_URL: string = AppConfig.REQUEST_URL + "/schedule";    //日程类
 
   private static WEB_SOCKET_URL: string = AppConfig.REQUEST_URL + "/push";    //webSocket推送
+
+  private static XIAOJIVOICE_URL: string = AppConfig.REQUEST_URL + "/xiaoji";    // 讯飞语音
 
   /* Connect */
   //用户类
@@ -72,7 +74,7 @@ export class AppConfig {
 
 
   //讯飞语音
-  public static XUNFEI_URL_TEXT: string = AppConfig.XUNFEI_URL + "/answer_text";    //文本回传 POST
-  public static XUNFEI_URL_AUDIO: string = AppConfig.XUNFEI_URL + "/answer_audio";    //语音文件带答案回传 POST
+  public static XUNFEI_URL_TEXT: string = AppConfig.XIAOJIVOICE_URL + "/answer_text";    //文本回传 POST
+  public static XUNFEI_URL_AUDIO: string = AppConfig.XIAOJIVOICE_URL + "/answer_audio";    //语音文件带答案回传 POST
 
 }

@@ -50,10 +50,10 @@ public class JsonParserUtil {
 				//获取各项数据字段
 				JSONArray jsonSemantic = jsonIntent.getJSONArray("semantic");
 				JSONArray jsonSlots = jsonSemantic.getJSONObject(0).getJSONArray("slots");
-				List userNameList = new ArrayList();
-				String scheduleName;
-				String scheduleStartTime;
-				String scheduleDeadline;
+				List userNameList = new ArrayList();		//参与人
+				String scheduleName;						//日程主题
+				String scheduleStartTime;					//
+				String scheduleDeadline;					//
 				for (int i = 0; i < jsonSlots.length(); i++) {
 					JSONObject jsonSlotData = jsonSlots.getJSONObject(i);
 					String name = jsonSlotData.getString("name");				//字段名
@@ -62,10 +62,13 @@ public class JsonParserUtil {
 
 					switch (name) {
 						case "person":
+
 							break;
 						case "time":
+
 							break;
 						case "schedule":
+
 							break;
 					}
 

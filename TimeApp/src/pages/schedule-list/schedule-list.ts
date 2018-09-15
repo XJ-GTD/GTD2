@@ -34,6 +34,11 @@ export class ScheduleListPage {
 
   }
 
+  showScheduleDetail(schedule){
+    this.paramsService.schedule = schedule;
+    this.navCtrl.push("ScheduleListPage");
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad ScheduleListPage');
   }
