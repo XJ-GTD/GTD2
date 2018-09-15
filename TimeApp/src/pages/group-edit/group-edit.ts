@@ -208,7 +208,7 @@ export class GroupEditPage {
     if(this.groupDetail==undefined&&this.groupDetail==null){
       //新增页面，调用保存接口
       console.log("保存接口")
-      if(this.testCheckboxLabel==undefined&&this.testCheckboxLabel==null){
+      if(this.testCheckboxLabel=="" || this.testCheckboxLabel==null){
         let labelAbnormity = '请先选择标签!'
         this.showAlert(labelAbnormity);
       }else {
@@ -237,9 +237,9 @@ export class GroupEditPage {
     //调用添加群组接口
     this.http.post(AppConfig.GROUP_ADD_GROUP_URL,{
       "userId":this.groupFind.userId,
-      "labelId":this.testCheckboxLabel,
+      "labelIds":this.testCheckboxLabel,
       "groupName":this.groupName,
-      "groupHeadImgUrl":"123",
+      "groupHeadImgUrl":"../../assets/imgs/headImg.jpg",
       "member":[{"userName":this.groupMemberName,"userContact":this.groupMemberContact}]
     }).subscribe(data => {
         this.data1 = data;

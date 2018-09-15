@@ -10,11 +10,12 @@ import { WebsocketService } from "../service/websocket.service";
 import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
 import { XiaojiAlarmclockService } from "../service/xiaoji-alarmclock.service";
 import { FileTransfer } from "@ionic-native/file-transfer";
+import {TimeService} from "../service/time.service";
 
 
 @Component({
   templateUrl: 'app.html',
-  providers: [ ParamsService, WebsocketService, XiaojiAssistantService, XiaojiAlarmclockService, FileTransfer ]
+  providers: [ ParamsService, WebsocketService, XiaojiAssistantService, XiaojiAlarmclockService, TimeService, FileTransfer ]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;

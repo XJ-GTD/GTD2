@@ -1050,7 +1050,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         // 入参关联检查
 
         try {
-            schedulePlayersRepository.updateConnectionByScheduleIdAndUserId(0,userId,CommonMethods.dateToStamp(updateDate),scheduleId);
+            schedulePlayersRepository.updateConnectionByScheduleIdAndUserId(playersStatus,userId,CommonMethods.dateToStamp(updateDate),scheduleId);
         }catch (Exception ex){
             throw new ServiceException("语法错误");
         }

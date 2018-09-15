@@ -184,7 +184,7 @@ public class ScheduleController {
                 data.put("remindList", remindList);
                 baseOutDto.setData(data);
                 baseOutDto.setCode(ResultCode.SUCCESS).setMessage("提醒时间查询成功");
-            }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("提醒时间查询失败");
+            }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("数据库无数据");
         }catch (Exception ex){
             throw new ServiceException(ex.getMessage());
         }

@@ -127,7 +127,7 @@ public class ScheduleRepository {
         }
         sql += " INNER JOIN gtd_schedule_players players_table\n" +
                 "ON players_table.SCHEDULE_ID = schedule_table.SCHEDULE_ID\n" +
-                "WHERE players_table.USER_ID = "+userId;
+                "WHERE players_table.USER_ID = "+userId + " AND players_table.PLAYERS_STATUS IN (0,1,2) ";
         if(scheduleId != null && scheduleId != 0 && !"".equals(scheduleId)){
             sql += " AND schedule_table.SCHEDULE_ID = " + scheduleId;
         }

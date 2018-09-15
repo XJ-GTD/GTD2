@@ -37,35 +37,35 @@ export class SpeechPage {
   }
 
   //展示日程列表
-  scheduleShow() {
-    this.findSchedule = new ScheduleOutModel();
-    this.findSchedule.scheduleStartTime = "2018-09-01 00:00";
-    this.findSchedule.scheduleDeadline = "2018-09-13 00:00";
-    this.findSchedule.userId = this.paramsService.user.userId;
-    this.http.post(AppConfig.SCHEDULE_FIND_URL, this.findSchedule, {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      responseType: 'json'
-    })
-      .subscribe(data => {
-        this.data = data;
-        console.log("data:" + this.data.toString());
-        let loader = this.loadingCtrl.create({
-          content: this.data.message,
-          duration: 1000
-        });
-
-        if (this.data.code == 0) {
-          this.paramsService.scheduleList = this.data.data.scheduleJoinList;
-          console.log("data:" + this.data.data);
-          this.navCtrl.push("ScheduleListPage");
-        } else {
-          console.log("error message:" + this.data.message);
-          loader.present();
-        }
-      })
-  }
+  // scheduleShow() {
+  //   this.findSchedule = new ScheduleOutModel();
+  //   this.findSchedule.scheduleStartTime = "2018-09-01 00:00";
+  //   this.findSchedule.scheduleDeadline = "2018-09-13 00:00";
+  //   this.findSchedule.userId = this.paramsService.user.userId;
+  //   this.http.post(AppConfig.SCHEDULE_FIND_URL, this.findSchedule, {
+  //     headers: {
+  //       "Content-Type": "application/json"
+  //     },
+  //     responseType: 'json'
+  //   })
+  //     .subscribe(data => {
+  //       this.data = data;
+  //       console.log("data:" + this.data.toString());
+  //       let loader = this.loadingCtrl.create({
+  //         content: this.data.message,
+  //         duration: 1000
+  //       });
+  //
+  //       if (this.data.code == 0) {
+  //         this.paramsService.scheduleList = this.data.data.scheduleJoinList;
+  //         console.log("data:" + this.data.data);
+  //         this.navCtrl.push("ScheduleListPage");
+  //       } else {
+  //         console.log("error message:" + this.data.message);
+  //         loader.present();
+  //       }
+  //     })
+  // }
 
   //扩展按钮
   openSocial(flag: number, fab: FabContainer) {
@@ -74,7 +74,7 @@ export class SpeechPage {
       this.groupListShow();
     }
     if (flag == 2) {
-      this.scheduleShow();
+      // this.scheduleShow();
     }
     if (flag == 3) {
       this.addSchedule();

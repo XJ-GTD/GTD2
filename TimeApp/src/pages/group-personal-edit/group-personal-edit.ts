@@ -81,7 +81,7 @@ export class GroupPersonalEditPage {
   addPersonal(){
     this.http.post(AppConfig.GROUP_ADD_GROUP_URL,{
       "userId":this.groupFind.userId,
-      "labelId":8,
+      "labelIds":8,
       "groupName":this.groupName,
       "groupHeadImgUrl":"123",
       "member":[{"userName":this.groupName,"userContact":this.userContact}]

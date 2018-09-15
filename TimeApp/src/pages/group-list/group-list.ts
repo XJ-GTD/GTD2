@@ -68,8 +68,8 @@ export class GroupListPage {
           // loader.present();
           console.log(this.data.message);
         } else if(this.data.code == 1) {
+          loader.setContent("暂无参与人，请您尝试创建吧")
           loader.present();  //空白页展示
-          console.log(this.data.message);
         }
         /*if(this.groupFind.userId == 0 && this.groupFind.userId == null){
           console.log("登陆或网络出错   请重新登陆！")

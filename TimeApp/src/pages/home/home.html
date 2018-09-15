@@ -14,46 +14,49 @@
 <ion-content padding>
 
   <div class="row" style="width: 100%;height: 100%">
-    <div style="width: 100%;height: 40%">
+    <ion-list style="width: 100%;height: 40%">
       <table style="width: 100%;height: 100%">
-        <caption class="text-center" style="background:#d9edf7;height: 15%;font-weight:900;color:black;">{{year}}年{{month}}月{{day}}</caption>
+        <caption class="text-center" style="background:#d9edf7;height: 15%;font-weight:900;color:black;">{{year}}年{{month}}月</caption>
         <thead>
-          <tr *ngFor="let w of weekDay">
-            <th>{{w}}</th>
+          <tr>
+            <th *ngFor="let w of weekDay">{{w}}</th>
           </tr>
         </thead>
         <tbody style="text-align: center">
-          <tr *ngFor="let day of monthDay">
-            <td style="background: #d9edf7">
-
-            </td>
-            <td style="background: #d9edf7">
-              5
-            </td>
-            <td style="background: #d9edf7">
-              5
-            </td>
-            <td style="background: #d9edf7">
-              6
-            </td>
-            <td style="background: #d9edf7">
-              7
-            </td>
-            <td style="background: #d9edf7">
-              8
-            </td>
-            <td style="background: #d9edf7">
-              9
-            </td>
-            <td style="background: #d9edf7">
-              10
+          <tr *ngFor="let md of time">
+            <td *ngFor="let d of md.day" style="background: #d9edf7">
+              <button ion-button (click)="findTodaySchedule(year, month, d)">{{d}}</button>
             </td>
           </tr>
-
         </tbody>
       </table>
-    </div>
+    </ion-list>
   </div>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let sd of scheduleList">
+      <button ion-item (click)="showScheduleDetail(sd)">
+        <h2>{{sd.scheduleName}}</h2>
+        <p *ngIf="sd.scheduleDeadline != null && sd.scheduleDeadline != '' ;else deadLine">
+          {{sd.scheduleStartTime}} - {{sd.scheduleDeadline}}
+        </p>
+        <ng-template #deadLine>
+          <p *ngIf="sd.scheduleStartTime == null || sd.scheduleStartTime == '' ;else startTime">
+            截止于{{sd.scheduleDeadline}}
+          </p>
+          <ng-template #startTime>
+            <p>{{sd.scheduleStartTime}}开始</p>
+          </ng-template>
+        </ng-template>
+      </button>
+      <ion-item-options>
+        <button ion-button icon-start>
+          <ion-icon name="text"></ion-icon>
+          删除
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 
   <button id="voice" ion-button icon-start (click)="openVoice()">语音助手</button>
 
