@@ -397,6 +397,16 @@ public class GroupServicelmpl implements IGroupService {
                 throw new ServiceException("群组名称包含关键字");
             }
         }
+
+        for(GroupMemberDto g:member){
+            if(CommonMethods.checkMySqlReservedWords(g.getUserName())){
+                throw new ServiceException("群成员姓名包含关键字");
+            }
+            if(!CommonMethods.checkIsPhoneNumber(g.getUserContact())){
+                throw new ServiceException("群成员联系方式格式错误");
+            }
+        }
+
         Date date = new Date();
         for(Integer i:labelId){
             if(labelId.size()!=1&&i== FIND_GROUP_LABELTYPE){
@@ -718,6 +728,21 @@ public class GroupServicelmpl implements IGroupService {
         if ( "".equals(userId) || userId == 0) throw new ServiceException("用户ID不能为空");
         if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
         if (labelId.size() == 0 || labelId == null) throw new ServiceException("标签不能为空");
+        if(groupName!=null||!"".equals(groupName)){
+            if(CommonMethods.checkMySqlReservedWords(groupName)){
+                throw new ServiceException("群组名称包含关键字");
+            }
+        }
+
+        for(GroupMemberOutDto g:member){
+            if(CommonMethods.checkMySqlReservedWords(g.getMemeberName())){
+                throw new ServiceException("群成员姓名包含关键字");
+            }
+            if(!CommonMethods.checkIsPhoneNumber(g.getMemeberContact())){
+                throw new ServiceException("群成员联系方式格式错误");
+            }
+        }
+
         //查询该群组
         GtdGroupEntity group = groupJpaRepository.getOne(groupId);
         if (group == null) {
