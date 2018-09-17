@@ -139,7 +139,7 @@ export class XiaojiAssistantService {
         //分离出需要语音播报的内容
         this.speechText = this.paramsService.aiuiData.speech;
 
-        console.log("成功:" + this.speechText);
+        console.log("语音调用成功:" + this.speechText);
         this.speakText(this.speechText);
       })
   }

@@ -24,40 +24,87 @@
     </ion-fab-list>
   </ion-fab>
 
-  <!--<ion-card>
-    <ion-card-content>
 
-    </ion-card-content>
-
-    <ion-item>
-      <button ion-button clear item-start>发布</button>
-      <button ion-button clear item-end>取消</button>
-    </ion-item>
-  </ion-card>-->
-
+<div *ngIf="initFlag != false">
   <div *ngFor="let message of messages" class="message-wrapper" on-hold="onMessageHold($event, $index, message)">
-    <!-- 判断消息是发送 -->
-    <div *ngIf="user._id !== message.userId">
-      <img (click)="viewProfile(message)" class="profile-pic left" [src]="toUser.pic" onerror="onProfilePicError(this)" />
+    <!-- 判断消息是讯飞 -->
+    <div *ngIf="message.speech != null">
       <!--  wave-->
       <div class="chat-bubble left slide-left">
-        <ion-input type="text" disabled class="message" [(ngModel)]=""></ion-input>
+        <ion-input type="text" disabled class="message" >{{message.speech}}</ion-input>
       </div>
     </div>
 
-    <!-- 判断消息是发送 -->
-    <div *ngIf="user._id === message.userId">
-      <img (click)="viewProfile(message)" class="profile-pic right" [src]="user.pic" onerror="onProfilePicError(this)" />
+    <!-- 判断消息是用户 -->
+    <div *ngIf="message.userText != null">
       <div class="chat-bubble right slide-right">
-        <ion-input type="text" disabled class="message" [(ngModel)]=""></ion-input>
+        <ion-input type="text" disabled class="message" >{{message.userText}}</ion-input>
         <div class="message-detail">
-          <span (click)="viewProfile(message)" class="bold">轻点可修改</span>
+          <span (click)="changeText(message.userText)" class="bold">轻点可修改</span>
         </div>
       </div>
     </div>
     <div class="cf"></div>
   </div>
 
+  <!-- 判断消息是数据 -->
+  <div *ngIf="message.dataType == 1">
+    <!--  wave-->
+    <div class="chat-bubble left slide-left">
+      <ion-card>
+         <ion-card-content>
+
+           <button ion-item >
+             <h2>{{message.scheduleName}}</h2>
+             <p *ngIf="message.scheduleDeadline != null && message.scheduleDeadline != '' ;else deadLine">
+               {{message.scheduleStartTime}} - {{message.scheduleDeadline}}
+             </p>
+             <ng-template #deadLine>
+               <p *ngIf="message.scheduleStartTime == null || message.scheduleStartTime == '' ;else startTime">
+                 截止于{{message.scheduleDeadline}}
+               </p>
+               <ng-template #startTime>
+                 <p>{{message.scheduleStartTime}}开始</p>
+               </ng-template>
+             </ng-template>
+           </button>
+
+         </ion-card-content>
+
+         <!--<ion-item>-->
+           <!--<button ion-button clear item-start>发布</button>-->
+           <!--<button ion-button clear item-end>取消</button>-->
+         <!--</ion-item>-->
+       </ion-card>
+    </div>
+  </div>
+
+  <!-- 判断消息是数据 -->
+  <div *ngIf="message.dataType == 2">
+    <!--  wave-->
+    <div class="chat-bubble left slide-left">
+      <ion-list>
+        <ion-item-sliding *ngFor="let sd of message.scheduleJoinList">
+          <button ion-item (click)="showScheduleDetail(sd)">
+            <h2>{{sd.scheduleName}}</h2>
+            <p *ngIf="sd.scheduleDeadline != null && sd.scheduleDeadline != '' ;else deadLine">
+              {{sd.scheduleStartTime}} - {{sd.scheduleDeadline}}
+            </p>
+            <ng-template #deadLine>
+              <p *ngIf="sd.scheduleStartTime == null || sd.scheduleStartTime == '' ;else startTime">
+                截止于{{sd.scheduleDeadline}}
+              </p>
+              <ng-template #startTime>
+                <p>{{sd.scheduleStartTime}}开始</p>
+              </ng-template>
+            </ng-template>
+          </button>
+        </ion-item-sliding>
+      </ion-list>
+    </div>
+  </div>
+
+</div>
 </ion-content>
 
 <ion-footer>
@@ -71,7 +118,7 @@
     <ion-toolbar>
       <ion-input id="userInput" type="text" [(ngModel)]="inputText" placeholder="请输入指令"></ion-input>
       <ion-buttons end>
-        <button ion-button icon-end color="royal">
+        <button ion-button icon-end color="royal" (click)="startXiaojiText()">
           发送
           <ion-icon name="send"></ion-icon>
         </button>

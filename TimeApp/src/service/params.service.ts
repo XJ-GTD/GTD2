@@ -3,6 +3,7 @@ import { UserModel} from "../model/user.model";
 import { ScheduleModel } from "../model/schedule.model";
 import { GroupModel } from "../model/group.model";
 import {ScheduleOutModel} from "../model/out/schedule.out.model";
+import {AiuiModel} from "../model/aiui.model";
 
 /**
  * 页面ts传值
@@ -12,11 +13,11 @@ import {ScheduleOutModel} from "../model/out/schedule.out.model";
 export class ParamsService {
 
   private _data: string;
-  private _aiuiData: any;                  //语音解析返回数据
+  private _aiuiData: AiuiModel;            //语音解析返回数据
   private _speech: string;               //语音播报
   private _user: UserModel;               //用户数据
   private _schedule: ScheduleModel;       //日程数据
-  private _scheduleList: Array<ScheduleModel>;  //数据list
+  private _scheduleList: Array<ScheduleModel>;  //日程数据list
   private _group: GroupModel;                //群组数据
   private _contactList: Array<number>;   //联系人数据
   private _findSchedule: ScheduleOutModel;    //查询日程
@@ -29,20 +30,20 @@ export class ParamsService {
     this._schedule = value;
   }
 
-  get aiuiData(): any {
-    return this._aiuiData;
-  }
-
-  set aiuiData(value: any) {
-    this._aiuiData = value;
-  }
-
   get user(): UserModel {
     return this._user;
   }
 
   set user(value: UserModel) {
     this._user = value;
+  }
+
+  get aiuiData(): AiuiModel {
+    return this._aiuiData;
+  }
+
+  set aiuiData(value: AiuiModel) {
+    this._aiuiData = value;
   }
 
   get data(): string {

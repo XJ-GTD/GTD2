@@ -73,7 +73,7 @@ public class VoiceParseController {
      * @return
      */
     @RequestMapping(value = "/answer_text", method = RequestMethod.POST)
-    public BaseOutDto readText(AiUiInDto inDto){
+    public BaseOutDto readText(@RequestBody AiUiInDto inDto){
         BaseOutDto outBean = new BaseOutDto();
         Map<String, AiUiDataOutDto> data = new HashMap<>();
         try{
