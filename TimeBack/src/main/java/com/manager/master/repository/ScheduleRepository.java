@@ -77,7 +77,7 @@ public class ScheduleRepository {
             if(groupName != null && !"".equals(groupName)){
                 sql += " INNER JOIN gtd_group group_t\n" +
                         " ON group_t.USER_ID = schedule_table.CREATE_ID\n"+
-                        " AND group_t.GROUP_NAME like ('%','"+ groupName +"','%')\n " +
+                        " AND group_t.GROUP_NAME like concat('%','"+ groupName +"','%')\n " +
                         " AND group_t.GROUP_ID = group_table.GROUP_ID\n";
             }
         }
