@@ -1,10 +1,10 @@
 package com.manager.master.dto;
 
 public class GroupMemberOutDto {
-    private int memberId;
-    private String memeberName;
-    private String memeberContact;
-    private int memberStatus;
+    private int memberId;            //群成员ID
+    private String memeberName;      //群成员姓名
+    private String memeberContact;   //群成员联系方式
+    private int memberStatus;       //群成员状态
 
     public int getMemberId() {
         return memberId;

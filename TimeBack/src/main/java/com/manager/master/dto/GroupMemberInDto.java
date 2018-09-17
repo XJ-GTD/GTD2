@@ -3,14 +3,14 @@ package com.manager.master.dto;
 import java.util.List;
 
 public class GroupMemberInDto {
-    private int userId;
-    private int groupId;
-    private String labelName;
-    private String groupName;
-    private String groupHeadImgUrl;
+    private int userId;                     //用户ID
+    private int groupId;                    //群组ID
+    private String labelName;               //标签名
+    private String groupName;               //群组名
+    private String groupHeadImgUrl;        //群头像
     private String condition;
-    private List<Integer> labelId;
-    private List<GroupMemberOutDto> member;
+    private List<Integer> labelId;          //标签ID List
+    private List<GroupMemberOutDto> member; //群成员 List
 
 
     public int getGroupId() {

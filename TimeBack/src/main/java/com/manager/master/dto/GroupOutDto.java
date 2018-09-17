@@ -7,12 +7,12 @@ import java.util.List;
  * create  zy
  */
 public class GroupOutDto{
-    private int groupId;
-    private String groupName;
-    private String groupHeadImg;
-    private int groupCreateId;
-    private List<LabelOutDto> labelList;
-    private List<GroupMemberDto> groupMembers;
+    private int groupId;                         //群组ID
+    private String groupName;                    //群组名
+    private String groupHeadImg;                 //群头像
+    private int groupCreateId;                  //群创建人
+    private List<LabelOutDto> labelList;         //群标签 List
+    private List<GroupMemberDto> groupMembers;   //群成员 List
 
     public int getGroupId() {
         return groupId;

@@ -1,9 +1,9 @@
 package com.manager.master.dto;
 
 public class GroupMemberDto {
-    private Integer userId;
-    private String userName;
-    private String userContact;
+    private Integer userId;        //群成员ID
+    private String userName;       //群成员姓名
+    private String userContact;    //群成员联系方式
 
     public Integer getUserId() {
         return userId;

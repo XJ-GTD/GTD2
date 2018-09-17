@@ -7,16 +7,15 @@ import java.util.List;
 import java.util.Set;
 
 public class GroupInDto {
-    private int userId;
-    private int groupId;
-    private String message;
-    private String labelName;
-    private String groupName;
-    private String groupHeadImgUrl;
+    private int userId;                        //用户ID
+    private int groupId;                       //群组ID
+    private String labelName;                  //标签名
+    private String groupName;                  //参与人名
+    private String groupHeadImgUrl;           //群头像
     private String condition;
-    private Integer labelId;
-    private List<Integer> labelIds;
-    private List<GroupMemberDto> member;
+    private Integer labelId;                    //标签ID
+    private List<Integer> labelIds;             //标签ID List
+    private List<GroupMemberDto> member;        //群成员 List
 
 
     public int getGroupId() {
@@ -81,14 +80,6 @@ public class GroupInDto {
 
     public void setCondition(String condition) {
         this.condition = condition;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public Integer getLabelId() {

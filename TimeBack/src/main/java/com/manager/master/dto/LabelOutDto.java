@@ -7,8 +7,8 @@ package com.manager.master.dto;
  */
 public class LabelOutDto {
 
-    private int labelId;
-    private String labelName;
+    private int labelId;        //标签ID
+    private String labelName;   //标签名
 
     public int getLabelId() {
         return labelId;

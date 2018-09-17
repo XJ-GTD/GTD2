@@ -7,9 +7,9 @@ package com.manager.master.dto;
  */
 public class GroupFindInDto {
 
-    private int userId;
+    private int userId;          //用户ID
     private int findType;       //查询类型
-    private int groupId;
+    private int groupId;        //群组ID
 
     public int getUserId() {
         return userId;
