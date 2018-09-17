@@ -1184,8 +1184,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         // 推送目标设置
         pushInDto.setData(pushOutDto);
         pushInDto.setUserId(userId);
-        // TODO
-//        pushInDto.setMemberUserId(createId);
+        pushInDto.setTargetUserId(createId);
         // 发送日程修改信息
         int modifyMessage = webSocketService.pushToUser(pushInDto);
         if(modifyMessage != 0){
