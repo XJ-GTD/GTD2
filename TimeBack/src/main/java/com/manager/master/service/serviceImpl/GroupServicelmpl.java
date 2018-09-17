@@ -93,7 +93,7 @@ public class GroupServicelmpl implements IGroupService {
                     throw new ServiceException("查询失败");
                 }
             }else if (typeId == 3) {
-
+                return null;
             } else {
                 throw new ServiceException("请输入正确的查询类型");
             }
@@ -241,6 +241,13 @@ public class GroupServicelmpl implements IGroupService {
                 throw new ServiceException("不能传入多个参数");
             }
         }
+
+        if(groupName != null && !"".equals(groupName)){
+            if (CommonMethods.checkMySqlReservedWords(groupName)){
+                throw new ServiceException("群组名称包含关键字");
+            }
+        }
+
         //接收返回结果
         List<GroupOutDto> groupOutDtos=new ArrayList<>();
         //查询群组ID集合
@@ -358,7 +365,7 @@ public class GroupServicelmpl implements IGroupService {
                             list.add(outDto);
                         }
                     }else{
-                        throw new ServiceException("请输入正确的类型");
+                        throw new ServiceException("请输入正确的查询类型");
                     }
                 }
             }
@@ -385,16 +392,18 @@ public class GroupServicelmpl implements IGroupService {
         if (labelId.size() == 0 || labelId == null) throw new ServiceException("标签不能为空");
         if (groupName == null || "".equals(groupName)) throw new ServiceException("群组名不能为空");
         if (groupHeadImgUrl == null || "".equals(groupHeadImgUrl)) throw new ServiceException("群头像不能为空");
-
+        if(groupName != null && !"".equals(groupName)){
+            if (CommonMethods.checkMySqlReservedWords(groupName)){
+                throw new ServiceException("群组名称包含关键字");
+            }
+        }
         Date date = new Date();
-
-
         for(Integer i:labelId){
             if(labelId.size()!=1&&i== FIND_GROUP_LABELTYPE){
                 throw new ServiceException("群组不能添加单人标签");
             }
             if(i==1){
-                if (member.size() == 0 || member == null) throw new ServiceException("群员不能为空");
+                if (member.size() == 0 || member == null) throw new ServiceException("权限群组需添加群成员");
             }
         }
 
@@ -779,9 +788,11 @@ public class GroupServicelmpl implements IGroupService {
                 for (GroupMemberOutDto gmDto : member) {
                     if (gmDto.getMemeberContact() == null || "".equals(gmDto.getMemeberContact()))
                         throw new ServiceException("群员联系方式不能为空");
-                    if (gmDto.getMemeberName() == null || "".equals(gmDto.getMemeberName()))
+                    if (gmDto.getMemeberName() == null || "".equals(gmDto.getMemeberName())) {
                         throw new ServiceException("群员姓名不能为空");
-
+                    }else if(CommonMethods.checkMySqlReservedWords(groupName)){
+                        throw new ServiceException("群成员名称包含关键字");
+                    }
                     GtdGroupMemberEntity groupMember = groupMemberRepository.findMemberByGroupIdAndUserId(groupId, groupRepository.findUserId(gmDto.getMemeberContact()));
 
                     if (groupMember != null) {
@@ -901,13 +912,13 @@ public class GroupServicelmpl implements IGroupService {
      */
     @Override
     public int updateStatus(InformInDto inDto) {
-        Integer  userId = inDto.getUserId();
-        Integer  groupId = inDto.getGroupId();
-        Integer resultType=inDto.getResultType();
-        logger.info("用户ID"+userId+"群组ID"+groupId+"修改结果类型"+resultType);
-        if (userId == null || "".equals(userId)) throw new ServiceException("用户ID不能为空");
-        if (groupId == null || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
-        if (resultType == null || "".equals(resultType)) throw new ServiceException("修改結果不能为空");
+        int  userId = inDto.getUserId();
+        int  groupId = inDto.getGroupId();
+        int resultType=inDto.getResultType();
+        logger.info("用户ID:"+userId+",群组ID:"+groupId+",修改结果类型:"+resultType);
+        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
+        if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
+        if (resultType == 0 || "".equals(resultType)) throw new ServiceException("修改結果不能为空");
 
         GtdGroupMemberEntity groupMember=groupMemberRepository.findMemberByGroupIdAndUserId(groupId,userId);
         if (groupMember == null) {
@@ -916,7 +927,7 @@ public class GroupServicelmpl implements IGroupService {
         if(resultType==1||resultType==3) {
             groupMember.setGroupMemberStatus(resultType);
         }else{
-            throw new ServiceException("请输入正确的用户选择");
+            throw new ServiceException("请输入正确的状态值");
         }
         groupMemberRepository.save(groupMember);
 //        boolean flag = false; //判断是否为权限群组

@@ -35,16 +35,48 @@
     </ion-item>
   </ion-card>-->
 
-  <ion-item-sliding>
-    <ion-item>
+  <div *ngFor="let message of messages" class="message-wrapper" on-hold="onMessageHold($event, $index, message)">
+    <!-- 判断消息是发送 -->
+    <div *ngIf="user._id !== message.userId">
+      <img (click)="viewProfile(message)" class="profile-pic left" [src]="toUser.pic" onerror="onProfilePicError(this)" />
+      <!--  wave-->
+      <div class="chat-bubble left slide-left">
+        <ion-input type="text" disabled class="message" [(ngModel)]=""></ion-input>
+      </div>
+    </div>
 
-    </ion-item>
-  </ion-item-sliding>
-
-  <button id="start" ion-button outline icon-start (click)="startXiaoJi()">
-    <ion-icon name="ionitron"></ion-icon>
-    启动语音助手
-  </button>
-
+    <!-- 判断消息是发送 -->
+    <div *ngIf="user._id === message.userId">
+      <img (click)="viewProfile(message)" class="profile-pic right" [src]="user.pic" onerror="onProfilePicError(this)" />
+      <div class="chat-bubble right slide-right">
+        <ion-input type="text" disabled class="message" [(ngModel)]=""></ion-input>
+        <div class="message-detail">
+          <span (click)="viewProfile(message)" class="bold">轻点可修改</span>
+        </div>
+      </div>
+    </div>
+    <div class="cf"></div>
+  </div>
 
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar *ngIf="modeFlag == true; else xjInput">
+    <button id="start" ion-button outline icon-start (click)="startXiaoJi()">
+      <ion-icon name="ionitron"></ion-icon>
+      启动语音
+    </button>
+  </ion-toolbar>
+  <ng-template #xjInput>
+    <ion-toolbar>
+      <ion-input id="userInput" type="text" [(ngModel)]="inputText" placeholder="请输入指令"></ion-input>
+      <ion-buttons end>
+        <button ion-button icon-end color="royal">
+          发送
+          <ion-icon name="send"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ng-template>
+
+</ion-footer>

@@ -52,7 +52,8 @@ public class GroupController {
                 logger.info("查询参与人列表成功：" + list.toString());
             }else outDto.setCode(ResultCode.REPEAT).setMessage("参与人列表为空");
         }catch (Exception e){
-             throw new ServiceException(e.getMessage());
+            logger.info(e.getMessage());
+            throw new ServiceException("查询失败");
         }
         return outDto;
     }
@@ -74,7 +75,8 @@ public class GroupController {
                 outDto.setData(map);
             }else outDto.setCode(ResultCode.REPEAT).setMessage("数据为空");
         }catch (Exception e){
-            throw new ServiceException(e.getMessage());
+            logger.info(e.getMessage());
+            throw new ServiceException("查询失败");
         }
         return outDto;
     }
@@ -96,7 +98,8 @@ public class GroupController {
                 outDto.setData(map);
             }else outDto.setCode(ResultCode.REPEAT).setMessage("数据为空");
         }catch (Exception e){
-            throw new ServiceException(e.getMessage());
+            logger.info(e.getMessage());
+            throw new ServiceException("查询失败");
         }
         return outDto;
     }
@@ -118,7 +121,8 @@ public class GroupController {
                 outDto.setData(map);
             }else outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
         }catch (Exception e){
-            throw new ServiceException(e.getMessage());
+            logger.info(e.getMessage());
+            throw new ServiceException("查询失败");
         }
         return outDto;
     }
@@ -140,7 +144,8 @@ public class GroupController {
                 outDto.setCode(ResultCode.REPEAT).setMessage("创建失败");
             }
         }catch (Exception e){
-            throw new ServiceException(e.getMessage());
+            logger.info(e.getMessage());
+            throw new ServiceException("创建失败");
         }
         return outDto;
     }
@@ -161,9 +166,10 @@ public class GroupController {
         } else {
             outDto.setCode(ResultCode.REPEAT).setMessage("修改失败");
         }
-    }catch (Exception e){
-            throw new ServiceException(e.getMessage());
-    }
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            throw new ServiceException("修改失败");
+        }
         return outDto;
     }
 
@@ -184,7 +190,8 @@ public class GroupController {
                 outDto.setCode(ResultCode.REPEAT).setMessage("修改失败");
             }
         }catch (Exception e){
-            throw new ServiceException(e.getMessage());
+            logger.info(e.getMessage());
+            throw new ServiceException("修改失败");
         }
         return outDto;
     }
@@ -206,7 +213,8 @@ public class GroupController {
                 outDto.setCode(ResultCode.REPEAT).setMessage("删除失败");
             }
         }catch (Exception e){
-            throw new ServiceException(e.getMessage());
+            logger.info(e.getMessage());
+            throw new ServiceException("删除失败");
         }
         return outDto;
     }
@@ -228,7 +236,8 @@ public class GroupController {
                 outDto.setCode(ResultCode.REPEAT).setMessage("退出失败");
             }
         }catch (Exception e){
-            throw new ServiceException(e.getMessage());
+            logger.info(e.getMessage());
+            throw new ServiceException("退出失败");
         }
         return outDto;
     }
