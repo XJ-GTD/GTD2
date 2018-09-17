@@ -114,6 +114,7 @@ export class HomePage {
         console.log("data:" + this.data.toString());
 
         if (this.data.code == 0) {
+          this.scheduleList = [];
           this.scheduleList = this.data.data.scheduleJoinList;
           console.log("data:" + this.data.data);
         } else {

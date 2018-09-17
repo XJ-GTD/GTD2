@@ -93,6 +93,9 @@ export class TimeService {
 
       this.timeModel.day.push(i.toString());
       count++;
+      if (i == daySum) {
+        this.list.push(this.timeModel);
+      }
       if (count > 6) {
         count = 0;
         this.list.push(this.timeModel);

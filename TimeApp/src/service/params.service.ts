@@ -12,7 +12,7 @@ import {ScheduleOutModel} from "../model/out/schedule.out.model";
 export class ParamsService {
 
   private _data: string;
-  private _voice: any;
+  private _aiuiData: any;                  //语音解析返回数据
   private _speech: string;               //语音播报
   private _user: UserModel;               //用户数据
   private _schedule: ScheduleModel;       //日程数据
@@ -28,13 +28,15 @@ export class ParamsService {
   set schedule(value: ScheduleModel) {
     this._schedule = value;
   }
-  get voice(): any {
-    return this._voice;
+
+  get aiuiData(): any {
+    return this._aiuiData;
   }
 
-  set voice(value: any) {
-    this._voice = value;
+  set aiuiData(value: any) {
+    this._aiuiData = value;
   }
+
   get user(): UserModel {
     return this._user;
   }

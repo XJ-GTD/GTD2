@@ -22,6 +22,8 @@ import {AppConfig} from "../../app/app.config";
 export class SpeechPage {
 
   data: any;
+  modeFlag: number = 0;
+  inputText: string;    //手动模式输入数据
   findSchedule: ScheduleOutModel; //查询日程条件
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -36,50 +38,25 @@ export class SpeechPage {
     console.log('ionViewDidLoad SpeechPage');
   }
 
-  //展示日程列表
-  // scheduleShow() {
-  //   this.findSchedule = new ScheduleOutModel();
-  //   this.findSchedule.scheduleStartTime = "2018-09-01 00:00";
-  //   this.findSchedule.scheduleDeadline = "2018-09-13 00:00";
-  //   this.findSchedule.userId = this.paramsService.user.userId;
-  //   this.http.post(AppConfig.SCHEDULE_FIND_URL, this.findSchedule, {
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     },
-  //     responseType: 'json'
-  //   })
-  //     .subscribe(data => {
-  //       this.data = data;
-  //       console.log("data:" + this.data.toString());
-  //       let loader = this.loadingCtrl.create({
-  //         content: this.data.message,
-  //         duration: 1000
-  //       });
-  //
-  //       if (this.data.code == 0) {
-  //         this.paramsService.scheduleList = this.data.data.scheduleJoinList;
-  //         console.log("data:" + this.data.data);
-  //         this.navCtrl.push("ScheduleListPage");
-  //       } else {
-  //         console.log("error message:" + this.data.message);
-  //         loader.present();
-  //       }
-  //     })
-  // }
-
   //扩展按钮
   openSocial(flag: number, fab: FabContainer) {
     console.log('Share in ' + flag);
     if (flag == 1) {
-      this.groupListShow();
+      //切换手动输入模式
     }
     if (flag == 2) {
-      // this.scheduleShow();
+      //进入群组
+      this.groupListShow();
     }
     if (flag == 3) {
+      //添加日程
       this.addSchedule();
     }
     fab.close();
+  }
+
+  switchMode() {
+    this.modeFlag = 1;//切换至手动输入模式
   }
 
   //添加日程
@@ -90,18 +67,21 @@ export class SpeechPage {
   //启动语音助手
   startXiaoJi() {
     this.navCtrl.push('CharPage');
-    this.xiaojiSpeech.listenAudio('ScheduleAddPage');
-
+    this.xiaojiSpeech.listenAudio();
   }
 
   //启动语音助手手动输入模式
   startXiaojiText() {
-
+    this.xiaojiSpeech.listenText(this.inputText);
   }
 
   //群组详情
   groupListShow() {
     this.navCtrl.push('GroupListPage');
   }
+
+  /*==================== 聊天界面 start ===================*/
+
+  /*==================== 聊天界面 end ===================*/
 
 }

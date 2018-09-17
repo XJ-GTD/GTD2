@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>speech</ion-title>
+    <ion-title>小鸡管家</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -18,13 +18,13 @@
   <ion-fab top right edge #fab1>
     <button ion-fab mini ><ion-icon name="add"></ion-icon></button>
     <ion-fab-list>
-      <button ion-fab (click)="openSocial(1, fab1)"><ion-icon name="contacts"></ion-icon></button>
-      <!--<button ion-fab (click)="openSocial(2, fab1)"><ion-icon name="logo-twitter"></ion-icon></button>-->
+      <button ion-fab (click)="openSocial(1, fab1)"><ion-icon name="create"></ion-icon></button>
+      <button ion-fab (click)="openSocial(2, fab1)"><ion-icon name="contacts"></ion-icon></button>
       <button ion-fab (click)="openSocial(3, fab1)"><ion-icon name="add"></ion-icon></button>
     </ion-fab-list>
   </ion-fab>
 
-  <ion-card>
+  <!--<ion-card>
     <ion-card-content>
 
     </ion-card-content>
@@ -33,8 +33,13 @@
       <button ion-button clear item-start>发布</button>
       <button ion-button clear item-end>取消</button>
     </ion-item>
-  </ion-card>
+  </ion-card>-->
 
+  <ion-item-sliding>
+    <ion-item>
+
+    </ion-item>
+  </ion-item-sliding>
 
   <button id="start" ion-button outline icon-start (click)="startXiaoJi()">
     <ion-icon name="ionitron"></ion-icon>

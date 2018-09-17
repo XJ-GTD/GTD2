@@ -1,9 +1,12 @@
+
+import {AiuiModel} from "./aiui.model";
+
+//基础类
 /**
  * create by wzy on 2018/05/28
  */
-//基础类
 export class BaseModel {
-  code: string;
+  code: number;
   message: string;
-  data: any;
+  data: AiuiModel;
 }

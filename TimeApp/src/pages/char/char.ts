@@ -121,7 +121,7 @@ export class CharPage {
       // this.messageService.sendMessage(chatId, message);
 
       this.xiaojiSpeech.listenText(message);
-       this.messages = this.paramsService.voice;
+       // this.messages = this.paramsService.voice;
 
 
 

@@ -21,7 +21,6 @@ export class XiaojiAssistantService {
   private fileContent: any;
   private filePath: string;
   private speechText: any;
-  private redirect: string;
 
   constructor(public appCtrl : App,
               private base64: Base64,
@@ -36,34 +35,17 @@ export class XiaojiAssistantService {
   /**
    * 语音助手录音录入 AUDIO
    */
-  public listenAudio(redirect: string) {
-    this.redirect = redirect;
+  public listenAudio() {
     try {
       cordova.plugins.xjvoicefromXF.startListen(result=>{
         // alert("成功:" + result);
         //讯飞语音录音设置默认存储路径
         this.filePath = this.file.externalRootDirectory + "/msc/iat.wav";
         console.log("文件路径：" + this.filePath);
-        // this.file.resolveDirectoryUrl(this.file.externalRootDirectory).then(directoryUrl=>{
-        //   this.file.getFile(directoryUrl,"iat.wav",{}).then((file)=>{
-        //     // let b = new Blob(ret);
-        //   })
-        // });
-
-        // alert(this.filePath);
-        // this.file.readAsText(this.filePath,"iat.wav").then(fileSrc=>{
-        //   let b = new Blob([fileSrc]);
-        //   let ff = new FormData();
-        //   ff.append('file',b);
-        //   this.http.post(url,ff).subscribe(data=>{
-        //     alert(data);
-        //   })
-        // });
 
 
-        // alert(this.filePath);
         let url = AppConfig.XUNFEI_URL_AUDIO;
-        // this.fileUpload(this.filePath, url);
+
         // 读取录音进行base64转码
         this.base64.encodeFile(this.filePath).then((base64File: string) => {
           this.fileContent = base64File;
@@ -152,15 +134,13 @@ export class XiaojiAssistantService {
         console.log("data" + data);
         this.data = data;
         //接收Object JSON数据
-        this.paramsService.voice = this.data.data.aiuiData;
+        this.paramsService.aiuiData = this.data.data.aiuiData;
 
         //分离出需要语音播报的内容
-        this.speechText = this.paramsService.voice.speech;
+        this.speechText = this.paramsService.aiuiData.speech;
 
         console.log("成功:" + this.speechText);
         this.speakText(this.speechText);
-        // let activeNav: NavController = this.appCtrl.getActiveNav();
-        // activeNav.push(this.redirect);
       })
   }
 

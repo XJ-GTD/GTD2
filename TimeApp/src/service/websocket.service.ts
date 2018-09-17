@@ -8,6 +8,8 @@ import {NavController, App, AlertController, LoadingController} from "ionic-angu
 import { XiaojiAssistantService } from "./xiaoji-assistant.service";
 import {HttpClient} from "@angular/common/http";
 import {FindOutModel} from "../model/out/find.out.model";
+import {BaseModel} from "../model/base.model";
+import {MqOutModel} from "../model/out/mq.out.model";
 
 /**
  * WebSocket连接Rabbitmq服务器
@@ -18,6 +20,9 @@ import {FindOutModel} from "../model/out/find.out.model";
 export class WebsocketService {
 
   groupFind:FindOutModel;
+  mqData: BaseModel;  //接收mq数据
+  mqPushData: MqOutModel; //入参数据
+
   constructor(public appCtrl : App,
               public alertCtrl: AlertController,
               private http: HttpClient,
@@ -66,27 +71,18 @@ export class WebsocketService {
 
     //对成功回调数据进行操作,放入全局变量中
     subject.asObservable().subscribe( data=> {
-      let returningData = JSON.parse(data.body)
-      // console.log(data.body);
-      // this.paramsService.schedule = JSON.parse(data.body);
-      // console.log( this.paramsService.schedule);
-      // if (this.paramsService.schedule.code == 0) {
-      //   alert("收到消息" + this.paramsService.schedule.scheduleName);
-      //   this.xiaojiSpeech.speakText(this.paramsService.schedule.scheduleName);
-      //   let activeNav: NavController = this.appCtrl.getActiveNav();
-      //   activeNav.push('UserMessagePage');
-      // } else if (this.paramsService.schedule.code == 1) {
-      //   alert("收到消息" + this.paramsService.schedule.scheduleName);
-      //   this.xiaojiSpeech.speakText(this.paramsService.schedule.scheduleName);
-      // } else if (this.paramsService.schedule.code == -1) {
-      //
-      // }
+      console.log("MQ:" + data.body);
+      this.mqData = JSON.parse(data.body)
+      console.log("JSON MQ:" + this.mqData);
+      if (this.mqData.code == 0) {
 
+        this.xiaojiSpeech.speakText(this.mqData.data.speech);
+        this.showConfirm(this.mqData);
+      } else if (this.mqData.code == 1) {
+        console.log("收到消息" + this.mqData.message);
+        this.xiaojiSpeech.speakText(this.mqData.data.speech);
+      } else if (this.mqData.code == -1) {
 
-      if(returningData.code == 0){
-        //接收成功
-        let successData = returningData.data
-        this.showConfirm(successData);
       }
 
 
@@ -111,6 +107,7 @@ export class WebsocketService {
 
   //弹出消息框
   showConfirm(successData) {
+
     const confirm = this.alertCtrl.create({
       title: successData.messageName,   //推送群组名称
       message: successData.messageMaster+''+successData.messageContent,   //群主名称+推送内容
@@ -118,7 +115,7 @@ export class WebsocketService {
         {
           text: '接受',
           handler: () => {
-            console.log('接受了');
+            console.log('接受');
             //此处填写调用方法
             if (successData.type == 1) {
               //调用日程方法
@@ -129,15 +126,18 @@ export class WebsocketService {
           }
         },
         {
-          text: '取消',
+          text: '拒绝',
           handler: () => {
-            console.log('没接受');
+            console.log('拒绝');
+
           }
         }
       ]
     });
     confirm.present();
   }
+
+  //
 
   //调用修改群成员状态接口
   invite(messageId){
