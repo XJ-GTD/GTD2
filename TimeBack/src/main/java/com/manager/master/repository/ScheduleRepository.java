@@ -41,6 +41,16 @@ public class ScheduleRepository {
     }
 
     /**
+     * 查询 日程时间名称 + 创建人ID
+     * @param scheduleId
+     * @return
+     */
+    public ScheduleOutDto findScheduleNameAndCreateId(Integer scheduleId){
+        String sql = "SELECT SCHEDULE_NAME scheduleName,CREATE_ID createId FROM gtd_schedule WHERE SCHEDULE_ID = " + scheduleId;
+        return (ScheduleOutDto) em.createNativeQuery(sql).getSingleResult();
+    }
+
+    /**
      * 查询自己创建的日程信息
      * @param inDto
      * @return

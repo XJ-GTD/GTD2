@@ -101,4 +101,14 @@ public interface SchedulePlayersRepository extends JpaRepository<GtdSchedulePlay
     @Query(value = "INSERT INTO gtd_schedule_players(SCHEDULE_ID,PLAYERS_STATUS,USER_ID,CREATE_ID,CREATE_DATE,UPDATE_ID,UPDATE_DATE) VALUES(?1,?2,?3,?4,?5,?6,?7)",nativeQuery = true)
     void insertSchedulePlayers(Integer scheduleId,Integer playersStatus,Integer userId,Integer createId,Timestamp createDt,Integer updateId,Timestamp updateDt);
 
+    /**
+     * 修改日程参与人状态
+     * @param userId
+     * @param scheduleId
+     * @param playersStatus
+     */
+    @Modifying
+    @Query(value = "UPDATE gtd_schedule_players SET PLAYERS_STATUS = ?3,UPDATE_ID = ?4,UPDATE_DATE = ?5 WHERE SCHEDULE_ID = ?2 AND USER_ID = ?1",nativeQuery = true)
+    void updatePlayersStatus(Integer userId,Integer scheduleId,Integer playersStatus,Integer updateId,Timestamp updateDt);
+
 }

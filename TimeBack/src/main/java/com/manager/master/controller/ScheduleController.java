@@ -190,4 +190,29 @@ public class ScheduleController {
         }
         return baseOutDto;
     }
+
+    /**
+     * 日程接受拒绝
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/choose",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto chooseAcceptOrRefuse(@RequestBody ScheduleInDto inDto){
+        BaseOutDto baseOutDto = new BaseOutDto();
+        int flag;
+        try{
+            flag = scheduleService.chooseAcceptOrRefuse(inDto);
+            if (flag == 0){
+                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("日程状态修改成功");
+            }else if(flag == 1){
+                baseOutDto.setCode(ResultCode.REPEAT).setMessage("日程状态修改失败");
+            } else {
+                baseOutDto.setCode(ResultCode.FAIL).setMessage("日程状态修改失败");
+            }
+        }catch (Exception ex){
+            throw new ServiceException(ex.getMessage());
+        }
+        return baseOutDto;
+    }
 }

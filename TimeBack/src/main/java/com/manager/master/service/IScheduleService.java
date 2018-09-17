@@ -67,4 +67,11 @@ public interface IScheduleService {
      * @return
      */
     List<RemindOutDto> findAllRemindTime(ScheduleInDto userId);
+
+    /**
+     * 日程接受拒绝
+     * @param inDto
+     * @return
+     */
+    int chooseAcceptOrRefuse(ScheduleInDto inDto);
 }

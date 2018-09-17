@@ -31,10 +31,14 @@ public class ScheduleServiceImpl implements IScheduleService {
     private static final String PUSH_MESSAGE_SCHEDULE_CREATE = "接受要注意守约哦";       //创建日程/添加参与人 推送
     private static final String PUSH_MESSAGE_SCHEDULE_UPDATE = "日程内容已经改变，请注意查看";       //创建日程/添加参与人 推送
     private static final String PUSH_MESSAGE_SCHEDULE_DELETE = "参与人已删除日程";       //删除日常推送
+    private static final String PUSH_MESSAGE_INVITATION_ACCEPT = "已接受日程邀请";         // 用户接受日程邀请 推送
+    private static final String PUSH_MESSAGE_INVITATION_REFUSE = "已拒绝日程邀请";         // 用户拒绝日程邀请 推送
 
     private static final Integer DB_LABEL_GENERAL = 4;       //一般
     private static final Integer DB_LABEL_IMPORT = 5;       //重要
     private static final Integer DB_LABEL_URGENCY = 6;       //紧急
+    private static final Integer DB_PLAYERS_STATUS_ACCEPT = 1;     // 接受(未完成)
+    private static final Integer DB_PLAYERS_STATUS_REFUSE = -1;     // 拒绝
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
@@ -1091,6 +1095,106 @@ public class ScheduleServiceImpl implements IScheduleService {
         }
 
         return remindTimeList;
+    }
+
+    /**
+     * 日程接受拒绝
+     *
+     * @param inDto
+     * @return
+     */
+    @Override
+    public int chooseAcceptOrRefuse(ScheduleInDto inDto) {
+
+        // 接收参数
+        Integer userId = inDto.getUserId();
+        Integer scheduleId = inDto.getScheduleId();
+        Integer playersStatus = inDto.getPlayersStatus();
+        // 入参必须项检查
+        if(userId == 0 || userId == null || "".equals(userId)){
+            logger.error("用户ID入参为空");
+            return -1;
+        }
+        if(scheduleId == 0 || scheduleId == null || "".equals(scheduleId)){
+            logger.error("日程事件ID不能为空");
+            return -1;
+        }
+        if(playersStatus == 0 || playersStatus == null || "".equals(playersStatus)){
+            logger.error("参与人状态ID不能为空");
+            return -1;
+        }
+        // 入参类型检查
+        // 入参长度检查
+        // 入参关联检查
+
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        String update = format.format(date);
+        // 业务处理
+        if(playersStatus == 1){
+            playersStatus = DB_PLAYERS_STATUS_ACCEPT;
+        } else if(playersStatus == -1){
+            playersStatus = DB_PLAYERS_STATUS_REFUSE;
+        }
+        // 更新状态
+        try {
+            schedulePlayersRepository.updatePlayersStatus(userId,scheduleId,playersStatus,userId,CommonMethods.dateToStamp(update));
+        }catch (Exception ex){
+            logger.error(" ------ updatePlayersStatus 语法错误");
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
+            return 1;
+        }
+        // 查询用户名称
+        String userName = null;
+        try {
+            userName = userRepository.findUserNameByUserId(userId);
+        }catch (Exception ex){
+            logger.error(" ------ findUserNameByUserId 语法错误");
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
+            return 1;
+        }
+        // 查询日程创建人
+        ScheduleOutDto scheduleOutDto = new ScheduleOutDto();
+        try {
+            scheduleOutDto = scheduleRepository.findScheduleNameAndCreateId(scheduleId);
+        }catch (Exception ex){
+            logger.error(" ------ findScheduleNameAndCreateId 语法错误");
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
+            return -1;
+        }
+        String scheduleName = scheduleOutDto.getScheduleName();
+        Integer createId = scheduleOutDto.getCreateId();
+
+        // 发送提醒 - 原有用户日程修改提醒
+        PushOutDto pushOutDto = new PushOutDto();   // 推送消息
+        PushInDto pushInDto = new PushInDto();      // 推送目标
+        // 推送信息设置
+        pushOutDto.setMessageId(scheduleId);
+        pushOutDto.setMessageName(scheduleName);
+        if(playersStatus == DB_PLAYERS_STATUS_REFUSE || playersStatus.equals(DB_PLAYERS_STATUS_REFUSE)){
+
+        } else if(playersStatus == DB_PLAYERS_STATUS_ACCEPT || playersStatus.equals(DB_PLAYERS_STATUS_ACCEPT)){
+            pushOutDto.setMessageContent(PUSH_MESSAGE_INVITATION_ACCEPT);
+        }
+        pushOutDto.setUserName(userName);
+        pushOutDto.setType(1);
+        // 推送目标设置
+        pushInDto.setData(pushOutDto);
+        pushInDto.setUserId(userId);
+        // TODO
+//        pushInDto.setMemberUserId(createId);
+        // 发送日程修改信息
+        int modifyMessage = webSocketService.pushToUser(pushInDto);
+        if(modifyMessage != 0){
+            logger.error("日程确认 ------ 推送失败！");
+        } else {
+            logger.info("日程确认 ------ 推送成功");
+        }
+
+        return 0;
     }
 
     /**

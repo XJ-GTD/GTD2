@@ -15,6 +15,8 @@ public class ScheduleOutDto {
     private Integer scheduleRepeatType;               // 日程重复类型
     private String scheduleStatus;                 // 完成状态
 
+    private Integer createId;      // 发布人ID
+
     public String getScheduleName() {
         return scheduleName;
     }
@@ -71,4 +73,11 @@ public class ScheduleOutDto {
         this.scheduleStatus = scheduleStatus;
     }
 
+    public Integer getCreateId() {
+        return createId;
+    }
+
+    public void setCreateId(Integer createId) {
+        this.createId = createId;
+    }
 }
