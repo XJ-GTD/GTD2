@@ -93,14 +93,6 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     List<Integer> findAllUserIdByGroupId(int userId);
 
     /**
-     * 查询用户的消息队列
-     * @param userId
-     * @return
-     */
-    @Query(value = " SELECT ACCOUNT_QUEUE FROM gtd_account WHERE USER_ID = ?1 ", nativeQuery = true)
-    String findAccountQueue(int userId);
-
-    /**
      * 根据 日程ID 查询 群组信息
      * @param scheduleId
      * @return

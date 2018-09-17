@@ -6,6 +6,20 @@ import {ScheduleModel} from "./schedule.model";
  * create by wzy on 2018/09/17
  */
 export class AiuiModel {
+
+  private _code: number;                       //动作判断flag
+  private _userNameList: Array<string>;		//参与人
+  private _scheduleName: string;						//日程主题
+  private _scheduleStartTime: string;					//开始时间
+  private _scheduleDeadline: string;					//结束时间
+  private _speech: string;      //讯飞语音播报字段
+  private _userText: string;      //用户语音播报字段
+
+  private _dataType: string;       //数据类型 0：无数据对话 1：单个详情  2：列表list
+
+  private _scheduleCreateList: Array<ScheduleModel>;       // 查询自己创建的日程
+  private _scheduleJoinList: Array<ScheduleModel>;      // 查询自己参与的日程
+
   get code(): number {
     return this._code;
   }
@@ -85,16 +99,5 @@ export class AiuiModel {
   set scheduleJoinList(value: Array<ScheduleModel>) {
     this._scheduleJoinList = value;
   }
-  private _code: number;                       //动作判断flag
-  private _userNameList: Array<string>;		//参与人
-  private _scheduleName: string;						//日程主题
-  private _scheduleStartTime: string;					//开始时间
-  private _scheduleDeadline: string;					//结束时间
-  private _speech: string;      //讯飞语音播报字段
-  private _userText: string;      //用户语音播报字段
 
-  private _dataType: string;       //数据类型 0：无数据对话 1：单个详情  2：列表list
-
-  private _scheduleCreateList: Array<ScheduleModel>;       // 查询自己创建的日程
-  private _scheduleJoinList: Array<ScheduleModel>;      // 查询自己参与的日程
 }

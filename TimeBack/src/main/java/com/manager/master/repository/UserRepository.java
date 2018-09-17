@@ -63,4 +63,5 @@ public class UserRepository {
         String sql = "SELECT USER_NAME FROM gtd_user WHERE USER_ID = " + userId;
         return (String) em.createNativeQuery(sql).getSingleResult();
     }
+
 }

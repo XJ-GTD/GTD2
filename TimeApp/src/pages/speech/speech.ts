@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import {AlertController, FabContainer, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
+import { AlertController, FabContainer, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { XiaojiAssistantService } from "../../service/xiaoji-assistant.service";
 import { ParamsService } from "../../service/params.service";
-import {ScheduleOutModel} from "../../model/out/schedule.out.model";
-import {HttpClient} from "@angular/common/http";
-import {AppConfig} from "../../app/app.config";
+import { HttpClient } from "@angular/common/http";
+import { AppConfig } from "../../app/app.config";
+import { AiuiModel } from "../../model/aiui.model";
 
 /**
  * Generated class for the SpeechPage page.
@@ -22,9 +22,13 @@ import {AppConfig} from "../../app/app.config";
 export class SpeechPage {
 
   data: any;
-  modeFlag: number = 0;
+  modeFlag: boolean = true;   //判断助手模式 true语音false手输
+
+  userText: string; //用户输入显示文本
+  speech: string;   //语音助手显示文本
   inputText: string;    //手动模式输入数据
-  findSchedule: ScheduleOutModel; //查询日程条件
+
+  messages: Array<AiuiModel>; //聊天数据队列
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private paramsService: ParamsService,
@@ -43,6 +47,7 @@ export class SpeechPage {
     console.log('Share in ' + flag);
     if (flag == 1) {
       //切换手动输入模式
+      this.modeFlag = !this.modeFlag;
     }
     if (flag == 2) {
       //进入群组
@@ -55,24 +60,9 @@ export class SpeechPage {
     fab.close();
   }
 
-  switchMode() {
-    this.modeFlag = 1;//切换至手动输入模式
-  }
-
   //添加日程
   addSchedule() {
     this.navCtrl.push("ScheduleAddPage")
-  }
-
-  //启动语音助手
-  startXiaoJi() {
-    this.navCtrl.push('CharPage');
-    this.xiaojiSpeech.listenAudio();
-  }
-
-  //启动语音助手手动输入模式
-  startXiaojiText() {
-    this.xiaojiSpeech.listenText(this.inputText);
   }
 
   //群组详情
@@ -81,6 +71,17 @@ export class SpeechPage {
   }
 
   /*==================== 聊天界面 start ===================*/
+
+  //启动语音输入
+  startXiaoJi() {
+    this.xiaojiSpeech.listenAudio();
+  }
+
+  //启动手动输入
+  startXiaojiText() {
+    this.xiaojiSpeech.listenText(this.inputText);
+  }
+
 
   /*==================== 聊天界面 end ===================*/
 

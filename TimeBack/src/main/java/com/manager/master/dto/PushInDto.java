@@ -9,8 +9,11 @@ import java.util.List;
  */
 public class PushInDto {
 
-    private Integer userId;         //用户ID
+    private Integer userId;         //推送人用户ID
+    private Integer targetUserId;       //推送目标UserId
+
     private List<Integer> memberUserId; //参与人ID List
+
     private PushOutDto data;            //推送数据
 
     public Integer getUserId() {
@@ -37,4 +40,11 @@ public class PushInDto {
         this.data = data;
     }
 
+    public Integer getTargetUserId() {
+        return targetUserId;
+    }
+
+    public void setTargetUserId(Integer targetUserId) {
+        this.targetUserId = targetUserId;
+    }
 }
