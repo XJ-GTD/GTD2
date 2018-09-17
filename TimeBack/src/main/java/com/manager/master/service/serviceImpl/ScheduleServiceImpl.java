@@ -1113,15 +1113,15 @@ public class ScheduleServiceImpl implements IScheduleService {
         // 入参必须项检查
         if(userId == 0 || userId == null || "".equals(userId)){
             logger.error("用户ID入参为空");
-            return -1;
+            return 1;
         }
         if(scheduleId == 0 || scheduleId == null || "".equals(scheduleId)){
             logger.error("日程事件ID不能为空");
-            return -1;
+            return 1;
         }
         if(playersStatus == 0 || playersStatus == null || "".equals(playersStatus)){
             logger.error("参与人状态ID不能为空");
-            return -1;
+            return 1;
         }
         // 入参类型检查
         // 入参长度检查
@@ -1163,7 +1163,7 @@ public class ScheduleServiceImpl implements IScheduleService {
             logger.error(" ------ findScheduleNameAndCreateId 语法错误");
             logger.error(ex.getMessage());
             ex.printStackTrace();
-            return -1;
+            return 1;
         }
         String scheduleName = scheduleOutDto.getScheduleName();
         Integer createId = scheduleOutDto.getCreateId();
@@ -1175,7 +1175,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         pushOutDto.setMessageId(scheduleId);
         pushOutDto.setMessageName(scheduleName);
         if(playersStatus == DB_PLAYERS_STATUS_REFUSE || playersStatus.equals(DB_PLAYERS_STATUS_REFUSE)){
-
+            pushOutDto.setMessageContent(PUSH_MESSAGE_INVITATION_REFUSE);
         } else if(playersStatus == DB_PLAYERS_STATUS_ACCEPT || playersStatus.equals(DB_PLAYERS_STATUS_ACCEPT)){
             pushOutDto.setMessageContent(PUSH_MESSAGE_INVITATION_ACCEPT);
         }

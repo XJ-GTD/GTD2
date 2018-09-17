@@ -209,4 +209,16 @@ public class CommonMethods {
         }
         return list;
     }
+
+    public static boolean checkIsPhoneNumber(String str){
+        if(isInteger(str)) {
+            if (str.length() ==11) {
+                return true;
+            } else {
+                return false;
+            }
+        }else {
+            return false;
+        }
+    }
 }

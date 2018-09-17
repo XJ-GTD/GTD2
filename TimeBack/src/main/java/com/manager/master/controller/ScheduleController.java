@@ -207,8 +207,6 @@ public class ScheduleController {
                 baseOutDto.setCode(ResultCode.SUCCESS).setMessage("日程状态修改成功");
             }else if(flag == 1){
                 baseOutDto.setCode(ResultCode.REPEAT).setMessage("日程状态修改失败");
-            } else {
-                baseOutDto.setCode(ResultCode.FAIL).setMessage("日程状态修改失败");
             }
         }catch (Exception ex){
             throw new ServiceException(ex.getMessage());
