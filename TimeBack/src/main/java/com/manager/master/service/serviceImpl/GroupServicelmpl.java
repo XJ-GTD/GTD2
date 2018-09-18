@@ -246,6 +246,9 @@ public class GroupServicelmpl implements IGroupService {
             if (CommonMethods.checkMySqlReservedWords(groupName)){
                 throw new ServiceException("群组名称包含关键字");
             }
+            if(groupName.length()>10){
+                throw new ServiceException("群名称过长");
+            }
         }
 
         //接收返回结果
@@ -728,11 +731,10 @@ public class GroupServicelmpl implements IGroupService {
         if ( "".equals(userId) || userId == 0) throw new ServiceException("用户ID不能为空");
         if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
         if (labelId.size() == 0 || labelId == null) throw new ServiceException("标签不能为空");
-        if(groupName!=null||!"".equals(groupName)){
-            if(CommonMethods.checkMySqlReservedWords(groupName)){
-                throw new ServiceException("群组名称包含关键字");
-            }
+        if(CommonMethods.checkMySqlReservedWords(groupName)){
+            throw new ServiceException("群组名称包含关键字");
         }
+
 
         for(GroupMemberOutDto g:member){
             if(CommonMethods.checkMySqlReservedWords(g.getMemeberName())){
@@ -769,6 +771,26 @@ public class GroupServicelmpl implements IGroupService {
                         throw new ServiceException("权限标签不能删除");
                     }
                 }
+                if(labelId.indexOf(g.getLabelId())==-1){
+                    groupJpaRepository.deleteGroupLabelEntityByGroupIdAndLabelId(groupId,g.getLabelId());
+                }
+            }
+
+            for(Integer i:labelId){
+                boolean boo=true;
+                for(GtdLabelEntity g:labels) {
+                    if (g.getLabelId()==i) {
+                        boo=false;
+                    }
+                }
+                if(boo){
+                    GtdGroupLabel gtdGroupLabel = new GtdGroupLabel();
+                    gtdGroupLabel.setGroupId(groupId);
+                    gtdGroupLabel.setLabelId(i);
+                    gtdGroupLabel.setCreateId(userId);
+                    gtdGroupLabel.setCreateDate(new Timestamp(new Date().getTime()));
+                    groupLabelJpa.save(gtdGroupLabel);
+                }
             }
 
             if(!group.getGroupName().equals(groupName)&&groupName!=null) {
@@ -781,8 +803,6 @@ public class GroupServicelmpl implements IGroupService {
             boolean status = false;
             for (Integer i : labelId) {
                 GtdLabelEntity labelEntity = labelJpaRespository.findGtdLabelEntityByLabelId(i);
-                labelEntity.setUpdateId(userId);
-                labelEntity.setUpdateDate(new Timestamp(new Date().getTime()));
                 set.add(labelEntity);
                 if (i == 1) {//判断新增有没有权限标签
                     status = true;
@@ -790,11 +810,12 @@ public class GroupServicelmpl implements IGroupService {
             }
             Date date = new Date();
             group.setUserId(userId);
-            group.setLabel(set);
+            //group.setLabel(set);
             group.setUpdateId(userId);
             group.setUpdateDate(new Timestamp(date.getTime()));
             logger.info("修改后的群组"+group);
             groupJpaRepository.save(group);
+
             List<Integer> userIns = new ArrayList<>();
             if (member != null) {
                 List<Integer> memberUserId=new ArrayList<>();
