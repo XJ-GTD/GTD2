@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class ScheduleServiceImpl implements IScheduleService {
 
-    private static final String PUSH_MESSAGE_SCHEDULE_CREATE = "接受要注意守约哦";       //创建日程/添加参与人 推送
+    private static final String PUSH_MESSAGE_SCHEDULE_CREATE = "推送了日程，是否接受？";       //创建日程/添加参与人 推送
     private static final String PUSH_MESSAGE_SCHEDULE_UPDATE = "日程内容已经改变，请注意查看";       //创建日程/添加参与人 推送
     private static final String PUSH_MESSAGE_SCHEDULE_DELETE = "参与人已删除日程";       //删除日常推送
     private static final String PUSH_MESSAGE_INVITATION_ACCEPT = "已接受日程邀请";         // 用户接受日程邀请 推送

@@ -49,6 +49,7 @@ public class VoiceParseController {
                 outBean.setData(data);
                 outBean.setCode(ResultCode.SUCCESS);
                 outBean.setMessage("[语音交互完成]");
+                logger.info("[语音交互完成]");
             } else {
                 data.put("aiuiData", dataDto);
                 outBean.setData(data);
@@ -69,7 +70,7 @@ public class VoiceParseController {
 
     /**
      * 语义解析：文本方法
-     * @param request
+     * @param inDto
      * @return
      */
     @RequestMapping(value = "/answer_text", method = RequestMethod.POST)
@@ -83,6 +84,7 @@ public class VoiceParseController {
                 outBean.setData(data);
                 outBean.setCode(ResultCode.SUCCESS);
                 outBean.setMessage("[语音交互完成]");
+                logger.info("[语音交互完成]");
             } else {
                 data.put("aiuiData", dataDto);
                 outBean.setData(data);

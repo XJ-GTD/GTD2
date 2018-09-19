@@ -24,87 +24,94 @@
     </ion-fab-list>
   </ion-fab>
 
+  <!-- talk start-->
 
-<div *ngIf="initFlag != false">
   <div *ngFor="let message of messages" class="message-wrapper" on-hold="onMessageHold($event, $index, message)">
     <!-- 判断消息是讯飞 -->
-    <div *ngIf="message.speech != null">
+    <div *ngIf="talkXF == message.talkType">
       <!--  wave-->
       <div class="chat-bubble left slide-left">
-        <ion-input type="text" disabled class="message" >{{message.speech}}</ion-input>
+        <div class="message" [innerHTML]="message.speech" autolinker></div>
       </div>
     </div>
 
     <!-- 判断消息是用户 -->
-    <div *ngIf="message.userText != null">
+    <div *ngIf="talkUser == message.talkType">
       <div class="chat-bubble right slide-right">
-        <ion-input type="text" disabled class="message" >{{message.userText}}</ion-input>
+        <div class="message" [innerHTML]="message.userText" autolinker></div>
         <div class="message-detail">
-          <span (click)="changeText(message.userText)" class="bold">轻点可修改</span>
+          <span class="bold">轻点以编辑</span>
         </div>
       </div>
     </div>
     <div class="cf"></div>
-  </div>
 
-  <!-- 判断消息是数据 -->
-  <div *ngIf="message.dataType == 1">
-    <!--  wave-->
-    <div class="chat-bubble left slide-left">
-      <ion-card>
-         <ion-card-content>
-
-           <button ion-item >
-             <h2>{{message.scheduleName}}</h2>
-             <p *ngIf="message.scheduleDeadline != null && message.scheduleDeadline != '' ;else deadLine">
-               {{message.scheduleStartTime}} - {{message.scheduleDeadline}}
-             </p>
-             <ng-template #deadLine>
-               <p *ngIf="message.scheduleStartTime == null || message.scheduleStartTime == '' ;else startTime">
-                 截止于{{message.scheduleDeadline}}
-               </p>
-               <ng-template #startTime>
-                 <p>{{message.scheduleStartTime}}开始</p>
-               </ng-template>
-             </ng-template>
-           </button>
-
-         </ion-card-content>
-
-         <!--<ion-item>-->
-           <!--<button ion-button clear item-start>发布</button>-->
-           <!--<button ion-button clear item-end>取消</button>-->
-         <!--</ion-item>-->
-       </ion-card>
-    </div>
-  </div>
-
-  <!-- 判断消息是数据 -->
-  <div *ngIf="message.dataType == 2">
-    <!--  wave-->
-    <div class="chat-bubble left slide-left">
-      <ion-list>
-        <ion-item-sliding *ngFor="let sd of message.scheduleJoinList">
-          <button ion-item (click)="showScheduleDetail(sd)">
-            <h2>{{sd.scheduleName}}</h2>
-            <p *ngIf="sd.scheduleDeadline != null && sd.scheduleDeadline != '' ;else deadLine">
-              {{sd.scheduleStartTime}} - {{sd.scheduleDeadline}}
-            </p>
-            <ng-template #deadLine>
-              <p *ngIf="sd.scheduleStartTime == null || sd.scheduleStartTime == '' ;else startTime">
-                截止于{{sd.scheduleDeadline}}
+    <!-- 判断消息是数据:单条 -->
+    <div *ngIf="talkDataSingle == message.talkType">
+      <!--  wave-->
+      <div class="chat-bubble left slide-left">
+        <div class="message" autolinker>
+          <ion-card>
+            <ion-card-content>
+              <h2>{{message.scheduleName}}</h2>
+              <p *ngIf="message.scheduleDeadline != null && message.scheduleDeadline != '' ;else deadLine">
+                {{message.scheduleStartTime}} - {{message.scheduleDeadline}}
               </p>
-              <ng-template #startTime>
-                <p>{{sd.scheduleStartTime}}开始</p>
+              <ng-template #deadLine>
+                <p *ngIf="message.scheduleStartTime == null || message.scheduleStartTime == '' ;else startTime">
+                  截止于{{message.scheduleDeadline}}
+                </p>
+                <ng-template #startTime>
+                  <p>{{message.scheduleStartTime}}开始</p>
+                </ng-template>
               </ng-template>
-            </ng-template>
-          </button>
-        </ion-item-sliding>
-      </ion-list>
+            </ion-card-content>
+
+           <!-- <ion-item>
+              <button ion-button clear item-start>发布</button>
+              <button ion-button clear item-end>取消</button>
+            </ion-item>-->
+          </ion-card>
+
+        </div>
+      </div>
     </div>
+
+    <!-- 判断消息是数据：list -->
+    <div *ngIf="talkDataList == message.talkType">
+      <!--  wave-->
+      <div class="chat-bubble left slide-left">
+        <div class="message" autolinker>
+          <ion-item-sliding *ngFor="let sj of message.scheduleJoinList">
+            <button ion-item (click)="showScheduleDetail(sj)">
+              <h2>{{sj.scheduleName}}</h2>
+              <p *ngIf="sj.scheduleDeadline != null && sj.scheduleDeadline != '' ;else deadLine">
+                {{sj.scheduleStartTime}} - {{sj.scheduleDeadline}}
+              </p>
+              <ng-template #deadLine>
+                <p *ngIf="sj.scheduleStartTime == null || sj.scheduleStartTime == '' ;else startTime">
+                  截止于{{sj.scheduleDeadline}}
+                </p>
+                <ng-template #startTime>
+                  <p>{{sj.scheduleStartTime}}开始</p>
+                </ng-template>
+              </ng-template>
+            </button>
+            <ion-item-options>
+              <button ion-button icon-start>
+                <ion-icon name="text"></ion-icon>
+                删除
+              </button>
+            </ion-item-options>
+          </ion-item-sliding>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-</div>
+  <!-- talk end-->
+
 </ion-content>
 
 <ion-footer>

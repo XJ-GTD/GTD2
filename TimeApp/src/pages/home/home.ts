@@ -36,6 +36,7 @@ export class HomePage {
   month: number;
   time: Array<TimeModel>;
   scheduleList: Array<ScheduleModel>;
+  schedule: ScheduleModel;
   findSchedule: ScheduleOutModel; //查询日程条件
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -121,6 +122,15 @@ export class HomePage {
           console.log("error message:" + this.data.message);
         }
       })
+  }
+
+  //展示数据详情
+  showScheduleDetail(schedule){
+    this.schedule = new ScheduleModel();
+    this.schedule = schedule;
+    this.paramsService.schedule = this.schedule;
+    console.log("schedule:" + this.paramsService.schedule);
+    this.navCtrl.push("ScheduleDetailPage");
   }
 
   openVoice() {

@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
-import { AlertController, FabContainer, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import { AlertController, Content, FabContainer, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { XiaojiAssistantService } from "../../service/xiaoji-assistant.service";
 import { ParamsService } from "../../service/params.service";
 import { HttpClient } from "@angular/common/http";
 import { AppConfig } from "../../app/app.config";
 import { AiuiModel } from "../../model/aiui.model";
-import {ScheduleModel} from "../../model/schedule.model";
+import { ScheduleModel } from "../../model/schedule.model";
 
 /**
  * Generated class for the SpeechPage page.
@@ -22,15 +22,23 @@ import {ScheduleModel} from "../../model/schedule.model";
 })
 export class SpeechPage {
 
+  @ViewChild(Content) content: Content;
+
   data: any;
   modeFlag: boolean = true;   //判断助手模式 true语音false手输
   initFlag:boolean = false;   //页面初始化
 
+  talkDataList: number = 4;    //数据多条
+  talkDataSingle: number = 3;     //数据单条
+  talkXF: number = 2;       //讯飞
+  talkUser: number = 1;     //用户
+
   userText: string; //用户输入显示文本
   speech: string;   //语音助手显示文本
-  inputText: string;    //手动模式输入数据
+  inputText: string = "";    //手动模式输入数据
 
   schedule: ScheduleModel;
+  aiuiData: AiuiModel;
   messages: Array<AiuiModel>; //聊天数据队列
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -39,10 +47,17 @@ export class SpeechPage {
               private loadingCtrl: LoadingController,
               private alert: AlertController,
               private xiaojiSpeech: XiaojiAssistantService) {
+
+    this.init();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SpeechPage');
+  }
+
+  init() {
+    this.messages = [];
+    this.aiuiData = new AiuiModel();
   }
 
   //扩展按钮
@@ -51,6 +66,7 @@ export class SpeechPage {
     if (flag == 1) {
       //切换手动输入模式
       this.modeFlag = !this.modeFlag;
+      this.initFlag = false;
     }
     if (flag == 2) {
       //进入群组
@@ -77,42 +93,80 @@ export class SpeechPage {
 
   //启动语音输入
   startXiaoJi() {
-    this.xiaojiSpeech.listenAudio();
 
-    this.messageHanding();
+    if (this.inputText != null && this.inputText != "") {
+      let input = this.xiaojiSpeech.listenAudio();
+      let url = AppConfig.XUNFEI_URL_TEXT;
+      this.messageHanding(url, input);
+    }
   }
 
   //启动手动输入
   startXiaojiText() {
-    this.xiaojiSpeech.listenText(this.inputText);
-
-    this.messageHanding();
+    if (this.inputText != null && this.inputText != "") {
+      let url = AppConfig.XUNFEI_URL_TEXT;
+      this.messageHanding(url, this.inputText);
+    }
   }
 
   //回传数据处理
-  messageHanding() {
+  messageHanding(url, input) {
+    this.http.post(url, {
+      content: input,
+      userId: this.paramsService.user.userId
+    },{
+      headers: {
+        "Content-Type": "application/json"
+      },
+      responseType: 'json'
+    })
+      .subscribe(data => {
+        console.log("data" + data);
+        this.data = data;
 
-    this.initFlag = true;
+        if (this.data.code == 0) {
+          //接收Object JSON数据
+          this.aiuiData = this.data.data.aiuiData;
 
-    this.messages = [];
+          let messageUser = new AiuiModel();
+          messageUser.talkType = this.talkUser;
+          messageUser.userText = this.aiuiData.userText;
+          this.messages.push(messageUser);
 
-    let aiuiDetail = new AiuiModel();
-    aiuiDetail.userText = this.paramsService.aiuiData.userText;
-    this.messages.push(aiuiDetail);
-    aiuiDetail = new AiuiModel();
-    aiuiDetail.speech = this.paramsService.aiuiData.speech;
-    this.messages.push(aiuiDetail);
-    aiuiDetail = new AiuiModel();
-    if (this.paramsService.aiuiData.dataType == "1") {
-      aiuiDetail.scheduleName = this.paramsService.aiuiData.scheduleName;
-      aiuiDetail.scheduleStartTime = this.paramsService.aiuiData.scheduleStartTime;
-      aiuiDetail.scheduleDeadline = this.paramsService.aiuiData.scheduleDeadline;
-      aiuiDetail.userNameList = this.paramsService.aiuiData.userNameList;
-      this.messages.push(aiuiDetail);
-    } else if (this.paramsService.aiuiData.dataType == "2"){
-      aiuiDetail.scheduleJoinList = this.paramsService.aiuiData.scheduleJoinList;
-      this.messages.push(aiuiDetail);
-    }
+          this.scrollToBottom();
+
+          setTimeout(() => {
+            let messageXF = new AiuiModel();
+            messageXF.talkType = this.talkXF;
+            messageXF.speech = this.aiuiData.speech;
+            this.messages.push(messageXF);
+            //分离出需要语音播报的内容
+            console.log("语音调用成功:" + this.aiuiData.speech);
+            this.xiaojiSpeech.speakText(this.aiuiData.speech);
+          }, 1000);
+
+          if (this.aiuiData.dataType == "1") {
+            setTimeout(() => {
+              let messageData = new AiuiModel();
+              messageData.talkType = this.talkDataSingle;
+              messageData.scheduleName = this.aiuiData.scheduleName;
+              messageData.scheduleStartTime = this.aiuiData.scheduleStartTime;
+              messageData.scheduleDeadline = this.aiuiData.scheduleDeadline;
+              this.messages.push(messageData);
+            }, 1500);
+          } else if (this.aiuiData.dataType == "2") {
+            setTimeout(() => {
+              let messageData = new AiuiModel();
+              messageData.talkType = this.talkDataList;
+              messageData.scheduleJoinList = this.aiuiData.scheduleJoinList;
+              this.messages.push(messageData);
+            }, 1500);
+          }
+
+          this.inputText = "";
+        }
+
+      });
 
   }
 
@@ -127,9 +181,16 @@ export class SpeechPage {
 
   //修改输入
   changeText(data) {
-    this.xiaojiSpeech.listenText(data);
+    if (data != null && data != "") {
+      let url = AppConfig.XUNFEI_URL_TEXT;
+      this.messageHanding(url, data);
+    }
+  }
 
-    this.messageHanding();
+  scrollToBottom() {
+    setTimeout(() => {
+      this.content.scrollToBottom();
+    }, 100);
   }
 
   /*==================== 聊天界面 end ===================*/

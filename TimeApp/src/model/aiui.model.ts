@@ -16,6 +16,7 @@ export class AiuiModel {
   private _userText: string;      //用户语音播报字段
 
   private _dataType: string;       //数据类型 0：无数据对话 1：单个详情  2：列表list
+  private _talkType: number;     //使用人：1是用户，2是讯飞
 
   private _scheduleCreateList: Array<ScheduleModel>;       // 查询自己创建的日程
   private _scheduleJoinList: Array<ScheduleModel>;      // 查询自己参与的日程
@@ -30,6 +31,13 @@ export class AiuiModel {
 
   get userNameList(): Array<string> {
     return this._userNameList;
+  }
+  get talkType(): number {
+    return this._talkType;
+  }
+
+  set talkType(value: number) {
+    this._talkType = value;
   }
 
   set userNameList(value: Array<string>) {

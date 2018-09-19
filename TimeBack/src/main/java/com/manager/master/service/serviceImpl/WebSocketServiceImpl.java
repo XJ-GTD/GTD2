@@ -63,7 +63,7 @@ public class WebSocketServiceImpl implements IWebSocketService {
 
         String accountQueue = "";
 
-        if (memberUserIds != null && memberUserIds.size() == 0) {
+        if (memberUserIds != null && memberUserIds.size() != 0) {
             for (Integer id: memberUserIds) {
                 accountQueue = userJpaRepository.findAccountQueue(id);
                 if (accountQueue == null || "".equals(accountQueue)) {

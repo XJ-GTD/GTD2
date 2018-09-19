@@ -99,6 +99,7 @@ public class AiUiServiceImpl implements IAiUiService {
                     for (GroupOutDto god: groupList) {
                         groupIds.add(god.getGroupId());
                     }
+                    logger.info("[找到参与人]");
                 } else {
                     aiuiData.setSpeech("没有找到该参与人，请尝试添加参与人后重新发布");
                     aiuiData.setDataType("0");
@@ -137,8 +138,13 @@ public class AiUiServiceImpl implements IAiUiService {
             // 查询自己参与的日程
             List<FindScheduleOutDto> scheduleJoinList = scheduleService.findJoinSchedule(findSchedule);
 
-            aiuiData.setScheduleCreateList(scheduleCreateList);
-            aiuiData.setScheduleJoinList(scheduleJoinList);
+            if (scheduleJoinList != null && scheduleJoinList.size() != 0) {
+                aiuiData.setScheduleCreateList(scheduleCreateList);
+                aiuiData.setScheduleJoinList(scheduleJoinList);
+            } else {
+                aiuiData.setSpeech(aiuiData.getSpeech() + ",暂没有日程安排");
+            }
+            logger.info("查询成功[scheduleCreateList]："+ scheduleCreateList.size() + " | [scheduleJoinList]：" + scheduleJoinList.size());
 
             aiuiData.setDataType("2");
         }
@@ -209,6 +215,7 @@ public class AiUiServiceImpl implements IAiUiService {
                     for (GroupOutDto god: groupList) {
                         groupIds.add(god.getGroupId());
                     }
+                    logger.info("[找到参与人]");
                 } else {
                     aiuiData.setSpeech("没有找到该参与人，请尝试添加参与人后重新发布");
                     aiuiData.setDataType("0");
@@ -247,8 +254,14 @@ public class AiUiServiceImpl implements IAiUiService {
             // 查询自己参与的日程
             List<FindScheduleOutDto> scheduleJoinList = scheduleService.findJoinSchedule(findSchedule);
 
-            aiuiData.setScheduleCreateList(scheduleCreateList);
-            aiuiData.setScheduleJoinList(scheduleJoinList);
+            if (scheduleJoinList != null && scheduleJoinList.size() != 0) {
+                aiuiData.setScheduleCreateList(scheduleCreateList);
+                aiuiData.setScheduleJoinList(scheduleJoinList);
+            } else {
+                aiuiData.setSpeech(aiuiData.getSpeech() + ",暂没有日程安排");
+            }
+
+            logger.info("查询成功[scheduleCreateList]："+ scheduleCreateList.size() + " | [scheduleJoinList]：" + scheduleJoinList.size());
 
             aiuiData.setDataType("2");
         }

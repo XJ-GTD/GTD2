@@ -4,7 +4,6 @@ import { HttpClient } from "@angular/common/http";
 import { ParamsService } from "./params.service";
 import { Base64 } from "@ionic-native/base64";
 import { File } from "@ionic-native/file";
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { App, NavController } from "ionic-angular";
 
 declare var cordova: any;
@@ -26,7 +25,6 @@ export class XiaojiAssistantService {
               private base64: Base64,
               private http: HttpClient,
               private file: File,
-              private transfer: FileTransfer,
               private paramsService: ParamsService) {
 
   }
@@ -70,6 +68,9 @@ export class XiaojiAssistantService {
   public listenText(text: string) {
     try {
 
+      if (text == null){
+        return 0;
+      }
       this.fileContent = text;
       let url = AppConfig.XUNFEI_URL_TEXT;
       this.connetXunfei(url);
@@ -83,7 +84,6 @@ export class XiaojiAssistantService {
   //文件上传
   fileUpload(filePath, url) {
 
-    const fileTransfer: FileTransferObject = this.transfer.create();
     /*  this.file
 
       this.http.post(url, {
@@ -95,21 +95,7 @@ export class XiaojiAssistantService {
         responseType: 'json'
       })*/
 
-    fileTransfer.upload(filePath, url, {
-      fileKey: 'file',
-      fileName: 'iat.wav',
-      mimeType: 'audio/wav',
-      headers:{
-        "Content-Type":"multipart/form-data;boundary=----WebKitFormBoundaryOYfIlq2tLIjhsanZ"
-      }
 
-    }).then(data => {
-      console.log(data);
-      this.data = data;
-      console.log("响应消息:" + this.data.message);
-    }, err => {
-      console.log(err.toString());
-    });
 
   }
 
@@ -154,6 +140,32 @@ export class XiaojiAssistantService {
       },error=>{
         console.log("报错:" + error);
       }, speechText);
+    } catch (e) {
+      console.log("问题："+ e)
+    }
+  }
+
+  //获取base64文件转码
+  public getFileContent() {
+    try {
+      cordova.plugins.xjvoicefromXF.startListen(result=>{
+        // alert("成功:" + result);
+        //讯飞语音录音设置默认存储路径
+        this.filePath = this.file.externalRootDirectory + "/msc/iat.wav";
+        console.log("文件路径：" + this.filePath);
+
+        // 读取录音进行base64转码
+        this.base64.encodeFile(this.filePath).then((base64File: string) => {
+          this.fileContent = base64File;
+          console.log("base64:" + this.fileContent);
+          return this.fileContent;
+        }, (err) => {
+          console.log("异常" + err.toString());
+        });
+
+      },error=>{
+        console.log("报错:" + error);
+      },true,true);
     } catch (e) {
       console.log("问题："+ e)
     }

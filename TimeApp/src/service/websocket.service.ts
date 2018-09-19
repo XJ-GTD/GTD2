@@ -10,6 +10,7 @@ import {HttpClient} from "@angular/common/http";
 import {FindOutModel} from "../model/out/find.out.model";
 import {BaseModel} from "../model/base.model";
 import {MqOutModel} from "../model/out/mq.out.model";
+import {MessageModel} from "../model/message.model";
 
 /**
  * WebSocket连接Rabbitmq服务器
@@ -19,9 +20,11 @@ import {MqOutModel} from "../model/out/mq.out.model";
 @Injectable()
 export class WebsocketService {
 
+  data: any;
   groupFind:FindOutModel;
-  mqData: BaseModel;  //接收mq数据
+  mqData: MqOutModel;  //接收mq数据
   mqPushData: MqOutModel; //入参数据
+  messageBack: MessageModel;
 
   constructor(public appCtrl : App,
               public alertCtrl: AlertController,
@@ -35,6 +38,7 @@ export class WebsocketService {
   init(){
     this.groupFind = new FindOutModel();
     this.groupFind.userId = this.paramsService.user.userId;
+    this.messageBack = new MessageModel();
   }
 
   /**
@@ -71,21 +75,10 @@ export class WebsocketService {
 
     //对成功回调数据进行操作,放入全局变量中
     subject.asObservable().subscribe( data=> {
-      console.log("MQ:" + data.body);
-      this.mqData = JSON.parse(data.body)
-      console.log("JSON MQ:" + this.mqData);
-      if (this.mqData.code == 0) {
-
-        this.xiaojiSpeech.speakText(this.mqData.data.speech);
-        this.showConfirm(this.mqData);
-      } else if (this.mqData.code == 1) {
-        console.log("收到消息" + this.mqData.message);
-        this.xiaojiSpeech.speakText(this.mqData.data.speech);
-      } else if (this.mqData.code == -1) {
-
-      }
-
-
+      console.log("MQ:" + data.toString());
+      this.mqData.data = JSON.parse(data)
+      console.log("JSON MQ:" + this.mqData.data);
+      this.showConfirm(this.mqData)
     });
 
     //连接失败回调
@@ -105,59 +98,80 @@ export class WebsocketService {
 
   }
 
-  //弹出消息框
-  showConfirm(successData) {
+  //新消息提示框
+  showConfirm(data: MqOutModel) {
 
-    const confirm = this.alertCtrl.create({
-      title: successData.messageName,   //推送群组名称
-      message: successData.messageMaster+''+successData.messageContent,   //群主名称+推送内容
-      buttons: [
-        {
-          text: '接受',
-          handler: () => {
-            console.log('接受');
-            //此处填写调用方法
-            if (successData.type == 1) {
-              //调用日程方法
-            }else {
-              //调用群组方法
-              this.invite(successData.messageId);
-            }
-          }
-        },
-        {
-          text: '拒绝',
-          handler: () => {
-            console.log('拒绝');
+    let alert = this.alertCtrl.create();
+    alert.setTitle(data.data.messageName);
+    alert.setMessage(data.data.userName + data.data.messageContent);
+    if (data.data.type == 1) {
+      alert.addButton({
+        text: '接受',
+        handler: (() => {
+          console.log('接受日程邀请');
+          this.messageBack.playersStatus = 1;
+          this.messageBack.scheduleId = data.data.messageId;
+          this.messageBack.userId = this.paramsService.user.userId;
+          this.chooseFunction(AppConfig.SCHEDULE_CHOOSE_URL, this.messageBack);
+        })
+      });
+      alert.addButton({
+        text: '拒绝',
+        handler: (() => {
+          console.log('拒绝日程邀请');
+          this.messageBack.playersStatus = -1;
+          this.messageBack.scheduleId = data.data.messageId;
+          this.messageBack.userId = this.paramsService.user.userId;
+          this.chooseFunction(AppConfig.SCHEDULE_CHOOSE_URL, this.messageBack);
+        })
+      });
+    } else if (data.data.type == 2) {
+      alert.addButton({
+        text: '接受',
+        handler: (() => {
+          console.log('接受日程邀请');
+          this.messageBack.resultType = 1;
+          this.messageBack.groupId = data.data.messageId;
+          this.messageBack.userId = this.paramsService.user.userId;
+          this.chooseFunction(AppConfig.GROUP_UPD_MEMBER_STATUS_URL, this.messageBack);
+        })
+      });
+      alert.addButton({
+        text: '拒绝',
+        handler: (() => {
+          console.log('拒绝日程邀请');
+          this.messageBack.resultType = 3;
+          this.messageBack.groupId = data.data.messageId;
+          this.messageBack.userId = this.paramsService.user.userId;
+          this.chooseFunction(AppConfig.GROUP_UPD_MEMBER_STATUS_URL, this.messageBack);
+        })
+      });
+    }
 
-          }
-        }
-      ]
-    });
-    confirm.present();
+    alert.present();
+
   }
 
-  //
+  //请求接口
+  chooseFunction(url, data) {
 
-  //调用修改群成员状态接口
-  invite(messageId){
-    this.http.post(AppConfig.GROUP_UPD_MEMBER_STATUS_URL,{
-      userId:this.groupFind.userId,
-      groupId:messageId,
-    }).subscribe(data => {
-      let subData:any;
-      subData = data;
-      let loader = this.loadingCtrl.create({
-        content: subData.message,
-        duration: 1500
-      });
-      if (subData.code == "0") {
-        loader.present();
-        // this.navCtrl.push('HomePage');
-      } else {
-        loader.present();
-      }
+    this.http.post(url, data, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      responseType: 'json'
     })
+      .subscribe(data => {
+        console.log("choose data：" + data)
+        this.data = data;
+        let loader = this.loadingCtrl.create({
+          content: this.data.message,
+          duration: 1000
+        });
+        if (this.data.code != 0) {
+          loader.present();
+        }
+      })
   }
 
 }

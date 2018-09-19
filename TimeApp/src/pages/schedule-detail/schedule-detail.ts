@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, ModalController, Navbar, NavController, NavParams} from 'ionic-angular';
 import { ParamsService } from "../../service/params.service";
 import { ScheduleModel } from "../../model/schedule.model";
 import {XiaojiAlarmclockService} from "../../service/xiaoji-alarmclock.service";
@@ -18,6 +18,7 @@ import {XiaojiAlarmclockService} from "../../service/xiaoji-alarmclock.service";
   providers: []
 })
 export class ScheduleDetailPage {
+  @ViewChild(Navbar) navBar: Navbar;
 
   schedule: ScheduleModel;
   date: string;
@@ -58,6 +59,12 @@ export class ScheduleDetailPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ScheduleDetailPage');
+  }
+
+  backButtonClick = (e: UIEvent) => {
+    // 重写返回方法
+    this.paramsService.schedule=null;
+    this.navCtrl.pop();
   }
 
 }

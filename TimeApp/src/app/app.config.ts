@@ -13,8 +13,8 @@ export class AppConfig {
 
   /* 环境URL 头部 */
   // private static REQUEST_URL: string = "http://www.guobaa.com//gtd";
-  private static REQUEST_URL: string = "http://192.168.176:8080/gtd";
-  // private static REQUEST_URL: string = "http://192.168.99.54:8080/gtd";//连接本地数据库
+  // private static REQUEST_URL: string = "http://192.168.176:8080/gtd";
+  private static REQUEST_URL: string = "http://192.168.99.54:8080/gtd";//连接本地数据库
 
   /* RabbitMq WebSocket */
   public static RABBITMQ_WS_URL: string = "ws://192.168.0.219:15674/ws";
@@ -52,11 +52,11 @@ export class AppConfig {
 
   public static GROUP_ADD_DEL_URL: string = AppConfig.GROUP_URL + "/add_del_member";    //群组添加 POST
 
-  public static GROUP_UPDATE_GROUP_URL:string = AppConfig.GROUP_URL + "/update_group"; //群组编辑 POST
+  public static GROUP_UPDATE_GROUP_URL: string = AppConfig.GROUP_URL + "/update_group"; //群组编辑 POST
 
-  public static GROUP_DEL_GROUP_URL:string = AppConfig.GROUP_URL + "/delete_group"; //删除群组 POST
+  public static GROUP_DEL_GROUP_URL: string = AppConfig.GROUP_URL + "/delete_group"; //删除群组 POST
 
-  public static GROUP_UPD_MEMBER_STATUS_URL:string = AppConfig.GROUP_URL + "/update_member_status"; //修改群成员状态 POST
+  public static GROUP_UPD_MEMBER_STATUS_URL: string = AppConfig.GROUP_URL + "/update_member_status"; //修改群成员状态 POST
 
   public static GROUP_ALL_SHOW_URL: string = AppConfig.GROUP_URL + "/find_all_players";   //全部参与人展示
 
@@ -65,10 +65,13 @@ export class AppConfig {
 
   public static SCHEDULE_FIND_URL: string = AppConfig.SCHEDULE_URL + "/find";    //查询日程 POST
 
-  public static SCHEDULE_UPDATE_STATE_URL: string = AppConfig.SCHEDULE_URL + "/update_state";  //更新日程状态
+  public static SCHEDULE_UPDATE_STATE_URL: string = AppConfig.SCHEDULE_URL + "/states";  //更新日程状态
+
+  public static SCHEDULE_DELETE_URL: string = AppConfig.SCHEDULE_URL + "/delete";  //删除日程
 
   public static SCHEDULE_TODAY_REMIND_URL: string = AppConfig.SCHEDULE_URL + "/find_today_remind";  //查询今天所有提醒时间
 
+  public static SCHEDULE_CHOOSE_URL: string = AppConfig.SCHEDULE_URL + "/choose";  //接受或者拒绝邀请
   //webSocket
   public static WEB_SOCKET_TASK_URL: string = AppConfig.WEB_SOCKET_URL + "/task";    //mq消息接收
 

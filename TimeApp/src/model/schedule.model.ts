@@ -1,11 +1,11 @@
+import {GroupModel} from "./group.model";
+import {RemindModel} from "./remind.model";
+
 /**
  * 日程类
  *
  * create by wzy on 2018/05/28
  */
-import {GroupModel} from "./group.model";
-import {RemindModel} from "./remind.model";
-
 export class ScheduleModel {
 
   private _code: number;                              //消息状态值
