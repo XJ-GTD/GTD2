@@ -143,6 +143,8 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     @Query(value = "SELECT GROUP_ID FROM gtd_group_member WHERE USER_NAME LIKE %?1% ",nativeQuery = true)
     List<Integer> getGroupIdsForUserName(String userName);
 
+    @Query(value = "DELETE FROM gtd_group_label WHERE GROUP_ID=?1 AND LABEL_ID=?2",nativeQuery = true)
+    void deleteGroupLabelEntityByGroupIdAndLabelId(int groupId,int labelId);
 
 }
 
