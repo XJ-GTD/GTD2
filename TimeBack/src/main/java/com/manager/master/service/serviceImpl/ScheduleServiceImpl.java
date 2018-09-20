@@ -1189,7 +1189,7 @@ public class ScheduleServiceImpl implements IScheduleService {
             pushOutDto.setMessageContent(PUSH_MESSAGE_INVITATION_ACCEPT);
         }
         pushOutDto.setUserName(userName);
-        pushOutDto.setType(1);
+        pushOutDto.setType(3);
         // 推送目标设置
         pushInDto.setData(pushOutDto);
         pushInDto.setUserId(userId);

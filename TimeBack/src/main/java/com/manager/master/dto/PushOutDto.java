@@ -11,7 +11,7 @@ public class PushOutDto {
     private Integer messageId;      //新消息ID： scheduleId / groupId
     private String messageContent;      //新消息内容： 告知用户邀请详详情
     private String userName;        //推送人名称
-    private Integer type;       //新消息类型： 1 日程  /  2 群组
+    private Integer type;       //新消息类型： 1 日程  /  2 群组      /3消息反馈
 
     public String getMessageName() {
         return messageName;
