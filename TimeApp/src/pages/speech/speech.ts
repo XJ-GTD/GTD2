@@ -98,7 +98,7 @@ export class SpeechPage {
     this.xiaojiSpeech.listenAudio();
 
     if (this.paramsService.speech != null && this.paramsService.speech != "") {
-      this.inputAudio = this.paramsService.speech;
+      this.inputAudio = this.paramsService.speech;6
       let url = AppConfig.XUNFEI_URL_TEXT;
       this.messageHanding(url, this.inputAudio);
     }
@@ -148,13 +148,15 @@ export class SpeechPage {
             this.xiaojiSpeech.speakText(this.aiuiData.speech);
           }, 1000);
 
-          if (this.aiuiData.dataType == "1") {
+          if (this.aiuiData.dataType == "1"
+            && this.aiuiData.scheduleCreateList != null &&  this.aiuiData.scheduleCreateList.length != 0) {
             setTimeout(() => {
               let messageData = new AiuiModel();
               messageData.talkType = this.talkDataSingle;
-              messageData.scheduleName = this.aiuiData.scheduleName;
-              messageData.scheduleStartTime = this.aiuiData.scheduleStartTime;
-              messageData.scheduleDeadline = this.aiuiData.scheduleDeadline;
+              messageData.scheduleName = this.aiuiData.scheduleCreateList[0].scheduleName;
+              messageData.scheduleStartTime = this.aiuiData.scheduleCreateList[0].scheduleStartTime;
+              messageData.scheduleDeadline = this.aiuiData.scheduleCreateList[0].scheduleDeadline;
+
               this.messages.push(messageData);
             }, 1500);
           } else if (this.aiuiData.dataType == "2"

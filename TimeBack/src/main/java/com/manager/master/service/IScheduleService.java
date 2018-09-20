@@ -31,7 +31,7 @@ public interface IScheduleService {
      * @param inDto
      * @return
      */
-    int addSchedule(ScheduleInDto inDto);
+    List<Integer> addSchedule(ScheduleInDto inDto);
 
     /**
      * 更新日程

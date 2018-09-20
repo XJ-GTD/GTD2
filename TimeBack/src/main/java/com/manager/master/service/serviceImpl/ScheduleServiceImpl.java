@@ -740,7 +740,7 @@ public class ScheduleServiceImpl implements IScheduleService {
      * @return
      */
     @Override
-    public int addSchedule(ScheduleInDto inDto){
+    public List<Integer> addSchedule(ScheduleInDto inDto){
         // 接收参数
         int userId = inDto.getUserId();                           			// 用户ID
         String scheduleName = inDto.getScheduleName();                    	// 日程事件名称
@@ -792,6 +792,8 @@ public class ScheduleServiceImpl implements IScheduleService {
             throw new ServiceException("日程事件名称包含关键字");
         }
 
+        List<Integer> keyValue = new ArrayList<>();
+
         // 业务处理
         GtdScheduleEntity scheduleEntity = new GtdScheduleEntity();                     // 日程表
         GtdUserScheduleEntity userScheduleEntity = new GtdUserScheduleEntity();         // 用户日程表
@@ -811,7 +813,8 @@ public class ScheduleServiceImpl implements IScheduleService {
 
         try{
             // 获取自增主键
-
+            scheduleJpaRepository.saveAndFlush(scheduleEntity);
+            keyValue.add(scheduleEntity.getScheduleId());
             // 日程事件表插入
             scheduleJpaRepository.save(scheduleEntity);
             logger.info("日程事件表 成功添加");
@@ -968,12 +971,16 @@ public class ScheduleServiceImpl implements IScheduleService {
         int modifyMessage = webSocketService.pushToUser(pushInDto);
         if(modifyMessage != 0){
             logger.error("日程添加 ------ 推送失败！");
-            return 1;
+            keyValue.add(0,1);
         } else {
             logger.info("日程添加 ------ 推送成功");
+            if (keyValue.get(0) != 0) {
+                keyValue.add(0, 0);
+                return keyValue;
+            }
         }
 
-        return 0;
+        return keyValue;
     }
 
     /**

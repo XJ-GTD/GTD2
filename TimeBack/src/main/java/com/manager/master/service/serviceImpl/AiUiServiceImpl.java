@@ -116,14 +116,19 @@ public class AiUiServiceImpl implements IAiUiService {
             scheduleData.setLabelIds(labelIds);
 
 
-            Integer flag = scheduleService.addSchedule(scheduleData);
-            if (flag == 1){
+            List<Integer> flag = scheduleService.addSchedule(scheduleData);
+            if (flag.get(0) == 1){
                 aiuiData.setSpeech("参与人尚未注册，发布失败");
                 aiuiData.setDataType("0");
                 logger.info("创建成功");
                 return aiuiData;
-            } else if (flag == 0) {
+            } else if (flag.get(0) == 0) {
                 logger.info("创建成功");
+                FindScheduleInDto findSchedule = new FindScheduleInDto();
+                findSchedule.setUserId(inDto.getUserId());
+                findSchedule.setScheduleId(flag.get(1));
+                List<FindScheduleOutDto> scheduleCreateList = scheduleService.findCreateSchedule(findSchedule);
+                aiuiData.setScheduleCreateList(scheduleCreateList);
             }
             aiuiData.setDataType("1");
 
@@ -232,14 +237,19 @@ public class AiUiServiceImpl implements IAiUiService {
             scheduleData.setLabelIds(labelIds);
 
 
-            Integer flag = scheduleService.addSchedule(scheduleData);
-            if (flag == 1){
+            List<Integer> flag = scheduleService.addSchedule(scheduleData);
+            if (flag.get(0) == 1){
                 aiuiData.setSpeech("参与人尚未注册，发布失败");
                 aiuiData.setDataType("0");
                 logger.info("创建成功");
                 return aiuiData;
-            } else if (flag == 0) {
+            } else if (flag.get(0) == 0) {
                 logger.info("创建成功");
+                FindScheduleInDto findSchedule = new FindScheduleInDto();
+                findSchedule.setUserId(inDto.getUserId());
+                findSchedule.setScheduleId(flag.get(1));
+                List<FindScheduleOutDto> scheduleCreateList = scheduleService.findCreateSchedule(findSchedule);
+                aiuiData.setScheduleCreateList(scheduleCreateList);
             }
             aiuiData.setDataType("1");
 

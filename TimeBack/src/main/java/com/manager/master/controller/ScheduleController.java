@@ -68,10 +68,10 @@ public class ScheduleController {
     @ResponseBody
     public BaseOutDto addSchedule(@RequestBody ScheduleInDto inDto) {
         BaseOutDto baseOutDto = new BaseOutDto();
-        Integer flag;
+        List<Integer> flag;
         try{
             flag = scheduleService.addSchedule(inDto);
-            if (flag == 0){
+            if (flag.get(0) == 0){
                 baseOutDto.setCode(ResultCode.SUCCESS).setMessage("创建日程成功");
                 // TODO 创建日程发布
 //        String dataMessage = inDto.toString();
