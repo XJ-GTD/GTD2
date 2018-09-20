@@ -4,19 +4,7 @@
  * create bu wzy on 2018/09/17
  */
 export class MqOutModel {
-  private _data: MqData;   //接收数据
 
-  get data(): MqData {
-    return this._data;
-  }
-  set data(value: MqData) {
-    this._data = value;
-  }
-
-}
-
-
-class MqData {
   private _messageName: string;     //新消息主题： schedule Name日程主题 / groupName  群族名
   private _messageId: number;      //新消息ID： scheduleId / groupId
   private _messageContent: string;      //新消息内容： 告知用户邀请详详情

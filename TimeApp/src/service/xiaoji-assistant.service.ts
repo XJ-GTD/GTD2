@@ -171,4 +171,32 @@ export class XiaojiAssistantService {
     }
   }
 
+  //获取语音输入
+  public getAudioBase64() {
+    try {
+      cordova.plugins.xjvoicefromXF.startListen(result=>{
+        // alert("成功:" + result);
+        //讯飞语音录音设置默认存储路径
+        this.filePath = this.file.externalRootDirectory + "/msc/iat.wav";
+        console.log("文件路径：" + this.filePath);
+
+
+        let url = AppConfig.XUNFEI_URL_AUDIO;
+
+        // 读取录音进行base64转码
+        this.base64.encodeFile(this.filePath).then((base64File: string) => {
+          this.fileContent = base64File;
+          console.log("base64:" + this.fileContent);
+          this.paramsService.speech = this.fileContent;
+        }, (err) => {
+          console.log("异常" + err.toString());
+        });
+
+      },error=>{
+        console.log("报错:" + error);
+      },true,true);
+    } catch (e) {
+      console.log("问题："+ e)
+    }
+  }
 }

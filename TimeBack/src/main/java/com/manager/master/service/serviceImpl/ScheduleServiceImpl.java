@@ -1158,7 +1158,9 @@ public class ScheduleServiceImpl implements IScheduleService {
         // 查询日程创建人
         ScheduleOutDto scheduleOutDto = new ScheduleOutDto();
         try {
-            scheduleOutDto = scheduleRepository.findScheduleNameAndCreateId(scheduleId);
+            Object[] obj = (Object[]) scheduleRepository.findScheduleNameAndCreateId(scheduleId);
+            scheduleOutDto.setCreateId((Integer) obj[1]);
+            scheduleOutDto.setScheduleName((String) obj[0]);
         }catch (Exception ex){
             logger.error(" ------ findScheduleNameAndCreateId 语法错误");
             logger.error(ex.getMessage());

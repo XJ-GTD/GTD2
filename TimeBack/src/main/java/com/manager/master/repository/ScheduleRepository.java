@@ -45,9 +45,9 @@ public class ScheduleRepository {
      * @param scheduleId
      * @return
      */
-    public ScheduleOutDto findScheduleNameAndCreateId(Integer scheduleId){
+    public Object findScheduleNameAndCreateId(Integer scheduleId){
         String sql = "SELECT SCHEDULE_NAME scheduleName,CREATE_ID createId FROM gtd_schedule WHERE SCHEDULE_ID = " + scheduleId;
-        return (ScheduleOutDto) em.createNativeQuery(sql).getSingleResult();
+        return em.createNativeQuery(sql).getSingleResult();
     }
 
     /**
