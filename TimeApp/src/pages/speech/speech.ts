@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AlertController, Content, FabContainer, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { XiaojiAssistantService } from "../../service/xiaoji-assistant.service";
 import { ParamsService } from "../../service/params.service";
@@ -36,6 +36,7 @@ export class SpeechPage {
   userText: string; //用户输入显示文本
   speech: string;   //语音助手显示文本
   inputText: string = "";    //手动模式输入数据
+  inputAudio: string = "";  //语音模式输入数据
 
   schedule: ScheduleModel;
   aiuiData: AiuiModel;
@@ -94,10 +95,12 @@ export class SpeechPage {
   //启动语音输入
   startXiaoJi() {
 
-    if (this.inputText != null && this.inputText != "") {
-      let input = this.xiaojiSpeech.listenAudio();
+    this.xiaojiSpeech.listenAudio();
+
+    if (this.paramsService.speech != null && this.paramsService.speech != "") {
+      this.inputAudio = this.paramsService.speech;
       let url = AppConfig.XUNFEI_URL_TEXT;
-      this.messageHanding(url, input);
+      this.messageHanding(url, this.inputAudio);
     }
   }
 
@@ -121,7 +124,7 @@ export class SpeechPage {
       responseType: 'json'
     })
       .subscribe(data => {
-        console.log("data" + data);
+        console.log("back data：" + data);
         this.data = data;
 
         if (this.data.code == 0) {
@@ -154,7 +157,8 @@ export class SpeechPage {
               messageData.scheduleDeadline = this.aiuiData.scheduleDeadline;
               this.messages.push(messageData);
             }, 1500);
-          } else if (this.aiuiData.dataType == "2") {
+          } else if (this.aiuiData.dataType == "2"
+            && this.aiuiData.scheduleJoinList != null &&  this.aiuiData.scheduleJoinList.length != 0) {
             setTimeout(() => {
               let messageData = new AiuiModel();
               messageData.talkType = this.talkDataList;

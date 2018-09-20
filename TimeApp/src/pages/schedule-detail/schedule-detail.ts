@@ -1,8 +1,8 @@
-import {Component, ViewChild} from '@angular/core';
-import {IonicPage, ModalController, Navbar, NavController, NavParams} from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, ModalController, Navbar, NavController, NavParams } from 'ionic-angular';
 import { ParamsService } from "../../service/params.service";
 import { ScheduleModel } from "../../model/schedule.model";
-import {XiaojiAlarmclockService} from "../../service/xiaoji-alarmclock.service";
+import { XiaojiAlarmclockService } from "../../service/xiaoji-alarmclock.service";
 
 /**
  * Generated class for the ScheduleDetailPage page.
@@ -21,7 +21,6 @@ export class ScheduleDetailPage {
   @ViewChild(Navbar) navBar: Navbar;
 
   schedule: ScheduleModel;
-  date: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private paramsService: ParamsService,

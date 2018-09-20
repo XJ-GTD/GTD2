@@ -30,7 +30,7 @@
 ###### <ionic3 plugman安装>
 ##### npm install -g plugman
 ###### <ionic3 cordova安装>
-##### npm install –g cordova@6.5.0
+##### npm install g cordova@6.5.0
 ######<ionic3创建自定义插件>
 ##### plugman create --name <pluginName> --plugin_id <pluginID> --plugin_version <version> [--path <directory>] [--variable NAME=VALUE]
 ##### ionic cordova plugin add file_path (注册插件，file_path为插件所在目录)

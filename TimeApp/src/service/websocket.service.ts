@@ -1,16 +1,15 @@
-import { Injectable, ViewChild } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { SockJS } from 'sockjs-client';
 import  Stomp from "@stomp/stompjs";
 import { AppConfig } from "../app/app.config";
 import { ParamsService } from "./params.service";
 import { Subject } from "rxjs/Subject";
-import {NavController, App, AlertController, LoadingController} from "ionic-angular";
+import { App, AlertController, LoadingController} from "ionic-angular";
 import { XiaojiAssistantService } from "./xiaoji-assistant.service";
-import {HttpClient} from "@angular/common/http";
-import {FindOutModel} from "../model/out/find.out.model";
-import {BaseModel} from "../model/base.model";
-import {MqOutModel} from "../model/out/mq.out.model";
-import {MessageModel} from "../model/message.model";
+import { HttpClient } from "@angular/common/http";
+import { FindOutModel } from "../model/out/find.out.model";
+import { MqOutModel } from "../model/out/mq.out.model";
+import { MessageModel } from "../model/message.model";
 
 /**
  * WebSocket连接Rabbitmq服务器
@@ -39,6 +38,7 @@ export class WebsocketService {
     this.groupFind = new FindOutModel();
     this.groupFind.userId = this.paramsService.user.userId;
     this.messageBack = new MessageModel();
+    this.mqData = new MqOutModel();
   }
 
   /**
@@ -76,102 +76,145 @@ export class WebsocketService {
     //对成功回调数据进行操作,放入全局变量中
     subject.asObservable().subscribe( data=> {
       console.log("MQ:" + data.toString());
-      this.mqData.data = JSON.parse(data)
-      console.log("JSON MQ:" + this.mqData.data);
-      this.showConfirm(this.mqData)
+      this.mqData = JSON.parse(data.body);
+      console.log("JSON MQ:" + this.mqData);
+
+      //新消息提示
+      let alert = this.alertCtrl.create();
+      alert.setTitle(this.mqData.messageName);
+      alert.setMessage(this.mqData.userName + this.mqData.messageContent);
+      if (this.mqData.type == 1) {
+        alert.addButton({
+          text: '接受',
+          handler: (() => {
+            console.log('接受日程邀请');
+            this.messageBack.playersStatus = 1;
+            this.messageBack.scheduleId = this.mqData.messageId;
+            this.messageBack.userId = this.paramsService.user.userId;
+
+            this.http.post(AppConfig.SCHEDULE_CHOOSE_URL, this.messageBack, {
+              headers: {
+                "Content-Type": "application/json"
+              },
+              responseType: 'json'
+            })
+              .subscribe(data => {
+                console.log("choose data：" + data);
+                this.data = data;
+                let loader = this.loadingCtrl.create({
+                  content: this.data.message,
+                  duration: 1000
+                });
+                if (this.data.code != 0) {
+                  loader.present();
+                }
+              })
+          })
+        });
+        alert.addButton({
+          text: '拒绝',
+          handler: (() => {
+            console.log('拒绝日程邀请');
+            this.messageBack.playersStatus = -1;
+            this.messageBack.scheduleId = this.mqData.messageId;
+            this.messageBack.userId = this.paramsService.user.userId;
+
+            this.http.post(AppConfig.SCHEDULE_CHOOSE_URL, this.messageBack, {
+              headers: {
+                "Content-Type": "application/json"
+              },
+              responseType: 'json'
+            })
+              .subscribe(data => {
+                console.log("choose data：" + data);
+                this.data = data;
+                let loader = this.loadingCtrl.create({
+                  content: this.data.message,
+                  duration: 1000
+                });
+                if (this.data.code != 0) {
+                  loader.present();
+                }
+              })
+          })
+        });
+      } else if (this.mqData.type == 2) {
+        alert.addButton({
+          text: '接受',
+          handler: (() => {
+            console.log('接受日程邀请');
+            this.messageBack.resultType = 1;
+            this.messageBack.groupId = this.mqData.messageId;
+            this.messageBack.userId = this.paramsService.user.userId;
+
+            this.http.post(AppConfig.GROUP_UPD_MEMBER_STATUS_URL, this.messageBack, {
+              headers: {
+                "Content-Type": "application/json"
+              },
+              responseType: 'json'
+            })
+              .subscribe(data => {
+                console.log("choose data：" + data);
+                this.data = data;
+                let loader = this.loadingCtrl.create({
+                  content: this.data.message,
+                  duration: 1000
+                });
+                if (this.data.code != 0) {
+                  loader.present();
+                }
+              })
+          })
+        });
+        alert.addButton({
+          text: '拒绝',
+          handler: (() => {
+            console.log('拒绝日程邀请');
+            this.messageBack.resultType = 3;
+            this.messageBack.groupId = this.mqData.messageId;
+            this.messageBack.userId = this.paramsService.user.userId;
+
+            this.http.post(AppConfig.GROUP_UPD_MEMBER_STATUS_URL, this.messageBack, {
+              headers: {
+                "Content-Type": "application/json"
+              },
+              responseType: 'json'
+            })
+              .subscribe(data => {
+                console.log("choose data：" + data);
+                this.data = data;
+                let loader = this.loadingCtrl.create({
+                  content: this.data.message,
+                  duration: 1000
+                });
+                if (this.data.code != 0) {
+                  loader.present();
+                }
+              })
+          })
+        });
+      }
+
+      alert.present();
+
     });
 
     //连接失败回调
     let on_error = function() {
-      console.log('error!:' + ws.readyState);
+      console.log('socket error!:' + ws.readyState);
       client = Stomp.over(new WebSocket(AppConfig.RABBITMQ_WS_URL));
       client.connect(login, password, on_connect, on_error, null,'/');
     }
 
     //关闭回调
-    // let on_close = function() {
-    //
-    // }
+    let on_close = function() {
+      console.log('socket close!');
+    }
 
     // 连接消息服务器
     client.connect(login, password, on_connect, on_error, null,'/');
 
   }
 
-  //新消息提示框
-  showConfirm(data: MqOutModel) {
-
-    let alert = this.alertCtrl.create();
-    alert.setTitle(data.data.messageName);
-    alert.setMessage(data.data.userName + data.data.messageContent);
-    if (data.data.type == 1) {
-      alert.addButton({
-        text: '接受',
-        handler: (() => {
-          console.log('接受日程邀请');
-          this.messageBack.playersStatus = 1;
-          this.messageBack.scheduleId = data.data.messageId;
-          this.messageBack.userId = this.paramsService.user.userId;
-          this.chooseFunction(AppConfig.SCHEDULE_CHOOSE_URL, this.messageBack);
-        })
-      });
-      alert.addButton({
-        text: '拒绝',
-        handler: (() => {
-          console.log('拒绝日程邀请');
-          this.messageBack.playersStatus = -1;
-          this.messageBack.scheduleId = data.data.messageId;
-          this.messageBack.userId = this.paramsService.user.userId;
-          this.chooseFunction(AppConfig.SCHEDULE_CHOOSE_URL, this.messageBack);
-        })
-      });
-    } else if (data.data.type == 2) {
-      alert.addButton({
-        text: '接受',
-        handler: (() => {
-          console.log('接受日程邀请');
-          this.messageBack.resultType = 1;
-          this.messageBack.groupId = data.data.messageId;
-          this.messageBack.userId = this.paramsService.user.userId;
-          this.chooseFunction(AppConfig.GROUP_UPD_MEMBER_STATUS_URL, this.messageBack);
-        })
-      });
-      alert.addButton({
-        text: '拒绝',
-        handler: (() => {
-          console.log('拒绝日程邀请');
-          this.messageBack.resultType = 3;
-          this.messageBack.groupId = data.data.messageId;
-          this.messageBack.userId = this.paramsService.user.userId;
-          this.chooseFunction(AppConfig.GROUP_UPD_MEMBER_STATUS_URL, this.messageBack);
-        })
-      });
-    }
-
-    alert.present();
-
-  }
-
-  //请求接口
-  chooseFunction(url, data) {
-
-    this.http.post(url, data, {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      responseType: 'json'
-    })
-      .subscribe(data => {
-        console.log("choose data：" + data)
-        this.data = data;
-        let loader = this.loadingCtrl.create({
-          content: this.data.message,
-          duration: 1000
-        });
-        if (this.data.code != 0) {
-          loader.present();
-        }
-      })
-  }
 
 }
