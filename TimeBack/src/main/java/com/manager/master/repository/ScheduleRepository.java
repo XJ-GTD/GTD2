@@ -175,11 +175,12 @@ public class ScheduleRepository {
      */
     public List<Object[]> findAllRemindTime(Integer userId, String startTime, String deadline) {
         String sql = " SELECT RM.REMIND_DATE, SS.SCHEDULE_NAME " +
-                " FROM gtd_remind RM " +
-                " INNER JOIN gtd_schedule_players SP ON RM.PLAYERS_ID = SP.PLAYERS_ID " +
-                " INNER JOIN gtd_schedule SS ON SS.SCHEDULE_ID = SP.SCHEDULE_ID " +
-                " WHERE DATE_FORMAT(REMIND_DATE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('"+ deadline +"','%Y-%m-%d %H:%i') " +
-                " AND DATE_FORMAT(REMIND_DATE,'%Y-%m-%d %H:%i') >= DATE_FORMAT('"+ startTime +"','%Y-%m-%d %H:%i')";
+                "  FROM gtd_remind RM " +
+                "  INNER JOIN gtd_schedule_players SP ON RM.PLAYERS_ID = SP.PLAYERS_ID " +
+                "  AND SP.PLAYERS_STATUS = 1 AND SP.USER_ID = " + userId +
+                "  INNER JOIN gtd_schedule SS ON SS.SCHEDULE_ID = SP.SCHEDULE_ID " +
+                "  WHERE DATE_FORMAT(RM.REMIND_DATE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('"+ deadline +"','%Y-%m-%d %H:%i') " +
+                "  AND DATE_FORMAT(RM.REMIND_DATE,'%Y-%m-%d %H:%i') >= DATE_FORMAT('"+ startTime +"','%Y-%m-%d %H:%i')";
 
         return em.createNativeQuery(sql).getResultList();
     }
