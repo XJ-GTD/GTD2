@@ -95,10 +95,10 @@ export class SpeechPage {
   //启动语音输入
   startXiaoJi() {
 
-    this.xiaojiSpeech.listenAudio();
+    this.xiaojiSpeech.getAudioBase64();
 
     if (this.paramsService.speech != null && this.paramsService.speech != "") {
-      this.inputAudio = this.paramsService.speech;6
+      this.inputAudio = this.paramsService.speech;
       let url = AppConfig.XUNFEI_URL_TEXT;
       this.messageHanding(url, this.inputAudio);
     }

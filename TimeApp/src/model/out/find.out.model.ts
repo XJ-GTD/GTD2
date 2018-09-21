@@ -6,7 +6,7 @@
 export class FindOutModel {
 
   private _userId: number;    //用户ID
-  private _findType: number;  //查询类型
+  private _findType: number;  //查询类型  1:个人  /  2:群组  / 3:备用
   private _groupId: number;    //群组ID
 
   get findType(): number {

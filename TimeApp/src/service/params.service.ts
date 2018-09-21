@@ -13,14 +13,21 @@ import {AiuiModel} from "../model/aiui.model";
 export class ParamsService {
 
   private _data: string;
+
   private _aiuiData: AiuiModel;            //语音解析返回数据
   private _speech: string;               //语音播报
+
   private _user: UserModel;               //用户数据
+
   private _schedule: ScheduleModel;       //日程数据
   private _scheduleList: Array<ScheduleModel>;  //日程数据list
-  private _group: GroupModel;                //群组数据
-  private _contactList: Array<number>;   //联系人数据
   private _findSchedule: ScheduleOutModel;    //查询日程
+
+  private _group: GroupModel;                //群组数据
+  private _groupType: string;    //判断是群组：group / 个人：person
+
+  private _contactList: Array<number>;   //联系人数据
+
 
   get schedule(): ScheduleModel {
     return this._schedule;
@@ -92,5 +99,13 @@ export class ParamsService {
 
   set speech(value: string) {
     this._speech = value;
+  }
+
+  get groupType(): string {
+    return this._groupType;
+  }
+
+  set groupType(value: string) {
+    this._groupType = value;
   }
 }

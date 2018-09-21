@@ -18,6 +18,17 @@ export class ScheduleOutModel {
   private _groupName: string;          //查询参与人相关事件
   private _groupMemberName: string;    //查询参与群组成员相关日程
 
+  private _playersStatus: number;  //参与人状态
+
+
+  get playersStatus(): number {
+    return this._playersStatus;
+  }
+
+  set playersStatus(value: number) {
+    this._playersStatus = value;
+  }
+
   get groupIds(): Array<number> {
     return this._groupIds;
   }

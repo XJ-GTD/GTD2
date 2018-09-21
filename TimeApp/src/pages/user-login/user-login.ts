@@ -45,12 +45,7 @@ export class UserLoginPage {
       // accountPassword: "admin",
       loginType: 0
 
-    },{
-      headers: {
-        "Content-Type": "application/json"
-      },
-      responseType: 'json'
-    })
+    },AppConfig.HEADER_OPTIONS_JSON)
       .subscribe(data => {
         this.data = data;
         console.log( this.data);

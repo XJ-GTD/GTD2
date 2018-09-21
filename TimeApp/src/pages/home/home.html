@@ -13,7 +13,7 @@
 
 <ion-content padding>
 
-  <div class="row">
+  <div id="homeCalendar">
     <ion-list style="width: 100%;height: 40%">
       <table style="width: 100%;height: 100%">
         <caption class="text-center" style="background:#d9edf7;height: 15%;font-weight:900;color:black;">{{year}}年{{month}}月</caption>
@@ -33,9 +33,9 @@
     </ion-list>
   </div>
 
-  <ion-list>
+  <ion-list id="homeTitle">
 
-    <span *ngIf="scheduleList == null; else showDay">今日无安排</span>
+    <h5 *ngIf="scheduleList.length == 0; else showDay">今日无安排</h5>
     <ng-template #showDay>
       <ion-item-sliding *ngFor="let sd of scheduleList">
         <button ion-item (click)="showScheduleDetail(sd)">

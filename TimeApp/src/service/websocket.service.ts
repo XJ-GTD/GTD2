@@ -195,10 +195,7 @@ export class WebsocketService {
         });
       } else if (this.mqData.type == 3) {
         alert.addButton({
-          text: '确认',
-          handler: (() => {
-            console.log('确认日程邀请');
-          })
+          text: '确认'
         });
       }
 

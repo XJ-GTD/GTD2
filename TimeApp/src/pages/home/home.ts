@@ -58,6 +58,8 @@ export class HomePage {
   }
 
   init() {
+    this.scheduleList = [];
+
     //初始化加载日历控件
     var today = new Date();
 
@@ -115,7 +117,6 @@ export class HomePage {
         console.log("data:" + this.data.toString());
 
         if (this.data.code == 0) {
-          this.scheduleList = [];
           this.scheduleList = this.data.data.scheduleJoinList;
           console.log("data:" + this.data.data);
         } else {

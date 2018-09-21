@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, LoadingController, NavController, NavParams, AlertController } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, LoadingController, NavController, NavParams, AlertController, Navbar} from 'ionic-angular';
 import { ParamsService } from "../../service/params.service";
 import { HttpClient } from "@angular/common/http";
 import { ScheduleModel } from "../../model/schedule.model";
@@ -24,6 +24,8 @@ import { GroupModel } from "../../model/group.model";
   providers: []
 })
 export class ScheduleAddPage {
+
+  @ViewChild(Navbar) navBar: Navbar;
 
   private data: any;
   groupIds: Array<number>;
@@ -153,7 +155,7 @@ export class ScheduleAddPage {
         });
         if (this.data.code == 0) {
           loader.present();
-          this.onBack();
+          this.backButtonClick;
           console.log("发布成功");
         } else {
           loader.present();
@@ -169,9 +171,12 @@ export class ScheduleAddPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ScheduleAddPage');
+    this.navBar.backButtonClick = this.backButtonClick;
   }
 
-  onBack() {
-    this.navCtrl.pop(); /*返回上一个页面*/
+  backButtonClick = (e: UIEvent) => {
+    // 重写返回方法
+    this.paramsService.schedule=null;
+    this.navCtrl.pop();
   }
 }

@@ -3,6 +3,9 @@ import { IonicPage, ModalController, Navbar, NavController, NavParams } from 'io
 import { ParamsService } from "../../service/params.service";
 import { ScheduleModel } from "../../model/schedule.model";
 import { XiaojiAlarmclockService } from "../../service/xiaoji-alarmclock.service";
+import {HttpClient} from "@angular/common/http";
+import {AppConfig} from "../../app/app.config";
+import {ScheduleOutModel} from "../../model/out/schedule.out.model";
 
 /**
  * Generated class for the ScheduleDetailPage page.
@@ -20,10 +23,13 @@ import { XiaojiAlarmclockService } from "../../service/xiaoji-alarmclock.service
 export class ScheduleDetailPage {
   @ViewChild(Navbar) navBar: Navbar;
 
+  data: any;
   schedule: ScheduleModel;
+  updateSchedule: ScheduleOutModel; //更新日程状态
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private paramsService: ParamsService,
+              private http: HttpClient,
               public modalCtrl: ModalController,
               private alarmClock: XiaojiAlarmclockService) {
 
@@ -56,8 +62,28 @@ export class ScheduleDetailPage {
     myModal.present();
   }
 
+  //日程完成状态改变
+  changeState() {
+    this.updateSchedule = new ScheduleOutModel();
+    this.updateSchedule.scheduleId;
+    this.updateSchedule.playersStatus = 0;
+    this.updateSchedule.userId = this.paramsService.user.userId;
+    this.http.post(AppConfig.SCHEDULE_UPDATE_STATE_URL, this.updateSchedule, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      responseType: 'json'
+    })
+      .subscribe(data => {
+        this.data = data;
+        console.log("日程完成状态：" + this.data);
+      });
+
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad ScheduleDetailPage');
+    this.navBar.backButtonClick = this.backButtonClick;
   }
 
   backButtonClick = (e: UIEvent) => {

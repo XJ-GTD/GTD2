@@ -83,7 +83,7 @@ export class GroupPersonalEditPage {
       "userId":this.groupFind.userId,
       "labelIds":8,
       "groupName":this.groupName,
-      "groupHeadImgUrl":"123",
+      "groupHeadImgUrl":"../../assets/imgs/headImg.jpg",
       "member":[{"userName":this.groupName,"userContact":this.userContact}]
     }).subscribe(data => {
       this.data = data;
@@ -120,7 +120,7 @@ export class GroupPersonalEditPage {
       });
       if (this.data.code == "0") {
         loader.present();
-        console.log('修改成功')
+        console.log('修改成功');
         this.navCtrl.push('HomePage');
       } else {
         loader.present();

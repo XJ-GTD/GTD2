@@ -6,34 +6,59 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title style="text-align: center">
-      <button style="left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;" (click)="findGroupList()">{{findFlag?'群组':'个人'}}</button>
-
-      <button style="position: absolute;left:85%;padding-top: 5px;font-size: 18px;background-color: transparent;" (click)="addORedit()">添加</button>
-    </ion-title>
-
-  </ion-navbar>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-segment [(ngModel)]="groupType" (ionChange)="findGroupList(groupType)">
+      <ion-segment-button value="group">
+        群组
+      </ion-segment-button>
+      <ion-segment-button value="person">
+        个人
+      </ion-segment-button>
+    </ion-segment>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="addPlayer(groupType)">
+        <ion-icon name="person-add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <ion-list>
 
-    <!-- 展示群组 -->
-      <div style="text-align: center"><p>点击头部名称可进行类型切换</p>
-        <div *ngFor="let gl of groupList">
-          <button class="row" style="width: 100%;background-color: #ffffff;" (click)="groupShowDetail(gl)">
-            <div class="listGroupNameStyle">
-              <p>{{gl.groupName}}</p>
-            </div>
-            <div class="listLabelNameStyle" *ngFor="let lb of gl.labelList">
-              <p>{{lb.labelName}}</p>
-            </div>
+  <div *ngIf="playerList.length == 0; else show">
+    <button ion-button (click)="addPlayer(groupType)">
+      <span id="groupTitle">您还没有参与人，请点击添加属于自己的参与人吧</span>
+    </button>
+  </div>
+
+  <ng-template #show>
+    <ion-list>
+
+      <ion-item-sliding *ngFor="let pg of playerList">
+        <button ion-item (click)="playerShowDetail(pg)">
+          <h2>{{pg.groupName}}</h2>
+          <p *ngFor="let lb of pg.labelList">{{lb.labelName}}</p>
+        </button>
+        <ion-item-options>
+          <button ion-button icon-start (click)="groupEdit(pg)">
+            <ion-icon name="edit"></ion-icon>
+            编辑
           </button>
-        </div>
-      </div>
+          <button ion-button icon-start (click)="deletePlayer(pg.groupId)">
+            <ion-icon name="text"></ion-icon>
+            删除
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
 
-  </ion-list>
+    </ion-list>
+  </ng-template>
+
 </ion-content>

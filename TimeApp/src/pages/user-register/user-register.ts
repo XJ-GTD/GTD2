@@ -34,6 +34,14 @@ export class UserRegisterPage {
               private loadingCtrl: LoadingController,
               private paramsService: ParamsService) {
 
+    this.init();
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad UserRegisterPage');
+  }
+
+  init() {
     this.RegisterForm = this.formBuilder.group({
       accountMobile:['',Validators.compose([Validators.required, Validators.minLength(11), Validators.maxLength(11)])],
       accountPassword: ['', Validators.compose([Validators.required, Validators.minLength(6),Validators.maxLength(20)])],
@@ -43,10 +51,6 @@ export class UserRegisterPage {
     this.accountMobile = this.RegisterForm.controls['accountMobile'];
     this.accountPassword = this.RegisterForm.controls['accountPassword'];
     this.reAccountPassword = this.RegisterForm.controls['reAccountPassword'];
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad UserRegisterPage');
   }
 
   register(form) {

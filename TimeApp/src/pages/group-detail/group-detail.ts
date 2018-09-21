@@ -39,19 +39,12 @@ export class GroupDetailPage {
     console.log('GroupDetailPage',this.groupDetail)
   }
 
-  backButtonClick = (e: UIEvent) => {
-    // 重写返回方法
-    this.paramsService.group=null;
-    this.navCtrl.pop();
-  }
-
   //默认页面初始化
   init() {
     this.groupFind = new FindOutModel();
     this.groupFind.userId = this.paramsService.user.userId;   //获取当前用户Id
     this.groupDetail = new GroupModel();
     this.groupDetail = this.paramsService.group;            //获取上个页面点击的群组Id
-    this.groupDetail.isaddORedit = true;
   }
 
   //跳转修改页面
@@ -59,4 +52,9 @@ export class GroupDetailPage {
     this.navCtrl.push('GroupEditPage')
   }
 
+  backButtonClick = (e: UIEvent) => {
+    // 重写返回方法
+    this.paramsService.group=null;
+    this.navCtrl.pop();
+  };
 }
