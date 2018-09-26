@@ -5,6 +5,7 @@ import com.manager.master.dto.*;
 import com.manager.master.service.CreateQueueService;
 import com.manager.master.service.IUserService;
 import com.manager.util.BaseUtil;
+import com.manager.util.CommonMethods;
 import com.manager.util.ResultCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -330,6 +331,45 @@ public class UserController {
             baseOutDto.setCode(ResultCode.FAIL);
             baseOutDto.setMessage("[编辑失败]：用户ID不可为空");
             logger.error("[编辑失败]：用户ID不可为空");
+            return baseOutDto;
+        }
+        // 入参类型检查
+        if(userSex != null && !"".equals(userSex)){
+            if(!CommonMethods.isInteger(userSex)){
+                baseOutDto.setCode(ResultCode.FAIL);
+                baseOutDto.setMessage("[编辑失败]：性别必须为指定整数");
+                logger.error("[编辑失败]：性别必须为指定整数");
+                return baseOutDto;
+            }
+            if(!"0".equals(userSex) && !"1".equals(userSex)){
+                baseOutDto.setCode(ResultCode.FAIL);
+                baseOutDto.setMessage("[编辑失败]：性别必须为指定整数");
+                logger.error("[编辑失败]：性别必须为指定整数");
+                return baseOutDto;
+            }
+        }
+        if(!CommonMethods.checkIsPhoneNumber(userContent)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[编辑失败]：联系方式格式不正确");
+            logger.error("[编辑失败]：联系方式格式不正确");
+            return baseOutDto;
+        }
+        if(!CommonMethods.checkIsDate2(birthday)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[编辑失败]：生日格式不正确");
+            logger.error("[编辑失败]：生日格式不正确");
+            return baseOutDto;
+        }
+        if(CommonMethods.checkMySqlReservedWords(userName)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[编辑失败]：昵称不能包含非法字符");
+            logger.error("[编辑失败]：昵称不能包含非法字符");
+            return baseOutDto;
+        }
+        if(CommonMethods.checkMySqlReservedWords(headimgUrl)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[编辑失败]：用户头像不能包含非法字符");
+            logger.error("[编辑失败]：用户头像不能包含非法字符");
             return baseOutDto;
         }
         int flag = 0;
