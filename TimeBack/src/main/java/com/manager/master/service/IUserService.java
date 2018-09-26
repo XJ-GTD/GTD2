@@ -35,4 +35,18 @@ public interface IUserService {
      * @return
      */
     List<LabelOutDto> findLabel(LabelInDto inDto);
+
+    /**
+     * 查找用户密码
+     * @param userId
+     * @return
+     */
+    String findPassword(Integer userId);
+
+    /**
+     *  修改用户密码
+     * @param userId
+     * @param newPassword
+     */
+    void updatePassword(Integer userId,String newPassword);
 }

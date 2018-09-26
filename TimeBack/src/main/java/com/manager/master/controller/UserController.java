@@ -173,7 +173,6 @@ public class UserController {
         inDto.setAccountPassword(password);
         //业务逻辑
         try {
-
             userInfo = userService.login(inDto);
             data.put("userInfo", userInfo);
             outBean.setData(data);
@@ -228,6 +227,85 @@ public class UserController {
             }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("标签查询失败");
         }catch (Exception ex){
             throw new ServiceException(ex.getMessage());
+        }
+        return baseOutDto;
+    }
+
+    /**
+     * 用户密码修改（登陆后）
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/update_password", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto updatePassword(@RequestBody UserPasswordInDto inDto){
+        BaseOutDto baseOutDto = new BaseOutDto();
+        // 获取入参
+        Integer userId = inDto.getUserId();
+        String oldPassword = inDto.getOldPassword();
+        String newPassword = inDto.getNewPassword();
+        // 入参必须项检查
+        if(userId == null || "".equals(userId)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("用户ID不能为空，请确认后重新请求");
+            logger.error("用户ID不能为空");
+            return baseOutDto;
+        }
+        if(oldPassword == null || "".equals(oldPassword)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("旧密码不能为空，请确认后重新请求");
+            logger.error("旧密码不能为空");
+            return baseOutDto;
+        }
+        if(newPassword == null || "".equals(newPassword)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("新密码不能为空，请确认后重新请求");
+            logger.error("新密码不能为空");
+            return baseOutDto;
+        }
+        // 入参长度检查
+        if(newPassword.length()<6){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[修改失败]：新密码长度不能小于6位");
+            logger.error("[修改失败]：新密码长度不能小于6位");
+            return baseOutDto;
+        }
+
+        // 业务处理
+        // 查询原始密码
+        String oldPasswordDB = null;
+        try{
+            oldPasswordDB = userService.findPassword(userId);
+        } catch (Exception e){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("原始密码查询错误");
+            logger.error("原始密码查询错误");
+            return baseOutDto;
+        }
+        // 旧密码加密
+        oldPassword = BaseUtil.encryption(oldPassword);
+        // 新密码加密
+        newPassword = BaseUtil.encryption(newPassword);
+        // 判断 旧密码输入是否正确
+        if(!oldPassword.equals(oldPasswordDB)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[修改失败]：原密码输入错误");
+            logger.error("[修改失败]：原密码输入错误");
+            return baseOutDto;
+        }
+        // 判断 新密码是否与旧密码相同
+        if(newPassword.equals(oldPasswordDB)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[修改失败]：新密码不能与原密码相同");
+            logger.error("[修改失败]：新密码不能与原密码相同");
+            return baseOutDto;
+        }
+        try {
+            userService.updatePassword(userId,newPassword);
+            baseOutDto.setCode(ResultCode.SUCCESS);
+            baseOutDto.setMessage("[密码修改成功]");
+        } catch (Exception e){
+            e.printStackTrace();
         }
         return baseOutDto;
     }

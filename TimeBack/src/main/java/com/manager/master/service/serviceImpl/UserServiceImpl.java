@@ -12,6 +12,7 @@ import com.manager.master.repository.UserJpaRepository;
 import com.manager.master.repository.UserRepository;
 import com.manager.master.service.CreateQueueService;
 import com.manager.master.service.IUserService;
+import com.manager.util.CommonMethods;
 import com.manager.util.UUIDUtil;
 import javafx.scene.input.DataFormat;
 import org.apache.logging.log4j.LogManager;
@@ -193,5 +194,44 @@ public class UserServiceImpl implements IUserService{
         }
 
         return labelOutDtoList;
+    }
+
+    /**
+     * 查找用户密码
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public String findPassword(Integer userId) {
+        String password = null;
+        try {
+            password = userRepository.findPasswordByUserId(userId);
+        } catch (Exception ex){
+            logger.error(" ------ findPasswordByUserId 语法错误");
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return password;
+    }
+
+    /**
+     * 修改用户密码
+     *
+     * @param userId
+     * @param newPassword
+     */
+    @Override
+    public void updatePassword(Integer userId, String newPassword) {
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        String update = format.format(date);
+        try {
+            userJpaRepository.updatePassword(userId,newPassword,userId,CommonMethods.dateToStamp(update));
+        } catch (Exception ex){
+            logger.error(" ------ updatePassword 语法错误");
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 }
