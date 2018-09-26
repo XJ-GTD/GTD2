@@ -1,0 +1,78 @@
+<!--
+  Generated template for the GroupAddPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>{{addType}}</ion-title>
+
+    <ion-buttons right>
+      <button ion-button icon-only (click)="savePlayer()">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <div *ngIf="playerDetail == null; else playerEdit">
+    <div *ngIf="playerType == 2; else personAdd">
+
+      <form [formGroup]="PlayerForm" (ngSubmit)="" novalidate>
+        <ion-item>
+          <ion-label floating>参与群组名称</ion-label>
+          <ion-input type="text" [formControl]=""></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>标签</ion-label>
+          <ion-select (focus)="findLabel()" [(ngModel)]="schedule.labelIds" multiple="true">
+            <div *ngFor="let lb of label">
+              <ion-option value="{{lb.labelId}}">{{lb.labelName}}</ion-option>
+            </div>
+          </ion-select>
+        </ion-item>
+
+        <ion-list>
+
+          <ion-item>
+            <ion-label floating>群成员名称</ion-label>
+            <ion-input type="text" [(ngModel)]=""></ion-input>
+
+            <ion-label floating>群成员联系方式</ion-label>
+            <ion-input type="number" [(ngModel)]=""></ion-input>
+          </ion-item>
+
+        </ion-list>
+
+      </form>
+
+    </div>
+
+    <ng-template #personAdd>
+
+    </ng-template>
+  </div>
+
+  <ng-template #playerEdit>
+    <div *ngIf="playerType == 'group'; else person">
+
+    </div>
+
+    <ng-template #person>
+
+    </ng-template>
+  </ng-template>
+</ion-content>

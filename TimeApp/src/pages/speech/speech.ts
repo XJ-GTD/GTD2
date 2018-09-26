@@ -6,6 +6,10 @@ import { HttpClient } from "@angular/common/http";
 import { AppConfig } from "../../app/app.config";
 import { AiuiModel } from "../../model/aiui.model";
 import { ScheduleModel } from "../../model/schedule.model";
+import {File} from "@ionic-native/file";
+import {Base64} from "@ionic-native/base64";
+
+declare var cordova: any;
 
 /**
  * Generated class for the SpeechPage page.
@@ -37,6 +41,8 @@ export class SpeechPage {
   speech: string;   //语音助手显示文本
   inputText: string = "";    //手动模式输入数据
   inputAudio: string = "";  //语音模式输入数据
+  fileContent: any;   //语音文件内容
+  filePath: string;   //语音文件路径
 
   schedule: ScheduleModel;
   aiuiData: AiuiModel;
@@ -45,6 +51,8 @@ export class SpeechPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private paramsService: ParamsService,
               private http: HttpClient,
+              private file: File,
+              private base64: Base64,
               private loadingCtrl: LoadingController,
               private alert: AlertController,
               private xiaojiSpeech: XiaojiAssistantService) {
@@ -95,13 +103,36 @@ export class SpeechPage {
   //启动语音输入
   startXiaoJi() {
 
-    this.xiaojiSpeech.getAudioBase64();
+    try {
+      cordova.plugins.xjvoicefromXF.startListen(result=>{
+        // alert("成功:" + result);
+        //讯飞语音录音设置默认存储路径
+        this.filePath = this.file.externalRootDirectory + "/msc/iat.wav";
+        console.log("文件路径：" + this.filePath);
 
-    if (this.paramsService.speech != null && this.paramsService.speech != "") {
-      this.inputAudio = this.paramsService.speech;
-      let url = AppConfig.XUNFEI_URL_TEXT;
-      this.messageHanding(url, this.inputAudio);
+        // 读取录音进行base64转码
+        this.base64.encodeFile(this.filePath).then((base64File: string) => {
+          this.fileContent = base64File;
+          console.log("base64:" + this.fileContent);
+
+          if (this.fileContent != null && this.fileContent != "") {
+            this.inputAudio = this.fileContent;
+            let url = AppConfig.XUNFEI_URL_AUDIO;
+            this.messageHanding(url, this.inputAudio);
+          }
+
+        }, (err) => {
+          console.log("异常" + err.toString());
+        });
+
+      },error=>{
+        console.log("报错:" + error);
+      },true,true);
+    } catch (e) {
+      console.log("问题："+ e)
     }
+
+
   }
 
   //启动手动输入
@@ -114,6 +145,7 @@ export class SpeechPage {
 
   //回传数据处理
   messageHanding(url, input) {
+
     this.http.post(url, {
       content: input,
       userId: this.paramsService.user.userId

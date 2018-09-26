@@ -1,0 +1,11 @@
+{
+  "name": "xjalarmclock",
+  "version": "1.0.0",
+  "description": "This plugin supports PhoneGap/Cordova apps running on both iOS and Android.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
