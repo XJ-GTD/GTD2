@@ -309,4 +309,40 @@ public class UserController {
         }
         return baseOutDto;
     }
+
+    /**
+     * 用户资料编辑
+     * @return
+     */
+    @RequestMapping(value = "/update_userinfo", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto updateUserInfo(@RequestBody UserInfoInDto infoInDto){
+        BaseOutDto baseOutDto = new BaseOutDto();
+        // 获取入参
+        Integer userId = infoInDto.getUserId();          // 用户ID
+        String userName = infoInDto.getUserName();       // 昵称
+        String headimgUrl = infoInDto.getHeadimgUrl();   // 用户头像
+        String birthday = infoInDto.getBirthday();       // 生日
+        String userSex = infoInDto.getUserSex();         // 性别
+        String userContent = infoInDto.getUserContent();    // 联系方式
+        // 必须项检查
+        if(userId == null || "".equals(userId)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[编辑失败]：用户ID不可为空");
+            logger.error("[编辑失败]：用户ID不可为空");
+            return baseOutDto;
+        }
+        int flag = 0;
+        try {
+            flag = userService.updateUserInfo(infoInDto);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        if(flag == 0){
+            baseOutDto.setCode(ResultCode.SUCCESS);
+            baseOutDto.setMessage("[编辑成功]");
+            logger.info("[编辑成功]");
+        }
+        return baseOutDto;
+    }
 }

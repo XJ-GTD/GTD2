@@ -1,10 +1,7 @@
 package com.manager.master.service.serviceImpl;
 
 import com.manager.config.exception.ServiceException;
-import com.manager.master.dto.LabelInDto;
-import com.manager.master.dto.LabelOutDto;
-import com.manager.master.dto.UserInDto;
-import com.manager.master.dto.UserOutDto;
+import com.manager.master.dto.*;
 import com.manager.master.entity.GtdAccountEntity;
 import com.manager.master.entity.GtdUserEntity;
 import com.manager.master.repository.LabelJpaRespository;
@@ -233,5 +230,36 @@ public class UserServiceImpl implements IUserService{
             logger.error(ex.getMessage());
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * 更新用户资料
+     *
+     * @param inDto
+     */
+    @Override
+    public int updateUserInfo(UserInfoInDto inDto) {
+        int flag = 0;
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        String update = format.format(date);
+
+        Integer userId = inDto.getUserId();          // 用户ID
+        String userName = inDto.getUserName();       // 昵称
+        String headimgUrl = inDto.getHeadimgUrl();   // 用户头像
+        String birthday = inDto.getBirthday();       // 生日
+        String userSex = inDto.getUserSex();         // 性别
+        String userContent = inDto.getUserContent();    // 联系方式
+
+        try {
+            userJpaRepository.updateUserInfo(userName,headimgUrl,birthday,userSex,userContent,userId,CommonMethods.dateToStamp(update),userId);
+        } catch (Exception ex){
+            logger.error(" ------ updateUserInfo 语法错误");
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
+            return 1;
+        }
+
+        return flag;
     }
 }

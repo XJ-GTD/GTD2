@@ -33,4 +33,19 @@ public interface UserJpaRepository extends JpaRepository<GtdUserEntity, Integer>
     @Query(value = "update gtd_account set ACCOUNT_PASSWORD = ?2,UPDATE_ID = ?3,UPDATE_DATE = ?4 where USER_ID = ?1",nativeQuery = true)
     void updatePassword(Integer userId, String newPassword, Integer updateId, Timestamp updateDt);
 
+    /**
+     *  更新用户资料
+     * @param userName
+     * @param heanImg
+     * @param birthday
+     * @param sex
+     * @param contact
+     * @param updateId
+     * @param updateDt
+     * @param userId
+     */
+    @Modifying
+    @Query(value = "update gtd_user set USER_NAME = ?1,HEADIMG_URL = ?2,BRITHDAY = ?3,USER_SEX = ?4,USER_CONTACT = ?5,UPDATE_ID = ?6,UPDATE_DATE = ?7 where USER_ID = ?8",nativeQuery = true)
+    void updateUserInfo(String userName,String heanImg,String birthday,String sex,String contact,Integer updateId,Timestamp updateDt,Integer userId);
+
 }
