@@ -5,6 +5,7 @@ import com.manager.master.dto.*;
 import com.manager.master.service.CreateQueueService;
 import com.manager.master.service.IUserService;
 import com.manager.util.BaseUtil;
+import com.manager.util.CommonMethods;
 import com.manager.util.ResultCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -306,6 +307,81 @@ public class UserController {
             baseOutDto.setMessage("[密码修改成功]");
         } catch (Exception e){
             e.printStackTrace();
+        }
+        return baseOutDto;
+    }
+
+    /**
+     * 用户资料编辑
+     * @return
+     */
+    @RequestMapping(value = "/update_userinfo", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto updateUserInfo(@RequestBody UserInfoInDto infoInDto){
+        BaseOutDto baseOutDto = new BaseOutDto();
+        // 获取入参
+        Integer userId = infoInDto.getUserId();          // 用户ID
+        String userName = infoInDto.getUserName();       // 昵称
+        String headimgUrl = infoInDto.getHeadimgUrl();   // 用户头像
+        String birthday = infoInDto.getBirthday();       // 生日
+        String userSex = infoInDto.getUserSex();         // 性别
+        String userContent = infoInDto.getUserContent();    // 联系方式
+        // 必须项检查
+        if(userId == null || "".equals(userId)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[编辑失败]：用户ID不可为空");
+            logger.error("[编辑失败]：用户ID不可为空");
+            return baseOutDto;
+        }
+        // 入参类型检查
+        if(userSex != null && !"".equals(userSex)){
+            if(!CommonMethods.isInteger(userSex)){
+                baseOutDto.setCode(ResultCode.FAIL);
+                baseOutDto.setMessage("[编辑失败]：性别必须为指定整数");
+                logger.error("[编辑失败]：性别必须为指定整数");
+                return baseOutDto;
+            }
+            if(!"0".equals(userSex) && !"1".equals(userSex)){
+                baseOutDto.setCode(ResultCode.FAIL);
+                baseOutDto.setMessage("[编辑失败]：性别必须为指定整数");
+                logger.error("[编辑失败]：性别必须为指定整数");
+                return baseOutDto;
+            }
+        }
+        if(!CommonMethods.checkIsPhoneNumber(userContent)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[编辑失败]：联系方式格式不正确");
+            logger.error("[编辑失败]：联系方式格式不正确");
+            return baseOutDto;
+        }
+        if(!CommonMethods.checkIsDate2(birthday)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[编辑失败]：生日格式不正确");
+            logger.error("[编辑失败]：生日格式不正确");
+            return baseOutDto;
+        }
+        if(CommonMethods.checkMySqlReservedWords(userName)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[编辑失败]：昵称不能包含非法字符");
+            logger.error("[编辑失败]：昵称不能包含非法字符");
+            return baseOutDto;
+        }
+        if(CommonMethods.checkMySqlReservedWords(headimgUrl)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[编辑失败]：用户头像不能包含非法字符");
+            logger.error("[编辑失败]：用户头像不能包含非法字符");
+            return baseOutDto;
+        }
+        int flag = 0;
+        try {
+            flag = userService.updateUserInfo(infoInDto);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        if(flag == 0){
+            baseOutDto.setCode(ResultCode.SUCCESS);
+            baseOutDto.setMessage("[编辑成功]");
+            logger.info("[编辑成功]");
         }
         return baseOutDto;
     }

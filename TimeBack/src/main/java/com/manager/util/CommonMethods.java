@@ -105,6 +105,23 @@ public class CommonMethods {
         return convertSuccess;
     }
 
+    /**
+     * 判断是否为日期格式
+     * @param str
+     * @return 日期格式返回true
+     */
+    public static boolean checkIsDate2(String str) {
+        boolean convertSuccess = true;
+        // 指定日期格式
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            simpleDateFormat.parse(str);
+        }catch (Exception e){
+            convertSuccess = false;
+        }
+        return convertSuccess;
+    }
+
     /*
      * 将时间转换为时间戳
      */

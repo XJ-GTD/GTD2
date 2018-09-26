@@ -1,9 +1,6 @@
 package com.manager.master.service;
 
-import com.manager.master.dto.LabelInDto;
-import com.manager.master.dto.LabelOutDto;
-import com.manager.master.dto.UserInDto;
-import com.manager.master.dto.UserOutDto;
+import com.manager.master.dto.*;
 import com.manager.master.entity.GtdUserEntity;
 
 import java.io.IOException;
@@ -49,4 +46,10 @@ public interface IUserService {
      * @param newPassword
      */
     void updatePassword(Integer userId,String newPassword);
+
+    /**
+     *  更新用户资料
+     * @param inDto
+     */
+    int updateUserInfo(UserInfoInDto inDto);
 }
