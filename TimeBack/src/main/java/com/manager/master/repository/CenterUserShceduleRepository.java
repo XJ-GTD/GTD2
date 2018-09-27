@@ -21,7 +21,7 @@ public interface CenterUserShceduleRepository extends JpaRepository<GtdUserSched
      * @param scheduleId
      */
     @Modifying
-    @Query(value="delete from gtd_user_shcedule where SCHEDULE_ID=?1",nativeQuery=true)
+    @Query(value="delete from gtd_user_schedule where SCHEDULE_ID=?1",nativeQuery=true)
     void deleteConnectionByScheduleId(Integer scheduleId);
 
     /**
@@ -29,6 +29,6 @@ public interface CenterUserShceduleRepository extends JpaRepository<GtdUserSched
      * @param userId
      */
     @Modifying
-    @Query(value="delete from gtd_user_shcedule where USER_ID=?1",nativeQuery=true)
+    @Query(value="delete from gtd_user_schedule where USER_ID=?1",nativeQuery=true)
     void deleteConnectionByUserId(Integer userId);
 }
