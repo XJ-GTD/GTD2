@@ -65,7 +65,6 @@ public interface SchedulePlayersRepository extends JpaRepository<GtdSchedulePlay
      * @param schedulId
      * @return
      */
-    @Modifying
     @Query(value = "SELECT PLAYERS_ID FROM gtd_schedule_players WHERE SCHEDULE_ID = ?1",nativeQuery = true)
     List<Integer> findAllPlayersId(Integer schedulId);
 
@@ -75,7 +74,6 @@ public interface SchedulePlayersRepository extends JpaRepository<GtdSchedulePlay
      * @param userId
      * @return
      */
-    @Modifying
     @Query(value = "SELECT PLAYERS_ID FROM gtd_schedule_players WHERE SCHEDULE_ID = ?1 AND USER_ID = ?2",nativeQuery = true)
     Integer findPlayersIdByUserIdAndScheduleId(Integer scheduleId,Integer userId);
 
