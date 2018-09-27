@@ -1,7 +1,7 @@
 page-user-login {
   .user_login{
-    $login_foot_height: 90px;
-    $login_body_height:calc(100vh - 90px);
+    $login_foot_height: 75px;
+    $login_body_height:calc(100vh - 75px);
     background-color: #fff;
     .login_body{
       height: $login_body_height;
@@ -11,10 +11,10 @@ page-user-login {
         padding-top: $login_icon_height/2;
         text-align: center;
         .xj_icon{
+          $xj_icon_size:70px;
           display: inline-block;
-          width: 100px;
-          height: 100px;
-
+          width: $xj_icon_size;
+          height: $xj_icon_size;
         }
       }
       .login_info{
@@ -24,7 +24,7 @@ page-user-login {
     .login_foot{
       height: $login_foot_height;
       .custom_share{
-        $share_png_size:50px;
+        $share_png_size:38px;
         text-align: center;
         .share{
           width: 50%;
@@ -55,7 +55,7 @@ page-user-login {
       .group_input{
         margin-right: 16px;
         padding: 0 20px;
-        $placeholder_color:#ccc;
+        $placeholder_color:rgb(179,179,179);
         $icon_width: 20px;
         $text_width: calc(100% - 25px);
         .input_icon{
@@ -81,15 +81,16 @@ page-user-login {
           color: #ad080e;
           margin-top: 15px;
           min-height: 20px;
+          padding-left: 31px;
         }
       }
       .login_button{
         border-radius: 25px;
         letter-spacing:5px;
-        background: -webkit-linear-gradient(left, #b729ff, #382cea); /* Safari 5.1 - 6.0 */
-        background: -o-linear-gradient(right, #b729ff, #382cea); /* Opera 11.1 - 12.0 */
-        background: -moz-linear-gradient(right, #b729ff, #382cea); /* Firefox 3.6 - 15 */
-        background: linear-gradient(to right, #b729ff, #382cea); /* 标准的语法（必须放在最后） */
+        background: -webkit-linear-gradient(left, rgb(149,58,139),rgb(86,82,222)); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Firefox 3.6 - 15 */
+        background: linear-gradient(to right, rgb(149,58,139),rgb(86,82,222)); /* 标准的语法（必须放在最后） */
       }
       .copywriting{
         margin-top: 10px;
@@ -99,13 +100,13 @@ page-user-login {
         div:nth-child(1){
           float: left;
           margin-left: 15px;
-          background-image: -webkit-linear-gradient(bottom, rgb(201, 115, 255), rgb(20, 11, 255));
+          background-image: -webkit-linear-gradient(bottom, rgb(149,58,139),rgb(86,82,222));
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
         }
         div:nth-child(2){
           float: right;
-          color: #ccc;
+          color: rgb(153,153,153);
           margin-right: 15px;
         }
       }
