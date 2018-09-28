@@ -149,12 +149,7 @@ export class SpeechPage {
     this.http.post(url, {
       content: input,
       userId: this.paramsService.user.userId
-    },{
-      headers: {
-        "Content-Type": "application/json"
-      },
-      responseType: 'json'
-    })
+    },AppConfig.HEADER_OPTIONS_JSON)
       .subscribe(data => {
         console.log("back data：" + data);
         this.data = data;

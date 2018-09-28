@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, NavController, NavParams, Slides} from 'ionic-angular';
 import { WebsocketService } from "../../service/websocket.service";
 import {ParamsService} from "../../service/params.service";
 import {XiaojiAlarmclockService} from "../../service/xiaoji-alarmclock.service";
@@ -10,6 +10,7 @@ import {TimeModel} from "../../model/time.model";
 import {TimeService} from "../../service/time.service";
 import {ScheduleModel} from "../../model/schedule.model";
 import {ScheduleOutModel} from "../../model/out/schedule.out.model";
+import {CalendarModel} from "../../model/calendar.model";
 
 /**
  * Generated class for the HomePage page.
@@ -25,16 +26,16 @@ import {ScheduleOutModel} from "../../model/out/schedule.out.model";
   providers: []
 })
 export class HomePage {
-
+  @ViewChild(Slides) slides: Slides;
 
   tab1Root = 'SpeechPage';
   data: any;
   remindScheduleList: Array<RemindModel>;//提醒时间数据
   remindList: Array<string>;  //全部提醒时间
-  weekDay: Array<string> = ["日","一","二","三","四","五","六"];   //周标识
-  year: number;
-  month: number;
-  time: Array<TimeModel>;
+
+  calendarList: Array<CalendarModel>;
+  calendar: CalendarModel;
+
   scheduleList: Array<ScheduleModel>;
   schedule: ScheduleModel;
   findSchedule: ScheduleOutModel; //查询日程条件
@@ -47,29 +48,58 @@ export class HomePage {
               private alarmClock: XiaojiAlarmclockService) {
 
     this.init();
-    //消息队列接收
-    this.webSocketService.connect(this.paramsService.user.accountQueue);
-
     this.setAlarmList();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
+
+  }
+
+  slidesNext() {
+    console.log('月份向后');
+    // console.log("当前index：" + this.slides.getActiveIndex());
+    // let year = this.calendarList[this.slides.getActiveIndex()].year;
+    // let month = this.calendarList[this.slides.getActiveIndex()].month;
+    let year = this.calendar.year;
+    let month = this.calendar.month;
+    this.calendar = this.timeService.nextOrPrev(2, year, month);
+
+    this.slides.update();
+  }
+
+  slidesPrev() {
+    console.log('月份向前');
+    // console.log("当前index：" + this.slides.getActiveIndex());
+    // let year = this.calendarList[this.slides.getActiveIndex()].year;
+    // let month = this.calendarList[this.slides.getActiveIndex()].month;
+    let year = this.calendar.year;
+    let month = this.calendar.month;
+
+    this.calendar = this.timeService.nextOrPrev(1, year, month);
+
+    this.slides.update();
   }
 
   init() {
+
+    //消息队列接收
+    this.webSocketService.connect(this.paramsService.user.accountQueue);
+
     this.scheduleList = [];
 
+    this.calendarControl();
+
+
+    let today = new Date();
+    this.findTodaySchedule( today.getFullYear(), today.getMonth() + 1, today.getDate());
+  }
+
+  calendarControl() {
     //初始化加载日历控件
-    var today = new Date();
+    this.calendar = new CalendarModel();
 
-    this.year = today.getFullYear();
-    this.month = today.getMonth() + 1;
-
-    this.time = [];
-    this.time = this.timeService.getCalendar(today.getFullYear(), today.getMonth() + 1)
-
-    this.findTodaySchedule(this.year, this.month, today.getDate());
+    this.calendar = this.timeService.calendarInit();
   }
 
   //设置当天全部提醒

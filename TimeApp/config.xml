@@ -93,4 +93,5 @@
     <plugin name="cordova-plugin-xjvoicefromXF" spec="C:\IdeaProjects\GTD2\xjvoicefromXF" />
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="~6.4.0" />
+    <plugin name="cordova-plugin-calendar" spec="~5.1.2" />
 </widget>

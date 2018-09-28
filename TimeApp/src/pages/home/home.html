@@ -14,22 +14,28 @@
 <ion-content padding>
 
   <div id="homeCalendar">
-    <ion-list style="width: 100%;height: 40%">
-      <table style="width: 100%;height: 100%">
-        <caption class="text-center" style="background:#d9edf7;height: 15%;font-weight:900;color:black;">{{year}}年{{month}}月</caption>
-        <thead>
-          <tr>
-            <th *ngFor="let w of weekDay">{{w}}</th>
-          </tr>
-        </thead>
-        <tbody style="text-align: center" class="calendar_home">
-          <tr *ngFor="let md of time">
-            <td *ngFor="let d of md.day" style="background: #d9edf7">
-              <button name="calendar" ion-button (click)="findTodaySchedule(year, month, d)">{{d}}</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <ion-list style="width: 100%;height: 100%">
+
+        <ion-slides (panleft)="slidesNext()" (panright)="slidesPrev()">
+          <ion-slide>
+            <table>
+              <caption class="text-center" style="background:#d9edf7;height: 15%;font-weight:900;color:black;">{{calendar.year}}年{{calendar.month}}月</caption>
+              <thead>
+              <tr>
+                <th *ngFor="let w of calendar.weekDay">{{w}}</th>
+              </tr>
+              </thead>
+              <tbody style="text-align: center" class="calendar_home" >
+              <tr *ngFor="let md of calendar.dayList">
+                <td *ngFor="let d of md.day" style="background: #d9edf7">
+                  <button name="calendar" ion-button (click)="findTodaySchedule(calendar.year, calendar.month, d)">{{d}}</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          <!--</ion-slide>-->
+        <!--</ion-slides>-->
+
     </ion-list>
   </div>
 
