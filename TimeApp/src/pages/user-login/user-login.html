@@ -12,82 +12,85 @@
 
 </ion-header>-->
 <div class="user_login">
-  <div class="login_body">
-    <div class="login_icon">
+  <ion-content padding>
+    <div class="login_body">
+      <div class="login_icon">
       <span class="xj_icon">
         <img src="/assets/imgs/logo2.png"/>
       </span>
-    </div>
-    <div class="login_info">
-      <div class="custom_form">
-        <div class="custom_group">
-          <div class="group_input">
-            <div class="input_icon">
+      </div>
+      <div class="login_info">
+        <div class="custom_form">
+          <div class="custom_group">
+            <div class="group_input">
+              <div class="input_icon">
               <span >
                  <ion-icon name="ios-person-outline"></ion-icon>
               </span>
-            </div>
-            <div class="input_text">
-              <ion-item>
-              <!--  <ion-label no-lines floating>
-                  <span class="input_title">用户名/账号</span>
-                </ion-label>-->
-                <ion-input type="text" [(ngModel)]="accountName" pattern="[0-9A-Za-z]*" placeholder="用户名/账号"></ion-input>
-              </ion-item>
+              </div>
+              <div class="input_text">
+                <ion-item>
+                  <!--  <ion-label no-lines floating>
+                      <span class="input_title">用户名/账号</span>
+                    </ion-label>-->
+                  <ion-input type="text" [(ngModel)]="accountName" pattern="[0-9A-Za-z]*" placeholder="用户名/账号"></ion-input>
+                </ion-item>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="custom_group">
-          <div class="group_input">
-            <div class="input_icon">
+          <div class="custom_group">
+            <div class="group_input">
+              <div class="input_icon">
               <span >
                 <ion-icon name="ios-lock-outline"></ion-icon>
               </span>
-            </div>
-            <div class="input_text">
-              <ion-item>
-               <!-- <ion-label no-lines floating>
-                  <span class="input_title">输入密码</span>
-                </ion-label>-->
-                <ion-input type="password" [(ngModel)]="accountPassword" placeholder="输入密码"></ion-input>
-              </ion-item>
-            </div>
-            <div class="error_info">
-              <span><!--用户名不能为空--></span>
+              </div>
+              <div class="input_text">
+                <ion-item>
+                  <!-- <ion-label no-lines floating>
+                     <span class="input_title">输入密码</span>
+                   </ion-label>-->
+                  <ion-input type="password" [(ngModel)]="accountPassword" placeholder="输入密码"></ion-input>
+                </ion-item>
+              </div>
+              <div class="error_info">
+                <span><!--用户名不能为空--></span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="custom_group">
-          <button ion-button block color="danger" class="login_button" (click)="signIn()">
-            登录
-          </button>
-          <div class="copywriting">
-            <div>
-              <span (click)="signUp()">注册</span>
-            </div>
-            <div>
-              <span (click)="forgetPassword()">忘记密码？</span>
+          <div class="custom_group">
+            <button ion-button block color="danger" class="login_button" (click)="signIn()">
+              登录
+            </button>
+            <div class="copywriting">
+              <div>
+                <span (click)="signUp()">注册</span>
+              </div>
+              <div>
+                <span (click)="forgetPassword()">忘记密码？</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="login_foot">
-    <ion-grid>
-      <ion-row>
-        <ion-col col-3></ion-col>
-        <ion-col col-6>
-          <div class="custom_share">
-            <div class="share QQ_share"><i></i></div>
-            <div class="share WeChat_share"><i></i></div>
-          </div>
-        </ion-col>
-        <ion-col col-3></ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
+    <div class="login_foot">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-3></ion-col>
+          <ion-col col-6>
+            <div class="custom_share">
+              <div class="share QQ_share"><i></i></div>
+              <div class="share WeChat_share"><i></i></div>
+            </div>
+          </ion-col>
+          <ion-col col-3></ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ion-content>
 </div>
+
 <!--
 <ion-content padding>
   <ion-list>
