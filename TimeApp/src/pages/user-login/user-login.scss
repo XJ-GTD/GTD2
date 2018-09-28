@@ -30,7 +30,7 @@ page-user-login {
         .share{
           width: 50%;
           float: left;
-          i{
+          img{
             width: $share_png_size;
             height: $share_png_size;
             display: inline-block;
@@ -38,12 +38,6 @@ page-user-login {
             background-size: $share_png_size $share_png_size;
             background-repeat:no-repeat;
           }
-        }
-        .QQ_share i{
-          background-image: url(/assets/imgs/QQ.png);
-        }
-        .WeChat_share i{
-          background-image: url(/assets/imgs/WeChat.png);
         }
       }
     }

@@ -9,15 +9,17 @@ page-user-register {
 
     /* 修改Ionic CSS */
     .toolbar-background-ios{
-      background: #fff ;
-      border-color: #fff;
+      background: #fff !important;
+      border-color: #fff !important;
     }
     .button-inner .back-button-text{
-      display: none;
+      display: none !important;
     }
     .back-button.show-back-button{
       color: rgb(102,102,102);
     }
+
+
     .header_header{
       font-family: PingFang-SC-Bold;
       text-align: center;
@@ -80,12 +82,12 @@ page-user-register {
       .copywriting{
         span.checkbox_span{
           $checkbox_size:15px;
-          margin-top: -5px;
+          margin-top: -3px;
           margin-right: -5px;
           width: 170px;
           float: right;
           .checkbox-ios {
-            margin-right: 3px;
+            margin-right: 3px !important;
             .checkbox-icon{
               border-radius: 2px;
               width: $checkbox_size;
@@ -120,7 +122,9 @@ page-user-register {
       vertical-align: 73%;
     }
     .input_text_verification{
+      border-bottom: 0.55px solid #c8c7cc;
       display: inline-block;
+      padding: 1px;
       width: $text_width;
       $verification_item_width:107px;
       $button_verification_width:calc(100% - 107px);
@@ -130,7 +134,8 @@ page-user-register {
         .item{
           padding-left: 10px;
           .item-inner {
-            border-bottom: 0.55px solid #c8c7cc;
+            //border-bottom: 0.55px solid #c8c7cc;
+            border-bottom: 0;
           }
         }
       }
@@ -138,7 +143,6 @@ page-user-register {
         float: right;
         text-align: right;
         width: $button_verification_width;
-        border-bottom: 0.55px solid #c8c7cc;
         height: 52.8px;;
         button{
           background-color: rgb(36,190,185);
