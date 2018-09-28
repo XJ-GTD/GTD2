@@ -24,33 +24,32 @@
           </div>
           <div class="input_text">
             <ion-item>
-              <ion-label no-lines floating>
-                <span class="input_title">输入您的手机号</span>
-              </ion-label>
-              <ion-input type="number" [formControl]="accountMobile" clearInput=true pattern="[0-9]*"
-              ><!--oninput="if(value.length > 11)value=value.slice(0,11)">--></ion-input>
+              <ion-input type="number" [formControl]="accountMobile" clearInput=true pattern="[0-9]*" placeholder="输入您的手机号" >
+                </ion-input>
             </ion-item>
           </div>
         </div>
       </div>
       <div class="custom_group verification">
-        <div class="group_input">
-          <div class="input_icon">
-          <span class="img_span">
-            <img src="/assets/imgs/verification.png"/>
-          </span>
+        <div class="group_input ">
+          <div class="verification_icon">
+            <span class="img_span">
+              <img src="/assets/imgs/verification.png"/>
+            </span>
           </div>
-          <div class="input_text">
-            <ion-item>
-              <ion-label no-lines floating>
-                <span class="input_title">验证码</span>
-              </ion-label>
-              <ion-input type="password" ></ion-input>
-            </ion-item>
+          <div class="input_text_verification">
+            <div class="verification_item">
+              <ion-item >
+                <ion-input type="password" placeholder="验证码"></ion-input>
+              </ion-item>
+            </div>
+            <div class="button_verification">
+              <button ion-button >发送验证码</button>
+            </div>
           </div>
-          <div class="input_verification">
-            <button  class="button_verification">发送验证码</button>
-          </div>
+          <!--<div class="input_verification ">
+            <button ion-button class="button_verification">发送验证码</button>
+          </div>-->
         </div>
       </div>
       <div class="custom_group">
@@ -62,10 +61,7 @@
           </div>
           <div class="input_text">
             <ion-item>
-              <ion-label no-lines floating>
-                <span class="input_title">密码</span>
-              </ion-label>
-              <ion-input type="password" [(ngModel)]="accountPassword"></ion-input>
+              <ion-input type="password" [(ngModel)]="accountPassword" placeholder="密码"></ion-input>
             </ion-item>
           </div>
         </div>
@@ -79,10 +75,7 @@
           </div>
           <div class="input_text">
             <ion-item>
-              <ion-label no-lines floating>
-                <span class="input_title">确定密码</span>
-              </ion-label>
-              <ion-input type="password" [formControl]="reAccountPassword" clearInput=true></ion-input>
+              <ion-input type="password" [formControl]="reAccountPassword" clearInput=true placeholder="确定密码"></ion-input>
             </ion-item>
           </div>
         </div>
@@ -96,10 +89,7 @@
           </div>
           <div class="input_text">
             <ion-item>
-              <ion-label no-lines floating>
-                <span class="input_title">可选，推荐实名</span>
-              </ion-label>
-              <ion-input type="text"></ion-input>
+              <ion-input type="text" placeholder="可选，推荐实名"></ion-input>
             </ion-item>
           </div>
           <div class="error_info">

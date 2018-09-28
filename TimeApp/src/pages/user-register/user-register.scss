@@ -1,4 +1,5 @@
 page-user-register {
+  $placeholder_color:rgb(179,179,179);
   .custom_region{
 
 
@@ -35,7 +36,6 @@ page-user-register {
       .group_input{
         margin-right: 16px;
         padding: 0 20px;
-        $placeholder_color:rgb(179,179,179);
         $icon_width: 20px;
         $text_width: calc(100% - 25px);
         .input_icon{
@@ -44,7 +44,7 @@ page-user-register {
           display: inline-block;
           font-size: 1.7em;
           line-height: 1;
-          vertical-align: -136%;
+          vertical-align: -18%;
           .img_span{
 
           }
@@ -79,13 +79,14 @@ page-user-register {
       .copywriting{
         span.checkbox_span{
           $checkbox_size:15px;
+          margin-top: -5px;
           margin-right: -5px;
           width: 170px;
           float: right;
           .checkbox-ios {
             margin-right: 3px;
             .checkbox-icon{
-              border-radius: 5px;
+              border-radius: 2px;
               width: $checkbox_size;
               height: $checkbox_size;
             }
@@ -106,29 +107,42 @@ page-user-register {
     }
   }
   .verification{
+    padding: 0 10px;
     $icon_width: 20px;
-    $icon_width: 20px;
+    $verification_width: 115px;
     $text_width: calc(100% - 25px);
-    .input_icon{
+    .verification_icon{
       width: $icon_width;
+      color: $placeholder_color;
       display: inline-block;
       font-size: 1.7em;
       line-height: 1;
-      vertical-align: -136%;
-      .img_span{
-
-      }
+      vertical-align: 73%;
     }
-    .input_text{
+    .input_text_verification{
       display: inline-block;
       width: $text_width;
-      .item{
-        padding-left: 10px;
+      $verification_item_width:107px;
+      $button_verification_width:calc(100% - 107px);
+      .verification_item{
+        float: left;
+        width: $verification_item_width;
+        .item{
+          padding-left: 10px;
+          .item-inner {
+            border-bottom: 0.55px solid #c8c7cc;
+          }
+        }
       }
-    }
-    .input_verification{
       .button_verification{
-
+        float: left;
+        width: $button_verification_width;
+        border-bottom: 0.55px solid #c8c7cc;
+        height: 52.8px;;
+        button{
+          background-color: rgb(36,190,185);
+          border-color: rgb(36,190,185);
+        }
       }
     }
   }

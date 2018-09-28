@@ -29,10 +29,10 @@
             </div>
             <div class="input_text">
               <ion-item>
-                <ion-label no-lines floating>
+              <!--  <ion-label no-lines floating>
                   <span class="input_title">用户名/账号</span>
-                </ion-label>
-                <ion-input type="text" [(ngModel)]="accountName" pattern="[0-9A-Za-z]*"></ion-input>
+                </ion-label>-->
+                <ion-input type="text" [(ngModel)]="accountName" pattern="[0-9A-Za-z]*" placeholder="用户名/账号"></ion-input>
               </ion-item>
             </div>
           </div>
@@ -46,10 +46,10 @@
             </div>
             <div class="input_text">
               <ion-item>
-                <ion-label no-lines floating>
+               <!-- <ion-label no-lines floating>
                   <span class="input_title">输入密码</span>
-                </ion-label>
-                <ion-input type="password" [(ngModel)]="accountPassword"></ion-input>
+                </ion-label>-->
+                <ion-input type="password" [(ngModel)]="accountPassword" placeholder="输入密码"></ion-input>
               </ion-item>
             </div>
             <div class="error_info">
