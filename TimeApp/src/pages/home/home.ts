@@ -56,6 +56,27 @@ export class HomePage {
 
   }
 
+  init() {
+
+    //消息队列接收
+    this.webSocketService.connect(this.paramsService.user.accountQueue);
+
+    this.scheduleList = [];
+
+    this.calendarControl();
+
+
+    let today = new Date();
+    this.findTodaySchedule( today.getFullYear(), today.getMonth() + 1, today.getDate());
+  }
+
+  calendarControl() {
+    //初始化加载日历控件
+    this.calendar = new CalendarModel();
+
+    this.calendar = this.timeService.calendarInit();
+  }
+
   slidesNext() {
     console.log('月份向后');
     // console.log("当前index：" + this.slides.getActiveIndex());
@@ -81,25 +102,12 @@ export class HomePage {
     this.slides.update();
   }
 
-  init() {
-
-    //消息队列接收
-    this.webSocketService.connect(this.paramsService.user.accountQueue);
-
-    this.scheduleList = [];
-
-    this.calendarControl();
-
-
-    let today = new Date();
-    this.findTodaySchedule( today.getFullYear(), today.getMonth() + 1, today.getDate());
+  goBackToday() {
+    this.calendar = this.timeService.calendarInit();
   }
 
-  calendarControl() {
-    //初始化加载日历控件
-    this.calendar = new CalendarModel();
-
-    this.calendar = this.timeService.calendarInit();
+  switchToWeek() {
+    
   }
 
   //设置当天全部提醒

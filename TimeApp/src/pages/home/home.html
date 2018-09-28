@@ -16,10 +16,14 @@
   <div id="homeCalendar">
     <ion-list style="width: 100%;height: 100%">
 
-        <ion-slides (panleft)="slidesNext()" (panright)="slidesPrev()">
+        <ion-slides (swipeleft)="slidesNext()" (swiperight)="slidesPrev()">
           <ion-slide>
             <table>
-              <caption class="text-center" style="background:#d9edf7;height: 15%;font-weight:900;color:black;">{{calendar.year}}年{{calendar.month}}月</caption>
+              <caption class="text-center" style="background:#d9edf7;height: 15%;font-weight:900;color:black;">
+                {{calendar.year}}年{{calendar.month}}月
+                <button ion-button (click)="goBackToday()">今天</button>
+                <button ion-button (click)="switchToWeek()">周</button>
+              </caption>
               <thead>
               <tr>
                 <th *ngFor="let w of calendar.weekDay">{{w}}</th>
@@ -33,8 +37,8 @@
               </tr>
               </tbody>
             </table>
-          <!--</ion-slide>-->
-        <!--</ion-slides>-->
+          </ion-slide>
+        </ion-slides>
 
     </ion-list>
   </div>

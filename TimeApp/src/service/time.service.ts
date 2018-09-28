@@ -1,9 +1,5 @@
 import {Injectable} from "@angular/core";
 import {TimeModel} from "../model/time.model";
-import {AlertController, App, LoadingController} from "ionic-angular";
-import {HttpClient} from "@angular/common/http";
-import {XiaojiAssistantService} from "./xiaoji-assistant.service";
-import {ParamsService} from "./params.service";
 import {CalendarModel} from "../model/calendar.model";
 
 
@@ -27,89 +23,40 @@ export class TimeService {
   calendarInit() {
     //初始化加载日历控件
     let today = new Date();
-    this.calendarList = [];
-    for (let i = 0; i < 3; i++) {
 
-      this.calendar = new CalendarModel();
+    this.calendar = new CalendarModel();
 
-      this.calendar.year = today.getFullYear();
-      this.calendar.month = today.getMonth() + 1;
+    this.calendar.year = today.getFullYear();
+    this.calendar.month = today.getMonth() + 1;
 
-      if (i == 0) {
+    this.calendar.dayList = this.getCalendar(this.calendar.year, this.calendar.month);
 
-        if (this.calendar.month == 1) {
-          this.calendar.year = this.calendar.year - 1;
-          this.calendar.month = this.calendar.month + 11;
-          this.calendar.dayList = this.getCalendar(this.calendar.year, this.calendar.month);
-        } else {
-          this.calendar.month = this.calendar.month - 1;
-          this.calendar.dayList = this.getCalendar(this.calendar.year, this.calendar.month);
-        }
-      } else if (i == 1) {
-        this.calendar.dayList = this.getCalendar(this.calendar.year, this.calendar.month);
-      } else if (i == 2) {
-        if (this.calendar.month == 12) {
-          this.calendar.year = this.calendar.year + 1;
-          this.calendar.month = this.calendar.month - 11;
-          this.calendar.dayList = this.getCalendar(this.calendar.year, this.calendar.month);
-        } else {
-          this.calendar.month = this.calendar.month + 1;
-          this.calendar.dayList = this.getCalendar(this.calendar.year, this.calendar.month);
-        }
-      }
-
-      this.calendarList.push(this.calendar);
-
-    }
-    let cl = [];
-    cl = this.calendarList;
-    return cl[1];
+    return this.calendar;
   }
 
   nextOrPrev(flag, year, month) {
 
-    this.calendarList = [];
-    for (let i = 0; i < 3; i++) {
-
-      this.calendar = new CalendarModel();
-
-      this.calendar.year = year;
-      this.calendar.month = month;
-
-      if (i == 0) {
-
-        if (this.calendar.month == 1) {
-          this.calendar.year = this.calendar.year - 1;
-          this.calendar.month = this.calendar.month + 11;
-          this.calendar.dayList = this.getCalendar(this.calendar.year, this.calendar.month);
-        } else {
-          this.calendar.month = this.calendar.month - 1;
-          this.calendar.dayList = this.getCalendar(this.calendar.year, this.calendar.month);
-        }
-      } else if (i == 1) {
-        this.calendar.dayList = this.getCalendar(this.calendar.year, this.calendar.month);
-      } else if (i == 2) {
-        if (this.calendar.month == 12) {
-          this.calendar.year = this.calendar.year + 1;
-          this.calendar.month = this.calendar.month - 11;
-          this.calendar.dayList = this.getCalendar(this.calendar.year, this.calendar.month);
-        } else {
-          this.calendar.month = this.calendar.month + 1;
-          this.calendar.dayList = this.getCalendar(this.calendar.year, this.calendar.month);
-        }
-      }
-
-      this.calendarList.push(this.calendar);
-
-    }
-    let cl = [];
-    cl = this.calendarList;
     if (flag == 1) {
-      return cl[0];
+      if (this.calendar.month == 1) {
+        this.calendar.year = this.calendar.year - 1;
+        this.calendar.month = this.calendar.month + 11;
+        this.calendar.dayList = this.getCalendar(this.calendar.year, this.calendar.month);
+      } else {
+        this.calendar.month = this.calendar.month - 1;
+        this.calendar.dayList = this.getCalendar(this.calendar.year, this.calendar.month);
+      }
     } else if (flag == 2) {
-      return cl[2];
+      if (this.calendar.month == 12) {
+        this.calendar.year = this.calendar.year + 1;
+        this.calendar.month = this.calendar.month - 11;
+        this.calendar.dayList = this.getCalendar(this.calendar.year, this.calendar.month);
+      } else {
+        this.calendar.month = this.calendar.month + 1;
+        this.calendar.dayList = this.getCalendar(this.calendar.year, this.calendar.month);
+      }
     }
 
+    return this.calendar;
   }
 
   //获取日历
@@ -152,6 +99,7 @@ export class TimeService {
     this.list = [];
     let count;
     this.timeModel = new TimeModel();
+
     switch (dayByWeek) {
       case "日":
         this.timeModel.day = [];
@@ -199,4 +147,62 @@ export class TimeService {
     }
 
   }
+
+  getOtherMonth(dayByWeek) {
+
+
+  }
+
+  /**=========================== ===== 周===================================**/
+
+  getCalendarOfWeek(daySum, dayByWeek) {
+    this.list = [];
+    let count;
+    this.timeModel = new TimeModel();
+    switch (dayByWeek) {
+      case "日":
+        this.timeModel.day = [];
+        count = 0;
+        break;
+      case "一":
+        this.timeModel.day = [" "];
+        count = 1;
+        break;
+      case "二":
+        this.timeModel.day = [" "," "];
+        count = 2;
+        break;
+      case "三":
+        this.timeModel.day = [" "," "," "];
+        count = 3;
+        break;
+      case "四":
+        this.timeModel.day = [" "," "," "," "];
+        count = 4;
+        break;
+      case "五":
+        this.timeModel.day = [" "," "," "," "," "];
+        count = 5;
+        break;
+      case "六":
+        this.timeModel.day = [" "," "," "," "," "," "];
+        count = 6;
+        break;
+    }
+
+    for (var i = 1; i <= daySum; i++) {
+
+      this.timeModel.day.push(i.toString());
+      count++;
+      if (i == daySum) {
+        this.list.push(this.timeModel);
+      }
+      if (count > 6) {
+        count = 0;
+        this.timeModel = new TimeModel();
+      }
+
+    }
+  }
+
 }

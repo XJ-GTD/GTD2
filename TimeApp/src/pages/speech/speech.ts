@@ -228,4 +228,9 @@ export class SpeechPage {
 
   /*==================== 聊天界面 end ===================*/
 
+  //返回方法
+  goBack() {
+    this.navCtrl.pop();
+  }
+
 }
