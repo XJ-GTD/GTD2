@@ -1,10 +1,7 @@
 package com.manager.master.service.serviceImpl;
 
 import com.manager.config.exception.ServiceException;
-import com.manager.master.dto.LabelInDto;
-import com.manager.master.dto.LabelOutDto;
-import com.manager.master.dto.UserInDto;
-import com.manager.master.dto.UserOutDto;
+import com.manager.master.dto.*;
 import com.manager.master.entity.GtdAccountEntity;
 import com.manager.master.entity.GtdUserEntity;
 import com.manager.master.repository.LabelJpaRespository;
@@ -12,6 +9,7 @@ import com.manager.master.repository.UserJpaRepository;
 import com.manager.master.repository.UserRepository;
 import com.manager.master.service.CreateQueueService;
 import com.manager.master.service.IUserService;
+import com.manager.util.CommonMethods;
 import com.manager.util.UUIDUtil;
 import javafx.scene.input.DataFormat;
 import org.apache.logging.log4j.LogManager;
@@ -193,5 +191,75 @@ public class UserServiceImpl implements IUserService{
         }
 
         return labelOutDtoList;
+    }
+
+    /**
+     * 查找用户密码
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public String findPassword(Integer userId) {
+        String password = null;
+        try {
+            password = userRepository.findPasswordByUserId(userId);
+        } catch (Exception ex){
+            logger.error(" ------ findPasswordByUserId 语法错误");
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return password;
+    }
+
+    /**
+     * 修改用户密码
+     *
+     * @param userId
+     * @param newPassword
+     */
+    @Override
+    public void updatePassword(Integer userId, String newPassword) {
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        String update = format.format(date);
+        try {
+            userJpaRepository.updatePassword(userId,newPassword,userId,CommonMethods.dateToStamp(update));
+        } catch (Exception ex){
+            logger.error(" ------ updatePassword 语法错误");
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * 更新用户资料
+     *
+     * @param inDto
+     */
+    @Override
+    public int updateUserInfo(UserInfoInDto inDto) {
+        int flag = 0;
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        String update = format.format(date);
+
+        Integer userId = inDto.getUserId();          // 用户ID
+        String userName = inDto.getUserName();       // 昵称
+        String headimgUrl = inDto.getHeadimgUrl();   // 用户头像
+        String birthday = inDto.getBirthday();       // 生日
+        String userSex = inDto.getUserSex();         // 性别
+        String userContent = inDto.getUserContent();    // 联系方式
+
+        try {
+            userJpaRepository.updateUserInfo(userName,headimgUrl,birthday,userSex,userContent,userId,CommonMethods.dateToStamp(update),userId);
+        } catch (Exception ex){
+            logger.error(" ------ updateUserInfo 语法错误");
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
+            return 1;
+        }
+
+        return flag;
     }
 }

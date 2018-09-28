@@ -5,6 +5,7 @@ import com.manager.master.dto.*;
 import com.manager.master.service.CreateQueueService;
 import com.manager.master.service.IUserService;
 import com.manager.util.BaseUtil;
+import com.manager.util.CommonMethods;
 import com.manager.util.ResultCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -173,7 +174,6 @@ public class UserController {
         inDto.setAccountPassword(password);
         //业务逻辑
         try {
-
             userInfo = userService.login(inDto);
             data.put("userInfo", userInfo);
             outBean.setData(data);
@@ -228,6 +228,160 @@ public class UserController {
             }else baseOutDto.setCode(ResultCode.REPEAT).setMessage("标签查询失败");
         }catch (Exception ex){
             throw new ServiceException(ex.getMessage());
+        }
+        return baseOutDto;
+    }
+
+    /**
+     * 用户密码修改（登陆后）
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/update_password", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto updatePassword(@RequestBody UserPasswordInDto inDto){
+        BaseOutDto baseOutDto = new BaseOutDto();
+        // 获取入参
+        Integer userId = inDto.getUserId();
+        String oldPassword = inDto.getOldPassword();
+        String newPassword = inDto.getNewPassword();
+        // 入参必须项检查
+        if(userId == null || "".equals(userId)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("用户ID不能为空，请确认后重新请求");
+            logger.error("用户ID不能为空");
+            return baseOutDto;
+        }
+        if(oldPassword == null || "".equals(oldPassword)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("旧密码不能为空，请确认后重新请求");
+            logger.error("旧密码不能为空");
+            return baseOutDto;
+        }
+        if(newPassword == null || "".equals(newPassword)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("新密码不能为空，请确认后重新请求");
+            logger.error("新密码不能为空");
+            return baseOutDto;
+        }
+        // 入参长度检查
+        if(newPassword.length()<6){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[修改失败]：新密码长度不能小于6位");
+            logger.error("[修改失败]：新密码长度不能小于6位");
+            return baseOutDto;
+        }
+
+        // 业务处理
+        // 查询原始密码
+        String oldPasswordDB = null;
+        try{
+            oldPasswordDB = userService.findPassword(userId);
+        } catch (Exception e){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("原始密码查询错误");
+            logger.error("原始密码查询错误");
+            return baseOutDto;
+        }
+        // 旧密码加密
+        oldPassword = BaseUtil.encryption(oldPassword);
+        // 新密码加密
+        newPassword = BaseUtil.encryption(newPassword);
+        // 判断 旧密码输入是否正确
+        if(!oldPassword.equals(oldPasswordDB)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[修改失败]：原密码输入错误");
+            logger.error("[修改失败]：原密码输入错误");
+            return baseOutDto;
+        }
+        // 判断 新密码是否与旧密码相同
+        if(newPassword.equals(oldPasswordDB)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[修改失败]：新密码不能与原密码相同");
+            logger.error("[修改失败]：新密码不能与原密码相同");
+            return baseOutDto;
+        }
+        try {
+            userService.updatePassword(userId,newPassword);
+            baseOutDto.setCode(ResultCode.SUCCESS);
+            baseOutDto.setMessage("[密码修改成功]");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return baseOutDto;
+    }
+
+    /**
+     * 用户资料编辑
+     * @return
+     */
+    @RequestMapping(value = "/update_userinfo", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto updateUserInfo(@RequestBody UserInfoInDto infoInDto){
+        BaseOutDto baseOutDto = new BaseOutDto();
+        // 获取入参
+        Integer userId = infoInDto.getUserId();          // 用户ID
+        String userName = infoInDto.getUserName();       // 昵称
+        String headimgUrl = infoInDto.getHeadimgUrl();   // 用户头像
+        String birthday = infoInDto.getBirthday();       // 生日
+        String userSex = infoInDto.getUserSex();         // 性别
+        String userContent = infoInDto.getUserContent();    // 联系方式
+        // 必须项检查
+        if(userId == null || "".equals(userId)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[编辑失败]：用户ID不可为空");
+            logger.error("[编辑失败]：用户ID不可为空");
+            return baseOutDto;
+        }
+        // 入参类型检查
+        if(userSex != null && !"".equals(userSex)){
+            if(!CommonMethods.isInteger(userSex)){
+                baseOutDto.setCode(ResultCode.FAIL);
+                baseOutDto.setMessage("[编辑失败]：性别必须为指定整数");
+                logger.error("[编辑失败]：性别必须为指定整数");
+                return baseOutDto;
+            }
+            if(!"0".equals(userSex) && !"1".equals(userSex)){
+                baseOutDto.setCode(ResultCode.FAIL);
+                baseOutDto.setMessage("[编辑失败]：性别必须为指定整数");
+                logger.error("[编辑失败]：性别必须为指定整数");
+                return baseOutDto;
+            }
+        }
+        if(!CommonMethods.checkIsPhoneNumber(userContent)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[编辑失败]：联系方式格式不正确");
+            logger.error("[编辑失败]：联系方式格式不正确");
+            return baseOutDto;
+        }
+        if(!CommonMethods.checkIsDate2(birthday)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[编辑失败]：生日格式不正确");
+            logger.error("[编辑失败]：生日格式不正确");
+            return baseOutDto;
+        }
+        if(CommonMethods.checkMySqlReservedWords(userName)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[编辑失败]：昵称不能包含非法字符");
+            logger.error("[编辑失败]：昵称不能包含非法字符");
+            return baseOutDto;
+        }
+        if(CommonMethods.checkMySqlReservedWords(headimgUrl)){
+            baseOutDto.setCode(ResultCode.FAIL);
+            baseOutDto.setMessage("[编辑失败]：用户头像不能包含非法字符");
+            logger.error("[编辑失败]：用户头像不能包含非法字符");
+            return baseOutDto;
+        }
+        int flag = 0;
+        try {
+            flag = userService.updateUserInfo(infoInDto);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        if(flag == 0){
+            baseOutDto.setCode(ResultCode.SUCCESS);
+            baseOutDto.setMessage("[编辑成功]");
+            logger.info("[编辑成功]");
         }
         return baseOutDto;
     }

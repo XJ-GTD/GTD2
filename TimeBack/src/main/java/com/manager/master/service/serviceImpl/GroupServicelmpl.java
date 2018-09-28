@@ -75,8 +75,8 @@ public class GroupServicelmpl implements IGroupService {
         int userId = inDto.getUserId();
         int typeId = inDto.getFindType();
         logger.info("参与人列表查询 用户Id " + userId + "查询类型 findType :" + typeId);
-        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
-        if (typeId == 0 || "".equals(typeId)) throw new ServiceException("类型ID不能为空");
+        if (userId == 0) throw new ServiceException("用户ID不能为空");
+        if (typeId == 0) throw new ServiceException("类型ID不能为空");
 
         List<GtdGroupEntity> list = null;
 //            GtdLabelEntity gle = labelJpaRespository.findByLabelId(FIND_GROUP_LABELTYPE);
@@ -145,6 +145,7 @@ public class GroupServicelmpl implements IGroupService {
                 if (status != 2 && status != 3) { //用户状态不为拒绝或未接受才显示
                     memberDtos.add(memberDto);
                 }
+
             }
             group.setGroupMembers(memberDtos);
             Set<GtdLabelEntity> set = g.getLabel();
@@ -174,15 +175,15 @@ public class GroupServicelmpl implements IGroupService {
     @Override
     public GroupOutDto selectMessage(GroupFindInDto inDto) {
         int userId = inDto.getUserId();
-        int groupId = inDto.getGroupId();
+        int groupId = inDto
+                .getGroupId();
         logger.info("参与人详情查询 用户Id " + userId + "群组ID :" + groupId);
-        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
-        if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
+        if (userId == 0) throw new ServiceException("用户ID不能为空");
+        if (groupId == 0) throw new ServiceException("群组ID不能为空");
 
         GtdGroupEntity groupEntity=null;
         try {
             groupEntity = groupJpaRepository.getOne(groupId);//获取当前群组
-            if(groupEntity==null)throw new ServiceException();
         }catch (Exception e){
             throw new ServiceException("该群组不存在");
         }
@@ -385,17 +386,26 @@ public class GroupServicelmpl implements IGroupService {
      */
     @Override
     public int addGroup(GroupInDto inDto) {
-        int userId = inDto.getUserId();
-        List<Integer> labelId = inDto.getLabelIds();
-        String groupName = inDto.getGroupName();
-        String groupHeadImgUrl = inDto.getGroupHeadImgUrl();
-        List<GroupMemberDto> member = inDto.getMember();
+        int userId = 0;
+        List<Integer> labelId = null;
+        String groupName = null;
+        String groupHeadImgUrl = null;
+        List<GroupMemberDto> member = null;
+        try {
+            userId = inDto.getUserId();
+            labelId = inDto.getLabelIds();
+            groupName = inDto.getGroupName();
+            groupHeadImgUrl = inDto.getGroupHeadImgUrl();
+            member = inDto.getMember();
+        } catch (Exception e) {
+            throw new ServiceException("参数错误");
+        }
         logger.info("添加群组 用户ID"+userId+"标签ID"+labelId+"群头像"+groupHeadImgUrl+"群名"+groupName+"群成员"+member);
-        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
-        if (labelId.size() == 0 || labelId == null) throw new ServiceException("标签不能为空");
+        if (userId == 0) throw new ServiceException("用户ID不能为空");
+        if (labelId==null||labelId.size() == 0) throw new ServiceException("标签不能为空");
         if (groupName == null || "".equals(groupName)) throw new ServiceException("群组名不能为空");
         if (groupHeadImgUrl == null || "".equals(groupHeadImgUrl)) throw new ServiceException("群头像不能为空");
-        if(groupName != null && !("".equals(groupName))){
+        if(!("".equals(groupName))){
             if (CommonMethods.checkMySqlReservedWords(groupName)){
                 throw new ServiceException("群组名称包含关键字");
             }
@@ -536,11 +546,17 @@ public class GroupServicelmpl implements IGroupService {
      */
     @Override
     public int delGroup(GroupInDto inDto) {
-        int userId = inDto.getUserId();
-        int groupId = inDto.getGroupId();
+        int userId = 0;
+        int groupId = 0;
+        try {
+            userId = inDto.getUserId();
+            groupId = inDto.getGroupId();
+        } catch (Exception e) {
+            throw new ServiceException("参数错误，请检查后重新输入");
+        }
         logger.info("用户ID"+userId+"群组ID"+groupId);
-        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
-        if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
+        if (userId == 0) throw new ServiceException("用户ID不能为空");
+        if (groupId == 0) throw new ServiceException("群组ID不能为空");
         GtdGroupEntity group = null;
         try {
             group = groupJpaRepository.getOne(groupId);
@@ -624,11 +640,17 @@ public class GroupServicelmpl implements IGroupService {
      */
     @Override
     public int exitGroup(GroupInDto inDto) {
-        int userId = inDto.getUserId();
-        int groupId = inDto.getGroupId();
+        int userId = 0;
+        int groupId = 0;
+        try {
+            userId = inDto.getUserId();
+            groupId = inDto.getGroupId();
+        } catch (Exception e) {
+            throw new ServiceException("参数错误，请检查后重新输入");
+        }
         logger.info("用户ID"+userId+"群组ID"+groupId);
-        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
-        if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
+        if (userId == 0 ) throw new ServiceException("用户ID不能为空");
+        if (groupId == 0) throw new ServiceException("群组ID不能为空");
         GtdGroupEntity group = null;
         try {
             group = groupJpaRepository.getOne(groupId);
@@ -644,13 +666,11 @@ public class GroupServicelmpl implements IGroupService {
             List<GtdGroupScheduleEntity> groupSchedules=groupScheduleJpaRepository.findGroupSchedulesByGroupId(groupId);
             for(GtdGroupScheduleEntity g:groupSchedules) {
                 int scheduleId = g.getScheduleId();
-                List<Integer> playerIds = schedulePlayersJpaRepository.findAllPlayersId(scheduleId);
+                Integer playerIds = schedulePlayersJpaRepository.findPlayersIdByUserIdAndScheduleId(scheduleId,userId);
                 if(playerIds!=null) {
-                    for (Integer i : playerIds) {
-                        remindJpaRepository.deleteAllByPlayersId(i);//删除提醒时间表
-                    }
-                    schedulePlayersJpaRepository.deleteConnectionByScheduleIdAndUserId(scheduleId,userId);//删除参与人表
+                    remindJpaRepository.deleteAllByPlayersId(playerIds);//删除提醒时间表
                 }
+                schedulePlayersJpaRepository.deleteConnectionByScheduleIdAndUserId(scheduleId,userId);//删除参与人表
             }
             groupMemberRepository.deleteGroupMember(userId,groupId);
         }else{
@@ -726,17 +746,27 @@ public class GroupServicelmpl implements IGroupService {
      */
     @Override
     public int updateGname(GroupMemberInDto inDto) {
-        int userId = inDto.getUserId();
-        int groupId = inDto.getGroupId();
-        List<Integer> labelId = inDto.getLabelId();
-        String groupName = inDto.getGroupName();
-        String groupHeadImgUrl = inDto.getGroupHeadImgUrl();
-        List<GroupMemberOutDto> member = inDto.getMember();
+        int userId = 0;
+        int groupId = 0;
+        List<Integer> labelId = null;
+        String groupName = null;
+        String groupHeadImgUrl = null;
+        List<GroupMemberOutDto> member = null;
+        try {
+            userId = inDto.getUserId();
+            groupId = inDto.getGroupId();
+            labelId = inDto.getLabelId();
+            groupName = inDto.getGroupName();
+            groupHeadImgUrl = inDto.getGroupHeadImgUrl();
+            member = inDto.getMember();
+        } catch (Exception e) {
+            throw new ServiceException("参数错误，请检查后重新输入");
+        }
         logger.info("编辑群组 用户ID"+userId+"群组ID"+groupId+"标签ID"+labelId+"群头像"+groupHeadImgUrl+"群名"+groupName+"群成员"+member);
-        if (member.size() == 0 || member == null) throw new ServiceException("群员不能为空");
-        if ( "".equals(userId) || userId == 0) throw new ServiceException("用户ID不能为空");
-        if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
-        if (labelId.size() == 0 || labelId == null) throw new ServiceException("标签不能为空");
+        if (member==null||member.size() == 0) throw new ServiceException("群员不能为空");
+        if (userId == 0) throw new ServiceException("用户ID不能为空");
+        if (groupId == 0) throw new ServiceException("群组ID不能为空");
+        if (labelId==null||labelId.size()==0) throw new ServiceException("标签不能为空");
         if(CommonMethods.checkMySqlReservedWords(groupName)){
             throw new ServiceException("群组名称包含关键字");
         }
@@ -753,9 +783,6 @@ public class GroupServicelmpl implements IGroupService {
 
         //查询该群组
         GtdGroupEntity group = groupJpaRepository.getOne(groupId);
-        if (group == null) {
-            throw new ServiceException("该群组数据为空");
-        }
         //查询群组下所有群成员
         List<Integer> userIds=groupMemberRepository.findAllUserIdByGroupId(groupId);
 
@@ -952,17 +979,25 @@ public class GroupServicelmpl implements IGroupService {
      */
     @Override
     public int updateStatus(InformInDto inDto) {
-        int  userId = inDto.getUserId();
-        int  groupId = inDto.getGroupId();
-        int resultType=inDto.getResultType();
+           int userId;
+           int groupId;
+           int resultType;
+           try {
+               userId = inDto.getUserId();
+               groupId = inDto.getGroupId();
+               resultType=inDto.getResultType();
+           }catch (Exception e){
+               throw new ServiceException("参数错误，请检查后输入正确参数");
+           }
+
         logger.info("用户ID:"+userId+",群组ID:"+groupId+",修改结果类型:"+resultType);
-        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
-        if (groupId == 0 || "".equals(groupId)) throw new ServiceException("群组ID不能为空");
-        if (resultType == 0 || "".equals(resultType)) throw new ServiceException("修改結果不能为空");
+        if (userId == 0) throw new ServiceException("用户ID不能为空");
+        if (groupId == 0) throw new ServiceException("群组ID不能为空");
+        if (resultType == 0) throw new ServiceException("修改結果不能为空");
 
         GtdGroupMemberEntity groupMember=groupMemberRepository.findMemberByGroupIdAndUserId(groupId,userId);
         if (groupMember == null) {
-            throw new ServiceException("没有此用户");
+            throw new ServiceException("该群组不存在或没有此用户");
         }
         if(resultType==1||resultType==3) {
             groupMember.setGroupMemberStatus(resultType);

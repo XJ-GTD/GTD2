@@ -64,4 +64,14 @@ public class UserRepository {
         return (String) em.createNativeQuery(sql).getSingleResult();
     }
 
+    /**
+     * 通过 用户ID 查找 密码
+     * @param userId
+     * @return
+     */
+    public String findPasswordByUserId(Integer userId){
+        String sql = "select ACCOUNT_PASSWORD from gtd_account where USER_ID = " + userId;
+        return (String) em.createNativeQuery(sql).getSingleResult();
+    }
+
 }
