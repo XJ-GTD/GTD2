@@ -2,6 +2,7 @@ package com.manager.master.repository;
 
 import com.manager.master.dto.GroupOutDto;
 import com.manager.master.entity.GtdGroupEntity;
+import com.manager.master.entity.GtdGroupScheduleEntity;
 import com.manager.master.entity.GtdLabelEntity;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -143,6 +144,11 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
     @Query(value = "SELECT GROUP_ID FROM gtd_group_member WHERE USER_NAME LIKE %?1% ",nativeQuery = true)
     List<Integer> getGroupIdsForUserName(String userName);
 
+    /**
+     * 根据群组ID和标签ID删除群组标签
+     * @param groupId
+     * @param labelId
+     */
     @Query(value = "DELETE FROM gtd_group_label WHERE GROUP_ID=?1 AND LABEL_ID=?2",nativeQuery = true)
     void deleteGroupLabelEntityByGroupIdAndLabelId(int groupId,int labelId);
 

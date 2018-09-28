@@ -31,4 +31,12 @@ public interface CenterGroupScheduleRepository extends JpaRepository<GtdGroupSch
      */
     @Query(value = "SELECT GROUP_SCHEDULE_ID,GROUP_ID,SCHEDULE_ID,CREATE_ID,CREATE_DATE,UPDATE_ID,UPDATE_DATE FROM gtd_group_schedule WHERE GROUP_ID=?1",nativeQuery =true )
     List<GtdGroupScheduleEntity> findGroupSchedulesByGroupId(int groupId);
+
+    /**
+     * 根据日程Id查询所有日程
+     * @param scheduleId
+     * @return
+     */
+    @Query(value = "SELECT GROUP_SCHEDULE_ID,GROUP_ID,SCHEDULE_ID,CREATE_ID,CREATE_DATE,UPDATE_ID,UPDATE_DATE FROM gtd_group_schedule WHERE SCHEDULE_ID=?1",nativeQuery = true)
+    List<GtdGroupScheduleEntity> selectByScheduleId(int scheduleId);
 }

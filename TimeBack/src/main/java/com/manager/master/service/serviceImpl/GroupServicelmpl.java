@@ -584,7 +584,7 @@ public class GroupServicelmpl implements IGroupService {
 
                         boolean boo = true;
                         //根据日程ID获取有该日程的所有群组 判断这些群组中有没有此用户
-                        List<GtdGroupScheduleEntity> groups = groupScheduleJpaRepository.findGroupSchedulesByGroupId(scheduleId);
+                        List<GtdGroupScheduleEntity> groups = groupScheduleJpaRepository.selectByScheduleId(scheduleId);
                         for (GtdGroupScheduleEntity gs : groups) {
                             if (gs.getGroupId() != groupId) {
                                 List<GtdGroupMemberEntity> groupMembers = groupMemberRepository.findMemberByGroupId(gs.getGroupId());
@@ -666,11 +666,24 @@ public class GroupServicelmpl implements IGroupService {
             List<GtdGroupScheduleEntity> groupSchedules=groupScheduleJpaRepository.findGroupSchedulesByGroupId(groupId);
             for(GtdGroupScheduleEntity g:groupSchedules) {
                 int scheduleId = g.getScheduleId();
-                Integer playerIds = schedulePlayersJpaRepository.findPlayersIdByUserIdAndScheduleId(scheduleId,userId);
-                if(playerIds!=null) {
-                    remindJpaRepository.deleteAllByPlayersId(playerIds);//删除提醒时间表
+                boolean boo = true;
+                //根据日程ID获取有该日程的所有群组 判断这些群组中有没有此用户
+                List<GtdGroupScheduleEntity> groups = groupScheduleJpaRepository.selectByScheduleId(scheduleId);
+                for (GtdGroupScheduleEntity gs : groups) {
+                    if (gs.getGroupId() != groupId) {
+                        List<GtdGroupMemberEntity> groupMembers = groupMemberRepository.findMemberByGroupId(gs.getGroupId());
+                        for (GtdGroupMemberEntity member : groupMembers) {
+                            if (member.getUserId() == userId) {
+                                boo = false;
+                            }
+                        }
+                    }
                 }
-                schedulePlayersJpaRepository.deleteConnectionByScheduleIdAndUserId(scheduleId,userId);//删除参与人表
+                if(boo) {
+                    Integer playerIds = schedulePlayersJpaRepository.findPlayersIdByUserIdAndScheduleId(scheduleId, userId);
+                    remindJpaRepository.deleteAllByPlayersId(playerIds);//删除提醒时间表
+                    schedulePlayersJpaRepository.deleteConnectionByScheduleIdAndUserId(scheduleId, userId);//删除参与人表
+                }
             }
             groupMemberRepository.deleteGroupMember(userId,groupId);
         }else{
@@ -692,7 +705,7 @@ public class GroupServicelmpl implements IGroupService {
 
                         boolean boo = true;
                         //根据日程ID获取有该日程的所有群组 判断这些群组中有没有此用户
-                        List<GtdGroupScheduleEntity> groups = groupScheduleJpaRepository.findGroupSchedulesByGroupId(scheduleId);
+                        List<GtdGroupScheduleEntity> groups = groupScheduleJpaRepository.selectByScheduleId(scheduleId);
                         for (GtdGroupScheduleEntity gs : groups) {
                             if (gs.getGroupId() != groupId) {
                                 List<GtdGroupMemberEntity> groupMembers = groupMemberRepository.findMemberByGroupId(gs.getGroupId());
