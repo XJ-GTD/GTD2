@@ -7,20 +7,26 @@
 export class TimeModel {
 
   constructor() {
-    this._day = [];
+    this._date = [];
   }
+
+  private _date: Array<DateModel>;    //  日期
+
+  get date(): Array<DateModel> {
+    return this._date;
+  }
+
+  set date(value: Array<DateModel>) {
+    this._date = value;
+  }
+
+}
+
+export class DateModel {
 
   private _year: number;
   private _month: number;
-  private _day: Array<string>;    //  日期
-
-  get day(): Array<string> {
-    return this._day;
-  }
-
-  set day(value: Array<string>) {
-    this._day = value;
-  }
+  private _day: number;
 
   get month(): number {
     return this._month;
@@ -35,5 +41,13 @@ export class TimeModel {
 
   set year(value: number) {
     this._year = value;
+  }
+
+  get day(): number {
+    return this._day;
+  }
+
+  set day(value: number) {
+    this._day = value;
   }
 }

@@ -35,6 +35,9 @@ export class HomePage {
 
   calendarList: Array<CalendarModel>;
   calendar: CalendarModel;
+  weekFlag: boolean = false;
+  year: number;
+  month: number;
 
   scheduleList: Array<ScheduleModel>;
   schedule: ScheduleModel;
@@ -75,39 +78,78 @@ export class HomePage {
     this.calendar = new CalendarModel();
 
     this.calendar = this.timeService.calendarInit();
+    this.year = this.calendar.year;
+    this.month = this.calendar.month;
   }
 
   slidesNext() {
-    console.log('月份向后');
-    // console.log("当前index：" + this.slides.getActiveIndex());
-    // let year = this.calendarList[this.slides.getActiveIndex()].year;
-    // let month = this.calendarList[this.slides.getActiveIndex()].month;
-    let year = this.calendar.year;
-    let month = this.calendar.month;
-    this.calendar = this.timeService.nextOrPrev(2, year, month);
+    if (this.weekFlag == true) {
+      console.log('星期向后');
+      let startDate = this.calendar.dayList[0].date[0];
+      let endDate = this.calendar.dayList[0].date[6];
+      this.calendar = this.timeService.nextOrPrevWeek(2, startDate, endDate);
+      this.year = this.calendar.year;
+      this.month = this.calendar.month;
+    } else {
+      console.log('月份向后');
+      let year = this.calendar.year;
+      let month = this.calendar.month;
+      this.calendar = this.timeService.nextOrPrev(2, year, month);
+      this.year = this.calendar.year;
+      this.month = this.calendar.month;
+    }
+
 
     this.slides.update();
   }
 
   slidesPrev() {
-    console.log('月份向前');
-    // console.log("当前index：" + this.slides.getActiveIndex());
-    // let year = this.calendarList[this.slides.getActiveIndex()].year;
-    // let month = this.calendarList[this.slides.getActiveIndex()].month;
-    let year = this.calendar.year;
-    let month = this.calendar.month;
+    if (this.weekFlag == true) {
+      console.log('星期向前');
+      let year = this.calendar.year;
+      let month = this.calendar.month;
+      let startDate = this.calendar.dayList[0].date[0];
+      let endDate = this.calendar.dayList[0].date[6];
+      this.calendar = this.timeService.nextOrPrevWeek(1, startDate, endDate);
+      this.year = this.calendar.year;
+      this.month = this.calendar.month;
+    } else {
+      console.log('月份向前');
+      let year = this.calendar.year;
+      let month = this.calendar.month;
+      this.calendar = this.timeService.nextOrPrev(1, year, month);
+      this.year = this.calendar.year;
+      this.month = this.calendar.month;
+    }
 
-    this.calendar = this.timeService.nextOrPrev(1, year, month);
 
     this.slides.update();
   }
 
   goBackToday() {
-    this.calendar = this.timeService.calendarInit();
+    if (this.weekFlag == true) {
+      let date = new Date();
+      this.calendar = this.timeService.getCalendarOfWeek(date.getFullYear(), date.getMonth() + 1);
+      this.year = this.calendar.year;
+      this.month = this.calendar.month;
+    } else {
+      this.calendar = this.timeService.calendarInit();
+      this.year = this.calendar.year;
+      this.month = this.calendar.month;
+    }
+
   }
 
-  switchToWeek() {
-    
+  switchMonthOrWeek(year, month) {
+    if (this.weekFlag == true) {
+      this.calendar = this.timeService.getCalendarOfWeek(year, month);
+      this.year = this.calendar.year;
+      this.month = this.calendar.month;
+    } else {
+      this.calendar = this.timeService.nextOrPrev(2, year, month - 1);
+      this.year = this.calendar.year;
+      this.month = this.calendar.month;
+    }
   }
 
   //设置当天全部提醒
@@ -139,6 +181,9 @@ export class HomePage {
 
   //查询当天日程
   findTodaySchedule(year, month, day) {
+    this.year = year;
+    this.month = month;
+
     this.findSchedule = new ScheduleOutModel();
     this.findSchedule.scheduleStartTime = year + "-" + month + "-" + day + " 00:00";
     this.findSchedule.scheduleDeadline = year + "-" + month + "-" + day + " 23:59";

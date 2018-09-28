@@ -20,9 +20,9 @@
           <ion-slide>
             <table>
               <caption class="text-center" style="background:#d9edf7;height: 15%;font-weight:900;color:black;">
-                {{calendar.year}}年{{calendar.month}}月
+                {{year}}年{{month}}月
                 <button ion-button (click)="goBackToday()">今天</button>
-                <button ion-button (click)="switchToWeek()">周</button>
+                <ion-toggle [(ngModel)]="weekFlag" (ionChange)="switchMonthOrWeek(year, month)" ></ion-toggle>
               </caption>
               <thead>
               <tr>
@@ -31,8 +31,8 @@
               </thead>
               <tbody style="text-align: center" class="calendar_home" >
               <tr *ngFor="let md of calendar.dayList">
-                <td *ngFor="let d of md.day" style="background: #d9edf7">
-                  <button name="calendar" ion-button (click)="findTodaySchedule(calendar.year, calendar.month, d)">{{d}}</button>
+                <td *ngFor="let d of md.date" style="background: #d9edf7">
+                  <button name="calendar" ion-button (click)="findTodaySchedule(d.year, d.month, d.day)">{{d.day}}</button>
                 </td>
               </tr>
               </tbody>
