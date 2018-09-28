@@ -1,14 +1,15 @@
 page-user-login {
   .user_login{
+    height: 100%;
     $login_foot_height: 75px;
-    $login_body_height:calc(100vh - 75px);
+    $login_body_height:calc(100% - 75px);
     background-color: #fff;
     .login_body{
       height: $login_body_height;
-      $login_icon_height:30%;
+      $login_icon_height:150px;
       .login_icon{
         height: $login_icon_height;
-        padding-top: $login_icon_height/2;
+        padding-top: $login_icon_height/3;
         text-align: center;
         .xj_icon{
           $xj_icon_size:70px;
