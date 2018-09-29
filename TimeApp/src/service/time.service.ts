@@ -231,16 +231,40 @@ export class TimeService {
 
     //1前2后
     if (flag == 1) {
-      this.weekDay = startDate.day - 1;
-      this.currentDay = startDate.day - 1;
-      this.calendar.year = startDate.year;
-      this.calendar.month = startDate.month;
+      if(startDate.day == 1) {    //开始日期是否是1号
+        if (startDate.month == 1) {   //开始月份是否是1月
+          this.calendar.year = startDate.year - 1;
+        } else {
+          this.calendar.year = startDate.year;
+        }
+        this.calendar.month = startDate.month - 1;
+        this.weekDay = TimeService.mGetDate(this.calendar.year, this.calendar.month);
+        this.currentDay = TimeService.mGetDate(this.calendar.year, this.calendar.month);
+      } else {
+        this.weekDay = startDate.day - 1;
+        this.currentDay = startDate.day - 1;
+        this.calendar.year = startDate.year;
+        this.calendar.month = startDate.month;
+      }
+
       this.calendar.dayList = this.getWeekCalendar(this.calendar.year, this.calendar.month);
     } else if (flag == 2) {
-      this.weekDay = endDate.day + 1;
-      this.currentDay = endDate.day + 1;
-      this.calendar.year = endDate.year;
-      this.calendar.month = endDate.month;
+      if (endDate.day == TimeService.mGetDate(endDate.year, endDate.month)) { //结束日期是否是最后一天
+        if (endDate.month == 12) {    //开始月份是否是12月
+          this.calendar.year = endDate.year + 1;
+        } else {
+          this.calendar.year = endDate.year;
+        }
+        this.weekDay = 1;
+        this.currentDay = 1;
+        this.calendar.month = endDate.month + 1;
+      } else {
+        this.weekDay = endDate.day + 1;
+        this.currentDay = endDate.day + 1;
+        this.calendar.year = endDate.year;
+        this.calendar.month = endDate.month;
+      }
+
       this.calendar.dayList = this.getWeekCalendar(this.calendar.year, this.calendar.month);
     }
 
