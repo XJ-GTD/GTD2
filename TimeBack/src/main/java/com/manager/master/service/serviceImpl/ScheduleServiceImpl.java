@@ -523,7 +523,7 @@ public class ScheduleServiceImpl implements IScheduleService {
                     for(int j=0; j<remindList.size(); j++){
                         Timestamp remindDt = remindList.get(j);
                         try{
-                            remindJpaRepository.insertIntoRemind(playerIdList.get(i),remindDt,userId,CommonMethods.dateToStamp(updateDate),userId,CommonMethods.dateToStamp(updateDate));
+                            remindJpaRepository.insertIntoRemind(playerIdList.get(i),remindDt,1,userId,CommonMethods.dateToStamp(updateDate),userId,CommonMethods.dateToStamp(updateDate));
                         } catch (Exception ex){
                             throw new ServiceException("---- insertIntoRemind 语法错误");
                         }
@@ -570,7 +570,7 @@ public class ScheduleServiceImpl implements IScheduleService {
             for(Integer pId : newPlayersIdList){
                 for(int i=0; i<remindList.size(); i++){
                     try{
-                        remindJpaRepository.insertIntoRemind(pId,remindList.get(i),userId,CommonMethods.dateToStamp(updateDate),userId,CommonMethods.dateToStamp(updateDate));
+                        remindJpaRepository.insertIntoRemind(pId,remindList.get(i),1,userId,CommonMethods.dateToStamp(updateDate),userId,CommonMethods.dateToStamp(updateDate));
                     } catch (Exception ex){
                         throw new ServiceException("---- insertIntoRemind 语法错误");
                     }
@@ -936,7 +936,7 @@ public class ScheduleServiceImpl implements IScheduleService {
             }
 
             for (Timestamp ts: remindList) {
-                remindJpaRepository.insertIntoRemind(schedulePlayersEntity.getPlayersId(), ts, userId, CommonMethods.dateToStamp(createDate),null, null);
+                remindJpaRepository.insertIntoRemind(schedulePlayersEntity.getPlayersId(), ts, 1,userId, CommonMethods.dateToStamp(createDate),null, null);
             }
         }
 

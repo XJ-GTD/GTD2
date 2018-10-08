@@ -6,6 +6,7 @@ import com.manager.master.entity.GtdGroupEntity;
 import com.manager.master.entity.GtdLabelEntity;
 import com.manager.master.entity.GtdScheduleEntity;
 import com.manager.master.entity.GtdUserEntity;
+import com.manager.master.service.IRemindService;
 import com.manager.master.service.IScheduleService;
 import com.manager.util.ResultCode;
 import org.apache.logging.log4j.LogManager;
@@ -29,6 +30,9 @@ public class ScheduleController {
 
     @Autowired
     IScheduleService scheduleService;
+
+    @Autowired
+    IRemindService remindService;
 
     @RequestMapping(value = "/find",method = RequestMethod.POST)
     @ResponseBody
@@ -207,6 +211,29 @@ public class ScheduleController {
                 baseOutDto.setCode(ResultCode.SUCCESS).setMessage("日程状态修改成功");
             }else if(flag == 1){
                 baseOutDto.setCode(ResultCode.REPEAT).setMessage("日程状态修改失败");
+            }
+        }catch (Exception ex){
+            throw new ServiceException(ex.getMessage());
+        }
+        return baseOutDto;
+    }
+
+    /**
+     *  提醒时间入库设置
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/remind",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto insertRemindTime(@RequestBody RemindInsertInDto inDto){
+        BaseOutDto baseOutDto = new BaseOutDto();
+        int flag = 0;
+        try{
+            flag = remindService.insertRemind(inDto);
+            if (flag == 0){
+                baseOutDto.setCode(ResultCode.SUCCESS).setMessage("提醒时间入库成功");
+            }else if(flag == 1){
+                baseOutDto.setCode(ResultCode.REPEAT).setMessage("提醒时间入库失败");
             }
         }catch (Exception ex){
             throw new ServiceException(ex.getMessage());
