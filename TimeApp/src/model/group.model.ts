@@ -13,6 +13,7 @@ export class GroupModel {
   private _labelList: Array<LabelModel>;//标签
   private _groupHeadImg: string;//群头像
   private _groupCreateId: number;//群创建人
+  private _labelIds: string;//标签ID
   private _groupMembers: Array<GroupMemberModel>;//群成员
 
   get groupId(): string {
@@ -61,5 +62,13 @@ export class GroupModel {
 
   set groupMembers(value: Array<GroupMemberModel>) {
     this._groupMembers = value;
+  }
+
+  get labelIds(): string {
+    return this._labelIds;
+  }
+
+  set labelIds(value: string) {
+    this._labelIds = value;
   }
 }

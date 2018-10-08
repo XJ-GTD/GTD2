@@ -94,4 +94,5 @@
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="~6.4.0" />
     <plugin name="cordova-plugin-calendar" spec="~5.1.2" />
+    <plugin name="com.telerik.plugins.nativepagetransitions" spec="~0.6.5" />
 </widget>

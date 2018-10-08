@@ -126,6 +126,7 @@ export class GroupAddPage {
   goBack() {
     // 重写返回方法
     this.paramsService.group=null;
+    this.paramsService.groupType = null;
     this.navCtrl.pop();
   }
 }
