@@ -1,16 +1,16 @@
-import {Component, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams, Slides} from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, Slides } from 'ionic-angular';
 import { WebsocketService } from "../../service/websocket.service";
-import {ParamsService} from "../../service/params.service";
-import {XiaojiAlarmclockService} from "../../service/xiaoji-alarmclock.service";
-import {HttpClient} from "@angular/common/http";
-import {AppConfig} from "../../app/app.config";
-import {RemindModel} from "../../model/remind.model";
-import {TimeModel} from "../../model/time.model";
-import {TimeService} from "../../service/time.service";
-import {ScheduleModel} from "../../model/schedule.model";
-import {ScheduleOutModel} from "../../model/out/schedule.out.model";
-import {CalendarModel} from "../../model/calendar.model";
+import { ParamsService } from "../../service/params.service";
+import { XiaojiAlarmclockService } from "../../service/xiaoji-alarmclock.service";
+import { HttpClient } from "@angular/common/http";
+import { AppConfig } from "../../app/app.config";
+import { RemindModel } from "../../model/remind.model";
+import { TimeService } from "../../service/time.service";
+import { ScheduleModel } from "../../model/schedule.model";
+import { ScheduleOutModel } from "../../model/out/schedule.out.model";
+import { CalendarModel } from "../../model/calendar.model";
+import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
 
 /**
  * Generated class for the HomePage page.
@@ -34,7 +34,10 @@ export class HomePage {
   remindList: Array<string>;  //全部提醒时间
 
   calendarList: Array<CalendarModel>;
-  calendar: CalendarModel;
+  calendar: CalendarModel;    //当前
+  lastCalendar: CalendarModel;  //上一个
+  nextCalendar: CalendarModel;  //下一个
+
   weekFlag: boolean = false;
   year: number;
   month: number;
@@ -48,6 +51,7 @@ export class HomePage {
               private http: HttpClient,
               private timeService: TimeService,
               private paramsService: ParamsService,
+              private nativePageTransitions: NativePageTransitions,
               private alarmClock: XiaojiAlarmclockService) {
 
     this.init();
@@ -80,6 +84,9 @@ export class HomePage {
     this.calendar = this.timeService.calendarInit();
     this.year = this.calendar.year;
     this.month = this.calendar.month;
+
+    this.lastCalendar = this.timeService.nextOrPrev(1, this.year, this.month);
+    this.nextCalendar = this.timeService.nextOrPrev(2, this.year, this.month);
   }
 
   slidesNext() {
@@ -90,6 +97,11 @@ export class HomePage {
       this.calendar = this.timeService.nextOrPrevWeek(2, startDate, endDate);
       this.year = this.calendar.year;
       this.month = this.calendar.month;
+
+      let startDateCopy = this.calendar.dayList[0].date[0];
+      let endDateCopy = this.calendar.dayList[0].date[6];
+      this.lastCalendar = this.timeService.nextOrPrevWeek(1, startDateCopy, endDateCopy);
+      this.nextCalendar = this.timeService.nextOrPrevWeek(2, startDateCopy, endDateCopy);
     } else {
       console.log('月份向后');
       let year = this.calendar.year;
@@ -97,6 +109,9 @@ export class HomePage {
       this.calendar = this.timeService.nextOrPrev(2, year, month);
       this.year = this.calendar.year;
       this.month = this.calendar.month;
+
+      this.lastCalendar = this.timeService.nextOrPrev(1, this.year, this.month);
+      this.nextCalendar = this.timeService.nextOrPrev(2, this.year, this.month);
     }
 
 
@@ -113,6 +128,11 @@ export class HomePage {
       this.calendar = this.timeService.nextOrPrevWeek(1, startDate, endDate);
       this.year = this.calendar.year;
       this.month = this.calendar.month;
+
+      let startDateCopy = this.calendar.dayList[0].date[0];
+      let endDateCopy = this.calendar.dayList[0].date[6];
+      this.lastCalendar = this.timeService.nextOrPrevWeek(1, startDateCopy, endDateCopy);
+      this.nextCalendar = this.timeService.nextOrPrevWeek(2, startDateCopy, endDateCopy);
     } else {
       console.log('月份向前');
       let year = this.calendar.year;
@@ -120,6 +140,9 @@ export class HomePage {
       this.calendar = this.timeService.nextOrPrev(1, year, month);
       this.year = this.calendar.year;
       this.month = this.calendar.month;
+
+      this.lastCalendar = this.timeService.nextOrPrev(1, this.year, this.month);
+      this.nextCalendar = this.timeService.nextOrPrev(2, this.year, this.month);
     }
 
 
@@ -132,10 +155,13 @@ export class HomePage {
       this.calendar = this.timeService.getCalendarOfWeek(date.getFullYear(), date.getMonth() + 1);
       this.year = this.calendar.year;
       this.month = this.calendar.month;
+
+      let startDateCopy = this.calendar.dayList[0].date[0];
+      let endDateCopy = this.calendar.dayList[0].date[6];
+      this.lastCalendar = this.timeService.nextOrPrevWeek(1, startDateCopy, endDateCopy);
+      this.nextCalendar = this.timeService.nextOrPrevWeek(2, startDateCopy, endDateCopy);
     } else {
-      this.calendar = this.timeService.calendarInit();
-      this.year = this.calendar.year;
-      this.month = this.calendar.month;
+      this.calendarControl();
     }
 
   }
@@ -145,10 +171,18 @@ export class HomePage {
       this.calendar = this.timeService.getCalendarOfWeek(year, month);
       this.year = this.calendar.year;
       this.month = this.calendar.month;
+
+      let startDateCopy = this.calendar.dayList[0].date[0];
+      let endDateCopy = this.calendar.dayList[0].date[6];
+      this.lastCalendar = this.timeService.nextOrPrevWeek(1, startDateCopy, endDateCopy);
+      this.nextCalendar = this.timeService.nextOrPrevWeek(2, startDateCopy, endDateCopy);
     } else {
       this.calendar = this.timeService.nextOrPrev(2, year, month - 1);
       this.year = this.calendar.year;
       this.month = this.calendar.month;
+
+      this.lastCalendar = this.timeService.nextOrPrev(1, this.year, this.month);
+      this.nextCalendar = this.timeService.nextOrPrev(2, this.year, this.month);
     }
   }
 
@@ -218,6 +252,17 @@ export class HomePage {
   }
 
   openVoice() {
+    let options: NativeTransitionOptions = {
+      direction: 'up',
+      duration: 1500,
+      slowdownfactor: 3,
+      slidePixels: 20,
+      iosdelay: 100,
+      androiddelay: 150,
+      fixedPixelsTop: 0,
+      fixedPixelsBottom: 60
+    };
+    this.nativePageTransitions.slide(options);
     this.navCtrl.push(this.tab1Root);
   }
 }

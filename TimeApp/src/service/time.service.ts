@@ -143,6 +143,16 @@ export class TimeService {
       day.day = i;
       day.month = month;
       day.year = year;
+
+      day.isMonth = day.month == (new Date().getMonth() + 1);
+      if (day.day == new Date().getDate()) {
+        day.isToday = true;
+        day.isActivity = true;
+      } else {
+        day.isToday = false;
+        day.isActivity = false;
+      }
+
       this.timeModel.date.push(day);
       if (i == daySum) {
         this.list.push(TimeService.completionDate(2, count, year, month, this.timeModel));
@@ -171,6 +181,9 @@ export class TimeService {
     let num;
     let yearCopy;
     let monthCopy;
+
+    let date = new Date();
+
     if (flag == 1) {
 
       if (month == 1) {
@@ -188,6 +201,16 @@ export class TimeService {
         day.day = num;
         day.month = monthCopy;
         day.year = yearCopy;
+
+        day.isMonth = day.month == (date.getMonth() + 1);
+        if (day.day == date.getDate()) {
+          day.isToday = true;
+          day.isActivity = true;
+        } else {
+          day.isToday = false;
+          day.isActivity = false;
+        }
+
         completion.date.push(day);
       }
 
@@ -205,13 +228,23 @@ export class TimeService {
         day.day = num;
         day.month = monthCopy;
         day.year = yearCopy;
+
+        day.isMonth = day.month == (date.getMonth() + 1);
+        if (day.day == date.getDate()) {
+          day.isToday = true;
+          day.isActivity = true;
+        } else {
+          day.isToday = false;
+          day.isActivity = false;
+        }
+
         timeModel.date.push(day);
       }
       completion = timeModel;
     }
     return completion;
   }
-  /**=========================== ===== 周===================================**/
+  /**=========================== ===== 周 ===== start ==== ===================================**/
 
   getCalendarOfWeek(year, month) {
 
@@ -343,6 +376,16 @@ export class TimeService {
       if (i == this.weekDay && month != month_sys) {
         flagWeek = true;
       }
+
+      day_date.isMonth = day_date.month == (new Date().getMonth() + 1);
+      if (day_date.day == new Date().getDate()) {
+        day_date.isToday = true;
+        day_date.isActivity = true;
+      } else {
+        day_date.isToday = false;
+        day_date.isActivity = false;
+      }
+
       this.timeModel.date.push(day_date);
       if (i == daySum) {
         this.list.push(TimeService.completionDate(2, count, year, month, this.timeModel));

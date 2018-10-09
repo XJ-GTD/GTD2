@@ -28,17 +28,23 @@ export class MyApp {
     public menu: MenuController,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    private storage: Storage
+    private storage: Storage,
+    private paramsService: ParamsService
   ) {
     //通过key，判断是否曾进入过引导页
     this.storage.get('firstIn').then((result) => {
       console.log('firstIn is', result);
-      if (result != null && result) {
-        this.rootPage = 'UserLoginPage';
+      if (this.paramsService.user == null) {
+        if (result != null && result) {
+          this.rootPage = 'UserLoginPage';
+        } else {
+          this.storage.set('firstIn', true);
+          this.rootPage = 'WelcomePage';
+        }
       } else {
-        this.storage.set('firstIn', true);
-        this.rootPage = 'WelcomePage';
+        this.rootPage = 'HomePage';
       }
+
     });
 
     platform.ready().then(() => {

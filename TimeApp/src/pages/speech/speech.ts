@@ -6,8 +6,9 @@ import { HttpClient } from "@angular/common/http";
 import { AppConfig } from "../../app/app.config";
 import { AiuiModel } from "../../model/aiui.model";
 import { ScheduleModel } from "../../model/schedule.model";
-import {File} from "@ionic-native/file";
-import {Base64} from "@ionic-native/base64";
+import { File } from "@ionic-native/file";
+import { Base64 } from "@ionic-native/base64";
+import { NativePageTransitions, NativeTransitionOptions } from "@ionic-native/native-page-transitions";
 
 declare var cordova: any;
 
@@ -55,6 +56,7 @@ export class SpeechPage {
               private base64: Base64,
               private loadingCtrl: LoadingController,
               private alert: AlertController,
+              private nativePageTransitions: NativePageTransitions,
               private xiaojiSpeech: XiaojiAssistantService) {
 
     this.init();
@@ -228,6 +230,26 @@ export class SpeechPage {
 
   /*==================== 聊天界面 end ===================*/
 
+  ionViewWillLeave() {
+    let options: NativeTransitionOptions = {
+      direction: 'up',
+      duration: 500,
+      slowdownfactor: 3,
+      slidePixels: 20,
+      iosdelay: 100,
+      androiddelay: 150,
+      fixedPixelsTop: 0,
+      fixedPixelsBottom: 60
+    };
+
+    this.nativePageTransitions.slide(options)
+      .then(onSuccess => {
+
+      })
+      .catch(onError => {
+
+      });
+  }
   //返回方法
   goBack() {
     this.navCtrl.pop();
