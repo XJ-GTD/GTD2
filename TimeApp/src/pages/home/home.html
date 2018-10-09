@@ -5,48 +5,64 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-title>首页</ion-title>
-
+  <ion-toolbar>
+    <ion-buttons start>
+      <button ion-button icon-only>
+        <ion-icon name="person"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-searchbar ></ion-searchbar>
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="settings"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
-
-<ion-content padding>
-
-  <div id="homeCalendar">
-    <ion-list style="width: 100%;height: 100%">
-
-        <ion-slides (swipeleft)="slidesNext()" (swiperight)="slidesPrev()">
-          <ion-slide>
-            <table>
-              <caption class="text-center" style="background:#d9edf7;height: 15%;font-weight:900;color:black;">
-                {{year}}年{{month}}月
-                <button ion-button (click)="goBackToday()">今天</button>
-                <ion-toggle [(ngModel)]="weekFlag" (ionChange)="switchMonthOrWeek(year, month)" ></ion-toggle>
-              </caption>
-              <thead>
-              <tr>
-                <th *ngFor="let w of calendar.weekDay">{{w}}</th>
-              </tr>
-              </thead>
-              <tbody style="text-align: center" class="calendar_home" >
-              <tr *ngFor="let md of calendar.dayList">
-                <td *ngFor="let d of md.date" style="background: #d9edf7">
-                  <button name="calendar" ion-button (click)="findTodaySchedule(d.year, d.month, d.day)">{{d.day}}</button>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </ion-slide>
-        </ion-slides>
-
-    </ion-list>
+<ion-content>
+  <div class="homeCalendar">
+      <ion-slides loop (swipeleft)="slidesNext()" (swiperight)="slidesPrev()">
+    <ion-slide>
+      <ion-card >
+        <ion-card-header no-padding>
+          <div float-left  (click)="goBackToday()">
+            <p  style="font-size: 2em" float-left>{{month}}</p>
+            <p  style="display: grid;margin-left: 0px" float-left>
+              <span style="font-size: 1.3em">{{year}}</span>
+              <span>month</span>
+            </p>
+            <p float-left style="margin-left: 0px" >
+              <ion-icon name="md-arrow-dropright" float-left></ion-icon>
+            </p>
+          </div>
+        </ion-card-header>
+        <ion-card-content>
+          <div padding-top></div>
+      <table>
+        <thead>
+        <tr>
+          <th *ngFor="let w of calendar.weekDay">{{w}}</th>
+        </tr>
+        </thead>
+        <tbody class="calendar_home" >
+        <tr *ngFor="let md of calendar.dayList">
+          <td *ngFor="let d of md.date">
+            <button class="calendarButton" ion-button (click)="findTodaySchedule(d.year, d.month, d.day)" >{{d.day}}</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+    </ion-slides>
+  <!--<ion-toggle [(ngModel)]="weekFlag" (ionChange)="switchMonthOrWeek(year, month)" ></ion-toggle>-->
   </div>
+  <ion-list>
+    <ion-list-header *ngIf="scheduleList.length == 0;">今日无安排</ion-list-header>
 
-  <ion-list id="homeTitle">
-
-    <h5 *ngIf="scheduleList.length == 0; else showDay">今日无安排</h5>
-    <ng-template #showDay>
+    <ion-item>
       <ion-item-sliding *ngFor="let sd of scheduleList">
         <button ion-item (click)="showScheduleDetail(sd)">
           <h2>{{sd.scheduleName}}</h2>
@@ -69,8 +85,10 @@
           </button>
         </ion-item-options>
       </ion-item-sliding>
-    </ng-template>
+    </ion-item>
   </ion-list>
+
+
 
 </ion-content>
 

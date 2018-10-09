@@ -26,7 +26,7 @@ import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/na
   providers: []
 })
 export class HomePage {
-  @ViewChild(Slides) slides: Slides;
+  //@ViewChild(Slides) slides: Slides;
 
   tab1Root = 'SpeechPage';
   data: any;
@@ -115,7 +115,7 @@ export class HomePage {
     }
 
 
-    this.slides.update();
+    //this.slides.update();
   }
 
   slidesPrev() {
@@ -146,7 +146,7 @@ export class HomePage {
     }
 
 
-    this.slides.update();
+    //this.slides.update();
   }
 
   goBackToday() {
