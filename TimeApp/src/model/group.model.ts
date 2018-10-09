@@ -7,12 +7,13 @@ import {GroupMemberModel} from "./groupMember.model";
 //参与人类
 export class GroupModel {
 
+  private _userId: number;
   private _groupId: string;//群组ID
   private _groupName: string;//群组名
   private _labelList: Array<LabelModel>;//标签
   private _labelName: Array<String>;//标签名称
   private _labelIds: Array<number>;//标签ID
-  private _groupHeadImg: string;//群头像
+  private _groupHeadImgUrl: string;//群头像
   private _groupCreateId: number;//群创建人
   private _groupMembers: Array<GroupMemberModel>;//群成员
 
@@ -40,12 +41,12 @@ export class GroupModel {
     this._labelList = value;
   }
 
-  get groupHeadImg(): string {
-    return this._groupHeadImg;
+  get groupHeadImgUrl(): string {
+    return this._groupHeadImgUrl;
   }
 
-  set groupHeadImg(value: string) {
-    this._groupHeadImg = value;
+  set groupHeadImgUrl(value: string) {
+    this._groupHeadImgUrl = value;
   }
 
   get groupCreateId(): number {
@@ -80,4 +81,11 @@ export class GroupModel {
     this._labelName = value;
   }
 
+  get userId(): number {
+    return this._userId;
+  }
+
+  set userId(value: number) {
+    this._userId = value;
+  }
 }

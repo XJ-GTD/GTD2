@@ -25,7 +25,7 @@ export class GroupAddPage {
 
   data: any;
 
-  groupLength: Array<number>;   //动态添加flag
+  groupMemberList: Array<GroupMemberModel>;   //动态添加
   groupMember: GroupMemberModel;    //群成员
 
   isAddOrEdit: boolean = true; //false:编辑 true:新增
@@ -60,7 +60,14 @@ export class GroupAddPage {
       this.playerDetail = this.paramsService.group;
     } else {
       this.addType = "新增";
+      this.groupMember = new GroupMemberModel();
+      this.groupMemberList = [];
+
+      this.groupMember.index = 1;
+      this.groupMemberList.push(this.groupMember);
     }
+
+    this.findLabel();
 
   }
 
@@ -77,7 +84,26 @@ export class GroupAddPage {
 
   //创建新参与人
   addPlayer() {
+    this.playerDetail.userId = this.paramsService.user.userId;
+    this.playerDetail.groupMembers = this.groupMemberList;
+    this.playerDetail.groupHeadImgUrl = "./assets/imgs/headImg.jpg";
+    this.http.post(AppConfig.GROUP_ADD_GROUP_URL, this.playerDetail, AppConfig.HEADER_OPTIONS_JSON)
+      .subscribe(data => {
+        console.log("data: " + data);
+        this.data = data;
+        let loader = this.loadingCtrl.create({
+          content: this.data.message,
+          duration: 1000
+        });
 
+        if (this.data.code == 0) {
+          loader.present();
+          this.goBack();
+        } else {
+          console.log("group add error message: " + this.data.message);
+          loader.present();
+        }
+      })
   }
 
   //更新参与人
@@ -85,8 +111,17 @@ export class GroupAddPage {
 
   }
 
-  //群组添加成员
-  dyAddGroupMember() {
+  //群组添加/删除成员
+  //1加2减
+  dyAddGroupMember(flag) {
+    console.log("add member");
+    if (flag == 1)  {
+      this.groupMember = new GroupMemberModel();
+      this.groupMember.index = this.groupMemberList.length + 1;
+      this.groupMemberList.push(this.groupMember);
+    } else if (flag == 2) {
+      this.groupMemberList.pop();
+    }
 
   }
 

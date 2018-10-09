@@ -1,10 +1,6 @@
 package com.manager.master.dto;
 
-import com.manager.master.entity.GtdLabelEntity;
-
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 public class GroupInDto {
     private int userId;                        //用户ID
