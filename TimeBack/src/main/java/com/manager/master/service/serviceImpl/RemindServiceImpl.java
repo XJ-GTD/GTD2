@@ -1,5 +1,6 @@
 package com.manager.master.service.serviceImpl;
 
+import com.manager.config.exception.ServiceException;
 import com.manager.master.dto.RemindInsertInDto;
 import com.manager.master.repository.RemindJpaRepository;
 import com.manager.master.repository.SchedulePlayersNewRepository;
@@ -84,6 +85,46 @@ public class RemindServiceImpl implements IRemindService {
             remindJpaRepository.insertIntoRemind(playersId,CommonMethods.dateToStamp(remindDate),remindType,userId,CommonMethods.dateToStamp(time),userId,CommonMethods.dateToStamp(time));
         } catch (Exception ex){
             logger.error("-----  insertIntoRemind 语法错误 ------");
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 提醒时间更新
+     *
+     * @param userId     用户id
+     * @param remindDate 提醒时间：yyyy-MM-dd HH:mm
+     * @param remindType 提醒类型
+     * @param remindId   提醒时间id
+     * @return
+     */
+    @Override
+    public int updateRemindDate(Integer userId, String remindDate, Integer remindType, Integer remindId) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date = new Date();
+        String time = sdf.format(date);
+        try{
+            remindJpaRepository.updateRemindDateByUser(CommonMethods.dateToStamp(remindDate),remindType,userId,CommonMethods.dateToStamp(time),remindId);
+        } catch (Exception ex){
+            logger.error("----- updateRemindDateByUser 语法错误 -----");
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 提醒时间删除
+     *
+     * @param remindId
+     * @return
+     */
+    @Override
+    public int deleteRemind(Integer remindId) {
+        try{
+            remindJpaRepository.deleteByRemindId(remindId);
+        } catch (Exception ex){
+            logger.error("----- deleteByRemindId 语法错误 -----");
             ex.printStackTrace();
         }
         return 0;

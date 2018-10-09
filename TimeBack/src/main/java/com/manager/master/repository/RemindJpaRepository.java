@@ -30,6 +30,18 @@ public interface RemindJpaRepository extends JpaRepository<GtdSchedulePlayersEnt
     void updateRemindDate(Timestamp reminddate,Integer userid,Timestamp updateDt,Integer remindId);
 
     /**
+     * 提醒时间更新
+     * @param remindDate
+     * @param remindType
+     * @param userId
+     * @param updateDate
+     * @param remindId
+     */
+    @Modifying
+    @Query(value = "UPDATE gtd_remind SET REMIND_DATE = ?1,REMIND_TYPE = ?2,UPDATE_ID = ?3,UPDATE_DATE = ?4 WHERE REMIND_ID = ?5",nativeQuery = true)
+    void updateRemindDateByUser(Timestamp remindDate,Integer remindType,Integer userId,Timestamp updateDate,Integer remindId);
+
+    /**
      * 根据 参与人表ID 查询 提醒时间ID
      * @param playersId
      * @return
@@ -45,6 +57,14 @@ public interface RemindJpaRepository extends JpaRepository<GtdSchedulePlayersEnt
     @Modifying
     @Query(value = "DELETE FROM gtd_remind WHERE PLAYERS_ID = ?1",nativeQuery = true)
     void deleteAllByPlayersId(Integer playersId);
+
+    /**
+     * 根据 提醒时间id 删除数据
+     * @param remindId
+     */
+    @Modifying
+    @Query(value = "DELETE FROM gtd_remind WHERE REMIND_ID = ?1",nativeQuery = true)
+    void deleteByRemindId(Integer remindId);
 
     /**
      * 插入提醒时间

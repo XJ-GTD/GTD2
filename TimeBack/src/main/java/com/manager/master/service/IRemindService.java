@@ -13,4 +13,21 @@ public interface IRemindService {
      * @return
      */
     int insertRemind(RemindInsertInDto inDto);
+
+    /**
+     * 提醒时间更新
+     * @param userId        用户id
+     * @param remindDate    提醒时间：yyyy-MM-dd HH:mm
+     * @param remindType    提醒类型
+     * @param remindId      提醒时间id
+     * @return
+     */
+    int updateRemindDate(Integer userId,String remindDate,Integer remindType,Integer remindId);
+
+    /**
+     * 提醒时间删除
+     * @param remindId
+     * @return
+     */
+    int deleteRemind(Integer remindId);
 }
