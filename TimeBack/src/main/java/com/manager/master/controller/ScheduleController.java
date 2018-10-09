@@ -345,16 +345,17 @@ public class ScheduleController {
         }
         // 业务处理
         logger.info("----- 业务处理 -----");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date date = new Date();
-        String time = sdf.format(date);
+        int flag = 0;
         try{
-            remindJpaRepository.updateRemindDateByUser(CommonMethods.dateToStamp(remindDate),remindType,userId,CommonMethods.dateToStamp(time),remindId);
+           flag =  remindService.updateRemindDate(userId,remindDate,remindType,remindId);
         } catch (Exception ex){
-            logger.error("----- updateRemindDateByUser 语法错误 -----");
-            throw new ServiceException("---- updateRemindDateByUser 语法错误----");
+            throw new ServiceException(ex.getMessage());
         }
-        baseOutDto.setCode(ResultCode.SUCCESS).setMessage("remindId: "+remindId+" - 提醒时间更新完成");
+        if(flag == 0){
+            baseOutDto.setCode(ResultCode.SUCCESS).setMessage("remindId: "+remindId+" - 提醒时间更新完成");
+        } else {
+            baseOutDto.setCode(ResultCode.FAIL).setMessage("remindId: "+remindId+" - 提醒时间更新失败");
+        }
         return baseOutDto;
 
     }
