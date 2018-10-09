@@ -150,7 +150,7 @@ public class UserServiceImpl implements IUserService{
             user.setAccountQueue((String) object[9]);
             user.setAccountWechat((String) object[10]);
             user.setAccountUuid((String) object[11]);
-
+            user.setAccountId((Integer) object[12]);
         } else {
             throw new ServiceException("用户名或密码错误！");
         }
