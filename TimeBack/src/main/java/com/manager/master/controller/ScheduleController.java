@@ -2,10 +2,8 @@ package com.manager.master.controller;
 
 import com.manager.config.exception.ServiceException;
 import com.manager.master.dto.*;
-import com.manager.master.entity.GtdGroupEntity;
-import com.manager.master.entity.GtdLabelEntity;
-import com.manager.master.entity.GtdScheduleEntity;
-import com.manager.master.entity.GtdUserEntity;
+import com.manager.master.repository.RemindRepository;
+import com.manager.master.repository.SchedulePlayersNewRepository;
 import com.manager.master.service.IRemindService;
 import com.manager.master.service.IScheduleService;
 import com.manager.util.ResultCode;
@@ -14,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -33,6 +32,9 @@ public class ScheduleController {
 
     @Autowired
     IRemindService remindService;
+
+    @Resource
+    private RemindRepository remindRepository;
 
     @RequestMapping(value = "/find",method = RequestMethod.POST)
     @ResponseBody
@@ -238,6 +240,57 @@ public class ScheduleController {
         }catch (Exception ex){
             throw new ServiceException(ex.getMessage());
         }
+        return baseOutDto;
+    }
+
+    /**
+     * 提醒时间查询
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/remind_find",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto findRemind(@RequestBody RemindFindInDto inDto){
+        logger.info("----- 开始调用接口：提醒时间查询 findRemind ------");
+        BaseOutDto baseOutDto = new BaseOutDto();
+        // 接收入参
+        Integer userId = inDto.getUserId();         // 用户id
+        Integer scheduleId = inDto.getScheduleId(); // 日程事件id
+        // 必输项判断
+        if(userId == null || "".equals(userId)){
+            logger.error("useId为空");
+            baseOutDto.setCode(ResultCode.REPEAT).setMessage("用户ID不可为空");
+            return baseOutDto;
+        }
+        if(scheduleId == null || "".equals(scheduleId)){
+            logger.error("scheduleId为空");
+            baseOutDto.setCode(ResultCode.REPEAT).setMessage("日程事件ID不可为空");
+            return baseOutDto;
+        }
+        // 业务处理
+        logger.info("----- 业务处理 -----");
+        // 查询 提醒时间
+        List<Object[]> remindList = new ArrayList<>();
+        List<RemindOutDto> remind = new ArrayList<>();
+        try {
+            remindList = remindRepository.findRemindByUserIDAndScheId(userId,scheduleId);
+        } catch (Exception ex){
+            throw new ServiceException("---- findRemindByUserIDAndScheId 语法错误----");
+        }
+        if(remindList.size()>0){
+            for(Object[] re : remindList){
+                RemindOutDto out = new RemindOutDto();
+                out.setRemindId((Integer)re[0]);
+                out.setRemindDate(re[1].toString());
+                remind.add(out);
+            }
+        }
+
+        Map<String,List> data = new HashMap<>();
+        data.put("remindList", remind);
+        baseOutDto.setData(data);
+        baseOutDto.setCode(ResultCode.SUCCESS).setMessage("提醒时间查询成功");
+
         return baseOutDto;
     }
 }
