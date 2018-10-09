@@ -112,4 +112,21 @@ public class RemindServiceImpl implements IRemindService {
         }
         return 0;
     }
+
+    /**
+     * 提醒时间删除
+     *
+     * @param remindId
+     * @return
+     */
+    @Override
+    public int deleteRemind(Integer remindId) {
+        try{
+            remindJpaRepository.deleteByRemindId(remindId);
+        } catch (Exception ex){
+            logger.error("----- deleteByRemindId 语法错误 -----");
+            ex.printStackTrace();
+        }
+        return 0;
+    }
 }

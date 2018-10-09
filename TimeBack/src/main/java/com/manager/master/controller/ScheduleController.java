@@ -39,9 +39,6 @@ public class ScheduleController {
     @Resource
     private RemindRepository remindRepository;
 
-    @Resource
-    private RemindJpaRepository remindJpaRepository;
-
     @RequestMapping(value = "/find",method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto findSchedule(@RequestBody FindScheduleInDto indto){
@@ -358,5 +355,43 @@ public class ScheduleController {
         }
         return baseOutDto;
 
+    }
+
+    /**
+     * 提醒时间删除
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/remind_delete",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto updateRemind(@RequestBody RemindDeleteInDto inDto){
+        BaseOutDto baseOutDto = new BaseOutDto();
+        Integer userId = inDto.getUserId(); // 用户id
+        Integer remindId = inDto.getRemindId(); // 提醒时间id
+        // 入参必须项检查
+        if(userId == null || "".equals(userId)){
+            logger.error("----- 用户id 不能为空 -----");
+            baseOutDto.setCode(ResultCode.FAIL).setMessage("userId 不能为空");
+            return baseOutDto;
+        }
+        if(remindId == null || "".equals(remindId)){
+            logger.error("----- 提醒时间id 不能为空 -----");
+            baseOutDto.setCode(ResultCode.FAIL).setMessage("remindId 不能为空");
+            return baseOutDto;
+        }
+        // 业务处理
+        logger.info("----- 业务处理 -----");
+        int flag = 0;
+        try{
+            flag = remindService.deleteRemind(remindId);
+        } catch (Exception ex){
+            throw new ServiceException(ex.getMessage());
+        }
+        if(flag == 0){
+            baseOutDto.setCode(ResultCode.SUCCESS).setMessage("remindId: "+remindId+" - 提醒时间已删除");
+        } else {
+            baseOutDto.setCode(ResultCode.FAIL).setMessage("remindId: "+remindId+" - 提醒时间删除失败");
+        }
+        return baseOutDto;
     }
 }

@@ -23,4 +23,11 @@ public interface IRemindService {
      * @return
      */
     int updateRemindDate(Integer userId,String remindDate,Integer remindType,Integer remindId);
+
+    /**
+     * 提醒时间删除
+     * @param remindId
+     * @return
+     */
+    int deleteRemind(Integer remindId);
 }
