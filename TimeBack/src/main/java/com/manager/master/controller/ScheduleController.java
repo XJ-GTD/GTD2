@@ -2,10 +2,12 @@ package com.manager.master.controller;
 
 import com.manager.config.exception.ServiceException;
 import com.manager.master.dto.*;
+import com.manager.master.repository.RemindJpaRepository;
 import com.manager.master.repository.RemindRepository;
 import com.manager.master.repository.SchedulePlayersNewRepository;
 import com.manager.master.service.IRemindService;
 import com.manager.master.service.IScheduleService;
+import com.manager.util.CommonMethods;
 import com.manager.util.ResultCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -35,6 +38,9 @@ public class ScheduleController {
 
     @Resource
     private RemindRepository remindRepository;
+
+    @Resource
+    private RemindJpaRepository remindJpaRepository;
 
     @RequestMapping(value = "/find",method = RequestMethod.POST)
     @ResponseBody
@@ -225,7 +231,7 @@ public class ScheduleController {
      * @param inDto
      * @return
      */
-    @RequestMapping(value = "/remind",method = RequestMethod.POST)
+    @RequestMapping(value = "/remind_add",method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto insertRemindTime(@RequestBody RemindInsertInDto inDto){
         BaseOutDto baseOutDto = new BaseOutDto();
@@ -292,5 +298,64 @@ public class ScheduleController {
         baseOutDto.setCode(ResultCode.SUCCESS).setMessage("提醒时间查询成功");
 
         return baseOutDto;
+    }
+
+    /**
+     * 提醒时间更新
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/remind_update",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto updateRemind(@RequestBody RemindUpdateInDto inDto){
+        logger.info("----- 开始执行[提醒时间更新] updateRemind -----");
+        BaseOutDto baseOutDto = new BaseOutDto();
+        // 获取入参
+        Integer userId = inDto.getUserId();     // 用户id
+        String remindDate = inDto.getRemindDate();  // 提醒时间：yyyy-MM-dd HH:mm
+        Integer remindType = inDto.getRemindType(); // 提醒类型
+        Integer remindId = inDto.getRemindId();     // 提醒时间id
+
+        // 入参必输项判断
+        if(userId == null || "".equals(userId)){
+            logger.error("----- 用户id 不能为空 -----");
+            baseOutDto.setCode(ResultCode.FAIL).setMessage("userId 不能为空");
+            return baseOutDto;
+        }
+        if(remindDate == null || "".equals(remindDate)){
+            logger.error("----- 提醒时间 不能为空 -----");
+            baseOutDto.setCode(ResultCode.FAIL).setMessage("remindDate 不能为空");
+            return baseOutDto;
+        }
+        if(remindType == null || "".equals(remindType)){
+            logger.error("----- 提醒类型 不能为空 -----");
+            baseOutDto.setCode(ResultCode.FAIL).setMessage("remindType 不能为空");
+            return baseOutDto;
+        }
+        if(remindId == null || "".equals(remindId)){
+            logger.error("----- 提醒时间id 不能为空 -----");
+            baseOutDto.setCode(ResultCode.FAIL).setMessage("remindId 不能为空");
+            return baseOutDto;
+        }
+        // 入参类型判断
+        if(!CommonMethods.checkIsDate(remindDate)){
+            logger.error("----- 提醒时间 格式错误 -----");
+            baseOutDto.setCode(ResultCode.FAIL).setMessage("remindDate 格式错误");
+            return baseOutDto;
+        }
+        // 业务处理
+        logger.info("----- 业务处理 -----");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date = new Date();
+        String time = sdf.format(date);
+        try{
+            remindJpaRepository.updateRemindDateByUser(CommonMethods.dateToStamp(remindDate),remindType,userId,CommonMethods.dateToStamp(time),remindId);
+        } catch (Exception ex){
+            logger.error("----- updateRemindDateByUser 语法错误 -----");
+            throw new ServiceException("---- updateRemindDateByUser 语法错误----");
+        }
+        baseOutDto.setCode(ResultCode.SUCCESS).setMessage("remindId: "+remindId+" - 提醒时间更新完成");
+        return baseOutDto;
+
     }
 }
