@@ -56,6 +56,74 @@
         </ion-card-content>
       </ion-card>
     </ion-slide>
+
+        <ion-slide>
+          <ion-card >
+            <ion-card-header no-padding>
+              <div float-left  (click)="goBackToday()">
+                <p  style="font-size: 2em" float-left>{{nextCalendar.month}}</p>
+                <p  style="display: grid;margin-left: 0px" float-left>
+                  <span style="font-size: 1.3em">{{nextCalendar.year}}</span>
+                  <span>month</span>
+                </p>
+                <p float-left style="margin-left: 0px" >
+                  <ion-icon name="md-arrow-dropright" float-left></ion-icon>
+                </p>
+              </div>
+            </ion-card-header>
+            <ion-card-content>
+              <div padding-top></div>
+              <table>
+                <thead>
+                <tr>
+                  <th *ngFor="let w of nextCalendar.weekDay">{{w}}</th>
+                </tr>
+                </thead>
+                <tbody class="calendar_home" >
+                <tr *ngFor="let md of calendar.dayList">
+                  <td *ngFor="let d of md.date">
+                    <button class="calendarButton" ion-button (click)="findTodaySchedule(d.year, d.month, d.day)" >{{d.day}}</button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </ion-card-content>
+          </ion-card>
+        </ion-slide>
+
+        <ion-slide>
+          <ion-card >
+            <ion-card-header no-padding>
+              <div float-left  (click)="goBackToday()">
+                <p  style="font-size: 2em" float-left>{{lastCalendar.month}}</p>
+                <p  style="display: grid;margin-left: 0px" float-left>
+                  <span style="font-size: 1.3em">{{lastCalendar.year}}</span>
+                  <span>month</span>
+                </p>
+                <p float-left style="margin-left: 0px" >
+                  <ion-icon name="md-arrow-dropright" float-left></ion-icon>
+                </p>
+              </div>
+            </ion-card-header>
+            <ion-card-content>
+              <div padding-top></div>
+              <table>
+                <thead>
+                <tr>
+                  <th *ngFor="let w of calendar.weekDay">{{w}}</th>
+                </tr>
+                </thead>
+                <tbody class="calendar_home" >
+                <tr *ngFor="let md of lastCalendar.dayList">
+                  <td *ngFor="let d of md.date">
+                    <button class="calendarButton" ion-button (click)="findTodaySchedule(d.year, d.month, d.day)" >{{d.day}}</button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </ion-card-content>
+          </ion-card>
+        </ion-slide>
     </ion-slides>
   <!--<ion-toggle [(ngModel)]="weekFlag" (ionChange)="switchMonthOrWeek(year, month)" ></ion-toggle>-->
   </div>
