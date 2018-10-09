@@ -8,6 +8,7 @@ package com.manager.master.dto;
 public class UserOutDto {
 
     private Integer userId;                 //用户ID
+    private Integer accountId;              //账户ID
     private String userName;            //昵称
     private String headimgUrl;          //头像URL
     private String brithday;            //生日
@@ -123,5 +124,13 @@ public class UserOutDto {
 
     public void setAccountQueue(String accountQueue) {
         this.accountQueue = accountQueue;
+    }
+
+    public Integer getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Integer accountId) {
+        this.accountId = accountId;
     }
 }
