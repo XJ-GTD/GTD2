@@ -11,7 +11,7 @@ import { File } from "@ionic-native/file";
 import { Base64 } from "@ionic-native/base64";
 import { LocalNotifications } from "@ionic-native/local-notifications";
 import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification';
-import { NativePageTransitions } from "@ionic-native/native-page-transitions";
+//import { NativePageTransitions } from "@ionic-native/native-page-transitions";
 
 
 @NgModule({
@@ -37,7 +37,7 @@ import { NativePageTransitions } from "@ionic-native/native-page-transitions";
     Base64,
     LocalNotifications,
     PhonegapLocalNotification,
-    NativePageTransitions,
+   // NativePageTransitions,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

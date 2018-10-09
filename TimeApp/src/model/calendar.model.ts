@@ -10,8 +10,7 @@ export class CalendarModel {
   private _year: number;   //年
   private _month: number;    //月
   private _dayList: Array<TimeModel>; //日
-
-  private _weekDay: Array<string> = ["日","一","二","三","四","五","六"];   //周标识
+  private _weekDay: Array<string> = ["SUN","MON","TUES","WED","THUR","FRI","SAT"];   //周标识
 
   get weekDay(): Array<string> {
     return this._weekDay;

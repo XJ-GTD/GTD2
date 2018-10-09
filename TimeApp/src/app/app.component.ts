@@ -5,7 +5,7 @@ import { Platform, MenuController, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from "@ionic/storage";
-import { ParamsService } from "../service/params.service";
+import {ParamsService} from "../service/params.service";
 import { WebsocketService } from "../service/websocket.service";
 import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
 import { XiaojiAlarmclockService } from "../service/xiaoji-alarmclock.service";
@@ -28,16 +28,20 @@ export class MyApp {
     public menu: MenuController,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    private storage: Storage
-  ) {
+    private storage: Storage,
+  private paramsService: ParamsService
+) {
+
     //通过key，判断是否曾进入过引导页
     this.storage.get('firstIn').then((result) => {
       console.log('firstIn is', result);
-      if (result != null && result) {
-        this.rootPage = 'UserLoginPage';
-      } else {
-        this.storage.set('firstIn', true);
-        this.rootPage = 'WelcomePage';
+      if (this.paramsService.user == null){
+        if (result != null && result ) {
+          this.rootPage = 'UserLoginPage';
+        } else {
+          this.storage.set('firstIn', true);
+          this.rootPage = 'WelcomePage';
+        }
       }
     });
 
