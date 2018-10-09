@@ -7,6 +7,7 @@ import {LabelOutModel} from "../../model/out/label.out.model";
 import {AppConfig} from "../../app/app.config";
 import {LabelModel} from "../../model/label.model";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {GroupMemberModel} from "../../model/groupMember.model";
 
 /**
  * Generated class for the GroupAddPage page.
@@ -24,14 +25,14 @@ export class GroupAddPage {
 
   data: any;
 
-  PlayerForm: FormGroup;    //参与人表单验证
-  groupName: any;    //群组名
-  groupMemberName: any;    //群成员名
-  groupMemberContact: any; //群成员联系方式
+  groupLength: Array<number>;   //动态添加flag
+  groupMember: GroupMemberModel;    //群成员
+
+  isAddOrEdit: boolean = true; //false:编辑 true:新增
 
   addType: string;    //页面标题
-  playerDetail: GroupModel;   //群组详情
-  playerType: string;   //参与人类型 1:个人  2：群组
+  playerDetail: GroupModel;   //参与人详情
+  playerType: string;   //参与人类型 person:个人  group：群组
 
   labelFind: LabelOutModel;   //标签查询用
   label: Array<LabelModel>;   //标签数据
@@ -53,27 +54,16 @@ export class GroupAddPage {
     this.playerType = this.paramsService.groupType;
 
     this.playerDetail = new GroupModel();
-    this.playerDetail = this.paramsService.group;
+
     if (this.paramsService.group != null) {
       this.addType = "编辑";
+      this.playerDetail = this.paramsService.group;
     } else {
       this.addType = "新增";
     }
 
-    this.formInit();
   }
 
-  formInit() {
-    this.PlayerForm = this.formBuilder.group({
-      groupName:['',Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(10)])],
-      groupMemberName: ['', Validators.compose([Validators.required, Validators.minLength(1),Validators.maxLength(10)])],
-      groupMemberContact:['',Validators.compose([Validators.required, Validators.minLength(11),Validators.maxLength(11)])]
-
-    });
-    this.groupName = this.PlayerForm.controls['groupName'];
-    this.groupMemberName = this.PlayerForm.controls['groupMemberName'];
-    this.groupMemberContact = this.PlayerForm.controls['groupMemberContact'];
-  }
 
   //提交保存
   savePlayer(type) {
@@ -94,6 +84,12 @@ export class GroupAddPage {
   updatePlayer() {
 
   }
+
+  //群组添加成员
+  dyAddGroupMember() {
+
+  }
+
 
   //查询系统标签
   findLabel() {
@@ -116,11 +112,6 @@ export class GroupAddPage {
           loader.present();
         }
       })
-  }
-
-  //群组添加成员用
-  findGroupMember() {
-
   }
 
   goBack() {

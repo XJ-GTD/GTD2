@@ -7,13 +7,13 @@ import {GroupMemberModel} from "./groupMember.model";
 //参与人类
 export class GroupModel {
 
-
   private _groupId: string;//群组ID
   private _groupName: string;//群组名
   private _labelList: Array<LabelModel>;//标签
+  private _labelName: Array<String>;//标签名称
+  private _labelIds: Array<number>;//标签ID
   private _groupHeadImg: string;//群头像
   private _groupCreateId: number;//群创建人
-  private _labelIds: string;//标签ID
   private _groupMembers: Array<GroupMemberModel>;//群成员
 
   get groupId(): string {
@@ -64,11 +64,20 @@ export class GroupModel {
     this._groupMembers = value;
   }
 
-  get labelIds(): string {
+  get labelIds(): Array<number> {
     return this._labelIds;
   }
 
-  set labelIds(value: string) {
+  set labelIds(value: Array<number>) {
     this._labelIds = value;
   }
+
+  get labelName(): Array<String> {
+    return this._labelName;
+  }
+
+  set labelName(value: Array<String>) {
+    this._labelName = value;
+  }
+
 }

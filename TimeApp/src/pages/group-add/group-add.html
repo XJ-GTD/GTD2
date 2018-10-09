@@ -27,20 +27,19 @@
 
 <ion-content padding>
 
-  <div *ngIf="playerDetail == null; else playerEdit">
-    <div *ngIf="playerType == 2; else personAdd">
+  <div *ngIf="isAddOrEdit; else playerEdit">
+    <div *ngIf="playerType == 'group'; else personAdd">
 
-      <form [formGroup]="PlayerForm" (ngSubmit)="" novalidate>
         <ion-item>
           <ion-label floating>参与群组名称</ion-label>
-          <ion-input type="text" [formControl]=""></ion-input>
+          <ion-input type="text" [(ngModel)]="playerDetail.groupName"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label floating>标签</ion-label>
-          <ion-select (focus)="findLabel()" [(ngModel)]="schedule.labelIds" multiple="true">
+          <ion-select (focus)="findLabel()" [(ngModel)]="playerDetail.labelList" multiple="true">
             <div *ngFor="let lb of label">
-              <ion-option value="{{lb.labelId}}">{{lb.labelName}}</ion-option>
+              <ion-option value="{{lb}}">{{lb.labelName}}</ion-option>
             </div>
           </ion-select>
         </ion-item>
@@ -49,15 +48,13 @@
 
           <ion-item>
             <ion-label floating>群成员名称</ion-label>
-            <ion-input type="text" [(ngModel)]=""></ion-input>
+            <ion-input type="text" [(ngModel)]="groupMember.userName"></ion-input>
 
             <ion-label floating>群成员联系方式</ion-label>
-            <ion-input type="number" [(ngModel)]=""></ion-input>
+            <ion-input type="number" [(ngModel)]="groupMember.userContact"></ion-input>
           </ion-item>
 
         </ion-list>
-
-      </form>
 
     </div>
 

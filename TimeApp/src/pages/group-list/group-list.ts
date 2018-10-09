@@ -24,6 +24,8 @@ export class GroupListPage {
   data: any;//数据源
 
   groupType: string = "group";    //判断是群组：group / 个人：person
+  typeNameG: string = "群组";
+  typeNameP: string = "个人";
   findPlayer: FindOutModel;//用户Id
 
   playerList: Array<GroupModel>;
@@ -47,6 +49,7 @@ export class GroupListPage {
 
     this.playerList = [];
     this.findGroupList(this.groupType);
+
   }
 
   /**
@@ -87,7 +90,8 @@ export class GroupListPage {
   //新建群组/个人
   addPlayer(type){
     this.paramsService.groupType = type;
-    this.navCtrl.push('GroupPersonalEditPage');
+    this.paramsService.group = null;
+    this.navCtrl.push('GroupAddPage');
 
   }
 
