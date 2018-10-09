@@ -61,6 +61,17 @@ export class UserLoginPage {
 
         if (this.data.code == "0") {
           this.paramsService.user = this.data.data.userInfo;
+          // window.localStorage.setItem('userName', this.paramsService.user.userName);
+          // window.localStorage.setItem('userId', this.paramsService.user.userId.toString());
+          // window.localStorage.setItem('accountId', this.paramsService.user.accountId.toString());
+          // window.localStorage.setItem('accountName', this.paramsService.user.accountName);
+          // window.localStorage.setItem('accountMobile', this.paramsService.user.accountMobile);
+          // window.localStorage.setItem('accountUuid', this.paramsService.user.accountUuid);
+          // window.localStorage.setItem('accountQueue', this.paramsService.user.accountQueue);
+          // window.localStorage.setItem('accountQq', this.paramsService.user.accountQq);
+          // window.localStorage.setItem('accountWechat', this.paramsService.user.accountWechat);
+          // window.localStorage.setItem('headimgUrl', this.paramsService.user.headimgUrl);
+
           // loginMessage.present(loginMessage.setMessage(this.data.message));
 
           loader.present();

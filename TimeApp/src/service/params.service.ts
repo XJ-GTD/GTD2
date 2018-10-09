@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { UserModel} from "../model/user.model";
-import { ScheduleModel } from "../model/schedule.model";
-import { GroupModel } from "../model/group.model";
+import {UserModel} from "../model/user.model";
+import {ScheduleModel} from "../model/schedule.model";
+import {GroupModel} from "../model/group.model";
 import {ScheduleOutModel} from "../model/out/schedule.out.model";
 import {AiuiModel} from "../model/aiui.model";
 
@@ -41,7 +41,7 @@ export class ParamsService {
     this._user = new UserModel();
     this._user.userName = window.localStorage.getItem('userName');
     this._user.userId = parseInt(window.localStorage.getItem('userId'));
-    this._user.accountId = parseInt(window.localStorage.getItem('accountId'));
+    //this._user.accountId = parseInt(window.localStorage.getItem('accountId'));
     this._user.accountName = window.localStorage.getItem('accountName');
     this._user.accountMobile = window.localStorage.getItem('accountMobile');
     this._user.accountUuid = window.localStorage.getItem('accountUuid');
@@ -56,7 +56,7 @@ export class ParamsService {
     // this._user = value;
     window.localStorage.setItem('userName', value.userName);
     window.localStorage.setItem('userId', value.userId.toString());
-    window.localStorage.setItem('accountId', value.accountId.toString());
+    //window.localStorage.setItem('accountId', value.accountId.toString());
     window.localStorage.setItem('accountName', value.accountName);
     window.localStorage.setItem('accountMobile', value.accountMobile);
     window.localStorage.setItem('accountUuid', value.accountUuid);
