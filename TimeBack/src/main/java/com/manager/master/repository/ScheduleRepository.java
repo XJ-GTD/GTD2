@@ -153,7 +153,9 @@ public class ScheduleRepository {
         if (scheduleStarttime != null && !"".equals(scheduleStarttime) && scheduleDeadline != null && !"".equals(scheduleDeadline)) {
             sql += " AND ( DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') <= DATE_FORMAT('"+scheduleDeadline+"','%Y-%m-%d %H:%i') AND DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') >= DATE_FORMAT('" + scheduleStarttime + "','%Y-%m-%d %H:%i')\n " +
                     " OR \n" +
-                    " DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('" + scheduleDeadline + "','%Y-%m-%d %H:%i') AND DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') >= DATE_FORMAT('" + scheduleStarttime + "','%Y-%m-%d %H:%i'))";
+                    " DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('" + scheduleDeadline + "','%Y-%m-%d %H:%i') AND DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') >= DATE_FORMAT('" + scheduleStarttime + "','%Y-%m-%d %H:%i')\n " +
+                    " OR \n " +
+                    " )";
         }
         return  em.createNativeQuery(sql).getResultList();
     }
