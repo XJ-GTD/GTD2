@@ -247,19 +247,17 @@ export class TimeService {
     } else if (flag == 3) {
 
       let lastDayCopy = timeModel.date[6].day;
+
+      if (month == 12) {
+        yearCopy = year + 1;
+        monthCopy = month - 11;
+      } else {
+        yearCopy = year;
+        monthCopy = month + 1;
+      }
       if (lastDayCopy == TimeService.mGetDate(year, month)) {
-        if (month == 12) {
-          yearCopy = year + 1;
-          monthCopy = month - 11;
-        } else {
-          yearCopy = year;
-          monthCopy = month + 1;
-        }
         lastDayCopy = 0;
       }
-
-
-
 
       for (let i = lastDayCopy; i < (lastDayCopy + 7); i++) {
         num = i + 1;

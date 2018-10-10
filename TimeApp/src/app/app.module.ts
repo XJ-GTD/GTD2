@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler,NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
@@ -18,7 +18,6 @@ import { NativePageTransitions } from "@ionic-native/native-page-transitions";
   declarations: [
     MyApp
   ],
-  schemas: [ NO_ERRORS_SCHEMA ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp, {
@@ -38,7 +37,7 @@ import { NativePageTransitions } from "@ionic-native/native-page-transitions";
     Base64,
     LocalNotifications,
     PhonegapLocalNotification,
-   NativePageTransitions,
+    NativePageTransitions,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

@@ -14,10 +14,10 @@
     </ion-buttons>
     <ion-segment [(ngModel)]="groupType" (ionChange)="findGroupList(groupType)">
       <ion-segment-button value="group">
-        群组
+        {{typeNameG}}
       </ion-segment-button>
       <ion-segment-button value="person">
-        个人
+        {{typeNameP}}
       </ion-segment-button>
     </ion-segment>
     <ion-buttons right>

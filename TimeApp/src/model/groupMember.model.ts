@@ -8,6 +8,8 @@ export class GroupMemberModel {
   private _userName: string;//群成员名字
   private _userContact: string;//群成员联系方式
 
+  private _index: number;
+
 
   get userId(): number {
     return this._userId;
@@ -31,5 +33,13 @@ export class GroupMemberModel {
 
   set userContact(value: string) {
     this._userContact = value;
+  }
+
+  get index(): number {
+    return this._index;
+  }
+
+  set index(value: number) {
+    this._index = value;
   }
 }

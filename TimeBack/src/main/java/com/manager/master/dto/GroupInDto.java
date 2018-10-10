@@ -1,10 +1,6 @@
 package com.manager.master.dto;
 
-import com.manager.master.entity.GtdLabelEntity;
-
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 public class GroupInDto {
     private int userId;                        //用户ID
@@ -15,7 +11,7 @@ public class GroupInDto {
     private String condition;
     private Integer labelId;                    //标签ID
     private List<Integer> labelIds;             //标签ID List
-    private List<GroupMemberDto> member;        //群成员 List
+    private List<GroupMemberDto> groupMembers;        //群成员 List
 
 
     public int getGroupId() {
@@ -59,11 +55,11 @@ public class GroupInDto {
     }
 
     public List<GroupMemberDto> getMember() {
-        return member;
+        return groupMembers;
     }
 
-    public void setMember(List<GroupMemberDto> member) {
-        this.member = member;
+    public void setMember(List<GroupMemberDto> groupMembers) {
+        this.groupMembers = groupMembers;
     }
 
     public int getUserId() {
