@@ -280,7 +280,7 @@ export class HomePage {
   openVoice() {
     let options: NativeTransitionOptions = {
       direction: 'up',
-      duration: 1500,
+      duration: 500,
       slowdownfactor: 3,
       slidePixels: 20,
       iosdelay: 100,

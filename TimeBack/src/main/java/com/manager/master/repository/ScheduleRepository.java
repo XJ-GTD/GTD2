@@ -155,7 +155,7 @@ public class ScheduleRepository {
                     " OR \n" +
                     " DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('" + scheduleDeadline + "','%Y-%m-%d %H:%i') AND DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') >= DATE_FORMAT('" + scheduleStarttime + "','%Y-%m-%d %H:%i')\n " +
                     " OR \n " +
-                    " )";
+                    " DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') >= DATE_FORMAT('"+ scheduleStarttime +"','%Y-%m-%d %H:%i')  AND DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') <=  DATE_FORMAT('" + scheduleDeadline + "','%Y-%m-%d %H:%i'))";
         }
         return  em.createNativeQuery(sql).getResultList();
     }
