@@ -11,7 +11,7 @@ import { ScheduleModel } from "../../model/schedule.model";
 import { ScheduleOutModel } from "../../model/out/schedule.out.model";
 import { CalendarModel } from "../../model/calendar.model";
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
-import {CalendarModule,CalendarComponentOptions } from "ion2-calendar";
+import {CalendarModule,CalendarComponentOptions } from "../../components/ion2-calendar/index";
 
 
 
@@ -54,7 +54,6 @@ export class HomePage {
   options: CalendarComponentOptions = {
     pickMode: 'single',
     from:new Date(1975, 0, 1),
-    //weekdays:this.calendar.weekDay,
     daysConfig:[]
   };
 
@@ -87,7 +86,7 @@ export class HomePage {
 
 
     let today = new Date();
-    this.findTodaySchedule( today.getFullYear(), today.getMonth() + 1, today.getDate());
+    //this.findTodaySchedule( today.getFullYear(), today.getMonth() + 1, today.getDate());
 
     let _daysConfig = [];
     for (let i = 0; i < 5; i++) {
@@ -237,9 +236,13 @@ export class HomePage {
   }
 
   //查询当天日程
-  findTodaySchedule(year, month, day) {
-    this.year = year;
-    this.month = month;
+  findTodaySchedule($event) {
+
+    console.log($event);
+    let eventDate = new Date($event.time);
+    let year = eventDate.getFullYear();
+    let month = eventDate.getMonth()+1;
+    let day = eventDate.getDate();
 
     this.findSchedule = new ScheduleOutModel();
     this.findSchedule.scheduleStartTime = year + "-" + month + "-" + day + " 00:00";

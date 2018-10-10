@@ -21,10 +21,10 @@
 </ion-header>
 
 <ion-content>
-
   <div class="homeCalendar">
           <div no-margin no-border padding-top no-lines>
-            <ion-calendar  [options]="options">
+            <ion-calendar  [options]="options"
+                           (onSelect)="findTodaySchedule($event)">
             </ion-calendar>
           </div>
   </div>

@@ -27,8 +27,6 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
 @Component({
   selector: 'ion-calendar',
   providers: [ION_CAL_VALUE_ACCESSOR],
-
-
   template: `
       <ion-card >
       <ion-card-header no-padding>

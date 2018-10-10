@@ -43,8 +43,13 @@
     .days .on-selected,
     .startSelection button.days-btn,
     .endSelection button.days-btn {
-        background-color: bindColors($background-color);
-        color: $color;
+       // background-color: bindColors($background-color);
+      background: -webkit-linear-gradient(left, rgb(149,58,139),rgb(86,82,222)); /* Safari 5.1 - 6.0 */
+      background: -o-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Opera 11.1 - 12.0 */
+      background: -moz-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Firefox 3.6 - 15 */
+      background: linear-gradient(to right, rgb(149,58,139),rgb(86,82,222)); /* 标准的语法（必须放在最后） */
+
+      color: $color;
     }
     .startSelection {
         position: relative;
@@ -172,12 +177,12 @@ ion-calendar-month {
         }
     }
     button.days-btn {
-        border-radius: 36px;
-        width: 36px;
+        border-radius: 10px;
+        width: 38px;
         display: block;
         margin: 0 auto;
         padding: 0;
-        height: 36px;
+        height: 25px;
         background-color: transparent;
         position: relative;
         z-index: 2;
@@ -219,8 +224,17 @@ ion-calendar-month {
         .days .today p {
             color: #565656;
         }
+
     }
     .cal-color {
         @include month-color(cal-color);
     }
+  //.cus_light {
+  //  @include month-color(cus_light, #a0a0a0);
+  //  .days .today p {
+  //    color: #565656;
+  //  }
+  //
+  //}
+
 }
