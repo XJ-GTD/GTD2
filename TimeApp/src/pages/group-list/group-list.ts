@@ -91,7 +91,13 @@ export class GroupListPage {
   addPlayer(type){
     this.paramsService.groupType = type;
     this.paramsService.group = null;
-    this.navCtrl.push('GroupAddPage');
+    let reload = function () {
+      return new Promise(resolve => {
+        window.location.reload();
+        resolve();
+      });
+    }
+    this.navCtrl.push('GroupAddPage',{reload});
 
   }
 

@@ -54,14 +54,6 @@ public class GroupInDto {
         this.labelIds = labelIds;
     }
 
-    public List<GroupMemberDto> getMember() {
-        return groupMembers;
-    }
-
-    public void setMember(List<GroupMemberDto> groupMembers) {
-        this.groupMembers = groupMembers;
-    }
-
     public int getUserId() {
         return userId;
     }
@@ -84,5 +76,13 @@ public class GroupInDto {
 
     public void setLabelId(Integer labelId) {
         this.labelId = labelId;
+    }
+
+    public List<GroupMemberDto> getGroupMembers() {
+        return groupMembers;
+    }
+
+    public void setGroupMembers(List<GroupMemberDto> groupMembers) {
+        this.groupMembers = groupMembers;
     }
 }

@@ -387,22 +387,22 @@ public class GroupServicelmpl implements IGroupService {
     @Override
     public int addGroup(GroupInDto inDto) {
         int userId = 0;
-        List<Integer> labelId = null;
+        List<Integer> labelIds = null;
         String groupName = null;
         String groupHeadImgUrl = null;
-        List<GroupMemberDto> member = null;
+        List<GroupMemberDto> groupMembers = null;
         try {
             userId = inDto.getUserId();
-            labelId = inDto.getLabelIds();
+            labelIds = inDto.getLabelIds();
             groupName = inDto.getGroupName();
             groupHeadImgUrl = inDto.getGroupHeadImgUrl();
-            member = inDto.getMember();
+            groupMembers = inDto.getGroupMembers();
         } catch (Exception e) {
             throw new ServiceException("参数错误");
         }
-        logger.info("添加群组 用户ID"+userId+"标签ID"+labelId+"群头像"+groupHeadImgUrl+"群名"+groupName+"群成员"+member);
+        logger.info("添加群组 用户ID"+userId+"标签ID"+ labelIds +"群头像"+groupHeadImgUrl+"群名"+groupName+"群成员"+groupMembers);
         if (userId == 0) throw new ServiceException("用户ID不能为空");
-        if (labelId==null||labelId.size() == 0) throw new ServiceException("标签不能为空");
+        if (labelIds ==null||labelIds.size() == 0) throw new ServiceException("标签不能为空");
         if (groupName == null || "".equals(groupName)) throw new ServiceException("群组名不能为空");
         if (groupHeadImgUrl == null || "".equals(groupHeadImgUrl)) throw new ServiceException("群头像不能为空");
         if(!("".equals(groupName))){
@@ -411,8 +411,8 @@ public class GroupServicelmpl implements IGroupService {
             }
         }
 
-        if(member!=null) {
-            for (GroupMemberDto g : member) {
+        if(groupMembers != null) {
+            for (GroupMemberDto g : groupMembers) {
                 if (CommonMethods.checkMySqlReservedWords(g.getUserName())) {
                     throw new ServiceException("群成员姓名包含关键字");
                 }
@@ -423,16 +423,16 @@ public class GroupServicelmpl implements IGroupService {
         }
 
         Date date = new Date();
-        for(Integer i:labelId){
-            if(labelId.size()!=1&&i== FIND_GROUP_LABELTYPE){
+        for(Integer i:labelIds){
+            if(labelIds.size()!=1&&i== FIND_GROUP_LABELTYPE){
                 throw new ServiceException("群组不能添加单人标签");
             }
             if(i==1){
-                if (member.size()==0) throw new ServiceException("权限群组需添加群成员");
+                if (groupMembers.size()==0) throw new ServiceException("权限群组需添加群成员");
             }
         }
 
-        if (labelId.size() == 1 && labelId.get(0) == FIND_GROUP_LABELTYPE) {
+        if (labelIds.size() == 1 && labelIds.get(0) == FIND_GROUP_LABELTYPE) {
             //创建单人
             GtdGroupEntity group = new GtdGroupEntity();
             group.setGroupName(groupName);
@@ -443,7 +443,7 @@ public class GroupServicelmpl implements IGroupService {
             //获取新建群组的主键id
             int groupId = groupJpaRepository.saveAndFlush(group).getGroupId();
             if (groupId == 0) throw new ServiceException("群组Id为空");
-            for (Integer i : labelId) {
+            for (Integer i : labelIds) {
                 //添加群组标签
                 GtdGroupLabel groupLabel = new GtdGroupLabel();
                 groupLabel.setLabelId(i);
@@ -453,8 +453,8 @@ public class GroupServicelmpl implements IGroupService {
                 groupLabelJpa.saveAndFlush(groupLabel);
             }
 
-            if(member!=null) {
-                for (GroupMemberDto g : member) {
+            if(groupMembers!=null) {
+                for (GroupMemberDto g : groupMembers) {
                     //添加群成员信息
                     GtdGroupMemberEntity groupMember = new GtdGroupMemberEntity();
                     Integer id = groupRepository.findUserId(g.getUserContact());
@@ -477,7 +477,7 @@ public class GroupServicelmpl implements IGroupService {
             group.setUserId(userId);
             group.setCreateDate(new Timestamp(date.getTime()));
             boolean flag = true;
-            for (Integer i : labelId) {
+            for (Integer i : labelIds) {
                 if (i == 1) {//判断是否含有权限标签
                     flag = false;
                 }
@@ -488,7 +488,7 @@ public class GroupServicelmpl implements IGroupService {
             int groupId = groupEntity.getGroupId();
             if (groupId == 0) throw new ServiceException("群组Id为空");
 
-            for (Integer i : labelId) {
+            for (Integer i : labelIds) {
                 GtdGroupLabel groupLabel = new GtdGroupLabel();
                 groupLabel.setLabelId(i);
                 groupLabel.setGroupId(groupId);
@@ -498,8 +498,8 @@ public class GroupServicelmpl implements IGroupService {
             }
 
             List<Integer> memberUserId=new ArrayList<>();
-            if(member!=null) {
-                for (GroupMemberDto g : member) {
+            if(groupMembers!=null) {
+                for (GroupMemberDto g : groupMembers) {
                     GtdGroupMemberEntity groupMember = new GtdGroupMemberEntity();
                     Integer id = groupRepository.findUserId(g.getUserContact());
                     groupMember.setUserId(id);
