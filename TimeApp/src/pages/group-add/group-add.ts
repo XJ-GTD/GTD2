@@ -1,13 +1,13 @@
-import {Component, ViewChild} from '@angular/core';
-import {IonicPage, LoadingController, Navbar, NavController, NavParams} from 'ionic-angular';
-import {HttpClient} from "@angular/common/http";
-import {ParamsService} from "../../service/params.service";
-import {GroupModel} from "../../model/group.model";
-import {LabelOutModel} from "../../model/out/label.out.model";
-import {AppConfig} from "../../app/app.config";
-import {LabelModel} from "../../model/label.model";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {GroupMemberModel} from "../../model/groupMember.model";
+import { Component } from '@angular/core';
+import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { HttpClient } from "@angular/common/http";
+import { ParamsService } from "../../service/params.service";
+import { GroupModel } from "../../model/group.model";
+import { LabelOutModel } from "../../model/out/label.out.model";
+import { AppConfig } from "../../app/app.config";
+import { LabelModel } from "../../model/label.model";
+import { FormBuilder } from "@angular/forms";
+import { GroupMemberModel } from "../../model/groupMember.model";
 
 /**
  * Generated class for the GroupAddPage page.
@@ -35,7 +35,7 @@ export class GroupAddPage {
   playerType: string;   //参与人类型 person:个人  group：群组
 
   labelFind: LabelOutModel;   //标签查询用
-  label: Array<LabelModel>;   //标签数据
+  labels: Array<LabelModel>;   //标签数据
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private http: HttpClient,
@@ -57,7 +57,19 @@ export class GroupAddPage {
 
     if (this.paramsService.group != null) {
       this.addType = "编辑";
+      this.isAddOrEdit = !this.isAddOrEdit;
       this.playerDetail = this.paramsService.group;
+
+      this.groupMemberList = this.playerDetail.groupMembers;
+      this.groupMember = this.groupMemberList[0];
+      for (let i = 0; i < this.groupMemberList.length; i++) {
+        this.groupMemberList[i].index = i + 1;
+      }
+
+      this.playerDetail.labelIds = [];
+      for (let i = 0; i < this.playerDetail.labelList.length; i++) {
+        this.playerDetail.labelIds.push(this.playerDetail.labelList[i].labelId);
+      }
     } else {
       this.addType = "新增";
       this.groupMember = new GroupMemberModel();
@@ -65,9 +77,14 @@ export class GroupAddPage {
 
       this.groupMember.index = 1;
       this.groupMemberList.push(this.groupMember);
+
     }
 
-    this.findLabel();
+    if (this.playerType == 'person') {
+      this.findLabel(3);
+    }else if (this.playerType == 'group') {
+      this.findLabel(1);
+    }
 
   }
 
@@ -84,9 +101,19 @@ export class GroupAddPage {
 
   //创建新参与人
   addPlayer() {
-    this.playerDetail.userId = this.paramsService.user.userId;
-    this.playerDetail.groupMembers = this.groupMemberList;
-    this.playerDetail.groupHeadImgUrl = "./assets/imgs/headImg.jpg";
+    if (this.playerType == 'person') {
+      this.playerDetail.userId = this.paramsService.user.userId;
+      this.playerDetail.groupMembers = this.groupMemberList;
+      this.playerDetail.groupName = this.groupMemberList[0].userName;
+      this.playerDetail.labelIds = [];
+      this.playerDetail.labelIds.push(this.labels[0].labelId);
+      this.playerDetail.groupHeadImgUrl = "./assets/imgs/headImg.jpg";
+    } else if (this.playerType == 'group') {
+      this.playerDetail.userId = this.paramsService.user.userId;
+      this.playerDetail.groupMembers = this.groupMemberList;
+      this.playerDetail.groupHeadImgUrl = "./assets/imgs/headImg.jpg";
+    }
+
     this.http.post(AppConfig.GROUP_ADD_GROUP_URL, this.playerDetail, AppConfig.HEADER_OPTIONS_JSON)
       .subscribe(data => {
         console.log("data: " + data);
@@ -108,7 +135,27 @@ export class GroupAddPage {
 
   //更新参与人
   updatePlayer() {
+    this.playerDetail.userId = this.paramsService.user.userId;
+    this.playerDetail.groupMembers = this.groupMemberList;
+    this.playerDetail.groupHeadImgUrl = "./assets/imgs/headImg.jpg";
 
+    this.http.post(AppConfig.GROUP_UPDATE_GROUP_URL, this.playerDetail, AppConfig.HEADER_OPTIONS_JSON)
+      .subscribe(data => {
+        console.log("data: " + data);
+        this.data = data;
+        let loader = this.loadingCtrl.create({
+          content: this.data.message,
+          duration: 1000
+        });
+
+        if (this.data.code == 0) {
+          loader.present();
+          this.goBack();
+        } else {
+          console.log("group add error message: " + this.data.message);
+          loader.present();
+        }
+      })
   }
 
   //群组添加/删除成员
@@ -127,17 +174,17 @@ export class GroupAddPage {
 
 
   //查询系统标签
-  findLabel() {
+  findLabel(type) {
     this.labelFind = new LabelOutModel();
     this.labelFind.userId = this.paramsService.user.userId;
-    this.labelFind.findType = 1;  //暂为硬代码，默认群组
+    this.labelFind.findType = type;  //暂为硬代码，默认群组
 
     this.http.post(AppConfig.USER_LABEL_URL, this.labelFind, AppConfig.HEADER_OPTIONS_JSON)
       .subscribe(data => {
         this.data = data;
         if (this.data.code == 0) {
-          this.label = [];
-          this.label = this.data.data.labelList;
+          this.labels = [];
+          this.labels = this.data.data.labelList;
 
         } else {
           let loader = this.loadingCtrl.create({
@@ -153,6 +200,7 @@ export class GroupAddPage {
     // 重写返回方法
     this.paramsService.group=null;
     this.paramsService.groupType = null;
-    this.navCtrl.pop();
+    // this.navCtrl.pop();
+    this.navCtrl.push('GroupListPage');
   }
 }

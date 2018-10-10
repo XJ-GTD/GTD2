@@ -65,7 +65,7 @@ export class ScheduleAddPage {
   findLabel() {
     this.labelFind = new LabelOutModel();
     this.labelFind.userId = this.paramsService.user.userId;
-    this.labelFind.findType = 0;  //暂为硬代码，默认日程
+    this.labelFind.findType = 2;  //暂为硬代码，默认2 日程
 
     this.http.post(AppConfig.USER_LABEL_URL, this.labelFind, {
       headers: {

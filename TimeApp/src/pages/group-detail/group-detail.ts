@@ -23,7 +23,7 @@ export class GroupDetailPage {
   @ViewChild(Navbar) navBar: Navbar;
 
   groupFind:FindOutModel;
-  groupDetail: GroupModel;
+  playerDetail: GroupModel;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -36,20 +36,23 @@ export class GroupDetailPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad GroupDetailPage');
     this.navBar.backButtonClick = this.backButtonClick;
-    console.log('GroupDetailPage',this.groupDetail)
+    console.log('GroupDetailPage',this.playerDetail)
   }
 
   //默认页面初始化
   init() {
     this.groupFind = new FindOutModel();
     this.groupFind.userId = this.paramsService.user.userId;   //获取当前用户Id
-    this.groupDetail = new GroupModel();
-    this.groupDetail = this.paramsService.group;            //获取上个页面点击的群组Id
+    this.playerDetail = new GroupModel();
+    this.playerDetail = this.paramsService.group;            //获取上个页面点击的群组Id
   }
 
   //跳转修改页面
   editgroup(){
-    this.navCtrl.push('GroupEditPage')
+    //编辑页面
+    console.log('跳转参与人编辑');
+    this.navCtrl.push('GroupAddPage');
+
   }
 
   backButtonClick = (e: UIEvent) => {
