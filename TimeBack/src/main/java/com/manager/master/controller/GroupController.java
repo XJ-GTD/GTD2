@@ -113,9 +113,9 @@ public class GroupController {
     @ResponseBody
     public BaseOutDto findGroupMember(@RequestBody GroupFindInDto inDto){
         BaseOutDto outDto=new BaseOutDto();
-        Map<String,List<GroupMemberOutDto>> map=new HashMap<String,List<GroupMemberOutDto>>();
+        Map<String,List<GroupMemberDto>> map=new HashMap<String,List<GroupMemberDto>>();
         try{
-            List<GroupMemberOutDto> list= groupService.findMember(inDto);
+            List<GroupMemberDto> list= groupService.findMember(inDto);
             if(list!=null) {
                 map.put("groupMemberList", list);
                 outDto.setData(map);
@@ -180,7 +180,7 @@ public class GroupController {
      */
     @RequestMapping(value = "/update_member_status",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto update_memberstatus(@RequestBody InformInDto inDto){
+    public BaseOutDto update_memberstatus(@RequestBody GroupFindInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try{
             int code=groupService.updateStatus(inDto);
