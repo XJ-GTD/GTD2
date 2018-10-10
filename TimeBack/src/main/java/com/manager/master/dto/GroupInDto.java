@@ -11,7 +11,7 @@ public class GroupInDto {
     private String condition;
     private Integer labelId;                    //标签ID
     private List<Integer> labelIds;             //标签ID List
-    private List<GroupMemberDto> groupMember;        //群成员 List
+    private List<GroupMemberDto> groupMembers;        //群成员 List
 
 
     public int getGroupId() {
@@ -55,11 +55,11 @@ public class GroupInDto {
     }
 
     public List<GroupMemberDto> getMember() {
-        return groupMember;
+        return groupMembers;
     }
 
-    public void setMember(List<GroupMemberDto> groupMember) {
-        this.groupMember = groupMember;
+    public void setMember(List<GroupMemberDto> groupMembers) {
+        this.groupMembers = groupMembers;
     }
 
     public int getUserId() {
