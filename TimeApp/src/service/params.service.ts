@@ -49,7 +49,8 @@ export class ParamsService {
     this._user.accountQq = window.localStorage.getItem('accountQq');
     this._user.accountWechat = window.localStorage.getItem('accountWechat');
     this._user.headimgUrl = window.localStorage.getItem('headimgUrl');
-    return this._user;
+    if  (this._user.userName == null) return null;
+      return this._user;
   }
 
   set user(value: UserModel) {

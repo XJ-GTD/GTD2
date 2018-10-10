@@ -232,7 +232,7 @@ export class SpeechPage {
 
   ionViewWillLeave() {
     let options: NativeTransitionOptions = {
-      direction: 'up',
+      direction: 'down',
       duration: 500,
       slowdownfactor: 3,
       slidePixels: 20,
