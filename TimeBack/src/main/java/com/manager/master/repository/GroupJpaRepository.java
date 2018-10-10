@@ -149,8 +149,9 @@ public interface GroupJpaRepository extends JpaRepository<GtdGroupEntity,Integer
      * @param groupId
      * @param labelId
      */
+    @Modifying
     @Query(value = "DELETE FROM gtd_group_label WHERE GROUP_ID=?1 AND LABEL_ID=?2",nativeQuery = true)
-    void deleteGroupLabelEntityByGroupIdAndLabelId(int groupId,int labelId);
+    void deleteByGroupIdAndLabelId(int groupId,int labelId);
 
 }
 

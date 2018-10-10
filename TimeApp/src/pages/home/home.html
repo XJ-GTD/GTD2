@@ -13,8 +13,8 @@
     </ion-buttons>
     <ion-searchbar ></ion-searchbar>
     <ion-buttons end>
-      <button ion-button icon-only>
-        <ion-icon name="settings"></ion-icon>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="settings"  ></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>
@@ -43,90 +43,12 @@
       <h3>
         完成日：{{sd.scheduleFinishDate}}
       </h3>
-      <p><label> {{sd.labelName}}</label></p>
+      <p><label> {{sd.labelName}}</label> &nbsp;</p>
       <ion-note item-end>
         截止于{{sd.scheduleDeadline}}
       </ion-note>
     </ion-item>
 
-
-
-
-    <ion-item  *ngFor="let sd of scheduleList"  (click)="showScheduleDetail(sd)">
-      <!--<ion-avatar item-start>-->
-      <!--</ion-avatar>-->
-      <ion-icon name='planet' item-start></ion-icon>
-      <h2>
-        {{sd.scheduleName}}
-      </h2>
-      <h3>
-        完成日：{{sd.scheduleFinishDate}}
-      </h3>
-      <p><label> {{sd.labelName}}</label></p>
-      <ion-note item-end>
-        截止于{{sd.scheduleDeadline}}
-      </ion-note>
-    </ion-item>
-    <ion-item  *ngFor="let sd of scheduleList"  (click)="showScheduleDetail(sd)">
-      <!--<ion-avatar item-start>-->
-      <!--</ion-avatar>-->
-      <ion-icon name='planet' item-start></ion-icon>
-      <h2>
-        {{sd.scheduleName}}
-      </h2>
-      <h3>
-        完成日：{{sd.scheduleFinishDate}}
-      </h3>
-      <p><label> {{sd.labelName}}</label></p>
-      <ion-note item-end>
-        截止于{{sd.scheduleDeadline}}
-      </ion-note>
-    </ion-item>
-    <ion-item  *ngFor="let sd of scheduleList"  (click)="showScheduleDetail(sd)">
-      <!--<ion-avatar item-start>-->
-      <!--</ion-avatar>-->
-      <ion-icon name='planet' item-start></ion-icon>
-      <h2>
-        {{sd.scheduleName}}
-      </h2>
-      <h3>
-        完成日：{{sd.scheduleFinishDate}}
-      </h3>
-      <p><label> {{sd.labelName}}</label></p>
-      <ion-note item-end>
-        截止于{{sd.scheduleDeadline}}
-      </ion-note>
-    </ion-item>
-    <ion-item  *ngFor="let sd of scheduleList"  (click)="showScheduleDetail(sd)">
-      <!--<ion-avatar item-start>-->
-      <!--</ion-avatar>-->
-      <ion-icon name='planet' item-start></ion-icon>
-      <h2>
-        {{sd.scheduleName}}
-      </h2>
-      <h3>
-        完成日：{{sd.scheduleFinishDate}}
-      </h3>
-      <p><label> {{sd.labelName}}</label></p>
-      <ion-note item-end>
-        截止于{{sd.scheduleDeadline}}
-      </ion-note>
-    </ion-item>
-    <ion-item  *ngFor="let sd of scheduleList"  (click)="showScheduleDetail(sd)">
-      <!--<ion-avatar item-start>-->
-      <!--</ion-avatar>-->
-      <ion-icon name='planet' item-start></ion-icon>
-      <h2>
-        {{sd.scheduleName}}
-      </h2>
-      <h3>
-        完成日：{{sd.scheduleFinishDate}}
-      </h3>
-      <p><label> {{sd.labelName}}</label></p>
-      <ion-note item-end>
-        截止于{{sd.scheduleDeadline}}
-      </ion-note>
-    </ion-item>
   </ion-list>
 
 </ion-content>
@@ -140,5 +62,15 @@
     <img  src="assets/imgs/vi.png" (click)="openVoice()"/>
   </ion-avatar>
 </ion-footer>
+
+<ion-menu [content]="mycontent">
+  <ion-content>
+    <ion-list>
+      <ion-item menuClose detail-none>Close Menu</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-nav [root]="rootPage"></ion-nav>
+
 
 

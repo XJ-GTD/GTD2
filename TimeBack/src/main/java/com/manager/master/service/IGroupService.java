@@ -24,7 +24,7 @@ public interface IGroupService {
     List<GroupOutDto> getListGroupByMessage(GroupInDto inDto);
 
     //查詢群成員
-    List<GroupMemberOutDto> findMember(GroupFindInDto inDto);
+    List<GroupMemberDto> findMember(GroupFindInDto inDto);
 
     //添加群组
     int addGroup(GroupInDto inDto);
@@ -45,7 +45,7 @@ public interface IGroupService {
     //int member(GroupInDto inDto);
 
     //群成员状态改变
-    int updateStatus(InformInDto inDto);
+    int updateStatus(GroupFindInDto inDto);
 
     /**
      * 创建编辑日程添加参与人用
