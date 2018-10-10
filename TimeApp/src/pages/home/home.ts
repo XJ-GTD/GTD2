@@ -11,6 +11,9 @@ import { ScheduleModel } from "../../model/schedule.model";
 import { ScheduleOutModel } from "../../model/out/schedule.out.model";
 import { CalendarModel } from "../../model/calendar.model";
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
+import {CalendarModule,CalendarComponentOptions } from "ion2-calendar";
+
+
 
 /**
  * Generated class for the HomePage page.
@@ -34,7 +37,7 @@ export class HomePage {
   remindList: Array<string>;  //全部提醒时间
 
   calendarList: Array<CalendarModel>;
-  calendar: CalendarModel;    //当前
+  calendar: CalendarModel = new CalendarModel();    //当前
   lastCalendar: CalendarModel;  //上一个
   nextCalendar: CalendarModel;  //下一个
 
@@ -45,6 +48,16 @@ export class HomePage {
   scheduleList: Array<ScheduleModel>;
   schedule: ScheduleModel;
   findSchedule: ScheduleOutModel; //查询日程条件
+  // calendar setting
+  //dateMulti: string[];
+  type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
+  options: CalendarComponentOptions = {
+    pickMode: 'single',
+    from:new Date(1975, 0, 1),
+    //weekdays:this.calendar.weekDay,
+    daysConfig:[]
+  };
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private webSocketService: WebsocketService,
@@ -75,6 +88,16 @@ export class HomePage {
 
     let today = new Date();
     this.findTodaySchedule( today.getFullYear(), today.getMonth() + 1, today.getDate());
+
+    let _daysConfig = [];
+    for (let i = 0; i < 5; i++) {
+      _daysConfig.push({
+        date: new Date(2018, 9, i + 1),
+        subTitle: `\u25B2`
+      })
+    }
+    this.options.daysConfig = _daysConfig;
+
   }
 
   calendarControl() {
