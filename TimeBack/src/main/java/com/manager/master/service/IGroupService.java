@@ -36,7 +36,7 @@ public interface IGroupService {
     int exitGroup(GroupInDto inDto);
 
     //编辑群组
-    int updateGname(GroupMemberInDto inDto);
+    int updateGname(GroupInDto inDto);
 
     //删除/添加群成员
     //int addOrDelMember(GroupMemberInDto inDto);

@@ -105,6 +105,7 @@ export class GroupListPage {
   playerShowDetail(groupDetail){
 
     console.log('跳转参与人详情');
+    this.paramsService.groupType = this.groupType;
     this.paramsService.group = groupDetail;
     this.navCtrl.push('GroupDetailPage');
 
@@ -129,19 +130,31 @@ export class GroupListPage {
         console.log("删除群组：" + this.data);
 
         let loader = this.loadingCtrl.create({
-          content: "服务器繁忙,请稍后再试",
+          content: this.data.message,
           duration: 1500
         });
 
         if (this.data.code == 0) {
-
+          console.log("删除群组：" + this.data.message);
+          loader.present();
+          this.refreshPage();
         } else if (this.data.code == -1) {
-          loader.present()
+          loader.present();
         } else if(this.data.code == 1) {
-
+          console.log("删除群组：" + this.data.message);
+          loader.present()
         }
 
       })
+  }
+
+  refreshPage(){
+    let reload = function () {
+      return new Promise(resolve => {
+        window.location.reload();
+      });
+    }
+    this.navCtrl.push('GroupListPage',reload());
   }
 
   //返回方法
