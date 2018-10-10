@@ -80,7 +80,11 @@ export class GroupAddPage {
 
     }
 
-    this.findLabel(1);
+    if (this.playerType == 'person') {
+      this.findLabel(3);
+    }else if (this.playerType == 'group') {
+      this.findLabel(1);
+    }
 
   }
 
@@ -101,7 +105,6 @@ export class GroupAddPage {
       this.playerDetail.userId = this.paramsService.user.userId;
       this.playerDetail.groupMembers = this.groupMemberList;
       this.playerDetail.groupName = this.groupMemberList[0].userName;
-      this.findLabel(3);
       this.playerDetail.labelIds = [];
       this.playerDetail.labelIds.push(this.labels[0].labelId);
       this.playerDetail.groupHeadImgUrl = "./assets/imgs/headImg.jpg";

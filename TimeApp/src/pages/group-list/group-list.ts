@@ -149,12 +149,7 @@ export class GroupListPage {
   }
 
   refreshPage(){
-    let reload = function () {
-      return new Promise(resolve => {
-        window.location.reload();
-      });
-    }
-    this.navCtrl.push('GroupListPage',reload());
+    this.navCtrl.push('GroupListPage');
   }
 
   //返回方法
