@@ -52,6 +52,9 @@ public class GroupServicelmpl implements IGroupService {
     private LabelJpaRespository labelJpaRespository;
 
     @Resource
+    private LabelRuleJpaRepository labelRuleJpaRepository;
+
+    @Resource
     private CenterGroupScheduleRepository groupScheduleJpaRepository;
 
     @Resource
@@ -427,7 +430,7 @@ public class GroupServicelmpl implements IGroupService {
             if(labelIds.size()!=1&&i== FIND_GROUP_LABELTYPE){
                 throw new ServiceException("群组不能添加单人标签");
             }
-            if(i==1){
+            if(labelRuleJpaRepository.getIdByLabel(i)!=null){
                 if (groupMembers.size()==0) throw new ServiceException("权限群组需添加群成员");
             }
         }
@@ -478,7 +481,7 @@ public class GroupServicelmpl implements IGroupService {
             group.setCreateDate(new Timestamp(date.getTime()));
             boolean flag = true;
             for (Integer i : labelIds) {
-                if (i == 1) {//判断是否含有权限标签
+                if (labelRuleJpaRepository.getIdByLabel(i)!=null) {//判断是否含有权限标签
                     flag = false;
                 }
             }
@@ -691,7 +694,7 @@ public class GroupServicelmpl implements IGroupService {
             boolean flag = false; //判断是否为权限群组
             Set<GtdLabelEntity> labels = group.getLabel();
             for (GtdLabelEntity label : labels) {
-                if (label.getLabelId() == 1) {
+                if (labelRuleJpaRepository.getIdByLabel(label.getLabelId())!=null) {
                     flag = true;
                 }
             }
@@ -805,7 +808,7 @@ public class GroupServicelmpl implements IGroupService {
             boolean flag = true;
             int type = 0;//本地群
             for (GtdLabelEntity g: labels) {
-                if (g.getLabelId() == 1) { //判断群组标签中是否含有权限标签
+                if (labelRuleJpaRepository.getIdByLabel(g.getLabelId())!=null) { //判断群组标签中是否含有权限标签
                     flag = false;
                     type = 1;//权限群
                     for (int i = 0; i < labelId.size(); i++) {
@@ -850,7 +853,7 @@ public class GroupServicelmpl implements IGroupService {
             for (Integer i : labelId) {
                 GtdLabelEntity labelEntity = labelJpaRespository.findGtdLabelEntityByLabelId(i);
                 set.add(labelEntity);
-                if (i == 1) {//判断新增有没有权限标签
+                if (labelRuleJpaRepository.getIdByLabel(i)!=null) {//判断新增有没有权限标签
                     status = true;
                 }
             }
