@@ -80,7 +80,7 @@ export class GroupAddPage {
 
     }
 
-    this.findLabel();
+    this.findLabel(1);
 
   }
 
@@ -101,6 +101,9 @@ export class GroupAddPage {
       this.playerDetail.userId = this.paramsService.user.userId;
       this.playerDetail.groupMembers = this.groupMemberList;
       this.playerDetail.groupName = this.groupMemberList[0].userName;
+      this.findLabel(3);
+      this.playerDetail.labelIds = [];
+      this.playerDetail.labelIds.push(this.labels[0].labelId);
       this.playerDetail.groupHeadImgUrl = "./assets/imgs/headImg.jpg";
     } else if (this.playerType == 'group') {
       this.playerDetail.userId = this.paramsService.user.userId;
@@ -168,10 +171,10 @@ export class GroupAddPage {
 
 
   //查询系统标签
-  findLabel() {
+  findLabel(type) {
     this.labelFind = new LabelOutModel();
     this.labelFind.userId = this.paramsService.user.userId;
-    this.labelFind.findType = 1;  //暂为硬代码，默认群组
+    this.labelFind.findType = type;  //暂为硬代码，默认群组
 
     this.http.post(AppConfig.USER_LABEL_URL, this.labelFind, AppConfig.HEADER_OPTIONS_JSON)
       .subscribe(data => {
@@ -194,6 +197,7 @@ export class GroupAddPage {
     // 重写返回方法
     this.paramsService.group=null;
     this.paramsService.groupType = null;
-    this.navCtrl.pop();
+    // this.navCtrl.pop();
+    this.navCtrl.push('GroupListPage');
   }
 }

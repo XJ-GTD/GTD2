@@ -172,7 +172,7 @@ public class UserServiceImpl implements IUserService{
         if (userId == 0){
             throw new ServiceException("用户ID不能为空");
         }
-        if (labelType != 0 && labelType != 1){
+        if (labelType == 0){
             throw new ServiceException("标签类型不能为空");
         }
         List<Map> labelList = labelJpaRespository.findLabelList(labelType);
