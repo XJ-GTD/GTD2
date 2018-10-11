@@ -12,23 +12,31 @@ import { Base64 } from "@ionic-native/base64";
 import { LocalNotifications } from "@ionic-native/local-notifications";
 import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification';
 import { NativePageTransitions } from "@ionic-native/native-page-transitions";
+import {SpeechPage} from "../pages/speech/speech";
+import {ParamsService} from "../service/params.service";
+import {XiaojiAlarmclockService} from "../service/xiaoji-alarmclock.service";
+import {XiaojiAssistantService} from "../service/xiaoji-assistant.service";
 
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
+    SpeechPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp, {
-      tabsHideOnSubPages: 'true'
+      tabsHideOnSubPages: 'true',
+      //强制使用IOS风格
+      mode: 'ios'
     }),
     IonicStorageModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,
+    SpeechPage
   ],
   providers: [
     StatusBar,
@@ -38,6 +46,9 @@ import { NativePageTransitions } from "@ionic-native/native-page-transitions";
     LocalNotifications,
     PhonegapLocalNotification,
     NativePageTransitions,
+    ParamsService,
+    XiaojiAlarmclockService,
+    XiaojiAssistantService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

@@ -73,11 +73,12 @@ export class SpeechPage {
 
   //扩展按钮
   openSocial(flag: number, fab: FabContainer) {
-    console.log('Share in ' + flag);
+    //console.log('Share in ' + flag);
     if (flag == 1) {
       //切换手动输入模式
       this.modeFlag = !this.modeFlag;
       this.initFlag = false;
+      return;
     }
     if (flag == 2) {
       //进入群组
