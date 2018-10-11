@@ -273,6 +273,8 @@ public class GroupServicelmpl implements IGroupService {
             GroupOutDto group = new GroupOutDto();
             group.setGroupId(i);
             group.setGroupName(groupEntity.getGroupName());
+            group.setGroupHeadImg(groupEntity.getGroupHeadimgUrl());
+            group.setGroupCreateId(groupEntity.getCreateId());
             Set<GtdLabelEntity> set = groupEntity.getLabel();
             //群组标签
             List<LabelOutDto> labelOut = new ArrayList<LabelOutDto>();
