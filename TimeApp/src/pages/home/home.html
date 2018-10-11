@@ -6,22 +6,19 @@
 -->
 <ion-header>
   <ion-toolbar>
-    <ion-buttons start>
-      <button ion-button icon-only>
-        <ion-icon name="person"></ion-icon>
-      </button>
-    </ion-buttons>
-    <ion-searchbar ></ion-searchbar>
+    <ion-avatar start padding-left>
+      <img src="assets/imgs/Voice robot.png" width="35px" />
+    </ion-avatar>
     <ion-buttons end>
-      <button ion-button icon-only menuToggle >
-        <ion-icon name="settings"  ></ion-icon>
+      <button ion-button icon-only menuToggle>
+        <img src="assets/imgs/set up.png" width="25px" />
       </button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="homeCalendar">
+  <div class="homeCalendar" >
             <ion-calendar  [options]="options"
                            (onSelect)="findTodaySchedule($event)">
             </ion-calendar>
@@ -43,7 +40,9 @@
       <h3>
         完成日：{{sd.scheduleFinishDate}}
       </h3>
-      <p><label> {{sd.labelName}}</label> &nbsp;</p>
+      <p>
+        <ion-badge>{{sd.labelName}}</ion-badge>
+      </p>
       <ion-note item-end>
         截止于{{sd.scheduleDeadline}}
       </ion-note>
@@ -54,23 +53,11 @@
 </ion-content>
 
 <ion-footer>
-    <!--<div  class="assistant"  (click)="openVoice()">-->
-      <!--<img  src="assets/imgs/Voice.gif"/>-->
-    <!--</div>-->
-
-  <ion-avatar style=" margin-top:-150px">
-    <img  src="assets/imgs/vi.png" (click)="openVoice()"/>
-  </ion-avatar>
+    <div  class=" animated bounceIn  assistant"  (click)="openVoice()" >
+      <img  src="assets/imgs/vi.png"/>
+    </div>
 </ion-footer>
 
-<ion-menu [content]="mycontent">
-  <ion-content>
-    <ion-list>
-      <ion-item menuClose detail-none>Close Menu</ion-item>
-    </ion-list>
-  </ion-content>
-</ion-menu>
-<ion-nav [root]="rootPage"></ion-nav>
 
 
 

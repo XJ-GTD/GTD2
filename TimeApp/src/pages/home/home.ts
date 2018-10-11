@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Slides } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { WebsocketService } from "../../service/websocket.service";
 import { ParamsService } from "../../service/params.service";
 import { XiaojiAlarmclockService } from "../../service/xiaoji-alarmclock.service";
@@ -10,8 +10,8 @@ import { TimeService } from "../../service/time.service";
 import { ScheduleModel } from "../../model/schedule.model";
 import { ScheduleOutModel } from "../../model/out/schedule.out.model";
 import { CalendarModel } from "../../model/calendar.model";
-import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
 import {CalendarModule,CalendarComponentOptions } from "../../components/ion2-calendar/index";
+import {SpeechPage} from "../speech/speech";
 
 
 
@@ -58,7 +58,7 @@ export class HomePage {
   };
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public modalCtr: ModalController,public navCtr: NavController,  public navParams: NavParams,
               private webSocketService: WebsocketService,
               private http: HttpClient,
               private timeService: TimeService,
@@ -267,28 +267,29 @@ export class HomePage {
         }
       })
   }
-
   //展示数据详情
   showScheduleDetail(schedule){
     this.schedule = new ScheduleModel();
     this.schedule = schedule;
     this.paramsService.schedule = this.schedule;
     console.log("schedule:" + this.paramsService.schedule);
-    this.navCtrl.push("ScheduleDetailPage");
+    this.navCtr.push("ScheduleDetailPage");
   }
 
   openVoice() {
-    let options: NativeTransitionOptions = {
-      direction: 'up',
-      duration: 500,
-      slowdownfactor: 3,
-      slidePixels: 20,
-      iosdelay: 100,
-      androiddelay: 150,
-      fixedPixelsTop: 0,
-      fixedPixelsBottom: 60
-    };
-    this.nativePageTransitions.slide(options);
-    this.navCtrl.push(this.tab1Root);
+    // let options: NativeTransitionOptions = {
+    //   direction: 'up',
+    //   duration: 1500,
+    //   slowdownfactor: 3,
+    //   slidePixels: 20,
+    //   iosdelay: 100,
+    //   androiddelay: 150,
+    //   fixedPixelsTop: 0,
+    //   fixedPixelsBottom: 60
+    // };
+    // //this.nativePageTransitions.slide(options);
+    let tab1RootModal  = this.modalCtr.create(SpeechPage);
+    tab1RootModal.present();
+    //this.navCtrl.push()
   }
 }
