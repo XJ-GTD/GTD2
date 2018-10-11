@@ -29,6 +29,8 @@ export class SpeechPage {
 
   @ViewChild(Content) content: Content;
 
+
+
   data: any;
   modeFlag: boolean = true;   //判断助手模式 true语音false手输
   initFlag:boolean = false;   //页面初始化
@@ -198,6 +200,11 @@ export class SpeechPage {
             }, 1500);
           }
 
+          this.inputText = "";
+        }
+        else if (this.data.code == -1) {
+
+          // this.xiaojiSpeech.speakText();
           this.inputText = "";
         }
 

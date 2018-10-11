@@ -1,0 +1,24 @@
+<ion-menu [content]="homemenu" side="right">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>菜单</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <button ion-item (click)="openPage(homePage)">
+        隐私模式
+      </button>
+      <button ion-item (click)="openPage(friendsPage)">
+        群组
+      </button>
+      <button ion-item (click)="openPage(eventsPage)">
+        历史纪录
+      </button>
+      <button ion-item (click)="userSet()">
+        设置
+      </button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-nav #homemenu [root]="menuPage"></ion-nav>

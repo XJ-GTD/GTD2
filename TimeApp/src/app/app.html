@@ -1,24 +1,2 @@
-<ion-menu [content]="mycontent" side="right">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>设置</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content>
-    <ion-list>
-      <button ion-item (click)="openPage(homePage)">
-        隐私模式
-      </button>
-      <button ion-item (click)="openPage(friendsPage)">
-        群组
-      </button>
-      <button ion-item (click)="openPage(eventsPage)">
-        Events
-      </button>
-      <button ion-item (click)="closeMenu()">
-       退出
-      </button>
-    </ion-list>
-  </ion-content>
-</ion-menu>
+
 <ion-nav [root]="rootPage" #mycontent></ion-nav>

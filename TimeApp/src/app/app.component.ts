@@ -42,7 +42,8 @@ export class MyApp {
           this.rootPage = 'WelcomePage';
         }
       } else {
-        this.rootPage = 'HomePage';
+        // this.rootPage = 'HomePage';
+        this.rootPage = 'HomeMenuPage';
       }
 
     });
