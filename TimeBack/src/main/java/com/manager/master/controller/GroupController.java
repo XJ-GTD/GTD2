@@ -73,6 +73,7 @@ public class GroupController {
             if(list!=null) {
                 map.put("group", list);
                 outDto.setData(map);
+                outDto.setMessage("查询成功");
             }else outDto.setCode(ResultCode.REPEAT).setMessage("数据为空");
         }catch (Exception e){
             logger.info(e.getMessage());
@@ -96,6 +97,7 @@ public class GroupController {
             if(list!=null) {
                 map.put("groupList", list);
                 outDto.setData(map);
+                outDto.setMessage("查询成功");
             }else outDto.setCode(ResultCode.REPEAT).setMessage("数据为空");
         }catch (Exception e){
             logger.info(e.getMessage());
@@ -119,6 +121,7 @@ public class GroupController {
             if(list!=null) {
                 map.put("groupMemberList", list);
                 outDto.setData(map);
+                outDto.setMessage("查询成功");
             }else outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
         }catch (Exception e){
             logger.info(e.getMessage());
