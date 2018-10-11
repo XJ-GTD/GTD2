@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { AlertController, Content, FabContainer, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, Content, FabContainer, IonicPage, LoadingController, NavController, NavParams,ViewController } from 'ionic-angular';
 import { XiaojiAssistantService } from "../../service/xiaoji-assistant.service";
 import { ParamsService } from "../../service/params.service";
 import { HttpClient } from "@angular/common/http";
@@ -8,7 +8,6 @@ import { AiuiModel } from "../../model/aiui.model";
 import { ScheduleModel } from "../../model/schedule.model";
 import { File } from "@ionic-native/file";
 import { Base64 } from "@ionic-native/base64";
-import { NativePageTransitions, NativeTransitionOptions } from "@ionic-native/native-page-transitions";
 
 declare var cordova: any;
 
@@ -52,13 +51,13 @@ export class SpeechPage {
   messages: Array<AiuiModel>; //聊天数据队列
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
+              public viewCtrl: ViewController,
               private paramsService: ParamsService,
               private http: HttpClient,
               private file: File,
               private base64: Base64,
               private loadingCtrl: LoadingController,
               private alert: AlertController,
-              private nativePageTransitions: NativePageTransitions,
               private xiaojiSpeech: XiaojiAssistantService) {
 
     this.init();
@@ -236,31 +235,10 @@ export class SpeechPage {
     }, 100);
   }
 
-  /*==================== 聊天界面 end ===================*/
-
-  ionViewWillLeave() {
-    let options: NativeTransitionOptions = {
-      direction: 'down',
-      duration: 500,
-      slowdownfactor: 3,
-      slidePixels: 20,
-      iosdelay: 100,
-      androiddelay: 150,
-      fixedPixelsTop: 0,
-      fixedPixelsBottom: 60
-    };
-
-    this.nativePageTransitions.slide(options)
-      .then(onSuccess => {
-
-      })
-      .catch(onError => {
-
-      });
-  }
   //返回方法
   goBack() {
-    this.navCtrl.pop();
+    //this.navCtrl.pop();
+    this.viewCtrl.dismiss();
   }
 
 }
