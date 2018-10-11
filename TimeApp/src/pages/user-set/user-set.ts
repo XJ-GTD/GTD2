@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {ParamsService} from "../../service/params.service";
 
 /**
  * Generated class for the UserSetPage page.
@@ -16,7 +17,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class UserSetPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private paramsService: ParamsService) {
   }
 
   ionViewDidLoad() {
@@ -25,6 +27,7 @@ export class UserSetPage {
 
 
   logOut() {
-
+    this.paramsService.user = null;
+    this.navCtrl.push("UserLoginPage");
   }
 }

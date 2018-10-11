@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component} from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { WebsocketService } from "../../service/websocket.service";
 import { ParamsService } from "../../service/params.service";
@@ -10,8 +10,7 @@ import { TimeService } from "../../service/time.service";
 import { ScheduleModel } from "../../model/schedule.model";
 import { ScheduleOutModel } from "../../model/out/schedule.out.model";
 import { CalendarModel } from "../../model/calendar.model";
-import {CalendarModule,CalendarComponentOptions } from "../../components/ion2-calendar/index";
-import {SpeechPage} from "../speech/speech";
+import { CalendarComponentOptions } from "../../components/ion2-calendar/index";
 
 
 
@@ -29,7 +28,6 @@ import {SpeechPage} from "../speech/speech";
   providers: []
 })
 export class HomePage {
-  //@ViewChild(Slides) slides: Slides;
 
   tab1Root = 'SpeechPage';
   data: any;
@@ -58,12 +56,12 @@ export class HomePage {
   };
 
 
-  constructor(public modalCtr: ModalController,public navCtr: NavController,  public navParams: NavParams,
+  constructor(public navCtr: NavController,  public navParams: NavParams,
+              public modalCtr: ModalController,
               private webSocketService: WebsocketService,
               private http: HttpClient,
               private timeService: TimeService,
               private paramsService: ParamsService,
-              private nativePageTransitions: NativePageTransitions,
               private alarmClock: XiaojiAlarmclockService) {
 
     this.init();
@@ -277,19 +275,7 @@ export class HomePage {
   }
 
   openVoice() {
-    // let options: NativeTransitionOptions = {
-    //   direction: 'up',
-    //   duration: 1500,
-    //   slowdownfactor: 3,
-    //   slidePixels: 20,
-    //   iosdelay: 100,
-    //   androiddelay: 150,
-    //   fixedPixelsTop: 0,
-    //   fixedPixelsBottom: 60
-    // };
-    // //this.nativePageTransitions.slide(options);
-    let tab1RootModal  = this.modalCtr.create(SpeechPage);
+    let tab1RootModal  = this.modalCtr.create("SpeechPage");
     tab1RootModal.present();
-    //this.navCtrl.push()
   }
 }
