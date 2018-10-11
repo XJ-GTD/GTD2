@@ -1,14 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import {
-  AlertController,
-  Content,
-  FabContainer,
-  IonicPage,
-  LoadingController,
-  NavController,
-  NavParams,
-  ViewController
-} from 'ionic-angular';
+import { AlertController, Content, FabContainer, IonicPage, LoadingController, NavController, NavParams,ViewController } from 'ionic-angular';
 import { XiaojiAssistantService } from "../../service/xiaoji-assistant.service";
 import { ParamsService } from "../../service/params.service";
 import { HttpClient } from "@angular/common/http";

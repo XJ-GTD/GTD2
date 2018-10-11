@@ -67,7 +67,6 @@ export class HomePage {
     this.init();
     this.setAlarmList();
   }
-
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
 
