@@ -7,7 +7,7 @@ public class GroupInDto {
     private int groupId;                       //群组ID
     private String labelName;                  //标签名
     private String groupName;                  //参与人名
-    private String groupHeadImgUrl;           //群头像
+    private String groupHeadImg;               //群头像
     private String condition;
     private Integer labelId;                    //标签ID
     private List<Integer> labelIds;             //标签ID List
@@ -38,12 +38,12 @@ public class GroupInDto {
         this.labelName = labelName;
     }
 
-    public String getGroupHeadImgUrl() {
-        return groupHeadImgUrl;
+    public String getGroupHeadImg() {
+        return groupHeadImg;
     }
 
-    public void setGroupHeadImgUrl(String groupHeadImgUrl) {
-        this.groupHeadImgUrl = groupHeadImgUrl;
+    public void setGroupHeadImg(String groupHeadImg) {
+        this.groupHeadImg = groupHeadImg;
     }
 
     public List<Integer> getLabelIds() {

@@ -151,9 +151,15 @@ public class ScheduleRepository {
             sql += " AND DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('"+scheduleDeadline+"','%Y-%m-%d %H:%i')";
         }
         if (scheduleStarttime != null && !"".equals(scheduleStarttime) && scheduleDeadline != null && !"".equals(scheduleDeadline)) {
-            sql += " AND ( DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') <= DATE_FORMAT('"+scheduleDeadline+"','%Y-%m-%d %H:%i') AND DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') >= DATE_FORMAT('" + scheduleStarttime + "','%Y-%m-%d %H:%i')\n " +
+            sql += " AND ( \n" +
+                    " (DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') <= DATE_FORMAT('"+scheduleDeadline+"','%Y-%m-%d %H:%i') AND DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') >= DATE_FORMAT('" + scheduleStarttime + "','%Y-%m-%d %H:%i'))\n " +
                     " OR \n" +
-                    " DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('" + scheduleDeadline + "','%Y-%m-%d %H:%i') AND DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') >= DATE_FORMAT('" + scheduleStarttime + "','%Y-%m-%d %H:%i'))";
+                    " (DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') <= DATE_FORMAT('" + scheduleDeadline + "','%Y-%m-%d %H:%i') AND DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') >= DATE_FORMAT('" + scheduleStarttime + "','%Y-%m-%d %H:%i'))\n " +
+                    " OR \n " +
+                    " ((DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') >= DATE_FORMAT('"+ scheduleStarttime +"','%Y-%m-%d %H:%i')  AND DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') <=  DATE_FORMAT('" + scheduleStarttime + "','%Y-%m-%d %H:%i'))\n" +
+                    " AND \n" +
+                    " (DATE_FORMAT(schedule_table.SCHEDULE_DEADLINE,'%Y-%m-%d %H:%i') >= DATE_FORMAT('"+ scheduleDeadline +"','%Y-%m-%d %H:%i')  AND DATE_FORMAT(schedule_table.SCHEDULE_STARTTIME,'%Y-%m-%d %H:%i') <=  DATE_FORMAT('" + scheduleDeadline + "','%Y-%m-%d %H:%i')))\n" +
+                    " )";
         }
         return  em.createNativeQuery(sql).getResultList();
     }

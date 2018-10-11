@@ -155,7 +155,7 @@ export class ScheduleAddPage {
         });
         if (this.data.code == 0) {
           loader.present();
-          this.backButtonClick;
+          this.goBack();
           console.log("发布成功");
         } else {
           loader.present();
@@ -178,5 +178,12 @@ export class ScheduleAddPage {
     // 重写返回方法
     this.paramsService.schedule=null;
     this.navCtrl.pop();
+  }
+
+  goBack() {
+    // 重写返回方法
+    this.paramsService.schedule=null;
+    this.navCtrl.pop();
+    // this.navCtrl.push('GroupListPage');
   }
 }

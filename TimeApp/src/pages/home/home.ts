@@ -63,7 +63,7 @@ export class HomePage {
               private http: HttpClient,
               private timeService: TimeService,
               private paramsService: ParamsService,
-              //private nativePageTransitions: NativePageTransitions,
+              private nativePageTransitions: NativePageTransitions,
               private alarmClock: XiaojiAlarmclockService) {
 
     this.init();

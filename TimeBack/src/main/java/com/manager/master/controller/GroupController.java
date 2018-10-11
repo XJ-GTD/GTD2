@@ -73,6 +73,7 @@ public class GroupController {
             if(list!=null) {
                 map.put("group", list);
                 outDto.setData(map);
+                outDto.setMessage("查询成功");
             }else outDto.setCode(ResultCode.REPEAT).setMessage("数据为空");
         }catch (Exception e){
             logger.info(e.getMessage());
@@ -96,6 +97,7 @@ public class GroupController {
             if(list!=null) {
                 map.put("groupList", list);
                 outDto.setData(map);
+                outDto.setMessage("查询成功");
             }else outDto.setCode(ResultCode.REPEAT).setMessage("数据为空");
         }catch (Exception e){
             logger.info(e.getMessage());
@@ -113,12 +115,13 @@ public class GroupController {
     @ResponseBody
     public BaseOutDto findGroupMember(@RequestBody GroupFindInDto inDto){
         BaseOutDto outDto=new BaseOutDto();
-        Map<String,List<GroupMemberOutDto>> map=new HashMap<String,List<GroupMemberOutDto>>();
+        Map<String,List<GroupMemberDto>> map=new HashMap<String,List<GroupMemberDto>>();
         try{
-            List<GroupMemberOutDto> list= groupService.findMember(inDto);
+            List<GroupMemberDto> list= groupService.findMember(inDto);
             if(list!=null) {
                 map.put("groupMemberList", list);
                 outDto.setData(map);
+                outDto.setMessage("查询成功");
             }else outDto.setCode(ResultCode.REPEAT).setMessage("信息查询失败");
         }catch (Exception e){
             logger.info(e.getMessage());
@@ -180,7 +183,7 @@ public class GroupController {
      */
     @RequestMapping(value = "/update_member_status",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto update_memberstatus(@RequestBody InformInDto inDto){
+    public BaseOutDto update_memberstatus(@RequestBody GroupFindInDto inDto){
         BaseOutDto outDto = new BaseOutDto();
         try{
             int code=groupService.updateStatus(inDto);
