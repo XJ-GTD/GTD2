@@ -41,7 +41,6 @@ export class ParamsService {
 
   get user(): UserModel {
     this._user = new UserModel();
-    this._user.userName = window.localStorage.getItem('userName');
     this._user.userId = parseInt(window.localStorage.getItem('userId'));
     this._user.accountId = parseInt(window.localStorage.getItem('accountId'));
     this._user.accountName = window.localStorage.getItem('accountName');
@@ -50,7 +49,11 @@ export class ParamsService {
     this._user.accountQueue = window.localStorage.getItem('accountQueue');
     this._user.accountQq = window.localStorage.getItem('accountQq');
     this._user.accountWechat = window.localStorage.getItem('accountWechat');
-    this._user.headimgUrl = window.localStorage.getItem('headimgUrl');
+    this._user.userName = window.localStorage.getItem('userName');
+    this._user.headImgUrl = window.localStorage.getItem('headImgUrl');
+    this._user.birthday = window.localStorage.getItem('birthday');
+    this._user.userSex = parseInt(window.localStorage.getItem('userSex'));
+    this._user.userContact = window.localStorage.getItem('userContact');
     if  (this._user.userName == null) return null;
       return this._user;
   }
@@ -66,7 +69,10 @@ export class ParamsService {
       window.localStorage.setItem('accountQueue', value.accountQueue);
       window.localStorage.setItem('accountQq', value.accountQq);
       window.localStorage.setItem('accountWechat', value.accountWechat);
-      window.localStorage.setItem('headimgUrl', value.headimgUrl);
+      window.localStorage.setItem('headimgUrl', value.headImgUrl);
+      window.localStorage.setItem('birthday', value.birthday);
+      window.localStorage.setItem('userSex', value.userSex.toString());
+      window.localStorage.setItem('userContact', value.userContact);
     } else {
       this._user = value;
     }

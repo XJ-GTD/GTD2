@@ -11,7 +11,6 @@ import com.manager.master.service.CreateQueueService;
 import com.manager.master.service.IUserService;
 import com.manager.util.CommonMethods;
 import com.manager.util.UUIDUtil;
-import javafx.scene.input.DataFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -141,7 +138,7 @@ public class UserServiceImpl implements IUserService{
             user.setUserId((Integer) object[0]);
             user.setUserName((String) object[1]);
             user.setHeadImgUrl((String) object[2]);
-            user.setBirthday((String) object[3]);
+            user.setBirthday(CommonMethods.stampToDate((Timestamp) object[3]));
             user.setUserSex((Integer) object[4]);
             user.setUserContact((String) object[5]);
             user.setAccountName((String) object[6]);
@@ -238,28 +235,52 @@ public class UserServiceImpl implements IUserService{
      * @param inDto
      */
     @Override
-    public int updateUserInfo(UserInfoInDto inDto) {
-        int flag = 0;
+    public UserOutDto updateUserInfo(UserInDto inDto) {
+
+        UserOutDto user = new UserOutDto();
+
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
         String update = format.format(date);
 
         Integer userId = inDto.getUserId();          // 用户ID
         String userName = inDto.getUserName();       // 昵称
-        String headimgUrl = inDto.getHeadimgUrl();   // 用户头像
+        String headImgUrl = inDto.getHeadImgUrl();   // 用户头像
         String birthday = inDto.getBirthday();       // 生日
         String userSex = inDto.getUserSex();         // 性别
-        String userContent = inDto.getUserContent();    // 联系方式
+        String userContent = inDto.getUserContact();    // 联系方式
 
         try {
-            userJpaRepository.updateUserInfo(userName,headimgUrl,birthday,userSex,userContent,userId,CommonMethods.dateToStamp(update),userId);
+            userJpaRepository.updateUserInfo(userName,headImgUrl,birthday,userSex,userContent,userId,CommonMethods.dateToStamp(update),userId);
+
+            Object[] object = (Object[]) userRepository.findUserInfo(userId);
+
+            if (object != null) {
+                user.setUserId((Integer) object[0]);
+                user.setUserName((String) object[1]);
+                user.setHeadImgUrl((String) object[2]);
+                user.setBirthday(CommonMethods.stampToDate((Timestamp) object[3]));
+                user.setUserSex((Integer) object[4]);
+                user.setUserContact((String) object[5]);
+                user.setAccountName((String) object[6]);
+                user.setAccountMobile((String) object[7]);
+                user.setAccountQq((String) object[8]);
+                user.setAccountQueue((String) object[9]);
+                user.setAccountWechat((String) object[10]);
+                user.setAccountUuid((String) object[11]);
+                user.setAccountId((Integer) object[12]);
+            } else {
+                logger.error(" ------ 数据异常");
+                throw new ServiceException("数据异常！");
+            }
+
         } catch (Exception ex){
             logger.error(" ------ updateUserInfo 语法错误");
             logger.error(ex.getMessage());
             ex.printStackTrace();
-            return 1;
+            return null;
         }
 
-        return flag;
+        return user;
     }
 }

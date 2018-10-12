@@ -12,9 +12,9 @@
 export class AppConfig {
 
   /* 环境URL 头部 */
-   private static REQUEST_URL: string = "http://www.guobaa.com/gtd";
+   // private static REQUEST_URL: string = "http://www.guobaa.com/gtd";
   //private static REQUEST_URL: string = "http://192.168.176:8080/gtd";
-  //private static REQUEST_URL: string = "http://192.168.99.54:8080/gtd";//连接本地数据库
+  private static REQUEST_URL: string = "http://192.168.99.35:8080/gtd";//连接本地数据库
 
   /* RabbitMq WebSocket */
   public static RABBITMQ_WS_URL: string = "ws://192.168.0.219:15674/ws";
@@ -48,6 +48,10 @@ export class AppConfig {
   public static USER_REGISTER_URL: string = AppConfig.USER_URL + "/register";   //注册 POST
 
   public static USER_LABEL_URL: string = AppConfig.USER_URL + "/find_label";           //查询标签
+
+  public static USER_UPDATE_PASSWORD_URL: string = AppConfig.USER_URL + "/update_password";           //修改密码
+
+  public static USER_UPDATE_INFO_URL: string = AppConfig.USER_URL + "/update_userinfo";           //修改资料
 
   //群组类
   public static GROUP_FIND_URL: string = AppConfig.GROUP_URL + "/find_all";    //全部群组查询 POST

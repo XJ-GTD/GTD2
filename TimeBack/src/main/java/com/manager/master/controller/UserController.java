@@ -191,25 +191,6 @@ public class UserController {
     }
 
     /**
-     * 调用创建对列测试样式
-     * @param
-     * @return
-     */
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    @ResponseBody
-    public BaseOutDto test() {
-        BaseOutDto outBean = new BaseOutDto();
-       System.out.print("开始创建对列");
-
-        try {
-            createQueueService.createQueue(189,"exchange");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return outBean;
-    }
-
-    /**
      * 标签查询
      * @param inDto
      * @return
@@ -317,15 +298,18 @@ public class UserController {
      */
     @RequestMapping(value = "/update_userinfo", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto updateUserInfo(@RequestBody UserInfoInDto infoInDto){
+    public BaseOutDto updateUserInfo(@RequestBody UserInDto infoInDto){
         BaseOutDto baseOutDto = new BaseOutDto();
+        UserOutDto user = new UserOutDto();
+        Map<String, UserOutDto> data = new TreeMap<>();
+
         // 获取入参
         Integer userId = infoInDto.getUserId();          // 用户ID
         String userName = infoInDto.getUserName();       // 昵称
-        String headimgUrl = infoInDto.getHeadimgUrl();   // 用户头像
+        String headImgUrl = infoInDto.getHeadImgUrl();   // 用户头像
         String birthday = infoInDto.getBirthday();       // 生日
         String userSex = infoInDto.getUserSex();         // 性别
-        String userContent = infoInDto.getUserContent();    // 联系方式
+        String userContact = infoInDto.getUserContact();    // 联系方式
         // 必须项检查
         if(userId == null || "".equals(userId)){
             baseOutDto.setCode(ResultCode.FAIL);
@@ -348,7 +332,7 @@ public class UserController {
                 return baseOutDto;
             }
         }
-        if(!CommonMethods.checkIsPhoneNumber(userContent)){
+        if(!CommonMethods.checkIsPhoneNumber(userContact)){
             baseOutDto.setCode(ResultCode.FAIL);
             baseOutDto.setMessage("[编辑失败]：联系方式格式不正确");
             logger.error("[编辑失败]：联系方式格式不正确");
@@ -366,23 +350,30 @@ public class UserController {
             logger.error("[编辑失败]：昵称不能包含非法字符");
             return baseOutDto;
         }
-        if(CommonMethods.checkMySqlReservedWords(headimgUrl)){
+        if(CommonMethods.checkMySqlReservedWords(headImgUrl)){
             baseOutDto.setCode(ResultCode.FAIL);
             baseOutDto.setMessage("[编辑失败]：用户头像不能包含非法字符");
             logger.error("[编辑失败]：用户头像不能包含非法字符");
             return baseOutDto;
         }
-        int flag = 0;
+
         try {
-            flag = userService.updateUserInfo(infoInDto);
+            user = userService.updateUserInfo(infoInDto);
         } catch (Exception e){
             e.printStackTrace();
         }
-        if(flag == 0){
+        if(user != null){
+            data.put("userInfo", user);
+            baseOutDto.setData(data);
             baseOutDto.setCode(ResultCode.SUCCESS);
             baseOutDto.setMessage("[编辑成功]");
             logger.info("[编辑成功]");
+        } else {
+            baseOutDto.setCode(ResultCode.REPEAT);
+            baseOutDto.setMessage("[编辑失败]");
+            logger.info("[编辑失败]");
         }
         return baseOutDto;
     }
+
 }

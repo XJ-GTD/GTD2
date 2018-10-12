@@ -51,5 +51,5 @@ public interface IUserService {
      *  更新用户资料
      * @param inDto
      */
-    int updateUserInfo(UserInfoInDto inDto);
+    UserOutDto updateUserInfo(UserInDto inDto);
 }
