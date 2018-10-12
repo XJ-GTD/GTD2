@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { Platform, MenuController, Nav } from 'ionic-angular';
+import { Platform, MenuController, Nav, Tabs } from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -10,14 +10,16 @@ import { WebsocketService } from "../service/websocket.service";
 import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
 import { XiaojiAlarmclockService } from "../service/xiaoji-alarmclock.service";
 import { TimeService } from "../service/time.service";
+import { BackButtonService } from "../service/backbutton.service";
 
 
 @Component({
   templateUrl: 'app.html',
-  providers: [ ParamsService, WebsocketService, XiaojiAssistantService, XiaojiAlarmclockService, TimeService ]
+  providers: [ ParamsService, WebsocketService, XiaojiAssistantService, XiaojiAlarmclockService, TimeService, BackButtonService ]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
+  @ViewChild('myTabs') tabRef: Tabs;
 
   // make HelloIonicPage the root (or first) page
   rootPage:any;
@@ -29,7 +31,8 @@ export class MyApp {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     private storage: Storage,
-    private paramsService: ParamsService
+    private paramsService: ParamsService,
+    public backButtonService: BackButtonService
   ) {
     //通过key，判断是否曾进入过引导页
     this.storage.get('firstIn').then((result) => {
@@ -51,6 +54,7 @@ export class MyApp {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
+      this.backButtonService.registerBackButtonAction(null);
       statusBar.styleDefault();
       splashScreen.hide();
     });

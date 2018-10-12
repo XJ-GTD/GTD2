@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {ParamsService} from "../../service/params.service";
+import { ParamsService } from "../../service/params.service";
 
 /**
  * Generated class for the UserSetPage page.
@@ -28,6 +28,31 @@ export class UserSetPage {
 
   logOut() {
     this.paramsService.user = null;
+    window.localStorage.clear();
     this.navCtrl.push("UserLoginPage");
+  }
+
+  accountSecurity() {
+
+  }
+
+  newsMessage() {
+
+  }
+
+  cleanCache() {
+
+  }
+
+  shareApp() {
+
+  }
+
+  aboutApp() {
+
+  }
+
+  helpAndFeedback() {
+
   }
 }

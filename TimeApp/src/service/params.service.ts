@@ -41,7 +41,7 @@ export class ParamsService {
     this._user = new UserModel();
     this._user.userName = window.localStorage.getItem('userName');
     this._user.userId = parseInt(window.localStorage.getItem('userId'));
-    //this._user.accountId = parseInt(window.localStorage.getItem('accountId'));
+    this._user.accountId = parseInt(window.localStorage.getItem('accountId'));
     this._user.accountName = window.localStorage.getItem('accountName');
     this._user.accountMobile = window.localStorage.getItem('accountMobile');
     this._user.accountUuid = window.localStorage.getItem('accountUuid');
@@ -54,17 +54,20 @@ export class ParamsService {
   }
 
   set user(value: UserModel) {
-    // this._user = value;
-    window.localStorage.setItem('userName', value.userName);
-    window.localStorage.setItem('userId', value.userId.toString());
-    //window.localStorage.setItem('accountId', value.accountId.toString());
-    window.localStorage.setItem('accountName', value.accountName);
-    window.localStorage.setItem('accountMobile', value.accountMobile);
-    window.localStorage.setItem('accountUuid', value.accountUuid);
-    window.localStorage.setItem('accountQueue', value.accountQueue);
-    window.localStorage.setItem('accountQq', value.accountQq);
-    window.localStorage.setItem('accountWechat', value.accountWechat);
-    window.localStorage.setItem('headimgUrl', value.headimgUrl);
+    if (value != null) {
+      window.localStorage.setItem('userName', value.userName);
+      window.localStorage.setItem('userId', value.userId.toString());
+      window.localStorage.setItem('accountId', value.accountId.toString());
+      window.localStorage.setItem('accountName', value.accountName);
+      window.localStorage.setItem('accountMobile', value.accountMobile);
+      window.localStorage.setItem('accountUuid', value.accountUuid);
+      window.localStorage.setItem('accountQueue', value.accountQueue);
+      window.localStorage.setItem('accountQq', value.accountQq);
+      window.localStorage.setItem('accountWechat', value.accountWechat);
+      window.localStorage.setItem('headimgUrl', value.headimgUrl);
+    } else {
+      this._user = value;
+    }
   }
 
   get aiuiData(): AiuiModel {

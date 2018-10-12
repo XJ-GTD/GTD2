@@ -75,7 +75,7 @@ export class UserLoginPage {
           // loginMessage.present(loginMessage.setMessage(this.data.message));
 
           loader.present();
-          this.navCtrl.push('HomePage');
+          this.navCtrl.setRoot('HomePage');
         } else {
           alert.present();
         }
