@@ -14,5 +14,28 @@
 
 
 <ion-content padding>
-  <div style="width: 25% ;height: 20%; border:1px solid #a1a1a1;"></div>
+
+  <ion-list>
+
+    <ion-item>
+      <ion-label>性别</ion-label>
+      <ion-select></ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>生日</ion-label>
+      <ion-datetime></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>手机号</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>关系人</ion-label>
+      <button ion-button (click)="relation()"></button>
+    </ion-item>
+
+  </ion-list>
 </ion-content>

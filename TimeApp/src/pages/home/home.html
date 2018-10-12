@@ -6,9 +6,11 @@
 -->
 <ion-header>
   <ion-toolbar>
-    <ion-avatar start padding-left>
-      <img src="./assets/imgs/Voice robot.png" width="35px" />
-    </ion-avatar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="showUserDetail()">
+        <img src="./assets/imgs/Voice robot.png" width="35px" />
+      </button>
+    </ion-buttons>
     <ion-buttons end>
       <button ion-button icon-only menuToggle>
         <img src="./assets/imgs/Set up.png" width="25px" />
