@@ -140,8 +140,8 @@ public class UserServiceImpl implements IUserService{
         if (object != null) {
             user.setUserId((Integer) object[0]);
             user.setUserName((String) object[1]);
-            user.setHeadimgUrl((String) object[2]);
-            user.setBrithday((String) object[3]);
+            user.setHeadImgUrl((String) object[2]);
+            user.setBirthday((String) object[3]);
             user.setUserSex((Integer) object[4]);
             user.setUserContact((String) object[5]);
             user.setAccountName((String) object[6]);

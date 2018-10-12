@@ -10,8 +10,8 @@ public class UserOutDto {
     private Integer userId;                 //用户ID
     private Integer accountId;              //账户ID
     private String userName;            //昵称
-    private String headimgUrl;          //头像URL
-    private String brithday;            //生日
+    private String headImgUrl;          //头像URL
+    private String birthday;            //生日
     private Integer userSex;            //性别
     private String userContact;         //联系方式
     private String accountName;         //账户名
@@ -38,20 +38,12 @@ public class UserOutDto {
         this.userName = userName;
     }
 
-    public String getHeadimgUrl() {
-        return headimgUrl;
+    public String getHeadImgUrl() {
+        return headImgUrl;
     }
 
-    public void setHeadimgUrl(String headimgUrl) {
-        this.headimgUrl = headimgUrl;
-    }
-
-    public String getBrithday() {
-        return brithday;
-    }
-
-    public void setBrithday(String brithday) {
-        this.brithday = brithday;
+    public void setHeadImgUrl(String headImgUrl) {
+        this.headImgUrl = headImgUrl;
     }
 
     public Integer getUserSex() {
@@ -132,5 +124,13 @@ public class UserOutDto {
 
     public void setAccountId(Integer accountId) {
         this.accountId = accountId;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 }

@@ -23,8 +23,12 @@ export class UserDetailPage {
     console.log('ionViewDidLoad UserDetailPage');
   }
 
+  init() {
+
+  }
+
   relation() {
     console.log("跳转relationPage");
-    this.navCtrl.push("UserRelationPage")
+    this.navCtrl.push("UserRelationPage");
   }
 }
