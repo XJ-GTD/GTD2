@@ -28,6 +28,8 @@ export class ParamsService {
 
   private _contactList: Array<number>;   //联系人数据
 
+  private _inPrivate: boolean;   //隐私模式
+
 
   get schedule(): ScheduleModel {
     return this._schedule;
@@ -132,5 +134,13 @@ export class ParamsService {
 
   set groupType(value: string) {
     this._groupType = value;
+  }
+
+  get inPrivate(): boolean {
+    return this._inPrivate;
+  }
+
+  set inPrivate(value: boolean) {
+    this._inPrivate = value;
   }
 }

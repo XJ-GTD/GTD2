@@ -24,8 +24,6 @@ export class HomeMenuPage {
               public platform: Platform,
               public backButtonService: BackButtonService) {
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       this.backButtonService.registerBackButtonAction(null);
     });
   }
@@ -40,5 +38,16 @@ export class HomeMenuPage {
     this.navCtrl.push("UserSetPage");
   }
 
+  inPrivate() {
 
+  }
+
+  groupListShow() {
+    console.log("跳转参与人页");
+    this.navCtrl.push('GroupListPage',{popPage:'HomeMenuPage'});
+  }
+
+  showHistory() {
+
+  }
 }

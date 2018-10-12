@@ -91,13 +91,7 @@ export class GroupListPage {
   addPlayer(type){
     this.paramsService.groupType = type;
     this.paramsService.group = null;
-    let reload = function () {
-      return new Promise(resolve => {
-        window.location.reload();
-        resolve();
-      });
-    }
-    this.navCtrl.push('GroupAddPage',{reload});
+    this.navCtrl.push('GroupAddPage',{popPage: this.navParams.get("popPage")});
 
   }
 
@@ -149,12 +143,12 @@ export class GroupListPage {
   }
 
   refreshPage(){
-    this.navCtrl.push('GroupListPage');
+    this.navCtrl.setRoot('GroupListPage', {popPage: this.navParams.get("popPage")});
   }
 
   //返回方法
   goBack() {
-    this.navCtrl.pop();
+    this.navCtrl.setRoot(this.navParams.get("popPage"));
   }
 
 }
