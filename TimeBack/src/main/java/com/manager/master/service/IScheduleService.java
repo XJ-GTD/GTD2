@@ -74,4 +74,11 @@ public interface IScheduleService {
      * @return
      */
     int chooseAcceptOrRefuse(ScheduleInDto inDto);
+
+    /**
+     *  查询整月每天日程详情
+     * @param inDto
+     * @return
+     */
+    List<ScheduleDetailsOutDto> findScheduleFlag(ScheduleDetailsInDto inDto);
 }
