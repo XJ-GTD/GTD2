@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, Platform, Tabs } from 'ionic-angular';
+import { BackButtonService } from "../../service/backbutton.service";
 
 /**
  * Generated class for the HomeMenuPage page.
@@ -15,10 +16,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   providers: []
 })
 export class HomeMenuPage {
+  @ViewChild('myTabs') tabRef: Tabs;
 
   menuPage: any = 'HomePage';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              public platform: Platform,
+              public backButtonService: BackButtonService) {
+    this.platform.ready().then(() => {
+      this.backButtonService.registerBackButtonAction(null);
+    });
   }
 
   ionViewDidLoad() {
@@ -29,5 +36,18 @@ export class HomeMenuPage {
   userSet() {
     console.log("跳转设置页");
     this.navCtrl.push("UserSetPage");
+  }
+
+  inPrivate() {
+
+  }
+
+  groupListShow() {
+    console.log("跳转参与人页");
+    this.navCtrl.push('GroupListPage',{popPage:'HomeMenuPage'});
+  }
+
+  showHistory() {
+
   }
 }

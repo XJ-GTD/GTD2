@@ -97,7 +97,7 @@ export class SpeechPage {
 
   //群组详情
   groupListShow() {
-    this.navCtrl.push('GroupListPage');
+    this.navCtrl.push('GroupListPage', {popPage:'SpeechPage'});
   }
 
   /*==================== 聊天界面 start ===================*/

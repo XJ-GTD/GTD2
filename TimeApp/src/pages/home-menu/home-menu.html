@@ -6,17 +6,26 @@
   </ion-header>
   <ion-content>
     <ion-list>
-      <button ion-item (click)="openPage(homePage)">
-        隐私模式
+
+      <ion-item>
+        <ion-toggle (ionChange)="inPrivate()"></ion-toggle>
+        <ion-label>隐私模式</ion-label>
+        <ion-icon name="lock" item-start></ion-icon>
+      </ion-item>
+
+      <button ion-item (click)="groupListShow()">
+        <ion-icon name="people" item-start></ion-icon>
+        <ion-label>参与人</ion-label>
       </button>
-      <button ion-item (click)="openPage(friendsPage)">
-        群组
+
+      <button ion-item (click)="showHistory()">
+        <ion-label>历史纪录</ion-label>
+        <ion-icon name="clock" item-start></ion-icon>
       </button>
-      <button ion-item (click)="openPage(eventsPage)">
-        历史纪录
-      </button>
+
       <button ion-item (click)="userSet()">
-        设置
+        <ion-label>设置</ion-label>
+        <ion-icon name="settings" item-start></ion-icon>
       </button>
     </ion-list>
   </ion-content>

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -1213,5 +1214,75 @@ public class ScheduleServiceImpl implements IScheduleService {
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String date = sf.format(new Date());
         return date;
+    }
+
+    /**
+     * 查询整月每天日程详情
+     *
+     * @param inDto
+     * @return
+     */
+    @Override
+    public List<ScheduleDetailsOutDto> findScheduleFlag(ScheduleDetailsInDto inDto) {
+        List<ScheduleDetailsOutDto> resultList = new ArrayList<>();
+        int daySum = inDto.getDaySum();
+        Integer userId = inDto.getUserId();
+        String year = inDto.getYear();
+        String mouth = inDto.getMouth();
+        String startDate = year + "-" + mouth + "-1 00:00";
+        String endDate = year + "-" + mouth + "-" + daySum + " 23:59";
+
+        List<Map<String,String>> timeList = new ArrayList<>();
+        FindScheduleInDto createInDto = new FindScheduleInDto();
+        createInDto.setUserId(userId);
+        createInDto.setScheduleStartTime(startDate);
+        createInDto.setScheduleDeadline(endDate);
+        List<FindScheduleOutDto> findCreateSchedule = findCreateSchedule(createInDto);
+        for(FindScheduleOutDto outDto : findCreateSchedule){
+            Map<String,String> map = new HashMap<>();
+            map.put("startTime",outDto.getScheduleStartTime());
+            map.put("endTime",outDto.getScheduleDeadline());
+            timeList.add(map);
+        }
+        List<FindScheduleOutDto> findJoinSchedule = findJoinSchedule(createInDto);
+        for(FindScheduleOutDto outDto : findJoinSchedule){
+            Map<String,String> map1 = new HashMap<>();
+            map1.put("startTime",outDto.getScheduleStartTime());
+            map1.put("endTime",outDto.getScheduleDeadline());
+            timeList.add(map1);
+        }
+        List<String> dateList = new ArrayList<>();
+        for(int i = 0;i<timeList.size();i++){
+            Map<String,String> map = timeList.get(i);
+            String startTime = map.get("startTime");
+            String endTime = map.get("endTime");
+            List<String> dateList1 = CommonMethods.getBetweenDates(startTime,endTime);
+            dateList.addAll(dateList1);
+        }
+        if(dateList.size()>0){
+            HashSet h = new HashSet(dateList);
+            dateList.clear();
+            dateList.addAll(h);
+        }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        for(int i = 1; i<daySum+1;i++){
+            ScheduleDetailsOutDto outDto = new ScheduleDetailsOutDto();
+            String dateS = year + "-" + mouth +"-"+ i;
+            Date date = null;
+            try {
+                date = format.parse(dateS);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String str = format.format(date);
+            String flag = "0";
+            if(dateList.contains(str)){
+                flag = "1";
+            }
+            outDto.setDate(str);
+            outDto.setFlag(flag);
+            resultList.add(outDto);
+        }
+        return resultList;
     }
 }

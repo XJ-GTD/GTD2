@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -237,5 +238,33 @@ public class CommonMethods {
         }else {
             return false;
         }
+    }
+
+    /**
+     * 获取两个日期之间的日期
+     * @param startS 开始日期
+     * @param endS   结束日期
+     * @return  日起集合
+     */
+    public static List<String> getBetweenDates(String startS,String endS){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date start = null;
+        Date end = null;
+        try {
+            start = format.parse(startS);
+            end = format.parse(endS);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        List<String> result = new ArrayList<>();
+
+        Calendar dd = Calendar.getInstance();   // 定义日期实力
+        dd.setTime(start);
+        while (dd.getTime().getTime() <= end.getTime()){
+            String str = format.format(dd.getTime());
+            result.add(str);
+            dd.add(Calendar.DAY_OF_MONTH,1);    // 进行当前日期月份加1
+        }
+        return result;
     }
 }

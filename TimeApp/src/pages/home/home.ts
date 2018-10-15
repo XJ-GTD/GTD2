@@ -264,6 +264,7 @@ export class HomePage {
         }
       })
   }
+
   //展示数据详情
   showScheduleDetail(schedule){
     this.schedule = new ScheduleModel();
@@ -271,6 +272,11 @@ export class HomePage {
     this.paramsService.schedule = this.schedule;
     console.log("schedule:" + this.paramsService.schedule);
     this.navCtr.push("ScheduleDetailPage");
+  }
+
+  showUserDetail() {
+    console.log("跳转user" );
+    this.navCtr.push("UserDetailPage");
   }
 
   openVoice() {

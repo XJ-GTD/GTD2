@@ -107,11 +107,11 @@ export class GroupAddPage {
       this.playerDetail.groupName = this.groupMemberList[0].userName;
       this.playerDetail.labelIds = [];
       this.playerDetail.labelIds.push(this.labels[0].labelId);
-      this.playerDetail.groupHeadImgUrl = "./assets/imgs/headImg.jpg";
+      this.playerDetail.groupHeadImg = "./assets/imgs/headImg.jpg";
     } else if (this.playerType == 'group') {
       this.playerDetail.userId = this.paramsService.user.userId;
       this.playerDetail.groupMembers = this.groupMemberList;
-      this.playerDetail.groupHeadImgUrl = "./assets/imgs/headImg.jpg";
+      this.playerDetail.groupHeadImg = "./assets/imgs/headImg.jpg";
     }
 
     this.http.post(AppConfig.GROUP_ADD_GROUP_URL, this.playerDetail, AppConfig.HEADER_OPTIONS_JSON)
@@ -137,7 +137,7 @@ export class GroupAddPage {
   updatePlayer() {
     this.playerDetail.userId = this.paramsService.user.userId;
     this.playerDetail.groupMembers = this.groupMemberList;
-    this.playerDetail.groupHeadImgUrl = "./assets/imgs/headImg.jpg";
+    this.playerDetail.groupHeadImg = "./assets/imgs/headImg.jpg";
 
     this.http.post(AppConfig.GROUP_UPDATE_GROUP_URL, this.playerDetail, AppConfig.HEADER_OPTIONS_JSON)
       .subscribe(data => {
@@ -201,6 +201,6 @@ export class GroupAddPage {
     this.paramsService.group=null;
     this.paramsService.groupType = null;
     // this.navCtrl.pop();
-    this.navCtrl.push('GroupListPage');
+    this.navCtrl.setRoot('GroupListPage',{popPage: this.navParams.get("popPage")});
   }
 }
