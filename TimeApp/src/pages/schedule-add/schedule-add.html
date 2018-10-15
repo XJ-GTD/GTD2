@@ -9,19 +9,22 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>新建日程</ion-title>
+    <ion-title>新建任务</ion-title>
+      <ion-buttons end padding-right>
+        <button (click)="newProject()">
+        <ion-label>
+            发布
+        </ion-label>
+        </button>
+      </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding style="background-color: rgb(245,245,245)">
   <ion-list>
-
-    <ion-item>
-      <ion-label floating>日程标题</ion-label>
-      <ion-input type="text" [(ngModel)]="schedule.scheduleName"></ion-input>
-    </ion-item>
 
     <ion-item>
       <ion-label floating>参与人</ion-label>
@@ -33,27 +36,38 @@
     </ion-item>
 
     <ion-item>
-      <ion-label floating>开始时间</ion-label>
-      <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleStartTime"></ion-datetime>
+      <ion-label floating>日程内容</ion-label>
+      <ion-input type="text" [(ngModel)]="schedule.scheduleName"></ion-input>
     </ion-item>
 
-    <ion-item>
-      <ion-label floating>结束时间</ion-label>
-      <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleDeadline"></ion-datetime>
-    </ion-item>
 
     <ion-item>
       <ion-label floating>标签</ion-label>
-      <ion-select (focus)="findLabel()" [(ngModel)]="schedule.labelIds" multiple="true">
+      <ion-select (focus)="findLabel()" [(ngModel)]="schedule.labelIds" multiple="true" ion-text="标签">
         <div *ngFor="let lb of label">
           <ion-option value="{{lb.labelId}}">{{lb.labelName}}</ion-option>
         </div>
       </ion-select>
     </ion-item>
 
-    <div>
-      <button ion-button outline (click)="newProject()">确认</button><button ion-button outline (click)="onBack()">取消</button>
-    </div>
-
   </ion-list>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>全天</ion-label>
+      <ion-toggle checked="false"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>开始时间</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD HH:mm DDDD " [(ngModel)]="schedule.scheduleStartTime" ></ion-datetime>
+
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>结束时间</ion-label>
+      <ion-datetime displayFormat="HH:mm YYYY-MM-DD DDDD" [(ngModel)]="schedule.scheduleDeadline"></ion-datetime>
+    </ion-item>
+  </ion-list>
+
 </ion-content>

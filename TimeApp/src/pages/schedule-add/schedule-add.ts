@@ -27,6 +27,7 @@ export class ScheduleAddPage {
 
   @ViewChild(Navbar) navBar: Navbar;
 
+
   private data: any;
   groupIds: Array<number>;
   group: Array<GroupModel>;
@@ -172,6 +173,7 @@ export class ScheduleAddPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ScheduleAddPage');
     this.navBar.backButtonClick = this.backButtonClick;
+    this.navBar.setBackButtonText("");
   }
 
   backButtonClick = (e: UIEvent) => {
