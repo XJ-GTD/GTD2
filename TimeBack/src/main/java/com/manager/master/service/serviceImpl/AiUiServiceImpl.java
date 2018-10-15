@@ -63,7 +63,9 @@ public class AiUiServiceImpl implements IAiUiService {
 
         if (aiuiData == null || "".equals(aiuiData)) {
             logger.info("语音数据解析失败");
-            throw new ServiceException("服务器出错");
+            aiuiData.setSpeech("我不明白你的意思，请尝试这样问我：我明天有什么安排");
+            aiuiData.setDataType("0");
+            return aiuiData;
         }
 
         //时间格式规整
@@ -184,7 +186,9 @@ public class AiUiServiceImpl implements IAiUiService {
 
         if (aiuiData == null || "".equals(aiuiData)) {
             logger.info("语音数据解析失败");
-            throw new ServiceException("服务器出错");
+            aiuiData.setSpeech("我不明白你的意思，请尝试这样问我：我明天有什么安排");
+            aiuiData.setDataType("0");
+            return aiuiData;
         }
 
         //时间格式规整
@@ -199,6 +203,8 @@ public class AiUiServiceImpl implements IAiUiService {
             scheduleDeadline += " 00:00";
         } else if (scheduleDeadline != null && scheduleDeadline.length() > 11){
             scheduleDeadline = scheduleDeadline.replace("T", " ");
+        } else {
+            scheduleDeadline = scheduleStartTime;
         }
 
         //根据动作做出对应业务逻辑
