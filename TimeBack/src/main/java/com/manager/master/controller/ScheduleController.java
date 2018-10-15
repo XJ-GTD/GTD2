@@ -394,4 +394,75 @@ public class ScheduleController {
         }
         return baseOutDto;
     }
+
+    /**
+     * 当月日程总览
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/find_flag",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto findScheduleFlag(@RequestBody ScheduleDetailsInDto inDto){
+        logger.info("----- 开始 findScheduleDetailsByMounth -----");
+        BaseOutDto baseOutDto = new BaseOutDto();
+        // 接受入参
+        Integer userId = inDto.getUserId(); // 用户id
+        String year = inDto.getYear();      // 查询年份
+        String mouth = inDto.getMouth();    // 查询月份
+        int daySum = inDto.getDaySum();     // 当月天数
+        // 入参必须项检查
+        logger.info("--- 入参检查 ---");
+        if(userId == null || "".equals(userId)){
+            logger.error("----- 用户id 不能为空 -----");
+            baseOutDto.setCode(ResultCode.FAIL).setMessage("userId 不能为空");
+            return baseOutDto;
+        }
+        if(year == null || "".equals(year.trim())){
+            logger.error("----- 查询年份 不能为空 -----");
+            baseOutDto.setCode(ResultCode.FAIL).setMessage("year 不能为空");
+            return baseOutDto;
+        }
+        if(mouth == null || "".equals(mouth.trim())){
+            logger.error("----- 查询月份 不能为空 -----");
+            baseOutDto.setCode(ResultCode.FAIL).setMessage("mouth 不能为空");
+            return baseOutDto;
+        }
+        // 入参类型判断
+        if(!CommonMethods.isInteger(year)){
+            logger.error("----- 查询年份 输入有误 -----");
+            baseOutDto.setCode(ResultCode.FAIL).setMessage("year 输入有误");
+            return baseOutDto;
+        }
+        List<String> mouthList = new ArrayList<>();
+        mouthList.add("1");
+        mouthList.add("2");
+        mouthList.add("3");
+        mouthList.add("4");
+        mouthList.add("5");
+        mouthList.add("6");
+        mouthList.add("7");
+        mouthList.add("8");
+        mouthList.add("9");
+        mouthList.add("10");
+        mouthList.add("11");
+        mouthList.add("12");
+        if(!CommonMethods.isInteger(mouth) || !mouthList.contains(mouth)){
+            logger.error("----- 查询月份 输入有误 -----");
+            baseOutDto.setCode(ResultCode.FAIL).setMessage("mouth 输入有误");
+            return baseOutDto;
+        }
+        if(daySum < 28){
+            logger.error("----- 当月天数 输入有误 -----");
+            baseOutDto.setCode(ResultCode.FAIL).setMessage("daySum 输入有误");
+            return baseOutDto;
+        }
+
+        List<ScheduleDetailsOutDto> result = scheduleService.findScheduleFlag(inDto);
+        Map<String,List<ScheduleDetailsOutDto>> map = new HashMap<>();
+        map.put("resultList",result);
+        baseOutDto.setCode(ResultCode.SUCCESS);
+        baseOutDto.setData(map);
+
+        return baseOutDto;
+    }
 }
