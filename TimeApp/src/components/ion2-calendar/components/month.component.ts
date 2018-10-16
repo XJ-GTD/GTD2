@@ -1,16 +1,7 @@
 import { Component, ChangeDetectorRef, Input, Output, EventEmitter, forwardRef, AfterViewInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import {
-  CalendarComponentMonthChange,
-  CalendarDay,
-  CalendarModalOptions,
-  CalendarMonth,
-  CalendarOriginal,
-  PickMode
-} from '../calendar.model'
+import { CalendarDay, CalendarMonth, CalendarOriginal, PickMode } from '../calendar.model'
 import { defaults, pickModes } from "../config";
-import * as moment from "moment";
-import {CalendarService} from "../services/calendar.service";
 
 export const MONTH_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -88,7 +79,6 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
   @Input() readonly = false;
   @Input() color: string = defaults.COLOR;
 
-  @Output() monthChange: EventEmitter<CalendarComponentMonthChange> = new EventEmitter();
   @Output() onChange: EventEmitter<CalendarDay[]> = new EventEmitter();
   @Output() onSelect: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectStart: EventEmitter<CalendarDay> = new EventEmitter();
@@ -103,8 +93,7 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
     return this.pickMode === pickModes.RANGE
   }
 
-  constructor(public ref: ChangeDetectorRef,
-              public calSvc: CalendarService) { }
+  constructor(public ref: ChangeDetectorRef) { }
 
   ngAfterViewInit(): void {
     this._isInit = true;
@@ -184,22 +173,10 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
     }
   }
 
-  monthOpt: CalendarMonth;
-  _d: CalendarModalOptions;
-
   onSelected(item: CalendarDay): void {
     if (this.readonly) return;
     item.selected = true;
     this.onSelect.emit(item);
-
-    this.monthOpt = this.calSvc.createMonthsByPeriod(new Date().getTime(), 1, this._d)[0];
-    const currentTime = this.monthOpt.original.time;
-    this.monthChange.emit({
-      oldMonth: this.calSvc.multiFormat(this.monthOpt.original.time),
-      newMonth: this.calSvc.multiFormat(currentTime)
-    });
-    this.monthOpt = this.calSvc.createMonthsByPeriod(currentTime, 1, this._d)[0];
-
     if (this.pickMode === pickModes.SINGLE) {
       this._date[0] = item;
       this.onChange.emit(this._date);
