@@ -80,6 +80,8 @@ public class AiUiServiceImpl implements IAiUiService {
             scheduleDeadline += " 00:00";
         } else if (scheduleDeadline != null && scheduleDeadline.length() > 11){
             scheduleDeadline = scheduleDeadline.replace("T", " ");
+        } else {
+            scheduleDeadline = scheduleStartTime;
         }
 
         //根据动作做出对应业务逻辑
