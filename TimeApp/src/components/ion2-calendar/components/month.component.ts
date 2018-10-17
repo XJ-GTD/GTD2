@@ -1,7 +1,17 @@
-import { Component, ChangeDetectorRef, Input, Output, EventEmitter, forwardRef, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+  Input,
+  Output,
+  EventEmitter,
+  forwardRef,
+  AfterViewInit,
+  ViewChild
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CalendarDay, CalendarMonth, CalendarOriginal, PickMode } from '../calendar.model'
 import { defaults, pickModes } from "../config";
+import {CalendarComponent} from "./calendar.component";
 
 export const MONTH_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -71,6 +81,8 @@ export const MONTH_VALUE_ACCESSOR: any = {
   `
 })
 export class MonthComponent implements ControlValueAccessor, AfterViewInit {
+
+  @Output() CumClick = new EventEmitter<any>();
 
   @Input() month: CalendarMonth;
   @Input() pickMode: PickMode;
@@ -180,6 +192,10 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
     if (this.pickMode === pickModes.SINGLE) {
       this._date[0] = item;
       this.onChange.emit(this._date);
+
+      if (this._isRange == false) {
+        this.CumClick.emit(item);
+      }
       return;
     }
 

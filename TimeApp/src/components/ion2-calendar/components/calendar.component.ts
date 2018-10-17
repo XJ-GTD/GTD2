@@ -78,6 +78,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
                               [readonly]="readonly"
                               (onChange)="onChanged($event)"
                               (swipe)="swipeEvent($event)"
+                              (CumClick)="monthClick($event)"
                               (onSelect)="onSelect.emit($event)"
                               (onSelectStart)="onSelectStart.emit($event)"
                               (onSelectEnd)="onSelectEnd.emit($event)"
@@ -389,6 +390,15 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
 
       default:
 
+    }
+  }
+
+
+  monthClick(event: CalendarDay){
+    if (event.isToday == false && event.isNextMonth) {
+      this.nextMonth();
+    } else if (event.isToday == false && event.isLastMonth) {
+      this.backMonth()
     }
   }
 }
