@@ -766,6 +766,8 @@ public class ScheduleServiceImpl implements IScheduleService {
         if (groupIds == null || "".equals(groupIds)) throw new ServiceException("群组不能为空");
         if (labelIds == null || "".equals(labelIds)) throw new ServiceException("标签名称不能为空");
         if (scheduleStatus == null || "".equals(scheduleStatus))scheduleStatus = 1;
+        if((scheduleStartTime == null || "".equals(scheduleStartTime)) && (scheduleDeadline != null && !"".equals(scheduleDeadline))) scheduleStartTime = scheduleDeadline;
+        if((scheduleStartTime != null && !"".equals(scheduleStartTime)) && (scheduleDeadline == null || "".equals(scheduleDeadline))) scheduleDeadline = scheduleStartTime;
         // 入参类型检查
         /*// 日程重复类型 判断
         int[] types = new int[] { 0, 1, 2, 3 };
