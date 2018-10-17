@@ -22,7 +22,8 @@
 <ion-content>
   <div class="homeCalendar" >
             <ion-calendar  [options]="options"
-                           (onSelect)="findTodaySchedule($event)">
+                           (onSelect)="findTodaySchedule($event)"
+                           (onInit)="discernTags($event)">
             </ion-calendar>
           </div>
   <ion-list>

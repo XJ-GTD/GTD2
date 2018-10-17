@@ -85,6 +85,9 @@ export class AppConfig {
   public static SCHEDULE_TODAY_REMIND_URL: string = AppConfig.SCHEDULE_URL + "/find_today_remind";  //查询今天所有提醒时间
 
   public static SCHEDULE_CHOOSE_URL: string = AppConfig.SCHEDULE_URL + "/choose";  //接受或者拒绝邀请
+
+  public static SCHEDULE_CALENDAR_MARK_URL: string = AppConfig.SCHEDULE_URL + "/find_flag";   //日历小标记
+
   //webSocket
   public static WEB_SOCKET_TASK_URL: string = AppConfig.WEB_SOCKET_URL + "/task";    //mq消息接收
 

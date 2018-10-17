@@ -85,7 +85,7 @@ export class TimeService {
   }
 
   //获取当月总天数
-  private static mGetDate(year, month){
+  public static mGetDate(year, month){
     console.log("year:" + year + "| month:" + month);
     var d = new Date(year, month, 0);
     return d.getDate();

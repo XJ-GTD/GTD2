@@ -1228,9 +1228,9 @@ public class ScheduleServiceImpl implements IScheduleService {
         int daySum = inDto.getDaySum();
         Integer userId = inDto.getUserId();
         String year = inDto.getYear();
-        String mouth = inDto.getMouth();
-        String startDate = year + "-" + mouth + "-1 00:00";
-        String endDate = year + "-" + mouth + "-" + daySum + " 23:59";
+        String month = inDto.getMonth();
+        String startDate = year + "-" + month + "-1 00:00";
+        String endDate = year + "-" + month + "-" + daySum + " 23:59";
 
         List<Map<String,String>> timeList = new ArrayList<>();
         FindScheduleInDto createInDto = new FindScheduleInDto();
@@ -1267,7 +1267,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         for(int i = 1; i<daySum+1;i++){
             ScheduleDetailsOutDto outDto = new ScheduleDetailsOutDto();
-            String dateS = year + "-" + mouth +"-"+ i;
+            String dateS = year + "-" + month +"-"+ i;
             Date date = null;
             try {
                 date = format.parse(dateS);
