@@ -19,8 +19,7 @@ public interface CreateQueueService {
      * 创建队列
      *
      * @param userId 用户id
-     * @param exchangeName 交换机名
      */
-      String createQueue(int userId, String exchangeName) throws IOException;
+      String createQueue(int userId) throws IOException;
 
 }

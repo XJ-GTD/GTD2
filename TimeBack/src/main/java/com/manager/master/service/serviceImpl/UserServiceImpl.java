@@ -92,7 +92,8 @@ public class UserServiceImpl implements IUserService{
         accountEntity.setAccountUuid(UUIDUtil.getUUID());       //唯一标识码
         String queueName="";
         try {
-            queueName=createQueueService.createQueue(user.getUserId(),"exchange") ;
+//            queueName=createQueueService.createQueue(user.getUserId(),"exchange") ;
+            queueName=createQueueService.createQueue(user.getUserId()) ;
         } catch (IOException e) {
             e.printStackTrace();
             throw new ServiceException("服务器异常，请稍后再试！");

@@ -14,12 +14,13 @@ public class CreateQueueServiceImpl implements CreateQueueService {
     @Autowired
     RabbitTemplate rabbitTemplate;
     @Override
-    public String createQueue(int userId, String exchangeName) throws IOException {
+    public String createQueue(int userId) throws IOException {
         //对列名
         String queueName="gtd"+userId;
         CreateQueueUtil createQueueUtil=new CreateQueueUtil();
+        createQueueUtil.createExchange(rabbitTemplate,queueName);
         //创建对列
-        createQueueUtil.createQueue(rabbitTemplate,queueName,exchangeName);
+        createQueueUtil.createQueue(rabbitTemplate,queueName,queueName);
         return queueName;
     }
 }

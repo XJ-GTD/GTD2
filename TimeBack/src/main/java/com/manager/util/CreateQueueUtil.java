@@ -18,6 +18,12 @@ public class CreateQueueUtil  {
         rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).queueDeclare(queueName, true, false, false, null);
         //绑定队列到对应的交换机
         rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).queueBind(queueName, exchangeName, queueName);
+//        ProducerConfiguration producer = new ProducerConfiguration(exchangeName,queueName,queueName);
+//        ConsumerConfig consumer = new ConsumerConfig(queueName,queueName,1);
+    }
+
+    public void createExchange(RabbitTemplate rabbitTemplate, String exchangeName) throws IOException {
+        rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).exchangeDeclare(exchangeName,"topic",true);
     }
 
 
