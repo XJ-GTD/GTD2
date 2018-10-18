@@ -282,7 +282,6 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     } else if (!isNext && this.canBack()) {
       this.backMonth()
     }
-    this.onInit.emit(this.monthOpt.original.time);
   }
 
   _onChanged: Function = () => {
@@ -319,6 +318,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   createMonth(date: number): CalendarMonth {
+    this.onInit.emit(this.monthOpt.original.time);
     return this.calSvc.createMonthsByPeriod(date, 1, this._d)[0];
   }
 

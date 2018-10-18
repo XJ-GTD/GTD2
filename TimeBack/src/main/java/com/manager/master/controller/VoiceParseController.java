@@ -43,7 +43,7 @@ public class VoiceParseController {
         BaseOutDto outBean = new BaseOutDto();
         Map<String, AiUiDataOutDto> data = new HashMap<>();
         try{
-            AiUiDataOutDto dataDto = aiUiService.answerAudio(inDto);
+            AiUiDataOutDto dataDto = aiUiService.aiuiAnswer(inDto, 0);
             if (dataDto != null) {
                 data.put("aiuiData", dataDto);
                 outBean.setData(data);
@@ -78,7 +78,7 @@ public class VoiceParseController {
         BaseOutDto outBean = new BaseOutDto();
         Map<String, AiUiDataOutDto> data = new HashMap<>();
         try{
-            AiUiDataOutDto dataDto = aiUiService.answerText(inDto);
+            AiUiDataOutDto dataDto = aiUiService.aiuiAnswer(inDto, 1);
             if (dataDto != null) {
                 data.put("aiuiData", dataDto);
                 outBean.setData(data);
