@@ -95,7 +95,6 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
   @Output() onSelect: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectStart: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectEnd: EventEmitter<CalendarDay> = new EventEmitter();
-  @Output() onInit: EventEmitter<number> = new EventEmitter();
 
   _date: Array<CalendarDay | null> = [null, null];
   _isInit = false;
@@ -157,7 +156,6 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
   }
 
   isStartSelection(day: CalendarDay): boolean {
-    this.onInit.emit(day.time);
     if (!day) return false;
     if (this.pickMode !== pickModes.RANGE || !this._isInit || this._date[0] === null) {
       return false;
@@ -197,7 +195,6 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
 
       if (this._isRange == false) {
         this.cumClick.emit(item);
-        this.onInit.emit(item.time);
       }
       return;
     }

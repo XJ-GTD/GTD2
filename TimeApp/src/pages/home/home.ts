@@ -89,7 +89,7 @@ export class HomePage {
   discernTags($event) {
 
     console.log($event);
-    let eventDate = new Date($event.time);
+    let eventDate = new Date($event);
     let year = eventDate.getFullYear();
     let month = eventDate.getMonth()+1;
     this.calendar.userId = this.paramsService.user.userId;

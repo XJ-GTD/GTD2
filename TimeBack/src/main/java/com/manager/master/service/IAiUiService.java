@@ -11,19 +11,10 @@ import com.manager.master.dto.AiUiInDto;
 public interface IAiUiService {
 
     /**
-     * 文本方法
+     * 语义方法
      * @param inDto
      * @return
      */
-    public AiUiDataOutDto answerText(AiUiInDto inDto);
-
-    /**
-     * 音频方法
-     * @param inDto
-     * @return
-     */
-    public AiUiDataOutDto answerAudio(AiUiInDto inDto);
-
-
+    public AiUiDataOutDto aiuiAnswer(AiUiInDto inDto, int flag);
 
 }
