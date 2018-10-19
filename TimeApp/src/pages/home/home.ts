@@ -116,7 +116,7 @@ export class HomePage {
             }
           }
           this.options.daysConfig = _daysConfig;
-
+          this.weekFlag = !this.weekFlag;
         } else {
           console.log("tags error!");
         }

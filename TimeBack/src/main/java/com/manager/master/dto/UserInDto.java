@@ -15,6 +15,7 @@ public class UserInDto {
     private String accountPassword;     //登陆密码
     private String accountName;         //登陆名(登陆可输入手机号可为账户名)
     private String accountUuid;         //唯一标识码
+    private String deviceId;
     private Integer loginType;           //登陆类型 0:手机或账户名登陆， 1：微信登陆， 2：QQ登陆
 
     private String userName;            //用户昵称
@@ -134,5 +135,13 @@ public class UserInDto {
 
     public void setUserContact(String userContact) {
         this.userContact = userContact;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }

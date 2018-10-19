@@ -7,5 +7,6 @@ export class BaseModel {
   private dataType: number;   //数据类型
   private deviceId: string;   //设备ID
 
+  private
   private data: any;            //数据详情
 }

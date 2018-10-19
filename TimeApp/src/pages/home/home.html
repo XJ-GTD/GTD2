@@ -26,6 +26,7 @@
                            (onInit)="discernTags($event)">
             </ion-calendar>
           </div>
+  <div *ngIf="weekFlag"></div>
   <ion-list>
     <ion-list-header *ngIf="scheduleList.length == 0;">很休闲的一天</ion-list-header>
     <ion-list-header *ngIf="scheduleList.length > 0;">

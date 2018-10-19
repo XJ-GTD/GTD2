@@ -2,7 +2,7 @@ package com.manager.master.controller;
 
 import com.manager.config.exception.ServiceException;
 import com.manager.master.dto.*;
-import com.manager.master.service.CreateQueueService;
+import com.manager.master.service.ICreateQueueService;
 import com.manager.master.service.IUserService;
 import com.manager.util.BaseUtil;
 import com.manager.util.CommonMethods;
@@ -13,7 +13,6 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -32,10 +31,10 @@ public class UserController {
 
     private final IUserService userService;
     private final RabbitTemplate rabbitTemplate;
-    private final CreateQueueService createQueueService;
+    private final ICreateQueueService createQueueService;
 
     @Autowired
-    public UserController(IUserService userService, RabbitTemplate rabbitTemplate, CreateQueueService createQueueService) {
+    public UserController(IUserService userService, RabbitTemplate rabbitTemplate, ICreateQueueService createQueueService) {
         this.userService = userService;
         this.rabbitTemplate = rabbitTemplate;
         this.createQueueService = createQueueService;
