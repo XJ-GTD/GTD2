@@ -32,6 +32,9 @@ export class DateModel {
   private _isActivity: boolean;
   private _isMonth: boolean;
 
+  private _date: string;
+  private _flag: string;
+
   get month(): number {
     return this._month;
   }
@@ -76,4 +79,20 @@ export class DateModel {
   set isToday(value: boolean) {
     this._isToday = value;
   }
+
+  get flag(): string {
+    return this._flag;
+  }
+
+  set flag(value: string) {
+    this._flag = value;
+  }
+  get date(): string {
+    return this._date;
+  }
+
+  set date(value: string) {
+    this._date = value;
+  }
+
 }

@@ -766,6 +766,8 @@ public class ScheduleServiceImpl implements IScheduleService {
         if (groupIds == null || "".equals(groupIds)) throw new ServiceException("群组不能为空");
         if (labelIds == null || "".equals(labelIds)) throw new ServiceException("标签名称不能为空");
         if (scheduleStatus == null || "".equals(scheduleStatus))scheduleStatus = 1;
+        if((scheduleStartTime == null || "".equals(scheduleStartTime)) && (scheduleDeadline != null && !"".equals(scheduleDeadline))) scheduleStartTime = scheduleDeadline;
+        if((scheduleStartTime != null && !"".equals(scheduleStartTime)) && (scheduleDeadline == null || "".equals(scheduleDeadline))) scheduleDeadline = scheduleStartTime;
         // 入参类型检查
         /*// 日程重复类型 判断
         int[] types = new int[] { 0, 1, 2, 3 };
@@ -1228,9 +1230,9 @@ public class ScheduleServiceImpl implements IScheduleService {
         int daySum = inDto.getDaySum();
         Integer userId = inDto.getUserId();
         String year = inDto.getYear();
-        String mouth = inDto.getMouth();
-        String startDate = year + "-" + mouth + "-1 00:00";
-        String endDate = year + "-" + mouth + "-" + daySum + " 23:59";
+        String month = inDto.getMonth();
+        String startDate = year + "-" + month + "-1 00:00";
+        String endDate = year + "-" + month + "-" + daySum + " 23:59";
 
         List<Map<String,String>> timeList = new ArrayList<>();
         FindScheduleInDto createInDto = new FindScheduleInDto();
@@ -1267,7 +1269,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         for(int i = 1; i<daySum+1;i++){
             ScheduleDetailsOutDto outDto = new ScheduleDetailsOutDto();
-            String dateS = year + "-" + mouth +"-"+ i;
+            String dateS = year + "-" + month +"-"+ i;
             Date date = null;
             try {
                 date = format.parse(dateS);

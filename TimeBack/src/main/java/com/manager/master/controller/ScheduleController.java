@@ -408,7 +408,7 @@ public class ScheduleController {
         // 接受入参
         Integer userId = inDto.getUserId(); // 用户id
         String year = inDto.getYear();      // 查询年份
-        String mouth = inDto.getMouth();    // 查询月份
+        String mouth = inDto.getMonth();    // 查询月份
         int daySum = inDto.getDaySum();     // 当月天数
         // 入参必须项检查
         logger.info("--- 入参检查 ---");

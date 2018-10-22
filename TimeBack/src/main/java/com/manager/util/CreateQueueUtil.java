@@ -20,5 +20,10 @@ public class CreateQueueUtil  {
         rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).queueBind(queueName, exchangeName, queueName);
     }
 
+    //动态创建exchange
+    public void createExchange(RabbitTemplate rabbitTemplate, String exchangeName, String exchangeType) throws IOException {
+        rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).exchangeDeclare(exchangeName,exchangeType,true);
+    }
+
 
 }

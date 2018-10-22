@@ -69,7 +69,7 @@ export class ParamsService {
       window.localStorage.setItem('accountQueue', value.accountQueue);
       window.localStorage.setItem('accountQq', value.accountQq);
       window.localStorage.setItem('accountWechat', value.accountWechat);
-      window.localStorage.setItem('headimgUrl', value.headImgUrl);
+      window.localStorage.setItem('headImgUrl', value.headImgUrl);
       window.localStorage.setItem('birthday', value.birthday);
       window.localStorage.setItem('userSex', value.userSex.toString());
       window.localStorage.setItem('userContact', value.userContact);

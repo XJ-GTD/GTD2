@@ -7,7 +7,7 @@ import com.manager.master.entity.GtdUserEntity;
 import com.manager.master.repository.LabelJpaRespository;
 import com.manager.master.repository.UserJpaRepository;
 import com.manager.master.repository.UserRepository;
-import com.manager.master.service.CreateQueueService;
+import com.manager.master.service.ICreateQueueService;
 import com.manager.master.service.IUserService;
 import com.manager.util.CommonMethods;
 import com.manager.util.UUIDUtil;
@@ -34,7 +34,7 @@ public class UserServiceImpl implements IUserService{
 
     private Logger logger = LogManager.getLogger(this.getClass());
     @Autowired
-    CreateQueueService createQueueService;
+    ICreateQueueService createQueueService;
     @Resource
     private UserRepository userRepository;
     @Resource
@@ -91,8 +91,10 @@ public class UserServiceImpl implements IUserService{
         accountEntity.setUserId(user.getUserId());
         accountEntity.setAccountUuid(UUIDUtil.getUUID());       //唯一标识码
         String queueName="";
+        String exchangeName="";
         try {
-            queueName=createQueueService.createQueue(user.getUserId(),"exchange") ;
+            exchangeName = createQueueService.createExchange(user.getUserId(), 1);
+            queueName = createQueueService.createQueue(user.getUserId(), inDto.getDeviceId(), exchangeName) ;
         } catch (IOException e) {
             e.printStackTrace();
             throw new ServiceException("服务器异常，请稍后再试！");

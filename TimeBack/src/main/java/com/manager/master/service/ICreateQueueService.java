@@ -14,13 +14,13 @@ import java.util.List;
  *
  *
  */
-public interface CreateQueueService {
+public interface ICreateQueueService {
     /**
      * 创建队列
      *
      * @param userId 用户id
-     * @param exchangeName 交换机名
      */
-      String createQueue(int userId, String exchangeName) throws IOException;
+      String createQueue(int userId, String deviceId, String exchangeName) throws IOException;
 
+      String createExchange(int userId, int type) throws IOException;
 }

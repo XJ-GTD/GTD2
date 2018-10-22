@@ -203,22 +203,22 @@ export class WebsocketService {
 
     });
 
+
     //连接失败回调
     let on_error = function() {
       console.log('socket error!:' + ws.readyState);
       client = Stomp.over(new WebSocket(AppConfig.RABBITMQ_WS_URL));
-      client.connect(login, password, on_connect, on_error, null,'/');
-    }
+      client.connect(login, password, on_connect, on_error, on_close,'/');
+    };
 
     //关闭回调
     let on_close = function() {
       console.log('socket close!');
-    }
+    };
 
     // 连接消息服务器
-    client.connect(login, password, on_connect, on_error, null,'/');
+    client.connect(login, password, on_connect, on_error, on_close,'/');
 
   }
-
 
 }

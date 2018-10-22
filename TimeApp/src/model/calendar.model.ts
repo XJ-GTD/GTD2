@@ -12,6 +12,9 @@ export class CalendarModel {
   private _dayList: Array<TimeModel>; //日
   private _weekDay: Array<string> = ["SUN","MON","TUES","WED","THUR","FRI","SAT"];   //周标识
 
+  private _daySum: number;
+  private _userId: number;
+
   get weekDay(): Array<string> {
     return this._weekDay;
   }
@@ -39,6 +42,21 @@ export class CalendarModel {
 
   set year(value: number) {
     this._year = value;
+  }
+
+  get userId(): number {
+    return this._userId;
+  }
+
+  set userId(value: number) {
+    this._userId = value;
+  }
+  get daySum(): number {
+    return this._daySum;
+  }
+
+  set daySum(value: number) {
+    this._daySum = value;
   }
 
 }

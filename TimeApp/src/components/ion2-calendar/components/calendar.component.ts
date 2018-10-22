@@ -78,9 +78,11 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
                               [readonly]="readonly"
                               (onChange)="onChanged($event)"
                               (swipe)="swipeEvent($event)"
+                              (cumClick)="monthClick($event)"
                               (onSelect)="onSelect.emit($event)"
                               (onSelectStart)="onSelectStart.emit($event)"
                               (onSelectEnd)="onSelectEnd.emit($event)"
+                              (onInit)="onInit.emit($event)"
                               [pickMode]="_d.pickMode"
                               [color]="_d.color">
           </ion-calendar-month>
@@ -134,6 +136,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   @Output() onSelect: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectStart: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectEnd: EventEmitter<CalendarDay> = new EventEmitter();
+  @Output() onInit: EventEmitter<number> = new EventEmitter();
 
   @Input()
   set options(value: CalendarComponentOptions) {
@@ -150,6 +153,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
 
 
   constructor(public calSvc: CalendarService) {
+
   }
 
   ngOnInit(): void {
@@ -314,6 +318,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   createMonth(date: number): CalendarMonth {
+    this.onInit.emit(date);
     return this.calSvc.createMonthsByPeriod(date, 1, this._d)[0];
   }
 
@@ -389,6 +394,14 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
 
       default:
 
+    }
+  }
+
+  monthClick(event: CalendarDay){
+    if (event.isToday == false && event.isNextMonth) {
+      this.nextMonth();
+    } else if (event.isToday == false && event.isLastMonth) {
+      this.backMonth()
     }
   }
 }

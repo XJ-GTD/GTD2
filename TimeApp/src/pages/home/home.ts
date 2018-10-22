@@ -11,6 +11,7 @@ import { ScheduleModel } from "../../model/schedule.model";
 import { ScheduleOutModel } from "../../model/out/schedule.out.model";
 import { CalendarModel } from "../../model/calendar.model";
 import { CalendarComponentOptions } from "../../components/ion2-calendar/index";
+import { TimeModel } from "../../model/time.model";
 
 
 
@@ -42,12 +43,12 @@ export class HomePage {
   weekFlag: boolean = false;
   year: number;
   month: number;
+  dayList: TimeModel;
 
   scheduleList: Array<ScheduleModel>;
   schedule: ScheduleModel;
   findSchedule: ScheduleOutModel; //查询日程条件
-  // calendar setting
-  //dateMulti: string[];
+
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
   options: CalendarComponentOptions = {
     pickMode: 'single',
@@ -79,24 +80,50 @@ export class HomePage {
 
     this.scheduleList = [];
 
-    this.calendarControl();
-
-
-    let today = new Date();
-    //this.findTodaySchedule( today.getFullYear(), today.getMonth() + 1, today.getDate());
-
-    let _daysConfig = [];
-    for (let i = 0; i < 5; i++) {
-      _daysConfig.push({
-        date: new Date(2018, 9, i + 1),
-        subTitle: `\u25B2`
-      })
-    }
-    this.options.daysConfig = _daysConfig;
+    // this.calendarControl();
+    // let today = new Date();
+    // this.findTodaySchedule( today.getFullYear(), today.getMonth() + 1, today.getDate());
 
   }
 
-  calendarControl() {
+  discernTags($event) {
+
+    console.log($event);
+    let eventDate = new Date($event);
+    let year = eventDate.getFullYear();
+    let month = eventDate.getMonth()+1;
+    this.calendar.userId = this.paramsService.user.userId;
+    this.calendar.year = year;
+    this.calendar.month = month;
+    this.calendar.daySum = TimeService.mGetDate(year, month);
+    this.http.post(AppConfig.SCHEDULE_CALENDAR_MARK_URL, this.calendar, AppConfig.HEADER_OPTIONS_JSON)
+      .subscribe(data => {
+        this.data = data;
+        console.log("tags data: " + this.data.data);
+
+        if (this.data.code == 0) {
+          this.dayList = new TimeModel();
+          this.dayList.date = this.data.data.resultList;
+          console.log("dayList: " + this.dayList);
+
+          let _daysConfig = [];
+          for (let i = 0; i < this.dayList.date.length; i++) {
+            if (this.dayList.date[i].flag == '1') {
+              _daysConfig.push({
+                date: new Date(this.dayList.date[i].date),
+                subTitle: `\u25B2`
+              });
+            }
+          }
+          this.options.daysConfig = _daysConfig;
+          this.weekFlag = !this.weekFlag;
+        } else {
+          console.log("tags error!");
+        }
+      })
+  }
+
+  /*calendarControl() {
     //初始化加载日历控件
     this.calendar = new CalendarModel();
 
@@ -203,7 +230,7 @@ export class HomePage {
       this.lastCalendar = this.timeService.nextOrPrev(1, this.year, this.month);
       this.nextCalendar = this.timeService.nextOrPrev(2, this.year, this.month);
     }
-  }
+  }*/
 
   //设置当天全部提醒
   setAlarmList() {

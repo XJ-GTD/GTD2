@@ -6,7 +6,7 @@ package com.manager.master.dto;
 public class ScheduleDetailsInDto {
     private Integer userId; // 用户id
     private String year;    // 查询年份
-    private String mouth;   // 查询月份
+    private String month;   // 查询月份
     private int daySum;     // 当月天数
 
     public Integer getUserId() {
@@ -25,14 +25,6 @@ public class ScheduleDetailsInDto {
         this.year = year;
     }
 
-    public String getMouth() {
-        return mouth;
-    }
-
-    public void setMouth(String mouth) {
-        this.mouth = mouth;
-    }
-
     public int getDaySum() {
         return daySum;
     }
@@ -46,8 +38,16 @@ public class ScheduleDetailsInDto {
         return "ScheduleDetailsInDto{" +
                 "userId=" + userId +
                 ", year='" + year + '\'' +
-                ", mouth='" + mouth + '\'' +
+                ", mouth='" + month + '\'' +
                 ", daySum=" + daySum +
                 '}';
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
     }
 }
