@@ -227,6 +227,9 @@ a.autolinker {
 }
 .scl_list{
   background: rgb(213,215,221);
+  margin: 0px;
+  width:calc(100% - 1px);
+
 }
 
 .scl_list .item-ios h2{

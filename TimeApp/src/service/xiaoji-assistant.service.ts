@@ -35,7 +35,7 @@ export class XiaojiAssistantService {
    */
   public listenAudio() {
     try {
-      cordova.plugins.xjvoicefromXF.startListen(result=>{
+      cordova.plugins.XjBaiduSpeech.startListen(result=>{
         // alert("成功:" + result);
         //讯飞语音录音设置默认存储路径
         this.filePath = this.file.externalRootDirectory + "/msc/iat.wav";
@@ -142,6 +142,35 @@ export class XiaojiAssistantService {
       }, speechText);
     } catch (e) {
       console.log("问题："+ e)
+    }
+  }
+
+  /**
+   * 返回语音播报
+   */
+  public testbaidu() {
+    try {
+      cordova.plugins.XjBaiduSpeech.startListen(result=>{
+        alert("成功:" + result);
+        cordova.plugins.XjBaiduSpeech.release();
+      },error=>{
+        alert("报错:" + error);
+        cordova.plugins.XjBaiduSpeech.release();
+      },"");
+    } catch (e) {
+      alert("问题："+ e)
+    }
+  }
+
+  public testbaiduWakeUp() {
+    try {
+      cordova.plugins.XjBaiduWakeUp.wakeUpStart(result=>{
+        this.testbaidu();
+      },error=>{
+        alert("报错:" + error);
+      },"");
+    } catch (e) {
+      alert("问题："+ e)
     }
   }
 

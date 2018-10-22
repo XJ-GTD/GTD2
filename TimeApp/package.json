@@ -52,7 +52,6 @@
     "cordova-plugin-local-notification": "^0.9.0-beta.3",
     "cordova-plugin-splashscreen": "^4.1.0",
     "cordova-plugin-whitelist": "^1.3.3",
-    "cordova-plugin-xjvoicefromXF": "file:../xjvoicefromXF",
     "cordova-sqlite-storage": "^2.4.0",
     "fullcalendar": "^3.9.0",
     "global": "^4.3.2",
@@ -90,8 +89,7 @@
       "cordova-plugin-local-notification": {},
       "phonegap-plugin-local-notification": {},
       "cordova-plugin-file-transfer": {},
-      "org.nypr.cordova.wakeupplugin": {},
-      "cordova-plugin-xjvoicefromXF": {}
+      "org.nypr.cordova.wakeupplugin": {}
     },
     "platforms": [
       "browser",

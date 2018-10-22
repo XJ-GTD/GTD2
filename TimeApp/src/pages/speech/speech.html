@@ -36,7 +36,7 @@
         <!--<ion-avatar item-start>-->
           <!--<img src="assets/imgs/vi.png">-->
         <!--</ion-avatar>-->
-        <h2 [innerHTML]="message.userText" ></h2>
+        <h2 [innerHTML]="message.userText" class="animated bounceIn"></h2>
         <h3></h3>
         <p>
           <span class="bold">轻点以编辑</span>
@@ -113,7 +113,7 @@
 
 <ion-footer >
   <ion-toolbar *ngIf="modeFlag == true; else xjInput">
-    <button id="start" ion-button outline icon-start (click)="startXiaoJi()">
+    <button id="start" ion-button outline icon-start (click)="testbaiduWakeUp()">
       <ion-icon name="ionitron"></ion-icon>
       启动语音
     </button>
