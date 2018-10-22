@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-BaiduSpeechAndTTS" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>cordova-plugin-BaiduSpeechAndTTS</name>
+    <js-module name="XjBaiduSpeech" src="www/xjBaiduSpeech.js">
+        <clobbers target="cordova.plugins.XjBaiduSpeech"/>
+    </js-module>
+    <js-module name="XjBaiduTts" src="www/xjBaiduTts.js">
+        <clobbers target="cordova.plugins.XjBaiduTts"/>
+    </js-module>
+    <js-module name="XjBaiduWakeUp" src="www/xjBaiduWakeUp.js">
+        <clobbers target="cordova.plugins.XjBaiduWakeUp"/>
+    </js-module>
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="XjBaiduSpeech">
+                <param name="android-package" value="com.xj.ionic.speechandtts.XjBaiduSpeech"/>
+            </feature>
+            <feature name="XjBaiduTts">
+                <param name="android-package" value="com.xj.ionic.speechandtts.XjBaiduTts"/>
+            </feature>
+            <feature name="XjBaiduWakeUp">
+                <param name="android-package" value="com.xj.ionic.speechandtts.XjBaiduWakeUp"/>
+            </feature>
+        </config-file>
+        <config-file parent="/*" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.RECORD_AUDIO" />
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+            <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+            <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+        </config-file>
+
+        <config-file parent="application" target="AndroidManifest.xml">
+            <meta-data android:name="com.baidu.speech.APP_ID" android:value="14502702" />
+            <meta-data android:name="com.baidu.speech.API_KEY" android:value="6YvlNRGZ5I4CkA715XnVyoSm" />
+            <meta-data android:name="com.baidu.speech.SECRET_KEY" android:value="9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF" />
+
+        </config-file>
+
+        <!-- JAVA-->
+        <source-file src="src/android/com/xj/ionic/speechandtts/XjBaiduTts.java" target-dir="src/com/xj/ionic/speechandtts/"/>
+        <source-file src="src/android/com/xj/ionic/speechandtts/XjBaiduSpeech.java" target-dir="src/com/xj/ionic/speechandtts/"/>
+        <source-file src="src/android/com/xj/ionic/speechandtts/XjBaiduWakeUp.java" target-dir="src/com/xj/ionic/speechandtts/"/>
+
+        <source-file src="src/android/com/xj/ionic/speechandtts/listener/XjSpeechRecogListener.java" target-dir="src/com/xj/ionic/speechandtts/listener/"/>
+        <source-file src="src/android/com/xj/ionic/speechandtts/listener/XjTtsListener.java" target-dir="src/com/xj/ionic/speechandtts/listener/"/>
+        <source-file src="src/android/com/xj/ionic/speechandtts/listener/XjWakeupListener.java" target-dir="src/com/xj/ionic/speechandtts/listener/"/>
+
+
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/recog/IStatus.java" target-dir="src/com/baidu/aip/asrwakeup3/core/recog/"/>
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/recog/MyRecognizer.java" target-dir="src/com/baidu/aip/asrwakeup3/core/recog/"/>
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/recog/RecogResult.java" target-dir="src/com/baidu/aip/asrwakeup3/core/recog/"/>
+
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/recog/listener/ChainRecogListener.java" target-dir="src/com/baidu/aip/asrwakeup3/core/recog/listener/"/>
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/recog/listener/IRecogListener.java" target-dir="src/com/baidu/aip/asrwakeup3/core/recog/listener/"/>
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/recog/listener/MessageStatusRecogListener.java" target-dir="com/baidu/aip/asrwakeup3/core/recog/listener/"/>
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/recog/listener/RecogEventAdapter.java" target-dir="src/com/baidu/aip/asrwakeup3/core/recog/listener/"/>
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/recog/listener/StatusRecogListener.java" target-dir="src/com/baidu/aip/asrwakeup3/core/recog/listener/"/>
+
+
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/util/FileUtil.java" target-dir="src/com/baidu/aip/asrwakeup3/core/util/"/>
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/util/MyLogger.java" target-dir="src/com/baidu/aip/asrwakeup3/core/util/"/>
+
+
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/wakeup/IWakeupListener.java" target-dir="src/com/baidu/aip/asrwakeup3/core/wakeup/"/>
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/wakeup/MyWakeup.java" target-dir="src/com/baidu/aip/asrwakeup3/core/wakeup/"/>
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/wakeup/RecogWakeupListener.java" target-dir="src/com/baidu/aip/asrwakeup3/core/wakeup/"/>
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/wakeup/SimpleWakeupListener.java" target-dir="src/com/baidu/aip/asrwakeup3/core/wakeup/"/>
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/wakeup/WakeupEventAdapter.java" target-dir="src/com/baidu/aip/asrwakeup3/core/wakeup/"/>
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/wakeup/WakeUpResult.java" target-dir="src/com/baidu/aip/asrwakeup3/core/wakeup/"/>
+
+        <source-file src="src/android/com/baidu/tts/MyTts.java" target-dir="src/com/baidu/tts/"/>
+        <source-file src="src/android/com/baidu/tts/sample/MainHandlerConstant.java" target-dir="src/com/baidu/tts/sample/"/>
+
+        <source-file src="src/android/com/baidu/tts/sample/control/InitConfig.java" target-dir="src/com/baidu/tts/sample/control/"/>
+        <source-file src="src/android/com/baidu/tts/sample/control/MySyntherizer.java" target-dir="src/com/baidu/tts/sample/control/"/>
+        <source-file src="src/android/com/baidu/tts/sample/control/NonBlockSyntherizer.java" target-dir="src/com/baidu/tts/sample/control/"/>
+        <source-file src="src/android/com/baidu/tts/sample/listener/MessageListener.java" target-dir="src/com/baidu/tts/sample/listener/"/>
+        <source-file src="src/android/com/baidu/tts/sample/util/AutoCheck.java" target-dir="src/com/baidu/tts/sample/util/"/>
+        <source-file src="src/android/com/baidu/tts/sample/util/FileUtil.java" target-dir="src/com/baidu/tts/sample/util/"/>
+        <source-file src="src/android/com/baidu/tts/sample/util/OfflineResource.java" target-dir="src/com/baidu/tts/sample/util/"/>
+
+
+        <!--lib-->
+        <source-file src="src/android/libs/bdasr_V3_20180801_d6f298a.jar" target-dir="libs"/>
+        <source-file src="src/android/libs/com.baidu.tts_2.3.2.20180713_6101c2a.jar" target-dir="libs"/>
+        <source-file src="src/android/libs/jniLibs/arm64-v8a/libBaiduSpeechSDK.so" target-dir="libs/arm64-v8a"/>
+        <source-file src="src/android/libs/jniLibs/arm64-v8a/libbd_easr_s1_merge_normal_20151216.dat.so" target-dir="libs/arm64-v8a"/>
+        <source-file src="src/android/libs/jniLibs/arm64-v8a/libbd_etts.so" target-dir="libs/arm64-v8a"/>
+        <source-file src="src/android/libs/jniLibs/arm64-v8a/libbdEASRAndroid.so" target-dir="libs/arm64-v8a"/>
+        <source-file src="src/android/libs/jniLibs/arm64-v8a/libBDSpeechDecoder_V1.so" target-dir="libs/arm64-v8a"/>
+        <source-file src="src/android/libs/jniLibs/arm64-v8a/libbdSpilWakeup.so" target-dir="libs/arm64-v8a"/>
+        <source-file src="src/android/libs/jniLibs/arm64-v8a/libbdtts.so" target-dir="libs/arm64-v8a"/>
+        <source-file src="src/android/libs/jniLibs/arm64-v8a/libgnustl_shared.so" target-dir="libs/arm64-v8a"/>
+        <source-file src="src/android/libs/jniLibs/arm64-v8a/libvad.dnn.so" target-dir="libs/arm64-v8a"/>
+
+
+        <source-file src="src/android/libs/jniLibs/armeabi/libBaiduSpeechSDK.so" target-dir="libs/armeabi"/>
+        <source-file src="src/android/libs/jniLibs/armeabi/libbd_easr_s1_merge_normal_20151216.dat.so" target-dir="libs/armeabi"/>
+        <source-file src="src/android/libs/jniLibs/armeabi/libbd_etts.so" target-dir="libs/armeabi"/>
+        <source-file src="src/android/libs/jniLibs/armeabi/libbdEASRAndroid.so" target-dir="libs/armeabi"/>
+        <source-file src="src/android/libs/jniLibs/armeabi/libBDSpeechDecoder_V1.so" target-dir="libs/armeabi"/>
+        <source-file src="src/android/libs/jniLibs/armeabi/libbdSpilWakeup.so" target-dir="libs/armeabi"/>
+        <source-file src="src/android/libs/jniLibs/armeabi/libbdtts.so" target-dir="libs/armeabi"/>
+        <source-file src="src/android/libs/jniLibs/armeabi/libgnustl_shared.so" target-dir="libs/armeabi"/>
+        <source-file src="src/android/libs/jniLibs/armeabi/libvad.dnn.so" target-dir="libs/armeabi"/>
+
+
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libBaiduSpeechSDK.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbd_easr_s1_merge_normal_20151216.dat.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbd_etts.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbdEASRAndroid.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libBDSpeechDecoder_V1.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbdSpilWakeup.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbdtts.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libgnustl_shared.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libvad.dnn.so" target-dir="libs/armeabi-v7a"/>
+
+        <!--Assets -->
+        <source-file src="src/android/assets/WakeUp.bin" target-dir="assets"/>
+        <source-file src="src/android/assets/baidu_speech_grammar.bsg" target-dir="assets"/>
+        <source-file src="src/android/assets/baiduTTS/bd_etts_common_speech_as_mand_eng_high_am_v3.0.0_20170516.dat" target-dir="assets/baiduTTS/"/>
+        <source-file src="src/android/assets/baiduTTS/bd_etts_common_speech_f7_mand_eng_high_am-mix_v3.0.0_20170512.dat" target-dir="assets/baiduTTS/"/>
+        <source-file src="src/android/assets/baiduTTS/bd_etts_common_speech_m15_mand_eng_high_am-mix_v3.0.0_20170505.dat" target-dir="assets/baiduTTS/"/>
+        <source-file src="src/android/assets/baiduTTS/bd_etts_common_speech_yyjw_mand_eng_high_am-mix_v3.0.0_20170512.dat" target-dir="assets/baiduTTS/"/>
+        <source-file src="src/android/assets/baiduTTS/bd_etts_text.dat" target-dir="assets/baiduTTS/"/>
+
+        <source-file src="src/android/assets/msc/iat.pcm" target-dir="assets/msc/"/>
+
+
+        <!-- res raw -->
+
+        <source-file src="src/android/res/raw/bdspeech_recognition_cancel.mp3" target-dir="res/raw/"/>
+        <source-file src="src/android/res/raw/bdspeech_recognition_error.mp3" target-dir="res/raw/"/>
+        <source-file src="src/android/res/raw/bdspeech_recognition_start.mp3" target-dir="res/raw/"/>
+        <source-file src="src/android/res/raw/bdspeech_recognition_success.mp3" target-dir="res/raw/"/>
+        <source-file src="src/android/res/raw/bdspeech_speech_end.mp3" target-dir="res/raw/"/>
+
+
+    </platform>
+    <platform name="ios">
+        <config-file parent="/*" target="config.xml">
+            <feature name="BaiduSpeechAndTTS">
+                <param name="ios-package" value="BaiduSpeechAndTTS"/>
+            </feature>
+        </config-file>
+        <source-file src="src/ios/BaiduSpeechAndTTS.m"/>
+    </platform>
+
+</plugin>
