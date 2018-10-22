@@ -10,7 +10,6 @@ import { XiaojiAssistantService } from "../../service/xiaoji-assistant.service";
   ],
   imports: [
     IonicPageModule.forChild(SpeechPage),
-
   ],
   providers: [
     ParamsService,

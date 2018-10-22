@@ -10,7 +10,6 @@ import { File } from "@ionic-native/file";
 import { Base64 } from "@ionic-native/base64";
 
 declare var cordova: any;
-
 /**
  * Generated class for the SpeechPage page.
  *
@@ -106,10 +105,10 @@ export class SpeechPage {
   startXiaoJi() {
 
     try {
-      cordova.plugins.xjvoicefromXF.startListen(result=>{
+      cordova.plugins.XjBaiduSpeech.startListen(result=>{
         // alert("成功:" + result);
         //讯飞语音录音设置默认存储路径
-        this.filePath = this.file.externalRootDirectory + "/msc/iat.wav";
+        this.filePath = this.file.applicationDirectory + "/msc/iat.pcm";
         console.log("文件路径：" + this.filePath);
 
         // 读取录音进行base64转码
@@ -152,8 +151,10 @@ export class SpeechPage {
       content: input,
       userId: this.paramsService.user.userId
     },AppConfig.HEADER_OPTIONS_JSON)
+
       .subscribe(data => {
         console.log("back data：" + data);
+        this.messages = [];
         this.data = data;
 
         if (this.data.code == 0) {
@@ -240,5 +241,16 @@ export class SpeechPage {
   goBack() {
     this.viewCtrl.dismiss();
   }
+
+  //启动手动输入
+  testbaidu() {
+    this.xiaojiSpeech.testbaidu();
+  }
+
+  //启动手动输入
+  testbaiduWakeUp() {
+    this.xiaojiSpeech.testbaiduWakeUp();
+  }
+
 
 }
