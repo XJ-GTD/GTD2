@@ -16,16 +16,21 @@ declare var cordova: any;
 @Injectable()
 export class XiaojiAssistantService {
 
-  private data: any;
   private fileContent: any;
   private filePath: string;
   private speechText: any;
+
+  public isSpeaking:boolean;
+  public islistenAudioing:boolean;
+  public isWakeUp:boolean;
 
   constructor(public appCtrl : App,
               private base64: Base64,
               private http: HttpClient,
               private file: File,
               private paramsService: ParamsService) {
+    this.isSpeaking = false;
+    this.islistenAudioing = false;
 
   }
 
@@ -33,12 +38,15 @@ export class XiaojiAssistantService {
   /**
    * 语音助手录音录入 AUDIO
    */
-  public listenAudio() {
+  public listenAudio(success) {
     try {
+      if (this.isSpeaking) return;
+      this.islistenAudioing = true;
+
       cordova.plugins.XjBaiduSpeech.startListen(result=>{
         // alert("成功:" + result);
         //讯飞语音录音设置默认存储路径
-        this.filePath = this.file.externalRootDirectory + "/msc/iat.wav";
+        this.filePath = this.file.externalRootDirectory + "/xjASR/iat.pcm";
         console.log("文件路径：" + this.filePath);
 
 
@@ -48,10 +56,12 @@ export class XiaojiAssistantService {
         this.base64.encodeFile(this.filePath).then((base64File: string) => {
           this.fileContent = base64File;
           console.log("base64:" + this.fileContent);
-          this.connetXunfei(url);
+          this.connetXunfei(url,success);
         }, (err) => {
           console.log("异常" + err.toString());
         });
+
+        this.islistenAudioing = false;
 
       },error=>{
         console.log("报错:" + error);
@@ -65,7 +75,7 @@ export class XiaojiAssistantService {
   /**
    * 语音助手手动输入 TEXT
    */
-  public listenText(text: string) {
+  public listenText(text: string,success) {
     try {
 
       if (text == null){
@@ -73,7 +83,7 @@ export class XiaojiAssistantService {
       }
       this.fileContent = text;
       let url = AppConfig.XUNFEI_URL_TEXT;
-      this.connetXunfei(url);
+      this.connetXunfei(url,success);
 
     } catch (e) {
       console.log("问题："+ e)
@@ -103,7 +113,7 @@ export class XiaojiAssistantService {
    * 录音文件传输后台服务解析
    * @param {string} url 后台服务路径
    */
-  private connetXunfei(url: string) {
+  private connetXunfei(url: string,success) {
     console.log("调用成功:" + this.fileContent);
     console.log("调用URL:" + url);
     //调用讯飞语音服务
@@ -118,27 +128,35 @@ export class XiaojiAssistantService {
     })
       .subscribe(data => {
         console.log("data" + data);
-        this.data = data;
         //接收Object JSON数据
-        this.paramsService.aiuiData = this.data.data.aiuiData;
+        success(data);
+        //this.paramsService.aiuiData = this.data.data.aiuiData;
 
         //分离出需要语音播报的内容
         this.speechText = this.paramsService.aiuiData.speech;
 
         console.log("语音调用成功:" + this.speechText);
-        this.speakText(this.speechText);
+        this.speakText(this.speechText,rs=>{
+          console.log("语音调用成功:" + rs);
+        });
       })
   }
 
   /**
    * 返回语音播报
    */
-  public speakText(speechText: string) {
+  public speakText(speechText: string,success) {
     try {
-      cordova.plugins.xjvoicefromXF.startSpeak(result=>{
+      if (this.islistenAudioing) return;
+      this.isSpeaking = true;
+
+      cordova.plugins.XjBaiduTts.startSpeak(result=>{
         console.log("成功:" + result);
+        this.isSpeaking = false;
+        success(result);
       },error=>{
         console.log("报错:" + error);
+        this.isSpeaking = false;
       }, speechText);
     } catch (e) {
       console.log("问题："+ e)
@@ -146,26 +164,17 @@ export class XiaojiAssistantService {
   }
 
   /**
-   * 返回语音播报
+   * 启动监听WakeUp
    */
-  public testbaidu() {
-    try {
-      cordova.plugins.XjBaiduSpeech.startListen(result=>{
-        alert("成功:" + result);
-        this.testbaiduWakeUp();
-      },error=>{
-        alert("报错:" + error);
-      },"");
-    } catch (e) {
-      alert("问题："+ e)
-    }
-  }
-
-  public testbaiduWakeUp() {
+  public initbaiduWakeUp(success) {
     try {
       cordova.plugins.XjBaiduWakeUp.wakeUpStart(result=>{
-        this.testbaiduWakeUpStop();
-        this.testbaiduSpeak("请说你让我做的事情");
+        if (    this.isSpeaking || this.islistenAudioing) {
+
+          success(false);
+          return;
+        }
+        success(true);
       },error=>{
         alert("报错:" + error);
       },"");
@@ -174,25 +183,14 @@ export class XiaojiAssistantService {
     }
   }
 
-  public testbaiduWakeUpStop() {
+  /**
+   * 停止监听WakeUp
+   */
+  public baiduWakeUpStop() {
     try {
-      cordova.plugins.XjBaiduWakeUp.wakeUpStop();
+        cordova.plugins.XjBaiduWakeUp.wakeUpStop();
     } catch (e) {
       alert("问题："+ e)
     }
   }
-
-  public testbaiduSpeak(speechText: string) {
-    try {
-      cordova.plugins.XjBaiduTts.startSpeak(result=>{
-
-        this.testbaidu();
-      },error=>{
-        alert("报错:" + error);
-      },speechText);
-    } catch (e) {
-      alert("问题："+ e)
-    }
-  }
-
 }

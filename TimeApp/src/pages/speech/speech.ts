@@ -67,8 +67,24 @@ export class SpeechPage {
   init() {
     this.messages = [];
     this.aiuiData = new AiuiModel();
+    this.initWakeUp();
   }
 
+  initWakeUp(){
+    this.xiaojiSpeech.initbaiduWakeUp(isWakeUp=>{
+      this.xiaojiSpeech.baiduWakeUpStop();
+      if (!isWakeUp)  {
+        this.initWakeUp();
+      }
+      this.xiaojiSpeech.speakText("请说出你让我做的事情",speakRs=>{
+        this.xiaojiSpeech.listenAudio(data=>{
+          this.initWakeUp();
+          this.messageHanding(data);
+        })
+      })
+    });
+
+  }
   //扩展按钮
   openSocial(flag: number, fab: FabContainer) {
     //console.log('Share in ' + flag);
@@ -103,70 +119,34 @@ export class SpeechPage {
 
   //启动语音输入
   startXiaoJi() {
-
-    try {
-      cordova.plugins.XjBaiduSpeech.startListen(result=>{
-        // alert("成功:" + result);
-        //讯飞语音录音设置默认存储路径
-        this.filePath = this.file.applicationDirectory + "/msc/iat.pcm";
-        console.log("文件路径：" + this.filePath);
-
-        // 读取录音进行base64转码
-        this.base64.encodeFile(this.filePath).then((base64File: string) => {
-          this.fileContent = base64File;
-          console.log("base64:" + this.fileContent);
-
-          if (this.fileContent != null && this.fileContent != "") {
-            this.inputAudio = this.fileContent;
-            let url = AppConfig.XUNFEI_URL_AUDIO;
-            this.messageHanding(url, this.inputAudio);
-          }
-
-        }, (err) => {
-          console.log("异常" + err.toString());
-        });
-
-      },error=>{
-        console.log("报错:" + error);
-      },true,true);
-    } catch (e) {
-      console.log("问题："+ e)
-    }
-
-
+    if (this.xiaojiSpeech.islistenAudioing) return;
+    this.xiaojiSpeech.listenAudio(rs =>{
+      this.messageHanding(rs);
+    });
   }
 
   //启动手动输入
   startXiaojiText() {
     if (this.inputText != null && this.inputText != "") {
-      let url = AppConfig.XUNFEI_URL_TEXT;
-      this.messageHanding(url, this.inputText);
+      this.xiaojiSpeech.listenText(this.inputText,rs=>{
+        this.messageHanding(rs);
+      });
     }
   }
 
   //回传数据处理
-  messageHanding(url, input) {
+  messageHanding(xfdata:any) {
 
-    this.http.post(url, {
-      content: input,
-      userId: this.paramsService.user.userId
-    },AppConfig.HEADER_OPTIONS_JSON)
-
-      .subscribe(data => {
-        console.log("back data：" + data);
         this.messages = [];
-        this.data = data;
 
-        if (this.data.code == 0) {
+        if (xfdata.code == 0) {
           //接收Object JSON数据
-          this.aiuiData = this.data.data.aiuiData;
+          this.aiuiData = xfdata.data.aiuiData;
 
           let messageUser = new AiuiModel();
           messageUser.talkType = this.talkUser;
           messageUser.userText = this.aiuiData.userText;
           this.messages.push(messageUser);
-
-          this.scrollToBottom();
 
           setTimeout(() => {
             let messageXF = new AiuiModel();
@@ -175,7 +155,9 @@ export class SpeechPage {
             this.messages.push(messageXF);
             //分离出需要语音播报的内容
             console.log("语音调用成功:" + this.aiuiData.speech);
-            this.xiaojiSpeech.speakText(this.aiuiData.speech);
+            this.xiaojiSpeech.speakText(this.aiuiData.speech,speakRs=>{
+
+            });
           }, 1000);
 
           if (this.aiuiData.dataType == "1"
@@ -207,9 +189,7 @@ export class SpeechPage {
           this.inputText = "";
         }
 
-      });
-
-  }
+      }
 
   //展示数据详情
   showScheduleDetail(schedule){
@@ -220,15 +200,15 @@ export class SpeechPage {
     this.navCtrl.push("ScheduleDetailPage");
   }
 
-  //修改输入
-  changeText(data) {
-    if (data != null && data != "") {
-      let url = AppConfig.XUNFEI_URL_TEXT;
-      this.messageHanding(url, data);
-    }
-  }
+  // //修改输入
+  // changeText(data) {
+  //   if (data != null && data != "") {
+  //     let url = AppConfig.XUNFEI_URL_TEXT;
+  //     this.messageHanding(url, data);
+  //   }
+  // }
 
-  scrollToBottom() {
+  scrollToBottom(){
     setTimeout(() => {
       this.content.scrollToBottom();
     }, 100);
@@ -241,16 +221,5 @@ export class SpeechPage {
   goBack() {
     this.viewCtrl.dismiss();
   }
-
-  //启动手动输入
-  testbaidu() {
-    this.xiaojiSpeech.testbaidu();
-  }
-
-  //启动手动输入
-  testbaiduWakeUp() {
-    this.xiaojiSpeech.testbaiduWakeUp();
-  }
-
 
 }
