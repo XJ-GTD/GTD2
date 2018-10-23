@@ -20,7 +20,7 @@ public class MyWakeup {
     private  EventManager wp;
     private EventListener eventListener;
 
-    private boolean isListenering = false;
+    public static boolean isListenering = false;
 
 
     private static final String TAG = "MyWakeup";
@@ -56,12 +56,14 @@ public class MyWakeup {
 
     public void start(Map<String, Object> params) {
         String json = new JSONObject(params).toString();
+        isListenering = true;
         MyLogger.info(TAG + ".Debug", "wakeup params(反馈请带上此行日志):" + json);
         wp.send(SpeechConstant.WAKEUP_START, json, null, 0, 0);
     }
 
     public void stop() {
         MyLogger.info(TAG, "唤醒结束");
+        isListenering = false;
         wp.send(SpeechConstant.WAKEUP_STOP, null, null, 0, 0);
     }
 
