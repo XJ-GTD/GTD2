@@ -12,7 +12,7 @@
 ### npm install -g ionic@4.1.2
 ### npm install -g plugman
 ### npm install -g cordova@6.5.0
-### ionic cordova platform add android@6.4.0
+### ionic cordova platform add android
 ##步骤3：
 ### idea 菜单 File -> settings -> plugins -> Browse repositorie -> 输入phonegap -> 选择PhoneGap/Cordova Plugins安装
 ### 新建服务器 phonegap ，选择命令serve启动

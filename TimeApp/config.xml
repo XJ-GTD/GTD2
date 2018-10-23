@@ -89,11 +89,10 @@
     <plugin name="phonegap-plugin-local-notification" spec="~1.0.1" />
     <plugin name="cordova-plugin-file-transfer" spec="~1.7.1" />
     <plugin name="cordova-plugin-dialogs" spec="^2.0.1" />
-    <plugin name="org.nypr.cordova.wakeupplugin" spec="C:\IdeaProjects\GTD2\xjalarmclock" />
     <engine name="browser" spec="^5.0.4" />
     <plugin name="cordova-plugin-calendar" spec="~5.1.2" />
     <plugin name="com.telerik.plugins.nativepagetransitions" spec="~0.6.5" />
-    <plugin name="cordova-plugin-xjvoicefromXF" spec="../xjvoicefromXF" />
     <engine name="android" spec="~6.4.0" />
     <plugin name="cordova-plugin-BaiduSpeechAndTTS" spec="../BaiduSpeechAndTTS" />
+    <plugin name="org.nypr.cordova.wakeupplugin" spec="../xjalarmclock" />
 </widget>
