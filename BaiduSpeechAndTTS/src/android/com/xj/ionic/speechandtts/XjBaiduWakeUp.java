@@ -35,8 +35,6 @@ public class XjBaiduWakeUp extends CordovaPlugin{
 
 
         MyWakeup wakeUp = new MyWakeup(cordova.getActivity(),new XjWakeupListener(callbackContext));
-
-
         if (action.equals("start")) {
             wakeUp.start(params);
             return true;

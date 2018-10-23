@@ -24,8 +24,8 @@ public class NonBlockSyntherizer extends MySyntherizer {
     private static final String TAG = "NonBlockSyntherizer";
 
 
-    public NonBlockSyntherizer(Context context, InitConfig initConfig, Handler mainHandler) {
-        super(context, mainHandler);
+    public NonBlockSyntherizer(Context context, InitConfig initConfig) {
+        super(context);
         initThread();
         runInHandlerThread(INIT, initConfig);
     }
@@ -42,12 +42,7 @@ public class NonBlockSyntherizer extends MySyntherizer {
                     case INIT:
                         InitConfig config = (InitConfig) msg.obj;
                         boolean isSuccess = init(config);
-                        if (isSuccess) {
-                            // speak("初始化成功");
-                            sendToUiThread("NonBlockSyntherizer 初始化成功");
-                        } else {
-                            sendToUiThread("合成引擎初始化失败, 请查看日志");
-                        }
+
                         break;
                     case RELEASE:
                         NonBlockSyntherizer.super.release();

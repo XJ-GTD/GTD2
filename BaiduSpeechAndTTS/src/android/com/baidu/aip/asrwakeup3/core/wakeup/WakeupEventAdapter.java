@@ -13,6 +13,7 @@ public class WakeupEventAdapter implements EventListener {
 
     public WakeupEventAdapter(IWakeupListener listener) {
         this.listener = listener;
+        listener.setSelf4Relase(this);
     }
 
     private static final String TAG = "WakeupEventAdapter";

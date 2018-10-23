@@ -6,9 +6,6 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import com.baidu.tts.MyTts;
-import com.baidu.tts.client.TtsMode;
-import com.baidu.tts.sample.control.MySyntherizer;
-import com.baidu.tts.sample.util.OfflineResource;
 import com.xj.ionic.speechandtts.listener.XjTtsListener;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -46,15 +43,18 @@ public class XjBaiduTts extends CordovaPlugin {
 
         initPermission();
 
-        ApplicationInfo info = this.cordova.getActivity().getApplicationInfo();
-        String  API_KEY =  info.metaData.getString("com.baidu.speech.API_KEY");
-        String  SECRET_KEY = info.metaData.getString("com.baidu.speech.SECRET_KEY");
-        String APP_ID  =  info.metaData.getString("com.baidu.speech.APP_ID");
-        if (SECRET_KEY != null) this.secretKey = SECRET_KEY;
-        if (API_KEY != null) this.appKey = API_KEY;
-        if (APP_ID != null) this.appId = APP_ID;
-
-
+        try {
+            ApplicationInfo info = this.cordova.getActivity().getPackageManager().getApplicationInfo(this.cordova.getActivity().getPackageName(),
+                    PackageManager.GET_META_DATA);
+            String  API_KEY =   String.valueOf(info.metaData.getInt("com.baidu.speech.API_KEY"));
+            String  SECRET_KEY = info.metaData.getString("com.baidu.speech.SECRET_KEY");
+            String APP_ID  =  info.metaData.getString("com.baidu.speech.APP_ID");
+            if (SECRET_KEY != null) this.secretKey = SECRET_KEY;
+            if (API_KEY != null) this.appKey = API_KEY;
+            if (APP_ID != null) this.appId = APP_ID;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -63,7 +63,6 @@ public class XjBaiduTts extends CordovaPlugin {
 
 
         MyTts tts = new MyTts(cordova.getActivity(), new XjTtsListener(callbackContext),appId,appKey,secretKey);
-
 
         if (action.equals("speak")) {
             tts.speak(args.getString(0));

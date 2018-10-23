@@ -16,23 +16,38 @@ import java.util.Map;
 
 public class MyWakeup {
 
-
-    private static boolean isInited = false;
-
-    private EventManager wp;
+    private static EventManager wppri;
+    private  EventManager wp;
     private EventListener eventListener;
+
+    private boolean isListenering = false;
+
 
     private static final String TAG = "MyWakeup";
 
     public MyWakeup(Context context, EventListener eventListener) {
-//        if (isInited) {
-//            MyLogger.error(TAG, "还未调用release()，请勿新建一个新类");
-//            throw new RuntimeException("还未调用release()，请勿新建一个新类");
-//        }
-        isInited = true;
+
         this.eventListener = eventListener;
-        wp = EventManagerFactory.create(context, "wp");
+        wp = getWpEventManager(context);
         wp.registerListener(eventListener);
+    }
+
+    private static EventManager getWpEventManager(Context context){
+        if (wppri == null){
+            wppri =  EventManagerFactory.create(context, "wp");
+        }
+        return wppri;
+    }
+
+    public static EventManager getWpEventManager(){
+        return wppri;
+    }
+
+    private static EventManager releaseWpEventManager(){
+        if (wppri != null){
+            wppri =  null;
+        }
+        return wppri;
     }
 
     public MyWakeup(Context context, IWakeupListener eventListener) {
@@ -61,7 +76,6 @@ public class MyWakeup {
     public void release() {
         stop();
         wp.unregisterListener(eventListener);
-        wp = null;
-        isInited = false;
+        wp = releaseWpEventManager();
     }
 }

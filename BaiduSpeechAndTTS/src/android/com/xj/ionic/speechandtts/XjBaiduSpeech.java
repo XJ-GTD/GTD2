@@ -1,10 +1,13 @@
 package com.xj.ionic.speechandtts;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import com.baidu.aip.asrwakeup3.core.recog.MyRecognizer;
+import com.baidu.aip.asrwakeup3.core.util.FileUtil;
 import com.baidu.speech.asr.SpeechConstant;
 import com.xj.ionic.speechandtts.listener.XjSpeechRecogListener;
 import org.apache.cordova.CallbackContext;
@@ -24,7 +27,9 @@ import cn.sh.com.xj.timeApp.R;
  */
 public class XjBaiduSpeech extends CordovaPlugin{
 
-    boolean isTs = true;
+    private boolean isTs = true;
+
+    private String samplePath;
 
     @Override
     protected void pluginInitialize() {
@@ -32,6 +37,8 @@ public class XjBaiduSpeech extends CordovaPlugin{
         super.pluginInitialize();
 
         initPermission();
+
+        initSamplePath();
 
     }
 
@@ -46,7 +53,7 @@ public class XjBaiduSpeech extends CordovaPlugin{
         params.put(SpeechConstant.PID, 15372);
         params.put(SpeechConstant.VAD, SpeechConstant.VAD_DNN);
         params.put(SpeechConstant.ASR_OFFLINE_ENGINE_GRAMMER_FILE_PATH, "assets://baidu_speech_grammar.bsg");
-        params.put(SpeechConstant.OUT_FILE, "assets://msc/iat.pcm");
+        params.put(SpeechConstant.OUT_FILE, samplePath+ "/iat.pcm");
         params.put(SpeechConstant.ACCEPT_AUDIO_DATA, "true");
 
         if (isTs){
@@ -83,6 +90,18 @@ public class XjBaiduSpeech extends CordovaPlugin{
         }
         return false;
     }
+
+    private void initSamplePath() {
+        String sampleDir = "xjASR";
+        samplePath = Environment.getExternalStorageDirectory().toString() + "/" + sampleDir;
+        if (!FileUtil.makeDir(samplePath)) {
+            samplePath = this.cordova.getActivity().getExternalFilesDir(sampleDir).getAbsolutePath();
+            if (!FileUtil.makeDir(samplePath)) {
+                throw new RuntimeException("创建临时目录失败 :" + samplePath);
+            }
+        }
+    }
+
 
     /**
      * android 6.0 以上需要动态申请权限

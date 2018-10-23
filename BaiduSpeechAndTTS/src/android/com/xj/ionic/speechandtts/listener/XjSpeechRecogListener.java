@@ -64,7 +64,9 @@ public class XjSpeechRecogListener extends StatusRecogListener {
 
         }
         speechEndTime = 0;
-        sendMessage(message, status, true);
+        //sendMessage(message, status, true);
+        sendMessage(results[0], status, true);
+
     }
 
     @Override

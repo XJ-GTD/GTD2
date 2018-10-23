@@ -2,6 +2,8 @@ package com.baidu.aip.asrwakeup3.core.wakeup;
 
 
 import com.baidu.aip.asrwakeup3.core.util.MyLogger;
+import com.baidu.speech.EventListener;
+import com.baidu.speech.EventManager;
 
 /**
  * Created by fujiayi on 2017/6/21.
@@ -10,6 +12,9 @@ import com.baidu.aip.asrwakeup3.core.util.MyLogger;
 public class SimpleWakeupListener implements IWakeupListener {
 
     private static final String TAG = "SimpleWakeupListener";
+
+    protected EventListener listener;
+
 
     @Override
     public void onSuccess(String word, WakeUpResult result) {
@@ -30,5 +35,13 @@ public class SimpleWakeupListener implements IWakeupListener {
     public void onASrAudio(byte[] data, int offset, int length) {
         MyLogger.error(TAG, "audio data： " + data.length);
     }
+
+    @Override
+    public  IWakeupListener setSelf4Relase( EventListener listener){
+        this.listener = listener;
+        return this;
+
+    }
+
 
 }

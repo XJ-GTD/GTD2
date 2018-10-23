@@ -1,6 +1,7 @@
 package com.xj.ionic.speechandtts.listener;
 
 import com.baidu.aip.asrwakeup3.core.recog.IStatus;
+import com.baidu.aip.asrwakeup3.core.wakeup.MyWakeup;
 import com.baidu.aip.asrwakeup3.core.wakeup.SimpleWakeupListener;
 import com.baidu.aip.asrwakeup3.core.wakeup.WakeUpResult;
 import org.apache.cordova.CallbackContext;
@@ -23,5 +24,6 @@ public class XjWakeupListener extends SimpleWakeupListener implements IStatus {
     public void onSuccess(String word, WakeUpResult result) {
         super.onSuccess(word, result);
         callbackContext.success(word);
+        MyWakeup.getWpEventManager().unregisterListener(this.listener);
     }
 }

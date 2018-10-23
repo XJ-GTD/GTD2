@@ -152,10 +152,9 @@ export class XiaojiAssistantService {
     try {
       cordova.plugins.XjBaiduSpeech.startListen(result=>{
         alert("成功:" + result);
-        cordova.plugins.XjBaiduSpeech.release();
+        this.testbaiduWakeUp();
       },error=>{
         alert("报错:" + error);
-        cordova.plugins.XjBaiduSpeech.release();
       },"");
     } catch (e) {
       alert("问题："+ e)
@@ -165,10 +164,32 @@ export class XiaojiAssistantService {
   public testbaiduWakeUp() {
     try {
       cordova.plugins.XjBaiduWakeUp.wakeUpStart(result=>{
-        this.testbaidu();
+        this.testbaiduWakeUpStop();
+        this.testbaiduSpeak("请说你让我做的事情");
       },error=>{
         alert("报错:" + error);
       },"");
+    } catch (e) {
+      alert("问题："+ e)
+    }
+  }
+
+  public testbaiduWakeUpStop() {
+    try {
+      cordova.plugins.XjBaiduWakeUp.wakeUpStop();
+    } catch (e) {
+      alert("问题："+ e)
+    }
+  }
+
+  public testbaiduSpeak(speechText: string) {
+    try {
+      cordova.plugins.XjBaiduTts.startSpeak(result=>{
+
+        this.testbaidu();
+      },error=>{
+        alert("报错:" + error);
+      },speechText);
     } catch (e) {
       alert("问题："+ e)
     }

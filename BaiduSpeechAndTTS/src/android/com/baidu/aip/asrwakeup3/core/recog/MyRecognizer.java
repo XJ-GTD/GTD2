@@ -9,6 +9,7 @@ import com.baidu.speech.asr.SpeechConstant;
 import org.json.JSONObject;
 import com.baidu.aip.asrwakeup3.core.recog.listener.IRecogListener;
 import com.baidu.aip.asrwakeup3.core.recog.listener.RecogEventAdapter;
+import android.os.Environment;
 
 import java.util.Map;
 
@@ -51,10 +52,7 @@ public class MyRecognizer {
      * @param eventListener 识别状态和结果回调
      */
     public MyRecognizer(Context context, EventListener eventListener) {
-//        if (isInited) {
-//            MyLogger.error(TAG, "还未调用release()，请勿新建一个新类");
-//            throw new RuntimeException("还未调用release()，请勿新建一个新类");
-//        }
+
         isInited = true;
         this.eventListener = eventListener;
         // SDK集成步骤 1.1  初始化asr的EventManager示例，多次得到的类，只能选一个使用
@@ -62,7 +60,6 @@ public class MyRecognizer {
         // SDK集成步骤 1.2 设置回调event， 识别引擎会回调这个类告知重要状态和识别结果
         asr.registerListener(eventListener);
     }
-
 
     /**
      * 离线命令词，在线不需要调用
