@@ -5,6 +5,7 @@ import com.manager.master.dto.PushInDto;
 import com.manager.master.dto.PushOutDto;
 import com.manager.master.repository.UserJpaRepository;
 import com.manager.master.service.IWebSocketService;
+import com.manager.util.BaseUtil;
 import com.manager.util.ProducerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,9 +48,15 @@ public class WebSocketServiceImpl implements IWebSocketService {
 
         //推送人ID
         Integer userId = inDto.getUserId();
+        String deviceId = inDto.getDeviceId();
         //需要推送的目标List
         List<Integer> memberUserIds = inDto.getMemberUserId();
         Integer targetUserId = inDto.getTargetUserId();
+
+//        if (deviceId == null || "".equals(deviceId)) {
+//            logger.log(ERROR,"缺少设备ID");
+//            throw new SecurityException("缺少设备ID");
+//        }
 
         if ((memberUserIds == null || memberUserIds.size() == 0)
                 && (targetUserId == null || targetUserId == 0)){
@@ -65,17 +72,13 @@ public class WebSocketServiceImpl implements IWebSocketService {
 
         if (memberUserIds != null && memberUserIds.size() != 0) {
             for (Integer id: memberUserIds) {
-                accountQueue = userJpaRepository.findAccountQueue(id);
-                if (accountQueue == null || "".equals(accountQueue)) {
-                    return 1;
-                }
+                accountQueue = BaseUtil.createQueueName(targetUserId, deviceId);
+
                 producerUtil.sendTheTarget(data, accountQueue);
             }
         } else if (targetUserId != null && targetUserId != 0) {
-            accountQueue = userJpaRepository.findAccountQueue(targetUserId);
-            if (accountQueue == null || "".equals(accountQueue)) {
-                return 1;
-            }
+            accountQueue = BaseUtil.createQueueName(userId, deviceId);
+
             producerUtil.sendTheTarget(data, accountQueue);
         }
 

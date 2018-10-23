@@ -11,6 +11,7 @@ public class PushInDto {
 
     private Integer userId;         //推送人用户ID
     private Integer targetUserId;       //推送目标UserId
+    private String  deviceId;        //  设备ID
 
     private List<Integer> memberUserId; //参与人ID List
 
@@ -46,5 +47,13 @@ public class PushInDto {
 
     public void setTargetUserId(Integer targetUserId) {
         this.targetUserId = targetUserId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }

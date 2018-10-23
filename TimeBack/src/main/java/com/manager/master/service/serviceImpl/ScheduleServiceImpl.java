@@ -300,6 +300,8 @@ public class ScheduleServiceImpl implements IScheduleService {
         int updateId = inDto.getUpdateId();                          		// 更新人
         String updateDate = inDto.getUpdateDate();                     		// 更新时间
 
+        String deviceId = inDto.getDeviceId();
+
         List<Integer> groupIds = inDto.getGroupIds();                          		// 群组 List
         List<Integer> labelIds = inDto.getLabelIds();                          		// 标签 List
         String date = dateFormat();
@@ -597,6 +599,8 @@ public class ScheduleServiceImpl implements IScheduleService {
             pushInDto.setData(pushOutDto);
             pushInDto.setUserId(userId);
             pushInDto.setMemberUserId(oldUserIdList);
+
+            pushInDto.setDeviceId(deviceId);
             // 发送日程修改信息
             int modifyMessage = webSocketService.pushToUser(pushInDto);
             if(modifyMessage != 0){
@@ -618,6 +622,8 @@ public class ScheduleServiceImpl implements IScheduleService {
             pushInDto1.setData(pushOutDto1);
             pushInDto1.setUserId(userId);
             pushInDto1.setMemberUserId(newUserIdList);
+
+            pushInDto.setDeviceId(deviceId);
             // 发送日程修改信息
             int createMessage = webSocketService.pushToUser(pushInDto1);
             if(createMessage != 0){
@@ -751,6 +757,8 @@ public class ScheduleServiceImpl implements IScheduleService {
         Integer scheduleStatus = inDto.getScheduleStatus();                  // 完成状态
         int createId = inDto.getCreateId();                      		    // 更新人
         String createDate = inDto.getCreateDate();                 		    // 更新时间
+
+        String deviceId = inDto.getDeviceId();
 
         List<Integer> groupIds = inDto.getGroupIds();                          		// 群组 List
         List<Integer> labelIds = inDto.getLabelIds();                          		// 标签 List
@@ -970,6 +978,8 @@ public class ScheduleServiceImpl implements IScheduleService {
         pushInDto.setData(pushOutDto);
         pushInDto.setUserId(userId);
         pushInDto.setMemberUserId(playersIdList);
+
+        pushInDto.setDeviceId(deviceId);
         // 发送日程修改信息
         int modifyMessage = webSocketService.pushToUser(pushInDto);
         if(modifyMessage != 0){
@@ -1120,6 +1130,8 @@ public class ScheduleServiceImpl implements IScheduleService {
         Integer userId = inDto.getUserId();
         Integer scheduleId = inDto.getScheduleId();
         Integer playersStatus = inDto.getPlayersStatus();
+
+        String deviceId = inDto.getDeviceId();
         // 入参必须项检查
         if(userId == 0 || userId == null || "".equals(userId)){
             logger.error("用户ID入参为空");
@@ -1197,6 +1209,8 @@ public class ScheduleServiceImpl implements IScheduleService {
         pushInDto.setData(pushOutDto);
         pushInDto.setUserId(userId);
         pushInDto.setTargetUserId(createId);
+
+        pushInDto.setDeviceId(deviceId);
         // 发送日程修改信息
         int modifyMessage = webSocketService.pushToUser(pushInDto);
         if(modifyMessage != 0){
