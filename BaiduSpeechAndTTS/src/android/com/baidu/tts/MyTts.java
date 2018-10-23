@@ -50,7 +50,7 @@ public class MyTts {
 
     private Context context;
 
-    protected String offlineVoice = OfflineResource.VOICE_MALE;
+    protected String offlineVoice = OfflineResource.VOICE_DUYY;
 
 
 
