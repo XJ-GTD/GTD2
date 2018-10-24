@@ -9,6 +9,7 @@ import com.manager.master.repository.UserJpaRepository;
 import com.manager.master.repository.UserRepository;
 import com.manager.master.service.ICreateQueueService;
 import com.manager.master.service.IUserService;
+import com.manager.util.BaseUtil;
 import com.manager.util.CommonMethods;
 import com.manager.util.UUIDUtil;
 import org.apache.logging.log4j.LogManager;
@@ -146,10 +147,10 @@ public class UserServiceImpl implements IUserService{
             user.setAccountName((String) object[6]);
             user.setAccountMobile((String) object[7]);
             user.setAccountQq((String) object[8]);
-            user.setAccountQueue((String) object[9]);
-            user.setAccountWechat((String) object[10]);
-            user.setAccountUuid((String) object[11]);
-            user.setAccountId((Integer) object[12]);
+            user.setAccountWechat((String) object[9]);
+            user.setAccountUuid((String) object[10]);
+            user.setAccountId((Integer) object[11]);
+            user.setAccountQueue(BaseUtil.createQueueName(user.getUserId(), inDto.getDeviceId()));
         } else {
             throw new ServiceException("用户名或密码错误！");
         }
@@ -267,10 +268,10 @@ public class UserServiceImpl implements IUserService{
                 user.setAccountName((String) object[6]);
                 user.setAccountMobile((String) object[7]);
                 user.setAccountQq((String) object[8]);
-                user.setAccountQueue((String) object[9]);
-                user.setAccountWechat((String) object[10]);
-                user.setAccountUuid((String) object[11]);
-                user.setAccountId((Integer) object[12]);
+                user.setAccountWechat((String) object[9]);
+                user.setAccountUuid((String) object[10]);
+                user.setAccountId((Integer) object[11]);
+                user.setAccountQueue(BaseUtil.createQueueName(user.getUserId(), inDto.getDeviceId()));
             } else {
                 logger.error(" ------ 数据异常");
                 throw new ServiceException("数据异常！");

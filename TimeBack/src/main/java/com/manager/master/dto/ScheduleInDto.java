@@ -26,6 +26,8 @@ public class ScheduleInDto {
     private List<Integer> groupScheduleIds;                 // 群组日程 List
     private List<Integer> scheduleLabelIds;                 // 日程标签 List
 
+    private String deviceId;
+
     private Integer playersStatus;                     // 参与人状态ID
 
     @Override
@@ -177,5 +179,13 @@ public class ScheduleInDto {
 
     public void setPlayersStatus(Integer playersStatus) {
         this.playersStatus = playersStatus;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }

@@ -41,5 +41,25 @@ public class BaseUtil {
         return str;
     }
 
+    //队列命名规则
+    public static String createQueueName(Integer userId, String deviceId) {
+//        return userId + "_" + deviceId;
+        return "gtd" + userId;
+    }
+
+    //交换机命名规则
+    public static String createExchangeName(Integer userId) {
+        return "gtd" + userId;
+    }
+
+    //用户名命名规则
+    public static String createUserName(String accountMobile) {
+        return "用户_" + accountMobile;
+    }
+
+    //账户名命名规则
+    public static String createAccountName(String accountMobile) {
+        return "gtd" + accountMobile;
+    }
 
 }

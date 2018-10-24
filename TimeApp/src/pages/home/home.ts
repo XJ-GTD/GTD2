@@ -68,6 +68,7 @@ export class HomePage {
     this.init();
     this.setAlarmList();
   }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
 
@@ -79,6 +80,7 @@ export class HomePage {
     this.webSocketService.connect(this.paramsService.user.accountQueue);
 
     this.scheduleList = [];
+
 
     // this.calendarControl();
     // let today = new Date();
@@ -96,30 +98,33 @@ export class HomePage {
     this.calendar.year = year;
     this.calendar.month = month;
     this.calendar.daySum = TimeService.mGetDate(year, month);
+
+    this.discernTagsRestful(success => {
+      this.dayList = new TimeModel();
+      this.dayList.date = this.data.data.resultList;
+      console.log("dayList: " + this.dayList);
+
+      let _daysConfig = [];
+      for (let i = 0; i < this.dayList.date.length; i++) {
+        if (this.dayList.date[i].flag == '1') {
+          _daysConfig.push({
+            date: new Date(this.dayList.date[i].date),
+            subTitle: `\u25B2`
+          });
+        }
+      }
+      this.options.daysConfig = _daysConfig;
+    })
+
+  }
+
+  discernTagsRestful(success) {
     this.http.post(AppConfig.SCHEDULE_CALENDAR_MARK_URL, this.calendar, AppConfig.HEADER_OPTIONS_JSON)
       .subscribe(data => {
-        this.data = data;
-        console.log("tags data: " + this.data.data);
 
-        if (this.data.code == 0) {
-          this.dayList = new TimeModel();
-          this.dayList.date = this.data.data.resultList;
-          console.log("dayList: " + this.dayList);
+        console.log("data" + data);
+        success = data;
 
-          let _daysConfig = [];
-          for (let i = 0; i < this.dayList.date.length; i++) {
-            if (this.dayList.date[i].flag == '1') {
-              _daysConfig.push({
-                date: new Date(this.dayList.date[i].date),
-                subTitle: `\u25B2`
-              });
-            }
-          }
-          this.options.daysConfig = _daysConfig;
-          this.weekFlag = !this.weekFlag;
-        } else {
-          console.log("tags error!");
-        }
       })
   }
 
