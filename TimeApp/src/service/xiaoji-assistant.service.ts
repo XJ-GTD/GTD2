@@ -5,7 +5,6 @@ import { ParamsService } from "./params.service";
 import { Base64 } from "@ionic-native/base64";
 import { File } from "@ionic-native/file";
 import { App, NavController } from "ionic-angular";
-
 declare var cordova: any;
 
 /**
@@ -31,6 +30,7 @@ export class XiaojiAssistantService {
               private paramsService: ParamsService) {
     this.isSpeaking = false;
     this.islistenAudioing = false;
+
 
   }
 
