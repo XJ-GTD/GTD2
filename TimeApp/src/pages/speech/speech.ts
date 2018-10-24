@@ -9,6 +9,7 @@ import { ScheduleModel } from "../../model/schedule.model";
 import { File } from "@ionic-native/file";
 import { Base64 } from "@ionic-native/base64";
 
+
 declare var cordova: any;
 /**
  * Generated class for the SpeechPage page.
