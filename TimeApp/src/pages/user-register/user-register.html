@@ -81,6 +81,7 @@
             <div >
               <!--*ngIf="true" -->
               <div class="error_info">
+                <span *ngIf="this.checkBoxClickFlag">不同意协议不能注册</span>
                 <span *ngIf="this.checkPassword">请输入密码</span>
               </div>
             </div>
@@ -95,9 +96,9 @@
           <span class="checkbox_span">
             <!--<ion-item>-->
             <!--<ion-label >已阅读《用户协议》</ion-label>-->
-              <ion-checkbox checked="true"></ion-checkbox>
+              <ion-checkbox [(ngModel)]="checkBoxClick"></ion-checkbox>
             <!--</ion-item>-->
-          <span class="userAgreement_span">已阅读<span class="userAgreement_span_1"
+          <span class="userAgreement_span">我已阅读并同意<span class="userAgreement_span_1"
                                                     (click)="userAgreegment()">《用户协议》</span></span>
           </span>
         </div>

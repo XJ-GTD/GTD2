@@ -32,6 +32,8 @@ export class UserRegisterPage {
   checkMoblieNull: any;
   checkPassword: any;
   reAccountPassword: any;
+  checkBoxClick: any;
+  checkBoxClickFlag:any;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -61,61 +63,69 @@ export class UserRegisterPage {
   }**/
 
   register() {
-
-    //用户注册
-    this.http.post(AppConfig.USER_REGISTER_URL, {
-      accountName: this.accountName,
-      accountPassword: this.accountPassword,
-      accountMobile: this.accountMobile,
-      deviceId: this.deviceId,
-      loginType: 0
-    }, {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      responseType: 'json'
-    })
-      .subscribe(data => {
-        this.data = data;
-        let loader = this.loadingCtrl.create({
-          content: this.data.message,
-          duration: 1000
-        });
-        if (this.data.code == "0") {
-          loader.present();
-          //注册成功后登陆
-          this.http.post(AppConfig.USER_LOGIN_URL, {
-            accountName: this.accountMobile,
-
-            accountPassword: this.accountPassword,
-            loginType: 0
-          }, {
-            headers: {
-              "Content-Type": "application/json"
-            },
-            responseType: 'json'
-          })
-            .subscribe(data => {
-              console.log(data);
-              this.data = data;
-              let loader = this.loadingCtrl.create({
-                content: this.data.message,
-                duration: 1000
-              });
-              if (this.data.code == "0") {
-                this.paramsService.user = this.data.data.userInfo;
-                loader.present();
-                this.navCtrl.push('HomePage');
-              } else {
-                loader.present();
-              }
-
-            })
-        } else {
-          loader.present();
-        }
-
+    var a=this.checkBoxClick;
+    if (!this.checkBoxClick== true)
+    {
+      this.checkBoxClickFlag=true;
+    }else
+    {
+      this.checkBoxClickFlag=false;
+      //用户注册
+      this.http.post(AppConfig.USER_REGISTER_URL, {
+        accountName: this.accountName,
+        accountPassword: this.accountPassword,
+        accountMobile: this.accountMobile,
+        deviceId: this.deviceId,
+        loginType: 0
+      }, {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        responseType: 'json'
       })
+        .subscribe(data => {
+          this.data = data;
+          let loader = this.loadingCtrl.create({
+            content: this.data.message,
+            duration: 1000
+          });
+          if (this.data.code == "0") {
+            loader.present();
+            //注册成功后登陆
+            this.http.post(AppConfig.USER_LOGIN_URL, {
+              accountName: this.accountMobile,
+
+              accountPassword: this.accountPassword,
+              loginType: 0
+            }, {
+              headers: {
+                "Content-Type": "application/json"
+              },
+              responseType: 'json'
+            })
+              .subscribe(data => {
+                console.log(data);
+                this.data = data;
+                let loader = this.loadingCtrl.create({
+                  content: this.data.message,
+                  duration: 1000
+                });
+                if (this.data.code == "0") {
+                  this.paramsService.user = this.data.data.userInfo;
+                  loader.present();
+                  this.navCtrl.push('HomePage');
+                } else {
+                  loader.present();
+                }
+
+              })
+          } else {
+            loader.present();
+          }
+
+        })
+    }
+
   }
   checkPhone(){
     var  re = /^1\d{10}$/;   //正则表达式
@@ -135,7 +145,7 @@ export class UserRegisterPage {
   }
 
   checkPwd(){
-    if (this.accountPassword) {      //判断字符是否为空
+    if (this.accountPassword==null || this.accountPassword=="" || this.accountPassword===undefined) {      //判断字符是否为空
       this.checkPassword=true;
     }else{
       this.checkPassword=false;
