@@ -23,9 +23,7 @@ export class HomeMenuPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public platform: Platform,
               public backButtonService: BackButtonService) {
-    this.platform.ready().then(() => {
-      this.backButtonService.registerBackButtonAction(null);
-    });
+
   }
 
   ionViewDidLoad() {
