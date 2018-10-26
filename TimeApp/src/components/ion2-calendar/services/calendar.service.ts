@@ -198,6 +198,13 @@ export class CalendarService {
           days[endOffsetIndex] = this.createCalendarDay(dayAfter.valueOf(), opt, thisMonth);
         }
       }
+      //补齐6行 by zhangjy
+      if (days.length == 35){
+        for (endOffsetIndex; endOffsetIndex < 35 +  7; endOffsetIndex++) {
+          const dayAfter = moment(days[endOffsetIndex - 1].time).clone().add(1, 'd');
+          days[endOffsetIndex] = this.createCalendarDay(dayAfter.valueOf(), opt, thisMonth);
+        }
+      }
     }
 
     return {
