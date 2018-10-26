@@ -82,7 +82,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
                               (onSelect)="onSelect.emit($event)"
                               (onSelectStart)="onSelectStart.emit($event)"
                               (onSelectEnd)="onSelectEnd.emit($event)"
-                              (onInit)="onInit.emit($event)"
+                              (tabInit)="tabInit.emit($event)"
                               [pickMode]="_d.pickMode"
                               [color]="_d.color">
           </ion-calendar-month>
@@ -136,7 +136,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   @Output() onSelect: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectStart: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectEnd: EventEmitter<CalendarDay> = new EventEmitter();
-  @Output() onInit: EventEmitter<number> = new EventEmitter();
+  @Output() tabInit: EventEmitter<number> = new EventEmitter();
 
   @Input()
   set options(value: CalendarComponentOptions) {
@@ -318,7 +318,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   createMonth(date: number): CalendarMonth {
-    this.onInit.emit(date);
+    this.tabInit.emit(date);
     return this.calSvc.createMonthsByPeriod(date, 1, this._d)[0];
   }
 

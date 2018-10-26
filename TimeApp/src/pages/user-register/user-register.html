@@ -18,15 +18,24 @@
       <div class="custom_group">
         <div class="group_input">
           <div class="input_icon">
-              <span >
+              <span>
                  <ion-icon name="ios-person-outline"></ion-icon>
               </span>
           </div>
           <div class="input_text">
             <ion-item>
-              <ion-input type="number" [formControl]="accountMobile" clearInput=true pattern="[0-9]*" placeholder="输入您的手机号" >
-                </ion-input>
+              <ion-input type="number" [(ngModel)]="accountMobile"  (ionBlur)="checkPhone()"  clearInput=true placeholder="输入您的手机号">
+              </ion-input>
             </ion-item>
+          </div>
+        </div>
+        <div>
+          <div>
+            <!--*ngIf="true" -->
+            <div class="error_info">
+              <span *ngIf="this.checkMoblieNull">手机号不能为空</span>
+              <span *ngIf="this.checkMoblie">请输入正确11位手机号</span>
+            </div>
           </div>
         </div>
       </div>
@@ -39,74 +48,58 @@
           </div>
           <div class="input_text_verification">
             <div class="verification_item">
-              <ion-item >
-                <ion-input type="password" placeholder="验证码"></ion-input>
+              <ion-item>
+                <ion-input type="text" [(ngModel)]="authCode" placeholder="验证码"></ion-input>
               </ion-item>
             </div>
             <div class="button_verification">
-              <button ion-button >发送验证码</button>
+              <button ion-button>发送验证码</button>
             </div>
           </div>
-          <!--<div class="input_verification ">
-            <button ion-button class="button_verification">发送验证码</button>
-          </div>-->
+        </div>
+      </div>
+      <div >
+        <div >
+          <!--*ngIf="true" -->
+          <div class="error_info">
+          </div>
         </div>
       </div>
       <div class="custom_group">
         <div class="group_input">
           <div class="input_icon">
-            <span >
+            <span>
               <ion-icon name="ios-lock-outline"></ion-icon>
             </span>
           </div>
           <div class="input_text">
             <ion-item>
-              <ion-input type="password" [(ngModel)]="accountPassword" placeholder="密码"></ion-input>
+              <ion-input type="text" [(ngModel)]="accountPassword" (ionBlur)="checkPwd()" placeholder="密码"></ion-input>
             </ion-item>
           </div>
-        </div>
-      </div>
-      <div class="custom_group">
-        <div class="group_input">
-          <div class="input_icon">
-          <span >
-            <ion-icon name="ios-lock-outline"></ion-icon>
-          </span>
-          </div>
-          <div class="input_text">
-            <ion-item>
-              <ion-input type="password" [formControl]="reAccountPassword" clearInput=true placeholder="确定密码"></ion-input>
-            </ion-item>
-          </div>
-        </div>
-      </div>
-      <div class="custom_group">
-        <div class="group_input">
-          <div class="input_icon">
-          <span class="img_span">
-            <img src="./assets/imgs/realName.png"/>
-          </span>
-          </div>
-          <div class="input_text">
-            <ion-item>
-              <ion-input type="text" placeholder="可选，推荐实名"></ion-input>
-            </ion-item>
-          </div>
-          <div class="error_info">
-            <span>请输入正确11位手机号</span>
+          <div >
+            <div >
+              <!--*ngIf="true" -->
+              <div class="error_info">
+                <span *ngIf="this.checkBoxClickFlag">不同意协议不能注册</span>
+                <span *ngIf="this.checkPassword">请输入密码</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div class="custom_group padding_0">
-        <button ion-button block color="danger" class="region_button">
+        <button ion-button block color="danger" (click)="register()" class="region_button">
           注册
         </button>
         <div class="copywriting">
           <span class="checkbox_span">
-            <ion-item>
-              <ion-label>已阅读《用户协议》</ion-label>
-              <ion-checkbox checked="true"></ion-checkbox>
-            </ion-item>
+            <!--<ion-item>-->
+            <!--<ion-label >已阅读《用户协议》</ion-label>-->
+              <ion-checkbox [(ngModel)]="checkBoxClick"></ion-checkbox>
+            <!--</ion-item>-->
+          <span class="userAgreement_span">我已阅读并同意<span class="userAgreement_span_1"
+                                                    (click)="userAgreegment()">《用户协议》</span></span>
           </span>
         </div>
       </div>
