@@ -12,6 +12,7 @@ import { XiaojiAlarmclockService } from "../service/xiaoji-alarmclock.service";
 import { TimeService } from "../service/time.service";
 import { BackButtonService } from "../service/backbutton.service";
 import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
+import {AndroidFullScreen} from "@ionic-native/android-full-screen";
 
 
 @Component({
@@ -34,7 +35,8 @@ export class MyApp {
     private storage: Storage,
     private paramsService: ParamsService,
     public backButtonService: BackButtonService,
-    public feedbackService: XiaojiFeedbackService
+    public feedbackService: XiaojiFeedbackService,
+    private androidFullScreen: AndroidFullScreen
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -46,7 +48,9 @@ export class MyApp {
       splashScreen.hide();
     });
 
-
+    this.androidFullScreen.immersiveMode()
+      .then(() => console.log('Immersive mode supported'))
+      .catch(err => console.log(err));
   }
 
   ngAfterViewInit(){
