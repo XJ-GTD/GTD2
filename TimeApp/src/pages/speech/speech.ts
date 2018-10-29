@@ -8,6 +8,7 @@ import { AiuiModel } from "../../model/aiui.model";
 import { ScheduleModel } from "../../model/schedule.model";
 import { File } from "@ionic-native/file";
 import { Base64 } from "@ionic-native/base64";
+import  {XiaojiFeedbackService} from "../../service/xiaoji-feedback.service";
 
 
 declare var cordova: any;
@@ -56,7 +57,8 @@ export class SpeechPage {
               private base64: Base64,
               private loadingCtrl: LoadingController,
               private alert: AlertController,
-              public xiaojiSpeech: XiaojiAssistantService) {
+              public xiaojiSpeech: XiaojiAssistantService,
+              public xiaojiFeekback: XiaojiFeedbackService) {
 
     this.init();
   }
@@ -90,6 +92,8 @@ export class SpeechPage {
   openSocial(flag: number, fab: FabContainer) {
     //console.log('Share in ' + flag);
     if (flag == 1) {
+      this.xiaojiFeekback.audioBass();
+
       //切换手动输入模式
       this.modeFlag = !this.modeFlag;
       this.initFlag = false;
@@ -97,10 +101,14 @@ export class SpeechPage {
     }
     if (flag == 2) {
       //进入群组
+      this.xiaojiFeekback.audioBongo();
+
       this.groupListShow();
     }
     if (flag == 3) {
       //添加日程
+
+      this.xiaojiFeekback.audioHighhat();
       this.addSchedule();
     }
     fab.close();
@@ -123,6 +131,8 @@ export class SpeechPage {
     if (this.xiaojiSpeech.islistenAudioing) return;
     this.xiaojiSpeech.listenAudio(rs =>{
       this.messageHanding(rs);
+      this.xiaojiFeekback.audioSnare();
+
     });
   }
 

@@ -11,11 +11,12 @@ import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
 import { XiaojiAlarmclockService } from "../service/xiaoji-alarmclock.service";
 import { TimeService } from "../service/time.service";
 import { BackButtonService } from "../service/backbutton.service";
+import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
 
 
 @Component({
   templateUrl: 'app.html',
-  providers: [ ParamsService, WebsocketService, XiaojiAssistantService, XiaojiAlarmclockService, TimeService, BackButtonService ]
+  providers: [ ParamsService, WebsocketService, XiaojiAssistantService, XiaojiAlarmclockService, TimeService, BackButtonService ,XiaojiFeedbackService]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
@@ -32,12 +33,15 @@ export class MyApp {
     public splashScreen: SplashScreen,
     private storage: Storage,
     private paramsService: ParamsService,
-    public backButtonService: BackButtonService
+    public backButtonService: BackButtonService,
+    public feedbackService: XiaojiFeedbackService
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
+      feedbackService.initAudio();
       this.backButtonService.registerBackButtonAction(null);
+
       statusBar.styleDefault();
       splashScreen.hide();
     });
