@@ -43,11 +43,11 @@
     .days .on-selected,
     .startSelection button.days-btn,
     .endSelection button.days-btn {
-       // background-color: bindColors($background-color);
-      background: -webkit-linear-gradient(left, rgb(149,58,139),rgb(86,82,222)); /* Safari 5.1 - 6.0 */
-      background: -o-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Opera 11.1 - 12.0 */
-      background: -moz-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Firefox 3.6 - 15 */
-      background: linear-gradient(to right, rgb(149,58,139),rgb(86,82,222)); /* 标准的语法（必须放在最后） */
+       background-color: bindColors($background-color);
+      //background: -webkit-linear-gradient(left, rgb(149,58,139),rgb(86,82,222)); /* Safari 5.1 - 6.0 */
+      //background: -o-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Opera 11.1 - 12.0 */
+      //background: -moz-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Firefox 3.6 - 15 */
+      //background: linear-gradient(to right, rgb(149,58,139),rgb(86,82,222)); /* 标准的语法（必须放在最后） */
 
       color: $color;
     }
@@ -189,8 +189,8 @@ ion-calendar-month {
     }
     button.days-btn p {
         margin: 0;
-        font-size: 1.2em;
-        color: #333;
+        font-size: 11pt;
+        color: rgb(34,34,34);
     }
     button.days-btn.on-selected small {
         transition: bottom .3s;

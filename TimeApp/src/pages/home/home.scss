@@ -5,44 +5,89 @@
 }
 .homeCalendar{
   width: 100%;
-  height: 366px;
   background-color: #fff;
   position:relative;
+
+  ion-card-header{
+    border-bottom-width:1px;
+    border-bottom-style:ridge;
+    border-bottom-color:#eee;
+  }
+  .toolbar-background-ios{
+    background-color: white;
+  }
+  .slide-zoom{
+    height: 100%;
+  }
+  .assistant{
+    //   height:50px;
+    border-radius:100%;
+    //background-color: red;
+    background-color: rgba(0,0,0,0.0);
+    height: 50px;
+  }
+  .footer-md::before{
+    background-image:none ;
+  }
+  .week-ion-calendar{
+    height: 375px;
+    background-color: rgba(0,0,0,0.05);
+  }
+
+  .week-ion-calendar ion-calendar-month .days{
+    height: 32px;
+  }
+
+  .week-ion-calendar ion-calendar-month .light .days .on-selected{
+
+    background: -webkit-linear-gradient(left,rgb(86,82,222), rgb(149,58,139)); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, rgb(86,82,222), rgb(149,58,139)); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, rgb(86,82,222), rgb(149,58,139)); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, rgb(86,82,222), rgb(149,58,139)); /* 标准的语法（必须放在最后） */
+
+
+    p{
+      color: #ffffff;
+    }
+
+
+  }
+  ion-calendar-month {
+    button.days-btn {
+      border-radius: 12px;
+      width: 44px;
+      display: block;
+      margin: 0 auto;
+      padding: 0;
+      height: 24px;
+      background-color: transparent;
+      position: relative;
+      z-index: 2;
+    }
+  }
+
+  .homelist{
+
+    ion-list-header{
+      ion-label{
+        font-size: 15pt;
+        color: rgb(153,153,153);
+        font-family:PingFang-SC-Medium;
+
+      }
+    }
+
+    .item-ios{
+      h2{
+        font-size: 18pt;
+        font-family: PingFang-SC-Bold;
+        color: rgb(34,34,34);
+        white-space:normal;
+      }
+    }
+
+  }
 }
 
-ion-card-header{
-  border-bottom-width:1px;
-  border-bottom-style:ridge;
-  border-bottom-color:#eee;
-}
-ion-card{
-  border-radius:10px;
-  margin: 14%;
-}
-.card-ios{
-  border-radius:10px;
-  height:93%;
-}
-.card-ios p{
-  margin: 12px 2px 8px 8px;
-}
-.toolbar-background-ios{
- background-color: white;
-}
-.slide-zoom{
-  height: 100%;
-}
-.card-content{
-  padding-top:5px
-}
-.assistant{
-//   height:50px;
-  border-radius:100%;
-//background-color: red;
-  background-color: rgba(0,0,0,0.0);
-  height: 50px;
-}
-.footer-md::before{
-  background-image:none ;
-}
+
 

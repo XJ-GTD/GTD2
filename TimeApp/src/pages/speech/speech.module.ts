@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { SpeechPage } from './speech';
 import { ParamsService } from "../../service/params.service";
 import { XiaojiAssistantService } from "../../service/xiaoji-assistant.service";
+import { XiaojiFeedbackService } from "../../service/xiaoji-feedback.service";
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { XiaojiAssistantService } from "../../service/xiaoji-assistant.service";
   ],
   providers: [
     ParamsService,
-    XiaojiAssistantService
+    XiaojiAssistantService,
+    XiaojiFeedbackService
   ],
   entryComponents: [
     SpeechPage,

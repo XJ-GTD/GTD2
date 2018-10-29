@@ -18,12 +18,13 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
   <div class="homeCalendar" >
             <ion-calendar  [options]="options"
                            (onSelect)="findTodaySchedule($event)"
                            (onInit)="discernTags($event)"
-                            class="week-ion-calendar">
+                            class="max-ion-calendar">
             </ion-calendar>
           </div>
   <div *ngIf="weekFlag"></div>

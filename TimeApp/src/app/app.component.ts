@@ -11,11 +11,12 @@ import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
 import { XiaojiAlarmclockService } from "../service/xiaoji-alarmclock.service";
 import { TimeService } from "../service/time.service";
 import { BackButtonService } from "../service/backbutton.service";
+import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
 
 
 @Component({
   templateUrl: 'app.html',
-  providers: [ ParamsService, WebsocketService, XiaojiAssistantService, XiaojiAlarmclockService, TimeService, BackButtonService ]
+  providers: [ ParamsService, WebsocketService, XiaojiAssistantService, XiaojiAlarmclockService, TimeService, BackButtonService ,XiaojiFeedbackService]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
@@ -32,11 +33,25 @@ export class MyApp {
     public splashScreen: SplashScreen,
     private storage: Storage,
     private paramsService: ParamsService,
-    public backButtonService: BackButtonService
+    public backButtonService: BackButtonService,
+    public feedbackService: XiaojiFeedbackService
   ) {
+    platform.ready().then(() => {
+      // Okay, so the platform is ready and our plugins are available.
+      // Here you can do any higher level native things you might need.
+      feedbackService.initAudio();
+      this.backButtonService.registerBackButtonAction(null);
+
+      statusBar.styleDefault();
+      splashScreen.hide();
+    });
+
+
+  }
+
+  ngAfterViewInit(){
     //通过key，判断是否曾进入过引导页
     this.storage.get('firstIn').then((result) => {
-      console.log('firstIn is', result);
       if (this.paramsService.user == null) {
         if (result != null && result) {
           this.rootPage = 'UserLoginPage';
@@ -49,16 +64,11 @@ export class MyApp {
         this.rootPage = 'HomeMenuPage';
       }
 
-    });
+      if (this.nav.getViews().length == 0){
+        this.nav.setRoot(this.rootPage);
+      }
 
-    platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      this.backButtonService.registerBackButtonAction(null);
-      statusBar.styleDefault();
-      splashScreen.hide();
     });
-
   }
 
 }

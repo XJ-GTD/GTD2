@@ -13,6 +13,7 @@ import { LocalNotifications } from "@ionic-native/local-notifications";
 import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification'
 import { ParamsService } from "../service/params.service";
 import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
+import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
     XiaojiAssistantService,
     LocalNotifications,
     PhonegapLocalNotification,
+    XiaojiFeedbackService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
