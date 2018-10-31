@@ -1,12 +1,10 @@
 package com.manager.master.repository;
 
-import com.manager.master.entity.GtdUserEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  * 用户实现类
@@ -86,6 +84,21 @@ public class UserRepository {
                 " FROM gtd_account B " +
                 " INNER JOIN gtd_user A ON B.USER_ID = A.USER_ID AND A.USER_ID = " + userId;
 
+
+        return em.createNativeQuery(sql).getSingleResult();
+    }
+
+    /**
+     * 通过手机号查询用户
+     * @param mobile
+     * @return
+     */
+    public Object findInfoByMobile(String mobile){
+        String sql = "SELECT A.USER_ID, A.USER_NAME, A.HEADIMG_URL, A.BRITHDAY, A.USER_SEX, " +
+                "A.USER_CONTACT, B.ACCOUNT_NAME, B.ACCOUNT_MOBILE, B.ACCOUNT_QQ, " +
+                "B.ACCOUNT_WECHAT, B.ACCOUNT_UUID, B.ACCOUNT_ID " +
+                " FROM gtd_account B " +
+                " INNER JOIN gtd_user A ON B.USER_ID = A.USER_ID AND B.ACCOUNT_MOBILE = " + mobile;
 
         return em.createNativeQuery(sql).getSingleResult();
     }

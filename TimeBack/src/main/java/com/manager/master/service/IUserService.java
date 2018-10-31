@@ -1,7 +1,9 @@
 package com.manager.master.service;
 
-import com.manager.master.dto.*;
-import com.manager.master.entity.GtdUserEntity;
+import com.manager.master.dto.LabelInDto;
+import com.manager.master.dto.LabelOutDto;
+import com.manager.master.dto.UserInDto;
+import com.manager.master.dto.UserOutDto;
 
 import java.io.IOException;
 import java.util.List;
@@ -52,4 +54,11 @@ public interface IUserService {
      * @param inDto
      */
     UserOutDto updateUserInfo(UserInDto inDto);
+
+    /**
+     * 验证码登陆
+     * @param inDto
+     * @return
+     */
+    UserOutDto codeLogin(UserInDto inDto);
 }

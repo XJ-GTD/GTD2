@@ -2,11 +2,13 @@ package com.manager.master.controller;
 
 import com.manager.config.exception.ServiceException;
 import com.manager.master.dto.*;
+import com.manager.master.entity.Sms;
 import com.manager.master.service.ICreateQueueService;
 import com.manager.master.service.IUserService;
 import com.manager.util.BaseUtil;
 import com.manager.util.CommonMethods;
 import com.manager.util.ResultCode;
+import com.manager.util.SmsManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -58,6 +60,7 @@ public class UserController {
 //         String accountUuid=inDto.getAccountUuid();         //唯一标识码
          Integer loginType=inDto.getLoginType();           //登陆类型 0:手机或账户名登陆， 1：微信登陆， 2：QQ登陆
          String userName=inDto.getUserName();
+         String authCode = inDto.getAuthCode();
         //入参检查
          //必填项检查
         if(accountMobile==null || "".equals(accountMobile)){
@@ -70,6 +73,21 @@ public class UserController {
                }
             }
         }
+        if(authCode == null || "".equals(authCode)){
+            outBean.setCode(ResultCode.REPEAT);
+            outBean.setMessage("[注册失败]：验证码不可为空");
+            logger.info("[注册失败]：验证码不可为空");
+            return outBean;
+        }
+        Sms sms = SmsManager.getCache(accountMobile);
+
+        if(sms == null || !authCode.equals(sms.getValue())){
+            outBean.setCode(ResultCode.REPEAT);
+            outBean.setMessage("[注册失败]：验证码错误");
+            logger.info("[注册失败]：验证码错误");
+            return outBean;
+        }
+
         if(accountPassword==null || "".equals(accountPassword)){
             outBean.setCode(ResultCode.REPEAT);
             outBean.setMessage("[注册失败]：密码不可为空");
@@ -129,6 +147,7 @@ public class UserController {
                 outBean.setMessage("[注册失败]：手机号已注册");
                 logger.info("[注册失败]：手机号已注册");
             }
+            SmsManager.clearOnly(accountMobile);
         }catch (Exception ex){
             throw new ServiceException(ex.getMessage());
         }

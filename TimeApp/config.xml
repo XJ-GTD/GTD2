@@ -97,4 +97,5 @@
     <plugin name="org.nypr.cordova.wakeupplugin" spec="../xjalarmclock" />
     <plugin name="cordova-plugin-vibration" spec="~3.1.0" />
     <plugin name="cordova-plugin-nativeaudio" spec="~3.0.9" />
+    <plugin name="cordova-plugin-fullscreen" spec="~1.1.0" />
 </widget>

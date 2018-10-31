@@ -91,18 +91,7 @@ public class UserServiceImpl implements IUserService{
         accountEntity.setAccountPassword(inDto.getAccountPassword());
         accountEntity.setUserId(user.getUserId());
         accountEntity.setAccountUuid(UUIDUtil.getUUID());       //唯一标识码
-        String queueName="";
-        String exchangeName="";
-        try {
-            exchangeName = createQueueService.createExchange(user.getUserId(), 1);
-            queueName = createQueueService.createQueue(user.getUserId(), inDto.getDeviceId(), exchangeName) ;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ServiceException("服务器异常，请稍后再试！");
-        }
-        if(!"".equals(queueName)){
-            accountEntity.setAccountQueue(queueName);
-        }
+
         //一对一关系添加
         user.setAccount(accountEntity);
 
@@ -135,9 +124,13 @@ public class UserServiceImpl implements IUserService{
             accountName = inDto.getAccountQq();
         }
 
+
+
         Object[] object = (Object[]) userRepository.login(inDto.getLoginType(), accountName, inDto.getAccountPassword());
 
         if (object != null) {
+
+
             user.setUserId((Integer) object[0]);
             user.setUserName((String) object[1]);
             user.setHeadImgUrl((String) object[2]);
@@ -150,7 +143,18 @@ public class UserServiceImpl implements IUserService{
             user.setAccountWechat((String) object[9]);
             user.setAccountUuid((String) object[10]);
             user.setAccountId((Integer) object[11]);
-            user.setAccountQueue(BaseUtil.createQueueName(user.getUserId(), inDto.getDeviceId()));
+
+            String queueName="";
+            String exchangeName="";
+            try {
+                exchangeName = createQueueService.createExchange(user.getUserId(), 1);
+                queueName = createQueueService.createQueue(user.getUserId(), inDto.getDeviceId(), exchangeName) ;
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new ServiceException("服务器异常，请稍后再试！");
+            }
+
+            user.setAccountQueue(queueName);
         } else {
             throw new ServiceException("用户名或密码错误！");
         }
@@ -285,5 +289,10 @@ public class UserServiceImpl implements IUserService{
         }
 
         return user;
+    }
+
+    @Override
+    public UserOutDto codeLogin(UserInDto inDto) {
+        return null;
     }
 }

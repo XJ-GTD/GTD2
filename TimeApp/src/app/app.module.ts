@@ -14,6 +14,7 @@ import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notifica
 import { ParamsService } from "../service/params.service";
 import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
 import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
+import {AndroidFullScreen} from "@ionic-native/android-full-screen";
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
     BrowserModule,
     IonicModule.forRoot(MyApp, {
       tabsHideOnSubPages: 'true',
+
       //强制使用IOS风格
       mode: 'ios'
     }),
@@ -44,6 +46,7 @@ import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
     LocalNotifications,
     PhonegapLocalNotification,
     XiaojiFeedbackService,
+    AndroidFullScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

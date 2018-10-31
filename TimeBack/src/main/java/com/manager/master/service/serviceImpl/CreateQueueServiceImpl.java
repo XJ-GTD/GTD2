@@ -1,6 +1,7 @@
 package com.manager.master.service.serviceImpl;
 
 import com.manager.master.service.ICreateQueueService;
+import com.manager.util.BaseUtil;
 import com.manager.util.CreateQueueUtil;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,10 @@ public class CreateQueueServiceImpl implements ICreateQueueService {
     @Override
     public String createQueue(int userId, String deviceId, String exchange) throws IOException {
         //对列名
-        String queueName = userId + "_" + deviceId;
+        String queueName = BaseUtil.createQueueName(userId, deviceId);
         CreateQueueUtil createQueueUtil = new CreateQueueUtil();
 
-        String exchangeName = "gtd" + userId;
+        String exchangeName = BaseUtil.createExchangeName(userId);
         //创建对列
         createQueueUtil.createQueue(rabbitTemplate, queueName, exchangeName);
         return queueName;
@@ -33,7 +34,7 @@ public class CreateQueueServiceImpl implements ICreateQueueService {
     @Override
     public String createExchange(int userId, int type) throws IOException {
         //对列名
-        String exchangeName = "gtd" + userId;
+        String exchangeName = BaseUtil.createExchangeName(userId);
         CreateQueueUtil createQueueUtil = new CreateQueueUtil();
         createQueueUtil.createExchange(rabbitTemplate, exchangeName, TOPIC_EXCHANGE);
         return exchangeName;

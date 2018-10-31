@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import {Vibration} from '@ionic-native/vibration';
-import {NativeAudio} from '@ionic-native/native-audio';
+import { Vibration } from '@ionic-native/vibration';
+import { NativeAudio } from '@ionic-native/native-audio';
 /**
  * 界面操作回馈
  *

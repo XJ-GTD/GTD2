@@ -53,6 +53,6 @@ export class UserSetPage {
   }
 
   helpAndFeedback() {
-
+    this.navCtrl.push("UserHelpPage");
   }
 }
