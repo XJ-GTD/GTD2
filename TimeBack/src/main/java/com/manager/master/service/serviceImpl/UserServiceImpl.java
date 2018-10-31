@@ -127,8 +127,8 @@ public class UserServiceImpl implements IUserService{
         String queueName="";
         String exchangeName="";
         try {
-            exchangeName = createQueueService.createExchange(user.getUserId(), 1);
-            queueName = createQueueService.createQueue(user.getUserId(), inDto.getDeviceId(), exchangeName) ;
+            exchangeName = createQueueService.createExchange(inDto.getUserId(), 1);
+            queueName = createQueueService.createQueue(inDto.getUserId(), inDto.getDeviceId(), exchangeName) ;
         } catch (IOException e) {
             e.printStackTrace();
             throw new ServiceException("服务器异常，请稍后再试！");
