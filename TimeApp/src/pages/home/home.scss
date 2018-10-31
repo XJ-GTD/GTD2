@@ -1,3 +1,26 @@
+ion-app.ios page-home ion-header [padding-left]{
+  padding-left:10px
+}
+ion-app.ios page-home ion-header [padding-right] {
+  padding-right: 10px;
+}
+super-tabs-toolbar{
+  .toolbar-background-md{
+    background: transparent;
+  }
+  .toolbar-content-md{
+    width: 50%;
+  }
+}
+.homeContent{
+ position: absolute;
+  top: 10px;
+  left:10px;
+  right:10px;
+  bottom:10px;
+  background-color:#FFFFFF ;
+}
+
 #voice {
   position: fixed;
   left: 40%;
@@ -5,12 +28,12 @@
 }
 .homeCalendar{
   width: 100%;
-  background-color: #fff;
+  //background-color: #fff;
   position:relative;
+  height: 350px;
 
   ion-card-header{
     border-bottom-width:1px;
-    border-bottom-style:ridge;
     border-bottom-color:#eee;
   }
   .toolbar-background-ios{
@@ -29,41 +52,9 @@
   .footer-md::before{
     background-image:none ;
   }
-  .week-ion-calendar{
-    height: 375px;
-    background-color: rgba(0,0,0,0.05);
-  }
 
   .week-ion-calendar ion-calendar-month .days{
     height: 32px;
-  }
-
-  .week-ion-calendar ion-calendar-month .light .days .on-selected{
-
-    background: -webkit-linear-gradient(left,rgb(86,82,222), rgb(149,58,139)); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(right, rgb(86,82,222), rgb(149,58,139)); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(right, rgb(86,82,222), rgb(149,58,139)); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to right, rgb(86,82,222), rgb(149,58,139)); /* 标准的语法（必须放在最后） */
-
-
-    p{
-      color: #ffffff;
-    }
-
-
-  }
-  ion-calendar-month {
-    button.days-btn {
-      border-radius: 12px;
-      width: 44px;
-      display: block;
-      margin: 0 auto;
-      padding: 0;
-      height: 24px;
-      background-color: transparent;
-      position: relative;
-      z-index: 2;
-    }
   }
 
   .homelist{

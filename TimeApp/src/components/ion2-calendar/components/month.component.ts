@@ -29,18 +29,20 @@ export const MONTH_VALUE_ACCESSOR: any = {
           <ng-template ngFor let-day [ngForOf]="month.days" [ngForTrackBy]="trackByTime">
             <div class="days">
               <ng-container *ngIf="day">
-                <button type='button'
-                        [class]="'days-btn ' + day.cssClass"
-                        [class.today]="day.isToday"
-                        (click)="onSelected(day)"
-                        [class.marked]="day.marked"
-                        [class.last-month-day]="day.isLastMonth"
-                        [class.next-month-day]="day.isNextMonth"
-                        [class.on-selected]="isSelected(day.time)"
-                        [disabled]="day.disable">
-                  <p>{{day.title}}</p>
-                  <small *ngIf="day.subTitle">{{day?.subTitle}}</small>
-                </button>
+                <div class="borderDiv"
+                  [class.on-selected]="isSelected(day.time)">
+                  <button type='button'
+                          [class]="'days-btn ' + day.cssClass"
+                          [class.today]="day.isToday"
+                          (click)="onSelected(day)"
+                          [class.marked]="day.marked"
+                          [class.last-month-day]="day.isLastMonth"
+                          [class.next-month-day]="day.isNextMonth"
+                          [disabled]="day.disable">
+                    <p>{{day.title}}</p>
+                    <small *ngIf="day.subTitle">{{day?.subTitle}}</small>
+                  </button>
+                </div>
               </ng-container>
             </div>
           </ng-template>

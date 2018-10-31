@@ -28,18 +28,18 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
   selector: 'ion-calendar',
   providers: [ION_CAL_VALUE_ACCESSOR],
   template: `
-      <ion-card >
+      <ion-card no-padding >
       <ion-card-header no-padding>
         <div class="title">
           <ng-template [ngIf]="_showMonthPicker" [ngIfElse]="title">
           <div float-left >
-          <p  style="font-size: 2em" float-left>{{monthOpt.original.month<9? "0" + (monthOpt.original.month+1):monthOpt.original.month + 1}}</p>
-          <p  style="display: grid;margin-left: 0px" float-left>
-          <span style="font-size: 1.3em">{{monthOpt.original.year}}</span>
-          <span>month</span>
+          <p  style="font-size: 40px;color: #222222;font-weight: bold;letter-spacing: -5px" float-left>{{monthOpt.original.month<9? "0" + (monthOpt.original.month+1):monthOpt.original.month + 1}}</p>
+          <p  style="display: grid;padding-left:8px;padding-top:10px" float-left no-margin >
+            <span style="font-size: 15px;height: 16px;color: #666666;">{{monthOpt.original.year}}</span>
+            <span style="font-size: 10px;color: #666666;">month</span>
           </p>
-            <ion-icon float-left  padding-top class="arrow-dropdown"
-                      [name]="_view === 'days' ? 'md-arrow-dropdown' : 'md-arrow-dropup'" (click)="switchView()"></ion-icon>
+            <ion-icon style="padding-top:10px;padding-left: 6px;color:#666666" class="arrow-dropdown"
+                      [name]="_view === 'days' ? 'md-arrow-dropright' : 'md-arrow-dropdown'" (click)="switchView()"></ion-icon>
            </div>
           </ng-template>
           <ng-template #title>
