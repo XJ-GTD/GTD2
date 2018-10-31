@@ -34,6 +34,7 @@ export class UserRegisterPage {
   reAccountPassword: any;
   checkBoxClick: any;
   checkBoxClickFlag:any;
+  authCode: any;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -76,7 +77,8 @@ export class UserRegisterPage {
         accountPassword: this.accountPassword,
         accountMobile: this.accountMobile,
         deviceId: this.deviceId,
-        loginType: 0
+        loginType: 0,
+        authCode: this.authCode
       }, {
         headers: {
           "Content-Type": "application/json"
@@ -153,5 +155,29 @@ export class UserRegisterPage {
   }
   userAgreegment() {
     this.navCtrl.push('UserAgreementPage');
+  }
+
+  sendMsg(){
+    if(this.checkMoblie == false && this.checkMoblieNull == false){
+      this.http.post(AppConfig.SMS_MESSAGEXSEND_URL, {
+        tel : this.accountMobile,
+        type : 0
+      }, {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        responseType: 'json'
+      })
+        .subscribe(data =>{
+          this.data = data;
+          let alert = this.alertCtrl.create({
+            title:'提示信息',
+            subTitle: this.data.message,
+            buttons:['确定']
+          });
+          alert.present();
+          console.log(this.data.data)
+        })
+    }
   }
 }

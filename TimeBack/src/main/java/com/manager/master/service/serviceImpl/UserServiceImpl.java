@@ -285,4 +285,9 @@ public class UserServiceImpl implements IUserService{
 
         return user;
     }
+
+    @Override
+    public UserOutDto codeLogin(UserInDto inDto) {
+        return null;
+    }
 }
