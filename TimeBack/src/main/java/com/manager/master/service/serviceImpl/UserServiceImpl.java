@@ -124,19 +124,13 @@ public class UserServiceImpl implements IUserService{
             accountName = inDto.getAccountQq();
         }
 
-        String queueName="";
-        String exchangeName="";
-        try {
-            exchangeName = createQueueService.createExchange(inDto.getUserId(), 1);
-            queueName = createQueueService.createQueue(inDto.getUserId(), inDto.getDeviceId(), exchangeName) ;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ServiceException("服务器异常，请稍后再试！");
-        }
+
 
         Object[] object = (Object[]) userRepository.login(inDto.getLoginType(), accountName, inDto.getAccountPassword());
 
         if (object != null) {
+
+
             user.setUserId((Integer) object[0]);
             user.setUserName((String) object[1]);
             user.setHeadImgUrl((String) object[2]);
@@ -149,6 +143,17 @@ public class UserServiceImpl implements IUserService{
             user.setAccountWechat((String) object[9]);
             user.setAccountUuid((String) object[10]);
             user.setAccountId((Integer) object[11]);
+
+            String queueName="";
+            String exchangeName="";
+            try {
+                exchangeName = createQueueService.createExchange(user.getUserId(), 1);
+                queueName = createQueueService.createQueue(user.getUserId(), inDto.getDeviceId(), exchangeName) ;
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new ServiceException("服务器异常，请稍后再试！");
+            }
+
             user.setAccountQueue(queueName);
         } else {
             throw new ServiceException("用户名或密码错误！");
