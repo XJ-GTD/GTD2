@@ -4,14 +4,18 @@ ion-app.ios page-home ion-header [padding-left]{
 ion-app.ios page-home ion-header [padding-right] {
   padding-right: 10px;
 }
-super-tabs-toolbar{
-  .toolbar-background-md{
-    background: transparent;
-  }
-  .toolbar-content-md{
-    width: 50%;
+super-tabs{
+  height: 200px;
+  super-tabs-toolbar{
+    .toolbar-background-md{
+      background: transparent;
+    }
+    .toolbar-content-md{
+      width: 50%;
+    }
   }
 }
+
 .homeContent{
  position: absolute;
   top: 10px;
@@ -19,64 +23,29 @@ super-tabs-toolbar{
   right:10px;
   bottom:10px;
   background-color:#FFFFFF ;
-}
+  background-image: url('../assets/imgs/homebackImg.png');
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  -moz-background-size:100% 100%;
 
-#voice {
-  position: fixed;
-  left: 40%;
-  top: 85%;
 }
 .homeCalendar{
   width: 100%;
   //background-color: #fff;
   position:relative;
   height: 350px;
-
-  ion-card-header{
-    border-bottom-width:1px;
-    border-bottom-color:#eee;
-  }
-  .toolbar-background-ios{
-    background-color: white;
-  }
-  .slide-zoom{
-    height: 100%;
-  }
-  .assistant{
-    //   height:50px;
-    border-radius:100%;
-    //background-color: red;
-    background-color: rgba(0,0,0,0.0);
-    height: 50px;
-  }
-  .footer-md::before{
-    background-image:none ;
-  }
-
-  .week-ion-calendar ion-calendar-month .days{
-    height: 32px;
-  }
-
-  .homelist{
-
-    ion-list-header{
-      ion-label{
-        font-size: 15pt;
-        color: rgb(153,153,153);
-        font-family:PingFang-SC-Medium;
-
-      }
-    }
-
-    .item-ios{
-      h2{
-        font-size: 18pt;
-        font-family: PingFang-SC-Bold;
-        color: rgb(34,34,34);
-        white-space:normal;
-      }
-    }
-
+}
+.assistant{
+  //   height:50px;
+  border-radius:100%;
+  //background-color: red;
+  background-color: rgba(0,0,0,0.0);
+  right: 10px;
+  bottom:10px;
+  position: absolute;
+  z-index:999;
+  img{
+    height: 90px;
   }
 }
 

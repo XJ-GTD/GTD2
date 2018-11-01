@@ -238,11 +238,12 @@ ion-calendar-month {
     .on-selected {
       border: 1px solid;
       border-radius: 38px;
+      border-color:#953a8b ;
       //border-image: -webkit-linear-gradient(left,#953a8b, #5652de) 5 5;
       //border-image: -moz-linear-gradient(left,#953a8b, #5652de) 5 5;
       //border-image: linear-gradient(left,#953a8b, #5652de) 5 5;
       p {
-        color: #a890d7;
+        color: #5652de;
       }
     }
 

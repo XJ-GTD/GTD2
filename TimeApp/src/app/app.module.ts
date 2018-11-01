@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import {BrowserModule, HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
@@ -15,6 +15,7 @@ import { ParamsService } from "../service/params.service";
 import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
 import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
 import {AndroidFullScreen} from "@ionic-native/android-full-screen";
+import {MyHammerConfig} from "./MyHammerConfig";
 
 
 @NgModule({

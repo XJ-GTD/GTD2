@@ -10,8 +10,9 @@ import { TimeService } from "../../service/time.service";
 import { ScheduleModel } from "../../model/schedule.model";
 import { ScheduleOutModel } from "../../model/out/schedule.out.model";
 import { CalendarModel } from "../../model/calendar.model";
-import { CalendarComponentOptions } from "../../components/ion2-calendar/index";
+import { CalendarComponentOptions,CalendarController } from "../../components/ion2-calendar";
 import { TimeModel } from "../../model/time.model";
+import {HomeWorkListPage} from "../home-work-list/home-work-list";
 
 
 
@@ -30,9 +31,9 @@ import { TimeModel } from "../../model/time.model";
 })
 export class HomePage {
 
-  page1: any = 'GroupListPage';
-  page2: any ='GroupListPage';
-  page3: any ='GroupListPage';
+  page1: any = 'HomeWorkListPage';
+  page2: any ='HomeWorkListPage';
+  page3: any ='HomeWorkListPage';
 
   tab1Root = 'SpeechPage';
   data: any;
@@ -50,7 +51,6 @@ export class HomePage {
   dayList: TimeModel;
 
   scheduleList: Array<ScheduleModel>;
-  schedule: ScheduleModel;
   findSchedule: ScheduleOutModel; //查询日程条件
 
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
@@ -67,7 +67,8 @@ export class HomePage {
               private http: HttpClient,
               private timeService: TimeService,
               private paramsService: ParamsService,
-              private alarmClock: XiaojiAlarmclockService) {
+              private alarmClock: XiaojiAlarmclockService,
+              private calendarController:CalendarController) {
 
     this.init();
     this.setAlarmList();
@@ -85,21 +86,37 @@ export class HomePage {
 
     this.scheduleList = [];
 
-    let _daysConfig = [];
-    _daysConfig.push({
-          date: new Date('2018-10-10'),
-          subTitle: `\u25B2`
-    })
-    _daysConfig.push({
-      date: new Date('2018-10-12'),
-      cssClass: `hassometing`
-    })
+    setTimeout(()=>{
 
-    _daysConfig.push({
-      date: new Date('2018-10-13'),
-      cssClass: `busysometing`
-    })
-    this.options.daysConfig = _daysConfig;
+      this.options.daysConfig.push({
+        date: new Date('2018-11-10'),
+        subTitle: `\u25B2`
+      });
+      setTimeout(()=>{
+
+        this.options.daysConfig.push({
+          date: new Date('2018-11-12'),
+          cssClass: `hassometing animated bounceIn`
+        });
+        setTimeout(()=>{
+          this.options.daysConfig.push({
+            date: new Date('2018-11-13'),
+            cssClass: `busysometing animated bounceIn`
+          });
+          this.options.daysConfig.push({
+            date: new Date('2018-11-14'),
+            cssClass: `busysometing animated bounceIn`
+          });
+          this.options.daysConfig.push({
+            date: new Date('2018-11-15'),
+            cssClass: `busysometing animated bounceIn`
+          });
+        },1000);
+      },1000);
+    },1000);
+
+
+
 
 
     // this.calendarControl();
@@ -124,16 +141,16 @@ export class HomePage {
       this.dayList.date = this.data.data.resultList;
       console.log("dayList: " + this.dayList);
 
-      let _daysConfig = [];
-      for (let i = 0; i < this.dayList.date.length; i++) {
-        if (this.dayList.date[i].flag == '1') {
-          _daysConfig.push({
-            date: new Date(this.dayList.date[i].date),
-            subTitle: `\u25B2`
-          });
-        }
-      }
-      this.options.daysConfig = _daysConfig;
+      // let _daysConfig = [];
+      // for (let i = 0; i < this.dayList.date.length; i++) {
+      //   if (this.dayList.date[i].flag == '1') {
+      //     _daysConfig.push({
+      //       date: new Date(this.dayList.date[i].date),
+      //       subTitle: `\u25B2`
+      //     });
+      //   }
+      // }
+      // this.options.daysConfig = _daysConfig;
     })
 
   }
@@ -315,15 +332,6 @@ export class HomePage {
           console.log("error message:" + this.data.message);
         }
       })
-  }
-
-  //展示数据详情
-  showScheduleDetail(schedule){
-    this.schedule = new ScheduleModel();
-    this.schedule = schedule;
-    this.paramsService.schedule = this.schedule;
-    console.log("schedule:" + this.paramsService.schedule);
-    this.navCtr.push("ScheduleDetailPage");
   }
 
   showUserDetail() {
