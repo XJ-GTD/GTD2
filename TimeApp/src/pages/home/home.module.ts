@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { HomePage } from './home';
-import { CalendarModule } from "../../components/ion2-calendar/calendar.module";
+import { CalendarModule } from "../../components/ion2-calendar";
+import { SuperTabsModule,SuperTabsController} from "../../components/ionic2-super-tabs";
 
 @NgModule({
   declarations: [
@@ -9,10 +10,14 @@ import { CalendarModule } from "../../components/ion2-calendar/calendar.module";
   ],
   imports: [
     IonicPageModule.forChild(HomePage),
-    CalendarModule
+    CalendarModule,
+    SuperTabsModule
   ],
   entryComponents: [
-    HomePage,
+    HomePage
+  ],
+  providers:[
+    SuperTabsController
   ]
 })
 export class HomePageModule {}

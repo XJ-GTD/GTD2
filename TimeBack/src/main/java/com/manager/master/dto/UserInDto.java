@@ -1,7 +1,5 @@
 package com.manager.master.dto;
 
-import java.util.Date;
-
 /**
  * create by wzy on 201/05/03
  * 用户登陆信息入参类
@@ -17,6 +15,7 @@ public class UserInDto {
     private String accountUuid;         //唯一标识码
     private String deviceId;
     private Integer loginType;           //登陆类型 0:手机或账户名登陆， 1：微信登陆， 2：QQ登陆
+    private String authCode;            //验证码
 
     private String userName;            //用户昵称
     private Integer userId;     // 用户ID
@@ -143,5 +142,13 @@ public class UserInDto {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public String getAuthCode() {
+        return authCode;
+    }
+
+    public void setAuthCode(String authCode) {
+        this.authCode = authCode;
     }
 }

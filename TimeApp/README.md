@@ -16,3 +16,7 @@
 ##步骤3：
 ### idea 菜单 File -> settings -> plugins -> Browse repositorie -> 输入phonegap -> 选择PhoneGap/Cordova Plugins安装
 ### 新建服务器 phonegap ，选择命令serve启动
+
+#SQLite插件安装手顺
+## ionic cordova plugin add cordova-sqlite-storage
+## npm install --save @ionic-native/sqlite

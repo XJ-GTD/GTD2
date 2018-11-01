@@ -42,6 +42,8 @@ export class AppConfig {
 
   private static XIAOJIVOICE_URL: string = AppConfig.REQUEST_URL + "/xiaoji";    // 讯飞语音
 
+  private static SMS_URL: string = AppConfig.REQUEST_URL + "/sms";            //短信
+
   /* Connect */
   //用户类
   public static USER_LOGIN_URL: string = AppConfig.USER_URL + "/login";   //登陆 POST
@@ -95,5 +97,7 @@ export class AppConfig {
   //讯飞语音
   public static XUNFEI_URL_TEXT: string = AppConfig.XIAOJIVOICE_URL + "/answer_text";    //文本回传 POST
   public static XUNFEI_URL_AUDIO: string = AppConfig.XIAOJIVOICE_URL + "/answer_audio";    //语音文件带答案回传 POST
+
+  public static SMS_MESSAGEXSEND_URL: string = AppConfig.SMS_URL + "/messageXsend";       //短信验证
 
 }

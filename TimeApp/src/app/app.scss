@@ -14,13 +14,19 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-*{font-family:PingFang-SC,"微软雅黑",Georgia,Serif,Arial, Helvetica, sans-serif,"宋体";}
-.list-ios > .item-block:first-child {
-   border-top: 0px solid #c8c7cc;
+*{font-family:PingFang-SC-Regular,PingFang-SC,"微软雅黑",Georgia}
+
+.ion-page.show-page{
+  background: #FFFFFF;
 }
-.header-ios .toolbar-ios:last-child .toolbar-background-ios{
-  border-width:0 0 0 0;
+ion-content{
+  background: -webkit-linear-gradient(left,color($background-color-content,first,start), color($background-color-content,first,end)); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(right,color($background-color-content,first,start), color($background-color-content,first,end)); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(right, color($background-color-content,first,start), color($background-color-content,first,end)); /* Firefox 3.6 - 15 */
+  background: linear-gradient(to right,color($background-color-content,first,start), color($background-color-content,first,end)); /* 标准的语法（必须放在最后） */
 }
-ion-list-header{
-  min-height:66px;
+
+ion-header img{
+  width: 20px;
 }
+

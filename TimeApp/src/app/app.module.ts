@@ -15,7 +15,8 @@ import { ParamsService } from "../service/params.service";
 import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
 import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
 import {AndroidFullScreen} from "@ionic-native/android-full-screen";
-
+import { SQLite } from '@ionic-native/sqlite';
+import {SqliteService} from "../service/sqlite.service";
 
 @NgModule({
   declarations: [
@@ -47,6 +48,8 @@ import {AndroidFullScreen} from "@ionic-native/android-full-screen";
     PhonegapLocalNotification,
     XiaojiFeedbackService,
     AndroidFullScreen,
+    SQLite,
+    SqliteService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
