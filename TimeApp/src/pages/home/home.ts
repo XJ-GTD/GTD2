@@ -30,6 +30,10 @@ import { TimeModel } from "../../model/time.model";
 })
 export class HomePage {
 
+  page1: any = 'GroupListPage';
+  page2: any ='GroupListPage';
+  page3: any ='GroupListPage';
+
   tab1Root = 'SpeechPage';
   data: any;
   remindScheduleList: Array<RemindModel>;//提醒时间数据
@@ -80,6 +84,22 @@ export class HomePage {
     this.webSocketService.connect(this.paramsService.user.accountQueue);
 
     this.scheduleList = [];
+
+    let _daysConfig = [];
+    _daysConfig.push({
+          date: new Date('2018-10-10'),
+          subTitle: `\u25B2`
+    })
+    _daysConfig.push({
+      date: new Date('2018-10-12'),
+      cssClass: `hassometing`
+    })
+
+    _daysConfig.push({
+      date: new Date('2018-10-13'),
+      cssClass: `busysometing`
+    })
+    this.options.daysConfig = _daysConfig;
 
 
     // this.calendarControl();

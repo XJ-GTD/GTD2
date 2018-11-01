@@ -40,21 +40,21 @@
     .days .marked.on-selected p {
         color: $color;
     }
-    .days .on-selected,
-    .startSelection button.days-btn,
-    .endSelection button.days-btn {
-       background-color: bindColors($background-color);
-      //background: -webkit-linear-gradient(left, rgb(149,58,139),rgb(86,82,222)); /* Safari 5.1 - 6.0 */
-      //background: -o-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Opera 11.1 - 12.0 */
-      //background: -moz-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Firefox 3.6 - 15 */
-      //background: linear-gradient(to right, rgb(149,58,139),rgb(86,82,222)); /* 标准的语法（必须放在最后） */
-
-      color: $color;
-    }
+    //.days .on-selected,
+    //.startSelection button.days-btn,
+    //.endSelection button.days-btn {
+    //  background-color: bindColors($background-color);
+    //  background: -webkit-linear-gradient(left, rgb(149,58,139),rgb(86,82,222)); /* Safari 5.1 - 6.0 */
+    //  background: -o-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Opera 11.1 - 12.0 */
+    //  background: -moz-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Firefox 3.6 - 15 */
+    //  background: linear-gradient(to right, rgb(149,58,139),rgb(86,82,222)); /* 标准的语法（必须放在最后） */
+    //
+    //  color: $color;
+    //}
     .startSelection {
         position: relative;
         &:after {
-            height: 36px;
+            height: 32px;
             width: 50%;
             content: '';
             position: absolute;
@@ -67,7 +67,7 @@
     .endSelection {
         position: relative;
         &:after {
-            height: 36px;
+            height: 32px;
             width: 50%;
             content: '';
             position: absolute;
@@ -103,7 +103,7 @@
   .days.startSelection:nth-child(7n):after,
   .days.between:nth-child(7n) button.days-btn,
   button.days-btn.is-last {
-    border-radius: 0 36px 36px 0;
+    border-radius: 0 32px 32px 0;
     &.on-selected {
       border-radius: 50%
     }
@@ -112,7 +112,7 @@
   .days.endSelection:nth-child(7n+1):after,
   .days.between:nth-child(7n+1) button.days-btn,
   button.days-btn.is-first {
-    border-radius: 36px 0 0 36px;
+    border-radius: 32px 0 0 32px;
   }
 
   .startSelection button.days-btn.is-first,
@@ -126,19 +126,19 @@
 
   .startSelection.is-last-wrap {
     &::after {
-      border-radius: 0 36px 36px 0;
+      border-radius: 0 32px 32px 0;
     }
   }
 
   .endSelection.is-first-wrap {
     &::after {
-      border-radius: 36px 0 0 36px;
+      border-radius: 32px 0 0 32px;
     }
   }
 
-  .days .on-selected p {
-        color: $color;
-    }
+  //.days .on-selected p {
+  //      color: $color;
+  //  }
     .startSelection,
     .endSelection,
     .between {
@@ -164,33 +164,33 @@ ion-calendar-month {
         width: 14%;
         float: left;
         text-align: center;
-        height: 30px;
-        margin-bottom: 5px;
+        height: 32px;
+        margin-bottom: 7px;
     }
     .days .marked p {
-        font-weight: 500;
+        font-weight: 100;
     }
     .days .on-selected {
         border: none;
         p {
-            font-size: 1.3em;
+            font-size: 14px;
         }
     }
     button.days-btn {
-        border-radius: 10px;
-        width: 38px;
+        border-radius: 32px;
+        width: 32px;
         display: block;
-        margin: 0 auto;
+        margin: 2px;
         padding: 0;
-        height: 25px;
+        height: 32px;
         background-color: transparent;
         position: relative;
         z-index: 2;
     }
     button.days-btn p {
         margin: 0;
-        font-size: 11pt;
-        color: rgb(34,34,34);
+        font-size: 14px;
+        color: #222222;
     }
     button.days-btn.on-selected small {
         transition: bottom .3s;
@@ -226,9 +226,65 @@ ion-calendar-month {
         }
 
     }
-    .cal-color {
-        @include month-color(cal-color);
+  .cal-color {
+
+    @include month-color(cal-color,#222222);
+
+    .borderDiv{
+      width: 38px;
+      height: 38px;
+
     }
+    .on-selected {
+      border: 1px solid;
+      border-radius: 38px;
+      //border-image: -webkit-linear-gradient(left,#953a8b, #5652de) 5 5;
+      //border-image: -moz-linear-gradient(left,#953a8b, #5652de) 5 5;
+      //border-image: linear-gradient(left,#953a8b, #5652de) 5 5;
+      p {
+        color: #a890d7;
+      }
+    }
+
+    .on-selected::after{
+      content: '';
+      //z-index: -1;
+    }
+    .days {
+      .hassometing{
+        background:#7cd8d5;
+        p {
+          color: #ffffff;
+          font-weight: 100;
+        }
+      }
+      .busysometing{
+        background:#24beb9;
+        p {
+        color: #ffffff;
+        font-weight: 100;
+      }
+      }
+      .today {
+        background: -webkit-linear-gradient(left, rgb(149,58,139),rgb(86,82,222)); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Firefox 3.6 - 15 */
+        background: linear-gradient(to right, rgb(149,58,139),rgb(86,82,222)); /* 标准的语法（必须放在最后） */
+        p {
+          color: #ffffff;
+          font-weight: 100;
+        }
+      }
+
+       .last-month-day ,
+       .next-month-day  {
+
+        display: none;
+      }
+
+    }
+
+  }
   //.cus_light {
   //  @include month-color(cus_light, #a0a0a0);
   //  .days .today p {

@@ -38,7 +38,17 @@ $colors: (
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222
+  dark:       #222,
+  none:       transparent
+
+);
+
+//html backcolor set
+$background-color-content:(
+  first:(
+  start:#953a8b,
+  end:#5652de
+  )
 );
 
 
