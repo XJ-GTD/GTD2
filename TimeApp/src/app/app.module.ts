@@ -1,4 +1,4 @@
-import {BrowserModule, HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
@@ -15,8 +15,8 @@ import { ParamsService } from "../service/params.service";
 import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
 import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
 import {AndroidFullScreen} from "@ionic-native/android-full-screen";
-import {MyHammerConfig} from "./MyHammerConfig";
-
+import { SQLite } from '@ionic-native/sqlite';
+import {SqliteService} from "../service/sqlite.service";
 
 @NgModule({
   declarations: [
@@ -48,6 +48,8 @@ import {MyHammerConfig} from "./MyHammerConfig";
     PhonegapLocalNotification,
     XiaojiFeedbackService,
     AndroidFullScreen,
+    SQLite,
+    SqliteService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

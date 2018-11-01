@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { Platform, MenuController, Nav, Tabs } from 'ionic-angular';
+import { Platform, MenuController, Nav, Tabs, Events  } from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -13,7 +13,7 @@ import { TimeService } from "../service/time.service";
 import { BackButtonService } from "../service/backbutton.service";
 import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
 import {AndroidFullScreen} from "@ionic-native/android-full-screen";
-
+import {SqliteService} from "../service/sqlite.service";
 
 @Component({
   templateUrl: 'app.html',
@@ -36,7 +36,9 @@ export class MyApp {
     private paramsService: ParamsService,
     public backButtonService: BackButtonService,
     public feedbackService: XiaojiFeedbackService,
-    private androidFullScreen: AndroidFullScreen
+    private androidFullScreen: AndroidFullScreen,
+    private events: Events,
+    private nativeProvider:SqliteService
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -44,15 +46,25 @@ export class MyApp {
       feedbackService.initAudio();
       this.backButtonService.registerBackButtonAction(null);
 
-      statusBar.styleDefault();
-      splashScreen.hide();
+      /*statusBar.styleDefault();
+      splashScreen.hide();*/
+      this.init();
     });
 
     this.androidFullScreen.immersiveMode()
       .then(() => console.log('Immersive mode supported'))
       .catch(err => console.log(err));
   }
-
+  init(){
+    //确保异步执行完后才隐藏启动动画
+    this.events.subscribe('db:create', () => {
+      //创建数据库与表成功后才关闭动画跳转页面
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
+    })
+    //初始化创建数据库
+    this.nativeProvider.createDb();
+  }
   ngAfterViewInit(){
     //通过key，判断是否曾进入过引导页
     this.storage.get('firstIn').then((result) => {
