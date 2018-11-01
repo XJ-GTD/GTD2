@@ -37,14 +37,14 @@ public class AiUiServiceImpl implements IAiUiService {
     }
 
     /**
-     * 音频方法
+     * 语音方法
      * @param inDto
      * @return
      */
     @Override
-    public AiUiDataOutDto aiuiAnswer(AiUiInDto inDto, int flag) {
+    public AiUiOutDto aiuiAnswer(AiUiInDto inDto, int flag) {
 
-        AiUiDataOutDto aiuiData = null;
+        AiUiOutDto aiuiData = null;
         //入参检测
         //非空检测
         if (inDto.getContent() == null || "".equals(inDto.getContent()))throw new ServiceException("缺少语音输入");

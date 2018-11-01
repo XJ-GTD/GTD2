@@ -124,8 +124,6 @@ public class UserServiceImpl implements IUserService{
             accountName = inDto.getAccountQq();
         }
 
-
-
         Object[] object = (Object[]) userRepository.login(inDto.getLoginType(), accountName, inDto.getAccountPassword());
 
         if (object != null) {

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 讯飞语音json解析类
+ * 讯飞语音出参类
  *
  * create by wzy on 2018/09/14
  */
-public class AiUiDataOutDto {
+public class AiUiOutDto {
 
     private Integer code;                       //动作判断flag
     private List<String> userNameList;		//参与人

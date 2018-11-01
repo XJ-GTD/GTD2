@@ -2,7 +2,7 @@ package com.manager.util;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.manager.master.dto.AiUiDataOutDto;
+import com.manager.master.dto.AiUiOutDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,8 @@ public class JsonParserUtil {
 	 * @param json
 	 * @return
 	 */
-	public static AiUiDataOutDto parse(String json) {
-		AiUiDataOutDto aiUiData = new AiUiDataOutDto();
+	public static AiUiOutDto parse(String json) {
+		AiUiOutDto aiUiData = new AiUiOutDto();
 
 		try {
 

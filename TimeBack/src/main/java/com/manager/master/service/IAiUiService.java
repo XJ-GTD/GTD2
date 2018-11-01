@@ -1,6 +1,6 @@
 package com.manager.master.service;
 
-import com.manager.master.dto.AiUiDataOutDto;
+import com.manager.master.dto.AiUiOutDto;
 import com.manager.master.dto.AiUiInDto;
 
 /**
@@ -15,6 +15,6 @@ public interface IAiUiService {
      * @param inDto
      * @return
      */
-    public AiUiDataOutDto aiuiAnswer(AiUiInDto inDto, int flag);
+    public AiUiOutDto aiuiAnswer(AiUiInDto inDto, int flag);
 
 }

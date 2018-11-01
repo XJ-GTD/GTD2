@@ -1,7 +1,7 @@
 package com.manager.master.controller;
 
 import com.manager.config.exception.ServiceException;
-import com.manager.master.dto.AiUiDataOutDto;
+import com.manager.master.dto.AiUiOutDto;
 import com.manager.master.dto.AiUiInDto;
 import com.manager.master.dto.BaseOutDto;
 import com.manager.master.service.IAiUiService;
@@ -41,9 +41,9 @@ public class VoiceParseController {
     @RequestMapping(value = "/answer_audio", method = RequestMethod.POST)
     public BaseOutDto readAudio(@RequestBody AiUiInDto inDto){
         BaseOutDto outBean = new BaseOutDto();
-        Map<String, AiUiDataOutDto> data = new HashMap<>();
+        Map<String, AiUiOutDto> data = new HashMap<>();
         try{
-            AiUiDataOutDto dataDto = aiUiService.aiuiAnswer(inDto, 0);
+            AiUiOutDto dataDto = aiUiService.aiuiAnswer(inDto, 0);
             if (dataDto != null) {
                 data.put("aiuiData", dataDto);
                 outBean.setData(data);
@@ -76,9 +76,9 @@ public class VoiceParseController {
     @RequestMapping(value = "/answer_text", method = RequestMethod.POST)
     public BaseOutDto readText(@RequestBody AiUiInDto inDto){
         BaseOutDto outBean = new BaseOutDto();
-        Map<String, AiUiDataOutDto> data = new HashMap<>();
+        Map<String, AiUiOutDto> data = new HashMap<>();
         try{
-            AiUiDataOutDto dataDto = aiUiService.aiuiAnswer(inDto, 1);
+            AiUiOutDto dataDto = aiUiService.aiuiAnswer(inDto, 1);
             if (dataDto != null) {
                 data.put("aiuiData", dataDto);
                 outBean.setData(data);
