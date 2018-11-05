@@ -151,7 +151,8 @@ export class SpeechPage {
   //回传数据处理
   messageHanding(xfdata:any) {
 
-        this.messages = [];
+        this.messages.length = 0;
+
 
         if (xfdata.code == 0) {
           //接收Object JSON数据
@@ -192,6 +193,7 @@ export class SpeechPage {
               messageData.talkType = this.talkDataList;
               messageData.scheduleJoinList = this.aiuiData.scheduleJoinList;
               this.messages.push(messageData);
+
             }, 1500);
           }
 
