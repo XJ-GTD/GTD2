@@ -4,6 +4,7 @@ import { SpeechPage } from './speech';
 import { ParamsService } from "../../service/params.service";
 import { XiaojiAssistantService } from "../../service/xiaoji-assistant.service";
 import { XiaojiFeedbackService } from "../../service/xiaoji-feedback.service";
+import {LightSvgPageModule} from "../light-svg/light-svg.module";
 
 @NgModule({
   declarations: [
@@ -11,6 +12,7 @@ import { XiaojiFeedbackService } from "../../service/xiaoji-feedback.service";
   ],
   imports: [
     IonicPageModule.forChild(SpeechPage),
+    LightSvgPageModule
   ],
   providers: [
     ParamsService,

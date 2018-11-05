@@ -19,6 +19,8 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+
+
   <div class="homeContent">
           <div class="homeCalendar" >
               <ion-calendar  [options]="options"
@@ -26,19 +28,21 @@
                              (onInit)="discernTags($event)">
               </ion-calendar>
             </div>
+    <p class = "showDay">{{showDay}}</p>
     <super-tabs>
       <super-tab title="今天" [root]="page1">
-
       </super-tab>
       <super-tab [root]="page2" title="发送"></super-tab>
       <super-tab [root]="page3" title="未读"></super-tab>
     </super-tabs>
-
   </div>
     <div  class=" animated bounceIn  assistant"  (click)="openVoice()" >
       <img  src="./assets/imgs/yuying.png"/>
     </div>
 </ion-content>
+
+
+
 
 
 

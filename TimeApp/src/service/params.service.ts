@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {UserModel} from "../model/user.model";
 import {ScheduleModel} from "../model/schedule.model";
 import {GroupModel} from "../model/group.model";
 import {ScheduleOutModel} from "../model/out/schedule.out.model";
 import {AiuiModel} from "../model/aiui.model";
-
 /**
  * 页面ts传值
  * create by wzy on 2018/05/28.

@@ -17,6 +17,8 @@ import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
 import {AndroidFullScreen} from "@ionic-native/android-full-screen";
 import { SQLite } from '@ionic-native/sqlite';
 import {SqliteService} from "../service/sqlite.service";
+import {UtilService} from "../service/util.service";
+import {CalendarService} from "../service/calendar.service";
 
 @NgModule({
   declarations: [
@@ -50,6 +52,8 @@ import {SqliteService} from "../service/sqlite.service";
     AndroidFullScreen,
     SQLite,
     SqliteService,
+    UtilService,
+    CalendarService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

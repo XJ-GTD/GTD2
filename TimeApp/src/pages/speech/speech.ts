@@ -9,6 +9,7 @@ import { ScheduleModel } from "../../model/schedule.model";
 import { File } from "@ionic-native/file";
 import { Base64 } from "@ionic-native/base64";
 import  {XiaojiFeedbackService} from "../../service/xiaoji-feedback.service";
+import {LightSvgPage} from "../light-svg/light-svg";
 
 
 declare var cordova: any;
@@ -27,6 +28,8 @@ declare var cordova: any;
 })
 export class SpeechPage {
 
+
+  @ViewChild(LightSvgPage) lightSvgPage:LightSvgPage;
   @ViewChild(Content) content: Content;
 
   data: any;
@@ -231,6 +234,11 @@ export class SpeechPage {
   //返回方法
   goBack() {
     this.viewCtrl.dismiss();
+  }
+
+  reset(){
+    this.lightSvgPage.startHue += 60;
+    this.lightSvgPage.reset();
   }
 
 }

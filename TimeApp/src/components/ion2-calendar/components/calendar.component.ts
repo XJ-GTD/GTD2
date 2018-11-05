@@ -222,6 +222,11 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     });
     this.monthOpt = this.createMonth(backTime);
   }
+  //add by zhangjy
+  refresh(): void {
+    this.monthOpt = this.createMonth(this.monthOpt.original.time);
+  }
+
 
   canBack(): boolean {
     if (!this._d.from || this._view !== 'days') return true;
