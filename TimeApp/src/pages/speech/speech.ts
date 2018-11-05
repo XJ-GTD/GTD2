@@ -73,7 +73,8 @@ export class SpeechPage {
   init() {
     this.messages = [];
     this.aiuiData = new AiuiModel();
-    this.initWakeUp();
+    //语音唤醒冲突暂时关闭
+    //this.initWakeUp();
   }
 
   initWakeUp(){
