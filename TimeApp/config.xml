@@ -81,7 +81,6 @@
     <plugin name="cordova-plugin-device" spec="1.1.4" />
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.1" />
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.11" />
-    <plugin name="cordova-sqlite-storage" spec="^2.5.0" />
     <plugin name="cordova-plugin-advanced-http" spec="^1.11.1" />
     <allow-navigation href="http://192.168.99.54:8100" />
     <plugin name="com-badrit-base64" spec="~0.2.0" />
@@ -94,8 +93,9 @@
     <plugin name="com.telerik.plugins.nativepagetransitions" spec="~0.6.5" />
     <engine name="android" spec="~6.4.0" />
     <plugin name="cordova-plugin-BaiduSpeechAndTTS" spec="../BaiduSpeechAndTTS" />
-    <plugin name="org.nypr.cordova.wakeupplugin" spec="../xjalarmclock" />
     <plugin name="cordova-plugin-vibration" spec="~3.1.0" />
     <plugin name="cordova-plugin-nativeaudio" spec="~3.0.9" />
     <plugin name="cordova-plugin-fullscreen" spec="~1.1.0" />
+    <plugin name="cordova-sqlite-storage" spec="^2.4.0" />
+    <plugin name="org.nypr.cordova.wakeupplugin" spec="../xjalarmclock" />
 </widget>
