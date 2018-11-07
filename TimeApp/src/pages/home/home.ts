@@ -212,6 +212,9 @@ export class HomePage {
     this.navCtr.push("UserDetailPage");
   }
 
+  gotoToday(){
+    this.ion2calendar.setViewDate(moment().format("YYYY-MM-DD"));
+  }
   openVoice() {
     let tab1RootModal  = this.modalCtr.create("SpeechPage");
     tab1RootModal.present();

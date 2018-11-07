@@ -133,24 +133,78 @@
 
         <source-file src="src/android/assets/msc/iat.pcm" target-dir="assets/msc/"/>
 
-
         <!-- res raw -->
-
         <source-file src="src/android/res/raw/bdspeech_recognition_cancel.mp3" target-dir="res/raw/"/>
         <source-file src="src/android/res/raw/bdspeech_recognition_error.mp3" target-dir="res/raw/"/>
         <source-file src="src/android/res/raw/bdspeech_recognition_start.mp3" target-dir="res/raw/"/>
         <source-file src="src/android/res/raw/bdspeech_recognition_success.mp3" target-dir="res/raw/"/>
         <source-file src="src/android/res/raw/bdspeech_speech_end.mp3" target-dir="res/raw/"/>
 
-
     </platform>
+
     <platform name="ios">
         <config-file parent="/*" target="config.xml">
-            <feature name="BaiduSpeechAndTTS">
-                <param name="ios-package" value="BaiduSpeechAndTTS"/>
-            </feature>
-        </config-file>
-        <source-file src="src/ios/BaiduSpeechAndTTS.m"/>
-    </platform>
 
+            <feature name="XjBaiduSpeech">
+                <param name="ios-package" value="XjBaiduSpeech"/>
+            </feature>
+            <feature name="XjBaiduTts">
+                <param name="ios-package" value="XjBaiduTts"/>
+            </feature>
+            <feature name="XjBaiduWakeUp">
+                <param name="ios-package" value="XjBaiduWakeUp"/>
+            </feature>
+
+            <preference name="bdasrappid" value="14502702"/>
+            <preference name="bdasrapikey" value="6YvlNRGZ5I4CkA715XnVyoSm"/>
+            <preference name="bdasrsecretkey" value="9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF"/>
+        </config-file>
+
+        <!-- 运行支持库-->
+        <framework src="libc++.tbd" weak="true"/>
+        <framework src="libz.1.2.5.tbd" weak="true"/>
+        <framework src="AudioToolbox.framework" weak="true"/>
+        <framework src="AVFoundation.framework" weak="true"/>
+        <framework src="CFNetwork.framework" weak="true"/>
+        <framework src="CoreLocation.framework" weak="true"/>
+        <framework src="CoreTelephony.framework" weak="true"/>
+        <framework src="SystemConfiguration.framework" weak="true"/>
+        <framework src="GLKit.framework" weak="true"/>
+
+        <!-- ASR 头部文件-->
+        <header-file src="src/ios/BDSClientHeaders/ASR/BDSASRDefines.h"/>
+        <header-file src="src/ios/BDSClientHeaders/ASR/BDSASRParameters.h"/>
+        <header-file src="src/ios/BDSClientHeaders/ASR/BDSEventManager.h"/>
+        <header-file src="src/ios/BDSClientHeaders/ASR/BDSUploaderDefines.h"/>
+        <header-file src="src/ios/BDSClientHeaders/ASR/BDSUploaderParameters.h"/>
+        <header-file src="src/ios/BDSClientHeaders/ASR/BDSWakeupDefines.h"/>
+        <header-file src="src/ios/BDSClientHeaders/ASR/BDSWakeupParameters.h"/>
+
+        <!-- TTS 头部文件-->
+        <header-file src="src/ios/BDSClientHeaders/TTS/BDS_EttsModelManagerInterface.h"/>
+        <header-file src="src/ios/BDSClientHeaders/TTS/BDSBuiltInPlayer.h"/>
+        <header-file src="src/ios/BDSClientHeaders/TTS/BDSMixedModeSynthesizer.h"/>
+        <header-file src="src/ios/BDSClientHeaders/TTS/BDSSpeechSynthesizer.h"/>
+        <header-file src="src/ios/BDSClientHeaders/TTS/BDSSpeechSynthesizerDelegate.h"/>
+        <header-file src="src/ios/BDSClientHeaders/TTS/BDSSpeechSynthesizerErrors.h"/>
+        <header-file src="src/ios/BDSClientHeaders/TTS/BDSSpeechSynthesizerParams.h"/>
+        <header-file src="src/ios/BDSClientHeaders/TTS/BDSSynthesizerLogLevel.h"/>
+        <header-file src="src/ios/BDSClientHeaders/TTS/BDSSynthesizerStatusNotifications.h"/>
+        <header-file src="src/ios/BDSClientHeaders/TTS/BDSTTSEventManager.h"/>
+
+
+
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle"/>
+
+        <source-file framework="true" src="src/ios/BDSClientLib/libBaiduSpeechSDK.a"/>
+
+        <source-file src="src/ios/XjBaiduSpeech.m"/>
+        <source-file src="src/ios/XjBaiduTts.m"/>
+        <source-file src="src/ios/XjBaiduWakeUp.m"/>
+
+        <config-file parent="NSMicrophoneUsageDescription" target="*-Info.plist">
+            <string>是否允许[冥王星]使用您的麦克风？</string>
+        </config-file>
+
+    </platform>
 </plugin>
