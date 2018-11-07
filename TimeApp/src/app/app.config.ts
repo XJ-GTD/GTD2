@@ -12,8 +12,8 @@
 export class AppConfig {
 
   /* 环境URL 头部 */
-   private static REQUEST_URL: string = "http://www.guobaa.com/gtd";
-  // private static REQUEST_URL: string = "http://192.168.99.35:8080/gtd";//连接本地数据库
+   // private static REQUEST_URL: string = "http://www.guobaa.com/gtd";
+  private static REQUEST_URL: string = "http://192.168.99.33:8080/gtd";//连接本地数据库
 
   /* RabbitMq WebSocket */
   public static RABBITMQ_WS_URL: string = "ws://www.guobaa.com/ws";
@@ -95,9 +95,9 @@ export class AppConfig {
 
 
   //讯飞语音
-  public static XUNFEI_URL_TEXT: string = AppConfig.XIAOJIVOICE_URL + "/answer_text";    //文本回传 POST
-  public static XUNFEI_URL_AUDIO: string = AppConfig.XIAOJIVOICE_URL + "/answer_audio";    //语音文件带答案回传 POST
+  public static XUNFEI_URL_AUDIO: string = AppConfig.XIAOJIVOICE_URL + "/answer_audio";    //语音接口 POST
 
-  public static SMS_MESSAGEXSEND_URL: string = AppConfig.SMS_URL + "/messageXsend";       //短信验证
+  //短消息
+  public static SMS_MESSAGEXSEND_URL: string = AppConfig.SMS_URL + "/message_send";       //短信验证
 
 }

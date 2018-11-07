@@ -32,7 +32,7 @@ public class SubMailController {
      * 发送验证码  单用户
      * @return
      */
-    @RequestMapping(value = "/messageXsend" ,method = RequestMethod.POST)
+    @RequestMapping(value = "/message_send" ,method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto sendMessage(@RequestBody String reqData ){
         BaseOutDto out = new BaseOutDto();

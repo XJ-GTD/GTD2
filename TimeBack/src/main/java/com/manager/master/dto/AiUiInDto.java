@@ -9,6 +9,7 @@ public class AiUiInDto {
     private String content;         //base64转码语音文件  /  文本
     private Integer userId;
     private String deviceId;
+    private String accountUuid;
 
     public String getContent() {
         return content;
@@ -32,5 +33,13 @@ public class AiUiInDto {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public String getAccountUuid() {
+        return accountUuid;
+    }
+
+    public void setAccountUuid(String accountUuid) {
+        this.accountUuid = accountUuid;
     }
 }

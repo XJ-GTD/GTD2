@@ -34,63 +34,23 @@ public class VoiceParseController {
     }
 
     /**
-     * 语义解析：音频方法
+     * 语义解析： 0:音频方法 1:文本方法
      * @param inDto
      * @return
      */
     @RequestMapping(value = "/answer_audio", method = RequestMethod.POST)
     public BaseOutDto readAudio(@RequestBody AiUiInDto inDto){
         BaseOutDto outBean = new BaseOutDto();
-        Map<String, AiUiOutDto> data = new HashMap<>();
         try{
             AiUiOutDto dataDto = aiUiService.aiuiAnswer(inDto, 0);
             if (dataDto != null) {
-                data.put("aiuiData", dataDto);
-                outBean.setData(data);
                 outBean.setCode(ResultCode.SUCCESS);
                 outBean.setMessage("[语音交互完成]");
                 logger.info("[语音交互完成]");
             } else {
-                data.put("aiuiData", dataDto);
-                outBean.setData(data);
                 outBean.setCode(ResultCode.REPEAT);
-                outBean.setMessage("[数据库无数据]");
-                logger.info("[数据库无数据]");
-            }
-
-        } catch (Exception e){
-            outBean.setCode(ResultCode.FAIL);
-            outBean.setMessage("[语音交互失败]：请联系技术人员");
-            logger.info(e.getMessage());
-            throw new ServiceException("[语音交互失败]：请联系技术人员");
-        }
-
-        return outBean;
-    }
-
-    /**
-     * 语义解析：文本方法
-     * @param inDto
-     * @return
-     */
-    @RequestMapping(value = "/answer_text", method = RequestMethod.POST)
-    public BaseOutDto readText(@RequestBody AiUiInDto inDto){
-        BaseOutDto outBean = new BaseOutDto();
-        Map<String, AiUiOutDto> data = new HashMap<>();
-        try{
-            AiUiOutDto dataDto = aiUiService.aiuiAnswer(inDto, 1);
-            if (dataDto != null) {
-                data.put("aiuiData", dataDto);
-                outBean.setData(data);
-                outBean.setCode(ResultCode.SUCCESS);
-                outBean.setMessage("[语音交互完成]");
-                logger.info("[语音交互完成]");
-            } else {
-                data.put("aiuiData", dataDto);
-                outBean.setData(data);
-                outBean.setCode(ResultCode.REPEAT);
-                outBean.setMessage("[数据库无数据]");
-                logger.info("[数据库无数据]");
+                outBean.setMessage("[语音数据解析失败]");
+                logger.info("[语音数据解析失败]");
             }
 
         } catch (Exception e){

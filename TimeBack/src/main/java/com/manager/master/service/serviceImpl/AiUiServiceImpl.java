@@ -1,7 +1,9 @@
 package com.manager.master.service.serviceImpl;
 
 import com.manager.config.exception.ServiceException;
-import com.manager.master.dto.*;
+import com.manager.master.dto.AiUiJsonDto;
+import com.manager.master.dto.AiUiInDto;
+import com.manager.master.dto.AiUiOutDto;
 import com.manager.master.service.IAiUiService;
 import com.manager.master.service.IGroupService;
 import com.manager.master.service.IScheduleService;
@@ -13,8 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.manager.config.configuration.XFSkillConfig.*;
 
 /**
  * 语义解析方法接口实现类
@@ -26,6 +27,12 @@ import java.util.List;
 public class AiUiServiceImpl implements IAiUiService {
 
     private Logger logger = LogManager.getLogger(this.getClass());
+
+    private static final Integer RC_SUCCESS = 0;
+    private static final Integer RC_INPUT_ERROR = 1;
+    private static final Integer RC_SYSTEM_ERROR = 2;
+    private static final Integer RC_FAIL = 3;
+    private static final Integer RC_NOT_DEAL = 4;
 
     private final IScheduleService scheduleService;
     private final IGroupService groupService;
@@ -39,19 +46,29 @@ public class AiUiServiceImpl implements IAiUiService {
     /**
      * 语音方法
      * @param inDto
+     * rc: 0:成功
+     * 1：输入异常 2：系统内部异常
+     * 3：
      * @return
      */
     @Override
     public AiUiOutDto aiuiAnswer(AiUiInDto inDto, int flag) {
 
-        AiUiOutDto aiuiData = null;
+        AiUiJsonDto aiuiData = null;
+        AiUiOutDto outDto = new AiUiOutDto();
+
+        Integer userId = inDto.getUserId();
+        String content = inDto.getContent();
+        String deviceId = inDto.getDeviceId();
+
         //入参检测
         //非空检测
-        if (inDto.getContent() == null || "".equals(inDto.getContent()))throw new ServiceException("缺少语音输入");
-        if (inDto.getUserId() == null || "".equals(inDto.getUserId()))throw new ServiceException("缺少用户ID");
+        if (content == null || "".equals(content))throw new ServiceException("缺少语音输入");
+        if (userId == 0 || "".equals(userId))throw new ServiceException("缺少用户ID");
+        if (deviceId == null || "".equals(deviceId))throw new ServiceException("缺少设备ID");
 
         //调用讯飞API
-        String outData = AiUiUtil.readAudio(inDto.getContent(), flag);
+        String outData = AiUiUtil.readAudio(content, flag);
 
         if ("".equals(outData) || outData == null) {
             logger.info("调用讯飞API失败");
@@ -61,14 +78,47 @@ public class AiUiServiceImpl implements IAiUiService {
         //解析讯飞回传数据
         aiuiData = JsonParserUtil.parse(outData);
 
-        if (aiuiData == null || "".equals(aiuiData)) {
-            logger.info("语音数据解析失败");
-            aiuiData.setSpeech("我不明白你的意思，请尝试这样问我：我明天有什么安排");
-            aiuiData.setDataType("0");
-            return aiuiData;
+        if (aiuiData == null) {
+            return null;
+        } else if (aiuiData.getRc() == RC_NOT_DEAL){
+
+            return outDto;
+        } else if (aiuiData.getRc() == RC_INPUT_ERROR || aiuiData.getRc() == RC_SYSTEM_ERROR) {
+
+            return outDto;
+        } else {
+            String service_user = aiuiData.getService().split(".")[0];
+            if (service_user.equals(USER_SERVICE)) {
+                return outDto;
+            } else {
+                aiuiData.setService(aiuiData.getService().split(".")[1]);
+            }
         }
 
-        //时间格式规整
+
+        String service = aiuiData.getService();
+        switch (service) {
+            case SERVICE_SCHEDULE:
+                outDto = scheduleMethod(aiuiData, userId, deviceId);
+                break;
+            case SERVICE_PLAYER:
+                outDto = playerMethod(aiuiData);
+                break;
+            default:
+
+                break;
+        }
+
+        return outDto;
+    }
+
+    /**
+     * 日程相关处理
+     * @return
+     */
+    private AiUiOutDto scheduleMethod(AiUiJsonDto aiuiData, Integer userId, String deviceId) {
+        AiUiOutDto outData = new AiUiOutDto();
+        /*//时间格式规整
         String scheduleStartTime = aiuiData.getScheduleStartTime();
         String scheduleDeadline = aiuiData.getScheduleDeadline();
         if (scheduleStartTime != null && scheduleStartTime.length() < 11 && !"".equals(scheduleStartTime)) {
@@ -113,7 +163,7 @@ public class AiUiServiceImpl implements IAiUiService {
             }
 
             scheduleData.setGroupIds(groupIds);
-            scheduleData.setUserId(inDto.getUserId());
+            scheduleData.setUserId(userId);
             scheduleData.setScheduleName(aiuiData.getScheduleName());
             scheduleData.setScheduleStartTime(scheduleStartTime);
             scheduleData.setScheduleDeadline(scheduleDeadline);
@@ -129,18 +179,18 @@ public class AiUiServiceImpl implements IAiUiService {
             } else if (flagList.get(0) == 0) {
                 logger.info("创建成功");
                 FindScheduleInDto findSchedule = new FindScheduleInDto();
-                findSchedule.setUserId(inDto.getUserId());
+                findSchedule.setUserId(userId);
                 findSchedule.setScheduleId(flagList.get(1));
                 List<FindScheduleOutDto> scheduleCreateList = scheduleService.findCreateSchedule(findSchedule);
                 aiuiData.setScheduleCreateList(scheduleCreateList);
             }
             aiuiData.setDataType("1");
 
-        } else if (aiuiData.getCode() == 2) {
+        } else if (aiuiData.getCode() == 2) {        // 2:查找日程
             FindScheduleInDto findSchedule = new FindScheduleInDto();
             findSchedule.setScheduleStartTime(scheduleStartTime);
             findSchedule.setScheduleDeadline(scheduleDeadline);
-            findSchedule.setUserId(inDto.getUserId());
+            findSchedule.setUserId(userId);
 
             // 查询自己创建的日程
             List<FindScheduleOutDto> scheduleCreateList = scheduleService.findCreateSchedule(findSchedule);
@@ -157,9 +207,14 @@ public class AiUiServiceImpl implements IAiUiService {
             logger.info("查询成功[scheduleCreateList]："+ scheduleCreateList.size() + " | [scheduleJoinList]：" + scheduleJoinList.size());
 
             aiuiData.setDataType("2");
-        }
+        }*/
 
-        return aiuiData;
+        return outData;
     }
 
+    private AiUiOutDto playerMethod(AiUiJsonDto aiuiData) {
+        AiUiOutDto outData = new AiUiOutDto();
+
+        return outData;
+    }
 }

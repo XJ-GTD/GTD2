@@ -14,16 +14,6 @@ public class RabbitProducerConfig {
 
     final static String queueName = "GTD";
 
-    @Bean
-    public Queue gtdQueue() {
-        return new Queue("GTD");
-    }
-
-    @Bean
-    public Queue userQueue() {
-        return new Queue("user");
-    }
-
     /**
      * ===============以下是验证topic Exchange的队列==========
      */

@@ -20,6 +20,7 @@ import java.util.UUID;
 public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
 
     private Logger logger = LogManager.getLogger(this.getClass());
+
     private final RabbitTemplate rabbitTemplate;
     private final AmqpTemplate amqpTemplate;
     private final RabbitProducerConfig rabbitProducerConfig;
@@ -35,32 +36,31 @@ public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
      * routing_key: taskQueue
      * @param sendMsg
      */
-    public void send(String sendMsg) {
-        System.out.println("Sender1 : " + sendMsg);
+    public void send(String queueName, String sendMsg) {
+        logger.info("点对点 消息 : "+ sendMsg);
         this.rabbitTemplate.convertAndSend("taskQueue", sendMsg);
     }
 
     /**
      * 通配符模式
      * 生产两种routing_key消息，最后会被exchange中设置的binding_key过滤，发送给对应消费者
-     * @param sendMsg1
-     * @param sendMsg2
+     * @param exchangeName
+     * @param userId
+     * @param sendMsg
      */
-    public void topicSend(String sendMsg1, String sendMsg2) {
-        System.out.println("topicSender1 : "+ sendMsg1);
-        this.amqpTemplate.convertAndSend("exchange","topic.message",sendMsg1);
-
-        System.out.println("topicSender2 : "+ sendMsg2);
-        this.amqpTemplate.convertAndSend("exchange","topic.messages",sendMsg2);
+    public void topicSend(String exchangeName, int userId, String sendMsg) {
+        logger.info("topic 消息 : "+ sendMsg);
+        String queueName = userId + ".#";
+        this.amqpTemplate.convertAndSend(exchangeName, queueName, sendMsg);
     }
 
     /**
      * 订阅模式
      * @param sendMsg
      */
-    public void fanoutSend(String sendMsg) {
-        System.out.println(sendMsg);
-        this.amqpTemplate.convertAndSend("fanoutExchange", "abcd.ee", sendMsg);
+    public void fanoutSend(String exchangeName, String sendMsg) {
+        logger.info("fanout 消息 : "+ sendMsg);
+        this.amqpTemplate.convertAndSend(exchangeName, "abcd.ee", sendMsg);
     }
 
     /**
