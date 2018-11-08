@@ -16,14 +16,18 @@
 // automatically applied to the <body> element in the app.
 *{font-family:PingFang-SC-Regular,PingFang-SC,"微软雅黑",Georgia}
 
-.ion-page.show-page{
-  background: #FFFFFF;
+.ios .ion-page.show-page ~ .nav-decor{
+  background: transparent;
 }
-ion-content{
+
+page-home{
   background: -webkit-linear-gradient(left,color($background-color-content,first,start), color($background-color-content,first,end)); /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(right,color($background-color-content,first,start), color($background-color-content,first,end)); /* Opera 11.1 - 12.0 */
   background: -moz-linear-gradient(right, color($background-color-content,first,start), color($background-color-content,first,end)); /* Firefox 3.6 - 15 */
   background: linear-gradient(to right,color($background-color-content,first,start), color($background-color-content,first,end)); /* 标准的语法（必须放在最后） */
+  .content-ios{
+     background-color:transparent;
+  }
 }
 
 ion-header img{

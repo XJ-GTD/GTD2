@@ -9,6 +9,7 @@ import { ScheduleModel } from "../../model/schedule.model";
 import { File } from "@ionic-native/file";
 import { Base64 } from "@ionic-native/base64";
 import  {XiaojiFeedbackService} from "../../service/xiaoji-feedback.service";
+import {LightSvgPage} from "../light-svg/light-svg";
 
 
 declare var cordova: any;
@@ -27,6 +28,8 @@ declare var cordova: any;
 })
 export class SpeechPage {
 
+
+  @ViewChild(LightSvgPage) lightSvgPage:LightSvgPage;
   @ViewChild(Content) content: Content;
 
   data: any;
@@ -70,7 +73,8 @@ export class SpeechPage {
   init() {
     this.messages = [];
     this.aiuiData = new AiuiModel();
-    this.initWakeUp();
+    //语音唤醒冲突暂时关闭
+    //this.initWakeUp();
   }
 
   initWakeUp(){
@@ -148,7 +152,8 @@ export class SpeechPage {
   //回传数据处理
   messageHanding(xfdata:any) {
 
-        this.messages = [];
+        this.messages.length = 0;
+
 
         if (xfdata.code == 0) {
           //接收Object JSON数据
@@ -189,6 +194,7 @@ export class SpeechPage {
               messageData.talkType = this.talkDataList;
               messageData.scheduleJoinList = this.aiuiData.scheduleJoinList;
               this.messages.push(messageData);
+
             }, 1500);
           }
 
@@ -231,6 +237,11 @@ export class SpeechPage {
   //返回方法
   goBack() {
     this.viewCtrl.dismiss();
+  }
+
+  reset(){
+    this.lightSvgPage.startHue += 60;
+    this.lightSvgPage.reset();
   }
 
 }

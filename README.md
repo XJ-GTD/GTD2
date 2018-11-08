@@ -44,7 +44,7 @@
 ##### ionic cordova plugin add cordova-plugin-local-notification
 ##### npm install --save @ionic-native/local-notifications
 #####
-###### <安装系统弹窗插件>
+###### <安装系统弹窗
 ##### ionic cordova plugin add cordova-plugin-dialogs
 ##### npm install --save @ionic-native/dialogs
 #####

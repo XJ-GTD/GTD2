@@ -1,0 +1,49 @@
+page-home-work-list {
+ul{
+
+  .item-ios.item-block .item-inner{
+    border-bottom: 0px solid #c8c7cc;
+  }
+
+  .item-ios{
+    background-color:transparent;
+    font-size: 14px;
+    color: #222222;
+
+    white-space: nowrap;  /*强制span不换行*/
+    overflow: hidden;  /*超出宽度部分隐藏*/
+    text-overflow: ellipsis;  /*超出部分以点号代替*/
+    min-height:0px;
+    list-style-type:none;
+    padding-left: 0px;
+    margin-left:-20px;
+    margin-top: 10px;
+
+
+    p{
+      font-size: 12px;
+      color: #222222;
+    }
+
+    ion-icon{
+      font-size: 20px;
+      margin: 0px 5px 0px 0px;
+    }
+    .input-wrapper{
+      height: 30px;
+    }
+  }
+  .item-ios [item-start]{
+    margin: 2px 5px 0px 0px;
+  }
+
+  li{
+
+  }
+}
+  ion-scroll{
+    min-height: 100px;
+    height: 100%;
+  }
+
+}

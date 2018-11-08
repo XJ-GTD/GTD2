@@ -11,24 +11,15 @@
   <ion-toolbar>
     <ion-buttons left>
       <button ion-button icon-only (click)="goBack()">
-        <img src="./assets/imgs/back.png" width="25px"/>
+        <ion-icon name="arrow-back" style=" color: white"></ion-icon>
       </button>
-    </ion-buttons>
-
-    <ion-buttons end>
-    <button ion-button icon-only (click)="openSocial(1,null)">
-      <ion-icon name="create" style="color: white"></ion-icon>
-    </button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
 
 
-  <ion-list>
-    <ion-item  class="XFTalk">
-      <h2>请问，需要我帮你做点什么？点击【启动语音】开始对话吧！</h2>
-    </ion-item>
+  <ion-list class="yyWarp">
     <ion-item  *ngFor="let message of messages"  on-hold="onMessageHold($event, $index, message)">
 
       <!-- 判断消息是用户 -->
@@ -58,9 +49,6 @@
               <p>
                 <ion-badge>{{sj.labelName}}</ion-badge>
               </p>
-              <ion-note item-end>
-                截止于{{sj.scheduleDeadline}}
-              </ion-note>
             </ion-item>
           </ion-list>
       </ion-card>
@@ -101,33 +89,41 @@
     </ion-item>
   </ion-list>
 
-  <ion-fab right middle edge #fab1 color="dark">
-    <button ion-fab mini ><ion-icon name="arrow-dropup"></ion-icon></button>
-    <ion-fab-list  side="top">
-      <button ion-fab (click)="openSocial(1, fab1)" color="dark"><ion-icon name="create"></ion-icon></button>
-      <button ion-fab (click)="openSocial(2, fab1)" color="secondary"><ion-icon name="contacts"></ion-icon></button>
-      <button ion-fab (click)="openSocial(3, fab1)" color="danger"><ion-icon name="add"></ion-icon></button>
-    </ion-fab-list>
-  </ion-fab>
+  <!--<ion-fab left bottom edge #fab1 color="dark">-->
+    <!--<button ion-fab mini ><ion-icon name="arrow-dropup"></ion-icon></button>-->
+    <!--<ion-fab-list  side="top">-->
+      <!--<button ion-fab (click)="openSocial(1, fab1)" color="dark"><ion-icon name="create"></ion-icon></button>-->
+      <!--<button ion-fab (click)="openSocial(2, fab1)" color="secondary"><ion-icon name="contacts"></ion-icon></button>-->
+      <!--<button ion-fab (click)="openSocial(3, fab1)" color="danger"><ion-icon name="add"></ion-icon></button>-->
+    <!--</ion-fab-list>-->
+  <!--</ion-fab>-->
 </ion-content>
 
-<ion-footer >
-  <ion-toolbar *ngIf="modeFlag == true; else xjInput">
-    <button id="start" ion-button outline icon-start (click)="startXiaoJi()">
-      <ion-icon name="ionitron"></ion-icon>
-      启动语音
-    </button>
-  </ion-toolbar>
-  <ng-template #xjInput>
-    <ion-toolbar padding-left>
-      <ion-input id="userInput" type="text" [(ngModel)]="inputText" placeholder="请输入指令"></ion-input>
-      <ion-buttons end>
-        <button ion-button icon-end color="royal" (click)="startXiaojiText()">
-          发送
-          <ion-icon name="send"></ion-icon>
+  <ion-footer>
+    <ion-toolbar  *ngIf="modeFlag == true; else xjInput">
+      <ion-buttons left>
+        <button ion-button icon-only (click)="openSocial(1,null)">
+          <ion-icon name="code-working" style=" color: white;font-size: 40px"></ion-icon>
         </button>
       </ion-buttons>
+
+      <img  src="./assets/imgs/yuying.png"   (click)="startXiaoJi()" class="animated bounceIn"/>
     </ion-toolbar>
-  </ng-template>
-</ion-footer>
+    <ng-template #xjInput>
+      <ion-toolbar>
+        <ion-buttons left>
+          <button ion-button icon-only (click)="openSocial(1,null)">
+            <ion-icon name="create" style=" color: white"></ion-icon>
+          </button>
+        </ion-buttons>
+        <ion-input id="userInput" type="text" [(ngModel)]="inputText" placeholder="请输入指令"></ion-input>
+        <ion-buttons end>
+          <button ion-button icon-end color="royal" (click)="startXiaojiText()">
+            发送
+            <ion-icon name="send"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ng-template>
+  </ion-footer>
 </div>
