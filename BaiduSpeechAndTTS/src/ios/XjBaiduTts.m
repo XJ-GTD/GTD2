@@ -9,9 +9,9 @@
 
 @interface XjBaiduTts : CDVPlugin<BDSSpeechSynthesizerDelegate> {
   // Member variables go here.@property (nonatomic, strong) NSString* callbackId;
-  @property (nonatomic, strong) NSString* callbackId;
 }
 
+@property (nonatomic, strong) NSString* callbackId;
 - (void)speak:(CDVInvokedUrlCommand*)command;
 @end
 
@@ -21,7 +21,6 @@ static BOOL isSpeak = YES;
 static BOOL textFromFile = READ_SYNTHESIS_TEXT_FROM_FILE;
 static BOOL displayAllSentences = !READ_SYNTHESIS_TEXT_FROM_FILE;
 
-#error 请在官网新建app，配置bundleId，并在此填写相关参数
 NSString* APP_ID = @"14502702";
 NSString* API_KEY = @"6YvlNRGZ5I4CkA715XnVyoSm";
 NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
@@ -61,12 +60,6 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     NSString* offlineChineseAndEnglishTextData = [[NSBundle mainBundle] pathForResource:@"Chinese_And_English_Text" ofType:@"dat"];
 
     err = [[BDSSpeechSynthesizer sharedInstance] loadOfflineEngine:offlineChineseAndEnglishTextData speechDataPath:offlineEngineSpeechData licenseFilePath:nil withAppCode:APP_ID];
-    if(err){
-        [self displayError:err withTitle:@"Offline TTS init failed"];
-        return;
-    }
-    [TTSConfigViewController loadedAudioModelWithName:@"Chinese female" forLanguage:@"chn"];
-    [TTSConfigViewController loadedAudioModelWithName:@"English female" forLanguage:@"eng"];
 }
 
 
@@ -74,12 +67,12 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 - (void)speak:(CDVInvokedUrlCommand*)command
 {
 
-    NSString* text = [command.arguments objectAtIndex:0];
+    NSString* string = [command.arguments objectAtIndex:0];
     NSInteger sentenceID;
     NSError* err = nil;
     [[BDSSpeechSynthesizer sharedInstance] setSynthesizerDelegate:self];
     self.callbackId = command.callbackId;
-    sentenceID = [[BDSSpeechSynthesizer sharedInstance] speakSentence:[string text] withError:&err];
+    sentenceID =  [[BDSSpeechSynthesizer sharedInstance] speakSentence:(string) withError:(&err)];
     if(err != nil){
        NSLog(@"Did finish synth, %ld", err);
     }
@@ -101,8 +94,7 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 - (void)synthesizerSpeechEndSentence:(NSInteger)SpeakSentence{
     NSLog(@"Did synthesizerSpeechEndSentence speak %ld", SpeakSentence);
    if (self.callbackId) {
-       NSDictionary* info = [NSDictionary dictionaryWithObjectsAndKeys:@"SpeechResults",STR_EVENT,SpeakSentence,STR_RESULTS, nil];
-       CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:info];
+       CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
        [result setKeepCallbackAsBool:YES];
        [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
    }
