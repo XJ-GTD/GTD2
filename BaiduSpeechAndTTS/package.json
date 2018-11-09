@@ -1,0 +1,12 @@
+{
+  "name": "cordova-plugin-BaiduSpeechAndTTS",
+  "version": "0.0.1",
+  "description": "",
+  "cordova": {
+    "id": "cordova-plugin-BaiduSpeechAndTTS",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  }
+}

@@ -2,16 +2,16 @@
 
 #import <Cordova/CDV.h>
 
-@interface BaiduSpeechAndTTS : CDVPlugin {
+@interface XjBaiduTts : CDVPlugin {
   // Member variables go here.
 }
 
-- (void)coolMethod:(CDVInvokedUrlCommand*)command;
+- (void)speak:(CDVInvokedUrlCommand*)command;
 @end
 
-@implementation BaiduSpeechAndTTS
+@implementation XjBaiduTts
 
-- (void)coolMethod:(CDVInvokedUrlCommand*)command
+- (void)speak:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* pluginResult = nil;
     NSString* echo = [command.arguments objectAtIndex:0];
