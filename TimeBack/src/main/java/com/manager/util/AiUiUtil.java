@@ -51,11 +51,7 @@ public class AiUiUtil {
             }
 
             return result;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
 

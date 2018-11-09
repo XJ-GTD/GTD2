@@ -8,7 +8,7 @@ import { App, NavController } from "ionic-angular";
 declare var cordova: any;
 
 /**
- * 小鸡语音助手
+ * 小吉语音助手
  *
  * create by wzy on 2018/08/07.
  */
@@ -49,14 +49,18 @@ export class XiaojiAssistantService {
         this.filePath = this.file.externalRootDirectory + "/xjASR/iat.pcm";
         console.log("文件路径：" + this.filePath);
 
-
-        let url = AppConfig.XUNFEI_URL_AUDIO;
-
         // 读取录音进行base64转码
         this.base64.encodeFile(this.filePath).then((base64File: string) => {
           this.fileContent = base64File;
           console.log("base64:" + this.fileContent);
-          this.connetXunfei(url,success);
+
+          let data = {
+            content: this.fileContent,
+            userId: this.paramsService.user.userId,
+            flag: 0
+          };
+
+          this.connetXunfei(data, success);
         }, (err) => {
           console.log("异常" + err.toString());
         });
@@ -82,8 +86,12 @@ export class XiaojiAssistantService {
         return 0;
       }
       this.fileContent = text;
-      let url = AppConfig.XUNFEI_URL_TEXT;
-      this.connetXunfei(url,success);
+      let data = {
+        content: this.fileContent,
+        userId: this.paramsService.user.userId,
+        flag: 1
+      };
+      this.connetXunfei(data, success);
 
     } catch (e) {
       console.log("问题："+ e)
@@ -91,46 +99,19 @@ export class XiaojiAssistantService {
 
   }
 
-  //文件上传
-  fileUpload(filePath, url) {
-
-    /*  this.file
-
-      this.http.post(url, {
-        content: this.fileContent
-      },{
-        headers: {
-          "Content-Type": "application/json"
-        },
-        responseType: 'json'
-      })*/
-
-
-
-  }
-
   /**
    * 录音文件传输后台服务解析
    * @param {string} url 后台服务路径
    */
-  private connetXunfei(url: string,success) {
+  private connetXunfei(audioData, success) {
     console.log("调用成功:" + this.fileContent);
-    console.log("调用URL:" + url);
+    console.log("调用URL:" + AppConfig.XUNFEI_URL_AUDIO);
     //调用讯飞语音服务
-    this.http.post(url, {
-      content: this.fileContent,
-      userId: this.paramsService.user.userId
-    },{
-      headers: {
-        "Content-Type": "application/json"
-      },
-      responseType: 'json'
-    })
+    this.http.post(AppConfig.XUNFEI_URL_AUDIO, audioData,AppConfig.HEADER_OPTIONS_JSON)
       .subscribe(data => {
         console.log("data" + data);
         //接收Object JSON数据
         success(data);
-        //this.paramsService.aiuiData = this.data.data.aiuiData;
 
         //分离出需要语音播报的内容
         this.speechText = this.paramsService.aiuiData.speech;

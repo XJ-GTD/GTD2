@@ -43,8 +43,7 @@ public class BaseUtil {
 
     //队列命名规则
     public static String createQueueName(Integer userId, String deviceId) {
-//        return userId + "_" + deviceId;
-        return "gtd" + userId;
+        return userId + "." + deviceId;
     }
 
     //交换机命名规则
