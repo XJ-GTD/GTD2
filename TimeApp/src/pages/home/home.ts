@@ -6,7 +6,6 @@ import { XiaojiAlarmclockService } from "../../service/xiaoji-alarmclock.service
 import { HttpClient } from "@angular/common/http";
 import { AppConfig } from "../../app/app.config";
 import { RemindModel } from "../../model/remind.model";
-import { TimeService } from "../../service/time.service";
 import { ScheduleModel } from "../../model/schedule.model";
 import { ScheduleOutModel } from "../../model/out/schedule.out.model";
 import { CalendarModel } from "../../model/calendar.model";
@@ -74,7 +73,6 @@ export class HomePage {
               public modalCtr: ModalController,
               private webSocketService: WebsocketService,
               private http: HttpClient,
-              private timeService: TimeService,
               private paramsService: ParamsService,
               private alarmClock: XiaojiAlarmclockService,
               private calendarService:CalendarService) {
