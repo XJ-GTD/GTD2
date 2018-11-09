@@ -1,6 +1,9 @@
 /********* BaiduSpeechAndTTS.m Cordova Plugin Implementation *******/
 
 #import <Cordova/CDV.h>
+#import "BDSEventManager.h"
+#import "BDSASRDefines.h"
+#import "BDSASRParameters.h"
 
 @interface XjBaiduSpeech : CDVPlugin {
   // Member variables go here.

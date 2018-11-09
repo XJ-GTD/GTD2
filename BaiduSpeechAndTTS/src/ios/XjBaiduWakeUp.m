@@ -1,6 +1,8 @@
 /********* BaiduSpeechAndTTS.m Cordova Plugin Implementation *******/
 
 #import <Cordova/CDV.h>
+#import "BDSWakeupDefines.h"
+#import "BDSWakeupParameters.h"
 
 @interface XjBaiduWakeUp : CDVPlugin {
   // Member variables go here.
@@ -11,6 +13,7 @@
 - (void)stop:(CDVInvokedUrlCommand*)command;
 
 - (void)release:(CDVInvokedUrlCommand*)command;
+
 @end
 
 @implementation XjBaiduWakeUp
