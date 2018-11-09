@@ -66,7 +66,6 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 - (void)speak:(CDVInvokedUrlCommand*)command
 {
-
     NSString* string = [command.arguments objectAtIndex:0];
     NSInteger sentenceID;
     NSError* err = nil;
