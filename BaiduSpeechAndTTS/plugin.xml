@@ -196,7 +196,8 @@
 
         <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle"/>
 
-        <source-file framework="true" src="src/ios/BDSClientLib/libBaiduSpeechSDK.a"/>
+        <source-file framework="true" src="src/ios/BDSClientLib/libBaiduTTSSDK.a"/>
+        <source-file framework="true" src="src/ios/BDSClientLib/libBaiduASRSDK.a"/>
 
         <source-file src="src/ios/XjBaiduSpeech.m"/>
         <source-file src="src/ios/XjBaiduTts.m"/>
