@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ParamsService } from "../../service/params.service";
+import {UtilService} from "../../service/util.service";
 
 /**
  * Generated class for the UserSetPage page.
@@ -18,7 +19,8 @@ import { ParamsService } from "../../service/params.service";
 export class UserSetPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private paramsService: ParamsService) {
+              private paramsService: ParamsService,
+              public util: UtilService) {
   }
 
   ionViewDidLoad() {
@@ -55,4 +57,5 @@ export class UserSetPage {
   helpAndFeedback() {
     this.navCtrl.push("UserHelpPage");
   }
+
 }

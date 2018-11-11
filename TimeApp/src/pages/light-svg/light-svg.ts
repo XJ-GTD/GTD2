@@ -76,7 +76,7 @@ export class LightSvgPage {
       let scale = 1 + this.tick * 0.00025 ;
       this.ctx.scale( scale, scale );
       this.ctx.translate( -this.cx, -this.cy );
-      this.ctx.drawImage(this.c.nativeElement, this.util.rand( -50, 50 ), this.util.rand( -50, 50 ) );
+      this.ctx.drawImage(this.c.nativeElement, UtilService.rand( -50, 50 ), UtilService.rand( -50, 50 ) );
       this.ctx.restore();
     }
 
@@ -125,10 +125,10 @@ class Branch{
   }
 
   constructor(hue:number, x:number, y :number,public util:UtilService ) {
-    let x1 = x + this.util.rand( -this.move, this.move );
-    let y1 = y + this.util.rand( -this.move, this.move);
-    this.angle = this.angle != undefined ? this.angle : this.util.rand( 0, Math.PI * 1 );
-    this.vel = this.vel != undefined ? this.vel : this.util.rand( -4, 4 );
+    let x1 = x + UtilService.rand( -this.move, this.move );
+    let y1 = y + UtilService.rand( -this.move, this.move);
+    this.angle = this.angle != undefined ? this.angle : UtilService.rand( 0, Math.PI * 1 );
+    this.vel = this.vel != undefined ? this.vel : UtilService.rand( -4, 4 );
     this.hue = hue != undefined ? hue : 200;
     this.points.push({
       x: x1,
@@ -149,7 +149,7 @@ class Branch{
         x: lastPoint.x + Math.cos( this.angle ) * this.vel,
         y: lastPoint.y + Math.sin( this.angle ) * this.vel
       });
-      this.angle += this.util.rand( -this.spread, this.spread );
+      this.angle += UtilService.rand( -this.spread, this.spread );
       this.vel *= 0.99;
       this.spread = this.vel * 0.04;
       this.tick++;
@@ -168,16 +168,16 @@ class Branch{
     var length = this.points.length,
       i = length - 1,
       point = this.points[ i ],
-      lastPoint = this.points[ i - this.util.randInt( 5, 15 ) ];
+      lastPoint = this.points[ i - UtilService.randInt( 5, 15 ) ];
     let jitter = 8;
     if( lastPoint ) {
       //let jitter = 2 + this.life * 6;
       this.ctx.beginPath();
       this.ctx.moveTo( lastPoint.x, lastPoint.y );
-      this.ctx.lineTo( point.x + this.util.rand( -jitter, jitter ), point.y + this.util.rand( -jitter, jitter ) );
+      this.ctx.lineTo( point.x + UtilService.rand( -jitter, jitter ), point.y + UtilService.rand( -jitter, jitter ) );
       this.ctx.lineWidth = 1;
       var alpha = this.life * 0.075;
-      this.ctx.strokeStyle = 'hsla(' + ( this.hue + this.util.rand( -10, 10 ) ) + ', 70%, 40%, ' + alpha + ')';
+      this.ctx.strokeStyle = 'hsla(' + ( this.hue + UtilService.rand( -10, 10 ) ) + ', 70%, 40%, ' + alpha + ')';
       this.ctx.stroke();
     }
   }

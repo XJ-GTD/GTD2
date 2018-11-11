@@ -14,11 +14,12 @@ import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notifica
 import { ParamsService } from "../service/params.service";
 import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
 import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
-import {AndroidFullScreen} from "@ionic-native/android-full-screen";
+import { AndroidFullScreen } from "@ionic-native/android-full-screen";
 import { SQLite } from '@ionic-native/sqlite';
-import {SqliteService} from "../service/sqlite.service";
-import {UtilService} from "../service/util.service";
-import {CalendarService} from "../service/calendar.service";
+import { SqliteService } from "../service/sqlite.service";
+import { UtilService } from "../service/util.service";
+import { CalendarService } from "../service/calendar.service";
+import {Device} from "@ionic-native/device";
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import {CalendarService} from "../service/calendar.service";
     SplashScreen,
     File,
     Base64,
+    Device,
     ParamsService,
     XiaojiAssistantService,
     LocalNotifications,

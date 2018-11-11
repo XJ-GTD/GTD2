@@ -24,6 +24,7 @@
     "@ionic-native/base64": "^4.15.0",
     "@ionic-native/calendar": "^4.15.0",
     "@ionic-native/core": "4.3.2",
+    "@ionic-native/device": "^4.17.0",
     "@ionic-native/dialogs": "^4.13.0",
     "@ionic-native/file": "^4.15.0",
     "@ionic-native/file-transfer": "^4.12.2",

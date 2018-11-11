@@ -11,12 +11,13 @@ import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
 import { XiaojiAlarmclockService } from "../service/xiaoji-alarmclock.service";
 import { BackButtonService } from "../service/backbutton.service";
 import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
-import {AndroidFullScreen} from "@ionic-native/android-full-screen";
-import {SqliteService} from "../service/sqlite.service";
+import { AndroidFullScreen } from "@ionic-native/android-full-screen";
+import { SqliteService } from "../service/sqlite.service";
+import { UtilService } from "../service/util.service";
 
 @Component({
   templateUrl: 'app.html',
-  providers: [ ParamsService, WebsocketService, XiaojiAssistantService, XiaojiAlarmclockService, BackButtonService ,XiaojiFeedbackService]
+  providers: [ ParamsService, WebsocketService, XiaojiAssistantService, XiaojiAlarmclockService, BackButtonService ,XiaojiFeedbackService, UtilService]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;

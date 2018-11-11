@@ -79,7 +79,7 @@ export class HomeWorkListPage {
         // } else {
         //   console.log("error message:" + datatype.message);
         // }
-        let len = this.util.randInt(2,13);
+        let len = UtilService.randInt(2,13);
         for(let i=0;i<len;i++){
           let mo = new ScheduleModel();
           mo.scheduleStartTime = "05:00";
