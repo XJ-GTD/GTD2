@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import {UtilService} from "../../service/util.service";
+import {SqliteService} from "../../service/sqlite.service";
 
 /**
  * Generated class for the WelcomePage page.
@@ -23,7 +25,11 @@ export class WelcomePage {
     }
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController,
+              public util: UtilService,
+              private loadingCtrl: LoadingController,
+              private sqliteService: SqliteService,
+              public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
@@ -32,6 +38,20 @@ export class WelcomePage {
 
   goToLogin() {
     this.navCtrl.setRoot('UserLoginPage');
+  }
+
+  /**
+   * 游客身份登录 dch
+   */
+  visitor(){
+    let loader = this.loadingCtrl.create({
+      content: "正在加载...",
+      duration: 10000
+    });
+   // alert(this.util.uuid(32,32));
+    this.sqliteService.executeSql('',[])
+    loader.present();
+    this.navCtrl.setRoot('HomePage');
   }
 
 }
