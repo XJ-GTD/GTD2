@@ -63,31 +63,27 @@ async createTable() {
     'LOGIN_STATE VARCHAR(20))',
     []).catch(e=>{
     console.log('GTD_ACCOUNT:'+e.toString());
+  }).then(data=>{
+    console.log(data);
+  }).catch(e=>{
+    console.log(e);
   })
-  // this.executeSql('CREATE TABLE IF NOT EXISTS GTD_ACCOUNT(ACCOUNT_MOBILE VARCHAR(20) PRIMARY KEY, ' +
-  //   'ACCOUNT_TOKEN VARCHAR(100),' +
-  //   'ACCOUNT_NAME VARCHAR(30) NOT NULL,' +
-  //   'ACCOUNT_QUEUE VARCHAR(64) NOT NULL,' +
-  //   'ACCOUNT_UUID VARCHAR(64) NOT NULL,' +
-  //   'USER_ID int(11) NOT NULL' +
-  //   'LOGIN_TIME VARCHAR(20),' +
-  //   'MOBILE_MODEL VARCHAR(50) NOT NULL, ' +
-  //   'LOGIN_STATE INT(1))',
-  //   []);
-  // //创建用户表
-  // this.executeSql( 'CREATE TABLE GTD_USER (USER_ID  int(11) NOT NULL AUTO_INCREMENT ,' +
-  //   'USER_NAME  varchar(15) NOT NULL ,' +
-  //   'HEADIMG_URL  varchar(200),' +
-  //   'BRITHDAY  datetime NULL DEFAULT NULL,' +
-  //   'USER_SEX  int(1) NULL DEFAULT NULL ,' +
-  //   'USER_CONTACT  varchar(11) ,' +
-  //   'USER_TYPE  int(1) NOT NULL ,' +
-  //   'CREATE_ID  int(11) NULL DEFAULT NULL ,' +
-  //   'CREATE_DATE  datetime NULL DEFAULT NULL ,' +
-  //   'UPDATE_ID  int(11) NULL DEFAULT NULL ,' +
-  //   'UPDATE_DATE  datetime NULL DEFAULT NULL ,' +
-  //   'PRIMARY KEY (USER_ID)' +
-  //   ')', []);
+  //创建
+  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_USER(userId VARCHAR(64) PRIMARY KEY, ' +
+    'userName VARCHAR(100),' +
+    'headImgUrl VARCHAR(200) NOT NULL,' +
+    'brithday VARCHAR(10) NOT NULL,' +
+    'userSex VARCHAR(2) NOT NULL,' +
+    'userContact VARCHAR(20) NOT NULL,' +
+    'UserType VARCHAR(2),' +
+    'token VARCHAR(200))',
+    []).catch(e=>{
+    console.log('GTD_ACCOUNT:'+e.toString());
+  }).then(data=>{
+    console.log(data);
+  }).catch(e=>{
+    console.log(e);
+  })
   //创建事件表
   // this.executeSql( 'CREATE TABLE GTD_SCHEDULE(' +
   //   'SCHEDULE_ID  int(11) NOT NULL AUTO_INCREMENT ,' +
@@ -106,6 +102,13 @@ async createTable() {
 
   await this.executeSql('CREATE TABLE IF NOT EXISTS remindMaster(remind_id INTEGER PRIMARY KEY ' +
     'AUTOINCREMENT,user_id TEXT,state TEXT , content TEXT,remind_time TEXT,create_time TEXT)', []);
+  var myDate = new Date();
+  this.executeSql('INSERT INTO remindMaster(user_id) VALUES (?)', [myDate.toDateString()]);
+  this.executeSql('SELECT * from remindMaster', []).then(data=>{
+    if (!!!!data && !!!!data.rows) {
+      alert(data.rows.length);
+    }
+  })
 }
 
 /**
