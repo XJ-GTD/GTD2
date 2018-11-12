@@ -63,71 +63,83 @@ async createTable() {
     'LOGIN_STATE VARCHAR(20))',
     []).catch(e=>{
     console.log('GTD_ACCOUNT:'+e.toString());
-  }).then(data=>{
-    console.log(data);
   }).catch(e=>{
     console.log(e);
   })
   //创建用户基本信息表
-  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_USER(userId VARCHAR(64) PRIMARY KEY, ' +
-    'userName VARCHAR(100),' +
+  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_A(userId VARCHAR(100) PRIMARY KEY, ' +
+    'userName VARCHAR(100),idCard VARCHAR(100),' +
     'headImgUrl VARCHAR(200),' +
     'brithday VARCHAR(10),' +
     'userSex VARCHAR(2),' +
-    'userContact VARCHAR(20),' +
-    'UserType VARCHAR(2),' +
-    'token VARCHAR(200))',
+    'userContact VARCHAR(20),acountQueue VARCHAR(20),' +
+    'userType VARCHAR(2),' +
+    'userToken VARCHAR(200))',
     []).catch(e=>{
     console.log('GTD_ACCOUNT:'+e.toString());
-  }).then(data=>{
-    console.log(data);
   }).catch(e=>{
     console.log(e);
   })
-  //创建日程详情表
-  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_SCHEDULE(scheduleId VARCHAR(64) PRIMARY KEY, ' +
+  //创建日程表
+  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_C(scheduleId VARCHAR(64) PRIMARY KEY, ' +
     'scheduleName VARCHAR(100),' +
-    'scheduleStartTime VARCHAR(200) NOT NULL,' +
-    'scheduleDeadLine VARCHAR(10) NOT NULL,' +
-    'scheduleRepeatType VARCHAR(2) NOT NULL)'
+    'scheduleStartTime VARCHAR(20),' +
+    'scheduleDeadLine VARCHAR(20),' +
+    'labelId VARCHAR(64))'
     ,[]).catch(e=>{
-    console.log('GTD_ACCOUNT:'+e.toString());
-  }).then(data=>{
-    console.log(data);
-  }).catch(e=>{
-    console.log(e);
+    console.log('GTD_C:'+e.toString());
   })
 
   //创建日程参与人表
-  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_SCHEDULE_PLAYERS(playersId VARCHAR(64) PRIMARY KEY, ' +
+  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_D(playersId VARCHAR(64) PRIMARY KEY, ' +
     'scheduleId VARCHAR(100),' +
-    'scheduleOtherName VARCHAR(200) NOT NULL,' +
-    'players_finish_date VARCHAR(20) NOT NULL,' +
-    'userId VARCHAR(2) NOT NULL)'
+    'scheduleOtherName VARCHAR(200),scheduleAuth VARCHAR(2),' +
+    'playersFinishDate VARCHAR(20),playersStatus VARCHAR(2),' +
+    'userId VARCHAR(100))'
     ,[]).catch(e=>{
     console.log('GTD_ACCOUNT:'+e.toString());
-  }).then(data=>{
-    console.log(data);
-  }).catch(e=>{
-    console.log(e);
   })
 
+  //联系人表
+  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_B(bpkId VARCHAR(64) PRIMARY KEY, ' +
+    'relaterId VARCHAR(100),' +
+    'relaterName VARCHAR(20),relaterContact VARCHAR(20),' +
+    'relaterOtherName VARCHAR(20),relaterFlag VARCHAR(2),' +
+    'relaterM VARCHAR(10))'
+    ,[]).catch(e=>{
+    console.log('GTD_ACCOUNT:'+e.toString());
+  })
 
-  //创建事件表
-  // this.executeSql( 'CREATE TABLE GTD_SCHEDULE(' +
-  //   'SCHEDULE_ID  int(11) NOT NULL AUTO_INCREMENT ,' +
-  //   'SCHEDULE_NAME  varchar(20) NOT NULL ,' +
-  //   'SCHEDULE_STARTTIME  datetime NULL DEFAULT NULL ,' +
-  //   'SCHEDULE_DEADLINE  datetime NULL DEFAULT NULL ,' +
-  //   'SCHEDULE_REPEAT_TYPE  int(11) NULL DEFAULT NULL COMMENT \'0是单次日程，1是每天重复，2是每周重复，3是每月重复\' ,' +
-  //   'SCHEDULE_STATUS  int(11) NULL DEFAULT NULL COMMENT \'0是完成，1是未完成，2是过期\' ,' +
-  //   'SCHEDULE_FINISH_DATE  datetime NULL DEFAULT NULL ,' +
-  //   'CREATE_ID  int(11) NULL DEFAULT NULL ,' +
-  //   'CREATE_DATE  datetime NULL DEFAULT NULL ,' +
-  //   'UPDATE_ID  int(11) NULL DEFAULT NULL ,' +
-  //   'UPDATE_DATE  datetime NULL DEFAULT NULL ,' +
-  //   'PRIMARY KEY (SCHEDULE_ID)\n' +
-  //   ')', []);
+  //标签表
+  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_F(labelId VARCHAR(64) PRIMARY KEY, ' +
+    'labelName VARCHAR(100),' +
+    'labelType VARCHAR(20),' +
+    'labelTable VARCHAR(20)'
+    ,[]).catch(e=>{
+    console.log('GTD_ACCOUNT:'+e.toString());
+  })
+
+  // 提醒时间表
+  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_E(remindId VARCHAR(64) PRIMARY KEY, ' +
+    'playersId VARCHAR(100),' +
+    'remindDate VARCHAR(20)'
+    ,[]).catch(e=>{
+    console.log('GTD_ACCOUNT:'+e.toString());
+  })
+  // message表
+  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_H(messageId VARCHAR(64) PRIMARY KEY, ' +
+    'messageName VARCHAR(100),' +
+    'messageType VARCHAR(20)'
+    ,[]).catch(e=>{
+    console.log('GTD_H:'+e.toString());
+  })
+  // 系统设置表
+  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_G(systemId VARCHAR(64) PRIMARY KEY, ' +
+    'systemName VARCHAR(100),' +
+    'systemStatus VARCHAR(20),systemType VARCHAR(20)'
+    ,[]).catch(e=>{
+    console.log('GTD_H:'+e.toString());
+  })
 
   await this.executeSql('CREATE TABLE IF NOT EXISTS remindMaster(remind_id INTEGER PRIMARY KEY ' +
     'AUTOINCREMENT,user_id TEXT,state TEXT , content TEXT,remind_time TEXT,create_time TEXT)', []);
@@ -202,7 +214,7 @@ isMobile():boolean{
    * @returns {Promise<any>}
    */
   userIsExist(sql){
-      return this.executeSql('select * from GTD_USER'+sql,[])
+      return this.executeSql('select * from GTD_A'+sql,[])
   }
 
   /**
@@ -214,7 +226,7 @@ isMobile():boolean{
     this.userIsExist('where userId='+ param.accountUuid).then(data => {
         //如果存在则更新用户登录状态及TOKEN
         if (!!!!data && !!!!data.rows && data.rows.length > 0) {
-          this.executeSql('update GTD_ACCOUNT SET ACCOUNT_QUEUE=? where ACCOUNT_UUID=?',[param.accountQueue,param.accountUuid])
+          this.executeSql('update GTD_A SET ACCOUNT_QUEUE=? where userId=?',[param.accountQueue,param.userId])
             .catch(e=>{
               console.log('updateLogin:'+e.toString());
             })
