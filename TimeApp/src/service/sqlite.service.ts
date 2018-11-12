@@ -68,13 +68,13 @@ async createTable() {
   }).catch(e=>{
     console.log(e);
   })
-  //创建
+  //创建用户基本信息表
   this.executeSql('CREATE TABLE IF NOT EXISTS GTD_USER(userId VARCHAR(64) PRIMARY KEY, ' +
     'userName VARCHAR(100),' +
-    'headImgUrl VARCHAR(200) NOT NULL,' +
-    'brithday VARCHAR(10) NOT NULL,' +
-    'userSex VARCHAR(2) NOT NULL,' +
-    'userContact VARCHAR(20) NOT NULL,' +
+    'headImgUrl VARCHAR(200),' +
+    'brithday VARCHAR(10),' +
+    'userSex VARCHAR(2),' +
+    'userContact VARCHAR(20),' +
     'UserType VARCHAR(2),' +
     'token VARCHAR(200))',
     []).catch(e=>{
@@ -84,6 +84,35 @@ async createTable() {
   }).catch(e=>{
     console.log(e);
   })
+  //创建日程详情表
+  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_SCHEDULE(scheduleId VARCHAR(64) PRIMARY KEY, ' +
+    'scheduleName VARCHAR(100),' +
+    'scheduleStartTime VARCHAR(200) NOT NULL,' +
+    'scheduleDeadLine VARCHAR(10) NOT NULL,' +
+    'scheduleRepeatType VARCHAR(2) NOT NULL)'
+    ,[]).catch(e=>{
+    console.log('GTD_ACCOUNT:'+e.toString());
+  }).then(data=>{
+    console.log(data);
+  }).catch(e=>{
+    console.log(e);
+  })
+
+  //创建日程参与人表
+  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_SCHEDULE_PLAYERS(playersId VARCHAR(64) PRIMARY KEY, ' +
+    'scheduleId VARCHAR(100),' +
+    'scheduleOtherName VARCHAR(200) NOT NULL,' +
+    'players_finish_date VARCHAR(20) NOT NULL,' +
+    'userId VARCHAR(2) NOT NULL)'
+    ,[]).catch(e=>{
+    console.log('GTD_ACCOUNT:'+e.toString());
+  }).then(data=>{
+    console.log(data);
+  }).catch(e=>{
+    console.log(e);
+  })
+
+
   //创建事件表
   // this.executeSql( 'CREATE TABLE GTD_SCHEDULE(' +
   //   'SCHEDULE_ID  int(11) NOT NULL AUTO_INCREMENT ,' +
@@ -172,8 +201,8 @@ isMobile():boolean{
    * @param param
    * @returns {Promise<any>}
    */
-  accountIsExist(param){
-      return this.executeSql('select * from GTD_ACCOUNT where ACCOUNT_UUID=?',[param])
+  userIsExist(sql){
+      return this.executeSql('select * from GTD_USER'+sql,[])
   }
 
   /**
@@ -182,7 +211,7 @@ isMobile():boolean{
    */
   saveOrUpdateLogin(param){
     //先判断用户是否存在
-    this.accountIsExist(param.accountUuid).then(data => {
+    this.userIsExist('where userId='+ param.accountUuid).then(data => {
         //如果存在则更新用户登录状态及TOKEN
         if (!!!!data && !!!!data.rows && data.rows.length > 0) {
           this.executeSql('update GTD_ACCOUNT SET ACCOUNT_QUEUE=? where ACCOUNT_UUID=?',[param.accountQueue,param.accountUuid])

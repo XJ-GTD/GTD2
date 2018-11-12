@@ -7,7 +7,7 @@ import {GroupMemberModel} from "./groupMember.model";
 //参与人类
 export class GroupModel {
 
-  private _userId: number;
+  private _userId: string;
   private _groupId: string;//群组ID
   private _groupName: string;//群组名
   private _labelList: Array<LabelModel>;//标签
@@ -81,11 +81,11 @@ export class GroupModel {
     this._labelName = value;
   }
 
-  get userId(): number {
+  get userId(): string {
     return this._userId;
   }
 
-  set userId(value: number) {
+  set userId(value: string) {
     this._userId = value;
   }
 }

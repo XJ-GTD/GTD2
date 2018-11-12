@@ -40,7 +40,7 @@ export class ParamsService {
 
   get user(): UserModel {
     this._user = new UserModel();
-    this._user.userId = parseInt(window.localStorage.getItem('userId'));
+    this._user.userId = window.localStorage.getItem('userId');
     this._user.accountId = parseInt(window.localStorage.getItem('accountId'));
     this._user.accountName = window.localStorage.getItem('accountName');
     this._user.accountMobile = window.localStorage.getItem('accountMobile');
@@ -60,8 +60,9 @@ export class ParamsService {
   set user(value: UserModel) {
     if (value != null) {
       window.localStorage.setItem('userName', value.userName);
-      window.localStorage.setItem('userId', value.userId.toString());
-      window.localStorage.setItem('accountId', value.accountId.toString());
+      window.localStorage.setItem('userId', value.userId);
+      window.localStorage.setItem('token', value.token);
+     // window.localStorage.setItem('accountId', value.accountId ? '0':value.accountId.toString());
       window.localStorage.setItem('accountName', value.accountName);
       window.localStorage.setItem('accountMobile', value.accountMobile);
       window.localStorage.setItem('accountUuid', value.accountUuid);
@@ -70,7 +71,7 @@ export class ParamsService {
       window.localStorage.setItem('accountWechat', value.accountWechat);
       window.localStorage.setItem('headImgUrl', value.headImgUrl);
       window.localStorage.setItem('birthday', value.birthday);
-      window.localStorage.setItem('userSex', value.userSex.toString());
+      //window.localStorage.setItem('userSex', value.userSex ? '0':value.userSex.toString());
       window.localStorage.setItem('userContact', value.userContact);
     } else {
       this._user = value;

@@ -4,18 +4,18 @@
  */
 export class GroupMemberModel {
 
-  private _userId: number;//群成员Id
+  private _userId: string;//群成员Id
   private _userName: string;//群成员名字
   private _userContact: string;//群成员联系方式
 
   private _index: number;
 
 
-  get userId(): number {
+  get userId(): string {
     return this._userId;
   }
 
-  set userId(value: number) {
+  set userId(value: string) {
     this._userId = value;
   }
 

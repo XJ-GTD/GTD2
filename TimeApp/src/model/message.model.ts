@@ -6,7 +6,7 @@
  */
 export class MessageModel {
 
-  private _userId: number;           //用户ID
+  private _userId: string;           //用户ID
   private _scheduleId: number;         //日程ID
   private _playersStatus: number;      //日程接受或拒绝 1接受 -1拒绝
   private _groupId: number;          // 群组ID
@@ -41,11 +41,11 @@ export class MessageModel {
   set scheduleId(value: number) {
     this._scheduleId = value;
   }
-  get userId(): number {
+  get userId(): string {
     return this._userId;
   }
 
-  set userId(value: number) {
+  set userId(value: string) {
     this._userId = value;
   }
 

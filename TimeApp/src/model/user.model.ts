@@ -6,7 +6,7 @@
 export class UserModel {
 
   private _accountId: number;    //账户ID
-  private _userId: number;   //用户ID
+  private _userId: string;   //用户ID
 
   private _userName: string;   //昵称
   private _headImgUrl: string;          //头像URL
@@ -20,6 +20,14 @@ export class UserModel {
   private _accountMobile: string;    //手机号
   private _accountQueue: string;    //消息队列
   private _accountUuid: string;
+  private _token:string;
+  get token(): string {
+    return this._token;
+  }
+
+  set token(value: string) {
+    this._token = value;
+  }
 
   get accountId(): number {
     return this._accountId;
@@ -29,11 +37,11 @@ export class UserModel {
     this._accountId = value;
   }
 
-  get userId(): number {
+  get userId(): string {
     return this._userId;
   }
 
-  set userId(value: number) {
+  set userId(value: string) {
     this._userId = value;
   }
 
