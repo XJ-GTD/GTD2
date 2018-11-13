@@ -16,19 +16,15 @@
 @end
 
 
-#define READ_SYNTHESIS_TEXT_FROM_FILE (NO)
-static BOOL isSpeak = YES;
-static BOOL textFromFile = READ_SYNTHESIS_TEXT_FROM_FILE;
-static BOOL displayAllSentences = !READ_SYNTHESIS_TEXT_FROM_FILE;
+
+
+@implementation XjBaiduTts
 
 NSString* APP_ID = @"14502702";
 NSString* API_KEY = @"6YvlNRGZ5I4CkA715XnVyoSm";
 NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
-@implementation XjBaiduTts
-
 #pragma mark Initialization functions
-
 - (void) pluginInitialize {
     [self configureSDK];
 }
@@ -46,8 +42,8 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     [[BDSSpeechSynthesizer sharedInstance] setApiKey:API_KEY withSecretKey:SECRET_KEY];
 
     [[AVAudioSession sharedInstance]setCategory:AVAudioSessionCategoryPlayback error:nil];
-    //    [[BDSSpeechSynthesizer sharedInstance] setSynthParam:@(BDS_SYNTHESIZER_SPEAKER_DYY) forKey:BDS_SYNTHESIZER_PARAM_SPEAKER];
-    //    [[BDSSpeechSynthesizer sharedInstance] setSynthParam:@(10) forKey:BDS_SYNTHESIZER_PARAM_ONLINE_REQUEST_TIMEOUT];
+    [[BDSSpeechSynthesizer sharedInstance] setSynthParam:@(BDS_SYNTHESIZER_SPEAKER_DYY) forKey:BDS_SYNTHESIZER_PARAM_SPEAKER];
+    [[BDSSpeechSynthesizer sharedInstance] setSynthParam:@(10) forKey:BDS_SYNTHESIZER_PARAM_ONLINE_REQUEST_TIMEOUT];
 
 }
 
@@ -55,7 +51,7 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
     NSError *err = nil;
     // 在这里选择不同的离线音库（请在XCode中Add相应的资源文件），同一时间只能load一个离线音库。根据网络状况和配置，SDK可能会自动切换到离线合成。
-    NSString* offlineEngineSpeechData = [[NSBundle mainBundle] pathForResource:@"Chinese_And_English_Speech_Female" ofType:@"dat"];
+    NSString* offlineEngineSpeechData = [[NSBundle mainBundle] pathForResource:@"Chinese_And_English_Speech_DYY" ofType:@"dat"];
 
     NSString* offlineChineseAndEnglishTextData = [[NSBundle mainBundle] pathForResource:@"Chinese_And_English_Text" ofType:@"dat"];
 

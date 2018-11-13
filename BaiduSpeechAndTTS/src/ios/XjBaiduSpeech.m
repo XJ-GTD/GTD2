@@ -23,69 +23,64 @@
 
 @end
 
+
+
 @implementation XjBaiduSpeech
+
+NSString* APP_ID_1 = @"14502702";
+NSString* API_KEY_1 = @"6YvlNRGZ5I4CkA715XnVyoSm";
+NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 - (void) pluginInitialize {
     self.asrEventManager = [BDSEventManager createEventManagerWithName:BDS_ASR_NAME];
-    [self configVoiceRecognitionClient];
+   [self configVoiceRecognitionClient];
 }
 
 
 
 - (void)start:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* pluginResult = nil;
-    NSString* echo = [command.arguments objectAtIndex:0];
+    // 设置语音识别代理
+    [self.asrEventManager setDelegate:self];
+    
+    // 发送指令：启动识别
+    self.callbackId = command.callbackId;
+    
+    [self.asrEventManager sendCommand:BDS_ASR_CMD_START];
+}
 
-    if (echo != nil && [echo length] > 0) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-    }
-
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+- (void)audioStreamRecognition
+{
+    //AudioInputStream *stream = [[AudioInputStream alloc] init];
+    //[self.asrEventManager setParameter:stream forKey:BDS_ASR_AUDIO_INPUT_STREAM];
+    //[self.asrEventManager setParameter:@"" forKey:BDS_ASR_AUDIO_FILE_PATH];
+    [self.asrEventManager setDelegate:self];
+    [self.asrEventManager sendCommand:BDS_ASR_CMD_START];
+    //[self onInitializing];
 }
 
 - (void)stop:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* pluginResult = nil;
-    NSString* echo = [command.arguments objectAtIndex:0];
-
-    if (echo != nil && [echo length] > 0) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-    }
-
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    self.callbackId = command.callbackId;
+    [self.asrEventManager setDelegate:self];
+   
+    [self.asrEventManager sendCommand:BDS_ASR_CMD_STOP];
 }
 
 - (void)cancel:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* pluginResult = nil;
-    NSString* echo = [command.arguments objectAtIndex:0];
-
-    if (echo != nil && [echo length] > 0) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-    }
-
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    self.callbackId = command.callbackId;
+    [self.asrEventManager setDelegate:self];
+    
+    [self.asrEventManager sendCommand:BDS_ASR_CMD_CANCEL];
 }
 
 - (void)release:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* pluginResult = nil;
-    NSString* echo = [command.arguments objectAtIndex:0];
-
-    if (echo != nil && [echo length] > 0) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-    }
-
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    self.callbackId = command.callbackId;
+    [self.asrEventManager setDelegate:self];
+   
+    [self.asrEventManager sendCommand:BDS_ASR_CMD_STOP];
 }
 
 #pragma mark - Private: Configuration
@@ -93,23 +88,24 @@
     //设置DEBUG_LOG的级别
     [self.asrEventManager setParameter:@(EVRDebugLogLevelTrace) forKey:BDS_ASR_DEBUG_LOG_LEVEL];
     //配置API_KEY 和 SECRET_KEY 和 APP_ID
-    [self.asrEventManager setParameter:@[API_KEY, SECRET_KEY] forKey:BDS_ASR_API_SECRET_KEYS];
-    [self.asrEventManager setParameter:APP_ID forKey:BDS_ASR_OFFLINE_APP_CODE];
+    [self.asrEventManager setParameter:@[API_KEY_1, SECRET_KEY_1] forKey:BDS_ASR_API_SECRET_KEYS];
+    [self.asrEventManager setParameter:APP_ID_1 forKey:BDS_ASR_OFFLINE_APP_CODE];
+    //[self.asrEventManager setParameter:@(NO) forKey:BDS_ASR_ENABLE_LONG_SPEECH];
     //配置端点检测（二选一）
-    [self configModelVAD];
-//      [self configDNNMFE];
+    //[self configModelVAD];
+    [self configDNNMFE];
 
-    //     [self.asrEventManager setParameter:@"15361" forKey:BDS_ASR_PRODUCT_ID];
+     [self.asrEventManager setParameter:@"15361" forKey:BDS_ASR_PRODUCT_ID];
     // ---- 语义与标点 -----
     [self enableNLU];
     //    [self enablePunctuation];
     // ------------------------
 
     //离线配置
-   [self configOfflineClient];
+   //[self configOfflineClient];
 
    //开启声音
-    [self.asrEventManager setParameter:@(EVRPlayToneAll) forKey:BDS_ASR_PLAY_TONE];
+  [self.asrEventManager setParameter:@(EVRPlayToneAll) forKey:BDS_ASR_PLAY_TONE];
 
 }
 
@@ -132,9 +128,23 @@
 
 
 - (void)configModelVAD {
+    //NSString *modelVAD_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_basic_model" ofType:@"dat"];
+    //[self.asrEventManager setParameter:modelVAD_filepath forKey:BDS_ASR_MODEL_VAD_DAT_FILE];
+    //[self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_MODEL_VAD];
+    // 服务端VAD
+    //[self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_EARLY_RETURN];
+    // 本地VAD
+    //[self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_LOCAL_VAD];
+    
     NSString *modelVAD_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_basic_model" ofType:@"dat"];
+    
     [self.asrEventManager setParameter:modelVAD_filepath forKey:BDS_ASR_MODEL_VAD_DAT_FILE];
+    
     [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_MODEL_VAD];
+    
+    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_NLU];
+    
+    [self.asrEventManager setParameter:@"15361" forKey:BDS_ASR_PRODUCT_ID];
 }
 
 - (void)configDNNMFE {
@@ -143,10 +153,13 @@
     NSString *cmvn_dnn_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_mfe_cmvn" ofType:@"dat"];
     [self.asrEventManager setParameter:cmvn_dnn_filepath forKey:BDS_ASR_MFE_CMVN_DAT_FILE];
 
-    [self.asrEventManager setParameter:@(NO) forKey:BDS_ASR_ENABLE_MODEL_VAD];
+    // 关闭服务端VAD
+    [self.asrEventManager setParameter:@(NO) forKey:BDS_ASR_ENABLE_EARLY_RETURN];
+    // 关闭本地VAD
+    [self.asrEventManager setParameter:@(NO) forKey:BDS_ASR_ENABLE_LOCAL_VAD];
     // MFE支持自定义静音时长
-//    [self.asrEventManager setParameter:@(500.f) forKey:BDS_ASR_MFE_MAX_SPEECH_PAUSE];
-//    [self.asrEventManager setParameter:@(500.f) forKey:BDS_ASR_MFE_MAX_WAIT_DURATION];
+    [self.asrEventManager setParameter:@(50.f) forKey:BDS_ASR_MFE_MAX_SPEECH_PAUSE];
+    [self.asrEventManager setParameter:@(50.f) forKey:BDS_ASR_MFE_MAX_WAIT_DURATION];
 }
 
 - (void)configOfflineClient {
@@ -155,8 +168,7 @@
     [self.asrEventManager setParameter:@(EVR_STRATEGY_BOTH) forKey:BDS_ASR_STRATEGY];
     NSString* gramm_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_gramm" ofType:@"dat"];
     NSString* lm_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_basic_model" ofType:@"dat"];
-    [self.asrEventManager setDelegate:self];
-    [self.asrEventManager setParameter:APP_ID forKey:BDS_ASR_OFFLINE_APP_CODE];
+    [self.asrEventManager setParameter:APP_ID_1 forKey:BDS_ASR_OFFLINE_APP_CODE];
     [self.asrEventManager setParameter:lm_filepath forKey:BDS_ASR_OFFLINE_ENGINE_DAT_FILE_PATH];
     // 请在 (官网)[http://speech.baidu.com/asr] 参考模板定义语法，下载语法文件后，替换BDS_ASR_OFFLINE_ENGINE_GRAMMER_FILE_PATH参数
     [self.asrEventManager setParameter:gramm_filepath forKey:BDS_ASR_OFFLINE_ENGINE_GRAMMER_FILE_PATH];
@@ -169,7 +181,7 @@
     switch (workStatus) {
         case EVoiceRecognitionClientWorkStatusNewRecordData: {
             NSLog(@"Did EVoiceRecognitionClientWorkStatusNewRecordData");
-            [self.fileHandler writeData:(NSData *)aObj];
+            //[self.fileHandler writeData:(NSData *)aObj];
             break;
         }
 
@@ -196,10 +208,6 @@
                 CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self getDescriptionForDic:aObj]];
                 [result setKeepCallbackAsBool:YES];
                 [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
-
-                   CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-                   [result setKeepCallbackAsBool:YES];
-                   [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
                }
             }
             break;
