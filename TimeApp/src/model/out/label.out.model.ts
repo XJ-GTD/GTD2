@@ -4,11 +4,11 @@
  * create by wzy on 2018/09/07
  */
 export class LabelOutModel {
-  get userId(): number {
+  get userId(): string {
     return this._userId;
   }
 
-  set userId(value: number) {
+  set userId(value: string) {
     this._userId = value;
   }
   get findType(): number {
@@ -19,5 +19,5 @@ export class LabelOutModel {
     this._findType = value;
   }
   private _findType: number;
-  private _userId: number;
+  private _userId: string;
 }

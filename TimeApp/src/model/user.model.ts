@@ -5,35 +5,33 @@
 //用户类
 export class UserModel {
 
-  private _accountId: number;    //账户ID
-  private _userId: number;   //用户ID
-
+  private _userId: string;   //用户ID
   private _userName: string;   //昵称
   private _headImgUrl: string;          //头像URL
   private _birthday: string;    // 生日
   private _userSex: number;     // 性别
   private _userContact: string; // 联系方式
-
   private _accountName: string;         //账户名
   private _accountQq: string;           //账户QQ
   private _accountWechat: string;       //账户微信
   private _accountMobile: string;    //手机号
   private _accountQueue: string;    //消息队列
   private _accountUuid: string;
+  private _userToken:string;
 
-  get accountId(): number {
-    return this._accountId;
+  get userToken(): string {
+    return this._userToken;
   }
 
-  set accountId(value: number) {
-    this._accountId = value;
+  set userToken(value: string) {
+    this._userToken = value;
   }
 
-  get userId(): number {
+  get userId(): string {
     return this._userId;
   }
 
-  set userId(value: number) {
+  set userId(value: string) {
     this._userId = value;
   }
 

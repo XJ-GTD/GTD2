@@ -5,7 +5,7 @@
  */
 export class ScheduleOutModel {
 
-  private _userId: number;            //用户ID
+  private _userId: string;            //用户ID
   private _scheduleName: string;      //日程主题
   private _scheduleStartTime: string;   //开始时间
   private _scheduleDeadline: string;    //截止时间
@@ -64,11 +64,11 @@ export class ScheduleOutModel {
   set scheduleName(value: string) {
     this._scheduleName = value;
   }
-  get userId(): number {
+  get userId(): string {
     return this._userId;
   }
 
-  set userId(value: number) {
+  set userId(value: string) {
     this._userId = value;
   }
 

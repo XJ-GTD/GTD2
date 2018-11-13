@@ -13,7 +13,7 @@ export class CalendarModel {
   private _weekDay: Array<string> = ["SUN","MON","TUES","WED","THUR","FRI","SAT"];   //周标识
 
   private _daySum: number;
-  private _userId: number;
+  private _userId: string;
 
   get weekDay(): Array<string> {
     return this._weekDay;
@@ -44,11 +44,11 @@ export class CalendarModel {
     this._year = value;
   }
 
-  get userId(): number {
+  get userId(): string {
     return this._userId;
   }
 
-  set userId(value: number) {
+  set userId(value: string) {
     this._userId = value;
   }
   get daySum(): number {

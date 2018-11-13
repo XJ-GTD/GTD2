@@ -3,6 +3,7 @@
 #import <Cordova/CDV.h>
 #import "BDSWakeupDefines.h"
 #import "BDSWakeupParameters.h"
+#import "BDSEventManager.h"
 
 #define STR_EVENT @"event"
 #define STR_MESSAGE @"message"
@@ -23,7 +24,13 @@
 
 @end
 
+
+
 @implementation XjBaiduWakeUp
+
+NSString* APP_ID_2 = @"14502702";
+//NSString* API_KEY_2 = @"6YvlNRGZ5I4CkA715XnVyoSm";
+//NSString* SECRET_KEY_2 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 #pragma mark Initialization functions
 
@@ -33,7 +40,7 @@
 
 - (void)configWakeup {
 
-    [self.wakeupEventManager setParameter:APP_ID forKey:BDS_WAKEUP_APP_CODE];
+    [self.wakeupEventManager setParameter:APP_ID_2 forKey:BDS_WAKEUP_APP_CODE];
     [self.wakeupEventManager setParameter:nil forKey:BDS_WAKEUP_AUDIO_FILE_PATH];
     [self.wakeupEventManager setParameter:nil forKey:BDS_WAKEUP_AUDIO_INPUT_STREAM];
 
