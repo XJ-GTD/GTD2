@@ -33,7 +33,6 @@ public class SmsServerImpl implements ISmsServer {
     @Autowired
     private SmsConfig sms;
 
-
     /**
      * 发送短信验证码
      * @param tel       收件人手机号
@@ -45,7 +44,7 @@ public class SmsServerImpl implements ISmsServer {
     public String sendMessage(String tel, String type) {
 
 
-        AppConfig appConfig = ConfigLoader.createConfig(sms.getAppid(),sms.getAppkey(),sms.getSigntype());
+        SmsConfig appConfig = ConfigLoader.createConfig(sms.getAppid(),sms.getAppkey(),sms.getSigntype());
         //验证码生成
         String captcha = String.valueOf(new Random().nextInt(10)) + String.valueOf((new Random().nextInt(89999)) + 10000);
         MESSAGEXsend message = new MESSAGEXsend(appConfig);
