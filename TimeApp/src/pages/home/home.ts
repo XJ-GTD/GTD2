@@ -35,12 +35,12 @@ import {CalendarService} from "../../service/calendar.service";
 })
 export class HomePage {
 
-  page1:any = 'HomeWorkListPage';
-  page2:any = 'HomeWorkListPage';
-  page3:any = 'HomeWorkListPage';
+  // page1:any = 'HomeWorkListPage';
+  // page2:any = 'HomeWorkListPage';
+  // page3:any = 'HomeWorkListPage';
   @ViewChild(CalendarComponent) ion2calendar:CalendarComponent;
 
-  @ViewChild(SuperTabsComponent) superTabsComponent:SuperTabsComponent;
+  @ViewChild(HomeWorkListPage) homeWorkListPage:HomeWorkListPage;
 
   tab1Root = 'SpeechPage';
   data: any;
@@ -84,7 +84,7 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-    this.superTabsComponent.height =  window.document.body.clientHeight - 350 - 45 -20;
+    this.homeWorkListPage.height =  window.document.body.clientHeight - 350 - 45 -20;
     console.log('ionViewDidLoad HomePage');
 
   }
