@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef, Input, Renderer2} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {ScheduleModel} from "../../model/schedule.model";
 import {ParamsService} from "../../service/params.service";
@@ -31,13 +31,24 @@ export class HomeWorkListPage {
               private paramsService: ParamsService,
               private calendarService:CalendarService,
               private http: HttpClient,
-              private util:UtilService) {
+              private util:UtilService,
+              private rnd: Renderer2,
+              private el: ElementRef) {
     this.scheduleList = [];
-  }
-
-  ionViewDidLoad() {
     console.log('ionViewDidLoad HomeWorkListPage');
     this.calendarService.getSelectDay(this);
+  }
+
+  /**
+   * Height of the tabs
+   */
+  @Input()
+  set height(val: number) {
+    this.rnd.setStyle(this.el.nativeElement, 'height', val + 'px');
+  }
+
+  get height(): number {
+    return this.el.nativeElement.offsetHeight;
   }
 
   //展示数据详情

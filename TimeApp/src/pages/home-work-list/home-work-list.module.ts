@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
+import {ModuleWithProviders, NgModule} from '@angular/core';
+import {IonicModule, IonicPageModule} from 'ionic-angular';
 import { HomeWorkListPage } from './home-work-list';
 
 @NgModule({
@@ -7,7 +7,16 @@ import { HomeWorkListPage } from './home-work-list';
     HomeWorkListPage,
   ],
   imports: [
-    IonicPageModule.forChild(HomeWorkListPage),
+    IonicModule,
+    // IonicPageModule.forChild(HomeWorkListPage),
   ],
+
+  exports: [HomeWorkListPage]
 })
-export class HomeWorkListPageModule {}
+export class HomeWorkListPageModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: HomeWorkListPageModule
+    };
+  }
+}
