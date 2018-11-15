@@ -16,6 +16,7 @@ import * as moment from "moment";
 import {SuperTabsComponent} from "../../components/ionic2-super-tabs";
 import {LightSvgPage} from "../light-svg/light-svg";
 import {CalendarService} from "../../service/calendar.service";
+import {SqliteService} from "../../service/sqlite.service";
 
 
 
@@ -75,6 +76,7 @@ export class HomePage {
               private http: HttpClient,
               private paramsService: ParamsService,
               private alarmClock: XiaojiAlarmclockService,
+              private sqliteService:SqliteService,
               private calendarService:CalendarService) {
 
     moment.locale('zh-cn');
@@ -96,38 +98,63 @@ export class HomePage {
     this.webSocketService.connect(this.paramsService.user.accountQueue);
 
     this.scheduleList = [];
-
+    this.sqliteService.test();
     setTimeout(()=>{
+      this.sqliteService.executeSql("select substr(playersFinishDate,1,10) finishDate,count(*) numL from GTD_D " +
+        "GROUP BY substr(playersFinishDate,1,10) ",[]).then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          this.options.daysConfig.push({
+            date: new Date('2018-11-10'),
+            subTitle: `\u25B2`
+          });
+          for(let i=0;i<data.rows.length;i++){
+            if(data.rows.item(i).numL<5){
+              this.options.daysConfig.push({
+                date: new Date(data.rows.item(i).finishDate),
+                cssClass: `hassometing animated bounceIn`
+              });
+            }else{
+              this.options.daysConfig.push({
+                date: new Date(data.rows.item(i).finishDate),
+                cssClass: `busysometing animated bounceIn`
+              });
+            }
 
-      this.options.daysConfig.push({
-        date: new Date('2018-11-10'),
-        subTitle: `\u25B2`
-      });
-      setTimeout(()=>{
-
-        this.options.daysConfig.push({
-          date: new Date('2018-11-12'),
-          cssClass: `hassometing animated bounceIn`
-        });
+          }
+        }
         this.ion2calendar.refresh();
-        setTimeout(()=>{
-          this.options.daysConfig.push({
-            date: new Date('2018-11-13'),
-            cssClass: `busysometing animated bounceIn`
-          });
-          this.options.daysConfig.push({
-            date: new Date('2018-11-14'),
-            cssClass: `busysometing animated bounceIn`
-          });
-          this.options.daysConfig.push({
-            date: new Date('2018-11-15'),
-            cssClass: `busysometing animated bounceIn`
-          });
-          this.ion2calendar.refresh();
-        },1000);
-        this.ion2calendar.refresh();
-      },1000);
-      this.ion2calendar.refresh();
+      }).catch(e=>{
+        console.log("GTD_D->:"+e);
+      })
+      // this.options.daysConfig.push({
+      //   date: new Date('2018-11-10'),
+      //   subTitle: `\u25B2`
+      // });
+      // setTimeout(()=>{
+      //
+      //   this.options.daysConfig.push({
+      //     date: new Date('2018-11-12'),
+      //     cssClass: `hassometing animated bounceIn`
+      //   });
+      //   this.ion2calendar.refresh();
+      //   setTimeout(()=>{
+      //     this.options.daysConfig.push({
+      //       date: new Date('2018-11-13'),
+      //       cssClass: `busysometing animated bounceIn`
+      //     });
+      //     this.options.daysConfig.push({
+      //       date: new Date('2018-11-14'),
+      //       cssClass: `busysometing animated bounceIn`
+      //     });
+      //     this.options.daysConfig.push({
+      //       date: new Date('2018-11-15'),
+      //       cssClass: `busysometing animated bounceIn`
+      //     });
+      //     this.ion2calendar.refresh();
+      //   },1000);
+      //   this.ion2calendar.refresh();
+      // },1000);
+      // this.ion2calendar.refresh();
     },1000);
 
 

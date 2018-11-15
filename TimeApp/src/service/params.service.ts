@@ -61,7 +61,7 @@ export class ParamsService {
     if (value != null) {
       window.localStorage.setItem('userName', value.userName);
       window.localStorage.setItem('userId', value.userId);
-      window.localStorage.setItem('token', value.token);
+     // window.localStorage.setItem('token', value.token);
      // window.localStorage.setItem('accountId', value.accountId ? '0':value.accountId.toString());
       window.localStorage.setItem('accountName', value.accountName);
       window.localStorage.setItem('accountMobile', value.accountMobile);

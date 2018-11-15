@@ -3,6 +3,7 @@ import { AlertController, IonicPage, LoadingController, NavController, NavParams
 import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
 import { ParamsService } from "../../service/params.service";
+import {SqliteService} from "../../service/sqlite.service";
 
 /**
  * Generated class for the UserLoginPage page.
@@ -30,6 +31,7 @@ export class UserLoginPage {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private http: HttpClient,
+    private sqliteService: SqliteService,
     private paramsService: ParamsService) {
   }
 
@@ -61,6 +63,7 @@ export class UserLoginPage {
 
         if (this.data.code == "0") {
           this.paramsService.user = this.data.data.userInfo;
+          //this.sqliteService.saveOrUpdateUser(this.data.data.userInfo);
           // window.localStorage.setItem('userName', this.paramsService.user.userName);
           // window.localStorage.setItem('userId', this.paramsService.user.userId.toString());
           // window.localStorage.setItem('accountId', this.paramsService.user.accountId.toString());

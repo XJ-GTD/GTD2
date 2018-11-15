@@ -63,8 +63,6 @@ async createTable() {
     'LOGIN_STATE VARCHAR(20))',
     []).catch(e=>{
     console.log('GTD_ACCOUNT:'+e.toString());
-  }).catch(e=>{
-    console.log(e);
   })
   //创建用户基本信息表
   this.executeSql('CREATE TABLE IF NOT EXISTS GTD_A(userId VARCHAR(100) PRIMARY KEY, ' +
@@ -76,9 +74,7 @@ async createTable() {
     'userType VARCHAR(2),' +
     'userToken VARCHAR(200))',
     []).catch(e=>{
-    console.log('GTD_ACCOUNT:'+e.toString());
-  }).catch(e=>{
-    console.log(e);
+    console.log('GTD_A:'+e.toString());
   })
   //创建日程表
   this.executeSql('CREATE TABLE IF NOT EXISTS GTD_C(scheduleId VARCHAR(64) PRIMARY KEY, ' +
@@ -99,7 +95,13 @@ async createTable() {
     ,[]).catch(e=>{
     console.log('GTD_ACCOUNT:'+e.toString());
   })
-
+  this.executeSql("select substr(playersFinishDate,1,10) finishDate,count(*) numL from GTD_D " +
+    "GROUP BY substr(playersFinishDate,1,10) ",[]).then(data=>{
+    //alert(data.rows.length);
+    //alert(data.rows.item(0).finishDate +","+data.rows.item(0).numL);
+  }).catch(e=>{
+    console.log("GTD_D->:"+e);
+  })
   //联系人表
   this.executeSql('CREATE TABLE IF NOT EXISTS GTD_B(bpkId VARCHAR(64) PRIMARY KEY, ' +
     'relaterId VARCHAR(100),' +
@@ -107,16 +109,15 @@ async createTable() {
     'relaterOtherName VARCHAR(20),relaterFlag VARCHAR(2),' +
     'relaterM VARCHAR(10))'
     ,[]).catch(e=>{
-    console.log('GTD_ACCOUNT:'+e.toString());
+    console.log('GTD_B:'+e.toString());
   })
-
   //标签表
   this.executeSql('CREATE TABLE IF NOT EXISTS GTD_F(labelId VARCHAR(64) PRIMARY KEY, ' +
     'labelName VARCHAR(100),' +
     'labelType VARCHAR(20),' +
     'labelTable VARCHAR(20)'
     ,[]).catch(e=>{
-    console.log('GTD_ACCOUNT:'+e.toString());
+    console.log('GTD_F:'+e.toString());
   })
 
   // 提醒时间表
@@ -124,7 +125,7 @@ async createTable() {
     'playersId VARCHAR(100),' +
     'remindDate VARCHAR(20)'
     ,[]).catch(e=>{
-    console.log('GTD_ACCOUNT:'+e.toString());
+    console.log('GTD_E:'+e.toString());
   })
   // message表
   this.executeSql('CREATE TABLE IF NOT EXISTS GTD_H(messageId VARCHAR(64) PRIMARY KEY, ' +
@@ -141,16 +142,22 @@ async createTable() {
     console.log('GTD_H:'+e.toString());
   })
 
+  // 字典类型表
+  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_X(dictValue VARCHAR(64) PRIMARY KEY, ' +
+    'dictName VARCHAR(100)'
+    ,[]).catch(e=>{
+    console.log('GTD_H:'+e.toString());
+  })
+  // 字典数据表
+  this.executeSql('CREATE TABLE IF NOT EXISTS GTD_Y(dictValue VARCHAR(64) not null, ' +
+    'dictDataName VARCHAR(100),dictDataValue VARCHAR(20) not null'
+    ,[]).catch(e=>{
+    console.log('GTD_Y:'+e.toString());
+  })
   await this.executeSql('CREATE TABLE IF NOT EXISTS remindMaster(remind_id INTEGER PRIMARY KEY ' +
     'AUTOINCREMENT,user_id TEXT,state TEXT , content TEXT,remind_time TEXT,create_time TEXT)', []);
-  var myDate = new Date();
-  this.executeSql('INSERT INTO remindMaster(user_id) VALUES (?)', [myDate.toDateString()]);
-  this.executeSql('SELECT * from remindMaster', []).then(data=>{
-    if (!!!!data && !!!!data.rows) {
-      alert(data.rows.length);
-    }
-  })
 }
+
 
 /**
  * 执行语句
@@ -209,7 +216,7 @@ isMobile():boolean{
 }
 
   /**
-   * 根据账号UUID判断用户是否存在
+   *判断用户是否存在
    * @param param
    * @returns {Promise<any>}
    */
@@ -221,28 +228,87 @@ isMobile():boolean{
    * 保存或添加账户信息
    * @param param
    */
-  saveOrUpdateLogin(param){
+  saveOrUpdateUser(param){
     //先判断用户是否存在
-    this.userIsExist('where userId='+ param.accountUuid).then(data => {
-        //如果存在则更新用户登录状态及TOKEN
-        if (!!!!data && !!!!data.rows && data.rows.length > 0) {
-          this.executeSql('update GTD_A SET ACCOUNT_QUEUE=? where userId=?',[param.accountQueue,param.userId])
-            .catch(e=>{
-              console.log('updateLogin:'+e.toString());
-            })
-        }else{
-          this.executeSql('INSERT INTO GTD_ACCOUNT(ACCOUNT_MOBILE,ACCOUNT_NAME,ACCOUNT_QUEUE,ACCOUNT_UUID,USER_ID) VALUES (?,?,?,?,?)',
-            [param.accountMobile,param.accountName, param.accountQueue, param.accountUuid,param.userId])
-            .then(data => {
-              console.log(data);
-            })
-            .catch(e=>{
-              console.log('saveLogin:'+e.toString());
-            })
-        }
-    }).catch(e=>{
-      console.log('saveOrUpdateLogin:'+e.toString());
+    return new Promise((resolve, reject) => {
+        this.userIsExist('where userId='+ param.accountUuid).then(data => {
+          //如果存在则更新用户登录状态及TOKEN
+          if (!!!!data && !!!!data.rows && data.rows.length > 0) {
+            this.executeSql('update GTD_A SET ACCOUNT_QUEUE=? where userId=?',[param.accountQueue,param.userId])
+              .catch(e=>{
+                reject(e);
+                console.log('updateLogin:'+e.toString());
+              })
+          }else{
+            this.executeSql('INSERT INTO GTD_A(userId,userName,accountQueue,userToken) VALUES (?,?,?,?)',
+              [param.userId,param.accountName, param.accountQueue, param.accountUuid])
+              .then(data => {
+                console.log(data);
+              })
+              .catch(e=>{
+                reject(e);
+                console.log('saveLogin:'+e.toString());
+              })
+          }
+      }).catch(e=>{
+        console.log('saveOrUpdateLogin:'+e.toString());
+      })
     })
   }
 
+  /**
+   * 添加日程
+   * @param param
+   */
+  addRc(param){
+    this.executeSql("INSERT INTO GTD_D(playersId,scheduleOtherName,playersFinishDate,userId) " +
+      "VALUES (?,?,?,?)",[param.playersId,param.scheduleOtherName,param.playersFinishDate,param.userId])
+  }
+  /**
+   * 生成本地测试日历数据
+   */
+  test(){
+    for (let i=1;i<10;i++){
+      let date = '2018-11-0'+i +' 10:24'
+      let id = 'a'+i;
+      this.executeSql("INSERT INTO GTD_D(playersId,scheduleOtherName,playersFinishDate,userId) " +
+        "VALUES (?,?,?,?)",[id,id,date,'1234567890'])
+    }
+    for (let i=5;i<10;i++){
+      let date = '2018-11-0'+i +' 10:24'
+      let id = 'b'+i;
+      this.executeSql("INSERT INTO GTD_D(playersId,scheduleOtherName,playersFinishDate,userId) " +
+        "VALUES (?,?,?,?)",[id,id,date,'1234567890'])
+    }
+    for (let i=5;i<10;i++){
+      let date = '2018-11-0'+i +' 10:24'
+      let id = 'c'+i;
+      this.executeSql("INSERT INTO GTD_D(playersId,scheduleOtherName,playersFinishDate,userId) " +
+        "VALUES (?,?,?,?)",[id,id,date,'1234567890'])
+    }
+    for (let i=5;i<10;i++){
+      let date = '2018-11-0'+i +' 10:24'
+      let id = 'd'+i;
+      this.executeSql("INSERT INTO GTD_D(playersId,scheduleOtherName,playersFinishDate,userId) " +
+        "VALUES (?,?,?,?)",[id,id,date,'1234567890'])
+    }
+    for (let i=5;i<10;i++){
+      let date = '2018-11-0'+i +' 10:24'
+      let id = 'e'+i;
+      this.executeSql("INSERT INTO GTD_D(playersId,scheduleOtherName,playersFinishDate,userId) " +
+        "VALUES (?,?,?,?)",[id,id,date,'1234567890'])
+    }
+    for (let i=5;i<10;i++){
+      let date = '2018-11-0'+i +' 10:24'
+      let id = 'f'+i;
+      this.executeSql("INSERT INTO GTD_D(playersId,scheduleOtherName,playersFinishDate,userId) " +
+        "VALUES (?,?,?,?)",[id,id,date,'1234567890'])
+    }
+    for (let i=18;i<20;i++){
+      let date = '2018-11-'+i +' 10:24'
+      let id = 'h'+i;
+      this.executeSql("INSERT INTO GTD_D(playersId,scheduleOtherName,playersFinishDate,userId) " +
+        "VALUES (?,?,?,?)",[id,id,date,'1234567890'])
+    }
+  }
 }
