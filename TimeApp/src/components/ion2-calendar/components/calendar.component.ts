@@ -287,6 +287,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     } else if (!isNext && this.canBack()) {
       this.backMonth()
     }
+    this.onSelect.emit()
   }
 
   _onChanged: Function = () => {

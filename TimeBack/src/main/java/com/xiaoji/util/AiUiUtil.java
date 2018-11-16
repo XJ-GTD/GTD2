@@ -42,11 +42,11 @@ public class AiUiUtil {
             Map<String, String> header = null;
             String result = "";
             if (flag == 0) {
-                header = buildHeader_audio();
+                header = buildHeader(flag);
                 result = httpPost(URL, header, base64Audio(audio));
 
             } else if (flag == 1) {
-                header = buildHeader_text();
+                header = buildHeader(flag);
                 result = httpPost(URL, header, audio.getBytes());
             }
 
@@ -64,35 +64,22 @@ public class AiUiUtil {
      * @throws UnsupportedEncodingException
      * @throws ParseException
      */
-    private static Map<String, String> buildHeader_audio() throws UnsupportedEncodingException, ParseException {
+    private static Map<String, String> buildHeader(int flag) throws UnsupportedEncodingException, ParseException {
         String curTime = System.currentTimeMillis() / 1000L + "";
-        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_AUDIO+"\",\"scene\":\""+SCENE+"\"}";
-        //使用个性化参数时参数格式如下：
+        String param = "";
+        if (flag == 0) {
+            param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_AUDIO+"\",\"scene\":\""+SCENE+"\"}";
+            //使用个性化参数时参数格式如下：
 //        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_AUDIO+"\",\"scene\":\""+SCENE+"\",\"pers_param\":"+PERS_PARAM+"}";
-        String paramBase64 = new String(Base64.encodeBase64(param.getBytes("UTF-8")));
-        String checkSum = DigestUtils.md5Hex(API_KEY + curTime + paramBase64);
-
-        Map<String, String> header = new HashMap<String, String>();
-        header.put("X-Param", paramBase64);
-        header.put("X-CurTime", curTime);
-        header.put("X-CheckSum", checkSum);
-        header.put("X-Appid", APPID);
-        return header;
-    }
-
-    /**
-     * 文本转义
-     * @return
-     * @throws UnsupportedEncodingException
-     * @throws ParseException
-     */
-    private static Map<String, String> buildHeader_text() throws UnsupportedEncodingException, ParseException {
-        String curTime = System.currentTimeMillis() / 1000L + "";
-        String param = "{\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_TEXT+"\",\"scene\":\""+SCENE+"\"}";
-        //使用个性化参数时参数格式如下：
+        } else if (flag == 1) {
+            param = "{\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_TEXT+"\",\"scene\":\""+SCENE+"\"}";
+            //使用个性化参数时参数格式如下：
 //        String param = "{\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_TEXT+"\",\"scene\":\""+SCENE+"\",\"pers_param\":"+PERS_PARAM+"}";
+        }
+
         String paramBase64 = new String(Base64.encodeBase64(param.getBytes("UTF-8")));
         String checkSum = DigestUtils.md5Hex(API_KEY + curTime + paramBase64);
+
         Map<String, String> header = new HashMap<String, String>();
         header.put("X-Param", paramBase64);
         header.put("X-CurTime", curTime);
