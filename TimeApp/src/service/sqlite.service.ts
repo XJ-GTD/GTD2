@@ -267,12 +267,70 @@ isMobile():boolean{
   /**
    * 生成本地测试日历数据
    */
+
+  addRctest(param:Date,minYear:number,i:number){
+
+      return new Promise((resolve, reject) => {
+        let year = param.getFullYear();
+        let month = param.getMonth()+1;
+        let monthStr = month+"";
+        if(month<10){
+          monthStr = '0'+month;
+        }
+        let day = param.getDate();
+        let dayStr = day +"";
+        if(day<10){
+          dayStr='0'+day;
+        }
+        let hours = param.getHours();
+        let minutes = param.getMinutes();
+        let dateStr=year+"-"+monthStr+"-"+dayStr+" "+hours+":"+minutes;
+        let id = dateStr;
+        this.executeSql("INSERT INTO GTD_D(playersId,scheduleOtherName,playersFinishDate,userId) " +
+          "VALUES (?,?,?,?)",[id,id,dateStr,'1234567890']).then(data=>{
+          let nowDate = new Date(param.getTime()-5000*60*60);
+          console.log("时间："+param.toLocaleString()+"条数："+i);
+          if(nowDate.getFullYear()>minYear){
+            i+=1;
+            this.addRctest(nowDate,minYear,i)
+          }else{
+
+            console.log("添加完成，总数据量为："+i)
+            alert("添加完成，总数据量为："+i);
+            resolve("添加完成，总数据量为："+i);
+          }
+        }).catch(e=>{
+          alert("报错"+e.message);
+          reject(e);
+
+        })
+      })
+
+  }
+
+
   test(){
-    for (let i=1;i<10;i++){
-      let date = '2018-11-0'+i +' 10:24'
-      let id = 'a'+i;
-      this.executeSql("INSERT INTO GTD_D(playersId,scheduleOtherName,playersFinishDate,userId) " +
-        "VALUES (?,?,?,?)",[id,id,date,'1234567890'])
+    for(let b=1980;b<2020;b++){
+      let date= b+"";
+      for(let a=1;a<13;a++){
+        if(a<10){
+          date=date+"-0"+a;
+        }else{
+          date = date +"-"+ a;
+        }
+        for (let i=1;i<30;i++){
+          if(i<10){
+            date = date+"-0" +i +' 08:06';
+          }else{
+            date=date + "-"+i +' 08:06';
+          }
+          for (let c=0;c<10;c++){
+            let id = date + c;
+            this.executeSql("INSERT INTO GTD_D(playersId,scheduleOtherName,playersFinishDate,userId) " +
+              "VALUES (?,?,?,?)",[id,id,date,'1234567890'])
+          }
+        }
+      }
     }
     for (let i=5;i<10;i++){
       let date = '2018-11-0'+i +' 10:24'
