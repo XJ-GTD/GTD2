@@ -5,5 +5,5 @@ package com.xiaoji.gtd.service;
  *
  * create by wzy on 2018/11/15.
  */
-public interface PersonService {
+public interface IPersonService {
 }

@@ -1,6 +1,6 @@
 package com.xiaoji.gtd.controller;
 
-import com.xiaoji.master.dto.BaseOutDto;
+import com.xiaoji.gtd.dto.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class AIButlerController {
      */
     @RequestMapping(value = "/audio_mp3", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto audioMp3() {
+    public BaseOutDto audioMp3(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;
@@ -35,7 +35,7 @@ public class AIButlerController {
      */
     @RequestMapping(value = "/audio_base64", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto audioBase64() {
+    public BaseOutDto audioBase64(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;
@@ -47,7 +47,7 @@ public class AIButlerController {
      */
     @RequestMapping(value = "/text", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto addSchedule() {
+    public BaseOutDto addSchedule(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;

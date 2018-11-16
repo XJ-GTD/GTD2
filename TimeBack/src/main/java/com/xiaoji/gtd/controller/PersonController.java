@@ -1,7 +1,6 @@
 package com.xiaoji.gtd.controller;
 
-import com.xiaoji.master.dto.BaseOutDto;
-import com.xiaoji.master.dto.UserInDto;
+import com.xiaoji.gtd.dto.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +23,7 @@ public class PersonController {
      */
     @RequestMapping(value = "/sign_up", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto signUp() {
+    public BaseOutDto signUp(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;
@@ -36,7 +35,7 @@ public class PersonController {
      */
     @RequestMapping(value = "/sign_up", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto updatePassword() {
+    public BaseOutDto updatePassword(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;
@@ -48,7 +47,7 @@ public class PersonController {
      */
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto logout() {
+    public BaseOutDto logout(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;
@@ -60,7 +59,7 @@ public class PersonController {
      */
     @RequestMapping(value = "/search_user", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto searchUser() {
+    public BaseOutDto searchUser(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;
@@ -72,7 +71,7 @@ public class PersonController {
      */
     @RequestMapping(value = "/update_info", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto updateUserInfo() {
+    public BaseOutDto updateUserInfo(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;

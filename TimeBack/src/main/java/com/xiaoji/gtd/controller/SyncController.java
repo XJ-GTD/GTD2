@@ -1,6 +1,6 @@
 package com.xiaoji.gtd.controller;
 
-import com.xiaoji.master.dto.BaseOutDto;
+import com.xiaoji.gtd.dto.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
@@ -23,19 +23,31 @@ public class SyncController {
      */
     @RequestMapping(value = "/login_sync", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto loginSync() {
+    public BaseOutDto loginSync(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;
     }
 
     /**
-     * 定时同步
+     * 定时同步(上传)
      * @return
      */
-    @RequestMapping(value = "/timing_sync", method = RequestMethod.POST)
+    @RequestMapping(value = "/timing_upload", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto timingSync() {
+    public BaseOutDto timingUpload(@RequestBody BaseInDto inDto) {
+        BaseOutDto outDto = new BaseOutDto();
+
+        return outDto;
+    }
+
+    /**
+     * 定时同步(下载)
+     * @return
+     */
+    @RequestMapping(value = "/timing_download", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto timingDownload(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;

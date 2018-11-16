@@ -1,6 +1,6 @@
 package com.xiaoji.gtd.controller;
 
-import com.xiaoji.master.dto.BaseOutDto;
+import com.xiaoji.gtd.dto.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class AuthController {
      */
     @RequestMapping(value = "/login_visitors", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto loginVisitors() {
+    public BaseOutDto loginVisitors(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;
@@ -35,7 +35,7 @@ public class AuthController {
      */
     @RequestMapping(value = "/login_password", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto loginPassword() {
+    public BaseOutDto loginPassword(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;
@@ -47,7 +47,7 @@ public class AuthController {
      */
     @RequestMapping(value = "/login_code", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto loginAuthCode() {
+    public BaseOutDto loginAuthCode(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;

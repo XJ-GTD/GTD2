@@ -1,6 +1,6 @@
 package com.xiaoji.gtd.controller;
 
-import com.xiaoji.master.dto.BaseOutDto;
+import com.xiaoji.gtd.dto.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/sms")
-public class SMSController {
+public class SmsController {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
@@ -23,7 +23,7 @@ public class SMSController {
      */
     @RequestMapping(value = "/code", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto sendAuthCode() {
+    public BaseOutDto sendAuthCode(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;
@@ -35,7 +35,7 @@ public class SMSController {
      */
     @RequestMapping(value = "/message", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto sendMessage() {
+    public BaseOutDto sendMessage(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;

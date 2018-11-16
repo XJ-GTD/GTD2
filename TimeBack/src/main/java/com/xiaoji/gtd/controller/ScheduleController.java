@@ -1,6 +1,6 @@
 package com.xiaoji.gtd.controller;
 
-import com.xiaoji.master.dto.BaseOutDto;
+import com.xiaoji.gtd.dto.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class ScheduleController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto addSchedule() {
+    public BaseOutDto addSchedule(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;
@@ -35,7 +35,7 @@ public class ScheduleController {
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto updateSchedule() {
+    public BaseOutDto updateSchedule(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;
@@ -46,7 +46,7 @@ public class ScheduleController {
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto deleteSchedule() {
+    public BaseOutDto deleteSchedule(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;
@@ -57,7 +57,7 @@ public class ScheduleController {
      */
     @RequestMapping(value = "/invite", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto inviteSchedule() {
+    public BaseOutDto inviteSchedule(@RequestBody BaseInDto inDto) {
         BaseOutDto outDto = new BaseOutDto();
 
         return outDto;
