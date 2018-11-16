@@ -7,6 +7,7 @@ export class UserModel {
 
   private _userId: string;   //用户ID
   private _userName: string;   //昵称
+  private _accountId: number;
   private _headImgUrl: string;          //头像URL
   private _birthday: string;    // 生日
   private _userSex: number;     // 性别
@@ -18,6 +19,14 @@ export class UserModel {
   private _accountQueue: string;    //消息队列
   private _accountUuid: string;
   private _userToken:string;
+
+  get accountId(): number {
+    return this._accountId;
+  }
+
+  set accountId(value: number) {
+    this._accountId = value;
+  }
 
   get userToken(): string {
     return this._userToken;
