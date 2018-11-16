@@ -98,9 +98,9 @@ export class HomePage {
     this.webSocketService.connect(this.paramsService.user.accountQueue);
 
     this.scheduleList = [];
-    this.sqliteService.test();
     setTimeout(()=>{
       this.sqliteService.executeSql("select substr(playersFinishDate,1,10) finishDate,count(*) numL from GTD_D " +
+        "where substr(playersFinishDate,1,7)='2018-11'" +
         "GROUP BY substr(playersFinishDate,1,10) ",[]).then(data=>{
         if(data && data.rows && data.rows.length>0){
           this.options.daysConfig.push({
@@ -163,7 +163,7 @@ export class HomePage {
 
     // this.calendarControl();
     // let today = new Date();
-    // this.findTodaySchedule( today.getFullYear(), today.getMonth() + 1, today.getDate());
+    //this.findTodaySchedule( today.getFullYear(), today.getMonth() + 1, today.getDate());
 
   }
   //设置当天全部提醒
@@ -192,7 +192,11 @@ export class HomePage {
       })
 
   }
-
+  discernTags($event){
+    let eventDate = new Date($event.time);
+    let year = eventDate.getFullYear();
+    let month = eventDate.getMonth()+1;
+  }
   //查询当天日程
   findTodaySchedule($event) {
 
