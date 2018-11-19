@@ -63,10 +63,10 @@ export class HomeWorkListPage {
   }
   //查询当天日程
   findTodaySchedule($event) {
-    this.sqliteService.addRctest(new Date(),1980,1).then(data=>{
-        let datas=data;
-        console.log(data);
-    })
+    // this.sqliteService.addRctest(new Date(),1980,1).then(data=>{
+    //     let datas=data;
+    //     console.log(data);
+    // })
     console.log($event);
     let eventDate = new Date($event.time);
     let dateStr2 = eventDate.toDateString();

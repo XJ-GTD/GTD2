@@ -20,6 +20,7 @@ import { SqliteService } from "../service/sqlite.service";
 import { UtilService } from "../service/util.service";
 import { CalendarService } from "../service/calendar.service";
 import {Device} from "@ionic-native/device";
+import { SQLitePorter } from '@ionic-native/sqlite-porter';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import {Device} from "@ionic-native/device";
     SqliteService,
     UtilService,
     CalendarService,
+    SQLitePorter,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
