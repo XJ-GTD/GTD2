@@ -92,7 +92,7 @@ export class HomeWorkListPage {
     console.log("scheduleStartTime:" + findSchedule.scheduleStartTime + " | scheduleDeadline:" + findSchedule.scheduleDeadline);
     this.scheduleList = [];
     let dateStr=year + "-" + monthStr + "-" + dayStr;
-    this.sqliteService.executeSql('select substr(playersFinishDate,12,16) dateStr,gtdd.* from GTD_D gtdd where substr(playersFinishDate,1,10)=?'
+    this.sqliteService.executeSql('select substr(playersFinishDate,12,16) dateStr,gtdd.* from GTD_D gtdd where substr(playersId,1,10)=?'
       ,[dateStr])
       .then(data=>{
         if(data && data.rows && data.rows.length>0){

@@ -23,9 +23,21 @@ public class PersonController {
      */
     @RequestMapping(value = "/sign_up", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto signUp(@RequestBody BaseInDto inDto) {
-        BaseOutDto outDto = new BaseOutDto();
+    public Out signUp(@RequestBody SignUpInDto inDto) {
+        Out outDto = new Out();
+        SignUpOutDto user = new SignUpOutDto();
+        //验证手机号码正确
 
+        //验证手机号码重复
+
+        //验证验证码是否正确
+
+        //生产注册用户数据
+
+        //创建用户相关数据
+
+
+        outDto.setData(user);
         return outDto;
     }
 
@@ -33,10 +45,13 @@ public class PersonController {
      * 修改密码
      * @return
      */
-    @RequestMapping(value = "/sign_up", method = RequestMethod.POST)
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto updatePassword(@RequestBody BaseInDto inDto) {
-        BaseOutDto outDto = new BaseOutDto();
+    public Out updatePassword(@RequestBody UpdatePWDInDto inDto) {
+        Out outDto = new Out();
+        //校验验证码
+
+        //更新密码
 
         return outDto;
     }
@@ -47,8 +62,9 @@ public class PersonController {
      */
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto logout(@RequestBody BaseInDto inDto) {
-        BaseOutDto outDto = new BaseOutDto();
+    public Out logout(@RequestBody UpdatePWDInDto inDto) {
+        Out outDto = new Out();
+
 
         return outDto;
     }
@@ -59,8 +75,12 @@ public class PersonController {
      */
     @RequestMapping(value = "/search_user", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto searchUser(@RequestBody BaseInDto inDto) {
-        BaseOutDto outDto = new BaseOutDto();
+    public Out searchUser(@RequestBody SearchUserInDto inDto) {
+        Out outDto = new Out();
+
+        //检索用户
+
+        //返回用户数据List
 
         return outDto;
     }
@@ -71,8 +91,8 @@ public class PersonController {
      */
     @RequestMapping(value = "/update_info", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto updateUserInfo(@RequestBody BaseInDto inDto) {
-        BaseOutDto outDto = new BaseOutDto();
+    public Out updateUserInfo(@RequestBody BaseInDto inDto) {
+        Out outDto = new Out();
 
         return outDto;
     }

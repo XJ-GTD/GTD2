@@ -201,11 +201,11 @@ export class HomePage {
   findTodaySchedule($event) {
 
     console.log($event);
-     this.sqliteService.addRctest().then(data=>{
-      alert("插入数据：" + data);
-    }).catch((err)=>{
-      alert(err);
-     })
+    //  this.sqliteService.addRctest().then(data=>{
+    //   alert("插入数据：" + data);
+    // }).catch((err)=>{
+    //   alert(err);
+    //  })
 
     let eventDate = new Date($event.time);
     let year = eventDate.getFullYear();
