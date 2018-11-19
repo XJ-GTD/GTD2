@@ -76,11 +76,10 @@ export class MyApp {
           this.rootPage = 'WelcomePage';
         }
       } else {
-        // this.rootPage = 'HomePage';
-        this.nativeProvider.addRctest(new Date(),2016,1).then(data=>{
-          this.rootPage = 'HomeMenuPage';
-        })
-        // this.rootPage = 'HomeMenuPage';
+        // this.nativeProvider.addRctest(new Date(),2016,1).then(data=>{
+        //   this.rootPage = 'HomeMenuPage';
+        // })
+        this.rootPage = 'HomeMenuPage';
       }
 
       if (this.nav.getViews().length == 0){

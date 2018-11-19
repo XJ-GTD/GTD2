@@ -18,6 +18,18 @@ public class SyncController {
     private Logger logger = LogManager.getLogger(this.getClass());
 
     /**
+     * app初始化同步
+     * @return
+     */
+    @RequestMapping(value = "/initial_sync", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutDto initialSync(@RequestBody BaseInDto inDto) {
+        BaseOutDto outDto = new BaseOutDto();
+
+        return outDto;
+    }
+
+    /**
      * 登陆同步
      * @return
      */

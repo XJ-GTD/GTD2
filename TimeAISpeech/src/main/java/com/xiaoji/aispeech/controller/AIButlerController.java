@@ -1,18 +1,13 @@
-package com.xiaoji.gtd.controller;
+package com.xiaoji.aispeech.controller;
 
-import com.xiaoji.gtd.dto.*;
+import com.xiaoji.aispeech.dto.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-/**
- * AI助手类
- *
- * create by wzy on 2018/11/15.
- */
-@CrossOrigin
-@RestController
-@RequestMapping(value = "/aibutler")
 public class AIButlerController {
 
     private Logger logger = LogManager.getLogger(this.getClass());

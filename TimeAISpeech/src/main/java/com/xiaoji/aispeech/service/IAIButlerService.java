@@ -1,4 +1,4 @@
-package com.xiaoji.gtd.service;
+package com.xiaoji.aispeech.service;
 
 /**
  * 语音助手类接口
