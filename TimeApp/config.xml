@@ -98,4 +98,5 @@
     <plugin name="cordova-sqlite-storage" spec="^2.4.0" />
     <plugin name="org.nypr.cordova.wakeupplugin" spec="../xjalarmclock" />
     <plugin name="cordova-plugin-BaiduSpeechAndTTS" spec="../BaiduSpeechAndTTS" />
+    <plugin name="uk.co.workingedge.cordova.plugin.sqliteporter" spec="^1.0.5" />
 </widget>

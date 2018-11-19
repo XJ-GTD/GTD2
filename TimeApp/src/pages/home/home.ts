@@ -98,64 +98,64 @@ export class HomePage {
     this.webSocketService.connect(this.paramsService.user.accountQueue);
 
     this.scheduleList = [];
-    setTimeout(()=>{
-      this.sqliteService.executeSql("select substr(playersFinishDate,1,10) finishDate,count(*) numL from GTD_D " +
-        "where substr(playersFinishDate,1,7)='2018-11'" +
-        "GROUP BY substr(playersFinishDate,1,10) ",[]).then(data=>{
-        if(data && data.rows && data.rows.length>0){
-          this.options.daysConfig.push({
-            date: new Date('2018-11-10'),
-            subTitle: `\u25B2`
-          });
-          for(let i=0;i<data.rows.length;i++){
-            if(data.rows.item(i).numL<5){
-              this.options.daysConfig.push({
-                date: new Date(data.rows.item(i).finishDate),
-                cssClass: `hassometing animated bounceIn`
-              });
-            }else{
-              this.options.daysConfig.push({
-                date: new Date(data.rows.item(i).finishDate),
-                cssClass: `busysometing animated bounceIn`
-              });
-            }
-
-          }
-        }
-        this.ion2calendar.refresh();
-      }).catch(e=>{
-        console.log("GTD_D->:"+e);
-      })
-      // this.options.daysConfig.push({
-      //   date: new Date('2018-11-10'),
-      //   subTitle: `\u25B2`
-      // });
-      // setTimeout(()=>{
-      //
-      //   this.options.daysConfig.push({
-      //     date: new Date('2018-11-12'),
-      //     cssClass: `hassometing animated bounceIn`
-      //   });
-      //   this.ion2calendar.refresh();
-      //   setTimeout(()=>{
-      //     this.options.daysConfig.push({
-      //       date: new Date('2018-11-13'),
-      //       cssClass: `busysometing animated bounceIn`
-      //     });
-      //     this.options.daysConfig.push({
-      //       date: new Date('2018-11-14'),
-      //       cssClass: `busysometing animated bounceIn`
-      //     });
-      //     this.options.daysConfig.push({
-      //       date: new Date('2018-11-15'),
-      //       cssClass: `busysometing animated bounceIn`
-      //     });
-      //     this.ion2calendar.refresh();
-      //   },1000);
-      //   this.ion2calendar.refresh();
-      // },1000);
-      // this.ion2calendar.refresh();
-    },1000);
+    // setTimeout(()=>{
+    //   this.sqliteService.executeSql("select substr(playersFinishDate,1,10) finishDate,count(*) numL from GTD_D " +
+    //     "where substr(playersFinishDate,1,7)='2018-11'" +
+    //     "GROUP BY substr(playersFinishDate,1,10) ",[]).then(data=>{
+    //     if(data && data.rows && data.rows.length>0){
+    //       this.options.daysConfig.push({
+    //         date: new Date('2018-11-10'),
+    //         subTitle: `\u25B2`
+    //       });
+    //       for(let i=0;i<data.rows.length;i++){
+    //         if(data.rows.item(i).numL<5){
+    //           this.options.daysConfig.push({
+    //             date: new Date(data.rows.item(i).finishDate),
+    //             cssClass: `hassometing animated bounceIn`
+    //           });
+    //         }else{
+    //           this.options.daysConfig.push({
+    //             date: new Date(data.rows.item(i).finishDate),
+    //             cssClass: `busysometing animated bounceIn`
+    //           });
+    //         }
+    //
+    //       }
+    //     }
+    //     this.ion2calendar.refresh();
+    //   }).catch(e=>{
+    //     console.log("GTD_D->:"+e);
+    //   })
+    //   // this.options.daysConfig.push({
+    //   //   date: new Date('2018-11-10'),
+    //   //   subTitle: `\u25B2`
+    //   // });
+    //   // setTimeout(()=>{
+    //   //
+    //   //   this.options.daysConfig.push({
+    //   //     date: new Date('2018-11-12'),
+    //   //     cssClass: `hassometing animated bounceIn`
+    //   //   });
+    //   //   this.ion2calendar.refresh();
+    //   //   setTimeout(()=>{
+    //   //     this.options.daysConfig.push({
+    //   //       date: new Date('2018-11-13'),
+    //   //       cssClass: `busysometing animated bounceIn`
+    //   //     });
+    //   //     this.options.daysConfig.push({
+    //   //       date: new Date('2018-11-14'),
+    //   //       cssClass: `busysometing animated bounceIn`
+    //   //     });
+    //   //     this.options.daysConfig.push({
+    //   //       date: new Date('2018-11-15'),
+    //   //       cssClass: `busysometing animated bounceIn`
+    //   //     });
+    //   //     this.ion2calendar.refresh();
+    //   //   },1000);
+    //   //   this.ion2calendar.refresh();
+    //   // },1000);
+    //   // this.ion2calendar.refresh();
+    // },1000);
 
 
 
@@ -201,6 +201,12 @@ export class HomePage {
   findTodaySchedule($event) {
 
     console.log($event);
+     this.sqliteService.addRctest().then(data=>{
+      alert("插入数据：" + data);
+    }).catch((err)=>{
+      alert(err);
+     })
+
     let eventDate = new Date($event.time);
     let year = eventDate.getFullYear();
     let month = eventDate.getMonth()+1;

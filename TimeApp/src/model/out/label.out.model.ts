@@ -4,6 +4,7 @@
  * create by wzy on 2018/09/07
  */
 export class LabelOutModel {
+  insert
   get userId(): string {
     return this._userId;
   }
