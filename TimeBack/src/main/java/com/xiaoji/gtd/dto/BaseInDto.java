@@ -14,7 +14,8 @@ public class BaseInDto {
     private String token;
 
     private String account;
-    private String password;
+    private String accountMobile;
+    private String accountPassword;
 
     public String getUserId() {
         return userId;
@@ -56,11 +57,19 @@ public class BaseInDto {
         this.account = account;
     }
 
-    public String getPassword() {
-        return password;
+    public String getAccountMobile() {
+        return accountMobile;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAccountMobile(String accountMobile) {
+        this.accountMobile = accountMobile;
+    }
+
+    public String getAccountPassword() {
+        return accountPassword;
+    }
+
+    public void setAccountPassword(String accountPassword) {
+        this.accountPassword = accountPassword;
     }
 }
