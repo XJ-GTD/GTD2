@@ -2,6 +2,7 @@ package com.xiaoji.util;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
+import sun.misc.BASE64Encoder;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -106,7 +107,7 @@ public class AiUiUtil {
      * @return
      * @throws IOException
      */
-    private static byte[] readFile(String filePath) throws IOException {
+    public static byte[] readFile(String filePath) throws IOException {
         InputStream in = new FileInputStream(filePath);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024 * 4];
