@@ -7,7 +7,7 @@ import {AppConfig} from "../../app/app.config";
 import {HttpClient} from "@angular/common/http";
 import {CalendarService} from "../../service/calendar.service";
 import {UtilService} from "../../service/util.service";
-import {SqliteService} from "../../service/sqlite.service";
+import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
 
 /**
  * Generated class for the HomeWorkListPage page.
@@ -34,7 +34,7 @@ export class HomeWorkListPage {
               private http: HttpClient,
               private util:UtilService,
               private rnd: Renderer2,
-              private sqliteService:SqliteService,
+              private sqliteService:BaseSqliteService,
               private el: ElementRef) {
     this.scheduleList = [];
     console.log('ionViewDidLoad HomeWorkListPage');
@@ -92,7 +92,7 @@ export class HomeWorkListPage {
     console.log("scheduleStartTime:" + findSchedule.scheduleStartTime + " | scheduleDeadline:" + findSchedule.scheduleDeadline);
     this.scheduleList = [];
     let dateStr=year + "-" + monthStr + "-" + dayStr;
-    this.sqliteService.executeSql('select substr(playersFinishDate,12,16) dateStr,gtdd.* from GTD_D gtdd where substr(playersFinishDate,1,10)=?'
+    this.sqliteService.executeSql('select substr(playersFinishDate,12,16) dateStr,gtdd.* from GTD_D gtdd where substr(playersId,1,10)=?'
       ,[dateStr])
       .then(data=>{
         if(data && data.rows && data.rows.length>0){

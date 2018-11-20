@@ -3,7 +3,7 @@ import { AlertController, IonicPage, LoadingController, NavController, NavParams
 import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
 import { ParamsService } from "../../service/params.service";
-import {SqliteService} from "../../service/sqlite.service";
+import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
 
 /**
  * Generated class for the UserLoginPage page.
@@ -31,7 +31,7 @@ export class UserLoginPage {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private http: HttpClient,
-    private sqliteService: SqliteService,
+    private sqliteService: BaseSqliteService,
     private paramsService: ParamsService) {
   }
 

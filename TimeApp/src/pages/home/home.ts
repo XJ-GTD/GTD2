@@ -16,7 +16,7 @@ import * as moment from "moment";
 import {SuperTabsComponent} from "../../components/ionic2-super-tabs";
 import {LightSvgPage} from "../light-svg/light-svg";
 import {CalendarService} from "../../service/calendar.service";
-import {SqliteService} from "../../service/sqlite.service";
+import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
 
 
 
@@ -76,7 +76,7 @@ export class HomePage {
               private http: HttpClient,
               private paramsService: ParamsService,
               private alarmClock: XiaojiAlarmclockService,
-              private sqliteService:SqliteService,
+              private sqliteService:BaseSqliteService,
               private calendarService:CalendarService) {
 
     moment.locale('zh-cn');
@@ -202,11 +202,11 @@ export class HomePage {
   findTodaySchedule($event) {
 
     console.log($event);
-     this.sqliteService.addRctest().then(data=>{
-      alert("插入数据：" + data);
-    }).catch((err)=>{
-      alert(err);
-     })
+    //  this.sqliteService.addRctest().then(data=>{
+    //   alert("插入数据：" + data);
+    // }).catch((err)=>{
+    //   alert(err);
+    //  })
 
     let eventDate = new Date($event.time);
     let year = eventDate.getFullYear();

@@ -1,23 +1,25 @@
 package com.xiaoji.gtd.dto;
 
+import java.util.List;
 import java.util.Map;
 
 /**
- * 基本出参类
+ * restFul返回数据
  *
  * create by wzy on 2018/11/15.
  */
-public class BaseOutDto {
+public class Out {
 
-    private String code;
+    private RETCODE code;
     private String message;
-    private Object data;
+    private BaseOut data;
+    private List<BaseOut> lsData;
 
-    public String getCode() {
+    public RETCODE getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(RETCODE code) {
         this.code = code;
     }
 
@@ -33,9 +35,15 @@ public class BaseOutDto {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(BaseOut data) {
         this.data = data;
     }
 
+    public List<BaseOut> getLsData() {
+        return lsData;
+    }
 
+    public void setLsData(List<BaseOut> lsData) {
+        this.lsData = lsData;
+    }
 }
