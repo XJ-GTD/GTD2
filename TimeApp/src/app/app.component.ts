@@ -12,8 +12,8 @@ import { XiaojiAlarmclockService } from "../service/xiaoji-alarmclock.service";
 import { BackButtonService } from "../service/backbutton.service";
 import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
 import { AndroidFullScreen } from "@ionic-native/android-full-screen";
-import { SqliteService } from "../service/sqlite.service";
 import { UtilService } from "../service/util.service";
+import {BaseSqliteService} from "../service/sqlite-service/base-sqlite.service";
 
 @Component({
   templateUrl: 'app.html',
@@ -38,7 +38,7 @@ export class MyApp {
     public feedbackService: XiaojiFeedbackService,
     private androidFullScreen: AndroidFullScreen,
     private events: Events,
-    private nativeProvider:SqliteService
+    private nativeProvider:BaseSqliteService
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
