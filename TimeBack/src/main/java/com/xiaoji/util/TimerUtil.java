@@ -16,7 +16,7 @@ import java.util.TimerTask;
  */
 public class TimerUtil {
 
-    private static Logger logger = LogManager.getLogger(SmsUtil.class);
+    private static Logger logger = LogManager.getLogger(SubMailUtil.class);
     private final static HashMap<String, TimerDto> cacheMap = new HashMap<>();
 
     public synchronized  static void putCache(String key, TimerDto value){

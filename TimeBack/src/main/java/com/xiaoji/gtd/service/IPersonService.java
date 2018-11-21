@@ -24,21 +24,5 @@ public interface IPersonService {
      */
     int signUp(SignUpInDto inDto);
 
-    /**
-     * 游客验证
-     * @return
-     */
-    String visitorsLogin(LoginInDto inDto);
 
-    /**
-     * 密码登陆验证
-     * @return
-     */
-    LoginOutDto passwordLogin(LoginInDto inDto);
-
-    /**
-     * 短信登陆验证
-     * @return
-     */
-    LoginOutDto smsLogin(LoginInDto inDto);
 }

@@ -15,7 +15,7 @@ public class BaseInDto {
 
     private String account;
     private String accountMobile;
-    private String accountPassword;
+    private String password;
 
     public String getUserId() {
         return userId;
@@ -65,11 +65,11 @@ public class BaseInDto {
         this.accountMobile = accountMobile;
     }
 
-    public String getAccountPassword() {
-        return accountPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAccountPassword(String accountPassword) {
-        this.accountPassword = accountPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

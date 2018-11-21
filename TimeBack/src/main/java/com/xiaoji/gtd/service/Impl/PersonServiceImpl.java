@@ -16,6 +16,7 @@ import com.xiaoji.util.CommonMethods;
 import com.xiaoji.util.TimerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,12 +35,16 @@ public class PersonServiceImpl implements IPersonService {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
-    //暂时使用常量，字典表规范后更改
-    private final static String HEAD_IMG_URL_ANDROID = "./assets/headImg.jpg";
-    private final static String HEAD_IMG_URL_IOS = "";
-    private final static String ACCOUNT_STATUS = "10001";
-    private final static String LOGIN_TYPE_MOBILE = "10011";
-    private final static String LOGIN_TYPE_ACCOUNT = "10012";
+    @Value("${person.signup.headimgurl.android}")
+    private static String HEAD_IMG_URL_ANDROID;
+    @Value("${person.signup.headimgurl.ios}")
+    private static String HEAD_IMG_URL_IOS;
+    @Value("${person.signup.accountStatus}")
+    private static String ACCOUNT_STATUS;
+    @Value("${person.signup.logintype.mobile}")
+    private static String LOGIN_TYPE_MOBILE;
+    @Value("${person.signup.logintype.account}")
+    private static String LOGIN_TYPE_ACCOUNT;
 
     @Resource
     private PersonRepository personRepository;
@@ -90,8 +95,8 @@ public class PersonServiceImpl implements IPersonService {
 
             Timestamp date = CommonMethods.dateToStamp(new Date().toString());
             //规则字段
-            accountName = BaseUtil.createAccountName(accountMobile);
-            nickName = BaseUtil.createNickName(accountMobile);
+            accountName = BaseUtil.getAccountName(accountMobile);
+            nickName = BaseUtil.getNickName(accountMobile);
             headImgUrl = HEAD_IMG_URL_ANDROID;
             accountStatus = ACCOUNT_STATUS;
             logger.info("账户名：" + accountName + " 昵称：" + nickName);
@@ -138,30 +143,5 @@ public class PersonServiceImpl implements IPersonService {
         return 0;
     }
 
-    /**
-     * 游客验证
-     * @return
-     */
-    @Override
-    public String visitorsLogin(LoginInDto inDto) {
-        return null;
-    }
 
-    /**
-     * 密码登陆验证
-     * @return
-     */
-    @Override
-    public LoginOutDto passwordLogin(LoginInDto inDto) {
-        return null;
-    }
-
-    /**
-     * 短信登陆验证
-     * @return
-     */
-    @Override
-    public LoginOutDto smsLogin(LoginInDto inDto) {
-        return null;
-    }
 }

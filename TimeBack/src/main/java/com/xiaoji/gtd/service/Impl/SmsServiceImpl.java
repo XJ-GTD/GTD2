@@ -1,7 +1,7 @@
 package com.xiaoji.gtd.service.Impl;
 
 import com.xiaoji.gtd.service.ISmsService;
-import com.xiaoji.util.SmsUtil;
+import com.xiaoji.util.SubMailUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class SmsServiceImpl implements ISmsService {
     public int getAuthCode(String mobile) {
 
         try {
-            SmsUtil.getAuthCode(mobile);
+            SubMailUtil.getAuthCode(mobile);
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("短信验证接口请求失败");

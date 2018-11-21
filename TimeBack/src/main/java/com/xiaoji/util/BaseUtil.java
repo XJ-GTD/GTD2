@@ -1,9 +1,12 @@
 package com.xiaoji.util;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
@@ -80,23 +83,36 @@ public class BaseUtil {
     }
 
     //交换机命名规则
-    public static String createExchangeName(Integer userId) {
+    public static String getExchangeName(String userId) {
         return "gtd" + userId;
     }
 
     //队列命名规则
-    public static String createQueueName(Integer userId, String deviceId) {
+    public static String getQueueName(String userId, String deviceId) {
         return userId + "." + deviceId;
     }
 
     //昵称命名规则
-    public static String createNickName(String accountMobile) {
+    public static String getNickName(String accountMobile) {
         return "时间旅行者" + accountMobile;
     }
 
     //账户名命名规则
-    public static String createAccountName(String accountMobile) {
+    public static String getAccountName(String accountMobile) {
         return "gtd" + accountMobile;
     }
 
+    //动态创建queue
+    public static void createQueue(RabbitTemplate rabbitTemplate, String queueName, String exchangeName) throws IOException {
+
+        //创建队列
+        rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).queueDeclare(queueName, true, false, false, null);
+        //绑定队列到对应的交换机
+        rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).queueBind(queueName, exchangeName, queueName);
+    }
+
+    //动态创建exchange
+    public static void createExchange(RabbitTemplate rabbitTemplate, String exchangeName, String exchangeType) throws IOException {
+        rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).exchangeDeclare(exchangeName,exchangeType,true);
+    }
 }

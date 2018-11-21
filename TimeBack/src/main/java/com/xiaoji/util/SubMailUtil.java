@@ -12,6 +12,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.util.Map;
@@ -23,14 +24,20 @@ import java.util.TreeMap;
  *
  * create by wzy on 2018/09/05
  */
-public class SmsUtil {
+public class SubMailUtil {
 
-    private static final String TIME = "一分钟";
-    private static final String URL = "https://api.mysubmail.com/message/xsend";
-    private static final String APPID = "28912";
-    private static final String APPKEY = "b7b93968f2566a756ad47de9f6c32078";
-    private static final String PROJECT = "SvPNp1";
-    private static final String SIGNTYPE = "";
+    @Value("${submail.messageXsend.time}")
+    private static String TIME;
+    @Value("${submail.messageXsend.url}")
+    private static String URL;
+    @Value("${submail.messageXsend.appid}")
+    private static String APPID;
+    @Value("${submail.messageXsend.appkey}")
+    private static String APPKEY;
+    @Value("${submail.messageXsend.project.authcode}")
+    private static String PROJECT;
+    @Value("${submail.messageXsend.signtype}")
+    private static String SIGNTYPE;
 
     public static void getAuthCode(String to) {
 
