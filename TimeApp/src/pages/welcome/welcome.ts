@@ -4,6 +4,12 @@ import {UtilService} from "../../service/util.service";
 import {SqliteService} from "../../service/sqlite.service";
 import { ParamsService } from "../../service/params.service";
 import {UserModel} from "../../model/user.model";
+import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
+import {UserSqliteService} from "../../service/sqlite-service/user-sqlite.service";
+import {UEntity} from "../../entity/u.entity";
+import {UoModel} from "../../model/out/uo.model";
+import {WorkSqliteService} from "../../service/sqlite-service/work-sqlite.service";
+import {CalendarService} from "../../service/calendar.service";
 
 /**
  * Generated class for the WelcomePage page.
@@ -30,8 +36,11 @@ export class WelcomePage {
   constructor(public navCtrl: NavController,
               public util: UtilService,
               private loadingCtrl: LoadingController,
-              private sqliteService: SqliteService,
+              private sqliteService: BaseSqliteService,
+              private userSqlite: UserSqliteService,
+              private workSqlite: WorkSqliteService,
               private paramsService: ParamsService,
+              private calendarService:CalendarService,
               public navParams: NavParams) {
   }
 
@@ -40,12 +49,49 @@ export class WelcomePage {
   }
 
   goToLogin() {
-    this.navCtrl.setRoot('UserLoginPage');
+    let u:UEntity=new UEntity();
+    u.uI=this.util.getUuid();
+    u.uty='0';
+    this.workSqlite.test();
+    this.sqliteService.save(u).then(data=>{
+      console.log(data);
+      this.navCtrl.setRoot('HomePage');
+    })
+
+    //this.navCtrl.setRoot('UserLoginPage');
     //this.visitor();
   }
   //同步本地日历数据
   uploadLocal(){
+    this.calendarService.findEvent().then(msg=>{
+      let data=eval(msg);
+      // alert(data.length);
+      // alert(data[0].title);
+      // alert(JSON.stringify(data[0]));
+      for(let i=0;i<data.length;i++) {
+        this.sqliteService.executeSql("INSERT INTO GTD_C(scheduleName,scheduleStartTime,scheduleDeadLine,labelId,localId) VALUES (?,?,?,?,?)",
+          [data[i].title,data[i].startDate,data[i].endDate,"1",data[i].id])
+          .then(msg=>{
+            //alert("插入C表");
+          })
+          .catch(err=>{
+            //alert("插入C表错误:"+err);
+          });
 
+        this.sqliteService.executeSql("SELECT last_insert_rowid() as scheduleId FROM GTD_C",[])
+          .then(data=>{
+            //alert(data.rows.item(0).scheduleId);
+            this.sqliteService.executeSql("INSERT INTO GTD_D(scheduleId,scheduleOtherName,scheduleAuth,playersStatus,userId) VALUES (?,?,?,?,?)" ,
+              [data.rows.item(0).scheduleId,"","","",""]);
+          })
+          .catch(err=>{
+            //alert("获取日程ID失败");
+          });
+      }
+    }).catch(err=>{
+      //alert("err");
+      //alert(err);
+    });
   }
   //创建数据库
   createSql(){
@@ -66,29 +112,6 @@ export class WelcomePage {
       content: "正在加载...",
       duration: 1000
     });
-    //判断是否存在
-    this.sqliteService.userIsExist('').then(data=>{
-      if(data && data.rows&& data.rows.length>0){
-        this.paramsService.user=data.rows.item(0)
-        loader.present();
-        this.navCtrl.setRoot('HomePage');
-      }else{
-        //不存在则添加
-        let uuid = this.util.getUuid();
-        uuid='1234567890'
-        this.sqliteService.executeSql('INSERT INTO GTD_A(userId,userType) VALUES (?,?)',[uuid,0])
-          .then(data=>{
-            let user: UserModel = new UserModel();
-            user.userId=uuid;
-            loader.present();
-            this.navCtrl.setRoot('HomePage');
-          }).catch(e=>{
-          console.log(e)
-        })
-      }
-    }).catch(e=>{
-      console.log(e);
-    })
   }
 
 }

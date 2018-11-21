@@ -21,7 +21,6 @@ import java.text.ParseException;
  * create by wzy on 2018/11/16.
  */
 @Service
-@Transactional
 public class AIButlerServiceImpl implements IAIButlerService {
     private Logger logger = LogManager.getLogger(this.getClass());
     /**
@@ -56,8 +55,11 @@ public class AIButlerServiceImpl implements IAIButlerService {
 
     @Override
     public JSON answerTextResJSON(String data) {
+        logger.info("service*********************************" + data);
         String outData = AiUiUtil.readAudio(data, 1);
+        logger.info("service*********************************outData" + outData);
         JSON outJson = JSON.parseObject(outData);
+        logger.info("service*********************************outJson" + outJson);
         return outJson;
     }
 

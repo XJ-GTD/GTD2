@@ -10,6 +10,9 @@ import { HttpClient } from "@angular/common/http";
 import { FindOutModel } from "../model/out/find.out.model";
 import { MqOutModel } from "../model/out/mq.out.model";
 import { MessageModel } from "../model/message.model";
+import {UserSqliteService} from "./sqlite-service/user-sqlite.service";
+import {UoModel} from "../model/out/uo.model";
+import {UEntity} from "../entity/u.entity";
 
 /**
  * WebSocket连接Rabbitmq服务器
@@ -24,21 +27,35 @@ export class WebsocketService {
   mqData: MqOutModel;  //接收mq数据
   mqPushData: MqOutModel; //入参数据
   messageBack: MessageModel;
+  u:UEntity;
 
   constructor(public appCtrl : App,
               public alertCtrl: AlertController,
               private http: HttpClient,
               public loadingCtrl: LoadingController,
               private xiaojiSpeech: XiaojiAssistantService,
+              private userSqlite: UserSqliteService,
               private paramsService?: ParamsService){
     this.init();
   }
 
   init(){
+
     this.groupFind = new FindOutModel();
-    this.groupFind.userId = this.paramsService.user.userId;
+    //this.groupFind.userId = this.paramsService.user.userId;
     this.messageBack = new MessageModel();
     this.mqData = new MqOutModel();
+    let uo=new UoModel();
+    this.u = new UEntity();
+    this.userSqlite.select(this.u,uo)
+      .then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          this.u=data.rows.item(0);
+          this.groupFind.userId = this.u.uI;
+          this.messageBack.userId = this.u.uI;
+        }
+      })
+
   }
 
   /**
@@ -90,7 +107,7 @@ export class WebsocketService {
             console.log('接受日程邀请');
             this.messageBack.playersStatus = 1;
             this.messageBack.scheduleId = this.mqData.messageId;
-            this.messageBack.userId = this.paramsService.user.userId;
+            //this.messageBack.userId = this.paramsService.user.userId;
 
             this.http.post(AppConfig.SCHEDULE_CHOOSE_URL, this.messageBack, {
               headers: {
@@ -117,7 +134,7 @@ export class WebsocketService {
             console.log('拒绝日程邀请');
             this.messageBack.playersStatus = -1;
             this.messageBack.scheduleId = this.mqData.messageId;
-            this.messageBack.userId = this.paramsService.user.userId;
+            //this.messageBack.userId = this.paramsService.user.userId;
 
             this.http.post(AppConfig.SCHEDULE_CHOOSE_URL, this.messageBack, {
               headers: {
@@ -145,7 +162,7 @@ export class WebsocketService {
             console.log('接受日程邀请');
             this.messageBack.resultType = 1;
             this.messageBack.groupId = this.mqData.messageId;
-            this.messageBack.userId = this.paramsService.user.userId;
+           // this.messageBack.userId = this.paramsService.user.userId;
 
             this.http.post(AppConfig.GROUP_UPD_MEMBER_STATUS_URL, this.messageBack, {
               headers: {
@@ -172,7 +189,7 @@ export class WebsocketService {
             console.log('拒绝日程邀请');
             this.messageBack.resultType = 3;
             this.messageBack.groupId = this.mqData.messageId;
-            this.messageBack.userId = this.paramsService.user.userId;
+            //this.messageBack.userId = this.paramsService.user.userId;
 
             this.http.post(AppConfig.GROUP_UPD_MEMBER_STATUS_URL, this.messageBack, {
               headers: {

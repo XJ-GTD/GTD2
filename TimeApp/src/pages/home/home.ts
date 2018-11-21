@@ -17,6 +17,10 @@ import {SuperTabsComponent} from "../../components/ionic2-super-tabs";
 import {LightSvgPage} from "../light-svg/light-svg";
 import {CalendarService} from "../../service/calendar.service";
 import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
+import {WorkSqliteService} from "../../service/sqlite-service/work-sqlite.service";
+import {UserSqliteService} from "../../service/sqlite-service/user-sqlite.service";
+import {UEntity} from "../../entity/u.entity";
+import {UoModel} from "../../model/out/uo.model";
 
 
 
@@ -55,7 +59,7 @@ export class HomePage {
   dayList: TimeModel;
 
   showDay:string;
-
+  u:UEntity;
 
 
   //查询日历
@@ -77,6 +81,8 @@ export class HomePage {
               private paramsService: ParamsService,
               private alarmClock: XiaojiAlarmclockService,
               private sqliteService:BaseSqliteService,
+              private userSqlite:UserSqliteService,
+              private workSqlite:WorkSqliteService,
               private calendarService:CalendarService) {
 
     moment.locale('zh-cn');
@@ -89,6 +95,11 @@ export class HomePage {
     this.homeWorkListPage.height =  window.document.body.clientHeight - 350 - 45 -20;
     console.log('ionViewDidLoad HomePage');
 
+    //this.findEvent();
+
+    document.addEventListener('resume',()=>{
+      // this.findEvent();
+    })
   }
 
   init() {
@@ -99,6 +110,45 @@ export class HomePage {
     this.webSocketService.connect("15000");
 
     this.scheduleList = [];
+    //获取用户信息
+    this.u = new UEntity();
+    this.userSqlite.select(this.u,new UoModel())
+      .then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          this.u=data.rows.item(0);
+          //消息队列接收
+          this.webSocketService.connect(this.u.aQ);
+        }
+      })
+    let month = moment().format('YYYY-MM');
+    this.workSqlite.selectMonthBs(month).then(data=>{
+      if(data && data.rows && data.rows.length>0){
+
+        for(let i=0;i<data.rows.length;i++){
+          let rcp=data.rows.item(i);
+          let res:any={};
+          if(data.rows.item(i).ct<5){
+            res.date = new Date(rcp.ymd);
+            res.cssClass = `hassometing animated bounceIn`;
+            // this.options.daysConfig.push({
+            //   date: new Date(rcp.ymd),
+            //   cssClass: `hassometing animated bounceIn`
+            // });
+          }else{
+            // this.options.daysConfig.push({
+            //   date: new Date(rcp.ymd),
+            //   cssClass: `busysometing animated bounceIn`
+            // });
+            res.cssClass = `busysometing animated bounceIn`;
+          }
+          if(rcp.mdn != null){
+            res.subTitle=`\u25B2`;
+          }
+          this.options.daysConfig.push(res);
+        }
+      }
+      this.ion2calendar.refresh();
+    })
     // setTimeout(()=>{
     //   this.sqliteService.executeSql("select substr(playersFinishDate,1,10) finishDate,count(*) numL from GTD_D " +
     //     "where substr(playersFinishDate,1,7)='2018-11'" +
@@ -171,7 +221,8 @@ export class HomePage {
   setAlarmList() {
 
     this.http.post(AppConfig.SCHEDULE_TODAY_REMIND_URL, {
-      userId: this.paramsService.user.userId
+      //userId: this.paramsService.user.userId
+      userId:this.u.uI
     },{
       headers: {
         "Content-Type": "application/json"
@@ -254,5 +305,78 @@ export class HomePage {
   openVoice() {
     let tab1RootModal  = this.modalCtr.create("SpeechPage");
     tab1RootModal.present();
+  }
+
+  /**
+   * 本地日历日程增删
+   */
+  findEvent(){
+    this.sqliteService.executeSql("SELECT MAX(localId) as maxId FROM GTD_C",[]).then(max=>{
+      let maxId=max.rows.item(0).maxId;
+
+      this.calendarService.findEvent().then(msg=> {
+        let id = 0;
+        //alert(msg.length);
+        for (let i = 0; i < msg.length; i++) {
+          if (msg[i].id > id) {
+            id = msg[i].id;
+            if(id>maxId){
+              let data=eval(msg);
+              this.sqliteService.executeSql("INSERT INTO GTD_C(scheduleName,scheduleStartTime,scheduleDeadLine,labelId,localId) VALUES (?,?,?,?,?)",
+                [data[i].title,data[i].startDate,data[i].endDate,"1",data[i].id])
+                .then(msg=>{
+                  // alert(JSON.stringify(data[i]));
+                  //alert("插入C表");
+                })
+                .catch(err=>{
+                  //alert("插入C表错误:"+err);
+                });
+              this.sqliteService.executeSql("SELECT last_insert_rowid() as scheduleId FROM GTD_C",[])
+                .then(data=>{
+                  // this.sqliteService.executeSql("SELECT USERID FROM GTD_ACCOUNT WHERE ",[]);
+                  //alert(data.rows.item(0).scheduleId);
+                  this.sqliteService.executeSql("INSERT INTO GTD_D(scheduleId,scheduleOtherName,scheduleAuth,playersStatus,userId) VALUES (?,?,?,?,?)" ,
+                    [data.rows.item(0).scheduleId,"","","",""]);
+                })
+                .catch(err=>{
+                  //alert("获取日程ID失败");
+                });
+            }
+          }
+        }
+
+        this.sqliteService.executeSql("SELECT localId FROM GTD_C",[]).then(max=>{
+          let ids=[];
+          for(let i=0;i<msg.length;i++){
+            ids.push(msg[i].id);
+          }
+          //删除本地删除的日程
+          //alert("ids.length:"+ids.toString());
+          //alert(JSON.stringify(max));
+          for(let i=0;i<max.rows.length;i++){
+            if(ids.indexOf(max.rows.item(i).localId)==-1){
+              this.sqliteService.executeSql("SELECT scheduleId FROM GTD_C WHERE localId="+max.rows.item(i).localId,[])
+                .then(msg=>{
+                  this.sqliteService.executeSql("DELETE FROM GTD_D WHERE scheduleId="+msg.rows.item(0).scheduleId,[]).then(msg=>{
+                    //alert("删除D表数据");
+                  })
+                    .catch(err=>{
+                      //alert("删除D表数据出错"+JSON.stringify(err));
+                    });
+                });
+              this.sqliteService.executeSql("DELETE FROM GTD_C WHERE localId="+max.rows.item(i).localId,[]).then(msg=>{
+                //alert("删除C表数据");
+              })
+                .catch(err=>{
+                  //alert("删除C表数据失败"+JSON.stringify(err));
+                });
+
+            }
+          }
+        });
+
+
+      });
+    });
   }
 }

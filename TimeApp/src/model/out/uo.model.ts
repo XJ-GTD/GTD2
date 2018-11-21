@@ -1,7 +1,7 @@
 /**
  * create by on 2018/11/19
  */
-import {UModel} from "./u.model";
+import {UEntity} from "../../entity/u.entity";
 
 //用户类
 export class UoModel {
@@ -10,7 +10,7 @@ export class UoModel {
    * 数量
    */
   private _ct:number;
-  private _us: Array<UModel>;                 //参与人
+  private _us: Array<UEntity>;                 //参与人
 
   get ct(): number {
     return this._ct;
@@ -20,11 +20,11 @@ export class UoModel {
     this._ct = value;
   }
 
-  get us(): Array<UModel> {
+  get us(): Array<UEntity> {
     return this._us;
   }
 
-  set us(value: Array<UModel>) {
+  set us(value: Array<UEntity>) {
     this._us = value;
   }
 }

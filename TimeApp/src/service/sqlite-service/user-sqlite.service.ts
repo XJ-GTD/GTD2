@@ -1,10 +1,8 @@
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Injectable } from '@angular/core';
 import {Platform, Events, List} from 'ionic-angular';
-import {UserModel} from "../../model/user.model";
-import {UModel} from "../../entity/u.model";
-import {UoModel} from "../../entity/uo.model";
 import {BaseSqliteService} from "./base-sqlite.service";
+import {UEntity} from "../../entity/u.entity";
+import {UoModel} from "../../model/out/uo.model";
 
 
 /**
@@ -37,32 +35,65 @@ export class UserSqliteService {
     })
   }
 
-
-  select(u:UModel,outParam:UoModel){
+  selectAll(u:UEntity,outParam:UoModel){
+    let sql='select * from GTD_A where 1=1';
+    if(u.uI != null){
+      sql=sql+'and uI="'+u.uI+'"';
+    }
+    return  this.baseSqliteService.executeSql(sql,[])
+  }
+  select(u:UEntity,outParam:UoModel): Promise<any>{
     return new Promise((resolve, reject) =>{
-     // if(u.uI != null){
-        let sql='select * from GTD_A where 1=1';
+      // if(u.uI != null){
+      let sql='select * from GTD_A where 1=1';
 
-        if(u.uI != null){
-          sql=sql+'and uI="'+u.uI+'"';
-        }
-        this.baseSqliteService.executeSql(sql,[])
-          .then(data=>{
-            if(data&& data.rows && data.rows.length>0){
-              outParam.ct=data.rows.length;
-              let d=new Array<UModel>()
-              for(let i=0;i<data.rows.length;i++){
-                d[i]=data.rows.item(i);
-              }
-              outParam.us=d;
-              resolve(outParam);
-            }else{
-              outParam.ct=0;
-              resolve(outParam);
-            }
-          }).catch(e=>{
-          reject(e);
-        })
+      if(u.uI != null){
+        sql=sql+'and uI="'+u.uI+'"';
+      }
+      this.baseSqliteService.executeSql(sql,[])
+        .then(data=>{
+          resolve(data);
+          // if(data&& data.rows && data.rows.length>0){
+          //   outParam.ct=data.rows.length;
+          //   let d=new Array<UEntity>()
+          //   for(let i=0;i<data.rows.length;i++){
+          //     d[i]=data.rows.item(i);
+          //   }
+          //   outParam.us=d;
+          //   resolve(outParam);
+          // }else{
+          //   outParam.ct=0;
+          //   resolve(outParam);
+          // }
+        }).catch(e=>{
+        reject(e);
+      })
+      // }else{
+      //   reject('入参不能为空！')
+      // }
+    })
+  }
+
+  selectOne(u:UEntity){
+    return new Promise((resolve, reject) =>{
+      // if(u.uI != null){
+      let sql='select * from GTD_A where 1=1';
+
+      if(u.uI != null){
+        sql=sql+'and uI="'+u.uI+'"';
+      }
+      this.baseSqliteService.executeSql(sql,[])
+        .then(data=>{
+          let uu = new UEntity();
+          if(data&& data.rows && data.rows.length>0){
+            uu=data.rows.item(0);
+            resolve(uu);
+          }else{
+            resolve(uu);
+          }
+        }).catch(e=>{
+        reject(e);
+      })
       // }else{
       //   reject('入参不能为空！')
       // }

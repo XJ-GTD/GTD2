@@ -18,11 +18,13 @@ import { AndroidFullScreen } from "@ionic-native/android-full-screen";
 import { SQLite } from '@ionic-native/sqlite';
 import { SqliteService } from "../service/sqlite.service";
 import { UtilService } from "../service/util.service";
+import {Calendar} from "@ionic-native/calendar";
 import { CalendarService } from "../service/calendar.service";
 import {Device} from "@ionic-native/device";
 import { SQLitePorter } from '@ionic-native/sqlite-porter';
 import {BaseSqliteService} from "../service/sqlite-service/base-sqlite.service";
 import {UserSqliteService} from "../service/sqlite-service/user-sqlite.service";
+import {WorkSqliteService} from "../service/sqlite-service/work-sqlite.service";
 
 @NgModule({
   declarations: [
@@ -57,10 +59,12 @@ import {UserSqliteService} from "../service/sqlite-service/user-sqlite.service";
     AndroidFullScreen,
     SQLite,
     UtilService,
+    Calendar,
     CalendarService,
     SQLitePorter,
     BaseSqliteService,
     UserSqliteService,
+    WorkSqliteService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
