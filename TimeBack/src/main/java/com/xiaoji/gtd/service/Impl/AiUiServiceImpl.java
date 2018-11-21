@@ -1,8 +1,8 @@
-package com.xiaoji.master.service.serviceImpl;
+package com.xiaoji.gtd.service.Impl;
 
 import com.xiaoji.config.exception.ServiceException;
-import com.xiaoji.master.dto.AiUiJsonDto;
 import com.xiaoji.master.dto.AiUiInDto;
+import com.xiaoji.master.dto.AiUiJsonDto;
 import com.xiaoji.master.dto.AiUiOutDto;
 import com.xiaoji.master.service.IAiUiService;
 import com.xiaoji.master.service.IGroupService;
@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import static com.xiaoji.configuration.XFSkillConfig.*;
 
@@ -24,7 +25,7 @@ import static com.xiaoji.configuration.XFSkillConfig.*;
  */
 @Service
 @Transactional
-public class AiUiServiceImpl implements IAiUiService {
+public class IntentService implements IIntentService {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
@@ -33,16 +34,8 @@ public class AiUiServiceImpl implements IAiUiService {
     private static final Integer RC_SYSTEM_ERROR = 2;
     private static final Integer RC_FAIL = 3;
     private static final Integer RC_NOT_DEAL = 4;
-
-    private final IScheduleService scheduleService;
-    private final IGroupService groupService;
-
     @Autowired
-    public AiUiServiceImpl(IScheduleService scheduleService, IGroupService groupService) {
-        this.scheduleService = scheduleService;
-        this.groupService = groupService;
-    }
-
+    private RestTemplate restTemplate;
     /**
      * 语音方法
      * @param inDto
@@ -53,6 +46,8 @@ public class AiUiServiceImpl implements IAiUiService {
      */
     @Override
     public AiUiOutDto aiuiAnswer(AiUiInDto inDto, int flag) {
+
+        restTemplate.postForEntity()
 
         AiUiJsonDto aiuiData = null;
         AiUiOutDto outDto = new AiUiOutDto();

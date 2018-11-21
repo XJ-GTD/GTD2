@@ -1,4 +1,4 @@
-package com.xiaoji.config.configuration;
+package com.xiaoji.configuration;
 
 /**
  * 讯飞技能配置

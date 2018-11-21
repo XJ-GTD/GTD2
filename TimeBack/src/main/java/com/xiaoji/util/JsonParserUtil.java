@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.xiaoji.config.configuration.XFSkillConfig.*;
+import static com.xiaoji.configuration.XFSkillConfig.*;
 import static org.apache.logging.log4j.Level.ERROR;
 
 /**
