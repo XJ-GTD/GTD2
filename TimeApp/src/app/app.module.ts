@@ -21,6 +21,8 @@ import { UtilService } from "../service/util.service";
 import { CalendarService } from "../service/calendar.service";
 import {Device} from "@ionic-native/device";
 import { SQLitePorter } from '@ionic-native/sqlite-porter';
+import {BaseSqliteService} from "../service/sqlite-service/base-sqlite.service";
+import {UserSqliteService} from "../service/sqlite-service/user-sqlite.service";
 
 @NgModule({
   declarations: [
@@ -54,10 +56,11 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter';
     XiaojiFeedbackService,
     AndroidFullScreen,
     SQLite,
-    SqliteService,
     UtilService,
     CalendarService,
     SQLitePorter,
+    BaseSqliteService,
+    UserSqliteService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
