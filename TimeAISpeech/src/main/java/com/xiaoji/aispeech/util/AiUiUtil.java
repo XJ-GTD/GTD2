@@ -23,7 +23,7 @@ public class AiUiUtil {
     private static final String DATA_TYPE_AUDIO = "audio";
     private static final String SCENE = "main";
     private static final String SAMPLE_RATE = "16000";
-    private static final String AUTH_ID = "8b9133b8519875127034d7c3cb70a383";
+    private static final String AUTH_ID = "8b9133b8519875127034d7c3cb70a384";
     private static final String AUE = "raw";
     private static final String FILE_PATH = "";
 
@@ -42,7 +42,7 @@ public class AiUiUtil {
             String result = "";
             if (flag == 0) {
                 header = buildHeader_audio();
-                result = httpPost(URL, header, base64Audio(audio));
+                result = httpPost(URL, header, readFile(audio));
 
             } else if (flag == 1) {
                 header = buildHeader_text();

@@ -1,5 +1,6 @@
-package com.xiaoji.aispeech.bean;
+package com.xiaoji.aispeech.xf.aiuiData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,12 +8,12 @@ import java.util.List;
  *
  * create by wzy on 2018/07/23
  */
-public class AiUiBackBean {
+public class AiUiResponse {
 
     private String code;        //结果码(具体见错误码)
     private String desc;        //描述
-    private String sid;     //会话ID
-    private List<Object> data;       //结果数据
+    private String sid;         //会话ID
+    private List<AiuiSub> data = new ArrayList<AiuiSub>();  //语义结果
 
     public String getCode() {
         return code;
@@ -38,12 +39,12 @@ public class AiUiBackBean {
         this.sid = sid;
     }
 
-    public List<Object> getData() {
+
+    public List<AiuiSub> getData() {
         return data;
     }
 
-    public void setData(List<Object> data) {
+    public void setData(List<AiuiSub> data) {
         this.data = data;
     }
-
 }

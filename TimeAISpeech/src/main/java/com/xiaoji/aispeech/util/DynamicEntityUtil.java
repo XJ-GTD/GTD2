@@ -2,7 +2,7 @@ package com.xiaoji.aispeech.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.xiaoji.aispeech.bean.AiUiInBean;
+import com.xiaoji.aispeech.bean.AiuiDynamiceEntityBean;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -28,7 +28,7 @@ public class DynamicEntityUtil {
     private static final String ACCOUNTKEY = "e7e466235f9545ee93b8d82ece084415";
 //    private static final String RES_NAME = "SCARECROW.contact_main";
 
-    public static String update(AiUiInBean inBean) throws IOException,ParseException, InterruptedException{
+    public static String update(AiuiDynamiceEntityBean inBean) throws IOException,ParseException, InterruptedException{
         Map<String, String> header = buildHeader();
         String uploadBody = buildUploadBody(inBean);
         String result = httpPost(UPLOAD_URL, header, uploadBody);
@@ -59,7 +59,7 @@ public class DynamicEntityUtil {
     }
 
     //上传数据
-    private static String buildUploadBody(AiUiInBean inBean) throws UnsupportedEncodingException {
+    private static String buildUploadBody(AiuiDynamiceEntityBean inBean) throws UnsupportedEncodingException {
         String body = "";
         String persParam = getPersParam(inBean.getUuid());
         String resName = getResName(inBean.getResName());
