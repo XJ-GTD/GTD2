@@ -12,6 +12,7 @@ import com.xiaoji.gtd.repository.GtdUserRepository;
 import com.xiaoji.gtd.repository.PersonRepository;
 import com.xiaoji.gtd.service.IPersonService;
 import com.xiaoji.util.BaseUtil;
+import com.xiaoji.util.CommonMethods;
 import com.xiaoji.util.TimerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * 用户接口实现类
@@ -55,8 +57,8 @@ public class PersonServiceImpl implements IPersonService {
      */
     @Override
     public boolean isRepeatMobile(String mobile) {
-        BigInteger bi = new BigInteger((String) personRepository.findByMobile(mobile));
-        int count = bi.intValue();
+        Object obj = personRepository.findByMobile(mobile);
+        int count = Integer.valueOf(obj.toString());
         return count != 0;
     }
 
@@ -86,22 +88,27 @@ public class PersonServiceImpl implements IPersonService {
 
         try {
 
+            Timestamp date = CommonMethods.dateToStamp(new Date().toString());
             //规则字段
             accountName = BaseUtil.createAccountName(accountMobile);
             nickName = BaseUtil.createNickName(accountMobile);
             headImgUrl = HEAD_IMG_URL_ANDROID;
             accountStatus = ACCOUNT_STATUS;
-            logger.info("用户名：" + accountName + " 昵称：" + nickName);
+            logger.info("账户名：" + accountName + " 昵称：" + nickName);
 
             //用户数据生成
             userEntity.setUserId(userId);
             userEntity.setNickName(nickName);
             userEntity.setHeadimgUrl(headImgUrl);
+            userEntity.setCreateId(userId);
+            userEntity.setCreateDate(date);
             userRepository.save(userEntity);
 
             accountEntity.setUserId(userId);
             accountEntity.setAccountStatus(accountStatus);
             accountEntity.setAccountInviter(accountInviter);
+            accountEntity.setCreateId(userId);
+            accountEntity.setCreateDate(date);
             accountRepository.save(accountEntity);
 
             mobileLoginEntity.setLoginName(accountMobile);
@@ -109,14 +116,17 @@ public class PersonServiceImpl implements IPersonService {
             mobileLoginEntity.setPassword(password);
             loginType = LOGIN_TYPE_MOBILE;
             mobileLoginEntity.setLoginType(loginType);
+            mobileLoginEntity.setCreateId(userId);
+            mobileLoginEntity.setCreateDate(date);
+            loginRepository.save(mobileLoginEntity);
 
             accountLoginEntity.setLoginName(accountName);
             accountLoginEntity.setUserId(userId);
             accountLoginEntity.setPassword(password);
             loginType = LOGIN_TYPE_ACCOUNT;
             accountLoginEntity.setLoginType(loginType);
-
-            loginRepository.save(mobileLoginEntity);
+            accountLoginEntity.setCreateId(userId);
+            accountLoginEntity.setCreateDate(date);
             loginRepository.save(accountLoginEntity);
 
             logger.info("用户注册成功!");
