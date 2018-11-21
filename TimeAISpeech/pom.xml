@@ -96,11 +96,6 @@
             <version>1.2.47</version>
         </dependency>
         <dependency>
-            <groupId>com.iflytek.msc</groupId>
-            <artifactId>msc</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20160810</version>
@@ -110,6 +105,11 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
         </dependency>
 
     </dependencies>

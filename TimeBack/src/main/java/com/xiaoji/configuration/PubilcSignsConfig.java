@@ -1,6 +1,4 @@
-package com.xiaoji.config.configuration;
-
-import org.springframework.beans.factory.annotation.Value;
+package com.xiaoji.configuration;
 
 /**
  * 公共文言配置
