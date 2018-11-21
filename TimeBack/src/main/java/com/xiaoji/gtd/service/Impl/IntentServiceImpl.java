@@ -5,6 +5,7 @@ import com.xiaoji.aispeech.bean.VoiceOutBean;
 import com.xiaoji.gtd.dto.AiUiInDto;
 import com.xiaoji.gtd.dto.Out;
 import com.xiaoji.gtd.service.IIntentService;
+import com.xiaoji.util.Pinyin4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,7 +118,7 @@ public class IntentServiceImpl implements IIntentService {
 
 
             //TODO 成功后改写逻辑用MQ发出
-            logger.info("--->async rest response success----, result = "+voiceOutBeanResponseEntity.getBody().getData().get(0).getAnswer());
+            logger.info("--->async rest response success----, result = "+ Pinyin4j.toPinYin(voiceOutBeanResponseEntity.getBody().getData().get(0).getAnswer()));
         }
     }
 }
