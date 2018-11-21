@@ -65,16 +65,15 @@ public class AIButlerController {
      */
     @RequestMapping(value = "/text", method = RequestMethod.POST)
     @ResponseBody
-    public VoiceOutBean addSchedule(@RequestBody VoiceInBean voiceInBean) {
+    public VoiceOutBean text(@RequestBody VoiceInBean voiceInBean) {
+
 
         JSON repJson = aiButlerService.answerTextResJSON(voiceInBean.getContent());
+
 
         AiUiResponse response  = JSON.toJavaObject(repJson,AiUiResponse.class);
         //写入日志
         voiceLogrService.saveLog4XF(response,voiceInBean,repJson.toJSONString());
-
-
-
 
         return tranOutJsonObject(response,voiceInBean);
     }
@@ -85,12 +84,14 @@ public class AIButlerController {
      */
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
-    public VoiceOutBean addSchedule(@RequestParam String text) {
+    public VoiceOutBean test(@RequestParam String text) {
 
 
+        logger.info("*********************text" + text);
         JSON repJson = aiButlerService.answerTextResJSON(text);
-
+        logger.info("*********************repJson" + repJson);
         AiUiResponse response  = JSON.toJavaObject(repJson,AiUiResponse.class);
+        logger.info("*********************response" + response);
         //写入日志
         VoiceInBean voiceInBean = new VoiceInBean();
         voiceInBean.setContent(text);

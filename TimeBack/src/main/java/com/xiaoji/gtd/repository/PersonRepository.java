@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.math.BigInteger;
 
 /**
  * 用户类DAO层 注解类
@@ -23,10 +24,10 @@ public class PersonRepository {
      * @param mobile
      * @return
      */
-    public int findByMobile(String mobile) {
+    public Object findByMobile(String mobile) {
 
         String sql = "SELECT COUNT(*) FROM gtd_login WHERE LOGIN_NAME = " + mobile;
 
-        return (int) em.createNativeQuery(sql).getSingleResult();
+        return em.createNativeQuery(sql).getSingleResult();
     }
 }

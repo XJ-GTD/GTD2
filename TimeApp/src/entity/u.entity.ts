@@ -3,14 +3,14 @@
  */
 
 //用户类
-export class UModel {
+export class UEntity {
 
   private _uI: string=null;   //用户ID
   private _oUI:string=null; //原用户ID
   private _uN: string=null;   //昵称
   private _hIU: string=null;          //头像URL
   private _biy: string=null;    // 生日
-  private _uS: number=null;     // 性别
+  private _uS: string=null;     // 性别
   private _uCt: string=null; // 联系方式
   private _aQ: string=null;    //消息队列
   private _uT:string=null; //token
@@ -169,11 +169,11 @@ export class UModel {
     this._biy = value;
   }
 
-  get uS(): number {
+  get uS(): string {
     return this._uS;
   }
 
-  set uS(value: number) {
+  set uS(value: string) {
     this._uS = value;
   }
 

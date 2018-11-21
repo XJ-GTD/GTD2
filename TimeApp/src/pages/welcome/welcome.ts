@@ -4,6 +4,11 @@ import {UtilService} from "../../service/util.service";
 import {SqliteService} from "../../service/sqlite.service";
 import { ParamsService } from "../../service/params.service";
 import {UserModel} from "../../model/user.model";
+import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
+import {UserSqliteService} from "../../service/sqlite-service/user-sqlite.service";
+import {UEntity} from "../../entity/u.entity";
+import {UoModel} from "../../model/out/uo.model";
+import {WorkSqliteService} from "../../service/sqlite-service/work-sqlite.service";
 import {CalendarService} from "../../service/calendar.service";
 
 /**
@@ -31,7 +36,9 @@ export class WelcomePage {
   constructor(public navCtrl: NavController,
               public util: UtilService,
               private loadingCtrl: LoadingController,
-              private sqliteService: SqliteService,
+              private sqliteService: BaseSqliteService,
+              private userSqlite: UserSqliteService,
+              private workSqlite: WorkSqliteService,
               private paramsService: ParamsService,
               private calendarService:CalendarService,
               public navParams: NavParams) {
@@ -42,7 +49,16 @@ export class WelcomePage {
   }
 
   goToLogin() {
-    this.navCtrl.setRoot('UserLoginPage');
+    let u:UEntity=new UEntity();
+    u.uI=this.util.getUuid();
+    u.uty='0';
+    this.workSqlite.test();
+    this.sqliteService.save(u).then(data=>{
+      console.log(data);
+      this.navCtrl.setRoot('HomePage');
+    })
+
+    //this.navCtrl.setRoot('UserLoginPage');
     //this.visitor();
   }
   //同步本地日历数据
@@ -96,29 +112,6 @@ export class WelcomePage {
       content: "正在加载...",
       duration: 1000
     });
-    //判断是否存在
-    this.sqliteService.userIsExist('').then(data=>{
-      if(data && data.rows&& data.rows.length>0){
-        this.paramsService.user=data.rows.item(0)
-        loader.present();
-        this.navCtrl.setRoot('HomePage');
-      }else{
-        //不存在则添加
-        let uuid = this.util.getUuid();
-        uuid='1234567890'
-        this.sqliteService.executeSql('INSERT INTO GTD_A(userId,userType) VALUES (?,?)',[uuid,0])
-          .then(data=>{
-            let user: UserModel = new UserModel();
-            user.userId=uuid;
-            loader.present();
-            this.navCtrl.setRoot('HomePage');
-          }).catch(e=>{
-          console.log(e)
-        })
-      }
-    }).catch(e=>{
-      console.log(e);
-    })
   }
 
 }

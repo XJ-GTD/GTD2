@@ -17,6 +17,10 @@ import {SuperTabsComponent} from "../../components/ionic2-super-tabs";
 import {LightSvgPage} from "../light-svg/light-svg";
 import {CalendarService} from "../../service/calendar.service";
 import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
+import {WorkSqliteService} from "../../service/sqlite-service/work-sqlite.service";
+import {UserSqliteService} from "../../service/sqlite-service/user-sqlite.service";
+import {UEntity} from "../../entity/u.entity";
+import {UoModel} from "../../model/out/uo.model";
 
 
 
@@ -55,7 +59,7 @@ export class HomePage {
   dayList: TimeModel;
 
   showDay:string;
-
+  u:UEntity;
 
 
   //查询日历
@@ -77,6 +81,8 @@ export class HomePage {
               private paramsService: ParamsService,
               private alarmClock: XiaojiAlarmclockService,
               private sqliteService:BaseSqliteService,
+              private userSqlite:UserSqliteService,
+              private workSqlite:WorkSqliteService,
               private calendarService:CalendarService) {
 
     moment.locale('zh-cn');
@@ -104,6 +110,45 @@ export class HomePage {
     this.webSocketService.connect("15000");
 
     this.scheduleList = [];
+    //获取用户信息
+    this.u = new UEntity();
+    this.userSqlite.select(this.u,new UoModel())
+      .then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          this.u=data.rows.item(0);
+          //消息队列接收
+          this.webSocketService.connect(this.u.aQ);
+        }
+      })
+    let month = moment().format('YYYY-MM');
+    this.workSqlite.selectMonthBs(month).then(data=>{
+      if(data && data.rows && data.rows.length>0){
+
+        for(let i=0;i<data.rows.length;i++){
+          let rcp=data.rows.item(i);
+          let res:any={};
+          if(data.rows.item(i).ct<5){
+            res.date = new Date(rcp.ymd);
+            res.cssClass = `hassometing animated bounceIn`;
+            // this.options.daysConfig.push({
+            //   date: new Date(rcp.ymd),
+            //   cssClass: `hassometing animated bounceIn`
+            // });
+          }else{
+            // this.options.daysConfig.push({
+            //   date: new Date(rcp.ymd),
+            //   cssClass: `busysometing animated bounceIn`
+            // });
+            res.cssClass = `busysometing animated bounceIn`;
+          }
+          if(rcp.mdn != null){
+            res.subTitle=`\u25B2`;
+          }
+          this.options.daysConfig.push(res);
+        }
+      }
+      this.ion2calendar.refresh();
+    })
     // setTimeout(()=>{
     //   this.sqliteService.executeSql("select substr(playersFinishDate,1,10) finishDate,count(*) numL from GTD_D " +
     //     "where substr(playersFinishDate,1,7)='2018-11'" +
@@ -176,7 +221,8 @@ export class HomePage {
   setAlarmList() {
 
     this.http.post(AppConfig.SCHEDULE_TODAY_REMIND_URL, {
-      userId: this.paramsService.user.userId
+      //userId: this.paramsService.user.userId
+      userId:this.u.uI
     },{
       headers: {
         "Content-Type": "application/json"
