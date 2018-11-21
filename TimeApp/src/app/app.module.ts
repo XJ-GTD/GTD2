@@ -23,6 +23,7 @@ import {Device} from "@ionic-native/device";
 import { SQLitePorter } from '@ionic-native/sqlite-porter';
 import {BaseSqliteService} from "../service/sqlite-service/base-sqlite.service";
 import {UserSqliteService} from "../service/sqlite-service/user-sqlite.service";
+import {WorkSqliteService} from "../service/sqlite-service/work-sqlite.service";
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import {UserSqliteService} from "../service/sqlite-service/user-sqlite.service";
     SQLitePorter,
     BaseSqliteService,
     UserSqliteService,
+    WorkSqliteService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

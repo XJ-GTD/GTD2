@@ -8,6 +8,9 @@ import {HttpClient} from "@angular/common/http";
 import {CalendarService} from "../../service/calendar.service";
 import {UtilService} from "../../service/util.service";
 import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
+import {UEntity} from "../../entity/u.entity";
+import {UserSqliteService} from "../../service/sqlite-service/user-sqlite.service";
+import {UoModel} from "../../model/out/uo.model";
 
 /**
  * Generated class for the HomeWorkListPage page.
@@ -26,6 +29,7 @@ export class HomeWorkListPage {
   schedule: ScheduleModel;
   scheduleList: Array<ScheduleModel>;
   findSchedule: ScheduleOutModel; //查询日程条件
+  u:UEntity;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -35,12 +39,24 @@ export class HomeWorkListPage {
               private util:UtilService,
               private rnd: Renderer2,
               private sqliteService:BaseSqliteService,
+              private userSqlite:UserSqliteService,
               private el: ElementRef) {
     this.scheduleList = [];
     console.log('ionViewDidLoad HomeWorkListPage');
     this.calendarService.getSelectDay(this);
+    this.init()
   }
 
+  init(){
+    let uo=new UoModel();
+    this.u = new UEntity();
+    this.userSqlite.select(this.u,uo)
+      .then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          this.u=data.rows.item(0);
+        }
+      })
+  }
   /**
    * Height of the tabs
    */
@@ -88,18 +104,19 @@ export class HomeWorkListPage {
     findSchedule = new ScheduleOutModel();
     findSchedule.scheduleStartTime = year + "-" + month + "-" + day + " 00:00";
     findSchedule.scheduleDeadline = year + "-" + month + "-" + day + " 23:59";
-    findSchedule.userId = this.paramsService.user.userId;
+    //findSchedule.userId = this.paramsService.user.userId;
+    findSchedule.userId = this.u.uI;
     console.log("scheduleStartTime:" + findSchedule.scheduleStartTime + " | scheduleDeadline:" + findSchedule.scheduleDeadline);
     this.scheduleList = [];
     let dateStr=year + "-" + monthStr + "-" + dayStr;
-    this.sqliteService.executeSql('select substr(playersFinishDate,12,16) dateStr,gtdd.* from GTD_D gtdd where substr(playersId,1,10)=?'
+    this.sqliteService.executeSql('select substr(pd,12,16) dateStr,gtdd.* from GTD_D gtdd where substr(pd,1,10)=?'
       ,[dateStr])
       .then(data=>{
         if(data && data.rows && data.rows.length>0){
           for(let i=0;i<data.rows.length;i++){
             let mo = new ScheduleModel();
             mo.scheduleStartTime = data.rows.item(i).dateStr;
-            mo.scheduleName = data.rows.item(i).scheduleOtherName;
+            mo.scheduleName = data.rows.item(i).son;
             this.scheduleList.push(mo);
           }
         }
