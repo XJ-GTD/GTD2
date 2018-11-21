@@ -62,13 +62,24 @@ public class AuthServiceImpl implements IAuthService {
      */
     @Override
     public LoginOutDto passwordLogin(LoginInDto inDto) {
-
+        LoginOutDto data = new LoginOutDto();
         String account = inDto.getAccount();
         String password = inDto.getPassword();
 
-        authRepository.passwordLogin(account, password);
+        try {
+            Object obj = authRepository.passwordLogin(account, password);
+            int count = Integer.valueOf(obj.toString());
+            if (count != 0) {
 
-        return null;
+            } else {
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return data;
     }
 
     /**
