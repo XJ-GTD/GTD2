@@ -5,8 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.AsyncClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.AsyncRestTemplate;
 import org.springframework.web.client.RestTemplate;
+
+import java.nio.charset.Charset;
 
 @Configuration
 public class RestTemplateConfig{
@@ -27,6 +30,9 @@ public class RestTemplateConfig{
 
     @Bean
     public AsyncRestTemplate asyncRestTemplate(ClientHttpRequestFactory factory){
-        return new AsyncRestTemplate();
+        AsyncRestTemplate asyncRestTemplate = new AsyncRestTemplate();
+        // 添加 UTF-8 的解析器
+        asyncRestTemplate.getMessageConverters().add(0,new StringHttpMessageConverter(Charset.forName("UTF-8")));
+        return asyncRestTemplate;
     }
 }

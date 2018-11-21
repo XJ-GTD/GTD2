@@ -29,10 +29,6 @@ public class TimerUtil {
 
     public synchronized static TimerDto getCache(String key){
         TimerDto code = cacheMap.get(key);
-        if(code != null && System.currentTimeMillis() > code.getTimeOut()){
-            cacheMap.remove(key);
-            return null;
-        }
         return code;
     }
 
