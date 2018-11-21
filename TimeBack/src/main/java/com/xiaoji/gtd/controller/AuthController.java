@@ -23,8 +23,8 @@ public class AuthController {
      */
     @RequestMapping(value = "/login_visitors", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto loginVisitors(@RequestBody BaseInDto inDto) {
-        BaseOutDto outDto = new BaseOutDto();
+    public Out loginVisitors(@RequestBody BaseInDto inDto) {
+        Out outDto = new Out();
 
         return outDto;
     }
@@ -35,8 +35,8 @@ public class AuthController {
      */
     @RequestMapping(value = "/login_password", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto loginPassword(@RequestBody BaseInDto inDto) {
-        BaseOutDto outDto = new BaseOutDto();
+    public Out loginPassword(@RequestBody BaseInDto inDto) {
+        Out outDto = new Out();
 
         return outDto;
     }
@@ -47,8 +47,8 @@ public class AuthController {
      */
     @RequestMapping(value = "/login_code", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto loginAuthCode(@RequestBody BaseInDto inDto) {
-        BaseOutDto outDto = new BaseOutDto();
+    public Out loginAuthCode(@RequestBody BaseInDto inDto) {
+        Out outDto = new Out();
 
         return outDto;
     }

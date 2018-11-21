@@ -6,11 +6,12 @@ package com.xiaoji.gtd.dto;
  */
 public class SignUpInDto {
 
-    private String accountMobile;       //手机号
-    private String accountPassword;     //登陆密码
+    private String accountMobile;      //手机号
+    private String password;            //登陆密码
     private String deviceId;            //设备ID
     private String authCode;            //验证码
-    private String userId;     // 用户ID
+    private String userId;              // 用户ID
+    private String accountInviter;      //邀请人
 
 
     public String getAccountMobile() {
@@ -19,14 +20,6 @@ public class SignUpInDto {
 
     public void setAccountMobile(String accountMobile) {
         this.accountMobile = accountMobile;
-    }
-
-    public String getAccountPassword() {
-        return accountPassword;
-    }
-
-    public void setAccountPassword(String accountPassword) {
-        this.accountPassword = accountPassword;
     }
 
     public String getDeviceId() {
@@ -51,5 +44,21 @@ public class SignUpInDto {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getAccountInviter() {
+        return accountInviter;
+    }
+
+    public void setAccountInviter(String accountInviter) {
+        this.accountInviter = accountInviter;
     }
 }
