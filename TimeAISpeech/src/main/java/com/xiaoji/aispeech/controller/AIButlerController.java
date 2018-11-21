@@ -118,7 +118,7 @@ public class AIButlerController {
 
         for (AiuiSub sub:ls){
             if("nlp".equals(sub.getSub())){
-                if (sub.getIntent() != null){
+                if (sub.getIntent() != null && sub.getIntent().getAnswer() != null){
                     AiuiIntent intent =  sub.getIntent();
                     List<Semantic> semantics = intent.getSemantic();
 

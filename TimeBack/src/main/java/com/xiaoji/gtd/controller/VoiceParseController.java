@@ -1,6 +1,7 @@
 package com.xiaoji.gtd.controller;
 
 import com.xiaoji.config.exception.ServiceException;
+import com.xiaoji.gtd.service.IIntentService;
 import com.xiaoji.master.dto.AiUiInDto;
 import com.xiaoji.master.dto.AiUiOutDto;
 import com.xiaoji.master.dto.BaseOutDto;
@@ -18,17 +19,14 @@ import org.springframework.web.bind.annotation.*;
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/xiaoji")
+@RequestMapping(value = "/parseIntent")
 public class VoiceParseController {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
-    private final IAiUiService aiUiService;
-
     @Autowired
-    public VoiceParseController(IAiUiService aiUiService) {
-        this.aiUiService = aiUiService;
-    }
+    private IIntentService intentService;
+
 
     /**
      * 语义解析： 0:音频方法 1:文本方法
@@ -37,27 +35,41 @@ public class VoiceParseController {
      */
     @RequestMapping(value = "/answer_audio", method = RequestMethod.POST)
     public BaseOutDto readAudio(@RequestBody AiUiInDto inDto){
+
+       intentService.parserBase64(inDto);
         BaseOutDto outBean = new BaseOutDto();
-        try{
-            AiUiOutDto dataDto = aiUiService.aiuiAnswer(inDto, 0);
-            if (dataDto != null) {
-                outBean.setCode(ResultCode.SUCCESS);
-                outBean.setMessage("[语音交互完成]");
-                logger.info("[语音交互完成]");
-            } else {
-                outBean.setCode(ResultCode.REPEAT);
-                outBean.setMessage("[语音数据解析失败]");
-                logger.info("[语音数据解析失败]");
-            }
-
-        } catch (Exception e){
-            outBean.setCode(ResultCode.FAIL);
-            outBean.setMessage("[语音交互失败]：请联系技术人员");
-            logger.info(e.getMessage());
-            throw new ServiceException("[语音交互失败]：请联系技术人员");
-        }
-
+        outBean.setCode(0);
         return outBean;
     }
 
+
+    /**
+     * 语义解析： 0:音频方法 1:文本方法
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/text", method = RequestMethod.POST)
+    public BaseOutDto readText(@RequestBody AiUiInDto inDto){
+        intentService.asyncParserText(inDto);
+        BaseOutDto outBean = new BaseOutDto();
+        outBean.setCode(0);
+        return outBean;
+    }
+
+    /**
+     * 语义解析： 0:音频方法 1:文本方法
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public BaseOutDto readText(@RequestParam String text){
+        AiUiInDto inDto = new AiUiInDto();
+        inDto.setContent(text);
+        inDto.setUserId("12333");
+        inDto.setDeviceId("333222111");
+        intentService.asyncParserText(inDto);
+        BaseOutDto outBean = new BaseOutDto();
+        outBean.setCode(0);
+        return outBean;
+    }
 }

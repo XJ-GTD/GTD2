@@ -1,6 +1,9 @@
 package com.xiaoji.gtd.service.Impl;
 
+import com.xiaoji.aispeech.bean.VoiceInBean;
+import com.xiaoji.aispeech.bean.VoiceOutBean;
 import com.xiaoji.config.exception.ServiceException;
+import com.xiaoji.gtd.service.IIntentService;
 import com.xiaoji.master.dto.AiUiInDto;
 import com.xiaoji.master.dto.AiUiJsonDto;
 import com.xiaoji.master.dto.AiUiOutDto;
@@ -12,8 +15,15 @@ import com.xiaoji.util.JsonParserUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
+import org.springframework.web.client.AsyncRestTemplate;
 import org.springframework.web.client.RestTemplate;
 
 import static com.xiaoji.configuration.XFSkillConfig.*;
@@ -23,9 +33,8 @@ import static com.xiaoji.configuration.XFSkillConfig.*;
  *
  * create by wzy on 2018/09/14
  */
-@Service
-@Transactional
-public class IntentService implements IIntentService {
+@Component
+public class IntentServiceImpl implements IIntentService {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
@@ -36,6 +45,14 @@ public class IntentService implements IIntentService {
     private static final Integer RC_NOT_DEAL = 4;
     @Autowired
     private RestTemplate restTemplate;
+    @Value("${intent.text.url}")
+    private String textuUrl;
+    @Value("${intent.base64.url}")
+    private String base64Url;
+
+    @Autowired
+    private AsyncRestTemplate asyncRestTemplate;
+
     /**
      * 语音方法
      * @param inDto
@@ -44,68 +61,67 @@ public class IntentService implements IIntentService {
      * 3：
      * @return
      */
-    @Override
-    public AiUiOutDto aiuiAnswer(AiUiInDto inDto, int flag) {
+//    @Override
+//    public AiUiOutDto aiuiAnswer(AiUiInDto inDto, int flag) {
+//
+//        AiUiJsonDto aiuiData = null;
+//        AiUiOutDto outDto = new AiUiOutDto();
+//
+//        Integer userId = inDto.getUserId();
+//        String content = inDto.getContent();
+//        String deviceId = inDto.getDeviceId();
+//
+//        //入参检测
+//        //非空检测
+//        if (content == null || "".equals(content))throw new ServiceException("缺少语音输入");
+//        if (userId == 0 || "".equals(userId))throw new ServiceException("缺少用户ID");
+//        if (deviceId == null || "".equals(deviceId))throw new ServiceException("缺少设备ID");
+//
+//        //调用讯飞API
+//        String outData = AiUiUtil.readAudio(content, flag);
+//
+//        if ("".equals(outData) || outData == null) {
+//            logger.info("调用讯飞API失败");
+//            throw new ServiceException("语音交互失败");
+//        }
+//
+//        //解析讯飞回传数据
+//        aiuiData = JsonParserUtil.parse(outData);
+//
+//        if (aiuiData == null) {
+//            return null;
+//        } else if (aiuiData.getRc() == RC_NOT_DEAL){
+//
+//            return outDto;
+//        } else if (aiuiData.getRc() == RC_INPUT_ERROR || aiuiData.getRc() == RC_SYSTEM_ERROR) {
+//
+//            return outDto;
+//        } else {
+//            String service_user = aiuiData.getService().split(".")[0];
+//            if (service_user.equals(USER_SERVICE)) {
+//                return outDto;
+//            } else {
+//                aiuiData.setService(aiuiData.getService().split(".")[1]);
+//            }
+//        }
+//
+//
+//        String service = aiuiData.getService();
+//        switch (service) {
+//            case SERVICE_SCHEDULE:
+//                outDto = scheduleMethod(aiuiData, userId, deviceId);
+//                break;
+//            case SERVICE_PLAYER:
+//                outDto = playerMethod(aiuiData);
+//                break;
+//            default:
+//
+//                break;
+//        }
+//
+//        return outDto;
+//    }
 
-        restTemplate.postForEntity()
-
-        AiUiJsonDto aiuiData = null;
-        AiUiOutDto outDto = new AiUiOutDto();
-
-        Integer userId = inDto.getUserId();
-        String content = inDto.getContent();
-        String deviceId = inDto.getDeviceId();
-
-        //入参检测
-        //非空检测
-        if (content == null || "".equals(content))throw new ServiceException("缺少语音输入");
-        if (userId == 0 || "".equals(userId))throw new ServiceException("缺少用户ID");
-        if (deviceId == null || "".equals(deviceId))throw new ServiceException("缺少设备ID");
-
-        //调用讯飞API
-        String outData = AiUiUtil.readAudio(content, flag);
-
-        if ("".equals(outData) || outData == null) {
-            logger.info("调用讯飞API失败");
-            throw new ServiceException("语音交互失败");
-        }
-
-        //解析讯飞回传数据
-        aiuiData = JsonParserUtil.parse(outData);
-
-        if (aiuiData == null) {
-            return null;
-        } else if (aiuiData.getRc() == RC_NOT_DEAL){
-
-            return outDto;
-        } else if (aiuiData.getRc() == RC_INPUT_ERROR || aiuiData.getRc() == RC_SYSTEM_ERROR) {
-
-            return outDto;
-        } else {
-            String service_user = aiuiData.getService().split(".")[0];
-            if (service_user.equals(USER_SERVICE)) {
-                return outDto;
-            } else {
-                aiuiData.setService(aiuiData.getService().split(".")[1]);
-            }
-        }
-
-
-        String service = aiuiData.getService();
-        switch (service) {
-            case SERVICE_SCHEDULE:
-                outDto = scheduleMethod(aiuiData, userId, deviceId);
-                break;
-            case SERVICE_PLAYER:
-                outDto = playerMethod(aiuiData);
-                break;
-            default:
-
-                break;
-        }
-
-        return outDto;
-    }
 
     /**
      * 日程相关处理
@@ -211,5 +227,83 @@ public class IntentService implements IIntentService {
         AiUiOutDto outData = new AiUiOutDto();
 
         return outData;
+    }
+
+    @Override
+    public AiUiOutDto parserBase64(AiUiInDto inDto) {
+        AiUiOutDto ret = new AiUiOutDto();
+        VoiceInBean in = new VoiceInBean();
+        VoiceOutBean out = new VoiceOutBean();
+        in.setContent(inDto.getContent());
+        in.setUserId(inDto.getUserId());
+        in.setDeviceId(inDto.getDeviceId());
+
+        out = restTemplate.postForObject(this.base64Url,in,VoiceOutBean.class);
+
+        return ret;
+
+    }
+
+    @Override
+    public AiUiOutDto parserText(AiUiInDto inDto) {
+        AiUiOutDto ret = new AiUiOutDto();
+        VoiceInBean in = new VoiceInBean();
+        VoiceOutBean out = new VoiceOutBean();
+        in.setContent(inDto.getContent());
+        in.setUserId(inDto.getUserId());
+        in.setDeviceId(inDto.getDeviceId());
+        out = restTemplate.postForObject(this.textuUrl,in,VoiceOutBean.class);
+
+        return ret;
+
+    }
+
+    @Override
+    public void asyncParserBase64(AiUiInDto inDto) {
+        VoiceInBean in = new VoiceInBean();
+        VoiceOutBean out = new VoiceOutBean();
+        in.setContent(inDto.getContent());
+        in.setUserId(inDto.getUserId());
+        in.setDeviceId(inDto.getDeviceId());
+
+        HttpEntity<VoiceInBean> en = new HttpEntity<VoiceInBean>(in);
+
+
+        ListenableFuture<ResponseEntity<VoiceOutBean>> forEntity =  asyncRestTemplate.postForEntity(this.base64Url,en,VoiceOutBean.class);
+
+        forEntity.addCallback(new CallBackProcess());
+    }
+
+    @Override
+    public void asyncParserText(AiUiInDto inDto) {
+        VoiceInBean in = new VoiceInBean();
+        VoiceOutBean out = new VoiceOutBean();
+        in.setContent(inDto.getContent());
+        in.setUserId(inDto.getUserId());
+        in.setDeviceId(inDto.getDeviceId());
+
+        HttpEntity<VoiceInBean> en = new HttpEntity<VoiceInBean>(in);
+
+
+        ListenableFuture<ResponseEntity<VoiceOutBean>> forEntity =  asyncRestTemplate.postForEntity(this.textuUrl,en,VoiceOutBean.class);
+        forEntity.addCallback(new CallBackProcess());
+
+    }
+
+    class CallBackProcess implements ListenableFutureCallback<ResponseEntity<VoiceOutBean>>{
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            //TODO 失败后MQ通知客户端
+            logger.error("=====rest response faliure======");
+
+        }
+
+        @Override
+        public void onSuccess(ResponseEntity<VoiceOutBean> voiceOutBeanResponseEntity) {
+
+            //TODO 成功后改写逻辑用MQ发出
+            logger.info("--->async rest response success----, result = "+voiceOutBeanResponseEntity.getBody().getData().get(0).getAnswer());
+        }
     }
 }

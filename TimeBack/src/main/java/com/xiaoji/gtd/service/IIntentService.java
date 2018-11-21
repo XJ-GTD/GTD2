@@ -10,11 +10,12 @@ import com.xiaoji.master.dto.AiUiOutDto;
  */
 public interface IIntentService {
 
-    /**
-     * 语义方法
-     * @param inDto
-     * @return
-     */
-    public AiUiOutDto aiuiAnswer(AiUiInDto inDto, int flag);
+    public AiUiOutDto parserBase64(AiUiInDto inDto);
+
+    public AiUiOutDto parserText(AiUiInDto inDto);
+
+    public void asyncParserBase64(AiUiInDto inDto);
+
+    public void asyncParserText(AiUiInDto inDto);
 
 }
