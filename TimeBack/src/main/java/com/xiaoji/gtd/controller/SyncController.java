@@ -24,8 +24,8 @@ public class SyncController {
      */
     @RequestMapping(value = "/initial_sync", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto initialSync(@RequestBody BaseInDto inDto) {
-        BaseOutDto outDto = new BaseOutDto();
+    public Out initialSync(@RequestBody BaseInDto inDto) {
+        Out outDto = new Out();
 
         return outDto;
     }
@@ -36,8 +36,8 @@ public class SyncController {
      */
     @RequestMapping(value = "/login_sync", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto loginSync(@RequestBody BaseInDto inDto) {
-        BaseOutDto outDto = new BaseOutDto();
+    public Out loginSync(@RequestBody BaseInDto inDto) {
+        Out outDto = new Out();
 
         return outDto;
     }
@@ -48,8 +48,8 @@ public class SyncController {
      */
     @RequestMapping(value = "/timing_upload", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto timingUpload(@RequestBody BaseInDto inDto) {
-        BaseOutDto outDto = new BaseOutDto();
+    public Out timingUpload(@RequestBody BaseInDto inDto) {
+        Out outDto = new Out();
 
         return outDto;
     }
@@ -60,8 +60,8 @@ public class SyncController {
      */
     @RequestMapping(value = "/timing_download", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto timingDownload(@RequestBody BaseInDto inDto) {
-        BaseOutDto outDto = new BaseOutDto();
+    public Out timingDownload(@RequestBody BaseInDto inDto) {
+        Out outDto = new Out();
 
         return outDto;
     }

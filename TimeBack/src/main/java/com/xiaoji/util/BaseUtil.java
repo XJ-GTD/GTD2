@@ -79,19 +79,19 @@ public class BaseUtil {
         return returnMap;
     }
 
-    //队列命名规则
-    public static String createQueueName(Integer userId, String deviceId) {
-        return userId + "." + deviceId;
-    }
-
     //交换机命名规则
     public static String createExchangeName(Integer userId) {
         return "gtd" + userId;
     }
 
-    //用户名命名规则
-    public static String createUserName(String accountMobile) {
-        return "用户" + accountMobile;
+    //队列命名规则
+    public static String createQueueName(Integer userId, String deviceId) {
+        return userId + "." + deviceId;
+    }
+
+    //昵称命名规则
+    public static String createNickName(String accountMobile) {
+        return "时间旅行者" + accountMobile;
     }
 
     //账户名命名规则

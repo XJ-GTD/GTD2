@@ -6,4 +6,11 @@ package com.xiaoji.gtd.service;
  * create by wzy on 2018/11/16.
  */
 public interface ISmsService {
+
+    /**
+     * 获取短信验证码
+     * @param mobile
+     * @return
+     */
+    int getAuthCode(String mobile);
 }

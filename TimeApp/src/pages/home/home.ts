@@ -95,7 +95,8 @@ export class HomePage {
 
   this.showDay = moment().format('dddd YYYY 年 MM 月 DD 日');
     //消息队列接收
-    this.webSocketService.connect(this.paramsService.user.accountQueue);
+    // this.webSocketService.connect(this.paramsService.user.accountQueue);
+    this.webSocketService.connect("15000");
 
     this.scheduleList = [];
     // setTimeout(()=>{

@@ -12,7 +12,7 @@ import java.util.List;
 public class VoiceOutBean {
     private String code;
     private String message;
-    private String drviceId;
+    private String deviceId;
     private String userId;
     private List<NlpOutDto> data;
 
@@ -32,14 +32,6 @@ public class VoiceOutBean {
         this.message = message;
     }
 
-    public String getDrviceId() {
-        return drviceId;
-    }
-
-    public void setDrviceId(String drviceId) {
-        this.drviceId = drviceId;
-    }
-
     public String getUserId() {
         return userId;
     }
@@ -54,6 +46,14 @@ public class VoiceOutBean {
 
     public void setData(List<NlpOutDto> data) {
         this.data = data;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }
 

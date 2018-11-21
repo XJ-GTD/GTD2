@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.xiaoji.config.WebAppConfig;
-import com.xiaoji.master.dto.BaseOutDto;
-import com.xiaoji.util.ResultCode;
+import com.xiaoji.gtd.dto.Out;
+import com.xiaoji.gtd.dto.code.ResultCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -24,11 +24,12 @@ public class GlobalExceptionResolver {
     @ExceptionHandler(value = ServiceException.class)
     public void serviceExceptionHandler(HttpServletResponse response, ServiceException e) {
         e.printStackTrace();
-        BaseOutDto baseOutDto= new BaseOutDto();
-        baseOutDto.setCode(ResultCode.FAIL).setMessage(e.getMessage());
-        if (e.getMessage() == null || "".equals(e.getMessage()))  baseOutDto.setMessage("请求异常，请检查后重新请求");
+        Out out= new Out();
+        out.setCode(ResultCode.FAIL);
+        out.setMessage(e.getMessage());
+        if (e.getMessage() == null || "".equals(e.getMessage()))  out.setMessage("请求异常，请检查后重新请求");
         LOGGER.info("--------ServiceException--------");
-        responseResult(response, baseOutDto);
+        responseResult(response, out);
     }
 
     /**
@@ -39,31 +40,33 @@ public class GlobalExceptionResolver {
     public void exceptionHandler(HttpServletResponse response, Exception e) {
         e.printStackTrace();
         if (e instanceof JSONException || e instanceof HttpMessageNotReadableException){
-            BaseOutDto baseOutDto= new BaseOutDto();
-            baseOutDto.setCode(ResultCode.FAIL).setMessage("请求参数错误，请检查后重新输入");
+            Out out= new Out();
+            out.setCode(ResultCode.FAIL);
+            out.setMessage("请求参数错误，请检查后重新输入");
             LOGGER.info("--------JSONException--------");
-            responseResult(response, baseOutDto);
+            responseResult(response, out);
         }else {
-            BaseOutDto baseOutDto = new BaseOutDto();
-            baseOutDto.setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("服务器打酱油了，请稍后再试~");
+            Out out = new Out();
+            out.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            out.setMessage("服务器打酱油了，请稍后再试~");
             LOGGER.info("--------Exception--------");
             LOGGER.error(e.getMessage(), e);
-            responseResult(response, baseOutDto);
+            responseResult(response, out);
         }
     }
     /**
      * @param response
-     * @param baseOutDto
+     * @param out
      * @Title: responseResult
      * @Description: 响应结果
      * @Reutrn void
      */
-    private void responseResult(HttpServletResponse response,BaseOutDto baseOutDto) {
+    private void responseResult(HttpServletResponse response,Out out) {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         response.setStatus(200);
         try {
-            response.getWriter().write(JSON.toJSONString(baseOutDto, SerializerFeature.WriteMapNullValue));
+            response.getWriter().write(JSON.toJSONString(out, SerializerFeature.WriteMapNullValue));
         } catch (IOException ex) {
             LOGGER.error(ex.getMessage());
         }

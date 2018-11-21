@@ -1,7 +1,8 @@
 package com.xiaoji.gtd.dto;
 
+import com.xiaoji.gtd.dto.code.ResultCode;
+
 import java.util.List;
-import java.util.Map;
 
 /**
  * restFul返回数据
@@ -10,18 +11,10 @@ import java.util.Map;
  */
 public class Out {
 
-    private RETCODE code;
+    private ResultCode code;
     private String message;
     private BaseOut data;
     private List<BaseOut> lsData;
-
-    public RETCODE getCode() {
-        return code;
-    }
-
-    public void setCode(RETCODE code) {
-        this.code = code;
-    }
 
     public String getMessage() {
         return message;
@@ -31,7 +24,15 @@ public class Out {
         this.message = message;
     }
 
-    public Object getData() {
+    public List<BaseOut> getLsData() {
+        return lsData;
+    }
+
+    public void setLsData(List<BaseOut> lsData) {
+        this.lsData = lsData;
+    }
+
+    public BaseOut getData() {
         return data;
     }
 
@@ -39,11 +40,11 @@ public class Out {
         this.data = data;
     }
 
-    public List<BaseOut> getLsData() {
-        return lsData;
+    public ResultCode getCode() {
+        return code;
     }
 
-    public void setLsData(List<BaseOut> lsData) {
-        this.lsData = lsData;
+    public void setCode(ResultCode code) {
+        this.code = code;
     }
 }

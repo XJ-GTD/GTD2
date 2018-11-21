@@ -6,17 +6,17 @@ package com.xiaoji.gtd.dto;
  */
 public class UpdatePWDInDto {
 
-    private String accountPassword;     //登陆密码
+    private String password;     //登陆密码
     private String deviceId;            //设备ID
     private String authCode;            //验证码
     private String userId;              // 用户ID
 
-    public String getAccountPassword() {
-        return accountPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAccountPassword(String accountPassword) {
-        this.accountPassword = accountPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getDeviceId() {
@@ -42,4 +42,6 @@ public class UpdatePWDInDto {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+
 }
