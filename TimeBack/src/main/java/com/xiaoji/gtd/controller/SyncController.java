@@ -1,7 +1,7 @@
 package com.xiaoji.gtd.controller;
 
-import com.xiaoji.gtd.dto.*;
-import com.xiaoji.master.dto.BaseOutDto;
+import com.xiaoji.gtd.dto.BaseInDto;
+import com.xiaoji.gtd.dto.Out;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
