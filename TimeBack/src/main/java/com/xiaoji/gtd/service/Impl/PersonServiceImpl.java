@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigInteger;
 
 /**
  * 用户接口实现类
@@ -54,7 +55,8 @@ public class PersonServiceImpl implements IPersonService {
      */
     @Override
     public boolean isRepeatMobile(String mobile) {
-        int count = personRepository.findByMobile(mobile);
+        BigInteger bi = new BigInteger((String) personRepository.findByMobile(mobile));
+        int count = bi.intValue();
         return count != 0;
     }
 

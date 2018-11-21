@@ -23,10 +23,10 @@ public class PersonRepository {
      * @param mobile
      * @return
      */
-    public int findByMobile(String mobile) {
+    public Object findByMobile(String mobile) {
 
         String sql = "SELECT COUNT(*) FROM gtd_login WHERE LOGIN_NAME = " + mobile;
 
-        return (int) em.createNativeQuery(sql).getSingleResult();
+        return em.createNativeQuery(sql).getSingleResult();
     }
 }
