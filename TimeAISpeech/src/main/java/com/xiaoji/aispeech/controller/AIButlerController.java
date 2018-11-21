@@ -110,7 +110,7 @@ public class AIButlerController {
         outDto.setCode(response.getCode());
         outDto.setMessage(response.getDesc());
         outDto.setUserId(voiceInBean.getUserId());
-        outDto.setDrviceId(voiceInBean.getDeviceId());
+        outDto.setDeviceId(voiceInBean.getDeviceId());
 
 
         List<AiuiSub> ls =response.getData();

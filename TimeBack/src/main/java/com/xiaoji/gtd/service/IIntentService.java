@@ -1,7 +1,7 @@
 package com.xiaoji.gtd.service;
 
-import com.xiaoji.master.dto.AiUiInDto;
-import com.xiaoji.master.dto.AiUiOutDto;
+import com.xiaoji.gtd.dto.AiUiInDto;
+import com.xiaoji.gtd.dto.Out;
 
 /**
  * 语义解析方法接口
@@ -10,9 +10,9 @@ import com.xiaoji.master.dto.AiUiOutDto;
  */
 public interface IIntentService {
 
-    public AiUiOutDto parserBase64(AiUiInDto inDto);
+    public Out parserBase64(AiUiInDto inDto);
 
-    public AiUiOutDto parserText(AiUiInDto inDto);
+    public Out parserText(AiUiInDto inDto);
 
     public void asyncParserBase64(AiUiInDto inDto);
 
