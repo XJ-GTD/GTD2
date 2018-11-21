@@ -4,6 +4,7 @@ import {UtilService} from "../../service/util.service";
 import {SqliteService} from "../../service/sqlite.service";
 import { ParamsService } from "../../service/params.service";
 import {UserModel} from "../../model/user.model";
+import {CalendarService} from "../../service/calendar.service";
 
 /**
  * Generated class for the WelcomePage page.
@@ -32,6 +33,7 @@ export class WelcomePage {
               private loadingCtrl: LoadingController,
               private sqliteService: SqliteService,
               private paramsService: ParamsService,
+              private calendarService:CalendarService,
               public navParams: NavParams) {
   }
 
@@ -45,7 +47,35 @@ export class WelcomePage {
   }
   //同步本地日历数据
   uploadLocal(){
+    this.calendarService.findEvent().then(msg=>{
+      let data=eval(msg);
+      // alert(data.length);
+      // alert(data[0].title);
+      // alert(JSON.stringify(data[0]));
+      for(let i=0;i<data.length;i++) {
+        this.sqliteService.executeSql("INSERT INTO GTD_C(scheduleName,scheduleStartTime,scheduleDeadLine,labelId,localId) VALUES (?,?,?,?,?)",
+          [data[i].title,data[i].startDate,data[i].endDate,"1",data[i].id])
+          .then(msg=>{
+            //alert("插入C表");
+          })
+          .catch(err=>{
+            //alert("插入C表错误:"+err);
+          });
 
+        this.sqliteService.executeSql("SELECT last_insert_rowid() as scheduleId FROM GTD_C",[])
+          .then(data=>{
+            //alert(data.rows.item(0).scheduleId);
+            this.sqliteService.executeSql("INSERT INTO GTD_D(scheduleId,scheduleOtherName,scheduleAuth,playersStatus,userId) VALUES (?,?,?,?,?)" ,
+              [data.rows.item(0).scheduleId,"","","",""]);
+          })
+          .catch(err=>{
+            //alert("获取日程ID失败");
+          });
+      }
+    }).catch(err=>{
+      //alert("err");
+      //alert(err);
+    });
   }
   //创建数据库
   createSql(){

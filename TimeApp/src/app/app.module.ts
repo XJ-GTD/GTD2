@@ -18,6 +18,7 @@ import { AndroidFullScreen } from "@ionic-native/android-full-screen";
 import { SQLite } from '@ionic-native/sqlite';
 import { SqliteService } from "../service/sqlite.service";
 import { UtilService } from "../service/util.service";
+import {Calendar} from "@ionic-native/calendar";
 import { CalendarService } from "../service/calendar.service";
 import {Device} from "@ionic-native/device";
 import { SQLitePorter } from '@ionic-native/sqlite-porter';
@@ -57,6 +58,7 @@ import {UserSqliteService} from "../service/sqlite-service/user-sqlite.service";
     AndroidFullScreen,
     SQLite,
     UtilService,
+    Calendar,
     CalendarService,
     SQLitePorter,
     BaseSqliteService,

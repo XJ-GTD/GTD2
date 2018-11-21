@@ -128,6 +128,29 @@ export class HomeWorkListPage {
     //
     //     }
     //   })
+
+    //查询本地日历日程
+    this.sqliteService.executeSql("SELECT localId,scheduleName,scheduleStartTime,scheduleDeadLine FROM GTD_C WHERE scheduleStartTime BETWEEN "+"'"+findSchedule.scheduleStartTime+"'"+" AND "+"'"+findSchedule.scheduleDeadline+"'",[]).then(data => {
+      if (!!!!data && !!!!data.rows && data.rows.length > 0) {
+        for (let i = 0; i < data.rows.length; i++) {
+          let mo = new ScheduleModel();
+          mo.scheduleStartTime =data.rows.item(i).scheduleStartTime;
+          mo.scheduleName = data.rows.item(i).scheduleName;
+          mo.scheduleDeadline=data.rows.item(i).scheduleDeadLine;
+          this.scheduleList.push(mo);
+          //alert(data.rows.item(i));
+        }
+        if(data.rows.length>0){
+          console.log("-------"+data.rows.item(0).SCHEDULE_TITLE);
+          //alert(data.rows.item(0).state+","+data.rows.item(0).remind_time)
+        }
+      }
+    })
+      .catch(err=>{
+        //alert("err");
+        //alert(err);
+      });
+
   }
 
 }
