@@ -250,28 +250,35 @@ export class BaseSqliteService {
   }
 
   save(param:any): Promise<BsModel>{
+    let bs=new BsModel();
     return new Promise((resolve, reject) =>{
       this.executeSql(param.isq,[])
         .then(data=>{
-          let bs=new BsModel();
           bs.code = 0;
           bs.message="添加成功";
           resolve(bs);
         }).catch(e=>{
-        reject(e);
+          bs.code = 1;
+          bs.message=e.message;
+          reject(bs);
       })
     });
   }
   /**
    * 更新
    */
-  update(param:any): Promise<any>{
+  update(param:any): Promise<BsModel>{
+    let bs=new BsModel();
     return new Promise((resolve, reject) =>{
       this.executeSql(param.usq,[])
         .then(data=>{
-          resolve(data);
+          bs.code = 0;
+          bs.message="更新成功";
+          resolve(bs);
         }).catch(e=>{
-        reject(e);
+        bs.code = 1;
+        bs.message=e.message;
+        reject(bs);
       })
 
     });
@@ -282,17 +289,27 @@ export class BaseSqliteService {
    * @param param
    * @returns {Promise<any>}
    */
-  delete(param:any): Promise<any>{
+  delete(param:any): Promise<BsModel>{
+    let bs=new BsModel();
     return new Promise((resolve, reject) =>{
       this.executeSql(param.dsq,[])
         .then(data=>{
-          resolve(data);
+          bs.code = 0;
+          bs.message="删除成功";
+          resolve(bs);
         }).catch(e=>{
-        reject(e);
+        bs.code = 1;
+        bs.message=e.message;
+        reject(bs);
       })
     });
   }
 
+  /**
+   * 根据ID查询
+   * @param t
+   * @returns {Promise<T>}
+   */
   getOne<T>(t:any): Promise<T>{
     return new Promise((resolve, reject) =>{
       this.executeSql(t.qosq,[])

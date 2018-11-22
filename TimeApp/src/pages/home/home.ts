@@ -112,12 +112,14 @@ export class HomePage {
     this.scheduleList = [];
     //获取用户信息
     this.u = new UEntity();
-    this.userSqlite.select(this.u,new UoModel())
+    this.userSqlite.getUo(this.u)
       .then(data=>{
-        if(data && data.rows && data.rows.length>0){
-          this.u=data.rows.item(0);
+        if(data.code==0 ){
+          this.u=data.u;
           //消息队列接收
           this.webSocketService.connect(this.u.aQ);
+        }else{
+          alert(data.message);
         }
       })
     let month = moment().format('YYYY-MM');

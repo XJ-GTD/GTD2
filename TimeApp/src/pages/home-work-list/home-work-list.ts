@@ -50,10 +50,12 @@ export class HomeWorkListPage {
   init(){
     let uo=new UoModel();
     this.u = new UEntity();
-    this.userSqlite.select(this.u,uo)
+    this.userSqlite.getUo(this.u)
       .then(data=>{
-        if(data && data.rows && data.rows.length>0){
-          this.u=data.rows.item(0);
+        if(data.code==0){
+          this.u=data.u;
+        }else{
+          alert(data.message)
         }
       })
   }

@@ -15,7 +15,7 @@ export class ZtdEntity {
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_Y(zt VARCHAR(100) NOT NULL,' +
-                          'zk VARCHAR(100) NOT NULL,zkv VARCHAR(10),px INTEGER)';
+                          'zk VARCHAR(100) NOT NULL,zkv VARCHAR(10),px INTEGER);';
   private _drsq:string="DROP TABLE GTD_Y"
 
   private _isq:string;

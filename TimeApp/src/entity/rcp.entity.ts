@@ -19,7 +19,7 @@ export class RcpEntity {
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_D(pI VARCHAR(100) PRIMARY KEY,sI VARCHAR(100),' +
-                          'son VARCHAR(100),sa VARCHAR(2),ps VARCHAR(2),pd VARCHAR(20),uI VARCHAR(100),ib VARCHAR(2))';
+                          'son VARCHAR(100),sa VARCHAR(2),ps VARCHAR(2),pd VARCHAR(20),uI VARCHAR(100),ib VARCHAR(2));';
   private _drsq:string="DROP TABLE GTD_D";
 
   private _isq:string;
