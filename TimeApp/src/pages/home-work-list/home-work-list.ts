@@ -11,6 +11,7 @@ import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.servic
 import {UEntity} from "../../entity/u.entity";
 import {UserSqliteService} from "../../service/sqlite-service/user-sqlite.service";
 import {UoModel} from "../../model/out/uo.model";
+import {WorkSqliteService} from "../../service/sqlite-service/work-sqlite.service";
 
 /**
  * Generated class for the HomeWorkListPage page.
@@ -40,6 +41,7 @@ export class HomeWorkListPage {
               private rnd: Renderer2,
               private sqliteService:BaseSqliteService,
               private userSqlite:UserSqliteService,
+              private workSqlite:WorkSqliteService,
               private el: ElementRef) {
     this.scheduleList = [];
     console.log('ionViewDidLoad HomeWorkListPage');
@@ -111,18 +113,16 @@ export class HomeWorkListPage {
     console.log("scheduleStartTime:" + findSchedule.scheduleStartTime + " | scheduleDeadline:" + findSchedule.scheduleDeadline);
     this.scheduleList = [];
     let dateStr=year + "-" + monthStr + "-" + dayStr;
-    this.sqliteService.executeSql('select substr(pd,12,16) dateStr,gtdd.* from GTD_D gtdd where substr(pd,1,10)=?'
-      ,[dateStr])
-      .then(data=>{
-        if(data && data.rows && data.rows.length>0){
-          for(let i=0;i<data.rows.length;i++){
-            let mo = new ScheduleModel();
-            mo.scheduleStartTime = data.rows.item(i).dateStr;
-            mo.scheduleName = data.rows.item(i).son;
-            this.scheduleList.push(mo);
-          }
+    this.workSqlite.getOd(dateStr).then(data=>{
+      if(data.code==0){
+        for(let i=0;i<data.sjl.length;i++){
+          let mo = new ScheduleModel();
+          mo.scheduleStartTime = data.sjl[i].tm
+          mo.scheduleName = data.sjl[i].son;
+          this.scheduleList.push(mo);
         }
-      })
+      }
+    })
 
     // this.http.post(AppConfig.SCHEDULE_FIND_URL, this.findSchedule, {
     //   headers: {

@@ -57,25 +57,10 @@ export class BaseSqliteService {
    * 创建表
    */
   async createTable() {
-    // this.querySql('', []);
     //可能存在多个执行创建表语句，只需最后一个使用await
-    //登录账户信息
     //this.executeSql('DROP TABLE GTD_ACCOUNT',[]);
-    this.executeSql('CREATE TABLE IF NOT EXISTS GTD_ACCOUNT(ACCOUNT_MOBILE VARCHAR(20) PRIMARY KEY, ' +
-      'ACCOUNT_TOKEN VARCHAR(100),' +
-      'ACCOUNT_NAME VARCHAR(30) NOT NULL,' +
-      'ACCOUNT_QUEUE VARCHAR(64) NOT NULL,' +
-      'ACCOUNT_UUID VARCHAR(64) NOT NULL,' +
-      'USER_ID VARCHAR(20) NOT NULL,' +
-      'LOGIN_TIME VARCHAR(20),' +
-      'MOBILE_MODEL VARCHAR(50), ' +
-      'LOGIN_STATE VARCHAR(20))',[]
-      ).catch(e=>{
-      console.log('GTD_ACCOUNT:'+e.toString());
-    })
     //创建用户基本信息表
     let ue=new UEntity();
-    //alert(usql);
     this.executeSql(ue.csq,[]).catch(e=>{
       console.log('GTD_A:'+e.toString());
     })
@@ -90,13 +75,6 @@ export class BaseSqliteService {
     this.executeSql(rcp.csq,[]).catch(e=>{
       console.log('GTD_ACCOUNT:'+e.toString());
     })
-    // this.executeSql("select substr(playersFinishDate,1,10) finishDate,count(*) numL from GTD_D " +
-    //   "GROUP BY substr(playersFinishDate,1,10) ",[]).then(data=>{
-    //   //alert(data.rows.length);
-    //   //alert(data.rows.item(0).finishDate +","+data.rows.item(0).numL);
-    // }).catch(e=>{
-    //   console.log("GTD_D->:"+e);
-    // })
     //授权联系人表
     let ru = new RuEntity();
     this.executeSql(ru.csq,[]).catch(e=>{
@@ -133,73 +111,10 @@ export class BaseSqliteService {
     this.executeSql(ztd.csq,[]).catch(e=>{
       console.log('GTD_Y:'+e.toString());
     })
-    await this.executeSql('CREATE TABLE IF NOT EXISTS remindMaster(remind_id INTEGER PRIMARY KEY AUTOINCREMENT,' +
-      'user_id TEXT,state TEXT , content TEXT,remind_time TEXT,create_time TEXT)',[]);
 
-    let sql = "";
-    sql = 'CREATE TABLE IF NOT EXISTS GTD_ACCOUNT(ACCOUNT_MOBILE VARCHAR(20) PRIMARY KEY, ' +
-      'ACCOUNT_TOKEN VARCHAR(100),' +
-      'ACCOUNT_NAME VARCHAR(30) NOT NULL,' +
-      'ACCOUNT_QUEUE VARCHAR(64) NOT NULL,' +
-      'ACCOUNT_UUID VARCHAR(64) NOT NULL,' +
-      'USER_ID VARCHAR(20) NOT NULL,' +
-      'LOGIN_TIME VARCHAR(20),' +
-      'MOBILE_MODEL VARCHAR(50), ' +
-      'LOGIN_STATE VARCHAR(20));';
-    sql =   sql + 'CREATE TABLE IF NOT EXISTS GTD_A(userId VARCHAR(100) PRIMARY KEY, ' +
-      'userName VARCHAR(100),idCard VARCHAR(100),' +
-      'headImgUrl VARCHAR(200),' +
-      'brithday VARCHAR(10),' +
-      'userSex VARCHAR(2),' +
-      'userContact VARCHAR(20),acountQueue VARCHAR(20),' +
-      'userType VARCHAR(2),' +
-      'userToken VARCHAR(200));';
-    //创建日程表
-    sql =   sql + 'CREATE TABLE IF NOT EXISTS GTD_C(scheduleId VARCHAR(64) PRIMARY KEY, ' +
-      'scheduleName VARCHAR(100),' +
-      'scheduleStartTime VARCHAR(20),' +
-      'scheduleDeadLine VARCHAR(20),' +
-      'labelId VARCHAR(64));';
-
-    //创建日程参与人表
-    sql =   sql + 'CREATE TABLE IF NOT EXISTS GTD_D(playersId VARCHAR(64) PRIMARY KEY, ' +
-      'scheduleId VARCHAR(100),' +
-      'scheduleOtherName VARCHAR(200),scheduleAuth VARCHAR(2),' +
-      'playersFinishDate VARCHAR(20),playersStatus VARCHAR(2),' +
-      'userId VARCHAR(100));';
-    //联系人表
-    sql =   sql + 'CREATE TABLE IF NOT EXISTS GTD_B(bpkId VARCHAR(64) PRIMARY KEY, ' +
-      'relaterId VARCHAR(100),' +
-      'relaterName VARCHAR(20),relaterContact VARCHAR(20),' +
-      'relaterOtherName VARCHAR(20),relaterFlag VARCHAR(2),' +
-      'relaterM VARCHAR(10));';
-    //标签表
-    sql =   sql + 'CREATE TABLE IF NOT EXISTS GTD_F(labelId VARCHAR(64) PRIMARY KEY, ' +
-      'labelName VARCHAR(100),' +
-      'labelType VARCHAR(20),' +
-      'labelTable VARCHAR(20));';
-
-    // 提醒时间表
-    sql =   sql + 'CREATE TABLE IF NOT EXISTS GTD_E(remindId VARCHAR(64) PRIMARY KEY, ' +
-      'playersId VARCHAR(100),' +
-      'remindDate VARCHAR(20));';
-    // message表
-    sql =   sql + 'CREATE TABLE IF NOT EXISTS GTD_H(messageId VARCHAR(64) PRIMARY KEY, ' +
-      'messageName VARCHAR(100),' +
-      'messageType VARCHAR(20));';
-    // 系统设置表
-    sql =   sql + 'CREATE TABLE IF NOT EXISTS GTD_G(systemId VARCHAR(64) PRIMARY KEY, ' +
-      'systemName VARCHAR(100),' +
-      'systemStatus VARCHAR(20),systemType VARCHAR(20));';
-
-    // 字典类型表
-    sql =   sql + 'CREATE TABLE IF NOT EXISTS GTD_X(dictValue VARCHAR(64) PRIMARY KEY, ' +
-      'dictName VARCHAR(100));';
-    // 字典数据表
-    sql =   sql + 'CREATE TABLE IF NOT EXISTS GTD_Y(dictValue VARCHAR(64) not null, ' +
-      'dictDataName VARCHAR(100),dictDataValue VARCHAR(20) not null);';
-    sql =   sql + 'CREATE TABLE IF NOT EXISTS remindMaster(remind_id INTEGER PRIMARY KEY ' +
-      'AUTOINCREMENT,user_id TEXT,state TEXT , content TEXT,remind_time TEXT,create_time TEXT);';
+    let sql = new UEntity().csq+ new RcEntity().csq + new RcpEntity().csq +new RuEntity().csq
+                  + new LbEntity().csq+new ReEntity().csq+ new StEntity().csq+ new MsEntity().csq
+                  + new ZtEntity().csq+new ZtdEntity().csq;
     //this.importSqlToDb(sql);
   }
 
