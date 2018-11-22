@@ -12,7 +12,7 @@ export class RcpoModel extends BsModel{
    * 数量
    */
   private _ct:number;//事件数量
-  private _sjl: Array<RcpModel>; //事件list
+  private _sjl: Array<RcpModel> ; //事件list
   private _sj: RcpModel; //事件
   get ct(): number {
     return this._ct;

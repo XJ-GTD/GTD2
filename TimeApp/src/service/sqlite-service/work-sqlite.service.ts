@@ -7,6 +7,7 @@ import {MsEntity} from "../../entity/ms.entity";
 import {MbsoModel} from "../../model/out/mbso.model";
 import {MbsModel} from "../../model/mbs.model";
 import {RcpoModel} from "../../model/out/rcpo.model";
+import {RcpModel} from "../../model/rcp.model";
 
 
 /**
@@ -33,8 +34,8 @@ export class WorkSqliteService {
       let mbso = new MbsoModel();
       this.baseSqlite.executeSql(sql,[]).then(data=>{
         mbso.code=0;
+        let mbsl = new Array<MbsModel>()
         if(data && data.rows && data.rows.length>0){
-          let mbsl = new Array<MbsModel>()
           for(let i=0;i<data.rows.length;i++){
             let mbs = new MbsModel();
             mbs.date=new Date(data.rows.item(i).ymd);
@@ -46,8 +47,8 @@ export class WorkSqliteService {
             }
             mbsl.push(mbs)
           }
-          mbso.bs=mbsl;
         }
+        mbso.bs=mbsl;
         resolve(mbso);
       }).catch(e=>{
         mbso.code=1;
@@ -68,14 +69,14 @@ export class WorkSqliteService {
         let rcpo = new RcpoModel();
         this.baseSqlite.executeSql(sql,[]).then(data=>{
           rcpo.code=0;
+          let rcps = new Array<RcpModel>()
           if(data && data.rows && data.rows.length>0){
-            let rcps = new Array<RcpoModel>()
             for(let i=0;i<data.rows.length;i++){
               let rcp = new RcpoModel();
               rcps.push(data.rows.item(i))
             }
-            rcpo.sjl = rcps;
           }
+          rcpo.sjl = rcps;
           resolve(rcpo);
         }).catch(e=>{
           rcpo.code=1;
@@ -84,6 +85,18 @@ export class WorkSqliteService {
         })
       })
   }
+
+  /**
+   * 获取事件详情
+   * @param d 'yyyy-MM-dd'
+   */
+  getsd(d:string,):Promise<RcpoModel>{
+    return new Promise((resolve, reject) =>{
+      //TODO
+    })
+  }
+
+
   test() {
     let ms = new MsEntity();
     ms.mn='test';
