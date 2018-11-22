@@ -28,8 +28,7 @@ public class TimerUtil {
     }
 
     public synchronized static TimerDto getCache(String key){
-        TimerDto code = cacheMap.get(key);
-        return code;
+        return cacheMap.get(key);
     }
 
     static {

@@ -113,6 +113,6 @@ public class BaseUtil {
 
     //动态创建exchange
     public static void createExchange(RabbitTemplate rabbitTemplate, String exchangeName, String exchangeType) throws IOException {
-        rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).exchangeDeclare(exchangeName,exchangeType,true);
+        rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).exchangeDeclare(exchangeName, exchangeType,true);
     }
 }

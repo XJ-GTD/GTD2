@@ -4,6 +4,7 @@ import com.xiaoji.config.rabbitmq.RabbitProducerConfig;
 import com.xiaoji.gtd.dto.LoginInDto;
 import com.xiaoji.gtd.dto.LoginOutDto;
 import com.xiaoji.gtd.repository.AuthRepository;
+import com.xiaoji.gtd.repository.PersonRepository;
 import com.xiaoji.gtd.service.IAuthService;
 import com.xiaoji.util.BaseUtil;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -30,13 +31,13 @@ public class AuthServiceImpl implements IAuthService {
 
     @Resource
     private AuthRepository authRepository;
+    @Resource
+    private PersonRepository personRepository;
 
-    private final RabbitTemplate rabbitTemplate;
-    private final AmqpTemplate amqpTemplate;
+    private RabbitTemplate rabbitTemplate;
 
     @Autowired
-    public AuthServiceImpl(AmqpTemplate amqpTemplate, RabbitTemplate rabbitTemplate) {
-        this.amqpTemplate = amqpTemplate;
+    public AuthServiceImpl(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 
@@ -70,7 +71,7 @@ public class AuthServiceImpl implements IAuthService {
             Object obj = authRepository.passwordLogin(account, password);
             int count = Integer.valueOf(obj.toString());
             if (count != 0) {
-
+                Object[] objs = (Object[]) personRepository.getPersonDetail();
             } else {
 
             }
