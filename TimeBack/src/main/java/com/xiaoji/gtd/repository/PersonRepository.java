@@ -31,12 +31,4 @@ public class PersonRepository {
         return em.createNativeQuery(sql).getSingleResult();
     }
 
-    /**
-     * 验证成功后获取用户全部信息
-     * @return
-     */
-    public Object getPersonDetail() {
-        String sql = "";
-        return em.createNativeQuery(sql).getSingleResult();
-    }
 }

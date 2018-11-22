@@ -23,9 +23,9 @@ public class AuthRepository {
      * @return
      */
     public Object passwordLogin(String account, String password) {
-        String sql = "SELECT COUNT(*) FROM gtd_login \n" +
-                " WHERE LOGIN_NAME = '" + account + "' AND PASSWORD = '" + password;
+        String sql = "SELECT COUNT(*), USER_ID FROM gtd_login \n" +
+                " WHERE LOGIN_NAME = '" + account + "' AND PASSWORD = '" + password + "'";
 
-        return em.createNativeQuery(sql).getResultList();
+        return em.createNativeQuery(sql).getSingleResult();
     }
 }

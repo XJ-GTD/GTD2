@@ -1,7 +1,5 @@
 package com.xiaoji.gtd.service.Impl;
 
-import com.xiaoji.gtd.dto.LoginInDto;
-import com.xiaoji.gtd.dto.LoginOutDto;
 import com.xiaoji.gtd.dto.SignUpInDto;
 import com.xiaoji.gtd.entity.GtdAccountEntity;
 import com.xiaoji.gtd.entity.GtdLoginEntity;
@@ -16,6 +14,8 @@ import com.xiaoji.util.CommonMethods;
 import com.xiaoji.util.TimerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,15 +36,19 @@ public class PersonServiceImpl implements IPersonService {
     private Logger logger = LogManager.getLogger(this.getClass());
 
     @Value("${person.signup.headimgurl.android}")
-    private static String HEAD_IMG_URL_ANDROID;
+    private String HEAD_IMG_URL_ANDROID;
     @Value("${person.signup.headimgurl.ios}")
-    private static String HEAD_IMG_URL_IOS;
+    private String HEAD_IMG_URL_IOS;
     @Value("${person.signup.accountStatus}")
-    private static String ACCOUNT_STATUS;
+    private String ACCOUNT_STATUS;
     @Value("${person.signup.logintype.mobile}")
-    private static String LOGIN_TYPE_MOBILE;
+    private String LOGIN_TYPE_MOBILE;
     @Value("${person.signup.logintype.account}")
-    private static String LOGIN_TYPE_ACCOUNT;
+    private String LOGIN_TYPE_ACCOUNT;
+    @Value("${rabbitmq.exchange.type.fanout}")
+    private String EXCHANGE_TYPE_FANOUT;
+    @Value("${rabbitmq.exchange.type.topic}")
+    private String EXCHANGE_TYPE_TOPIC;
 
     @Resource
     private PersonRepository personRepository;
@@ -54,6 +58,13 @@ public class PersonServiceImpl implements IPersonService {
     private GtdAccountRepository accountRepository;
     @Resource
     private GtdUserRepository userRepository;
+
+    private final RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    public PersonServiceImpl(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
 
     /**
      * 验证手机号是否重复
@@ -90,6 +101,7 @@ public class PersonServiceImpl implements IPersonService {
         String accountStatus = "";
         String accountInviter = "";
         String loginType = "";
+        String exchangeName = "";
 
         try {
 
@@ -135,6 +147,8 @@ public class PersonServiceImpl implements IPersonService {
             loginRepository.save(accountLoginEntity);
 
             logger.info("用户注册成功!");
+            exchangeName = BaseUtil.getExchangeName(userId);
+            BaseUtil.createExchange(rabbitTemplate, exchangeName, EXCHANGE_TYPE_TOPIC);
             TimerUtil.clearOnly(accountMobile);
         } catch (Exception e) {
             e.printStackTrace();

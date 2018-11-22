@@ -34,7 +34,7 @@ public class AuthServiceImpl implements IAuthService {
     @Resource
     private PersonRepository personRepository;
 
-    private RabbitTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
 
     @Autowired
     public AuthServiceImpl(RabbitTemplate rabbitTemplate) {
@@ -47,8 +47,9 @@ public class AuthServiceImpl implements IAuthService {
      */
     @Override
     public String visitorsLogin(LoginInDto inDto) {
-        String accountQueue = BaseUtil.getQueueName(inDto.getUserId(), inDto.getDeviceId());
+        String accountQueue = "";
         try {
+            accountQueue = BaseUtil.getQueueName(inDto.getUserId(), inDto.getDeviceId());
             BaseUtil.createQueue(rabbitTemplate, accountQueue, VISITOR_EXCHANGE_NAME);
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,14 +67,18 @@ public class AuthServiceImpl implements IAuthService {
         LoginOutDto data = new LoginOutDto();
         String account = inDto.getAccount();
         String password = inDto.getPassword();
+        String queueName = "";
 
         try {
-            Object obj = authRepository.passwordLogin(account, password);
-            int count = Integer.valueOf(obj.toString());
+            Object[] obj = (Object[]) authRepository.passwordLogin(account, password);
+            int count = Integer.valueOf(obj[0].toString());
             if (count != 0) {
-                Object[] objs = (Object[]) personRepository.getPersonDetail();
+                data.setUserId(obj[1].toString());
+                queueName = BaseUtil.getQueueName(data.getUserId(), inDto.getDeviceId());
+                BaseUtil.createQueue(rabbitTemplate, queueName, BaseUtil.getExchangeName(data.getUserId()));
+                data.setAccountQueue(queueName);
             } else {
-
+                data = null;
             }
         } catch (Exception e) {
             e.printStackTrace();
