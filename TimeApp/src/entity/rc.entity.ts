@@ -15,13 +15,22 @@ export class RcEntity {
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_C(sI VARCHAR(100) PRIMARY KEY,' +
-                          'sN VARCHAR(100),lI VARCHAR(10),uI VARCHAR(100))';
+                          'sN VARCHAR(100),lI VARCHAR(10),uI VARCHAR(100));';
   private _drsq:string="DROP TABLE GTD_C"
 
   private _isq:string;
   private _usq:string;
   private _dsq:string;
+  //查询单个
+  private _qosq:string = 'select * from GTD_C where sI=' + this._sI;
 
+  get qosq(): string {
+    return this._qosq;
+  }
+
+  set qosq(value: string) {
+    this._qosq = value;
+  }
 
   get isq(): string {
     let sql='insert into GTD_C ' +

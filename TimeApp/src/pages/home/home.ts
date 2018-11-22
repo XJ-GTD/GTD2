@@ -112,42 +112,39 @@ export class HomePage {
     this.scheduleList = [];
     //获取用户信息
     this.u = new UEntity();
-    this.userSqlite.select(this.u,new UoModel())
+    this.userSqlite.getUo(this.u)
       .then(data=>{
-        if(data && data.rows && data.rows.length>0){
-          this.u=data.rows.item(0);
+        if(data.code==0 ){
+          this.u=data.u;
           //消息队列接收
           this.webSocketService.connect(this.u.aQ);
+        }else{
+          alert(data.message);
         }
       })
     let month = moment().format('YYYY-MM');
-    this.workSqlite.selectMonthBs(month).then(data=>{
-      if(data && data.rows && data.rows.length>0){
-
-        for(let i=0;i<data.rows.length;i++){
-          let rcp=data.rows.item(i);
+    this.workSqlite.getMBs(month).then(data=>{
+      //成功
+      if(data.code==0){
+        for(let i=0;i<data.bs.length;i++){
+          let mbs=data.bs[i];
           let res:any={};
-          if(data.rows.item(i).ct<5){
-            res.date = new Date(rcp.ymd);
+          res.date=mbs.date;
+          //事少
+          if(!mbs.im){
             res.cssClass = `hassometing animated bounceIn`;
-            // this.options.daysConfig.push({
-            //   date: new Date(rcp.ymd),
-            //   cssClass: `hassometing animated bounceIn`
-            // });
           }else{
-            // this.options.daysConfig.push({
-            //   date: new Date(rcp.ymd),
-            //   cssClass: `busysometing animated bounceIn`
-            // });
+            //事多
             res.cssClass = `busysometing animated bounceIn`;
           }
-          if(rcp.mdn != null){
+          //有消息
+          if(mbs.iem){
             res.subTitle=`\u25B2`;
           }
           this.options.daysConfig.push(res);
         }
+        this.ion2calendar.refresh();
       }
-      this.ion2calendar.refresh();
     })
     // setTimeout(()=>{
     //   this.sqliteService.executeSql("select substr(playersFinishDate,1,10) finishDate,count(*) numL from GTD_D " +

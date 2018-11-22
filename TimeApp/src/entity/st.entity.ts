@@ -15,13 +15,22 @@ export class StEntity {
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_G(si INTEGER PRIMARY KEY AUTOINCREMENT,' +
-                          'sn VARCHAR(100),ss VARCHAR(10),st VARCHAR(100))';
+                          'sn VARCHAR(100),ss VARCHAR(10),st VARCHAR(100));';
   private _drsq:string="DROP TABLE GTD_G";
 
   private _isq:string;
   private _usq:string;
   private _dsq:string;
+  //查询单个
+  private _qosq:string = 'select * from GTD_G where si=' + this._si;
 
+  get qosq(): string {
+    return this._qosq;
+  }
+
+  set qosq(value: string) {
+    this._qosq = value;
+  }
 
   get isq(): string {
     let sql='insert into GTD_G ' +

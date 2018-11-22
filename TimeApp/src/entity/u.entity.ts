@@ -23,13 +23,22 @@ export class UEntity {
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_A(uI VARCHAR(100) PRIMARY KEY,' +
                           'uN VARCHAR(100),iC VARCHAR(100),biy VARCHAR(10),' +
                           'uS VARCHAR(2),uC VARCHAR(20),aQ VARCHAR(20),'+
-                          'uTy VARCHAR(2),uT VARCHAR(200),hIU VARCHAR(300))';
+                          'uTy VARCHAR(2),uT VARCHAR(200),hIU VARCHAR(300));';
   private _drsq:string="DROP TABLE GTD_A"
 
   private _isq:string;
   private _usq:string;
   private _dsq:string;
+  //查询单个
+  private _qosq:string = 'select * from GTD_A where uI=' + this._uI;
 
+  get qosq(): string {
+    return this._qosq;
+  }
+
+  set qosq(value: string) {
+    this._qosq = value;
+  }
   get csq(): string {
     return this._csq;
   }

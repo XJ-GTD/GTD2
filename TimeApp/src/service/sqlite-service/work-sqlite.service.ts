@@ -4,6 +4,10 @@ import {BaseSqliteService} from "./base-sqlite.service";
 import {UEntity} from "../../entity/u.entity";
 import {UoModel} from "../../model/out/uo.model";
 import {MsEntity} from "../../entity/ms.entity";
+import {MbsoModel} from "../../model/out/mbso.model";
+import {MbsModel} from "../../model/mbs.model";
+import {RcpoModel} from "../../model/out/rcpo.model";
+import {RcpModel} from "../../model/rcp.model";
 
 
 /**
@@ -19,31 +23,80 @@ export class WorkSqliteService {
   }
 
   /**
-   * 查询事件表示
+   * 查询每月事件标识
    * @param ym 格式‘2018-01’
    */
-  selectMonthBs(ym){
-    // "select substr(pD,1,10) finishDate,count(*) numL from GTD_D " +
-    // "where substr(pD,1,7)='" + ym +
-    // "' GROUP BY substr(pD,1,10) "
+  getMBs(ym):Promise<MbsoModel>{
     let sql='select substr(gd.pD,1,10) ymd,gh.mdn,count(*) ct from GTD_D gd ' +
       'left outer join (select substr(md,1,10) mdn from GTD_H where mt="0" group by substr(md,1,10)) gh on gh.mdn=substr(gd.pD,1,10) ' +
-      ' GROUP BY substr(gd.pD,1,10),gh.mdn'
-    return this.baseSqlite.executeSql(sql,[])
+      'where  substr(gd.pD,1,7)="' + ym +'" GROUP BY substr(gd.pD,1,10),gh.mdn'
+    return new Promise((resolve, reject) =>{
+      let mbso = new MbsoModel();
+      this.baseSqlite.executeSql(sql,[]).then(data=>{
+        mbso.code=0;
+        let mbsl = new Array<MbsModel>()
+        if(data && data.rows && data.rows.length>0){
+          for(let i=0;i<data.rows.length;i++){
+            let mbs = new MbsModel();
+            mbs.date=new Date(data.rows.item(i).ymd);
+            if(data.rows.item(i).ct>5){
+              mbs.im=true;
+            }
+            if(data.rows.item(i).mdn !=null){
+              mbs.iem=true;
+            }
+            mbsl.push(mbs)
+          }
+        }
+        mbso.bs=mbsl;
+        resolve(mbso);
+      }).catch(e=>{
+        mbso.code=1;
+        mbso.message=e.message;
+        reject(mbso)
+      })
+    })
   }
 
   /**
    * 查询当天事件
-   * @param d
+   * @param d 'yyyy-MM-dd'
    */
-  selectOd(d:string,):Promise<any>{
+  getOd(d:string,):Promise<RcpoModel>{
       return new Promise((resolve, reject) =>{
-        let sql='select substr(gd.pD,1,10) ymd,gh.mdn,count(*) ct from GTD_D gd ' +
-          'left outer join (select substr(md,1,10) mdn from GTD_H where mt="0" group by substr(md,1,10)) gh on gh.mdn=substr(gd.pD,1,10) ' +
-          ' GROUP BY substr(gd.pD,1,10),gh.mdn'
-        this.baseSqlite.executeSql(sql,[])
+        let sql="select substr(pd,12,16) tm,gtdd.* from GTD_D" +
+          " gtdd where substr(pd,1,10)='" + d+"'";
+        let rcpo = new RcpoModel();
+        this.baseSqlite.executeSql(sql,[]).then(data=>{
+          rcpo.code=0;
+          let rcps = new Array<RcpModel>()
+          if(data && data.rows && data.rows.length>0){
+            for(let i=0;i<data.rows.length;i++){
+              let rcp = new RcpoModel();
+              rcps.push(data.rows.item(i))
+            }
+          }
+          rcpo.sjl = rcps;
+          resolve(rcpo);
+        }).catch(e=>{
+          rcpo.code=1;
+          rcpo.message=e.message;
+          reject(rcpo)
+        })
       })
   }
+
+  /**
+   * 获取事件详情
+   * @param d 'yyyy-MM-dd'
+   */
+  getsd(d:string,):Promise<RcpoModel>{
+    return new Promise((resolve, reject) =>{
+      //TODO
+    })
+  }
+
+
   test() {
     let ms = new MsEntity();
     ms.mn='test';

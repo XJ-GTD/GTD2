@@ -42,61 +42,28 @@ export class UserSqliteService {
     }
     return  this.baseSqliteService.executeSql(sql,[])
   }
-  select(u:UEntity,outParam:UoModel): Promise<any>{
+  getUo(u:UEntity): Promise<UoModel>{
     return new Promise((resolve, reject) =>{
-      // if(u.uI != null){
-      let sql='select * from GTD_A where 1=1';
-
-      if(u.uI != null){
-        sql=sql+'and uI="'+u.uI+'"';
-      }
+      let sql='select * from GTD_A';
+      let op = new UoModel();
       this.baseSqliteService.executeSql(sql,[])
         .then(data=>{
-          resolve(data);
-          // if(data&& data.rows && data.rows.length>0){
-          //   outParam.ct=data.rows.length;
-          //   let d=new Array<UEntity>()
-          //   for(let i=0;i<data.rows.length;i++){
-          //     d[i]=data.rows.item(i);
-          //   }
-          //   outParam.us=d;
-          //   resolve(outParam);
-          // }else{
-          //   outParam.ct=0;
-          //   resolve(outParam);
-          // }
-        }).catch(e=>{
-        reject(e);
-      })
-      // }else{
-      //   reject('入参不能为空！')
-      // }
-    })
-  }
-
-  selectOne(u:UEntity){
-    return new Promise((resolve, reject) =>{
-      // if(u.uI != null){
-      let sql='select * from GTD_A where 1=1';
-
-      if(u.uI != null){
-        sql=sql+'and uI="'+u.uI+'"';
-      }
-      this.baseSqliteService.executeSql(sql,[])
-        .then(data=>{
-          let uu = new UEntity();
           if(data&& data.rows && data.rows.length>0){
-            uu=data.rows.item(0);
-            resolve(uu);
+            op.u=data.rows.item(0);
+            op.code=0;
+            op.message="成功"
+            resolve(op);
           }else{
-            resolve(uu);
+            op.code=2;
+            op.message="暂无用户信息"
+            resolve(op);
           }
         }).catch(e=>{
-        reject(e);
+          op.code=1;
+          op.message="系统错误"
+          resolve(op);
       })
-      // }else{
-      //   reject('入参不能为空！')
-      // }
     })
   }
+
 }

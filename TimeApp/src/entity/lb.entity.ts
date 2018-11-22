@@ -15,13 +15,22 @@ export class LbEntity {
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_F(lai INTEGER PRIMARY KEY,' +
-                          'lan VARCHAR(100),lat VARCHAR(10),lau VARCHAR(100))';
+                          'lan VARCHAR(100),lat VARCHAR(10),lau VARCHAR(100));';
   private _drsq:string="DROP TABLE GTD_F";
 
   private _isq:string;
   private _usq:string;
   private _dsq:string;
+  //查询单个
+  private _qosq:string = 'select * from GTD_F where lai=' + this._lai;
 
+  get qosq(): string {
+    return this._qosq;
+  }
+
+  set qosq(value: string) {
+    this._qosq = value;
+  }
 
   get isq(): string {
     let sql='insert into GTD_F ' +
@@ -122,4 +131,5 @@ export class LbEntity {
   set lau(value: string) {
     this._lau = value;
   }
+
 }
