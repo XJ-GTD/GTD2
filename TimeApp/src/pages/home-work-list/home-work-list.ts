@@ -11,6 +11,7 @@ import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.servic
 import {UEntity} from "../../entity/u.entity";
 import {UserSqliteService} from "../../service/sqlite-service/user-sqlite.service";
 import {UoModel} from "../../model/out/uo.model";
+import {WorkSqliteService} from "../../service/sqlite-service/work-sqlite.service";
 
 /**
  * Generated class for the HomeWorkListPage page.
@@ -40,6 +41,7 @@ export class HomeWorkListPage {
               private rnd: Renderer2,
               private sqliteService:BaseSqliteService,
               private userSqlite:UserSqliteService,
+              private workSqlite:WorkSqliteService,
               private el: ElementRef) {
     this.scheduleList = [];
     console.log('ionViewDidLoad HomeWorkListPage');
@@ -50,10 +52,12 @@ export class HomeWorkListPage {
   init(){
     let uo=new UoModel();
     this.u = new UEntity();
-    this.userSqlite.select(this.u,uo)
+    this.userSqlite.getUo(this.u)
       .then(data=>{
-        if(data && data.rows && data.rows.length>0){
-          this.u=data.rows.item(0);
+        if(data.code==0){
+          this.u=data.u;
+        }else{
+          alert(data.message)
         }
       })
   }
@@ -102,25 +106,34 @@ export class HomeWorkListPage {
 
      let findSchedule = new ScheduleOutModel();
     findSchedule = new ScheduleOutModel();
-    findSchedule.scheduleStartTime = year + "-" + month + "-" + day + " 00:00";
-    findSchedule.scheduleDeadline = year + "-" + month + "-" + day + " 23:59";
+    if(day>=10&&month>=10) {
+      findSchedule.scheduleStartTime = year + "-" + month + "-" + day + " 00:00";
+      findSchedule.scheduleDeadline = year + "-" + month + "-" + day + " 23:59";
+    }else if(day<10&&month>=10){
+      findSchedule.scheduleStartTime = year + "-" + month + "-0" + day + " 00:00";
+      findSchedule.scheduleDeadline = year + "-" + month + "-0" + day + " 23:59";
+    }else if(day>=10&&month<10){
+      findSchedule.scheduleStartTime = year + "-0" + month + "-" + day + " 00:00";
+      findSchedule.scheduleDeadline = year + "-0" + month + "-" + day + " 23:59";
+    }else{
+      findSchedule.scheduleStartTime = year + "-0" + month + "-0" + day + " 00:00";
+      findSchedule.scheduleDeadline = year + "-0" + month + "-0" + day + " 23:59";
+    }
     //findSchedule.userId = this.paramsService.user.userId;
     findSchedule.userId = this.u.uI;
     console.log("scheduleStartTime:" + findSchedule.scheduleStartTime + " | scheduleDeadline:" + findSchedule.scheduleDeadline);
     this.scheduleList = [];
     let dateStr=year + "-" + monthStr + "-" + dayStr;
-    this.sqliteService.executeSql('select substr(pd,12,16) dateStr,gtdd.* from GTD_D gtdd where substr(pd,1,10)=?'
-      ,[dateStr])
-      .then(data=>{
-        if(data && data.rows && data.rows.length>0){
-          for(let i=0;i<data.rows.length;i++){
-            let mo = new ScheduleModel();
-            mo.scheduleStartTime = data.rows.item(i).dateStr;
-            mo.scheduleName = data.rows.item(i).son;
-            this.scheduleList.push(mo);
-          }
+    this.workSqlite.getOd(dateStr).then(data=>{
+      if(data.code==0){
+        for(let i=0;i<data.sjl.length;i++){
+          let mo = new ScheduleModel();
+          mo.scheduleStartTime = data.sjl[i].tm
+          mo.scheduleName = data.sjl[i].son;
+          this.scheduleList.push(mo);
         }
-      })
+      }
+    })
 
     // this.http.post(AppConfig.SCHEDULE_FIND_URL, this.findSchedule, {
     //   headers: {
@@ -147,25 +160,29 @@ export class HomeWorkListPage {
     //   })
 
     //查询本地日历日程
-    this.sqliteService.executeSql("SELECT localId,scheduleName,scheduleStartTime,scheduleDeadLine FROM GTD_C WHERE scheduleStartTime BETWEEN "+"'"+findSchedule.scheduleStartTime+"'"+" AND "+"'"+findSchedule.scheduleDeadline+"'",[]).then(data => {
+      this.sqliteService.executeSql("SELECT GTD_C.sN,GTD_C.lI,GTD_D.cd,GTD_D.pd FROM GTD_C JOIN GTD_D ON GTD_C.sI=GTD_D.sI AND GTD_C.sI IN (SELECT sI FROM GTD_D WHERE cd BETWEEN "+"'"+findSchedule.scheduleStartTime+"'"+" AND "+"'"+findSchedule.scheduleDeadline+"')",[]).then(data => {
+      // this.sqliteService.executeSql("SELECT sI FROM GTD_C",[]).then(msg=>{
+      //   alert(JSON.stringify(data)+" "+JSON.stringify(msg));
+      //
+      // });
+        //alert(JSON.stringify(data.rows.item(0)));
       if (!!!!data && !!!!data.rows && data.rows.length > 0) {
         for (let i = 0; i < data.rows.length; i++) {
           let mo = new ScheduleModel();
-          mo.scheduleStartTime =data.rows.item(i).scheduleStartTime;
-          mo.scheduleName = data.rows.item(i).scheduleName;
-          mo.scheduleDeadline=data.rows.item(i).scheduleDeadLine;
+          mo.scheduleStartTime =data.rows.item(i).cd;
+          mo.scheduleName = data.rows.item(i).sN;
+          //mo.scheduleDeadline=data.rows.item(i).pd;
           this.scheduleList.push(mo);
-          //alert(data.rows.item(i));
+
         }
         if(data.rows.length>0){
-          console.log("-------"+data.rows.item(0).SCHEDULE_TITLE);
+          //console.log("-------"+data.rows.item(0).SCHEDULE_TITLE);
           //alert(data.rows.item(0).state+","+data.rows.item(0).remind_time)
         }
       }
     })
       .catch(err=>{
-        //alert("err");
-        //alert(err);
+        alert("err:"+JSON.stringify(err));
       });
 
   }

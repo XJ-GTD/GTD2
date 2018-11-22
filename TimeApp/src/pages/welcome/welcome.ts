@@ -10,6 +10,8 @@ import {UEntity} from "../../entity/u.entity";
 import {UoModel} from "../../model/out/uo.model";
 import {WorkSqliteService} from "../../service/sqlite-service/work-sqlite.service";
 import {CalendarService} from "../../service/calendar.service";
+import {RcEntity} from "../../entity/rc.entity";
+import {RcpEntity} from "../../entity/rcp.entity";
 
 /**
  * Generated class for the WelcomePage page.
@@ -46,6 +48,7 @@ export class WelcomePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad WelcomePage');
+    this.uploadLocal();
   }
 
   goToLogin() {
@@ -68,25 +71,43 @@ export class WelcomePage {
       // alert(data.length);
       // alert(data[0].title);
       // alert(JSON.stringify(data[0]));
+
       for(let i=0;i<data.length;i++) {
-        this.sqliteService.executeSql("INSERT INTO GTD_C(scheduleName,scheduleStartTime,scheduleDeadLine,labelId,localId) VALUES (?,?,?,?,?)",
-          [data[i].title,data[i].startDate,data[i].endDate,"1",data[i].id])
+        let rc=new RcEntity();
+        rc.sI=this.util.getUuid();
+        rc.uI="";
+        rc.sN=data[i].title;
+        rc.lI="";
+
+        let rcp=new RcpEntity();
+        rcp.pI=this.util.getUuid();    //日程参与人表uuID
+        rcp.sI=rc.sI; //关联日程UUID
+        rcp.son="";  //日程别名
+        rcp.sa="";   //修改权限
+        rcp.ps="";   //完成状态
+        rcp.cd=data[i].startDate;//创建时间
+        rcp.pd="";   //完成时间
+        rcp.uI=rc.uI; //参与人ID
+        rcp.ib="1";
+
+        this.sqliteService.executeSql(rc.isq,
+          [])
           .then(msg=>{
-            //alert("插入C表");
+            //alert(rc.isq);
           })
           .catch(err=>{
             //alert("插入C表错误:"+err);
           });
 
-        this.sqliteService.executeSql("SELECT last_insert_rowid() as scheduleId FROM GTD_C",[])
-          .then(data=>{
-            //alert(data.rows.item(0).scheduleId);
-            this.sqliteService.executeSql("INSERT INTO GTD_D(scheduleId,scheduleOtherName,scheduleAuth,playersStatus,userId) VALUES (?,?,?,?,?)" ,
-              [data.rows.item(0).scheduleId,"","","",""]);
+
+        this.sqliteService.executeSql(rcp.isq , [])
+          .then(msg=>{
+            //alert(rcp.isq);
           })
           .catch(err=>{
-            //alert("获取日程ID失败");
-          });
+            //alert("插入D表错误:"+JSON.stringify(err));
+          });;
+
       }
     }).catch(err=>{
       //alert("err");

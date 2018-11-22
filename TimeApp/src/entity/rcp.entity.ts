@@ -10,6 +10,7 @@ export class RcpEntity {
   private _son:string=null; //日程别名
   private _sa: string=null;   //修改权限
   private _ps:string=null; //完成状态
+  private _cd:string=null;  //创建时间
   private _pd: string=null;   //完成时间
   private _uI: string=null;  //参与人ID
   private _ib: string='0';  //是否本地:0非本地；1本地日历 默认非本地
@@ -19,7 +20,7 @@ export class RcpEntity {
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_D(pI VARCHAR(100) PRIMARY KEY,sI VARCHAR(100),' +
-                          'son VARCHAR(100),sa VARCHAR(2),ps VARCHAR(2),pd VARCHAR(20),uI VARCHAR(100),ib VARCHAR(2))';
+                          'son VARCHAR(100),sa VARCHAR(2),ps VARCHAR(2),cd VARCHAR(20),pd VARCHAR(20),uI VARCHAR(100),ib VARCHAR(2))';
   private _drsq:string="DROP TABLE GTD_D";
 
   private _isq:string;
@@ -38,8 +39,8 @@ export class RcpEntity {
 
   get isq(): string {
     let sql='insert into GTD_D ' +
-      '(pI,sI,son,sa,ps,pd,uI,ib) values("'+ this._pI+'","'+ this._sI+'","'+ this._son+'","'
-      +this._sa+ '","'+this._ps+ '","'+this._pd+ '","'+ this._uI+'","'+ this._ib+'")';
+      '(pI,sI,son,sa,ps,cd,pd,uI,ib) values("'+ this._pI+'","'+ this._sI+'","'+ this._son+'","'
+      +this._sa+ '","'+this._ps+ '","'+this._cd+ '","'+this._pd+ '","'+ this._uI+'","'+ this._ib+'")';
     this._isq=sql;
     return this._isq;
   }
@@ -61,6 +62,9 @@ export class RcpEntity {
     }
     if(this._ps!=null){
       sql=sql+' ps="' + this._ps +'",';
+    }
+    if(this._cd!=null){
+      sql=sql+' cd="' + this._cd +'",';
     }
     if(this._pd!=null){
       sql=sql+' pd="' + this._pd +'",';
@@ -96,6 +100,9 @@ export class RcpEntity {
     }
     if(this._ps!=null){
       sql=sql+' and ps="' + this._ps +'"';
+    }
+    if(this._cd!=null){
+      sql=sql+' and cd="' + this._cd +'"';
     }
     if(this._pd!=null){
       sql=sql+' and pd="' + this._pd +'"';
@@ -192,4 +199,13 @@ export class RcpEntity {
   set ib(value: string) {
     this._ib = value;
   }
+
+  get cd(): string {
+    return this._cd;
+  }
+
+  set cd(value: string) {
+    this._cd = value;
+  }
+
 }

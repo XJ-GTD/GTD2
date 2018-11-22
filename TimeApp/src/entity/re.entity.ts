@@ -14,7 +14,7 @@ export class ReEntity {
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_E(ri VARCHAR(100) PRIMARY KEY,' +
-                          'pi VARCHAR(100),rd VARCHAR(10))';
+                          'pi VARCHAR(100),rd VARCHAR(10));';
   private _drsq:string="DROP TABLE GTD_E"
 
   private _isq:string;
