@@ -1,9 +1,9 @@
 package com.xiaoji.gtd.controller;
 
+import com.xiaoji.gtd.dto.AiUiInDto;
 import com.xiaoji.gtd.dto.Out;
 import com.xiaoji.gtd.dto.code.ResultCode;
 import com.xiaoji.gtd.service.IIntentService;
-import com.xiaoji.gtd.dto.AiUiInDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

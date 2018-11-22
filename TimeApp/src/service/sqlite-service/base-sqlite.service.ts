@@ -13,6 +13,7 @@ import {StEntity} from "../../entity/st.entity";
 import {ZtEntity} from "../../entity/zt.entity";
 import {ZtdEntity} from "../../entity/ztd.entity";
 import {MsEntity} from "../../entity/ms.entity";
+import {BsModel} from "../../model/out/bs.model";
 
 /**
  * 客户端数据库
@@ -248,14 +249,14 @@ export class BaseSqliteService {
     return this.platform.is('mobile') && !this.platform.is('mobileweb');
   }
 
-  save(param:any): Promise<any>{
+  save(param:any): Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       this.executeSql(param.isq,[])
         .then(data=>{
-          let outParam:any={};
-          outParam.code = 0;
-          outParam.message="0";
-          resolve(outParam);
+          let bs=new BsModel();
+          bs.code = 0;
+          bs.message="添加成功";
+          resolve(bs);
         }).catch(e=>{
         reject(e);
       })
@@ -288,6 +289,21 @@ export class BaseSqliteService {
           resolve(data);
         }).catch(e=>{
         reject(e);
+      })
+    });
+  }
+
+  getOne<T>(t:any): Promise<T>{
+    return new Promise((resolve, reject) =>{
+      this.executeSql(t.qosq,[])
+        .then(data=>{
+          if(data && data.rows && data.rows.length>0){
+            resolve(data.rows.item(0));
+          }else{
+            reject(null);
+          }
+        }).catch(e=>{
+          reject(e);
       })
     });
   }

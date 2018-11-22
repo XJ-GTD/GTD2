@@ -29,7 +29,16 @@ export class UEntity {
   private _isq:string;
   private _usq:string;
   private _dsq:string;
+  //查询单个
+  private _qosq:string = 'select * from GTD_A where uI=' + this._uI;
 
+  get qosq(): string {
+    return this._qosq;
+  }
+
+  set qosq(value: string) {
+    this._qosq = value;
+  }
   get csq(): string {
     return this._csq;
   }
