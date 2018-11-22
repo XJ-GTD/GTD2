@@ -11,14 +11,15 @@ export class RcpEntity {
   private _sa: string=null;   //修改权限
   private _ps:string=null; //完成状态
   private _pd: string=null;   //完成时间
-  private _uI: string=null;          //参与人ID
+  private _uI: string=null;  //参与人ID
+  private _ib: string='0';  //是否本地:0非本地；1本地日历 默认非本地
   /*
    * 创建表
    * @type {string}
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_D(pI VARCHAR(100) PRIMARY KEY,sI VARCHAR(100),' +
-                          'son VARCHAR(100),sa VARCHAR(2),ps VARCHAR(2),pd VARCHAR(20),uI VARCHAR(100))';
+                          'son VARCHAR(100),sa VARCHAR(2),ps VARCHAR(2),pd VARCHAR(20),uI VARCHAR(100),ib VARCHAR(2))';
   private _drsq:string="DROP TABLE GTD_D";
 
   private _isq:string;
@@ -28,8 +29,8 @@ export class RcpEntity {
 
   get isq(): string {
     let sql='insert into GTD_D ' +
-      '(pI,sI,son,sa,ps,pd,uI) values("'+ this._pI+'","'+ this._sI+'","'+ this._son+'","'
-      +this._sa+ '","'+this._ps+ '","'+this._pd+ '","'+ this._uI+'")';
+      '(pI,sI,son,sa,ps,pd,uI,ib) values("'+ this._pI+'","'+ this._sI+'","'+ this._son+'","'
+      +this._sa+ '","'+this._ps+ '","'+this._pd+ '","'+ this._uI+'","'+ this._ib+'")';
     this._isq=sql;
     return this._isq;
   }
@@ -57,6 +58,9 @@ export class RcpEntity {
     }
     if(this._uI!=null){
       sql=sql+' uI="' + this._uI +'",';
+    }
+    if(this._ib!=null){
+      sql=sql+' ib="' + this._ib +'",';
     }
     if(this._pI != null){
       sql = sql + ' pI="' + this._pI +'" where pI="' + this._pI +'"';
@@ -89,6 +93,9 @@ export class RcpEntity {
     }
     if(this._uI!=null){
       sql=sql+' and uI="' + this._uI +'"';
+    }
+    if(this._ib!=null){
+      sql=sql+' and ib="' + this._ib +'"';
     }
     this._dsq=sql;
     return this._dsq;
@@ -167,5 +174,13 @@ export class RcpEntity {
 
   set uI(value: string) {
     this._uI = value;
+  }
+
+  get ib(): string {
+    return this._ib;
+  }
+
+  set ib(value: string) {
+    this._ib = value;
   }
 }
