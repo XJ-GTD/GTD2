@@ -102,8 +102,19 @@ export class HomeWorkListPage {
 
      let findSchedule = new ScheduleOutModel();
     findSchedule = new ScheduleOutModel();
-    findSchedule.scheduleStartTime = year + "-" + month + "-" + day + " 00:00";
-    findSchedule.scheduleDeadline = year + "-" + month + "-" + day + " 23:59";
+    if(day>=10&&month>=10) {
+      findSchedule.scheduleStartTime = year + "-" + month + "-" + day + " 00:00";
+      findSchedule.scheduleDeadline = year + "-" + month + "-" + day + " 23:59";
+    }else if(day<10&&month>=10){
+      findSchedule.scheduleStartTime = year + "-" + month + "-0" + day + " 00:00";
+      findSchedule.scheduleDeadline = year + "-" + month + "-0" + day + " 23:59";
+    }else if(day>=10&&month<10){
+      findSchedule.scheduleStartTime = year + "-0" + month + "-" + day + " 00:00";
+      findSchedule.scheduleDeadline = year + "-0" + month + "-" + day + " 23:59";
+    }else{
+      findSchedule.scheduleStartTime = year + "-0" + month + "-0" + day + " 00:00";
+      findSchedule.scheduleDeadline = year + "-0" + month + "-0" + day + " 23:59";
+    }
     //findSchedule.userId = this.paramsService.user.userId;
     findSchedule.userId = this.u.uI;
     console.log("scheduleStartTime:" + findSchedule.scheduleStartTime + " | scheduleDeadline:" + findSchedule.scheduleDeadline);
@@ -147,25 +158,29 @@ export class HomeWorkListPage {
     //   })
 
     //查询本地日历日程
-    this.sqliteService.executeSql("SELECT localId,scheduleName,scheduleStartTime,scheduleDeadLine FROM GTD_C WHERE scheduleStartTime BETWEEN "+"'"+findSchedule.scheduleStartTime+"'"+" AND "+"'"+findSchedule.scheduleDeadline+"'",[]).then(data => {
+      this.sqliteService.executeSql("SELECT GTD_C.sN,GTD_C.lI,GTD_D.cd,GTD_D.pd FROM GTD_C JOIN GTD_D ON GTD_C.sI=GTD_D.sI AND GTD_C.sI IN (SELECT sI FROM GTD_D WHERE cd BETWEEN "+"'"+findSchedule.scheduleStartTime+"'"+" AND "+"'"+findSchedule.scheduleDeadline+"')",[]).then(data => {
+      // this.sqliteService.executeSql("SELECT sI FROM GTD_C",[]).then(msg=>{
+      //   alert(JSON.stringify(data)+" "+JSON.stringify(msg));
+      //
+      // });
+        //alert(JSON.stringify(data.rows.item(0)));
       if (!!!!data && !!!!data.rows && data.rows.length > 0) {
         for (let i = 0; i < data.rows.length; i++) {
           let mo = new ScheduleModel();
-          mo.scheduleStartTime =data.rows.item(i).scheduleStartTime;
-          mo.scheduleName = data.rows.item(i).scheduleName;
-          mo.scheduleDeadline=data.rows.item(i).scheduleDeadLine;
+          mo.scheduleStartTime =data.rows.item(i).cd;
+          mo.scheduleName = data.rows.item(i).sN;
+          //mo.scheduleDeadline=data.rows.item(i).pd;
           this.scheduleList.push(mo);
-          //alert(data.rows.item(i));
+
         }
         if(data.rows.length>0){
-          console.log("-------"+data.rows.item(0).SCHEDULE_TITLE);
+          //console.log("-------"+data.rows.item(0).SCHEDULE_TITLE);
           //alert(data.rows.item(0).state+","+data.rows.item(0).remind_time)
         }
       }
     })
       .catch(err=>{
-        //alert("err");
-        //alert(err);
+        alert("err:"+JSON.stringify(err));
       });
 
   }
