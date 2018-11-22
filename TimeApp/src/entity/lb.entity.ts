@@ -21,7 +21,16 @@ export class LbEntity {
   private _isq:string;
   private _usq:string;
   private _dsq:string;
+  //查询单个
+  private _qosq:string = 'select * from GTD_F where lai=' + this._lai;
 
+  get qosq(): string {
+    return this._qosq;
+  }
+
+  set qosq(value: string) {
+    this._qosq = value;
+  }
 
   get isq(): string {
     let sql='insert into GTD_F ' +
@@ -122,4 +131,5 @@ export class LbEntity {
   set lau(value: string) {
     this._lau = value;
   }
+
 }

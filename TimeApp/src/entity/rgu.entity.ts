@@ -19,7 +19,16 @@ export class RguEntity {
   private _isq:string;
   private _usq:string;
   private _dsq:string;
+  //查询单个
+  private _qosq:string = 'select * from GTD_B_X where bi=' + this._bi;
 
+  get qosq(): string {
+    return this._qosq;
+  }
+
+  set qosq(value: string) {
+    this._qosq = value;
+  }
   get csq(): string {
     return this._csq;
   }
