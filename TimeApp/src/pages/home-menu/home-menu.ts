@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, Tabs } from 'ionic-angular';
 import { BackButtonService } from "../../service/util-service/backbutton.service";
+import {RelationListPage} from "../relation-list/relation-list";
 
 /**
  * Generated class for the HomeMenuPage page.
@@ -43,7 +44,7 @@ export class HomeMenuPage {
 
   groupListShow() {
     console.log("跳转参与人页");
-    this.navCtrl.push('GroupListPage',{popPage:'HomeMenuPage'});
+    this.navCtrl.push('RelationListPage',{popPage:'HomeMenuPage'});
   }
 
   showHistory() {
