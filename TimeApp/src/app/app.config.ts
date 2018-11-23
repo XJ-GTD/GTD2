@@ -32,6 +32,7 @@ export class AppConfig {
   };
 
   /* Controller */
+  private static AUTH_URL: string = AppConfig.REQUEST_URL + "/auth";    //用户类
   private static USER_URL: string = AppConfig.REQUEST_URL + "/user";    //用户类
 
   private static GROUP_URL: string = AppConfig.REQUEST_URL + "/group";   //群组类
@@ -45,6 +46,7 @@ export class AppConfig {
   private static SMS_URL: string = AppConfig.REQUEST_URL + "/sms";            //短信
 
   /* Connect */
+  public static AUTH_VISITOR_URL: string = AppConfig.AUTH_URL + "/login_visitors";   //游客登录
   //用户类
   public static USER_LOGIN_URL: string = AppConfig.USER_URL + "/login";   //登陆 POST
 
