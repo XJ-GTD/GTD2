@@ -13,6 +13,7 @@ import { MessageModel } from "../model/message.model";
 import {UserSqliteService} from "./sqlite-service/user-sqlite.service";
 import {UoModel} from "../model/out/uo.model";
 import {UEntity} from "../entity/u.entity";
+import {UserService} from "./user.service";
 
 /**
  * WebSocket连接Rabbitmq服务器
@@ -34,7 +35,7 @@ export class WebsocketService {
               private http: HttpClient,
               public loadingCtrl: LoadingController,
               private xiaojiSpeech: XiaojiAssistantService,
-              private userSqlite: UserSqliteService,
+              private userSqlite:UserService,
               private paramsService?: ParamsService){
     this.init();
   }
@@ -46,7 +47,7 @@ export class WebsocketService {
     this.messageBack = new MessageModel();
     this.mqData = new MqOutModel();
     this.u = new UEntity();
-    this.userSqlite.getUo(this.u)
+    this.userSqlite.getUo()
       .then(data=>{
         if(data.code==0){
           this.u=data.u;

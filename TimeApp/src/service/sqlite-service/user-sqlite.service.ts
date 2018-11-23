@@ -13,8 +13,35 @@ import {UoModel} from "../../model/out/uo.model";
 @Injectable()
 export class UserSqliteService {
 
-  constructor( private baseSqliteService: BaseSqliteService) { }
+  constructor( private baseSqlite: BaseSqliteService) { }
 
+  /**
+   * 添加用户
+   * @param {string} _uI 用户uuID
+   * @param {string} _uN 昵称
+   * @param {string} _hIU 头像URL
+   * @param {string} _biy 生日
+   * @param {string} _uS 性别
+   * @param {string} _uCt 联系方式
+   * @param {string} _aQ 消息队列
+   * @param {string} _uT token
+   * @param _uty 0游客1正式用户
+   */
+  addu(uI: string, oUI:string,uN: string,hIU: string,biy: string,uS: string,
+       uCt: string, aQ: string, uT:string,uty:string){
+    let u = new UEntity();
+    u.uI=uI;
+    u.oUI=oUI;
+    u.uN=uN;
+    u.hIU=hIU;
+    u.biy=biy;
+    u.uS=uS;
+    u.uCt=uCt;
+    u.aQ=aQ;
+    u.uT=uT;
+    u.uty=uty;
+    return this.baseSqlite.save(u);
+  }
   /**
    * 根据账号UUID判断用户是否存在
    * @param param
@@ -23,7 +50,7 @@ export class UserSqliteService {
   userIsExist(sql,outParam:boolean){
     return new Promise((resolve, reject) =>
     {
-      this.baseSqliteService.executeSql('select * from GTD_A'+sql,[]).then(data=>{
+      this.baseSqlite.executeSql('select * from GTD_A'+sql,[]).then(data=>{
           if(data && data.rows && data.rows.length>0){
               resolve(outParam);
           }else{
@@ -40,30 +67,11 @@ export class UserSqliteService {
     if(u.uI != null){
       sql=sql+'and uI="'+u.uI+'"';
     }
-    return  this.baseSqliteService.executeSql(sql,[])
+    return  this.baseSqlite.executeSql(sql,[])
   }
-  getUo(u:UEntity): Promise<UoModel>{
-    return new Promise((resolve, reject) =>{
+  getUo(){
       let sql='select * from GTD_A';
-      let op = new UoModel();
-      this.baseSqliteService.executeSql(sql,[])
-        .then(data=>{
-          if(data&& data.rows && data.rows.length>0){
-            op.u=data.rows.item(0);
-            op.code=0;
-            op.message="成功"
-            resolve(op);
-          }else{
-            op.code=2;
-            op.message="暂无用户信息"
-            resolve(op);
-          }
-        }).catch(e=>{
-          op.code=1;
-          op.message="系统错误"
-          resolve(op);
-      })
-    })
+      return this.baseSqlite.executeSql(sql,[])
   }
 
 }
