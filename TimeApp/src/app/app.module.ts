@@ -25,6 +25,9 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter';
 import {BaseSqliteService} from "../service/sqlite-service/base-sqlite.service";
 import {UserSqliteService} from "../service/sqlite-service/user-sqlite.service";
 import {WorkSqliteService} from "../service/sqlite-service/work-sqlite.service";
+import {BaseService} from "../service/base.service";
+import {UserService} from "../service/user.service";
+import {WorkService} from "../service/work.service";
 
 @NgModule({
   declarations: [
@@ -63,8 +66,11 @@ import {WorkSqliteService} from "../service/sqlite-service/work-sqlite.service";
     CalendarService,
     SQLitePorter,
     BaseSqliteService,
-    UserSqliteService,
     WorkSqliteService,
+    UserSqliteService,
+    UserService,
+    BaseService,
+    WorkService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

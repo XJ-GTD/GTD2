@@ -1,19 +1,19 @@
 import { Injectable } from "@angular/core";
 import { SockJS } from 'sockjs-client';
 import  Stomp from "@stomp/stompjs";
-import { AppConfig } from "../app/app.config";
+
 import { ParamsService } from "./params.service";
 import { Subject } from "rxjs/Subject";
 import { App, AlertController, LoadingController} from "ionic-angular";
 import { XiaojiAssistantService } from "./xiaoji-assistant.service";
 import { HttpClient } from "@angular/common/http";
-import { FindOutModel } from "../model/out/find.out.model";
-import { MqOutModel } from "../model/out/mq.out.model";
-import { MessageModel } from "../model/message.model";
-import {UserSqliteService} from "./sqlite-service/user-sqlite.service";
-import {UoModel} from "../model/out/uo.model";
-import {UEntity} from "../entity/u.entity";
-import {UserService} from "./user.service";
+import {FindOutModel} from "../../model/out/find.out.model";
+import {UserService} from "../user.service";
+import {MqOutModel} from "../../model/out/mq.out.model";
+import {MessageModel} from "../../model/message.model";
+import {UEntity} from "../../entity/u.entity";
+import {AppConfig} from "../../app/app.config";
+
 
 /**
  * WebSocket连接Rabbitmq服务器
