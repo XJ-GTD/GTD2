@@ -34,7 +34,7 @@
 //     */
 //    @Override
 //    public int insertRemind(RemindInsertInDto inDto) {
-//        logger.info(" ------- 开始 RemindServiceImpl - insertRemind --------");
+//        logger.debug(" ------- 开始 RemindServiceImpl - insertRemind --------");
 //        // 接收参数
 //        Integer userId = inDto.getUserId();
 //        String remindDate = inDto.getRemindDate();
@@ -42,7 +42,7 @@
 //        Integer remindType = inDto.getRemindType();
 //
 //        // 入参必输项检查
-//        logger.info("----- 入参检查 -----");
+//        logger.debug("----- 入参检查 -----");
 //        if(userId == null || "".equals(userId)){
 //            logger.error("----- 用户id 不能为空 -----");
 //            return 1;
@@ -69,7 +69,7 @@
 //        // 查找 参与人 表Id
 //        Integer playersId = null;
 //        try {
-//            logger.info("----- 查找参与人表ID -----");
+//            logger.debug("----- 查找参与人表ID -----");
 //            playersId = schedulePlayersNewRepository.findPlayersIdByUserIdAndScheduleId(scheduleId,userId);
 //        } catch (Exception ex){
 //            logger.error("-----  findPlayersIdByUserIdAndScheduleId 语法错误 ------");
@@ -80,7 +80,7 @@
 //        Date date = new Date();
 //        String time = sdf.format(date);
 //        try {
-//            logger.info("---- 插入提醒时间 -----");
+//            logger.debug("---- 插入提醒时间 -----");
 //            remindJpaRepository.insertIntoRemind(playersId,CommonMethods.dateToStamp(remindDate),remindType,userId,CommonMethods.dateToStamp(time),userId,CommonMethods.dateToStamp(time));
 //        } catch (Exception ex){
 //            logger.error("-----  insertIntoRemind 语法错误 ------");

@@ -1,0 +1,53 @@
+page-personal-add-detail {
+  //.item-block.item-ios:first-child > .item-inner {
+  //  border-bottom-color: transparent !important;
+  //  box-shadow: none !important;
+  //}
+  //
+  //.item-block.item-ios:last-child > .item-inner {
+  //  border-bottom-color: transparent !important;
+  //  box-shadow: none !important;
+  //}
+
+  //.scroll-content .item:first-child .item-inner{
+  //  border-bottom-color: transparent !important;
+  //  box-shadow: none !important;
+  //  background-color: blanchedalmond;
+  //}
+  //.scroll-content .item:last-child .item-inner{
+  //  border-bottom-color: transparent !important;
+  //  box-shadow: none !important;
+  //  color: greenyellow;
+  //
+  //}
+
+  .scroll-content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
+
+  }
+
+
+
+  .item-inner{
+    border-bottom: 0px !important;
+  }
+
+  .item-block.item-ios{
+    border-bottom: 0.55px solid #c8c7cc ;
+  }
+
+  .item-block.item-ios:nth-of-type(1){
+    border-bottom: 0px !important;
+    box-shadow: none !important;
+  }
+
+  //.item-block.item-ios:nth-last-of-type(1){
+  //  border-bottom: 0px !important;
+  //  box-shadow: none !important;
+  //}
+
+
+
+}

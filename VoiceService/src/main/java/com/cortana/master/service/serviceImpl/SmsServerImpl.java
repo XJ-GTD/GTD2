@@ -84,17 +84,17 @@
 //            String status = jo.get("status").toString();
 //            //发送失败
 //            if("error".equals(status)){
-//                logger.info("返回结果:"+response);
+//                logger.debug("返回结果:"+response);
 //                return null;
 //            }
 //            if("success".equals(status)){
 //                SmsManager.putCache(tel, new Sms(tel, captcha, System.currentTimeMillis() + 1000 * 60 * 10));
-//                logger.info("返回结果:"+response);
-//                logger.info("手机号:" + tel + " 验证码:" + captcha);
+//                logger.debug("返回结果:"+response);
+//                logger.debug("手机号:" + tel + " 验证码:" + captcha);
 //            }
 //
 //        }catch(Exception e){
-//            logger.info("发送失败");
+//            logger.debug("发送失败");
 //            return null;
 //        }
 //        return captcha;
@@ -128,7 +128,7 @@
 //        try {
 //            //发送短信
 //            String response=submail.multixsend();
-//            logger.info("接口返回消息:"+response);
+//            logger.debug("接口返回消息:"+response);
 ////            {"status":"error","code":109,"msg":"Invalid appkey"}
 //            if(response.contains("success")){
 //
@@ -150,9 +150,9 @@
 //                    list.add(str);
 //                }
 //            }
-//            logger.info("接口返回消息:"+response);
+//            logger.debug("接口返回消息:"+response);
 //        }catch (Exception e){
-//            logger.info("发送失败");
+//            logger.debug("发送失败");
 //            return null ;
 //        }
 //        return list;
@@ -177,15 +177,15 @@
 //            JSONObject jo = JSON.parseObject(response);
 //            String status = jo.getString("status");
 //            if("error".equals(status)){
-//                logger.info("返回的数据："+response);
+//                logger.debug("返回的数据："+response);
 //                return null;
 //            }
 //            if("success".equals(status)){
 //                SmsManager.putCache(tel, new Sms(tel, captcha, System.currentTimeMillis() + 1000 * 60 * 10));
-//                logger.info("返回的数据："+response);
+//                logger.debug("返回的数据："+response);
 //            }
 //        }catch (Exception e){
-//            logger.info("短信发送失败！");
+//            logger.debug("短信发送失败！");
 //        }
 //        return captcha;
 //    }

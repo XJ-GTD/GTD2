@@ -23,40 +23,7 @@ import {AppConfig} from "../../app/app.config";
 @Injectable()
 export class WebsocketService {
 
-  data: any;
-  groupFind:FindOutModel;
-  mqData: MqOutModel;  //接收mq数据
-  mqPushData: MqOutModel; //入参数据
-  messageBack: MessageModel;
-  u:UEntity;
-
-  constructor(public appCtrl : App,
-              public alertCtrl: AlertController,
-              private http: HttpClient,
-              public loadingCtrl: LoadingController,
-              private xiaojiSpeech: XiaojiAssistantService,
-              private userSqlite:UserService,
-              private paramsService?: ParamsService){
-    this.init();
-  }
-
-  init(){
-
-    this.groupFind = new FindOutModel();
-    //this.groupFind.userId = this.paramsService.user.userId;
-    this.messageBack = new MessageModel();
-    this.mqData = new MqOutModel();
-    this.u = new UEntity();
-    this.userSqlite.getUo()
-      .then(data=>{
-        if(data.code==0){
-          this.u=data.u;
-          this.groupFind.userId = this.u.uI;
-          this.messageBack.userId = this.u.uI;
-        }else{
-          alert(data.message)
-        }
-      })
+  constructor(public loadingCtrl: LoadingController){
   }
 
   /**
@@ -94,130 +61,9 @@ export class WebsocketService {
     //对成功回调数据进行操作,放入全局变量中
     subject.asObservable().subscribe( data=> {
       console.log("MQ:" + data.toString());
-      this.mqData = JSON.parse(data.body);
-      console.log("JSON MQ:" + this.mqData);
+      let body = JSON.parse(data.body);
+      console.log("JSON MQ:" + body);
 
-      //新消息提示
-      let alert = this.alertCtrl.create();
-      alert.setTitle(this.mqData.messageName);
-      alert.setMessage(this.mqData.userName + this.mqData.messageContent);
-      if (this.mqData.type == 1) {
-        alert.addButton({
-          text: '接受',
-          handler: (() => {
-            console.log('接受日程邀请');
-            this.messageBack.playersStatus = 1;
-            this.messageBack.scheduleId = this.mqData.messageId;
-            //this.messageBack.userId = this.paramsService.user.userId;
-
-            this.http.post(AppConfig.SCHEDULE_CHOOSE_URL, this.messageBack, {
-              headers: {
-                "Content-Type": "application/json"
-              },
-              responseType: 'json'
-            })
-              .subscribe(data => {
-                console.log("choose data：" + data);
-                this.data = data;
-                let loader = this.loadingCtrl.create({
-                  content: this.data.message,
-                  duration: 1000
-                });
-                if (this.data.code != 0) {
-                  loader.present();
-                }
-              })
-          })
-        });
-        alert.addButton({
-          text: '拒绝',
-          handler: (() => {
-            console.log('拒绝日程邀请');
-            this.messageBack.playersStatus = -1;
-            this.messageBack.scheduleId = this.mqData.messageId;
-            //this.messageBack.userId = this.paramsService.user.userId;
-
-            this.http.post(AppConfig.SCHEDULE_CHOOSE_URL, this.messageBack, {
-              headers: {
-                "Content-Type": "application/json"
-              },
-              responseType: 'json'
-            })
-              .subscribe(data => {
-                console.log("choose data：" + data);
-                this.data = data;
-                let loader = this.loadingCtrl.create({
-                  content: this.data.message,
-                  duration: 1000
-                });
-                if (this.data.code != 0) {
-                  loader.present();
-                }
-              })
-          })
-        });
-      } else if (this.mqData.type == 2) {
-        alert.addButton({
-          text: '接受',
-          handler: (() => {
-            console.log('接受日程邀请');
-            this.messageBack.resultType = 1;
-            this.messageBack.groupId = this.mqData.messageId;
-           // this.messageBack.userId = this.paramsService.user.userId;
-
-            this.http.post(AppConfig.GROUP_UPD_MEMBER_STATUS_URL, this.messageBack, {
-              headers: {
-                "Content-Type": "application/json"
-              },
-              responseType: 'json'
-            })
-              .subscribe(data => {
-                console.log("choose data：" + data);
-                this.data = data;
-                let loader = this.loadingCtrl.create({
-                  content: this.data.message,
-                  duration: 1000
-                });
-                if (this.data.code != 0) {
-                  loader.present();
-                }
-              })
-          })
-        });
-        alert.addButton({
-          text: '拒绝',
-          handler: (() => {
-            console.log('拒绝日程邀请');
-            this.messageBack.resultType = 3;
-            this.messageBack.groupId = this.mqData.messageId;
-            //this.messageBack.userId = this.paramsService.user.userId;
-
-            this.http.post(AppConfig.GROUP_UPD_MEMBER_STATUS_URL, this.messageBack, {
-              headers: {
-                "Content-Type": "application/json"
-              },
-              responseType: 'json'
-            })
-              .subscribe(data => {
-                console.log("choose data：" + data);
-                this.data = data;
-                let loader = this.loadingCtrl.create({
-                  content: this.data.message,
-                  duration: 1000
-                });
-                if (this.data.code != 0) {
-                  loader.present();
-                }
-              })
-          })
-        });
-      } else if (this.mqData.type == 3) {
-        alert.addButton({
-          text: '确认'
-        });
-      }
-
-      alert.present();
 
     });
 

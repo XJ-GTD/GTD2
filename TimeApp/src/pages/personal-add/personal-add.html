@@ -1,0 +1,72 @@
+<!--
+  Generated template for the PersonalAddPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <!--<ion-buttons left>-->
+      <!--<button ion-button icon-only (click)="goBack()">-->
+        <!--取消-->
+      <!--</button>-->
+    <!--</ion-buttons>-->
+    <ion-title>新建 </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<!--个人添加新建搜索 2018.22.22-->
+<ion-content padding class="page-backgroud-color">
+  <div >
+
+    <div style="margin: 20px 0px;">
+      <ion-item>
+        <ion-input type="number" [(ngModel)]="tel" (ionBlur)="checkPhone()" placeholder="请输入手机号" clearInput ></ion-input>
+      </ion-item>
+    </div>
+    <div>
+      <span style="width: 100%; text-align: center;display: block;padding-bottom: 20px; color: rgb(153,153,153);" *ngIf="checkMoblie == false && checkMoblieNull == false && isRegist == false">
+        该用户未注册
+      </span>
+      <span style="width: 100%; text-align: center;display: block;padding-bottom: 20px; color: rgb(153,153,153);" *ngIf="errorCode ==1">
+          手机号错误
+      </span>
+    </div>
+
+
+    <div *ngIf="checkMoblie == false && checkMoblieNull == false">
+      <!--<ion-list>-->
+        <!--<ion-item>-->
+          <!--<div item-start>-->
+            <!--<img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg" width="60px" height="60px" style="border-radius: 50px;border-bottom: 0px">-->
+          <!--</div>-->
+          <!--<div>-->
+            <!--<span>{{name}}</span>-->
+          <!--</div>-->
+          <!--<div item-end (click)="toPersonalAddDetail()">-->
+            <!--<span *ngIf="isRegist == true">添加</span>-->
+            <!--<span *ngIf="isRegist == false">未注册</span>-->
+          <!--</div>-->
+        <!--</ion-item>-->
+
+        <ion-item>
+          <ion-avatar item-start>
+            <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
+          </ion-avatar>
+          <ion-label>
+            <span>{{name}}</span>
+          </ion-label>
+          <div item-end (click)="toPersonalAddDetail()">
+            <span *ngIf="existCode == 1">已添加</span>
+            <span *ngIf="existCode == 2">添加</span>
+            <span *ngIf="existCode == 3">未注册</span>
+          </div>
+        </ion-item>
+      <!--</ion-list>-->
+    </div>
+  </div>
+
+
+</ion-content>

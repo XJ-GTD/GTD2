@@ -118,7 +118,7 @@ public class IntentServiceImpl implements IIntentService {
 
 
             //TODO 成功后改写逻辑用MQ发出
-            logger.info("--->async rest response success----, result = "+ Pinyin4j.toPinYin(voiceOutBeanResponseEntity.getBody().getData().get(0).getAnswer()));
+            logger.debug("--->async rest response success----, result = "+ Pinyin4j.toPinYin(voiceOutBeanResponseEntity.getBody().getData().get(0).getAnswer()));
         }
     }
 }

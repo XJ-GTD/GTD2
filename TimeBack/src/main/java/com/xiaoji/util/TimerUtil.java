@@ -41,7 +41,7 @@ public class TimerUtil {
                     while(iterator.hasNext()){
                         TimerDto sms = (TimerDto)iterator.next();
                         if(sms != null && sms.getTimeOut()< System.currentTimeMillis()){
-                            logger.info("[定时器运行]：删除" + sms.getKey()+"验证码："+sms.getValue()+"过期时间："+sms.getTimeOut() + "当前时间："+ System.currentTimeMillis());
+                            logger.debug("[定时器运行]：删除" + sms.getKey()+"验证码："+sms.getValue()+"过期时间："+sms.getTimeOut() + "当前时间："+ System.currentTimeMillis());
                             iterator.remove();
                         }
                     }

@@ -43,17 +43,17 @@ public class VoiceParseController {
             if (dataDto != null) {
                 outBean.setCode(ResultCode.SUCCESS);
                 outBean.setMessage("[语音交互完成]");
-                logger.info("[语音交互完成]");
+                logger.debug("[语音交互完成]");
             } else {
                 outBean.setCode(ResultCode.REPEAT);
                 outBean.setMessage("[语音数据解析失败]");
-                logger.info("[语音数据解析失败]");
+                logger.debug("[语音数据解析失败]");
             }
 
         } catch (Exception e){
             outBean.setCode(ResultCode.FAIL);
             outBean.setMessage("[语音交互失败]：请联系技术人员");
-            logger.info(e.getMessage());
+            logger.debug(e.getMessage());
             throw new ServiceException("[语音交互失败]：请联系技术人员");
         }
 

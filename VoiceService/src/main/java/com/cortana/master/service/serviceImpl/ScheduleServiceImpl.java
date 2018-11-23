@@ -605,7 +605,7 @@
 //            if(modifyMessage != 0){
 //                logger.error("日程修改 --- 原有参与人 --- 推送失败！");
 //            } else {
-//                logger.info("日程修改 --- 原有参与人 --- 推送成功");
+//                logger.debug("日程修改 --- 原有参与人 --- 推送成功");
 //            }
 //
 //            // 发送提醒 - 新增用户日程提醒
@@ -628,7 +628,7 @@
 //            if(createMessage != 0){
 //                logger.error("日程修改 --- 新增参与人 --- 推送失败！");
 //            } else {
-//                logger.info("日程修改 --- 新增参与人 --- 推送成功");
+//                logger.debug("日程修改 --- 新增参与人 --- 推送成功");
 //            }
 //        }
 //
@@ -687,7 +687,7 @@
 //        }else throw new ServiceException("groupIds参数不能为空");
 //
 //        Set<Integer> setGroupUserId = list.stream().map(GtdGroupMemberEntity::getUserId).collect(Collectors.toSet());
-//        //setGroupUserId.forEach(e -> logger.info(e));   // 打印
+//        //setGroupUserId.forEach(e -> logger.debug(e));   // 打印
 //
 //        List<GtdSchedulePlayersEntity> listSp = null;
 //        try {
@@ -710,7 +710,7 @@
 //                schedulePlayersEntity.setCreateDate(CommonMethods.dateToStamp(createDate));
 //                schedulePlayersEntity.setPlayersStatus(3);
 //                schedulePlayersEntity.setUserId(i);
-//                logger.info("添加 群组Id " + groupIds + "有此成员 userId " + i + "\t 日程事件"+ scheduleId + "参与人表添加 userId :" + i);
+//                logger.debug("添加 群组Id " + groupIds + "有此成员 userId " + i + "\t 日程事件"+ scheduleId + "参与人表添加 userId :" + i);
 //                try{
 //                    schedulePlayersRepository.save(schedulePlayersEntity);
 //                }catch (Exception e){
@@ -729,7 +729,7 @@
 //                }
 //            }
 //            if (groupMember == null) {
-//                logger.info("群组Id " + groupIds + "没有此成员 userId" + i.getUserId() + "参与人表删除 userId :" + i.getUserId());
+//                logger.debug("群组Id " + groupIds + "没有此成员 userId" + i.getUserId() + "参与人表删除 userId :" + i.getUserId());
 //                try {
 //                    schedulePlayersRepository.deleteConnectionByScheduleIdAndUserId(scheduleId, i.getUserId());
 //                } catch (Exception e) {
@@ -827,7 +827,7 @@
 //            keyValue.add(scheduleEntity.getScheduleId());
 //            // 日程事件表插入
 //            scheduleJpaRepository.save(scheduleEntity);
-//            logger.info("日程事件表 成功添加");
+//            logger.debug("日程事件表 成功添加");
 //        }catch (Exception e){
 //            throw new ServiceException("语法错误");
 //        }
@@ -841,7 +841,7 @@
 //        try{
 //            // 用户日程表插入
 //            userShceduleRepository.save(userScheduleEntity);
-//            logger.info("用户日程表 成功添加");
+//            logger.debug("用户日程表 成功添加");
 //        }catch (Exception e){
 //            throw new ServiceException("语法错误");
 //        }
@@ -858,7 +858,7 @@
 //                try{
 //                    // 日程标签表插入
 //                    //scheduleLabelRepository.save(scheduleLabelEntity);
-//                    logger.info("日程标签中间表 成功添加" + "labelIds = "+Integer.parseInt(id.toString()));
+//                    logger.debug("日程标签中间表 成功添加" + "labelIds = "+Integer.parseInt(id.toString()));
 //                }catch (Exception e){
 //                    throw new ServiceException("语法错误");
 //                }
@@ -885,7 +885,7 @@
 //                try{
 //                    // 群组日程表 插入
 //                    groupScheduleRepository.save(groupScheduleEntity);
-//                    logger.info("群组日程中间表 成功添加" + "groupIds = "+Integer.parseInt(id.toString()));
+//                    logger.debug("群组日程中间表 成功添加" + "groupIds = "+Integer.parseInt(id.toString()));
 //                }catch (Exception e){
 //                    throw new ServiceException("语法错误");
 //                }
@@ -893,7 +893,7 @@
 //        }else throw new ServiceException("groupIds参数不能为空");
 //
 //        Set<Integer> setGroupUserId = list.stream().map(GtdGroupMemberEntity::getUserId).collect(Collectors.toSet());
-//        //setGroupUserId.forEach(e -> logger.info(e));   // 打印
+//        //setGroupUserId.forEach(e -> logger.debug(e));   // 打印
 //
 //        //添加提醒时间
 //        //设置时间
@@ -940,7 +940,7 @@
 //            try{
 //                // 日程参与人插入
 //                schedulePlayersRepository.save(schedulePlayersEntity);
-//                logger.info("日程参与人 成功添加"+ "群组成员userId = " + i);
+//                logger.debug("日程参与人 成功添加"+ "群组成员userId = " + i);
 //            }catch (Exception e){
 //                throw new ServiceException("语法错误");
 //            }
@@ -985,7 +985,7 @@
 //            logger.error("日程添加 ------ 推送失败！");
 //            keyValue.add(0,1);
 //        } else {
-//            logger.info("日程添加 ------ 推送成功");
+//            logger.debug("日程添加 ------ 推送成功");
 //            if (keyValue.get(0) != 0) {
 //                keyValue.add(0, 0);
 //                return keyValue;
@@ -1022,7 +1022,7 @@
 //            List<GtdSchedulePlayersEntity> playersEntities = schedulePlayersRepository.findAllByScheduleId(scheduleId);
 //            for (GtdSchedulePlayersEntity entity:playersEntities){
 //                // TODO 发送消息给 参与人 entity.getCreateId()
-//                logger.info("userId = "+ userId + "\t 发送消息给 参与人 " + entity.getCreateId());
+//                logger.debug("userId = "+ userId + "\t 发送消息给 参与人 " + entity.getCreateId());
 //            }
 //            try {
 //                userShceduleRepository.deleteConnectionByScheduleId(scheduleId);    // 用户日程表 删除
@@ -1038,7 +1038,7 @@
 //            }
 //        }else {     // 参与人删除
 //            // TODO 发送消息给发布人 data.getCreateId()
-//            logger.info("userId = "+ userId + "\t 发送消息给 发布人 " + data.getCreateId());
+//            logger.debug("userId = "+ userId + "\t 发送消息给 发布人 " + data.getCreateId());
 //            try {
 //                schedulePlayersRepository.deleteConnectionByScheduleIdAndUserId(scheduleId,userId); // 日程参与人表 删除
 //            }catch (Exception ex){
@@ -1215,7 +1215,7 @@
 //        if(modifyMessage != 0){
 //            logger.error("日程确认 ------ 推送失败！");
 //        } else {
-//            logger.info("日程确认 ------ 推送成功");
+//            logger.debug("日程确认 ------ 推送成功");
 //        }
 //
 //        return 0;

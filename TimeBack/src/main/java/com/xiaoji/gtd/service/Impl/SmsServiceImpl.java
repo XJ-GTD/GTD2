@@ -61,7 +61,7 @@ public class SmsServiceImpl implements ISmsService {
             requestSubMail(mobile);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info("短信验证接口请求失败");
+            logger.debug("短信验证接口请求失败");
             return 1;
         }
 

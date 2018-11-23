@@ -56,7 +56,7 @@ public class ScheduleController {
         } catch (Exception e){
             baseOutDto.setCode(ResultCode.FAIL);
             baseOutDto.setMessage("[查询失败]：请联系技术人员");
-            logger.info(e.getMessage());
+            logger.debug(e.getMessage());
             throw new ServiceException("[查询失败]：请联系技术人员");
         }
 
@@ -251,7 +251,7 @@ public class ScheduleController {
     @RequestMapping(value = "/remind_find",method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto findRemind(@RequestBody RemindFindInDto inDto){
-        logger.info("----- 开始调用接口：提醒时间查询 findRemind ------");
+        logger.debug("----- 开始调用接口：提醒时间查询 findRemind ------");
         BaseOutDto baseOutDto = new BaseOutDto();
         // 接收入参
         Integer userId = inDto.getUserId();         // 用户id
@@ -268,7 +268,7 @@ public class ScheduleController {
             return baseOutDto;
         }
         // 业务处理
-        logger.info("----- 业务处理 -----");
+        logger.debug("----- 业务处理 -----");
         // 查询 提醒时间
         List<Object[]> remindList = new ArrayList<>();
         List<RemindOutDto> remind = new ArrayList<>();
@@ -302,7 +302,7 @@ public class ScheduleController {
     @RequestMapping(value = "/remind_update",method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto updateRemind(@RequestBody RemindUpdateInDto inDto){
-        logger.info("----- 开始执行[提醒时间更新] updateRemind -----");
+        logger.debug("----- 开始执行[提醒时间更新] updateRemind -----");
         BaseOutDto baseOutDto = new BaseOutDto();
         // 获取入参
         Integer userId = inDto.getUserId();     // 用户id
@@ -338,7 +338,7 @@ public class ScheduleController {
             return baseOutDto;
         }
         // 业务处理
-        logger.info("----- 业务处理 -----");
+        logger.debug("----- 业务处理 -----");
         int flag = 0;
         try{
            flag =  remindService.updateRemindDate(userId,remindDate,remindType,remindId);
@@ -377,7 +377,7 @@ public class ScheduleController {
             return baseOutDto;
         }
         // 业务处理
-        logger.info("----- 业务处理 -----");
+        logger.debug("----- 业务处理 -----");
         int flag = 0;
         try{
             flag = remindService.deleteRemind(remindId);
@@ -400,7 +400,7 @@ public class ScheduleController {
     @RequestMapping(value = "/find_flag",method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto findScheduleFlag(@RequestBody ScheduleDetailsInDto inDto){
-        logger.info("----- 开始 findScheduleDetailsByMounth -----");
+        logger.debug("----- 开始 findScheduleDetailsByMounth -----");
         BaseOutDto baseOutDto = new BaseOutDto();
         // 接受入参
         Integer userId = inDto.getUserId(); // 用户id
@@ -408,7 +408,7 @@ public class ScheduleController {
         String mouth = inDto.getMonth();    // 查询月份
         int daySum = inDto.getDaySum();     // 当月天数
         // 入参必须项检查
-        logger.info("--- 入参检查 ---");
+        logger.debug("--- 入参检查 ---");
         if(userId == null || "".equals(userId)){
             logger.error("----- 用户id 不能为空 -----");
             baseOutDto.setCode(ResultCode.FAIL).setMessage("userId 不能为空");

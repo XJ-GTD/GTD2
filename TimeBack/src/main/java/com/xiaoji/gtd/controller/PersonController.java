@@ -46,25 +46,25 @@ public class PersonController {
         if(inDto.getAccountMobile() == null || "".equals(inDto.getAccountMobile())){
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("[注册失败]：手机号不可为空");
-            logger.info("[注册失败]：手机号不可为空");
+            logger.debug("[注册失败]：手机号不可为空");
             return outDto;
         }
         if(inDto.getPassword() == null || "".equals(inDto.getPassword())){
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("[注册失败]：密码不可为空");
-            logger.info("[注册失败]：密码不可为空");
+            logger.debug("[注册失败]：密码不可为空");
             return outDto;
         }
         if(inDto.getAuthCode() == null || "".equals(inDto.getAuthCode())){
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("[注册失败]：请输入验证码不可为空");
-            logger.info("[注册失败]：请输入验证码不可为空");
+            logger.debug("[注册失败]：请输入验证码不可为空");
             return outDto;
         }
         if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("[注册失败]：用户ID不可为空");
-            logger.info("[注册失败]：用户ID不可为空");
+            logger.debug("[注册失败]：用户ID不可为空");
             return outDto;
         }
         //入参正确性检测
@@ -72,7 +72,7 @@ public class PersonController {
             if(inDto.getAccountMobile().length()!=11){
                 outDto.setCode(ResultCode.FAIL);
                 outDto.setMessage("[注册失败]：请输入正确手机号");
-                logger.info("[注册失败]：请输入正确手机号");
+                logger.debug("[注册失败]：请输入正确手机号");
                 return outDto;
             }
         }
@@ -80,14 +80,14 @@ public class PersonController {
             if(!Objects.requireNonNull(TimerUtil.getCache(inDto.getAccountMobile())).getValue().equals(inDto.getAuthCode())){
                 outDto.setCode(ResultCode.FAIL);
                 outDto.setMessage("[注册失败]：请输入正确短信验证码");
-                logger.info("[注册失败]：请输入正确短信验证码");
+                logger.debug("[注册失败]：请输入正确短信验证码");
                 return outDto;
             }
         } catch (Exception e) {
             e.printStackTrace();
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("[注册失败]：短信验证码已过期，请重新获取");
-            logger.info("[注册失败]：短信验证码已过期");
+            logger.debug("[注册失败]：短信验证码已过期");
             return outDto;
         }
 
@@ -95,7 +95,7 @@ public class PersonController {
         if(personService.isRepeatMobile(inDto.getAccountMobile())){
             outDto.setCode(ResultCode.REPEAT);
             outDto.setMessage("[注册失败]：手机号已被注册");
-            logger.info("[注册失败]：手机号已被注册");
+            logger.debug("[注册失败]：手机号已被注册");
             return outDto;
         }
 
@@ -108,11 +108,11 @@ public class PersonController {
             if (flag == 0) {
                 outDto.setCode(ResultCode.REPEAT);
                 outDto.setMessage("[恭喜您，注册成功]");
-                logger.info("[恭喜您，注册成功]");
+                logger.debug("[恭喜您，注册成功]");
             } else {
                 outDto.setCode(ResultCode.FAIL);
                 outDto.setMessage("[注册失败]：请稍后再试");
-                logger.info("[注册失败]：请稍后再试");
+                logger.debug("[注册失败]：请稍后再试");
                 return outDto;
             }
 

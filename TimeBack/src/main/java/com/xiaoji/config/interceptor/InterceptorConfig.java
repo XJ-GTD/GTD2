@@ -22,7 +22,7 @@ public class InterceptorConfig implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
 
-        logger.info("拦截了...");
+        logger.debug("拦截了...");
         return true;
     }
 
