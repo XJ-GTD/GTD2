@@ -20,6 +20,7 @@ export class UserSetPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private paramsService: ParamsService,
+
               public util: UtilService) {
   }
 

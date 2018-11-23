@@ -7,6 +7,9 @@ import com.xiaoji.gtd.repository.AuthRepository;
 import com.xiaoji.gtd.repository.PersonRepository;
 import com.xiaoji.gtd.service.IAuthService;
 import com.xiaoji.util.BaseUtil;
+import com.xiaoji.util.TimerUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,8 @@ import java.io.IOException;
 @Service
 @Transactional
 public class AuthServiceImpl implements IAuthService {
+
+    private Logger logger = LogManager.getLogger(this.getClass());
 
     @Value("${rabbitmq.exchange.visitors}")
     private String VISITOR_EXCHANGE_NAME;
@@ -67,15 +72,18 @@ public class AuthServiceImpl implements IAuthService {
         LoginOutDto data = new LoginOutDto();
         String account = inDto.getAccount();
         String password = inDto.getPassword();
+        String deviceId = inDto.getDeviceId();
+        String userId = "";
         String queueName = "";
 
         try {
             Object[] obj = (Object[]) authRepository.passwordLogin(account, password);
             int count = Integer.valueOf(obj[0].toString());
             if (count != 0) {
-                data.setUserId(obj[1].toString());
-                queueName = BaseUtil.getQueueName(data.getUserId(), inDto.getDeviceId());
-                BaseUtil.createQueue(rabbitTemplate, queueName, BaseUtil.getExchangeName(data.getUserId()));
+                userId = obj[1].toString();
+                data.setUserId(userId);
+                queueName = BaseUtil.getQueueName(userId, deviceId);
+                BaseUtil.createQueue(rabbitTemplate, queueName, BaseUtil.getExchangeName(userId));
                 data.setAccountQueue(queueName);
             } else {
                 data = null;
@@ -94,6 +102,29 @@ public class AuthServiceImpl implements IAuthService {
      */
     @Override
     public LoginOutDto smsLogin(LoginInDto inDto) {
-        return null;
+        LoginOutDto data = new LoginOutDto();
+        String accountMobile = inDto.getAccount();
+        String deviceId = inDto.getDeviceId();
+        String userId = "";
+        String queueName = "";
+
+        try {
+            Object[] obj = (Object[]) authRepository.authCodeLogin(accountMobile);
+            int count = Integer.valueOf(obj[0].toString());
+            if (count != 0) {
+                userId = obj[1].toString();
+                data.setUserId(userId);
+                queueName = BaseUtil.getQueueName(userId, deviceId);
+                BaseUtil.createQueue(rabbitTemplate, queueName, BaseUtil.getExchangeName(userId));
+                data.setAccountQueue(queueName);
+            } else {
+                data = null;
+            }
+            TimerUtil.clearOnly(accountMobile);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return data;
     }
 }

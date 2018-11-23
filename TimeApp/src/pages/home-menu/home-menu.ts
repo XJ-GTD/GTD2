@@ -34,6 +34,7 @@ export class HomeMenuPage {
   userSet() {
     console.log("跳转设置页");
     this.navCtrl.push("UserSetPage");
+
   }
 
   inPrivate() {

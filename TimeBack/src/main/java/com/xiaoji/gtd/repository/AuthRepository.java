@@ -28,4 +28,11 @@ public class AuthRepository {
 
         return em.createNativeQuery(sql).getSingleResult();
     }
+
+    public Object authCodeLogin(String accountMobile) {
+        String sql = "SELECT COUNT(*), USER_ID FROM gtd_login \n" +
+                " WHERE LOGIN_NAME = '"+ accountMobile + "'";
+
+        return em.createNativeQuery(sql).getSingleResult();
+    }
 }

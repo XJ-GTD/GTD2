@@ -47,8 +47,8 @@ public class AuthController {
         //必须项检测
         if(inDto.getDeviceId() == null || "".equals(inDto.getDeviceId())){
             outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("[验证失败]：请输入验证码不可为空");
-            logger.info("[验证失败]：请输入验证码不可为空");
+            outDto.setMessage("[验证失败]：设备ID不可为空");
+            logger.info("[验证失败]：设备ID不可为空");
             return outDto;
         }
         if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
@@ -106,6 +106,13 @@ public class AuthController {
             logger.info("[登陆失败]：密码不可为空");
             return outDto;
         }
+        if(inDto.getDeviceId() == null || "".equals(inDto.getDeviceId())){
+            outDto.setCode(ResultCode.FAIL);
+            outDto.setMessage("[登陆失败]：设备ID不可为空");
+            logger.info("[password登陆失败]：设备ID不可为空");
+            return outDto;
+        }
+
         //入参正确性检测
         String password = BaseUtil.encryption(inDto.getPassword());
         inDto.setPassword(password);
@@ -140,56 +147,70 @@ public class AuthController {
     @ResponseBody
     public Out loginAuthCode(@RequestBody LoginInDto inDto) {
         Out outDto = new Out();
+        LoginOutDto data = new LoginOutDto();
 
         //入参检测
         //必须项检测
-//        if(inDto.getAccountMobile() == null || "".equals(inDto.getAccountMobile())){
-//            outDto.setCode(ResultCode.FAIL);
-//            outDto.setMessage("[注册失败]：手机号不可为空");
-//            logger.info("[注册失败]：手机号不可为空");
-//            return outDto;
-//        }
-//        if(inDto.getPassword() == null || "".equals(inDto.getPassword())){
-//            outDto.setCode(ResultCode.FAIL);
-//            outDto.setMessage("[注册失败]：密码不可为空");
-//            logger.info("[注册失败]：密码不可为空");
-//            return outDto;
-//        }
-//        if(inDto.getAuthCode() == null || "".equals(inDto.getAuthCode())){
-//            outDto.setCode(ResultCode.FAIL);
-//            outDto.setMessage("[注册失败]：请输入验证码不可为空");
-//            logger.info("[注册失败]：请输入验证码不可为空");
-//            return outDto;
-//        }
-//        if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
-//            outDto.setCode(ResultCode.FAIL);
-//            outDto.setMessage("[注册失败]：用户ID不可为空");
-//            logger.info("[注册失败]：用户ID不可为空");
-//            return outDto;
-//        }
-//        //入参正确性检测
-//        if(!BaseUtil.isInteger(inDto.getAccountMobile())){
-//            if(inDto.getAccountMobile().length()!=11){
-//                outDto.setCode(ResultCode.FAIL);
-//                outDto.setMessage("[注册失败]：请输入正确手机号");
-//                logger.info("[注册失败]：请输入正确手机号");
-//                return outDto;
-//            }
-//        }
-//        try {
-//            if(!Objects.requireNonNull(TimerUtil.getCache(inDto.getAccountMobile())).getValue().equals(inDto.getAuthCode())){
-//                outDto.setCode(ResultCode.FAIL);
-//                outDto.setMessage("[注册失败]：请输入正确短信验证码");
-//                logger.info("[注册失败]：请输入正确短信验证码");
-//                return outDto;
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            outDto.setCode(ResultCode.FAIL);
-//            outDto.setMessage("[注册失败]：短信验证码已过期，请重新获取");
-//            logger.info("[注册失败]：短信验证码已过期");
-//            return outDto;
-//        }
+        if(inDto.getAccount() == null || "".equals(inDto.getAccount())){
+            outDto.setCode(ResultCode.FAIL);
+            outDto.setMessage("[登陆失败]：手机号不可为空");
+            logger.info("[登陆失败]：手机号不可为空");
+            return outDto;
+        }
+        if(inDto.getDeviceId() == null || "".equals(inDto.getDeviceId())){
+            outDto.setCode(ResultCode.FAIL);
+            outDto.setMessage("[登陆失败]：设备ID不可为空");
+            logger.info("[code登陆失败]：设备ID不可为空");
+            return outDto;
+        }
+        if(inDto.getAuthCode() == null || "".equals(inDto.getAuthCode())){
+            outDto.setCode(ResultCode.FAIL);
+            outDto.setMessage("[登陆失败]：验证码不可为空");
+            logger.info("[登陆失败]：验证码不可为空");
+            return outDto;
+        }
+        //入参正确性检测
+        if(!BaseUtil.isInteger(inDto.getAccount())){
+            if(inDto.getAccount().length()!=11){
+                outDto.setCode(ResultCode.FAIL);
+                outDto.setMessage("[登陆失败]：请输入正确手机号");
+                logger.info("[登陆失败]：请输入正确手机号");
+                return outDto;
+            }
+        }
+        try {
+            if(!Objects.requireNonNull(TimerUtil.getCache(inDto.getAccount())).getValue().equals(inDto.getAuthCode())){
+                outDto.setCode(ResultCode.FAIL);
+                outDto.setMessage("[登陆失败]：请输入正确短信验证码");
+                logger.info("[登陆失败]：请输入正确短信验证码");
+                return outDto;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.FAIL);
+            outDto.setMessage("[登陆失败]：短信验证码已过期，请重新获取");
+            logger.info("[登陆失败]：短信验证码已过期");
+            return outDto;
+        }
+
+        //业务逻辑
+        try {
+            data = authService.smsLogin(inDto);
+            if (data != null) {
+                outDto.setData(data);
+                outDto.setCode(ResultCode.SUCCESS);
+                outDto.setMessage("[登陆成功]");
+                logger.info("[code登陆失败]");
+            } else {
+                outDto.setCode(ResultCode.FAIL);
+                outDto.setMessage("[登陆失败]：请稍后再试");
+                logger.info("[code登陆失败]：请稍后再试");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            outDto.setMessage("[登陆失败]：服务器繁忙");
+        }
 
         return outDto;
     }
