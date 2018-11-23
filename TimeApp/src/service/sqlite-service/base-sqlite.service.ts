@@ -164,39 +164,20 @@ export class BaseSqliteService {
     return this.platform.is('mobile') && !this.platform.is('mobileweb');
   }
 
-  save(param:any): Promise<BsModel>{
-    let bs=new BsModel();
-    return new Promise((resolve, reject) =>{
-      this.executeSql(param.isq,[])
-        .then(data=>{
-          bs.code = 0;
-          bs.message="添加成功";
-          resolve(bs);
-        }).catch(e=>{
-          bs.code = 1;
-          bs.message=e.message;
-          reject(bs);
-      })
-    });
+  /**
+   * 保存
+   * @param et 对应实体类
+   * @returns {Promise<any>}
+   */
+  save(et:any){
+    return this.executeSql(et.isq,[])
   }
   /**
    * 更新
    */
-  update(param:any): Promise<BsModel>{
-    let bs=new BsModel();
-    return new Promise((resolve, reject) =>{
-      this.executeSql(param.usq,[])
-        .then(data=>{
-          bs.code = 0;
-          bs.message="更新成功";
-          resolve(bs);
-        }).catch(e=>{
-        bs.code = 1;
-        bs.message=e.message;
-        reject(bs);
-      })
+  update(et:any){
+    return this.executeSql(et.usq,[])
 
-    });
   }
 
   /**
@@ -204,20 +185,8 @@ export class BaseSqliteService {
    * @param param
    * @returns {Promise<any>}
    */
-  delete(param:any): Promise<BsModel>{
-    let bs=new BsModel();
-    return new Promise((resolve, reject) =>{
-      this.executeSql(param.dsq,[])
-        .then(data=>{
-          bs.code = 0;
-          bs.message="删除成功";
-          resolve(bs);
-        }).catch(e=>{
-        bs.code = 1;
-        bs.message=e.message;
-        reject(bs);
-      })
-    });
+  delete(et:any){
+    return this.executeSql(et.dsq,[])
   }
 
   /**
@@ -225,19 +194,8 @@ export class BaseSqliteService {
    * @param t
    * @returns {Promise<T>}
    */
-  getOne<T>(t:any): Promise<T>{
-    return new Promise((resolve, reject) =>{
-      this.executeSql(t.qosq,[])
-        .then(data=>{
-          if(data && data.rows && data.rows.length>0){
-            resolve(data.rows.item(0));
-          }else{
-            reject(null);
-          }
-        }).catch(e=>{
-          reject(e);
-      })
-    });
+  getOne(et:any){
+    return this.executeSql(et.qosq,[])
   }
 
   /**

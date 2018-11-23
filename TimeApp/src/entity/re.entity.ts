@@ -93,4 +93,27 @@ export class ReEntity {
     this._drsq = value;
   }
 
+  get ri(): string {
+    return this._ri;
+  }
+
+  set ri(value: string) {
+    this._ri = value;
+  }
+
+  get pi(): string {
+    return this._pi;
+  }
+
+  set pi(value: string) {
+    this._pi = value;
+  }
+
+  get rd(): string {
+    return this._rd;
+  }
+
+  set rd(value: string) {
+    this._rd = value;
+  }
 }
