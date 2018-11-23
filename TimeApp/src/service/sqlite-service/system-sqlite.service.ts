@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import {BaseSqliteService} from "./base-sqlite.service";
 
 /**
- * 闹铃
+ * 系统设置
  */
 @Injectable()
-export class RemindSqliteService {
+export class SystemSqliteService {
 
   constructor(private baseSqlite: BaseSqliteService) {
 
   }
-
 }

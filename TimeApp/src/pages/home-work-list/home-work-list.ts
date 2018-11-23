@@ -12,6 +12,8 @@ import {UEntity} from "../../entity/u.entity";
 import {UserSqliteService} from "../../service/sqlite-service/user-sqlite.service";
 import {UoModel} from "../../model/out/uo.model";
 import {WorkSqliteService} from "../../service/sqlite-service/work-sqlite.service";
+import {WorkService} from "../../service/work.service";
+import {UserService} from "../../service/user.service";
 
 /**
  * Generated class for the HomeWorkListPage page.
@@ -40,8 +42,8 @@ export class HomeWorkListPage {
               private util:UtilService,
               private rnd: Renderer2,
               private sqliteService:BaseSqliteService,
-              private userSqlite:UserSqliteService,
-              private workSqlite:WorkSqliteService,
+              private userSqlite:UserService,
+              private workSqlite:WorkService,
               private el: ElementRef) {
     this.scheduleList = [];
     console.log('ionViewDidLoad HomeWorkListPage');
@@ -52,7 +54,7 @@ export class HomeWorkListPage {
   init(){
     let uo=new UoModel();
     this.u = new UEntity();
-    this.userSqlite.getUo(this.u)
+    this.userSqlite.getUo()
       .then(data=>{
         if(data.code==0){
           this.u=data.u;

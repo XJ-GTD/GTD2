@@ -26,74 +26,29 @@ export class WorkSqliteService {
    * 查询每月事件标识
    * @param ym 格式‘2018-01’
    */
-  getMBs(ym):Promise<MbsoModel>{
+  getMBs(ym){
     let sql='select substr(gd.pD,1,10) ymd,gh.mdn,count(*) ct from GTD_D gd ' +
       'left outer join (select substr(md,1,10) mdn from GTD_H where mt="0" group by substr(md,1,10)) gh on gh.mdn=substr(gd.pD,1,10) ' +
       'where  substr(gd.pD,1,7)="' + ym +'" GROUP BY substr(gd.pD,1,10),gh.mdn'
-    return new Promise((resolve, reject) =>{
-      let mbso = new MbsoModel();
-      this.baseSqlite.executeSql(sql,[]).then(data=>{
-        mbso.code=0;
-        let mbsl = new Array<MbsModel>()
-        if(data && data.rows && data.rows.length>0){
-          for(let i=0;i<data.rows.length;i++){
-            let mbs = new MbsModel();
-            mbs.date=new Date(data.rows.item(i).ymd);
-            if(data.rows.item(i).ct>5){
-              mbs.im=true;
-            }
-            if(data.rows.item(i).mdn !=null){
-              mbs.iem=true;
-            }
-            mbsl.push(mbs)
-          }
-        }
-        mbso.bs=mbsl;
-        resolve(mbso);
-      }).catch(e=>{
-        mbso.code=1;
-        mbso.message=e.message;
-        reject(mbso)
-      })
-    })
+    return this.baseSqlite.executeSql(sql,[]);
   }
 
   /**
    * 查询当天事件
    * @param d 'yyyy-MM-dd'
    */
-  getOd(d:string,):Promise<RcpoModel>{
-      return new Promise((resolve, reject) =>{
-        let sql="select substr(pd,12,16) tm,gtdd.* from GTD_D" +
-          " gtdd where substr(pd,1,10)='" + d+"'";
-        let rcpo = new RcpoModel();
-        this.baseSqlite.executeSql(sql,[]).then(data=>{
-          rcpo.code=0;
-          let rcps = new Array<RcpModel>()
-          if(data && data.rows && data.rows.length>0){
-            for(let i=0;i<data.rows.length;i++){
-              let rcp = new RcpoModel();
-              rcps.push(data.rows.item(i))
-            }
-          }
-          rcpo.sjl = rcps;
-          resolve(rcpo);
-        }).catch(e=>{
-          rcpo.code=1;
-          rcpo.message=e.message;
-          reject(rcpo)
-        })
-      })
+  getOd(d:string){
+    let sql="select substr(pd,12,16) tm,gtdd.* from GTD_D" +
+      " gtdd where substr(pd,1,10)='" + d+"'";
+      return this.baseSqlite.executeSql(sql,[]);
   }
 
   /**
    * 获取事件详情
    * @param d 'yyyy-MM-dd'
    */
-  getsd(d:string,):Promise<RcpoModel>{
-    return new Promise((resolve, reject) =>{
-      //TODO
-    })
+  getsd(d:string){
+
   }
 
 

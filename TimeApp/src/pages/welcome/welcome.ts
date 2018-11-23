@@ -12,6 +12,8 @@ import {WorkSqliteService} from "../../service/sqlite-service/work-sqlite.servic
 import {CalendarService} from "../../service/calendar.service";
 import {RcEntity} from "../../entity/rc.entity";
 import {RcpEntity} from "../../entity/rcp.entity";
+import {AppConfig} from "../../app/app.config";
+import {HttpClient} from "@angular/common/http";
 
 /**
  * Generated class for the WelcomePage page.
@@ -43,6 +45,7 @@ export class WelcomePage {
               private workSqlite: WorkSqliteService,
               private paramsService: ParamsService,
               private calendarService:CalendarService,
+              private http: HttpClient,
               public navParams: NavParams) {
   }
 
@@ -60,9 +63,7 @@ export class WelcomePage {
       console.log(data);
       this.navCtrl.setRoot('HomePage');
     })
-
     //this.navCtrl.setRoot('UserLoginPage');
-    //this.visitor();
   }
   //同步本地日历数据
   uploadLocal(){
@@ -129,10 +130,12 @@ export class WelcomePage {
    * 游客身份登录 dch
    */
   visitor(){
-    let loader = this.loadingCtrl.create({
-      content: "正在加载...",
-      duration: 1000
-    });
+    this.http.post(AppConfig.AUTH_VISITOR_URL, {
+      userId: this.util.getUuid(),
+      deviceId: this.util.getDeviceId(),
+    },AppConfig.HEADER_OPTIONS_JSON).subscribe(data=>{
+      alert(data)
+    })
   }
 
 }
