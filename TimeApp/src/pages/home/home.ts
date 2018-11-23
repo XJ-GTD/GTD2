@@ -21,6 +21,8 @@ import {WorkSqliteService} from "../../service/sqlite-service/work-sqlite.servic
 import {UserSqliteService} from "../../service/sqlite-service/user-sqlite.service";
 import {UEntity} from "../../entity/u.entity";
 import {UoModel} from "../../model/out/uo.model";
+import {WorkService} from "../../service/work.service";
+import {UserService} from "../../service/user.service";
 
 
 
@@ -81,8 +83,8 @@ export class HomePage {
               private paramsService: ParamsService,
               private alarmClock: XiaojiAlarmclockService,
               private sqliteService:BaseSqliteService,
-              private userSqlite:UserSqliteService,
-              private workSqlite:WorkSqliteService,
+              private userSqlite:UserService,
+              private workSqlite:WorkService,
               private calendarService:CalendarService) {
 
     moment.locale('zh-cn');
@@ -112,7 +114,7 @@ export class HomePage {
     this.scheduleList = [];
     //获取用户信息
     this.u = new UEntity();
-    this.userSqlite.getUo(this.u)
+    this.userSqlite.getUo()
       .then(data=>{
         if(data.code==0 ){
           this.u=data.u;
