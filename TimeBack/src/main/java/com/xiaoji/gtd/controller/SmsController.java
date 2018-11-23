@@ -42,7 +42,7 @@ public class SmsController {
         if(inDto.getAccountMobile() == null || "".equals(inDto.getAccountMobile())){
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("[获取验证失败]：手机号不可为空");
-            logger.info("[获取验证失败]：手机号不可为空");
+            logger.debug("[获取验证失败]：手机号不可为空");
             return outDto;
         }
         //入参正确性检测
@@ -50,7 +50,7 @@ public class SmsController {
             if(inDto.getAccountMobile().length()!=11){
                 outDto.setCode(ResultCode.FAIL);
                 outDto.setMessage("[获取验证失败]：请输入正确手机号");
-                logger.info("[获取验证失败]：请输入正确手机号");
+                logger.debug("[获取验证失败]：请输入正确手机号");
                 return outDto;
             }
         }
@@ -60,11 +60,11 @@ public class SmsController {
             if (flag == 0) {
                 outDto.setCode(ResultCode.REPEAT);
                 outDto.setMessage("[获取验证成功，请查看短信]");
-                logger.info("[获取验证成功]");
+                logger.debug("[获取验证成功]");
             } else {
                 outDto.setCode(ResultCode.FAIL);
                 outDto.setMessage("[获取验证失败]：请稍后再试");
-                logger.info("[获取验证失败]");
+                logger.debug("[获取验证失败]");
                 return outDto;
             }
         } catch (Exception e) {

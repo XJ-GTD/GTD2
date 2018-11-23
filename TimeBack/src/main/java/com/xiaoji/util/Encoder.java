@@ -119,7 +119,7 @@ public class Encoder {
             logger.error("Read WMI Service error.", e);
             e.printStackTrace();
         }
-        logger.info(from + "'s " + field + " : " + result);
+        logger.debug(from + "'s " + field + " : " + result);
         return result.trim();
     }
 

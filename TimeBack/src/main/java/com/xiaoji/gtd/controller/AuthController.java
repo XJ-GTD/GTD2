@@ -48,13 +48,13 @@ public class AuthController {
         if(inDto.getDeviceId() == null || "".equals(inDto.getDeviceId())){
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("[验证失败]：设备ID不可为空");
-            logger.info("[验证失败]：设备ID不可为空");
+            logger.debug("[验证失败]：设备ID不可为空");
             return outDto;
         }
         if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("[验证失败]：用户ID不可为空");
-            logger.info("[验证失败]：用户ID不可为空");
+            logger.debug("[验证失败]：用户ID不可为空");
             return outDto;
         }
 
@@ -67,11 +67,11 @@ public class AuthController {
                 outDto.setData(data);
                 outDto.setCode(ResultCode.SUCCESS);
                 outDto.setMessage("[验证成功]");
-                logger.info("[验证成功]");
+                logger.debug("[验证成功]");
             } else {
                 outDto.setCode(ResultCode.FAIL);
                 outDto.setMessage("[验证失败]");
-                logger.info("[验证失败]");
+                logger.debug("[验证失败]");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,19 +97,19 @@ public class AuthController {
         if(inDto.getAccount() == null || "".equals(inDto.getAccount())){
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("[登陆失败]：登陆账户名不可为空");
-            logger.info("[登陆失败]：登陆账户名不可为空");
+            logger.debug("[登陆失败]：登陆账户名不可为空");
             return outDto;
         }
         if(inDto.getPassword() == null || "".equals(inDto.getPassword())){
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("[登陆失败]：密码不可为空");
-            logger.info("[登陆失败]：密码不可为空");
+            logger.debug("[登陆失败]：密码不可为空");
             return outDto;
         }
         if(inDto.getDeviceId() == null || "".equals(inDto.getDeviceId())){
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("[登陆失败]：设备ID不可为空");
-            logger.info("[password登陆失败]：设备ID不可为空");
+            logger.debug("[password登陆失败]：设备ID不可为空");
             return outDto;
         }
 
@@ -124,11 +124,11 @@ public class AuthController {
                 outDto.setData(data);
                 outDto.setCode(ResultCode.SUCCESS);
                 outDto.setMessage("[登陆成功]");
-                logger.info("[登陆失败]");
+                logger.debug("[登陆失败]");
             } else {
                 outDto.setCode(ResultCode.FAIL);
                 outDto.setMessage("[登陆失败]：请稍后再试");
-                logger.info("[登陆失败]：请稍后再试");
+                logger.debug("[登陆失败]：请稍后再试");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -154,19 +154,19 @@ public class AuthController {
         if(inDto.getAccount() == null || "".equals(inDto.getAccount())){
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("[登陆失败]：手机号不可为空");
-            logger.info("[登陆失败]：手机号不可为空");
+            logger.debug("[登陆失败]：手机号不可为空");
             return outDto;
         }
         if(inDto.getDeviceId() == null || "".equals(inDto.getDeviceId())){
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("[登陆失败]：设备ID不可为空");
-            logger.info("[code登陆失败]：设备ID不可为空");
+            logger.debug("[code登陆失败]：设备ID不可为空");
             return outDto;
         }
         if(inDto.getAuthCode() == null || "".equals(inDto.getAuthCode())){
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("[登陆失败]：验证码不可为空");
-            logger.info("[登陆失败]：验证码不可为空");
+            logger.debug("[登陆失败]：验证码不可为空");
             return outDto;
         }
         //入参正确性检测
@@ -174,7 +174,7 @@ public class AuthController {
             if(inDto.getAccount().length()!=11){
                 outDto.setCode(ResultCode.FAIL);
                 outDto.setMessage("[登陆失败]：请输入正确手机号");
-                logger.info("[登陆失败]：请输入正确手机号");
+                logger.debug("[登陆失败]：请输入正确手机号");
                 return outDto;
             }
         }
@@ -182,14 +182,14 @@ public class AuthController {
             if(!Objects.requireNonNull(TimerUtil.getCache(inDto.getAccount())).getValue().equals(inDto.getAuthCode())){
                 outDto.setCode(ResultCode.FAIL);
                 outDto.setMessage("[登陆失败]：请输入正确短信验证码");
-                logger.info("[登陆失败]：请输入正确短信验证码");
+                logger.debug("[登陆失败]：请输入正确短信验证码");
                 return outDto;
             }
         } catch (Exception e) {
             e.printStackTrace();
             outDto.setCode(ResultCode.FAIL);
             outDto.setMessage("[登陆失败]：短信验证码已过期，请重新获取");
-            logger.info("[登陆失败]：短信验证码已过期");
+            logger.debug("[登陆失败]：短信验证码已过期");
             return outDto;
         }
 
@@ -200,11 +200,11 @@ public class AuthController {
                 outDto.setData(data);
                 outDto.setCode(ResultCode.SUCCESS);
                 outDto.setMessage("[登陆成功]");
-                logger.info("[code登陆失败]");
+                logger.debug("[code登陆失败]");
             } else {
                 outDto.setCode(ResultCode.FAIL);
                 outDto.setMessage("[登陆失败]：请稍后再试");
-                logger.info("[code登陆失败]：请稍后再试");
+                logger.debug("[code登陆失败]：请稍后再试");
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -87,11 +87,11 @@ public class AIButlerController {
     public VoiceOutBean test(@RequestParam String text) {
 
 
-        logger.info("*********************text" + text);
+        logger.debug("*********************text" + text);
         JSON repJson = aiButlerService.answerTextResJSON(text);
-        logger.info("*********************repJson" + repJson);
+        logger.debug("*********************repJson" + repJson);
         AiUiResponse response  = JSON.toJavaObject(repJson,AiUiResponse.class);
-        logger.info("*********************response" + response);
+        logger.debug("*********************response" + response);
         //写入日志
         VoiceInBean voiceInBean = new VoiceInBean();
         voiceInBean.setContent(text);

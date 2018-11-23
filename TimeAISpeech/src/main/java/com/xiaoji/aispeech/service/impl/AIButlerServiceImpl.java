@@ -55,11 +55,11 @@ public class AIButlerServiceImpl implements IAIButlerService {
 
     @Override
     public JSON answerTextResJSON(String data) {
-        logger.info("service*********************************" + data);
+        logger.debug("service*********************************" + data);
         String outData = AiUiUtil.readAudio(data, 1);
-        logger.info("service*********************************outData" + outData);
+        logger.debug("service*********************************outData" + outData);
         JSON outJson = JSON.parseObject(outData);
-        logger.info("service*********************************outJson" + outJson);
+        logger.debug("service*********************************outJson" + outJson);
         return outJson;
     }
 

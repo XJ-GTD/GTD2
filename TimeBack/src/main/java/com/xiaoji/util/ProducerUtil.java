@@ -37,7 +37,7 @@ public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
      * @param sendMsg
      */
     public void send(String queueName, String sendMsg) {
-        logger.info("点对点 消息 : "+ sendMsg);
+        logger.debug("点对点 消息 : "+ sendMsg);
         this.rabbitTemplate.convertAndSend("taskQueue", sendMsg);
     }
 
@@ -49,7 +49,7 @@ public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
      * @param sendMsg
      */
     public void topicSend(String exchangeName, int userId, String sendMsg) {
-        logger.info("topic 消息 : "+ sendMsg);
+        logger.debug("topic 消息 : "+ sendMsg);
         String queueName = userId + ".#";
         this.amqpTemplate.convertAndSend(exchangeName, queueName, sendMsg);
     }
@@ -59,7 +59,7 @@ public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
      * @param sendMsg
      */
     public void fanoutSend(String exchangeName, String sendMsg) {
-        logger.info("fanout 消息 : "+ sendMsg);
+        logger.debug("fanout 消息 : "+ sendMsg);
         this.amqpTemplate.convertAndSend(exchangeName, "abcd.ee", sendMsg);
     }
 
@@ -92,8 +92,8 @@ public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
      * @param sendMsg
      */
     public void sendTheTarget(String sendMsg, String target) {
-        logger.info("target" + target);
-        logger.info("Sender1 : " + sendMsg);
+        logger.debug("target" + target);
+        logger.debug("Sender1 : " + sendMsg);
         String[] mobile = target.split(",");
         for (String str: mobile) {
             this.rabbitTemplate.convertAndSend(str, sendMsg);

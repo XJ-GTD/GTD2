@@ -71,7 +71,7 @@
 //        String outData = AiUiUtil.readAudio(content, flag);
 //
 //        if ("".equals(outData) || outData == null) {
-//            logger.info("调用讯飞API失败");
+//            logger.debug("调用讯飞API失败");
 //            throw new ServiceException("语音交互失败");
 //        }
 //
@@ -153,11 +153,11 @@
 //                    for (GroupOutDto god: groupList) {
 //                        groupIds.add(god.getGroupId());
 //                    }
-//                    logger.info("[找到参与人]");
+//                    logger.debug("[找到参与人]");
 //                } else {
 //                    aiuiData.setSpeech("没有找到该参与人，请尝试添加参与人后重新发布");
 //                    aiuiData.setDataType("0");
-//                    logger.info("[数据库无数据]");
+//                    logger.debug("[数据库无数据]");
 //                    return aiuiData;
 //                }
 //            }
@@ -174,10 +174,10 @@
 //            if (flagList.get(0) == 1){
 //                aiuiData.setSpeech("参与人尚未注册，发布失败");
 //                aiuiData.setDataType("0");
-//                logger.info("创建成功");
+//                logger.debug("创建成功");
 //                return aiuiData;
 //            } else if (flagList.get(0) == 0) {
-//                logger.info("创建成功");
+//                logger.debug("创建成功");
 //                FindScheduleInDto findSchedule = new FindScheduleInDto();
 //                findSchedule.setUserId(userId);
 //                findSchedule.setScheduleId(flagList.get(1));
@@ -204,7 +204,7 @@
 //                aiuiData.setSpeech(aiuiData.getSpeech() + ",暂没有日程安排");
 //            }
 //
-//            logger.info("查询成功[scheduleCreateList]："+ scheduleCreateList.size() + " | [scheduleJoinList]：" + scheduleJoinList.size());
+//            logger.debug("查询成功[scheduleCreateList]："+ scheduleCreateList.size() + " | [scheduleJoinList]：" + scheduleJoinList.size());
 //
 //            aiuiData.setDataType("2");
 //        }*/

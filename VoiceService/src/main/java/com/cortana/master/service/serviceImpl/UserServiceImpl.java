@@ -191,7 +191,7 @@ public class UserServiceImpl implements IUserService{
                 outDto.setLabelName((String) gle.get("LABEL_NAME"));
                 labelOutDtoList.add(outDto);
             }
-            logger.info("dataList: " + labelOutDtoList.toString());
+            logger.debug("dataList: " + labelOutDtoList.toString());
         } else {
             throw new ServiceException("未查询到标签数据");
         }

@@ -68,7 +68,7 @@ public class UserController {
                if(accountQq==null || "".equals(accountQq)){
                    outBean.setCode(ResultCode.REPEAT);
                    outBean.setMessage("[注册失败]：手机号/微信/QQ不可都为空");
-                   logger.info("[注册失败]：手机号/微信/QQ不可都为空");
+                   logger.debug("[注册失败]：手机号/微信/QQ不可都为空");
                    return outBean;
                }
             }
@@ -76,7 +76,7 @@ public class UserController {
         if(authCode == null || "".equals(authCode)){
             outBean.setCode(ResultCode.REPEAT);
             outBean.setMessage("[注册失败]：验证码不可为空");
-            logger.info("[注册失败]：验证码不可为空");
+            logger.debug("[注册失败]：验证码不可为空");
             return outBean;
         }
 //        Sms sms = SmsManager.getCache(accountMobile);
@@ -84,20 +84,20 @@ public class UserController {
 //        if(sms == null || !authCode.equals(sms.getValue())){
 //            outBean.setCode(ResultCode.REPEAT);
 //            outBean.setMessage("[注册失败]：验证码错误");
-//            logger.info("[注册失败]：验证码错误");
+//            logger.debug("[注册失败]：验证码错误");
 //            return outBean;
 //        }
 
         if(accountPassword==null || "".equals(accountPassword)){
             outBean.setCode(ResultCode.REPEAT);
             outBean.setMessage("[注册失败]：密码不可为空");
-            logger.info("[注册失败]：密码不可为空");
+            logger.debug("[注册失败]：密码不可为空");
             return outBean;
         }
         if(loginType==null){
             outBean.setCode(ResultCode.REPEAT);
             outBean.setMessage("[注册失败]：登录类型不可为空");
-            logger.info("[注册失败]：登录类型不可为空");
+            logger.debug("[注册失败]：登录类型不可为空");
             return outBean;
         }
         //入参类型检查
@@ -105,14 +105,14 @@ public class UserController {
             if(!BaseUtil.isInteger(accountMobile)){
                 outBean.setCode(ResultCode.REPEAT);
                 outBean.setMessage("[注册失败]：手机类型错误");
-                logger.info("[注册失败]：手机类型错误");
+                logger.debug("[注册失败]：手机类型错误");
                 return outBean;
             }
         }
         if(loginType!=0 && loginType!=1 && loginType!=2){
             outBean.setCode(ResultCode.REPEAT);
             outBean.setMessage("[注册失败]：登录类型入参错误");
-            logger.info("[注册失败]：登录类型入参错误");
+            logger.debug("[注册失败]：登录类型入参错误");
             return outBean;
         }
         //入参长度检查
@@ -120,14 +120,14 @@ public class UserController {
             if(accountMobile.length()!=11){
                 outBean.setCode(ResultCode.REPEAT);
                 outBean.setMessage("[注册失败]：手机号位数错误");
-                logger.info("[注册失败]：手机号位数错误");
+                logger.debug("[注册失败]：手机号位数错误");
                 return outBean;
             }
         }
         if(accountPassword.length()<6){
             outBean.setCode(ResultCode.REPEAT);
             outBean.setMessage("[注册失败]：密码位数请不小于6位");
-            logger.info("[注册失败]：密码位数请不小于6位");
+            logger.debug("[注册失败]：密码位数请不小于6位");
             return outBean;
         }
         //入参关联检查
@@ -141,11 +141,11 @@ public class UserController {
             if (flag == 0) {
                 outBean.setCode(ResultCode.SUCCESS);
                 outBean.setMessage("[注册成功]");
-                logger.info("[注册成功]");
+                logger.debug("[注册成功]");
             } else if (flag == 1) {
                 outBean.setCode(ResultCode.REPEAT);
                 outBean.setMessage("[注册失败]：手机号已注册");
-                logger.info("[注册失败]：手机号已注册");
+                logger.debug("[注册失败]：手机号已注册");
             }
 //            SmsManager.clearOnly(accountMobile);
         }catch (Exception ex){
@@ -173,14 +173,14 @@ public class UserController {
         if(password==null || "".equals(password)){
             outBean.setCode(ResultCode.FAIL);
             outBean.setMessage("[登陆失败]：请输入密码");
-            logger.info("[登陆失败]：请输入密码");
+            logger.debug("[登陆失败]：请输入密码");
             return outBean;
         }
         if(accountName==null || "".equals(accountName)){
             if(accountMobile==null || "".equals(accountMobile)){
                 outBean.setCode(ResultCode.FAIL);
                 outBean.setMessage("[登陆失败]：请输入用户名");
-                logger.info("[登陆失败]：请输入用户名");
+                logger.debug("[登陆失败]：请输入用户名");
                 return outBean;
             } else {
                 inDto.setAccountName(accountMobile);
@@ -197,11 +197,11 @@ public class UserController {
             outBean.setData(data);
             outBean.setCode(ResultCode.SUCCESS);
             outBean.setMessage("[登陆成功]");
-            logger.info("[登陆成功]");
+            logger.debug("[登陆成功]");
         } catch (Exception e){
             outBean.setCode(ResultCode.FAIL);
             outBean.setMessage("[登陆失败]：用户名或密码输入错误");
-            logger.info(e.getMessage());
+            logger.debug(e.getMessage());
             throw new ServiceException("[登陆失败]：用户名或密码输入错误");
         }
 
@@ -385,11 +385,11 @@ public class UserController {
             baseOutDto.setData(data);
             baseOutDto.setCode(ResultCode.SUCCESS);
             baseOutDto.setMessage("[编辑成功]");
-            logger.info("[编辑成功]");
+            logger.debug("[编辑成功]");
         } else {
             baseOutDto.setCode(ResultCode.REPEAT);
             baseOutDto.setMessage("[编辑失败]");
-            logger.info("[编辑失败]");
+            logger.debug("[编辑失败]");
         }
         return baseOutDto;
     }

@@ -72,7 +72,7 @@
 //
 //        int userId = inDto.getUserId();
 //        int typeId = inDto.getFindType();
-//        logger.info("参与人列表查询 用户Id " + userId + "查询类型 findType :" + typeId);
+//        logger.debug("参与人列表查询 用户Id " + userId + "查询类型 findType :" + typeId);
 //        if (userId == 0) throw new ServiceException("用户ID不能为空");
 //        if (typeId == 0) throw new ServiceException("类型ID不能为空");
 //
@@ -139,7 +139,7 @@
 //                memberDto.setUserName(user.getUserName());
 //                memberDto.setUserContact(user.getUserContact());
 //                int status=user.getGroupMemberStatus();
-//                logger.info("群组成员状态："+user.getUserName()+","+status);
+//                logger.debug("群组成员状态："+user.getUserName()+","+status);
 //                if (status != 2 && status != 3) { //用户状态不为拒绝或未接受才显示
 //                    memberDtos.add(memberDto);
 //                }
@@ -159,7 +159,7 @@
 //            group.setLabelList(labelOut);
 //            result.add(group);
 //        }
-//        logger.info("参与人列表："+result);
+//        logger.debug("参与人列表："+result);
 //            return result;
 //    }
 //
@@ -175,7 +175,7 @@
 //        int userId = inDto.getUserId();
 //        int groupId = inDto
 //                .getGroupId();
-//        logger.info("参与人详情查询 用户Id " + userId + "群组ID :" + groupId);
+//        logger.debug("参与人详情查询 用户Id " + userId + "群组ID :" + groupId);
 //        if (userId == 0) throw new ServiceException("用户ID不能为空");
 //        if (groupId == 0) throw new ServiceException("群组ID不能为空");
 //
@@ -230,7 +230,7 @@
 //    public List<GroupOutDto> getListGroupByMessage(GroupInDto inDto) {
 //        Integer labelId=inDto.getLabelId();
 //        String groupName=inDto.getGroupName();
-//        logger.info("根据条件查询 labelId:"+labelId+"groupName:"+groupName);
+//        logger.debug("根据条件查询 labelId:"+labelId+"groupName:"+groupName);
 //        if(labelId==null){
 //            if(groupName==null||"".equals(groupName)) {
 //                throw new ServiceException("请传入查询参数");
@@ -306,7 +306,7 @@
 //        int userId = inDto.getUserId();
 //        int groupId = inDto.getGroupId();
 //        int findType=inDto.getFindType();
-//        logger.info("查询群成员 用户ID:"+userId+"，群组ID:"+groupId+"，查询类型:"+findType);
+//        logger.debug("查询群成员 用户ID:"+userId+"，群组ID:"+groupId+"，查询类型:"+findType);
 //        if (userId == 0 || "".equals(userId)) throw new ServiceException("用户ID不能为空");
 //        if (findType == 0 || "".equals(findType)) throw new ServiceException("类型不能为空");
 //        if(findType==2){
@@ -400,7 +400,7 @@
 //        } catch (Exception e) {
 //            throw new ServiceException("参数错误");
 //        }
-//        logger.info("添加群组 用户ID"+userId+"标签ID"+ labelIds +"群头像"+groupHeadImg+"群名"+groupName+"群成员"+groupMembers);
+//        logger.debug("添加群组 用户ID"+userId+"标签ID"+ labelIds +"群头像"+groupHeadImg+"群名"+groupName+"群成员"+groupMembers);
 //        if (userId == 0) throw new ServiceException("用户ID不能为空");
 //        if (labelIds ==null||labelIds.size() == 0) throw new ServiceException("标签不能为空");
 //        if (groupName == null || "".equals(groupName)) throw new ServiceException("群组名不能为空");
@@ -554,7 +554,7 @@
 //        } catch (Exception e) {
 //            throw new ServiceException("参数错误，请检查后重新输入");
 //        }
-//        logger.info("用户ID"+userId+"群组ID"+groupId);
+//        logger.debug("用户ID"+userId+"群组ID"+groupId);
 //        if (userId == 0) throw new ServiceException("用户ID不能为空");
 //        if (groupId == 0) throw new ServiceException("群组ID不能为空");
 //        GtdGroupEntity group = null;
@@ -648,7 +648,7 @@
 //        } catch (Exception e) {
 //            throw new ServiceException("参数错误，请检查后重新输入");
 //        }
-//        logger.info("用户ID"+userId+"群组ID"+groupId);
+//        logger.debug("用户ID"+userId+"群组ID"+groupId);
 //        if (userId == 0 ) throw new ServiceException("用户ID不能为空");
 //        if (groupId == 0) throw new ServiceException("群组ID不能为空");
 //        GtdGroupEntity group = null;
@@ -775,7 +775,7 @@
 //        } catch (Exception e) {
 //            throw new ServiceException("参数错误，请检查后重新输入");
 //        }
-//        logger.info("编辑群组 用户ID"+userId+"群组ID"+groupId+"标签ID"+labelIds+"群头像"+groupHeadImg+"群名"+groupName+"群成员"+groupMembers);
+//        logger.debug("编辑群组 用户ID"+userId+"群组ID"+groupId+"标签ID"+labelIds+"群头像"+groupHeadImg+"群名"+groupName+"群成员"+groupMembers);
 //        if (groupMembers==null||groupMembers.size() == 0) throw new ServiceException("群员不能为空");
 //        if (userId == 0) throw new ServiceException("用户ID不能为空");
 //        if (groupId == 0) throw new ServiceException("群组ID不能为空");
@@ -798,7 +798,7 @@
 //        GtdGroupEntity group = groupJpaRepository.getOne(groupId);
 //        //查询群组下所有群成员
 //        List<Integer> userIds=groupMemberRepository.findAllUserIdByGroupId(groupId);
-//        logger.info("原群组成员ID："+userIds.toString());
+//        logger.debug("原群组成员ID："+userIds.toString());
 //        int createId = group.getCreateId();
 //        Set<GtdLabelEntity> labels = group.getLabel();//群组原标签
 //
@@ -860,7 +860,7 @@
 //            //group.setLabel(set);
 //            group.setUpdateId(userId);
 //            group.setUpdateDate(new Timestamp(date.getTime()));
-//            logger.info("修改后的群组"+group);
+//            logger.debug("修改后的群组"+group);
 //            groupJpaRepository.save(group);
 //
 //            List<Integer> userIns = new ArrayList<>();
@@ -1004,7 +1004,7 @@
 //               throw new ServiceException("参数错误，请检查后输入正确参数");
 //           }
 //
-//        logger.info("用户ID:"+userId+",群组ID:"+groupId+",修改结果类型:"+resultType);
+//        logger.debug("用户ID:"+userId+",群组ID:"+groupId+",修改结果类型:"+resultType);
 //        if (userId == 0) throw new ServiceException("用户ID不能为空");
 //        if (groupId == 0) throw new ServiceException("群组ID不能为空");
 //        if (resultType == 0) throw new ServiceException("修改結果不能为空");

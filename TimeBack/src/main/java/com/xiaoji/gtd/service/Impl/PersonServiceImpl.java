@@ -111,7 +111,7 @@ public class PersonServiceImpl implements IPersonService {
             nickName = BaseUtil.getNickName(accountMobile);
             headImgUrl = HEAD_IMG_URL_ANDROID;
             accountStatus = ACCOUNT_STATUS;
-            logger.info("账户名：" + accountName + " 昵称：" + nickName);
+            logger.debug("账户名：" + accountName + " 昵称：" + nickName);
 
             //用户数据生成
             userEntity.setUserId(userId);
@@ -146,7 +146,7 @@ public class PersonServiceImpl implements IPersonService {
             accountLoginEntity.setCreateDate(date);
             loginRepository.save(accountLoginEntity);
 
-            logger.info("用户注册成功!");
+            logger.debug("用户注册成功!");
             exchangeName = BaseUtil.getExchangeName(userId);
             BaseUtil.createExchange(rabbitTemplate, exchangeName, EXCHANGE_TYPE_TOPIC);
             TimerUtil.clearOnly(accountMobile);
