@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { ParamsService } from "../../service/params.service";
-import {UtilService} from "../../service/util.service";
+import { ParamsService } from "../../service/util-service/params.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the UserSetPage page.

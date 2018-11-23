@@ -1,14 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { AlertController, Content, FabContainer, IonicPage, LoadingController, NavController, NavParams,ViewController } from 'ionic-angular';
-import { XiaojiAssistantService } from "../../service/xiaoji-assistant.service";
-import { ParamsService } from "../../service/params.service";
+import { XiaojiAssistantService } from "../../service/util-service/xiaoji-assistant.service";
+import { ParamsService } from "../../service/util-service/params.service";
 import { HttpClient } from "@angular/common/http";
 import { AppConfig } from "../../app/app.config";
 import { AiuiModel } from "../../model/aiui.model";
 import { ScheduleModel } from "../../model/schedule.model";
 import { File } from "@ionic-native/file";
 import { Base64 } from "@ionic-native/base64";
-import  {XiaojiFeedbackService} from "../../service/xiaoji-feedback.service";
+import  {XiaojiFeedbackService} from "../../service/util-service/xiaoji-feedback.service";
 import {LightSvgPage} from "../light-svg/light-svg";
 
 

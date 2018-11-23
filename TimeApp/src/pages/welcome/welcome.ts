@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
-import {UtilService} from "../../service/util.service";
+import {UtilService} from "../../service/util-service/util.service";
 import {SqliteService} from "../../service/sqlite.service";
-import { ParamsService } from "../../service/params.service";
+import { ParamsService } from "../../service/util-service/params.service";
 import {UserModel} from "../../model/user.model";
 import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
 import {UserSqliteService} from "../../service/sqlite-service/user-sqlite.service";

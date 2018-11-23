@@ -1,12 +1,12 @@
 import {Component, ElementRef, Input, Renderer2} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {ScheduleModel} from "../../model/schedule.model";
-import {ParamsService} from "../../service/params.service";
+import {ParamsService} from "../../service/util-service/params.service";
 import {ScheduleOutModel} from "../../model/out/schedule.out.model";
 import {AppConfig} from "../../app/app.config";
 import {HttpClient} from "@angular/common/http";
 import {CalendarService} from "../../service/calendar.service";
-import {UtilService} from "../../service/util.service";
+import {UtilService} from "../../service/util-service/util.service";
 import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
 import {UEntity} from "../../entity/u.entity";
 import {UserSqliteService} from "../../service/sqlite-service/user-sqlite.service";

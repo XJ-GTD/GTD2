@@ -1,6 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {UtilService} from "../../service/util.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the LightSvgPage page.

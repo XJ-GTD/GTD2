@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
-import { ParamsService } from "../../service/params.service";
+import { ParamsService } from "../../service/util-service/params.service";
 import { ScheduleModel } from "../../model/schedule.model";
 import {AppConfig} from "../../app/app.config";
 import {HttpClient} from "@angular/common/http";

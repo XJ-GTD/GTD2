@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AppConfig } from "../app/app.config";
+import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
 import { ParamsService } from "./params.service";
 import { Base64 } from "@ionic-native/base64";

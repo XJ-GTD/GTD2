@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, ModalController, Navbar, NavController, NavParams } from 'ionic-angular';
-import { ParamsService } from "../../service/params.service";
+import { ParamsService } from "../../service/util-service/params.service";
 import { ScheduleModel } from "../../model/schedule.model";
-import { XiaojiAlarmclockService } from "../../service/xiaoji-alarmclock.service";
+import { XiaojiAlarmclockService } from "../../service/util-service/xiaoji-alarmclock.service";
 import {HttpClient} from "@angular/common/http";
 import {AppConfig} from "../../app/app.config";
 import {ScheduleOutModel} from "../../model/out/schedule.out.model";

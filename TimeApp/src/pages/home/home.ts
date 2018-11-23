@@ -1,8 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
-import { WebsocketService } from "../../service/websocket.service";
-import { ParamsService } from "../../service/params.service";
-import { XiaojiAlarmclockService } from "../../service/xiaoji-alarmclock.service";
+import { WebsocketService } from "../../service/util-service/websocket.service";
+import { ParamsService } from "../../service/util-service/params.service";
+import { XiaojiAlarmclockService } from "../../service/util-service/xiaoji-alarmclock.service";
 import { HttpClient } from "@angular/common/http";
 import { AppConfig } from "../../app/app.config";
 import { RemindModel } from "../../model/remind.model";

@@ -1,7 +1,7 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {IonicModule} from 'ionic-angular';
 import { LightSvgPage } from './light-svg';
-import {UtilService} from "../../service/util.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 @NgModule({
   declarations: [

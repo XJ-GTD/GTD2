@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
-import { ParamsService } from "../../service/params.service";
+import { ParamsService } from "../../service/util-service/params.service";
 import { AppConfig } from "../../app/app.config";
 
 

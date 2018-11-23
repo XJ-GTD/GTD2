@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, Tabs } from 'ionic-angular';
-import { BackButtonService } from "../../service/backbutton.service";
+import { BackButtonService } from "../../service/util-service/backbutton.service";
 
 /**
  * Generated class for the HomeMenuPage page.

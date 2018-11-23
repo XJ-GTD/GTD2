@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {UserModel} from "../../model/user.model";
-import {ParamsService} from "../../service/params.service";
+import {ParamsService} from "../../service/util-service/params.service";
 import {HttpClient} from "@angular/common/http";
 import {AppConfig} from "../../app/app.config";
 

@@ -5,14 +5,14 @@ import { Platform, MenuController, Nav, Tabs, Events  } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from "@ionic/storage";
-import { ParamsService } from "../service/params.service";
-import { WebsocketService } from "../service/websocket.service";
-import { XiaojiAssistantService } from "../service/xiaoji-assistant.service";
-import { XiaojiAlarmclockService } from "../service/xiaoji-alarmclock.service";
-import { BackButtonService } from "../service/backbutton.service";
-import { XiaojiFeedbackService } from "../service/xiaoji-feedback.service";
+import { ParamsService } from "../service/util-service/params.service";
+import { WebsocketService } from "../service/util-service/websocket.service";
+import { XiaojiAssistantService } from "../service/util-service/xiaoji-assistant.service";
+import { XiaojiAlarmclockService } from "../service/util-service/xiaoji-alarmclock.service";
+import { BackButtonService } from "../service/util-service/backbutton.service";
+import { XiaojiFeedbackService } from "../service/util-service/xiaoji-feedback.service";
 import { AndroidFullScreen } from "@ionic-native/android-full-screen";
-import { UtilService } from "../service/util.service";
+import { UtilService } from "../service/util-service/util.service";
 import {BaseSqliteService} from "../service/sqlite-service/base-sqlite.service";
 
 @Component({

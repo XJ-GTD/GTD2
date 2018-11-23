@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { ScheduleAddPage } from './schedule-add';
-import {ParamsService} from "../../service/params.service";
+import {ParamsService} from "../../service/util-service/params.service";
 
 @NgModule({
   declarations: [
