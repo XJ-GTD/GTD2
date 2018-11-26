@@ -9,21 +9,23 @@ export class UEntity {
   private _oUI:string=null; //原用户ID
   private _uN: string=null;   //昵称
   private _hIU: string=null;          //头像URL
+  private _iC:string=null; //身份证
   private _biy: string=null;    // 生日
   private _uS: string=null;     // 性别
   private _uCt: string=null; // 联系方式
   private _aQ: string=null;    //消息队列
   private _uT:string=null; //token
   private _uty:string=null;//0游客1正式用户
+  private _uc:string=null;//账号
   /**
    * 创建表
    * @type {string}
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_A(uI VARCHAR(100) PRIMARY KEY,' +
-                          'uN VARCHAR(100),iC VARCHAR(100),biy VARCHAR(10),' +
-                          'uS VARCHAR(2),uC VARCHAR(20),aQ VARCHAR(20),'+
-                          'uTy VARCHAR(2),uT VARCHAR(200),hIU VARCHAR(300));';
+                          'uN VARCHAR(100),hIU VARCHAR(300),iC VARCHAR(100),biy VARCHAR(10),' +
+                          'uS VARCHAR(2),uCt VARCHAR(20),aQ VARCHAR(20),'+
+                          'uT VARCHAR(200),uTy VARCHAR(2),uc VARCHAR(30));';
   private _drsq:string="DROP TABLE GTD_A"
 
   private _isq:string;
@@ -57,9 +59,9 @@ export class UEntity {
 
   get isq(): string {
     let sql='insert into GTD_A ' +
-      '(uI,uN,biy,uT,hIU,uC,aQ,uty) ' +
+      '(uI,uN,biy,uT,hIU,uC,aQ,uty,iC,uc) ' +
       'values("'+ this._uI+ '","'+ this._uN+'","'+ this._biy+'","'+this.uT+ '","'+
-      this._hIU+'","'+ this._uCt+'","'+this._aQ+'","'+this._uty+'")';
+      this._hIU+'","'+ this._uCt+'","'+this._aQ+'","'+this._uty+'","'+this._iC+'","'+this._uc+'")';
     this._isq=sql;
     return this._isq;
   }
@@ -90,6 +92,12 @@ export class UEntity {
     }
     if(this._uS!=null){
       sql=sql+' uS="' + this._uS +'",';
+    }
+    if(this._uc!=null){
+      sql=sql+' uc="' + this._uc +'",';
+    }
+    if(this._iC!=null){
+      sql=sql+' iC="' + this._iC +'",';
     }
     if(this._oUI != null){
       sql = sql + ' uI="' + this._oUI +'" where uI="' + this._uI +'"';
@@ -129,6 +137,12 @@ export class UEntity {
     }
     if(this._uI != null){
       sql = sql + ' and uI="' + this._uI +'"';
+    }
+    if(this._uc!=null){
+      sql=sql+' and uc="' + this._uc +'"';
+    }
+    if(this._iC != null){
+      sql = sql + ' and iC="' + this._iC +'"';
     }
     this._dsq=sql;
     return this._dsq;
@@ -216,5 +230,21 @@ export class UEntity {
 
   set uty(value: string) {
     this._uty = value;
+  }
+
+  get iC(): string {
+    return this._iC;
+  }
+
+  set iC(value: string) {
+    this._iC = value;
+  }
+
+  get uc(): string {
+    return this._uc;
+  }
+
+  set uc(value: string) {
+    this._uc = value;
   }
 }

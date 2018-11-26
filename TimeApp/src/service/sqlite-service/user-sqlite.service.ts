@@ -47,19 +47,8 @@ export class UserSqliteService {
    * @param param
    * @returns {Promise<any>}
    */
-  userIsExist(sql,outParam:boolean){
-    return new Promise((resolve, reject) =>
-    {
-      this.baseSqlite.executeSql('select * from GTD_A'+sql,[]).then(data=>{
-          if(data && data.rows && data.rows.length>0){
-              resolve(outParam);
-          }else{
-              resolve(!outParam);
-          }
-      }).catch(e=>{
-          reject(e);
-      })
-    })
+  userIsExist(ui:string){
+    return this.baseSqlite.executeSql('select * from GTD_A where uI=?',[ui])
   }
 
   selectAll(u:UEntity,outParam:UoModel){
