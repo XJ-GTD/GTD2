@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
- * Generated class for the GroupSelectPage page.
+ * Generated class for the PgPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -10,10 +10,10 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-group-select',
-  templateUrl: 'group-select.html',
+  selector: 'page-pg',
+  templateUrl: 'pg.html',
 })
-export class GroupSelectPage {
+export class PgPage {
 
   indexs:any;
 
@@ -23,7 +23,7 @@ export class GroupSelectPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad GroupSelectPage');
+    console.log('ionViewDidLoad PgPage');
     this.indexs=[{"name":"张三","select":"false"},{"name":"李四","select":"false"}]
   }
 

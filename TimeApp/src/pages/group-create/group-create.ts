@@ -29,4 +29,9 @@ export class GroupCreatePage {
     this.navCtrl.push("PersonalAddPage")
   }
 
+  toGroupSelect(){
+    this.navCtrl.push("GroupSelectPage")
+  }
+
+
 }

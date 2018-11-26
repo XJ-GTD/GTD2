@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ParamsService } from "../../service/util-service/params.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the AaPage page.
@@ -15,11 +17,47 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class AaPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private paramsService: ParamsService,
+
+              public util: UtilService) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AaPage');
   }
 
+
+  logOut() {
+    this.paramsService.user = null;
+    window.localStorage.clear();
+    this.navCtrl.push("UbPage");
+  }
+
+  accountSecurity() {
+
+  }
+
+  newsMessage() {
+
+  }
+
+  cleanCache() {
+
+  }
+
+  shareApp() {
+
+  }
+
+  aboutApp() {
+
+  }
+
+  helpAndFeedback() {
+    this.navCtrl.push("AdPage");
+  }
+
+
 }
+

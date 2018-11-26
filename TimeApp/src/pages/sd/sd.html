@@ -15,4 +15,12 @@
 
 <ion-content padding>
 
+
+  <ion-item>
+    <ion-label floating>提醒时间</ion-label>
+    <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="remindTime"></ion-datetime>
+  </ion-item>
+
+  <button ion-button color="danger" (click)="setAralmClock()">确定</button><button ion-button (click)="dismiss()">取消</button>
+
 </ion-content>

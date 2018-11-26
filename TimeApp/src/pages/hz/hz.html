@@ -1,0 +1,33 @@
+<ion-menu [content]="homemenu" side="left" swipeEnabled = "false">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>菜单</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+
+      <ion-item>
+        <ion-toggle (ionChange)="inPrivate()"></ion-toggle>
+        <ion-label>隐私模式</ion-label>
+        <ion-icon name="lock" item-start></ion-icon>
+      </ion-item>
+
+      <button ion-item (click)="groupListShow()">
+        <ion-icon name="people" item-start></ion-icon>
+        <ion-label>参与人</ion-label>
+      </button>
+
+      <button ion-item (click)="showHistory()">
+        <ion-label>历史纪录</ion-label>
+        <ion-icon name="clock" item-start></ion-icon>
+      </button>
+
+      <button ion-item (click)="userSet()">
+        <ion-label>设置</ion-label>
+        <ion-icon name="settings" item-start></ion-icon>
+      </button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-nav #homemenu [root]="menuPage"></ion-nav>
