@@ -34,7 +34,8 @@ export class AuRestfulService {
    * @param {string} pw
    */
   login(un:string,pw:string) {
-    let dv = this.util.getDeviceId;
+    let dv = this.util.getDeviceId();
+    dv='1232321';
     return this.http.post(AppConfig.AUTH_LOGIN_URL, {
       account: un,
       password: pw,

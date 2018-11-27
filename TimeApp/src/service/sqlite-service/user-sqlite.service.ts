@@ -51,16 +51,25 @@ export class UserSqliteService {
     return this.baseSqlite.executeSql('select * from GTD_A where uI=?',[ui])
   }
 
-  selectAll(u:UEntity,outParam:UoModel){
-    let sql='select * from GTD_A where 1=1';
-    if(u.uI != null){
-      sql=sql+'and uI="'+u.uI+'"';
-    }
-    return  this.baseSqlite.executeSql(sql,[])
-  }
   getUo(){
       let sql='select * from GTD_A';
       return this.baseSqlite.executeSql(sql,[])
   }
 
+//   this.sqliteService.executeSql('replace into GTD_A(uI,uty) VALUES (?,?)',['6688','0']).then(data=>{
+//   console.log(data);
+//   this.sqliteService.executeSql('select * from GTD_A',[])
+// .then(data0=>{
+//   console.log(data0)
+//   this.sqliteService.executeSql('replace into GTD_A(uI,uty) VALUES (?,?)',['6688','1'])
+// .then(data1=>{
+//   console.log(data1)
+//   this.sqliteService.executeSql('select * from GTD_A',[])
+// .then(data2=>{
+//   console.log(data2)
+// })
+// })
+//
+// })
+// })
 }

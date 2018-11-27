@@ -25,7 +25,7 @@ export class UEntity {
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_A(uI VARCHAR(100) PRIMARY KEY,' +
                           'uN VARCHAR(100),hIU VARCHAR(300),iC VARCHAR(100),biy VARCHAR(10),' +
                           'uS VARCHAR(2),uCt VARCHAR(20),aQ VARCHAR(20),'+
-                          'uT VARCHAR(200),uTy VARCHAR(2),uc VARCHAR(30));';
+                          'uT VARCHAR(200),uty VARCHAR(2),uc VARCHAR(30));';
   private _drsq:string="DROP TABLE GTD_A"
 
   private _isq:string;

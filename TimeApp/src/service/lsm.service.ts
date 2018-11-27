@@ -20,15 +20,17 @@ export class LsmService {
   au:AuRestfulService;
   pn:PnRestfulService;
   dx:DxRestfulService;
-  basesqlite:BaseSqliteService;
+  userSqlite:UserSqliteService;
   data:any
   constructor(private http: HttpClient,
               private loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
+              private basesqlite:BaseSqliteService,
               private util: UtilService) {
     this.au = new AuRestfulService(http,util);
     this.pn = new PnRestfulService(http,util);
     this.dx = new DxRestfulService(http,util);
+    this.userSqlite = new UserSqliteService(this.basesqlite)
   }
 
   /**
@@ -38,21 +40,38 @@ export class LsmService {
    * @param {string} ac 验证码
    * @param {string} ui uuid
    */
-  sn(am:string,pw:string,ac:string,ui:string):Promise<BsModel>{
+  sn(am:string,pw:string,ac:string):Promise<BsModel>{
+    //生成用户UUID
+    let ui = this.util.getUuid();
     return new Promise((resolve, reject) =>{
       let base = new BsModel();
-      this.pn.sn(am,pw,ac,ui)
-        .subscribe(data=>{
-          this.data = data;
-          base = this.data
-          resolve(base)
-        },err => {
-          base.message = err.message
-          base.code=1
-          reject(base)
-        })
-
-    })
+      //查询已存在用户UUID
+      this.userSqlite.getUo().then(data=>{
+        if(data && data.rows && data.rows.length>0){
+            ui = data.rows.item(0).uI;
+            //直接注册
+            this.pn.sn(am,pw,ac,ui)
+              .subscribe(sndata=>{
+                this.data = sndata;
+                base = this.data
+                resolve(base)
+              },err => {
+                base.message = err.message
+                base.code=1
+                reject(base)
+              })
+          }else {
+            base.message = '本地用户不存在'
+            base.code=1
+            reject(base)
+          }
+      }).catch(e=>{
+              console.log(""+e.message)
+              base.message = e.message
+              base.code=1
+              reject(base)
+      })
+     })
   }
   /**
    * 游客登录
@@ -61,32 +80,45 @@ export class LsmService {
     let ui = this.util.getUuid();
     return new Promise((resolve, reject) =>{
       let base = new BsModel();
-      //调用游客登录接口
-      this.au.visitor(ui).subscribe(data=>{
-        this.data = data;
-        base = this.data
-        if(this.data.code==0){
-            let u = new UEntity();
-            u.uI=ui;
-            u.aQ=this.data.accountQueue
-            //Sqlite插入用户信息
+      //查询用户
+      this.userSqlite.getUo().then(data=>{
+        let oldUi = null;
+        if(data && data.rows && data.rows.length>0){
+          ui = data.rows.item(0).uI;
+          oldUi = data.rows.item(0).uI;
+        }
+        //调用游客登录接口
+        this.au.visitor(ui).subscribe(datal=>{
+          this.data = datal;
+          base = this.data;
+          let u = new UEntity();
+          u.uI=ui;
+          u.aQ=this.data.data.accountQueue
+          //用户如果不存在则添加
+          if(oldUi==null){
             this.basesqlite.save(u).then(data=>{
-              console.log(data)
-              resolve(base)
-            }).catch(e=>{
-              console.log(""+e.message)
-              base.message = e.message
+              resolve(base);
+            }).catch(eu=>{
               base.code=1
-              reject(base)
+              base.message=eu.message
+              resolve(base);
             })
           }else{
-          resolve(base)
+            //用户如果存在则更新
+            this.basesqlite.update(u).then(data=>{
+              resolve(base);
+            }).catch(eu=>{
+              base.code=1
+              base.message=eu.message
+              resolve(base);
+            })
           }
-        },err => {
-          base.message = err.message
-          base.code=1
-          reject(base)
         })
+      }).catch(e=>{
+        base.message = e.message
+        base.code=1
+        reject(base)
+      })
     })
   }
 
@@ -98,33 +130,47 @@ export class LsmService {
   login(un:string,pw:string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let base = new BsModel();
-      this.au.login(un,pw)
-        .subscribe(data=>{
-          this.data = data;
-          base = this.data
-          if(this.data.code==0){
-            let u = new UEntity();
-            u.uI=this.data.userId;
-            u.aQ=this.data.accountQueue
-            //Sqlite插入用户信息
+      //查询用户
+      this.userSqlite.getUo().then(data=>{
+        let oldUi = null;
+        if(data && data.rows && data.rows.length>0){
+          let oldUi = data.rows.item(0).uI;
+        }
+        //登录
+        this.au.login(un,pw).subscribe(datal=>{
+          this.data = datal;
+          base = this.data;
+          let u = new UEntity();
+          u.uI=this.data.data.userId;
+          u.aQ=this.data.data.accountQueue
+          //用户如果不存在则添加
+          if(oldUi==null){
             this.basesqlite.save(u).then(data=>{
-              console.log(data)
-              resolve(base)
-            }).catch(e=>{
-              console.log(""+e.message)
-              base.message = e.message
+              resolve(base);
+            }).catch(eu=>{
               base.code=1
-              reject(base)
+              base.message=eu.message
+              resolve(base);
             })
           }else{
-            resolve(base)
+            //用户如果存在则更新
+            if(oldUi != u.uI){
+              u.oUI = oldUi;
+            }
+            this.basesqlite.update(u).then(data=>{
+              resolve(base);
+            }).catch(eu=>{
+              base.code=1
+              base.message=eu.message
+              resolve(base);
+            })
           }
-      },err => {
-          base.message = err.message
-          base.code=1
-          reject(base)
         })
-
+      }).catch(e=>{
+        base.message = e.message
+        base.code=1
+        reject(base)
+      })
     })
   }
 
@@ -140,7 +186,23 @@ export class LsmService {
       .subscribe(data=>{
         this.data = data;
         base = this.data
-        resolve(base)
+        if(this.data.code==0){
+          let u = new UEntity();
+          u.uI=this.data.data.userId;
+          u.aQ=this.data.data.accountQueue
+          //Sqlite插入用户信息
+          this.basesqlite.save(u).then(data=>{
+            console.log(data)
+            resolve(base)
+          }).catch(e=>{
+            console.log(""+e.message)
+            base.message = e.message
+            base.code=1
+            reject(base)
+          })
+        }else{
+          reject(base)
+        }
       },err => {
         base.message = err.message
         base.code=1
