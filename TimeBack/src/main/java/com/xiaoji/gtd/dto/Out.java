@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Out {
 
-    private ResultCode code;
+    private int code;
     private String message;
     private BaseOut data;
     private List<BaseOut> lsData;
@@ -40,11 +40,16 @@ public class Out {
         this.data = data;
     }
 
-    public ResultCode getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(ResultCode code) {
+    public void setCode(int code) {
         this.code = code;
     }
+
+    public void setCode(ResultCode code) {
+        this.code = code.code;
+    }
+
 }

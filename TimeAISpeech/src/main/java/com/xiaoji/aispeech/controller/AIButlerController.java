@@ -20,7 +20,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/aiButler")
+@RequestMapping(value = "/ai_butler")
 public class AIButlerController {
 
     private Logger logger = LogManager.getLogger(this.getClass());
@@ -47,7 +47,7 @@ public class AIButlerController {
      * 语音交互（base64文件转码）
      * @return
      */
-    @RequestMapping(value = "/audio_base64", method = RequestMethod.POST)
+    @RequestMapping(value = "/audio", method = RequestMethod.POST)
     @ResponseBody
     public VoiceOutBean audioBase64(@RequestBody VoiceInBean voiceInBean) {
         JSON repJson = aiButlerService.answerAudioResJSON(voiceInBean.getContent());
@@ -127,6 +127,7 @@ public class AIButlerController {
                     nlp.setAnswer(intent.getAnswer().getText());
                     nlp.setAnswerImg(intent.getAnswer().getImgUrl());
                     nlp.setAnswerUrl(intent.getAnswer().getUrl());
+                    nlp.setService(intent.getService());
 
                     for (Semantic semantic : semantics){
                         nlp.setIntent(semantic.getIntent());

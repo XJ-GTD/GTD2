@@ -14,10 +14,10 @@ public class WebSocketOutDto extends BaseOut {
     private String answerText;
     private String answerUrl;
     private String answerImg;
-    private ResultCode status;
+    private int status;
     private String skillType;
-    private WebSocketSource source;
-    private WebSocketResult result;
+    private WebSocketSourceDto source;
+    private WebSocketResultDto result;
 
 
     public String getVersion() {
@@ -52,19 +52,19 @@ public class WebSocketOutDto extends BaseOut {
         this.skillType = skillType;
     }
 
-    public WebSocketSource getSource() {
+    public WebSocketSourceDto getSource() {
         return source;
     }
 
-    public void setSource(WebSocketSource source) {
+    public void setSource(WebSocketSourceDto source) {
         this.source = source;
     }
 
-    public WebSocketResult getResult() {
+    public WebSocketResultDto getResult() {
         return result;
     }
 
-    public void setResult(WebSocketResult result) {
+    public void setResult(WebSocketResultDto result) {
         this.result = result;
     }
 
@@ -76,11 +76,15 @@ public class WebSocketOutDto extends BaseOut {
         this.answerImg = answerImg;
     }
 
-    public ResultCode getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(ResultCode status) {
+    public void setStatus(int status) {
         this.status = status;
+    }
+
+    public void setStatus(ResultCode status) {
+        this.status = status.code;
     }
 }

@@ -8,5 +8,5 @@ import java.util.Map;
  *
  * create by wzy on 2018/11/22
  */
-public class WebSocketSource {
+public class WebSocketSourceDto {
 }

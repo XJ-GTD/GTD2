@@ -5,7 +5,7 @@ public class Slot{
     private int end;
     private String name;
     private String normValue;
-    private  String value;
+    private String value;
 
     public int getBegin() {
         return begin;

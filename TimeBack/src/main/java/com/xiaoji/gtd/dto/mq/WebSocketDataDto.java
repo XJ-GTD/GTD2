@@ -5,7 +5,7 @@ package com.xiaoji.gtd.dto.mq;
  *
  * create by wzy on 2018/11/22
  */
-public class WebSocketData {
+public class WebSocketDataDto {
 
     //业务
     private String scheduleName;
@@ -13,7 +13,7 @@ public class WebSocketData {
     private String endTime;
     private String label;
     private String planName;
-    private String player;
+    private String playerName;
     private String status;
 
     public String getScheduleName() {
@@ -56,20 +56,20 @@ public class WebSocketData {
         this.planName = planName;
     }
 
-    public String getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(String player) {
-        this.player = player;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
     }
 
     //扩展字段
@@ -298,4 +298,5 @@ public class WebSocketData {
     public void setCommon_Z(String common_Z) {
         this.common_Z = common_Z;
     }
+
 }

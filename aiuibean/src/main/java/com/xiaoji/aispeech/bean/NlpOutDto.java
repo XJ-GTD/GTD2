@@ -11,6 +11,7 @@ public class NlpOutDto{
     private String answerUrl;
     private List<Slot> slots;
     private String intent;
+    private String service;
 
     public String getText() {
         return text;
@@ -58,6 +59,14 @@ public class NlpOutDto{
 
     public void setIntent(String intent) {
         this.intent = intent;
+    }
+
+    public String getService() {
+        return service;
+    }
+
+    public void setService(String service) {
+        this.service = service;
     }
 }
 
