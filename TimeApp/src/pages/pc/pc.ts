@@ -15,11 +15,18 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class PcPage {
 
+  name:any;
+  tel:any;
+  code:any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PcPage');
+    this.name = this.navParams.get("name");
+    this.tel=this.navParams.get("tel");
+    this.code = this.navParams.get("code");
   }
 
 }

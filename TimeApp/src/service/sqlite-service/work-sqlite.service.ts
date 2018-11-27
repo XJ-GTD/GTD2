@@ -93,37 +93,4 @@ export class WorkSqliteService {
       console.log(e)
     })
   }
-  // select(u:UEntity,outParam:UoModel): Promise<any>{
-  //   return new Promise((resolve, reject) =>{
-  //     // if(u.uI != null){
-  //     let sql='select * from GTD_A where 1=1';
-  //
-  //     if(u.uI != null){
-  //       sql=sql+'and uI="'+u.uI+'"';
-  //     }
-  //     this.baseSqlite.executeSql(sql,[])
-  //       .then(data=>{
-  //         resolve(data);
-  //         // if(data&& data.rows && data.rows.length>0){
-  //         //   outParam.ct=data.rows.length;
-  //         //   let d=new Array<UEntity>()
-  //         //   for(let i=0;i<data.rows.length;i++){
-  //         //     d[i]=data.rows.item(i);
-  //         //   }
-  //         //   outParam.us=d;
-  //         //   resolve(outParam);
-  //         // }else{
-  //         //   outParam.ct=0;
-  //         //   resolve(outParam);
-  //         // }
-  //       }).catch(e=>{
-  //       reject(e);
-  //     })
-  //     // }else{
-  //     //   reject('入参不能为空！')
-  //     // }
-  //   })
-  // }
-
-
 }

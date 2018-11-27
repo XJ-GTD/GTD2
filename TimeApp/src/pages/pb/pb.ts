@@ -15,11 +15,29 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class PbPage {
 
+  name:any;
+  state:any;//true 编辑 false 不可编辑
+  isPush:any;
+  lableColor:any = 'red'
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PbPage');
+    this.name = "旺财"
+    this.state = false;
+    console.log(this.name + this.state)
   }
+
+  edit(){
+    this.state = true;
+  }
+
+  confirm(){
+    this.state = false;
+    console.log(this.isPush);
+  }
+
 
 }

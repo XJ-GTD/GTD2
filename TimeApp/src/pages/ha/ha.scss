@@ -1,3 +1,55 @@
-page-ha {
+page-ha{
+  background: -webkit-linear-gradient(left,color($background-color-content,first,start), color($background-color-content,first,end)); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(right,color($background-color-content,first,start), color($background-color-content,first,end)); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(right, color($background-color-content,first,start), color($background-color-content,first,end)); /* Firefox 3.6 - 15 */
+  background: linear-gradient(to right,color($background-color-content,first,start), color($background-color-content,first,end)); /* 标准的语法（必须放在最后） */
+  .content-ios{
+    background-color:transparent;
+  }
+}
+.homeContent{
+  position: absolute;
+  top: 10px;
+  left:10px;
+  right:10px;
+  bottom:10px;
+  background-color:#FFFFFF ;
+  background-image: url('../assets/imgs/homebackImg.png');
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  -moz-background-size:100% 100%;
+
+  ion-app.ios page-home ion-header [padding-left]{
+    padding-left:10px
+  }
+  ion-app.ios page-home ion-header [padding-right] {
+    padding-right: 10px;
+  }
+
+  .showDay{
+    font-size: 10px;
+    color: #999999;
+    margin-left: 15px;
+    height: 0px;
+    margin-top: -10px;
+
+  }
+  .homeCalendar{
+    width: 100%;
+    //background-color: #fff;
+    position:relative;
+    height: 350px;
+  }
+  super-tabs{
+    //height: 100%;
+    super-tabs-toolbar{
+      .toolbar-background-md{
+        background: transparent;
+      }
+      .toolbar-content-md{
+        width: 50%;
+      }
+    }
+  }
 
 }

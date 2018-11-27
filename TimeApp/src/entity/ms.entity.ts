@@ -6,8 +6,8 @@
 export class MsEntity {
 
   private _mi: string=null;   //UmtD
-  private _mn:string=null; //日程名
-  private _md: string=null;   //关联标签ID
+  private _mn:string=null; //message内容
+  private _md: string=null;   //发布时间
   private _mt: string=null;          //创建人ID
   /*
    * 创建表

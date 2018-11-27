@@ -15,11 +15,37 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class PaPage {
 
+  relation: any = 'persional' ;
+  indexs : any;
+  popPage:any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PaPage');
+    this.indexs=[1,2,3,4,5,6,7,8,9];
+    this.popPage = this.navParams.get('popPage');
+  }
+
+  toAddMemebr(){
+    this.navCtrl.push('PfPage');
+  }
+
+  toGroupMember(){
+    this.navCtrl.push('PdPage');
+  }
+
+  toGroupCreate(){
+    this.navCtrl.push("PePage");
+  }
+
+  toMemberDetail(){
+    this.navCtrl.push("PbPage");
+  }
+
+  goBack() {
+    this.navCtrl.pop();
   }
 
 }

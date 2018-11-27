@@ -28,6 +28,7 @@ import {WorkSqliteService} from "../service/sqlite-service/work-sqlite.service";
 import {BaseService} from "../service/base.service";
 import {UserService} from "../service/user.service";
 import {WorkService} from "../service/work.service";
+import {LsmService} from "../service/lsm.service";
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import {WorkService} from "../service/work.service";
     UserService,
     BaseService,
     WorkService,
+    LsmService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

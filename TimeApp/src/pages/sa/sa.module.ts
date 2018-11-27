@@ -9,5 +9,8 @@ import { SaPage } from './sa';
   imports: [
     IonicPageModule.forChild(SaPage),
   ],
+  entryComponents: [
+    SaPage,
+  ]
 })
 export class SaPageModule {}

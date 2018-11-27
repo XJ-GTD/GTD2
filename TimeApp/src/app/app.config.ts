@@ -32,7 +32,9 @@ export class AppConfig {
   };
 
   /* Controller */
-  private static AUTH_URL: string = AppConfig.REQUEST_URL + "/auth";    //用户类
+  private static AUTH_URL: string = AppConfig.REQUEST_URL + "/auth";    //登录验证
+  private static PERSON_URL: string = AppConfig.REQUEST_URL + "/person";    //用户注册
+
   private static USER_URL: string = AppConfig.REQUEST_URL + "/user";    //用户类
 
   private static GROUP_URL: string = AppConfig.REQUEST_URL + "/group";   //群组类
@@ -45,12 +47,18 @@ export class AppConfig {
 
   private static SMS_URL: string = AppConfig.REQUEST_URL + "/sms";            //短信
 
-  /* Connect */
-  public static AUTH_VISITOR_URL: string = AppConfig.AUTH_URL + "/login_visitors";   //游客登录
-  //用户类
   public static USER_LOGIN_URL: string = AppConfig.USER_URL + "/login";   //登陆 POST
-
   public static USER_REGISTER_URL: string = AppConfig.USER_URL + "/register";   //注册 POST
+
+  /* 登录 */
+  public static AUTH_VISITOR_URL: string = AppConfig.AUTH_URL + "/login_visitors";   //游客登录
+  public static AUTH_LOGIN_URL: string = AppConfig.AUTH_URL + "/login_password";   //登录
+  public static AUTH_SMSLOGIN_URL: string = AppConfig.AUTH_URL + "/login_code";   //短信登录
+  /*注册*/
+  public static PERSON_SU_URL: string = AppConfig.PERSON_URL + "/sign_up";   //注册
+  public static PERSON_UPW_URL: string = AppConfig.PERSON_URL + "/updatePassword";   //修改密码
+  /*短信*/
+  public static SMS_CODE_URL: string = AppConfig.SMS_URL + "/code";   //短信验证
 
   public static USER_LABEL_URL: string = AppConfig.USER_URL + "/find_label";           //查询标签
 

@@ -6,15 +6,15 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar [hideBackButton]="true">
     <ion-buttons left>
-      <button ion-button icon-only>
+      <button ion-button icon-only (click)="goBack()">
         取消
       </button>
     </ion-buttons>
     <ion-title>选择群</ion-title>
     <ion-buttons right>
-      <button ion-button icon-only>
+      <button ion-button icon-only (click)="showSelect()">
         确定
       </button>
     </ion-buttons>
@@ -26,14 +26,14 @@
 <ion-content padding class="page-backgroud-color">
   <div>
     <ion-item *ngFor="let i of indexs">
-      <ion-avatar item-start>
+      <ion-avatar item-start >
         <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
       </ion-avatar>
       <ion-label>
-        <h2>皮球</h2>
+        <h2>{{i.name}}</h2>
         <p>皮一下很开心</p>
       </ion-label>
-      <ion-checkbox item-end></ion-checkbox>
+      <ion-checkbox item-end [(ngModel)]="i.select"></ion-checkbox>
     </ion-item>
   </div>
 </ion-content>

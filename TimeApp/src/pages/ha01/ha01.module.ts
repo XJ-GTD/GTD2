@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
+import {ModuleWithProviders, NgModule} from '@angular/core';
+import {IonicModule, IonicPageModule} from 'ionic-angular';
 import { Ha01Page } from './ha01';
 
 @NgModule({
@@ -7,7 +7,15 @@ import { Ha01Page } from './ha01';
     Ha01Page,
   ],
   imports: [
-    IonicPageModule.forChild(Ha01Page),
+    IonicModule,
+    // IonicPageModule.forChild(Ha01Page),
   ],
+  exports: [Ha01Page]
 })
-export class Ha01PageModule {}
+export class Ha01PageModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: Ha01PageModule
+    };
+  }
+}
