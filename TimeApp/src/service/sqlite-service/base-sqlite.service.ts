@@ -73,7 +73,7 @@ export class BaseSqliteService {
     //创建日程参与人表
     let rcp = new RcpEntity();
     this.executeSql(rcp.csq,[]).catch(e=>{
-      console.log('GTD_ACCOUNT:'+e.toString());
+      console.log('GTD_D:'+e.toString());
     })
     //授权联系人表
     let ru = new RuEntity();
