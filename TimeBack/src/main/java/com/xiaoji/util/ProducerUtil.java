@@ -38,7 +38,7 @@ public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
      */
     public void send(String queueName, String sendMsg) {
         logger.debug("点对点 消息 : "+ sendMsg);
-        this.rabbitTemplate.convertAndSend("taskQueue", sendMsg);
+        this.rabbitTemplate.convertAndSend(queueName, sendMsg);
     }
 
     /**
@@ -49,7 +49,7 @@ public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
      * @param sendMsg
      */
     public void topicSend(String exchangeName, int userId, String sendMsg) {
-        logger.debug("topic 消息 : "+ sendMsg);
+        logger.debug("topic广播 消息 : "+ sendMsg);
         String queueName = userId + ".#";
         this.amqpTemplate.convertAndSend(exchangeName, queueName, sendMsg);
     }

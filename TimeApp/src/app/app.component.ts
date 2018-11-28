@@ -14,6 +14,7 @@ import { XiaojiFeedbackService } from "../service/util-service/xiaoji-feedback.s
 import { AndroidFullScreen } from "@ionic-native/android-full-screen";
 import { UtilService } from "../service/util-service/util.service";
 import {BaseSqliteService} from "../service/sqlite-service/base-sqlite.service";
+import {PageConfig} from "./page.config";
 
 @Component({
   templateUrl: 'app.html',
@@ -68,18 +69,12 @@ export class MyApp {
   ngAfterViewInit(){
     //通过key，判断是否曾进入过引导页
     this.storage.get('firstIn').then((result) => {
-      if (this.paramsService.user == null) {
-        if (result != null && result) {
-          this.rootPage = 'UserLoginPage';
-        } else {
-          this.storage.set('firstIn', true);
-          this.rootPage = 'WelcomePage';
-        }
+
+      if (result != null && result) {
+        this.rootPage = PageConfig.HZ_PAGE;
       } else {
-        // this.nativeProvider.addRctest(new Date(),2016,1).then(data=>{
-        //   this.rootPage = 'HomeMenuPage';
-        // })
-        this.rootPage = 'HomeMenuPage';
+        this.storage.set('firstIn', true);
+        this.rootPage = PageConfig.AZ_PAGE;
       }
 
       if (this.nav.getViews().length == 0){

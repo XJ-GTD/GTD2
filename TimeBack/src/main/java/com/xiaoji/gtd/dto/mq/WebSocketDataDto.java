@@ -8,68 +8,68 @@ package com.xiaoji.gtd.dto.mq;
 public class WebSocketDataDto {
 
     //业务
-    private String scheduleName;
-    private String startTime;
-    private String endTime;
-    private String label;
-    private String planName;
-    private String playerName;
-    private String status;
+    private String sn;      //scheduleName;
+    private String st;      //startTime;
+    private String et;      //endTime;
+    private String lb;      //label;
+    private String pn;      //planName;
+    private String pln;     //playerName;
+    private String ss;      //status;
 
-    public String getScheduleName() {
-        return scheduleName;
+    public String getSn() {
+        return sn;
     }
 
-    public void setScheduleName(String scheduleName) {
-        this.scheduleName = scheduleName;
+    public void setSn(String sn) {
+        this.sn = sn;
     }
 
-    public String getStartTime() {
-        return startTime;
+    public String getSt() {
+        return st;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public void setSt(String st) {
+        this.st = st;
     }
 
-    public String getEndTime() {
-        return endTime;
+    public String getEt() {
+        return et;
     }
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+    public void setEt(String et) {
+        this.et = et;
     }
 
-    public String getLabel() {
-        return label;
+    public String getLb() {
+        return lb;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setLb(String lb) {
+        this.lb = lb;
     }
 
-    public String getPlanName() {
-        return planName;
+    public String getPn() {
+        return pn;
     }
 
-    public void setPlanName(String planName) {
-        this.planName = planName;
+    public void setPn(String pn) {
+        this.pn = pn;
     }
 
-    public String getStatus() {
-        return status;
+    public String getPln() {
+        return pln;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setPln(String pln) {
+        this.pln = pln;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public String getSs() {
+        return ss;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setSs(String ss) {
+        this.ss = ss;
     }
 
     //扩展字段

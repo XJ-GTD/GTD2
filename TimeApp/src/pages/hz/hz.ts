@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, Tabs } from 'ionic-angular';
 import { BackButtonService } from "../../service/util-service/backbutton.service";
+import {PageConfig} from "../../app/page.config";
 
 /**
  * Generated class for the HzPage page.
@@ -18,7 +19,7 @@ import { BackButtonService } from "../../service/util-service/backbutton.service
 export class HzPage {
   @ViewChild('myTabs') tabRef: Tabs;
 
-  menuPage: any = 'HaPage';
+  hzPage: any = PageConfig.HZ_PAGE;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public platform: Platform,

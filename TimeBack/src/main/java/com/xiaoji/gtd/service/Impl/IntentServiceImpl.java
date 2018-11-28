@@ -28,6 +28,7 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.client.AsyncRestTemplate;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -156,26 +157,26 @@ public class IntentServiceImpl implements IIntentService {
             List<NlpOutDto> data = parseData.getData();
 
             String queueName = BaseUtil.getQueueName(userId, deviceId);
-            outDto.setVersion(version);
+            outDto.setVs(version);
 
             if (!code.equals("0")) {
-                outDto.setStatus(ResultCode.FAIL);
-                webSocketService.pushMessage(queueName, outDto);
+                outDto.setSs(ResultCode.FAIL);
+                webSocketService.pushMessageOfXF(queueName, outDto);
                 return;
             }
             for (NlpOutDto nod: data) {
                 String flag = WebSocketSkillEnum.getIntentCode(splitStr(nod.getService()));
                 if (flag != null && flag.equals("0")) {
                     String skillType = WebSocketSkillEnum.getIntentCode(nod.getIntent());
-                    outDto.setSkillType(skillType);
-                    outDto.setResult(dealWithSlots(nod));
+                    outDto.setSk(skillType);
+                    outDto.setRes(dealWithSlots(nod));
                 } else {
-                    outDto.setAnswerText(nod.getText());
-                    outDto.setAnswerUrl(nod.getAnswerUrl());
-                    outDto.setAnswerImg(nod.getAnswerImg());
+                    outDto.setAt(nod.getText());
+                    outDto.setAu(nod.getAnswerUrl());
+                    outDto.setAi(nod.getAnswerImg());
                 }
-                outDto.setStatus(ResultCode.SUCCESS);
-                webSocketService.pushMessage(queueName, outDto);
+                outDto.setSs(ResultCode.SUCCESS);
+                webSocketService.pushMessageOfXF(queueName, outDto);
                 outDto = new WebSocketOutDto();
             }
         }
@@ -187,24 +188,24 @@ public class IntentServiceImpl implements IIntentService {
             for (Slot slot: nod.getSlots()) {
                 switch (slot.getName()) {
                     case "time":
-                        String[] timeList = JSONObject.parseObject(slot.getNormValue()).getString("datetime").split("/");
-                        data.setStartTime(timeList[0]);
-                        data.setEndTime(timeList[1]);
+                        String[] timeList = JSONObject.parseObject(slot.getNormValue()).getString("datetime").split("/");;
+                        data.setSt(timeList[0]);
+                        data.setEt(timeList[timeList.length]);
                         break;
                     case "schedule":
-                        data.setScheduleName(slot.getNormValue());
+                        data.setSn(slot.getNormValue());
                         break;
                     case "player":
-                        data.setPlayerName(slot.getNormValue());
+                        data.setPln(slot.getNormValue());
                         break;
                     case "plan":
-                        data.setPlanName(slot.getNormValue());
+                        data.setPn(slot.getNormValue());
                         break;
                     case "label":
-                        data.setLabel(slot.getNormValue());
+                        data.setLb(slot.getNormValue());
                         break;
                     case "status":
-                        data.setStatus(slot.getNormValue());
+                        data.setSs(slot.getNormValue());
                         break;
                 }
 

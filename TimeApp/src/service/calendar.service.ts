@@ -1,6 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {HomeWorkListPage} from "../pages/home-work-list/home-work-list";
 import {Calendar} from "@ionic-native/calendar";
+import {Ha01Page} from "../pages/ha01/ha01";
 
 /**
  * 页面ts传值(Calendar)
@@ -15,7 +15,7 @@ export class CalendarService {
     this.selectDay.emit($event);
   }
 
-  public getSelectDay(obj:HomeWorkListPage){
+  public getSelectDay(obj:Ha01Page){
     this.selectDay.subscribe(($event)=>{
       obj.findTodaySchedule($event);
     })
