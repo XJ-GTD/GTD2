@@ -62,13 +62,13 @@ export class UserService {
    * 查询用户资料
    * @returns {Promise<UModel>}
    */
-  getUo(): Promise<UModel>{
+  getUo(): Promise<UoModel>{
     return new Promise((resolve, reject) =>{
-      let op = new UModel();
+      let op = new UoModel();
       this.userSqlite.getUo()
         .then(data=>{
           if(data&& data.rows && data.rows.length>0){
-            op=data.rows.item(0);
+            op.u=data.rows.item(0);
             op.code=0;
             op.message="成功"
             resolve(op);
