@@ -5,7 +5,7 @@
 //Message消息表
 export class MsEntity {
 
-  private _mi: string=null;   //UmtD
+  private _mi: number=null;   //UmtD
   private _mn:string=null; //message内容
   private _md: string=null;   //发布时间
   private _mt: string=null;          //创建人ID
@@ -101,11 +101,12 @@ export class MsEntity {
     this._drsq = value;
   }
 
-  get mi(): string {
+
+  get mi(): number {
     return this._mi;
   }
 
-  set mi(value: string) {
+  set mi(value: number) {
     this._mi = value;
   }
 

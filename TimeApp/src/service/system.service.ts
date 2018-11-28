@@ -60,7 +60,7 @@ export class SystemService {
    * @param {string} st
    * @returns {Promise<BsModel>}
    */
-  addSt(sn: string, ss:string,st: string):Promise<BsModel>{
+  addStl(sn: string, ss:string,st: string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let s = new StEntity();
       s.sn=sn;
@@ -89,7 +89,7 @@ export class SystemService {
    * @param {string} st
    * @returns {Promise<BsModel>}
    */
-  updateSt(si:number,sn: string, ss:string,st: string):Promise<BsModel>{
+  updateStl(si:number,sn: string, ss:string,st: string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let s = new StEntity();
       s.si=si;
@@ -119,7 +119,7 @@ export class SystemService {
    * @param {string} st
    * @returns {Promise<BsModel>}
    */
-  delSt(si:number,sn: string, ss:string,st: string):Promise<BsModel>{
+  delStl(si:number,sn: string, ss:string,st: string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let s = new StEntity();
       s.si=si;

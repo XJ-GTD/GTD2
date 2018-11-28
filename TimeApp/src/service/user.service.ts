@@ -29,6 +29,7 @@ export class UserService {
    * @param {string} aQ 消息队列
    * @param {string} uT token
    * @param {string} uty 0游客1正式用户
+   *
    */
   upu(uI: string, oUI:string,uN: string,hIU: string,biy: string,uS: string,
           uCt: string, aQ: string, uT:string,uty:string):Promise<BsModel>{

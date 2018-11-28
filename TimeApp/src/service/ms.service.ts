@@ -18,16 +18,14 @@ export class MsService {
 
   /**
    * 添加message消息
-   * @param {string} mi
    * @param {string} mn
    * @param {string} md
    * @param {string} mt
    * @returns {Promise<BsModel>}
    */
-  addMs(mi: string, mn:string,md: string,mt: string):Promise<BsModel>{
+  addMs( mn:string,md: string,mt: string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let ms = new MsEntity();
-      ms.mi=mi;
       ms.mn=mn;
       ms.md=md;
       ms.mt=mt;
@@ -46,12 +44,17 @@ export class MsService {
   }
 
   /**
-   *
+   *查询Message消息
    * @returns {Promise<MsoModel>}
    */
-  getUo(ms:MsEntity): Promise<MsoModel>{
+  getMs(mi: number, mn:string,md: string,mt: string): Promise<MsoModel>{
     return new Promise((resolve, reject) =>{
       let op = new MsoModel();
+      let ms = new MsEntity();
+      ms.mi=mi;
+      ms.mn=mn;
+      ms.md=md;
+      ms.mt=mt;
       this.msSqlite.getMs(ms)
         .then(data=>{
           if(data&& data.rows && data.rows.length>0){
@@ -67,20 +70,20 @@ export class MsService {
         }).catch(e=>{
         op.code=1;
         op.message="系统错误"
-        resolve(op);
+        reject(op);
       })
     })
   }
 
   /**
    * 修改message消息
-   * @param {string} mi
+   * @param {number} mi
    * @param {string} mn
    * @param {string} md
    * @param {string} mt
    * @returns {Promise<BsModel>}
    */
-  updateMs(mi: string, mn:string,md: string,mt: string):Promise<BsModel>{
+  updateMs(mi: number, mn:string,md: string,mt: string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let ms = new MsEntity();
       ms.mi=mi;
@@ -103,13 +106,13 @@ export class MsService {
 
   /**
    * 删除message消息
-   * @param {string} mi
+   * @param {number} mi
    * @param {string} mn
    * @param {string} md
    * @param {string} mt
    * @returns {Promise<BsModel>}
    */
-  deleteMs(mi: string, mn:string,md: string,mt: string):Promise<BsModel>{
+  delMs(mi: number, mn:string,md: string,mt: string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let ms = new MsEntity();
       ms.mi=mi;
