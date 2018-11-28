@@ -2,6 +2,9 @@ import {Injectable} from "@angular/core";
 import {UserSqliteService} from "./sqlite-service/user-sqlite.service";
 import {UoModel} from "../model/out/uo.model";
 import {UEntity} from "../entity/u.entity";
+import {UModel} from "../model/u.model";
+import {BaseSqliteService} from "./sqlite-service/base-sqlite.service";
+import {BsModel} from "../model/out/bs.model";
 
 /**
  * 用户sevice
@@ -10,26 +13,56 @@ import {UEntity} from "../entity/u.entity";
  */
 @Injectable()
 export class UserService {
-  constructor( private userSqlite: UserSqliteService) { }
+  userSqlite:UserSqliteService;
+  constructor( private baseSqlite: BaseSqliteService) {
+    this.userSqlite=new UserSqliteService(baseSqlite);
+  }
 
   /**
-   * 添加用户
-   * @param {string} _uI 用户uuID
-   * @param {string} _uN 昵称
-   * @param {string} _hIU 头像URL
-   * @param {string} _biy 生日
-   * @param {string} _uS 性别
-   * @param {string} _uCt 联系方式
-   * @param {string} _aQ 消息队列
-   * @param {string} _uT token
-   * @param _uty 0游客1正式用户
+   * 更新用户资料
+   * @param {string} uI 用户uuID
+   * @param {string} uN 昵称
+   * @param {string} hIU 头像URL
+   * @param {string} biy 生日
+   * @param {string} uS 性别
+   * @param {string} uCt 联系方式
+   * @param {string} aQ 消息队列
+   * @param {string} uT token
+   * @param {string} uty 0游客1正式用户
+   *
    */
-  addu(uI: string, oUI:string,uN: string,hIU: string,biy: string,uS: string,
-          uCt: string, aQ: string, uT:string,uty:string){
+  upu(uI: string, oUI:string,uN: string,hIU: string,biy: string,uS: string,
+          uCt: string, aQ: string, uT:string,uty:string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
-
+      let u = new UEntity();
+      u.uI=uI;
+      u.oUI=oUI;
+      u.uN=uN;
+      u.hIU=hIU;
+      u.biy=biy;
+      u.uS=uS;
+      u.uCt=uCt;
+      u.aQ=aQ;
+      u.uT=uT;
+      u.uty=uty;
+      let bs = new BsModel();
+      this.baseSqlite.update(u).then(data=>{
+          bs.code=0;
+          bs.message='成功';
+          resolve(bs);
+      }).catch(e=>{
+          bs.code=1;
+          bs.message=e.message;
+          alert('更新用户资料失败：'+e.message)
+          reject(bs)
+      })
     })
   }
+
+  /**
+   * 查询用户资料
+   * @returns {Promise<UModel>}
+   */
   getUo(): Promise<UoModel>{
     return new Promise((resolve, reject) =>{
       let op = new UoModel();

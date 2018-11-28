@@ -305,73 +305,9 @@ export class HaPage {
    * 本地日历日程增删
    */
   findEvent(){
-    this.sqliteService.executeSql("SELECT MAX(localId) as maxId FROM GTD_C",[]).then(max=>{
-      let maxId=max.rows.item(0).maxId;
+    this.calendarService.findEvent().then(data=>{
 
-      this.calendarService.findEvent().then(msg=> {
-        let id = 0;
-        //alert(msg.length);
-        for (let i = 0; i < msg.length; i++) {
-          if (msg[i].id > id) {
-            id = msg[i].id;
-            if(id>maxId){
-              let data=eval(msg);
-              this.sqliteService.executeSql("INSERT INTO GTD_C(scheduleName,scheduleStartTime,scheduleDeadLine,labelId,localId) VALUES (?,?,?,?,?)",
-                [data[i].title,data[i].startDate,data[i].endDate,"1",data[i].id])
-                .then(msg=>{
-                  // alert(JSON.stringify(data[i]));
-                  //alert("插入C表");
-                })
-                .catch(err=>{
-                  //alert("插入C表错误:"+err);
-                });
-              this.sqliteService.executeSql("SELECT last_insert_rowid() as scheduleId FROM GTD_C",[])
-                .then(data=>{
-                  // this.sqliteService.executeSql("SELECT USERID FROM GTD_ACCOUNT WHERE ",[]);
-                  //alert(data.rows.item(0).scheduleId);
-                  this.sqliteService.executeSql("INSERT INTO GTD_D(scheduleId,scheduleOtherName,scheduleAuth,playersStatus,userId) VALUES (?,?,?,?,?)" ,
-                    [data.rows.item(0).scheduleId,"","","",""]);
-                })
-                .catch(err=>{
-                  //alert("获取日程ID失败");
-                });
-            }
-          }
-        }
-
-        this.sqliteService.executeSql("SELECT localId FROM GTD_C",[]).then(max=>{
-          let ids=[];
-          for(let i=0;i<msg.length;i++){
-            ids.push(msg[i].id);
-          }
-          //删除本地删除的日程
-          //alert("ids.length:"+ids.toString());
-          //alert(JSON.stringify(max));
-          for(let i=0;i<max.rows.length;i++){
-            if(ids.indexOf(max.rows.item(i).localId)==-1){
-              this.sqliteService.executeSql("SELECT scheduleId FROM GTD_C WHERE localId="+max.rows.item(i).localId,[])
-                .then(msg=>{
-                  this.sqliteService.executeSql("DELETE FROM GTD_D WHERE scheduleId="+msg.rows.item(0).scheduleId,[]).then(msg=>{
-                    //alert("删除D表数据");
-                  })
-                    .catch(err=>{
-                      //alert("删除D表数据出错"+JSON.stringify(err));
-                    });
-                });
-              this.sqliteService.executeSql("DELETE FROM GTD_C WHERE localId="+max.rows.item(i).localId,[]).then(msg=>{
-                //alert("删除C表数据");
-              })
-                .catch(err=>{
-                  //alert("删除C表数据失败"+JSON.stringify(err));
-                });
-
-            }
-          }
-        });
-
-
-      });
-    });
+    })
   }
 }
 
