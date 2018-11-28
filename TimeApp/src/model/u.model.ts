@@ -1,9 +1,10 @@
 /**
  * create by on 2018/11/19
  */
+import {BsModel} from "./out/bs.model";
 
 //用户类
-export class UModel {
+export class UModel extends BsModel{
 
   private _uI: string=null;   //用户ID
   private _oUI:string=null; //原用户ID
