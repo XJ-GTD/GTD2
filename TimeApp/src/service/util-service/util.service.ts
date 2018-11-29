@@ -58,7 +58,7 @@ export class UtilService {
     return deviceId;
   }
 
-  checkPhone(str){
+  public checkPhone(str){
     if(str == undefined|| str == null || str == ''){
       return 0;//输入为空
     }

@@ -45,20 +45,17 @@ public class VoiceParseController {
         //入参检测
         //必须项检测
         if(inDto.getContent() == null || "".equals(inDto.getContent())){
-            outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("[调用失败]：语音内容不可为空");
+            outDto.setCode(ResultCode.NULL_XF_AUDIO);
             logger.debug("[调用失败]：语音内容不可为空");
             return outDto;
         }
         if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
-            outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("[调用失败]：用户ID不可为空");
+            outDto.setCode(ResultCode.NULL_UUID);
             logger.debug("[调用失败]：用户ID不可为空");
             return outDto;
         }
         if(inDto.getDeviceId() == null || "".equals(inDto.getDeviceId())){
-            outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("[调用失败]：设备ID不可为空");
+            outDto.setCode(ResultCode.NULL_DEVICEID);
             logger.debug("[调用失败]：设备ID不可为空");
             return outDto;
         }
@@ -66,15 +63,15 @@ public class VoiceParseController {
 
         //业务逻辑
         try {
-
             intentService.asyncParserBase64(inDto);
+            outDto.setCode(ResultCode.SUCCESS);
+            logger.debug("[调用成功]");
         } catch (Exception e) {
             e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            outDto.setMessage("[调用失败]：服务器繁忙");
+            logger.error("[调用失败]：服务器繁忙");
         }
 
-        outDto.setCode(ResultCode.SUCCESS);
         return outDto;
     }
 
@@ -91,20 +88,17 @@ public class VoiceParseController {
         //入参检测
         //必须项检测
         if(inDto.getContent() == null || "".equals(inDto.getContent())){
-            outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("[调用失败]：输入内容不可为空");
+            outDto.setCode(ResultCode.NULL_XF_TEXT);
             logger.debug("[调用失败]：输入内容不可为空");
             return outDto;
         }
         if(inDto.getDeviceId() == null || "".equals(inDto.getDeviceId())){
-            outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("[调用失败]：设备ID不可为空");
+            outDto.setCode(ResultCode.NULL_DEVICEID);
             logger.debug("[调用失败]：设备ID不可为空");
             return outDto;
         }
         if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
-            outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("[调用失败]：用户ID不可为空");
+            outDto.setCode(ResultCode.NULL_UUID);
             logger.debug("[调用失败]：用户ID不可为空");
             return outDto;
         }
@@ -112,13 +106,14 @@ public class VoiceParseController {
         //业务逻辑
         try {
             intentService.asyncParserText(inDto);
+            outDto.setCode(ResultCode.SUCCESS);
+            logger.debug("[调用成功]");
         } catch (Exception e) {
             e.printStackTrace();
-            e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            outDto.setMessage("[调用失败]：服务器繁忙");
+            logger.error("[调用失败]：服务器繁忙");
         }
-        outDto.setCode(ResultCode.SUCCESS);
+
         return outDto;
     }
 

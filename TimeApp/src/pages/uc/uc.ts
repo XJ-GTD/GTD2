@@ -43,26 +43,26 @@ export class UcPage {
 
   updateUserInfo() {
 
-    this.http.post(AppConfig.USER_UPDATE_INFO_URL, this.user, AppConfig.HEADER_OPTIONS_JSON)
-      .subscribe(data => {
-        this.data = data;
-        console.log("userInfo data：" + this.data.data);
-
-        let loader = this.loadingCtrl.create({
-          content: this.data.message,
-          duration: 1000
-        });
-
-        if (this.data.code == 0) {
-          this.paramsService.user = this.data.data.userInfo;
-          this.user = this.data.userInfo;
-          this.user.birthday = this.user.birthday.replace("T00:00Z", "");
-          loader.present();
-        } else if (this.data.code == 1) {
-          console.log("更新请求失败");
-          loader.present();
-        }
-      });
+    // this.http.post(AppConfig.USER_UPDATE_INFO_URL, this.user, AppConfig.HEADER_OPTIONS_JSON)
+    //   .subscribe(data => {
+    //     this.data = data;
+    //     console.log("userInfo data：" + this.data.data);
+    //
+    //     let loader = this.loadingCtrl.create({
+    //       content: this.data.message,
+    //       duration: 1000
+    //     });
+    //
+    //     if (this.data.code == 0) {
+    //       this.paramsService.user = this.data.data.userInfo;
+    //       this.user = this.data.userInfo;
+    //       this.user.birthday = this.user.birthday.replace("T00:00Z", "");
+    //       loader.present();
+    //     } else if (this.data.code == 1) {
+    //       console.log("更新请求失败");
+    //       loader.present();
+    //     }
+    //   });
   }
 
   relation() {
