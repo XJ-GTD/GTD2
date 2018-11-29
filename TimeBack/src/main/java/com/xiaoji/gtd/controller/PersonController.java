@@ -113,7 +113,7 @@ public class PersonController {
         try {
             int flag = personService.signUp(inDto);
             if (flag == 0) {
-                outDto.setCode(ResultCode.REPEAT);
+                outDto.setCode(ResultCode.SUCCESS);
                 outDto.setMessage("[恭喜您，注册成功]");
                 logger.debug("[恭喜您，注册成功]");
             } else {

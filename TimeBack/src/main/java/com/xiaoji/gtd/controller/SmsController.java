@@ -56,17 +56,17 @@ public class SmsController {
         }
 
         try {
-            int flag = smsService.getAuthCode(inDto.getAccountMobile());
-            if (flag == 0) {
-                outDto.setCode(ResultCode.REPEAT);
+//            int flag = smsService.getAuthCode(inDto.getAccountMobile());
+//            if (flag == 0) {
+                outDto.setCode(ResultCode.SUCCESS);
                 outDto.setMessage("[获取验证成功，请查看短信]");
                 logger.debug("[获取验证成功]");
-            } else {
-                outDto.setCode(ResultCode.FAIL);
-                outDto.setMessage("[获取验证失败]：请稍后再试");
-                logger.debug("[获取验证失败]");
-                return outDto;
-            }
+//            } else {
+//                outDto.setCode(ResultCode.FAIL);
+//                outDto.setMessage("[获取验证失败]：请稍后再试");
+//                logger.debug("[获取验证失败]");
+//                return outDto;
+//            }
         } catch (Exception e) {
             e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
