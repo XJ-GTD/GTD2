@@ -43,8 +43,8 @@ export class WebsocketService {
     client.heartbeat.incoming = 0;
 
     //登陆账户
-    const login = "admin";
-    const password = "admin";
+    const login = "gtd_mq";
+    const password = "gtd_mq";
 
     //创建观察者
     let subject = new Subject<any>();
@@ -52,7 +52,7 @@ export class WebsocketService {
     // 连接成功回调 on_connect
     let on_connect = function(x) {
       console.log(client);
-      client.subscribe("/queue/" + queueName, function(data) {
+      client.subscribe("/queue/" + "616818.0952634651", function(data) {
         console.log("on_connect回调成功:" + data);
 
         subject.next(data); //能够在let变量方法内使用this方法
@@ -67,6 +67,8 @@ export class WebsocketService {
       console.log("JSON MQ:" + ws);
 
       if (ws.vs == "1.0" && ws.ss == 0) {
+
+
         switch (ws.sk) {
           case SkillConfig.XF_NMT:
             break;

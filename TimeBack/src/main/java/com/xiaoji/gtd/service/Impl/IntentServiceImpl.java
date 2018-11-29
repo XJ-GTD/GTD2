@@ -190,7 +190,9 @@ public class IntentServiceImpl implements IIntentService {
                     case "time":
                         String[] timeList = JSONObject.parseObject(slot.getNormValue()).getString("datetime").split("/");;
                         data.setSt(timeList[0]);
-                        data.setEt(timeList[timeList.length]);
+                        if (timeList.length > 1) {
+                            data.setEt(timeList[1]);
+                        }
                         break;
                     case "schedule":
                         data.setSn(slot.getNormValue());
