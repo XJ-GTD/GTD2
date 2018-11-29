@@ -246,6 +246,10 @@ export class HaPage {
   //查询当天日程
   findTodaySchedule($event) {
 
+    if (!$event) {
+      return;
+    }
+
     console.log($event);
     //  this.sqliteService.addRctest().then(data=>{
     //   alert("插入数据：" + data);
@@ -261,6 +265,7 @@ export class HaPage {
     //this.page1.findTodaySchedule($event);
     //this.page2.findTodaySchedule($event);
     //this.page3.findTodaySchedule($event);
+
     this.calendarService.setSelectDay($event);
 
     //

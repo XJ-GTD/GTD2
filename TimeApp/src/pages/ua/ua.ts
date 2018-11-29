@@ -3,7 +3,10 @@ import {AlertController, IonicPage, LoadingController, NavController, NavParams}
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
 import { ParamsService } from "../../service/util-service/params.service";
-import { AppConfig } from "../../app/app.config";
+import { UtilService} from "../../service/util-service/util.service";
+import {LsmService} from "../../service/lsm.service";
+import {HaPage} from "../ha/ha";
+import {timeout} from "rxjs/operator/timeout";
 
 
 /**
@@ -35,6 +38,9 @@ export class UaPage {
   checkBoxClick: any;
   checkBoxClickFlag:any;
   authCode: any;
+  errorCode: any;
+  timeOut:any = "发送验证码";
+  timer:any;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -42,26 +48,15 @@ export class UaPage {
               private http: HttpClient,
               private loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
-              private paramsService: ParamsService) {
+              private paramsService: ParamsService,
+              private utilService: UtilService,
+              private lsmService: LsmService) {
 
-    // this.init();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UaPage');
   }
-
-  /*init() {
-    this.RegisterForm = this.formBuilder.group({
-      accountMobile:['',Validators.compose([Validators.required, Validators.minLength(11), Validators.maxLength(11)])],
-      accountPassword:['', Validators.compose([Validators.required, Validators.minLength(6),Validators.maxLength(20)])],
-      reAccountPassword:['',Validators.compose([Validators.required])]
-
-    });
-    this.accountMobile = this.RegisterForm.controls['accountMobile'];
-    this.accountPassword = this.RegisterForm.controls['accountPassword'];
-    this.reAccountPassword = this.RegisterForm.controls['reAccountPassword'];
-  }**/
 
   register() {
     var a=this.checkBoxClick;
@@ -71,77 +66,69 @@ export class UaPage {
     }else
     {
       this.checkBoxClickFlag=false;
-      //用户注册
-      // this.http.post(AppConfig.USER_REGISTER_URL, {
-      //   accountName: this.accountName,
-      //   accountPassword: this.accountPassword,
-      //   accountMobile: this.accountMobile,
-      //   deviceId: this.deviceId,
-      //   loginType: 0,
-      //   authCode: this.authCode
-      // }, {
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   responseType: 'json'
-      // })
-      //   .subscribe(data => {
-      //     this.data = data;
-      //     let loader = this.loadingCtrl.create({
-      //       content: this.data.message,
-      //       duration: 1000
-      //     });
-      //     if (this.data.code == "0") {
-      //       loader.present();
-      //       //注册成功后登陆
-      //       this.http.post(AppConfig.USER_LOGIN_URL, {
-      //         accountName: this.accountMobile,
-      //
-      //         accountPassword: this.accountPassword,
-      //         loginType: 0
-      //       }, {
-      //         headers: {
-      //           "Content-Type": "application/json"
-      //         },
-      //         responseType: 'json'
-      //       })
-      //         .subscribe(data => {
-      //           console.log(data);
-      //           this.data = data;
-      //           let loader = this.loadingCtrl.create({
-      //             content: this.data.message,
-      //             duration: 1000
-      //           });
-      //           if (this.data.code == "0") {
-      //             this.paramsService.user = this.data.data.userInfo;
-      //             loader.present();
-      //             this.navCtrl.push('HaPage');
-      //           } else {
-      //             loader.present();
-      //           }
-      //
-      //         })
-      //     } else {
-      //       loader.present();
-      //     }
+      if(this.errorCode == 3 && this.checkPassword == false ){
+        this.lsmService.sn(this.accountMobile,this.accountPassword,this.authCode).then(data =>{
+          if(data.code == 0) {
+            //注册成功执行登陆
+            this.lsmService.login(this.accountMobile, this.accountPassword).then(data => {
+              // 登陆成功
+              let alert = this.alertCtrl.create({
+                title: '提示信息',
+                subTitle: data.message,
+                buttons: [{
+                  text: '确定', role: 'cancel', handler: () => {
+                    //跳转首页
+                    this.navCtrl.setRoot('HzPage');
+                  }
+                }]
+              });
+              alert.present();
 
-        // })
+            }).catch(reason => {
+              //登陆失败
+              let alert = this.alertCtrl.create({
+                title:'提示信息',
+                subTitle: reason.message,
+                buttons:['确定']
+              });
+              alert.present();
+            })
+          }else{
+            let alert = this.alertCtrl.create({
+              title:'提示信息',
+              subTitle: data.message,
+              buttons:['确定']
+            });
+            alert.present();
+          }
+        }).catch(reason => {
+          //注册失败
+          let alert = this.alertCtrl.create({
+            title:'提示信息',
+            subTitle: reason.message,
+            buttons:['确定']
+          });
+          alert.present();
+        })
+      }
+      //用户注册
+
     }
 
   }
   checkPhone(){
-    var  re = /^1\d{10}$/;   //正则表达式
-    var  ren=re.test(this.accountMobile);
-    //判断手机号是否为空
-    this.checkMoblieNull=false;
-    this.checkMoblie=false;
-    if(this.accountMobile==null || this.accountMobile==""){
-      this.checkMoblieNull=true;
-    }else {
-      //判断手机号是否为11
-      if (!re.test(this.accountMobile)) {      //判断字符是否是11位数字
-        this.checkMoblie=true;
-      }
+
+    this.errorCode = this.utilService.checkPhone(this.accountMobile);
+    if(this.errorCode == 0){
+      this.checkMoblieNull = true;
+    }
+    if(this.errorCode == 1 || this.errorCode == 2){
+      this.checkMoblieNull = false;
+      this.checkMoblie = true;
+    }
+    if(this.errorCode == 3){
+      this.checkMoblie = false;
+      this.checkMoblieNull = false;
     }
 
   }
@@ -158,27 +145,44 @@ export class UaPage {
   }
 
   sendMsg(){
-    if(this.checkMoblie == false && this.checkMoblieNull == false){
-    //   this.http.post(AppConfig.SMS_MESSAGEXSEND_URL, {
-    //     tel : this.accountMobile,
-    //     type : 0
-    //   }, {
-    //     headers: {
-    //       "Content-Type": "application/json"
-    //     },
-    //     responseType: 'json'
-    //   })
-    //     .subscribe(data =>{
-    //       this.data = data;
-    //       let alert = this.alertCtrl.create({
-    //         title:'提示信息',
-    //         subTitle: this.data.message,
-    //         buttons:['确定']
-    //       });
-    //       alert.present();
-    //       console.log(this.data.data)
-    //     })
+    console.log(11);
+    if(this.errorCode == 3){
+      this.lsmService.sc(this.accountMobile).then(data=>{
+        console.log("sc::" + data)
+        let alert = this.alertCtrl.create({
+          title:'提示信息',
+          subTitle: data.message,
+          buttons:['确定']
+        });
+        alert.present();
+      }).catch(ref =>{
+        console.log("ref::" + ref);
+        let alert = this.alertCtrl.create({
+          title:'提示信息',
+          subTitle: ref.message,
+          buttons:['确定']
+        });
+        alert.present();
+      })
+
+    }else{
+      let alert = this.alertCtrl.create({
+        title:'提示信息',
+        subTitle: '请填写正确的手机号',
+        buttons:['确定']
+      });
+      alert.present();
     }
+    this.timeOut = 10;
+    this.timer = setInterval(()=>{
+      this.timeOut --;
+      if(this.timeOut <= 0){
+        clearTimeout(this.timer)
+        console.log("清除定时器")
+        this.timeOut="发送验证码"
+      }
+      console.log(this.timeOut)
+    },1000)
   }
 }
 
