@@ -76,21 +76,28 @@ public class PersonController {
                 return outDto;
             }
         }
-        try {
-            if(!Objects.requireNonNull(TimerUtil.getCache(inDto.getAccountMobile())).getValue().equals(inDto.getAuthCode())){
-                outDto.setCode(ResultCode.FAIL);
-                outDto.setMessage("[注册失败]：请输入正确短信验证码");
-                logger.debug("[注册失败]：请输入正确短信验证码");
-                return outDto;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            outDto.setCode(ResultCode.FAIL);
-            outDto.setMessage("[注册失败]：短信验证码已过期，请重新获取");
-            logger.debug("[注册失败]：短信验证码已过期");
+//        try {
+//            if(!Objects.requireNonNull(TimerUtil.getCache(inDto.getAccountMobile())).getValue().equals(inDto.getAuthCode())){
+//                outDto.setCode(ResultCode.FAIL);
+//                outDto.setMessage("[注册失败]：请输入正确短信验证码");
+//                logger.debug("[注册失败]：请输入正确短信验证码");
+//                return outDto;
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            outDto.setCode(ResultCode.FAIL);
+//            outDto.setMessage("[注册失败]：短信验证码已过期，请重新获取");
+//            logger.debug("[注册失败]：短信验证码已过期");
+//            return outDto;
+//        }
+
+        //验证用户uuid重复
+        if(personService.isRepeatUuid(inDto.getUserId())){
+            outDto.setCode(ResultCode.REPEAT);
+            outDto.setMessage("[注册失败]：用户标识码已被注册");
+            logger.debug("[注册失败]：用户标识码已被注册");
             return outDto;
         }
-
         //验证手机号码重复
         if(personService.isRepeatMobile(inDto.getAccountMobile())){
             outDto.setCode(ResultCode.REPEAT);
@@ -113,9 +120,7 @@ public class PersonController {
                 outDto.setCode(ResultCode.FAIL);
                 outDto.setMessage("[注册失败]：请稍后再试");
                 logger.debug("[注册失败]：请稍后再试");
-                return outDto;
             }
-
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -214,28 +214,28 @@ export class HaPage {
   //设置当天全部提醒
   setAlarmList() {
 
-    this.http.post(AppConfig.SCHEDULE_TODAY_REMIND_URL, {
-      //userId: this.paramsService.user.userId
-      userId:this.u.uI
-    },{
-      headers: {
-        "Content-Type": "application/json"
-      },
-      responseType: 'json'
-    })
-      .subscribe(data => {
-        this.data = data;
-        console.log( this.data);
-
-        if (this.data.code == 0) {
-          this.remindScheduleList = [];
-          this.remindScheduleList = this.data.data.remindList;
-          for(let i = 0; i < this.remindScheduleList.length; i++) {
-            this.alarmClock.setAlarmClock(this.remindScheduleList[i].remindDate, this.remindScheduleList[i].scheduleName);
-          }
-        }
-
-      })
+    // this.http.post(AppConfig.SCHEDULE_TODAY_REMIND_URL, {
+    //   //userId: this.paramsService.user.userId
+    //   userId:this.u.uI
+    // },{
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   responseType: 'json'
+    // })
+    //   .subscribe(data => {
+    //     this.data = data;
+    //     console.log( this.data);
+    //
+    //     if (this.data.code == 0) {
+    //       this.remindScheduleList = [];
+    //       this.remindScheduleList = this.data.data.remindList;
+    //       for(let i = 0; i < this.remindScheduleList.length; i++) {
+    //         this.alarmClock.setAlarmClock(this.remindScheduleList[i].remindDate, this.remindScheduleList[i].scheduleName);
+    //       }
+    //     }
+    //
+    //   })
 
   }
   discernTags($event){

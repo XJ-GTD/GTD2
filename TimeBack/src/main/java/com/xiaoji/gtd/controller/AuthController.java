@@ -124,11 +124,11 @@ public class AuthController {
                 outDto.setData(data);
                 outDto.setCode(ResultCode.SUCCESS);
                 outDto.setMessage("[登陆成功]");
-                logger.debug("[登陆失败]");
+                logger.debug("[登陆成功]");
             } else {
                 outDto.setCode(ResultCode.FAIL);
-                outDto.setMessage("[登陆失败]：请稍后再试");
-                logger.debug("[登陆失败]：请稍后再试");
+                outDto.setMessage("[登陆失败]：用户名或密码输入错误");
+                logger.debug("[登陆失败]：用户名或密码输入错误");
             }
         } catch (Exception e) {
             e.printStackTrace();
