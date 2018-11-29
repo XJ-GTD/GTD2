@@ -64,20 +64,20 @@ export class SaPage {
 
   //日程完成状态改变
   changeState() {
-    this.updateSchedule = new ScheduleOutModel();
-    this.updateSchedule.scheduleId;
-    this.updateSchedule.playersStatus = 0;
-    this.updateSchedule.userId = this.paramsService.user.userId;
-    this.http.post(AppConfig.SCHEDULE_UPDATE_STATE_URL, this.updateSchedule, {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      responseType: 'json'
-    })
-      .subscribe(data => {
-        this.data = data;
-        console.log("日程完成状态：" + this.data);
-      });
+    // this.updateSchedule = new ScheduleOutModel();
+    // this.updateSchedule.scheduleId;
+    // this.updateSchedule.playersStatus = 0;
+    // this.updateSchedule.userId = this.paramsService.user.userId;
+    // this.http.post(AppConfig.SCHEDULE_UPDATE_STATE_URL, this.updateSchedule, {
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   responseType: 'json'
+    // })
+    //   .subscribe(data => {
+    //     this.data = data;
+    //     console.log("日程完成状态：" + this.data);
+    //   });
 
   }
 
