@@ -31,47 +31,83 @@ export class AppConfig {
   };
 
   /* Controller */
-  private static AUTH_URL: string = AppConfig.REQUEST_URL + "/auth";    //验证类
+  private static AUTH_URL: string = AppConfig.REQUEST_URL + "/auth";    //登录验证
+  private static PERSON_URL: string = AppConfig.REQUEST_URL + "/person";    //用户注册
 
-  private static PERSON_URL: string = AppConfig.REQUEST_URL + "/person";    //用户类
+  private static USER_URL: string = AppConfig.REQUEST_URL + "/user";    //用户类
+
+  private static GROUP_URL: string = AppConfig.REQUEST_URL + "/group";   //群组类
+
+  private static SCHEDULE_URL: string = AppConfig.REQUEST_URL + "/schedule";    //日程类
 
   private static WEB_SOCKET_URL: string = AppConfig.REQUEST_URL + "/push";    //webSocket推送
 
-  private static XF_SPEECH_URL: string = AppConfig.REQUEST_URL + "/parse";    // 讯飞语音
+  private static XIAOJIVOICE_URL: string = AppConfig.REQUEST_URL + "/xiaoji";    // 讯飞语音
 
   private static SMS_URL: string = AppConfig.REQUEST_URL + "/sms";            //短信
 
-  /* ------------------------ 验证类 start--------------------------*/
-  /* 登录验证 */
+  public static USER_LOGIN_URL: string = AppConfig.USER_URL + "/login";   //登陆 POST
+  public static USER_REGISTER_URL: string = AppConfig.USER_URL + "/register";   //注册 POST
+
+  /* 登录 */
   public static AUTH_VISITOR_URL: string = AppConfig.AUTH_URL + "/login_visitors";   //游客登录
-
-  public static AUTH_LOGIN_URL: string = AppConfig.AUTH_URL + "/login_password";   //用户密码登录
-
-  public static AUTH_SMSLOGIN_URL: string = AppConfig.AUTH_URL + "/login_code";   //用户短信登录
-
-  /* ------------------------ 验证类 end--------------------------*/
-
-  /* ------------------------ 用户类 start--------------------------*/
+  public static AUTH_LOGIN_URL: string = AppConfig.AUTH_URL + "/login_password";   //登录
+  public static AUTH_SMSLOGIN_URL: string = AppConfig.AUTH_URL + "/login_code";   //短信登录
   /*注册*/
-  public static PERSON_SIGN_UP_URL: string = AppConfig.PERSON_URL + "/sign_up";   //注册
-
-  public static PERSON_UPW_URL: string = AppConfig.PERSON_URL + "/update_password";   //修改密码
-
-
-  /* ------------------------ 用户类 end--------------------------*/
-
-  /* ------------------------ 短信类 start--------------------------*/
+  public static PERSON_SU_URL: string = AppConfig.PERSON_URL + "/sign_up";   //注册
+  public static PERSON_UPW_URL: string = AppConfig.PERSON_URL + "/updatePassword";   //修改密码
   /*短信*/
-  public static SMS_CODE_URL: string = AppConfig.SMS_URL + "/code";   //获取短信验证码
+  public static SMS_CODE_URL: string = AppConfig.SMS_URL + "/code";   //短信验证
 
-  /* ------------------------ 短信类 end--------------------------*/
+  public static USER_LABEL_URL: string = AppConfig.USER_URL + "/find_label";           //查询标签
 
-  /* ------------------------ 讯飞语音类 start--------------------------*/
-  /*语音*/
-  public static XF_AUDIO_URL: string = AppConfig.XF_SPEECH_URL + "/audio";   //语音输入
+  public static USER_UPDATE_PASSWORD_URL: string = AppConfig.USER_URL + "/update_password";           //修改密码
 
-  public static XF_TEXT_URL: string = AppConfig.XF_SPEECH_URL + "/text";   //文本输入
+  public static USER_UPDATE_INFO_URL: string = AppConfig.USER_URL + "/update_userinfo";           //修改资料
 
-  /* ------------------------ 讯飞语音类 end--------------------------*/
+  //群组类
+  public static GROUP_FIND_URL: string = AppConfig.GROUP_URL + "/find_all";    //全部群组查询 POST
+
+  public static GROUP_ADD_GROUP_URL: string = AppConfig.GROUP_URL + "/add_group"; //新增群组 post
+
+  public static GROUP_FIND_SINGLE_URL: string = AppConfig.GROUP_URL + "/find_single";    //群组详情查询 POST
+
+  public static GROUP_FIND_GROUPMEMBER_URL: string = AppConfig.GROUP_URL + "/find_group_member";    //查询群成员全部 POST
+
+  public static GROUP_ADD_DEL_URL: string = AppConfig.GROUP_URL + "/add_del_member";    //群组添加 POST
+
+  public static GROUP_UPDATE_GROUP_URL: string = AppConfig.GROUP_URL + "/update_group"; //群组编辑 POST
+
+  public static GROUP_DELETE_GROUP_URL: string = AppConfig.GROUP_URL + "/delete_group"; //删除群组 POST
+
+  public static GROUP_UPD_MEMBER_STATUS_URL: string = AppConfig.GROUP_URL + "/update_member_status"; //修改群成员状态 POST
+
+  public static GROUP_ALL_SHOW_URL: string = AppConfig.GROUP_URL + "/find_all_players";   //全部参与人展示
+
+  //日程类
+  public static SCHEDULE_ADD_URL: string = AppConfig.SCHEDULE_URL + "/create";    //添加（发布）日程 POST
+
+  public static SCHEDULE_FIND_URL: string = AppConfig.SCHEDULE_URL + "/find";    //查询日程 POST
+
+  public static SCHEDULE_UPDATE_STATE_URL: string = AppConfig.SCHEDULE_URL + "/states";  //更新日程状态
+
+  public static SCHEDULE_DELETE_URL: string = AppConfig.SCHEDULE_URL + "/delete";  //删除日程
+
+  public static SCHEDULE_TODAY_REMIND_URL: string = AppConfig.SCHEDULE_URL + "/find_today_remind";  //查询今天所有提醒时间
+
+  public static SCHEDULE_CHOOSE_URL: string = AppConfig.SCHEDULE_URL + "/choose";  //接受或者拒绝邀请
+
+  public static SCHEDULE_CALENDAR_MARK_URL: string = AppConfig.SCHEDULE_URL + "/find_flag";   //日历小标记
+
+  //webSocket
+  public static WEB_SOCKET_TASK_URL: string = AppConfig.WEB_SOCKET_URL + "/task";    //mq消息接收
+
+
+  //讯飞语音
+  public static XUNFEI_URL_AUDIO: string = AppConfig.XIAOJIVOICE_URL + "/answer_audio";    //语音接口 POST
+
+  //短消息
+  public static SMS_MESSAGEXSEND_URL: string = AppConfig.SMS_URL + "/message_send";       //短信验证
+
 
 }

@@ -71,10 +71,10 @@ export class MyApp {
     this.storage.get('firstIn').then((result) => {
 
       if (result != null && result) {
-        this.rootPage = "HzPage";
+        this.rootPage = PageConfig.HZ_PAGE;
       } else {
         this.storage.set('firstIn', true);
-        this.rootPage = "AzPage";
+        this.rootPage = PageConfig.AZ_PAGE;;
       }
 
       if (this.nav.getViews().length == 0){
