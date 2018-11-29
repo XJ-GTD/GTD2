@@ -243,8 +243,13 @@ export class HaPage {
     let year = eventDate.getFullYear();
     let month = eventDate.getMonth()+1;
   }
+
+  createEvent($event){
+    alert($event)
+  }
   //查询当天日程
   findTodaySchedule($event) {
+
 
     if (!$event) {
       return;
