@@ -53,7 +53,7 @@
             </Policies>
         </RollingFile>
 
-        <RollingFile name="RollingFileError" fileName="./logs/debug.log"
+        <RollingFile name="RollingFileDebug" fileName="./logs/debug.log"
                      filePattern="./logs/$${date:yyyy-MM}/debug-%d{yyyy-MM-dd}-%i.log">
             <ThresholdFilter level="DEBUG"/>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
