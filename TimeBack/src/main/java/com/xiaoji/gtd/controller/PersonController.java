@@ -131,7 +131,7 @@ public class PersonController {
      * 修改密码
      * @return
      */
-    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/update_password", method = RequestMethod.POST)
     @ResponseBody
     public Out updatePassword(@RequestBody UpdatePWDInDto inDto) {
         Out outDto = new Out();
