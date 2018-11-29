@@ -36,7 +36,7 @@ public class PersonRepository {
      * @return
      */
     public Object findByUuid(String uuid) {
-        String sql = "SELECT COUNT(*) FROM gtd_login WHERE USER_ID = '" + uuid + "'";
+        String sql = "SELECT COUNT(*) FROM gtd_account WHERE USER_ID = '" + uuid + "'";
 
         return em.createNativeQuery(sql).getSingleResult();
     }

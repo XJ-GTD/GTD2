@@ -72,60 +72,60 @@ export class UaPage {
     {
       this.checkBoxClickFlag=false;
       //用户注册
-      this.http.post(AppConfig.USER_REGISTER_URL, {
-        accountName: this.accountName,
-        accountPassword: this.accountPassword,
-        accountMobile: this.accountMobile,
-        deviceId: this.deviceId,
-        loginType: 0,
-        authCode: this.authCode
-      }, {
-        headers: {
-          "Content-Type": "application/json"
-        },
-        responseType: 'json'
-      })
-        .subscribe(data => {
-          this.data = data;
-          let loader = this.loadingCtrl.create({
-            content: this.data.message,
-            duration: 1000
-          });
-          if (this.data.code == "0") {
-            loader.present();
-            //注册成功后登陆
-            this.http.post(AppConfig.USER_LOGIN_URL, {
-              accountName: this.accountMobile,
+      // this.http.post(AppConfig.USER_REGISTER_URL, {
+      //   accountName: this.accountName,
+      //   accountPassword: this.accountPassword,
+      //   accountMobile: this.accountMobile,
+      //   deviceId: this.deviceId,
+      //   loginType: 0,
+      //   authCode: this.authCode
+      // }, {
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   },
+      //   responseType: 'json'
+      // })
+      //   .subscribe(data => {
+      //     this.data = data;
+      //     let loader = this.loadingCtrl.create({
+      //       content: this.data.message,
+      //       duration: 1000
+      //     });
+      //     if (this.data.code == "0") {
+      //       loader.present();
+      //       //注册成功后登陆
+      //       this.http.post(AppConfig.USER_LOGIN_URL, {
+      //         accountName: this.accountMobile,
+      //
+      //         accountPassword: this.accountPassword,
+      //         loginType: 0
+      //       }, {
+      //         headers: {
+      //           "Content-Type": "application/json"
+      //         },
+      //         responseType: 'json'
+      //       })
+      //         .subscribe(data => {
+      //           console.log(data);
+      //           this.data = data;
+      //           let loader = this.loadingCtrl.create({
+      //             content: this.data.message,
+      //             duration: 1000
+      //           });
+      //           if (this.data.code == "0") {
+      //             this.paramsService.user = this.data.data.userInfo;
+      //             loader.present();
+      //             this.navCtrl.push('HaPage');
+      //           } else {
+      //             loader.present();
+      //           }
+      //
+      //         })
+      //     } else {
+      //       loader.present();
+      //     }
 
-              accountPassword: this.accountPassword,
-              loginType: 0
-            }, {
-              headers: {
-                "Content-Type": "application/json"
-              },
-              responseType: 'json'
-            })
-              .subscribe(data => {
-                console.log(data);
-                this.data = data;
-                let loader = this.loadingCtrl.create({
-                  content: this.data.message,
-                  duration: 1000
-                });
-                if (this.data.code == "0") {
-                  this.paramsService.user = this.data.data.userInfo;
-                  loader.present();
-                  this.navCtrl.push('HaPage');
-                } else {
-                  loader.present();
-                }
-
-              })
-          } else {
-            loader.present();
-          }
-
-        })
+        // })
     }
 
   }
@@ -159,25 +159,25 @@ export class UaPage {
 
   sendMsg(){
     if(this.checkMoblie == false && this.checkMoblieNull == false){
-      this.http.post(AppConfig.SMS_MESSAGEXSEND_URL, {
-        tel : this.accountMobile,
-        type : 0
-      }, {
-        headers: {
-          "Content-Type": "application/json"
-        },
-        responseType: 'json'
-      })
-        .subscribe(data =>{
-          this.data = data;
-          let alert = this.alertCtrl.create({
-            title:'提示信息',
-            subTitle: this.data.message,
-            buttons:['确定']
-          });
-          alert.present();
-          console.log(this.data.data)
-        })
+    //   this.http.post(AppConfig.SMS_MESSAGEXSEND_URL, {
+    //     tel : this.accountMobile,
+    //     type : 0
+    //   }, {
+    //     headers: {
+    //       "Content-Type": "application/json"
+    //     },
+    //     responseType: 'json'
+    //   })
+    //     .subscribe(data =>{
+    //       this.data = data;
+    //       let alert = this.alertCtrl.create({
+    //         title:'提示信息',
+    //         subTitle: this.data.message,
+    //         buttons:['确定']
+    //       });
+    //       alert.present();
+    //       console.log(this.data.data)
+    //     })
     }
   }
 }

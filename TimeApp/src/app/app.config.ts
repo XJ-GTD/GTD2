@@ -53,7 +53,7 @@ export class AppConfig {
 
   /* ------------------------ 用户类 start--------------------------*/
   /*注册*/
-  public static PERSON_SIGN_UP_URL: string = AppConfig.PERSON_URL + "/sign_up";   //注册
+  public static PERSON_SU_URL: string = AppConfig.PERSON_URL + "/sign_up";   //注册
 
   public static PERSON_UPW_URL: string = AppConfig.PERSON_URL + "/update_password";   //修改密码
 
