@@ -25,7 +25,7 @@ public class PersonRepository {
      * @return
      */
     public Object findByMobile(String mobile) {
-        String sql = "SELECT COUNT(*) FROM gtd_login WHERE LOGIN_NAME = " + mobile;
+        String sql = "SELECT COUNT(*) FROM gtd_login WHERE LOGIN_NAME = '" + mobile + "'";
 
         return em.createNativeQuery(sql).getSingleResult();
     }
@@ -36,7 +36,7 @@ public class PersonRepository {
      * @return
      */
     public Object findByUuid(String uuid) {
-        String sql = "SELECT COUNT(*) FROM gtd_login WHERE USER_ID = " + uuid;
+        String sql = "SELECT COUNT(*) FROM gtd_login WHERE USER_ID = '" + uuid + "'";
 
         return em.createNativeQuery(sql).getSingleResult();
     }
