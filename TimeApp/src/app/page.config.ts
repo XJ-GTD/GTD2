@@ -1,10 +1,34 @@
+import {HaPage} from "../pages/ha/ha";
 
 /**
  * 页面迁移用
  */
 export class PageConfig {
+  static get HA_PAGE(): any {
+    return this._HA_PAGE;
+  }
 
-  public static AZ_PAGE: string = "AzPage"
+  static set HA_PAGE(value: any) {
+    this._HA_PAGE = value;
+  }
+  static get HZ_PAGE(): any {
+    return this._HZ_PAGE;
+  }
 
-  public static HZ_PAGE: string = "HzPage";
+  static set HZ_PAGE(value: any) {
+    this._HZ_PAGE = value;
+  }
+
+  static get AZ_PAGE(): any {
+    return this._AZ_PAGE;
+  }
+
+  static set AZ_PAGE(value: any) {
+    this._AZ_PAGE = value;
+  }
+
+  private static _AZ_PAGE: any = "AzPage"
+
+  private static _HA_PAGE: any = HaPage;
+  private static _HZ_PAGE: any = "HzPage";
 }

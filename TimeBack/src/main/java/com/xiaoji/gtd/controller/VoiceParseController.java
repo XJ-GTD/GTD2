@@ -25,8 +25,12 @@ public class VoiceParseController {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
+    private final IIntentService intentService;
+
     @Autowired
-    private IIntentService intentService;
+    public VoiceParseController(IIntentService intentService) {
+        this.intentService = intentService;
+    }
 
 
     /**
