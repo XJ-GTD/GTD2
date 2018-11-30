@@ -4,6 +4,7 @@
 
 import {RuEntity} from "../../entity/ru.entity";
 import {BsModel} from "./bs.model";
+import {RuModel} from "../ru.model";
 
 //用户类
 export class RuoModel extends BsModel{
@@ -12,8 +13,8 @@ export class RuoModel extends BsModel{
    * 数量
    */
   private _ct:number;
-  private _us: Array<RuEntity>;                 //参与人List
-  private _u: RuEntity; //当前参与人
+  private _us: Array<RuModel>;                 //参与人List
+  private _u: RuModel; //当前参与人
   get ct(): number {
     return this._ct;
   }
@@ -22,19 +23,19 @@ export class RuoModel extends BsModel{
     this._ct = value;
   }
 
-  get us(): Array<RuEntity> {
+  get us(): Array<RuModel> {
     return this._us;
   }
 
-  set us(value: Array<RuEntity>) {
+  set us(value: Array<RuModel>) {
     this._us = value;
   }
 
-  get u(): RuEntity {
+  get u(): RuModel {
     return this._u;
   }
 
-  set u(value: RuEntity) {
+  set u(value: RuModel) {
     this._u = value;
   }
 }

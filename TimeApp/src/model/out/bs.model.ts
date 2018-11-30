@@ -3,6 +3,7 @@
  */
 
 import {RuEntity} from "../../entity/ru.entity";
+import {AppConfig} from "../../app/app.config";
 
 //用户类
 export class BsModel {
@@ -10,8 +11,8 @@ export class BsModel {
   /**
    * 数量
    */
-  private _code:number; //code
-  private _message: string; //消息
+  private _code:number = AppConfig.SUCCESS_CODE; //code
+  private _message: string = AppConfig.SUCCESS_MESSAGE; //消息
 
 
   get code(): number {
