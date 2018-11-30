@@ -10,6 +10,8 @@
  */
 
 export class AppConfig {
+  /*0游客身份，1登录*/
+  public static IL:number=0;
 
   /* 环境URL 头部 */
    private static REQUEST_URL: string = "http://www.guobaa.com/gtd";
@@ -109,5 +111,12 @@ export class AppConfig {
 
   //短消息
   public static SMS_MESSAGEXSEND_URL: string = AppConfig.SMS_URL + "/message_send";       //短信验证
+
+  public static SUCCESS_CODE : number = 0;
+  public static SUCCESS_MESSAGE : string ='成功！'
+  public static ERR_CODE : number = 1;
+  public static ERR_MESSAGE : string='系统出错！'
+  public static NULL_CODE : number= 2;
+  public static NULL_MESSAGE : string='查询结果不存在！'
 
 }
