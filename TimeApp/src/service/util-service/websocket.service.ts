@@ -6,7 +6,7 @@ import { Subject } from "rxjs/Subject";
 import { LoadingController } from "ionic-angular";
 import { AppConfig } from "../../app/app.config";
 import { WsModel } from "../../model/ws.model";
-import { DwMqService } from "../dw-mq.service";
+import { DwMqService } from "./dw-mq.service";
 
 
 /**

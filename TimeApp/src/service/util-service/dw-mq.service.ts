@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { WsModel } from "../model/ws.model";
-import { SkillConfig } from "../app/skill.config";
+import { WsModel } from "../../model/ws.model";
+import { SkillConfig } from "../../app/skill.config";
 
 /**
  * webSocket公用处理方法

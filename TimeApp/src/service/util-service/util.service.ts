@@ -1,5 +1,5 @@
-import {Injectable} from "@angular/core";
-import {Device} from "@ionic-native/device";
+import { Injectable } from "@angular/core";
+import { Device } from "@ionic-native/device";
 
 /**
  * 公共方法

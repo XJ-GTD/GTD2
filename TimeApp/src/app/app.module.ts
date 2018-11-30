@@ -36,6 +36,7 @@ import {RemindService} from "../service/remind.service";
 import {RemindSqliteService} from "../service/sqlite-service/remind-sqlite.service";
 import {SystemService} from "../service/system.service";
 import {SystemSqliteService} from "../service/sqlite-service/system-sqlite.service";
+import {XiaojiAlarmclockService} from "../service/util-service/xiaoji-alarmclock.service";
 
 @NgModule({
   declarations: [
@@ -62,13 +63,13 @@ import {SystemSqliteService} from "../service/sqlite-service/system-sqlite.servi
     File,
     Base64,
     Device,
-    ParamsService,
     XiaojiAssistantService,
+    XiaojiAlarmclockService,
+    UtilService,
     LocalNotifications,
     PhonegapLocalNotification,
     XiaojiFeedbackService,
     SQLite,
-    UtilService,
     Calendar,
     CalendarService,
     SQLitePorter,

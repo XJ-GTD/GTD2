@@ -7,17 +7,17 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from "@ionic/storage";
 import { ParamsService } from "../service/util-service/params.service";
 import { WebsocketService } from "../service/util-service/websocket.service";
-import { XiaojiAssistantService } from "../service/util-service/xiaoji-assistant.service";
-import { XiaojiAlarmclockService } from "../service/util-service/xiaoji-alarmclock.service";
 import { BackButtonService } from "../service/util-service/backbutton.service";
 import { XiaojiFeedbackService } from "../service/util-service/xiaoji-feedback.service";
 import { UtilService } from "../service/util-service/util.service";
-import {BaseSqliteService} from "../service/sqlite-service/base-sqlite.service";
-import {PageConfig} from "./page.config";
+import { BaseSqliteService } from "../service/sqlite-service/base-sqlite.service";
+import { PageConfig } from "./page.config";
+import { DwMqService } from "../service/util-service/dw-mq.service";
+import { DwEmitService } from "../service/util-service/dw-emit.service";
 
 @Component({
   templateUrl: 'app.html',
-  providers: [ ParamsService, WebsocketService, XiaojiAssistantService, XiaojiAlarmclockService, BackButtonService ,XiaojiFeedbackService, UtilService]
+  providers: [ ParamsService, WebsocketService, DwMqService, DwEmitService, BackButtonService ]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
