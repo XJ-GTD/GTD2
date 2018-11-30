@@ -29,6 +29,7 @@ public enum ResultCode {
 	FAIL_SIGNUP(50100),                    //注册失败
     FAIL_AUTH(50101),                      //登陆验证失败
     FAIL_SMS(50102),                       //短信获取失败
+    FAIL_XF(50200),                         //讯飞语音调用失败
 
 
     // 未认证（签名错误）

@@ -134,16 +134,11 @@ public class IntentServiceImpl implements IIntentService {
 
         @Override
         public void onFailure(Throwable throwable) {
-            //TODO 失败后MQ通知客户端
             logger.error("=====rest response faliure======" + throwable.getMessage());
-
-            WebSocketOutDto outDto = new WebSocketOutDto();
-
         }
 
         @Override
         public void onSuccess(ResponseEntity<VoiceOutBean> voiceOutBeanResponseEntity) {
-            //TODO 成功后改写逻辑用MQ发出
             logger.debug("--->async rest response success----, result = "+ Pinyin4j.toPinYin(voiceOutBeanResponseEntity.getBody().getData().get(0).getAnswer()));
 
             VoiceOutBean parseData = voiceOutBeanResponseEntity.getBody();
@@ -159,7 +154,8 @@ public class IntentServiceImpl implements IIntentService {
             outDto.setVs(version);
 
             if (!code.equals("0")) {
-                outDto.setSs(ResultCode.FAIL);
+                outDto.setSs(ResultCode.FAIL_XF);
+                logger.error("语义解析失败： " + message);
                 webSocketService.pushMessageOfXF(queueName, outDto);
                 return;
             }
@@ -176,6 +172,7 @@ public class IntentServiceImpl implements IIntentService {
                 }
                 outDto.setSs(ResultCode.SUCCESS);
                 webSocketService.pushMessageOfXF(queueName, outDto);
+                logger.debug("消息队列：" + queueName + " | 数据：" + outDto);
                 outDto = new WebSocketOutDto();
             }
         }
@@ -184,34 +181,41 @@ public class IntentServiceImpl implements IIntentService {
             WebSocketResultDto result = new WebSocketResultDto();
             WebSocketDataDto data = new WebSocketDataDto();
 
-            for (Slot slot: nod.getSlots()) {
-                switch (slot.getName()) {
-                    case "time":
-                        String[] timeList = JSONObject.parseObject(slot.getNormValue()).getString("datetime").split("/");;
-                        data.setSt(timeList[0]);
-                        if (timeList.length > 1) {
-                            data.setEt(timeList[1]);
-                        }
-                        break;
-                    case "schedule":
-                        data.setSn(slot.getNormValue());
-                        break;
-                    case "player":
-                        data.setPln(slot.getNormValue());
-                        break;
-                    case "plan":
-                        data.setPn(slot.getNormValue());
-                        break;
-                    case "label":
-                        data.setLb(slot.getNormValue());
-                        break;
-                    case "status":
-                        data.setSs(slot.getNormValue());
-                        break;
-                }
+            try {
+                for (Slot slot: nod.getSlots()) {
+                    switch (slot.getName()) {
+                        case "time":
+                            String[] timeList = JSONObject.parseObject(slot.getNormValue()).getString("datetime").split("/");;
+                            data.setSt(timeList[0]);
+                            if (timeList.length > 1) {
+                                data.setEt(timeList[1]);
+                            }
+                            break;
+                        case "schedule":
+                            data.setSn(slot.getNormValue());
+                            break;
+                        case "player":
+                            data.setPln(slot.getNormValue());
+                            break;
+                        case "plan":
+                            data.setPn(slot.getNormValue());
+                            break;
+                        case "label":
+                            data.setLb(slot.getNormValue());
+                            break;
+                        case "status":
+                            data.setSs(slot.getNormValue());
+                            break;
+                    }
 
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error("参数解析失败");
             }
+
             result.setData(data);
+            logger.debug("参数解析完成");
             return result;
         }
 

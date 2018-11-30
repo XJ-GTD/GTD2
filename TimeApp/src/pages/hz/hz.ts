@@ -46,7 +46,7 @@ export class HzPage {
 
   }
 
-  groupListShow() {
+  playerListShow() {
     console.log("跳转参与人页");
     this.navCtrl.push('PaPage');
   }

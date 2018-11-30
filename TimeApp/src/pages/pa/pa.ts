@@ -17,7 +17,6 @@ export class PaPage {
 
   relation: any = 'persional' ;
   indexs : any;
-  popPage:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -25,7 +24,6 @@ export class PaPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad PaPage');
     this.indexs=[1,2,3,4,5,6,7,8,9];
-    this.popPage = this.navParams.get('popPage');
   }
 
   toAddMemebr(){
