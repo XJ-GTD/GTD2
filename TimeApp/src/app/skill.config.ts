@@ -21,6 +21,7 @@ export class SkillConfig {
   public static XF_SYSH: string = "A1301";    //讯飞：私密模式
 
   //其他技能
+  public static XF_OTS: string = "B1000";    //全部其他技能
   public static XF_OTWT: string = "B1001";    //天气
   public static XF_OTCN: string = "B1002";    //万年历
   public static XF_OTDT: string = "B1003";    //日期

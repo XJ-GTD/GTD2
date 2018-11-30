@@ -35,11 +35,7 @@ export class DwMqService {
           break;
         case SkillConfig.XF_SYSH:
           break;
-        case SkillConfig.XF_OTWT:
-          break;
-        case SkillConfig.XF_OTCN:
-          break;
-        case SkillConfig.XF_OTDT:
+        case SkillConfig.XF_OTS:
           break;
         case SkillConfig.BC_SCC:
           break;
