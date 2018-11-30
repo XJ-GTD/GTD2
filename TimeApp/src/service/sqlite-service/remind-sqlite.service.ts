@@ -8,7 +8,7 @@ import {ReEntity} from "../../entity/re.entity";
 @Injectable()
 export class RemindSqliteService {
 
-  constructor(private baseSqlite: BaseSqliteService) {}
+  constructor(private baseSqlite: BaseSqliteService) { }
 
   /**
    * 添加

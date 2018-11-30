@@ -11,13 +11,15 @@ export class RcEntity {
   private _uI: string=null;          //创建人ID
   private _sd:string=null; //开始时间
   private _ed:string = null; //结束时间
+  private _ji:string=null; //计划ID
   /*
    * 创建表
    * @type {string}
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_C(sI VARCHAR(100) PRIMARY KEY,' +
-                          'sN VARCHAR(100),lI VARCHAR(10),uI VARCHAR(100),sd VARCHAR(20),ed VARCHAR(20));';
+                          'sN VARCHAR(100),lI VARCHAR(10),uI VARCHAR(100),sd VARCHAR(20),' +
+    'ed VARCHAR(20),ji VARCHAR(20));';
   private _drsq:string="DROP TABLE GTD_C"
 
   private _isq:string;
@@ -36,8 +38,8 @@ export class RcEntity {
 
   get isq(): string {
     let sql='insert into GTD_C ' +
-      '(sI,sN,lI,uI,sd,ed) values("'+ this._sI+'","'+ this._sN+'","'+this._lI+ '","'+ this._uI
-      +'","'+this._sd+ '","'+ this._ed+'")';
+      '(sI,sN,lI,uI,sd,ed,ji) values("'+ this._sI+'","'+ this._sN+'","'+this._lI+ '","'+ this._uI
+      +'","'+this._sd+ '","'+ this._ed+'","'+ this._ji+'")';
     this._isq=sql;
     return this._isq;
   }
@@ -62,6 +64,9 @@ export class RcEntity {
     }
     if(this._ed!=null){
       sql=sql+' ed="' + this._ed +'",';
+    }
+    if(this._ji!=null){
+      sql=sql+' ji="' + this._ji +'",';
     }
     if(this._sI != null){
       sql = sql + ' sI="' + this._sI +'" where sI="' + this._sI +'"';
@@ -91,6 +96,9 @@ export class RcEntity {
     }
     if(this._ed!=null){
       sql=sql+' and ed="' + this._ed +'"';
+    }
+    if(this._ji!=null){
+      sql=sql+' and ji="' + this._ji +'"';
     }
 
     this._dsq=sql;
@@ -163,5 +171,13 @@ export class RcEntity {
 
   set ed(value: string) {
     this._ed = value;
+  }
+
+  get ji(): string {
+    return this._ji;
+  }
+
+  set ji(value: string) {
+    this._ji = value;
   }
 }

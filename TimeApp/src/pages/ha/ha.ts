@@ -18,8 +18,9 @@ import {UEntity} from "../../entity/u.entity";
 import {WorkService} from "../../service/work.service";
 import {UserService} from "../../service/user.service";
 import {Ha01Page} from "../ha01/ha01";
-
-
+import {PlayerService} from "../../service/player.service";
+import {RcEntity} from "../../entity/rc.entity";
+import {RcpEntity} from "../../entity/rcp.entity";
 
 
 /**
@@ -80,7 +81,8 @@ export class HaPage {
               private sqliteService:BaseSqliteService,
               private userSqlite:UserService,
               private workSqlite:WorkService,
-              private calendarService:CalendarService) {
+              private calendarService:CalendarService,
+              private playerService:PlayerService) {
 
     moment.locale('zh-cn');
 
@@ -210,6 +212,10 @@ export class HaPage {
     // let today = new Date();
     //this.findTodaySchedule( today.getFullYear(), today.getMonth() + 1, today.getDate());
 
+    // this.sqliteService.executeSql("DROP TABLE GTD_C",[]);
+    // this.sqliteService.executeSql("DROP TABLE GTD_D",[]);
+    // this.sqliteService.createTable();
+    //this.playerService.addPlayer("SUUID","日程A","1","1","2018-11-29 14:25","2018-11-29 14:26","PUUID","日程别名","1","1","2018-11-29 14:25","1","1","1");
   }
   //设置当天全部提醒
   setAlarmList() {
@@ -272,6 +278,29 @@ export class HaPage {
     //this.page3.findTodaySchedule($event);
 
     this.calendarService.setSelectDay($event);
+
+    let findSchedule = new ScheduleOutModel();
+    if(day>=10&&month>=10) {
+      findSchedule.scheduleStartTime = year + "-" + month + "-" + day + " 00:00";
+      findSchedule.scheduleDeadline = year + "-" + month + "-" + day + " 23:59";
+    }else if(day<10&&month>=10){
+      findSchedule.scheduleStartTime = year + "-" + month + "-0" + day + " 00:00";
+      findSchedule.scheduleDeadline = year + "-" + month + "-0" + day + " 23:59";
+    }else if(day>=10&&month<10){
+      findSchedule.scheduleStartTime = year + "-0" + month + "-" + day + " 00:00";
+      findSchedule.scheduleDeadline = year + "-0" + month + "-" + day + " 23:59";
+    }else{
+      findSchedule.scheduleStartTime = year + "-0" + month + "-0" + day + " 00:00";
+      findSchedule.scheduleDeadline = year + "-0" + month + "-0" + day + " 23:59";
+    }
+
+    //查询选中那天的日历日程
+    this.playerService.getLocalSchedule(findSchedule.scheduleStartTime, findSchedule.scheduleDeadline).then(data => {
+      for(let i=0;i<data.length;i++){
+        this.scheduleList.push(data[i]);
+      }
+      //alert(JSON.stringify(this.scheduleList[0]));
+    })
 
     //
     // this.findSchedule = new ScheduleOutModel();

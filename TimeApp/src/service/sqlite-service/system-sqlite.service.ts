@@ -8,7 +8,7 @@ import {StEntity} from "../../entity/st.entity";
 @Injectable()
 export class SystemSqliteService {
 
-  constructor(private baseSqlite: BaseSqliteService) {}
+  constructor(private baseSqlite: BaseSqliteService) { }
 
   /**
    * 添加

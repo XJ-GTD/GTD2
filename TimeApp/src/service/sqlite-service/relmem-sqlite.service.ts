@@ -8,7 +8,7 @@ import {RguEntity} from "../../entity/rgu.entity";
 @Injectable()
 export class RelmemSqliteService {
 
-  constructor(private baseSqlite: BaseSqliteService) {}
+  constructor(private baseSqlite: BaseSqliteService) { }
 
   /**
    * 添加
