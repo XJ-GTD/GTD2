@@ -3,7 +3,7 @@
     @return color($colors, $color-value)
   } @else {
     @if (type-of(map-get($colors, $color-value)) != color) {
-      @return #488aff
+      @return red
     } @else {
       @return color($colors, $color-value)
     }

@@ -131,14 +131,14 @@ export class HaPage {
           res.date=mbs.date;
           //事少
           if(!mbs.im){
-            res.cssClass = `hassometing animated bounceIn`;
+            res.cssClass = `hassometing animated fadeInDown`;
           }else{
             //事多
-            res.cssClass = `busysometing animated bounceIn`;
+            res.cssClass = `busysometing animated fadeInDown`;
           }
           //有消息
           if(mbs.iem){
-            res.subTitle=`\u25B2`;
+            res.subTitle=`\u2022`;
           }
           this.options.daysConfig.push(res);
         }
