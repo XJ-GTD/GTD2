@@ -3,6 +3,12 @@ import {RelmemSqliteService} from "./sqlite-service/relmem-sqlite.service";
 import {RguEntity} from "../entity/rgu.entity";
 import {RguoModel} from "../model/out/rguo.model";
 import {BsModel} from "../model/out/bs.model";
+import {RuEntity} from "../entity/ru.entity";
+import {RuoModel} from "../model/out/ruo.model";
+import {RuModel} from "../model/ru.model";
+import {AppConfig} from "../app/app.config";
+import {BaseSqliteService} from "./sqlite-service/base-sqlite.service";
+import {UtilService} from "./util-service/util.service";
 
 
 /**
@@ -10,75 +16,72 @@ import {BsModel} from "../model/out/bs.model";
  */
 @Injectable()
 export class RelmemService {
-
-  constructor(private relmemSqlite: RelmemSqliteService) { }
-
-  /**
-   * 查询
-   * @param {string} bi
-   * @param {string} bmi
-   * @returns {Promise<RguoModel>}
-   */
-  getRgu(bi:string,bmi:string):Promise<RguoModel>{
-    return new Promise((resolve, reject) =>{
-      let rgu=new RguEntity();
-      rgu.bi=bi;
-      rgu.bmi=bmi;
-      let r=new RguoModel();
-      this.relmemSqlite.getRgu(rgu).then(data=>{
-        if(data&& data.rows && data.rows.length>0){
-          let rgus=[];
-          for(let i=0;i<data.rows.length;i++){
-            rgus.push(data.rows.item(i));
-          }
-          r.rgus=rgus;
-          r.code=0;
-          r.message="成功"
-          resolve(r);
-        }else{
-          r.code=2;
-          r.message="暂无信息"
-          resolve(r);
-        }
-      })
-        .catch(e=>{
-          r.code=1;
-          r.message="系统错误"
-          reject(r);
-        })
-    });
-
+  relmemSqlite: RelmemSqliteService
+  constructor(private baseSqlite: BaseSqliteService,
+              private util:UtilService) {
+    this.relmemSqlite = new RelmemSqliteService(baseSqlite);
   }
 
   /**
-   * 删除
-   * @param {string} bi
-   * @param {string} bmi
+   * 添加联系人
+   * @param {string} ran 别名
+   * @param {string} rN 名称
+   * @param {string} rc 联系电话
+   * @param {string} rel 0联系人,1群组
    * @returns {Promise<BsModel>}
    */
-  delRgu(bi:string,bmi:string):Promise<BsModel>{
+  aru(ran:string,rN:string,rc:string,rel:string):Promise<BsModel>{
     return new Promise((resolve, reject)=>{
-      let rgu=new RguEntity();
-      rgu.bi=bi;
-      rgu.bmi=bmi;
+      let ru=new RuEntity();
+      ru.id=this.util.getUuid();
+      ru.ran=ran;
+      ru.rN=rN;
+      ru.rC=rc;
+      ru.rel=rel;
       let base=new BsModel();
-      this.relmemSqlite.delRgu(rgu).then(data=>{
-        base.code=0;
-        base.message="success";
+      this.relmemSqlite.aru(ru).then(data=>{
         resolve(base);
+      }).catch(e=>{
+        base.code=AppConfig.ERR_CODE;
+        base.message=e.message;
+        reject(base);
       })
-        .catch(e=>{
-          base.code=1;
-          base.message=e.message;
-          reject(base);
-        })
     })
   }
 
   /**
-   * 添加
-   * @param {string} bi
-   * @param {string} bmi
+   * 查询授权联系人
+   * @param {string} id 主键
+   * @param {string} ran 别名
+   * @param {string} rN 名称
+   * @param {string} rC 手机号
+   * @param {string} rel  0联系人,1群组
+   */
+  getrus(id:string,ran:string,rN:string,rC:string,rel:string):Promise<RuoModel>{
+    return new Promise((resolve, reject)=>{
+      let ruo=new RuoModel();
+      this.relmemSqlite.getrus(id,ran,rN,rC,rel).then(data=>{
+        let rus = new Array<RuModel>();
+        if(data&& data.rows && data.rows.length>0){
+          for(let i=0;i<data.rows.length;i++){
+            rus.push(data.rows.item(i));
+          }
+        }
+        ruo.us=rus;
+        resolve(ruo);
+      }).catch(e=>{
+        ruo.code=AppConfig.ERR_CODE;
+        ruo.message=e.message;
+        reject(ruo);
+      })
+    })
+  }
+
+
+  /**
+   * 添加群组人员
+   * @param {string} bi 群组ID
+   * @param {string} bmi 关系人ID
    * @returns {Promise<BsModel>}
    */
   addRgu(bi:string,bmi:string):Promise<BsModel>{
@@ -88,17 +91,56 @@ export class RelmemService {
       rgu.bmi=bmi;
       let base=new BsModel();
       this.relmemSqlite.addRgu(rgu).then(data=>{
-        base.code=0;
-        base.message="success";
         resolve(base);
+      }).catch(e=>{
+          base.code=AppConfig.ERR_CODE;
+          base.message=e.message;
+          reject(base);
+        })
+    })
+  }
+  /**
+   * 查询群组人员
+   * @param @param {string} id 群组主键
+   * @returns {Promise<any>}
+   */
+  getRgus(id:string):Promise<RuoModel>{
+    return new Promise((resolve, reject) =>{
+      let ruo=new RuoModel();
+      this.relmemSqlite.getRgus(id).then(data=>{
+        let rus = new Array<RuModel>();
+        if(data&& data.rows && data.rows.length>0){
+          for(let i=0;i<data.rows.length;i++){
+            rus.push(data.rows.item(i));
+          }
+        }
+        ruo.us=rus;
+        resolve(ruo);
+      }).catch(e=>{
+        ruo.code=AppConfig.ERR_CODE;
+        ruo.message=AppConfig.ERR_MESSAGE;
+        reject(ruo);
       })
-        .catch(e=>{
+    });
+  }
+  /**
+   * 删除群组人员
+   * @param {string} id 群成员ID
+   * @returns {Promise<BsModel>}
+   */
+  delRgu(id:string):Promise<BsModel>{
+    return new Promise((resolve, reject)=>{
+      let base=new BsModel();
+      this.relmemSqlite.delRgu(id).then(data=>{
+        resolve(base);
+      }).catch(e=>{
           base.code=1;
           base.message=e.message;
           reject(base);
         })
     })
   }
+
 
   /**
    * 修改
@@ -108,11 +150,10 @@ export class RelmemService {
    */
   updateRgu(bi:string,bmi:string):Promise<BsModel>{
     return new Promise((resolve, reject)=>{
-      let rgu=new RguEntity();
-      rgu.bi=bi;
-      rgu.bmi=bmi;
+      let ru=new RuEntity();
+
       let base=new BsModel();
-      this.relmemSqlite.updateRgu(rgu).then(data=>{
+      this.relmemSqlite.uru(ru).then(data=>{
         base.code=0;
         base.message="success";
         resolve(base);

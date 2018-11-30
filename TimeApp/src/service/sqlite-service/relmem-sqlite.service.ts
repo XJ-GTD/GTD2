@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {BaseSqliteService} from "./base-sqlite.service";
 import {RguEntity} from "../../entity/rgu.entity";
+import {RuEntity} from "../../entity/ru.entity";
 
 /**
  * 授权联系人
@@ -8,50 +9,57 @@ import {RguEntity} from "../../entity/rgu.entity";
 @Injectable()
 export class RelmemSqliteService {
 
-  constructor(private baseSqlite: BaseSqliteService) { }
+  constructor(private baseSqlite: BaseSqliteService) {}
 
   /**
-   * 添加
-   * @param {RguEntity} rgu
-   * @returns {Promise<any>}
+   * 添加授权联系人
    */
-  addRgu(rgu:RguEntity){
-    return this.baseSqlite.save(rgu);
+  aru(ru:RuEntity){
+    return this.baseSqlite.save(ru);
   }
 
   /**
-   * 删除
-   * @param {RguEntity} rgu
-   * @returns {Promise<any>}
+   * 更新授权联系人
    */
-  delRgu(rgu:RguEntity){
-    return this.baseSqlite.delete(rgu);
+  uru(ru:RuEntity){
+    return this.baseSqlite.update(ru);
   }
 
   /**
-   * 修改
-   * @param {RguEntity} rgu
-   * @returns {Promise<any>}
+   * 查询授权联系人
+   * @param {string} id 主键
+   * @param {string} ran 别名
+   * @param {string} rN 名称
+   * @param {string} rC 手机号
+   * @param {string} rel  0联系人,1群组
    */
-  updateRgu(rgu:RguEntity){
-    return this.baseSqlite.update(rgu);
-  }
-
-  /**
-   * 查询
-   * @param {RguEntity} rgu
-   * @returns {Promise<any>}
-   */
-  getRgu(rgu:RguEntity){
-    let sql="SELECT bi,bmi FROM GTD_B_X where 1=1";
-    if(rgu.bi!=null){
-      sql=sql+' bi="' + rgu.bi +'",';
+  getrus(id:string,ran:string,rN:string,rC:string,rel:string){
+    let sql="SELECT * FROM GTD_B where 1=1";
+    if(id != null && id !=''){
+      sql = sql + " and id='"+id+"'";
     }
-    if(rgu.bmi!=null){
-      sql=sql+' bmi="' + rgu.bmi +'",';
+    if(rel != null && rel !=''){
+      sql = sql + " and rel='"+rel+"'";
     }
-
+    if(ran != null && ran !=''){
+      sql = sql + " and ran like '%"+ran+"%'";
+    }
+    if(rN != null && rN !=''){
+      sql = sql + " and rN like '%"+rN+"%'";
+    }
+    if(rC != null && rC !=''){
+      sql = sql + " and rC like '%"+rC+"%'";
+    }
     return this.baseSqlite.executeSql(sql,[]);
+  }
+
+  /**
+   * 删除授权联系人
+   * @param {RuEntity} ru
+   * @returns {Promise<any>}
+   */
+  dru(ru:RuEntity){
+    return this.baseSqlite.delete(ru);
   }
 
   /**
@@ -62,4 +70,33 @@ export class RelmemSqliteService {
   getOne(rgu:RguEntity){
     return this.baseSqlite.getOne(rgu);
   }
+
+  /**
+   * 添加群组人员
+   * @param {RguEntity} rgu
+   * @returns {Promise<any>}
+   */
+  addRgu(rgu:RguEntity){
+    return this.baseSqlite.save(rgu);
+  }
+  /**
+   * 查询群组人员
+   * @param @param {string} id 群组主键
+   * @returns {Promise<any>}
+   */
+  getRgus(id:string){
+    let sql="SELECT gb.* FROM GTD_B gb " +
+      "left join GTD_B_X bs on bs.bmi = gb.id where bs.bi='" + id +"'";
+    return this.baseSqlite.executeSql(sql,[]);
+  }
+  /**
+   * 删除群组人员
+   * @param {RguEntity} bmi 关系人ID
+   * @returns {Promise<any>}
+   */
+  delRgu(bmi:string){
+    let sql = "delete from GTD_B_X where bmi = '"+bmi+"'";
+    return this.baseSqlite.executeSql(sql,[]);
+  }
+
 }
