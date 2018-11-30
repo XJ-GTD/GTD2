@@ -74,7 +74,7 @@ export class MyApp {
         this.rootPage = PageConfig.HZ_PAGE;
       } else {
         this.storage.set('firstIn', true);
-        this.rootPage = PageConfig.AZ_PAGE;;
+        this.rootPage = PageConfig.AZ_PAGE;
       }
 
       if (this.nav.getViews().length == 0){

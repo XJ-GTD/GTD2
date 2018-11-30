@@ -19,7 +19,7 @@ import {PageConfig} from "../../app/page.config";
 export class HzPage {
   @ViewChild('myTabs') tabRef: Tabs;
 
-  hzPage: any = PageConfig.HZ_PAGE;
+  haPage: any = PageConfig.HA_PAGE;
 
   name:any="小强";
   tel:any="133****1233";
@@ -48,7 +48,7 @@ export class HzPage {
 
   groupListShow() {
     console.log("跳转参与人页");
-    this.navCtrl.push('PaPage',{popPage:'HzPage'});
+    this.navCtrl.push('PaPage');
   }
 
   showHistory() {

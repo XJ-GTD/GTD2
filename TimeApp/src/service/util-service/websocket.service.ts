@@ -2,19 +2,11 @@ import { Injectable } from "@angular/core";
 import { SockJS } from 'sockjs-client';
 import  Stomp from "@stomp/stompjs";
 
-import { ParamsService } from "./params.service";
 import { Subject } from "rxjs/Subject";
-import { App, AlertController, LoadingController} from "ionic-angular";
-import { XiaojiAssistantService } from "./xiaoji-assistant.service";
-import { HttpClient } from "@angular/common/http";
-import {FindOutModel} from "../../model/out/find.out.model";
-import {UserService} from "../user.service";
-import {MqOutModel} from "../../model/out/mq.out.model";
-import {MessageModel} from "../../model/message.model";
-import {UEntity} from "../../entity/u.entity";
-import {AppConfig} from "../../app/app.config";
-import {WsModel} from "../../model/ws.model";
-import {SkillConfig} from "../../app/skill.config";
+import { LoadingController } from "ionic-angular";
+import { AppConfig } from "../../app/app.config";
+import { WsModel } from "../../model/ws.model";
+import { DwMqService } from "../dw-mq.service";
 
 
 /**
@@ -25,7 +17,8 @@ import {SkillConfig} from "../../app/skill.config";
 @Injectable()
 export class WebsocketService {
 
-  constructor(public loadingCtrl: LoadingController){
+  constructor(public loadingCtrl: LoadingController,
+              public dwService: DwMqService){
   }
 
   /**
@@ -52,7 +45,7 @@ export class WebsocketService {
     // 连接成功回调 on_connect
     let on_connect = function(x) {
       console.log(client);
-      client.subscribe("/queue/" + "616818.0952634651", function(data) {
+      client.subscribe("/queue/" + queueName, function(data) {
         console.log("on_connect回调成功:" + data);
 
         subject.next(data); //能够在let变量方法内使用this方法
@@ -66,48 +59,7 @@ export class WebsocketService {
       ws = JSON.parse(data.body);
       console.log("JSON MQ:" + ws);
 
-      if (ws.vs == "1.0" && ws.ss == 0) {
-
-
-        switch (ws.sk) {
-          case SkillConfig.XF_NMT:
-            break;
-          case SkillConfig.XF_NMC:
-            break;
-          case SkillConfig.XF_SCC:
-            break;
-          case SkillConfig.XF_SCD:
-            break;
-          case SkillConfig.XF_SCF:
-            break;
-          case SkillConfig.XF_PEC:
-            break;
-          case SkillConfig.XF_PED:
-            break;
-          case SkillConfig.XF_PEF:
-            break;
-          case SkillConfig.XF_PEA:
-            break;
-          case SkillConfig.XF_SYSH:
-            break;
-          case SkillConfig.XF_OTWT:
-            break;
-          case SkillConfig.XF_OTCN:
-            break;
-          case SkillConfig.XF_OTDT:
-            break;
-          case SkillConfig.BC_SCC:
-            break;
-          case SkillConfig.BC_SCD:
-            break;
-          case SkillConfig.BC_SCU:
-            break;
-          case SkillConfig.BC_PEC:
-            break;
-        }
-      } else {
-
-      }
+      this.dwService.dealWithMq(ws);
 
     });
 

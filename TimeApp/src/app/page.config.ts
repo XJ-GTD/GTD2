@@ -29,6 +29,6 @@ export class PageConfig {
 
   private static _AZ_PAGE: any = "AzPage"
 
-  private static _HA_PAGE: any = HaPage;
+  private static _HA_PAGE: any = "HaPage";
   private static _HZ_PAGE: any = "HzPage";
 }
