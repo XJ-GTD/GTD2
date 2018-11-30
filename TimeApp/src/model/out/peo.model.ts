@@ -3,7 +3,7 @@ import {RcEntity} from "../../entity/rc.entity";
 import {RcpEntity} from "../../entity/rcp.entity";
 
 
-//Message out类
+//日程 out类
 export class PeoModel extends BsModel {
   private _rcs: Array<RcEntity>;
   private _rc: RcEntity;

@@ -4,6 +4,7 @@ import {RcEntity} from "../entity/rc.entity";
 import {RcpEntity} from "../entity/rcp.entity";
 import {PeoModel} from "../model/out/peo.model";
 import {BsModel} from "../model/out/bs.model";
+import {ScheduleModel} from "../model/schedule.model";
 
 /**
  * 日程逻辑处理
@@ -12,7 +13,8 @@ import {BsModel} from "../model/out/bs.model";
  */
 @Injectable()
 export class PlayerService {
-  constructor( private playerSqliteService:PlayerSqliteService){}
+
+  constructor( private playerSqliteService:PlayerSqliteService ){ }
 
   /**
    * 查询日程
@@ -261,4 +263,20 @@ export class PlayerService {
     })
   }
 
+  /**
+   * 查询某天的日程
+   * @param {string} startTime 某天的00:00
+   * @param {string} endTime   某天的23:59
+   * @returns {Promise<ScheduleModel[]>}
+   */
+  getLocalSchedule(startTime:string,endTime:string):Promise<ScheduleModel[]>{
+    return new Promise((resolve, reject)=>{
+      this.playerSqliteService.getLocalSchedule(startTime,endTime).then(data=>{
+        resolve(data);
+      })
+        .catch(e=>{
+          reject(e);
+        })
+    })
+  }
 }

@@ -11,7 +11,7 @@ import {BsModel} from "../model/out/bs.model";
 @Injectable()
 export class RelmemService {
 
-  constructor(private relmemSqlite: RelmemSqliteService) {}
+  constructor(private relmemSqlite: RelmemSqliteService) { }
 
   /**
    * 查询

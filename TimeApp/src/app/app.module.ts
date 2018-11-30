@@ -29,6 +29,16 @@ import {BaseService} from "../service/base.service";
 import {UserService} from "../service/user.service";
 import {WorkService} from "../service/work.service";
 import {LsmService} from "../service/lsm.service";
+import {PlayerService} from "../service/player.service";
+import {PlayerSqliteService} from "../service/sqlite-service/player-sqlite.service";
+import {MsService} from "../service/ms.service";
+import {MsSqliteService} from "../service/sqlite-service/ms-sqlite.service";
+import {RelmemService} from "../service/relmem.service";
+import {RelmemSqliteService} from "../service/sqlite-service/relmem-sqlite.service";
+import {RemindService} from "../service/remind.service";
+import {RemindSqliteService} from "../service/sqlite-service/remind-sqlite.service";
+import {SystemService} from "../service/system.service";
+import {SystemSqliteService} from "../service/sqlite-service/system-sqlite.service";
 
 @NgModule({
   declarations: [
@@ -73,6 +83,16 @@ import {LsmService} from "../service/lsm.service";
     BaseService,
     WorkService,
     LsmService,
+    PlayerService,
+    PlayerSqliteService,
+    MsService,
+    MsSqliteService,
+    RelmemService,
+    RelmemSqliteService,
+    RemindService,
+    RemindSqliteService,
+    SystemService,
+    SystemSqliteService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
