@@ -85,7 +85,6 @@ import {XiaojiAlarmclockService} from "../service/util-service/xiaoji-alarmclock
     MsService,
     MsSqliteService,
     RelmemService,
-    RelmemSqliteService,
     RemindService,
     RemindSqliteService,
     SystemService,
