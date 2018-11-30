@@ -4,6 +4,9 @@ import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
 import { ParamsService } from "../../service/util-service/params.service";
 import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
+import { LsmService} from "../../service/lsm.service";
+import {BsModel} from "../../model/out/bs.model";
+import {HaPage} from "../ha/ha";
 
 /**
  * Generated class for the UbPage page.
@@ -32,7 +35,8 @@ export class UbPage {
     private alertCtrl: AlertController,
     private http: HttpClient,
     private sqliteService: BaseSqliteService,
-    private paramsService: ParamsService) {
+    private paramsService: ParamsService,
+    private lsmService: LsmService) {
   }
 
   ionViewDidLoad() {
@@ -40,50 +44,27 @@ export class UbPage {
   }
 
   signIn() {
-    this.http.post(AppConfig.USER_LOGIN_URL, {
-      accountName: this.accountName,
-      accountPassword: this.accountPassword,
-      // accountName: "admin",
-      // accountPassword: "admin",
-      loginType: 0
+       this.lsmService.login(this.accountName, this.accountPassword).then(data=>{
+         let alert = this.alertCtrl.create({
+           title:'提示信息',
+           subTitle: data.message,
 
-    },AppConfig.HEADER_OPTIONS_JSON)
-      .subscribe(data => {
-        this.data = data;
-        console.log( this.data);
-        let loader = this.loadingCtrl.create({
-          content: this.data.message,
-          duration: 1000
-        });
-        let alert = this.alertCtrl.create({
-          title:'提示信息',
-          subTitle: this.data.message,
-          buttons:['确定']
-        });
+           buttons:[{text:'确定',role:'cancel',handler:()=>{
+               //跳转首页
+               this.navCtrl.setRoot('HaPage');
+             }}]
+         });
+         alert.present();
+       }).catch(res=>{
+         let alert = this.alertCtrl.create({
+           title:'提示信息',
+           subTitle: res.message,
+           buttons:["确定"]
+         });
+         alert.present();
+         console.log(res);
+         });
 
-        if (this.data.code == "0") {
-          this.paramsService.user = this.data.data.userInfo;
-          //this.sqliteService.saveOrUpdateUser(this.data.data.userInfo);
-          // window.localStorage.setItem('userName', this.paramsService.user.userName);
-          // window.localStorage.setItem('userId', this.paramsService.user.userId.toString());
-          // window.localStorage.setItem('accountId', this.paramsService.user.accountId.toString());
-          // window.localStorage.setItem('accountName', this.paramsService.user.accountName);
-          // window.localStorage.setItem('accountMobile', this.paramsService.user.accountMobile);
-          // window.localStorage.setItem('accountUuid', this.paramsService.user.accountUuid);
-          // window.localStorage.setItem('accountQueue', this.paramsService.user.accountQueue);
-          // window.localStorage.setItem('accountQq', this.paramsService.user.accountQq);
-          // window.localStorage.setItem('accountWechat', this.paramsService.user.accountWechat);
-          // window.localStorage.setItem('headimgUrl', this.paramsService.user.headimgUrl);
-
-          // loginMessage.present(loginMessage.setMessage(this.data.message));
-
-          loader.present();
-          this.navCtrl.setRoot('HaPage');
-        } else {
-          alert.present();
-        }
-
-      })
   }
 
   signUp() {

@@ -19,7 +19,11 @@ import {PageConfig} from "../../app/page.config";
 export class HzPage {
   @ViewChild('myTabs') tabRef: Tabs;
 
-  haPage: any = "HaPage";
+  hzPage: any = PageConfig.HZ_PAGE;
+
+  name:any="小强";
+  tel:any="133****1233";
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public platform: Platform,

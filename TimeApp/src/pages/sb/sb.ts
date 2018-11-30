@@ -68,26 +68,26 @@ export class SbPage {
     this.labelFind.userId = this.paramsService.user.userId;
     this.labelFind.findType = 2;  //暂为硬代码，默认2 日程
 
-    this.http.post(AppConfig.USER_LABEL_URL, this.labelFind, {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      responseType: 'json'
-    })
-      .subscribe(data => {
-        this.data = data;
-        if (this.data.code == 0) {
-          this.label = [];
-          this.label = this.data.data.labelList;
-
-        } else {
-          let loader = this.loadingCtrl.create({
-            content: "服务器繁忙，请稍后再试",
-            duration: 1000
-          });
-          loader.present();
-        }
-      })
+    // this.http.post(AppConfig.USER_LABEL_URL, this.labelFind, {
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   responseType: 'json'
+    // })
+    //   .subscribe(data => {
+    //     this.data = data;
+    //     if (this.data.code == 0) {
+    //       this.label = [];
+    //       this.label = this.data.data.labelList;
+    //
+    //     } else {
+    //       let loader = this.loadingCtrl.create({
+    //         content: "服务器繁忙，请稍后再试",
+    //         duration: 1000
+    //       });
+    //       loader.present();
+    //     }
+    //   })
   }
 
   /**
@@ -97,31 +97,31 @@ export class SbPage {
     this.groupFind = new FindOutModel();
     this.groupFind.userId= this.paramsService.user.userId;
     this.groupFind.findType = 3;        //暂为硬代码，默认群组
-    this.http.post(AppConfig.GROUP_ALL_SHOW_URL, this.groupFind, {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      responseType: 'json'
-    })
-      .subscribe(data => {
-        this.data = data;
-        let loader = this.loadingCtrl.create({
-          content: this.data.message,
-          duration: 1000
-        });
-        if (this.data.code == 0) {
-          this.group = [];
-          this.group = this.data.data.groupList;
-
-        } else if (this.data.code == 1) {
-          loader.setContent("暂未找到参与人，请尝试创建参与人吧");
-          loader.present();
-        } else if (this.data.code == -1) {
-          loader.setContent("服务器繁忙，请稍后再试");
-          loader.present();
-        }
-
-      })
+    // this.http.post(AppConfig.GROUP_ALL_SHOW_URL, this.groupFind, {
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   responseType: 'json'
+    // })
+    //   .subscribe(data => {
+    //     this.data = data;
+    //     let loader = this.loadingCtrl.create({
+    //       content: this.data.message,
+    //       duration: 1000
+    //     });
+    //     if (this.data.code == 0) {
+    //       this.group = [];
+    //       this.group = this.data.data.groupList;
+    //
+    //     } else if (this.data.code == 1) {
+    //       loader.setContent("暂未找到参与人，请尝试创建参与人吧");
+    //       loader.present();
+    //     } else if (this.data.code == -1) {
+    //       loader.setContent("服务器繁忙，请稍后再试");
+    //       loader.present();
+    //     }
+    //
+    //   })
 
 
   }
@@ -142,27 +142,27 @@ export class SbPage {
     //事件默认状态：1
     this.schedule.scheduleStatus = 1;
     console.log("groupIds:" + this.schedule.groupIds + " labelIds: " + this.schedule.labelIds);
-    this.http.post(AppConfig.SCHEDULE_ADD_URL, this.schedule, {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      responseType: 'json'
-    })
-      .subscribe(data => {
-        this.data = data;
-        let loader = this.loadingCtrl.create({
-          content: this.data.message,
-          duration: 1500
-        });
-        if (this.data.code == 0) {
-          loader.present();
-          this.goBack();
-          console.log("发布成功");
-        } else {
-          loader.present();
-          console.log("发布失败" + this.data.message);
-        }
-      });
+    // this.http.post(AppConfig.SCHEDULE_ADD_URL, this.schedule, {
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   responseType: 'json'
+    // })
+    //   .subscribe(data => {
+    //     this.data = data;
+    //     let loader = this.loadingCtrl.create({
+    //       content: this.data.message,
+    //       duration: 1500
+    //     });
+    //     if (this.data.code == 0) {
+    //       loader.present();
+    //       this.goBack();
+    //       console.log("发布成功");
+    //     } else {
+    //       loader.present();
+    //       console.log("发布失败" + this.data.message);
+    //     }
+    //   });
   }
 
   //编辑完成提交

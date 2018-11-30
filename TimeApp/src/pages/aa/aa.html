@@ -7,40 +7,36 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Aa</ion-title>
+    <ion-title>设置</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding class="page-backgroud-color">
 
   <div>
 
-    <ion-item>
+    <button ion-item (click)="accountSecurity()">
       <ion-label>账号与安全</ion-label>
-      <button ion-button (click)="accountSecurity()"></button>
-    </ion-item>
+    </button>
 
-    <ion-item>
+    <button ion-item (click)="newsMessage()">
       <ion-label>消息通知</ion-label>
-      <button ion-button (click)="newsMessage()"></button>
-    </ion-item>
+    </button>
 
-    <ion-item>
-      <ion-label>缓存清理</ion-label>
-      <button ion-button (click)="cleanCache()"></button>
-    </ion-item>
+    <button ion-item (click)="cleanCache()">
+      <ion-label item-start>缓存清理</ion-label>
+      <ion-label item-end text-end>5.5M</ion-label>
+    </button>
 
-    <ion-item>
+    <button ion-item (click)="shareApp()" margin-top>
       <ion-label>分享APP</ion-label>
-      <button ion-button (click)="shareApp()"></button>
-    </ion-item>
+    </button>
 
-    <ion-item>
+    <button ion-item (click)="aboutApp()" margin-top>
       <ion-label>关于</ion-label>
-      <button ion-button (click)="aboutApp()"></button>
-    </ion-item>
+    </button>
 
     <button ion-item (click)="helpAndFeedback()">
       <ion-label>帮助及反馈</ion-label>
@@ -50,7 +46,8 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
-    <button ion-button (click)="logOut()">退出登陆</button>
-  </ion-toolbar>
+  <ion-item>
+    <ion-label text-center color="danger" (click)="logOut()">退出登录</ion-label>
+  </ion-item>
+
 </ion-footer>

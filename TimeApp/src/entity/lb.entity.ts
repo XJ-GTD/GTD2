@@ -34,7 +34,7 @@ export class LbEntity {
 
   get isq(): string {
     let sql='insert into GTD_F ' +
-      '(sN,lI,uI) values('+ this._lai+',"'+ this._lan+'","'+ this._lat+'","'+this._lau+ '")';
+      '(lai,lan,lat,lau) values('+ this._lai+',"'+ this._lan+'","'+ this._lat+'","'+this._lau+ '")';
     this._isq=sql;
     return this._isq;
   }

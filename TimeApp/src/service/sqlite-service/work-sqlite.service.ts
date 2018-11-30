@@ -8,6 +8,10 @@ import {MbsoModel} from "../../model/out/mbso.model";
 import {MbsModel} from "../../model/mbs.model";
 import {RcpoModel} from "../../model/out/rcpo.model";
 import {RcpModel} from "../../model/rcp.model";
+import {RuModel} from "../../model/ru.model";
+import {RcEntity} from "../../entity/rc.entity";
+import {RcpEntity} from "../../entity/rcp.entity";
+import {UtilService} from "../util-service/util.service";
 
 
 /**
@@ -18,8 +22,31 @@ import {RcpModel} from "../../model/rcp.model";
 @Injectable()
 export class WorkSqliteService {
 
-  constructor( private baseSqlite: BaseSqliteService) {
+  constructor( private baseSqlite: BaseSqliteService,
+            private util:UtilService) {
 
+  }
+
+  /**
+   * 保存日程参与人信息
+   * @param {RcEntity} rc
+   * @param {Array<RuModel>} rcps
+   */
+  sRcps(rc:RcEntity,rus:Array<RuModel>){
+    let sqlStr = "";
+    if(rus != null && rus.length>0){
+      for(let i=0;i<rus.length;i++){
+        let rcp = new RcpEntity();
+        rcp.pI = this.util.getUuid();
+        rcp.uI =rus[i].rI;
+        rcp.son=rc.sN;
+        rcp.sI=rc.sI;
+        rcp.cd=rc.sd;
+        rcp.pd=rc.ed;
+        rcp.rui=rus[i].id
+        this.baseSqlite.save(rcp);
+      }
+    }
   }
 
   /**
@@ -45,10 +72,46 @@ export class WorkSqliteService {
 
   /**
    * 获取事件详情
-   * @param d 'yyyy-MM-dd'
+   * @param sI 日程主键
    */
-  getsd(d:string){
+  getds(sI:string){
+    let sql = "select jh.jn,gf.lan,gc.* from GTD_C gc " +
+      "left join GTD_J_H jh on jh.ji = gc.ji " +
+      "left join GTD_F gf on gf.lai = gc.lI where gc.sI =?"
+    return this.baseSqlite.executeSql(sql,[sI])
+  }
 
+  /**
+   * 根据条件查询日程
+   * @param {string} ct 标题
+   * @param {string} sd 开始时间
+   * @param {string} ed 结束时间
+   * @param {string} lbI 标签编号
+   * @param {string} lbN 标签名称
+   * @param {string} jh 计划名称
+   */
+  getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string){
+    let sql ="select gd.* from GTD_D gd " +
+      "left join GTD_C gc on gc.sI = gd.sI " +
+      "left join GTD_F gf on gf.lai = gc.lI " +
+      "left join GTD_J_H jh on jh.ji = gc.ji " +
+      "where 1=1";
+    if(ct != null && ct != ""){
+      sql = sql + " and gd.son like '%" + ct +"%'"
+    }
+    if(sd != null && sd != ""){
+      sql = sql + " and gc.sd >= '" + sd +"' and gc.ed >= '" + sd +"'";
+    }
+    if(ed != null && ed != ""){
+      sql = sql + " and gc.sd <= '" + ed +"' and gc.ed <= '" + ed +"'";
+    }
+    if(lbI != null && lbI != ""){
+      sql = sql + " and gf.lan like '%" + lbI +"%'"
+    }
+    if(jh != null && jh != ""){
+      sql = sql + " and jh.jn like '%" + jh +"%'"
+    }
+    return this.baseSqlite.executeSql(sql,[]);
   }
 
 

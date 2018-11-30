@@ -220,28 +220,28 @@ export class HaPage {
   //设置当天全部提醒
   setAlarmList() {
 
-    this.http.post(AppConfig.SCHEDULE_TODAY_REMIND_URL, {
-      //userId: this.paramsService.user.userId
-      userId:this.u.uI
-    },{
-      headers: {
-        "Content-Type": "application/json"
-      },
-      responseType: 'json'
-    })
-      .subscribe(data => {
-        this.data = data;
-        console.log( this.data);
-
-        if (this.data.code == 0) {
-          this.remindScheduleList = [];
-          this.remindScheduleList = this.data.data.remindList;
-          for(let i = 0; i < this.remindScheduleList.length; i++) {
-            this.alarmClock.setAlarmClock(this.remindScheduleList[i].remindDate, this.remindScheduleList[i].scheduleName);
-          }
-        }
-
-      })
+    // this.http.post(AppConfig.SCHEDULE_TODAY_REMIND_URL, {
+    //   //userId: this.paramsService.user.userId
+    //   userId:this.u.uI
+    // },{
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   responseType: 'json'
+    // })
+    //   .subscribe(data => {
+    //     this.data = data;
+    //     console.log( this.data);
+    //
+    //     if (this.data.code == 0) {
+    //       this.remindScheduleList = [];
+    //       this.remindScheduleList = this.data.data.remindList;
+    //       for(let i = 0; i < this.remindScheduleList.length; i++) {
+    //         this.alarmClock.setAlarmClock(this.remindScheduleList[i].remindDate, this.remindScheduleList[i].scheduleName);
+    //       }
+    //     }
+    //
+    //   })
 
   }
   discernTags($event){
@@ -249,8 +249,17 @@ export class HaPage {
     let year = eventDate.getFullYear();
     let month = eventDate.getMonth()+1;
   }
+
+  createEvent($event){
+    alert($event)
+  }
   //查询当天日程
   findTodaySchedule($event) {
+
+
+    if (!$event) {
+      return;
+    }
 
     console.log($event);
     //  this.sqliteService.addRctest().then(data=>{
@@ -267,6 +276,7 @@ export class HaPage {
     //this.page1.findTodaySchedule($event);
     //this.page2.findTodaySchedule($event);
     //this.page3.findTodaySchedule($event);
+
     this.calendarService.setSelectDay($event);
 
     let findSchedule = new ScheduleOutModel();

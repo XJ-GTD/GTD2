@@ -25,6 +25,7 @@
     <div class="haCalendar" >
       <ion-calendar  [options]="options"
                      (onSelect)="findTodaySchedule($event)"
+                     (onPressup)="createEvent($event)"
                      (onInit)="discernTags($event)">
       </ion-calendar>
     </div>

@@ -7,12 +7,31 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Ad</ion-title>
+    <ion-title>意见反馈</ion-title>
+    <ion-buttons right>
+      <button icon-only ion-button >
+        完成
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-label>问题描述</ion-label>
+  <ion-textarea placeholder="请描述你遇到的问题" fz-elastic></ion-textarea>
+  <div ion-item no-padding>
+    <div>
+      <ion-thumbnail ion-button color="light" float-left class="padding-0">
+        <img src="http://img.ph.126.net/AJVTPrlsBJuatCG8oQNqkg==/3323375050023235491.jpg">
+      </ion-thumbnail>
+    </div>
+    <div>
+      <ion-thumbnail ion-button color="light" class="div-add-border" ">
+        <ion-icon name="add"></ion-icon>
+      </ion-thumbnail>
+    </div>
+  </div>
 
 </ion-content>
