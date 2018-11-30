@@ -14,7 +14,7 @@ import {MsoModel} from "../model/out/mso.model";
  */
 @Injectable()
 export class MsService {
-  constructor( private msSqlite:MsSqliteService){}
+  constructor( private msSqlite:MsSqliteService){ }
 
   /**
    * 添加message消息

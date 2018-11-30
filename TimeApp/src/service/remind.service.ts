@@ -11,7 +11,7 @@ import {ReoModel} from "../model/out/reo.model";
 @Injectable()
 export class RemindService {
 
-  constructor(private remindSqlite: RemindSqliteService) {}
+  constructor(private remindSqlite: RemindSqliteService) { }
 
   /**
    * 添加提醒时间

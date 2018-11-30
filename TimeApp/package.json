@@ -20,7 +20,6 @@
     "@angular/http": "5.0.0",
     "@angular/platform-browser": "5.0.0",
     "@angular/platform-browser-dynamic": "5.0.0",
-    "@ionic-native/android-full-screen": "^4.16.0",
     "@ionic-native/base64": "^4.15.0",
     "@ionic-native/calendar": "^4.15.0",
     "@ionic-native/core": "4.3.2",
@@ -37,7 +36,6 @@
     "@ionic-native/sqlite": "^4.16.0",
     "@ionic-native/sqlite-porter": "^4.17.0",
     "@ionic-native/status-bar": "4.3.2",
-    "@ionic-native/text-to-speech": "^4.16.0",
     "@ionic-native/vibration": "^4.16.0",
     "@ionic/storage": "^2.2.0",
     "@stomp/stompjs": "^4.0.8",
@@ -83,7 +81,7 @@
     "@ionic/app-scripts": "3.1.0",
     "typescript": "2.4.2"
   },
-  "description": "An Ionic project",
+  "description": "An timeApp project",
   "cordova": {
     "plugins": {
       "ionic-plugin-keyboard": {},
