@@ -35,6 +35,7 @@ export const MONTH_VALUE_ACCESSOR: any = {
                           [class]="'days-btn ' + day.cssClass"
                           [class.today]="day.isToday"
                           (click)="onSelected(day)"
+                          (pressup)="onPressuped(day)"
                           [class.marked]="day.marked"
                           [class.last-month-day]="day.isLastMonth"
                           [class.next-month-day]="day.isNextMonth"
@@ -95,6 +96,7 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
 
   @Output() onChange: EventEmitter<CalendarDay[]> = new EventEmitter();
   @Output() onSelect: EventEmitter<CalendarDay> = new EventEmitter();
+  @Output() onPressup: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectStart: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectEnd: EventEmitter<CalendarDay> = new EventEmitter();
 
@@ -191,6 +193,57 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
     if (this.readonly) return;
     item.selected = true;
     this.onSelect.emit(item);
+    if (this.pickMode === pickModes.SINGLE) {
+      this._date[0] = item;
+      this.onChange.emit(this._date);
+
+      if (this._isRange == false) {
+        this.cumClick.emit(item);
+      }
+      return;
+    }
+
+    if (this.pickMode === pickModes.RANGE) {
+      if (this._date[0] === null) {
+        this._date[0] = item;
+        this.onSelectStart.emit(item);
+      } else if (this._date[1] === null) {
+        if (this._date[0].time < item.time) {
+          this._date[1] = item;
+          this.onSelectEnd.emit(item);
+        } else {
+          this._date[1] = this._date[0];
+          this.onSelectEnd.emit(this._date[0]);
+          this._date[0] = item;
+          this.onSelectStart.emit(item);
+        }
+      } else {
+        this._date[0] = item;
+        this.onSelectStart.emit(item);
+        this._date[1] = null;
+      }
+      this.onChange.emit(this._date);
+      return;
+    }
+
+    if (this.pickMode === pickModes.MULTI) {
+
+      const index = this._date.findIndex(e => e !== null && e.time === item.time);
+
+      if (index === -1) {
+        this._date.push(item);
+      } else {
+        this._date.splice(index, 1);
+      }
+      this.onChange.emit(this._date.filter(e => e !== null));
+    }
+  }
+
+
+  onPressuped(item: CalendarDay): void {
+    if (this.readonly) return;
+    item.selected = true;
+    this.onPressup.emit(item);
     if (this.pickMode === pickModes.SINGLE) {
       this._date[0] = item;
       this.onChange.emit(this._date);

@@ -42,7 +42,7 @@ public class AiUiUtil {
             String result = "";
             if (flag == 0) {
                 header = buildHeader_audio();
-                result = httpPost(URL, header, readFile(audio));
+                result = httpPost(URL, header, base64Audio(audio));
 
             } else if (flag == 1) {
                 header = buildHeader_text();
@@ -50,11 +50,7 @@ public class AiUiUtil {
             }
 
             return result;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
 

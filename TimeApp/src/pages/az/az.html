@@ -4,37 +4,27 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
+<ion-slides>
+  <!--<ion-slide *ngFor="let slide of slides">-->
+  <!--<ion-toolbar>-->
+  <!--<ion-buttons end>-->
+  <!--<button ion-button color="primary" (click)="goToLogin()">✘</button>-->
+  <!--</ion-buttons>-->
+  <!--</ion-toolbar>-->
+  <!--<img [src]="slide.image" class="slide-image"/>-->
+  <!--<h2 class="slide-title" [innerHTML]="slide.title"></h2>-->
+  <!--<p [innerHTML]="slide.description"></p>-->
+  <!--</ion-slide>-->
+  <ion-slide style="background-image:url(/assets/imgs/wlcome_2.jpg);background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%; ">
+  </ion-slide>
+  <ion-slide style="background-image:url(/assets/imgs/wlcome_1.jpg);background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%; ">
+  </ion-slide>
+  <ion-slide style="background-image:url(/assets/imgs/wlcome_3.jpg);background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%; ">
+    <img src="/assets/imgs/wlcome_3.jpg" class="slide-image"/>
+    <button ion-button large clear icon-end color="primary" (click)="goToLogin()">
+      立即开始
+      <ion-icon name="arrow-forward"></ion-icon>
+    </button>
+  </ion-slide>
 
-  <ion-navbar>
-    <ion-title>Az</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-  <ion-slides pager>
-    <!--<ion-slide *ngFor="let slide of slides">-->
-    <!--<ion-toolbar>-->
-    <!--<ion-buttons end>-->
-    <!--<button ion-button color="primary" (click)="goToLogin()">✘</button>-->
-    <!--</ion-buttons>-->
-    <!--</ion-toolbar>-->
-    <!--<img [src]="slide.image" class="slide-image"/>-->
-    <!--<h2 class="slide-title" [innerHTML]="slide.title"></h2>-->
-    <!--<p [innerHTML]="slide.description"></p>-->
-    <!--</ion-slide>-->
-
-    <ion-slide>
-      <img src="./assets/imgs/welcome.jpg" class="slide-image"/>
-      <h2 class="slide-title">准备好时间之旅了吗？</h2>
-      <button ion-button large clear icon-end color="primary" (click)="goToLogin()">
-        立即开始
-        <ion-icon name="arrow-forward"></ion-icon>
-      </button>
-    </ion-slide>
-
-  </ion-slides>
-
-</ion-content>
+</ion-slides>

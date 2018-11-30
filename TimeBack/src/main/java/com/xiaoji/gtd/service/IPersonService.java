@@ -19,6 +19,13 @@ public interface IPersonService {
     boolean isRepeatMobile(String mobile);
 
     /**
+     * 验证uuid重复性
+     * @param uuid
+     * @return
+     */
+    boolean isRepeatUuid(String uuid);
+
+    /**
      * 用户注册
      * @param inDto
      */

@@ -13,6 +13,8 @@ import {MqOutModel} from "../../model/out/mq.out.model";
 import {MessageModel} from "../../model/message.model";
 import {UEntity} from "../../entity/u.entity";
 import {AppConfig} from "../../app/app.config";
+import {WsModel} from "../../model/ws.model";
+import {SkillConfig} from "../../app/skill.config";
 
 
 /**
@@ -41,8 +43,8 @@ export class WebsocketService {
     client.heartbeat.incoming = 0;
 
     //登陆账户
-    const login = "admin";
-    const password = "admin";
+    const login = "gtd_mq";
+    const password = "gtd_mq";
 
     //创建观察者
     let subject = new Subject<any>();
@@ -50,7 +52,7 @@ export class WebsocketService {
     // 连接成功回调 on_connect
     let on_connect = function(x) {
       console.log(client);
-      client.subscribe("/queue/" + queueName, function(data) {
+      client.subscribe("/queue/" + "616818.0952634651", function(data) {
         console.log("on_connect回调成功:" + data);
 
         subject.next(data); //能够在let变量方法内使用this方法
@@ -60,10 +62,52 @@ export class WebsocketService {
 
     //对成功回调数据进行操作,放入全局变量中
     subject.asObservable().subscribe( data=> {
-      console.log("MQ:" + data.toString());
-      let body = JSON.parse(data.body);
-      console.log("JSON MQ:" + body);
+      let ws = new WsModel();
+      ws = JSON.parse(data.body);
+      console.log("JSON MQ:" + ws);
 
+      if (ws.vs == "1.0" && ws.ss == 0) {
+
+
+        switch (ws.sk) {
+          case SkillConfig.XF_NMT:
+            break;
+          case SkillConfig.XF_NMC:
+            break;
+          case SkillConfig.XF_SCC:
+            break;
+          case SkillConfig.XF_SCD:
+            break;
+          case SkillConfig.XF_SCF:
+            break;
+          case SkillConfig.XF_PEC:
+            break;
+          case SkillConfig.XF_PED:
+            break;
+          case SkillConfig.XF_PEF:
+            break;
+          case SkillConfig.XF_PEA:
+            break;
+          case SkillConfig.XF_SYSH:
+            break;
+          case SkillConfig.XF_OTWT:
+            break;
+          case SkillConfig.XF_OTCN:
+            break;
+          case SkillConfig.XF_OTDT:
+            break;
+          case SkillConfig.BC_SCC:
+            break;
+          case SkillConfig.BC_SCD:
+            break;
+          case SkillConfig.BC_SCU:
+            break;
+          case SkillConfig.BC_PEC:
+            break;
+        }
+      } else {
+
+      }
 
     });
 

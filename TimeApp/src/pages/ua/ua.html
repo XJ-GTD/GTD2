@@ -35,8 +35,8 @@
           <div>
             <!--*ngIf="true" -->
             <div class="error_info">
-              <span *ngIf="this.checkMoblieNull">手机号不能为空</span>
-              <span *ngIf="this.checkMoblie">请输入正确11位手机号</span>
+              <span *ngIf="this.errorCode == 0">手机号不能为空</span>
+              <span *ngIf="this.errorCode == 1 || this.errorCode == 2">请输入正确11位手机号</span>
             </div>
           </div>
         </div>
@@ -55,7 +55,7 @@
               </ion-item>
             </div>
             <div class="button_verification">
-              <button ion-button>发送验证码</button>
+              <button ion-button (click)="sendMsg()">{{timeOut}}</button>
             </div>
           </div>
         </div>

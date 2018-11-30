@@ -10,77 +10,80 @@ import com.xiaoji.gtd.dto.code.ResultCode;
  */
 public class WebSocketOutDto extends BaseOut {
 
-    private String version;
-    private String answerText;
-    private String answerUrl;
-    private String answerImg;
-    private ResultCode status;
-    private String skillType;
-    private WebSocketSource source;
-    private WebSocketResult result;
+    private String vs;      //version
+    private String at;      //answerText;
+    private String au;      //answerUrl;
+    private String ai;      //answerImg;
+    private int ss;         //status;
+    private String sk;      //skillType;
+    private WebSocketSourceDto src;     //source;
+    private WebSocketResultDto res;     //result;
 
-
-    public String getVersion() {
-        return version;
+    public String getVs() {
+        return vs;
     }
 
-    public void setVersion(String version) {
-        this.version = version;
+    public void setVs(String vs) {
+        this.vs = vs;
     }
 
-    public String getAnswerText() {
-        return answerText;
+    public String getAt() {
+        return at;
     }
 
-    public void setAnswerText(String answerText) {
-        this.answerText = answerText;
+    public void setAt(String at) {
+        this.at = at;
     }
 
-    public String getAnswerUrl() {
-        return answerUrl;
+    public String getAu() {
+        return au;
     }
 
-    public void setAnswerUrl(String answerUrl) {
-        this.answerUrl = answerUrl;
+    public void setAu(String au) {
+        this.au = au;
     }
 
-    public String getSkillType() {
-        return skillType;
+    public String getAi() {
+        return ai;
     }
 
-    public void setSkillType(String skillType) {
-        this.skillType = skillType;
+    public void setAi(String ai) {
+        this.ai = ai;
     }
 
-    public WebSocketSource getSource() {
-        return source;
+    public int getSs() {
+        return ss;
     }
 
-    public void setSource(WebSocketSource source) {
-        this.source = source;
+    public void setSs(int ss) {
+        this.ss = ss;
     }
 
-    public WebSocketResult getResult() {
-        return result;
+    public String getSk() {
+        return sk;
     }
 
-    public void setResult(WebSocketResult result) {
-        this.result = result;
+    public void setSk(String sk) {
+        this.sk = sk;
     }
 
-    public String getAnswerImg() {
-        return answerImg;
+    public WebSocketSourceDto getSrc() {
+        return src;
     }
 
-    public void setAnswerImg(String answerImg) {
-        this.answerImg = answerImg;
+    public void setSrc(WebSocketSourceDto src) {
+        this.src = src;
     }
 
-    public ResultCode getStatus() {
-        return status;
+    public WebSocketResultDto getRes() {
+        return res;
     }
 
-    public void setStatus(ResultCode status) {
-        this.status = status;
+    public void setRes(WebSocketResultDto res) {
+        this.res = res;
+    }
+
+    public void setSs(ResultCode status) {
+        this.ss = status.code;
     }
 }

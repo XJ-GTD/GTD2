@@ -14,6 +14,7 @@ import com.xiaoji.util.CommonMethods;
 import com.xiaoji.util.TimerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -79,6 +81,18 @@ public class PersonServiceImpl implements IPersonService {
     }
 
     /**
+     * 验证uuid重复性
+     * @param uuid
+     * @return
+     */
+    @Override
+    public boolean isRepeatUuid(String uuid) {
+        Object obj = personRepository.findByUuid(uuid);
+        int count = Integer.valueOf(obj.toString());
+        return count != 0;
+    }
+
+    /**
      * 用户注册
      * @param inDto
      */
@@ -104,8 +118,8 @@ public class PersonServiceImpl implements IPersonService {
         String exchangeName = "";
 
         try {
-
-            Timestamp date = CommonMethods.dateToStamp(new Date().toString());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Timestamp date = CommonMethods.dateToStamp(sdf.format(new Date()));
             //规则字段
             accountName = BaseUtil.getAccountName(accountMobile);
             nickName = BaseUtil.getNickName(accountMobile);
@@ -152,7 +166,7 @@ public class PersonServiceImpl implements IPersonService {
             TimerUtil.clearOnly(accountMobile);
         } catch (Exception e) {
             e.printStackTrace();
-            return 1;
+            throw new ServiceException("服务器异常，请稍后再试！");
         }
         return 0;
     }

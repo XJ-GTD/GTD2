@@ -10,12 +10,20 @@ import com.xiaoji.gtd.dto.Out;
  */
 public interface IIntentService {
 
-    public Out parserBase64(AiUiInDto inDto);
+    Out parserBase64(AiUiInDto inDto);
 
-    public Out parserText(AiUiInDto inDto);
+    Out parserText(AiUiInDto inDto);
 
-    public void asyncParserBase64(AiUiInDto inDto);
+    /**
+     * 讯飞请求 音频
+     * @param inDto
+     */
+    void asyncParserBase64(AiUiInDto inDto);
 
-    public void asyncParserText(AiUiInDto inDto);
+    /**
+     * 讯飞请求 文本
+     * @param inDto
+     */
+    void asyncParserText(AiUiInDto inDto);
 
 }

@@ -1,33 +1,54 @@
-<ion-menu [content]="homemenu" side="left" swipeEnabled = "false">
+<!--首页侧边栏-->
+<ion-menu [content]="hz" side="left" swipeEnabled = "false">
   <ion-header>
     <ion-toolbar>
-      <ion-title>菜单</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content>
+    <ion-item>
+      <ion-avatar item-start>
+        <!--<img src="http://img.ph.126.net/AJVTPrlsBJuatCG8oQNqkg==/3323375050023235491.jpg" class="img_size">-->
+        <img src="./assets/imgs/headImg.jpg" class="img_size">
+      </ion-avatar>
+      <h1>{{name}}</h1>
+      <span>{{tel}}</span>
+    </ion-item>
     <ion-list>
-
+      <!--<ion-item>-->
+        <!--<ion-toggle (ionChange)="inPrivate()"></ion-toggle>-->
+        <!--<ion-label>隐私模式</ion-label>-->
+        <!--<ion-icon name="lock" item-start></ion-icon>-->
+      <!--</ion-item>-->
+      <!--<button ion-item (click)="groupListShow()">-->
+        <!--<ion-icon name="people" item-start></ion-icon>-->
+        <!--<ion-label>参与人</ion-label>-->
+      <!--</button>-->
+      <!--<button ion-item (click)="showHistory()">-->
+        <!--<ion-label>历史纪录</ion-label>-->
+        <!--<ion-icon name="clock" item-start></ion-icon>-->
+      <!--</button>-->
+      <!--<button ion-item (click)="userSet()">-->
+        <!--<ion-label>设置</ion-label>-->
+        <!--<ion-icon name="settings" item-start></ion-icon>-->
+      <!--</button>-->
       <ion-item>
+        <img src="./assets/imgs/13.png" item-start class="icon_size"/>
         <ion-toggle (ionChange)="inPrivate()"></ion-toggle>
         <ion-label>隐私模式</ion-label>
-        <ion-icon name="lock" item-start></ion-icon>
+      </ion-item>
+      <ion-item (click)="groupListShow()">
+        <img src="./assets/imgs/12.png" item-start class="icon_size"/>
+        <ion-label>参与人</ion-label>
+      </ion-item>
+      <ion-item>
+        <img src="./assets/imgs/11.png" item-start class="icon_size "/>
+        <ion-label>计划</ion-label>
       </ion-item>
 
-      <button ion-item (click)="groupListShow()">
-        <ion-icon name="people" item-start></ion-icon>
-        <ion-label>参与人</ion-label>
-      </button>
-
-      <button ion-item (click)="showHistory()">
-        <ion-label>历史纪录</ion-label>
-        <ion-icon name="clock" item-start></ion-icon>
-      </button>
-
-      <button ion-item (click)="userSet()">
-        <ion-label>设置</ion-label>
-        <ion-icon name="settings" item-start></ion-icon>
-      </button>
     </ion-list>
   </ion-content>
+  <ion-footer>
+    <ion-item  (click)="userSet()">设置</ion-item>
+  </ion-footer>
 </ion-menu>
-<ion-nav #homemenu [root]="menuPage"></ion-nav>
+<ion-nav #hz [root]="hzPage"></ion-nav>

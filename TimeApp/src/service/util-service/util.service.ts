@@ -57,4 +57,21 @@ export class UtilService {
     let deviceId = this.device.uuid;
     return deviceId;
   }
+
+  public checkPhone(str){
+    if(str == undefined|| str == null || str == ''){
+      return 0;//输入为空
+    }
+    if(str.length != 11){
+      return 1;//长度小于11
+    }
+    let regex = /^((13[0-9])|(14[5,7,9])|(15([0-3]|[5-9]))|(166)|(17[0,1,3,5,6,7,8])|(18[0-9])|(19[8|9]))\d{8}$/;
+    let isPhone = regex.test(str);
+    if(isPhone){
+      return 3;//手机号正确
+    }else{
+      return 2;//手机号格式错误
+    }
+
+  }
 }

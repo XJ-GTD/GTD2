@@ -124,7 +124,7 @@ public class SmsServiceImpl implements ISmsService {
                 JSONObject jsonStr = JSONObject.parseObject(EntityUtils.toString(httpEntity, "UTF-8"));
                 String status = jsonStr.getString("status");
                 if ("success".equals(status)) {
-                    TimerUtil.putCache(to, new TimerDto(to, code, System.currentTimeMillis() + 1000 * 60));
+                    TimerUtil.putCache(to, new TimerDto(to, code, System.currentTimeMillis() + 10 * 1000 * 60));
                 } else {
                     throw new ServiceException();
                 }

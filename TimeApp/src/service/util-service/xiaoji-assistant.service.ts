@@ -105,9 +105,9 @@ export class XiaojiAssistantService {
    */
   private connetXunfei(audioData, success) {
     console.log("调用成功:" + this.fileContent);
-    console.log("调用URL:" + AppConfig.XUNFEI_URL_AUDIO);
+    console.log("调用URL:" + AppConfig.XF_AUDIO_URL);
     //调用讯飞语音服务
-    this.http.post(AppConfig.XUNFEI_URL_AUDIO, audioData,AppConfig.HEADER_OPTIONS_JSON)
+    this.http.post(AppConfig.XF_AUDIO_URL, audioData,AppConfig.HEADER_OPTIONS_JSON)
       .subscribe(data => {
         console.log("data" + data);
         //接收Object JSON数据
