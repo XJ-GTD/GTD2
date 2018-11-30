@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from "@ionic/storage";
@@ -14,9 +13,7 @@ import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notifica
 import { ParamsService } from "../service/util-service/params.service";
 import { XiaojiAssistantService } from "../service/util-service/xiaoji-assistant.service";
 import { XiaojiFeedbackService } from "../service/util-service/xiaoji-feedback.service";
-import { AndroidFullScreen } from "@ionic-native/android-full-screen";
 import { SQLite } from '@ionic-native/sqlite';
-import { SqliteService } from "../service/sqlite.service";
 import { UtilService } from "../service/util-service/util.service";
 import {Calendar} from "@ionic-native/calendar";
 import { CalendarService } from "../service/calendar.service";
@@ -70,7 +67,6 @@ import {SystemSqliteService} from "../service/sqlite-service/system-sqlite.servi
     LocalNotifications,
     PhonegapLocalNotification,
     XiaojiFeedbackService,
-    AndroidFullScreen,
     SQLite,
     UtilService,
     Calendar,

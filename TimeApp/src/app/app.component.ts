@@ -11,7 +11,6 @@ import { XiaojiAssistantService } from "../service/util-service/xiaoji-assistant
 import { XiaojiAlarmclockService } from "../service/util-service/xiaoji-alarmclock.service";
 import { BackButtonService } from "../service/util-service/backbutton.service";
 import { XiaojiFeedbackService } from "../service/util-service/xiaoji-feedback.service";
-import { AndroidFullScreen } from "@ionic-native/android-full-screen";
 import { UtilService } from "../service/util-service/util.service";
 import {BaseSqliteService} from "../service/sqlite-service/base-sqlite.service";
 import {PageConfig} from "./page.config";
@@ -37,7 +36,6 @@ export class MyApp {
     private paramsService: ParamsService,
     public backButtonService: BackButtonService,
     public feedbackService: XiaojiFeedbackService,
-    private androidFullScreen: AndroidFullScreen,
     private events: Events,
     private nativeProvider:BaseSqliteService
   ) {
@@ -51,10 +49,6 @@ export class MyApp {
       splashScreen.hide();*/
       this.init();
     });
-
-    this.androidFullScreen.immersiveMode()
-      .then(() => console.log('Immersive mode supported'))
-      .catch(err => console.log(err));
   }
   init(){
     //确保异步执行完后才隐藏启动动画
