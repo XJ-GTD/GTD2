@@ -7,12 +7,10 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>新建任务</ion-title>
+    <ion-title>创建日程</ion-title>
     <ion-buttons end padding-right>
-      <button (click)="newProject()">
-        <ion-label>
+      <button (click)="newProject()" ion-only ion-button>
           发布
-        </ion-label>
       </button>
     </ion-buttons>
 
@@ -21,51 +19,104 @@
 </ion-header>
 
 
-<ion-content padding style="background-color: rgb(245,245,245)">
-  <ion-list>
+<ion-content padding>
 
-    <ion-item>
-      <ion-label floating>参与人</ion-label>
-      <ion-select [(ngModel)]="schedule.groupIds" multiple="true">
-        <div *ngFor="let gp of group">
-          <ion-option value="{{gp.groupId}}">{{gp.groupName}}</ion-option>
-        </div>
-      </ion-select>
-    </ion-item>
+  <ion-textarea placeholder="要发的内容..."></ion-textarea>
 
-    <ion-item>
-      <ion-label floating>日程内容</ion-label>
-      <ion-input type="text" [(ngModel)]="schedule.scheduleName"></ion-input>
-    </ion-item>
+  <div ion-item no-padding>
+    <div float-left margin-left>
+      <ion-thumbnail ion-button color="light" float-start class="button-border padding-0 " no-margin>
+        <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg" class="button-border">
+      </ion-thumbnail>
+      <div style="clear: both; font-size:10px" text-center>麻花</div>
+    </div>
+    <div float-left margin-left>
+      <ion-thumbnail ion-button color="light" class="div-add-border button-border" no-margin >
+        <ion-icon name="add"></ion-icon>
+      </ion-thumbnail>
+      <div style="clear: both; font-size:10px" text-center></div>
+    </div>
+  </div>
+
+  <ion-item>
+    <ion-label></ion-label>
+    <ion-select item-end >
+      <ion-option [selected]="true">日程</ion-option>
+      <ion-option [selected]="false">日常</ion-option>
+    </ion-select>
+  </ion-item>
+  <button ion-item>
+    <img src="./assets/imgs/1.png" item-start/>
+    <ion-label>时间</ion-label>
+    <!--<ion-label text-end>2018年11月20日</ion-label>-->
+    <ion-datetime displayFormat="YYYY-MM-DD HH:mm DDDD "></ion-datetime>
+  </button>
+  <button ion-item>
+    <img src="./assets/imgs/4.png" item-start/>
+    <ion-label>重复类型</ion-label>
+    <ion-label text-end>年</ion-label>
+  </button><button ion-item>
+    <img src="./assets/imgs/1.png" item-start/>
+    <ion-label>重复时间</ion-label>
+    <ion-label text-end>11月20日</ion-label>
+  </button>
+  <button ion-item>
+    <img src="./assets/imgs/b.png" item-start/>
+    <ion-label>备注</ion-label>
+    <ion-input text-end type="text">2018年11月20日</ion-input>
+  </button>
+
+    <!--<button ion-icon>-->
+    <!--<div style="background-color: #f1f1f1;width: 150px" padding>-->
+      <!--<img src="./assets/imgs/i.png"/>添加计划-->
+    <!--</div>-->
+    <!--</button>-->
 
 
-    <ion-item>
-      <ion-label floating>标签</ion-label>
-      <ion-select (focus)="findLabel()" [(ngModel)]="schedule.labelIds" multiple="true" ion-text="标签">
-        <div *ngFor="let lb of label">
-          <ion-option value="{{lb.labelId}}">{{lb.labelName}}</ion-option>
-        </div>
-      </ion-select>
-    </ion-item>
+  <!--<ion-list>-->
 
-  </ion-list>
+    <!--<ion-item>-->
+      <!--<ion-label floating>参与人</ion-label>-->
+      <!--&lt;!&ndash;<ion-select [(ngModel)]="" multiple="true">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div>&ndash;&gt;-->
+          <!--&lt;!&ndash;<ion-option>张三</ion-option>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</ion-select>&ndash;&gt;-->
+    <!--</ion-item>-->
 
-  <ion-list>
-    <ion-item>
-      <ion-label>全天</ion-label>
-      <ion-toggle checked="false"></ion-toggle>
-    </ion-item>
+    <!--<ion-item>-->
+      <!--<ion-label floating>日程内容</ion-label>-->
+      <!--&lt;!&ndash;<ion-input type="text" ></ion-input>&ndash;&gt;-->
+    <!--</ion-item>-->
 
-    <ion-item>
-      <ion-label floating>开始时间</ion-label>
-      <ion-datetime displayFormat="YYYY-MM-DD HH:mm DDDD " [(ngModel)]="schedule.scheduleStartTime" ></ion-datetime>
 
-    </ion-item>
+    <!--<ion-item>-->
+      <!--<ion-label floating>标签</ion-label>-->
+      <!--&lt;!&ndash;<ion-select (focus)="findLabel()" multiple="true" ion-text="标签">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div >&ndash;&gt;-->
+          <!--&lt;!&ndash;<ion-option >}</ion-option>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</ion-select>&ndash;&gt;-->
+    <!--</ion-item>-->
 
-    <ion-item>
-      <ion-label floating>结束时间</ion-label>
-      <ion-datetime displayFormat="HH:mm YYYY-MM-DD DDDD" [(ngModel)]="schedule.scheduleDeadline"></ion-datetime>
-    </ion-item>
-  </ion-list>
+  <!--</ion-list>-->
+
+  <!--<ion-list>-->
+    <!--<ion-item>-->
+      <!--<ion-label>全天</ion-label>-->
+      <!--<ion-toggle checked="false"></ion-toggle>-->
+    <!--</ion-item>-->
+
+    <!--<ion-item>-->
+      <!--<ion-label floating>开始时间</ion-label>-->
+      <!--<ion-datetime displayFormat="YYYY-MM-DD HH:mm DDDD "></ion-datetime>-->
+
+    <!--</ion-item>-->
+
+    <!--<ion-item>-->
+      <!--<ion-label floating>结束时间</ion-label>-->
+      <!--<ion-datetime displayFormat="HH:mm YYYY-MM-DD DDDD"></ion-datetime>-->
+    <!--</ion-item>-->
+  <!--</ion-list>-->
 
 </ion-content>

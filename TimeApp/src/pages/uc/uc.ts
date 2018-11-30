@@ -20,14 +20,15 @@ import {AppConfig} from "../../app/app.config";
 })
 export class UcPage {
 
+  state:any = false;
   data: any;
-  user: UserModel;
+  // user: UserModel;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private http: HttpClient,
               private loadingCtrl: LoadingController,
               private paramsService: ParamsService) {
-    this.init();
+    // this.init();
   }
 
   ionViewDidLoad() {
@@ -36,9 +37,9 @@ export class UcPage {
 
   init() {
 
-    this.user = new UserModel();
-    this.user = this.paramsService.user;
-    this.user.birthday = this.user.birthday.replace(" 00:00", "");
+    // this.user = new UserModel();
+    // this.user = this.paramsService.user;
+    // this.user.birthday = this.user.birthday.replace(" 00:00", "");
   }
 
   updateUserInfo() {
@@ -66,7 +67,16 @@ export class UcPage {
   }
 
   relation() {
-    console.log("跳转relationPage");
-    this.navCtrl.push("UserRelationPage");
+    console.log("跳转PaPage");
+    this.navCtrl.push("PaPage");
   }
+
+  edit(){
+    this.state = true;
+  }
+
+  confirm(){
+    this.state = false;
+  }
+
 }

@@ -1,11 +1,38 @@
 page-sb {
+  .padding-0{
+    padding: 0px !important;
 
-}
-ion-list ion-item ion-label
-{
-  color:#b3b3b3;
-  font-weight: 200;
-}
-.datetime-text{
-  // display: none;
+  }
+
+  .scroll-content {
+    //padding-left: 0 !important;
+    //padding-right: 0 !important;
+    //padding-bottom: 0 !important;
+  }
+
+  .item-inner{
+    border-bottom: 0px !important;
+  }
+
+  .item-block.item-ios{
+    border-bottom: 0.55px solid #c8c7cc ;
+  }
+
+
+  .div-add-border{
+    border: 0.5px dotted #ccc;
+  }
+  .button-border{
+    border-radius: 50%;
+  }
+
+  textarea.text-input{
+    height:120px;
+  }
+
+  ion-textarea{
+    border:0.5px solid #f2f2f2;
+    border-radius: 5px;
+  }
+
 }

@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {RelmemService} from "../../service/relmem.service";
+import {UEntity} from "../../entity/u.entity";
+
 
 /**
  * Generated class for the PcPage page.
@@ -15,11 +18,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class PcPage {
 
+  uo:UEntity;
+
   name:any;
   tel:any;
   code:any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private relme:RelmemService) {
   }
 
   ionViewDidLoad() {
@@ -27,6 +32,14 @@ export class PcPage {
     this.name = this.navParams.get("name");
     this.tel=this.navParams.get("tel");
     this.code = this.navParams.get("code");
+    this.uo = this.navParams.get("uo");
   }
 
+  submit() {
+    this.relme.aru('', '', this.tel, '0').then(data => {
+
+    }).catch(reason => {
+
+    })
+  }
 }

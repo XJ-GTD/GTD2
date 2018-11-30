@@ -3,6 +3,7 @@ import { AlertController, IonicPage, LoadingController, NavController, NavParams
 import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
 import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
+import {UEntity} from "../../entity/u.entity";
 
 /**
  * Generated class for the PfPage page.
@@ -28,6 +29,8 @@ export class PfPage {
 
   checkMoblieNull: boolean;
   checkMoblie: boolean;
+
+  uo:UEntity;
 
   constructor(
     public navCtrl: NavController,
@@ -91,10 +94,11 @@ export class PfPage {
     let data:Object ={
       name : this.name,
       tel: this.tel,
-      code: this.existCode
+      code: this.existCode,
+      uo : this.uo
     }
     if(this.existCode == 1){
-      this.navCtrl.push("PbPage");
+      this.navCtrl.push("PbPage",{uo:this.uo});
     }else{
       this.navCtrl.push("PcPage",data);
     }
