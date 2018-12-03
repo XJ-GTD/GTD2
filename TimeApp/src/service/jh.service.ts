@@ -36,7 +36,7 @@ export class JhService {
       this.jhSqlite.ajh(jh).then(data=>{
         resolve(bs)
       }).then(e=>{
-        bs.code=AppConfig.ERR_CODE
+        bs.code=AppConfig.ERR_CODE;
         bs.message=e.message;
         reject(bs);
       })
@@ -60,7 +60,7 @@ export class JhService {
       this.jhSqlite.ujh(jh).then(data=>{
         resolve(bs)
       }).then(e=>{
-        bs.code=AppConfig.ERR_CODE
+        bs.code=AppConfig.ERR_CODE;
         bs.message=e.message;
         reject(bs);
       })
