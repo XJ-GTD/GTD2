@@ -35,7 +35,7 @@ export class JhService {
       let bs=new BsModel();
       this.jhSqlite.ajh(jh).then(data=>{
         resolve(bs)
-      }).then(e=>{
+      }).catch(e=>{
         bs.code=AppConfig.ERR_CODE;
         bs.message=e.message;
         reject(bs);
@@ -59,7 +59,7 @@ export class JhService {
       let bs=new BsModel();
       this.jhSqlite.ujh(jh).then(data=>{
         resolve(bs)
-      }).then(e=>{
+      }).catch(e=>{
         bs.code=AppConfig.ERR_CODE;
         bs.message=e.message;
         reject(bs);
@@ -83,7 +83,7 @@ export class JhService {
         }
         jho.jhs=jhs;
         resolve(jho)
-      }).then(e=>{
+      }).catch(e=>{
         jho.code=AppConfig.ERR_CODE
         jho.message=e.message;
         reject(jho);
@@ -103,7 +103,7 @@ export class JhService {
       let bs=new BsModel();
       this.jhSqlite.djh(jh).then(data=>{
         resolve(bs)
-      }).then(e=>{
+      }).catch(e=>{
         bs.code=AppConfig.ERR_CODE
         bs.message=e.message;
         reject(bs);
@@ -124,7 +124,7 @@ export class JhService {
           jh=data.rows.item(0)
         }
         resolve(jh)
-      }).then(e=>{
+      }).catch(e=>{
         jh.code=AppConfig.ERR_CODE
         jh.message=e.message;
         reject(jh);
