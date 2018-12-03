@@ -56,17 +56,17 @@ export class DwMqService {
           let rel = '';
           let rF = '';
           let qrL=[];
-          this.relmem.aru(ran,rN,rC,rel,rF,qrL)
+          this.relmem.aru(ran,rN,rC,rel,rF,qrL);
           break;
         case SkillConfig.XF_PED: //讯飞：参与人删除
           let id='';
           this.relmem.delRu(id);
           break;
         case SkillConfig.XF_PEF: //讯飞：参与人查询
-          this.relmem.getrus(id,ran,rN,rC,rel)
+          this.relmem.getrus(id,ran,rN,rC,rel);
           break;
         case SkillConfig.XF_PEA: //讯飞：参与人授权
-          this.relmem.upr(id,ran,rN,rC,rel,rF,qrL)
+          this.relmem.upr(id,ran,rN,rC,rel,rF,qrL);
           break;
         case SkillConfig.XF_SYSH: //讯飞：私密模式
           break;

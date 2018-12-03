@@ -166,7 +166,7 @@ public class IntentServiceImpl implements IIntentService {
                     outDto.setSk(skillType);
                     outDto.setRes(dealWithSlots(nod));
                 } else {
-                    outDto.setAt(nod.getText());
+                    outDto.setAt(nod.getAnswer());
                     outDto.setAu(nod.getAnswerUrl());
                     outDto.setAi(nod.getAnswerImg());
                 }
@@ -195,7 +195,9 @@ public class IntentServiceImpl implements IIntentService {
                             data.setSn(slot.getNormValue());
                             break;
                         case "player":
-                            data.setPln(slot.getNormValue());
+                            String playName = Pinyin4j.toPinYin(slot.getNormValue());
+                            data.setPln(playName);
+                            data.setCommon_A(slot.getNormValue());
                             break;
                         case "plan":
                             data.setPn(slot.getNormValue());
