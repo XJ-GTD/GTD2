@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { WsModel } from "../../model/ws.model";
 import { SkillConfig } from "../../app/skill.config";
+import {DwEmitService} from "./dw-emit.service";
 
 /**
  * webSocket公用处理方法
@@ -9,6 +10,9 @@ import { SkillConfig } from "../../app/skill.config";
  */
 @Injectable()
 export class DwMqService {
+
+  constructor(private dwEmit: DwEmitService) {
+  }
 
   public dealWithMq(data: WsModel) {
 
@@ -24,6 +28,9 @@ export class DwMqService {
         case SkillConfig.XF_SCD:
           break;
         case SkillConfig.XF_SCF:
+          this.dwEmit.setHaData(data);
+          //this.dwEmit.setHbData(data);
+          this.dwEmit.setAdPage(data);
           break;
         case SkillConfig.XF_PEC:
           break;

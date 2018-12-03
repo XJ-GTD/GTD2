@@ -59,7 +59,7 @@ export class Ha01Page {
         if(data.code==0){
           this.u=data.u;
         }else{
-          alert(data.message)
+          // alert(data.message)
         }
       })
   }

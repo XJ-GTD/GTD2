@@ -17,7 +17,7 @@ import { DwEmitService } from "../service/util-service/dw-emit.service";
 
 @Component({
   templateUrl: 'app.html',
-  providers: [ ParamsService, WebsocketService, DwMqService, DwEmitService, BackButtonService ]
+  providers: [ ParamsService, WebsocketService, DwMqService, BackButtonService ]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
