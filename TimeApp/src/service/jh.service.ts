@@ -96,7 +96,7 @@ export class JhService {
    * @param {String} ji
    * @returns {Promise<any>}
    */
-  djh(ji:String):Promise<BsModel>{
+  djh(ji:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let jh = new JhEntity();
       jh.ji = ji;
