@@ -175,4 +175,22 @@ export class WorkService {
     });
   }
 
+  /**
+   * 删除日程
+   * @param {string} sI 主键
+   * @returns {Promise<BsModel>}
+   */
+  delrc(sI:string):Promise<BsModel> {
+    return new Promise((resolve, reject) => {
+      let rc = new RcEntity()
+      rc.sI=sI;
+      let bs = new BsModel();
+      this.baseSqlite.delete(rc).then(data=>{
+        resolve(bs)
+      }).catch(e=>{
+        bs.code=AppConfig.ERR_CODE;
+        bs.message=e.message;
+      })
+    })
+  }
 }

@@ -36,7 +36,7 @@ export class PcPage {
   }
 
   submit() {
-    this.relme.aru('', '', this.tel, '0').then(data => {
+    this.relme.aru('', '', this.tel, '0','',null).then(data => {
 
     }).catch(reason => {
 

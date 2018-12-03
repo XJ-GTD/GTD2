@@ -24,13 +24,16 @@ export class RelmemService {
 
   /**
    * 添加联系人
+   * @param {string} id 更新人UUID
    * @param {string} ran 别名
    * @param {string} rN 名称
    * @param {string} rc 联系电话
    * @param {string} rel 0联系人,1群组
+   * @param {string} rF 授权标识0未授权1授权
+   * @param {Array} qrL Array<RuModel>  群组人员list
    * @returns {Promise<BsModel>}
    */
-  aru(ran:string,rN:string,rc:string,rel:string):Promise<BsModel>{
+  aru(ran:string,rN:string,rc:string,rel:string,rF:string,qrL:Array<any>):Promise<BsModel>{
     return new Promise((resolve, reject)=>{
       let ru=new RuEntity();
       ru.id=this.util.getUuid();
@@ -38,8 +41,51 @@ export class RelmemService {
       ru.rN=rN;
       ru.rC=rc;
       ru.rel=rel;
+      ru.rF = rF;
       let base=new BsModel();
       this.relmemSqlite.aru(ru).then(data=>{
+        //如果是群
+        if(rel=='1' && qrL != null && qrL.length>0){
+          for(let i=0;i<qrL.length;i++){
+            this.addRgu(ru.id,qrL[i].id)
+          }
+        }
+        resolve(base);
+      }).catch(e=>{
+        base.code=AppConfig.ERR_CODE;
+        base.message=e.message;
+        reject(base);
+      })
+    })
+  }
+
+  /**
+   * 更新联系人
+   * @param {string} ran 别名
+   * @param {string} rN 名称
+   * @param {string} rc 联系电话
+   * @param {string} rel 0联系人,1群组
+   * @param {string} rF 授权标识0未授权1授权
+   * @param {Array} qrL Array<RuModel>  群组人员list
+   * @returns {Promise<BsModel>}
+   */
+  upr(id:string,ran:string,rN:string,rc:string,rel:string,rF:string,qrL:Array<any>):Promise<BsModel>{
+    return new Promise((resolve, reject)=>{
+      let ru=new RuEntity();
+      ru.id=id;
+      ru.ran=ran;
+      ru.rN=rN;
+      ru.rC=rc;
+      ru.rel=rel;
+      ru.rF = rF;
+      let base=new BsModel();
+      this.relmemSqlite.uru(ru).then(data=>{
+        //如果是群
+        if(rel=='1' && qrL != null && qrL.length>0){
+          for(let i=0;i<qrL.length;i++){
+            this.addRgu(ru.id,qrL[i].id)
+          }
+        }
         resolve(base);
       }).catch(e=>{
         base.code=AppConfig.ERR_CODE;
@@ -138,6 +184,26 @@ export class RelmemService {
           base.message=e.message;
           reject(base);
         })
+    })
+  }
+
+  /**
+   * 删除联系人
+   * @param {string} id 群成员ID
+   * @returns {Promise<BsModel>}
+   */
+  delRu(id:string):Promise<BsModel>{
+    return new Promise((resolve, reject)=>{
+      let base=new BsModel();
+      let ru = new RuEntity();
+      ru.id = id;
+      this.relmemSqlite.dru(ru).then(data=>{
+        resolve(base);
+      }).catch(e=>{
+        base.code=1;
+        base.message=e.message;
+        reject(base);
+      })
     })
   }
 
