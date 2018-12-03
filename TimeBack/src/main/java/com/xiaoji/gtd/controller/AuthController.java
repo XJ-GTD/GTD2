@@ -6,6 +6,7 @@ import com.xiaoji.gtd.dto.Out;
 import com.xiaoji.gtd.dto.code.ResultCode;
 import com.xiaoji.gtd.service.IAuthService;
 import com.xiaoji.util.BaseUtil;
+import com.xiaoji.util.CommonMethods;
 import com.xiaoji.util.TimerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,6 +52,17 @@ public class AuthController {
             return outDto;
         }
         if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
+            outDto.setCode(ResultCode.NULL_UUID);
+            logger.debug("[验证失败]：用户ID不可为空");
+            return outDto;
+        }
+        //入参正确性检测
+        if (CommonMethods.checkMySqlReservedWords(inDto.getUserId())) {
+            outDto.setCode(ResultCode.NULL_UUID);
+            logger.debug("[验证失败]：用户ID不可为空");
+            return outDto;
+        }
+        if (CommonMethods.checkMySqlReservedWords(inDto.getDeviceId())) {
             outDto.setCode(ResultCode.NULL_UUID);
             logger.debug("[验证失败]：用户ID不可为空");
             return outDto;

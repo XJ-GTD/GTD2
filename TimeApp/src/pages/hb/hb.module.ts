@@ -19,7 +19,6 @@ import { DwEmitService } from "../../service/util-service/dw-emit.service";
     ParamsService,
     XiaojiAssistantService,
     XiaojiFeedbackService,
-    DwEmitService
   ],
   entryComponents: [
     HbPage,

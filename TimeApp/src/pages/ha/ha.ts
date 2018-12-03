@@ -341,9 +341,9 @@ export class HaPage {
     this.ion2calendar.setViewDate(moment().format("YYYY-MM-DD"));
   }
   openVoice() {
-    // let tab1RootModal  = this.modalCtr.create("HbPage");
-    // tab1RootModal.present();
-    this.navCtr.push("HbPage");
+    let tab1RootModal  = this.modalCtr.create("HbPage");
+    tab1RootModal.present();
+    // this.navCtr.push("HbPage");
   }
 
   /**
