@@ -43,7 +43,7 @@ export class RelmemService {
       ru.rel=rel;
       ru.rF = rF;
       let base=new BsModel();
-      this.relmemSqlite.uru(ru).then(data=>{
+      this.relmemSqlite.aru(ru).then(data=>{
         //如果是群
         if(rel=='1' && qrL != null && qrL.length>0){
           for(let i=0;i<qrL.length;i++){
@@ -79,7 +79,7 @@ export class RelmemService {
       ru.rel=rel;
       ru.rF = rF;
       let base=new BsModel();
-      this.relmemSqlite.aru(ru).then(data=>{
+      this.relmemSqlite.uru(ru).then(data=>{
         //如果是群
         if(rel=='1' && qrL != null && qrL.length>0){
           for(let i=0;i<qrL.length;i++){
