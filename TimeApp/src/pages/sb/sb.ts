@@ -30,7 +30,7 @@ export class SbPage {
 
   private data: any;
   groupIds: Array<number>;
-  group: Array<GroupModel>;
+  group: any;//Array<GroupModel>;
   schedule: any;
   scheduleOut: ScheduleOutModel;
   groupFind: FindOutModel;
@@ -45,7 +45,7 @@ export class SbPage {
               private alertCtrl: AlertController,
               private paramsService: ParamsService) {
 
-    this.init();
+    // this.init();
 
   }
 
@@ -60,6 +60,7 @@ export class SbPage {
     }
     this.addContact();
     this.findLabel();
+    this.group = [{groupId:1,groupName:"李四"},{groupId:2,groupName:"马武"}];
   }
 
   //查询系统标签

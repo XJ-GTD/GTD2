@@ -5,42 +5,98 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>user-detail</ion-title>
+    <ion-title></ion-title>
+    <ion-buttons right>
+      <button ion-button ion-only *ngIf="state == false" (click)="edit()">
+        编辑
+      </button>
+      <button ion-button ion-only *ngIf="state == true" (click)="confirm()">
+        确定
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding class="page-backgroud-color">
 
-  <ion-list>
+  <!--<ion-list>-->
 
     <ion-item>
       <ion-label>昵称</ion-label>
-      <ion-input type="text" [(ngModel)]="user.userName" ></ion-input>
+      <!--<ion-label *ngIf="this.state == false">张三</ion-label>-->
+      <ion-input type="text" *ngIf="this.state == true" value="张三"></ion-input>
+      <ion-input type="text" *ngIf="this.state == false" disabled="true" value="张三"></ion-input>
+      <ion-avatar item-end>
+        <img src="./assets/imgs/headImg.jpg" style="width: 80px;height: 80px">
+      </ion-avatar>
+
     </ion-item>
 
-    <ion-item>
+    <button ion-item margin-top *ngIf="this.state == false">
+      <ion-label item-start>性别</ion-label>
+      <ion-label item-end text-end >女</ion-label>
+    </button>
+    <ion-item margin-top *ngIf="this.state == true">
       <ion-label>性别</ion-label>
-      <ion-select [(ngModel)]="user.userSex">
+      <ion-select  item-end>
         <ion-option value="0">男</ion-option>
         <ion-option value="1">女</ion-option>
       </ion-select>
     </ion-item>
-
-    <ion-item>
+    <button ion-item >
       <ion-label>生日</ion-label>
-      <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="user.birthday" ></ion-datetime>
-    </ion-item>
+      <ion-label item-end text-end *ngIf="this.state == false">1995/08/20</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" *ngIf="this.state == true" item-end text-end float-end></ion-datetime>
+    </button>
 
-    <ion-item>
+    <button ion-item margin-top *ngIf="this.state == false">
       <ion-label>手机号</ion-label>
-      <ion-input type="number" [(ngModel)]="user.userContact" ></ion-input>
-    </ion-item>
+      <ion-label item-end text-end >135****1122</ion-label>
+    </button>
 
-    <button ion-item (click)="relation()">关系人</button>
+    <button ion-item margin-top  *ngIf="this.state == true">
+      <ion-label>手机号</ion-label>
+      <ion-input type="tel" item-end text-end></ion-input>
+    </button>
 
-  </ion-list>
+    <button ion-item (click)="relation()" margin-top>关系人</button>
+
+
+
+    <!--<ion-item>-->
+      <!--<ion-label>生日</ion-label>-->
+      <!--<ion-datetime displayFormat="YYYY-MM-DD"  ></ion-datetime>-->
+    <!--</ion-item>-->
+
+    <!--<ion-item>-->
+      <!--<ion-label>手机号</ion-label>-->
+      <!--<ion-input type="number"  ></ion-input>-->
+    <!--</ion-item>-->
+
+
+  <!--</ion-list>-->
+
+
+  <!--<ion-item margin-top>-->
+    <!--<ion-label item-start>性别</ion-label>-->
+    <!--<ion-label item-end text-end *ngIf="this.state == false">女</ion-label>-->
+    <!--<ion-select *ngIf="this.state == true" item-end>-->
+      <!--<ion-option value="0">男</ion-option>-->
+      <!--<ion-option value="1">女</ion-option>-->
+    <!--</ion-select>-->
+  <!--</ion-item>-->
+  <!--<ion-item>-->
+    <!--<ion-label item-start>生日</ion-label>-->
+    <!--<ion-label item-end text-end *ngIf="this.state == false">1995/08/20</ion-label>-->
+    <!--<ion-datetime displayFormat="YYYY-MM-DD" *ngIf="this.state == true" item-end text-end float-right></ion-datetime>-->
+  <!--</ion-item>-->
+  <!--<ion-item margin-top>-->
+    <!--<ion-label item-start>手机号</ion-label>-->
+    <!--<ion-label item-end text-end *ngIf="this.state == false">135****1122</ion-label>-->
+    <!--<ion-input type="tel" *ngIf="this.state == true" item-end text-end></ion-input>-->
+  <!--</ion-item>-->
 </ion-content>

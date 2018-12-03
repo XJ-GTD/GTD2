@@ -44,17 +44,29 @@ export class UbPage {
   }
 
   signIn() {
-       this.lsmService.login(this.accountName, this.accountPassword).then(data=>{
-         let alert = this.alertCtrl.create({
-           title:'提示信息',
-           subTitle: data.message,
+       this.lsmService.login(this.accountName, this.accountPassword).then(data=> {
+         console.log(data)
+         if (data.code == 0) {
+           let alert = this.alertCtrl.create({
+             title: '提示信息',
+             subTitle: data.message,
+             buttons: [{
+               text: '确定', role: 'cancel', handler: () => {
+                 //跳转首页
+                 this.navCtrl.setRoot('HzPage');
+               }
+             }]
+           });
+           alert.present();
+         }else{
+            let alert = this.alertCtrl.create({
+              title:'提示信息',
+              subTitle: data.message,
+              buttons:["确定"]
+            });
+            alert.present();
+         }
 
-           buttons:[{text:'确定',role:'cancel',handler:()=>{
-               //跳转首页
-               this.navCtrl.setRoot('HaPage');
-             }}]
-         });
-         alert.present();
        }).catch(res=>{
          let alert = this.alertCtrl.create({
            title:'提示信息',
@@ -63,7 +75,7 @@ export class UbPage {
          });
          alert.present();
          console.log(res);
-         });
+       });
 
   }
 
@@ -71,7 +83,7 @@ export class UbPage {
     this.navCtrl.push('UaPage');
   }
 
-  forgetPassword() {
-    this.navCtrl.push('UserForgetPasswordPage');
+  toUd() {
+    this.navCtrl.push('UdPage');
   }
 }

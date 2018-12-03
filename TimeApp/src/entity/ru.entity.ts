@@ -5,21 +5,21 @@
 //授权联系人表实体
 export class RuEntity {
 
-  private _id: string=null;   //UUID
+  private _id: string=null; //UUID
   private _ran:string=null; //别名
-  private _rI: string=null;   //关联ID
-  private _rN: string=null;          //名称
-  private _rC: string=null;    // 联系方式
-  private _rF: string=null;     // 授权标识0未授权1授权
-  private _rel: string=null; // 联系类型
+  private _rI: string=null; //关联ID
+  private _rN: string=null; //名称
+  private _rC: string=null; // 联系方式
+  private _rF: string=null; // 授权标识0未授权1授权
+  private _rel: string='0'; // 联系类型0人;1群组
   /**
    * 创建表
    * @type {string}
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_B(id VARCHAR(100) PRIMARY KEY,' +
-                          'ran VARCHAR(100),rI VARCHAR(100),rN VARCHAR(10),' +
-                          'rC VARCHAR(2),rF VARCHAR(2),rel VARCHAR(20));';
+                          'ran VARCHAR(100),rI VARCHAR(100),rN VARCHAR(100),' +
+                          'rC VARCHAR(100),rF VARCHAR(2),rel VARCHAR(20));';
   private _drsq:string="DROP TABLE GTD_B";
 
   private _isq:string;
