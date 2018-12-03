@@ -7,9 +7,9 @@ export class RuModel {
 
   private _id: string=null;   //UUID
   private _ran:string=null; //别名
-  private _rI: string=null;   //关联ID
-  private _rN: string=null;          //名称
-  private _rC: string=null;    // 联系方式
+  private _rI: string=null;  //关联ID
+  private _rN: string=null;  //名称
+  private _rC: string=null;  // 联系方式
   private _rF: string=null;     // 授权标识0未授权1授权
   private _rel: string=null; // 联系类型
 

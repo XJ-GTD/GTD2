@@ -6,7 +6,7 @@
 export class JhEntity {
   private _ji: string=null;   //计划编号
   private _jn:string=null; //计划名
-  private _jg: string=null; //标签功能
+  private _jg: string=null; //计划描述
   /*
    * 创建表
    * @type {string}

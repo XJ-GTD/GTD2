@@ -11,7 +11,7 @@ export class RuEntity {
   private _rN: string=null;          //名称
   private _rC: string=null;    // 联系方式
   private _rF: string=null;     // 授权标识0未授权1授权
-  private _rel: string=null; // 联系类型
+  private _rel: string='0'; // 联系类型0人;1群组
   /**
    * 创建表
    * @type {string}
