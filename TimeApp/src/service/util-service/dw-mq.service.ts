@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { WsModel } from "../../model/ws.model";
 import { SkillConfig } from "../../app/skill.config";
+import {WorkService} from "../work.service";
+import {RelmemService} from "../relmem.service";
 
 /**
  * webSocket公用处理方法
@@ -10,40 +12,71 @@ import { SkillConfig } from "../../app/skill.config";
 @Injectable()
 export class DwMqService {
 
+  constructor(private work:WorkService,private relmem :RelmemService){
+
+  }
+
   public dealWithMq(data: WsModel) {
 
     if (data.vs == "1.0" && data.ss == 0) {
 
       switch (data.sk) {
+
         case SkillConfig.XF_NMT:
+
           break;
         case SkillConfig.XF_NMC:
           break;
-        case SkillConfig.XF_SCC:
+        case SkillConfig.XF_SCC: //讯飞：日程添加
+          let ct='';
+          let sd='';
+          let ed = '';
+          let lbI = '';
+          let jhi = '';
+          let ruL=[];
+          this.work.arc(ct,sd,ed,lbI,jhi,ruL);
           break;
-        case SkillConfig.XF_SCD:
+        case SkillConfig.XF_SCD: //讯飞：日程删除
+          let sI = "";
+          this.work.delrc(sI);
           break;
-        case SkillConfig.XF_SCF:
+        case SkillConfig.XF_SCF: //讯飞：日程查询
+          let jh = '';
+          let lbN='';
+          this.work.getwL(ct,sd,ed,lbI,lbN,jh);
           break;
-        case SkillConfig.XF_PEC:
+        case SkillConfig.XF_PEC: //讯飞：参与人添加
+          let ran='';
+          let rN='';
+          let rC = '';
+          let rel = '';
+          let rF = '';
+          let qrL=[];
+          this.relmem.aru(ran,rN,rC,rel,rF,qrL)
           break;
-        case SkillConfig.XF_PED:
+        case SkillConfig.XF_PED: //讯飞：参与人删除
+          let id='';
+          this.relmem.delRu(id);
           break;
-        case SkillConfig.XF_PEF:
+        case SkillConfig.XF_PEF: //讯飞：参与人查询
+          this.relmem.getrus(id,ran,rN,rC,rel)
           break;
-        case SkillConfig.XF_PEA:
+        case SkillConfig.XF_PEA: //讯飞：参与人授权
+          this.relmem.upr(id,ran,rN,rC,rel,rF,qrL)
           break;
-        case SkillConfig.XF_SYSH:
+        case SkillConfig.XF_SYSH: //讯飞：私密模式
           break;
         case SkillConfig.XF_OTS:
           break;
-        case SkillConfig.BC_SCC:
+        case SkillConfig.BC_SCC: //添加日程
+          this.work.arc(ct,sd,ed,lbI,jhi,ruL);
           break;
-        case SkillConfig.BC_SCD:
+        case SkillConfig.BC_SCD: //删除日程
+          this.work.delrc(sI);
           break;
-        case SkillConfig.BC_SCU:
+        case SkillConfig.BC_SCU: //更新日程
           break;
-        case SkillConfig.BC_PEC:
+        case SkillConfig.BC_PEC: //添加参与人
           break;
       }
     } else {

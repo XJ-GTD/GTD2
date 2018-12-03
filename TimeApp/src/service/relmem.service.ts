@@ -187,6 +187,26 @@ export class RelmemService {
     })
   }
 
+  /**
+   * 删除联系人
+   * @param {string} id 群成员ID
+   * @returns {Promise<BsModel>}
+   */
+  delRu(id:string):Promise<BsModel>{
+    return new Promise((resolve, reject)=>{
+      let base=new BsModel();
+      let ru = new RuEntity();
+      ru.id = id;
+      this.relmemSqlite.dru(ru).then(data=>{
+        resolve(base);
+      }).catch(e=>{
+        base.code=1;
+        base.message=e.message;
+        reject(base);
+      })
+    })
+  }
+
 
   /**
    * 修改
