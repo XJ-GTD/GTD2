@@ -63,7 +63,6 @@ export class HbPage {
               public xiaojiSpeech: XiaojiAssistantService,
               public xiaojiFeekback: XiaojiFeedbackService) {
 
-    this.dwEmit.getHbData(this);
     this.init();
   }
 
@@ -72,6 +71,7 @@ export class HbPage {
   }
 
   ionViewDidLoad() {
+
     console.log('ionViewDidLoad HbPage');
   }
 
