@@ -36,7 +36,8 @@ import { RemindSqliteService } from "../service/sqlite-service/remind-sqlite.ser
 import { SystemService } from "../service/system.service";
 import { SystemSqliteService } from "../service/sqlite-service/system-sqlite.service";
 import { XiaojiAlarmclockService } from "../service/util-service/xiaoji-alarmclock.service";
-import {JhService} from "../service/jh.service";
+import { JhService } from "../service/jh.service";
+import { DwEmitService } from "../service/util-service/dw-emit.service";
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import {JhService} from "../service/jh.service";
     SQLite,
     Calendar,
     CalendarService,
+    DwEmitService,
     SQLitePorter,
     BaseSqliteService,
     WorkSqliteService,

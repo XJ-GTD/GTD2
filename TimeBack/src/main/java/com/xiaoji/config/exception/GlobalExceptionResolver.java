@@ -25,7 +25,7 @@ public class GlobalExceptionResolver {
     public void serviceExceptionHandler(HttpServletResponse response, ServiceException e) {
         e.printStackTrace();
         Out out= new Out();
-        out.setCode(ResultCode.FAIL);
+        out.setCode(ResultCode.FAIL_BUSIC);
         out.setMessage(e.getMessage());
         if (e.getMessage() == null || "".equals(e.getMessage()))  out.setMessage("请求异常，请检查后重新请求");
         LOGGER.info("--------ServiceException--------");
@@ -41,7 +41,7 @@ public class GlobalExceptionResolver {
         e.printStackTrace();
         if (e instanceof JSONException || e instanceof HttpMessageNotReadableException){
             Out out= new Out();
-            out.setCode(ResultCode.FAIL);
+            out.setCode(ResultCode.FAIL_BUSIC);
             out.setMessage("请求参数错误，请检查后重新输入");
             LOGGER.info("--------JSONException--------");
             responseResult(response, out);

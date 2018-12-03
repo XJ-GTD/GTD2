@@ -1,5 +1,7 @@
-import {EventEmitter, Injectable} from "@angular/core";
-import {Ha01Page} from "../../pages/ha01/ha01";
+import { EventEmitter, Injectable } from "@angular/core";
+import { HbPage } from "../../pages/hb/hb";
+import {HaPage} from "../../pages/ha/ha";
+import {AdPage} from "../../pages/ad/ad";
 
 /**
  * 数据传递广播处理类
@@ -7,16 +9,45 @@ import {Ha01Page} from "../../pages/ha01/ha01";
 @Injectable()
 export class DwEmitService {
 
-  private _speechData: EventEmitter<any> = new EventEmitter();
+  //首页数据传递
+  private ha: EventEmitter<any> = new EventEmitter();
 
-  public getSpeechData(page) {
-    this._speechData.subscribe($event => {
+  public setHaData($event) {
+    this.ha.emit($event);
+  }
 
+  public getHaData(page: HaPage) {
+    this.ha.subscribe($event => {
+      //调取页面方法,在这里调用页面逻辑
+      page.test($event);
     })
   }
 
-  public setSpeechData($event) {
-    this._speechData.emit($event);
+  //语音界面数据传递
+  private hb: EventEmitter<any> = new EventEmitter();
+
+  public setHbData($event) {
+    this.hb.emit($event);
+  }
+
+  public getHbData(page: HbPage) {
+    this.hb.subscribe($event => {
+      // page.messageHanding($event);
+      page.test($event);
+    })
+  }
+
+  //test
+  private ad: EventEmitter<any> = new EventEmitter();
+
+  public setAdPage($event) {
+    this.ad.emit($event);
+  }
+
+  public getAdPage(page: AdPage) {
+    this.ad.subscribe($event => {
+      page.test($event);
+    })
   }
 
 }

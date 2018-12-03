@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { WsModel } from "../../model/ws.model";
 import { SkillConfig } from "../../app/skill.config";
-import {WorkService} from "../work.service";
-import {RelmemService} from "../relmem.service";
+import { DwEmitService } from "./dw-emit.service";
+import { WorkService } from "../work.service";
+import { RelmemService } from "../relmem.service";
 
 /**
  * webSocket公用处理方法
@@ -12,7 +13,9 @@ import {RelmemService} from "../relmem.service";
 @Injectable()
 export class DwMqService {
 
-  constructor(private work:WorkService,private relmem :RelmemService){
+  constructor(private work:WorkService,
+              private relmem :RelmemService,
+              private dwEmit: DwEmitService){
 
   }
 
@@ -21,9 +24,7 @@ export class DwMqService {
     if (data.vs == "1.0" && data.ss == 0) {
 
       switch (data.sk) {
-
         case SkillConfig.XF_NMT:
-
           break;
         case SkillConfig.XF_NMC:
           break;
@@ -40,10 +41,13 @@ export class DwMqService {
           let sI = "";
           this.work.delrc(sI);
           break;
-        case SkillConfig.XF_SCF: //讯飞：日程查询
-          let jh = '';
-          let lbN='';
-          this.work.getwL(ct,sd,ed,lbI,lbN,jh);
+        case SkillConfig.XF_SCF:
+          // let jh = '';
+          // let lbN='';
+          // this.work.getwL(ct,sd,ed,lbI,lbN,jh);
+          this.dwEmit.setHaData(data);
+          //this.dwEmit.setHbData(data);
+          this.dwEmit.setAdPage(data);
           break;
         case SkillConfig.XF_PEC: //讯飞：参与人添加
           let ran='';

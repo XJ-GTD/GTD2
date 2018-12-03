@@ -9,7 +9,7 @@ import {WsResModel} from "./ws.res.model";
 export class WsModel {
   private _vs: string;      //version
   private _at: string;      //answerText;
-  private _au: string;      //answerText;
+  private _au: string;      //answerUrl;
   private _ai: string;      //answerImg;
   private _ss: number;      //status;
   private _sk: string;      //skillType;

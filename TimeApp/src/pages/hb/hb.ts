@@ -10,7 +10,9 @@ import { File } from "@ionic-native/file";
 import { Base64 } from "@ionic-native/base64";
 import  {XiaojiFeedbackService} from "../../service/util-service/xiaoji-feedback.service";
 import {Hb01Page} from "../hb01/hb01";
-
+import {DwEmitService} from "../../service/util-service/dw-emit.service";
+import {WsResModel} from "../../model/ws.res.model";
+import {WsModel} from "../../model/ws.model";
 
 declare var cordova: any;
 /**
@@ -28,7 +30,6 @@ declare var cordova: any;
 })
 export class HbPage {
 
-
   @ViewChild(Hb01Page) Hb01Page:Hb01Page;
   @ViewChild(Content) content: Content;
 
@@ -36,16 +37,14 @@ export class HbPage {
   modeFlag: boolean = true;   //判断助手模式 true语音false手输
   initFlag:boolean = false;   //页面初始化
 
-  talkDataList: number = 4;    //数据多条
-  talkDataSingle: number = 3;     //数据单条
-  talkXF: number = 2;       //讯飞
-  talkUser: number = 1;     //用户
+  tdl: number = 4;    //数据多条
+  tds: number = 3;     //数据单条
+  tx: number = 2;       //讯飞
+  tu: number = 1;     //用户
 
   userText: string; //用户输入显示文本
   speech: string;   //语音助手显示文本
   inputText: string = "";    //手动模式输入数据
-  inputAudio: string = "";  //语音模式输入数据
-  fileContent: any;   //语音文件内容
   filePath: string;   //语音文件路径
 
   schedule: ScheduleModel;
@@ -58,12 +57,18 @@ export class HbPage {
               private http: HttpClient,
               private file: File,
               private base64: Base64,
+              private dwEmit: DwEmitService,
               private loadingCtrl: LoadingController,
               private alert: AlertController,
               public xiaojiSpeech: XiaojiAssistantService,
               public xiaojiFeekback: XiaojiFeedbackService) {
 
+    this.dwEmit.getHbData(this);
     this.init();
+  }
+
+  test($event) {
+    alert("hbpage");
   }
 
   ionViewDidLoad() {
@@ -92,31 +97,6 @@ export class HbPage {
     });
 
   }
-  //扩展按钮
-  openSocial(flag: number, fab: FabContainer) {
-    //console.log('Share in ' + flag);
-    if (flag == 1) {
-      this.xiaojiFeekback.audioBass();
-
-      //切换手动输入模式
-      this.modeFlag = !this.modeFlag;
-      this.initFlag = false;
-      return;
-    }
-    if (flag == 2) {
-      //进入群组
-      this.xiaojiFeekback.audioBongo();
-
-      this.groupListShow();
-    }
-    if (flag == 3) {
-      //添加日程
-
-      this.xiaojiFeekback.audioHighhat();
-      this.addSchedule();
-    }
-    fab.close();
-  }
 
   //添加日程
   addSchedule() {
@@ -126,16 +106,23 @@ export class HbPage {
   //群组详情
   groupListShow() {
     this.navCtrl.push('GroupListPage', {popPage:'HbPage'});
-    //flag has error
   }
 
   /*==================== 聊天界面 start ===================*/
+
+  switchInput() {
+    this.xiaojiFeekback.audioBass();
+
+    //切换手动输入模式
+    this.modeFlag = !this.modeFlag;
+    this.initFlag = false;
+    return;
+  }
 
   //启动语音输入
   startXiaoJi() {
     if (this.xiaojiSpeech.islistenAudioing) return;
     this.xiaojiSpeech.listenAudio(rs =>{
-      this.messageHanding(rs);
       this.xiaojiFeekback.audioSnare();
 
     });
@@ -144,18 +131,31 @@ export class HbPage {
   //启动手动输入
   startXiaojiText() {
     if (this.inputText != null && this.inputText != "") {
-      this.xiaojiSpeech.listenText(this.inputText,rs=>{
-        this.messageHanding(rs);
-      });
+      this.xiaojiSpeech.listenText(this.inputText);
     }
+
+    this.inputText = "";
   }
 
   //回传数据处理
-  messageHanding(xfdata:any) {
+  messageHanding($event) {
 
-    this.messages.length = 0;
+    alert($event);
+    // if($event != null) {
+    //   let messageData = new AiuiModel();
+    //   messageData.at = $event.res.data.st;
+    //   messageData.tt = this.tu;
+    //   this.messages.push(messageData);
+    // } else {
+    //   let messageUser = new AiuiModel();
+    //   messageUser.at = this.inputText;
+    //   messageUser.tt = this.tx;
+    //   this.messages.push(messageUser);
+    // }
+    //
+    // this.inputText = "";
 
-
+/*
     if (xfdata.code == 0) {
       //接收Object JSON数据
       this.aiuiData = xfdata.data.aiuiData;
@@ -205,7 +205,7 @@ export class HbPage {
 
       // this.xiaojiSpeech.speakText();
       this.inputText = "";
-    }
+    }*/
 
   }
 

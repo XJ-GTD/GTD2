@@ -21,6 +21,8 @@ import {Ha01Page} from "../ha01/ha01";
 import {PlayerService} from "../../service/player.service";
 import {RcEntity} from "../../entity/rc.entity";
 import {RcpEntity} from "../../entity/rcp.entity";
+import {DwEmitService} from "../../service/util-service/dw-emit.service";
+import {HbPage} from "../hb/hb";
 
 
 /**
@@ -38,11 +40,7 @@ import {RcpEntity} from "../../entity/rcp.entity";
 })
 export class HaPage {
 
-  // page1:any = 'HomeWorkListPage';
-  // page2:any = 'HomeWorkListPage';
-  // page3:any = 'HomeWorkListPage';
   @ViewChild(CalendarComponent) ion2calendar:CalendarComponent;
-
   @ViewChild(Ha01Page) ha01Page:Ha01Page;
 
   tab1Root = 'HbPage';
@@ -82,12 +80,19 @@ export class HaPage {
               private userSqlite:UserService,
               private workSqlite:WorkService,
               private calendarService:CalendarService,
+              private dwEmit: DwEmitService,
               private playerService:PlayerService) {
 
     moment.locale('zh-cn');
-
     this.init();
     this.setAlarmList();
+    this.dwEmit.getHaData(this);
+  }
+
+  test($event) {
+    //示例方法，完成删除
+    //在这里完成对数据传递页面的操作
+    alert("获取了版本数据" + $event.vs);
   }
 
   ionViewDidLoad() {
@@ -106,7 +111,7 @@ export class HaPage {
     this.showDay = moment().format('dddd YYYY 年 MM 月 DD 日');
     //消息队列接收
     // this.webSocketService.connect(this.paramsService.user.accountQueue);
-    // this.webSocketService.connect();
+    this.webSocketService.connect("1");
 
     this.scheduleList = [];
     //获取用户信息
@@ -118,7 +123,7 @@ export class HaPage {
           //消息队列接收
           this.webSocketService.connect(this.u.aQ);
         }else{
-          alert(data.message);
+          // alert(data.message);
         }
       })
     let month = moment().format('YYYY-MM');
@@ -251,7 +256,7 @@ export class HaPage {
   }
 
   createEvent($event){
-    alert($event)
+    // alert($event)
   }
   //查询当天日程
   findTodaySchedule($event) {
@@ -336,8 +341,9 @@ export class HaPage {
     this.ion2calendar.setViewDate(moment().format("YYYY-MM-DD"));
   }
   openVoice() {
-    let tab1RootModal  = this.modalCtr.create("HbPage");
-    tab1RootModal.present();
+    // let tab1RootModal  = this.modalCtr.create("HbPage");
+    // tab1RootModal.present();
+    this.navCtr.push("HbPage");
   }
 
   /**

@@ -1,4 +1,5 @@
 import {ScheduleModel} from "./schedule.model";
+import {RcModel} from "./rc.model";
 
 /**
  * 讯飞语音消息回传类
@@ -7,105 +8,70 @@ import {ScheduleModel} from "./schedule.model";
  */
 export class AiuiModel {
 
-  private _code: number;                       //动作判断flag
-  private _userNameList: Array<string>;		//参与人
-  private _scheduleName: string;						//日程主题
-  private _scheduleStartTime: string;					//开始时间
-  private _scheduleDeadline: string;					//结束时间
-  private _speech: string;      //讯飞语音播报字段
-  private _userText: string;      //用户语音播报字段
+  private _at: string;      //answerText;
+  private _au: string;      //answerUrl;
+  private _ai: string;      //answerImg;
+  private _ut: string;      //用户语音播报字段
 
-  private _dataType: string;       //数据类型 0：无数据对话 1：单个详情  2：列表list
-  private _talkType: number;     //使用人：1是用户，2是讯飞
+  private _dt: string;       //数据类型 0：无数据对话 1：单个详情  2：列表list
+  private _tt: number;     //使用人：1是用户，2是讯飞
 
-  private _scheduleCreateList: Array<ScheduleModel>;       // 查询自己创建的日程
-  private _scheduleJoinList: Array<ScheduleModel>;      // 查询自己参与的日程
+  private _scL: Array<RcModel>;    //日程数据list
 
-  get code(): number {
-    return this._code;
+
+  get at(): string {
+    return this._at;
   }
 
-  set code(value: number) {
-    this._code = value;
+  set at(value: string) {
+    this._at = value;
   }
 
-  get userNameList(): Array<string> {
-    return this._userNameList;
-  }
-  get talkType(): number {
-    return this._talkType;
+  get au(): string {
+    return this._au;
   }
 
-  set talkType(value: number) {
-    this._talkType = value;
+  set au(value: string) {
+    this._au = value;
   }
 
-  set userNameList(value: Array<string>) {
-    this._userNameList = value;
+  get ai(): string {
+    return this._ai;
   }
 
-  get scheduleName(): string {
-    return this._scheduleName;
+  set ai(value: string) {
+    this._ai = value;
   }
 
-  set scheduleName(value: string) {
-    this._scheduleName = value;
+  get ut(): string {
+    return this._ut;
   }
 
-  get scheduleStartTime(): string {
-    return this._scheduleStartTime;
+  set ut(value: string) {
+    this._ut = value;
   }
 
-  set scheduleStartTime(value: string) {
-    this._scheduleStartTime = value;
+  get dt(): string {
+    return this._dt;
   }
 
-  get scheduleDeadline(): string {
-    return this._scheduleDeadline;
+  set dt(value: string) {
+    this._dt = value;
   }
 
-  set scheduleDeadline(value: string) {
-    this._scheduleDeadline = value;
+  get tt(): number {
+    return this._tt;
   }
 
-  get speech(): string {
-    return this._speech;
+  set tt(value: number) {
+    this._tt = value;
   }
 
-  set speech(value: string) {
-    this._speech = value;
+  get scL(): Array<RcModel> {
+    return this._scL;
   }
 
-  get userText(): string {
-    return this._userText;
+  set scL(value: Array<RcModel>) {
+    this._scL = value;
   }
-
-  set userText(value: string) {
-    this._userText = value;
-  }
-
-  get dataType(): string {
-    return this._dataType;
-  }
-
-  set dataType(value: string) {
-    this._dataType = value;
-  }
-
-  get scheduleCreateList(): Array<ScheduleModel> {
-    return this._scheduleCreateList;
-  }
-
-  set scheduleCreateList(value: Array<ScheduleModel>) {
-    this._scheduleCreateList = value;
-  }
-
-  get scheduleJoinList(): Array<ScheduleModel> {
-    return this._scheduleJoinList;
-  }
-
-  set scheduleJoinList(value: Array<ScheduleModel>) {
-    this._scheduleJoinList = value;
-  }
-
 }

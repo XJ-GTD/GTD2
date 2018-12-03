@@ -59,7 +59,7 @@ export class HzPage {
   }
 
   sbAdd(){
-    console.log("跳转日程添加")
+    console.log("跳转日程添加");
     this.navCtrl.push('SbPage',{popPage:'HzPage'});
   }
 

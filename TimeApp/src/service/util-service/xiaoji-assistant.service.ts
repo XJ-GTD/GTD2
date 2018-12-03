@@ -23,8 +23,7 @@ export class XiaojiAssistantService {
   public islistenAudioing:boolean;
   public isWakeUp:boolean;
 
-  constructor(public appCtrl : App,
-              private base64: Base64,
+  constructor(private base64: Base64,
               private http: HttpClient,
               private file: File,
               private paramsService: ParamsService) {
@@ -60,7 +59,7 @@ export class XiaojiAssistantService {
             flag: 0
           };
 
-          this.connetXunfei(data, success);
+          this.connetXunfei(data, AppConfig.XF_AUDIO_URL);
         }, (err) => {
           console.log("异常" + err.toString());
         });
@@ -79,7 +78,7 @@ export class XiaojiAssistantService {
   /**
    * 语音助手手动输入 TEXT
    */
-  public listenText(text: string,success) {
+  public listenText(text: string) {
     try {
 
       if (text == null){
@@ -88,10 +87,10 @@ export class XiaojiAssistantService {
       this.fileContent = text;
       let data = {
         content: this.fileContent,
-        userId: this.paramsService.user.userId,
-        flag: 1
+        userId: "616818",
+        deviceId: "0952634651",
       };
-      this.connetXunfei(data, success);
+      this.connetXunfei(data, AppConfig.XF_TEXT_URL);
 
     } catch (e) {
       console.log("问题："+ e)
@@ -103,22 +102,18 @@ export class XiaojiAssistantService {
    * 录音文件传输后台服务解析
    * @param {string} url 后台服务路径
    */
-  private connetXunfei(audioData, success) {
+  private connetXunfei(audioData, url) {
     console.log("调用成功:" + this.fileContent);
-    console.log("调用URL:" + AppConfig.XF_AUDIO_URL);
+    console.log("调用URL:" + url);
     //调用讯飞语音服务
-    this.http.post(AppConfig.XF_AUDIO_URL, audioData,AppConfig.HEADER_OPTIONS_JSON)
+    this.http.post(url, audioData, AppConfig.HEADER_OPTIONS_JSON)
       .subscribe(data => {
         console.log("data" + data);
         //接收Object JSON数据
-        success(data);
-
-        //分离出需要语音播报的内容
-        this.speechText = this.paramsService.aiuiData.speech;
 
         console.log("语音调用成功:" + this.speechText);
         this.speakText(this.speechText,rs=>{
-          console.log("语音调用成功:" + rs);
+          console.log("语音调用成功2:" + rs);
         });
       })
   }

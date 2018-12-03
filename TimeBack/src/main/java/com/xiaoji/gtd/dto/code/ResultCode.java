@@ -26,6 +26,7 @@ public enum ResultCode {
 
     EXPIRE_AUTHCODE(21001),                //验证码过期
 
+    FAIL_BUSIC(50000),                     //失败统一处理
 	FAIL_SIGNUP(50100),                    //注册失败
     FAIL_AUTH(50101),                      //登陆验证失败
     FAIL_SMS(50102),                       //短信获取失败
