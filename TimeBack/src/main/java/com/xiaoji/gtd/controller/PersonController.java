@@ -4,6 +4,7 @@ import com.xiaoji.gtd.dto.*;
 import com.xiaoji.gtd.dto.code.ResultCode;
 import com.xiaoji.gtd.service.IPersonService;
 import com.xiaoji.util.BaseUtil;
+import com.xiaoji.util.CommonMethods;
 import com.xiaoji.util.TimerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -64,12 +65,17 @@ public class PersonController {
             return outDto;
         }
         //入参正确性检测
-        if(!BaseUtil.isInteger(inDto.getAccountMobile())){
+        if(!CommonMethods.isInteger(inDto.getAccountMobile())){
             if(inDto.getAccountMobile().length()!=11){
                 outDto.setCode(ResultCode.ERROR_MOBILE);
                 logger.debug("[注册失败]：请输入正确手机号");
                 return outDto;
             }
+        }
+        if (CommonMethods.checkMySqlReservedWords(inDto.getUserId())) {
+            outDto.setCode(ResultCode.ERROR_UUID);
+            logger.debug("[注册失败]：用户ID类型或格式错误");
+            return outDto;
         }
 //        try {
 //            if(!Objects.requireNonNull(TimerUtil.getCache(inDto.getAccountMobile())).getValue().equals(inDto.getAuthCode())){
@@ -84,10 +90,12 @@ public class PersonController {
 //            return outDto;
 //        }
 
+
+        //数据重复性
         //验证用户uuid重复
         if(personService.isRepeatUuid(inDto.getUserId())){
             outDto.setCode(ResultCode.REPEAT_UUID);
-            logger.debug("[注册失败]：用户标识码已被注册");
+            logger.debug("[注册失败]：用户ID已被注册");
             return outDto;
         }
         //验证手机号码重复
@@ -129,22 +137,59 @@ public class PersonController {
     @ResponseBody
     public Out updatePassword(@RequestBody UpdatePWDInDto inDto) {
         Out outDto = new Out();
-        //校验验证码
+        //入参检测
+        //必须项检测
+        if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
+            outDto.setCode(ResultCode.NULL_UUID);
+            logger.debug("[修改失败]：用户ID不可为空");
+            return outDto;
+        }
+        if(inDto.getOldPassword() == null || "".equals(inDto.getOldPassword())){
+            outDto.setCode(ResultCode.NULL_OLD_PASSWORD);
+            logger.debug("[修改失败]：请输入当前密码");
+            return outDto;
+        }
+        if(inDto.getPassword() == null || "".equals(inDto.getPassword())){
+            outDto.setCode(ResultCode.NULL_PASSWORD);
+            logger.debug("[修改失败]：请输入新密码");
+            return outDto;
+        }
+        //入参正确性检测
+        if (CommonMethods.checkMySqlReservedWords(inDto.getUserId())) {
+            outDto.setCode(ResultCode.ERROR_UUID);
+            logger.debug("[修改失败]：用户ID类型或格式错误");
+            return outDto;
+        }
+        if (personService.isPasswordTrue(inDto.getUserId(), inDto.getOldPassword())) {
+            outDto.setCode(ResultCode.ERROR_PASSWORD);
+            logger.debug("[修改失败]：输入密码错误");
+            return outDto;
+        }
 
-        //更新密码
+        //业务操作
+        try {
+            personService.updatePassword(inDto);
+            outDto.setCode(ResultCode.SUCCESS);
+            logger.debug("[修改成功]");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            logger.error("[修改失败]：服务器繁忙");
+        }
 
         return outDto;
     }
 
     /**
      * 用户注销
+     * (暂无)
      * @return
      */
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ResponseBody
     public Out logout(@RequestBody UpdatePWDInDto inDto) {
         Out outDto = new Out();
-
 
         return outDto;
     }
@@ -157,10 +202,54 @@ public class PersonController {
     @ResponseBody
     public Out searchUser(@RequestBody SearchUserInDto inDto) {
         Out outDto = new Out();
+        SearchUserOutDto data;
 
-        //检索用户
+        //入参检测
+        //必须项检测
+        if(inDto.getAccountMobile() == null || "".equals(inDto.getAccountMobile())){
+            outDto.setCode(ResultCode.NULL_MOBILE);
+            logger.debug("[查询失败]：手机号不可为空");
+            return outDto;
+        }
+        //入参正确性检测
+        if(!CommonMethods.isInteger(inDto.getAccountMobile())){
+            if(inDto.getAccountMobile().length()!=11){
+                outDto.setCode(ResultCode.ERROR_MOBILE);
+                logger.debug("[查询失败]：请输入正确手机号");
+                return outDto;
+            }
+        }
 
-        //返回用户数据List
+        //业务逻辑
+        try {
+
+            data = personService.searchPlayer(inDto);
+            if (data != null) {
+                outDto.setCode(ResultCode.SUCCESS);
+                logger.debug("[查询成功]");
+            } else {
+                outDto.setCode(ResultCode.FAIL_SEARCH);
+                logger.debug("[查询失败]：请稍后再试");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            logger.error("[查询失败]：服务器繁忙");
+        }
+
+        return outDto;
+    }
+
+
+    /**
+     * 添加联系人
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/add_player", method = RequestMethod.POST)
+    @ResponseBody
+    public Out addPlayer(@RequestBody BaseInDto inDto) {
+        Out outDto = new Out();
 
         return outDto;
     }

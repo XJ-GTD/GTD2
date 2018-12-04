@@ -8,7 +8,7 @@ import java.util.Objects;
 @Table(name = "gtd_user", schema = "gtd", catalog = "")
 public class GtdUserEntity {
     private String userId;
-    private String nickName;
+    private String userName;
     private String headimgUrl;
     private String brithday;
     private String realName;
@@ -32,13 +32,13 @@ public class GtdUserEntity {
     }
 
     @Basic
-    @Column(name = "NICK_NAME")
-    public String getNickName() {
-        return nickName;
+    @Column(name = "USER_NAME")
+    public String getUserName() {
+        return userName;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Basic
@@ -157,7 +157,7 @@ public class GtdUserEntity {
         if (o == null || getClass() != o.getClass()) return false;
         GtdUserEntity that = (GtdUserEntity) o;
         return Objects.equals(userId, that.userId) &&
-                Objects.equals(nickName, that.nickName) &&
+                Objects.equals(userName, that.userName) &&
                 Objects.equals(headimgUrl, that.headimgUrl) &&
                 Objects.equals(brithday, that.brithday) &&
                 Objects.equals(realName, that.realName) &&
@@ -173,6 +173,6 @@ public class GtdUserEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, nickName, headimgUrl, brithday, realName, idCard, userSex, userContact, userType, createId, createDate, updateId, updateDate);
+        return Objects.hash(userId, userName, headimgUrl, brithday, realName, idCard, userSex, userContact, userType, createId, createDate, updateId, updateDate);
     }
 }

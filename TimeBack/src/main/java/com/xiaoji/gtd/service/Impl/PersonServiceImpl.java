@@ -1,6 +1,9 @@
 package com.xiaoji.gtd.service.Impl;
 
+import com.xiaoji.gtd.dto.SearchUserInDto;
+import com.xiaoji.gtd.dto.SearchUserOutDto;
 import com.xiaoji.gtd.dto.SignUpInDto;
+import com.xiaoji.gtd.dto.UpdatePWDInDto;
 import com.xiaoji.gtd.entity.GtdAccountEntity;
 import com.xiaoji.gtd.entity.GtdLoginEntity;
 import com.xiaoji.gtd.entity.GtdUserEntity;
@@ -69,30 +72,6 @@ public class PersonServiceImpl implements IPersonService {
     }
 
     /**
-     * 验证手机号是否重复
-     * @param mobile
-     * @return
-     */
-    @Override
-    public boolean isRepeatMobile(String mobile) {
-        Object obj = personRepository.findByMobile(mobile);
-        int count = Integer.valueOf(obj.toString());
-        return count != 0;
-    }
-
-    /**
-     * 验证uuid重复性
-     * @param uuid
-     * @return
-     */
-    @Override
-    public boolean isRepeatUuid(String uuid) {
-        Object obj = personRepository.findByUuid(uuid);
-        int count = Integer.valueOf(obj.toString());
-        return count != 0;
-    }
-
-    /**
      * 用户注册
      * @param inDto
      */
@@ -110,7 +89,7 @@ public class PersonServiceImpl implements IPersonService {
         String userId = inDto.getUserId();
 
         String accountName = "";
-        String nickName = "";
+        String userName = "";
         String headImgUrl = "";
         String accountStatus = "";
         String accountInviter = "";
@@ -118,18 +97,18 @@ public class PersonServiceImpl implements IPersonService {
         String exchangeName = "";
 
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            Timestamp date = CommonMethods.dateToStamp(sdf.format(new Date()));
+
+            Timestamp date = BaseUtil.getSqlDate();
             //规则字段
             accountName = BaseUtil.getAccountName(accountMobile);
-            nickName = BaseUtil.getNickName(accountMobile);
+            userName = BaseUtil.getUserName(accountMobile);
             headImgUrl = HEAD_IMG_URL_ANDROID;
             accountStatus = ACCOUNT_STATUS;
-            logger.debug("账户名：" + accountName + " 昵称：" + nickName);
+            logger.debug("账户名：" + accountName + " 昵称：" + userName);
 
             //用户数据生成
             userEntity.setUserId(userId);
-            userEntity.setNickName(nickName);
+            userEntity.setUserName(userName);
             userEntity.setHeadimgUrl(headImgUrl);
             userEntity.setCreateId(userId);
             userEntity.setCreateDate(date);
@@ -171,5 +150,93 @@ public class PersonServiceImpl implements IPersonService {
         return 0;
     }
 
+    /**
+     * 修改密码
+     * @param inDto
+     * @return
+     */
+    @Override
+    public int updatePassword(UpdatePWDInDto inDto) {
+
+        String userId = inDto.getUserId();
+        String password = inDto.getPassword();
+
+        personRepository.updatePassword(userId, password);
+
+        return 0;
+    }
+
+    /**
+     * 查询密码是否正确
+     * @param userId
+     * @param password
+     * @return
+     */
+    @Override
+    public boolean isPasswordTrue(String userId, String password) {
+        Object obj = personRepository.isPasswordTrue(userId, password);
+        int count = Integer.valueOf(obj.toString());
+        return count == 0;
+    }
+
+    /**
+     * 查询目标用户
+     * @param inDto
+     * @return
+     */
+    @Override
+    public SearchUserOutDto searchPlayer(SearchUserInDto inDto) {
+
+        SearchUserOutDto outDto = null;
+
+        String accountMobile = "";
+        String userId = "";                 //用户ID
+        String userName = "";            //昵称
+        String headImgUrl = "";          //头像URL
+
+        try {
+            outDto = new SearchUserOutDto();
+            accountMobile = inDto.getAccountMobile();
+
+            Object[] objList = (Object[]) personRepository.searchTargetUser(accountMobile, LOGIN_TYPE_MOBILE);
+            userId = String.valueOf(objList[0]);
+            userName = String.valueOf(objList[1]);
+            headImgUrl = String.valueOf(objList[2]);
+
+            outDto.setAccountMobile(accountMobile);
+            outDto.setUserId(userId);
+            outDto.setUserName(userName);
+            outDto.setHeadImgUrl(headImgUrl);
+
+        } catch (Exception e) {
+            logger.error("查询用户出错");
+            throw new SecurityException("查询用户出错");
+        }
+        return outDto;
+    }
+
+    /**
+     * 验证手机号是否重复
+     * @param mobile
+     * @return
+     */
+    @Override
+    public boolean isRepeatMobile(String mobile) {
+        Object obj = personRepository.findByMobile(mobile);
+        int count = Integer.valueOf(obj.toString());
+        return count != 0;
+    }
+
+    /**
+     * 验证uuid重复性
+     * @param uuid
+     * @return
+     */
+    @Override
+    public boolean isRepeatUuid(String uuid) {
+        Object obj = personRepository.findByUuid(uuid);
+        int count = Integer.valueOf(obj.toString());
+        return count != 0;
+    }
 
 }

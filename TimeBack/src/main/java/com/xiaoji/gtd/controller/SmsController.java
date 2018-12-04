@@ -6,6 +6,7 @@ import com.xiaoji.gtd.dto.SmsInDto;
 import com.xiaoji.gtd.dto.code.ResultCode;
 import com.xiaoji.gtd.service.ISmsService;
 import com.xiaoji.util.BaseUtil;
+import com.xiaoji.util.CommonMethods;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class SmsController {
             return outDto;
         }
         //入参正确性检测
-        if(!BaseUtil.isInteger(inDto.getAccountMobile())){
+        if(!CommonMethods.isInteger(inDto.getAccountMobile())){
             if(inDto.getAccountMobile().length()!=11){
                 outDto.setCode(ResultCode.ERROR_MOBILE);
                 outDto.setMessage("[获取验证失败]：请输入正确手机号");

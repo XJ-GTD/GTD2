@@ -9,6 +9,7 @@ import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,17 +22,6 @@ import java.util.regex.Pattern;
  * create by wzy on 2018/04/26.
  */
 public class BaseUtil {
-
-    /*
-     * 判断是否为整数
-     * @param str 传入的字符串
-     * @return 是整数返回true,否则返回false
-     */
-
-    public static boolean isInteger(String str) {
-        Pattern pattern = Pattern.compile("[0-9]*");
-        return pattern.matcher(str).matches();
-    }
 
     /**
      * 字符串加密
@@ -82,6 +72,12 @@ public class BaseUtil {
         return returnMap;
     }
 
+    //获取表数据时间
+    public static Timestamp getSqlDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return CommonMethods.dateToStamp(sdf.format(new Date()));
+    }
+
     //交换机命名规则
     public static String getExchangeName(String userId) {
         return "gtd" + userId;
@@ -93,7 +89,7 @@ public class BaseUtil {
     }
 
     //昵称命名规则
-    public static String getNickName(String accountMobile) {
+    public static String getUserName(String accountMobile) {
         return "时间旅行者" + accountMobile;
     }
 

@@ -59,12 +59,12 @@ public class AuthController {
         //入参正确性检测
         if (CommonMethods.checkMySqlReservedWords(inDto.getUserId())) {
             outDto.setCode(ResultCode.NULL_UUID);
-            logger.debug("[验证失败]：用户ID不可为空");
+            logger.debug("[验证失败]：用户ID类型或格式错误");
             return outDto;
         }
         if (CommonMethods.checkMySqlReservedWords(inDto.getDeviceId())) {
             outDto.setCode(ResultCode.NULL_UUID);
-            logger.debug("[验证失败]：用户ID不可为空");
+            logger.debug("[验证失败]：设备ID类型或格式错误");
             return outDto;
         }
 
@@ -119,6 +119,17 @@ public class AuthController {
         }
 
         //入参正确性检测
+        if (CommonMethods.checkMySqlReservedWords(inDto.getAccount())) {
+            outDto.setCode(ResultCode.NULL_UUID);
+            logger.debug("[登陆失败]：账户名类型或格式错误");
+            return outDto;
+        }
+        if (CommonMethods.checkMySqlReservedWords(inDto.getDeviceId())) {
+            outDto.setCode(ResultCode.NULL_UUID);
+            logger.debug("[登陆失败]：设备ID类型或格式错误");
+            return outDto;
+        }
+
         String password = BaseUtil.encryption(inDto.getPassword());
         inDto.setPassword(password);
 
@@ -170,12 +181,17 @@ public class AuthController {
             return outDto;
         }
         //入参正确性检测
-        if(!BaseUtil.isInteger(inDto.getAccount())){
+        if(!CommonMethods.isInteger(inDto.getAccount())){
             if(inDto.getAccount().length()!=11){
                 outDto.setCode(ResultCode.ERROR_MOBILE);
                 logger.debug("[登陆失败]：请输入正确手机号");
                 return outDto;
             }
+        }
+        if (CommonMethods.checkMySqlReservedWords(inDto.getDeviceId())) {
+            outDto.setCode(ResultCode.NULL_UUID);
+            logger.debug("[登陆失败]：设备ID类型或格式错误");
+            return outDto;
         }
         try {
             if(!Objects.requireNonNull(TimerUtil.getCache(inDto.getAccount())).getValue().equals(inDto.getAuthCode())){
