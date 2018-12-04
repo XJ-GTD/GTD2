@@ -26,9 +26,6 @@ export class HzPage {
   // uo: UModel;
   uo:UEntity;
 
-  name:any="小强";
-  tel:any="133****1233";
-
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public platform: Platform,
@@ -44,7 +41,7 @@ export class HzPage {
 
 
   userSet() {
-    console.log("跳转设置页");
+    console.log("跳转设置页HzPage跳转AaPage");
     this.navCtrl.push("AaPage");
 
   }
@@ -54,18 +51,18 @@ export class HzPage {
   }
 
   playerListShow() {
-    console.log("跳转参与人页");
+    console.log("跳转参与人页HzPage跳转PaPage");
     this.navCtrl.push('PaPage',{popPage:'HzPage'});
   }
 
   sbAdd(){
-    console.log("跳转日程添加");
+    console.log("跳转日程添加HzPage跳转SbPage");
     this.navCtrl.push('SbPage',{popPage:'HzPage'});
   }
 
   toUc(){
-    console.log("跳转用户详情")
-    this.navCtrl.push('UcPage',{popPage:'HzPage'});
+    console.log("跳转用户详情HzPage跳转UcPage")
+    this.navCtrl.push('UcPage',{popPage:'HzPage',uo:this.uo});
   }
 
   showHistory() {
@@ -77,7 +74,6 @@ export class HzPage {
       if(data.code == 0){
         // this.uo = this.UeToUM(data.u);
         this.uo = data.u;
-        this.name = this.uo.uN;
       }
       console.log(data)
       console.log(this.uo)

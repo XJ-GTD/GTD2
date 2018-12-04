@@ -31,6 +31,7 @@ export class AaPage {
   logOut() {
     this.paramsService.user = null;
     window.localStorage.clear();
+    console.log('AaPage跳转UbPage')
     this.navCtrl.push("UbPage");
   }
 
@@ -55,6 +56,7 @@ export class AaPage {
   }
 
   helpAndFeedback() {
+    console.log('AaPage跳转AdPage')
     this.navCtrl.push("AdPage");
   }
 

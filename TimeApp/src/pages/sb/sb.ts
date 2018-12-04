@@ -3,12 +3,14 @@ import {IonicPage, LoadingController, NavController, NavParams, AlertController,
 import { ParamsService } from "../../service/util-service/params.service";
 import { HttpClient } from "@angular/common/http";
 import { ScheduleModel } from "../../model/schedule.model";
-import { AppConfig } from "../../app/app.config";
 import { ScheduleOutModel } from "../../model/out/schedule.out.model";
 import { FindOutModel } from "../../model/out/find.out.model";
 import { LabelOutModel } from "../../model/out/label.out.model";
-import { LabelModel } from "../../model/label.model";
-import { GroupModel } from "../../model/group.model";
+import { LabelModel } from "../../model/label.model"
+import { PopoverController,ActionSheetController } from "ionic-angular";
+import {RelmemService} from "../../service/relmem.service";
+import {RuModel} from "../../model/ru.model";
+
 
 /**
  * Generated class for the SbPage page.
@@ -38,29 +40,37 @@ export class SbPage {
   labelIds: Array<number>;
   label: Array<LabelModel>;
 
+  pRelAl:Array<RuModel>;
+  select:any = [];
+
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private http: HttpClient,
               public loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
-              private paramsService: ParamsService) {
+              private paramsService: ParamsService,
+              private popoverCtrl:PopoverController,
+              private actionSheetCtrl: ActionSheetController,
+              private relmemService: RelmemService) {
 
-    // this.init();
+    this.init();
 
   }
 
   init() {
     //判断：创建/编辑
-    if (this.paramsService.schedule != null) {
-      this.schedule = new ScheduleModel();
-      this.schedule = this.paramsService.schedule;
-    } else {
-      this.scheduleOut =  new ScheduleOutModel();
-      this.schedule = this.scheduleOut;
-    }
-    this.addContact();
-    this.findLabel();
-    this.group = [{groupId:1,groupName:"李四"},{groupId:2,groupName:"马武"}];
+    // if (this.paramsService.schedule != null) {
+    //   this.schedule = new ScheduleModel();
+    //   this.schedule = this.paramsService.schedule;
+    // } else {
+    //   this.scheduleOut =  new ScheduleOutModel();
+    //   this.schedule = this.scheduleOut;
+    // }
+    // this.addContact();
+    // this.findLabel();
+    // this.group = [{groupId:1,groupName:"李四"},{groupId:2,groupName:"马武"}];
+    this.getAllRel();
   }
 
   //查询系统标签
@@ -69,26 +79,6 @@ export class SbPage {
     this.labelFind.userId = this.paramsService.user.userId;
     this.labelFind.findType = 2;  //暂为硬代码，默认2 日程
 
-    // this.http.post(AppConfig.USER_LABEL_URL, this.labelFind, {
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   responseType: 'json'
-    // })
-    //   .subscribe(data => {
-    //     this.data = data;
-    //     if (this.data.code == 0) {
-    //       this.label = [];
-    //       this.label = this.data.data.labelList;
-    //
-    //     } else {
-    //       let loader = this.loadingCtrl.create({
-    //         content: "服务器繁忙，请稍后再试",
-    //         duration: 1000
-    //       });
-    //       loader.present();
-    //     }
-    //   })
   }
 
   /**
@@ -188,5 +178,84 @@ export class SbPage {
     this.paramsService.schedule=null;
     this.navCtrl.pop();
     // this.navCtrl.push('GroupListPage');
+  }
+
+  popTest(){
+    //弹窗测试
+    // this.popoverCtrl.create()
+
+  }
+
+  presentActionSheet() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Modify your album',
+      buttons: [
+        {
+          text: 'Destructive',
+          role: 'destructive',
+          handler: () => {
+            console.log('Destructive clicked');
+          }
+        },{
+          text: 'Archive',
+          handler: () => {
+            console.log('Archive clicked');
+          }
+        },{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+
+  showCheckbox() {
+    let alert = this.alertCtrl.create();
+    alert.setTitle('选择参与人');
+
+    for(let i = 0;i<this.pRelAl.length;i++){
+      let selected = false;
+      for(let j = 0;j<this.select.length;j++){
+        if(i == this.select[j]){
+          selected = true;
+          break;
+        }
+      }
+
+      alert.addInput({
+        type: 'checkbox',
+        label: this.pRelAl[i].ran,
+        value: i.toString(),
+        checked: selected
+      });
+    }
+    alert.addButton('取消');
+    alert.addButton({
+      text: '确定',
+      handler: data => {
+        console.log('Checkbox data:', data);
+        this.select = data;
+      }
+    });
+    alert.present();
+  }
+
+  //所有联系
+  getAllRel(){
+    this.relmemService.getrus(null,null,null,null,'0').then(data=>{
+      console.log(data);
+      if(data.code == 0){
+        this.pRelAl = data.us;
+      }else{
+        console.log("查询失败");
+      }
+
+    }).catch(reason => {
+      console.log("查询失败");
+    })
   }
 }

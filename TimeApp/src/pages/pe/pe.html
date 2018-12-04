@@ -27,7 +27,7 @@
     <ion-item>
       <ion-input placeholder="请输入" ></ion-input>
       <!--<ion-buttons item-end>-->
-      <img src="../../assets/imgs/3.png" height="25" width="25" (click)="toGroupSelect()" item-end>
+      <img src="../../assets/imgs/3.png" height="25" width="25" (click)="toAddGroupMember()" item-end>
       <!--</ion-buttons>-->
 
     </ion-item>
@@ -38,13 +38,13 @@
     <ion-label color="primary" stacked style="padding-left:16px ;">
       群成员
     </ion-label>
-    <ion-item-sliding *ngFor="let i of indexs">
+    <ion-item-sliding *ngFor="let cy of qcy">
       <ion-item>
         <ion-avatar item-start>
           <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
         </ion-avatar>
         <ion-label>
-          <h2>{{i.name}}</h2>
+          <h2>{{cy.ran}}</h2>
           <p>皮一下很开心</p>
         </ion-label>
       </ion-item>
@@ -53,7 +53,7 @@
         <!--<button ion-button color="danger">Share</button>-->
       </ion-item-options>
       <ion-item-options side="right">
-        <button ion-button color="danger" (click)="delete(i)">删除</button>
+        <button ion-button color="danger" (click)="delete(cy)">删除</button>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
