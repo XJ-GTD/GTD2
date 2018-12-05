@@ -24,7 +24,9 @@ export class PcPage {
   tel:any;
   code:any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private relme:RelmemService) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private relme:RelmemService) {
   }
 
   ionViewDidLoad() {
@@ -35,11 +37,21 @@ export class PcPage {
     this.uo = this.navParams.get("uo");
   }
 
+
   submit() {
-    this.relme.aru('', '', this.tel, '0','',null).then(data => {
+    this.relme.aru(this.name, null, this.tel, '0','0',null).then(data => {
+      if(data.code == 0){
+        //添加成功
+        console.log("添加成功::" + this.tel)
+        this.navCtrl.setRoot("PaPage","HzPage")
+      }else{
+        //添加失败
+        console.log("添加失败::" + this.tel);
+      }
 
     }).catch(reason => {
-
+      //添加失败
+      console.log("添加失败::" + this.tel);
     })
   }
 }

@@ -85,7 +85,7 @@ export class RuEntity {
       sql=sql+' rel="' + this._rel +'",';
     }
     if(this._id != null){
-      sql = sql + ' _id="' + this._id +'" where _id="' + this._id +'"';
+      sql = sql + ' id="' + this._id +'" where id="' + this._id +'"';
     }
     this._usq=sql;
     return this._usq;

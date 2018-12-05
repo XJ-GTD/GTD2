@@ -92,7 +92,7 @@ export class HaPage {
   test($event) {
     //示例方法，完成删除
     //在这里完成对数据传递页面的操作
-    alert("获取了版本数据" + $event.vs);
+    alert("获取了版本数据" + $event.sjl.length);
   }
 
   ionViewDidLoad() {
@@ -350,9 +350,7 @@ export class HaPage {
    * 本地日历日程增删
    */
   findEvent(){
-    this.calendarService.findEvent().then(data=>{
 
-    })
   }
 }
 

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {UEntity} from "../../entity/u.entity";
+import {RuModel} from "../../model/ru.model";
 
 /**
  * Generated class for the PePage page.
@@ -16,6 +18,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class PePage {
 
   indexs:any;
+  uo:UEntity;
+  qcy:Array<RuModel>;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
@@ -27,24 +31,31 @@ export class PePage {
   }
 
   toAddGroupMember(){
-    this.navCtrl.push("PersonalAddPage")
-  }
-
-  toGroupSelect(){
-    this.navCtrl.push("PgPage")
+    console.log("PePage跳转PgPage")
+    this.navCtrl.push("PgPage",{callback:this.getData,sel:this.qcy})
   }
 
   delete(select:any){
-    let j  = this.indexs.indexOf(select);
-    let arr: any = [];
-    for(let i = 0;i<this.indexs.length-1;i++){
-      if(i<j){
-        arr[i]=this.indexs[i];
-      }else{
-        arr[i]= this.indexs[i+1];
+    let flag = this.qcy.indexOf(select);
+    console.log(flag);
+    let tmp = new Array<RuModel>();
+    for(let i = 0; i< this.qcy.length;i++){
+      if(i==flag){
+        continue;
       }
+      tmp.push(this.qcy[i]);
     }
-    this.indexs = arr;
-    console.log(j)
+    this.qcy = tmp;
+
   }
+
+  getData = (data) =>
+  {
+    return new Promise((resolve, reject) => {
+      console.log(data);
+      this.qcy = data;
+      resolve();
+    });
+  };
+
 }

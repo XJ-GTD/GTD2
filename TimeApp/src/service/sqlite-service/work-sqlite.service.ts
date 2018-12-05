@@ -34,7 +34,9 @@ export class WorkSqliteService {
    */
   sRcps(rc:RcEntity,rus:Array<RuModel>){
     let sqlStr = "";
+    let isTrue = false;
     if(rus != null && rus.length>0){
+
       for(let i=0;i<rus.length;i++){
         let rcp = new RcpEntity();
         rcp.pI = this.util.getUuid();
@@ -43,9 +45,22 @@ export class WorkSqliteService {
         rcp.sI=rc.sI;
         rcp.cd=rc.sd;
         rcp.pd=rc.ed;
-        rcp.rui=rus[i].id
+        rcp.rui=rus[i].id;
+        if(rcp.uI == rc.uI){
+          isTrue = true;
+        }
         this.baseSqlite.save(rcp);
       }
+    }
+    if(!isTrue){
+      let rcp2 = new RcpEntity();
+      rcp2.pI = this.util.getUuid();
+      rcp2.uI =rc.uI;
+      rcp2.son=rc.sN;
+      rcp2.sI=rc.sI;
+      rcp2.cd=rc.sd;
+      rcp2.pd=rc.ed;
+      this.baseSqlite.save(rcp2);
     }
   }
 

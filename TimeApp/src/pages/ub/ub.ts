@@ -53,6 +53,7 @@ export class UbPage {
              buttons: [{
                text: '确定', role: 'cancel', handler: () => {
                  //跳转首页
+                 console.log('UbPage跳转HzPage')
                  this.navCtrl.setRoot('HzPage');
                }
              }]
@@ -80,10 +81,12 @@ export class UbPage {
   }
 
   signUp() {
+    console.log('UbPage跳转UaPage')
     this.navCtrl.push('UaPage');
   }
 
   toUd() {
+    console.log('UbPage跳转UdPage')
     this.navCtrl.push('UdPage');
   }
 }

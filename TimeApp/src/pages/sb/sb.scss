@@ -1,6 +1,6 @@
 page-sb {
   .padding-0{
-    padding: 0px !important;
+    padding: 0 !important;
 
   }
 
@@ -11,7 +11,7 @@ page-sb {
   }
 
   .item-inner{
-    border-bottom: 0px !important;
+    border-bottom: 0 !important;
   }
 
   .item-block.item-ios{
@@ -33,6 +33,11 @@ page-sb {
   ion-textarea{
     border:0.5px solid #f2f2f2;
     border-radius: 5px;
+  }
+
+  .item-ios>img{
+    width: 20px;
+    height: 20px;
   }
 
 }

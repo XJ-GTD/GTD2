@@ -12,7 +12,7 @@
         取消
       </button>
     </ion-buttons>
-    <ion-title>选择群</ion-title>
+    <ion-title>选择群成员</ion-title>
     <ion-buttons right>
       <button ion-button icon-only (click)="showSelect()">
         确定
@@ -24,16 +24,16 @@
 
 
 <ion-content padding class="page-backgroud-color">
-  <div>
-    <ion-item *ngFor="let i of indexs">
+  <div *ngFor="let u of us">
+    <ion-item>
       <ion-avatar item-start >
         <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
       </ion-avatar>
       <ion-label>
-        <h2>{{i.name}}</h2>
-        <p>皮一下很开心</p>
+        <h2>{{u.ran}}</h2>
+        <!--<p>皮一下很开心</p>-->
       </ion-label>
-      <ion-checkbox item-end [(ngModel)]="i.select"></ion-checkbox>
+      <ion-checkbox item-end (ionChange)="selected(u,$event)" [checked]="checkSel(u)"></ion-checkbox>
     </ion-item>
   </div>
 </ion-content>

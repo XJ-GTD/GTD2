@@ -36,7 +36,7 @@
     </div>
 
 
-    <div *ngIf="checkMoblie == false && checkMoblieNull == false">
+    <div *ngIf="checkMoblie == false && checkMoblieNull == false ">
       <!--<ion-list>-->
       <!--<ion-item>-->
       <!--<div item-start>-->
@@ -50,20 +50,21 @@
       <!--<span *ngIf="isRegist == false">未注册</span>-->
       <!--</div>-->
       <!--</ion-item>-->
-
-      <ion-item>
-        <ion-avatar item-start>
-          <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
-        </ion-avatar>
-        <ion-label>
-          <span style="font-family: PingFang-SC-Bold">{{name}}</span>
-        </ion-label>
-        <div item-end (click)="toPersonalAddDetail()">
-          <span *ngIf="existCode == 1" style="color: red">已添加</span>
-          <span *ngIf="existCode == 2" style="color: #488aff">添加</span>
-          <span *ngIf="existCode == 3">未注册</span>
-        </div>
-      </ion-item>
+      <div *ngFor="let index of sr">
+        <ion-item>
+          <ion-avatar item-start>
+            <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
+          </ion-avatar>
+          <ion-label>
+            <span style="font-family: PingFang-SC-Bold">{{index.rN}}</span>
+          </ion-label>
+          <div item-end (click)="toPersonalAddDetail(index)">
+            <span *ngIf="existCode == 1" style="color: red">已添加</span>
+            <span *ngIf="existCode == 2" style="color: #488aff">添加</span>
+            <span *ngIf="existCode == 3">未注册</span>
+          </div>
+        </ion-item>
+      </div>
       <!--</ion-list>-->
     </div>
   </div>

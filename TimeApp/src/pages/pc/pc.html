@@ -4,6 +4,7 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+<!-- 注册未添加 未注册用户 -->
 <ion-header>
 
   <ion-navbar>
@@ -26,12 +27,12 @@
       <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg" style="width: 60px;height: 60px ;margin: 0 auto">
 
     </ion-avatar>
-    <ion-title style="margin: 0 auto">{{name}}</ion-title>
+    <ion-title style="margin: 0 auto">{{tel}}</ion-title>
   </ion-item>
   <!--<div>-->
   <ion-item class="flag">
     <ion-label>备注</ion-label>
-    <ion-input type="text" text-end placeholder="{{name}}"></ion-input>
+    <ion-input type="text" text-end placeholder="{{tel}}" [(ngModel)]="name"></ion-input>
   </ion-item>
   <ion-item *ngIf="code == 1 || code == 2" class="flag">
     <ion-label>接收该用户的推送</ion-label>
