@@ -24,37 +24,38 @@ export class DwMqService {
 
     if (data0.vs == "1.0" && data0.ss == 0) {
       let resd = data0.res.data;
+      let ct=resd.sn;
+      let sd=resd.st;
+      let ed = resd.et;
+      let lbI = resd.lb;
+      let jhi = resd.pn;
+      let ruL=[];
       switch (data0.sk) {
-        case SkillConfig.XF_NMT:
+        case SkillConfig.XF_NMT: //确认
           break;
-        case SkillConfig.XF_NMC:
+        case SkillConfig.XF_NMC: //取消
           break;
         case SkillConfig.XF_SCC: //讯飞：日程添加
-          let ct=resd.sn;
-          let sd='';
-          let ed = '';
-          let lbI = '';
-          let jhi = '';
-          let ruL=[];
+
           this.work.arc(ct,sd,ed,lbI,jhi,ruL).then(data=>{
-
+            this.dwEmit.setHaData(data);
           }).catch(e=>{
-
+            this.dwEmit.setHaData(e);
           })
           break;
         case SkillConfig.XF_SCD: //讯飞：日程删除
           let sI = "";
           this.work.delrc(sI).then(data=>{
-
+            this.dwEmit.setHaData(data);
           }).catch(e=>{
-
+            this.dwEmit.setHaData(e);
           })
           break;
         case SkillConfig.XF_SCF: //讯飞：日程查询
           let jh = '';
           let lbN='';
           this.work.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
-            alert(data.code);
+            //alert(data.code);
             this.dwEmit.setHaData(data);
             //this.dwEmit.setHbData(data);
             this.dwEmit.setAdPage(data);

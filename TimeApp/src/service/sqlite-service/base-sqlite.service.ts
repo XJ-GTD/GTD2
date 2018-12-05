@@ -16,6 +16,7 @@ import {MsEntity} from "../../entity/ms.entity";
 import {BsModel} from "../../model/out/bs.model";
 import {RguEntity} from "../../entity/rgu.entity";
 import {LbSqliteService} from "./lb-sqlite.service";
+import {JhEntity} from "../../entity/jh.entity";
 
 /**
  * 客户端数据库
@@ -118,11 +119,16 @@ export class BaseSqliteService {
     this.executeSql(ztd.csq,[]).catch(e=>{
       console.log('GTD_Y:'+e.toString());
     })
+    // 计划表
+    let jh = new JhEntity();
+    this.executeSql(jh.csq,[]).catch(e=>{
+      console.log('GTD_J_H:'+e.toString());
+    })
     let data = new Array();
     this.initlb(data);
     let sql = new UEntity().csq+ new RcEntity().csq + new RcpEntity().csq +new RuEntity().csq
                   + new LbEntity().csq+new ReEntity().csq+ new StEntity().csq+ new MsEntity().csq
-                  + new ZtEntity().csq+new ZtdEntity().csq;
+                  + new ZtEntity().csq+new ZtdEntity().csq+new JhEntity().csq+new RguEntity().csq;
     //this.importSqlToDb(sql);
   }
 

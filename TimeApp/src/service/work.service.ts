@@ -155,7 +155,7 @@ export class WorkService {
         resolve(rcpo)
       }).catch(e=>{
         rcpo.code=AppConfig.ERR_CODE;
-        rcpo.message=AppConfig.NULL_MESSAGE;
+        rcpo.message=e.message;
         reject(rcpo)
       })
     });
