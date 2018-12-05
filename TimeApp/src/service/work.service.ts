@@ -44,6 +44,7 @@ export class WorkService {
    */
   arc(ct:string,sd:string,ed:string,lbI:string,jhi:string,ruL:Array<RuModel>):Promise<BsModel>{
     return new Promise((resolve, reject) => {
+      let bs = new BsModel();
       //先查询当前用户ID
       this.userSqlite.getUo().then(data=>{
         if(data && data.rows && data.rows.length>0){
@@ -58,7 +59,12 @@ export class WorkService {
           this.baseSqlite.save(rc).then(data=>{
             this.workSqlite.sRcps(rc,ruL)
           })
+          resolve(bs)
         }
+      }).catch(e=>{
+        bs.code = AppConfig.ERR_CODE
+        bs.message=e.message
+        resolve(bs)
       })
 
     })
