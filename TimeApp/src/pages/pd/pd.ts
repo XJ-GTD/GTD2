@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {UEntity} from "../../entity/u.entity";
 
 
 /**
@@ -16,6 +17,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class PdPage {
   indexs:any;
+  uo:UEntity;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }

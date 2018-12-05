@@ -20,17 +20,20 @@
 
 
 <ion-content padding>
+  <ion-label></ion-label>
 
   <ion-textarea placeholder="要发的内容..."></ion-textarea>
 
   <div ion-item no-padding>
-    <div float-left margin-left>
-      <ion-thumbnail ion-button color="light" float-start class="button-border padding-0 " no-margin>
-        <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg" class="button-border">
-      </ion-thumbnail>
-      <div style="clear: both; font-size:10px" text-center>麻花</div>
+    <div *ngFor="let index of select">
+      <div float-left margin-left title="{{pRelAl[index].ran}}">
+        <ion-thumbnail ion-button color="light" float-start class="button-border padding-0 " no-margin>
+          <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg" class="button-border">
+        </ion-thumbnail>
+        <div style="clear: both; font-size:10px;width:56px;overflow: hidden;text-overflow: ellipsis;" text-center >{{pRelAl[index].ran}}</div>
+      </div>
     </div>
-    <div float-left margin-left>
+    <div float-left margin-left (click)="showCheckbox()">
       <ion-thumbnail ion-button color="light" class="div-add-border button-border" no-margin >
         <ion-icon name="add"></ion-icon>
       </ion-thumbnail>
@@ -49,16 +52,22 @@
     <img src="./assets/imgs/1.png" item-start/>
     <ion-label>时间</ion-label>
     <!--<ion-label text-end>2018年11月20日</ion-label>-->
-    <ion-datetime displayFormat="YYYY-MM-DD HH:mm DDDD "></ion-datetime>
+    <ion-datetime displayFormat="YYYY-MM-DD HH:mm"></ion-datetime>
   </button>
-  <button ion-item>
+  <ion-item>
     <img src="./assets/imgs/4.png" item-start/>
     <ion-label>重复类型</ion-label>
-    <ion-label text-end>年</ion-label>
-  </button><button ion-item>
+    <ion-select item-end >
+      <ion-option [selected]="true">月</ion-option>
+      <ion-option [selected]="false">年</ion-option>
+      <ion-option [selected]="false">周</ion-option>
+      <ion-option [selected]="false">日</ion-option>
+    </ion-select>
+  </ion-item>
+  <button ion-item>
     <img src="./assets/imgs/1.png" item-start/>
     <ion-label>重复时间</ion-label>
-    <ion-label text-end>11月20日</ion-label>
+    <ion-datetime displayFormat="MM-DD"></ion-datetime>
   </button>
   <button ion-item>
     <img src="./assets/imgs/b.png" item-start/>

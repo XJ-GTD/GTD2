@@ -21,7 +21,7 @@
       </ion-segment-button>
     </ion-segment>
 
-    <ion-buttons right [ngSwitch]="relation">
+    <ion-buttons right [ngSwitch]="relation" margin-right>
       <button ion-button icon-only *ngSwitchCase="'persional'" (click)="toAddMemebr()">
         <ion-icon name="person-add"></ion-icon>
       </button>
@@ -37,18 +37,33 @@
 <ion-content padding class="page-backgroud-color">
   <div [ngSwitch]="relation">
     <ion-list *ngSwitchCase="'persional'">
-      <ion-item *ngIf="false">
+      <ion-item *ngIf="us == undefined">
         <ion-label>你还没有添加联系人，快点击右上方添加联系人</ion-label>
       </ion-item>
-      <div *ngIf="indexs != undefined">
-        <ion-item *ngFor="let i of indexs" (click)="toMemberDetail()">
-          <ion-avatar item-start>
+      <!--<div *ngIf="indexs != undefined">-->
+        <!--<ion-item *ngFor="let i of indexs" (click)="toMemberDetail()">-->
+          <!--<ion-avatar item-start>-->
+            <!--<img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">-->
+          <!--</ion-avatar>-->
+          <!--<h2 style="color:#000">人员{{i}}</h2>-->
+          <!--<p>暖心的皮袄</p>-->
+        <!--</ion-item>-->
+      <!--</div>-->
+
+      <ion-item-sliding *ngFor="let u of us">
+        <ion-item (click)="toMemberDetail(u)">
+          <ion-avatar item-start >
             <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
           </ion-avatar>
-          <h2 style="color:#000">人员{{i}}</h2>
-          <p>暖心的皮袄</p>
+          <ion-label>
+            <h2 style="color: #000;">{{u.ran}}</h2>
+            <p></p>
+          </ion-label>
         </ion-item>
-      </div>
+        <ion-item-options side="right">
+          <button ion-button color="danger" (click)="delPersional(u)">删除</button>
+        </ion-item-options>
+      </ion-item-sliding>
     </ion-list>
 
     <ion-list *ngSwitchCase="'group'">

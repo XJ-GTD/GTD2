@@ -6,8 +6,8 @@ package com.xiaoji.gtd.dto;
  */
 public class UpdatePWDInDto {
 
+    private String oldPassword;     //旧密码
     private String password;     //登陆密码
-    private String deviceId;            //设备ID
     private String authCode;            //验证码
     private String userId;              // 用户ID
 
@@ -17,14 +17,6 @@ public class UpdatePWDInDto {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
     }
 
     public String getAuthCode() {
@@ -43,5 +35,11 @@ public class UpdatePWDInDto {
         this.userId = userId;
     }
 
+    public String getOldPassword() {
+        return oldPassword;
+    }
 
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
 }

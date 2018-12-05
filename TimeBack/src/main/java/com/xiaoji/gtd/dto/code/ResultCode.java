@@ -12,11 +12,14 @@ public enum ResultCode {
     NULL_DEVICEID(11003),                 //设备ID为空
     NULL_PASSWORD(11004),                 //密码为空
     NULL_ACCOUNT(11005),                  //账户名为空
+    NULL_OLD_PASSWORD(11006),             //旧密码为空
+
+    NULL_AUTHCODE(11101),                  //验证码为空
 
     NULL_XF_AUDIO(11201),                 //讯飞语音输入为空
     NULL_XF_TEXT(11202),                  //讯飞文本输入为空
 
-    NULL_AUTHCODE(11101),                  //验证码为空
+    NULL_USER(11500),                       //用户尚未注册
 
 
     ERROR_UUID(20001),                     //用户ID错误
@@ -30,6 +33,8 @@ public enum ResultCode {
 	FAIL_SIGNUP(50100),                    //注册失败
     FAIL_AUTH(50101),                      //登陆验证失败
     FAIL_SMS(50102),                       //短信获取失败
+    FAIL_SEARCH(50103),                    //查询失败
+
     FAIL_XF(50200),                         //讯飞语音调用失败
 
 

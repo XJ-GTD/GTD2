@@ -1,8 +1,6 @@
 package com.xiaoji.gtd.service;
 
-import com.xiaoji.gtd.dto.LoginInDto;
-import com.xiaoji.gtd.dto.LoginOutDto;
-import com.xiaoji.gtd.dto.SignUpInDto;
+import com.xiaoji.gtd.dto.*;
 
 /**
  * 用户类接口
@@ -31,5 +29,25 @@ public interface IPersonService {
      */
     int signUp(SignUpInDto inDto);
 
+    /**
+     * 用户密码修改
+     * @param inDto
+     * @return
+     */
+    int updatePassword(UpdatePWDInDto inDto);
 
+    /**
+     * 查询密码是否正确
+     * @param userId
+     * @param password
+     * @return
+     */
+    boolean isPasswordTrue(String userId, String password);
+
+    /**
+     * 查询目标用户
+     * @param inDto
+     * @return
+     */
+    SearchUserOutDto searchPlayer(SearchUserInDto inDto);
 }

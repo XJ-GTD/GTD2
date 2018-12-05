@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
-import {UserModel} from "../../model/user.model";
 import {ParamsService} from "../../service/util-service/params.service";
-import {HttpClient} from "@angular/common/http";
-import {AppConfig} from "../../app/app.config";
+import {UEntity} from "../../entity/u.entity";
+import {RelmemService} from "../../service/relmem.service";
+import {UserService} from "../../service/user.service";
 
 /**
  * Generated class for the UcPage page.
@@ -19,16 +19,16 @@ import {AppConfig} from "../../app/app.config";
   providers: []
 })
 export class UcPage {
-
+  //编辑控制
   state:any = false;
-  data: any;
-  // user: UserModel;
+  uo:UEntity;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private http: HttpClient,
+              private userService: UserService,
               private loadingCtrl: LoadingController,
               private paramsService: ParamsService) {
-    // this.init();
+    this.init();
   }
 
   ionViewDidLoad() {
@@ -36,38 +36,15 @@ export class UcPage {
   }
 
   init() {
-
-    // this.user = new UserModel();
-    // this.user = this.paramsService.user;
-    // this.user.birthday = this.user.birthday.replace(" 00:00", "");
+    this.uo = this.navParams.get("uo");
   }
 
   updateUserInfo() {
 
-    // this.http.post(AppConfig.USER_UPDATE_INFO_URL, this.user, AppConfig.HEADER_OPTIONS_JSON)
-    //   .subscribe(data => {
-    //     this.data = data;
-    //     console.log("userInfo data：" + this.data.data);
-    //
-    //     let loader = this.loadingCtrl.create({
-    //       content: this.data.message,
-    //       duration: 1000
-    //     });
-    //
-    //     if (this.data.code == 0) {
-    //       this.paramsService.user = this.data.data.userInfo;
-    //       this.user = this.data.userInfo;
-    //       this.user.birthday = this.user.birthday.replace("T00:00Z", "");
-    //       loader.present();
-    //     } else if (this.data.code == 1) {
-    //       console.log("更新请求失败");
-    //       loader.present();
-    //     }
-    //   });
   }
 
   relation() {
-    console.log("跳转PaPage");
+    console.log("UcPage跳转PaPage");
     this.navCtrl.push("PaPage");
   }
 
@@ -75,8 +52,20 @@ export class UcPage {
     this.state = true;
   }
 
-  confirm(){
-    this.state = false;
+  confirm(uo:UEntity){
+    this.userService.upu(uo.uI,uo.oUI,uo.uN,uo.hIU,uo.biy,uo.uS,uo.uCt,uo.aQ,uo.uT,uo.uty).then(data=>{
+      if(data.code == 0){
+        this.state = false;
+        console.log("修改信息成功")
+      }else{
+        this.state = true;
+        console.log("修改信息失败")
+      }
+    }).catch(reason => {
+      this.state = true;
+      console.log("修改信息失败")
+    })
+
   }
 
 }
