@@ -14,6 +14,7 @@ import {UoModel} from "../../model/out/uo.model";
 import {WorkSqliteService} from "../../service/sqlite-service/work-sqlite.service";
 import {WorkService} from "../../service/work.service";
 import {UserService} from "../../service/user.service";
+import {PlayerService} from "../../service/player.service";
 
 /**
  * Generated class for the Ha01Page page.
@@ -44,6 +45,7 @@ export class Ha01Page {
               private sqliteService:BaseSqliteService,
               private userSqlite:UserService,
               private workSqlite:WorkService,
+              private playerSqlite:PlayerService,
               private el: ElementRef) {
     this.scheduleList = [];
     console.log('ionViewDidLoad Ha01Page');
@@ -162,30 +164,16 @@ export class Ha01Page {
     //   })
 
     //查询本地日历日程
-    this.sqliteService.executeSql("SELECT GTD_C.sN,GTD_C.lI,GTD_D.cd,GTD_D.pd FROM GTD_C JOIN GTD_D ON GTD_C.sI=GTD_D.sI AND GTD_C.sI IN (SELECT sI FROM GTD_D WHERE cd BETWEEN "+"'"+findSchedule.scheduleStartTime+"'"+" AND "+"'"+findSchedule.scheduleDeadline+"')",[]).then(data => {
-      // this.sqliteService.executeSql("SELECT sI FROM GTD_C",[]).then(msg=>{
-      //   alert(JSON.stringify(data)+" "+JSON.stringify(msg));
-      //
-      // });
-      //alert(JSON.stringify(data.rows.item(0)));
-      if (!!!!data && !!!!data.rows && data.rows.length > 0) {
-        for (let i = 0; i < data.rows.length; i++) {
-          let mo = new ScheduleModel();
-          mo.scheduleStartTime =data.rows.item(i).cd;
-          mo.scheduleName = data.rows.item(i).sN;
-          //mo.scheduleDeadline=data.rows.item(i).pd;
-          this.scheduleList.push(mo);
-
-        }
-        if(data.rows.length>0){
-          //console.log("-------"+data.rows.item(0).SCHEDULE_TITLE);
-          //alert(data.rows.item(0).state+","+data.rows.item(0).remind_time)
-        }
-      }
-    })
-      .catch(err=>{
-        alert("err:"+JSON.stringify(err));
-      });
+    // this.playerSqlite.getLocalSchedule(findSchedule.scheduleStartTime,findSchedule.scheduleDeadline).then(data=>{
+    //   if(data.length>0){
+    //     for(let i=0;i<data.length;i++){
+    //       let mo = new ScheduleModel();
+    //       mo.scheduleStartTime = data[i].scheduleStartTime;
+    //       mo.scheduleName = data[i].scheduleName;;
+    //       this.scheduleList.push(mo);
+    //     }
+    //   }
+    // });
 
   }
 

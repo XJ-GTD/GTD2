@@ -350,9 +350,7 @@ export class HaPage {
    * 本地日历日程增删
    */
   findEvent(){
-    this.calendarService.findEvent().then(data=>{
 
-    })
   }
 }
 
