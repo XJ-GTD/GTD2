@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {UEntity} from "../../entity/u.entity";
 import {RuModel} from "../../model/ru.model";
+import {RelmemService} from "../../service/relmem.service";
+import {HzPage} from "../hz/hz";
 
 /**
  * Generated class for the PePage page.
@@ -17,17 +19,19 @@ import {RuModel} from "../../model/ru.model";
 })
 export class PePage {
 
-  indexs:any;
   uo:UEntity;
   qcy:Array<RuModel>;
 
+  qmc:any;//群名称
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private relmemService: RelmemService) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PePage');
-    this.indexs=[{name:"张三"},{name:"李四"},{name:"王五"}]
   }
 
   toAddGroupMember(){
@@ -58,4 +62,17 @@ export class PePage {
     });
   };
 
+  save(){
+    this.relmemService.aru(null,this.qmc,null,'1',null,this.qcy).then(data=>{
+      if(data.code == 0){
+        console.log("添加群成功");
+        this.navCtrl.setRoot("PaPage",{popPage: 'HzPage'})
+
+      }else{
+        console.log("添加群失败")
+      }
+    }).catch(reason => {
+      console.log("添加群失败")
+    })
+  }
 }

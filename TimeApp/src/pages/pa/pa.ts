@@ -19,11 +19,12 @@ import {RuModel} from "../../model/ru.model";
 })
 export class PaPage {
 
-  relation: any = 'persional' ;
+  relation: any = 'group' ;
   indexs : any;
   uo:UEntity;
 
   us: Array<RuModel>;
+  gs: Array<RuModel>;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -47,8 +48,10 @@ export class PaPage {
     }).catch(reason => {
 
     })
-    console.log("查询个人")
-    this.queryPersional()
+    console.log("查询个人");
+    this.queryPersional();
+    console.log("查询群组")
+    this.queryGroup();
   }
 
   toAddMemebr(){
@@ -56,9 +59,9 @@ export class PaPage {
     this.navCtrl.push('PfPage',{uo:this.uo});
   }
 
-  toGroupMember(){
+  toGroupMember(g){
     console.log('PaPage跳转PdPage')
-    this.navCtrl.push('PdPage');
+    this.navCtrl.push('PdPage',{g:g});
   }
 
   toGroupCreate(){
@@ -100,6 +103,32 @@ export class PaPage {
     }).catch(reason => {
       console.log("删除异常::" + reason.message);
     })
+  }
+
+  delGroup(g){
+    this.relmemService.delRu(g.id).then(data=>{
+      if(data.code == 0){
+        console.log("删除成功");
+        this.queryGroup()
+      }else{
+        console.log("删除失败");
+      }
+    }).catch(reason => {
+      console.log("删除异常::" + reason.message);
+    })
+  }
+
+  queryGroup(){
+    this.relmemService.getrus(null,null,null,null,'1').then(data=>{
+      if(data.code == 0 && data.us != null && data.us != undefined && data.us.length > 0 ){
+        console.log("查询群组成功");
+        this.gs = data.us;
+      }else{
+        console.log("查询群组失败")
+      }
+    }).catch(reason => {
+      console.log("查询群组失败")
+    });
   }
 
 }
