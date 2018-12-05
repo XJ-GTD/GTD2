@@ -43,7 +43,7 @@ export class WorkSqliteService {
         rcp.sI=rc.sI;
         rcp.cd=rc.sd;
         rcp.pd=rc.ed;
-        rcp.rui=rus[i].id
+        rcp.rui=rus[i].id;
         this.baseSqlite.save(rcp);
       }
     }
