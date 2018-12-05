@@ -14,6 +14,7 @@ import {ZtEntity} from "../../entity/zt.entity";
 import {ZtdEntity} from "../../entity/ztd.entity";
 import {MsEntity} from "../../entity/ms.entity";
 import {BsModel} from "../../model/out/bs.model";
+import {RguEntity} from "../../entity/rgu.entity";
 
 /**
  * 客户端数据库
@@ -79,6 +80,11 @@ export class BaseSqliteService {
     let ru = new RuEntity();
     this.executeSql(ru.csq,[]).catch(e=>{
       console.log('GTD_B:'+e.toString());
+    })
+    //群组关联人
+    let rgu = new RguEntity();
+    this.executeSql(rgu.csq,[]).catch(e=>{
+      console.log('GTD_B_X:'+e.toString());
     })
     //标签表
     let lb = new LbEntity();
