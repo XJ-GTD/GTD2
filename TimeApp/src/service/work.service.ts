@@ -12,6 +12,9 @@ import {UtilService} from "./util-service/util.service";
 import {UserSqliteService} from "./sqlite-service/user-sqlite.service";
 import {RcModel} from "../model/rc.model";
 import {AppConfig} from "../app/app.config";
+import {LbSqliteService} from "./sqlite-service/lb-sqlite.service";
+import {LboModel} from "../model/out/lbo.model";
+import {LbModel} from "../model/lb.model";
 
 /**
  * 日程逻辑处理
@@ -22,10 +25,12 @@ import {AppConfig} from "../app/app.config";
 export class WorkService {
   workSqlite: WorkSqliteService;
   userSqlite: UserSqliteService;
+  lbSqlite: LbSqliteService;
   constructor(private baseSqlite:BaseSqliteService,
                 private util:UtilService) {
     this.workSqlite = new WorkSqliteService(baseSqlite,util);
     this.userSqlite = new UserSqliteService(baseSqlite);
+    this.lbSqlite = new LbSqliteService(baseSqlite);
   }
 
   /**
@@ -35,10 +40,11 @@ export class WorkService {
    * @param {string} ed 结束时间
    * @param {string} lbI 标签编号
    * @param {string} jhi 计划名称
-   * @param {Array}  jhi 参与人json数组[ {id,mo} ]（id主键,mo联系方式）
+   * @param {Array}  ruL 参与人json数组[ {id,rN,rC} ]（id主键,rN名称,rC联系方式）
    */
   arc(ct:string,sd:string,ed:string,lbI:string,jhi:string,ruL:Array<RuModel>):Promise<BsModel>{
     return new Promise((resolve, reject) => {
+      let bs = new BsModel();
       //先查询当前用户ID
       this.userSqlite.getUo().then(data=>{
         if(data && data.rows && data.rows.length>0){
@@ -53,7 +59,12 @@ export class WorkService {
           this.baseSqlite.save(rc).then(data=>{
             this.workSqlite.sRcps(rc,ruL)
           })
+          resolve(bs)
         }
+      }).catch(e=>{
+        bs.code = AppConfig.ERR_CODE
+        bs.message=e.message
+        resolve(bs)
       })
 
     })
@@ -193,4 +204,30 @@ export class WorkService {
       })
     })
   }
+
+  /**
+   * 查询标签
+   */
+  getlbs():Promise<LboModel>{
+    return new Promise((resolve, reject) =>{
+      let lbo = new LboModel();
+      this.lbSqlite.getlbs().then(data=>{
+        let lbs = new Array<LbModel>()
+        if(data && data.rows && data.rows.length>0){
+          for(let i=0;i<data.rows.length;i++){
+            let lb = new LbModel();
+            lb = data.rows.item(i);
+            lbs.push(lb);
+          }
+        }
+        lbo.lbs=lbs;
+        resolve(lbo)
+      }).catch(e=>{
+        lbo.code=AppConfig.ERR_CODE;
+        lbo.message=e.message;
+        reject(lbo)
+      })
+    });
+  }
+
 }
