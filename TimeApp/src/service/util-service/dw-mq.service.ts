@@ -54,6 +54,7 @@ export class DwMqService {
           let jh = '';
           let lbN='';
           this.work.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
+            alert(data.code);
             this.dwEmit.setHaData(data);
             //this.dwEmit.setHbData(data);
             this.dwEmit.setAdPage(data);
