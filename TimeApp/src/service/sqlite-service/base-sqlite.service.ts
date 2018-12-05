@@ -15,6 +15,7 @@ import {ZtdEntity} from "../../entity/ztd.entity";
 import {MsEntity} from "../../entity/ms.entity";
 import {BsModel} from "../../model/out/bs.model";
 import {RguEntity} from "../../entity/rgu.entity";
+import {LbSqliteService} from "./lb-sqlite.service";
 
 /**
  * 客户端数据库
@@ -117,7 +118,8 @@ export class BaseSqliteService {
     this.executeSql(ztd.csq,[]).catch(e=>{
       console.log('GTD_Y:'+e.toString());
     })
-
+    let data = new Array();
+    this.initlb(data);
     let sql = new UEntity().csq+ new RcEntity().csq + new RcpEntity().csq +new RuEntity().csq
                   + new LbEntity().csq+new ReEntity().csq+ new StEntity().csq+ new MsEntity().csq
                   + new ZtEntity().csq+new ZtdEntity().csq;
@@ -245,6 +247,36 @@ export class BaseSqliteService {
 
 
     })
+  }
+  initlb(data:any){
+    data.push({lai:'BQA01',lat:'BQA',lan:'任务'});
+    data.push({lai:'BQB01',lat:'BQB',lan:'生活'})
+    data.push({lai:'BQB02',lat:'BQB',lan:'工作'})
+    data.push({lai:'BQC01',lat:'BQC',lan:'聚会'})
+    data.push({lai:'BQC02',lat:'BQC',lan:'会议'})
+    data.push({lai:'BQC03',lat:'BQC',lan:'事件'})
+    data.push({lai:'BQC04',lat:'BQC',lan:'预约'})
+    data.push({lai:'BQC05',lat:'BQC',lan:'运动'})
+    data.push({lai:'BQD01',lat:'BQD',lan:'特殊日期'})
+    data.push({lai:'BQD02',lat:'BQD',lan:'法定假日'})
+    data.push({lai:'BQE01',lat:'BQE',lan:'里程碑'})
+    data.push({lai:'BQE02',lat:'BQE',lan:'随手记'})
+    data.push({lai:'BQE03',lat:'BQE',lan:'记账'})
+
+    for(let i=0;i<data.length;i++){
+      /*let sql = 'insert into GTD_F (lai,lan,lat) select "'+ data[i].lai +'","'+ data[i].lan +'","'+ data[i].lat +'" ' +
+        'where not exists (select lai,lan,lat from GTD_F)'
+      this.executeSql(sql,[]).then(data=>{
+        console.log(data)
+      }).catch(e=>{
+        console.log(e.message)
+      })*/
+      let lb=new LbEntity();
+      lb.lai = data[i].lai;
+      lb.lan = data[i].lan;
+      lb.lat=data[i].lat;
+      this.save(lb);
+    }
   }
 
 }
