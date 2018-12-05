@@ -74,9 +74,9 @@ public class WebSocketDataDto {
 
     //扩展字段
     private String common_A;        //人名原参数
-    private String common_B;
-    private String common_C;
-    private String common_D;
+    private String common_B;        //
+    private String common_C;        //
+    private String common_D;        //
     private String common_E;
     private String common_F;
     private String common_G;

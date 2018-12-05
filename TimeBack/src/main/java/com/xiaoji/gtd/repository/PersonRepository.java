@@ -58,7 +58,7 @@ public class PersonRepository {
      * @return
      */
     public Object searchTargetUser(String accountMobile, String type) {
-        String sql = "SELECT TA.USER_ID, TB.USER_NAME, TB.HEADIMG_URL \n" +
+        String sql = "SELECT COUNT(*), TA.USER_ID, TB.USER_NAME, TB.HEADIMG_URL \n" +
                 " FROM gtd_login TA \n" +
                 " INNER JOIN gtd_user TB ON TA.USER_ID = TB.USER_ID \n" +
                 " WHERE TA.LOGIN_TYPE = '" + type + "' AND TA.LOGIN_NAME = '" + accountMobile +"'";
@@ -77,4 +77,5 @@ public class PersonRepository {
                 " WHERE USER_ID = '" + userId + "'";
         return em.createNativeQuery(sql).getSingleResult();
     }
+
 }

@@ -36,6 +36,7 @@ public enum ResultCode {
     FAIL_SEARCH(50103),                    //查询失败
 
     FAIL_XF(50200),                         //讯飞语音调用失败
+    FAIL_XF_SKILL(50201),                   //讯飞语音无对应技能
 
 
     // 未认证（签名错误）

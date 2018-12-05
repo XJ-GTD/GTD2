@@ -1,17 +1,12 @@
 package com.xiaoji.gtd.service.Impl;
 
-import com.xiaoji.gtd.dto.SearchUserInDto;
-import com.xiaoji.gtd.dto.SearchUserOutDto;
-import com.xiaoji.gtd.dto.SignUpInDto;
-import com.xiaoji.gtd.dto.UpdatePWDInDto;
+import com.xiaoji.gtd.dto.*;
 import com.xiaoji.gtd.entity.GtdAccountEntity;
 import com.xiaoji.gtd.entity.GtdLoginEntity;
 import com.xiaoji.gtd.entity.GtdUserEntity;
-import com.xiaoji.gtd.repository.GtdAccountRepository;
-import com.xiaoji.gtd.repository.GtdLoginRepository;
-import com.xiaoji.gtd.repository.GtdUserRepository;
-import com.xiaoji.gtd.repository.PersonRepository;
+import com.xiaoji.gtd.repository.*;
 import com.xiaoji.gtd.service.IPersonService;
+import com.xiaoji.gtd.service.IWebSocketService;
 import com.xiaoji.util.BaseUtil;
 import com.xiaoji.util.CommonMethods;
 import com.xiaoji.util.TimerUtil;
@@ -63,12 +58,16 @@ public class PersonServiceImpl implements IPersonService {
     private GtdAccountRepository accountRepository;
     @Resource
     private GtdUserRepository userRepository;
+    @Resource
+    private GtdTokenRepository tokenRepository;
 
     private final RabbitTemplate rabbitTemplate;
+    private final IWebSocketService webSocketService;
 
     @Autowired
-    public PersonServiceImpl(RabbitTemplate rabbitTemplate) {
+    public PersonServiceImpl(RabbitTemplate rabbitTemplate, IWebSocketService webSocketService) {
         this.rabbitTemplate = rabbitTemplate;
+        this.webSocketService = webSocketService;
     }
 
     /**
@@ -199,20 +198,69 @@ public class PersonServiceImpl implements IPersonService {
             accountMobile = inDto.getAccountMobile();
 
             Object[] objList = (Object[]) personRepository.searchTargetUser(accountMobile, LOGIN_TYPE_MOBILE);
-            userId = String.valueOf(objList[0]);
-            userName = String.valueOf(objList[1]);
-            headImgUrl = String.valueOf(objList[2]);
 
-            outDto.setAccountMobile(accountMobile);
-            outDto.setUserId(userId);
-            outDto.setUserName(userName);
-            outDto.setHeadImgUrl(headImgUrl);
+            if (Integer.valueOf(objList[0].toString()) != 0) {
+                userId = String.valueOf(objList[1]);
+                userName = String.valueOf(objList[2]);
+                headImgUrl = String.valueOf(objList[3]);
+
+                outDto.setAccountMobile(accountMobile);
+                outDto.setUserId(userId);
+                outDto.setUserName(userName);
+                outDto.setHeadImgUrl(headImgUrl);
+            } else {
+                return null;
+            }
 
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("查询用户出错");
             throw new SecurityException("查询用户出错");
         }
         return outDto;
+    }
+
+    /**
+     * 发送添加邀请
+     * @param inDto
+     * @return
+     */
+    @Override
+    public int addPlayer(PlayerInDto inDto) {
+
+        PlayerOutDto outDto;
+
+        String accountMobile = "";
+        String userId = "";                 //用户ID
+        String userName = "";            //昵称
+        String headImgUrl = "";          //头像URL
+
+        try {
+            outDto = new PlayerOutDto();
+
+            Object[] objList = (Object[]) personRepository.searchTargetUser(accountMobile, LOGIN_TYPE_MOBILE);
+
+            if (Integer.valueOf(objList[0].toString()) != 0) {
+                userId = String.valueOf(objList[1]);
+                userName = String.valueOf(objList[2]);
+                headImgUrl = String.valueOf(objList[3]);
+
+                outDto.setAccountMobile(accountMobile);
+                outDto.setUserId(userId);
+                outDto.setUserName(userName);
+                outDto.setHeadImgUrl(headImgUrl);
+
+//                webSocketService.pushMessage();
+            } else {
+                return 1;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("发送邀请错误");
+            throw new SecurityException("发送邀请错误");
+        }
+        return 0;
     }
 
     /**

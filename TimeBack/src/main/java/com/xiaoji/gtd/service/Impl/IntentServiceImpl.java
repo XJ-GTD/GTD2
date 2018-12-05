@@ -156,14 +156,20 @@ public class IntentServiceImpl implements IIntentService {
             if (!code.equals("0")) {
                 outDto.setSs(ResultCode.FAIL_XF);
                 logger.error("语义解析失败： " + message);
-                webSocketService.pushMessageOfXF(queueName, outDto);
+                webSocketService.pushMessage(queueName, outDto);
+                return;
+            }
+            if (data == null) {
+                outDto.setSs(ResultCode.FAIL_XF_SKILL);
+                logger.error("语义解析失败： 无对应技能");
+                webSocketService.pushMessage(queueName, outDto);
                 return;
             }
             for (NlpOutDto nod: data) {
                 String flag = WebSocketSkillEnum.getIntentCode(splitStr(nod.getService()));
+                String skillType = WebSocketSkillEnum.getIntentCode(nod.getIntent());
+                outDto.setSk(skillType);
                 if (flag != null && flag.equals("0")) {
-                    String skillType = WebSocketSkillEnum.getIntentCode(nod.getIntent());
-                    outDto.setSk(skillType);
                     outDto.setRes(dealWithSlots(nod));
                 } else {
                     outDto.setAt(nod.getAnswer());
@@ -171,7 +177,7 @@ public class IntentServiceImpl implements IIntentService {
                     outDto.setAi(nod.getAnswerImg());
                 }
                 outDto.setSs(ResultCode.SUCCESS);
-                webSocketService.pushMessageOfXF(queueName, outDto);
+                webSocketService.pushMessage(queueName, outDto);
                 logger.debug("消息队列：" + queueName + " | 数据：" + outDto);
                 outDto = new WebSocketOutDto();
             }

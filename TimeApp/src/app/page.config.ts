@@ -4,6 +4,12 @@ import {HaPage} from "../pages/ha/ha";
  * 页面迁移用
  */
 export class PageConfig {
+
+  private static _AZ_PAGE: any = "AzPage";
+
+  private static _HA_PAGE: any = "HaPage";
+  private static _HZ_PAGE: any = "HzPage";
+
   static get HA_PAGE(): any {
     return this._HA_PAGE;
   }
@@ -27,8 +33,4 @@ export class PageConfig {
     this._AZ_PAGE = value;
   }
 
-  private static _AZ_PAGE: any = "AzPage"
-
-  private static _HA_PAGE: any = "HaPage";
-  private static _HZ_PAGE: any = "HzPage";
 }
