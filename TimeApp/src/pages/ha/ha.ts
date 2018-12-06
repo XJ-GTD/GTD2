@@ -9,18 +9,15 @@ import { RemindModel } from "../../model/remind.model";
 import { ScheduleModel } from "../../model/schedule.model";
 import { ScheduleOutModel } from "../../model/out/schedule.out.model";
 import { CalendarModel } from "../../model/calendar.model";
-import {CalendarComponent, CalendarComponentOptions, CalendarController} from "../../components/ion2-calendar";
+import {CalendarComponent, CalendarComponentOptions} from "../../components/ion2-calendar";
 import { TimeModel } from "../../model/time.model";
 import * as moment from "moment";
 import {CalendarService} from "../../service/calendar.service";
-import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
 import {UEntity} from "../../entity/u.entity";
 import {WorkService} from "../../service/work.service";
 import {UserService} from "../../service/user.service";
 import {Ha01Page} from "../ha01/ha01";
 import {PlayerService} from "../../service/player.service";
-import {RcEntity} from "../../entity/rc.entity";
-import {RcpEntity} from "../../entity/rcp.entity";
 import {DwEmitService} from "../../service/util-service/dw-emit.service";
 import {HbPage} from "../hb/hb";
 
@@ -76,7 +73,6 @@ export class HaPage {
               private http: HttpClient,
               private paramsService: ParamsService,
               private alarmClock: XiaojiAlarmclockService,
-              private sqliteService:BaseSqliteService,
               private userSqlite:UserService,
               private workSqlite:WorkService,
               private calendarService:CalendarService,
@@ -92,7 +88,7 @@ export class HaPage {
   test($event) {
     //示例方法，完成删除
     //在这里完成对数据传递页面的操作
-    alert("获取了版本数据" + $event.vs);
+    alert("获取了版本数据" + $event.sjl.length);
   }
 
   ionViewDidLoad() {
@@ -300,12 +296,16 @@ export class HaPage {
     }
 
     //查询选中那天的日历日程
-    this.playerService.getLocalSchedule(findSchedule.scheduleStartTime, findSchedule.scheduleDeadline).then(data => {
-      for(let i=0;i<data.length;i++){
-        this.scheduleList.push(data[i]);
+    let dayStr = moment().set({'year':year,'month':month-1,'date':day}).format('YYYY-MM-DD');
+    this.workSqlite.getOd(dayStr).then(data=>{
+      if(data && data.slc && data.slc.length>0){
+        for(let i=0;i<data.slc.length;i++){
+          this.scheduleList.push(data.slc[i]);
+        }
       }
-      //alert(JSON.stringify(this.scheduleList[0]));
     })
+
+    this.ha01Page.findTodaySchedule($event);
 
     //
     // this.findSchedule = new ScheduleOutModel();
@@ -350,9 +350,7 @@ export class HaPage {
    * 本地日历日程增删
    */
   findEvent(){
-    this.calendarService.findEvent().then(data=>{
 
-    })
   }
 }
 

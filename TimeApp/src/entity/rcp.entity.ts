@@ -8,7 +8,7 @@ export class RcpEntity {
   private _pI: string=null;//日程参与人表uuID
   private _sI: string=null;   //关联日程UUID
   private _son:string=null; //日程别名
-  private _sa: string=null;   //修改权限
+  private _sa: string=null;   //修改权限 0不可修改，1可修改
   private _ps:string=null; //完成状态
   private _cd:string=null;  //创建时间
   private _pd: string=null;   //完成时间

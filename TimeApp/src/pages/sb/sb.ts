@@ -2,15 +2,15 @@ import {Component, ViewChild} from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams, AlertController, Navbar} from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
 import { HttpClient } from "@angular/common/http";
-import { ScheduleModel } from "../../model/schedule.model";
 import { ScheduleOutModel } from "../../model/out/schedule.out.model";
 import { FindOutModel } from "../../model/out/find.out.model";
-import { LabelOutModel } from "../../model/out/label.out.model";
 import { LabelModel } from "../../model/label.model"
 import { PopoverController,ActionSheetController } from "ionic-angular";
 import {RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
-
+import {ModalController} from "ionic-angular";
+import {WorkService} from "../../service/work.service";
+import {LbModel} from "../../model/lb.model";
 
 /**
  * Generated class for the SbPage page.
@@ -31,18 +31,18 @@ export class SbPage {
 
 
   private data: any;
-  groupIds: Array<number>;
   group: any;//Array<GroupModel>;
   schedule: any;
-  scheduleOut: ScheduleOutModel;
   groupFind: FindOutModel;
-  labelFind: LabelOutModel;
-  labelIds: Array<number>;
   label: Array<LabelModel>;
 
   pRelAl:Array<RuModel>;
   select:any = [];
 
+  lbs: Array<LbModel>
+  type: any ;
+  title:any;
+  startTime:any;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -52,7 +52,9 @@ export class SbPage {
               private paramsService: ParamsService,
               private popoverCtrl:PopoverController,
               private actionSheetCtrl: ActionSheetController,
-              private relmemService: RelmemService) {
+              private relmemService: RelmemService,
+              private modalCtrl: ModalController,
+              private workService: WorkService) {
 
     this.init();
 
@@ -71,13 +73,20 @@ export class SbPage {
     // this.findLabel();
     // this.group = [{groupId:1,groupName:"李四"},{groupId:2,groupName:"马武"}];
     this.getAllRel();
+    this.findLabel();
   }
 
   //查询系统标签
   findLabel() {
-    this.labelFind = new LabelOutModel();
-    this.labelFind.userId = this.paramsService.user.userId;
-    this.labelFind.findType = 2;  //暂为硬代码，默认2 日程
+    this.workService.getlbs().then(data=>{
+      if(data.code == 0){
+        this.lbs = data.lbs;
+        console.log('标签查询成功')
+
+      }
+    }).catch(reason => {
+
+    })
 
   }
 
@@ -119,41 +128,35 @@ export class SbPage {
 
   //发布任务入库
   newProject() {
-    this.scheduleOut = new ScheduleOutModel();
-    this.schedule.userId = this.paramsService.user.userId;
+
+
+    // this.scheduleOut = new ScheduleOutModel();
+    // this.schedule.userId = this.paramsService.user.userId;
     /*时间格式规整*/
-    if (this.schedule.scheduleStartTime != null && this.schedule.scheduleStartTime != "") {
-      this.schedule.scheduleStartTime = this.schedule.scheduleStartTime.replace("T", " ");
-      this.schedule.scheduleStartTime = this.schedule.scheduleStartTime.replace(":00Z", "");
+    if (this.startTime != null && this.startTime != "") {
+      this.startTime = this.startTime.replace("T", " ");
+      this.startTime = this.startTime.replace(":00Z", "");
     }
-    if (this.schedule.scheduleDeadline != null && this.schedule.scheduleDeadline != "") {
-      this.schedule.scheduleDeadline = this.schedule.scheduleDeadline.replace("T", " ");
-      this.schedule.scheduleDeadline = this.schedule.scheduleDeadline.replace(":00Z", "");
+    if (this.startTime != null && this.startTime != "") {
+      this.startTime = this.startTime.replace("T", " ");
+      this.startTime = this.startTime.replace(":00Z", "");
     }
-    //事件默认状态：1
-    this.schedule.scheduleStatus = 1;
-    console.log("groupIds:" + this.schedule.groupIds + " labelIds: " + this.schedule.labelIds);
-    // this.http.post(AppConfig.SCHEDULE_ADD_URL, this.schedule, {
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   responseType: 'json'
-    // })
-    //   .subscribe(data => {
-    //     this.data = data;
-    //     let loader = this.loadingCtrl.create({
-    //       content: this.data.message,
-    //       duration: 1500
-    //     });
-    //     if (this.data.code == 0) {
-    //       loader.present();
-    //       this.goBack();
-    //       console.log("发布成功");
-    //     } else {
-    //       loader.present();
-    //       console.log("发布失败" + this.data.message);
-    //     }
-    //   });
+
+    let rul = new Array<RuModel>();
+    for(let i = 0;i< this.select.length;i++){
+      rul.push(this.pRelAl[this.select[i]]);
+    }
+
+    this.workService.arc(this.title,this.startTime,null,this.type,null,rul).then(data=>{
+      if(data.code == 0){
+        console.log("添加日程成功")
+        this.navCtrl.setRoot('HzPage')
+      }else{
+        console.log("添加日程失败")
+      }
+    }).catch(reason => {
+      console.log("添加日程失败")
+    })
   }
 
   //编辑完成提交
@@ -258,4 +261,18 @@ export class SbPage {
       console.log("查询失败");
     })
   }
+
+  toTest(){
+    let model = this.modalCtrl.create("PaPage",{},{
+      showBackdrop: true
+    })
+    model.present();
+  }
+}
+@Component({
+  template:''
+})
+
+class SelectPage{
+
 }

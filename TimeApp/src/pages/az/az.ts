@@ -51,7 +51,9 @@ export class AzPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AzPage');
-    this.uploadLocal();
+
+    //同步本地日历
+    //this.uploadLocal();
   }
 
   goToLogin() {
@@ -67,53 +69,7 @@ export class AzPage {
   }
   //同步本地日历数据
   uploadLocal(){
-    this.calendarService.findEvent().then(msg=>{
-      let data=eval(msg);
-      // alert(data.length);
-      // alert(data[0].title);
-      // alert(JSON.stringify(data[0]));
-
-      for(let i=0;i<data.length;i++) {
-        let rc=new RcEntity();
-        rc.sI=this.util.getUuid();
-        rc.uI="";
-        rc.sN=data[i].title;
-        rc.lI="";
-
-        let rcp=new RcpEntity();
-        rcp.pI=this.util.getUuid();    //日程参与人表uuID
-        rcp.sI=rc.sI; //关联日程UUID
-        rcp.son="";  //日程别名
-        rcp.sa="";   //修改权限
-        rcp.ps="";   //完成状态
-        rcp.cd=data[i].startDate;//创建时间
-        rcp.pd="";   //完成时间
-        rcp.uI=rc.uI; //参与人ID
-        rcp.ib="1";
-
-        this.sqliteService.executeSql(rc.isq,
-          [])
-          .then(msg=>{
-            //alert(rc.isq);
-          })
-          .catch(err=>{
-            //alert("插入C表错误:"+err);
-          });
-
-
-        this.sqliteService.executeSql(rcp.isq , [])
-          .then(msg=>{
-            //alert(rcp.isq);
-          })
-          .catch(err=>{
-            //alert("插入D表错误:"+JSON.stringify(err));
-          });;
-
-      }
-    }).catch(err=>{
-      //alert("err");
-      //alert(err);
-    });
+    this.calendarService.uploadLocal();
   }
   //创建数据库
   createSql(){

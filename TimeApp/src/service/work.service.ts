@@ -12,6 +12,10 @@ import {UtilService} from "./util-service/util.service";
 import {UserSqliteService} from "./sqlite-service/user-sqlite.service";
 import {RcModel} from "../model/rc.model";
 import {AppConfig} from "../app/app.config";
+import {LbSqliteService} from "./sqlite-service/lb-sqlite.service";
+import {LboModel} from "../model/out/lbo.model";
+import {LbModel} from "../model/lb.model";
+import {ScheduleModel} from "../model/schedule.model";
 
 /**
  * 日程逻辑处理
@@ -22,10 +26,12 @@ import {AppConfig} from "../app/app.config";
 export class WorkService {
   workSqlite: WorkSqliteService;
   userSqlite: UserSqliteService;
+  lbSqlite: LbSqliteService;
   constructor(private baseSqlite:BaseSqliteService,
                 private util:UtilService) {
     this.workSqlite = new WorkSqliteService(baseSqlite,util);
     this.userSqlite = new UserSqliteService(baseSqlite);
+    this.lbSqlite = new LbSqliteService(baseSqlite);
   }
 
   /**
@@ -35,10 +41,11 @@ export class WorkService {
    * @param {string} ed 结束时间
    * @param {string} lbI 标签编号
    * @param {string} jhi 计划名称
-   * @param {Array}  jhi 参与人json数组[ {id,mo} ]（id主键,mo联系方式）
+   * @param {Array}  ruL 参与人json数组[ {id,rN,rC} ]（id主键,rN名称,rC联系方式）
    */
   arc(ct:string,sd:string,ed:string,lbI:string,jhi:string,ruL:Array<RuModel>):Promise<BsModel>{
     return new Promise((resolve, reject) => {
+      let bs = new BsModel();
       //先查询当前用户ID
       this.userSqlite.getUo().then(data=>{
         if(data && data.rows && data.rows.length>0){
@@ -53,11 +60,100 @@ export class WorkService {
           this.baseSqlite.save(rc).then(data=>{
             this.workSqlite.sRcps(rc,ruL)
           })
+          resolve(bs)
         }
+      }).catch(e=>{
+        bs.code = AppConfig.ERR_CODE
+        bs.message=e.message
+        resolve(bs)
       })
 
     })
   }
+
+  /**
+   * 更新日程
+   * @param {string} sI 日程主键
+   * @param {string} ct 标题
+   * @param {string} sd 开始时间
+   * @param {string} ed 结束时间
+   * @param {string} lbI 标签编号
+   * @param {string} jhi 计划名称
+   * @param {Array}  ruL 参与人json数组[ {id,rN,rC} ]（id主键,rN名称,rC联系方式）
+   */
+  urc(sI:string,ct:string,sd:string,ed:string,lbI:string,jhi:string,ruL:Array<RuModel>):Promise<BsModel>{
+    return new Promise((resolve, reject) => {
+      let bs = new BsModel();
+      //先查询当前用户ID
+      this.userSqlite.getUo().then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          let rc = new RcEntity();
+          rc.uI=data.rows.item(0).uI;
+          rc.sN=ct;
+          rc.sd=sd;
+          rc.ed=ed;
+          rc.lI=lbI;
+          rc.ji=jhi;
+          rc.sI=sI;
+          this.baseSqlite.update(rc).then(datau=>{
+            this.workSqlite.dRcps(sI).then(datad=>{
+              this.workSqlite.sRcps(rc,ruL)
+              resolve(bs)
+            }).catch(ed=>{
+              bs.code = AppConfig.ERR_CODE
+              bs.message=ed.message
+              resolve(bs)
+            })
+          }).catch(eu=>{
+            bs.code = AppConfig.ERR_CODE
+            bs.message=eu.message
+            resolve(bs)
+          })
+          resolve(bs)
+        }
+      }).catch(e=>{
+        bs.code = AppConfig.ERR_CODE
+        bs.message=e.message
+        resolve(bs)
+      })
+
+    })
+  }
+
+  /**
+   * 删除日程
+   * @param {string} sI 日程主键
+   * @param {string} sa 修改权限 0不可修改，1可修改
+   */
+  drc(sI:string,sa:string):Promise<BsModel>{
+    return new Promise((resolve, reject) => {
+      let bs = new BsModel();
+      if(sa == '1'){
+        let rc = new RcEntity()
+        rc.sI = sI;
+        this.baseSqlite.delete(rc).then(datau => {
+          this.workSqlite.dRcps(sI).then(datad => {
+            resolve(bs);
+          }).catch(ed => {
+            bs.code = AppConfig.ERR_CODE
+            bs.message = ed.message
+            resolve(bs)
+          })
+        }).catch(eu => {
+          bs.code = AppConfig.ERR_CODE
+          bs.message = eu.message
+          resolve(bs)
+        })
+      }else{
+        bs.code = AppConfig.ERR_CODE
+        bs.message = '无权限删除'
+        resolve(bs)
+      }
+
+
+    })
+  }
+
 
   /**
    * 查询每月事件标识
@@ -67,29 +163,35 @@ export class WorkService {
   getMBs(ym): Promise<MbsoModel> {
     return new Promise((resolve, reject) => {
       let mbso = new MbsoModel();
-      this.workSqlite.getMBs(ym).then(data => {
-        mbso.code = 0;
-        let mbsl = new Array<MbsModel>()
-        if (data && data.rows && data.rows.length > 0) {
-          for (let i = 0; i < data.rows.length; i++) {
-            let mbs = new MbsModel();
-            mbs.date = new Date(data.rows.item(i).ymd);
-            if (data.rows.item(i).ct > 5) {
-              mbs.im = true;
+      //先查询当前用户ID
+      this.userSqlite.getUo().then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          this.workSqlite.getMBs(ym,data.rows.item(0).uI).then(data => {
+            mbso.code = 0;
+            let mbsl = new Array<MbsModel>()
+            if (data && data.rows && data.rows.length > 0) {
+              for (let i = 0; i < data.rows.length; i++) {
+                let mbs = new MbsModel();
+                mbs.date = new Date(data.rows.item(i).ymd);
+                if (data.rows.item(i).ct > 5) {
+                  mbs.im = true;
+                }
+                if (data.rows.item(i).mdn != null) {
+                  mbs.iem = true;
+                }
+                mbsl.push(mbs)
+              }
             }
-            if (data.rows.item(i).mdn != null) {
-              mbs.iem = true;
-            }
-            mbsl.push(mbs)
-          }
+            mbso.bs = mbsl;
+            resolve(mbso);
+          }).catch(e => {
+            mbso.code = 1;
+            mbso.message = e.message;
+            reject(mbso)
+          })
         }
-        mbso.bs = mbsl;
-        resolve(mbso);
-      }).catch(e => {
-        mbso.code = 1;
-        mbso.message = e.message;
-        reject(mbso)
       })
+
     })
   }
 
@@ -100,22 +202,28 @@ export class WorkService {
   getOd(d:string):Promise<RcpoModel>{
     return new Promise((resolve, reject) =>{
       let rcpo = new RcpoModel();
-      this.workSqlite.getOd(d).then(data=>{
-        let rcps = new Array<RcpModel>()
+      //先查询当前用户ID
+      this.userSqlite.getUo().then(data=>{
         if(data && data.rows && data.rows.length>0){
-          for(let i=0;i<data.rows.length;i++){
-            let rcp = new RcpModel();
-            rcp = data.rows.item(i);
-            rcps.push(rcp);
-          }
+          this.workSqlite.getOd(d,data.rows.item(0).uI).then(data=>{
+            let rcps = new Array<ScheduleModel>()
+            if(data && data.rows && data.rows.length>0){
+              for(let i=0;i<data.rows.length;i++){
+                let rcp = new ScheduleModel();
+                rcp = data.rows.item(i);
+                rcps.push(rcp);
+              }
+            }
+            rcpo.slc = rcps;
+            resolve(rcpo);
+          }).catch(e=>{
+            rcpo.code=AppConfig.ERR_CODE;
+            rcpo.message=e.message;
+            reject(rcpo)
+          })
         }
-        rcpo.sjl = rcps;
-        resolve(rcpo);
-      }).catch(e=>{
-        rcpo.code=AppConfig.ERR_CODE;
-        rcpo.message=e.message;
-        reject(rcpo)
       })
+
     })
   }
 
@@ -144,7 +252,7 @@ export class WorkService {
         resolve(rcpo)
       }).catch(e=>{
         rcpo.code=AppConfig.ERR_CODE;
-        rcpo.message=AppConfig.NULL_MESSAGE;
+        rcpo.message=e.message;
         reject(rcpo)
       })
     });
@@ -193,4 +301,30 @@ export class WorkService {
       })
     })
   }
+
+  /**
+   * 查询标签
+   */
+  getlbs():Promise<LboModel>{
+    return new Promise((resolve, reject) =>{
+      let lbo = new LboModel();
+      this.lbSqlite.getlbs().then(data=>{
+        let lbs = new Array<LbModel>()
+        if(data && data.rows && data.rows.length>0){
+          for(let i=0;i<data.rows.length;i++){
+            let lb = new LbModel();
+            lb = data.rows.item(i);
+            lbs.push(lb);
+          }
+        }
+        lbo.lbs=lbs;
+        resolve(lbo)
+      }).catch(e=>{
+        lbo.code=AppConfig.ERR_CODE;
+        lbo.message=e.message;
+        reject(lbo)
+      })
+    });
+  }
+
 }

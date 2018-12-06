@@ -5,7 +5,7 @@
 //标签表
 export class LbEntity {
 
-  private _lai: number=null;   //主键
+  private _lai: string=null;   //主键
   private _lan:string=null; //标签名
   private _lat: string=null;//标签类型
   private _lau: string=null; //标签功能
@@ -14,7 +14,7 @@ export class LbEntity {
    * @type {string}
    * @private
    */
-  private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_F(lai INTEGER PRIMARY KEY,' +
+  private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_F(lai VARCHAR(20) PRIMARY KEY,' +
                           'lan VARCHAR(100),lat VARCHAR(10),lau VARCHAR(100));';
   private _drsq:string="DROP TABLE GTD_F";
 
@@ -34,7 +34,7 @@ export class LbEntity {
 
   get isq(): string {
     let sql='insert into GTD_F ' +
-      '(lai,lan,lat,lau) values('+ this._lai+',"'+ this._lan+'","'+ this._lat+'","'+this._lau+ '")';
+      '(lai,lan,lat,lau) values("'+ this._lai+'","'+ this._lan+'","'+ this._lat+'","'+this._lau+ '")';
     this._isq=sql;
     return this._isq;
   }
@@ -55,7 +55,7 @@ export class LbEntity {
       sql=sql+' _lau="' + this._lau +'",';
     }
     if(this._lai != null){
-      sql = sql + ' lai=' + this._lai +' where lai=' + this._lai;
+      sql = sql + ' lai="' + this._lai +'" where lai=' + this._lai;
     }
     this._usq=sql;
     return this._usq;
@@ -66,7 +66,7 @@ export class LbEntity {
   get dsq(): string {
     let sql='DELETE FROM GTD_F WHERE 1=1 ';
     if(this._lai!=null){
-      sql=sql+' and lai=' + this._lai;
+      sql=sql+' and lai="' + this._lai+'"';
     }
     if(this._lan!=null){
       sql=sql+' and lan="' + this._lan +'"';
@@ -100,11 +100,11 @@ export class LbEntity {
   set drsq(value: string) {
     this._drsq = value;
   }
-  get lai(): number {
+  get lai(): string {
     return this._lai;
   }
 
-  set lai(value: number) {
+  set lai(value: string) {
     this._lai = value;
   }
 

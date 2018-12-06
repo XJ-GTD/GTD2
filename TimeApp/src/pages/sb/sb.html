@@ -22,7 +22,7 @@
 <ion-content padding>
   <ion-label></ion-label>
 
-  <ion-textarea placeholder="要发的内容..."></ion-textarea>
+  <ion-textarea placeholder="要发的内容..." [(ngModel)]="title"></ion-textarea>
 
   <div ion-item no-padding>
     <div *ngFor="let index of select">
@@ -41,20 +41,26 @@
     </div>
   </div>
 
-  <ion-item>
+  <div ion-item>
     <ion-label></ion-label>
-    <ion-select item-end >
-      <ion-option [selected]="true">日程</ion-option>
-      <ion-option [selected]="false">日常</ion-option>
+    <!--<ion-select item-end [(ngModel)]="type" style="width: 100px">-->
+      <!--<ion-option [selected]="true" value="BQA">任务</ion-option>-->
+      <!--<ion-option [selected]="false" value="BQB">日常</ion-option>-->
+      <!--<ion-option [selected]="false" value="BQC">日程</ion-option>-->
+      <!--<ion-option [selected]="false" value="BQD">纪念日</ion-option>-->
+      <!--<ion-option [selected]="false" value="BQE">备忘录</ion-option>-->
+    <!--</ion-select>-->
+    <ion-select item-end [(ngModel)]="type" placeholder="标签">
+      <ion-option  *ngFor="let lb of lbs" value="{{lb.lai}}">{{lb.lan}}</ion-option>
     </ion-select>
-  </ion-item>
+  </div>
   <button ion-item>
     <img src="./assets/imgs/1.png" item-start/>
     <ion-label>时间</ion-label>
     <!--<ion-label text-end>2018年11月20日</ion-label>-->
-    <ion-datetime displayFormat="YYYY-MM-DD HH:mm"></ion-datetime>
+    <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="startTime"></ion-datetime>
   </button>
-  <ion-item>
+  <ion-item *ngIf="false">
     <img src="./assets/imgs/4.png" item-start/>
     <ion-label>重复类型</ion-label>
     <ion-select item-end >
@@ -64,12 +70,12 @@
       <ion-option [selected]="false">日</ion-option>
     </ion-select>
   </ion-item>
-  <button ion-item>
+  <button ion-item  *ngIf="false">
     <img src="./assets/imgs/1.png" item-start/>
     <ion-label>重复时间</ion-label>
     <ion-datetime displayFormat="MM-DD"></ion-datetime>
   </button>
-  <button ion-item>
+  <button ion-item *ngIf="false">
     <img src="./assets/imgs/b.png" item-start/>
     <ion-label>备注</ion-label>
     <ion-input text-end type="text">2018年11月20日</ion-input>

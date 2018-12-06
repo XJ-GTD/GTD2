@@ -36,20 +36,11 @@
 
 <ion-content padding class="page-backgroud-color">
   <div [ngSwitch]="relation">
+
     <ion-list *ngSwitchCase="'persional'">
       <ion-item *ngIf="us == undefined">
         <ion-label>你还没有添加联系人，快点击右上方添加联系人</ion-label>
       </ion-item>
-      <!--<div *ngIf="indexs != undefined">-->
-        <!--<ion-item *ngFor="let i of indexs" (click)="toMemberDetail()">-->
-          <!--<ion-avatar item-start>-->
-            <!--<img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">-->
-          <!--</ion-avatar>-->
-          <!--<h2 style="color:#000">人员{{i}}</h2>-->
-          <!--<p>暖心的皮袄</p>-->
-        <!--</ion-item>-->
-      <!--</div>-->
-
       <ion-item-sliding *ngFor="let u of us">
         <ion-item (click)="toMemberDetail(u)">
           <ion-avatar item-start >
@@ -67,27 +58,22 @@
     </ion-list>
 
     <ion-list *ngSwitchCase="'group'">
-      <div *ngIf="indexs != undefined">
-        <button ion-item *ngFor="let i of indexs" (click)="toGroupMember()">
-          <ion-avatar item-start>
-            <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
-          </ion-avatar>
-          <ion-label>组{{i}}</ion-label>
-        </button>
-      </div>
-      <ion-item *ngIf="false">
+      <ion-item *ngIf="gs == undefined">
         <ion-label >你还没有创建群组，快点击右上方添加联系人</ion-label>
       </ion-item>
-      <!--<div *ngIf="indexs != undefined">-->
-      <!--<ion-item *ngFor="let i of indexs" (click)="toGroupMember()">-->
-      <!--<ion-avatar item-start>-->
-      <!--<img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">-->
-      <!--</ion-avatar>-->
-      <!--<h2>皮球</h2>-->
-      <!--<p>&nbsp;</p>-->
-      <!--<ion-icon name="lock" item-end ></ion-icon>-->
-      <!--</ion-item>-->
-      <!--</div>-->
+      <ion-item-sliding *ngFor="let g of gs">
+        <button ion-item (click)="toGroupMember(g)">
+          <ion-avatar item-start >
+            <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
+          </ion-avatar>
+          <ion-label>
+            {{g.rN}}
+          </ion-label>
+        </button>
+        <ion-item-options side="right">
+          <button ion-button color="danger" (click)="delGroup(g)">删除</button>
+        </ion-item-options>
+      </ion-item-sliding>
     </ion-list>
   </div>
 
