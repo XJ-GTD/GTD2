@@ -48,6 +48,9 @@ export class WorkSqliteService {
         rcp.rui=rus[i].id;
         if(rcp.uI == rc.uI){
           isTrue = true;
+          rcp.sa='1'
+        }else{
+          rcp.sa='0'
         }
         this.baseSqlite.save(rcp);
       }
@@ -60,17 +63,43 @@ export class WorkSqliteService {
       rcp2.sI=rc.sI;
       rcp2.cd=rc.sd;
       rcp2.pd=rc.ed;
+      rcp2.sa='1'
       this.baseSqlite.save(rcp2);
     }
+  }
+
+  /**
+   * 查询日程参与人
+   * @param {string} sI 日程ID
+   * @param {string} pI 日程参与人表主键
+   */
+  getRcps(sI:string,pI:string){
+    let sql = 'select * from GTD_D where 1=1';
+    if(sI != null && sI !=''){
+      sql = sql + ' and sI= "'+ sI +'"';
+    }
+    if(pI != null && pI !=''){
+      sql = sql + ' and pI= "'+ pI +'"';
+    }
+    return this.baseSqlite.executeSql(sql,[])
+  }
+
+  /**
+   * 删除日程关联表
+   * @param {string} sI 日程ID
+   */
+  dRcps(sI:string){
+    let sql = 'delete from GTD_D where sI= "'+ sI +'"';
+    return this.baseSqlite.executeSql(sql,[])
   }
 
   /**
    * 查询每月事件标识
    * @param ym 格式‘2018-01’
    */
-  getMBs(ym){
+  getMBs(ym:string,ui:string){
     let sql='select substr(gd.dt,1,10) ymd,gh.mdn,count(*) ct from ' +
-      '(select case when pd != null and pd != "null" then pd else cd end dt,gdd.* from GTD_D gdd) gd ' +
+      '(select case when pd != null and pd != "null" then pd else cd end dt,gdd.* from GTD_D gdd where uI="'+ ui+'") gd ' +
       'left join (select substr(md,1,10) mdn from GTD_H where mt="0" group by substr(md,1,10)) gh on gh.mdn=substr(gd.dt,1,10) ' +
       'where  substr(gd.dt,1,7)="' + ym +'" GROUP BY substr(gd.dt,1,10),gh.mdn'
     return this.baseSqlite.executeSql(sql,[]);
@@ -80,9 +109,9 @@ export class WorkSqliteService {
    * 查询当天事件
    * @param d 'yyyy-MM-dd'
    */
-  getOd(d:string){
+  getOd(d:string,ui:string){
     let sql="select substr(dt,12,16) scheduleStartTime,gtdd.pI scheduleId,gtdd.son scheduleName from " +
-      "(select case when pd != null and pd != 'null' then pd else cd end dt,gdd.* from GTD_D gdd)" +
+      "(select case when pd != null and pd != 'null' then pd else cd end dt,gdd.* from GTD_D gdd where uI='"+ ui+"')" +
       " gtdd where substr(dt,1,10)='" + d+"'";
       return this.baseSqlite.executeSql(sql,[]);
   }
@@ -91,11 +120,11 @@ export class WorkSqliteService {
    * 获取事件详情
    * @param sI 日程主键
    */
-  getds(sI:string){
-    let sql = "select jh.jn,gf.lan,gc.* from GTD_C gc " +
+  getds(pI:string){
+    let sql = "select jh.jn,gf.lan,gd.sa,gc.* from GTD_D gd left join GTD_C gc on gc.sI = gd.sI" +
       "left join GTD_J_H jh on jh.ji = gc.ji " +
-      "left join GTD_F gf on gf.lai = gc.lI where gc.sI =?"
-    return this.baseSqlite.executeSql(sql,[sI])
+      "left join GTD_F gf on gf.lai = gc.lI where gd.pI ='" + pI +"'"
+    return this.baseSqlite.executeSql(sql,[])
   }
 
   /**

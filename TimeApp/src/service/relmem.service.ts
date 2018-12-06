@@ -22,6 +22,22 @@ export class RelmemService {
     this.relmemSqlite = new RelmemSqliteService(baseSqlite);
   }
 
+
+  relMeMinit(){
+    let rc = '12345678900'
+    let rel='0';
+    this.aru(rc,rc,rc,rel,'0',null)
+    let rc1 = '12345678901'
+    let rel1='0';
+    this.aru('','',rc1,rel1,'0',null)
+    let rc2 = '12345678902'
+    let rel2='0';
+    this.aru('','',rc2,rel2,'0',null)
+    let rc3 = '12345678903'
+    let rel3='0';
+    this.aru('','',rc3,rel3,'0',null)
+  }
+
   /**
    * 添加联系人
    * @param {string} id 更新人UUID
@@ -42,6 +58,12 @@ export class RelmemService {
       ru.rC=rc;
       ru.rel=rel;
       ru.rF = rF;
+      if(ru.rN == null || ru.rN == ''){
+        ru.rN=rc;
+      }
+      if(ru.ran == null || ru.ran == ''){
+        ru.ran=rc;
+      }
       let base=new BsModel();
       this.relmemSqlite.aru(ru).then(data=>{
         //如果是群
@@ -171,13 +193,14 @@ export class RelmemService {
   }
   /**
    * 删除群组人员
+   * @param {string} bi 群组主键ID
    * @param {string} id 群成员ID
    * @returns {Promise<BsModel>}
    */
-  delRgu(id:string):Promise<BsModel>{
+  delRgu(bi:string,id:string):Promise<BsModel>{
     return new Promise((resolve, reject)=>{
       let base=new BsModel();
-      this.relmemSqlite.delRgu(id).then(data=>{
+      this.relmemSqlite.delRgu(bi,id).then(data=>{
         resolve(base);
       }).catch(e=>{
           base.code=1;
@@ -197,6 +220,7 @@ export class RelmemService {
       let base=new BsModel();
       let ru = new RuEntity();
       ru.id = id;
+      ru.rel=null;
       this.relmemSqlite.dru(ru).then(data=>{
         resolve(base);
       }).catch(e=>{
