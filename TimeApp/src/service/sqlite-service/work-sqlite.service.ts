@@ -97,9 +97,9 @@ export class WorkSqliteService {
    * 查询每月事件标识
    * @param ym 格式‘2018-01’
    */
-  getMBs(ym){
+  getMBs(ym:string,ui:string){
     let sql='select substr(gd.dt,1,10) ymd,gh.mdn,count(*) ct from ' +
-      '(select case when pd != null and pd != "null" then pd else cd end dt,gdd.* from GTD_D gdd) gd ' +
+      '(select case when pd != null and pd != "null" then pd else cd end dt,gdd.* from GTD_D gdd where uI="'+ ui+'") gd ' +
       'left join (select substr(md,1,10) mdn from GTD_H where mt="0" group by substr(md,1,10)) gh on gh.mdn=substr(gd.dt,1,10) ' +
       'where  substr(gd.dt,1,7)="' + ym +'" GROUP BY substr(gd.dt,1,10),gh.mdn'
     return this.baseSqlite.executeSql(sql,[]);
@@ -109,9 +109,9 @@ export class WorkSqliteService {
    * 查询当天事件
    * @param d 'yyyy-MM-dd'
    */
-  getOd(d:string){
+  getOd(d:string,ui:string){
     let sql="select substr(dt,12,16) scheduleStartTime,gtdd.pI scheduleId,gtdd.son scheduleName from " +
-      "(select case when pd != null and pd != 'null' then pd else cd end dt,gdd.* from GTD_D gdd)" +
+      "(select case when pd != null and pd != 'null' then pd else cd end dt,gdd.* from GTD_D gdd where uI='"+ ui+"')" +
       " gtdd where substr(dt,1,10)='" + d+"'";
       return this.baseSqlite.executeSql(sql,[]);
   }

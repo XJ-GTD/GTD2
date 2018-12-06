@@ -163,29 +163,35 @@ export class WorkService {
   getMBs(ym): Promise<MbsoModel> {
     return new Promise((resolve, reject) => {
       let mbso = new MbsoModel();
-      this.workSqlite.getMBs(ym).then(data => {
-        mbso.code = 0;
-        let mbsl = new Array<MbsModel>()
-        if (data && data.rows && data.rows.length > 0) {
-          for (let i = 0; i < data.rows.length; i++) {
-            let mbs = new MbsModel();
-            mbs.date = new Date(data.rows.item(i).ymd);
-            if (data.rows.item(i).ct > 5) {
-              mbs.im = true;
+      //先查询当前用户ID
+      this.userSqlite.getUo().then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          this.workSqlite.getMBs(ym,data.rows.item(0).uI).then(data => {
+            mbso.code = 0;
+            let mbsl = new Array<MbsModel>()
+            if (data && data.rows && data.rows.length > 0) {
+              for (let i = 0; i < data.rows.length; i++) {
+                let mbs = new MbsModel();
+                mbs.date = new Date(data.rows.item(i).ymd);
+                if (data.rows.item(i).ct > 5) {
+                  mbs.im = true;
+                }
+                if (data.rows.item(i).mdn != null) {
+                  mbs.iem = true;
+                }
+                mbsl.push(mbs)
+              }
             }
-            if (data.rows.item(i).mdn != null) {
-              mbs.iem = true;
-            }
-            mbsl.push(mbs)
-          }
+            mbso.bs = mbsl;
+            resolve(mbso);
+          }).catch(e => {
+            mbso.code = 1;
+            mbso.message = e.message;
+            reject(mbso)
+          })
         }
-        mbso.bs = mbsl;
-        resolve(mbso);
-      }).catch(e => {
-        mbso.code = 1;
-        mbso.message = e.message;
-        reject(mbso)
       })
+
     })
   }
 
@@ -196,22 +202,28 @@ export class WorkService {
   getOd(d:string):Promise<RcpoModel>{
     return new Promise((resolve, reject) =>{
       let rcpo = new RcpoModel();
-      this.workSqlite.getOd(d).then(data=>{
-        let rcps = new Array<ScheduleModel>()
+      //先查询当前用户ID
+      this.userSqlite.getUo().then(data=>{
         if(data && data.rows && data.rows.length>0){
-          for(let i=0;i<data.rows.length;i++){
-            let rcp = new ScheduleModel();
-            rcp = data.rows.item(i);
-            rcps.push(rcp);
-          }
+          this.workSqlite.getOd(d,data.rows.item(0).uI).then(data=>{
+            let rcps = new Array<ScheduleModel>()
+            if(data && data.rows && data.rows.length>0){
+              for(let i=0;i<data.rows.length;i++){
+                let rcp = new ScheduleModel();
+                rcp = data.rows.item(i);
+                rcps.push(rcp);
+              }
+            }
+            rcpo.slc = rcps;
+            resolve(rcpo);
+          }).catch(e=>{
+            rcpo.code=AppConfig.ERR_CODE;
+            rcpo.message=e.message;
+            reject(rcpo)
+          })
         }
-        rcpo.slc = rcps;
-        resolve(rcpo);
-      }).catch(e=>{
-        rcpo.code=AppConfig.ERR_CODE;
-        rcpo.message=e.message;
-        reject(rcpo)
       })
+
     })
   }
 

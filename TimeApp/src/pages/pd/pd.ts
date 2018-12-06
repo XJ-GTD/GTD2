@@ -63,7 +63,7 @@ export class PdPage {
   }
 
   delete(u){
-    this.relmemService.delRgu(u.id).then(data=>{
+    this.relmemService.delRgu(this.g.id,u.id).then(data=>{
       if(data.code == 0 ){
         console.log("删除群组成员成功")
         this.queryGAll();
