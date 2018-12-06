@@ -130,10 +130,10 @@ export class Ha01Page {
     let dateStr=year + "-" + monthStr + "-" + dayStr;
     this.workSqlite.getOd(dateStr).then(data=>{
       if(data.code==0){
-        for(let i=0;i<data.sjl.length;i++){
+        for(let i=0;i<data.slc.length;i++){
           let mo = new ScheduleModel();
-          mo.scheduleStartTime = data.sjl[i].tm
-          mo.scheduleName = data.sjl[i].son;
+          mo.scheduleStartTime = data.slc[i].scheduleStartTime
+          mo.scheduleName = data.slc[i].scheduleName;
           this.scheduleList.push(mo);
         }
       }
