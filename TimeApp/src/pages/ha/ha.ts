@@ -305,6 +305,8 @@ export class HaPage {
       }
     })
 
+    this.ha01Page.findTodaySchedule($event);
+
     //
     // this.findSchedule = new ScheduleOutModel();
     // this.findSchedule.scheduleStartTime = year + "-" + month + "-" + day + " 00:00";
