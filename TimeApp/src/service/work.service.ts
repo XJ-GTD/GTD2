@@ -97,13 +97,8 @@ export class WorkService {
           rc.sI=sI;
           this.baseSqlite.update(rc).then(datau=>{
             this.workSqlite.dRcps(sI).then(datad=>{
-              this.workSqlite.sRcps(rc,ruL).then(datas=>{
-                resolve(bs);
-              }).catch(es=>{
-                bs.code = AppConfig.ERR_CODE
-                bs.message=es.message
-                resolve(bs)
-              })
+              this.workSqlite.sRcps(rc,ruL)
+              resolve(bs)
             }).catch(ed=>{
               bs.code = AppConfig.ERR_CODE
               bs.message=ed.message
@@ -133,7 +128,7 @@ export class WorkService {
   drc(sI:string,sa:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
-      if(sa == 1){
+      if(sa == '1'){
         let rc = new RcEntity()
         rc.sI = sI;
         this.baseSqlite.delete(rc).then(datau => {
