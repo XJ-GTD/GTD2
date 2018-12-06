@@ -15,6 +15,7 @@ import {AppConfig} from "../app/app.config";
 import {LbSqliteService} from "./sqlite-service/lb-sqlite.service";
 import {LboModel} from "../model/out/lbo.model";
 import {LbModel} from "../model/lb.model";
+import {ScheduleModel} from "../model/schedule.model";
 
 /**
  * 日程逻辑处理
@@ -112,15 +113,15 @@ export class WorkService {
     return new Promise((resolve, reject) =>{
       let rcpo = new RcpoModel();
       this.workSqlite.getOd(d).then(data=>{
-        let rcps = new Array<RcpModel>()
+        let rcps = new Array<ScheduleModel>()
         if(data && data.rows && data.rows.length>0){
           for(let i=0;i<data.rows.length;i++){
-            let rcp = new RcpModel();
+            let rcp = new ScheduleModel();
             rcp = data.rows.item(i);
             rcps.push(rcp);
           }
         }
-        rcpo.sjl = rcps;
+        rcpo.slc = rcps;
         resolve(rcpo);
       }).catch(e=>{
         rcpo.code=AppConfig.ERR_CODE;

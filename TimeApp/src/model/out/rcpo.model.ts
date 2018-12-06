@@ -4,6 +4,7 @@
 
 import {BsModel} from "./bs.model";
 import {RcpModel} from "../rcp.model";
+import {ScheduleModel} from "../schedule.model";
 
 //用户类
 export class RcpoModel extends BsModel{
@@ -14,6 +15,7 @@ export class RcpoModel extends BsModel{
   private _ct:number;//事件数量
   private _sjl: Array<RcpModel> ; //事件list
   private _sj: RcpModel; //事件
+  private _slc: Array<ScheduleModel> ; //事件list
   get ct(): number {
     return this._ct;
   }
@@ -36,5 +38,13 @@ export class RcpoModel extends BsModel{
 
   set sj(value: RcpModel) {
     this._sj = value;
+  }
+
+  get slc(): Array<ScheduleModel> {
+    return this._slc;
+  }
+
+  set slc(value: Array<ScheduleModel>) {
+    this._slc = value;
   }
 }

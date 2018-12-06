@@ -69,9 +69,10 @@ export class WorkSqliteService {
    * @param ym 格式‘2018-01’
    */
   getMBs(ym){
-    let sql='select substr(gd.pD,1,10) ymd,gh.mdn,count(*) ct from GTD_D gd ' +
-      'left outer join (select substr(md,1,10) mdn from GTD_H where mt="0" group by substr(md,1,10)) gh on gh.mdn=substr(gd.pD,1,10) ' +
-      'where  substr(gd.pD,1,7)="' + ym +'" GROUP BY substr(gd.pD,1,10),gh.mdn'
+    let sql='select substr(gd.dt,1,10) ymd,gh.mdn,count(*) ct from ' +
+      '(select case when pd != null and pd != "null" then pd else cd end dt,gdd.* from GTD_D gdd) gd ' +
+      'left join (select substr(md,1,10) mdn from GTD_H where mt="0" group by substr(md,1,10)) gh on gh.mdn=substr(gd.dt,1,10) ' +
+      'where  substr(gd.dt,1,7)="' + ym +'" GROUP BY substr(gd.dt,1,10),gh.mdn'
     return this.baseSqlite.executeSql(sql,[]);
   }
 
@@ -80,8 +81,9 @@ export class WorkSqliteService {
    * @param d 'yyyy-MM-dd'
    */
   getOd(d:string){
-    let sql="select substr(pd,12,16) tm,gtdd.* from GTD_D" +
-      " gtdd where substr(pd,1,10)='" + d+"'";
+    let sql="select substr(dt,12,16) scheduleStartTime,gtdd.pI scheduleId,gtdd.son scheduleName from " +
+      "(select case when pd != null and pd != 'null' then pd else cd end dt,gdd.* from GTD_D gdd)" +
+      " gtdd where substr(dt,1,10)='" + d+"'";
       return this.baseSqlite.executeSql(sql,[]);
   }
 

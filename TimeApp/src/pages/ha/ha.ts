@@ -9,18 +9,15 @@ import { RemindModel } from "../../model/remind.model";
 import { ScheduleModel } from "../../model/schedule.model";
 import { ScheduleOutModel } from "../../model/out/schedule.out.model";
 import { CalendarModel } from "../../model/calendar.model";
-import {CalendarComponent, CalendarComponentOptions, CalendarController} from "../../components/ion2-calendar";
+import {CalendarComponent, CalendarComponentOptions} from "../../components/ion2-calendar";
 import { TimeModel } from "../../model/time.model";
 import * as moment from "moment";
 import {CalendarService} from "../../service/calendar.service";
-import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
 import {UEntity} from "../../entity/u.entity";
 import {WorkService} from "../../service/work.service";
 import {UserService} from "../../service/user.service";
 import {Ha01Page} from "../ha01/ha01";
 import {PlayerService} from "../../service/player.service";
-import {RcEntity} from "../../entity/rc.entity";
-import {RcpEntity} from "../../entity/rcp.entity";
 import {DwEmitService} from "../../service/util-service/dw-emit.service";
 import {HbPage} from "../hb/hb";
 
@@ -76,7 +73,6 @@ export class HaPage {
               private http: HttpClient,
               private paramsService: ParamsService,
               private alarmClock: XiaojiAlarmclockService,
-              private sqliteService:BaseSqliteService,
               private userSqlite:UserService,
               private workSqlite:WorkService,
               private calendarService:CalendarService,
@@ -300,11 +296,13 @@ export class HaPage {
     }
 
     //查询选中那天的日历日程
-    this.playerService.getLocalSchedule(findSchedule.scheduleStartTime, findSchedule.scheduleDeadline).then(data => {
-      for(let i=0;i<data.length;i++){
-        this.scheduleList.push(data[i]);
+    let dayStr = moment().set({'year':year,'month':month-1,'date':day}).format('YYYY-MM-DD');
+    this.workSqlite.getOd(dayStr).then(data=>{
+      if(data && data.slc && data.slc.length>0){
+        for(let i=0;i<data.slc.length;i++){
+          this.scheduleList.push(data.slc[i]);
+        }
       }
-      //alert(JSON.stringify(this.scheduleList[0]));
     })
 
     //
