@@ -15,6 +15,7 @@ export class RcModel extends BsModel{
   private _uI: string=null;          //创建人ID
   private _sd:string=null; //开始时间
   private _ed:string = null; //结束时间
+  private _sa:string = null; //修改权限 0不可修改，1可修改
 
   get sI(): string {
     return this._sI;
@@ -87,5 +88,13 @@ export class RcModel extends BsModel{
 
   set jn(value: string) {
     this._jn = value;
+  }
+
+  get sa(): string {
+    return this._sa;
+  }
+
+  set sa(value: string) {
+    this._sa = value;
   }
 }

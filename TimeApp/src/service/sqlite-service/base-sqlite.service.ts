@@ -162,6 +162,7 @@ export class BaseSqliteService {
           resolve(res);
         }, (tx, err) =>{
           console.log('error: ' + err.message);
+          console.log("sql: "+sql)
           reject(err);
         });
       });
