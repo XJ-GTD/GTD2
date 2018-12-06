@@ -2,13 +2,11 @@ import {Component, ViewChild} from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams, AlertController, Navbar} from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
 import { HttpClient } from "@angular/common/http";
-import { ScheduleOutModel } from "../../model/out/schedule.out.model";
 import { FindOutModel } from "../../model/out/find.out.model";
 import { LabelModel } from "../../model/label.model"
 import { PopoverController,ActionSheetController } from "ionic-angular";
 import {RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
-import {ModalController} from "ionic-angular";
 import {WorkService} from "../../service/work.service";
 import {LbModel} from "../../model/lb.model";
 
@@ -38,11 +36,21 @@ export class SbPage {
 
   pRelAl:Array<RuModel>;
   select:any = [];
+  selectLb:Array<LbModel>;
 
   lbs: Array<LbModel>
   type: any ;
   title:any;
   startTime:any;
+
+  isShow:any = false;
+  showA:boolean = false;
+  showB:boolean = false;
+  showC:boolean = false;
+  showD:boolean = false;
+  showE:boolean = false;
+
+
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -53,7 +61,6 @@ export class SbPage {
               private popoverCtrl:PopoverController,
               private actionSheetCtrl: ActionSheetController,
               private relmemService: RelmemService,
-              private modalCtrl: ModalController,
               private workService: WorkService) {
 
     this.init();
@@ -183,12 +190,6 @@ export class SbPage {
     // this.navCtrl.push('GroupListPage');
   }
 
-  popTest(){
-    //弹窗测试
-    // this.popoverCtrl.create()
-
-  }
-
   presentActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Modify your album',
@@ -262,17 +263,73 @@ export class SbPage {
     })
   }
 
-  toTest(){
-    let model = this.modalCtrl.create("PaPage",{},{
-      showBackdrop: true
-    })
-    model.present();
+
+  backdropclick(e){
+    //判断点击的是否为遮罩层，是的话隐藏遮罩层
+    if(e.srcElement.className == 'itemClass'){
+      this.isShow = false;
+      this.showChange();
+    }
+    //隐藏滚动条
+    e.stopPropagation();
+  }
+
+  show(){
+    this.isShow = true
+  }
+
+  checkdd(lb){
+    //控制
+    if(lb.lau == null){
+      lb.lau = true;
+    }else{
+      lb.lau = !lb.lau;
+    }
+    if(this.selectLb == undefined || this.selectLb.length == 0){
+      this.selectLb = new Array<LbModel>();
+      this.selectLb.push(lb);
+      return;
+    }
+    for(let i = 0;i<this.selectLb.length;i++){
+      if(lb.lai == this.selectLb[i].lai){
+        let tmp = new Array<LbModel>();
+        for(let j = 0;j<this.selectLb.length;j++){
+          if(j != i){
+            tmp.push(this.selectLb[j]);
+          }
+        }
+        this.selectLb  = tmp;
+        return;
+      }
+    }
+
+    console.log('tianj')
+    this.selectLb.push(lb);
+
+  }
+
+  showChange(){
+    let A= false;
+    let B= false;
+    let C= false;
+    let D= false;
+    let E= false;
+
+    for(let i = 0;this.selectLb != undefined && i<this.selectLb.length;i++){
+      switch(this.selectLb[i].lat){
+        case 'BQA': A = true;
+        case 'BQB': B = true;
+        case 'BQC': C = true;
+        case 'BQD': D = true;
+        case 'BQE': E = true;
+      }
+    }
+    this.showA = A;
+    this.showB = B;
+    this.showC = C;
+    this.showD = D;
+    this.showE = E;
+
   }
 }
-@Component({
-  template:''
-})
 
-class SelectPage{
-
-}
