@@ -35,7 +35,7 @@ export class AppConfig {
   public static HEADER_OPTIONS_JSON: any = {
     headers: {
       "Content-Type": "application/json",
-      "Authorization": this.Token
+      "Authorization": AppConfig.Token
     },
   };
 

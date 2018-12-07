@@ -15,6 +15,8 @@ import { PageConfig } from "./page.config";
 import { DwMqService } from "../service/util-service/dw-mq.service";
 import { DwEmitService } from "../service/util-service/dw-emit.service";
 import {FiSqliteService} from "../service/sqlite-service/fi-sqlite.service";
+import {UserService} from "../service/user.service";
+import {AppConfig} from "./app.config";
 
 @Component({
   templateUrl: 'app.html',
@@ -36,7 +38,8 @@ export class MyApp {
     public feedbackService: XiaojiFeedbackService,
     private events: Events,
     private fisqlite:FiSqliteService,
-    private baseSqlite:BaseSqliteService
+    private baseSqlite:BaseSqliteService,
+    private user:UserService
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -49,14 +52,19 @@ export class MyApp {
     });
   }
   init(){
-    //确保异步执行完后才隐藏启动动画
-    this.events.subscribe('db:create', () => {
-      //创建数据库与表成功后才关闭动画跳转页面
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+    // //确保异步执行完后才隐藏启动动画
+    // this.events.subscribe('db:create', () => {
+    //   //创建数据库与表成功后才关闭动画跳转页面
+    //   this.statusBar.styleDefault();
+    //   this.splashScreen.hide();
+    // })
+    // //初始化创建数据库
+    // this.baseSqlite.createDb();
+    this.user.getUo().then(data=>{
+      AppConfig.Token=data.u.uT;
+    }).catch(e=>{
+      alert(e.message)
     })
-    //初始化创建数据库
-    this.baseSqlite.createDb();
   }
   ngAfterViewInit(){
     //通过key，判断是否曾进入过引导页
@@ -95,6 +103,15 @@ export class MyApp {
     }).catch(e=>{
       this.rootPage = PageConfig.AZ_PAGE;
       this.nav.setRoot(this.rootPage);
+
+      //确保异步执行完后才隐藏启动动画
+      this.events.subscribe('db:create', () => {
+        //创建数据库与表成功后才关闭动画跳转页面
+        this.statusBar.styleDefault();
+        this.splashScreen.hide();
+      })
+      //初始化创建数据库
+      this.baseSqlite.createDb();
     })
   }
 
