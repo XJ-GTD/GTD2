@@ -5,6 +5,7 @@ import {UEntity} from "../entity/u.entity";
 import {UModel} from "../model/u.model";
 import {BaseSqliteService} from "./sqlite-service/base-sqlite.service";
 import {BsModel} from "../model/out/bs.model";
+import {AppConfig} from "../app/app.config";
 
 /**
  * 用户sevice
@@ -43,8 +44,11 @@ export class UserService {
       u.uS=uS;
       u.uCt=uCt;
       u.aQ=aQ;
-      u.uT=uT;
       u.uty=uty;
+      if(uT != null && uT!=''){
+        u.uT=uT;
+        AppConfig.Token=uT;
+      }
       let bs = new BsModel();
       this.baseSqlite.update(u).then(data=>{
           bs.code=0;

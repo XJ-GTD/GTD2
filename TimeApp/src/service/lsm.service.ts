@@ -10,6 +10,7 @@ import {BsModel} from "../model/out/bs.model";
 import {UserSqliteService} from "./sqlite-service/user-sqlite.service";
 import {BaseSqliteService} from "./sqlite-service/base-sqlite.service";
 import {UEntity} from "../entity/u.entity";
+import {AppConfig} from "../app/app.config";
 
 
 /**
@@ -143,6 +144,9 @@ export class LsmService {
           let u = new UEntity();
           u.uI=this.data.data.userId;
           u.aQ=this.data.data.accountQueue
+          if(u.uT != null && u.uT!=''){
+            AppConfig.Token=u.uT;
+          }
           //用户如果不存在则添加
           if(oldUi==null){
             this.basesqlite.save(u).then(data=>{
