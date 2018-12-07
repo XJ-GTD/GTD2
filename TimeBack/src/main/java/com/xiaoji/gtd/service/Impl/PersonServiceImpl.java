@@ -6,6 +6,7 @@ import com.xiaoji.gtd.entity.GtdLoginEntity;
 import com.xiaoji.gtd.entity.GtdUserEntity;
 import com.xiaoji.gtd.repository.*;
 import com.xiaoji.gtd.service.IPersonService;
+import com.xiaoji.gtd.service.ISmsService;
 import com.xiaoji.gtd.service.IWebSocketService;
 import com.xiaoji.util.BaseUtil;
 import com.xiaoji.util.CommonMethods;
@@ -58,16 +59,16 @@ public class PersonServiceImpl implements IPersonService {
     private GtdAccountRepository accountRepository;
     @Resource
     private GtdUserRepository userRepository;
-    @Resource
-    private GtdTokenRepository tokenRepository;
 
     private final RabbitTemplate rabbitTemplate;
     private final IWebSocketService webSocketService;
+    private final ISmsService smsService;
 
     @Autowired
-    public PersonServiceImpl(RabbitTemplate rabbitTemplate, IWebSocketService webSocketService) {
+    public PersonServiceImpl(RabbitTemplate rabbitTemplate, IWebSocketService webSocketService, ISmsService smsService) {
         this.rabbitTemplate = rabbitTemplate;
         this.webSocketService = webSocketService;
+        this.smsService = smsService;
     }
 
     /**
@@ -197,7 +198,7 @@ public class PersonServiceImpl implements IPersonService {
             outDto = new SearchUserOutDto();
             accountMobile = inDto.getAccountMobile();
 
-            Object[] objList = (Object[]) personRepository.searchTargetUser(accountMobile, LOGIN_TYPE_MOBILE);
+            Object[] objList = (Object[]) personRepository.searchUserByMobile(accountMobile, LOGIN_TYPE_MOBILE);
 
             if (Integer.valueOf(objList[0].toString()) != 0) {
                 userId = String.valueOf(objList[1]);
@@ -230,15 +231,17 @@ public class PersonServiceImpl implements IPersonService {
 
         PlayerOutDto outDto;
 
-        String accountMobile = "";
-        String userId = "";                 //用户ID
+        String accountMobile = inDto.getAccountMobile();
+        String targetUserId = inDto.getTargetUserId();
+        String userId = inDto.getUserId();                 //用户ID
+
         String userName = "";            //昵称
         String headImgUrl = "";          //头像URL
 
         try {
             outDto = new PlayerOutDto();
 
-            Object[] objList = (Object[]) personRepository.searchTargetUser(accountMobile, LOGIN_TYPE_MOBILE);
+            Object[] objList = (Object[]) personRepository.searchUserById(targetUserId, LOGIN_TYPE_MOBILE);
 
             if (Integer.valueOf(objList[0].toString()) != 0) {
                 userId = String.valueOf(objList[1]);

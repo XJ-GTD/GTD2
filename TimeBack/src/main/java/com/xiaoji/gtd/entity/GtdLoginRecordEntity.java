@@ -14,13 +14,14 @@ public class GtdLoginRecordEntity {
     private String loginLocaltion;
     private String loginIp;
     private String token;
-    private Integer createId;
+    private String createId;
     private Timestamp createDate;
-    private Integer updateId;
+    private String updateId;
     private Timestamp updateDate;
 
     @Id
     @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getId() {
         return id;
     }
@@ -91,11 +92,11 @@ public class GtdLoginRecordEntity {
 
     @Basic
     @Column(name = "CREATE_ID")
-    public Integer getCreateId() {
+    public String getCreateId() {
         return createId;
     }
 
-    public void setCreateId(Integer createId) {
+    public void setCreateId(String createId) {
         this.createId = createId;
     }
 
@@ -111,11 +112,11 @@ public class GtdLoginRecordEntity {
 
     @Basic
     @Column(name = "UPDATE_ID")
-    public Integer getUpdateId() {
+    public String getUpdateId() {
         return updateId;
     }
 
-    public void setUpdateId(Integer updateId) {
+    public void setUpdateId(String updateId) {
         this.updateId = updateId;
     }
 

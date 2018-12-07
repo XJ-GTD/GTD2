@@ -1,5 +1,6 @@
 package com.xiaoji.gtd.controller;
 
+import com.xiaoji.config.interceptor.AuthCheck;
 import com.xiaoji.gtd.dto.*;
 import com.xiaoji.gtd.dto.code.ResultCode;
 import com.xiaoji.gtd.service.IPersonService;
@@ -135,6 +136,7 @@ public class PersonController {
      */
     @RequestMapping(value = "/update_password", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out updatePassword(@RequestBody UpdatePWDInDto inDto) {
         Out outDto = new Out();
         //入参检测
@@ -188,6 +190,7 @@ public class PersonController {
      */
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out logout(@RequestBody UpdatePWDInDto inDto) {
         Out outDto = new Out();
 
@@ -200,6 +203,7 @@ public class PersonController {
      */
     @RequestMapping(value = "/search_user", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out searchUser(@RequestBody SearchUserInDto inDto) {
         Out outDto = new Out();
         SearchUserOutDto data;
@@ -249,6 +253,7 @@ public class PersonController {
      */
     @RequestMapping(value = "/add_player", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out addPlayer(@RequestBody PlayerInDto inDto) {
         Out outDto = new Out();
 
@@ -302,6 +307,7 @@ public class PersonController {
      */
     @RequestMapping(value = "/update_info", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out updateUserInfo(@RequestBody BaseInDto inDto) {
         Out outDto = new Out();
 

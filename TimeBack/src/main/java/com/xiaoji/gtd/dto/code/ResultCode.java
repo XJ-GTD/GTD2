@@ -26,8 +26,10 @@ public enum ResultCode {
     ERROR_MOBILE(20002),                   //手机号错误
     ERROR_PASSWORD(20003),                 //密码错误
     ERROR_AUTHCODE(20004),                 //验证码错误
+    ERROR_TOKEN(20005),                     //TOKEN验证错误
 
     EXPIRE_AUTHCODE(21001),                //验证码过期
+    EXPIRE_TOKEN(21002),                   //token过期
 
     FAIL_BUSIC(50000),                     //失败统一处理
 	FAIL_SIGNUP(50100),                    //注册失败
@@ -38,18 +40,20 @@ public enum ResultCode {
     FAIL_XF(50200),                         //讯飞语音调用失败
     FAIL_XF_SKILL(50201),                   //讯飞语音无对应技能
 
+    FAIL_TOKEN(50500),                      //校验token失败
+
 
     // 未认证（签名错误）
     NOT_FOUND(401),
     //权限等级不足
-    UNAUTH_LEVEL(402),
+    UN_AUTH_LEVEL(402),
     // 未认证（签名错误）
     UNAUTHORIZED(401),
 
     /** 未登录 */
-    UNAUTHEN(4401),
+    UN_AUTH_TOKEN(4401),
     /** 未授权，拒绝访问 */
-    UNAUTHZ(4403),
+    UN_AUTH_Z(4403),
 
     // 服务器内部错误
     INTERNAL_SERVER_ERROR(500);

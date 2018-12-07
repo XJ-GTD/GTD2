@@ -54,14 +54,27 @@ public class PersonRepository {
 
     /**
      * 查询目标用户
-     *
+     * (手机号查询）
      * @return
      */
-    public Object searchTargetUser(String accountMobile, String type) {
+    public Object searchUserByMobile(String accountMobile, String type) {
         String sql = "SELECT COUNT(*), TA.USER_ID, TB.USER_NAME, TB.HEADIMG_URL \n" +
                 " FROM gtd_login TA \n" +
                 " INNER JOIN gtd_user TB ON TA.USER_ID = TB.USER_ID \n" +
                 " WHERE TA.LOGIN_TYPE = '" + type + "' AND TA.LOGIN_NAME = '" + accountMobile +"'";
+        return em.createNativeQuery(sql).getSingleResult();
+    }
+
+    /**
+     * 查询目标用户
+     * (userId查询)
+     * @return
+     */
+    public Object searchUserById(String userId, String type) {
+        String sql = "SELECT COUNT(*), TA.USER_ID, TB.USER_NAME, TB.HEADIMG_URL \n" +
+                " FROM gtd_login TA \n" +
+                " INNER JOIN gtd_user TB ON TA.USER_ID = TB.USER_ID \n" +
+                " WHERE TA.LOGIN_TYPE = '" + type + "' AND TA.LOGIN_NAME = '" + userId +"'";
         return em.createNativeQuery(sql).getSingleResult();
     }
 
@@ -72,7 +85,7 @@ public class PersonRepository {
      * @return
      */
     public Object updatePassword(String userId, String password) {
-        String sql = "UPDATE gtd_login \n " +
+        String sql = "UPDATE gtd_login \n" +
                 " SET PASSWORD = '" + password + "', CREATE_ID = '" + userId + "', CREATE_DATE = " + BaseUtil.getSqlDate() + " \n" +
                 " WHERE USER_ID = '" + userId + "'";
         return em.createNativeQuery(sql).getSingleResult();
