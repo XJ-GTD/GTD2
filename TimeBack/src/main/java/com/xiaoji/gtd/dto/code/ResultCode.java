@@ -27,6 +27,7 @@ public enum ResultCode {
     ERROR_PASSWORD(20003),                 //密码错误
     ERROR_AUTHCODE(20004),                 //验证码错误
     ERROR_TOKEN(20005),                     //TOKEN验证错误
+    ERROR_USERNAME(20006),                  //用户名错误
 
     EXPIRE_AUTHCODE(21001),                //验证码过期
     EXPIRE_TOKEN(21002),                   //token过期

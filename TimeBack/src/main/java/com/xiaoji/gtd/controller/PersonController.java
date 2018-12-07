@@ -318,7 +318,24 @@ public class PersonController {
             logger.debug("[修改失败]：用户ID不可为空");
             return outDto;
         }
+        //特殊字符检测
+        //入参正确性验证
+        if (CommonMethods.checkMySqlReservedWords(inDto.getUserName())) {
+            outDto.setCode(ResultCode.ERROR_USERNAME);
+            logger.debug("[修改失败]：用户名类型或格式错误");
+            return outDto;
+        }
 
+        //业务逻辑
+        try {
+
+            outDto.setCode(ResultCode.SUCCESS);
+            logger.debug("[修改成功]");
+        } catch (Exception e) {
+          e.printStackTrace();
+          outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+          logger.error("[修改失败]：服务器繁忙");
+        }
 
         return outDto;
     }
