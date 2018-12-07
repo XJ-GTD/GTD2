@@ -18,6 +18,7 @@ import {RguEntity} from "../../entity/rgu.entity";
 import {LbSqliteService} from "./lb-sqlite.service";
 import {JhEntity} from "../../entity/jh.entity";
 import {RelmemService} from "../relmem.service";
+import {FiEntity} from "../../entity/fi.entity";
 
 /**
  * 客户端数据库
@@ -125,10 +126,15 @@ export class BaseSqliteService {
     this.executeSql(jh.csq,[]).catch(e=>{
       console.log('GTD_J_H:'+e.toString());
     })
-
+    // 版本表
+    let fi = new FiEntity();
+    this.executeSql(fi.csq,[]).catch(e=>{
+      console.log('GTD_FI:'+e.toString());
+    })
     let sql = new UEntity().csq+ new RcEntity().csq + new RcpEntity().csq +new RuEntity().csq
                   + new LbEntity().csq+new ReEntity().csq+ new StEntity().csq+ new MsEntity().csq
-                  + new ZtEntity().csq+new ZtdEntity().csq+new JhEntity().csq+new RguEntity().csq;
+                  + new ZtEntity().csq+new ZtdEntity().csq+new JhEntity().csq+new RguEntity().csq
+                  +new FiEntity().csq;
     //this.importSqlToDb(sql);
     let data = new Array();
     this.initlb(data);
