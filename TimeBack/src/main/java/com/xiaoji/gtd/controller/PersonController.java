@@ -308,8 +308,17 @@ public class PersonController {
     @RequestMapping(value = "/update_info", method = RequestMethod.POST)
     @ResponseBody
     @AuthCheck
-    public Out updateUserInfo(@RequestBody BaseInDto inDto) {
+    public Out updateUserInfo(@RequestBody UserInfoInDto inDto) {
         Out outDto = new Out();
+
+        //入参检测
+        //必须项检测
+        if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
+            outDto.setCode(ResultCode.NULL_MOBILE);
+            logger.debug("[修改失败]：用户ID不可为空");
+            return outDto;
+        }
+
 
         return outDto;
     }
