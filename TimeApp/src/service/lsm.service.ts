@@ -50,7 +50,7 @@ export class LsmService {
         if(data && data.rows && data.rows.length>0){
             ui = data.rows.item(0).uI;
             //直接注册
-            this.pn.sn(am,pw,ac,ui)
+            this.pn.sn(am,pw,ac,ui,'')
               .subscribe(sndata=>{
                 this.data = sndata;
                 base = this.data
@@ -235,13 +235,35 @@ export class LsmService {
 
   /**
    * 修改密码
+   * @param {string} ui 用户ID
+   * @param {string} op 旧密码
    * @param {string} pw 新密码
    */
-  upw(pw:string):Promise<BsModel>{
-    let ui = this.util.getUuid();
+  upw(ui:string, op:string, pw:string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let base = new BsModel();
-      this.pn.upw(ui,pw)
+      this.pn.upw(ui,op,pw)
+        .subscribe(data=>{
+          this.data = data;
+          base = this.data
+          resolve(base)
+        },err => {
+          base.message = err.message
+          base.code=1
+          reject(base)
+        })
+    })
+  }
+
+  /**
+   * 用户搜索
+   * @param {string} am 手机号
+   * @param {string} tn token
+   */
+  su(am:string,tn:string):Promise<BsModel>{
+    return new Promise((resolve, reject) =>{
+      let base = new BsModel();
+      this.pn.su(am,tn)
         .subscribe(data=>{
           this.data = data;
           base = this.data

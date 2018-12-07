@@ -91,11 +91,12 @@ export class RelmemSqliteService {
   }
   /**
    * 删除群组人员
-   * @param {RguEntity} bmi 关系人ID
+   * @param {string} bi 群组主键ID
+   * @param {string} bmi 关系人ID
    * @returns {Promise<any>}
    */
-  delRgu(bmi:string){
-    let sql = "delete from GTD_B_X where bmi = '"+bmi+"'";
+  delRgu(bi:string,bmi:string){
+    let sql = "delete from GTD_B_X where bmi = '"+bmi+"' and bi='"+bi+"'";
     return this.baseSqlite.executeSql(sql,[]);
   }
 

@@ -17,6 +17,7 @@ import {BsModel} from "../../model/out/bs.model";
 import {RguEntity} from "../../entity/rgu.entity";
 import {LbSqliteService} from "./lb-sqlite.service";
 import {JhEntity} from "../../entity/jh.entity";
+import {RelmemService} from "../relmem.service";
 
 /**
  * 客户端数据库
@@ -124,12 +125,14 @@ export class BaseSqliteService {
     this.executeSql(jh.csq,[]).catch(e=>{
       console.log('GTD_J_H:'+e.toString());
     })
-    let data = new Array();
-    this.initlb(data);
+
     let sql = new UEntity().csq+ new RcEntity().csq + new RcpEntity().csq +new RuEntity().csq
                   + new LbEntity().csq+new ReEntity().csq+ new StEntity().csq+ new MsEntity().csq
                   + new ZtEntity().csq+new ZtdEntity().csq+new JhEntity().csq+new RguEntity().csq;
     //this.importSqlToDb(sql);
+    let data = new Array();
+    this.initlb(data);
+
   }
 
 
@@ -162,6 +165,7 @@ export class BaseSqliteService {
           resolve(res);
         }, (tx, err) =>{
           console.log('error: ' + err.message);
+          console.log("sql: "+sql)
           reject(err);
         });
       });

@@ -55,7 +55,16 @@ export class DwMqService {
           let jh = '';
           let lbN='';
           this.work.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
-            //alert(data.code);
+            let str = ""
+            if(data && data.sjl && data.sjl.length>0){
+              str = '您有'+data.sjl.length+"个日程等待您去处理！"
+            }else{
+              str="您今天有大把的时间可以利用"
+            }
+            let url = "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&text=" + encodeURI(str);
+            var n = new Audio(url);
+            n.src = url;
+            n.play();
             this.dwEmit.setHaData(data);
             //this.dwEmit.setHbData(data);
             this.dwEmit.setAdPage(data);

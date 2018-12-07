@@ -9,7 +9,7 @@
   <ion-navbar>
     <ion-title>创建群</ion-title>
     <ion-buttons right>
-      <button ion-button ion-only >
+      <button ion-button ion-only (click)="save()">
         保存
       </button>
     </ion-buttons>
@@ -25,7 +25,7 @@
       群名称
     </ion-label>
     <ion-item>
-      <ion-input placeholder="请输入" ></ion-input>
+      <ion-input placeholder="请输入" [(ngModel)]="qmc"></ion-input>
       <!--<ion-buttons item-end>-->
       <img src="../../assets/imgs/3.png" height="25" width="25" (click)="toAddGroupMember()" item-end>
       <!--</ion-buttons>-->
@@ -43,10 +43,7 @@
         <ion-avatar item-start>
           <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
         </ion-avatar>
-        <ion-label>
-          <h2>{{cy.ran}}</h2>
-          <p>皮一下很开心</p>
-        </ion-label>
+        <ion-label>{{cy.ran}}</ion-label>
       </ion-item>
       <ion-item-options side="left">
         <!--<button ion-button>Favorite</button>-->

@@ -9,7 +9,7 @@ import {RemindModel} from "./remind.model";
 export class ScheduleModel {
 
   private _code: number;                              //消息状态值
-  private _scheduleId: number;                        // 日程事件ID
+  private _scheduleId: string;                        // 日程事件ID
   private _scheduleName: string;                    // 日程事件名称
   private _scheduleStartTime: string;              // 开始时间
   private _scheduleDeadline: string;               // 截止时间
@@ -47,10 +47,10 @@ export class ScheduleModel {
     this._scheduleName = value;
   }
 
-  get scheduleId(): number {
+  get scheduleId(): string {
     return this._scheduleId;
   }
-  set scheduleId(value: number) {
+  set scheduleId(value: string) {
     this._scheduleId = value;
   }
 

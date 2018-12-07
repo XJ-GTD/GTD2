@@ -60,6 +60,10 @@ export class AppConfig {
 
   public static PERSON_UPW_URL: string = AppConfig.PERSON_URL + "/update_password";   //修改密码
 
+  public static PERSON_LG: string = AppConfig.PERSON_URL + "/logout";   //用户注销
+
+  public static PERSON_SU: string = AppConfig.PERSON_URL + "/search_user";   //用户搜索
+
 
   /* ------------------------ 用户类 end--------------------------*/
 
