@@ -20,6 +20,7 @@ import {JhEntity} from "../../entity/jh.entity";
 import {RelmemService} from "../relmem.service";
 import {FiEntity} from "../../entity/fi.entity";
 import {AppConfig} from "../../app/app.config";
+import {UtilService} from "../util-service/util.service";
 
 /**
  * 客户端数据库
@@ -33,6 +34,7 @@ export class BaseSqliteService {
   win: any = window;//window对象
   constructor( private platform: Platform,
                private sqlite: SQLite,
+               private util: UtilService,
                private sqlitePorter: SQLitePorter,
                private events: Events) { }
   /**
@@ -57,7 +59,7 @@ export class BaseSqliteService {
       this.database = this.win.openDatabase("data.db", '1.0', 'database', 5 * 1024 * 1024);//声明H5 数据库大小
       console.debug(this.className+"H5数据库mingWX.db创建/成功连接")
     }
-    alert('创建数据成功！')
+    //alert('创建数据成功！')
   }
 
   /**
@@ -69,7 +71,12 @@ export class BaseSqliteService {
     //this.executeSql('DROP TABLE GTD_ACCOUNT',[]);
     //创建用户基本信息表
     let ue=new UEntity();
-    this.executeSql(ue.csq,[]).catch(e=>{
+    this.executeSql(ue.csq,[]).then(data=>{
+      let u:UEntity=new UEntity();
+      u.uI=this.util.getUuid();
+      u.uty='0';
+      this.save(u);
+    }).catch(e=>{
       console.log('createTable：GTD_A:'+e.toString());
     })
     //创建日程表
@@ -150,7 +157,7 @@ export class BaseSqliteService {
     let data = new Array();
     this.initlb(data);
     console.debug(this.className+"数据库初始化建表结束")
-    alert('初始化建表结束！')
+   // alert('初始化建表结束！')
   }
 
 

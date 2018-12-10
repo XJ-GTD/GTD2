@@ -56,17 +56,12 @@ export class AzPage {
     console.log('ionViewDidLoad AzPage');
 
     //同步本地日历
-    //this.uploadLocal();
+    this.uploadLocal();
   }
 
   goToLogin() {
-    let u:UEntity=new UEntity();
-    u.uI=this.util.getUuid();
-    u.uty='0';
-    this.sqliteService.save(u).then(data=>{
-      console.log(data);
-      this.navCtrl.setRoot('HaPage');
-    })
+
+    this.navCtrl.setRoot('HaPage');
     //this.navCtrl.setRoot('UbPage');
   }
   //同步本地日历数据

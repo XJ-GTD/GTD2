@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 
 import { Platform, MenuController, Nav, Tabs, Events  } from 'ionic-angular';
+import { AndroidPermissions } from '@ionic-native/android-permissions';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -20,7 +21,7 @@ import {AppConfig} from "./app.config";
 
 @Component({
   templateUrl: 'app.html',
-  providers: [ ParamsService, WebsocketService, DwMqService, BackButtonService ]
+  providers: [ ParamsService, WebsocketService, DwMqService, BackButtonService,AndroidPermissions ]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
@@ -41,16 +42,47 @@ export class MyApp {
     private baseSqlite:BaseSqliteService,
     private storage: Storage,
     private paramsService: ParamsService,
-    private user:UserService
+    private user:UserService,
+    private androidPermissions: AndroidPermissions
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      feedbackService.initAudio();
-      this.backButtonService.registerBackButtonAction(null);
       // statusBar.styleDefault();
       // splashScreen.hide();
-      this.init();
+      console.debug("PERMISSION request init");
+      let list = [
+          this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE,
+          this.androidPermissions.PERMISSION.RECORD_AUDIO,
+          this.androidPermissions.PERMISSION.ACCESS_NETWORK_STATE,
+          this.androidPermissions.PERMISSION.READ_PHONE_STATE,
+          this.androidPermissions.PERMISSION.MODIFY_AUDIO_SETTINGS,
+          this.androidPermissions.PERMISSION.WRITE_SETTINGS,
+          this.androidPermissions.PERMISSION.ACCESS_WIFI_STATE,
+          this.androidPermissions.PERMISSION.CHANGE_WIFI_STATE,
+          this.androidPermissions.PERMISSION.READ_CALENDAR,
+          this.androidPermissions.PERMISSION.WRITE_CALENDAR,
+          this.androidPermissions.PERMISSION.RECEIVE_BOOT_COMPLETED,
+          this.androidPermissions.PERMISSION.WAKE_LOCK,
+          this.androidPermissions.PERMISSION.VIBRATE,
+        this.androidPermissions.PERMISSION.BLUETOOTH,
+        ];
+      console.debug("PERMISSION request" + list);
+      this.androidPermissions.requestPermissions(list).then(
+        (result) => {
+          console.debug('Has permission?',result.hasPermission)
+          feedbackService.initAudio();
+          this.backButtonService.registerBackButtonAction(null);
+          this.init();
+        },
+        (err) => {
+          console.debug('Has permission?', err.toString())
+        feedbackService.initAudio();
+        this.backButtonService.registerBackButtonAction(null);
+        this.init();
+        }
+      );
+
     });
   }
   init(){
@@ -86,7 +118,7 @@ export class MyApp {
       }
       this.nav.setRoot(this.rootPage);
     }).catch(e=>{
-      alert("MyApp查询版本号失败")
+     // alert("MyApp查询版本号失败")
       //首次打开App,初始化创建数据库建表
       this.baseSqlite.createTable();
       this.rootPage = PageConfig.AZ_PAGE;
