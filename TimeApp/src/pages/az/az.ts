@@ -63,16 +63,16 @@ export class AzPage {
     let u:UEntity=new UEntity();
     u.uI=this.util.getUuid();
     u.uty='0';
-    this.workSqlite.test();
     this.sqliteService.save(u).then(data=>{
       console.log(data);
       this.navCtrl.setRoot('HaPage');
+      this.calendarService.uploadLocal(u.uI);
     })
     //this.navCtrl.setRoot('UbPage');
   }
   //同步本地日历数据
   uploadLocal(){
-    this.calendarService.uploadLocal();
+    //this.calendarService.uploadLocal();
   }
   //创建数据库
   createSql(){

@@ -86,7 +86,7 @@ export class MyApp {
       }
       this.nav.setRoot(this.rootPage);
     }).catch(e=>{
-      alert("MyApp查询版本号失败")
+     // alert("MyApp查询版本号失败")
       //首次打开App,初始化创建数据库建表
       this.baseSqlite.createTable();
       this.rootPage = PageConfig.AZ_PAGE;
