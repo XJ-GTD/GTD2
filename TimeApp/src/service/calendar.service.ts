@@ -52,7 +52,7 @@ export class CalendarService {
   }
 
   //同步本地日历日程
-  uploadLocal():Promise<BsModel>{
+  uploadLocal(uI:string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       this.findEvent().then(msg=>{
 
@@ -78,7 +78,7 @@ export class CalendarService {
           // rcp.uI=rc.uI; //参与人ID
           // rcp.ib="1";
 
-          this.playService.addPlayer(this.util.getUuid(),data[i].title,"","",data[i].startDate,data[i].endDate,this.util.getUuid(),"","","",data[i].startDate,"","","1").then(base=>{
+          this.playService.addPlayer(this.util.getUuid(),data[i].title,"",uI,data[i].startDate,data[i].endDate,this.util.getUuid(),"","","",data[i].startDate,"",uI,"1").then(base=>{
             resolve(base);
           })
             .catch(e=>{
