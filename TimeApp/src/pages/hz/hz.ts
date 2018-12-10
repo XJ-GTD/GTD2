@@ -31,7 +31,9 @@ export class HzPage {
               public platform: Platform,
               public backButtonService: BackButtonService,
               public userService: UserService) {
-
+    this.platform.ready().then(() => {
+      this.backButtonService.registerBackButtonAction(this.tabRef);
+    });
   }
 
   ionViewDidLoad() {

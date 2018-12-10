@@ -57,17 +57,4 @@ public class ScheduleController {
         return outDto;
     }
 
-    /**
-     * 接受权限申请
-     * @return
-     */
-    @RequestMapping(value = "/invite", method = RequestMethod.POST)
-    @ResponseBody
-    @AuthCheck
-    public Out inviteSchedule(@RequestBody BaseInDto inDto) {
-        Out outDto = new Out();
-
-        return outDto;
-    }
-
 }

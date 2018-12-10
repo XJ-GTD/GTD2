@@ -15,4 +15,10 @@ public interface IWebSocketService {
      */
     void pushMessage(String queueName, WebSocketOutDto outDto);
 
+    /**
+     * 数据处理用：向客户端用户所有终端推送数据
+     * @param userId
+     * @param outDto
+     */
+    void pushTopicMessage(String userId, WebSocketOutDto outDto);
 }

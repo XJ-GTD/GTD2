@@ -1,6 +1,9 @@
 package com.xiaoji.gtd.service.Impl;
 
 import com.xiaoji.gtd.dto.*;
+import com.xiaoji.gtd.dto.mq.WebSocketDataDto;
+import com.xiaoji.gtd.dto.mq.WebSocketOutDto;
+import com.xiaoji.gtd.dto.mq.WebSocketResultDto;
 import com.xiaoji.gtd.entity.GtdAccountEntity;
 import com.xiaoji.gtd.entity.GtdLoginEntity;
 import com.xiaoji.gtd.entity.GtdUserEntity;
@@ -23,7 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用户接口实现类
@@ -50,6 +55,8 @@ public class PersonServiceImpl implements IPersonService {
     private String EXCHANGE_TYPE_FANOUT;
     @Value("${rabbitmq.exchange.type.topic}")
     private String EXCHANGE_TYPE_TOPIC;
+    @Value("${mq.agreement.version}")
+    private String VERSION;
 
     @Resource
     private PersonRepository personRepository;
@@ -90,7 +97,7 @@ public class PersonServiceImpl implements IPersonService {
 
         String accountName = "";
         String userName = "";
-        String headImgUrl = "";
+        String headImg = "";
         String accountStatus = "";
         String accountInviter = "";
         String loginType = "";
@@ -102,14 +109,14 @@ public class PersonServiceImpl implements IPersonService {
             //规则字段
             accountName = BaseUtil.getAccountName(accountMobile);
             userName = BaseUtil.getUserName(accountMobile);
-            headImgUrl = HEAD_IMG_URL_ANDROID;
+            headImg = HEAD_IMG_URL_ANDROID;
             accountStatus = ACCOUNT_STATUS;
             logger.debug("账户名：" + accountName + " 昵称：" + userName);
 
             //用户数据生成
             userEntity.setUserId(userId);
             userEntity.setUserName(userName);
-            userEntity.setHeadimgUrl(headImgUrl);
+            userEntity.setHeadImg(headImg);
             userEntity.setCreateId(userId);
             userEntity.setCreateDate(date);
             userRepository.save(userEntity);
@@ -174,51 +181,10 @@ public class PersonServiceImpl implements IPersonService {
      */
     @Override
     public boolean isPasswordTrue(String userId, String password) {
+        logger.debug("查询密码正确性：用户id " + userId + "| 密码 " + password);
         Object obj = personRepository.isPasswordTrue(userId, password);
         int count = Integer.valueOf(obj.toString());
         return count == 0;
-    }
-
-    /**
-     * 查询目标用户
-     * @param inDto
-     * @return
-     */
-    @Override
-    public SearchUserOutDto searchPlayer(PlayerInDto inDto) {
-
-        SearchUserOutDto outDto = null;
-
-        String accountMobile = "";
-        String userId = "";                 //用户ID
-        String userName = "";            //昵称
-        String headImgUrl = "";          //头像URL
-
-        try {
-            outDto = new SearchUserOutDto();
-            accountMobile = inDto.getAccountMobile();
-
-            Object[] objList = (Object[]) personRepository.searchUserByMobile(accountMobile, LOGIN_TYPE_MOBILE);
-
-            if (Integer.valueOf(objList[0].toString()) != 0) {
-                userId = String.valueOf(objList[1]);
-                userName = String.valueOf(objList[2]);
-                headImgUrl = String.valueOf(objList[3]);
-
-                outDto.setAccountMobile(accountMobile);
-                outDto.setUserId(userId);
-                outDto.setUserName(userName);
-                outDto.setHeadImgUrl(headImgUrl);
-            } else {
-                return null;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("查询用户出错");
-            throw new SecurityException("查询用户出错");
-        }
-        return outDto;
     }
 
     /**
@@ -227,35 +193,55 @@ public class PersonServiceImpl implements IPersonService {
      * @return
      */
     @Override
-    public int addPlayer(PlayerInDto inDto) {
+    public PlayerOutDto addPlayer(PlayerInDto inDto) {
 
         PlayerOutDto outDto;
+        WebSocketOutDto socketOutDto;
 
         String accountMobile = inDto.getAccountMobile();
-        String targetUserId = inDto.getTargetUserId();
-        String userId = inDto.getUserId();                 //用户ID
-
+        String userId = inDto.getUserId();                 //用户I
         String userName = "";            //昵称
-        String headImgUrl = "";          //头像URL
+        String headImg = "";          //头像URL
+        String mobile = "";
+
+        String targetUserId = "";
+        String targetUserName = "";
+        String targetHeadImg = "";
 
         try {
             outDto = new PlayerOutDto();
+            socketOutDto = new WebSocketOutDto();
 
-            Object[] objList = (Object[]) personRepository.searchUserById(targetUserId, LOGIN_TYPE_MOBILE);
+            Object[] objList = (Object[]) personRepository.searchUserByMobile(accountMobile, LOGIN_TYPE_MOBILE);
+            Object[] objUser = (Object[]) personRepository.searchUserById(userId);
 
-            if (Integer.valueOf(objList[0].toString()) != 0) {
-                userId = String.valueOf(objList[1]);
-                userName = String.valueOf(objList[2]);
-                headImgUrl = String.valueOf(objList[3]);
+            if (Integer.valueOf(objList[0].toString()) > 0) {
+                targetUserId = String.valueOf(objList[1]);
+                targetUserName = String.valueOf(objList[2]);
+                targetHeadImg = String.valueOf(objList[3]);
 
+                logger.debug("目标用户信息： " + targetUserId + " | " + targetUserName + " | " +  targetHeadImg);
                 outDto.setAccountMobile(accountMobile);
-                outDto.setUserId(userId);
-                outDto.setUserName(userName);
-                outDto.setHeadImgUrl(headImgUrl);
+                outDto.setUserId(targetUserId);
+                outDto.setUserName(targetUserName);
+                outDto.setHeadImg(targetHeadImg);
 
-//                webSocketService.pushMessage();
+                userName = objUser[0].toString();
+                headImg = objUser[1].toString();
+                mobile = objUser[2].toString();
+
+                logger.debug("发送邀请用户信息： " + userId + " | " + userName + " | " + headImg + " | " + mobile);
+                WebSocketDataDto data = new WebSocketDataDto();
+                data.setUs(userId);
+                data.setUn(userName);
+                data.setHi(headImg);
+                data.setMb(mobile);
+
+                socketOutDto.setRes(new WebSocketResultDto(data));
+                webSocketService.pushTopicMessage(targetUserId, socketOutDto);
             } else {
-                return 1;
+                logger.debug("手机号[" + accountMobile + "]未注册!");
+                return null;
             }
 
         } catch (Exception e) {
@@ -263,7 +249,7 @@ public class PersonServiceImpl implements IPersonService {
             logger.error("发送邀请错误");
             throw new SecurityException("发送邀请错误");
         }
-        return 0;
+        return outDto;
     }
 
     /**
@@ -273,6 +259,7 @@ public class PersonServiceImpl implements IPersonService {
      */
     @Override
     public boolean isRepeatMobile(String mobile) {
+        logger.debug("查询手机号重复性：手机号" + mobile);
         Object obj = personRepository.findByMobile(mobile);
         int count = Integer.valueOf(obj.toString());
         return count != 0;
@@ -285,6 +272,7 @@ public class PersonServiceImpl implements IPersonService {
      */
     @Override
     public boolean isRepeatUuid(String uuid) {
+        logger.debug("查询uuid重复性：uuid" + uuid);
         Object obj = personRepository.findByUuid(uuid);
         int count = Integer.valueOf(obj.toString());
         return count != 0;

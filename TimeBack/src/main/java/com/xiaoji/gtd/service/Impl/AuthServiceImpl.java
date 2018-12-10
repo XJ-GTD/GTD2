@@ -87,12 +87,24 @@ public class AuthServiceImpl implements IAuthService {
         String userId = "";
         String queueName = "";
         String token = "";
+        String userName = "";
+        String headImgUrl = "";
+        String birthday = "";
+        String realName = "";
+        String idCard = "";
+        String userSex = "";
 
         try {
-            Object[] obj = (Object[]) authRepository.passwordLogin(account, password, LOGIN_TYPE_ACCOUNT);
+            Object[] obj = (Object[]) authRepository.authLogin(account, password, null, LOGIN_TYPE_ACCOUNT);
             int count = Integer.valueOf(obj[0].toString());
             if (count != 0) {
                 userId = obj[1].toString();
+                userName = obj[2].toString();
+                headImgUrl = obj[3].toString();
+                birthday = obj[4].toString();
+                realName = obj[5].toString();
+                idCard = obj[6].toString();
+                userSex = obj[7].toString();
 
                 queueName = BaseUtil.getQueueName(userId, deviceId);
                 BaseUtil.createQueue(rabbitTemplate, queueName, BaseUtil.getExchangeName(userId));
@@ -100,8 +112,14 @@ public class AuthServiceImpl implements IAuthService {
                 token = BaseUtil.getToken(userId, deviceId);
 
                 data.setToken(token);
-                data.setUserId(userId);
                 data.setAccountQueue(queueName);
+                data.setUserId(userId);
+                data.setUserName(userName);
+                data.setBirthday(birthday);
+                data.setHeadImgUrl(headImgUrl);
+                data.setRealName(realName);
+                data.setIdCard(idCard);
+                data.setUserSex(userSex);
 
                 loginRecord(userId, deviceId, token, loginIp, loginLocaltion);
             } else {
@@ -129,13 +147,25 @@ public class AuthServiceImpl implements IAuthService {
         String userId = "";
         String queueName = "";
         String token = "";
+        String userName = "";
+        String headImgUrl = "";
+        String birthday = "";
+        String realName = "";
+        String idCard = "";
+        String userSex = "";
 
         try {
-            Object[] obj = (Object[]) authRepository.authCodeLogin(accountMobile, LOGIN_TYPE_MOBILE);
+            Object[] obj = (Object[]) authRepository.authLogin(null, null, accountMobile, LOGIN_TYPE_MOBILE);
             int count = Integer.valueOf(obj[0].toString());
             if (count != 0) {
 
                 userId = obj[1].toString();
+                userName = obj[2].toString();
+                headImgUrl = obj[3].toString();
+                birthday = obj[4].toString();
+                realName = obj[5].toString();
+                idCard = obj[6].toString();
+                userSex = obj[7].toString();
 
                 queueName = BaseUtil.getQueueName(userId, deviceId);
                 BaseUtil.createQueue(rabbitTemplate, queueName, BaseUtil.getExchangeName(userId));
@@ -143,6 +173,13 @@ public class AuthServiceImpl implements IAuthService {
                 token = BaseUtil.getToken(userId, deviceId);
 
                 data.setUserId(userId);
+                data.setUserName(userName);
+                data.setBirthday(birthday);
+                data.setHeadImgUrl(headImgUrl);
+                data.setUserSex(userSex);
+                data.setRealName(realName);
+                data.setIdCard(idCard);
+
                 data.setAccountQueue(queueName);
                 data.setToken(token);
 

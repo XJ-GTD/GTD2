@@ -1,5 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
-import { AlertController, Content, FabContainer, IonicPage, LoadingController, NavController, NavParams,ViewController } from 'ionic-angular';
+import {
+  AlertController,
+  Content,
+  FabContainer,
+  IonicPage,
+  LoadingController,
+  NavController,
+  NavParams, Platform,
+  Tabs,
+  ViewController
+} from 'ionic-angular';
 import { XiaojiAssistantService } from "../../service/util-service/xiaoji-assistant.service";
 import { ParamsService } from "../../service/util-service/params.service";
 import { HttpClient } from "@angular/common/http";
@@ -13,6 +23,7 @@ import {Hb01Page} from "../hb01/hb01";
 import {DwEmitService} from "../../service/util-service/dw-emit.service";
 import {WsResModel} from "../../model/ws.res.model";
 import {WsModel} from "../../model/ws.model";
+import {BackButtonService} from "../../service/util-service/backbutton.service";
 
 declare var cordova: any;
 /**
@@ -29,7 +40,7 @@ declare var cordova: any;
   providers: []
 })
 export class HbPage {
-
+  @ViewChild('myTabs') tabRef: Tabs;
   @ViewChild(Hb01Page) Hb01Page:Hb01Page;
   @ViewChild(Content) content: Content;
 
@@ -54,15 +65,13 @@ export class HbPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController,
               public paramsService: ParamsService,
-              private http: HttpClient,
-              private file: File,
-              private base64: Base64,
-              private dwEmit: DwEmitService,
-              private loadingCtrl: LoadingController,
-              private alert: AlertController,
+              public platform: Platform,
+              public backButtonService: BackButtonService,
               public xiaojiSpeech: XiaojiAssistantService,
               public xiaojiFeekback: XiaojiFeedbackService) {
-
+    this.platform.ready().then(() => {
+      this.backButtonService.registerBackButtonAction(this.tabRef);
+    });
     this.init();
   }
 

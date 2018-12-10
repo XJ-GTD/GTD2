@@ -9,8 +9,8 @@ import java.util.Objects;
 public class GtdUserEntity {
     private String userId;
     private String userName;
-    private String headimgUrl;
-    private String brithday;
+    private String headImg;
+    private String birthday;
     private String realName;
     private String idCard;
     private Integer userSex;
@@ -42,23 +42,23 @@ public class GtdUserEntity {
     }
 
     @Basic
-    @Column(name = "HEADIMG_URL")
-    public String getHeadimgUrl() {
-        return headimgUrl;
+    @Column(name = "HEAD_IMG")
+    public String getHeadImg() {
+        return headImg;
     }
 
-    public void setHeadimgUrl(String headimgUrl) {
-        this.headimgUrl = headimgUrl;
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
     }
 
     @Basic
-    @Column(name = "BRITHDAY")
-    public String getBrithday() {
-        return brithday;
+    @Column(name = "BIRTHDAY")
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setBrithday(String brithday) {
-        this.brithday = brithday;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
     @Basic
@@ -158,8 +158,8 @@ public class GtdUserEntity {
         GtdUserEntity that = (GtdUserEntity) o;
         return Objects.equals(userId, that.userId) &&
                 Objects.equals(userName, that.userName) &&
-                Objects.equals(headimgUrl, that.headimgUrl) &&
-                Objects.equals(brithday, that.brithday) &&
+                Objects.equals(headImg, that.headImg) &&
+                Objects.equals(birthday, that.birthday) &&
                 Objects.equals(realName, that.realName) &&
                 Objects.equals(idCard, that.idCard) &&
                 Objects.equals(userSex, that.userSex) &&
@@ -173,6 +173,8 @@ public class GtdUserEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, userName, headimgUrl, brithday, realName, idCard, userSex, userContact, userType, createId, createDate, updateId, updateDate);
+        return Objects.hash(userId, userName, headImg, birthday, realName, idCard, userSex, userContact, userType, createId, createDate, updateId, updateDate);
     }
+
+
 }

@@ -45,16 +45,9 @@ public interface IPersonService {
     boolean isPasswordTrue(String userId, String password);
 
     /**
-     * 查询目标用户
-     * @param inDto
-     * @return
-     */
-    SearchUserOutDto searchPlayer(PlayerInDto inDto);
-
-    /**
      * 发送添加邀请
      * @param inDto
      * @return
      */
-    int addPlayer(PlayerInDto inDto);
+    PlayerOutDto addPlayer(PlayerInDto inDto);
 }

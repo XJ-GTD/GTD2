@@ -4,13 +4,13 @@ package com.xiaoji.gtd.dto;
  *
  * create by wzy on 2018/12/05
  */
-public class PlayerOutDto {
+public class PlayerOutDto extends BaseOut{
 
     private String userId;
-    private String headImgUrl;
+    private String headImg;
     private String userName;
     private String accountMobile;
-    private boolean relaterFlag;     //是否同意发送
+    private boolean isAgree;     //是否同意发送
 
     public String getUserId() {
         return userId;
@@ -18,14 +18,6 @@ public class PlayerOutDto {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getHeadImgUrl() {
-        return headImgUrl;
-    }
-
-    public void setHeadImgUrl(String headImgUrl) {
-        this.headImgUrl = headImgUrl;
     }
 
     public String getUserName() {
@@ -44,11 +36,19 @@ public class PlayerOutDto {
         this.accountMobile = accountMobile;
     }
 
-    public boolean isRelaterFlag() {
-        return relaterFlag;
+    public String getHeadImg() {
+        return headImg;
     }
 
-    public void setRelaterFlag(boolean relaterFlag) {
-        this.relaterFlag = relaterFlag;
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
+    }
+
+    public boolean isAgree() {
+        return isAgree;
+    }
+
+    public void setAgree(boolean agree) {
+        isAgree = agree;
     }
 }
