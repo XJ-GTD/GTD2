@@ -38,7 +38,6 @@ import { XiaojiAlarmclockService } from "../service/util-service/xiaoji-alarmclo
 import { JhService } from "../service/jh.service";
 import { DwEmitService } from "../service/util-service/dw-emit.service";
 import {FiSqliteService} from "../service/sqlite-service/fi-sqlite.service";
-
 @NgModule({
   declarations: [
     MyApp,

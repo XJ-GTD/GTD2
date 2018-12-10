@@ -20,6 +20,7 @@
     "@angular/http": "5.0.0",
     "@angular/platform-browser": "5.0.0",
     "@angular/platform-browser-dynamic": "5.0.0",
+    "@ionic-native/android-permissions": "^4.18.0",
     "@ionic-native/base64": "^4.15.0",
     "@ionic-native/calendar": "^4.15.0",
     "@ionic-native/core": "4.3.2",
