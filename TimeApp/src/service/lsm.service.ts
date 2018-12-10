@@ -259,26 +259,4 @@ export class LsmService {
     })
   }
 
-  /**
-   * 用户搜索
-   * @param {string} am 手机号
-   * @param {string} tn token
-   */
-  su(am:string,tn:string):Promise<BsModel>{
-    return new Promise((resolve, reject) =>{
-      let base = new BsModel();
-      this.pn.su(am,tn)
-        .subscribe(data=>{
-          this.data = data;
-          base = this.data
-          resolve(base)
-        },err => {
-          base.message = err.message
-          base.code=1
-          reject(base)
-        })
-    })
-  }
-
-
 }

@@ -9,6 +9,7 @@ import {RuModel} from "../model/ru.model";
 import {AppConfig} from "../app/app.config";
 import {BaseSqliteService} from "./sqlite-service/base-sqlite.service";
 import {UtilService} from "./util-service/util.service";
+import {PnRestfulService} from "./restful-service/pn-restful.service";
 
 
 /**
@@ -16,7 +17,9 @@ import {UtilService} from "./util-service/util.service";
  */
 @Injectable()
 export class RelmemService {
-  relmemSqlite: RelmemSqliteService
+  relmemSqlite: RelmemSqliteService;
+  pnRes:PnRestfulService;
+  data:any;
   constructor(private baseSqlite: BaseSqliteService,
               private util:UtilService) {
     this.relmemSqlite = new RelmemSqliteService(baseSqlite);
@@ -26,21 +29,21 @@ export class RelmemService {
   relMeMinit(){
     let rc = '12345678900'
     let rel='0';
-    this.aru(rc,rc,rc,rel,'0',null)
+    this.aru('',rc,rc,rc,rel,'0',null)
     let rc1 = '12345678901'
     let rel1='0';
-    this.aru('','',rc1,rel1,'0',null)
+    this.aru('','','',rc1,rel1,'0',null)
     let rc2 = '12345678902'
     let rel2='0';
-    this.aru('','',rc2,rel2,'0',null)
+    this.aru('','','',rc2,rel2,'0',null)
     let rc3 = '12345678903'
     let rel3='0';
-    this.aru('','',rc3,rel3,'0',null)
+    this.aru('','','',rc3,rel3,'0',null)
   }
 
   /**
    * 添加联系人
-   * @param {string} id 更新人UUID
+   * @param {string} uI 当前登录人ID
    * @param {string} ran 别名
    * @param {string} rN 名称
    * @param {string} rc 联系电话
@@ -49,7 +52,7 @@ export class RelmemService {
    * @param {Array} qrL Array<RuModel>  群组人员list
    * @returns {Promise<BsModel>}
    */
-  aru(ran:string,rN:string,rc:string,rel:string,rF:string,qrL:Array<any>):Promise<BsModel>{
+  aru(uI:string,ran:string,rN:string,rc:string,rel:string,rF:string,qrL:Array<any>):Promise<BsModel>{
     return new Promise((resolve, reject)=>{
       let ru=new RuEntity();
       ru.id=this.util.getUuid();
@@ -65,24 +68,56 @@ export class RelmemService {
         ru.ran=rc;
       }
       let base=new BsModel();
-      this.relmemSqlite.aru(ru).then(data=>{
-        //如果是群
-        if(rel=='1' && qrL != null && qrL.length>0){
-          for(let i=0;i<qrL.length;i++){
-            this.addRgu(ru.id,qrL[i].id)
+
+      if(rel=='0'){
+        //如果是人,先判断服务器是否存在，如果存在则获取联系人信息，如果不存在则添加成本地的
+        this.pnRes.su(uI,rc,AppConfig.Token).subscribe(data=>{
+          this.data = data;
+          if(this.data.code==0){
+            ru.rN=this.data.userName;
+            ru.ran=this.data.userName;
+            ru.hiu=this.data.headImgUrl;
+            ru.rI=this.data.uI;
           }
-        }
-        resolve(base);
-      }).catch(e=>{
-        base.code=AppConfig.ERR_CODE;
-        base.message=e.message;
-        reject(base);
-      })
+          //添加本地联系人
+          this.relmemSqlite.aru(ru).then(data=>{
+            base = this.data
+            resolve(base)
+          }).catch(e=>{
+            base.code=AppConfig.ERR_CODE;
+            base.message=e.message;
+            reject(base);
+          })
+
+        },err => {
+          base.message = err.message
+          base.code=1
+          reject(base)
+        })
+      }else{
+        //如果是群
+        this.relmemSqlite.aru(ru).then(data=>{
+          if(rel=='1' && qrL != null && qrL.length>0){
+            for(let i=0;i<qrL.length;i++){
+              this.addRgu(ru.id,qrL[i].id)
+            }
+          }
+          resolve(base);
+        }).catch(e=>{
+          base.code=AppConfig.ERR_CODE;
+          base.message=e.message;
+          reject(base);
+        })
+
+      }
+
     })
   }
 
   /**
    * 更新联系人
+   * @param {string} uI 当前登录人ID
+   * @param {string} id 更新人UUID
    * @param {string} ran 别名
    * @param {string} rN 名称
    * @param {string} rc 联系电话
