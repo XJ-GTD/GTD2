@@ -20,6 +20,7 @@ import {JhEntity} from "../../entity/jh.entity";
 import {RelmemService} from "../relmem.service";
 import {FiEntity} from "../../entity/fi.entity";
 import {AppConfig} from "../../app/app.config";
+import {UtilService} from "../util-service/util.service";
 
 /**
  * 客户端数据库
@@ -33,6 +34,7 @@ export class BaseSqliteService {
   win: any = window;//window对象
   constructor( private platform: Platform,
                private sqlite: SQLite,
+               private util: UtilService,
                private sqlitePorter: SQLitePorter,
                private events: Events) { }
   /**
@@ -69,7 +71,12 @@ export class BaseSqliteService {
     //this.executeSql('DROP TABLE GTD_ACCOUNT',[]);
     //创建用户基本信息表
     let ue=new UEntity();
-    this.executeSql(ue.csq,[]).catch(e=>{
+    this.executeSql(ue.csq,[]).then(data=>{
+      let u:UEntity=new UEntity();
+      u.uI=this.util.getUuid();
+      u.uty='0';
+      this.save(u);
+    }).catch(e=>{
       console.log('createTable：GTD_A:'+e.toString());
     })
     //创建日程表
