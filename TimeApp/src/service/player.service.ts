@@ -91,12 +91,13 @@ export class PlayerService {
 
   /**
    * 添加日程
-   * @param {string} sI
-   * @param {string} sN
-   * @param {string} lI
-   * @param {string} uI
-   * @param {string} sd
-   * @param {string} ed
+   * @param {string} sI 日程UUID
+   * @param {string} sN 日程名称
+   * @param {string} lI 标签名
+   * @param {string} uI 创建人
+   * @param {string} sd 开始时间
+   * @param {string} ed 结束时间
+   *
    * @param {string} pI
    * @param {string} son
    * @param {string} sa
@@ -119,7 +120,7 @@ export class PlayerService {
       let rcp=new RcpEntity();
       rcp.pI=pI;
       rcp.sI=sI;
-      rcp.son=son;
+      rcp.son=sN;
       rcp.sa=sa;
       rcp.ps=ps;
       rcp.cd=cd;
