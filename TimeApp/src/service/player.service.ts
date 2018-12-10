@@ -264,20 +264,5 @@ export class PlayerService {
     })
   }
 
-  /**
-   * 查询某天的日程
-   * @param {string} startTime 某天的00:00
-   * @param {string} endTime   某天的23:59
-   * @returns {Promise<ScheduleModel[]>}
-   */
-  getLocalSchedule(startTime:string,endTime:string):Promise<ScheduleModel[]>{
-    return new Promise((resolve, reject)=>{
-      this.playerSqliteService.getLocalSchedule(startTime,endTime).then(data=>{
-        resolve(data);
-      })
-        .catch(e=>{
-          reject(e);
-        })
-    })
-  }
+
 }

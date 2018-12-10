@@ -40,9 +40,9 @@ export class CalendarService {
    */
   findEvent():Promise<any>{
     return new Promise((resolve, reject) => {
-      this.calendar.findEvent("", "", "", new Date("1900-01-01"), new Date("2118-12-31")).then(
+      this.calendar.findEvent("", "", "", new Date("2018-12-01"), new Date("2118-12-31")).then(
         (msg) => {
-          alert(JSON.stringify(msg));
+          //alert(JSON.stringify(msg));
           resolve(msg);
         },
         (err) => {
@@ -86,7 +86,7 @@ export class CalendarService {
             // rcp.uI=rc.uI; //参与人ID
             // rcp.ib="1";
 
-            this.playService.addPlayer(this.util.getUuid(),data[i].title,"",uI,data[i].startDate,data[i].endDate,this.util.getUuid(),"","","",data[i].startDate,"",uI,"1").then(base=>{
+            this.playService.addPlayer(this.util.getUuid(),data[i].title,"",uI,data[i].startDate,data[i].endDate,this.util.getUuid(),data[i].title,"","",data[i].startDate,"",uI,"1").then(base=>{
               resolve(base);
             })
               .catch(e=>{

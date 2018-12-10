@@ -14,7 +14,7 @@ import {UoModel} from "../../model/out/uo.model";
 import {WorkSqliteService} from "../../service/sqlite-service/work-sqlite.service";
 import {WorkService} from "../../service/work.service";
 import {UserService} from "../../service/user.service";
-import {PlayerService} from "../../service/player.service";
+import {PlayerSqliteService} from "../../service/sqlite-service/player-sqlite.service";
 
 /**
  * Generated class for the Ha01Page page.
@@ -45,7 +45,7 @@ export class Ha01Page {
               private sqliteService:BaseSqliteService,
               private userSqlite:UserService,
               private workSqlite:WorkService,
-              private playerSqlite:PlayerService,
+              private playerSqlite:PlayerSqliteService,
               private el: ElementRef) {
     this.scheduleList = [];
     console.log('ionViewDidLoad Ha01Page');
@@ -162,11 +162,13 @@ export class Ha01Page {
 
     //查询本地日历日程
     // this.playerSqlite.getLocalSchedule(findSchedule.scheduleStartTime,findSchedule.scheduleDeadline).then(data=>{
-    //   if(data.length>0){
-    //     for(let i=0;i<data.length;i++){
+    //   alert(data.rows.item(0).sN);
+    //   if(data.rows.length>0){
+    //     for(let i=0;i<data.rows.length;i++){
     //       let mo = new ScheduleModel();
-    //       mo.scheduleStartTime = data[i].scheduleStartTime;
-    //       mo.scheduleName = data[i].scheduleName;;
+    //
+    //       mo.scheduleStartTime = data.rows.item(i).sN;
+    //       mo.scheduleName = data.rows.item(i).cd;
     //       this.scheduleList.push(mo);
     //     }
     //   }

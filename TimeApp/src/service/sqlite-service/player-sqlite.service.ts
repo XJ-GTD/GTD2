@@ -139,29 +139,9 @@ export class PlayerSqliteService {
    * @param {string} endTime
    * @returns {Promise<ScheduleModel[]>}
    */
-  getLocalSchedule(startTime:string,endTime:string):Promise<ScheduleModel[]>{
-    return new Promise((resolve, reject)=>{
-
-
-      this.baseSqlite.executeSql("SELECT GTD_C.sN,GTD_C.lI,GTD_D.cd,GTD_D.uI FROM GTD_C JOIN GTD_D ON GTD_C.sI=GTD_D.sI AND GTD_C.sI IN (SELECT sI FROM GTD_D WHERE cd BETWEEN "+"'"+startTime+"'"+" AND "+"'"+endTime+"')",[]).then(data => {
-
-        let scheduleList=[];
-        if (!!!!data && !!!!data.rows && data.rows.length > 0) {
-          for (let i = 0; i < data.rows.length; i++) {
-            let mo=new ScheduleModel();
-            mo.scheduleName=data.rows.item(i).sN;
-            mo.scheduleStartTime=data.rows.item(i).cd;
-            scheduleList.push(mo);
-          }
-          resolve(scheduleList);
-        }
-      })
-        .catch(err=>{
-          console.log("err:"+JSON.stringify(err));
-          reject(err);
-        });
-    })
-
+  getLocalSchedule(startTime:string,endTime:string){
+    return this.baseSqlite.executeSql("SELECT GTD_C.sN,GTD_C.lI,GTD_D.cd,GTD_D.uI " +
+      "FROM GTD_C JOIN GTD_D ON GTD_C.sI=GTD_D.sI AND GTD_C.sI IN (SELECT sI FROM GTD_D WHERE cd BETWEEN "+"'"+startTime+"'"+" AND "+"'"+endTime+"')",[]);
   }
 
 }
