@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
 import { Platform, MenuController, Nav, Tabs, Events  } from 'ionic-angular';
-import { AndroidPermissions } from '@ionic-native/android-permissions';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -18,10 +17,12 @@ import { DwEmitService } from "../service/util-service/dw-emit.service";
 import {FiSqliteService} from "../service/sqlite-service/fi-sqlite.service";
 import {UserService} from "../service/user.service";
 import {AppConfig} from "./app.config";
+import { BackgroundMode } from '@ionic-native/background-mode';
+import { AndroidPermissions } from '@ionic-native/android-permissions';
 
 @Component({
   templateUrl: 'app.html',
-  providers: [ ParamsService, WebsocketService, DwMqService, BackButtonService,AndroidPermissions ]
+  providers: [ ParamsService, WebsocketService, DwMqService, BackButtonService,AndroidPermissions,BackgroundMode ]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
@@ -43,7 +44,8 @@ export class MyApp {
     private storage: Storage,
     private paramsService: ParamsService,
     private user:UserService,
-    private androidPermissions: AndroidPermissions
+    private androidPermissions: AndroidPermissions,
+    private backgroundMode: BackgroundMode
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -51,6 +53,16 @@ export class MyApp {
       // statusBar.styleDefault();
       // splashScreen.hide();
       console.debug("PERMISSION request init");
+      this.backgroundMode.enable();
+      this.platform.registerBackButtonAction(() => {
+        this.backgroundMode.moveToBackground();
+      },0);
+
+
+      //this.backButtonService.registerBackButtonAction(null,300);
+
+      //this.backButtonService.registerBackButtonAction(null,400);
+      //this.backButtonService.registerBackButtonAction(null,401);
       let list = [
           this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE,
           this.androidPermissions.PERMISSION.RECORD_AUDIO,
@@ -72,13 +84,12 @@ export class MyApp {
         (result) => {
           console.debug('Has permission?',result.hasPermission)
           feedbackService.initAudio();
-          this.backButtonService.registerBackButtonAction(null);
+          //this.backButtonService.registerBackButtonAction(null);
           this.init();
         },
         (err) => {
           console.debug('Has permission?', err.toString())
         feedbackService.initAudio();
-        this.backButtonService.registerBackButtonAction(null);
         this.init();
         }
       );
