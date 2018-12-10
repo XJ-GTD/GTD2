@@ -59,7 +59,7 @@ export class PnRestfulService {
    * @param {string} am 手机号
    * @param {string} tn token
    */
-  su(am:string,tn:string) {
+  su(ui:string,am:string,tn:string) {
     return this.http.post(AppConfig.PERSON_SU, {
       accountMobile:am,
       token: tn
