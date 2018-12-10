@@ -48,8 +48,8 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       feedbackService.initAudio();
       this.backButtonService.registerBackButtonAction(null);
-      /*statusBar.styleDefault();
-      splashScreen.hide();*/
+      // statusBar.styleDefault();
+      // splashScreen.hide();
       this.init();
     });
   }
@@ -65,51 +65,60 @@ export class MyApp {
   }
   ngAfterViewInit(){
     //通过key，判断是否曾进入过引导页
-    // this.storage.get('firstIn').then((result) => {
-    //
-    //   if (result != null && result) {
-    //     this.rootPage = PageConfig.HZ_PAGE;
-    //   } else {
-    //
-    //     this.storage.set('firstIn', true);
-    //     this.rootPage = PageConfig.AZ_PAGE;
-    //   }
-    //
-    //   if (this.nav.getViews().length == 0){
+    this.storage.get('firstIn').then((result) => {
+
+      if (result != null && result) {
+        this.rootPage = PageConfig.HZ_PAGE;
+      } else {
+        //初始化创建数据库建表
+        this.baseSqlite.createTable();
+        this.storage.set('firstIn', true);
+        this.rootPage = PageConfig.AZ_PAGE;
+      }
+
+      if (this.nav.getViews().length == 0){
+        this.nav.setRoot(this.rootPage);
+      }
+
+    });
+
+    // //初始化创建数据库
+    // this.baseSqlite.createDb().then(data=>{
+    //   //查询版本
+    //   this.fisqlite.getfi(1).then(data=>{
+    //     let istrue:boolean = false
+    //     if(data && data.rows && data.rows>0){
+    //       if(data.rows.item(0).isup==1){
+    //         istrue=true;
+    //         this.fisqlite.ufi(null,0)
+    //       }
+    //     }else{
+    //       istrue=true;
+    //       this.fisqlite.afi(1,0)
+    //       this.user.getUo().then(data=>{
+    //         // AppConfig.Token=data.u.uT;
+    //         console.debug(JSON.stringify(data))
+    //       }).catch(e=>{
+    //         console.error(e.message)
+    //       })
+    //     }
+    //     //如果发现最新更新则跳转引导页
+    //     if(istrue){
+    //       this.rootPage = PageConfig.AZ_PAGE;
+    //     }else{
+    //       this.rootPage = PageConfig.HZ_PAGE;
+    //     }
     //     this.nav.setRoot(this.rootPage);
-    //   }
+    //   }).catch(e=>{
+    //     this.rootPage = PageConfig.AZ_PAGE;
+    //     this.nav.setRoot(this.rootPage);
+    //     //初始化创建数据库建表
+    //     this.baseSqlite.createTable();
+    //   })
+    // }).catch(e=>{
     //
-    // });
-    this.fisqlite.getfi(1).then(data=>{
-      let istrue:boolean = false
-        if(data && data.rows && data.rows>0){
-          if(data.rows.item(0).isup==1){
-            istrue=true;
-            this.fisqlite.ufi(null,0)
-          }
-        }else{
-          istrue=true;
-          this.fisqlite.afi(1,0)
-          this.user.getUo().then(data=>{
-           // AppConfig.Token=data.u.uT;
-            console.debug(JSON.stringify(data))
-          }).catch(e=>{
-            console.error(e.message)
-          })
-        }
-        //如果发现最新更新则跳转引导页
-        if(istrue){
-          this.rootPage = PageConfig.AZ_PAGE;
-        }else{
-          this.rootPage = PageConfig.HZ_PAGE;
-        }
-      this.nav.setRoot(this.rootPage);
-    }).catch(e=>{
-      this.rootPage = PageConfig.AZ_PAGE;
-      this.nav.setRoot(this.rootPage);
-      //初始化创建数据库建表
-      this.baseSqlite.createTable();
-    })
+    // })
+
   }
 
 }
