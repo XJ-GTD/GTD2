@@ -49,7 +49,7 @@ public interface IPersonService {
      * @param inDto
      * @return
      */
-    SearchUserOutDto searchPlayer(SearchUserInDto inDto);
+    SearchUserOutDto searchPlayer(PlayerInDto inDto);
 
     /**
      * 发送添加邀请

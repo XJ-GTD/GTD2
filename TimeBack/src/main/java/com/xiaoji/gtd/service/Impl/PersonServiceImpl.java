@@ -185,7 +185,7 @@ public class PersonServiceImpl implements IPersonService {
      * @return
      */
     @Override
-    public SearchUserOutDto searchPlayer(SearchUserInDto inDto) {
+    public SearchUserOutDto searchPlayer(PlayerInDto inDto) {
 
         SearchUserOutDto outDto = null;
 

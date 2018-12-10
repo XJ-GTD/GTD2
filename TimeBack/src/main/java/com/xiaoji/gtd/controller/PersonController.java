@@ -198,55 +198,6 @@ public class PersonController {
     }
 
     /**
-     * 用户搜索
-     * @return
-     */
-    @RequestMapping(value = "/search_user", method = RequestMethod.POST)
-    @ResponseBody
-    @AuthCheck
-    public Out searchUser(@RequestBody SearchUserInDto inDto) {
-        Out outDto = new Out();
-        SearchUserOutDto data;
-
-        //入参检测
-        //必须项检测
-        if(inDto.getAccountMobile() == null || "".equals(inDto.getAccountMobile())){
-            outDto.setCode(ResultCode.NULL_MOBILE);
-            logger.debug("[查询失败]：手机号不可为空");
-            return outDto;
-        }
-        //入参正确性检测
-        if(!CommonMethods.isInteger(inDto.getAccountMobile())){
-            if(inDto.getAccountMobile().length()!=11){
-                outDto.setCode(ResultCode.ERROR_MOBILE);
-                logger.debug("[查询失败]：请输入正确手机号");
-                return outDto;
-            }
-        }
-
-        //业务逻辑
-        try {
-
-            data = personService.searchPlayer(inDto);
-            if (data != null) {
-                outDto.setData(data);
-                outDto.setCode(ResultCode.SUCCESS);
-                logger.debug("[查询成功]");
-            } else {
-                outDto.setCode(ResultCode.NULL_USER);
-                logger.debug("[查询成功]：该手机号尚未注册");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            logger.error("[查询失败]：服务器繁忙");
-        }
-
-        return outDto;
-    }
-
-
-    /**
      * 添加联系人
      * @param inDto
      * @return
@@ -256,6 +207,7 @@ public class PersonController {
     @AuthCheck
     public Out addPlayer(@RequestBody PlayerInDto inDto) {
         Out outDto = new Out();
+        SearchUserOutDto data;
 
         //入参检测
         //必须项检测
@@ -283,6 +235,16 @@ public class PersonController {
 
         //业务逻辑
         try {
+
+            data = personService.searchPlayer(inDto);
+            if (data != null) {
+                outDto.setData(data);
+                outDto.setCode(ResultCode.SUCCESS);
+                logger.debug("[查询成功]");
+            } else {
+                outDto.setCode(ResultCode.NULL_USER);
+                logger.debug("[查询成功]：该手机号尚未注册");
+            }
 
             int flag = personService.addPlayer(inDto);
             if (flag == 0) {
