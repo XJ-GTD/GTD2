@@ -39,6 +39,8 @@ export class MyApp {
     private events: Events,
     private fisqlite:FiSqliteService,
     private baseSqlite:BaseSqliteService,
+    private storage: Storage,
+    private paramsService: ParamsService,
     private user:UserService
   ) {
     platform.ready().then(() => {
@@ -52,19 +54,14 @@ export class MyApp {
     });
   }
   init(){
-    // //确保异步执行完后才隐藏启动动画
-    // this.events.subscribe('db:create', () => {
-    //   //创建数据库与表成功后才关闭动画跳转页面
-    //   this.statusBar.styleDefault();
-    //   this.splashScreen.hide();
-    // })
-    // //初始化创建数据库
-    // this.baseSqlite.createDb();
-    this.user.getUo().then(data=>{
-      AppConfig.Token=data.u.uT;
-    }).catch(e=>{
-      alert(e.message)
+    //确保异步执行完后才隐藏启动动画
+    this.events.subscribe('db:create', () => {
+      //创建数据库与表成功后才关闭动画跳转页面
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
     })
+    //初始化创建数据库
+    this.baseSqlite.createDb();
   }
   ngAfterViewInit(){
     //通过key，判断是否曾进入过引导页
@@ -73,6 +70,7 @@ export class MyApp {
     //   if (result != null && result) {
     //     this.rootPage = PageConfig.HZ_PAGE;
     //   } else {
+    //
     //     this.storage.set('firstIn', true);
     //     this.rootPage = PageConfig.AZ_PAGE;
     //   }
@@ -92,6 +90,12 @@ export class MyApp {
         }else{
           istrue=true;
           this.fisqlite.afi(1,0)
+          this.user.getUo().then(data=>{
+           // AppConfig.Token=data.u.uT;
+            console.debug(JSON.stringify(data))
+          }).catch(e=>{
+            console.error(e.message)
+          })
         }
         //如果发现最新更新则跳转引导页
         if(istrue){
@@ -103,15 +107,8 @@ export class MyApp {
     }).catch(e=>{
       this.rootPage = PageConfig.AZ_PAGE;
       this.nav.setRoot(this.rootPage);
-
-      //确保异步执行完后才隐藏启动动画
-      this.events.subscribe('db:create', () => {
-        //创建数据库与表成功后才关闭动画跳转页面
-        this.statusBar.styleDefault();
-        this.splashScreen.hide();
-      })
-      //初始化创建数据库
-      this.baseSqlite.createDb();
+      //初始化创建数据库建表
+      this.baseSqlite.createTable();
     })
   }
 
