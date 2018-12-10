@@ -12,6 +12,7 @@ export class RuEntity {
   private _rC: string=null; // 联系方式
   private _rF: string=null; // 授权标识0未授权1授权
   private _rel: string='0'; // 联系类型0人;1群组
+  private _hiu: string=null; // 联系人头像URL
   /**
    * 创建表
    * @type {string}
@@ -19,7 +20,7 @@ export class RuEntity {
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_B(id VARCHAR(100) PRIMARY KEY,' +
                           'ran VARCHAR(100),rI VARCHAR(100),rN VARCHAR(100),' +
-                          'rC VARCHAR(100),rF VARCHAR(2),rel VARCHAR(20));';
+                          'rC VARCHAR(100),rF VARCHAR(2),rel VARCHAR(20),hiu VARCHAR(100));';
   private _drsq:string="DROP TABLE GTD_B";
 
   private _isq:string;
@@ -53,9 +54,9 @@ export class RuEntity {
 
   get isq(): string {
     let sql='insert into GTD_B ' +
-      '(id,ran,rI,rN,rC,rF,rel) ' +
+      '(id,ran,rI,rN,rC,rF,rel,hiu) ' +
       'values("'+ this._id+'","'+ this._ran+'","'+this._rI+ '","'+
-      this._rN+'","'+ this._rC+'","'+this._rF+'","'+this._rel+'")';
+      this._rN+'","'+ this._rC+'","'+this._rF+'","'+this._rel+'","'+this._hiu+'")';
     this._isq=sql;
     return this._isq;
   }
@@ -83,6 +84,9 @@ export class RuEntity {
     }
     if(this._rel!=null){
       sql=sql+' rel="' + this._rel +'",';
+    }
+    if(this._hiu!=null){
+      sql=sql+' hiu="' + this._hiu +'",';
     }
     if(this._id != null){
       sql = sql + ' id="' + this._id +'" where id="' + this._id +'"';
@@ -115,6 +119,9 @@ export class RuEntity {
     }
     if(this._rel!=null){
       sql=sql+' and rel="' + this._rel +'"';
+    }
+    if(this._hiu!=null){
+      sql=sql+' and hiu="' + this._hiu +'"';
     }
 
     this._dsq=sql;
@@ -180,5 +187,13 @@ export class RuEntity {
 
   set rel(value: string) {
     this._rel = value;
+  }
+
+  get hiu(): string {
+    return this._hiu;
+  }
+
+  set hiu(value: string) {
+    this._hiu = value;
   }
 }
