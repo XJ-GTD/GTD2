@@ -56,7 +56,7 @@ export class AzPage {
     console.log('ionViewDidLoad AzPage');
 
     //同步本地日历
-    //this.uploadLocal();
+    this.uploadLocal();
   }
 
   goToLogin() {

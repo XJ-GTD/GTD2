@@ -63,7 +63,7 @@ public class AuthController {
             return outDto;
         }
         if (CommonMethods.checkMySqlReservedWords(inDto.getDeviceId())) {
-            outDto.setCode(ResultCode.NULL_UUID);
+            outDto.setCode(ResultCode.NULL_DEVICEID);
             logger.debug("[验证失败]：设备ID类型或格式错误");
             return outDto;
         }
@@ -125,7 +125,7 @@ public class AuthController {
             return outDto;
         }
         if (CommonMethods.checkMySqlReservedWords(inDto.getDeviceId())) {
-            outDto.setCode(ResultCode.NULL_UUID);
+            outDto.setCode(ResultCode.NULL_DEVICEID);
             logger.debug("[登陆失败]：设备ID类型或格式错误");
             return outDto;
         }
@@ -189,7 +189,7 @@ public class AuthController {
             }
         }
         if (CommonMethods.checkMySqlReservedWords(inDto.getDeviceId())) {
-            outDto.setCode(ResultCode.NULL_UUID);
+            outDto.setCode(ResultCode.NULL_DEVICEID);
             logger.debug("[登陆失败]：设备ID类型或格式错误");
             return outDto;
         }
