@@ -14,6 +14,9 @@ import {RcEntity} from "../../entity/rc.entity";
 import {RcpEntity} from "../../entity/rcp.entity";
 import {AppConfig} from "../../app/app.config";
 import {HttpClient} from "@angular/common/http";
+import {BaseService} from "../../service/base.service";
+import {WorkService} from "../../service/work.service";
+import {UserService} from "../../service/user.service";
 
 /**
  * Generated class for the AzPage page.
@@ -40,9 +43,9 @@ export class AzPage {
   constructor(public navCtrl: NavController,
               public util: UtilService,
               private loadingCtrl: LoadingController,
-              private sqliteService: BaseSqliteService,
-              private userSqlite: UserSqliteService,
-              private workSqlite: WorkSqliteService,
+              private sqliteService: BaseService,
+              private userSqlite: UserService,
+              private workSqlite: WorkService,
               private paramsService: ParamsService,
               private calendarService:CalendarService,
               private http: HttpClient,

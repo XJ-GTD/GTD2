@@ -26,8 +26,7 @@ public class WebAppConfig extends WebMvcConfigurationSupport {
      * 配置拦截器
      */
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new InterceptorConfig())
-                .addPathPatterns("/user/**");
+        registry.addInterceptor(new InterceptorConfig());
     }
 
     /**

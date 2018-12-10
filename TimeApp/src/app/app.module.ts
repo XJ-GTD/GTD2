@@ -30,7 +30,6 @@ import { PlayerSqliteService} from "../service/sqlite-service/player-sqlite.serv
 import { MsService } from "../service/ms.service";
 import { MsSqliteService } from "../service/sqlite-service/ms-sqlite.service";
 import { RelmemService } from "../service/relmem.service";
-import { RelmemSqliteService } from "../service/sqlite-service/relmem-sqlite.service";
 import { RemindService} from "../service/remind.service";
 import { RemindSqliteService } from "../service/sqlite-service/remind-sqlite.service";
 import { SystemService } from "../service/system.service";
@@ -38,6 +37,7 @@ import { SystemSqliteService } from "../service/sqlite-service/system-sqlite.ser
 import { XiaojiAlarmclockService } from "../service/util-service/xiaoji-alarmclock.service";
 import { JhService } from "../service/jh.service";
 import { DwEmitService } from "../service/util-service/dw-emit.service";
+import {FiSqliteService} from "../service/sqlite-service/fi-sqlite.service";
 
 @NgModule({
   declarations: [
@@ -76,8 +76,6 @@ import { DwEmitService } from "../service/util-service/dw-emit.service";
     DwEmitService,
     SQLitePorter,
     BaseSqliteService,
-    WorkSqliteService,
-    UserSqliteService,
     UserService,
     BaseService,
     WorkService,
@@ -91,6 +89,7 @@ import { DwEmitService } from "../service/util-service/dw-emit.service";
     RemindSqliteService,
     SystemService,
     SystemSqliteService,
+    FiSqliteService,
     JhService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

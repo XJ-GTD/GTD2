@@ -1,5 +1,6 @@
 package com.xiaoji.gtd.controller;
 
+import com.xiaoji.config.interceptor.AuthCheck;
 import com.xiaoji.gtd.dto.BaseInDto;
 import com.xiaoji.gtd.dto.Out;
 import org.apache.logging.log4j.LogManager;
@@ -36,6 +37,7 @@ public class SyncController {
      */
     @RequestMapping(value = "/login_sync", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out loginSync(@RequestBody BaseInDto inDto) {
         Out outDto = new Out();
 
@@ -48,6 +50,7 @@ public class SyncController {
      */
     @RequestMapping(value = "/timing_upload", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out timingUpload(@RequestBody BaseInDto inDto) {
         Out outDto = new Out();
 
@@ -60,6 +63,7 @@ public class SyncController {
      */
     @RequestMapping(value = "/timing_download", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out timingDownload(@RequestBody BaseInDto inDto) {
         Out outDto = new Out();
 

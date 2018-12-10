@@ -118,10 +118,10 @@ export class WorkSqliteService {
 
   /**
    * 获取事件详情
-   * @param sI 日程主键
+   * @param pI 日程参与人ID
    */
   getds(pI:string){
-    let sql = "select jh.jn,gf.lan,gd.sa,gc.* from GTD_D gd left join GTD_C gc on gc.sI = gd.sI" +
+    let sql = "select jh.jn,gf.lan,gd.sa,gc.* from GTD_D gd left join GTD_C gc on gc.sI = gd.sI " +
       "left join GTD_J_H jh on jh.ji = gc.ji " +
       "left join GTD_F gf on gf.lai = gc.lI where gd.pI ='" + pI +"'"
     return this.baseSqlite.executeSql(sql,[])

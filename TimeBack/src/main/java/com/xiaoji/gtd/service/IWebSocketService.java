@@ -10,8 +10,9 @@ import com.xiaoji.gtd.dto.mq.WebSocketOutDto;
 public interface IWebSocketService {
 
     /**
-     * 讯飞处理用：向客户端推送数据
+     * 数据处理用：向客户端推送数据
      * @param outDto
      */
-    void pushMessageOfXF(String queueName, WebSocketOutDto outDto);
+    void pushMessage(String queueName, WebSocketOutDto outDto);
+
 }

@@ -1,5 +1,6 @@
 package com.xiaoji.gtd.controller;
 
+import com.xiaoji.config.interceptor.AuthCheck;
 import com.xiaoji.gtd.dto.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,6 +24,7 @@ public class ScheduleController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out addSchedule(@RequestBody BaseInDto inDto) {
         Out outDto = new Out();
 
@@ -35,6 +37,7 @@ public class ScheduleController {
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out updateSchedule(@RequestBody BaseInDto inDto) {
         Out outDto = new Out();
 
@@ -47,6 +50,7 @@ public class ScheduleController {
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out deleteSchedule(@RequestBody BaseInDto inDto) {
         Out outDto = new Out();
 
@@ -59,6 +63,7 @@ public class ScheduleController {
      */
     @RequestMapping(value = "/invite", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out inviteSchedule(@RequestBody BaseInDto inDto) {
         Out outDto = new Out();
 

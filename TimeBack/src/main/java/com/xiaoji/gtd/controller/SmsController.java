@@ -1,5 +1,6 @@
 package com.xiaoji.gtd.controller;
 
+import com.xiaoji.config.interceptor.AuthCheck;
 import com.xiaoji.gtd.dto.BaseInDto;
 import com.xiaoji.gtd.dto.Out;
 import com.xiaoji.gtd.dto.SmsInDto;
@@ -72,18 +73,6 @@ public class SmsController {
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
             outDto.setMessage("[获取验证失败]：服务器繁忙");
         }
-
-        return outDto;
-    }
-
-    /**
-     * 短信推送
-     * @return
-     */
-    @RequestMapping(value = "/message", method = RequestMethod.POST)
-    @ResponseBody
-    public Out sendMessage(@RequestBody SmsInDto inDto) {
-        Out outDto = new Out();
 
         return outDto;
     }

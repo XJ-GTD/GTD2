@@ -16,6 +16,7 @@ import {LbSqliteService} from "./sqlite-service/lb-sqlite.service";
 import {LboModel} from "../model/out/lbo.model";
 import {LbModel} from "../model/lb.model";
 import {ScheduleModel} from "../model/schedule.model";
+import {MsEntity} from "../entity/ms.entity";
 
 /**
  * 日程逻辑处理
@@ -260,13 +261,13 @@ export class WorkService {
 
   /**
    * 事件详情
-   * @param {string} sI 日程ID
+   * @param {string} pI 日程参与人ID
    * @returns {Promise<RcpModel>}
    */
-  getdetails(sI:string):Promise<RcModel>{
+  getds(pI:string):Promise<RcModel>{
     return new Promise((resolve, reject) =>{
       let rc= new RcModel();
-      this.workSqlite.getds(sI).then(data=>{
+      this.workSqlite.getds(pI).then(data=>{
           if(data&&data.rows&&data.rows.length>0){
             rc= data.rows.item(0);
             resolve(rc);
@@ -326,5 +327,45 @@ export class WorkService {
       })
     });
   }
+  test() {
+    let ms = new MsEntity();
+    ms.mn='test';
+    ms.md='2018-12-18 20:12';
+    ms.mt='0';
+    //插入消息
+    this.baseSqlite.save(ms).then(data=>{
+      console.log(data);
+    })
+    let sqlStr = "INSERT INTO GTD_D(pI,son,pd,uI) " +
+      "VALUES ('24314','12424','2018-12-18 20:12','123458')";
+    this.baseSqlite.executeSql(sqlStr, []).then(data => {
+      console.log(data)
+    }).catch(e => {
+      console.log(e)
+    })
 
+    let sqlStr3 = "INSERT INTO GTD_D(pI,son,pd,uI) " +
+      "VALUES ('243143','12424','2018-12-17 20:12','123458')";
+    this.baseSqlite.executeSql(sqlStr3,[]).then(data=>{
+      console.log(data)
+    }).catch(e=>{
+      console.log(e)
+    })
+
+    let sqlStr4 = "INSERT INTO GTD_D(pI,son,pd,uI) " +
+      "VALUES ('243144','12424','2018-12-15 20:12','123458')";
+    this.baseSqlite.executeSql(sqlStr4,[]).then(data=>{
+      console.log(data)
+    }).catch(e=>{
+      console.log(e)
+    })
+
+    let sqlStr5 = "INSERT INTO GTD_D(pI,son,pd,uI) " +
+      "VALUES ('243145','12424','2018-12-22 20:12','123458')";
+    this.baseSqlite.executeSql(sqlStr5,[]).then(data=>{
+      console.log(data)
+    }).catch(e=>{
+      console.log(e)
+    })
+  }
 }

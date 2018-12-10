@@ -50,4 +50,11 @@ public interface IPersonService {
      * @return
      */
     SearchUserOutDto searchPlayer(SearchUserInDto inDto);
+
+    /**
+     * 发送添加邀请
+     * @param inDto
+     * @return
+     */
+    int addPlayer(PlayerInDto inDto);
 }

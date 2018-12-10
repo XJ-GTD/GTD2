@@ -22,16 +22,21 @@ public class AuthRepository {
      * 密码登陆验证
      * @return
      */
-    public Object passwordLogin(String account, String password) {
+    public Object passwordLogin(String account, String password, String type) {
         String sql = "SELECT COUNT(*), USER_ID FROM gtd_login \n" +
-                " WHERE LOGIN_NAME = '" + account + "' AND PASSWORD = '" + password + "'";
+                " WHERE LOGIN_NAME = '" + account + "' AND PASSWORD = '" + password + "' AND LOGIN_TYPE = '" + type + "'";
 
         return em.createNativeQuery(sql).getSingleResult();
     }
 
-    public Object authCodeLogin(String accountMobile) {
+    /**
+     * 短信验证码登陆
+     * @param accountMobile
+     * @return
+     */
+    public Object authCodeLogin(String accountMobile, String type) {
         String sql = "SELECT COUNT(*), USER_ID FROM gtd_login \n" +
-                " WHERE LOGIN_NAME = '"+ accountMobile + "'";
+                " WHERE LOGIN_NAME = '"+ accountMobile + "' AND LOGIN_TYPE = '" + type + "'";
 
         return em.createNativeQuery(sql).getSingleResult();
     }

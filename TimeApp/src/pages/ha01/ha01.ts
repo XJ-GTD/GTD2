@@ -131,10 +131,7 @@ export class Ha01Page {
     this.workSqlite.getOd(dateStr).then(data=>{
       if(data.code==0){
         for(let i=0;i<data.slc.length;i++){
-          let mo = new ScheduleModel();
-          mo.scheduleStartTime = data.slc[i].scheduleStartTime
-          mo.scheduleName = data.slc[i].scheduleName;
-          this.scheduleList.push(mo);
+          this.scheduleList.push(data.slc[i]);
         }
       }
     })

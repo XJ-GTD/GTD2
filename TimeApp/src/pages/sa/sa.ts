@@ -6,6 +6,9 @@ import { XiaojiAlarmclockService } from "../../service/util-service/xiaoji-alarm
 import {HttpClient} from "@angular/common/http";
 import {AppConfig} from "../../app/app.config";
 import {ScheduleOutModel} from "../../model/out/schedule.out.model";
+import {WorkService} from "../../service/work.service";
+import {RcModel} from "../../model/rc.model";
+import {LbModel} from "../../model/lb.model";
 
 /**
  * Generated class for the SaPage page.
@@ -25,20 +28,28 @@ export class SaPage {
 
   data: any;
   schedule: ScheduleModel;
+  rc:RcModel;
+  lbs:Array<LbModel>;
   updateSchedule: ScheduleOutModel; //更新日程状态
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private paramsService: ParamsService,
               private http: HttpClient,
               public modalCtrl: ModalController,
+              private work:WorkService,
               private alarmClock: XiaojiAlarmclockService) {
-
     this.init();
   }
 
   init() {
     this.schedule = new ScheduleModel();
-    this.schedule = this.paramsService.schedule;
+    this.schedule = this.navParams.data;
+    this.rc = new RcModel();
+    this.work.getds(this.schedule.scheduleId).then(data=>{
+      this.rc = data;
+    }).catch(e=>{
+      alert(e.message)
+    })
     /*时间格式规整*/
     if (this.schedule.scheduleStartTime != null && this.schedule.scheduleStartTime != "") {
       this.schedule.scheduleStartTime = this.schedule.scheduleStartTime.replace(" ", "T");
@@ -48,6 +59,17 @@ export class SaPage {
       this.schedule.scheduleDeadline = this.schedule.scheduleDeadline.replace(" ", "T");
       // this.schedule.scheduleDeadline = this.schedule.scheduleDeadline.replace(":00Z", "");
     }
+    this.lbs = new Array<LbModel>();
+    //查询系统标签
+    this.work.getlbs().then(data=>{
+      if(data.code == 0){
+        this.lbs = data.lbs;
+        console.log('标签查询成功')
+
+      }
+    }).catch(reason => {
+
+    })
   }
 
   //设置闹钟
@@ -91,5 +113,7 @@ export class SaPage {
     this.paramsService.schedule=null;
     this.navCtrl.pop();
   }
+
+
 
 }

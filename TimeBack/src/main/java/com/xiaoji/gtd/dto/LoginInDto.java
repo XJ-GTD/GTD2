@@ -11,6 +11,8 @@ public class LoginInDto {
     private String deviceId;
     private String account;
     private String password;
+    private String loginIp;
+    private String loginLocaltion;
 
     public String getUserId() {
         return userId;
@@ -50,5 +52,21 @@ public class LoginInDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getLoginIp() {
+        return loginIp;
+    }
+
+    public void setLoginIp(String loginIp) {
+        this.loginIp = loginIp;
+    }
+
+    public String getLoginLocaltion() {
+        return loginLocaltion;
+    }
+
+    public void setLoginLocaltion(String loginLocaltion) {
+        this.loginLocaltion = loginLocaltion;
     }
 }

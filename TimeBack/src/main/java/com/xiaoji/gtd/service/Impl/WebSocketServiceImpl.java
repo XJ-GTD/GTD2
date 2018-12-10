@@ -27,8 +27,9 @@ public class WebSocketServiceImpl implements IWebSocketService {
      * @param outDto
      */
     @Override
-    public void pushMessageOfXF(String queueName, WebSocketOutDto outDto) {
+    public void pushMessage(String queueName, WebSocketOutDto outDto) {
         String message = JSONObject.toJSONString(outDto);
         producerUtil.send(queueName, message);
     }
+
 }

@@ -1,4 +1,3 @@
-
 /**
  * Generated class for the ScheduleDetailPage page.
  *
@@ -9,7 +8,13 @@
  * create by wzy on 2018/05/24
  */
 
+import {UserService} from "../service/user.service";
+
 export class AppConfig {
+
+  constructor(private user:UserService){
+
+  }
   /*0游客身份，1登录*/
   public static IL:number=0;
 
@@ -24,13 +29,14 @@ export class AppConfig {
 
   /* RabbitMq SockJs */
   public static RABBITMQ_SJ_URL: string = "http://192.168.0.219:15674/stomp";
-
+  /* token */
+  public static Token: string = "";
   /* 请求头 OPTIONS*/
   public static HEADER_OPTIONS_JSON: any = {
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization": AppConfig.Token
     },
-    responseType: 'json'
   };
 
   /* Controller */
@@ -59,6 +65,10 @@ export class AppConfig {
   public static PERSON_SU_URL: string = AppConfig.PERSON_URL + "/sign_up";   //注册
 
   public static PERSON_UPW_URL: string = AppConfig.PERSON_URL + "/update_password";   //修改密码
+
+  public static PERSON_LG: string = AppConfig.PERSON_URL + "/logout";   //用户注销
+
+  public static PERSON_SU: string = AppConfig.PERSON_URL + "/search_user";   //用户搜索
 
 
   /* ------------------------ 用户类 end--------------------------*/

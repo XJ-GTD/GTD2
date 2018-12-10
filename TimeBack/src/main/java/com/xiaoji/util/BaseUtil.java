@@ -1,5 +1,10 @@
 package com.xiaoji.util;
 
+import com.xiaoji.gtd.dto.code.ResultCode;
+import com.xiaoji.gtd.repository.GtdTokenRepository;
+import net.minidev.json.JSONObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import java.beans.BeanInfo;
@@ -16,12 +21,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * create by wzy on 2018/04/26.
  */
 public class BaseUtil {
+
+    private static Logger logger = LogManager.getLogger(Jwt.class);
 
     /**
      * 字符串加密
@@ -76,6 +82,23 @@ public class BaseUtil {
     public static Timestamp getSqlDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return CommonMethods.dateToStamp(sdf.format(new Date()));
+    }
+
+    /**
+     * 获取Token
+     * @param deviceId
+     * @param userId
+     * @return
+     */
+    public static String getToken(String userId,String deviceId)
+    {
+        Date date = new Date();
+        Map<String, Object> payload = new HashMap<String, Object>();
+        payload.put("userId", userId);// 用户id
+        payload.put("deviceId", deviceId);// 用户名
+        payload.put("iat", date.getTime());// 生成时间
+        payload.put("ext", date.getTime() + 1000 * 60 * 60 * 24 * 180L);// 过期时间6个月
+        return Jwt.createToken(payload);
     }
 
     //交换机命名规则

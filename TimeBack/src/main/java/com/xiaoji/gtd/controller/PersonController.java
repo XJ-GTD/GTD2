@@ -1,5 +1,6 @@
 package com.xiaoji.gtd.controller;
 
+import com.xiaoji.config.interceptor.AuthCheck;
 import com.xiaoji.gtd.dto.*;
 import com.xiaoji.gtd.dto.code.ResultCode;
 import com.xiaoji.gtd.service.IPersonService;
@@ -135,6 +136,7 @@ public class PersonController {
      */
     @RequestMapping(value = "/update_password", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out updatePassword(@RequestBody UpdatePWDInDto inDto) {
         Out outDto = new Out();
         //入参检测
@@ -188,6 +190,7 @@ public class PersonController {
      */
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out logout(@RequestBody UpdatePWDInDto inDto) {
         Out outDto = new Out();
 
@@ -200,6 +203,7 @@ public class PersonController {
      */
     @RequestMapping(value = "/search_user", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out searchUser(@RequestBody SearchUserInDto inDto) {
         Out outDto = new Out();
         SearchUserOutDto data;
@@ -225,11 +229,12 @@ public class PersonController {
 
             data = personService.searchPlayer(inDto);
             if (data != null) {
+                outDto.setData(data);
                 outDto.setCode(ResultCode.SUCCESS);
                 logger.debug("[查询成功]");
             } else {
-                outDto.setCode(ResultCode.FAIL_SEARCH);
-                logger.debug("[查询失败]：请稍后再试");
+                outDto.setCode(ResultCode.NULL_USER);
+                logger.debug("[查询成功]：该手机号尚未注册");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -248,8 +253,50 @@ public class PersonController {
      */
     @RequestMapping(value = "/add_player", method = RequestMethod.POST)
     @ResponseBody
-    public Out addPlayer(@RequestBody BaseInDto inDto) {
+    @AuthCheck
+    public Out addPlayer(@RequestBody PlayerInDto inDto) {
         Out outDto = new Out();
+
+        //入参检测
+        //必须项检测
+        if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
+            outDto.setCode(ResultCode.NULL_MOBILE);
+            logger.debug("[添加失败]：用户ID不可为空");
+            return outDto;
+        }
+        if(inDto.getTargetUserId() == null || "".equals(inDto.getTargetUserId())){
+            outDto.setCode(ResultCode.NULL_MOBILE);
+            logger.debug("[添加失败]：目标联系人ID不可为空");
+            return outDto;
+        }
+        //入参正确性验证
+        if (CommonMethods.checkMySqlReservedWords(inDto.getUserId())) {
+            outDto.setCode(ResultCode.ERROR_UUID);
+            logger.debug("[添加失败]：用户ID类型或格式错误");
+            return outDto;
+        }
+        if (CommonMethods.checkMySqlReservedWords(inDto.getTargetUserId())) {
+            outDto.setCode(ResultCode.ERROR_UUID);
+            logger.debug("[添加失败]：目标联系人ID类型或格式错误");
+            return outDto;
+        }
+
+        //业务逻辑
+        try {
+
+            int flag = personService.addPlayer(inDto);
+            if (flag == 0) {
+                outDto.setCode(ResultCode.SUCCESS);
+                logger.debug("[添加成功]");
+            } else {
+                outDto.setCode(ResultCode.NULL_USER);
+                logger.debug("[添加失败]：该手机号尚未注册");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            logger.error("[添加失败]：服务器繁忙");
+        }
 
         return outDto;
     }
@@ -260,8 +307,35 @@ public class PersonController {
      */
     @RequestMapping(value = "/update_info", method = RequestMethod.POST)
     @ResponseBody
-    public Out updateUserInfo(@RequestBody BaseInDto inDto) {
+    @AuthCheck
+    public Out updateUserInfo(@RequestBody UserInfoInDto inDto) {
         Out outDto = new Out();
+
+        //入参检测
+        //必须项检测
+        if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
+            outDto.setCode(ResultCode.NULL_MOBILE);
+            logger.debug("[修改失败]：用户ID不可为空");
+            return outDto;
+        }
+        //特殊字符检测
+        //入参正确性验证
+        if (CommonMethods.checkMySqlReservedWords(inDto.getUserName())) {
+            outDto.setCode(ResultCode.ERROR_USERNAME);
+            logger.debug("[修改失败]：用户名类型或格式错误");
+            return outDto;
+        }
+
+        //业务逻辑
+        try {
+
+            outDto.setCode(ResultCode.SUCCESS);
+            logger.debug("[修改成功]");
+        } catch (Exception e) {
+          e.printStackTrace();
+          outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+          logger.error("[修改失败]：服务器繁忙");
+        }
 
         return outDto;
     }

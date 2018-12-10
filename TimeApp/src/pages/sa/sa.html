@@ -19,7 +19,8 @@
 
     <ion-item>
       <ion-label floating>日程标题</ion-label>
-      <ion-input type="text" disabled [(ngModel)]="schedule.scheduleName"></ion-input>
+      <!--<ion-input type="text" disabled [(ngModel)]="schedule.scheduleName"></ion-input>-->
+      <ion-input type="text" disabled [(ngModel)]="rc.sN"></ion-input>
     </ion-item>
 
     <ion-item>
@@ -33,19 +34,25 @@
 
     <ion-item>
       <ion-label floating>开始时间</ion-label>
-      <ion-datetime disabled displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleStartTime"></ion-datetime>
+      <!--<ion-datetime disabled displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleStartTime"></ion-datetime>-->
+      <ion-datetime disabled displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="rc.sd"></ion-datetime>
     </ion-item>
 
     <ion-item>
       <ion-label floating>结束时间</ion-label>
-      <ion-datetime disabled displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleDeadline"></ion-datetime>
+      <!--<ion-datetime disabled displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleDeadline"></ion-datetime>-->
+      <ion-datetime disabled displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="rc.ed"></ion-datetime>
     </ion-item>
 
     <ion-item>
       <ion-label floating>标签</ion-label>
-      <ion-select disabled (focus)="findLabel()" [(ngModel)]="schedule.labelName" multiple="true">
-        <div *ngFor="let lb of schedule.labelName">
-          <ion-option value="{{lb}}">{{lb}}</ion-option>
+      <!--<ion-select disabled (focus)="findLabel()" [(ngModel)]="schedule.labelName" multiple="true">-->
+      <!--<div *ngFor="let lb of schedule.labelName">-->
+        <!--<ion-option value="{{lb}}">{{lb}}</ion-option>-->
+      <!--</div>-->
+      <ion-select disabled  [(ngModel)]="rc.lan" multiple="true">
+        <div *ngFor="let lb of lbs">
+          <ion-option value="{{lb.lai}}">{{lb.lan}}</ion-option>
         </div>
       </ion-select>
     </ion-item>

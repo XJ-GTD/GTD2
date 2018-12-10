@@ -1,5 +1,6 @@
 package com.xiaoji.gtd.controller;
 
+import com.xiaoji.config.interceptor.AuthCheck;
 import com.xiaoji.gtd.dto.AiUiInDto;
 import com.xiaoji.gtd.dto.Out;
 import com.xiaoji.gtd.dto.code.ResultCode;
@@ -81,6 +82,7 @@ public class VoiceParseController {
      * @param inDto
      * @return
      */
+    @AuthCheck
     @RequestMapping(value = "/text", method = RequestMethod.POST)
     public Out readText(@RequestBody AiUiInDto inDto){
         Out outDto = new Out();

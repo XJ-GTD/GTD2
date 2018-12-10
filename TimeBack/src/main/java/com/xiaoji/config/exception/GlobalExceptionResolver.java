@@ -12,12 +12,30 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.security.auth.message.AuthException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @ControllerAdvice
 public class GlobalExceptionResolver {
     private final static Logger LOGGER =  LogManager.getLogger(WebAppConfig.class.getName());
+
+    /**
+     * token异常处理
+     * @param response
+     * @param e
+     */
+    @ExceptionHandler(value = AuthException.class)
+    public void authExceptionHandler(HttpServletResponse response, AuthException e) {
+        e.printStackTrace();
+        Out out= new Out();
+        out.setCode(ResultCode.UN_AUTH_TOKEN);
+        out.setMessage(e.getMessage());
+        if (e.getMessage() == null || "".equals(e.getMessage()))  out.setMessage("没有TOKEN权限");
+        LOGGER.info("--------AuthException--------");
+        responseResult(response, out);
+    }
+
     /**
      * 业务异常的处理
      */

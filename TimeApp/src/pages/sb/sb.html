@@ -4,12 +4,13 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+
 <ion-header>
 
   <ion-navbar>
     <ion-title>创建日程</ion-title>
-    <ion-buttons end padding-right>
-      <button (click)="newProject()" ion-only ion-button>
+    <ion-buttons right>
+      <button (click)="newProject()"  ion-button>
           发布
       </button>
     </ion-buttons>
@@ -20,7 +21,7 @@
 
 
 <ion-content padding>
-  <ion-label></ion-label>
+  <!--<ion-label></ion-label>-->
 
   <ion-textarea placeholder="要发的内容..." [(ngModel)]="title"></ion-textarea>
 
@@ -40,9 +41,24 @@
       <div style="clear: both; font-size:10px" text-center></div>
     </div>
   </div>
-
+  <div>
+    <ion-buttons>
+      <button style="padding:5px;border-radius: 5px;background-color: #f0f0f0" *ngFor="let lb of selectLb" float-left>
+        <div float-left>
+          <img src="./assets/imgs/i.png"/>
+        </div>
+        <div float-left style="padding-top: 2px;padding-bottom: 5px;padding-left: 5px">{{lb.lan}}</div>
+      </button>
+      <button style="padding:5px;border-radius: 5px;background-color: #f0f0f0" (click)="show()">
+        <div float-left>
+          <img src="./assets/imgs/i.png"/>
+        </div>
+        <div float-left style="padding-top: 2px;padding-bottom: 5px;padding-left: 5px">添加标签</div>
+      </button>
+    </ion-buttons>
+  </div>
   <div ion-item>
-    <ion-label></ion-label>
+    <ion-label>标签</ion-label>
     <!--<ion-select item-end [(ngModel)]="type" style="width: 100px">-->
       <!--<ion-option [selected]="true" value="BQA">任务</ion-option>-->
       <!--<ion-option [selected]="false" value="BQB">日常</ion-option>-->
@@ -60,7 +76,7 @@
     <!--<ion-label text-end>2018年11月20日</ion-label>-->
     <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="startTime"></ion-datetime>
   </button>
-  <ion-item *ngIf="false">
+  <ion-item *ngIf="showA">
     <img src="./assets/imgs/4.png" item-start/>
     <ion-label>重复类型</ion-label>
     <ion-select item-end >
@@ -70,68 +86,29 @@
       <ion-option [selected]="false">日</ion-option>
     </ion-select>
   </ion-item>
-  <button ion-item  *ngIf="false">
+  <button ion-item  *ngIf="showB">
     <img src="./assets/imgs/1.png" item-start/>
     <ion-label>重复时间</ion-label>
     <ion-datetime displayFormat="MM-DD"></ion-datetime>
   </button>
-  <button ion-item *ngIf="false">
+  <button ion-item *ngIf="showC">
     <img src="./assets/imgs/b.png" item-start/>
     <ion-label>备注</ion-label>
     <ion-input text-end type="text">2018年11月20日</ion-input>
   </button>
 
-    <!--<button ion-icon>-->
-    <!--<div style="background-color: #f1f1f1;width: 150px" padding>-->
-      <!--<img src="./assets/imgs/i.png"/>添加计划-->
-    <!--</div>-->
-    <!--</button>-->
-
-
-  <!--<ion-list>-->
-
-    <!--<ion-item>-->
-      <!--<ion-label floating>参与人</ion-label>-->
-      <!--&lt;!&ndash;<ion-select [(ngModel)]="" multiple="true">&ndash;&gt;-->
-        <!--&lt;!&ndash;<div>&ndash;&gt;-->
-          <!--&lt;!&ndash;<ion-option>张三</ion-option>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--&lt;!&ndash;</ion-select>&ndash;&gt;-->
-    <!--</ion-item>-->
-
-    <!--<ion-item>-->
-      <!--<ion-label floating>日程内容</ion-label>-->
-      <!--&lt;!&ndash;<ion-input type="text" ></ion-input>&ndash;&gt;-->
-    <!--</ion-item>-->
-
-
-    <!--<ion-item>-->
-      <!--<ion-label floating>标签</ion-label>-->
-      <!--&lt;!&ndash;<ion-select (focus)="findLabel()" multiple="true" ion-text="标签">&ndash;&gt;-->
-        <!--&lt;!&ndash;<div >&ndash;&gt;-->
-          <!--&lt;!&ndash;<ion-option >}</ion-option>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--&lt;!&ndash;</ion-select>&ndash;&gt;-->
-    <!--</ion-item>-->
-
-  <!--</ion-list>-->
-
-  <!--<ion-list>-->
-    <!--<ion-item>-->
-      <!--<ion-label>全天</ion-label>-->
-      <!--<ion-toggle checked="false"></ion-toggle>-->
-    <!--</ion-item>-->
-
-    <!--<ion-item>-->
-      <!--<ion-label floating>开始时间</ion-label>-->
-      <!--<ion-datetime displayFormat="YYYY-MM-DD HH:mm DDDD "></ion-datetime>-->
-
-    <!--</ion-item>-->
-
-    <!--<ion-item>-->
-      <!--<ion-label floating>结束时间</ion-label>-->
-      <!--<ion-datetime displayFormat="HH:mm YYYY-MM-DD DDDD"></ion-datetime>-->
-    <!--</ion-item>-->
-  <!--</ion-list>-->
 
 </ion-content>
+<div *ngIf="isShow" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();">
+  <ion-backdrop disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></ion-backdrop>
+
+  <div class="pop-css">
+    <div class="titlecss" text-center>选择标签</div>
+    <div *ngFor="let lb of lbs" class="contentcss">
+      <div>
+        <button float-left style="padding-top: 2px;padding-bottom: 5px;padding-left: 5px" [ngClass]="{selectcss: lb.lau, noselectcss:!lb.lau}" (click)="checkdd(lb)">{{lb.lan}}</button>
+      </div>
+    </div>
+
+  </div>
+</div>
