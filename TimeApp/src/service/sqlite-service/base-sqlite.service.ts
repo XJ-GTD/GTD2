@@ -19,6 +19,7 @@ import {LbSqliteService} from "./lb-sqlite.service";
 import {JhEntity} from "../../entity/jh.entity";
 import {RelmemService} from "../relmem.service";
 import {FiEntity} from "../../entity/fi.entity";
+import {AppConfig} from "../../app/app.config";
 
 /**
  * 客户端数据库
@@ -27,7 +28,7 @@ import {FiEntity} from "../../entity/fi.entity";
  */
 @Injectable()
 export class BaseSqliteService {
-
+  className:String = 'BaseSqliteService';
   database: SQLiteObject;
   win: any = window;//window对象
   constructor( private platform: Platform,
@@ -37,24 +38,24 @@ export class BaseSqliteService {
   /**
    * 创建数据库
    */
-  createDb() {
+  createDb(){
+    console.debug(this.className+"开始创建/连接数据库mingWX.db")
     if (this.isMobile()) {
       this.sqlite.create({
-        name: 'data.db',
+        name: 'mingWX.db',
         location: 'default'
-      })
-        .then((db: SQLiteObject) => {
+      }).then((db: SQLiteObject) => {
           this.database = db;
-          this.createTable();
-        })
-        .catch(e => {
+          console.debug(this.className+"数据库mingWX.db创建/成功连接")
+        }).catch(e => {
           alert(e.toString());
+        console.debug(this.className+"数据库创建/连接失败："+e.message)
           this.events.publish('db:create');
         });
     } else {
       //H5数据库存储
       this.database = this.win.openDatabase("data.db", '1.0', 'database', 5 * 1024 * 1024);//声明H5 数据库大小
-      this.createTable();
+      console.debug(this.className+"H5数据库mingWX.db创建/成功连接")
     }
   }
 
@@ -62,12 +63,13 @@ export class BaseSqliteService {
    * 创建表
    */
   async createTable() {
+    console.debug(this.className+"数据库初始化建表开始")
     //可能存在多个执行创建表语句，只需最后一个使用await
     //this.executeSql('DROP TABLE GTD_ACCOUNT',[]);
     //创建用户基本信息表
     let ue=new UEntity();
     this.executeSql(ue.csq,[]).catch(e=>{
-      console.log('GTD_A:'+e.toString());
+      console.log('createTable：GTD_A:'+e.toString());
     })
     //创建日程表
     let rc = new RcEntity();
@@ -92,6 +94,9 @@ export class BaseSqliteService {
     })
     //标签表
     let lb = new LbEntity();
+    // this.executeSql(lb.drsq,[]).catch(e=>{
+    //   console.log('GTD_F:'+e.toString());
+    // })
     this.executeSql(lb.csq,[]).catch(e=>{
       console.log('GTD_F:'+e.toString());
     })
@@ -128,7 +133,12 @@ export class BaseSqliteService {
     })
     // 版本表
     let fi = new FiEntity();
-    this.executeSql(fi.csq,[]).catch(e=>{
+    this.executeSql(fi.csq,[]).then(data=>{
+      fi.id=1;
+      fi.firstIn=1;
+      fi.isup=0
+      this.save(fi);
+    }).catch(e=>{
       console.log('GTD_FI:'+e.toString());
     })
     let sql = new UEntity().csq+ new RcEntity().csq + new RcpEntity().csq +new RuEntity().csq
@@ -138,7 +148,7 @@ export class BaseSqliteService {
     //this.importSqlToDb(sql);
     let data = new Array();
     this.initlb(data);
-
+    console.debug(this.className+"数据库初始化建表结束")
   }
 
 
