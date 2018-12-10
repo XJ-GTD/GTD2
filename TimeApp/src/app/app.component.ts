@@ -79,12 +79,14 @@ export class MyApp {
           }
           console.debug(JSON.stringify(data))
         }).catch(e=>{
+          alert("MyApp获取Token失败")
           console.error("MyApp获取Token失败"+e.message)
         })
         this.rootPage = PageConfig.HZ_PAGE;
       }
       this.nav.setRoot(this.rootPage);
     }).catch(e=>{
+      alert("MyApp查询版本号失败")
       //首次打开App,初始化创建数据库建表
       this.baseSqlite.createTable();
       this.rootPage = PageConfig.AZ_PAGE;

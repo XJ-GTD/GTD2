@@ -57,6 +57,7 @@ export class BaseSqliteService {
       this.database = this.win.openDatabase("data.db", '1.0', 'database', 5 * 1024 * 1024);//声明H5 数据库大小
       console.debug(this.className+"H5数据库mingWX.db创建/成功连接")
     }
+    alert('创建数据成功！')
   }
 
   /**
@@ -149,6 +150,7 @@ export class BaseSqliteService {
     let data = new Array();
     this.initlb(data);
     console.debug(this.className+"数据库初始化建表结束")
+    alert('初始化建表结束！')
   }
 
 
@@ -165,7 +167,7 @@ export class BaseSqliteService {
         })
         .catch((error)=> {
           console.error(error);
-          alert(error);
+          alert(this.className+"sql执行错误:"+error.message);
           reject(error)
         });
     });
