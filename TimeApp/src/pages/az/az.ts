@@ -63,7 +63,6 @@ export class AzPage {
     let u:UEntity=new UEntity();
     u.uI=this.util.getUuid();
     u.uty='0';
-    this.workSqlite.test();
     this.sqliteService.save(u).then(data=>{
       console.log(data);
       this.navCtrl.setRoot('HaPage');
