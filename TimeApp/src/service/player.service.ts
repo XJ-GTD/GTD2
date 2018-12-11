@@ -148,6 +148,12 @@ export class PlayerService {
     })
   }
 
+  initfirst(datas:Array<any>):Promise<BsModel>{
+    console.debug(datas);
+    return null;
+
+  }
+
   /**
    * 修改日程
    * @param {string} sI

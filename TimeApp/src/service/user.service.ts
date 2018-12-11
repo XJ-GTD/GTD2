@@ -70,7 +70,7 @@ export class UserService {
   getUo(): Promise<UoModel>{
     return new Promise((resolve, reject) =>{
       let op = new UoModel();
-      this.userSqlite.getUo()
+      return this.userSqlite.getUo()
         .then(data=>{
           if(data&& data.rows && data.rows.length>0){
             op.u=data.rows.item(0);
