@@ -56,6 +56,7 @@ export class UaPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UaPage');
+    
   }
 
   register() {
@@ -68,44 +69,63 @@ export class UaPage {
       this.checkBoxClickFlag=false;
       if(this.errorCode == 3 && this.checkPassword == false ){
         this.lsmService.sn(this.accountMobile,this.accountPassword,this.authCode).then(data =>{
+          console.debug("注册返回信息::" + JSON.stringify(data));
           if(data.code == 0) {
+            console.log("注册成功");
             //注册成功执行登陆
-            this.lsmService.login(this.accountMobile, this.accountPassword).then(data => {
+            this.lsmService.login(this.accountMobile, this.accountPassword).then(data1 => {
+              console.debug("登录返回信息::" + JSON.stringify(data));
               // 登陆成功
-              let alert = this.alertCtrl.create({
-                title: '提示信息',
-                subTitle: data.message,
-                buttons: [{
-                  text: '确定', role: 'cancel', handler: () => {
-                    //跳转首页
-                    this.navCtrl.setRoot('HzPage');
-                  }
-                }]
-              });
-              alert.present();
+              if(data1.code == 0) {
+                console.debug("登录失败");
+                let alert = this.alertCtrl.create({
+                  title: '提示信息',
+                  subTitle: "注册成功",
+                  buttons: [{
+                    text: '确定', role: 'cancel', handler: () => {
+                      //跳转首页
+                      this.navCtrl.setRoot('HzPage');
+                    }
+                  }]
+                });
+                alert.present();
+              }else{
+                console.debug("登录失败");
+                //登陆失败
+                let alert = this.alertCtrl.create({
+                  title:'提示信息',
+                  subTitle: "登录失败",
+                  buttons:['确定']
+                });
+                alert.present();
+              }
+
 
             }).catch(reason => {
+              console.debug("登录失败");
               //登陆失败
               let alert = this.alertCtrl.create({
                 title:'提示信息',
-                subTitle: reason.message,
+                subTitle: "登录失败",
                 buttons:['确定']
               });
               alert.present();
             })
           }else{
+            console.debug("注册失败");
             let alert = this.alertCtrl.create({
               title:'提示信息',
-              subTitle: data.message,
+              subTitle: "注册失败",
               buttons:['确定']
             });
             alert.present();
           }
         }).catch(reason => {
+          console.debug("注册失败");
           //注册失败
           let alert = this.alertCtrl.create({
             title:'提示信息',
-            subTitle: reason.message,
+            subTitle: "注册失败",
             buttons:['确定']
           });
           alert.present();

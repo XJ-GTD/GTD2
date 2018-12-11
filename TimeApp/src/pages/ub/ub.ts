@@ -44,49 +44,54 @@ export class UbPage {
   }
 
   signIn() {
-       this.lsmService.login(this.accountName, this.accountPassword).then(data=> {
-         console.log(data)
-         if (data.code == 0) {
-           let alert = this.alertCtrl.create({
-             title: '提示信息',
-             subTitle: data.message,
-             buttons: [{
-               text: '确定', role: 'cancel', handler: () => {
-                 //跳转首页
-                 console.log('UbPage跳转HzPage')
-                 this.navCtrl.setRoot('HzPage');
-               }
-             }]
-           });
-           alert.present();
-         }else{
-            let alert = this.alertCtrl.create({
-              title:'提示信息',
-              subTitle: data.message,
-              buttons:["确定"]
-            });
-            alert.present();
-         }
-
-       }).catch(res=>{
+    
+    console.debug("登录按钮被点击");
+     this.lsmService.login(this.accountName, this.accountPassword).then(data=> {
+       console.log(data)
+       if (data.code == 0) {
+         console.debug("登录失败")
          let alert = this.alertCtrl.create({
-           title:'提示信息',
-           subTitle: res.message,
-           buttons:["确定"]
+           title: '提示信息',
+           subTitle: "登录成功",
+           buttons: [{
+             text: '确定', role: 'cancel', handler: () => {
+               //跳转首页
+               console.log('UbPage跳转HzPage');
+               this.navCtrl.setRoot('HzPage');
+             }
+           }]
          });
          alert.present();
-         console.log(res);
+       }else{
+         console.debug("登录失败");
+          let alert = this.alertCtrl.create({
+            title:'提示信息',
+            subTitle: "登录失败",
+            buttons:["确定"]
+          });
+          alert.present();
+       }
+
+     }).catch(res=>{
+       console.debug("登录失败");
+       let alert = this.alertCtrl.create({
+         title:'提示信息',
+         subTitle: "登录失败",
+         buttons:["确定"]
        });
+       alert.present();
+       console.log(res);
+     });
 
   }
 
   signUp() {
-    console.log('UbPage跳转UaPage')
+    console.log('UbPage跳转UaPage');
     this.navCtrl.push('UaPage');
   }
 
   toUd() {
-    console.log('UbPage跳转UdPage')
+    console.log('UbPage跳转UdPage');
     this.navCtrl.push('UdPage');
   }
 }
