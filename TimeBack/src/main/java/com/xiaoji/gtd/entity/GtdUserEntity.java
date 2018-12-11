@@ -175,6 +175,4 @@ public class GtdUserEntity {
     public int hashCode() {
         return Objects.hash(userId, userName, headImg, birthday, realName, idCard, userSex, userContact, userType, createId, createDate, updateId, updateDate);
     }
-
-
 }

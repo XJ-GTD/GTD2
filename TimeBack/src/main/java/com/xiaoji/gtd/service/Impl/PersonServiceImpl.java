@@ -12,7 +12,6 @@ import com.xiaoji.gtd.service.IPersonService;
 import com.xiaoji.gtd.service.ISmsService;
 import com.xiaoji.gtd.service.IWebSocketService;
 import com.xiaoji.util.BaseUtil;
-import com.xiaoji.util.CommonMethods;
 import com.xiaoji.util.TimerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,10 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 /**
  * 用户接口实现类

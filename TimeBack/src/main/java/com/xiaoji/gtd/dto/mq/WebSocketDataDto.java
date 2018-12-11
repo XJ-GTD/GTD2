@@ -16,6 +16,7 @@ public class WebSocketDataDto {
     private String pln;     //playerName;
     private String ss;      //status;
 
+//    private String
     private String us;      //userId
     private String un;      //userName
     private String hi;      //headImg

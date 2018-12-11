@@ -88,19 +88,19 @@ public class AuthServiceImpl implements IAuthService {
         String queueName = "";
         String token = "";
         String userName = "";
-        String headImgUrl = "";
+        String headImg = "";
         String birthday = "";
         String realName = "";
         String idCard = "";
         String userSex = "";
 
         try {
-            Object[] obj = (Object[]) authRepository.authLogin(account, password, null, LOGIN_TYPE_ACCOUNT);
+            Object[] obj = (Object[]) authRepository.authLogin(account, password);
             int count = Integer.valueOf(obj[0].toString());
             if (count != 0) {
                 userId = obj[1].toString();
                 userName = obj[2].toString();
-                headImgUrl = obj[3].toString();
+                headImg = obj[3].toString();
                 birthday = obj[4].toString();
                 realName = obj[5].toString();
                 idCard = obj[6].toString();
@@ -116,7 +116,7 @@ public class AuthServiceImpl implements IAuthService {
                 data.setUserId(userId);
                 data.setUserName(userName);
                 data.setBirthday(birthday);
-                data.setHeadImgUrl(headImgUrl);
+                data.setHeadImg(headImg);
                 data.setRealName(realName);
                 data.setIdCard(idCard);
                 data.setUserSex(userSex);
@@ -125,9 +125,12 @@ public class AuthServiceImpl implements IAuthService {
             } else {
                 data = null;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        } catch (NullPointerException ne) {
+            ne.printStackTrace();
+            logger.error("数据读取异常");
+        } catch (IOException ie) {
+            ie.printStackTrace();
+            logger.error("io异常");
         }
 
         return data;
@@ -140,7 +143,7 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     public LoginOutDto smsLogin(LoginInDto inDto) {
         LoginOutDto data = new LoginOutDto();
-        String accountMobile = inDto.getAccount();
+        String account = inDto.getAccount();
         String deviceId = inDto.getDeviceId();
         String loginIp = inDto.getLoginIp();
         String loginLocaltion = inDto.getLoginLocaltion();
@@ -148,20 +151,20 @@ public class AuthServiceImpl implements IAuthService {
         String queueName = "";
         String token = "";
         String userName = "";
-        String headImgUrl = "";
+        String headImg = "";
         String birthday = "";
         String realName = "";
         String idCard = "";
         String userSex = "";
 
         try {
-            Object[] obj = (Object[]) authRepository.authLogin(null, null, accountMobile, LOGIN_TYPE_MOBILE);
+            Object[] obj = (Object[]) authRepository.authLogin(account, null);
             int count = Integer.valueOf(obj[0].toString());
             if (count != 0) {
 
                 userId = obj[1].toString();
                 userName = obj[2].toString();
-                headImgUrl = obj[3].toString();
+                headImg = obj[3].toString();
                 birthday = obj[4].toString();
                 realName = obj[5].toString();
                 idCard = obj[6].toString();
@@ -175,7 +178,7 @@ public class AuthServiceImpl implements IAuthService {
                 data.setUserId(userId);
                 data.setUserName(userName);
                 data.setBirthday(birthday);
-                data.setHeadImgUrl(headImgUrl);
+                data.setHeadImg(headImg);
                 data.setUserSex(userSex);
                 data.setRealName(realName);
                 data.setIdCard(idCard);
@@ -187,10 +190,13 @@ public class AuthServiceImpl implements IAuthService {
             } else {
                 data = null;
             }
-            TimerUtil.clearOnly(accountMobile);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            TimerUtil.clearOnly(account);
+        } catch (NullPointerException ne) {
+            ne.printStackTrace();
+            logger.error("数据读取异常");
+        } catch (IOException ie) {
+            ie.printStackTrace();
+            logger.error("io异常");
         }
         return data;
     }

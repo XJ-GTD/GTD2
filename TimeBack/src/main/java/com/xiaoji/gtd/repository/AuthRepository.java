@@ -28,16 +28,16 @@ public class AuthRepository {
      * 登陆验证
      * @return
      */
-    public Object authLogin(String account, String password, String accountMobile, String type) {
+    public Object authLogin(String account, String password) {
 
         String sqlScreen = "";
-        if (type.equals(LOGIN_TYPE_ACCOUNT)) {
-            sqlScreen = " WHERE LOGIN_NAME = '" + account + "' AND PASSWORD = '" + password + "' AND LOGIN_TYPE = '" + type + "'";
-        } else if (type.equals(LOGIN_TYPE_MOBILE)) {
-            sqlScreen = " WHERE LOGIN_NAME = '"+ accountMobile + "' AND LOGIN_TYPE = '" + type + "'";
+        if (password != null && !password.equals("")) {
+            sqlScreen = " WHERE LOGIN_NAME = '" + account + "' AND PASSWORD = '" + password + "' AND LOGIN_TYPE IN ('" + LOGIN_TYPE_ACCOUNT + "','" + LOGIN_TYPE_MOBILE + "')";
+        } else {
+            sqlScreen = " WHERE LOGIN_NAME = '"+ account + "' AND LOGIN_TYPE = '" + LOGIN_TYPE_MOBILE + "'";
         }
 
-        String sql = "SELECT COUNT(*), USER_ID, USER_NAME, HEAD_IMG, BIRTHDAY, REAL_NAME, ID_CARD, USER_SEX \n" +
+        String sql = "SELECT COUNT(*), TB.USER_ID, TB.USER_NAME, TB.HEAD_IMG, TB.BIRTHDAY, TB.REAL_NAME, TB.ID_CARD, TB.USER_SEX \n" +
                 " FROM gtd_login TA \n" +
                 " INNER JOIN gtd_user TB ON TB.USER_ID = TA.USER_ID " + sqlScreen;
 
