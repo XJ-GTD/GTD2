@@ -13,7 +13,6 @@ import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notifica
 import { XiaojiAssistantService } from "../service/util-service/xiaoji-assistant.service";
 import { XiaojiFeedbackService } from "../service/util-service/xiaoji-feedback.service";
 import { SQLite } from '@ionic-native/sqlite';
-import { UtilService } from "../service/util-service/util.service";
 import { Calendar } from "@ionic-native/calendar";
 import { CalendarService } from "../service/calendar.service";
 import { Device } from "@ionic-native/device";
@@ -21,7 +20,7 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter';
 import { BaseSqliteService } from "../service/sqlite-service/base-sqlite.service";
 import { UserSqliteService } from "../service/sqlite-service/user-sqlite.service";
 import { WorkSqliteService } from "../service/sqlite-service/work-sqlite.service";
-import { BaseService } from "../service/base.service";
+
 import { UserService } from "../service/user.service";
 import { WorkService } from "../service/work.service";
 import { LsmService } from "../service/lsm.service";
@@ -38,6 +37,16 @@ import { XiaojiAlarmclockService } from "../service/util-service/xiaoji-alarmclo
 import { JhService } from "../service/jh.service";
 import { DwEmitService } from "../service/util-service/dw-emit.service";
 import {FiSqliteService} from "../service/sqlite-service/fi-sqlite.service";
+import {ParamsService} from "../service/util-service/params.service";
+import {WebsocketService} from "../service/util-service/websocket.service";
+import {DwMqService} from "../service/util-service/dw-mq.service";
+import {BackButtonService} from "../service/util-service/backbutton.service";
+import {UtilService} from "../service/util-service/util.service";
+import {BaseService} from "../service/base.service";
+import {BackgroundMode} from '@ionic-native/background-mode';
+import {PermissionsService} from "../service/util-service/permissions.service";
+import {AndroidPermissions} from '@ionic-native/android-permissions';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -90,6 +99,16 @@ import {FiSqliteService} from "../service/sqlite-service/fi-sqlite.service";
     SystemSqliteService,
     FiSqliteService,
     JhService,
+    ParamsService,
+    WebsocketService,
+    DwMqService,
+    BackButtonService,
+    BackgroundMode,
+    UserSqliteService,
+    WorkSqliteService,
+    AndroidPermissions,
+    PermissionsService,
+
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
