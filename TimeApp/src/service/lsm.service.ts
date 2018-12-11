@@ -141,33 +141,37 @@ export class LsmService {
         this.au.login(un,pw).subscribe(datal=>{
           this.data = datal;
           base = this.data;
-          let u = new UEntity();
-          u.uI=this.data.data.userId;
-          u.aQ=this.data.data.accountQueue
-          if(u.uT != null && u.uT!=''){
-            AppConfig.Token=u.uT;
-          }
-          //用户如果不存在则添加
-          if(oldUi==null){
-            this.basesqlite.save(u).then(data=>{
-              resolve(base);
-            }).catch(eu=>{
-              base.code=1
-              base.message=eu.message
-              resolve(base);
-            })
-          }else{
-            //用户如果存在则更新
-            if(oldUi != u.uI){
-              u.oUI = oldUi;
+          if(this.data.code ==0){
+            let u = new UEntity();
+            u.uI=this.data.data.userId;
+            u.aQ=this.data.data.accountQueue
+            if(u.uT != null && u.uT!=''){
+              AppConfig.Token=u.uT;
             }
-            this.basesqlite.update(u).then(data=>{
-              resolve(base);
-            }).catch(eu=>{
-              base.code=1
-              base.message=eu.message
-              resolve(base);
-            })
+            //用户如果不存在则添加
+            if(oldUi==null){
+              this.basesqlite.save(u).then(data=>{
+                resolve(base);
+              }).catch(eu=>{
+                base.code=1
+                base.message=eu.message
+                resolve(base);
+              })
+            }else{
+              //用户如果存在则更新
+              if(oldUi != u.uI){
+                u.oUI = oldUi;
+              }
+              this.basesqlite.update(u).then(data=>{
+                resolve(base);
+              }).catch(eu=>{
+                base.code=1
+                base.message=eu.message
+                resolve(base);
+              })
+            }
+          }else{
+            resolve(base);
           }
         })
       }).catch(e=>{
