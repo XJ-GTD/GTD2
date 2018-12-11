@@ -1,12 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { Platform, MenuController, Nav, Tabs, Events  } from 'ionic-angular';
+import {Platform, MenuController, Nav, Tabs, Events, IonicApp} from 'ionic-angular';
 
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {Storage} from "@ionic/storage";
 import {ParamsService} from "../service/util-service/params.service";
-import {BackButtonService} from "../service/util-service/backbutton.service";
 import {XiaojiFeedbackService} from "../service/util-service/xiaoji-feedback.service";
 import {BaseSqliteService} from "../service/sqlite-service/base-sqlite.service";
 import {PageConfig} from "./page.config";
@@ -29,18 +28,16 @@ export class MyApp {
 
   constructor(
     public platform: Platform,
-    public menu: MenuController,
     public statusBar: StatusBar,
+    public appCtrl: IonicApp,
+    public backgroundMode: BackgroundMode,
     public splashScreen: SplashScreen,
-    public backButtonService: BackButtonService,
     public feedbackService: XiaojiFeedbackService,
     private events: Events,
     private fisqlite: FiSqliteService,
     private baseSqlite: BaseSqliteService,
-    private storage: Storage,
     private paramsService: ParamsService,
     private user: UserService,
-    private backgroundMode: BackgroundMode,
     private permissionsService: PermissionsService,
   ) {
 
@@ -50,13 +47,13 @@ export class MyApp {
       // statusBar.styleDefault();
       // splashScreen.hide();
       this.backgroundMode.enable();
-      this.backButtonService.registerBackButtonAction(this.nav);//注册返回按键事件
+      this.registerBackButtonAction();
+
 
       let i = 0;
       permissionsService.checkAllPermissiions()
         .then(res => {
           feedbackService.initAudio();
-          //this.backButtonService.registerBackButtonAction(null);
           this.init();
 
         }).catch(res => {
@@ -70,7 +67,7 @@ export class MyApp {
   init() {
     //查询版本
     this.fisqlite.getfi(1).then(data => {
-      let istrue: boolean = false
+      let istrue: boolean = false;
       if (data && data.rows && data.rows.length > 0) {
         if (data.rows.item(0).isup == 1) {
           istrue = true;
@@ -93,9 +90,9 @@ export class MyApp {
           }
           console.debug(JSON.stringify(data))
         }).catch(e => {
-          alert("MyApp获取Token失败")
+          alert("MyApp获取Token失败");
           console.error("MyApp获取Token失败" + e.message)
-        })
+        });
         this.rootPage = PageConfig.HZ_PAGE;
       }
       this.nav.setRoot(this.rootPage);
@@ -135,6 +132,28 @@ export class MyApp {
     });
     //初始化创建数据库
     this.baseSqlite.createDb();
+  }
+
+  registerBackButtonAction(): void {
+    this.platform.registerBackButtonAction(() => {
+      //如果想点击返回按钮隐藏toast或loading或Overlay就把下面加上
+      // this.appCtrl._toastPortal.getActive() || this.appCtrl._loadingPortal.getActive() || this.appCtrl._overlayPortal.getActive();
+      let activePortal = this.appCtrl._modalPortal.getActive();
+      if (activePortal) {
+        activePortal.dismiss().catch(() => {
+        });
+        activePortal.onDidDismiss(() => {
+        });
+        return;
+      }
+
+      if (this.nav.canGoBack())  {
+        this.nav.pop();
+      } else {
+        this.backgroundMode.moveToBackground();
+      }
+
+    }, 1);
   }
 
 }
