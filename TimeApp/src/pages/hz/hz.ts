@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, Tabs } from 'ionic-angular';
-import { BackButtonService } from "../../service/util-service/backbutton.service";
 import {PageConfig} from "../../app/page.config";
 import {UserService} from "../../service/user.service";
 import {UModel} from "../../model/u.model";
@@ -28,10 +27,7 @@ export class HzPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public platform: Platform,
-              public backButtonService: BackButtonService,
               public userService: UserService) {
-
   }
 
   ionViewDidLoad() {

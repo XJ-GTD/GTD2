@@ -16,6 +16,13 @@ public class WebSocketDataDto {
     private String pln;     //playerName;
     private String ss;      //status;
 
+//    private String
+    private String us;      //userId
+    private String un;      //userName
+    private String hi;      //headImg
+    private String mb;      //mobile
+    private String ia;      //isAgree
+
     public String getSn() {
         return sn;
     }
@@ -70,6 +77,46 @@ public class WebSocketDataDto {
 
     public void setSs(String ss) {
         this.ss = ss;
+    }
+
+    public String getUs() {
+        return us;
+    }
+
+    public void setUs(String us) {
+        this.us = us;
+    }
+
+    public String getUn() {
+        return un;
+    }
+
+    public void setUn(String un) {
+        this.un = un;
+    }
+
+    public String getHi() {
+        return hi;
+    }
+
+    public void setHi(String hi) {
+        this.hi = hi;
+    }
+
+    public String getIa() {
+        return ia;
+    }
+
+    public void setIa(String ia) {
+        this.ia = ia;
+    }
+
+    public String getMb() {
+        return mb;
+    }
+
+    public void setMb(String mb) {
+        this.mb = mb;
     }
 
     //扩展字段

@@ -6,6 +6,14 @@ package com.xiaoji.gtd.dto.mq;
  * create by wzy on 2018/11/22
  */
 public class WebSocketResultDto {
+
+    public WebSocketResultDto() {
+    }
+
+    public WebSocketResultDto(WebSocketDataDto data) {
+        this.data = data;
+    }
+
     private WebSocketDataDto data;
 
     public WebSocketDataDto getData() {

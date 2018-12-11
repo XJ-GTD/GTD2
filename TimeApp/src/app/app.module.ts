@@ -40,7 +40,6 @@ import {FiSqliteService} from "../service/sqlite-service/fi-sqlite.service";
 import {ParamsService} from "../service/util-service/params.service";
 import {WebsocketService} from "../service/util-service/websocket.service";
 import {DwMqService} from "../service/util-service/dw-mq.service";
-import {BackButtonService} from "../service/util-service/backbutton.service";
 import {UtilService} from "../service/util-service/util.service";
 import {BaseService} from "../service/base.service";
 import {BackgroundMode} from '@ionic-native/background-mode';
@@ -102,13 +101,11 @@ import {AndroidPermissions} from '@ionic-native/android-permissions';
     ParamsService,
     WebsocketService,
     DwMqService,
-    BackButtonService,
     BackgroundMode,
     UserSqliteService,
     WorkSqliteService,
     AndroidPermissions,
     PermissionsService,
-
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

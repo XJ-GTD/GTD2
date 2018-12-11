@@ -58,23 +58,23 @@ public class PersonRepository {
      * @return
      */
     public Object searchUserByMobile(String accountMobile, String type) {
-        String sql = "SELECT COUNT(*), TA.USER_ID, TB.USER_NAME, TB.HEADIMG_URL \n" +
+        String sql = "SELECT COUNT(*), TA.USER_ID, TB.USER_NAME, TB.HEAD_IMG \n" +
                 " FROM gtd_login TA \n" +
-                " INNER JOIN gtd_user TB ON TA.USER_ID = TB.USER_ID \n" +
+                " INNER JOIN gtd_user TB ON TB.USER_ID = TA.USER_ID \n" +
                 " WHERE TA.LOGIN_TYPE = '" + type + "' AND TA.LOGIN_NAME = '" + accountMobile +"'";
         return em.createNativeQuery(sql).getSingleResult();
     }
 
     /**
-     * 查询目标用户
+     * 查询用户
      * (userId查询)
      * @return
      */
-    public Object searchUserById(String userId, String type) {
-        String sql = "SELECT COUNT(*), TA.USER_ID, TB.USER_NAME, TB.HEADIMG_URL \n" +
+    public Object searchUserById(String userId) {
+        String sql = "SELECT TB.USER_NAME, TB.HEAD_IMG, TA.LOGIN_NAME \n" +
                 " FROM gtd_login TA \n" +
-                " INNER JOIN gtd_user TB ON TA.USER_ID = TB.USER_ID \n" +
-                " WHERE TA.LOGIN_TYPE = '" + type + "' AND TA.LOGIN_NAME = '" + userId +"'";
+                " INNER JOIN gtd_user TB ON TB.USER_ID = TA.USER_ID \n" +
+                " WHERE TA.LOGIN_TYPE = '10011' AND TB.USER_ID = '"+ userId + "'";
         return em.createNativeQuery(sql).getSingleResult();
     }
 
