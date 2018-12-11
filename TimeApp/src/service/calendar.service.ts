@@ -55,6 +55,23 @@ export class CalendarService {
 
   //同步本地日历日程
   uploadLocal():Promise<BsModel>{
+
+      // //查询用户
+      // return this.userService.getUo().then(data=> {
+      //   if (data && data.u && data.u.uI) {
+      //     uI = data.u.uI;
+      //   }
+      // })
+
+      return this.calendar.findEvent("", "", "", new Date("2018-12-01"), new Date("2118-12-31")).then((data)=>{
+        let calendars=data;
+        return this.playService.initfirst(calendars);
+      });
+
+  }
+
+  //同步本地日历日程
+  uploadLocal1():Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       //查询用户
       this.userService.getUo().then(data=>{
@@ -67,24 +84,6 @@ export class CalendarService {
           let data=eval(msg);
 
           for(let i=0;i<data.length;i++) {
-            // let rc=new RcEntity();
-            // rc.sI=this.util.getUuid();
-            // rc.uI="";
-            // rc.sN=data[i].title;
-            // rc.lI="";
-            // rc.sd=data[i].startDate;
-            // rc.ed=data[i].endDate;
-            //
-            // let rcp=new RcpEntity();
-            // rcp.pI=this.util.getUuid();    //日程参与人表uuID
-            // rcp.sI=rc.sI; //关联日程UUID
-            // rcp.son="";  //日程别名
-            // rcp.sa="";   //修改权限
-            // rcp.ps="";   //完成状态
-            // rcp.cd=rc.sd;//创建时间
-            // rcp.pd="";   //完成时间
-            // rcp.uI=rc.uI; //参与人ID
-            // rcp.ib="1";
 
             this.playService.addPlayer(this.util.getUuid(),data[i].title,"",uI,data[i].startDate,data[i].endDate,this.util.getUuid(),data[i].title,"","",data[i].startDate,"",uI,"1").then(base=>{
               resolve(base);
