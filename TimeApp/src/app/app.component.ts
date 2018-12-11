@@ -9,20 +9,18 @@ import { ParamsService } from "../service/util-service/params.service";
 import { WebsocketService } from "../service/util-service/websocket.service";
 import { BackButtonService } from "../service/util-service/backbutton.service";
 import { XiaojiFeedbackService } from "../service/util-service/xiaoji-feedback.service";
-import { UtilService } from "../service/util-service/util.service";
 import { BaseSqliteService } from "../service/sqlite-service/base-sqlite.service";
 import { PageConfig } from "./page.config";
 import { DwMqService } from "../service/util-service/dw-mq.service";
-import { DwEmitService } from "../service/util-service/dw-emit.service";
-import {FiSqliteService} from "../service/sqlite-service/fi-sqlite.service";
-import {UserService} from "../service/user.service";
-import {AppConfig} from "./app.config";
-import { BackgroundMode } from '@ionic-native/background-mode';
+import { FiSqliteService } from "../service/sqlite-service/fi-sqlite.service";
+import { UserService } from "../service/user.service";
+import { AppConfig } from "./app.config";
 import { AndroidPermissions } from '@ionic-native/android-permissions';
+import { BackgroundMode } from "@ionic-native/background-mode";
 
 @Component({
   templateUrl: 'app.html',
-  providers: [ ParamsService, WebsocketService, DwMqService, BackButtonService,AndroidPermissions,BackgroundMode ]
+  providers: [ ParamsService, WebsocketService, DwMqService, BackButtonService, AndroidPermissions, BackgroundMode ]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
@@ -54,15 +52,9 @@ export class MyApp {
       // splashScreen.hide();
       console.debug("PERMISSION request init");
       this.backgroundMode.enable();
-      this.platform.registerBackButtonAction(() => {
-        this.backgroundMode.moveToBackground();
-      },0);
 
+      this.backButtonService.registerBackButtonAction(this.nav);//注册返回按键事件
 
-      //this.backButtonService.registerBackButtonAction(null,300);
-
-      //this.backButtonService.registerBackButtonAction(null,400);
-      //this.backButtonService.registerBackButtonAction(null,401);
       let list = [
           this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE,
           this.androidPermissions.PERMISSION.RECORD_AUDIO,
@@ -82,13 +74,12 @@ export class MyApp {
       console.debug("PERMISSION request" + list);
       this.androidPermissions.requestPermissions(list).then(
         (result) => {
-          console.debug('Has permission?',result.hasPermission)
+          console.debug('Has permission?',result.hasPermission);
           feedbackService.initAudio();
-          //this.backButtonService.registerBackButtonAction(null);
           this.init();
         },
         (err) => {
-          console.debug('Has permission?', err.toString())
+          console.debug('Has permission?', err.toString());
         feedbackService.initAudio();
         this.init();
         }
@@ -99,7 +90,7 @@ export class MyApp {
   init(){
     //查询版本
     this.fisqlite.getfi(1).then(data=>{
-      let istrue:boolean = false
+      let istrue:boolean = false;
       if(data && data.rows && data.rows.length>0){
         if(data.rows.item(0).isup==1){
           istrue=true;
@@ -122,9 +113,9 @@ export class MyApp {
           }
           console.debug(JSON.stringify(data))
         }).catch(e=>{
-          alert("MyApp获取Token失败")
+          alert("MyApp获取Token失败");
           console.error("MyApp获取Token失败"+e.message)
-        })
+        });
         this.rootPage = PageConfig.HZ_PAGE;
       }
       this.nav.setRoot(this.rootPage);
@@ -160,7 +151,7 @@ export class MyApp {
       //创建数据库与表成功后才关闭动画跳转页面
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-    })
+    });
     //初始化创建数据库
     this.baseSqlite.createDb();
   }

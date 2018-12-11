@@ -65,13 +65,8 @@ export class HbPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController,
               public paramsService: ParamsService,
-              public platform: Platform,
-              public backButtonService: BackButtonService,
               public xiaojiSpeech: XiaojiAssistantService,
               public xiaojiFeekback: XiaojiFeedbackService) {
-    this.platform.ready().then(() => {
-      this.backButtonService.registerBackButtonAction(this.tabRef);
-    });
     this.init();
   }
 
