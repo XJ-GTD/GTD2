@@ -8,7 +8,6 @@ package com.xiaoji.gtd.dto;
 public class PlayerInDto {
 
     private String userId;
-    private String targetUserId;
     private String accountMobile;
 
     public String getUserId() {
@@ -17,14 +16,6 @@ public class PlayerInDto {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getTargetUserId() {
-        return targetUserId;
-    }
-
-    public void setTargetUserId(String targetUserId) {
-        this.targetUserId = targetUserId;
     }
 
     public String getAccountMobile() {

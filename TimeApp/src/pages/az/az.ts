@@ -19,6 +19,7 @@ import {WorkService} from "../../service/work.service";
 import {UserService} from "../../service/user.service";
 import {PageConfig} from "../../app/page.config";
 import {FiSqliteService} from "../../service/sqlite-service/fi-sqlite.service";
+import {PermissionsService} from "../../service/util-service/permissions.service";
 
 /**
  * Generated class for the AzPage page.
@@ -57,7 +58,8 @@ export class AzPage {
               private baseSqlite:BaseSqliteService,
               private fisqlite:FiSqliteService,
               private nav:Nav,
-              private events: Events) {
+              private events: Events,
+              private permissionsService: PermissionsService,) {
   }
 
   ionViewDidLoad() {
@@ -106,10 +108,25 @@ export class AzPage {
 
     loading.present();
 
-    //初始化创建数据库
-    // this.baseSqlite.createDb();
+    this.permissionsService.checkAllPermissiions()
+      .then(res => {
+        // feedbackService.initAudio();
+        // //this.backButtonService.registerBackButtonAction(null);
+        // this.init();
 
-    //查询版本
+        //初始化创建数据库
+        return this.baseSqlite.createDb();
+
+      }).then(){
+      .
+    }catch(res => {
+      alert(res);
+    })
+
+
+    //
+    //
+    // 查询版本
     this.fisqlite.getfi(1).then(data=>{
       this.rootPage = PageConfig.HZ_PAGE;
       let istrue:boolean = false

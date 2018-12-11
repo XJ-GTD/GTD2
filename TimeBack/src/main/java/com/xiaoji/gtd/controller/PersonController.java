@@ -198,110 +198,6 @@ public class PersonController {
     }
 
     /**
-     * 用户搜索
-     * @return
-     */
-    @RequestMapping(value = "/search_user", method = RequestMethod.POST)
-    @ResponseBody
-    @AuthCheck
-    public Out searchUser(@RequestBody SearchUserInDto inDto) {
-        Out outDto = new Out();
-        SearchUserOutDto data;
-
-        //入参检测
-        //必须项检测
-        if(inDto.getAccountMobile() == null || "".equals(inDto.getAccountMobile())){
-            outDto.setCode(ResultCode.NULL_MOBILE);
-            logger.debug("[查询失败]：手机号不可为空");
-            return outDto;
-        }
-        //入参正确性检测
-        if(!CommonMethods.isInteger(inDto.getAccountMobile())){
-            if(inDto.getAccountMobile().length()!=11){
-                outDto.setCode(ResultCode.ERROR_MOBILE);
-                logger.debug("[查询失败]：请输入正确手机号");
-                return outDto;
-            }
-        }
-
-        //业务逻辑
-        try {
-
-            data = personService.searchPlayer(inDto);
-            if (data != null) {
-                outDto.setData(data);
-                outDto.setCode(ResultCode.SUCCESS);
-                logger.debug("[查询成功]");
-            } else {
-                outDto.setCode(ResultCode.NULL_USER);
-                logger.debug("[查询成功]：该手机号尚未注册");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            logger.error("[查询失败]：服务器繁忙");
-        }
-
-        return outDto;
-    }
-
-
-    /**
-     * 添加联系人
-     * @param inDto
-     * @return
-     */
-    @RequestMapping(value = "/add_player", method = RequestMethod.POST)
-    @ResponseBody
-    @AuthCheck
-    public Out addPlayer(@RequestBody PlayerInDto inDto) {
-        Out outDto = new Out();
-
-        //入参检测
-        //必须项检测
-        if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
-            outDto.setCode(ResultCode.NULL_MOBILE);
-            logger.debug("[添加失败]：用户ID不可为空");
-            return outDto;
-        }
-        if(inDto.getTargetUserId() == null || "".equals(inDto.getTargetUserId())){
-            outDto.setCode(ResultCode.NULL_MOBILE);
-            logger.debug("[添加失败]：目标联系人ID不可为空");
-            return outDto;
-        }
-        //入参正确性验证
-        if (CommonMethods.checkMySqlReservedWords(inDto.getUserId())) {
-            outDto.setCode(ResultCode.ERROR_UUID);
-            logger.debug("[添加失败]：用户ID类型或格式错误");
-            return outDto;
-        }
-        if (CommonMethods.checkMySqlReservedWords(inDto.getTargetUserId())) {
-            outDto.setCode(ResultCode.ERROR_UUID);
-            logger.debug("[添加失败]：目标联系人ID类型或格式错误");
-            return outDto;
-        }
-
-        //业务逻辑
-        try {
-
-            int flag = personService.addPlayer(inDto);
-            if (flag == 0) {
-                outDto.setCode(ResultCode.SUCCESS);
-                logger.debug("[添加成功]");
-            } else {
-                outDto.setCode(ResultCode.NULL_USER);
-                logger.debug("[添加失败]：该手机号尚未注册");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            logger.error("[添加失败]：服务器繁忙");
-        }
-
-        return outDto;
-    }
-
-    /**
      * 修改用户信息
      * @return
      */
@@ -340,4 +236,91 @@ public class PersonController {
         return outDto;
     }
 
+    /**
+     * 添加联系人
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/add_player", method = RequestMethod.POST)
+    @ResponseBody
+    @AuthCheck
+    public Out addPlayer(@RequestBody PlayerInDto inDto) {
+        Out outDto = new Out();
+        PlayerOutDto data;
+
+        //入参检测
+        //必须项检测
+        if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
+            outDto.setCode(ResultCode.NULL_MOBILE);
+            logger.debug("[添加失败]：用户ID不可为空");
+            return outDto;
+        }
+        if(inDto.getAccountMobile() == null || "".equals(inDto.getAccountMobile())){
+            outDto.setCode(ResultCode.NULL_MOBILE);
+            logger.debug("[注册失败]：手机号不可为空");
+            return outDto;
+        }
+        //入参正确性验证
+        if (CommonMethods.checkMySqlReservedWords(inDto.getUserId())) {
+            outDto.setCode(ResultCode.ERROR_UUID);
+            logger.debug("[添加失败]：用户ID类型或格式错误");
+            return outDto;
+        }
+        if(!CommonMethods.isInteger(inDto.getAccountMobile())){
+            if(inDto.getAccountMobile().length()!=11){
+                outDto.setCode(ResultCode.ERROR_MOBILE);
+                logger.debug("[添加失败]：请输入正确手机号");
+                return outDto;
+            }
+        }
+
+
+        //业务逻辑
+        try {
+
+            data = personService.addPlayer(inDto);
+            if (data != null) {
+                outDto.setData(data);
+                outDto.setCode(ResultCode.SUCCESS);
+                logger.debug("[添加成功]");
+            } else {
+                outDto.setCode(ResultCode.NULL_USER);
+                logger.debug("[添加失败]：该手机号尚未注册");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            logger.error("[添加失败]：服务器繁忙");
+        }
+
+        return outDto;
+    }
+
+    /**
+     * 查询目标用户是否接受推送
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/is_agree", method = RequestMethod.POST)
+    @ResponseBody
+    @AuthCheck
+    public Out isAgree(@RequestBody PlayerInDto inDto) {
+        Out outDto = new Out();
+
+        return outDto;
+    }
+
+    /**
+     * 发送权限申请
+     * @return
+     */
+    @RequestMapping(value = "/invite", method = RequestMethod.POST)
+    @ResponseBody
+    @AuthCheck
+    public Out inviteSchedule(@RequestBody BaseInDto inDto) {
+        Out outDto = new Out();
+
+        return outDto;
+    }
 }
