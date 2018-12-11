@@ -12,7 +12,7 @@ public class ScheduleInDto {
 
     private String userId;
     private String skillType;      //skillType;
-    //业务
+
     private String scheduleName;      //scheduleName;
     private String startTime;      //startTime;
     private String endTime;      //endTime;

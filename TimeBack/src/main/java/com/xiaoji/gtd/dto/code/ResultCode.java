@@ -13,6 +13,7 @@ public enum ResultCode {
     NULL_PASSWORD(11004),                 //密码为空
     NULL_ACCOUNT(11005),                  //账户名为空
     NULL_OLD_PASSWORD(11006),             //旧密码为空
+    NULL_SKILL_TYPE(11007),               //技能类型为空
 
     NULL_AUTHCODE(11101),                  //验证码为空
 
@@ -28,6 +29,7 @@ public enum ResultCode {
     ERROR_AUTHCODE(20004),                 //验证码错误
     ERROR_TOKEN(20005),                     //TOKEN验证错误
     ERROR_USERNAME(20006),                  //用户名错误
+    ERROR_SKILL_TYPE(20007),                //技能类型错误
 
     EXPIRE_AUTHCODE(21001),                //验证码过期
     EXPIRE_TOKEN(21002),                   //token过期
@@ -37,6 +39,7 @@ public enum ResultCode {
     FAIL_AUTH(50101),                      //登陆验证失败
     FAIL_SMS(50102),                       //短信获取失败
     FAIL_SEARCH(50103),                    //查询失败
+    FAIL_SCHEDULE(50104),                   //日程处理失败
 
     FAIL_XF(50200),                         //讯飞语音调用失败
     FAIL_XF_SKILL(50201),                   //讯飞语音无对应技能

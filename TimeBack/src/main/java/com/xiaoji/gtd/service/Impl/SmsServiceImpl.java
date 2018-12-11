@@ -62,7 +62,24 @@ public class SmsServiceImpl implements ISmsService {
         } catch (Exception e) {
             e.printStackTrace();
             logger.debug("短信验证接口请求失败");
-            return 1;
+        }
+
+        return 0;
+    }
+
+    /**
+     * 推送短信日程
+     * @param mobile
+     * @return
+     */
+    @Override
+    public int pushSchedule(String mobile) {
+
+        try {
+            requestSubMail(mobile);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.debug("短信验证接口请求失败");
         }
 
         return 0;

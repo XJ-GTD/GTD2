@@ -13,4 +13,12 @@ public interface ISmsService {
      * @return
      */
     int getAuthCode(String mobile);
+
+    /**
+     * 推送短信日程
+     * @param mobile
+     * @return
+     */
+    int pushSchedule(String mobile);
+
 }
