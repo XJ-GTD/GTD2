@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import {BaseSqliteService} from "./base-sqlite.service";
+import {BaseSqlite} from "./base-sqlite";
 import {FiEntity} from "../../entity/fi.entity";
 
 /**
  * 版本表
  */
 @Injectable()
-export class FiSqliteService {
+export class FiSqlite {
 
-  constructor(private baseSqlite: BaseSqliteService) {}
+  constructor(private baseSqlite: BaseSqlite) {}
 
   /**
    * 添加版本表

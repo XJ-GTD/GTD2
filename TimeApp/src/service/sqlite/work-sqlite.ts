@@ -1,13 +1,6 @@
 import { Injectable } from '@angular/core';
-import {Platform, Events, List} from 'ionic-angular';
-import {BaseSqliteService} from "./base-sqlite.service";
-import {UEntity} from "../../entity/u.entity";
-import {UoModel} from "../../model/out/uo.model";
+import {BaseSqlite} from "./base-sqlite";
 import {MsEntity} from "../../entity/ms.entity";
-import {MbsoModel} from "../../model/out/mbso.model";
-import {MbsModel} from "../../model/mbs.model";
-import {RcpoModel} from "../../model/out/rcpo.model";
-import {RcpModel} from "../../model/rcp.model";
 import {RuModel} from "../../model/ru.model";
 import {RcEntity} from "../../entity/rc.entity";
 import {RcpEntity} from "../../entity/rcp.entity";
@@ -20,9 +13,9 @@ import {UtilService} from "../util-service/util.service";
  * create w on 2018/10/24
  */
 @Injectable()
-export class WorkSqliteService {
+export class WorkSqlite{
 
-  constructor( private baseSqlite: BaseSqliteService,
+  constructor( private baseSqlite: BaseSqlite,
             private util:UtilService) {
 
   }

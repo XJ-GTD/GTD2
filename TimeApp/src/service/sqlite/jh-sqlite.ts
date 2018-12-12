@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
-import {BaseSqliteService} from "./base-sqlite.service";
+import {BaseSqlite} from "./base-sqlite";
 import {RguEntity} from "../../entity/rgu.entity";
-import {RuEntity} from "../../entity/ru.entity";
 import {JhEntity} from "../../entity/jh.entity";
 
 /**
  * 授权联系人
  */
 @Injectable()
-export class JhSqliteService {
+export class JhSqlite {
 
-  constructor(private baseSqlite: BaseSqliteService) {}
+  constructor(private baseSqlite: BaseSqlite) {}
 
   /**
    * 添加计划

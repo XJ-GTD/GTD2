@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {SystemSqliteService} from "./sqlite-service/system-sqlite.service";
+import {SystemSqlite} from "./sqlite/system-sqlite";
 import {StEntity} from "../entity/st.entity";
 import {StoModel} from "../model/out/sto.model";
 import {BsModel} from "../model/out/bs.model";
@@ -12,7 +12,7 @@ import {BsModel} from "../model/out/bs.model";
 @Injectable()
 export class SystemService {
 
-  constructor(private systemSqlite: SystemSqliteService) {
+  constructor(private systemSqlite: SystemSqlite) {
 
   }
 

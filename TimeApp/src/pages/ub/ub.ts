@@ -3,7 +3,6 @@ import { AlertController, IonicPage, LoadingController, NavController, NavParams
 import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
 import { ParamsService } from "../../service/util-service/params.service";
-import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
 import { LsmService} from "../../service/lsm.service";
 import {BsModel} from "../../model/out/bs.model";
 import {HaPage} from "../ha/ha";
@@ -34,7 +33,6 @@ export class UbPage {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private http: HttpClient,
-    private sqliteService: BaseSqliteService,
     private paramsService: ParamsService,
     private lsmService: LsmService) {
   }

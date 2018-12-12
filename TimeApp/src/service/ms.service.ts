@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {MsSqliteService} from "./sqlite-service/ms-sqlite.service";
+import {MsSqlite} from "./sqlite/ms-sqlite";
 import {BsModel} from "../model/out/bs.model";
 import {UEntity} from "../entity/u.entity";
 import {MsEntity} from "../entity/ms.entity";
@@ -14,7 +14,7 @@ import {MsoModel} from "../model/out/mso.model";
  */
 @Injectable()
 export class MsService {
-  constructor( private msSqlite:MsSqliteService){ }
+  constructor( private msSqlite:MsSqlite){ }
 
   /**
    * 添加message消息

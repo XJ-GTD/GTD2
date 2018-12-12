@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {BaseSqliteService} from "./sqlite-service/base-sqlite.service";
-import {JhSqliteService} from "./sqlite-service/jh-sqlite.service";
+import {BaseSqlite} from "./sqlite/base-sqlite";
+import {JhSqlite} from "./sqlite/jh-sqlite";
 import {UtilService} from "./util-service/util.service";
 import {JhEntity} from "../entity/jh.entity";
 import {BsModel} from "../model/out/bs.model";
@@ -14,10 +14,10 @@ import {JhModel} from "../model/jh.model";
  */
 @Injectable()
 export class JhService {
-  jhSqlite:JhSqliteService;
-  constructor(private baseSqlite: BaseSqliteService,
+  jhSqlite:JhSqlite;
+  constructor(private baseSqlite: BaseSqlite,
                 private util:UtilService) {
-    this.jhSqlite = new JhSqliteService(baseSqlite)
+    this.jhSqlite = new JhSqlite(baseSqlite)
   }
 
   /**

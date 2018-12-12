@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
-import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
 import {UEntity} from "../../entity/u.entity";
 import { RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
@@ -41,7 +40,6 @@ export class PfPage {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private relmemService: RelmemService,
-    private sqliteService: BaseSqliteService,
     private http:HttpClient) {
   }
 

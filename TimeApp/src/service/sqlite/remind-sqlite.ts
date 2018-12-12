@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import {BaseSqliteService} from "./base-sqlite.service";
+import {BaseSqlite} from "./base-sqlite";
 import {ReEntity} from "../../entity/re.entity";
 
 /**
  * 闹铃
  */
 @Injectable()
-export class RemindSqliteService {
+export class RemindSqlite {
 
-  constructor(private baseSqlite: BaseSqliteService) { }
+  constructor(private baseSqlite: BaseSqlite) { }
 
   /**
    * 添加

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BaseSqliteService} from "./base-sqlite.service";
+import {BaseSqlite} from "./base-sqlite";
 import {MsEntity} from "../../entity/ms.entity";
 
 
@@ -10,8 +10,8 @@ import {MsEntity} from "../../entity/ms.entity";
  * create by hjd on 2018/11/23
  */
 @Injectable()
-export class MsSqliteService {
-  constructor( private baseSqlite: BaseSqliteService) { }
+export class MsSqlite {
+  constructor( private baseSqlite: BaseSqlite) { }
 
   /**
    * 添加Message消息

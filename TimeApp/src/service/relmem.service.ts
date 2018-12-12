@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {RelmemSqliteService} from "./sqlite-service/relmem-sqlite.service";
+import {RelmemSqlite} from "./sqlite/relmem-sqlite";
 import {RguEntity} from "../entity/rgu.entity";
 import {RguoModel} from "../model/out/rguo.model";
 import {BsModel} from "../model/out/bs.model";
@@ -7,9 +7,9 @@ import {RuEntity} from "../entity/ru.entity";
 import {RuoModel} from "../model/out/ruo.model";
 import {RuModel} from "../model/ru.model";
 import {AppConfig} from "../app/app.config";
-import {BaseSqliteService} from "./sqlite-service/base-sqlite.service";
+import {BaseSqlite} from "./sqlite/base-sqlite";
 import {UtilService} from "./util-service/util.service";
-import {PnRestfulService} from "./restful-service/pn-restful.service";
+import {PnRestful} from "./restful/pn-restful";
 
 
 /**
@@ -17,12 +17,12 @@ import {PnRestfulService} from "./restful-service/pn-restful.service";
  */
 @Injectable()
 export class RelmemService {
-  relmemSqlite: RelmemSqliteService;
-  pnRes:PnRestfulService;
+  relmemSqlite: RelmemSqlite;
+  pnRes:PnRestful;
   data:any;
-  constructor(private baseSqlite: BaseSqliteService,
+  constructor(private baseSqlite: BaseSqlite,
               private util:UtilService) {
-    this.relmemSqlite = new RelmemSqliteService(baseSqlite);
+    this.relmemSqlite = new RelmemSqlite(baseSqlite);
   }
 
 

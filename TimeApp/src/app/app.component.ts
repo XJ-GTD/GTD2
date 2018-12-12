@@ -1,21 +1,21 @@
-import { Component } from '@angular/core';
-import {Platform, Nav,IonicApp} from 'ionic-angular';
-import {BackgroundMode} from '@ionic-native/background-mode';
-import {BaseSqliteService} from "../service/sqlite-service/base-sqlite.service";
-import {ConfigService} from "../service/config.service";
-import {PageConfig} from "./page.config";
+import { Component, ViewChild } from '@angular/core';
+import { Platform, Nav,IonicApp} from 'ionic-angular';
+import { BackgroundMode } from '@ionic-native/background-mode';
+import { ConfigService } from "../service/config.service";
+import { PageConfig } from "./page.config";
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
+  @ViewChild('Nav')nav: Nav;
+
   rootPage: any = PageConfig.AL_PAGE;
 
   constructor(
     public platform: Platform,
     public appCtrl: IonicApp,
     public backgroundMode: BackgroundMode,
-    private nav:Nav,
     private configService:ConfigService
   ) {
   }

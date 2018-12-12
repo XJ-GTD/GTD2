@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import {NgModule, ErrorHandler} from '@angular/core';
+import { IonicApp,Nav, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -17,34 +17,32 @@ import { Calendar } from "@ionic-native/calendar";
 import { CalendarService } from "../service/calendar.service";
 import { Device } from "@ionic-native/device";
 import { SQLitePorter } from '@ionic-native/sqlite-porter';
-import { BaseSqliteService } from "../service/sqlite-service/base-sqlite.service";
-import { UserSqliteService } from "../service/sqlite-service/user-sqlite.service";
-import { WorkSqliteService } from "../service/sqlite-service/work-sqlite.service";
+import { BaseSqlite } from "../service/sqlite/base-sqlite";
 
 import { UserService } from "../service/user.service";
 import { WorkService } from "../service/work.service";
 import { LsmService } from "../service/lsm.service";
 import { PlayerService } from "../service/player.service";
-import { PlayerSqliteService} from "../service/sqlite-service/player-sqlite.service";
+import { PlayerSqlite} from "../service/sqlite/player-sqlite";
 import { MsService } from "../service/ms.service";
-import { MsSqliteService } from "../service/sqlite-service/ms-sqlite.service";
+import { MsSqlite } from "../service/sqlite/ms-sqlite";
 import { RelmemService } from "../service/relmem.service";
 import { RemindService} from "../service/remind.service";
-import { RemindSqliteService } from "../service/sqlite-service/remind-sqlite.service";
+import { RemindSqlite } from "../service/sqlite/remind-sqlite";
 import { SystemService } from "../service/system.service";
-import { SystemSqliteService } from "../service/sqlite-service/system-sqlite.service";
+import { SystemSqlite } from "../service/sqlite/system-sqlite";
 import { XiaojiAlarmclockService } from "../service/util-service/xiaoji-alarmclock.service";
 import { JhService } from "../service/jh.service";
 import { DwEmitService } from "../service/util-service/dw-emit.service";
-import {FiSqliteService} from "../service/sqlite-service/fi-sqlite.service";
+import {FiSqlite} from "../service/sqlite/fi-sqlite";
 import {ParamsService} from "../service/util-service/params.service";
 import {WebsocketService} from "../service/util-service/websocket.service";
 import {DwMqService} from "../service/util-service/dw-mq.service";
 import {UtilService} from "../service/util-service/util.service";
-import {BaseService} from "../service/base.service";
 import {BackgroundMode} from '@ionic-native/background-mode';
 import {PermissionsService} from "../service/util-service/permissions.service";
 import {AndroidPermissions} from '@ionic-native/android-permissions';
+import {ConfigService} from "../service/config.service";
 
 @NgModule({
   declarations: [
@@ -82,30 +80,28 @@ import {AndroidPermissions} from '@ionic-native/android-permissions';
     CalendarService,
     DwEmitService,
     SQLitePorter,
-    BaseSqliteService,
+    BaseSqlite,
     UserService,
-    BaseService,
     WorkService,
     LsmService,
     PlayerService,
-    PlayerSqliteService,
+    PlayerSqlite,
     MsService,
-    MsSqliteService,
+    MsSqlite,
     RelmemService,
     RemindService,
-    RemindSqliteService,
+    RemindSqlite,
     SystemService,
-    SystemSqliteService,
-    FiSqliteService,
+    SystemSqlite,
+    FiSqlite,
     JhService,
     ParamsService,
     WebsocketService,
     DwMqService,
     BackgroundMode,
-    UserSqliteService,
-    WorkSqliteService,
     AndroidPermissions,
     PermissionsService,
+    ConfigService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

@@ -13,14 +13,11 @@ import {StEntity} from "../../entity/st.entity";
 import {ZtEntity} from "../../entity/zt.entity";
 import {ZtdEntity} from "../../entity/ztd.entity";
 import {MsEntity} from "../../entity/ms.entity";
-import {BsModel} from "../../model/out/bs.model";
 import {RguEntity} from "../../entity/rgu.entity";
-import {LbSqliteService} from "./lb-sqlite.service";
 import {JhEntity} from "../../entity/jh.entity";
-import {RelmemService} from "../relmem.service";
 import {FiEntity} from "../../entity/fi.entity";
-import {AppConfig} from "../../app/app.config";
 import {UtilService} from "../util-service/util.service";
+import {BsModel} from "../../model/out/bs.model";
 
 /**
  * 客户端数据库
@@ -28,8 +25,8 @@ import {UtilService} from "../util-service/util.service";
  * create w on 2018/10/24
  */
 @Injectable()
-export class BaseSqliteService {
-  className:String = 'BaseSqliteService';
+export class BaseSqlite {
+  className:String = 'BaseSqlite';
   database: SQLiteObject;
   win: any = window;//window对象
   constructor( private platform: Platform,
@@ -40,26 +37,54 @@ export class BaseSqliteService {
   /**
    * 创建数据库
    */
-  createDb(){
-    console.debug(this.className+"开始创建/连接数据库mingWX.db")
-    if (this.isMobile()) {
-      this.sqlite.create({
-        name: 'mingWX.db',
-        location: 'default'
-      }).then((db: SQLiteObject) => {
+  createDb(): Promise<BsModel> {
+    return new Promise((resolve, reject) => {
+      let bs = new BsModel();
+      console.debug(this.className + " start create Db mingWX.db")
+      if (this.isMobile()) {
+        this.sqlite.create({
+          name: 'mingWX.db',
+          location: 'default'
+        }).then((db: SQLiteObject) => {
+          console.debug(this.className + " create Db success")
           this.database = db;
-          console.debug(this.className+"数据库mingWX.db创建/成功连接")
+          resolve(bs)
         }).catch(e => {
-          alert(e.toString());
-        console.debug(this.className+"数据库创建/连接失败："+e.message)
+          console.debug(this.className + " create Db fail：" + e.message)
           this.events.publish('db:create');
+          bs.code=1
+          resolve(bs);
         });
-    } else {
-      //H5数据库存储
-      this.database = this.win.openDatabase("data.db", '1.0', 'database', 5 * 1024 * 1024);//声明H5 数据库大小
-      console.debug(this.className+"H5数据库mingWX.db创建/成功连接")
-    }
-    //alert('创建数据成功！')
+      } else {
+        //H5数据库存储
+        this.database = this.win.openDatabase("data.db", '1.0', 'database', 5 * 1024 * 1024);//声明H5 数据库大小
+        console.debug(this.className + " create Db success")
+        resolve(bs)
+      }
+      //alert('创建数据成功！')
+    });
+  }
+
+  /**
+   * 查询FI表是否存在
+   * @returns {Promise<BsModel>}
+   */
+  isFi(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        let sql="SELECT * FROM GTD_FI where id=1";
+        this.executeSql(sql,[]).then(data=>{
+          if(data && data.row && data.row.length()>0&& data.rows.item(0).isup == 0){
+            console.debug(this.className + " fi is exist")
+            resolve(true)
+          }else{
+            console.error(this.className + " fi is not exist")
+            resolve(false)
+          }
+        }).catch(e=>{
+          console.error(this.className + " fi is not exist:" + e.message)
+          resolve(false)
+        })
+    })
   }
 
   /**
