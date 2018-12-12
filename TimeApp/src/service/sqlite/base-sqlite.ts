@@ -74,7 +74,7 @@ export class BaseSqlite {
         let bs=new BsModel();
         let sql="SELECT * FROM GTD_FI where id=1";
         this.executeSql(sql,[]).then(data=>{
-          if(data && data.rows && data.rows.length()>0){
+          if(data && data.rows && data.rows.length>0){
             if(data.rows.item(0).isup != 0){
               bs.code=3;//更新后首次打开进入引导页
             }
