@@ -55,7 +55,8 @@ export class UbPage {
              text: '确定', role: 'cancel', handler: () => {
                //跳转首页
                console.log('UbPage跳转HzPage');
-               this.navCtrl.setRoot('HzPage');
+               //setroot修改
+               this.navCtrl.push('HzPage');
              }
            }]
          });

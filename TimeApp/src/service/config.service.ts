@@ -21,16 +21,20 @@ export class ConfigService {
   initDataBase():Promise<boolean>{
    return new Promise((resolve, reject)=>{
       this.baseSqlite.isFi().then(data=>{
+        console.log("config initDataBase info : " + JSON.stringify(data))
         if(data.code==1){
+          console.log("config initDataBase 开始建表 ")
           //创建表
           return this.baseSqlite.createTable(data)
         }else if(data.code==3){
           //更新表
+          console.log("config initDataBase 更新表 ")
           return this.baseSqlite.updateTable(data)
         }
       }).then(data=>{
         //初始化表数据
         if(data && data.data && data.data.code && data.data.code==1){
+          console.log("config initDataBase 初始化表数据 ")
             return this.baseSqlite.init()
         }
       }).then(data=> {
@@ -64,12 +68,13 @@ export class ConfigService {
     return  new Promise((resolve, reject)=>{
       //先创建或连接数据
       this.baseSqlite.createDb().then(data=>{
+        console.log("config.service isIntoBoot createDb:: "+　JSON.stringify(data))
         if(data.code != 0){
           resolve(true)
         }
         return this.baseSqlite.isFi()
       }).then(data=>{
-        console.log(data.toString())
+        console.log("config.service isIntoBoot Fi:: "+　JSON.stringify(data))
         //在判断版本表是否存在
         if(data.code>0){
           resolve(true)

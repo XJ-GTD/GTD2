@@ -28,12 +28,12 @@ export class MyApp {
 
       //判断是否进入boot页面
       this.configService.isIntoBoot().then(isInto=>{
+        console.log("app.component isInto :: " + isInto )
         if (isInto){
           this.rootPage = PageConfig.AZ_PAGE;
         }
-
-      })
-        .then(data=>{
+        console.log("app.component rootPage :: " + this.rootPage )
+      }).then(data=>{
         console.debug(' time app into go to ' +  this.rootPage);
         this.nav.setRoot(this.rootPage);
       }).catch(err=>{
