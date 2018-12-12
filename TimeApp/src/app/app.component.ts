@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, Nav,IonicApp} from 'ionic-angular';
+import { Platform, Nav, IonicApp } from 'ionic-angular';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { ConfigService } from "../service/config.service";
 import { PageConfig } from "./page.config";
@@ -8,7 +8,7 @@ import { PageConfig } from "./page.config";
   templateUrl: 'app.html'
 })
 export class MyApp {
-  @ViewChild('Nav')nav: Nav;
+  @ViewChild(Nav) nav: Nav;
 
   rootPage: any = PageConfig.AL_PAGE;
 
@@ -18,10 +18,7 @@ export class MyApp {
     public backgroundMode: BackgroundMode,
     private configService:ConfigService
   ) {
-  }
-
-  ionViewDidLoad() {
-    console.debug(' time app start ');
+    console.log(' time app start ');
     this.platform.ready().then(() => {
       //允许进入后台模式
       this.backgroundMode.enable();
@@ -47,6 +44,7 @@ export class MyApp {
       })
     });
   }
+
 
   registerBackButtonAction(): void {
     this.platform.registerBackButtonAction(() => {
