@@ -61,7 +61,7 @@ export class UEntity {
     let sql='insert into GTD_A ' +
       '(uI,uN,biy,uT,hIU,uC,aQ,uty,iC,uc) ' +
       'values("'+ this._uI+ '","'+ this._uN+'","'+ this._biy+'","'+this.uT+ '","'+
-      this._hIU+'","'+ this._uCt+'","'+this._aQ+'","'+this._uty+'","'+this._iC+'","'+this._uc+'")';
+      this._hIU+'","'+ this._uCt+'","'+this._aQ+'","'+this._uty+'","'+this._iC+'","'+this._uc+'");';
     this._isq=sql;
     return this._isq;
   }

@@ -9,6 +9,7 @@
  */
 
 import {UserService} from "../service/user.service";
+import {UEntity} from "../entity/u.entity";
 
 export class AppConfig {
 
@@ -93,5 +94,7 @@ export class AppConfig {
   public static ERR_MESSAGE : string='系统出错！'
   public static NULL_CODE : number= 2;
   public static NULL_MESSAGE : string='查询结果不存在！'
+  //用户信息
+  public static uInfo:UEntity = null;
 
 }

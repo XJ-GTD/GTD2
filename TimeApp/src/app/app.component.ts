@@ -33,7 +33,7 @@ export class MyApp {
         }
 
       }).then(data=>{
-        alert(1)
+        //alert(1)
       }).then(data=>{
         console.debug(' time app into go to ' +  this.rootPage);
         this.nav.setRoot(this.rootPage);

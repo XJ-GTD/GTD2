@@ -33,7 +33,7 @@ export class FiEntity {
 
   get isq(): string {
     let sql='insert into GTD_FI ' +
-      '(id,firstIn,isup) values('+ this._id+','+ this._firstIn+','+ this._isup+')';
+      '(id,firstIn,isup) values('+ this._id+','+ this._firstIn+','+ this._isup+');';
     this._isq=sql;
     return this._isq;
   }
