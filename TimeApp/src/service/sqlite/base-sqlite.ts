@@ -79,7 +79,6 @@ export class BaseSqlite {
               bs.code=3;//更新后首次打开进入引导页
             }
             console.log(this.className + " fi is exist")
-            resolve(bs)
           }else{
             console.error(this.className + " fi is not exist")
             bs.code=2;//无数据
