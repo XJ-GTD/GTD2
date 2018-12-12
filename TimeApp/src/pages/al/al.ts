@@ -74,7 +74,7 @@ export class AlPage {
         console.log("权限申请完成");
         //初始化创建数据库
         console.log("al :: 初始化创建数据库开始");
-        return this.configService.initDataBase();
+        this.configService.initDataBase();
       }).then(data => {
         console.log("al :: 初始化创建数据库结束");
         //初始化本地变量

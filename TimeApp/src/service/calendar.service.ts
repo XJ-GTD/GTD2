@@ -100,30 +100,30 @@ export class CalendarService {
       let model = new BsModel();
       this.userService.getUo().then(data=>{
         console.log("calendarService ::"+"查询用户信息成功");
-        console.log(1)
+        console.log(1);
         if(data&&data.u&&data.u.uI){
           uI=data.u.uI;
         }
         return this.findEvent()
       }).then(data=>{
         console.log("calendarService ::"+"查询本地日历成功");
-        console.log(2)
+        console.log(2);
         //this.findEvent返回msg
-        let arr = new Array();
+        let arr = [];
         for(let i=0;i<data.length;i++) {
           arr.push(this.playService.addPlayer(this.util.getUuid(),data[i].title,"",uI,data[i].startDate,data[i].endDate,this.util.getUuid(),data[i].title,"","",data[i].startDate,"",uI,"1"));
         }
         return Promise.all(arr);
       }).then(data=>{
         console.log("calendarService ::"+"导入本地日历成功");
-        console.log(3)
+        console.log(3);
         console.log(JSON.stringify(data));
         resolve(model);
-      }).catch(reason => {
+      }).catch(err => {
         console.log("calendarService ::"+"导入本地日历失败");
         model.code = 1;
         model.message = "失败";
-        reject(model);
+        return;
       })
     })
   }

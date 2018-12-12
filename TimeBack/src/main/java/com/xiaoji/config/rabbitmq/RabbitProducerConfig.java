@@ -1,6 +1,7 @@
 package com.xiaoji.config.rabbitmq;
 
 import org.springframework.amqp.core.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 
@@ -11,6 +12,13 @@ import org.springframework.context.annotation.Bean;
  */
 @SpringBootConfiguration
 public class RabbitProducerConfig {
+
+    @Value("${rabbitmq.exchange.visitors}")
+    private String visitorExchange;
+
+    @Value("${rabbitmq.exchange.system}")
+    private String systemExchange;
+
 
     final static String queueName = "GTD";
 
@@ -53,6 +61,16 @@ public class RabbitProducerConfig {
     @Bean
     FanoutExchange fanoutExchange() {
         return new FanoutExchange("fanoutExchange");
+    }
+
+    @Bean
+    FanoutExchange visitorExchange() {
+        return new FanoutExchange(visitorExchange);
+    }
+
+    @Bean
+    FanoutExchange systemExchange() {
+        return new FanoutExchange(systemExchange);
     }
 
     /**
