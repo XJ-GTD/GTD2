@@ -44,12 +44,12 @@ export class UbPage {
   }
 
   signIn() {
-    
+
     console.debug("登录按钮被点击");
      this.lsmService.login(this.accountName, this.accountPassword).then(data=> {
-       console.log(data)
+       console.log(data);
        if (data.code == 0) {
-         console.debug("登录失败")
+         console.debug("登录成功");
          let alert = this.alertCtrl.create({
            title: '提示信息',
            subTitle: "登录成功",

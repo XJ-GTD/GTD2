@@ -117,11 +117,9 @@ export class AzPage {
         //初始化创建数据库
         return this.baseSqlite.createDb();
 
-      }).then(){
-      .
-    }catch(res => {
+      }).catch(res => {
       alert(res);
-    })
+    });
 
 
     //
