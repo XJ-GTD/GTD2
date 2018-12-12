@@ -57,7 +57,7 @@ export class AlPage {
       userId: this.util.getUuid(),
       deviceId: this.util.getDeviceId(),
     },AppConfig.HEADER_OPTIONS_JSON).subscribe(data=>{
-      alert(data)
+      console.log(data);
     })
   }
 
