@@ -38,6 +38,7 @@ export class MyApp {
         console.debug(' time app into go to ' +  this.rootPage);
         this.nav.setRoot(this.rootPage);
       }).catch(err=>{
+        //alert(err.message)
         this.rootPage = PageConfig.AZ_PAGE;
         console.debug(' time app start err' +  err + 'go to ' + this.rootPage);
         this.nav.setRoot(this.rootPage);

@@ -1,17 +1,18 @@
 import {Component, Injectable} from '@angular/core';
 import {componentFactoryName} from "@angular/compiler";
 import {BaseSqlite} from "./sqlite/base-sqlite";
+import {UtilService} from "./util-service/util.service";
 
 /**
  * 整体配置Service
  */
 @Injectable()
-@Component({
-  providers: []
-})
+// @Component({
+//   providers: []
+// })
 export class ConfigService {
-  constructor(private baseSqlite : BaseSqlite) {
-
+  constructor(public util : UtilService,
+              public baseSqlite : BaseSqlite) {
   }
 
   initDataBase():Promise<any>{
@@ -47,8 +48,8 @@ export class ConfigService {
     return p;
   }
   //判断初始化进入页面
-  isIntoBoot():Promise<any>{
-    var p = new Promise(function(resolve, reject){
+  isIntoBoot():Promise<boolean>{
+    return  new Promise((resolve, reject)=>{
       //先创建或连接数据
       this.baseSqlite.createDb().then(data=>{
         if(data.code != 0){
@@ -61,7 +62,5 @@ export class ConfigService {
         resolve(data)
       })
     });
-    return p;
-
   }
 }
