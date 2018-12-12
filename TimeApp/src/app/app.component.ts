@@ -34,11 +34,11 @@ export class MyApp {
       }).then(data=>{
         alert(1)
       }).then(data=>{
-        console.log(' time app into go to ' +  this.rootPage);
+        console.debug(' time app into go to ' +  this.rootPage);
         this.nav.setRoot(this.rootPage);
       }).catch(err=>{
         this.rootPage = PageConfig.AZ_PAGE;
-        console.log(' time app start err' +  err + 'go to ' + this.rootPage);
+        console.debug(' time app start err' +  err + 'go to ' + this.rootPage);
         this.nav.setRoot(this.rootPage);
       })
     });
