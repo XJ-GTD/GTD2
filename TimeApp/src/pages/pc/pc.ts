@@ -43,7 +43,8 @@ export class PcPage {
       if(data.code == 0){
         //添加成功
         console.log("添加成功::" + this.tel)
-        this.navCtrl.setRoot("PaPage","HzPage")
+        //setroot
+        this.navCtrl.push("PaPage","HzPage")
       }else{
         //添加失败
         console.log("添加失败::" + this.tel);

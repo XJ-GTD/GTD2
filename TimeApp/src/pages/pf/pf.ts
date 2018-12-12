@@ -50,7 +50,8 @@ export class PfPage {
 
   goBack() {
     console.log('PfPage跳转PaPage')
-    this.navCtrl.setRoot('PaPage');
+    //setroot
+    this.navCtrl.pop();
   }
 
   checkPhone(){

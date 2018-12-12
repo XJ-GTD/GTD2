@@ -66,7 +66,8 @@ export class PePage {
     this.relmemService.aru(this.uo.uI,null,this.qmc,null,'1',null,this.qcy).then(data=>{
       if(data.code == 0){
         console.log("添加群成功");
-        this.navCtrl.setRoot("PaPage",{popPage: 'HzPage'})
+        //setroot
+        this.navCtrl.push("PaPage",{popPage: 'HzPage'})
 
       }else{
         console.log("添加群失败")

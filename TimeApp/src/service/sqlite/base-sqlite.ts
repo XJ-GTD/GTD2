@@ -40,17 +40,17 @@ export class BaseSqlite {
   createDb(): Promise<BsModel> {
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
-      console.debug(this.className + " start create Db mingWX.db")
+      console.log(this.className + " start create Db mingWX.db")
       if (this.isMobile()) {
         this.sqlite.create({
           name: 'mingWX.db',
           location: 'default'
         }).then((db: SQLiteObject) => {
-          console.debug(this.className + " create Db success")
+          console.log(this.className + " create Db success")
           this.database = db;
           resolve(bs)
         }).catch(e => {
-          console.debug(this.className + " create Db fail：" + e.message)
+          console.log(this.className + " create Db fail：" + e.message)
           this.events.publish('db:create');
           bs.code=1
           resolve(bs);
@@ -58,7 +58,7 @@ export class BaseSqlite {
       } else {
         //H5数据库存储
         this.database = this.win.openDatabase("data.db", '1.0', 'database', 5 * 1024 * 1024);//声明H5 数据库大小
-        console.debug(this.className + " create Db success")
+        console.log(this.className + " create Db success")
         resolve(bs)
       }
       //alert('创建数据成功！')
@@ -67,22 +67,28 @@ export class BaseSqlite {
 
   /**
    * 查询FI表是否存在
-   * @returns {Promise<BsModel>}
+   * @returns {Promise<BsModel>} code 0正常打开，1报错暂无表，2无版本数据3，更新后首次打开
    */
-  isFi(): Promise<boolean> {
+  isFi(): Promise<BsModel> {
     return new Promise((resolve, reject) => {
+        let bs=new BsModel();
         let sql="SELECT * FROM GTD_FI where id=1";
         this.executeSql(sql,[]).then(data=>{
-          if(data && data.row && data.row.length()>0&& data.rows.item(0).isup == 0){
-            console.debug(this.className + " fi is exist")
-            resolve(true)
+          if(data && data.rows && data.rows.length>0){
+            if(data.rows.item(0).isup != 0){
+              bs.code=3;//更新后首次打开进入引导页
+            }
+            console.log(this.className + " fi is exist")
           }else{
             console.error(this.className + " fi is not exist")
-            resolve(false)
+            bs.code=2;//无数据
           }
+          resolve(bs)
         }).catch(e=>{
           console.error(this.className + " fi is not exist:" + e.message)
-          resolve(false)
+          bs.code=1
+          bs.message=e.message
+          resolve(bs)
         })
     })
   }
@@ -90,101 +96,138 @@ export class BaseSqlite {
   /**
    * 创建表
    */
-  async createTable() {
-    console.debug(this.className+"数据库初始化建表开始")
-    //可能存在多个执行创建表语句，只需最后一个使用await
-    //this.executeSql('DROP TABLE GTD_ACCOUNT',[]);
-    //创建用户基本信息表
-    let ue=new UEntity();
-    this.executeSql(ue.csq,[]).then(data=>{
-      let u:UEntity=new UEntity();
-      u.uI=this.util.getUuid();
-      u.uty='0';
-      this.save(u);
-    }).catch(e=>{
-      console.log('createTable：GTD_A:'+e.toString());
-    })
-    //创建日程表
-    let rc = new RcEntity();
-    this.executeSql(rc.csq,[]).catch(e=>{
-      console.log('GTD_C:'+e.toString());
-    })
+   createTable(data:BsModel): Promise<any> {
+    return new Promise((resolve, reject) => {
+      console.log(this.className + "数据库初始化建表开始")
+      //可能存在多个执行创建表语句，只需最后一个使用await
+      //this.executeSql('DROP TABLE GTD_ACCOUNT',[]);
+      //判断是否是手机端
+      if (this.isMobile()) {
 
-    //创建日程参与人表
-    let rcp = new RcpEntity();
-    this.executeSql(rcp.csq,[]).catch(e=>{
-      console.log('GTD_D:'+e.toString());
-    })
-    //授权联系人表
-    let ru = new RuEntity();
-    this.executeSql(ru.csq,[]).catch(e=>{
-      console.log('GTD_B:'+e.toString());
-    })
-    //群组关联人
-    let rgu = new RguEntity();
-    this.executeSql(rgu.csq,[]).catch(e=>{
-      console.log('GTD_B_X:'+e.toString());
-    })
-    //标签表
-    let lb = new LbEntity();
-    // this.executeSql(lb.drsq,[]).catch(e=>{
-    //   console.log('GTD_F:'+e.toString());
-    // })
-    this.executeSql(lb.csq,[]).catch(e=>{
-      console.log('GTD_F:'+e.toString());
-    })
+          let sql = new UEntity().csq + new RcEntity().csq + new RcpEntity().csq + new RuEntity().csq
+            + new LbEntity().csq + new ReEntity().csq + new StEntity().csq + new MsEntity().csq
+            + new ZtEntity().csq + new ZtdEntity().csq + new JhEntity().csq + new RguEntity().csq
+            + new FiEntity().csq;
+          this.importSqlToDb(sql).then(data=>{
+            console.log("-------------------BaseSqlite createTable: "+JSON.stringify(data))
+            resolve(data)
+          }).catch(e=>{
+            console.error("------------------BaseSqlite createTable: "+e.message)
+            reject(e)
+          })
+      } else {
+        let ue = new UEntity();
 
-    // 提醒时间表
-    let re = new ReEntity();
-    this.executeSql(re.csq,[]).catch(e=>{
-      console.log('GTD_E:'+e.toString());
+        this.executeSql(ue.csq, []).then(data => {
+          let u: UEntity = new UEntity();
+          u.uI = this.util.getUuid();
+          u.uty = '0';
+          return this.save(u);
+        }).then(data=>{
+          //创建日程表
+          let rc = new RcEntity();
+          return  this.executeSql(rc.csq, [])
+        }).then(data=>{
+          //创建日程参与人表
+          let rcp = new RcpEntity();
+          return this.executeSql(rcp.csq, [])
+        }).then(data=>{
+          //授权联系人表
+            let ru = new RuEntity();
+            return this.executeSql(ru.csq, [])
+        }).then(data=>{
+          //群组关联人
+          let rgu = new RguEntity();
+          return this.executeSql(rgu.csq, [])
+        }).then(data=>{
+          //标签表
+          let lb = new LbEntity();
+          return this.executeSql(lb.csq, [])
+        }).then(data=>{
+          // 提醒时间表
+          let re = new ReEntity();
+          return this.executeSql(re.csq, [])
+        }).then(data=>{
+          // 系统设置表
+          let st = new StEntity();
+          return this.executeSql(st.csq, [])
+        }).then(data=>{
+          // massage
+          let ms = new MsEntity();
+          return this.executeSql(ms.csq, [])
+        }).then(data=>{
+          // 字典类型表
+          let zt = new ZtEntity();
+          return this.executeSql(zt.csq, [])
+        }).then(data=>{
+          // 字典数据表
+          let ztd = new ZtdEntity();
+          return this.executeSql(ztd.csq, [])
+        }).then(data=>{
+          // 计划表
+          let jh = new JhEntity();
+          return this.executeSql(jh.csq, [])
+        }).then(data=>{
+          // 版本表
+          let fi = new FiEntity();
+          return this.executeSql(fi.csq, [])
+        }).then(data=>{
+          // 版本表
+          let fi = new FiEntity();
+          fi.id = 1;
+          fi.firstIn = 1;
+          fi.isup = 0
+          return this.save(fi);
+        }).then(data=>{
+          resolve(data)
+        }).catch(e=>{
+          console.error("basesqlite createTable Error : "+e.message);
+          reject(e)
+        })
+
+        let data = new Array();
+        this.initlb(data);
+        console.log("-------------------BaseSqlite createTable: "+JSON.stringify(data))
+      }
     })
-    // 系统设置表
-    let st = new StEntity();
-    this.executeSql(st.csq,[]).catch(e=>{
-      console.log('GTD_G:'+e.toString());
+  }
+  /**
+   * 更新表
+   */
+  updateTable(data:BsModel): Promise<any> {
+    return new Promise((resolve, reject) => {
+
     })
-    // massage
-    let ms = new MsEntity();
-    this.executeSql(ms.csq,[]).catch(e=>{
-      console.log('GTD_H:'+e.toString());
-    })
-    // 字典类型表
-    let zt = new ZtEntity();
-    this.executeSql(zt.csq,[]).catch(e=>{
-      console.log('GTD_X:'+e.toString());
-    })
-    // 字典数据表
-    let ztd = new ZtdEntity();
-    this.executeSql(ztd.csq,[]).catch(e=>{
-      console.log('GTD_Y:'+e.toString());
-    })
-    // 计划表
-    let jh = new JhEntity();
-    this.executeSql(jh.csq,[]).catch(e=>{
-      console.log('GTD_J_H:'+e.toString());
-    })
-    // 版本表
-    let fi = new FiEntity();
-    this.executeSql(fi.csq,[]).then(data=>{
-      fi.id=1;
-      fi.firstIn=1;
-      fi.isup=0
-      this.save(fi);
-    }).catch(e=>{
-      console.log('GTD_FI:'+e.toString());
-    })
-    let sql = new UEntity().csq+ new RcEntity().csq + new RcpEntity().csq +new RuEntity().csq
-                  + new LbEntity().csq+new ReEntity().csq+ new StEntity().csq+ new MsEntity().csq
-                  + new ZtEntity().csq+new ZtdEntity().csq+new JhEntity().csq+new RguEntity().csq
-                  +new FiEntity().csq;
-    //this.importSqlToDb(sql);
-    let data = new Array();
-    this.initlb(data);
-    console.debug(this.className+"数据库初始化建表结束")
-   // alert('初始化建表结束！')
   }
 
+  /**
+   * 初始化数据
+   * @param {BsModel} data
+   * @returns {Promise<any>}
+   */
+  init(): Promise<any> {
+    //版本表
+    let fi = new FiEntity();
+    fi.id = 1;
+    fi.firstIn = 1;
+    fi.isup = 0;
+    //用户表
+    let u: UEntity = new UEntity();
+    u.uI = this.util.getUuid();
+    u.uty = '0';
+    return new Promise((resolve, reject) => {
+      let sql=fi.isq+u.isq;
+      if(this.isMobile()){
+        this.importSqlToDb(sql).then(data=>{
+          console.log("-------------------BaseSqlite createTable: "+JSON.stringify(data))
+          resolve(data)
+        }).catch(e=>{
+          console.error("------------------BaseSqlite createTable: "+e.message)
+          reject(e)
+        })
+      }
+    })
+  }
 
   /**
    * 批量语句

@@ -100,7 +100,7 @@ export class AlPage {
       userId: this.util.getUuid(),
       deviceId: this.util.getDeviceId(),
     },AppConfig.HEADER_OPTIONS_JSON).subscribe(data=>{
-      alert(data)
+      console.log(data);
     })
   }
 
@@ -138,11 +138,11 @@ export class AlPage {
         this.increment(10);
       })
       .then(data => {
-        console.log("al :: 同步服务器结束")
+        console.log("al :: 同步服务器结束");
         //同步本地日历
         console.log("al :: 导入用户本地日历开始");
         this.increment(10);
-        return this.calendarService.uploadLocal2();
+        return this.calendarService.uploadLocal();
       })
       .then(data => {
         console.log("al :: 导入用户本地日历结束");
@@ -155,8 +155,8 @@ export class AlPage {
         console.log("al :: 初始化本地参数开始")
         this.increment(10);
       }).then(data => {
-        //连接websockte
-        console.log("al :: 开始连接websockte")
+        //连接webSocket
+        console.log("al :: 开始连接webSocket");
         return this.webSocketService.connect("1");
       }).then(data => {
         console.log("al :: 连接websockte成功")
