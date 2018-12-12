@@ -7,14 +7,10 @@ import {AppConfig} from "../../app/app.config";
 import {HttpClient} from "@angular/common/http";
 import {CalendarService} from "../../service/calendar.service";
 import {UtilService} from "../../service/util-service/util.service";
-import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
 import {UEntity} from "../../entity/u.entity";
-import {UserSqliteService} from "../../service/sqlite-service/user-sqlite.service";
 import {UoModel} from "../../model/out/uo.model";
-import {WorkSqliteService} from "../../service/sqlite-service/work-sqlite.service";
 import {WorkService} from "../../service/work.service";
 import {UserService} from "../../service/user.service";
-import {PlayerSqliteService} from "../../service/sqlite-service/player-sqlite.service";
 
 /**
  * Generated class for the Ha01Page page.
@@ -42,10 +38,8 @@ export class Ha01Page {
               private http: HttpClient,
               private util:UtilService,
               private rnd: Renderer2,
-              private sqliteService:BaseSqliteService,
               private userSqlite:UserService,
               private workSqlite:WorkService,
-              private playerSqlite:PlayerSqliteService,
               private el: ElementRef) {
     this.scheduleList = [];
     console.log('ionViewDidLoad Ha01Page');

@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {WorkSqliteService} from "./sqlite-service/work-sqlite.service";
+import {WorkSqlite} from "./sqlite/work-sqlite";
 import {MbsoModel} from "../model/out/mbso.model";
 import {MbsModel} from "../model/mbs.model";
 import {RcpoModel} from "../model/out/rcpo.model";
@@ -7,16 +7,16 @@ import {RcpModel} from "../model/rcp.model";
 import {BsModel} from "../model/out/bs.model";
 import {RuModel} from "../model/ru.model";
 import {RcEntity} from "../entity/rc.entity";
-import {BaseSqliteService} from "./sqlite-service/base-sqlite.service";
+import {BaseSqlite} from "./sqlite/base-sqlite";
 import {UtilService} from "./util-service/util.service";
-import {UserSqliteService} from "./sqlite-service/user-sqlite.service";
 import {RcModel} from "../model/rc.model";
 import {AppConfig} from "../app/app.config";
-import {LbSqliteService} from "./sqlite-service/lb-sqlite.service";
+import {LbSqlite} from "./sqlite/lb-sqlite";
 import {LboModel} from "../model/out/lbo.model";
 import {LbModel} from "../model/lb.model";
 import {ScheduleModel} from "../model/schedule.model";
 import {MsEntity} from "../entity/ms.entity";
+import {UserSqlite} from "./sqlite/user-sqlite";
 
 /**
  * 日程逻辑处理
@@ -25,14 +25,14 @@ import {MsEntity} from "../entity/ms.entity";
  */
 @Injectable()
 export class WorkService {
-  workSqlite: WorkSqliteService;
-  userSqlite: UserSqliteService;
-  lbSqlite: LbSqliteService;
-  constructor(private baseSqlite:BaseSqliteService,
+  workSqlite: WorkSqlite;
+  userSqlite: UserSqlite;
+  lbSqlite: LbSqlite;
+  constructor(private baseSqlite:BaseSqlite,
                 private util:UtilService) {
-    this.workSqlite = new WorkSqliteService(baseSqlite,util);
-    this.userSqlite = new UserSqliteService(baseSqlite);
-    this.lbSqlite = new LbSqliteService(baseSqlite);
+    this.workSqlite = new WorkSqlite(baseSqlite,util);
+    this.userSqlite = new UserSqlite(baseSqlite);
+    this.lbSqlite = new LbSqlite(baseSqlite);
   }
 
   /**

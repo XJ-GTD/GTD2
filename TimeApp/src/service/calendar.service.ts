@@ -1,10 +1,8 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {Calendar} from "@ionic-native/calendar";
 import {Ha01Page} from "../pages/ha01/ha01";
-import {RcEntity} from "../entity/rc.entity";
-import {RcpEntity} from "../entity/rcp.entity";
 import {UtilService} from "./util-service/util.service";
-import {BaseSqliteService} from "./sqlite-service/base-sqlite.service";
+import {BaseSqlite} from "./sqlite/base-sqlite";
 import {PlayerService} from "./player.service";
 import {BsModel} from "../model/out/bs.model";
 import {UserService} from "./user.service";
@@ -30,7 +28,7 @@ export class CalendarService {
 
   constructor(private calendar: Calendar,
               private util:UtilService,
-              private baseSqlite:BaseSqliteService,
+              private baseSqlite:BaseSqlite,
               private userService:UserService,
               private playService:PlayerService) { }
 

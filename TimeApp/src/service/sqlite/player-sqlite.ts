@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BaseSqliteService} from "./base-sqlite.service";
+import {BaseSqlite} from "./base-sqlite";
 import {RcEntity} from "../../entity/rc.entity";
 import {RcpEntity} from "../../entity/rcp.entity";
 import {ScheduleModel} from "../../model/schedule.model";
@@ -11,8 +11,8 @@ import {ScheduleModel} from "../../model/schedule.model";
  * create by hjd on 2018/11/23
  */
 @Injectable()
-export class PlayerSqliteService {
-  constructor(private baseSqlite: BaseSqliteService ) { }
+export class PlayerSqlite {
+  constructor(private baseSqlite: BaseSqlite ) { }
 
   /**
    * 添加日程

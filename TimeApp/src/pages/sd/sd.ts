@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
-import {BaseSqliteService} from "../../service/sqlite-service/base-sqlite.service";
 
 /**
  * Generated class for the SdPage page.
@@ -21,7 +20,7 @@ export class SdPage {
   remindTime: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public viewCtrl: ViewController,private sqliteService:BaseSqliteService) {
+              public viewCtrl: ViewController) {
 
   }
 
@@ -32,7 +31,6 @@ export class SdPage {
   setAralmClock() {
     this.remindTime = this.remindTime.replace("T", " ");
     this.remindTime = this.remindTime.replace(":00Z", "");
-    this.sqliteService.executeSql('',[])
     this.viewCtrl.dismiss(this.remindTime);
   }
 

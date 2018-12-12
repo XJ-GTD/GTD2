@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import {BaseModel} from "../model/base.model";
-import {AuRestfulService} from "./restful-service/au-restful.service";
-import {PnRestfulService} from "./restful-service/pn-restful.service";
-import {DxRestfulService} from "./restful-service/dx-restful.service";
+import {AuRestful} from "./restful/au-restful";
+import {PnRestful} from "./restful/pn-restful";
+import {DxRestful} from "./restful/dx-restful";
 import {AlertController, LoadingController, NavController, NavParams} from "ionic-angular";
 import {HttpClient} from "@angular/common/http";
 import {UtilService} from "./util-service/util.service";
 import {BsModel} from "../model/out/bs.model";
-import {UserSqliteService} from "./sqlite-service/user-sqlite.service";
-import {BaseSqliteService} from "./sqlite-service/base-sqlite.service";
+import {UserSqlite} from "./sqlite/user-sqlite";
+import {BaseSqlite} from "./sqlite/base-sqlite";
 import {UEntity} from "../entity/u.entity";
 import {AppConfig} from "../app/app.config";
 
@@ -18,20 +18,20 @@ import {AppConfig} from "../app/app.config";
  */
 @Injectable()
 export class LsmService {
-  au:AuRestfulService;
-  pn:PnRestfulService;
-  dx:DxRestfulService;
-  userSqlite:UserSqliteService;
+  au:AuRestful;
+  pn:PnRestful;
+  dx:DxRestful;
+  userSqlite:UserSqlite;
   data:any
   constructor(private http: HttpClient,
               private loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
-              private basesqlite:BaseSqliteService,
+              private basesqlite:BaseSqlite,
               private util: UtilService) {
-    this.au = new AuRestfulService(http,util);
-    this.pn = new PnRestfulService(http,util);
-    this.dx = new DxRestfulService(http,util);
-    this.userSqlite = new UserSqliteService(this.basesqlite)
+    this.au = new AuRestful(http,util);
+    this.pn = new PnRestful(http,util);
+    this.dx = new DxRestful(http,util);
+    this.userSqlite = new UserSqlite(this.basesqlite)
   }
 
   /**

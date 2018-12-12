@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
-import {UserSqliteService} from "./sqlite-service/user-sqlite.service";
+import {UserSqlite} from "./sqlite/user-sqlite";
 import {UoModel} from "../model/out/uo.model";
 import {UEntity} from "../entity/u.entity";
 import {UModel} from "../model/u.model";
-import {BaseSqliteService} from "./sqlite-service/base-sqlite.service";
+import {BaseSqlite} from "./sqlite/base-sqlite";
 import {BsModel} from "../model/out/bs.model";
 import {AppConfig} from "../app/app.config";
 
@@ -14,9 +14,9 @@ import {AppConfig} from "../app/app.config";
  */
 @Injectable()
 export class UserService {
-  userSqlite:UserSqliteService;
-  constructor( private baseSqlite: BaseSqliteService) {
-    this.userSqlite=new UserSqliteService(baseSqlite);
+  userSqlite:UserSqlite;
+  constructor( private baseSqlite: BaseSqlite) {
+    this.userSqlite=new UserSqlite(baseSqlite);
   }
 
   /**

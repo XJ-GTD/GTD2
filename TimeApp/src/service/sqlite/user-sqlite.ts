@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import {Platform, Events, List} from 'ionic-angular';
-import {BaseSqliteService} from "./base-sqlite.service";
+import {BaseSqlite} from "./base-sqlite";
 import {UEntity} from "../../entity/u.entity";
-import {UoModel} from "../../model/out/uo.model";
 
 
 /**
@@ -11,9 +9,9 @@ import {UoModel} from "../../model/out/uo.model";
  * create w on 2018/10/24
  */
 @Injectable()
-export class UserSqliteService {
+export class UserSqlite {
 
-  constructor( private baseSqlite: BaseSqliteService) { }
+  constructor( private baseSqlite: BaseSqlite) { }
 
   /**
    * 添加用户
@@ -56,15 +54,15 @@ export class UserSqliteService {
       return this.baseSqlite.executeSql(sql,[])
   }
 
-//   this.sqliteService.executeSql('replace into GTD_A(uI,uty) VALUES (?,?)',['6688','0']).then(data=>{
+//   this.sqlite.executeSql('replace into GTD_A(uI,uty) VALUES (?,?)',['6688','0']).then(data=>{
 //   console.log(data);
-//   this.sqliteService.executeSql('select * from GTD_A',[])
+//   this.sqlite.executeSql('select * from GTD_A',[])
 // .then(data0=>{
 //   console.log(data0)
-//   this.sqliteService.executeSql('replace into GTD_A(uI,uty) VALUES (?,?)',['6688','1'])
+//   this.sqlite.executeSql('replace into GTD_A(uI,uty) VALUES (?,?)',['6688','1'])
 // .then(data1=>{
 //   console.log(data1)
-//   this.sqliteService.executeSql('select * from GTD_A',[])
+//   this.sqlite.executeSql('select * from GTD_A',[])
 // .then(data2=>{
 //   console.log(data2)
 // })

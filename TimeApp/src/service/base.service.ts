@@ -1,9 +1,6 @@
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Injectable } from '@angular/core';
-import { Platform , Events } from 'ionic-angular';
-import { SQLitePorter } from '@ionic-native/sqlite-porter';
-import * as moment from "moment";
-import {BaseSqliteService} from "./sqlite-service/base-sqlite.service";
+import {BaseSqlite} from "./sqlite/base-sqlite";
 import {BsModel} from "../model/out/bs.model";
 
 

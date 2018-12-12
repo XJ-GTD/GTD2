@@ -1,10 +1,9 @@
 import {Injectable} from "@angular/core";
-import {PlayerSqliteService} from "./sqlite-service/player-sqlite.service";
+import {PlayerSqlite} from "./sqlite/player-sqlite";
 import {RcEntity} from "../entity/rc.entity";
 import {RcpEntity} from "../entity/rcp.entity";
 import {PeoModel} from "../model/out/peo.model";
 import {BsModel} from "../model/out/bs.model";
-import {ScheduleModel} from "../model/schedule.model";
 
 /**
  * 日程逻辑处理
@@ -14,7 +13,7 @@ import {ScheduleModel} from "../model/schedule.model";
 @Injectable()
 export class PlayerService {
 
-  constructor( private playerSqliteService:PlayerSqliteService ){ }
+  constructor( private playerSqliteService:PlayerSqlite ){ }
 
   /**
    * 查询日程

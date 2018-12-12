@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {RemindSqliteService} from "./sqlite-service/remind-sqlite.service";
+import {RemindSqlite} from "./sqlite/remind-sqlite";
 import {ReEntity} from "../entity/re.entity";
 import {BsModel} from "../model/out/bs.model";
 import {ReoModel} from "../model/out/reo.model";
@@ -11,7 +11,7 @@ import {ReoModel} from "../model/out/reo.model";
 @Injectable()
 export class RemindService {
 
-  constructor(private remindSqlite: RemindSqliteService) { }
+  constructor(private remindSqlite: RemindSqlite) { }
 
   /**
    * 添加提醒时间

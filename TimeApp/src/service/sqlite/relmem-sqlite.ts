@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BaseSqliteService} from "./base-sqlite.service";
+import {BaseSqlite} from "./base-sqlite";
 import {RguEntity} from "../../entity/rgu.entity";
 import {RuEntity} from "../../entity/ru.entity";
 
@@ -7,9 +7,9 @@ import {RuEntity} from "../../entity/ru.entity";
  * 授权联系人
  */
 @Injectable()
-export class RelmemSqliteService {
+export class RelmemSqlite {
 
-  constructor(private baseSqlite: BaseSqliteService) {}
+  constructor(private baseSqlite: BaseSqlite) {}
 
   /**
    * 添加授权联系人

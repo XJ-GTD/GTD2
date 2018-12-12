@@ -13,13 +13,9 @@ import {StEntity} from "../../entity/st.entity";
 import {ZtEntity} from "../../entity/zt.entity";
 import {ZtdEntity} from "../../entity/ztd.entity";
 import {MsEntity} from "../../entity/ms.entity";
-import {BsModel} from "../../model/out/bs.model";
 import {RguEntity} from "../../entity/rgu.entity";
-import {LbSqliteService} from "./lb-sqlite.service";
 import {JhEntity} from "../../entity/jh.entity";
-import {RelmemService} from "../relmem.service";
 import {FiEntity} from "../../entity/fi.entity";
-import {AppConfig} from "../../app/app.config";
 import {UtilService} from "../util-service/util.service";
 
 /**
@@ -28,8 +24,8 @@ import {UtilService} from "../util-service/util.service";
  * create w on 2018/10/24
  */
 @Injectable()
-export class BaseSqliteService {
-  className:String = 'BaseSqliteService';
+export class BaseSqlite {
+  className:String = 'BaseSqlite';
   database: SQLiteObject;
   win: any = window;//window对象
   constructor( private platform: Platform,

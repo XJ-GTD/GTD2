@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {Platform, Nav,IonicApp} from 'ionic-angular';
 import {BackgroundMode} from '@ionic-native/background-mode';
-import {BaseSqliteService} from "../service/sqlite-service/base-sqlite.service";
 import {ConfigService} from "../service/config.service";
 import {PageConfig} from "./page.config";
 
