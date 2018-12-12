@@ -53,18 +53,22 @@ public class ScheduleServiceImpl implements IScheduleService {
 
         String userId = inDto.getUserId();
         String skillType = inDto.getSkillType();
+        String scheduleId = inDto.getScheduleId();
         String scheduleName = inDto.getScheduleName();
         String startTime = inDto.getStartTime();
         String endTime = inDto.getEndTime();
         String label = inDto.getLabel();
         String planName = inDto.getPlanName();
         String status = inDto.getStatus();
+        String executeId = inDto.getExecuteId();
+        int scheduleAuth = inDto.getScheduleAuth();
         List<Map<String, String>> playerName = inDto.getPlayerName();
         String targetUserId = "";
         String targetMobile = "";
 
         try {
 
+            data.setSi(scheduleId);
             data.setSn(scheduleName);
             data.setSt(startTime);
             data.setEt(endTime);
@@ -72,6 +76,8 @@ public class ScheduleServiceImpl implements IScheduleService {
             data.setPn(planName);
             data.setSt(status);
             data.setUs(userId);
+            data.setEi(executeId);
+            data.setSa(scheduleAuth);
 
             outDto.setRes(new WebSocketResultDto(data));
             outDto.setSk(skillType);

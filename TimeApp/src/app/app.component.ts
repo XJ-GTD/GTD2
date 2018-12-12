@@ -11,7 +11,6 @@ import {PageConfig} from "./page.config";
 export class MyApp {
   rootPage: any = PageConfig.AL_PAGE;
 
-
   constructor(
     public platform: Platform,
     public appCtrl: IonicApp,

@@ -13,13 +13,18 @@ public class ScheduleInDto {
     private String userId;
     private String skillType;      //skillType;
 
+    private String scheduleId;          //scheduleId;
     private String scheduleName;      //scheduleName;
     private String startTime;      //startTime;
     private String endTime;      //endTime;
     private String label;      //label;
     private String planName;      //planName;
-    private List<Map<String, String>> playerName;     //playerName 包含accountMobile和userId
+    private List<Map<String, String>> players;     //players 包含accountMobile和userId
     private String status;      //status;
+
+    private String executeId;       //executeId
+    private int scheduleAuth;       //scheduleAuth
+
 
     public String getUserId() {
         return userId;
@@ -77,19 +82,43 @@ public class ScheduleInDto {
         this.planName = planName;
     }
 
-    public List<Map<String, String>> getPlayerName() {
-        return playerName;
-    }
-
-    public void setPlayerName(List<Map<String, String>> playerName) {
-        this.playerName = playerName;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getScheduleId() {
+        return scheduleId;
+    }
+
+    public void setScheduleId(String scheduleId) {
+        this.scheduleId = scheduleId;
+    }
+
+    public String getExecuteId() {
+        return executeId;
+    }
+
+    public void setExecuteId(String executeId) {
+        this.executeId = executeId;
+    }
+
+    public int getScheduleAuth() {
+        return scheduleAuth;
+    }
+
+    public void setScheduleAuth(int scheduleAuth) {
+        this.scheduleAuth = scheduleAuth;
+    }
+
+    public List<Map<String, String>> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Map<String, String>> players) {
+        this.players = players;
     }
 }

@@ -16,7 +16,11 @@ public class WebSocketDataDto {
     private String pln;     //playerName;
     private String ss;      //status;
 
-//    private String
+    private String si;      //scheduleId;
+    private String ei;       //executeId
+    private String pli;     //playerId;
+    private int sa;       //scheduleAuth
+
     private String us;      //userId
     private String un;      //userName
     private String hi;      //headImg
@@ -117,6 +121,38 @@ public class WebSocketDataDto {
 
     public void setMb(String mb) {
         this.mb = mb;
+    }
+
+    public String getSi() {
+        return si;
+    }
+
+    public void setSi(String si) {
+        this.si = si;
+    }
+
+    public String getEi() {
+        return ei;
+    }
+
+    public void setEi(String ei) {
+        this.ei = ei;
+    }
+
+    public int getSa() {
+        return sa;
+    }
+
+    public void setSa(int sa) {
+        this.sa = sa;
+    }
+
+    public String getPli() {
+        return pli;
+    }
+
+    public void setPli(String pli) {
+        this.pli = pli;
     }
 
     //扩展字段

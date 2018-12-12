@@ -53,11 +53,6 @@ export class AlPage {
     this.initSystem();
   }
 
-
-
-
-
-
   /**
    * 游客身份登录 dch
    */

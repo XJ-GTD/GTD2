@@ -46,6 +46,26 @@ public class ScheduleController {
             logger.debug("[推送日程失败]：用户ID不可为空");
             return outDto;
         }
+        if(inDto.getScheduleId() == null || "".equals(inDto.getScheduleId())){
+            outDto.setCode(ResultCode.NULL_SCHEDULE_ID);
+            logger.debug("[推送日程失败]：技能类型不可为空");
+            return outDto;
+        }
+        if(inDto.getScheduleName() == null || "".equals(inDto.getScheduleName())){
+            outDto.setCode(ResultCode.NULL_SCHEDULE_NAME);
+            logger.debug("[推送日程失败]：日程主题不可为空");
+            return outDto;
+        }
+        if(inDto.getPlayers() == null || inDto.getPlayers().size() != 0){
+            outDto.setCode(ResultCode.NULL_PLAYER);
+            logger.debug("[推送日程失败]：参与人不可为空");
+            return outDto;
+        }
+        if(inDto.getStartTime() == null || "".equals(inDto.getStartTime())){
+            outDto.setCode(ResultCode.NULL_TIME);
+            logger.debug("[推送日程失败]：日程时间不可为空");
+            return outDto;
+        }
         if(inDto.getSkillType() == null || "".equals(inDto.getSkillType())){
             outDto.setCode(ResultCode.NULL_SKILL_TYPE);
             logger.debug("[推送日程失败]：技能类型不可为空");

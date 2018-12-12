@@ -318,8 +318,21 @@ public class PersonController {
     @RequestMapping(value = "/invite", method = RequestMethod.POST)
     @ResponseBody
     @AuthCheck
-    public Out inviteSchedule(@RequestBody BaseInDto inDto) {
+    public Out inviteSchedule(@RequestBody PlayerInDto inDto) {
         Out outDto = new Out();
+
+        //入参检测
+        //必须项检测
+        if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
+            outDto.setCode(ResultCode.NULL_MOBILE);
+            logger.debug("[权限申请失败]：用户ID不可为空");
+            return outDto;
+        }
+        if(inDto.getAccountMobile() == null || "".equals(inDto.getAccountMobile())){
+            outDto.setCode(ResultCode.NULL_MOBILE);
+            logger.debug("[权限申请失败]：手机号不可为空");
+            return outDto;
+        }
 
         return outDto;
     }

@@ -14,6 +14,10 @@ public enum ResultCode {
     NULL_ACCOUNT(11005),                  //账户名为空
     NULL_OLD_PASSWORD(11006),             //旧密码为空
     NULL_SKILL_TYPE(11007),               //技能类型为空
+    NULL_SCHEDULE_ID(11008),              //日程id为空
+    NULL_SCHEDULE_NAME(11009),            //日程主题为空
+    NULL_PLAYER(11010),                   //参与人为空
+    NULL_TIME(11011),                     //时间为空
 
     NULL_AUTHCODE(11101),                  //验证码为空
 
