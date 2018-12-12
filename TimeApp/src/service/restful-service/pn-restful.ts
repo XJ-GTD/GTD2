@@ -10,7 +10,7 @@ import {UtilService} from "../util-service/util.service";
  * 注册
  */
 @Injectable()
-export class PnRestfulService {
+export class PnRestful {
   data: any;
   user: any;
   accountName: string;

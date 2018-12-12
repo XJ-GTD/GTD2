@@ -9,7 +9,7 @@ import {UtilService} from "../util-service/util.service";
  * 登录
  */
 @Injectable()
-export class AuRestfulService {
+export class AuRestful {
   data:any;
   constructor(private http: HttpClient,
                 private util: UtilService) {

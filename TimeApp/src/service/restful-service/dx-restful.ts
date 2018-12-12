@@ -9,7 +9,7 @@ import {UtilService} from "../util-service/util.service";
  * 短信
  */
 @Injectable()
-export class DxRestfulService {
+export class DxRestful {
   constructor(private http: HttpClient,
                 private util: UtilService) {
 
