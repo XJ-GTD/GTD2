@@ -51,16 +51,17 @@ export class ConfigService {
   isIntoBoot():Promise<boolean>{
     return  new Promise((resolve, reject)=>{
       //先创建或连接数据
-      this.baseSqlite.createDb().then(data=>{
-        if(data.code != 0){
-          resolve(false)
-        }
-        return this.baseSqlite.isFi()
-      }).then(data=>{
-        console.debug(data.toString())
-        //在判断版本表是否存在
-        resolve(data)
-      })
+      // this.baseSqlite.createDb().then(data=>{
+      //   if(data.code != 0){
+      //     resolve(false)
+      //   }
+      //   return this.baseSqlite.isFi()
+      // }).then(data=>{
+      //   console.debug(data.toString())
+      //   //在判断版本表是否存在
+      //   resolve(data)
+      // })
+      resolve(true)
     });
   }
 }

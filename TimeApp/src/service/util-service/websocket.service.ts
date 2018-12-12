@@ -51,7 +51,6 @@ export class WebsocketService {
           console.log("on_connect回调成功:" + data);
 
           subject.next(data); //能够在let变量方法内使用this方法
-          resolve('connect ok');
 
         });
       };
@@ -61,7 +60,7 @@ export class WebsocketService {
         let ws = new WsModel();
         ws = JSON.parse(data.body);
         console.log("JSON MQ:" + ws);
-
+        resolve('connect ok');
         this.dwService.dealWithMq(ws);
 
       });

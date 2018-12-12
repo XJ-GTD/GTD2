@@ -86,7 +86,7 @@ export class AlPage {
         console.log("al :: 同步服务器开始");
       })
       .then(data => {
-        console.log("al :: 同步服务器结束")
+        console.log("al :: 同步服务器结束");
         //同步本地日历
         console.log("al :: 导入用户本地日历开始");
         return this.calendarService.uploadLocal2();
