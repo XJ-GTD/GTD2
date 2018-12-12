@@ -100,12 +100,12 @@ export class AlPage {
         //初始化本地参数
         console.log("al :: 初始化本地参数开始")
       }).then(data => {
-        //连接websockte
-        console.log("al :: 开始连接websockte")
+        //连接webSocket
+        console.log("al :: 开始连接webSocket");
         return this.webSocketService.connect("1");
       }).then(data => {
-        console.log("al :: 连接websockte成功")
-        //检车websockte的状态
+        console.log("al :: 连接webSocket成功")
+        //检车webSocket的状态
 
       })
       .then(data => {

@@ -123,8 +123,9 @@ export class CalendarService {
         console.log("calendarService ::"+"导入本地日历失败");
         model.code = 1;
         model.message = "失败";
-        return;
-      })
-    })
+        resolve(model);
+      });
+      return;
+    });
   }
 }
