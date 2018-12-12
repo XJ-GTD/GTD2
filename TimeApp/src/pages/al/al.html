@@ -1,20 +1,23 @@
-<!--
-  Generated template for the AlPage page.
+<div class="container">
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
+  <div class="progress-wrapper">
+    <div class="current" [ngStyle]="getOverlayStyle()">{{ current }}/{{ max }}</div>
 
-<!--加载页面-->
-<!--<ion-header>-->
+    <round-progress
+      [current]="current"
+      [max]="max"
+      [stroke]="stroke"
+      [radius]="radius"
+      [semicircle]="semicircle"
+      [rounded]="rounded"
+      [responsive]="responsive"
+      [clockwise]="clockwise"
+      [color]="gradient ? 'url(#gradient)' : color"
+      [background]="background"
+      [duration]="duration"
+      [animation]="animation"
+      [animationDelay]="animationDelay"></round-progress>
+  </div>
+  <div class="text">{{ text }}</div>
+</div>
 
-  <!--<ion-navbar>-->
-    <!--<ion-title>Al</ion-title>-->
-  <!--</ion-navbar>-->
-
-<!--</ion-header>-->
-
-
-<!--<ion-content padding>-->
-
-<!--</ion-content>-->

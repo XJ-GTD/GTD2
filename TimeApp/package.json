@@ -20,8 +20,8 @@
     "@angular/http": "5.0.0",
     "@angular/platform-browser": "5.0.0",
     "@angular/platform-browser-dynamic": "5.0.0",
-    "@ionic-native/android-permissions": "^4.18.0",
-    "@ionic-native/background-mode": "^4.18.0",
+    "@ionic-native/android-permissions": "^3.10.0",
+    "@ionic-native/background-mode": "^3.10.0",
     "@ionic-native/base64": "^4.15.0",
     "@ionic-native/calendar": "^4.15.0",
     "@ionic-native/core": "4.3.2",
@@ -77,7 +77,8 @@
     "sw-toolbox": "3.6.0",
     "uk.co.workingedge.cordova.plugin.sqliteporter": "^1.0.5",
     "ws": "3.3.2",
-    "zone.js": "0.8.18"
+    "zone.js": "0.8.18",
+    "angular-svg-round-progressbar": "~1.2.1"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.0",

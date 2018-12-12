@@ -32,9 +32,8 @@ export class MyApp {
           this.rootPage = PageConfig.AZ_PAGE;
         }
 
-      }).then(data=>{
-        alert(1)
-      }).then(data=>{
+      })
+        .then(data=>{
         console.debug(' time app into go to ' +  this.rootPage);
         this.nav.setRoot(this.rootPage);
       }).catch(err=>{
