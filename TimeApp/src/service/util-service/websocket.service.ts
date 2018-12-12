@@ -24,62 +24,66 @@ export class WebsocketService {
   /**
    * 监听消息队列
    */
-  public connect(queueName: string) {
+  public connect(queueName: string) :Promise<any> {
+    var p = new Promise(function (resolve, reject) {
 
-    let ws = new WebSocket(AppConfig.RABBITMQ_WS_URL);
+      let ws = new WebSocket(AppConfig.RABBITMQ_WS_URL);
 
-    //建立连接
-    let client = Stomp.over(ws);
+      //建立连接
+      let client = Stomp.over(ws);
 
-    //呼吸
-    client.heartbeat.outgoing = 0;
-    client.heartbeat.incoming = 0;
+      //呼吸
+      client.heartbeat.outgoing = 0;
+      client.heartbeat.incoming = 0;
 
-    //登陆账户
-    const login = "gtd_mq";
-    const password = "gtd_mq";
+      //登陆账户
+      const login = "gtd_mq";
+      const password = "gtd_mq";
 
-    //创建观察者
-    let subject = new Subject<any>();
+      //创建观察者
+      let subject = new Subject<any>();
 
-    // 连接成功回调 on_connect
-    let on_connect = function(x) {
-      console.log(client);
-      queueName = '616818.0952634651';
-      client.subscribe("/queue/" + queueName, function(data) {
-        console.log("on_connect回调成功:" + data);
+      // 连接成功回调 on_connect
+      let on_connect = function(x) {
+        console.log(client);
+        queueName = '616818.0952634651';
+        client.subscribe("/queue/" + queueName, function(data) {
+          console.log("on_connect回调成功:" + data);
 
-        subject.next(data); //能够在let变量方法内使用this方法
+          subject.next(data); //能够在let变量方法内使用this方法
+          resolve('connect ok');
+
+        });
+      };
+
+      //对成功回调数据进行操作,放入全局变量中
+      subject.asObservable().subscribe( data=> {
+        let ws = new WsModel();
+        ws = JSON.parse(data.body);
+        console.log("JSON MQ:" + ws);
+
+        this.dwService.dealWithMq(ws);
 
       });
-    };
 
-    //对成功回调数据进行操作,放入全局变量中
-    subject.asObservable().subscribe( data=> {
-      let ws = new WsModel();
-      ws = JSON.parse(data.body);
-      console.log("JSON MQ:" + ws);
 
-      this.dwService.dealWithMq(ws);
+      //连接失败回调
+      let on_error = function() {
+        console.log('socket error!:' + ws.readyState);
+        client = Stomp.over(new WebSocket(AppConfig.RABBITMQ_WS_URL));
+        client.connect(login, password, on_connect, on_error, on_close,'/');
+      };
+
+      //关闭回调
+      let on_close = function() {
+        console.log('socket close!');
+      };
+
+      // 连接消息服务器
+      client.connect(login, password, on_connect, on_error, on_close,'/');
 
     });
-
-
-    //连接失败回调
-    let on_error = function() {
-      console.log('socket error!:' + ws.readyState);
-      client = Stomp.over(new WebSocket(AppConfig.RABBITMQ_WS_URL));
-      client.connect(login, password, on_connect, on_error, on_close,'/');
-    };
-
-    //关闭回调
-    let on_close = function() {
-      console.log('socket close!');
-    };
-
-    // 连接消息服务器
-    client.connect(login, password, on_connect, on_error, on_close,'/');
-
+    return p;
   }
 
 }

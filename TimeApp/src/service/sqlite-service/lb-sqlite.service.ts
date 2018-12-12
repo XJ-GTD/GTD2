@@ -20,7 +20,7 @@ export class LbSqliteService {
   /**
    * 不存在则添加标签
    */
-  alnb(lb:LbEntity){
+  alnb(lb:LbEntity):Promise<any>{
     let sql = 'insert into GTD_F (lai,lan,lat) select "'+ lb.lai +'","'+ lb.lan +'","'+ lb.lat +'" ' +
       'where not exists (select lai,lan,lat from GTD_F)'
     return this.baseSqlite.executeSql(sql,[]);
