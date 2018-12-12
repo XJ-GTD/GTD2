@@ -74,7 +74,7 @@ export class AlPage {
         console.log("权限申请完成");
         //初始化创建数据库
         console.log("al :: 初始化创建数据库开始");
-        this.configService.initDataBase();
+        return this.configService.initDataBase();
       }).then(data => {
         console.log("al :: 初始化创建数据库结束");
         //初始化本地变量
@@ -103,10 +103,6 @@ export class AlPage {
         //连接webSocket
         console.log("al :: 开始连接webSocket");
         return this.webSocketService.connect("1");
-      }).then(data => {
-        console.log("al :: 连接webSocket成功")
-        //检车webSocket的状态
-
       })
       .then(data => {
         //进入主页

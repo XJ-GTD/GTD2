@@ -24,8 +24,8 @@ export class WebsocketService {
   /**
    * 监听消息队列
    */
-  public connect(queueName: string) :Promise<any> {
-    var p = new Promise(function (resolve, reject) {
+  public connect(queueName: string) {
+    // var p = new Promise(function (resolve, reject) {
 
       let ws = new WebSocket(AppConfig.RABBITMQ_WS_URL);
 
@@ -49,7 +49,7 @@ export class WebsocketService {
         queueName = '616818.0952634651';
         client.subscribe("/queue/" + queueName, function(data) {
           console.log("on_connect回调成功:" + data);
-
+          alert("socket success1");
           subject.next(data); //能够在let变量方法内使用this方法
 
         });
@@ -60,15 +60,15 @@ export class WebsocketService {
         let ws = new WsModel();
         ws = JSON.parse(data.body);
         console.log("JSON MQ:" + ws);
-        resolve('connect ok');
+        // resolve('connect ok');
         this.dwService.dealWithMq(ws);
-
+        alert("socket success2");
       });
 
 
       //连接失败回调
       let on_error = function() {
-        console.log('socket error!:' + ws.readyState);
+        console.log('webSocket error! :' + ws.readyState);
         client = Stomp.over(new WebSocket(AppConfig.RABBITMQ_WS_URL));
         client.connect(login, password, on_connect, on_error, on_close,'/');
       };
@@ -81,8 +81,8 @@ export class WebsocketService {
       // 连接消息服务器
       client.connect(login, password, on_connect, on_error, on_close,'/');
 
-    });
-    return p;
+    // });
+    // return p;
   }
 
 }

@@ -107,7 +107,7 @@ export class HaPage {
     this.showDay = moment().format('dddd YYYY 年 MM 月 DD 日');
     //消息队列接收
     // this.webSocketService.connect(this.paramsService.user.accountQueue);
-    this.webSocketService.connect("1");
+    // this.webSocketService.connect("1");
 
     this.scheduleList = [];
     //获取用户信息
@@ -117,7 +117,7 @@ export class HaPage {
         if(data.code==0 ){
           this.u=data.u;
           //消息队列接收
-          this.webSocketService.connect(this.u.aQ);
+          // this.webSocketService.connect(this.u.aQ);
         }else{
           // alert(data.message);
         }
