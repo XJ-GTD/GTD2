@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import {NgModule, ErrorHandler} from '@angular/core';
+import { IonicApp,Nav, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -39,10 +39,10 @@ import {ParamsService} from "../service/util-service/params.service";
 import {WebsocketService} from "../service/util-service/websocket.service";
 import {DwMqService} from "../service/util-service/dw-mq.service";
 import {UtilService} from "../service/util-service/util.service";
-import {BaseService} from "../service/base.service";
 import {BackgroundMode} from '@ionic-native/background-mode';
 import {PermissionsService} from "../service/util-service/permissions.service";
 import {AndroidPermissions} from '@ionic-native/android-permissions';
+import {ConfigService} from "../service/config.service";
 
 @NgModule({
   declarations: [
@@ -82,7 +82,6 @@ import {AndroidPermissions} from '@ionic-native/android-permissions';
     SQLitePorter,
     BaseSqlite,
     UserService,
-    BaseService,
     WorkService,
     LsmService,
     PlayerService,
@@ -102,6 +101,7 @@ import {AndroidPermissions} from '@ionic-native/android-permissions';
     BackgroundMode,
     AndroidPermissions,
     PermissionsService,
+    ConfigService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

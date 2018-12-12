@@ -13,6 +13,7 @@ export class BsModel {
    */
   private _code:number = AppConfig.SUCCESS_CODE; //code
   private _message: string = AppConfig.SUCCESS_MESSAGE; //消息
+  private _data:any = null;
 
 
   get code(): number {
@@ -29,5 +30,12 @@ export class BsModel {
 
   set message(value: string) {
     this._message = value;
+  }
+  get data(): any {
+    return this._data;
+  }
+
+  set data(value: any) {
+    this._data = value;
   }
 }
