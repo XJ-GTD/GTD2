@@ -10,6 +10,7 @@ import {ParamsService} from "../../service/util-service/params.service";
 import {CalendarService} from "../../service/calendar.service";
 import {HttpClient} from "@angular/common/http";
 import {ConfigService} from "../../service/config.service";
+import {WebsocketService} from "../../service/util-service/websocket.service";
 
 /**
  * Generated class for the AlPage page.
@@ -39,7 +40,8 @@ export class AlPage {
               private nav:Nav,
               private events: Events,
               private permissionsService: PermissionsService,
-              private configService:ConfigService) {
+              private configService:ConfigService,
+              private webSocketService: WebsocketService) {
   }
 
   ionViewDidLoad() {
@@ -63,46 +65,61 @@ export class AlPage {
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
     });
-
-
     loading.present();
+    this.rootPage = PageConfig.HZ_PAGE;
 
-
+    console.log("权限申请开始");
     this.permissionsService.checkAllPermissiions()
       .then(res => {
+        console.log("权限申请完成");
         //初始化创建数据库
+        console.log("al :: 初始化创建数据库开始");
         return this.configService.initDataBase();
       }).then(data => {
-      //初始化本地变量
-    })
+        console.log("al :: 初始化创建数据库结束");
+        //初始化本地变量
+        console.log("al :: 初始化本地变量开始");
+      })
       .then(data => {
+        console.log("al :: 初始化本地变量结束");
         //同步服务器
+        console.log("al :: 同步服务器开始");
       })
       .then(data => {
+        console.log("al :: 同步服务器结束")
         //同步本地日历
+        console.log("al :: 导入用户本地日历开始");
+        return this.calendarService.uploadLocal2();
       })
       .then(data => {
+        console.log("al :: 导入用户本地日历结束");
         //登陆
+
       })
       .then(data => {
         //初始化本地参数
+        console.log("al :: 初始化本地参数开始")
       }).then(data => {
-      //连接websockte
+        //连接websockte
+        console.log("al :: 开始连接websockte")
+        return this.webSocketService.connect("1");
+      }).then(data => {
+        console.log("al :: 连接websockte成功")
+        //检车websockte的状态
 
-    }).then(data => {
-      //检车websockte的状态
-    })
+      })
       .then(data => {
         //进入主页
 
         loading.dismiss();
-        this.nav.setRoot(PageConfig.HZ_PAGE);
+        this.nav.setRoot(this.rootPage);
 
       }).then(data => {
 
-    })
-      .catch(res => {
-        alert(res);
+      }).catch(res => {
+        console.log("al error :: "+JSON.stringify(res));
+        loading.dismiss();
+        this.nav.setRoot(this.rootPage);
       })
 
 

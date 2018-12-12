@@ -19,11 +19,12 @@ export class AzPage {
   }
 
   ionViewDidLoad() {
-    console.debug('ionViewDidLoad AzPage ionViewDidLoad ');
+    console.log('ionViewDidLoad AzPage ionViewDidLoad ');
   }
 
   startApp(){
     console.debug('time app go to ' + PageConfig.AL_PAGE);
+    console.log('time app go to ' + PageConfig.AL_PAGE);
     this.nav.setRoot(PageConfig.AL_PAGE);
   }
 }

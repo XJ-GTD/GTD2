@@ -38,12 +38,15 @@ export class CalendarService {
    */
   findEvent():Promise<any>{
     return new Promise((resolve, reject) => {
+      console.log("执行查询本地日历")
       this.calendar.findEvent("", "", "", new Date("2018-12-01"), new Date("2118-12-31")).then(
         (msg) => {
-          //alert(JSON.stringify(msg));
+          console.log("执行查询本地日历结束");
           resolve(msg);
+
         },
         (err) => {
+          console.log("执行查询本地日历结束B::" + JSON.stringify(err));
           reject(err);
         }
       );
@@ -51,22 +54,6 @@ export class CalendarService {
 
   }
 
-  //同步本地日历日程
-  uploadLocal():Promise<BsModel>{
-
-      // //查询用户
-      // return this.userService.getUo().then(data=> {
-      //   if (data && data.u && data.u.uI) {
-      //     uI = data.u.uI;
-      //   }
-      // })
-
-      return this.calendar.findEvent("", "", "", new Date("2018-12-01"), new Date("2118-12-31")).then((data)=>{
-        let calendars=data;
-        return this.playService.initfirst(calendars);
-      });
-
-  }
 
   //同步本地日历日程
   uploadLocal1():Promise<BsModel>{
@@ -102,4 +89,42 @@ export class CalendarService {
     })
     }
 
+
+  /**
+   * 同步本地日历日程
+   *
+   */
+  uploadLocal2():Promise<BsModel>{
+    return new Promise((resolve,reject)=>{
+      let uI = '';
+      let model = new BsModel();
+      this.userService.getUo().then(data=>{
+        console.log("calendarService ::"+"查询用户信息成功");
+        console.log(1)
+        if(data&&data.u&&data.u.uI){
+          uI=data.u.uI;
+        }
+        return this.findEvent()
+      }).then(data=>{
+        console.log("calendarService ::"+"查询本地日历成功");
+        console.log(2)
+        //this.findEvent返回msg
+        let arr = new Array();
+        for(let i=0;i<data.length;i++) {
+          arr.push(this.playService.addPlayer(this.util.getUuid(),data[i].title,"",uI,data[i].startDate,data[i].endDate,this.util.getUuid(),data[i].title,"","",data[i].startDate,"",uI,"1"));
+        }
+        return Promise.all(arr);
+      }).then(data=>{
+        console.log("calendarService ::"+"导入本地日历成功");
+        console.log(3)
+        console.log(JSON.stringify(data));
+        resolve(model);
+      }).catch(reason => {
+        console.log("calendarService ::"+"导入本地日历失败");
+        model.code = 1;
+        model.message = "失败";
+        reject(model);
+      })
+    })
+  }
 }
