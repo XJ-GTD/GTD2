@@ -14,7 +14,7 @@ export class BaseService {
 
   database: SQLiteObject;
   win: any = window;//window对象
-  constructor( private baseSqlite: BaseSqliteService) { }
+  constructor( private baseSqlite: BaseSqlite) { }
 
   save(param:any):Promise<BsModel>{
     let bs=new BsModel();

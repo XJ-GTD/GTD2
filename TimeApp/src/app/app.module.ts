@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import {IonicApp, IonicModule, IonicErrorHandler, Nav} from 'ionic-angular';
 import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -43,6 +43,7 @@ import {BaseService} from "../service/base.service";
 import {BackgroundMode} from '@ionic-native/background-mode';
 import {PermissionsService} from "../service/util-service/permissions.service";
 import {AndroidPermissions} from '@ionic-native/android-permissions';
+import {ConfigService} from "../service/config.service";
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import {AndroidPermissions} from '@ionic-native/android-permissions';
     MyApp,
   ],
   providers: [
+    Nav,
     StatusBar,
     SplashScreen,
     File,
@@ -102,6 +104,7 @@ import {AndroidPermissions} from '@ionic-native/android-permissions';
     BackgroundMode,
     AndroidPermissions,
     PermissionsService,
+    ConfigService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

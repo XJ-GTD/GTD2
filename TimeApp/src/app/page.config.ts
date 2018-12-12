@@ -32,7 +32,7 @@ export class PageConfig {
   private static _UA_PAGE: any = "UaPage";
   private static _UB_PAGE: any = "UbPage";
   private static _UC_PAGE: any = "UcPage";
-  private static _AL_PAGE: any = "UlPage";
+  private static _AL_PAGE: any = "AlPage";
 
 
   static get AZ_PAGE(): any {

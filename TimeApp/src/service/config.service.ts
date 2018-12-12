@@ -41,6 +41,7 @@ export class ConfigService {
 
   isIntoBoot():Promise<any>{
     var p = new Promise(function(resolve, reject){
+      resolve(false);
     });
     return p;
 
