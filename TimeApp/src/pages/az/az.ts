@@ -35,14 +35,6 @@ import {PermissionsService} from "../../service/util-service/permissions.service
 })
 export class AzPage {
 
-  slides = [
-    {
-      title: "Welcome to the GTD2!",
-      description: "这 <b>是一个引导页</b> ！",
-      image: "../../assets/imgs/welcome_1.jpg",
-    }
-  ];
-
   rootPage:any;
 
   constructor(public navCtrl: NavController,
@@ -60,13 +52,14 @@ export class AzPage {
               private nav:Nav,
               private events: Events,
               private permissionsService: PermissionsService,) {
+
+
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AzPage');
+    console.log('ionViewDidLoad AzPage ionViewDidLoad ');
+    this.rootPage = PageConfig.HZ_PAGE;
 
-    //同步本地日历
-    // this.uploadLocal();
   }
 
   goToLogin() {
@@ -77,17 +70,6 @@ export class AzPage {
   //同步本地日历数据
   uploadLocal(){
      return this.calendarService.uploadLocal();
-  }
-  //创建数据库
-  createSql(){
-
-  }
-
-  /**
-   * 跳转注册页
-   */
-  register(){
-
   }
   /**
    * 游客身份登录 dch
@@ -116,17 +98,34 @@ export class AzPage {
 
         //初始化创建数据库
         return this.baseSqlite.createDb();
+      }).then(data=>{
+      //初始化本地变量
+    })
+      .then(data=>{
+        //同步服务器
+      })
+      .then(data=>{
+        //同步本地日历
+    })
+      .then(data=>{
+        //初始化本地参数
+      })
+      .then(data=>{
+        //进入主页
 
-      }).catch(res => {
+        loading.dismiss();
+        this.nav.setRoot(this.rootPage);
+
+      })
+      .catch(res => {
       alert(res);
-    });
+    })
 
 
     //
     //
     // 查询版本
     this.fisqlite.getfi(1).then(data=>{
-      this.rootPage = PageConfig.HZ_PAGE;
       let istrue:boolean = false
       if(data && data.rows && data.rows.length>0){
         if(data.rows.item(0).isup==1){
@@ -178,8 +177,6 @@ export class AzPage {
       }).catch(reason => {
 
       });
-      loading.dismiss();
-      this.nav.setRoot(this.rootPage);
 
     })
 
