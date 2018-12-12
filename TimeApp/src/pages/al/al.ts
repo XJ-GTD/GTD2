@@ -96,7 +96,7 @@ export class AlPage {
         //进入主页
 
         loading.dismiss();
-        this.nav.setRoot(this.rootPage);
+        this.nav.setRoot(PageConfig.HZ_PAGE);
 
       }).then(data => {
 

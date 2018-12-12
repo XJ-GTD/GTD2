@@ -18,18 +18,24 @@ export class ConfigService {
     var p = new Promise(function(resolve, reject){
 
       //连接数据
+      resolve(true);
 
     }).then(data=>{
       //检查有没有数据表
+      return;
 
     }).then(data=>{
       //没有表创建表结构
+
+      return;
 
       //存在数据表
 
 
     }).then(data=>{
       //初始化数据
+
+      return;
     });
     return p;
   }
