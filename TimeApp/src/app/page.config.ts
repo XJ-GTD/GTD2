@@ -32,6 +32,7 @@ export class PageConfig {
   private static _UA_PAGE: any = "UaPage";
   private static _UB_PAGE: any = "UbPage";
   private static _UC_PAGE: any = "UcPage";
+  private static _AL_PAGE: any = "UlPage";
 
 
   static get AZ_PAGE(): any {
@@ -248,5 +249,13 @@ export class PageConfig {
 
   static set UC_PAGE(value: any) {
     this._UC_PAGE = value;
+  }
+
+  static set AL_PAGE(value: any) {
+    this._AL_PAGE = value;
+  }
+
+  static get AL_PAGE(): any {
+    return this._AL_PAGE;
   }
 }
