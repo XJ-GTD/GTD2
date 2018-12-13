@@ -16,7 +16,7 @@ export class StEntity {
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_G(si INTEGER PRIMARY KEY AUTOINCREMENT,' +
                           'sn VARCHAR(100),ss VARCHAR(10),st VARCHAR(100));';
-  private _drsq:string="DROP TABLE GTD_G;";
+  private _drsq:string="DROP TABLE IF EXISTS GTD_G;";
 
   private _isq:string;
   private _usq:string;
