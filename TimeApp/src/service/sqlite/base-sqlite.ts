@@ -96,7 +96,7 @@ export class BaseSqlite {
   /**
    * 创建表
    */
-   createTable(data:BsModel): Promise<any> {
+   createTable(bsData:BsModel): Promise<any> {
     return new Promise((resolve, reject) => {
       console.log(this.className + "数据库初始化建表开始")
       //可能存在多个执行创建表语句，只需最后一个使用await
@@ -109,8 +109,12 @@ export class BaseSqlite {
             + new ZtEntity().csq + new ZtdEntity().csq + new JhEntity().csq + new RguEntity().csq
             + new FiEntity().csq;
           this.importSqlToDb(sql).then(data=>{
-            console.log("-------------------BaseSqlite createTable: "+JSON.stringify(data))
-            resolve(data)
+            console.log("-------------------BaseSqlite createTable success: "+JSON.stringify(data))
+            console.log("BaseSqlite createTable 初始化表数据 start ")
+            return this.init();
+          }).then(inData=>{
+            console.log("-------------------BaseSqlite Init Data success: "+JSON.stringify(inData))
+            resolve(inData);
           }).catch(e=>{
             console.error("------------------BaseSqlite createTable: "+e.message)
             reject(e)
@@ -179,15 +183,17 @@ export class BaseSqlite {
           fi.isup = 0
           return this.save(fi);
         }).then(data=>{
+          data.data=bsData;
+          let data1 = new Array();
+          this.initlb(data1);
+          console.log("-------------------BaseSqlite createTable: "+JSON.stringify(data))
           resolve(data)
         }).catch(e=>{
           console.error("basesqlite createTable Error : "+e.message);
           reject(e)
         })
 
-        let data = new Array();
-        this.initlb(data);
-        console.log("-------------------BaseSqlite createTable: "+JSON.stringify(data))
+
       }
     })
   }

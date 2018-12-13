@@ -33,10 +33,10 @@ export class ConfigService {
         }
       }).then(data=>{
         //初始化表数据
-        if(data && data.data && data.data.code && data.data.code==1){
-          console.log("config initDataBase 初始化表数据 ")
-            return this.baseSqlite.init()
-        }
+        // if(data && data.data && data.data.code && data.data.code==1){
+        //   console.log("config initDataBase 初始化表数据 ")
+        //     return this.baseSqlite.init()
+        // }
       }).then(data=> {
        //初始化数据
         this.user.getUo().then(ud=>{
