@@ -2,6 +2,8 @@ package com.xiaoji.gtd.service;
 
 import com.xiaoji.gtd.dto.*;
 
+import java.util.List;
+
 /**
  * 用户类接口
  *
@@ -49,5 +51,25 @@ public interface IPersonService {
      * @param inDto
      * @return
      */
-    PlayerOutDto addPlayer(PlayerInDto inDto);
+    int addPlayer(PlayerInDto inDto);
+
+    /**
+     * 发送权限申请
+     * @param inDto
+     * @return
+     */
+    int inviteSchedule(PlayerInDto inDto);
+
+    /**
+     * 查询联系人
+     * @param inDto
+     * @return
+     */
+    PlayerOutDto searchPlayer(PlayerInDto inDto);
+
+    /**
+     * 用户是否接受推送
+     * @param inDto
+     */
+    List<PlayerDataDto> isAgree(String userId, List<PlayerDataDto> inDto);
 }

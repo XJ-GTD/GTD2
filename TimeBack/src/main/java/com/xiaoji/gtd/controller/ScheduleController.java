@@ -38,6 +38,7 @@ public class ScheduleController {
     @AuthCheck
     public Out dealWithSchedule(@RequestBody ScheduleInDto inDto) {
         Out outDto = new Out();
+        SearchOutDto data;
 
         //入参检测
         //非空检测
@@ -56,7 +57,7 @@ public class ScheduleController {
             logger.debug("[推送日程失败]：日程主题不可为空");
             return outDto;
         }
-        if(inDto.getPlayers() == null || inDto.getPlayers().size() != 0){
+        if(inDto.getPlayers() == null || inDto.getPlayers().size() == 0){
             outDto.setCode(ResultCode.NULL_PLAYER);
             logger.debug("[推送日程失败]：参与人不可为空");
             return outDto;
@@ -77,7 +78,7 @@ public class ScheduleController {
             logger.debug("[推送日程失败]：用户ID类型或格式错误");
             return outDto;
         }
-        if(!CommonMethods.isInteger(inDto.getSkillType())){
+        if(CommonMethods.checkMySqlReservedWords(inDto.getSkillType())){
             outDto.setCode(ResultCode.ERROR_SKILL_TYPE);
             logger.debug("[推送日程失败]：请输入正确技能类型");
             return outDto;
@@ -86,8 +87,9 @@ public class ScheduleController {
         //业务逻辑
         try {
 
-            int flag = scheduleService.dealWithSchedule(inDto);
-            if (flag == 0) {
+            data = scheduleService.dealWithSchedule(inDto);
+            if (data != null) {
+                outDto.setData(data);
                 outDto.setCode(ResultCode.SUCCESS);
                 logger.debug("dealWithSchedule 推送日程成功");
             } else {

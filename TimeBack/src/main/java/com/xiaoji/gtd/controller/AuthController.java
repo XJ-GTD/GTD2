@@ -47,7 +47,7 @@ public class AuthController {
         //入参检测
         //必须项检测
         if(inDto.getDeviceId() == null || "".equals(inDto.getDeviceId())){
-            outDto.setCode(ResultCode.NULL_DEVICEID);
+            outDto.setCode(ResultCode.NULL_DEVICE_ID);
             logger.debug("[验证失败]：设备ID不可为空");
             return outDto;
         }
@@ -63,7 +63,7 @@ public class AuthController {
             return outDto;
         }
         if (CommonMethods.checkMySqlReservedWords(inDto.getDeviceId())) {
-            outDto.setCode(ResultCode.NULL_DEVICEID);
+            outDto.setCode(ResultCode.NULL_DEVICE_ID);
             logger.debug("[验证失败]：设备ID类型或格式错误");
             return outDto;
         }
@@ -113,7 +113,7 @@ public class AuthController {
             return outDto;
         }
         if(inDto.getDeviceId() == null || "".equals(inDto.getDeviceId())){
-            outDto.setCode(ResultCode.NULL_DEVICEID);
+            outDto.setCode(ResultCode.NULL_DEVICE_ID);
             logger.debug("[password登陆失败]：设备ID不可为空");
             return outDto;
         }
@@ -125,7 +125,7 @@ public class AuthController {
             return outDto;
         }
         if (CommonMethods.checkMySqlReservedWords(inDto.getDeviceId())) {
-            outDto.setCode(ResultCode.NULL_DEVICEID);
+            outDto.setCode(ResultCode.NULL_DEVICE_ID);
             logger.debug("[登陆失败]：设备ID类型或格式错误");
             return outDto;
         }
@@ -171,12 +171,12 @@ public class AuthController {
             return outDto;
         }
         if(inDto.getDeviceId() == null || "".equals(inDto.getDeviceId())){
-            outDto.setCode(ResultCode.NULL_DEVICEID);
+            outDto.setCode(ResultCode.NULL_DEVICE_ID);
             logger.debug("[code登陆失败]：设备ID不可为空");
             return outDto;
         }
         if(inDto.getAuthCode() == null || "".equals(inDto.getAuthCode())){
-            outDto.setCode(ResultCode.NULL_AUTHCODE);
+            outDto.setCode(ResultCode.NULL_AUTH_CODE);
             logger.debug("[登陆失败]：验证码不可为空");
             return outDto;
         }
@@ -189,19 +189,19 @@ public class AuthController {
             }
         }
         if (CommonMethods.checkMySqlReservedWords(inDto.getDeviceId())) {
-            outDto.setCode(ResultCode.NULL_DEVICEID);
+            outDto.setCode(ResultCode.NULL_DEVICE_ID);
             logger.debug("[登陆失败]：设备ID类型或格式错误");
             return outDto;
         }
         try {
             if(!Objects.requireNonNull(TimerUtil.getCache(inDto.getAccount())).getValue().equals(inDto.getAuthCode())){
-                outDto.setCode(ResultCode.ERROR_AUTHCODE);
+                outDto.setCode(ResultCode.ERROR_AUTH_CODE);
                 logger.debug("[登陆失败]：请输入正确短信验证码");
                 return outDto;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            outDto.setCode(ResultCode.EXPIRE_AUTHCODE);
+            outDto.setCode(ResultCode.EXPIRE_AUTH_CODE);
             outDto.setMessage("[登陆失败]：短信验证码已过期，请重新获取");
             logger.debug("[登陆失败]：短信验证码已过期");
             return outDto;

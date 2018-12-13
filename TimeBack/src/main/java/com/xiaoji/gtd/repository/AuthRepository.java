@@ -44,4 +44,24 @@ public class AuthRepository {
         return em.createNativeQuery(sql).getSingleResult();
     }
 
+    /**
+     * 接受推送权限查询
+     * @return
+     */
+    public Object isAcceptThePush(String userId, String targetUserId, String targetMobile) {
+
+        String sqlQuery = " WHERE TA.PLAYER_ID = '" + userId + "' \n";
+        if (targetMobile != null && !targetMobile.equals("")) {
+            sqlQuery += " AND TB.LOGIN_TYPE = '" + LOGIN_TYPE_MOBILE + "' AND LOGIN_NAME = '" + targetMobile + "' \n";
+        }
+        if (targetUserId != null && !targetUserId.equals("")) {
+            sqlQuery += " AND TB.USER_ID = '" + targetUserId + "' ";
+        }
+
+        String sql = "SELECT COUNT(*), TA.PLAYER_FLAG, TB.USER_ID FROM gtd_player TA \n" +
+                " INNER JOIN gtd_login TB ON TB.USER_ID = TA.USER_ID \n" +
+                sqlQuery;
+
+        return em.createNativeQuery(sql).getSingleResult();
+    }
 }

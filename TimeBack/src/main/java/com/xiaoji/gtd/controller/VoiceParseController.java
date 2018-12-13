@@ -56,7 +56,7 @@ public class VoiceParseController {
             return outDto;
         }
         if(inDto.getDeviceId() == null || "".equals(inDto.getDeviceId())){
-            outDto.setCode(ResultCode.NULL_DEVICEID);
+            outDto.setCode(ResultCode.NULL_DEVICE_ID);
             logger.debug("[调用失败]：设备ID不可为空");
             return outDto;
         }
@@ -95,7 +95,7 @@ public class VoiceParseController {
             return outDto;
         }
         if(inDto.getDeviceId() == null || "".equals(inDto.getDeviceId())){
-            outDto.setCode(ResultCode.NULL_DEVICEID);
+            outDto.setCode(ResultCode.NULL_DEVICE_ID);
             logger.debug("[调用失败]：设备ID不可为空");
             return outDto;
         }

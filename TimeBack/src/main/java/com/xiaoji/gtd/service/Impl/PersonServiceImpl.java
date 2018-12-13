@@ -1,6 +1,7 @@
 package com.xiaoji.gtd.service.Impl;
 
 import com.xiaoji.gtd.dto.*;
+import com.xiaoji.gtd.dto.code.ResultCode;
 import com.xiaoji.gtd.dto.mq.WebSocketDataDto;
 import com.xiaoji.gtd.dto.mq.WebSocketOutDto;
 import com.xiaoji.gtd.dto.mq.WebSocketResultDto;
@@ -24,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 用户接口实现类
@@ -61,6 +64,8 @@ public class PersonServiceImpl implements IPersonService {
     private GtdAccountRepository accountRepository;
     @Resource
     private GtdUserRepository userRepository;
+    @Resource
+    private AuthRepository authRepository;
 
     private final RabbitTemplate rabbitTemplate;
     private final IWebSocketService webSocketService;
@@ -188,44 +193,31 @@ public class PersonServiceImpl implements IPersonService {
      * @return
      */
     @Override
-    public PlayerOutDto addPlayer(PlayerInDto inDto) {
+    public int addPlayer(PlayerInDto inDto) {
 
-        PlayerOutDto outDto;
         WebSocketOutDto socketOutDto;
 
         String accountMobile = inDto.getAccountMobile();
         String userId = inDto.getUserId();                 //用户I
+        String targetUserId = inDto.getTargetUserId();
+
         String userName = "";            //昵称
         String headImg = "";          //头像URL
         String mobile = "";
 
-        String targetUserId = "";
-        String targetUserName = "";
-        String targetHeadImg = "";
 
         try {
-            outDto = new PlayerOutDto();
             socketOutDto = new WebSocketOutDto();
 
-            Object[] objList = (Object[]) personRepository.searchUserByMobile(accountMobile, LOGIN_TYPE_MOBILE);
             Object[] objUser = (Object[]) personRepository.searchUserById(userId);
 
-            if (Integer.valueOf(objList[0].toString()) > 0) {
-                targetUserId = String.valueOf(objList[1]);
-                targetUserName = String.valueOf(objList[2]);
-                targetHeadImg = String.valueOf(objList[3]);
-
-                logger.debug("目标用户信息： " + targetUserId + " | " + targetUserName + " | " +  targetHeadImg);
-                outDto.setAccountMobile(accountMobile);
-                outDto.setUserId(targetUserId);
-                outDto.setUserName(targetUserName);
-                outDto.setHeadImg(targetHeadImg);
+            if (targetUserId != null && !targetUserId.equals("")) {
 
                 userName = objUser[0].toString();
                 headImg = objUser[1].toString();
                 mobile = objUser[2].toString();
-
                 logger.debug("发送邀请用户信息： " + userId + " | " + userName + " | " + headImg + " | " + mobile);
+
                 WebSocketDataDto data = new WebSocketDataDto();
                 data.setUs(userId);
                 data.setUn(userName);
@@ -236,7 +228,8 @@ public class PersonServiceImpl implements IPersonService {
                 webSocketService.pushTopicMessage(targetUserId, socketOutDto);
             } else {
                 logger.debug("手机号[" + accountMobile + "]未注册!");
-                return null;
+                //短信推送邀请
+
             }
 
         } catch (Exception e) {
@@ -244,7 +237,104 @@ public class PersonServiceImpl implements IPersonService {
             logger.error("发送邀请错误");
             throw new SecurityException("发送邀请错误");
         }
-        return outDto;
+        return 0;
+    }
+
+    /**
+     * 发送权限申请
+     *
+     * @param inDto
+     * @return
+     */
+    @Override
+    public int inviteSchedule(PlayerInDto inDto) {
+
+        return 0;
+    }
+
+    /**
+     * 查询联系人
+     *
+     * @param inDto
+     * @return
+     */
+    @Override
+    public PlayerOutDto searchPlayer(PlayerInDto inDto) {
+
+        PlayerOutDto data = new PlayerOutDto();
+
+        String targetMobile = inDto.getAccountMobile();
+        String userName = "";
+        String headImg = "";
+        String userId = "";
+
+        Object[] objects = (Object[]) personRepository.searchUserByMobile(targetMobile, LOGIN_TYPE_MOBILE);
+
+        if (Integer.valueOf(objects[0].toString()) > 0) {
+            userId = String.valueOf(objects[1]);
+            userName = String.valueOf(objects[2]);
+            headImg = String.valueOf(objects[3]);
+            logger.debug("目标用户信息： " + userId + " | " + userName + " | " +  headImg);
+
+            data.setUserId(userId);
+            data.setHeadImg(headImg);
+            data.setUserName(userName);
+        } else {
+            logger.debug("未查询到用户");
+            return null;
+        }
+        return data;
+    }
+
+    /**
+     * 用户是否接受推送
+     *
+     * @param inDto
+     */
+    @Override
+    public List<PlayerDataDto> isAgree(String userId, List<PlayerDataDto> inDto) {
+        List<PlayerDataDto> dataList = new ArrayList<>();
+        PlayerDataDto data;
+
+        String targetUserId = "";
+        String targetMobile = "";
+        boolean isAgree;
+        boolean isUser;
+
+        try {
+            for (PlayerDataDto player: inDto) {
+                data = new PlayerDataDto();
+                targetMobile = player.getAccountMobile();
+
+                Object[] objects = (Object[]) authRepository.isAcceptThePush(userId, player.getUserId(), targetMobile);
+                targetUserId = (String) objects[2];
+                int count = Integer.valueOf(objects[0].toString());
+                if (count > 0) {
+                    isAgree = (boolean) objects[1];
+
+                    logger.debug("[查询到用户" + targetMobile + "]：userId = "+ targetUserId + " | 接收权限" + isAgree);
+                    data.setAgree(isAgree);
+                    data.setUser(true);
+                    data.setPlayer(true);
+                    data.setUserId(targetUserId);
+                } else if (targetUserId != null && count == 0) {
+                    logger.debug("[查询到用户" + targetMobile + "]：userId = "+ targetUserId + " | [" + userId + "]不是其好友");
+                    data.setUser(true);
+                    data.setUserId(targetUserId);
+                } else {
+                    logger.debug("[未查询到用户" + targetMobile + "]：非注册用户");
+                }
+
+                data.setAccountMobile(targetMobile);
+                dataList.add(data);
+            }
+
+        } catch (IndexOutOfBoundsException e) {
+            logger.error("authRepository.isAcceptThePush 数据查询异常");
+            throw new SecurityException("数据查询异常");
+        }
+
+        return dataList;
     }
 
     /**

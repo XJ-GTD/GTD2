@@ -45,7 +45,9 @@ public class SmsServiceImpl implements ISmsService {
     @Value("${submail.messageXsend.appkey}")
     private String APPKEY;
     @Value("${submail.messageXsend.project.authcode}")
-    private String PROJECT;
+    private String PROJECT_AUTH_CODE;
+    @Value("${submail.messageXsend.project.pushschedule}")
+    private String PROJECT_SCHEDULE;
     @Value("${submail.messageXsend.signtype}")
     private String SIGNTYPE;
 
@@ -58,7 +60,7 @@ public class SmsServiceImpl implements ISmsService {
     public int getAuthCode(String mobile) {
 
         try {
-            requestSubMail(mobile);
+            requestSubMail(mobile, PROJECT_AUTH_CODE);
         } catch (Exception e) {
             e.printStackTrace();
             logger.debug("短信验证接口请求失败");
@@ -76,7 +78,7 @@ public class SmsServiceImpl implements ISmsService {
     public int pushSchedule(String mobile) {
 
         try {
-            requestSubMail(mobile);
+            requestSubMail(mobile, PROJECT_SCHEDULE);
         } catch (Exception e) {
             e.printStackTrace();
             logger.debug("短信验证接口请求失败");
@@ -89,7 +91,7 @@ public class SmsServiceImpl implements ISmsService {
      * 请求赛邮短信推送API
      * @param to
      */
-    private void requestSubMail(String to) {
+    private void requestSubMail(String to, String project) {
 
         TreeMap<String, Object> requestData = new TreeMap<String, Object>();
         JSONObject vars = new JSONObject();
@@ -99,7 +101,7 @@ public class SmsServiceImpl implements ISmsService {
         vars.put("time", TIME);
 
         requestData.put("appid", APPID);
-        requestData.put("project", PROJECT);
+        requestData.put("project", project);
         requestData.put("to", to);
 
         if(!vars.isEmpty()){

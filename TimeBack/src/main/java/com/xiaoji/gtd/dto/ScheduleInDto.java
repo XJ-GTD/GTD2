@@ -19,7 +19,7 @@ public class ScheduleInDto {
     private String endTime;      //endTime;
     private String label;      //label;
     private String planName;      //planName;
-    private List<Map<String, String>> players;     //players 包含accountMobile和userId
+    private List<PlayerDataDto> players;     //players 包含accountMobile和userId
     private String status;      //status;
 
     private String executeId;       //executeId
@@ -114,11 +114,11 @@ public class ScheduleInDto {
         this.scheduleAuth = scheduleAuth;
     }
 
-    public List<Map<String, String>> getPlayers() {
+    public List<PlayerDataDto> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<Map<String, String>> players) {
+    public void setPlayers(List<PlayerDataDto> players) {
         this.players = players;
     }
 }

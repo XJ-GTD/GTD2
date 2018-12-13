@@ -56,7 +56,7 @@ public class PersonController {
             return outDto;
         }
         if(inDto.getAuthCode() == null || "".equals(inDto.getAuthCode())){
-            outDto.setCode(ResultCode.NULL_AUTHCODE);
+            outDto.setCode(ResultCode.NULL_AUTH_CODE);
             logger.debug("[注册失败]：请输入验证码不可为空");
             return outDto;
         }
@@ -80,13 +80,13 @@ public class PersonController {
         }
 //        try {
 //            if(!Objects.requireNonNull(TimerUtil.getCache(inDto.getAccountMobile())).getValue().equals(inDto.getAuthCode())){
-//                outDto.setCode(ResultCode.ERROR_AUTHCODE);
+//                outDto.setCode(ResultCode.ERROR_AUTH_CODE);
 //                logger.debug("[注册失败]：请输入正确短信验证码");
 //                return outDto;
 //            }
 //        } catch (Exception e) {
 //            e.printStackTrace();
-//            outDto.setCode(ResultCode.EXPIRE_AUTHCODE);
+//            outDto.setCode(ResultCode.EXPIRE_AUTH_CODE);
 //            logger.debug("[注册失败]：短信验证码已过期");
 //            return outDto;
 //        }
@@ -274,18 +274,16 @@ public class PersonController {
             }
         }
 
-
         //业务逻辑
         try {
 
-            data = personService.addPlayer(inDto);
-            if (data != null) {
-                outDto.setData(data);
+            int flag = personService.addPlayer(inDto);
+            if (flag != 0) {
                 outDto.setCode(ResultCode.SUCCESS);
-                logger.debug("[添加成功]");
+                logger.debug("[邀请添加发送成功]");
             } else {
-                outDto.setCode(ResultCode.NULL_USER);
-                logger.debug("[添加失败]：该手机号尚未注册");
+                outDto.setCode(ResultCode.FAIL_BUSIC);
+                logger.debug("[邀请添加发送失败]");
             }
 
         } catch (Exception e) {
@@ -298,15 +296,50 @@ public class PersonController {
     }
 
     /**
-     * 查询目标用户是否接受推送
+     * 查询目标用户
      * @param inDto
      * @return
      */
-    @RequestMapping(value = "/is_agree", method = RequestMethod.POST)
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
     @AuthCheck
-    public Out isAgree(@RequestBody PlayerInDto inDto) {
+    public Out searchPlayer(@RequestBody PlayerInDto inDto) {
         Out outDto = new Out();
+        PlayerOutDto data = new PlayerOutDto();
+
+        //入参检测
+        //必须项检测
+        if(inDto.getAccountMobile() == null || "".equals(inDto.getAccountMobile())){
+            outDto.setCode(ResultCode.NULL_MOBILE);
+            logger.debug("[查询用户失败]：手机号不可为空");
+            return outDto;
+        }
+        //入参正确性验证
+        if(!CommonMethods.isInteger(inDto.getAccountMobile())){
+            if(inDto.getAccountMobile().length()!=11){
+                outDto.setCode(ResultCode.ERROR_MOBILE);
+                logger.debug("[查询用户失败]：请输入正确手机号");
+                return outDto;
+            }
+        }
+
+        //业务逻辑
+        try {
+
+            data = personService.searchPlayer(inDto);
+            if (data != null) {
+                outDto.setData(data);
+                outDto.setCode(ResultCode.SUCCESS);
+                logger.debug("[查询用户成功]");
+            } else {
+                outDto.setCode(ResultCode.NOT_USER);
+                logger.debug("[该用户尚未注册]");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            logger.error("[查询用户失败]：服务器繁忙");
+        }
 
         return outDto;
     }
@@ -332,6 +365,36 @@ public class PersonController {
             outDto.setCode(ResultCode.NULL_MOBILE);
             logger.debug("[权限申请失败]：手机号不可为空");
             return outDto;
+        }
+        //入参正确性验证
+        if (CommonMethods.checkMySqlReservedWords(inDto.getUserId())) {
+            outDto.setCode(ResultCode.ERROR_UUID);
+            logger.debug("[权限申请失败]：用户ID类型或格式错误");
+            return outDto;
+        }
+        if(!CommonMethods.isInteger(inDto.getAccountMobile())){
+            if(inDto.getAccountMobile().length()!=11){
+                outDto.setCode(ResultCode.ERROR_MOBILE);
+                logger.debug("[权限申请失败]：请输入正确手机号");
+                return outDto;
+            }
+        }
+
+        //业务逻辑
+        try {
+
+            int flag = personService.inviteSchedule(inDto);
+            if (flag == 0) {
+                outDto.setCode(ResultCode.SUCCESS);
+                logger.debug("[权限申请成功]");
+            } else {
+                outDto.setCode(ResultCode.FAIL_PLAYER);
+                logger.debug("[权限申请失败]");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            logger.error("[权限申请失败]：服务器繁忙");
         }
 
         return outDto;

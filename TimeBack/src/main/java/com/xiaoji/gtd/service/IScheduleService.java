@@ -1,6 +1,7 @@
 package com.xiaoji.gtd.service;
 
 import com.xiaoji.gtd.dto.ScheduleInDto;
+import com.xiaoji.gtd.dto.SearchOutDto;
 
 /**
  * 日程类接口
@@ -13,5 +14,5 @@ public interface IScheduleService {
      * 日程推送处理
      * @return
      */
-    int dealWithSchedule(ScheduleInDto inDto);
+    SearchOutDto dealWithSchedule(ScheduleInDto inDto);
 }

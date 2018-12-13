@@ -1,10 +1,13 @@
 package com.xiaoji.gtd.service.Impl;
 
+import com.xiaoji.gtd.dto.PlayerDataDto;
 import com.xiaoji.gtd.dto.ScheduleInDto;
+import com.xiaoji.gtd.dto.SearchOutDto;
 import com.xiaoji.gtd.dto.code.ResultCode;
 import com.xiaoji.gtd.dto.mq.WebSocketDataDto;
 import com.xiaoji.gtd.dto.mq.WebSocketOutDto;
 import com.xiaoji.gtd.dto.mq.WebSocketResultDto;
+import com.xiaoji.gtd.service.IPersonService;
 import com.xiaoji.gtd.service.IScheduleService;
 import com.xiaoji.gtd.service.ISmsService;
 import com.xiaoji.gtd.service.IWebSocketService;
@@ -34,11 +37,13 @@ public class ScheduleServiceImpl implements IScheduleService {
 
     private final IWebSocketService webSocketService;
     private final ISmsService smsService;
+    private final IPersonService personService;
 
     @Autowired
-    public ScheduleServiceImpl(IWebSocketService webSocketService, ISmsService smsService) {
+    public ScheduleServiceImpl(IWebSocketService webSocketService, ISmsService smsService, IPersonService personService) {
         this.webSocketService = webSocketService;
         this.smsService = smsService;
+        this.personService = personService;
     }
 
     /**
@@ -46,9 +51,10 @@ public class ScheduleServiceImpl implements IScheduleService {
      * @return
      */
     @Override
-    public int dealWithSchedule(ScheduleInDto inDto) {
+    public SearchOutDto dealWithSchedule(ScheduleInDto inDto) {
 
-        WebSocketOutDto outDto = new WebSocketOutDto();
+        SearchOutDto outDto = new SearchOutDto();
+        WebSocketOutDto pushDto = new WebSocketOutDto();
         WebSocketDataDto data = new WebSocketDataDto();
 
         String userId = inDto.getUserId();
@@ -62,7 +68,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         String status = inDto.getStatus();
         String executeId = inDto.getExecuteId();
         int scheduleAuth = inDto.getScheduleAuth();
-        List<Map<String, String>> playerName = inDto.getPlayerName();
+        List<PlayerDataDto> players;
         String targetUserId = "";
         String targetMobile = "";
 
@@ -79,27 +85,32 @@ public class ScheduleServiceImpl implements IScheduleService {
             data.setEi(executeId);
             data.setSa(scheduleAuth);
 
-            outDto.setRes(new WebSocketResultDto(data));
-            outDto.setSk(skillType);
-            outDto.setVs(VERSION);
+            pushDto.setRes(new WebSocketResultDto(data));
+            pushDto.setSk(skillType);
+            pushDto.setVs(VERSION);
 
-            for (Map<String, String> map: playerName) {
-                targetMobile = map.get("targetMobile");
-                targetUserId = map.get("targetUserId");
-                if (targetUserId != null && !targetUserId.equals("")) {
-                    outDto.setSs(ResultCode.SUCCESS);
-                    webSocketService.pushTopicMessage(targetUserId, outDto);
+            players = personService.isAgree(userId, inDto.getPlayers());
+            for (PlayerDataDto player: players) {
+                targetMobile = player.getAccountMobile();
+                targetUserId = player.getUserId();
+
+                if (player.isAgree()) {
+                    pushDto.setSs(ResultCode.SUCCESS);
+                    webSocketService.pushTopicMessage(targetUserId, pushDto);
+                    logger.debug("[成功推送日程]:方式 === RABBIT MQ");
                 } else {
-                    smsService.pushSchedule(targetMobile);
+//                    smsService.pushSchedule(targetMobile);
+                    logger.debug("[成功推送日程]:方式 === SMS");
                 }
             }
-
+            outDto.setPlayers(players);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("");
+            logger.error("dealWithSchedule日程推送出错");
+            outDto = null;
         }
 
-        return 0;
+        return outDto;
     }
 
 
