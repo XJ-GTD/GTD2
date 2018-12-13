@@ -32,12 +32,14 @@ export class ConfigService {
           return this.baseSqlite.updateTable(data)
         }
       }).then(data=>{
+        console.log("config initDataBase info2 :: " + JSON.stringify(data))
         //初始化表数据
         // if(data && data.data && data.data.code && data.data.code==1){
         //   console.log("config initDataBase 初始化表数据 ")
         //     return this.baseSqlite.init()
         // }
       }).then(data=> {
+        console.log("config initDataBase info3 :: " + JSON.stringify(data))
        //初始化数据
         this.user.getUo().then(ud=>{
           if(ud && ud.u){

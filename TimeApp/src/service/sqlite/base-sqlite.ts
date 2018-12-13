@@ -108,6 +108,7 @@ export class BaseSqlite {
             + new LbEntity().csq + new ReEntity().csq + new StEntity().csq + new MsEntity().csq
             + new ZtEntity().csq + new ZtdEntity().csq + new JhEntity().csq + new RguEntity().csq
             + new FiEntity().csq;
+          console.log("BaseSqlite createTable sql :: " + sql);
           this.importSqlToDb(sql).then(data=>{
             console.log("-------------------BaseSqlite createTable success: "+JSON.stringify(data))
             console.log("BaseSqlite createTable 初始化表数据 start ")

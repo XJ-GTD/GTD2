@@ -42,20 +42,28 @@
     </div>
   </div>
   <div>
-    <ion-buttons>
-      <button style="padding:5px;border-radius: 5px;background-color: #f0f0f0" *ngFor="let lb of selectLb" float-left>
-        <div float-left>
-          <img src="./assets/imgs/i.png"/>
-        </div>
-        <div float-left style="padding-top: 2px;padding-bottom: 5px;padding-left: 5px">{{lb.lan}}</div>
-      </button>
-      <button style="padding:5px;border-radius: 5px;background-color: #f0f0f0" (click)="show()">
-        <div float-left>
-          <img src="./assets/imgs/i.png"/>
-        </div>
-        <div float-left style="padding-top: 2px;padding-bottom: 5px;padding-left: 5px">添加标签</div>
-      </button>
-    </ion-buttons>
+    <ion-label float-right>
+      <div class="selectCss" (click)="show()">
+        张三
+      </div>
+    </ion-label>
+    <ion-label float-right>
+      <ion-buttons>
+        <!--<button class="buttonCss" *ngFor="let lb of selectLb" float-left>-->
+          <!--<div float-left>-->
+            <!--<img src="./assets/imgs/i.png"/>-->
+          <!--</div>-->
+          <!--<div float-left class="divCss">{{lb.lan}}</div>-->
+        <!--</button>-->
+        <button class="buttonCss" (click)="show()" >
+          <div float-left>
+            <img src="./assets/imgs/i.png"/>
+          </div>
+          <div float-left class="divCss">添加计划</div>
+        </button>
+      </ion-buttons>
+    </ion-label>
+
   </div>
   <div ion-item>
     <ion-label>标签</ion-label>
@@ -70,28 +78,33 @@
       <ion-option  *ngFor="let lb of lbs" value="{{lb.lai}}">{{lb.lan}}</ion-option>
     </ion-select>
   </div>
-  <button ion-item>
+  <button ion-item class="padding-left-0">
     <img src="./assets/imgs/1.png" item-start/>
     <ion-label>时间</ion-label>
     <!--<ion-label text-end>2018年11月20日</ion-label>-->
     <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="startTime"></ion-datetime>
   </button>
-  <ion-item *ngIf="showA">
+  <ion-item *ngIf="showA" class="padding-left-0">
     <img src="./assets/imgs/4.png" item-start/>
     <ion-label>重复类型</ion-label>
-    <ion-select item-end >
-      <ion-option [selected]="true">月</ion-option>
-      <ion-option [selected]="false">年</ion-option>
-      <ion-option [selected]="false">周</ion-option>
-      <ion-option [selected]="false">日</ion-option>
+    <ion-select item-end [(ngModel)]="repeatType" (ionChange)="chengeType()" >
+      <ion-option [selected]="true" value="y">年</ion-option>
+      <ion-option [selected]="false" value="m">月</ion-option>
+      <ion-option [selected]="false" value="w">周</ion-option>
+      <ion-option [selected]="false" value="d">日</ion-option>
     </ion-select>
   </ion-item>
-  <button ion-item  *ngIf="showB">
+  <button ion-item  *ngIf="showB && repeatType!='w'" class="padding-left-0">
     <img src="./assets/imgs/1.png" item-start/>
     <ion-label>重复时间</ion-label>
-    <ion-datetime displayFormat="MM-DD"></ion-datetime>
+    <ion-datetime displayFormat="{{repeatTime}}" pickerFormat="{{repeatTime}}" doneText="确定" cancelText="取消" ></ion-datetime>
   </button>
-  <button ion-item *ngIf="showC">
+  <button ion-item  *ngIf="showB && repeatType=='w'" class="padding-left-0">
+    <img src="./assets/imgs/1.png" item-start/>
+    <ion-label>重复时间</ion-label>
+    <ion-datetime displayFormat="DDDD" pickerFormat="YYYY-MM-DD" [(ngModel)]="startTime" [disabled]="true"></ion-datetime>
+  </button>
+  <button ion-item *ngIf="showC" class="padding-left-0">
     <img src="./assets/imgs/b.png" item-start/>
     <ion-label>备注</ion-label>
     <ion-input text-end type="text">2018年11月20日</ion-input>
