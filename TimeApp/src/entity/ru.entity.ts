@@ -21,7 +21,7 @@ export class RuEntity {
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_B(id VARCHAR(100) PRIMARY KEY,' +
                           'ran VARCHAR(100),rI VARCHAR(100),rN VARCHAR(100),' +
                           'rC VARCHAR(100),rF VARCHAR(2),rel VARCHAR(20),hiu VARCHAR(100));';
-  private _drsq:string="DROP TABLE GTD_B";
+  private _drsq:string="DROP TABLE IF EXISTS GTD_B;";
 
   private _isq:string;
   private _usq:string;

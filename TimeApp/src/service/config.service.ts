@@ -20,25 +20,12 @@ export class ConfigService {
 
   initDataBase():Promise<boolean>{
    return new Promise((resolve, reject)=>{
-      this.baseSqlite.isFi().then(data=>{
-        console.log("config initDataBase info : " + JSON.stringify(data))
-        if(data.code==1){
-          console.log("config initDataBase 开始建表 ")
-          //创建表
-          return this.baseSqlite.createTable(data)
-        }else if(data.code==3){
-          //更新表
-          console.log("config initDataBase 更新表 ")
-          return this.baseSqlite.updateTable(data)
-        }
-      }).then(data=>{
-        //初始化表数据
-        if(data && data.data && data.data.code && data.data.code==1){
-          console.log("config initDataBase 初始化表数据 ")
-            return this.baseSqlite.init()
-        }
+     //先创建或链接数据库
+     this.baseSqlite.createOrUpdateTable('').then(data=>{
+          //初始化生成数据
+          return this.baseSqlite.initData()
       }).then(data=> {
-       //初始化数据
+       //初始化静态变量数据
         this.user.getUo().then(ud=>{
           if(ud && ud.u){
             AppConfig.uInfo=ud.u;
@@ -66,6 +53,7 @@ export class ConfigService {
   //判断初始化进入页面
   isIntoBoot():Promise<boolean>{
     return  new Promise((resolve, reject)=>{
+
       //先创建或连接数据
       this.baseSqlite.createDb().then(data=>{
         console.log("config.service isIntoBoot createDb:: "+　JSON.stringify(data))
@@ -81,7 +69,9 @@ export class ConfigService {
         }else{
           resolve(false)
         }
-
+      }).catch(e=>{
+        console.log("config.service isIntoBoot error: "+　e.message)
+        resolve(true)
       })
     });
   }

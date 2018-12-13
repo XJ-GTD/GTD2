@@ -9,7 +9,11 @@ import { RemindModel } from "../../model/remind.model";
 import { ScheduleModel } from "../../model/schedule.model";
 import { ScheduleOutModel } from "../../model/out/schedule.out.model";
 import { CalendarModel } from "../../model/calendar.model";
-import {CalendarComponent, CalendarComponentOptions} from "../../components/ion2-calendar";
+import {
+  CalendarComponent,
+  CalendarComponentMonthChange,
+  CalendarComponentOptions
+} from "../../components/ion2-calendar";
 import { TimeModel } from "../../model/time.model";
 import * as moment from "moment";
 import {CalendarService} from "../../service/calendar.service";
@@ -100,6 +104,9 @@ export class HaPage {
     document.addEventListener('resume',()=>{
       // this.findEvent();
     })
+
+    let month = moment().format('YYYY-MM');
+    this.findDayConfig(month);
   }
 
   init() {
@@ -122,30 +129,7 @@ export class HaPage {
           // alert(data.message);
         }
       })
-    let month = moment().format('YYYY-MM');
-    this.workSqlite.getMBs(month).then(data=>{
-      //成功
-      if(data.code==0){
-        for(let i=0;i<data.bs.length;i++){
-          let mbs=data.bs[i];
-          let res:any={};
-          res.date=mbs.date;
-          //事少
-          if(!mbs.im){
-            res.cssClass = `hassometing animated fadeInDown`;
-          }else{
-            //事多
-            res.cssClass = `busysometing animated fadeInDown`;
-          }
-          //有消息
-          if(mbs.iem){
-            res.subTitle=`\u2022`;
-          }
-          this.options.daysConfig.push(res);
-        }
-        this.ion2calendar.refresh();
-      }
-    })
+
     // setTimeout(()=>{
     //   this.sqliteService.executeSql("select substr(playersFinishDate,1,10) finishDate,count(*) numL from GTD_D " +
     //     "where substr(playersFinishDate,1,7)='2018-11'" +
@@ -251,17 +235,49 @@ export class HaPage {
     let month = eventDate.getMonth()+1;
   }
 
-  createEvent($event){
-    // alert($event)
+  configMonthEventDay($event:CalendarComponentMonthChange){
+
+    console.info($event.newMonth.dateObj)
+    let month = moment($event.newMonth.dateObj).format('YYYY-MM');
+    this.findDayConfig(month);
+
+
   }
+
+  findDayConfig(month){
+    this.workSqlite.getMBs(month).then(data=>{
+      //成功
+      if(data.code==0){
+        for(let i=0;i<data.bs.length;i++){
+          let mbs=data.bs[i];
+          let res:any={};
+          res.date=mbs.date;
+          //事少
+          if(!mbs.im){
+            res.cssClass = `hassometing animated bounce`;
+          }else{
+            //事多
+            res.cssClass = `busysometing animated bounce`;
+          }
+          //有消息
+          if(mbs.iem){
+            res.subTitle=`\u2022`;
+          }
+          this.options.daysConfig.push(res);
+        }
+        this.ion2calendar.refresh();
+      }
+    })
+  }
+  createEvent($event){
+    console.info($event)
+  }
+
   //查询当天日程
   findTodaySchedule($event) {
-
-
     if (!$event) {
       return;
     }
-
     console.log($event);
     //  this.sqliteService.addRctest().then(data=>{
     //   alert("插入数据：" + data);

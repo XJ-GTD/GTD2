@@ -16,7 +16,7 @@ export class MsEntity {
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_H(mi INTEGER PRIMARY KEY AUTOINCREMENT,' +
                           'mn VARCHAR(100),md VARCHAR(20),mt VARCHAR(100));';
-  private _drsq:string="DROP TABLE GTD_H"
+  private _drsq:string="DROP TABLE IF EXISTS GTD_H;"
 
   private _isq:string;
   private _usq:string;
