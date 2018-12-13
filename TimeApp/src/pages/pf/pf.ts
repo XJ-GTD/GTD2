@@ -46,6 +46,7 @@ export class PfPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad PfPage');
     this.uo = this.navParams.get('uo');
+    this.navCtrl.remove(this.navParams.get('index'));
   }
 
   goBack() {

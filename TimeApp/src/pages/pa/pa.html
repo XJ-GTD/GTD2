@@ -13,7 +13,7 @@
       </button>
     </ion-buttons>
     <ion-segment [(ngModel)]="relation">
-      <ion-segment-button value="persional" >
+      <ion-segment-button value="person" >
         个人
       </ion-segment-button>
       <ion-segment-button value="group">
@@ -22,7 +22,7 @@
     </ion-segment>
 
     <ion-buttons right [ngSwitch]="relation" margin-right>
-      <button ion-button icon-only *ngSwitchCase="'persional'" (click)="toAddMemebr()">
+      <button ion-button icon-only *ngSwitchCase="'person'" (click)="toAddMember()">
         <ion-icon name="person-add"></ion-icon>
       </button>
       <button ion-button icon-only *ngSwitchCase="'group'" (click)="toGroupCreate()">

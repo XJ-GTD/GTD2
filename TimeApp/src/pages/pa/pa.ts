@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {UEntity} from "../../entity/u.entity";
 import {UserService} from "../../service/user.service";
 import { RelmemService} from "../../service/relmem.service";
@@ -19,7 +19,7 @@ import {RuModel} from "../../model/ru.model";
 })
 export class PaPage {
 
-  relation: any = 'group' ;
+  relation: any = 'person' ;
   indexs : any;
   uo:UEntity;
 
@@ -28,6 +28,7 @@ export class PaPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              public view: ViewController,
               public userService: UserService,
               public relmemService: RelmemService) {
     this.init();
@@ -54,23 +55,25 @@ export class PaPage {
     this.queryGroup();
   }
 
-  toAddMemebr(){
-    console.log('PaPage跳转PfPage')
-    this.navCtrl.push('PfPage',{uo:this.uo});
+  toAddMember(){
+    console.log('PaPage跳转PfPage');
+
+    let index = this.navCtrl.indexOf(this.view);
+    this.navCtrl.push('PfPage',{uo:this.uo, index: index});
   }
 
   toGroupMember(g){
-    console.log('PaPage跳转PdPage')
+    console.log('PaPage跳转PdPage');
     this.navCtrl.push('PdPage',{g:g});
   }
 
   toGroupCreate(){
-    console.log('PaPage跳转PePage')
+    console.log('PaPage跳转PePage');
     this.navCtrl.push("PePage");
   }
 
   toMemberDetail(u){
-    console.log('PaPage跳转PbPage')
+    console.log('PaPage跳转PbPage');
     this.navCtrl.push("PbPage",{u:u});
   }
 
@@ -80,7 +83,7 @@ export class PaPage {
 
   queryPersional(){
     this.relmemService.getrus("","","","","0").then(data=>{
-      console.log(data)
+      console.log(data);
       if(data.us != null && data.us != undefined && data.us.length > 0){
         console.log(data.us.length + "联系人不为空::" + data.us);
         this.us = data.us;
