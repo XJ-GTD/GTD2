@@ -16,7 +16,7 @@ export class LbEntity {
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_F(lai VARCHAR(20) PRIMARY KEY,' +
                           'lan VARCHAR(100),lat VARCHAR(10),lau VARCHAR(100));';
-  private _drsq:string="DROP TABLE GTD_F";
+  private _drsq:string="DROP TABLE IF EXISTS GTD_F;";
 
   private _isq:string;
   private _usq:string;

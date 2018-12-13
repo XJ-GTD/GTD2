@@ -15,7 +15,7 @@ export class FiEntity {
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_FI(id Integer PRIMARY KEY,' +
                           'firstIn Integer,isup Integer);';
-  private _drsq:string="DROP TABLE GTD_FI";
+  private _drsq:string="DROP TABLE IF EXISTS GTD_FI;";
 
   private _isq:string;
   private _usq:string;

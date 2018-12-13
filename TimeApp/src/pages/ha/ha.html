@@ -26,7 +26,8 @@
       <ion-calendar  [options]="options"
                      (onSelect)="findTodaySchedule($event)"
                      (onPressup)="createEvent($event)"
-                     (onInit)="discernTags($event)">
+                     (onInit)="discernTags($event)"
+                     (monthChange)="configMonthEventDay($event)" >
       </ion-calendar>
     </div>
     <p class = "showDay">{{showDay}}</p>

@@ -14,7 +14,7 @@ export class ZtEntity {
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_X(zt VARCHAR(100) PRIMARY KEY,' +
                           'zv VARCHAR(100));';
-  private _drsq:string="DROP TABLE GTD_X"
+  private _drsq:string="DROP TABLE IF EXISTS GTD_X;"
 
   private _isq:string;
   private _usq:string;

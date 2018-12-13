@@ -4,13 +4,6 @@
 
 //日程参与表
 export class RcpEntity {
-  get bi(): string {
-    return this._bi;
-  }
-
-  set bi(value: string) {
-    this._bi = value;
-  }
 
   private _pI: string=null;//日程参与人表uuID
   private _sI: string=null;   //关联日程UUID
@@ -31,7 +24,7 @@ export class RcpEntity {
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_D(pI VARCHAR(100) PRIMARY KEY,sI VARCHAR(100),' +
                           'son VARCHAR(100),sa VARCHAR(2),ps VARCHAR(2),cd VARCHAR(20),pd VARCHAR(20),' +
     'uI VARCHAR(100),rui VARCHAR(100),ib VARCHAR(2),bi VARCHAR(20));';
-  private _drsq:string="DROP TABLE GTD_D";
+  private _drsq:string="DROP TABLE IF EXISTS GTD_D;";
 
   private _isq:string;
   private _usq:string;
@@ -235,5 +228,13 @@ export class RcpEntity {
 
   set rui(value: string) {
     this._rui = value;
+  }
+
+  get bi(): string {
+    return this._bi;
+  }
+
+  set bi(value: string) {
+    this._bi = value;
   }
 }
