@@ -37,7 +37,7 @@
 <ion-content padding class="page-backgroud-color">
   <div [ngSwitch]="relation">
 
-    <ion-list *ngSwitchCase="'persional'">
+    <ion-list *ngSwitchCase="'person'">
       <ion-item *ngIf="us == undefined">
         <ion-label>你还没有添加联系人，快点击右上方添加联系人</ion-label>
       </ion-item>
@@ -52,7 +52,7 @@
           </ion-label>
         </ion-item>
         <ion-item-options side="right">
-          <button ion-button color="danger" (click)="delPersional(u)">删除</button>
+          <button ion-button color="danger" (click)="delPerson(u)">删除</button>
         </ion-item-options>
       </ion-item-sliding>
     </ion-list>

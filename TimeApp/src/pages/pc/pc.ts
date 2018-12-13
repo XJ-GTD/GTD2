@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {RelmemService} from "../../service/relmem.service";
 import {UEntity} from "../../entity/u.entity";
+import {PageConfig} from "../../app/page.config";
 
 
 /**
@@ -26,6 +27,7 @@ export class PcPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              private loadingCtrl: LoadingController,
               private relme:RelmemService) {
   }
 
@@ -39,20 +41,35 @@ export class PcPage {
 
 
   submit() {
+    let loader = this.loadingCtrl.create({
+      content: "",
+      duration: 1000
+    });
     this.relme.aru(this.uo.uI,this.name, null, this.tel, '0','0',null).then(data => {
       if(data.code == 0){
         //添加成功
-        console.log("添加成功::" + this.tel)
+        console.log("添加成功::" + this.tel);
         //setroot
-        this.navCtrl.push("PaPage","HzPage")
+        let pageList = this.navCtrl.getViews().forEach(page => {
+          if(page.name == PageConfig.PA_PAGE){
+            this.navCtrl.popTo(page);
+          } else {
+            this.navCtrl.popToRoot();
+          }
+        });
+        // this.navCtrl.push("PaPage","HzPage")
       }else{
         //添加失败
         console.log("添加失败::" + this.tel);
+        loader.setContent("服务器繁忙，添加失败");
+        loader.present();
       }
 
     }).catch(reason => {
       //添加失败
       console.log("添加失败::" + this.tel);
+      loader.setContent("出错了，添加失败");
+      loader.present();
     })
   }
 }

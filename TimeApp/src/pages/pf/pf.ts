@@ -5,6 +5,7 @@ import { HttpClient } from "@angular/common/http";
 import {UEntity} from "../../entity/u.entity";
 import { RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
+import {PageConfig} from "../../app/page.config";
 
 /**
  * Generated class for the PfPage page.
@@ -46,13 +47,13 @@ export class PfPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad PfPage');
     this.uo = this.navParams.get('uo');
-    this.navCtrl.remove(this.navParams.get('index'));
+
   }
 
   goBack() {
-    console.log('PfPage跳转PaPage')
-    //setroot
+    console.log('PfPage跳转PaPage');
     this.navCtrl.pop();
+
   }
 
   checkPhone(){

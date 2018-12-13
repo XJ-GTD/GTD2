@@ -41,25 +41,23 @@ export class PaPage {
   }
 
   init(){
-    console.log("查询登陆用户")
+    console.log("查询登陆用户");
     this.userService.getUo().then(data=>{
       if(data.code == 0){
         this.uo = data.u;
       }
     }).catch(reason => {
 
-    })
+    });
     console.log("查询个人");
-    this.queryPersional();
-    console.log("查询群组")
+    this.queryPerson();
+    console.log("查询群组");
     this.queryGroup();
   }
 
   toAddMember(){
     console.log('PaPage跳转PfPage');
-
-    let index = this.navCtrl.indexOf(this.view);
-    this.navCtrl.push('PfPage',{uo:this.uo, index: index});
+    this.navCtrl.push('PfPage',{uo:this.uo});
   }
 
   toGroupMember(g){
@@ -81,10 +79,10 @@ export class PaPage {
     this.navCtrl.pop();
   }
 
-  queryPersional(){
+  queryPerson(){
     this.relmemService.getrus("","","","","0").then(data=>{
       console.log(data);
-      if(data.us != null && data.us != undefined && data.us.length > 0){
+      if(data.us != null && data.us.length > 0){
         console.log(data.us.length + "联系人不为空::" + data.us);
         this.us = data.us;
       }else{
@@ -95,11 +93,11 @@ export class PaPage {
     });
   }
 
-  delPersional(u){
+  delPerson(u){
     this.relmemService.delRu(u.id).then(data=>{
       if(data.code == 0){
         console.log("删除成功");
-        this.queryPersional()
+        this.queryPerson()
       }else{
         console.log("删除失败");
       }
@@ -123,7 +121,7 @@ export class PaPage {
 
   queryGroup(){
     this.relmemService.getrus(null,null,null,null,'1').then(data=>{
-      if(data.code == 0 && data.us != null && data.us != undefined && data.us.length > 0 ){
+      if(data.code == 0 && data.us != null && data.us.length > 0 ){
         console.log("查询群组成功");
         this.gs = data.us;
       }else{
