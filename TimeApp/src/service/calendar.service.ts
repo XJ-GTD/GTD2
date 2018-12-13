@@ -39,7 +39,7 @@ export class CalendarService {
   findEvent():Promise<any>{
     return new Promise((resolve, reject) => {
       console.log("执行查询本地日历")
-      this.calendar.findEvent("", "", "", new Date("2018-12-01"), new Date("2118-12-31")).then(
+      this.calendar.findEvent("", "", "", new Date("2000-01-01"), new Date()).then(
         (msg) => {
           console.log("执行查询本地日历结束");
           resolve(msg);
