@@ -14,7 +14,7 @@ export class JhEntity {
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_J_H(ji VARCHAR(20) PRIMARY KEY,' +
                           'jn VARCHAR(100),jg VARCHAR(100));';
-  private _drsq:string="DROP TABLE GTD_J_H";
+  private _drsq:string="DROP TABLE GTD_J_H;";
 
   private _isq:string;
   private _usq:string;

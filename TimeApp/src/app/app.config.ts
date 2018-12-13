@@ -96,5 +96,10 @@ export class AppConfig {
   public static NULL_MESSAGE : string='查询结果不存在！'
   //用户信息
   public static uInfo:UEntity = null;
+  /**
+   * 0正常进入1首次进入2无数据3更新后进入
+   * @type {string}
+   */
+  public static isFirst:number = 1;
 
 }

@@ -14,7 +14,7 @@ export class RguEntity {
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_B_X(bi VARCHAR(100),' +
                           'bmi VARCHAR(100));';
-  private _drsq:string="DROP TABLE GTD_B_X"
+  private _drsq:string="DROP TABLE GTD_B_X;"
 
   private _isq:string;
   private _usq:string;
