@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {AlertController, LoadingController, NavController, NavParams} from "ionic-angular";
 import {AppConfig} from "../../app/app.config";
 import {UtilService} from "../util-service/util.service";
 import {BsRestful} from "./bs-restful";
