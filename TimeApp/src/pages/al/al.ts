@@ -148,7 +148,7 @@ export class AlPage {
       .then(data => {
         console.log("al :: 导入用户本地日历结束");
         this.increment(10);
-        //登陆
+        //游客登陆
         return this.lsm.visitor()
       })
       .then(data => {

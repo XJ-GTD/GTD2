@@ -296,7 +296,7 @@ export class BaseSqlite {
       this.sqlitePorter.importSqlToDb(this.database, sql)
         .then((count) => {
           console.log('Imported');
-          alert("Imported" + count);
+          //alert("Imported" + count);
           resolve(count);
         })
         .catch((error)=> {
