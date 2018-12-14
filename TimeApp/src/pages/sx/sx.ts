@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {PageConfig} from "../../app/page.config";
 
 /**
  * Generated class for the SxPage page.

@@ -127,7 +127,7 @@ export class AlPage {
       }).then(data => {
         console.log("al :: 初始化创建数据库结束");
         //初始化本地变量
-      this.text=" 初始化本地变量";
+        this.text=" 初始化本地变量";
         console.log("al :: 初始化本地变量开始");
       this.increment(10);
       })
@@ -135,12 +135,14 @@ export class AlPage {
         console.log("al :: 初始化本地变量结束");
         //同步服务器
         console.log("al :: 同步服务器开始");
+        this.text=" 同步服务器";
         this.increment(10);
       })
       .then(data => {
         console.log("al :: 同步服务器结束");
         //同步本地日历
         console.log("al :: 导入用户本地日历开始");
+        this.text=" 导入本地日程";
         this.increment(10);
         return this.calendarService.uploadLocal();
       })
@@ -177,7 +179,7 @@ export class AlPage {
       }).catch(res => {
         console.log("al error :: "+JSON.stringify(res));
         //loading.dismiss();
-        this.nav.setRoot(this.rootPage);
+       this.nav.setRoot(this.rootPage);
       })
 
 

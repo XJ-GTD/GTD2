@@ -15,47 +15,59 @@
 
 <ion-content padding>
 
-  <ion-list>
+  <ion-item>
+    <img src="./assets/imgs/h.png" style="width: 20px" item-start>
+    <ion-label col-3>任务</ion-label>
+    <ion-label >{{rc.sN}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <img src="./assets/imgs/g.png" style="width: 20px" item-start>
+    <ion-label col-2 item-left>参与人</ion-label>
+    <div item-left margin-left>
+      <div>
+        <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">
+          <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg" style="border-radius: 50%;width: 40px;height: 40px">
+        </ion-thumbnail>
+        <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center >李四</div>
+      </div>
+    </div>
+    <div item-left>
+      <div>
+        <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">
+          <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg" style="border-radius: 50%;width: 40px;height: 40px">
+        </ion-thumbnail>
+        <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center >李四</div>
+      </div>
+    </div>
+  </ion-item>
+  <ion-item>
+    <img src="./assets/imgs/f.png" style="width: 20px" item-start>
+    <ion-label col-3>计划</ion-label>
+    <ion-label >具体事件</ion-label>
+  </ion-item>
+  <ion-item>
+    <img src="./assets/imgs/e.png" style="width: 20px" item-start>
+    <ion-label col-3 item-left>标签</ion-label>
 
-    <ion-item>
-      <ion-label floating>日程标题</ion-label>
-      <!--<ion-input type="text" disabled [(ngModel)]="schedule.scheduleName"></ion-input>-->
-      <ion-input type="text" disabled [(ngModel)]="rc.sN"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label floating>参与人</ion-label>
-      <ion-select disabled [(ngModel)]="schedule.group" multiple="true">
-        <div *ngFor="let gp of schedule.group">
-          <ion-option value="{{gp.groupId}}" >{{gp.groupName}}</ion-option>
-        </div>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <ion-label floating>开始时间</ion-label>
-      <!--<ion-datetime disabled displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleStartTime"></ion-datetime>-->
-      <ion-datetime disabled displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="rc.sd"></ion-datetime>
-    </ion-item>
-
-    <ion-item>
-      <ion-label floating>结束时间</ion-label>
-      <!--<ion-datetime disabled displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="schedule.scheduleDeadline"></ion-datetime>-->
-      <ion-datetime disabled displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="rc.ed"></ion-datetime>
-    </ion-item>
-
-    <ion-item>
-      <ion-label floating>标签</ion-label>
-      <!--<ion-select disabled (focus)="findLabel()" [(ngModel)]="schedule.labelName" multiple="true">-->
-      <!--<div *ngFor="let lb of schedule.labelName">-->
-        <!--<ion-option value="{{lb}}">{{lb}}</ion-option>-->
-      <!--</div>-->
-      <ion-select disabled  [(ngModel)]="rc.lan" multiple="true">
-        <div *ngFor="let lb of lbs">
-          <ion-option value="{{lb.lai}}">{{lb.lan}}</ion-option>
-        </div>
-      </ion-select>
-    </ion-item>
+    <div item-left>
+      <div float-left>日常</div>
+    </div>
+  </ion-item>
+  <ion-item>
+    <img src="./assets/imgs/d.png" style="width: 20px" item-start>
+    <ion-label col-3>时间</ion-label>
+    <ion-label >2018年11月22日 15:33</ion-label>
+  </ion-item>
+  <button ion-item>
+    <img src="./assets/imgs/c.png" style="width: 20px" item-start>
+    <ion-label col-3>提醒</ion-label>
+    <ion-label color="primary">提前十分钟</ion-label>
+  </button>
+  <ion-item>
+    <img src="./assets/imgs/b.png" style="width: 20px" item-start>
+    <ion-label col-3>备注</ion-label>
+    <ion-label >哈哈哈</ion-label>
+  </ion-item>
 
     <button ion-button (click)="setAlarm()">设置提醒闹钟</button>
     <!--<button ion-button (click)="changeState()">日程完成</button>-->
@@ -64,7 +76,5 @@
         <div>
           <button ion-button outline (click)="newProject()">确认</button><button ion-button outline (click)="onBack()">取消</button>
         </div>-->
-
-  </ion-list>
 
 </ion-content>

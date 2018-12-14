@@ -44,6 +44,13 @@ export class UbPage {
   signIn() {
 
     console.debug("登录按钮被点击");
+    if(this.accountName == null && this.accountPassword == null){
+      let alert = this.alertCtrl.create({
+        subTitle: "输入为空",
+      });
+      alert.present();
+      return;
+    }
      this.lsmService.login(this.accountName, this.accountPassword).then(data=> {
        console.log(data);
        if (data.code == 0) {
@@ -55,8 +62,7 @@ export class UbPage {
              text: '确定', role: 'cancel', handler: () => {
                //跳转首页
                console.log('UbPage跳转HzPage');
-               //setroot修改
-               this.navCtrl.push('HzPage');
+               this.navCtrl.setRoot('HzPage');
              }
            }]
          });

@@ -74,24 +74,24 @@ export class PlayerSqlite {
    * @returns {Promise<any>}
    */
   getRc(rc:RcEntity){
-    let sql="select sI,sN,lI,uI,sd,ed from GTD_H where 1=1";
+    let sql="select sI,sN,lI,uI,sd,ed from GTD_C where 1=1";
     if(rc.sI!=null){
-      sql=sql+' sI="' + rc.sI +'",';
+      sql=sql+' and sI="' + rc.sI +'"';
     }
     if(rc.sN!=null){
-      sql=sql+' sN="' + rc.sN +'",';
+      sql=sql+' and sN="' + rc.sN +'"';
     }
     if(rc.lI!=null){
-      sql=sql+' lI="' + rc.lI +'",';
+      sql=sql+' and lI="' + rc.lI +'"';
     }
     if(rc.uI!=null){
-      sql=sql+' uI="' + rc.uI +'",';
+      sql=sql+' and uI="' + rc.uI +'"';
     }
     if(rc.sd!=null){
-      sql=sql+' sd="' + rc.sd +'",';
+      sql=sql+' and sd="' + rc.sd +'"';
     }
     if(rc.ed!=null){
-      sql=sql+' ed="' + rc.ed +'",';
+      sql=sql+' and ed="' + rc.ed +'"';
     }
     return this.baseSqlite.executeSql(sql,[]);
   }
@@ -102,33 +102,36 @@ export class PlayerSqlite {
    * @returns {Promise<any>}
    */
   getRcp(rcp:RcpEntity){
-    let sql="select pI,sI,son,sa,ps,cd,pd,uI,ib from GTD_H where 1=1";
+    let sql="select pI,sI,son,sa,ps,cd,pd,uI,ib from GTD_D where 1=1";
     if(rcp.pI!=null){
-      sql=sql+' pI="' + rcp.pI +'",';
+      sql=sql+' and pI="' + rcp.pI +'"';
     }
     if(rcp.sI!=null){
-      sql=sql+' sI="' + rcp.sI +'",';
+      sql=sql+' and sI="' + rcp.sI +'"';
     }
     if(rcp.son!=null){
-      sql=sql+' son="' + rcp.son +'",';
+      sql=sql+' and son="' + rcp.son +'"';
     }
     if(rcp.sa!=null){
-      sql=sql+' sa="' + rcp.sa +'",';
+      sql=sql+' and sa="' + rcp.sa +'"';
     }
     if(rcp.ps!=null){
-      sql=sql+' ps="' + rcp.ps +'",';
+      sql=sql+' and ps="' + rcp.ps +'"';
     }
     if(rcp.cd!=null){
-      sql=sql+' cd="' + rcp.cd +'",';
+      sql=sql+' and cd="' + rcp.cd +'"';
     }
     if(rcp.pd!=null){
-      sql=sql+' pd="' + rcp.pd +'",';
+      sql=sql+' and pd="' + rcp.pd +'"';
     }
     if(rcp.uI!=null){
-      sql=sql+' uI="' + rcp.uI +'",';
+      sql=sql+' and uI="' + rcp.uI +'"';
     }
     if(rcp.ib!=null){
-      sql=sql+' ib="' + rcp.ib +'",';
+      sql=sql+' and ib="' + rcp.ib +'"';
+    }
+    if(rcp.bi!=null){
+      sql=sql+' and bi="' + rcp.bi +'"';
     }
     return this.baseSqlite.executeSql(sql,[]);
   }

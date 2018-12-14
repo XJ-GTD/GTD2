@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {UEntity} from "../../entity/u.entity";
 import {RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
+import {PageConfig} from "../../app/page.config";
 
 /**
  * Generated class for the PgPage page.
@@ -18,7 +19,6 @@ import {RuModel} from "../../model/ru.model";
 })
 export class PgPage {
 
-  indexs:any;
   uo:UEntity;
 
   us:Array<RuModel>;
@@ -34,7 +34,6 @@ export class PgPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PgPage');
-    this.indexs=[{"name":"张三","select":"false"},{"name":"李四","select":"false"}]
     this.queryAllRel();
     this.callback = this.navParams.get("callback");
     this.sel = this.navParams.get("sel");
@@ -98,5 +97,33 @@ export class PgPage {
     }
     return false;
   }
+
+
+  // ionViewDidLoad(){
+  //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");
+  // }
+  // ionViewWillEnter(){
+  //   console.log("2.0 ionViewWillEnter 顾名思义，当将要进入页面时触发");
+  // }
+  // ionViewDidEnter(){
+  //   console.log("3.0 ionViewDidEnter 当进入页面时触发");
+  // }
+  // ionViewWillLeave(){
+  //   console.log("4.0 ionViewWillLeave 当将要从页面离开时触发");
+  // }
+  // ionViewDidLeave(){
+  //   console.log("5.0 ionViewDidLeave 离开页面时触发");
+  // }
+  // ionViewWillUnload(){
+  //   console.log("6.0 ionViewWillUnload 当页面将要销毁同时页面上元素移除时触发");
+  // }
+  //
+  // ionViewCanEnter(){
+  //   console.log("ionViewCanEnter");
+  // }
+  //
+  // ionViewCanLeave(){
+  //   console.log("ionViewCanLeave");
+  // }
 
 }

@@ -145,10 +145,11 @@ export class PfPage {
       name : this.name,
       tel: this.tel,
       code: this.existCode,
-      u : u
+      u : u,
+      uo:this.uo
     }
     if(this.existCode == 1){
-      console.log('PfPage跳转PbPage')
+      console.log('PfPage跳转P,bPage')
       this.navCtrl.push("PbPage",data);
     }else{
       console.log('PfPage跳转PcPage')
