@@ -14,7 +14,7 @@ export class SystemSqlite {
    * 添加
    * @param {StEntity} st
    */
-  addSt(st:StEntity){
+  addSt(st:StEntity):Promise<any>{
     return this.baseSqlite.save(st);
   }
 
@@ -22,7 +22,7 @@ export class SystemSqlite {
    * 删除
    * @param {StEntity} st
    */
-  delSt(st:StEntity){
+  delSt(st:StEntity):Promise<any>{
     return this.baseSqlite.delete(st);
   }
 
@@ -30,7 +30,7 @@ export class SystemSqlite {
    * 修改
    * @param {StEntity} st
    */
-  updateSt(st:StEntity){
+  updateSt(st:StEntity):Promise<any>{
    return this.baseSqlite.update(st);
   }
 
@@ -39,7 +39,7 @@ export class SystemSqlite {
    * @param {StEntity} st
    * @returns {Promise<any>}
    */
-  getSt(st:StEntity){
+  getSt(st:StEntity):Promise<any>{
     let sql="SELECT si,sn,ss,st FROM GTD_G WHERE 1=1";
     if(st.si!=null){
       sql=sql+' si="' + st.si +'",';
@@ -55,7 +55,7 @@ export class SystemSqlite {
    * @param {StEntity} st
    * @returns {Promise<any>}
    */
-  getOne(st:StEntity){
+  getOne(st:StEntity):Promise<any>{
     return this.baseSqlite.getOne(st);
   }
 }

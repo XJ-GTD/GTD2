@@ -18,7 +18,7 @@ export class MsSqlite {
    * @param {MsEntity} ms
    * @returns {Promise<any>}
    */
-  addMs(ms:MsEntity){
+  addMs(ms:MsEntity):Promise<any>{
     return this.baseSqlite.save(ms);
   }
 
@@ -27,7 +27,7 @@ export class MsSqlite {
    * @param {MsEntity} ms
    * @returns {Promise<any>}
    */
-  updateMs(ms:MsEntity){
+  updateMs(ms:MsEntity):Promise<any>{
     return this.baseSqlite.update(ms);
   }
 
@@ -36,7 +36,7 @@ export class MsSqlite {
    * @param {MsEntity} ms
    * @returns {Promise<any>}
    */
-  deletMs(ms:MsEntity){
+  deletMs(ms:MsEntity):Promise<any>{
     return this.baseSqlite.delete(ms);
   }
 
@@ -44,7 +44,7 @@ export class MsSqlite {
    * 查询Message消息
    * @returns {Promise<any>}
    */
-  getMs(ms:MsEntity){
+  getMs(ms:MsEntity):Promise<any>{
     let sql="select mi,mn,md,mt from GTD_H where 1=1";
     if(ms.mi!=null){
       sql=sql+' mi="' + ms.mi +'",';
@@ -65,7 +65,7 @@ export class MsSqlite {
    *根据ID查询
    * @param {ms:MsEntity}
    */
-  getOne(ms:MsEntity) {
+  getOne(ms:MsEntity):Promise<any>{
     return this.baseSqlite.getOne(ms);
   }
 

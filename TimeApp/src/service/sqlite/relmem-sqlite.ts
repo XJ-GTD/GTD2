@@ -14,14 +14,14 @@ export class RelmemSqlite {
   /**
    * 添加授权联系人
    */
-  aru(ru:RuEntity){
+  aru(ru:RuEntity):Promise<any>{
     return this.baseSqlite.save(ru);
   }
 
   /**
    * 更新授权联系人
    */
-  uru(ru:RuEntity){
+  uru(ru:RuEntity):Promise<any>{
     return this.baseSqlite.update(ru);
   }
 
@@ -33,7 +33,7 @@ export class RelmemSqlite {
    * @param {string} rC 手机号
    * @param {string} rel  0联系人,1群组
    */
-  getrus(id:string,ran:string,rN:string,rC:string,rel:string){
+  getrus(id:string,ran:string,rN:string,rC:string,rel:string):Promise<any>{
     let sql="SELECT * FROM GTD_B where 1=1";
     if(id != null && id !=''){
       sql = sql + " and id='"+id+"'";
@@ -58,7 +58,7 @@ export class RelmemSqlite {
    * @param {RuEntity} ru
    * @returns {Promise<any>}
    */
-  dru(ru:RuEntity){
+  dru(ru:RuEntity):Promise<any>{
     return this.baseSqlite.delete(ru);
   }
 
@@ -67,7 +67,7 @@ export class RelmemSqlite {
    * @param {RguEntity} rgu
    * @returns {Promise<any>}
    */
-  getOne(rgu:RguEntity){
+  getOne(rgu:RguEntity):Promise<any>{
     return this.baseSqlite.getOne(rgu);
   }
 
@@ -76,7 +76,7 @@ export class RelmemSqlite {
    * @param {RguEntity} rgu
    * @returns {Promise<any>}
    */
-  addRgu(rgu:RguEntity){
+  addRgu(rgu:RguEntity):Promise<any>{
     return this.baseSqlite.save(rgu);
   }
   /**
@@ -84,7 +84,7 @@ export class RelmemSqlite {
    * @param @param {string} id 群组主键
    * @returns {Promise<any>}
    */
-  getRgus(id:string){
+  getRgus(id:string):Promise<any>{
     let sql="SELECT gb.* FROM GTD_B gb " +
       "left join GTD_B_X bs on bs.bmi = gb.id where bs.bi='" + id +"'";
     return this.baseSqlite.executeSql(sql,[]);
@@ -95,7 +95,7 @@ export class RelmemSqlite {
    * @param {string} bmi 关系人ID
    * @returns {Promise<any>}
    */
-  delRgu(bi:string,bmi:string){
+  delRgu(bi:string,bmi:string):Promise<any>{
     let sql = "delete from GTD_B_X where bmi = '"+bmi+"' and bi='"+bi+"'";
     return this.baseSqlite.executeSql(sql,[]);
   }

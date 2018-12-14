@@ -26,7 +26,7 @@ export class UserSqlite {
    * @param _uty 0游客1正式用户
    */
   addu(uI: string, oUI:string,uN: string,hIU: string,biy: string,uS: string,
-       uCt: string, aQ: string, uT:string,uty:string){
+       uCt: string, aQ: string, uT:string,uty:string):Promise<any>{
     let u = new UEntity();
     u.uI=uI;
     u.oUI=oUI;
@@ -45,11 +45,11 @@ export class UserSqlite {
    * @param param
    * @returns {Promise<any>}
    */
-  userIsExist(ui:string){
+  userIsExist(ui:string):Promise<any>{
     return this.baseSqlite.executeSql('select * from GTD_A where uI=?',[ui])
   }
 
-  getUo(){
+  getUo():Promise<any>{
       let sql='select * from GTD_A';
       return this.baseSqlite.executeSql(sql,[])
   }
