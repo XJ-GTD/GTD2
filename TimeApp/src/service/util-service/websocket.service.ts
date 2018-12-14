@@ -45,7 +45,7 @@ export class WebsocketService {
       // 连接成功回调 on_connect
       let on_connect = function(x) {
         console.log(client);
-        queueName = '616818.0952634651';
+        //queueName = '616818.0952634651';
         client.subscribe("/queue/" + queueName, function(data) {
           console.log("on_connect回调成功:" + data);
           alert("socket success1");
