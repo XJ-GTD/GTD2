@@ -8,6 +8,8 @@ import {BsModel} from "../model/out/bs.model";
 import {UserService} from "./user.service";
 import {RcEntity} from "../entity/rc.entity";
 import {RcpEntity} from "../entity/rcp.entity";
+import {PlayerSqlite} from "./sqlite/player-sqlite";
+import {AppConfig} from "../app/app.config";
 
 /**
  * 页面ts传值(Calendar)
@@ -32,7 +34,8 @@ export class CalendarService {
               private util:UtilService,
               private baseSqlite:BaseSqlite,
               private userService:UserService,
-              private playService:PlayerService) { }
+              private playService:PlayerService,
+              private playSqlite:PlayerSqlite  ) { }
 
   /**
    * 查询本地日历所有日程
@@ -46,7 +49,6 @@ export class CalendarService {
           console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg));
           console.log("getCalendarOptions::"+ JSON.stringify(this.calendar.getCalendarOptions()));
           resolve(msg);
-
         },
         (err) => {
           console.log("执行查询本地日历结束 err ::" + JSON.stringify(err));
@@ -64,70 +66,167 @@ export class CalendarService {
    */
   uploadLocal():Promise<BsModel>{
     return new Promise((resolve,reject)=>{
-      let uI = '';
       let model = new BsModel();
-      let rcs = new Array<RcEntity>();
-      let rcps = new Array<RcpEntity>();
-      this.userService.getUo().then(data=>{
-        console.log("calendarService ::"+"查询用户信息成功");
-        if(data&&data.u&&data.u.uI){
-          uI=data.u.uI;
-        }
-        return this.findEvent();
-      }).then(data=>{
-        console.log("calendarService ::"+"查询本地日历成功");
-        //this.findEvent返回msg
-        let arr = [];
-        for(let i=0;i<data.length;i++) {
-          //判断是否存在 rcp 与 rc
-          //逻辑 查rcp 查rc 改rc 改 rcp
-          arr.push(this.checkInfo(uI,data[i].id,data[i].title,data[i].startDate,data.endDate));
-        }
-        return Promise.all(arr);
-      }).then(data=>{
-        console.log("calendarService ::"+"导入本地日历成功");
-        console.log("calendarService ::" + JSON.stringify(data));
+      if(this.baseSqlite.isMobile()){
+        let uI = '';
+        uI = AppConfig.uInfo.uI;
+        this.findEvent().then(data=>{
+          console.log("calendarService ::"+"查询本地日历成功");
+          //this.findEvent返回msg
+          let arr = [];
+          for(let i=0;i<data.length;i++) {
+            //判断是否存在 rcp 与 rc
+            //逻辑 查rcp 查rc 改rc 改 rcp
+            arr.push(this.checkInfo(uI,data[i].id,data[i].title,data[i].startDate,data[i].endDate));
+          }
+          return Promise.all(arr);
+        }).then(data=>{
+          console.log("calendarService ::"+"导入本地日历成功");
+          console.log("calendarService ::" + JSON.stringify(data));
+          resolve(model);
+        }).catch(err => {
+          console.log("calendarService ::"+"导入本地日历失败");
+          model.code = 1;
+          model.message = "失败";
+          reject(model);
+        })
+      }else{
         resolve(model);
-      }).catch(err => {
-        console.log("calendarService ::"+"导入本地日历失败");
-        model.code = 1;
-        model.message = "失败";
-        reject(model);
+      }
+    })
+
+  }
+
+  checkInfo(uI:string,bi:string,title:string,startDate:string,endDate:string):Promise<any>{
+    return new Promise((resolve ,reject)=>{
+      let rc = new RcEntity();
+      console.log("rcEntity::"+JSON.stringify(rc));
+      rc.uI = uI;
+      let rcp = new RcpEntity();
+      console.log("rcpEntity::"+JSON.stringify(rcp));
+      rcp.bi = bi;
+      rcp.uI = uI;
+      rcp.ib = "1";
+      let bs = new BsModel();
+      this.playSqlite.getRcp(rcp).then(data1=>{
+        if( data1.rows &&  data1.rows.length > 0) {
+          let tmp:RcpEntity = data1.rows.item(0);
+          console.log("查询rcp :: " + JSON.stringify(tmp));
+          rc.sI = tmp.sI;
+          rcp.sI = tmp.sI;
+          rcp.uI = tmp.uI;
+          rcp.pI = tmp.pI;
+          rcp.ps = tmp.ps;
+          rcp.pd = tmp.pd;
+          rcp.bi = tmp.bi;
+          rcp.ib = tmp.ib;
+          rcp.cd = tmp.cd;
+          rcp.rui = tmp.rui;
+          rcp.sa = tmp.sa;
+          rcp.son = tmp.son;
+          return this.updatePlayer(rc,rcp,title,startDate,endDate);
+        }else{
+          rc.sI = this.util.getUuid();
+          rc.sN = title;
+          rc.sd = startDate;
+          rc.ed = endDate;
+          rcp.pI = this.util.getUuid();
+          rcp.sI = rc.sI;
+          rcp.son = title;
+          rcp.cd = startDate;
+          return this.addPlayer(rc,rcp,title,startDate,endDate);
+        }
+      }).then(data2=>{
+        //添加或更新后
+        resolve(bs);
+
+      }).catch(reason => {
+        bs.message = AppConfig.ERR_MESSAGE;
+        bs.code = AppConfig.ERR_CODE;
+        reject(bs);
+      })
+
+
+
+
+      // this.playService.getPlayer(null,null,null,uI,null,null,null,null,null,null,null,null,null,"1",bi).then(data=>{
+      //   console.log("::"+JSON.stringify(data))
+      //   let rcps = [];
+      //   if(data.code == 0){
+      //     rcps = data.rcps;
+      //     if( rcps && rcps.length > 0){
+      //       //存在相同的数据
+      //       console.log("存在相同的数据 :: "+ JSON.stringify(rcps));
+      //       let rcp:RcpEntity = rcps[0];
+      //       return this.playService.updatePlayer(rcp.sI,title,"",uI,startDate,endDate,rcp.pI,
+      //         title,rcp.sa,rcp.ps,startDate,rcp.pd,uI,"1",bi);
+      //     }else{
+      //       console.log("不存在相同的数据 :: "+ JSON.stringify(rcps));
+      //       return this.playService.addPlayer(this.util.getUuid(),title,"",uI,startDate,endDate,this.util.getUuid(),
+      //         title,"","",startDate,"",uI,"1",bi);
+      //     }
+      //   }
+      //
+      // }).then(data=>{
+      //   console.log(JSON.stringify(data));
+      //   if(data.code == 0){
+      //     resolve(data)
+      //   }else{
+      //     reject(data)
+      //   }
+      // }).catch(reason => {
+      //   console.log(JSON.stringify(reason));
+      //   reject(reason)
+      // })
+    })
+  }
+
+
+  addPlayer(rc:RcEntity,rcp:RcpEntity,title:string,startDate:string,endDate:string):Promise<any>{
+    return new Promise((resolve,reject)=>{
+      let bs = new BsModel();
+      this.playSqlite.addRc(rc).then(data1=>{
+        console.log("calendar 添加本地日历 rc ::"+ JSON.stringify(rc));
+        return this.playSqlite.addRcp(rcp);
+      }).then(data2=>{
+        console.log("calendar 添加本地日历 rcp ::"+ JSON.stringify(rcp));
+        resolve(bs);
+      }).catch(reason => {
+        bs.code = AppConfig.ERR_CODE;
+        bs.message = reason.message;
+        reject(bs);
       })
     })
   }
 
-  checkInfo(uI:string,id:string,title:string,startDate:string,endDate:string):Promise<any>{
-    return new Promise((resolve ,reject)=>{
-      this.playService.getPlayer(null,null,null,uI,null,null,null,null,null,null,null,null,null,"1",id).then(data=>{
-        console.log("::"+JSON.stringify(data))
-        let rcps = [];
-        if(data.code == 0){
-          rcps = data.rcps;
-          if( rcps && rcps.length > 0){
-            //存在相同的数据
-            console.log("存在相同的数据 :: "+ JSON.stringify(rcps));
-            let rcp:RcpEntity = rcps[0];
-            return this.playService.updatePlayer(rcp.sI,title,"",uI,startDate,endDate,rcp.pI,
-              title,rcp.sa,rcp.ps,startDate,rcp.pd,uI,"1",id);
-          }else{
-            console.log("不存在相同的数据 :: "+ JSON.stringify(rcps));
-            return this.playService.addPlayer(this.util.getUuid(),title,"",uI,startDate,endDate,this.util.getUuid(),
-              title,"","",startDate,"",uI,"1",id);
-          }
-        }
-
-      }).then(data=>{
-        console.log(JSON.stringify(data));
-        if(data.code == 0){
-          resolve(data)
-        }else{
-          reject(data)
-        }
+  updatePlayer(rc:RcEntity,rcp:RcpEntity,title:string,startDate:string,endDate:string):Promise<any>{
+    return new Promise((resolve,reject)=>{
+      let bs =new BsModel();
+      this.playSqlite.getRc(rc).then(data2=>{
+        let tmp:RcEntity = data2.rows.item(0);
+        console.log("查询rc :: " + JSON.stringify(tmp));
+        rc.sN = title;
+        rc.sd = startDate;
+        rc.ed = endDate;
+        rc.lI = tmp.lI;
+        rc.ji = tmp.ji;
+        console.log("更新rc前 :: " + JSON.stringify(rc));
+        return this.playSqlite.updateRc(rc);
+      }).then(data3=>{
+        console.log("更新rc :: " + JSON.stringify(rc));
+        rcp.son = title;
+        rcp.cd = startDate;
+        console.log("更新rcp前 :: " + JSON.stringify(rcp));
+        return this.playSqlite.updateRcp(rcp);
+      }).then(data4=>{
+        console.log("更新rcp :: " + JSON.stringify(rcp));
+        resolve(bs);
       }).catch(reason => {
-        console.log(JSON.stringify(reason));
-        reject(reason)
+        bs.code = AppConfig.ERR_CODE;
+        bs.message = reason.message;
+        reject(bs);
       })
+
     })
   }
 

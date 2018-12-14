@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppConfig} from "../../app/app.config";
 import {UtilService} from "../util-service/util.service";
+import {BsRestful} from "./bs-restful";
 
 
 
@@ -9,23 +10,26 @@ import {UtilService} from "../util-service/util.service";
  * 登录
  */
 @Injectable()
-export class AuRestful {
-  data:any;
-  constructor(private http: HttpClient,
-                private util: UtilService) {
-
+export class AuRestful extends BsRestful{
+  constructor(private http: HttpClient,private util: UtilService) {
+    super()
   }
 
   /**
    * 游客登录
    * @param {string} ui UUID
    */
-  visitor(ui:string) {
+  visitor(ui:string):Promise<any> {
     let dv = this.util.getDeviceId();
-    return this.http.post(AppConfig.AUTH_VISITOR_URL, {
+    if(dv && dv != null && dv !=''){
+
+    }else{
+      dv='1232321';
+    }
+    return this.bsHttp(this.http,AppConfig.AUTH_VISITOR_URL, {
       userId:ui,
       deviceId: dv
-    },AppConfig.HEADER_OPTIONS_JSON)
+    })
   }
 
   /**
@@ -33,14 +37,18 @@ export class AuRestful {
    * @param {string} un
    * @param {string} pw
    */
-  login(un:string,pw:string) {
+  login(un:string,pw:string):Promise<any> {
     let dv = this.util.getDeviceId();
-    dv='1232321';
-    return this.http.post(AppConfig.AUTH_LOGIN_URL, {
+    if(dv && dv != null && dv !=''){
+
+    }else{
+      dv='1232321';
+    }
+    return this.bsHttp(this.http,AppConfig.AUTH_LOGIN_URL, {
       account: un,
       password: pw,
       deviceId: dv
-    },AppConfig.HEADER_OPTIONS_JSON)
+    })
   }
 
 
@@ -50,12 +58,12 @@ export class AuRestful {
    * @param {string} um 手机号
    * @param {string} ac 验证码
    */
-  ml(um:string,ac:string) {
+  ml(um:string,ac:string):Promise<any> {
     let dv = this.util.getDeviceId;
-    return this.http.post(AppConfig.AUTH_SMSLOGIN_URL, {
+    return this.bsHttp(this.http,AppConfig.AUTH_SMSLOGIN_URL, {
       account: um,
       authCode: ac,
       deviceId: dv
-    },AppConfig.HEADER_OPTIONS_JSON)
+    })
   }
 }
