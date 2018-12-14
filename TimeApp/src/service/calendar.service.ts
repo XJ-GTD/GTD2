@@ -6,6 +6,8 @@ import {BaseSqlite} from "./sqlite/base-sqlite";
 import {PlayerService} from "./player.service";
 import {BsModel} from "../model/out/bs.model";
 import {UserService} from "./user.service";
+import {RcEntity} from "../entity/rc.entity";
+import {RcpEntity} from "../entity/rcp.entity";
 
 /**
  * 页面ts传值(Calendar)
@@ -41,12 +43,13 @@ export class CalendarService {
       console.log("执行查询本地日历")
       this.calendar.findEvent("", "", "", new Date("2000-01-01"), new Date()).then(
         (msg) => {
-          console.log("执行查询本地日历结束");
+          console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg));
+          console.log("getCalendarOptions::"+ JSON.stringify(this.calendar.getCalendarOptions()));
           resolve(msg);
 
         },
         (err) => {
-          console.log("执行查询本地日历结束B::" + JSON.stringify(err));
+          console.log("执行查询本地日历结束 err ::" + JSON.stringify(err));
           reject(err);
         }
       );
@@ -63,23 +66,27 @@ export class CalendarService {
     return new Promise((resolve,reject)=>{
       let uI = '';
       let model = new BsModel();
+      let rcs = new Array<RcEntity>();
+      let rcps = new Array<RcpEntity>();
       this.userService.getUo().then(data=>{
         console.log("calendarService ::"+"查询用户信息成功");
         if(data&&data.u&&data.u.uI){
           uI=data.u.uI;
         }
-        return this.findEvent()
+        return this.findEvent();
       }).then(data=>{
         console.log("calendarService ::"+"查询本地日历成功");
         //this.findEvent返回msg
         let arr = [];
         for(let i=0;i<data.length;i++) {
-          arr.push(this.playService.addPlayer(this.util.getUuid(),data[i].title,"",uI,data[i].startDate,data[i].endDate,this.util.getUuid(),data[i].title,"","",data[i].startDate,"",uI,"1"));
+          //判断是否存在 rcp 与 rc
+          //逻辑 查rcp 查rc 改rc 改 rcp
+          arr.push(this.checkInfo(uI,data[i].id,data[i].title,data[i].startDate,data.endDate));
         }
         return Promise.all(arr);
       }).then(data=>{
         console.log("calendarService ::"+"导入本地日历成功");
-        console.log(JSON.stringify(data));
+        console.log("calendarService ::" + JSON.stringify(data));
         resolve(model);
       }).catch(err => {
         console.log("calendarService ::"+"导入本地日历失败");
@@ -89,4 +96,39 @@ export class CalendarService {
       })
     })
   }
+
+  checkInfo(uI:string,id:string,title:string,startDate:string,endDate:string):Promise<any>{
+    return new Promise((resolve ,reject)=>{
+      this.playService.getPlayer(null,null,null,uI,null,null,null,null,null,null,null,null,null,"1",id).then(data=>{
+        console.log("::"+JSON.stringify(data))
+        let rcps = [];
+        if(data.code == 0){
+          rcps = data.rcps;
+          if( rcps && rcps.length > 0){
+            //存在相同的数据
+            console.log("存在相同的数据 :: "+ JSON.stringify(rcps));
+            let rcp:RcpEntity = rcps[0];
+            return this.playService.updatePlayer(rcp.sI,title,"",uI,startDate,endDate,rcp.pI,
+              title,rcp.sa,rcp.ps,startDate,rcp.pd,uI,"1",id);
+          }else{
+            console.log("不存在相同的数据 :: "+ JSON.stringify(rcps));
+            return this.playService.addPlayer(this.util.getUuid(),title,"",uI,startDate,endDate,this.util.getUuid(),
+              title,"","",startDate,"",uI,"1",id);
+          }
+        }
+
+      }).then(data=>{
+        console.log(JSON.stringify(data));
+        if(data.code == 0){
+          resolve(data)
+        }else{
+          reject(data)
+        }
+      }).catch(reason => {
+        console.log(JSON.stringify(reason));
+        reject(reason)
+      })
+    })
+  }
+
 }

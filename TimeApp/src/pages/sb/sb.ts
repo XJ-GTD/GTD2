@@ -9,6 +9,7 @@ import {RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
 import {WorkService} from "../../service/work.service";
 import {LbModel} from "../../model/lb.model";
+import {PageConfig} from "../../app/page.config";
 
 /**
  * Generated class for the SbPage page.
@@ -42,6 +43,7 @@ export class SbPage {
   type: any ;
   title:any;
   startTime:any;
+  repeatType:any;
 
   isShow:any = false;
   showA:boolean = false;
@@ -50,7 +52,13 @@ export class SbPage {
   showD:boolean = false;
   showE:boolean = false;
 
+  repeatTime:any = SbPage.yType;
+  static yType:any = "MM月DD日";
+  static mType:any = "DD日 HH时mm分";
+  static wType:any = "";
+  static dType:any = "HH时mm分ss秒";
 
+  test:any = "2018-12-07";
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -318,10 +326,15 @@ export class SbPage {
     for(let i = 0;this.selectLb != undefined && i<this.selectLb.length;i++){
       switch(this.selectLb[i].lat){
         case 'BQA': A = true;
+          break;
         case 'BQB': B = true;
+          break;
         case 'BQC': C = true;
+          break;
         case 'BQD': D = true;
+          break;
         case 'BQE': E = true;
+          break;
       }
     }
     this.showA = A;
@@ -331,5 +344,50 @@ export class SbPage {
     this.showE = E;
 
   }
+
+  chengeType(){
+    switch(this.repeatType){
+      case "y": this.repeatTime = SbPage.yType;
+        break;
+      case "m": this.repeatTime = SbPage.mType;
+        break;
+      case "w": this.repeatTime = SbPage.wType;
+        break;
+      case "d": this.repeatTime = SbPage.dType;
+        break;
+    }
+  }
+
+  chengeTime(){
+    console.log(this.test)
+  }
+
+  // ionViewDidLoad(){
+  //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");
+  // }
+  // ionViewWillEnter(){
+  //   console.log("2.0 ionViewWillEnter 顾名思义，当将要进入页面时触发");
+  // }
+  // ionViewDidEnter(){
+  //   console.log("3.0 ionViewDidEnter 当进入页面时触发");
+  // }
+  // ionViewWillLeave(){
+  //   console.log("4.0 ionViewWillLeave 当将要从页面离开时触发");
+  // }
+  // ionViewDidLeave(){
+  //   console.log("5.0 ionViewDidLeave 离开页面时触发");
+  // }
+  // ionViewWillUnload(){
+  //   console.log("6.0 ionViewWillUnload 当页面将要销毁同时页面上元素移除时触发");
+  // }
+  //
+  // ionViewCanEnter(){
+  //   console.log("ionViewCanEnter");
+  // }
+  //
+  // ionViewCanLeave(){
+  //   console.log("ionViewCanLeave");
+  // }
+
 }
 

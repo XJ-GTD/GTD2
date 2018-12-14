@@ -31,9 +31,10 @@ export class PlayerService {
    * @param {string} pd 完成时间
    * @param {string} uIs 参与人ID
    * @param {string} ib 是否本地
+   * @param {string} ib 本地id
    * @returns {Promise<PeoModel>}
    */
-  getPlayer(sI:string,sN:string,lI:string,uI:string,sd:string,ed:string,pI:string,son:string,sa:string,ps:string,cd:string,pd:string,uIs:string,ib:string):Promise<PeoModel>{
+  getPlayer(sI:string,sN:string,lI:string,uI:string,sd:string,ed:string,pI:string,son:string,sa:string,ps:string,cd:string,pd:string,uIs:string,ib:string,bi:string):Promise<PeoModel>{
     return new Promise((resolve, reject) =>{
       let rc=new RcEntity();
       rc.sI=sI;
@@ -52,50 +53,73 @@ export class PlayerService {
       rcp.pd=pd;
       rcp.uI=uIs;
       rcp.ib=ib;
+      rcp.bi=bi;
       let peo=new PeoModel();
       let p=[];
-      this.playerSqliteService.getRc(rc).then(data=>{
-        if(data&& data.rows && data.rows.length>0){
-          for(let i=0;i<data.length;i++){
+      this.playerSqliteService.getRcp(rcp).then(data=>{
+        console.log("player service :: success " + JSON.stringify(data))
+        if( data.rows &&  data.rows.length > 0){
+          console.log("player service :: 1 ")
+          //存在主表
+          for(let i=0;i<data.rows.length;i++){
             p.push(data.rows.item(i));
+
           }
-          peo.rcs=p;
-          this.playerSqliteService.getRcp(rcp).then(data=>{
-            for(let i=0;i<data.length;i++){
-              p.push(data.rows.item(i));
-            }
-            peo.rcps=p;
-            peo.code=0;
-            peo.message="success";
-          })
-            .catch(e=>{
-            peo.code=1;
-            peo.message=e.message;
-            reject(peo);
-          })
+          peo.rcps = p;
+          console.log("player service :: 2 ")
+          console.log("player service :: 2 " + JSON.stringify(peo))
+          resolve(peo);
         }else{
-          peo.code=2;
-          peo.message="暂无信息"
+          console.log("player service :: 3 ")
+          console.log("player service :: 3 " + JSON.stringify(peo))
           resolve(peo);
         }
-
+      }).catch(reason => {
+        console.log("player service :: error " + JSON.stringify(reason))
+        reject(reason);
       })
-        .catch(e=>{
-          peo.code=1;
-          peo.message=e.message;
-          reject(peo);
-        })
+      // this.playerSqliteService.getRc(rc).then(data=>{
+      //   if(data&& data.rows && data.rows.length>0){
+      //     for(let i=0;i<data.rows.length;i++){
+      //       p.push(data.rows.item(i));
+      //     }
+      //     peo.rcs=p;
+      //     this.playerSqliteService.getRcp(rcp).then(data=>{
+      //       for(let i=0;i<data.rows.length;i++){
+      //         p.push(data.rows.item(i));
+      //       }
+      //       peo.rcps=p;
+      //       peo.code=0;
+      //       peo.message="success";
+      //     })
+      //       .catch(e=>{
+      //       peo.code=1;
+      //       peo.message=e.message;
+      //       reject(peo);
+      //     })
+      //   }else{
+      //     peo.code=2;
+      //     peo.message="暂无信息"
+      //     resolve(peo);
+      //   }
+      //
+      // })
+      //   .catch(e=>{
+      //     peo.code=1;
+      //     peo.message=e.message;
+      //     reject(peo);
+      //   })
     })
   }
 
   /**
    * 添加日程
    * @param {string} sI 日程UUID
-   * @param {string} sN 日程名称
+   * @param {string} sN 日程名称 本地
    * @param {string} lI 标签名
    * @param {string} uI 创建人
-   * @param {string} sd 开始时间
-   * @param {string} ed 结束时间
+   * @param {string} sd 开始时间 本地
+   * @param {string} ed 结束时间 本地
    *
    * @param {string} pI
    * @param {string} son
@@ -105,9 +129,10 @@ export class PlayerService {
    * @param {string} pd
    * @param {string} uIs
    * @param {string} ib
+   * @param {string} bi
    * @returns {Promise<BsModel>}
    */
-  addPlayer(sI:string,sN:string,lI:string,uI:string,sd:string,ed:string,pI:string,son:string,sa:string,ps:string,cd:string,pd:string,uIs:string,ib:string):Promise<BsModel>{
+  addPlayer(sI:string,sN:string,lI:string,uI:string,sd:string,ed:string,pI:string,son:string,sa:string,ps:string,cd:string,pd:string,uIs:string,ib:string,bi:string):Promise<BsModel>{
     return new Promise((resolve, reject)=>{
       let rc=new RcEntity();
       rc.sI=sI;
@@ -126,6 +151,7 @@ export class PlayerService {
       rcp.pd=pd;
       rcp.uI=uIs;
       rcp.ib=ib;
+      rcp.bi=bi;
       let base=new BsModel();
       this.playerSqliteService.addRc(rc).then(rc=>{
         this.playerSqliteService.addRcp(rcp).then(rcp=>{
@@ -147,12 +173,6 @@ export class PlayerService {
     })
   }
 
-  initfirst(datas:Array<any>):Promise<BsModel>{
-    console.debug(datas);
-    return null;
-
-  }
-
   /**
    * 修改日程
    * @param {string} sI
@@ -171,7 +191,7 @@ export class PlayerService {
    * @param {string} ib
    * @returns {Promise<BsModel>}
    */
-  updatePlayer(sI:string,sN:string,lI:string,uI:string,sd:string,ed:string,pI:string,son:string,sa:string,ps:string,cd:string,pd:string,uIs:string,ib:string):Promise<BsModel>{
+  updatePlayer(sI:string,sN:string,lI:string,uI:string,sd:string,ed:string,pI:string,son:string,sa:string,ps:string,cd:string,pd:string,uIs:string,ib:string,bi:string):Promise<BsModel>{
     return new Promise((resolve, reject)=>{
       let rc=new RcEntity();
       rc.sI=sI;
@@ -191,8 +211,11 @@ export class PlayerService {
       rcp.uI=uIs;
       rcp.ib=ib;
       let base=new BsModel();
-      this.playerSqliteService.updateRc(rc).then(rc=>{
-        this.playerSqliteService.updateRcp(rcp).then(rcp=>{
+      console.log("更新数据::----------- rc " +JSON.stringify(rc)+" rcp "+ JSON.stringify(rcp));
+      this.playerSqliteService.updateRc(rc).then(data=>{
+        console.log("更新数据::-----------rc"+JSON.stringify(rc))
+        this.playerSqliteService.updateRcp(rcp).then(data1=>{
+          console.log("更新数据::-----------rcp"+ JSON.stringify(rcp) )
           base.code=0;
           base.message="success";
           resolve(base);

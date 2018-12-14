@@ -1,14 +1,14 @@
 <!--首页侧边栏-->
 <ion-menu [content]="ha" side="left" swipeEnabled = "false">
-  <ion-header>
-    <ion-toolbar>
-    </ion-toolbar>
-  </ion-header>
+  <!--<ion-header>-->
+    <!--<ion-toolbar>-->
+    <!--</ion-toolbar>-->
+  <!--</ion-header>-->
   <ion-content>
-    <ion-item (click)="toUc()" *ngIf="uo">
+    <ion-item margin-top margin-bottom (click)="toUc()" *ngIf="uo" id="tag1">
       <ion-avatar item-start>
         <!--<img src="http://img.ph.126.net/AJVTPrlsBJuatCG8oQNqkg==/3323375050023235491.jpg" class="img_size">-->
-        <img src="./assets/imgs/headImg.jpg" class="img_size">
+        <img [src]="imgurl" class="img_size">
       </ion-avatar>
       <h1 [innerHtml]="uo.uN"></h1>
       <span [innerHtml]="uo.uCt"></span>

@@ -15,6 +15,7 @@ export class RcpEntity {
   private _uI: string=null;  //参与人用户ID
   private _rui: string=null;  //联系人ID
   private _ib: string='0';  //是否本地:0非本地；1本地日历 默认非本地
+  private _bi: string=null; //本地日程id
   /*
    * 创建表
    * @type {string}
@@ -22,7 +23,7 @@ export class RcpEntity {
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_D(pI VARCHAR(100) PRIMARY KEY,sI VARCHAR(100),' +
                           'son VARCHAR(100),sa VARCHAR(2),ps VARCHAR(2),cd VARCHAR(20),pd VARCHAR(20),' +
-    'uI VARCHAR(100),rui VARCHAR(100),ib VARCHAR(2));';
+    'uI VARCHAR(100),rui VARCHAR(100),ib VARCHAR(2),bi VARCHAR(20));';
   private _drsq:string="DROP TABLE IF EXISTS GTD_D;";
 
   private _isq:string;
@@ -41,8 +42,8 @@ export class RcpEntity {
 
   get isq(): string {
     let sql='insert into GTD_D ' +
-      '(pI,sI,son,sa,ps,cd,pd,uI,rui,ib) values("'+ this._pI+'","'+ this._sI+'","'+ this._son+'","'
-      +this._sa+ '","'+this._ps+ '","'+this._cd+ '","'+this._pd+ '","'+ this._uI+'","'+ this._rui+'","'+ this._ib+'")';
+      '(pI,sI,son,sa,ps,cd,pd,uI,rui,ib,bi) values("'+ this._pI+'","'+ this._sI+'","'+ this._son+'","'
+      +this._sa+ '","'+this._ps+ '","'+this._cd+ '","'+this._pd+ '","'+ this._uI+'","'+ this._rui+'","'+ this._ib+'","'+this._bi+'")';
     this._isq=sql;
     return this._isq;
   }
@@ -76,6 +77,9 @@ export class RcpEntity {
     }
     if(this._ib!=null){
       sql=sql+' ib="' + this._ib +'",';
+    }
+    if(this._bi!=null){
+      sql=sql+' bi="' + this._bi +'",';
     }
     if(this._rui!=null){
       sql=sql+' rui="' + this._rui +'",';
@@ -117,6 +121,9 @@ export class RcpEntity {
     }
     if(this._ib!=null){
       sql=sql+' and ib="' + this._ib +'"';
+    }
+    if(this._bi!=null){
+      sql=sql+' and bi="' + this._bi +'"';
     }
     if(this._rui!=null){
       sql=sql+' and rui="' + this._rui +'"';
@@ -221,5 +228,13 @@ export class RcpEntity {
 
   set rui(value: string) {
     this._rui = value;
+  }
+
+  get bi(): string {
+    return this._bi;
+  }
+
+  set bi(value: string) {
+    this._bi = value;
   }
 }
