@@ -2,18 +2,17 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppConfig} from "../../app/app.config";
 import {UtilService} from "../util-service/util.service";
-import {BsRestful} from "./bs-restful";
 
 
 
 /**
- * 短信
+ * 日程操作
  */
 @Injectable()
-export class DxRestful  extends BsRestful{
+export class DxRestful {
   constructor(private http: HttpClient,
                 private util: UtilService) {
-    super()
+
   }
 
   /**
