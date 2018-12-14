@@ -12,6 +12,7 @@ import {HttpClient} from "@angular/common/http";
 import {ConfigService} from "../../service/config.service";
 import {WebsocketService} from "../../service/util-service/websocket.service";
 import {RoundProgressEase} from 'angular-svg-round-progressbar';
+import {LsmService} from "../../service/lsm.service";
 
 /**
  * Generated class for the AlPage page.
@@ -49,9 +50,7 @@ export class AlPage {
               public navParams: NavParams,
               private loadingCtrl: LoadingController,
               public util: UtilService,
-              private userSqlite: UserService,
-              private workSqlite: WorkService,
-              private paramsService: ParamsService,
+              private lsm:LsmService,
               private calendarService:CalendarService,
               private http: HttpClient,
               private nav:Nav,
@@ -150,9 +149,10 @@ export class AlPage {
         console.log("al :: 导入用户本地日历结束");
         this.increment(10);
         //登陆
-
+        return this.lsm.visitor()
       })
       .then(data => {
+        console.log("al :: 游客登录结束，获取登录信息:"+JSON.stringify(AppConfig.uInfo));
         //初始化本地参数
         console.log("al :: 初始化本地参数开始")
         this.increment(10);
