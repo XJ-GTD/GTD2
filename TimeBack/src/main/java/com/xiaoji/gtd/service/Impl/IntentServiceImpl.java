@@ -201,9 +201,7 @@ public class IntentServiceImpl implements IIntentService {
                             data.setSn(slot.getNormValue());
                             break;
                         case "player":
-                            String playName = Pinyin4j.toPinYin(slot.getNormValue());
-                            data.setPln(playName);
-                            data.setCommon_A(slot.getNormValue());
+                            data = dealWithPlayer(data, slot);
                             break;
                         case "plan":
                             data.setPn(slot.getNormValue());
@@ -225,6 +223,30 @@ public class IntentServiceImpl implements IIntentService {
             result.setData(data);
             logger.debug("参数解析完成");
             return result;
+        }
+
+        private WebSocketDataDto dealWithPlayer(WebSocketDataDto data, Slot slot) {
+            String playName = Pinyin4j.toPinYin(slot.getNormValue());
+            String pln = data.getPln();
+            String common_A = data.getCommon_A();
+            String common_B = data.getCommon_B();
+            if (pln != null && !pln.equals("")) {
+                data.setPln(pln + "," + playName);
+            } else {
+                data.setPln(playName);
+            }
+            if (common_A != null && !common_A.equals("")) {
+                data.setCommon_A(common_A + "," + slot.getValue());
+            } else {
+                data.setCommon_A(slot.getValue());
+            }
+            if (common_B != null && !common_B.equals("")) {
+                data.setCommon_B(common_B + "," + slot.getNormValue());
+            } else {
+                data.setCommon_B(slot.getNormValue());
+            }
+
+            return data;
         }
 
         private String splitStr(String str) {
