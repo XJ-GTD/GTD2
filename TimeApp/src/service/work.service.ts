@@ -17,6 +17,7 @@ import {LbModel} from "../model/lb.model";
 import {ScheduleModel} from "../model/schedule.model";
 import {MsEntity} from "../entity/ms.entity";
 import {UserSqlite} from "./sqlite/user-sqlite";
+import {DataConfig} from "../app/data.config";
 
 /**
  * 日程逻辑处理
@@ -64,7 +65,7 @@ export class WorkService {
           resolve(bs)
         }
       }).catch(e=>{
-        bs.code = AppConfig.ERR_CODE
+        bs.code = DataConfig.ERR_CODE
         bs.message=e.message
         resolve(bs)
       })
@@ -101,19 +102,19 @@ export class WorkService {
               this.workSqlite.sRcps(rc,ruL)
               resolve(bs)
             }).catch(ed=>{
-              bs.code = AppConfig.ERR_CODE
+              bs.code = DataConfig.ERR_CODE
               bs.message=ed.message
               resolve(bs)
             })
           }).catch(eu=>{
-            bs.code = AppConfig.ERR_CODE
+            bs.code = DataConfig.ERR_CODE
             bs.message=eu.message
             resolve(bs)
           })
           resolve(bs)
         }
       }).catch(e=>{
-        bs.code = AppConfig.ERR_CODE
+        bs.code = DataConfig.ERR_CODE
         bs.message=e.message
         resolve(bs)
       })
@@ -136,17 +137,17 @@ export class WorkService {
           this.workSqlite.dRcps(sI).then(datad => {
             resolve(bs);
           }).catch(ed => {
-            bs.code = AppConfig.ERR_CODE
+            bs.code = DataConfig.ERR_CODE
             bs.message = ed.message
             resolve(bs)
           })
         }).catch(eu => {
-          bs.code = AppConfig.ERR_CODE
+          bs.code = DataConfig.ERR_CODE
           bs.message = eu.message
           resolve(bs)
         })
       }else{
-        bs.code = AppConfig.ERR_CODE
+        bs.code = DataConfig.ERR_CODE
         bs.message = '无权限删除'
         resolve(bs)
       }
@@ -218,7 +219,7 @@ export class WorkService {
             rcpo.slc = rcps;
             resolve(rcpo);
           }).catch(e=>{
-            rcpo.code=AppConfig.ERR_CODE;
+            rcpo.code=DataConfig.ERR_CODE;
             rcpo.message=e.message;
             reject(rcpo)
           })
@@ -252,7 +253,7 @@ export class WorkService {
         rcpo.sjl=rcps;
         resolve(rcpo)
       }).catch(e=>{
-        rcpo.code=AppConfig.ERR_CODE;
+        rcpo.code=DataConfig.ERR_CODE;
         rcpo.message=e.message;
         reject(rcpo)
       })
@@ -272,13 +273,13 @@ export class WorkService {
             rc= data.rows.item(0);
             resolve(rc);
           }else{
-            rc.code=AppConfig.NULL_CODE
-            rc.message=AppConfig.NULL_MESSAGE
+            rc.code=DataConfig.NULL_CODE
+            rc.message=DataConfig.NULL_MESSAGE
             resolve(rc);
           }
       }).catch(e=>{
-        rc.code=AppConfig.ERR_CODE
-        rc.message=AppConfig.ERR_MESSAGE
+        rc.code=DataConfig.ERR_CODE
+        rc.message=DataConfig.ERR_MESSAGE
         reject(rc);
       })
     });
@@ -297,7 +298,7 @@ export class WorkService {
       this.baseSqlite.delete(rc).then(data=>{
         resolve(bs)
       }).catch(e=>{
-        bs.code=AppConfig.ERR_CODE;
+        bs.code=DataConfig.ERR_CODE;
         bs.message=e.message;
       })
     })
@@ -321,7 +322,7 @@ export class WorkService {
         lbo.lbs=lbs;
         resolve(lbo)
       }).catch(e=>{
-        lbo.code=AppConfig.ERR_CODE;
+        lbo.code=DataConfig.ERR_CODE;
         lbo.message=e.message;
         reject(lbo)
       })

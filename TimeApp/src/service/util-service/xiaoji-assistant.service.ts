@@ -5,6 +5,8 @@ import { ParamsService } from "./params.service";
 import { Base64 } from "@ionic-native/base64";
 import { File } from "@ionic-native/file";
 import { App, NavController } from "ionic-angular";
+import {DataConfig} from "../../app/data.config";
+import {UtilService} from "./util.service";
 declare var cordova: any;
 
 /**
@@ -26,6 +28,7 @@ export class XiaojiAssistantService {
   constructor(private base64: Base64,
               private http: HttpClient,
               private file: File,
+              private util: UtilService,
               private paramsService: ParamsService) {
     this.isSpeaking = false;
     this.islistenAudioing = false;
@@ -55,7 +58,8 @@ export class XiaojiAssistantService {
 
           let data = {
             content: this.fileContent,
-            userId: this.paramsService.user.userId,
+            userId: DataConfig.uInfo.uI,
+            deviceId: this.util.getDeviceId(),
             flag: 0
           };
 
@@ -87,8 +91,8 @@ export class XiaojiAssistantService {
       this.fileContent = text;
       let data = {
         content: this.fileContent,
-        userId: "616818",
-        deviceId: "0952634651",
+        userId: DataConfig.uInfo.uI,
+        deviceId: this.util.getDeviceId(),
       };
       this.connetXunfei(data, AppConfig.XF_TEXT_URL);
 

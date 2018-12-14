@@ -1,9 +1,8 @@
-import {Component, Injectable} from '@angular/core';
-import {componentFactoryName} from "@angular/compiler";
-import {BaseSqlite} from "./sqlite/base-sqlite";
-import {UtilService} from "./util-service/util.service";
-import {UserService} from "./user.service";
-import {AppConfig} from "../app/app.config";
+import { Injectable } from '@angular/core';
+import { BaseSqlite } from "./sqlite/base-sqlite";
+import { UtilService } from "./util-service/util.service";
+import { UserService } from "./user.service";
+import { DataConfig } from "../app/data.config";
 
 /**
  * 整体配置Service
@@ -28,7 +27,7 @@ export class ConfigService {
        //初始化静态变量数据
         this.user.getUo().then(ud=>{
           if(ud && ud.u){
-            AppConfig.uInfo=ud.u;
+            DataConfig.uInfo=ud.u;
             resolve(true)
           }else{
             resolve(false)

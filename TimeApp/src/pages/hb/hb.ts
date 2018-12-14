@@ -143,7 +143,7 @@ export class HbPage {
   //回传数据处理
   messageHanding($event) {
 
-    alert($event);
+    alert("这是语音HbPage页面：" + $event);
     // if($event != null) {
     //   let messageData = new AiuiModel();
     //   messageData.at = $event.res.data.st;

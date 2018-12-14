@@ -21,8 +21,8 @@ export class AppConfig {
 
   /* 环境URL 头部 */
    // private static REQUEST_URL: string = "http://www.guobaa.com/gtd";
-  // private static REQUEST_URL: string = "https://192.168.0.176:8888/gtd";//连接本地数据库
-  private static REQUEST_URL: string = "https://192.168.99.5:8888/gtd";//连接本地数据库
+  private static REQUEST_URL: string = "https://192.168.0.176:8888/gtd";//连接本地数据库
+  // private static REQUEST_URL: string = "https://192.168.99.5:8888/gtd";//连接本地数据库
 
   /* RabbitMq WebSocket */
   // public static RABBITMQ_WS_URL: string = "ws://www.guobaa.com/ws";
@@ -95,19 +95,5 @@ export class AppConfig {
   public static SCHEDULE_DEAL_URL: string = AppConfig.SCHEDULE_URL + "/deal";   //获取短信验证码
 
   /* ------------------------ 日历类 end--------------------------*/
-
-  public static SUCCESS_CODE : number = 0;
-  public static SUCCESS_MESSAGE : string ='成功！'
-  public static ERR_CODE : number = 1;
-  public static ERR_MESSAGE : string='系统出错！'
-  public static NULL_CODE : number= 2;
-  public static NULL_MESSAGE : string='查询结果不存在！'
-  //用户信息
-  public static uInfo:UEntity = null;
-  /**
-   * 0正常进入1首次进入2无数据3更新后进入
-   * @type {string}
-   */
-  public static isFirst:number = 1;
 
 }

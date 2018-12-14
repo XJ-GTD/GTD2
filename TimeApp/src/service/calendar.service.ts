@@ -1,15 +1,15 @@
-import {EventEmitter, Injectable} from '@angular/core';
-import {Calendar} from "@ionic-native/calendar";
-import {Ha01Page} from "../pages/ha01/ha01";
-import {UtilService} from "./util-service/util.service";
-import {BaseSqlite} from "./sqlite/base-sqlite";
-import {PlayerService} from "./player.service";
-import {BsModel} from "../model/out/bs.model";
-import {UserService} from "./user.service";
-import {RcEntity} from "../entity/rc.entity";
-import {RcpEntity} from "../entity/rcp.entity";
-import {PlayerSqlite} from "./sqlite/player-sqlite";
-import {AppConfig} from "../app/app.config";
+import { EventEmitter, Injectable } from '@angular/core';
+import { Calendar } from "@ionic-native/calendar";
+import { Ha01Page } from "../pages/ha01/ha01";
+import { UtilService } from "./util-service/util.service";
+import { BaseSqlite } from "./sqlite/base-sqlite";
+import { PlayerService } from "./player.service";
+import { BsModel } from "../model/out/bs.model";
+import { UserService } from "./user.service";
+import { RcEntity } from "../entity/rc.entity";
+import { RcpEntity } from "../entity/rcp.entity";
+import { PlayerSqlite } from "./sqlite/player-sqlite";
+import { DataConfig } from "../app/data.config";
 
 /**
  * 页面ts传值(Calendar)
@@ -69,7 +69,7 @@ export class CalendarService {
       let model = new BsModel();
       if(this.baseSqlite.isMobile()){
         let uI = '';
-        uI = AppConfig.uInfo.uI;
+        uI = DataConfig.uInfo.uI;
         this.findEvent().then(data=>{
           console.log("calendarService ::"+"查询本地日历成功");
           //this.findEvent返回msg
@@ -141,8 +141,8 @@ export class CalendarService {
         resolve(bs);
 
       }).catch(reason => {
-        bs.message = AppConfig.ERR_MESSAGE;
-        bs.code = AppConfig.ERR_CODE;
+        bs.message = DataConfig.ERR_MESSAGE;
+        bs.code = DataConfig.ERR_CODE;
         reject(bs);
       })
 
@@ -192,7 +192,7 @@ export class CalendarService {
         console.log("calendar 添加本地日历 rcp ::"+ JSON.stringify(rcp));
         resolve(bs);
       }).catch(reason => {
-        bs.code = AppConfig.ERR_CODE;
+        bs.code = DataConfig.ERR_CODE;
         bs.message = reason.message;
         reject(bs);
       })
@@ -222,7 +222,7 @@ export class CalendarService {
         console.log("更新rcp :: " + JSON.stringify(rcp));
         resolve(bs);
       }).catch(reason => {
-        bs.code = AppConfig.ERR_CODE;
+        bs.code = DataConfig.ERR_CODE;
         bs.message = reason.message;
         reject(bs);
       })

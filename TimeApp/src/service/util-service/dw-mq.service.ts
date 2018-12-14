@@ -20,17 +20,17 @@ export class DwMqService {
 
   }
 
-  public dealWithMq(data0: WsModel) {
+  public dealWithMq(mqDate: WsModel) {
 
-    if (data0.vs == "1.0" && data0.ss == 0) {
-      let resd = data0.res.data;
+    if (mqDate.vs == "1.0" && mqDate.ss == 0) {
+      let resd = mqDate.res.data;
       let ct=resd.sn;
       let sd=resd.st;
       let ed = resd.et;
       let lbI = resd.lb;
       let jhi = resd.pn;
       let ruL=[];
-      switch (data0.sk) {
+      switch (mqDate.sk) {
         case SkillConfig.XF_NMT: //确认
           break;
         case SkillConfig.XF_NMC: //取消
@@ -46,9 +46,9 @@ export class DwMqService {
         case SkillConfig.XF_SCD: //讯飞：日程删除
           let sI = "";
           this.work.delrc(sI).then(data=>{
-            this.dwEmit.setHaData(data);
+            this.dwEmit.setHbData(data);
           }).catch(e=>{
-            this.dwEmit.setHaData(e);
+            this.dwEmit.setHbData(e);
           });
           break;
         case SkillConfig.XF_SCF: //讯飞：日程查询
@@ -65,11 +65,9 @@ export class DwMqService {
             var n = new Audio(url);
             n.src = url;
             n.play();
-            this.dwEmit.setHaData(data);
-            //this.dwEmit.setHbData(data);
+            this.dwEmit.setHbData(data);
           }).catch(e=>{
-            this.dwEmit.setHaData(e);
-            //this.dwEmit.setHbData(e);
+            this.dwEmit.setHbData(e);
           });
           break;
         case SkillConfig.XF_PEC: //讯飞：参与人添加

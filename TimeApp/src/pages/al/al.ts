@@ -1,18 +1,16 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams, LoadingController, Nav, Events} from 'ionic-angular';
-import {AppConfig} from "../../app/app.config";
-import {PageConfig} from "../../app/page.config";
-import {PermissionsService} from "../../service/util-service/permissions.service";
-import {UtilService} from "../../service/util-service/util.service";
-import {UserService} from "../../service/user.service";
-import {WorkService} from "../../service/work.service";
-import {ParamsService} from "../../service/util-service/params.service";
-import {CalendarService} from "../../service/calendar.service";
-import {HttpClient} from "@angular/common/http";
-import {ConfigService} from "../../service/config.service";
-import {WebsocketService} from "../../service/util-service/websocket.service";
-import {RoundProgressEase} from 'angular-svg-round-progressbar';
-import {LsmService} from "../../service/lsm.service";
+import { IonicPage, NavController, NavParams, LoadingController, Nav, Events } from 'ionic-angular';
+import { AppConfig } from "../../app/app.config";
+import { PageConfig } from "../../app/page.config";
+import { PermissionsService } from "../../service/util-service/permissions.service";
+import { UtilService } from "../../service/util-service/util.service";
+import { CalendarService } from "../../service/calendar.service";
+import { HttpClient } from "@angular/common/http";
+import { ConfigService } from "../../service/config.service";
+import { WebsocketService } from "../../service/util-service/websocket.service";
+import { RoundProgressEase } from 'angular-svg-round-progressbar';
+import { LsmService } from "../../service/lsm.service";
+import { DataConfig } from "../../app/data.config";
 
 /**
  * Generated class for the AlPage page.
@@ -152,14 +150,14 @@ export class AlPage {
         return this.lsm.visitor()
       })
       .then(data => {
-        console.log("al :: 游客登录结束，获取登录信息:"+JSON.stringify(AppConfig.uInfo));
+        console.log("al :: 游客登录结束，获取登录信息:"+JSON.stringify(DataConfig.uInfo));
         //初始化本地参数
         console.log("al :: 初始化本地参数开始")
         this.increment(10);
       }).then(data => {
         //连接webSocket
         console.log("al :: 开始连接webSocket");
-        return this.webSocketService.connect(AppConfig.uInfo.aQ);
+        return this.webSocketService.connect(DataConfig.uInfo.aQ);
       }).then(data => {
         console.log("al :: 连接websockte成功")
       this.increment(10);

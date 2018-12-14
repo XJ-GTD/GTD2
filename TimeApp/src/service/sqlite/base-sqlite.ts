@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Platform , Events } from 'ionic-angular';
 import { SQLitePorter } from '@ionic-native/sqlite-porter';
 import * as moment from "moment";
-import {UEntity} from "../../entity/u.entity";
+import { UEntity } from "../../entity/u.entity";
 import {RcEntity} from "../../entity/rc.entity";
 import {RcpEntity} from "../../entity/rcp.entity";
 import {RuEntity} from "../../entity/ru.entity";
@@ -18,7 +18,7 @@ import {JhEntity} from "../../entity/jh.entity";
 import {FiEntity} from "../../entity/fi.entity";
 import {UtilService} from "../util-service/util.service";
 import {BsModel} from "../../model/out/bs.model";
-import {AppConfig} from "../../app/app.config";
+import {DataConfig} from "../../app/data.config";
 
 /**
  * 客户端数据库
@@ -101,14 +101,14 @@ export class BaseSqlite {
               code = 2;//无数据
             }
           }
-          AppConfig.isFirst= code;
+          DataConfig.isFirst= code;
           bs.code=code;
           resolve(bs)
         }).catch(e=>{
           console.error(this.className + " isFi() is Error:" + e.message)
           bs.code=1
           bs.message=e.message;
-          AppConfig.isFirst= bs.code;
+          DataConfig.isFirst= bs.code;
           resolve(bs)
         })
     })
@@ -122,7 +122,7 @@ export class BaseSqlite {
    createOrUpdateTable(updateSql:string): Promise<any> {
     return new Promise((resolve, reject) => {
       //初始化建表
-      if(AppConfig.isFirst != 0){
+      if(DataConfig.isFirst != 0){
         //初始化建表
         console.log(this.className + "createTable：数据库初始化建表开始")
         //判断是否是手机端
@@ -243,7 +243,7 @@ export class BaseSqlite {
    */
   initData(): Promise<any> {
     return new Promise((resolve, reject) => {
-      if(AppConfig.isFirst!=0){
+      if(DataConfig.isFirst!=0){
         console.log("-------------------BaseSqlite initData table  data to start ------------------")
         //版本表
         let fi = new FiEntity();

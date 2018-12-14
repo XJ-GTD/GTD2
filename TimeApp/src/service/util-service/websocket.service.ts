@@ -45,10 +45,8 @@ export class WebsocketService {
       // 连接成功回调 on_connect
       let on_connect = function(x) {
         console.log(client);
-        //queueName = '616818.0952634651';
         client.subscribe("/queue/" + queueName, function(data) {
           console.log("on_connect回调成功:" + data);
-          alert("socket success1");
           subject.next(data); //能够在let变量方法内使用this方法
 
         });
@@ -59,9 +57,7 @@ export class WebsocketService {
         let ws = new WsModel();
         ws = JSON.parse(data.body);
         console.log("JSON MQ:" + ws);
-        // resolve('connect ok');
         this.dwService.dealWithMq(ws);
-        alert("socket success2");
       });
 
 

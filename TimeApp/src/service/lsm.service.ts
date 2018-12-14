@@ -11,6 +11,7 @@ import {UserSqlite} from "./sqlite/user-sqlite";
 import {BaseSqlite} from "./sqlite/base-sqlite";
 import {UEntity} from "../entity/u.entity";
 import {AppConfig} from "../app/app.config";
+import {DataConfig} from "../app/data.config";
 
 
 /**
@@ -45,9 +46,9 @@ export class LsmService {
       let base = new BsModel();
       console.log("------lsm sn 开始注册--------")
       let ui = '';
-      if(AppConfig.uInfo && AppConfig.uInfo.uI) {
+      if(DataConfig.uInfo && DataConfig.uInfo.uI) {
         console.log("------lsm sn 请求注册接口 --------")
-        ui=AppConfig.uInfo.uI;
+        ui=DataConfig.uInfo.uI;
             //直接注册
         this.pn.sn(am, pw, ac, ui, '')
           .then(data => {
@@ -73,11 +74,11 @@ export class LsmService {
   visitor() :Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let base = new BsModel();
-      if(AppConfig.isFirst!=0) {
+      if(DataConfig.isFirst!=0) {
         console.log("------lsm visitor 开始游客登录--------")
         let ui = '';
-        if (AppConfig.uInfo && AppConfig.uInfo.uI) {
-          ui = AppConfig.uInfo.uI;
+        if (DataConfig.uInfo && DataConfig.uInfo.uI) {
+          ui = DataConfig.uInfo.uI;
           console.log("------lsm visitor 获取用户ID：" + ui + ",发起游客登录请求")
           let resData: any = null
           //调用游客登录接口
@@ -91,7 +92,7 @@ export class LsmService {
                 u.aQ = datal.data.accountQueue
                 console.log("------lsm visitor 游客登录成功更新GTD_A消息队列编号：" + u.aQ)
                 //赋值消息队列
-                AppConfig.uInfo.aQ = u.aQ;
+                DataConfig.uInfo.aQ = u.aQ;
               }
               //用户如果存在则更新
               return this.basesqlite.update(u)
@@ -129,8 +130,8 @@ export class LsmService {
       let base = new BsModel();
       let oldUi = '';
       console.log("------lsm login 开始登录--------")
-      if(AppConfig.uInfo && AppConfig.uInfo.uI) {
-        oldUi = AppConfig.uInfo.uI;
+      if(DataConfig.uInfo && DataConfig.uInfo.uI) {
+        oldUi = DataConfig.uInfo.uI;
         console.log("------lsm login 开始登录获取初始用户UI: "+oldUi +",请求登录接口")
         //-------请求登录
         this.au.login(un, pw).then(datal => {
@@ -147,7 +148,7 @@ export class LsmService {
             u.uN=datal.data.userName;
             u.uS=datal.data.userSex;
             u.uty='1';
-            AppConfig.uInfo=u;
+            DataConfig.uInfo=u;
             if (u.uT != null && u.uT != '') {
               AppConfig.Token = u.uT;
             }
@@ -192,8 +193,8 @@ export class LsmService {
     let base = new BsModel();
     let oldUi = '';
     console.log("------lsm ml 开始短信登录--------")
-    if(AppConfig.uInfo && AppConfig.uInfo.uI) {
-      oldUi = AppConfig.uInfo.uI;
+    if(DataConfig.uInfo && DataConfig.uInfo.uI) {
+      oldUi = DataConfig.uInfo.uI;
       console.log("------lsm ml 开始短信登录获取初始用户UI: " + oldUi + ",请求登录接口")
       this.au.ml(um, ac).then(datal => {
         base = datal
@@ -210,7 +211,7 @@ export class LsmService {
           u.uN = datal.data.userName;
           u.uS = datal.data.userSex;
           u.uty = '1';
-          AppConfig.uInfo = u;
+          DataConfig.uInfo = u;
           if (u.uT != null && u.uT != '') {
             AppConfig.Token = u.uT;
           }

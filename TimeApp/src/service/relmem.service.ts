@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import {RelmemSqlite} from "./sqlite/relmem-sqlite";
-import {RguEntity} from "../entity/rgu.entity";
-import {RguoModel} from "../model/out/rguo.model";
-import {BsModel} from "../model/out/bs.model";
-import {RuEntity} from "../entity/ru.entity";
-import {RuoModel} from "../model/out/ruo.model";
-import {RuModel} from "../model/ru.model";
-import {AppConfig} from "../app/app.config";
-import {BaseSqlite} from "./sqlite/base-sqlite";
-import {UtilService} from "./util-service/util.service";
-import {PnRestful} from "./restful/pn-restful";
+import { RelmemSqlite } from "./sqlite/relmem-sqlite";
+import { RguEntity } from "../entity/rgu.entity";
+import { BsModel } from "../model/out/bs.model";
+import { RuEntity } from "../entity/ru.entity";
+import { RuoModel } from "../model/out/ruo.model";
+import { RuModel } from "../model/ru.model";
+import { AppConfig } from "../app/app.config";
+import { BaseSqlite } from "./sqlite/base-sqlite";
+import { UtilService } from "./util-service/util.service";
+import { PnRestful } from "./restful/pn-restful";
+import { DataConfig } from "../app/data.config";
 
 
 /**
@@ -84,7 +84,7 @@ export class RelmemService {
             base = this.data
             resolve(base)
           }).catch(e=>{
-            base.code=AppConfig.ERR_CODE;
+            base.code=DataConfig.ERR_CODE;
             base.message=e.message;
             reject(base);
           })
@@ -104,7 +104,7 @@ export class RelmemService {
           }
           resolve(base);
         }).catch(e=>{
-          base.code=AppConfig.ERR_CODE;
+          base.code=DataConfig.ERR_CODE;
           base.message=e.message;
           reject(base);
         })
@@ -145,7 +145,7 @@ export class RelmemService {
         }
         resolve(base);
       }).catch(e=>{
-        base.code=AppConfig.ERR_CODE;
+        base.code=DataConfig.ERR_CODE;
         base.message=e.message;
         reject(base);
       })
@@ -173,7 +173,7 @@ export class RelmemService {
         ruo.us=rus;
         resolve(ruo);
       }).catch(e=>{
-        ruo.code=AppConfig.ERR_CODE;
+        ruo.code=DataConfig.ERR_CODE;
         ruo.message=e.message;
         reject(ruo);
       })
@@ -196,7 +196,7 @@ export class RelmemService {
       this.relmemSqlite.addRgu(rgu).then(data=>{
         resolve(base);
       }).catch(e=>{
-          base.code=AppConfig.ERR_CODE;
+          base.code=DataConfig.ERR_CODE;
           base.message=e.message;
           reject(base);
         })
@@ -220,8 +220,8 @@ export class RelmemService {
         ruo.us=rus;
         resolve(ruo);
       }).catch(e=>{
-        ruo.code=AppConfig.ERR_CODE;
-        ruo.message=AppConfig.ERR_MESSAGE;
+        ruo.code=DataConfig.ERR_CODE;
+        ruo.message=DataConfig.ERR_MESSAGE;
         reject(ruo);
       })
     });

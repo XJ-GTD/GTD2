@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import {BaseSqlite} from "./sqlite/base-sqlite";
-import {JhSqlite} from "./sqlite/jh-sqlite";
-import {UtilService} from "./util-service/util.service";
-import {JhEntity} from "../entity/jh.entity";
-import {BsModel} from "../model/out/bs.model";
-import {AppConfig} from "../app/app.config";
-import {JhoModel} from "../model/out/jho.model";
-import {JhModel} from "../model/jh.model";
+import { BaseSqlite } from "./sqlite/base-sqlite";
+import { JhSqlite } from "./sqlite/jh-sqlite";
+import { UtilService } from "./util-service/util.service";
+import { JhEntity } from "../entity/jh.entity";
+import { BsModel } from "../model/out/bs.model";
+import { JhoModel } from "../model/out/jho.model";
+import { JhModel } from "../model/jh.model";
+import { DataConfig } from "../app/data.config";
 
 
 /**
@@ -36,7 +36,7 @@ export class JhService {
       this.jhSqlite.ajh(jh).then(data=>{
         resolve(bs)
       }).catch(e=>{
-        bs.code=AppConfig.ERR_CODE;
+        bs.code=DataConfig.ERR_CODE;
         bs.message=e.message;
         reject(bs);
       })
@@ -60,7 +60,7 @@ export class JhService {
       this.jhSqlite.ujh(jh).then(data=>{
         resolve(bs)
       }).catch(e=>{
-        bs.code=AppConfig.ERR_CODE;
+        bs.code=DataConfig.ERR_CODE;
         bs.message=e.message;
         reject(bs);
       })
@@ -84,7 +84,7 @@ export class JhService {
         jho.jhs=jhs;
         resolve(jho)
       }).catch(e=>{
-        jho.code=AppConfig.ERR_CODE
+        jho.code=DataConfig.ERR_CODE
         jho.message=e.message;
         reject(jho);
       })
@@ -104,7 +104,7 @@ export class JhService {
       this.jhSqlite.djh(jh).then(data=>{
         resolve(bs)
       }).catch(e=>{
-        bs.code=AppConfig.ERR_CODE
+        bs.code=DataConfig.ERR_CODE
         bs.message=e.message;
         reject(bs);
       })
@@ -125,7 +125,7 @@ export class JhService {
         }
         resolve(jh)
       }).catch(e=>{
-        jh.code=AppConfig.ERR_CODE
+        jh.code=DataConfig.ERR_CODE
         jh.message=e.message;
         reject(jh);
       })
