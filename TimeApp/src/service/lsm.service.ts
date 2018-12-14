@@ -47,6 +47,7 @@ export class LsmService {
       let ui = '';
       if(AppConfig.uInfo && AppConfig.uInfo.uI) {
         console.log("------lsm sn 请求注册接口 --------")
+        ui=AppConfig.uInfo.uI;
             //直接注册
         this.pn.sn(am, pw, ac, ui, '')
           .then(data => {
