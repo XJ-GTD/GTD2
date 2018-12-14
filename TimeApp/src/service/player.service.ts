@@ -57,18 +57,25 @@ export class PlayerService {
       let peo=new PeoModel();
       let p=[];
       this.playerSqliteService.getRcp(rcp).then(data=>{
+        console.log("player service :: success " + JSON.stringify(data))
         if( data.rows &&  data.rows.length > 0){
+          console.log("player service :: 1 ")
           //存在主表
-          for(let rcpa of data.rows){
-            peo.rcps.push(rcpa);
+          for(let i=0;i<data.rows.length;i++){
+            p.push(data.rows.item(i));
+
           }
+          peo.rcps = p;
+          console.log("player service :: 2 ")
+          console.log("player service :: 2 " + JSON.stringify(peo))
           resolve(peo);
         }else{
-          peo.code = 1;
-          peo.message = "无数据"
+          console.log("player service :: 3 ")
+          console.log("player service :: 3 " + JSON.stringify(peo))
           resolve(peo);
         }
       }).catch(reason => {
+        console.log("player service :: error " + JSON.stringify(reason))
         reject(reason);
       })
       // this.playerSqliteService.getRc(rc).then(data=>{
@@ -204,8 +211,11 @@ export class PlayerService {
       rcp.uI=uIs;
       rcp.ib=ib;
       let base=new BsModel();
-      this.playerSqliteService.updateRc(rc).then(rc=>{
-        this.playerSqliteService.updateRcp(rcp).then(rcp=>{
+      console.log("更新数据::----------- rc " +JSON.stringify(rc)+" rcp "+ JSON.stringify(rcp));
+      this.playerSqliteService.updateRc(rc).then(data=>{
+        console.log("更新数据::-----------rc"+JSON.stringify(rc))
+        this.playerSqliteService.updateRcp(rcp).then(data1=>{
+          console.log("更新数据::-----------rcp"+ JSON.stringify(rcp) )
           base.code=0;
           base.message="success";
           resolve(base);

@@ -100,24 +100,32 @@ export class CalendarService {
   checkInfo(uI:string,id:string,title:string,startDate:string,endDate:string):Promise<any>{
     return new Promise((resolve ,reject)=>{
       this.playService.getPlayer(null,null,null,uI,null,null,null,null,null,null,null,null,null,"1",id).then(data=>{
+        console.log("::"+JSON.stringify(data))
         let rcps = [];
         if(data.code == 0){
           rcps = data.rcps;
-          if( rcps.length > 0){
+          if( rcps && rcps.length > 0){
             //存在相同的数据
+            console.log("存在相同的数据 :: "+ JSON.stringify(rcps));
             let rcp:RcpEntity = rcps[0];
-            return this.playService.updatePlayer(rcp.sI,title,"",uI,startDate,endDate,this.util.getUuid(),
+            return this.playService.updatePlayer(rcp.sI,title,"",uI,startDate,endDate,rcp.pI,
               title,rcp.sa,rcp.ps,startDate,rcp.pd,uI,"1",id);
-
           }else{
+            console.log("不存在相同的数据 :: "+ JSON.stringify(rcps));
             return this.playService.addPlayer(this.util.getUuid(),title,"",uI,startDate,endDate,this.util.getUuid(),
               title,"","",startDate,"",uI,"1",id);
           }
         }
 
       }).then(data=>{
-        resolve(data)
+        console.log(JSON.stringify(data));
+        if(data.code == 0){
+          resolve(data)
+        }else{
+          reject(data)
+        }
       }).catch(reason => {
+        console.log(JSON.stringify(reason));
         reject(reason)
       })
     })
