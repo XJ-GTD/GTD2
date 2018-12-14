@@ -73,43 +73,48 @@ export class LsmService {
   visitor() :Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let base = new BsModel();
-      console.log("------lsm visitor 开始游客登录--------")
-      let ui = '';
-      if(AppConfig.uInfo && AppConfig.uInfo.uI){
-        ui = AppConfig.uInfo.uI;
-        console.log("------lsm visitor 获取用户ID：" + ui +",发起游客登录请求")
-        let resData:any=null
-        //调用游客登录接口
-        this.au.visitor(ui)
-          .then(datal=>{
-          console.log("------lsm visitor 游客登录请求返回结果："+JSON.stringify(datal))
-          base = datal;
-          let u = new UEntity();
-          u.uI=ui;
-          if(datal.data && datal.data.accountQueue){
-            u.aQ=datal.data.accountQueue
-            console.log("------lsm visitor 游客登录成功更新GTD_A消息队列编号："+u.aQ)
-            //赋值消息队列
-            AppConfig.uInfo.aQ=u.aQ;
-          }
-          //用户如果存在则更新
-          return this.basesqlite.update(u)
-        })
-          .then(data=>{
-          console.log("------lsm visitor 游客登录更新GTD_A返回结果："+JSON.stringify(data))
-          resolve(base);
-        })
-          .catch(e=>{
-          base.code=1
-          base.message=e.message
-          console.log("------lsm visitor 游客登录报错："+e.message)
-          reject(base);
-        })
+      if(AppConfig.isFirst!=0) {
+        console.log("------lsm visitor 开始游客登录--------")
+        let ui = '';
+        if (AppConfig.uInfo && AppConfig.uInfo.uI) {
+          ui = AppConfig.uInfo.uI;
+          console.log("------lsm visitor 获取用户ID：" + ui + ",发起游客登录请求")
+          let resData: any = null
+          //调用游客登录接口
+          this.au.visitor(ui)
+            .then(datal => {
+              console.log("------lsm visitor 游客登录请求返回结果：" + JSON.stringify(datal))
+              base = datal;
+              let u = new UEntity();
+              u.uI = ui;
+              if (datal.data && datal.data.accountQueue) {
+                u.aQ = datal.data.accountQueue
+                console.log("------lsm visitor 游客登录成功更新GTD_A消息队列编号：" + u.aQ)
+                //赋值消息队列
+                AppConfig.uInfo.aQ = u.aQ;
+              }
+              //用户如果存在则更新
+              return this.basesqlite.update(u)
+            })
+            .then(data => {
+              console.log("------lsm visitor 游客登录更新GTD_A返回结果：" + JSON.stringify(data))
+              resolve(base);
+            })
+            .catch(e => {
+              base.code = 1
+              base.message = e.message
+              console.log("------lsm visitor 游客登录报错：" + e.message)
+              reject(base);
+            })
+        } else {
+          console.error("------lsm visitor 游客登录获取用户ID失败")
+          base.code = 1
+          base.message = "获取用户ID失败";
+          reject(base)
+        }
       }else{
-        console.error("------lsm visitor 游客登录获取用户ID失败")
-        base.code=1
-        base.message="获取用户ID失败";
-        reject(base)
+        console.log("------lsm visitor 已游客登录状态--------")
+        resolve(base);
       }
     })
   }
