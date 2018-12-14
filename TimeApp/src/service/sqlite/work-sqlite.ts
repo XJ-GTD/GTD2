@@ -66,7 +66,7 @@ export class WorkSqlite{
    * @param {string} sI 日程ID
    * @param {string} pI 日程参与人表主键
    */
-  getRcps(sI:string,pI:string){
+  getRcps(sI:string,pI:string):Promise<any>{
     let sql = 'select * from GTD_D where 1=1';
     if(sI != null && sI !=''){
       sql = sql + ' and sI= "'+ sI +'"';
@@ -81,7 +81,7 @@ export class WorkSqlite{
    * 删除日程关联表
    * @param {string} sI 日程ID
    */
-  dRcps(sI:string){
+  dRcps(sI:string):Promise<any>{
     let sql = 'delete from GTD_D where sI= "'+ sI +'"';
     return this.baseSqlite.executeSql(sql,[])
   }
@@ -90,7 +90,7 @@ export class WorkSqlite{
    * 查询每月事件标识
    * @param ym 格式‘2018-01’
    */
-  getMBs(ym:string,ui:string){
+  getMBs(ym:string,ui:string):Promise<any>{
     let sql='select substr(gd.dt,1,10) ymd,gh.mdn,count(*) ct from ' +
       '(select case when pd != null and pd != "null" then pd else cd end dt,gdd.* from GTD_D gdd where uI="'+ ui+'") gd ' +
       'left join (select substr(md,1,10) mdn from GTD_H where mt="0" group by substr(md,1,10)) gh on gh.mdn=substr(gd.dt,1,10) ' +
@@ -102,7 +102,7 @@ export class WorkSqlite{
    * 查询当天事件
    * @param d 'yyyy-MM-dd'
    */
-  getOd(d:string,ui:string){
+  getOd(d:string,ui:string):Promise<any>{
     let sql="select substr(dt,12,16) scheduleStartTime,gtdd.pI scheduleId,gtdd.son scheduleName from " +
       "(select case when pd != null and pd != 'null' then pd else cd end dt,gdd.* from GTD_D gdd where uI='"+ ui+"')" +
       " gtdd where substr(dt,1,10)='" + d+"'";
@@ -113,7 +113,7 @@ export class WorkSqlite{
    * 获取事件详情
    * @param pI 日程参与人ID
    */
-  getds(pI:string){
+  getds(pI:string):Promise<any>{
     let sql = "select jh.jn,gf.lan,gd.sa,gc.* from GTD_D gd left join GTD_C gc on gc.sI = gd.sI " +
       "left join GTD_J_H jh on jh.ji = gc.ji " +
       "left join GTD_F gf on gf.lai = gc.lI where gd.pI ='" + pI +"'"
@@ -129,7 +129,7 @@ export class WorkSqlite{
    * @param {string} lbN 标签名称
    * @param {string} jh 计划名称
    */
-  getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string){
+  getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string):Promise<any>{
     let sql ="select gd.* from GTD_D gd " +
       "left join GTD_C gc on gc.sI = gd.sI " +
       "left join GTD_F gf on gf.lai = gc.lI " +

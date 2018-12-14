@@ -15,7 +15,7 @@ export class RemindSqlite {
    * @param {ReEntity} re
    * @returns {Promise<any>}
    */
-  addRe(re:ReEntity){
+  addRe(re:ReEntity):Promise<any>{
     return this.baseSqlite.save(re);
   }
 
@@ -24,7 +24,7 @@ export class RemindSqlite {
    * @param {ReEntity} re
    * @returns {Promise<any>}
    */
-  delRe(re:ReEntity){
+  delRe(re:ReEntity):Promise<any>{
     return this.baseSqlite.delete(re);
   }
 
@@ -33,7 +33,7 @@ export class RemindSqlite {
    * @param {ReEntity} re
    * @returns {Promise<any>}
    */
-  updateRe(re:ReEntity){
+  updateRe(re:ReEntity):Promise<any>{
     return this.baseSqlite.update(re);
   }
 
@@ -42,7 +42,7 @@ export class RemindSqlite {
    * @param {ReEntity} re
    * @returns {Promise<any>}
    */
-  getRe(re:ReEntity){
+  getRe(re:ReEntity):Promise<any>{
     let sql="SELECT ri,pi,rd FROM GTD_E where 1=1";
     if(re.ri!=null){
       sql=sql+' ri="' + re.ri +'",';
@@ -62,7 +62,7 @@ export class RemindSqlite {
    * @param {ReEntity} re
    * @returns {Promise<any>}
    */
-  getOne(re:ReEntity){
+  getOne(re:ReEntity):Promise<any>{
     return this.baseSqlite.getOne(re);
   }
 }

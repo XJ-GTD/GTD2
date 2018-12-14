@@ -13,7 +13,7 @@ export class LbSqlite {
   /**
    * 添加标签
    */
-  alb(lb:LbEntity){
+  alb(lb:LbEntity):Promise<any>{
     return this.baseSqlite.save(lb);
   }
 
@@ -29,7 +29,7 @@ export class LbSqlite {
   /**
    * 更新标签
    */
-  ulb(lb:LbEntity){
+  ulb(lb:LbEntity):Promise<any>{
     return this.baseSqlite.update(lb);
   }
 
@@ -37,7 +37,7 @@ export class LbSqlite {
    * 查询标签
    * @param {string} jn 标签名
    */
-  getlbs(){
+  getlbs():Promise<any>{
     let sql="SELECT * FROM GTD_F order by lai";
     return this.baseSqlite.executeSql(sql,[]);
   }

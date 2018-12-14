@@ -14,14 +14,14 @@ export class JhSqlite {
   /**
    * 添加计划
    */
-  ajh(jh:JhEntity){
+  ajh(jh:JhEntity): Promise<any> {
     return this.baseSqlite.save(jh);
   }
 
   /**
    * 更新计划
    */
-  ujh(jh:JhEntity){
+  ujh(jh:JhEntity): Promise<any> {
     return this.baseSqlite.update(jh);
   }
 
@@ -29,7 +29,7 @@ export class JhSqlite {
    * 查询计划
    * @param {string} jn 计划名
    */
-  getJhs(jn:string){
+  getJhs(jn:string): Promise<any> {
     let sql="SELECT * FROM GTD_J_H where 1=1";
     if(jn != null && jn !=''){
       sql = sql + " and jn='"+jn+"'";
@@ -42,7 +42,7 @@ export class JhSqlite {
    * @param {JhEntity}
    * @returns {Promise<any>}
    */
-  djh(jh:JhEntity){
+  djh(jh:JhEntity): Promise<any> {
     return this.baseSqlite.delete(jh);
   }
 
@@ -51,7 +51,7 @@ export class JhSqlite {
    * @param {RguEntity} rgu
    * @returns {Promise<any>}
    */
-  getOne(ji:string){
+  getOne(ji:string): Promise<any> {
     let sql = "SELECT * FROM GTD_J_H where ji=?"
     return this.baseSqlite.executeSql(sql,[ji]);
   }

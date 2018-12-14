@@ -51,6 +51,8 @@ export class AppConfig {
 
   private static SMS_URL: string = AppConfig.REQUEST_URL + "/sms";            //短信
 
+  private static SCHEDULE_URL: string = AppConfig.REQUEST_URL + "/schedule";            //schedule日历
+
   /* ------------------------ 验证类 start--------------------------*/
   /* 登录验证 */
   public static AUTH_VISITOR_URL: string = AppConfig.AUTH_URL + "/login_visitors";   //游客登录
@@ -87,6 +89,12 @@ export class AppConfig {
   public static XF_TEXT_URL: string = AppConfig.XF_SPEECH_URL + "/text";   //文本输入
 
   /* ------------------------ 讯飞语音类 end--------------------------*/
+
+  /* ------------------------ 日历类 start--------------------------*/
+  /*短信*/
+  public static SCHEDULE_DEAL_URL: string = AppConfig.SCHEDULE_URL + "/deal";   //获取短信验证码
+
+  /* ------------------------ 日历类 end--------------------------*/
 
   public static SUCCESS_CODE : number = 0;
   public static SUCCESS_MESSAGE : string ='成功！'

@@ -97,7 +97,7 @@ export class BaseSqlite {
                 code=0;//无更新
               }
             }else{
-              console.error(this.className + "isFi()  GTD_FI data is null")
+              console.log(this.className + "isFi()  GTD_FI data is null")
               code = 2;//无数据
             }
           }
