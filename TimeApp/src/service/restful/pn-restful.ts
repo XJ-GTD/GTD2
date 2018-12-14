@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {AlertController, LoadingController, NavController, NavParams} from "ionic-angular";
 import {AppConfig} from "../../app/app.config";
 import {UtilService} from "../util-service/util.service";
+import {BsRestful} from "./bs-restful";
 
 
 
@@ -10,14 +11,11 @@ import {UtilService} from "../util-service/util.service";
  * 注册
  */
 @Injectable()
-export class PnRestful {
-  data: any;
-  user: any;
-  accountName: string;
-  accountPassword: string;
+export class PnRestful extends BsRestful{
+
   constructor(private http: HttpClient,
                 private util: UtilService) {
-
+    super()
   }
 
 
@@ -29,15 +27,19 @@ export class PnRestful {
    * @param {string} ui uuid
    * @param {string} ai 邀请人账号
    */
-  sn(am:string,pw:string,ac:string,ui:string,ai:string) {
-    let dv = this.util.getDeviceId;
-    return this.http.post(AppConfig.PERSON_SU_URL, {
+  sn(am:string,pw:string,ac:string,ui:string,ai:string):Promise<any>{
+    let dv = this.util.getDeviceId();
+    if(dv && dv != null && dv !=''){
+    }else{
+      dv='1232321';
+    }
+    return this.bsHttp(this.http,AppConfig.PERSON_SU_URL, {
       accountMobile: am,
       password: pw,
       authCode: ac,
       accountInviter:ai,
       userId: ui
-    },AppConfig.HEADER_OPTIONS_JSON)
+    })
   }
 
   /**
@@ -46,12 +48,12 @@ export class PnRestful {
    * @param {string} op 旧密码
    * @param {string} pw 新密码
    */
-  upw(ui:string,op:string,pw:string) {
-    return this.http.post(AppConfig.PERSON_UPW_URL, {
+  upw(ui:string,op:string,pw:string):Promise<any>{
+    return this.bsHttp(this.http,AppConfig.PERSON_UPW_URL, {
       userId: ui,
       oldPassword:op,
       password: pw
-    },AppConfig.HEADER_OPTIONS_JSON)
+    })
   }
 
   /**
@@ -59,10 +61,10 @@ export class PnRestful {
    * @param {string} am 手机号
    * @param {string} tn token
    */
-  su(ui:string,am:string,tn:string) {
-    return this.http.post(AppConfig.PERSON_SU, {
+  su(ui:string,am:string,tn:string):Promise<any>{
+    return this.bsHttp(this.http,AppConfig.PERSON_SU, {
       accountMobile:am,
       token: tn
-    },AppConfig.HEADER_OPTIONS_JSON)
+    })
   }
 }

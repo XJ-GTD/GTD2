@@ -22,7 +22,6 @@ export class LsmService {
   pn:PnRestful;
   dx:DxRestful;
   userSqlite:UserSqlite;
-  data:any
   constructor(private http: HttpClient,
               private loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
@@ -42,36 +41,29 @@ export class LsmService {
    * @param {string} ui uuid
    */
   sn(am:string,pw:string,ac:string):Promise<BsModel>{
-    //生成用户UUID
-    let ui = this.util.getUuid();
     return new Promise((resolve, reject) =>{
       let base = new BsModel();
-      //查询已存在用户UUID
-      this.userSqlite.getUo().then(data=>{
-        if(data && data.rows && data.rows.length>0){
-            ui = data.rows.item(0).uI;
+      console.log("------lsm sn 开始注册--------")
+      let ui = '';
+      if(AppConfig.uInfo && AppConfig.uInfo.uI) {
+        console.log("------lsm sn 请求注册接口 --------")
             //直接注册
-            this.pn.sn(am,pw,ac,ui,'')
-              .subscribe(sndata=>{
-                this.data = sndata;
-                base = this.data
-                resolve(base)
-              },err => {
-                base.message = err.message
-                base.code=1
-                reject(base)
-              })
-          }else {
-            base.message = '本地用户不存在'
-            base.code=1
+        this.pn.sn(am, pw, ac, ui, '')
+          .then(data => {
+            console.log("------lsm sn 请求注册接口返回结果："+JSON.stringify(data))
+            base = data
+            resolve(base)
+          }).catch(e=>{
+            base.message = e.message
+            base.code = 1
             reject(base)
-          }
-      }).catch(e=>{
-              console.log(""+e.message)
-              base.message = e.message
-              base.code=1
-              reject(base)
-      })
+        })
+       }else {
+        console.error("------lsm sn 注册获取用户ID失败")
+        base.code=1
+        base.message="获取用户ID失败";
+        reject(base)
+      }
      })
   }
   /**
@@ -192,31 +184,53 @@ export class LsmService {
   ml(um:string,ac:string) :Promise<BsModel>{
   return new Promise((resolve, reject) =>{
     let base = new BsModel();
-    this.au.ml(um,ac).then(data=>{
-        this.data = data;
-        base = this.data
-        if(this.data.code==0){
+    let oldUi = '';
+    console.log("------lsm ml 开始短信登录--------")
+    if(AppConfig.uInfo && AppConfig.uInfo.uI) {
+      oldUi = AppConfig.uInfo.uI;
+      console.log("------lsm ml 开始短信登录获取初始用户UI: " + oldUi + ",请求登录接口")
+      this.au.ml(um, ac).then(datal => {
+        base = datal
+        console.log("------lsm ml 短信登录请求返回结果："+JSON.stringify(datal))
+        base = datal;
+        if (datal.code == 0) {
           let u = new UEntity();
-          u.uI=this.data.data.userId;
-          u.aQ=this.data.data.accountQueue
-          //Sqlite插入用户信息
-          this.basesqlite.save(u).then(data=>{
-            console.log(data)
-            resolve(base)
-          }).catch(e=>{
-            console.log(""+e.message)
-            base.message = e.message
-            base.code=1
-            reject(base)
-          })
-        }else{
-          reject(base)
+          u.uI = datal.data.userId;
+          u.aQ = datal.data.accountQueue
+          u.biy = datal.data.brithday;
+          u.hIU = datal.data.headImg;
+          u.iC = datal.data.idCard;
+          u.uT = datal.data.token;
+          u.uN = datal.data.userName;
+          u.uS = datal.data.userSex;
+          u.uty = '1';
+          AppConfig.uInfo = u;
+          if (u.uT != null && u.uT != '') {
+            AppConfig.Token = u.uT;
+          }
+          //用户如果存在则更新
+          if (oldUi != u.uI) {
+            u.oUI = oldUi;
+          }
+          console.log("------lsm login 短信登录请求返回结果code==0，更新用户信息：" + JSON.stringify(u))
+          return this.basesqlite.update(u)
         }
-      },err => {
-        base.message = err.message
-        base.code=1
-        reject(base)
       })
+        .then(data => {
+          if(base.code == 0){
+            console.log("------lsm login 短信登录请求返回结果code==0，更新用户信息success："+JSON.stringify(data))
+          }else{
+            console.error("------lsm login 短信登录请求返回fail")
+          }
+          resolve(base);
+        })
+        .catch(eu => {
+        base.code = 1
+        base.message = eu.message
+        console.error("------lsm login 短信登录报错：" + eu.message)
+        resolve(base);
+      })
+    }
   })
 }
 
@@ -227,17 +241,17 @@ export class LsmService {
   sc(am:string):Promise<BsModel> {
     return new Promise((resolve, reject) => {
       let base = new BsModel();
-      this.dx.sc(am)
-        .subscribe(data => {
-          this.data = data;
-          base = this.data
-          resolve(base)
-        }, err => {
-          base.message = err.message
-          base.code = 1
-          reject(base)
-        })
-
+      console.log("------lsm sc 开始发送短信验证码-------")
+      this.dx.sc(am).then(data => {
+        console.log("------lsm sc 发送短信验证码返回结果："+JSON.stringify(data))
+        base = data
+        resolve(base)
+      }).catch(err => {
+        base.message = err.message
+        base.code = 1
+        console.error("------lsm sc 短信登录报错：" + err.message)
+        reject(base)
+      })
     })
   }
 
@@ -250,16 +264,15 @@ export class LsmService {
   upw(ui:string, op:string, pw:string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let base = new BsModel();
-      this.pn.upw(ui,op,pw)
-        .subscribe(data=>{
-          this.data = data;
-          base = this.data
+      this.pn.upw(ui,op,pw).then(data=>{
+          base = data
           resolve(base)
-        },err => {
-          base.message = err.message
-          base.code=1
-          reject(base)
-        })
+        }).catch(err => {
+        base.message = err.message
+        base.code = 1
+        console.error("------lsm sc 短信登录报错：" + err.message)
+        reject(base)
+      })
     })
   }
 

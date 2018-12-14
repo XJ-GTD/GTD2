@@ -40,7 +40,6 @@ export class AuRestful extends BsRestful{
   login(un:string,pw:string):Promise<any> {
     let dv = this.util.getDeviceId();
     if(dv && dv != null && dv !=''){
-
     }else{
       dv='1232321';
     }

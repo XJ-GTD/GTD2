@@ -20,9 +20,9 @@ export class DxRestful  extends BsRestful{
    * 短信验证码
    * @param {string} am 手机号
    */
-  sc(am:string) {
-    return this.http.post(AppConfig.SMS_CODE_URL, {
+  sc(am:string):Promise<any>{
+    return this.bsHttp(this.http,AppConfig.SMS_CODE_URL, {
       accountMobile: am
-    },AppConfig.HEADER_OPTIONS_JSON)
+    })
   }
 }
