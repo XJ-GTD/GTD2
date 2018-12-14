@@ -159,7 +159,7 @@ export class AlPage {
       }).then(data => {
         //连接webSocket
         console.log("al :: 开始连接webSocket");
-        return this.webSocketService.connect("1");
+        return this.webSocketService.connect(AppConfig.uInfo.aQ);
       }).then(data => {
         console.log("al :: 连接websockte成功")
       this.increment(10);
