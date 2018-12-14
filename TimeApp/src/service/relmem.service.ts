@@ -71,7 +71,7 @@ export class RelmemService {
 
       if(rel=='0'){
         //如果是人,先判断服务器是否存在，如果存在则获取联系人信息，如果不存在则添加成本地的
-        this.pnRes.su(uI,rc,AppConfig.Token).subscribe(data=>{
+        this.pnRes.su(uI,rc,AppConfig.Token).then(data=>{
           this.data = data;
           if(this.data.code==0){
             ru.rN=this.data.userName;
@@ -89,7 +89,7 @@ export class RelmemService {
             reject(base);
           })
 
-        },err => {
+        }).catch(err => {
           base.message = err.message
           base.code=1
           reject(base)
