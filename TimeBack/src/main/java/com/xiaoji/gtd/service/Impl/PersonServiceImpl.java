@@ -195,41 +195,56 @@ public class PersonServiceImpl implements IPersonService {
     @Override
     public int addPlayer(PlayerInDto inDto) {
 
-        WebSocketOutDto socketOutDto;
+        WebSocketOutDto pushDto;
+        PlayerDataDto data;
 
-        String accountMobile = inDto.getAccountMobile();
-        String userId = inDto.getUserId();                 //用户I
         String targetUserId = inDto.getTargetUserId();
+        String targetMobile = inDto.getTargetMobile();
 
+        String userId = inDto.getUserId();                 //用户Id
         String userName = "";            //昵称
         String headImg = "";          //头像URL
         String mobile = "";
 
 
         try {
-            socketOutDto = new WebSocketOutDto();
+            pushDto = new WebSocketOutDto();
 
-            Object[] objUser = (Object[]) personRepository.searchUserById(userId);
+            data = searchRelation(userId, targetUserId, targetMobile);
 
-            if (targetUserId != null && !targetUserId.equals("")) {
+            if (data.isAgree() && data.isPlayer()) {
+                logger.debug("[已经成为对方好友]:无需重复太添加");
+            } else if (!data.isPlayer() && data.isUser()){
+                Object[] objUser = (Object[]) personRepository.searchUserById(userId);
+                if (targetUserId != null && !targetUserId.equals("")) {
 
-                userName = objUser[0].toString();
-                headImg = objUser[1].toString();
-                mobile = objUser[2].toString();
-                logger.debug("发送邀请用户信息： " + userId + " | " + userName + " | " + headImg + " | " + mobile);
+                    userName = objUser[0].toString();
+                    headImg = objUser[1].toString();
+                    mobile = objUser[2].toString();
+                    logger.debug("发送邀请用户信息： " + userId + " | " + userName + " | " + headImg + " | " + mobile);
 
-                WebSocketDataDto data = new WebSocketDataDto();
-                data.setUs(userId);
-                data.setUn(userName);
-                data.setHi(headImg);
-                data.setMb(mobile);
+                    WebSocketDataDto socketData = new WebSocketDataDto();
+                    socketData.setUs(userId);
+                    socketData.setUn(userName);
+                    socketData.setHi(headImg);
+                    socketData.setMb(mobile);
 
-                socketOutDto.setRes(new WebSocketResultDto(data));
-                webSocketService.pushTopicMessage(targetUserId, socketOutDto);
-            } else {
-                logger.debug("手机号[" + accountMobile + "]未注册!");
+                    pushDto.setRes(new WebSocketResultDto(socketData));
+                    webSocketService.pushTopicMessage(targetUserId, pushDto);
+                    logger.debug("[成功推送邀请]:方式 === rabbitmq");
+                }
+
+            } else if (!data.isUser()) {
+                logger.debug("手机号[" + targetMobile + "]未注册!");
                 //短信推送邀请
-
+//                smsService.pushPlayer(targetMobile);
+            } else if (!data.isAgree() && data.isPlayer()){
+                logger.debug("[已经被对方拉黑]:无法发送邀请");
+                return 1;
+            } else {
+                //可能出错
+                logger.debug("addPlayer数据出错");
+                return 1;
             }
 
         } catch (Exception e) {
@@ -237,18 +252,6 @@ public class PersonServiceImpl implements IPersonService {
             logger.error("发送邀请错误");
             throw new SecurityException("发送邀请错误");
         }
-        return 0;
-    }
-
-    /**
-     * 发送权限申请
-     *
-     * @param inDto
-     * @return
-     */
-    @Override
-    public int inviteSchedule(PlayerInDto inDto) {
-
         return 0;
     }
 
@@ -298,34 +301,15 @@ public class PersonServiceImpl implements IPersonService {
 
         String targetUserId = "";
         String targetMobile = "";
-        boolean isAgree;
-        boolean isUser;
+
 
         try {
             for (PlayerDataDto player: inDto) {
-                data = new PlayerDataDto();
                 targetMobile = player.getAccountMobile();
+                targetUserId = player.getUserId();
 
-                Object[] objects = (Object[]) authRepository.isAcceptThePush(userId, player.getUserId(), targetMobile);
-                targetUserId = (String) objects[2];
-                int count = Integer.valueOf(objects[0].toString());
-                if (count > 0) {
-                    isAgree = (boolean) objects[1];
+                data = searchRelation(userId, targetUserId, targetMobile);
 
-                    logger.debug("[查询到用户" + targetMobile + "]：userId = "+ targetUserId + " | 接收权限" + isAgree);
-                    data.setAgree(isAgree);
-                    data.setUser(true);
-                    data.setPlayer(true);
-                    data.setUserId(targetUserId);
-                } else if (targetUserId != null && count == 0) {
-                    logger.debug("[查询到用户" + targetMobile + "]：userId = "+ targetUserId + " | [" + userId + "]不是其好友");
-                    data.setUser(true);
-                    data.setUserId(targetUserId);
-                } else {
-                    logger.debug("[未查询到用户" + targetMobile + "]：非注册用户");
-                }
-
-                data.setAccountMobile(targetMobile);
                 dataList.add(data);
             }
 
@@ -335,6 +319,41 @@ public class PersonServiceImpl implements IPersonService {
         }
 
         return dataList;
+    }
+
+    /**
+     * 查询目标用户关系及类型
+     * @param userId
+     * @param targetUserId
+     * @param targetMobile
+     * @return
+     */
+    private PlayerDataDto searchRelation(String userId, String targetUserId, String targetMobile) {
+
+        PlayerDataDto data = new PlayerDataDto();
+        String sqlTargetUserId = "";
+        boolean isAgree;
+
+        Object[] objects = (Object[]) authRepository.isAcceptThePush(userId, targetUserId, targetMobile);
+        sqlTargetUserId = (String) objects[2];
+        int count = Integer.valueOf(objects[0].toString());
+        if (count > 0) {
+            isAgree = (boolean) objects[1];
+
+            logger.debug("[查询到用户" + targetMobile + "]：userId = "+ sqlTargetUserId + " | 接收权限" + isAgree);
+            data.setAgree(isAgree);
+            data.setUser(true);
+            data.setPlayer(true);
+            data.setUserId(sqlTargetUserId);
+        } else if (sqlTargetUserId != null && !sqlTargetUserId.equals("") && count == 0) {
+            logger.debug("[查询到用户" + targetMobile + "]：userId = "+ sqlTargetUserId + " | [" + userId + "]不是其好友");
+            data.setUser(true);
+            data.setUserId(sqlTargetUserId);
+        } else {
+            logger.debug("[未查询到用户" + targetMobile + "]：非注册用户");
+        }
+        data.setAccountMobile(targetMobile);
+        return data;
     }
 
     /**

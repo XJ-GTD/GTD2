@@ -10,6 +10,7 @@ public class PlayerInDto {
     private String userId;
     private String accountMobile;
     private String targetUserId;
+    private String targetMobile;
 
     public String getUserId() {
         return userId;
@@ -33,5 +34,13 @@ public class PlayerInDto {
 
     public void setTargetUserId(String targetUserId) {
         this.targetUserId = targetUserId;
+    }
+
+    public String getTargetMobile() {
+        return targetMobile;
+    }
+
+    public void setTargetMobile(String targetMobile) {
+        this.targetMobile = targetMobile;
     }
 }

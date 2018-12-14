@@ -18,13 +18,8 @@ public class ScheduleInDto {
     private String startTime;      //startTime;
     private String endTime;      //endTime;
     private String label;      //label;
-    private String planName;      //planName;
     private List<PlayerDataDto> players;     //players 包含accountMobile和userId
     private String status;      //status;
-
-    private String executeId;       //executeId
-    private int scheduleAuth;       //scheduleAuth
-
 
     public String getUserId() {
         return userId;
@@ -74,14 +69,6 @@ public class ScheduleInDto {
         this.label = label;
     }
 
-    public String getPlanName() {
-        return planName;
-    }
-
-    public void setPlanName(String planName) {
-        this.planName = planName;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -96,22 +83,6 @@ public class ScheduleInDto {
 
     public void setScheduleId(String scheduleId) {
         this.scheduleId = scheduleId;
-    }
-
-    public String getExecuteId() {
-        return executeId;
-    }
-
-    public void setExecuteId(String executeId) {
-        this.executeId = executeId;
-    }
-
-    public int getScheduleAuth() {
-        return scheduleAuth;
-    }
-
-    public void setScheduleAuth(int scheduleAuth) {
-        this.scheduleAuth = scheduleAuth;
     }
 
     public List<PlayerDataDto> getPlayers() {

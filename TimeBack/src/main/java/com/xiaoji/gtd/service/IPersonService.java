@@ -54,13 +54,6 @@ public interface IPersonService {
     int addPlayer(PlayerInDto inDto);
 
     /**
-     * 发送权限申请
-     * @param inDto
-     * @return
-     */
-    int inviteSchedule(PlayerInDto inDto);
-
-    /**
      * 查询联系人
      * @param inDto
      * @return

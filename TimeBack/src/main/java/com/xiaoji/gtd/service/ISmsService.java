@@ -21,4 +21,10 @@ public interface ISmsService {
      */
     int pushSchedule(String mobile);
 
+    /**
+     * 推送好友邀请
+     * @param mobile
+     * @return
+     */
+    int pushPlayer(String mobile);
 }

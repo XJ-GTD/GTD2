@@ -64,10 +64,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         String startTime = inDto.getStartTime();
         String endTime = inDto.getEndTime();
         String label = inDto.getLabel();
-        String planName = inDto.getPlanName();
         String status = inDto.getStatus();
-        String executeId = inDto.getExecuteId();
-        int scheduleAuth = inDto.getScheduleAuth();
         List<PlayerDataDto> players;
         String targetUserId = "";
         String targetMobile = "";
@@ -79,11 +76,8 @@ public class ScheduleServiceImpl implements IScheduleService {
             data.setSt(startTime);
             data.setEt(endTime);
             data.setLb(label);
-            data.setPn(planName);
             data.setSt(status);
             data.setUs(userId);
-            data.setEi(executeId);
-            data.setSa(scheduleAuth);
 
             pushDto.setRes(new WebSocketResultDto(data));
             pushDto.setSk(skillType);
@@ -98,9 +92,11 @@ public class ScheduleServiceImpl implements IScheduleService {
                     pushDto.setSs(ResultCode.SUCCESS);
                     webSocketService.pushTopicMessage(targetUserId, pushDto);
                     logger.debug("[成功推送日程]:方式 === RABBIT MQ");
-                } else {
+                } else if (!player.isUser()){
 //                    smsService.pushSchedule(targetMobile);
                     logger.debug("[成功推送日程]:方式 === SMS");
+                } else {
+                    logger.debug("[不可推送日程]:原因 === 非对方好友或没有权限");
                 }
             }
             outDto.setPlayers(players);

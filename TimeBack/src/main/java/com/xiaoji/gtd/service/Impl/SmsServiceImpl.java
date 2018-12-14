@@ -36,7 +36,7 @@ public class SmsServiceImpl implements ISmsService {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
-    @Value("${submail.messageXsend.time}")
+    @Value("${submail.messageXsend.business.time}")
     private String TIME;
     @Value("${submail.messageXsend.url}")
     private String URL;
@@ -48,8 +48,13 @@ public class SmsServiceImpl implements ISmsService {
     private String PROJECT_AUTH_CODE;
     @Value("${submail.messageXsend.project.pushschedule}")
     private String PROJECT_SCHEDULE;
+    @Value("${submail.messageXsend.project.pushplayer}")
+    private String PROJECT_PLAYER;
     @Value("${submail.messageXsend.signtype}")
     private String SIGNTYPE;
+    @Value("${submail.messageXsend.business.url}")
+    private String BUSINESS_URL;
+
 
     /**
      * 获取验证码
@@ -60,7 +65,13 @@ public class SmsServiceImpl implements ISmsService {
     public int getAuthCode(String mobile) {
 
         try {
-            requestSubMail(mobile, PROJECT_AUTH_CODE);
+            JSONObject vars = new JSONObject();
+
+            String code = new Random().nextInt(10) + String.valueOf((new Random().nextInt(89999)) + 10000);;
+            vars.put("code", code);
+            vars.put("time", TIME);
+
+            requestSubMail(mobile, PROJECT_AUTH_CODE, vars);
         } catch (Exception e) {
             e.printStackTrace();
             logger.debug("短信验证接口请求失败");
@@ -78,7 +89,31 @@ public class SmsServiceImpl implements ISmsService {
     public int pushSchedule(String mobile) {
 
         try {
-            requestSubMail(mobile, PROJECT_SCHEDULE);
+            JSONObject vars = new JSONObject();
+            vars.put("url", BUSINESS_URL);
+            requestSubMail(mobile, PROJECT_SCHEDULE, vars);
+            logger.debug("短信推送日程成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.debug("短信验证接口请求失败");
+        }
+
+        return 0;
+    }
+
+    /**
+     * 推送好友邀请
+     *
+     * @param mobile
+     * @return
+     */
+    @Override
+    public int pushPlayer(String mobile) {
+        try {
+            JSONObject vars = new JSONObject();
+            vars.put("url", BUSINESS_URL);
+            requestSubMail(mobile, PROJECT_PLAYER, vars);
+            logger.debug("短信推送好友邀请成功");
         } catch (Exception e) {
             e.printStackTrace();
             logger.debug("短信验证接口请求失败");
@@ -91,14 +126,9 @@ public class SmsServiceImpl implements ISmsService {
      * 请求赛邮短信推送API
      * @param to
      */
-    private void requestSubMail(String to, String project) {
+    private void requestSubMail(String to, String project, JSONObject vars) {
 
         TreeMap<String, Object> requestData = new TreeMap<String, Object>();
-        JSONObject vars = new JSONObject();
-
-        String code = new Random().nextInt(10) + String.valueOf((new Random().nextInt(89999)) + 10000);;
-        vars.put("code", code);
-        vars.put("time", TIME);
 
         requestData.put("appid", APPID);
         requestData.put("project", project);
@@ -143,8 +173,12 @@ public class SmsServiceImpl implements ISmsService {
                 JSONObject jsonStr = JSONObject.parseObject(EntityUtils.toString(httpEntity, "UTF-8"));
                 String status = jsonStr.getString("status");
                 if ("success".equals(status)) {
-                    TimerUtil.putCache(to, new TimerDto(to, code, System.currentTimeMillis() + 10 * 1000 * 60));
+                    logger.debug("赛邮短信接口请求成功");
+                    if (project.equals(PROJECT_AUTH_CODE)) {
+                        TimerUtil.putCache(to, new TimerDto(to, vars.get("code"), System.currentTimeMillis() + 10 * 1000 * 60));
+                    }
                 } else {
+                    logger.error("赛邮短信接口请求报错");
                     throw new ServiceException();
                 }
             }
