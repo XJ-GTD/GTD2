@@ -25,7 +25,6 @@ export class WebsocketService {
    * 监听消息队列
    */
   public connect(queueName: string) {
-    // var p = new Promise(function (resolve, reject) {
 
       let ws = new WebSocket(AppConfig.RABBITMQ_WS_URL);
 
@@ -81,8 +80,6 @@ export class WebsocketService {
       // 连接消息服务器
       client.connect(login, password, on_connect, on_error, on_close,'/');
 
-    // });
-    // return p;
   }
 
 }

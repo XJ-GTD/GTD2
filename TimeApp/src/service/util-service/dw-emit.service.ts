@@ -1,7 +1,6 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { HbPage } from "../../pages/hb/hb";
-import {HaPage} from "../../pages/ha/ha";
-import {AdPage} from "../../pages/ad/ad";
+import { HaPage } from "../../pages/ha/ha";
 
 /**
  * 数据传递广播处理类
@@ -32,22 +31,9 @@ export class DwEmitService {
 
   public getHbData(page: HbPage) {
     this.hb.subscribe($event => {
-      // page.messageHanding($event);
-      page.test($event);
+      page.messageHanding($event);
     })
   }
 
-  //test
-  private ad: EventEmitter<any> = new EventEmitter();
-
-  public setAdPage($event) {
-    this.ad.emit($event);
-  }
-
-  public getAdPage(page: AdPage) {
-    this.ad.subscribe($event => {
-      page.test($event);
-    })
-  }
 
 }

@@ -20,7 +20,6 @@ export class AdPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private dwEmit: DwEmitService) {
-    this.dwEmit.getAdPage(this);
   }
 
   ionViewDidLoad() {

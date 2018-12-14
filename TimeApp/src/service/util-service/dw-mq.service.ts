@@ -41,7 +41,7 @@ export class DwMqService {
             this.dwEmit.setHaData(data);
           }).catch(e=>{
             this.dwEmit.setHaData(e);
-          })
+          });
           break;
         case SkillConfig.XF_SCD: //讯飞：日程删除
           let sI = "";
@@ -49,13 +49,13 @@ export class DwMqService {
             this.dwEmit.setHaData(data);
           }).catch(e=>{
             this.dwEmit.setHaData(e);
-          })
+          });
           break;
         case SkillConfig.XF_SCF: //讯飞：日程查询
           let jh = '';
           let lbN='';
           this.work.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
-            let str = ""
+            let str = "";
             if(data && data.sjl && data.sjl.length>0){
               str = '您有'+data.sjl.length+"个日程等待您去处理！"
             }else{
@@ -67,12 +67,10 @@ export class DwMqService {
             n.play();
             this.dwEmit.setHaData(data);
             //this.dwEmit.setHbData(data);
-            this.dwEmit.setAdPage(data);
           }).catch(e=>{
             this.dwEmit.setHaData(e);
             //this.dwEmit.setHbData(e);
-            this.dwEmit.setAdPage(e);
-          })
+          });
           break;
         case SkillConfig.XF_PEC: //讯飞：参与人添加
           let ran='';
@@ -85,7 +83,7 @@ export class DwMqService {
 
           }).catch(e=>{
 
-          })
+          });
           break;
         case SkillConfig.XF_PED: //讯飞：参与人删除
           let id='';
@@ -93,21 +91,21 @@ export class DwMqService {
 
           }).catch(e=>{
 
-          })
+          });
           break;
         case SkillConfig.XF_PEF: //讯飞：参与人查询
           this.relmem.getrus(id,ran,rN,rC,rel).then(data=>{
 
           }).catch(e=>{
 
-          })
+          });
           break;
         case SkillConfig.XF_PEA: //讯飞：参与人授权
           this.relmem.upr(id,ran,rN,rC,rel,rF,qrL).then(data=>{
 
           }).catch(e=>{
 
-          })
+          });
           break;
         case SkillConfig.XF_SYSH: //讯飞：私密模式
           break;
@@ -118,7 +116,7 @@ export class DwMqService {
 
           }).catch(e=>{
 
-          })
+          });
           break;
         case SkillConfig.BC_SCD: //删除日程
           this.work.delrc(sI).then(data=>{

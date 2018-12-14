@@ -28,7 +28,7 @@ export class MyApp {
 
       //判断是否进入boot页面
       this.configService.isIntoBoot().then(isInto=>{
-        console.log("app.component isInto :: " + isInto )
+        console.log("app.component isInto :: " + isInto );
         if (isInto){
           this.rootPage = PageConfig.AZ_PAGE;
         }
