@@ -1,9 +1,10 @@
 /**
  * create by on 2018/11/19
  */
+import {BsModel} from "./out/bs.model";
 
 //授权联系人表实体
-export class RuModel {
+export class RuModel extends BsModel{
 
   private _id: string=null;   //UUID
   private _ran:string=null; //别名
@@ -12,7 +13,7 @@ export class RuModel {
   private _rC: string=null;  // 联系方式
   private _rF: string=null;     // 授权标识0未授权1授权
   private _rel: string=null; // 联系类型
-
+  private _hiu: string=null; // 联系人头像URL
   get id(): string {
     return this._id;
   }
@@ -67,5 +68,13 @@ export class RuModel {
 
   set rel(value: string) {
     this._rel = value;
+  }
+
+  get hiu(): string {
+    return this._hiu;
+  }
+
+  set hiu(value: string) {
+    this._hiu = value;
   }
 }

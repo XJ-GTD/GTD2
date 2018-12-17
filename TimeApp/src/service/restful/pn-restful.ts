@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppConfig} from "../../app/app.config";
-import {UtilService} from "../util-service/util.service";
 import {BsRestful} from "./bs-restful";
 
 
@@ -12,8 +11,7 @@ import {BsRestful} from "./bs-restful";
 @Injectable()
 export class PnRestful extends BsRestful{
 
-  constructor(private http: HttpClient,
-                private util: UtilService) {
+  constructor(private http: HttpClient) {
     super()
   }
 
@@ -26,12 +24,7 @@ export class PnRestful extends BsRestful{
    * @param {string} ui uuid
    * @param {string} ai 邀请人账号
    */
-  sn(am:string,pw:string,ac:string,ui:string,ai:string):Promise<any>{
-    let dv = this.util.getDeviceId();
-    if(dv && dv != null && dv !=''){
-    }else{
-      dv='1232321';
-    }
+  sn(am:string,pw:string,ac:string,ui:string,ai:string,dv:string):Promise<any>{
     return this.bsHttp(this.http,AppConfig.PERSON_SU_URL, {
       accountMobile: am,
       password: pw,

@@ -1,11 +1,11 @@
 import {Injectable} from "@angular/core";
 import {UserSqlite} from "./sqlite/user-sqlite";
-import {UoModel} from "../model/out/uo.model";
 import {UEntity} from "../entity/u.entity";
 import {UModel} from "../model/u.model";
 import {BaseSqlite} from "./sqlite/base-sqlite";
 import {BsModel} from "../model/out/bs.model";
-import {AppConfig} from "../app/app.config";
+import {PnRestful} from "./restful/pn-restful";
+import {HttpClient} from "@angular/common/http";
 
 /**
  * 用户sevice
@@ -15,51 +15,58 @@ import {AppConfig} from "../app/app.config";
 @Injectable()
 export class UserService {
   userSqlite:UserSqlite;
-  constructor( private baseSqlite: BaseSqlite) {
+  pnRestful:PnRestful;
+  constructor( private baseSqlite: BaseSqlite,private http: HttpClient) {
     this.userSqlite=new UserSqlite(baseSqlite);
+    this.pnRestful=new PnRestful(http);
   }
+
 
   /**
    * 更新用户资料
-   * @param {string} uI 用户uuID
-   * @param {string} uN 昵称
-   * @param {string} hIU 头像URL
-   * @param {string} biy 生日
-   * @param {string} uS 性别
-   * @param {string} uCt 联系方式
-   * @param {string} aQ 消息队列
-   * @param {string} uT token
-   * @param {string} uty 0游客1正式用户
-   *
+   * @param {string} uI 用户UUID
+   * @param {string} uN 用户名称
+   * @param {string} hIU 用户头像
+   * @param {string} biy 用户生日
+   * @param {string} rn 用户真实姓名
+   * @param {string} iC 用户身份证号
+   * @param {string} uS 用户性别（性别0无 1男 2女）
+   * @returns {Promise<any>}
    */
-  upu(uI: string, oUI:string,uN: string,hIU: string,biy: string,uS: string,
-          uCt: string, aQ: string, uT:string,uty:string):Promise<BsModel>{
+
+  upu(uI:string,uN:string,hIU:string,biy:string,rn:string,
+      iC:string,uS:string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let u = new UEntity();
       u.uI=uI;
-      u.oUI=oUI;
       u.uN=uN;
       u.hIU=hIU;
       u.biy=biy;
       u.uS=uS;
-      u.uCt=uCt;
-      u.aQ=aQ;
-      u.uty=uty;
-      if(uT != null && uT!=''){
-        u.uT=uT;
-        AppConfig.Token=uT;
-      }
+      u.rn=rn;
+      u.iC=iC;
       let bs = new BsModel();
-      this.baseSqlite.update(u).then(data=>{
-          bs.code=0;
-          bs.message='成功';
-          resolve(bs);
+      let rsData:any = null;
+      console.log("------- 1.UserService restful upu user start --------")
+      this.pnRestful.upu(uI,uN,hIU,biy,rn,iC,uS).then(data=>{
+        console.log("------- 2.UserService restful upu user end: " + JSON.stringify(data))
+        rsData = data
+        bs = data;
+        if(rsData && rsData.code == 0){
+          console.log("------- 3.UserService sqlite upu user start --------")
+          return  this.baseSqlite.update(u)
+        }
+      }).then(data=>{
+        console.log("------- 4.UserService sqlite upu user end: " + JSON.stringify(data))
+        resolve(bs);
       }).catch(e=>{
-          bs.code=1;
-          bs.message=e.message;
-          alert('更新用户资料失败：'+e.message)
-          reject(bs)
+        console.error("------- UserService upu user error: " + JSON.stringify(e))
+        bs.code=1;
+        bs.message=e.message;
+        alert("------- UserService upu user error: " + JSON.stringify(e))
+        reject(bs)
       })
+
     })
   }
 
@@ -67,15 +74,13 @@ export class UserService {
    * 查询用户资料
    * @returns {Promise<UModel>}
    */
-  getUo(): Promise<UoModel>{
+  getUo(): Promise<UModel>{
     return new Promise((resolve, reject) =>{
-      let op = new UoModel();
+      let op = new UModel();
       return this.userSqlite.getUo()
         .then(data=>{
           if(data&& data.rows && data.rows.length>0){
-            op.u=data.rows.item(0);
-            op.code=0;
-            op.message="成功"
+            op=data.rows.item(0);
             resolve(op);
           }else{
             op.code=2;

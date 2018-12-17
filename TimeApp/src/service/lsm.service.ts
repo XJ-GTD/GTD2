@@ -15,7 +15,7 @@ import {DataConfig} from "../app/data.config";
 
 
 /**
- * 登录、注、册短信
+ * 登录、注册、短信登录、密码修改
  */
 @Injectable()
 export class LsmService {
@@ -29,7 +29,7 @@ export class LsmService {
               private basesqlite:BaseSqlite,
               private util: UtilService) {
     this.au = new AuRestful(http,util);
-    this.pn = new PnRestful(http,util);
+    this.pn = new PnRestful(http);
     this.dx = new DxRestful(http,util);
     this.userSqlite = new UserSqlite(this.basesqlite)
   }
@@ -43,6 +43,11 @@ export class LsmService {
    */
   sn(am:string,pw:string,ac:string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
+      let dv = this.util.getDeviceId();
+      if(dv && dv != null && dv !=''){
+      }else{
+        dv='1232321';
+      }
       let base = new BsModel();
       console.log("------lsm sn 开始注册--------")
       let ui = '';
@@ -50,7 +55,7 @@ export class LsmService {
         console.log("------lsm sn 请求注册接口 --------")
         ui=DataConfig.uInfo.uI;
             //直接注册
-        this.pn.sn(am, pw, ac, ui, '')
+        this.pn.sn(am, pw, ac, ui, '',dv)
           .then(data => {
             console.log("------lsm sn 请求注册接口返回结果："+JSON.stringify(data))
             base = data
