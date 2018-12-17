@@ -9,6 +9,7 @@ export class UEntity {
   private _oUI:string=null; //原用户ID
   private _uN: string=null;   //昵称
   private _hIU: string=null;          //头像URL
+  private _rn: string=null;   //真实姓名
   private _iC:string=null; //身份证
   private _biy: string=null;    // 生日
   private _uS: string=null;     // 性别
@@ -23,7 +24,7 @@ export class UEntity {
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_A(uI VARCHAR(100) PRIMARY KEY,' +
-                          'uN VARCHAR(100),hIU VARCHAR(300),iC VARCHAR(100),biy VARCHAR(10),' +
+                          'uN VARCHAR(100),hIU VARCHAR(300),rn VARCHAR(50),iC VARCHAR(100),biy VARCHAR(10),' +
                           'uS VARCHAR(2),uCt VARCHAR(20),aQ VARCHAR(20),'+
                           'uT VARCHAR(200),uty VARCHAR(2),uc VARCHAR(30));';
   private _drsq:string="DROP TABLE IF EXISTS GTD_A;"
@@ -59,9 +60,9 @@ export class UEntity {
 
   get isq(): string {
     let sql='insert into GTD_A ' +
-      '(uI,uN,biy,uT,hIU,uC,aQ,uty,iC,uc) ' +
+      '(uI,uN,biy,uT,hIU,uC,aQ,uty,rn,iC,uc) ' +
       'values("'+ this._uI+ '","'+ this._uN+'","'+ this._biy+'","'+this.uT+ '","'+
-      this._hIU+'","'+ this._uCt+'","'+this._aQ+'","'+this._uty+'","'+this._iC+'","'+this._uc+'");';
+      this._hIU+'","'+ this._uCt+'","'+this._aQ+'","'+this._uty+'","'+this._rn+'","'+this._iC+'","'+this._uc+'");';
     this._isq=sql;
     return this._isq;
   }
@@ -98,6 +99,9 @@ export class UEntity {
     }
     if(this._iC!=null){
       sql=sql+' iC="' + this._iC +'",';
+    }
+    if(this._rn!=null){
+      sql=sql+' rn="' + this._rn +'",';
     }
     if(this._oUI != null){
       sql = sql + ' uI="' + this._oUI +'" where uI="' + this._uI +'"';
@@ -143,6 +147,9 @@ export class UEntity {
     }
     if(this._iC != null){
       sql = sql + ' and iC="' + this._iC +'"';
+    }
+    if(this._rn != null){
+      sql = sql + ' and rn="' + this._rn +'"';
     }
     this._dsq=sql;
     return this._dsq;
@@ -246,5 +253,13 @@ export class UEntity {
 
   set uc(value: string) {
     this._uc = value;
+  }
+
+  get rn(): string {
+    return this._rn;
+  }
+
+  set rn(value: string) {
+    this._rn = value;
   }
 }
