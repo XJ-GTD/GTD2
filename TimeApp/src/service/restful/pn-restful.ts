@@ -73,7 +73,7 @@ export class PnRestful extends BsRestful{
    * @param {string} aui 添加人用户ID
    * @returns {Promise<any>}
    */
-  su(ui:string,am:string,aui:string):Promise<any>{
+  au(ui:string,am:string,aui:string):Promise<any>{
     return this.bsHttp(this.http,AppConfig.PERSON_ADDU, {
       userId:ui,
       targetMobile:am,
@@ -93,7 +93,7 @@ export class PnRestful extends BsRestful{
    * @returns {Promise<any>}
    */
 
-  su(ui:string,uN:string,hiu:string,biy:string,rn:string,iC:string,uS:string):Promise<any>{
+  upu(ui:string,uN:string,hiu:string,biy:string,rn:string,iC:string,uS:string):Promise<any>{
     return this.bsHttp(this.http,AppConfig.PERSON_UP, {
       userId:ui,
       userName:uN,
