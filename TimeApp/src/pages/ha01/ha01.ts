@@ -11,6 +11,7 @@ import {UEntity} from "../../entity/u.entity";
 import {UoModel} from "../../model/out/uo.model";
 import {WorkService} from "../../service/work.service";
 import {UserService} from "../../service/user.service";
+import {DataConfig} from "../../app/data.config";
 
 /**
  * Generated class for the Ha01Page page.
@@ -48,16 +49,8 @@ export class Ha01Page {
   }
 
   init(){
-    let uo=new UoModel();
-    this.u = new UEntity();
-    this.userSqlite.getUo()
-      .then(data=>{
-        if(data.code==0){
-          this.u=data.u;
-        }else{
-          // alert(data.message)
-        }
-      })
+    this.u = DataConfig.uInfo;
+    console.log("ha01 获取用户信息："+JSON.stringify(this.u))
   }
   /**
    * Height of the tabs

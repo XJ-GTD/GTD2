@@ -45,7 +45,7 @@ export class PcPage {
       content: "",
       duration: 1000
     });
-    this.relme.aru(this.uo.uI,this.name, null, this.tel, '0','0',null).then(data => {
+    this.relme.aru(this.uo.uI,'',this.name, null, this.tel, '0',null,null,null).then(data => {
       if(data.code == 0){
         //添加成功
         console.log("添加成功::" + this.tel);

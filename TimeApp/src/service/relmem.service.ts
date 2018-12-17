@@ -63,7 +63,7 @@ export class RelmemService {
    * @param {Array} qrL Array<RuModel>  群组人员list
    * @returns {Promise<BsModel>}
    */
-  aru(uI:string,auI:string,ran:string,rN:string,rc:string,rel:string,hiu:string,rF:string,qrL:Array<any>):Promise<BsModel>{
+  aru(uI:string,auI:string,ran:string,rN:string,rc:string,rel:string,hiu:string,rF:string,qrL:Array<RuModel>):Promise<BsModel>{
     return new Promise((resolve, reject)=>{
       let base=new BsModel();
       let ru=new RuEntity();

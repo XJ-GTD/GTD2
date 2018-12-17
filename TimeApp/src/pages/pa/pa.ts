@@ -4,6 +4,7 @@ import {UEntity} from "../../entity/u.entity";
 import {UserService} from "../../service/user.service";
 import { RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
+import {DataConfig} from "../../app/data.config";
 
 /**
  * Generated class for the PaPage page.
@@ -40,13 +41,15 @@ export class PaPage {
 
   init(){
     console.log("查询登陆用户");
-    this.userService.getUo().then(data=>{
-      if(data.code == 0){
-        this.uo = data.u;
-      }
-    }).catch(reason => {
-
-    });
+    // this.userService.getUo().then(data=>{
+    //   if(data.code == 0){
+    //     this.uo = data.u;
+    //   }
+    // }).catch(reason => {
+    //
+    // });
+    this.uo = DataConfig.uInfo;
+    console.log("pa 获取用户信息："+JSON.stringify(this.uo))
     console.log("查询个人");
     this.queryPerson();
     console.log("查询群组");

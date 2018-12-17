@@ -4,6 +4,7 @@ import {ParamsService} from "../../service/util-service/params.service";
 import {UEntity} from "../../entity/u.entity";
 import {RelmemService} from "../../service/relmem.service";
 import {UserService} from "../../service/user.service";
+import {DataConfig} from "../../app/data.config";
 
 /**
  * Generated class for the UcPage page.
@@ -36,7 +37,8 @@ export class UcPage {
   }
 
   init() {
-    this.uo = this.navParams.get("uo");
+    this.uo = DataConfig.uInfo;
+    console.log("uc 获取用户信息："+JSON.stringify(this.uo))
   }
 
   updateUserInfo() {
@@ -53,7 +55,7 @@ export class UcPage {
   }
 
   confirm(uo:UEntity){
-    this.userService.upu(uo.uI,uo.oUI,uo.uN,uo.hIU,uo.biy,uo.uS,uo.uCt,uo.aQ,uo.uT,uo.uty).then(data=>{
+    this.userService.upu(uo.uI,uo.uN,uo.hIU,uo.biy,uo.rn,uo.iC,uo.uS).then(data=>{
       if(data.code == 0){
         this.state = false;
         console.log("修改信息成功")

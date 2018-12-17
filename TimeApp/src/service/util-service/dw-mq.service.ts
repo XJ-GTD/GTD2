@@ -77,7 +77,7 @@ export class DwMqService {
           let rel = '';
           let rF = '';
           let qrL=[];
-          this.relmem.aru('',ran,rN,rC,rel,rF,qrL).then(data=>{
+          this.relmem.aru('','',ran,rN,rC,rel,'',rF,qrL).then(data=>{
 
           }).catch(e=>{
 
