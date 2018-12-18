@@ -24,6 +24,7 @@ import {Ha01Page} from "../ha01/ha01";
 import {PlayerService} from "../../service/player.service";
 import {DwEmitService} from "../../service/util-service/dw-emit.service";
 import {HbPage} from "../hb/hb";
+import {DataConfig} from "../../app/data.config";
 
 
 /**
@@ -118,17 +119,17 @@ export class HaPage {
 
     this.scheduleList = [];
     //获取用户信息
-    this.u = new UEntity();
-    this.userSqlite.getUo()
-      .then(data=>{
-        if(data.code==0 ){
-          this.u=data.u;
-          //消息队列接收
-          // this.webSocketService.connect(this.u.aQ);
-        }else{
-          // alert(data.message);
-        }
-      })
+    this.u = DataConfig.uInfo;
+    // this.userSqlite.getUo()
+    //   .then(data=>{
+    //     if(data.code==0 ){
+    //       this.u=data.u;
+    //       //消息队列接收
+    //       // this.webSocketService.connect(this.u.aQ);
+    //     }else{
+    //       // alert(data.message);
+    //     }
+    //   })
 
     // setTimeout(()=>{
     //   this.sqliteService.executeSql("select substr(playersFinishDate,1,10) finishDate,count(*) numL from GTD_D " +
