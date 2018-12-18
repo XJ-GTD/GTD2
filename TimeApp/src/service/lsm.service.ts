@@ -95,9 +95,13 @@ export class LsmService {
               u.uI = ui;
               if (datal.data && datal.data.accountQueue) {
                 u.aQ = datal.data.accountQueue
+                if(datal.data.token){
+                  u.uT=datal.data.token
+                }
                 console.log("------lsm visitor 游客登录成功更新GTD_A消息队列编号：" + u.aQ)
                 //赋值消息队列
                 DataConfig.uInfo.aQ = u.aQ;
+                AppConfig.Token=u.uT;
               }
               //用户如果存在则更新
               return this.basesqlite.update(u)

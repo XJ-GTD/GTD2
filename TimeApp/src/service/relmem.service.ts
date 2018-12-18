@@ -86,11 +86,14 @@ export class RelmemService {
         //添加本地联系人
         this.relmemSqlite.aru(ru).then(data=>{
           console.log("--------- 2.RelmemService aru() sqlite add contact end: "+JSON.stringify(data))
-          console.log("--------- 3.RelmemService aru() restful add contact start ----------")
-          return this.pnRes.au(uI,rc,auI)
+
+         if(auI != null && auI !=''){
+           console.log("--------- 3.RelmemService aru() restful add contact start ----------")
+           return this.pnRes.au(uI,rc,auI)
+         }
         }).then(data=>{
-          console.log("--------- 4.RelmemService aru() restful add contact end: "+JSON.stringify(data))
           if(data && data.code && data.code != null){
+            console.log("--------- 4.RelmemService aru() restful add contact end: "+JSON.stringify(data))
             base = data;
           }
           resolve(base)
