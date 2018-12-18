@@ -16,7 +16,7 @@ public interface IAuthService {
      * 游客验证
      * @return
      */
-    String visitorsLogin(LoginInDto inDto);
+    LoginOutDto visitorsLogin(LoginInDto inDto);
 
     /**
      * 密码登陆验证

@@ -22,7 +22,7 @@ export class AppConfig {
   /* 环境URL 头部 */
    // private static REQUEST_URL: string = "http://www.guobaa.com/gtd";
   private static REQUEST_URL: string = "https://192.168.0.176:8888/gtd";//连接本地数据库
-  // private static REQUEST_URL: string = "https://192.168.99.5:8888/gtd";//连接本地数据库
+  // private static REQUEST_URL: string = "https://192.168.99.22:8888/gtd";//连接本地数据库
 
   /* RabbitMq WebSocket */
   // public static RABBITMQ_WS_URL: string = "ws://www.guobaa.com/ws";
@@ -30,6 +30,7 @@ export class AppConfig {
 
   /* RabbitMq SockJs */
   public static RABBITMQ_SJ_URL: string = "http://192.168.0.219:15674/stomp";
+
   /* token */
   public static Token: string = "";
   /* 请求头 OPTIONS*/
@@ -71,7 +72,7 @@ export class AppConfig {
 
   public static PERSON_LG: string = AppConfig.PERSON_URL + "/logout";   //用户注销
 
-  public static PERSON_SU: string = AppConfig.PERSON_URL + "/search_user";   //用户搜索
+  public static PERSON_SU: string = AppConfig.PERSON_URL + "/search";   //用户搜索
 
   public static PERSON_UP: string = AppConfig.PERSON_URL + "/update_info";   //用户更新
 

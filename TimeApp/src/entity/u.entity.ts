@@ -73,38 +73,38 @@ export class UEntity {
 
   get usq(): string {
     let sql='update GTD_A set';
-    if(this._uN!=null){
+    if(this._uN!=null && this._uN!=''){
       sql=sql+' uN="' + this._uN +'",';
     }
-    if(this.biy!=null){
-      sql=sql+' biy="' + this.biy +'",';
+    if(this._biy!=null && this._biy!=''){
+      sql=sql+' biy="' + this._biy +'",';
     }
-    if(this._uT!=null){
+    if(this._uT!=null && this._uT!=''){
       sql=sql+' uT="' + this._uT +'",';
     }
-    if(this._hIU!=null){
+    if(this._hIU!=null && this._hIU!=''){
       sql=sql+' hIU="' + this._hIU +'",';
     }
-    if(this._uCt!=null){
+    if(this._uCt!=null && this._uCt!=''){
       sql=sql+' uCt="' + this._uCt +'",';
     }
-    if(this._aQ!=null){
+    if(this._aQ!=null && this._aQ!=''){
       sql=sql+' aQ="' + this._aQ +'",';
     }
-    if(this._uS!=null){
+    if(this._uS!=null && this._uS!=''){
       sql=sql+' uS="' + this._uS +'",';
     }
-    if(this._uc!=null){
+    if(this._uc!=null && this._uc!=''){
       sql=sql+' uc="' + this._uc +'",';
     }
-    if(this._iC!=null){
+    if(this._iC!=null && this._iC!=''){
       sql=sql+' iC="' + this._iC +'",';
     }
-    if(this._rn!=null){
+    if(this._rn!=null && this._rn!=''){
       sql=sql+' rn="' + this._rn +'",';
     }
-    if(this._oUI != null){
-      sql = sql + ' uI="' + this._oUI +'" where uI="' + this._uI +'"';
+    if(this._oUI != null && this._oUI!=''){
+      sql = sql + ' uI="' + this._uI +'" where uI="' + this._oUI +'"';
     }else{
       sql = sql + ' uI="' + this._uI +'" where uI="' + this._uI +'"';
     }
@@ -118,37 +118,37 @@ export class UEntity {
 
   get dsq(): string {
     let sql='DELETE FROM GTD_A WHERE 1=1 ';
-    if(this._uN!=null){
+    if(this._uN!=null && this._uN!=''){
       sql=sql+' and uN="' + this._uN +'"';
     }
-    if(this.biy!=null){
-      sql=sql+' and biy="' + this.biy +'"';
+    if(this._biy!=null && this._biy!=''){
+      sql=sql+' and biy="' + this._biy +'"';
     }
-    if(this._uT!=null){
+    if(this._uT!=null && this._uT!=''){
       sql=sql+' and uT="' + this._uT +'"';
     }
-    if(this._hIU!=null){
+    if(this._hIU!=null && this._hIU!=''){
       sql=sql+' and hIU="' + this._hIU +'"';
     }
-    if(this._uCt!=null){
+    if(this._uCt!=null && this._uCt!=''){
       sql=sql+' and uCt="' + this._uCt +'"';
     }
-    if(this._aQ!=null){
+    if(this._aQ!=null && this._aQ!=''){
       sql=sql+' and aQ="' + this._aQ +'"';
     }
-    if(this._uS!=null){
+    if(this._uS!=null && this._uS!=''){
       sql=sql+' and uS="' + this._uS +'"';
     }
-    if(this._uI != null){
+    if(this._uI != null && this._uI!=''){
       sql = sql + ' and uI="' + this._uI +'"';
     }
-    if(this._uc!=null){
+    if(this._uc!=null && this._uc!=''){
       sql=sql+' and uc="' + this._uc +'"';
     }
-    if(this._iC != null){
+    if(this._iC != null && this._iC!=''){
       sql = sql + ' and iC="' + this._iC +'"';
     }
-    if(this._rn != null){
+    if(this._rn != null && this._rn!=''){
       sql = sql + ' and rn="' + this._rn +'"';
     }
     this._dsq=sql;

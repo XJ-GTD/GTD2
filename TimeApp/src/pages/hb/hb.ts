@@ -1,28 +1,12 @@
-import { Component, ViewChild } from '@angular/core';
-import {
-  AlertController,
-  Content,
-  FabContainer,
-  IonicPage,
-  LoadingController,
-  NavController,
-  NavParams, Platform,
-  Tabs,
-  ViewController
-} from 'ionic-angular';
+import {Component, EventEmitter, Output, ViewChild} from '@angular/core';
+import { Content, IonicPage, NavController, NavParams, Tabs, ViewController } from 'ionic-angular';
 import { XiaojiAssistantService } from "../../service/util-service/xiaoji-assistant.service";
 import { ParamsService } from "../../service/util-service/params.service";
-import { HttpClient } from "@angular/common/http";
-import { AppConfig } from "../../app/app.config";
 import { AiuiModel } from "../../model/aiui.model";
 import { ScheduleModel } from "../../model/schedule.model";
-import { File } from "@ionic-native/file";
-import { Base64 } from "@ionic-native/base64";
-import  {XiaojiFeedbackService} from "../../service/util-service/xiaoji-feedback.service";
-import {Hb01Page} from "../hb01/hb01";
+import { XiaojiFeedbackService } from "../../service/util-service/xiaoji-feedback.service";
+import { Hb01Page } from "../hb01/hb01";
 import {DwEmitService} from "../../service/util-service/dw-emit.service";
-import {WsResModel} from "../../model/ws.res.model";
-import {WsModel} from "../../model/ws.model";
 
 declare var cordova: any;
 /**
@@ -43,6 +27,7 @@ export class HbPage {
   @ViewChild(Hb01Page) Hb01Page:Hb01Page;
   @ViewChild(Content) content: Content;
 
+
   data: any;
   modeFlag: boolean = true;   //判断助手模式 true语音false手输
   initFlag:boolean = false;   //页面初始化
@@ -60,30 +45,40 @@ export class HbPage {
   schedule: ScheduleModel;
   aiuiData: AiuiModel;
   messages: Array<AiuiModel>; //聊天数据队列
+  //语音界面数据传递
+  public hbOfMq: EventEmitter<any> = new EventEmitter();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController,
+              private dwEmit: DwEmitService,
               public paramsService: ParamsService,
               public xiaojiSpeech: XiaojiAssistantService,
               public xiaojiFeekback: XiaojiFeedbackService) {
-    this.init();
+
   }
 
-  test($event) {
-    alert("hbpage");
-  }
 
   ionViewDidLoad() {
+
+    this.dwEmit.getHbData((data)=>{
+      this.messageHanding(data);
+    });
+
+
+      this.messages = [];
+      this.aiuiData = new AiuiModel();
+
+    //语音唤醒冲突暂时关闭
+    //this.initWakeUp();
+
+    // this.dwEmit.getHbData(data => {
+    //   this.messageHanding(data);
+    // })
 
     console.log('ionViewDidLoad HbPage');
   }
 
-  init() {
-    this.messages = [];
-    this.aiuiData = new AiuiModel();
-    //语音唤醒冲突暂时关闭
-    //this.initWakeUp();
-  }
+
 
   initWakeUp(){
     this.xiaojiSpeech.initbaiduWakeUp(isWakeUp=>{

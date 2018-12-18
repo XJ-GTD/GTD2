@@ -7,6 +7,8 @@ public enum ResultCode {
     REPEAT_MOBILE(10101),                 //手机号重复
     REPEAT_UUID(10102),                   //用户ID重复
 
+    REPEAT_PLAYER(10200),                   //好友添加重复
+
     NULL_UUID(11001),                     //用户ID为空
     NULL_MOBILE(11002),                   //手机号为空
     NULL_DEVICE_ID(11003),                 //设备ID为空
@@ -26,7 +28,7 @@ public enum ResultCode {
 
     NOT_USER(11500),                       //用户尚未注册
     NOT_PLAYER(11501),                      //没有添加好友
-    NOT_AUTH_PLYER(11502),                  //已被好友拉黑
+    NOT_AUTH_PLAYER(11502),                  //已被好友拉黑
 
 
     ERROR_UUID(20001),                     //用户ID错误

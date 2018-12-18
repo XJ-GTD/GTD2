@@ -1,5 +1,4 @@
-import { EventEmitter, Injectable } from "@angular/core";
-import { HbPage } from "../../pages/hb/hb";
+import {Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Injectable, NgModule, Output} from "@angular/core";
 import { HaPage } from "../../pages/ha/ha";
 
 /**
@@ -8,32 +7,49 @@ import { HaPage } from "../../pages/ha/ha";
 @Injectable()
 export class DwEmitService {
 
+
+
   //首页数据传递
-  private ha: EventEmitter<any> = new EventEmitter();
+  private ha: EventEmitter<any>;
 
   public setHaData($event) {
+    this.createEmit(this.ha);
     this.ha.emit($event);
   }
 
-  public getHaData(page: HaPage) {
+  public getHaData(success) {
     this.ha.subscribe($event => {
       //调取页面方法,在这里调用页面逻辑
-      page.test($event);
+      success($event);
     })
   }
 
   //语音界面数据传递
-  private hb: EventEmitter<any> = new EventEmitter();
+  public hbOfMq: EventEmitter<any> = new EventEmitter();
 
-  public setHbData($event) {
-    this.hb.emit($event);
+  public setHbData($event): void {
+    this.hbOfMq.emit($event);
   }
 
-  public getHbData(page: HbPage) {
-    this.hb.subscribe($event => {
-      page.messageHanding($event);
-    })
+  public getHbData(success){
+    this.hbOfMq.subscribe($event => {
+      success($event).then(() => {
+        this.destroyEmit(this.hbOfMq);
+      });
+    });
   }
 
-
+  /**
+   * 统一的创建方法
+   * @param emit
+   */
+  private createEmit(emit: EventEmitter<any>) {
+    if (emit == null) emit = new EventEmitter<any>();
+  }
+  /**
+   * 统一的销毁方法
+   */
+  private destroyEmit(emit: EventEmitter<any>) {
+    emit = null;
+  }
 }
