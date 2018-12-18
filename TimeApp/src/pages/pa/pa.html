@@ -44,7 +44,7 @@
       <ion-item-sliding *ngFor="let u of us">
         <ion-item (click)="toMemberDetail(u)">
           <ion-avatar item-start >
-            <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
+            <img [src]="u.hiu">
           </ion-avatar>
           <ion-label>
             <h2 style="color: #000;">{{u.ran}}</h2>

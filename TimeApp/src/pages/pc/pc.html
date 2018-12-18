@@ -21,18 +21,18 @@
   <!--<span style="width: 60pt;display: block;text-align: center;">李四</span>-->
   <!--</div>-->
   <!--</div>-->
-  <ion-item style="height: 40%" class="flag">
+  <ion-item style="height: 40%" class="flag" *ngIf="ru">
     <ion-avatar >
       <!--<ion-img width="80" height="80" src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg" ></ion-img>-->
-      <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg" style="width: 60px;height: 60px ;margin: 0 auto">
+      <img [src]="ru.hiu" style="width: 60px;height: 60px ;margin: 0 auto">
 
     </ion-avatar>
-    <ion-title style="margin: 0 auto">{{tel}}</ion-title>
+    <ion-title style="margin: 0 auto">{{ru.rN}}</ion-title>
   </ion-item>
   <!--<div>-->
-  <ion-item class="flag">
+  <ion-item class="flag" *ngIf="ru">
     <ion-label>备注</ion-label>
-    <ion-input type="text" text-end placeholder="{{tel}}" [(ngModel)]="name"></ion-input>
+    <ion-input type="text" text-end placeholder="{{ru.rC}}" [(ngModel)]="ru.ran"></ion-input>
   </ion-item>
   <ion-item *ngIf="code == 1 || code == 2" class="flag">
     <ion-label>接收该用户的推送</ion-label>

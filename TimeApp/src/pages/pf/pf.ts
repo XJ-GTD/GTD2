@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
-import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
 import {UEntity} from "../../entity/u.entity";
 import { RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
-import {PageConfig} from "../../app/page.config";
+import {DataConfig} from "../../app/data.config";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the PfPage page.
@@ -25,7 +25,6 @@ export class PfPage {
   isRegist: boolean ;
   existCode: any;//1 存在 2 已注册未添加 3 未注册
   tel:any;
-  i: number = 1;
 
   errorCode: number;//
 
@@ -34,6 +33,7 @@ export class PfPage {
 
   uo:UEntity;
   sr:any = new Array(RuModel);
+  ru:RuModel;
 
   constructor(
     public navCtrl: NavController,
@@ -41,13 +41,13 @@ export class PfPage {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private relmemService: RelmemService,
-    private http:HttpClient) {
+    private utilService: UtilService) {
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PfPage');
-    this.uo = this.navParams.get('uo');
-
+    this.uo = DataConfig.uInfo;
   }
 
   goBack() {
@@ -76,63 +76,25 @@ export class PfPage {
       }
     }
     if(this.checkMoblie == false && this.checkMoblieNull == false){
-      this.relmemService.getrus(null,null,null,this.tel,"0").then(data=>{
-        if(data.us != null && data.us != undefined){
-          console.log("查询用户数为::" + data.us + data.us.length);
-          if(data.us.length > 0){
-            //已添加
-            this.sr = data.us;
-            for(let i = 0;i<data.us.length;i++){
-              console.log(data.us[i]);
-            }
-            this.isRegist = true;
-            this.existCode = 1;
-          }else{
-            //未添加
-            let tmp = new RuModel();
-            tmp.rC= this.tel;
-            tmp.rN= this.tel;
-            let arr = [tmp];
-            this.sr = arr;
-            this.isRegist= false;
-            this.existCode = 3;
-          }
+      this.ru = undefined;
+      this.relmemService.su(this.tel).then(data=>{
+        if(data.code == 0){
+          this.isRegist = true;
+          this.existCode = 2;
+          this.ru = data;
+          this.ru.rC = this.tel;
         }else{
-          console.log(this.tel + "::用户查询失败")
-          let tmp = new RuModel();
-          tmp.rC= this.tel;
-          tmp.rN= this.tel;
-          let arr = [tmp];
-          this.sr = arr;
-          this.isRegist= false;
+          this.ru = new RuModel();
+          this.isRegist = false;
           this.existCode = 3;
+          this.ru.rN = this.tel;
+          this.ru.rC = this.tel;
+          this.ru.hiu = DataConfig.defultHeadImg;
+          this.ru.rI = this.tel;
         }
-
-      }).catch(reason => {
-        console.log(this.tel + "::用户查询失败catch")
-        let tmp = new RuModel();
-        tmp.rC= this.tel;
-        tmp.rN= this.tel;
-        let arr = [tmp];
-        this.sr = arr;
-        this.isRegist= false;
-        this.existCode = 3;
+        this.errorCode = 0;
       })
-      // 查询输入手机号对应的信息
-      // if(this.tel==13697975154){
-      //   this.name="kang";
-      //   this.isRegist= true;
-      //   this.existCode = 1;
-      // }else if(this.tel==13697975153){
-      //   this.name="kang";
-      //   this.isRegist= true;
-      //   this.existCode = 2;
-      // }else{
-      //   this.name=this.tel;
-      //   this.isRegist= false;
-      //   this.existCode = 3;
-      // }
-      this.errorCode = 0;
+
     }else{
       this.name=null;
       this.isRegist=false;
@@ -140,13 +102,12 @@ export class PfPage {
     }
   }
 
-  toPersonalAddDetail(u){
+  toPersonalAddDetail(ru){
     let data:Object ={
-      name : this.name,
-      tel: this.tel,
+      name : this.name,//名称
+      // tel: this.tel,//手机号
       code: this.existCode,
-      u : u,
-      uo:this.uo
+      ru : ru,//手机号信息
     }
     if(this.existCode == 1){
       console.log('PfPage跳转P,bPage')

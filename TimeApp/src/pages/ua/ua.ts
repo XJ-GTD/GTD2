@@ -43,6 +43,8 @@ export class UaPage {
   timer:any;
 
 
+  rePage:string;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private formBuilder: FormBuilder,
               private http: HttpClient,
@@ -56,7 +58,7 @@ export class UaPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UaPage');
-    
+    this.rePage = this.navParams.get("rePage");
   }
 
   register() {
@@ -77,14 +79,23 @@ export class UaPage {
               console.debug("登录返回信息::" + JSON.stringify(data));
               // 登陆成功
               if(data1.code == 0) {
-                console.debug("登录失败");
+                console.debug("登录成功");
                 let alert = this.alertCtrl.create({
                   title: '提示信息',
                   subTitle: "注册成功",
                   buttons: [{
                     text: '确定', role: 'cancel', handler: () => {
-                      //跳转首页
-                      this.navCtrl.setRoot('HzPage');
+                      if(!this.rePage){
+                        //跳转首页
+                        this.navCtrl.setRoot('HzPage');
+                      }else{
+                        this.navCtrl.getViews().forEach(page=>{
+                          if(page.name == this.rePage){
+                            this.navCtrl.popTo(page);
+                          }
+                        })
+                      }
+
                     }
                   }]
                 });

@@ -59,6 +59,11 @@ export class UcPage {
       if(data.code == 0){
         this.state = false;
         console.log("修改信息成功")
+        this.userService.getUo().then(data=>{
+          if(data.code == 0){
+
+          }
+        })
       }else{
         this.state = true;
         console.log("修改信息失败")

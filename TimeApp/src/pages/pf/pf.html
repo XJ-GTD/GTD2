@@ -50,21 +50,21 @@
       <!--<span *ngIf="isRegist == false">未注册</span>-->
       <!--</div>-->
       <!--</ion-item>-->
-      <div *ngFor="let index of sr">
-        <ion-item>
+      <!--<div *ngFor="let index of sr">-->
+        <ion-item *ngIf="ru">
           <ion-avatar item-start>
-            <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
+            <img [src]="ru.hiu">
           </ion-avatar>
           <ion-label>
-            <span style="font-family: PingFang-SC-Bold">{{index.rN}}</span>
+            <span style="font-family: PingFang-SC-Bold">{{ru.rN}}</span>
           </ion-label>
-          <div item-end (click)="toPersonalAddDetail(index)">
+          <div item-end (click)="toPersonalAddDetail(ru)">
             <span *ngIf="existCode == 1" style="color: red">已添加</span>
             <span *ngIf="existCode == 2" style="color: #488aff">添加</span>
             <span *ngIf="existCode == 3">未注册</span>
           </div>
         </ion-item>
-      </div>
+      <!--</div>-->
       <!--</ion-list>-->
     </div>
   </div>
