@@ -7,10 +7,9 @@ import { EventEmitter, Injectable } from "@angular/core";
 export class DwEmitService {
 
   //首页数据传递
-  private ha: EventEmitter<any>;
+  private ha: EventEmitter<any> = new EventEmitter();
 
   public setHaData($event) {
-    this.createEmit(this.ha);
     this.ha.emit($event);
   }
 
@@ -34,13 +33,6 @@ export class DwEmitService {
     });
   }
 
-  /**
-   * 统一的创建方法
-   * @param emit
-   */
-  private createEmit(emit: EventEmitter<any>) {
-    if (emit == null) emit = new EventEmitter<any>();
-  }
   /**
    * 统一的销毁方法
    */
