@@ -72,8 +72,11 @@ export class AppConfig {
 
   public static PERSON_LG: string = AppConfig.PERSON_URL + "/logout";   //用户注销
 
-  public static PERSON_SU: string = AppConfig.PERSON_URL + "/search_user";   //用户搜索
+  public static PERSON_SU: string = AppConfig.PERSON_URL + "/search";   //用户搜索
 
+  public static PERSON_UP: string = AppConfig.PERSON_URL + "/update_info";   //用户更新
+
+  public static PERSON_ADDU: string = AppConfig.PERSON_URL + "/add_player";   //用户添加
 
   /* ------------------------ 用户类 end--------------------------*/
 

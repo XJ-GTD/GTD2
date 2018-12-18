@@ -4,7 +4,7 @@ import { SkillConfig } from "../../app/skill.config";
 import { DwEmitService } from "./dw-emit.service";
 import { WorkService } from "../work.service";
 import { RelmemService } from "../relmem.service";
-import {WsResDataModel, WsResModel} from "../../model/ws.res.model";
+import { WsResDataModel } from "../../model/ws.res.model";
 
 /**
  * webSocket公用处理方法
@@ -144,7 +144,7 @@ export class DwMqService {
     let rel = '';
     let rF = '';
     let qrL=[];
-    this.relmem.aru('',ran,rN,rC,rel,rF,qrL).then(data=>{
+    this.relmem.aru('','',ran,rN,rC,rel,'',rF,qrL).then(data=>{
 
     }).catch(e=>{
 

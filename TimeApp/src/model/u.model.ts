@@ -16,6 +16,7 @@ export class UModel extends BsModel{
   private _aQ: string=null;    //消息队列
   private _uT:string=null; //token
   private _uty:string=null;//0游客1正式用户
+  private _rn: string=null;   //真实姓名
 
   get uI(): string {
     return this._uI;
@@ -95,5 +96,13 @@ export class UModel extends BsModel{
 
   set uty(value: string) {
     this._uty = value;
+  }
+
+  get rn(): string {
+    return this._rn;
+  }
+
+  set rn(value: string) {
+    this._rn = value;
   }
 }

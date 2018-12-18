@@ -3,6 +3,7 @@ import { BaseSqlite } from "./sqlite/base-sqlite";
 import { UtilService } from "./util-service/util.service";
 import { UserService } from "./user.service";
 import { DataConfig } from "../app/data.config";
+import {AppConfig} from "../app/app.config";
 
 /**
  * 整体配置Service
@@ -26,8 +27,13 @@ export class ConfigService {
       }).then(data=> {
        //初始化静态变量数据
         this.user.getUo().then(ud=>{
-          if(ud && ud.u){
-            DataConfig.uInfo=ud.u;
+          if(ud){
+            let u:any= ud;
+            DataConfig.uInfo=u;
+            if(u.uT){
+              AppConfig.Token=u.uT;
+            }
+            console.log("ConfigService init userInfo :" + JSON.stringify(DataConfig.uInfo))
             resolve(true)
           }else{
             resolve(false)

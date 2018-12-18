@@ -5,11 +5,11 @@ import { BsModel } from "../model/out/bs.model";
 import { RuEntity } from "../entity/ru.entity";
 import { RuoModel } from "../model/out/ruo.model";
 import { RuModel } from "../model/ru.model";
-import { AppConfig } from "../app/app.config";
 import { BaseSqlite } from "./sqlite/base-sqlite";
 import { UtilService } from "./util-service/util.service";
 import { PnRestful } from "./restful/pn-restful";
 import { DataConfig } from "../app/data.config";
+import {HttpClient} from "@angular/common/http";
 
 
 /**
@@ -19,31 +19,42 @@ import { DataConfig } from "../app/data.config";
 export class RelmemService {
   relmemSqlite: RelmemSqlite;
   pnRes:PnRestful;
-  data:any;
   constructor(private baseSqlite: BaseSqlite,
-              private util:UtilService) {
+              private util:UtilService,private http: HttpClient) {
     this.relmemSqlite = new RelmemSqlite(baseSqlite);
-  }
-
-
-  relMeMinit(){
-    let rc = '12345678900'
-    let rel='0';
-    this.aru('',rc,rc,rc,rel,'0',null)
-    let rc1 = '12345678901'
-    let rel1='0';
-    this.aru('','','',rc1,rel1,'0',null)
-    let rc2 = '12345678902'
-    let rel2='0';
-    this.aru('','','',rc2,rel2,'0',null)
-    let rc3 = '12345678903'
-    let rel3='0';
-    this.aru('','','',rc3,rel3,'0',null)
+    this.pnRes=new PnRestful(http);
   }
 
   /**
+   * 联系人搜索
+   * @param {string} am 手机号
+   */
+  su(am:string):Promise<RuModel>{
+    return new Promise((resolve, reject) =>{
+      let rs = new RuModel();
+      console.log("------------ RelmemService su() start user ---------------")
+      this.pnRes.su(am).then(data=>{
+        rs=data;
+        if(data && data.code==0){
+          rs.rI=data.data.userId;
+          rs.hiu=data.data.headImg;
+          rs.rN=data.data.userName;
+        }
+        console.log("------------ RelmemService su() user end : "+JSON.stringify(data));
+        resolve(rs)
+      }).catch(e=>{
+        alert("user su() Error: " + JSON.stringify(e))
+        console.error("RelmemService su() Error: " + JSON.stringify(e))
+        rs.code = 1;
+        rs.message=e.message;
+        reject(rs)
+      })
+    })
+  }
+  /**
    * 添加联系人
    * @param {string} uI 当前登录人ID
+   * *@param {string} auI 联系人用户ID
    * @param {string} ran 别名
    * @param {string} rN 名称
    * @param {string} rc 联系电话
@@ -52,8 +63,9 @@ export class RelmemService {
    * @param {Array} qrL Array<RuModel>  群组人员list
    * @returns {Promise<BsModel>}
    */
-  aru(uI:string,ran:string,rN:string,rc:string,rel:string,rF:string,qrL:Array<any>):Promise<BsModel>{
+  aru(uI:string,auI:string,ran:string,rN:string,rc:string,rel:string,hiu:string,rF:string,qrL:Array<RuModel>):Promise<BsModel>{
     return new Promise((resolve, reject)=>{
+      let base=new BsModel();
       let ru=new RuEntity();
       ru.id=this.util.getUuid();
       ru.ran=ran;
@@ -61,46 +73,45 @@ export class RelmemService {
       ru.rC=rc;
       ru.rel=rel;
       ru.rF = rF;
+      ru.rI=auI;
+      ru.hiu=hiu;
       if(ru.rN == null || ru.rN == ''){
         ru.rN=rc;
       }
       if(ru.ran == null || ru.ran == ''){
         ru.ran=rc;
       }
-      let base=new BsModel();
-
       if(rel=='0'){
-        //如果是人,先判断服务器是否存在，如果存在则获取联系人信息，如果不存在则添加成本地的
-        this.pnRes.su(uI,rc,AppConfig.Token).then(data=>{
-          this.data = data;
-          if(this.data.code==0){
-            ru.rN=this.data.userName;
-            ru.ran=this.data.userName;
-            ru.hiu=this.data.headImgUrl;
-            ru.rI=this.data.uI;
-          }
-          //添加本地联系人
-          this.relmemSqlite.aru(ru).then(data=>{
-            base = this.data
-            resolve(base)
-          }).catch(e=>{
-            base.code=DataConfig.ERR_CODE;
-            base.message=e.message;
-            reject(base);
-          })
+        console.log("--------- 1.RelmemService aru() sqlite add contact start -------------")
+        //添加本地联系人
+        this.relmemSqlite.aru(ru).then(data=>{
+          console.log("--------- 2.RelmemService aru() sqlite add contact end: "+JSON.stringify(data))
 
-        }).catch(err => {
-          base.message = err.message
-          base.code=1
-          reject(base)
+         if(auI != null && auI !=''){
+           console.log("--------- 3.RelmemService aru() restful add contact start ----------")
+           return this.pnRes.au(uI,rc,auI)
+         }
+        }).then(data=>{
+          if(data && data.code && data.code != null){
+            console.log("--------- 4.RelmemService aru() restful add contact end: "+JSON.stringify(data))
+            base = data;
+          }
+          resolve(base)
+        }).catch(e=>{
+          console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e))
+          base.code=DataConfig.ERR_CODE;
+          base.message=e.message;
+          reject(base);
         })
+
       }else{
         //如果是群
         this.relmemSqlite.aru(ru).then(data=>{
           if(rel=='1' && qrL != null && qrL.length>0){
-            for(let i=0;i<qrL.length;i++){
-              this.addRgu(ru.id,qrL[i].id)
-            }
+            // for(let i=0;i<qrL.length;i++){
+            //   this.addRgu(ru.id,qrL[i].id)
+            // }
+            this.addRgus(ru.id,qrL)
           }
           resolve(base);
         }).catch(e=>{
@@ -108,7 +119,6 @@ export class RelmemService {
           base.message=e.message;
           reject(base);
         })
-
       }
 
     })
@@ -200,6 +210,43 @@ export class RelmemService {
           base.message=e.message;
           reject(base);
         })
+    })
+  }
+  /**
+   * 添加多个群组人员
+   * @param {string} bi 群组ID
+   * @param {Array<RuModel>} rus 关系人ID
+   * @returns {Promise<BsModel>}
+   */
+  addRgus(id:string,rus:Array<RuModel>):Promise<BsModel>{
+    return new Promise((resolve, reject)=>{
+      let bs = new BsModel();
+      if(rus && rus.length>0){
+        if(this.baseSqlite.isMobile()){
+          let sql = '';
+          for(let i=0;i<rus.length;i++){
+            sql+='insert into GTD_B_X (bi,bmi) ' + 'values("'+ id+'","'+ rus[i].id+'");'
+          }
+          console.log("--------- RelmemService addRgus() add Group personnel sql: "+sql)
+          this.baseSqlite.importSqlToDb(sql).then(data=>{
+            console.log("--------- RelmemService addRgus() restful add Group personnel End: "+JSON.stringify(data))
+            resolve(bs)
+          }).catch(e=>{
+            console.log("--------- RelmemService addRgus() restful add Group personnel Error: "+JSON.stringify(e))
+            bs.code=DataConfig.ERR_CODE
+            bs.message=e.message;
+            reject(bs)
+          })
+        }else{
+          for(let i=0;i<rus.length;i++){
+            this.addRgu(id,rus[i].id)
+          }
+          resolve(bs)
+        }
+      }else{
+
+      }
+
     })
   }
   /**

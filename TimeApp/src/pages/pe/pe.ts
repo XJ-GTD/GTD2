@@ -4,6 +4,7 @@ import {UEntity} from "../../entity/u.entity";
 import {RuModel} from "../../model/ru.model";
 import {RelmemService} from "../../service/relmem.service";
 import {PageConfig} from "../../app/page.config";
+import {DataConfig} from "../../app/data.config";
 
 /**
  * Generated class for the PePage page.
@@ -32,7 +33,8 @@ export class PePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PePage');
-    this.uo = this.navParams.get("uo");
+    this.uo = DataConfig.uInfo;
+    console.log("pe 获取用户信息："+JSON.stringify(this.uo))
   }
 
   toAddGroupMember(){
@@ -64,7 +66,7 @@ export class PePage {
   };
 
   save(){
-    this.relmemService.aru(this.uo.uI,null,this.qmc,null,'1',null,this.qcy).then(data=>{
+    this.relmemService.aru(this.uo.uI,null,null,this.qmc,null,'1',null,null,this.qcy).then(data=>{
       if(data.code == 0){
         console.log("添加群成功");
         //setroot
