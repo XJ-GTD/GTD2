@@ -59,7 +59,7 @@
 
         <source-file src="src/android/com/baidu/aip/asrwakeup3/core/recog/listener/ChainRecogListener.java" target-dir="src/com/baidu/aip/asrwakeup3/core/recog/listener/"/>
         <source-file src="src/android/com/baidu/aip/asrwakeup3/core/recog/listener/IRecogListener.java" target-dir="src/com/baidu/aip/asrwakeup3/core/recog/listener/"/>
-        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/recog/listener/MessageStatusRecogListener.java" target-dir="com/baidu/aip/asrwakeup3/core/recog/listener/"/>
+        <source-file src="src/android/com/baidu/aip/asrwakeup3/core/recog/listener/MessageStatusRecogListener.java" target-dir="src/com/baidu/aip/asrwakeup3/core/recog/listener/"/>
         <source-file src="src/android/com/baidu/aip/asrwakeup3/core/recog/listener/RecogEventAdapter.java" target-dir="src/com/baidu/aip/asrwakeup3/core/recog/listener/"/>
         <source-file src="src/android/com/baidu/aip/asrwakeup3/core/recog/listener/StatusRecogListener.java" target-dir="src/com/baidu/aip/asrwakeup3/core/recog/listener/"/>
 
