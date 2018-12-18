@@ -122,7 +122,7 @@ export class HaPage {
     this.userSqlite.getUo()
       .then(data=>{
         if(data.code==0 ){
-          this.u=data.u;
+          //this.u=data.u;
           //消息队列接收
           // this.webSocketService.connect(this.u.aQ);
         }else{

@@ -124,6 +124,7 @@ export class HbPage {
 
   //启动语音输入
   startXiaoJi() {
+    console.log("开始语音输入")
     if (this.xiaojiSpeech.islistenAudioing) return;
     this.xiaojiSpeech.listenAudio(rs =>{
       this.xiaojiFeekback.audioSnare();
