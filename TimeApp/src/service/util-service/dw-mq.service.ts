@@ -52,23 +52,25 @@ export class DwMqService {
           });
           break;
         case SkillConfig.XF_SCF: //讯飞：日程查询
-          let jh = '';
-          let lbN='';
-          this.work.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
-            let str = "";
-            if(data && data.sjl && data.sjl.length>0){
-              str = '您有'+data.sjl.length+"个日程等待您去处理！"
-            }else{
-              str="您今天有大把的时间可以利用"
-            }
-            let url = "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&text=" + encodeURI(str);
-            var n = new Audio(url);
-            n.src = url;
-            n.play();
-            this.dwEmit.setHbData(data);
-          }).catch(e=>{
-            this.dwEmit.setHbData(e);
-          });
+          this.dwEmit.setHaData(mqDate);
+          this.dwEmit.setHbData(mqDate);
+          // let jh = '';
+          // let lbN='';
+          // this.work.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
+          //   let str = "";
+          //   if(data && data.sjl && data.sjl.length>0){
+          //     str = '您有'+data.sjl.length+"个日程等待您去处理！"
+          //   }else{
+          //     str="您今天有大把的时间可以利用"
+          //   }
+          //   let url = "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&text=" + encodeURI(str);
+          //   var n = new Audio(url);
+          //   n.src = url;
+          //   n.play();
+          //   this.dwEmit.setHbData(data);
+          // }).catch(e=>{
+          //   this.dwEmit.setHbData(e);
+          // });
           break;
         case SkillConfig.XF_PEC: //讯飞：参与人添加
           let ran='';

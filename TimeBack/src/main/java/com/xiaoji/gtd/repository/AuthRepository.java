@@ -64,4 +64,5 @@ public class AuthRepository {
 
         return em.createNativeQuery(sql).getSingleResult();
     }
+
 }

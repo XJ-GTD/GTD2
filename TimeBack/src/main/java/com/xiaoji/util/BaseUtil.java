@@ -90,7 +90,7 @@ public class BaseUtil {
      * @param userId
      * @return
      */
-    public static String getToken(String userId,String deviceId)
+    public static String getToken(String userId, String deviceId)
     {
         Date date = new Date();
         Map<String, Object> payload = new HashMap<String, Object>();

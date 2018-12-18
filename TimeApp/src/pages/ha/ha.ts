@@ -1,10 +1,9 @@
-import {Component, ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import {Component, Output, ViewChild} from '@angular/core';
+import {IonicPage, NavController, NavParams, ModalController, Modal} from 'ionic-angular';
 import { WebsocketService } from "../../service/util-service/websocket.service";
 import { ParamsService } from "../../service/util-service/params.service";
 import { XiaojiAlarmclockService } from "../../service/util-service/xiaoji-alarmclock.service";
 import { HttpClient } from "@angular/common/http";
-import { AppConfig } from "../../app/app.config";
 import { RemindModel } from "../../model/remind.model";
 import { ScheduleModel } from "../../model/schedule.model";
 import { ScheduleOutModel } from "../../model/out/schedule.out.model";
@@ -24,6 +23,8 @@ import {Ha01Page} from "../ha01/ha01";
 import {PlayerService} from "../../service/player.service";
 import {DwEmitService} from "../../service/util-service/dw-emit.service";
 import {HbPage} from "../hb/hb";
+import {AppConfig} from "../../app/app.config";
+import {PageConfig} from "../../app/page.config";
 
 
 /**
@@ -92,7 +93,7 @@ export class HaPage {
   test($event) {
     //示例方法，完成删除
     //在这里完成对数据传递页面的操作
-    alert("获取了版本数据" + $event.sjl.length);
+    alert("HaPage获取了版本数据" + $event);
   }
 
   ionViewDidLoad() {
@@ -356,8 +357,9 @@ export class HaPage {
   gotoToday(){
     this.ion2calendar.setViewDate(moment().format("YYYY-MM-DD"));
   }
+
   openVoice() {
-    let tab1RootModal  = this.modalCtr.create("HbPage");
+    let tab1RootModal = this.modalCtr.create(PageConfig.HB_PAGE);
     tab1RootModal.present();
     // this.navCtr.push("HbPage");
   }

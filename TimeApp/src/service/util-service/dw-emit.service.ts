@@ -1,5 +1,4 @@
-import { EventEmitter, Injectable } from "@angular/core";
-import { HbPage } from "../../pages/hb/hb";
+import {Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Injectable, NgModule, Output} from "@angular/core";
 import { HaPage } from "../../pages/ha/ha";
 
 /**
@@ -23,17 +22,20 @@ export class DwEmitService {
   }
 
   //语音界面数据传递
-  private hb: EventEmitter<any> = new EventEmitter();
+  public hbOfMq: EventEmitter<any> = new EventEmitter();
 
-  public setHbData($event) {
-    this.hb.emit($event);
+  public setHbData($event): void {
+    if (this.hbOfMq!= null) this.hbOfMq.emit($event);
+  }
+  public setEventEmitter(eventEmit:EventEmitter<any>){
+    this.hbOfMq = eventEmit;
+
   }
 
-  public getHbData(page: HbPage) {
-    this.hb.subscribe($event => {
-      page.messageHanding($event);
-    })
+  public getHbData(success){
+    this.hbOfMq.subscribe($event => {
+      success($event);
+    });
   }
-
 
 }
