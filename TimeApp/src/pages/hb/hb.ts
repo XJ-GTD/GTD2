@@ -47,7 +47,6 @@ export class HbPage {
   aiuiData: AiuiModel;
   messages: Array<AiuiModel>; //聊天数据队列
   //语音界面数据传递
-  public hbOfMq: EventEmitter<any> = new EventEmitter();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController,
@@ -234,7 +233,7 @@ export class HbPage {
 
   //返回方法
   goBack() {
-    this.dwEmit.hbOfMq.unsubscribe();
+    this.dwEmit.destroyHbData();
     this.viewCtrl.dismiss();
   }
 

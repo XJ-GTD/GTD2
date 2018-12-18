@@ -31,7 +31,7 @@ export class ConfigService {
             let u:any= ud;
             DataConfig.uInfo=u;
             if(u.uT){
-              AppConfig.HEADER_OPTIONS_JSON.headers.Authorization=u.uT;
+              AppConfig.HEADER_OPTIONS_JSON.headers.Authorization = u.uT;
             }
             console.log("ConfigService init userInfo :" + JSON.stringify(DataConfig.uInfo));
             resolve(true)
