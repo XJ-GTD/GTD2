@@ -1,4 +1,28 @@
 page-ub {
+
+  .login_header{
+
+    /* 修改Ionic CSS */
+    .toolbar-background-ios{
+      background: #fff !important;
+      border-color: #fff !important;
+    }
+    .button-inner .back-button-text{
+      display: none !important;
+    }
+    .back-button.show-back-button{
+      color: rgb(102,102,102);
+    }
+
+
+    .header_header{
+      font-family: PingFang-SC-Bold;
+      text-align: center;
+      font-size: 20px;
+      color: rgb(34,34,34);
+      padding-right: 30px;
+    }
+  }
   .user_login{
     height: 100%;
     $login_foot_height: 75px;

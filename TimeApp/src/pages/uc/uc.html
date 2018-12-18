@@ -37,15 +37,17 @@
 
     <button ion-item margin-top *ngIf="this.state == false">
       <ion-label item-start>性别</ion-label>
-      <ion-label item-end text-end *ngIf="uo.uS == 0">男</ion-label>
-      <ion-label item-end text-end *ngIf="uo.uS == 1">女</ion-label>
+      <ion-label item-end text-end *ngIf="uo.uS == 0">无</ion-label>
+      <ion-label item-end text-end *ngIf="uo.uS == 1">男</ion-label>
+      <ion-label item-end text-end *ngIf="uo.uS == 2">女</ion-label>
 
     </button>
     <ion-item margin-top *ngIf="this.state == true">
       <ion-label>性别</ion-label>
       <ion-select  item-end [(ngModel)]="uo.uS">
-        <ion-option value="0">男</ion-option>
-        <ion-option value="1">女</ion-option>
+        <ion-option value="0">无</ion-option>
+        <ion-option value="1">男</ion-option>
+        <ion-option value="2">女</ion-option>
       </ion-select>
     </ion-item>
     <button ion-item >

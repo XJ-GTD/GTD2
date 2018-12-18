@@ -27,6 +27,8 @@ export class UbPage {
   accountName: string;
   accountPassword: string;
 
+  rePage:string;//成功返回页面
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -39,6 +41,8 @@ export class UbPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UbPage');
+    this.rePage = this.navParams.get("rePage");
+    console.log(this.rePage)
   }
 
   signIn() {
@@ -60,9 +64,18 @@ export class UbPage {
            subTitle: "登录成功",
            buttons: [{
              text: '确定', role: 'cancel', handler: () => {
-               //跳转首页
-               console.log('UbPage跳转HzPage');
-               this.navCtrl.setRoot('HzPage');
+               if(!this.rePage){
+                 //跳转首页
+                 console.log('UbPage跳转HzPage');
+                 this.navCtrl.setRoot('HzPage');
+               }else{
+                 this.navCtrl.getViews().forEach(page=>{
+                   if(page.name == this.rePage){
+                     this.navCtrl.popTo(page);
+                   }
+                 })
+               }
+
              }
            }]
          });
@@ -92,11 +105,11 @@ export class UbPage {
 
   signUp() {
     console.log('UbPage跳转UaPage');
-    this.navCtrl.push('UaPage');
+    this.navCtrl.push('UaPage',{"rePage":this.rePage});
   }
 
   toUd() {
     console.log('UbPage跳转UdPage');
-    this.navCtrl.push('UdPage');
+    this.navCtrl.push('UdPage',{"rePage":this.rePage});
   }
 }

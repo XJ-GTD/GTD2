@@ -5,6 +5,7 @@ import {UserService} from "../../service/user.service";
 import { RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
 import {DataConfig} from "../../app/data.config";
+import {PageConfig} from "../../app/page.config";
 
 /**
  * Generated class for the PaPage page.
@@ -41,24 +42,17 @@ export class PaPage {
 
   init(){
     console.log("查询登陆用户");
-    // this.userService.getUo().then(data=>{
-    //   if(data.code == 0){
-    //     this.uo = data.u;
-    //   }
-    // }).catch(reason => {
-    //
-    // });
     this.uo = DataConfig.uInfo;
-    console.log("pa 获取用户信息："+JSON.stringify(this.uo))
-    console.log("查询个人");
-    this.queryPerson();
-    console.log("查询群组");
-    this.queryGroup();
   }
 
   toAddMember(){
+    if(this.uo.uty == "0"){
+      this.navCtrl.push(PageConfig.UB_PAGE,{"rePage":PageConfig.PA_PAGE});
+      return;
+    }
+
     console.log('PaPage跳转PfPage');
-    this.navCtrl.push('PfPage',{uo:this.uo});
+    this.navCtrl.push('PfPage');
   }
 
   toGroupMember(g){
@@ -68,10 +62,10 @@ export class PaPage {
 
   toGroupCreate(){
     console.log('PaPage跳转PePage');
-    this.navCtrl.push("PePage",{uo:this.uo});
+    this.navCtrl.push("PePage");
   }
 
-  toMemberDetail(u){
+  toMemberDetail(u:RuModel){
     console.log('PaPage跳转PbPage');
     this.navCtrl.push("PbPage",{u:u});
   }
@@ -87,36 +81,38 @@ export class PaPage {
         console.log(data.us.length + "联系人不为空::" + data.us);
         this.us = data.us;
       }else{
-        console.log("个人查询错误")
+        console.log("个人查询为空");
+        this.us = undefined;
       }
     }).catch( reason => {
-      console.log("个人查询错误::" + reason.message)
+      console.log("个人查询错误::" + reason.message);
+      this.us = undefined;
     });
   }
 
   delPerson(u){
     this.relmemService.delRu(u.id).then(data=>{
       if(data.code == 0){
-        console.log("删除成功");
+        console.log("个人删除成功");
         this.queryPerson()
       }else{
-        console.log("删除失败");
+        console.log("个人删除失败");
       }
     }).catch(reason => {
-      console.log("删除异常::" + reason.message);
+      console.log("个人删除异常::" + reason.message);
     })
   }
 
   delGroup(g){
     this.relmemService.delRu(g.id).then(data=>{
       if(data.code == 0){
-        console.log("删除成功");
+        console.log("群组删除成功");
         this.queryGroup()
       }else{
-        console.log("删除失败");
+        console.log("群组删除失败");
       }
     }).catch(reason => {
-      console.log("删除异常::" + reason.message);
+      console.log("群组删除异常::" + reason.message);
     })
   }
 
@@ -131,6 +127,8 @@ export class PaPage {
       }
     }).catch(reason => {
       console.log("查询群组失败");
+      this.gs = undefined;
+
     });
   }
 

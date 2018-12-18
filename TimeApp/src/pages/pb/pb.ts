@@ -22,7 +22,7 @@ export class PbPage {
   name:any;
   state:any;//true 编辑 false 不可编辑
   isPush:any;
-  u:RuModel;
+  u:RuModel = new RuModel();
   uo:UEntity;
 
   constructor(public navCtrl: NavController,
@@ -33,7 +33,7 @@ export class PbPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad PbPage');
     this.state = false;
-    this.u = this.navParams.get("u")
+    this.u = this.navParams.data.u;
     this.name = this.u.rN;
     if(this.u.rF == '0'){
       this.isPush = false;
