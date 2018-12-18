@@ -142,9 +142,11 @@ public class AuthServiceImpl implements IAuthService {
         } catch (NullPointerException ne) {
             ne.printStackTrace();
             logger.error("数据读取异常");
+            throw new SecurityException("数据读取异常");
         } catch (IOException ie) {
             ie.printStackTrace();
-            logger.error("io异常");
+            logger.error("io异常:" + ie.getMessage());
+            throw new SecurityException("交换机获取异常");
         }
 
         return data;
@@ -208,9 +210,11 @@ public class AuthServiceImpl implements IAuthService {
         } catch (NullPointerException ne) {
             ne.printStackTrace();
             logger.error("数据读取异常");
+            throw new SecurityException("数据读取异常");
         } catch (IOException ie) {
             ie.printStackTrace();
-            logger.error("io异常");
+            logger.error("io异常:" + ie.getMessage());
+            throw new SecurityException("交换机获取异常");
         }
         return data;
     }
@@ -241,6 +245,7 @@ public class AuthServiceImpl implements IAuthService {
             loginRecordRepository.save(lrd);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error("登陆记录异常:" + e.getMessage());
         }
 
     }
