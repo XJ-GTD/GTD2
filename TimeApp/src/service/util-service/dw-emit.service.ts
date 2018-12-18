@@ -1,13 +1,10 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Injectable, NgModule, Output} from "@angular/core";
-import { HaPage } from "../../pages/ha/ha";
+import { EventEmitter, Injectable } from "@angular/core";
 
 /**
  * 数据传递广播处理类
  */
 @Injectable()
 export class DwEmitService {
-
-
 
   //首页数据传递
   private ha: EventEmitter<any>;
@@ -33,9 +30,7 @@ export class DwEmitService {
 
   public getHbData(success){
     this.hbOfMq.subscribe($event => {
-      success($event).then(() => {
-        this.destroyEmit(this.hbOfMq);
-      });
+      success($event)
     });
   }
 
@@ -49,7 +44,7 @@ export class DwEmitService {
   /**
    * 统一的销毁方法
    */
-  private destroyEmit(emit: EventEmitter<any>) {
-    emit = null;
+  public destroyEmit(emit: EventEmitter<any>) {
+    emit.unsubscribe();
   }
 }

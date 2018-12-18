@@ -235,6 +235,7 @@ export class HbPage {
 
   //返回方法
   goBack() {
+    this.dwEmit.destroyEmit(this.dwEmit.hbOfMq);
     this.viewCtrl.dismiss();
   }
 
