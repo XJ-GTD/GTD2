@@ -59,7 +59,6 @@ export class HbPage {
 
 
   ionViewDidLoad() {
-    this.dwEmit.setEventEmitter(this.hbOfMq);
 
     this.dwEmit.getHbData((data)=>{
       this.messageHanding(data);
@@ -236,7 +235,6 @@ export class HbPage {
 
   //返回方法
   goBack() {
-    this.dwEmit.setEventEmitter(null);
     this.viewCtrl.dismiss();
   }
 

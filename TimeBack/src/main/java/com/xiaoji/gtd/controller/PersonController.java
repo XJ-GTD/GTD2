@@ -278,12 +278,18 @@ public class PersonController {
         try {
 
             int flag = personService.addPlayer(inDto);
-            if (flag != 0) {
+            if (flag == 0) {
                 outDto.setCode(ResultCode.SUCCESS);
                 logger.debug("[邀请添加发送成功]");
-            } else {
-                outDto.setCode(ResultCode.NOT_AUTH_PLYER);
+            } else if (flag == 1){
+                outDto.setCode(ResultCode.NOT_AUTH_PLAYER);
                 logger.debug("[邀请添加发送失败]：已被拉黑");
+            } else if (flag == 2){
+                outDto.setCode(ResultCode.REPEAT_PLAYER);
+                logger.debug("[重复添加]");
+            } else {
+                outDto.setCode(ResultCode.FAIL_PLAYER);
+                logger.debug("[添加失败]：请稍后再次添加");
             }
 
         } catch (Exception e) {

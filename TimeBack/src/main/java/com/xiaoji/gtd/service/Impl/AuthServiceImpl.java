@@ -60,16 +60,30 @@ public class AuthServiceImpl implements IAuthService {
      * @return
      */
     @Override
-    public String visitorsLogin(LoginInDto inDto) {
-        String accountQueue = "";
+    public LoginOutDto visitorsLogin(LoginInDto inDto) {
+        LoginOutDto data = null;
         try {
+            String deviceId = inDto.getDeviceId();
+            String loginIp = inDto.getLoginIp();
+            String loginLocaltion = inDto.getLoginLocaltion();
+            String accountQueue = "";
+            String userId = "";
+            String token = "";
+
+            token = BaseUtil.getToken(userId, deviceId);
             accountQueue = BaseUtil.getQueueName(inDto.getUserId(), inDto.getDeviceId());
             BaseUtil.createQueue(rabbitTemplate, accountQueue, VISITOR_EXCHANGE_NAME);
+
+            data = new LoginOutDto();
+            data.setAccountQueue(accountQueue);
+            data.setToken(token);
+
+            loginRecord(userId, deviceId, token, loginIp, loginLocaltion);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            logger.error("游客登陆出错");
         }
-        return accountQueue;
+        return data;
     }
 
     /**

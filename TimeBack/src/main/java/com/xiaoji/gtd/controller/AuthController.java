@@ -70,10 +70,9 @@ public class AuthController {
 
         //业务逻辑
         try {
-            String accountQueue = authService.visitorsLogin(inDto);
+            data = authService.visitorsLogin(inDto);
 
-            if (accountQueue != null && !accountQueue.equals("")){
-                data.setAccountQueue(accountQueue);
+            if (data != null){
                 outDto.setData(data);
                 outDto.setCode(ResultCode.SUCCESS);
                 logger.debug("[验证成功]");

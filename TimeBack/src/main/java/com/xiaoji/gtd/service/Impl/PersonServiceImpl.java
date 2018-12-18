@@ -214,6 +214,7 @@ public class PersonServiceImpl implements IPersonService {
 
             if (data.isAgree() && data.isPlayer()) {
                 logger.debug("[已经成为对方好友]:无需重复太添加");
+                return 2;
             } else if (!data.isPlayer() && data.isUser()){
                 Object[] objUser = (Object[]) personRepository.searchUserById(userId);
                 if (targetUserId != null && !targetUserId.equals("")) {
@@ -244,7 +245,7 @@ public class PersonServiceImpl implements IPersonService {
             } else {
                 //可能出错
                 logger.debug("addPlayer数据出错");
-                return 1;
+                return -1;
             }
 
         } catch (Exception e) {
@@ -340,7 +341,7 @@ public class PersonServiceImpl implements IPersonService {
         if (count > 0) {
             isAgree = (boolean) objects[1];
 
-            logger.debug("[查询到用户" + targetMobile + "]：userId = "+ sqlTargetUserId + " | 接收权限" + isAgree);
+            logger.debug("[查询到用户" + targetMobile + "]：userId = "+ sqlTargetUserId + " | [" + userId + "]已是其好友| 接收权限" + isAgree);
             data.setAgree(isAgree);
             data.setUser(true);
             data.setPlayer(true);

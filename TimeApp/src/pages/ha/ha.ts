@@ -87,13 +87,7 @@ export class HaPage {
     moment.locale('zh-cn');
     this.init();
     this.setAlarmList();
-    this.dwEmit.getHaData(this);
-  }
 
-  test($event) {
-    //示例方法，完成删除
-    //在这里完成对数据传递页面的操作
-    alert("HaPage获取了版本数据" + $event);
   }
 
   ionViewDidLoad() {
@@ -108,6 +102,12 @@ export class HaPage {
 
     let month = moment().format('YYYY-MM');
     this.findDayConfig(month);
+
+    //示例方法，完成删除
+    //在这里完成对数据传递页面的操作
+    this.dwEmit.getHaData(data => {
+      alert("HaPage获取了版本数据" + data);
+    });
   }
 
   init() {
