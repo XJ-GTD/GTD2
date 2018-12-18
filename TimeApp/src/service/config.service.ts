@@ -3,6 +3,7 @@ import { BaseSqlite } from "./sqlite/base-sqlite";
 import { UtilService } from "./util-service/util.service";
 import { UserService } from "./user.service";
 import { DataConfig } from "../app/data.config";
+import {AppConfig} from "../app/app.config";
 
 /**
  * 整体配置Service
@@ -29,6 +30,9 @@ export class ConfigService {
           if(ud){
             let u:any= ud;
             DataConfig.uInfo=u;
+            if(u.uT){
+              AppConfig.Token=u.uT;
+            }
             console.log("ConfigService init userInfo :" + JSON.stringify(DataConfig.uInfo))
             resolve(true)
           }else{
