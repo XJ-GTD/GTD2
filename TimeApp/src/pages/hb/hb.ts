@@ -7,6 +7,7 @@ import { ScheduleModel } from "../../model/schedule.model";
 import { XiaojiFeedbackService } from "../../service/util-service/xiaoji-feedback.service";
 import { Hb01Page } from "../hb01/hb01";
 import {DwEmitService} from "../../service/util-service/dw-emit.service";
+import {AppConfig} from "../../app/app.config";
 
 declare var cordova: any;
 /**
@@ -71,10 +72,6 @@ export class HbPage {
     //语音唤醒冲突暂时关闭
     //this.initWakeUp();
 
-    // this.dwEmit.getHbData(data => {
-    //   this.messageHanding(data);
-    // })
-
     console.log('ionViewDidLoad HbPage');
   }
 
@@ -119,7 +116,7 @@ export class HbPage {
 
   //启动语音输入
   startXiaoJi() {
-    console.log("开始语音输入")
+    console.log("开始语音输入");
     if (this.xiaojiSpeech.islistenAudioing) return;
     this.xiaojiSpeech.listenAudio(rs =>{
       this.xiaojiFeekback.audioSnare();
@@ -130,6 +127,7 @@ export class HbPage {
   //启动手动输入
   startXiaojiText() {
     if (this.inputText != null && this.inputText != "") {
+
       this.xiaojiSpeech.listenText(this.inputText);
     }
 
@@ -236,7 +234,7 @@ export class HbPage {
 
   //返回方法
   goBack() {
-    this.dwEmit.destroyEmit(this.dwEmit.hbOfMq);
+    this.dwEmit.hbOfMq.unsubscribe();
     this.viewCtrl.dismiss();
   }
 

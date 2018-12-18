@@ -31,18 +31,18 @@ export class ConfigService {
             let u:any= ud;
             DataConfig.uInfo=u;
             if(u.uT){
-              AppConfig.Token=u.uT;
+              AppConfig.HEADER_OPTIONS_JSON.headers.Authorization=u.uT;
             }
-            console.log("ConfigService init userInfo :" + JSON.stringify(DataConfig.uInfo))
+            console.log("ConfigService init userInfo :" + JSON.stringify(DataConfig.uInfo));
             resolve(true)
           }else{
             resolve(false)
           }
         })
      }).catch(e=>{
-       console.error("config initDataBase error : " + e.message)
+       console.error("config initDataBase error : " + e.message);
         resolve(false)
-      })
+      });
 
       return;
     });

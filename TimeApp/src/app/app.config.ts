@@ -31,13 +31,11 @@ export class AppConfig {
   /* RabbitMq SockJs */
   public static RABBITMQ_SJ_URL: string = "http://192.168.0.219:15674/stomp";
 
-  /* token */
-  public static Token: string = "";
   /* 请求头 OPTIONS*/
   public static HEADER_OPTIONS_JSON: any = {
     headers: {
       "Content-Type": "application/json",
-      "Authorization": AppConfig.Token
+      "Authorization": ""
     },
   };
 

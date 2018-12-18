@@ -15,7 +15,6 @@ export class BsRestful {
    */
   bsHttp(http:HttpClient,url:string,body:any):Promise<any> {
     return new Promise((resolve, reject) => {
-      AppConfig.HEADER_OPTIONS_JSON.headers.Authorization=AppConfig.Token
       http.post(url,body,AppConfig.HEADER_OPTIONS_JSON).subscribe(data=>{
         resolve(data)
       },err => {

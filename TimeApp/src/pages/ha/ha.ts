@@ -25,6 +25,7 @@ import {DwEmitService} from "../../service/util-service/dw-emit.service";
 import { HbPage } from "../hb/hb";
 import { DataConfig } from "../../app/data.config";
 import { PageConfig } from "../../app/page.config";
+import {AppConfig} from "../../app/app.config";
 
 
 /**
@@ -106,7 +107,7 @@ export class HaPage {
     //示例方法，完成删除
     //在这里完成对数据传递页面的操作
     this.dwEmit.getHaData(data => {
-      alert("HaPage获取了版本数据" + data);
+      // alert("HaPage获取了版本数据" + data);
     });
   }
 

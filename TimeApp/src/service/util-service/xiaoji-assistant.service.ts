@@ -46,7 +46,7 @@ export class XiaojiAssistantService {
       this.islistenAudioing = true;
 
       cordova.plugins.XjBaiduSpeech.startListen(result=>{
-        // alert("成功:" + result);
+
         //讯飞语音录音设置默认存储路径
         this.filePath = this.file.cacheDirectory + "/xjASR/iat.pcm";
         console.log("文件路径：" + this.filePath);
