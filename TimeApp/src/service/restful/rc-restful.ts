@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppConfig} from "../../app/app.config";
-import {UtilService} from "../util-service/util.service";
 import {BsRestful} from "./bs-restful";
+import {PsModel} from "../../model/ps.model";
 
 
 
@@ -11,8 +11,7 @@ import {BsRestful} from "./bs-restful";
  */
 @Injectable()
 export class RcRestful extends BsRestful{
-  constructor(private http: HttpClient,
-                private util: UtilService) {
+  constructor(private http: HttpClient) {
     super()
   }
 
@@ -30,7 +29,7 @@ export class RcRestful extends BsRestful{
    * @returns {Promise<any>}
    */
   sc(ui:string,skt:string,si:string,sn:string,
-     st:string,et:string,li:string,ps:any,sts:string):Promise<any> {
+     st:string,et:string,li:string,ps:Array<PsModel>,sts:string):Promise<any> {
     return this.bsHttp(this.http,AppConfig.SCHEDULE_DEAL_URL, {
       userId: ui,
       skillType: skt,
