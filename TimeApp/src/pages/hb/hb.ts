@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output, ViewChild} from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Content, IonicPage, NavController, NavParams, Tabs, ViewController } from 'ionic-angular';
 import { XiaojiAssistantService } from "../../service/util-service/xiaoji-assistant.service";
 import { ParamsService } from "../../service/util-service/params.service";
@@ -43,6 +43,7 @@ export class HbPage {
   filePath: string;   //语音文件路径
 
   schedule: ScheduleModel;
+  inputData: AiuiModel;
   aiuiData: AiuiModel;
   messages: Array<AiuiModel>; //聊天数据队列
   //语音界面数据传递
@@ -64,8 +65,9 @@ export class HbPage {
     });
 
 
-      this.messages = [];
-      this.aiuiData = new AiuiModel();
+    this.messages = [];
+    this.aiuiData = new AiuiModel();
+    this.inputData = new AiuiModel();
 
     //语音唤醒冲突暂时关闭
     //this.initWakeUp();
@@ -129,15 +131,15 @@ export class HbPage {
       this.xiaojiSpeech.listenText(this.inputText);
     }
 
-    this.aiuiData = new AiuiModel();
+    this.inputData = new AiuiModel();
     this.inputText = "";
   }
 
   //语音输入页面处理
   speechInputHanding(text) {
-    this.aiuiData.tt = this.tu;
-    this.aiuiData.at = text;
-    this.messages.push(this.aiuiData);
+    this.inputData.tt = this.tu;
+    this.inputData.at = text;
+    this.messages.push(this.inputData);
   }
 
   //回传数据处理
@@ -157,6 +159,7 @@ export class HbPage {
     this.aiuiData.tt = this.tx;
     this.aiuiData.at = at;
     this.messages.push(this.aiuiData);
+    this.xiaojiSpeech.speakText(at, success=>{});
     // if($event != null) {
     //   let messageData = new AiuiModel();
     //   messageData.at = $event.res.data.st;
