@@ -117,7 +117,8 @@ export class XiaojiAssistantService extends BsRestful{
         //接收Object JSON数据
 
       }).catch(e=>{
-        console.error("XiaojiAssistantService connetXunfei error:" + JSON.stringify(e))
+        console.error("XiaojiAssistantService connetXunfei error:" + JSON.stringify(e));
+        this.speakText("现在我遇到了小麻烦，请您稍后再来找我吧", success=>{});
     })
   }
 

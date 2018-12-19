@@ -139,7 +139,7 @@ public class IntentServiceImpl implements IIntentService {
 
         @Override
         public void onSuccess(ResponseEntity<VoiceOutBean> voiceOutBeanResponseEntity) {
-            logger.debug("--->async rest response success----, result = "+ Pinyin4j.toPinYin(voiceOutBeanResponseEntity.getBody().getData().get(0).getAnswer()));
+            logger.debug("--->async rest response success---- ");
 
             VoiceOutBean parseData = voiceOutBeanResponseEntity.getBody();
             WebSocketOutDto outDto = new WebSocketOutDto();
@@ -159,7 +159,7 @@ public class IntentServiceImpl implements IIntentService {
                 webSocketService.pushMessage(queueName, outDto);
                 return;
             }
-            if (data == null) {
+            if (data == null || data.size() == 0) {
                 outDto.setSs(ResultCode.FAIL_XF_SKILL);
                 logger.error("语义解析失败： 无对应技能");
                 webSocketService.pushMessage(queueName, outDto);

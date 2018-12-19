@@ -119,9 +119,11 @@ export class HbPage {
     console.log("开始语音输入");
     if (this.xiaojiSpeech.islistenAudioing) return;
     this.xiaojiSpeech.listenAudio(rs =>{
+      rs = rs.replace("[asr.partial]","");
       this.speechInputHanding(rs);
       this.xiaojiFeekback.audioSnare();
     });
+
   }
 
   //启动手动输入
@@ -130,13 +132,11 @@ export class HbPage {
       this.speechInputHanding(this.inputText);
       this.xiaojiSpeech.listenText(this.inputText);
     }
-
     this.inputText = "";
   }
 
   //语音输入页面处理
   speechInputHanding(text) {
-    text = text.replace("[asr.partial]","");
     this.inputData.tt = this.tu;
     this.inputData.at = text;
     this.messages.push(this.inputData);
@@ -148,15 +148,21 @@ export class HbPage {
 
     console.log("这是语音HbPage页面数据处理：messageHanding方法");
     let at;
-    if ($event.at != undefined) {
-      at = $event.at;
+    if ($event == 1) {
+      at = "我不太明白您的意思";
+    } else {
+      if ($event.at != undefined) {
+        at = $event.at;
+      }
+      if ($event.au != undefined) {
+        at += "\n" + $event.au;
+      }
+      if ($event.ai != undefined) {
+        at += "\n" + $event.ai;
+      }
     }
-    if ($event.au != undefined) {
-      at += "\n" + $event.au;
-    }
-    if ($event.ai != undefined) {
-      at += "\n" + $event.ai;
-    }
+
+
     this.aiuiData.tt = this.tx;
     this.aiuiData.at = at;
     this.messages.push(this.aiuiData);
@@ -226,6 +232,7 @@ export class HbPage {
       // this.xiaojiSpeech.speakText();
       this.inputText = "";
     }*/
+    this.aiuiData = new AiuiModel();
 
   }
 

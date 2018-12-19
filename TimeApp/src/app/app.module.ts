@@ -43,6 +43,7 @@ import {BackgroundMode} from '@ionic-native/background-mode';
 import {PermissionsService} from "../service/util-service/permissions.service";
 import {AndroidPermissions} from '@ionic-native/android-permissions';
 import {ConfigService} from "../service/config.service";
+import {ErrorCodeService} from "../service/util-service/error-code.service";
 
 @NgModule({
   declarations: [
@@ -102,6 +103,7 @@ import {ConfigService} from "../service/config.service";
     AndroidPermissions,
     PermissionsService,
     ConfigService,
+    ErrorCodeService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

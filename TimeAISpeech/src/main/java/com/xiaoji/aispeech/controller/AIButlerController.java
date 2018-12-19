@@ -129,10 +129,13 @@ public class AIButlerController {
                     nlp.setAnswerUrl(intent.getAnswer().getUrl());
                     nlp.setService(intent.getService());
 
-                    for (Semantic semantic : semantics){
-                        nlp.setIntent(semantic.getIntent());
-                        nlp.setSlots(semantic.getSlots());
+                    if (semantics != null) {
+                        for (Semantic semantic : semantics){
+                            nlp.setIntent(semantic.getIntent());
+                            nlp.setSlots(semantic.getSlots());
+                        }
                     }
+
                     data.add(nlp);
                 }
 
