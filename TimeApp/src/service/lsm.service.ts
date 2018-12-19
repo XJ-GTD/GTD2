@@ -77,7 +77,8 @@ export class LsmService {
   visitor() :Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let base = new BsModel();
-      if(DataConfig.isFirst!=0) {
+      if(DataConfig.isFirst!=0 ||  DataConfig.uInfo.uT == null ||
+        DataConfig.uInfo.uT =='null' ||  DataConfig.uInfo.uT=='') {
         console.log("------lsm visitor 开始游客登录--------")
         let ui = '';
         if (DataConfig.uInfo && DataConfig.uInfo.uI) {
