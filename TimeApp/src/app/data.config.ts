@@ -20,4 +20,6 @@ export class DataConfig {
    */
   public static isFirst:number = 1;
 
+  public static defultHeadImg:string = "./assets/imgs/headImg.jpg"
+
 }

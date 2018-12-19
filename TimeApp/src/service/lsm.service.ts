@@ -101,7 +101,7 @@ export class LsmService {
                 console.log("------lsm visitor 游客登录成功更新GTD_A消息队列编号：" + u.aQ)
                 //赋值消息队列
                 DataConfig.uInfo.aQ = u.aQ;
-                AppConfig.HEADER_OPTIONS_JSON.headers.Authorization=u.uT;
+                DataConfig.uInfo.uT=u.uT;
               }
               //用户如果存在则更新
               return this.basesqlite.update(u)
@@ -156,11 +156,8 @@ export class LsmService {
             u.uT=datal.data.token;
             u.uN=datal.data.userName;
             u.uS=datal.data.userSex;
-            u.uty='1';
+            u.uty="1";
             DataConfig.uInfo=u;
-            if (u.uT != null && u.uT != '') {
-              AppConfig.HEADER_OPTIONS_JSON.headers.Authorization = u.uT;
-            }
             //用户如果存在则更新
             if (oldUi != u.uI) {
               u.oUI = oldUi;
@@ -221,9 +218,6 @@ export class LsmService {
           u.uS = datal.data.userSex;
           u.uty = '1';
           DataConfig.uInfo = u;
-          if (u.uT != null && u.uT != '') {
-            AppConfig.HEADER_OPTIONS_JSON.headers.Authorization = u.uT;
-          }
           //用户如果存在则更新
           if (oldUi != u.uI) {
             u.oUI = oldUi;
