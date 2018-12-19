@@ -37,8 +37,7 @@ export class DwMqService {
           this.xfScheduleDelete();
           break;
         case SkillConfig.XF_SCF: //讯飞：日程查询
-          this.dwEmit.setHbData(mqDate);//测试用
-          this.xfScheduleFind();
+          this.xfScheduleFind(mqDate);
           break;
         case SkillConfig.XF_PEC: //讯飞：参与人添加
           this.xfPlayerCreate()
@@ -113,8 +112,8 @@ export class DwMqService {
   /**
    * 语音：日程查询
    */
-  private xfScheduleFind() {
-
+  private xfScheduleFind(mqDate) {
+    this.dwEmit.setHbData(mqDate);//测试用
     // let jh = '';
     // let lbN='';
     // this.work.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{

@@ -6,8 +6,7 @@ import { AiuiModel } from "../../model/aiui.model";
 import { ScheduleModel } from "../../model/schedule.model";
 import { XiaojiFeedbackService } from "../../service/util-service/xiaoji-feedback.service";
 import { Hb01Page } from "../hb01/hb01";
-import {DwEmitService} from "../../service/util-service/dw-emit.service";
-import {AppConfig} from "../../app/app.config";
+import { DwEmitService } from "../../service/util-service/dw-emit.service";
 
 declare var cordova: any;
 /**
@@ -118,25 +117,46 @@ export class HbPage {
     console.log("开始语音输入");
     if (this.xiaojiSpeech.islistenAudioing) return;
     this.xiaojiSpeech.listenAudio(rs =>{
+      this.speechInputHanding(rs);
       this.xiaojiFeekback.audioSnare();
-
     });
   }
 
   //启动手动输入
   startXiaojiText() {
     if (this.inputText != null && this.inputText != "") {
-
+      this.speechInputHanding(this.inputText);
       this.xiaojiSpeech.listenText(this.inputText);
     }
 
+    this.aiuiData = new AiuiModel();
     this.inputText = "";
+  }
+
+  //语音输入页面处理
+  speechInputHanding(text) {
+    this.aiuiData.tt = this.tu;
+    this.aiuiData.at = text;
+    this.messages.push(this.aiuiData);
   }
 
   //回传数据处理
   messageHanding($event) {
 
-    alert("这是语音HbPage页面：" + $event);
+    console.log("这是语音HbPage页面数据处理：messageHanding方法");
+    let at;
+    if ($event.at != undefined) {
+      at = $event.at;
+    }
+    if ($event.au != undefined) {
+      at += "\n" + $event.au;
+    }
+    if ($event.ai != undefined) {
+      at += "\n" + $event.ai;
+    }
+    this.aiuiData.tt = this.tx;
+    this.aiuiData.at = at;
+    this.messages.push(this.aiuiData);
     // if($event != null) {
     //   let messageData = new AiuiModel();
     //   messageData.at = $event.res.data.st;

@@ -171,11 +171,10 @@ public class IntentServiceImpl implements IIntentService {
                 outDto.setSk(skillType);
                 if (flag != null && flag.equals("0")) {
                     outDto.setRes(dealWithSlots(nod));
-                } else {
-                    outDto.setAt(nod.getAnswer());
-                    outDto.setAu(nod.getAnswerUrl());
-                    outDto.setAi(nod.getAnswerImg());
                 }
+                outDto.setAt(nod.getAnswer());
+                outDto.setAu(nod.getAnswerUrl());
+                outDto.setAi(nod.getAnswerImg());
                 outDto.setSs(ResultCode.SUCCESS);
                 webSocketService.pushMessage(queueName, outDto);
                 logger.debug("消息队列：" + queueName + " | 数据：" + outDto);
