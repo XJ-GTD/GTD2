@@ -131,7 +131,6 @@ export class HbPage {
       this.xiaojiSpeech.listenText(this.inputText);
     }
 
-    this.inputData = new AiuiModel();
     this.inputText = "";
   }
 
@@ -141,6 +140,7 @@ export class HbPage {
     this.inputData.tt = this.tu;
     this.inputData.at = text;
     this.messages.push(this.inputData);
+    this.inputData = new AiuiModel();
   }
 
   //回传数据处理
