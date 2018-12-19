@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {BaseSqlite} from "./base-sqlite";
 import {RguEntity} from "../../entity/rgu.entity";
 import {RuEntity} from "../../entity/ru.entity";
+import {BsModel} from "../../model/out/bs.model";
 
 /**
  * 授权联系人
@@ -14,7 +15,7 @@ export class RelmemSqlite {
   /**
    * 添加授权联系人
    */
-  aru(ru:RuEntity):Promise<any>{
+  aru(ru:RuEntity):Promise<BsModel>{
     return this.baseSqlite.save(ru);
   }
 
