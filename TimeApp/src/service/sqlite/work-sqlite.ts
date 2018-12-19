@@ -29,36 +29,43 @@ export class WorkSqlite{
     let sqlStr = "";
     let isTrue = false;
     if(rus != null && rus.length>0){
+      if(this.baseSqlite.isMobile()){
+        let sql = "";
 
-      for(let i=0;i<rus.length;i++){
-        let rcp = new RcpEntity();
-        rcp.pI = this.util.getUuid();
-        rcp.uI =rus[i].rI;
-        rcp.son=rc.sN;
-        rcp.sI=rc.sI;
-        rcp.cd=rc.sd;
-        rcp.pd=rc.ed;
-        rcp.rui=rus[i].id;
-        if(rcp.uI == rc.uI){
-          isTrue = true;
-          rcp.sa='1'
-        }else{
-          rcp.sa='0'
+        for(let i=0;i<rus.length;i++){
+          let ru = rus[i];
+          let sa = '0';
+          if(ru.rI && ru.rI == rc.uI){
+            sa='1';
+            isTrue=true;
+          }
+          sql +='insert into GTD_D (pI,sI,son,sa,cd,pd,uI,rui) values("'+ this.util.getUuid()+'","'+ rc.sI+'","'
+            + rc.sN+'","' +sa+ '","'+rc.sd+ '","'+rc.ed+ '","'+ ru.rI+'","'+ ru.id+'")';
         }
-        this.baseSqlite.save(rcp);
+        return this.baseSqlite.importSqlToDb(sql)
+      }else{
+        let rcp = new RcpEntity();
+        for(let i=0;i<rus.length;i++){
+          rcp.pI = this.util.getUuid();
+          rcp.uI =rus[i].rI;
+          rcp.son=rc.sN;
+          rcp.sI=rc.sI;
+          rcp.cd=rc.sd;
+          rcp.pd=rc.ed;
+          rcp.rui=rus[i].id;
+          if(rcp.uI == rc.uI){
+            isTrue = true;
+            rcp.sa='1'
+          }else{
+            rcp.sa='0'
+          }
+          this.baseSqlite.save(rcp);
+        }
+        rcp.pI = this.util.getUuid();
+        return this.baseSqlite.save(rcp);
       }
     }
-    if(!isTrue){
-      let rcp2 = new RcpEntity();
-      rcp2.pI = this.util.getUuid();
-      rcp2.uI =rc.uI;
-      rcp2.son=rc.sN;
-      rcp2.sI=rc.sI;
-      rcp2.cd=rc.sd;
-      rcp2.pd=rc.ed;
-      rcp2.sa='1'
-      this.baseSqlite.save(rcp2);
-    }
+
   }
 
   /**
@@ -103,7 +110,7 @@ export class WorkSqlite{
    * @param d 'yyyy-MM-dd'
    */
   getOd(d:string,ui:string):Promise<any>{
-    let sql="select substr(dt,12,16) scheduleStartTime,gtdd.pI scheduleId,gtdd.son scheduleName from " +
+    let sql="select substr(dt,12,16) scheduleStartTime,gtdd.pI scheduleId,gtdd.son scheduleName,gtdd.* from " +
       "(select case when pd != null and pd != 'null' then pd else cd end dt,gdd.* from GTD_D gdd where uI='"+ ui+"')" +
       " gtdd where substr(dt,1,10)='" + d+"'";
       return this.baseSqlite.executeSql(sql,[]);

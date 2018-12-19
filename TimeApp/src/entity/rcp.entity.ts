@@ -43,7 +43,8 @@ export class RcpEntity {
   get isq(): string {
     let sql='insert into GTD_D ' +
       '(pI,sI,son,sa,ps,cd,pd,uI,rui,ib,bi) values("'+ this._pI+'","'+ this._sI+'","'+ this._son+'","'
-      +this._sa+ '","'+this._ps+ '","'+this._cd+ '","'+this._pd+ '","'+ this._uI+'","'+ this._rui+'","'+ this._ib+'","'+this._bi+'")';
+      +this._sa+ '","'+this._ps+ '","'+this._cd+ '","'+this._pd+ '","'+ this._uI+'","'+ this._rui+'","'
+      + this._ib+'","'+this._bi+'")';
     this._isq=sql;
     return this._isq;
   }
@@ -54,37 +55,37 @@ export class RcpEntity {
 
   get usq(): string {
     let sql='update GTD_D set';
-    if(this._sI!=null){
+    if(this._sI!=null && this._sI!=''){
       sql=sql+' sI="' + this._sI +'",';
     }
-    if(this._son!=null){
+    if(this._son!=null && this._son!=''){
       sql=sql+' son="' + this._son +'",';
     }
-    if(this._sa!=null){
+    if(this._sa!=null && this._sa!=''){
       sql=sql+' sa="' + this._sa +'",';
     }
-    if(this._ps!=null){
+    if(this._ps!=null && this._ps!=''){
       sql=sql+' ps="' + this._ps +'",';
     }
-    if(this._cd!=null){
+    if(this._cd!=null && this._cd!=''){
       sql=sql+' cd="' + this._cd +'",';
     }
-    if(this._pd!=null){
+    if(this._pd!=null && this._pd!=''){
       sql=sql+' pd="' + this._pd +'",';
     }
-    if(this._uI!=null){
+    if(this._uI!=null && this._uI!=''){
       sql=sql+' uI="' + this._uI +'",';
     }
-    if(this._ib!=null){
+    if(this._ib!=null && this._ib!=''){
       sql=sql+' ib="' + this._ib +'",';
     }
-    if(this._bi!=null){
+    if(this._bi!=null && this._bi!=''){
       sql=sql+' bi="' + this._bi +'",';
     }
-    if(this._rui!=null){
+    if(this._rui!=null && this._rui!=''){
       sql=sql+' rui="' + this._rui +'",';
     }
-    if(this._pI != null){
+    if(this._pI != null && this._pI!=''){
       sql = sql + ' pI="' + this._pI +'" where pI="' + this._pI +'"';
     }
     this._usq=sql;
@@ -95,37 +96,37 @@ export class RcpEntity {
   }
   get dsq(): string {
     let sql='DELETE FROM GTD_D WHERE 1=1 ';
-    if(this._sI!=null){
+    if(this._sI!=null && this._sI!=''){
       sql=sql+' and sI="' + this._sI +'"';
     }
-    if(this._pI!=null){
+    if(this._pI!=null && this._pI!=''){
       sql=sql+' and pI="' + this._pI +'"';
     }
-    if(this._son!=null){
+    if(this._son!=null && this._son!=''){
       sql=sql+' and son="' + this._son +'"';
     }
-    if(this._sa!=null){
+    if(this._sa!=null && this._sa!=''){
       sql=sql+' and sa="' + this._sa +'"';
     }
-    if(this._ps!=null){
+    if(this._ps!=null && this._ps!=''){
       sql=sql+' and ps="' + this._ps +'"';
     }
-    if(this._cd!=null){
+    if(this._cd!=null && this._cd!=''){
       sql=sql+' and cd="' + this._cd +'"';
     }
-    if(this._pd!=null){
+    if(this._pd!=null && this._pd!=''){
       sql=sql+' and pd="' + this._pd +'"';
     }
-    if(this._uI!=null){
+    if(this._uI!=null && this._uI!=''){
       sql=sql+' and uI="' + this._uI +'"';
     }
-    if(this._ib!=null){
+    if(this._ib!=null && this._ib!=''){
       sql=sql+' and ib="' + this._ib +'"';
     }
-    if(this._bi!=null){
+    if(this._bi!=null && this._bi!=''){
       sql=sql+' and bi="' + this._bi +'"';
     }
-    if(this._rui!=null){
+    if(this._rui!=null && this._rui!=''){
       sql=sql+' and rui="' + this._rui +'"';
     }
     this._dsq=sql;
