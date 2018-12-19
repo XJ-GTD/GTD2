@@ -7,6 +7,7 @@ import { File } from "@ionic-native/file";
 import { App, NavController } from "ionic-angular";
 import {DataConfig} from "../../app/data.config";
 import {UtilService} from "./util.service";
+import {BsRestful} from "../restful/bs-restful";
 declare var cordova: any;
 
 /**
@@ -15,7 +16,7 @@ declare var cordova: any;
  * create by wzy on 2018/08/07.
  */
 @Injectable()
-export class XiaojiAssistantService {
+export class XiaojiAssistantService extends BsRestful{
 
   private fileContent: any;
   private filePath: string;
@@ -30,10 +31,9 @@ export class XiaojiAssistantService {
               private file: File,
               private util: UtilService,
               private paramsService: ParamsService) {
+    super()
     this.isSpeaking = false;
     this.islistenAudioing = false;
-
-
   }
 
 
@@ -111,8 +111,8 @@ export class XiaojiAssistantService {
     console.log("调用成功:" + this.fileContent);
     console.log("调用URL:" + url);
     //调用讯飞语音服务
-    this.http.post(url, audioData, AppConfig.HEADER_OPTIONS_JSON)
-      .subscribe(data => {
+    this.bsHttp(this.http ,url, audioData)
+      .then(data => {
         console.log("data" + data);
         //接收Object JSON数据
 
@@ -120,7 +120,9 @@ export class XiaojiAssistantService {
         this.speakText(this.speechText,rs=>{
           console.log("语音调用成功2:" + rs);
         });
-      })
+      }).catch(e=>{
+        console.error("XiaojiAssistantService connetXunfei error:" + JSON.stringify(e))
+    })
   }
 
   /**
