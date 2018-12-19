@@ -101,6 +101,7 @@ export class LsmService {
                 console.log("------lsm visitor 游客登录成功更新GTD_A消息队列编号：" + u.aQ)
                 //赋值消息队列
                 DataConfig.uInfo.aQ = u.aQ;
+                DataConfig.uInfo.uT=u.uT;
               }
               //用户如果存在则更新
               return this.basesqlite.update(u)
