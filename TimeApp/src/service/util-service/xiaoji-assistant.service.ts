@@ -20,7 +20,6 @@ export class XiaojiAssistantService extends BsRestful{
 
   private fileContent: any;
   private filePath: string;
-  private speechText: any;
 
   public isSpeaking:boolean;
   public islistenAudioing:boolean;
@@ -49,7 +48,7 @@ export class XiaojiAssistantService extends BsRestful{
 
         //讯飞语音录音设置默认存储路径
         // this.filePath = this.file.cacheDirectory + "/xjASR/iat.pcm";
-        this.filePath = this.file.cacheDirectory + "/msc/iat.wav";
+        this.filePath = this.file.externalRootDirectory + "/xjASR/iat.pcm";
         console.log("文件路径：" + this.filePath);
 
         // 读取录音进行base64转码
@@ -63,7 +62,8 @@ export class XiaojiAssistantService extends BsRestful{
             deviceId: this.util.getDeviceId(),
             flag: 0
           };
-
+          console.log("语音识别:" + result);
+          success(result);
           this.connetXunfei(data, AppConfig.XF_AUDIO_URL);
         }, (err) => {
           console.log("异常" + err.toString());
@@ -116,10 +116,6 @@ export class XiaojiAssistantService extends BsRestful{
         console.log("data" + data);
         //接收Object JSON数据
 
-        console.log("语音调用成功:" + this.speechText);
-        this.speakText(this.speechText,rs=>{
-          console.log("语音调用成功2:" + rs);
-        });
       }).catch(e=>{
         console.error("XiaojiAssistantService connetXunfei error:" + JSON.stringify(e))
     })

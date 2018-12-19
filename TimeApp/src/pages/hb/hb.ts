@@ -137,6 +137,7 @@ export class HbPage {
 
   //语音输入页面处理
   speechInputHanding(text) {
+    text = text.replace("[asr.partial]","");
     this.inputData.tt = this.tu;
     this.inputData.at = text;
     this.messages.push(this.inputData);
