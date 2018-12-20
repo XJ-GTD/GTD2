@@ -218,10 +218,6 @@ export class WorkSqlite{
     return this.baseSqlite.executeSql(sql,[])
   }
 
-  getdsRcps(){
-
-  }
-
   /**
    * 根据条件查询日程
    * @param {string} ct 标题
