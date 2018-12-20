@@ -283,13 +283,13 @@ export class WorkService {
 
   /**
    * 事件详情
-   * @param {string} pI 日程参与人ID
+   * @param {string} pI 日程ID
    * @returns {Promise<RcpModel>}
    */
-  getds(pI:string):Promise<RcModel>{
+  getds(sI:string):Promise<RcModel>{
     return new Promise((resolve, reject) =>{
       let rc= new RcModel();
-      this.workSqlite.getds(pI).then(data=>{
+      this.workSqlite.getds(sI).then(data=>{
           if(data&&data.rows&&data.rows.length>0){
             rc= data.rows.item(0);
             resolve(rc);
