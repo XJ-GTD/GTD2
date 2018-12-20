@@ -40,6 +40,10 @@ public class AuthServiceImpl implements IAuthService {
     private String LOGIN_TYPE_MOBILE;
     @Value("${person.signup.logintype.account}")
     private String LOGIN_TYPE_ACCOUNT;
+    @Value("${person.signup.logintype.account}")
+    private String AUTH_TYPE_VISITOR;
+    @Value("${person.signup.logintype.account}")
+    private String AUTH_TYPE_USER;
 
     @Resource
     private AuthRepository authRepository;
@@ -70,7 +74,7 @@ public class AuthServiceImpl implements IAuthService {
             String userId = "";
             String token = "";
 
-            token = BaseUtil.getToken(userId, deviceId);
+            token = BaseUtil.getToken(userId, deviceId, AUTH_TYPE_VISITOR);
             accountQueue = BaseUtil.getQueueName(inDto.getUserId(), inDto.getDeviceId());
             BaseUtil.createQueue(rabbitTemplate, accountQueue, VISITOR_EXCHANGE_NAME);
 
@@ -123,7 +127,7 @@ public class AuthServiceImpl implements IAuthService {
                 queueName = BaseUtil.getQueueName(userId, deviceId);
                 BaseUtil.createQueue(rabbitTemplate, queueName, BaseUtil.getExchangeName(userId));
 
-                token = BaseUtil.getToken(userId, deviceId);
+                token = BaseUtil.getToken(userId, deviceId, AUTH_TYPE_USER);
 
                 data.setToken(token);
                 data.setAccountQueue(queueName);
@@ -189,7 +193,7 @@ public class AuthServiceImpl implements IAuthService {
                 queueName = BaseUtil.getQueueName(userId, deviceId);
                 BaseUtil.createQueue(rabbitTemplate, queueName, BaseUtil.getExchangeName(userId));
 
-                token = BaseUtil.getToken(userId, deviceId);
+                token = BaseUtil.getToken(userId, deviceId, AUTH_TYPE_USER);
 
                 data.setUserId(userId);
                 data.setUserName(userName);

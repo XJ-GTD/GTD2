@@ -113,7 +113,7 @@ export class XiaojiAssistantService extends BsRestful{
     //调用讯飞语音服务
     this.bsHttp(this.http ,url, audioData)
       .then(data => {
-        console.log("data" + data);
+        console.log("data code：" + data.body.code);
         //接收Object JSON数据
 
       }).catch(e=>{

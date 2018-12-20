@@ -49,31 +49,54 @@ public class InterceptorConfig implements HandlerInterceptor {
         String authToken = "";
         if (authCheck != null) {
             authToken = request.getHeader("Authorization");
+            String visitPath = request.getServletPath();
+
             if (StringUtils.isBlank(authToken)) {
                 //这里自定义的一个异常，与全局异常捕获配合
-                throw new AuthException("权限受限");
+                throw new AuthException("无TOKEN 权限受限");
                 //return false;
             } else {
                 //这里查表
-                Map<String, Object> resultMap;
-                resultMap = Jwt.validToken(authToken);
+                try {
+                    Map<String, Object> resultMap;
+                    resultMap = Jwt.validToken(authToken);
 
-                int status = (int) resultMap.get("status");
-                boolean isSuccess = (boolean) resultMap.get("isSuccess");
-                String userId = "";
-                String accountMobile = "";
-                JSONObject data;
-                if (status == ResultCode.SUCCESS.code && isSuccess) {
-                    logger.debug("=====TOKEN 有效 未过期======");
-                    data = (JSONObject) resultMap.get("data");
-                    userId = (String) data.get("userId");
-                    accountMobile = (String) data.get("accountMobile");
+                    int status = (int) resultMap.get("status");
+                    boolean isSuccess = (boolean) resultMap.get("isSuccess");
+                    String userId = "";
+                    String accountMobile = "";
+                    String authType = "";
+                    JSONObject data;
+                    if (status == ResultCode.SUCCESS.code && isSuccess) {
+                        logger.debug("=====TOKEN 未过期======");
+                        data = (JSONObject) resultMap.get("data");
+                        userId = (String) data.get("userId");
+                        accountMobile = (String) data.get("accountMobile");
+                        authType = (String) data.get("authType");
 
-                    return true;
-                } else {
-                    logger.debug("=====TOKEN 无效 已过期======");
-                    return false;
+                        if (authType.equals("user")) {
+                            logger.debug("=====TOKEN 有效 接受访问 ======");
+                            return true;
+                        }
+                        if (authType.equals("visitor")) {
+                            if (visitPath.equals("/parse/text") || visitPath.equals("/parse/audio")) {
+                                logger.debug("=====TOKEN 有效 接受访问 ======");
+                                return true;
+                            } else {
+                                logger.debug("=====TOKEN 非用户权限 拒绝访问 ======");
+                                return false;
+                            }
+                        }
+
+                    } else {
+                        logger.debug("=====TOKEN 无效 已过期 拒绝访问======");
+                        return false;
+                    }
+                } catch (NullPointerException e) {
+                    logger.error("[TOKEN 验证出错]：缺少必要参数，无效TOKEN 拒绝访问!");
+                    throw new AuthException("无效TOKEN,权限受限");
                 }
+
             }
         }
         return true;
