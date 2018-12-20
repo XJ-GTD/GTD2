@@ -2,6 +2,7 @@
  * create by on 2018/11/19
  */
 import {BsModel} from "./out/bs.model";
+import {RguModel} from "./rgu.model";
 
 //日程表
 export class RcModel extends BsModel{
@@ -16,7 +17,8 @@ export class RcModel extends BsModel{
   private _sd:string=null; //开始时间
   private _ed:string = null; //结束时间
   private _sa:string = null; //修改权限 0不可修改，1可修改
-
+  private _pI: string=null;//日程参与人表uuID
+  private _relmem : Array<RguModel> //联系人
   get sI(): string {
     return this._sI;
   }
@@ -96,5 +98,21 @@ export class RcModel extends BsModel{
 
   set sa(value: string) {
     this._sa = value;
+  }
+
+  get pI(): string {
+    return this._pI;
+  }
+
+  set pI(value: string) {
+    this._pI = value;
+  }
+
+  get relmem(): Array<RguModel> {
+    return this._relmem;
+  }
+
+  set relmem(value: Array<RguModel>) {
+    this._relmem = value;
   }
 }

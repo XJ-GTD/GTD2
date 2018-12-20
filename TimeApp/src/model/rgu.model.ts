@@ -3,7 +3,7 @@
  */
 
 //群组中间表
-export class RguEntity {
+export class RguModel {
 
   private _bi: string=null;   //授权表主键ID
   private _bmi:string=null; //授权表关系人主键ID
