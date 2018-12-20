@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output, ViewChild} from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Content, IonicPage, NavController, NavParams, Tabs, ViewController } from 'ionic-angular';
 import { XiaojiAssistantService } from "../../service/util-service/xiaoji-assistant.service";
 import { ParamsService } from "../../service/util-service/params.service";
@@ -6,8 +6,7 @@ import { AiuiModel } from "../../model/aiui.model";
 import { ScheduleModel } from "../../model/schedule.model";
 import { XiaojiFeedbackService } from "../../service/util-service/xiaoji-feedback.service";
 import { Hb01Page } from "../hb01/hb01";
-import {DwEmitService} from "../../service/util-service/dw-emit.service";
-import {AppConfig} from "../../app/app.config";
+import { DwEmitService } from "../../service/util-service/dw-emit.service";
 
 declare var cordova: any;
 /**
@@ -44,6 +43,7 @@ export class HbPage {
   filePath: string;   //语音文件路径
 
   schedule: ScheduleModel;
+  inputData: AiuiModel;
   aiuiData: AiuiModel;
   messages: Array<AiuiModel>; //聊天数据队列
   //语音界面数据传递
@@ -65,8 +65,9 @@ export class HbPage {
     });
 
 
-      this.messages = [];
-      this.aiuiData = new AiuiModel();
+    this.messages = [];
+    this.aiuiData = new AiuiModel();
+    this.inputData = new AiuiModel();
 
     //语音唤醒冲突暂时关闭
     //this.initWakeUp();
@@ -118,25 +119,54 @@ export class HbPage {
     console.log("开始语音输入");
     if (this.xiaojiSpeech.islistenAudioing) return;
     this.xiaojiSpeech.listenAudio(rs =>{
+      rs = rs.replace("[asr.partial]","");
+      this.speechInputHanding(rs);
       this.xiaojiFeekback.audioSnare();
-
     });
+
   }
 
   //启动手动输入
   startXiaojiText() {
     if (this.inputText != null && this.inputText != "") {
-
+      this.speechInputHanding(this.inputText);
       this.xiaojiSpeech.listenText(this.inputText);
     }
-
     this.inputText = "";
+  }
+
+  //语音输入页面处理
+  speechInputHanding(text) {
+    this.inputData.tt = this.tu;
+    this.inputData.at = text;
+    this.messages.push(this.inputData);
+    this.inputData = new AiuiModel();
   }
 
   //回传数据处理
   messageHanding($event) {
 
-    alert("这是语音HbPage页面：" + $event);
+    console.log("这是语音HbPage页面数据处理：messageHanding方法");
+    let at;
+    if ($event == 1) {
+      at = "我不太明白您的意思";
+    } else {
+      if ($event.at != undefined) {
+        at = $event.at;
+      }
+      if ($event.au != undefined) {
+        at += "\n" + $event.au;
+      }
+      if ($event.ai != undefined) {
+        at += "\n" + $event.ai;
+      }
+    }
+
+
+    this.aiuiData.tt = this.tx;
+    this.aiuiData.at = at;
+    this.messages.push(this.aiuiData);
+    this.xiaojiSpeech.speakText(at, success=>{});
     // if($event != null) {
     //   let messageData = new AiuiModel();
     //   messageData.at = $event.res.data.st;
@@ -202,6 +232,7 @@ export class HbPage {
       // this.xiaojiSpeech.speakText();
       this.inputText = "";
     }*/
+    this.aiuiData = new AiuiModel();
 
   }
 

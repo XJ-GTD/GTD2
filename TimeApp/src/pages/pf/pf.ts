@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
-import { HttpClient } from "@angular/common/http";
-import {UEntity} from "../../entity/u.entity";
+import { UEntity } from "../../entity/u.entity";
 import { RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
 import {DataConfig} from "../../app/data.config";
@@ -89,7 +88,7 @@ export class PfPage {
           this.existCode = 3;
           this.ru.rN = this.tel;
           this.ru.rC = this.tel;
-          this.ru.hiu = DataConfig.defultHeadImg;
+          this.ru.hiu = DataConfig.defaultHeadImg;
           this.ru.rI = this.tel;
         }
         this.errorCode = 0;

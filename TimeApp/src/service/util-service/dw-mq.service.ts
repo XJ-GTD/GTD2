@@ -5,6 +5,7 @@ import { DwEmitService } from "./dw-emit.service";
 import { WorkService } from "../work.service";
 import { RelmemService } from "../relmem.service";
 import { WsResDataModel } from "../../model/ws.res.model";
+import {ErrorCodeService} from "./error-code.service";
 
 /**
  * webSocket公用处理方法
@@ -16,6 +17,7 @@ export class DwMqService {
 
   constructor(private work:WorkService,
               private relmem :RelmemService,
+              private errorCode: ErrorCodeService,
               private dwEmit: DwEmitService){
 
   }
@@ -31,17 +33,16 @@ export class DwMqService {
         case SkillConfig.XF_NMC: //取消
           break;
         case SkillConfig.XF_SCC: //讯飞：日程添加
-          this.xfScheduleCreate(mqDate.res.data)
+          this.xfScheduleCreate(mqDate.res.data);
           break;
         case SkillConfig.XF_SCD: //讯飞：日程删除
           this.xfScheduleDelete();
           break;
         case SkillConfig.XF_SCF: //讯飞：日程查询
-          this.dwEmit.setHbData(mqDate);//测试用
-          this.xfScheduleFind();
+          this.xfScheduleFind(mqDate);
           break;
         case SkillConfig.XF_PEC: //讯飞：参与人添加
-          this.xfPlayerCreate()
+          this.xfPlayerCreate();
           break;
         case SkillConfig.XF_PED: //讯飞：参与人删除
           this.xfPlayerDelete();
@@ -69,6 +70,7 @@ export class DwMqService {
       }
     } else {
       //失败消息处理
+      this.errorCode.errorHanding(mqDate.ss);
 
     }
 
@@ -113,8 +115,8 @@ export class DwMqService {
   /**
    * 语音：日程查询
    */
-  private xfScheduleFind() {
-
+  private xfScheduleFind(mqDate) {
+    this.dwEmit.setHbData(mqDate);//测试用
     // let jh = '';
     // let lbN='';
     // this.work.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{

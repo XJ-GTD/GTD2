@@ -16,7 +16,7 @@
 ##### ionic cordova build android 【debug版本，无需签名】
 ##### ionic cordova build android --release 【发布版，需要签名（要使用jarsigner签名必须用release版本）】
 ##### ionic cordova build android --release --prod => 优化启动速度，解决启动白屏
-
+#####ionic-app-scripts build --target cordova --platform android
 
 ###### 安装 phonegap 插件
 ##### npm install -- global phonegap
