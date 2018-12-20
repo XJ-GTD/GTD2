@@ -42,8 +42,8 @@ export class WorkSqlite{
             sa='1';
             isTrue=true;
           }
-          sql +='insert into GTD_D (pI,sI,son,sa,cd,pd,uI,rui) values("'+ this.util.getUuid()+'","'+ rc.sI+'","'
-            + rc.sN+'","' +sa+ '","'+rc.sd+ '","'+rc.ed+ '","'+ ru.rI+'","'+ ru.id+'")';
+          sql +='insert into GTD_D (pI,sI,son,sa,cd,pd,uI,rui,sdt) values("'+ this.util.getUuid()+'","'+ rc.sI+'","'
+            + rc.sN+'","' +sa+ '","'+rc.sd+ '","'+rc.ed+ '","'+ ru.rI+'","'+ ru.id+'",'+ ru.sdt+')';
         }
         return this.baseSqlite.importSqlToDb(sql)
       }else{
@@ -113,7 +113,7 @@ export class WorkSqlite{
         let resL = new Array<any>()
         if(data&&data.rows&&data.rows.length>0){
           let ls = data.rows;
-          for(let i=20;i<=31;i++){
+          for(let i=1;i<=31;i++){
             let day = ym+"-"+i;
             if(i<10){
               day = ym+'-0'+i
