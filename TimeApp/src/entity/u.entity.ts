@@ -103,6 +103,9 @@ export class UEntity {
     if(this._rn!=null && this._rn!=''){
       sql=sql+' rn="' + this._rn +'",';
     }
+    if(this._uty!=null && this._uty!=''){
+      sql=sql+' uty="' + this._uty +'",';
+    }
     if(this._oUI != null && this._oUI!=''){
       sql = sql + ' uI="' + this._uI +'" where uI="' + this._oUI +'"';
     }else{

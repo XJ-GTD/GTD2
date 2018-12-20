@@ -10,7 +10,6 @@ import {RcEntity} from "../entity/rc.entity";
 import {BaseSqlite} from "./sqlite/base-sqlite";
 import {UtilService} from "./util-service/util.service";
 import {RcModel} from "../model/rc.model";
-import {AppConfig} from "../app/app.config";
 import {LbSqlite} from "./sqlite/lb-sqlite";
 import {LboModel} from "../model/out/lbo.model";
 import {LbModel} from "../model/lb.model";
@@ -18,6 +17,9 @@ import {ScheduleModel} from "../model/schedule.model";
 import {MsEntity} from "../entity/ms.entity";
 import {UserSqlite} from "./sqlite/user-sqlite";
 import {DataConfig} from "../app/data.config";
+import {PsModel} from "../model/ps.model";
+import {RcRestful} from "./restful/rc-restful";
+import {HttpClient} from "@angular/common/http";
 
 /**
  * 日程逻辑处理
@@ -29,11 +31,13 @@ export class WorkService {
   workSqlite: WorkSqlite;
   userSqlite: UserSqlite;
   lbSqlite: LbSqlite;
+  rcResful:RcRestful;
   constructor(private baseSqlite:BaseSqlite,
-                private util:UtilService) {
+                private util:UtilService,private http: HttpClient) {
     this.workSqlite = new WorkSqlite(baseSqlite,util);
     this.userSqlite = new UserSqlite(baseSqlite);
     this.lbSqlite = new LbSqlite(baseSqlite);
+    this.rcResful = new RcRestful(http);
   }
 
   /**
@@ -49,21 +53,38 @@ export class WorkService {
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
       //先查询当前用户ID
-      this.userSqlite.getUo().then(data=>{
-        if(data && data.rows && data.rows.length>0){
-          let rc = new RcEntity();
-          rc.uI=data.rows.item(0).uI;
-          rc.sN=ct;
-          rc.sd=sd;
-          rc.ed=ed;
-          rc.lI=lbI;
-          rc.ji=jhi;
-          rc.sI=this.util.getUuid();
-          this.baseSqlite.save(rc).then(data=>{
-            this.workSqlite.sRcps(rc,ruL)
-          })
-          resolve(bs)
+      let rc = new RcEntity();
+      rc.uI=DataConfig.uInfo.uI;
+      rc.sN=ct;
+      rc.sd=sd;
+      rc.ed=ed;
+      rc.lI=lbI;
+      rc.ji=jhi;
+      rc.sI=this.util.getUuid();
+      let psl = new Array<PsModel>()
+      this.baseSqlite.save(rc).then(data=>{
+        if(ruL && ruL.length>0){
+          return this.workSqlite.sRcps(rc,ruL)
         }
+      }).then(data=>{
+        //转化接口对应的参与人参数
+        if(ruL && ruL.length>0){
+          for(let i=0;i<ruL.length;i++){
+            //排除当前登录人
+            if(ruL[i].rI != rc.uI){
+              let ps = new PsModel();
+              ps.userId=ruL[i].rI;
+              ps.accountMobile = ruL[i].rC;
+              psl.push(ps);
+            }
+          }
+        }
+        //参与人大于0则访问后台接口
+        if(psl.length>0){
+          return this.rcResful.sc(rc.uI,'D1101',rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'')
+        }
+      }).then(data=>{
+        resolve(bs)
       }).catch(e=>{
         bs.code = DataConfig.ERR_CODE
         bs.message=e.message
@@ -262,13 +283,13 @@ export class WorkService {
 
   /**
    * 事件详情
-   * @param {string} pI 日程参与人ID
+   * @param {string} pI 日程ID
    * @returns {Promise<RcpModel>}
    */
-  getds(pI:string):Promise<RcModel>{
+  getds(sI:string):Promise<RcModel>{
     return new Promise((resolve, reject) =>{
       let rc= new RcModel();
-      this.workSqlite.getds(pI).then(data=>{
+      this.workSqlite.getds(sI).then(data=>{
           if(data&&data.rows&&data.rows.length>0){
             rc= data.rows.item(0);
             resolve(rc);

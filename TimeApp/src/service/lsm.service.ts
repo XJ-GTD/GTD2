@@ -3,15 +3,15 @@ import {BaseModel} from "../model/base.model";
 import {AuRestful} from "./restful/au-restful";
 import {PnRestful} from "./restful/pn-restful";
 import {DxRestful} from "./restful/dx-restful";
-import {AlertController, LoadingController, NavController, NavParams} from "ionic-angular";
 import {HttpClient} from "@angular/common/http";
 import {UtilService} from "./util-service/util.service";
 import {BsModel} from "../model/out/bs.model";
-import {UserSqlite} from "./sqlite/user-sqlite";
 import {BaseSqlite} from "./sqlite/base-sqlite";
 import {UEntity} from "../entity/u.entity";
-import {AppConfig} from "../app/app.config";
 import {DataConfig} from "../app/data.config";
+import {RelmemService} from "./relmem.service";
+import {RelmemSqlite} from "./sqlite/relmem-sqlite";
+import {RuEntity} from "../entity/ru.entity";
 
 
 /**
@@ -22,16 +22,14 @@ export class LsmService {
   au:AuRestful;
   pn:PnRestful;
   dx:DxRestful;
-  userSqlite:UserSqlite;
+  relmem:RelmemSqlite;
   constructor(private http: HttpClient,
-              private loadingCtrl: LoadingController,
-              private alertCtrl: AlertController,
               private basesqlite:BaseSqlite,
               private util: UtilService) {
     this.au = new AuRestful(http,util);
     this.pn = new PnRestful(http);
     this.dx = new DxRestful(http,util);
-    this.userSqlite = new UserSqlite(this.basesqlite)
+    this.relmem = new RelmemSqlite(basesqlite);
   }
 
   /**
@@ -79,7 +77,8 @@ export class LsmService {
   visitor() :Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let base = new BsModel();
-      if(DataConfig.isFirst!=0) {
+      if(DataConfig.isFirst!=0 ||  DataConfig.uInfo.uT == null ||
+        DataConfig.uInfo.uT =='null' ||  DataConfig.uInfo.uT=='') {
         console.log("------lsm visitor 开始游客登录--------")
         let ui = '';
         if (DataConfig.uInfo && DataConfig.uInfo.uI) {
@@ -95,9 +94,8 @@ export class LsmService {
               u.uI = ui;
               if (datal.data && datal.data.accountQueue) {
                 u.aQ = datal.data.accountQueue
-                if(datal.data.token){
-                  u.uT=datal.data.token
-                }
+                u.uT=datal.data.token
+
                 console.log("------lsm visitor 游客登录成功更新GTD_A消息队列编号：" + u.aQ)
                 //赋值消息队列
                 DataConfig.uInfo.aQ = u.aQ;

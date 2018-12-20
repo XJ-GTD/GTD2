@@ -3,28 +3,29 @@
  */
 import {BsModel} from "./bs.model";
 import {RguEntity} from "../../entity/rgu.entity";
+import {RguModel} from "../rgu.model";
 
 //Message out类
 export class RguoModel extends BsModel {
 
 
-  private _rgus: Array<RguEntity>;
-  private _rgu: RguEntity;
+  private _rgus: Array<RguModel>;
+  private _rgu: RguModel;
 
 
-  get rgus(): Array<RguEntity> {
+  get rgus(): Array<RguModel> {
     return this._rgus;
   }
 
-  set rgus(value: Array<RguEntity>) {
+  set rgus(value: Array<RguModel>) {
     this._rgus = value;
   }
 
-  get rgu(): RguEntity {
+  get rgu(): RguModel {
     return this._rgu;
   }
 
-  set rgu(value: RguEntity) {
+  set rgu(value: RguModel) {
     this._rgu = value;
   }
 }
