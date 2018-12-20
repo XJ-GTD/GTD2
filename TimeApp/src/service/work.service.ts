@@ -20,6 +20,7 @@ import {DataConfig} from "../app/data.config";
 import {PsModel} from "../model/ps.model";
 import {RcRestful} from "./restful/rc-restful";
 import {HttpClient} from "@angular/common/http";
+import {SkillConfig} from "../app/skill.config";
 
 /**
  * 日程逻辑处理
@@ -57,7 +58,13 @@ export class WorkService {
       rc.uI=DataConfig.uInfo.uI;
       rc.sN=ct;
       rc.sd=sd;
+      if(sd == null || sd == ''){
+        rc.sd=ed;
+      }
       rc.ed=ed;
+      if(ed == null || ed == ''){
+        rc.ed=sd;
+      }
       rc.lI=lbI;
       rc.ji=jhi;
       rc.sI=this.util.getUuid();
@@ -81,14 +88,17 @@ export class WorkService {
         }
         //参与人大于0则访问后台接口
         if(psl.length>0){
-          return this.rcResful.sc(rc.uI,'D1101',rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'')
+          console.log("WorkService arc() restful " + SkillConfig.BC_SCC+" start")
+          return this.rcResful.sc(rc.uI,SkillConfig.BC_SCC,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'')
         }
       }).then(data=>{
+        console.log("WorkService arc() end : " +JSON.stringify(data))
         resolve(bs)
       }).catch(e=>{
+        console.error("WorkService arc() Error : " +JSON.stringify(e))
         bs.code = DataConfig.ERR_CODE
         bs.message=e.message
-        resolve(bs)
+        reject(bs)
       })
 
     })
@@ -114,7 +124,13 @@ export class WorkService {
           rc.uI=data.rows.item(0).uI;
           rc.sN=ct;
           rc.sd=sd;
+          if(sd == null || sd == ''){
+            rc.sd=ed;
+          }
           rc.ed=ed;
+          if(ed == null || ed == ''){
+            rc.ed=sd;
+          }
           rc.lI=lbI;
           rc.ji=jhi;
           rc.sI=sI;
@@ -186,35 +202,32 @@ export class WorkService {
   getMBs(ym): Promise<MbsoModel> {
     return new Promise((resolve, reject) => {
       let mbso = new MbsoModel();
-      //先查询当前用户ID
-      this.userSqlite.getUo().then(data=>{
-        if(data && data.rows && data.rows.length>0){
-          this.workSqlite.getMBs(ym,data.rows.item(0).uI).then(data => {
-            mbso.code = 0;
-            let mbsl = new Array<MbsModel>()
-            if (data && data.rows && data.rows.length > 0) {
-              for (let i = 0; i < data.rows.length; i++) {
-                let mbs = new MbsModel();
-                mbs.date = new Date(data.rows.item(i).ymd);
-                if (data.rows.item(i).ct > 5) {
-                  mbs.im = true;
-                }
-                if (data.rows.item(i).mdn != null) {
-                  mbs.iem = true;
-                }
-                mbsl.push(mbs)
-              }
+      console.log("----- WorkService getMBs(获取当月标识) start -----")
+      this.workSqlite.getMBs(ym,DataConfig.uInfo.uI).then(data => {
+        console.log("----- WorkService getMBs(获取当月标识) result:" + JSON.stringify(data))
+        mbso.code = 0;
+        let mbsl = new Array<MbsModel>()
+        if (data.code==0&&data.data.length > 0) {
+          for (let i = 0; i < data.data.length; i++) {
+            let mbs = new MbsModel();
+            mbs.date = new Date(data.data[i].ymd);
+            if (data.data[i].ct > 5) {
+              mbs.im = true;
             }
-            mbso.bs = mbsl;
-            resolve(mbso);
-          }).catch(e => {
-            mbso.code = 1;
-            mbso.message = e.message;
-            reject(mbso)
-          })
+            if (data.data[i].mdn != null) {
+              mbs.iem = true;
+            }
+            mbsl.push(mbs)
+          }
         }
+        mbso.bs = mbsl;
+        resolve(mbso);
+      }).catch(e => {
+        console.error("----- WorkService getMBs(获取当月标识) Error:" + JSON.stringify(e))
+        mbso.code = 1;
+        mbso.message = e.message;
+        reject(mbso)
       })
-
     })
   }
 
@@ -225,28 +238,25 @@ export class WorkService {
   getOd(d:string):Promise<RcpoModel>{
     return new Promise((resolve, reject) =>{
       let rcpo = new RcpoModel();
-      //先查询当前用户ID
-      this.userSqlite.getUo().then(data=>{
-        if(data && data.rows && data.rows.length>0){
-          this.workSqlite.getOd(d,data.rows.item(0).uI).then(data=>{
-            let rcps = new Array<ScheduleModel>()
-            if(data && data.rows && data.rows.length>0){
-              for(let i=0;i<data.rows.length;i++){
-                let rcp = new ScheduleModel();
-                rcp = data.rows.item(i);
-                rcps.push(rcp);
-              }
-            }
-            rcpo.slc = rcps;
-            resolve(rcpo);
-          }).catch(e=>{
-            rcpo.code=DataConfig.ERR_CODE;
-            rcpo.message=e.message;
-            reject(rcpo)
-          })
+      console.log("----- WorkService getOd(获取当天事件) start -----")
+      this.workSqlite.getOd(d,DataConfig.uInfo.uI).then(data=>{
+        console.log("----- WorkService getOd(获取当天事件) result:" + JSON.stringify(data))
+        let rcps = new Array<ScheduleModel>()
+        if(data.code==0 &&data.data.length>0){
+          for(let i=0;i<data.data.length;i++){
+            let rcp = new ScheduleModel();
+            rcp = data.data[i];
+            rcps.push(rcp);
+          }
         }
+        rcpo.slc = rcps;
+        resolve(rcpo);
+      }).catch(e=>{
+        console.error("----- WorkService getOd(获取当天事件) Error:" + JSON.stringify(e))
+        rcpo.code=DataConfig.ERR_CODE;
+        rcpo.message=e.message;
+        reject(rcpo)
       })
-
     })
   }
 
@@ -262,7 +272,9 @@ export class WorkService {
   getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string):Promise<RcpoModel>{
     return new Promise((resolve, reject) =>{
       let rcpo = new RcpoModel();
+      console.log("----- WorkService getwL(根据条件查询日程) start -----")
       this.workSqlite.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
+        console.log("----- WorkService getwL(根据条件查询日程) result:" + JSON.stringify(data))
         let rcps = new Array<RcpModel>()
         if(data && data.rows && data.rows.length>0){
           for(let i=0;i<data.rows.length;i++){
@@ -274,6 +286,7 @@ export class WorkService {
         rcpo.sjl=rcps;
         resolve(rcpo)
       }).catch(e=>{
+        console.error("----- WorkService getwL(根据条件查询日程) Error:" + JSON.stringify(e))
         rcpo.code=DataConfig.ERR_CODE;
         rcpo.message=e.message;
         reject(rcpo)
@@ -289,7 +302,9 @@ export class WorkService {
   getds(sI:string):Promise<RcModel>{
     return new Promise((resolve, reject) =>{
       let rc= new RcModel();
+      console.log("----- WorkService getds(事件详情) start -----")
       this.workSqlite.getds(sI).then(data=>{
+        console.log("----- WorkService getds(事件详情) result:" + JSON.stringify(data))
           if(data&&data.rows&&data.rows.length>0){
             rc= data.rows.item(0);
             resolve(rc);
@@ -299,6 +314,7 @@ export class WorkService {
             resolve(rc);
           }
       }).catch(e=>{
+        console.error("----- WorkService getds(事件详情) Error:" + JSON.stringify(e))
         rc.code=DataConfig.ERR_CODE
         rc.message=DataConfig.ERR_MESSAGE
         reject(rc);
@@ -316,9 +332,12 @@ export class WorkService {
       let rc = new RcEntity()
       rc.sI=sI;
       let bs = new BsModel();
+      console.log("----- WorkService delrc(删除日程) start -----")
       this.baseSqlite.delete(rc).then(data=>{
+        console.log("----- WorkService delrc(删除日程) result:" + JSON.stringify(data))
         resolve(bs)
       }).catch(e=>{
+        console.error("----- WorkService delrc(删除日程) Error:" + JSON.stringify(e))
         bs.code=DataConfig.ERR_CODE;
         bs.message=e.message;
       })
