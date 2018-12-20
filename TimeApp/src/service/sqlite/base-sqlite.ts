@@ -259,6 +259,8 @@ export class BaseSqlite {
           let sql=fi.isq+u.isq;
           this.importSqlToDb(sql).then(data=>{
             console.log("-------------------BaseSqlite initData  GTD_A and GTD_FI table to data: "+JSON.stringify(data))
+            let data1 = new Array();
+            this.initlb(data1);
             resolve(data)
           }).catch(e=>{
             console.error("------------------BaseSqlite initData to table data: "+e.message)
