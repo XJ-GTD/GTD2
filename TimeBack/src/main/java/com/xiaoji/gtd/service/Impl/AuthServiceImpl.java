@@ -40,9 +40,9 @@ public class AuthServiceImpl implements IAuthService {
     private String LOGIN_TYPE_MOBILE;
     @Value("${person.signup.logintype.account}")
     private String LOGIN_TYPE_ACCOUNT;
-    @Value("${person.signup.logintype.account}")
+    @Value("${person.signup.authtype.visitor}")
     private String AUTH_TYPE_VISITOR;
-    @Value("${person.signup.logintype.account}")
+    @Value("${person.signup.authtype.user}")
     private String AUTH_TYPE_USER;
 
     @Resource
