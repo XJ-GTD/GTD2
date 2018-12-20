@@ -44,6 +44,7 @@ import {PermissionsService} from "../service/util-service/permissions.service";
 import {AndroidPermissions} from '@ionic-native/android-permissions';
 import {ConfigService} from "../service/config.service";
 import {ErrorCodeService} from "../service/util-service/error-code.service";
+import {HdSpeechService} from "../service/util-service/hd-speech.service";
 
 @NgModule({
   declarations: [
@@ -104,6 +105,7 @@ import {ErrorCodeService} from "../service/util-service/error-code.service";
     PermissionsService,
     ConfigService,
     ErrorCodeService,
+    HdSpeechService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

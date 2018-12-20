@@ -6,6 +6,7 @@ import { WorkService } from "../work.service";
 import { RelmemService } from "../relmem.service";
 import { WsResDataModel } from "../../model/ws.res.model";
 import {ErrorCodeService} from "./error-code.service";
+import {HdSpeechService} from "./hd-speech.service";
 
 /**
  * webSocket公用处理方法
@@ -18,6 +19,7 @@ export class DwMqService {
   constructor(private work:WorkService,
               private relmem :RelmemService,
               private errorCode: ErrorCodeService,
+              private hdSpeech: HdSpeechService,
               private dwEmit: DwEmitService){
 
   }
@@ -82,9 +84,9 @@ export class DwMqService {
    * 语音：日程创建
    * @param data
    */
-  private xfScheduleCreate(data: WsResDataModel) {
-
-    let resd = data;
+  private xfScheduleCreate(mqDate) {
+    this.dwEmit.setHbData(mqDate);//测试用
+    let resd = mqDate.res.data;
     let ct=resd.sn;
     let sd=resd.st;
     let ed = resd.et;
@@ -116,6 +118,7 @@ export class DwMqService {
    * 语音：日程查询
    */
   private xfScheduleFind(mqDate) {
+    this.hdSpeech.scheduleFind();
     this.dwEmit.setHbData(mqDate);//测试用
     // let jh = '';
     // let lbN='';
