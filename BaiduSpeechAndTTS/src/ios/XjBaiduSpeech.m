@@ -92,8 +92,8 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     [self.asrEventManager setParameter:APP_ID_1 forKey:BDS_ASR_OFFLINE_APP_CODE];
     //[self.asrEventManager setParameter:@(NO) forKey:BDS_ASR_ENABLE_LONG_SPEECH];
     //配置端点检测（二选一）
-    //[self configModelVAD];
-    [self configDNNMFE];
+    [self configModelVAD];
+    //[self configDNNMFE];
 
      [self.asrEventManager setParameter:@"15361" forKey:BDS_ASR_PRODUCT_ID];
     // ---- 语义与标点 -----
@@ -132,25 +132,25 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     //[self.asrEventManager setParameter:modelVAD_filepath forKey:BDS_ASR_MODEL_VAD_DAT_FILE];
     //[self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_MODEL_VAD];
     // 服务端VAD
-    //[self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_EARLY_RETURN];
+    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_EARLY_RETURN];
     // 本地VAD
-    //[self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_LOCAL_VAD];
-    
-    NSString *modelVAD_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_basic_model" ofType:@"dat"];
-    
+    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_LOCAL_VAD];
+
+   NSString *modelVAD_filepath = [[NSBundle mainBundle] pathForResource:@"BDSClientResource.bundle/BDSClientEASRResources/bds_easr_basic_model" ofType:@"dat"];
+
     [self.asrEventManager setParameter:modelVAD_filepath forKey:BDS_ASR_MODEL_VAD_DAT_FILE];
-    
-    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_MODEL_VAD];
-    
-    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_NLU];
-    
-    [self.asrEventManager setParameter:@"15361" forKey:BDS_ASR_PRODUCT_ID];
+
+   [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_MODEL_VAD];
+
+   //[self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_NLU];
+
+  //  [self.asrEventManager setParameter:@"15361" forKey:BDS_ASR_PRODUCT_ID];
 }
 
 - (void)configDNNMFE {
-    NSString *mfe_dnn_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_mfe_dnn" ofType:@"dat"];
+    NSString *mfe_dnn_filepath = [[NSBundle mainBundle] pathForResource:@"BDSClientResource.bundle/BDSClientEASRResources/bds_easr_mfe_dnn" ofType:@"dat"];
     [self.asrEventManager setParameter:mfe_dnn_filepath forKey:BDS_ASR_MFE_DNN_DAT_FILE];
-    NSString *cmvn_dnn_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_mfe_cmvn" ofType:@"dat"];
+    NSString *cmvn_dnn_filepath = [[NSBundle mainBundle] pathForResource:@"BDSClientResource.bundle/BDSClientEASRResources/bds_easr_mfe_cmvn" ofType:@"dat"];
     [self.asrEventManager setParameter:cmvn_dnn_filepath forKey:BDS_ASR_MFE_CMVN_DAT_FILE];
 
     // 关闭服务端VAD
@@ -166,8 +166,8 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
     // 离线仅可识别自定义语法规则下的词
     [self.asrEventManager setParameter:@(EVR_STRATEGY_BOTH) forKey:BDS_ASR_STRATEGY];
-    NSString* gramm_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_gramm" ofType:@"dat"];
-    NSString* lm_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_basic_model" ofType:@"dat"];
+    NSString* gramm_filepath = [[NSBundle mainBundle] pathForResource:@"BDSClientResource.bundle/BDSClientEASRResources/bds_easr_gramm" ofType:@"dat"];
+    NSString* lm_filepath = [[NSBundle mainBundle] pathForResource:@"BDSClientResource.bundle/BDSClientEASRResources/bds_easr_basic_model" ofType:@"dat"];
     [self.asrEventManager setParameter:APP_ID_1 forKey:BDS_ASR_OFFLINE_APP_CODE];
     [self.asrEventManager setParameter:lm_filepath forKey:BDS_ASR_OFFLINE_ENGINE_DAT_FILE_PATH];
     // 请在 (官网)[http://speech.baidu.com/asr] 参考模板定义语法，下载语法文件后，替换BDS_ASR_OFFLINE_ENGINE_GRAMMER_FILE_PATH参数
@@ -263,7 +263,7 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 
 - (void)configFileHandler {
-    self.fileHandler = [self createFileHandleWithName:@"iat.pcm" isAppend:NO];
+    self.fileHandler = [self createFileHandleWithName:@"xjASR/iat.pcm" isAppend:NO];
 }
 
 - (NSFileHandle *)createFileHandleWithName:(NSString *)aFileName isAppend:(BOOL)isAppend {
@@ -289,7 +289,7 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 #pragma mark - Private: File
 - (NSString *)getFilePath:(NSString *)fileName {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     if (paths && [paths count]) {
         return [[paths objectAtIndex:0] stringByAppendingPathComponent:fileName];
     } else {
