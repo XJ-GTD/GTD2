@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {UEntity} from "../../entity/u.entity";
 import {RuModel} from "../../model/ru.model";
 import {RelmemService} from "../../service/relmem.service";
@@ -28,11 +28,15 @@ export class PePage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private relmemService: RelmemService) {
+              private relmemService: RelmemService,
+              private alertCtrl: AlertController) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PePage');
+  }
+
+  ionViewWillEnter(){
     this.uo = DataConfig.uInfo;
     console.log("pe 获取用户信息："+JSON.stringify(this.uo))
   }
@@ -66,10 +70,21 @@ export class PePage {
   };
 
   save(){
+    if(!this.qmc){
+      let alert = this.alertCtrl.create({
+        message: '请输入群组名称',
+        enableBackdropDismiss:false
+      });
+      setTimeout(()=>{
+        alert.dismiss();
+      },1000);
+      alert.present();
+      return;
+    }
+
     this.relmemService.aru(this.uo.uI,null,null,this.qmc,null,'1',null,null,this.qcy).then(data=>{
       if(data.code == 0){
         console.log("添加群成功");
-        //setroot
         this.navCtrl.pop();
 
       }else{

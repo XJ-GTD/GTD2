@@ -27,8 +27,8 @@ export class PfPage {
 
   errorCode: number;//
 
-  checkMoblieNull: boolean;
-  checkMoblie: boolean;
+  checkMobileNull: boolean;
+  checkMobile: boolean;
 
   uo:UEntity;
   sr:any = new Array(RuModel);
@@ -59,22 +59,25 @@ export class PfPage {
     var  re = /^1\d{10}$/;   //正则表达式
     var  ren=re.test(this.tel);
     //判断手机号是否为空
-    this.checkMoblieNull=false;
-    this.checkMoblie=false;
+    this.checkMobileNull=false;
+    this.checkMobile=false;
     if(this.tel==null || this.tel==""){
-      this.checkMoblieNull=true;
+      this.checkMobileNull=true;
     }else {
       //判断手机号是否为11
       if (!re.test(this.tel)) {      //判断字符是否是11位数字
-        this.checkMoblie=true;
+        this.checkMobile=true;
         this.errorCode = 1;
         let alert = this.alertCtrl.create({
           subTitle: "手机号错误",
         });
+        setTimeout(()=>{
+          alert.dismiss();
+        },1000);
         alert.present();
       }
     }
-    if(this.checkMoblie == false && this.checkMoblieNull == false){
+    if(this.checkMobile == false && this.checkMobileNull == false){
       this.ru = undefined;
       this.relmemService.su(this.tel).then(data=>{
         if(data.code == 0){
