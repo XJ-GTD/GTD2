@@ -16,6 +16,7 @@ export class RcpEntity {
   private _rui: string=null;  //联系人ID
   private _ib: string='0';  //是否本地:0非本地；1本地日历 默认非本地
   private _bi: string=null; //本地日程id
+  private _sdt: number = 0; //日程是否发送状态;0未发送，1同意发送，2拒绝发送，3未注册
   /*
    * 创建表
    * @type {string}
@@ -23,7 +24,7 @@ export class RcpEntity {
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_D(pI VARCHAR(100) PRIMARY KEY,sI VARCHAR(100),' +
                           'son VARCHAR(100),sa VARCHAR(2),ps VARCHAR(2),cd VARCHAR(20),pd VARCHAR(20),' +
-    'uI VARCHAR(100),rui VARCHAR(100),ib VARCHAR(2),bi VARCHAR(20));';
+    'uI VARCHAR(100),rui VARCHAR(100),ib VARCHAR(2),bi VARCHAR(20),sdt INTEGER);';
   private _drsq:string="DROP TABLE IF EXISTS GTD_D;";
 
   private _isq:string;
@@ -42,9 +43,9 @@ export class RcpEntity {
 
   get isq(): string {
     let sql='insert into GTD_D ' +
-      '(pI,sI,son,sa,ps,cd,pd,uI,rui,ib,bi) values("'+ this._pI+'","'+ this._sI+'","'+ this._son+'","'
+      '(pI,sI,son,sa,ps,cd,pd,uI,rui,ib,bi,sdt) values("'+ this._pI+'","'+ this._sI+'","'+ this._son+'","'
       +this._sa+ '","'+this._ps+ '","'+this._cd+ '","'+this._pd+ '","'+ this._uI+'","'+ this._rui+'","'
-      + this._ib+'","'+this._bi+'")';
+      + this._ib+'","'+this._bi+'",'+this._sdt+')';
     this._isq=sql;
     return this._isq;
   }
@@ -84,6 +85,9 @@ export class RcpEntity {
     }
     if(this._rui!=null && this._rui!=''){
       sql=sql+' rui="' + this._rui +'",';
+    }
+    if(this._sdt!=null){
+      sql=sql+' sdt=' + this._sdt;
     }
     if(this._pI != null && this._pI!=''){
       sql = sql + ' pI="' + this._pI +'" where pI="' + this._pI +'"';
@@ -128,6 +132,9 @@ export class RcpEntity {
     }
     if(this._rui!=null && this._rui!=''){
       sql=sql+' and rui="' + this._rui +'"';
+    }
+    if(this._sdt!=null){
+      sql=sql+' and sdt=' + this._sdt;
     }
     this._dsq=sql;
     return this._dsq;
@@ -237,5 +244,13 @@ export class RcpEntity {
 
   set bi(value: string) {
     this._bi = value;
+  }
+
+  get sdt(): number {
+    return this._sdt;
+  }
+
+  set sdt(value: number) {
+    this._sdt = value;
   }
 }
