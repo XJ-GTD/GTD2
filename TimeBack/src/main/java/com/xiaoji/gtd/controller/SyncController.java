@@ -3,8 +3,12 @@ package com.xiaoji.gtd.controller;
 import com.xiaoji.config.interceptor.AuthCheck;
 import com.xiaoji.gtd.dto.BaseInDto;
 import com.xiaoji.gtd.dto.Out;
+import com.xiaoji.gtd.dto.code.ResultCode;
+import com.xiaoji.gtd.dto.sync.SyncOutDto;
+import com.xiaoji.gtd.service.ISyncService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -19,6 +23,13 @@ public class SyncController {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
+    private final ISyncService syncService;
+
+    @Autowired
+    public SyncController(ISyncService syncService) {
+        this.syncService = syncService;
+    }
+
     /**
      * app初始化同步
      * @return
@@ -27,6 +38,24 @@ public class SyncController {
     @ResponseBody
     public Out initialSync(@RequestBody BaseInDto inDto) {
         Out outDto = new Out();
+        SyncOutDto data;
+
+        try {
+
+            data = syncService.initialSync();
+            if (data != null) {
+                outDto.setData(data);
+                outDto.setCode(ResultCode.SUCCESS);
+                logger.debug("初始化成功");
+            } else {
+                outDto.setCode(ResultCode.FAIL_INIT);
+                logger.debug("初始化成功");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            logger.error("初始化数据失败：服务器繁忙");
+        }
 
         return outDto;
     }
