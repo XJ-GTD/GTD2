@@ -22,7 +22,6 @@
     "@angular/platform-browser-dynamic": "5.0.0",
     "@ionic-native/android-permissions": "^3.10.0",
     "@ionic-native/background-mode": "^3.10.0",
-    "@ionic-native/base64": "^4.15.0",
     "@ionic-native/calendar": "^4.15.0",
     "@ionic-native/core": "4.3.2",
     "@ionic-native/device": "^4.17.0",

@@ -100,6 +100,5 @@
     <plugin name="cordova-plugin-android-permissions" spec="~1.0.0" />
     <plugin name="cordova-plugin-background-mode" spec="~0.7.2" />
     <engine name="ios" spec="~4.3.1" />
-    <plugin name="com-badrit-base64" spec="~0.2.0" />
     <plugin name="cordova-plugin-console" spec="~1.1.0" />
 </widget>
