@@ -3,6 +3,7 @@
  */
 import {BsModel} from "./out/bs.model";
 import {RguModel} from "./rgu.model";
+import {RuModel} from "./ru.model";
 
 //日程表
 export class RcModel extends BsModel{
@@ -18,7 +19,7 @@ export class RcModel extends BsModel{
   private _ed:string = null; //结束时间
   private _sa:string = null; //修改权限 0不可修改，1可修改
   private _pI: string=null;//日程参与人表uuID
-  private _relmem : Array<RguModel> //联系人
+  private _rus : Array<RuModel> //联系人
   get sI(): string {
     return this._sI;
   }
@@ -108,11 +109,11 @@ export class RcModel extends BsModel{
     this._pI = value;
   }
 
-  get relmem(): Array<RguModel> {
-    return this._relmem;
+  get rus(): Array<RuModel> {
+    return this._rus;
   }
 
-  set relmem(value: Array<RguModel>) {
-    this._relmem = value;
+  set rus(value: Array<RuModel>) {
+    this._rus = value;
   }
 }

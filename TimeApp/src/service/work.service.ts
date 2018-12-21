@@ -15,12 +15,12 @@ import {LboModel} from "../model/out/lbo.model";
 import {LbModel} from "../model/lb.model";
 import {ScheduleModel} from "../model/schedule.model";
 import {MsEntity} from "../entity/ms.entity";
-import {UserSqlite} from "./sqlite/user-sqlite";
 import {DataConfig} from "../app/data.config";
 import {PsModel} from "../model/ps.model";
 import {RcRestful} from "./restful/rc-restful";
 import {HttpClient} from "@angular/common/http";
 import {SkillConfig} from "../app/skill.config";
+import {RelmemSqlite} from "./sqlite/relmem-sqlite";
 
 /**
  * 日程逻辑处理
@@ -30,13 +30,13 @@ import {SkillConfig} from "../app/skill.config";
 @Injectable()
 export class WorkService {
   workSqlite: WorkSqlite;
-  userSqlite: UserSqlite;
+  relmem: RelmemSqlite;
   lbSqlite: LbSqlite;
   rcResful:RcRestful;
   constructor(private baseSqlite:BaseSqlite,
                 private util:UtilService,private http: HttpClient) {
     this.workSqlite = new WorkSqlite(baseSqlite,util);
-    this.userSqlite = new UserSqlite(baseSqlite);
+    this.relmem = new RelmemSqlite(baseSqlite);
     this.lbSqlite = new LbSqlite(baseSqlite);
     this.rcResful = new RcRestful(http);
   }
@@ -93,7 +93,40 @@ export class WorkService {
         }
       }).then(data=>{
         console.log("WorkService arc() end : " +JSON.stringify(data))
-        resolve(bs)
+        if(psl.length>0 && data.code==0 && data.data.players.length>0){
+          let players = data.data.players;
+          for(let i=0;i<ruL.length;i++){
+
+            for(let j=0;j<players.length;j++){
+              if(ruL[i].rC == players[i].accountMobile){
+                  if(players[i].agree){
+                    ruL[i].sdt=1
+                    break;
+                  }else if(!players[i].player){
+                    ruL[i].sdt=2
+                    break;
+                  }else if(!players[i].user){
+                    ruL[i].sdt=3
+                    break;
+                  }
+              }
+            }
+            //先删除再添加
+            this.workSqlite.dRcps(rc.sI).then(data=>{
+              return this.workSqlite.sRcps(rc,ruL)
+            }).then(data=>{
+              resolve(bs)
+            }).catch(e=>{
+              console.error("WorkService arc() Error : " +JSON.stringify(e))
+              bs.code = DataConfig.ERR_CODE
+              bs.message=e.message
+              reject(bs)
+            })
+          }
+        }else{
+          resolve(bs)
+        }
+
       }).catch(e=>{
         console.error("WorkService arc() Error : " +JSON.stringify(e))
         bs.code = DataConfig.ERR_CODE
@@ -118,44 +151,80 @@ export class WorkService {
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
       //先查询当前用户ID
-      this.userSqlite.getUo().then(data=>{
-        if(data && data.rows && data.rows.length>0){
-          let rc = new RcEntity();
-          rc.uI=data.rows.item(0).uI;
-          rc.sN=ct;
-          rc.sd=sd;
-          if(sd == null || sd == ''){
-            rc.sd=ed;
+      let rc = new RcEntity();
+      rc.uI=DataConfig.uInfo.uI;
+      rc.sN=ct;
+      rc.sd=sd;
+      if(sd == null || sd == ''){
+        rc.sd=ed;
+      }
+      rc.ed=ed;
+      if(ed == null || ed == ''){
+        rc.ed=sd;
+      }
+      rc.lI=lbI;
+      rc.ji=jhi;
+      rc.sI=sI;
+      let psl = new Array<PsModel>()
+      this.baseSqlite.update(rc).then(datau=>{
+        //转化接口对应的参与人参数
+        if(ruL && ruL.length>0){
+          for(let i=0;i<ruL.length;i++){
+            //排除当前登录人
+            if(ruL[i].rI != rc.uI){
+              let ps = new PsModel();
+              ps.userId=ruL[i].rI;
+              ps.accountMobile = ruL[i].rC;
+              psl.push(ps);
+            }
           }
-          rc.ed=ed;
-          if(ed == null || ed == ''){
-            rc.ed=sd;
+        }
+        //参与人大于0则访问后台接口
+        if(psl.length>0){
+          console.log("WorkService urc() restful " + SkillConfig.BC_SCU+" start")
+          return this.rcResful.sc(rc.uI,SkillConfig.BC_SCU,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'')
+        }
+      }).then(data=>{
+        console.log("WorkService urc() end : " +JSON.stringify(data))
+        if(psl.length>0 && data.code==0 && data.data.players.length>0){
+          let players = data.data.players;
+          for(let i=0;i<ruL.length;i++){
+
+            for(let j=0;j<players.length;j++){
+              if(ruL[i].rC == players[i].accountMobile){
+                if(players[i].agree){
+                  ruL[i].sdt=1
+                  break;
+                }else if(!players[i].player){
+                  ruL[i].sdt=2
+                  break;
+                }else if(!players[i].user){
+                  ruL[i].sdt=3
+                  break;
+                }
+              }
+            }resolve(bs)
+            //先删除再添加
+            // this.workSqlite.dRcps(rc.sI).then(data=>{
+            //   return this.workSqlite.sRcps(rc,ruL)
+            // }).then(data=>{
+            //   resolve(bs)
+            // }).catch(e=>{
+            //   console.error("WorkService arc() Error : " +JSON.stringify(e))
+            //   bs.code = DataConfig.ERR_CODE
+            //   bs.message=e.message
+            //   reject(bs)
+            // })
           }
-          rc.lI=lbI;
-          rc.ji=jhi;
-          rc.sI=sI;
-          this.baseSqlite.update(rc).then(datau=>{
-            this.workSqlite.dRcps(sI).then(datad=>{
-              this.workSqlite.sRcps(rc,ruL)
-              resolve(bs)
-            }).catch(ed=>{
-              bs.code = DataConfig.ERR_CODE
-              bs.message=ed.message
-              resolve(bs)
-            })
-          }).catch(eu=>{
-            bs.code = DataConfig.ERR_CODE
-            bs.message=eu.message
-            resolve(bs)
-          })
+        }else{
           resolve(bs)
         }
-      }).catch(e=>{
+
+      }).catch(eu=>{
         bs.code = DataConfig.ERR_CODE
-        bs.message=e.message
+        bs.message=eu.message
         resolve(bs)
       })
-
     })
   }
 
@@ -171,13 +240,9 @@ export class WorkService {
         let rc = new RcEntity()
         rc.sI = sI;
         this.baseSqlite.delete(rc).then(datau => {
-          this.workSqlite.dRcps(sI).then(datad => {
-            resolve(bs);
-          }).catch(ed => {
-            bs.code = DataConfig.ERR_CODE
-            bs.message = ed.message
-            resolve(bs)
-          })
+          return this.workSqlite.dRcps(sI)
+        }).then(datad => {
+          resolve(bs);
         }).catch(eu => {
           bs.code = DataConfig.ERR_CODE
           bs.message = eu.message
@@ -307,12 +372,29 @@ export class WorkService {
         console.log("----- WorkService getds(事件详情) result:" + JSON.stringify(data))
           if(data&&data.rows&&data.rows.length>0){
             rc= data.rows.item(0);
-            resolve(rc);
           }else{
             rc.code=DataConfig.NULL_CODE
             rc.message=DataConfig.NULL_MESSAGE
-            resolve(rc);
           }
+          return this.relmem.getRgusBySi(sI)
+      }).then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          let rs=data.rows;
+          let rus = new Array<RuModel>();
+          for(let i=0;i<rs.length;i++){
+            let ru = new RuModel()
+            if(rs.item(i).uI == rc.uI){
+              ru.rN=DataConfig.uInfo.uN;
+              ru.rI=DataConfig.uInfo.uI;
+              ru.hiu=DataConfig.uInfo.hIU;
+            }else{
+              ru = rs.item(i)
+            }
+            rus.push(ru)
+          }
+          rc.rus = rus;
+        }
+        resolve(rc);
       }).catch(e=>{
         console.error("----- WorkService getds(事件详情) Error:" + JSON.stringify(e))
         rc.code=DataConfig.ERR_CODE
