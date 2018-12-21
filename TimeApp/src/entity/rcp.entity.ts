@@ -90,7 +90,9 @@ export class RcpEntity {
       sql=sql+' sdt=' + this._sdt;
     }
     if(this._pI != null && this._pI!=''){
-      sql = sql + ' pI="' + this._pI +'" where pI="' + this._pI +'"';
+      sql = sql + ' where pI="' + this._pI +'"';
+    }else if(this._sI!=null && this._sI!=''){
+      sql = sql  +' where sI="' + this._sI +'"';
     }
     this._usq=sql;
     return this._usq;

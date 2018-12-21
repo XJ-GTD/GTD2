@@ -66,6 +66,7 @@ export class DwMqService {
           this.scheduleDelete();
           break;
         case SkillConfig.BC_SCU: //更新日程
+          this.scheduleUpdate(mqDate.res.data);
           break;
         case SkillConfig.BC_PEC: //添加参与人
           break;
@@ -220,12 +221,32 @@ export class DwMqService {
     let sd=resd.st;
     let ed = resd.et;
     let lbI = resd.lb;
-    let jhi = resd.pn;
-    let ruL=[];
-    this.work.arc(ct,sd,ed,lbI,jhi,ruL).then(data=>{
-
+    let jhi = resd.ei;
+    let sI=resd.si;
+    console.log("----- DwMqService scheduleCreate(业务：日程添加) start---- ")
+    this.work.arcMq(sI,jhi,ct,sd,ed,lbI).then(data=>{
+      console.log("----- DwMqService scheduleCreate(业务：日程添加) end ---- ")
     }).catch(e=>{
+      console.log("----- DwMqService scheduleCreate(业务：日程添加) Error : "+JSON.stringify(e))
+    });
+  }
 
+  /**
+   * 业务：日程更新
+   */
+  private scheduleUpdate(data: WsResDataModel) {
+    let resd = data;
+    let ct=resd.sn;
+    let sd=resd.st;
+    let ed = resd.et;
+    let lbI = resd.lb;
+    let jhi = resd.ei;
+    let sI=resd.si;
+    console.log("----- DwMqService scheduleCreate(业务：日程更新) start---- ")
+    this.work.urcMq(sI,jhi,ct,sd,ed,lbI).then(data=>{
+      console.log("----- DwMqService scheduleCreate(业务：日程更新) end ---- ")
+    }).catch(e=>{
+      console.log("----- DwMqService scheduleCreate(业务：日程更新) Error : "+JSON.stringify(e))
     });
   }
 
