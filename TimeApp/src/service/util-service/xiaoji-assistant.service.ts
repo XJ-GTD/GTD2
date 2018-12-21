@@ -47,12 +47,13 @@ export class XiaojiAssistantService extends BsRestful{
       cordova.plugins.XjBaiduSpeech.startListen(result=>{
 
         //讯飞语音录音设置默认存储路径
-        // this.filePath = this.file.cacheDirectory + "/xjASR/iat.pcm";
-        this.filePath = this.file.externalRootDirectory + "/xjASR/iat.pcm";
+        //this.filePath = this.file.cacheDirectory + "iat.pcm";
+
+       //this.filePath = this.file.externalRootDirectory + "/xjASR/iat.pcm";
         console.log("文件路径：" + this.filePath);
 
         // 读取录音进行base64转码
-        this.base64.encodeFile(this.filePath).then((base64File: string) => {
+        this.file.readAsDataURL(this.file.cacheDirectory,"iat.pcm").then((base64File: string) => {
           this.fileContent = base64File;
           console.log("base64:" + this.fileContent);
 
@@ -78,6 +79,45 @@ export class XiaojiAssistantService extends BsRestful{
       console.log("问题："+ e)
     }
 
+  }
+
+  testBase644Ios(sucess){
+    console.log("testBase644Ios:" + 1);
+    var c = document.createElement('canvas');
+
+    console.log("testBase644Ios:" + 2);
+    var ctx = c.getContext("2d");
+
+    console.log("testBase644Ios:" + 3);
+    var img = new Image();
+
+    console.log("testBase644Ios:" + 4);
+
+    img.onload = function() {
+
+      console.log("testBase644Ios:" + 11);
+
+      c.width = 100;
+      c.height = 100;
+
+      console.log("testBase644Ios:" + 12);
+
+      ctx.drawImage(img, 0, 0);
+
+      console.log("testBase644Ios:" + 13);
+
+      var dataUri = c.toDataURL("image/png");
+
+      console.log("testBase644Ios:" + 14);
+
+      sucess(dataUri);
+
+      console.log("testBase644Ios:" + 15);
+    };
+    var filePath = this.file.cacheDirectory + "xjASR/iat.pcm";
+    console.log("testBase644Ios:" + 5 + "====>" + filePath);
+    img.src = filePath;
+    console.log("testBase644Ios:" + 5);
   }
 
   /**

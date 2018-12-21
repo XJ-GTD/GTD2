@@ -107,7 +107,7 @@ public class AiUiUtil {
      * @throws IOException
      */
     private static byte[] base64Audio(String filePath) throws IOException {
-        String audio = filePath.replace("data:image/*;charset=utf-8;base64,", "");
+        String audio = filePath.replace("data:*/*;base64,","");
         byte[] body = Base64.decodeBase64(audio);
         return body;
     }

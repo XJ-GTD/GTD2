@@ -46,6 +46,8 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     // 发送指令：启动识别
     self.callbackId = command.callbackId;
     
+    [self configFileHandler];
+
     [self.asrEventManager sendCommand:BDS_ASR_CMD_START];
 }
 
@@ -63,7 +65,7 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 {
     self.callbackId = command.callbackId;
     [self.asrEventManager setDelegate:self];
-   
+
     [self.asrEventManager sendCommand:BDS_ASR_CMD_STOP];
 }
 
@@ -71,7 +73,7 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 {
     self.callbackId = command.callbackId;
     [self.asrEventManager setDelegate:self];
-    
+
     [self.asrEventManager sendCommand:BDS_ASR_CMD_CANCEL];
 }
 
@@ -79,7 +81,7 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 {
     self.callbackId = command.callbackId;
     [self.asrEventManager setDelegate:self];
-   
+
     [self.asrEventManager sendCommand:BDS_ASR_CMD_STOP];
 }
 
@@ -181,7 +183,7 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     switch (workStatus) {
         case EVoiceRecognitionClientWorkStatusNewRecordData: {
             NSLog(@"Did EVoiceRecognitionClientWorkStatusNewRecordData");
-            //[self.fileHandler writeData:(NSData *)aObj];
+            [self.fileHandler writeData:(NSData *)aObj];
             break;
         }
 
@@ -263,7 +265,7 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 
 - (void)configFileHandler {
-    self.fileHandler = [self createFileHandleWithName:@"xjASR/iat.pcm" isAppend:NO];
+    self.fileHandler = [self createFileHandleWithName:@"iat.pcm" isAppend:NO];
 }
 
 - (NSFileHandle *)createFileHandleWithName:(NSString *)aFileName isAppend:(BOOL)isAppend {
