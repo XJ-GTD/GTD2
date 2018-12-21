@@ -37,11 +37,16 @@ export class PcPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PcPage');
-    this.uo = DataConfig.uInfo;
+
     this.name = this.navParams.get("name");
     // this.tel=this.navParams.get("tel");
     this.code = this.navParams.get("code");
     this.ru = this.navParams.get("ru");
+  }
+
+  ionViewWillEnter(){
+    console.log("PcPage :: 获取登录用户")
+    this.uo = DataConfig.uInfo;
   }
 
 
@@ -50,11 +55,16 @@ export class PcPage {
       content: "",
       duration: 1000
     });
-    this.relme.aru(this.uo.uI,this.ru.rI,this.ru.ran,this.ru.rN,  this.ru.rC, '0',this.ru.hiu,"0",null).then(data => {
+    //true 为1 false 为0
+    if(this.ru.rF){
+      this.ru.rF = "1"
+    }else{
+      this.ru.rF = "0"
+    }
+    this.relme.aru(this.uo.uI,this.ru.rI,this.ru.ran,this.ru.rN,  this.ru.rC, '0',this.ru.hiu,this.ru.rF,null).then(data => {
       if(data.code == 0){
         //添加成功
         // console.log("添加成功::" + this.tel);
-        //setroot
         let pageList = this.navCtrl.getViews().forEach(page => {
           if(page.name == PageConfig.PA_PAGE){
             this.navCtrl.popTo(page);

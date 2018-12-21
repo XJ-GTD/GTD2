@@ -14,6 +14,7 @@ export class RuModel extends BsModel{
   private _rF: string=null;     // 授权标识0未授权1授权
   private _rel: string=null; // 联系类型
   private _hiu: string=null; // 联系人头像URL
+  private _sdt: number = 0; //日程是否发送状态;0未发送，1同意发送，2拒绝发送，3未注册
   get id(): string {
     return this._id;
   }
@@ -76,5 +77,13 @@ export class RuModel extends BsModel{
 
   set hiu(value: string) {
     this._hiu = value;
+  }
+
+  get sdt(): number {
+    return this._sdt;
+  }
+
+  set sdt(value: number) {
+    this._sdt = value;
   }
 }

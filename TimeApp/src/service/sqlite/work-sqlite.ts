@@ -7,6 +7,7 @@ import {RcpEntity} from "../../entity/rcp.entity";
 import {UtilService} from "../util-service/util.service";
 import {RcModel} from "../../model/rc.model";
 import {BsModel} from "../../model/out/bs.model";
+import {DataConfig} from "../../app/data.config";
 
 
 /**
@@ -41,8 +42,11 @@ export class WorkSqlite{
             sa='1';
             isTrue=true;
           }
-          sql +='insert into GTD_D (pI,sI,son,sa,cd,pd,uI,rui) values("'+ this.util.getUuid()+'","'+ rc.sI+'","'
-            + rc.sN+'","' +sa+ '","'+rc.sd+ '","'+rc.ed+ '","'+ ru.rI+'","'+ ru.id+'")';
+          if(!ru.sdt){
+            ru.sdt=0;
+          }
+          sql +='insert into GTD_D (pI,sI,son,sa,cd,pd,uI,rui,sdt) values("'+ this.util.getUuid()+'","'+ rc.sI+'","'
+            + rc.sN+'","' +sa+ '","'+rc.sd+ '","'+rc.ed+ '","'+ ru.rI+'","'+ ru.id+'",'+ ru.sdt+')';
         }
         return this.baseSqlite.importSqlToDb(sql)
       }else{
@@ -55,13 +59,19 @@ export class WorkSqlite{
           rcp.cd=rc.sd;
           rcp.pd=rc.ed;
           rcp.rui=rus[i].id;
+          if(rus[i].sdt){
+            rcp.sdt=rus[i].sdt
+          }
           if(rcp.uI == rc.uI){
             isTrue = true;
             rcp.sa='1'
+            rcp.sdt=1
           }else{
             rcp.sa='0'
           }
-          this.baseSqlite.save(rcp);
+          if(i < rus.length-1){
+            this.baseSqlite.save(rcp);
+          }
         }
         rcp.pI = this.util.getUuid();
         return this.baseSqlite.save(rcp);
@@ -99,10 +109,12 @@ export class WorkSqlite{
    * 查询每月事件标识
    * @param ym 格式‘2018-01’
    */
-  getMBstwo(ym:string,ui:string):Promise<BsModel>{
+  getMBs(ym:string,ui:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
-      let sql='select gc.* from GTD_C gc left join GTD_D gd on gc.sI=dg.sI where gc.sI != null and ' +
-        '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'"))';
+      // let sql='select gc.* from GTD_C gc left join GTD_D gd on gc.sI=gd.sI where gd.sI is not null and ' +
+      //   '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'") and gd.uI = "' +ui+'"';
+      let sql='select gc.* from GTD_C gc left join GTD_D gd on gc.sI=gd.sI and gd.uI = "' +ui+'" where ' +
+        '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'")';
       let bs = new BsModel();
       this.baseSqlite.executeSql(sql,[]).then(data=>{
         let resL = new Array<any>()
@@ -113,14 +125,17 @@ export class WorkSqlite{
             if(i<10){
               day = ym+'-0'+i
             }
+
             let count:number = 0;
             for(let j=0;j<ls.length;j++){
-              if(ls.item(i).sd != null && ls.item(i).ed != null && ls.item(i).sd>=day && ls.item(i).sd<=day){
+              let sd = ls.item(j).sd.substr(0,10)
+              let ed = ls.item(j).ed.substr(0,10)
+              if(sd<=day && ed>=day){
                 count +=1;
               }
             }
             if(count>0){
-              let res :any ;
+              let res:any={};
               res.ymd = day;
               res.ct = count;
               resL.push(res)
@@ -130,6 +145,7 @@ export class WorkSqlite{
         bs.data=resL;
         resolve(bs)
       }).catch(e=>{
+        console.error("WorkSqlite arc() Error : " +JSON.stringify(e))
         bs.code=1
         bs.message=e.message
         reject(bs)
@@ -137,33 +153,15 @@ export class WorkSqlite{
     })
   }
 
-  getMBs(ym:string,ui:string):Promise<any>{
-
-    let sql='select substr(gd.dt,1,10) ymd,gh.mdn,count(*) ct from ' +
-      '(select case when pd != null and pd != "null" then pd else cd end dt,gdd.* from GTD_D gdd where uI="'+ ui+'") gd ' +
-      'left join (select substr(md,1,10) mdn from GTD_H where mt="0" group by substr(md,1,10)) gh on gh.mdn=substr(gd.dt,1,10) ' +
-      'where  substr(gd.dt,1,7)="' + ym +'" GROUP BY substr(gd.dt,1,10),gh.mdn'
-    return this.baseSqlite.executeSql(sql,[]);
-  }
-
   /**
    * 查询当天事件
    * @param d 'yyyy-MM-dd'
    */
-  getOd(d:string,ui:string):Promise<any>{
-    let sql="select substr(dt,12,16) scheduleStartTime,gtdd.pI scheduleId,gtdd.son scheduleName,gtdd.* from " +
-      "(select case when pd != null and pd != 'null' then pd else cd end dt,gdd.* from GTD_D gdd where uI='"+ ui+"')" +
-      " gtdd where substr(dt,1,10)='" + d+"'";
-      return this.baseSqlite.executeSql(sql,[]);
-  }
-  /**
-   * 查询当天事件
-   * @param d 'yyyy-MM-dd'
-   */
-  getOdTwo(d:string,ui:string):Promise<BsModel>{
+  getOd(d:string,ui:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
-      let sql='select gc.*,gd.san,gd.pI,gd.sa from GTD_C gc left join GTD_D gd on gc.sI=dg.sI where ' +
-        '(substr(gc.sd,1,10) <= "'+d+'" or substr(gc.ed,1,10)>= "'+d+'"))';
+      let sql='select gc.*,gd.son,gd.pI,gd.sa from GTD_C gc left join GTD_D gd on gc.sI=gd.sI ' +
+        'and gd.uI ="'+ui+'" where (substr(gc.sd,1,10) <= "'+d+'" and substr(gc.ed,1,10)>= "'+d+'") '
+       // +'and (gd.pI is null or gd.uI ="'+DataConfig.uInfo.uI+'")';
       let bs = new BsModel();
       this.baseSqlite.executeSql(sql,[]).then(data=>{
         let resL = new Array<any>()
@@ -174,7 +172,7 @@ export class WorkSqlite{
             res.scheduleId = res.sI;
             res.scheduleName = res.sN;
             if(res.san != null){
-              res.scheduleName =res.san;
+              res.scheduleName =res.son;
             }
             if(res.sd.substr(0,10) == d){
               res.scheduleStartTime = res.sd.substr(12,16)
@@ -201,7 +199,7 @@ export class WorkSqlite{
    * @param pI 日程参与人ID
    */
   getds(sI:string):Promise<any>{
-    let sql = "select jh.jn,gf.lan,gd.sa,gc.* from GTD_C gd left join GTD_D gc on gc.sI = gd.sI " +
+    let sql = "select jh.jn,gf.lan,gd.sa,gc.* from GTD_C gc left join GTD_D gd on gc.sI = gd.sI " +
       "left join GTD_J_H jh on jh.ji = gc.ji " +
       "left join GTD_F gf on gf.lai = gc.lI where gc.sI ='" + sI +"'"
     return this.baseSqlite.executeSql(sql,[])

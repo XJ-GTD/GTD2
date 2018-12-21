@@ -31,6 +31,9 @@ export class UserSqlite {
     u.uI=uI;
     u.oUI=oUI;
     u.uN=uN;
+    if(uN == null || uN==''){
+      u.uN = "user" + uI.substr(0,10)
+    }
     u.hIU=hIU;
     u.biy=biy;
     u.uS=uS;
