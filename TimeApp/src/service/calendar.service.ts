@@ -85,7 +85,7 @@ export class CalendarService {
           console.log("calendarService ::" + JSON.stringify(data));
           resolve(model);
         }).catch(err => {
-          console.log("calendarService ::"+"导入本地日历失败");
+          console.error("calendarService ::"+"导入本地日历失败");
           model.code = 1;
           model.message = "失败";
           reject(model);
@@ -141,6 +141,7 @@ export class CalendarService {
         resolve(bs);
 
       }).catch(reason => {
+        console.error("calendar checkInfo 添加本地日历 rcp Error ::"+ JSON.stringify(reason));
         bs.message = DataConfig.ERR_MESSAGE;
         bs.code = DataConfig.ERR_CODE;
         reject(bs);
@@ -192,6 +193,7 @@ export class CalendarService {
         console.log("calendar 添加本地日历 rcp ::"+ JSON.stringify(rcp));
         resolve(bs);
       }).catch(reason => {
+        console.error("calendar addPlayer 添加本地日历 rcp Error ::"+ JSON.stringify(reason));
         bs.code = DataConfig.ERR_CODE;
         bs.message = reason.message;
         reject(bs);
@@ -222,6 +224,7 @@ export class CalendarService {
         console.log("更新rcp :: " + JSON.stringify(rcp));
         resolve(bs);
       }).catch(reason => {
+        console.error("calendar updatePlayer 更新本地日历 rcp Error ::"+ JSON.stringify(reason));
         bs.code = DataConfig.ERR_CODE;
         bs.message = reason.message;
         reject(bs);
