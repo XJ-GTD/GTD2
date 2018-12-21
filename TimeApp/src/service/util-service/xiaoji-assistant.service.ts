@@ -79,43 +79,43 @@ export class XiaojiAssistantService extends BsRestful{
 
   }
 
-  testBase644Ios(sucess){
-    console.log("testBase644Ios:" + 1);
+  testBase64Ios(sucess){
+    console.log("testBase64Ios:" + 1);
     var c = document.createElement('canvas');
 
-    console.log("testBase644Ios:" + 2);
+    console.log("testBase64Ios:" + 2);
     var ctx = c.getContext("2d");
 
-    console.log("testBase644Ios:" + 3);
+    console.log("testBase64Ios:" + 3);
     var img = new Image();
 
-    console.log("testBase644Ios:" + 4);
+    console.log("testBase64Ios:" + 4);
 
     img.onload = function() {
 
-      console.log("testBase644Ios:" + 11);
+      console.log("testBase64Ios:" + 11);
 
       c.width = 100;
       c.height = 100;
 
-      console.log("testBase644Ios:" + 12);
+      console.log("testBase64Ios:" + 12);
 
       ctx.drawImage(img, 0, 0);
 
-      console.log("testBase644Ios:" + 13);
+      console.log("testBase64Ios:" + 13);
 
       var dataUri = c.toDataURL("image/png");
 
-      console.log("testBase644Ios:" + 14);
+      console.log("testBase64Ios:" + 14);
 
       sucess(dataUri);
 
-      console.log("testBase644Ios:" + 15);
+      console.log("testBase64Ios:" + 15);
     };
     var filePath = this.file.cacheDirectory + "xjASR/iat.pcm";
-    console.log("testBase644Ios:" + 5 + "====>" + filePath);
+    console.log("testBase64Ios:" + 5 + "====>" + filePath);
     img.src = filePath;
-    console.log("testBase644Ios:" + 5);
+    console.log("testBase64Ios:" + 5);
   }
 
   /**
@@ -187,7 +187,7 @@ export class XiaojiAssistantService extends BsRestful{
   public initbaiduWakeUp(success) {
     try {
       cordova.plugins.XjBaiduWakeUp.wakeUpStart(result=>{
-        if (    this.isSpeaking || this.islistenAudioing) {
+        if (this.isSpeaking || this.islistenAudioing) {
 
           success(false);
           return;
