@@ -116,6 +116,7 @@ export class WorkService {
             this.workSqlite.dRcps(rc.sI).then(data=>{
               return this.workSqlite.sRcps(rc,ruL)
             }).then(data=>{
+              //this.urc(rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,rc.ji,ruL)
               resolve(bs)
             }).catch(e=>{
               console.error("WorkService arc() Error : " +JSON.stringify(e))
@@ -220,12 +221,12 @@ export class WorkService {
         if(ruL && ruL.length>0){
           for(let i=0;i<ruL.length;i++){
             //排除当前登录人
-            if(ruL[i].rI != rc.uI){
+            //if(ruL[i].rI != rc.uI){
               let ps = new PsModel();
               ps.userId=ruL[i].rI;
               ps.accountMobile = ruL[i].rC;
               psl.push(ps);
-            }
+            //}
           }
         }
         //参与人大于0则访问后台接口
@@ -254,16 +255,16 @@ export class WorkService {
               }
             }resolve(bs)
             //先删除再添加
-            // this.workSqlite.dRcps(rc.sI).then(data=>{
-            //   return this.workSqlite.sRcps(rc,ruL)
-            // }).then(data=>{
-            //   resolve(bs)
-            // }).catch(e=>{
-            //   console.error("WorkService arc() Error : " +JSON.stringify(e))
-            //   bs.code = DataConfig.ERR_CODE
-            //   bs.message=e.message
-            //   reject(bs)
-            // })
+            this.workSqlite.dRcps(rc.sI).then(data=>{
+              return this.workSqlite.sRcps(rc,ruL)
+            }).then(data=>{
+              resolve(bs)
+            }).catch(e=>{
+              console.error("WorkService arc() Error : " +JSON.stringify(e))
+              bs.code = DataConfig.ERR_CODE
+              bs.message=e.message
+              reject(bs)
+            })
           }
         }else{
           resolve(bs)
