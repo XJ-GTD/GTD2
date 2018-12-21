@@ -78,12 +78,12 @@ export class WorkService {
         if(ruL && ruL.length>0){
           for(let i=0;i<ruL.length;i++){
             //排除当前登录人
-            if(ruL[i].rI != rc.uI){
+            //if(ruL[i].rI != rc.uI){
               let ps = new PsModel();
               ps.userId=ruL[i].rI;
               ps.accountMobile = ruL[i].rC;
               psl.push(ps);
-            }
+            //}
           }
         }
         //参与人大于0则访问后台接口

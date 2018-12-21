@@ -42,6 +42,9 @@ export class WorkSqlite{
             sa='1';
             isTrue=true;
           }
+          if(!ru.sdt){
+            ru.sdt=0;
+          }
           sql +='insert into GTD_D (pI,sI,son,sa,cd,pd,uI,rui,sdt) values("'+ this.util.getUuid()+'","'+ rc.sI+'","'
             + rc.sN+'","' +sa+ '","'+rc.sd+ '","'+rc.ed+ '","'+ ru.rI+'","'+ ru.id+'",'+ ru.sdt+')';
         }
@@ -56,9 +59,13 @@ export class WorkSqlite{
           rcp.cd=rc.sd;
           rcp.pd=rc.ed;
           rcp.rui=rus[i].id;
+          if(rus[i].sdt){
+            rcp.sdt=rus[i].sdt
+          }
           if(rcp.uI == rc.uI){
             isTrue = true;
             rcp.sa='1'
+            rcp.sdt=1
           }else{
             rcp.sa='0'
           }
