@@ -76,7 +76,7 @@ public class AuthServiceImpl implements IAuthService {
 
             token = BaseUtil.getToken(userId, deviceId, AUTH_TYPE_VISITOR);
             accountQueue = BaseUtil.getQueueName(inDto.getUserId(), inDto.getDeviceId());
-            BaseUtil.createQueue(rabbitTemplate, accountQueue, VISITOR_EXCHANGE_NAME);
+            BaseUtil.createQueue(rabbitTemplate, accountQueue, deviceId, VISITOR_EXCHANGE_NAME);
 
             data = new LoginOutDto();
             data.setAccountQueue(accountQueue);
@@ -125,7 +125,7 @@ public class AuthServiceImpl implements IAuthService {
                 userSex = obj[7].toString();
 
                 queueName = BaseUtil.getQueueName(userId, deviceId);
-                BaseUtil.createQueue(rabbitTemplate, queueName, BaseUtil.getExchangeName(userId));
+                BaseUtil.createQueue(rabbitTemplate, queueName, deviceId, BaseUtil.getExchangeName(userId));
 
                 token = BaseUtil.getToken(userId, deviceId, AUTH_TYPE_USER);
 
@@ -191,7 +191,7 @@ public class AuthServiceImpl implements IAuthService {
                 userSex = obj[7].toString();
 
                 queueName = BaseUtil.getQueueName(userId, deviceId);
-                BaseUtil.createQueue(rabbitTemplate, queueName, BaseUtil.getExchangeName(userId));
+                BaseUtil.createQueue(rabbitTemplate, queueName, deviceId, BaseUtil.getExchangeName(userId));
 
                 token = BaseUtil.getToken(userId, deviceId, AUTH_TYPE_USER);
 

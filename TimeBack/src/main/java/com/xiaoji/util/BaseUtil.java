@@ -123,11 +123,15 @@ public class BaseUtil {
     }
 
     //动态创建queue
-    public static void createQueue(RabbitTemplate rabbitTemplate, String queueName, String exchangeName) throws IOException {
+    public static void createQueue(RabbitTemplate rabbitTemplate, String userId, String deviceId, String exchangeName) throws IOException {
+        String queueName = getQueueName(userId, deviceId);
+        String queueGlob = userId + ".#";
         //创建队列
         rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).queueDeclare(queueName, true, false, false, null);
-        //绑定队列到对应的交换机
+        //绑定队列【点对点routing_key】到对应的交换机
         rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).queueBind(queueName, exchangeName, queueName);
+        //绑定队列【广播routing_key】到对应的交换机
+        rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).queueBind(queueName, exchangeName, queueGlob);
     }
 
     //动态创建exchange
