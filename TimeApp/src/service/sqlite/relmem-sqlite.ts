@@ -107,7 +107,7 @@ export class RelmemSqlite {
    * @returns {Promise<any>}
    */
   getRgusBySi(sI:string){
-    let sql = 'select gb.*,gd.uI from GTD_D gd left join GTD_B gb on gd.rui = gb.id where gd.sI="'+sI+'"';
+    let sql = 'select gb.*,gd.uI,gd.sdt from GTD_D gd left join GTD_B gb on gd.rui = gb.id where gd.sI="'+sI+'"';
     return this.baseSqlite.executeSql(sql,[]);
   }
 
