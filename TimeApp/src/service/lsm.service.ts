@@ -3,15 +3,14 @@ import {BaseModel} from "../model/base.model";
 import {AuRestful} from "./restful/au-restful";
 import {PnRestful} from "./restful/pn-restful";
 import {DxRestful} from "./restful/dx-restful";
-import {HttpClient} from "@angular/common/http";
+import { HTTP } from '@ionic-native/http';
 import {UtilService} from "./util-service/util.service";
 import {BsModel} from "../model/out/bs.model";
 import {BaseSqlite} from "./sqlite/base-sqlite";
 import {UEntity} from "../entity/u.entity";
 import {DataConfig} from "../app/data.config";
-import {RelmemService} from "./relmem.service";
 import {RelmemSqlite} from "./sqlite/relmem-sqlite";
-import {RuEntity} from "../entity/ru.entity";
+
 
 
 /**
@@ -23,7 +22,7 @@ export class LsmService {
   pn:PnRestful;
   dx:DxRestful;
   relmem:RelmemSqlite;
-  constructor(private http: HttpClient,
+  constructor(private http: HTTP,
               private basesqlite:BaseSqlite,
               private util: UtilService) {
     this.au = new AuRestful(http,util);

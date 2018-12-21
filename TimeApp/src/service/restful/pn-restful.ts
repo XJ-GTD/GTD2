@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import { HTTP } from '@ionic-native/http';
 import {AppConfig} from "../../app/app.config";
 import {BsRestful} from "./bs-restful";
 
@@ -11,7 +11,7 @@ import {BsRestful} from "./bs-restful";
 @Injectable()
 export class PnRestful extends BsRestful{
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HTTP) {
     super()
   }
 

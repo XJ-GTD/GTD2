@@ -9,7 +9,7 @@ import { BaseSqlite } from "./sqlite/base-sqlite";
 import { UtilService } from "./util-service/util.service";
 import { PnRestful } from "./restful/pn-restful";
 import { DataConfig } from "../app/data.config";
-import {HttpClient} from "@angular/common/http";
+import { HTTP } from '@ionic-native/http';
 
 
 /**
@@ -20,7 +20,7 @@ export class RelmemService {
   relmemSqlite: RelmemSqlite;
   pnRes:PnRestful;
   constructor(private baseSqlite: BaseSqlite,
-              private util:UtilService,private http: HttpClient) {
+              private util:UtilService,private http: HTTP) {
     this.relmemSqlite = new RelmemSqlite(baseSqlite);
     this.pnRes=new PnRestful(http);
   }

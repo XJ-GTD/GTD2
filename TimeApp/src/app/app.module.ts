@@ -45,7 +45,7 @@ import {AndroidPermissions} from '@ionic-native/android-permissions';
 import {ConfigService} from "../service/config.service";
 import {ErrorCodeService} from "../service/util-service/error-code.service";
 import {HdSpeechService} from "../service/util-service/hd-speech.service";
-
+import { HTTP } from '@ionic-native/http';
 @NgModule({
   declarations: [
     MyApp,
@@ -66,6 +66,7 @@ import {HdSpeechService} from "../service/util-service/hd-speech.service";
     MyApp,
   ],
   providers: [
+    HTTP,
     StatusBar,
     SplashScreen,
     File,

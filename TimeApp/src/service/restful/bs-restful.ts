@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppConfig} from "../../app/app.config";
 import {DataConfig} from "../../app/data.config";
-
+import { HTTP } from '@ionic-native/http';
 
 
 /**
@@ -14,7 +14,7 @@ export class BsRestful {
    * http请求
    * @param {string} am 手机号
    */
-  bsHttp(http:HttpClient,url:string,body:any):Promise<any> {
+  bsHttp(http:HTTP,url:string,body:any):Promise<any> {
     return new Promise((resolve, reject) => {
       if(DataConfig.uInfo && DataConfig.uInfo.uT){
         AppConfig.HEADER_OPTIONS_JSON.headers.Authorization=DataConfig.uInfo.uT
@@ -23,7 +23,7 @@ export class BsRestful {
         console.error(url + "请求头Token未取到")
       }
 
-      http.post(url,body,AppConfig.HEADER_OPTIONS_JSON).subscribe(data=>{
+      http.post(url,body,AppConfig.HEADER_OPTIONS_JSON).then(data=>{
         resolve(data)
       },err => {
         console.error(url + "请求头部：" + JSON.stringify(AppConfig.HEADER_OPTIONS_JSON))

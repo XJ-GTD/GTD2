@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import { HTTP } from '@ionic-native/http';
+
 import {AppConfig} from "../../app/app.config";
 import {UtilService} from "../util-service/util.service";
 import {BsRestful} from "./bs-restful";
@@ -11,7 +12,7 @@ import {BsRestful} from "./bs-restful";
  */
 @Injectable()
 export class DxRestful  extends BsRestful{
-  constructor(private http: HttpClient,
+  constructor(private http: HTTP,
                 private util: UtilService) {
     super()
   }

@@ -5,7 +5,7 @@ import {UModel} from "../model/u.model";
 import {BaseSqlite} from "./sqlite/base-sqlite";
 import {BsModel} from "../model/out/bs.model";
 import {PnRestful} from "./restful/pn-restful";
-import {HttpClient} from "@angular/common/http";
+import { HTTP } from '@ionic-native/http';
 
 /**
  * 用户sevice
@@ -16,7 +16,7 @@ import {HttpClient} from "@angular/common/http";
 export class UserService {
   userSqlite:UserSqlite;
   pnRestful:PnRestful;
-  constructor( private baseSqlite: BaseSqlite,private http: HttpClient) {
+  constructor( private baseSqlite: BaseSqlite,private http: HTTP) {
     this.userSqlite=new UserSqlite(baseSqlite);
     this.pnRestful=new PnRestful(http);
   }

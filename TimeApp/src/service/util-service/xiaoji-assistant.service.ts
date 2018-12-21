@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AppConfig } from "../../app/app.config";
-import { HttpClient } from "@angular/common/http";
+import { HTTP } from '@ionic-native/http';
 import { ParamsService } from "./params.service";
 import { File } from "@ionic-native/file";
 
@@ -24,7 +24,7 @@ export class XiaojiAssistantService extends BsRestful{
   public islistenAudioing:boolean;
   public isWakeUp:boolean;
 
-  constructor(private http: HttpClient,
+  constructor(private http: HTTP,
               private file: File,
               private util: UtilService,
               private paramsService: ParamsService) {

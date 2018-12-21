@@ -18,7 +18,7 @@ import {MsEntity} from "../entity/ms.entity";
 import {DataConfig} from "../app/data.config";
 import {PsModel} from "../model/ps.model";
 import {RcRestful} from "./restful/rc-restful";
-import {HttpClient} from "@angular/common/http";
+import { HTTP } from '@ionic-native/http';
 import {SkillConfig} from "../app/skill.config";
 import {RelmemSqlite} from "./sqlite/relmem-sqlite";
 import {RcpEntity} from "../entity/rcp.entity";
@@ -35,7 +35,7 @@ export class WorkService {
   lbSqlite: LbSqlite;
   rcResful:RcRestful;
   constructor(private baseSqlite:BaseSqlite,
-                private util:UtilService,private http: HttpClient) {
+                private util:UtilService,private http: HTTP) {
     this.workSqlite = new WorkSqlite(baseSqlite,util);
     this.relmem = new RelmemSqlite(baseSqlite);
     this.lbSqlite = new LbSqlite(baseSqlite);
