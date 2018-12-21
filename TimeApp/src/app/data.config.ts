@@ -22,4 +22,13 @@ export class DataConfig {
 
   public static defaultHeadImg:string = "./assets/imgs/headImg.jpg"
 
+
+  /*========== 语音对应文言 start =========*/
+  public static XF_SPEECH_SCHEDULE_CREATE: string = "";
+  public static XF_SPEECH_SCHEDULE_DELETE: string = "";
+  public static XF_SPEECH_SCHEDULE_FIND: string = "";
+  public static XF_SPEECH_PLAYER_CREATE: string = "";
+  public static XF_SPEECH_PLAYER_FIND: string = "";
+
+  /*========== 语音对应文言  end  =========*/
 }

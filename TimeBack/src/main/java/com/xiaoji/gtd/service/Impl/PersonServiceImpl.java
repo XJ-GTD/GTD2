@@ -232,7 +232,7 @@ public class PersonServiceImpl implements IPersonService {
 
                     pushDto.setRes(new WebSocketResultDto(socketData));
                     webSocketService.pushTopicMessage(targetUserId, pushDto);
-                    logger.debug("[成功推送邀请]:方式 === rabbitmq");
+                    logger.debug("[成功推送邀请]:方式 === rabbitmq | targetUserId:" + targetUserId);
                 }
 
             } else if (!data.isUser()) {
@@ -240,7 +240,7 @@ public class PersonServiceImpl implements IPersonService {
                 //短信推送邀请
 //                smsService.pushPlayer(targetMobile);
             } else if (!data.isAgree() && data.isPlayer()){
-                logger.debug("[已经被对方拉黑]:无法发送邀请");
+                logger.debug("[已经被对方" + targetUserId + "拉黑]:无法发送邀请");
                 return 1;
             } else {
                 //可能出错
@@ -339,7 +339,7 @@ public class PersonServiceImpl implements IPersonService {
         sqlTargetUserId = (String) objects[2];
         int count = Integer.valueOf(objects[0].toString());
         if (count > 0) {
-            isAgree = (boolean) objects[1];
+            isAgree = (int) objects[1] != 0;
 
             logger.debug("[查询到用户" + targetMobile + "]：userId = "+ sqlTargetUserId + " | [" + userId + "]已是其好友| 接收权限" + isAgree);
             data.setAgree(isAgree);

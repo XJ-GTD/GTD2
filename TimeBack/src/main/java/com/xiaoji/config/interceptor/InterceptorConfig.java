@@ -75,15 +75,15 @@ public class InterceptorConfig implements HandlerInterceptor {
                         authType = (String) data.get("authType");
 
                         if (authType.equals("user")) {
-                            logger.debug("=====TOKEN 有效 接受访问 ======");
+                            logger.debug("=====TOKEN 有效 类型[" + authType + "] 接受访问 ======");
                             return true;
                         }
                         if (authType.equals("visitor")) {
                             if (visitPath.equals("/parse/text") || visitPath.equals("/parse/audio")) {
-                                logger.debug("=====TOKEN 有效 接受访问 ======");
+                                logger.debug("=====TOKEN 有效 类型[" + authType + "] 接受访问 ======");
                                 return true;
                             } else {
-                                logger.debug("=====TOKEN 非用户权限 拒绝访问 ======");
+                                logger.debug("=====TOKEN 类型[" + authType + "] 非用户权限 拒绝访问 ======");
                                 return false;
                             }
                         }
