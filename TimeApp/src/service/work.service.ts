@@ -21,6 +21,7 @@ import {RcRestful} from "./restful/rc-restful";
 import {HttpClient} from "@angular/common/http";
 import {SkillConfig} from "../app/skill.config";
 import {RelmemSqlite} from "./sqlite/relmem-sqlite";
+import {RcpEntity} from "../entity/rcp.entity";
 
 /**
  * 日程逻辑处理
@@ -138,6 +139,54 @@ export class WorkService {
   }
 
   /**
+   * Mq添加日程
+   * @param {string} sN 标题
+   * @param {string} sd 开始时间
+   * @param {string} ed 结束时间
+   * @param {string} lbI 标签编号
+   * @param {string} jhi 计划名称
+   * @param {Array}  ruL 参与人json数组[ {id,rN,rC} ]（id主键,rN名称,rC联系方式）
+   */
+  arcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string):Promise<BsModel>{
+    return new Promise((resolve, reject) => {
+      let bs = new BsModel();
+      //先查询当前用户ID
+      let rc = new RcEntity();
+      rc.uI=cui;
+      rc.sN=sN;
+      rc.sd=sd;
+      if(sd == null || sd == ''){
+        rc.sd=ed;
+      }
+      rc.ed=ed;
+      if(ed == null || ed == ''){
+        rc.ed=sd;
+      }
+      rc.lI=lbI;
+      rc.sI=sI;
+      let psl = new Array<PsModel>()
+      console.log("------ WorkService arcMq() Start ------------")
+      this.baseSqlite.save(rc).then(data=>{
+        let rcp = new RcpEntity();
+        rcp.uI=DataConfig.uInfo.uI;
+        rcp.sI=sI;
+        rcp.sa='0';
+        rcp.pI=this.util.getUuid();
+        rcp.sdt=1;
+        rcp.son=rc.sN;
+        return this.baseSqlite.save(rcp)
+      }).then(data=>{
+        console.log("------ WorkService arcMq() End ------------")
+      }).catch(e=>{
+        console.error("WorkService arcMq() Error : " +JSON.stringify(e))
+        bs.code = DataConfig.ERR_CODE
+        bs.message=e.message
+        reject(bs)
+      })
+    })
+  }
+
+  /**
    * 更新日程
    * @param {string} sI 日程主键
    * @param {string} ct 标题
@@ -224,6 +273,55 @@ export class WorkService {
         bs.code = DataConfig.ERR_CODE
         bs.message=eu.message
         resolve(bs)
+      })
+    })
+  }
+
+
+  /**
+   * Mq更新日程
+   * @param {string} sN 标题
+   * @param {string} sd 开始时间
+   * @param {string} ed 结束时间
+   * @param {string} lbI 标签编号
+   * @param {string} jhi 计划名称
+   * @param {Array}  ruL 参与人json数组[ {id,rN,rC} ]（id主键,rN名称,rC联系方式）
+   */
+  urcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string):Promise<BsModel>{
+    return new Promise((resolve, reject) => {
+      let bs = new BsModel();
+      //先查询当前用户ID
+      let rc = new RcEntity();
+      rc.uI=cui;
+      rc.sN=sN;
+      rc.sd=sd;
+      if(sd == null || sd == ''){
+        rc.sd=ed;
+      }
+      rc.ed=ed;
+      if(ed == null || ed == ''){
+        rc.ed=sd;
+      }
+      rc.lI=lbI;
+      rc.sI=sI;
+      let psl = new Array<PsModel>()
+      console.log("------ WorkService arcMq() Start ------------")
+      this.baseSqlite.update(rc).then(data=>{
+        let rcp = new RcpEntity();
+        rcp.uI=DataConfig.uInfo.uI;
+        rcp.sI=sI;
+        rcp.sa='0';
+        rcp.pI=this.util.getUuid();
+        rcp.sdt=1;
+        rcp.son=rc.sN;
+        return this.baseSqlite.update(rcp)
+      }).then(data=>{
+        console.log("------ WorkService arcMq() End ------------")
+      }).catch(e=>{
+        console.error("WorkService arcMq() Error : " +JSON.stringify(e))
+        bs.code = DataConfig.ERR_CODE
+        bs.message=e.message
+        reject(bs)
       })
     })
   }
