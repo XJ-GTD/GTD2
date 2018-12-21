@@ -49,9 +49,9 @@ public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
      * @param sendMsg
      */
     public void topicSend(String exchangeName, String userId, String sendMsg) {
-        logger.debug("topic广播 消息 : "+ sendMsg);
+        logger.debug("topic广播 exchangeName:" + exchangeName + "| userId:" + userId + "| 消息 : "+ sendMsg);
         String queueName = userId + ".#";
-        this.amqpTemplate.convertAndSend(exchangeName, queueName, sendMsg);
+        this.amqpTemplate.convertAndSend(exchangeName, "abcd.ee", sendMsg);
     }
 
     /**
@@ -91,14 +91,10 @@ public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
      * 测试点对点 routing_key: taskQueue
      * @param sendMsg
      */
-    public void sendTheTarget(String sendMsg, String target) {
-        logger.debug("target" + target);
+    public void sendTheTarget(String sendMsg, String target, String exchange) {
+        logger.debug("target:" + target);
         logger.debug("Sender1 : " + sendMsg);
-        String[] mobile = target.split(",");
-        for (String str: mobile) {
-            this.rabbitTemplate.convertAndSend(str, sendMsg);
-        }
-
+        topicSend(exchange, target, "`12`12`12`12");
     }
 
 }
