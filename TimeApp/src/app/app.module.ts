@@ -7,7 +7,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from "@ionic/storage";
 import { HttpClientModule } from "@angular/common/http";
 import { File } from "@ionic-native/file";
-import { Base64 } from "@ionic-native/base64";
+
 import { LocalNotifications } from "@ionic-native/local-notifications";
 import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification'
 import { XiaojiAssistantService } from "../service/util-service/xiaoji-assistant.service";
@@ -69,7 +69,6 @@ import {HdSpeechService} from "../service/util-service/hd-speech.service";
     StatusBar,
     SplashScreen,
     File,
-    Base64,
     Device,
     XiaojiAssistantService,
     XiaojiAlarmclockService,
