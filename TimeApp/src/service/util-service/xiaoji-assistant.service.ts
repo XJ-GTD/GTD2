@@ -3,7 +3,7 @@ import { AppConfig } from "../../app/app.config";
 import { HttpClient } from "@angular/common/http";
 import { ParamsService } from "./params.service";
 import { File } from "@ionic-native/file";
-import { App, NavController } from "ionic-angular";
+
 import {DataConfig} from "../../app/data.config";
 import {UtilService} from "./util.service";
 import {BsRestful} from "../restful/bs-restful";
@@ -24,8 +24,7 @@ export class XiaojiAssistantService extends BsRestful{
   public islistenAudioing:boolean;
   public isWakeUp:boolean;
 
-  constructor(private base64: Base64,
-              private http: HttpClient,
+  constructor(private http: HttpClient,
               private file: File,
               private util: UtilService,
               private paramsService: ParamsService) {
