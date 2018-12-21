@@ -37,13 +37,9 @@ export class PaPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PaPage');
-    this.init();
   }
 
-  init(){
-    console.log("查询登陆用户");
-    this.uo = DataConfig.uInfo;
-  }
+
 
   toAddMember(){
     if(this.uo.uty == "0"){
@@ -132,7 +128,9 @@ export class PaPage {
     });
   }
 
-  ionViewDidEnter(){
+  ionViewWillEnter(){
+    console.log("查询登陆用户");
+    this.uo = DataConfig.uInfo;
     console.log("查询个人");
     this.queryPerson();
     console.log("查询群组");

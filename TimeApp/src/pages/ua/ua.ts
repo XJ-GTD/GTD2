@@ -31,8 +31,8 @@ export class UaPage {
   accountMobile: any;
   userName: any;
   deviceId: any;
-  checkMoblie: any;
-  checkMoblieNull: any;
+  checkMobile: any;
+  checkMobileNull: any;
   checkPassword: any;
   reAccountPassword: any;
   checkBoxClick: any;
@@ -151,15 +151,15 @@ export class UaPage {
 
     this.errorCode = this.utilService.checkPhone(this.accountMobile);
     if(this.errorCode == 0){
-      this.checkMoblieNull = true;
+      this.checkMobileNull = true;
     }
     if(this.errorCode == 1 || this.errorCode == 2){
-      this.checkMoblieNull = false;
-      this.checkMoblie = true;
+      this.checkMobileNull = false;
+      this.checkMobile = true;
     }
     if(this.errorCode == 3){
-      this.checkMoblie = false;
-      this.checkMoblieNull = false;
+      this.checkMobile = false;
+      this.checkMobileNull = false;
     }
 
   }

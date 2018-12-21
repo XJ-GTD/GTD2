@@ -92,7 +92,7 @@ public class XjBaiduSpeech extends CordovaPlugin{
     }
 
     private void initSamplePath() {
-        String sampleDir = "xjASR";
+        String sampleDir = "";
         samplePath = this.cordova.getActivity().getCacheDir().getPath() + "/" + sampleDir;
         if (!FileUtil.makeDir(samplePath)) {
             throw new RuntimeException("创建临时目录失败 :" + samplePath);

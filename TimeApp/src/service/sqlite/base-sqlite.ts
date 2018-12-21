@@ -422,7 +422,7 @@ export class BaseSqlite {
     data.push({lai:'BQC04',lat:'BQC',lan:'预约'})
     data.push({lai:'BQC05',lat:'BQC',lan:'运动'})
     data.push({lai:'BQD01',lat:'BQD',lan:'特殊日期'})
-    data.push({lai:'BQD02',lat:'BQD',lan:'法定假日'})
+    //data.push({lai:'BQD02',lat:'BQD',lan:'法定假日'})
     data.push({lai:'BQE01',lat:'BQE',lan:'里程碑'})
     data.push({lai:'BQE02',lat:'BQE',lan:'随手记'})
     data.push({lai:'BQE03',lat:'BQE',lan:'记账'})

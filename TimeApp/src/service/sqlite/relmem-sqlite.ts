@@ -101,4 +101,14 @@ export class RelmemSqlite {
     return this.baseSqlite.executeSql(sql,[]);
   }
 
+  /**
+   * 根据日程ID获取相关参与人
+   * @param {string} sI
+   * @returns {Promise<any>}
+   */
+  getRgusBySi(sI:string){
+    let sql = 'select gb.*,gd.uI,gd.sdt from GTD_D gd left join GTD_B gb on gd.rui = gb.id where gd.sI="'+sI+'"';
+    return this.baseSqlite.executeSql(sql,[]);
+  }
+
 }
