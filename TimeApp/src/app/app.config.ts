@@ -1,23 +1,8 @@
 /**
- * Generated class for the ScheduleDetailPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- *
  * 请求路径类
  * create by wzy on 2018/05/24
  */
-
-import {UserService} from "../service/user.service";
-import {UEntity} from "../entity/u.entity";
-
 export class AppConfig {
-
-  constructor(private user:UserService){
-
-  }
-  /*0游客身份，1登录*/
-  public static IL:number=0;
 
   /* 环境URL 头部 */
    // private static REQUEST_URL: string = "http://www.guobaa.com/gtd";

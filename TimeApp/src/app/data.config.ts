@@ -5,6 +5,9 @@ import {UEntity} from "../entity/u.entity";
  */
 export class DataConfig {
 
+  /*0游客身份，1登录*/
+  public static IL:number=0;
+
   public static SUCCESS_CODE : number = 0;
   public static SUCCESS_MESSAGE : string ='成功！';
   public static ERR_CODE : number = 1;
