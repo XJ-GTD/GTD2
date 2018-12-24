@@ -19,6 +19,7 @@ public enum ResultCode {
     NULL_SCHEDULE_ID(11008),              //日程id为空
     NULL_SCHEDULE_NAME(11009),            //日程主题为空
     NULL_PLAYER(11010),                   //参与人为空
+    NULL_NAME(11012),                     //姓名为空
     NULL_TIME(11011),                     //时间为空
 
     NULL_AUTH_CODE(11101),                  //验证码为空

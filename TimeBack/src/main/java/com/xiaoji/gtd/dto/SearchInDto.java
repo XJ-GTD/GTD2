@@ -8,10 +8,22 @@ import java.util.Map;
  */
 public class SearchInDto {
 
-    private String userId;
-    private String targetUserId;
-    private String targetMobile;
+    private String userName;
+    private String otherName;
 
-    private List<PlayerDataDto> players;
-    
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getOtherName() {
+        return otherName;
+    }
+
+    public void setOtherName(String otherName) {
+        this.otherName = otherName;
+    }
 }

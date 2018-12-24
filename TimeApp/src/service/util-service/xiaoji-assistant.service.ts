@@ -1,12 +1,11 @@
 import { Injectable } from "@angular/core";
 import { AppConfig } from "../../app/app.config";
 import { HTTP } from '@ionic-native/http';
-import { ParamsService } from "./params.service";
 import { File } from "@ionic-native/file";
 
-import {DataConfig} from "../../app/data.config";
-import {UtilService} from "./util.service";
-import {BsRestful} from "../restful/bs-restful";
+import { DataConfig } from "../../app/data.config";
+import { UtilService } from "./util.service";
+import { BsRestful } from "../restful/bs-restful";
 declare var cordova: any;
 
 /**

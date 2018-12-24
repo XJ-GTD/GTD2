@@ -350,4 +350,31 @@ public class PersonController {
         return outDto;
     }
 
+    /**
+     * 传入的参与人姓名/备注转化成拼音返回
+     * @param inDto
+     * @return
+     */
+    @RequestMapping(value = "/conversion", method = RequestMethod.POST)
+    @ResponseBody
+    @AuthCheck
+    public Out conversionPinyin(@RequestBody SearchInDto inDto) {
+        Out outDto = new Out();
+
+        //入参检测
+        //必须项检测
+        if (inDto.getOtherName().equals("") || inDto.getOtherName() == null) {
+            outDto.setCode(ResultCode.NULL_NAME);
+            logger.debug("姓名数据为空");
+        }
+
+        //业务逻辑
+        try {
+
+        } catch (Exception e) {
+
+        }
+
+        return outDto;
+    }
 }
