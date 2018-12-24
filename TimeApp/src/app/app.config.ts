@@ -101,7 +101,7 @@ export class AppConfig {
   /* ------------------------ 日历类 end--------------------------*/
 
   /* ------------------------ 初始化 start--------------------------*/
-  private static INIT_SYNC_URL: string = AppConfig.SYNC_URL + "/initial_sync";   //初始化
+  public static SYNC_INIT_URL: string = AppConfig.SYNC_URL + "/initial_sync";   //初始化
   /* ------------------------ 初始化 end--------------------------*/
 
 }
