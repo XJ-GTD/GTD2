@@ -33,31 +33,31 @@ export class SyncService {
         .then(data => {
           console.log("-------SyncService initzdlb restful 初始化字典数据及标签表接口返回结果："+JSON.stringify(data))
           base = data
-          if(data.code == 0 && data.syncDataList.length>0){
+          if(data.code == 0 && data.data.syncDataList.length>0){
             let sql=''
-            for(let a=0;a<data.syncDataList.length;a++){
-              let res = data.syncDataList[1];
+            for(let a=0;a<data.data.syncDataList.length;a++){
+              let res = data.data.syncDataList[a];
               //字典类型表
               if(res.type=='dictionary' && res.dataList.length>0){
-                for(let i=0;i<data.syncDataList.length;i++){
-                  let dict = data.syncDataList[i];
+                for(let i=0;i<res.dataList.length;i++){
+                  let dict = res.dataList[i];
                   let str = 'key'
                   sql=sql+ 'insert into GTD_X(zt,zv) values("'+ dict.key+'","'+ dict.value+'");';
                 }
               }
               //字典数据表
               if(res.type=='dictionaryData' && res.dataList.length>0){
-                for(let i=0;i<data.syncDataList.length;i++){
-                  let dict = data.syncDataList[i];
-                  sql=sql+ 'insert into GTD_Y(zt,zk,zkv,px) values("'+ dict.type+'","'+ dict.key+'","'+ dict.value+'",'+ dict.id+');';
+                for(let j=0;j<res.dataList.length;j++){
+                  let dictd = res.dataList[j];
+                  sql=sql+ 'insert into GTD_Y(zt,zk,zkv,px) values("'+ dictd.type+'","'+ dictd.key+'","'+ dictd.value+'",'+ dictd.id+');';
                 }
               }
 
               //标签表
               if(res.type=='label' && res.dataList.length>0){
-                for(let i=0;i<data.syncDataList.length;i++){
-                  let dict = data.syncDataList[i];
-                  sql=sql+ 'insert into GTD_F(lai,lan,lat) values("'+ dict.id+'","'+ dict.value+'","'+ dict.type+'");';
+                for(let l=0;l<res.dataList.length;l++){
+                  let label = res.dataList[l];
+                  sql=sql+ 'insert into GTD_F(lai,lan,lat) values("'+ label.id+'","'+ label.value+'","'+ label.type+'");';
                 }
               }
             }
