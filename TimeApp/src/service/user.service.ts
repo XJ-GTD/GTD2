@@ -14,10 +14,10 @@ import { HTTP } from '@ionic-native/http';
  */
 @Injectable()
 export class UserService {
-  userSqlite:UserSqlite;
-  pnRestful:PnRestful;
-  constructor( private baseSqlite: BaseSqlite,private http: HTTP,
-               private userSqlite:UserSqlite,private pnRestful:PnRestful) {
+  constructor( private baseSqlite: BaseSqlite,
+               private http: HTTP,
+               private userSqlite:UserSqlite,
+               private pnRestful:PnRestful) {
   }
 
 
