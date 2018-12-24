@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import {AppConfig} from "../../app/app.config";
-import {UtilService} from "../util-service/util.service";
-import {BsRestful} from "./bs-restful";
+import { AppConfig } from "../../app/app.config";
+import { UtilService } from "../util-service/util.service";
+import { BsRestful } from "./bs-restful";
 
 import { HTTP } from '@ionic-native/http';
 

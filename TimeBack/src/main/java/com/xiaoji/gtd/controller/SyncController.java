@@ -36,6 +36,7 @@ public class SyncController {
      */
     @RequestMapping(value = "/initial_sync", method = RequestMethod.POST)
     @ResponseBody
+    @AuthCheck
     public Out initialSync(@RequestBody BaseInDto inDto) {
         Out outDto = new Out();
         SyncOutDto data;
