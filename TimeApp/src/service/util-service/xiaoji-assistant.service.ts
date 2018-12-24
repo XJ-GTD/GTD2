@@ -15,7 +15,7 @@ declare var cordova: any;
  * create by wzy on 2018/08/07.
  */
 @Injectable()
-export class XiaojiAssistantService extends BsRestful{
+export class XiaojiAssistantService{
 
   private fileContent: any;
   private filePath: string;
@@ -27,8 +27,7 @@ export class XiaojiAssistantService extends BsRestful{
   constructor(private http: HTTP,
               private file: File,
               private util: UtilService,
-              private paramsService: ParamsService) {
-    super()
+              private bsRestful: BsRestful) {
     this.isSpeaking = false;
     this.islistenAudioing = false;
   }
@@ -149,7 +148,7 @@ export class XiaojiAssistantService extends BsRestful{
     console.log("调用成功:" + this.fileContent);
     console.log("调用URL:" + url);
     //调用讯飞语音服务
-    this.bsHttp(this.http ,url, audioData)
+    this.bsRestful.post(url, audioData)
       .then(data => {
         console.log("data code：" + data.code);
         //接收Object JSON数据
