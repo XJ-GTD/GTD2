@@ -12,8 +12,12 @@ export class BsRestful {
 
   constructor(private http:HTTP){
     http.setDataSerializer("json");
-    http.setSSLCertMode("default");
+    http.setSSLCertMode("nocheck");
   }
+
+  // public setHttpHeader(key:value){
+  //   // this.http.setHeader()
+  // }
   /**
    * http请求
    * @param {string} am 手机号
