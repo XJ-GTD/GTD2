@@ -52,6 +52,8 @@ export class AppConfig {
 
   private static SCHEDULE_URL: string = AppConfig.REQUEST_URL + "/schedule";            //schedule日历
 
+  private static SYNC_URL: string = AppConfig.REQUEST_URL + "/sync";   //初始化
+
   /* ------------------------ 验证类 start--------------------------*/
   /* 登录验证 */
   public static AUTH_VISITOR_URL: string = AppConfig.AUTH_URL + "/login_visitors";   //游客登录
@@ -97,5 +99,9 @@ export class AppConfig {
   public static SCHEDULE_DEAL_URL: string = AppConfig.SCHEDULE_URL + "/deal";   //获取短信验证码
 
   /* ------------------------ 日历类 end--------------------------*/
+
+  /* ------------------------ 初始化 start--------------------------*/
+  private static INIT_SYNC_URL: string = AppConfig.SYNC_URL + "/initial_sync";   //初始化
+  /* ------------------------ 初始化 end--------------------------*/
 
 }
