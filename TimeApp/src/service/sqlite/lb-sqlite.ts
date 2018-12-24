@@ -26,6 +26,18 @@ export class LbSqlite {
     return this.baseSqlite.executeSql(sql,[]);
   }
 
+  restAdd(data:Array<any>):Promise<any>{
+    if(data != null && data.length>0){
+      let sql = ''
+      for(let i=0;i<data.length;i++){
+        sql = sql+'insert into GTD_F (lai,lan,lat) select "'+ data[i].lai +'","'+ data[i].lan +'","'+ data[i].lat +'" ' +
+          'where not exists (select lai,lan,lat from GTD_F)';
+      }
+
+      return this.baseSqlite.executeSql(sql,[]);
+    }
+  }
+
   /**
    * 更新标签
    */
