@@ -10,9 +10,8 @@ import { PsModel } from "../../model/ps.model";
  * 日程操作
  */
 @Injectable()
-export class RcRestful extends BsRestful{
-  constructor(private http: HTTP) {
-    super()
+export class RcRestful{
+  constructor(private bs: BsRestful) {
   }
 
   /**
@@ -30,7 +29,7 @@ export class RcRestful extends BsRestful{
    */
   sc(ui:string,skt:string,si:string,sn:string,
      st:string,et:string,li:string,ps:Array<PsModel>,sts:string):Promise<any> {
-    return this.bsHttp(this.http,AppConfig.SCHEDULE_DEAL_URL, {
+    return this.bs.post(AppConfig.SCHEDULE_DEAL_URL, {
       userId: ui,
       skillType: skt,
       scheduleId: si,

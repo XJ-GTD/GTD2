@@ -18,7 +18,6 @@ import {MsEntity} from "../entity/ms.entity";
 import {DataConfig} from "../app/data.config";
 import {PsModel} from "../model/ps.model";
 import {RcRestful} from "./restful/rc-restful";
-import { HTTP } from '@ionic-native/http';
 import {SkillConfig} from "../app/skill.config";
 import {RelmemSqlite} from "./sqlite/relmem-sqlite";
 import {RcpEntity} from "../entity/rcp.entity";
@@ -30,16 +29,13 @@ import {RcpEntity} from "../entity/rcp.entity";
  */
 @Injectable()
 export class WorkService {
-  workSqlite: WorkSqlite;
-  relmem: RelmemSqlite;
-  lbSqlite: LbSqlite;
-  rcResful:RcRestful;
+W
   constructor(private baseSqlite:BaseSqlite,
-                private util:UtilService,private http: HTTP) {
-    this.workSqlite = new WorkSqlite(baseSqlite,util);
-    this.relmem = new RelmemSqlite(baseSqlite);
-    this.lbSqlite = new LbSqlite(baseSqlite);
-    this.rcResful = new RcRestful(http);
+                private util:UtilService,
+                private workSqlite: WorkSqlite,
+                private relmem: RelmemSqlite,
+                private lbSqlite: LbSqlite,
+                private rcResful:RcRestful) {
   }
 
   /**

@@ -17,12 +17,9 @@ import { HTTP } from '@ionic-native/http';
  */
 @Injectable()
 export class RelmemService {
-  relmemSqlite: RelmemSqlite;
-  pnRes:PnRestful;
-  constructor(private baseSqlite: BaseSqlite,
-              private util:UtilService,private http: HTTP) {
-    this.relmemSqlite = new RelmemSqlite(baseSqlite);
-    this.pnRes=new PnRestful(http);
+
+  constructor(private baseSqlite: BaseSqlite,private pnRes:PnRestful,
+              private util:UtilService,private http: HTTP,private relmemSqlite: RelmemSqlite) {
   }
 
   /**

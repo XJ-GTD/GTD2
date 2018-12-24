@@ -16,9 +16,8 @@ import { HTTP } from '@ionic-native/http';
 export class UserService {
   userSqlite:UserSqlite;
   pnRestful:PnRestful;
-  constructor( private baseSqlite: BaseSqlite,private http: HTTP) {
-    this.userSqlite=new UserSqlite(baseSqlite);
-    this.pnRestful=new PnRestful(http);
+  constructor( private baseSqlite: BaseSqlite,private http: HTTP,
+               private userSqlite:UserSqlite,private pnRestful:PnRestful) {
   }
 
 

@@ -17,11 +17,9 @@ import {DataConfig} from "../app/data.config";
  */
 @Injectable()
 export class SyncService {
-  lbSqlite:LbSqlite;
-  sync:SyncRestful;
-  constructor( private baseSqlite: BaseSqlite,private http: HTTP) {
-    this.lbSqlite=new LbSqlite(baseSqlite);
-    this.sync=new SyncRestful(http);
+
+  constructor( private lbSqlite:LbSqlite,private sync:SyncRestful) {
+
   }
 
   /**

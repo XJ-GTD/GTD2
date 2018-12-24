@@ -10,9 +10,8 @@ import {PsModel} from "../../model/ps.model";
  * 日程操作
  */
 @Injectable()
-export class SyncRestful extends BsRestful{
-  constructor(private http: HTTP) {
-    super()
+export class SyncRestful{
+  constructor(private bs: BsRestful) {
   }
 
   /**
@@ -20,6 +19,6 @@ export class SyncRestful extends BsRestful{
    * @returns {Promise<any>}
    */
   init():Promise<any> {
-    return this.bsHttp(this.http,AppConfig.SYNC_INIT_URL, {})
+    return this.bs.post(AppConfig.SYNC_INIT_URL, {})
   }
 }

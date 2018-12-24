@@ -11,9 +11,8 @@ import { HTTP } from '@ionic-native/http';
  * 登录
  */
 @Injectable()
-export class AuRestful extends BsRestful{
-  constructor(private http: HTTP,private util: UtilService) {
-    super()
+export class AuRestful{
+  constructor(private util: UtilService,private bs: BsRestful) {
   }
 
   /**
@@ -27,7 +26,7 @@ export class AuRestful extends BsRestful{
     }else{
       dv='1232321';
     }
-    return this.bsHttp(this.http,AppConfig.AUTH_VISITOR_URL, {
+    return this.bs.post(AppConfig.AUTH_VISITOR_URL, {
       userId:ui,
       deviceId: dv
     })
@@ -44,7 +43,7 @@ export class AuRestful extends BsRestful{
     }else{
       dv='1232321';
     }
-    return this.bsHttp(this.http,AppConfig.AUTH_LOGIN_URL, {
+    return this.bs.post(AppConfig.AUTH_LOGIN_URL, {
       account: un,
       password: pw,
       deviceId: dv
@@ -60,7 +59,7 @@ export class AuRestful extends BsRestful{
    */
   ml(um:string,ac:string):Promise<any> {
     let dv = this.util.getDeviceId;
-    return this.bsHttp(this.http,AppConfig.AUTH_SMSLOGIN_URL, {
+    return this.bs.post(AppConfig.AUTH_SMSLOGIN_URL, {
       account: um,
       authCode: ac,
       deviceId: dv

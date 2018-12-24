@@ -14,10 +14,8 @@ import { DataConfig } from "../app/data.config";
  */
 @Injectable()
 export class JhService {
-  jhSqlite:JhSqlite;
-  constructor(private baseSqlite: BaseSqlite,
+  constructor(private jhSqlite: JhSqlite,
                 private util:UtilService) {
-    this.jhSqlite = new JhSqlite(baseSqlite)
   }
 
   /**

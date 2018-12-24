@@ -9,11 +9,15 @@ import { HTTP } from '@ionic-native/http';
  */
 @Injectable()
 export class BsRestful {
+
+  constructor(private http:HTTP){
+
+  }
   /**
    * http请求
    * @param {string} am 手机号
    */
-  bsHttp(http:HTTP,url:string,body:any):Promise<any> {
+  post(url:string,body:any):Promise<any> {
     return new Promise((resolve, reject) => {
       if(DataConfig.uInfo && DataConfig.uInfo.uT){
         AppConfig.HEADER_OPTIONS_JSON.headers.Authorization=DataConfig.uInfo.uT
@@ -21,13 +25,12 @@ export class BsRestful {
       }else{
         console.error(url + "请求头Token未取到")
       }
-
-      http.post(url,body,AppConfig.HEADER_OPTIONS_JSON).then(data=>{
+      this.http.post(url,body,AppConfig.HEADER_OPTIONS_JSON).then(data=>{
         resolve(data)
-      },err => {
-        console.error(url + "请求头部：" + JSON.stringify(AppConfig.HEADER_OPTIONS_JSON))
-        console.error(url + "请求报错：" + JSON.stringify(err))
-        reject(err)
+      }).catch(e=>{
+          console.error(url + "请求头部：" + JSON.stringify(AppConfig.HEADER_OPTIONS_JSON))
+          console.error(url + "请求报错：" + JSON.stringify(e))
+        reject(e);
       })
     })
   }
