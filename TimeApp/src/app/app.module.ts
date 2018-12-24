@@ -5,7 +5,6 @@ import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from "@ionic/storage";
-import { HttpClientModule } from "@angular/common/http";
 import { File } from "@ionic-native/file";
 
 import { LocalNotifications } from "@ionic-native/local-notifications";
@@ -71,7 +70,6 @@ import {SyncService} from "../service/sync.service";
       mode: 'ios'
     }),
     IonicStorageModule.forRoot(),
-    HttpClientModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

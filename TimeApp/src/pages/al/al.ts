@@ -5,12 +5,13 @@ import { PageConfig } from "../../app/page.config";
 import { PermissionsService } from "../../service/util-service/permissions.service";
 import { UtilService } from "../../service/util-service/util.service";
 import { CalendarService } from "../../service/calendar.service";
-import { HttpClient } from "@angular/common/http";
 import { ConfigService } from "../../service/config.service";
 import { WebsocketService } from "../../service/util-service/websocket.service";
 import { RoundProgressEase } from 'angular-svg-round-progressbar';
 import { LsmService } from "../../service/lsm.service";
 import { DataConfig } from "../../app/data.config";
+import { HTTP } from "@ionic-native/http";
+import { BsRestful } from "../../service/restful/bs-restful";
 
 /**
  * Generated class for the AlPage page.
@@ -50,8 +51,9 @@ export class AlPage {
               public util: UtilService,
               private lsm:LsmService,
               private calendarService:CalendarService,
-              private http: HttpClient,
+              private http: HTTP,
               private nav:Nav,
+              private bsRestful: BsRestful,
               private events: Events,
               private permissionsService: PermissionsService,
               private configService:ConfigService,
@@ -93,10 +95,10 @@ export class AlPage {
    * 游客身份登录 dch
    */
   visitor(){
-    this.http.post(AppConfig.AUTH_VISITOR_URL, {
+    this.bsRestful.post(AppConfig.AUTH_VISITOR_URL, {
       userId: this.util.getUuid(),
       deviceId: this.util.getDeviceId(),
-    },AppConfig.HEADER_OPTIONS_JSON).subscribe(data=>{
+    }).then(data=>{
       console.log(data);
     })
   }

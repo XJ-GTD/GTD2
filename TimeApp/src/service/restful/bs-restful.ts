@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AppConfig } from "../../app/app.config";
 import { DataConfig } from "../../app/data.config";
-import { HTTP } from '@ionic-native/http';
+import { HTTP } from "@ionic-native/http";
 
 
 /**
@@ -10,9 +10,9 @@ import { HTTP } from '@ionic-native/http';
 @Injectable()
 export class BsRestful {
 
-  constructor(private http:HTTP){
-    http.setDataSerializer("json");
-    http.setSSLCertMode("nocheck").then(data=>{
+  constructor(private http: HTTP){
+    this.http.setDataSerializer("json");
+    this.http.setSSLCertMode("nocheck").then(data=>{
       console.log("----------- BsRestful setSSLCertMode Success ------------ ")
       console.log("----------- BsRestful setSSLCertMode data ----- :" +  JSON.stringify(data))
     }).catch(err=>{

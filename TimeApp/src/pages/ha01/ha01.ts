@@ -3,15 +3,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {ScheduleModel} from "../../model/schedule.model";
 import {ParamsService} from "../../service/util-service/params.service";
 import {ScheduleOutModel} from "../../model/out/schedule.out.model";
-import {AppConfig} from "../../app/app.config";
-import {HttpClient} from "@angular/common/http";
 import {CalendarService} from "../../service/calendar.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UEntity} from "../../entity/u.entity";
-import {UoModel} from "../../model/out/uo.model";
 import {WorkService} from "../../service/work.service";
 import {UserService} from "../../service/user.service";
 import {DataConfig} from "../../app/data.config";
+import {HTTP} from "@ionic-native/http";
 
 /**
  * Generated class for the Ha01Page page.
@@ -36,7 +34,7 @@ export class Ha01Page {
               public navParams: NavParams,
               private paramsService: ParamsService,
               private calendarService:CalendarService,
-              private http: HttpClient,
+              private http: HTTP,
               private util:UtilService,
               private rnd: Renderer2,
               private userSqlite:UserService,

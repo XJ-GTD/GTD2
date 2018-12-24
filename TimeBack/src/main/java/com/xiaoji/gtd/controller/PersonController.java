@@ -360,7 +360,7 @@ public class PersonController {
     @AuthCheck
     public Out conversionPinyin(@RequestBody SearchInDto inDto) {
         Out outDto = new Out();
-
+        SearchOutDto data = new SearchOutDto();
         //入参检测
         //必须项检测
         if (inDto.getOtherName().equals("") || inDto.getOtherName() == null) {
@@ -370,9 +370,20 @@ public class PersonController {
 
         //业务逻辑
         try {
-
+            String pyOfName = personService.conversionPinyin(inDto);
+            if (!pyOfName.equals("")) {
+                data.setPyOfName(pyOfName);
+                outDto.setData(data);
+                outDto.setCode(ResultCode.SUCCESS);
+                logger.debug("[转化拼音成功]");
+            } else {
+                outDto.setCode(ResultCode.FAIL_BUSIC);
+                logger.debug("[转化拼音失败]");
+            }
         } catch (Exception e) {
-
+            e.printStackTrace();
+            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            logger.error("[查询用户失败]：服务器繁忙");
         }
 
         return outDto;

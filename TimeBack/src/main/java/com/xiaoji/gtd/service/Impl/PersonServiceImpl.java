@@ -13,6 +13,7 @@ import com.xiaoji.gtd.service.IPersonService;
 import com.xiaoji.gtd.service.ISmsService;
 import com.xiaoji.gtd.service.IWebSocketService;
 import com.xiaoji.util.BaseUtil;
+import com.xiaoji.util.Pinyin4j;
 import com.xiaoji.util.TimerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -320,6 +321,18 @@ public class PersonServiceImpl implements IPersonService {
         }
 
         return dataList;
+    }
+
+    /**
+     * 传入的参与人姓名/备注转化成拼音返回
+     *
+     * @param inDto
+     * @return
+     */
+    @Override
+    public String conversionPinyin(SearchInDto inDto) {
+        String otherName = inDto.getOtherName();
+        return Pinyin4j.toPinYin(otherName);
     }
 
     /**

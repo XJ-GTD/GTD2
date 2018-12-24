@@ -1,7 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams, AlertController, Navbar} from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
-import { HttpClient } from "@angular/common/http";
 import { FindOutModel } from "../../model/out/find.out.model";
 import { LabelModel } from "../../model/label.model"
 import { PopoverController,ActionSheetController } from "ionic-angular";
@@ -9,7 +8,7 @@ import {RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
 import {WorkService} from "../../service/work.service";
 import {LbModel} from "../../model/lb.model";
-import {PageConfig} from "../../app/page.config";
+import {HTTP} from "@ionic-native/http";
 
 /**
  * Generated class for the SbPage page.
@@ -62,7 +61,7 @@ export class SbPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private http: HttpClient,
+              private http: HTTP,
               public loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
               private paramsService: ParamsService,

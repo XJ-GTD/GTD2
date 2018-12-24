@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
 import { WebsocketService } from "../../service/util-service/websocket.service";
 import { ParamsService } from "../../service/util-service/params.service";
 import { XiaojiAlarmclockService } from "../../service/util-service/xiaoji-alarmclock.service";
-import { HttpClient } from "@angular/common/http";
 import { RemindModel } from "../../model/remind.model";
 import { ScheduleModel } from "../../model/schedule.model";
 import { ScheduleOutModel } from "../../model/out/schedule.out.model";
@@ -26,6 +25,7 @@ import { HbPage } from "../hb/hb";
 import { DataConfig } from "../../app/data.config";
 import { PageConfig } from "../../app/page.config";
 import {AppConfig} from "../../app/app.config";
+import {HTTP} from "@ionic-native/http";
 
 /**
  * Generated class for the HaPage page.
@@ -80,7 +80,7 @@ export class HaPage {
   constructor(public navCtr: NavController,  public navParams: NavParams,
               public modalCtr: ModalController,
               private webSocketService: WebsocketService,
-              private http: HttpClient,
+              private http: HTTP,
               private paramsService: ParamsService,
               private alarmClock: XiaojiAlarmclockService,
               private userSqlite:UserService,

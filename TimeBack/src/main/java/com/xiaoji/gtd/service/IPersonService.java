@@ -65,4 +65,11 @@ public interface IPersonService {
      * @param inDto
      */
     List<PlayerDataDto> isAgree(String userId, List<PlayerDataDto> inDto);
+
+    /**
+     * 传入的参与人姓名/备注转化成拼音返回
+     * @param inDto
+     * @return
+     */
+    String conversionPinyin(SearchInDto inDto);
 }

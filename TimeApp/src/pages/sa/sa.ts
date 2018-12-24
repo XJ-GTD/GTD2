@@ -3,13 +3,11 @@ import { IonicPage, ModalController, Navbar, NavController, NavParams } from 'io
 import { ParamsService } from "../../service/util-service/params.service";
 import { ScheduleModel } from "../../model/schedule.model";
 import { XiaojiAlarmclockService } from "../../service/util-service/xiaoji-alarmclock.service";
-import {HttpClient} from "@angular/common/http";
-import {AppConfig} from "../../app/app.config";
 import {ScheduleOutModel} from "../../model/out/schedule.out.model";
 import {WorkService} from "../../service/work.service";
 import {RcModel} from "../../model/rc.model";
 import {LbModel} from "../../model/lb.model";
-import {PageConfig} from "../../app/page.config";
+import {HTTP} from "@ionic-native/http";
 
 /**
  * Generated class for the SaPage page.
@@ -35,7 +33,7 @@ export class SaPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private paramsService: ParamsService,
-              private http: HttpClient,
+              private http: HTTP,
               public modalCtrl: ModalController,
               private work:WorkService,
               private alarmClock: XiaojiAlarmclockService) {

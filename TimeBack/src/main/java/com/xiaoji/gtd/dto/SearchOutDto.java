@@ -9,13 +9,14 @@ import java.util.List;
  */
 public class SearchOutDto extends BaseOut {
 
-    private List<PlayerDataDto> players;
+    private String pyOfName;
 
-    public List<PlayerDataDto> getPlayers() {
-        return players;
+
+    public String getPyOfName() {
+        return pyOfName;
     }
 
-    public void setPlayers(List<PlayerDataDto> players) {
-        this.players = players;
+    public void setPyOfName(String pyOfName) {
+        this.pyOfName = pyOfName;
     }
 }

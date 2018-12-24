@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
 import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
-import { AppConfig } from "../../app/app.config";
-import { HttpClient } from "@angular/common/http";
 import { ParamsService } from "../../service/util-service/params.service";
 import { LsmService} from "../../service/lsm.service";
-import {BsModel} from "../../model/out/bs.model";
-import {HaPage} from "../ha/ha";
+import {HTTP} from "@ionic-native/http";
 
 /**
  * Generated class for the UbPage page.
@@ -34,7 +31,7 @@ export class UbPage {
     public navParams: NavParams,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
-    private http: HttpClient,
+    private http: HTTP,
     private paramsService: ParamsService,
     private lsmService: LsmService) {
   }
