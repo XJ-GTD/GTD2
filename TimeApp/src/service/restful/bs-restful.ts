@@ -12,6 +12,7 @@ export class BsRestful {
 
   constructor(private http:HTTP){
     http.setDataSerializer("json");
+    http.setSSLCertMode("default");
   }
   /**
    * http请求
