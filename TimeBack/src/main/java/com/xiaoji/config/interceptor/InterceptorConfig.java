@@ -79,7 +79,7 @@ public class InterceptorConfig implements HandlerInterceptor {
                             return true;
                         }
                         if (authType.equals("visitor")) {
-                            if (visitPath.equals("/parse/text") || visitPath.equals("/parse/audio")) {
+                            if (visitPath.equals("/parse/text") || visitPath.equals("/parse/audio") || visitPath.equals("/sync/initial_sync")) {
                                 logger.debug("=====TOKEN 有效 类型[" + authType + "] 接受访问 ======");
                                 return true;
                             } else {

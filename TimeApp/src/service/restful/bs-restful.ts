@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {AppConfig} from "../../app/app.config";
-import {DataConfig} from "../../app/data.config";
+import { AppConfig } from "../../app/app.config";
+import { DataConfig } from "../../app/data.config";
 import { HTTP } from '@ionic-native/http';
 
 
