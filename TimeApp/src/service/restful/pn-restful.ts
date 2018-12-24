@@ -9,10 +9,10 @@ import { BsRestful } from "./bs-restful";
  * 注册
  */
 @Injectable()
-export class PnRestful extends BsRestful{
+export class PnRestful{
 
-  constructor(private http: HTTP) {
-    super()
+  constructor(private bs: BsRestful) {
+
   }
 
 
@@ -25,7 +25,7 @@ export class PnRestful extends BsRestful{
    * @param {string} ai 邀请人账号
    */
   sn(am:string,pw:string,ac:string,ui:string,ai:string,dv:string):Promise<any>{
-    return this.bsHttp(this.http,AppConfig.PERSON_SU_URL, {
+    return this.bs.post(AppConfig.PERSON_SU_URL, {
       accountMobile: am,
       password: pw,
       authCode: ac,
@@ -41,7 +41,7 @@ export class PnRestful extends BsRestful{
    * @param {string} pw 新密码
    */
   upw(ui:string,op:string,pw:string):Promise<any>{
-    return this.bsHttp(this.http,AppConfig.PERSON_UPW_URL, {
+    return this.bs.post(AppConfig.PERSON_UPW_URL, {
       userId: ui,
       oldPassword:op,
       password: pw
@@ -54,7 +54,7 @@ export class PnRestful extends BsRestful{
    * @param {string} tn token
    */
   su(am:string):Promise<any>{
-    return this.bsHttp(this.http,AppConfig.PERSON_SU, {
+    return this.bs.post(AppConfig.PERSON_SU, {
       accountMobile:am
     })
   }
@@ -67,7 +67,7 @@ export class PnRestful extends BsRestful{
    * @returns {Promise<any>}
    */
   au(ui:string,am:string,aui:string):Promise<any>{
-    return this.bsHttp(this.http,AppConfig.PERSON_ADDU, {
+    return this.bs.post(AppConfig.PERSON_ADDU, {
       userId:ui,
       targetMobile:am,
       targetUserId:aui
@@ -87,7 +87,7 @@ export class PnRestful extends BsRestful{
    */
 
   upu(ui:string,uN:string,hiu:string,biy:string,rn:string,iC:string,uS:string):Promise<any>{
-    return this.bsHttp(this.http,AppConfig.PERSON_UP, {
+    return this.bs.post(AppConfig.PERSON_UP, {
       userId:ui,
       userName:uN,
       headImgUrl:hiu,

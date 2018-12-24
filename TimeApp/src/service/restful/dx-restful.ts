@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HTTP } from '@ionic-native/http';
-
 import { AppConfig } from "../../app/app.config";
 import { UtilService } from "../util-service/util.service";
 import { BsRestful } from "./bs-restful";
@@ -11,10 +9,9 @@ import { BsRestful } from "./bs-restful";
  * 短信
  */
 @Injectable()
-export class DxRestful  extends BsRestful{
-  constructor(private http: HTTP,
+export class DxRestful{
+  constructor(private bs: BsRestful,
                 private util: UtilService) {
-    super()
   }
 
   /**
@@ -22,7 +19,7 @@ export class DxRestful  extends BsRestful{
    * @param {string} am 手机号
    */
   sc(am:string):Promise<any>{
-    return this.bsHttp(this.http,AppConfig.SMS_CODE_URL, {
+    return this.bs.post(AppConfig.SMS_CODE_URL, {
       accountMobile: am
     })
   }

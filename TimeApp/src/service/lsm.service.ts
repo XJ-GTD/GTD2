@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
-import {BaseModel} from "../model/base.model";
 import {AuRestful} from "./restful/au-restful";
 import {PnRestful} from "./restful/pn-restful";
 import {DxRestful} from "./restful/dx-restful";
-import { HTTP } from '@ionic-native/http';
 import {UtilService} from "./util-service/util.service";
 import {BsModel} from "../model/out/bs.model";
 import {BaseSqlite} from "./sqlite/base-sqlite";
 import {UEntity} from "../entity/u.entity";
 import {DataConfig} from "../app/data.config";
-import {RelmemSqlite} from "./sqlite/relmem-sqlite";
 
 
 
@@ -18,17 +15,12 @@ import {RelmemSqlite} from "./sqlite/relmem-sqlite";
  */
 @Injectable()
 export class LsmService {
-  au:AuRestful;
-  pn:PnRestful;
-  dx:DxRestful;
-  relmem:RelmemSqlite;
-  constructor(private http: HTTP,
+
+  constructor(private au: AuRestful,
+              private pn:PnRestful,
+              private dx:DxRestful,
               private basesqlite:BaseSqlite,
               private util: UtilService) {
-    this.au = new AuRestful(http,util);
-    this.pn = new PnRestful(http);
-    this.dx = new DxRestful(http,util);
-    this.relmem = new RelmemSqlite(basesqlite);
   }
 
   /**
