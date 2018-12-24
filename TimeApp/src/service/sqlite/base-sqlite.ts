@@ -279,13 +279,13 @@ export class BaseSqlite {
             this.initlb(data1);
           }).catch(e=>{
             console.error("------------------BaseSqlite createTable: "+e.message)
-            reject(e)
+            reject(e);
           })
         }
       }else{
         console.log("-------------------BaseSqlite initData table data is exsit ------------------")
         let bs = new BsModel();
-        resolve(bs)
+        resolve(bs);
       }
     })
   }
@@ -304,7 +304,7 @@ export class BaseSqlite {
         .catch((error)=> {
           console.error(error);
           alert(this.className+"sql执行错误:"+error.message);
-          reject(error)
+          reject(error);
         });
     });
   }
@@ -319,7 +319,7 @@ export class BaseSqlite {
           resolve(res);
         }, (tx, err) =>{
           console.log('error: ' + err.message);
-          console.log("sql: "+sql)
+          console.log("sql: "+sql);
           reject(err);
         });
       });
@@ -333,7 +333,13 @@ export class BaseSqlite {
    * @return {boolean}
    */
   isMobile():boolean{
-    return this.platform.is('mobile') && !this.platform.is('mobileweb');
+    let bool = this.platform.is('mobile');
+    let str = this.win.cordova.platformId;
+    if(str === "browser"){
+      bool = false;
+    }
+    //this.platform.is('mobile') && !this.platform.is('mobileweb')
+    return bool;
   }
 
   /**
