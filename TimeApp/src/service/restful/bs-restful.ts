@@ -12,7 +12,13 @@ export class BsRestful {
 
   constructor(private http:HTTP){
     http.setDataSerializer("json");
-    http.setSSLCertMode("nocheck");
+    http.setSSLCertMode("nocheck").then(data=>{
+      console.log("----------- BsRestful setSSLCertMode Success ------------ ")
+      console.log("----------- BsRestful setSSLCertMode data ----- :" +  JSON.stringify(data))
+    }).catch(err=>{
+      console.error("----------- BsRestful setSSLCertMode Error ------------ ")
+      console.error("----------- BsRestful setSSLCertMode Error data: " + JSON.stringify(err))
+    })
   }
 
   // public setHttpHeader(key:value){
