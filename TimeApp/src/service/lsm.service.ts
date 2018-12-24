@@ -83,7 +83,7 @@ export class LsmService {
               base = datal;
               let u = new UEntity();
               u.uI = ui;
-              if (datal.data && datal.data.accountQueue) {
+              if (datal.code==0) {
                 u.aQ = datal.data.accountQueue
                 u.uT=datal.data.token
 

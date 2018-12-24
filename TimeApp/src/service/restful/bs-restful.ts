@@ -11,7 +11,7 @@ import { HTTP } from '@ionic-native/http';
 export class BsRestful {
 
   constructor(private http:HTTP){
-
+    http.setDataSerializer("json")
   }
   /**
    * http请求
@@ -25,7 +25,7 @@ export class BsRestful {
       }else{
         console.error(url + "请求头Token未取到")
       }
-      this.http.post(url,body,AppConfig.HEADER_OPTIONS_JSON).then(data=>{
+      this.http.post(url,body,{ "Authorization": DataConfig.uInfo.uT }).then(data=>{
         resolve(data)
       }).catch(e=>{
           console.error(url + "请求头部：" + JSON.stringify(AppConfig.HEADER_OPTIONS_JSON))
