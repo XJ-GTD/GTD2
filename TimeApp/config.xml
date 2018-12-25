@@ -99,4 +99,5 @@
     <engine name="browser" spec="~5.0.4" />
     <engine name="android" spec="~6.4.0" />
     <plugin name="cordova-plugin-advanced-http" spec="~2.0.2" />
+    <plugin name="cordova-plugin-nativeaudio" spec="~3.0.9" />
 </widget>
