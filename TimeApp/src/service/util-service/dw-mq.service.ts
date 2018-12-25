@@ -235,15 +235,14 @@ export class DwMqService {
    * 业务：日程更新
    */
   private scheduleUpdate(data: WsResDataModel) {
-    let resd = data;
-    let ct=resd.sn;
-    let sd=resd.st;
-    let ed = resd.et;
-    let lbI = resd.lb;
-    let jhi = resd.ei;
-    let sI=resd.si;
+    let ct=data.sn;
+    let sd=data.st;
+    let ed = data.et;
+    let lbI = data.lb;
+    let rui = data.us;
+    let sI=data.si;
     console.log("----- DwMqService scheduleCreate(业务：日程更新) start---- ")
-    this.work.urcMq(sI,jhi,ct,sd,ed,lbI).then(data=>{
+    this.work.urcMq(sI,rui,ct,sd,ed,lbI).then(data=>{
       console.log("----- DwMqService scheduleCreate(业务：日程更新) end ---- ")
     }).catch(e=>{
       console.log("----- DwMqService scheduleCreate(业务：日程更新) Error : "+JSON.stringify(e))
