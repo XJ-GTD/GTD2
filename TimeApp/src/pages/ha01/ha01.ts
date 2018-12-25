@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, Renderer2} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {App, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ScheduleModel} from "../../model/schedule.model";
 import {ParamsService} from "../../service/util-service/params.service";
 import {ScheduleOutModel} from "../../model/out/schedule.out.model";
@@ -8,6 +8,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {UEntity} from "../../entity/u.entity";
 import {WorkService} from "../../service/work.service";
 import {UserService} from "../../service/user.service";
+import {HaPage} from "../ha/ha";
 import {DataConfig} from "../../app/data.config";
 
 /**
@@ -28,6 +29,7 @@ export class Ha01Page {
   scheduleList: Array<ScheduleModel>;
   findSchedule: ScheduleOutModel; //查询日程条件
   u:UEntity;
+  haPage:HaPage;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -37,7 +39,8 @@ export class Ha01Page {
               private rnd: Renderer2,
               private userSqlite:UserService,
               private workSqlite:WorkService,
-              private el: ElementRef) {
+              private el: ElementRef,
+              private app: App) {
     this.scheduleList = [];
     console.log('ionViewDidLoad Ha01Page');
     //this.calendarService.getSelectDay(this);
@@ -62,11 +65,12 @@ export class Ha01Page {
 
   //展示数据详情
   showScheduleDetail(schedule){
+    console.log("schedule :: " + JSON.stringify(schedule));
     this.schedule = new ScheduleModel();
     this.schedule = schedule;
     this.paramsService.schedule = this.schedule;
-    console.log("schedule:" + this.paramsService.schedule);
-    this.navCtrl.push("SaPage",this.schedule);
+    console.log("schedule:" + JSON.stringify(this.paramsService.schedule));
+    this.app.getRootNav().push("SaPage",this.schedule);
   }
   //查询当天日程
   findTodaySchedule($event) {
@@ -119,44 +123,42 @@ export class Ha01Page {
       }
     })
 
-    // this.http.post(AppConfig.SCHEDULE_FIND_URL, this.findSchedule, {
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   responseType: 'json'
-    // })
-    //   .subscribe(data => {
-    //     // let datatype: any;
-    //     // datatype = data;
-    //     // if (datatype.code == 0) {
-    //     //   this.scheduleList = datatype.data.scheduleJoinList;
-    //     // } else {
-    //     //   console.log("error message:" + datatype.message);
-    //     // }
-    //     let len = UtilService.randInt(2,13);
-    //     for(let i=0;i<len;i++){
-    //       let mo = new ScheduleModel();
-    //       mo.scheduleStartTime = "05:00";
-    //       mo.scheduleName = "mytest 我的车市"
-    //       this.scheduleList.push(mo);
-    //
-    //     }
-    //   })
-
-    //查询本地日历日程
-    // this.playerSqlite.getLocalSchedule(findSchedule.scheduleStartTime,findSchedule.scheduleDeadline).then(data=>{
-    //   alert(data.rows.item(0).sN);
-    //   if(data.rows.length>0){
-    //     for(let i=0;i<data.rows.length;i++){
-    //       let mo = new ScheduleModel();
-    //
-    //       mo.scheduleStartTime = data.rows.item(i).sN;
-    //       mo.scheduleName = data.rows.item(i).cd;
-    //       this.scheduleList.push(mo);
-    //     }
-    //   }
-    // });
-
   }
+
+
+  showDetail(itm){
+    this.haPage.showDetail(itm,this.scheduleList);
+  }
+
+  setData(page){
+    this.haPage = page;
+  }
+
+  // ionViewDidLoad(){
+  //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");
+  // }
+  // ionViewWillEnter(){
+  //   console.log("2.0 ionViewWillEnter 顾名思义，当将要进入页面时触发");
+  // }
+  // ionViewDidEnter(){
+  //   console.log("3.0 ionViewDidEnter 当进入页面时触发");
+  // }
+  // ionViewWillLeave(){
+  //   console.log("4.0 ionViewWillLeave 当将要从页面离开时触发");
+  // }
+  // ionViewDidLeave(){
+  //   console.log("5.0 ionViewDidLeave 离开页面时触发");
+  // }
+  // ionViewWillUnload(){
+  //   console.log("6.0 ionViewWillUnload 当页面将要销毁同时页面上元素移除时触发");
+  // }
+  //
+  // ionViewCanEnter(){
+  //   console.log("ionViewCanEnter");
+  // }
+  //
+  // ionViewCanLeave(){
+  //   console.log("ionViewCanLeave");
+  // }
 
 }

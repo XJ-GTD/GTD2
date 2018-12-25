@@ -21,7 +21,7 @@
 
 
 <ion-content padding>
-  <!--<ion-label></ion-label>-->
+  <ion-label></ion-label>
 
   <ion-textarea placeholder="要发的内容..." [(ngModel)]="title"></ion-textarea>
 
@@ -29,7 +29,7 @@
     <div *ngFor="let index of select">
       <div float-left margin-left title="{{pRelAl[index].ran}}">
         <ion-thumbnail ion-button color="light" float-start class="button-border padding-0 " no-margin>
-          <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg" class="button-border">
+          <img [src]="pRelAl[index].hiu" class="button-border">
         </ion-thumbnail>
         <div style="clear: both; font-size:10px;width:56px;overflow: hidden;text-overflow: ellipsis;" text-center >{{pRelAl[index].ran}}</div>
       </div>
@@ -42,11 +42,11 @@
     </div>
   </div>
   <div>
-    <ion-label float-right>
-      <div class="selectCss" (click)="show()">
-        张三
-      </div>
-    </ion-label>
+    <!--<ion-label float-right>-->
+      <!--<div class="selectCss" (click)="show()">-->
+        <!--张三-->
+      <!--</div>-->
+    <!--</ion-label>-->
     <ion-label float-right>
       <ion-buttons>
         <!--<button class="buttonCss" *ngFor="let lb of selectLb" float-left>-->
@@ -59,13 +59,14 @@
           <div float-left>
             <img src="./assets/imgs/i.png"/>
           </div>
-          <div float-left class="divCss">添加计划</div>
+          <div float-left class="divCss">{{jh}}</div>
         </button>
       </ion-buttons>
     </ion-label>
 
   </div>
-  <div ion-item>
+  <div ion-item class="padding-left-0">
+    <img src="./assets/imgs/e.png" item-start/>
     <ion-label>标签</ion-label>
     <!--<ion-select item-end [(ngModel)]="type" style="width: 100px">-->
       <!--<ion-option [selected]="true" value="BQA">任务</ion-option>-->
@@ -74,7 +75,7 @@
       <!--<ion-option [selected]="false" value="BQD">纪念日</ion-option>-->
       <!--<ion-option [selected]="false" value="BQE">备忘录</ion-option>-->
     <!--</ion-select>-->
-    <ion-select item-end [(ngModel)]="type" placeholder="标签">
+    <ion-select item-end [(ngModel)]="type" placeholder="标签" (ionChange)="showSelect()">
       <ion-option  *ngFor="let lb of lbs" value="{{lb.lai}}">{{lb.lan}}</ion-option>
     </ion-select>
   </div>
@@ -102,26 +103,36 @@
   <button ion-item  *ngIf="showB && repeatType=='w'" class="padding-left-0">
     <img src="./assets/imgs/1.png" item-start/>
     <ion-label>重复时间</ion-label>
-    <ion-datetime displayFormat="DDDD" pickerFormat="YYYY-MM-DD" [(ngModel)]="startTime" [disabled]="true"></ion-datetime>
+    <ion-datetime displayFormat="DDDD" pickerFormat="YYYY-MM-DD" [(ngModel)]="startTime" [disabled]="false"></ion-datetime>
   </button>
   <button ion-item *ngIf="showC" class="padding-left-0">
     <img src="./assets/imgs/b.png" item-start/>
     <ion-label>备注</ion-label>
     <ion-input text-end type="text">2018年11月20日</ion-input>
   </button>
+  <!--<button ion-item *ngIf="showD" class="padding-left-0">-->
+    <!--<img src="./assets/imgs/b.png" item-start/>-->
+    <!--<ion-label>备注</ion-label>-->
+    <!--<ion-input text-end type="text">2018年11月20日</ion-input>-->
+  <!--</button>-->
+  <button ion-item *ngIf="showE" class="padding-left-0" (click)="remindSet()">
+    <img src="./assets/imgs/c.png" item-start/>
+    <ion-label>提醒方式</ion-label>
+    <ion-label color="primary" text-end>{{remindType===undefined?"无":remindType}}</ion-label>
+  </button>
 
 
 </ion-content>
-<div *ngIf="isShow" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();">
-  <ion-backdrop disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></ion-backdrop>
+<!--<div *ngIf="isShow" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();">-->
+  <!--<ion-backdrop disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></ion-backdrop>-->
 
-  <div class="pop-css">
-    <div class="titlecss" text-center>选择标签</div>
-    <div *ngFor="let lb of lbs" class="contentcss">
-      <div>
-        <button float-left style="padding-top: 2px;padding-bottom: 5px;padding-left: 5px" [ngClass]="{selectcss: lb.lau, noselectcss:!lb.lau}" (click)="checkdd(lb)">{{lb.lan}}</button>
-      </div>
-    </div>
+  <!--<div class="pop-css">-->
+    <!--<div class="titlecss" text-center>选择标签</div>-->
+    <!--<div *ngFor="let lb of lbs" class="contentcss">-->
+      <!--<div>-->
+        <!--<button float-left style="padding-top: 2px;padding-bottom: 5px;padding-left: 5px;vertical-align:middle;" [ngClass]="{selectcss: lb.lau, noselectcss:!lb.lau}" (click)="checkdd(lb)">{{lb.lan}}</button>-->
+      <!--</div>-->
+    <!--</div>-->
 
-  </div>
-</div>
+  <!--</div>-->
+<!--</div>-->

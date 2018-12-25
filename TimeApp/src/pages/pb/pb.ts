@@ -21,7 +21,8 @@ export class PbPage {
 
   name:any;
   state:any;//true 编辑 false 不可编辑
-  isPush:any;
+  isPush:any;//接受用户推送 接受 true
+  isPop:any;//是否被拒绝 拒绝 true
   u:RuModel = new RuModel();
   uo:UEntity;
 
@@ -41,6 +42,7 @@ export class PbPage {
     if(this.u.rF == '1'){
       this.isPush = true;
     }
+    this.isPop = false;
     console.log(this.name + this.state)
   }
 

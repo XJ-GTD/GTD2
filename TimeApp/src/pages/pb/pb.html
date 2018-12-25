@@ -39,7 +39,7 @@
     <ion-label>接收该用户的推送</ion-label>
     <ion-checkbox item-end [disabled]="state ? false : true" [checked]="true" [(ngModel)]="isPush"></ion-checkbox>
   </ion-item>
-  <ion-item>
+  <ion-item *ngIf="isPop">
     <ion-label color="danger">他拒收了你的推送</ion-label>
     <button item-end ion-button>再次发送</button>
   </ion-item>

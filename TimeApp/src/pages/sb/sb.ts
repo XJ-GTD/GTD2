@@ -8,6 +8,8 @@ import {RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
 import {WorkService} from "../../service/work.service";
 import {LbModel} from "../../model/lb.model";
+import {UtilService} from "../../service/util-service/util.service";
+import * as moment from "moment";
 
 /**
  * Generated class for the SbPage page.
@@ -33,22 +35,22 @@ export class SbPage {
   groupFind: FindOutModel;
   label: Array<LabelModel>;
 
-  pRelAl:Array<RuModel>;
+  pRelAl:Array<RuModel>;//所有联系人
   select:any = [];
   selectLb:Array<LbModel>;
 
   lbs: Array<LbModel>
   type: any ;
   title:any;
-  startTime:any;
+  startTime:any;//开始时间
   repeatType:any;
 
   isShow:any = false;
-  showA:boolean = false;
-  showB:boolean = false;
-  showC:boolean = false;
+  showA:boolean = false;//重复类型
+  showB:boolean = false;//重复时间
+  showC:boolean = false;//备注
   showD:boolean = false;
-  showE:boolean = false;
+  showE:boolean = false;//闹钟
 
   repeatTime:any = SbPage.yType;
   static yType:any = "MM月DD日";
@@ -56,7 +58,10 @@ export class SbPage {
   static wType:any = "";
   static dType:any = "HH时mm分ss秒";
 
-  test:any = "2018-12-07";
+  static defaultJH:string = "添加计划";
+  jh:string = SbPage.defaultJH;
+
+  remindType:string ;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -66,26 +71,14 @@ export class SbPage {
               private popoverCtrl:PopoverController,
               private actionSheetCtrl: ActionSheetController,
               private relmemService: RelmemService,
-              private workService: WorkService) {
-
-    this.init();
-
+              private workService: WorkService,
+              private util: UtilService) {
   }
 
   init() {
-    //判断：创建/编辑
-    // if (this.paramsService.schedule != null) {
-    //   this.schedule = new ScheduleModel();
-    //   this.schedule = this.paramsService.schedule;
-    // } else {
-    //   this.scheduleOut =  new ScheduleOutModel();
-    //   this.schedule = this.scheduleOut;
-    // }
-    // this.addContact();
-    // this.findLabel();
-    // this.group = [{groupId:1,groupName:"李四"},{groupId:2,groupName:"马武"}];
     this.getAllRel();
     this.findLabel();
+    this.startTime = new Date(new Date().getTime()+8*60*60*1000).toISOString();
   }
 
   //查询系统标签
@@ -109,33 +102,6 @@ export class SbPage {
     this.groupFind = new FindOutModel();
     this.groupFind.userId= this.paramsService.user.userId;
     this.groupFind.findType = 3;        //暂为硬代码，默认群组
-    // this.http.post(AppConfig.GROUP_ALL_SHOW_URL, this.groupFind, {
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   responseType: 'json'
-    // })
-    //   .subscribe(data => {
-    //     this.data = data;
-    //     let loader = this.loadingCtrl.create({
-    //       content: this.data.message,
-    //       duration: 1000
-    //     });
-    //     if (this.data.code == 0) {
-    //       this.group = [];
-    //       this.group = this.data.data.groupList;
-    //
-    //     } else if (this.data.code == 1) {
-    //       loader.setContent("暂未找到参与人，请尝试创建参与人吧");
-    //       loader.present();
-    //     } else if (this.data.code == -1) {
-    //       loader.setContent("服务器繁忙，请稍后再试");
-    //       loader.present();
-    //     }
-    //
-    //   })
-
-
   }
 
   //发布任务入库
@@ -144,22 +110,23 @@ export class SbPage {
 
     // this.scheduleOut = new ScheduleOutModel();
     // this.schedule.userId = this.paramsService.user.userId;
+    console.log("时间格式规整前 :: " + this.startTime);
     /*时间格式规整*/
     if (this.startTime != null && this.startTime != "") {
       this.startTime = this.startTime.replace("T", " ");
       this.startTime = this.startTime.replace(":00Z", "");
     }
-    if (this.startTime != null && this.startTime != "") {
-      this.startTime = this.startTime.replace("T", " ");
-      this.startTime = this.startTime.replace(":00Z", "");
-    }
+    this.startTime = moment(new Date(this.startTime).getTime()-8*60*60*1000).format("YYYY-MM-DD HH:mm");
+    console.log("时间格式规整后 :: " + this.startTime);
 
     let rul = new Array<RuModel>();
     for(let i = 0;i< this.select.length;i++){
       rul.push(this.pRelAl[this.select[i]]);
     }
-
-    this.workService.arc(this.title,this.startTime,null,this.type,null,rul).then(data=>{
+    if(this.jh==SbPage.defaultJH){
+      this.jh = null;
+    }
+    this.workService.arc(this.title,this.startTime,null,this.type,this.jh,rul).then(data=>{
       if(data.code == 0){
         console.log("添加日程成功")
         this.navCtrl.setRoot('HzPage')
@@ -180,6 +147,7 @@ export class SbPage {
     console.log('ionViewDidLoad SbPage');
     this.navBar.backButtonClick = this.backButtonClick;
     this.navBar.setBackButtonText("");
+    this.init();
   }
 
   backButtonClick = (e: UIEvent) => {
@@ -253,7 +221,7 @@ export class SbPage {
     alert.present();
   }
 
-  //所有联系
+  //所有联系人
   getAllRel(){
     this.relmemService.getrus(null,null,null,null,'0').then(data=>{
       console.log(data);
@@ -279,8 +247,32 @@ export class SbPage {
     e.stopPropagation();
   }
 
+  //添加计划
   show(){
-    this.isShow = true
+    // this.isShow = true;
+    let alert = this.alertCtrl.create({
+      title: '添加计划',
+      inputs: [{
+        type: "text",
+        id: "jh",
+        name:"jh",
+        placeholder: "添加计划"
+      }],
+      buttons: [
+        {
+          text: "确认",
+          role: null,
+          handler: data=>{
+            console.log(data);
+            if(data.jh.trim() != "" && data.jh != SbPage.defaultJH){
+              this.jh = data.jh.trim();
+            }
+          }
+        },
+      ],
+      enableBackdropDismiss: true
+    });
+    alert.present()
   }
 
   checkdd(lb){
@@ -342,6 +334,7 @@ export class SbPage {
 
   }
 
+  //时间选择类型
   chengeType(){
     switch(this.repeatType){
       case "y": this.repeatTime = SbPage.yType;
@@ -355,8 +348,65 @@ export class SbPage {
     }
   }
 
-  chengeTime(){
-    console.log(this.test)
+
+
+  showSelect(){
+    let A= false;
+    let B= false;
+    let C= false;
+    let D= false;
+    let E= false;
+    switch(this.type.substring(0,3)){
+      case 'BQA':
+        C = true;
+        E = true;
+        break;
+      case 'BQB':
+        B = true;
+        E = true;
+        break;
+      case 'BQC':
+        A = true;
+        B = true;
+        C = true;
+        E = true;
+        break;
+      case 'BQD':
+        A = true;
+        B = true;
+        C = true;
+        D = true;
+        break;
+      case 'BQE':
+        B = true;
+        break;
+    }
+    this.showA = A;
+    this.showB = B;
+    this.showC = C;
+    this.showD = D;
+    this.showE = E;
+
+  }
+
+  //提醒时间设置
+  remindSet(){
+    let alert = this.alertCtrl.create({
+      title:'提醒时间',
+      inputs:[
+        {type:'radio',value:"无",label:"无",name:"sj",checked:false,handler:data=>{console.log(JSON.stringify(data))}},
+        {type:'radio',value:"任务发生当天",label:"任务发生当天",name:"sj",checked:false,handler:data=>{console.log(JSON.stringify(data))}},
+        {type:'radio',value:"1天前",label:"1天前",name:"sj",checked:false,handler:data=>{console.log(JSON.stringify(data))}},
+        {type:'radio',value:"2天前",label:"2天前",name:"sj",checked:false,handler:data=>{console.log(JSON.stringify(data))}},
+        {type:'radio',value:"1周前",label:"1周前",name:"sj",checked:false,handler:data=>{console.log(JSON.stringify(data))}}
+      ],
+      buttons:[
+        {text:"确认",role:null,handler:data=>{console.log(JSON.stringify(data));this.remindType=data;}},
+        {text:"取消",role:null,handler:data=>{console.log(JSON.stringify(data))}},
+      ]
+
+    });
+    alert.present()
   }
 
   // ionViewDidLoad(){
