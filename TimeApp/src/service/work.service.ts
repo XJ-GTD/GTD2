@@ -164,11 +164,15 @@ W
       rc.sI=sI;
       let psl = new Array<PsModel>();
       console.log("------ WorkService arcMq() Start ------------");
+
       this.baseSqlite.save(rc).then(data=>{
         let rcp = new RcpEntity();
         rcp.uI=DataConfig.uInfo.uI;
         rcp.sI=sI;
         rcp.sa='0';
+        if(rcp.uI ==rc.uI){
+          rcp.sa='1';
+        }
         rcp.pI=this.util.getUuid();
         rcp.sdt=1;
         rcp.son=rc.sN;
