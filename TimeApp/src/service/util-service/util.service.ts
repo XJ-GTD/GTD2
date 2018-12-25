@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Device } from "@ionic-native/device";
+import {DataConfig} from "../../app/data.config";
 
 /**
  * 公共方法
@@ -8,7 +9,7 @@ import { Device } from "@ionic-native/device";
  */
 @Injectable()
 export class UtilService {
-
+  wins: any = window;//window对象
   constructor(public device: Device) {}
 
   public static rand(min, max ) {
@@ -88,7 +89,17 @@ export class UtilService {
 
   }
 
-
+  /**
+   * 是否真机环境
+   * @return {boolean}
+   */
+  isMobile():boolean{
+    let str = this.wins.cordova.platformId;
+    if(str === "browser"){
+      DataConfig.IS_MOBILE = false;
+    }
+    return DataConfig.IS_MOBILE;
+  }
 
 
 

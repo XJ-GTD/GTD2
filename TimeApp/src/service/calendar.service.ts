@@ -10,6 +10,7 @@ import { RcEntity } from "../entity/rc.entity";
 import { RcpEntity } from "../entity/rcp.entity";
 import { PlayerSqlite } from "./sqlite/player-sqlite";
 import { DataConfig } from "../app/data.config";
+import {ReturnConfig} from "../app/return.config";
 
 /**
  * 页面ts传值(Calendar)
@@ -67,7 +68,7 @@ export class CalendarService {
   uploadLocal():Promise<BsModel>{
     return new Promise((resolve,reject)=>{
       let model = new BsModel();
-      if(this.baseSqlite.isMobile()){
+      if(DataConfig.IS_MOBILE){
         let uI = '';
         uI = DataConfig.uInfo.uI;
         this.findEvent().then(data=>{
@@ -142,8 +143,8 @@ export class CalendarService {
 
       }).catch(reason => {
         console.error("calendar checkInfo 添加本地日历 rcp Error ::"+ JSON.stringify(reason));
-        bs.message = DataConfig.ERR_MESSAGE;
-        bs.code = DataConfig.ERR_CODE;
+        bs.message = ReturnConfig.ERR_MESSAGE;
+        bs.code = ReturnConfig.ERR_CODE;
         reject(bs);
       })
 
@@ -194,7 +195,7 @@ export class CalendarService {
         resolve(bs);
       }).catch(reason => {
         console.error("calendar addPlayer 添加本地日历 rcp Error ::"+ JSON.stringify(reason));
-        bs.code = DataConfig.ERR_CODE;
+        bs.code = ReturnConfig.ERR_CODE;
         bs.message = reason.message;
         reject(bs);
       })
@@ -225,7 +226,7 @@ export class CalendarService {
         resolve(bs);
       }).catch(reason => {
         console.error("calendar updatePlayer 更新本地日历 rcp Error ::"+ JSON.stringify(reason));
-        bs.code = DataConfig.ERR_CODE;
+        bs.code = ReturnConfig.ERR_CODE;
         bs.message = reason.message;
         reject(bs);
       })

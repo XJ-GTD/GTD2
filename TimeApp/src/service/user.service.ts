@@ -5,6 +5,7 @@ import {UModel} from "../model/u.model";
 import {BaseSqlite} from "./sqlite/base-sqlite";
 import {BsModel} from "../model/out/bs.model";
 import {PnRestful} from "./restful/pn-restful";
+import {ReturnConfig} from "../app/return.config";
 
 /**
  * 用户sevice
@@ -44,23 +45,23 @@ export class UserService {
       u.iC=iC;
       let bs = new BsModel();
       let rsData:any = null;
-      console.log("------- 1.UserService restful upu user start --------")
+      console.log("------- 1.UserService restful upu user start --------");
       this.pnRestful.upu(uI,uN,hIU,biy,rn,iC,uS).then(data=>{
-        console.log("------- 2.UserService restful upu user end: " + JSON.stringify(data))
+        console.log("------- 2.UserService restful upu user end: " + JSON.stringify(data));
         rsData = data
         bs = data;
         if(rsData && rsData.code == 0){
-          console.log("------- 3.UserService sqlite upu user start --------")
+          console.log("------- 3.UserService sqlite upu user start --------");
           return  this.baseSqlite.update(u)
         }
       }).then(data=>{
-        console.log("------- 4.UserService sqlite upu user end: " + JSON.stringify(data))
+        console.log("------- 4.UserService sqlite upu user end: " + JSON.stringify(data));
         resolve(bs);
       }).catch(e=>{
-        console.error("------- UserService upu user error: " + JSON.stringify(e))
+        console.error("------- UserService upu user error: " + JSON.stringify(e));
         bs.code=1;
         bs.message=e.message;
-        alert("------- UserService upu user error: " + JSON.stringify(e))
+        alert("------- UserService upu user error: " + JSON.stringify(e));
         reject(bs)
       })
 
@@ -74,19 +75,18 @@ export class UserService {
   getUo(): Promise<UModel>{
     return new Promise((resolve, reject) =>{
       let op = new UModel();
-      return this.userSqlite.getUo()
-        .then(data=>{
+      return this.userSqlite.getUo().then(data=>{
           if(data&& data.rows && data.rows.length>0){
             op=data.rows.item(0);
             resolve(op);
           }else{
-            op.code=2;
-            op.message="暂无用户信息"
+            op.code=ReturnConfig.NULL_CODE;
+            op.message=ReturnConfig.NULL_MESSAGE;
             resolve(op);
           }
         }).catch(e=>{
-        op.code=1;
-        op.message="系统错误"
+        op.code=ReturnConfig.ERR_CODE;
+        op.message=ReturnConfig.ERR_MESSAGE;
         resolve(op);
       })
     })

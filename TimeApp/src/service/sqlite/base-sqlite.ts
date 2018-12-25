@@ -42,7 +42,7 @@ export class BaseSqlite {
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
       console.log(this.className + " start create Db mingWX.db")
-      if (this.isMobile()) {
+      if (DataConfig.IS_MOBILE) {
         this.sqlite.create({
           name: 'mingWX.db',
           location: 'default'
@@ -67,54 +67,6 @@ export class BaseSqlite {
   }
 
   /**
-   * 查询FI表是否存在
-   * @returns {Promise<BsModel>} code 0正常打开，1报错暂无表，2无版本数据3，更新后首次打开
-   */
-  isFi(): Promise<BsModel> {
-    return new Promise((resolve, reject) => {
-        let bs=new BsModel();
-        let code = 1;//表不存
-        let sql="SELECT * FROM sqlite_master where type='table' and name='GTD_FI'";
-        //1.先查询表是否存在
-        this.executeSql(sql,[]).then(data=>{
-          if(data && data.rows && data.rows.length>0){
-            console.log(this.className + " fi is exist");
-            let sql1="SELECT * FROM GTD_FI where id=1";
-            code = 0;//表存在
-            //2.查询GTD_FI表信息
-            return this.executeSql(sql,[]);
-          }else{
-            console.error(this.className + "isFi()  GTD_FI is not exist");
-            code=1;
-          }
-        }).then(data=>{
-          if(code==0){
-            if(data && data.rows && data.rows.length>0){
-              if(data.rows.item(0).isup && data.rows.item(0).isup != 0){
-                console.log(this.className + " isFi()  GTD_FI is update");
-                code=3;//更新后首次打开进入引导页
-              }else{
-                code=0;//无更新
-              }
-            }else{
-              console.log(this.className + "isFi()  GTD_FI data is null");
-              code = 2;//无数据
-            }
-          }
-          DataConfig.isFirst= code;
-          bs.code=code;
-          resolve(bs);
-        }).catch(e=>{
-          console.error(this.className + " isFi() is Error:" + e.message);
-          bs.code=1;
-          bs.message=e.message;
-          DataConfig.isFirst= bs.code;
-          resolve(bs);
-        })
-    })
-  }
-
-  /**
    * 创建/更新表
    * @param {string} updateSql 更新SQL
    * @returns {Promise<any>}
@@ -126,7 +78,7 @@ export class BaseSqlite {
         //初始化建表
         console.log(this.className + "createTable：数据库初始化建表开始");
         //判断是否是手机端
-        if (this.isMobile()) {
+        if (DataConfig.IS_MOBILE) {
           //1先删除表
           let delsql = new UEntity().drsq + new RcEntity().drsq + new RcpEntity().drsq + new RuEntity().drsq
             + new LbEntity().drsq + new ReEntity().drsq + new StEntity().drsq + new MsEntity().drsq
@@ -237,7 +189,7 @@ export class BaseSqlite {
   }
 
   /**
-   * 初始化数据
+   * 初始化表数据
    * @param {BsModel} data
    * @returns {Promise<any>}
    */
@@ -254,7 +206,7 @@ export class BaseSqlite {
         let u: UEntity = new UEntity();
         u.uI = this.util.getUuid();
         u.uty = '0';
-        if(this.isMobile()){
+        if(DataConfig.IS_MOBILE){
           //手机端
           let sql=fi.isq+u.isq;
           this.importSqlToDb(sql).then(data=>{
@@ -322,21 +274,6 @@ export class BaseSqlite {
     });
   }
 
-
-  /**
-   * 是否真机环境
-   * @return {boolean}
-   */
-  isMobile():boolean{
-    let bool = this.platform.is('mobile');
-    let str = this.win.cordova.platformId;
-    if(str === "browser"){
-      bool = false;
-    }
-    //this.platform.is('mobile') && !this.platform.is('mobileweb')
-    return bool;
-  }
-
   /**
    * 保存
    * @param et 对应实体类
@@ -369,79 +306,6 @@ export class BaseSqlite {
    */
   getOne(et:any){
     return this.executeSql(et.qosq,[])
-  }
-
-  /**
-   * 生成本地测试日历数据
-   */
-  addRctest(): Promise<any> {
-    let sql = "";
-
-    let ii = 1;
-    let mo = moment();
-    return new Promise((resolve, reject) => {
-
-      while (ii < 3000) {
-
-
-        mo = mo.add(5, "h");
-
-        sql = sql + "INSERT INTO GTD_D(pI,son,uI) " +
-          "VALUES ( '" + mo.format("YYYY-MM-DD hh:mm:ss SSS") + "','加上5个小时');";
-        ii += 1;
-      }
-
-
-      mo = moment();
-      ii= 0;
-      while (ii < 3000) {
-
-
-        mo = mo.subtract(5, "h");
-        sql = sql + "INSERT INTO GTD_D(pI,son,uI) " +
-          "VALUES ( '" + mo.format("SSS YYYY-MM-DD hh:mm:ss") + "','减去5个小时');";
-        ii += 1;
-      }
-
-      this.importSqlToDb(sql,).then((data) => {
-        resolve("添加完成，总数据量为：" + ii);
-      }).catch((err) => {
-          resolve(err.toString());
-        }
-      )
-
-
-    })
-  }
-  initlb(data:any){
-    data.push({lai:'BQA01',lat:'BQA',lan:'任务'});
-    data.push({lai:'BQB01',lat:'BQB',lan:'生活'})
-    data.push({lai:'BQB02',lat:'BQB',lan:'工作'})
-    data.push({lai:'BQC01',lat:'BQC',lan:'聚会'})
-    data.push({lai:'BQC02',lat:'BQC',lan:'会议'})
-    data.push({lai:'BQC03',lat:'BQC',lan:'事件'})
-    data.push({lai:'BQC04',lat:'BQC',lan:'预约'})
-    data.push({lai:'BQC05',lat:'BQC',lan:'运动'})
-    data.push({lai:'BQD01',lat:'BQD',lan:'特殊日期'})
-    //data.push({lai:'BQD02',lat:'BQD',lan:'法定假日'})
-    data.push({lai:'BQE01',lat:'BQE',lan:'里程碑'})
-    data.push({lai:'BQE02',lat:'BQE',lan:'随手记'})
-    data.push({lai:'BQE03',lat:'BQE',lan:'记账'})
-
-    for(let i=0;i<data.length;i++){
-      /*let sql = 'insert into GTD_F (lai,lan,lat) select "'+ data[i].lai +'","'+ data[i].lan +'","'+ data[i].lat +'" ' +
-        'where not exists (select lai,lan,lat from GTD_F)'
-      this.executeSql(sql,[]).then(data=>{
-        console.log(data)
-      }).catch(e=>{
-        console.log(e.message)
-      })*/
-      let lb=new LbEntity();
-      lb.lai = data[i].lai;
-      lb.lan = data[i].lan;
-      lb.lat=data[i].lat;
-      this.save(lb);
-    }
   }
 
 }

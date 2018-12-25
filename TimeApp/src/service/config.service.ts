@@ -4,6 +4,7 @@ import { UtilService } from "./util-service/util.service";
 import { UserService } from "./user.service";
 import { DataConfig } from "../app/data.config";
 import {AppConfig} from "../app/app.config";
+import {FiSqlite} from "./sqlite/fi-sqlite";
 
 /**
  * 整体配置Service
@@ -13,9 +14,10 @@ import {AppConfig} from "../app/app.config";
 //   providers: []
 // })
 export class ConfigService {
-  constructor(public util : UtilService,
+  constructor(private util : UtilService,
               private user:UserService,
-              public baseSqlite : BaseSqlite) {
+              private fi : FiSqlite,
+              private baseSqlite : BaseSqlite) {
   }
 
   initDataBase():Promise<boolean>{
@@ -58,14 +60,17 @@ export class ConfigService {
   //判断初始化进入页面
   isIntoBoot():Promise<boolean>{
     return  new Promise((resolve, reject)=>{
-
+      //先判断是否手机还是网页
+      this.util.isMobile()
+      console.log("--------- 是否是手机模式打开 ： " + this.util.isMobile())
       //先创建或连接数据
       this.baseSqlite.createDb().then(data=>{
         console.log("config.service isIntoBoot createDb:: "+　JSON.stringify(data))
         if(data.code != 0){
           resolve(true)
         }
-        return this.baseSqlite.isFi()
+        console.log("--------- 判断是否是首次打开 start --------- ")
+        return this.fi.isFi()
       }).then(data=>{
         console.log("config.service isIntoBoot Fi:: "+　JSON.stringify(data))
         //在判断版本表是否存在

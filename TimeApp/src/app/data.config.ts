@@ -7,13 +7,8 @@ export class DataConfig {
 
   /*0游客身份，1登录*/
   public static IL:number=0;
-
-  public static SUCCESS_CODE : number = 0;
-  public static SUCCESS_MESSAGE : string ='成功！';
-  public static ERR_CODE : number = 1;
-  public static ERR_MESSAGE : string='系统出错！';
-  public static NULL_CODE : number= 2;
-  public static NULL_MESSAGE : string='查询结果不存在！';
+  /* 判断是手机还是网页true是false不是 */
+  public static IS_MOBILE : boolean=true;
 
   //用户信息
   public static uInfo:UEntity = null;
