@@ -33,30 +33,31 @@ import { SystemSqlite } from "../service/sqlite/system-sqlite";
 import { XiaojiAlarmclockService } from "../service/util-service/xiaoji-alarmclock.service";
 import { JhService } from "../service/jh.service";
 import { DwEmitService } from "../service/util-service/dw-emit.service";
-import {FiSqlite} from "../service/sqlite/fi-sqlite";
-import {ParamsService} from "../service/util-service/params.service";
-import {WebsocketService} from "../service/util-service/websocket.service";
-import {DwMqService} from "../service/util-service/dw-mq.service";
-import {UtilService} from "../service/util-service/util.service";
-import {BackgroundMode} from '@ionic-native/background-mode';
-import {PermissionsService} from "../service/util-service/permissions.service";
-import {AndroidPermissions} from '@ionic-native/android-permissions';
-import {ConfigService} from "../service/config.service";
-import {ErrorCodeService} from "../service/util-service/error-code.service";
-import {HdSpeechService} from "../service/util-service/hd-speech.service";
-import {JhSqlite} from "../service/sqlite/jh-sqlite";
-import {LbSqlite} from "../service/sqlite/lb-sqlite";
-import {RelmemSqlite} from "../service/sqlite/relmem-sqlite";
-import {UserSqlite} from "../service/sqlite/user-sqlite";
-import {WorkSqlite} from "../service/sqlite/work-sqlite";
-import {AuRestful} from "../service/restful/au-restful";
-import {BsRestful} from "../service/restful/bs-restful";
-import {DxRestful} from "../service/restful/dx-restful";
-import {PnRestful} from "../service/restful/pn-restful";
-import {RcRestful} from "../service/restful/rc-restful";
-import {SyncRestful} from "../service/restful/sync-restful";
-import {SyncService} from "../service/sync.service";
+import { FiSqlite } from "../service/sqlite/fi-sqlite";
+import { ParamsService } from "../service/util-service/params.service";
+import { WebsocketService } from "../service/util-service/websocket.service";
+import { DwMqService } from "../service/util-service/dw-mq.service";
+import { UtilService } from "../service/util-service/util.service";
+import { BackgroundMode } from '@ionic-native/background-mode';
+import { PermissionsService } from "../service/util-service/permissions.service";
+import { AndroidPermissions } from '@ionic-native/android-permissions';
+import { ConfigService } from "../service/config.service";
+import { ErrorCodeService } from "../service/util-service/error-code.service";
+import { HdSpeechService } from "../service/util-service/hd-speech.service";
+import { JhSqlite } from "../service/sqlite/jh-sqlite";
+import { LbSqlite } from "../service/sqlite/lb-sqlite";
+import { RelmemSqlite } from "../service/sqlite/relmem-sqlite";
+import { UserSqlite } from "../service/sqlite/user-sqlite";
+import { WorkSqlite } from "../service/sqlite/work-sqlite";
+import { AuRestful } from "../service/restful/au-restful";
+import { BsRestful } from "../service/restful/bs-restful";
+import { DxRestful } from "../service/restful/dx-restful";
+import { PnRestful } from "../service/restful/pn-restful";
+import { RcRestful } from "../service/restful/rc-restful";
+import { SyncRestful } from "../service/restful/sync-restful";
+import { SyncService } from "../service/sync.service";
 import { HTTP } from "@ionic-native/http";
+import { ZtdSqlite } from "../service/sqlite/ztd-sqlite";
 @NgModule({
   declarations: [
     MyApp,
@@ -103,6 +104,7 @@ import { HTTP } from "@ionic-native/http";
     SystemSqlite,
     UserSqlite,
     WorkSqlite,
+    ZtdSqlite,
     AuRestful,
     BsRestful,
     DxRestful,
