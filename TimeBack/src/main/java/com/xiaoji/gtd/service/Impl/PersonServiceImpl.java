@@ -272,6 +272,7 @@ public class PersonServiceImpl implements IPersonService {
         String userName = "";
         String headImg = "";
         String userId = "";
+        String pyOfUserName = "";
 
         Object[] objects = (Object[]) personRepository.searchUserByMobile(targetMobile, LOGIN_TYPE_MOBILE);
 
@@ -279,11 +280,13 @@ public class PersonServiceImpl implements IPersonService {
             userId = String.valueOf(objects[1]);
             userName = String.valueOf(objects[2]);
             headImg = String.valueOf(objects[3]);
+            pyOfUserName = conversionPinyin(userName);
             logger.debug("目标用户信息： " + userId + " | " + userName + " | " +  headImg);
 
             data.setUserId(userId);
             data.setHeadImg(headImg);
             data.setUserName(userName);
+            data.setPyOfUserName(pyOfUserName);
         } else {
             logger.debug("未查询到用户");
             return null;
@@ -326,12 +329,11 @@ public class PersonServiceImpl implements IPersonService {
     /**
      * 传入的参与人姓名/备注转化成拼音返回
      *
-     * @param inDto
+     * @param otherName
      * @return
      */
     @Override
-    public String conversionPinyin(SearchInDto inDto) {
-        String otherName = inDto.getOtherName();
+    public String conversionPinyin(String otherName) {
         return Pinyin4j.toPinYin(otherName);
     }
 

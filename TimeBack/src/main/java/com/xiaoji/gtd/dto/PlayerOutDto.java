@@ -9,6 +9,7 @@ public class PlayerOutDto extends BaseOut{
     private String userId;
     private String headImg;
     private String userName;
+    private String pyOfUserName;
     private String accountMobile;
     private boolean isAgree;     //是否同意发送
 
@@ -50,5 +51,13 @@ public class PlayerOutDto extends BaseOut{
 
     public void setAgree(boolean agree) {
         isAgree = agree;
+    }
+
+    public String getPyOfUserName() {
+        return pyOfUserName;
+    }
+
+    public void setPyOfUserName(String pyOfUserName) {
+        this.pyOfUserName = pyOfUserName;
     }
 }

@@ -68,8 +68,8 @@ public interface IPersonService {
 
     /**
      * 传入的参与人姓名/备注转化成拼音返回
-     * @param inDto
+     * @param otherName
      * @return
      */
-    String conversionPinyin(SearchInDto inDto);
+    String conversionPinyin(String otherName);
 }

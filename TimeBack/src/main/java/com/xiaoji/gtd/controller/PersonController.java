@@ -370,7 +370,7 @@ public class PersonController {
 
         //业务逻辑
         try {
-            String pyOfName = personService.conversionPinyin(inDto);
+            String pyOfName = personService.conversionPinyin(inDto.getOtherName());
             if (!pyOfName.equals("")) {
                 data.setPyOfName(pyOfName);
                 outDto.setData(data);
