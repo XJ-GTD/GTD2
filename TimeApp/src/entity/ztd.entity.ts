@@ -5,7 +5,7 @@
 //标签表
 export class ZtdEntity {
 
-  private _zt: number=null;   //字典类型
+  private _zt: string=null;   //字典类型
   private _zk: string=null; //字典健值
   private _zkv: string=null;//名称
   private _px: number=0; //排序
@@ -25,7 +25,7 @@ export class ZtdEntity {
 
   get isq(): string {
     let sql='insert into GTD_Y ' +
-      '(sN,lI,uI) values("'+ this._zk+'","'+ this._zkv+'",'+this._px+ ')';
+      '(zt,zk,zkv,px) values("'+ this._zt+'","'+ this._zk+'","'+ this._zkv+'",'+this._px+ ')';
     this._isq=sql;
     return this._isq;
   }
@@ -90,11 +90,11 @@ export class ZtdEntity {
   set drsq(value: string) {
     this._drsq = value;
   }
-  get zt(): number {
+  get zt(): string {
     return this._zt;
   }
 
-  set zt(value: number) {
+  set zt(value: string) {
     this._zt = value;
   }
 

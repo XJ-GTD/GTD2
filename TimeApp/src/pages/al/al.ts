@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Nav, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Nav } from 'ionic-angular';
 import { AppConfig } from "../../app/app.config";
 import { PageConfig } from "../../app/page.config";
 import { PermissionsService } from "../../service/util-service/permissions.service";
@@ -12,6 +12,7 @@ import { LsmService } from "../../service/lsm.service";
 import { DataConfig } from "../../app/data.config";
 import { HTTP } from "@ionic-native/http";
 import { BsRestful } from "../../service/restful/bs-restful";
+import {SyncService} from "../../service/sync.service";
 
 /**
  * Generated class for the AlPage page.
@@ -51,13 +52,12 @@ export class AlPage {
               public util: UtilService,
               private lsm:LsmService,
               private calendarService:CalendarService,
-              private http: HTTP,
               private nav:Nav,
               private bsRestful: BsRestful,
-              private events: Events,
               private permissionsService: PermissionsService,
               private configService:ConfigService,
               private webSocketService: WebsocketService,
+              private sync:SyncService,
               private _ease: RoundProgressEase) {
     this.text="正在初始化";
   }
@@ -91,18 +91,6 @@ export class AlPage {
     };
   }
 
-  /**
-   * 游客身份登录 dch
-   */
-  visitor(){
-    this.bsRestful.post(AppConfig.AUTH_VISITOR_URL, {
-      userId: this.util.getUuid(),
-      deviceId: this.util.getDeviceId(),
-    }).then(data=>{
-      console.log(data);
-    })
-  }
-
   initSystem() {
     let loading = this.loadingCtrl.create({
       enableBackdropDismiss:false,
@@ -118,17 +106,25 @@ export class AlPage {
         this.text="权限申请完成";
         console.log("权限申请完成");
         //初始化创建数据库
-
         this.text=" 初始化创建数据库开始";
         console.log("al :: 初始化创建数据库开始");
         this.increment(10);
         return this.configService.initDataBase();
-      }).then(data => {
+      })
+      .then(data => {
         console.log("al :: 初始化创建数据库结束");
+        console.log("al :: 游客登录开始");
+        this.increment(10);
+        //游客登陆
+        return this.lsm.visitor()
+      })
+      .then(data => {
+        console.log("al :: 游客登录结束，获取登录信息:"+JSON.stringify(DataConfig.uInfo));
         //初始化本地变量
         this.text=" 初始化本地变量";
         console.log("al :: 初始化本地变量开始");
-      this.increment(10);
+        this.increment(10);
+        return this.sync.initzdlb()
       })
       .then(data => {
         console.log("al :: 初始化本地变量结束");
@@ -147,16 +143,12 @@ export class AlPage {
       })
       .then(data => {
         console.log("al :: 导入用户本地日历结束");
-        this.increment(10);
-        //游客登陆
-        return this.lsm.visitor()
-      })
-      .then(data => {
-        console.log("al :: 游客登录结束，获取登录信息:"+JSON.stringify(DataConfig.uInfo));
         //初始化本地参数
         console.log("al :: 初始化本地参数开始")
         this.increment(10);
+        return this.sync.initLocalData()
       }).then(data => {
+        console.log("al :: 初始化本地参数结束")
         //连接webSocket
         console.log("al :: 开始连接webSocket");
         return this.webSocketService.connect(DataConfig.uInfo.aQ);
