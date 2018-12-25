@@ -69,6 +69,7 @@ export class DwMqService {
           this.scheduleUpdate(mqDate.res.data);
           break;
         case SkillConfig.BC_PEC: //添加参与人
+          this.relationAdd(mqDate.res.data)
           break;
       }
     } else {
@@ -234,15 +235,14 @@ export class DwMqService {
    * 业务：日程更新
    */
   private scheduleUpdate(data: WsResDataModel) {
-    let resd = data;
-    let ct=resd.sn;
-    let sd=resd.st;
-    let ed = resd.et;
-    let lbI = resd.lb;
-    let jhi = resd.ei;
-    let sI=resd.si;
+    let ct=data.sn;
+    let sd=data.st;
+    let ed = data.et;
+    let lbI = data.lb;
+    let rui = data.us;
+    let sI=data.si;
     console.log("----- DwMqService scheduleCreate(业务：日程更新) start---- ")
-    this.work.urcMq(sI,jhi,ct,sd,ed,lbI).then(data=>{
+    this.work.urcMq(sI,rui,ct,sd,ed,lbI).then(data=>{
       console.log("----- DwMqService scheduleCreate(业务：日程更新) end ---- ")
     }).catch(e=>{
       console.log("----- DwMqService scheduleCreate(业务：日程更新) Error : "+JSON.stringify(e))
@@ -258,6 +258,27 @@ export class DwMqService {
 
     }).catch(e=>{
 
+    })
+  }
+
+  /**
+   * 业务：添加联系人
+   */
+  private relationAdd(data: WsResDataModel) {
+    let aui = data.us;
+    let ran = data.un;
+    let rN = data.un;
+    let rc = data.mb;
+    let hiu = data.hi;
+    let rF = '0';
+    if(data.ia=='true'){
+      rF='1'
+    }
+    console.log("----- DwMqService relationAdd(业务：联系人添加) start---- ")
+    this.relmem.aruMq(aui,ran,rN,rc,hiu,rF).then(data=>{
+      console.log("----- DwMqService relationAdd(业务：联系人添加) end : " + JSON.stringify(data))
+    }).catch(e=>{
+      console.log("----- DwMqService relationAdd(业务：联系人添加) Error : " + JSON.stringify(e))
     })
   }
 }

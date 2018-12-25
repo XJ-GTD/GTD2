@@ -129,6 +129,55 @@ export class RelmemService {
   }
 
   /**
+   * MQ添加联系人
+   * *@param {string} auI 联系人用户ID
+   * @param {string} ran 别名
+   * @param {string} rN 名称
+   * @param {string} rc 联系电话
+   * @param {string} hiu 头像
+   * @returns {Promise<BsModel>}
+   */
+  aruMq(auI:string,ran:string,rN:string,rc:string,hiu:string,rF:string):Promise<BsModel>{
+    return new Promise((resolve, reject)=>{
+      let base=new BsModel();
+      let ru=new RuEntity();
+      ru.id=this.util.getUuid();
+      ru.ran=ran;
+      ru.rN=rN;
+      ru.rC=rc;
+      ru.rF = rF;
+      ru.rI=auI;
+      ru.hiu=hiu;
+      if(ru.rN == null || ru.rN == ''){
+        ru.rN=rc;
+      }
+      if(ru.ran == null || ru.ran == ''){
+        ru.ran=rc;
+      }
+    console.log("--------- 1.RelmemService aru() sqlite add contact start -------------");
+    this.relmemSqlite.getrus('','','',rc,'0').then(data=>{
+      if(data && data.rows && data.rows.length>0){
+        console.log("--------- 2.RelmemService aru() sqlite query contact is exsit -------------");
+        base.code=ReturnConfig.EXSIT_CODE;
+        base.message=ReturnConfig.EXSIT_MSG;
+        resolve(base);
+      }else{
+        //添加本地联系人
+        return this.relmemSqlite.aru(ru).then(data=>{
+          console.log("--------- 2.RelmemService aru() sqlite add contact end: "+JSON.stringify(data));
+        }).catch(e=>{
+          console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e));
+          base.code=ReturnConfig.ERR_CODE;
+          base.message=e.message;
+          reject(base);
+        })
+      }
+    })
+
+    })
+  }
+
+  /**
    * 更新联系人
    * @param {string} uI 当前登录人ID
    * @param {string} id 更新人UUID
