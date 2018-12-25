@@ -36,6 +36,8 @@ public class AuthServiceImpl implements IAuthService {
 
     @Value("${rabbitmq.exchange.visitors}")
     private String VISITOR_EXCHANGE_NAME;
+    @Value("${rabbitmq.exchange.system}")
+    private String SYSTEM_EXCHANGE_NAME;
     @Value("${person.signup.logintype.mobile}")
     private String LOGIN_TYPE_MOBILE;
     @Value("${person.signup.logintype.account}")
@@ -116,16 +118,17 @@ public class AuthServiceImpl implements IAuthService {
             Object[] obj = (Object[]) authRepository.authLogin(account, password);
             int count = Integer.valueOf(obj[0].toString());
             if (count != 0) {
-                userId = obj[1].toString();
-                userName = obj[2].toString();
-                headImg = obj[3].toString();
-                birthday = obj[4].toString();
-                realName = obj[5].toString();
-                idCard = obj[6].toString();
-                userSex = obj[7].toString();
+                if (obj[1] != null)userId = obj[1].toString();
+                if (obj[2] != null)userName = obj[2].toString();
+                if (obj[3] != null)headImg = obj[3].toString();
+                if (obj[4] != null)birthday = obj[4].toString();
+                if (obj[5] != null)realName = obj[5].toString();
+                if (obj[6] != null)idCard = obj[6].toString();
+                if (obj[7] != null)userSex = obj[7].toString();
 
                 queueName = BaseUtil.getQueueName(userId, deviceId);
                 BaseUtil.createQueue(rabbitTemplate, userId, deviceId, BaseUtil.getExchangeName(userId));
+                BaseUtil.bindExchange(rabbitTemplate, queueName, SYSTEM_EXCHANGE_NAME);
 
                 token = BaseUtil.getToken(userId, deviceId, AUTH_TYPE_USER);
 
@@ -182,16 +185,17 @@ public class AuthServiceImpl implements IAuthService {
             int count = Integer.valueOf(obj[0].toString());
             if (count != 0) {
 
-                userId = obj[1].toString();
-                userName = obj[2].toString();
-                headImg = obj[3].toString();
-                birthday = obj[4].toString();
-                realName = obj[5].toString();
-                idCard = obj[6].toString();
-                userSex = obj[7].toString();
+                if (obj[1] != null)userId = obj[1].toString();
+                if (obj[2] != null)userName = obj[2].toString();
+                if (obj[3] != null)headImg = obj[3].toString();
+                if (obj[4] != null)birthday = obj[4].toString();
+                if (obj[5] != null)realName = obj[5].toString();
+                if (obj[6] != null)idCard = obj[6].toString();
+                if (obj[7] != null)userSex = obj[7].toString();
 
                 queueName = BaseUtil.getQueueName(userId, deviceId);
                 BaseUtil.createQueue(rabbitTemplate, userId, deviceId, BaseUtil.getExchangeName(userId));
+                BaseUtil.bindExchange(rabbitTemplate, queueName, SYSTEM_EXCHANGE_NAME);
 
                 token = BaseUtil.getToken(userId, deviceId, AUTH_TYPE_USER);
 

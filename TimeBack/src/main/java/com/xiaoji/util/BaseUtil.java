@@ -146,4 +146,9 @@ public class BaseUtil {
     public static void createExchange(RabbitTemplate rabbitTemplate, String exchangeName, String exchangeType) throws IOException {
         rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).exchangeDeclare(exchangeName, exchangeType,true);
     }
+
+    //绑定交换机
+    public static void bindExchange(RabbitTemplate rabbitTemplate, String queueName, String exchangeName) throws IOException {
+        rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).queueBind(queueName, exchangeName, queueName);
+    }
 }
