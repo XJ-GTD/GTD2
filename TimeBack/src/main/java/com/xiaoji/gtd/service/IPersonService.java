@@ -72,4 +72,11 @@ public interface IPersonService {
      * @return
      */
     String conversionPinyin(String otherName);
+
+    /**
+     * 添加服务器数据
+     * ！！ 同步方法完成后删除！！！
+     * @return
+     */
+    int temporaryPlayer(TestPlayerInDto inDto);
 }

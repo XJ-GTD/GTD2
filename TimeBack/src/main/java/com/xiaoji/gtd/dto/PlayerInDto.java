@@ -12,10 +12,6 @@ public class PlayerInDto {
     private String targetUserId;
     private String targetMobile;
 
-    //同步方法完成后删除
-    private String id;
-    private String otherName;
-
     public String getUserId() {
         return userId;
     }
@@ -47,20 +43,5 @@ public class PlayerInDto {
     public void setTargetMobile(String targetMobile) {
         this.targetMobile = targetMobile;
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getOtherName() {
-        return otherName;
-    }
-
-    public void setOtherName(String otherName) {
-        this.otherName = otherName;
-    }
+    
 }

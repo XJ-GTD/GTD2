@@ -12,7 +12,7 @@ public class GtdPlayerEntity {
     private String pyOhterName;
     private String playerAnotherName;
     private String playerName;
-    private String pyUserName;
+    private String pyPlayerName;
     private Integer playerFlag;
     private String playerHeadimg;
     private Integer playerType;
@@ -75,13 +75,13 @@ public class GtdPlayerEntity {
     }
 
     @Basic
-    @Column(name = "PY_USER_NAME")
-    public String getPyUserName() {
-        return pyUserName;
+    @Column(name = "PY_PLAYER_NAME")
+    public String getPyPlayerName() {
+        return pyPlayerName;
     }
 
-    public void setPyUserName(String pyUserName) {
-        this.pyUserName = pyUserName;
+    public void setPyPlayerName(String pyPlayerName) {
+        this.pyPlayerName = pyPlayerName;
     }
 
     @Basic
@@ -194,7 +194,7 @@ public class GtdPlayerEntity {
                 Objects.equals(pyOhterName, that.pyOhterName) &&
                 Objects.equals(playerAnotherName, that.playerAnotherName) &&
                 Objects.equals(playerName, that.playerName) &&
-                Objects.equals(pyUserName, that.pyUserName) &&
+                Objects.equals(pyPlayerName, that.pyPlayerName) &&
                 Objects.equals(playerFlag, that.playerFlag) &&
                 Objects.equals(playerHeadimg, that.playerHeadimg) &&
                 Objects.equals(playerType, that.playerType) &&
@@ -209,6 +209,6 @@ public class GtdPlayerEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, playerId, pyOhterName, playerAnotherName, playerName, pyUserName, playerFlag, playerHeadimg, playerType, playerContact, relation, userId, createId, createDate, updateId, updateDate);
+        return Objects.hash(id, playerId, pyOhterName, playerAnotherName, playerName, pyPlayerName, playerFlag, playerHeadimg, playerType, playerContact, relation, userId, createId, createDate, updateId, updateDate);
     }
 }

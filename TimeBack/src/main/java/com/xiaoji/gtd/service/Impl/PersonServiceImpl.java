@@ -1,12 +1,12 @@
 package com.xiaoji.gtd.service.Impl;
 
 import com.xiaoji.gtd.dto.*;
-import com.xiaoji.gtd.dto.code.ResultCode;
 import com.xiaoji.gtd.dto.mq.WebSocketDataDto;
 import com.xiaoji.gtd.dto.mq.WebSocketOutDto;
 import com.xiaoji.gtd.dto.mq.WebSocketResultDto;
 import com.xiaoji.gtd.entity.GtdAccountEntity;
 import com.xiaoji.gtd.entity.GtdLoginEntity;
+import com.xiaoji.gtd.entity.GtdPlayerEntity;
 import com.xiaoji.gtd.entity.GtdUserEntity;
 import com.xiaoji.gtd.repository.*;
 import com.xiaoji.gtd.service.IPersonService;
@@ -67,6 +67,8 @@ public class PersonServiceImpl implements IPersonService {
     private GtdUserRepository userRepository;
     @Resource
     private AuthRepository authRepository;
+    @Resource
+    private GtdPlayerRepository playerRepository;
 
     private final RabbitTemplate rabbitTemplate;
     private final IWebSocketService webSocketService;
@@ -338,6 +340,46 @@ public class PersonServiceImpl implements IPersonService {
     }
 
     /**
+     * 添加服务器数据
+     * ！！ 同步方法完成后删除！！！
+     *
+     * @return
+     */
+    @Override
+    public int temporaryPlayer(TestPlayerInDto inDto) {
+        GtdPlayerEntity playerEntity = new GtdPlayerEntity();
+
+        String id = inDto.getId();
+        String userId = inDto.getUserId();
+        String otherName = inDto.getOtherName();
+        String pyOfOtherName = conversionPinyin(otherName);
+        String playerName = inDto.getPlayerName();
+        String pyOfPlayerName = conversionPinyin(playerName);
+        String accountMobile = inDto.getAccountMobile();
+        String headImg = inDto.getHeadImg();
+
+        String playId = inDto.getPlayerId();
+        int playFlag = inDto.getPlayerFlag();
+        int playType = inDto.getPlayerType();
+
+        playerEntity.setId(id);
+        playerEntity.setUserId(userId);
+        playerEntity.setPlayerAnotherName(otherName);
+        playerEntity.setPyOhterName(pyOfOtherName);
+        playerEntity.setPlayerName(playerName);
+        playerEntity.setPyPlayerName(pyOfPlayerName);
+        playerEntity.setPlayerHeadimg(headImg);
+        playerEntity.setPlayerContact(accountMobile);
+        playerEntity.setPlayerId(playId);
+        playerEntity.setPlayerFlag(playFlag);
+        playerEntity.setPlayerType(playType);
+
+        playerRepository.save(playerEntity);
+
+        return 0;
+    }
+
+    /**
      * 查询目标用户关系及类型
      * @param userId
      * @param targetUserId
@@ -398,5 +440,4 @@ public class PersonServiceImpl implements IPersonService {
         return count != 0;
     }
 
-//    private void
 }
