@@ -69,6 +69,7 @@ export class DwMqService {
           this.scheduleUpdate(mqDate.res.data);
           break;
         case SkillConfig.BC_PEC: //添加参与人
+          this.relationAdd(mqDate.res.data)
           break;
       }
     } else {
@@ -258,6 +259,27 @@ export class DwMqService {
 
     }).catch(e=>{
 
+    })
+  }
+
+  /**
+   * 业务：添加联系人
+   */
+  private relationAdd(data: WsResDataModel) {
+    let aui = data.us;
+    let ran = data.un;
+    let rN = data.un;
+    let rc = data.mb;
+    let hiu = data.hi;
+    let rF = '0';
+    if(data.ia=='true'){
+      rF='1'
+    }
+    console.log("----- DwMqService relationAdd(业务：联系人添加) start---- ")
+    this.relmem.aruMq(aui,ran,rN,rc,hiu,rF).then(data=>{
+      console.log("----- DwMqService relationAdd(业务：联系人添加) end : " + JSON.stringify(data))
+    }).catch(e=>{
+      console.log("----- DwMqService relationAdd(业务：联系人添加) Error : " + JSON.stringify(e))
     })
   }
 }
