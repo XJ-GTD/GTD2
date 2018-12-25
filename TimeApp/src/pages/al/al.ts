@@ -10,7 +10,6 @@ import { WebsocketService } from "../../service/util-service/websocket.service";
 import { RoundProgressEase } from 'angular-svg-round-progressbar';
 import { LsmService } from "../../service/lsm.service";
 import { DataConfig } from "../../app/data.config";
-import { HTTP } from "@ionic-native/http";
 import { BsRestful } from "../../service/restful/bs-restful";
 
 /**
@@ -51,7 +50,6 @@ export class AlPage {
               public util: UtilService,
               private lsm:LsmService,
               private calendarService:CalendarService,
-              private http: HTTP,
               private nav:Nav,
               private bsRestful: BsRestful,
               private events: Events,

@@ -44,7 +44,6 @@ import {AndroidPermissions} from '@ionic-native/android-permissions';
 import {ConfigService} from "../service/config.service";
 import {ErrorCodeService} from "../service/util-service/error-code.service";
 import {HdSpeechService} from "../service/util-service/hd-speech.service";
-import { HTTP } from '@ionic-native/http';
 import {JhSqlite} from "../service/sqlite/jh-sqlite";
 import {LbSqlite} from "../service/sqlite/lb-sqlite";
 import {RelmemSqlite} from "../service/sqlite/relmem-sqlite";
@@ -57,6 +56,7 @@ import {PnRestful} from "../service/restful/pn-restful";
 import {RcRestful} from "../service/restful/rc-restful";
 import {SyncRestful} from "../service/restful/sync-restful";
 import {SyncService} from "../service/sync.service";
+import { HTTP } from "@ionic-native/http";
 @NgModule({
   declarations: [
     MyApp,

@@ -5,7 +5,6 @@ import {UModel} from "../model/u.model";
 import {BaseSqlite} from "./sqlite/base-sqlite";
 import {BsModel} from "../model/out/bs.model";
 import {PnRestful} from "./restful/pn-restful";
-import { HTTP } from '@ionic-native/http';
 
 /**
  * 用户sevice
@@ -15,7 +14,6 @@ import { HTTP } from '@ionic-native/http';
 @Injectable()
 export class UserService {
   constructor( private baseSqlite: BaseSqlite,
-               private http: HTTP,
                private userSqlite:UserSqlite,
                private pnRestful:PnRestful) {
   }

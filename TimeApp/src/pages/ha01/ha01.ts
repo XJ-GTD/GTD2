@@ -9,7 +9,6 @@ import {UEntity} from "../../entity/u.entity";
 import {WorkService} from "../../service/work.service";
 import {UserService} from "../../service/user.service";
 import {DataConfig} from "../../app/data.config";
-import {HTTP} from "@ionic-native/http";
 
 /**
  * Generated class for the Ha01Page page.
@@ -34,7 +33,6 @@ export class Ha01Page {
               public navParams: NavParams,
               private paramsService: ParamsService,
               private calendarService:CalendarService,
-              private http: HTTP,
               private util:UtilService,
               private rnd: Renderer2,
               private userSqlite:UserService,

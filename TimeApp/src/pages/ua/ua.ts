@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { ParamsService } from "../../service/util-service/params.service";
 import { UtilService} from "../../service/util-service/util.service";
 import {LsmService} from "../../service/lsm.service";
-import {HTTP} from "@ionic-native/http";
 
 
 /**
@@ -45,7 +44,6 @@ export class UaPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private formBuilder: FormBuilder,
-              private http: HTTP,
               private loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
               private paramsService: ParamsService,

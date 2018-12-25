@@ -25,7 +25,6 @@ import { HbPage } from "../hb/hb";
 import { DataConfig } from "../../app/data.config";
 import { PageConfig } from "../../app/page.config";
 import {AppConfig} from "../../app/app.config";
-import {HTTP} from "@ionic-native/http";
 
 /**
  * Generated class for the HaPage page.
@@ -80,7 +79,6 @@ export class HaPage {
   constructor(public navCtr: NavController,  public navParams: NavParams,
               public modalCtr: ModalController,
               private webSocketService: WebsocketService,
-              private http: HTTP,
               private paramsService: ParamsService,
               private alarmClock: XiaojiAlarmclockService,
               private userSqlite:UserService,

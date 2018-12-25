@@ -8,7 +8,6 @@ import {RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
 import {WorkService} from "../../service/work.service";
 import {LbModel} from "../../model/lb.model";
-import {HTTP} from "@ionic-native/http";
 
 /**
  * Generated class for the SbPage page.
@@ -61,7 +60,6 @@ export class SbPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private http: HTTP,
               public loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
               private paramsService: ParamsService,

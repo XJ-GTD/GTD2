@@ -10,7 +10,15 @@ import java.util.List;
 public class SearchOutDto extends BaseOut {
 
     private String pyOfName;
+    private List<PlayerDataDto> players;
 
+    public List<PlayerDataDto> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<PlayerDataDto> players) {
+        this.players = players;
+    }
 
     public String getPyOfName() {
         return pyOfName;

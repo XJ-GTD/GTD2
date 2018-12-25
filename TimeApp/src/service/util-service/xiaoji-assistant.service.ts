@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { AppConfig } from "../../app/app.config";
-import { HTTP } from '@ionic-native/http';
 import { File } from "@ionic-native/file";
 
 import { DataConfig } from "../../app/data.config";
@@ -23,8 +22,7 @@ export class XiaojiAssistantService{
   public islistenAudioing:boolean;
   public isWakeUp:boolean;
 
-  constructor(private http: HTTP,
-              private file: File,
+  constructor(private file: File,
               private util: UtilService,
               private bsRestful: BsRestful) {
     this.isSpeaking = false;

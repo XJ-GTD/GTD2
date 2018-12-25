@@ -3,22 +3,16 @@ import { AppConfig } from "../../app/app.config";
 import { DataConfig } from "../../app/data.config";
 import { HTTP } from "@ionic-native/http";
 
-
 /**
  * 基础resful请求
  */
 @Injectable()
 export class BsRestful {
 
-  constructor(private http: HTTP){
+  constructor(public http: HTTP){
     this.http.setDataSerializer("json");
-    this.http.setSSLCertMode("nocheck").then(data=>{
-      console.log("----------- BsRestful setSSLCertMode Success ------------ ")
-      console.log("----------- BsRestful setSSLCertMode data ----- :" +  JSON.stringify(data))
-    }).catch(err=>{
-      console.error("----------- BsRestful setSSLCertMode Error ------------ ")
-      console.error("----------- BsRestful setSSLCertMode Error data: " + JSON.stringify(err))
-    })
+    console.log("nocheck===================================================================");
+
   }
 
   // public setHttpHeader(key:value){
@@ -36,6 +30,13 @@ export class BsRestful {
       }else{
         console.error(url + "请求头Token未取到");
       }
+      this.http.setSSLCertMode("nocheck").then(data=>{
+        console.log("----------- BsRestful setSSLCertMode Success ------------ ");
+        console.log("----------- BsRestful setSSLCertMode data ----- :" +  JSON.stringify(data))
+      }).catch(err=>{
+        console.error("----------- BsRestful setSSLCertMode Error ------------ ");
+        console.error("----------- BsRestful setSSLCertMode Error data: " + JSON.stringify(err))
+      });
       this.http.post(url,body,{ "Authorization": DataConfig.uInfo.uT }).then(data=>{
        // data.data = JSON.parse(data.data)
         resolve(JSON.parse(data.data));
