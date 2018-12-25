@@ -2,9 +2,7 @@
  * create by on 2018/11/19
  */
 
-import {RuEntity} from "../../entity/ru.entity";
-import {AppConfig} from "../../app/app.config";
-import {DataConfig} from "../../app/data.config";
+import {ReturnConfig} from "../../app/return.config";
 
 //用户类
 export class BsModel {
@@ -12,8 +10,8 @@ export class BsModel {
   /**
    * 数量
    */
-  private _code:number = DataConfig.SUCCESS_CODE; //code
-  private _message: string = DataConfig.SUCCESS_MESSAGE; //消息
+  private _code:number = ReturnConfig.SUCCESS_CODE; //code
+  private _message: string = ReturnConfig.SUCCESS_MESSAGE; //消息
   private _data:any = null;
 
 
