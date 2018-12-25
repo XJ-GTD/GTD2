@@ -80,27 +80,34 @@ export class RelmemService {
       }
       if(rel=='0'){
         console.log("--------- 1.RelmemService aru() sqlite add contact start -------------");
-        //添加本地联系人
-        this.relmemSqlite.aru(ru).then(data=>{
-          console.log("--------- 2.RelmemService aru() sqlite add contact end: "+JSON.stringify(data));
-
-         if(auI != null && auI !=''){
-           console.log("--------- 3.RelmemService aru() restful add contact start ----------");
-           return this.pnRes.au(uI,rc,auI);
-         }
-        }).then(data=>{
-          if(data && data.code && data.code != null){
-            console.log("--------- 4.RelmemService aru() restful add contact end: "+JSON.stringify(data));
-            base = data;
+        this.relmemSqlite.getrus('','','',rc,'0').then(data=>{
+          if(data && data.rows && data.rows.length>0){
+            console.log("--------- 2.RelmemService aru() sqlite query contact is exsit -------------");
+            base.code=ReturnConfig.EXSIT_CODE;
+            base.message=ReturnConfig.EXSIT_MSG;
+            resolve(base);
+          }else{
+            //添加本地联系人
+            return this.relmemSqlite.aru(ru).then(data=>{
+              console.log("--------- 2.RelmemService aru() sqlite add contact end: "+JSON.stringify(data));
+              if(auI != null && auI !=''){
+                console.log("--------- 3.RelmemService aru() restful add contact start ----------");
+                return this.pnRes.au(uI,rc,auI);
+              }
+            }).then(data=>{
+              if(data && data.code && data.code != null){
+                console.log("--------- 4.RelmemService aru() restful add contact end: "+JSON.stringify(data));
+                base = data;
+              }
+              resolve(base);
+            }).catch(e=>{
+              console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e));
+              base.code=ReturnConfig.ERR_CODE;
+              base.message=e.message;
+              reject(base);
+            })
           }
-          resolve(base);
-        }).catch(e=>{
-          console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e));
-          base.code=ReturnConfig.ERR_CODE;
-          base.message=e.message;
-          reject(base);
         })
-
       }else{
         //如果是群
         this.relmemSqlite.aru(ru).then(data=>{
