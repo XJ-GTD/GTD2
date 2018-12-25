@@ -1,6 +1,5 @@
 package com.xiaoji.gtd.service.Impl;
 
-import com.xiaoji.config.rabbitmq.RabbitProducerConfig;
 import com.xiaoji.gtd.dto.LoginInDto;
 import com.xiaoji.gtd.dto.LoginOutDto;
 import com.xiaoji.gtd.entity.GtdLoginRecordEntity;
@@ -12,7 +11,6 @@ import com.xiaoji.util.BaseUtil;
 import com.xiaoji.util.TimerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,7 +74,7 @@ public class AuthServiceImpl implements IAuthService {
 
             token = BaseUtil.getToken(userId, deviceId, AUTH_TYPE_VISITOR);
             accountQueue = BaseUtil.getQueueName(inDto.getUserId(), inDto.getDeviceId());
-            BaseUtil.bindExchange(rabbitTemplate, accountQueue, SYSTEM_EXCHANGE_NAME);
+            BaseUtil.visitorCreateQueue(rabbitTemplate, accountQueue, SYSTEM_EXCHANGE_NAME);
 
             data = new LoginOutDto();
             data.setAccountQueue(accountQueue);

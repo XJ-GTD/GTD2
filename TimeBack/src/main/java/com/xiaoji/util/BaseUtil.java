@@ -119,6 +119,14 @@ public class BaseUtil {
         return "gtd" + accountMobile;
     }
 
+    //游客用：动态创建queue
+    public static void visitorCreateQueue(RabbitTemplate rabbitTemplate, String queueName, String exchangeName) throws IOException {
+        //创建队列
+        rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).queueDeclare(queueName, true, false, false, null);
+        //绑定队列到对应的交换机
+        rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).queueBind(queueName, exchangeName, queueName);
+    }
+
     //动态创建queue
     public static void createQueue(RabbitTemplate rabbitTemplate, String userId, String deviceId, String exchangeName) throws IOException {
         String queueName = getQueueName(userId, deviceId);
