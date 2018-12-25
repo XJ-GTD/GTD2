@@ -11,6 +11,10 @@ import {ReturnConfig} from "../../app/return.config";
 export class BsRestful {
 
   constructor(public http: HTTP){
+
+  }
+
+  init() {
     this.http.setDataSerializer("json");
     console.log("nocheck===================================================================");
     this.http.setSSLCertMode("nocheck").then(data=>{
@@ -21,7 +25,6 @@ export class BsRestful {
       console.error("----------- BsRestful setSSLCertMode Error data: " + JSON.stringify(err))
     });
   }
-
   // public setHttpHeader(key:value){
   //   // this.http.setHeader()
   // }

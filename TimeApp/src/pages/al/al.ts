@@ -108,10 +108,13 @@ export class AlPage {
         this.text=" 初始化创建数据库开始";
         console.log("al :: 初始化创建数据库开始");
         this.increment(10);
+        console.log("al :: 初始化https协议开始");
+        this.bsRestful.init();
         return this.configService.initDataBase();
       })
       .then(data => {
         console.log("al :: 初始化创建数据库结束");
+        console.log("al :: 初始化https协议结束");
         console.log("al :: 游客登录开始");
         this.increment(10);
         //游客登陆

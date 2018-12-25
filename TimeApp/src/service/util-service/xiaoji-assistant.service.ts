@@ -16,8 +16,6 @@ declare var cordova: any;
 export class XiaojiAssistantService{
 
   private fileContent: any;
-  private filePath: string;
-
   public isSpeaking:boolean;
   public islistenAudioing:boolean;
   public isWakeUp:boolean;
@@ -44,7 +42,7 @@ export class XiaojiAssistantService{
         //this.filePath = this.file.cacheDirectory + "iat.pcm";
 
        //this.filePath = this.file.externalRootDirectory + "/xjASR/iat.pcm";
-        console.log("文件路径：" + this.filePath);
+        console.log("文件路径：" + this.file.cacheDirectory);
 
         // 读取录音进行base64转码
         this.file.readAsDataURL(this.file.cacheDirectory,"iat.pcm").then((base64File: string) => {
@@ -175,6 +173,14 @@ export class XiaojiAssistantService{
     } catch (e) {
       console.log("问题："+ e)
     }
+  }
+
+  /**
+   * 停止监听
+   */
+  public stopListenAudio() {
+    console.log("停止监听");
+    cordova.plugins.XjBaiduSpeech.stopListen();
   }
 
   /**
