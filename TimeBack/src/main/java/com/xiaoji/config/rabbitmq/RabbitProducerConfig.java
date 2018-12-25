@@ -13,14 +13,8 @@ import org.springframework.context.annotation.Bean;
 @SpringBootConfiguration
 public class RabbitProducerConfig {
 
-    @Value("${rabbitmq.exchange.visitors}")
-    private String visitorExchange;
-
     @Value("${rabbitmq.exchange.system}")
     private String systemExchange;
-
-
-    final static String queueName = "GTD";
 
     /**
      * ===============以下是验证topic Exchange的队列==========
@@ -61,11 +55,6 @@ public class RabbitProducerConfig {
     @Bean
     FanoutExchange fanoutExchange() {
         return new FanoutExchange("fanoutExchange");
-    }
-
-    @Bean
-    FanoutExchange visitorExchange() {
-        return new FanoutExchange(visitorExchange);
     }
 
     @Bean

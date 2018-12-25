@@ -1,8 +1,5 @@
 package com.xiaoji.util;
 
-import com.xiaoji.gtd.dto.code.ResultCode;
-import com.xiaoji.gtd.repository.GtdTokenRepository;
-import net.minidev.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -120,14 +117,6 @@ public class BaseUtil {
     //账户名命名规则
     public static String getAccountName(String accountMobile) {
         return "gtd" + accountMobile;
-    }
-
-    //游客用：动态创建queue
-    public static void visitorCreateQueue(RabbitTemplate rabbitTemplate, String queueName, String exchangeName) throws IOException {
-        //创建队列
-        rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).queueDeclare(queueName, true, false, false, null);
-        //绑定队列到对应的交换机
-        rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).queueBind(queueName, exchangeName, queueName);
     }
 
     //动态创建queue

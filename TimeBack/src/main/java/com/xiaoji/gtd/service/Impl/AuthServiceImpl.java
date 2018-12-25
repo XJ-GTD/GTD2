@@ -34,8 +34,6 @@ public class AuthServiceImpl implements IAuthService {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
-    @Value("${rabbitmq.exchange.visitors}")
-    private String VISITOR_EXCHANGE_NAME;
     @Value("${rabbitmq.exchange.system}")
     private String SYSTEM_EXCHANGE_NAME;
     @Value("${person.signup.logintype.mobile}")
@@ -78,7 +76,7 @@ public class AuthServiceImpl implements IAuthService {
 
             token = BaseUtil.getToken(userId, deviceId, AUTH_TYPE_VISITOR);
             accountQueue = BaseUtil.getQueueName(inDto.getUserId(), inDto.getDeviceId());
-            BaseUtil.visitorCreateQueue(rabbitTemplate, accountQueue, VISITOR_EXCHANGE_NAME);
+            BaseUtil.bindExchange(rabbitTemplate, accountQueue, SYSTEM_EXCHANGE_NAME);
 
             data = new LoginOutDto();
             data.setAccountQueue(accountQueue);
