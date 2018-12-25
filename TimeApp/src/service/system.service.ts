@@ -36,17 +36,17 @@ export class SystemService {
           }
           s.sts=sts;
           s.code=0;
-          s.message="成功"
+          s.message="成功";
           resolve(s);
         }else{
           s.code=2;
-          s.message="暂无信息"
+          s.message="暂无信息";
           resolve(s);
         }
       })
     .catch(e=>{
         s.code=1;
-        s.message="系统错误"
+        s.message="系统错误";
         resolve(s);
       })
     });
@@ -71,12 +71,12 @@ export class SystemService {
 
       this.systemSqlite.addSt(s).then(data=>{
         base.code=0;
-        base.message="success"
-        resolve(base)
+        base.message="success";
+        resolve(base);
       }).catch(e=>{
         base.code=1;
         base.message=e.message;
-        reject(base)
+        reject(base);
       })
     })
   }
@@ -101,12 +101,12 @@ export class SystemService {
 
       this.systemSqlite.updateSt(s).then(data=>{
         base.code=0;
-        base.message="success"
+        base.message="success";
         resolve(base)
       }).catch(e=>{
         base.code=1;
         base.message=e.message;
-        reject(base)
+        reject(base);
       })
     })
   }
@@ -131,12 +131,12 @@ export class SystemService {
 
       this.systemSqlite.delSt(s).then(data=>{
         base.code=0;
-        base.message="success"
+        base.message="success";
         resolve(base)
       }).catch(e=>{
         base.code=1;
         base.message=e.message;
-        reject(base)
+        reject(base);
       })
     })
   }

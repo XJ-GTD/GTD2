@@ -8,7 +8,8 @@ import { RuModel } from "../model/ru.model";
 import { BaseSqlite } from "./sqlite/base-sqlite";
 import { UtilService } from "./util-service/util.service";
 import { PnRestful } from "./restful/pn-restful";
-import { DataConfig } from "../app/data.config";
+import {DataConfig} from "../app/data.config";
+import {ReturnConfig} from "../app/return.config";
 
 
 /**
@@ -28,7 +29,7 @@ export class RelmemService {
   su(am:string):Promise<RuModel>{
     return new Promise((resolve, reject) =>{
       let rs = new RuModel();
-      console.log("------------ RelmemService su() start user ---------------")
+      console.log("------------ RelmemService su() start user ---------------");
       this.pnRes.su(am).then(data=>{
         rs=data;
         if(data && data.code==0){
@@ -37,13 +38,13 @@ export class RelmemService {
           rs.rN=data.data.userName;
         }
         console.log("------------ RelmemService su() user end : "+JSON.stringify(data));
-        resolve(rs)
+        resolve(rs);
       }).catch(e=>{
-        alert("user su() Error: " + JSON.stringify(e))
-        console.error("RelmemService su() Error: " + JSON.stringify(e))
+        alert("user su() Error: " + JSON.stringify(e));
+        console.error("RelmemService su() Error: " + JSON.stringify(e));
         rs.code = 1;
         rs.message=e.message;
-        reject(rs)
+        reject(rs);
       })
     })
   }
@@ -78,28 +79,35 @@ export class RelmemService {
         ru.ran=rc;
       }
       if(rel=='0'){
-        console.log("--------- 1.RelmemService aru() sqlite add contact start -------------")
-        //添加本地联系人
-        this.relmemSqlite.aru(ru).then(data=>{
-          console.log("--------- 2.RelmemService aru() sqlite add contact end: "+JSON.stringify(data))
-
-         if(auI != null && auI !=''){
-           console.log("--------- 3.RelmemService aru() restful add contact start ----------")
-           return this.pnRes.au(uI,rc,auI)
-         }
-        }).then(data=>{
-          if(data && data.code && data.code != null){
-            console.log("--------- 4.RelmemService aru() restful add contact end: "+JSON.stringify(data))
-            base = data;
+        console.log("--------- 1.RelmemService aru() sqlite add contact start -------------");
+        this.relmemSqlite.getrus('','','',rc,'0').then(data=>{
+          if(data && data.rows && data.rows.length>0){
+            console.log("--------- 2.RelmemService aru() sqlite query contact is exsit -------------");
+            base.code=ReturnConfig.EXSIT_CODE;
+            base.message=ReturnConfig.EXSIT_MSG;
+            resolve(base);
+          }else{
+            //添加本地联系人
+            return this.relmemSqlite.aru(ru).then(data=>{
+              console.log("--------- 2.RelmemService aru() sqlite add contact end: "+JSON.stringify(data));
+              if(auI != null && auI !=''){
+                console.log("--------- 3.RelmemService aru() restful add contact start ----------");
+                return this.pnRes.au(uI,rc,auI);
+              }
+            }).then(data=>{
+              if(data && data.code && data.code != null){
+                console.log("--------- 4.RelmemService aru() restful add contact end: "+JSON.stringify(data));
+                base = data;
+              }
+              resolve(base);
+            }).catch(e=>{
+              console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e));
+              base.code=ReturnConfig.ERR_CODE;
+              base.message=e.message;
+              reject(base);
+            })
           }
-          resolve(base)
-        }).catch(e=>{
-          console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e))
-          base.code=DataConfig.ERR_CODE;
-          base.message=e.message;
-          reject(base);
         })
-
       }else{
         //如果是群
         this.relmemSqlite.aru(ru).then(data=>{
@@ -107,11 +115,11 @@ export class RelmemService {
             // for(let i=0;i<qrL.length;i++){
             //   this.addRgu(ru.id,qrL[i].id)
             // }
-            this.addRgus(ru.id,qrL)
+            this.addRgus(ru.id,qrL);
           }
           resolve(base);
         }).catch(e=>{
-          base.code=DataConfig.ERR_CODE;
+          base.code=ReturnConfig.ERR_CODE;
           base.message=e.message;
           reject(base);
         })
@@ -146,12 +154,12 @@ export class RelmemService {
         //如果是群
         if(rel=='1' && qrL != null && qrL.length>0){
           for(let i=0;i<qrL.length;i++){
-            this.addRgu(ru.id,qrL[i].id)
+            this.addRgu(ru.id,qrL[i].id);
           }
         }
         resolve(base);
       }).catch(e=>{
-        base.code=DataConfig.ERR_CODE;
+        base.code=ReturnConfig.ERR_CODE;
         base.message=e.message;
         reject(base);
       })
@@ -179,7 +187,7 @@ export class RelmemService {
         ruo.us=rus;
         resolve(ruo);
       }).catch(e=>{
-        ruo.code=DataConfig.ERR_CODE;
+        ruo.code=ReturnConfig.ERR_CODE;
         ruo.message=e.message;
         reject(ruo);
       })
@@ -202,7 +210,7 @@ export class RelmemService {
       this.relmemSqlite.addRgu(rgu).then(data=>{
         resolve(base);
       }).catch(e=>{
-          base.code=DataConfig.ERR_CODE;
+          base.code=ReturnConfig.ERR_CODE;
           base.message=e.message;
           reject(base);
         })
@@ -218,26 +226,26 @@ export class RelmemService {
     return new Promise((resolve, reject)=>{
       let bs = new BsModel();
       if(rus && rus.length>0){
-        if(this.baseSqlite.isMobile()){
+        if(DataConfig.IS_MOBILE){
           let sql = '';
           for(let i=0;i<rus.length;i++){
             sql+='insert into GTD_B_X (bi,bmi) ' + 'values("'+ id+'","'+ rus[i].id+'");'
           }
-          console.log("--------- RelmemService addRgus() add Group personnel sql: "+sql)
+          console.log("--------- RelmemService addRgus() add Group personnel sql: "+sql);
           this.baseSqlite.importSqlToDb(sql).then(data=>{
-            console.log("--------- RelmemService addRgus() restful add Group personnel End: "+JSON.stringify(data))
-            resolve(bs)
+            console.log("--------- RelmemService addRgus() restful add Group personnel End: "+JSON.stringify(data));
+            resolve(bs);
           }).catch(e=>{
-            console.log("--------- RelmemService addRgus() restful add Group personnel Error: "+JSON.stringify(e))
-            bs.code=DataConfig.ERR_CODE
+            console.log("--------- RelmemService addRgus() restful add Group personnel Error: "+JSON.stringify(e));
+            bs.code=ReturnConfig.ERR_CODE;
             bs.message=e.message;
-            reject(bs)
+            reject(bs);
           })
         }else{
           for(let i=0;i<rus.length;i++){
-            this.addRgu(id,rus[i].id)
+            this.addRgu(id,rus[i].id);
           }
-          resolve(bs)
+          resolve(bs);
         }
       }else{
 
@@ -263,8 +271,8 @@ export class RelmemService {
         ruo.us=rus;
         resolve(ruo);
       }).catch(e=>{
-        ruo.code=DataConfig.ERR_CODE;
-        ruo.message=DataConfig.ERR_MESSAGE;
+        ruo.code=ReturnConfig.ERR_CODE;
+        ruo.message=ReturnConfig.ERR_MESSAGE;
         reject(ruo);
       })
     });

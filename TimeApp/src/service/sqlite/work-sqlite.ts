@@ -32,7 +32,7 @@ export class WorkSqlite{
     let sqlStr = "";
     let isTrue = false;
     if(rus != null && rus.length>0){
-      if(this.baseSqlite.isMobile()){
+      if(DataConfig.IS_MOBILE){
         let sql = "";
 
         for(let i=0;i<rus.length;i++){
