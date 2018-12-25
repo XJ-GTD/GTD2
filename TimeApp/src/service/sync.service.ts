@@ -101,7 +101,7 @@ export class SyncService {
         if(data && data.rows&&data.rows.length>0){
           let res = data.rows;
             for(let i=0;i<res.length;i++){
-              ReturnConfig.RETURN_MSG.set(res.item(i).lai,res.item(i).lan)
+              ReturnConfig.RETURN_MSG.set(res.item(i).zk,res.item(i).zkv)
             }
           console.log("-------SyncService initLocalData ReturnConfig.RETURN_MSG 数据结果："+JSON.stringify(ReturnConfig.RETURN_MSG))
         }
