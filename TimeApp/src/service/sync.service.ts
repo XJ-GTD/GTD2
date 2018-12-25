@@ -97,12 +97,13 @@ export class SyncService {
     return new Promise((resolve, reject) =>{
       let base = new BsModel();
       this.ztd.getZtd('400').then(data=>{
-        console.error("-------SyncService initLocalData sqlite 初始本地静态数据结果："+JSON.stringify(data))
+        console.log("-------SyncService initLocalData sqlite 初始本地静态数据结果："+JSON.stringify(data))
         if(data && data.rows&&data.rows.length>0){
           let res = data.rows;
             for(let i=0;i<res.length;i++){
               ReturnConfig.RETURN_MSG.set(res.item(i).lai,res.item(i).lan)
             }
+          console.log("-------SyncService initLocalData ReturnConfig.RETURN_MSG 数据结果："+JSON.stringify(ReturnConfig.RETURN_MSG))
         }
         resolve(base)
       }).catch(e=>{
