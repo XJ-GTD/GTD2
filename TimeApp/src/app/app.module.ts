@@ -57,6 +57,7 @@ import {PnRestful} from "../service/restful/pn-restful";
 import {RcRestful} from "../service/restful/rc-restful";
 import {SyncRestful} from "../service/restful/sync-restful";
 import {SyncService} from "../service/sync.service";
+import {ZtdSqlite} from "../service/sqlite/ztd-sqlite";
 @NgModule({
   declarations: [
     MyApp,
@@ -103,6 +104,7 @@ import {SyncService} from "../service/sync.service";
     SystemSqlite,
     UserSqlite,
     WorkSqlite,
+    ZtdSqlite,
     AuRestful,
     BsRestful,
     DxRestful,
