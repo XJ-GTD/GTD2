@@ -1,6 +1,7 @@
 package com.xiaoji.gtd.service.Impl;
 
 import com.xiaoji.gtd.dto.*;
+import com.xiaoji.gtd.dto.code.ResultCode;
 import com.xiaoji.gtd.dto.mq.WebSocketDataDto;
 import com.xiaoji.gtd.dto.mq.WebSocketOutDto;
 import com.xiaoji.gtd.dto.mq.WebSocketResultDto;
@@ -232,7 +233,10 @@ public class PersonServiceImpl implements IPersonService {
                     socketData.setUn(userName);
                     socketData.setHi(headImg);
                     socketData.setMb(mobile);
+                    socketData.setIa(true);
 
+                    pushDto.setVs(VERSION);
+                    pushDto.setSs(ResultCode.SUCCESS);
                     pushDto.setRes(new WebSocketResultDto(socketData));
                     webSocketService.pushTopicMessage(targetUserId, pushDto);
                     logger.debug("[成功推送邀请]:方式 === rabbitmq | targetUserId:" + targetUserId);

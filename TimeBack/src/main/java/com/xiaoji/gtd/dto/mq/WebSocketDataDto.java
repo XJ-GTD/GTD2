@@ -19,13 +19,13 @@ public class WebSocketDataDto {
     private String si;      //scheduleId;
     private String ei;       //executeId
     private String pli;     //playerId;
-    private int sa;       //scheduleAuth
+    private Integer sa;     //scheduleAuth
 
     private String us;      //userId
     private String un;      //userName
     private String hi;      //headImg
     private String mb;      //mobile
-    private String ia;      //isAgree
+    private boolean ia;      //isAgree
 
     public String getSn() {
         return sn;
@@ -107,11 +107,11 @@ public class WebSocketDataDto {
         this.hi = hi;
     }
 
-    public String getIa() {
+    public boolean getIa() {
         return ia;
     }
 
-    public void setIa(String ia) {
+    public void setIa(boolean ia) {
         this.ia = ia;
     }
 
@@ -139,11 +139,11 @@ public class WebSocketDataDto {
         this.ei = ei;
     }
 
-    public int getSa() {
+    public Integer getSa() {
         return sa;
     }
 
-    public void setSa(int sa) {
+    public void setSa(Integer sa) {
         this.sa = sa;
     }
 
