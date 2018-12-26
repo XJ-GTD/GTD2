@@ -5,6 +5,7 @@ import com.xiaoji.gtd.dto.code.ResultCode;
 import com.xiaoji.gtd.dto.mq.WebSocketDataDto;
 import com.xiaoji.gtd.dto.mq.WebSocketOutDto;
 import com.xiaoji.gtd.dto.mq.WebSocketResultDto;
+import com.xiaoji.gtd.dto.mq.WebSocketSkillEnum;
 import com.xiaoji.gtd.entity.GtdAccountEntity;
 import com.xiaoji.gtd.entity.GtdLoginEntity;
 import com.xiaoji.gtd.entity.GtdPlayerEntity;
@@ -235,6 +236,7 @@ public class PersonServiceImpl implements IPersonService {
                     socketData.setMb(mobile);
                     socketData.setIa(true);
 
+                    pushDto.setSk(WebSocketSkillEnum.getIntentCode("player_create"));
                     pushDto.setVs(VERSION);
                     pushDto.setSs(ResultCode.SUCCESS);
                     pushDto.setRes(new WebSocketResultDto(socketData));
