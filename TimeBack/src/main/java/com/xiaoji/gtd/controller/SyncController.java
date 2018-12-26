@@ -125,16 +125,6 @@ public class SyncController {
             logger.debug("[上传数据失败]");
             return outDto;
         }
-        if(inDto.getHeadImg() == null || "".equals(inDto.getHeadImg())){
-            outDto.setCode(ResultCode.FAIL_BUSIC);
-            logger.debug("[上传数据失败]");
-            return outDto;
-        }
-        if(inDto.getOtherName() == null || "".equals(inDto.getOtherName())){
-            outDto.setCode(ResultCode.FAIL_BUSIC);
-            logger.debug("[上传数据失败]");
-            return outDto;
-        }
         if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
             outDto.setCode(ResultCode.FAIL_BUSIC);
             logger.debug("[上传数据失败]");
