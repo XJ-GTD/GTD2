@@ -3,6 +3,7 @@ package com.xiaoji.gtd.service.Impl;
 import com.xiaoji.config.exception.ServiceException;
 import com.xiaoji.gtd.dto.sync.SyncDataDto;
 import com.xiaoji.gtd.dto.sync.SyncDataList;
+import com.xiaoji.gtd.dto.sync.SyncInDto;
 import com.xiaoji.gtd.dto.sync.SyncOutDto;
 import com.xiaoji.gtd.entity.GtdDictionaryDataEntity;
 import com.xiaoji.gtd.entity.GtdDictionaryEntity;
@@ -128,5 +129,27 @@ public class SyncServiceImpl implements ISyncService {
 
         out.setSyncDataList(syncDataList);
         return out;
+    }
+
+    /**
+     * 登陆同步
+     *
+     * @param inDto
+     * @return
+     */
+    @Override
+    public SyncOutDto loginSync(SyncInDto inDto) {
+        return null;
+    }
+
+    /**
+     * 定时同步
+     *
+     * @param inDto
+     * @return
+     */
+    @Override
+    public SyncOutDto timingSync(SyncInDto inDto) {
+        return null;
     }
 }

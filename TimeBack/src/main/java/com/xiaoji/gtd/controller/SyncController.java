@@ -5,6 +5,7 @@ import com.xiaoji.gtd.dto.BaseInDto;
 import com.xiaoji.gtd.dto.Out;
 import com.xiaoji.gtd.dto.TestPlayerInDto;
 import com.xiaoji.gtd.dto.code.ResultCode;
+import com.xiaoji.gtd.dto.sync.SyncInDto;
 import com.xiaoji.gtd.dto.sync.SyncOutDto;
 import com.xiaoji.gtd.service.IPersonService;
 import com.xiaoji.gtd.service.ISyncService;
@@ -41,7 +42,7 @@ public class SyncController {
     @RequestMapping(value = "/initial_sync", method = RequestMethod.POST)
     @ResponseBody
     @AuthCheck
-    public Out initialSync(@RequestBody BaseInDto inDto) {
+    public Out initialSync(@RequestBody SyncInDto inDto) {
         Out outDto = new Out();
         SyncOutDto data;
 
@@ -72,7 +73,7 @@ public class SyncController {
     @RequestMapping(value = "/login_sync", method = RequestMethod.POST)
     @ResponseBody
     @AuthCheck
-    public Out loginSync(@RequestBody BaseInDto inDto) {
+    public Out loginSync(@RequestBody SyncInDto inDto) {
         Out outDto = new Out();
 
         return outDto;

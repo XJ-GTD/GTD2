@@ -1,5 +1,6 @@
 package com.xiaoji.gtd.service;
 
+import com.xiaoji.gtd.dto.sync.SyncInDto;
 import com.xiaoji.gtd.dto.sync.SyncOutDto;
 
 /**
@@ -14,4 +15,18 @@ public interface ISyncService {
      * @return
      */
     SyncOutDto initialSync();
+
+    /**
+     * 登陆同步
+     * @param inDto
+     * @return
+     */
+    SyncOutDto loginSync(SyncInDto inDto);
+
+    /**
+     * 定时同步
+     * @param inDto
+     * @return
+     */
+    SyncOutDto timingSync(SyncInDto inDto);
 }
