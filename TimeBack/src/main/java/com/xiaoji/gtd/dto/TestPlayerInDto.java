@@ -5,17 +5,17 @@ package com.xiaoji.gtd.dto;
  */
 public class TestPlayerInDto {
 
-    private String id;
-    private String userId;
-    private String otherName;
+    private String id;              //参与人表主键
+    private String userId;          //用户id
+    private String otherName;       //备注
 
-    private String accountMobile;
-    private String playerId;
-    private String playerName;
-    private String headImg;
+    private String accountMobile;   //参与人手机号
+    private String playerId;        //参与人id
+    private String playerName;      //参与人昵称
+    private String headImg;         //参与人头像
 
-    private int playerFlag;
-    private int playerType;
+    private int playerFlag;         //参与人权限 0不接收 1接收
+    private int playerType;         //参与人类型 0未注册用户 1注册用户
 
     public String getId() {
         return id;
