@@ -97,6 +97,9 @@ export class RelmemService {
             }).then(data=>{
               if(data && data.code && data.code != null){
                 console.log("--------- 4.RelmemService aru() restful add contact end: "+JSON.stringify(data));
+                if(ru.rI != null){
+                  this.addPlayers(ru.id,uI,ru.ran,ru.rC,ru.rI,ru.rN,ru.hiu,ru.rF,'1')
+                }
                 base = data;
               }
               resolve(base);
@@ -165,6 +168,9 @@ export class RelmemService {
         //添加本地联系人
         return this.relmemSqlite.aru(ru).then(data=>{
           console.log("--------- 2.RelmemService aru() sqlite add contact end: "+JSON.stringify(data));
+          if(ru.rI != null){
+            this.addPlayers(ru.id,DataConfig.uInfo.uI,ru.ran,ru.rC,ru.rI,ru.rN,ru.hiu,ru.rF,'1')
+          }
         }).catch(e=>{
           console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e));
           base.code=ReturnConfig.ERR_CODE;
@@ -388,6 +394,42 @@ export class RelmemService {
           base.message=e.message;
           reject(base);
         })
+    })
+  }
+
+  /**
+   * 再次发送邀请请求
+   * @param {string} ui 当前登录人ID
+   * @param {string} ri 联系人对应的用户ID
+   * @param {string} rc 电话
+   * @returns {Promise<any>}
+   * @constructor
+   */
+  SendAgain(ui:string,ri:string,rc:string):Promise<BsModel>{
+    return new Promise((resolve, reject)=>{
+
+    })
+  }
+
+  /** 服务器添加联系人
+  * @param {string} id 联系人主键
+  * @param {string} ui 当前登录人ID
+  * @param {string} ona 备注
+  * @param {string} am  电话
+  * @param {string} aui 联系人用户ID
+  * @param {string} aN 联系人名称
+  * @param {string} hi 头像
+  * @param {string} rF 参与人权限 0不接收 1接收
+  * @param {string} pt 参与人类型 0未注册用户 1注册用户
+  * @returns {Promise<any>}
+  */
+  addPlayers(id:string,ui:string,ona:string,am:string,aui:string,aN:string,hi:string,rF:string,pt:string):Promise<any>{
+    return new Promise((resolve, reject)=>{
+      this.pnRes.addPlayers(id,ui,ona,am,aui,aN,hi,rF,pt).then(data=>{
+        console.log( "-----------" + JSON.stringify(data))
+      }).catch(e=>{
+        console.log( "-----------" + JSON.stringify(e))
+      })
     })
   }
 

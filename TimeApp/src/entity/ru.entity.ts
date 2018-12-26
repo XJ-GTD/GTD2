@@ -7,8 +7,10 @@ export class RuEntity {
 
   private _id: string=null; //UUID
   private _ran:string=null; //别名
+  private _ranpy:string=null; //别名拼音
   private _rI: string=null; //关联ID
   private _rN: string=null; //名称
+  private _rNpy: string=null; //名称拼音
   private _rC: string=null; // 联系方式
   private _rF: string=null; // 授权标识0未授权1授权
   private _rel: string='0'; // 联系类型0人;1群组
@@ -19,8 +21,8 @@ export class RuEntity {
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_B(id VARCHAR(100) PRIMARY KEY,' +
-                          'ran VARCHAR(100),rI VARCHAR(100),rN VARCHAR(100),' +
-                          'rC VARCHAR(100),rF VARCHAR(2),rel VARCHAR(20),hiu VARCHAR(100));';
+                          'ran VARCHAR(100),ranpy VARCHAR(100),rI VARCHAR(100),rN VARCHAR(100),' +
+                          'rNpy VARCHAR(100),rC VARCHAR(100),rF VARCHAR(2),rel VARCHAR(20),hiu VARCHAR(100));';
   private _drsq:string="DROP TABLE IF EXISTS GTD_B;";
 
   private _isq:string;
@@ -54,9 +56,9 @@ export class RuEntity {
 
   get isq(): string {
     let sql='insert into GTD_B ' +
-      '(id,ran,rI,rN,rC,rF,rel,hiu) ' +
-      'values("'+ this._id+'","'+ this._ran+'","'+this._rI+ '","'+
-      this._rN+'","'+ this._rC+'","'+this._rF+'","'+this._rel+'","'+this._hiu+'")';
+      '(id,ran,ranpy,rI,rN,rNpy,rC,rF,rel,hiu) ' +
+      'values("'+ this._id+'","'+ this._ran+'","'+ this._ranpy+'","'+this._rI+ '","'+
+      this._rN+'","'+this._rNpy+'","'+ this._rC+'","'+this._rF+'","'+this._rel+'","'+this._hiu+'")';
     this._isq=sql;
     return this._isq;
   }
@@ -67,28 +69,34 @@ export class RuEntity {
 
   get usq(): string {
     let sql='update GTD_B set';
-    if(this._ran!=null){
+    if(this._ran!=null && this._ran!=''){
       sql=sql+' ran="' + this._ran +'",';
     }
-    if(this._rI!=null){
+    if(this._ranpy!=null && this._ranpy!=''){
+      sql=sql+' ranpy="' + this._ranpy +'",';
+    }
+    if(this._rI!=null && this._rI!=''){
       sql=sql+' rI="' + this._rI +'",';
     }
-    if(this._rN!=null){
+    if(this._rN!=null && this._rN!=''){
       sql=sql+' rN="' + this._rN +'",';
     }
-    if(this._rC!=null){
+    if(this._rNpy!=null && this._rNpy!=''){
+      sql=sql+' rNpy="' + this._rNpy +'",';
+    }
+    if(this._rC!=null && this._rC!=''){
       sql=sql+' rC="' + this._rC +'",';
     }
-    if(this._rF!=null){
+    if(this._rF!=null && this._rF!=''){
       sql=sql+' rF="' + this._rF +'",';
     }
-    if(this._rel!=null){
+    if(this._rel!=null && this._rel!=''){
       sql=sql+' rel="' + this._rel +'",';
     }
-    if(this._hiu!=null){
+    if(this._hiu!=null && this._hiu!=''){
       sql=sql+' hiu="' + this._hiu +'",';
     }
-    if(this._id != null){
+    if(this._id != null && this._id!=''){
       sql = sql + ' id="' + this._id +'" where id="' + this._id +'"';
     }
     this._usq=sql;
@@ -99,28 +107,34 @@ export class RuEntity {
   }
   get dsq(): string {
     let sql='DELETE FROM GTD_B WHERE 1=1 ';
-    if(this._id!=null){
+    if(this._id!=null && this._id!=''){
       sql=sql+' and id="' + this._id +'"';
     }
-    if(this._ran!=null){
+    if(this._ran!=null && this._ran!=''){
       sql=sql+' and ran="' + this._ran +'"';
     }
-    if(this._rI!=null){
+    if(this._ranpy!=null && this._ranpy!=''){
+      sql=sql+' and ranpy="' + this._ranpy +'"';
+    }
+    if(this._rI!=null && this._rI!=''){
       sql=sql+' and rI="' + this._rI +'"';
     }
-    if(this._rN!=null){
+    if(this._rN!=null && this._rN!=''){
       sql=sql+' and rN="' + this._rN +'"';
     }
-    if(this._rC!=null){
+    if(this._rNpy!=null && this._rNpy!=''){
+      sql=sql+' and rNpy="' + this._rNpy +'"';
+    }
+    if(this._rC!=null && this._rC!=''){
       sql=sql+' and rC="' + this._rC +'"';
     }
-    if(this._rF!=null){
+    if(this._rF!=null && this._rF!=''){
       sql=sql+' and rF="' + this._rF +'"';
     }
-    if(this._rel!=null){
+    if(this._rel!=null && this._rel!=''){
       sql=sql+' and rel="' + this._rel +'"';
     }
-    if(this._hiu!=null){
+    if(this._hiu!=null && this._hiu!=''){
       sql=sql+' and hiu="' + this._hiu +'"';
     }
 
@@ -195,5 +209,21 @@ export class RuEntity {
 
   set hiu(value: string) {
     this._hiu = value;
+  }
+
+  get ranpy(): string {
+    return this._ranpy;
+  }
+
+  set ranpy(value: string) {
+    this._ranpy = value;
+  }
+
+  get rNpy(): string {
+    return this._rNpy;
+  }
+
+  set rNpy(value: string) {
+    this._rNpy = value;
   }
 }

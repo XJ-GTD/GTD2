@@ -96,4 +96,31 @@ export class PnRestful{
       userSex: uS
     })
   }
+
+  /**
+   * 服务器添加联系人
+   * @param {string} id 联系人主键
+   * @param {string} ui 当前登录人ID
+   * @param {string} ona 备注
+   * @param {string} am  电话
+   * @param {string} aui 联系人用户ID
+   * @param {string} aN 联系人名称
+   * @param {string} hi 头像
+   * @param {string} rF 参与人权限 0不接收 1接收
+   * @param {string} pt 参与人类型 0未注册用户 1注册用户
+   * @returns {Promise<any>}
+   */
+  addPlayers(id:string,ui:string,ona:string,am:string,aui:string,aN:string,hi:string,rF:string,pt:string):Promise<any>{
+    return this.bs.post(AppConfig.SYNC_TEMP_URL, {
+      id:id,
+      userId:ui,
+      otherName:ona,
+      accountMobile:am,
+      playerId:aui,
+      playerName:aN,
+      headImg:hi,
+      playerFlag:rF,
+      playerType:pt
+    })
+  }
 }
