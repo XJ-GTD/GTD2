@@ -5,13 +5,19 @@
     <!--</ion-toolbar>-->
   <!--</ion-header>-->
   <ion-content>
-    <ion-item margin-top margin-bottom (click)="toUc()" *ngIf="uo" id="tag1">
+    <ion-item margin-top margin-bottom (click)="toUc()" [hidden]="uo.uty == 0" id="tag1">
       <ion-avatar item-start>
         <!--<img src="http://img.ph.126.net/AJVTPrlsBJuatCG8oQNqkg==/3323375050023235491.jpg" class="img_size">-->
         <img [src]="imgurl" class="img_size">
       </ion-avatar>
       <h1 [innerHtml]="uo.uN"></h1>
       <span [innerHtml]="uo.uCt"></span>
+    </ion-item>
+
+    <ion-item [hidden]="uo.uty != 0" (click)="toUb()">
+      <button ion-button class="sign_button">
+        登录/注册
+      </button>
     </ion-item>
 
 

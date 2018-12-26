@@ -31,6 +31,9 @@ export class PdPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad PdPage');
     this.g = this.navParams.get('g');
+  }
+
+  ionViewWillEnter(){
     this.init();
   }
 

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { ParamsService } from "../../service/util-service/params.service";
 import { UtilService} from "../../service/util-service/util.service";
 import {LsmService} from "../../service/lsm.service";
+import {ReturnConfig} from "../../app/return.config";
 
 
 /**
@@ -91,18 +92,26 @@ export class UaPage {
                           }
                         })
                       }
-
                     }
                   }]
                 });
                 alert.present();
               }else{
-                console.debug("登录失败");
+                let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
+                console.log("登录失败");
                 //登陆失败
                 let alert = this.alertCtrl.create({
                   title:'提示信息',
-                  subTitle: "登录失败",
-                  buttons:['确定']
+                  subTitle: message,
+                  buttons:[
+                    {
+                      text:"确定",
+                      role:"cancel",
+                      handler:()=>{
+                        this.navCtrl.pop();
+                      }
+                    }
+                  ]
                 });
                 alert.present();
               }
@@ -114,7 +123,15 @@ export class UaPage {
               let alert = this.alertCtrl.create({
                 title:'提示信息',
                 subTitle: "登录失败",
-                buttons:['确定']
+                buttons:[
+                  {
+                    text:"确定",
+                    role:"cancel",
+                    handler:()=>{
+                      this.navCtrl.pop();
+                    }
+                  }
+                ]
               });
               alert.present();
             })
@@ -122,17 +139,17 @@ export class UaPage {
             console.debug("注册失败");
             let alert = this.alertCtrl.create({
               title:'提示信息',
-              subTitle: "注册失败",
+              subTitle: data.message,
               buttons:['确定']
             });
             alert.present();
           }
         }).catch(reason => {
-          console.debug("注册失败");
+          console.log("注册失败 ::" + reason.message);
           //注册失败
           let alert = this.alertCtrl.create({
             title:'提示信息',
-            subTitle: "注册失败",
+            subTitle: reason.message,
             buttons:['确定']
           });
           alert.present();

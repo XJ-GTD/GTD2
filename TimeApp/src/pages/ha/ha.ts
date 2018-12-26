@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { App, IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { WebsocketService } from "../../service/util-service/websocket.service";
 import { ParamsService } from "../../service/util-service/params.service";
 import { XiaojiAlarmclockService } from "../../service/util-service/xiaoji-alarmclock.service";
@@ -19,7 +19,6 @@ import {UEntity} from "../../entity/u.entity";
 import {WorkService} from "../../service/work.service";
 import {UserService} from "../../service/user.service";
 import {Ha01Page} from "../ha01/ha01";
-import {PlayerService} from "../../service/player.service";
 import {DwEmitService} from "../../service/util-service/dw-emit.service";
 import { HbPage } from "../hb/hb";
 import { DataConfig } from "../../app/data.config";
@@ -84,7 +83,8 @@ export class HaPage {
               private userSqlite:UserService,
               private workSqlite:WorkService,
               private calendarService:CalendarService,
-              private dwEmit: DwEmitService) {
+              private dwEmit: DwEmitService,
+              private app: App) {
 
     moment.locale('zh-cn');
     this.init();
@@ -275,6 +275,7 @@ export class HaPage {
   }
   createEvent($event){
     console.info($event)
+    this.app.getRootNav().push(PageConfig.SB_PAGE);
   }
 
   //查询当天日程
