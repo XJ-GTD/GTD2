@@ -271,7 +271,7 @@ export class DwMqService {
     let rc = data.mb;
     let hiu = data.hi;
     let rF = '0';
-    if(data.ia=='true'){
+    if(data.ia){
       rF='1'
     }
     console.log("----- DwMqService relationAdd(业务：联系人添加) start---- ")

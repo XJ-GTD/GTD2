@@ -95,7 +95,7 @@ export class RelmemService {
                 return this.pnRes.au(uI,rc,auI);
               }
             }).then(data=>{
-              if(data && data.code && data.code != null){
+              if(auI != null && auI !=''){
                 console.log("--------- 4.RelmemService aru() restful add contact end: "+JSON.stringify(data));
                 if(ru.rI != null){
                   this.addPlayers(ru.id,uI,ru.ran,ru.rC,ru.rI,ru.rN,ru.hiu,ru.rF,'1')
