@@ -87,6 +87,7 @@ export class AppConfig {
 
   /* ------------------------ 初始化 start--------------------------*/
   public static SYNC_INIT_URL: string = AppConfig.SYNC_URL + "/initial_sync";   //初始化
+  public static SYNC_TEMP_URL: string = AppConfig.SYNC_URL + "/temporary";   //初始化
   /* ------------------------ 初始化 end--------------------------*/
 
 }
