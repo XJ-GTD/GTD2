@@ -1,8 +1,5 @@
 package com.xiaoji.util;
 
-import com.xiaoji.gtd.dto.code.ResultCode;
-import com.xiaoji.gtd.repository.GtdTokenRepository;
-import net.minidev.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -145,5 +142,10 @@ public class BaseUtil {
     //动态创建exchange
     public static void createExchange(RabbitTemplate rabbitTemplate, String exchangeName, String exchangeType) throws IOException {
         rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).exchangeDeclare(exchangeName, exchangeType,true);
+    }
+
+    //绑定交换机
+    public static void bindExchange(RabbitTemplate rabbitTemplate, String queueName, String exchangeName) throws IOException {
+        rabbitTemplate.getConnectionFactory().createConnection().createChannel(false).queueBind(queueName, exchangeName, queueName);
     }
 }

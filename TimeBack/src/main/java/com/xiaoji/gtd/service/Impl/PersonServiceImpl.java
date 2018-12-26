@@ -7,6 +7,7 @@ import com.xiaoji.gtd.dto.mq.WebSocketOutDto;
 import com.xiaoji.gtd.dto.mq.WebSocketResultDto;
 import com.xiaoji.gtd.entity.GtdAccountEntity;
 import com.xiaoji.gtd.entity.GtdLoginEntity;
+import com.xiaoji.gtd.entity.GtdPlayerEntity;
 import com.xiaoji.gtd.entity.GtdUserEntity;
 import com.xiaoji.gtd.repository.*;
 import com.xiaoji.gtd.service.IPersonService;
@@ -67,6 +68,8 @@ public class PersonServiceImpl implements IPersonService {
     private GtdUserRepository userRepository;
     @Resource
     private AuthRepository authRepository;
+    @Resource
+    private GtdPlayerRepository playerRepository;
 
     private final RabbitTemplate rabbitTemplate;
     private final IWebSocketService webSocketService;
@@ -230,7 +233,10 @@ public class PersonServiceImpl implements IPersonService {
                     socketData.setUn(userName);
                     socketData.setHi(headImg);
                     socketData.setMb(mobile);
+                    socketData.setIa(true);
 
+                    pushDto.setVs(VERSION);
+                    pushDto.setSs(ResultCode.SUCCESS);
                     pushDto.setRes(new WebSocketResultDto(socketData));
                     webSocketService.pushTopicMessage(targetUserId, pushDto);
                     logger.debug("[成功推送邀请]:方式 === rabbitmq | targetUserId:" + targetUserId);
@@ -335,6 +341,46 @@ public class PersonServiceImpl implements IPersonService {
     @Override
     public String conversionPinyin(String otherName) {
         return Pinyin4j.toPinYin(otherName);
+    }
+
+    /**
+     * 添加服务器数据
+     * ！！ 同步方法完成后删除！！！
+     *
+     * @return
+     */
+    @Override
+    public int temporaryPlayer(TestPlayerInDto inDto) {
+        GtdPlayerEntity playerEntity = new GtdPlayerEntity();
+
+        String id = inDto.getId();
+        String userId = inDto.getUserId();
+        String otherName = inDto.getOtherName();
+        String pyOfOtherName = conversionPinyin(otherName);
+        String playerName = inDto.getPlayerName();
+        String pyOfPlayerName = conversionPinyin(playerName);
+        String accountMobile = inDto.getAccountMobile();
+        String headImg = inDto.getHeadImg();
+
+        String playId = inDto.getPlayerId();
+        int playFlag = inDto.getPlayerFlag();
+        int playType = inDto.getPlayerType();
+
+        playerEntity.setId(id);
+        playerEntity.setUserId(userId);
+        playerEntity.setPlayerAnotherName(otherName);
+        playerEntity.setPyOhterName(pyOfOtherName);
+        playerEntity.setPlayerName(playerName);
+        playerEntity.setPyPlayerName(pyOfPlayerName);
+        playerEntity.setPlayerHeadimg(headImg);
+        playerEntity.setPlayerContact(accountMobile);
+        playerEntity.setPlayerId(playId);
+        playerEntity.setPlayerFlag(playFlag);
+        playerEntity.setPlayerType(playType);
+
+        playerRepository.save(playerEntity);
+
+        return 0;
     }
 
     /**

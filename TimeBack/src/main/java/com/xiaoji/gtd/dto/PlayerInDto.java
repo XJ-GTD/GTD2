@@ -43,4 +43,5 @@ public class PlayerInDto {
     public void setTargetMobile(String targetMobile) {
         this.targetMobile = targetMobile;
     }
+    
 }

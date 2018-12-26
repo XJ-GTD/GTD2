@@ -19,6 +19,8 @@ export class SdPage {
   scheduleName: string;
   remindTime: string;
 
+  remindText:string = "null";
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController) {
 
@@ -32,6 +34,10 @@ export class SdPage {
     this.remindTime = this.remindTime.replace("T", " ");
     this.remindTime = this.remindTime.replace(":00Z", "");
     this.viewCtrl.dismiss(this.remindTime);
+  }
+
+  checked(){
+    console.log(this.remindText)
   }
 
   dismiss() {

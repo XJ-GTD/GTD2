@@ -29,6 +29,7 @@ export class HzPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public userService: UserService) {
+    this.uo = DataConfig.uInfo;
   }
 
   ionViewDidLoad() {
@@ -59,8 +60,17 @@ export class HzPage {
   }
 
   toUc(){
-    console.log("跳转用户详情HzPage跳转UcPage")
+    if(DataConfig.uInfo.uty == "0"){
+      this.navCtrl.push(PageConfig.UB_PAGE,{"rePage":PageConfig.UC_PAGE,"puPage":PageConfig.UC_PAGE});
+      return;
+    }
+    console.log("跳转用户详情HzPage跳转UcPage");
     this.navCtrl.push('UcPage',{popPage:'HzPage',uo:this.uo});
+  }
+
+  toUb(){
+    console.log("跳转用户详情HzPage跳转UbPage");
+    this.navCtrl.push(PageConfig.UB_PAGE);
   }
 
   showHistory() {
