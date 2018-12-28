@@ -114,7 +114,25 @@ export class RelmemSqlite {
   }
 
   xfGetRu(py:string):Promise<any>{
-    let sql = 'select * from  GTD_B where ranpy in ('+py+') or rN in ('+py+')' ;
+    let pyL = py.split(",");
+    let sql = "select * from  GTD_B where ";
+    let ranpy = ''
+    let rNpy=''
+    for(let i=0;i<pyL.length;i++){
+      if(pyL[i] != ''){
+        if(ranpy==''){
+          ranpy="ranpy in ('"+pyL[i]+"'"
+        }else{
+          ranpy=ranpy + ",'"+pyL[i]+"'"
+        }
+        if(rNpy==''){
+          rNpy="rNpy in ('"+pyL[i]+"'"
+        }else{
+          ranpy=rNpy + ",'"+pyL[i]+"'"
+        }
+      }
+    }
+    let sql = sql + ranpy + ") or " + rNpy +")";
     return this.baseSqlite.executeSql(sql,[]);
   }
 

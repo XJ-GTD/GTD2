@@ -66,18 +66,20 @@ export class RelmemService {
       let ru=new RuEntity();
       ru.id=this.util.getUuid();
       ru.ran=ran;
+      if(ru.ran == null || ru.ran == ''){
+        ru.ran=rc;
+      }
       ru.rN=rN;
+      if(ru.rN == null || ru.rN == ''){
+        ru.rN=ran;
+      }
       ru.rC=rc;
       ru.rel=rel;
       ru.rF = rF;
       ru.rI=auI;
       ru.hiu=hiu;
-      if(ru.rN == null || ru.rN == ''){
-        ru.rN=rc;
-      }
-      if(ru.ran == null || ru.ran == ''){
-        ru.ran=rc;
-      }
+      ru.rNpy = this.util.PinYin(ru.rN);
+      ru.ranpy = this.util.PinYin(ru.ran);
       if(rel=='0'){
         console.log("--------- 1.RelmemService aru() sqlite add contact start -------------");
         this.relmemSqlite.getrus('','','',rc,'0').then(data=>{
