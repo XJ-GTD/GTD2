@@ -2,12 +2,11 @@ package com.xiaoji.gtd.service.Impl;
 
 import com.xiaoji.config.exception.ServiceException;
 import com.xiaoji.gtd.dto.sync.*;
-import com.xiaoji.gtd.entity.GtdDictionaryDataEntity;
-import com.xiaoji.gtd.entity.GtdDictionaryEntity;
-import com.xiaoji.gtd.entity.GtdLabelEntity;
+import com.xiaoji.gtd.entity.*;
 import com.xiaoji.gtd.repository.GtdDictionaryDataRepository;
 import com.xiaoji.gtd.repository.GtdDictionaryRepository;
 import com.xiaoji.gtd.repository.GtdLabelRepository;
+import com.xiaoji.gtd.repository.SyncRepository;
 import com.xiaoji.gtd.service.ISyncService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,6 +44,8 @@ public class SyncServiceImpl implements ISyncService {
     private GtdDictionaryDataRepository dictionaryDataRepository;
     @Resource
     private GtdLabelRepository labelRepository;
+    @Resource
+    private SyncRepository syncRepository;
 
     /**
      * 初始化数据同步
@@ -159,7 +160,7 @@ public class SyncServiceImpl implements ISyncService {
             for (SyncDataDto sdd: syncDataList) {
                 tableName = sdd.getTableName();
                 dataList = sdd.getDataList();
-                upLoadData(tableName, dataList);
+                upLoadData(tableName, dataList, userId, version);
             }
         } else { //仅需要下载更新
         }
@@ -167,22 +168,84 @@ public class SyncServiceImpl implements ISyncService {
         return null;
     }
 
-    //处理需要上传的数据
-    private void upLoadData(String tableName, List<SyncTableData> dataList) {
+    /**
+     * 上传的数据
+     * @param tableName
+     * @param dataList
+     */
+    private void upLoadData(String tableName, List<SyncTableData> dataList, String userId, String version) {
 
         switch (tableName) {
             case "GTD_B":       //联系人表
+                List<GtdPlayerEntity> tableDataList = new ArrayList<>();
+                List<String> ids = new ArrayList<>();
+                GtdPlayerEntity playerEntity = new GtdPlayerEntity();
+                for (SyncTableData std: dataList) {
+                    playerEntity.setId(std.getTableA());                    //主键
+                    playerEntity.setPlayerAnotherName(std.getTableB());     //别称
+                    playerEntity.setPyOhterName(std.getTableC());           //别称拼音
+                    playerEntity.setPlayerId(std.getTableD());              //联系人用户ID
+                    playerEntity.setPlayerHeadimg(std.getTableE());         //联系人头像
+                    playerEntity.setPlayerName(std.getTableF());            //联系人昵称
+                    playerEntity.setPyPlayerName(std.getTableG());          //联系人昵称拼音
+                    playerEntity.setPlayerContact(std.getTableH());         //联系人手机号
+                    playerEntity.setPlayerFlag(Integer.valueOf(std.getTableI()));   //授权联系人标识
+                    playerEntity.setPlayerType(Integer.valueOf(std.getTableJ()));   //联系人类型
+                    playerEntity.setUserId(std.getTableK());                //联系人数据归属
+
+                    ids.add(std.getTableA());
+                    tableDataList.add(playerEntity);
+
+                    playerEntity = new GtdPlayerEntity();                   //归零
+                }
+
+                List<String> sqlIds = syncRepository.compareToHighVersion(version, userId, ids);
+                for (GtdPlayerEntity gpe: tableDataList) {
+
+                }
                 break;
             case "GTD_B_X":     //群组表
+                GtdPlayerMemberEntity playerMemberEntity = new GtdPlayerMemberEntity();
+                for (SyncTableData std: dataList) {
+
+                    playerMemberEntity = new GtdPlayerMemberEntity();
+                }
                 break;
             case "GTD_C":       //日程表
+                GtdScheduleEntity scheduleEntity = new GtdScheduleEntity();
+                for (SyncTableData std: dataList) {
+
+                    scheduleEntity = new GtdScheduleEntity();
+                }
                 break;
             case "GTD_D":       //日程参与人表
+                GtdExecuteEntity executeEntity = new GtdExecuteEntity();
+                for (SyncTableData std: dataList) {
+
+                    executeEntity = new GtdExecuteEntity();
+                }
                 break;
             case "GTD_H":       //计划表
+                GtdPlanEntity planEntity = new GtdPlanEntity();
+                for (SyncTableData std: dataList) {
+
+                    planEntity = new GtdPlanEntity();
+                }
                 break;
             case "GTD_C_A":     //本地日历表
+                GtdLocalScheduleEntity localScheduleEntity = new GtdLocalScheduleEntity();
+                for (SyncTableData std: dataList) {
+
+                    localScheduleEntity = new GtdLocalScheduleEntity();
+                }
                 break;
         }
+    }
+
+    /**
+     * 下载数据
+     */
+    private void downLoad() {
+
     }
 }

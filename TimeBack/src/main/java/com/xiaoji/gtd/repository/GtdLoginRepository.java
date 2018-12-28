@@ -13,8 +13,4 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface GtdLoginRepository extends JpaRepository<GtdLoginEntity,Integer> {
-
-    /*@Modifying
-    @Query(value = "select count(*) from gtd_login where USER_ID = ?1 and LOGIN_NAME = ?2 and LOGIN_TYPE = '10011'",nativeQuery = true)
-    int findByUserId(String userId, String accountMobile);*/
 }

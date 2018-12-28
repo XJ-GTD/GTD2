@@ -83,6 +83,15 @@ public class BaseUtil {
         return CommonMethods.dateToStamp(sdf.format(new Date()));
     }
 
+    //获取更新版本号
+    public static String getVersion() {
+        String res = "";
+        Date date = new Date();
+        // 指定日期格式
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        res = sdf.format(date);
+        return res;
+    }
     /**
      * 获取Token
      * @param deviceId
