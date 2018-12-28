@@ -132,7 +132,7 @@ export class RelmemSqlite {
         }
       }
     }
-    let sql = sql + ranpy + ") or " + rNpy +")";
+    sql = sql + ranpy + ") or " + rNpy +")";
     return this.baseSqlite.executeSql(sql,[]);
   }
 
