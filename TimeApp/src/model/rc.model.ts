@@ -20,6 +20,8 @@ export class RcModel extends BsModel{
   private _sa:string = null; //修改权限 0不可修改，1可修改
   private _pI: string=null;//日程参与人表uuID
   private _rus : Array<RuModel> //联系人
+  private _noca:string;
+  private _nocb:string;
   get sI(): string {
     return this._sI;
   }
@@ -115,5 +117,21 @@ export class RcModel extends BsModel{
 
   set rus(value: Array<RuModel>) {
     this._rus = value;
+  }
+
+  get noca(): string {
+    return this._noca;
+  }
+
+  set noca(value: string) {
+    this._noca = value;
+  }
+
+  get nocb(): string {
+    return this._nocb;
+  }
+
+  set nocb(value: string) {
+    this._nocb = value;
   }
 }

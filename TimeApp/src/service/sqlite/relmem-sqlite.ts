@@ -90,6 +90,8 @@ export class RelmemSqlite {
       "left join GTD_B_X bs on bs.bmi = gb.id where bs.bi='" + id +"'";
     return this.baseSqlite.executeSql(sql,[]);
   }
+
+
   /**
    * 删除群组人员
    * @param {string} bi 群组主键ID
@@ -106,8 +108,13 @@ export class RelmemSqlite {
    * @param {string} sI
    * @returns {Promise<any>}
    */
-  getRgusBySi(sI:string){
+  getRgusBySi(sI:string):Promise<any>{
     let sql = 'select gb.*,gd.uI,gd.sdt from GTD_D gd left join GTD_B gb on gd.rui = gb.id where gd.sI="'+sI+'"';
+    return this.baseSqlite.executeSql(sql,[]);
+  }
+
+  xfGetRu(py:string):Promise<any>{
+    let sql = 'select * from  GTD_B where ranpy in ('+py+') or rN in ('+py+')' ;
     return this.baseSqlite.executeSql(sql,[]);
   }
 

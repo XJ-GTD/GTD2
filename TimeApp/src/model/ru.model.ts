@@ -8,8 +8,10 @@ export class RuModel extends BsModel{
 
   private _id: string=null;   //UUID
   private _ran:string=null; //别名
+  private _ranpy:string=null; //别名拼音
   private _rI: string=null;  //关联ID
   private _rN: string=null;  //名称
+  private _rNpy: string=null;  //名称拼音
   private _rC: string=null;  // 联系方式
   private _rF: string=null;     // 授权标识0未授权1授权
   private _rel: string=null; // 联系类型
@@ -85,5 +87,21 @@ export class RuModel extends BsModel{
 
   set sdt(value: number) {
     this._sdt = value;
+  }
+
+  get ranpy(): string {
+    return this._ranpy;
+  }
+
+  set ranpy(value: string) {
+    this._ranpy = value;
+  }
+
+  get rNpy(): string {
+    return this._rNpy;
+  }
+
+  set rNpy(value: string) {
+    this._rNpy = value;
   }
 }

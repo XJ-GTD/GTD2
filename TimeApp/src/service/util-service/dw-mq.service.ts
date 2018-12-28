@@ -35,7 +35,7 @@ export class DwMqService {
         case SkillConfig.XF_NMC: //取消
           break;
         case SkillConfig.XF_SCC: //讯飞：日程添加
-          this.xfScheduleCreate(mqDate.res.data);
+          this.xfScheduleCreate(mqDate);
           break;
         case SkillConfig.XF_SCD: //讯飞：日程删除
           this.xfScheduleDelete();
@@ -86,27 +86,26 @@ export class DwMqService {
    * 语音：日程创建
    * @param data
    */
-  private xfScheduleCreate(mqDate:WsResDataModel) {
-    this.dwEmit.setHbData(mqDate);//测试用
-    let ca=mqDate.common_A;  //人名原参数value
-    let cb=mqDate.common_B; //人名原参数normValue
-    let pln = mqDate.pln //拼音
-    let sn = mqDate.sn //标题
-    let sd = mqDate.st;
+  private xfScheduleCreate(mqDate) {
+    let md:WsResDataModel= mqDate.res.data;
+    let ca=md.common_A;  //人名原参数value
+    let cb=md.common_B; //人名原参数normValue
+    let pln = md.pln //拼音
+    let sn = md.sn //标题
+    let sd = md.st;
     if(sd == null || sd==''){
-      sd=mqDate.et;
+      sd=md.et;
     }
-    let ed=mqDate.et;
+    let ed=md.et;
     if(ed == null || ed==''){
-      ed=mqDate.st;
+      ed=md.st;
     }
-    let ruL=[];
-
-    // this.work.arc(ct,sd,ed,lbI,jhi,ruL).then(data=>{
-    //   this.dwEmit.setHaData(data);
-    // }).catch(e=>{
-    //   this.dwEmit.setHaData(e);
-    // });
+    this.work.xfAddrc(sn,sd,pln,ca,cb).then(data=>{
+      mqDate.qData=data;
+      this.dwEmit.setHbData(mqDate);//测试用
+    }).catch(e=>{
+      this.dwEmit.setHbData(mqDate);//测试用
+    });
   }
 
   /**
