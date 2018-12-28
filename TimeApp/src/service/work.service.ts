@@ -579,12 +579,12 @@ W
               let npy = '';
               let istrue = false;
               if(ru.ran && ru.ran != null && ru.ran != ''){
-                npy = this.util.PinYin(ru.ran);
+                npy = this.util.chineseToPinYin(ru.ran);
                 nopy = nopy.replace(npy,'');
                 istrue = true;
               }
               if(!istrue&&ru.rN && ru.rN != null && ru.rN != ''){
-                npy = this.util.PinYin(ru.rN);
+                npy = this.util.chineseToPinYin(ru.rN);
                 nopy = nopy.replace(npy,'');
               }
             }
@@ -597,7 +597,7 @@ W
           let nocb='';//获取不存在的联系人 解析中文名称
           for(let j=0;j<nopyL.length;j++){
             for(let a=0;a<caL.length;a++){
-              let capy = this.util.PinYin(caL[a]);
+              let capy = this.util.chineseToPinYin(caL[a]);
               if(nopyL[j] == capy){
                 if(noca == ''){
                   noca = caL[a];
@@ -607,7 +607,7 @@ W
               }
             }
             for(let b=0;b<cbL.length;b++){
-              let cbpy = this.util.PinYin(cbL[b]);
+              let cbpy = this.util.chineseToPinYin(cbL[b]);
               if(nopyL[j] == cbpy){
                 if(nocb == ''){
                   nocb = caL[b];

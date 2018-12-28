@@ -78,8 +78,8 @@ export class RelmemService {
       ru.rF = rF;
       ru.rI=auI;
       ru.hiu=hiu;
-      ru.rNpy = this.util.PinYin(ru.rN);
-      ru.ranpy = this.util.PinYin(ru.ran);
+      ru.rNpy = this.util.chineseToPinYin(ru.rN);
+      ru.ranpy = this.util.chineseToPinYin(ru.ran);
       if(rel=='0'){
         console.log("--------- 1.RelmemService aru() sqlite add contact start -------------");
         this.relmemSqlite.getrus('','','',rc,'0').then(data=>{
