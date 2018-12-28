@@ -1,10 +1,7 @@
 package com.xiaoji.gtd.service.Impl;
 
 import com.xiaoji.config.exception.ServiceException;
-import com.xiaoji.gtd.dto.sync.SyncDataDto;
-import com.xiaoji.gtd.dto.sync.SyncDataList;
-import com.xiaoji.gtd.dto.sync.SyncInDto;
-import com.xiaoji.gtd.dto.sync.SyncOutDto;
+import com.xiaoji.gtd.dto.sync.*;
 import com.xiaoji.gtd.entity.GtdDictionaryDataEntity;
 import com.xiaoji.gtd.entity.GtdDictionaryEntity;
 import com.xiaoji.gtd.entity.GtdLabelEntity;
@@ -19,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,11 +54,11 @@ public class SyncServiceImpl implements ISyncService {
     @Override
     public SyncOutDto initialSync() {
         SyncOutDto out = new SyncOutDto();
-        List<SyncDataDto> syncDataList = new ArrayList<>();
+        List<SyncInitDataDto> syncDataList = new ArrayList<>();
 
-        List<SyncDataList> labelList = new ArrayList<>();
-        List<SyncDataList> dictionaryList = new ArrayList<>();
-        List<SyncDataList> dictionaryDataList = new ArrayList<>();
+        List<SyncInitData> labelList = new ArrayList<>();
+        List<SyncInitData> dictionaryList = new ArrayList<>();
+        List<SyncInitData> dictionaryDataList = new ArrayList<>();
 
         List<GtdLabelEntity> labelEntityList;
         List<GtdDictionaryEntity> dictionaryEntityList;
@@ -73,11 +69,11 @@ public class SyncServiceImpl implements ISyncService {
             //字典表
             dictionaryEntityList = dictionaryRepository.findAllByDictType(SYNC_INIT);
             List<Integer> dictValues = new ArrayList<>();
-            SyncDataDto syncDataA = new SyncDataDto();
+            SyncInitDataDto syncDataA = new SyncInitDataDto();
             for (GtdDictionaryEntity gde: dictionaryEntityList) {
                 dictValues.add(gde.getDictValue());
 
-                SyncDataList sd = new SyncDataList();
+                SyncInitData sd = new SyncInitData();
                 sd.setKey(String.valueOf(gde.getDictValue()));
                 sd.setValue(gde.getDictName());
                 sd.setType(gde.getDictType());
@@ -90,9 +86,9 @@ public class SyncServiceImpl implements ISyncService {
 
             //字典数据表
             dictionaryDataEntityList = dictionaryDataRepository.findAllByDictValueIn(dictValues);
-            SyncDataDto syncDataB = new SyncDataDto();
+            SyncInitDataDto syncDataB = new SyncInitDataDto();
             for (GtdDictionaryDataEntity gdde: dictionaryDataEntityList) {
-                SyncDataList sd = new SyncDataList();
+                SyncInitData sd = new SyncInitData();
 
                 sd.setKey(gdde.getDictdataValue());
                 sd.setValue(gdde.getDictdataName());
@@ -107,9 +103,9 @@ public class SyncServiceImpl implements ISyncService {
 
             //标签表
             labelEntityList = labelRepository.findAll();
-            SyncDataDto syncDataC = new SyncDataDto();
+            SyncInitDataDto syncDataC = new SyncInitDataDto();
             for (GtdLabelEntity gle: labelEntityList) {
-                SyncDataList sd = new SyncDataList();
+                SyncInitData sd = new SyncInitData();
 
                 sd.setType(gle.getLabelType());
                 sd.setValue(gle.getLabelName());
@@ -150,6 +146,43 @@ public class SyncServiceImpl implements ISyncService {
      */
     @Override
     public SyncOutDto timingSync(SyncInDto inDto) {
+
+        List<SyncDataDto> syncDataList = inDto.getSyncDataList();
+        String userId = inDto.getUserId();
+        String deviceId = inDto.getDeviceId();
+        String version = inDto.getVersion();
+
+        String tableName = "";
+        List<SyncTableData> dataList;
+
+        if (syncDataList != null && syncDataList.size() > 0) { //需要上传数据
+            for (SyncDataDto sdd: syncDataList) {
+                tableName = sdd.getTableName();
+                dataList = sdd.getDataList();
+                upLoadData(tableName, dataList);
+            }
+        } else { //仅需要下载更新
+        }
+
         return null;
+    }
+
+    //处理需要上传的数据
+    private void upLoadData(String tableName, List<SyncTableData> dataList) {
+
+        switch (tableName) {
+            case "GTD_B":       //联系人表
+                break;
+            case "GTD_B_X":     //群组表
+                break;
+            case "GTD_C":       //日程表
+                break;
+            case "GTD_D":       //日程参与人表
+                break;
+            case "GTD_H":       //计划表
+                break;
+            case "GTD_C_A":     //本地日历表
+                break;
+        }
     }
 }

@@ -25,7 +25,7 @@ public class WebSocketDataDto {
     private String un;      //userName
     private String hi;      //headImg
     private String mb;      //mobile
-    private boolean ia;      //isAgree
+    private Boolean ia;      //isAgree
 
     public String getSn() {
         return sn;
@@ -107,11 +107,11 @@ public class WebSocketDataDto {
         this.hi = hi;
     }
 
-    public boolean getIa() {
+    public Boolean getIa() {
         return ia;
     }
 
-    public void setIa(boolean ia) {
+    public void setIa(Boolean ia) {
         this.ia = ia;
     }
 

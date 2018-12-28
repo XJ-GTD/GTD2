@@ -21,6 +21,7 @@ public enum ResultCode {
     NULL_PLAYER(11010),                   //参与人为空
     NULL_NAME(11012),                     //姓名为空
     NULL_TIME(11011),                     //时间为空
+    NULL_VERSION(11013),                  //同步版本号为空
 
     NULL_AUTH_CODE(11101),                  //验证码为空
 
@@ -51,10 +52,12 @@ public enum ResultCode {
     FAIL_SCHEDULE(50104),                   //日程处理失败
     FAIL_PLAYER(50105),                     //参与人处理失败
 
+
     FAIL_XF(50200),                         //讯飞语音调用失败
     FAIL_XF_SKILL(50201),                   //讯飞语音无对应技能
 
     FAIL_INIT(50300),                       //初始化同步失败
+    FAIL_SYNC(50301),                       //同步数据失败
 
     FAIL_TOKEN(50500),                      //校验token失败
 

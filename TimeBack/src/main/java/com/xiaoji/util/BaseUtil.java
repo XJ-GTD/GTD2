@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 基础工具类
+ *
  * create by wzy on 2018/04/26.
  */
 public class BaseUtil {
