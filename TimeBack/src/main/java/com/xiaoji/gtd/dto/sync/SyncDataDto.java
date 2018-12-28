@@ -3,28 +3,29 @@ package com.xiaoji.gtd.dto.sync;
 import java.util.List;
 
 /**
- * 同步数据列表类
+ * 用户同步数据类
  *
- * create by wzy on 2018/12/21
+ * create by wzy on 2018/12/27
  */
 public class SyncDataDto {
 
-    private String type;
-    private List<SyncDataList> dataList;
+    private String tableName;
+    private List<SyncTableData> dataList;
 
-    public String getType() {
-        return type;
+    public String getTableName() {
+        return tableName;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
-    public List<SyncDataList> getDataList() {
+
+    public List<SyncTableData> getDataList() {
         return dataList;
     }
 
-    public void setDataList(List<SyncDataList> dataList) {
+    public void setDataList(List<SyncTableData> dataList) {
         this.dataList = dataList;
     }
 }
