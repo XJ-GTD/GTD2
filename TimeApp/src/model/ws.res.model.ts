@@ -21,7 +21,7 @@ export class WsResDataModel {
   private _et: string;      //endTime;
   private _lb: string;      //label;
   private _pn: string;      //planName;
-  private _pln: string;     //playerName;
+  private _pln: string;     //playerName; 拼音
   private _ss: string;      //status;
 
   private _si: string;      //scheduleId;

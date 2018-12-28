@@ -22,6 +22,7 @@ import {SkillConfig} from "../app/skill.config";
 import {RelmemSqlite} from "./sqlite/relmem-sqlite";
 import {RcpEntity} from "../entity/rcp.entity";
 import {ReturnConfig} from "../app/return.config";
+import {RcoModel} from "../model/out/rco.model";
 
 /**
  * 日程逻辑处理
@@ -434,27 +435,30 @@ W
    * @param {string} lbN 标签名称
    * @param {string} jh 计划名称
    */
-  getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string):Promise<RcpoModel>{
+  getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string):Promise<RcoModel>{
     return new Promise((resolve, reject) =>{
-      let rcpo = new RcpoModel();
+      let rco = new RcoModel();
       console.log("----- WorkService getwL(根据条件查询日程) start -----");
       this.workSqlite.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
         console.log("----- WorkService getwL(根据条件查询日程) result:" + JSON.stringify(data));
-        let rcps = new Array<RcpModel>()
+        let rcs = new Array<RcModel>()
         if(data && data.rows && data.rows.length>0){
           for(let i=0;i<data.rows.length;i++){
-            let rcp = new RcpModel();
-            rcp = data.rows.item(i);
-            rcps.push(rcp);
+            let rc = new RcModel();
+            rc = data.rows.item(i);
+            rcs.push(rc);
           }
+        }else{
+          rco.code=ReturnConfig.NULL_CODE;
+          rco.message=ReturnConfig.NULL_MESSAGE;
         }
-        rcpo.sjl=rcps;
-        resolve(rcpo);
+        rco.rcL=rcs;
+        resolve(rco);
       }).catch(e=>{
         console.error("----- WorkService getwL(根据条件查询日程) Error:" + JSON.stringify(e));
-        rcpo.code=ReturnConfig.ERR_CODE;
-        rcpo.message=e.message;
-        reject(rcpo);
+        rco.code=ReturnConfig.ERR_CODE;
+        rco.message=e.message;
+        reject(rco);
       })
     });
   }
@@ -549,5 +553,17 @@ W
         reject(lbo);
       })
     });
+  }
+
+  /**
+   *
+   * @returns {Promise<LboModel>}
+   */
+  xfAddrc(sn:string,st:string,py:string):Promise<RcModel>{
+    let pyL=py.split(",");
+    return new Promise((resolve, reject) =>{
+
+    })
+
   }
 }
