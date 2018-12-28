@@ -7,6 +7,8 @@ import { ScheduleModel } from "../../model/schedule.model";
 import { XiaojiFeedbackService } from "../../service/util-service/xiaoji-feedback.service";
 import { Hb01Page } from "../hb01/hb01";
 import { DwEmitService } from "../../service/util-service/dw-emit.service";
+import {SkillConfig} from "../../app/skill.config";
+import {RcModel} from "../../model/rc.model";
 
 declare var cordova: any;
 /**
@@ -153,6 +155,15 @@ export class HbPage {
     } else {
       if ($event.at != undefined) {
         at = $event.at;
+        //讯飞查询日程 dch测试
+        if($event.sk && $event.sk==SkillConfig.XF_SCF){
+          if($event.qData && $event.qData.code==0){
+            let data:Array<RcModel>=$event.qData.rcL;
+            for(let i=0;i<data.length;i++){
+              at += "<p>" + data[i].sd +" : " + data[i].sN+"</p>";
+            }
+          }
+        }
       }
       if ($event.au != undefined) {
         at += "\n" + $event.au;

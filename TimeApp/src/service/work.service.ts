@@ -22,6 +22,8 @@ import {SkillConfig} from "../app/skill.config";
 import {RelmemSqlite} from "./sqlite/relmem-sqlite";
 import {RcpEntity} from "../entity/rcp.entity";
 import {ReturnConfig} from "../app/return.config";
+import {RcoModel} from "../model/out/rco.model";
+import {WsResDataModel} from "../model/ws.res.model";
 
 /**
  * 日程逻辑处理
@@ -434,27 +436,30 @@ W
    * @param {string} lbN 标签名称
    * @param {string} jh 计划名称
    */
-  getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string):Promise<RcpoModel>{
+  getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string):Promise<RcoModel>{
     return new Promise((resolve, reject) =>{
-      let rcpo = new RcpoModel();
+      let rco = new RcoModel();
       console.log("----- WorkService getwL(根据条件查询日程) start -----");
       this.workSqlite.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
         console.log("----- WorkService getwL(根据条件查询日程) result:" + JSON.stringify(data));
-        let rcps = new Array<RcpModel>()
+        let rcs = new Array<RcModel>()
         if(data && data.rows && data.rows.length>0){
           for(let i=0;i<data.rows.length;i++){
-            let rcp = new RcpModel();
-            rcp = data.rows.item(i);
-            rcps.push(rcp);
+            let rc = new RcModel();
+            rc = data.rows.item(i);
+            rcs.push(rc);
           }
+        }else{
+          rco.code=ReturnConfig.NULL_CODE;
+          rco.message=ReturnConfig.NULL_MESSAGE;
         }
-        rcpo.sjl=rcps;
-        resolve(rcpo);
+        rco.rcL=rcs;
+        resolve(rco);
       }).catch(e=>{
         console.error("----- WorkService getwL(根据条件查询日程) Error:" + JSON.stringify(e));
-        rcpo.code=ReturnConfig.ERR_CODE;
-        rcpo.message=e.message;
-        reject(rcpo);
+        rco.code=ReturnConfig.ERR_CODE;
+        rco.message=e.message;
+        reject(rco);
       })
     });
   }
@@ -549,5 +554,81 @@ W
         reject(lbo);
       })
     });
+  }
+
+  /**
+   *
+   * @returns {Promise<LboModel>}
+   */
+  xfAddrc(sn:string,st:string,py:string,ca:string,cb:string):Promise<RcModel>{
+    return new Promise((resolve, reject) =>{
+      let rc = new RcModel();
+      rc.sN=sn;
+      rc.sd=st;
+      let nopy=py; //不存在的联系人
+      let ruL = new Array<RuModel>();
+      console.log("---------- WorkService 讯飞语音添加日程 Start ------------");
+      console.log("  ------ WorkService 讯飞语音添加日程: 匹配参与人 ----");
+      this.relmem.xfGetRu(py).then(data=>{
+        console.log("  ------ WorkService 讯飞语音添加日程: 匹配参与人查询结果：" + JSON.stringify(data));
+          if(data && data.rows&&data.rows.length>0){
+            //获取不存在的联系人 pinyin名称
+            for(let i=0;i<data.rows.length;i++){
+              let ru:RuModel = data.rows.item(i);
+              ruL.push(ru);
+              let npy = '';
+              let istrue = false;
+              if(ru.ran && ru.ran != null && ru.ran != ''){
+                npy = this.util.chineseToPinYin(ru.ran);
+                nopy = nopy.replace(npy,'');
+                istrue = true;
+              }
+              if(!istrue&&ru.rN && ru.rN != null && ru.rN != ''){
+                npy = this.util.chineseToPinYin(ru.rN);
+                nopy = nopy.replace(npy,'');
+              }
+            }
+          }
+
+          let nopyL:Array<string> = nopy.split(",");
+          let caL = ca.split(",");
+          let cbL = cb.split(",");
+          let noca='';//获取不存在的联系人中文名称
+          let nocb='';//获取不存在的联系人 解析中文名称
+          for(let j=0;j<nopyL.length;j++){
+            for(let a=0;a<caL.length;a++){
+              let capy = this.util.chineseToPinYin(caL[a]);
+              if(nopyL[j] == capy){
+                if(noca == ''){
+                  noca = caL[a];
+                }else{
+                  noca = "," + caL[a];
+                }
+              }
+            }
+            for(let b=0;b<cbL.length;b++){
+              let cbpy = this.util.chineseToPinYin(cbL[b]);
+              if(nopyL[j] == cbpy){
+                if(nocb == ''){
+                  nocb = caL[b];
+                }else{
+                  nocb = "," + caL[b];
+                }
+              }
+            }
+          }
+        rc.rus=ruL;
+        rc.noca=noca;
+        rc.nocb=nocb;
+        resolve(rc)
+      }).catch(e=>{
+        console.error("-------- WorkService 讯飞语音添加日程 ERROR : " + JSON.stringify(e));
+        rc.code=ReturnConfig.ERR_CODE;
+        rc.message=ReturnConfig.ERR_MESSAGE;
+        reject(rc)
+      })
+
+    })
+
   }
 }

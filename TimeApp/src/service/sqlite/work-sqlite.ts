@@ -226,19 +226,19 @@ export class WorkSqlite{
    * @param {string} jh 计划名称
    */
   getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string):Promise<any>{
-    let sql ="select gd.* from GTD_D gd " +
-      "left join GTD_C gc on gc.sI = gd.sI " +
+    let sql ="select gc.*,gf.lan,jh.jn from GTD_C gc " +
+      "left join GTD_D gd on gc.sI = gd.sI " +
       "left join GTD_F gf on gf.lai = gc.lI " +
       "left join GTD_J_H jh on jh.ji = gc.ji " +
-      "where 1=1";
+      "where gd.uI='"+DataConfig.uInfo.uI+"'";
     if(ct != null && ct != ""){
       sql = sql + " and gd.son like '%" + ct +"%'"
     }
     if(sd != null && sd != ""){
-      sql = sql + " and gc.sd >= '" + sd +"' and gc.ed >= '" + sd +"'";
+      sql = sql + " and substr(gc.sd,1,10) <= '" + sd +"'";
     }
     if(ed != null && ed != ""){
-      sql = sql + " and gc.sd <= '" + ed +"' and gc.ed <= '" + ed +"'";
+      sql = sql + " and substr(gc.ed,1,10) >= '" + ed +"'";
     }
     if(lbI != null && lbI != ""){
       sql = sql + " and gf.lan like '%" + lbI +"%'"
@@ -249,46 +249,4 @@ export class WorkSqlite{
     return this.baseSqlite.executeSql(sql,[]);
   }
 
-
-  test() {
-    let ms = new MsEntity();
-    ms.mn='test';
-    ms.md='2018-11-18 20:12';
-    ms.mt='0';
-    //插入消息
-    this.baseSqlite.save(ms).then(data=>{
-      console.log(data);
-    })
-    let sqlStr = "INSERT INTO GTD_D(pI,son,pd,uI) " +
-      "VALUES ('24314','12424','2018-11-18 20:12','123458')";
-    this.baseSqlite.executeSql(sqlStr, []).then(data => {
-      console.log(data)
-    }).catch(e => {
-      console.log(e)
-    })
-
-    let sqlStr3 = "INSERT INTO GTD_D(pI,son,pd,uI) " +
-      "VALUES ('243143','12424','2018-11-17 20:12','123458')";
-    this.baseSqlite.executeSql(sqlStr3,[]).then(data=>{
-      console.log(data)
-    }).catch(e=>{
-      console.log(e)
-    })
-
-    let sqlStr4 = "INSERT INTO GTD_D(pI,son,pd,uI) " +
-      "VALUES ('243144','12424','2018-11-15 20:12','123458')";
-    this.baseSqlite.executeSql(sqlStr4,[]).then(data=>{
-      console.log(data)
-    }).catch(e=>{
-      console.log(e)
-    })
-
-    let sqlStr5 = "INSERT INTO GTD_D(pI,son,pd,uI) " +
-      "VALUES ('243145','12424','2018-11-22 20:12','123458')";
-    this.baseSqlite.executeSql(sqlStr5,[]).then(data=>{
-      console.log(data)
-    }).catch(e=>{
-      console.log(e)
-    })
-  }
 }

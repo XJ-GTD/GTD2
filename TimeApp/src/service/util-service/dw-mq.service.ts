@@ -35,7 +35,7 @@ export class DwMqService {
         case SkillConfig.XF_NMC: //取消
           break;
         case SkillConfig.XF_SCC: //讯飞：日程添加
-          this.xfScheduleCreate(mqDate.res.data);
+          this.xfScheduleCreate(mqDate);
           break;
         case SkillConfig.XF_SCD: //讯飞：日程删除
           this.xfScheduleDelete();
@@ -87,19 +87,24 @@ export class DwMqService {
    * @param data
    */
   private xfScheduleCreate(mqDate) {
-    this.dwEmit.setHbData(mqDate);//测试用
-    let resd = mqDate.res.data;
-    let ct=resd.sn;
-    let sd=resd.st;
-    let ed = resd.et;
-    let lbI = resd.lb;
-    let jhi = resd.pn;
-    let ruL=[];
-
-    this.work.arc(ct,sd,ed,lbI,jhi,ruL).then(data=>{
-      this.dwEmit.setHaData(data);
+    let md:WsResDataModel= mqDate.res.data;
+    let ca=md.common_A;  //人名原参数value
+    let cb=md.common_B; //人名原参数normValue
+    let pln = md.pln //拼音
+    let sn = md.sn //标题
+    let sd = md.st;
+    if(sd == null || sd==''){
+      sd=md.et;
+    }
+    let ed=md.et;
+    if(ed == null || ed==''){
+      ed=md.st;
+    }
+    this.work.xfAddrc(sn,sd,pln,ca,cb).then(data=>{
+      mqDate.qData=data;
+      this.dwEmit.setHbData(mqDate);//测试用
     }).catch(e=>{
-      this.dwEmit.setHaData(e);
+      this.dwEmit.setHbData(mqDate);//测试用
     });
   }
 
@@ -121,24 +126,34 @@ export class DwMqService {
    */
   private xfScheduleFind(mqDate) {
     this.hdSpeech.scheduleFind();
-    this.dwEmit.setHbData(mqDate);//测试用
-    // let jh = '';
-    // let lbN='';
-    // this.work.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
-    //   let str = "";
-    //   if(data && data.sjl && data.sjl.length>0){
-    //     str = '您有'+data.sjl.length+"个日程等待您去处理！"
-    //   }else{
-    //     str="您今天有大把的时间可以利用"
-    //   }
-    //   let url = "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&text=" + encodeURI(str);
-    //   var n = new Audio(url);
-    //   n.src = url;
-    //   n.play();
-    //   this.dwEmit.setHbData(data);
-    // }).catch(e=>{
-    //   this.dwEmit.setHbData(e);
-    // });
+    let para :WsResDataModel  = mqDate.res.data
+    let ct = para.sn;
+    let lbN = para.lb;
+    let jh = para.pn;
+    let sd = para.st;
+    if(sd == null || sd==''){
+      sd=para.et;
+    }
+    let ed=para.et;
+    if(ed == null || ed==''){
+      ed=para.st;
+    }
+    this.work.getwL('',sd,ed,'',lbN,jh).then(data=>{
+      let str = "";
+      if(data && data.rcL && data.rcL.length>0){
+        str = '您有'+data.rcL.length+"个日程等待您去处理！"
+      }else{
+        str="您今天有大把的时间可以利用"
+      }
+      let url = "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&text=" + encodeURI(str);
+      var n = new Audio(url);
+      n.src = url;
+      n.play();
+      mqDate.qData = data;
+      this.dwEmit.setHbData(mqDate);//测试用
+    }).catch(e=>{
+      this.dwEmit.setHbData(mqDate);//测试用
+    });
   }
 
   /**
