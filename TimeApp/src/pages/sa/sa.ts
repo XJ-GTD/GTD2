@@ -115,11 +115,11 @@ export class SaPage {
 
   save(){
     this.starttmp = moment(new Date(this.starttmp).getTime()-8*60*60*1000).format("YYYY-MM-DD HH:mm");
-    this.endtmp = this.endtmp
-    console.log(this.starttmp)
+    // this.endtmp = this.endtmp
+    console.log(this.starttmp);
     this.rc.sd = this.starttmp;
-    this.rc.ed = this.endtmp;
-
+    // this.rc.ed = this.endtmp;
+    console.log("修改日程传入参数 :: " + JSON.stringify(this.rc));
     this.work.urc(this.rc.sI,this.rc.sN,this.rc.sd,this.rc.ed,this.rc.lI,this.rc.ji,this.rc.rus).then(data=>{
       console.log(JSON.stringify(data));
     }).catch(reason => {
@@ -173,9 +173,10 @@ export class SaPage {
         console.log('Checkbox data:', data);
         rus = new Array<RuModel>();
         for(let i = 0;i<data.length;i++){
-          rus.push(this.rus[i]);
+          rus.push(this.rus[data[i]]);
         }
         this.rc.rus = rus;
+        console.log("选择的参与人 :: " + JSON.stringify(this.rc.rus));
       }
     });
     alert.present();

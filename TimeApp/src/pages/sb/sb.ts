@@ -39,7 +39,7 @@ export class SbPage {
   select:any = [];
   selectLb:Array<LbModel>;
 
-  lbs: Array<LbModel>
+  lbs: Array<LbModel>;
   type: any ;
   title:any;
   startTime:any;//开始时间
@@ -236,7 +236,7 @@ export class SbPage {
     })
   }
 
-
+  //
   backdropclick(e){
     //判断点击的是否为遮罩层，是的话隐藏遮罩层
     if(e.srcElement.className == 'itemClass'){
@@ -300,7 +300,7 @@ export class SbPage {
       }
     }
 
-    console.log('tianj')
+    console.log('tianj');
     this.selectLb.push(lb);
 
   }
@@ -314,15 +314,15 @@ export class SbPage {
 
     for(let i = 0;this.selectLb != undefined && i<this.selectLb.length;i++){
       switch(this.selectLb[i].lat){
-        case 'BQA': A = true;
+        case '1': A = true;
           break;
-        case 'BQB': B = true;
+        case '2': B = true;
           break;
-        case 'BQC': C = true;
+        case '3': C = true;
           break;
-        case 'BQD': D = true;
+        case '4': D = true;
           break;
-        case 'BQE': E = true;
+        case '5': E = true;
           break;
       }
     }
@@ -356,28 +356,28 @@ export class SbPage {
     let C= false;
     let D= false;
     let E= false;
-    switch(this.type.substring(0,3)){
-      case 'BQA':
+    switch(this.lbs[this.type-1].lat){
+      case '1':
         C = true;
         E = true;
         break;
-      case 'BQB':
+      case '2':
         B = true;
         E = true;
         break;
-      case 'BQC':
+      case '3':
         A = true;
         B = true;
         C = true;
         E = true;
         break;
-      case 'BQD':
+      case '4':
         A = true;
         B = true;
         C = true;
         D = true;
         break;
-      case 'BQE':
+      case '5':
         B = true;
         break;
     }
