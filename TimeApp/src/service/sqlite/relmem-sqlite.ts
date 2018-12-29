@@ -128,7 +128,7 @@ export class RelmemSqlite {
         if(rNpy==''){
           rNpy="rNpy in ('"+pyL[i]+"'"
         }else{
-          ranpy=rNpy + ",'"+pyL[i]+"'"
+          rNpy=rNpy + ",'"+pyL[i]+"'"
         }
       }
     }

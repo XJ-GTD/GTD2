@@ -140,12 +140,13 @@ W
 
   /**
    * Mq添加日程
+   * @param {string} sI 主键
+   * @param {string} cui 日程创建人
    * @param {string} sN 标题
    * @param {string} sd 开始时间
    * @param {string} ed 结束时间
    * @param {string} lbI 标签编号
    * @param {string} jhi 计划名称
-   * @param {Array}  ruL 参与人json数组[ {id,rN,rC} ]（id主键,rN名称,rC联系方式）
    */
   arcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {

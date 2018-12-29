@@ -202,10 +202,18 @@ export class RelmemService {
       let ru=new RuEntity();
       ru.id=id;
       ru.ran=ran;
+      if(ru.ran == null || ru.ran == ''){
+        ru.ran=rc;
+      }
       ru.rN=rN;
+      if(ru.rN == null || ru.rN == ''){
+        ru.rN=ran;
+      }
       ru.rC=rc;
       ru.rel=rel;
       ru.rF = rF;
+      ru.rNpy = this.util.chineseToPinYin(ru.rN);
+      ru.ranpy = this.util.chineseToPinYin(ru.ran);
       let base=new BsModel();
       this.relmemSqlite.uru(ru).then(data=>{
         //如果是群

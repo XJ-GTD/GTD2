@@ -7,6 +7,7 @@ import { RelmemService } from "../relmem.service";
 import { WsResDataModel } from "../../model/ws.res.model";
 import {ErrorCodeService} from "./error-code.service";
 import {HdSpeechService} from "./hd-speech.service";
+import {DataConfig} from "../../app/data.config";
 
 /**
  * webSocket公用处理方法
@@ -145,10 +146,10 @@ export class DwMqService {
       }else{
         str="您今天有大把的时间可以利用"
       }
-      let url = "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&text=" + encodeURI(str);
-      var n = new Audio(url);
-      n.src = url;
-      n.play();
+      // let url = "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&text=" + encodeURI(str);
+      // var n = new Audio(url);
+      // n.src = url;
+      // n.play();
       mqDate.qData = data;
       this.dwEmit.setHbData(mqDate);//测试用
     }).catch(e=>{
@@ -239,11 +240,14 @@ export class DwMqService {
     let rui = data.us;
     let sI=data.si;
     console.log("----- DwMqService scheduleCreate(业务：日程添加) start---- ")
-    this.work.arcMq(sI,rui,ct,sd,ed,lbI).then(data=>{
-      console.log("----- DwMqService scheduleCreate(业务：日程添加) end ---- ")
-    }).catch(e=>{
-      console.log("----- DwMqService scheduleCreate(业务：日程添加) Error : "+JSON.stringify(e))
-    });
+    if(rui != DataConfig.uInfo.uI){
+      this.work.arcMq(sI,rui,ct,sd,ed,lbI).then(data=>{
+        console.log("----- DwMqService scheduleCreate(业务：日程添加) end ---- ")
+      }).catch(e=>{
+        console.log("----- DwMqService scheduleCreate(业务：日程添加) Error : "+JSON.stringify(e))
+      });
+    }
+
   }
 
   /**
