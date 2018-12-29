@@ -6,7 +6,7 @@
 export class ReEntity {
 
   private _ri: string=null;   //提醒时间UUID
-  private _pi:string=null; //参与人表ID
+  private _sI:string=null; //参与人表ID
   private _rd: string=null;   //日程提醒时间
   /*
    * 创建表
@@ -14,8 +14,8 @@ export class ReEntity {
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_E(ri VARCHAR(100) PRIMARY KEY,' +
-                          'pi VARCHAR(100),rd VARCHAR(10));';
-  private _drsq:string="DROP TABLE IF EXISTS GTD_E;"
+                          'sI VARCHAR(100),rd VARCHAR(10));';
+  private _drsq:string="DROP TABLE IF EXISTS GTD_E;";
 
   private _isq:string;
   private _usq:string;
@@ -33,7 +33,7 @@ export class ReEntity {
 
   get isq(): string {
     let sql='insert into GTD_E ' +
-      '(ri,pi,rd) values("'+ this._ri+'","'+ this._pi+'","'+this._rd+'")';
+      '(ri,sI,rd) values("'+ this._ri+'","'+ this._sI+'","'+this._rd+'")';
     this._isq=sql;
     return this._isq;
   }
@@ -44,8 +44,8 @@ export class ReEntity {
 
   get usq(): string {
     let sql='update GTD_E set';
-    if(this._pi!=null){
-      sql=sql+' pi="' + this._pi +'",';
+    if(this._sI!=null){
+      sql=sql+' sI="' + this._sI +'",';
     }
     if(this._rd!=null){
       sql=sql+' rd="' + this._rd +'",';
@@ -64,8 +64,8 @@ export class ReEntity {
     if(this._ri!=null){
       sql=sql+' and ri="' + this._ri +'"';
     }
-    if(this._pi!=null){
-      sql=sql+' and pi="' + this._pi +'"';
+    if(this._sI!=null){
+      sql=sql+' and sI="' + this._sI +'"';
     }
     if(this._rd!=null){
       sql=sql+' and rd="' + this._rd +'"';
@@ -101,12 +101,12 @@ export class ReEntity {
     this._ri = value;
   }
 
-  get pi(): string {
-    return this._pi;
+  get sI(): string {
+    return this._sI;
   }
 
-  set pi(value: string) {
-    this._pi = value;
+  set sI(value: string) {
+    this._sI = value;
   }
 
   get rd(): string {
