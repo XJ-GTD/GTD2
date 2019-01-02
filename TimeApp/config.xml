@@ -92,7 +92,5 @@
     <plugin name="com.telerik.plugins.nativepagetransitions" spec="~0.6.5" />
     <plugin name="cordova-sqlite-storage" spec="~2.6.0" />
     <plugin name="uk.co.workingedge.cordova.plugin.sqliteporter" spec="~1.1.0" />
-    <plugin name="cordova-plugin-BaiduSpeechAndTTS" spec="../BaiduSpeechAndTTS" />
     <plugin name="cordova-plugin-statusbar" spec="~2.4.2" />
-    <engine name="android" spec="~6.4.0" />
 </widget>
