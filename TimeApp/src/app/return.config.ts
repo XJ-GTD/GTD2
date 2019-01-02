@@ -1,5 +1,3 @@
-import {UEntity} from "../entity/u.entity";
-
 /**
  * 公共配置用
  */

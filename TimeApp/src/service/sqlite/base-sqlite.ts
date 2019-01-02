@@ -1,8 +1,7 @@
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Injectable } from '@angular/core';
-import { Platform , Events } from 'ionic-angular';
+import { Events } from 'ionic-angular';
 import { SQLitePorter } from '@ionic-native/sqlite-porter';
-import * as moment from "moment";
 import { UEntity } from "../../entity/u.entity";
 import {RcEntity} from "../../entity/rc.entity";
 import {RcpEntity} from "../../entity/rcp.entity";
@@ -30,8 +29,7 @@ export class BaseSqlite {
   className:String = 'BaseSqlite';
   database: SQLiteObject;
   win: any = window;//window对象
-  constructor( private platform: Platform,
-               private sqlite: SQLite,
+  constructor( private sqlite: SQLite,
                private util: UtilService,
                private sqlitePorter: SQLitePorter,
                private events: Events) { }
