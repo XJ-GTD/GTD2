@@ -8,7 +8,6 @@ import { IonicStorageModule } from "@ionic/storage";
 import { File } from "@ionic-native/file";
 
 import { LocalNotifications } from "@ionic-native/local-notifications";
-import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification'
 import { XiaojiAssistantService } from "../service/util-service/xiaoji-assistant.service";
 import { XiaojiFeedbackService } from "../service/util-service/xiaoji-feedback.service";
 import { SQLite } from '@ionic-native/sqlite';
@@ -86,7 +85,6 @@ import { ZtdSqlite } from "../service/sqlite/ztd-sqlite";
     XiaojiAlarmclockService,
     UtilService,
     LocalNotifications,
-    PhonegapLocalNotification,
     XiaojiFeedbackService,
     SQLite,
     Calendar,
