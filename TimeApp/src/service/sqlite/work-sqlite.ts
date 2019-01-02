@@ -175,9 +175,9 @@ export class WorkSqlite{
               res.scheduleName =res.son;
             }
             if(res.sd.substr(0,10) == d){
-              res.scheduleStartTime = res.sd.substr(12,16)
+              res.scheduleStartTime = res.sd.substr(11,16)
             }else if(res.ed.substr(0,10) == d){
-              res.scheduleStartTime = res.ed.substr(12,16)
+              res.scheduleStartTime = res.ed.substr(11,16)
             }else{
               res.scheduleStartTime="08:00"
             }

@@ -83,6 +83,11 @@ export class SyncService {
         })
       }else{
         console.log("------SyncService initzdlb restful 已初始化字典数据及标签表 --------")
+        // this.initLocalData().then(data=>{
+        //   if(ReturnConfig.RETURN_MSG.size==0){
+        //     this.initzdlb()
+        //   }
+        // })
         resolve(base)
       }
 
