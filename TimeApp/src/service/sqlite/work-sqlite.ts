@@ -31,52 +31,52 @@ export class WorkSqlite{
   sRcps(rc:RcEntity,rus:Array<RuModel>){
     let sqlStr = "";
     let isTrue = false;
-    if(rus != null && rus.length>0){
-      if(DataConfig.IS_MOBILE){
-        let sql = "";
+    // if(rus != null && rus.length>0){
+    // if(DataConfig.IS_MOBILE){
+      let sql = "";
 
-        for(let i=0;i<rus.length;i++){
-          let ru = rus[i];
-          let sa = '0';
-          if(ru.rI && ru.rI == rc.uI){
-            sa='1';
-            isTrue=true;
-          }
-          if(!ru.sdt){
-            ru.sdt=0;
-          }
-          sql +='insert into GTD_D (pI,sI,son,sa,cd,pd,uI,rui,sdt) values("'+ this.util.getUuid()+'","'+ rc.sI+'","'
-            + rc.sN+'","' +sa+ '","'+rc.sd+ '","'+rc.ed+ '","'+ ru.rI+'","'+ ru.id+'",'+ ru.sdt+')';
+      for(let i=0;i<rus.length;i++){
+        let ru = rus[i];
+        let sa = '0';
+        if(ru.rI && ru.rI == rc.uI){
+          sa='1';
+          isTrue=true;
         }
-        return this.baseSqlite.importSqlToDb(sql)
-      }else{
-        let rcp = new RcpEntity();
-        for(let i=0;i<rus.length;i++){
-          rcp.pI = this.util.getUuid();
-          rcp.uI =rus[i].rI;
-          rcp.son=rc.sN;
-          rcp.sI=rc.sI;
-          rcp.cd=rc.sd;
-          rcp.pd=rc.ed;
-          rcp.rui=rus[i].id;
-          if(rus[i].sdt){
-            rcp.sdt=rus[i].sdt
-          }
-          if(rcp.uI == rc.uI){
-            isTrue = true;
-            rcp.sa='1'
-            rcp.sdt=1
-          }else{
-            rcp.sa='0'
-          }
-          if(i < rus.length-1){
-            this.baseSqlite.save(rcp);
-          }
+        if(!ru.sdt){
+          ru.sdt=0;
         }
-        rcp.pI = this.util.getUuid();
-        return this.baseSqlite.save(rcp);
+        sql +='insert into GTD_D (pI,sI,son,sa,cd,pd,uI,rui,sdt) values("'+ this.util.getUuid()+'","'+ rc.sI+'","'
+          + rc.sN+'","' +sa+ '","'+rc.sd+ '","'+rc.ed+ '","'+ ru.rI+'","'+ ru.id+'",'+ ru.sdt+');';
       }
-    }
+      return this.baseSqlite.importSqlToDb(sql)
+      // }else{
+      //   let rcp = new RcpEntity();
+      //   for(let i=0;i<rus.length;i++){
+      //     rcp.pI = this.util.getUuid();
+      //     rcp.uI =rus[i].rI;
+      //     rcp.son=rc.sN;
+      //     rcp.sI=rc.sI;
+      //     rcp.cd=rc.sd;
+      //     rcp.pd=rc.ed;
+      //     rcp.rui=rus[i].id;
+      //     if(rus[i].sdt){
+      //       rcp.sdt=rus[i].sdt
+      //     }
+      //     if(rcp.uI == rc.uI){
+      //       isTrue = true;
+      //       rcp.sa='1'
+      //       rcp.sdt=1
+      //     }else{
+      //       rcp.sa='0'
+      //     }
+      //     if(i < rus.length-1){
+      //       this.baseSqlite.save(rcp);
+      //     }
+      //   }
+      //   rcp.pI = this.util.getUuid();
+      //   return this.baseSqlite.save(rcp);
+      // }
+    // }
 
   }
 
