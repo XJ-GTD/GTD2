@@ -243,7 +243,7 @@ public class AutoCheck {
             String path = context.getApplicationInfo().nativeLibraryDir;
             appendLogMessage("Jni so文件目录 " + path);
             File[] files = new File(path).listFiles();
-            TreeSet<String> set = new TreeSet<>();
+            TreeSet<String> set = new TreeSet<String>();
             if (files != null) {
                 for (File file : files) {
                     if (file.canRead()) {

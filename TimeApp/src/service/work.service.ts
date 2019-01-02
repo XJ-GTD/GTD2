@@ -71,23 +71,18 @@ W
       let psl = new Array<PsModel>();
       this.baseSqlite.save(rc).then(data=>{
         if(ruL && ruL.length>0){
-          return this.workSqlite.sRcps(rc,ruL);
-        }
-      }).then(data=>{
-        //转化接口对应的参与人参数
-        if(ruL && ruL.length>0){
-          for(let i=0;i<ruL.length;i++){
-            //排除当前登录人
-            //if(ruL[i].rI != rc.uI){
+          //转化接口对应的参与人参数
+          if(ruL && ruL.length>0){
+            for(let i=0;i<ruL.length;i++){
+              //排除当前登录人
+              //if(ruL[i].rI != rc.uI){
               let ps = new PsModel();
               ps.userId=ruL[i].rI;
               ps.accountMobile = ruL[i].rC;
               psl.push(ps);
-            //}
+              //}
+            }
           }
-        }
-        //参与人大于0则访问后台接口
-        if(psl.length>0){
           console.log("WorkService arc() restful " + SkillConfig.BC_SCC+" start");
           return this.rcResful.sc(rc.uI,SkillConfig.BC_SCC,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'');
         }
@@ -111,23 +106,12 @@ W
                   }
               }
             }
-            //先删除再添加
-            this.workSqlite.dRcps(rc.sI).then(data=>{
-              return this.workSqlite.sRcps(rc,ruL);
-            }).then(data=>{
-              //this.urc(rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,rc.ji,ruL)
-              resolve(bs);
-            }).catch(e=>{
-              console.error("WorkService arc() Error : " +JSON.stringify(e));
-              bs.code = ReturnConfig.ERR_CODE;
-              bs.message=e.message;
-              reject(bs);
-            })
           }
-        }else{
-          resolve(bs);
         }
-
+        return this.workSqlite.sRcps(rc,ruL);
+      }).then(data=>{
+        console.log("WorkService arc() add 参与人 Success : " +JSON.stringify(data));
+        resolve(bs);
       }).catch(e=>{
         console.error("WorkService arc() Error : " +JSON.stringify(e));
         bs.code = ReturnConfig.ERR_CODE;
@@ -491,6 +475,7 @@ W
             let ru = new RuModel();
             if(rs.item(i).uI == rc.uI){
               ru.rN=DataConfig.uInfo.uN;
+              ru.ran=DataConfig.uInfo.uN;
               ru.rI=DataConfig.uInfo.uI;
               ru.hiu=DataConfig.uInfo.hIU;
             }else{

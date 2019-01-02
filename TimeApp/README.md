@@ -20,3 +20,25 @@
 #SQLite插件安装手顺
 ## ionic cordova plugin add cordova-sqlite-storage
 ## npm install --save @ionic-native/sqlite
+
+#插件安装
+##ionic cordova plugin add cordova-plugin-statusbar
+##ionic cordova plugin add uk.co.workingedge.cordova.plugin.sqliteporter
+##ionic cordova plugin add cordova-sqlite-storage
+##ionic cordova plugin add cordova-plugin-whitelist
+##ionic cordova plugin add com.telerik.plugins.nativepagetransitions
+##ionic cordova plugin add cordova-plugin-nativeaudio
+##ionic cordova plugin add cordova-plugin-vibration
+##ionic cordova plugin add cordova-plugin-file-transfer
+##ionic cordova plugin add cordova-plugin-local-notification
+##ionic cordova plugin add cordova-plugin-ionic-webview
+##ionic cordova plugin add cordova-plugin-splashscreen
+##ionic cordova plugin add ionic-plugin-keyboard
+##ionic cordova plugin add cordova-plugin-device
+##ionic cordova plugin add cordova-plugin-console
+##ionic cordova plugin add cordova-plugin-file
+##ionic cordova plugin add cordova-plugin-calendar
+##ionic cordova plugin add cordova-plugin-advanced-http
+##ionic cordova plugin add cordova-plugin-android-permissions
+##ionic cordova plugin add cordova-plugin-background-mode
+##ionic cordova plugin add ../BaiduSpeechAndTTS
