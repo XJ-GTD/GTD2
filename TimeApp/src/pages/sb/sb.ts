@@ -129,7 +129,7 @@ export class SbPage {
     this.workService.arc(this.title,this.startTime,null,this.type,this.jh,rul).then(data=>{
       if(data.code == 0){
         console.log("添加日程成功")
-        this.navCtrl.setRoot('HzPage')
+        this.navCtrl.push('HzPage')
       }else{
         console.log("添加日程失败")
       }

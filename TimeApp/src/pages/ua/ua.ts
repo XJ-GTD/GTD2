@@ -84,7 +84,7 @@ export class UaPage {
                     text: '确定', role: 'cancel', handler: () => {
                       if(!this.rePage){
                         //跳转首页
-                        this.navCtrl.setRoot('HzPage');
+                        this.navCtrl.push('HzPage');
                       }else{
                         this.navCtrl.getViews().forEach(page=>{
                           if(page.name == this.rePage){

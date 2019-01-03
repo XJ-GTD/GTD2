@@ -25,6 +25,6 @@ export class AzPage {
   startApp(){
     console.debug('time app go to ' + PageConfig.AL_PAGE);
     console.log('time app go to ' + PageConfig.AL_PAGE);
-    this.nav.setRoot(PageConfig.AL_PAGE);
+    this.nav.push(PageConfig.AL_PAGE);
   }
 }

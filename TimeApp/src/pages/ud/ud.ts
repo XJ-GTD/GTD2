@@ -43,7 +43,7 @@ export class UdPage {
           buttons: [{
             text: '确定', role: 'cancel', handler: () => {
               //跳转首页
-              this.navCtrl.setRoot('HzPage');
+              this.navCtrl.push('HzPage');
             }
           }]
         });
