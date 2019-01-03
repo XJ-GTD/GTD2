@@ -50,7 +50,7 @@ W
    * @param {string} jhi 计划名称
    * @param {Array}  ruL 参与人json数组[ {id,rN,rC} ]（id主键,rN名称,rC联系方式）
    */
-  arc(ct:string,sd:string,ed:string,lbI:string,jhi:string,ruL:Array<RuModel>):Promise<BsModel>{
+  arc(ct:string,sd:string,lbI:string,jhi:string,cft:string,rm:string,ac:string,ruL:Array<RuModel>):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
       //先查询当前用户ID
@@ -58,18 +58,24 @@ W
       rc.uI=DataConfig.uInfo.uI;
       rc.sN=ct;
       rc.sd=sd;
-      if(sd == null || sd == ''){
-        rc.sd=ed;
-      }
-      rc.ed=ed;
-      if(ed == null || ed == ''){
+      if(cft && cft != null && cft != ''){
+        rc.ed='2999-12-31 23:59';
+      }else{
         rc.ed=sd;
       }
+
       rc.lI=lbI;
       rc.ji=jhi;
       rc.sI=this.util.getUuid();
       let psl = new Array<PsModel>();
-      this.baseSqlite.save(rc).then(data=>{
+      console.log("----- workService arc 添加日程开始-------");
+      this.baseSqlite.save(rc)
+        .then(data=>{
+          console.log("----- workService arc 添加日程返回结果：" + JSON.stringify(data));
+          console.log("----- workService arc 添加日程子表-------");
+          return this.workSqlite.addLbData(rc.sI,rc.lI,cft,rm,ac,'0')
+        })
+        .then(data=>{
         if(ruL && ruL.length>0){
           //转化接口对应的参与人参数
           if(ruL && ruL.length>0){
@@ -83,15 +89,14 @@ W
               //}
             }
           }
-          console.log("WorkService arc() restful " + SkillConfig.BC_SCC+" start");
+          console.log("WorkService arc() restful request " + SkillConfig.BC_SCC+" start");
           return this.rcResful.sc(rc.uI,SkillConfig.BC_SCC,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'');
         }
       }).then(data=>{
-        console.log("WorkService arc() end : " +JSON.stringify(data));
+        console.log("WorkService arc() restful request end : " +JSON.stringify(data));
         if(psl.length>0 && data.code==0 && data.data.players.length>0){
           let players = data.data.players;
           for(let i=0;i<ruL.length;i++){
-
             for(let j=0;j<players.length;j++){
               if(ruL[i].rC == players[i].accountMobile){
                   if(players[i].agree){
