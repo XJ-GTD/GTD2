@@ -2,13 +2,13 @@
  * create by on 2018/11/19
  */
 
-//日程标签表-日程标签
+//日程标签表-日程标签（聚会、会议、事件、预约、运动）
 export class RcbthEntity {
 
   private _sI:string=null;   //UUID
   private _id:string=null; //主键
   private _tk:string=null;  //标签key值
-  private _sd:string=null; //开始时间
+  private _cft:string=null; //重复类型：0日，1周，2月，3年
   private _dt:string=null; //日期（具体到天）
   private _ed:string = null; //结束时间
   private _cf:string=null;  //是否重复：0否1是
@@ -21,7 +21,7 @@ export class RcbthEntity {
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_C_RC(sI VARCHAR(100) PRIMARY KEY,' +
-                          'id VARCHAR(100),tk VARCHAR(10),cf VARCHAR(2),sd VARCHAR(20),dt VARCHAR(20),' +
+                          'id VARCHAR(100),tk VARCHAR(10),cf VARCHAR(2),cft VARCHAR(20),dt VARCHAR(20),' +
     'ed VARCHAR(20),rm VARCHAR(100),ac VARCHAR(2),fh VARCHAR(2));';
   private _drsq:string="DROP TABLE IF EXISTS GTD_C_RC;"
 
@@ -41,8 +41,8 @@ export class RcbthEntity {
 
   get isq(): string {
     let sql='insert into GTD_C_RC ' +
-      '(sI,id,tk,cf,sd,dt,ed,rm,ac,fh) values("'+ this._sI+'","'+ this._id+'","'+this._tk+ '","'+ this._cf
-      +'","'+this._sd+ '","'+ this._dt+'","'+ this._ed+'","'+ this._rm+'","'+ this._ac+'","'+ this._fh+'")';
+      '(sI,id,tk,cf,cft,dt,ed,rm,ac,fh) values("'+ this._sI+'","'+ this._id+'","'+this._tk+ '","'+ this._cf
+      +'","'+this._cft+ '","'+ this._dt+'","'+ this._ed+'","'+ this._rm+'","'+ this._ac+'","'+ this._fh+'")';
     this._isq=sql;
     return this._isq;
   }
@@ -62,8 +62,8 @@ export class RcbthEntity {
     if(this._cf!=null){
       sql=sql+' cf="' + this._cf +'",';
     }
-    if(this._sd!=null){
-      sql=sql+' sd="' + this._sd +'",';
+    if(this._cft!=null){
+      sql=sql+' cft="' + this._cft +'",';
     }
     if(this._dt!=null){
       sql=sql+' dt="' + this._dt +'",';
@@ -103,8 +103,8 @@ export class RcbthEntity {
     if(this._cf!=null){
       sql=sql+' and cf="' + this._cf +'"';
     }
-    if(this._sd!=null){
-      sql=sql+' and sd="' + this._sd +'"';
+    if(this._cft!=null){
+      sql=sql+' and cft="' + this._cft +'"';
     }
     if(this._ed!=null){
       sql=sql+' and ed="' + this._ed +'"';
@@ -169,12 +169,12 @@ export class RcbthEntity {
   }
 
 
-  get sd(): string {
-    return this._sd;
+  get cft(): string {
+    return this._cft;
   }
 
-  set sd(value: string) {
-    this._sd = value;
+  set cft(value: string) {
+    this._cft = value;
   }
 
   get ed(): string {
