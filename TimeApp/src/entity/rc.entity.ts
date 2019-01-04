@@ -50,25 +50,25 @@ export class RcEntity {
 
   get usq(): string {
     let sql='update GTD_C set';
-    if(this._sN!=null){
+    if(this._sN!=null && this._sN!=''){
       sql=sql+' sN="' + this._sN +'",';
     }
-    if(this._lI!=null){
+    if(this._lI!=null && this._lI!=''){
       sql=sql+' lI="' + this._lI +'",';
     }
-    if(this._uI!=null){
+    if(this._uI!=null && this._uI!=''){
       sql=sql+' uI="' + this._uI +'",';
     }
-    if(this._sd!=null){
+    if(this._sd!=null && this._sd!=''){
       sql=sql+' sd="' + this._sd +'",';
     }
-    if(this._ed!=null){
+    if(this._ed!=null && this._ed!=''){
       sql=sql+' ed="' + this._ed +'",';
     }
-    if(this._ji!=null){
+    if(this._ji!=null && this._ji!=''){
       sql=sql+' ji="' + this._ji +'",';
     }
-    if(this._sI != null){
+    if(this._sI != null && this._sI!=''){
       sql = sql + ' sI="' + this._sI +'" where sI="' + this._sI +'"';
     }
     this._usq=sql;
@@ -79,25 +79,25 @@ export class RcEntity {
   }
   get dsq(): string {
     let sql='DELETE FROM GTD_C WHERE 1=1 ';
-    if(this._sI!=null){
+    if(this._sI!=null && this._sI!=''){
       sql=sql+' and sI="' + this._sI +'"';
     }
-    if(this._sN!=null){
+    if(this._sN!=null && this._sN!=''){
       sql=sql+' and sN="' + this._sN +'"';
     }
-    if(this._lI!=null){
+    if(this._lI!=null && this._lI!=''){
       sql=sql+' and lI="' + this._lI +'"';
     }
-    if(this._uI!=null){
+    if(this._uI!=null && this._uI!=''){
       sql=sql+' and uI="' + this._uI +'"';
     }
-    if(this._sd!=null){
+    if(this._sd!=null && this._sd!=''){
       sql=sql+' and sd="' + this._sd +'"';
     }
-    if(this._ed!=null){
+    if(this._ed!=null && this._ed!=''){
       sql=sql+' and ed="' + this._ed +'"';
     }
-    if(this._ji!=null){
+    if(this._ji!=null && this._ji!=''){
       sql=sql+' and ji="' + this._ji +'"';
     }
 

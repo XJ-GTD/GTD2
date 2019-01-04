@@ -13,4 +13,17 @@ page-pa {
   .item-block.item-ios{
     border-bottom: 0.55px solid #c8c7cc ;
   }
+
+  ion-item{
+    height: 80px;
+  }
+
+  ion-avatar img{
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  ion-item-sliding button{
+    height: 80px;
+  }
 }

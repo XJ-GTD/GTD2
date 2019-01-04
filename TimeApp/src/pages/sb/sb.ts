@@ -43,7 +43,8 @@ export class SbPage {
   type: any ;
   title:any;
   startTime:any;//开始时间
-  repeatType:any;
+  repeatType:any;//重复类型
+  remarks:any;//备注
 
   isShow:any = false;
   showA:boolean = false;//重复类型
@@ -120,13 +121,15 @@ export class SbPage {
     console.log("时间格式规整后 :: " + this.startTime);
 
     let rul = new Array<RuModel>();
-    for(let i = 0;i< this.select.length;i++){
-      rul.push(this.pRelAl[this.select[i]]);
+    if(this.select){
+      for(let i = 0;i< this.select.length;i++){
+        rul.push(this.pRelAl[this.select[i]]);
+      }
     }
     if(this.jh==SbPage.defaultJH){
       this.jh = null;
     }
-    this.workService.arc(this.title,this.startTime,null,this.type,this.jh,rul).then(data=>{
+    this.workService.arc(this.title,this.startTime,this.type,this.jh,this.repeatType,this.remarks,'',rul).then(data=>{
       if(data.code == 0){
         console.log("添加日程成功")
         this.navCtrl.push('HzPage')
