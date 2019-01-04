@@ -37,4 +37,18 @@ page-hz {
     background: -moz-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Firefox 3.6 - 15 */
     background: linear-gradient(to right, rgb(149,58,139),rgb(86,82,222)); /* 标准的语法（必须放在最后） */
   }
+
+  ion-item{
+    height: 76px;
+  }
+
+  .headDiv{
+    height: 165px;
+  }
+
+  .centerCss{
+    margin: 0 auto;
+
+  }
+
 }

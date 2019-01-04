@@ -10,6 +10,10 @@ import {WorkService} from "../../service/work.service";
 import {LbModel} from "../../model/lb.model";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
+import {ZtdModel} from "../../model/ztd.model";
+import {DataConfig} from "../../app/data.config";
+import {JhService} from "../../service/jh.service";
+import {JhModel} from "../../model/jh.model";
 
 /**
  * Generated class for the SbPage page.
@@ -40,6 +44,7 @@ export class SbPage {
   selectLb:Array<LbModel>;
 
   lbs: Array<LbModel>;
+  repeatTypes:Array<ZtdModel>;
   type: any ;
   title:any;
   startTime:any;//开始时间
@@ -61,8 +66,10 @@ export class SbPage {
 
   static defaultJH:string = "添加计划";
   jh:string = SbPage.defaultJH;
+  lb:Object = {lan:"日常"};
 
   remindType:string ;
+  jhs:Array<JhModel>;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -73,13 +80,22 @@ export class SbPage {
               private actionSheetCtrl: ActionSheetController,
               private relmemService: RelmemService,
               private workService: WorkService,
-              private util: UtilService) {
+              private util: UtilService,
+              private jhService: JhService) {
+  }
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad SbPage');
+    this.navBar.backButtonClick = this.backButtonClick;
+    this.navBar.setBackButtonText("");
+    this.init();
   }
 
   init() {
     this.getAllRel();
     this.findLabel();
+    this.getAllJh();
     this.startTime = new Date(new Date().getTime()+8*60*60*1000).toISOString();
+    this.repeatTypes = DataConfig.ZTD_MAP.get(DataConfig.REPEAT_TYPE); //重复类型
   }
 
   //查询系统标签
@@ -146,12 +162,6 @@ export class SbPage {
 
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SbPage');
-    this.navBar.backButtonClick = this.backButtonClick;
-    this.navBar.setBackButtonText("");
-    this.init();
-  }
 
   backButtonClick = (e: UIEvent) => {
     // 重写返回方法
@@ -239,6 +249,16 @@ export class SbPage {
     })
   }
 
+  //所有计划
+  getAllJh(){
+    this.jhService.getJhs(null).then(data=>{
+      console.log("获取所有计划选项 :: " + JSON.stringify(data));
+      this.jhs = data.jhs;
+    }).catch(reason => {
+      console.log("获取所有计划选项 :: err " + JSON.stringify(reason));
+    })
+  }
+
   //
   backdropclick(e){
     //判断点击的是否为遮罩层，是的话隐藏遮罩层
@@ -252,30 +272,37 @@ export class SbPage {
 
   //添加计划
   show(){
-    // this.isShow = true;
-    let alert = this.alertCtrl.create({
-      title: '添加计划',
-      inputs: [{
-        type: "text",
-        id: "jh",
-        name:"jh",
-        placeholder: "添加计划"
-      }],
-      buttons: [
-        {
-          text: "确认",
-          role: null,
-          handler: data=>{
-            console.log(data);
-            if(data.jh.trim() != "" && data.jh != SbPage.defaultJH){
-              this.jh = data.jh.trim();
-            }
-          }
-        },
-      ],
-      enableBackdropDismiss: true
-    });
-    alert.present()
+    let domList = document.getElementsByName("lab");
+    for(let i = 0;i<domList.length;i++){
+      let dom = domList.item(i);
+      let rgb = 'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')';
+      dom.style.borderColor = rgb;
+      dom.style.color = rgb;
+    }
+    this.isShow = true;
+    // let alert = this.alertCtrl.create({
+    //   // title: '添加计划',
+    //   subTitle: '添加家伙',
+    //   inputs: [{
+    //     type: "button",
+    //     id: "jh",
+    //     name:"jh"
+    //   }],
+    //   buttons: [
+    //     {
+    //       text: "确认",
+    //       role: null,
+    //       handler: data=>{
+    //         console.log(data);
+    //         if(data.jh.trim() != "" && data.jh != SbPage.defaultJH){
+    //           this.jh = data.jh.trim();
+    //         }
+    //       }
+    //     },
+    //   ],
+    //   enableBackdropDismiss: true
+    // });
+    // alert.present()
   }
 
   checkdd(lb){
@@ -359,7 +386,14 @@ export class SbPage {
     let C= false;
     let D= false;
     let E= false;
-    switch(this.lbs[this.type-1].lat){
+    let tmp:LbModel = new LbModel();
+    for(let lb of this.lbs){
+      if(lb.lai == this.type){
+        tmp = lb;
+        break;
+      }
+    }
+    switch(tmp.lat){
       case '1':
         C = true;
         E = true;
@@ -411,6 +445,67 @@ export class SbPage {
     });
     alert.present()
   }
+
+  showLb(){
+    let inputs = [];
+    for(let lb of this.lbs){
+      inputs.push(
+        {type:'radio',value:lb,label:lb.lan,checked:false}
+      )
+    }
+    console.log(JSON.stringify(inputs))
+    let alert = this.alertCtrl.create({
+      title:'标签',
+      inputs:inputs,
+      buttons:[
+        {text:"取消",role:null,handler:data=>{console.log(JSON.stringify(data))}},
+        {text:"确认",role:null,handler:data=> {
+            console.log(JSON.stringify(data));
+            let lb:LbModel = data.valueOf();
+            this.lb = lb;
+            this.type = lb.lai;
+            this.showSelect();
+          }
+        },
+      ]
+    });
+    alert.present();
+  }
+  c(){
+
+  }
+
+  selectJh = function ($event,jh){
+    let flag = undefined;
+    console.log(JSON.stringify(this.lbs));
+    console.log(JSON.stringify(jh));
+    for(let i =0;i<this.lbs.length;i++){
+      if(this.lbs[i].lai == jh.lai){
+        flag = i;
+        break;
+      }
+    }
+    let domList = document.getElementsByName("lab");
+    for(let i = 0;i<domList.length;i++){
+      if(i == flag){
+        let dom = domList.item(i);
+        let rgb = dom.style.borderColor;
+        let color = "#FFF";
+        dom.style.backgroundColor = rgb;
+        dom.style.color = color;
+      }else{
+        let dom = domList.item(i);
+        let rgb = dom.style.borderColor;
+        let color = rgb;
+        let bgcolor = "#FFF";
+        dom.style.backgroundColor = bgcolor;
+        dom.style.color = color;
+      }
+    }
+
+
+  }
+
 
   // ionViewDidLoad(){
   //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");

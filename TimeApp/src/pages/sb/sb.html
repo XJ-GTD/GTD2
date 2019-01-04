@@ -41,7 +41,7 @@
       <div style="clear: both; font-size:10px" text-center></div>
     </div>
   </div>
-  <div>
+  <div class="height56">
     <!--<ion-label float-right>-->
       <!--<div class="selectCss" (click)="show()">-->
         <!--张三-->
@@ -55,57 +55,55 @@
           <!--</div>-->
           <!--<div float-left class="divCss">{{lb.lan}}</div>-->
         <!--</button>-->
-        <button class="buttonCss" (click)="show()" >
+        <button class="buttonCssA" (click)="show()" >
           <div float-left>
             <img src="./assets/imgs/i.png"/>
           </div>
-          <div float-left class="divCss">{{jh}}</div>
+          <div float-left class="divCssA">{{jh}}</div>
+        </button>
+
+        <button class="buttonCssB bor" (click)="showLb()">
+          <div float-right style="width: 12px;height: 18px;position: relative;margin-right: 5px;">
+            <div class="arrowCss"></div>
+          </div>
+          <div float-right class="divCssB" style="font-size: 15px">{{lb.lan}}</div>
         </button>
       </ion-buttons>
     </ion-label>
 
   </div>
-  <div ion-item class="padding-left-0">
-    <img src="./assets/imgs/e.png" item-start/>
-    <ion-label>标签</ion-label>
-    <!--<ion-select item-end [(ngModel)]="type" style="width: 100px">-->
-      <!--<ion-option [selected]="true" value="BQA">任务</ion-option>-->
-      <!--<ion-option [selected]="false" value="BQB">日常</ion-option>-->
-      <!--<ion-option [selected]="false" value="BQC">日程</ion-option>-->
-      <!--<ion-option [selected]="false" value="BQD">纪念日</ion-option>-->
-      <!--<ion-option [selected]="false" value="BQE">备忘录</ion-option>-->
+
+  <!--<div ion-item class="padding-left-0 height56">-->
+    <!--<img src="./assets/imgs/e.png" item-start/>-->
+    <!--<ion-label>标签</ion-label>-->
+    <!--<ion-select item-end [(ngModel)]="type" placeholder="标签" (ionChange)="showSelect()">-->
+      <!--<ion-option  *ngFor="let lb of lbs" value="{{lb.lai}}">{{lb.lan}}</ion-option>-->
     <!--</ion-select>-->
-    <ion-select item-end [(ngModel)]="type" placeholder="标签" (ionChange)="showSelect()">
-      <ion-option  *ngFor="let lb of lbs" value="{{lb.lai}}">{{lb.lan}}</ion-option>
-    </ion-select>
-  </div>
-  <button ion-item class="padding-left-0">
+  <!--</div>-->
+  <button ion-item class="padding-left-0 height56">
     <img src="./assets/imgs/1.png" item-start/>
     <ion-label>时间</ion-label>
     <!--<ion-label text-end>2018年11月20日</ion-label>-->
     <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="startTime"></ion-datetime>
   </button>
-  <ion-item *ngIf="showA" class="padding-left-0">
+  <ion-item *ngIf="showA" class="padding-left-0 height56">
     <img src="./assets/imgs/4.png" item-start/>
     <ion-label>重复类型</ion-label>
     <ion-select item-end [(ngModel)]="repeatType" (ionChange)="chengeType()" >
-      <ion-option [selected]="true" value="y">年</ion-option>
-      <ion-option [selected]="false" value="m">月</ion-option>
-      <ion-option [selected]="false" value="w">周</ion-option>
-      <ion-option [selected]="false" value="d">日</ion-option>
+      <ion-option  *ngFor="let ztd of repeatTypes" value="{{ztd.zk}}">{{ztd.zkv}}</ion-option>
     </ion-select>
   </ion-item>
-  <button ion-item  *ngIf="showB && repeatType!='w'" class="padding-left-0">
+  <button ion-item  *ngIf="showB && repeatType!='w'" class="padding-left-0 height56">
     <img src="./assets/imgs/1.png" item-start/>
     <ion-label>重复时间</ion-label>
     <ion-datetime displayFormat="{{repeatTime}}" pickerFormat="{{repeatTime}}" doneText="确定" cancelText="取消" ></ion-datetime>
   </button>
-  <button ion-item  *ngIf="showB && repeatType=='w'" class="padding-left-0">
+  <button ion-item  *ngIf="showB && repeatType=='w'" class="padding-left-0 height56">
     <img src="./assets/imgs/1.png" item-start/>
     <ion-label>重复时间</ion-label>
     <ion-datetime displayFormat="DDDD" pickerFormat="YYYY-MM-DD" [(ngModel)]="startTime" [disabled]="false"></ion-datetime>
   </button>
-  <button ion-item *ngIf="showC" class="padding-left-0">
+  <button ion-item *ngIf="showC" class="padding-left-0 height56">
     <img src="./assets/imgs/b.png" item-start/>
     <ion-label>备注</ion-label>
     <ion-input text-end type="text" [(ngModel)]="remarks">2018年11月20日</ion-input>
@@ -115,7 +113,7 @@
     <!--<ion-label>备注</ion-label>-->
     <!--<ion-input text-end type="text">2018年11月20日</ion-input>-->
   <!--</button>-->
-  <button ion-item *ngIf="showE" class="padding-left-0" (click)="remindSet()">
+  <button ion-item *ngIf="showE" class="padding-left-0 height56" (click)="remindSet()">
     <img src="./assets/imgs/c.png" item-start/>
     <ion-label>提醒方式</ion-label>
     <ion-label color="primary" text-end>{{remindType===undefined?"无":remindType}}</ion-label>
@@ -123,16 +121,17 @@
 
 
 </ion-content>
-<!--<div *ngIf="isShow" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();">-->
-  <!--<ion-backdrop disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></ion-backdrop>-->
+<div [hidden]="!isShow" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();">
+  <ion-backdrop disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></ion-backdrop>
 
-  <!--<div class="pop-css">-->
-    <!--<div class="titlecss" text-center>选择标签</div>-->
-    <!--<div *ngFor="let lb of lbs" class="contentcss">-->
-      <!--<div>-->
-        <!--<button float-left style="padding-top: 2px;padding-bottom: 5px;padding-left: 5px;vertical-align:middle;" [ngClass]="{selectcss: lb.lau, noselectcss:!lb.lau}" (click)="checkdd(lb)">{{lb.lan}}</button>-->
-      <!--</div>-->
-    <!--</div>-->
+  <div class="pop-css">
+    <div class="titlecss" text-center>选择计划</div>
+    <div class="flexCss">
+      <div *ngFor="let lb of lbs" class="contentcss">
+        <!--<button name="lab" style="height:25px ; font-size: 1.5rem;" [ngClass]="{selectcss: lb.lau, noselectcss:!lb.lau}" (click)="selectJh($event,lb)">{{lb.lan}}</button>-->
+        <button name="lab" style="height:25px ; font-size: 1.5rem;" class="jhCss" (click)="selectJh($event,lb)">{{lb.lan}}</button>
+      </div>
+    </div>
 
-  <!--</div>-->
-<!--</div>-->
+  </div>
+</div>

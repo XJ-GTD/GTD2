@@ -20,8 +20,10 @@ export class PageConfig {
   private static _SB_PAGE: any = "SbPage";
   private static _SC_PAGE: any = "ScPage";
   private static _SD_PAGE: any = "SdPage";
+  private static _SW_PAGE: any = "SwPage";
   private static _SX_PAGE: any = "SxPage";
   private static _SY_PAGE: any = "SyPage";
+  private static _SZ_PAGE: any = "SzPage";
   private static _PA_PAGE: any = "PaPage";
   private static _PB_PAGE: any = "PbPage";
   private static _PC_PAGE: any = "PcPage";
@@ -155,6 +157,14 @@ export class PageConfig {
     this._SD_PAGE = value;
   }
 
+  static get SW_PAGE(): any {
+    return this._SW_PAGE;
+  }
+
+  static set SW_PAGE(value: any) {
+    this._SW_PAGE = value;
+  }
+
   static get SX_PAGE(): any {
     return this._SX_PAGE;
   }
@@ -169,6 +179,14 @@ export class PageConfig {
 
   static set SY_PAGE(value: any) {
     this._SY_PAGE = value;
+  }
+
+  static get SZ_PAGE(): any {
+    return this._SZ_PAGE;
+  }
+
+  static set SZ_PAGE(value: any) {
+    this._SZ_PAGE = value;
   }
 
   static get PA_PAGE(): any {

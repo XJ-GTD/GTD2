@@ -7,12 +7,44 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Sy</ion-title>
+    <ion-title>计划详情</ion-title>
+    <ion-buttons right>
+      <button ion-button [hidden]="isEdit" (click)="edit()">编辑</button>
+      <button ion-button [hidden]="!isEdit" (click)="save()">保存</button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <div [hidden]="isEdit">
+    <div *ngIf="jh !== undefined">
+      <ion-item>
+        <ion-label>计划名称</ion-label>
+        <ion-label>{{jh.jn}}</ion-label>
+      </ion-item>
+      <div style="display: flex; font-size:1.7rem;margin:11px 8px 11px 0;" class="height56" padding-left>
+        <div col-5 style="padding: 0 !important;">计划描述</div>
+        <div col-7 style=" padding: 0 !important; white-space:normal;word-break:break-all;word-wrap:break-word; ">{{jh.jg}}</div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isEdit">
+    <div *ngIf="jh !== undefined">
+      <ion-item>
+        <ion-label>计划名称</ion-label>
+        <ion-input placeholder="{{jh.jn}}" [(ngModel)]="jn"></ion-input>
+      </ion-item>
+      <div style="display: flex;font-size:1.7rem;" padding-left>
+        <div style="margin:11px 8px 11px 0;">计划描述</div>
+        <ion-textarea placeholder="{{jh.jg}}" [(ngModel)]="jg" style="margin:11px 8px 11px 0;" ></ion-textarea>
+      </div>
+      <!--<div style="display: flex; font-size:1.7rem;margin:11px 8px 11px 0;" padding-left>-->
+        <!--<div col-5 style="padding: 0 !important;">计划描述</div>-->
+        <!--<div col-7 style=" padding: 0 !important; white-space:normal;word-break:break-all;word-wrap:break-word; ">{{jh.jg}}</div>-->
+      <!--</div>-->
+    </div>
+  </div>
 
 </ion-content>

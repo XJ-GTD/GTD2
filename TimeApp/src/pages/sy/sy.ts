@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {JhModel} from "../../model/jh.model";
 
 /**
  * Generated class for the SyPage page.
@@ -15,11 +16,41 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class SyPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  jh: JhModel;
+  isEdit:boolean;
+
+  jn:string;
+  jg:string;
+
+  constructor(private navCtrl: NavController,
+              private navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SyPage');
+  }
+
+  ionViewWillEnter(){
+    this.jh = this.navParams.get("jh");
+    this.isEdit = false;
+  }
+
+  edit(){
+    this.isEdit = !this.isEdit;
+  }
+
+  save(){
+    console.log("输入计划名称 :: " + this.jn);
+    console.log("输入计划描述 :: " + this.jg);
+    if(this.jn !== undefined){
+      this.jh.jn = this.jn;
+    }
+    if(this.jg !== undefined){
+      this.jh.jg = this.jg;
+    }
+    this.jn = undefined;
+    this.jg = undefined;
+    this.isEdit = !this.isEdit;
   }
 
 

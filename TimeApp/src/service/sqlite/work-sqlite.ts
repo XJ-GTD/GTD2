@@ -49,35 +49,6 @@ export class WorkSqlite{
           + rc.sN+'","' +sa+ '","'+rc.sd+ '","'+rc.ed+ '","'+ ru.rI+'","'+ ru.id+'",'+ ru.sdt+');';
       }
       return this.baseSqlite.importSqlToDb(sql)
-      // }else{
-      //   let rcp = new RcpEntity();
-      //   for(let i=0;i<rus.length;i++){
-      //     rcp.pI = this.util.getUuid();
-      //     rcp.uI =rus[i].rI;
-      //     rcp.son=rc.sN;
-      //     rcp.sI=rc.sI;
-      //     rcp.cd=rc.sd;
-      //     rcp.pd=rc.ed;
-      //     rcp.rui=rus[i].id;
-      //     if(rus[i].sdt){
-      //       rcp.sdt=rus[i].sdt
-      //     }
-      //     if(rcp.uI == rc.uI){
-      //       isTrue = true;
-      //       rcp.sa='1'
-      //       rcp.sdt=1
-      //     }else{
-      //       rcp.sa='0'
-      //     }
-      //     if(i < rus.length-1){
-      //       this.baseSqlite.save(rcp);
-      //     }
-      //   }
-      //   rcp.pI = this.util.getUuid();
-      //   return this.baseSqlite.save(rcp);
-      // }
-    // }
-
   }
 
   /**
@@ -111,9 +82,12 @@ export class WorkSqlite{
    */
   getMBs(ym:string,ui:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
-      // let sql='select gc.* from GTD_C gc left join GTD_D gd on gc.sI=gd.sI where gd.sI is not null and ' +
-      //   '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'") and gd.uI = "' +ui+'"';
-      let sql='select gc.* from GTD_C gc ' +
+      let sql='select gc.*,lbd.* from GTD_C gc ' +
+        'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
+        'union select sI,cft,cf,ac,fh from GTD_CC ' +
+        'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
+        'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
+        'union select sI,cft,cf,ac,fh from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
         'left join GTD_D gd on gc.sI=gd.sI and gd.uI = "' +ui+'" where ' +
         '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'")';
       let bs = new BsModel();
@@ -127,12 +101,11 @@ export class WorkSqlite{
             }
 
             let count:number = 0;
-            for(let j=0;j<ls.length;j++){
-              let sd = ls.item(j).sd.substr(0,10)
-              let ed = ls.item(j).ed.substr(0,10)
-              if(sd<=day && ed>=day){
-                count +=1;
+            for (let j = 0; j < ls.length; j++) {
+              if (this.isymwd(ls.item(j).cft, day, ls.item(j).sd, ls.item(j).ed)) {
+                count += 1;
               }
+
             }
             //TODO
             // if(count>0){
@@ -166,7 +139,13 @@ export class WorkSqlite{
    */
   getOd(d:string,ui:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
-      let sql='select gc.*,gd.son,gd.pI,gd.sa from GTD_C gc left join GTD_D gd on gc.sI=gd.sI ' +
+      let sql='select gc.*,gd.son,gd.pI,gd.sa,lbd.* from GTD_C gc ' +
+        'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
+        'union select sI,cft,cf,ac,fh from GTD_CC ' +
+        'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
+        'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
+        'union select sI,cft,cf,ac,fh from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
+        'left join GTD_D gd on gc.sI=gd.sI ' +
         'and gd.uI ="'+ui+'" where (substr(gc.sd,1,10) <= "'+d+'" and substr(gc.ed,1,10)>= "'+d+'") '
        // +'and (gd.pI is null or gd.uI ="'+DataConfig.uInfo.uI+'")';
       let bs = new BsModel();
@@ -175,20 +154,22 @@ export class WorkSqlite{
         if(data&&data.rows&&data.rows.length>0){
           let ls = data.rows;
           for(let i=0;i<ls.length;i++){
-            let res:any = ls.item(i);
-            res.scheduleId = res.sI;
-            res.scheduleName = res.sN;
-            if(res.san != null){
-              res.scheduleName =res.son;
+            if(this.isymwd(ls.item(i).cft,d,ls.item(i).sd,ls.item(i).ed)){
+              let res:any = ls.item(i);
+              res.scheduleId = res.sI;
+              res.scheduleName = res.sN;
+              if(res.san != null){
+                res.scheduleName =res.son;
+              }
+              if(res.sd.substr(0,10) == d){
+                res.scheduleStartTime = res.sd.substr(11,16)
+              }else if(res.ed.substr(0,10) == d){
+                res.scheduleStartTime = res.ed.substr(11,16)
+              }else{
+                res.scheduleStartTime="08:00"
+              }
+              resL.push(res)
             }
-            if(res.sd.substr(0,10) == d){
-              res.scheduleStartTime = res.sd.substr(11,16)
-            }else if(res.ed.substr(0,10) == d){
-              res.scheduleStartTime = res.ed.substr(11,16)
-            }else{
-              res.scheduleStartTime="08:00"
-            }
-            resL.push(res)
           }
         }
         bs.data=resL;
@@ -199,6 +180,45 @@ export class WorkSqlite{
         reject(bs)
       })
     })
+  }
+
+  /**
+   * 判断当前日期是否对应重复类型
+   * @param {string} cft 重复类型
+   * @param {string} day 当前日期
+   * @param {string} sd 开始日期
+   * @param {string} ed 结束日期
+   * @returns {boolean}
+   */
+  isymwd(cft:string,day:string,sd:string,ed:string):boolean{
+    let isTrue = false;
+    sd = sd.substr(0,10);
+    ed= ed.substr(0,10);
+    if(cft && cft != null){
+      if(cft=='1'){//年
+        if(sd.substr(4,10)== day.substr(4,10)){
+          isTrue = true;
+        }
+      }else if(cft=='2'){ //月
+        if(sd.substr(4,6)== day.substr(4,6)){
+          isTrue = true;
+        }
+      }else if(cft=='3'){ //周
+        let sdz = new Date(sd.replace('-','/')).getDay();
+        let dayz = new Date(day.replace('-','/')).getDay();
+        if(sd<=day && sdz == dayz){
+          isTrue = true;
+        }
+      }else if(cft=='4'){ //周
+        if(sd<=day && ed>=day){
+          isTrue = true;
+        }
+        isTrue = true;
+      }
+    }else if(sd<=day && ed>=day){
+      isTrue = true;
+    }
+    return isTrue;
   }
 
   /**

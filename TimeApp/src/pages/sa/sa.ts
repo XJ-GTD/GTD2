@@ -1,5 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import {AlertController, IonicPage, ModalController, Nav, Navbar, NavController, NavParams} from 'ionic-angular';
+import {
+  AlertController, Events, IonicPage, ModalController, Nav, Navbar, NavController,
+  NavParams
+} from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
 import { ScheduleModel } from "../../model/schedule.model";
 import { XiaojiAlarmclockService } from "../../service/util-service/xiaoji-alarmclock.service";
@@ -45,7 +48,8 @@ export class SaPage {
               private alarmClock: XiaojiAlarmclockService,
               private util: UtilService,
               private alertCtrl: AlertController,
-              private relmemService: RelmemService) {
+              private relmemService: RelmemService,
+              private event: Events) {
     this.rc = new RcModel();
   }
 
@@ -182,6 +186,17 @@ export class SaPage {
     alert.present();
   }
 
+
+  del(){
+    console.log(" :: click delete");
+    this.work.delrc(this.rc.sI).then(data=>{
+      console.log("删除成功 :: " );
+      this.event.publish("reloadHa01");
+      this.navCtrl.pop();
+    }).catch(reason=>{
+      console.log("删除失败 :: " );
+    })
+  }
   // ionViewDidLoad(){
   //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");
   // }

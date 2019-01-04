@@ -32,4 +32,6 @@ export class DataConfig {
 
   /* ------- 字典数据 ---------*/
   public static ZTD_MAP:Map<string,any> = new Map<string,any>();
+  public static REPEAT_TYPE:string = '12';
+
 }

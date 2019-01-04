@@ -36,7 +36,7 @@
   </ion-item>
   <ion-item *ngIf="code == 1 || code == 2" class="flag">
     <ion-label>接收该用户的推送</ion-label>
-    <ion-checkbox item-end [(ngModel)]="ru.rF"></ion-checkbox>
+    <ion-checkbox item-end [(ngModel)]="ru.rF" (ionChange)="piliangtianjia()"></ion-checkbox>
   </ion-item>
   <ion-label></ion-label>
   <ion-label></ion-label>
