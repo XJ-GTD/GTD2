@@ -59,6 +59,11 @@ export class HzPage {
     this.navCtrl.push('SbPage',{popPage:'HzPage'});
   }
 
+  toSx(){
+    console.log("跳转计划一览SxPage");
+    this.navCtrl.push(PageConfig.SX_PAGE);
+  }
+
   toUc(){
     if(DataConfig.uInfo.uty == "0"){
       this.navCtrl.push(PageConfig.UB_PAGE,{"rePage":PageConfig.UC_PAGE,"puPage":PageConfig.UC_PAGE});

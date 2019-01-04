@@ -5,6 +5,7 @@ import {UEntity} from "../../entity/u.entity";
 import {PageConfig} from "../../app/page.config";
 import {RuModel} from "../../model/ru.model";
 import {DataConfig} from "../../app/data.config";
+import {UtilService} from "../../service/util-service/util.service";
 
 
 /**
@@ -32,7 +33,8 @@ export class PcPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private loadingCtrl: LoadingController,
-              private relme:RelmemService) {
+              private relme:RelmemService,
+              private util: UtilService) {
   }
 
   ionViewDidLoad() {
@@ -84,5 +86,13 @@ export class PcPage {
       loader.setContent("出错了，添加失败");
       loader.present();
     })
+  }
+
+
+  piliangtianjia(){
+    for(let i =1;i<10;i++){
+
+      this.relme.aru(this.uo.uI,this.util.getUuid(),"测"+i,"测"+i,  "13"+i+i+i+i+i+i+i+i+i, '0',"./assets/imgs/headImg.jpg","1",null).then()
+    }
   }
 }
