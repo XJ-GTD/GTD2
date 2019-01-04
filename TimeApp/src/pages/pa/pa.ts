@@ -42,10 +42,10 @@ export class PaPage {
 
 
   toAddMember(){
-    if(this.uo.uty == "0"){
-      this.navCtrl.push(PageConfig.UB_PAGE,{"rePage":PageConfig.PA_PAGE});
-      return;
-    }
+    // if(this.uo.uty == "0"){
+    //   this.navCtrl.push(PageConfig.UB_PAGE,{"rePage":PageConfig.PA_PAGE});
+    //   return;
+    // }
 
     console.log('PaPage跳转PfPage');
     this.navCtrl.push('PfPage');
