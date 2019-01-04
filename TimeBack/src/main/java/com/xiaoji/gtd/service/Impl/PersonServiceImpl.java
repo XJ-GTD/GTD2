@@ -379,6 +379,8 @@ public class PersonServiceImpl implements IPersonService {
         playerEntity.setPlayerId(playId);
         playerEntity.setPlayerFlag(playFlag);
         playerEntity.setPlayerType(playType);
+        playerEntity.setCreateId(userId);
+        playerEntity.setCreateDate(BaseUtil.getSqlDate());
 
         playerRepository.save(playerEntity);
 

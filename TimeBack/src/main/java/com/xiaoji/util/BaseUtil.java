@@ -92,6 +92,7 @@ public class BaseUtil {
         res = sdf.format(date);
         return res;
     }
+
     /**
      * 获取Token
      * @param deviceId

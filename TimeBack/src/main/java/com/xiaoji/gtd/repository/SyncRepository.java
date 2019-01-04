@@ -32,4 +32,15 @@ public class SyncRepository {
 
         return em.createNativeQuery(sql).getResultList();
     }
+
+    /**
+     * 查询最新的版本号
+     * @param userId
+     * @return
+     */
+    public Object findLatestVersion(String userId) {
+        String sql = " SELECT MAX(VERSION) FROM gtd_sync_version \n" +
+                " WHERE USER_ID = '" + userId + "'";
+        return em.createNativeQuery(sql).getSingleResult();
+    }
 }

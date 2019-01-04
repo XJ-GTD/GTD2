@@ -1,11 +1,13 @@
 package com.xiaoji.gtd.service.Impl;
 
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import com.xiaoji.config.exception.ServiceException;
 import com.xiaoji.gtd.dto.sync.*;
 import com.xiaoji.gtd.entity.*;
 import com.xiaoji.gtd.repository.*;
 import com.xiaoji.gtd.service.ISyncService;
 import com.xiaoji.util.BaseUtil;
+import com.xiaoji.util.SyncGetOrSetMethod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -138,7 +140,25 @@ public class SyncServiceImpl implements ISyncService {
      */
     @Override
     public SyncOutDto loginSync(SyncInDto inDto) {
-        return null;
+        SyncOutDto outData = new SyncOutDto();
+        List<SyncDataDto> dataList = new ArrayList<>();
+
+        String userId = inDto.getUserId();
+        String deviceId = inDto.getDeviceId();
+        String version = "";
+
+        dataList = downLoad(userId, deviceId, version);
+
+        if (dataList != null) {
+            version = findLatestVersion(userId);
+            outData.setVersion(version);
+            outData.setUserDataList(dataList);
+            logger.debug("获取数据成功 version：["+ version + "] | data: size = " + dataList.size());
+            return outData;
+        } else {
+            logger.debug("服务器暂无该账号数据!");
+            return null;
+        }
     }
 
     /**
@@ -154,20 +174,32 @@ public class SyncServiceImpl implements ISyncService {
         String userId = inDto.getUserId();
         String deviceId = inDto.getDeviceId();
         String version = inDto.getVersion();
+        String uploadVersion = BaseUtil.getVersion();
+
+        String downloadSyncVersion = findLatestVersion(userId);
+        logger.debug("服务器最新数据版本号:" + downloadSyncVersion);
 
         String tableName = "";
         List<SyncTableData> dataList;
         List<GtdSyncVersionEntity> syncVersionList = new ArrayList<>();
 
         if (syncDataList != null && syncDataList.size() > 0) { //需要上传数据
+            logger.debug("=========== 上传数据开始 ===========");
             for (SyncDataDto sdd: syncDataList) {
                 tableName = sdd.getTableName();
                 dataList = sdd.getDataList();
-                List<GtdSyncVersionEntity> syncVersion = upLoadData(tableName, dataList, userId, version, deviceId);
-                syncVersionList.addAll(syncVersion);
+                logger.debug("上传"+ tableName + "表数据， 数据大小：" + dataList.size());
+
+                List<GtdSyncVersionEntity> latestSyncData = upLoadData(tableName, dataList, userId, version, deviceId, uploadVersion);
+                syncVersionList.addAll(latestSyncData);
             }
+            logger.debug("保存本次更新数据记录, 版本号["+ uploadVersion + "],共" + syncVersionList.size() + "条");
             gtdSyncVersionRepository.saveAll(syncVersionList);
+
+            logger.debug("=========== 上传数据结束 ===========");
         } else { //仅需要下载更新
+            logger.debug("=========== 下载数据开始 ===========");
+            logger.debug("=========== 下载数据结束 ===========");
         }
 
         return null;
@@ -178,7 +210,7 @@ public class SyncServiceImpl implements ISyncService {
      * @param tableName
      * @param dataList
      */
-    private List<GtdSyncVersionEntity> upLoadData(String tableName, List<SyncTableData> dataList, String userId, String version, String deviceId) {
+    private List<GtdSyncVersionEntity> upLoadData(String tableName, List<SyncTableData> dataList, String userId, String version, String deviceId, String uploadVersion) {
 
         List<GtdSyncVersionEntity> syncVersion = new ArrayList<>();
 
@@ -188,22 +220,10 @@ public class SyncServiceImpl implements ISyncService {
                 List<String> ids = new ArrayList<>();
                 GtdPlayerEntity playerEntity = new GtdPlayerEntity();
                 for (SyncTableData std: dataList) {
-                    playerEntity.setId(std.getTableA());                    //主键
-                    playerEntity.setPlayerAnotherName(std.getTableB());     //别称
-                    playerEntity.setPyOhterName(std.getTableC());           //别称拼音
-                    playerEntity.setPlayerId(std.getTableD());              //联系人用户ID
-                    playerEntity.setPlayerHeadimg(std.getTableE());         //联系人头像
-                    playerEntity.setPlayerName(std.getTableF());            //联系人昵称
-                    playerEntity.setPyPlayerName(std.getTableG());          //联系人昵称拼音
-                    playerEntity.setPlayerContact(std.getTableH());         //联系人手机号
-                    playerEntity.setPlayerFlag(Integer.valueOf(std.getTableI()));   //授权联系人标识
-                    playerEntity.setPlayerType(Integer.valueOf(std.getTableJ()));   //联系人类型
-                    playerEntity.setUserId(std.getTableK());                //联系人数据归属
-
                     ids.add(std.getTableA());
-                    tableDataList.add(playerEntity);
+                    playerEntity = SyncGetOrSetMethod.dtoToEntity(std);
 
-                    playerEntity = new GtdPlayerEntity();                   //归零
+                    tableDataList.add(playerEntity);
                 }
 
                 List<String> sqlIds = syncRepository.compareToHighVersion(version, userId, ids);
@@ -221,6 +241,7 @@ public class SyncServiceImpl implements ISyncService {
                     syncVersionEntity.setDeviceId(deviceId);
                     syncVersionEntity.setCreateId(userId);
                     syncVersionEntity.setCreateDate(BaseUtil.getSqlDate());
+                    syncVersionEntity.setVersion(uploadVersion);
                     syncVersion.add(syncVersionEntity);                 //填入入库版本表list
 
                     syncDataList.add(gpe);                              //填入入库联系人list
@@ -270,7 +291,47 @@ public class SyncServiceImpl implements ISyncService {
     /**
      * 下载数据
      */
-    private void downLoad() {
+    private List<SyncDataDto> downLoad(String userId, String deviceId, String version) {
+        List<SyncDataDto> syncDataList = new ArrayList<>();
+        SyncDataDto syncData = new SyncDataDto();
+        List<SyncTableData> dataList = new ArrayList<>();
+        SyncTableData data;
 
+        try {
+
+            if (version != null && !version.equals("")) {
+
+            } else  {
+                List<GtdPlayerEntity> playerEntityList = gtdPlayerRepository.findAllByUserId(userId);   //联系人数据
+                logger.debug("获取联系人表数据，需要转化数据量为 " + playerEntityList.size() + "条");
+                for (GtdPlayerEntity gpe: playerEntityList) {
+                    data = SyncGetOrSetMethod.entityToDto(gpe);
+
+                    dataList.add(data);
+                }
+                syncData.setTableName(SyncTableNameEnum.PLAYER.tableName);
+                syncData.setDataList(dataList);
+                syncDataList.add(syncData);
+                logger.debug("联系人表数据赋值完成");
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return syncDataList;
     }
+
+    /**
+     * 获取服务端最新更新版本号
+     * @param userId
+     * @return 库存版本号 ： 生成版本号
+     */
+    private String findLatestVersion(String userId) {
+        Object[] obj = (Object[]) syncRepository.findLatestVersion(userId);
+        return obj != null? String.valueOf(obj[0]): BaseUtil.getVersion();
+    }
+
 }

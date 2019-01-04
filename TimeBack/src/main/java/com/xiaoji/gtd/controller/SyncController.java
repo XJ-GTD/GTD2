@@ -90,11 +90,6 @@ public class SyncController {
             logger.debug("[同步失败]：设备ID不可为空");
             return outDto;
         }
-        if(inDto.getVersion() == null || "".equals(inDto.getVersion())){
-            outDto.setCode(ResultCode.NULL_VERSION);
-            logger.debug("[同步失败]：版本号不可为空");
-            return outDto;
-        }
         //入参正确性检测
         if (CommonMethods.checkMySqlReservedWords(inDto.getUserId())) {
             outDto.setCode(ResultCode.ERROR_UUID);
@@ -105,7 +100,7 @@ public class SyncController {
         //业务逻辑
         try {
 
-            data = syncService.timingSync(inDto);
+            data = syncService.loginSync(inDto);
 
             if (data != null) {
                 outDto.setData(data);
@@ -119,7 +114,7 @@ public class SyncController {
         } catch (Exception e) {
             e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            logger.error("[注册失败]：服务器繁忙");
+            logger.error("[同步失败]：服务器繁忙");
         }
 
         return outDto;
