@@ -10,6 +10,8 @@ import {WorkService} from "../../service/work.service";
 import {LbModel} from "../../model/lb.model";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
+import {ZtdModel} from "../../model/ztd.model";
+import {DataConfig} from "../../app/data.config";
 
 /**
  * Generated class for the SbPage page.
@@ -40,6 +42,7 @@ export class SbPage {
   selectLb:Array<LbModel>;
 
   lbs: Array<LbModel>;
+  repeatTypes:Array<ZtdModel>;
   type: any ;
   title:any;
   startTime:any;//开始时间
@@ -75,11 +78,18 @@ export class SbPage {
               private workService: WorkService,
               private util: UtilService) {
   }
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad SbPage');
+    this.navBar.backButtonClick = this.backButtonClick;
+    this.navBar.setBackButtonText("");
+    this.init();
+  }
 
   init() {
     this.getAllRel();
     this.findLabel();
     this.startTime = new Date(new Date().getTime()+8*60*60*1000).toISOString();
+    this.repeatTypes = DataConfig.ZTD_MAP.get(DataConfig.REPEAT_TYPE); //重复类型
   }
 
   //查询系统标签
@@ -146,12 +156,6 @@ export class SbPage {
 
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SbPage');
-    this.navBar.backButtonClick = this.backButtonClick;
-    this.navBar.setBackButtonText("");
-    this.init();
-  }
 
   backButtonClick = (e: UIEvent) => {
     // 重写返回方法

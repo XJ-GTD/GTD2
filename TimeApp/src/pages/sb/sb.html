@@ -89,10 +89,7 @@
     <img src="./assets/imgs/4.png" item-start/>
     <ion-label>重复类型</ion-label>
     <ion-select item-end [(ngModel)]="repeatType" (ionChange)="chengeType()" >
-      <ion-option [selected]="true" value="y">年</ion-option>
-      <ion-option [selected]="false" value="m">月</ion-option>
-      <ion-option [selected]="false" value="w">周</ion-option>
-      <ion-option [selected]="false" value="d">日</ion-option>
+      <ion-option  *ngFor="let ztd of repeatTypes" value="{{ztd.zk}}">{{ztd.zkv}}</ion-option>
     </ion-select>
   </ion-item>
   <button ion-item  *ngIf="showB && repeatType!='w'" class="padding-left-0">
