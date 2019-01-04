@@ -83,7 +83,6 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
                               (onPressup)="onPressup.emit($event)"
                               (onSelectStart)="onSelectStart.emit($event)"
                               (onSelectEnd)="onSelectEnd.emit($event)"
-                              (tabInit)="tabInit.emit($event)"
                               [pickMode]="_d.pickMode"
                               [color]="_d.color">
           </ion-calendar-month>
@@ -138,7 +137,6 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   @Output() onPressup: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectStart: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectEnd: EventEmitter<CalendarDay> = new EventEmitter();
-  @Output() tabInit: EventEmitter<number> = new EventEmitter();
 
   @Input()
   set options(value: CalendarComponentOptions) {
@@ -226,9 +224,9 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     this.monthOpt = this.createMonth(backTime);
   }
   //add by zhangjy
-  refresh(): void {
-    this.monthOpt = this.createMonth(this.monthOpt.original.time);
-  }
+  // refresh(): void {
+  //   this.monthOpt = this.createMonth(this.monthOpt.original.time);
+  // }
 
 
   canBack(): boolean {
@@ -327,7 +325,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   createMonth(date: number): CalendarMonth {
-    this.tabInit.emit(date);
+    this.configMonthEventDay(date);
     return this.calSvc.createMonthsByPeriod(date, 1, this._d)[0];
   }
 
@@ -412,5 +410,19 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     } else if (event.isToday == false && event.isLastMonth) {
       this.backMonth()
     }
+  }
+
+
+  configMonthEventDay(time){
+    let newMonth = this.calSvc.multiFormat(time);
+    console.info(newMonth.dateObj);
+    let month = moment(newMonth.dateObj).format('YYYY-MM');
+
+    let len = this.options.daysConfig.length;
+    this.options.daysConfig.splice(0,len-1);
+    this.calSvc.findDayEventForMonth(month).then((data)=>{
+      this.options.daysConfig.push(...data);
+      this.monthOpt =  this.calSvc.createMonthsByPeriod(time, 1, this._d)[0];
+    })
   }
 }

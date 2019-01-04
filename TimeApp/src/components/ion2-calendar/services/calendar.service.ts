@@ -10,11 +10,13 @@ import {
 } from '../calendar.model'
 import * as moment from 'moment';
 import { defaults, pickModes } from "../config";
+import {WorkService} from "../../../service/work.service";
 
 @Injectable()
 export class CalendarService {
 
-  constructor() {
+  constructor(  private work:WorkService,
+  ) {
 
   }
 
@@ -101,6 +103,7 @@ export class CalendarService {
     if (opt.daysConfig.length <= 0) return null;
     return opt.daysConfig.find((n) => day.isSame(n.date, 'day'))
   }
+
 
   createCalendarDay(time: number, opt: CalendarModalOptions, month?: number): CalendarDay {
     let _time = moment(time);
@@ -262,5 +265,50 @@ export class CalendarService {
       date: _moment.date()
     }
   }
+
+  findDayEventForMonth(month):Promise<Array<DayConfig>> {
+    return new Promise<Array<DayConfig>>((resolve, reject) =>
+      this.work.getMBs(month).then(data=>{
+        //成功
+        let dayConfigs:Array<DayConfig> = new Array<DayConfig>();
+        if(data.code==0){
+          for(let i=0;i<data.bs.length;i++){
+            let mbs=data.bs[i];
+            let res:any={};
+            res.date=mbs.date;
+            //事少
+            if(!mbs.im){
+              res.cssClass = `hassometing animated bounceIn`;
+            }else{
+              //事多
+              res.cssClass = `busysometing animated bounceIn`;
+            }
+            //有消息
+            if(mbs.iem){
+              res.subTitle=`\u2022`;
+            }
+            dayConfigs.push(res);
+          }
+          resolve(dayConfigs);
+
+        }
+      })
+    );
+  }
+
+  // findDayEventForDay(day):Promise<DayConfig> {
+  //   return new Promise<DayConfig>((resolve, reject) =>
+  //
+  //     this.work.getOd(day).then(data=>{
+  //       if(data && data.slc && data.slc.length>0){
+  //         for(let i=0;i<data.slc.length;i++){
+  //         //  this.scheduleList.push(data.slc[i]);
+  //         }
+  //       }
+  //     })
+  //
+  //   );
+  // }
+
 
 }
