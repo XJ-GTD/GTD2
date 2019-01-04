@@ -17,6 +17,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import * as moment from 'moment';
 import { defaults, pickModes } from "../config";
+import {XiaojiFeedbackService} from "../../../service/util-service/xiaoji-feedback.service";
 
 export const ION_CAL_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
@@ -156,7 +157,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
 
-  constructor(public calSvc: CalendarService) {
+  constructor(public calSvc: CalendarService, public xiaojiFeekback: XiaojiFeedbackService) {
 
   }
 
@@ -288,7 +289,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   newstart:boolean = true;
   swipeEvent($event: any): void {
     const isNext = $event.deltaX < 0;
-    if (!this.newstart) return;
+   // if (!this.newstart) return;
     if (isNext)
       this.nextArray.push(1);
     else
@@ -299,8 +300,10 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     this.newstart = false;
     this.swipeEventS().then((d)=>{
       console.info(d);
-      if (this.nextArray.length > 0)
+      if (this.nextArray.length > 0){
+
         this.startSwipe();
+      }
       else{
         //this.configMonthEventDay
         this.newstart = true
@@ -310,7 +313,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   swipeEventS():Promise<any>{
     return new Promise<any>((resolve,reject)=>{
 
-      let n:number=this.nextArray.pop()
+      let n:number=this.nextArray.pop();
       if (n==1 && this.canNext()) {
         this.nextMonth();
         this.css =2;
@@ -320,6 +323,8 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
 
         this.css = 1;
       }
+
+      this.xiaojiFeekback.audioBass();
 
       window.setTimeout(()=>{
         this.css = 100;
