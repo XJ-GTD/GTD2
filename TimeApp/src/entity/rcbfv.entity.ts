@@ -11,7 +11,7 @@ export class RcbfvEntity {
   private _cf:string=null;  //是否重复：0否1是
   private _cft:string=null; //重复类型：0日，1周，2月，3年
   private _dt:string=null; //日期（重复日期开始时间）
-  private _ed:string = null; //结束时间
+  private _wd:string = null; //完成时间
   private _rm:string=null; //备注
   private _ac:string=null; //闹铃提醒类型
   private _fh:string=null; //是否完成0否1是
@@ -22,7 +22,7 @@ export class RcbfvEntity {
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_C_MO(sI VARCHAR(100) PRIMARY KEY,' +
                           'id VARCHAR(100),tk VARCHAR(10),cf VARCHAR(2),cft VARCHAR(20),dt VARCHAR(20),' +
-    'ed VARCHAR(20),rm VARCHAR(100),ac VARCHAR(2),fh VARCHAR(2));';
+    'wd VARCHAR(20),rm VARCHAR(100),ac VARCHAR(2),fh VARCHAR(2));';
   private _drsq:string="DROP TABLE IF EXISTS GTD_C_MO;"
 
   private _isq:string;
@@ -41,8 +41,8 @@ export class RcbfvEntity {
 
   get isq(): string {
     let sql='insert into GTD_C_MO ' +
-      '(sI,id,tk,cf,cft,dt,ed,rm,ac,fh) values("'+ this._sI+'","'+ this._id+'","'+this._tk+ '","'+ this._cf
-      +'","'+this._cft+ '","'+ this._dt+'","'+ this._ed+'","'+ this._rm+'","'+ this._ac+'","'+ this._fh+'")';
+      '(sI,id,tk,cf,cft,dt,wd,rm,ac,fh) values("'+ this._sI+'","'+ this._id+'","'+this._tk+ '","'+ this._cf
+      +'","'+this._cft+ '","'+ this._dt+'","'+ this._wd+'","'+ this._rm+'","'+ this._ac+'","'+ this._fh+'")';
     this._isq=sql;
     return this._isq;
   }
@@ -68,8 +68,8 @@ export class RcbfvEntity {
     if(this._dt!=null){
       sql=sql+' dt="' + this._dt +'",';
     }
-    if(this._ed!=null){
-      sql=sql+' ed="' + this._ed +'",';
+    if(this._wd!=null){
+      sql=sql+' wd="' + this._wd +'",';
     }
     if(this._rm!=null){
       sql=sql+' rm="' + this._rm +'",';
@@ -106,8 +106,8 @@ export class RcbfvEntity {
     if(this._cft!=null){
       sql=sql+' and cft="' + this._cft +'"';
     }
-    if(this._ed!=null){
-      sql=sql+' and ed="' + this._ed +'"';
+    if(this._wd!=null){
+      sql=sql+' and wd="' + this._wd +'"';
     }
     if(this._rm!=null){
       sql=sql+' and rm="' + this._rm +'"';
@@ -177,12 +177,12 @@ export class RcbfvEntity {
     this._cft = value;
   }
 
-  get ed(): string {
-    return this._ed;
+  get wd(): string {
+    return this._wd;
   }
 
-  set ed(value: string) {
-    this._ed = value;
+  set wd(value: string) {
+    this._wd = value;
   }
 
   get rm(): string {
