@@ -18,6 +18,11 @@ import {FiEntity} from "../../entity/fi.entity";
 import {UtilService} from "../util-service/util.service";
 import {BsModel} from "../../model/out/bs.model";
 import {DataConfig} from "../../app/data.config";
+import {RcboEntity} from "../../entity/rcbo.entity";
+import {RcbtEntity} from "../../entity/rcbt.entity";
+import {RcbthEntity} from "../../entity/rcbth.entity";
+import {RcbfEntity} from "../../entity/rcbf.entity";
+import {RcbfvEntity} from "../../entity/rcbfv.entity";
 
 /**
  * 客户端数据库
@@ -76,19 +81,22 @@ export class BaseSqlite {
         //初始化建表
         console.log(this.className + "createTable：数据库初始化建表开始");
         //判断是否是手机端
-        if (DataConfig.IS_MOBILE) {
+        //if (DataConfig.IS_MOBILE) {
+        if (true) {
           //1先删除表
           let delsql = new UEntity().drsq + new RcEntity().drsq + new RcpEntity().drsq + new RuEntity().drsq
             + new LbEntity().drsq + new ReEntity().drsq + new StEntity().drsq + new MsEntity().drsq
             + new ZtEntity().drsq + new ZtdEntity().drsq + new JhEntity().drsq + new RguEntity().drsq
-            + new FiEntity().drsq;
+            + new FiEntity().drsq+new RcboEntity().drsq + new RcbtEntity().drsq + new RcbthEntity().drsq
+            + new RcbfEntity().drsq + new RcbfvEntity().drsq;
           //再建表
           this.importSqlToDb(delsql).then(data=>{
             console.log("-------------------BaseSqlite createTable delete table success: "+JSON.stringify(data))
             let insertsql = new UEntity().csq + new RcEntity().csq + new RcpEntity().csq + new RuEntity().csq
               + new LbEntity().csq + new ReEntity().csq + new StEntity().csq + new MsEntity().csq
               + new ZtEntity().csq + new ZtdEntity().csq + new JhEntity().csq + new RguEntity().csq
-              + new FiEntity().csq;
+              + new FiEntity().csq+new RcboEntity().csq+new RcbtEntity().csq + new RcbthEntity().csq
+              + new RcbfEntity().csq + new RcbfvEntity().csq;
             return  this.importSqlToDb(insertsql);
           }).then(data=>{
             console.log("-------------------BaseSqlite createTable success: "+JSON.stringify(data));

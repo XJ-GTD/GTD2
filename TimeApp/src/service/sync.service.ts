@@ -130,7 +130,9 @@ export class SyncService {
           for(let j=0;j<ztL.length;j++){
             let ztdL = new Array<ZtdModel>()
             for(let i=0;i<res.length;i++){
-              ztdL.push(res.item(i));
+              if(ztL.item(j).zt == res.item(i).zt){
+                ztdL.push(res.item(i));
+              }
             }
             ztMap.set(ztL.item(j).zt,ztdL);
           }
