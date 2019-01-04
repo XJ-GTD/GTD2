@@ -11,7 +11,7 @@ export class DataConfig {
   public static IS_MOBILE : boolean=true;
 
   //用户信息
-  public static uInfo:UEntity = null;
+  public static uInfo:UEntity = new UEntity();
   /**
    * 0正常进入1首次进入2无数据3更新后进入
    * @type {string}

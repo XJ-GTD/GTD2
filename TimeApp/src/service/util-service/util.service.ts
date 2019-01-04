@@ -12,11 +12,11 @@ export class UtilService {
   wins: any = window;//window对象
   constructor(public device: Device) {}
 
-  public static rand(min, max ) {
+  public static rand(min, max ):number {
     return Math.random() * ( max - min ) + min;
   }
 
-  public static randInt(min, max ) {
+  public static randInt(min, max ):number {
     return Math.floor( min + Math.random() * ( max - min + 1 ) );
   };
 
@@ -98,10 +98,10 @@ export class UtilService {
    * @return {boolean}
    */
   isMobile():boolean{
-    let str = this.wins.cordova.platformId;
-    if(str === "browser"){
+    //let str = this.wins.cordova.platformId;
+    //if(str === "browser"){
       DataConfig.IS_MOBILE = false;
-    }
+    //}
     return DataConfig.IS_MOBILE;
   }
 

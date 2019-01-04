@@ -16,15 +16,15 @@ export class RemindService {
   /**
    * 添加提醒时间
    * @param {string} ri
-   * @param {string} pi
+   * @param {string} sI
    * @param {string} rd
    * @returns {Promise<BsModel>}
    */
-  addRe(ri:string,pi:string,rd:string):Promise<BsModel>{
+  addRe(ri:string,sI:string,rd:string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let re=new ReEntity();
       re.ri=ri;
-      re.pi=pi;
+      re.sI=sI;
       re.rd=rd;
       let base=new BsModel();
       this.remindSqlite.addRe(re).then(data=>{
@@ -43,15 +43,15 @@ export class RemindService {
   /**
    * 删除提醒时间
    * @param {string} ri
-   * @param {string} pi
+   * @param {string} sI
    * @param {string} rd
    * @returns {Promise<BsModel>}
    */
-  delRe(ri:string,pi:string,rd:string):Promise<BsModel>{
+  delRe(ri:string,sI:string,rd:string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let re=new ReEntity();
       re.ri=ri;
-      re.pi=pi;
+      re.sI=sI;
       re.rd=rd;
       let base=new BsModel();
       this.remindSqlite.delRe(re).then(data=>{
@@ -70,15 +70,15 @@ export class RemindService {
   /**
    * 修改提醒时间
    * @param {string} ri
-   * @param {string} pi
+   * @param {string} sI
    * @param {string} rd
    * @returns {Promise<BsModel>}
    */
-  updateRe(ri:string,pi:string,rd:string):Promise<BsModel>{
+  updateRe(ri:string,sI:string,rd:string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let re=new ReEntity();
       re.ri=ri;
-      re.pi=pi;
+      re.sI=sI;
       re.rd=rd;
       let base=new BsModel();
       this.remindSqlite.updateRe(re).then(data=>{
@@ -97,15 +97,15 @@ export class RemindService {
   /**
    * 查询所有提醒时间
    * @param {string} ri
-   * @param {string} pi
+   * @param {string} sI
    * @param {string} rd
    * @returns {Promise<GetOutModel>}
    */
-  getRe(ri:string,pi:string,rd:string):Promise<ReoModel>{
+  getRe(ri:string,sI:string,rd:string):Promise<ReoModel>{
     return new Promise((resolve, reject) =>{
       let re=new ReEntity();
       re.ri=ri;
-      re.pi=pi;
+      re.sI=sI;
       re.rd=rd;
       let reo=new ReoModel();
       let data=[];

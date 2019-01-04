@@ -9,7 +9,6 @@ import { ScheduleOutModel } from "../../model/out/schedule.out.model";
 import { CalendarModel } from "../../model/calendar.model";
 import {
   CalendarComponent,
-  CalendarComponentMonthChange,
   CalendarComponentOptions
 } from "../../components/ion2-calendar";
 import { TimeModel } from "../../model/time.model";
@@ -22,7 +21,6 @@ import {DwEmitService} from "../../service/util-service/dw-emit.service";
 import { HbPage } from "../hb/hb";
 import { DataConfig } from "../../app/data.config";
 import { PageConfig } from "../../app/page.config";
-import {AppConfig} from "../../app/app.config";
 
 /**
  * Generated class for the HaPage page.
@@ -102,7 +100,7 @@ export class HaPage {
 
 
     let month = moment().format('YYYY-MM');
-    this.findDayConfig(month);
+    //this.findDayConfig(month);
 
     //示例方法，完成删除
     //在这里完成对数据传递页面的操作
@@ -121,77 +119,6 @@ export class HaPage {
     this.scheduleList = [];
     //获取用户信息
     this.u = DataConfig.uInfo;
-    // this.userSqlite.getUo()
-    //   .then(data=>{
-    //     if(data.code==0 ){
-    //       this.u=data.u;
-    //       //消息队列接收
-    //       // this.webSocketService.connect(this.u.aQ);
-    //     }else{
-    //       // alert(data.message);
-    //     }
-    //   })
-
-    // setTimeout(()=>{
-    //   this.sqliteService.executeSql("select substr(playersFinishDate,1,10) finishDate,count(*) numL from GTD_D " +
-    //     "where substr(playersFinishDate,1,7)='2018-11'" +
-    //     "GROUP BY substr(playersFinishDate,1,10) ",[]).then(data=>{
-    //     if(data && data.rows && data.rows.length>0){
-    //       this.options.daysConfig.push({
-    //         date: new Date('2018-11-10'),
-    //         subTitle: `\u25B2`
-    //       });
-    //       for(let i=0;i<data.rows.length;i++){
-    //         if(data.rows.item(i).numL<5){
-    //           this.options.daysConfig.push({
-    //             date: new Date(data.rows.item(i).finishDate),
-    //             cssClass: `hassometing animated bounceIn`
-    //           });
-    //         }else{
-    //           this.options.daysConfig.push({
-    //             date: new Date(data.rows.item(i).finishDate),
-    //             cssClass: `busysometing animated bounceIn`
-    //           });
-    //         }
-    //
-    //       }
-    //     }
-    //     this.ion2calendar.refresh();
-    //   }).catch(e=>{
-    //     console.log("GTD_D->:"+e);
-    //   })
-    //   // this.options.daysConfig.push({
-    //   //   date: new Date('2018-11-10'),
-    //   //   subTitle: `\u25B2`
-    //   // });
-    //   // setTimeout(()=>{
-    //   //
-    //   //   this.options.daysConfig.push({
-    //   //     date: new Date('2018-11-12'),
-    //   //     cssClass: `hassometing animated bounceIn`
-    //   //   });
-    //   //   this.ion2calendar.refresh();
-    //   //   setTimeout(()=>{
-    //   //     this.options.daysConfig.push({
-    //   //       date: new Date('2018-11-13'),
-    //   //       cssClass: `busysometing animated bounceIn`
-    //   //     });
-    //   //     this.options.daysConfig.push({
-    //   //       date: new Date('2018-11-14'),
-    //   //       cssClass: `busysometing animated bounceIn`
-    //   //     });
-    //   //     this.options.daysConfig.push({
-    //   //       date: new Date('2018-11-15'),
-    //   //       cssClass: `busysometing animated bounceIn`
-    //   //     });
-    //   //     this.ion2calendar.refresh();
-    //   //   },1000);
-    //   //   this.ion2calendar.refresh();
-    //   // },1000);
-    //   // this.ion2calendar.refresh();
-    // },1000);
-
-
 
 
 
@@ -231,46 +158,8 @@ export class HaPage {
     //   })
 
   }
-  discernTags($event){
-    let eventDate = new Date($event.time);
-    let year = eventDate.getFullYear();
-    let month = eventDate.getMonth()+1;
-  }
-
-  configMonthEventDay($event:CalendarComponentMonthChange){
-
-    console.info($event.newMonth.dateObj)
-    let month = moment($event.newMonth.dateObj).format('YYYY-MM');
-    this.findDayConfig(month);
 
 
-  }
-
-  findDayConfig(month){
-    this.workSqlite.getMBs(month).then(data=>{
-      //成功
-      if(data.code==0){
-        for(let i=0;i<data.bs.length;i++){
-          let mbs=data.bs[i];
-          let res:any={};
-          res.date=mbs.date;
-          //事少
-          if(!mbs.im){
-            res.cssClass = `hassometing animated bounce`;
-          }else{
-            //事多
-            res.cssClass = `busysometing animated bounce`;
-          }
-          //有消息
-          if(mbs.iem){
-            res.subTitle=`\u2022`;
-          }
-          this.options.daysConfig.push(res);
-        }
-        this.ion2calendar.refresh();
-      }
-    })
-  }
   createEvent($event){
     console.info($event)
     this.app.getRootNav().push(PageConfig.SB_PAGE);
@@ -297,6 +186,7 @@ export class HaPage {
     //this.page2.findTodaySchedule($event);
     //this.page3.findTodaySchedule($event);
 
+    // this.calendarService.setSelectDay($event);
 
     let findSchedule = new ScheduleOutModel();
     if(day>=10&&month>=10) {

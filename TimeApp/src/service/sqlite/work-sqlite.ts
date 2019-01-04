@@ -113,12 +113,12 @@ export class WorkSqlite{
     return new Promise((resolve, reject) => {
       // let sql='select gc.* from GTD_C gc left join GTD_D gd on gc.sI=gd.sI where gd.sI is not null and ' +
       //   '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'") and gd.uI = "' +ui+'"';
-      let sql='select gc.* from GTD_C gc left join GTD_D gd on gc.sI=gd.sI and gd.uI = "' +ui+'" where ' +
+      let sql='select gc.* from GTD_C gc ' +
+        'left join GTD_D gd on gc.sI=gd.sI and gd.uI = "' +ui+'" where ' +
         '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'")';
       let bs = new BsModel();
       this.baseSqlite.executeSql(sql,[]).then(data=>{
         let resL = new Array<any>()
-        if(data&&data.rows&&data.rows.length>0){
           let ls = data.rows;
           for(let i=1;i<=31;i++){
             let day = ym+"-"+i;
@@ -134,14 +134,21 @@ export class WorkSqlite{
                 count +=1;
               }
             }
-            if(count>0){
+            //TODO
+            // if(count>0){
+            //   let res:any={};
+            //   res.ymd = day;
+            //   res.ct = count;
+            //   resL.push(res)
+            // }
+            if(UtilService.randInt(0,1)>0){
               let res:any={};
               res.ymd = day;
-              res.ct = count;
+              res.ct = UtilService.randInt(0,10);
               resL.push(res)
             }
+
           }
-        }
         bs.data=resL;
         resolve(bs)
       }).catch(e=>{

@@ -24,9 +24,7 @@
     <div class="haCalendar" >
       <ion-calendar  [options]="options"
                      (onSelect)="findTodaySchedule($event)"
-                     (onPressup)="createEvent($event)"
-                     (onInit)="discernTags($event)"
-                     (monthChange)="configMonthEventDay($event)" >
+                     (onPressup)="createEvent($event)" >
       </ion-calendar>
     </div>
     <p class = "showDay" >{{showDay}}</p>
