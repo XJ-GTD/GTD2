@@ -3,11 +3,9 @@ package com.xiaoji.gtd.service.Impl;
 import com.xiaoji.config.exception.ServiceException;
 import com.xiaoji.gtd.dto.sync.*;
 import com.xiaoji.gtd.entity.*;
-import com.xiaoji.gtd.repository.GtdDictionaryDataRepository;
-import com.xiaoji.gtd.repository.GtdDictionaryRepository;
-import com.xiaoji.gtd.repository.GtdLabelRepository;
-import com.xiaoji.gtd.repository.SyncRepository;
+import com.xiaoji.gtd.repository.*;
 import com.xiaoji.gtd.service.ISyncService;
+import com.xiaoji.util.BaseUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +40,10 @@ public class SyncServiceImpl implements ISyncService {
     private GtdDictionaryRepository dictionaryRepository;
     @Resource
     private GtdDictionaryDataRepository dictionaryDataRepository;
+    @Resource
+    private GtdSyncVersionRepository gtdSyncVersionRepository;
+    @Resource
+    private GtdPlayerRepository gtdPlayerRepository;
     @Resource
     private GtdLabelRepository labelRepository;
     @Resource
@@ -155,13 +157,16 @@ public class SyncServiceImpl implements ISyncService {
 
         String tableName = "";
         List<SyncTableData> dataList;
+        List<GtdSyncVersionEntity> syncVersionList = new ArrayList<>();
 
         if (syncDataList != null && syncDataList.size() > 0) { //需要上传数据
             for (SyncDataDto sdd: syncDataList) {
                 tableName = sdd.getTableName();
                 dataList = sdd.getDataList();
-                upLoadData(tableName, dataList, userId, version);
+                List<GtdSyncVersionEntity> syncVersion = upLoadData(tableName, dataList, userId, version, deviceId);
+                syncVersionList.addAll(syncVersion);
             }
+            gtdSyncVersionRepository.saveAll(syncVersionList);
         } else { //仅需要下载更新
         }
 
@@ -173,7 +178,9 @@ public class SyncServiceImpl implements ISyncService {
      * @param tableName
      * @param dataList
      */
-    private void upLoadData(String tableName, List<SyncTableData> dataList, String userId, String version) {
+    private List<GtdSyncVersionEntity> upLoadData(String tableName, List<SyncTableData> dataList, String userId, String version, String deviceId) {
+
+        List<GtdSyncVersionEntity> syncVersion = new ArrayList<>();
 
         switch (tableName) {
             case "GTD_B":       //联系人表
@@ -200,9 +207,25 @@ public class SyncServiceImpl implements ISyncService {
                 }
 
                 List<String> sqlIds = syncRepository.compareToHighVersion(version, userId, ids);
+                List<GtdPlayerEntity> syncDataList = new ArrayList<>();
                 for (GtdPlayerEntity gpe: tableDataList) {
+                    for (String sqlId : sqlIds) {
+                        if (gpe.getId().equals(sqlId)) {            //匹配到对应id就跳过不更新
+                            tableDataList.remove(gpe);
+                            break;
+                        }
+                    }
+                    GtdSyncVersionEntity syncVersionEntity = new GtdSyncVersionEntity();
+                    syncVersionEntity.setTableId(gpe.getId());
+                    syncVersionEntity.setTableName(tableName);
+                    syncVersionEntity.setDeviceId(deviceId);
+                    syncVersionEntity.setCreateId(userId);
+                    syncVersionEntity.setCreateDate(BaseUtil.getSqlDate());
+                    syncVersion.add(syncVersionEntity);                 //填入入库版本表list
 
+                    syncDataList.add(gpe);                              //填入入库联系人list
                 }
+                gtdPlayerRepository.saveAll(syncDataList);
                 break;
             case "GTD_B_X":     //群组表
                 GtdPlayerMemberEntity playerMemberEntity = new GtdPlayerMemberEntity();
@@ -240,6 +263,8 @@ public class SyncServiceImpl implements ISyncService {
                 }
                 break;
         }
+
+        return syncVersion;
     }
 
     /**
