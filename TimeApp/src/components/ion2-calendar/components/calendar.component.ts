@@ -30,10 +30,11 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
   template: `
       <ion-card no-padding >
       <ion-card-header no-padding>
-        <div class="title">
-          <ng-template [ngIf]="_showMonthPicker" [ngIfElse]="title">
+        
+        <div class="title animated" [ngClass]="{'jello':css==1,'flash':css==2}">
+          <ng-template [ngIf]="_showMonthPicker" [ngIfElse]="title" >
           <div float-left >
-          <p  style="font-size: 30px;color: #222222;font-weight: bold;letter-spacing: -1px" float-left>{{monthOpt.original.month<9? "0" + (monthOpt.original.month+1):monthOpt.original.month + 1}}</p>
+          <p  style="font-size: 30px;color: #222222;font-weight: bold;letter-spacing: -1px" float-left >{{monthOpt.original.month<9? "0" + (monthOpt.original.month+1):monthOpt.original.month + 1}}</p>
           <p  style="display: grid;padding-left:0px;padding-top:5px" float-left no-margin >
             <span style="font-size: 15px;height: 16px;color: #666666;">{{monthOpt.original.year}}</span>
             <span style="font-size: 10px;color: #666666;">month</span>
@@ -43,7 +44,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
            </div>
           </ng-template>
           <ng-template #title>
-            <div class="switch-btn">
+            <div class="switch-btn" >
               <div float-left >
                 <p  style="font-size: 2em" float-left>{{monthOpt.original.month<9? "0" + (monthOpt.original.month+1):monthOpt.original.month + 1}}</p>
                 <p  style="display: grid;margin-left: 0px" float-left>
@@ -72,8 +73,8 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
                              [weekStart]="_d.weekStart">
           </ion-calendar-week>
 
-          <ion-calendar-month class="component-mode animated"
-                              [ngClass]="{'bounceInLeft':css==1,'bounceInRight':css==2}"
+          <ion-calendar-month class="component-mode animated faster"
+                              [ngClass]="{'slideInLeft':css==1,'slideInRight':css==2}"
                               [(ngModel)]="_calendarMonthValue"
                               [month]="monthOpt"
                               [readonly]="readonly"
@@ -283,22 +284,48 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     }
   }
 
+  nextArray:Array<number>=new Array<number>();
+  newstart:boolean = true;
   swipeEvent($event: any): void {
     const isNext = $event.deltaX < 0;
-    if (isNext && this.canNext()) {
-      this.nextMonth();
-      this.css =2;
+    if (isNext)
+      this.nextArray.push(1);
+    else
+      this.nextArray.push(0);
+    if (this.newstart)this.startSwipe()
+  }
+  startSwipe(){
+    this.newstart = false;
+    this.swipeEventS().then((d)=>{
+      console.info(d);
+      if (this.nextArray.length > 0)
+        this.startSwipe();
+      else
+        this.newstart = true
+    });
+  }
+  swipeEventS():Promise<any>{
+    return new Promise<any>((resolve,reject)=>{
 
-    } else if (!isNext && this.canBack()) {
-      this.backMonth()
+      let n:number=this.nextArray.pop()
+      if (n==1 && this.canNext()) {
+        this.nextMonth();
+        this.css =2;
 
-      this.css = 1;
-    }
-    window.setTimeout(()=>{
+      } else if (n==0 && this.canBack()) {
+        this.backMonth()
 
-      this.css = 100;
-    },1000);
-    this.onSelect.emit()
+        this.css = 1;
+      }
+
+      window.setTimeout(()=>{
+        this.css = 100;
+        this.onSelect.emit();
+        window.setTimeout(()=>{
+          resolve(true);
+        },1000);
+      },600);
+    })
   }
 
   _onChanged: Function = () => {
