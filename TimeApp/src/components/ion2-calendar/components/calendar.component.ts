@@ -288,6 +288,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   newstart:boolean = true;
   swipeEvent($event: any): void {
     const isNext = $event.deltaX < 0;
+    if (!this.newstart) return;
     if (isNext)
       this.nextArray.push(1);
     else
@@ -300,8 +301,10 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
       console.info(d);
       if (this.nextArray.length > 0)
         this.startSwipe();
-      else
+      else{
+        //this.configMonthEventDay
         this.newstart = true
+      }
     });
   }
   swipeEventS():Promise<any>{
@@ -323,7 +326,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
         this.onSelect.emit();
         window.setTimeout(()=>{
           resolve(true);
-        },1000);
+        },800);
       },600);
     })
   }
