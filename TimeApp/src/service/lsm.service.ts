@@ -7,6 +7,8 @@ import {BsModel} from "../model/out/bs.model";
 import {BaseSqlite} from "./sqlite/base-sqlite";
 import {UEntity} from "../entity/u.entity";
 import {DataConfig} from "../app/data.config";
+import {RcEntity} from "../entity/rc.entity";
+import {RcpEntity} from "../entity/rcp.entity";
 
 
 
@@ -159,6 +161,17 @@ export class LsmService {
           }else{
             console.error("------lsm login 登录请求返回fail");
           }
+          console.log("------lsm login 登录请求返回结果后更新日程用户ID-------");
+          let rc=new RcEntity();
+          rc.uI=DataConfig.uInfo.uI;
+          return this.basesqlite.update(rc);
+        })
+          .then(data=>{
+            let rcp=new RcpEntity();
+            rcp.uI=DataConfig.uInfo.uI;
+            console.log("------lsm login 登录请求返回结果后更新日程参与人用户ID-------");
+            return this.basesqlite.update(rcp);
+        }).then(data=>{
           resolve(base);
         })
           .catch(eu => {

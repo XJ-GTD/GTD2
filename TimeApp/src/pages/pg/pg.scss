@@ -1,7 +1,31 @@
 page-pg {
-  .item-inner {
-    border-bottom-color: transparent !important;
-    box-shadow: none !important;
+  //.item-inner {
+  //  border-bottom-color: transparent !important;
+  //  box-shadow: none !important;
+  //}
+
+  .scroll-content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
   }
+
+  .item-inner{
+    border-bottom: 0px !important;
+  }
+
+  .item-block.item-ios{
+    border-bottom: 0.55px solid #c8c7cc ;
+  }
+
+  ion-item{
+    height: 80px;
+  }
+
+  ion-avatar img{
+    height: 40px !important;
+    width: 40px !important;
+  }
+
 
 }
