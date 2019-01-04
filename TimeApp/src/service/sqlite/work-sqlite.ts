@@ -49,35 +49,6 @@ export class WorkSqlite{
           + rc.sN+'","' +sa+ '","'+rc.sd+ '","'+rc.ed+ '","'+ ru.rI+'","'+ ru.id+'",'+ ru.sdt+');';
       }
       return this.baseSqlite.importSqlToDb(sql)
-      // }else{
-      //   let rcp = new RcpEntity();
-      //   for(let i=0;i<rus.length;i++){
-      //     rcp.pI = this.util.getUuid();
-      //     rcp.uI =rus[i].rI;
-      //     rcp.son=rc.sN;
-      //     rcp.sI=rc.sI;
-      //     rcp.cd=rc.sd;
-      //     rcp.pd=rc.ed;
-      //     rcp.rui=rus[i].id;
-      //     if(rus[i].sdt){
-      //       rcp.sdt=rus[i].sdt
-      //     }
-      //     if(rcp.uI == rc.uI){
-      //       isTrue = true;
-      //       rcp.sa='1'
-      //       rcp.sdt=1
-      //     }else{
-      //       rcp.sa='0'
-      //     }
-      //     if(i < rus.length-1){
-      //       this.baseSqlite.save(rcp);
-      //     }
-      //   }
-      //   rcp.pI = this.util.getUuid();
-      //   return this.baseSqlite.save(rcp);
-      // }
-    // }
-
   }
 
   /**
@@ -111,9 +82,7 @@ export class WorkSqlite{
    */
   getMBs(ym:string,ui:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
-      // let sql='select gc.* from GTD_C gc left join GTD_D gd on gc.sI=gd.sI where gd.sI is not null and ' +
-      //   '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'") and gd.uI = "' +ui+'"';
-      let sql='select gc.* from GTD_C gc ' +
+      let sql='select gc.*,lbd.* from GTD_C gc ' +
         'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
         'union select sI,cft,cf,ac,fh from GTD_CC ' +
         'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
@@ -136,32 +105,7 @@ export class WorkSqlite{
               if (this.isymwd(ls.item(j).cft, day, ls.item(j).sd, ls.item(j).ed)) {
                 count += 1;
               }
-              // let sd = ls.item(j).sd.substr(0,10);
-              // let ed = ls.item(j).ed.substr(0,10);
-              // if(ls.item(j).cft && ls.item(j).cft != null){
-              //   if(ls.item(j).cft==1){//年
-              //     if(sd.substr(4,10)== day.substr(4,10)){
-              //       count +=1;
-              //     }
-              //   }else if(ls.item(j).cft==2){ //月
-              //     if(sd.substr(4,6)== day.substr(4,6)){
-              //       count +=1;
-              //     }
-              //   }else if(ls.item(j).cft==3){ //周
-              //     let sdz = new Date(sd.replace('-','/').getDay());
-              //     let dayz = new Date(day.replace('-','/').getDay());
-              //     if(sd<=day && sdz == dayz){
-              //       count +=1;
-              //     }
-              //   }else if(ls.item(j).cft==4){ //周
-              //     if(sd<=day && ed>=day){
-              //       count +=1;
-              //     }
-              //     count +=1;
-              //   }
-              // }else if(sd<=day && ed>=day){
-              //   count +=1;
-              // }
+
             }
             //TODO
             // if(count>0){
@@ -195,7 +139,7 @@ export class WorkSqlite{
    */
   getOd(d:string,ui:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
-      let sql='select gc.*,gd.son,gd.pI,gd.sa from GTD_C gc ' +
+      let sql='select gc.*,gd.son,gd.pI,gd.sa,lbd.* from GTD_C gc ' +
         'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
         'union select sI,cft,cf,ac,fh from GTD_CC ' +
         'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
