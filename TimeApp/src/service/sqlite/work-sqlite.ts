@@ -113,7 +113,8 @@ export class WorkSqlite{
     return new Promise((resolve, reject) => {
       // let sql='select gc.* from GTD_C gc left join GTD_D gd on gc.sI=gd.sI where gd.sI is not null and ' +
       //   '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'") and gd.uI = "' +ui+'"';
-      let sql='select gc.* from GTD_C gc left join GTD_D gd on gc.sI=gd.sI and gd.uI = "' +ui+'" where ' +
+      let sql='select gc.* from GTD_C gc ' +
+        'left join GTD_D gd on gc.sI=gd.sI and gd.uI = "' +ui+'" where ' +
         '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'")';
       let bs = new BsModel();
       this.baseSqlite.executeSql(sql,[]).then(data=>{
