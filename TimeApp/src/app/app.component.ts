@@ -1,8 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, Nav, IonicApp } from 'ionic-angular';
+import {Platform, Nav, IonicApp, MenuController} from 'ionic-angular';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { ConfigService } from "../service/config.service";
 import { PageConfig } from "./page.config";
+import {MenuScalePushType} from "../components/menuType/customType";
 
 @Component({
   templateUrl: 'app.html'
@@ -19,7 +20,10 @@ export class MyApp {
     private configService:ConfigService
   ) {
     console.log(' time app start ');
+
+    MenuController.registerType('scalePush', MenuScalePushType);
     this.platform.ready().then(() => {
+
       //允许进入后台模式
       this.backgroundMode.enable();
       //设置返回键（android）
