@@ -47,6 +47,8 @@ public class SyncServiceImpl implements ISyncService {
     @Resource
     private GtdPlayerRepository gtdPlayerRepository;
     @Resource
+    private GtdPlayerMemberRepository gtdPlayerMemberRepository;
+    @Resource
     private GtdLabelRepository labelRepository;
     @Resource
     private SyncRepository syncRepository;
@@ -314,6 +316,14 @@ public class SyncServiceImpl implements ISyncService {
                 syncDataList.add(syncData);
                 logger.debug("联系人表数据赋值完成");
 
+                syncData = new SyncDataDto();
+                List<GtdPlayerMemberEntity> playerMemberEntityList = gtdPlayerMemberRepository.findAllByUserId(userId);
+                logger.debug("获取联系人群组表数据，需要转化数据量为 " + playerMemberEntityList.size() + "条");
+                syncData.setTableName(SyncTableNameEnum.PLAYER_MEMBER.tableName);
+
+                syncData.setDataList(dataList);
+                syncDataList.add(syncData);
+                logger.debug("联系人群组表数据赋值完成");
             }
 
         } catch (Exception e) {
