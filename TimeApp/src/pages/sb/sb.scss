@@ -47,7 +47,7 @@ page-sb {
     left: 0;
     bottom: 0;
     right: 0;
-    width: 60% !important;
+    width: 80% !important;
     height: 40% !important;
     background-color: #FFFFFF;
     z-index: 1000;
@@ -56,22 +56,30 @@ page-sb {
 
   .selectcss{
     border-radius: 20px;
-    border:1px solid #f5f5f5;
-    background-color: #7cd8d5;
-    padding: 6px;
+    border:1px solid #df34d2;
+    background-color: #FFF;
     margin-top: 10px;
-    margin-left: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
   }
 
   .noselectcss{
     border-radius: 20px;
     border:1px solid #f5f5f5;
-    background-color: #488aff;
-    padding: 6px;
+    background-color: #85db82;
     margin-top: 10px;
-    margin-left: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
   }
 
+  .jhCss{
+    border-radius: 20px;
+    border:1px solid #df34d2;
+    background-color: #FFF;
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
 
 
 
@@ -86,20 +94,68 @@ page-sb {
   .contentcss{
   }
 
-  .buttonCss{
+  .flexCss{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+  }
+
+  .buttonCssA{
     padding:5px;
     border-radius: 5%;
     background-color: #f0f0f0;
     border:0.5px solid #7f8e9e;
-    .divCss{
+    .divCssA{
       padding: 3px;
 
     }
   }
 
+  .buttonCssB{
+    padding:5px;
+    border-radius: 5%;
+    background-color: #fff;
+    border:0.5px solid #24BEB9;
+    color:#24BEB9;
+    .divCssB{
+      padding: 3px;
+
+    }
+  }
+
+  .bor{
+    border-radius: 5px;
+  }
+
+  ion-thumbnail img{
+    width: 45px;
+    height: 45px;
+  }
+
+  .height56{
+    height: 56px;
+  }
+
   .padding-left-0{
     padding-left: 0px;
   }
+
+  .arrowCss{
+    left: 5px;
+    top: 50%;
+    margin-top: -2px;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 5px solid;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    color: #24BEB9;
+    pointer-events: none;
+  }
+
+
 
   .selectCss {
     /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/

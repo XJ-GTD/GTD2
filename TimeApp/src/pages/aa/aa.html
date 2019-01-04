@@ -17,28 +17,28 @@
 
   <div>
 
-    <button ion-item (click)="accountSecurity()">
+    <button ion-item (click)="accountSecurity()" class="rowCss">
       <ion-label>账号与安全</ion-label>
     </button>
 
-    <button ion-item (click)="newsMessage()">
+    <button ion-item (click)="newsMessage()" class="rowCss">
       <ion-label>消息通知</ion-label>
     </button>
 
-    <button ion-item (click)="cleanCache()">
+    <button ion-item (click)="cleanCache()" class="rowCss">
       <ion-label item-start>缓存清理</ion-label>
       <ion-label item-end text-end>5.5M</ion-label>
     </button>
 
-    <button ion-item (click)="shareApp()" margin-top>
+    <button ion-item (click)="shareApp()" margin-top class="rowCss">
       <ion-label>分享APP</ion-label>
     </button>
 
-    <button ion-item (click)="aboutApp()" margin-top>
+    <button ion-item (click)="aboutApp()" margin-top class="rowCss">
       <ion-label>关于</ion-label>
     </button>
 
-    <button ion-item (click)="helpAndFeedback()">
+    <button ion-item (click)="helpAndFeedback()" class="rowCss">
       <ion-label>帮助及反馈</ion-label>
     </button>
 
@@ -46,7 +46,7 @@
 </ion-content>
 
 <ion-footer>
-  <ion-item>
+  <ion-item class="rowCss">
     <ion-label text-center color="danger" (click)="logOut()">退出登录</ion-label>
   </ion-item>
 

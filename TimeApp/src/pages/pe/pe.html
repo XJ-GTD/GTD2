@@ -24,10 +24,10 @@
     <ion-label color="primary" stacked style="padding-left:16px ;">
       群名称
     </ion-label>
-    <ion-item>
+    <ion-item class="height57">
       <ion-input placeholder="请输入" [(ngModel)]="qmc"></ion-input>
       <!--<ion-buttons item-end>-->
-      <img src="./assets/imgs/3.png" height="25" width="25" (click)="toAddGroupMember()" item-end>
+      <img src="./assets/imgs/3.png" height="25" width="25" (click)="toAddGroupMember()" item-end/>
       <!--</ion-buttons>-->
 
     </ion-item>
@@ -38,8 +38,8 @@
     <ion-label color="primary" stacked style="padding-left:16px ;">
       群成员
     </ion-label>
-    <div style="width: 100%;height: 50px;color: #000;background-color: #fff">
-      <button  style="font-size: 14px; background-color: #fff;color: rgb(102,102,102);" float-end  padding (click)="toAddGroupMember()">添加</button>
+    <div style="width: 100%;height: 35px;color: #000;background-color: #fff">
+      <button  style="font-size: 14px; background-color: #fff;color: rgb(102,102,102);padding: 16px 16px 0 16px" float-end (click)="toAddGroupMember()">添加</button>
     </div>
     <ion-item-sliding *ngFor="let cy of qcy">
       <ion-item>
