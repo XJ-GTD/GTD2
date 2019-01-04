@@ -240,21 +240,21 @@ export class WorkSqlite{
     sd = sd.substr(0,10);
     ed= ed.substr(0,10);
     if(cft && cft != null){
-      if(cft==1){//年
+      if(cft=='1'){//年
         if(sd.substr(4,10)== day.substr(4,10)){
           isTrue = true;
         }
-      }else if(cft==2){ //月
+      }else if(cft=='2'){ //月
         if(sd.substr(4,6)== day.substr(4,6)){
           isTrue = true;
         }
-      }else if(cft==3){ //周
+      }else if(cft=='3'){ //周
         let sdz = new Date(sd.replace('-','/')).getDay();
         let dayz = new Date(day.replace('-','/')).getDay();
         if(sd<=day && sdz == dayz){
           isTrue = true;
         }
-      }else if(cft==4){ //周
+      }else if(cft=='4'){ //周
         if(sd<=day && ed>=day){
           isTrue = true;
         }
