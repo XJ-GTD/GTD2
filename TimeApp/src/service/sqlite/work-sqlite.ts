@@ -113,7 +113,8 @@ export class WorkSqlite{
     return new Promise((resolve, reject) => {
       // let sql='select gc.* from GTD_C gc left join GTD_D gd on gc.sI=gd.sI where gd.sI is not null and ' +
       //   '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'") and gd.uI = "' +ui+'"';
-      let sql='select gc.* from GTD_C gc left join GTD_D gd on gc.sI=gd.sI and gd.uI = "' +ui+'" where ' +
+      let sql='select gc.* from GTD_C gc ' +
+        'left join GTD_D gd on gc.sI=gd.sI and gd.uI = "' +ui+'" where ' +
         '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'")';
       let bs = new BsModel();
       this.baseSqlite.executeSql(sql,[]).then(data=>{
@@ -255,4 +256,36 @@ export class WorkSqlite{
     return this.baseSqlite.executeSql(sql,[]);
   }
 
+  /**
+   * 添加对应标签表数据
+   * @param {string} sI 日程主键
+   * @param {string} tk 标签类型
+   * @param {string} cft 重复类型
+   * @param {string} rm 备注
+   * @param {string} ac 闹铃类型
+   * @param {string} fh 是否完成0未完成，1完成
+   * @returns {Promise<any>}
+   */
+  addLbData(sI:string,tk:string,cft:string,rm:string,ac:string,fh:string):Promise<any>{
+    let id = this.util.getUuid();
+    let tn='GTD_C_BO';
+    let cf='0'
+    if(cft != null && cft !=''){
+      cf='1'
+    }
+    if(tk == '1'){
+      tn='GTD_C_BO'
+    }else if(tk >= '2' && tk <= '3'){
+      tn='GTD_CC'
+    }else if(tk >= '4' && tk <= '8'){
+      tn='GTD_C_RC'
+    }else if(tk == '9'){
+      tn='GTD_C_JN'
+    }else if(tk >= '10'){
+      tn='GTD_C_MO'
+    }
+    let sql ='insert into ' + tn +
+      '(sI,id,tk,cft,rm,ac,fh) values("'+ sI+'","'+ id+'","'+tk+ '","'+cft+ '","'+ rm+'","'+ ac+'","'+ fh+'")';
+    return this.baseSqlite.executeSql(sql,[]);
+  }
 }

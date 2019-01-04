@@ -3,7 +3,6 @@ import {App, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ScheduleModel} from "../../model/schedule.model";
 import {ParamsService} from "../../service/util-service/params.service";
 import {ScheduleOutModel} from "../../model/out/schedule.out.model";
-import {CalendarService} from "../../service/calendar.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UEntity} from "../../entity/u.entity";
 import {WorkService} from "../../service/work.service";
@@ -34,7 +33,6 @@ export class Ha01Page {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private paramsService: ParamsService,
-              private calendarService:CalendarService,
               private util:UtilService,
               private rnd: Renderer2,
               private userSqlite:UserService,

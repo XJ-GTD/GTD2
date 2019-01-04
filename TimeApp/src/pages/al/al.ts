@@ -4,7 +4,7 @@ import { AppConfig } from "../../app/app.config";
 import { PageConfig } from "../../app/page.config";
 import { PermissionsService } from "../../service/util-service/permissions.service";
 import { UtilService } from "../../service/util-service/util.service";
-import { CalendarService } from "../../service/calendar.service";
+import { ReadlocalService } from "../../service/readlocal.service";
 import { ConfigService } from "../../service/config.service";
 import { WebsocketService } from "../../service/util-service/websocket.service";
 import { RoundProgressEase } from 'angular-svg-round-progressbar';
@@ -50,7 +50,7 @@ export class AlPage {
               private loadingCtrl: LoadingController,
               public util: UtilService,
               private lsm:LsmService,
-              private calendarService:CalendarService,
+              private readlocal:ReadlocalService,
               private nav:Nav,
               private bsRestful: BsRestful,
               private permissionsService: PermissionsService,
@@ -141,7 +141,7 @@ export class AlPage {
         console.log("al :: 导入用户本地日历开始");
         this.text=" 导入本地日程";
         this.increment(10);
-        return this.calendarService.uploadLocal();
+        return this.readlocal.uploadLocal();
       })
       .then(data => {
         console.log("al :: 导入用户本地日历结束");

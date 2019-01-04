@@ -12,7 +12,7 @@ import { XiaojiAssistantService } from "../service/util-service/xiaoji-assistant
 import { XiaojiFeedbackService } from "../service/util-service/xiaoji-feedback.service";
 import { SQLite } from '@ionic-native/sqlite';
 import { Calendar } from "@ionic-native/calendar";
-import { CalendarService } from "../service/calendar.service";
+import { ReadlocalService } from "../service/readlocal.service";
 import { Device } from "@ionic-native/device";
 import { SQLitePorter } from '@ionic-native/sqlite-porter';
 import { BaseSqlite } from "../service/sqlite/base-sqlite";
@@ -88,7 +88,7 @@ import { ZtdSqlite } from "../service/sqlite/ztd-sqlite";
     XiaojiFeedbackService,
     SQLite,
     Calendar,
-    CalendarService,
+    ReadlocalService,
     DwEmitService,
     SQLitePorter,
     BaseSqlite,

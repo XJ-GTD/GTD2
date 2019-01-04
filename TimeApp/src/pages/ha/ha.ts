@@ -13,7 +13,6 @@ import {
 } from "../../components/ion2-calendar";
 import { TimeModel } from "../../model/time.model";
 import * as moment from "moment";
-import {CalendarService} from "../../service/calendar.service";
 import {UEntity} from "../../entity/u.entity";
 import {WorkService} from "../../service/work.service";
 import {UserService} from "../../service/user.service";
@@ -80,7 +79,6 @@ export class HaPage {
               private alarmClock: XiaojiAlarmclockService,
               private userSqlite:UserService,
               private workSqlite:WorkService,
-              private calendarService:CalendarService,
               private dwEmit: DwEmitService,
               private app: App) {
 
