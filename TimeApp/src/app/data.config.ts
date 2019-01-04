@@ -29,4 +29,7 @@ export class DataConfig {
   public static XF_SPEECH_PLAYER_FIND: string = "";
 
   /*========== 语音对应文言  end  =========*/
+
+  /* ------- 字典数据 ---------*/
+  public static ZTD_MAP:Map<string,any> = new Map<string,any>();
 }

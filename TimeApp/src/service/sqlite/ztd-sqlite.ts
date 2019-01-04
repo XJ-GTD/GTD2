@@ -3,7 +3,7 @@ import {BaseSqlite} from "./base-sqlite";
 import {FiEntity} from "../../entity/fi.entity";
 
 /**
- * 版本表
+ * 字典数据表
  */
 @Injectable()
 export class ZtdSqlite {
@@ -11,14 +11,36 @@ export class ZtdSqlite {
   constructor(private baseSqlite: BaseSqlite) {}
 
   /**
-   * 查询版本表
+   * 查询字典表
    * @param {string} id 主键
    */
-  getZtd(zt:string): Promise<any> {
+  getZtdMessage(zt:string): Promise<any> {
     let sql="SELECT * FROM GTD_Y where 1=1";
     if(zt != null && zt!=''){
       sql = sql + " and zt='"+zt +"'";
     }
     return this.baseSqlite.executeSql(sql,[]);
   }
+
+  /**
+   * 查询字典类型表
+   * @param {string} zt
+   * @returns {Promise<any>}
+   */
+  getZt(zt:string): Promise<any> {
+    let sql="SELECT * FROM GTD_X where zt !='400'";
+    if(zt != null && zt!=''){
+      sql = sql + " and zt='"+zt +"'";
+    }
+    return this.baseSqlite.executeSql(sql,[]);
+  }
+
+  getZtd(zt:string): Promise<any> {
+    let sql="SELECT * FROM GTD_Y where zt !='400'";
+    if(zt != null && zt!=''){
+      sql = sql + " and zt='"+zt +"'";
+    }
+    return this.baseSqlite.executeSql(sql,[]);
+  }
+
 }
