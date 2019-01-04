@@ -127,12 +127,36 @@ export class WorkSqlite{
             }
 
             let count:number = 0;
-            for(let j=0;j<ls.length;j++){
-              let sd = ls.item(j).sd.substr(0,10)
-              let ed = ls.item(j).ed.substr(0,10)
-              if(sd<=day && ed>=day){
-                count +=1;
+            for (let j = 0; j < ls.length; j++) {
+              if (this.isymwd(ls.item(j).cft, day, ls.item(j).sd, ls.item(j).ed)) {
+                count += 1;
               }
+              // let sd = ls.item(j).sd.substr(0,10);
+              // let ed = ls.item(j).ed.substr(0,10);
+              // if(ls.item(j).cft && ls.item(j).cft != null){
+              //   if(ls.item(j).cft==1){//年
+              //     if(sd.substr(4,10)== day.substr(4,10)){
+              //       count +=1;
+              //     }
+              //   }else if(ls.item(j).cft==2){ //月
+              //     if(sd.substr(4,6)== day.substr(4,6)){
+              //       count +=1;
+              //     }
+              //   }else if(ls.item(j).cft==3){ //周
+              //     let sdz = new Date(sd.replace('-','/').getDay());
+              //     let dayz = new Date(day.replace('-','/').getDay());
+              //     if(sd<=day && sdz == dayz){
+              //       count +=1;
+              //     }
+              //   }else if(ls.item(j).cft==4){ //周
+              //     if(sd<=day && ed>=day){
+              //       count +=1;
+              //     }
+              //     count +=1;
+              //   }
+              // }else if(sd<=day && ed>=day){
+              //   count +=1;
+              // }
             }
             //TODO
             // if(count>0){
@@ -175,20 +199,22 @@ export class WorkSqlite{
         if(data&&data.rows&&data.rows.length>0){
           let ls = data.rows;
           for(let i=0;i<ls.length;i++){
-            let res:any = ls.item(i);
-            res.scheduleId = res.sI;
-            res.scheduleName = res.sN;
-            if(res.san != null){
-              res.scheduleName =res.son;
+            if(this.isymwd(ls.item(i).cft,d,ls.item(i).sd,ls.item(i).ed)){
+              let res:any = ls.item(i);
+              res.scheduleId = res.sI;
+              res.scheduleName = res.sN;
+              if(res.san != null){
+                res.scheduleName =res.son;
+              }
+              if(res.sd.substr(0,10) == d){
+                res.scheduleStartTime = res.sd.substr(11,16)
+              }else if(res.ed.substr(0,10) == d){
+                res.scheduleStartTime = res.ed.substr(11,16)
+              }else{
+                res.scheduleStartTime="08:00"
+              }
+              resL.push(res)
             }
-            if(res.sd.substr(0,10) == d){
-              res.scheduleStartTime = res.sd.substr(11,16)
-            }else if(res.ed.substr(0,10) == d){
-              res.scheduleStartTime = res.ed.substr(11,16)
-            }else{
-              res.scheduleStartTime="08:00"
-            }
-            resL.push(res)
           }
         }
         bs.data=resL;
@@ -199,6 +225,45 @@ export class WorkSqlite{
         reject(bs)
       })
     })
+  }
+
+  /**
+   * 判断当前日期是否对应重复类型
+   * @param {string} cft 重复类型
+   * @param {string} day 当前日期
+   * @param {string} sd 开始日期
+   * @param {string} ed 结束日期
+   * @returns {boolean}
+   */
+  isymwd(cft:string,day:string,sd:string,ed:string):boolean{
+    let isTrue = false;
+    sd = sd.substr(0,10);
+    ed= ed.substr(0,10);
+    if(cft && cft != null){
+      if(cft==1){//年
+        if(sd.substr(4,10)== day.substr(4,10)){
+          isTrue = true;
+        }
+      }else if(cft==2){ //月
+        if(sd.substr(4,6)== day.substr(4,6)){
+          isTrue = true;
+        }
+      }else if(cft==3){ //周
+        let sdz = new Date(sd.replace('-','/')).getDay();
+        let dayz = new Date(day.replace('-','/')).getDay();
+        if(sd<=day && sdz == dayz){
+          isTrue = true;
+        }
+      }else if(cft==4){ //周
+        if(sd<=day && ed>=day){
+          isTrue = true;
+        }
+        isTrue = true;
+      }
+    }else if(sd<=day && ed>=day){
+      isTrue = true;
+    }
+    return isTrue;
   }
 
   /**
