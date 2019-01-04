@@ -244,7 +244,13 @@ export class RelmemService {
       let ruo=new RuoModel();
       this.relmemSqlite.getrus(id,ran,rN,rC,rel).then(data=>{
         let rus = new Array<RuModel>();
+
         if(data&& data.rows && data.rows.length>0){
+          let ru = new RuModel();
+          ru.hiu=DataConfig.uInfo.hIU;
+          ru.ran=DataConfig.uInfo.uN;
+          ru.rI=DataConfig.uInfo.uI;
+          rus.push(ru);
           for(let i=0;i<data.rows.length;i++){
             rus.push(data.rows.item(i));
           }
