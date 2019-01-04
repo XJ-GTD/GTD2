@@ -87,7 +87,11 @@ export class RcpEntity {
       sql=sql+' rui="' + this._rui +'",';
     }
     if(this._sdt!=null){
-      sql=sql+' sdt=' + this._sdt;
+      sql=sql+' sdt=' + this._sdt+',';
+    }
+    let str = sql.substr(sql.length-1,sql.length);
+    if(str == ','){
+      sql = sql.substr(0,sql.length-1);
     }
     if(this._pI != null && this._pI!=''){
       sql = sql + ' where pI="' + this._pI +'"';

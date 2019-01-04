@@ -68,9 +68,14 @@ export class RcEntity {
     if(this._ji!=null && this._ji!=''){
       sql=sql+' ji="' + this._ji +'",';
     }
-    if(this._sI != null && this._sI!=''){
-      sql = sql + ' sI="' + this._sI +'" where sI="' + this._sI +'"';
+    let str = sql.substr(sql.length-1,sql.length);
+    if(str == ','){
+      sql = sql.substr(0,sql.length-1);
     }
+    if(this._sI != null && this._sI!=''){
+      sql = sql +'" where sI="' + this._sI +'"';
+    }
+
     this._usq=sql;
     return this._usq;
   }
