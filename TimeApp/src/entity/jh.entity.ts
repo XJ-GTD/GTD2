@@ -32,7 +32,7 @@ export class JhEntity {
 
   get isq(): string {
     let sql='insert into GTD_J_H ' +
-      '(ji,jn,jg) values('+ this._ji+',"'+ this._jn+'","'+this._jg+ '")';
+      '(ji,jn,jg) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '")';
     this._isq=sql;
     return this._isq;
   }
