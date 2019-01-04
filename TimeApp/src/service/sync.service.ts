@@ -11,6 +11,7 @@ import {SyncRestful} from "./restful/sync-restful";
 import {DataConfig} from "../app/data.config";
 import {ZtdSqlite} from "./sqlite/ztd-sqlite";
 import {ReturnConfig} from "../app/return.config";
+import {ZtdModel} from "../model/ztd.model";
 
 /**
  * 初始化
@@ -101,19 +102,45 @@ export class SyncService {
   initLocalData():Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let base = new BsModel();
-      this.ztd.getZtd('400').then(data=>{
-        console.log("-------SyncService initLocalData sqlite 初始本地静态数据结果："+JSON.stringify(data))
+      console.log("-------SyncService initLocalData sqlite 初始本地返回本地message------------");
+      let ztL:any = null;
+      this.ztd.getZtdMessage('400').then(data=>{
+        console.log("-------SyncService initLocalData sqlite 初始本地静态数据本地message结果："+JSON.stringify(data));
         if(data && data.rows&&data.rows.length>0){
           let res = data.rows;
-            for(let i=0;i<res.length;i++){
-              ReturnConfig.RETURN_MSG.set(res.item(i).zk,res.item(i).zkv)
-            }
-          console.log("-------SyncService initLocalData ReturnConfig.RETURN_MSG 数据结果："+JSON.stringify(ReturnConfig.RETURN_MSG))
+          for(let i=0;i<res.length;i++){
+            ReturnConfig.RETURN_MSG.set(res.item(i).zk,res.item(i).zkv);
+          }
+          console.log("-------SyncService initLocalData ReturnConfig.RETURN_MSG 数据结果："+JSON.stringify(ReturnConfig.RETURN_MSG));
         }
-        resolve(base)
+        console.log("-------SyncService initLocalData sqlite 初始本地字典表数据 -------- ");
+        return this.ztd.getZt('')
+      }).then(data=>{
+        console.log("-------SyncService initLocalData sqlite 初始本地字典表："+JSON.stringify(data));
+        if(data && data.rows&&data.rows.length>0){
+          ztL = data.rows;
+          console.log("-------SyncService initLocalData ReturnConfig.RETURN_MSG 数据结果："+JSON.stringify(ReturnConfig.RETURN_MSG));
+        }
+        return this.ztd.getZtd('')
+      }).then(data=>{
+        console.log("-------SyncService initLocalData sqlite 初始本地字典表："+JSON.stringify(data));
+        if(ztL !=null && data && data.rows&&data.rows.length>0){
+          let res = data.rows;
+          let ztMap = new Map<string,any>();
+          for(let j=0;j<ztL.length;j++){
+            let ztdL = new Array<ZtdModel>()
+            for(let i=0;i<res.length;i++){
+              ztdL.push(res.item(i));
+            }
+            ztMap.set(ztL.item(j).zt,ztdL);
+          }
+          DataConfig.ZTD_MAP = ztMap;
+          console.log("-------SyncService initLocalDataDataConfig.ZTD_MAP 数据结果："+JSON.stringify( DataConfig.ZTD_MAP));
+        }
+        resolve(base);
       }).catch(e=>{
-        console.error("-------SyncService initLocalData sqlite 初始本地静态数据 Error："+JSON.stringify(e))
-        base.message=e.message
+        console.error("-------SyncService initLocalData sqlite 初始本地静态数据 Error："+JSON.stringify(e));
+        base.message=e.message;
         base.code=1;
         reject(base)
       })

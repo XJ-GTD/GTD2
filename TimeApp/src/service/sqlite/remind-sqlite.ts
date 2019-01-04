@@ -43,12 +43,12 @@ export class RemindSqlite {
    * @returns {Promise<any>}
    */
   getRe(re:ReEntity):Promise<any>{
-    let sql="SELECT ri,pi,rd FROM GTD_E where 1=1";
+    let sql="SELECT ri,sI,rd FROM GTD_E where 1=1";
     if(re.ri!=null){
       sql=sql+' ri="' + re.ri +'",';
     }
-    if(re.pi!=null){
-      sql=sql+' pi="' + re.pi +'",';
+    if(re.sI!=null){
+      sql=sql+' sI="' + re.sI +'",';
     }
     if(re.rd!=null){
       sql=sql+' rd="' + re.rd +'",';
