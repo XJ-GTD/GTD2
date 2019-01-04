@@ -72,7 +72,8 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
                              [weekStart]="_d.weekStart">
           </ion-calendar-week>
 
-          <ion-calendar-month class="component-mode"
+          <ion-calendar-month class="component-mode animated"
+                              [ngClass]="{'bounceInLeft':css==1,'bounceInRight':css==2}"
                               [(ngModel)]="_calendarMonthValue"
                               [month]="monthOpt"
                               [readonly]="readonly"
@@ -107,6 +108,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   _options: CalendarComponentOptions;
   _view: 'month' | 'days' = 'days';
   _calendarMonthValue: CalendarDay[] = [null, null];
+  css:number=1;
 
   _showToggleButtons = false;
   get showToggleButtons(): boolean {
@@ -285,9 +287,17 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     const isNext = $event.deltaX < 0;
     if (isNext && this.canNext()) {
       this.nextMonth();
+      this.css =2;
+
     } else if (!isNext && this.canBack()) {
       this.backMonth()
+
+      this.css = 1;
     }
+    window.setTimeout(()=>{
+
+      this.css = 100;
+    },1000);
     this.onSelect.emit()
   }
 
