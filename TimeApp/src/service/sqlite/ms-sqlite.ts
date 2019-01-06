@@ -53,7 +53,7 @@ export class MsSqlite {
       sql=sql+' mn="' + ms.mn +'",';
     }
     if(ms.md!=null){
-      sql=sql+' md="' + ms.md +'",';
+      sql=sql+' substr(md,1,10)="' + ms.md +'",';
     }
     if(ms.mt!=null){
       sql=sql+' mt="' + ms.mt +'",';
@@ -67,6 +67,15 @@ export class MsSqlite {
    */
   getOne(ms:MsEntity):Promise<any>{
     return this.baseSqlite.getOne(ms);
+  }
+
+  /**
+   * 查询当月Message消息
+   * @returns {Promise<any>}
+   */
+  getMonthMs(month:string):Promise<any>{
+    let sql="select mi,mn,substr(md,1,10) md,mt from GTD_H where mt='0' and substr(md,1,7)='"+month +"'";
+    return this.baseSqlite.executeSql(sql,[]);
   }
 
 }

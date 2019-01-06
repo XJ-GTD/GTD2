@@ -8,6 +8,8 @@ import { WsResDataModel } from "../../model/ws.res.model";
 import {ErrorCodeService} from "./error-code.service";
 import {HdSpeechService} from "./hd-speech.service";
 import {DataConfig} from "../../app/data.config";
+import {MsEntity} from "../../entity/ms.entity";
+import {MsSqlite} from "../sqlite/ms-sqlite";
 
 /**
  * webSocket公用处理方法
@@ -21,6 +23,7 @@ export class DwMqService {
               private relmem :RelmemService,
               private errorCode: ErrorCodeService,
               private hdSpeech: HdSpeechService,
+              private msSqlite:MsSqlite,
               private dwEmit: DwEmitService){
 
   }
@@ -239,12 +242,19 @@ export class DwMqService {
     let lbI = data.lb;
     let rui = data.us;
     let sI=data.si;
-    console.log("----- DwMqService scheduleCreate(业务：日程添加) start---- ")
+    console.log("----- DwMqService scheduleCreate(业务：日程添加) start---- ");
     if(rui != DataConfig.uInfo.uI){
       this.work.arcMq(sI,rui,ct,sd,ed,lbI).then(data=>{
-        console.log("----- DwMqService scheduleCreate(业务：日程添加) end ---- ")
+        console.log("----- DwMqService scheduleCreate(业务：日程添加) end ---- ");
+        let ms = new MsEntity();
+        ms.mn=ct;
+        ms.md=sd;
+        ms.mt='0';
+        return this.msSqlite.addMs(ms);
+      }).then(data=>{
+        console.log("----- DwMqService scheduleCreate(业务：日程添加Message) end ---- ");
       }).catch(e=>{
-        console.log("----- DwMqService scheduleCreate(业务：日程添加) Error : "+JSON.stringify(e))
+        console.log("----- DwMqService scheduleCreate(业务：日程添加) Error : "+JSON.stringify(e));
       });
     }
 
