@@ -5,10 +5,10 @@
 //标签表
 export class LbEntity {
 
-  private _lai: string=null;   //主键
-  private _lan:string=null; //标签名
-  private _lat: string=null;//标签类型
-  private _lau: string=null; //标签功能
+  private _lai: string='';   //主键
+  private _lan:string=''; //标签名
+  private _lat: string='';//标签类型
+  private _lau: string=''; //标签功能
   /*
    * 创建表
    * @type {string}

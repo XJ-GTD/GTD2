@@ -37,9 +37,34 @@ export class RcEntity {
   }
 
   get isq(): string {
+    let field='sI'
+    let values = '"'+this._sI+'"'
+    if(this._sN!=null && this._sN!=''){
+      field=field+',sN';
+      values = ',"'+this._sN+'"'
+    }
+    if(this._lI!=null && this._lI!=''){
+      field=field+',lI';
+      values = ',"'+this._lI+'"'
+    }
+    if(this._uI!=null && this._uI!=''){
+      field=field+',uI';
+      values = ',"'+this._uI+'"'
+    }
+    if(this._sd!=null && this._sd!=''){
+      field=field+',sd';
+      values = ',"'+this._sd+'"'
+    }
+    if(this._ed!=null && this._ed!=''){
+      field=field+',ed';
+      values = ',"'+this._ed+'"'
+    }
+    if(this._ji!=null && this._ji!=''){
+      field=field+',ji';
+      values = ',"'+this._ji+'"'
+    }
     let sql='insert into GTD_C ' +
-      '(sI,sN,lI,uI,sd,ed,ji) values("'+ this._sI+'","'+ this._sN+'","'+this._lI+ '","'+ this._uI
-      +'","'+this._sd+ '","'+ this._ed+'","'+ this._ji+'")';
+      '('+field+') values('+ values+')';
     this._isq=sql;
     return this._isq;
   }

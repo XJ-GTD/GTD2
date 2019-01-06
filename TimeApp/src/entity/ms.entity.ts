@@ -5,10 +5,10 @@
 //Message消息表
 export class MsEntity {
 
-  private _mi: number=null;   //UmtD
-  private _mn:string=null; //message内容
-  private _md: string=null;   //发布时间
-  private _mt: string=null;          //创建人ID
+  private _mi: number;   //UmtD
+  private _mn:string=''; //message内容
+  private _md: string='';   //发布时间
+  private _mt: string='';          //创建人ID
   /*
    * 创建表
    * @type {string}
