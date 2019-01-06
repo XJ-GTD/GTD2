@@ -8,6 +8,7 @@ import {UtilService} from "../util-service/util.service";
 import {RcModel} from "../../model/rc.model";
 import {BsModel} from "../../model/out/bs.model";
 import {DataConfig} from "../../app/data.config";
+import {ReturnConfig} from "../../app/return.config";
 
 
 /**
@@ -175,8 +176,8 @@ export class WorkSqlite{
         bs.data=resL;
         resolve(bs)
       }).catch(e=>{
-        bs.code=1
-        bs.message=e.message
+        bs.code=ReturnConfig.ERR_CODE;
+        bs.message=e.message;
         reject(bs)
       })
     })
