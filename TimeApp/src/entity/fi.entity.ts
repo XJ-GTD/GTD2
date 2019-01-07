@@ -5,9 +5,9 @@
 //更新表
 export class FiEntity {
 
-  private _id: number=null;   //主键
-  private _firstIn:number=null; //版本号
-  private _isup: number=null;//是否更新0暂无更新，1已更新
+  private _id: number;   //主键
+  private _firstIn:number; //版本号
+  private _isup: number;//是否更新0暂无更新，1已更新
   /*
    * 创建表
    * @type {string}

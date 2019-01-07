@@ -8,6 +8,8 @@ import {UtilService} from "../util-service/util.service";
 import {RcModel} from "../../model/rc.model";
 import {BsModel} from "../../model/out/bs.model";
 import {DataConfig} from "../../app/data.config";
+import {ReturnConfig} from "../../app/return.config";
+import {MsSqlite} from "./ms-sqlite";
 
 
 /**
@@ -19,6 +21,7 @@ import {DataConfig} from "../../app/data.config";
 export class WorkSqlite{
 
   constructor( private baseSqlite: BaseSqlite,
+            private msSqlite:MsSqlite,
             private util:UtilService) {
 
   }
@@ -91,13 +94,14 @@ export class WorkSqlite{
         'left join GTD_D gd on gc.sI=gd.sI and gd.uI = "' +ui+'" where ' +
         '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'")';
       let bs = new BsModel();
-      this.baseSqlite.executeSql(sql,[]).then(data=>{
-        let resL = new Array<any>()
+      let resL = new Array<any>();
+      this.baseSqlite.executeSql(sql,[])
+        .then(data=>{
           let ls = data.rows;
           for(let i=1;i<=31;i++){
             let day = ym+"-"+i;
             if(i<10){
-              day = ym+'-0'+i
+              day = ym+'-0'+i;
             }
 
             let count:number = 0;
@@ -118,17 +122,30 @@ export class WorkSqlite{
               let res:any={};
               res.ymd = day;
               res.ct = UtilService.randInt(0,10);
-              resL.push(res)
+              resL.push(res);
             }
-
           }
+
+        return this.msSqlite.getMonthMs(ym);
+      }).then(data=>{
+        if(data&&data.rows&&data.rows.length){
+          //判断是否有消息
+          for(let i=0;i<=resL.length;i++){
+            for(let j=0;j<=data.rows.length;j++){
+              if(resL[i].ymd== data.rows.item(j).md){
+                resL[i].mdn=1;
+                break;
+              }
+            }
+          }
+        }
         bs.data=resL;
-        resolve(bs)
+        resolve(bs);
       }).catch(e=>{
-        console.error("WorkSqlite arc() Error : " +JSON.stringify(e))
-        bs.code=1
-        bs.message=e.message
-        reject(bs)
+        console.error("WorkSqlite arc() Error : " +JSON.stringify(e));
+        bs.code=ReturnConfig.ERR_CODE;
+        bs.message=e.message;
+        reject(bs);
       })
     })
   }
@@ -146,11 +163,11 @@ export class WorkSqlite{
         'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
         'union select sI,cft,cf,ac,fh from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
         'left join GTD_D gd on gc.sI=gd.sI ' +
-        'and gd.uI ="'+ui+'" where (substr(gc.sd,1,10) <= "'+d+'" and substr(gc.ed,1,10)>= "'+d+'") '
+        'and gd.uI ="'+ui+'" where (substr(gc.sd,1,10) <= "'+d+'" and substr(gc.ed,1,10)>= "'+d+'") ';
        // +'and (gd.pI is null or gd.uI ="'+DataConfig.uInfo.uI+'")';
       let bs = new BsModel();
+      let resL = new Array<any>();
       this.baseSqlite.executeSql(sql,[]).then(data=>{
-        let resL = new Array<any>()
         if(data&&data.rows&&data.rows.length>0){
           let ls = data.rows;
           for(let i=0;i<ls.length;i++){
@@ -162,21 +179,25 @@ export class WorkSqlite{
                 res.scheduleName =res.son;
               }
               if(res.sd.substr(0,10) == d){
-                res.scheduleStartTime = res.sd.substr(11,16)
+                res.scheduleStartTime = res.sd.substr(11,16);
               }else if(res.ed.substr(0,10) == d){
-                res.scheduleStartTime = res.ed.substr(11,16)
+                res.scheduleStartTime = res.ed.substr(11,16);
               }else{
-                res.scheduleStartTime="08:00"
+                res.scheduleStartTime="08:00";
               }
-              resL.push(res)
+              resL.push(res);
             }
           }
         }
+        let ms = new MsEntity();
+        ms.md=d;
+        return this.msSqlite.updateMs(ms);
+      }).then(data=>{
         bs.data=resL;
-        resolve(bs)
+        resolve(bs);
       }).catch(e=>{
-        bs.code=1
-        bs.message=e.message
+        bs.code=ReturnConfig.ERR_CODE;
+        bs.message=e.message;
         reject(bs)
       })
     })
@@ -226,7 +247,13 @@ export class WorkSqlite{
    * @param pI 日程参与人ID
    */
   getds(sI:string):Promise<any>{
-    let sql = "select jh.jn,gf.lan,gd.sa,gc.* from GTD_C gc left join GTD_D gd on gc.sI = gd.sI " +
+    let sql = "select jh.jn,gf.lan,gd.sa,gc.*,lbd.* from GTD_C gc " +
+      'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
+      'union select sI,cft,cf,ac,fh from GTD_CC ' +
+      'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
+      'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
+      'union select sI,cft,cf,ac,fh from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
+      "left join GTD_D gd on gc.sI = gd.sI " +
       "left join GTD_J_H jh on jh.ji = gc.ji " +
       "left join GTD_F gf on gf.lai = gc.lI where gc.sI ='" + sI +"'"
     return this.baseSqlite.executeSql(sql,[])

@@ -5,10 +5,10 @@
 //Message消息表
 export class MsEntity {
 
-  private _mi: number=null;   //UmtD
-  private _mn:string=null; //message内容
-  private _md: string=null;   //发布时间
-  private _mt: string=null;          //创建人ID
+  private _mi: number; //UmtD
+  private _mn:string=''; //message内容
+  private _md: string=''; //发布时间
+  private _mt: string=''; //状态0未读，1已读
   /*
    * 创建表
    * @type {string}
@@ -49,13 +49,17 @@ export class MsEntity {
       sql=sql+' mn="' + this._mn +'",';
     }
     if(this._md!=null){
-      sql=sql+' md="' + this._md +'",';
+      sql=sql+' substr(md,1,10)="' + this._md +'",';
     }
     if(this._mt!=null){
       sql=sql+' mt="' + this._mt +'",';
     }
+    let str = sql.substr(sql.length-1,sql.length);
+    if(str == ','){
+      sql = sql.substr(0,sql.length-1);
+    }
     if(this._mi != null){
-      sql = sql + ' mi="' + this._mi +'" where mi="' + this._mi +'"';
+      sql = sql + ' where mi="' + this._mi +'"';
     }
     this._usq=sql;
     return this._usq;
