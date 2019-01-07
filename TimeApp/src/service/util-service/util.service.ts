@@ -126,6 +126,7 @@ export class UtilService {
     let bool=false;
     if(d<0){
       bool=true;
+      d=-d;
     }
     if(!bool && d==1){
       str = '明天';
