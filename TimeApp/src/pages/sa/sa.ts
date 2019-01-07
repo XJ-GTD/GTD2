@@ -124,7 +124,7 @@ export class SaPage {
     this.rc.sd = this.starttmp;
     // this.rc.ed = this.endtmp;
     console.log("修改日程传入参数 :: " + JSON.stringify(this.rc));
-    this.work.urc(this.rc.sI,this.rc.sN,this.rc.sd,this.rc.ed,this.rc.lI,this.rc.ji,this.rc.rus).then(data=>{
+    this.work.urc(this.rc.sI,this.rc.sN,this.rc.sd,this.rc.ed,this.rc.lI,this.rc.ji,'','','',this.rc.rus).then(data=>{
       console.log(JSON.stringify(data));
     }).catch(reason => {
       console.log(JSON.stringify(reason));
