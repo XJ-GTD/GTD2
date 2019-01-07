@@ -139,10 +139,10 @@ export class UtilService {
     }else if(d>=3&& d<30){
       str=d+'天';
     }if(d>=30&& d<365){
-      d = 365/30;
+      d = d/30;
       str=d.toString().substr(0,1)+"月";
     }if(d>=365){
-      d = 365/365;
+      d = d/365;
       str=d.toString().substr(0,1)+"年";
     }
     if(d>=3&&bool){
