@@ -61,7 +61,7 @@ export class SyncService {
                 if(res.type=='label' && res.dataList.length>0){
                   for(let l=0;l<res.dataList.length;l++){
                     let label = res.dataList[l];
-                    sql=sql+ 'insert into GTD_F(lai,lan,lat) values("'+ label.id+'","'+ label.value+'","'+ label.type+'");';
+                    sql=sql+ 'insert into GTD_F(lai,lan,lat,lau) values("'+ label.id+'","'+ label.value+'","'+ label.type+'","'+ label.key+'");';
                   }
                 }
               }

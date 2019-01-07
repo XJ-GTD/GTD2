@@ -24,6 +24,7 @@ import {RcpEntity} from "../entity/rcp.entity";
 import {ReturnConfig} from "../app/return.config";
 import {RcoModel} from "../model/out/rco.model";
 import {WsResDataModel} from "../model/ws.res.model";
+import {MsSqlite} from "./sqlite/ms-sqlite";
 
 /**
  * 日程逻辑处理
@@ -33,11 +34,12 @@ import {WsResDataModel} from "../model/ws.res.model";
 @Injectable()
 export class WorkService {
 W
-  constructor(private baseSqlite:BaseSqlite,
-                private util:UtilService,
-                private workSqlite: WorkSqlite,
-                private relmem: RelmemSqlite,
-                private lbSqlite: LbSqlite,
+  constructor(private baseSqlite : BaseSqlite,
+                private util : UtilService,
+                private workSqlite : WorkSqlite,
+                private relmem : RelmemSqlite,
+                private lbSqlite : LbSqlite,
+                private msSqlite : MsSqlite,
                 private rcResful:RcRestful) {
   }
 
@@ -69,11 +71,10 @@ W
       rc.sI=this.util.getUuid();
       let psl = new Array<PsModel>();
       console.log("----- workService arc 添加日程开始-------");
-      this.baseSqlite.save(rc)
-        .then(data=>{
+      this.baseSqlite.save(rc).then(data=>{
           console.log("----- workService arc 添加日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 添加日程子表-------");
-          return this.workSqlite.addLbData(rc.sI,rc.lI,cft,rm,ac,'0')
+          return this.workSqlite.addLbData(rc.sI,rc.lI,cft,rm,ac,'0');
         })
         .then(data=>{
         if(ruL && ruL.length>0){
@@ -116,6 +117,7 @@ W
         return this.workSqlite.sRcps(rc,ruL);
       }).then(data=>{
         console.log("WorkService arc() add 参与人 Success : " +JSON.stringify(data));
+        //this.drc(rc.sI,'1')
         resolve(bs);
       }).catch(e=>{
         console.error("WorkService arc() Error : " +JSON.stringify(e));
@@ -137,7 +139,7 @@ W
    * @param {string} lbI 标签编号
    * @param {string} jhi 计划名称
    */
-  arcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string):Promise<BsModel>{
+  arcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string,cft:string,rm:string,ac:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
       //先查询当前用户ID
@@ -154,10 +156,14 @@ W
       }
       rc.lI=lbI;
       rc.sI=sI;
-      let psl = new Array<PsModel>();
       console.log("------ WorkService arcMq() Start ------------");
-
-      this.baseSqlite.save(rc).then(data=>{
+      this.baseSqlite.save(rc)
+        .then(data=>{
+          console.log("----- workService arc 添加日程返回结果：" + JSON.stringify(data));
+          console.log("----- workService arc 添加日程子表-------");
+          return this.workSqlite.addLbData(rc.sI,rc.lI,cft,rm,ac,'0');
+        })
+        .then(data=>{
         let rcp = new RcpEntity();
         rcp.uI=DataConfig.uInfo.uI;
         rcp.sI=sI;
@@ -190,7 +196,7 @@ W
    * @param {string} jhi 计划名称
    * @param {Array}  ruL 参与人json数组[ {id,rN,rC} ]（id主键,rN名称,rC联系方式）
    */
-  urc(sI:string,ct:string,sd:string,ed:string,lbI:string,jhi:string,ruL:Array<RuModel>):Promise<BsModel>{
+  urc(sI:string,ct:string,sd:string,ed:string,lbI:string,jhi:string,cft:string,rm:string,ac:string,ruL:Array<RuModel>):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
       //先查询当前用户ID
@@ -227,7 +233,13 @@ W
           console.log("WorkService urc() restful " + SkillConfig.BC_SCU+" start");
           return this.rcResful.sc(rc.uI,SkillConfig.BC_SCU,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'');
         }
-      }).then(data=>{
+      })
+        .then(data=>{
+          console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(data));
+          console.log("----- workService arc 更新日程子表-------");
+          return this.workSqlite.updateLbData(rc.sI,rc.lI,cft,rm,ac,'0');
+        })
+        .then(data=>{
         console.log("WorkService urc() end : " +JSON.stringify(data));
         if(psl.length>0 && data.code==0 && data.data.players.length>0){
           let players = data.data.players;
@@ -281,7 +293,7 @@ W
    * @param {string} jhi 计划名称
    * @param {Array}  ruL 参与人json数组[ {id,rN,rC} ]（id主键,rN名称,rC联系方式）
    */
-  urcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string):Promise<BsModel>{
+  urcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string,cft:string,rm:string,ac:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
       //先查询当前用户ID
@@ -298,7 +310,6 @@ W
       }
       rc.lI=lbI;
       rc.sI=sI;
-      let psl = new Array<PsModel>();
       console.log("------ WorkService arcMq() Start ------------");
       this.baseSqlite.update(rc).then(data=>{
         let rcp = new RcpEntity();
@@ -309,7 +320,13 @@ W
         rcp.sdt=1;
         rcp.son=rc.sN;
         return this.baseSqlite.update(rcp);
-      }).then(data=>{
+      })
+        .then(data=>{
+          console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(data));
+          console.log("----- workService arc 更新日程子表-------");
+          return this.workSqlite.updateLbData(rc.sI,rc.lI,cft,rm,ac,'0');
+        })
+        .then(data=>{
         console.log("------ WorkService arcMq() End ------------");
       }).catch(e=>{
         console.error("WorkService arcMq() Error : " +JSON.stringify(e));
@@ -331,11 +348,50 @@ W
       if(sa == '1'){
         let rc = new RcEntity();
         rc.sI = sI;
-        this.baseSqlite.delete(rc).then(datau => {
+        let ruL:Array<RuModel> = new Array<RuModel>();
+        let psl = new Array<PsModel>();
+        console.log('--------- 删除的日程开始 ---------')
+        this.baseSqlite.delete(rc)
+          .then(datad => {
+            console.log('--------- 删除的日程结束 ---------')
+            console.log('--------- 查询要删除的参与人开始 ---------');
+            return this.relmem.getRgusBySi(sI);
+        })
+          .then(data => {
+            if(data && data.rows && data.rows.length>0) {
+              let rs = data.rows;
+              for (let i = 0; i < rs.length; i++) {
+                ruL.push(rs.item(i));
+              }
+            }
+            console.log('--------- 删除的参与人开始 ---------');
           return this.workSqlite.dRcps(sI);
-        }).then(datad => {
+        })
+          .then(data=>{
+            console.log('--------- 删除的参与人结束 ---------');
+          if(ruL && ruL.length>0){
+            //转化接口对应的参与人参数
+            if(ruL && ruL.length>0){
+              for(let i=0;i<ruL.length;i++){
+                //排除当前登录人
+                //if(ruL[i].rI != rc.uI){
+                let ps = new PsModel();
+                ps.userId=ruL[i].rI;
+                ps.accountMobile = ruL[i].rC;
+                psl.push(ps);
+                //}
+              }
+            }
+            console.log("WorkService drc() 删除日程 restful request " + SkillConfig.BC_SCD+" start");
+            return this.rcResful.sc(DataConfig.uInfo.uI,SkillConfig.BC_SCD,rc.sI,'123','2019-01-07','2019-01-07','1',psl,'');
+
+          }
+
+        })
+          .then(data=>{
           resolve(bs);
-        }).catch(eu => {
+        })
+          .catch(eu => {
           bs.code = ReturnConfig.ERR_CODE;
           bs.message = eu.message;
           resolve(bs)
@@ -501,7 +557,7 @@ W
   }
 
   /**
-   * 删除日程
+   * MQ删除日程
    * @param {string} sI 主键
    * @returns {Promise<BsModel>}
    */
@@ -511,10 +567,31 @@ W
       rc.sI=sI;
       let bs = new BsModel();
       console.log("----- WorkService delrc(删除日程) start -----");
-      this.baseSqlite.delete(rc).then(data=>{
-        console.log("----- WorkService delrc(删除日程) result:" + JSON.stringify(data));
+      //先查询日程
+      this.baseSqlite.getOne(rc)
+      .then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          //插入message表
+          let ms = new MsEntity();
+          ms.mn=data.rows.item(0).sN;
+          ms.md=data.rows.item(0).sd;
+          ms.mt='0';
+          return this.msSqlite.addMs(ms);
+        }
+      })
+        .then(data=>{
+          //删除日程
+        return this.baseSqlite.delete(rc);
+      })
+        .then(data=>{
+          console.log("----- WorkService delrc(删除日程) result:" + JSON.stringify(data));
+          console.log('--------- 删除的参与人开始 ---------');
+          return this.workSqlite.dRcps(sI);
+      }).then(data=>{
+        console.log('--------- 删除的参与人结束 ---------');
         resolve(bs);
-      }).catch(e=>{
+      })
+        .catch(e=>{
         console.error("----- WorkService delrc(删除日程) Error:" + JSON.stringify(e));
         bs.code=ReturnConfig.ERR_CODE;
         bs.message=e.message;

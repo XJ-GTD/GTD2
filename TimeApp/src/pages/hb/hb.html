@@ -23,14 +23,7 @@
 
         <!-- 判断消息是用户 -->
         <div *ngIf="tu == message.tt" class="userTalk">
-          <!--<ion-avatar item-start>-->
-          <!--<img src="assets/imgs/vi.png">-->
-          <!--</ion-avatar>-->
           <h2 [innerHTML]="message.at" class="animated bounceIn"></h2>
-          <h3></h3>
-          <p>
-            <span class="bold">轻点以编辑</span>
-          </p>
         </div>
 
         <!-- 判断消息是讯飞 -->
@@ -99,7 +92,7 @@
     <!--</ion-fab>-->
   </ion-content>
 
-  <ion-footer>
+  <ion-footer style="height: 94px">
     <ion-toolbar  *ngIf="modeFlag == true; else xjInput">
       <ion-buttons left>
         <button ion-button icon-only (click)="switchInput()">
@@ -110,17 +103,16 @@
       <img  src="./assets/imgs/yuying.png"   (click)="startXiaoJi()" class="animated bounceIn"/>
     </ion-toolbar>
     <ng-template #xjInput>
-      <ion-toolbar>
+      <ion-toolbar style="margin-top: 18px" class="animated bounceIn faster">
         <ion-buttons left>
           <button ion-button icon-only (click)="switchInput()">
             <ion-icon name="mic" style=" color: white"></ion-icon>
           </button>
         </ion-buttons>
-        <ion-input id="userInput" type="text" [(ngModel)]="inputText" placeholder="请输入指令"></ion-input>
+        <ion-input style="margin-left：10px" id="userInput" type="text" [(ngModel)]="inputText" placeholder="打字悄悄告诉我"></ion-input>
         <ion-buttons end>
           <button ion-button icon-end color="royal" (click)="startXiaojiText()">
-            发送
-            <ion-icon name="send"></ion-icon>
+            <ion-icon name="send" style=" color: white;font-size: 40px"></ion-icon>
           </button>
         </ion-buttons>
       </ion-toolbar>

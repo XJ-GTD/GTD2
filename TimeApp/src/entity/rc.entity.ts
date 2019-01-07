@@ -41,27 +41,27 @@ export class RcEntity {
     let values = '"'+this._sI+'"'
     if(this._sN!=null && this._sN!=''){
       field=field+',sN';
-      values = ',"'+this._sN+'"'
+      values =values+  ',"'+this._sN+'"'
     }
     if(this._lI!=null && this._lI!=''){
       field=field+',lI';
-      values = ',"'+this._lI+'"'
+      values =values+  ',"'+this._lI+'"'
     }
     if(this._uI!=null && this._uI!=''){
       field=field+',uI';
-      values = ',"'+this._uI+'"'
+      values = values+ ',"'+this._uI+'"'
     }
     if(this._sd!=null && this._sd!=''){
       field=field+',sd';
-      values = ',"'+this._sd+'"'
+      values = values+ ',"'+this._sd+'"'
     }
     if(this._ed!=null && this._ed!=''){
       field=field+',ed';
-      values = ',"'+this._ed+'"'
+      values =values+  ',"'+this._ed+'"'
     }
     if(this._ji!=null && this._ji!=''){
       field=field+',ji';
-      values = ',"'+this._ji+'"'
+      values =values+ ',"'+this._ji+'"'
     }
     let sql='insert into GTD_C ' +
       '('+field+') values('+ values+')';

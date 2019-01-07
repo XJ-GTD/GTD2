@@ -211,14 +211,21 @@ page-hb {
 
     img {
       height: 90px;
-      margin-left: calc(50% - 45px);
+      margin-left: calc(50% - 65px);
     }
     // left: calc(-50% - 35px);
     // width: calc(100% * 2 - 90px);
+    input::-webkit-input-placeholder {
+              /* placeholder颜色  */
+      color: #aab2bd;
+              /* placeholder字体大小  */
+      font-size: 20px;
+    }
 
     input {
       color: #7f8e9e;
       font-size: 22px;
+      margin-left: 8px;
     }
 
     /* fixes an ios bug bear */

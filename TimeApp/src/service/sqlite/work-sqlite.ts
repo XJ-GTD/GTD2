@@ -10,6 +10,7 @@ import {BsModel} from "../../model/out/bs.model";
 import {DataConfig} from "../../app/data.config";
 import {ReturnConfig} from "../../app/return.config";
 import {MsSqlite} from "./ms-sqlite";
+import {ScheduleModel} from "../../model/schedule.model";
 
 
 /**
@@ -111,14 +112,14 @@ export class WorkSqlite{
               }
 
             }
-            //TODO
-            // if(count>0){
-            //   let res:any={};
-            //   res.ymd = day;
-            //   res.ct = count;
-            //   resL.push(res)
-            // }
-            if(UtilService.randInt(0,1)>0){
+ //           TODO
+ //            if(count>0){
+ //              let res:any={};
+ //              res.ymd = day;
+ //              res.ct = count;
+ //              resL.push(res)
+ //            }
+          if(UtilService.randInt(0,1)>0){
               let res:any={};
               res.ymd = day;
               res.ct = UtilService.randInt(0,10);
@@ -130,12 +131,21 @@ export class WorkSqlite{
       }).then(data=>{
         if(data&&data.rows&&data.rows.length){
           //判断是否有消息
-          for(let i=0;i<=resL.length;i++){
-            for(let j=0;j<=data.rows.length;j++){
+          for(let j=0;j<=data.rows.length;j++){
+            let bool = true; //判断当前日是否存在
+            for(let i=0;i<=resL.length;i++){
               if(resL[i].ymd== data.rows.item(j).md){
                 resL[i].mdn=1;
+                bool = false;
                 break;
               }
+            }
+            if(bool){
+              let res:any={};
+              res.ymd = data.rows.item(j).md;
+              res.ct = 0;
+              res.mdn=1;
+              resL.push(res);
             }
           }
         }
@@ -185,9 +195,31 @@ export class WorkSqlite{
               }else{
                 res.scheduleStartTime="08:00";
               }
+              if(res.lau){
+                res.labelColor = res.lau;
+              }
+              //判断别人还是自己的
+              if(res.uI==DataConfig.uInfo.uI){
+                res.scheduleType = '●';
+              }else{
+                res.scheduleType = '▲';
+              }
+              //是否新消息
+              if(res.mf && res.mf=='0'){
+                res.isMessage='·';
+              }
               resL.push(res);
             }
           }
+        }
+
+        let r = 0;
+        for (r=0;r<10;r++){
+          let res:ScheduleModel = new ScheduleModel();
+          res.scheduleId = "1111";
+          res.scheduleName = "1111";
+          res.scheduleStartTime = "15:30";
+          resL.push(res);
         }
         let ms = new MsEntity();
         ms.md=d;
@@ -215,7 +247,7 @@ export class WorkSqlite{
     let isTrue = false;
     sd = sd.substr(0,10);
     ed= ed.substr(0,10);
-    if(cft && cft != null){
+    if(cft && cft != null && cft !='undefined'){
       if(cft=='1'){//年
         if(sd.substr(4,10)== day.substr(4,10)){
           isTrue = true;
@@ -333,6 +365,58 @@ export class WorkSqlite{
     }
     let sql ='insert into ' + tn +
       '(sI,id,tk,cft,rm,ac,fh) values("'+ sI+'","'+ id+'","'+tk+ '","'+cft+ '","'+ rm+'","'+ ac+'","'+ fh+'")';
+    return this.baseSqlite.executeSql(sql,[]);
+  }
+
+  /**
+   * 更新对应标签表数据
+   * @param {string} sI 日程主键
+   * @param {string} tk 标签类型
+   * @param {string} cft 重复类型
+   * @param {string} rm 备注
+   * @param {string} ac 闹铃类型
+   * @param {string} fh 是否完成0未完成，1完成
+   * @returns {Promise<any>}
+   */
+  updateLbData(sI:string,tk:string,cft:string,rm:string,ac:string,fh:string):Promise<any>{
+    let tn='GTD_C_BO';
+    let cf='0'
+    if(cft != null && cft !=''){
+      cf='1'
+    }
+    if(tk == '1'){
+      tn='GTD_C_BO'
+    }else if(tk >= '2' && tk <= '3'){
+      tn='GTD_CC'
+    }else if(tk >= '4' && tk <= '8'){
+      tn='GTD_C_RC'
+    }else if(tk == '9'){
+      tn='GTD_C_JN'
+    }else if(tk >= '10'){
+      tn='GTD_C_MO'
+    }
+    let sql ='update ' + tn +
+      'set ';
+    if(tk != null && tk !=''){
+      sql=sql + 'tk="'+tk+'",'
+    }
+    if(cft != null && cft !=''){
+      sql=sql + 'cft="'+cft+'",'
+    }
+    if(rm != null && rm !=''){
+      sql=sql + 'rm="'+rm+'",'
+    }
+    if(ac != null && ac !=''){
+      sql=sql + 'ac="'+ac+'",'
+    }
+    if(fh != null && fh !=''){
+      sql=sql + 'fh="'+fh+'",'
+    }
+    let str = sql.substr(sql.length-1,sql.length);
+    if(str == ','){
+      sql = sql.substr(0,sql.length-1);
+    }
+    sql = sql + ' where sI="'+ sI+'"';
     return this.baseSqlite.executeSql(sql,[]);
   }
 }

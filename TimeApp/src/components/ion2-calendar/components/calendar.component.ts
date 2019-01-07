@@ -17,6 +17,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import * as moment from 'moment';
 import { defaults, pickModes } from "../config";
+import {XiaojiFeedbackService} from "../../../service/util-service/xiaoji-feedback.service";
 
 export const ION_CAL_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
@@ -31,7 +32,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
       <ion-card no-padding >
       <ion-card-header no-padding>
         
-        <div class="title animated" [ngClass]="{'jello':css==1,'flash':css==2}">
+        <div class="title animated" [ngClass]="{'jello':css==1,'flash':css==2}" animationend="" >
           <ng-template [ngIf]="_showMonthPicker" [ngIfElse]="title" >
           <div float-left >
           <p  style="font-size: 30px;color: #222222;font-weight: bold;letter-spacing: -1px" float-left >{{monthOpt.original.month<9? "0" + (monthOpt.original.month+1):monthOpt.original.month + 1}}</p>
@@ -156,7 +157,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
 
-  constructor(public calSvc: CalendarService) {
+  constructor(public calSvc: CalendarService, public xiaojiFeekback: XiaojiFeedbackService) {
 
   }
 
@@ -288,19 +289,22 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   newstart:boolean = true;
   swipeEvent($event: any): void {
     const isNext = $event.deltaX < 0;
-    if (!this.newstart) return;
+   // if (!this.newstart) return;
     if (isNext)
       this.nextArray.push(1);
     else
       this.nextArray.push(0);
-    if (this.newstart)this.startSwipe()
+    if (this.newstart){
+      this.startSwipe();
+    }
   }
   startSwipe(){
     this.newstart = false;
     this.swipeEventS().then((d)=>{
       console.info(d);
-      if (this.nextArray.length > 0)
+      if (this.nextArray.length > 0){
         this.startSwipe();
+      }
       else{
         //this.configMonthEventDay
         this.newstart = true
@@ -310,7 +314,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   swipeEventS():Promise<any>{
     return new Promise<any>((resolve,reject)=>{
 
-      let n:number=this.nextArray.pop()
+      let n:number=this.nextArray.pop();
       if (n==1 && this.canNext()) {
         this.nextMonth();
         this.css =2;
@@ -321,13 +325,15 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
         this.css = 1;
       }
 
+      this.xiaojiFeekback.audioBass();
+
       window.setTimeout(()=>{
         this.css = 100;
         this.onSelect.emit();
         window.setTimeout(()=>{
           resolve(true);
-        },800);
-      },600);
+        },100);
+      },200);
     })
   }
 
@@ -365,7 +371,9 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   createMonth(date: number): CalendarMonth {
-    this.configMonthEventDay(date);
+    if (this.nextArray.length == 0){
+      this.configMonthEventDay(date);
+    }
     return this.calSvc.createMonthsByPeriod(date, 1, this._d)[0];
   }
 
