@@ -81,9 +81,9 @@ export class BaseSqlite {
         //初始化建表
         console.log(this.className + "createTable：数据库初始化建表开始");
         //判断是否是手机端
-        //if (DataConfig.IS_MOBILE) {
-        let a = true;
-        if (a) {
+        if (DataConfig.IS_MOBILE) {
+        // let a = true;
+        // if (a) {
           //1先删除表
           let delsql = new UEntity().drsq + new RcEntity().drsq + new RcpEntity().drsq + new RuEntity().drsq
             + new LbEntity().drsq + new ReEntity().drsq + new StEntity().drsq + new MsEntity().drsq
