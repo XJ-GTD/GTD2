@@ -21,6 +21,7 @@ import {DwEmitService} from "../../service/util-service/dw-emit.service";
 import { HbPage } from "../hb/hb";
 import { DataConfig } from "../../app/data.config";
 import { PageConfig } from "../../app/page.config";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the HaPage page.
@@ -52,6 +53,7 @@ export class HaPage {
   dayList: TimeModel;
 
   showDay:string;
+  showDay2:string;
   u:UEntity;
 
   noShow:boolean = true;
@@ -78,9 +80,10 @@ export class HaPage {
               private paramsService: ParamsService,
               private alarmClock: XiaojiAlarmclockService,
               private userSqlite:UserService,
-              private workSqlite:WorkService,
+              private workService:WorkService,
               private dwEmit: DwEmitService,
-              private app: App) {
+              private app: App,
+              private utilService:UtilService) {
 
     moment.locale('zh-cn');
     this.init();
@@ -89,7 +92,7 @@ export class HaPage {
   }
 
   ionViewDidLoad() {
-    this.ha01Page.height =  window.document.body.clientHeight - 350 - 45 -20;
+    this.ha01Page.height =  window.document.body.clientHeight - 350 - 110;
     console.log('ionViewDidLoad HaPage');
 
     //this.findEvent();
@@ -111,7 +114,8 @@ export class HaPage {
 
   init() {
 
-    this.showDay = moment().format('dddd YYYY 年 MM 月 DD 日');
+    //this.showDay = moment().format('dddd YYYY 年 MM 月 DD 日');
+    this.showDay = "今天";
     //消息队列接收
     // this.webSocketService.connect(this.paramsService.user.accountQueue);
     // this.webSocketService.connect("1");
@@ -170,50 +174,57 @@ export class HaPage {
     if (!$event) {
       return;
     }
-    console.log($event);
-    //  this.sqliteService.addRctest().then(data=>{
-    //   alert("插入数据：" + data);
-    // }).catch((err)=>{
-    //   alert(err);
-    //  })
-
     let eventDate = new Date($event.time);
     let year = eventDate.getFullYear();
     let month = eventDate.getMonth()+1;
     let day = eventDate.getDate();
-    this.showDay = moment().set({'year':year,'month':month-1,'date':day}).format('dddd YYYY 年 MM 月 DD 日');
-    //this.page1.findTodaySchedule($event);
-    //this.page2.findTodaySchedule($event);
-    //this.page3.findTodaySchedule($event);
+    this.showDay = this.utilService.showDay(moment().set({'year':year,'month':month-1,'date':day}).format('YYYY-MM-DD'))
+    this.showDay2 =  moment().set({'year':year,'month':month-1,'date':day}).format('dddd YYYY 年 MM 月 DD 日');
 
-    // this.calendarService.setSelectDay($event);
+    // console.log($event);
+    // //  this.sqliteService.addRctest().then(data=>{
+    // //   alert("插入数据：" + data);
+    // // }).catch((err)=>{
+    // //   alert(err);
+    // //  })
+    //
+    // let eventDate = new Date($event.time);
+    // let year = eventDate.getFullYear();
+    // let month = eventDate.getMonth()+1;
+    // let day = eventDate.getDate();
+    // this.showDay = moment().set({'year':year,'month':month-1,'date':day}).format('dddd YYYY 年 MM 月 DD 日');
+    // //this.page1.findTodaySchedule($event);
+    // //this.page2.findTodaySchedule($event);
+    // //this.page3.findTodaySchedule($event);
+    //
+    // // this.calendarService.setSelectDay($event);
+    //
+    // let findSchedule = new ScheduleOutModel();
+    // if(day>=10&&month>=10) {
+    //   findSchedule.scheduleStartTime = year + "-" + month + "-" + day + " 00:00";
+    //   findSchedule.scheduleDeadline = year + "-" + month + "-" + day + " 23:59";
+    // }else if(day<10&&month>=10){
+    //   findSchedule.scheduleStartTime = year + "-" + month + "-0" + day + " 00:00";
+    //   findSchedule.scheduleDeadline = year + "-" + month + "-0" + day + " 23:59";
+    // }else if(day>=10&&month<10){
+    //   findSchedule.scheduleStartTime = year + "-0" + month + "-" + day + " 00:00";
+    //   findSchedule.scheduleDeadline = year + "-0" + month + "-" + day + " 23:59";
+    // }else{
+    //   findSchedule.scheduleStartTime = year + "-0" + month + "-0" + day + " 00:00";
+    //   findSchedule.scheduleDeadline = year + "-0" + month + "-0" + day + " 23:59";
+    // }
+    //
+    // //查询选中那天的日历日程
+    // let dayStr = moment().set({'year':year,'month':month-1,'date':day}).format('YYYY-MM-DD');
+    // this.workService.getOd(dayStr).then(data=>{
+    //   if(data && data.slc && data.slc.length>0){
+    //     for(let i=0;i<data.slc.length;i++){
+    //       this.scheduleList.push(data.slc[i]);
+    //     }
+    //   }
+    // })
 
-    let findSchedule = new ScheduleOutModel();
-    if(day>=10&&month>=10) {
-      findSchedule.scheduleStartTime = year + "-" + month + "-" + day + " 00:00";
-      findSchedule.scheduleDeadline = year + "-" + month + "-" + day + " 23:59";
-    }else if(day<10&&month>=10){
-      findSchedule.scheduleStartTime = year + "-" + month + "-0" + day + " 00:00";
-      findSchedule.scheduleDeadline = year + "-" + month + "-0" + day + " 23:59";
-    }else if(day>=10&&month<10){
-      findSchedule.scheduleStartTime = year + "-0" + month + "-" + day + " 00:00";
-      findSchedule.scheduleDeadline = year + "-0" + month + "-" + day + " 23:59";
-    }else{
-      findSchedule.scheduleStartTime = year + "-0" + month + "-0" + day + " 00:00";
-      findSchedule.scheduleDeadline = year + "-0" + month + "-0" + day + " 23:59";
-    }
-
-    //查询选中那天的日历日程
-    let dayStr = moment().set({'year':year,'month':month-1,'date':day}).format('YYYY-MM-DD');
-    this.workSqlite.getOd(dayStr).then(data=>{
-      if(data && data.slc && data.slc.length>0){
-        for(let i=0;i<data.slc.length;i++){
-          this.scheduleList.push(data.slc[i]);
-        }
-      }
-    })
-
-    this.ha01Page.findTodaySchedule($event);
+    this.ha01Page.showEvent($event);
 
     //
     // this.findSchedule = new ScheduleOutModel();
@@ -434,33 +445,6 @@ export class HaPage {
       }
     },1);
   }
-
-  // ionViewDidLoad(){
-  //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");
-  // }
-  // ionViewWillEnter(){
-  //   console.log("2.0 ionViewWillEnter 顾名思义，当将要进入页面时触发");
-  // }
-  // ionViewDidEnter(){
-  //   console.log("3.0 ionViewDidEnter 当进入页面时触发");
-  // }
-  // ionViewWillLeave(){
-  //   console.log("4.0 ionViewWillLeave 当将要从页面离开时触发");
-  // }
-  // ionViewDidLeave(){
-  //   console.log("5.0 ionViewDidLeave 离开页面时触发");
-  // }
-  // ionViewWillUnload(){
-  //   console.log("6.0 ionViewWillUnload 当页面将要销毁同时页面上元素移除时触发");
-  // }
-  //
-  // ionViewCanEnter(){
-  //   console.log("ionViewCanEnter");
-  // }
-  //
-  // ionViewCanLeave(){
-  //   console.log("ionViewCanLeave");
-  // }
 
 
 }

@@ -278,10 +278,10 @@ export class CalendarService {
             res.date=mbs.date;
             //事少
             if(!mbs.im){
-              res.cssClass = `hassometing animated bounceIn`;
+              res.cssClass = `hassometing animated bounceIn delay-1s slow`;
             }else{
               //事多
-              res.cssClass = `busysometing animated bounceIn`;
+              res.cssClass = `busysometing animated bounceIn delay-1s slow`;
             }
             //有消息
             if(mbs.iem){

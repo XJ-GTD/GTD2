@@ -71,7 +71,7 @@ export class Ha01Page {
     this.app.getRootNav().push("SaPage",this.schedule);
   }
   //查询当天日程
-  findTodaySchedule($event) {
+  showEvent($event) {
     // this.sqliteService.addRctest(new Date(),1980,1).then(data=>{
     //     let datas=data;
     //     console.log(data);
