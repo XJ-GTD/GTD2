@@ -244,7 +244,7 @@ export class DwMqService {
     let sI=data.si;
     console.log("----- DwMqService scheduleCreate(业务：日程添加) start---- ");
     if(rui != DataConfig.uInfo.uI){
-      this.work.arcMq(sI,rui,ct,sd,ed,lbI).then(data=>{
+      this.work.arcMq(sI,rui,ct,sd,ed,lbI,'','','').then(data=>{
         console.log("----- DwMqService scheduleCreate(业务：日程添加) end ---- ");
         let ms = new MsEntity();
         ms.mn=ct;
@@ -271,8 +271,15 @@ export class DwMqService {
     let rui = data.us;
     let sI=data.si;
     console.log("----- DwMqService scheduleCreate(业务：日程更新) start---- ")
-    this.work.urcMq(sI,rui,ct,sd,ed,lbI).then(data=>{
+    this.work.urcMq(sI,rui,ct,sd,ed,lbI,'','','').then(data=>{
       console.log("----- DwMqService scheduleCreate(业务：日程更新) end ---- ")
+      let ms = new MsEntity();
+      ms.mn=ct;
+      ms.md=sd;
+      ms.mt='0';
+      return this.msSqlite.addMs(ms);
+    }).then(data=>{
+      console.log("----- DwMqService scheduleCreate(业务：日程更新Message) end ---- ");
     }).catch(e=>{
       console.log("----- DwMqService scheduleCreate(业务：日程更新) Error : "+JSON.stringify(e))
     });

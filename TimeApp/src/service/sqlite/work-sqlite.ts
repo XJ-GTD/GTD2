@@ -335,4 +335,56 @@ export class WorkSqlite{
       '(sI,id,tk,cft,rm,ac,fh) values("'+ sI+'","'+ id+'","'+tk+ '","'+cft+ '","'+ rm+'","'+ ac+'","'+ fh+'")';
     return this.baseSqlite.executeSql(sql,[]);
   }
+
+  /**
+   * 更新对应标签表数据
+   * @param {string} sI 日程主键
+   * @param {string} tk 标签类型
+   * @param {string} cft 重复类型
+   * @param {string} rm 备注
+   * @param {string} ac 闹铃类型
+   * @param {string} fh 是否完成0未完成，1完成
+   * @returns {Promise<any>}
+   */
+  updateLbData(sI:string,tk:string,cft:string,rm:string,ac:string,fh:string):Promise<any>{
+    let tn='GTD_C_BO';
+    let cf='0'
+    if(cft != null && cft !=''){
+      cf='1'
+    }
+    if(tk == '1'){
+      tn='GTD_C_BO'
+    }else if(tk >= '2' && tk <= '3'){
+      tn='GTD_CC'
+    }else if(tk >= '4' && tk <= '8'){
+      tn='GTD_C_RC'
+    }else if(tk == '9'){
+      tn='GTD_C_JN'
+    }else if(tk >= '10'){
+      tn='GTD_C_MO'
+    }
+    let sql ='update ' + tn +
+      'set ';
+    if(tk != null && tk !=''){
+      sql=sql + 'tk="'+tk+'",'
+    }
+    if(cft != null && cft !=''){
+      sql=sql + 'cft="'+cft+'",'
+    }
+    if(rm != null && rm !=''){
+      sql=sql + 'rm="'+rm+'",'
+    }
+    if(ac != null && ac !=''){
+      sql=sql + 'ac="'+ac+'",'
+    }
+    if(fh != null && fh !=''){
+      sql=sql + 'fh="'+fh+'",'
+    }
+    let str = sql.substr(sql.length-1,sql.length);
+    if(str == ','){
+      sql = sql.substr(0,sql.length-1);
+    }
+    sql = sql + ' where sI="'+ sI+'"';
+    return this.baseSqlite.executeSql(sql,[]);
+  }
 }
