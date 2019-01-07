@@ -131,12 +131,21 @@ export class WorkSqlite{
       }).then(data=>{
         if(data&&data.rows&&data.rows.length){
           //判断是否有消息
-          for(let i=0;i<=resL.length;i++){
-            for(let j=0;j<=data.rows.length;j++){
+          for(let j=0;j<=data.rows.length;j++){
+            let bool = true; //判断当前日是否存在
+            for(let i=0;i<=resL.length;i++){
               if(resL[i].ymd== data.rows.item(j).md){
                 resL[i].mdn=1;
+                bool = false;
                 break;
               }
+            }
+            if(bool){
+              let res:any={};
+              res.ymd = data.rows.item(j).md;
+              res.ct = 0;
+              res.mdn=1;
+              resL.push(res);
             }
           }
         }
