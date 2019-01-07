@@ -20,6 +20,9 @@ export class RcModel extends BsModel{
   private _sa:string = null; //修改权限 0不可修改，1可修改
   private _pI: string=null;//日程参与人表uuID
   private _rus : Array<RuModel> //联系人
+  private _cft:string=null; //重复类型
+  private _ac:string=null; //提醒方式
+  private _fh:string=null; //完成情况
   private _noca:string;
   private _nocb:string;
   get sI(): string {
@@ -133,5 +136,29 @@ export class RcModel extends BsModel{
 
   set nocb(value: string) {
     this._nocb = value;
+  }
+
+  get cft(): string {
+    return this._cft;
+  }
+
+  set cft(value: string) {
+    this._cft = value;
+  }
+
+  get ac(): string {
+    return this._ac;
+  }
+
+  set ac(value: string) {
+    this._ac = value;
+  }
+
+  get fh(): string {
+    return this._fh;
+  }
+
+  set fh(value: string) {
+    this._fh = value;
   }
 }

@@ -98,10 +98,15 @@ export class UtilService {
    * @return {boolean}
    */
   isMobile():boolean{
-    //let str = this.wins.cordova.platformId;
-    //if(str === "browser"){
+    let str='';
+    if(this.wins.cordov){
+      str = this.wins.cordova.platformId;
+    }else{
       DataConfig.IS_MOBILE = false;
-    //}
+    }
+    if(str === "browser"){
+      DataConfig.IS_MOBILE = false;
+    }
     return DataConfig.IS_MOBILE;
   }
 

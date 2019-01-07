@@ -5,10 +5,10 @@
 //Message消息表
 export class MsEntity {
 
-  private _mi: number=null;   //UmtD
-  private _mn:string=null; //message内容
-  private _md: string=null;   //发布时间
-  private _mt: string=null;          //创建人ID
+  private _mi: number; //UmtD
+  private _mn:string=''; //message内容
+  private _md: string=''; //发布时间
+  private _mt: string=''; //状态0未读，1已读
   /*
    * 创建表
    * @type {string}
@@ -16,7 +16,7 @@ export class MsEntity {
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_H(mi INTEGER PRIMARY KEY AUTOINCREMENT,' +
                           'mn VARCHAR(100),md VARCHAR(20),mt VARCHAR(100));';
-  private _drsq:string="DROP TABLE IF EXISTS GTD_H;"
+  private _drsq:string="DROP TABLE IF EXISTS GTD_H;";
 
   private _isq:string;
   private _usq:string;
@@ -54,8 +54,12 @@ export class MsEntity {
     if(this._mt!=null){
       sql=sql+' mt="' + this._mt +'",';
     }
+    let str = sql.substr(sql.length-1,sql.length);
+    if(str == ','){
+      sql = sql.substr(0,sql.length-1);
+    }
     if(this._mi != null){
-      sql = sql + ' mi="' + this._mi +'" where mi="' + this._mi +'"';
+      sql = sql + ' where mi="' + this._mi +'"';
     }
     this._usq=sql;
     return this._usq;
