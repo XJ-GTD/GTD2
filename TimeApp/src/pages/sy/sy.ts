@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {JhModel} from "../../model/jh.model";
+import {JhService} from "../../service/jh.service";
 
 /**
  * Generated class for the SyPage page.
@@ -23,7 +24,8 @@ export class SyPage {
   jg:string;
 
   constructor(private navCtrl: NavController,
-              private navParams: NavParams) {
+              private navParams: NavParams,
+              private jhService: JhService) {
   }
 
   ionViewDidLoad() {
@@ -37,6 +39,8 @@ export class SyPage {
 
   edit(){
     this.isEdit = !this.isEdit;
+    this.jg = this.jh.jg;
+    this.jn = this.jh.jn;
   }
 
   save(){
@@ -48,9 +52,15 @@ export class SyPage {
     if(this.jg !== undefined){
       this.jh.jg = this.jg;
     }
-    this.jn = undefined;
-    this.jg = undefined;
-    this.isEdit = !this.isEdit;
+    this.jhService.ujh(this.jh.ji,this.jh.jn,this.jh.jg).then(data=>{
+      alert("保存修改成功");
+      this.jn = undefined;
+      this.jg = undefined;
+      this.isEdit = !this.isEdit;
+    }).catch(reason => {
+      alert("保存失败")
+    });
+
   }
 
 

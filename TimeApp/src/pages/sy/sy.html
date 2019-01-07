@@ -18,33 +18,44 @@
 
 
 <ion-content padding>
-  <div [hidden]="isEdit">
+  <div *ngIf="isEdit" >
     <div *ngIf="jh !== undefined">
-      <ion-item>
-        <ion-label>计划名称</ion-label>
-        <ion-label>{{jh.jn}}</ion-label>
-      </ion-item>
-      <div style="display: flex; font-size:1.7rem;margin:11px 8px 11px 0;" class="height56" padding-left>
-        <div col-5 style="padding: 0 !important;">计划描述</div>
-        <div col-7 style=" padding: 0 !important; white-space:normal;word-break:break-all;word-wrap:break-word; ">{{jh.jg}}</div>
+      <div style="display: flex; font-size:1.7rem;" class="height56 bortom" padding-left>
+        <div col-3>
+          <div class="margin181">计划名称</div>
+        </div>
+        <div col-9>
+          <ion-input col-12 placeholder="{{jh.jn}}" [(ngModel)]="jn"></ion-input>
+        </div>
+      </div>
+      <div style="display: flex; font-size:1.7rem;" class="bortom" padding-left>
+        <div col-3>
+          <div class="margin181">计划描述</div>
+        </div>
+        <div col-9>
+          <ion-textarea style="border:0.5px solid #cccccc;" col-12 placeholder="{{jh.jg}}" [(ngModel)]="jg"></ion-textarea>
+        </div>
       </div>
     </div>
   </div>
-  <div *ngIf="isEdit">
+  <div [hidden]="isEdit" *ngIf="jh !== undefined">
     <div *ngIf="jh !== undefined">
-      <ion-item>
-        <ion-label>计划名称</ion-label>
-        <ion-input placeholder="{{jh.jn}}" [(ngModel)]="jn"></ion-input>
-      </ion-item>
-      <div style="display: flex;font-size:1.7rem;" padding-left>
-        <div style="margin:11px 8px 11px 0;">计划描述</div>
-        <ion-textarea placeholder="{{jh.jg}}" [(ngModel)]="jg" style="margin:11px 8px 11px 0;" ></ion-textarea>
+      <div style="display: flex; font-size:1.7rem;" class="height56 bortom" padding-left>
+        <div col-3>
+          <div class="margin181">计划名称</div>
+        </div>
+        <div col-9>
+          <div col-12 class="margin181" no-padding>{{jh.jn}}</div>
+        </div>
       </div>
-      <!--<div style="display: flex; font-size:1.7rem;margin:11px 8px 11px 0;" padding-left>-->
-        <!--<div col-5 style="padding: 0 !important;">计划描述</div>-->
-        <!--<div col-7 style=" padding: 0 !important; white-space:normal;word-break:break-all;word-wrap:break-word; ">{{jh.jg}}</div>-->
-      <!--</div>-->
+      <div style="display: flex; font-size:1.7rem;" class=" bortom" padding-left>
+        <div col-3>
+          <div class="margin181">计划描述</div>
+        </div>
+        <div col-9>
+          <div class="margin181" no-padding style="white-space: pre-wrap">{{jh.jg}}</div>
+        </div>
+      </div>
     </div>
   </div>
-
 </ion-content>

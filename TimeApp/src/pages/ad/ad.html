@@ -20,7 +20,7 @@
 
 <ion-content padding>
   <ion-label>问题描述</ion-label>
-  <ion-textarea placeholder="请描述你遇到的问题"></ion-textarea>
+  <ion-textarea placeholder="请描述你遇到的问题" (input)="updateEditor()"></ion-textarea>
   <div ion-item no-padding>
     <div>
       <ion-thumbnail ion-button color="light" float-left class="padding-0">
