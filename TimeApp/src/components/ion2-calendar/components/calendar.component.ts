@@ -32,7 +32,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
       <ion-card no-padding >
       <ion-card-header no-padding>
         
-        <div class="title animated" [ngClass]="{'jello':css==1,'flash':css==2}">
+        <div class="title animated" [ngClass]="{'jello':css==1,'flash':css==2}" animationend="" >
           <ng-template [ngIf]="_showMonthPicker" [ngIfElse]="title" >
           <div float-left >
           <p  style="font-size: 30px;color: #222222;font-weight: bold;letter-spacing: -1px" float-left >{{monthOpt.original.month<9? "0" + (monthOpt.original.month+1):monthOpt.original.month + 1}}</p>
@@ -87,8 +87,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
                               (onSelectStart)="onSelectStart.emit($event)"
                               (onSelectEnd)="onSelectEnd.emit($event)"
                               [pickMode]="_d.pickMode"
-                              [color]="_d.color"
-                              animationend="animationendEvent" >
+                              [color]="_d.color">
           </ion-calendar-month>
         </ng-template>
 
@@ -304,7 +303,6 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     this.swipeEventS().then((d)=>{
       console.info(d);
       if (this.nextArray.length > 0){
-
         this.startSwipe();
       }
       else{
@@ -328,15 +326,15 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
       }
 
       this.xiaojiFeekback.audioBass();
+
+      window.setTimeout(()=>{
+        this.css = 100;
+        this.onSelect.emit();
         window.setTimeout(()=>{
           resolve(true);
-        },500);
+        },100);
+      },200);
     })
-  }
-
-  animationendEvent(){
-    this.css = 100;
-    this.onSelect.emit();
   }
 
   _onChanged: Function = () => {
@@ -373,7 +371,9 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   createMonth(date: number): CalendarMonth {
-    this.configMonthEventDay(date);
+    if (this.nextArray.length == 0){
+      this.configMonthEventDay(date);
+    }
     return this.calSvc.createMonthsByPeriod(date, 1, this._d)[0];
   }
 
