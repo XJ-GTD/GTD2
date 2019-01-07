@@ -115,6 +115,7 @@ W
         return this.workSqlite.sRcps(rc,ruL);
       }).then(data=>{
         console.log("WorkService arc() add 参与人 Success : " +JSON.stringify(data));
+        //this.drc(rc.sI,'1')
         resolve(bs);
       }).catch(e=>{
         console.error("WorkService arc() Error : " +JSON.stringify(e));
@@ -380,7 +381,8 @@ W
               }
             }
             console.log("WorkService drc() 删除日程 restful request " + SkillConfig.BC_SCD+" start");
-            return this.rcResful.sc(rc.uI,SkillConfig.BC_SCD,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'');
+            return this.rcResful.sc(DataConfig.uInfo.uI,SkillConfig.BC_SCD,rc.sI,'123','2019-01-07','2019-01-07','1',psl,'');
+
           }
 
         })
