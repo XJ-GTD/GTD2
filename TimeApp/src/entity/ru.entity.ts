@@ -13,6 +13,7 @@ export class RuEntity {
   private _rNpy: string=null; //名称拼音
   private _rC: string=null; // 联系方式
   private _rF: string=null; // 授权标识0未授权1授权
+  private _ot:string;//0是未被添加，1是同意，2是拉黑
   private _rel: string='0'; // 联系类型0人;1群组
   private _hiu: string=null; // 联系人头像URL
   /**
@@ -22,7 +23,8 @@ export class RuEntity {
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_B(id VARCHAR(100) PRIMARY KEY,' +
                           'ran VARCHAR(100),ranpy VARCHAR(100),rI VARCHAR(100),rN VARCHAR(100),' +
-                          'rNpy VARCHAR(100),rC VARCHAR(100),rF VARCHAR(2),rel VARCHAR(20),hiu VARCHAR(100));';
+                          'rNpy VARCHAR(100),rC VARCHAR(100),rF VARCHAR(2),rel VARCHAR(20),' +
+                          'hiu VARCHAR(100),ot VARCHAR(2));';
   private _drsq:string="DROP TABLE IF EXISTS GTD_B;";
 
   private _isq:string;
@@ -56,9 +58,9 @@ export class RuEntity {
 
   get isq(): string {
     let sql='insert into GTD_B ' +
-      '(id,ran,ranpy,rI,rN,rNpy,rC,rF,rel,hiu) ' +
+      '(id,ran,ranpy,rI,rN,rNpy,rC,rF,rel,hiu,ot) ' +
       'values("'+ this._id+'","'+ this._ran+'","'+ this._ranpy+'","'+this._rI+ '","'+
-      this._rN+'","'+this._rNpy+'","'+ this._rC+'","'+this._rF+'","'+this._rel+'","'+this._hiu+'")';
+      this._rN+'","'+this._rNpy+'","'+ this._rC+'","'+this._rF+'","'+this._rel+'","'+this._hiu+'","'+this._ot+'")';
     this._isq=sql;
     return this._isq;
   }
@@ -95,6 +97,9 @@ export class RuEntity {
     }
     if(this._hiu!=null && this._hiu!=''){
       sql=sql+' hiu="' + this._hiu +'",';
+    }
+    if(this._ot!=null && this._ot!=''){
+      sql=sql+' ot="' + this._ot +'",';
     }
     if(this._id != null && this._id!=''){
       sql = sql + ' id="' + this._id +'" where id="' + this._id +'"';
@@ -225,5 +230,13 @@ export class RuEntity {
 
   set rNpy(value: string) {
     this._rNpy = value;
+  }
+
+  get ot(): string {
+    return this._ot;
+  }
+
+  set ot(value: string) {
+    this._ot = value;
   }
 }
