@@ -170,7 +170,23 @@ export class BaseSqlite {
             let fi = new FiEntity();
             str+="GTD_FI";
             return this.executeSql(fi.csq, []);
-          }).then(data=>{
+          })
+            .then(data=>{
+              return this.executeSql(new RcboEntity().csq, []);
+            })
+            .then(data=>{
+              return this.executeSql(new RcbtEntity().csq, []);
+            })
+            .then(data=>{
+              return this.executeSql(new RcbthEntity().csq, []);
+            })
+            .then(data=>{
+              return this.executeSql(new RcbfEntity().csq, []);
+            })
+            .then(data=>{
+              return this.executeSql(new RcbfvEntity().csq, []);
+            })
+            .then(data=>{
             console.log("-------------------BaseSqlite createTable success: "+str);
             resolve(data);
           }).catch(e=>{
@@ -249,17 +265,26 @@ export class BaseSqlite {
    */
   importSqlToDb(sql: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.sqlitePorter.importSqlToDb(this.database, sql)
-        .then((count) => {
-          console.log('Imported');
-          //alert("Imported" + count);
-          resolve(count);
-        })
-        .catch((error)=> {
-          console.error(error);
-          alert(this.className+"sql执行错误:"+error.message);
-          reject(error);
-        });
+      if(DataConfig.IS_MOBILE){
+        this.sqlitePorter.importSqlToDb(this.database, sql)
+          .then((count) => {
+            console.log('Imported');
+            //alert("Imported" + count);
+            resolve(count);
+          })
+          .catch((error)=> {
+            console.error(error);
+            alert(this.className+"sql执行错误:"+error.message);
+            reject(error);
+          });
+      }else{
+        let sqls = sql.split(';');
+        for(let i=0;i<sqls.length;i++){
+          this.executeSql(sqls[i],[]);
+        }
+        resolve(sqls.length);
+      }
+
     });
   }
 
