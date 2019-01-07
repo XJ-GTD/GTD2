@@ -87,7 +87,8 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
                               (onSelectStart)="onSelectStart.emit($event)"
                               (onSelectEnd)="onSelectEnd.emit($event)"
                               [pickMode]="_d.pickMode"
-                              [color]="_d.color">
+                              [color]="_d.color"
+                              animationend="animationendEvent" >
           </ion-calendar-month>
         </ng-template>
 
@@ -294,7 +295,9 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
       this.nextArray.push(1);
     else
       this.nextArray.push(0);
-    if (this.newstart)this.startSwipe()
+    if (this.newstart){
+      this.startSwipe();
+    }
   }
   startSwipe(){
     this.newstart = false;
@@ -325,15 +328,15 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
       }
 
       this.xiaojiFeekback.audioBass();
-
-      window.setTimeout(()=>{
-        this.css = 100;
-        this.onSelect.emit();
         window.setTimeout(()=>{
           resolve(true);
-        },800);
-      },600);
+        },500);
     })
+  }
+
+  animationendEvent(){
+    this.css = 100;
+    this.onSelect.emit();
   }
 
   _onChanged: Function = () => {
