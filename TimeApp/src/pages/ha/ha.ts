@@ -53,6 +53,7 @@ export class HaPage {
   dayList: TimeModel;
 
   showDay:string;
+  showDay2:string;
   u:UEntity;
 
   noShow:boolean = true;
@@ -178,6 +179,7 @@ export class HaPage {
     let month = eventDate.getMonth()+1;
     let day = eventDate.getDate();
     this.showDay = this.utilService.showDay(moment().set({'year':year,'month':month-1,'date':day}).format('YYYY-MM-DD'))
+    this.showDay2 =  moment().set({'year':year,'month':month-1,'date':day}).format('dddd YYYY 年 MM 月 DD 日');
 
     // console.log($event);
     // //  this.sqliteService.addRctest().then(data=>{
