@@ -111,14 +111,14 @@ export class WorkSqlite{
               }
 
             }
-            //TODO
-            // if(count>0){
-            //   let res:any={};
-            //   res.ymd = day;
-            //   res.ct = count;
-            //   resL.push(res)
-            // }
-            if(UtilService.randInt(0,1)>0){
+ //           TODO
+ //            if(count>0){
+ //              let res:any={};
+ //              res.ymd = day;
+ //              res.ct = count;
+ //              resL.push(res)
+ //            }
+          if(UtilService.randInt(0,1)>0){
               let res:any={};
               res.ymd = day;
               res.ct = UtilService.randInt(0,10);
