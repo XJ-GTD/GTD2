@@ -247,7 +247,7 @@ export class WorkSqlite{
     let isTrue = false;
     sd = sd.substr(0,10);
     ed= ed.substr(0,10);
-    if(cft && cft != null){
+    if(cft && cft != null && cft !='undefined'){
       if(cft=='1'){//年
         if(sd.substr(4,10)== day.substr(4,10)){
           isTrue = true;
