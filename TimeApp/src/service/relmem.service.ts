@@ -78,6 +78,7 @@ export class RelmemService {
       ru.rF = rF;
       ru.rI=auI;
       ru.hiu=hiu;
+      ru.ot='0';
       ru.rNpy = this.util.chineseToPinYin(ru.rN);
       ru.ranpy = this.util.chineseToPinYin(ru.ran);
       if(rel=='0'){
@@ -187,7 +188,6 @@ export class RelmemService {
 
   /**
    * 更新联系人
-   * @param {string} uI 当前登录人ID
    * @param {string} id 更新人UUID
    * @param {string} ran 别名
    * @param {string} rN 名称
@@ -195,13 +195,15 @@ export class RelmemService {
    * @param {string} rel 0联系人,1群组
    * @param {string} rF 授权标识0未授权1授权
    * @param {Array} qrL Array<RuModel>  群组人员list
+   * @param {string} ot 0是未被添加，1是同意，2是拉黑
    * @returns {Promise<BsModel>}
    */
-  upr(id:string,ran:string,rN:string,rc:string,rel:string,rF:string,qrL:Array<any>):Promise<BsModel>{
+  upr(id:string,ran:string,rN:string,rc:string,rel:string,rF:string,qrL:Array<any>,ot:string):Promise<BsModel>{
     return new Promise((resolve, reject)=>{
       let ru=new RuEntity();
       ru.id=id;
       ru.ran=ran;
+      ru.ot=ot;
       if(ru.ran == null || ru.ran == ''){
         ru.ran=rc;
       }
