@@ -113,7 +113,7 @@ export class UtilService {
 
   /**
    * 显示选中日期对应类型
-   * @param {string} day
+   * @param {string} day 格式（YYYY-MM-DD）
    * @returns {string}
    */
   showDay(day:string):string{
