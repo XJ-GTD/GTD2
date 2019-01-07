@@ -92,7 +92,7 @@ export class HaPage {
   }
 
   ionViewDidLoad() {
-    this.ha01Page.height =  window.document.body.clientHeight - 350 - 45 -50;
+    this.ha01Page.height =  window.document.body.clientHeight - 350 - 110;
     console.log('ionViewDidLoad HaPage');
 
     //this.findEvent();
