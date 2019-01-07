@@ -10,6 +10,7 @@ import {BsModel} from "../../model/out/bs.model";
 import {DataConfig} from "../../app/data.config";
 import {ReturnConfig} from "../../app/return.config";
 import {MsSqlite} from "./ms-sqlite";
+import {ScheduleModel} from "../../model/schedule.model";
 
 
 /**
@@ -188,6 +189,15 @@ export class WorkSqlite{
               resL.push(res);
             }
           }
+        }
+
+        let r = 0;
+        for (r=0;r<10;r++){
+          let res:ScheduleModel = new ScheduleModel();
+          res.scheduleId = "1111";
+          res.scheduleName = "1111";
+          res.scheduleStartTime = "15:30";
+          resL.push(res);
         }
         let ms = new MsEntity();
         ms.md=d;
