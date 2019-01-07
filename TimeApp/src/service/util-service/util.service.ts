@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Device } from "@ionic-native/device";
 import {DataConfig} from "../../app/data.config";
+import * as moment from "moment";
 
 /**
  * 公共方法
@@ -108,6 +109,47 @@ export class UtilService {
       DataConfig.IS_MOBILE = false;
     }
     return DataConfig.IS_MOBILE;
+  }
+
+  /**
+   * 显示选中日期对应类型
+   * @param {string} day 格式（YYYY-MM-DD）
+   * @returns {string}
+   */
+  showDay(day:string):string{
+    let str='今天';
+    //今天
+    let tt=new Date(moment().format('YYYY-MM-DD')).getTime();
+    //选中天
+    let dt = new Date(day).getTime();
+    let d=(dt-tt)/(1000 * 60 * 60 * 24);
+    let bool=false;
+    if(d<0){
+      bool=true;
+    }
+    if(!bool && d==1){
+      str = '明天';
+    }else if(!bool && d==2){
+      str = '后天';
+    }else if(bool && d==1){
+      str = '昨天';
+    }else if(bool && d==2){
+      str = '前天';
+    }else if(d>=3&& d<30){
+      str=d+'天';
+    }if(d>=30&& d<365){
+      d = 365/30;
+      str=d.toString().substr(0,1)+"月";
+    }if(d>=365){
+      d = 365/365;
+      str=d.toString().substr(0,1)+"年";
+    }
+    if(d>=3&&bool){
+      str+='前';
+    }else if(d>=3&&!bool){
+      str+='后';
+    }
+    return str;
   }
 
 
