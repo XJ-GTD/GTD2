@@ -195,6 +195,19 @@ export class WorkSqlite{
               }else{
                 res.scheduleStartTime="08:00";
               }
+              if(res.lau){
+                res.labelColor = res.lau;
+              }
+              //判断别人还是自己的
+              if(res.uI==DataConfig.uInfo.uI){
+                res.scheduleType = '●';
+              }else{
+                res.scheduleType = '▲';
+              }
+              //是否新消息
+              if(res.mf && res.mf=='0'){
+                res.isMessage='·';
+              }
               resL.push(res);
             }
           }

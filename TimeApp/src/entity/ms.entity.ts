@@ -8,14 +8,16 @@ export class MsEntity {
   private _mi: number; //UmtD
   private _mn:string=''; //message内容
   private _md: string=''; //发布时间
-  private _mt: string=''; //状态0未读，1已读
+  private _mt: string=''; //类型0日程
+  private _mf: string=''; //状态0未读，1已读
+  private _rI: string=''; //关联ID
   /*
    * 创建表
    * @type {string}
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_H(mi INTEGER PRIMARY KEY AUTOINCREMENT,' +
-                          'mn VARCHAR(100),md VARCHAR(20),mt VARCHAR(100));';
+                          'mn VARCHAR(100),md VARCHAR(20),mt VARCHAR(100),mf VARCHAR(2),rI VARCHAR(200));';
   private _drsq:string="DROP TABLE IF EXISTS GTD_H;";
 
   private _isq:string;
@@ -34,7 +36,7 @@ export class MsEntity {
 
   get isq(): string {
     let sql='insert into GTD_H ' +
-      '(mn,md,mt) values("'+ this._mn+'","'+this._md+ '","'+ this._mt+'")';
+      '(mn,md,mt,mf,rI) values("'+ this._mn+'","'+this._md+ '","'+ this._mt+'","'+this._mf+ '","'+ this._rI+'")';
     this._isq=sql;
     return this._isq;
   }
@@ -136,5 +138,21 @@ export class MsEntity {
 
   set mt(value: string) {
     this._mt = value;
+  }
+
+  get mf(): string {
+    return this._mf;
+  }
+
+  set mf(value: string) {
+    this._mf = value;
+  }
+
+  get rI(): string {
+    return this._rI;
+  }
+
+  set rI(value: string) {
+    this._rI = value;
   }
 }
