@@ -21,6 +21,7 @@ import {DwEmitService} from "../../service/util-service/dw-emit.service";
 import { HbPage } from "../hb/hb";
 import { DataConfig } from "../../app/data.config";
 import { PageConfig } from "../../app/page.config";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the HaPage page.
@@ -80,7 +81,8 @@ export class HaPage {
               private userSqlite:UserService,
               private workService:WorkService,
               private dwEmit: DwEmitService,
-              private app: App) {
+              private app: App,
+              private utilService:UtilService) {
 
     moment.locale('zh-cn');
     this.init();
@@ -175,7 +177,8 @@ export class HaPage {
     let year = eventDate.getFullYear();
     let month = eventDate.getMonth()+1;
     let day = eventDate.getDate();
-    this.showDay = moment().set({'year':year,'month':month-1,'date':day}).format('dddd YYYY 年 MM 月 DD 日');
+    this.showDay = this.utilService.showDay(moment().set({'year':year,'month':month-1,'date':day}).format('YYYY-MM-DD'))
+
     // console.log($event);
     // //  this.sqliteService.addRctest().then(data=>{
     // //   alert("插入数据：" + data);
