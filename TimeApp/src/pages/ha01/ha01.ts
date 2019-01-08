@@ -2,13 +2,10 @@ import {Component, ElementRef, Input, Renderer2} from '@angular/core';
 import {App, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ScheduleModel} from "../../model/schedule.model";
 import {ParamsService} from "../../service/util-service/params.service";
-import {ScheduleOutModel} from "../../model/out/schedule.out.model";
 import {UtilService} from "../../service/util-service/util.service";
-import {UEntity} from "../../entity/u.entity";
 import {WorkService} from "../../service/work.service";
 import {UserService} from "../../service/user.service";
-import {HaPage} from "../ha/ha";
-import {DataConfig} from "../../app/data.config";
+import * as moment from "moment";
 
 /**
  * Generated class for the Ha01Page page.
@@ -24,31 +21,23 @@ import {DataConfig} from "../../app/data.config";
 })
 export class Ha01Page {
 
-  schedule: ScheduleModel;
-  scheduleList: Array<ScheduleModel>;
-  findSchedule: ScheduleOutModel; //查询日程条件
-  u:UEntity;
-  haPage:HaPage;
+  dayEvents: Array<ScheduleModel>;
+
+  noShow: boolean = true;
+  showNow: ScheduleModel;
+  active: number = 0;//当前页面
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private paramsService: ParamsService,
-              private util:UtilService,
+              private util: UtilService,
               private rnd: Renderer2,
-              private userSqlite:UserService,
-              private workSqlite:WorkService,
+              private workService: WorkService,
               private el: ElementRef,
               private app: App) {
-    this.scheduleList = [];
     console.log('ionViewDidLoad Ha01Page');
-    //this.calendarService.getSelectDay(this);
-    this.init()
+    this.height = window.document.body.clientHeight - 350 - 110;
   }
 
-  init(){
-    this.u = DataConfig.uInfo;
-    console.log("ha01 获取用户信息："+JSON.stringify(this.u))
-  }
   /**
    * Height of the tabs
    */
@@ -57,80 +46,61 @@ export class Ha01Page {
     this.rnd.setStyle(this.el.nativeElement, 'height', val + 'px');
   }
 
-  get height(): number {
-    return this.el.nativeElement.offsetHeight;
+  //展示数据详情
+  showScheduleDetail(schedule:ScheduleModel) {
+    console.log("schedule :: " + JSON.stringify(schedule));
+
+
+    let domList = document.getElementsByName("pop-css");
+    console.log(domList.length);
+
+    for (let i = 0; i < domList.length; i++) {
+      if (this.active == i) {
+        domList.item(i).className = "pop-css activeCss";
+      }
+      if (i == this.active - 1) {
+        domList.item(i).className = "pop-css activeCssLeft";
+      }
+      if (i == this.active + 1) {
+        domList.item(i).className = "pop-css activeCssRight";
+      }
+      if (i < this.active - 1) {
+        domList.item(i).className = "pop-css activeCssLeft-1";
+      }
+      if (i > this.active + 1) {
+        domList.item(i).className = "pop-css activeCssRight-1";
+      }
+      console.log("i :: " + i);
+    }
+    this.noShow = false;
+
+    this.app.getRootNav().push("SaPage", schedule);
   }
 
-  //展示数据详情
-  showScheduleDetail(schedule){
-    console.log("schedule :: " + JSON.stringify(schedule));
-    this.schedule = new ScheduleModel();
-    this.schedule = schedule;
-    this.paramsService.schedule = this.schedule;
-    console.log("schedule:" + JSON.stringify(this.paramsService.schedule));
-    this.app.getRootNav().push("SaPage",this.schedule);
-  }
   //查询当天日程
-  showEvent($event) {
-    // this.sqliteService.addRctest(new Date(),1980,1).then(data=>{
-    //     let datas=data;
-    //     console.log(data);
-    // })
+  showEvents($event) {
     console.log($event);
     let eventDate = new Date($event.time);
-    let dateStr2 = eventDate.toDateString();
-    dateStr2 = eventDate.toLocaleDateString();
-    dateStr2 = eventDate.toLocaleString()
     let year = eventDate.getFullYear();
-    let month = eventDate.getMonth()+1;
+    let month = eventDate.getMonth() + 1;
     let day = eventDate.getDate();
-    let monthStr = month+"";
-    if(month<10){
-      monthStr = '0'+month;
-    }
-    let dayStr = day +"";
-    if(day<10){
-      dayStr='0'+day;
-    }
 
-    let findSchedule = new ScheduleOutModel();
-    findSchedule = new ScheduleOutModel();
-    if(day>=10&&month>=10) {
-      findSchedule.scheduleStartTime = year + "-" + month + "-" + day + " 00:00";
-      findSchedule.scheduleDeadline = year + "-" + month + "-" + day + " 23:59";
-    }else if(day<10&&month>=10){
-      findSchedule.scheduleStartTime = year + "-" + month + "-0" + day + " 00:00";
-      findSchedule.scheduleDeadline = year + "-" + month + "-0" + day + " 23:59";
-    }else if(day>=10&&month<10){
-      findSchedule.scheduleStartTime = year + "-0" + month + "-" + day + " 00:00";
-      findSchedule.scheduleDeadline = year + "-0" + month + "-" + day + " 23:59";
-    }else{
-      findSchedule.scheduleStartTime = year + "-0" + month + "-0" + day + " 00:00";
-      findSchedule.scheduleDeadline = year + "-0" + month + "-0" + day + " 23:59";
-    }
-    //findSchedule.userId = this.paramsService.user.userId;
-    findSchedule.userId = this.u.uI;
-    console.log("scheduleStartTime:" + findSchedule.scheduleStartTime + " | scheduleDeadline:" + findSchedule.scheduleDeadline);
-    this.scheduleList = [];
-    let dateStr=year + "-" + monthStr + "-" + dayStr;
-    this.workSqlite.getOd(dateStr).then(data=>{
-      if(data.code==0){
-        for(let i=0;i<data.slc.length;i++){
-          this.scheduleList.push(data.slc[i]);
+    this.dayEvents = [];
+    let dateStr = moment().set({
+      'year': year,
+      'month': month - 1,
+      'date': day
+    }).format('YYYY-MM-DD');
+    this.workService.getOd(dateStr).then(data => {
+      if (data.code == 0) {
+        for (let i = 0; i < data.slc.length; i++) {
+          this.dayEvents.push(data.slc[i]);
         }
       }
     })
 
   }
 
-
-  showDetail(itm){
-    this.haPage.showDetail(itm,this.scheduleList);
-  }
-
-  setData(page){
-    this.haPage = page;
-  }
 
   // ionViewDidLoad(){
   //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");
@@ -158,5 +128,132 @@ export class Ha01Page {
   // ionViewCanLeave(){
   //   console.log("ionViewCanLeave");
   // }
+
+
+  swipeEvent(event) {
+    console.log(event);
+    console.log("当前页面 :: " + this.active);
+
+    if (event.direction == 2) {
+      let index = this.active;
+
+      //   3 4 5 6
+      // 2 3 4 5
+      console.log("向左滑 :: ");
+      if (index == this.dayEvents.length - 1) {
+        console.log("划不动了 :: ");
+        return;
+      }
+      let domList = document.getElementsByName("pop-css");
+
+      //左一左移
+      if (index - 1 >= 0) {
+        let dom2 = domList.item(index - 1);
+        dom2.className = "pop-css activeCssLeft-1";
+      }
+      //当前页面左移
+      let dom: HTMLElement = domList.item(index);
+      console.log(dom)
+      // dom.style.transform = "translate(-105%,10%)"
+      dom.className = "pop-css activeCssLeft ";
+      //右一左移
+      if (index + 1 < this.dayEvents.length) {
+        let dom2 = domList.item(index + 1);
+        dom2.className = "pop-css activeCss";
+      }
+      //右二左移
+      if (index + 2 < this.dayEvents.length) {
+        let dom2 = domList.item(index + 2);
+        dom2.className = "pop-css activeCssRight";
+      }
+
+      this.active++;
+    }
+    if (event.direction == 4) {
+      console.log("向右滑 :: ");
+      let index = this.active;
+      if (this.active == 0) {
+        console.log("划不动了 :: ")
+        return;
+      }
+      //当前页右移
+      let domList = document.getElementsByName("pop-css");
+      let dom = domList.item(index);
+      dom.className = "pop-css activeCssRight ";
+      //右一右移
+      if (index + 1 < domList.length) {
+        let dom2 = domList.item(index + 1);
+        dom2.className = "pop-css activeCssRight-1";
+      }
+      //左一右移
+      if (index - 1 >= 0) {
+        let dom2 = domList.item(index - 1);
+        dom2.className = "pop-css activeCss";
+      }
+      //左二右移
+      if (index - 2 >= 0) {
+        let dom2 = domList.item(index - 2);
+        dom2.className = "pop-css activeCssLeft";
+      }
+      this.active--;
+    }
+  }
+
+  backdropclick = function (e) {
+    //判断点击的是否为遮罩层，是的话隐藏遮罩层
+    if (e.srcElement.className == 'itemClass') {
+      this.noShow = true;
+    }
+    //隐藏滚动条
+    //阻止冒泡
+    // e.stopPropagation();
+  }
+
+  testCl() {
+    console.log("点击一次 :: ");
+    console.log(" :: " + document);
+    // var dom = document.getElementById("1111")
+    let domlist = document.getElementsByName("1111");
+    for (let i = 0; i < domlist.length; i++) {
+      //阻止默认滑动事件
+      domlist.item(i).addEventListener('touchmove', (e) => {
+        e.preventDefault();
+      }, true);
+    }
+
+  }
+
+  testSw() {
+    console.log("滑动一次 ::")
+  }
+
+  removeElement(obj) {
+    let domlist = document.getElementsByName("pop-css");
+    console.log("div删除前 ::" + domlist.length);
+    let index = this.dayEvents.indexOf(obj);
+    console.log(index);
+    console.log(this.dayEvents.splice(index, 1));
+    setTimeout(() => {
+      let domlist2 = document.getElementsByName("pop-css");
+      console.log("div删除后 ::" + domlist2.length);
+      if (this.active < domlist2.length) {
+        console.log("右补齐 :: ");
+        domlist2.item(this.active).className = "pop-css activeCss";
+        if (this.active + 1 < domlist2.length) {
+          domlist2.item(this.active + 1).className = "pop-css activeCssRight";
+        }
+      } else if (this.active > 0) {
+        console.log("左补齐 :: ");
+        domlist2.item(this.active - 1).className = "pop-css activeCss";
+        if (this.active - 1 > 0) {
+          domlist2.item(this.active - 2).className = "pop-css activeCssLeft";
+        }
+        this.active--;
+      } else {
+        this.noShow = true;
+      }
+    }, 1);
+  }
+
 
 }

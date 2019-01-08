@@ -195,7 +195,7 @@ export class WorkSqlite{
         for (r=0;r<10;r++){
           let res:ScheduleModel = new ScheduleModel();
           res.scheduleId = "1111";
-          res.scheduleName = "1111";
+          res.scheduleName = "我在想可以做什么呢？是不是很有意思呢。哈哈哈哈";
           res.scheduleStartTime = "15:30";
           resL.push(res);
         }

@@ -4,6 +4,7 @@ import { BackgroundMode } from '@ionic-native/background-mode';
 import { ConfigService } from "../service/config.service";
 import { PageConfig } from "./page.config";
 import {MenuScalePushType} from "../components/menuType/customType";
+import {XiaojiFeedbackService} from "../service/util-service/xiaoji-feedback.service";
 
 @Component({
   templateUrl: 'app.html'
@@ -17,7 +18,8 @@ export class MyApp {
     public platform: Platform,
     public appCtrl: IonicApp,
     public backgroundMode: BackgroundMode,
-    private configService:ConfigService
+    private configService:ConfigService,
+    private xiaojiFeekback: XiaojiFeedbackService
   ) {
     console.log(' time app start ');
 
@@ -26,6 +28,7 @@ export class MyApp {
 
       //允许进入后台模式
       this.backgroundMode.enable();
+      this.xiaojiFeekback.initAudio()
       //设置返回键（android）
       this.registerBackButtonAction();
 
