@@ -11,7 +11,7 @@ page-pa {
   }
 
   .item-block.item-ios{
-    border-bottom: 0.55px solid #c8c7cc ;
+    border-bottom: 0.55px solid #e5e5e5 ;
   }
 
   ion-item{
@@ -26,4 +26,10 @@ page-pa {
   ion-item-sliding button{
     height: 80px;
   }
+
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+
 }

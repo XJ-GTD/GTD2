@@ -84,7 +84,7 @@ page-ua {
           $checkbox_size:15px;
           margin-top: 5px;
           margin-right: -5px;
-          width: 225px;
+          //width: 225px;
           float: right;
           .checkbox-ios {
             margin-right: 3px !important;
@@ -112,19 +112,20 @@ page-ua {
   .verification{
     $icon_width: 20px;
     $verification_width: 115px;
-    $text_width: calc(100% - 25px);
+    $text_width: calc(100% - 35px);
     .verification_icon{
       width: $icon_width;
       color: $placeholder_color;
       display: inline-block;
       font-size: 1.7em;
       line-height: 1;
-      vertical-align: 73%;
+      vertical-align: 90%;
     }
     .input_text_verification{
-      border-bottom: 0.55px solid #c8c7cc;
+      border-bottom: 0.55px solid #e5e5e5;
       display: inline-block;
       padding: 1px;
+      margin-left:10px;
       width: $text_width;
       $verification_item_width:107px;
       $button_verification_width:calc(100% - 107px);
@@ -132,7 +133,8 @@ page-ua {
         float: left;
         width: $verification_item_width;
         .item{
-          padding-left: 10px;
+          //padding-left: 10px;
+          padding: 0;
           .item-inner {
             //border-bottom: 0.55px solid #c8c7cc;
             border-bottom: 0;
@@ -162,6 +164,7 @@ page-ua {
   }
   .userAgreement_span_1{
     float:right;
+    text-decoration: underline;
   }
   .error_info{
     color: #ad080e;
@@ -173,5 +176,9 @@ page-ua {
 
   ion-item{
     height: 60px;
+  }
+
+  .item-ios.item-block .item-inner{
+    border-bottom: 0.55px solid #e5e5e5 ;
   }
 }

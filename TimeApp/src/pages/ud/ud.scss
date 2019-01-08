@@ -16,4 +16,25 @@ page-ud {
     padding-left: 31px;
     margin-bottom: 25px;
   }
+
+  .checkbox-ios {
+    $checkbox_size: 15px;
+    margin-right: 3px !important;
+    margin-top: 2px;
+    .checkbox-icon{
+      border-radius: 2px;
+      width: $checkbox_size;
+      height: $checkbox_size;
+    }
+    .checkbox-checked .checkbox-inner {
+      left: 4px;
+      top: 2px;
+    }
+  }
+
+  .item-ios.item-block .item-inner{
+    border-bottom: 0.55px solid #e5e5e5 !important; ;
+  }
+
+
 }

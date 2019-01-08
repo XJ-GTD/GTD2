@@ -135,6 +135,14 @@ page-ub {
   ion-item {
     height: 60px;
   }
+
+  .item-block.item-ios{
+    border-bottom: 0.55px solid #e5e5e5 ;
+  }
+
+  .item-ios.item-block .item-inner{
+    border-bottom: 0 solid #e5e5e5 !important; ;
+  }
 }
 
 

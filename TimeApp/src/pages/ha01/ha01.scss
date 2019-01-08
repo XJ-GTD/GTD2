@@ -62,7 +62,7 @@ page-ha01 {
     z-index: 50;
     border-radius: 20px;
 
-    transition:width 1s, height 1s;
+    transition:width 100ms, height 100ms;
     -moz-transition:width 1s, height 1s, -moz-transform 1s; /* Firefox 4 */
     -webkit-transition:width 0.5s, height 0.5s, -webkit-transform 1s; /* Safari and Chrome */
     -o-transition:width 1s, height 1s, -o-transform 1s; /* Opera */

@@ -18,14 +18,14 @@
   <div style="padding:10px;margin-top: 40px">
     <ion-item padding>
       <ion-icon name="ios-person-outline" item-start></ion-icon>
-      <ion-input item-end type="text" placeholder="输入您的手机号" [(ngModel)]="accountMobile"  (ionBlur)="checkPhone()"  ></ion-input>
+      <ion-input type="text" placeholder="输入您的手机号" [(ngModel)]="accountMobile"  (ionBlur)="checkPhone()"  ></ion-input>
     </ion-item>
     <ion-label *ngIf="this.errorCode == 0" class="error_info">手机号不能为空</ion-label>
     <ion-label *ngIf="this.errorCode == 1 || this.errorCode == 2" class="error_info">请输入正确11位手机号</ion-label>
     <ion-item padding>
       <ion-icon name="ios-lock-outline" item-start></ion-icon>
       <ion-input type="number" placeholder="验证码" [(ngModel)]="authCode" ></ion-input>
-      <ion-buttons item-end>
+      <ion-buttons item-right>
         <button ion-button>发送验证码</button>
       </ion-buttons>
     </ion-item>
@@ -34,8 +34,8 @@
       登录
     </button>
     <div>
-      <span float-end>&nbsp;&nbsp;&nbsp;已同意《用户协议》</span>
-      <span style="display: block;width: 25px" float-end><ion-checkbox></ion-checkbox></span>
+      <span float-end>已同意<span style="text-decoration: underline">《用户协议》</span></span>
+      <span style="display: block;" float-end><ion-checkbox></ion-checkbox></span>
     </div>
 
 
