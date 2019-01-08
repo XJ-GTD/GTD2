@@ -158,11 +158,33 @@ export class SyncService {
    */
   loginSync():Promise<BsModel>{
     return new Promise((resolve, reject) =>{
+      let sql='';
       this.sync.loginSync(DataConfig.uInfo.uI,this.util.getDeviceId())
         .then(data=>{
-          if(data && data.code==0){
-
-
+          if(data && data.code==0&&data.data.userDataList.length>0){
+            let uds = data.data.userDataList;
+            for(let i=0;i<uds.length;i++){
+              let ud = uds[i];
+              if(ud.tableName=='gtd_user'){
+                for(let i=0;i<ud.dataList.length;i++){
+                  let dt = ud.dataList[i];
+                  let u = new UEntity();
+                  u.uI=dt.tableA;
+                  u.uN=dt.tableB;
+                  u.hIU=dt.tableC;
+                  if(sql == ''){
+                    sql = u.isq;
+                  }
+                }
+              }
+            }
+            if(sql != ''){
+              this.base.executeSql(sql,[]).then(data=>{
+                console.log('----- 登录同步服务器数据成功 ------' + JSON.stringify(data));
+              }).catch(e=>{
+                console.error('----- 登录同步服务器数据失败 ------' + JSON.stringify(e));
+              })
+            }
           }
         })
     })
