@@ -97,7 +97,7 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     [self configModelVAD];
     //[self configDNNMFE];
 
-     [self.asrEventManager setParameter:@"15361" forKey:BDS_ASR_PRODUCT_ID];
+    //[self.asrEventManager setParameter:@"15361" forKey:BDS_ASR_PRODUCT_ID];
     // ---- 语义与标点 -----
     [self enableNLU];
     //    [self enablePunctuation];
@@ -107,7 +107,7 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
    //[self configOfflineClient];
 
    //开启声音
-  [self.asrEventManager setParameter:@(EVRPlayToneAll) forKey:BDS_ASR_PLAY_TONE];
+  //[self.asrEventManager setParameter:@(EVRPlayToneAll) forKey:BDS_ASR_PLAY_TONE];
 
 }
 
@@ -115,7 +115,7 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 - (void) enableNLU {
     // ---- 开启语义理解 -----
     [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_NLU];
-    [self.asrEventManager setParameter:@"15372" forKey:BDS_ASR_PRODUCT_ID];
+    [self.asrEventManager setParameter:@"15361" forKey:BDS_ASR_PRODUCT_ID];
 }
 
 - (void) enablePunctuation {
@@ -130,23 +130,16 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 
 - (void)configModelVAD {
-    //NSString *modelVAD_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_basic_model" ofType:@"dat"];
-    //[self.asrEventManager setParameter:modelVAD_filepath forKey:BDS_ASR_MODEL_VAD_DAT_FILE];
-    //[self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_MODEL_VAD];
-    // 服务端VAD
-    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_EARLY_RETURN];
-    // 本地VAD
-    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_LOCAL_VAD];
-
    NSString *modelVAD_filepath = [[NSBundle mainBundle] pathForResource:@"BDSClientResource.bundle/BDSClientEASRResources/bds_easr_basic_model" ofType:@"dat"];
 
     [self.asrEventManager setParameter:modelVAD_filepath forKey:BDS_ASR_MODEL_VAD_DAT_FILE];
 
    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_MODEL_VAD];
+    // 服务端VAD
+    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_EARLY_RETURN];
+    // 本地VAD
+    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_LOCAL_VAD];
 
-   //[self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_NLU];
-
-  //  [self.asrEventManager setParameter:@"15361" forKey:BDS_ASR_PRODUCT_ID];
 }
 
 - (void)configDNNMFE {
