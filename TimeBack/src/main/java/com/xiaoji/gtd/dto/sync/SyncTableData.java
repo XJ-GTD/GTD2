@@ -33,6 +33,7 @@ public class SyncTableData {
     private String tableX;
     private String tableY;
     private String tableZ;
+    private String action;
 
     public String getTableA() {
         return tableA;
@@ -240,5 +241,13 @@ public class SyncTableData {
 
     public void setTableZ(String tableZ) {
         this.tableZ = tableZ;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 }

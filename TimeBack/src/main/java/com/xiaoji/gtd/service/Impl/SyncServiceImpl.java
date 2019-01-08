@@ -256,6 +256,7 @@ public class SyncServiceImpl implements ISyncService {
         switch (tableName) {
             case "GTD_B":       //联系人表
                 List<GtdPlayerEntity> tableDataList = new ArrayList<>();
+                List<GtdPlayerEntity> deleteDataList = new ArrayList<>();
                 List<String> ids = new ArrayList<>();
                 GtdPlayerEntity playerEntity;
                 for (SyncTableData std: dataList) {
@@ -313,13 +314,6 @@ public class SyncServiceImpl implements ISyncService {
                 for (SyncTableData std: dataList) {
 
                     planEntity = new GtdPlanEntity();
-                }
-                break;
-            case "GTD_C_A":     //本地日历表
-                GtdLocalScheduleEntity localScheduleEntity = new GtdLocalScheduleEntity();
-                for (SyncTableData std: dataList) {
-
-                    localScheduleEntity = new GtdLocalScheduleEntity();
                 }
                 break;
             case "":
@@ -494,21 +488,6 @@ public class SyncServiceImpl implements ISyncService {
                 syncData.setDataList(dataList);
                 syncDataList.add(syncData);
                 logger.debug("计划表数据赋值完成");
-
-                //用户表
-                syncData = new SyncDataDto();
-                dataList = new ArrayList<>();
-                List<GtdUserEntity> userEntityList = gtdUserRepository.findAllByUserId(userId);
-                logger.debug("获取用户表数据，需要转化数据量为 " + userEntityList.size() + "条");
-                for (GtdUserEntity gue: userEntityList) {
-                    data = SyncGetOrSetMethod.userEntityToDto(gue);
-
-                    dataList.add(data);
-                }
-                syncData.setTableName(SyncTableNameEnum.USER.tableName);
-                syncData.setDataList(dataList);
-                syncDataList.add(syncData);
-                logger.debug("用户表数据赋值完成");
 
                 logger.debug("======== [用户" + userId + " 全部数据下载完成] =======");
             }
