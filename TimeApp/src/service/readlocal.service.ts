@@ -19,8 +19,6 @@ import {ReturnConfig} from "../app/return.config";
 @Injectable()
 export class ReadlocalService {
 
-  private selectDay: EventEmitter<any> = new EventEmitter();
-
   constructor(private calendar: Calendar,
               private util:UtilService,
               private baseSqlite:BaseSqlite,
@@ -57,7 +55,7 @@ export class ReadlocalService {
   uploadLocal():Promise<BsModel>{
     return new Promise((resolve,reject)=>{
       let model = new BsModel();
-      if(DataConfig.IS_MOBILE){
+      if(1==1){
         let uI = '';
         uI = DataConfig.uInfo.uI;
         this.findEvent().then(data=>{

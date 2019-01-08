@@ -33,7 +33,11 @@ export class BsRestful {
     return new Promise((resolve, reject) => {
       console.log("------ 开始请求（"+url + "）-------");
       if(DataConfig.IS_MOBILE){
-        this.http.post(url,body,{ "Authorization": DataConfig.uInfo.uT }).then(data=>{
+        let token = '';
+        if(DataConfig.uInfo.uT && DataConfig.uInfo.uT != null && DataConfig.uInfo.uT != '' && DataConfig.uInfo.uT != 'null'){
+          token = DataConfig.uInfo.uT;
+        }
+        this.http.post(url,body,{ "Authorization": token }).then(data=>{
           let jsonData = JSON.parse(data.data);
           //获取返回值message
           jsonData.message=ReturnConfig.RETURN_MSG.get(jsonData.code+"");

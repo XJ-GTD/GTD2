@@ -159,37 +159,45 @@ export class SyncService {
   loginSync():Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let sql='';
+      let base = new BsModel();
       this.sync.loginSync(DataConfig.uInfo.uI,this.util.getDeviceId())
-        .then(data=>{
-          if(data && data.code==0&&data.data.userDataList.length>0){
+        .then(data=> {
+          if (data && data.code == 0 && data.data.userDataList.length > 0) {
             let uds = data.data.userDataList;
-            for(let i=0;i<uds.length;i++){
+            for (let i = 0; i < uds.length; i++) {
               let ud = uds[i];
-              if(ud.tableName=='gtd_user'){
-                for(let i=0;i<ud.dataList.length;i++){
+              if (ud.tableName == 'gtd_user') {
+                for (let i = 0; i < ud.dataList.length; i++) {
                   let dt = ud.dataList[i];
                   let u = new UEntity();
-                  u.uI=dt.tableA;
-                  u.uN=dt.tableB;
-                  u.hIU=dt.tableC;
+                  u.uI = dt.tableA;
+                  u.uN = dt.tableB;
+                  u.hIU = dt.tableC;
                   // u.uty='1';
                   // u.uT=DataConfig.uInfo.uT;
                   // u.aQ=DataConfig.uInfo.aQ;
-                  if(sql == ''){
+                  if (sql == '') {
                     sql = u.usq;
                   }
                 }
               }
             }
-            if(sql != ''){
-              this.base.executeSql(sql,[]).then(data=>{
+            if (sql != '') {
+              this.base.executeSql(sql, []).then(data => {
                 console.log('----- 登录同步服务器数据成功 ------' + JSON.stringify(data));
-              }).catch(e=>{
+              }).catch(e => {
                 console.error('----- 登录同步服务器数据失败 ------' + JSON.stringify(e));
               })
             }
           }
-        })
+          console.log('----- 登录同步服务器数据结束 ------' + JSON.stringify(data));
+          resolve(base);
+        }).catch(e=>{
+        console.error('----- 登录同步服务器数据失败 ------' + JSON.stringify(e));
+        base.code=ReturnConfig.ERR_CODE;
+        base.message=ReturnConfig.ERR_MESSAGE;
+        resolve(base);
+      })
     })
 
   }
