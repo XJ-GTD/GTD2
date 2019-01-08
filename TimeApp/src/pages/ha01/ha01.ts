@@ -157,6 +157,7 @@ export class Ha01Page {
       }
       //当前页面左移
       let dom: HTMLElement = domList.item(index);
+      console.log(dom)
       // dom.style.transform = "translate(-105%,10%)"
       dom.className = "pop-css activeCssLeft ";
       //右一左移
