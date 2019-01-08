@@ -12,6 +12,7 @@ import {DataConfig} from "../app/data.config";
 import {ZtdSqlite} from "./sqlite/ztd-sqlite";
 import {ReturnConfig} from "../app/return.config";
 import {ZtdModel} from "../model/ztd.model";
+import {UtilService} from "./util-service/util.service";
 
 /**
  * 初始化
@@ -21,7 +22,10 @@ import {ZtdModel} from "../model/ztd.model";
 @Injectable()
 export class SyncService {
 
-  constructor( private base:BaseSqlite,private sync:SyncRestful,private ztd:ZtdSqlite) {
+  constructor( private base:BaseSqlite,
+               private sync:SyncRestful,
+               private util:UtilService,
+               private ztd:ZtdSqlite) {
 
   }
 
@@ -147,5 +151,21 @@ export class SyncService {
         reject(base)
       })
     })
+  }
+
+  /**
+   * 登录同步数据
+   */
+  loginSync():Promise<BsModel>{
+    return new Promise((resolve, reject) =>{
+      this.sync.loginSync(DataConfig.uInfo.uI,this.util.getDeviceId())
+        .then(data=>{
+          if(data && data.code==0){
+
+
+          }
+        })
+    })
+
   }
 }

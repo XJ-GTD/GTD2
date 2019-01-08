@@ -21,4 +21,15 @@ export class SyncRestful{
   init():Promise<any> {
     return this.bs.post(AppConfig.SYNC_INIT_URL, {})
   }
+
+  /**
+   * 初始化获取字典数据和标签数据
+   * @returns {Promise<any>}
+   */
+  loginSync(uI:string,dI:string):Promise<any> {
+    return this.bs.post(AppConfig.SYNC_LOGIN_URL, {
+      userId:uI,
+      deviceId: dI
+    })
+  }
 }

@@ -9,6 +9,7 @@ import {UEntity} from "../entity/u.entity";
 import {DataConfig} from "../app/data.config";
 import {RcEntity} from "../entity/rc.entity";
 import {RcpEntity} from "../entity/rcp.entity";
+import {SyncService} from "./sync.service";
 
 
 
@@ -22,6 +23,7 @@ export class LsmService {
               private pn:PnRestful,
               private dx:DxRestful,
               private basesqlite:BaseSqlite,
+              private sync : SyncService,
               private util: UtilService) {
   }
 
@@ -172,8 +174,13 @@ export class LsmService {
             console.log("------lsm login 登录请求返回结果后更新日程参与人用户ID-------");
             return this.basesqlite.update(rcp);
         }).then(data=>{
-          resolve(base);
+          console.log("------lsm login 登录成功请求开始同步服务器数据 -------");
+          return this.sync.loginSync();
         })
+          .then(data=>{
+            console.log("------lsm login 登录成功请求同步服务器数据结束 -------");
+            resolve(base);
+          })
           .catch(eu => {
           base.code = 1;
           base.message = eu.message;
