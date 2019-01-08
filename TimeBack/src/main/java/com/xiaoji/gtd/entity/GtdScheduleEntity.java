@@ -18,6 +18,7 @@ public class GtdScheduleEntity {
     private Timestamp createDate;
     private String updateId;
     private Timestamp updateDate;
+    private GtdLocalScheduleEntity localSchedule;
 
     @Id
     @Column(name = "SCHEDULE_ID")
@@ -150,5 +151,15 @@ public class GtdScheduleEntity {
     @Override
     public int hashCode() {
         return Objects.hash(scheduleId, scheduleName, labelId, userId, planId, startDate, endDate, createId, createDate, updateId, updateDate);
+    }
+
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "SCHEDULE_ID", referencedColumnName = "SCHEDULE_ID")
+    public GtdLocalScheduleEntity getLocalSchedule() {
+        return localSchedule;
+    }
+
+    public void setLocalSchedule(GtdLocalScheduleEntity localSchedule) {
+        this.localSchedule = localSchedule;
     }
 }

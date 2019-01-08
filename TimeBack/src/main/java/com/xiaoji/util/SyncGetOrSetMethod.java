@@ -134,6 +134,7 @@ public class SyncGetOrSetMethod {
      */
     public static GtdScheduleEntity scheduleDtoToEntity(SyncTableData std) {
         GtdScheduleEntity scheduleEntity = new GtdScheduleEntity();
+        GtdLocalScheduleEntity localScheduleEntity = new GtdLocalScheduleEntity();
 
         scheduleEntity.setScheduleId(std.getTableA());                          //日程事件ID
         scheduleEntity.setScheduleName(std.getTableB());                        //日程事件名称
@@ -142,6 +143,10 @@ public class SyncGetOrSetMethod {
         scheduleEntity.setPlanId(std.getTableE());                              //计划ID
         scheduleEntity.setStartDate(CommonMethods.dateToStamp(std.getTableF()));//开始时间
         scheduleEntity.setEndDate(CommonMethods.dateToStamp(std.getTableG()));  //结束时间
+        localScheduleEntity.setLocalId(std.getTableH());                        //本地日历Id
+        localScheduleEntity.setScheduleId(std.getTableA());                     //日程ID
+        localScheduleEntity.setDeviceId(std.getTableI());                       //设备Id
+        scheduleEntity.setLocalSchedule(localScheduleEntity);
 
         return scheduleEntity;
     }
@@ -161,6 +166,8 @@ public class SyncGetOrSetMethod {
         data.setTableE(gse.getPlanId());                            //计划ID
         data.setTableF(CommonMethods.stampToDate(gse.getStartDate()));         //开始时间
         data.setTableG(CommonMethods.stampToDate(gse.getEndDate()));           //结束时间
+        data.setTableH(gse.getLocalSchedule().getLocalId());        //本地日历Id
+        data.setTableI(gse.getLocalSchedule().getDeviceId());       //设备Id
 
         return data;
     }
@@ -373,4 +380,35 @@ public class SyncGetOrSetMethod {
         return data;
     }
 
+    /**
+     * 计划表dto转entity
+     * @param std
+     * @return
+     */
+    public static GtdPlanEntity planDtoToEntity(SyncTableData std) {
+        GtdPlanEntity planEntity = new GtdPlanEntity();
+
+        planEntity.setPlanId(std.getTableA());                          //计划ID
+        planEntity.setPlanName(std.getTableB());                        //计划名称
+        planEntity.setPlanContent(std.getTableC());                     //计划内容
+        planEntity.setUserId(std.getTableD());                          //创建者
+
+        return planEntity;
+    }
+
+    /**
+     * 计划主表entity转化Dto
+     * @param gpe
+     * @return
+     */
+    public static SyncTableData planEntityToDto(GtdPlanEntity gpe) {
+        SyncTableData data = new SyncTableData();
+
+        data.setTableA(gpe.getPlanId());                        //计划ID
+        data.setTableB(gpe.getPlanName());                      //计划名称
+        data.setTableC(gpe.getPlanContent());                   //计划内容
+        data.setTableD(gpe.getUserId());                        //创建者
+
+        return data;
+    }
 }

@@ -7,11 +7,11 @@ package com.xiaoji.gtd.dto.sync;
  */
 public enum SyncTableNameEnum {
 
-    USER("gtd_user"),
-    PLAYER("gtd_player"), PLAYER_MEMBER("gtd_player_member"),
-    SCHEDULE("gtd_schedule"), EXECUTE("gtd_execute"), LOCAL_SCHEDULE("gtd_local_schedule"),
-    SCHEDULE_A("gtd_schedule_a"),SCHEDULE_B("gtd_schedule_b"),SCHEDULE_C("gtd_schedule_c"),SCHEDULE_D("gtd_schedule_d"),SCHEDULE_E("gtd_schedule_e"),
-    PLAN("gtd_plan");
+    USER("GTD_A"),
+    PLAYER("GTD_B"), PLAYER_MEMBER("GTD_B_X"),
+    SCHEDULE("GTD_C"), EXECUTE("GTD_D"), LOCAL_SCHEDULE("gtd_local_schedule"),
+    SCHEDULE_A("GTD_C_RC"),SCHEDULE_B("GTD_C_C"),SCHEDULE_C("GTD_C_BO"),SCHEDULE_D("GTD_C_JN"),SCHEDULE_E("GTD_C_MO"),
+    PLAN("GTD_J_H");
 
     public String tableName;
 
