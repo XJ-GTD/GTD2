@@ -101,7 +101,7 @@ export class UEntity {
       field+=',uc';
       values = values+',"'+this._uc+'"';
     }
-    let sql='replace into GTD_A ('+field+') values('+ values +');';
+    let sql='insert into GTD_A ('+field+') values('+ values +');';
     this._isq=sql;
     return this._isq;
   }
