@@ -57,6 +57,7 @@ import { SyncRestful } from "../service/restful/sync-restful";
 import { SyncService } from "../service/sync.service";
 import { HTTP } from "@ionic-native/http";
 import { ZtdSqlite } from "../service/sqlite/ztd-sqlite";
+import {HttpClientModule} from "@angular/common/http";
 @NgModule({
   declarations: [
     MyApp,
@@ -70,6 +71,7 @@ import { ZtdSqlite } from "../service/sqlite/ztd-sqlite";
       mode: 'ios'
     }),
     IonicStorageModule.forRoot(),
+    HttpClientModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
