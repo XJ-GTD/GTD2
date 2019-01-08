@@ -172,10 +172,10 @@ export class WorkSqlite{
         'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
         'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
         'union select sI,cft,cf,ac,fh from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
-        'left join GTD_F gf on gf.lai=gc.lI'+
+        'left join GTD_F gf on gf.lai=gc.lI '+
         'left join GTD_D gd on gc.sI=gd.sI ' +
         'left join (select substr(md,1,10) md,mf,rI from GTD_H where mf="0" and substr(md,1,10) = "'+ d+
-        '" group by substr(md,1,10),mf,rI) gh on gc.sI=gh.rI'
+        '" group by substr(md,1,10),mf,rI) gh on gc.sI=gh.rI '
       'and gd.uI ="'+ui+'" where (substr(gc.sd,1,10) <= "'+d+'" and substr(gc.ed,1,10)>= "'+d+'") ';
        // +'and (gd.pI is null or gd.uI ="'+DataConfig.uInfo.uI+'")';
       let bs = new BsModel();
