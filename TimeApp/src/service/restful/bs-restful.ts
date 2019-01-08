@@ -44,7 +44,9 @@ export class BsRestful {
           reject(e);
         })
       }else{
-        AppConfig.HEADER_OPTIONS_JSON.headers.Authorization=DataConfig.uInfo.uT;
+        if(DataConfig.uInfo.uT){
+          AppConfig.HEADER_OPTIONS_JSON.headers.Authorization=DataConfig.uInfo.uT;
+        }
         this.httpClient.post(url,body,AppConfig.HEADER_OPTIONS_JSON).subscribe(data=>{
           resolve(data)
         },err => {
