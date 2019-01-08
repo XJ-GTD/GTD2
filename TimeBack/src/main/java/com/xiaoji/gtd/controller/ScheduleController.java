@@ -3,6 +3,7 @@ package com.xiaoji.gtd.controller;
 import com.xiaoji.config.interceptor.AuthCheck;
 import com.xiaoji.gtd.dto.*;
 import com.xiaoji.gtd.dto.code.ResultCode;
+import com.xiaoji.gtd.dto.mq.WebSocketSkillEnum;
 import com.xiaoji.gtd.service.IScheduleService;
 import com.xiaoji.util.CommonMethods;
 import org.apache.logging.log4j.LogManager;
@@ -49,12 +50,12 @@ public class ScheduleController {
         }
         if(inDto.getScheduleId() == null || "".equals(inDto.getScheduleId())){
             outDto.setCode(ResultCode.NULL_SCHEDULE_ID);
-            logger.debug("[推送日程失败]：技能类型不可为空");
+            logger.debug("[推送日程失败]：日程ID不可为空");
             return outDto;
         }
-        if(inDto.getScheduleName() == null || "".equals(inDto.getScheduleName())){
-            outDto.setCode(ResultCode.NULL_SCHEDULE_NAME);
-            logger.debug("[推送日程失败]：日程主题不可为空");
+        if(inDto.getSkillType() == null || "".equals(inDto.getSkillType())){
+            outDto.setCode(ResultCode.NULL_SKILL_TYPE);
+            logger.debug("[推送日程失败]：技能类型不可为空");
             return outDto;
         }
         if(inDto.getPlayers() == null || inDto.getPlayers().size() == 0){
@@ -62,15 +63,17 @@ public class ScheduleController {
             logger.debug("[推送日程失败]：参与人不可为空");
             return outDto;
         }
-        if(inDto.getStartTime() == null || "".equals(inDto.getStartTime())){
-            outDto.setCode(ResultCode.NULL_TIME);
-            logger.debug("[推送日程失败]：日程时间不可为空");
-            return outDto;
-        }
-        if(inDto.getSkillType() == null || "".equals(inDto.getSkillType())){
-            outDto.setCode(ResultCode.NULL_SKILL_TYPE);
-            logger.debug("[推送日程失败]：技能类型不可为空");
-            return outDto;
+        if (!WebSocketSkillEnum.BC_SCHEDULE_DELETE.getCode().equals(inDto.getSkillType())) {
+            if(inDto.getScheduleName() == null || "".equals(inDto.getScheduleName())){
+                outDto.setCode(ResultCode.NULL_SCHEDULE_NAME);
+                logger.debug("[推送日程失败]：日程主题不可为空");
+                return outDto;
+            }
+            if(inDto.getStartTime() == null || "".equals(inDto.getStartTime())){
+                outDto.setCode(ResultCode.NULL_TIME);
+                logger.debug("[推送日程失败]：日程时间不可为空");
+                return outDto;
+            }
         }
         //入参正确性验证
         if (CommonMethods.checkMySqlReservedWords(inDto.getUserId())) {

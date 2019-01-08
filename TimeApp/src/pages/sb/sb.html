@@ -42,26 +42,14 @@
     </div>
   </div>
   <div class="height56">
-    <!--<ion-label float-right>-->
-      <!--<div class="selectCss" (click)="show()">-->
-        <!--张三-->
-      <!--</div>-->
-    <!--</ion-label>-->
     <ion-label float-right>
       <ion-buttons>
-        <!--<button class="buttonCss" *ngFor="let lb of selectLb" float-left>-->
-          <!--<div float-left>-->
-            <!--<img src="./assets/imgs/i.png"/>-->
-          <!--</div>-->
-          <!--<div float-left class="divCss">{{lb.lan}}</div>-->
-        <!--</button>-->
-        <button class="buttonCssA" (click)="show()" >
+        <button class="buttonCssA" (click)="showJh()" >
           <div float-left>
-            <img src="./assets/imgs/i.png"/>
+            <img style="height: 12px;width: 9px;margin-top: 3px;" src="./assets/imgs/i.png"/>
           </div>
-          <div float-left class="divCssA">{{jh}}</div>
+          <div float-left class="divCssA">{{jh.jn}}</div>
         </button>
-
         <button class="buttonCssB bor" (click)="showLb()">
           <div float-right style="width: 12px;height: 18px;position: relative;margin-right: 5px;">
             <div class="arrowCss"></div>
@@ -73,17 +61,9 @@
 
   </div>
 
-  <!--<div ion-item class="padding-left-0 height56">-->
-    <!--<img src="./assets/imgs/e.png" item-start/>-->
-    <!--<ion-label>标签</ion-label>-->
-    <!--<ion-select item-end [(ngModel)]="type" placeholder="标签" (ionChange)="showSelect()">-->
-      <!--<ion-option  *ngFor="let lb of lbs" value="{{lb.lai}}">{{lb.lan}}</ion-option>-->
-    <!--</ion-select>-->
-  <!--</div>-->
   <button ion-item class="padding-left-0 height56">
     <img src="./assets/imgs/1.png" item-start/>
     <ion-label>时间</ion-label>
-    <!--<ion-label text-end>2018年11月20日</ion-label>-->
     <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="startTime"></ion-datetime>
   </button>
   <ion-item *ngIf="showA" class="padding-left-0 height56">
@@ -93,17 +73,18 @@
       <ion-option  *ngFor="let ztd of repeatTypes" value="{{ztd.zk}}">{{ztd.zkv}}</ion-option>
     </ion-select>
   </ion-item>
-  <button ion-item  *ngIf="showB && repeatType!='w'" class="padding-left-0 height56">
-    <img src="./assets/imgs/1.png" item-start/>
-    <ion-label>重复时间</ion-label>
-    <ion-datetime displayFormat="{{repeatTime}}" pickerFormat="{{repeatTime}}" doneText="确定" cancelText="取消" ></ion-datetime>
-  </button>
-  <button ion-item  *ngIf="showB && repeatType=='w'" class="padding-left-0 height56">
-    <img src="./assets/imgs/1.png" item-start/>
-    <ion-label>重复时间</ion-label>
-    <ion-datetime displayFormat="DDDD" pickerFormat="YYYY-MM-DD" [(ngModel)]="startTime" [disabled]="false"></ion-datetime>
-  </button>
-  <button ion-item *ngIf="showC" class="padding-left-0 height56">
+  <!--<button ion-item  *ngIf="showB && repeatType!='w'" class="padding-left-0 height56">-->
+    <!--<img src="./assets/imgs/1.png" item-start/>-->
+    <!--<ion-label>重复时间</ion-label>-->
+    <!--<ion-datetime displayFormat="{{repeatTime}}" pickerFormat="{{repeatTime}}" doneText="确定" cancelText="取消" ></ion-datetime>-->
+  <!--</button>-->
+  <!--<button ion-item  *ngIf="showB && repeatType=='w'" class="padding-left-0 height56">-->
+    <!--<img src="./assets/imgs/1.png" item-start/>-->
+    <!--<ion-label>重复时间</ion-label>-->
+    <!--<ion-datetime displayFormat="DDDD" pickerFormat="YYYY-MM-DD" [(ngModel)]="startTime" [disabled]="false"></ion-datetime>-->
+  <!--</button>-->
+  <button ion-item  class="padding-left-0 height56" (click)="showRemarks()">
+    <!--*ngIf="showC"-->
     <img src="./assets/imgs/b.png" item-start/>
     <ion-label>备注</ion-label>
     <ion-input text-end type="text" [(ngModel)]="remarks">2018年11月20日</ion-input>
@@ -121,17 +102,15 @@
 
 
 </ion-content>
-<div [hidden]="!isShow" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();">
+<div [hidden]="!isShowJh" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();">
   <ion-backdrop disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></ion-backdrop>
-
   <div class="pop-css">
     <div class="titlecss" text-center>选择计划</div>
     <div class="flexCss">
-      <div *ngFor="let lb of lbs" class="contentcss">
+      <div *ngFor="let jh of jhs" class="contentcss">
         <!--<button name="lab" style="height:25px ; font-size: 1.5rem;" [ngClass]="{selectcss: lb.lau, noselectcss:!lb.lau}" (click)="selectJh($event,lb)">{{lb.lan}}</button>-->
-        <button name="lab" style="height:25px ; font-size: 1.5rem;" class="jhCss" (click)="selectJh($event,lb)">{{lb.lan}}</button>
+        <button name="lab" style="height:25px ; font-size: 1.5rem;" class="jhCss" (click)="selectJh($event,jh)">{{jh.jn}}</button>
       </div>
     </div>
-
   </div>
 </div>

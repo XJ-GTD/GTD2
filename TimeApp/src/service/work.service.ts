@@ -24,6 +24,7 @@ import {RcpEntity} from "../entity/rcp.entity";
 import {ReturnConfig} from "../app/return.config";
 import {RcoModel} from "../model/out/rco.model";
 import {WsResDataModel} from "../model/ws.res.model";
+import {MsSqlite} from "./sqlite/ms-sqlite";
 
 /**
  * 日程逻辑处理
@@ -33,11 +34,12 @@ import {WsResDataModel} from "../model/ws.res.model";
 @Injectable()
 export class WorkService {
 W
-  constructor(private baseSqlite:BaseSqlite,
-                private util:UtilService,
-                private workSqlite: WorkSqlite,
-                private relmem: RelmemSqlite,
-                private lbSqlite: LbSqlite,
+  constructor(private baseSqlite : BaseSqlite,
+                private util : UtilService,
+                private workSqlite : WorkSqlite,
+                private relmem : RelmemSqlite,
+                private lbSqlite : LbSqlite,
+                private msSqlite : MsSqlite,
                 private rcResful:RcRestful) {
   }
 
@@ -555,7 +557,7 @@ W
   }
 
   /**
-   * 删除日程
+   * MQ删除日程
    * @param {string} sI 主键
    * @returns {Promise<BsModel>}
    */
@@ -565,10 +567,31 @@ W
       rc.sI=sI;
       let bs = new BsModel();
       console.log("----- WorkService delrc(删除日程) start -----");
-      this.baseSqlite.delete(rc).then(data=>{
-        console.log("----- WorkService delrc(删除日程) result:" + JSON.stringify(data));
+      //先查询日程
+      this.baseSqlite.getOne(rc)
+      .then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          //插入message表
+          let ms = new MsEntity();
+          ms.mn=data.rows.item(0).sN;
+          ms.md=data.rows.item(0).sd;
+          ms.mt='0';
+          return this.msSqlite.addMs(ms);
+        }
+      })
+        .then(data=>{
+          //删除日程
+        return this.baseSqlite.delete(rc);
+      })
+        .then(data=>{
+          console.log("----- WorkService delrc(删除日程) result:" + JSON.stringify(data));
+          console.log('--------- 删除的参与人开始 ---------');
+          return this.workSqlite.dRcps(sI);
+      }).then(data=>{
+        console.log('--------- 删除的参与人结束 ---------');
         resolve(bs);
-      }).catch(e=>{
+      })
+        .catch(e=>{
         console.error("----- WorkService delrc(删除日程) Error:" + JSON.stringify(e));
         bs.code=ReturnConfig.ERR_CODE;
         bs.message=e.message;

@@ -59,6 +59,11 @@ export class SxPage {
 
   delJh(jh:JhModel) {
     console.log("Sz点击删除 :: ")
+    this.jhService.djh(jh.ji).then(data=>{
+      this.getAllJh();
+    }).catch(reason => {
+
+    });
   }
 
   ionViewWillEnter(){

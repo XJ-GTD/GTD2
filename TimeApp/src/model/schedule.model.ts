@@ -15,7 +15,10 @@ export class ScheduleModel {
   private _scheduleDeadline: string;               // 截止时间
   private _scheduleStatus: string;                 // 完成状态
   private _scheduleFinishDate: string;              // 完成时间
-  private _labelName: Array<string>;               //标签名称
+  private _labelName: string;               //标签名称
+  private _labelColor: string;               //标签颜色
+  private _scheduleType:string;             //日程类型
+  private _isMessage:string; //是否新消息
   private _group: Array<GroupModel>;                 //参与人
   private _remind: Array<RemindModel>;              //提醒时间
 
@@ -76,11 +79,11 @@ export class ScheduleModel {
   set group(value: Array<GroupModel>) {
     this._group = value;
   }
-  get labelName(): Array<string> {
+  get labelName(): string {
     return this._labelName;
   }
 
-  set labelName(value: Array<string>) {
+  set labelName(value: string) {
     this._labelName = value;
   }
   get scheduleFinishDate(): string {
@@ -89,5 +92,29 @@ export class ScheduleModel {
 
   set scheduleFinishDate(value: string) {
     this._scheduleFinishDate = value;
+  }
+
+  get labelColor(): string {
+    return this._labelColor;
+  }
+
+  set labelColor(value: string) {
+    this._labelColor = value;
+  }
+
+  get scheduleType(): string {
+    return this._scheduleType;
+  }
+
+  set scheduleType(value: string) {
+    this._scheduleType = value;
+  }
+
+  get isMessage(): string {
+    return this._isMessage;
+  }
+
+  set isMessage(value: string) {
+    this._isMessage = value;
   }
 }

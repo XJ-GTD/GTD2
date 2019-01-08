@@ -5,7 +5,7 @@ package com.xiaoji.gtd.dto.sync;
  *
  * create by wzy on 2018/12/21
  */
-public class SyncDataList {
+public class SyncInitData {
 
     private long id;          //自增主键
     private String key;

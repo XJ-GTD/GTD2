@@ -1,5 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams, AlertController, Navbar} from 'ionic-angular';
+import {
+  IonicPage, LoadingController, NavController, NavParams, AlertController, Navbar,
+  ModalController
+} from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
 import { FindOutModel } from "../../model/out/find.out.model";
 import { LabelModel } from "../../model/label.model"
@@ -51,7 +54,10 @@ export class SbPage {
   repeatType:any;//重复类型
   remarks:any;//备注
 
-  isShow:any = false;
+  isShowLb:any = false;
+  isShowJh:any = false;
+  showJhFlag:boolean = true;
+  showLbFlag:boolean = true;
   showA:boolean = false;//重复类型
   showB:boolean = false;//重复时间
   showC:boolean = false;//备注
@@ -64,12 +70,12 @@ export class SbPage {
   static wType:any = "";
   static dType:any = "HH时mm分ss秒";
 
-  static defaultJH:string = "添加计划";
-  jh:string = SbPage.defaultJH;
-  lb:Object = {lan:"日常"};
-
+  lb:Object = {lan:"标签"};
   remindType:string ;
+
   jhs:Array<JhModel>;
+  jh:JhModel;
+  jhtmp:JhModel;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -81,8 +87,13 @@ export class SbPage {
               private relmemService: RelmemService,
               private workService: WorkService,
               private util: UtilService,
-              private jhService: JhService) {
+              private jhService: JhService,
+              private modal: ModalController) {
+    this.jhtmp = new JhModel();
+    this.jhtmp.jn="添加计划";
+    this.jh = this.jhtmp;
   }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad SbPage');
     this.navBar.backButtonClick = this.backButtonClick;
@@ -142,13 +153,10 @@ export class SbPage {
         rul.push(this.pRelAl[this.select[i]]);
       }
     }
-    if(this.jh==SbPage.defaultJH){
-      this.jh = null;
-    }
-    this.workService.arc(this.title,this.startTime,this.type,this.jh,this.repeatType,this.remarks,'',rul).then(data=>{
+    this.workService.arc(this.title,this.startTime,this.type,this.jh.ji,this.repeatType,this.remarks,'',rul).then(data=>{
       if(data.code == 0){
         console.log("添加日程成功")
-        this.navCtrl.setRoot('HzPage')
+        this.navCtrl.push('HzPage')
       }else{
         console.log("添加日程失败")
       }
@@ -263,7 +271,7 @@ export class SbPage {
   backdropclick(e){
     //判断点击的是否为遮罩层，是的话隐藏遮罩层
     if(e.srcElement.className == 'itemClass'){
-      this.isShow = false;
+      this.isShowJh = false;
       this.showChange();
     }
     //隐藏滚动条
@@ -271,68 +279,24 @@ export class SbPage {
   }
 
   //添加计划
-  show(){
-    let domList = document.getElementsByName("lab");
-    for(let i = 0;i<domList.length;i++){
-      let dom = domList.item(i);
-      let rgb = 'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')';
-      dom.style.borderColor = rgb;
-      dom.style.color = rgb;
+  showJh(){
+    if(this.showJhFlag){
+      let domList = document.getElementsByName("lab");
+      for(let i = 0;i<domList.length;i++){
+        let dom = domList.item(i);
+        let rgb = 'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')';
+        dom.style.borderColor = rgb;
+        dom.style.color = rgb;
+      }
+      this.showJhFlag = false;
     }
-    this.isShow = true;
-    // let alert = this.alertCtrl.create({
-    //   // title: '添加计划',
-    //   subTitle: '添加家伙',
-    //   inputs: [{
-    //     type: "button",
-    //     id: "jh",
-    //     name:"jh"
-    //   }],
-    //   buttons: [
-    //     {
-    //       text: "确认",
-    //       role: null,
-    //       handler: data=>{
-    //         console.log(data);
-    //         if(data.jh.trim() != "" && data.jh != SbPage.defaultJH){
-    //           this.jh = data.jh.trim();
-    //         }
-    //       }
-    //     },
-    //   ],
-    //   enableBackdropDismiss: true
-    // });
-    // alert.present()
+    this.isShowJh = true;
   }
 
-  checkdd(lb){
-    //控制
-    if(lb.lau == null){
-      lb.lau = true;
-    }else{
-      lb.lau = !lb.lau;
-    }
-    if(this.selectLb == undefined || this.selectLb.length == 0){
-      this.selectLb = new Array<LbModel>();
-      this.selectLb.push(lb);
-      return;
-    }
-    for(let i = 0;i<this.selectLb.length;i++){
-      if(lb.lai == this.selectLb[i].lai){
-        let tmp = new Array<LbModel>();
-        for(let j = 0;j<this.selectLb.length;j++){
-          if(j != i){
-            tmp.push(this.selectLb[j]);
-          }
-        }
-        this.selectLb  = tmp;
-        return;
-      }
-    }
+  //选择标签
+  showLbs(){
 
-    console.log('tianj');
-    this.selectLb.push(lb);
-
+    this.isShowLb = true;
   }
 
   showChange(){
@@ -471,16 +435,14 @@ export class SbPage {
     });
     alert.present();
   }
-  c(){
 
-  }
 
   selectJh = function ($event,jh){
     let flag = undefined;
-    console.log(JSON.stringify(this.lbs));
+    console.log(JSON.stringify(this.jhs));
     console.log(JSON.stringify(jh));
-    for(let i =0;i<this.lbs.length;i++){
-      if(this.lbs[i].lai == jh.lai){
+    for(let i =0;i<this.jhs.length;i++){
+      if(this.jhs[i].ji == jh.ji){
         flag = i;
         break;
       }
@@ -489,21 +451,39 @@ export class SbPage {
     for(let i = 0;i<domList.length;i++){
       if(i == flag){
         let dom = domList.item(i);
-        let rgb = dom.style.borderColor;
-        let color = "#FFF";
-        dom.style.backgroundColor = rgb;
-        dom.style.color = color;
+        let fcolor = dom.style.color; //当前颜色
+        let rgb = dom.style.borderColor; //当前边框颜色
+        let color = "rgb(255, 255, 255)"; //预设颜色
+        // alert("当前颜色::" + fcolor + "当前边框颜色 :: " + rgb + "预设颜色 :: " + color);
+        if(fcolor != color){
+          dom.style.backgroundColor = rgb;
+          dom.style.color = color;
+          this.jh = jh;
+          this.showFlag = false;
+        }else{
+          dom.style.backgroundColor = color;
+          dom.style.color = rgb;
+          this.jh = this.jhtmp;
+          this.showFlag = true;
+        }
       }else{
         let dom = domList.item(i);
         let rgb = dom.style.borderColor;
         let color = rgb;
-        let bgcolor = "#FFF";
+        let bgcolor = "rgb(255, 255, 255)";
         dom.style.backgroundColor = bgcolor;
         dom.style.color = color;
       }
     }
+  }
 
-
+  showRemarks(){
+    // let model = this.modal.create("TmdPage",{text:this.remarks},{showBackdrop:false});
+    // model.onDidDismiss((data)=>{
+    //   console.log(JSON.stringify(data));
+    //   this.remarks = data.text;
+    // });
+    // model.present();
   }
 
 

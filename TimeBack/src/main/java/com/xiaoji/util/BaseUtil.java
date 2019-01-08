@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 基础工具类
+ *
  * create by wzy on 2018/04/26.
  */
 public class BaseUtil {
@@ -79,6 +81,16 @@ public class BaseUtil {
     public static Timestamp getSqlDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return CommonMethods.dateToStamp(sdf.format(new Date()));
+    }
+
+    //获取更新版本号
+    public static String getVersion() {
+        String res = "";
+        Date date = new Date();
+        // 指定日期格式
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        res = sdf.format(date);
+        return res;
     }
 
     /**

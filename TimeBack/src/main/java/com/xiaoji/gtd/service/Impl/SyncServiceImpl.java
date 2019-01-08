@@ -1,17 +1,13 @@
 package com.xiaoji.gtd.service.Impl;
 
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import com.xiaoji.config.exception.ServiceException;
-import com.xiaoji.gtd.dto.sync.SyncDataDto;
-import com.xiaoji.gtd.dto.sync.SyncDataList;
-import com.xiaoji.gtd.dto.sync.SyncInDto;
-import com.xiaoji.gtd.dto.sync.SyncOutDto;
-import com.xiaoji.gtd.entity.GtdDictionaryDataEntity;
-import com.xiaoji.gtd.entity.GtdDictionaryEntity;
-import com.xiaoji.gtd.entity.GtdLabelEntity;
-import com.xiaoji.gtd.repository.GtdDictionaryDataRepository;
-import com.xiaoji.gtd.repository.GtdDictionaryRepository;
-import com.xiaoji.gtd.repository.GtdLabelRepository;
+import com.xiaoji.gtd.dto.sync.*;
+import com.xiaoji.gtd.entity.*;
+import com.xiaoji.gtd.repository.*;
 import com.xiaoji.gtd.service.ISyncService;
+import com.xiaoji.util.BaseUtil;
+import com.xiaoji.util.SyncGetOrSetMethod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +43,31 @@ public class SyncServiceImpl implements ISyncService {
     @Resource
     private GtdDictionaryDataRepository dictionaryDataRepository;
     @Resource
+    private GtdSyncVersionRepository gtdSyncVersionRepository;
+    @Resource
+    private GtdPlayerRepository gtdPlayerRepository;
+    @Resource
+    private GtdPlayerMemberRepository gtdPlayerMemberRepository;
+    @Resource
+    private GtdUserRepository gtdUserRepository;
+    @Resource
+    private GtdScheduleRepository gtdScheduleRepository;
+    @Resource
+    private GtdExecuteRepository gtdExecuteRepository;
+    @Resource
+    private GtdScheduleARepository gtdScheduleARepository;
+    @Resource
+    private GtdScheduleBRepository gtdScheduleBRepository;
+    @Resource
+    private GtdScheduleCRepository gtdScheduleCRepository;
+    @Resource
+    private GtdScheduleDRepository gtdScheduleDRepository;
+    @Resource
+    private GtdScheduleERepository gtdScheduleERepository;
+    @Resource
     private GtdLabelRepository labelRepository;
+    @Resource
+    private SyncRepository syncRepository;
 
     /**
      * 初始化数据同步
@@ -58,11 +77,11 @@ public class SyncServiceImpl implements ISyncService {
     @Override
     public SyncOutDto initialSync() {
         SyncOutDto out = new SyncOutDto();
-        List<SyncDataDto> syncDataList = new ArrayList<>();
+        List<SyncInitDataDto> syncDataList = new ArrayList<>();
 
-        List<SyncDataList> labelList = new ArrayList<>();
-        List<SyncDataList> dictionaryList = new ArrayList<>();
-        List<SyncDataList> dictionaryDataList = new ArrayList<>();
+        List<SyncInitData> labelList = new ArrayList<>();
+        List<SyncInitData> dictionaryList = new ArrayList<>();
+        List<SyncInitData> dictionaryDataList = new ArrayList<>();
 
         List<GtdLabelEntity> labelEntityList;
         List<GtdDictionaryEntity> dictionaryEntityList;
@@ -73,11 +92,11 @@ public class SyncServiceImpl implements ISyncService {
             //字典表
             dictionaryEntityList = dictionaryRepository.findAllByDictType(SYNC_INIT);
             List<Integer> dictValues = new ArrayList<>();
-            SyncDataDto syncDataA = new SyncDataDto();
+            SyncInitDataDto syncDataA = new SyncInitDataDto();
             for (GtdDictionaryEntity gde: dictionaryEntityList) {
                 dictValues.add(gde.getDictValue());
 
-                SyncDataList sd = new SyncDataList();
+                SyncInitData sd = new SyncInitData();
                 sd.setKey(String.valueOf(gde.getDictValue()));
                 sd.setValue(gde.getDictName());
                 sd.setType(gde.getDictType());
@@ -90,9 +109,9 @@ public class SyncServiceImpl implements ISyncService {
 
             //字典数据表
             dictionaryDataEntityList = dictionaryDataRepository.findAllByDictValueIn(dictValues);
-            SyncDataDto syncDataB = new SyncDataDto();
+            SyncInitDataDto syncDataB = new SyncInitDataDto();
             for (GtdDictionaryDataEntity gdde: dictionaryDataEntityList) {
-                SyncDataList sd = new SyncDataList();
+                SyncInitData sd = new SyncInitData();
 
                 sd.setKey(gdde.getDictdataValue());
                 sd.setValue(gdde.getDictdataName());
@@ -107,10 +126,11 @@ public class SyncServiceImpl implements ISyncService {
 
             //标签表
             labelEntityList = labelRepository.findAll();
-            SyncDataDto syncDataC = new SyncDataDto();
+            SyncInitDataDto syncDataC = new SyncInitDataDto();
             for (GtdLabelEntity gle: labelEntityList) {
-                SyncDataList sd = new SyncDataList();
+                SyncInitData sd = new SyncInitData();
 
+                sd.setKey(gle.getLabelColor());
                 sd.setType(gle.getLabelType());
                 sd.setValue(gle.getLabelName());
                 sd.setId(gle.getId());
@@ -139,7 +159,26 @@ public class SyncServiceImpl implements ISyncService {
      */
     @Override
     public SyncOutDto loginSync(SyncInDto inDto) {
-        return null;
+        SyncOutDto outData = new SyncOutDto();
+        List<SyncDataDto> dataList;
+
+        String userId = inDto.getUserId();
+        String deviceId = inDto.getDeviceId();
+        String version = "";
+
+        logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] ：开始获取数据");
+        dataList = downLoad(userId, deviceId, version);
+
+        if (dataList != null) {
+            version = findLatestVersion(userId);
+            outData.setVersion(version);
+            outData.setUserDataList(dataList);
+            logger.debug("获取数据成功 version：["+ version + "] | data: size = " + dataList.size());
+            return outData;
+        } else {
+            logger.debug("服务器暂无该账号数据!");
+            return null;
+        }
     }
 
     /**
@@ -150,6 +189,329 @@ public class SyncServiceImpl implements ISyncService {
      */
     @Override
     public SyncOutDto timingSync(SyncInDto inDto) {
+
+        List<SyncDataDto> syncDataList = inDto.getSyncDataList();
+        List<SyncDataDto> downLoadDataList;
+
+        String userId = inDto.getUserId();
+        String deviceId = inDto.getDeviceId();
+        String version = inDto.getVersion();
+
+        String uploadVersion = BaseUtil.getVersion();
+        logger.debug("服务器本次需要上传数据版本号:" + uploadVersion);
+        String downloadSyncVersion = findLatestVersion(userId);
+        logger.debug("服务器本次需要下载数据版本号:" + downloadSyncVersion);
+
+        String tableName = "";
+        List<SyncTableData> dataList;
+        List<GtdSyncVersionEntity> syncVersionList = new ArrayList<>();
+
+        if (syncDataList != null && syncDataList.size() > 0) { //需要上传数据
+            logger.debug("=========== 上传数据开始 ===========");
+            for (SyncDataDto sdd: syncDataList) {
+                tableName = sdd.getTableName();
+                dataList = sdd.getDataList();
+                logger.debug("上传"+ tableName + "表数据， 数据大小：" + dataList.size());
+
+                List<GtdSyncVersionEntity> latestSyncData = upLoadData(tableName, dataList, userId, version, deviceId, uploadVersion);
+                syncVersionList.addAll(latestSyncData);
+            }
+            logger.debug("保存本次更新数据记录, 版本号["+ uploadVersion + "],共" + syncVersionList.size() + "条");
+            gtdSyncVersionRepository.saveAll(syncVersionList);
+
+            logger.debug("=========== 上传数据结束 ===========");
+        } else { //仅需要下载更新
+            logger.debug("=========== 下载数据开始 ===========");
+
+            logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] ：开始获取数据");
+            downLoadDataList = downLoad(userId, deviceId, downloadSyncVersion);
+
+            if (downLoadDataList != null) {
+
+                version = findLatestVersion(userId);
+                logger.debug("获取数据成功 version：["+ version + "] | data: size = " + downLoadDataList.size());
+
+            } else {
+                logger.debug("服务器暂无该账号数据!");
+
+            }
+
+            logger.debug("=========== 下载数据结束 ===========");
+        }
+
         return null;
     }
+
+    /**
+     * 上传的数据
+     * @param tableName
+     * @param dataList
+     */
+    private List<GtdSyncVersionEntity> upLoadData(String tableName, List<SyncTableData> dataList, String userId, String version, String deviceId, String uploadVersion) {
+
+        List<GtdSyncVersionEntity> syncVersion = new ArrayList<>();
+
+        switch (tableName) {
+            case "GTD_B":       //联系人表
+                List<GtdPlayerEntity> tableDataList = new ArrayList<>();
+                List<String> ids = new ArrayList<>();
+                GtdPlayerEntity playerEntity;
+                for (SyncTableData std: dataList) {
+                    ids.add(std.getTableA());
+                    playerEntity = SyncGetOrSetMethod.playerDtoToEntity(std);
+
+                    tableDataList.add(playerEntity);
+                }
+
+                List<String> sqlIds = syncRepository.compareToHighVersion(version, userId, ids);
+                List<GtdPlayerEntity> syncDataList = new ArrayList<>();
+                for (GtdPlayerEntity gpe: tableDataList) {
+                    for (String sqlId : sqlIds) {
+                        if (gpe.getId().equals(sqlId)) {            //匹配到对应id就跳过不更新
+                            tableDataList.remove(gpe);
+                            break;
+                        }
+                    }
+                    GtdSyncVersionEntity syncVersionEntity = new GtdSyncVersionEntity();
+                    syncVersionEntity.setTableId(gpe.getId());
+                    syncVersionEntity.setTableName(tableName);
+                    syncVersionEntity.setDeviceId(deviceId);
+                    syncVersionEntity.setCreateId(userId);
+                    syncVersionEntity.setCreateDate(BaseUtil.getSqlDate());
+                    syncVersionEntity.setVersion(uploadVersion);
+                    syncVersion.add(syncVersionEntity);                 //填入入库版本表list
+
+                    syncDataList.add(gpe);                              //填入入库联系人list
+                }
+                gtdPlayerRepository.saveAll(syncDataList);
+                break;
+            case "GTD_B_X":     //群组表
+                GtdPlayerMemberEntity playerMemberEntity = new GtdPlayerMemberEntity();
+                for (SyncTableData std: dataList) {
+
+                    playerMemberEntity = new GtdPlayerMemberEntity();
+                }
+                break;
+            case "GTD_C":       //日程表
+                GtdScheduleEntity scheduleEntity = new GtdScheduleEntity();
+                for (SyncTableData std: dataList) {
+
+                    scheduleEntity = new GtdScheduleEntity();
+                }
+                break;
+            case "GTD_D":       //日程参与人表
+                GtdExecuteEntity executeEntity = new GtdExecuteEntity();
+                for (SyncTableData std: dataList) {
+
+                    executeEntity = new GtdExecuteEntity();
+                }
+                break;
+            case "GTD_H":       //计划表
+                GtdPlanEntity planEntity = new GtdPlanEntity();
+                for (SyncTableData std: dataList) {
+
+                    planEntity = new GtdPlanEntity();
+                }
+                break;
+            case "GTD_C_A":     //本地日历表
+                GtdLocalScheduleEntity localScheduleEntity = new GtdLocalScheduleEntity();
+                for (SyncTableData std: dataList) {
+
+                    localScheduleEntity = new GtdLocalScheduleEntity();
+                }
+                break;
+            case "":
+                break;
+        }
+
+        return syncVersion;
+    }
+
+    /**
+     * 下载数据
+     */
+    private List<SyncDataDto> downLoad(String userId, String deviceId, String version) {
+        List<SyncDataDto> syncDataList = new ArrayList<>();
+        SyncDataDto syncData;
+        List<SyncTableData> dataList;
+        SyncTableData data;
+
+        try {
+
+            if (version != null && !version.equals("")) {
+
+            } else  {
+                logger.debug("======== [开始下载 " + userId + " 全部数据] =======");
+
+                //联系人表
+                syncData = new SyncDataDto();
+                dataList = new ArrayList<>();
+                List<GtdPlayerEntity> playerEntityList = gtdPlayerRepository.findAllByUserId(userId);   //联系人数据
+                logger.debug("获取联系人表数据，需要转化数据量为 " + playerEntityList.size() + "条");
+                for (GtdPlayerEntity gpe: playerEntityList) {
+                    data = SyncGetOrSetMethod.playerEntityToDto(gpe);
+
+                    dataList.add(data);
+                }
+                syncData.setTableName(SyncTableNameEnum.PLAYER.tableName);
+                syncData.setDataList(dataList);
+                syncDataList.add(syncData);
+                logger.debug("联系人表数据赋值完成");
+
+                //联系人群组表
+                syncData = new SyncDataDto();
+                dataList = new ArrayList<>();
+                List<GtdPlayerMemberEntity> playerMemberEntityList = gtdPlayerMemberRepository.findAllByUserId(userId);
+                logger.debug("获取联系人群组表数据，需要转化数据量为 " + playerMemberEntityList.size() + "条");
+                for (GtdPlayerMemberEntity gpme: playerMemberEntityList) {
+                    data = SyncGetOrSetMethod.memberEntityToDto(gpme);
+
+                    dataList.add(data);
+                }
+                syncData.setTableName(SyncTableNameEnum.PLAYER_MEMBER.tableName);
+                syncData.setDataList(dataList);
+                syncDataList.add(syncData);
+                logger.debug("联系人群组表数据赋值完成");
+
+                //日程表
+                syncData = new SyncDataDto();
+                dataList = new ArrayList<>();
+                List<GtdScheduleEntity> scheduleEntityList = gtdScheduleRepository.findAllByUserId(userId);
+                logger.debug("获取日程表数据，需要转化数据量为 " + playerMemberEntityList.size() + "条");
+                for (GtdScheduleEntity gse: scheduleEntityList) {
+                    data = SyncGetOrSetMethod.scheduleEntityToDto(gse);
+
+                    dataList.add(data);
+                }
+                syncData.setTableName(SyncTableNameEnum.SCHEDULE.tableName);
+                syncData.setDataList(dataList);
+                syncDataList.add(syncData);
+                logger.debug("日程表数据赋值完成");
+
+                //日程参与人表
+                syncData = new SyncDataDto();
+                dataList = new ArrayList<>();
+                List<GtdExecuteEntity> executeEntityList = gtdExecuteRepository.findAllByUserId(userId);
+                logger.debug("获取日程参与人表数据，需要转化数据量为 " + executeEntityList.size() + "条");
+                for (GtdExecuteEntity gee: executeEntityList) {
+                    data = SyncGetOrSetMethod.executeEntityToDto(gee);
+
+                    dataList.add(data);
+                }
+                syncData.setTableName(SyncTableNameEnum.EXECUTE.tableName);
+                syncData.setDataList(dataList);
+                syncDataList.add(syncData);
+                logger.debug("日程参与人表数据赋值完成");
+
+                //日程子表（日程）
+                syncData = new SyncDataDto();
+                dataList = new ArrayList<>();
+                List<GtdScheduleAEntity> scheduleAEntityList = gtdScheduleARepository.findAllByUserId(userId);
+                logger.debug("获取日程子表（日程）数据，需要转化数据量为 " + scheduleAEntityList.size() + "条");
+                for (GtdScheduleAEntity gsaa: scheduleAEntityList) {
+                    data = SyncGetOrSetMethod.scheduleAEntityToDto(gsaa);
+
+                    dataList.add(data);
+                }
+                syncData.setTableName(SyncTableNameEnum.SCHEDULE_A.tableName);
+                syncData.setDataList(dataList);
+                syncDataList.add(syncData);
+                logger.debug("日程子表（日程）数据赋值完成");
+
+                //日程子表（日常生活）
+                syncData = new SyncDataDto();
+                dataList = new ArrayList<>();
+                List<GtdScheduleBEntity> scheduleBEntityList = gtdScheduleBRepository.findAllByUserId(userId);
+                logger.debug("获取日程子表（日常生活）数据，需要转化数据量为 " + scheduleBEntityList.size() + "条");
+                for (GtdScheduleBEntity gsbe: scheduleBEntityList) {
+                    data = SyncGetOrSetMethod.scheduleBEntityToDto(gsbe);
+
+                    dataList.add(data);
+                }
+                syncData.setTableName(SyncTableNameEnum.SCHEDULE_B.tableName);
+                syncData.setDataList(dataList);
+                syncDataList.add(syncData);
+                logger.debug("日程子表（日常生活）数据赋值完成");
+
+                //日程子表（任务）
+                syncData = new SyncDataDto();
+                dataList = new ArrayList<>();
+                List<GtdScheduleCEntity> scheduleCEntityList = gtdScheduleCRepository.findAllByUserId(userId);
+                logger.debug("获取日程子表（任务）数据，需要转化数据量为 " + scheduleCEntityList.size() + "条");
+                for (GtdScheduleCEntity gsce: scheduleCEntityList) {
+                    data = SyncGetOrSetMethod.scheduleCEntityToDto(gsce);
+
+                    dataList.add(data);
+                }
+                syncData.setTableName(SyncTableNameEnum.SCHEDULE_C.tableName);
+                syncData.setDataList(dataList);
+                syncDataList.add(syncData);
+                logger.debug("日程子表（任务）数据赋值完成");
+
+                //日程子表（纪念日）
+                syncData = new SyncDataDto();
+                dataList = new ArrayList<>();
+                List<GtdScheduleDEntity> scheduleDEntityList = gtdScheduleDRepository.findAllByUserId(userId);
+                logger.debug("获取日程子表（纪念日）数据，需要转化数据量为 " + scheduleDEntityList.size() + "条");
+                for (GtdScheduleDEntity gsde: scheduleDEntityList) {
+                    data = SyncGetOrSetMethod.scheduleDEntityToDto(gsde);
+
+                    dataList.add(data);
+                }
+                syncData.setTableName(SyncTableNameEnum.SCHEDULE_D.tableName);
+                syncData.setDataList(dataList);
+                syncDataList.add(syncData);
+                logger.debug("日程子表（纪念日）数据赋值完成");
+
+                //日程子表（备忘录）
+                syncData = new SyncDataDto();
+                dataList = new ArrayList<>();
+                List<GtdScheduleEEntity> scheduleEEntityList = gtdScheduleERepository.findAllByUserId(userId);
+                logger.debug("获取日程子表（备忘录）数据，需要转化数据量为 " + scheduleEEntityList.size() + "条");
+                for (GtdScheduleEEntity gsee: scheduleEEntityList) {
+                    data = SyncGetOrSetMethod.scheduleEEntityToDto(gsee);
+
+                    dataList.add(data);
+                }
+                syncData.setTableName(SyncTableNameEnum.SCHEDULE_E.tableName);
+                syncData.setDataList(dataList);
+                syncDataList.add(syncData);
+                logger.debug("日程子表（备忘录）数据赋值完成");
+
+                //用户表
+                syncData = new SyncDataDto();
+                dataList = new ArrayList<>();
+                List<GtdUserEntity> userEntityList = gtdUserRepository.findAllByUserId(userId);
+                logger.debug("获取用户表数据，需要转化数据量为 " + playerMemberEntityList.size() + "条");
+                for (GtdUserEntity gue: userEntityList) {
+                    data = SyncGetOrSetMethod.userEntityToDto(gue);
+
+                    dataList.add(data);
+                }
+                syncData.setTableName(SyncTableNameEnum.USER.tableName);
+                syncData.setDataList(dataList);
+                syncDataList.add(syncData);
+                logger.debug("用户表数据赋值完成");
+
+                logger.debug("======== [用户" + userId + " 全部数据下载完成] =======");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return syncDataList;
+    }
+
+    /**
+     * 获取服务端最新更新版本号
+     * @param userId
+     * @return 库存版本号 ： 生成版本号
+     */
+    private String findLatestVersion(String userId) {
+        Object[] obj = (Object[]) syncRepository.findLatestVersion(userId);
+        return obj != null? String.valueOf(obj[0]): BaseUtil.getVersion();
+    }
+
 }

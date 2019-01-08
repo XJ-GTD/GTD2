@@ -5,6 +5,7 @@ import { LsmService} from "../../service/lsm.service";
 import { UserService } from "../../service/user.service";
 import {DataConfig} from "../../app/data.config";
 import {ReturnConfig} from "../../app/return.config";
+import {WebsocketService} from "../../service/util-service/websocket.service";
 
 /**
  * Generated class for the UbPage page.
@@ -36,6 +37,7 @@ export class UbPage {
     private alertCtrl: AlertController,
     private paramsService: ParamsService,
     private lsmService: LsmService,
+    private webSocket: WebsocketService,
     private userService: UserService) {
   }
 
@@ -62,6 +64,7 @@ export class UbPage {
        if (data.code == 0) {
          // this.userService.getUo();
          console.log("登录成功");
+         this.webSocket.connect(data.data.accountQueue);
          let alert = this.alertCtrl.create({
            title: '提示信息',
            subTitle: "登录成功",
@@ -70,7 +73,7 @@ export class UbPage {
                if(!this.rePage && !this.puPage){
                  //跳转首页
                  console.log('UbPage跳转HzPage');
-                 this.navCtrl.setRoot('HzPage');
+                 this.navCtrl.push('HzPage');
                }else{
                  //登录分析
                  //登录成功跳转，登录成功返回，

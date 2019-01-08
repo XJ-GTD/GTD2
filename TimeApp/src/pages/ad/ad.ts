@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { PopoverController } from 'ionic-angular';
 import {DwEmitService} from "../../service/util-service/dw-emit.service";
@@ -18,8 +18,10 @@ import {PageConfig} from "../../app/page.config";
 })
 export class AdPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              private dwEmit: DwEmitService) {
+  constructor(private navCtrl: NavController,
+              private navParams: NavParams,
+              private dwEmit: DwEmitService,
+              private element: ElementRef) {
   }
 
   ionViewDidLoad() {
@@ -28,6 +30,17 @@ export class AdPage {
 
   test($event) {
     alert("测试adpage");
+  }
+
+  updateEditor(){
+    let el = this.element.nativeElement.querySelector("textarea");
+    el.style.overflow = "hidden";
+    el.style.height = "auto";
+    if (el['scrollHeight'] >= 120) { //给输入框设定一个最小的高度
+      el['style'].height = el['scrollHeight'] + "px";
+    }else {
+      el['style'].height = "120px";
+    }
   }
 
   // ionViewDidLoad(){

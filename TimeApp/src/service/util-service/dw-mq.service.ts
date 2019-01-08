@@ -42,7 +42,7 @@ export class DwMqService {
           this.xfScheduleCreate(mqDate);
           break;
         case SkillConfig.XF_SCD: //讯飞：日程删除
-          this.xfScheduleDelete();
+          this.xfScheduleDelete(mqDate);
           break;
         case SkillConfig.XF_SCF: //讯飞：日程查询
           this.xfScheduleFind(mqDate);
@@ -67,7 +67,7 @@ export class DwMqService {
           this.scheduleCreate(mqDate.res.data);
           break;
         case SkillConfig.BC_SCD: //删除日程
-          this.scheduleDelete();
+          this.scheduleDelete(mqDate.res.data);
           break;
         case SkillConfig.BC_SCU: //更新日程
           this.scheduleUpdate(mqDate.res.data);
@@ -115,7 +115,8 @@ export class DwMqService {
   /**
    * 语音：日程删除
    */
-  private xfScheduleDelete() {
+  private xfScheduleDelete(mqDate) {
+    let md:WsResDataModel= mqDate.res.data;
     let sI = "";
     this.work.delrc(sI).then(data=>{
       this.dwEmit.setHbData(data);
@@ -218,7 +219,7 @@ export class DwMqService {
     let rF = '';
     let qrL=[];
     let id='';
-    this.relmem.upr(id,ran,rN,rC,rel,rF,qrL).then(data=>{
+    this.relmem.upr(id,ran,rN,rC,rel,rF,qrL,'').then(data=>{
 
     }).catch(e=>{
 
@@ -288,8 +289,8 @@ export class DwMqService {
   /**
    * 业务：日程删除
    */
-  private scheduleDelete() {
-    let sI = "";
+  private scheduleDelete(data: WsResDataModel) {
+    let sI = data.si;
     this.work.delrc(sI).then(data=>{
 
     }).catch(e=>{

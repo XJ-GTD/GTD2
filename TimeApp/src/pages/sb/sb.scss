@@ -74,11 +74,16 @@ page-sb {
 
   .jhCss{
     border-radius: 20px;
-    border:1px solid #df34d2;
+    border:1px solid #e5e5e5;
     background-color: #FFF;
     margin-top: 10px;
     margin-left: 5px;
     margin-right: 5px;
+    max-width: 100px;
+    min-width: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
 
@@ -98,17 +103,24 @@ page-sb {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-
+    align-items: center;
+    max-height: 180px;
+    overflow: scroll;
+    margin-top: 10px;
   }
 
   .buttonCssA{
-    padding:5px;
-    border-radius: 5%;
+    padding:5px 10px 5px 15px;
+    border-radius: 60px;
     background-color: #f0f0f0;
-    border:0.5px solid #7f8e9e;
+    //border:0.5px solid #7f8e9e;
     .divCssA{
+      font-size: 12px;
       padding: 3px;
-
+      max-width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 

@@ -131,12 +131,21 @@ export class WorkSqlite{
       }).then(data=>{
         if(data&&data.rows&&data.rows.length){
           //判断是否有消息
-          for(let i=0;i<=resL.length;i++){
-            for(let j=0;j<=data.rows.length;j++){
+          for(let j=0;j<=data.rows.length;j++){
+            let bool = true; //判断当前日是否存在
+            for(let i=0;i<=resL.length;i++){
               if(resL[i].ymd== data.rows.item(j).md){
                 resL[i].mdn=1;
+                bool = false;
                 break;
               }
+            }
+            if(bool){
+              let res:any={};
+              res.ymd = data.rows.item(j).md;
+              res.ct = 0;
+              res.mdn=1;
+              resL.push(res);
             }
           }
         }
@@ -157,14 +166,17 @@ export class WorkSqlite{
    */
   getOd(d:string,ui:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
-      let sql='select gc.*,gd.son,gd.pI,gd.sa,lbd.* from GTD_C gc ' +
+      let sql='select gc.*,gd.son,gd.pI,gd.sa,lbd.*,gf.* from GTD_C gc ' +
         'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
         'union select sI,cft,cf,ac,fh from GTD_CC ' +
         'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
         'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
         'union select sI,cft,cf,ac,fh from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
+        'left join GTD_F gf on gf.lai=gc.lI '+
         'left join GTD_D gd on gc.sI=gd.sI ' +
-        'and gd.uI ="'+ui+'" where (substr(gc.sd,1,10) <= "'+d+'" and substr(gc.ed,1,10)>= "'+d+'") ';
+        'left join (select substr(md,1,10) md,mf,rI from GTD_H where mf="0" and substr(md,1,10) = "'+ d+
+        '" group by substr(md,1,10),mf,rI) gh on gc.sI=gh.rI '
+      'and gd.uI ="'+ui+'" where (substr(gc.sd,1,10) <= "'+d+'" and substr(gc.ed,1,10)>= "'+d+'") ';
        // +'and (gd.pI is null or gd.uI ="'+DataConfig.uInfo.uI+'")';
       let bs = new BsModel();
       let resL = new Array<any>();
@@ -185,6 +197,19 @@ export class WorkSqlite{
                 res.scheduleStartTime = res.ed.substr(11,16);
               }else{
                 res.scheduleStartTime="08:00";
+              }
+              if(res.lau){
+                res.labelColor = res.lau;
+              }
+              //判断别人还是自己的
+              if(res.uI==DataConfig.uInfo.uI){
+                res.scheduleType = '●';
+              }else{
+                res.scheduleType = '▲';
+              }
+              //是否新消息
+              if(res.mf && res.mf=='0'){
+                res.isMessage='·';
               }
               resL.push(res);
             }
@@ -225,7 +250,7 @@ export class WorkSqlite{
     let isTrue = false;
     sd = sd.substr(0,10);
     ed= ed.substr(0,10);
-    if(cft && cft != null){
+    if(cft && cft != null && cft !='undefined'){
       if(cft=='1'){//年
         if(sd.substr(4,10)== day.substr(4,10)){
           isTrue = true;

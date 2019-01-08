@@ -14,5 +14,10 @@ import java.util.List;
 @Transactional
 public interface GtdDictionaryRepository extends JpaRepository<GtdDictionaryEntity, Integer> {
 
+    /**
+     * 查询字典类型值
+     * @param dictType
+     * @return
+     */
     List<GtdDictionaryEntity> findAllByDictType(String dictType);
 }

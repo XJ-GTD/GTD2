@@ -4,6 +4,8 @@ import com.xiaoji.gtd.entity.GtdUserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * 用户表DAO层 继承类
  *
@@ -11,4 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface GtdUserRepository extends JpaRepository<GtdUserEntity,Integer> {
+
+    /**
+     * 查询用户下全部用户信息数据
+     * @return
+     */
+    List<GtdUserEntity> findAllByUserId(String userId);
 }

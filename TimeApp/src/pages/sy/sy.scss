@@ -14,6 +14,23 @@ page-sy {
     border-bottom: 0.55px solid #c8c7cc ;
   }
 
+  textarea.text-input{
+    height:120px;
+  }
+
+  ion-textarea{
+    border:0.5px solid #f2f2f2;
+    border-radius: 5px;
+  }
+
+  .margin181{
+    margin:15px 8px 15px 0;
+  }
+
+  .bortom{
+    border-bottom: 1px solid #cccccc;
+  }
+
   //.item-block.item-ios:nth-of-type(1){
   //  border-bottom: 0px !important;
   //  box-shadow: none !important;

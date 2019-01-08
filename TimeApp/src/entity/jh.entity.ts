@@ -4,9 +4,9 @@
 
 //标签表
 export class JhEntity {
-  private _ji: string='';   //计划编号
-  private _jn:string=''; //计划名
-  private _jg: string=''; //计划描述
+  private _ji: string=null;   //计划编号
+  private _jn:string=null; //计划名
+  private _jg: string=null; //计划描述
   /*
    * 创建表
    * @type {string}
@@ -20,7 +20,7 @@ export class JhEntity {
   private _usq:string;
   private _dsq:string;
   //查询单个
-  private _qosq:string = 'select * from GTD_J_H where ji=' + this._ji;
+  private _qosq:string = 'select * from GTD_J_H where ji="' + this._ji +'"';
 
   get qosq(): string {
     return this._qosq;
@@ -47,10 +47,10 @@ export class JhEntity {
       sql=sql+' jn="' + this._jn +'",';
     }
     if(this._jg!=null){
-      sql=sql+' _jg="' + this._jg +'",';
+      sql=sql+' jg="' + this._jg +'",';
     }
     if(this._ji != null){
-      sql = sql + ' ji=' + this._ji +' where ji=' + this._ji;
+      sql = sql + ' ji="' + this._ji +'" where ji="' + this._ji + '"';
     }
     this._usq=sql;
     return this._usq;
@@ -61,7 +61,7 @@ export class JhEntity {
   get dsq(): string {
     let sql='DELETE FROM GTD_J_H WHERE 1=1 ';
     if(this._ji!=null){
-      sql=sql+' and ji=' + this._ji;
+      sql=sql+' and ji="' + this._ji +'"';
     }
     if(this._jn!=null){
       sql=sql+' and jn="' + this._jn +'"';
