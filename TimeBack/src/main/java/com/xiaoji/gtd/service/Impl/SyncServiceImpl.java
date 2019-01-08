@@ -49,6 +49,8 @@ public class SyncServiceImpl implements ISyncService {
     @Resource
     private GtdPlayerMemberRepository gtdPlayerMemberRepository;
     @Resource
+    private GtdPlanRepository gtdPlanRepository;
+    @Resource
     private GtdUserRepository gtdUserRepository;
     @Resource
     private GtdScheduleRepository gtdScheduleRepository;
@@ -190,6 +192,7 @@ public class SyncServiceImpl implements ISyncService {
     @Override
     public SyncOutDto timingSync(SyncInDto inDto) {
 
+        SyncOutDto outDto = new SyncOutDto();
         List<SyncDataDto> syncDataList = inDto.getSyncDataList();
         List<SyncDataDto> downLoadDataList;
 
@@ -206,7 +209,7 @@ public class SyncServiceImpl implements ISyncService {
         List<SyncTableData> dataList;
         List<GtdSyncVersionEntity> syncVersionList = new ArrayList<>();
 
-        if (syncDataList != null && syncDataList.size() > 0) { //需要上传数据
+        if (syncDataList != null && syncDataList.size() > 0) {      //需要上传数据
             logger.debug("=========== 上传数据开始 ===========");
             for (SyncDataDto sdd: syncDataList) {
                 tableName = sdd.getTableName();
@@ -220,26 +223,25 @@ public class SyncServiceImpl implements ISyncService {
             gtdSyncVersionRepository.saveAll(syncVersionList);
 
             logger.debug("=========== 上传数据结束 ===========");
-        } else { //仅需要下载更新
-            logger.debug("=========== 下载数据开始 ===========");
-
-            logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] ：开始获取数据");
-            downLoadDataList = downLoad(userId, deviceId, downloadSyncVersion);
-
-            if (downLoadDataList != null) {
-
-                version = findLatestVersion(userId);
-                logger.debug("获取数据成功 version：["+ version + "] | data: size = " + downLoadDataList.size());
-
-            } else {
-                logger.debug("服务器暂无该账号数据!");
-
-            }
-
-            logger.debug("=========== 下载数据结束 ===========");
         }
 
-        return null;
+        logger.debug("=========== 下载数据开始 ===========");
+
+        logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] ：开始获取数据");
+        downLoadDataList = downLoad(userId, deviceId, downloadSyncVersion);
+
+        if (downLoadDataList != null) {
+            logger.debug("获取数据成功 version：["+ downloadSyncVersion + "] | data: size = " + downLoadDataList.size());
+            outDto.setVersion(version);
+            outDto.setUserDataList(downLoadDataList);
+        } else {
+            logger.debug("下载数据失败：服务器暂无该账号数据!");
+            return null;
+        }
+
+        logger.debug("=========== 下载数据结束 ===========");
+
+        return outDto;
     }
 
     /**
@@ -254,6 +256,7 @@ public class SyncServiceImpl implements ISyncService {
         switch (tableName) {
             case "GTD_B":       //联系人表
                 List<GtdPlayerEntity> tableDataList = new ArrayList<>();
+                List<GtdPlayerEntity> deleteDataList = new ArrayList<>();
                 List<String> ids = new ArrayList<>();
                 GtdPlayerEntity playerEntity;
                 for (SyncTableData std: dataList) {
@@ -311,13 +314,6 @@ public class SyncServiceImpl implements ISyncService {
                 for (SyncTableData std: dataList) {
 
                     planEntity = new GtdPlanEntity();
-                }
-                break;
-            case "GTD_C_A":     //本地日历表
-                GtdLocalScheduleEntity localScheduleEntity = new GtdLocalScheduleEntity();
-                for (SyncTableData std: dataList) {
-
-                    localScheduleEntity = new GtdLocalScheduleEntity();
                 }
                 break;
             case "":
@@ -478,20 +474,20 @@ public class SyncServiceImpl implements ISyncService {
                 syncDataList.add(syncData);
                 logger.debug("日程子表（备忘录）数据赋值完成");
 
-                //用户表
+                //计划表
                 syncData = new SyncDataDto();
                 dataList = new ArrayList<>();
-                List<GtdUserEntity> userEntityList = gtdUserRepository.findAllByUserId(userId);
-                logger.debug("获取用户表数据，需要转化数据量为 " + playerMemberEntityList.size() + "条");
-                for (GtdUserEntity gue: userEntityList) {
-                    data = SyncGetOrSetMethod.userEntityToDto(gue);
+                List<GtdPlanEntity> planEntityList = gtdPlanRepository.findAllByUserId(userId);
+                logger.debug("获取计划表数据，需要转化数据量为 " + planEntityList.size() + "条");
+                for (GtdPlanEntity gpe: planEntityList) {
+                    data = SyncGetOrSetMethod.planEntityToDto(gpe);
 
                     dataList.add(data);
                 }
-                syncData.setTableName(SyncTableNameEnum.USER.tableName);
+                syncData.setTableName(SyncTableNameEnum.PLAN.tableName);
                 syncData.setDataList(dataList);
                 syncDataList.add(syncData);
-                logger.debug("用户表数据赋值完成");
+                logger.debug("计划表数据赋值完成");
 
                 logger.debug("======== [用户" + userId + " 全部数据下载完成] =======");
             }

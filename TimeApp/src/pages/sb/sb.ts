@@ -44,9 +44,11 @@ export class SbPage {
 
   pRelAl:Array<RuModel>;//所有联系人
   select:any = [];
-  selectLb:Array<LbModel>;
+  // selectLb:Array<LbModel>;
 
   lbs: Array<LbModel>;
+  lb:LbModel;
+  lbtmp:LbModel;
   repeatTypes:Array<ZtdModel>;
   type: any ;
   title:any;
@@ -70,7 +72,6 @@ export class SbPage {
   static wType:any = "";
   static dType:any = "HH时mm分ss秒";
 
-  lb:Object = {lan:"标签"};
   remindType:string ;
 
   jhs:Array<JhModel>;
@@ -92,6 +93,9 @@ export class SbPage {
     this.jhtmp = new JhModel();
     this.jhtmp.jn="添加计划";
     this.jh = this.jhtmp;
+    this.lbtmp = new LbModel();
+    this.lbtmp.lan="标签";
+    this.lb = this.lbtmp;
   }
 
   ionViewDidLoad() {
@@ -177,12 +181,12 @@ export class SbPage {
     this.navCtrl.pop();
   }
 
-  goBack() {
-    // 重写返回方法
-    this.paramsService.schedule=null;
-    this.navCtrl.pop();
-    // this.navCtrl.push('GroupListPage');
-  }
+  // goBack() {
+  //   // 重写返回方法
+  //   this.paramsService.schedule=null;
+  //   this.navCtrl.pop();
+  //   // this.navCtrl.push('GroupListPage');
+  // }
 
   presentActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
@@ -272,16 +276,21 @@ export class SbPage {
     //判断点击的是否为遮罩层，是的话隐藏遮罩层
     if(e.srcElement.className == 'itemClass'){
       this.isShowJh = false;
-      this.showChange();
+      this.isShowLb = false;
+      // this.showChange();
+
+
+      this.type = this.lb.lai;
+      this.showSelect();
     }
     //隐藏滚动条
     e.stopPropagation();
   }
 
   //添加计划
-  showJh(){
+  showJhs(){
     if(this.showJhFlag){
-      let domList = document.getElementsByName("lab");
+      let domList = document.getElementsByName("labJh");
       for(let i = 0;i<domList.length;i++){
         let dom = domList.item(i);
         let rgb = 'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')';
@@ -295,38 +304,47 @@ export class SbPage {
 
   //选择标签
   showLbs(){
-
+    if(this.showLbFlag){
+      let domList = document.getElementsByName("labLb");
+      for(let i = 0;i<domList.length;i++){
+        let dom = domList.item(i);
+        let rgb = 'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')';
+        dom.style.borderColor = rgb;
+        dom.style.color = rgb;
+      }
+      this.showLbFlag = false;
+    }
     this.isShowLb = true;
   }
 
-  showChange(){
-    let A= false;
-    let B= false;
-    let C= false;
-    let D= false;
-    let E= false;
-
-    for(let i = 0;this.selectLb != undefined && i<this.selectLb.length;i++){
-      switch(this.selectLb[i].lat){
-        case '1': A = true;
-          break;
-        case '2': B = true;
-          break;
-        case '3': C = true;
-          break;
-        case '4': D = true;
-          break;
-        case '5': E = true;
-          break;
-      }
-    }
-    this.showA = A;
-    this.showB = B;
-    this.showC = C;
-    this.showD = D;
-    this.showE = E;
-
-  }
+  // showChange(){
+  //   let A= false;
+  //   let B= false;
+  //   let C= false;
+  //   let D= false;
+  //   let E= false;
+  //
+  //   for(let i = 0;this.selectLb != undefined && i<this.selectLb.length;i++){
+  //     switch(this.selectLb[i].lat){
+  //       case '1': A = true;
+  //         break;
+  //       case '2': B = true;
+  //         break;
+  //       case '3': C = true;
+  //         break;
+  //       case '4': D = true;
+  //         break;
+  //       case '5': E = true;
+  //         break;
+  //     }
+  //   }
+  //   this.showA = A;
+  //   this.showB = B;
+  //   this.showC = C;
+  //   this.showD = D;
+  //   this.showE = E;
+  //
+  // }
 
   //时间选择类型
   chengeType(){
@@ -447,7 +465,7 @@ export class SbPage {
         break;
       }
     }
-    let domList = document.getElementsByName("lab");
+    let domList = document.getElementsByName("labJh");
     for(let i = 0;i<domList.length;i++){
       if(i == flag){
         let dom = domList.item(i);
@@ -459,12 +477,12 @@ export class SbPage {
           dom.style.backgroundColor = rgb;
           dom.style.color = color;
           this.jh = jh;
-          this.showFlag = false;
+          this.showJhFlag = false;
         }else{
           dom.style.backgroundColor = color;
           dom.style.color = rgb;
           this.jh = this.jhtmp;
-          this.showFlag = true;
+          // this.showJhFlag = true;
         }
       }else{
         let dom = domList.item(i);
@@ -475,7 +493,48 @@ export class SbPage {
         dom.style.color = color;
       }
     }
-  }
+  };
+
+
+  selectLb = function ($event, lb) {
+    let flag = undefined;
+    console.log(JSON.stringify(this.lbs));
+    console.log(JSON.stringify(lb));
+    for(let i =0;i<this.lbs.length;i++){
+      if(this.lbs[i].lai == lb.lai){
+        flag = i;
+        break;
+      }
+    }
+    let domList = document.getElementsByName("labLb");
+    for(let i = 0;i<domList.length;i++){
+      if(i == flag){
+        let dom = domList.item(i);
+        let fcolor = dom.style.color; //当前颜色
+        let rgb = dom.style.borderColor; //当前边框颜色
+        let color = "rgb(255, 255, 255)"; //预设颜色
+        // alert("当前颜色::" + fcolor + "当前边框颜色 :: " + rgb + "预设颜色 :: " + color);
+        if(fcolor != color){
+          dom.style.backgroundColor = rgb;
+          dom.style.color = color;
+          this.lb = lb;
+          this.showLbFlag = false;
+        }else{
+          dom.style.backgroundColor = color;
+          dom.style.color = rgb;
+          this.lb = this.lbtmp;
+          this.showLbFlag = true;
+        }
+      }else{
+        let dom = domList.item(i);
+        let rgb = dom.style.borderColor;
+        let color = rgb;
+        let bgcolor = "rgb(255, 255, 255)";
+        dom.style.backgroundColor = bgcolor;
+        dom.style.color = color;
+      }
+    }
+  };
 
   showRemarks(){
     // let model = this.modal.create("TmdPage",{text:this.remarks},{showBackdrop:false});

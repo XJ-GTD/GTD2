@@ -151,4 +151,5 @@ public class GtdScheduleEntity {
     public int hashCode() {
         return Objects.hash(scheduleId, scheduleName, labelId, userId, planId, startDate, endDate, createId, createDate, updateId, updateDate);
     }
+
 }

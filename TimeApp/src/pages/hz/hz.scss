@@ -17,7 +17,11 @@ page-hz {
   }
 
   .item-block.item-ios{
-    border-bottom: 0.55px solid #c8c7cc ;
+    border-bottom: 0.55px solid #e5e5e5 ;
+  }
+
+  ion-list > ion-item:first-child{
+    border-top-color: #e5e5e5 !important;
   }
 
   #tag1{

@@ -12,15 +12,15 @@ public class GtdSyncVersionEntity {
     private String version;
     private String tableName;
     private String tableId;
-    private String deviceId;
+    private String syncAction;
     private String createId;
     private Timestamp createDate;
     private String updateId;
     private Timestamp updateDate;
+    private String deviceId;
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getId() {
         return id;
     }
@@ -70,13 +70,13 @@ public class GtdSyncVersionEntity {
     }
 
     @Basic
-    @Column(name = "DEVICE_ID")
-    public String getDeviceId() {
-        return deviceId;
+    @Column(name = "SYNC_ACTION")
+    public String getSyncAction() {
+        return syncAction;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setSyncAction(String syncAction) {
+        this.syncAction = syncAction;
     }
 
     @Basic
@@ -119,6 +119,16 @@ public class GtdSyncVersionEntity {
         this.updateDate = updateDate;
     }
 
+    @Basic
+    @Column(name = "DEVICE_ID")
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -129,15 +139,16 @@ public class GtdSyncVersionEntity {
                 Objects.equals(version, that.version) &&
                 Objects.equals(tableName, that.tableName) &&
                 Objects.equals(tableId, that.tableId) &&
-                Objects.equals(deviceId, that.deviceId) &&
+                Objects.equals(syncAction, that.syncAction) &&
                 Objects.equals(createId, that.createId) &&
                 Objects.equals(createDate, that.createDate) &&
                 Objects.equals(updateId, that.updateId) &&
-                Objects.equals(updateDate, that.updateDate);
+                Objects.equals(updateDate, that.updateDate) &&
+                Objects.equals(deviceId, that.deviceId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, version, tableName, tableId, deviceId, createId, createDate, updateId, updateDate);
+        return Objects.hash(id, userId, version, tableName, tableId, syncAction, createId, createDate, updateId, updateDate, deviceId);
     }
 }

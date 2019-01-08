@@ -373,4 +373,35 @@ public class SyncGetOrSetMethod {
         return data;
     }
 
+    /**
+     * 计划表dto转entity
+     * @param std
+     * @return
+     */
+    public static GtdPlanEntity planDtoToEntity(SyncTableData std) {
+        GtdPlanEntity planEntity = new GtdPlanEntity();
+
+        planEntity.setPlanId(std.getTableA());                          //计划ID
+        planEntity.setPlanName(std.getTableB());                        //计划名称
+        planEntity.setPlanContent(std.getTableC());                     //计划内容
+        planEntity.setUserId(std.getTableD());                          //创建者
+
+        return planEntity;
+    }
+
+    /**
+     * 计划主表entity转化Dto
+     * @param gpe
+     * @return
+     */
+    public static SyncTableData planEntityToDto(GtdPlanEntity gpe) {
+        SyncTableData data = new SyncTableData();
+
+        data.setTableA(gpe.getPlanId());                        //计划ID
+        data.setTableB(gpe.getPlanName());                      //计划名称
+        data.setTableC(gpe.getPlanContent());                   //计划内容
+        data.setTableD(gpe.getUserId());                        //创建者
+
+        return data;
+    }
 }
