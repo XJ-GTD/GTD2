@@ -53,32 +53,6 @@ export class SaPage {
     this.rc = new RcModel();
   }
 
-  init() {
-    this.schedule = new ScheduleModel();
-    this.schedule = this.navParams.data;
-    console.log("传入日程数据 ::" + JSON.stringify(this.schedule));
-    this.rc = new RcModel();
-    //查询日程详情
-    this.work.getds(this.schedule.scheduleId).then(data=>{
-      this.rc = data;
-      console.log("日程 :: " + JSON.stringify(this.rc));
-    }).catch(e=>{
-      alert(e.message)
-    });
-
-    // this.lbs = new Array<LbModel>();
-    //
-    // //查询系统标签
-    // this.work.getlbs().then(data=>{
-    //   if(data.code == 0){
-    //     this.lbs = data.lbs;
-    //     console.log('标签查询成功')
-    //   }
-    // }).catch(reason => {
-    //
-    // })
-  }
-
   //设置闹钟
   setAlarm() {
     let myModal = this.modalCtrl.create('SdPage');
@@ -97,7 +71,17 @@ export class SaPage {
   }
 
   ionViewWillEnter(){
-    this.init();
+    this.schedule = this.navParams.data
+    console.log("传入日程数据 ::" + JSON.stringify(this.schedule));
+    this.rc = new RcModel();
+    //查询日程详情
+    this.work.getds(this.schedule.scheduleId).then(data=>{
+      this.rc = data;
+      console.log("日程 :: " + JSON.stringify(this.rc));
+      this.edit();
+    }).catch(e=>{
+      alert(e.message)
+    });
     this.getAllRel();
   }
 

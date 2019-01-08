@@ -32,8 +32,7 @@ export class Ha01Page {
               private util: UtilService,
               private rnd: Renderer2,
               private workService: WorkService,
-              private el: ElementRef,
-              private app: App) {
+              private el: ElementRef) {
     console.log('ionViewDidLoad Ha01Page');
     this.height = window.document.body.clientHeight - 350 - 110;
   }
@@ -47,11 +46,11 @@ export class Ha01Page {
   }
 
   //展示数据详情
-  showScheduleDetail(schedule:ScheduleModel) {
-    console.log("schedule :: " + JSON.stringify(schedule));
+  showScheduleDetail(index) {
+    console.log("schedule :: " + JSON.stringify(index));
+    let domList = this.el.nativeElement.querySelectorAll(".pop-css");
+    this.active = index;
 
-
-    let domList = document.getElementsByName("pop-css");
     console.log(domList.length);
 
     for (let i = 0; i < domList.length; i++) {
@@ -74,7 +73,11 @@ export class Ha01Page {
     }
     this.noShow = false;
 
-    this.app.getRootNav().push("SaPage", schedule);
+    //
+  }
+
+  editEvent(schedule:ScheduleModel){
+    this.navCtrl.push("SaPage", schedule);
   }
 
   //查询当天日程
@@ -133,6 +136,8 @@ export class Ha01Page {
   swipeEvent(event) {
     console.log(event);
     console.log("当前页面 :: " + this.active);
+    let domList = this.el.nativeElement.querySelectorAll(".pop-css");
+
 
     if (event.direction == 2) {
       let index = this.active;
@@ -144,7 +149,6 @@ export class Ha01Page {
         console.log("划不动了 :: ");
         return;
       }
-      let domList = document.getElementsByName("pop-css");
 
       //左一左移
       if (index - 1 >= 0) {
@@ -153,7 +157,6 @@ export class Ha01Page {
       }
       //当前页面左移
       let dom: HTMLElement = domList.item(index);
-      console.log(dom)
       // dom.style.transform = "translate(-105%,10%)"
       dom.className = "pop-css activeCssLeft ";
       //右一左移
@@ -176,8 +179,6 @@ export class Ha01Page {
         console.log("划不动了 :: ")
         return;
       }
-      //当前页右移
-      let domList = document.getElementsByName("pop-css");
       let dom = domList.item(index);
       dom.className = "pop-css activeCssRight ";
       //右一右移
@@ -208,52 +209,5 @@ export class Ha01Page {
     //阻止冒泡
     // e.stopPropagation();
   }
-
-  testCl() {
-    console.log("点击一次 :: ");
-    console.log(" :: " + document);
-    // var dom = document.getElementById("1111")
-    let domlist = document.getElementsByName("1111");
-    for (let i = 0; i < domlist.length; i++) {
-      //阻止默认滑动事件
-      domlist.item(i).addEventListener('touchmove', (e) => {
-        e.preventDefault();
-      }, true);
-    }
-
-  }
-
-  testSw() {
-    console.log("滑动一次 ::")
-  }
-
-  removeElement(obj) {
-    let domlist = document.getElementsByName("pop-css");
-    console.log("div删除前 ::" + domlist.length);
-    let index = this.dayEvents.indexOf(obj);
-    console.log(index);
-    console.log(this.dayEvents.splice(index, 1));
-    setTimeout(() => {
-      let domlist2 = document.getElementsByName("pop-css");
-      console.log("div删除后 ::" + domlist2.length);
-      if (this.active < domlist2.length) {
-        console.log("右补齐 :: ");
-        domlist2.item(this.active).className = "pop-css activeCss";
-        if (this.active + 1 < domlist2.length) {
-          domlist2.item(this.active + 1).className = "pop-css activeCssRight";
-        }
-      } else if (this.active > 0) {
-        console.log("左补齐 :: ");
-        domlist2.item(this.active - 1).className = "pop-css activeCss";
-        if (this.active - 1 > 0) {
-          domlist2.item(this.active - 2).className = "pop-css activeCssLeft";
-        }
-        this.active--;
-      } else {
-        this.noShow = true;
-      }
-    }, 1);
-  }
-
 
 }

@@ -6,7 +6,7 @@
 -->
 <ion-scroll scrollY="true">
   <ul>
-    <li ion-item *ngFor="let itm of dayEvents"  (click)="showScheduleDetail(itm)">
+    <li ion-item *ngFor="let itm of dayEvents ;let i = index" (click)="showScheduleDetail(i)">
       <p item-start>
         {{itm.scheduleStartTime}}
       </p>
@@ -18,71 +18,74 @@
   </ul>
 </ion-scroll>
 
-<div [hidden]="noShow" class="backdrop-div" (click)="backdropclick($event)" (swipe)="swipeEvent($event)" >
-  <ion-backdrop disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;" ></ion-backdrop>
+<div [hidden]="noShow" class="backdrop-div" (click)="backdropclick($event)" >
+  <ion-backdrop disable-activated class="itemClass" role="presentation" tappable
+                style="opacity: 0.3; transition-delay: initial; transition-property: none;"></ion-backdrop>
   <!--<div style="width: 600px;height: 900px" (swipe)="swipeEvent($event)">-->
-  <div *ngFor="let i of dayEvents" (click)="testCl()"  name="1111">
-    <div class="pop-css" padding  style="position: absolute"  name="pop-css">
-      <ion-content id="aboutContent"  >
-        <ion-item style="border-top-left-radius: 20px;border-top-right-radius: 20px;">
-          <img src="./assets/imgs/h.png" style="width: 20px" item-start>
-          <ion-label col-3>任务</ion-label>
-          <ion-label >{{i.scheduleName}}</ion-label>
-        </ion-item>
-        <ion-item>
-          <img src="./assets/imgs/g.png" style="width: 20px" item-start>
-          <ion-label col-3 item-left style="margin-right: 0px !important;">参与人</ion-label>
-          <div item-left margin-left>
-            <div>
-              <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">
-                <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg" style="border-radius: 50%;width: 40px;height: 40px">
-              </ion-thumbnail>
-              <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center >张三</div>
-            </div>
-          </div>
-          <div item-left>
-            <div>
-              <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">
-                <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg" style="border-radius: 50%;width: 40px;height: 40px">
-              </ion-thumbnail>
-              <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center >李四</div>
-            </div>
-          </div>
-        </ion-item>
-        <ion-item>
-          <img src="./assets/imgs/f.png" style="width: 20px" item-start>
-          <ion-label col-3>计划</ion-label>
-          <ion-label >具体事件</ion-label>
-        </ion-item>
-        <ion-item>
-          <img src="./assets/imgs/e.png" style="width: 20px" item-start>
-          <ion-label col-3 item-left>标签</ion-label>
+  <div class="pop-css" padding style="position: absolute"
+       *ngFor="let event of dayEvents"  (swipe)="swipeEvent($event)">
+      <ion-item style="border-top-left-radius: 20px;border-top-right-radius: 20px;">
 
-          <div item-left>
-            <div float-left style="border-radius: 5px;border: 0.5px solid black">日常</div>
+        <div>
+          <!--<img src="./assets/imgs/f.png" style="width: 20px" >-->
+          <!--<ion-label col-3>计划</ion-label>-->
+          <!--<ion-label>具体事件</ion-label>-->
+          <!--<img src="./assets/imgs/e.png" style="width: 20px">-->
+          <!--<ion-label col-3 item-left>标签</ion-label>-->
+          <!--<div item-left>-->
+            <!--<div float-left style="border-radius: 5px;border: 0.5px solid black">日常</div>-->
+          <!--</div>-->
+          <!--<img src="./assets/imgs/d.png" style="width: 20px" >-->
+          <!--<ion-label col-3>时间</ion-label>-->
+          <!--<ion-label>2018年11月22日 15:33</ion-label>-->
+
+          <!--<button ion-item>-->
+            <!--<img src="./assets/imgs/c.png" style="width: 20px">-->
+            <!--<ion-label col-3>提醒</ion-label>-->
+            <!--<ion-label color="primary">提前十分钟</ion-label>-->
+          <!--</button>-->
+          <button (click)="editEvent(event)" ion-item class="buttonWan">编辑</button>
+        </div>
+      </ion-item>
+
+      <ion-item style="border-top-left-radius: 20px;border-top-right-radius: 20px;">
+        <img src="./assets/imgs/h.png" style="width: 20px" item-start>
+        <ion-label col-3>任务</ion-label>
+        <ion-label>{{event.scheduleName}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <img src="./assets/imgs/g.png" style="width: 20px" item-start>
+        <ion-label col-3 item-left style="margin-right: 0px !important;">参与人</ion-label>
+        <div item-left margin-left>
+          <div>
+            <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">
+              <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg"
+                   style="border-radius: 50%;width: 40px;height: 40px">
+            </ion-thumbnail>
+            <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center>
+              张三
+            </div>
           </div>
-        </ion-item>
-        <ion-item>
-          <img src="./assets/imgs/d.png" style="width: 20px" item-start>
-          <ion-label col-3>时间</ion-label>
-          <ion-label >2018年11月22日 15:33</ion-label>
-        </ion-item>
-        <button ion-item>
-          <img src="./assets/imgs/c.png" style="width: 20px" item-start>
-          <ion-label col-3>提醒</ion-label>
-          <ion-label color="primary">提前十分钟</ion-label>
-        </button>
-        <ion-item>
-          <img src="./assets/imgs/b.png" style="width: 20px" item-start>
-          <ion-label col-3>备注</ion-label>
-          <ion-label >哈哈哈</ion-label>
-        </ion-item>
-      </ion-content>
-      <div style="margin-top: -10px">
-        <button ion-button class="buttonWan" col-4 (click)="removeElement(i)">完成</button>
-      </div>
+        </div>
+        <div item-left>
+          <div>
+            <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">
+              <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg"
+                   style="border-radius: 50%;width: 40px;height: 40px">
+            </ion-thumbnail>
+            <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center>
+              李四
+            </div>
+          </div>
+        </div>
+      </ion-item>
+      <ion-item>
+        <img src="./assets/imgs/b.png" style="width: 20px" item-start>
+        <ion-label col-3>备注</ion-label>
+        <ion-label>哈哈哈</ion-label>
+      </ion-item>
+
     </div>
-  </div>
 
   <!--</div>-->
   <!--<div class="pop-css" padding style="transform: translate(105%,10%);" >-->

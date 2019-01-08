@@ -57,18 +57,10 @@ page-ha01 {
     bottom: 0;
     right: 0;
     width: 85% !important;
-    height: 80% !important;
+    height: 90% !important;
     background-color: #FFFFFF;
     z-index: 50;
     border-radius: 20px;
-
-    .scroll-content{
-      margin-top: 0px !important;
-      padding-top: 0px !important;
-    }
-    .item-ios{
-      padding-left: 0px !important;
-    }
 
     transition:width 1s, height 1s;
     -moz-transition:width 1s, height 1s, -moz-transform 1s; /* Firefox 4 */
@@ -92,22 +84,22 @@ page-ha01 {
   }
 
   .activeCssLeft{
-    transform: translate(-105%,10%);
+    transform: translate(-105%,5%);
     z-index: 40;
   }
 
   .activeCssRight{
-    transform: translate(105%,10%);
+    transform: translate(105%,5%);
     z-index: 40;
   }
 
   .activeCssLeft-1{
-    transform: translate(-205%,10%);
+    transform: translate(-205%,5%);
     z-index: 40;
   }
 
   .activeCssRight-1{
-    transform: translate(205%,10%);
+    transform: translate(205%,5%);
     z-index: 40;
   }
 

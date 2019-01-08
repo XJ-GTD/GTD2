@@ -21,23 +21,12 @@ export class ReadlocalService {
 
   private selectDay: EventEmitter<any> = new EventEmitter();
 
-  public setSelectDay($event){
-    this.selectDay.emit($event);
-  }
-
-  public getSelectDay(obj:Ha01Page){
-    this.selectDay.subscribe(($event)=>{
-      obj.findTodaySchedule($event);
-    })
-  }
-
   constructor(private calendar: Calendar,
               private util:UtilService,
               private baseSqlite:BaseSqlite,
               private userService:UserService,
               private playService:PlayerService,
               private playSqlite:PlayerSqlite  ) { }
-
   /**
    * 查询本地日历所有日程
    * @returns {Promise<any>}
