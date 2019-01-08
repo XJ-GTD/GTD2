@@ -55,7 +55,7 @@ export class ReadlocalService {
   uploadLocal():Promise<BsModel>{
     return new Promise((resolve,reject)=>{
       let model = new BsModel();
-      if(DataConfig.IS_MOBILE){
+      if(1==1){
         let uI = '';
         uI = DataConfig.uInfo.uI;
         this.findEvent().then(data=>{

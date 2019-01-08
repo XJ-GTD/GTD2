@@ -113,18 +113,18 @@ export class WorkSqlite{
 
             }
  //           TODO
- //            if(count>0){
- //              let res:any={};
- //              res.ymd = day;
- //              res.ct = count;
- //              resL.push(res)
- //            }
-          if(UtilService.randInt(0,1)>0){
+            if(count>0){
               let res:any={};
               res.ymd = day;
-              res.ct = UtilService.randInt(0,10);
-              resL.push(res);
+              res.ct = count;
+              resL.push(res)
             }
+          // if(UtilService.randInt(0,1)>0){
+          //     let res:any={};
+          //     res.ymd = day;
+          //     res.ct = UtilService.randInt(0,10);
+          //     resL.push(res);
+          //   }
           }
 
         return this.msSqlite.getMonthMs(ym);
