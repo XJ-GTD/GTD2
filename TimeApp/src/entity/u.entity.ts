@@ -5,19 +5,19 @@
 //用户类
 export class UEntity {
 
-  private _uI: string=null;   //用户ID
-  private _oUI:string=null; //原用户ID
-  private _uN: string=null;   //昵称
-  private _hIU: string=null;          //头像URL
-  private _rn: string=null;   //真实姓名
-  private _iC:string=null; //身份证
-  private _biy: string=null;    // 生日
-  private _uS: string=null;     // 性别
-  private _uCt: string=null; // 联系方式
-  private _aQ: string=null;    //消息队列
-  private _uT:string=null; //token
-  private _uty:string=null;//0游客1正式用户
-  private _uc:string=null;//账号
+  private _uI: string='';   //用户ID
+  private _oUI:string=''; //原用户ID
+  private _uN: string='';   //昵称
+  private _hIU: string='';          //头像URL
+  private _rn: string='';   //真实姓名
+  private _iC:string=''; //身份证
+  private _biy: string='';    // 生日
+  private _uS: string='';     // 性别
+  private _uCt: string=''; // 联系方式
+  private _aQ: string='';    //消息队列
+  private _uT:string=''; //token
+  private _uty:string='';//0游客1正式用户
+  private _uc:string='';//账号
   /**
    * 创建表
    * @type {string}
@@ -59,10 +59,49 @@ export class UEntity {
   }
 
   get isq(): string {
-    let sql='insert into GTD_A ' +
-      '(uI,uN,biy,uT,hIU,uC,aQ,uty,rn,iC,uc) ' +
-      'values("'+ this._uI+ '","'+ this._uN+'","'+ this._biy+'","'+this.uT+ '","'+
-      this._hIU+'","'+ this._uCt+'","'+this._aQ+'","'+this._uty+'","'+this._rn+'","'+this._iC+'","'+this._uc+'");';
+    let field = 'uI';
+    let values = '"'+this._uI+'"';
+    if(this._uN != null && this._uN != ''){
+      field+=',uN';
+      values = values+',"'+this._uN+'"';
+    }
+    if(this._biy != null && this._biy != ''){
+      field+=',biy';
+      values = values+',"'+this._biy+'"';
+    }
+    if(this._uT != null && this._uT != ''){
+      field+=',uT';
+      values = values+',"'+this._uT+'"';
+    }
+    if(this._hIU != null && this._hIU != ''){
+      field+=',hIU';
+      values = values+',"'+this._hIU+'"';
+    }
+    if(this._uCt != null && this._uCt != ''){
+      field+=',uCt';
+      values = values+',"'+this._uCt+'"';
+    }
+    if(this._aQ != null && this._aQ != ''){
+      field+=',aQ';
+      values = values+',"'+this._aQ+'"';
+    }
+    if(this._uty != null && this._uty != ''){
+      field+=',uty';
+      values = values+',"'+this._uty+'"';
+    }
+    if(this._rn != null && this._rn != ''){
+      field+=',rn';
+      values = values+',"'+this._rn+'"';
+    }
+    if(this._iC != null && this._iC != ''){
+      field+=',iC';
+      values = values+',"'+this._iC+'"';
+    }
+    if(this._uc != null && this._uc != ''){
+      field+=',uc';
+      values = values+',"'+this._uc+'"';
+    }
+    let sql='replace into GTD_A ('+field+') values('+ values +');';
     this._isq=sql;
     return this._isq;
   }
