@@ -128,6 +128,7 @@ export class UtilService {
       bool=true;
       d=-d;
     }
+    let ds = d;
     if(!bool && d==1){
       str = '明天';
     }else if(!bool && d==2){
@@ -139,11 +140,11 @@ export class UtilService {
     }else if(d>=3&& d<30){
       str=d+'天';
     }if(d>=30&& d<365){
-      d = d/30;
-      str=d.toString().substr(0,1)+"月";
+      ds = d/30;
+      str=ds.toString().substr(0,1)+"月";
     }if(d>=365){
-      d = d/365;
-      str=d.toString().substr(0,1)+"年";
+      ds = d/365;
+      str=ds.toString().substr(0,1)+"年";
     }
     if(d>=3&&bool){
       str+='前';
