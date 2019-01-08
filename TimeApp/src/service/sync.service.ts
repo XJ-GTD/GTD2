@@ -172,8 +172,11 @@ export class SyncService {
                   u.uI=dt.tableA;
                   u.uN=dt.tableB;
                   u.hIU=dt.tableC;
+                  // u.uty='1';
+                  // u.uT=DataConfig.uInfo.uT;
+                  // u.aQ=DataConfig.uInfo.aQ;
                   if(sql == ''){
-                    sql = u.isq;
+                    sql = u.usq;
                   }
                 }
               }
