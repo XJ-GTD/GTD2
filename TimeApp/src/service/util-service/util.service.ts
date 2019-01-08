@@ -100,7 +100,7 @@ export class UtilService {
    */
   isMobile():boolean{
     let str='';
-    if(this.wins.cordov){
+    if(this.wins.cordova){
       str = this.wins.cordova.platformId;
     }else{
       DataConfig.IS_MOBILE = false;
