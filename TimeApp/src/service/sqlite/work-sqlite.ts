@@ -203,9 +203,9 @@ export class WorkSqlite{
               }
               //判断别人还是自己的
               if(res.uI==DataConfig.uInfo.uI){
-                res.scheduleType = '●';
+                res.scheduleType = '\u25BA';
               }else{
-                res.scheduleType = '▲';
+                res.scheduleType = '\u25C4';
               }
               //是否新消息
               if(res.mf && res.mf=='0'){
@@ -215,14 +215,16 @@ export class WorkSqlite{
             }
           }
         }
-        let r = 0;
-        for (r=0;r<10;r++){
-          let res:ScheduleModel = new ScheduleModel();
-          res.scheduleId = "1111";
-          res.scheduleName = "***" +　r +　"***我在想可以做什么呢？是不是很有意思呢。哈哈哈哈";
-          res.scheduleStartTime = "15:30";
-          resL.push(res);
-        }
+        // let r = 0;
+        // for (r=0;r<10;r++){
+        //   let res:ScheduleModel = new ScheduleModel();
+        //   res.scheduleId = "1111";
+        //   res.scheduleName = "***" +　r +　"***我在想可以做什么呢？是不是很有意思呢。哈哈哈哈";
+        //   res.scheduleStartTime = "15:30";
+        //   res.scheduleType = "\u25C4";
+        //   res.labelColor = "red";
+        //   resL.push(res);
+        // }
         let ms = new MsEntity();
         ms.md=d;
         return this.msSqlite.updateMs(ms);

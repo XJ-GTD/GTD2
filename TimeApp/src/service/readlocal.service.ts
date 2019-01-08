@@ -19,8 +19,6 @@ import {ReturnConfig} from "../app/return.config";
 @Injectable()
 export class ReadlocalService {
 
-  private selectDay: EventEmitter<any> = new EventEmitter();
-
   constructor(private calendar: Calendar,
               private util:UtilService,
               private baseSqlite:BaseSqlite,
