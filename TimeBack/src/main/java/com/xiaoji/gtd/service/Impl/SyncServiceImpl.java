@@ -205,20 +205,20 @@ public class SyncServiceImpl implements ISyncService {
         String downloadSyncVersion = findLatestVersion(userId);
         logger.debug("服务器本次需要下载数据版本号:" + downloadSyncVersion);
 
-        String tableName = "";
-        List<SyncTableData> dataList;
         List<GtdSyncVersionEntity> syncVersionList = new ArrayList<>();
 
         if (syncDataList != null && syncDataList.size() > 0) {      //需要上传数据
             logger.debug("=========== 上传数据开始 ===========");
-            for (SyncDataDto sdd: syncDataList) {
-                tableName = sdd.getTableName();
-                dataList = sdd.getDataList();
-                logger.debug("上传"+ tableName + "表数据， 数据大小：" + dataList.size());
 
-                List<GtdSyncVersionEntity> latestSyncData = upLoadData(tableName, dataList, userId, version, deviceId, uploadVersion);
-                syncVersionList.addAll(latestSyncData);
-            }
+            List<GtdSyncVersionEntity> latestSyncData = upLoadData(syncDataList, userId, version, deviceId, uploadVersion);
+//            for (SyncDataDto sdd: syncDataList) {
+//                tableName = sdd.getTableName();
+//                dataList = sdd.getDataList();
+//                logger.debug("上传"+ tableName + "表数据， 数据大小：" + dataList.size());
+//
+//                List<GtdSyncVersionEntity> latestSyncData = upLoadData(tableName, dataList, userId, version, deviceId, uploadVersion);
+//                syncVersionList.addAll(latestSyncData);
+//            }
             logger.debug("保存本次更新数据记录, 版本号["+ uploadVersion + "],共" + syncVersionList.size() + "条");
             gtdSyncVersionRepository.saveAll(syncVersionList);
 
@@ -246,79 +246,94 @@ public class SyncServiceImpl implements ISyncService {
 
     /**
      * 上传的数据
-     * @param tableName
-     * @param dataList
+     * @param syncDataList
+     * @param userId
      */
-    private List<GtdSyncVersionEntity> upLoadData(String tableName, List<SyncTableData> dataList, String userId, String version, String deviceId, String uploadVersion) {
+    private List<GtdSyncVersionEntity> upLoadData(List<SyncDataDto> syncDataList, String userId, String version, String deviceId, String uploadVersion) {
 
         List<GtdSyncVersionEntity> syncVersion = new ArrayList<>();
+        List<GtdSyncVersionEntity> latestDataList = gtdSyncVersionRepository.compareToHighVersion(version, userId);
 
-        switch (tableName) {
-            case "GTD_B":       //联系人表
-                List<GtdPlayerEntity> tableDataList = new ArrayList<>();
-                List<GtdPlayerEntity> deleteDataList = new ArrayList<>();
-                List<String> ids = new ArrayList<>();
-                GtdPlayerEntity playerEntity;
-                for (SyncTableData std: dataList) {
-                    ids.add(std.getTableA());
-                    playerEntity = SyncGetOrSetMethod.playerDtoToEntity(std);
+        String tableName = "";
+        List<SyncTableData> dataList;
+        List<GtdSyncVersionEntity> dataCompare;
+        for (SyncDataDto sdd : syncDataList) {
 
-                    tableDataList.add(playerEntity);
-                }
+            tableName = sdd.getTableName();
+            dataList = takeOutData(latestDataList, tableName, sdd.getDataList());
+            switch (tableName) {
+                case "GTD_B":       //联系人表
+                    logger.debug("======== 联系人表上传更新开始 =======");
+                    List<GtdPlayerEntity> tableDataList = new ArrayList<>();
+                    List<GtdPlayerEntity> deleteDataList = new ArrayList<>();
+                    for (SyncTableData std: dataList) {
 
-                List<String> sqlIds = syncRepository.compareToHighVersion(version, userId, ids);
-                List<GtdPlayerEntity> syncDataList = new ArrayList<>();
-                for (GtdPlayerEntity gpe: tableDataList) {
-                    for (String sqlId : sqlIds) {
-                        if (gpe.getId().equals(sqlId)) {            //匹配到对应id就跳过不更新
-                            tableDataList.remove(gpe);
-                            break;
-                        }
+
+                        GtdPlayerEntity playerEntity = SyncGetOrSetMethod.playerDtoToEntity(std);
+                        if (isDelete(std.getAction())) deleteDataList.add(playerEntity);
+                        else tableDataList.add(playerEntity);
+
+                        GtdSyncVersionEntity syncVersionEntity = new GtdSyncVersionEntity();
+                        syncVersionEntity.setTableId(std.getTableA());
+                        syncVersionEntity.setTableName(tableName);
+                        syncVersionEntity.setDeviceId(deviceId);
+                        syncVersionEntity.setCreateId(userId);
+                        syncVersionEntity.setCreateDate(BaseUtil.getSqlDate());
+                        syncVersionEntity.setVersion(uploadVersion);
+                        syncVersion.add(syncVersionEntity);                 //填入入库版本表list
+
                     }
-                    GtdSyncVersionEntity syncVersionEntity = new GtdSyncVersionEntity();
-                    syncVersionEntity.setTableId(gpe.getId());
-                    syncVersionEntity.setTableName(tableName);
-                    syncVersionEntity.setDeviceId(deviceId);
-                    syncVersionEntity.setCreateId(userId);
-                    syncVersionEntity.setCreateDate(BaseUtil.getSqlDate());
-                    syncVersionEntity.setVersion(uploadVersion);
-                    syncVersion.add(syncVersionEntity);                 //填入入库版本表list
+                    logger.debug("-------- 联系人表数据删除 " + deleteDataList.size() + " 条 -------");
+                    gtdPlayerRepository.deleteAll(deleteDataList);
+                    logger.debug("-------- 联系人表数据更新 " + tableDataList.size() + " 条  -------");
+                    gtdPlayerRepository.saveAll(tableDataList);
+                    logger.debug("======== 联系人表上传更新完成 =======");
+                    break;
+//                case "GTD_B_X":     //群组表
+//                    logger.debug("======== 群组表上传更新开始 =======");
+//                    List<GtdPlayerMemberEntity> memberEntityList = new ArrayList<>();
+//                    for (SyncTableData std: dataList) {
+//                        GtdPlayerMemberEntity playerMemberEntity = SyncGetOrSetMethod.memberDtoToEntity(std);
+//                        memberEntityList.add(playerMemberEntity);
+//
+//                        GtdSyncVersionEntity syncVersionEntity = new GtdSyncVersionEntity();
+//                        syncVersionEntity.setTableId(std.getTableA());
+//                        syncVersionEntity.setTableName(tableName);
+//                        syncVersionEntity.setDeviceId(deviceId);
+//                        syncVersionEntity.setCreateId(userId);
+//                        syncVersionEntity.setCreateDate(BaseUtil.getSqlDate());
+//                        syncVersionEntity.setVersion(uploadVersion);
+//                        syncVersion.add(syncVersionEntity);                 //填入入库版本表list
+//                    }
+//                    gtdPlayerMemberRepository.saveAll(memberEntityList);
+//                    break;
+//                case "GTD_C":       //日程表
+//                    GtdScheduleEntity scheduleEntity = new GtdScheduleEntity();
+//                    for (SyncTableData std: dataList) {
+//
+//                        scheduleEntity = new GtdScheduleEntity();
+//                    }
+//                    break;
+//                case "GTD_D":       //日程参与人表
+//                    GtdExecuteEntity executeEntity = new GtdExecuteEntity();
+//                    for (SyncTableData std: dataList) {
+//
+//                        executeEntity = new GtdExecuteEntity();
+//                    }
+//                    break;
+//                case "GTD_H":       //计划表
+//                    GtdPlanEntity planEntity = new GtdPlanEntity();
+//                    for (SyncTableData std: dataList) {
+//
+//                        planEntity = new GtdPlanEntity();
+//                    }
+//                    break;
+//                case "":
+//                    break;
+            }
 
-                    syncDataList.add(gpe);                              //填入入库联系人list
-                }
-                gtdPlayerRepository.saveAll(syncDataList);
-                break;
-            case "GTD_B_X":     //群组表
-                GtdPlayerMemberEntity playerMemberEntity = new GtdPlayerMemberEntity();
-                for (SyncTableData std: dataList) {
-
-                    playerMemberEntity = new GtdPlayerMemberEntity();
-                }
-                break;
-            case "GTD_C":       //日程表
-                GtdScheduleEntity scheduleEntity = new GtdScheduleEntity();
-                for (SyncTableData std: dataList) {
-
-                    scheduleEntity = new GtdScheduleEntity();
-                }
-                break;
-            case "GTD_D":       //日程参与人表
-                GtdExecuteEntity executeEntity = new GtdExecuteEntity();
-                for (SyncTableData std: dataList) {
-
-                    executeEntity = new GtdExecuteEntity();
-                }
-                break;
-            case "GTD_H":       //计划表
-                GtdPlanEntity planEntity = new GtdPlanEntity();
-                for (SyncTableData std: dataList) {
-
-                    planEntity = new GtdPlanEntity();
-                }
-                break;
-            case "":
-                break;
         }
+
 
         return syncVersion;
     }
@@ -506,8 +521,45 @@ public class SyncServiceImpl implements ISyncService {
      * @return 库存版本号 ： 生成版本号
      */
     private String findLatestVersion(String userId) {
-        Object[] obj = (Object[]) syncRepository.findLatestVersion(userId);
-        return obj != null? String.valueOf(obj[0]): BaseUtil.getVersion();
+        Object obj = syncRepository.findLatestVersion(userId);
+        return obj != null? String.valueOf(obj): BaseUtil.getVersion();
+    }
+
+    /**
+     * 判断是否为删除操作
+     * @param action
+     * @return
+     */
+    private boolean isDelete(String action) {
+        return action.equals("2");
+    }
+
+    /**
+     * 分类取版本更新数据
+     * @param latestDataList
+     * @param tableName
+     * @return
+     */
+    private List<SyncTableData> takeOutData(List<GtdSyncVersionEntity> latestDataList, String tableName, List<SyncTableData> dataList) {
+        List<SyncTableData> newDataList = new ArrayList<>();
+
+        List<GtdSyncVersionEntity> dataCompare = new ArrayList<>();
+        for (GtdSyncVersionEntity gsve : latestDataList) {
+            if (tableName.equals(gsve.getTableName())) dataCompare.add(gsve);
+        }
+        logger.debug(tableName + "表更新数据有 " + dataCompare.size() + "条");
+
+        for (SyncTableData std: dataList) {
+            for (GtdSyncVersionEntity gsve : dataCompare) {
+                if (gsve.getTableId().equals(std.getTableA()) && !isDelete(gsve.getSyncAction())) {
+                    dataList.remove(std);       //匹配到对应id且不为删除数据就跳过不更新取最高版本
+                    logger.debug(tableName + "表 数据[ID: " + gsve.getTableId() + "] 以高版本未删除操作为优先不做更新");
+                    break;
+                }
+            }
+        }
+
+        return newDataList;
     }
 
 }

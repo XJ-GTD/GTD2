@@ -249,8 +249,8 @@ public class SyncGetOrSetMethod {
 
         scheduleBEntity.setId(std.getTableA());                                         //日程子表ID
         scheduleBEntity.setScheduleId(std.getTableB());                                 //日程事件ID
-        scheduleBEntity.setRemindType(std.getTableC());                                //提醒方式
-        scheduleBEntity.setRemindTime(CommonMethods.dateToStamp(std.getTableD()));     //提醒时间
+        scheduleBEntity.setRemindType(std.getTableE());                                //提醒方式
+        scheduleBEntity.setRemindTime(CommonMethods.dateToStamp(std.getTableF()));     //提醒时间
 
         return scheduleBEntity;
     }
@@ -265,8 +265,8 @@ public class SyncGetOrSetMethod {
 
         data.setTableA(gsbe.getId());                                    //日程子表ID
         data.setTableB(gsbe.getScheduleId());                            //日程事件ID
-        data.setTableC(gsbe.getRemindType());                               //提醒方式
-        data.setTableD(CommonMethods.stampToDate(gsbe.getRemindTime()));    //提醒时间
+        data.setTableE(gsbe.getRemindType());                               //提醒方式
+        data.setTableF(CommonMethods.stampToDate(gsbe.getRemindTime()));    //提醒时间
 
         return data;
     }
@@ -282,10 +282,10 @@ public class SyncGetOrSetMethod {
         scheduleCEntity.setId(std.getTableA());                                     //日程子表ID
         scheduleCEntity.setScheduleId(std.getTableB());                             //日程事件ID
         scheduleCEntity.setComment(std.getTableC());                                //备注
-        scheduleCEntity.setRemindType(std.getTableD());                             //提醒方式
-        scheduleCEntity.setRemindTime(CommonMethods.dateToStamp(std.getTableE()));  //提醒时间
-        scheduleCEntity.setFinishStatus(Integer.valueOf(std.getTableF()));          //完成状态
-        scheduleCEntity.setFinishTime(CommonMethods.dateToStamp(std.getTableG()));  //完成时间
+        scheduleCEntity.setRemindType(std.getTableE());                             //提醒方式
+        scheduleCEntity.setRemindTime(CommonMethods.dateToStamp(std.getTableF()));  //提醒时间
+        scheduleCEntity.setFinishStatus(Integer.valueOf(std.getTableG()));          //完成状态
+        scheduleCEntity.setFinishTime(CommonMethods.dateToStamp(std.getTableH()));  //完成时间
 
         return scheduleCEntity;
     }
@@ -301,10 +301,10 @@ public class SyncGetOrSetMethod {
         data.setTableA(gsce.getId());                                    //日程子表ID
         data.setTableB(gsce.getScheduleId());                            //日程事件ID
         data.setTableC(gsce.getComment());                               //备注
-        data.setTableD(gsce.getRemindType());                            //提醒方式
-        data.setTableE(CommonMethods.stampToDate(gsce.getRemindTime())); //提醒时间
-        data.setTableF(String.valueOf(gsce.getFinishStatus()));          //完成状态
-        data.setTableG(CommonMethods.stampToDate(gsce.getFinishTime())); //完成时间
+        data.setTableE(gsce.getRemindType());                            //提醒方式
+        data.setTableF(CommonMethods.stampToDate(gsce.getRemindTime())); //提醒时间
+        data.setTableG(String.valueOf(gsce.getFinishStatus()));          //完成状态
+        data.setTableH(CommonMethods.stampToDate(gsce.getFinishTime())); //完成时间
 
         return data;
     }
@@ -319,9 +319,9 @@ public class SyncGetOrSetMethod {
 
         scheduleDEntity.setId(std.getTableA());                                     //日程子表ID
         scheduleDEntity.setScheduleId(std.getTableB());                             //日程事件ID
-        scheduleDEntity.setRepeatType(std.getTableC());                             //重复类型
-        scheduleDEntity.setRemindType(std.getTableD());                             //提醒方式
-        scheduleDEntity.setRemindTime(CommonMethods.dateToStamp(std.getTableE()));  //提醒时间
+        scheduleDEntity.setRepeatType(std.getTableD());                             //重复类型
+        scheduleDEntity.setRemindType(std.getTableE());                             //提醒方式
+        scheduleDEntity.setRemindTime(CommonMethods.dateToStamp(std.getTableF()));  //提醒时间
 
         return scheduleDEntity;
     }
@@ -336,9 +336,9 @@ public class SyncGetOrSetMethod {
 
         data.setTableA(gsde.getId());                                    //日程子表ID
         data.setTableB(gsde.getScheduleId());                            //日程事件ID
-        data.setTableC(gsde.getRepeatType());                            //重复类型
-        data.setTableD(gsde.getRemindType());                            //提醒方式
-        data.setTableE(CommonMethods.stampToDate(gsde.getRemindTime())); //提醒时间
+        data.setTableD(gsde.getRepeatType());                            //重复类型
+        data.setTableE(gsde.getRemindType());                            //提醒方式
+        data.setTableF(CommonMethods.stampToDate(gsde.getRemindTime())); //提醒时间
 
         return data;
     }
