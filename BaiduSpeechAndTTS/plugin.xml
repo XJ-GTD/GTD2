@@ -163,7 +163,8 @@
         <!-- 运行支持库-->
         <framework src="libc++.tbd" weak="true"/>
         <framework src="libz.1.2.5.tbd" weak="true"/>
-        <framework src="AudioToolbox.framework" weak="true"/>
+        <framework src="libz.1.2.5.tbd" weak="true"/>
+        <framework src="libiconv.2.4.0.tdb" weak="true"/>
         <framework src="AVFoundation.framework" weak="true"/>
         <framework src="CFNetwork.framework" weak="true"/>
         <framework src="CoreLocation.framework" weak="true"/>
