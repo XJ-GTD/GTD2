@@ -17,6 +17,7 @@ export class JhEntity {
   private _drsq:string="DROP TABLE IF EXISTS GTD_J_H;";
 
   private _isq:string;
+  private _rpsq:string;
   private _usq:string;
   private _dsq:string;
   //查询单个
@@ -40,7 +41,16 @@ export class JhEntity {
   set isq(value: string) {
     this._isq = value;
   }
+  get rpsq(): string {
+    let sql='replace into GTD_J_H ' +
+      '(ji,jn,jg) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '")';
+    this._rpsq=sql;
+    return this._rpsq;
+  }
 
+  set rpsq(value: string) {
+    this._rpsq = value;
+  }
   get usq(): string {
     let sql='update GTD_J_H set';
     if(this._jn!=null){

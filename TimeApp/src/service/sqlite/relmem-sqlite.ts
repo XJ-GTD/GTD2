@@ -3,6 +3,8 @@ import {BaseSqlite} from "./base-sqlite";
 import {RguEntity} from "../../entity/rgu.entity";
 import {RuEntity} from "../../entity/ru.entity";
 import {BsModel} from "../../model/out/bs.model";
+import {SyncModel} from "../../model/sync.model";
+import {DataConfig} from "../../app/data.config";
 
 /**
  * 授权联系人
@@ -134,6 +136,57 @@ export class RelmemSqlite {
     }
     sql = sql + ranpy + ") or " + rNpy +")";
     return this.baseSqlite.executeSql(sql,[]);
+  }
+
+  /**
+   * 服务器同步联系人转sql
+   * @param {Array<SyncModel>} syncs
+   */
+  syncToRuSql(syncs:Array<SyncModel>){
+    let sql = '';
+    for(let i=0;i<syncs.length;i++){
+      let sync = syncs[i];
+      let en = new RuEntity();
+      en.id=sync.tableA;
+      en.ran=sync.tableB;
+      en.ranpy=sync.tableC;
+      en.rI=sync.tableD;
+      en.hiu=sync.tableE;
+      en.rN=sync.tableF;
+      en.rNpy=sync.tableG;
+      en.rC=sync.tableH;
+      en.rF=sync.tableI;
+      en.rel=sync.tableJ;
+      sync.tableK=DataConfig.uInfo.uI;
+      en.ot=sync.tableL;
+      if(sync.action=='2'){
+        sql+=en.dsq;
+      }else{
+        sql+=en.rpsq;
+      }
+    }
+    return sql;
+  }
+
+  /**
+   * 服务器同步联系人群组表转sql
+   * @param {Array<SyncModel>} syncs
+   */
+  syncToRguSql(syncs:Array<SyncModel>){
+    let sql = '';
+    for(let i=0;i<syncs.length;i++){
+      let sync = syncs[i];
+      let en = new RguEntity();
+      en.id=sync.tableA;
+      en.bi=sync.tableB;
+      en.bmi=sync.tableC;
+      if(sync.action=='2'){
+        sql+=en.dsq;
+      }else{
+        sql+=en.rpsq;
+      }
+    }
+    return sql;
   }
 
 }

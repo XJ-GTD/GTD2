@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {BaseSqlite} from "./base-sqlite";
 import {RguEntity} from "../../entity/rgu.entity";
 import {JhEntity} from "../../entity/jh.entity";
+import {SyncModel} from "../../model/sync.model";
+import {DataConfig} from "../../app/data.config";
 
 /**
  * 授权联系人
@@ -54,6 +56,28 @@ export class JhSqlite {
   getOne(ji:string): Promise<any> {
     let sql = "SELECT * FROM GTD_J_H where ji=?"
     return this.baseSqlite.executeSql(sql,[ji]);
+  }
+
+  /**
+   * 服务器同步日程参与人表转sql
+   * @param {Array<SyncModel>} syncs
+   */
+  syncToJhSql(syncs:Array<SyncModel>){
+    let sql = '';
+    for(let i=0;i<syncs.length;i++){
+      let sync = syncs[i];
+      let en = new JhEntity();
+      en.ji=sync.tableA;
+      en.jn=sync.tableB;
+      en.jg=sync.tableC;
+      sync.tableD = DataConfig.uInfo.uI;
+      if(sync.action=='2'){
+        sql+=en.dsq;
+      }else{
+        sql+=en.rpsq;
+      }
+    }
+    return sql;
   }
 
 }

@@ -5,17 +5,17 @@
 //授权联系人表实体
 export class RuEntity {
 
-  private _id: string=null; //UUID
-  private _ran:string=null; //别名
-  private _ranpy:string=null; //别名拼音
-  private _rI: string=null; //关联ID
-  private _rN: string=null; //名称
-  private _rNpy: string=null; //名称拼音
-  private _rC: string=null; // 联系方式
-  private _rF: string=null; // 授权标识0未授权1授权
+  private _id: string=''; //UUID
+  private _ran:string=''; //别名
+  private _ranpy:string=''; //别名拼音
+  private _rI: string=''; //关联ID
+  private _rN: string=''; //名称
+  private _rNpy: string=''; //名称拼音
+  private _rC: string=''; // 联系方式
+  private _rF: string=''; // 授权标识0未授权1授权
   private _ot:string;//0是未被添加，1是同意，2是拉黑
-  private _rel: string='0'; // 联系类型0人;1群组
-  private _hiu: string=null; // 联系人头像URL
+  private _rel: string=''; // 联系类型0人;1群组
+  private _hiu: string=''; // 联系人头像URL
   /**
    * 创建表
    * @type {string}
@@ -28,6 +28,7 @@ export class RuEntity {
   private _drsq:string="DROP TABLE IF EXISTS GTD_B;";
 
   private _isq:string;
+  private _rpsq:string;
   private _usq:string;
   private _dsq:string;
   //查询单个
@@ -67,6 +68,19 @@ export class RuEntity {
 
   set isq(value: string) {
     this._isq = value;
+  }
+
+  get rpsq(): string {
+    let sql='replace into GTD_B ' +
+      '(id,ran,ranpy,rI,rN,rNpy,rC,rF,rel,hiu,ot) ' +
+      'values("'+ this._id+'","'+ this._ran+'","'+ this._ranpy+'","'+this._rI+ '","'+
+      this._rN+'","'+this._rNpy+'","'+ this._rC+'","'+this._rF+'","'+this._rel+'","'+this._hiu+'","'+this._ot+'")';
+    this._rpsq=sql;
+    return this._rpsq;
+  }
+
+  set rpsq(value: string) {
+    this._rpsq = value;
   }
 
   get usq(): string {

@@ -11,6 +11,8 @@ import {DataConfig} from "../../app/data.config";
 import {ReturnConfig} from "../../app/return.config";
 import {MsSqlite} from "./ms-sqlite";
 import {ScheduleModel} from "../../model/schedule.model";
+import {SyncModel} from "../../model/sync.model";
+import {RcbModel} from "../../model/rcb.model";
 
 
 /**
@@ -422,5 +424,81 @@ export class WorkSqlite{
     }
     sql = sql + ' where sI="'+ sI+'"';
     return this.baseSqlite.executeSql(sql,[]);
+  }
+
+  /**
+   * 服务器同步日程表转sql
+   * @param {Array<SyncModel>} syncs
+   */
+  syncToRcSql(syncs:Array<SyncModel>){
+    let sql = '';
+    for(let i=0;i<syncs.length;i++){
+      let sync = syncs[i];
+      let en = new RcEntity();
+      en.sI=sync.tableA;
+      en.sN=sync.tableB;
+      en.lI=sync.tableC;
+      en.uI=sync.tableD;
+      en.ji=sync.tableE;
+      en.sd=sync.tableF;
+      en.ed=sync.tableG;
+      if(sync.action=='2'){
+        sql+=en.dsq;
+      }else{
+        sql+=en.rpsq;
+      }
+    }
+    return sql;
+  }
+  /**
+   * 服务器同步日程参与人表转sql
+   * @param {Array<SyncModel>} syncs
+   */
+  syncToRcpSql(syncs:Array<SyncModel>){
+    let sql = '';
+    for(let i=0;i<syncs.length;i++){
+      let sync = syncs[i];
+      let en = new RcpEntity();
+      en.pI=sync.tableA;
+      en.sI=sync.tableB;
+      en.son=sync.tableC;
+      en.sa=sync.tableD;
+      en.uI=sync.tableE;
+      en.rui=sync.tableF;
+      if(sync.action=='2'){
+        sql+=en.dsq;
+      }else{
+        sql+=en.rpsq;
+      }
+    }
+    return sql;
+  }
+
+  /**
+   * 服务器同步日程子表转sql
+   * @param {Array<SyncModel>} syncs
+   * @param {string} tn 子表名
+   */
+  syncToRcpSql(syncs:Array<SyncModel>,tn:string){
+    let sql = '';
+    for(let i=0;i<syncs.length;i++){
+      let sync = syncs[i];
+      let en = new RcbModel();
+      en.id=sync.tableA;
+      en.sI=sync.tableB;
+      en.rm=sync.tableC;
+      en.cft=sync.tableD;
+      en.ac=sync.tableE;
+      en.dt=sync.tableF;
+      en.fh=sync.tableG;
+      en.wd=sync.tableH;
+      en.tn=tn;
+      if(sync.action=='2'){
+        sql+=en.dsq;
+      }else{
+        sql+=en.rpsq;
+      }
+    }
+    return sql;
   }
 }
