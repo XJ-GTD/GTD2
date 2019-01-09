@@ -74,7 +74,7 @@ export class RuEntity {
     let sql='replace into GTD_B ' +
       '(id,ran,ranpy,rI,rN,rNpy,rC,rF,rel,hiu,ot) ' +
       'values("'+ this._id+'","'+ this._ran+'","'+ this._ranpy+'","'+this._rI+ '","'+
-      this._rN+'","'+this._rNpy+'","'+ this._rC+'","'+this._rF+'","'+this._rel+'","'+this._hiu+'","'+this._ot+'")';
+      this._rN+'","'+this._rNpy+'","'+ this._rC+'","'+this._rF+'","'+this._rel+'","'+this._hiu+'","'+this._ot+'");';
     this._rpsq=sql;
     return this._rpsq;
   }

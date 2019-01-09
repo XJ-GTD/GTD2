@@ -76,7 +76,7 @@ export class RcEntity {
   get rpsq(): string {
     let sql='replace into GTD_C ' +
       '(sI,sN,lI,uI,sd,ed,ji) values("'+ this._sI+'","'+ this._sN+'","'+this._lI+ '","'+ this._uI
-      +'","'+this._sd+ '","'+ this._ed+'","'+ this._ji+'")';
+      +'","'+this._sd+ '","'+ this._ed+'","'+ this._ji+'");';
     this._rpsq=sql;
     return this._rpsq;
   }

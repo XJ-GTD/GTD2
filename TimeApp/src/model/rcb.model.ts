@@ -16,8 +16,8 @@ export class RcbModel {
   private _ac:string=''; //提醒方式
   private _fh:string=''; //是否完成0否1是
   private _tn:string = null; // 表名
-  private _rpsq:string;
-  private _dsq:string;
+  private _rpsq:string='';
+  private _dsq:string='';
 
   get rpsq(): string {
     return this._rpsq;

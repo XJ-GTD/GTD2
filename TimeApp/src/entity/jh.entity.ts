@@ -43,7 +43,7 @@ export class JhEntity {
   }
   get rpsq(): string {
     let sql='replace into GTD_J_H ' +
-      '(ji,jn,jg) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '")';
+      '(ji,jn,jg) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '");';
     this._rpsq=sql;
     return this._rpsq;
   }

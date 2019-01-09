@@ -60,7 +60,7 @@ export class RguEntity {
 
   get rpsq(): string {
     let sql='replace into GTD_B_X ' +
-      '(bi,bmi) ' + 'values("'+ this._bi+'","'+ this._bmi+'")';
+      '(bi,bmi) ' + 'values("'+ this._bi+'","'+ this._bmi+'");';
     this._rpsq=sql;
     return this._rpsq;
   }
