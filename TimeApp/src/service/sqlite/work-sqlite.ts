@@ -11,6 +11,8 @@ import {DataConfig} from "../../app/data.config";
 import {ReturnConfig} from "../../app/return.config";
 import {MsSqlite} from "./ms-sqlite";
 import {ScheduleModel} from "../../model/schedule.model";
+import {SyncModel} from "../../model/sync.model";
+import {RcbModel} from "../../model/rcb.model";
 
 
 /**
@@ -88,7 +90,7 @@ export class WorkSqlite{
     return new Promise((resolve, reject) => {
       let sql='select gc.*,lbd.* from GTD_C gc ' +
         'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
-        'union select sI,cft,cf,ac,fh from GTD_CC ' +
+        'union select sI,cft,cf,ac,fh from GTD_C_C ' +
         'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
         'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
         'union select sI,cft,cf,ac,fh from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
@@ -168,7 +170,7 @@ export class WorkSqlite{
     return new Promise((resolve, reject) => {
       let sql='select gc.*,gd.son,gd.pI,gd.sa,lbd.*,gf.* from GTD_C gc ' +
         'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
-        'union select sI,cft,cf,ac,fh from GTD_CC ' +
+        'union select sI,cft,cf,ac,fh from GTD_C_C ' +
         'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
         'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
         'union select sI,cft,cf,ac,fh from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
@@ -285,7 +287,7 @@ export class WorkSqlite{
   getds(sI:string):Promise<any>{
     let sql = "select jh.jn,gf.lan,gd.sa,gc.*,lbd.* from GTD_C gc " +
       'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
-      'union select sI,cft,cf,ac,fh from GTD_CC ' +
+      'union select sI,cft,cf,ac,fh from GTD_C_C ' +
       'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
       'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
       'union select sI,cft,cf,ac,fh from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
@@ -359,7 +361,7 @@ export class WorkSqlite{
     if(tk == '1'){
       tn='GTD_C_BO'
     }else if(tk >= '2' && tk <= '3'){
-      tn='GTD_CC'
+      tn='GTD_C_C'
     }else if(tk >= '4' && tk <= '8'){
       tn='GTD_C_RC'
     }else if(tk == '9'){
@@ -391,7 +393,7 @@ export class WorkSqlite{
     if(tk == '1'){
       tn='GTD_C_BO'
     }else if(tk >= '2' && tk <= '3'){
-      tn='GTD_CC'
+      tn='GTD_C_C'
     }else if(tk >= '4' && tk <= '8'){
       tn='GTD_C_RC'
     }else if(tk == '9'){
@@ -422,5 +424,87 @@ export class WorkSqlite{
     }
     sql = sql + ' where sI="'+ sI+'"';
     return this.baseSqlite.executeSql(sql,[]);
+  }
+
+  /**
+   * 服务器同步日程表转sql
+   * @param {Array<SyncModel>} syncs
+   */
+  syncToRcSql(syncs:Array<SyncModel>){
+    let sql = '';
+    if(syncs != null && syncs.length>0) {
+      for (let i = 0; i < syncs.length; i++) {
+        let sync = syncs[i];
+        let en = new RcEntity();
+        en.sI = sync.tableA;
+        en.sN = sync.tableB;
+        en.lI = sync.tableC;
+        en.uI = sync.tableD;
+        en.ji = sync.tableE;
+        en.sd = sync.tableF;
+        en.ed = sync.tableG;
+        if (sync.action == '2') {
+          sql += en.dsq;
+        } else {
+          sql += en.rpsq;
+        }
+      }
+    }
+    return sql;
+  }
+  /**
+   * 服务器同步日程参与人表转sql
+   * @param {Array<SyncModel>} syncs
+   */
+  syncToRcpSql(syncs:Array<SyncModel>){
+    let sql = '';
+    if(syncs != null && syncs.length>0) {
+      for (let i = 0; i < syncs.length; i++) {
+        let sync = syncs[i];
+        let en = new RcpEntity();
+        en.pI = sync.tableA;
+        en.sI = sync.tableB;
+        en.son = sync.tableC;
+        en.sa = sync.tableD;
+        en.uI = sync.tableE;
+        en.rui = sync.tableF;
+        if (sync.action == '2') {
+          sql += en.dsq;
+        } else {
+          sql += en.rpsq;
+        }
+      }
+    }
+    return sql;
+  }
+
+  /**
+   * 服务器同步日程子表转sql
+   * @param {Array<SyncModel>} syncs
+   * @param {string} tn 子表名
+   */
+  syncToRcbSql(syncs:Array<SyncModel>,tn:string){
+    let sql = '';
+    if(syncs != null && syncs.length>0) {
+      for (let i = 0; i < syncs.length; i++) {
+        let sync = syncs[i];
+        let en = new RcbModel();
+        en.id = sync.tableA;
+        en.sI = sync.tableB;
+        en.rm = sync.tableC;
+        en.cft = sync.tableD;
+        en.ac = sync.tableE;
+        en.dt = sync.tableF;
+        en.fh = sync.tableG;
+        en.wd = sync.tableH;
+        en.tn = tn;
+        if (sync.action == '2') {
+          sql += en.dsq;
+        } else {
+          sql += en.rpsq;
+        }
+      }
+    }
+    return sql;
   }
 }

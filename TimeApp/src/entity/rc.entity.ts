@@ -5,13 +5,13 @@
 //日程表
 export class RcEntity {
 
-  private _sI: string=null;   //UUID
-  private _sN:string=null; //日程名
-  private _lI: string=null;   //关联标签ID
-  private _uI: string=null;          //创建人ID
-  private _sd:string=null; //开始时间
-  private _ed:string = null; //结束时间
-  private _ji:string=null; //计划ID
+  private _sI: string='';   //UUID
+  private _sN:string=''; //日程名
+  private _lI: string='';   //关联标签ID
+  private _uI: string='';          //创建人ID
+  private _sd:string=''; //开始时间
+  private _ed:string = ''; //结束时间
+  private _ji:string=''; //计划ID
   /*
    * 创建表
    * @type {string}
@@ -23,6 +23,7 @@ export class RcEntity {
   private _drsq:string="DROP TABLE IF EXISTS GTD_C;"
 
   private _isq:string;
+  private _rpsq:string;
   private _usq:string;
   private _dsq:string;
   //查询单个
@@ -37,8 +38,8 @@ export class RcEntity {
   }
 
   get isq(): string {
-    let field='sI'
-    let values = '"'+this._sI+'"'
+    let field='sI';
+    let values = '"'+this._sI+'"';
     if(this._sN!=null && this._sN!=''){
       field=field+',sN';
       values =values+  ',"'+this._sN+'"'
@@ -72,7 +73,17 @@ export class RcEntity {
   set isq(value: string) {
     this._isq = value;
   }
+  get rpsq(): string {
+    let sql='replace into GTD_C ' +
+      '(sI,sN,lI,uI,sd,ed,ji) values("'+ this._sI+'","'+ this._sN+'","'+this._lI+ '","'+ this._uI
+      +'","'+this._sd+ '","'+ this._ed+'","'+ this._ji+'");';
+    this._rpsq=sql;
+    return this._rpsq;
+  }
 
+  set rpsq(value: string) {
+    this._rpsq = value;
+  }
   get usq(): string {
     let sql='update GTD_C set';
     if(this._sN!=null && this._sN!=''){

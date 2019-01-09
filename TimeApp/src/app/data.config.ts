@@ -34,4 +34,16 @@ export class DataConfig {
   public static ZTD_MAP:Map<string,any> = new Map<string,any>();
   public static REPEAT_TYPE:string = '12';
 
+  /* =============== 同步表名 ==================*/
+  public static GTD_B:string='GTD_B'; //联系人表
+  public static GTD_B_X:string='GTD_B_X'; //群组关联表
+  public static GTD_C:string='GTD_C'; //日程表
+  public static GTD_D:string='GTD_D'; //日程参与人表
+  public static GTD_C_RC:string='GTD_C_RC'; //日程子表
+  public static GTD_C_C:string='GTD_C_C';//日程子表
+  public static GTD_C_BO:string='GTD_C_BO';//日程子表
+  public static GTD_C_JN:string='GTD_C_JN';//日程子表
+  public static GTD_C_MO:string='GTD_C_MO';//日程子表
+  public static GTD_J_H:string='GTD_J_H';//计划表
+
 }

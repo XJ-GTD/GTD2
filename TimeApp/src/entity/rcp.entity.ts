@@ -28,6 +28,7 @@ export class RcpEntity {
   private _drsq:string="DROP TABLE IF EXISTS GTD_D;";
 
   private _isq:string;
+  private _rpsq:string;
   private _usq:string;
   private _dsq:string;
   //查询单个
@@ -45,11 +46,22 @@ export class RcpEntity {
     let sql='insert into GTD_D ' +
       '(pI,sI,son,sa,ps,cd,pd,uI,rui,ib,bi,sdt) values("'+ this._pI+'","'+ this._sI+'","'+ this._son+'","'
       +this._sa+ '","'+this._ps+ '","'+this._cd+ '","'+this._pd+ '","'+ this._uI+'","'+ this._rui+'","'
-      + this._ib+'","'+this._bi+'",'+this._sdt+')';
+      + this._ib+'","'+this._bi+'",'+this._sdt+');';
     this._isq=sql;
     return this._isq;
   }
+  get rpsq(): string {
+    let sql='replace into GTD_D ' +
+      '(pI,sI,son,sa,ps,cd,pd,uI,rui,ib,bi,sdt) values("'+ this._pI+'","'+ this._sI+'","'+ this._son+'","'
+      +this._sa+ '","'+this._ps+ '","'+this._cd+ '","'+this._pd+ '","'+ this._uI+'","'+ this._rui+'","'
+      + this._ib+'","'+this._bi+'",'+this._sdt+');';
+    this._rpsq=sql;
+    return this._rpsq;
+  }
 
+  set rpsq(value: string) {
+    this._rpsq = value;
+  }
   set isq(value: string) {
     this._isq = value;
   }
