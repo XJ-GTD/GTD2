@@ -432,20 +432,22 @@ export class WorkSqlite{
    */
   syncToRcSql(syncs:Array<SyncModel>){
     let sql = '';
-    for(let i=0;i<syncs.length;i++){
-      let sync = syncs[i];
-      let en = new RcEntity();
-      en.sI=sync.tableA;
-      en.sN=sync.tableB;
-      en.lI=sync.tableC;
-      en.uI=sync.tableD;
-      en.ji=sync.tableE;
-      en.sd=sync.tableF;
-      en.ed=sync.tableG;
-      if(sync.action=='2'){
-        sql+=en.dsq;
-      }else{
-        sql+=en.rpsq;
+    if(syncs != null && syncs.length>0) {
+      for (let i = 0; i < syncs.length; i++) {
+        let sync = syncs[i];
+        let en = new RcEntity();
+        en.sI = sync.tableA;
+        en.sN = sync.tableB;
+        en.lI = sync.tableC;
+        en.uI = sync.tableD;
+        en.ji = sync.tableE;
+        en.sd = sync.tableF;
+        en.ed = sync.tableG;
+        if (sync.action == '2') {
+          sql += en.dsq;
+        } else {
+          sql += en.rpsq;
+        }
       }
     }
     return sql;
@@ -456,19 +458,21 @@ export class WorkSqlite{
    */
   syncToRcpSql(syncs:Array<SyncModel>){
     let sql = '';
-    for(let i=0;i<syncs.length;i++){
-      let sync = syncs[i];
-      let en = new RcpEntity();
-      en.pI=sync.tableA;
-      en.sI=sync.tableB;
-      en.son=sync.tableC;
-      en.sa=sync.tableD;
-      en.uI=sync.tableE;
-      en.rui=sync.tableF;
-      if(sync.action=='2'){
-        sql+=en.dsq;
-      }else{
-        sql+=en.rpsq;
+    if(syncs != null && syncs.length>0) {
+      for (let i = 0; i < syncs.length; i++) {
+        let sync = syncs[i];
+        let en = new RcpEntity();
+        en.pI = sync.tableA;
+        en.sI = sync.tableB;
+        en.son = sync.tableC;
+        en.sa = sync.tableD;
+        en.uI = sync.tableE;
+        en.rui = sync.tableF;
+        if (sync.action == '2') {
+          sql += en.dsq;
+        } else {
+          sql += en.rpsq;
+        }
       }
     }
     return sql;
@@ -481,22 +485,24 @@ export class WorkSqlite{
    */
   syncToRcbSql(syncs:Array<SyncModel>,tn:string){
     let sql = '';
-    for(let i=0;i<syncs.length;i++){
-      let sync = syncs[i];
-      let en = new RcbModel();
-      en.id=sync.tableA;
-      en.sI=sync.tableB;
-      en.rm=sync.tableC;
-      en.cft=sync.tableD;
-      en.ac=sync.tableE;
-      en.dt=sync.tableF;
-      en.fh=sync.tableG;
-      en.wd=sync.tableH;
-      en.tn=tn;
-      if(sync.action=='2'){
-        sql+=en.dsq;
-      }else{
-        sql+=en.rpsq;
+    if(syncs != null && syncs.length>0) {
+      for (let i = 0; i < syncs.length; i++) {
+        let sync = syncs[i];
+        let en = new RcbModel();
+        en.id = sync.tableA;
+        en.sI = sync.tableB;
+        en.rm = sync.tableC;
+        en.cft = sync.tableD;
+        en.ac = sync.tableE;
+        en.dt = sync.tableF;
+        en.fh = sync.tableG;
+        en.wd = sync.tableH;
+        en.tn = tn;
+        if (sync.action == '2') {
+          sql += en.dsq;
+        } else {
+          sql += en.rpsq;
+        }
       }
     }
     return sql;

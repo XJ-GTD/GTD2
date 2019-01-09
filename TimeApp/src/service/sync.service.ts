@@ -172,17 +172,19 @@ export class SyncService {
             let uds = data.data.userDataList;
             for (let i = 0; i < uds.length; i++) {
               let ud = uds[i];
-              alert(ud.tableName.substr(0,5));
+              //alert(ud.tableName.substr(0,5));
               if (ud.tableName == DataConfig.GTD_B) {
-                this.relmem.syncToRuSql(ud.datalist);
+                this.relmem.syncToRuSql(ud.dataList);
               }else if(ud.tableName == DataConfig.GTD_B_X) {
-                this.relmem.syncToRguSql(ud.datalist);
+                this.relmem.syncToRguSql(ud.dataList);
               }if (ud.tableName == DataConfig.GTD_C) {
-                this.work.syncToRcSql(ud.datalist);
+                this.work.syncToRcSql(ud.dataList);
               }else if(ud.tableName == DataConfig.GTD_D) {
-                this.work.syncToRcpSql(ud.datalist);
+                this.work.syncToRcpSql(ud.dataList);
               }else if(ud.tableName.substr(0,5)==DataConfig.GTD_C){
-                this.work.syncToRcbSql(ud.datalist,ud.tableName);
+                this.work.syncToRcbSql(ud.dataList,ud.tableName);
+              }else if(ud.tableName==DataConfig.GTD_J_H){
+                this.jh.syncToJhSql(ud.dataList);
               }
             }
             if (sql != '') {

@@ -118,19 +118,19 @@ export class RelmemSqlite {
   xfGetRu(py:string):Promise<any>{
     let pyL = py.split(",");
     let sql = "select * from  GTD_B where ";
-    let ranpy = ''
-    let rNpy=''
+    let ranpy = '';
+    let rNpy='';
     for(let i=0;i<pyL.length;i++){
       if(pyL[i] != ''){
         if(ranpy==''){
-          ranpy="ranpy in ('"+pyL[i]+"'"
+          ranpy="ranpy in ('"+pyL[i]+"'";
         }else{
-          ranpy=ranpy + ",'"+pyL[i]+"'"
+          ranpy=ranpy + ",'"+pyL[i]+"'";
         }
         if(rNpy==''){
-          rNpy="rNpy in ('"+pyL[i]+"'"
+          rNpy="rNpy in ('"+pyL[i]+"'";
         }else{
-          rNpy=rNpy + ",'"+pyL[i]+"'"
+          rNpy=rNpy + ",'"+pyL[i]+"'";
         }
       }
     }
@@ -144,27 +144,30 @@ export class RelmemSqlite {
    */
   syncToRuSql(syncs:Array<SyncModel>){
     let sql = '';
-    for(let i=0;i<syncs.length;i++){
-      let sync = syncs[i];
-      let en = new RuEntity();
-      en.id=sync.tableA;
-      en.ran=sync.tableB;
-      en.ranpy=sync.tableC;
-      en.rI=sync.tableD;
-      en.hiu=sync.tableE;
-      en.rN=sync.tableF;
-      en.rNpy=sync.tableG;
-      en.rC=sync.tableH;
-      en.rF=sync.tableI;
-      en.rel=sync.tableJ;
-      sync.tableK=DataConfig.uInfo.uI;
-      en.ot=sync.tableL;
-      if(sync.action=='2'){
-        sql+=en.dsq;
-      }else{
-        sql+=en.rpsq;
+    if(syncs != null && syncs.length>0){
+      for(let i=0;i<syncs.length;i++){
+        let sync = syncs[i];
+        let en = new RuEntity();
+        en.id=sync.tableA;
+        en.ran=sync.tableB;
+        en.ranpy=sync.tableC;
+        en.rI=sync.tableD;
+        en.hiu=sync.tableE;
+        en.rN=sync.tableF;
+        en.rNpy=sync.tableG;
+        en.rC=sync.tableH;
+        en.rF=sync.tableI;
+        en.rel=sync.tableJ;
+        sync.tableK=DataConfig.uInfo.uI;
+        en.ot=sync.tableL;
+        if(sync.action=='2'){
+          sql+=en.dsq;
+        }else{
+          sql+=en.rpsq;
+        }
       }
     }
+
     return sql;
   }
 
@@ -174,19 +177,21 @@ export class RelmemSqlite {
    */
   syncToRguSql(syncs:Array<SyncModel>){
     let sql = '';
-    for(let i=0;i<syncs.length;i++){
-      let sync = syncs[i];
-      let en = new RguEntity();
-      en.id=sync.tableA;
-      en.bi=sync.tableB;
-      en.bmi=sync.tableC;
-      if(sync.action=='2'){
-        sql+=en.dsq;
-      }else{
-        sql+=en.rpsq;
+    if(syncs != null && syncs.length>0){
+      for(let i=0;i<syncs.length;i++){
+        let sync = syncs[i];
+        let en = new RguEntity();
+        en.id=sync.tableA;
+        en.bi=sync.tableB;
+        en.bmi=sync.tableC;
+        if(sync.action=='2'){
+          sql+=en.dsq;
+        }else{
+          sql+=en.rpsq;
+        }
       }
+      return sql;
     }
-    return sql;
   }
 
 }

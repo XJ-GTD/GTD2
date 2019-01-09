@@ -280,7 +280,11 @@ export class BaseSqlite {
       }else{
         let sqls = sql.split(';');
         for(let i=0;i<sqls.length;i++){
-          this.executeSql(sqls[i],[]);
+          if(sqls[i] != null && sqls[i] !=''){
+            this.executeSql(sqls[i],[]);
+          }else{
+            console.error("sqls["+i+"]:"+sqls[i]+"\n+sql:"+sql);
+          }
         }
         resolve(sqls.length);
       }
