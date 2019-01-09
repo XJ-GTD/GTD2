@@ -479,7 +479,7 @@ export class WorkSqlite{
    * @param {Array<SyncModel>} syncs
    * @param {string} tn 子表名
    */
-  syncToRcpSql(syncs:Array<SyncModel>,tn:string){
+  syncToRcbSql(syncs:Array<SyncModel>,tn:string){
     let sql = '';
     for(let i=0;i<syncs.length;i++){
       let sync = syncs[i];
