@@ -13,6 +13,9 @@ import {ZtdSqlite} from "./sqlite/ztd-sqlite";
 import {ReturnConfig} from "../app/return.config";
 import {ZtdModel} from "../model/ztd.model";
 import {UtilService} from "./util-service/util.service";
+import {WorkSqlite} from "./sqlite/work-sqlite";
+import {RelmemSqlite} from "./sqlite/relmem-sqlite";
+import {JhSqlite} from "./sqlite/jh-sqlite";
 
 /**
  * 初始化
@@ -25,6 +28,9 @@ export class SyncService {
   constructor( private base:BaseSqlite,
                private sync:SyncRestful,
                private util:UtilService,
+               private work:WorkSqlite,
+               private relmem:RelmemSqlite,
+               private jh:JhSqlite,
                private ztd:ZtdSqlite) {
 
   }
@@ -166,24 +172,21 @@ export class SyncService {
             let uds = data.data.userDataList;
             for (let i = 0; i < uds.length; i++) {
               let ud = uds[i];
-              if (ud.tableName == 'gtd_user') {
-                for (let i = 0; i < ud.dataList.length; i++) {
-                  let dt = ud.dataList[i];
-                  let u = new UEntity();
-                  u.uI = dt.tableA;
-                  u.uN = dt.tableB;
-                  u.hIU = dt.tableC;
-                  // u.uty='1';
-                  // u.uT=DataConfig.uInfo.uT;
-                  // u.aQ=DataConfig.uInfo.aQ;
-                  if (sql == '') {
-                    sql = u.usq;
-                  }
-                }
+              alert(ud.tableName.substr(0,5));
+              if (ud.tableName == DataConfig.GTD_B) {
+                this.relmem.syncToRuSql(ud.datalist);
+              }else if(ud.tableName == DataConfig.GTD_B_X) {
+                this.relmem.syncToRguSql(ud.datalist);
+              }if (ud.tableName == DataConfig.GTD_C) {
+                this.work.syncToRcSql(ud.datalist);
+              }else if(ud.tableName == DataConfig.GTD_D) {
+                this.work.syncToRcpSql(ud.datalist);
+              }else if(ud.tableName.substr(0,5)==DataConfig.GTD_C){
+                this.work.syncToRcbSql(ud.datalist,ud.tableName);
               }
             }
             if (sql != '') {
-              this.base.executeSql(sql, []).then(data => {
+              this.base.importSqlToDb(sql).then(data => {
                 console.log('----- 登录同步服务器数据成功 ------' + JSON.stringify(data));
               }).catch(e => {
                 console.error('----- 登录同步服务器数据失败 ------' + JSON.stringify(e));

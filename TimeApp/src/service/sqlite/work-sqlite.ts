@@ -90,7 +90,7 @@ export class WorkSqlite{
     return new Promise((resolve, reject) => {
       let sql='select gc.*,lbd.* from GTD_C gc ' +
         'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
-        'union select sI,cft,cf,ac,fh from GTD_CC ' +
+        'union select sI,cft,cf,ac,fh from GTD_C_C ' +
         'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
         'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
         'union select sI,cft,cf,ac,fh from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
@@ -170,7 +170,7 @@ export class WorkSqlite{
     return new Promise((resolve, reject) => {
       let sql='select gc.*,gd.son,gd.pI,gd.sa,lbd.*,gf.* from GTD_C gc ' +
         'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
-        'union select sI,cft,cf,ac,fh from GTD_CC ' +
+        'union select sI,cft,cf,ac,fh from GTD_C_C ' +
         'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
         'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
         'union select sI,cft,cf,ac,fh from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
@@ -287,7 +287,7 @@ export class WorkSqlite{
   getds(sI:string):Promise<any>{
     let sql = "select jh.jn,gf.lan,gd.sa,gc.*,lbd.* from GTD_C gc " +
       'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
-      'union select sI,cft,cf,ac,fh from GTD_CC ' +
+      'union select sI,cft,cf,ac,fh from GTD_C_C ' +
       'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
       'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
       'union select sI,cft,cf,ac,fh from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
@@ -361,7 +361,7 @@ export class WorkSqlite{
     if(tk == '1'){
       tn='GTD_C_BO'
     }else if(tk >= '2' && tk <= '3'){
-      tn='GTD_CC'
+      tn='GTD_C_C'
     }else if(tk >= '4' && tk <= '8'){
       tn='GTD_C_RC'
     }else if(tk == '9'){
@@ -393,7 +393,7 @@ export class WorkSqlite{
     if(tk == '1'){
       tn='GTD_C_BO'
     }else if(tk >= '2' && tk <= '3'){
-      tn='GTD_CC'
+      tn='GTD_C_C'
     }else if(tk >= '4' && tk <= '8'){
       tn='GTD_C_RC'
     }else if(tk == '9'){

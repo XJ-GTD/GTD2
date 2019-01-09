@@ -20,16 +20,16 @@ export class RcbtEntity {
    * @type {string}
    * @private
    */
-  private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_CC(sI VARCHAR(100) PRIMARY KEY,' +
+  private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_C_C(sI VARCHAR(100) PRIMARY KEY,' +
                           'id VARCHAR(100),tk VARCHAR(10),cf VARCHAR(2),cft VARCHAR(20),dt VARCHAR(20),' +
     'wd VARCHAR(20),rm VARCHAR(100),ac VARCHAR(2),fh VARCHAR(2));';
-  private _drsq:string="DROP TABLE IF EXISTS GTD_CC;"
+  private _drsq:string="DROP TABLE IF EXISTS GTD_C_C;"
 
   private _isq:string;
   private _usq:string;
   private _dsq:string;
   //查询单个
-  private _qosq:string = 'select * from GTD_CC where sI=' + this._sI;
+  private _qosq:string = 'select * from GTD_C_C where sI=' + this._sI;
 
   get qosq(): string {
     return this._qosq;
@@ -40,7 +40,7 @@ export class RcbtEntity {
   }
 
   get isq(): string {
-    let sql='insert into GTD_CC ' +
+    let sql='insert into GTD_C_C ' +
       '(sI,id,tk,cf,cft,dt,wd,rm,ac,fh) values("'+ this._sI+'","'+ this._id+'","'+this._tk+ '","'+ this._cf
       +'","'+this._cft+ '","'+ this._dt+'","'+ this._wd+'","'+ this._rm+'","'+ this._ac+'","'+ this._fh+'")';
     this._isq=sql;
@@ -52,7 +52,7 @@ export class RcbtEntity {
   }
 
   get usq(): string {
-    let sql='update GTD_CC set';
+    let sql='update GTD_C_C set';
     if(this._id!=null){
       sql=sql+' id="' + this._id +'",';
     }
@@ -90,7 +90,7 @@ export class RcbtEntity {
     this._usq = value;
   }
   get dsq(): string {
-    let sql='DELETE FROM GTD_CC WHERE 1=1 ';
+    let sql='DELETE FROM GTD_C_C WHERE 1=1 ';
     if(this._sI!=null){
       sql=sql+' and sI="' + this._sI +'"';
     }

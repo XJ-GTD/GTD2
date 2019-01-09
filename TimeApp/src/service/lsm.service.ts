@@ -175,7 +175,7 @@ export class LsmService {
             return this.basesqlite.update(rcp);
         }).then(data=>{
           console.log("------lsm login 登录成功请求开始同步服务器数据 -------");
-          return this.sync.loginSync();
+          //return this.sync.loginSync();
         }).then(data=>{
             console.log("------lsm login 登录成功请求同步服务器数据结束 -------");
             resolve(base);
