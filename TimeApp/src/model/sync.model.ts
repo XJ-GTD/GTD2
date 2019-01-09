@@ -7,7 +7,7 @@ export class SyncModel {
 
   private _id: number;   //主键
   private _tableName: string=''; //表名
-  private _action: number; //执行类型0添加,1更新,2删除
+  private _action: string; //执行类型0添加,1更新,2删除
   private _tableA: string='';//名称
   private _tableB: string='';//名称
   private _tableC: string='';//名称
@@ -51,11 +51,11 @@ export class SyncModel {
     this._tableName = value;
   }
 
-  get action(): number {
+  get action(): string {
     return this._action;
   }
 
-  set action(value: number) {
+  set action(value: string) {
     this._action = value;
   }
 
