@@ -1,4 +1,5 @@
 import { EventEmitter, Injectable } from "@angular/core";
+import {AiuiModel} from "../../model/aiui.model";
 
 /**
  * 数据传递广播处理类
@@ -9,7 +10,7 @@ export class DwEmitService {
   //首页数据传递
   private ha: EventEmitter<any> = new EventEmitter();
 //语音界面数据传递
-  private hbOfMq: EventEmitter<any> = new EventEmitter();
+  private hbOfMq: EventEmitter<AiuiModel> = new EventEmitter();
 
   public setHaData($event) {
     this.setEmit(this.ha, $event);

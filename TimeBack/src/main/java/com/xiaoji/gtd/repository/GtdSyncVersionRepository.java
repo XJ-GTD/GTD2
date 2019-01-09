@@ -24,6 +24,6 @@ public interface GtdSyncVersionRepository extends JpaRepository<GtdSyncVersionEn
      * @return
      */
     @Query(value = "SELECT * FROM gtd_sync_version WHERE USER_ID = ?1 AND VERSION > ?2", nativeQuery = true)
-    List<GtdSyncVersionEntity> compareToHighVersion(String version, String userId);
+    List<GtdSyncVersionEntity> compareToHighVersion(String userId, String version);
 
 }
