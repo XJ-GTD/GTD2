@@ -22,20 +22,19 @@
       <ion-item  *ngFor="let message of messages"  on-hold="onMessageHold($event, $index, message)">
 
         <!-- 判断消息是用户 -->
-        <div *ngIf="tu == message.tt" class="userTalk">
-          <h2 [innerHTML]="message.at" class="animated bounceIn"></h2>
+        <div *ngIf="tu == message.tt" class="userTalk animated bounceIn">
+          <h2 [innerHTML]="message.at"></h2>
         </div>
 
         <!-- 判断消息是讯飞 -->
-        <div *ngIf="tx == message.tt" class="XFTalk">
+        <div *ngIf="tx == message.tt" class="XFTalk animated bounceIn">
           <!--  wave-->
-          <h2 [innerHTML]="message.at" ></h2>
+          <h2 [innerHTML]="message.at"></h2>
           <h3></h3>
         </div>
 
-
         <!-- 判断消息是数据：list -->
-        <ion-card *ngIf="tdl == message.tt"  class="scl_list">
+        <ion-card *ngIf="tdl == message.tt"  class="scl_list animated bounceIn">
           <ion-list>
             <ion-item *ngFor="let sj of message.scL" (click)="showScheduleDetail(sj)">
               <h2>{{sj.sd}}</h2>
@@ -45,40 +44,6 @@
             </ion-item>
           </ion-list>
         </ion-card>
-        <!-- talk start-->
-
-        <!-- 判断消息是数据:单条 -->
-       <!-- <div *ngIf="tds == message.tt"  class="scl_list">
-          <ion-card>
-            <ion-card-content>
-              <h2>{{message.s}}</h2>
-              <p *ngIf="message.scheduleDeadline != null && message.scheduleDeadline != '' ;else deadLine">
-                {{message.scheduleStartTime}} - {{message.scheduleDeadline}}
-              </p>
-              <ng-template #deadLine>
-                <p *ngIf="message.scheduleStartTime == null || message.scheduleStartTime == '' ;else startTime">
-                  截止于{{message.scheduleDeadline}}
-                </p>
-                <ng-template #startTime>
-                  <p>{{message.scheduleStartTime}}开始</p>
-                </ng-template>
-              </ng-template>
-            </ion-card-content>
-
-            &lt;!&ndash; <ion-item>
-               <button ion-button clear item-start>发布</button>
-               <button ion-button clear item-end>取消</button>
-             </ion-item>&ndash;&gt;
-          </ion-card>
-        </div>-->
-
-
-        <!-- 判断消息是讯飞 -->
-
-
-
-        <!-- talk end-->
-
       </ion-item>
     </ion-list>
 
