@@ -19,4 +19,11 @@ public interface GtdUserRepository extends JpaRepository<GtdUserEntity,Integer> 
      * @return
      */
     List<GtdUserEntity> findAllByUserId(String userId);
+
+    /**
+     * 根据主键查询详细数据
+     * @param id
+     * @return
+     */
+    GtdUserEntity findByUserId(String id);
 }

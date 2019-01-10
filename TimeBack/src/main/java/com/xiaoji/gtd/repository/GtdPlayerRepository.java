@@ -19,4 +19,11 @@ public interface GtdPlayerRepository extends JpaRepository<GtdPlayerEntity, Inte
      * @return
      */
     List<GtdPlayerEntity> findAllByUserId(String userId);
+
+    /**
+     * 根据主键查询详细数据
+     * @param id
+     * @return
+     */
+    GtdPlayerEntity findById(String id);
 }

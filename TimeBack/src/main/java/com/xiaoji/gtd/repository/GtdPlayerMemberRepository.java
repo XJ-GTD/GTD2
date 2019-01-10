@@ -21,4 +21,11 @@ public interface GtdPlayerMemberRepository extends JpaRepository<GtdPlayerMember
      */
     @Query(value = "SELECT * FROM gtd_player_member TA INNER JOIN gtd_player TB ON TB.PLAYER_ID = TA.PLAYER_ID WHERE TB.USER_ID = ?1", nativeQuery = true)
     List<GtdPlayerMemberEntity> findAllByUserId(String userId);
+
+    /**
+     * 根据主键查询详细数据
+     * @param id
+     * @return
+     */
+    GtdPlayerMemberEntity findById(String id);
 }

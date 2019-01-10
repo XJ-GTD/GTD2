@@ -21,4 +21,11 @@ public interface GtdScheduleARepository extends JpaRepository<GtdScheduleAEntity
      */
     @Query(value = "SELECT * FROM gtd_schedule_a TA INNER JOIN gtd_schedule TB ON TB.SCHEDULE_ID = TA.SCHEDULE_ID WHERE TB.USER_ID = ?1", nativeQuery = true)
     List<GtdScheduleAEntity> findAllByUserId(String userId);
+
+    /**
+     * 根据主键查询详细数据
+     * @param id
+     * @return
+     */
+    GtdScheduleAEntity findById(String id);
 }

@@ -37,6 +37,12 @@ public class SyncServiceImpl implements ISyncService {
     private String SYNC_TYPE_DICTIONARY;
     @Value("${sync.datalist.dictionary.data}")
     private String SYNC_TYPE_DICTIONARY_DATA;
+    @Value("${sync.timing.action.create}")
+    private String SYNC_ACTION_CREATE;
+    @Value("${sync.timing.action.update}")
+    private String SYNC_ACTION_UPDATE;
+    @Value("${sync.timing.action.delete}")
+    private String SYNC_ACTION_DELETE;
 
     @Resource
     private GtdDictionaryRepository dictionaryRepository;
@@ -224,7 +230,7 @@ public class SyncServiceImpl implements ISyncService {
 
         if (downLoadDataList != null) {
             logger.debug("获取数据成功 version：["+ downloadSyncVersion + "] | data: size = " + downLoadDataList.size());
-            outDto.setVersion(version);
+            outDto.setVersion(downloadSyncVersion);
             outDto.setUserDataList(downLoadDataList);
         } else {
             logger.debug("下载数据失败：服务器暂无该账号数据!");
@@ -489,6 +495,233 @@ public class SyncServiceImpl implements ISyncService {
                 List<GtdSyncVersionEntity> latestDataList = gtdSyncVersionRepository.downLoadSyncData(userId, version, downloadSyncVersion);
                 logger.debug("获取本次需要更新数据量为 " + latestDataList.size() + "条");
 
+                List<SyncTableData> playerList = new ArrayList<>();
+                List<SyncTableData> memberList = new ArrayList<>();
+                List<SyncTableData> scheduleList = new ArrayList<>();
+                List<SyncTableData> executeList = new ArrayList<>();
+                List<SyncTableData> scheduleAList = new ArrayList<>();
+                List<SyncTableData> scheduleBList = new ArrayList<>();
+                List<SyncTableData> scheduleCList = new ArrayList<>();
+                List<SyncTableData> scheduleDList = new ArrayList<>();
+                List<SyncTableData> scheduleEList = new ArrayList<>();
+                List<SyncTableData> planList = new ArrayList<>();
+                List<SyncTableData> userList = new ArrayList<>();
+
+                for (GtdSyncVersionEntity gsve : latestDataList) {
+                    switch (gsve.getTableName()) {
+                        case "GTD_B":       //联系人表
+                            logger.debug("======== 联系人表下载数据 ID[" + gsve.getTableId() + "] =======");
+                            data = new SyncTableData();
+                            if (gsve.getSyncAction().equals(SYNC_ACTION_DELETE)) {
+                                data.setTableA(gsve.getTableId());
+                                data.setAction(gsve.getSyncAction());
+                                playerList.add(data);
+                            } else {
+                                GtdPlayerEntity playerEntity = gtdPlayerRepository.findById(gsve.getTableId());
+                                data = SyncGetOrSetMethod.playerEntityToDto(playerEntity);
+                                data.setAction(gsve.getSyncAction());
+                                playerList.add(data);
+                            }
+                            break;
+                        case "GTD_B_X":     //群组表
+                            logger.debug("======== 群组表下载数据 ID[" + gsve.getTableId() + "] =======");
+                            data = new SyncTableData();
+                            if (gsve.getSyncAction().equals(SYNC_ACTION_DELETE)) {
+                                data.setTableA(gsve.getTableId());
+                                data.setAction(gsve.getSyncAction());
+                                memberList.add(data);
+                            } else {
+                                GtdPlayerMemberEntity memberEntity = gtdPlayerMemberRepository.findById(gsve.getTableId());
+                                data = SyncGetOrSetMethod.memberEntityToDto(memberEntity);
+                                data.setAction(gsve.getSyncAction());
+                                memberList.add(data);
+                            }
+                            break;
+                        case "GTD_C":       //日程表
+                            logger.debug("======== 日程表下载数据 ID[" + gsve.getTableId() + "] =======");
+                            data = new SyncTableData();
+                            if (gsve.getSyncAction().equals(SYNC_ACTION_DELETE)) {
+                                data.setTableA(gsve.getTableId());
+                                data.setAction(gsve.getSyncAction());
+                                scheduleList.add(data);
+                            } else {
+                                GtdScheduleEntity scheduleEntity = gtdScheduleRepository.findByScheduleId(gsve.getTableId());
+                                data = SyncGetOrSetMethod.scheduleEntityToDto(scheduleEntity);
+                                data.setAction(gsve.getSyncAction());
+                                scheduleList.add(data);
+                            }
+                            break;
+                        case "GTD_D":       //日程参与人表
+                            logger.debug("======== 日程参与人表下载数据 ID[" + gsve.getTableId() + "] =======");
+                            data = new SyncTableData();
+                            if (gsve.getSyncAction().equals(SYNC_ACTION_DELETE)) {
+                                data.setTableA(gsve.getTableId());
+                                data.setAction(gsve.getSyncAction());
+                                executeList.add(data);
+                            } else {
+                                GtdExecuteEntity executeEntity = gtdExecuteRepository.findByExecuteId(gsve.getTableId());
+                                data = SyncGetOrSetMethod.executeEntityToDto(executeEntity);
+                                data.setAction(gsve.getSyncAction());
+                                executeList.add(data);
+                            }
+                            break;
+                        case "GTD_J_H":       //计划表
+                            logger.debug("======== 计划表下载数据 ID[" + gsve.getTableId() + "] =======");
+                            data = new SyncTableData();
+                            if (gsve.getSyncAction().equals(SYNC_ACTION_DELETE)) {
+                                data.setTableA(gsve.getTableId());
+                                data.setAction(gsve.getSyncAction());
+                                planList.add(data);
+                            } else {
+                                GtdPlanEntity planEntity = gtdPlanRepository.findByPlanId(gsve.getTableId());
+                                data = SyncGetOrSetMethod.planEntityToDto(planEntity);
+                                data.setAction(gsve.getSyncAction());
+                                planList.add(data);
+                            }
+                            break;
+                        case "GTD_C_RC":        //日程子表（日程）
+                            logger.debug("======== 日程子表（日程）下载数据 ID[" + gsve.getTableId() + "] =======");
+                            data = new SyncTableData();
+                            if (gsve.getSyncAction().equals(SYNC_ACTION_DELETE)) {
+                                data.setTableA(gsve.getTableId());
+                                data.setAction(gsve.getSyncAction());
+                                scheduleAList.add(data);
+                            } else {
+                                GtdScheduleAEntity scheduleAEntity = gtdScheduleARepository.findById(gsve.getTableId());
+                                data = SyncGetOrSetMethod.scheduleAEntityToDto(scheduleAEntity);
+                                data.setAction(gsve.getSyncAction());
+                                scheduleAList.add(data);
+                            }
+                            break;
+                        case "GTD_C_C":        //日程子表（日常生活）
+                            logger.debug("======== 日程子表（日常生活）下载数据 ID[" + gsve.getTableId() + "] =======");
+                            data = new SyncTableData();
+                            if (gsve.getSyncAction().equals(SYNC_ACTION_DELETE)) {
+                                data.setTableA(gsve.getTableId());
+                                data.setAction(gsve.getSyncAction());
+                                scheduleBList.add(data);
+                            } else {
+                                GtdScheduleBEntity scheduleBEntity = gtdScheduleBRepository.findById(gsve.getTableId());
+                                data = SyncGetOrSetMethod.scheduleBEntityToDto(scheduleBEntity);
+                                data.setAction(gsve.getSyncAction());
+                                scheduleBList.add(data);
+                            }
+                            break;
+                        case "GTD_C_BO":        //日程子表（任务）
+                            logger.debug("======== 日程子表（任务）下载数据 ID[" + gsve.getTableId() + "] =======");
+                            data = new SyncTableData();
+                            if (gsve.getSyncAction().equals(SYNC_ACTION_DELETE)) {
+                                data.setTableA(gsve.getTableId());
+                                data.setAction(gsve.getSyncAction());
+                                scheduleCList.add(data);
+                            } else {
+                                GtdScheduleCEntity scheduleCEntity = gtdScheduleCRepository.findById(gsve.getTableId());
+                                data = SyncGetOrSetMethod.scheduleCEntityToDto(scheduleCEntity);
+                                data.setAction(gsve.getSyncAction());
+                                scheduleCList.add(data);
+                            }
+                            break;
+                        case "GTD_C_JN":         //日程子表（纪念日）
+                            logger.debug("======== 日程子表（纪念日）下载数据 ID[" + gsve.getTableId() + "] =======");
+                            data = new SyncTableData();
+                            if (gsve.getSyncAction().equals(SYNC_ACTION_DELETE)) {
+                                data.setTableA(gsve.getTableId());
+                                data.setAction(gsve.getSyncAction());
+                                scheduleDList.add(data);
+                            } else {
+                                GtdScheduleDEntity scheduleDEntity = gtdScheduleDRepository.findById(gsve.getTableId());
+                                data = SyncGetOrSetMethod.scheduleDEntityToDto(scheduleDEntity);
+                                data.setAction(gsve.getSyncAction());
+                                scheduleDList.add(data);
+                            }
+                            break;
+                        case "GTD_C_MO":        //日程子表（备忘录）
+                            logger.debug("======== 日程子表（备忘录）下载数据 ID[" + gsve.getTableId() + "] =======");
+                            data = new SyncTableData();
+                            if (gsve.getSyncAction().equals(SYNC_ACTION_DELETE)) {
+                                data.setTableA(gsve.getTableId());
+                                data.setAction(gsve.getSyncAction());
+                                scheduleEList.add(data);
+                            } else {
+                                GtdScheduleEEntity scheduleEEntity = gtdScheduleERepository.findById(gsve.getTableId());
+                                data = SyncGetOrSetMethod.scheduleEEntityToDto(scheduleEEntity);
+                                data.setAction(gsve.getSyncAction());
+                                scheduleEList.add(data);
+                            }
+                            break;
+                        case "GTD_A":         //用户表
+                            logger.debug("======== 用户表 下载数据 ID[" + gsve.getTableId() + "] =======");
+                            data = new SyncTableData();
+                            if (gsve.getSyncAction().equals(SYNC_ACTION_DELETE)) {
+                                data.setTableA(gsve.getTableId());
+                                data.setAction(gsve.getSyncAction());
+                                userList.add(data);
+                            } else {
+                                GtdUserEntity userEntity = gtdUserRepository.findByUserId(gsve.getTableId());
+                                data = SyncGetOrSetMethod.userEntityToDto(userEntity);
+                                data.setAction(gsve.getSyncAction());
+                                userList.add(data);
+                            }
+                            break;
+                    }
+                }
+                logger.debug("======== [查询下载完成 开始整合] =======");
+                logger.debug("-------- 添加联系人表数据 数据量:" + playerList.size() + " -------");
+                syncData = new SyncDataDto();
+                syncData.setTableName(SyncTableNameEnum.PLAYER.tableName);
+                syncData.setDataList(playerList);
+                syncDataList.add(syncData);
+
+                logger.debug("-------- 添加联系人群组表数据 数据量:" + memberList.size() + " -------");
+                syncData = new SyncDataDto();
+                syncData.setTableName(SyncTableNameEnum.PLAYER_MEMBER.tableName);
+                syncData.setDataList(memberList);
+                syncDataList.add(syncData);
+
+                logger.debug("-------- 添加日程表数据 数据量:" + scheduleList.size() + " -------");
+                syncData.setTableName(SyncTableNameEnum.SCHEDULE.tableName);
+                syncData.setDataList(scheduleList);
+                syncDataList.add(syncData);
+
+                logger.debug("-------- 添加日程参与人表数据 数据量:" + executeList.size() + " -------");
+                syncData.setTableName(SyncTableNameEnum.EXECUTE.tableName);
+                syncData.setDataList(executeList);
+                syncDataList.add(syncData);
+
+                logger.debug("-------- 添加日程子表（日程）数据 数据量:" + scheduleAList.size() + " -------");
+                syncData.setTableName(SyncTableNameEnum.SCHEDULE_A.tableName);
+                syncData.setDataList(scheduleAList);
+                syncDataList.add(syncData);
+
+                logger.debug("-------- 添加日程子表（日常生活）数据 数据量:" + scheduleBList.size() + " -------");
+                syncData.setTableName(SyncTableNameEnum.SCHEDULE_B.tableName);
+                syncData.setDataList(scheduleBList);
+                syncDataList.add(syncData);
+
+                logger.debug("-------- 添加日程子表（任务）数据 数据量:" + scheduleCList.size() + " -------");
+                syncData.setTableName(SyncTableNameEnum.SCHEDULE_C.tableName);
+                syncData.setDataList(scheduleCList);
+                syncDataList.add(syncData);
+
+                logger.debug("-------- 添加日程子表（纪念日）数据 数据量:" + scheduleDList.size() + " -------");
+                syncData.setTableName(SyncTableNameEnum.SCHEDULE_D.tableName);
+                syncData.setDataList(scheduleDList);
+                syncDataList.add(syncData);
+
+                logger.debug("-------- 添加日程子表（备忘录）数据 数据量:" + scheduleEList.size() + " -------");
+                syncData.setTableName(SyncTableNameEnum.SCHEDULE_E.tableName);
+                syncData.setDataList(scheduleEList);
+                syncDataList.add(syncData);
+
+                logger.debug("-------- 添加计划表数据 数据量:" + planList.size() + " -------");
+                syncData.setTableName(SyncTableNameEnum.PLAN.tableName);
+                syncData.setDataList(planList);
+                syncDataList.add(syncData);
+
+                logger.debug("-------- 添加用户表数据 -------");
+                syncData.setTableName(SyncTableNameEnum.USER.tableName);
+                syncData.setDataList(userList);
+                syncDataList.add(syncData);
 
             } else  {
                 logger.debug("======== [开始下载 " + userId + " 全部数据] =======");

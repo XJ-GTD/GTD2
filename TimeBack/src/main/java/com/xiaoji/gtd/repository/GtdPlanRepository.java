@@ -19,4 +19,11 @@ public interface GtdPlanRepository extends JpaRepository<GtdPlanEntity, Integer>
      * @return
      */
     List<GtdPlanEntity> findAllByUserId(String userId);
+
+    /**
+     * 根据主键查询详细数据
+     * @param id
+     * @return
+     */
+    GtdPlanEntity findByPlanId(String id);
 }

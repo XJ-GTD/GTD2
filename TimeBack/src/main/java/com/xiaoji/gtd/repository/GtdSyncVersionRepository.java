@@ -34,18 +34,25 @@ public interface GtdSyncVersionRepository extends JpaRepository<GtdSyncVersionEn
      * @return
      */
     /*
-    * SELECT TB.* FROM  (SELECT MAX(VERSION) VERSION, TABLE_ID, TABLE_NAME FROM gtd_sync_version Ta
-                WHERE Ta.USER_ID = "FE507A6BD8F1AED12FD3174343AE3AFE"
-                  AND Ta.VERSION > "20190108155550"
-                  AND Ta.VERSION < "20190112155550"
-                GROUP BY Ta.TABLE_ID, Ta.TABLE_NAME) MA
-INNER JOIN gtd_sync_version TB
-   ON MA.TABLE_ID = TB.TABLE_ID AND TB.VERSION = MA.VERSION;
+    *
+    *
+SELECT TC.* FROM
+  gtd_sync_version TC
+    INNER JOIN (
+    SELECT MAX(TA.VERSION) VERSION, TA.TABLE_NAME, TA.TABLE_ID
+    FROM gtd_sync_version TA
+    WHERE TA.USER_ID = "FE507A6BD8F1AED12FD3174343AE3AFE"
+      AND TA.VERSION > "20190108155550"
+      AND TA.VERSION < "20190110144437"
+    GROUP BY TA.TABLE_NAME, TA.TABLE_ID
+  ) TB
+    ON TC.TABLE_ID = TB.TABLE_ID AND TC.VERSION = TB.VERSION AND TB.TABLE_NAME = TC.TABLE_NAME;
    */
-    @Query(value = "SELECT TC.* FROM (" +
-            "SELECT MAX(TA.VERSION) VERSION, TA.TABLE_NAME, TA.TABLE_ID FROM gtd_sync_version TA " +
-            "WHERE TA.USER_ID = ?1 AND TA.VERSION > ?2 AND TA.VERSION < ?3 " +
-            "GROUP BY TA.TABLE_NAME, TA.TABLE_ID) TB " +
-            "INNER JOIN gtd_sync_version TC ON TC.TABLE_ID = TB.TABLE_ID AND TC.TABLE_NAME = TB.TABLE_NAME", nativeQuery = true)
+    @Query(value = "SELECT TC.* FROM gtd_sync_version TC " +
+            " INNER JOIN (" +
+            " SELECT MAX(TA.VERSION) VERSION, TA.TABLE_NAME, TA.TABLE_ID FROM gtd_sync_version TA " +
+            " WHERE TA.USER_ID = ?1 AND TA.VERSION > ?2 AND TA.VERSION < ?3 " +
+            " GROUP BY TA.TABLE_NAME, TA.TABLE_ID) TB " +
+            " ON TC.TABLE_ID = TB.TABLE_ID AND TC.TABLE_NAME = TB.TABLE_NAME AND TC.VERSION = TB.VERSION", nativeQuery = true)
     List<GtdSyncVersionEntity> downLoadSyncData(String userId, String localVersion, String latestVersion);
 }

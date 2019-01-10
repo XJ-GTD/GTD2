@@ -19,4 +19,11 @@ public interface GtdScheduleRepository extends JpaRepository<GtdScheduleEntity, 
      * @return
      */
     List<GtdScheduleEntity> findAllByUserId(String userId);
+
+    /**
+     * 根据主键查询详细数据
+     * @param id
+     * @return
+     */
+    GtdScheduleEntity findByScheduleId(String id);
 }

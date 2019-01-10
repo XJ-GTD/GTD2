@@ -19,4 +19,11 @@ public interface GtdExecuteRepository extends JpaRepository<GtdExecuteEntity, In
      * @return
      */
     List<GtdExecuteEntity> findAllByUserId(String userId);
+
+    /**
+     * 根据主键查询详细数据
+     * @param id
+     * @return
+     */
+    GtdExecuteEntity findByExecuteId(String id);
 }
