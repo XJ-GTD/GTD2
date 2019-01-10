@@ -31,6 +31,7 @@ public enum ResultCode {
     NOT_USER(11500),                       //用户尚未注册
     NOT_PLAYER(11501),                      //没有添加好友
     NOT_AUTH_PLAYER(11502),                  //已被好友拉黑
+    NOT_SYNC(11503),                        //没有同步数据
 
 
     ERROR_UUID(20001),                     //用户ID错误

@@ -108,7 +108,7 @@ public class SyncController {
                 logger.debug("[同步成功]");
             } else {
                 outDto.setCode(ResultCode.FAIL_SYNC);
-                logger.debug("[同步失败]：请稍后再试");
+                logger.debug("[同步失败]：没有该用户数据");
             }
 
         } catch (Exception e) {
@@ -164,8 +164,8 @@ public class SyncController {
                 outDto.setCode(ResultCode.SUCCESS);
                 logger.debug("[定时同步成功]");
             } else {
-                outDto.setCode(ResultCode.FAIL_SYNC);
-                logger.debug("[定时同步失败]：请稍后再试");
+                outDto.setCode(ResultCode.NOT_SYNC);
+                logger.debug("[定时同步成功]：暂无可更新数据");
             }
 
         } catch (Exception e) {
