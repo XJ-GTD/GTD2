@@ -126,7 +126,7 @@ export class MsEntity {
 
   get md(): string {
     if(this._md != null && this._md != ''){
-      this._md.replace('-','/');
+      this._md.replace(new RegExp('-','g'),'/');;
     }
     return this._md;
   }

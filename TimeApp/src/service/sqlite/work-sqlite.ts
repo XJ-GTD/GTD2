@@ -87,7 +87,7 @@ export class WorkSqlite{
    * @param ym 格式‘2018-01’
    */
   getMBs(ym:string,ui:string):Promise<BsModel>{
-    ym = ym.replace('-','/')
+    ym = ym.replace(new RegExp('-','g'),'/')
     return new Promise((resolve, reject) => {
       let sql='select gc.*,lbd.* from GTD_C gc ' +
         'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
@@ -252,8 +252,8 @@ export class WorkSqlite{
    */
   isymwd(cft:string,day:string,sd:string,ed:string):boolean{
     let isTrue = false;
-    sd = sd.substr(0,10).replace('-','/');
-    ed= ed.substr(0,10).replace('-','/');
+    sd = sd.substr(0,10).replace(new RegExp('-','g'),'/');
+    ed= ed.substr(0,10).replace(new RegExp('-','g'),'/');
     if(cft && cft != null && cft !='undefined'){
       if(cft=='1'){//年
         if(sd.substr(4,10)== day.substr(4,10)){
@@ -264,8 +264,8 @@ export class WorkSqlite{
           isTrue = true;
         }
       }else if(cft=='3'){ //周
-        let sdz = new Date(sd.replace('-','/')).getDay();
-        let dayz = new Date(day.replace('-','/')).getDay();
+        let sdz = new Date(sd.replace(new RegExp('-','g'),'/')).getDay();
+        let dayz = new Date(day.replace(new RegExp('-','g'),'/')).getDay();
         if(sd<=day && sdz == dayz){
           isTrue = true;
         }
