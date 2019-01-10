@@ -488,6 +488,8 @@ public class SyncServiceImpl implements ISyncService {
 
                 List<GtdSyncVersionEntity> latestDataList = gtdSyncVersionRepository.downLoadSyncData(userId, version, downloadSyncVersion);
                 logger.debug("获取本次需要更新数据量为 " + latestDataList.size() + "条");
+
+
             } else  {
                 logger.debug("======== [开始下载 " + userId + " 全部数据] =======");
 
