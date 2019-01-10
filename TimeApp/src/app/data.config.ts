@@ -57,8 +57,8 @@ export class DataConfig {
   public static S7: string = "S7";//联系人列表数据
 
   /* ============ mq返回类型 ===============*/
-  public static MQTQ : string = '0';
-  public static MQTL : string = '1';
+  public static MQTQ : string = '0'; // 处理逻辑前
+  public static MQTL : string = '1'; // 处理逻辑后
 
 
 }
