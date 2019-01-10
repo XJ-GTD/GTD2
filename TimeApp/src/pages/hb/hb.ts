@@ -142,38 +142,14 @@ export class HbPage {
   }
 
   //回传数据处理
-  messageHanding($event) {
+  messageHanding($event: AiuiModel) {
 
     console.log("这是语音HbPage页面数据处理：messageHanding方法");
-    let at;
-    if ($event == 1) {
-      at = "我不太明白您的意思";
-    } else {
-      if ($event.at != undefined) {
-        at = $event.at;
-        //讯飞查询日程 dch测试
-        if($event.sk && $event.sk==SkillConfig.XF_SCF){
-          if($event.qData && $event.qData.code==0){
-            let data:Array<RcModel>=$event.qData.rcL;
-            for(let i=0;i<data.length;i++){
-              at += "<p>" + data[i].sd +" : " + data[i].sN+"</p>";
-            }
-          }
-        }
-      }
-      if ($event.au != undefined) {
-        at += "\n" + $event.au;
-      }
-      if ($event.ai != undefined) {
-        at += "\n" + $event.ai;
-      }
-    }
-
 
     this.aiuiData.tt = DataConfig.S1;
-    this.aiuiData.at = at;
+    this.aiuiData.at = $event.at;
     this.messages.unshift(this.aiuiData);
-    this.xiaojiSpeech.speakText(at, success=>{});
+    this.xiaojiSpeech.speakText(this.aiuiData.at, success=>{});
     // if($event != null) {
     //   let messageData = new AiuiModel();
     //   messageData.at = $event.res.data.st;
