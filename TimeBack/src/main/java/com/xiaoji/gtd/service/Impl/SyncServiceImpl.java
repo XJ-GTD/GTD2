@@ -267,6 +267,8 @@ public class SyncServiceImpl implements ISyncService {
                         syncVersionEntity.setTableId(std.getTableA());
                         syncVersionEntity.setTableName(tableName);
                         syncVersionEntity.setDeviceId(deviceId);
+                        syncVersionEntity.setUserId(userId);
+                        syncVersionEntity.setSyncAction(std.getAction());
                         syncVersionEntity.setCreateId(userId);
                         syncVersionEntity.setCreateDate(BaseUtil.getSqlDate());
                         syncVersionEntity.setVersion(uploadVersion);
@@ -534,6 +536,7 @@ public class SyncServiceImpl implements ISyncService {
      */
     private List<SyncTableData> takeOutData(List<GtdSyncVersionEntity> latestDataList, String tableName, List<SyncTableData> dataList) {
         List<SyncTableData> newDataList = new ArrayList<>();
+        newDataList.addAll(dataList);
 
         List<GtdSyncVersionEntity> dataCompare = new ArrayList<>();
         for (GtdSyncVersionEntity gsve : latestDataList) {
@@ -544,7 +547,7 @@ public class SyncServiceImpl implements ISyncService {
         for (SyncTableData std: dataList) {
             for (GtdSyncVersionEntity gsve : dataCompare) {
                 if (gsve.getTableId().equals(std.getTableA()) && !isDelete(gsve.getSyncAction())) {
-                    dataList.remove(std);       //匹配到对应id且不为删除数据就跳过不更新取最高版本
+                    newDataList.remove(std);      //匹配到对应id且不为删除数据就跳过不更新取最高版本
                     logger.debug(tableName + "表 数据[ID: " + gsve.getTableId() + "] 以高版本未删除操作为优先不做更新");
                     break;
                 }

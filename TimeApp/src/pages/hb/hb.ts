@@ -9,6 +9,7 @@ import { Hb01Page } from "../hb01/hb01";
 import { DwEmitService } from "../../service/util-service/dw-emit.service";
 import {SkillConfig} from "../../app/skill.config";
 import {RcModel} from "../../model/rc.model";
+import {DataConfig} from "../../app/data.config";
 
 declare var cordova: any;
 /**
@@ -32,11 +33,6 @@ export class HbPage {
   data: any;
   modeFlag: boolean = true;   //判断助手模式 true语音false手输
   initFlag:boolean = false;   //页面初始化
-
-  tdl: number = 4;    //数据多条
-  tds: number = 3;     //数据单条
-  tx: number = 2;       //讯飞
-  tu: number = 1;     //用户
 
   userText: string; //用户输入显示文本
   speech: string;   //语音助手显示文本
@@ -138,7 +134,7 @@ export class HbPage {
 
   //语音输入页面处理
   speechInputHanding(text) {
-    this.inputData.tt = this.tu;
+    this.inputData.tt = DataConfig.U1;
     this.inputData.at = text;
     this.messages.unshift(this.inputData);
     this.inputData = new AiuiModel();
@@ -174,7 +170,7 @@ export class HbPage {
     }
 
 
-    this.aiuiData.tt = this.tx;
+    this.aiuiData.tt = DataConfig.S1;
     this.aiuiData.at = at;
     this.messages.unshift(this.aiuiData);
     this.xiaojiSpeech.speakText(at, success=>{});
