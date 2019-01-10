@@ -34,6 +34,10 @@ export class HbPage {
   modeFlag: boolean = true;   //判断助手模式 true语音false手输
   initFlag:boolean = false;   //页面初始化
 
+  U1: string = DataConfig.U1;
+  S1: string = DataConfig.S1;
+  S5: string = DataConfig.S5;
+
   userText: string; //用户输入显示文本
   speech: string;   //语音助手显示文本
   inputText: string = "";    //手动模式输入数据
@@ -134,7 +138,7 @@ export class HbPage {
 
   //语音输入页面处理
   speechInputHanding(text) {
-    this.inputData.tt = DataConfig.U1;
+    this.inputData.tt = this.U1;
     this.inputData.at = text;
     this.messages.unshift(this.inputData);
     this.inputData = new AiuiModel();
@@ -146,7 +150,7 @@ export class HbPage {
 
     console.log("这是语音HbPage页面数据处理：messageHanding方法");
 
-    this.aiuiData.tt = DataConfig.S1;
+    this.aiuiData.tt = this.S1;
     this.aiuiData.at = $event.at;
     this.messages.unshift(this.aiuiData);
     this.xiaojiSpeech.speakText(this.aiuiData.at, success=>{});

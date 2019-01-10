@@ -22,19 +22,19 @@
       <ion-item  *ngFor="let message of messages"  on-hold="onMessageHold($event, $index, message)">
 
         <!-- 判断消息是用户 -->
-        <div *ngIf="DataConfig.U1 == message.tt" class="userTalk animated bounceIn">
+        <div *ngIf="U1 == message.tt" class="userTalk animated bounceIn">
           <h2 [innerHTML]="message.ut"></h2>
         </div>
 
         <!-- 判断消息是讯飞 -->
-        <div *ngIf="DataConfig.S1 == message.tt" class="XFTalk animated bounceIn">
+        <div *ngIf="S1 == message.tt" class="XFTalk animated bounceIn">
           <!--  wave-->
           <h2 [innerHTML]="message.at"></h2>
           <h3></h3>
         </div>
 
         <!-- 判断消息是数据：list -->
-        <ion-card *ngIf="DataConfig.S5 == message.tt"  class="scl_list animated bounceIn">
+        <ion-card *ngIf="S5 == message.tt"  class="scl_list animated bounceIn">
           <ion-list>
             <ion-item *ngFor="let sj of message.scL" (click)="showScheduleDetail(sj)">
               <h2>{{sj.sd}}</h2>

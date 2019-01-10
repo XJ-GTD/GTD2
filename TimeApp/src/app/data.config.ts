@@ -47,12 +47,12 @@ export class DataConfig {
   public static GTD_J_H:string='GTD_J_H';//计划表
 
   /* =============== 语音页面type =============*/
-  public static U1: string = "";
-  public static S1: string = "";
-  public static S2: string = "";
-  public static S3: string = "";
-  public static S4: string = "";
-  public static S5: string = "";
-  public static S6: string = "";
-  public static S7: string = "";
+  public static U1: string = "U1";
+  public static S1: string = "S1";
+  public static S2: string = "S2";
+  public static S3: string = "S3";
+  public static S4: string = "S4";
+  public static S5: string = "S5";
+  public static S6: string = "S6";
+  public static S7: string = "S7";
 }
