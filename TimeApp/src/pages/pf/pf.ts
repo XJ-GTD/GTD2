@@ -58,25 +58,48 @@ export class PfPage {
   checkPhone(){
     var  re = /^1\d{10}$/;   //正则表达式
     var  ren=re.test(this.tel);
+
     //判断手机号是否为空
     this.checkMobileNull=false;
     this.checkMobile=false;
-    if(this.tel==null || this.tel==""){
+
+    let checkCode = this.utilService.checkPhone(this.tel);
+    if(checkCode == 0){
       this.checkMobileNull=true;
-    }else {
-      //判断手机号是否为11
-      if (!re.test(this.tel)) {      //判断字符是否是11位数字
-        this.checkMobile=true;
-        this.errorCode = 1;
-        let alert = this.alertCtrl.create({
-          subTitle: "手机号错误",
-        });
-        setTimeout(()=>{
-          alert.dismiss();
-        },1000);
-        alert.present();
-      }
     }
+
+    if(checkCode == 3){
+      //手机号正确
+    }
+    if(checkCode == 2){
+      //手机号错误
+      this.checkMobile=true;
+      this.errorCode = 1;
+      let alert = this.alertCtrl.create({
+        subTitle: "手机号错误",
+      });
+      setTimeout(()=>{
+        alert.dismiss();
+      },1000);
+      alert.present();
+    }
+
+    // if(this.tel==null || this.tel==""){
+    //   this.checkMobileNull=true;
+    // }else {
+    //   //判断手机号是否为11
+    //   if (!re.test(this.tel)) {      //判断字符是否是11位数字
+    //     this.checkMobile=true;
+    //     this.errorCode = 1;
+    //     let alert = this.alertCtrl.create({
+    //       subTitle: "手机号错误",
+    //     });
+    //     setTimeout(()=>{
+    //       alert.dismiss();
+    //     },1000);
+    //     alert.present();
+    //   }
+    // }
     if(this.checkMobile == false && this.checkMobileNull == false){
       this.ru = undefined;
       this.relmemService.su(this.tel).then(data=>{

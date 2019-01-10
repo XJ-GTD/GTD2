@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import { IonicPage, NavController, NavParams, Navbar } from 'ionic-angular';
 import {RuModel} from "../../model/ru.model";
 import {UEntity} from "../../entity/u.entity";
 import {RelmemService} from "../../service/relmem.service";
@@ -19,6 +19,8 @@ import {PageConfig} from "../../app/page.config";
 })
 export class PbPage {
 
+  @ViewChild(Navbar) navBar: Navbar;
+
   name:any;
   state:any;//true 编辑 false 不可编辑
   isPush:any;//接受用户推送 接受 true
@@ -33,6 +35,8 @@ export class PbPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PbPage');
+    this.navBar.backButtonClick = this.backButtonClick;
+    this.navBar.setBackButtonText("");
     this.state = false;
     this.u = this.navParams.data.u;
     this.name = this.u.rN;
@@ -45,6 +49,12 @@ export class PbPage {
     this.isPop = false;
     console.log(this.name + this.state)
   }
+
+  backButtonClick = (e: UIEvent) => {
+    // 重写返回方法
+    this.navCtrl.pop();
+  };
+
 
   edit(){
     this.state = true;

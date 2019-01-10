@@ -44,5 +44,8 @@ page-sz {
     border-bottom: 1px solid #cccccc;
   }
 
-
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
+  }
 }

@@ -7,7 +7,7 @@ page-sx {
   }
 
   .item-inner{
-    border-bottom: 0px !important;
+    border-bottom: 0 !important;
   }
 
   .item-block.item-ios{
@@ -21,4 +21,9 @@ page-sx {
   //  border-bottom: 0px !important;
   //  box-shadow: none !important;
   //}
+
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
+  }
 }

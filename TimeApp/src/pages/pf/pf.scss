@@ -15,4 +15,9 @@ page-pf {
     border-bottom-color: transparent !important;
     box-shadow: none !important;
   }
+
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
+  }
 }

@@ -23,5 +23,10 @@ page-pd {
     height: 40px !important;
   }
 
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+
 
 }

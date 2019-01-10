@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import { IonicPage, NavController, NavParams, Navbar} from 'ionic-angular';
 
 /**
  * Generated class for the SwPage page.
@@ -15,15 +15,20 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class SwPage {
 
+  @ViewChild(Navbar) navBar: Navbar;
+
   indexs:any = [];
   focusItem:any;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private navCtrl: NavController,
+              private navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SwPage');
+    this.navBar.backButtonClick = this.backButtonClick;
+    this.navBar.setBackButtonText("");
     this.indexs = ['01','02','03','04','05','06','07','08','09','10'];
 
     setTimeout(function () {
@@ -61,6 +66,11 @@ export class SwPage {
     return null;
   };
 
+
+  backButtonClick = (e: UIEvent) => {
+    // 重写返回方法
+    this.navCtrl.pop();
+  }
 
 
 }

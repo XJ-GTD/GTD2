@@ -195,8 +195,26 @@ page-sb {
   select::-ms-expand { display: none; }
 
 
-}
-.itemClass{
-  z-index: 20 !important;
+  .backdrop-div{
+    height: inherit;
+    position: absolute;
+    width: inherit;
+  }
 
+
+  .itemClass{
+    z-index: 20 !important;
+    height: inherit;
+    z-index: 10 !important;
+    position: absolute;
+    width: 100%;
+    background: black;
+    opacity: 0.3;
+
+  }
+
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
+  }
 }

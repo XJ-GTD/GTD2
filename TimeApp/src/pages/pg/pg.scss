@@ -27,5 +27,10 @@ page-pg {
     width: 40px !important;
   }
 
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+
 
 }

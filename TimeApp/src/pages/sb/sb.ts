@@ -100,8 +100,8 @@ export class SbPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SbPage');
-    this.navBar.backButtonClick = this.backButtonClick;
-    this.navBar.setBackButtonText("");
+    // this.navBar.backButtonClick = this.backButtonClick;
+    // this.navBar.setBackButtonText("");
     this.init();
   }
 
@@ -127,21 +127,13 @@ export class SbPage {
 
   }
 
-  /**
-   * 选择参与人
-   */
-  addContact() {
-    this.groupFind = new FindOutModel();
-    this.groupFind.userId= this.paramsService.user.userId;
-    this.groupFind.findType = 3;        //暂为硬代码，默认群组
-  }
+
+
 
   //发布任务入库
   newProject() {
 
 
-    // this.scheduleOut = new ScheduleOutModel();
-    // this.schedule.userId = this.paramsService.user.userId;
     console.log("时间格式规整前 :: " + this.startTime);
     /*时间格式规整*/
     if (this.startTime != null && this.startTime != "") {
@@ -179,14 +171,14 @@ export class SbPage {
     // 重写返回方法
     this.paramsService.schedule=null;
     this.navCtrl.pop();
-  }
+  };
 
-  // goBack() {
-  //   // 重写返回方法
-  //   this.paramsService.schedule=null;
-  //   this.navCtrl.pop();
-  //   // this.navCtrl.push('GroupListPage');
-  // }
+  goBack() {
+    // 重写返回方法
+    this.paramsService.schedule=null;
+    this.navCtrl.pop();
+    // this.navCtrl.push('GroupListPage');
+  }
 
   presentActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
@@ -215,6 +207,9 @@ export class SbPage {
     actionSheet.present();
   }
 
+  /**
+   * 选择参与人
+   */
   showCheckbox() {
     let alert = this.alertCtrl.create();
     alert.setTitle('选择参与人');
@@ -273,13 +268,12 @@ export class SbPage {
 
   //
   backdropclick(e){
+    console.log(e.srcElement)
     //判断点击的是否为遮罩层，是的话隐藏遮罩层
     if(e.srcElement.className == 'itemClass'){
       this.isShowJh = false;
       this.isShowLb = false;
       // this.showChange();
-
-
       this.type = this.lb.lai;
       this.showSelect();
     }

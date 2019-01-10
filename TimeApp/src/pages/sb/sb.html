@@ -7,7 +7,12 @@
 
 <ion-header>
 
-  <ion-navbar>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="goBack()">
+        <ion-icon name="arrow-back" ></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>创建日程</ion-title>
     <ion-buttons right>
       <button (click)="newProject()"  ion-button>
@@ -15,7 +20,7 @@
       </button>
     </ion-buttons>
 
-  </ion-navbar>
+  </ion-toolbar>
 
 </ion-header>
 
@@ -102,7 +107,7 @@
 
 </ion-content>
 <div [hidden]="!isShowJh" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();">
-  <ion-backdrop disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></ion-backdrop>
+  <div disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></div>
   <div class="pop-css">
     <div class="titlecss" text-center>选择计划</div>
     <div class="flexCss">
@@ -116,7 +121,7 @@
 
 
 <div [hidden]="!isShowLb" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();">
-  <ion-backdrop disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></ion-backdrop>
+  <div disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></div>
   <div class="pop-css">
     <div class="titlecss" text-center>选择标签</div>
     <div class="flexCss">

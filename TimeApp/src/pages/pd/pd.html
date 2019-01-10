@@ -12,6 +12,11 @@
     <!--</button>-->
     <!--</ion-buttons>-->
     <ion-title *ngIf="g != undefined">{{g.rN}}</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="addQcy()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>

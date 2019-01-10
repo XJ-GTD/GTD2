@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, NavController, NavParams, Navbar, ViewController} from 'ionic-angular';
 import {PageConfig} from "../../app/page.config";
 import {JhService} from "../../service/jh.service";
 import {JhModel} from "../../model/jh.model";
@@ -18,15 +18,19 @@ import {JhModel} from "../../model/jh.model";
 })
 export class SxPage {
 
+  @ViewChild(Navbar) navBar: Navbar;
+
   jhs:Array<JhModel>;
 
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
-              private jhService: JhService) {
+              private jhService: JhService,) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SxPage');
+    this.navBar.backButtonClick = this.backButtonClick;
+    this.navBar.setBackButtonText("");
   }
 
   toSy(jh:JhModel){
@@ -45,6 +49,10 @@ export class SxPage {
 
   }
 
+  backButtonClick = (e: UIEvent) => {
+    // 重写返回方法
+    this.navCtrl.pop();
+  }
 
 
   getAllJh(){

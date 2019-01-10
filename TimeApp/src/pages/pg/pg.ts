@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {UEntity} from "../../entity/u.entity";
 import {RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
@@ -28,7 +28,8 @@ export class PgPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private relmemService: RelmemService) {
+              private relmemService: RelmemService,
+              private viewCtrl: ViewController) {
 
   }
 
@@ -47,12 +48,14 @@ export class PgPage {
   }
 
   showSelect(){
-    console.log("点击确定")
+    console.log("点击确定");
 
-    this.callback(this.sel).then(()=>{
-      console.log("PgPage跳转PePage")
-      this.navCtrl.pop();
-    })
+    // this.callback(this.sel).then(()=>{
+    //   console.log("PgPage跳转PePage")
+    //   this.navCtrl.pop();
+    // })
+
+    this.viewCtrl.dismiss(this.sel);
   }
 
 

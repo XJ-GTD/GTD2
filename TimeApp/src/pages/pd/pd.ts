@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, NavController, NavParams, Navbar, ModalController} from 'ionic-angular';
 import {UEntity} from "../../entity/u.entity";
 import {RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
@@ -18,24 +18,38 @@ import {PageConfig} from "../../app/page.config";
   templateUrl: 'pd.html',
 })
 export class PdPage {
+
+  @ViewChild(Navbar) navBar: Navbar;
+
   uo:UEntity;
   g:RuModel;
   us:Array<RuModel>;
 
+  qcy:Array<RuModel>;
+
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private relmemService: RelmemService) {
+              private relmemService: RelmemService,
+              private modalCtl: ModalController) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PdPage');
+    this.navBar.backButtonClick = this.backButtonClick;
+    this.navBar.setBackButtonText("");
     this.g = this.navParams.get('g');
   }
 
   ionViewWillEnter(){
     this.init();
   }
+
+  backButtonClick = (e: UIEvent) => {
+    // 重写返回方法
+    this.navCtrl.pop();
+  };
+
 
   init(){
     this.queryGAll();
@@ -74,6 +88,25 @@ export class PdPage {
     }).catch(reason => {
       console.log("删除群组成员失败")
     })
+  }
+
+  getData = (data) =>
+  {
+    // return new Promise((resolve, reject) => {
+    //   console.log(data);
+    //   this.qcy = data;
+    //   resolve();
+    // });
+  };
+
+  addQcy(){
+    let modal = this.modalCtl.create(PageConfig.PG_PAGE,{callback:this.getData,sel:this.us});
+    modal.onDidDismiss((data)=>{
+      console.log(data===this.us);
+
+      console.log(JSON.stringify(data));
+    });
+    modal.present();
   }
 
   // ionViewDidLoad(){

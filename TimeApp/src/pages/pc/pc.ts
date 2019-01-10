@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, LoadingController, NavController, NavParams, Navbar} from 'ionic-angular';
 import {RelmemService} from "../../service/relmem.service";
 import {UEntity} from "../../entity/u.entity";
 import {PageConfig} from "../../app/page.config";
@@ -22,6 +22,8 @@ import {UtilService} from "../../service/util-service/util.service";
 })
 export class PcPage {
 
+  @ViewChild(Navbar) navBar: Navbar;
+
   uo:UEntity;
 
   name:any;
@@ -39,7 +41,8 @@ export class PcPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PcPage');
-
+    this.navBar.backButtonClick = this.backButtonClick;
+    this.navBar.setBackButtonText("");
     this.name = this.navParams.get("name");
     // this.tel=this.navParams.get("tel");
     this.code = this.navParams.get("code");
@@ -50,6 +53,11 @@ export class PcPage {
     console.log("PcPage :: 获取登录用户")
     this.uo = DataConfig.uInfo;
   }
+
+  backButtonClick = (e: UIEvent) => {
+    // 重写返回方法
+    this.navCtrl.pop();
+  };
 
 
   submit() {

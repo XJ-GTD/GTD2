@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
 import {JhService} from "../../service/jh.service";
 
 /**
@@ -16,6 +16,8 @@ import {JhService} from "../../service/jh.service";
 })
 export class SzPage {
 
+  @ViewChild(Navbar) navBar: Navbar;
+
   jhmc:string;
   jhms:string;
 
@@ -26,7 +28,14 @@ export class SzPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SzPage');
+    this.navBar.backButtonClick = this.backButtonClick;
+    this.navBar.setBackButtonText("");
   }
+
+  backButtonClick = (e: UIEvent) => {
+    // 重写返回方法
+    this.navCtrl.pop();
+  };
 
   save(){
     console.log("计划添加 :: 计划名称 " + this.jhmc +　" 计划描述 " + this.jhms );

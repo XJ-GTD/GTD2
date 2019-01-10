@@ -47,8 +47,9 @@ page-sw {
 
 
   .t1{
-    padding-left: 40px;
+    padding:10px 0 10px 40px;
     position: relative;
+
   }
 
   .t1:before {
@@ -56,10 +57,10 @@ page-sw {
     display: inline-block;
     position: absolute;
     top: 0;
-    width: 4px;
+    //width: 4px;
     height: 100%;
-    border-right: 1px solid #f3f3f3;
-    left: 19px;
+    border-right: 4px solid #f3f3f3;
+    left: 18px;
     z-index: 1;
   }
 
@@ -75,6 +76,15 @@ page-sw {
     top: 50%;
     margin-top: -2px;
     z-index: 1;
+  }
+
+  .t1:first-child:before{
+    height: 50%;
+    top: 50%;
+  }
+
+  .t1:last-child:before{
+    height: 50%;
   }
 
   .t1.highlight:after {
@@ -98,5 +108,10 @@ page-sw {
   .t1.highlight .d5{
     color: #fff;
     background-color: #3d93fd;
+  }
+
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
   }
 }

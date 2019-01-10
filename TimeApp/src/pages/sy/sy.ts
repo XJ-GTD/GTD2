@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import { IonicPage, NavController, NavParams, Navbar } from 'ionic-angular';
 import {JhModel} from "../../model/jh.model";
 import {JhService} from "../../service/jh.service";
 
@@ -17,6 +17,8 @@ import {JhService} from "../../service/jh.service";
 })
 export class SyPage {
 
+  @ViewChild(Navbar) navBar: Navbar;
+
   jh: JhModel;
   isEdit:boolean;
 
@@ -30,12 +32,19 @@ export class SyPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SyPage');
+    this.navBar.backButtonClick = this.backButtonClick;
+    this.navBar.setBackButtonText("");
   }
 
   ionViewWillEnter(){
     this.jh = this.navParams.get("jh");
     this.isEdit = false;
   }
+
+  backButtonClick = (e: UIEvent) => {
+    // 重写返回方法
+    this.navCtrl.pop();
+  };
 
   edit(){
     this.isEdit = !this.isEdit;

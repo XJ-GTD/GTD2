@@ -18,4 +18,9 @@ page-pc {
     border-bottom: 0px !important;
     box-shadow: none !important;
   }
+
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
+  }
 }

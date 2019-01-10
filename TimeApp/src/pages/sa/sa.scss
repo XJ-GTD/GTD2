@@ -53,4 +53,9 @@ page-sa {
   ion-item{
     height: 55px;
   }
+
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
+  }
 }
