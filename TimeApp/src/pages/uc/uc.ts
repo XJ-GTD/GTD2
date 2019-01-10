@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, LoadingController, NavController, NavParams, Navbar} from 'ionic-angular';
 import {ParamsService} from "../../service/util-service/params.service";
 import {UEntity} from "../../entity/u.entity";
 import {RelmemService} from "../../service/relmem.service";
@@ -20,6 +20,9 @@ import {DataConfig} from "../../app/data.config";
   providers: []
 })
 export class UcPage {
+
+  @ViewChild(Navbar) navBar: Navbar;
+
   //编辑控制
   state:any = false;
   uo:UEntity;
@@ -34,7 +37,14 @@ export class UcPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UcPage');
+    this.navBar.backButtonClick = this.backButtonClick;
+    this.navBar.setBackButtonText("");
   }
+
+  backButtonClick = (e: UIEvent) => {
+    // 重写返回方法
+    this.navCtrl.pop();
+  };
 
   init() {
     this.uo = DataConfig.uInfo;

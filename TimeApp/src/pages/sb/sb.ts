@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {
   IonicPage, LoadingController, NavController, NavParams, AlertController, Navbar,
-  ModalController
+  ModalController, Events
 } from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
 import { FindOutModel } from "../../model/out/find.out.model";
@@ -89,7 +89,8 @@ export class SbPage {
               private workService: WorkService,
               private util: UtilService,
               private jhService: JhService,
-              private modal: ModalController) {
+              private modal: ModalController,
+              private events: Events) {
     this.jhtmp = new JhModel();
     this.jhtmp.jn="添加计划";
     this.jh = this.jhtmp;
@@ -102,6 +103,13 @@ export class SbPage {
     console.log('ionViewDidLoad SbPage');
     // this.navBar.backButtonClick = this.backButtonClick;
     // this.navBar.setBackButtonText("");
+
+  }
+
+  ionViewWillEnter(){
+    console.log("ionViewWillEnter SbPage ::")
+    this.startTime = this.navParams.get("dateStr");
+    console.log(this.startTime);
     this.init();
   }
 
@@ -109,7 +117,14 @@ export class SbPage {
     this.getAllRel();
     this.findLabel();
     this.getAllJh();
-    this.startTime = new Date(new Date().getTime()+8*60*60*1000).toISOString();
+    if(this.startTime === undefined){
+      this.startTime = new Date(new Date().getTime()+8*60*60*1000).toISOString();
+    }else{
+      this.startTime = new Date(this.startTime).toISOString();
+    }
+
+    console.log(this.startTime)
+
     this.repeatTypes = DataConfig.ZTD_MAP.get(DataConfig.REPEAT_TYPE); //重复类型
   }
 
@@ -119,7 +134,6 @@ export class SbPage {
       if(data.code == 0){
         this.lbs = data.lbs;
         console.log('标签查询成功')
-
       }
     }).catch(reason => {
 
@@ -127,13 +141,8 @@ export class SbPage {
 
   }
 
-
-
-
   //发布任务入库
   newProject() {
-
-
     console.log("时间格式规整前 :: " + this.startTime);
     /*时间格式规整*/
     if (this.startTime != null && this.startTime != "") {
@@ -152,18 +161,14 @@ export class SbPage {
     this.workService.arc(this.title,this.startTime,this.type,this.jh.ji,this.repeatType,this.remarks,'',rul).then(data=>{
       if(data.code == 0){
         console.log("添加日程成功")
-        this.navCtrl.push('HzPage')
+        // this.navCtrl.push('HzPage')
+        this.navCtrl.pop();
       }else{
         console.log("添加日程失败")
       }
     }).catch(reason => {
       console.log("添加日程失败")
     })
-  }
-
-  //编辑完成提交
-  editFinish() {
-
   }
 
 
@@ -177,34 +182,6 @@ export class SbPage {
     // 重写返回方法
     this.paramsService.schedule=null;
     this.navCtrl.pop();
-    // this.navCtrl.push('GroupListPage');
-  }
-
-  presentActionSheet() {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: 'Modify your album',
-      buttons: [
-        {
-          text: 'Destructive',
-          role: 'destructive',
-          handler: () => {
-            console.log('Destructive clicked');
-          }
-        },{
-          text: 'Archive',
-          handler: () => {
-            console.log('Archive clicked');
-          }
-        },{
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }
-      ]
-    });
-    actionSheet.present();
   }
 
   /**
@@ -302,7 +279,8 @@ export class SbPage {
       let domList = document.getElementsByName("labLb");
       for(let i = 0;i<domList.length;i++){
         let dom = domList.item(i);
-        let rgb = 'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')';
+        // let rgb = 'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')';
+        let rgb = this.lbs[i].lau;
         dom.style.borderColor = rgb;
         dom.style.color = rgb;
       }
