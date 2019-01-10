@@ -172,6 +172,7 @@ public class IntentServiceImpl implements IIntentService {
                 if (flag != null && flag.equals("0")) {
                     outDto.setRes(dealWithSlots(nod));
                 }
+                outDto.setUt(nod.getText());
                 outDto.setAt(nod.getAnswer());
                 outDto.setAu(nod.getAnswerUrl());
                 outDto.setAi(nod.getAnswerImg());

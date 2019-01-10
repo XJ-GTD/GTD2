@@ -7,7 +7,9 @@ import {WsResModel} from "./ws.res.model";
  * create by wzy on 2018/11/28
  */
 export class WsModel {
+
   private _vs: string;      //version
+  private _ut: string;       //userText
   private _at: string;      //answerText;
   private _au: string;      //answerUrl;
   private _ai: string;      //answerImg;
@@ -78,5 +80,13 @@ export class WsModel {
 
   set res(value: WsResModel) {
     this._res = value;
+  }
+
+  get ut(): string {
+    return this._ut;
+  }
+
+  set ut(value: string) {
+    this._ut = value;
   }
 }

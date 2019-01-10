@@ -10,6 +10,7 @@ import {HdSpeechService} from "./hd-speech.service";
 import {DataConfig} from "../../app/data.config";
 import {MsEntity} from "../../entity/ms.entity";
 import {MsSqlite} from "../sqlite/ms-sqlite";
+import {AiuiModel} from "../../model/aiui.model";
 
 /**
  * webSocket公用处理方法
@@ -129,8 +130,9 @@ export class DwMqService {
   /**
    * 语音：日程查询
    */
-  private xfScheduleFind(mqDate) {
+  private xfScheduleFind(mqDate: WsModel) {
     this.hdSpeech.scheduleFind();
+
     let para :WsResDataModel  = mqDate.res.data
     let ct = para.sn;
     let lbN = para.lb;
@@ -143,6 +145,12 @@ export class DwMqService {
     if(ed == null || ed==''){
       ed=para.st;
     }
+
+    let aiui = new AiuiModel();
+    aiui.ut = mqDate.ut;
+    aiui.tt = DataConfig.U1;
+    this.dwEmit.setHbData(aiui);
+
     this.work.getwL('',sd,ed,'',lbN,jh).then(data=>{
       let str = "";
       if(data && data.rcL && data.rcL.length>0){
@@ -154,7 +162,7 @@ export class DwMqService {
       // var n = new Audio(url);
       // n.src = url;
       // n.play();
-      mqDate.qData = data;
+      // mqDate.qData = data;
       this.dwEmit.setHbData(mqDate);//测试用
     }).catch(e=>{
       this.dwEmit.setHbData(mqDate);//测试用
