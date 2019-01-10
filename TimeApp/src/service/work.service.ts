@@ -57,7 +57,7 @@ W
       let bs = new BsModel();
       //先查询当前用户ID
       let rc = new RcEntity();
-      sd=sd.replace('-','/');
+      sd=sd.replace(new RegExp('-','g'),'/');
       rc.uI=DataConfig.uInfo.uI;
       rc.sN=ct;
       rc.sd=sd;
@@ -145,7 +145,7 @@ W
       let bs = new BsModel();
       //先查询当前用户ID
       let rc = new RcEntity();
-      sd=sd.replace('-','/');
+      sd=sd.replace(new RegExp('-','g'),'/');;
       rc.uI=cui;
       rc.sN=sN;
       rc.sd=sd;
@@ -205,7 +205,7 @@ W
       //先查询当前用户ID
       let rc = new RcEntity();
       rc.uI=DataConfig.uInfo.uI;
-      sd=sd.replace('-','/');
+      sd=sd.replace(new RegExp('-','g'),'/');;
       rc.sN=ct;
       rc.sd=sd;
       if(cft && cft != null && cft != ''){
@@ -301,7 +301,7 @@ W
   urcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string,cft:string,rm:string,ac:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
-      sd=sd.replace('-','/');
+      sd=sd.replace(new RegExp('-','g'),'/');;
       //先查询当前用户ID
       let rc = new RcEntity();
       rc.uI=cui;
@@ -420,7 +420,7 @@ W
    * @returns {Promise<MbsoModel>}
    */
   getMBs(ym): Promise<MbsoModel> {
-    ym=ym.replace('-','/');
+    ym=ym.replace(new RegExp('-','g'),'/');;
     return new Promise((resolve, reject) => {
       let mbso = new MbsoModel();
       console.log("----- WorkService getMBs(获取当月标识) start -----");
@@ -457,7 +457,7 @@ W
    * @param d 'yyyy-MM-dd'
    */
   getOd(d:string):Promise<RcpoModel>{
-    d=d.replace('-','/');
+    d=d.replace(new RegExp('-','g'),'/');;
     return new Promise((resolve, reject) =>{
       let rcpo = new RcpoModel();
       console.log("----- WorkService getOd(获取当天事件) start -----");

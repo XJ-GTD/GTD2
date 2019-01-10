@@ -62,10 +62,17 @@ export class HaPage {
     this.showDay2 = moment().set({'year': year, 'month': month - 1, 'date': day}).format('dddd YYYY 年 MM 月 DD 日');
   }
 
+  ionViewWillEnter(){
+    console.log("ionViewWillEnter 刷新HaPage :: ")
+  }
+
 
   creNewEvent($event) {
     this.xiaojiFeekback.audioHighhat();
-    let sbPageModal = this.modalCtr.create(PageConfig.SB_PAGE);
+    console.log($event);
+    let eventDate = new Date($event.time);
+    let tmp = moment(eventDate).format("YYYY-MM-DD");
+    let sbPageModal = this.modalCtr.create(PageConfig.SB_PAGE,{dateStr:tmp});
     sbPageModal.present();
   }
 

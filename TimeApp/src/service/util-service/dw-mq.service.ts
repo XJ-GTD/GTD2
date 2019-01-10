@@ -363,6 +363,7 @@ export class DwMqService {
       if(qt==DataConfig.MQTQ){
         aiui.tt = DataConfig.U1;
         aiui.at = mqDate.ut;
+        aiui.at = '查询日程';
       }else if(qt==DataConfig.MQTM){
         aiui.tt = DataConfig.S1;
       }else{

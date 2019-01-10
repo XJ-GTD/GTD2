@@ -71,7 +71,7 @@ export class PfPage {
     if(checkCode == 3){
       //手机号正确
     }
-    if(checkCode == 2){
+    if(checkCode == 2 || checkCode == 1){
       //手机号错误
       this.checkMobile=true;
       this.errorCode = 1;
