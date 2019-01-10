@@ -181,77 +181,77 @@ public class SyncController {
      * 定时同步(上传)
      * @return
      */
-    @RequestMapping(value = "/timing_upload", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/timing_upload", method = RequestMethod.POST)
     @ResponseBody
     @AuthCheck
     public Out timingUpload(@RequestBody BaseInDto inDto) {
         Out outDto = new Out();
 
         return outDto;
-    }
+    }*/
 
     /**
      * 定时同步(下载)
      * @return
      */
-    @RequestMapping(value = "/timing_download", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/timing_download", method = RequestMethod.POST)
     @ResponseBody
     @AuthCheck
     public Out timingDownload(@RequestBody BaseInDto inDto) {
         Out outDto = new Out();
 
         return outDto;
-    }
+    }*/
 
     /**
      * 参与人数据上传
      *  ！！ 同步方法完成后删除！！！
      * @return
      */
-    @RequestMapping(value = "/temporary", method = RequestMethod.POST)
-    @ResponseBody
-    @AuthCheck
-    public Out temporaryPlayer(@RequestBody TestPlayerInDto inDto) {
-        Out outDto = new Out();
-
-        if(inDto.getAccountMobile() == null || "".equals(inDto.getAccountMobile())){
-            outDto.setCode(ResultCode.FAIL_BUSIC);
-            logger.debug("[上传数据失败]");
-            return outDto;
-        }
-        if(inDto.getId() == null || "".equals(inDto.getId())){
-            outDto.setCode(ResultCode.FAIL_BUSIC);
-            logger.debug("[上传数据失败]");
-            return outDto;
-        }
-        if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
-            outDto.setCode(ResultCode.FAIL_BUSIC);
-            logger.debug("[上传数据失败]");
-            return outDto;
-        }if(inDto.getPlayerId() == null || "".equals(inDto.getPlayerId())){
-            outDto.setCode(ResultCode.FAIL_BUSIC);
-            logger.debug("[上传数据失败]");
-            return outDto;
-        }
-        if(inDto.getPlayerName() == null || "".equals(inDto.getPlayerName())){
-            outDto.setCode(ResultCode.FAIL_BUSIC);
-            logger.debug("[上传数据失败]");
-            return outDto;
-        }
-
-        //业务逻辑
-        try {
-            int flag = personService.temporaryPlayer(inDto);
-            if (flag == 0) {
-                outDto.setCode(ResultCode.SUCCESS);
-                logger.debug("参与人上传数据库成功");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            logger.error("参与人上传服务器数据库失败：服务器错误");
-        }
-
-        return outDto;
-    }
+//    @RequestMapping(value = "/temporary", method = RequestMethod.POST)
+//    @ResponseBody
+//    @AuthCheck
+//    public Out temporaryPlayer(@RequestBody TestPlayerInDto inDto) {
+//        Out outDto = new Out();
+//
+//        if(inDto.getAccountMobile() == null || "".equals(inDto.getAccountMobile())){
+//            outDto.setCode(ResultCode.FAIL_BUSIC);
+//            logger.debug("[上传数据失败]");
+//            return outDto;
+//        }
+//        if(inDto.getId() == null || "".equals(inDto.getId())){
+//            outDto.setCode(ResultCode.FAIL_BUSIC);
+//            logger.debug("[上传数据失败]");
+//            return outDto;
+//        }
+//        if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
+//            outDto.setCode(ResultCode.FAIL_BUSIC);
+//            logger.debug("[上传数据失败]");
+//            return outDto;
+//        }if(inDto.getPlayerId() == null || "".equals(inDto.getPlayerId())){
+//            outDto.setCode(ResultCode.FAIL_BUSIC);
+//            logger.debug("[上传数据失败]");
+//            return outDto;
+//        }
+//        if(inDto.getPlayerName() == null || "".equals(inDto.getPlayerName())){
+//            outDto.setCode(ResultCode.FAIL_BUSIC);
+//            logger.debug("[上传数据失败]");
+//            return outDto;
+//        }
+//
+//        //业务逻辑
+//        try {
+//            int flag = personService.temporaryPlayer(inDto);
+//            if (flag == 0) {
+//                outDto.setCode(ResultCode.SUCCESS);
+//                logger.debug("参与人上传数据库成功");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+//            logger.error("参与人上传服务器数据库失败：服务器错误");
+//        }
+//
+//        return outDto;
+//    }
 }

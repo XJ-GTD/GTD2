@@ -941,6 +941,7 @@ public class SyncServiceImpl implements ISyncService {
      */
     private GtdSyncVersionEntity getSyncData(SyncTableData std, String userId, String version, String deviceId, String uploadVersion, String tableName) {
         GtdSyncVersionEntity syncVersionEntity = new GtdSyncVersionEntity();
+
         syncVersionEntity.setTableId(std.getTableA());
         syncVersionEntity.setTableName(tableName);
         syncVersionEntity.setDeviceId(deviceId);
