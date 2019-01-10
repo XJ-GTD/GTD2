@@ -11,6 +11,7 @@ import com.xiaoji.gtd.dto.code.ResultCode;
 public class WebSocketOutDto extends BaseOut {
 
     private String vs;      //version
+    private String ut;      //userText
     private String at;      //answerText;
     private String au;      //answerUrl;
     private String ai;      //answerImg;
@@ -85,5 +86,13 @@ public class WebSocketOutDto extends BaseOut {
 
     public void setSs(ResultCode status) {
         this.ss = status.code;
+    }
+
+    public String getUt() {
+        return ut;
+    }
+
+    public void setUt(String ut) {
+        this.ut = ut;
     }
 }
