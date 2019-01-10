@@ -13,6 +13,7 @@ import {MsSqlite} from "../sqlite/ms-sqlite";
 import {AiuiModel} from "../../model/aiui.model";
 import {RcoModel} from "../../model/out/rco.model";
 import {RcModel} from "../../model/rc.model";
+import {XiaojiAssistantService} from "./xiaoji-assistant.service";
 
 /**
  * webSocket公用处理方法
@@ -27,6 +28,7 @@ export class DwMqService {
               private errorCode: ErrorCodeService,
               private hdSpeech: HdSpeechService,
               private msSqlite:MsSqlite,
+              private xiaojiSpeech: XiaojiAssistantService,
               private dwEmit: DwEmitService){
 
   }
@@ -347,7 +349,6 @@ export class DwMqService {
     let t= mqDate.sk;
     aiui.tt = t;
     aiui.at =mqDate.at;
-    aiui.ut=mqDate.ut;
     let bool =false; //true 则发送语音界面
     //非业务类型可发送广播
     if(t.substr(0,1)!='D'){
@@ -361,6 +362,7 @@ export class DwMqService {
       let data:RcModel = rl;
       if(qt==DataConfig.MQTQ){
         aiui.tt = DataConfig.U1;
+        aiui.at = mqDate.ut;
       }else if(qt==DataConfig.MQTM){
         aiui.tt = DataConfig.S1;
       }else{
@@ -376,6 +378,7 @@ export class DwMqService {
       let data:RcoModel = rl;
       if(qt==DataConfig.MQTQ){
         aiui.tt = DataConfig.U1;
+        aiui.at = mqDate.ut;
       }else if(qt==DataConfig.MQTM){
         aiui.tt = DataConfig.S1;
       }else{
@@ -399,13 +402,16 @@ export class DwMqService {
     } else if (t == SkillConfig.XF_OTS) { //全部其他技能
 
     }else if (t == SkillConfig.BC_SCC) { //添加日程
-        aiui.tt = DataConfig.S5;
+      aiui.tt = DataConfig.S5;
+      let text='您与一条新的消息'
+      this.xiaojiSpeech.speakText(text, success=>{});
     } else if (t == SkillConfig.BC_SCD) { //删除日程
 
     } else if (t == SkillConfig.BC_SCU) { //更新日程
 
     } else if (t == SkillConfig.BC_PEC) { //添加参与人
-
+      let text='您与一条新的消息'
+      this.xiaojiSpeech.speakText(text, success=>{});
     }
     if(bool){
       let i = 100;

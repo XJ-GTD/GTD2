@@ -152,8 +152,10 @@ export class HbPage {
 
     this.aiuiData.tt = this.S1;
     this.aiuiData.at = $event.at;
-    this.messages.unshift(this.aiuiData);
-    this.xiaojiSpeech.speakText(this.aiuiData.at, success=>{});
+    //this.messages.unshift(this.aiuiData);
+    //this.xiaojiSpeech.speakText(this.aiuiData.at, success=>{});
+    this.messages.unshift($event);
+    this.xiaojiSpeech.speakText($event.at, success=>{});
     // if($event != null) {
     //   let messageData = new AiuiModel();
     //   messageData.at = $event.res.data.st;
