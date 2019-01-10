@@ -11,6 +11,8 @@ import {DataConfig} from "../../app/data.config";
 import {MsEntity} from "../../entity/ms.entity";
 import {MsSqlite} from "../sqlite/ms-sqlite";
 import {AiuiModel} from "../../model/aiui.model";
+import {RcoModel} from "../../model/out/rco.model";
+import {RcModel} from "../../model/rc.model";
 
 /**
  * webSocket公用处理方法
@@ -34,6 +36,11 @@ export class DwMqService {
 
     //成功消息处理
     if (mqDate.vs == "1.0" && mqDate.ss == 0) {
+      //mq返回则立即回馈语音界面
+      this.toAiui(DataConfig.MQTQ,mqDate,'');
+      setTimeout(() => {
+        this.toAiui(DataConfig.MQTM,mqDate,'');
+      }, 500);
       switch (mqDate.sk) {
         case SkillConfig.XF_NMT: //确认
           break;
@@ -91,7 +98,7 @@ export class DwMqService {
    * 语音：日程创建
    * @param data
    */
-  private xfScheduleCreate(mqDate) {
+  private xfScheduleCreate(mqDate: WsModel) {
     let md:WsResDataModel= mqDate.res.data;
     let ca=md.common_A;  //人名原参数value
     let cb=md.common_B; //人名原参数normValue
@@ -105,24 +112,29 @@ export class DwMqService {
     if(ed == null || ed==''){
       ed=md.st;
     }
+
     this.work.xfAddrc(sn,sd,pln,ca,cb).then(data=>{
-      mqDate.qData=data;
-      this.dwEmit.setHbData(mqDate);//测试用
+      // mqDate.qData=data;
+      // this.dwEmit.setHbData(mqDate);//测试用
+      this.toAiui(DataConfig.MQTL,mqDate,data)
     }).catch(e=>{
-      this.dwEmit.setHbData(mqDate);//测试用
+      this.toAiui(DataConfig.MQTL,mqDate,e)
+      // this.dwEmit.setHbData(mqDate);//测试用
     });
   }
 
   /**
    * 语音：日程删除
    */
-  private xfScheduleDelete(mqDate) {
+  private xfScheduleDelete(mqDate: WsModel) {
     let md:WsResDataModel= mqDate.res.data;
     let sI = "";
     this.work.delrc(sI).then(data=>{
-      this.dwEmit.setHbData(data);
+      //this.dwEmit.setHbData(data);
+      this.toAiui(DataConfig.MQTL,mqDate,data);
     }).catch(e=>{
-      this.dwEmit.setHbData(e);
+      //this.dwEmit.setHbData(e);
+      this.toAiui(DataConfig.MQTL,mqDate,e);
     });
 
   }
@@ -131,8 +143,6 @@ export class DwMqService {
    * 语音：日程查询
    */
   private xfScheduleFind(mqDate: WsModel) {
-    this.hdSpeech.scheduleFind();
-
     let para :WsResDataModel  = mqDate.res.data
     let ct = para.sn;
     let lbN = para.lb;
@@ -145,7 +155,6 @@ export class DwMqService {
     if(ed == null || ed==''){
       ed=para.st;
     }
-
     let aiui = new AiuiModel();
     aiui.ut = mqDate.ut;
     aiui.tt = DataConfig.U1;
@@ -163,9 +172,11 @@ export class DwMqService {
       // n.src = url;
       // n.play();
       // mqDate.qData = data;
-      this.dwEmit.setHbData(mqDate);//测试用
+      // this.dwEmit.setHbData(mqDate);//测试用
+      this.toAiui(DataConfig.MQTL,mqDate,data);
     }).catch(e=>{
-      this.dwEmit.setHbData(mqDate);//测试用
+      //this.dwEmit.setHbData(mqDate);//测试用
+      this.toAiui(DataConfig.MQTL,mqDate,e);
     });
   }
 
@@ -326,4 +337,80 @@ export class DwMqService {
       console.log("----- DwMqService relationAdd(业务：联系人添加) Error : " + JSON.stringify(e))
     })
   }
+  /**
+   *  返回值转Aiui
+   * @param {string} t mq处理类型：0是处理逻辑前;处理后
+   * @param rl 逻辑返回结果
+   * @param {string} t
+   * @returns {AiuiModel}
+   */
+  private toAiui(qt:string,mqDate: WsModel,rl:any) {
+    let aiui = new AiuiModel();
+    let t= mqDate.sk;
+    aiui.tt = t;
+    aiui.at =mqDate.at;
+    aiui.ut=mqDate.ut;
+    let bool =false; //true 则发送语音界面
+    //非业务类型可发送广播
+    if(t.substr(0,1)!='D'){
+      bool = true;
+    }
+    if (t == SkillConfig.XF_NMT) {   //确认
+
+    } else if (t == SkillConfig.XF_NMC) { //取消
+
+    } else if (t == SkillConfig.XF_SCC) { //讯飞：日程添加
+      let data:RcModel = rl;
+      if(qt==DataConfig.MQTQ){
+        aiui.tt = DataConfig.U1;
+      }else if(qt==DataConfig.MQTM){
+        aiui.tt = DataConfig.S1;
+      }else{
+        aiui.tt = DataConfig.S4;
+        aiui.sc = data;
+        if(!data.rus && data.rus.length==null){
+          aiui.at = '未查到相关参与人！'
+        }
+      }
+    } else if (t == SkillConfig.XF_SCD) { //讯飞：日程删除
+
+    } else if (t == SkillConfig.XF_SCF) { //讯飞：日程查询
+      let data:RcoModel = rl;
+      if(qt==DataConfig.MQTQ){
+        aiui.tt = DataConfig.U1;
+      }else if(qt==DataConfig.MQTM){
+        aiui.tt = DataConfig.S1;
+      }else{
+        aiui.tt = DataConfig.S5;
+        aiui.scL = data.rcL;
+        if(!data.rcL && data.rcL.length==0){
+          aiui.at = '您查的结果不存在！'
+        }
+      }
+    } else if (t == SkillConfig.XF_PEC) { //讯飞：参与人添加
+
+    } else if (t == SkillConfig.XF_PED) { //讯飞：参与人删除
+
+    } else if (t == SkillConfig.XF_PEF) { //讯飞：参与人查询
+
+    } else if (t == SkillConfig.XF_PEA) { //讯飞：参与人授权
+
+    } else if (t == SkillConfig.XF_SYSH) { //讯飞：私密模式
+
+    } else if (t == SkillConfig.XF_OTS) { //全部其他技能
+
+    }else if (t == SkillConfig.BC_SCC) { //添加日程
+        aiui.tt = DataConfig.S5;
+    } else if (t == SkillConfig.BC_SCD) { //删除日程
+
+    } else if (t == SkillConfig.BC_SCU) { //更新日程
+
+    } else if (t == SkillConfig.BC_PEC) { //添加参与人
+
+    }
+    if(bool){
+      this.dwEmit.setHbData(aiui);//测试用
+    }
+  }
+
 }
