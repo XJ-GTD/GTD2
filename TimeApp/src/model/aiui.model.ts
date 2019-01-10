@@ -1,5 +1,6 @@
 import {ScheduleModel} from "./schedule.model";
 import {RcModel} from "./rc.model";
+import {RuModel} from "./ru.model";
 
 /**
  * 讯飞语音消息回传类
@@ -13,11 +14,30 @@ export class AiuiModel {
   private _ai: string;      //answerImg;
   private _ut: string;      //用户语音播报字段
 
-  private _dt: string;       //数据类型 0：无数据对话 1：单个详情  2：列表list
-  private _tt: number;     //使用人：1是用户，2是讯飞
+  private _tt: string;     //使用人：U1是用户文言，S1是回答文本 S2是回答链接 S3是回答图片
+                            //S4是日程：增删查改/单条 S5是日程查询列表 S6是联系人：增删查改/单条 S7是联系人查询列表
 
+  private _sc: RcModel;             //日程单条
   private _scL: Array<RcModel>;    //日程数据list
 
+  private _pl: RuModel;             //联系人单条
+  private _plL: Array<RuModel>;     //联系人数据list
+
+  get pl(): RuModel {
+    return this._pl;
+  }
+
+  set pl(value: RuModel) {
+    this._pl = value;
+  }
+
+  get plL(): Array<RuModel> {
+    return this._plL;
+  }
+
+  set plL(value: Array<RuModel>) {
+    this._plL = value;
+  }
 
   get at(): string {
     return this._at;
@@ -51,19 +71,11 @@ export class AiuiModel {
     this._ut = value;
   }
 
-  get dt(): string {
-    return this._dt;
-  }
-
-  set dt(value: string) {
-    this._dt = value;
-  }
-
-  get tt(): number {
+  get tt(): string {
     return this._tt;
   }
 
-  set tt(value: number) {
+  set tt(value: string) {
     this._tt = value;
   }
 
@@ -73,5 +85,13 @@ export class AiuiModel {
 
   set scL(value: Array<RcModel>) {
     this._scL = value;
+  }
+
+  get sc(): RcModel {
+    return this._sc;
+  }
+
+  set sc(value: RcModel) {
+    this._sc = value;
   }
 }

@@ -211,35 +211,25 @@ public class SyncServiceImpl implements ISyncService {
             logger.debug("=========== 上传数据开始 ===========");
 
             List<GtdSyncVersionEntity> latestSyncData = upLoadData(syncDataList, userId, version, deviceId, uploadVersion);
-//            for (SyncDataDto sdd: syncDataList) {
-//                tableName = sdd.getTableName();
-//                dataList = sdd.getDataList();
-//                logger.debug("上传"+ tableName + "表数据， 数据大小：" + dataList.size());
-//
-//                List<GtdSyncVersionEntity> latestSyncData = upLoadData(tableName, dataList, userId, version, deviceId, uploadVersion);
-//                syncVersionList.addAll(latestSyncData);
-//            }
-            logger.debug("保存本次更新数据记录, 版本号["+ uploadVersion + "],共" + syncVersionList.size() + "条");
-            gtdSyncVersionRepository.saveAll(syncVersionList);
 
             logger.debug("=========== 上传数据结束 ===========");
+        } else {        //仅需要下载
+            logger.debug("=========== 下载数据开始 ===========");
+
+            logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] ：开始获取数据");
+            downLoadDataList = downLoad(userId, deviceId, downloadSyncVersion);
+
+            if (downLoadDataList != null) {
+                logger.debug("获取数据成功 version：["+ downloadSyncVersion + "] | data: size = " + downLoadDataList.size());
+                outDto.setVersion(version);
+                outDto.setUserDataList(downLoadDataList);
+            } else {
+                logger.debug("下载数据失败：服务器暂无该账号数据!");
+                return null;
+            }
+
+            logger.debug("=========== 下载数据结束 ===========");
         }
-
-        logger.debug("=========== 下载数据开始 ===========");
-
-        logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] ：开始获取数据");
-        downLoadDataList = downLoad(userId, deviceId, downloadSyncVersion);
-
-        if (downLoadDataList != null) {
-            logger.debug("获取数据成功 version：["+ downloadSyncVersion + "] | data: size = " + downLoadDataList.size());
-            outDto.setVersion(version);
-            outDto.setUserDataList(downLoadDataList);
-        } else {
-            logger.debug("下载数据失败：服务器暂无该账号数据!");
-            return null;
-        }
-
-        logger.debug("=========== 下载数据结束 ===========");
 
         return outDto;
     }
@@ -252,11 +242,11 @@ public class SyncServiceImpl implements ISyncService {
     private List<GtdSyncVersionEntity> upLoadData(List<SyncDataDto> syncDataList, String userId, String version, String deviceId, String uploadVersion) {
 
         List<GtdSyncVersionEntity> syncVersion = new ArrayList<>();
-        List<GtdSyncVersionEntity> latestDataList = gtdSyncVersionRepository.compareToHighVersion(version, userId);
+        List<GtdSyncVersionEntity> latestDataList = gtdSyncVersionRepository.compareToHighVersion(userId, version);
 
         String tableName = "";
         List<SyncTableData> dataList;
-        List<GtdSyncVersionEntity> dataCompare;
+
         for (SyncDataDto sdd : syncDataList) {
 
             tableName = sdd.getTableName();
@@ -334,6 +324,8 @@ public class SyncServiceImpl implements ISyncService {
 
         }
 
+        logger.debug("保存本次更新数据记录, 版本号["+ uploadVersion + "],共" + syncVersion.size() + "条");
+        gtdSyncVersionRepository.saveAll(syncVersion);
 
         return syncVersion;
     }
