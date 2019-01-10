@@ -38,9 +38,7 @@ export class DwMqService {
     if (mqDate.vs == "1.0" && mqDate.ss == 0) {
       //mq返回则立即回馈语音界面
       this.toAiui(DataConfig.MQTQ,mqDate,'');
-      setTimeout(() => {
-        this.toAiui(DataConfig.MQTM,mqDate,'');
-      }, 500);
+      this.toAiui(DataConfig.MQTM,mqDate,'');
       switch (mqDate.sk) {
         case SkillConfig.XF_NMT: //确认
           break;
@@ -383,6 +381,7 @@ export class DwMqService {
       }else{
         aiui.tt = DataConfig.S5;
         aiui.scL = data.rcL;
+        aiui.at = '为您查询的结果如下！';
         if(!data.rcL && data.rcL.length==0){
           aiui.at = '您查的结果不存在！'
         }
@@ -409,7 +408,16 @@ export class DwMqService {
 
     }
     if(bool){
-      this.dwEmit.setHbData(aiui);//测试用
+      let i = 100;
+      if(qt==DataConfig.MQTM){
+        i = 300;
+      }else if(qt==DataConfig.MQTL){
+        i = 500;
+      }
+      setTimeout(() => {
+        this.dwEmit.setHbData(aiui);//测试用
+      }, i);
+
     }
   }
 
