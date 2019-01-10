@@ -87,6 +87,7 @@ export class WorkSqlite{
    * @param ym 格式‘2018-01’
    */
   getMBs(ym:string,ui:string):Promise<BsModel>{
+    ym = ym.replace('-','/')
     return new Promise((resolve, reject) => {
       let sql='select gc.*,lbd.* from GTD_C gc ' +
         'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
@@ -102,9 +103,9 @@ export class WorkSqlite{
         .then(data=>{
           let ls = data.rows;
           for(let i=1;i<=31;i++){
-            let day = ym+"-"+i;
+            let day = ym+"/"+i;
             if(i<10){
-              day = ym+'-0'+i;
+              day = ym+'/0'+i;
             }
 
             let count:number = 0;
@@ -251,8 +252,8 @@ export class WorkSqlite{
    */
   isymwd(cft:string,day:string,sd:string,ed:string):boolean{
     let isTrue = false;
-    sd = sd.substr(0,10);
-    ed= ed.substr(0,10);
+    sd = sd.substr(0,10).replace('-','/');
+    ed= ed.substr(0,10).replace('-','/');
     if(cft && cft != null && cft !='undefined'){
       if(cft=='1'){//年
         if(sd.substr(4,10)== day.substr(4,10)){
@@ -268,7 +269,7 @@ export class WorkSqlite{
         if(sd<=day && sdz == dayz){
           isTrue = true;
         }
-      }else if(cft=='4'){ //周
+      }else if(cft=='4'){ //日
         if(sd<=day && ed>=day){
           isTrue = true;
         }

@@ -57,11 +57,12 @@ W
       let bs = new BsModel();
       //先查询当前用户ID
       let rc = new RcEntity();
+      sd=sd.replace('-','/');
       rc.uI=DataConfig.uInfo.uI;
       rc.sN=ct;
       rc.sd=sd;
       if(cft && cft != null && cft != ''){
-        rc.ed='2999-12-31 23:59';
+        rc.ed='2999/12/31 23:59';
       }else{
         rc.ed=sd;
       }
@@ -144,15 +145,17 @@ W
       let bs = new BsModel();
       //先查询当前用户ID
       let rc = new RcEntity();
+      sd=sd.replace('-','/');
       rc.uI=cui;
       rc.sN=sN;
       rc.sd=sd;
-      if(sd == null || sd == ''){
-        rc.sd=ed;
-      }
-      rc.ed=ed;
-      if(ed == null || ed == ''){
+      if(cft && cft != null && cft != ''){
+        rc.ed='2999/12/31 23:59';
+      }else{
         rc.ed=sd;
+      }
+      if(ed != null && ed != ''){
+        rc.ed=ed;
       }
       rc.lI=lbI;
       rc.sI=sI;
@@ -202,14 +205,16 @@ W
       //先查询当前用户ID
       let rc = new RcEntity();
       rc.uI=DataConfig.uInfo.uI;
+      sd=sd.replace('-','/');
       rc.sN=ct;
       rc.sd=sd;
-      if(sd == null || sd == ''){
-        rc.sd=ed;
-      }
-      rc.ed=ed;
-      if(ed == null || ed == ''){
+      if(cft && cft != null && cft != ''){
+        rc.ed='2999/12/31 23:59';
+      }else{
         rc.ed=sd;
+      }
+      if(ed != null && ed != ''){
+        rc.ed=ed;
       }
       rc.lI=lbI;
       rc.ji=jhi;
@@ -296,17 +301,19 @@ W
   urcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string,cft:string,rm:string,ac:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
+      sd=sd.replace('-','/');
       //先查询当前用户ID
       let rc = new RcEntity();
       rc.uI=cui;
       rc.sN=sN;
       rc.sd=sd;
-      if(sd == null || sd == ''){
-        rc.sd=ed;
-      }
-      rc.ed=ed;
-      if(ed == null || ed == ''){
+      if(cft && cft != null && cft != ''){
+        rc.ed='2999/12/31 23:59';
+      }else{
         rc.ed=sd;
+      }
+      if(ed != null && ed != ''){
+        rc.ed=ed;
       }
       rc.lI=lbI;
       rc.sI=sI;
@@ -413,6 +420,7 @@ W
    * @returns {Promise<MbsoModel>}
    */
   getMBs(ym): Promise<MbsoModel> {
+    ym=ym.replace('-','/');
     return new Promise((resolve, reject) => {
       let mbso = new MbsoModel();
       console.log("----- WorkService getMBs(获取当月标识) start -----");
@@ -449,6 +457,7 @@ W
    * @param d 'yyyy-MM-dd'
    */
   getOd(d:string):Promise<RcpoModel>{
+    d=d.replace('-','/');
     return new Promise((resolve, reject) =>{
       let rcpo = new RcpoModel();
       console.log("----- WorkService getOd(获取当天事件) start -----");
