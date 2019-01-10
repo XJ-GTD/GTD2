@@ -25,7 +25,6 @@ declare var cordova: any;
   providers: []
 })
 export class HbPage {
-  @ViewChild('myTabs') tabRef: Tabs;
   @ViewChild(Hb01Page) Hb01Page:Hb01Page;
   @ViewChild(Content) content: Content;
 
@@ -141,8 +140,9 @@ export class HbPage {
   speechInputHanding(text) {
     this.inputData.tt = this.tu;
     this.inputData.at = text;
-    this.messages.push(this.inputData);
+    this.messages.unshift(this.inputData);
     this.inputData = new AiuiModel();
+
   }
 
   //回传数据处理
@@ -176,7 +176,7 @@ export class HbPage {
 
     this.aiuiData.tt = this.tx;
     this.aiuiData.at = at;
-    this.messages.push(this.aiuiData);
+    this.messages.unshift(this.aiuiData);
     this.xiaojiSpeech.speakText(at, success=>{});
     // if($event != null) {
     //   let messageData = new AiuiModel();
