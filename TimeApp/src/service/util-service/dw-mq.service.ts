@@ -38,6 +38,9 @@ export class DwMqService {
     if (mqDate.vs == "1.0" && mqDate.ss == 0) {
       //mq返回则立即回馈语音界面
       this.toAiui(DataConfig.MQTQ,mqDate,'');
+      setTimeout(() => {
+        this.toAiui(DataConfig.MQTM,mqDate,'');
+      }, 500);
       switch (mqDate.sk) {
         case SkillConfig.XF_NMT: //确认
           break;
@@ -346,6 +349,7 @@ export class DwMqService {
     let t= mqDate.sk;
     aiui.tt = t;
     aiui.at =mqDate.at;
+    aiui.ut=mqDate.ut;
     let bool =false; //true 则发送语音界面
     //非业务类型可发送广播
     if(t.substr(0,1)!='D'){
@@ -357,7 +361,9 @@ export class DwMqService {
 
     } else if (t == SkillConfig.XF_SCC) { //讯飞：日程添加
       let data:RcModel = rl;
-      if(qt=='0'){
+      if(qt==DataConfig.MQTQ){
+        aiui.tt = DataConfig.U1;
+      }else if(qt==DataConfig.MQTM){
         aiui.tt = DataConfig.S1;
       }else{
         aiui.tt = DataConfig.S4;
@@ -370,7 +376,9 @@ export class DwMqService {
 
     } else if (t == SkillConfig.XF_SCF) { //讯飞：日程查询
       let data:RcoModel = rl;
-      if(qt=='0'){
+      if(qt==DataConfig.MQTQ){
+        aiui.tt = DataConfig.U1;
+      }else if(qt==DataConfig.MQTM){
         aiui.tt = DataConfig.S1;
       }else{
         aiui.tt = DataConfig.S5;
