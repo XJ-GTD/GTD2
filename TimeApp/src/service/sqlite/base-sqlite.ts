@@ -23,6 +23,8 @@ import {RcbtEntity} from "../../entity/rcbt.entity";
 import {RcbthEntity} from "../../entity/rcbth.entity";
 import {RcbfEntity} from "../../entity/rcbf.entity";
 import {RcbfvEntity} from "../../entity/rcbfv.entity";
+import {SyncEntity} from "../../entity/sync.entity";
+import {SyvEntity} from "../../entity/syv.entity";
 
 /**
  * 客户端数据库
@@ -229,9 +231,13 @@ export class BaseSqlite {
         let u: UEntity = new UEntity();
         u.uI = this.util.getUuid();
         u.uty = '0';
+        let syv = new SyvEntity();
+        syv.si=1;
+        syv.bv=0;
+        syv.fv='0';
         if(DataConfig.IS_MOBILE){
           //手机端
-          let sql=fi.isq+u.isq;
+          let sql=fi.isq+u.isq+syv.isq;
           this.importSqlToDb(sql).then(data=>{
             console.log("-------------------BaseSqlite initData  GTD_A and GTD_FI table to data: "+JSON.stringify(data))
             resolve(data)
@@ -244,6 +250,9 @@ export class BaseSqlite {
           this.save(u).then(data=>{
             console.log("-------------------BaseSqlite initData GTD_A to table data: "+JSON.stringify(data))
             return this.save(fi);
+          }).then(data=>{
+            console.log("-------------------BaseSqlite initData GTD_A to table data: "+JSON.stringify(data))
+            return this.save(syv);
           }).then(data=>{
             console.log("-------------------BaseSqlite initData GTD_FI to table data: "+JSON.stringify(data))
             resolve(data);
