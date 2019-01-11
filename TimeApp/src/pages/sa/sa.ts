@@ -13,6 +13,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
 import * as moment from "moment";
+import {PageConfig} from "../../app/page.config";
 
 /**
  * Generated class for the SaPage page.
@@ -66,6 +67,7 @@ export class SaPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad SaPage');
     this.navBar.backButtonClick = this.backButtonClick;
+    this.navBar.setBackButtonText("");
     // this.init();
     // this.getAllRel();
   }
@@ -81,6 +83,7 @@ export class SaPage {
       this.edit();
     }).catch(e=>{
       alert(e.message)
+      this.navCtrl.setRoot(PageConfig.HZ_PAGE);
     });
     this.getAllRel();
   }
@@ -173,6 +176,7 @@ export class SaPage {
 
   del(){
     console.log(" :: click delete");
+    console.log(JSON.stringify(this.rc))
     this.work.delrc(this.rc.sI).then(data=>{
       console.log("删除成功 :: " );
       this.event.publish("reloadHa01");

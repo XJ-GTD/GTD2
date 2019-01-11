@@ -1,5 +1,5 @@
-import {Component, ElementRef} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, ElementRef, ViewChild} from '@angular/core';
+import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
 import { PopoverController } from 'ionic-angular';
 import {DwEmitService} from "../../service/util-service/dw-emit.service";
 import {PageConfig} from "../../app/page.config";
@@ -18,6 +18,8 @@ import {PageConfig} from "../../app/page.config";
 })
 export class AdPage {
 
+  @ViewChild(Navbar) navBar: Navbar;
+
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
               private dwEmit: DwEmitService,
@@ -26,7 +28,14 @@ export class AdPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AdPage');
+    this.navBar.backButtonClick = this.backButtonClick;
+    this.navBar.setBackButtonText("");
   }
+
+  backButtonClick = (e: UIEvent) => {
+    // 重写返回方法
+    this.navCtrl.pop();
+  };
 
   test($event) {
     alert("测试adpage");

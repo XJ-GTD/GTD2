@@ -88,3 +88,8 @@ p{
 .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block{
   border-bottom: none;
 }
+
+//防止input框获取焦点抖动
+.input-cover{
+  position: static;
+}

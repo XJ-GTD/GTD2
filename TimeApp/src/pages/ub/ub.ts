@@ -73,7 +73,7 @@ export class UbPage {
                if(!this.rePage && !this.puPage){
                  //跳转首页
                  console.log('UbPage跳转HzPage');
-                 this.navCtrl.push('HzPage');
+                 this.navCtrl.setRoot('HzPage');
                }else{
                  //登录分析
                  //登录成功跳转，登录成功返回，
