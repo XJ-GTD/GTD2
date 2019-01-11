@@ -143,7 +143,7 @@ export class DwMqService {
    * 语音：日程查询
    */
   private xfScheduleFind(mqDate: WsModel) {
-    let para :WsResDataModel  = mqDate.res.data
+    let para :WsResDataModel  = mqDate.res.data;
     let ct = para.sn;
     let lbN = para.lb;
     let jh = para.pn;
@@ -370,7 +370,6 @@ export class DwMqService {
 
       } else if (t == SkillConfig.XF_SCC) { //讯飞：日程添加
         let data: RcModel = rl;
-
         aiui.tt = DataConfig.S4;
         aiui.sc = data;
         if (!data.rus && data.rus.length == null) {

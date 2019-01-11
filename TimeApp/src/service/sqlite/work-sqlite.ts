@@ -319,11 +319,16 @@ export class WorkSqlite{
    * @param {string} jh 计划名称
    */
   getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string):Promise<any>{
-    let sql ="select gc.*,gf.lan,jh.jn from GTD_C gc " +
-      "left join GTD_D gd on gc.sI = gd.sI " +
-      "left join GTD_F gf on gf.lai = gc.lI " +
-      "left join GTD_J_H jh on jh.ji = gc.ji " +
-      "where gd.uI='"+DataConfig.uInfo.uI+"'";
+    let sql ='select gc.*,gf.lan,jh.jn from GTD_C gc ' +
+      'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
+      'union select sI,cft,cf,ac,fh from GTD_C_C ' +
+      'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
+      'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
+      'union select sI,cft,cf,ac,fh from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
+      'left join GTD_D gd on gc.sI = gd.sI ' +
+      'left join GTD_F gf on gf.lai = gc.lI ' +
+      'left join GTD_J_H jh on jh.ji = gc.ji ' +
+      'where gd.uI="'+DataConfig.uInfo.uI+'"';
     if(ct != null && ct != ""){
       sql = sql + " and gd.son like '%" + ct +"%'"
     }
