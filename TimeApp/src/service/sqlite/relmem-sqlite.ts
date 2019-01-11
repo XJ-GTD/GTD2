@@ -5,6 +5,7 @@ import {RuEntity} from "../../entity/ru.entity";
 import {BsModel} from "../../model/out/bs.model";
 import {SyncModel} from "../../model/sync.model";
 import {DataConfig} from "../../app/data.config";
+import {SyncEntity} from "../../entity/sync.entity";
 
 /**
  * 授权联系人
@@ -139,7 +140,7 @@ export class RelmemSqlite {
   }
 
   /**
-   * 服务器同步联系人转sql
+   * 服务器登录同步联系人转sql
    * @param {Array<SyncModel>} syncs
    */
   syncToRuSql(syncs:Array<SyncModel>){
@@ -173,7 +174,7 @@ export class RelmemSqlite {
   }
 
   /**
-   * 服务器同步联系人群组表转sql
+   * 服务器登录同步联系人群组表转sql
    * @param {Array<SyncModel>} syncs
    */
   syncToRguSql(syncs:Array<SyncModel>){
@@ -195,6 +196,42 @@ export class RelmemSqlite {
     }
       return sql;
     }
+  }
+
+  /**
+   * 服务器定时同步联系人表
+   * @param {JhEntity} en
+   */
+  syncRuTime(en:RuEntity,ac:string): Promise<any> {
+    let sql = '';
+    let sync = new SyncEntity();
+    sync.tableA = en.id ;
+    sync.tableB = en.ran;
+    sync.tableC = en.ranpy;
+    sync.tableD = en.rI;
+    sync.tableE = en.hiu;
+    sync.tableF = en.rN;
+    sync.tableG = en.rNpy;
+    sync.tableH = en.rC;
+    sync.tableI = en.rF;
+    sync.tableJ = en.rel;
+    sync.tableK = DataConfig.uInfo.uI;
+    sync.action =ac;
+    return this.baseSqlite.save(sync);
+  }
+
+  /**
+   * 服务器定时同步群组联系人表
+   * @param {JhEntity} en
+   */
+  syncRuTime(en:RguEntity): Promise<any> {
+    let sql = '';
+    let sync = new SyncEntity();
+    sync.tableA = en.id ;
+    sync.tableB = en.bi;
+    sync.tableC = en.bmi;
+    sync.tableK = DataConfig.uInfo.uI;
+    return this.baseSqlite.save(sync);
   }
 
 }

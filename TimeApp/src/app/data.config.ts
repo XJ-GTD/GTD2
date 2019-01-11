@@ -65,5 +65,10 @@ export class DataConfig {
   public static MQTM : string = '1'; // 处理逻辑前讯飞回答
   public static MQTL : string = '2'; // 处理逻辑后
 
+  /* ============ Sql执行类型 ===============*/
+  public static AC_O : string = '0'; // 添加
+  public static AC_T : string = '1'; // 更新
+  public static AC_D : string = '2'; // 删除
+
 
 }
