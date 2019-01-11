@@ -34,7 +34,7 @@ export class StEntity {
 
   get isq(): string {
     let sql='insert into GTD_G ' +
-      '(sN,lI,uI) values("'+ this._sn+'","'+ this._ss+'","'+this._st+ '")';
+      '(sn,ss,st) values("'+ this._sn+'","'+ this._ss+'","'+this._st+ '")';
     this._isq=sql;
     return this._isq;
   }

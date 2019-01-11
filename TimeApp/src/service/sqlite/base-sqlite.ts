@@ -91,7 +91,7 @@ export class BaseSqlite {
             + new LbEntity().drsq + new ReEntity().drsq + new StEntity().drsq + new MsEntity().drsq
             + new ZtEntity().drsq + new ZtdEntity().drsq + new JhEntity().drsq + new RguEntity().drsq
             + new FiEntity().drsq+new RcboEntity().drsq + new RcbtEntity().drsq + new RcbthEntity().drsq
-            + new RcbfEntity().drsq + new RcbfvEntity().drsq;
+            + new RcbfEntity().drsq + new RcbfvEntity().drsq + new SyvEntity().drsq + new SyncEntity().drsq;
           //再建表
           this.importSqlToDb(delsql).then(data=>{
             console.log("-------------------BaseSqlite createTable delete table success: "+JSON.stringify(data))
@@ -99,7 +99,7 @@ export class BaseSqlite {
               + new LbEntity().csq + new ReEntity().csq + new StEntity().csq + new MsEntity().csq
               + new ZtEntity().csq + new ZtdEntity().csq + new JhEntity().csq + new RguEntity().csq
               + new FiEntity().csq+new RcboEntity().csq+new RcbtEntity().csq + new RcbthEntity().csq
-              + new RcbfEntity().csq + new RcbfvEntity().csq;
+              + new RcbfEntity().csq + new RcbfvEntity().csq + new SyvEntity().csq + new SyncEntity().csq;
             return  this.importSqlToDb(insertsql);
           }).then(data=>{
             console.log("-------------------BaseSqlite createTable success: "+JSON.stringify(data));
@@ -187,6 +187,12 @@ export class BaseSqlite {
             })
             .then(data=>{
               return this.executeSql(new RcbfvEntity().csq, []);
+            })
+            .then(data=>{
+            return this.executeSql(new SyvEntity().csq, []);
+          })
+            .then(data=>{
+              return this.executeSql(new SyncEntity().csq, []);
             })
             .then(data=>{
             console.log("-------------------BaseSqlite createTable success: "+str);

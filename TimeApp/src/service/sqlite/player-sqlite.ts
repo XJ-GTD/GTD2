@@ -6,7 +6,7 @@ import {ScheduleModel} from "../../model/schedule.model";
 
 
 /**
- * 参与人 sqlite
+ * 参与人（同步本地日历用） sqlite
  *
  * create by hjd on 2018/11/23
  */
