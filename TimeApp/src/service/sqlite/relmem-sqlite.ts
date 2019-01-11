@@ -89,7 +89,7 @@ export class RelmemSqlite {
    * @returns {Promise<any>}
    */
   getRgus(id:string):Promise<any>{
-    let sql="SELECT gb.* FROM GTD_B gb " +
+    let sql="SELECT gb.*,bs.id rugId,bs.bmi FROM GTD_B gb " +
       "left join GTD_B_X bs on bs.bmi = gb.id where bs.bi='" + id +"'";
     return this.baseSqlite.executeSql(sql,[]);
   }
@@ -101,8 +101,14 @@ export class RelmemSqlite {
    * @param {string} bmi 关系人ID
    * @returns {Promise<any>}
    */
-  delRgu(bi:string,bmi:string):Promise<any>{
-    let sql = "delete from GTD_B_X where bmi = '"+bmi+"' and bi='"+bi+"'";
+  delRgu(id:string,bmi:string):Promise<any>{
+    let sql = "delete from GTD_B_X where 1=1";
+    if(id != null && id != ''){
+       sql=sql + " and id = '"+id+"'";
+    }
+    if(bmi != null && bmi != ''){
+      sql=sql + " and bmi = '"+bmi+"'";
+    }
     return this.baseSqlite.executeSql(sql,[]);
   }
 
@@ -217,6 +223,7 @@ export class RelmemSqlite {
     sync.tableJ = en.rel;
     sync.tableK = DataConfig.uInfo.uI;
     sync.action =ac;
+    sync.tableName = DataConfig.GTD_B
     return this.baseSqlite.save(sync);
   }
 
@@ -224,14 +231,18 @@ export class RelmemSqlite {
    * 服务器定时同步群组联系人表
    * @param {JhEntity} en
    */
-  syncRguTime(en:RguEntity): Promise<any> {
+  syncRguTime(en:Array<RguEntity>,tn:string): Promise<any> {
     let sql = '';
-    let sync = new SyncEntity();
-    sync.tableA = en.id ;
-    sync.tableB = en.bi;
-    sync.tableC = en.bmi;
-    sync.tableK = DataConfig.uInfo.uI;
-    return this.baseSqlite.save(sync);
+    for(let rgu of en){
+      let sync = new SyncEntity();
+      sync.tableA = rgu.id ;
+      sync.tableB = rgu.bi;
+      sync.tableC = rgu.bmi;
+      sync.tableName = DataConfig.GTD_B_X;
+      sync.action = tn;
+      sql +=sync.isq;
+    }
+    return this.baseSqlite.importSqlToDb(sql);
   }
 
 }
