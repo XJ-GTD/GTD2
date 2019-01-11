@@ -78,19 +78,18 @@ public class PersonController {
             logger.debug("[注册失败]：用户ID类型或格式错误");
             return outDto;
         }
-//        try {
-//            if(!Objects.requireNonNull(TimerUtil.getCache(inDto.getAccountMobile())).getValue().equals(inDto.getAuthCode())){
-//                outDto.setCode(ResultCode.ERROR_AUTH_CODE);
-//                logger.debug("[注册失败]：请输入正确短信验证码");
-//                return outDto;
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            outDto.setCode(ResultCode.EXPIRE_AUTH_CODE);
-//            logger.debug("[注册失败]：短信验证码已过期");
-//            return outDto;
-//        }
-
+        try {
+            if(!Objects.requireNonNull(TimerUtil.getCache(inDto.getAccountMobile())).getValue().equals(inDto.getAuthCode())){
+                outDto.setCode(ResultCode.ERROR_AUTH_CODE);
+                logger.debug("[注册失败]：请输入正确短信验证码");
+                return outDto;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.EXPIRE_AUTH_CODE);
+            logger.debug("[注册失败]：短信验证码已过期");
+            return outDto;
+        }
 
         //数据重复性
         //验证用户uuid重复
