@@ -35,27 +35,57 @@ export class WorkSqlite{
    * @param {RcEntity} rc
    * @param {Array<RuModel>} rcps
    */
-  sRcps(rc:RcEntity,rus:Array<RuModel>){
-    let sqlStr = "";
-    let isTrue = false;
-    // if(rus != null && rus.length>0){
-    // if(DataConfig.IS_MOBILE){
+  save(rc:RcEntity):Promise<any>{
+    return new Promise((resolve, reject) => {
+      //添加本地日程
+      this.baseSqlite.save(rc).then(data=>{
+        //添加本地日程到同步表
+        console.log('------------- WorkSqlite save 同步表--------------')
+        this.syncRcTime(rc,DataConfig.AC_O);
+        resolve(data);
+      }).catch(e=>{
+        console.log('------------- WorkSqlite save Error：' + JSON.stringify(e));
+        reject(e);
+      })
+    })
+  }
+  /**
+   * 保存日程参与人信息
+   * @param {RcEntity} rc
+   * @param {Array<RuModel>} rcps
+   */
+  sRcps(rc:RcEntity,rus:Array<RuModel>):Promise<any>{
+    return new Promise((resolve, reject) => {
       let sql = "";
-
-      for(let i=0;i<rus.length;i++){
+      let rcpL = new Array<RcpEntity>();
+      for (let i = 0; i < rus.length; i++) {
         let ru = rus[i];
+        let rgc = new RcpEntity();
+        rgc.pI = this.util.getUuid();
+        rgc.sI = rc.sI;
+        rgc.son = rc.sN;
         let sa = '0';
-        if(ru.rI && ru.rI == rc.uI){
-          sa='1';
-          isTrue=true;
+        if (ru.rI && ru.rI == rc.uI) {
+          rgc.sa = '1';
         }
-        if(!ru.sdt){
-          ru.sdt=0;
+        rgc.cd = rc.sd;
+        rgc.pd = rc.ed;
+        rgc.uI = ru.rI;
+        rgc.rui = ru.id;
+        if (!ru.sdt) {
+          ru.sdt = 0;
         }
-        sql +='insert into GTD_D (pI,sI,son,sa,cd,pd,uI,rui,sdt) values("'+ this.util.getUuid()+'","'+ rc.sI+'","'
-          + rc.sN+'","' +sa+ '","'+rc.sd+ '","'+rc.ed+ '","'+ ru.rI+'","'+ ru.id+'",'+ ru.sdt+');';
+        rgc.sdt = ru.sdt;
+        sql += rgc.isq;
+        rcpL.push(rgc);
       }
-      return this.baseSqlite.importSqlToDb(sql)
+      this.baseSqlite.importSqlToDb(sql).then(data=>{
+        this.syncRgcTime(rcpL,DataConfig.AC_O)
+        resolve(data);
+      }).catch(e=>{
+        reject(e);
+      })
+    })
   }
 
   /**
@@ -359,28 +389,47 @@ export class WorkSqlite{
    * @returns {Promise<any>}
    */
   addLbData(sI:string,tk:string,cft:string,rm:string,ac:string,fh:string):Promise<any>{
-    let id = this.util.getUuid();
-    let tn='GTD_C_BO';
-    let cf='0'
-    if(cft != null && cft !=''){
-      cf='1'
-    }
-    if(tk == '1'){
-      tn='GTD_C_BO'
-    }else if(tk >= '2' && tk <= '3'){
-      tn='GTD_C_C'
-    }else if(tk >= '4' && tk <= '8'){
-      tn='GTD_C_RC'
-    }else if(tk == '9'){
-      tn='GTD_C_JN'
-    }else if(tk >= '10'){
-      tn='GTD_C_MO'
-    }
-    let sql ='insert into ' + tn +
-      '(sI,id,tk,cft,rm,ac,fh) values("'+ sI+'","'+ id+'","'+tk+ '","'+cft+ '","'+ rm+'","'+ ac+'","'+ fh+'")';
-    return this.baseSqlite.executeSql(sql,[]);
+    return new Promise((resolve, reject) => {
+      let en = new RcbModel();
+      if(tk == '1'){
+        en.tn='GTD_C_BO'
+      }else if(tk >= '2' && tk <= '3'){
+        en.tn='GTD_C_C'
+      }else if(tk >= '4' && tk <= '8'){
+        en.tn='GTD_C_RC'
+      }else if(tk == '9'){
+        en.tn='GTD_C_JN'
+      }else if(tk >= '10'){
+        en.tn='GTD_C_MO'
+      }
+      en.id = this.util.getUuid();
+      en.sI=sI;
+      en.tk=tk;
+      en.cft=cft;
+      en.rm=rm;
+      en.ac=ac;
+      en.fh=fh;
+
+      this.baseSqlite.executeSql(en.rpsq,[]).then(data=>{
+        //添加本地日程到同步表
+        console.log('------------- WorkSqlite addLbData 同步表--------------');
+        this.syncRcbTime(en,en.tn,DataConfig.AC_O);
+        resolve(data);
+      }).catch(e=>{
+        console.log('------------- WorkSqlite addLbData Error：' + JSON.stringify(e));
+        reject(e);
+      })
+    })
   }
 
+  // getlb():Promise<any>{
+  //  let sql = 'select sI,cft,cf,ac,fh from GTD_C_BO ' +
+  //   'union select sI,cft,cf,ac,fh from GTD_C_C ' +
+  //   'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
+  //   'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
+  //   'union select sI,cft,cf,ac,fh from GTD_C_MO';
+  //  return this.baseSqlite.executeSql(sql,[]);
+  // }
   /**
    * 更新对应标签表数据
    * @param {string} sI 日程主键
@@ -559,18 +608,21 @@ export class WorkSqlite{
    * @param {RcEntity} en
    * @param {string} ac 执行动作0添加，1更新，2删除
    */
-  syncRgcTime(en:RcpEntity,ac:string): Promise<any> {
+  syncRgcTime(ens:Array<RcpEntity>,ac:string): Promise<any> {
     let sql = '';
-    let sync = new SyncEntity();
-    sync.tableA = en.pI ;
-    sync.tableB = en.sI;
-    sync.tableC = en.son;
-    sync.tableD = en.uI;
-    sync.tableE = en.sa;
-    sync.tableF = en.uI;
-    sync.tableG = en.rui;
-    sync.action= ac;
-    sync.tableName = DataConfig.GTD_D
-    return this.baseSqlite.save(sync);
+    for (let en of ens){
+      let sync = new SyncEntity();
+      sync.tableA = en.pI ;
+      sync.tableB = en.sI;
+      sync.tableC = en.son;
+      sync.tableD = en.uI;
+      sync.tableE = en.sa;
+      sync.tableF = en.uI;
+      sync.tableG = en.rui;
+      sync.action= ac;
+      sync.tableName = DataConfig.GTD_D
+      sql+=sync.isq;
+    }
+    return this.baseSqlite.importSqlToDb(sql);
   }
 }

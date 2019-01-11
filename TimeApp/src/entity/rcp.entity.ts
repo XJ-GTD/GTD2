@@ -5,17 +5,17 @@
 //日程参与表
 export class RcpEntity {
 
-  private _pI: string=null;//日程参与人表uuID
-  private _sI: string=null;   //关联日程UUID
-  private _son:string=null; //日程别名
-  private _sa: string=null;   //修改权限 0不可修改，1可修改
-  private _ps:string=null; //完成状态
-  private _cd:string=null;  //创建时间
-  private _pd: string=null;   //完成时间
-  private _uI: string=null;  //参与人用户ID
-  private _rui: string=null;  //联系人ID
+  private _pI: string='';//日程参与人表uuID
+  private _sI: string='';   //关联日程UUID
+  private _son:string=''; //日程别名
+  private _sa: string='';   //修改权限 0不可修改，1可修改
+  private _ps:string=''; //完成状态
+  private _cd:string='';  //创建时间
+  private _pd: string='';   //完成时间
+  private _uI: string='';  //参与人用户ID
+  private _rui: string='';  //联系人ID
   private _ib: string='0';  //是否本地:0非本地；1本地日历 默认非本地
-  private _bi: string=null; //本地日程id
+  private _bi: string=''; //本地日程id
   private _sdt: number = 0; //日程是否发送状态;0未发送，1同意发送，2拒绝发送，3未注册
   /*
    * 创建表

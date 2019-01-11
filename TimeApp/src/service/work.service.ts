@@ -43,6 +43,8 @@ W
                 private rcResful:RcRestful) {
   }
 
+
+
   /**
    * 添加日程
    * @param {string} ct 标题
@@ -72,7 +74,7 @@ W
       rc.sI=this.util.getUuid();
       let psl = new Array<PsModel>();
       console.log("----- workService arc 添加日程开始-------");
-      this.baseSqlite.save(rc).then(data=>{
+      this.workSqlite.save(rc).then(data=>{
           console.log("----- workService arc 添加日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 添加日程子表-------");
           return this.workSqlite.addLbData(rc.sI,rc.lI,cft,rm,ac,'0');
@@ -91,12 +93,15 @@ W
               //}
             }
           }
-          console.log("WorkService arc() restful request " + SkillConfig.BC_SCC+" start");
-          return this.rcResful.sc(rc.uI,SkillConfig.BC_SCC,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'');
+
+          if(DataConfig.uInfo.uty=='1'){
+            console.log("WorkService arc() restful request " + SkillConfig.BC_SCC+" start");
+            return this.rcResful.sc(rc.uI,SkillConfig.BC_SCC,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'');
+          }
         }
       }).then(data=>{
         console.log("WorkService arc() restful request end : " +JSON.stringify(data));
-        if(psl.length>0 && data.code==0 && data.data.players.length>0){
+        if(psl.length>0 && data != null && data.code==0 && data.data.players.length>0){
           let players = data.data.players;
           for(let i=0;i<ruL.length;i++){
             for(let j=0;j<players.length;j++){
@@ -160,7 +165,7 @@ W
       rc.lI=lbI;
       rc.sI=sI;
       console.log("------ WorkService arcMq() Start ------------");
-      this.baseSqlite.save(rc)
+      this.workSqlite.save(rc)
         .then(data=>{
           console.log("----- workService arc 添加日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 添加日程子表-------");
