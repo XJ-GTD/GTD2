@@ -520,7 +520,7 @@ export class WorkSqlite{
    * @param {RcEntity} en
    * @param {string} ac 执行动作0添加，1更新，2删除
    */
-  syncRuTime(en:RcbModel,tn:string,ac:string): Promise<any> {
+  syncRcbTime(en:RcbModel,tn:string,ac:string): Promise<any> {
     let sql = '';
     let sync = new SyncEntity();
     sync.tableA = en.id ;
@@ -540,7 +540,7 @@ export class WorkSqlite{
    * @param {RcEntity} en
    * @param {string} ac 执行动作0添加，1更新，2删除
    */
-  syncRuTime(en:RcEntity,ac:string): Promise<any> {
+  syncRcTime(en:RcEntity,ac:string): Promise<any> {
     let sql = '';
     let sync = new SyncEntity();
     sync.tableA = en.sI ;
@@ -559,7 +559,7 @@ export class WorkSqlite{
    * @param {RcEntity} en
    * @param {string} ac 执行动作0添加，1更新，2删除
    */
-  syncRuTime(en:RcpEntity,ac:string): Promise<any> {
+  syncRgcTime(en:RcpEntity,ac:string): Promise<any> {
     let sql = '';
     let sync = new SyncEntity();
     sync.tableA = en.pI ;

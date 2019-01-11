@@ -224,7 +224,7 @@ export class RelmemSqlite {
    * 服务器定时同步群组联系人表
    * @param {JhEntity} en
    */
-  syncRuTime(en:RguEntity): Promise<any> {
+  syncRguTime(en:RguEntity): Promise<any> {
     let sql = '';
     let sync = new SyncEntity();
     sync.tableA = en.id ;
