@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { Content, IonicPage, NavController, NavParams, Tabs, ViewController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Content, IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { XiaojiAssistantService } from "../../service/util-service/xiaoji-assistant.service";
 import { ParamsService } from "../../service/util-service/params.service";
 import { AiuiModel } from "../../model/aiui.model";
@@ -7,9 +7,7 @@ import { ScheduleModel } from "../../model/schedule.model";
 import { XiaojiFeedbackService } from "../../service/util-service/xiaoji-feedback.service";
 import { Hb01Page } from "../hb01/hb01";
 import { DwEmitService } from "../../service/util-service/dw-emit.service";
-import {SkillConfig} from "../../app/skill.config";
-import {RcModel} from "../../model/rc.model";
-import {DataConfig} from "../../app/data.config";
+import { DataConfig } from "../../app/data.config";
 
 declare var cordova: any;
 /**
@@ -234,14 +232,6 @@ export class HbPage {
     this.navCtrl.push("SaPage");
   }
 
-  // //修改输入
-  // changeText(data) {
-  //   if (data != null && data != "") {
-  //     let url = AppConfig.XUNFEI_URL_TEXT;
-  //     this.messageHanding(url, data);
-  //   }
-  // }
-
   scrollToBottom(){
     setTimeout(() => {
       this.content.scrollToBottom();
@@ -249,7 +239,6 @@ export class HbPage {
   }
 
   /*==================== 聊天界面 end ===================*/
-
 
   //返回方法
   goBack() {
