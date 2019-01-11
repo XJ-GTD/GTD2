@@ -34,7 +34,9 @@ export class HbPage {
 
   U1: string = DataConfig.U1;
   S1: string = DataConfig.S1;
+  S4: string = DataConfig.S4;
   S5: string = DataConfig.S5;
+  S6: string = DataConfig.S6;
 
   userText: string; //用户输入显示文本
   speech: string;   //语音助手显示文本

@@ -28,9 +28,9 @@ public class AIButlerServiceImpl implements IAIButlerService {
      * @param data
      * @return
      */
-    public AiUiResponse answerText(String data) {
+    public AiUiResponse answerText(String data, String userId) {
 
-        JSON outJson = this.answerTextResJSON(data);
+        JSON outJson = this.answerTextResJSON(data, userId);
 
         AiUiResponse response  = JSON.toJavaObject(outJson,AiUiResponse.class);
 
@@ -43,10 +43,10 @@ public class AIButlerServiceImpl implements IAIButlerService {
      * @param data
      * @return
      */
-    public AiUiResponse answerAudio(String data) {
+    public AiUiResponse answerAudio(String data, String userId) {
 
 
-        JSON outJson = this.answerTextResJSON(data);
+        JSON outJson = this.answerTextResJSON(data, userId);
 
         AiUiResponse response  = JSON.toJavaObject(outJson,AiUiResponse.class);
 
@@ -54,9 +54,9 @@ public class AIButlerServiceImpl implements IAIButlerService {
     }
 
     @Override
-    public JSON answerTextResJSON(String data) {
+    public JSON answerTextResJSON(String data, String userId) {
         logger.debug("service*********************************" + data);
-        String outData = AiUiUtil.readAudio(data, 1);
+        String outData = AiUiUtil.readAudio(data, 1, userId);
         logger.debug("service*********************************outData" + outData);
         JSON outJson = JSON.parseObject(outData);
         logger.debug("service*********************************outJson" + outJson);
@@ -64,8 +64,8 @@ public class AIButlerServiceImpl implements IAIButlerService {
     }
 
     @Override
-    public JSON answerAudioResJSON(String data) {
-        String outData = AiUiUtil.readAudio(data, 0);
+    public JSON answerAudioResJSON(String data, String userId) {
+        String outData = AiUiUtil.readAudio(data, 0, userId);
         JSON outJson = JSON.parseObject(outData);
         return outJson;
     }
