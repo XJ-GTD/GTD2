@@ -644,6 +644,7 @@ W
       rc.sd=st;
       let nopy=py; //不存在的联系人
       let ruL = new Array<RuModel>();
+      rc.rus=ruL;
       console.log("---------- WorkService 讯飞语音添加日程 Start ------------");
       console.log("  ------ WorkService 讯飞语音添加日程: 匹配参与人 ----");
       this.relmem.xfGetRu(py).then(data=>{
