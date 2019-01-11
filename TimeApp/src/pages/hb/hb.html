@@ -39,10 +39,21 @@
             <ion-item *ngFor="let sj of message.scL" (click)="showScheduleDetail(sj)">
               <h2>{{sj.sd}}</h2>
               <p>
-                <ion-badge>{{sj.lan}}</ion-badge>
+                <ion-badge>{{sj.sN}}</ion-badge>
               </p>
             </ion-item>
           </ion-list>
+        </ion-card>
+
+        <!-- 判断消息是数据：新增日程 -->
+        <ion-card *ngIf="S6 == message.tt"  class="scl_list animated bounceIn">
+              <h2>{{message.sc.sd}}</h2>
+              <p>
+                <ion-badge>{{message.sc.sN}}</ion-badge>
+              </p>
+            <ion-item *ngFor="let ru of message.sc.rus">
+              <p>{{ru.ran}}</p>
+            </ion-item>
         </ion-card>
       </ion-item>
     </ion-list>
