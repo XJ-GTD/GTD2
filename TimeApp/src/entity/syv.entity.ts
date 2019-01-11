@@ -33,7 +33,7 @@ export class SyvEntity {
 
   get isq(): string {
     let sql='insert into GTD_S_V ' +
-      '(si,fv,bv,uI) values('+this._si+',"'+ this._fv+'",'+ this._bv+',"'+this._st+ '")';
+      '(si,fv,bv,st) values('+this._si+',"'+ this._fv+'",'+ this._bv+',"'+this._st+ '")';
     this._isq=sql;
     return this._isq;
   }
