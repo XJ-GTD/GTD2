@@ -32,4 +32,16 @@ export class SyncRestful{
       deviceId: dI
     })
   }
+  /**
+   * 定时更新接口
+   * @returns {Promise<any>}
+   */
+  syncTime(uI:string,dI:string,vs:string,sdl:any):Promise<any> {
+    return this.bs.post(AppConfig.SYNC_TIME_URL, {
+      userId:uI,
+      deviceId: dI,
+      version:vs,
+      syncDataList:sdl
+    })
+  }
 }

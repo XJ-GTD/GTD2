@@ -16,6 +16,8 @@ import {UtilService} from "./util-service/util.service";
 import {WorkSqlite} from "./sqlite/work-sqlite";
 import {RelmemSqlite} from "./sqlite/relmem-sqlite";
 import {JhSqlite} from "./sqlite/jh-sqlite";
+import {SyvEntity} from "../entity/syv.entity";
+import {SyncSqlite} from "./sqlite/sync-sqlite";
 
 /**
  * 初始化
@@ -26,7 +28,8 @@ import {JhSqlite} from "./sqlite/jh-sqlite";
 export class SyncService {
 
   constructor( private base:BaseSqlite,
-               private sync:SyncRestful,
+               private syncR:SyncRestful,
+               private syncS:SyncSqlite,
                private util:UtilService,
                private work:WorkSqlite,
                private relmem:RelmemSqlite,
@@ -43,7 +46,7 @@ export class SyncService {
       let base = new BsModel();
       console.log("------SyncService initzdlb restful 初始化字典数据及标签表 --------")
       if(DataConfig.isFirst != 0){
-        this.sync.init()
+        this.syncR.init()
           .then(data => {
             console.log("-------SyncService initzdlb restful 初始化字典数据及标签表接口返回结果："+JSON.stringify(data))
             base = data
@@ -166,38 +169,20 @@ export class SyncService {
     return new Promise((resolve, reject) =>{
       let sql='';
       let base = new BsModel();
-      this.sync.loginSync(DataConfig.uInfo.uI,this.util.getDeviceId())
+      this.syncR.loginSync(DataConfig.uInfo.uI,this.util.getDeviceId())
         .then(data=> {
           if (data && data.code == 0 && data.data.userDataList.length > 0) {
             let uds = data.data.userDataList;
-            for (let i = 0; i < uds.length; i++) {
-              let ud = uds[i];
-              //alert(ud.tableName.substr(0,5));
-              if (ud.tableName == DataConfig.GTD_B) {
-                sql+=this.relmem.syncToRuSql(ud.dataList);
-              }else if(ud.tableName == DataConfig.GTD_B_X) {
-                sql+=this.relmem.syncToRguSql(ud.dataList);
-              }if (ud.tableName == DataConfig.GTD_C) {
-                sql+=this.work.syncToRcSql(ud.dataList);
-              }else if(ud.tableName == DataConfig.GTD_D) {
-                sql+=this.work.syncToRcpSql(ud.dataList);
-              }else if(ud.tableName.substr(0,5)==DataConfig.GTD_C){
-                sql+=this.work.syncToRcbSql(ud.dataList,ud.tableName);
-              }else if(ud.tableName==DataConfig.GTD_J_H){
-                sql+=this.jh.syncToJhSql(ud.dataList);
-              }
-            }
-            if (sql != '') {
-              this.base.importSqlToDb(sql).then(data => {
-                console.log('----- 登录同步服务器数据成功 ------' + JSON.stringify(data));
-              }).catch(e => {
-                console.error('----- 登录同步服务器数据失败 ------' + JSON.stringify(e));
-              })
-            }
+            this.getsql(sql,uds);
           }
-          console.log('----- 登录同步服务器数据结束 ------' + JSON.stringify(data));
-          resolve(base);
-        }).catch(e=>{
+          if (sql != '') {
+            console.log('----- 登录同步服务器数据导入本地库 ------');
+            return this.base.importSqlToDb(sql);
+          }
+        }).then(data=>{
+        console.log('----- 登录同步服务器数据结束 ------' + JSON.stringify(data));
+        resolve(base);
+      }).catch(e=>{
         console.error('----- 登录同步服务器数据失败 ------' + JSON.stringify(e));
         base.code=ReturnConfig.ERR_CODE;
         base.message=ReturnConfig.ERR_MESSAGE;
@@ -205,5 +190,102 @@ export class SyncService {
       })
     })
 
+  }
+
+  /**
+   * 定时更新接口
+   * @param {string} uI
+   * @param {string} dI
+   * @param {string} vs
+   * @param sdl
+   * @returns {Promise<BsModel>}
+   */
+  syncTime():Promise<BsModel>{
+    return new Promise((resolve, reject) => {
+      let sql = '';
+      let bs = new BsModel();
+      let sv = new SyvEntity();
+      sv.si=1;
+      let sdl:any;
+      let bv:number=0;
+      let fv='0';
+      this.base.getOne(sv).then(data=>{
+        if(data&&data.rows&&data.rows.length>0){
+          bv=data.rows.item(0).bv;
+          fv=data.rows.item(0).fv;
+        }
+        return this.syncS.getsyL(bv);
+      }).then(data=>{
+        bs = data;
+        let sdl = [];
+        if(data && data.rows && data.rows.length>0){
+          bv = data.rows.item(0).id;
+          for(let tn in DataConfig.TABLE_NAMES){
+            let sd:any = {};
+            sd.tableName = tn;
+            sd.dataList=[];
+            for(let i=0;i<data.rows.length;i++){
+              let tb=data.rows.item(i);
+              if(tb.tableName == tn){
+                sd.dataList.push(tb);
+              }
+            }
+            sdl.push(sd);
+          }
+        }
+        return this.syncR.syncTime(DataConfig.uInfo.uI,this.util.getUuid(),fv,sdl)
+      }).then(data=>{
+        if(data.code==0){
+          if(data.userDataList.length>0){
+            fv = data.version;
+          }
+        }
+        if (data && data.code == 0 && data.data.userDataList.length > 0) {
+          let uds = data.data.userDataList;
+          this.getsql(sql,uds);
+        }
+        if (sql != '') {
+          console.log('----- 定时同步服务器数据导入本地库 ------');
+          return this.base.importSqlToDb(sql);
+        }
+      }).then(data=>{
+        sv.bv = bv;
+        sv.fv = fv;
+        return this.base.update(sv);
+      })
+        .then(data=>{
+        resolve(bs);
+      }).catch(e=>{
+        bs.code = ReturnConfig.ERR_CODE;
+        bs.message = ReturnConfig.ERR_MESSAGE;
+        reject(bs);
+      })
+
+    })
+  }
+
+  /**
+   * 拼接SQL
+   * @param {string} sql
+   * @param uds
+   */
+  getsql(sql:string,uds:any){
+    for (let i = 0; i < uds.length; i++) {
+      let ud = uds[i];
+      //alert(ud.tableName.substr(0,5));
+      if (ud.tableName == DataConfig.GTD_B) {
+        sql+=this.relmem.syncToRuSql(ud.dataList);
+      }else if(ud.tableName == DataConfig.GTD_B_X) {
+        sql+=this.relmem.syncToRguSql(ud.dataList);
+      }if (ud.tableName == DataConfig.GTD_C) {
+        sql+=this.work.syncToRcSql(ud.dataList);
+      }else if(ud.tableName == DataConfig.GTD_D) {
+        sql+=this.work.syncToRcpSql(ud.dataList);
+      }else if(ud.tableName.substr(0,5)==DataConfig.GTD_C){
+        sql+=this.work.syncToRcbSql(ud.dataList,ud.tableName);
+      }else if(ud.tableName==DataConfig.GTD_J_H){
+        sql+=this.jh.syncToJhSql(ud.dataList);
+      }
+    }
   }
 }

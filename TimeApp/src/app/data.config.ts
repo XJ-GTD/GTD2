@@ -46,6 +46,9 @@ export class DataConfig {
   public static GTD_C_MO:string='GTD_C_MO';//日程子表
   public static GTD_J_H:string='GTD_J_H';//计划表
 
+  public static TABLE_NAMES:Array<string>=['GTD_B','GTD_B_X','GTD_C','GTD_D',
+    'GTD_C_RC','GTD_C_C','GTD_C_BO','GTD_C_JN','GTD_C_MO','GTD_J_H'];//计划表
+
   /* =============== 语音页面type =============*/
   public static U1: string = "U1"; //用户语音文本
   public static S1: string = "S1"; //回答文本
