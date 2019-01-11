@@ -58,6 +58,7 @@ export class DataConfig {
   public static S5: string = "S5";//日程列表数据
   public static S6: string = "S6";//联系人单条数据
   public static S7: string = "S7";//联系人列表数据
+  public static D1: string = "D1";//业务处理
 
   /* ============ mq返回类型 ===============*/
   public static MQTQ : string = '0'; // 处理逻辑前用户问答

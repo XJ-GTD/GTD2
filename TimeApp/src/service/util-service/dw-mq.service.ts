@@ -269,6 +269,7 @@ export class DwMqService {
         let ms = new MsEntity();
         ms.mn=ct;
         ms.md=sd;
+        ms.rI=sI;
         ms.mt='0';
         return this.msSqlite.addMs(ms);
       }).then(data=>{
@@ -296,6 +297,7 @@ export class DwMqService {
       let ms = new MsEntity();
       ms.mn=ct;
       ms.md=sd;
+      ms.rI=sI;
       ms.mt='0';
       return this.msSqlite.addMs(ms);
     }).then(data=>{
@@ -399,17 +401,27 @@ export class DwMqService {
       } else if (t == SkillConfig.XF_OTS) { //全部其他技能
 
       } else if (t == SkillConfig.BC_SCC) { //添加日程
-        aiui.tt = DataConfig.S5;
+        aiui.tt = DataConfig.D1;
         let text = '您与一条新的消息'
+        this.dwEmit.setHaData(aiui);
         this.xiaojiSpeech.speakText(text, success => {
         });
       } else if (t == SkillConfig.BC_SCD) { //删除日程
-
-      } else if (t == SkillConfig.BC_SCU) { //更新日程
-
-      } else if (t == SkillConfig.BC_PEC) { //添加参与人
-        aiui.tt = DataConfig.S6;
+        aiui.tt = DataConfig.D1;
         let text = '您与一条新的消息'
+        this.dwEmit.setHaData(aiui);
+        this.xiaojiSpeech.speakText(text, success => {
+        });
+      } else if (t == SkillConfig.BC_SCU) { //更新日程
+        aiui.tt = DataConfig.D1;
+        let text = '您与一条新的消息'
+        this.dwEmit.setHaData(aiui);
+        this.xiaojiSpeech.speakText(text, success => {
+        });
+      } else if (t == SkillConfig.BC_PEC) { //添加参与人
+        aiui.tt = DataConfig.D1;
+        let text = '您与一条新的消息';
+        this.dwEmit.setHaData(aiui);
         this.xiaojiSpeech.speakText(text, success => {
         });
       }
@@ -424,7 +436,6 @@ export class DwMqService {
       setTimeout(() => {
         this.dwEmit.setHbData(aiui);//测试用
       }, i);
-
     }
   }
 
