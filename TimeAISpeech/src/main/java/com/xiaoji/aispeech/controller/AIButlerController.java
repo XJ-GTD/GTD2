@@ -124,6 +124,7 @@ public class AIButlerController {
                     List<Semantic> semantics = intent.getSemantic();
 
                     NlpOutDto nlp = new NlpOutDto();
+                    nlp.setText(intent.getText());
                     nlp.setAnswer(intent.getAnswer().getText());
                     nlp.setAnswerImg(intent.getAnswer().getImgUrl());
                     nlp.setAnswerUrl(intent.getAnswer().getUrl());
