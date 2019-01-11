@@ -23,10 +23,11 @@ export class UtilService {
 
   /**
    * 获取UUID
+   * ABCDEFGHIJKLMNOPQRSTUVWXYZ
    * @returns {string}
    */
   public getUuid() {
-    let CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+    let CHARS = '0123456789abcdefghijklmnopqrstuvwxyz'.split('');
 
     let uuid = function (len, radix) {
       var chars = CHARS, uuid = [], i;

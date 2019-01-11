@@ -17,7 +17,10 @@ export class RuModel extends BsModel{
   private _rel: string=null; // 联系类型
   private _hiu: string=null; // 联系人头像URL
   private _sdt: number = 0; //日程是否发送状态;0未发送，1同意发送，2拒绝发送，3未注册
-  private _ot:string;//0是未被添加，1是同意，2是拉黑
+  private _ot:string='';//0是未被添加，1是同意，2是拉黑
+  private _is:string='';//0本地存在，1本地不存在
+  private _rugId:string; //群组关联ID
+  private _bmi:string; //群组ID
   get id(): string {
     return this._id;
   }
@@ -112,5 +115,29 @@ export class RuModel extends BsModel{
 
   set ot(value: string) {
     this._ot = value;
+  }
+
+  get is(): string {
+    return this._is;
+  }
+
+  set is(value: string) {
+    this._is = value;
+  }
+
+  get rugId(): string {
+    return this._rugId;
+  }
+
+  set rugId(value: string) {
+    this._rugId = value;
+  }
+
+  get bmi(): string {
+    return this._bmi;
+  }
+
+  set bmi(value: string) {
+    this._bmi = value;
   }
 }

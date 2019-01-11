@@ -16,28 +16,28 @@ public interface IAIButlerService {
      * @param data
      * @return
      */
-    public AiUiResponse answerText(String data) ;
+    public AiUiResponse answerText(String data, String userId) ;
 
     /**
      * 音频方法
      * @param data
      * @return
      */
-    public AiUiResponse answerAudio(String data);
+    public AiUiResponse answerAudio(String data, String userId);
 
     /**
      * 文本方法
      * @param data
      * @return
      */
-    public JSON answerTextResJSON(String data) ;
+    public JSON answerTextResJSON(String data, String userId) ;
 
     /**
      * 音频方法
      * @param data
      * @return
      */
-    public JSON answerAudioResJSON(String data);
+    public JSON answerAudioResJSON(String data, String userId);
 
     /**
      * 上传资源

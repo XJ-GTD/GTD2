@@ -13,6 +13,7 @@ import {MsSqlite} from "./ms-sqlite";
 import {ScheduleModel} from "../../model/schedule.model";
 import {SyncModel} from "../../model/sync.model";
 import {RcbModel} from "../../model/rcb.model";
+import {SyncEntity} from "../../entity/sync.entity";
 
 
 /**
@@ -319,11 +320,16 @@ export class WorkSqlite{
    * @param {string} jh 计划名称
    */
   getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string):Promise<any>{
-    let sql ="select gc.*,gf.lan,jh.jn from GTD_C gc " +
-      "left join GTD_D gd on gc.sI = gd.sI " +
-      "left join GTD_F gf on gf.lai = gc.lI " +
-      "left join GTD_J_H jh on jh.ji = gc.ji " +
-      "where gd.uI='"+DataConfig.uInfo.uI+"'";
+    let sql ='select gc.*,gf.lan,jh.jn from GTD_C gc ' +
+      'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
+      'union select sI,cft,cf,ac,fh from GTD_C_C ' +
+      'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
+      'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
+      'union select sI,cft,cf,ac,fh from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
+      'left join GTD_D gd on gc.sI = gd.sI ' +
+      'left join GTD_F gf on gf.lai = gc.lI ' +
+      'left join GTD_J_H jh on jh.ji = gc.ji ' +
+      'where gd.uI="'+DataConfig.uInfo.uI+'"';
     if(ct != null && ct != ""){
       sql = sql + " and gd.son like '%" + ct +"%'"
     }
@@ -453,6 +459,7 @@ export class WorkSqlite{
     }
     return sql;
   }
+
   /**
    * 服务器同步日程参与人表转sql
    * @param {Array<SyncModel>} syncs
@@ -507,5 +514,63 @@ export class WorkSqlite{
       }
     }
     return sql;
+  }
+  /**
+   * 服务器定时同步日程子表
+   * @param {RcEntity} en
+   * @param {string} ac 执行动作0添加，1更新，2删除
+   */
+  syncRcbTime(en:RcbModel,tn:string,ac:string): Promise<any> {
+    let sql = '';
+    let sync = new SyncEntity();
+    sync.tableA = en.id ;
+    sync.tableB = en.sI;
+    sync.tableC = en.rm;
+    sync.tableD = en.cft;
+    sync.tableE = en.ac;
+    sync.tableF = en.dt;
+    sync.tableG = en.fh;
+    sync.tableH = en.wd;
+    sync.action= ac;
+    sync.tableName = tn;
+    return this.baseSqlite.save(sync);
+  }
+  /**
+   * 服务器定时同步日程表
+   * @param {RcEntity} en
+   * @param {string} ac 执行动作0添加，1更新，2删除
+   */
+  syncRcTime(en:RcEntity,ac:string): Promise<any> {
+    let sql = '';
+    let sync = new SyncEntity();
+    sync.tableA = en.sI ;
+    sync.tableB = en.sN;
+    sync.tableC = en.lI;
+    sync.tableD = en.uI;
+    sync.tableE = en.ji;
+    sync.tableF = en.sd;
+    sync.tableG = en.ed;
+    sync.action= ac;
+    return this.baseSqlite.save(sync);
+  }
+
+  /**
+   * 服务器定时同步参与人表
+   * @param {RcEntity} en
+   * @param {string} ac 执行动作0添加，1更新，2删除
+   */
+  syncRgcTime(en:RcpEntity,ac:string): Promise<any> {
+    let sql = '';
+    let sync = new SyncEntity();
+    sync.tableA = en.pI ;
+    sync.tableB = en.sI;
+    sync.tableC = en.son;
+    sync.tableD = en.uI;
+    sync.tableE = en.sa;
+    sync.tableF = en.uI;
+    sync.tableG = en.rui;
+    sync.action= ac;
+    sync.tableName = DataConfig.GTD_D
+    return this.baseSqlite.save(sync);
   }
 }

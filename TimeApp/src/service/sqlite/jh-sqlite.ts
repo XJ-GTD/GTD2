@@ -4,6 +4,7 @@ import {RguEntity} from "../../entity/rgu.entity";
 import {JhEntity} from "../../entity/jh.entity";
 import {SyncModel} from "../../model/sync.model";
 import {DataConfig} from "../../app/data.config";
+import {SyncEntity} from "../../entity/sync.entity";
 
 /**
  * 授权联系人
@@ -57,9 +58,8 @@ export class JhSqlite {
     let sql = "SELECT * FROM GTD_J_H where ji=?"
     return this.baseSqlite.executeSql(sql,[ji]);
   }
-
   /**
-   * 服务器同步日程参与人表转sql
+   * 服务器登录同步计划表转sql
    * @param {Array<SyncModel>} syncs
    */
   syncToJhSql(syncs:Array<SyncModel>){
@@ -79,5 +79,22 @@ export class JhSqlite {
     }
     return sql;
   }
+
+  /**
+   * 服务器定时同步计划表
+   * @param {JhEntity} en
+   */
+  syncJhTime(en:JhEntity,ac:string): Promise<any> {
+    let sql = '';
+      let sync = new SyncEntity();
+      sync.tableA = en.ji;
+      sync.tableB = en.jn ;
+      sync.tableC = en.jg;
+      sync.tableD = DataConfig.uInfo.uI;
+      sync.action = ac;
+      sync.tableName = DataConfig.GTD_J_H;
+    return this.baseSqlite.save(sync);
+  }
+
 
 }

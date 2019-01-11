@@ -29,15 +29,26 @@ export class RelmemService {
   su(am:string):Promise<RuModel>{
     return new Promise((resolve, reject) =>{
       let rs = new RuModel();
-      console.log("------------ RelmemService su() start user ---------------");
-      this.pnRes.su(am).then(data=>{
-        rs=data;
-        if(data && data.code==0){
-          rs.rI=data.data.userId;
-          rs.hiu=data.data.headImg;
-          rs.rN=data.data.userName;
+      console.log("------------ RelmemService su() start user query local ---------------");
+      this.relmemSqlite.getrus('','','',am,'0').then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          rs=data.rows.item(0);
+          rs.is='0';
+        }else{
+          console.log("------------ RelmemService su() resful server ---------------");
+          return this.pnRes.su(am);
         }
-        console.log("------------ RelmemService su() user end : "+JSON.stringify(data));
+      }).then(data=>{
+        if(rs.is != '0'){
+          rs=data;
+          if(data && data.code==0){
+            rs.rI=data.data.userId;
+            rs.hiu=data.data.headImg;
+            rs.rN=data.data.userName;
+            rs.is='1';
+          }
+          console.log("------------ RelmemService su() user end : "+JSON.stringify(data));
+        }
         resolve(rs);
       }).catch(e=>{
         alert("user su() Error: " + JSON.stringify(e));
@@ -100,11 +111,12 @@ export class RelmemService {
             }).then(data=>{
               if(auI != null && auI !=''){
                 console.log("--------- 4.RelmemService aru() restful add contact end: "+JSON.stringify(data));
-                if(ru.rI != null){
-                  this.addPlayers(ru.id,uI,ru.ran,ru.rC,ru.rI,ru.rN,ru.hiu,ru.rF,'1')
-                }
-                base = data;
+                //base = data;
               }
+              console.log("--------- 5.RelmemService aru() sync loacl sqlite start --------");
+              return this.relmemSqlite.syncRuTime(ru,DataConfig.AC_O);
+            }).then(data=>{
+              console.log("--------- 6.RelmemService aru() sync loacl sqlite End: "+JSON.stringify(data));
               resolve(base);
             }).catch(e=>{
               console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e));
@@ -123,6 +135,10 @@ export class RelmemService {
             // }
             this.addRgus(ru.id,qrL);
           }
+          console.log("--------- 5.RelmemService aru() sync loacl sqlite start --------");
+          return this.relmemSqlite.syncRuTime(ru,DataConfig.AC_O);
+        }).then(data=>{
+          console.log("--------- 6.RelmemService aru() sync loacl sqlite End: "+JSON.stringify(data));
           resolve(base);
         }).catch(e=>{
           base.code=ReturnConfig.ERR_CODE;
@@ -171,9 +187,11 @@ export class RelmemService {
         //添加本地联系人
         return this.relmemSqlite.aru(ru).then(data=>{
           console.log("--------- 2.RelmemService aru() sqlite add contact end: "+JSON.stringify(data));
-          if(ru.rI != null){
-            this.addPlayers(ru.id,DataConfig.uInfo.uI,ru.ran,ru.rC,ru.rI,ru.rN,ru.hiu,ru.rF,'1')
-          }
+          //入本地库
+          return this.relmemSqlite.syncRuTime(ru,DataConfig.AC_O);
+        }).then(data=>{
+          console.log("--------- 6.RelmemService aru() sync loacl sqlite End: "+JSON.stringify(data));
+          resolve(base);
         }).catch(e=>{
           console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e));
           base.code=ReturnConfig.ERR_CODE;
@@ -218,12 +236,16 @@ export class RelmemService {
       ru.ranpy = this.util.chineseToPinYin(ru.ran);
       let base=new BsModel();
       this.relmemSqlite.uru(ru).then(data=>{
-        //如果是群
-        if(rel=='1' && qrL != null && qrL.length>0){
-          for(let i=0;i<qrL.length;i++){
-            this.addRgu(ru.id,qrL[i].id);
-          }
-        }
+        // //如果是群
+        // if(rel=='1' && qrL != null && qrL.length>0){
+        //   for(let i=0;i<qrL.length;i++){
+        //     this.addRgu(ru.id,qrL[i].id);
+        //   }
+        // }
+        //入本地库
+        return this.relmemSqlite.syncRuTime(ru,DataConfig.AC_O);
+      }).then(data=>{
+        console.log("--------- 6.RelmemService aru() sync loacl sqlite End: "+JSON.stringify(data));
         resolve(base);
       }).catch(e=>{
         base.code=ReturnConfig.ERR_CODE;
@@ -245,11 +267,13 @@ export class RelmemService {
     return new Promise((resolve, reject)=>{
       let ruo=new RuoModel();
       let rus = new Array<RuModel>();
-      let ru = new RuModel();
-      ru.hiu=DataConfig.uInfo.hIU;
-      ru.ran=DataConfig.uInfo.uN;
-      ru.rI=DataConfig.uInfo.uI;
-      rus.push(ru);
+      // if(rel == 0){
+      //   let ru = new RuModel();
+      //   ru.hiu=DataConfig.uInfo.hIU;
+      //   ru.ran=DataConfig.uInfo.uN;
+      //   ru.rI=DataConfig.uInfo.uI;
+      //   rus.push(ru);
+      // }
       ruo.us=rus;
       this.relmemSqlite.getrus(id,ran,rN,rC,rel).then(data=>{
         if(data&& data.rows && data.rows.length>0){
@@ -277,16 +301,24 @@ export class RelmemService {
   addRgu(bi:string,bmi:string):Promise<BsModel>{
     return new Promise((resolve, reject)=>{
       let rgu=new RguEntity();
+      rgu.id=this.util.getUuid();
       rgu.bi=bi;
       rgu.bmi=bmi;
       let base=new BsModel();
       this.relmemSqlite.addRgu(rgu).then(data=>{
+        console.log("--------- 1.RelmemService addRgu() sync loacl sqlite start --------");
+        let rugL = new Array<RguEntity>();
+        rugL.push(rgu);
+        return this.relmemSqlite.syncRguTime(rugL,DataConfig.AC_O);
+      }).then(data=>{
+        console.log("--------- 2.RelmemService addRgu() sync loacl sqlite End: "+JSON.stringify(data));
         resolve(base);
       }).catch(e=>{
+        console.log("--------- 3.RelmemService addRgu() sync loacl sqlite ERROR: "+JSON.stringify(e));
           base.code=ReturnConfig.ERR_CODE;
           base.message=e.message;
           reject(base);
-        })
+      })
     })
   }
   /**
@@ -298,15 +330,23 @@ export class RelmemService {
   addRgus(id:string,rus:Array<RuModel>):Promise<BsModel>{
     return new Promise((resolve, reject)=>{
       let bs = new BsModel();
-      if(rus && rus.length>0){
-        if(DataConfig.IS_MOBILE){
-          let sql = '';
+          let sql='';
+          let rugL = new Array<RguEntity>();
           for(let i=0;i<rus.length;i++){
-            sql+='insert into GTD_B_X (bi,bmi) ' + 'values("'+ id+'","'+ rus[i].id+'");'
+            let rgu = new RguEntity();
+            rgu.bi = rus[i].id;
+            rgu.bmi = id;
+            rgu.id = this.util.getUuid();
+            rugL.push(rgu);
+            sql+=rgu.isq;
           }
           console.log("--------- RelmemService addRgus() add Group personnel sql: "+sql);
           this.baseSqlite.importSqlToDb(sql).then(data=>{
             console.log("--------- RelmemService addRgus() restful add Group personnel End: "+JSON.stringify(data));
+            console.log("--------- 5.RelmemService addRgus() sync loacl sqlite start --------");
+            return this.relmemSqlite.syncRguTime(rugL,DataConfig.AC_O);
+          }).then(data=>{
+            console.log("--------- 6.RelmemService addRgus() sync loacl sqlite End: "+JSON.stringify(data));
             resolve(bs);
           }).catch(e=>{
             console.log("--------- RelmemService addRgus() restful add Group personnel Error: "+JSON.stringify(e));
@@ -314,15 +354,7 @@ export class RelmemService {
             bs.message=e.message;
             reject(bs);
           })
-        }else{
-          for(let i=0;i<rus.length;i++){
-            this.addRgu(id,rus[i].id);
-          }
-          resolve(bs);
-        }
-      }else{
 
-      }
 
     })
   }
@@ -356,10 +388,17 @@ export class RelmemService {
    * @param {string} id 群成员ID
    * @returns {Promise<BsModel>}
    */
-  delRgu(bi:string,id:string):Promise<BsModel>{
+  delRgu(id:string,bmi:string):Promise<BsModel>{
     return new Promise((resolve, reject)=>{
       let base=new BsModel();
-      this.relmemSqlite.delRgu(bi,id).then(data=>{
+      this.relmemSqlite.delRgu(id,bmi).then(data=>{
+        let rugL = new Array<RguEntity>();
+        let rgu = new RguEntity();
+        rgu.id = id;
+        rugL.push(rgu);
+        return this.relmemSqlite.syncRguTime(rugL,DataConfig.AC_D);
+      }).then(data=>{
+        console.log("--------- 2.RelmemService addRgu() sync loacl sqlite End: "+JSON.stringify(data));
         resolve(base);
       }).catch(e=>{
           base.code=1;
@@ -370,8 +409,8 @@ export class RelmemService {
   }
 
   /**
-   * 删除联系人
-   * @param {string} id 群成员ID
+   * 删除联系人/群组
+   * @param {string} id 联系人/群组ID
    * @returns {Promise<BsModel>}
    */
   delRu(id:string):Promise<BsModel>{
@@ -379,39 +418,17 @@ export class RelmemService {
       let base=new BsModel();
       let ru = new RuEntity();
       ru.id = id;
-      ru.rel=null;
+      console.log("--------- RelmemService delRu() 删除联系人或群组 start --------");
       this.relmemSqlite.dru(ru).then(data=>{
+        return this.relmemSqlite.syncRuTime(ru,DataConfig.AC_D);
+      }).then(data=>{
+        console.log("--------- RelmemService addRgu() sync loacl sqlite End: "+JSON.stringify(data));
         resolve(base);
       }).catch(e=>{
         base.code=1;
         base.message=e.message;
         reject(base);
       })
-    })
-  }
-
-
-  /**
-   * 修改
-   * @param {string} bi
-   * @param {string} bmi
-   * @returns {Promise<BsModel>}
-   */
-  updateRgu(bi:string,bmi:string):Promise<BsModel>{
-    return new Promise((resolve, reject)=>{
-      let ru=new RuEntity();
-
-      let base=new BsModel();
-      this.relmemSqlite.uru(ru).then(data=>{
-        base.code=0;
-        base.message="success";
-        resolve(base);
-      })
-        .catch(e=>{
-          base.code=1;
-          base.message=e.message;
-          reject(base);
-        })
     })
   }
 
@@ -425,7 +442,16 @@ export class RelmemService {
    */
   SendAgain(ui:string,ri:string,rc:string):Promise<BsModel>{
     return new Promise((resolve, reject)=>{
-
+      let bs = new BsModel();
+      this.pnRes.au(ui,rc,ri).then(data=>{
+        bs = data;
+        bs.message = ReturnConfig.RETURN_MSG.get(data.code);
+        resolve(bs);
+      }).catch(e=>{
+        bs.code = ReturnConfig.ERR_CODE;
+        bs.message = ReturnConfig.ERR_MESSAGE;
+        reject(bs);
+      })
     })
   }
 

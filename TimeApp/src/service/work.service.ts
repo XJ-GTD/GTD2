@@ -457,7 +457,7 @@ W
    * @param d 'yyyy-MM-dd'
    */
   getOd(d:string):Promise<RcpoModel>{
-    d=d.replace(new RegExp('-','g'),'/');;
+    d=d.replace(new RegExp('-','g'),'/');
     return new Promise((resolve, reject) =>{
       let rcpo = new RcpoModel();
       console.log("----- WorkService getOd(获取当天事件) start -----");
@@ -495,6 +495,8 @@ W
     return new Promise((resolve, reject) =>{
       let rco = new RcoModel();
       console.log("----- WorkService getwL(根据条件查询日程) start -----");
+      sd = sd.replace(new RegExp('-','g'),'/');
+      ed = ed.replace(new RegExp('-','g'),'/');
       this.workSqlite.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
         console.log("----- WorkService getwL(根据条件查询日程) result:" + JSON.stringify(data));
         let rcs = new Array<RcModel>()

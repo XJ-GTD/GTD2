@@ -7,6 +7,7 @@ import { BsModel } from "../model/out/bs.model";
 import { JhoModel } from "../model/out/jho.model";
 import { JhModel } from "../model/jh.model";
 import {ReturnConfig} from "../app/return.config";
+import {DataConfig} from "../app/data.config";
 
 
 /**
@@ -31,9 +32,15 @@ export class JhService {
       jh.jn = jn;
       jh.jg = jg;
       let bs=new BsModel();
+      console.log('---------JhService:ajh 开始添加计划 ----------');
       this.jhSqlite.ajh(jh).then(data=>{
+        console.log('---------JhService:ajh 开始添加计划成功，开始添加同步库 ----------');
+        return this.jhSqlite.syncJhTime(jh,DataConfig.AC_O);
+      }).then(data=>{
+        console.log('--------- JhService:ajh 计划添加同步库结束 ----------');
         resolve(bs)
       }).catch(e=>{
+        console.error('---------JhService:ajh 添加计划 ERROR: '+ JSON.stringify(e));
         bs.code=ReturnConfig.ERR_CODE;
         bs.message=e.message;
         reject(bs);
@@ -55,9 +62,15 @@ export class JhService {
       jh.jn = jn;
       jh.jg = jg;
       let bs=new BsModel();
+      console.log('---------JhService:ujh 更新计划 start----------');
       this.jhSqlite.ujh(jh).then(data=>{
+        console.log('---------JhService:ujh 更新计划 Success，开始添加同步库 ----------');
+        return this.jhSqlite.syncJhTime(jh,DataConfig.AC_T);
+      }).then(data=>{
+        console.log('--------- JhService:ujh 计划更新同步库结束 ----------');
         resolve(bs)
       }).catch(e=>{
+        console.error('---------JhService:ujh 更新计划 ERROR: '+ JSON.stringify(e));
         bs.code=ReturnConfig.ERR_CODE;
         bs.message=e.message;
         reject(bs);
@@ -99,10 +112,16 @@ export class JhService {
       let jh = new JhEntity();
       jh.ji = ji;
       let bs=new BsModel();
+      console.log('---------JhService:djh 删除计划 start----------');
       this.jhSqlite.djh(jh).then(data=>{
+        console.log('---------JhService:djh 删除计划 Success，开始添加同步库 ----------');
+        return this.jhSqlite.syncJhTime(jh,DataConfig.AC_D);
+      }).then(data=>{
+        console.log('--------- JhService:djh 计划删除同步库结束 ----------');
         resolve(bs)
       }).catch(e=>{
-        bs.code=ReturnConfig.ERR_CODE
+        console.error('---------JhService:djh 删除计划 ERROR: '+ JSON.stringify(e));
+        bs.code=ReturnConfig.ERR_CODE;
         bs.message=e.message;
         reject(bs);
       })

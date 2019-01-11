@@ -36,16 +36,16 @@ public class AiUiUtil {
      * @param flag 0: 音频  1：文本
      * @return
      */
-    public static String readAudio(String audio, int flag){
+    public static String readAudio(String audio, int flag, String userId){
         try {
             Map<String, String> header = null;
             String result = "";
             if (flag == 0) {
-                header = buildHeader_audio();
+                header = buildHeader_audio(userId);
                 result = httpPost(URL, header, base64Audio(audio));
 
             } else if (flag == 1) {
-                header = buildHeader_text();
+                header = buildHeader_text(userId);
                 result = httpPost(URL, header, audio.getBytes());
             }
 
@@ -63,9 +63,9 @@ public class AiUiUtil {
      * @throws UnsupportedEncodingException
      * @throws ParseException
      */
-    private static Map<String, String> buildHeader_audio() throws UnsupportedEncodingException, ParseException {
+    private static Map<String, String> buildHeader_audio(String userId) throws UnsupportedEncodingException, ParseException {
         String curTime = System.currentTimeMillis() / 1000L + "";
-        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_AUDIO+"\",\"scene\":\""+SCENE+"\"}";
+        String param = "{\"aue\":\""+ AUE +"\",\"sample_rate\":\""+ SAMPLE_RATE +"\",\"auth_id\":\""+ userId +"\",\"data_type\":\""+ DATA_TYPE_AUDIO +"\",\"scene\":\""+SCENE+"\"}";
         //使用个性化参数时参数格式如下：
 //        String param = "{\"aue\":\""+AUE+"\",\"sample_rate\":\""+SAMPLE_RATE+"\",\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_AUDIO+"\",\"scene\":\""+SCENE+"\",\"pers_param\":"+PERS_PARAM+"}";
         String paramBase64 = new String(Base64.encodeBase64(param.getBytes("UTF-8")));
@@ -85,9 +85,9 @@ public class AiUiUtil {
      * @throws UnsupportedEncodingException
      * @throws ParseException
      */
-    private static Map<String, String> buildHeader_text() throws UnsupportedEncodingException, ParseException {
+    private static Map<String, String> buildHeader_text(String userId) throws UnsupportedEncodingException, ParseException {
         String curTime = System.currentTimeMillis() / 1000L + "";
-        String param = "{\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_TEXT+"\",\"scene\":\""+SCENE+"\"}";
+        String param = "{\"auth_id\":\""+ userId +"\",\"data_type\":\""+ DATA_TYPE_TEXT +"\",\"scene\":\""+SCENE+"\"}";
         //使用个性化参数时参数格式如下：
 //        String param = "{\"auth_id\":\""+AUTH_ID+"\",\"data_type\":\""+DATA_TYPE_TEXT+"\",\"scene\":\""+SCENE+"\",\"pers_param\":"+PERS_PARAM+"}";
         String paramBase64 = new String(Base64.encodeBase64(param.getBytes("UTF-8")));

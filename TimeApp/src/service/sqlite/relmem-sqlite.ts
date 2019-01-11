@@ -5,6 +5,7 @@ import {RuEntity} from "../../entity/ru.entity";
 import {BsModel} from "../../model/out/bs.model";
 import {SyncModel} from "../../model/sync.model";
 import {DataConfig} from "../../app/data.config";
+import {SyncEntity} from "../../entity/sync.entity";
 
 /**
  * 授权联系人
@@ -88,7 +89,7 @@ export class RelmemSqlite {
    * @returns {Promise<any>}
    */
   getRgus(id:string):Promise<any>{
-    let sql="SELECT gb.* FROM GTD_B gb " +
+    let sql="SELECT gb.*,bs.id rugId,bs.bmi FROM GTD_B gb " +
       "left join GTD_B_X bs on bs.bmi = gb.id where bs.bi='" + id +"'";
     return this.baseSqlite.executeSql(sql,[]);
   }
@@ -100,8 +101,14 @@ export class RelmemSqlite {
    * @param {string} bmi 关系人ID
    * @returns {Promise<any>}
    */
-  delRgu(bi:string,bmi:string):Promise<any>{
-    let sql = "delete from GTD_B_X where bmi = '"+bmi+"' and bi='"+bi+"'";
+  delRgu(id:string,bmi:string):Promise<any>{
+    let sql = "delete from GTD_B_X where 1=1";
+    if(id != null && id != ''){
+       sql=sql + " and id = '"+id+"'";
+    }
+    if(bmi != null && bmi != ''){
+      sql=sql + " and bmi = '"+bmi+"'";
+    }
     return this.baseSqlite.executeSql(sql,[]);
   }
 
@@ -139,7 +146,7 @@ export class RelmemSqlite {
   }
 
   /**
-   * 服务器同步联系人转sql
+   * 服务器登录同步联系人转sql
    * @param {Array<SyncModel>} syncs
    */
   syncToRuSql(syncs:Array<SyncModel>){
@@ -173,7 +180,7 @@ export class RelmemSqlite {
   }
 
   /**
-   * 服务器同步联系人群组表转sql
+   * 服务器登录同步联系人群组表转sql
    * @param {Array<SyncModel>} syncs
    */
   syncToRguSql(syncs:Array<SyncModel>){
@@ -195,6 +202,47 @@ export class RelmemSqlite {
     }
       return sql;
     }
+  }
+
+  /**
+   * 服务器定时同步联系人表
+   * @param {JhEntity} en
+   */
+  syncRuTime(en:RuEntity,ac:string): Promise<any> {
+    let sql = '';
+    let sync = new SyncEntity();
+    sync.tableA = en.id ;
+    sync.tableB = en.ran;
+    sync.tableC = en.ranpy;
+    sync.tableD = en.rI;
+    sync.tableE = en.hiu;
+    sync.tableF = en.rN;
+    sync.tableG = en.rNpy;
+    sync.tableH = en.rC;
+    sync.tableI = en.rF;
+    sync.tableJ = en.rel;
+    sync.tableK = DataConfig.uInfo.uI;
+    sync.action =ac;
+    sync.tableName = DataConfig.GTD_B
+    return this.baseSqlite.save(sync);
+  }
+
+  /**
+   * 服务器定时同步群组联系人表
+   * @param {JhEntity} en
+   */
+  syncRguTime(en:Array<RguEntity>,tn:string): Promise<any> {
+    let sql = '';
+    for(let rgu of en){
+      let sync = new SyncEntity();
+      sync.tableA = rgu.id ;
+      sync.tableB = rgu.bi;
+      sync.tableC = rgu.bmi;
+      sync.tableName = DataConfig.GTD_B_X;
+      sync.action = tn;
+      sql +=sync.isq;
+    }
+    return this.baseSqlite.importSqlToDb(sql);
   }
 
 }

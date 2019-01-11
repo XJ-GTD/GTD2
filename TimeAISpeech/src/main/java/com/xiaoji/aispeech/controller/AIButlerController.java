@@ -50,7 +50,7 @@ public class AIButlerController {
     @RequestMapping(value = "/audio", method = RequestMethod.POST)
     @ResponseBody
     public VoiceOutBean audioBase64(@RequestBody VoiceInBean voiceInBean) {
-        JSON repJson = aiButlerService.answerAudioResJSON(voiceInBean.getContent());
+        JSON repJson = aiButlerService.answerAudioResJSON(voiceInBean.getContent(), voiceInBean.getUserId());
 
         AiUiResponse response  = JSON.toJavaObject(repJson,AiUiResponse.class);
         //写入日志
@@ -68,37 +68,11 @@ public class AIButlerController {
     public VoiceOutBean text(@RequestBody VoiceInBean voiceInBean) {
 
 
-        JSON repJson = aiButlerService.answerTextResJSON(voiceInBean.getContent());
+        JSON repJson = aiButlerService.answerTextResJSON(voiceInBean.getContent(), voiceInBean.getUserId());
 
 
         AiUiResponse response  = JSON.toJavaObject(repJson,AiUiResponse.class);
         //写入日志
-        voiceLogrService.saveLog4XF(response,voiceInBean,repJson.toJSONString());
-
-        return tranOutJsonObject(response,voiceInBean);
-    }
-
-    /**
-     * 语音交互（文本）
-     * @return
-     */
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    @ResponseBody
-    public VoiceOutBean test(@RequestParam String text) {
-
-
-        logger.debug("*********************text" + text);
-        JSON repJson = aiButlerService.answerTextResJSON(text);
-        logger.debug("*********************repJson" + repJson);
-        AiUiResponse response  = JSON.toJavaObject(repJson,AiUiResponse.class);
-        logger.debug("*********************response" + response);
-        //写入日志
-        VoiceInBean voiceInBean = new VoiceInBean();
-        voiceInBean.setContent(text);
-        voiceInBean.setDeviceId("pc_test");
-        voiceInBean.setUserId("pc_test");
-        voiceInBean.setType("text");
-
         voiceLogrService.saveLog4XF(response,voiceInBean,repJson.toJSONString());
 
         return tranOutJsonObject(response,voiceInBean);
