@@ -58,6 +58,7 @@ import { SyncService } from "../service/sync.service";
 import { HTTP } from "@ionic-native/http";
 import { ZtdSqlite } from "../service/sqlite/ztd-sqlite";
 import {HttpClientModule} from "@angular/common/http";
+import {SyncSqlite} from "../service/sqlite/sync-sqlite";
 @NgModule({
   declarations: [
     MyApp,
@@ -105,6 +106,7 @@ import {HttpClientModule} from "@angular/common/http";
     UserSqlite,
     WorkSqlite,
     ZtdSqlite,
+    SyncSqlite,
     AuRestful,
     BsRestful,
     DxRestful,
