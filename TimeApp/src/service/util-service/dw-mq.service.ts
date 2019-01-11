@@ -355,9 +355,9 @@ export class DwMqService {
       bool = true;
       if(qt==DataConfig.MQTQ){
         aiui.tt = DataConfig.U1;
-        aiui.at = mqDate.ut;
+        aiui.ut = mqDate.ut;
         if(!mqDate.ut || mqDate.ut == null || mqDate.ut == ""){
-          aiui.at = '正在操作';
+          aiui.ut = '正在操作';
         }
       }else if(qt==DataConfig.MQTM){
         aiui.tt = DataConfig.S1;
