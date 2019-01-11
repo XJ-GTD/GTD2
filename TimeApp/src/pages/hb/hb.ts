@@ -72,6 +72,7 @@ export class HbPage {
     //this.initWakeUp();
 
     console.log('ionViewDidLoad HbPage');
+    this.Hb01Page.loadScene();
   }
 
 
@@ -246,9 +247,9 @@ export class HbPage {
     this.viewCtrl.dismiss();
   }
 
-  reset(){
-    this.Hb01Page.startHue += 60;
-    this.Hb01Page.reset();
-  }
+  // reset(){
+  //   this.Hb01Page.startHue += 60;
+  //   this.Hb01Page.reset();
+  // }
 
 }
