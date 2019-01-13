@@ -58,11 +58,11 @@ export class SyncEntity {
       'tableS,tableT,tableU,tableV,tableW,tableX,tableY,tableZ';
     let sql='insert into GTD_S_Y ' +
       '('+field+') values("'+ this._tableName+'",'+ this._action+',"'+ this._tableA+'","'+this._tableB+
-      '","'+ this._tableC+'",'+ this._tableD+',"'+ this._tableE+'","'+this._tableF+'","'+ this._tableG+'",'
-      '","'+ this._tableH+'",'+ this._tableI+',"'+ this._tableJ+'","'+this._tableK+'","'+ this._tableL+'",'
-      '","'+ this._tableM+'",'+ this._tableN+',"'+ this._tableO+'","'+this._tableP+'","'+ this._tableQ+'",'
-      '","'+ this._tableR+'",'+ this._tableS+',"'+ this._tableT+'","'+this._tableU+'","'+ this._tableV+'",'
-      '","'+ this._tableW+'",'+ this._tableX+',"'+ this._tableY+'","'+this._tableZ+'");';
+      '","'+ this._tableC+'","'+ this._tableD+'","'+ this._tableE+'","'+this._tableF+'","'+ this._tableG+
+      '","'+ this._tableH+'","'+ this._tableI+'","'+ this._tableJ+'","'+this._tableK+'","'+ this._tableL+
+      '","'+ this._tableM+'","'+ this._tableN+'","'+ this._tableO+'","'+this._tableP+'","'+ this._tableQ+
+      '","'+ this._tableR+'","'+ this._tableS+'","'+ this._tableT+'","'+this._tableU+'","'+ this._tableV+
+      '","'+ this._tableW+'","'+ this._tableX+'","'+ this._tableY+'","'+this._tableZ+'");';
     this._isq=sql;
     return this._isq;
   }

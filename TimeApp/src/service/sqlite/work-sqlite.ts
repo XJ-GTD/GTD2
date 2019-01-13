@@ -607,6 +607,7 @@ export class WorkSqlite{
     sync.tableF = en.sd;
     sync.tableG = en.ed;
     sync.action= ac;
+    sync.tableName = DataConfig.GTD_C;
     return this.baseSqlite.save(sync);
   }
 
@@ -627,7 +628,7 @@ export class WorkSqlite{
       sync.tableF = en.uI;
       sync.tableG = en.rui;
       sync.action= ac;
-      sync.tableName = DataConfig.GTD_D
+      sync.tableName = DataConfig.GTD_D;
       sql+=sync.isq;
     }
     return this.baseSqlite.importSqlToDb(sql);
