@@ -23,7 +23,7 @@ export class RcbModel {
     if(this._tn != null && this._tn !=''&& this._id !=null && this._id !=''){
       let sql='replace into '+ this._tn +
         ' (sI,id,tk,cf,cft,dt,wd,rm,ac,fh) values("'+ this._sI+'","'+ this._id+'","'+this._tk+ '","'+ this._cf
-        +'","'+this._cft+ '","'+ this._dt+'","'+ this._wd+'","'+ this._rm+'","'+ this._ac+'","'+ this._fh+'")';
+        +'","'+this._cft+ '","'+ this._dt+'","'+ this._wd+'","'+ this._rm+'","'+ this._ac+'","'+ this._fh+'");';
       this._rpsq=sql;
     }
     return this._rpsq;

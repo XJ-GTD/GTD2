@@ -62,7 +62,7 @@ export class SyncEntity {
       '","'+ this._tableH+'",'+ this._tableI+',"'+ this._tableJ+'","'+this._tableK+'","'+ this._tableL+'",'
       '","'+ this._tableM+'",'+ this._tableN+',"'+ this._tableO+'","'+this._tableP+'","'+ this._tableQ+'",'
       '","'+ this._tableR+'",'+ this._tableS+',"'+ this._tableT+'","'+this._tableU+'","'+ this._tableV+'",'
-      '","'+ this._tableW+'",'+ this._tableX+',"'+ this._tableY+'","'+this._tableZ+'")';
+      '","'+ this._tableW+'",'+ this._tableX+',"'+ this._tableY+'","'+this._tableZ+'");';
     this._isq=sql;
     return this._isq;
   }
