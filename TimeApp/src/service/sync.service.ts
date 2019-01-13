@@ -164,6 +164,7 @@ export class SyncService {
           console.log("-------SyncService initLocalDataDataConfig.ZTD_MAP 数据结果："+JSON.stringify( DataConfig.ZTD_MAP));
         }
         this.loginSync();
+        this.syncTime();
         resolve(base);
       }).catch(e=>{
         console.error("-------SyncService initLocalData sqlite 初始本地静态数据 Error："+JSON.stringify(e));
