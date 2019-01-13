@@ -184,7 +184,7 @@ export class SyncService {
         .then(data=> {
           if (data && data.code == 0 && data.data.userDataList.length > 0) {
             let uds = data.data.userDataList;
-            this.getsql(sql,uds);
+            sql = this.getsql(sql,uds);
           }
           if (sql != '') {
             console.log('----- 登录同步服务器数据导入本地库 ------');
@@ -253,7 +253,7 @@ export class SyncService {
         }
         if (data && data.code == 0 && data.data.userDataList.length > 0) {
           let uds = data.data.userDataList;
-          this.getsql(sql,uds);
+          sql = this.getsql(sql,uds);
         }
         if (sql != '') {
           console.log('----- 定时同步服务器数据导入本地库 ------');
