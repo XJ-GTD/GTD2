@@ -21,9 +21,10 @@ export class SyvEntity {
   private _usq:string;
   private _dsq:string;
   //查询单个
-  private _qosq:string = 'select * from GTD_S_V where si=' + this._si;
+  private _qosq:string;
 
   get qosq(): string {
+    this._qosq = 'select * from GTD_S_V where si=' + this._si
     return this._qosq;
   }
 
