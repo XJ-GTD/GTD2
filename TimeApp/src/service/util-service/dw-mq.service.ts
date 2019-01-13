@@ -14,6 +14,7 @@ import {AiuiModel} from "../../model/aiui.model";
 import {RcoModel} from "../../model/out/rco.model";
 import {RcModel} from "../../model/rc.model";
 import {XiaojiAssistantService} from "./xiaoji-assistant.service";
+import {UtilService} from "./util.service";
 
 /**
  * webSocket公用处理方法
@@ -350,7 +351,12 @@ export class DwMqService {
     let aiui = new AiuiModel();
     let t= mqDate.sk;
     aiui.tt = t;
-    aiui.at =mqDate.at;
+    //随机取一条语音播报
+    aiui.at = DataConfig.TEXT_CONTENT.get(t+UtilService.randInt(0,10));
+    if(aiui.at == null || aiui.at==''){
+      aiui.at =mqDate.at;
+    }
+
     let bool =false; //true 则发送语音界面
     //非业务类型可发送广播
     if(t.substr(0,1)!='D'){
@@ -414,16 +420,9 @@ export class DwMqService {
         });
       } else if (t == SkillConfig.BC_SCU) { //更新日程
         aiui.tt = DataConfig.D1;
-        let text = '您与一条新的消息'
         this.dwEmit.setHaData(aiui);
-        this.xiaojiSpeech.speakText(text, success => {
-        });
       } else if (t == SkillConfig.BC_PEC) { //添加参与人
         aiui.tt = DataConfig.D1;
-        let text = '您与一条新的消息';
-        this.dwEmit.setHaData(aiui);
-        this.xiaojiSpeech.speakText(text, success => {
-        });
       }
     }
     if(bool){
@@ -434,6 +433,8 @@ export class DwMqService {
         i = 500;
       }
       setTimeout(() => {
+        this.xiaojiSpeech.speakText(aiui.at, success => {
+        });
         this.dwEmit.setHbData(aiui);//测试用
       }, i);
     }

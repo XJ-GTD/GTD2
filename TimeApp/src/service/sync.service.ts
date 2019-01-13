@@ -117,7 +117,7 @@ export class SyncService {
       let base = new BsModel();
       console.log("-------SyncService initLocalData sqlite 初始本地返回本地message------------");
       let ztL:any = null;
-      this.ztd.getZtdMessage('400').then(data=>{
+      this.ztd.getZtdMessage(DataConfig.MESSAGE_TYPE).then(data=>{
         console.log("-------SyncService initLocalData sqlite 初始本地静态数据本地message结果："+JSON.stringify(data));
         if(data && data.rows&&data.rows.length>0){
           let res = data.rows;
@@ -125,6 +125,17 @@ export class SyncService {
             ReturnConfig.RETURN_MSG.set(res.item(i).zk,res.item(i).zkv);
           }
           console.log("-------SyncService initLocalData ReturnConfig.RETURN_MSG 数据结果："+JSON.stringify(ReturnConfig.RETURN_MSG));
+        }
+        console.log("-------SyncService initLocalData sqlite 初始本地字典表数据 -------- ");
+        return this.ztd.getZtd(DataConfig.TEXT_TYPE)
+      }).then(data=>{
+        console.log("-------SyncService initLocalData sqlite 初始本地静态数据本地message结果："+JSON.stringify(data));
+        if(data && data.rows&&data.rows.length>0){
+          let res = data.rows;
+          for(let i=0;i<res.length;i++){
+            DataConfig.TEXT_CONTENT.set(res.item(i).zk,res.item(i).zkv);
+          }
+          console.log("-------SyncService initLocalData ReturnConfig.RETURN_MSG 数据结果："+JSON.stringify(DataConfig.TEXT_CONTENT));
         }
         console.log("-------SyncService initLocalData sqlite 初始本地字典表数据 -------- ");
         return this.ztd.getZt('')
