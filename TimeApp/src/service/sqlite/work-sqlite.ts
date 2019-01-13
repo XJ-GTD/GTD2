@@ -500,6 +500,8 @@ export class WorkSqlite{
         en.ji = sync.tableE;
         en.sd = sync.tableF;
         en.ed = sync.tableG;
+        en.sd = en.sd.substr(0,10).replace(new RegExp('-','g'),'/');
+        en.ed= en.ed.substr(0,10).replace(new RegExp('-','g'),'/');
         if (sync.action == '2') {
           sql += en.dsq;
         } else {
