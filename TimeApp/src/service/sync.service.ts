@@ -248,12 +248,8 @@ export class SyncService {
         }
         return this.syncR.syncTime(DataConfig.uInfo.uI,this.util.getUuid(),fv,sdl)
       }).then(data=>{
-        if(data.code==0){
-          if(data.userDataList.length>0){
-            fv = data.version;
-          }
-        }
         if (data && data.code == 0 && data.data.userDataList.length > 0) {
+          fv = data.data.version;
           let uds = data.data.userDataList;
           sql = this.getsql(sql,uds);
         }
