@@ -125,7 +125,7 @@ export class WorkSqlite{
         'union select sI,cft,cf,ac,fh,tk from GTD_C_C ' +
         'union select sI,cft,cf,ac,fh,tk from GTD_C_RC ' +
         'union select sI,cft,cf,ac,fh,tk from GTD_C_JN ' +
-        'union select sI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.sI = gc.sI  and lbd.tk = gc.lI' +
+        'union select sI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.sI = gc.sI  and lbd.tk = gc.lI ' +
         'left join GTD_D gd on gc.sI=gd.sI where (gd.uI = "'+ui+'" or gc.uI= "'+ui+'") and' +
         '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'")';
       let bs = new BsModel();
@@ -205,7 +205,7 @@ export class WorkSqlite{
         'union select sI,cft,cf,ac,fh,tk from GTD_C_C ' +
         'union select sI,cft,cf,ac,fh,tk from GTD_C_RC ' +
         'union select sI,cft,cf,ac,fh,tk from GTD_C_JN ' +
-        'union select sI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.sI = gc.sI and lbd.tk = gc.lI' +
+        'union select sI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.sI = gc.sI and lbd.tk = gc.lI ' +
         'left join GTD_F gf on gf.lai=gc.lI '+
         'left join GTD_D gd on gc.sI=gd.sI ' +
         'left join (select substr(md,1,10) md,mf,rI from GTD_H where mf="0" and substr(md,1,10) = "'+ d+
@@ -323,7 +323,7 @@ export class WorkSqlite{
       'union select sI,cft,cf,ac,fh,tk from GTD_C_C ' +
       'union select sI,cft,cf,ac,fh,tk from GTD_C_RC ' +
       'union select sI,cft,cf,ac,fh,tk from GTD_C_JN ' +
-      'union select sI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.sI = gc.sI  and lbd.tk = gc.lI' +
+      'union select sI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.sI = gc.sI and lbd.tk = gc.lI ' +
       "left join GTD_D gd on gc.sI = gd.sI " +
       "left join GTD_J_H jh on jh.ji = gc.ji " +
       "left join GTD_F gf on gf.lai = gc.lI where gc.sI ='" + sI +"'"
@@ -352,11 +352,11 @@ export class WorkSqlite{
    */
   getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string):Promise<any>{
     let sql ='select gc.*,gf.lan,jh.jn from GTD_C gc ' +
-      'left join (select sI,cft,cf,ac,fh from GTD_C_BO ' +
-      'union select sI,cft,cf,ac,fh from GTD_C_C ' +
-      'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
-      'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
-      'union select sI,cft,cf,ac,fh from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
+      'left join (select sI,cft,cf,ac,fh,tk from GTD_C_BO ' +
+      'union select sI,cft,cf,ac,fh,tk from GTD_C_C ' +
+      'union select sI,cft,cf,ac,fh,tk from GTD_C_RC ' +
+      'union select sI,cft,cf,ac,fh,tk from GTD_C_JN ' +
+      'union select sI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.sI = gc.sI and lbd.tk = gc.lI ' +
       'left join GTD_D gd on gc.sI = gd.sI ' +
       'left join GTD_F gf on gf.lai = gc.lI ' +
       'left join GTD_J_H jh on jh.ji = gc.ji ' +
