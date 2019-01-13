@@ -233,7 +233,7 @@ export class SyncService {
         let sdl = [];
         if(data && data.rows && data.rows.length>0){
           bv = data.rows.item(0).id;
-          for(let tn in DataConfig.TABLE_NAMES){
+          for(let tn of DataConfig.TABLE_NAMES){
             let sd:any = {};
             sd.tableName = tn;
             sd.dataList=[];
