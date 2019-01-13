@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {PageConfig} from "../../app/page.config";
@@ -18,6 +18,8 @@ import {PageConfig} from "../../app/page.config";
 })
 export class AaPage {
 
+  @ViewChild(Navbar) navBar: Navbar;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private paramsService: ParamsService,
 
@@ -26,7 +28,15 @@ export class AaPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AaPage');
+    this.navBar.backButtonClick = this.backButtonClick;
+    this.navBar.setBackButtonText("");
   }
+
+  backButtonClick = (e: UIEvent) => {
+    // 重写返回方法
+    this.paramsService.schedule=null;
+    this.navCtrl.pop();
+  };
 
 
   logOut() {
