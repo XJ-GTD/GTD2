@@ -26,7 +26,7 @@ import {SyncSqlite} from "./sqlite/sync-sqlite";
  */
 @Injectable()
 export class SyncService {
-
+  timer;
   constructor( private base:BaseSqlite,
                private syncR:SyncRestful,
                private syncS:SyncSqlite,
@@ -194,6 +194,12 @@ export class SyncService {
           }
         }).then(data=>{
         console.log('----- 登录同步服务器数据结束 ------' + JSON.stringify(data));
+        this.timer = setInterval(()=> {
+          // 每隔10秒  刷新时间
+          console.log('000000 更新');
+          //this.time = (new Date().toTimeString()).substr(0,5); *60*5
+        }, 10000);
+
         resolve(base);
       }).catch(e=>{
         console.error('----- 登录同步服务器数据失败 ------' + JSON.stringify(e));
