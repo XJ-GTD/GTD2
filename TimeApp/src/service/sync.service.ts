@@ -88,7 +88,8 @@ export class SyncService {
           if(base.code==0 && base.data != null){
             console.log("------SyncService initzdlb insert into table End : " + JSON.stringify(data));
           }
-          resolve(base)
+          this.loginSync();
+          resolve(base);
         }).catch(e=>{
           console.error("-------SyncService initzdlb restful 初始化字典数据及标签表 Error："+JSON.stringify(e))
           base.message = e.message
@@ -298,5 +299,6 @@ export class SyncService {
         sql+=this.jh.syncToJhSql(ud.dataList);
       }
     }
+    return sql;
   }
 }
