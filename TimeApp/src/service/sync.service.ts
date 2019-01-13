@@ -88,7 +88,6 @@ export class SyncService {
           if(base.code==0 && base.data != null){
             console.log("------SyncService initzdlb insert into table End : " + JSON.stringify(data));
           }
-          this.loginSync();
           resolve(base);
         }).catch(e=>{
           console.error("-------SyncService initzdlb restful 初始化字典数据及标签表 Error："+JSON.stringify(e))
@@ -164,6 +163,7 @@ export class SyncService {
           DataConfig.ZTD_MAP = ztMap;
           console.log("-------SyncService initLocalDataDataConfig.ZTD_MAP 数据结果："+JSON.stringify( DataConfig.ZTD_MAP));
         }
+        this.loginSync();
         resolve(base);
       }).catch(e=>{
         console.error("-------SyncService initLocalData sqlite 初始本地静态数据 Error："+JSON.stringify(e));
