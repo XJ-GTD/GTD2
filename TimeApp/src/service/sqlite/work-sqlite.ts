@@ -126,7 +126,7 @@ export class WorkSqlite{
         'union select sI,cft,cf,ac,fh,tk from GTD_C_RC ' +
         'union select sI,cft,cf,ac,fh,tk from GTD_C_JN ' +
         'union select sI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.sI = gc.sI  and lbd.tk = gc.lI ' +
-        'left join GTD_D gd on gc.sI=gd.sI where (gd.uI = "'+ui+'" or gc.uI= "'+ui+'") and' +
+        'left join GTD_D gd on gc.sI=gd.sI where (gd.uI = "'+ui+'" or gc.uI= "'+ui+'") and ' +
         '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'")';
       let bs = new BsModel();
       let resL = new Array<any>();
