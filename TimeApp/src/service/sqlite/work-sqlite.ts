@@ -410,16 +410,20 @@ export class WorkSqlite{
       en.rm=rm;
       en.ac=ac;
       en.fh=fh;
+      if(en.tn != null && en.tn != ''){
+        this.baseSqlite.executeSql(en.rpsq,[]).then(data=>{
+          //添加本地日程到同步表
+          console.log('------------- WorkSqlite addLbData 同步表--------------');
+          this.syncRcbTime(en,en.tn,DataConfig.AC_O);
+          resolve(data);
+        }).catch(e=>{
+          console.log('------------- WorkSqlite addLbData Error：' + JSON.stringify(e));
+          reject(e);
+        })
+      }else{
+        resolve(en);
+      }
 
-      this.baseSqlite.executeSql(en.rpsq,[]).then(data=>{
-        //添加本地日程到同步表
-        console.log('------------- WorkSqlite addLbData 同步表--------------');
-        this.syncRcbTime(en,en.tn,DataConfig.AC_O);
-        resolve(data);
-      }).catch(e=>{
-        console.log('------------- WorkSqlite addLbData Error：' + JSON.stringify(e));
-        reject(e);
-      })
     })
   }
 

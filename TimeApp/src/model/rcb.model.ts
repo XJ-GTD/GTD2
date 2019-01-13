@@ -15,22 +15,21 @@ export class RcbModel {
   private _rm:string=''; //备注
   private _ac:string=''; //提醒方式
   private _fh:string=''; //是否完成0否1是
-  private _tn:string = null; // 表名
+  private _tn:string = ''; // 表名
   private _rpsq:string='';
   private _dsq:string='';
 
   get rpsq(): string {
-    return this._rpsq;
-  }
-
-  set rpsq(value: string) {
     if(this._tn != null && this._tn !=''&& this._id !=null && this._id !=''){
       let sql='replace into '+ this._tn +
         ' (sI,id,tk,cf,cft,dt,wd,rm,ac,fh) values("'+ this._sI+'","'+ this._id+'","'+this._tk+ '","'+ this._cf
         +'","'+this._cft+ '","'+ this._dt+'","'+ this._wd+'","'+ this._rm+'","'+ this._ac+'","'+ this._fh+'")';
       this._rpsq=sql;
     }
+    return this._rpsq;
+  }
 
+  set rpsq(value: string) {
     this._rpsq = value;
   }
 
