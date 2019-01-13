@@ -194,9 +194,11 @@ export class SyncService {
           }
         }).then(data=>{
         console.log('----- 登录同步服务器数据结束 ------' + JSON.stringify(data));
+        //定时同步
         this.timer = setInterval(()=> {
           // 每隔10秒  刷新时间
           console.log('000000 更新');
+          //this.syncTime();
           //this.time = (new Date().toTimeString()).substr(0,5); *60*5
         }, 10000);
 
