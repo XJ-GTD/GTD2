@@ -562,6 +562,10 @@ W
           }
           rc.rus = rus;
         }
+        let ms = new MsEntity();
+        ms.rI=rc.sI;
+        return this.msSqlite.updateMs(ms);
+      }).then(data=>{
         resolve(rc);
       }).catch(e=>{
         console.error("----- WorkService getds(事件详情) Error:" + JSON.stringify(e));

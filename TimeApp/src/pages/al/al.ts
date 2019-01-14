@@ -169,6 +169,10 @@ export class AlPage {
         this.nav.setRoot(this.rootPage);
 
       }).then(data => {
+        if(DataConfig.uInfo.uty=='1'){
+          //定时同步
+          this.sync.syncTime();
+        }
 
       }).catch(res => {
         console.log("al error :: "+JSON.stringify(res));

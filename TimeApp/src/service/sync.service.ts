@@ -163,8 +163,8 @@ export class SyncService {
           DataConfig.ZTD_MAP = ztMap;
           console.log("-------SyncService initLocalDataDataConfig.ZTD_MAP 数据结果："+JSON.stringify( DataConfig.ZTD_MAP));
         }
-        // this.loginSync();
-        // this.syncTime();
+        //this.loginSync();
+        //this.syncTime();
         resolve(base);
       }).catch(e=>{
         console.error("-------SyncService initLocalData sqlite 初始本地静态数据 Error："+JSON.stringify(e));
@@ -194,14 +194,10 @@ export class SyncService {
           }
         }).then(data=>{
         console.log('----- 登录同步服务器数据结束 ------' + JSON.stringify(data));
-        //定时同步
-        this.timer = setInterval(()=> {
-          // 每隔10秒  刷新时间
-          console.log('000000 更新');
-          //this.syncTime();
-          //this.time = (new Date().toTimeString()).substr(0,5); *60*5
+        //10秒后调用定时同步
+        setTimeout(() => {
+          this.syncTime()
         }, 10000);
-
         resolve(base);
       }).catch(e=>{
         console.error('----- 登录同步服务器数据失败 ------' + JSON.stringify(e));
@@ -223,6 +219,13 @@ export class SyncService {
    */
   syncTime():Promise<BsModel>{
     return new Promise((resolve, reject) => {
+      //定时同步
+      setInterval(()=> {
+        // 每隔10秒  刷新时间
+        console.log('000000 更新');
+        this.syncTime();
+        //this.time = (new Date().toTimeString()).substr(0,5); *60*5
+      }, 1000*60);
       let sql = '';
       let bs = new BsModel();
       let sv = new SyvEntity();
@@ -277,7 +280,6 @@ export class SyncService {
         bs.message = ReturnConfig.ERR_MESSAGE;
         reject(bs);
       })
-
     })
   }
 
