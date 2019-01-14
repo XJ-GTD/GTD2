@@ -111,7 +111,7 @@ export class RcEntity {
       sql = sql.substr(0,sql.length-1);
     }
     if(this._sI != null && this._sI!=''){
-      sql = sql +'" where sI="' + this._sI +'"';
+      sql = sql +' where sI="' + this._sI +'"';
     }
 
     this._usq=sql;
@@ -202,7 +202,7 @@ export class RcEntity {
 
   get sd(): string {
     if(this._sd != null && this._sd != ''){
-      this._sd = this._sd.substr(0,10).replace(new RegExp('-','g'),'/');
+      this._sd = this._sd.replace(new RegExp('-','g'),'/');
     }
     return this._sd;
   }
@@ -213,7 +213,7 @@ export class RcEntity {
 
   get ed(): string {
     if(this._ed != null && this._ed != ''){
-      this._ed= this._ed.substr(0,10).replace(new RegExp('-','g'),'/');
+      this._ed= this._ed.replace(new RegExp('-','g'),'/');
     }
     return this._ed;
   }

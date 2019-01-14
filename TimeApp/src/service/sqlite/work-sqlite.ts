@@ -123,12 +123,13 @@ export class WorkSqlite{
   getMBs(ym:string,ui:string):Promise<BsModel>{
     ym = ym.replace(new RegExp('-','g'),'/')
     return new Promise((resolve, reject) => {
-      let sql='select gc.*,lbd.* from GTD_C gc ' +
-        'left join (select sI,cft,cf,ac,fh,tk from GTD_C_BO ' +
-        'union select sI,cft,cf,ac,fh,tk from GTD_C_C ' +
-        'union select sI,cft,cf,ac,fh,tk from GTD_C_RC ' +
-        'union select sI,cft,cf,ac,fh,tk from GTD_C_JN ' +
-        'union select sI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.sI = gc.sI  and lbd.tk = gc.lI ' +
+      let sql='select gc.*,' +
+        'lbd.cft,lbd.wd,lbd.ac,lbd.fh,lbd.tk,lbd.rm,lbd.dt,lbd.subId from GTD_C gc ' +
+        'left join (select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_BO ' +
+        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_C ' +
+        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_RC ' +
+        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_JN ' +
+        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_MO) lbd on lbd.sI = gc.sI and lbd.tk = gc.lI ' +
         'left join GTD_D gd on gc.sI=gd.sI where (gd.uI = "'+ui+'" or gc.uI= "'+ui+'") and ' +
         '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'")';
       let bs = new BsModel();
@@ -146,7 +147,7 @@ export class WorkSqlite{
         let date = new Date(ym+'/01');
         let sd = UtilService.getCurrentMonthFirst(date);
         let ed = UtilService.getCurrentMonthLast(date);
-        return this.readlocal.findEventRc(sd,ed,resL);
+        return this.readlocal.findEventRc(sd,ed,rcL);
       }) .then(data=>{
         if(data.rcL.length>0){
           for(let i=1;i<=31;i++){
@@ -215,16 +216,17 @@ export class WorkSqlite{
    */
   getOd(d:string,ui:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
-      let sql='select gc.*,gd.son,gd.pI,gd.sa,lbd.*,gf.* from GTD_C gc ' +
-        'left join (select sI,cft,cf,ac,fh,tk from GTD_C_BO ' +
-        'union select sI,cft,cf,ac,fh,tk from GTD_C_C ' +
-        'union select sI,cft,cf,ac,fh,tk from GTD_C_RC ' +
-        'union select sI,cft,cf,ac,fh,tk from GTD_C_JN ' +
-        'union select sI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.sI = gc.sI and lbd.tk = gc.lI ' +
+      let sql='select gc.*,gd.son,gd.pI,gd.sa,gf.*, ' +
+        "lbd.cft,lbd.wd,lbd.ac,lbd.fh,lbd.tk,lbd.rm,lbd.dt,lbd.subId from GTD_C gc " +
+        'left join (select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_BO ' +
+        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_C ' +
+        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_RC ' +
+        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_JN ' +
+        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_MO) lbd on lbd.sI = gc.sI and lbd.tk = gc.lI ' +
         'left join GTD_F gf on gf.lai=gc.lI '+
         'left join GTD_D gd on gc.sI=gd.sI ' +
         'left join (select substr(md,1,10) md,mf,rI from GTD_H where mf="0" and substr(md,1,10) = "'+ d+
-        '" group by substr(md,1,10),mf,rI) gh on gc.sI=gh.rI '
+        '" group by substr(md,1,10),mf,rI) gh on gc.sI=gh.rI ' +
       ' where (substr(gc.sd,1,10) <= "'+d+'" and substr(gc.ed,1,10)>= "'+d+'") ' +
       ' and (gd.uI = "'+ui+'" or gc.uI= "'+ui+'")';
        // +'and (gd.pI is null or gd.uI ="'+DataConfig.uInfo.uI+'")';
@@ -236,12 +238,12 @@ export class WorkSqlite{
         console.log(' ---- WorkSqlite getOd 查询sqlite日历数据 ---- ');
         if(data && data.rows && data.rows.length>0){
           for (let i = 0; i < data.rows.length; i++) {
-            rcL.push(data.rows.item(i))
+            rcL.push(data.rows.item(i));
           }
         }
         console.log(' ---- WorkSqlite getMBs 查询本地日历数据 ---- ');
         let date = new Date(d);
-        return this.readlocal.findEventRc(date,date,resL);
+        return this.readlocal.findEventRc(date,date,rcL);
       }).then(data=>{
         if(data.rcL.length>0){
           for(let i=0;i<rcL.length;i++){
@@ -340,15 +342,16 @@ export class WorkSqlite{
    * @param pI 日程参与人ID
    */
   getds(sI:string):Promise<any>{
-    let sql = "select jh.jn,gf.lan,gd.sa,gc.*,lbd.* from GTD_C gc " +
-      'left join (select sI,cft,cf,ac,fh,tk from GTD_C_BO ' +
-      'union select sI,cft,cf,ac,fh,tk from GTD_C_C ' +
-      'union select sI,cft,cf,ac,fh,tk from GTD_C_RC ' +
-      'union select sI,cft,cf,ac,fh,tk from GTD_C_JN ' +
-      'union select sI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.sI = gc.sI and lbd.tk = gc.lI ' +
+    let sql = "select jh.jn,gf.lan,gd.sa,gc.*," +
+      "lbd.cft,lbd.wd,lbd.ac,lbd.fh,lbd.tk,lbd.rm,lbd.dt,lbd.subId from GTD_C gc " +
+      'left join (select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_BO ' +
+      'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_C ' +
+      'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_RC ' +
+      'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_JN ' +
+      'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_MO) lbd on lbd.sI = gc.sI and lbd.tk = gc.lI ' +
       "left join GTD_D gd on gc.sI = gd.sI " +
       "left join GTD_J_H jh on jh.ji = gc.ji " +
-      "left join GTD_F gf on gf.lai = gc.lI where gc.sI ='" + sI +"'"
+      "left join GTD_F gf on gf.lai = gc.lI where gc.sI ='" + sI +"'";
     return this.baseSqlite.executeSql(sql,[])
   }
   /**
