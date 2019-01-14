@@ -63,7 +63,6 @@ public class InterceptorConfig implements HandlerInterceptor {
                         logger.debug("=====TOKEN 未过期======");
                         data = (JSONObject) resultMap.get("data");
                         userId = (String) data.get("userId");
-                        accountMobile = (String) data.get("accountMobile");
                         authType = (String) data.get("authType");
 
                         if (authType.equals("user")) {
