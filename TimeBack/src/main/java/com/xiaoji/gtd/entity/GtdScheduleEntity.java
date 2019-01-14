@@ -20,7 +20,7 @@ public class GtdScheduleEntity {
     private Timestamp updateDate;
 
     @Id
-    @Column(name = "SCHEDULE_ID")
+    @Column(name = "SCHEDULE_ID", nullable = false, length = 50)
     public String getScheduleId() {
         return scheduleId;
     }
@@ -30,7 +30,7 @@ public class GtdScheduleEntity {
     }
 
     @Basic
-    @Column(name = "SCHEDULE_NAME")
+    @Column(name = "SCHEDULE_NAME", nullable = false, length = 150)
     public String getScheduleName() {
         return scheduleName;
     }
@@ -40,7 +40,7 @@ public class GtdScheduleEntity {
     }
 
     @Basic
-    @Column(name = "LABEL_ID")
+    @Column(name = "LABEL_ID", nullable = true)
     public Integer getLabelId() {
         return labelId;
     }
@@ -50,7 +50,7 @@ public class GtdScheduleEntity {
     }
 
     @Basic
-    @Column(name = "USER_ID")
+    @Column(name = "USER_ID", nullable = false, length = 50)
     public String getUserId() {
         return userId;
     }
@@ -60,7 +60,7 @@ public class GtdScheduleEntity {
     }
 
     @Basic
-    @Column(name = "PLAN_ID")
+    @Column(name = "PLAN_ID", nullable = true, length = 50)
     public String getPlanId() {
         return planId;
     }
@@ -70,7 +70,7 @@ public class GtdScheduleEntity {
     }
 
     @Basic
-    @Column(name = "START_DATE")
+    @Column(name = "START_DATE", nullable = true)
     public Timestamp getStartDate() {
         return startDate;
     }
@@ -80,7 +80,7 @@ public class GtdScheduleEntity {
     }
 
     @Basic
-    @Column(name = "END_DATE")
+    @Column(name = "END_DATE", nullable = true)
     public Timestamp getEndDate() {
         return endDate;
     }
@@ -90,7 +90,7 @@ public class GtdScheduleEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_ID")
+    @Column(name = "CREATE_ID", nullable = true, length = 50)
     public String getCreateId() {
         return createId;
     }
@@ -100,7 +100,7 @@ public class GtdScheduleEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_DATE")
+    @Column(name = "CREATE_DATE", nullable = true)
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -110,7 +110,7 @@ public class GtdScheduleEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_ID")
+    @Column(name = "UPDATE_ID", nullable = true, length = 50)
     public String getUpdateId() {
         return updateId;
     }
@@ -120,7 +120,7 @@ public class GtdScheduleEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_DATE")
+    @Column(name = "UPDATE_DATE", nullable = true)
     public Timestamp getUpdateDate() {
         return updateDate;
     }
@@ -151,5 +151,4 @@ public class GtdScheduleEntity {
     public int hashCode() {
         return Objects.hash(scheduleId, scheduleName, labelId, userId, planId, startDate, endDate, createId, createDate, updateId, updateDate);
     }
-
 }

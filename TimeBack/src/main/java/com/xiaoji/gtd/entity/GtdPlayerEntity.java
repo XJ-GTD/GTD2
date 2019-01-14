@@ -17,15 +17,15 @@ public class GtdPlayerEntity {
     private String playerHeadimg;
     private Integer playerType;
     private String playerContact;
-    private String relation;
     private String userId;
     private String createId;
     private Timestamp createDate;
     private String updateId;
     private Timestamp updateDate;
+    private String relation;
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false, length = 50)
     public String getId() {
         return id;
     }
@@ -35,7 +35,7 @@ public class GtdPlayerEntity {
     }
 
     @Basic
-    @Column(name = "PLAYER_ID")
+    @Column(name = "PLAYER_ID", nullable = true, length = 50)
     public String getPlayerId() {
         return playerId;
     }
@@ -45,7 +45,7 @@ public class GtdPlayerEntity {
     }
 
     @Basic
-    @Column(name = "PY_OHTER_NAME")
+    @Column(name = "PY_OHTER_NAME", nullable = true, length = 100)
     public String getPyOhterName() {
         return pyOhterName;
     }
@@ -55,7 +55,7 @@ public class GtdPlayerEntity {
     }
 
     @Basic
-    @Column(name = "PLAYER_ANOTHER_NAME")
+    @Column(name = "PLAYER_ANOTHER_NAME", nullable = false, length = 50)
     public String getPlayerAnotherName() {
         return playerAnotherName;
     }
@@ -65,7 +65,7 @@ public class GtdPlayerEntity {
     }
 
     @Basic
-    @Column(name = "PLAYER_NAME")
+    @Column(name = "PLAYER_NAME", nullable = true, length = 20)
     public String getPlayerName() {
         return playerName;
     }
@@ -75,7 +75,7 @@ public class GtdPlayerEntity {
     }
 
     @Basic
-    @Column(name = "PY_PLAYER_NAME")
+    @Column(name = "PY_PLAYER_NAME", nullable = true, length = 100)
     public String getPyPlayerName() {
         return pyPlayerName;
     }
@@ -85,7 +85,7 @@ public class GtdPlayerEntity {
     }
 
     @Basic
-    @Column(name = "PLAYER_FLAG")
+    @Column(name = "PLAYER_FLAG", nullable = true)
     public Integer getPlayerFlag() {
         return playerFlag;
     }
@@ -95,7 +95,7 @@ public class GtdPlayerEntity {
     }
 
     @Basic
-    @Column(name = "PLAYER_HEADIMG")
+    @Column(name = "PLAYER_HEADIMG", nullable = true, length = 200)
     public String getPlayerHeadimg() {
         return playerHeadimg;
     }
@@ -105,7 +105,7 @@ public class GtdPlayerEntity {
     }
 
     @Basic
-    @Column(name = "PLAYER_TYPE")
+    @Column(name = "PLAYER_TYPE", nullable = true)
     public Integer getPlayerType() {
         return playerType;
     }
@@ -115,7 +115,7 @@ public class GtdPlayerEntity {
     }
 
     @Basic
-    @Column(name = "PLAYER_CONTACT")
+    @Column(name = "PLAYER_CONTACT", nullable = false, length = 20)
     public String getPlayerContact() {
         return playerContact;
     }
@@ -125,17 +125,7 @@ public class GtdPlayerEntity {
     }
 
     @Basic
-    @Column(name = "RELATION")
-    public String getRelation() {
-        return relation;
-    }
-
-    public void setRelation(String relation) {
-        this.relation = relation;
-    }
-
-    @Basic
-    @Column(name = "USER_ID")
+    @Column(name = "USER_ID", nullable = false, length = 50)
     public String getUserId() {
         return userId;
     }
@@ -145,7 +135,7 @@ public class GtdPlayerEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_ID")
+    @Column(name = "CREATE_ID", nullable = true, length = 50)
     public String getCreateId() {
         return createId;
     }
@@ -155,7 +145,7 @@ public class GtdPlayerEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_DATE")
+    @Column(name = "CREATE_DATE", nullable = true)
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -165,7 +155,7 @@ public class GtdPlayerEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_ID")
+    @Column(name = "UPDATE_ID", nullable = true, length = 50)
     public String getUpdateId() {
         return updateId;
     }
@@ -175,13 +165,23 @@ public class GtdPlayerEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_DATE")
+    @Column(name = "UPDATE_DATE", nullable = true)
     public Timestamp getUpdateDate() {
         return updateDate;
     }
 
     public void setUpdateDate(Timestamp updateDate) {
         this.updateDate = updateDate;
+    }
+
+    @Basic
+    @Column(name = "relation", nullable = true, length = 255)
+    public String getRelation() {
+        return relation;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
     }
 
     @Override
@@ -199,16 +199,16 @@ public class GtdPlayerEntity {
                 Objects.equals(playerHeadimg, that.playerHeadimg) &&
                 Objects.equals(playerType, that.playerType) &&
                 Objects.equals(playerContact, that.playerContact) &&
-                Objects.equals(relation, that.relation) &&
                 Objects.equals(userId, that.userId) &&
                 Objects.equals(createId, that.createId) &&
                 Objects.equals(createDate, that.createDate) &&
                 Objects.equals(updateId, that.updateId) &&
-                Objects.equals(updateDate, that.updateDate);
+                Objects.equals(updateDate, that.updateDate) &&
+                Objects.equals(relation, that.relation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, playerId, pyOhterName, playerAnotherName, playerName, pyPlayerName, playerFlag, playerHeadimg, playerType, playerContact, relation, userId, createId, createDate, updateId, updateDate);
+        return Objects.hash(id, playerId, pyOhterName, playerAnotherName, playerName, pyPlayerName, playerFlag, playerHeadimg, playerType, playerContact, userId, createId, createDate, updateId, updateDate, relation);
     }
 }

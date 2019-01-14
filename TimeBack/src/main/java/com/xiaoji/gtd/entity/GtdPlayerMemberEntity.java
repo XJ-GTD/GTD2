@@ -10,13 +10,13 @@ public class GtdPlayerMemberEntity {
     private String id;
     private String playerId;
     private String memberId;
-    private Timestamp createId;
-    private String createDate;
+    private String createId;
+    private Timestamp createDate;
     private String updateId;
     private Timestamp updateDate;
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false, length = 100)
     public String getId() {
         return id;
     }
@@ -26,7 +26,7 @@ public class GtdPlayerMemberEntity {
     }
 
     @Basic
-    @Column(name = "PLAYER_ID")
+    @Column(name = "PLAYER_ID", nullable = false, length = 50)
     public String getPlayerId() {
         return playerId;
     }
@@ -36,7 +36,7 @@ public class GtdPlayerMemberEntity {
     }
 
     @Basic
-    @Column(name = "MEMBER_ID")
+    @Column(name = "MEMBER_ID", nullable = false, length = 50)
     public String getMemberId() {
         return memberId;
     }
@@ -46,27 +46,27 @@ public class GtdPlayerMemberEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_ID")
-    public Timestamp getCreateId() {
+    @Column(name = "CREATE_ID", nullable = true, length = 50)
+    public String getCreateId() {
         return createId;
     }
 
-    public void setCreateId(Timestamp createId) {
+    public void setCreateId(String createId) {
         this.createId = createId;
     }
 
     @Basic
-    @Column(name = "CREATE_DATE")
-    public String getCreateDate() {
+    @Column(name = "CREATE_DATE", nullable = true)
+    public Timestamp getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
 
     @Basic
-    @Column(name = "UPDATE_ID")
+    @Column(name = "UPDATE_ID", nullable = true, length = 50)
     public String getUpdateId() {
         return updateId;
     }
@@ -76,7 +76,7 @@ public class GtdPlayerMemberEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_DATE")
+    @Column(name = "UPDATE_DATE", nullable = true)
     public Timestamp getUpdateDate() {
         return updateDate;
     }

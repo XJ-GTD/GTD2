@@ -12,15 +12,15 @@ public class GtdSyncVersionEntity {
     private String version;
     private String tableName;
     private String tableId;
+    private String deviceId;
     private String syncAction;
     private String createId;
     private Timestamp createDate;
     private String updateId;
     private Timestamp updateDate;
-    private String deviceId;
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false)
     public long getId() {
         return id;
     }
@@ -30,7 +30,7 @@ public class GtdSyncVersionEntity {
     }
 
     @Basic
-    @Column(name = "USER_ID")
+    @Column(name = "USER_ID", nullable = true, length = 50)
     public String getUserId() {
         return userId;
     }
@@ -40,7 +40,7 @@ public class GtdSyncVersionEntity {
     }
 
     @Basic
-    @Column(name = "VERSION")
+    @Column(name = "VERSION", nullable = true, length = 50)
     public String getVersion() {
         return version;
     }
@@ -50,7 +50,7 @@ public class GtdSyncVersionEntity {
     }
 
     @Basic
-    @Column(name = "TABLE_NAME")
+    @Column(name = "TABLE_NAME", nullable = true, length = 50)
     public String getTableName() {
         return tableName;
     }
@@ -60,7 +60,7 @@ public class GtdSyncVersionEntity {
     }
 
     @Basic
-    @Column(name = "TABLE_ID")
+    @Column(name = "TABLE_ID", nullable = true, length = 50)
     public String getTableId() {
         return tableId;
     }
@@ -70,7 +70,17 @@ public class GtdSyncVersionEntity {
     }
 
     @Basic
-    @Column(name = "SYNC_ACTION")
+    @Column(name = "DEVICE_ID", nullable = true, length = 100)
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    @Basic
+    @Column(name = "SYNC_ACTION", nullable = true, length = 20)
     public String getSyncAction() {
         return syncAction;
     }
@@ -80,7 +90,7 @@ public class GtdSyncVersionEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_ID")
+    @Column(name = "CREATE_ID", nullable = true, length = 50)
     public String getCreateId() {
         return createId;
     }
@@ -90,7 +100,7 @@ public class GtdSyncVersionEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_DATE")
+    @Column(name = "CREATE_DATE", nullable = true)
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -100,7 +110,7 @@ public class GtdSyncVersionEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_ID")
+    @Column(name = "UPDATE_ID", nullable = true, length = 50)
     public String getUpdateId() {
         return updateId;
     }
@@ -110,23 +120,13 @@ public class GtdSyncVersionEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_DATE")
+    @Column(name = "UPDATE_DATE", nullable = true)
     public Timestamp getUpdateDate() {
         return updateDate;
     }
 
     public void setUpdateDate(Timestamp updateDate) {
         this.updateDate = updateDate;
-    }
-
-    @Basic
-    @Column(name = "DEVICE_ID")
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
     }
 
     @Override
@@ -139,16 +139,16 @@ public class GtdSyncVersionEntity {
                 Objects.equals(version, that.version) &&
                 Objects.equals(tableName, that.tableName) &&
                 Objects.equals(tableId, that.tableId) &&
+                Objects.equals(deviceId, that.deviceId) &&
                 Objects.equals(syncAction, that.syncAction) &&
                 Objects.equals(createId, that.createId) &&
                 Objects.equals(createDate, that.createDate) &&
                 Objects.equals(updateId, that.updateId) &&
-                Objects.equals(updateDate, that.updateDate) &&
-                Objects.equals(deviceId, that.deviceId);
+                Objects.equals(updateDate, that.updateDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, version, tableName, tableId, syncAction, createId, createDate, updateId, updateDate, deviceId);
+        return Objects.hash(id, userId, version, tableName, tableId, deviceId, syncAction, createId, createDate, updateId, updateDate);
     }
 }

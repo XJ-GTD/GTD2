@@ -17,7 +17,7 @@ public class GtdPlanEntity {
     private Timestamp updateDate;
 
     @Id
-    @Column(name = "PLAN_ID")
+    @Column(name = "PLAN_ID", nullable = false, length = 50)
     public String getPlanId() {
         return planId;
     }
@@ -27,7 +27,7 @@ public class GtdPlanEntity {
     }
 
     @Basic
-    @Column(name = "PLAN_NAME")
+    @Column(name = "PLAN_NAME", nullable = true, length = 100)
     public String getPlanName() {
         return planName;
     }
@@ -37,7 +37,7 @@ public class GtdPlanEntity {
     }
 
     @Basic
-    @Column(name = "PLAN_CONTENT")
+    @Column(name = "PLAN_CONTENT", nullable = true, length = 100)
     public String getPlanContent() {
         return planContent;
     }
@@ -47,7 +47,7 @@ public class GtdPlanEntity {
     }
 
     @Basic
-    @Column(name = "USER_ID")
+    @Column(name = "USER_ID", nullable = true, length = 50)
     public String getUserId() {
         return userId;
     }
@@ -57,7 +57,7 @@ public class GtdPlanEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_ID")
+    @Column(name = "CREATE_ID", nullable = true, length = 50)
     public String getCreateId() {
         return createId;
     }
@@ -67,7 +67,7 @@ public class GtdPlanEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_DATE")
+    @Column(name = "CREATE_DATE", nullable = true)
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -77,7 +77,7 @@ public class GtdPlanEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_ID")
+    @Column(name = "UPDATE_ID", nullable = true, length = 50)
     public String getUpdateId() {
         return updateId;
     }
@@ -87,7 +87,7 @@ public class GtdPlanEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_DATE")
+    @Column(name = "UPDATE_DATE", nullable = true)
     public Timestamp getUpdateDate() {
         return updateDate;
     }

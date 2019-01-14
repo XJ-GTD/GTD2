@@ -16,7 +16,7 @@ public class GtdAccountEntity {
     private Timestamp updateDate;
 
     @Id
-    @Column(name = "USER_ID")
+    @Column(name = "USER_ID", nullable = false, length = 50)
     public String getUserId() {
         return userId;
     }
@@ -26,7 +26,7 @@ public class GtdAccountEntity {
     }
 
     @Basic
-    @Column(name = "ACCOUNT_STATUS")
+    @Column(name = "ACCOUNT_STATUS", nullable = false, length = 10)
     public String getAccountStatus() {
         return accountStatus;
     }
@@ -36,7 +36,7 @@ public class GtdAccountEntity {
     }
 
     @Basic
-    @Column(name = "ACCOUNT_INVITER")
+    @Column(name = "ACCOUNT_INVITER", nullable = true, length = 50)
     public String getAccountInviter() {
         return accountInviter;
     }
@@ -46,7 +46,7 @@ public class GtdAccountEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_ID")
+    @Column(name = "CREATE_ID", nullable = true, length = 50)
     public String getCreateId() {
         return createId;
     }
@@ -56,7 +56,7 @@ public class GtdAccountEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_DATE")
+    @Column(name = "CREATE_DATE", nullable = true)
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -66,7 +66,7 @@ public class GtdAccountEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_ID")
+    @Column(name = "UPDATE_ID", nullable = true, length = 50)
     public String getUpdateId() {
         return updateId;
     }
@@ -76,7 +76,7 @@ public class GtdAccountEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_DATE")
+    @Column(name = "UPDATE_DATE", nullable = true)
     public Timestamp getUpdateDate() {
         return updateDate;
     }

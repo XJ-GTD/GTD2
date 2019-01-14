@@ -285,7 +285,7 @@ public class SyncServiceImpl implements ISyncService {
                     List<GtdPlayerMemberEntity> deleteMemberList = new ArrayList<>();
                     for (SyncTableData std: dataList) {
 
-                        GtdPlayerMemberEntity memberEntity = SyncGetOrSetMethod.memberDtoToEntity(std);
+                        GtdPlayerMemberEntity memberEntity = SyncGetOrSetMethod.memberDtoToEntity(std, userId);
                         if (isDelete(std.getAction())) deleteMemberList.add(memberEntity);
                         else tableMemberList.add(memberEntity);
 
@@ -323,7 +323,7 @@ public class SyncServiceImpl implements ISyncService {
                     List<GtdExecuteEntity> deleteExecuteList = new ArrayList<>();
                     for (SyncTableData std: dataList) {
 
-                        GtdExecuteEntity executeEntity = SyncGetOrSetMethod.executeDtoToEntity(std);
+                        GtdExecuteEntity executeEntity = SyncGetOrSetMethod.executeDtoToEntity(std, userId);
                         if (isDelete(std.getAction())) deleteExecuteList.add(executeEntity);
                         else tableExecuteList.add(executeEntity);
 
