@@ -123,7 +123,7 @@ export class WorkSqlite{
   getMBs(ym:string,ui:string):Promise<BsModel>{
     ym = ym.replace(new RegExp('-','g'),'/')
     return new Promise((resolve, reject) => {
-      let sql= this.getRcSql +
+      let sql= this.getRcSql() +
         ' where (gd.uI = "'+ui+'" or gc.uI= "'+ui+'") and ' +
         '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'")';
       let bs = new BsModel();
@@ -210,8 +210,7 @@ export class WorkSqlite{
    */
   getOd(d:string,ui:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
-      let sql= this.getRcSql +
-        ' left join GTD_F gf on gf.lai=gc.lI '+
+      let sql= this.getRcSql() + ' left join GTD_F gf on gf.lai=gc.lI '+
         'left join (select substr(md,1,10) md,mf,rI from GTD_H where mf="0" and substr(md,1,10) = "'+ d+
         '" group by substr(md,1,10),mf,rI) gh on gc.sI=gh.rI ' +
       ' where (substr(gc.sd,1,10) <= "'+d+'" and substr(gc.ed,1,10)>= "'+d+'") ' +
