@@ -111,7 +111,7 @@ export class RcEntity {
       sql = sql.substr(0,sql.length-1);
     }
     if(this._sI != null && this._sI!=''){
-      sql = sql +'" where sI="' + this._sI +'"';
+      sql = sql +' where sI="' + this._sI +'"';
     }
 
     this._usq=sql;
