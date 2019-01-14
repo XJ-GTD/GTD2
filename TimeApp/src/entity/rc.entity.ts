@@ -12,6 +12,8 @@ export class RcEntity {
   private _sd:string=''; //开始时间
   private _ed:string = ''; //结束时间
   private _ji:string=''; //计划ID
+  private _ib: string='0';  //是否本地:0非本地；1本地日历 默认非本地
+  private _bi: string=''; //本地日程id
   /*
    * 创建表
    * @type {string}
@@ -19,7 +21,7 @@ export class RcEntity {
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_C(sI VARCHAR(100) PRIMARY KEY,' +
                           'sN VARCHAR(100),lI VARCHAR(10),uI VARCHAR(100),sd VARCHAR(20),' +
-    'ed VARCHAR(20),ji VARCHAR(20));';
+    'ed VARCHAR(20),ji VARCHAR(20),ib VARCHAR(20),bi VARCHAR(200));';
   private _drsq:string="DROP TABLE IF EXISTS GTD_C;"
 
   private _isq:string;
@@ -75,8 +77,8 @@ export class RcEntity {
   }
   get rpsq(): string {
     let sql='replace into GTD_C ' +
-      '(sI,sN,lI,uI,sd,ed,ji) values("'+ this._sI+'","'+ this._sN+'","'+this._lI+ '","'+ this._uI
-      +'","'+this._sd+ '","'+ this._ed+'","'+ this._ji+'");';
+      '(sI,sN,lI,uI,sd,ed,ji,ib,bi) values("'+ this._sI+'","'+ this._sN+'","'+this._lI+ '","'+ this._uI
+      +'","'+this._sd+ '","'+ this._ed+'","'+ this._ji+'","'+ this._ib+'","'+ this._bi+'");';
     this._rpsq=sql;
     return this._rpsq;
   }
@@ -226,5 +228,20 @@ export class RcEntity {
 
   set ji(value: string) {
     this._ji = value;
+  }
+  get ib(): string {
+    return this._ib;
+  }
+
+  set ib(value: string) {
+    this._ib = value;
+  }
+
+  get bi(): string {
+    return this._bi;
+  }
+
+  set bi(value: string) {
+    this._bi = value;
   }
 }

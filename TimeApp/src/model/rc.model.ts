@@ -19,10 +19,22 @@ export class RcModel extends BsModel{
   private _ed:string = null; //结束时间
   private _sa:string = null; //修改权限 0不可修改，1可修改
   private _pI: string=null;//日程参与人表uuID
+  private _son: string=null;//日程别名
   private _rus : Array<RuModel> //联系人
+  //标签数据
+  private _subId:string=null; //子表ID
   private _cft:string=null; //重复类型
   private _ac:string=null; //提醒方式
   private _fh:string=null; //完成情况
+  private _dt:string=null; //日期（具体到天）
+  private _wd:string = null; //完成时间
+  private _rm:string=null; //备注
+
+  //本地日历
+  private _ib: string='0';  //是否本地:0非本地；1本地日历 默认非本地
+  private _bi: string=''; //本地日程id
+
+  //mq
   private _noca:string;
   private _nocb:string;
   get sI(): string {
@@ -160,5 +172,59 @@ export class RcModel extends BsModel{
 
   set fh(value: string) {
     this._fh = value;
+  }
+  get ib(): string {
+    return this._ib;
+  }
+
+  set ib(value: string) {
+    this._ib = value;
+  }
+
+  get bi(): string {
+    return this._bi;
+  }
+
+  set bi(value: string) {
+    this._bi = value;
+  }
+
+  get subId(): string {
+    return this._subId;
+  }
+
+  set subId(value: string) {
+    this._subId = value;
+  }
+
+  get dt(): string {
+    return this._dt;
+  }
+
+  set dt(value: string) {
+    this._dt = value;
+  }
+
+  get wd(): string {
+    return this._wd;
+  }
+
+  set wd(value: string) {
+    this._wd = value;
+  }
+
+  get rm(): string {
+    return this._rm;
+  }
+
+  set rm(value: string) {
+    this._rm = value;
+  }
+  get son(): string {
+    return this._son;
+  }
+
+  set son(value: string) {
+    this._son = value;
   }
 }

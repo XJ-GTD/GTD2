@@ -14,6 +14,8 @@ import {ScheduleModel} from "../../model/schedule.model";
 import {SyncModel} from "../../model/sync.model";
 import {RcbModel} from "../../model/rcb.model";
 import {SyncEntity} from "../../entity/sync.entity";
+import {ReadlocalService} from "../readlocal.service";
+import * as moment from "moment";
 
 
 /**
@@ -26,6 +28,7 @@ export class WorkSqlite{
 
   constructor( private baseSqlite: BaseSqlite,
             private msSqlite:MsSqlite,
+            private readlocal:ReadlocalService,
             private util:UtilService) {
 
   }
@@ -115,7 +118,7 @@ export class WorkSqlite{
 
   /**
    * 查询每月事件标识
-   * @param ym 格式‘2018-01’
+   * @param ym 格式‘2018/01’
    */
   getMBs(ym:string,ui:string):Promise<BsModel>{
     ym = ym.replace(new RegExp('-','g'),'/')
@@ -130,37 +133,49 @@ export class WorkSqlite{
         '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'")';
       let bs = new BsModel();
       let resL = new Array<any>();
-      this.baseSqlite.executeSql(sql,[])
-        .then(data=>{
-          let ls = data.rows;
+      let rcL = new Array<RcModel>();
+      this.baseSqlite.executeSql(sql,[]).then(data=>{
+
+        console.log(' ---- WorkSqlite getMBs 查询sqlite日历数据 ---- ');
+        if(data && data.rows && data.rows.length>0){
+          for (let i = 0; i < data.rows.length; i++) {
+            rcL.push(data.rows.item(i))
+          }
+        }
+        console.log(' ---- WorkSqlite getMBs 查询本地日历数据 ---- ');
+        let date = new Date(ym+'/01');
+        let sd = UtilService.getCurrentMonthFirst(date);
+        let ed = UtilService.getCurrentMonthLast(date);
+        return this.readlocal.findEventRc(sd,ed,resL);
+      }) .then(data=>{
+        if(data.rcL.length>0){
           for(let i=1;i<=31;i++){
             let day = ym+"/"+i;
             if(i<10){
               day = ym+'/0'+i;
             }
-
             let count:number = 0;
-            for (let j = 0; j < ls.length; j++) {
-              if (this.isymwd(ls.item(j).cft, day, ls.item(j).sd, ls.item(j).ed)) {
+            for (let j = 0; j < rcL.length; j++) {
+              if (this.isymwd(rcL[j].cft, day, rcL[j].sd, rcL[j].ed)) {
                 count += 1;
               }
-
             }
- //           TODO
+            //  TODO
             if(count>0){
               let res:any={};
               res.ymd = day;
               res.ct = count;
               resL.push(res)
             }
-          // if(UtilService.randInt(0,1)>0){
-          //     let res:any={};
-          //     res.ymd = day;
-          //     res.ct = UtilService.randInt(0,10);
-          //     resL.push(res);
-          //   }
+            // if(UtilService.randInt(0,1)>0){
+            //     let res:any={};
+            //     res.ymd = day;
+            //     res.ct = UtilService.randInt(0,10);
+            //     resL.push(res);
+            //   }
           }
-
+        }
+        //查询Message
         return this.msSqlite.getMonthMs(ym);
       }).then(data=>{
         if(data&&data.rows&&data.rows.length){
@@ -196,7 +211,7 @@ export class WorkSqlite{
 
   /**
    * 查询当天事件
-   * @param d 'yyyy-MM-dd'
+   * @param d 'yyyy/MM/dd'
    */
   getOd(d:string,ui:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
@@ -215,12 +230,23 @@ export class WorkSqlite{
        // +'and (gd.pI is null or gd.uI ="'+DataConfig.uInfo.uI+'")';
       let bs = new BsModel();
       let resL = new Array<any>();
+      let rcL = new Array<RcModel>();
       this.baseSqlite.executeSql(sql,[]).then(data=>{
-        if(data&&data.rows&&data.rows.length>0){
-          let ls = data.rows;
-          for(let i=0;i<ls.length;i++){
-            if(this.isymwd(ls.item(i).cft,d,ls.item(i).sd,ls.item(i).ed)){
-              let res:any = ls.item(i);
+        let localIds:string[] = [];
+        console.log(' ---- WorkSqlite getOd 查询sqlite日历数据 ---- ');
+        if(data && data.rows && data.rows.length>0){
+          for (let i = 0; i < data.rows.length; i++) {
+            rcL.push(data.rows.item(i))
+          }
+        }
+        console.log(' ---- WorkSqlite getMBs 查询本地日历数据 ---- ');
+        let date = new Date(d);
+        return this.readlocal.findEventRc(date,date,resL);
+      }).then(data=>{
+        if(data.rcL.length>0){
+          for(let i=0;i<rcL.length;i++){
+            let res:any = rcL[i];
+            if(this.isymwd(res.cft,d,res.sd,res.ed)){
               res.scheduleId = res.sI;
               res.scheduleName = res.sN;
               if(res.san != null){
@@ -260,10 +286,6 @@ export class WorkSqlite{
         //   res.labelColor = "red";
         //   resL.push(res);
         // }
-        let ms = new MsEntity();
-        ms.md=d;
-        return this.msSqlite.updateMs(ms);
-      }).then(data=>{
         bs.data=resL;
         resolve(bs);
       }).catch(e=>{
@@ -623,8 +645,8 @@ export class WorkSqlite{
       sync.tableA = en.pI ;
       sync.tableB = en.sI;
       sync.tableC = en.son;
-      sync.tableD = en.uI;
-      sync.tableE = en.sa;
+      sync.tableD = en.sa;
+      sync.tableE = en.sdt+'';
       sync.tableF = en.uI;
       sync.tableG = en.rui;
       sync.action= ac;
