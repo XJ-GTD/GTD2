@@ -146,7 +146,7 @@ export class WorkSqlite{
         let date = new Date(ym+'/01');
         let sd = UtilService.getCurrentMonthFirst(date);
         let ed = UtilService.getCurrentMonthLast(date);
-        return this.readlocal.findEventRc(sd,ed,resL);
+        return this.readlocal.findEventRc(sd,ed,rcL);
       }) .then(data=>{
         if(data.rcL.length>0){
           for(let i=1;i<=31;i++){
@@ -241,7 +241,7 @@ export class WorkSqlite{
         }
         console.log(' ---- WorkSqlite getMBs 查询本地日历数据 ---- ');
         let date = new Date(d);
-        return this.readlocal.findEventRc(date,date,resL);
+        return this.readlocal.findEventRc(date,date,rcL);
       }).then(data=>{
         if(data.rcL.length>0){
           for(let i=0;i<rcL.length;i++){
