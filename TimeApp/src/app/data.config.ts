@@ -34,7 +34,7 @@ export class DataConfig {
   public static ZTD_MAP:Map<string,any> = new Map<string,any>();
   public static REPEAT_TYPE:string = '12';
   //随机语音播报字典类型
-  public static TEXT_TYPE:string = '12';
+  public static TEXT_TYPE:string = '401';
   //随机语音播报字典内容
   public static TEXT_CONTENT:Map<string,any> = new Map<string,any>();
   //随机语音播报字典类型
