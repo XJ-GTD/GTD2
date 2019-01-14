@@ -15,10 +15,11 @@ public class GtdLabelEntity {
     private String createId;
     private Timestamp createDate;
     private String updateId;
-    private Timestamp column9;
+    private Timestamp updateDate;
 
     @Id
     @Column(name = "ID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -98,13 +99,13 @@ public class GtdLabelEntity {
     }
 
     @Basic
-    @Column(name = "column_9", nullable = true)
-    public Timestamp getColumn9() {
-        return column9;
+    @Column(name = "UPDATE_DATE", nullable = true)
+    public Timestamp getUpdateDate() {
+        return updateDate;
     }
 
-    public void setColumn9(Timestamp column9) {
-        this.column9 = column9;
+    public void setUpdateDate(Timestamp updateDate) {
+        this.updateDate = updateDate;
     }
 
     @Override
@@ -120,11 +121,11 @@ public class GtdLabelEntity {
                 Objects.equals(createId, that.createId) &&
                 Objects.equals(createDate, that.createDate) &&
                 Objects.equals(updateId, that.updateId) &&
-                Objects.equals(column9, that.column9);
+                Objects.equals(updateDate, that.updateDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, labelName, labelType, labelTable, labelColor, createId, createDate, updateId, column9);
+        return Objects.hash(id, labelName, labelType, labelTable, labelColor, createId, createDate, updateId, updateDate);
     }
 }
