@@ -24,9 +24,11 @@
     <ion-buttons right [ngSwitch]="relation" margin-right>
       <button ion-button icon-only *ngSwitchCase="'person'" (click)="toAddMember()">
         <ion-icon name="person-add"></ion-icon>
+        <!--<img src="./assets/imgs/addPerson.png"/>-->
       </button>
       <button ion-button icon-only *ngSwitchCase="'group'" (click)="toGroupCreate()">
         <ion-icon name="add"></ion-icon>
+        <!--<img src="./assets/imgs/aaddGroup.png"/>-->
       </button>
     </ion-buttons>
   </ion-toolbar>

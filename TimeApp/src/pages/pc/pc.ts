@@ -96,11 +96,4 @@ export class PcPage {
     })
   }
 
-
-  piliangtianjia(){
-    for(let i =1;i<10;i++){
-
-      this.relme.aru(this.uo.uI,this.util.getUuid(),"测"+i,"测"+i,  "13"+i+i+i+i+i+i+i+i+i, '0',"./assets/imgs/headImg.jpg","1",null).then()
-    }
-  }
 }
