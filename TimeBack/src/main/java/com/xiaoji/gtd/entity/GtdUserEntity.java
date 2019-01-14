@@ -20,8 +20,6 @@ public class GtdUserEntity {
     private Timestamp createDate;
     private String updateId;
     private Timestamp updateDate;
-    private String brithday;
-    private String headimgUrl;
 
     @Id
     @Column(name = "USER_ID", nullable = false, length = 50)
@@ -153,26 +151,6 @@ public class GtdUserEntity {
         this.updateDate = updateDate;
     }
 
-    @Basic
-    @Column(name = "brithday", nullable = true, length = 255)
-    public String getBrithday() {
-        return brithday;
-    }
-
-    public void setBrithday(String brithday) {
-        this.brithday = brithday;
-    }
-
-    @Basic
-    @Column(name = "headimg_url", nullable = true, length = 255)
-    public String getHeadimgUrl() {
-        return headimgUrl;
-    }
-
-    public void setHeadimgUrl(String headimgUrl) {
-        this.headimgUrl = headimgUrl;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -190,13 +168,11 @@ public class GtdUserEntity {
                 Objects.equals(createId, that.createId) &&
                 Objects.equals(createDate, that.createDate) &&
                 Objects.equals(updateId, that.updateId) &&
-                Objects.equals(updateDate, that.updateDate) &&
-                Objects.equals(brithday, that.brithday) &&
-                Objects.equals(headimgUrl, that.headimgUrl);
+                Objects.equals(updateDate, that.updateDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, userName, headImg, birthday, realName, idCard, userSex, userContact, userType, createId, createDate, updateId, updateDate, brithday, headimgUrl);
+        return Objects.hash(userId, userName, headImg, birthday, realName, idCard, userSex, userContact, userType, createId, createDate, updateId, updateDate);
     }
 }
