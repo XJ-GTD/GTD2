@@ -216,14 +216,14 @@ export class LsmService {
           let u = new UEntity();
           u.uI = datal.data.userId;
           u.aQ = datal.data.accountQueue;
-          u.biy = datal.data.brithday;
-          u.hIU = datal.data.headImg;
-          u.iC = datal.data.idCard;
-          u.uT = datal.data.token;
-          u.uN = datal.data.userName;
-          u.uS = datal.data.userSex;
-          u.uty = '1';
-          DataConfig.uInfo = u;
+          u.biy=datal.data.brithday;
+          u.hIU=datal.data.headImg;
+          u.iC=datal.data.idCard;
+          u.uT=datal.data.token;
+          u.uN=datal.data.userName;
+          u.uS=datal.data.userSex;
+          u.uty="1";
+          DataConfig.uInfo=u;
           //用户如果存在则更新
           if (oldUi != u.uI) {
             u.oUI = oldUi;
@@ -238,6 +238,11 @@ export class LsmService {
           }else{
             console.error("------lsm login 短信登录请求返回fail");
           }
+          console.log("------lsm login 短信登录成功请求开始同步服务器数据 -------");
+          return this.sync.loginSync();
+        })
+        .then(data=>{
+          console.log("------lsm login 短信登录成功请求同步服务器数据结束 -------");
           resolve(base);
         })
         .catch(eu => {
