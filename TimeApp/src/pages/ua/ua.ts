@@ -5,6 +5,7 @@ import { ParamsService } from "../../service/util-service/params.service";
 import { UtilService} from "../../service/util-service/util.service";
 import {LsmService} from "../../service/lsm.service";
 import {ReturnConfig} from "../../app/return.config";
+import {PageConfig} from "../../app/page.config";
 
 
 /**
@@ -59,7 +60,7 @@ export class UaPage {
   }
 
   register() {
-    var a=this.checkBoxClick;
+    let a=this.checkBoxClick;
     if (!this.checkBoxClick== true)
     {
       this.checkBoxClickFlag=true;
@@ -82,15 +83,14 @@ export class UaPage {
                   subTitle: "注册成功",
                   buttons: [{
                     text: '确定', role: 'cancel', handler: () => {
-                      if(!this.rePage){
-                        //跳转首页
-                        this.navCtrl.push('HzPage');
-                      }else{
+                      if(this.rePage != undefined){
                         this.navCtrl.getViews().forEach(page=>{
                           if(page.name == this.rePage){
                             this.navCtrl.popTo(page);
                           }
                         })
+                      }else{
+                        this.navCtrl.setRoot(PageConfig.HZ_PAGE);
                       }
                     }
                   }]
@@ -189,7 +189,6 @@ export class UaPage {
   }
 
   sendMsg(){
-    console.log(11);
     if(this.errorCode == 3){
       this.lsmService.sc(this.accountMobile).then(data=>{
         console.log("sc::" + data)
@@ -209,6 +208,17 @@ export class UaPage {
         alert.present();
       })
 
+      this.timeOut = 10;
+      this.timer = setInterval(()=>{
+        this.timeOut --;
+        if(this.timeOut <= 0){
+          clearTimeout(this.timer)
+          console.log("清除定时器")
+          this.timeOut="发送验证码"
+        }
+        console.log(this.timeOut)
+      },1000)
+
     }else{
       let alert = this.alertCtrl.create({
         title:'提示信息',
@@ -217,16 +227,11 @@ export class UaPage {
       });
       alert.present();
     }
-    this.timeOut = 10;
-    this.timer = setInterval(()=>{
-      this.timeOut --;
-      if(this.timeOut <= 0){
-        clearTimeout(this.timer)
-        console.log("清除定时器")
-        this.timeOut="发送验证码"
-      }
-      console.log(this.timeOut)
-    },1000)
+
+  }
+
+  format(){
+    this.accountMobile = this.utilService.remo(this.accountMobile);
   }
 }
 

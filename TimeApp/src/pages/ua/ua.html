@@ -26,7 +26,7 @@
           </div>
           <div class="input_text">
             <ion-item>
-              <ion-input type="number" [(ngModel)]="accountMobile"  (ionBlur)="checkPhone()"  clearInput=true placeholder="输入您的手机号">
+              <ion-input type="tel" [(ngModel)]="accountMobile" (input)="format()"  (ionBlur)="checkPhone()"  clearInput=true placeholder="输入您的手机号">
               </ion-input>
             </ion-item>
           </div>
@@ -94,7 +94,7 @@
         <button ion-button block color="danger" (click)="register()" class="region_button">
           注册
         </button>
-        <div class="copywriting">
+        <div class="copywriting" margin-top>
           <span class="checkbox_span">
             <!--<ion-item>-->
             <!--<ion-label >已阅读《用户协议》</ion-label>-->
