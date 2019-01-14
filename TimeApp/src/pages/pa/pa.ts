@@ -6,6 +6,7 @@ import { RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
 import {DataConfig} from "../../app/data.config";
 import {PageConfig} from "../../app/page.config";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the PaPage page.
@@ -31,7 +32,8 @@ export class PaPage {
               public navParams: NavParams,
               public view: ViewController,
               public userService: UserService,
-              public relmemService: RelmemService) {
+              public relmemService: RelmemService,
+              public utilService: UtilService) {
 
   }
 
@@ -42,11 +44,10 @@ export class PaPage {
 
 
   toAddMember(){
-    // if(this.uo.uty == "0"){
-    //   this.navCtrl.push(PageConfig.UB_PAGE,{"rePage":PageConfig.PA_PAGE});
-    //   return;
-    // }
-
+    if(this.uo.uty == '0'){
+      this.navCtrl.push(PageConfig.UB_PAGE,{"rePage":PageConfig.PA_PAGE})
+      return;
+    }
     console.log('PaPage跳转PfPage');
     this.navCtrl.push('PfPage');
   }
@@ -57,6 +58,10 @@ export class PaPage {
   }
 
   toGroupCreate(){
+    if(this.uo.uty == '0'){
+      this.navCtrl.push(PageConfig.UB_PAGE,{"rePage":PageConfig.PA_PAGE})
+      return;
+    }
     console.log('PaPage跳转PePage');
     this.navCtrl.push("PePage");
   }
