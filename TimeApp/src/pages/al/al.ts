@@ -138,13 +138,13 @@ export class AlPage {
       .then(data => {
         console.log("al :: 同步服务器结束");
         //同步本地日历
-        console.log("al :: 导入用户本地日历开始");
-        this.text=" 导入本地日程";
-        this.increment(10);
-        return this.readlocal.uploadLocal();
-      })
-      .then(data => {
-        console.log("al :: 导入用户本地日历结束");
+      //   console.log("al :: 导入用户本地日历开始");
+      //   this.text=" 导入本地日程";
+      //   this.increment(10);
+      //   return this.readlocal.uploadLocal();
+      // })
+      // .then(data => {
+      //   console.log("al :: 导入用户本地日历结束");
         //初始化本地参数
         console.log("al :: 初始化本地参数开始")
         this.increment(10);
