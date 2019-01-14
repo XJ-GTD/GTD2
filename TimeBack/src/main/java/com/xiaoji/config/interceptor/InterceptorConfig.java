@@ -1,24 +1,16 @@
 package com.xiaoji.config.interceptor;
 
 import com.xiaoji.gtd.dto.code.ResultCode;
-import com.xiaoji.gtd.entity.GtdLoginEntity;
-import com.xiaoji.gtd.repository.AuthRepository;
-import com.xiaoji.gtd.repository.GtdLoginRepository;
-import com.xiaoji.gtd.repository.GtdTokenRepository;
-import com.xiaoji.util.BaseUtil;
 import com.xiaoji.util.Jwt;
 import net.minidev.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import javax.security.auth.message.AuthException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

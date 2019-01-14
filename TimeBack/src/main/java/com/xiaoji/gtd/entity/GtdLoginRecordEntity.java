@@ -20,8 +20,7 @@ public class GtdLoginRecordEntity {
     private Timestamp updateDate;
 
     @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false)
     public long getId() {
         return id;
     }
@@ -31,7 +30,7 @@ public class GtdLoginRecordEntity {
     }
 
     @Basic
-    @Column(name = "USER_ID")
+    @Column(name = "USER_ID", nullable = false, length = 50)
     public String getUserId() {
         return userId;
     }
@@ -41,7 +40,7 @@ public class GtdLoginRecordEntity {
     }
 
     @Basic
-    @Column(name = "DEVICE_ID")
+    @Column(name = "DEVICE_ID", nullable = false, length = 100)
     public String getDeviceId() {
         return deviceId;
     }
@@ -51,7 +50,7 @@ public class GtdLoginRecordEntity {
     }
 
     @Basic
-    @Column(name = "LOGIN_TIME")
+    @Column(name = "LOGIN_TIME", nullable = true)
     public Timestamp getLoginTime() {
         return loginTime;
     }
@@ -61,7 +60,7 @@ public class GtdLoginRecordEntity {
     }
 
     @Basic
-    @Column(name = "LOGIN_LOCALTION")
+    @Column(name = "LOGIN_LOCALTION", nullable = true, length = 50)
     public String getLoginLocaltion() {
         return loginLocaltion;
     }
@@ -71,7 +70,7 @@ public class GtdLoginRecordEntity {
     }
 
     @Basic
-    @Column(name = "LOGIN_IP")
+    @Column(name = "LOGIN_IP", nullable = true, length = 50)
     public String getLoginIp() {
         return loginIp;
     }
@@ -81,7 +80,7 @@ public class GtdLoginRecordEntity {
     }
 
     @Basic
-    @Column(name = "TOKEN")
+    @Column(name = "TOKEN", nullable = false, length = 250)
     public String getToken() {
         return token;
     }
@@ -91,7 +90,7 @@ public class GtdLoginRecordEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_ID")
+    @Column(name = "CREATE_ID", nullable = true, length = 50)
     public String getCreateId() {
         return createId;
     }
@@ -101,7 +100,7 @@ public class GtdLoginRecordEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_DATE")
+    @Column(name = "CREATE_DATE", nullable = true)
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -111,7 +110,7 @@ public class GtdLoginRecordEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_ID")
+    @Column(name = "UPDATE_ID", nullable = true, length = 50)
     public String getUpdateId() {
         return updateId;
     }
@@ -121,7 +120,7 @@ public class GtdLoginRecordEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_DATE")
+    @Column(name = "UPDATE_DATE", nullable = true)
     public Timestamp getUpdateDate() {
         return updateDate;
     }

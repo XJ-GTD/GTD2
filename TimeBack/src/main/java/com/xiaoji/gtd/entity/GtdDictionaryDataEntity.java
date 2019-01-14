@@ -17,8 +17,7 @@ public class GtdDictionaryDataEntity {
     private Timestamp updateDate;
 
     @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false)
     public long getId() {
         return id;
     }
@@ -28,7 +27,7 @@ public class GtdDictionaryDataEntity {
     }
 
     @Basic
-    @Column(name = "DICT_VALUE")
+    @Column(name = "DICT_VALUE", nullable = false)
     public int getDictValue() {
         return dictValue;
     }
@@ -38,7 +37,7 @@ public class GtdDictionaryDataEntity {
     }
 
     @Basic
-    @Column(name = "DICTDATA_NAME")
+    @Column(name = "DICTDATA_NAME", nullable = false, length = 50)
     public String getDictdataName() {
         return dictdataName;
     }
@@ -48,7 +47,7 @@ public class GtdDictionaryDataEntity {
     }
 
     @Basic
-    @Column(name = "DICTDATA_VALUE")
+    @Column(name = "DICTDATA_VALUE", nullable = false, length = 5)
     public String getDictdataValue() {
         return dictdataValue;
     }
@@ -58,7 +57,7 @@ public class GtdDictionaryDataEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_ID")
+    @Column(name = "CREATE_ID", nullable = true, length = 50)
     public String getCreateId() {
         return createId;
     }
@@ -68,7 +67,7 @@ public class GtdDictionaryDataEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_DATE")
+    @Column(name = "CREATE_DATE", nullable = true)
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -78,7 +77,7 @@ public class GtdDictionaryDataEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_ID")
+    @Column(name = "UPDATE_ID", nullable = true, length = 50)
     public String getUpdateId() {
         return updateId;
     }
@@ -88,7 +87,7 @@ public class GtdDictionaryDataEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_DATE")
+    @Column(name = "UPDATE_DATE", nullable = true)
     public Timestamp getUpdateDate() {
         return updateDate;
     }

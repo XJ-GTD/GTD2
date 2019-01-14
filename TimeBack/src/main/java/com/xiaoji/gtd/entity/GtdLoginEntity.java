@@ -18,8 +18,7 @@ public class GtdLoginEntity {
     private Timestamp updateDate;
 
     @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false)
     public long getId() {
         return id;
     }
@@ -29,7 +28,7 @@ public class GtdLoginEntity {
     }
 
     @Basic
-    @Column(name = "USER_ID")
+    @Column(name = "USER_ID", nullable = false, length = 50)
     public String getUserId() {
         return userId;
     }
@@ -39,7 +38,7 @@ public class GtdLoginEntity {
     }
 
     @Basic
-    @Column(name = "LOGIN_TYPE")
+    @Column(name = "LOGIN_TYPE", nullable = false, length = 5)
     public String getLoginType() {
         return loginType;
     }
@@ -49,7 +48,7 @@ public class GtdLoginEntity {
     }
 
     @Basic
-    @Column(name = "LOGIN_NAME")
+    @Column(name = "LOGIN_NAME", nullable = false, length = 30)
     public String getLoginName() {
         return loginName;
     }
@@ -59,7 +58,7 @@ public class GtdLoginEntity {
     }
 
     @Basic
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD", nullable = true, length = 200)
     public String getPassword() {
         return password;
     }
@@ -69,7 +68,7 @@ public class GtdLoginEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_ID")
+    @Column(name = "CREATE_ID", nullable = true, length = 50)
     public String getCreateId() {
         return createId;
     }
@@ -79,7 +78,7 @@ public class GtdLoginEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_DATE")
+    @Column(name = "CREATE_DATE", nullable = true)
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -89,7 +88,7 @@ public class GtdLoginEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_ID")
+    @Column(name = "UPDATE_ID", nullable = true, length = 50)
     public String getUpdateId() {
         return updateId;
     }
@@ -99,7 +98,7 @@ public class GtdLoginEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_DATE")
+    @Column(name = "UPDATE_DATE", nullable = true)
     public Timestamp getUpdateDate() {
         return updateDate;
     }

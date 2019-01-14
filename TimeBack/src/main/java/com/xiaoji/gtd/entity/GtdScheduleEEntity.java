@@ -16,7 +16,7 @@ public class GtdScheduleEEntity {
     private Timestamp updateDate;
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false, length = 50)
     public String getId() {
         return id;
     }
@@ -26,7 +26,7 @@ public class GtdScheduleEEntity {
     }
 
     @Basic
-    @Column(name = "SCHEDULE_ID")
+    @Column(name = "SCHEDULE_ID", nullable = false, length = 50)
     public String getScheduleId() {
         return scheduleId;
     }
@@ -36,7 +36,7 @@ public class GtdScheduleEEntity {
     }
 
     @Basic
-    @Column(name = "COMMENT")
+    @Column(name = "COMMENT", nullable = true, length = 255)
     public String getComment() {
         return comment;
     }
@@ -46,7 +46,7 @@ public class GtdScheduleEEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_ID")
+    @Column(name = "CREATE_ID", nullable = true, length = 50)
     public String getCreateId() {
         return createId;
     }
@@ -56,7 +56,7 @@ public class GtdScheduleEEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_DATE")
+    @Column(name = "CREATE_DATE", nullable = true)
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -66,7 +66,7 @@ public class GtdScheduleEEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_ID")
+    @Column(name = "UPDATE_ID", nullable = true, length = 50)
     public String getUpdateId() {
         return updateId;
     }
@@ -76,7 +76,7 @@ public class GtdScheduleEEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_DATE")
+    @Column(name = "UPDATE_DATE", nullable = true)
     public Timestamp getUpdateDate() {
         return updateDate;
     }

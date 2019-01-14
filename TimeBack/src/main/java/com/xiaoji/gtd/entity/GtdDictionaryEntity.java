@@ -16,7 +16,7 @@ public class GtdDictionaryEntity {
     private Timestamp updateDate;
 
     @Id
-    @Column(name = "DICT_VALUE")
+    @Column(name = "DICT_VALUE", nullable = false)
     public int getDictValue() {
         return dictValue;
     }
@@ -26,7 +26,7 @@ public class GtdDictionaryEntity {
     }
 
     @Basic
-    @Column(name = "DICT_NAME")
+    @Column(name = "DICT_NAME", nullable = false, length = 50)
     public String getDictName() {
         return dictName;
     }
@@ -36,7 +36,7 @@ public class GtdDictionaryEntity {
     }
 
     @Basic
-    @Column(name = "DICT_TYPE")
+    @Column(name = "DICT_TYPE", nullable = false, length = 5)
     public String getDictType() {
         return dictType;
     }
@@ -46,7 +46,7 @@ public class GtdDictionaryEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_ID")
+    @Column(name = "CREATE_ID", nullable = true, length = 50)
     public String getCreateId() {
         return createId;
     }
@@ -56,7 +56,7 @@ public class GtdDictionaryEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_DATE")
+    @Column(name = "CREATE_DATE", nullable = true)
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -66,7 +66,7 @@ public class GtdDictionaryEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_ID")
+    @Column(name = "UPDATE_ID", nullable = true, length = 50)
     public String getUpdateId() {
         return updateId;
     }
@@ -76,7 +76,7 @@ public class GtdDictionaryEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_DATE")
+    @Column(name = "UPDATE_DATE", nullable = true)
     public Timestamp getUpdateDate() {
         return updateDate;
     }

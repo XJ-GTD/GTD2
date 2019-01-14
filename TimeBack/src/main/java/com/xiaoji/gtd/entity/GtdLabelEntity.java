@@ -18,7 +18,7 @@ public class GtdLabelEntity {
     private Timestamp column9;
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false)
     public int getId() {
         return id;
     }
@@ -28,7 +28,7 @@ public class GtdLabelEntity {
     }
 
     @Basic
-    @Column(name = "LABEL_NAME")
+    @Column(name = "LABEL_NAME", nullable = true, length = 10)
     public String getLabelName() {
         return labelName;
     }
@@ -38,7 +38,7 @@ public class GtdLabelEntity {
     }
 
     @Basic
-    @Column(name = "LABEL_TYPE")
+    @Column(name = "LABEL_TYPE", nullable = true, length = 5)
     public String getLabelType() {
         return labelType;
     }
@@ -48,7 +48,7 @@ public class GtdLabelEntity {
     }
 
     @Basic
-    @Column(name = "LABEL_TABLE")
+    @Column(name = "LABEL_TABLE", nullable = true, length = 20)
     public String getLabelTable() {
         return labelTable;
     }
@@ -58,7 +58,7 @@ public class GtdLabelEntity {
     }
 
     @Basic
-    @Column(name = "LABEL_COLOR")
+    @Column(name = "LABEL_COLOR", nullable = true, length = 10)
     public String getLabelColor() {
         return labelColor;
     }
@@ -68,7 +68,7 @@ public class GtdLabelEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_ID")
+    @Column(name = "CREATE_ID", nullable = true, length = 50)
     public String getCreateId() {
         return createId;
     }
@@ -78,7 +78,7 @@ public class GtdLabelEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_DATE")
+    @Column(name = "CREATE_DATE", nullable = true)
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -88,7 +88,7 @@ public class GtdLabelEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_ID")
+    @Column(name = "UPDATE_ID", nullable = true, length = 50)
     public String getUpdateId() {
         return updateId;
     }
@@ -98,7 +98,7 @@ public class GtdLabelEntity {
     }
 
     @Basic
-    @Column(name = "column_9")
+    @Column(name = "column_9", nullable = true)
     public Timestamp getColumn9() {
         return column9;
     }

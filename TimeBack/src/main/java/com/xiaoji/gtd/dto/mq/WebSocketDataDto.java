@@ -7,7 +7,7 @@ package com.xiaoji.gtd.dto.mq;
  */
 public class WebSocketDataDto {
 
-    //业务
+    //业务：日程
     private String sn;      //scheduleName;
     private String st;      //startTime;
     private String et;      //endTime;
@@ -21,6 +21,9 @@ public class WebSocketDataDto {
     private String pli;     //playerId;
     private Integer sa;     //scheduleAuth
 
+    //日程：子表
+
+    //联系人
     private String us;      //userId
     private String un;      //userName
     private String hi;      //headImg

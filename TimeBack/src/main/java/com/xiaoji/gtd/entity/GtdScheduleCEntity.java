@@ -20,7 +20,7 @@ public class GtdScheduleCEntity {
     private Timestamp updateDate;
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false, length = 50)
     public String getId() {
         return id;
     }
@@ -30,7 +30,7 @@ public class GtdScheduleCEntity {
     }
 
     @Basic
-    @Column(name = "SCHEDULE_ID")
+    @Column(name = "SCHEDULE_ID", nullable = false, length = 50)
     public String getScheduleId() {
         return scheduleId;
     }
@@ -40,7 +40,7 @@ public class GtdScheduleCEntity {
     }
 
     @Basic
-    @Column(name = "COMMENT")
+    @Column(name = "COMMENT", nullable = true, length = 255)
     public String getComment() {
         return comment;
     }
@@ -50,7 +50,7 @@ public class GtdScheduleCEntity {
     }
 
     @Basic
-    @Column(name = "REMIND_TYPE")
+    @Column(name = "REMIND_TYPE", nullable = true, length = 5)
     public String getRemindType() {
         return remindType;
     }
@@ -60,7 +60,7 @@ public class GtdScheduleCEntity {
     }
 
     @Basic
-    @Column(name = "REMIND_TIME")
+    @Column(name = "REMIND_TIME", nullable = true)
     public Timestamp getRemindTime() {
         return remindTime;
     }
@@ -70,7 +70,7 @@ public class GtdScheduleCEntity {
     }
 
     @Basic
-    @Column(name = "FINISH_STATUS")
+    @Column(name = "FINISH_STATUS", nullable = true)
     public Integer getFinishStatus() {
         return finishStatus;
     }
@@ -80,7 +80,7 @@ public class GtdScheduleCEntity {
     }
 
     @Basic
-    @Column(name = "FINISH_TIME")
+    @Column(name = "FINISH_TIME", nullable = true)
     public Timestamp getFinishTime() {
         return finishTime;
     }
@@ -90,7 +90,7 @@ public class GtdScheduleCEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_ID")
+    @Column(name = "CREATE_ID", nullable = true, length = 50)
     public String getCreateId() {
         return createId;
     }
@@ -100,7 +100,7 @@ public class GtdScheduleCEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_DATE")
+    @Column(name = "CREATE_DATE", nullable = true)
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -110,7 +110,7 @@ public class GtdScheduleCEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_ID")
+    @Column(name = "UPDATE_ID", nullable = true, length = 50)
     public String getUpdateId() {
         return updateId;
     }
@@ -120,7 +120,7 @@ public class GtdScheduleCEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_DATE")
+    @Column(name = "UPDATE_DATE", nullable = true)
     public Timestamp getUpdateDate() {
         return updateDate;
     }

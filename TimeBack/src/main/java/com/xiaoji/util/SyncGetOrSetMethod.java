@@ -26,6 +26,8 @@ public class SyncGetOrSetMethod {
         userEntity.setUserSex(Integer.valueOf(std.getTableG()));        //性别
         userEntity.setUserContact(std.getTableH());                     //联系方式
         userEntity.setUserType(Integer.valueOf(std.getTableI()));       //用户类型
+        userEntity.setUpdateId(std.getTableA());
+        userEntity.setUpdateDate(BaseUtil.getSqlDate());
 
         return userEntity;
     }
@@ -70,6 +72,8 @@ public class SyncGetOrSetMethod {
         playerEntity.setPlayerFlag(Integer.valueOf(std.getTableI()));   //授权联系人标识
         playerEntity.setPlayerType(Integer.valueOf(std.getTableJ()));   //联系人类型
         playerEntity.setUserId(std.getTableK());                //联系人数据归属
+        playerEntity.setCreateId(std.getTableK());
+        playerEntity.setCreateDate(BaseUtil.getSqlDate());
 
         return playerEntity;
     }
@@ -102,12 +106,14 @@ public class SyncGetOrSetMethod {
      * @param std
      * @return
      */
-    public static GtdPlayerMemberEntity memberDtoToEntity(SyncTableData std) {
+    public static GtdPlayerMemberEntity memberDtoToEntity(SyncTableData std, String userId) {
         GtdPlayerMemberEntity memberEntity = new GtdPlayerMemberEntity();
 
         memberEntity.setId(std.getTableA());                    //主键
         memberEntity.setPlayerId(std.getTableB());              //群组主键ID
         memberEntity.setMemberId(std.getTableC());              //群成员主键ID
+        memberEntity.setCreateId(userId);
+        memberEntity.setCreateDate(BaseUtil.getSqlDate());
 
         return memberEntity;
     }
@@ -142,6 +148,8 @@ public class SyncGetOrSetMethod {
         scheduleEntity.setPlanId(std.getTableE());                              //计划ID
         scheduleEntity.setStartDate(CommonMethods.dateToStamp(std.getTableF()));//开始时间
         scheduleEntity.setEndDate(CommonMethods.dateToStamp(std.getTableG()));  //结束时间
+        scheduleEntity.setCreateId(std.getTableD());
+        scheduleEntity.setCreateDate(BaseUtil.getSqlDate());
 
         return scheduleEntity;
     }
@@ -170,7 +178,7 @@ public class SyncGetOrSetMethod {
      * @param std
      * @return
      */
-    public static GtdExecuteEntity executeDtoToEntity(SyncTableData std) {
+    public static GtdExecuteEntity executeDtoToEntity(SyncTableData std, String userId) {
         GtdExecuteEntity executeEntity = new GtdExecuteEntity();
 
         executeEntity.setExecuteId(std.getTableA());                          //日程参与人表ID
@@ -180,6 +188,8 @@ public class SyncGetOrSetMethod {
         executeEntity.setExecuteStatus(Integer.valueOf(std.getTableE()));     //参与状态
         executeEntity.setUserId(std.getTableF());                             //参与人用户ID
         executeEntity.setId(std.getTableG());                                 //授权表ID
+        executeEntity.setCreateId(userId);
+        executeEntity.setCreateDate(BaseUtil.getSqlDate());
 
         return executeEntity;
     }

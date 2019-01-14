@@ -20,7 +20,7 @@ public class GtdExecuteEntity {
     private Timestamp updateDate;
 
     @Id
-    @Column(name = "EXECUTE_ID")
+    @Column(name = "EXECUTE_ID", nullable = false, length = 50)
     public String getExecuteId() {
         return executeId;
     }
@@ -30,7 +30,7 @@ public class GtdExecuteEntity {
     }
 
     @Basic
-    @Column(name = "SCHEDULE_ID")
+    @Column(name = "SCHEDULE_ID", nullable = false, length = 50)
     public String getScheduleId() {
         return scheduleId;
     }
@@ -40,7 +40,7 @@ public class GtdExecuteEntity {
     }
 
     @Basic
-    @Column(name = "SCHEDULE_OTHER_NAME")
+    @Column(name = "SCHEDULE_OTHER_NAME", nullable = true, length = 50)
     public String getScheduleOtherName() {
         return scheduleOtherName;
     }
@@ -50,7 +50,7 @@ public class GtdExecuteEntity {
     }
 
     @Basic
-    @Column(name = "SCHEDULE_AUTH")
+    @Column(name = "SCHEDULE_AUTH", nullable = true)
     public Integer getScheduleAuth() {
         return scheduleAuth;
     }
@@ -60,7 +60,7 @@ public class GtdExecuteEntity {
     }
 
     @Basic
-    @Column(name = "EXECUTE_STATUS")
+    @Column(name = "EXECUTE_STATUS", nullable = true)
     public Integer getExecuteStatus() {
         return executeStatus;
     }
@@ -70,7 +70,7 @@ public class GtdExecuteEntity {
     }
 
     @Basic
-    @Column(name = "USER_ID")
+    @Column(name = "USER_ID", nullable = true, length = 50)
     public String getUserId() {
         return userId;
     }
@@ -80,7 +80,7 @@ public class GtdExecuteEntity {
     }
 
     @Basic
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = true, length = 50)
     public String getId() {
         return id;
     }
@@ -90,7 +90,7 @@ public class GtdExecuteEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_ID")
+    @Column(name = "CREATE_ID", nullable = true, length = 50)
     public String getCreateId() {
         return createId;
     }
@@ -100,7 +100,7 @@ public class GtdExecuteEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_DATE")
+    @Column(name = "CREATE_DATE", nullable = true)
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -110,7 +110,7 @@ public class GtdExecuteEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_ID")
+    @Column(name = "UPDATE_ID", nullable = true, length = 50)
     public String getUpdateId() {
         return updateId;
     }
@@ -120,7 +120,7 @@ public class GtdExecuteEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_DATE")
+    @Column(name = "UPDATE_DATE", nullable = true)
     public Timestamp getUpdateDate() {
         return updateDate;
     }

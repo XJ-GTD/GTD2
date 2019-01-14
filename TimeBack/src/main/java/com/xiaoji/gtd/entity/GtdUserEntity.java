@@ -20,9 +20,11 @@ public class GtdUserEntity {
     private Timestamp createDate;
     private String updateId;
     private Timestamp updateDate;
+    private String brithday;
+    private String headimgUrl;
 
     @Id
-    @Column(name = "USER_ID")
+    @Column(name = "USER_ID", nullable = false, length = 50)
     public String getUserId() {
         return userId;
     }
@@ -32,7 +34,7 @@ public class GtdUserEntity {
     }
 
     @Basic
-    @Column(name = "USER_NAME")
+    @Column(name = "USER_NAME", nullable = false, length = 20)
     public String getUserName() {
         return userName;
     }
@@ -42,7 +44,7 @@ public class GtdUserEntity {
     }
 
     @Basic
-    @Column(name = "HEAD_IMG")
+    @Column(name = "HEAD_IMG", nullable = false, length = 200)
     public String getHeadImg() {
         return headImg;
     }
@@ -52,7 +54,7 @@ public class GtdUserEntity {
     }
 
     @Basic
-    @Column(name = "BIRTHDAY")
+    @Column(name = "BIRTHDAY", nullable = true, length = 10)
     public String getBirthday() {
         return birthday;
     }
@@ -62,7 +64,7 @@ public class GtdUserEntity {
     }
 
     @Basic
-    @Column(name = "REAL_NAME")
+    @Column(name = "REAL_NAME", nullable = true, length = 10)
     public String getRealName() {
         return realName;
     }
@@ -72,7 +74,7 @@ public class GtdUserEntity {
     }
 
     @Basic
-    @Column(name = "ID_CARD")
+    @Column(name = "ID_CARD", nullable = true, length = 20)
     public String getIdCard() {
         return idCard;
     }
@@ -82,7 +84,7 @@ public class GtdUserEntity {
     }
 
     @Basic
-    @Column(name = "USER_SEX")
+    @Column(name = "USER_SEX", nullable = true)
     public Integer getUserSex() {
         return userSex;
     }
@@ -92,7 +94,7 @@ public class GtdUserEntity {
     }
 
     @Basic
-    @Column(name = "USER_CONTACT")
+    @Column(name = "USER_CONTACT", nullable = true, length = 11)
     public String getUserContact() {
         return userContact;
     }
@@ -102,7 +104,7 @@ public class GtdUserEntity {
     }
 
     @Basic
-    @Column(name = "USER_TYPE")
+    @Column(name = "USER_TYPE", nullable = true)
     public Integer getUserType() {
         return userType;
     }
@@ -112,7 +114,7 @@ public class GtdUserEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_ID")
+    @Column(name = "CREATE_ID", nullable = true, length = 50)
     public String getCreateId() {
         return createId;
     }
@@ -122,7 +124,7 @@ public class GtdUserEntity {
     }
 
     @Basic
-    @Column(name = "CREATE_DATE")
+    @Column(name = "CREATE_DATE", nullable = true)
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -132,7 +134,7 @@ public class GtdUserEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_ID")
+    @Column(name = "UPDATE_ID", nullable = true, length = 50)
     public String getUpdateId() {
         return updateId;
     }
@@ -142,13 +144,33 @@ public class GtdUserEntity {
     }
 
     @Basic
-    @Column(name = "UPDATE_DATE")
+    @Column(name = "UPDATE_DATE", nullable = true)
     public Timestamp getUpdateDate() {
         return updateDate;
     }
 
     public void setUpdateDate(Timestamp updateDate) {
         this.updateDate = updateDate;
+    }
+
+    @Basic
+    @Column(name = "brithday", nullable = true, length = 255)
+    public String getBrithday() {
+        return brithday;
+    }
+
+    public void setBrithday(String brithday) {
+        this.brithday = brithday;
+    }
+
+    @Basic
+    @Column(name = "headimg_url", nullable = true, length = 255)
+    public String getHeadimgUrl() {
+        return headimgUrl;
+    }
+
+    public void setHeadimgUrl(String headimgUrl) {
+        this.headimgUrl = headimgUrl;
     }
 
     @Override
@@ -168,11 +190,13 @@ public class GtdUserEntity {
                 Objects.equals(createId, that.createId) &&
                 Objects.equals(createDate, that.createDate) &&
                 Objects.equals(updateId, that.updateId) &&
-                Objects.equals(updateDate, that.updateDate);
+                Objects.equals(updateDate, that.updateDate) &&
+                Objects.equals(brithday, that.brithday) &&
+                Objects.equals(headimgUrl, that.headimgUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, userName, headImg, birthday, realName, idCard, userSex, userContact, userType, createId, createDate, updateId, updateDate);
+        return Objects.hash(userId, userName, headImg, birthday, realName, idCard, userSex, userContact, userType, createId, createDate, updateId, updateDate, brithday, headimgUrl);
     }
 }
