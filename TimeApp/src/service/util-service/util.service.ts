@@ -169,7 +169,7 @@ export class UtilService {
   public static getCurrentMonthLast(date:Date):Date{
     let currentMonth=date.getMonth();
     let nextMonth=++currentMonth;
-    let nextMonthFirstDay=new Date(date.getFullYear(),nextMonth,1);
+    let nextMonthFirstDay=new Date(date.getFullYear(),nextMonth,1).getTime();
     let oneDay=1000*60*60*24;
     return new Date(nextMonthFirstDay-oneDay);
   }
