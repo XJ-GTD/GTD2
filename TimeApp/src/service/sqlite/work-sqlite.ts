@@ -418,17 +418,6 @@ export class WorkSqlite{
   addLbData(sI:string,tk:string,cft:string,rm:string,ac:string,fh:string):Promise<any>{
     return new Promise((resolve, reject) => {
       let en = new RcbModel();
-      if(tk == '1'){
-        en.tn='GTD_C_BO'
-      }else if(tk >= '2' && tk <= '3'){
-        en.tn='GTD_C_C'
-      }else if(tk >= '4' && tk <= '8'){
-        en.tn='GTD_C_RC'
-      }else if(tk == '9'){
-        en.tn='GTD_C_JN'
-      }else if(tk >= '10'){
-        en.tn='GTD_C_MO'
-      }
       en.id = this.util.getUuid();
       en.sI=sI;
       en.tk=tk;
@@ -472,45 +461,37 @@ export class WorkSqlite{
    * @returns {Promise<any>}
    */
   updateLbData(sI:string,tk:string,cft:string,rm:string,ac:string,fh:string):Promise<any>{
-    let tn='GTD_C_BO';
-    let cf='0'
-    if(cft != null && cft !=''){
-      cf='1'
-    }
-    if(tk == '1'){
-      tn='GTD_C_BO'
-    }else if(tk >= '2' && tk <= '3'){
-      tn='GTD_C_C'
-    }else if(tk >= '4' && tk <= '8'){
-      tn='GTD_C_RC'
-    }else if(tk == '9'){
-      tn='GTD_C_JN'
-    }else if(tk >= '10'){
-      tn='GTD_C_MO'
-    }
-    let sql ='update ' + tn +
-      'set ';
-    if(tk != null && tk !=''){
-      sql=sql + 'tk="'+tk+'",'
-    }
-    if(cft != null && cft !=''){
-      sql=sql + 'cft="'+cft+'",'
-    }
-    if(rm != null && rm !=''){
-      sql=sql + 'rm="'+rm+'",'
-    }
-    if(ac != null && ac !=''){
-      sql=sql + 'ac="'+ac+'",'
-    }
-    if(fh != null && fh !=''){
-      sql=sql + 'fh="'+fh+'",'
-    }
-    let str = sql.substr(sql.length-1,sql.length);
-    if(str == ','){
-      sql = sql.substr(0,sql.length-1);
-    }
-    sql = sql + ' where sI="'+ sI+'"';
-    return this.baseSqlite.executeSql(sql,[]);
+    return new Promise((resolve, reject) => {
+      let rcb = new RcbModel();
+      rcb.sI = sI;
+      rcb.tk = tk;
+      rcb.cft = cft;
+      rcb.rm=rm;
+      rcb.ac=ac;
+      rcb.fh=fh;
+      console.log('----worksqlite updateLbData 先删除原来标签子表----');
+      let rc = new RcEntity();
+      rc.sI=sI;
+      this.baseSqlite.getOne(rc).then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          rcb.tk = data.rows.item(0).lI;
+          return this.baseSqlite.delete(rcb);
+        }
+      }).then(data=>{
+        return this.syncRcbTime(rcb,rcb.tn,DataConfig.AC_D);
+      }).then(data=>{
+        console.log('----worksqlite updateLbData 再保存新标签子表----');
+        return this.baseSqlite.save(rcb);
+      }).then(data=>{
+        return this.syncRcbTime(rcb,rcb.tn,DataConfig.AC_O);
+      }).then(data=>{
+        resolve(data);
+      }).catch(e=>{
+        console.log('----worksqlite updateLbData 保存新标签子表 ERROR：'+JSON.stringify(e));
+        reject(e);
+      })
+    })
+
   }
 
   /**

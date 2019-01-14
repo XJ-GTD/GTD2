@@ -29,9 +29,10 @@ export class RcEntity {
   private _usq:string;
   private _dsq:string;
   //查询单个
-  private _qosq:string = 'select * from GTD_C where sI=' + this._sI;
+  private _qosq:string;
 
   get qosq(): string {
+    this._qosq = 'select * from GTD_C where sI=' + this._sI;
     return this._qosq;
   }
 
