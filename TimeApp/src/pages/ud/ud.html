@@ -18,7 +18,7 @@
   <div style="padding:10px;margin-top: 40px">
     <ion-item padding>
       <ion-icon name="ios-person-outline" item-start></ion-icon>
-      <ion-input type="text" placeholder="输入您的手机号" [(ngModel)]="accountMobile"  (ionBlur)="checkPhone()"  ></ion-input>
+      <ion-input type="tel" placeholder="输入您的手机号" [(ngModel)]="accountMobile"  (ionBlur)="checkPhone()"  (input)="format()"></ion-input>
     </ion-item>
     <ion-label *ngIf="this.errorCode == 0" class="error_info">手机号不能为空</ion-label>
     <ion-label *ngIf="this.errorCode == 1 || this.errorCode == 2" class="error_info">请输入正确11位手机号</ion-label>

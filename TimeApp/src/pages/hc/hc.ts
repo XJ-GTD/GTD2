@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
 
 /**
  * Generated class for the HcPage page.
@@ -15,11 +15,21 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class HcPage {
 
+  @ViewChild(Navbar) navBar: Navbar;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HcPage');
+    this.navBar.setBackButtonText("")
+    this.navBar.backButtonClick = this.backButtonClick;
   }
+
+  backButtonClick = (e: UIEvent) => {
+    // 重写返回方法
+    this.navCtrl.pop();
+  };
+
 
 }
