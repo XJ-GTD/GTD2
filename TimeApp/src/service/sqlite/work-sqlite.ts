@@ -146,7 +146,7 @@ export class WorkSqlite{
         let date = new Date(ym+'/01');
         let sd = UtilService.getCurrentMonthFirst(date);
         let ed = UtilService.getCurrentMonthLast(date);
-        return this.readlocal.findEvent(sd,ed,resL);
+        return this.readlocal.findEventRc(sd,ed,resL);
       }) .then(data=>{
         if(data.rcL.length>0){
           for(let i=1;i<=31;i++){
@@ -243,7 +243,7 @@ export class WorkSqlite{
         let date = new Date(d);
         let sd = UtilService.getCurrentMonthFirst(date);
         let ed = UtilService.getCurrentMonthLast(date);
-        return this.readlocal.findEvent(sd,ed,resL);
+        return this.readlocal.findEventRc(sd,ed,resL);
       }).then(data=>{
         if(data.rcL.length>0){
           for(let i=0;i<rcL.length;i++){

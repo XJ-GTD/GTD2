@@ -53,7 +53,7 @@ export class ReadlocalService {
    * 查询本地日历所有日程
    * @returns {Promise<any>}
    */
-  findEvent(sd:Date,ed:Date,rcL:Array<RcModel>):Promise<RcoModel>{
+  findEventRc(sd:Date,ed:Date,rcL:Array<RcModel>):Promise<RcoModel>{
     return new Promise((resolve, reject) => {
       console.log("执行查询本地日历");
       let rco = new RcoModel();
