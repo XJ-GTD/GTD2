@@ -23,9 +23,11 @@ public class SyncGetOrSetMethod {
         userEntity.setBirthday(std.getTableD());                        //出生日期
         userEntity.setRealName(std.getTableE());                        //真实姓名
         userEntity.setIdCard(std.getTableF());                          //身份证
-        userEntity.setUserSex(Integer.valueOf(std.getTableG()));        //性别
+        if (std.getTableG() != null && !std.getTableG().equals(""))
+            userEntity.setUserSex(Integer.valueOf(std.getTableG()));        //性别
         userEntity.setUserContact(std.getTableH());                     //联系方式
-        userEntity.setUserType(Integer.valueOf(std.getTableI()));       //用户类型
+        if (std.getTableI() != null && !std.getTableI().equals(""))
+            userEntity.setUserType(Integer.valueOf(std.getTableI()));       //用户类型
         userEntity.setUpdateId(std.getTableA());
         userEntity.setUpdateDate(BaseUtil.getSqlDate());
 
@@ -46,7 +48,8 @@ public class SyncGetOrSetMethod {
         data.setTableD(gue.getBirthday());                      //出生日期
         data.setTableE(gue.getRealName());                      //真实姓名
         data.setTableF(gue.getIdCard());                        //身份证
-        data.setTableG(String.valueOf(gue.getUserSex()));       //性别
+        if (gue.getUserSex() != null)
+            data.setTableG(String.valueOf(gue.getUserSex()));       //性别
         data.setTableH(gue.getUserContact());                   //联系方式
         data.setTableI(String.valueOf(gue.getUserType()));      //用户类型
 
@@ -69,8 +72,10 @@ public class SyncGetOrSetMethod {
         playerEntity.setPlayerName(std.getTableF());            //联系人昵称
         playerEntity.setPyPlayerName(std.getTableG());          //联系人昵称拼音
         playerEntity.setPlayerContact(std.getTableH());         //联系人手机号
-        playerEntity.setPlayerFlag(Integer.valueOf(std.getTableI()));   //授权联系人标识
-        playerEntity.setPlayerType(Integer.valueOf(std.getTableJ()));   //联系人类型
+        if (std.getTableI() != null && !std.getTableI().equals(""))
+            playerEntity.setPlayerFlag(Integer.valueOf(std.getTableI()));   //授权联系人标识
+        if (std.getTableJ() != null && !std.getTableJ().equals(""))
+            playerEntity.setPlayerType(Integer.valueOf(std.getTableJ()));   //联系人类型
         playerEntity.setUserId(std.getTableK());                //联系人数据归属
         playerEntity.setCreateId(std.getTableK());
         playerEntity.setCreateDate(BaseUtil.getSqlDate());
@@ -94,8 +99,10 @@ public class SyncGetOrSetMethod {
         data.setTableF(gpe.getPlayerName());                        //联系人昵称
         data.setTableG(gpe.getPyPlayerName());                      //联系人昵称拼音
         data.setTableH(gpe.getPlayerContact());                     //联系人手机号
-        data.setTableI(String.valueOf(gpe.getPlayerFlag()));        //授权联系人标识
-        data.setTableJ(String.valueOf(gpe.getPlayerType()));        //联系人类型
+        if (gpe.getPlayerFlag() != null)
+            data.setTableI(String.valueOf(gpe.getPlayerFlag()));        //授权联系人标识
+        if (gpe.getPlayerType() != null)
+            data.setTableJ(String.valueOf(gpe.getPlayerType()));        //联系人类型
         data.setTableK(gpe.getUserId());                            //联系人数据归属
 
         return data;
@@ -143,7 +150,8 @@ public class SyncGetOrSetMethod {
 
         scheduleEntity.setScheduleId(std.getTableA());                          //日程事件ID
         scheduleEntity.setScheduleName(std.getTableB());                        //日程事件名称
-        scheduleEntity.setLabelId(Integer.valueOf(std.getTableC()));            //标签ID
+        if (std.getTableC() != null && !std.getTableC().equals(""))
+            scheduleEntity.setLabelId(Integer.valueOf(std.getTableC()));            //标签ID
         scheduleEntity.setUserId(std.getTableD());                              //创建者
         scheduleEntity.setPlanId(std.getTableE());                              //计划ID
         scheduleEntity.setStartDate(CommonMethods.dateToStamp(std.getTableF()));//开始时间
@@ -164,7 +172,8 @@ public class SyncGetOrSetMethod {
 
         data.setTableA(gse.getScheduleId());                        //日程事件ID
         data.setTableB(gse.getScheduleName());                      //日程事件名称
-        data.setTableC(String.valueOf(gse.getLabelId()));           //标签ID
+        if (gse.getLabelId() != null)
+            data.setTableC(String.valueOf(gse.getLabelId()));           //标签ID
         data.setTableD(gse.getUserId());                            //创建者
         data.setTableE(gse.getPlanId());                            //计划ID
         data.setTableF(CommonMethods.stampToDate(gse.getStartDate()));         //开始时间
@@ -184,8 +193,10 @@ public class SyncGetOrSetMethod {
         executeEntity.setExecuteId(std.getTableA());                          //日程参与人表ID
         executeEntity.setScheduleId(std.getTableB());                         //日程事件ID
         executeEntity.setScheduleOtherName(std.getTableC());                  //日程主题备注
-        executeEntity.setScheduleAuth(Integer.valueOf(std.getTableD()));      //修改权限
-        executeEntity.setExecuteStatus(Integer.valueOf(std.getTableE()));     //参与状态
+        if (std.getTableD() != null && !std.getTableD().equals(""))
+            executeEntity.setScheduleAuth(Integer.valueOf(std.getTableD()));      //修改权限
+        if (std.getTableE() != null && !std.getTableE().equals(""))
+            executeEntity.setExecuteStatus(Integer.valueOf(std.getTableE()));     //参与状态
         executeEntity.setUserId(std.getTableF());                             //参与人用户ID
         executeEntity.setId(std.getTableG());                                 //授权表ID
         executeEntity.setCreateId(userId);
@@ -196,19 +207,21 @@ public class SyncGetOrSetMethod {
 
     /**
      * 日程参与人表entity转化Dto
-     * @param gse
+     * @param gee
      * @return
      */
-    public static SyncTableData executeEntityToDto(GtdExecuteEntity gse) {
+    public static SyncTableData executeEntityToDto(GtdExecuteEntity gee) {
         SyncTableData data = new SyncTableData();
 
-        data.setTableA(gse.getExecuteId());                         //日程参与人表ID
-        data.setTableB(gse.getScheduleId());                        //日程事件ID
-        data.setTableC(gse.getScheduleOtherName());                 //日程主题备注
-        data.setTableD(String.valueOf(gse.getScheduleAuth()));      //修改权限
-        data.setTableE(String.valueOf(gse.getExecuteStatus()));     //参与状态
-        data.setTableF(gse.getUserId());                            //参与人用户ID
-        data.setTableG(gse.getId());                                //授权表ID
+        data.setTableA(gee.getExecuteId());                         //日程参与人表ID
+        data.setTableB(gee.getScheduleId());                        //日程事件ID
+        data.setTableC(gee.getScheduleOtherName());                 //日程主题备注
+        if (gee.getScheduleAuth() != null)
+            data.setTableD(String.valueOf(gee.getScheduleAuth()));      //修改权限
+        if (gee.getExecuteStatus() != null)
+            data.setTableE(String.valueOf(gee.getExecuteStatus()));     //参与状态
+        data.setTableF(gee.getUserId());                            //参与人用户ID
+        data.setTableG(gee.getId());                                //授权表ID
 
         return data;
     }
@@ -294,7 +307,8 @@ public class SyncGetOrSetMethod {
         scheduleCEntity.setComment(std.getTableC());                                //备注
         scheduleCEntity.setRemindType(std.getTableE());                             //提醒方式
         scheduleCEntity.setRemindTime(CommonMethods.dateToStamp(std.getTableF()));  //提醒时间
-        scheduleCEntity.setFinishStatus(Integer.valueOf(std.getTableG()));          //完成状态
+        if (std.getTableG() != null && !std.getTableG().equals(""))
+            scheduleCEntity.setFinishStatus(Integer.valueOf(std.getTableG()));          //完成状态
         scheduleCEntity.setFinishTime(CommonMethods.dateToStamp(std.getTableH()));  //完成时间
 
         return scheduleCEntity;
@@ -313,7 +327,8 @@ public class SyncGetOrSetMethod {
         data.setTableC(gsce.getComment());                               //备注
         data.setTableE(gsce.getRemindType());                            //提醒方式
         data.setTableF(CommonMethods.stampToDate(gsce.getRemindTime())); //提醒时间
-        data.setTableG(String.valueOf(gsce.getFinishStatus()));          //完成状态
+        if (gsce.getFinishStatus() != null)
+            data.setTableG(String.valueOf(gsce.getFinishStatus()));          //完成状态
         data.setTableH(CommonMethods.stampToDate(gsce.getFinishTime())); //完成时间
 
         return data;

@@ -6,6 +6,7 @@ import { UserService } from "../../service/user.service";
 import {DataConfig} from "../../app/data.config";
 import {ReturnConfig} from "../../app/return.config";
 import {WebsocketService} from "../../service/util-service/websocket.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the UbPage page.
@@ -28,7 +29,7 @@ export class UbPage {
   accountPassword: string;
 
   rePage:string;//成功返回页面
-  puPage:string;//成功跳转页面 移除当前页面 跳转下一页面
+  // puPage:string;//成功跳转页面 移除当前页面 跳转下一页面
 
   constructor(
     public navCtrl: NavController,
@@ -38,19 +39,17 @@ export class UbPage {
     private paramsService: ParamsService,
     private lsmService: LsmService,
     private webSocket: WebsocketService,
-    private userService: UserService) {
+    private userService: UserService,
+    private utilService: UtilService) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UbPage');
     this.rePage = this.navParams.get("rePage");
-    this.puPage = this.navParams.get("puPage");
     console.log(this.rePage)
-    console.log(this.puPage)
   }
 
   signIn() {
-
     console.log("登录按钮被点击");
     if(this.accountName == null && this.accountPassword == null){
       let alert = this.alertCtrl.create({
@@ -59,10 +58,12 @@ export class UbPage {
       alert.present();
       return;
     }
-     this.lsmService.login(this.accountName, this.accountPassword).then(data=> {
+    this.utilService.loading("登录中");
+    this.lsmService.login(this.accountName, this.accountPassword).then(data=> {
        console.log(data);
        if (data.code == 0) {
          // this.userService.getUo();
+         this.utilService.unloading();
          console.log("登录成功");
          this.webSocket.connect(data.data.accountQueue);
          let alert = this.alertCtrl.create({
@@ -70,7 +71,7 @@ export class UbPage {
            subTitle: "登录成功",
            buttons: [{
              text: '确定', role: 'cancel', handler: () => {
-               if(!this.rePage && !this.puPage){
+               if(this.rePage==undefined){
                  //跳转首页
                  console.log('UbPage跳转HzPage');
                  this.navCtrl.setRoot('HzPage');
@@ -83,16 +84,13 @@ export class UbPage {
                      return;
                    }
                  });
-
-                 this.navCtrl.getActive().dismiss(()=>{
-                   this.navCtrl.push(this.puPage);
-                 })
                }
              }
            }]
          });
          alert.present();
        }else if(data.code == 1){
+         this.utilService.unloading();
          console.log("登录失败");
          let alert = this.alertCtrl.create({
            title:'提示信息',
@@ -101,6 +99,7 @@ export class UbPage {
          });
          alert.present();
        } else{
+         this.utilService.unloading();
          let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
          console.log("登录失败 :: " + message );
           let alert = this.alertCtrl.create({
@@ -111,7 +110,8 @@ export class UbPage {
           alert.present();
        }
 
-     }).catch(res=>{
+    }).catch(res=>{
+      this.utilService.unloading();
        console.log("登录失败 :: " +　res.message);
 
        let alert = this.alertCtrl.create({

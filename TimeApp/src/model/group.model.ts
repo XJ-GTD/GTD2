@@ -2,7 +2,7 @@
  * create by wzy on 2018/05/28
  */
 import {LabelModel} from "./label.model";
-import {GroupMemberModel} from "./groupMember.model";
+import {GroupMemberModel} from "./group-member.model";
 
 //参与人类
 export class GroupModel {

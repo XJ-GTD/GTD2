@@ -26,16 +26,17 @@
       <ion-icon name="ios-lock-outline" item-start></ion-icon>
       <ion-input type="number" placeholder="验证码" [(ngModel)]="authCode" ></ion-input>
       <ion-buttons item-right>
-        <button ion-button>发送验证码</button>
+        <button ion-button (click)="sendMsg()">{{timeOut}}</button>
       </ion-buttons>
     </ion-item>
+    <ion-label *ngIf="this.agreeFlag == false" class="error_info">请阅读并同意《用户协议》</ion-label>
 
     <button ion-button block color="danger" class="login_button" (click)="signIn()" style="margin-top: 100px !important;">
       登录
     </button>
-    <div>
-      <span float-end>已同意<span style="text-decoration: underline">《用户协议》</span></span>
-      <span style="display: block;" float-end><ion-checkbox></ion-checkbox></span>
+    <div margin-top>
+      <span float-end (click)="userAgreement()">我已阅读并同意<span style="text-decoration: underline;color:blue">《用户协议》</span></span>
+      <span style="display: block;" float-end><ion-checkbox [(ngModel)]="agree"></ion-checkbox></span>
     </div>
 
 

@@ -5,16 +5,17 @@ import { DwEmitService } from "./dw-emit.service";
 import { WorkService } from "../work.service";
 import { RelmemService } from "../relmem.service";
 import { WsResDataModel } from "../../model/ws.res.model";
-import {ErrorCodeService} from "./error-code.service";
-import {HdSpeechService} from "./hd-speech.service";
-import {DataConfig} from "../../app/data.config";
-import {MsEntity} from "../../entity/ms.entity";
-import {MsSqlite} from "../sqlite/ms-sqlite";
-import {AiuiModel} from "../../model/aiui.model";
-import {RcoModel} from "../../model/out/rco.model";
-import {RcModel} from "../../model/rc.model";
-import {XiaojiAssistantService} from "./xiaoji-assistant.service";
+import { ErrorCodeService } from "./error-code.service";
+import { EmitSpeechService } from "./emit-speech.service";
+import { DataConfig } from "../../app/data.config";
+import { MsEntity } from "../../entity/ms.entity";
+import { MsSqlite } from "../sqlite/ms-sqlite";
+import { AiuiModel } from "../../model/aiui.model";
+import { XiaojiAssistantService } from "./xiaoji-assistant.service";
 import {UtilService} from "./util.service";
+import {WsEnumModel} from "../../model/ws.enum.model";
+import {RcModel} from "../../model/rc.model";
+import {RcoModel} from "../../model/out/rco.model";
 
 /**
  * webSocket公用处理方法
@@ -27,9 +28,9 @@ export class DwMqService {
   constructor(private work:WorkService,
               private relmem :RelmemService,
               private errorCode: ErrorCodeService,
-              private hdSpeech: HdSpeechService,
               private msSqlite:MsSqlite,
               private xiaojiSpeech: XiaojiAssistantService,
+              private emitSend: EmitSpeechService,
               private dwEmit: DwEmitService){
 
   }
@@ -37,11 +38,13 @@ export class DwMqService {
   //消息类型判断
   public dealWithMq(mqDate: WsModel) {
 
+    this.sendUserToPage(mqDate.ut, mqDate.sk, mqDate.ss);
+
     //成功消息处理
     if (mqDate.vs == "1.0" && mqDate.ss == 0) {
       //mq返回则立即回馈语音界面
-      this.toAiui(DataConfig.MQTQ,mqDate,'');
-      this.toAiui(DataConfig.MQTM,mqDate,'');
+      // this.toAiui(DataConfig.MQTQ,mqDate,'');
+      // this.toAiui(DataConfig.MQTM,mqDate,'');
       switch (mqDate.sk) {
         case SkillConfig.XF_NMT: //确认
           break;
@@ -340,6 +343,25 @@ export class DwMqService {
       console.log("----- DwMqService relationAdd(业务：联系人添加) Error : " + JSON.stringify(e))
     })
   }
+
+  /**
+   * 取出用户翻译传回界面
+   * @param userText
+   * @param sk
+   */
+  private sendUserToPage(userText: string, sk: string, ss: number) {
+    let aiui = new AiuiModel();
+    aiui.tt = DataConfig.U1;
+    if (ss == 0) {
+      aiui.ut = userText;
+    } else {
+      aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[sk] + UtilService.randInt(0,10));
+    }
+    this.emitSend.send(aiui, sk);
+  }
+
+  // private dwResultSendToPage(aiui: string, sk)
+
   /**
    *  返回值转Aiui
    * @param {string} t mq处理类型：0是处理逻辑前;处理后

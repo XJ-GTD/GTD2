@@ -96,6 +96,7 @@ export class SbPage {
     this.jh = this.jhtmp;
     this.lbtmp = new LbModel();
     this.lbtmp.lan="标签";
+    this.lbtmp.lat='0';
     this.lb = this.lbtmp;
   }
 
@@ -507,6 +508,12 @@ export class SbPage {
       }
     }
   };
+
+  test(){
+    console.log("test");
+    let modal = this.modal.create("TmdPage");
+    modal.present();
+  }
 
   showRemarks(){
     // let model = this.modal.create("TmdPage",{text:this.remarks},{showBackdrop:false});

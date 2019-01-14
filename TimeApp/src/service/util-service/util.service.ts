@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Device } from "@ionic-native/device";
 import {DataConfig} from "../../app/data.config";
 import * as moment from "moment";
+import {Events, LoadingController, ModalController, NavController} from "ionic-angular";
 
 /**
  * 公共方法
@@ -11,7 +12,10 @@ import * as moment from "moment";
 @Injectable()
 export class UtilService {
   wins: any = window;//window对象
-  constructor(public device: Device) {}
+  constructor(public device: Device,
+              private loadCtrl: LoadingController,
+              private events: Events,
+              ) {}
 
   public static rand(min, max ):number {
     return Math.random() * ( max - min ) + min;
@@ -245,5 +249,64 @@ export class UtilService {
        return first+space;
     }
   }
+
+  loading(text:string){
+    this.events.subscribe("loading",()=>{
+      let loading = this.loadCtrl.create({
+        content:text,
+        showBackdrop:false,
+        cssClass:"loadingcss",
+      });
+      loading.present();
+      this.events.subscribe("unloading",()=>{
+        loading.dismiss();
+        this.events.unsubscribe("loading");
+        this.events.unsubscribe("unloading");
+      })
+    });
+
+    this.events.publish("loading");
+  }
+
+  unloading(){
+    this.events.publish("unloading");
+  }
+
+  /**
+   * dateString to YYYY/MM/DD hh:mm:ss
+   * @param {string} inDate
+   * @returns {string}
+   */
+  dateFormatI(inDate:string){
+    let outDate = moment(new Date(inDate).getTime()-8*60*60*1000).format("YYYY/MM/DD hh:mm:ss");
+    return outDate;
+  }
+
+  /**
+   * dateString to YYYY-MM-DD hh:mm:ss
+   * @param {string} inDate
+   * @returns {string}
+   */
+  dateFormatA(inDate:string){
+    let outDate = moment(new Date(inDate).getTime()-8*60*60*1000).format("YYYY-MM-DD hh:mm:ss");
+    return outDate;
+  }
+
+  /**
+   * dateString to YYYY-MM-DDThh:mm:ss.000Z
+   * @param {string} inDate
+   * @returns {string}
+   */
+  dateFormatT(inDate:string){
+    let outDate = moment(new Date(inDate).getTime()+8*60*60*1000).toISOString();
+    return outDate;
+  }
+
+  telFormat(tel){
+    let tmp = tel.toString();
+    let out = tmp.substr(0,3)+" "+tmp.substr(3,4)+" "+tmp.substr(7,4);
+    return out.trim();
+  }
+
 
 }
