@@ -42,7 +42,7 @@ import { PermissionsService } from "../service/util-service/permissions.service"
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { ConfigService } from "../service/config.service";
 import { ErrorCodeService } from "../service/util-service/error-code.service";
-import { HdSpeechService } from "../service/util-service/hd-speech.service";
+import { EmitSpeechService } from "../service/util-service/emit-speech.service";
 import { JhSqlite } from "../service/sqlite/jh-sqlite";
 import { LbSqlite } from "../service/sqlite/lb-sqlite";
 import { RelmemSqlite } from "../service/sqlite/relmem-sqlite";
@@ -57,8 +57,8 @@ import { SyncRestful } from "../service/restful/sync-restful";
 import { SyncService } from "../service/sync.service";
 import { HTTP } from "@ionic-native/http";
 import { ZtdSqlite } from "../service/sqlite/ztd-sqlite";
-import {HttpClientModule} from "@angular/common/http";
-import {SyncSqlite} from "../service/sqlite/sync-sqlite";
+import { HttpClientModule } from "@angular/common/http";
+import { SyncSqlite } from "../service/sqlite/sync-sqlite";
 @NgModule({
   declarations: [
     MyApp,
@@ -130,7 +130,7 @@ import {SyncSqlite} from "../service/sqlite/sync-sqlite";
     PermissionsService,
     ConfigService,
     ErrorCodeService,
-    HdSpeechService,
+    EmitSpeechService,
     SyncService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
