@@ -185,4 +185,8 @@ export class UdPage {
   //   console.log("ionViewCanLeave");
   // }
 
+
+  format(){
+    this.accountMobile = this.utilService.remo(this.accountMobile);
+  }
 }

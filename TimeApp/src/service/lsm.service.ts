@@ -10,6 +10,7 @@ import {DataConfig} from "../app/data.config";
 import {RcEntity} from "../entity/rc.entity";
 import {RcpEntity} from "../entity/rcp.entity";
 import {SyncService} from "./sync.service";
+import {ReturnConfig} from "../app/return.config";
 
 
 
@@ -137,7 +138,7 @@ export class LsmService {
         this.au.login(un, pw).then(datal => {
           console.log("------lsm login 登录请求返回结果："+JSON.stringify(datal));
           base = datal;
-          if (datal.code == 0) {
+          if (datal.code == ReturnConfig.SUCCESS_CODE) {
             let u = new UEntity();
             u.uI = datal.data.userId;
             u.aQ = datal.data.accountQueue;
@@ -155,14 +156,12 @@ export class LsmService {
             }
             console.log("------lsm login 登录请求返回结果code==0，更新用户信息："+JSON.stringify(u));
             return this.basesqlite.update(u);
-          }
-        })
-          .then(data => {
-          if(base.code == 0){
-            console.log("------lsm login 登录请求返回结果code==0，更新用户信息success："+JSON.stringify(data));
           }else{
+            console.error("------lsm login 登录请求返回结果 Error:" + JSON.stringify(datal));
             console.error("------lsm login 登录请求返回fail");
           }
+        }).then(data => {
+          base.message=ReturnConfig.RETURN_MSG.get(data.code);
           console.log("------lsm login 登录请求返回结果后更新日程用户ID-------");
           let rc=new RcEntity();
           rc.uI=DataConfig.uInfo.uI;
@@ -174,17 +173,20 @@ export class LsmService {
             console.log("------lsm login 登录请求返回结果后更新日程参与人用户ID-------");
             return this.basesqlite.update(rcp);
         }).then(data=>{
-          console.log("------lsm login 登录成功请求开始同步服务器数据 -------");
-          return this.sync.loginSync();
+          if(base.code == ReturnConfig.SUCCESS_CODE){
+            console.log("------lsm login 登录成功请求开始同步服务器数据 -------");
+            return this.sync.loginSync();
+          }
         }).then(data=>{
-            console.log("------lsm login 登录成功请求同步服务器数据结束 -------");
-            resolve(base);
-          })
-          .catch(eu => {
+          if(base.code == ReturnConfig.SUCCESS_CODE) {
+            console.log("------lsm login 登录成功请求同步服务器数据结束 result= " + JSON.stringify(data));
+          }
+          resolve(base);
+        }).catch(eu => {
           base.code = 1;
           base.message = eu.message;
           console.error("------lsm login 登录报错：" + eu.message);
-          resolve(base);
+          reject(base);
         })
       }else{
         console.error("------lsm visitor 登录获取用户ID失败");
@@ -231,14 +233,10 @@ export class LsmService {
           console.log("------lsm login 短信登录请求返回结果code==0，更新用户信息：" + JSON.stringify(u));
           return this.basesqlite.update(u);
         }
-      })
-        .then(data => {
-          if(base.code == 0){
-            console.log("------lsm login 短信登录请求返回结果code==0，更新用户信息success："+JSON.stringify(data));
-          }else{
-            console.error("------lsm login 短信登录请求返回fail");
+      }).then(data => {
+          if(base.code == ReturnConfig.SUCCESS_CODE) {
+            console.log("------lsm login 短信登录成功请求开始同步服务器数据 -------");
           }
-          console.log("------lsm login 短信登录成功请求开始同步服务器数据 -------");
           return this.sync.loginSync();
         })
         .then(data=>{

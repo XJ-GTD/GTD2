@@ -57,7 +57,7 @@ export class AuRestful{
    * @param {string} ac 验证码
    */
   ml(um:string,ac:string):Promise<any> {
-    let dv = this.util.getDeviceId;
+    let dv = this.util.getDeviceId();
     return this.bs.post(AppConfig.AUTH_SMSLOGIN_URL, {
       account: um,
       authCode: ac,

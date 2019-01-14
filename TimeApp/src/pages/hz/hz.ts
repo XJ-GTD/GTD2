@@ -34,7 +34,6 @@ export class HzPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HzPage');
-    // this.getuo();
     this.imgurl = "./assets/imgs/headImg.jpg";
   }
 
@@ -65,10 +64,6 @@ export class HzPage {
   }
 
   toUc(){
-    if(DataConfig.uInfo.uty == "0"){
-      this.navCtrl.push(PageConfig.UB_PAGE,{"rePage":PageConfig.UC_PAGE,"puPage":PageConfig.UC_PAGE});
-      return;
-    }
     console.log("跳转用户详情HzPage跳转UcPage");
     this.navCtrl.push('UcPage',{popPage:'HzPage',uo:this.uo});
   }
@@ -82,25 +77,12 @@ export class HzPage {
 
   }
 
-  // getuo(){
-  //   this.userService.getUo().then(data=>{
-  //     if(data.code == 0){
-  //       this.uo = data.u;
-  //     }
-  //     console.log(JSON.stringify(this.uo));
-  //   }).catch(reason => {
-  //
-  //   })
-  // }
-
-  // ionViewDidLoad(){
-  //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");
-  // }
   ionViewWillEnter(){
     // console.log("2.0 ionViewWillEnter 顾名思义，当将要进入页面时触发");
     //this.getuo();
+    console.log("ionViewWillEnter 刷新HzPage :: ");
     this.uo = DataConfig.uInfo;
-    console.log("hz 获取用户信息："+JSON.stringify(this.uo))
+    console.log("hz 获取用户信息："+JSON.stringify(this.uo));
   }
   // ionViewDidEnter(){
   //   console.log("3.0 ionViewDidEnter 当进入页面时触发");
