@@ -224,7 +224,7 @@ export class WorkSqlite{
         'left join GTD_F gf on gf.lai=gc.lI '+
         'left join GTD_D gd on gc.sI=gd.sI ' +
         'left join (select substr(md,1,10) md,mf,rI from GTD_H where mf="0" and substr(md,1,10) = "'+ d+
-        '" group by substr(md,1,10),mf,rI) gh on gc.sI=gh.rI '
+        '" group by substr(md,1,10),mf,rI) gh on gc.sI=gh.rI ' +
       ' where (substr(gc.sd,1,10) <= "'+d+'" and substr(gc.ed,1,10)>= "'+d+'") ' +
       ' and (gd.uI = "'+ui+'" or gc.uI= "'+ui+'")';
        // +'and (gd.pI is null or gd.uI ="'+DataConfig.uInfo.uI+'")';
@@ -236,7 +236,7 @@ export class WorkSqlite{
         console.log(' ---- WorkSqlite getOd 查询sqlite日历数据 ---- ');
         if(data && data.rows && data.rows.length>0){
           for (let i = 0; i < data.rows.length; i++) {
-            rcL.push(data.rows.item(i))
+            rcL.push(data.rows.item(i));
           }
         }
         console.log(' ---- WorkSqlite getMBs 查询本地日历数据 ---- ');
