@@ -242,8 +242,9 @@ export class WorkSqlite{
           }
         }
         console.log(' ---- WorkSqlite getMBs 查询本地日历数据 ---- ');
-        let date = new Date(d);
-        return this.readlocal.findEventRc(date,date,rcL);
+        let sd = new Date(d + ' 00:00');
+        let ed = new Date(d + ' 23:59');
+        return this.readlocal.findEventRc(sd,ed,rcL);
       }).then(data=>{
         if(data.rcL.length>0){
           for(let i=0;i<rcL.length;i++){
