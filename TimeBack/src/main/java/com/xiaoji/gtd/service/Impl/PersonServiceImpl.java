@@ -9,7 +9,6 @@ import com.xiaoji.gtd.dto.mq.WebSocketSkillEnum;
 import com.xiaoji.gtd.entity.GtdAccountEntity;
 import com.xiaoji.gtd.entity.GtdLoginEntity;
 import com.xiaoji.gtd.entity.GtdPlayerEntity;
-import com.xiaoji.gtd.entity.GtdUserEntity;
 import com.xiaoji.gtd.repository.*;
 import com.xiaoji.gtd.service.IPersonService;
 import com.xiaoji.gtd.service.ISmsService;
