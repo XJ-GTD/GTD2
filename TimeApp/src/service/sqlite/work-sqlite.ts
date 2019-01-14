@@ -123,14 +123,8 @@ export class WorkSqlite{
   getMBs(ym:string,ui:string):Promise<BsModel>{
     ym = ym.replace(new RegExp('-','g'),'/')
     return new Promise((resolve, reject) => {
-      let sql='select gc.*,' +
-        'lbd.cft,lbd.wd,lbd.ac,lbd.fh,lbd.tk,lbd.rm,lbd.dt,lbd.subId from GTD_C gc ' +
-        'left join (select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_BO ' +
-        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_C ' +
-        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_RC ' +
-        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_JN ' +
-        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_MO) lbd on lbd.sI = gc.sI and lbd.tk = gc.lI ' +
-        'left join GTD_D gd on gc.sI=gd.sI where (gd.uI = "'+ui+'" or gc.uI= "'+ui+'") and ' +
+      let sql= this.getRcSql +
+        ' where (gd.uI = "'+ui+'" or gc.uI= "'+ui+'") and ' +
         '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'")';
       let bs = new BsModel();
       let resL = new Array<any>();
@@ -216,20 +210,12 @@ export class WorkSqlite{
    */
   getOd(d:string,ui:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
-      let sql='select gc.*,gd.son,gd.pI,gd.sa,gf.*, ' +
-        "lbd.cft,lbd.wd,lbd.ac,lbd.fh,lbd.tk,lbd.rm,lbd.dt,lbd.subId from GTD_C gc " +
-        'left join (select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_BO ' +
-        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_C ' +
-        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_RC ' +
-        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_JN ' +
-        'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_MO) lbd on lbd.sI = gc.sI and lbd.tk = gc.lI ' +
-        'left join GTD_F gf on gf.lai=gc.lI '+
-        'left join GTD_D gd on gc.sI=gd.sI ' +
+      let sql= this.getRcSql +
+        ' left join GTD_F gf on gf.lai=gc.lI '+
         'left join (select substr(md,1,10) md,mf,rI from GTD_H where mf="0" and substr(md,1,10) = "'+ d+
         '" group by substr(md,1,10),mf,rI) gh on gc.sI=gh.rI ' +
       ' where (substr(gc.sd,1,10) <= "'+d+'" and substr(gc.ed,1,10)>= "'+d+'") ' +
       ' and (gd.uI = "'+ui+'" or gc.uI= "'+ui+'")';
-       // +'and (gd.pI is null or gd.uI ="'+DataConfig.uInfo.uI+'")';
       let bs = new BsModel();
       let resL = new Array<any>();
       let rcL = new Array<RcModel>();
@@ -300,6 +286,22 @@ export class WorkSqlite{
   }
 
   /**
+   * 日程查询SQL
+   * @returns {string}
+   */
+  getRcSql():string{
+    let sql= 'select gc.*,' +
+      'lbd.cft,lbd.wd,lbd.ac,lbd.fh,lbd.tk,lbd.rm,lbd.dt,lbd.subId from GTD_C gc ' +
+      'left join (select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_BO ' +
+      'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_C ' +
+      'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_RC ' +
+      'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_JN ' +
+      'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
+      'left join GTD_D gd on gc.sI=gd.sI ';
+    return sql;
+  }
+
+  /**
    * 判断当前日期是否对应重复类型
    * @param {string} cft 重复类型
    * @param {string} day 当前日期
@@ -349,7 +351,7 @@ export class WorkSqlite{
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_C ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_RC ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_JN ' +
-      'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_MO) lbd on lbd.sI = gc.sI and lbd.tk = gc.lI ' +
+      'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
       "left join GTD_D gd on gc.sI = gd.sI " +
       "left join GTD_J_H jh on jh.ji = gc.ji " +
       "left join GTD_F gf on gf.lai = gc.lI where gc.sI ='" + sI +"'";
@@ -378,11 +380,11 @@ export class WorkSqlite{
    */
   getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string):Promise<any>{
     let sql ='select gc.*,gf.lan,jh.jn from GTD_C gc ' +
-      'left join (select sI,cft,cf,ac,fh,tk from GTD_C_BO ' +
-      'union select sI,cft,cf,ac,fh,tk from GTD_C_C ' +
-      'union select sI,cft,cf,ac,fh,tk from GTD_C_RC ' +
-      'union select sI,cft,cf,ac,fh,tk from GTD_C_JN ' +
-      'union select sI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.sI = gc.sI and lbd.tk = gc.lI ' +
+      'left join (select sI ssI,cft,cf,ac,fh,tk from GTD_C_BO ' +
+      'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_C ' +
+      'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_RC ' +
+      'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_JN ' +
+      'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.sI = gc.ssI ' +
       'left join GTD_D gd on gc.sI = gd.sI ' +
       'left join GTD_F gf on gf.lai = gc.lI ' +
       'left join GTD_J_H jh on jh.ji = gc.ji ' +
@@ -460,11 +462,10 @@ export class WorkSqlite{
    * @param {string} fh 是否完成0未完成，1完成
    * @returns {Promise<any>}
    */
-  updateLbData(sI:string,tk:string,cft:string,rm:string,ac:string,fh:string):Promise<any>{
+  updateLbData(subId:string,sI:string,tk:string,cft:string,rm:string,ac:string,fh:string):Promise<any>{
     return new Promise((resolve, reject) => {
       let rcb = new RcbModel();
       rcb.sI = sI;
-      rcb.tk = tk;
       rcb.cft = cft;
       rcb.rm=rm;
       rcb.ac=ac;
@@ -474,6 +475,7 @@ export class WorkSqlite{
       rc.sI=sI;
       this.baseSqlite.getOne(rc).then(data=>{
         if(data && data.rows && data.rows.length>0){
+          rcb.id = subId;
           rcb.tk = data.rows.item(0).lI;
           return this.baseSqlite.delete(rcb);
         }
@@ -481,6 +483,8 @@ export class WorkSqlite{
         return this.syncRcbTime(rcb,rcb.tn,DataConfig.AC_D);
       }).then(data=>{
         console.log('----worksqlite updateLbData 再保存新标签子表----');
+        rcb.tk = tk;
+        rcb.id = this.util.getUuid();
         return this.baseSqlite.save(rcb);
       }).then(data=>{
         return this.syncRcbTime(rcb,rcb.tn,DataConfig.AC_O);
