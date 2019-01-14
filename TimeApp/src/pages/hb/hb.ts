@@ -8,6 +8,7 @@ import { XiaojiFeedbackService } from "../../service/util-service/xiaoji-feedbac
 import { Hb01Page } from "../hb01/hb01";
 import { DwEmitService } from "../../service/util-service/dw-emit.service";
 import { DataConfig } from "../../app/data.config";
+import {$e} from "@angular/compiler/src/chars";
 
 declare var cordova: any;
 /**
@@ -151,12 +152,32 @@ export class HbPage {
 
     console.log("这是语音HbPage页面数据处理：messageHanding方法");
 
-    this.aiuiData.tt = this.S1;
-    this.aiuiData.at = $event.at;
+    let textU = new AiuiModel();
+    let textX = new AiuiModel();
+    let data = new AiuiModel();
+
+    if ($event.tt == DataConfig.U1) {
+      textU = $event;
+      this.messages.push(textU);
+    } else if ($event.tt == DataConfig.S5) {
+      textX.tt = DataConfig.S1;
+      textX.at = $event.at;
+      this.messages.push(textU);
+      this.xiaojiSpeech.speakText(textX.at, success=>{});
+
+      setTimeout(() => {
+        data.tt = $event.tt;
+        data.scL = $event.scL;
+        this.messages.push(data);
+      }, 1000);
+    }
+
+    // this.aiuiData.tt = this.S1;
+    // this.aiuiData.at = $event.at;
     //this.messages.unshift(this.aiuiData);
     //this.xiaojiSpeech.speakText(this.aiuiData.at, success=>{});
-    this.messages.unshift($event);
-    this.xiaojiSpeech.speakText($event.at, success=>{});
+    // this.messages.unshift($event);
+    // this.xiaojiSpeech.speakText($event.at, success=>{});
     // if($event != null) {
     //   let messageData = new AiuiModel();
     //   messageData.at = $event.res.data.st;
