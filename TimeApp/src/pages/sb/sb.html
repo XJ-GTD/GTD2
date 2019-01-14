@@ -69,7 +69,7 @@
   <button ion-item class="padding-left-0 height56">
     <img src="./assets/imgs/1.png" item-start/>
     <ion-label>时间</ion-label>
-    <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="startTime"></ion-datetime>
+    <ion-datetime displayFormat="YYYY年MM月DD日 HH:mm" [(ngModel)]="startTime"></ion-datetime>
   </button>
   <ion-item *ngIf="showA" class="padding-left-0 height56">
     <img src="./assets/imgs/4.png" item-start/>
@@ -102,6 +102,10 @@
     <img src="./assets/imgs/c.png" item-start/>
     <ion-label>提醒方式</ion-label>
     <ion-label color="primary" text-end>{{remindType===undefined?"无":remindType}}</ion-label>
+  </button>
+
+  <button ion-button (click)="test()">
+    testttt
   </button>
 
 
