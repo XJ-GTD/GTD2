@@ -155,7 +155,24 @@ export class UtilService {
     return str;
   }
 
+  /**
+   * 获取当前月的第一天
+   */
+  public static getCurrentMonthFirst(date:Date):Date{
+    date.setDate(1);
+    return date;
+  }
 
+  /**
+   * 获取当前月的最后一天
+   */
+  public static getCurrentMonthLast(date:Date):Date{
+    let currentMonth=date.getMonth();
+    let nextMonth=++currentMonth;
+    let nextMonthFirstDay=new Date(date.getFullYear(),nextMonth,1);
+    let oneDay=1000*60*60*24;
+    return new Date(nextMonthFirstDay-oneDay);
+  }
 
  /**
   * 中文转拼音

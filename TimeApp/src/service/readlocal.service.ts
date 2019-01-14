@@ -11,6 +11,8 @@ import { RcpEntity } from "../entity/rcp.entity";
 import { PlayerSqlite } from "./sqlite/player-sqlite";
 import { DataConfig } from "../app/data.config";
 import {ReturnConfig} from "../app/return.config";
+import {RcModel} from "../model/rc.model";
+import {RcoModel} from "../model/out/rco.model";
 
 /**
  * 页面ts传值(Calendar)
@@ -43,6 +45,68 @@ export class ReadlocalService {
           reject(err);
         }
       );
+    })
+
+  }
+
+  /**
+   * 查询本地日历所有日程
+   * @returns {Promise<any>}
+   */
+  findEvent(sd:Date,ed:Date,rcL:Array<RcModel>):Promise<RcoModel>{
+    return new Promise((resolve, reject) => {
+      console.log("执行查询本地日历");
+      let rco = new RcoModel();
+      rco.rcL=rcL;
+      let locals = new Array<RcModel>();
+      //从sqlite中获取已存在的本地日历信息
+      if(rcL.length>0){
+        for(let rcc of rcL){
+          if(rcc.bi && rcc.bi != null && rcc.bi != ''){
+            locals.push(rcc);
+          }
+        }
+      }
+      if(DataConfig.IS_MOBILE){
+        this.calendar.findEvent("", "", "", sd, ed).then(
+          (msg) => {
+            console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg));
+            console.log("getCalendarOptions::"+ JSON.stringify(this.calendar.getCalendarOptions()));
+            if(msg.length>0){
+              for(let i=0;i<msg.length;i++) {
+                let isTrue = true;
+                //过滤已存在sqlite的本地日历
+                for(let data of locals){
+                  if(data.bi == msg[i].id){
+                    isTrue = false;
+                    break;
+                  }
+                }
+                if(isTrue){
+                  let rc = new RcModel();
+                  rc.uI = DataConfig.uInfo.uI;
+                  rc.sN=msg[i].title;
+                  rc.sd=msg[i].startDate;
+                  rc.ed=msg[i].endDate;
+                  rc.bi=msg[i].id;
+                  rc.ib='1';
+                  rcL.push(rc);
+                }
+
+              }
+              rco.rcL=rcL;
+            }
+            resolve(rco);
+          },
+          (err) => {
+            console.log("执行查询本地日历结束 err ::" + JSON.stringify(err));
+            rco.code = ReturnConfig.ERR_CODE;
+            rco.message=err.toString();
+            reject(err);
+          });
+      }else{
+        resolve(rco);
+      }
     })
 
   }
