@@ -39,24 +39,6 @@ export class RcbModel {
       if(this._sI!=null){
         sql=sql+' and sI="' + this._sI +'"';
       }
-      if(this._id!=null){
-        sql=sql+' and id="' + this._id +'"';
-      }
-      if(this._tk!=null){
-        sql=sql+' and tk="' + this._tk +'"';
-      }
-      if(this._cf!=null){
-        sql=sql+' and cf="' + this._cf +'"';
-      }
-      if(this._cft!=null){
-        sql=sql+' and cft="' + this._cft +'"';
-      }
-      if(this._wd!=null){
-        sql=sql+' and wd="' + this._wd +'"';
-      }
-      if(this._rm!=null){
-        sql=sql+' and rm="' + this._rm +'"';
-      }
       this._dsq=sql;
     }
 
@@ -76,6 +58,17 @@ export class RcbModel {
   }
 
   get tn(): string {
+    if(this._tk == '1'){
+      this._tn='GTD_C_BO'
+    }else if(this._tk >= '2' && this._tk <= '3'){
+      this._tn='GTD_C_C'
+    }else if(this._tk >= '4' && this._tk <= '8'){
+      this._tn='GTD_C_RC'
+    }else if(this._tk == '9'){
+      this._tn='GTD_C_JN'
+    }else if(this._tk >= '10'){
+      this._tn='GTD_C_MO'
+    }
     return this._tn;
   }
 
