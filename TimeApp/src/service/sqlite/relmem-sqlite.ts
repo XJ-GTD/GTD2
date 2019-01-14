@@ -151,7 +151,6 @@ export class RelmemSqlite {
    */
   syncToRuSql(syncs:Array<SyncModel>){
     let sql = '';
-    if(syncs.length>0) {
       if (syncs != null && syncs.length > 0) {
         for (let i = 0; i < syncs.length; i++) {
           let sync = syncs[i];
@@ -175,7 +174,7 @@ export class RelmemSqlite {
           }
         }
       }
-    }
+
     return sql;
   }
 
@@ -185,23 +184,21 @@ export class RelmemSqlite {
    */
   syncToRguSql(syncs:Array<SyncModel>){
     let sql = '';
-    if(syncs.length>0){
-      if(syncs != null && syncs.length>0) {
-        for (let i = 0; i < syncs.length; i++) {
-          let sync = syncs[i];
-          let en = new RguEntity();
-          en.id = sync.tableA;
-          en.bi = sync.tableB;
-          en.bmi = sync.tableC;
-          if (sync.action == '2') {
-            sql += en.dsq;
-          } else {
-            sql += en.rpsq;
-          }
+    if(syncs != null && syncs.length>0) {
+      for (let i = 0; i < syncs.length; i++) {
+        let sync = syncs[i];
+        let en = new RguEntity();
+        en.id = sync.tableA;
+        en.bi = sync.tableB;
+        en.bmi = sync.tableC;
+        if (sync.action == '2') {
+          sql += en.dsq;
+        } else {
+          sql += en.rpsq;
         }
+      }
     }
-      return sql;
-    }
+    return sql;
   }
 
   /**

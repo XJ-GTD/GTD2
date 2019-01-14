@@ -6,34 +6,34 @@
 export class SyncEntity {
 
   private _id: number;   //主键
-  private _tableName: string; //表名
-  private _action: string; //执行类型0添加,1更新,2删除
-  private _tableA: string;//名称
-  private _tableB: string;//名称
-  private _tableC: string;//名称
-  private _tableD: string;//名称
-  private _tableE: string;//名称
-  private _tableF: string;//名称
-  private _tableG: string;//名称
-  private _tableH: string;//名称
-  private _tableI: string;//名称
-  private _tableJ: string;//名称
-  private _tableK: string;//名称
-  private _tableL: string;//名称
-  private _tableM: string;//名称
-  private _tableN: string;//名称
-  private _tableO: string;//名称
-  private _tableP: string;//名称
-  private _tableQ: string;//名称
-  private _tableR: string;//名称
-  private _tableS: string;//名称
-  private _tableT: string;//名称
-  private _tableU: string;//名称
-  private _tableV: string;//名称
-  private _tableW: string;//名称
-  private _tableX: string;//名称
-  private _tableY: string;//名称
-  private _tableZ: string;//名称
+  private _tableName: string=''; //表名
+  private _action: string=''; //执行类型0添加,1更新,2删除
+  private _tableA: string='';//名称
+  private _tableB: string='';//名称
+  private _tableC: string='';//名称
+  private _tableD: string='';//名称
+  private _tableE: string='';//名称
+  private _tableF: string='';//名称
+  private _tableG: string='';//名称
+  private _tableH: string='';//名称
+  private _tableI: string='';//名称
+  private _tableJ: string='';//名称
+  private _tableK: string='';//名称
+  private _tableL: string='';//名称
+  private _tableM: string='';//名称
+  private _tableN: string='';//名称
+  private _tableO: string='';//名称
+  private _tableP: string='';//名称
+  private _tableQ: string='';//名称
+  private _tableR: string='';//名称
+  private _tableS: string='';//名称
+  private _tableT: string='';//名称
+  private _tableU: string='';//名称
+  private _tableV: string='';//名称
+  private _tableW: string='';//名称
+  private _tableX: string='';//名称
+  private _tableY: string='';//名称
+  private _tableZ: string='';//名称
     /*
      * 创建表
      * @type {string}
@@ -58,11 +58,11 @@ export class SyncEntity {
       'tableS,tableT,tableU,tableV,tableW,tableX,tableY,tableZ';
     let sql='insert into GTD_S_Y ' +
       '('+field+') values("'+ this._tableName+'",'+ this._action+',"'+ this._tableA+'","'+this._tableB+
-      '","'+ this._tableC+'",'+ this._tableD+',"'+ this._tableE+'","'+this._tableF+'","'+ this._tableG+'",'
-      '","'+ this._tableH+'",'+ this._tableI+',"'+ this._tableJ+'","'+this._tableK+'","'+ this._tableL+'",'
-      '","'+ this._tableM+'",'+ this._tableN+',"'+ this._tableO+'","'+this._tableP+'","'+ this._tableQ+'",'
-      '","'+ this._tableR+'",'+ this._tableS+',"'+ this._tableT+'","'+this._tableU+'","'+ this._tableV+'",'
-      '","'+ this._tableW+'",'+ this._tableX+',"'+ this._tableY+'","'+this._tableZ+'")';
+      '","'+ this._tableC+'","'+ this._tableD+'","'+ this._tableE+'","'+this._tableF+'","'+ this._tableG+
+      '","'+ this._tableH+'","'+ this._tableI+'","'+ this._tableJ+'","'+this._tableK+'","'+ this._tableL+
+      '","'+ this._tableM+'","'+ this._tableN+'","'+ this._tableO+'","'+this._tableP+'","'+ this._tableQ+
+      '","'+ this._tableR+'","'+ this._tableS+'","'+ this._tableT+'","'+this._tableU+'","'+ this._tableV+
+      '","'+ this._tableW+'","'+ this._tableX+'","'+ this._tableY+'","'+this._tableZ+'");';
     this._isq=sql;
     return this._isq;
   }

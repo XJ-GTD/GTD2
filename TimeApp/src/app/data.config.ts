@@ -33,7 +33,12 @@ export class DataConfig {
   /* ------- 字典数据 ---------*/
   public static ZTD_MAP:Map<string,any> = new Map<string,any>();
   public static REPEAT_TYPE:string = '12';
-
+  //随机语音播报字典类型
+  public static TEXT_TYPE:string = '401';
+  //随机语音播报字典内容
+  public static TEXT_CONTENT:Map<string,any> = new Map<string,any>();
+  //随机语音播报字典类型
+  public static MESSAGE_TYPE:string = '400';
   /* =============== 同步表名 ==================*/
   public static GTD_B:string='GTD_B'; //联系人表
   public static GTD_B_X:string='GTD_B_X'; //群组关联表

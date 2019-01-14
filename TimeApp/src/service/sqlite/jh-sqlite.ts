@@ -64,17 +64,19 @@ export class JhSqlite {
    */
   syncToJhSql(syncs:Array<SyncModel>){
     let sql = '';
-    for(let i=0;i<syncs.length;i++){
-      let sync = syncs[i];
-      let en = new JhEntity();
-      en.ji=sync.tableA;
-      en.jn=sync.tableB;
-      en.jg=sync.tableC;
-      sync.tableD = DataConfig.uInfo.uI;
-      if(sync.action=='2'){
-        sql+=en.dsq;
-      }else{
-        sql+=en.rpsq;
+    if(syncs != null && syncs.length>0) {
+      for (let i = 0; i < syncs.length; i++) {
+        let sync = syncs[i];
+        let en = new JhEntity();
+        en.ji = sync.tableA;
+        en.jn = sync.tableB;
+        en.jg = sync.tableC;
+        sync.tableD = DataConfig.uInfo.uI;
+        if (sync.action == '2') {
+          sql += en.dsq;
+        } else {
+          sql += en.rpsq;
+        }
       }
     }
     return sql;

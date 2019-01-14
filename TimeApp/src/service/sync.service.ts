@@ -26,7 +26,7 @@ import {SyncSqlite} from "./sqlite/sync-sqlite";
  */
 @Injectable()
 export class SyncService {
-
+  timer;
   constructor( private base:BaseSqlite,
                private syncR:SyncRestful,
                private syncS:SyncSqlite,
@@ -88,7 +88,7 @@ export class SyncService {
           if(base.code==0 && base.data != null){
             console.log("------SyncService initzdlb insert into table End : " + JSON.stringify(data));
           }
-          resolve(base)
+          resolve(base);
         }).catch(e=>{
           console.error("-------SyncService initzdlb restful 初始化字典数据及标签表 Error："+JSON.stringify(e))
           base.message = e.message
@@ -117,7 +117,7 @@ export class SyncService {
       let base = new BsModel();
       console.log("-------SyncService initLocalData sqlite 初始本地返回本地message------------");
       let ztL:any = null;
-      this.ztd.getZtdMessage('400').then(data=>{
+      this.ztd.getZtdMessage(DataConfig.MESSAGE_TYPE).then(data=>{
         console.log("-------SyncService initLocalData sqlite 初始本地静态数据本地message结果："+JSON.stringify(data));
         if(data && data.rows&&data.rows.length>0){
           let res = data.rows;
@@ -125,6 +125,17 @@ export class SyncService {
             ReturnConfig.RETURN_MSG.set(res.item(i).zk,res.item(i).zkv);
           }
           console.log("-------SyncService initLocalData ReturnConfig.RETURN_MSG 数据结果："+JSON.stringify(ReturnConfig.RETURN_MSG));
+        }
+        console.log("-------SyncService initLocalData sqlite 初始本地字典表数据 -------- ");
+        return this.ztd.getZtd(DataConfig.TEXT_TYPE)
+      }).then(data=>{
+        console.log("-------SyncService initLocalData sqlite 初始本地静态数据本地message结果："+JSON.stringify(data));
+        if(data && data.rows&&data.rows.length>0){
+          let res = data.rows;
+          for(let i=0;i<res.length;i++){
+            DataConfig.TEXT_CONTENT.set(res.item(i).zk,res.item(i).zkv);
+          }
+          console.log("-------SyncService initLocalData ReturnConfig.RETURN_MSG 数据结果："+JSON.stringify(DataConfig.TEXT_CONTENT));
         }
         console.log("-------SyncService initLocalData sqlite 初始本地字典表数据 -------- ");
         return this.ztd.getZt('')
@@ -152,6 +163,8 @@ export class SyncService {
           DataConfig.ZTD_MAP = ztMap;
           console.log("-------SyncService initLocalDataDataConfig.ZTD_MAP 数据结果："+JSON.stringify( DataConfig.ZTD_MAP));
         }
+        // this.loginSync();
+        // this.syncTime();
         resolve(base);
       }).catch(e=>{
         console.error("-------SyncService initLocalData sqlite 初始本地静态数据 Error："+JSON.stringify(e));
@@ -173,7 +186,7 @@ export class SyncService {
         .then(data=> {
           if (data && data.code == 0 && data.data.userDataList.length > 0) {
             let uds = data.data.userDataList;
-            this.getsql(sql,uds);
+            sql = this.getsql(sql,uds);
           }
           if (sql != '') {
             console.log('----- 登录同步服务器数据导入本地库 ------');
@@ -181,6 +194,14 @@ export class SyncService {
           }
         }).then(data=>{
         console.log('----- 登录同步服务器数据结束 ------' + JSON.stringify(data));
+        //定时同步
+        this.timer = setInterval(()=> {
+          // 每隔10秒  刷新时间
+          console.log('000000 更新');
+          //this.syncTime();
+          //this.time = (new Date().toTimeString()).substr(0,5); *60*5
+        }, 10000);
+
         resolve(base);
       }).catch(e=>{
         console.error('----- 登录同步服务器数据失败 ------' + JSON.stringify(e));
@@ -220,7 +241,7 @@ export class SyncService {
         let sdl = [];
         if(data && data.rows && data.rows.length>0){
           bv = data.rows.item(0).id;
-          for(let tn in DataConfig.TABLE_NAMES){
+          for(let tn of DataConfig.TABLE_NAMES){
             let sd:any = {};
             sd.tableName = tn;
             sd.dataList=[];
@@ -235,14 +256,10 @@ export class SyncService {
         }
         return this.syncR.syncTime(DataConfig.uInfo.uI,this.util.getUuid(),fv,sdl)
       }).then(data=>{
-        if(data.code==0){
-          if(data.userDataList.length>0){
-            fv = data.version;
-          }
-        }
         if (data && data.code == 0 && data.data.userDataList.length > 0) {
+          fv = data.data.version;
           let uds = data.data.userDataList;
-          this.getsql(sql,uds);
+          sql = this.getsql(sql,uds);
         }
         if (sql != '') {
           console.log('----- 定时同步服务器数据导入本地库 ------');
@@ -287,5 +304,6 @@ export class SyncService {
         sql+=this.jh.syncToJhSql(ud.dataList);
       }
     }
+    return sql;
   }
 }
