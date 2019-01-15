@@ -284,7 +284,7 @@ public class PersonServiceImpl implements IPersonService {
 
         Object[] objects = (Object[]) personRepository.searchUserByMobile(targetMobile, LOGIN_TYPE_MOBILE);
 
-        if (Integer.valueOf(objects[0].toString()) > 0) {
+        if (objects != null) {
             userId = String.valueOf(objects[1]);
             userName = String.valueOf(objects[2]);
             headImg = String.valueOf(objects[3]);
