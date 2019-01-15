@@ -104,7 +104,6 @@ public class BaseUtil {
         Date date = new Date();
         Map<String, Object> payload = new HashMap<String, Object>();
         payload.put("userId", userId);// 用户id
-        payload.put("deviceId", deviceId);// 用户名
         payload.put("authType", authType);// 用户类型
         payload.put("iat", date.getTime());// 生成时间
         payload.put("ext", date.getTime() + 1000 * 60 * 60 * 24 * 180L);// 过期时间6个月

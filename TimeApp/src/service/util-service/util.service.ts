@@ -256,6 +256,7 @@ export class UtilService {
         content:text,
         showBackdrop:false,
         cssClass:"loadingcss",
+        dismissOnPageChange:true,
       });
       loading.present();
       this.events.subscribe("unloading",()=>{
@@ -306,6 +307,17 @@ export class UtilService {
     let tmp = tel.toString();
     let out = tmp.substr(0,3)+" "+tmp.substr(3,4)+" "+tmp.substr(7,4);
     return out.trim();
+  }
+
+  /**
+   * 手机号输入去除英文
+   * @param inStr
+   * @returns {String}
+   */
+  remo(inStr){
+    let tmp = inStr.replace(/[a-zA-Z]/g,'');
+    tmp = tmp.substr(0,11);
+    return new String(tmp);
   }
 
 

@@ -197,7 +197,7 @@ export class SyncService {
         //10秒后调用定时同步
         setTimeout(() => {
           this.syncTime()
-        }, 10000);
+        }, 60000);
         resolve(base);
       }).catch(e=>{
         console.error('----- 登录同步服务器数据失败 ------' + JSON.stringify(e));
@@ -225,7 +225,7 @@ export class SyncService {
         console.log('000000 更新');
         this.syncTime();
         //this.time = (new Date().toTimeString()).substr(0,5); *60*5
-      }, 1000*60);
+      }, 1000*60*5);
       let sql = '';
       let bs = new BsModel();
       let sv = new SyvEntity();

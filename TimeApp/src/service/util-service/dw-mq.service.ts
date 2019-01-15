@@ -303,7 +303,7 @@ export class DwMqService {
     let rui = data.us;
     let sI=data.si;
     console.log("----- DwMqService scheduleCreate(业务：日程更新) start---- ")
-    this.work.urcMq(sI,rui,ct,sd,ed,lbI,'','','').then(data=>{
+    this.work.urcMq(sI,rui,ct,sd,ed,lbI,'','','','').then(data=>{
       console.log("----- DwMqService scheduleCreate(业务：日程更新) end ---- ")
       let ms = new MsEntity();
       ms.mn=ct;

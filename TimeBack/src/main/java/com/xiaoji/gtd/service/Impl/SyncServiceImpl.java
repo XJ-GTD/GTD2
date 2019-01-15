@@ -167,17 +167,21 @@ public class SyncServiceImpl implements ISyncService {
     @Override
     public SyncOutDto loginSync(SyncInDto inDto) {
         SyncOutDto outData = new SyncOutDto();
-        List<SyncDataDto> dataList;
+        List<SyncDataDto> dataList = new ArrayList<>();
 
         String userId = inDto.getUserId();
         String deviceId = inDto.getDeviceId();
-        String version = "";
+        String version = findLatestVersion(userId);
 
-        logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] ：开始获取数据");
-        dataList = downLoad(userId, deviceId, version, null);
+        if (!version.equals("")) {
+            logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] ：开始获取数据");
+            dataList = downLoad(userId, deviceId, null, null);
+        } else {
+            logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] ：暂无数据，无需同步");
+        }
 
-        if (dataList != null) {
-            version = findLatestVersion(userId);
+
+        if (dataList != null && dataList.size() > 0) {
             outData.setVersion(version);
             outData.setUserDataList(dataList);
             logger.debug("获取数据成功 version：["+ version + "] | data: size = " + dataList.size());
@@ -208,35 +212,42 @@ public class SyncServiceImpl implements ISyncService {
         String uploadVersion = BaseUtil.getVersion();
         logger.debug("服务器本次需要上传数据版本号:" + uploadVersion);
 
-
         if (syncDataList != null && syncDataList.size() > 0) {      //需要上传数据
             logger.debug("=========== 上传数据开始 ===========");
+            logger.debug("=========== 上传数据量为：" + syncDataList.size() + " ===========");
             logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] | 上传版本号[" + uploadVersion + "]：开始上传数据");
 
             upLoadData(syncDataList, userId, version, deviceId, uploadVersion);
 
             logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] 上传数据成功 ");
             logger.debug("=========== 上传数据结束 ===========");
+        } else {
+            logger.debug("=========== [本次无需上传更新] ===========");
         }
 
-        logger.debug("=========== 下载数据开始 ===========");
         String downloadSyncVersion = findLatestVersion(userId);
         logger.debug("服务器本次需要下载数据版本号:" + downloadSyncVersion);
 
-        logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] ：开始获取数据");
+        if (!downloadSyncVersion.equals("") && !version.equals(downloadSyncVersion)) {
+            logger.debug("=========== 下载数据开始 ===========");
 
-        downLoadDataList = downLoad(userId, deviceId, version, downloadSyncVersion);
+            logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] ：开始获取数据");
 
-        if (downLoadDataList != null) {
-            logger.debug("获取数据成功 version：["+ downloadSyncVersion + "] | data: size = " + downLoadDataList.size());
-            outDto.setVersion(downloadSyncVersion);
-            outDto.setUserDataList(downLoadDataList);
+            downLoadDataList = downLoad(userId, deviceId, version, downloadSyncVersion);
+
+            if (downLoadDataList != null) {
+                logger.debug("获取数据成功 version：["+ downloadSyncVersion + "] | data: size = " + downLoadDataList.size());
+                outDto.setVersion(downloadSyncVersion);
+                outDto.setUserDataList(downLoadDataList);
+            } else {
+                logger.debug("下载数据失败：服务器暂无该账号数据!");
+                return null;
+            }
+
+            logger.debug("=========== 下载数据结束 ===========");
         } else {
-            logger.debug("下载数据失败：服务器暂无该账号数据!");
-            return null;
+            logger.debug("=========== [本次无需下载更新] ===========");
         }
-
-        logger.debug("=========== 下载数据结束 ===========");
 
         return outDto;
     }
@@ -893,7 +904,7 @@ public class SyncServiceImpl implements ISyncService {
      */
     private String findLatestVersion(String userId) {
         Object obj = syncRepository.findLatestVersion(userId);
-        return obj != null? String.valueOf(obj): BaseUtil.getVersion();
+        return obj != null? String.valueOf(obj): "";
     }
 
     /**

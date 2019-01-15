@@ -204,7 +204,7 @@ W
    * @param {string} jhi 计划名称
    * @param {Array}  ruL 参与人json数组[ {id,rN,rC} ]（id主键,rN名称,rC联系方式）
    */
-  urc(sI:string,ct:string,sd:string,ed:string,lbI:string,jhi:string,cft:string,rm:string,ac:string,ruL:Array<RuModel>):Promise<BsModel>{
+  urc(sI:string,ct:string,sd:string,ed:string,lbI:string,jhi:string,subId:string,cft:string,rm:string,ac:string,ruL:Array<RuModel>):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
       //先查询当前用户ID
@@ -247,7 +247,7 @@ W
         .then(data=>{
           console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 更新日程子表-------");
-          return this.workSqlite.updateLbData(rc.sI,rc.lI,cft,rm,ac,'0');
+          return this.workSqlite.updateLbData(subId,rc.sI,rc.lI,cft,rm,ac,'0');
         })
         .then(data=>{
         console.log("WorkService urc() end : " +JSON.stringify(data));
@@ -303,7 +303,7 @@ W
    * @param {string} jhi 计划名称
    * @param {Array}  ruL 参与人json数组[ {id,rN,rC} ]（id主键,rN名称,rC联系方式）
    */
-  urcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string,cft:string,rm:string,ac:string):Promise<BsModel>{
+  urcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string,subId:string,cft:string,rm:string,ac:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
       sd=sd.replace(new RegExp('-','g'),'/');;
@@ -336,7 +336,7 @@ W
         .then(data=>{
           console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 更新日程子表-------");
-          return this.workSqlite.updateLbData(rc.sI,rc.lI,cft,rm,ac,'0');
+          return this.workSqlite.updateLbData(subId,rc.sI,rc.lI,cft,rm,ac,'0',);
         })
         .then(data=>{
         console.log("------ WorkService arcMq() End ------------");

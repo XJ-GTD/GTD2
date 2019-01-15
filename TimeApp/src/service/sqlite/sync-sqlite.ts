@@ -25,7 +25,7 @@ export class SyncSqlite {
    * @returns {Promise<any>}
    */
   getsyL(id:number): Promise<any> {
-    let sql="SELECT * FROM GTD_S_Y where id >=" +id +" order by id desc";
+    let sql="SELECT * FROM GTD_S_Y where id >" +id +" order by id desc";
     return this.baseSqlite.executeSql(sql,[]);
   }
 
