@@ -124,9 +124,9 @@ export class UtilService {
   showDay(day:string):string{
     let str='今天';
     //今天
-    let tt=new Date(moment().format('YYYY-MM-DD')).getTime();
+    let tt=moment(moment().format('YYYY/MM/DD')).valueOf();
     //选中天
-    let dt = new Date(day).getTime();
+    let dt = moment(day).valueOf();
     let d=(dt-tt)/(1000 * 60 * 60 * 24);
     let bool=false;
     if(d<0){
