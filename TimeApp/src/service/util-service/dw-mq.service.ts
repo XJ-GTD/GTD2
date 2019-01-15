@@ -44,8 +44,8 @@ export class DwMqService {
     //成功消息处理
     if (mqDate.vs == "1.0" && mqDate.ss == 0) {
       //mq返回则立即回馈语音界面
-      this.toAiui(DataConfig.MQTQ,mqDate,'');
-      this.toAiui(DataConfig.MQTM,mqDate,'');
+      // this.toAiui(DataConfig.MQTQ,mqDate,'');
+      // this.toAiui(DataConfig.MQTM,mqDate,'');
       switch (mqDate.sk) {
         case SkillConfig.XF_NMT: //确认
           break;
@@ -169,13 +169,13 @@ export class DwMqService {
         // str = '您有'+data.rcL.length+"个日程等待您去处理！"
         aiui.scL = data.rcL;
         aiui.tt = DataConfig.S5;
-        // aiui.at = WsEnumModel[mqDate.sk] + UtilService.randInt(0,10);
+        // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
         aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "1");
       }else{
         // str="您今天有大把的时间可以利用"
         aiui.tt = DataConfig.S1;
         // aiui.at = WsEnumModel[mqDate.sk] + UtilService.randInt(0,10);
-        aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "1");
+        aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "10");
       }
       // let url = "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&text=" + encodeURI(str);
       // var n = new Audio(url);
@@ -183,11 +183,11 @@ export class DwMqService {
       // n.play();
       // mqDate.qData = data;
       // this.dwEmit.setHbData(mqDate);//测试用
-      this.toAiui(DataConfig.MQTL,mqDate,data);
+      // this.toAiui(DataConfig.MQTL,mqDate,data);
       this.dwResultSendToPage(aiui, mqDate.sk);
     }).catch(e=>{
       //this.dwEmit.setHbData(mqDate);//测试用
-      this.toAiui(DataConfig.MQTL,mqDate,e);
+      // this.toAiui(DataConfig.MQTL,mqDate,e);
     });
   }
 
