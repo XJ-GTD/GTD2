@@ -5,8 +5,8 @@
 export class AppConfig {
 
   /* 环境URL 头部 */
-   // private static REQUEST_URL: string = "https://www.guobaa.com/gtd";
-  private static REQUEST_URL: string = "http://192.168.0.176:8080/gtd";//连接本地数据库
+  private static REQUEST_URL: string = "https://www.guobaa.com/gtd";
+  //private static REQUEST_URL: string = "http://192.168.0.176:8080/gtd";//连接本地数据库
   // private static REQUEST_URL: string = "http://192.168.99.31:8080/gtd";//连接本地数据库
 
   /* RabbitMq WebSocket */

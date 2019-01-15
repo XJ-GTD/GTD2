@@ -23,6 +23,7 @@
     "@ionic-native/android-permissions": "^4.18.0",
     "@ionic-native/background-mode": "^4.18.0",
     "@ionic-native/calendar": "^4.18.0",
+    "@ionic-native/contacts": "^4.19.0",
     "@ionic-native/core": "^4.11.0",
     "@ionic-native/device": "^4.18.0",
     "@ionic-native/file": "^4.18.0",
@@ -109,7 +110,8 @@
       "cordova-plugin-advanced-http": {},
       "cordova-plugin-android-permissions": {},
       "cordova-plugin-background-mode": {},
-      "cordova-plugin-BaiduSpeechAndTTS": {}
+      "cordova-plugin-BaiduSpeechAndTTS": {},
+      "cordova-plugin-contacts": {}
     },
     "platforms": [
       "android",

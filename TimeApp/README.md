@@ -43,5 +43,3 @@
 ##ionic cordova plugin add cordova-plugin-background-mode
 ##ionic cordova plugin add ../BaiduSpeechAndTTS
 ##ionic cordova plugin add cordova-plugin-contacts
-
-##npm install --save @ionic-native/contacts
