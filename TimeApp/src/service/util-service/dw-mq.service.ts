@@ -175,7 +175,7 @@ export class DwMqService {
         // str="您今天有大把的时间可以利用"
         aiui.tt = DataConfig.S1;
         // aiui.at = WsEnumModel[mqDate.sk] + UtilService.randInt(0,10);
-        aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "11");
+        aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "10");
       }
       // let url = "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&text=" + encodeURI(str);
       // var n = new Audio(url);
