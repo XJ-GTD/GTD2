@@ -37,7 +37,7 @@ public class AuthRepository {
             sqlScreen = " WHERE LOGIN_NAME = '"+ account + "' AND LOGIN_TYPE = '" + LOGIN_TYPE_MOBILE + "'";
         }
 
-        String sql = "SELECT COUNT(*), TB.USER_ID, TB.USER_NAME, TB.HEAD_IMG, TB.BIRTHDAY, TB.REAL_NAME, TB.ID_CARD, TB.USER_SEX \n" +
+        String sql = "SELECT 1, TB.USER_ID, TB.USER_NAME, TB.HEAD_IMG, TB.BIRTHDAY, TB.REAL_NAME, TB.ID_CARD, TB.USER_SEX \n" +
                 " FROM gtd_login TA \n" +
                 " INNER JOIN gtd_user TB ON TB.USER_ID = TA.USER_ID " + sqlScreen;
 
@@ -58,7 +58,7 @@ public class AuthRepository {
             sqlQuery += " AND TB.USER_ID = '" + targetUserId + "' ";
         }
 
-        String sql = "SELECT COUNT(*), TA.PLAYER_FLAG, TB.USER_ID FROM gtd_player TA \n" +
+        String sql = "SELECT 1, TA.PLAYER_FLAG, TB.USER_ID FROM gtd_player TA \n" +
                 " INNER JOIN gtd_login TB ON TB.USER_ID = TA.USER_ID \n" +
                 sqlQuery;
 
