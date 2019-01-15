@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import {
+  ActionSheetController, AlertController, IonicPage, LoadingController, NavController,
+  NavParams
+} from 'ionic-angular';
 import { UEntity } from "../../entity/u.entity";
 import { RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
 import {DataConfig} from "../../app/data.config";
 import {UtilService} from "../../service/util-service/util.service";
+import {Contacts} from "@ionic-native/contacts";
 
 /**
  * Generated class for the PfPage page.
@@ -17,6 +21,7 @@ import {UtilService} from "../../service/util-service/util.service";
 @Component({
   selector: 'page-pf',
   templateUrl: 'pf.html',
+  providers:[Contacts]
 })
 export class PfPage {
 
@@ -34,13 +39,17 @@ export class PfPage {
   sr:any = new Array(RuModel);
   ru:RuModel;
 
+  contacts:any = [];
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private relmemService: RelmemService,
-    private utilService: UtilService) {
+    private utilService: UtilService,
+    private conTacts: Contacts,
+    private actionSheetCtrl: ActionSheetController,) {
 
   }
 
@@ -56,9 +65,6 @@ export class PfPage {
   }
 
   checkPhone(){
-    var  re = /^1\d{10}$/;   //正则表达式
-    var  ren=re.test(this.tel);
-
     //判断手机号是否为空
     this.checkMobileNull=false;
     this.checkMobile=false;
@@ -84,22 +90,6 @@ export class PfPage {
       alert.present();
     }
 
-    // if(this.tel==null || this.tel==""){
-    //   this.checkMobileNull=true;
-    // }else {
-    //   //判断手机号是否为11
-    //   if (!re.test(this.tel)) {      //判断字符是否是11位数字
-    //     this.checkMobile=true;
-    //     this.errorCode = 1;
-    //     let alert = this.alertCtrl.create({
-    //       subTitle: "手机号错误",
-    //     });
-    //     setTimeout(()=>{
-    //       alert.dismiss();
-    //     },1000);
-    //     alert.present();
-    //   }
-    // }
     if(this.checkMobile == false && this.checkMobileNull == false){
       this.ru = undefined;
       this.relmemService.su(this.tel).then(data=>{
@@ -142,4 +132,73 @@ export class PfPage {
       this.navCtrl.push("PcPage",data);
     }
   }
+
+  getContacts(){
+    if(this.tel != null && this.tel != ''){
+      let tmp = new String(this.tel);
+      tmp = tmp.replace(/[a-zA-Z]/g,'');
+      if(tmp.length >= 11){
+        this.tel =new String(tmp.substr(0,11)) ;
+        this.checkPhone();
+      }else{
+        this.tel = new String(tmp);
+      }
+
+
+      let fields = ['phoneNumbers','displayName'];
+
+      this.conTacts.find(['phoneNumbers'],{
+        // filter:this.utilService.telFormat(this.tel),
+        filter:this.tel,
+        multiple:true,
+        desiredFields:["displayName","phoneNumbers"]
+      }).then(data=>{
+        console.log(JSON.stringify(data));
+        this.contacts = data;
+        console.log("1 :: " + JSON.stringify(this.contacts));
+        if(this.tel.length > 3){
+          return this.conTacts.find(['phoneNumbers'],{filter:this.utilService.telFormat(this.tel),multiple:true, desiredFields:["displayName","phoneNumbers"]});
+        }
+      }).then(data=>{
+        console.log("2 :: " + JSON.stringify(data));
+        if(data != undefined){
+          this.contacts = this.contacts.concat(data);
+        }
+        for(let i = 0;i< this.contacts.length;i++){
+          for(let j = 0;j< this.contacts[i].phoneNumbers.length;j++){
+            if(this.contacts[i].phoneNumbers[j].value.length>11){
+              this.contacts[i].phoneNumbers[j].value = this.contacts[i].phoneNumbers[j].value.replace(/\s/g,'');
+            }
+          }
+        }
+      });
+      console.log(this.tel);
+    }else{
+      this.contacts = [];
+    }
+  }
+
+  select(contact){
+    console.log(JSON.stringify(contact));
+    this.tel = contact.phoneNumbers[0].value.replace(/\s/g,'');
+    this.contacts = [];
+    this.checkPhone();
+  }
+
+  more(){
+    let actionSheet = this.actionSheetCtrl.create({
+      title:'更多',
+      buttons:[
+        {
+          text:'本地联系人',
+          handler:()=>{
+            console.log("选择")
+          }
+        },
+      ]
+    });
+
+    actionSheet.present();
+  }
+
 }

@@ -73,16 +73,8 @@ p{
   background: #FFFFFF;
 }
 
-.loadingcss{
-  .loading-wrapper{
-    background: none;
-    border:1px solid #2ec95c;
-
-  }
-}
-
 .header-ios .toolbar-ios:last-child .toolbar-background-ios {
-  border-width: 0 0 0.55px;
+  border-width: 0 0 0;
 }
 
 .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block{
