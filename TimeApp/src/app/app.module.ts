@@ -59,6 +59,8 @@ import { HTTP } from "@ionic-native/http";
 import { ZtdSqlite } from "../service/sqlite/ztd-sqlite";
 import { HttpClientModule } from "@angular/common/http";
 import { SyncSqlite } from "../service/sqlite/sync-sqlite";
+import { NetworkService } from "../service/util-service/network.service";
+import { Network } from "@ionic-native/network";
 @NgModule({
   declarations: [
     MyApp,
@@ -80,6 +82,7 @@ import { SyncSqlite } from "../service/sqlite/sync-sqlite";
   ],
   providers: [
     HTTP,
+    Network,
     StatusBar,
     SplashScreen,
     File,
@@ -132,6 +135,7 @@ import { SyncSqlite } from "../service/sqlite/sync-sqlite";
     ErrorCodeService,
     EmitSpeechService,
     SyncService,
+    NetworkService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

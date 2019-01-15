@@ -7,6 +7,8 @@ import { ScheduleModel } from "../../model/schedule.model";
 import { XiaojiFeedbackService } from "../../service/util-service/xiaoji-feedback.service";
 import { DwEmitService } from "../../service/util-service/dw-emit.service";
 import { DataConfig } from "../../app/data.config";
+import {WsEnumModel} from "../../model/ws.enum.model";
+import {NetworkService} from "../../service/util-service/network.service";
 
 declare var cordova: any;
 /**
@@ -53,6 +55,7 @@ export class HbPage {
               private dwEmit: DwEmitService,
               public paramsService: ParamsService,
               public xiaojiSpeech: XiaojiAssistantService,
+              private networkService: NetworkService,
               public xiaojiFeekback: XiaojiFeedbackService) {
 
   }
@@ -64,6 +67,7 @@ export class HbPage {
       this.messageHanding(data);
     });
 
+    this.netNetwork();
 
     this.messages = [];
     this.aiuiData = new AiuiModel();
@@ -124,11 +128,11 @@ export class HbPage {
       this.speechInputHanding(rs);
       this.xiaojiFeekback.audioSnare();
     });
-
   }
 
   //启动手动输入
   startXiaojiText() {
+
     if (this.inputText != null && this.inputText != "") {
       this.speechInputHanding(this.inputText);
       this.xiaojiSpeech.listenText(this.inputText);
@@ -174,77 +178,6 @@ export class HbPage {
       }, 1000);
     }
 
-    // this.aiuiData.tt = this.S1;
-    // this.aiuiData.at = $event.at;
-    //this.messages.unshift(this.aiuiData);
-    //this.xiaojiSpeech.speakText(this.aiuiData.at, success=>{});
-    // this.messages.unshift($event);
-    // this.xiaojiSpeech.speakText($event.at, success=>{});
-    // if($event != null) {
-    //   let messageData = new AiuiModel();
-    //   messageData.at = $event.res.data.st;
-    //   messageData.tt = this.tu;
-    //   this.messages.push(messageData);
-    // } else {
-    //   let messageUser = new AiuiModel();
-    //   messageUser.at = this.inputText;
-    //   messageUser.tt = this.tx;
-    //   this.messages.push(messageUser);
-    // }
-    //
-    // this.inputText = "";
-
-/*
-    if (xfdata.code == 0) {
-      //接收Object JSON数据
-      this.aiuiData = xfdata.data.aiuiData;
-
-      let messageUser = new AiuiModel();
-      messageUser.talkType = this.talkUser;
-      messageUser.userText = this.aiuiData.userText;
-      this.messages.push(messageUser);
-
-      setTimeout(() => {
-        let messageXF = new AiuiModel();
-        messageXF.talkType = this.talkXF;
-        messageXF.speech = this.aiuiData.speech;
-        this.messages.push(messageXF);
-        //分离出需要语音播报的内容
-        console.log("语音调用成功:" + this.aiuiData.speech);
-        this.xiaojiSpeech.speakText(this.aiuiData.speech,speakRs=>{
-
-        });
-      }, 1000);
-
-      if (this.aiuiData.dataType == "1"
-        && this.aiuiData.scheduleCreateList != null &&  this.aiuiData.scheduleCreateList.length != 0) {
-        setTimeout(() => {
-          let messageData = new AiuiModel();
-          messageData.talkType = this.talkDataSingle;
-          messageData.scheduleName = this.aiuiData.scheduleCreateList[0].scheduleName;
-          messageData.scheduleStartTime = this.aiuiData.scheduleCreateList[0].scheduleStartTime;
-          messageData.scheduleDeadline = this.aiuiData.scheduleCreateList[0].scheduleDeadline;
-
-          this.messages.push(messageData);
-        }, 1500);
-      } else if (this.aiuiData.dataType == "2"
-        && this.aiuiData.scheduleJoinList != null &&  this.aiuiData.scheduleJoinList.length != 0) {
-        setTimeout(() => {
-          let messageData = new AiuiModel();
-          messageData.talkType = this.talkDataList;
-          messageData.scheduleJoinList = this.aiuiData.scheduleJoinList;
-          this.messages.push(messageData);
-
-        }, 1500);
-      }
-
-      this.inputText = "";
-    }
-    else if (this.data.code == -1) {
-
-      // this.xiaojiSpeech.speakText();
-      this.inputText = "";
-    }*/
     this.aiuiData = new AiuiModel();
 
   }
@@ -262,6 +195,20 @@ export class HbPage {
     setTimeout(() => {
       this.content.scrollToBottom();
     }, 100);
+  }
+
+  /**
+   * 没网络禁用语音按钮
+   */
+  private netNetwork() {
+    if (this.networkService.getNetworkType() === 'none') {
+      //WsEnumModel["E04"] + UtilService.randInt(0,10);
+      let aiui = new AiuiModel();
+      aiui.tt = this.S1;
+      aiui.at = WsEnumModel["E04"] + "1";
+      this.messages.push(aiui);
+      this.xiaojiSpeech.speakText(DataConfig.TEXT_CONTENT.get(aiui.at), success=>{});
+    }
   }
 
   /*==================== 聊天界面 end ===================*/

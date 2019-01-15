@@ -10,6 +10,9 @@ export class DataConfig {
   /* 判断是手机还是网页true是false不是 */
   public static IS_MOBILE : boolean=true;
 
+  /*----===== 网络状态值 =====----- */
+  public static IS_NETWORK_CONNECT: boolean = true;
+
   //用户信息
   public static uInfo:UEntity = new UEntity();
   /**
@@ -18,8 +21,7 @@ export class DataConfig {
    */
   public static isFirst:number = 1;
 
-  public static defaultHeadImg:string = "./assets/imgs/headImg.jpg"
-
+  public static defaultHeadImg:string = "./assets/imgs/headImg.jpg";
 
   /*========== 语音对应文言 start =========*/
   public static XF_SPEECH_SCHEDULE_CREATE: string = "";
