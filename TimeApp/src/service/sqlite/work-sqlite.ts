@@ -385,18 +385,19 @@ export class WorkSqlite{
       'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_RC ' +
       'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_JN ' +
       'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.ssI = gc.sI ' +
-      'left join GTD_D gd on gc.sI = gd.sI ' +
+      //'left join GTD_D gd on gc.sI = gd.sI ' +
       'left join GTD_F gf on gf.lai = gc.lI ' +
       'left join GTD_J_H jh on jh.ji = gc.ji ' +
-      'where gd.uI="'+DataConfig.uInfo.uI+'"';
+     // 'where gd.uI="'+DataConfig.uInfo.uI+'"';
+      'where 1=1';
     if(ct != null && ct != ""){
       sql = sql + " and gd.son like '%" + ct +"%'"
     }
     if(sd != null && sd != ""){
-      sql = sql + " and substr(gc.sd,1,10) <= '" + sd +"'";
+      sql = sql + " and substr(gc.sd,1,10) <= '" + moment(sd).format('YYYY/MM/DD') +"'";
     }
     if(ed != null && ed != ""){
-      sql = sql + " and substr(gc.ed,1,10) >= '" + ed +"'";
+      sql = sql + " and substr(gc.ed,1,10) >= '" + moment(ed).format('YYYY/MM/DD') +"'";
     }
     if(lbI != null && lbI != ""){
       sql = sql + " and gf.lan like '%" + lbI +"%'"

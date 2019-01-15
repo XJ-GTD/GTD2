@@ -97,8 +97,8 @@
     <plugin name="cordova-plugin-android-permissions" spec="~1.0.0" />
     <plugin name="cordova-plugin-background-mode" spec="~0.7.2" />
     <plugin name="cordova-plugin-BaiduSpeechAndTTS" spec="../BaiduSpeechAndTTS" />
+    <plugin name="cordova-plugin-contacts" spec="~3.0.1" />
     <engine name="android" spec="6.4.0" />
     <engine name="ios" spec="^4.4.0" />
     <engine name="browser" spec="^5.0.4" />
-    <plugin name="cordova-plugin-contacts" spec="~3.0.1" />
 </widget>
