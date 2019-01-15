@@ -384,7 +384,7 @@ export class WorkSqlite{
       'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_C ' +
       'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_RC ' +
       'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_JN ' +
-      'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.sI = gc.ssI ' +
+      'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_MO) lbd on lbd.ssI = gc.sI ' +
       'left join GTD_D gd on gc.sI = gd.sI ' +
       'left join GTD_F gf on gf.lai = gc.lI ' +
       'left join GTD_J_H jh on jh.ji = gc.ji ' +
