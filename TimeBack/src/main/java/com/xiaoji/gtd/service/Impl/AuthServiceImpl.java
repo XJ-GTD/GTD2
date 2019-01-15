@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.persistence.NoResultException;
 import java.io.IOException;
 import java.sql.Timestamp;
 
@@ -112,21 +113,27 @@ public class AuthServiceImpl implements IAuthService {
 
         try {
             Object[] obj = (Object[]) authRepository.authLogin(account, password);
-            int count = Integer.valueOf(obj[0].toString());
-            if (count != 0) {
-                if (obj[1] != null)userId = obj[1].toString();
-                if (obj[2] != null)userName = obj[2].toString();
-                if (obj[3] != null)headImg = obj[3].toString();
-                if (obj[4] != null)birthday = obj[4].toString();
-                if (obj[5] != null)realName = obj[5].toString();
-                if (obj[6] != null)idCard = obj[6].toString();
-                if (obj[7] != null)userSex = obj[7].toString();
+            if (obj != null) {
+                if (!password.equals(obj[7].toString())) {
+                    logger.debug("密码不匹配");
+                    return null;
+                }
+
+                if (obj[0] != null)userId = obj[0].toString();
+                if (obj[1] != null)userName = obj[1].toString();
+                if (obj[2] != null)headImg = obj[2].toString();
+                if (obj[3] != null)birthday = obj[3].toString();
+                if (obj[4] != null)realName = obj[4].toString();
+                if (obj[5] != null)idCard = obj[5].toString();
+                if (obj[6] != null)userSex = obj[6].toString();
 
                 queueName = BaseUtil.getQueueName(userId, deviceId);
                 BaseUtil.createQueue(rabbitTemplate, userId, deviceId, BaseUtil.getExchangeName(userId));
                 BaseUtil.bindExchange(rabbitTemplate, queueName, SYSTEM_EXCHANGE_NAME);
+                logger.debug("========= 生成用户消息队列 ==========");
 
                 token = BaseUtil.getToken(userId, deviceId, AUTH_TYPE_USER);
+                logger.debug("========= 生成用户token ===========");
 
                 data.setToken(token);
                 data.setAccountQueue(queueName);
@@ -178,21 +185,22 @@ public class AuthServiceImpl implements IAuthService {
 
         try {
             Object[] obj = (Object[]) authRepository.authLogin(account, null);
-            int count = Integer.valueOf(obj[0].toString());
-            if (count != 0) {
+            if (obj != null) {
 
-                if (obj[1] != null)userId = obj[1].toString();
-                if (obj[2] != null)userName = obj[2].toString();
-                if (obj[3] != null)headImg = obj[3].toString();
-                if (obj[4] != null)birthday = obj[4].toString();
-                if (obj[5] != null)realName = obj[5].toString();
-                if (obj[6] != null)idCard = obj[6].toString();
-                if (obj[7] != null)userSex = obj[7].toString();
+                if (obj[0] != null)userId = obj[0].toString();
+                if (obj[1] != null)userName = obj[1].toString();
+                if (obj[2] != null)headImg = obj[2].toString();
+                if (obj[3] != null)birthday = obj[3].toString();
+                if (obj[4] != null)realName = obj[4].toString();
+                if (obj[5] != null)idCard = obj[5].toString();
+                if (obj[6] != null)userSex = obj[6].toString();
 
+                logger.debug("========= 生成用户消息队列 ==========");
                 queueName = BaseUtil.getQueueName(userId, deviceId);
                 BaseUtil.createQueue(rabbitTemplate, userId, deviceId, BaseUtil.getExchangeName(userId));
                 BaseUtil.bindExchange(rabbitTemplate, queueName, SYSTEM_EXCHANGE_NAME);
 
+                logger.debug("========= 生成用户token ===========");
                 token = BaseUtil.getToken(userId, deviceId, AUTH_TYPE_USER);
 
                 data.setUserId(userId);

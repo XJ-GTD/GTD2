@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * 验证类DAO层 注解类
@@ -32,12 +33,12 @@ public class AuthRepository {
 
         String sqlScreen = "";
         if (password != null && !password.equals("")) {
-            sqlScreen = " WHERE LOGIN_NAME = '" + account + "' AND PASSWORD = '" + password + "' AND LOGIN_TYPE IN ('" + LOGIN_TYPE_ACCOUNT + "','" + LOGIN_TYPE_MOBILE + "')";
+            sqlScreen = " WHERE LOGIN_NAME = '" + account + "' AND LOGIN_TYPE IN ('" + LOGIN_TYPE_ACCOUNT + "','" + LOGIN_TYPE_MOBILE + "')";
         } else {
             sqlScreen = " WHERE LOGIN_NAME = '"+ account + "' AND LOGIN_TYPE = '" + LOGIN_TYPE_MOBILE + "'";
         }
 
-        String sql = "SELECT 1, TB.USER_ID, TB.USER_NAME, TB.HEAD_IMG, TB.BIRTHDAY, TB.REAL_NAME, TB.ID_CARD, TB.USER_SEX \n" +
+        String sql = "SELECT TA.USER_ID, TB.USER_NAME, TB.HEAD_IMG, TB.BIRTHDAY, TB.REAL_NAME, TB.ID_CARD, TB.USER_SEX, TA.PASSWORD \n" +
                 " FROM gtd_login TA \n" +
                 " INNER JOIN gtd_user TB ON TB.USER_ID = TA.USER_ID " + sqlScreen;
 
