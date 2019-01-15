@@ -11,8 +11,11 @@ import com.xiaoji.util.TimerUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import java.util.Objects;
 
 /**
@@ -143,10 +146,14 @@ public class AuthController {
                 outDto.setCode(ResultCode.FAIL_AUTH);
                 logger.debug("[登陆失败]：用户名或密码输入错误");
             }
+        } catch (NoResultException | EmptyResultDataAccessException | NonUniqueResultException e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.NOT_USER);
+            logger.debug("[登陆失败]：该手机号或用户名尚未注册");
         } catch (Exception e) {
             e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            outDto.setMessage("[登陆失败]：服务器繁忙");
+            logger.debug("[登陆失败]：服务器繁忙");
         }
 
         return outDto;
@@ -219,6 +226,10 @@ public class AuthController {
                 outDto.setMessage("[登陆失败]：请稍后再试");
                 logger.debug("[code登陆失败]：请稍后再试");
             }
+        } catch (NoResultException | EmptyResultDataAccessException | NonUniqueResultException e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.NOT_USER);
+            logger.debug("[登陆失败]：该手机号或用户名尚未注册");
         } catch (Exception e) {
             e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);

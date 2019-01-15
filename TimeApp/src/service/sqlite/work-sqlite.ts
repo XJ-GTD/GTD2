@@ -125,7 +125,7 @@ export class WorkSqlite{
     return new Promise((resolve, reject) => {
       // or gc.uI= "'+ui+'"
       let sql= this.getRcSql() +
-        ' where (gd.uI = "'+ui+ ' or (gc.uI= "'+ui+'" and gd.uI != "'+ui+'")) and ' +
+        ' where (gd.uI = "'+ui+ '" or gc.uI= "'+ui+'") and ' +
         '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'")';
       let bs = new BsModel();
       let resL = new Array<any>();
@@ -215,7 +215,7 @@ export class WorkSqlite{
         'left join (select substr(md,1,10) md,mf,rI from GTD_H where mf="0" and substr(md,1,10) = "'+ d+
         '" group by substr(md,1,10),mf,rI) gh on gc.sI=gh.rI ' +
       ' where (substr(gc.sd,1,10) <= "'+d+'" and substr(gc.ed,1,10)>= "'+d+'") ' +
-      ' and (gd.uI = "'+ui+'" or (gc.uI= "'+ui+'" and gd.uI != "'+ui+'"))';
+      ' and (gd.uI = "'+ui+'" or gc.uI= "'+ui+'")';
       let bs = new BsModel();
       let resL = new Array<any>();
       let rcL = new Array<RcModel>();
@@ -297,7 +297,7 @@ export class WorkSqlite{
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_RC ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_JN ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
-      'left join GTD_D gd on gc.sI=gd.sI ';
+      'left join (select * from GTD_D where uI ="'+DataConfig.uInfo.uI+'") gd on gc.sI=gd.sI ';
     return sql;
   }
 
