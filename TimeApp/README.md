@@ -43,3 +43,4 @@
 ##ionic cordova plugin add cordova-plugin-background-mode
 ##ionic cordova plugin add ../BaiduSpeechAndTTS
 ##ionic cordova plugin add cordova-plugin-contacts
+##ionic cordova plugin add cordova-plugin-network-information
