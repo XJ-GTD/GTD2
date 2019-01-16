@@ -7,10 +7,12 @@ import com.xiaoji.gtd.service.IPersonService;
 import com.xiaoji.util.BaseUtil;
 import com.xiaoji.util.CommonMethods;
 import com.xiaoji.util.TimerUtil;
+import org.apache.ibatis.transaction.TransactionException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.NoResultException;
@@ -70,7 +72,7 @@ public class PersonController {
         }
         //入参正确性检测
         if(!CommonMethods.isInteger(inDto.getAccountMobile())){
-            if(inDto.getAccountMobile().length()!=11){
+            if(inDto.getAccountMobile().length() != 11){
                 outDto.setCode(ResultCode.ERROR_MOBILE);
                 logger.debug("[注册失败]：请输入正确手机号");
                 return outDto;
@@ -294,6 +296,10 @@ public class PersonController {
                 logger.debug("[添加失败]：请稍后再次添加");
             }
 
+        } catch (TransactionException | JpaSystemException e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.SUCCESS);
+            logger.debug("[邀请添加发送成功]");
         } catch (Exception e) {
             e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);

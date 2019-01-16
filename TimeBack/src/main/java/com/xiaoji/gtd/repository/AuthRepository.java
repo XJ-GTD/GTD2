@@ -51,16 +51,14 @@ public class AuthRepository {
      */
     public Object isAcceptThePush(String userId, String targetUserId, String targetMobile) {
 
-        String sqlQuery = " WHERE TA.PLAYER_ID = '" + userId + "' \n";
-        if (targetMobile != null && !targetMobile.equals("")) {
-            sqlQuery += " AND TB.LOGIN_TYPE = '" + LOGIN_TYPE_MOBILE + "' AND LOGIN_NAME = '" + targetMobile + "' \n";
-        }
+        String sqlQuery = " WHERE TB.LOGIN_TYPE = '" + LOGIN_TYPE_MOBILE + "' AND TB.LOGIN_NAME = '" + targetMobile + "' \n";
         if (targetUserId != null && !targetUserId.equals("")) {
-            sqlQuery += " AND TB.USER_ID = '" + targetUserId + "' ";
+            sqlQuery += " AND TB.USER_ID = '" + targetUserId + "' \n";
         }
 
-        String sql = "SELECT 1, TA.PLAYER_FLAG, TB.USER_ID FROM gtd_player TA \n" +
-                " INNER JOIN gtd_login TB ON TB.USER_ID = TA.USER_ID \n" +
+        String sql = "SELECT DISTINCT TB.USER_ID, TA.PLAYER_FLAG  FROM gtd_login TB \n" +
+                " LEFT JOIN gtd_player TA ON TA.USER_ID = TB.USER_ID \n" +
+                " AND TA.PLAYER_ID = '" + userId + "'\n" +
                 sqlQuery;
 
         return em.createNativeQuery(sql).getSingleResult();

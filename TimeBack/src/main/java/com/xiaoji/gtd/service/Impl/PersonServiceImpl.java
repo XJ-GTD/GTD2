@@ -23,10 +23,13 @@ import org.hibernate.service.spi.ServiceException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -245,9 +248,9 @@ public class PersonServiceImpl implements IPersonService {
                 }
 
             } else if (!data.isUser()) {
-                logger.debug("手机号[" + targetMobile + "]未注册!");
+                logger.debug("手机号[" + targetMobile + "]未注册! | 已通过短信推送邀请");
                 //短信推送邀请
-//                smsService.pushPlayer(targetMobile);
+                smsService.pushPlayer(targetMobile);
             } else if (!data.isAgree() && data.isPlayer()){
                 logger.debug("[已经被对方" + targetUserId + "拉黑]:无法发送邀请");
                 return 1;
@@ -260,7 +263,6 @@ public class PersonServiceImpl implements IPersonService {
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("发送邀请错误");
-            throw new SecurityException("发送邀请错误");
         }
         return 0;
     }
@@ -400,26 +402,34 @@ public class PersonServiceImpl implements IPersonService {
         String sqlTargetUserId = "";
         boolean isAgree;
 
-        Object[] objects = (Object[]) authRepository.isAcceptThePush(userId, targetUserId, targetMobile);
-        sqlTargetUserId = (String) objects[2];
-        int count = Integer.valueOf(objects[0].toString());
-        if (count > 0) {
-            isAgree = (int) objects[1] != 0;
+        try {
+            Object[] objects = (Object[]) authRepository.isAcceptThePush(userId, targetUserId, targetMobile);
 
-            logger.debug("[查询到用户" + targetMobile + "]：userId = "+ sqlTargetUserId + " | [" + userId + "]已是其好友| 接收权限" + isAgree);
-            data.setAgree(isAgree);
-            data.setUser(true);
-            data.setPlayer(true);
-            data.setUserId(sqlTargetUserId);
-        } else if (sqlTargetUserId != null && !sqlTargetUserId.equals("") && count == 0) {
-            logger.debug("[查询到用户" + targetMobile + "]：userId = "+ sqlTargetUserId + " | [" + userId + "]不是其好友");
-            data.setUser(true);
-            data.setUserId(sqlTargetUserId);
-        } else {
-            logger.debug("[未查询到用户" + targetMobile + "]：非注册用户");
+            if (objects[0] != null && !objects[0].equals("")) {
+                sqlTargetUserId = objects[0].toString();
+                if (objects[1] != null && !objects[1].equals("")) {
+                    isAgree = Integer.valueOf(objects[1].toString()) != 0;
+                    logger.debug("[查询到目标用户" + targetMobile + "]：targetUserId = "+ sqlTargetUserId + " | 用户[" + userId + "]你已是其好友| 接收权限" + isAgree);
+                    data.setAgree(isAgree);
+                    data.setUser(true);
+                    data.setPlayer(true);
+                    data.setUserId(sqlTargetUserId);
+                } else {
+                    logger.debug("[查询到目标用户" + targetMobile + "]：targetUserId = "+ sqlTargetUserId + " | 用户[" + userId + "]你不是其好友");
+                    data.setUser(true);
+                    data.setUserId(sqlTargetUserId);
+                }
+            }
+            data.setAccountMobile(targetMobile);
+        } catch (NoResultException | EmptyResultDataAccessException | NonUniqueResultException e) {
+            e.printStackTrace();
+            logger.debug("[未查询到目标用户" + targetMobile + "]：非注册用户");
+            data.setUser(false);
+            data.setAccountMobile(targetMobile);
         }
-        data.setAccountMobile(targetMobile);
+
         return data;
+
     }
 
     /**
