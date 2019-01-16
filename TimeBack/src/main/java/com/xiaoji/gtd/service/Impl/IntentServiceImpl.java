@@ -166,10 +166,13 @@ public class IntentServiceImpl implements IIntentService {
                 return;
             }
             for (NlpOutDto nod: data) {
+                if (nod.getService() == null) continue;
                 String flag = WebSocketSkillEnum.getIntentCode(splitStr(nod.getService()));
                 if (nod.getIntent() != null) {
                     String skillType = WebSocketSkillEnum.getIntentCode(nod.getIntent());
-
+                    outDto.setSk(skillType);
+                } else {
+                    outDto.setSk(flag);
                 }
                 if (flag != null && flag.equals("0")) {
                     outDto.setRes(dealWithSlots(nod));

@@ -106,8 +106,8 @@ public class SyncController {
                 outDto.setCode(ResultCode.SUCCESS);
                 logger.debug("[同步成功]");
             } else {
-                outDto.setCode(ResultCode.FAIL_SYNC);
-                logger.debug("[同步失败]：没有该用户数据");
+                outDto.setCode(ResultCode.NOT_SYNC);
+                logger.debug("[同步成功]：没有该用户数据");
             }
 
         } catch (Exception e) {

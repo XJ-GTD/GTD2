@@ -30,8 +30,7 @@ export class DwMqService {
               private errorCode: ErrorCodeService,
               private msSqlite:MsSqlite,
               private xiaojiSpeech: XiaojiAssistantService,
-              private emitSend: EmitSpeechService,
-              private dwEmit: DwEmitService){
+              private emitSend: EmitSpeechService,){
 
   }
 
@@ -74,7 +73,8 @@ export class DwMqService {
           break;
         case SkillConfig.XF_SYSH: //讯飞：私密模式
           break;
-        case SkillConfig.XF_OTS:
+        case SkillConfig.XF_OTS:    //讯飞：第三方技能
+          this.otherSpeech(mqDate);
           break;
         case SkillConfig.BC_SCC: //添加日程
           this.scheduleCreate(mqDate.res.data);
@@ -118,7 +118,19 @@ export class DwMqService {
       ed=md.st;
     }
 
+    let aiui = new AiuiModel();
+
     this.work.xfAddrc(sn,sd,pln,ca,cb).then(data=>{
+      if (data != null) {
+        aiui.sc = data;
+        aiui.tt = DataConfig.S4;
+        // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
+        aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "1");
+      } else {
+        aiui.tt = DataConfig.S1;
+        // aiui.at = WsEnumModel[mqDate.sk] + UtilService.randInt(0,10);
+        aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "10");
+      }
       // mqDate.qData=data;
       // this.dwEmit.setHbData(mqDate);//测试用
       // this.toAiui(DataConfig.MQTL,mqDate,data)
@@ -134,7 +146,23 @@ export class DwMqService {
   private xfScheduleDelete(mqDate: WsModel) {
     let md:WsResDataModel= mqDate.res.data;
     let sI = "";
+
+    let aiui = new AiuiModel();
+    if (!mqDate.ses) {
+
+    }
+
     this.work.delrc(sI).then(data=>{
+      if (data != null) {
+        // aiui.sc = data;
+        aiui.tt = DataConfig.S1;
+        // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
+        aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "1");
+      } else {
+        aiui.tt = DataConfig.S1;
+        // aiui.at = WsEnumModel[mqDate.sk] + UtilService.randInt(0,10);
+        aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "10");
+      }
       //this.dwEmit.setHbData(data);
       // this.toAiui(DataConfig.MQTL,mqDate,data);
     }).catch(e=>{
@@ -170,7 +198,7 @@ export class DwMqService {
         aiui.scL = data.rcL;
         aiui.tt = DataConfig.S5;
         // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
-        aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "1");
+        aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "1");
       }else{
         // str="您今天有大把的时间可以利用"
         aiui.tt = DataConfig.S1;
@@ -352,6 +380,19 @@ export class DwMqService {
   }
 
   /**
+   * 讯飞第三方技能统一返回
+   * @param mqDate
+   */
+  private otherSpeech(mqDate: WsModel) {
+    let aiui = new AiuiModel();
+    aiui.tt = DataConfig.S1;
+    aiui.at = mqDate.at;
+    aiui.ai = mqDate.ai;
+    aiui.au = mqDate.au;
+    this.dwResultSendToPage(aiui, mqDate.sk);
+  }
+
+  /**
    * 取出用户翻译传回界面
    * @param userText
    * @param sk
@@ -378,6 +419,8 @@ export class DwMqService {
 
     this.emitSend.send(aiui, sk);
   }
+
+
 
   /**
    *  返回值转Aiui
@@ -478,5 +521,6 @@ export class DwMqService {
   //     }, i);
   //   }
   // }
+
 
 }
