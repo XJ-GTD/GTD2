@@ -116,7 +116,7 @@ export class UbPage {
 
        let alert = this.alertCtrl.create({
          title:'提示信息',
-         subTitle: res.message,
+         subTitle: "登录失败",
          buttons:["确定"]
        });
 

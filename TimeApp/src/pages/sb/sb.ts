@@ -221,7 +221,7 @@ export class SbPage {
 
   //所有联系人
   getAllRel(){
-    this.relmemService.getrus(null,null,null,null,'0').then(data=>{
+    this.relmemService.rcGetRus().then(data=>{
       console.log(data);
       if(data.code == 0){
         this.pRelAl = data.us;

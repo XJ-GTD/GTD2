@@ -25,10 +25,9 @@
 <!--个人添加新建搜索 -->
 <ion-content padding class="page-backgroud-color">
   <div >
-
     <div style="margin: 20px 0px;">
       <ion-item style="height: 50px">
-        <ion-input type="tel" [(ngModel)]="tel" (input)="getContacts()"  placeholder="请输入手机号" clearInput></ion-input>
+        <ion-input type="tel" [(ngModel)]="tel" (ionBlur)="getContacts()" placeholder="请输入手机号" clearInput></ion-input>
       </ion-item>
     </div>
 
@@ -72,14 +71,14 @@
       <!--</div>-->
       <!--</ion-item>-->
       <!--<div *ngFor="let index of sr">-->
-        <ion-item *ngIf="ru">
+        <ion-item *ngIf="ru" (click)="toPersonalAddDetail(ru)">
           <ion-avatar item-start>
             <img [src]="ru.hiu">
           </ion-avatar>
           <ion-label>
             <span style="font-family: PingFang-SC-Bold">{{ru.rN}}</span>
           </ion-label>
-          <div item-end (click)="toPersonalAddDetail(ru)">
+          <div item-end>
             <span *ngIf="existCode == 1" style="color: red">已添加</span>
             <span *ngIf="existCode == 2" style="color: #488aff">添加</span>
             <span *ngIf="existCode == 3">未注册</span>

@@ -13,6 +13,7 @@ import { DataConfig } from "../../app/data.config";
 import { BsRestful } from "../../service/restful/bs-restful";
 import {SyncService} from "../../service/sync.service";
 import {FiEntity} from "../../entity/fi.entity";
+import {ContactsService} from "../../service/util-service/contacts.service";
 
 /**
  * Generated class for the AlPage page.
@@ -58,7 +59,8 @@ export class AlPage {
               private configService:ConfigService,
               private webSocketService: WebsocketService,
               private sync:SyncService,
-              private _ease: RoundProgressEase) {
+              private _ease: RoundProgressEase,
+              private ContactsService: ContactsService) {
     this.text="正在初始化";
   }
 
@@ -159,7 +161,9 @@ export class AlPage {
         console.log("al :: 连接websockte成功")
       this.increment(10);
         //检车websockte的状态
-
+        return this.ContactsService.getContacts();
+      }).then(data=>{
+        console.log("al :: 查询联系人成功");
       }).then(data=>{
         console.log("al :: 开始更新版本表");
         return this.configService.ufi(null,0)

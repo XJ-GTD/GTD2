@@ -8,7 +8,10 @@ import { RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
 import {DataConfig} from "../../app/data.config";
 import {UtilService} from "../../service/util-service/util.service";
+import {ContactsService} from "../../service/util-service/contacts.service";
+import {ReturnConfig} from "../../app/return.config";
 import {Contacts} from "@ionic-native/contacts";
+import {CordovaInstance} from "@ionic-native/core";
 
 /**
  * Generated class for the PfPage page.
@@ -48,8 +51,9 @@ export class PfPage {
     private alertCtrl: AlertController,
     private relmemService: RelmemService,
     private utilService: UtilService,
-    private conTacts: Contacts,
-    private actionSheetCtrl: ActionSheetController,) {
+    private actionSheetCtrl: ActionSheetController,
+    private contactsService: ContactsService,
+    private conTacts: Contacts,) {
 
   }
 
@@ -64,7 +68,9 @@ export class PfPage {
 
   }
 
-  checkPhone(){
+  //输入手机号 失去焦点 去除非数字 去除空格 查询
+
+  checkPhone(contact){
     //判断手机号是否为空
     this.checkMobileNull=false;
     this.checkMobile=false;
@@ -79,19 +85,30 @@ export class PfPage {
     }
     if(checkCode == 2 || checkCode == 1){
       //手机号错误
+
       this.checkMobile=true;
       this.errorCode = 1;
-      let alert = this.alertCtrl.create({
-        subTitle: "手机号错误",
-      });
-      setTimeout(()=>{
-        alert.dismiss();
-      },1000);
-      alert.present();
-    }
+      if(this.tel.length == 11){
+        let alert = this.alertCtrl.create({
+          subTitle: "手机号错误",
+        });
+        setTimeout(()=>{
+          alert.dismiss();
+        },1000);
+        alert.present();
+      }
 
+    }
+    console.log(this.checkMobile +　" + "　+ this.checkMobileNull);
     if(this.checkMobile == false && this.checkMobileNull == false){
+      // this.getContacts();
       this.ru = undefined;
+      // this.contacts=[];
+      // if(ContactsService.contactList.get(this.tel)){
+      //   this.contacts.push(ContactsService.contactList.get(this.tel));
+      // }
+      // console.log(ContactsService.contactList.get(this.tel));
+      console.log("开始查询::" + this.tel);
       this.relmemService.su(this.tel).then(data=>{
         if(data.code == 0){
           this.isRegist = true;
@@ -99,15 +116,29 @@ export class PfPage {
           this.ru = data;
           this.ru.rC = this.tel;
         }else{
-          this.ru = new RuModel();
-          this.isRegist = false;
-          this.existCode = 3;
-          this.ru.rN = this.tel;
-          this.ru.rC = this.tel;
-          this.ru.hiu = DataConfig.defaultHeadImg;
-          this.ru.rI = this.tel;
+          let alert = this.alertCtrl.create({
+            subTitle: ReturnConfig.RETURN_MSG.get(data.code.toString()),
+          });
+          setTimeout(()=>{
+            alert.dismiss();
+          },1000);
+          alert.present();
+          if(data.code == 11500){
+            this.ru = new RuModel();
+            this.isRegist = false;
+            this.existCode = 3;
+            if(contact != null){
+              this.ru.ran = contact.displayName;
+            }
+            this.ru.rN = this.tel;
+            this.ru.rC = this.tel;
+            this.ru.hiu = DataConfig.defaultHeadImg;
+            this.ru.rI = this.tel;
+          }
         }
         this.errorCode = 0;
+      }).catch(reason => {
+
       })
 
     }else{
@@ -139,12 +170,10 @@ export class PfPage {
       tmp = tmp.replace(/[a-zA-Z]/g,'');
       if(tmp.length >= 11){
         this.tel =new String(tmp.substr(0,11)) ;
-        this.checkPhone();
+
       }else{
         this.tel = new String(tmp);
       }
-
-
       let fields = ['phoneNumbers','displayName'];
 
       this.conTacts.find(['phoneNumbers'],{
@@ -173,6 +202,7 @@ export class PfPage {
         }
       });
       console.log(this.tel);
+      this.checkPhone(null);
     }else{
       this.contacts = [];
     }
@@ -182,7 +212,7 @@ export class PfPage {
     console.log(JSON.stringify(contact));
     this.tel = contact.phoneNumbers[0].value.replace(/\s/g,'');
     this.contacts = [];
-    this.checkPhone();
+    this.checkPhone(contact);
   }
 
   more(){
@@ -192,7 +222,8 @@ export class PfPage {
         {
           text:'本地联系人',
           handler:()=>{
-            console.log("选择")
+            console.log("选择");
+            this.navCtrl.push('PhPage');
           }
         },
       ]

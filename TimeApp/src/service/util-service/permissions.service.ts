@@ -25,6 +25,7 @@ export class PermissionsService {
     this.androidPermissions.PERMISSION.WAKE_LOCK,
     this.androidPermissions.PERMISSION.VIBRATE,
     this.androidPermissions.PERMISSION.BLUETOOTH,
+    this.androidPermissions.PERMISSION.READ_CONTACTS,
   ];
 
   constructor(
@@ -41,6 +42,8 @@ export class PermissionsService {
         return this.checkPermissiion(this.list_all[i++]);
       })
       .then(res => {
+        return this.checkPermissiion(this.list_all[i++]);
+      }).then(res => {
         return this.checkPermissiion(this.list_all[i++]);
       }).then(res => {
         return this.checkPermissiion(this.list_all[i++]);
