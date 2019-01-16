@@ -85,4 +85,23 @@ export class ConfigService {
       })
     });
   }
+
+  /**
+   * 更新版本表
+   * @param {number} firstIn 版本号
+   * @param {number} isup 是否更新0暂无更新，1已更新；1状态进入引导页，并更新成0
+   * @returns {Promise<any>}
+   */
+  ufi(firstIn:number,isup:number):Promise<any>{
+    return  new Promise((resolve, reject)=>{
+      console.log('------ 更新版本表状态:'+isup+' --------');
+      this.fi.ufi(firstIn,isup).then(data=>{
+        resolve(data);
+      }).catch(e=>{
+        console.log('------ 更新版本表状态:'+isup+' Error:' +JSON.stringify(e));
+        reject(e);
+      })
+    })
+  }
+
 }

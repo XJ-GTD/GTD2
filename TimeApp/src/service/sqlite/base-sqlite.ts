@@ -232,7 +232,7 @@ export class BaseSqlite {
         let fi = new FiEntity();
         fi.id = 1;
         fi.firstIn = 1;
-        fi.isup = 0;
+        fi.isup = 1;
         //用户表
         let u: UEntity = new UEntity();
         u.uI = this.util.getUuid();
