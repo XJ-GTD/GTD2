@@ -179,7 +179,6 @@ public class SmsServiceImpl implements ISmsService {
                     }
                 } else {
                     logger.error("赛邮短信接口请求报错");
-                    throw new ServiceException();
                 }
             }
         } catch(IOException e){

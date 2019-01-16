@@ -40,7 +40,6 @@ import java.util.List;
  * create by wzy on 2018/11/16.
  */
 @Service
-@Transactional
 public class PersonServiceImpl implements IPersonService {
 
     private Logger logger = LogManager.getLogger(this.getClass());
@@ -90,6 +89,7 @@ public class PersonServiceImpl implements IPersonService {
      * 用户注册
      * @param inDto
      */
+    @Transactional
     @Override
     public int signUp(SignUpInDto inDto) {
 
@@ -170,6 +170,7 @@ public class PersonServiceImpl implements IPersonService {
      * @param inDto
      * @return
      */
+    @Transactional
     @Override
     public int updatePassword(UpdatePWDInDto inDto) {
 
@@ -284,22 +285,26 @@ public class PersonServiceImpl implements IPersonService {
         String userId = "";
         String pyOfUserName = "";
 
-        Object[] objects = (Object[]) personRepository.searchUserByMobile(targetMobile, LOGIN_TYPE_MOBILE);
+        try {
+            Object[] objects = (Object[]) personRepository.searchUserByMobile(targetMobile, LOGIN_TYPE_MOBILE);
 
-        if (objects != null) {
-            userId = String.valueOf(objects[1]);
-            userName = String.valueOf(objects[2]);
-            headImg = String.valueOf(objects[3]);
-            pyOfUserName = conversionPinyin(userName);
-            logger.debug("目标用户信息： " + userId + " | " + userName + " | " +  headImg);
+            if (objects != null) {
+                userId = String.valueOf(objects[1]);
+                userName = String.valueOf(objects[2]);
+                headImg = String.valueOf(objects[3]);
+                pyOfUserName = conversionPinyin(userName);
+                logger.debug("目标用户信息： " + userId + " | " + userName + " | " +  headImg);
 
-            data.setUserId(userId);
-            data.setHeadImg(headImg);
-            data.setUserName(userName);
-            data.setPyOfUserName(pyOfUserName);
-        } else {
-            logger.debug("未查询到用户");
-            return null;
+                data.setUserId(userId);
+                data.setHeadImg(headImg);
+                data.setUserName(userName);
+                data.setPyOfUserName(pyOfUserName);
+            }
+
+        } catch (NoResultException | EmptyResultDataAccessException | NonUniqueResultException e) {
+            e.printStackTrace();
+            data = null;
+            logger.debug("该手机号或用户名尚未注册");
         }
         return data;
     }
@@ -345,48 +350,6 @@ public class PersonServiceImpl implements IPersonService {
     @Override
     public String conversionPinyin(String otherName) {
         return Pinyin4j.toPinYin(otherName);
-    }
-
-    /**
-     * 添加服务器数据
-     * ！！ 同步方法完成后删除！！！
-     *
-     * @return
-     */
-    @Override
-    public int temporaryPlayer(TestPlayerInDto inDto) {
-        GtdPlayerEntity playerEntity = new GtdPlayerEntity();
-
-        String id = inDto.getId();
-        String userId = inDto.getUserId();
-        String otherName = inDto.getOtherName();
-        String pyOfOtherName = conversionPinyin(otherName);
-        String playerName = inDto.getPlayerName();
-        String pyOfPlayerName = conversionPinyin(playerName);
-        String accountMobile = inDto.getAccountMobile();
-        String headImg = inDto.getHeadImg();
-
-        String playId = inDto.getPlayerId();
-        int playFlag = inDto.getPlayerFlag();
-        int playType = inDto.getPlayerType();
-
-        playerEntity.setId(id);
-        playerEntity.setUserId(userId);
-        playerEntity.setPlayerAnotherName(otherName);
-        playerEntity.setPyOhterName(pyOfOtherName);
-        playerEntity.setPlayerName(playerName);
-        playerEntity.setPyPlayerName(pyOfPlayerName);
-        playerEntity.setPlayerHeadimg(headImg);
-        playerEntity.setPlayerContact(accountMobile);
-        playerEntity.setPlayerId(playId);
-        playerEntity.setPlayerFlag(playFlag);
-        playerEntity.setPlayerType(playType);
-        playerEntity.setCreateId(userId);
-        playerEntity.setCreateDate(BaseUtil.getSqlDate());
-
-        playerRepository.save(playerEntity);
-
-        return 0;
     }
 
     /**

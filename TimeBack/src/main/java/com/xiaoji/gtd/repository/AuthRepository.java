@@ -13,7 +13,6 @@ import java.util.List;
  *
  * create by wzy on 2018/11/21
  */
-@Transactional
 @Repository
 public class AuthRepository {
 

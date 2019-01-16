@@ -296,10 +296,6 @@ public class PersonController {
                 logger.debug("[添加失败]：请稍后再次添加");
             }
 
-        } catch (TransactionException | JpaSystemException e) {
-            e.printStackTrace();
-            outDto.setCode(ResultCode.SUCCESS);
-            logger.debug("[邀请添加发送成功]");
         } catch (Exception e) {
             e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
@@ -349,10 +345,6 @@ public class PersonController {
                 outDto.setCode(ResultCode.NOT_USER);
                 logger.debug("[该用户尚未注册]");
             }
-        } catch (NoResultException | EmptyResultDataAccessException | NonUniqueResultException e) {
-            e.printStackTrace();
-            outDto.setCode(ResultCode.NOT_USER);
-            logger.debug("[登陆失败]：该手机号或用户名尚未注册");
         } catch (Exception e) {
             e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);

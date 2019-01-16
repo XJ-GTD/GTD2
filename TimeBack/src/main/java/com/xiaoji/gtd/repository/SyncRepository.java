@@ -12,7 +12,6 @@ import java.util.List;
  *
  * create by wzy on 2018/11/20
  */
-@Transactional
 @Repository
 public class SyncRepository {
 

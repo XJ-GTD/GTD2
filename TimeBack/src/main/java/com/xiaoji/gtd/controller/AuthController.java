@@ -86,7 +86,7 @@ public class AuthController {
         } catch (Exception e) {
             e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            outDto.setMessage("[验证失败]：服务器繁忙");
+            logger.debug("[验证失败]：服务器繁忙");
         }
 
         return outDto;
@@ -208,7 +208,6 @@ public class AuthController {
         } catch (Exception e) {
             e.printStackTrace();
             outDto.setCode(ResultCode.EXPIRE_AUTH_CODE);
-            outDto.setMessage("[登陆失败]：短信验证码已过期，请重新获取");
             logger.debug("[登陆失败]：短信验证码已过期");
             return outDto;
         }
@@ -219,11 +218,9 @@ public class AuthController {
             if (data != null) {
                 outDto.setData(data);
                 outDto.setCode(ResultCode.SUCCESS);
-                outDto.setMessage("[登陆成功]");
                 logger.debug("[code登陆失败]");
             } else {
                 outDto.setCode(ResultCode.FAIL_AUTH);
-                outDto.setMessage("[登陆失败]：请稍后再试");
                 logger.debug("[code登陆失败]：请稍后再试");
             }
         } catch (NoResultException | EmptyResultDataAccessException | NonUniqueResultException e) {
@@ -233,7 +230,7 @@ public class AuthController {
         } catch (Exception e) {
             e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            outDto.setMessage("[登陆失败]：服务器繁忙");
+            logger.debug("[登陆失败]：服务器繁忙");
         }
 
         return outDto;
