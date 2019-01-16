@@ -48,7 +48,6 @@ public class SyncController {
         SyncOutDto data;
 
         try {
-
             data = syncService.initialSync();
             if (data != null) {
                 outDto.setData(data);
