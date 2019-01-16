@@ -291,6 +291,40 @@ export class RelmemService {
     })
   }
 
+  /**
+   * 日程查询授权联系人
+   * @param {string} id 主键
+   * @param {string} ran 别名
+   * @param {string} rN 名称
+   * @param {string} rC 手机号
+   * @param {string} rel  0联系人,1群组
+   */
+  rcGetRus():Promise<RuoModel>{
+    return new Promise((resolve, reject)=>{
+      let ruo=new RuoModel();
+      let rus = new Array<RuModel>();
+      let ru = new RuModel();
+      ru.hiu=DataConfig.uInfo.hIU;
+      ru.ran=DataConfig.uInfo.uN;
+      ru.rI=DataConfig.uInfo.uI;
+      rus.push(ru);
+      ruo.us=rus;
+      this.relmemSqlite.getrus('','','','','0').then(data=>{
+        if(data&& data.rows && data.rows.length>0){
+          for(let i=0;i<data.rows.length;i++){
+            rus.push(data.rows.item(i));
+          }
+        }
+        ruo.us=rus;
+        resolve(ruo);
+      }).catch(e=>{
+        ruo.code=ReturnConfig.ERR_CODE;
+        ruo.message=e.message;
+        reject(ruo);
+      })
+    })
+  }
+
 
   /**
    * 添加群组人员
