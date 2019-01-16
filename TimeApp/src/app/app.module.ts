@@ -61,6 +61,9 @@ import { HttpClientModule } from "@angular/common/http";
 import { SyncSqlite } from "../service/sqlite/sync-sqlite";
 import { NetworkService } from "../service/util-service/network.service";
 import { Network } from "@ionic-native/network";
+import { Contacts} from "@ionic-native/contacts";
+import { ContactsService} from "../service/util-service/contacts.service";
+
 @NgModule({
   declarations: [
     MyApp,
@@ -83,6 +86,7 @@ import { Network } from "@ionic-native/network";
   providers: [
     HTTP,
     Network,
+    Contacts,
     StatusBar,
     SplashScreen,
     File,
@@ -136,6 +140,7 @@ import { Network } from "@ionic-native/network";
     EmitSpeechService,
     SyncService,
     NetworkService,
+    ContactsService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

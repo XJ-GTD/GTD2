@@ -67,12 +67,14 @@ export class PbPage {
     }else{
       this.u.rF = '0';
     }
-    console.log(this.u.id)
+    console.log(this.u.id);
     this.relmemService.upr(this.u.id,this.u.ran,this.u.rN,this.u.rC,this.u.rel,this.u.rF,null,'').then(data=>{
       if(data.code == 0){
         this.state = false;
       }
-    })
+    }).catch(reason => {
+
+    });
     console.log(this.isPush);
   }
 
