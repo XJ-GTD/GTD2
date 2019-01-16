@@ -221,6 +221,11 @@ W
       if(ed != null && ed != ''){
         rc.ed=ed;
       }
+      if(DataConfig.IS_NETWORK_CONNECT){
+        rc.if='0';
+      }else{
+        rc.if='1'
+      }
       rc.lI=lbI;
       rc.ji=jhi;
       rc.sI=sI;
