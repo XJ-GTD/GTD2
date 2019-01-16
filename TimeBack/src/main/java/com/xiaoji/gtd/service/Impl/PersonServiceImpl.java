@@ -250,7 +250,7 @@ public class PersonServiceImpl implements IPersonService {
             } else if (!data.isUser()) {
                 logger.debug("手机号[" + targetMobile + "]未注册! | 已通过短信推送邀请");
                 //短信推送邀请
-                smsService.pushPlayer(targetMobile);
+//                smsService.pushPlayer(targetMobile);
             } else if (!data.isAgree() && data.isPlayer()){
                 logger.debug("[已经被对方" + targetUserId + "拉黑]:无法发送邀请");
                 return 1;
@@ -429,7 +429,6 @@ public class PersonServiceImpl implements IPersonService {
         }
 
         return data;
-
     }
 
     /**
