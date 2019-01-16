@@ -40,6 +40,11 @@ export class WorkSqlite{
    */
   save(rc:RcEntity):Promise<any>{
     return new Promise((resolve, reject) => {
+      if(DataConfig.IS_NETWORK_CONNECT){
+        rc.if='0';
+      }else{
+        rc.if='1'
+      }
       //添加本地日程
       this.baseSqlite.save(rc).then(data=>{
         //添加本地日程到同步表
