@@ -82,8 +82,13 @@ export class FiSqlite {
   ufi(firstIn:number,isup:number): Promise<any> {
     let fi = new FiEntity();
     fi.id=1;
-    fi.firstIn=firstIn;
-    fi.isup=isup;
+    if(isup != null){
+      fi.firstIn=firstIn;
+    }
+    if(fi.isup != null){
+      fi.isup=isup;
+    }
+
     return this.baseSqlite.update(fi);
   }
 

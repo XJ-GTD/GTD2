@@ -12,6 +12,7 @@ import { LsmService } from "../../service/lsm.service";
 import { DataConfig } from "../../app/data.config";
 import { BsRestful } from "../../service/restful/bs-restful";
 import {SyncService} from "../../service/sync.service";
+import {FiEntity} from "../../entity/fi.entity";
 
 /**
  * Generated class for the AlPage page.
@@ -159,10 +160,12 @@ export class AlPage {
       this.increment(10);
         //检车websockte的状态
 
-      })
-      .then(data => {
+      }).then(data=>{
+        console.log("al :: 开始更新版本表");
+        return this.configService.ufi(null,0)
+      }) .then(data => {
+        console.log("al :: 开始更新版本表结束");
         //进入主页
-
         //loading.dismiss();
         this.increment(10);
         this.text=" 进入主页";
