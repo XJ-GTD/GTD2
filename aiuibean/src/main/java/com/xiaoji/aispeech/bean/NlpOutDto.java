@@ -12,6 +12,7 @@ public class NlpOutDto{
     private List<Slot> slots;
     private String intent;
     private String service;
+    private Boolean shouldEndSession;
 
     public String getText() {
         return text;
@@ -67,6 +68,14 @@ public class NlpOutDto{
 
     public void setService(String service) {
         this.service = service;
+    }
+
+    public Boolean getShouldEndSession() {
+        return shouldEndSession;
+    }
+
+    public void setShouldEndSession(Boolean shouldEndSession) {
+        this.shouldEndSession = shouldEndSession;
     }
 }
 

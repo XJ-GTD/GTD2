@@ -14,7 +14,7 @@ public class AiuiIntent{
     private Answer answer		;//Object	否	对结果内容的最简化文本/图片描述，各技能自定义
     private String dialog_stat		;//String	否	用于客户端判断是否使用信源返回数据
     private List<AiuiIntent> moreResults		;//Object	否	在存在多个候选结果时，用于提供更多的结果描述
-
+    private Boolean shouldEndSession;   //当该字段为空或为 true 时表示技能已完成一次对话，如果为 false 时，表示技能期待用户输入，远场交互设备此时应该主动打开麦克风拾音
 
     public int getRc() {
         return rc;
@@ -94,6 +94,14 @@ public class AiuiIntent{
 
     public void setMoreResults(List<AiuiIntent> moreResults) {
         this.moreResults = moreResults;
+    }
+
+    public Boolean getShouldEndSession() {
+        return shouldEndSession;
+    }
+
+    public void setShouldEndSession(Boolean shouldEndSession) {
+        this.shouldEndSession = shouldEndSession;
     }
 }
 

@@ -15,6 +15,7 @@ export class WsModel {
   private _ai: string;      //answerImg;
   private _ss: number;      //status;
   private _sk: string;      //skillType;
+  private _ses: boolean;     //shouldEndSession
   private _src: WsSrcModel; //source;
   private _res: WsResModel; //result;
 
@@ -88,5 +89,13 @@ export class WsModel {
 
   set ut(value: string) {
     this._ut = value;
+  }
+
+  get ses(): boolean {
+    return this._ses;
+  }
+
+  set ses(value: boolean) {
+    this._ses = value;
   }
 }

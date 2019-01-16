@@ -103,6 +103,9 @@ public class AIButlerController {
                     nlp.setAnswerImg(intent.getAnswer().getImgUrl());
                     nlp.setAnswerUrl(intent.getAnswer().getUrl());
                     nlp.setService(intent.getService());
+                    if (intent.getShouldEndSession() != null) {
+                        nlp.setShouldEndSession(intent.getShouldEndSession());
+                    }
 
                     if (semantics != null) {
                         for (Semantic semantic : semantics){

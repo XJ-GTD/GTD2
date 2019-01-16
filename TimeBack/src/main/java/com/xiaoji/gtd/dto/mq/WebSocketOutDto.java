@@ -17,6 +17,7 @@ public class WebSocketOutDto extends BaseOut {
     private String ai;      //answerImg;
     private int ss;         //status;
     private String sk;      //skillType;
+    private Boolean ses;     //shouldEndSession
     private WebSocketSourceDto src;     //source;
     private WebSocketResultDto res;     //result;
 
@@ -94,5 +95,13 @@ public class WebSocketOutDto extends BaseOut {
 
     public void setUt(String ut) {
         this.ut = ut;
+    }
+
+    public Boolean getSes() {
+        return ses;
+    }
+
+    public void setSes(Boolean ses) {
+        this.ses = ses;
     }
 }

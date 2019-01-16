@@ -4,9 +4,7 @@ public class AiuiSub {
       private String sub;
       private String auth_id;
       private int result_id;
-     // private AiuiLat text;
-   //   private AiuiContent content;
-     private String content;
+      private String content;
       private String text;
       private AiuiIntent intent;
 
@@ -34,22 +32,6 @@ public class AiuiSub {
         this.result_id = result_id;
     }
 
-//    public AiuiLat getText() {
-//        return text;
-//    }
-//
-//    public void setText(AiuiLat text) {
-//        this.text = text;
-//    }
-//
-//    public AiuiContent getContent() {
-//        return content;
-//    }
-//
-//    public void setContent(AiuiContent content) {
-//        this.content = content;
-//    }
-
     public AiuiIntent getIntent() {
         return intent;
     }
@@ -57,7 +39,6 @@ public class AiuiSub {
     public void setIntent(AiuiIntent intent) {
         this.intent = intent;
     }
-
 
     public String getContent() {
         return content;

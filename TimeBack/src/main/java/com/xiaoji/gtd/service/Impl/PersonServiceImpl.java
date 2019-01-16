@@ -289,9 +289,9 @@ public class PersonServiceImpl implements IPersonService {
             Object[] objects = (Object[]) personRepository.searchUserByMobile(targetMobile, LOGIN_TYPE_MOBILE);
 
             if (objects != null) {
-                userId = String.valueOf(objects[1]);
-                userName = String.valueOf(objects[2]);
-                headImg = String.valueOf(objects[3]);
+                userId = String.valueOf(objects[0]);
+                userName = String.valueOf(objects[1]);
+                headImg = String.valueOf(objects[2]);
                 pyOfUserName = conversionPinyin(userName);
                 logger.debug("目标用户信息： " + userId + " | " + userName + " | " +  headImg);
 

@@ -7,7 +7,7 @@ package com.xiaoji.gtd.dto.mq;
  */
 public enum WebSocketSkillEnum {
     XF_GTD("0", "SCARECROW"),
-    XF_NORM_TRUE("A0001","gtd_norm_true"), XF_NORM_CANCEL("A0002","gtd_norm_cancel"),
+    XF_NORM_TRUE("A0001","好的，已确认"), XF_NORM_CANCEL("A0002","好的，已取消"),
     XF_SCHEDULE_CREATE("A1101","gtd_schedule_create"), XF_SCHEDULE_DELETE("A1102","gtd_schedule_delete"), XF_SCHEDULE_FIND("A1103","gtd_schedule_find"),
     XF_PLAYER_CREATE("A1201","gtd_player_create"), XF_PLAYER_DELETE("A1202","gtd_player_delete"), XF_PLAYER_FIND("A1203","gtd_player_find"), XF_PLAYER_AUTH("A1204","gtd_player_auth"),
     XF_SYSTEM_HIDE("A1301","gtd_system_hide"),
