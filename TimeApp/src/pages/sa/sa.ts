@@ -122,7 +122,7 @@ export class SaPage {
 
   //所有联系
   getAllRel(){
-    this.relmemService.getrus(null,null,null,null,'0').then(data=>{
+    this.relmemService.rcGetRus().then(data=>{
       console.log(data);
       if(data.code == 0){
         this.rus = data.us;
@@ -177,7 +177,7 @@ export class SaPage {
   del(){
     console.log(" :: click delete");
     console.log(JSON.stringify(this.rc))
-    this.work.delrc(this.rc.sI).then(data=>{
+    this.work.drc(this.rc.sI,this.rc.sa).then(data=>{
       console.log("删除成功 :: " );
       this.event.publish("reloadHa01");
       this.navCtrl.pop();
