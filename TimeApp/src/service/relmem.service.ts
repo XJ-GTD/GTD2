@@ -84,6 +84,13 @@ export class RelmemService {
       if(ru.rN == null || ru.rN == ''){
         ru.rN=ran;
       }
+      if(ru.rel == '0'){
+        if(DataConfig.IS_NETWORK_CONNECT){
+          ru.fi='0'
+        }else{
+          ru.fi='1';
+        }
+      }
       ru.rC=rc;
       ru.rel=rel;
       ru.rF = rF;
@@ -507,6 +514,44 @@ export class RelmemService {
         console.log( "-----------" + JSON.stringify(data))
       }).catch(e=>{
         console.log( "-----------" + JSON.stringify(e))
+      })
+    })
+  }
+
+  /**
+   * 联网状态查询未发送邀请信息，并发送消息
+   * @returns {Promise<any>}
+   */
+  nwSendRu():Promise<BsModel>{
+    return new Promise((resolve, reject)=>{
+      let bs = new BsModel();
+      let rus = new Array<any>();
+      console.log( "-------- 联网状态，开始查询未发送邀请联系人信息 --------");
+      this.relmemSqlite.getNoSendRu().then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          for(let i=0;i<data.rows.length;i++){
+            let ru:any=data.rows.item(i);
+            ru.userId=DataConfig.uInfo.uI;
+            ru.targetMobile=ru.rC;
+            ru.targetUserId=ru.rI;
+            rus.push(ru);
+          }
+          console.log( "-------- 联网状态，开始发送联系人邀请 --------");
+          return this.pnRes.au('','','');
+        }else{
+          bs.code = ReturnConfig.NULL_CODE;
+          bs.message = ReturnConfig.NULL_MESSAGE;
+        }
+      }).then(data=>{
+        if(bs.code==0){
+          console.log( "-------- 联网状态，开始发送联系人邀请成功 --------");
+        }
+        resolve(bs)
+      }).catch(e=>{
+        console.error( "-------- 联网状态，查询并发送联系人邀请失败 ：" + JSON.stringify(e));
+        bs.code=ReturnConfig.ERR_CODE;
+        bs.message=ReturnConfig.ERR_MESSAGE;
+        reject(bs)
       })
     })
   }

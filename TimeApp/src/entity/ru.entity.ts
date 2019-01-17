@@ -16,6 +16,7 @@ export class RuEntity {
   private _ot:string;//0是未被添加，1是同意，2是拉黑
   private _rel: string=''; // 联系类型0人;1群组
   private _hiu: string=''; // 联系人头像URL
+  private _fi: string=''; //联系人发送邀请状态0已发送，1未发送
   /**
    * 创建表
    * @type {string}
@@ -24,7 +25,7 @@ export class RuEntity {
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_B(id VARCHAR(100) PRIMARY KEY,' +
                           'ran VARCHAR(100),ranpy VARCHAR(100),rI VARCHAR(100),rN VARCHAR(100),' +
                           'rNpy VARCHAR(100),rC VARCHAR(100),rF VARCHAR(2),rel VARCHAR(20),' +
-                          'hiu VARCHAR(100),ot VARCHAR(2));';
+                          'hiu VARCHAR(100),ot VARCHAR(2),if VARCHAR(2));';
   private _drsq:string="DROP TABLE IF EXISTS GTD_B;";
 
   private _isq:string;
@@ -59,9 +60,10 @@ export class RuEntity {
 
   get isq(): string {
     let sql='insert into GTD_B ' +
-      '(id,ran,ranpy,rI,rN,rNpy,rC,rF,rel,hiu,ot) ' +
+      '(id,ran,ranpy,rI,rN,rNpy,rC,rF,rel,hiu,ot,fi) ' +
       'values("'+ this._id+'","'+ this._ran+'","'+ this._ranpy+'","'+this._rI+ '","'+
-      this._rN+'","'+this._rNpy+'","'+ this._rC+'","'+this._rF+'","'+this._rel+'","'+this._hiu+'","'+this._ot+'")';
+      this._rN+'","'+this._rNpy+'","'+ this._rC+'","'+this._rF+'","'+this._rel+'","'
+      +this._hiu+'","'+this._ot+'","'+this._fi+'")';
     this._isq=sql;
     return this._isq;
   }
@@ -72,9 +74,10 @@ export class RuEntity {
 
   get rpsq(): string {
     let sql='replace into GTD_B ' +
-      '(id,ran,ranpy,rI,rN,rNpy,rC,rF,rel,hiu,ot) ' +
+      '(id,ran,ranpy,rI,rN,rNpy,rC,rF,rel,hiu,ot,fi) ' +
       'values("'+ this._id+'","'+ this._ran+'","'+ this._ranpy+'","'+this._rI+ '","'+
-      this._rN+'","'+this._rNpy+'","'+ this._rC+'","'+this._rF+'","'+this._rel+'","'+this._hiu+'","'+this._ot+'");';
+      this._rN+'","'+this._rNpy+'","'+ this._rC+'","'+this._rF+'","'+this._rel+'","'+
+      this._hiu+'","'+this._ot+'","'+this._fi+'");';
     this._rpsq=sql;
     return this._rpsq;
   }
@@ -114,6 +117,9 @@ export class RuEntity {
     }
     if(this._ot!=null && this._ot!=''){
       sql=sql+' ot="' + this._ot +'",';
+    }
+    if(this._fi!=null && this._fi!=''){
+      sql=sql+' fi="' + this._fi +'",';
     }
     if(this._id != null && this._id!=''){
       sql = sql + ' id="' + this._id +'" where id="' + this._id +'"';
@@ -252,5 +258,13 @@ export class RuEntity {
 
   set ot(value: string) {
     this._ot = value;
+  }
+
+  get fi(): string {
+    return this._fi;
+  }
+
+  set fi(value: string) {
+    this._fi = value;
   }
 }

@@ -68,7 +68,11 @@ W
       }else{
         rc.ed=sd;
       }
-
+      if(DataConfig.IS_NETWORK_CONNECT){
+        rc.fi='0';
+      }else{
+        rc.fi='1'
+      }
       rc.lI=lbI;
       rc.ji=jhi;
       rc.sI=this.util.getUuid();
@@ -76,29 +80,29 @@ W
       console.log("----- workService arc 添加日程开始-------");
       this.workSqlite.save(rc).then(data=>{
           console.log("----- workService arc 添加日程返回结果：" + JSON.stringify(data));
+
           console.log("----- workService arc 添加日程子表-------");
           return this.workSqlite.addLbData(rc.sI,rc.lI,cft,rm,ac,'0');
-        })
-        .then(data=>{
-        if(ruL && ruL.length>0){
-          //转化接口对应的参与人参数
+        }).then(data=>{
           if(ruL && ruL.length>0){
-            for(let i=0;i<ruL.length;i++){
-              //排除当前登录人
-              //if(ruL[i].rI != rc.uI){
-              let ps = new PsModel();
-              ps.userId=ruL[i].rI;
-              ps.accountMobile = ruL[i].rC;
-              psl.push(ps);
-              //}
+            //转化接口对应的参与人参数
+            if(ruL && ruL.length>0){
+              for(let i=0;i<ruL.length;i++){
+                //排除当前登录人
+                //if(ruL[i].rI != rc.uI){
+                let ps = new PsModel();
+                ps.userId=ruL[i].rI;
+                ps.accountMobile = ruL[i].rC;
+                psl.push(ps);
+                //}
+              }
+            }
+
+            if(DataConfig.uInfo.uty=='1'){
+              console.log("WorkService arc() restful request " + SkillConfig.BC_SCC+" start");
+              return this.rcResful.sc(rc.uI,SkillConfig.BC_SCC,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'');
             }
           }
-
-          if(DataConfig.uInfo.uty=='1'){
-            console.log("WorkService arc() restful request " + SkillConfig.BC_SCC+" start");
-            return this.rcResful.sc(rc.uI,SkillConfig.BC_SCC,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'');
-          }
-        }
       }).then(data=>{
         console.log("WorkService arc() restful request end : " +JSON.stringify(data));
         if(psl.length>0 && data != null && data.code==0 && data.data.players.length>0){
@@ -222,9 +226,9 @@ W
         rc.ed=ed;
       }
       if(DataConfig.IS_NETWORK_CONNECT){
-        rc.if='0';
+        rc.fi='0';
       }else{
-        rc.if='1'
+        rc.fi='1'
       }
       rc.lI=lbI;
       rc.ji=jhi;
@@ -724,5 +728,47 @@ W
 
     })
 
+  }
+
+  /**
+   * 联网状态查询未发送邀请信息，并发送消息
+   * @returns {Promise<any>}
+   */
+  nwSendRu():Promise<BsModel>{
+    return new Promise((resolve, reject)=>{
+      let bs = new BsModel();
+      let rgcL:any = null
+      console.log( "-------- 联网状态，开始查询未发送邀请联系人信息 --------");
+      this.workSqlite.getNoSendRgc().then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          rgcL = data.rows;
+          console.log( "-------- 联网状态，开始发送联系人邀请 --------");
+          return this.workSqlite.getNoSendRc();
+        }else{
+          bs.code = ReturnConfig.NULL_CODE;
+          bs.message = ReturnConfig.NULL_MESSAGE;
+        }
+      }).then(data=>{
+        if(rgcL!=null && rgcL.length>0){
+            if(data && data.rows && data.rows.length>0){
+              for(let i = 0;i<data.rows.length;i++){
+                let rc:RcModel = data.rows.item(i)
+                for(let j=0;j<rgcL.length;j++){
+
+                }
+              }
+            }
+        }
+        if(bs.code==0){
+          console.log( "-------- 联网状态，开始发送联系人邀请成功 --------");
+        }
+        resolve(bs)
+      }).catch(e=>{
+        console.error( "-------- 联网状态，查询并发送联系人邀请失败 ：" + JSON.stringify(e));
+        bs.code=ReturnConfig.ERR_CODE;
+        bs.message=ReturnConfig.ERR_MESSAGE;
+        reject(bs)
+      })
+    })
   }
 }

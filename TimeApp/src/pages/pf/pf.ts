@@ -43,6 +43,7 @@ export class PfPage {
   ru:RuModel;
 
   contacts:any = [];
+  contactsTmp:any = [];
 
   constructor(
     public navCtrl: NavController,
@@ -82,6 +83,7 @@ export class PfPage {
 
     if(checkCode == 3){
       //手机号正确
+      this.contacts = [];
     }
     if(checkCode == 2 || checkCode == 1){
       //手机号错误
@@ -136,6 +138,7 @@ export class PfPage {
             this.ru.rI = this.tel;
           }
         }
+        this.contactsTmp = [];
         this.errorCode = 0;
       }).catch(reason => {
 
@@ -145,6 +148,7 @@ export class PfPage {
       this.name=null;
       this.isRegist=false;
       this.existCode =  0;
+      this.contactsTmp = this.contacts;
     }
   }
 
@@ -154,7 +158,7 @@ export class PfPage {
       // tel: this.tel,//手机号
       code: this.existCode,
       ru : ru,//手机号信息
-    }
+    };
     if(this.existCode == 1){
       console.log('PfPage跳转P,bPage')
       this.navCtrl.push("PbPage",data);
@@ -177,7 +181,6 @@ export class PfPage {
       let fields = ['phoneNumbers','displayName'];
 
       this.conTacts.find(['phoneNumbers'],{
-        // filter:this.utilService.telFormat(this.tel),
         filter:this.tel,
         multiple:true,
         desiredFields:["displayName","phoneNumbers"]
@@ -190,19 +193,27 @@ export class PfPage {
         }
       }).then(data=>{
         console.log("2 :: " + JSON.stringify(data));
+        let dataTmp = this.contacts;
         if(data != undefined){
-          this.contacts = this.contacts.concat(data);
+          dataTmp = this.contacts.concat(data);
         }
-        for(let i = 0;i< this.contacts.length;i++){
-          for(let j = 0;j< this.contacts[i].phoneNumbers.length;j++){
-            if(this.contacts[i].phoneNumbers[j].value.length>11){
-              this.contacts[i].phoneNumbers[j].value = this.contacts[i].phoneNumbers[j].value.replace(/\s/g,'');
+        this.contacts = [];
+        for(let i = 0;i< dataTmp.length;i++){
+          for(let j = 0;j< dataTmp[i].phoneNumbers.length;j++){
+            if(dataTmp[i].phoneNumbers[j].value.length>11){
+              dataTmp[i].phoneNumbers[j].value = dataTmp[i].phoneNumbers[j].value.replace(/\s/g,'');
+            }
+            if(this.utilService.checkPhone(dataTmp[i].phoneNumbers[j].value)==3){
+              this.contacts.push(dataTmp[i]);
             }
           }
         }
+
+        this.checkPhone(null);
+
       });
       console.log(this.tel);
-      this.checkPhone(null);
+
     }else{
       this.contacts = [];
     }
@@ -228,8 +239,10 @@ export class PfPage {
         },
       ]
     });
-
     actionSheet.present();
+
+    let map = new Map<string, string>();
   }
+
 
 }

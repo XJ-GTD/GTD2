@@ -1,17 +1,15 @@
-package com.xiaoji.gtd.dto;
+package com.xiaoji.gtd.dto.schedule;
+
+import com.xiaoji.gtd.dto.player.PlayerDataDto;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * 日程类入参
+ *  日程数据类
  *
- * Create by wzy on 2018/12/11
+ *  create by wzy on 2019/01/17
  */
-public class ScheduleInDto {
-
-    private String userId;
-    private String skillType;      //skillType;
+public class ScheduleDataDto {
 
     private String scheduleId;          //scheduleId;
     private String scheduleName;      //scheduleName;
@@ -20,22 +18,6 @@ public class ScheduleInDto {
     private String label;      //label;
     private List<PlayerDataDto> players;     //players 包含accountMobile和userId
     private String status;      //status;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getSkillType() {
-        return skillType;
-    }
-
-    public void setSkillType(String skillType) {
-        this.skillType = skillType;
-    }
 
     public String getScheduleName() {
         return scheduleName;
@@ -92,4 +74,5 @@ public class ScheduleInDto {
     public void setPlayers(List<PlayerDataDto> players) {
         this.players = players;
     }
+
 }

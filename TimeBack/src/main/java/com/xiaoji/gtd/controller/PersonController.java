@@ -3,21 +3,17 @@ package com.xiaoji.gtd.controller;
 import com.xiaoji.config.interceptor.AuthCheck;
 import com.xiaoji.gtd.dto.*;
 import com.xiaoji.gtd.dto.code.ResultCode;
+import com.xiaoji.gtd.dto.player.PlayerInDto;
+import com.xiaoji.gtd.dto.player.PlayerOutDto;
+import com.xiaoji.gtd.dto.player.SearchInDto;
+import com.xiaoji.gtd.dto.player.SearchOutDto;
 import com.xiaoji.gtd.service.IPersonService;
 import com.xiaoji.util.BaseUtil;
 import com.xiaoji.util.CommonMethods;
-import com.xiaoji.util.TimerUtil;
-import org.apache.ibatis.transaction.TransactionException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-import java.util.Objects;
 
 /**
  * 用户类
@@ -262,25 +258,16 @@ public class PersonController {
             logger.debug("[添加失败]：用户ID不可为空");
             return outDto;
         }
-        if(inDto.getTargetMobile() == null || "".equals(inDto.getTargetMobile())){
+        if(inDto.getPlayerList() == null || inDto.getPlayerList().size() == 0){
             outDto.setCode(ResultCode.NULL_MOBILE);
-            logger.debug("[注册失败]：手机号不可为空");
+            logger.debug("[添加失败]：目标用户数据不可为空");
             return outDto;
         }
+
         //入参正确性验证
         if (CommonMethods.checkMySqlReservedWords(inDto.getUserId())) {
             outDto.setCode(ResultCode.ERROR_UUID);
             logger.debug("[添加失败]：用户ID类型或格式错误");
-            return outDto;
-        }
-        if(!CommonMethods.isInteger(inDto.getTargetMobile())){
-            outDto.setCode(ResultCode.ERROR_MOBILE);
-            logger.debug("[添加失败]：请输入正确手机号");
-            return outDto;
-        }
-        if(inDto.getTargetMobile().length()!=11){
-            outDto.setCode(ResultCode.ERROR_MOBILE);
-            logger.debug("[添加失败]：请输入正确手机号");
             return outDto;
         }
 
@@ -321,22 +308,14 @@ public class PersonController {
     @AuthCheck
     public Out searchPlayer(@RequestBody PlayerInDto inDto) {
         Out outDto = new Out();
-        PlayerOutDto data = new PlayerOutDto();
+        PlayerOutDto data;
 
         //入参检测
         //必须项检测
-        if(inDto.getAccountMobile() == null || "".equals(inDto.getAccountMobile())){
+        if(inDto.getPlayerList() == null || inDto.getPlayerList().size() == 0){
             outDto.setCode(ResultCode.NULL_MOBILE);
-            logger.debug("[查询用户失败]：手机号不可为空");
+            logger.debug("[查询用户失败]：目标用户数据不可为空");
             return outDto;
-        }
-        //入参正确性验证
-        if(!CommonMethods.isInteger(inDto.getAccountMobile())){
-            if(inDto.getAccountMobile().length()!=11){
-                outDto.setCode(ResultCode.ERROR_MOBILE);
-                logger.debug("[查询用户失败]：请输入正确手机号");
-                return outDto;
-            }
         }
 
         //业务逻辑
@@ -349,7 +328,7 @@ public class PersonController {
                 logger.debug("[查询用户成功]");
             } else {
                 outDto.setCode(ResultCode.NOT_USER);
-                logger.debug("[该用户尚未注册]");
+                logger.debug("[所查用户尚未注册]");
             }
         } catch (Exception e) {
             e.printStackTrace();

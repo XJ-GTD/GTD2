@@ -22,6 +22,7 @@ public enum ResultCode {
     NULL_NAME(11012),                     //姓名为空
     NULL_TIME(11011),                     //时间为空
     NULL_VERSION(11013),                  //同步版本号为空
+    NULL_SCHEDULE(11014),              //日程数据为空
 
     NULL_AUTH_CODE(11101),                  //验证码为空
 

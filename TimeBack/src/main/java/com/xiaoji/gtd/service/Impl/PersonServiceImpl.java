@@ -6,15 +6,16 @@ import com.xiaoji.gtd.dto.mq.WebSocketDataDto;
 import com.xiaoji.gtd.dto.mq.WebSocketOutDto;
 import com.xiaoji.gtd.dto.mq.WebSocketResultDto;
 import com.xiaoji.gtd.dto.mq.WebSocketSkillEnum;
+import com.xiaoji.gtd.dto.player.*;
 import com.xiaoji.gtd.entity.GtdAccountEntity;
 import com.xiaoji.gtd.entity.GtdLoginEntity;
-import com.xiaoji.gtd.entity.GtdPlayerEntity;
 import com.xiaoji.gtd.entity.GtdUserEntity;
 import com.xiaoji.gtd.repository.*;
 import com.xiaoji.gtd.service.IPersonService;
 import com.xiaoji.gtd.service.ISmsService;
 import com.xiaoji.gtd.service.IWebSocketService;
 import com.xiaoji.util.BaseUtil;
+import com.xiaoji.util.CommonMethods;
 import com.xiaoji.util.Pinyin4j;
 import com.xiaoji.util.TimerUtil;
 import org.apache.logging.log4j.LogManager;
@@ -207,58 +208,66 @@ public class PersonServiceImpl implements IPersonService {
         WebSocketOutDto pushDto;
         PlayerDataDto data;
 
-        String targetUserId = inDto.getTargetUserId();
-        String targetMobile = inDto.getTargetMobile();
-
+        List<PlayerInData> playerList = inDto.getPlayerList();
         String userId = inDto.getUserId();                 //用户Id
-        String userName = "";            //昵称
-        String headImg = "";          //头像URL
-        String mobile = "";
+        String targetUserId = "";       //目标用户ID
+        String targetMobile = "";       //目标用户手机号
+
+        String userName = "";           //昵称
+        String headImg = "";            //头像URL
+        String mobile = "";             //手机号
 
 
         try {
             pushDto = new WebSocketOutDto();
 
-            data = searchRelation(userId, targetUserId, targetMobile);
+            for (PlayerInData pid : playerList) {
 
-            if (data.isAgree() && data.isPlayer()) {
-                logger.debug("[已经成为对方好友]:无需重复太添加");
-                return 2;
-            } else if (!data.isPlayer() && data.isUser()){
-                Object[] objUser = (Object[]) personRepository.searchUserById(userId);
-                if (targetUserId != null && !targetUserId.equals("")) {
+                targetMobile = pid.getTargetMobile();
+                targetUserId = pid.getTargetUserId();
 
-                    userName = objUser[0].toString();
-                    headImg = objUser[1].toString();
-                    mobile = objUser[2].toString();
-                    logger.debug("发送邀请用户信息： " + userId + " | " + userName + " | " + headImg + " | " + mobile);
+                data = searchRelation(userId, targetUserId, targetMobile);
 
-                    WebSocketDataDto socketData = new WebSocketDataDto();
-                    socketData.setUs(userId);
-                    socketData.setUn(userName);
-                    socketData.setHi(headImg);
-                    socketData.setMb(mobile);
-                    socketData.setIa(true);
+                if (data.isAgree() && data.isPlayer()) {
+                    logger.debug("[已经成为对方好友]:无需重复太添加");
+                    return 2;
+                } else if (!data.isPlayer() && data.isUser()){
+                    Object[] objUser = (Object[]) personRepository.searchUserById(userId);
+                    if (targetUserId != null && !targetUserId.equals("")) {
 
-                    pushDto.setSk(WebSocketSkillEnum.getIntentCode("player_create"));
-                    pushDto.setVs(VERSION);
-                    pushDto.setSs(ResultCode.SUCCESS);
-                    pushDto.setRes(new WebSocketResultDto(socketData));
-                    webSocketService.pushTopicMessage(targetUserId, pushDto);
-                    logger.debug("[成功推送邀请]:方式 === rabbitmq | targetUserId:" + targetUserId);
+                        userName = objUser[0].toString();
+                        headImg = objUser[1].toString();
+                        mobile = objUser[2].toString();
+                        logger.debug("发送邀请用户信息： " + userId + " | " + userName + " | " + headImg + " | " + mobile);
+
+                        WebSocketDataDto socketData = new WebSocketDataDto();
+                        socketData.setUs(userId);
+                        socketData.setUn(userName);
+                        socketData.setHi(headImg);
+                        socketData.setMb(mobile);
+                        socketData.setIa(true);
+
+                        pushDto.setSk(WebSocketSkillEnum.getIntentCode("player_create"));
+                        pushDto.setVs(VERSION);
+                        pushDto.setSs(ResultCode.SUCCESS);
+                        pushDto.setRes(new WebSocketResultDto(socketData));
+                        webSocketService.pushTopicMessage(targetUserId, pushDto);
+                        logger.debug("[成功推送邀请]:方式 === rabbitmq | targetUserId:" + targetUserId);
+                    }
+
+                } else if (!data.isUser()) {
+                    logger.debug("手机号[" + targetMobile + "]未注册! | 已通过短信推送邀请");
+                    //短信推送邀请
+//                smsService.pushPlayer(targetMobile);
+                } else if (!data.isAgree() && data.isPlayer()){
+                    logger.debug("[已经被对方" + targetUserId + "拉黑]:无法发送邀请");
+                    return 1;
+                } else {
+                    //可能出错
+                    logger.debug("addPlayer数据出错");
+                    return -1;
                 }
 
-            } else if (!data.isUser()) {
-                logger.debug("手机号[" + targetMobile + "]未注册! | 已通过短信推送邀请");
-                //短信推送邀请
-//                smsService.pushPlayer(targetMobile);
-            } else if (!data.isAgree() && data.isPlayer()){
-                logger.debug("[已经被对方" + targetUserId + "拉黑]:无法发送邀请");
-                return 1;
-            } else {
-                //可能出错
-                logger.debug("addPlayer数据出错");
-                return -1;
             }
 
         } catch (Exception e) {
@@ -277,36 +286,62 @@ public class PersonServiceImpl implements IPersonService {
     @Override
     public PlayerOutDto searchPlayer(PlayerInDto inDto) {
 
-        PlayerOutDto data = new PlayerOutDto();
+        PlayerOutDto outDto = new PlayerOutDto();
+        List<PlayerOutData> dataList = new ArrayList<>();
+        PlayerOutData data;
 
-        String targetMobile = inDto.getAccountMobile();
+        List<PlayerInData> playerList = inDto.getPlayerList();
+
+        List<String> mobileList = new ArrayList<>();
         String userName = "";
         String headImg = "";
         String userId = "";
         String pyOfUserName = "";
 
         try {
-            Object[] objects = (Object[]) personRepository.searchUserByMobile(targetMobile, LOGIN_TYPE_MOBILE);
+            for (PlayerInData pid: playerList) {
+                if(!CommonMethods.isInteger(pid.getTargetMobile())){
+                    logger.debug("[查询用户失败]：请输入正确手机号");
+                    return null;
+                }
+                if(pid.getTargetMobile().length() != 11){
+                    logger.debug("[查询用户失败]：请输入正确手机号");
+                    return null;
+                }
+                mobileList.add(pid.getTargetMobile());
+            }
+            logger.debug("-------- 本次需要查询用户数据 手机号码数量为 " + mobileList.size() + " ------------");
+            List<Object> objList = personRepository.searchUserByMobile(mobileList, LOGIN_TYPE_MOBILE);
+            if (objList.size() > 0) {
+                logger.debug("-------- 本次查询对应用户数据量为 " + objList.size() + " ------------");
+                for (Object obj : objList) {
+                    Object[] objects = (Object[]) obj;
+                    userId = String.valueOf(objects[0]);
+                    userName = String.valueOf(objects[1]);
+                    headImg = String.valueOf(objects[2]);
+                    pyOfUserName = conversionPinyin(userName);
+                    logger.debug("目标用户信息： " + userId + " | " + userName + " | " +  headImg);
 
-            if (objects != null) {
-                userId = String.valueOf(objects[0]);
-                userName = String.valueOf(objects[1]);
-                headImg = String.valueOf(objects[2]);
-                pyOfUserName = conversionPinyin(userName);
-                logger.debug("目标用户信息： " + userId + " | " + userName + " | " +  headImg);
+                    data = new PlayerOutData();
+                    data.setUserId(userId);
+                    data.setHeadImg(headImg);
+                    data.setUserName(userName);
+                    data.setPyOfUserName(pyOfUserName);
 
-                data.setUserId(userId);
-                data.setHeadImg(headImg);
-                data.setUserName(userName);
-                data.setPyOfUserName(pyOfUserName);
+                    dataList.add(data);
+                }
+                outDto.setPlayerList(dataList);
+            } else {
+                logger.debug("-------- 本次未查询对应用户 皆为非注册用户 ------------");
+                return null;
             }
 
         } catch (NoResultException | EmptyResultDataAccessException | NonUniqueResultException e) {
             e.printStackTrace();
-            data = null;
-            logger.debug("该手机号或用户名尚未注册");
+            outDto = null;
+            logger.debug("-------- 本次未查询对应用户 皆为非注册用户 ------------");
         }
-        return data;
+        return outDto;
     }
 
     /**
@@ -324,6 +359,7 @@ public class PersonServiceImpl implements IPersonService {
 
 
         try {
+            logger.debug("查询参与人数量：" + inDto.size());
             for (PlayerDataDto player: inDto) {
                 targetMobile = player.getAccountMobile();
                 targetUserId = player.getUserId();
@@ -332,7 +368,7 @@ public class PersonServiceImpl implements IPersonService {
 
                 dataList.add(data);
             }
-
+            logger.debug("查询参与人权限完成");
         } catch (IndexOutOfBoundsException e) {
             logger.error("authRepository.isAcceptThePush 数据查询异常");
             throw new SecurityException("数据查询异常");

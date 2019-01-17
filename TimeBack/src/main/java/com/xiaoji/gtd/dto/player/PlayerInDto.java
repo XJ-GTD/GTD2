@@ -1,4 +1,6 @@
-package com.xiaoji.gtd.dto;
+package com.xiaoji.gtd.dto.player;
+
+import java.util.List;
 
 /**
  * 添加联系人
@@ -9,8 +11,8 @@ public class PlayerInDto {
 
     private String userId;
     private String accountMobile;
-    private String targetUserId;
-    private String targetMobile;
+
+    private List<PlayerInData> playerList;
 
     public String getUserId() {
         return userId;
@@ -28,20 +30,11 @@ public class PlayerInDto {
         this.accountMobile = accountMobile;
     }
 
-    public String getTargetUserId() {
-        return targetUserId;
+    public List<PlayerInData> getPlayerList() {
+        return playerList;
     }
 
-    public void setTargetUserId(String targetUserId) {
-        this.targetUserId = targetUserId;
+    public void setPlayerList(List<PlayerInData> playerList) {
+        this.playerList = playerList;
     }
-
-    public String getTargetMobile() {
-        return targetMobile;
-    }
-
-    public void setTargetMobile(String targetMobile) {
-        this.targetMobile = targetMobile;
-    }
-    
 }
