@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {BaseSqlite} from "./base-sqlite";
-import {MsEntity} from "../../entity/ms.entity";
 import {RuModel} from "../../model/ru.model";
 import {RcEntity} from "../../entity/rc.entity";
 import {RcpEntity} from "../../entity/rcp.entity";
@@ -10,7 +9,6 @@ import {BsModel} from "../../model/out/bs.model";
 import {DataConfig} from "../../app/data.config";
 import {ReturnConfig} from "../../app/return.config";
 import {MsSqlite} from "./ms-sqlite";
-import {ScheduleModel} from "../../model/schedule.model";
 import {SyncModel} from "../../model/sync.model";
 import {RcbModel} from "../../model/rcb.model";
 import {SyncEntity} from "../../entity/sync.entity";
@@ -40,11 +38,6 @@ export class WorkSqlite{
    */
   save(rc:RcEntity):Promise<any>{
     return new Promise((resolve, reject) => {
-      if(DataConfig.IS_NETWORK_CONNECT){
-        rc.if='0';
-      }else{
-        rc.if='1'
-      }
       //添加本地日程
       this.baseSqlite.save(rc).then(data=>{
         //添加本地日程到同步表
@@ -450,14 +443,6 @@ export class WorkSqlite{
     })
   }
 
-  // getlb():Promise<any>{
-  //  let sql = 'select sI,cft,cf,ac,fh from GTD_C_BO ' +
-  //   'union select sI,cft,cf,ac,fh from GTD_C_C ' +
-  //   'union select sI,cft,cf,ac,fh from GTD_C_RC ' +
-  //   'union select sI,cft,cf,ac,fh from GTD_C_JN ' +
-  //   'union select sI,cft,cf,ac,fh from GTD_C_MO';
-  //  return this.baseSqlite.executeSql(sql,[]);
-  // }
   /**
    * 更新对应标签表数据
    * @param {string} sI 日程主键
@@ -501,8 +486,29 @@ export class WorkSqlite{
         reject(e);
       })
     })
-
   }
+
+  /**
+   * 未发送日程查询SQL
+   * @returns {string}
+   */
+  getNoSendRc():Promise<any>{
+      let sql= this.getRcSql()+'where gc.fi !="0"';
+      return this.baseSqlite.executeSql(sql,[]);
+  }
+
+  /**
+   * 未发送日程参与人查询SQL
+   * @returns {string}
+   */
+  getNoSendRgc():Promise<any>{
+    let sql= 'select gb.* from GTD_D gd left join GTD_C gc on gc.sI= gd.sI ' +
+      'left join GTD_B gb on gb.id = gd.rui where gb.rel = "0" and ' +
+      'gc.fi != "0" and gd.uI !="'+DataConfig.uInfo.uI+'"';
+    return this.baseSqlite.executeSql(sql,[]);
+  }
+
+
 
   /**
    * 服务器同步日程表转sql

@@ -58,6 +58,19 @@ export class RelmemSqlite {
   }
 
   /**
+   * 查询授权联系人
+   * @param {string} id 主键
+   * @param {string} ran 别名
+   * @param {string} rN 名称
+   * @param {string} rC 手机号
+   * @param {string} rel  0联系人,1群组
+   */
+  getNoSendRu():Promise<any>{
+    let sql="SELECT * FROM GTD_B where fi != '0'";
+    return this.baseSqlite.executeSql(sql,[]);
+  }
+
+  /**
    * 删除授权联系人
    * @param {RuEntity} ru
    * @returns {Promise<any>}
@@ -90,7 +103,7 @@ export class RelmemSqlite {
    */
   getRgus(id:string):Promise<any>{
     let sql="SELECT gb.*,bs.id rugId,bs.bmi FROM GTD_B gb " +
-      "left join GTD_B_X bs on bs.bmi = gb.id where bs.bi='" + id +"'";
+      "left join GTD_B_X bs on bs.bmi = gb.id where bs.bmi='" + id +"'";
     return this.baseSqlite.executeSql(sql,[]);
   }
 

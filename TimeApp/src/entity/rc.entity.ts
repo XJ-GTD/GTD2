@@ -14,7 +14,7 @@ export class RcEntity {
   private _ji:string=''; //计划ID
   private _ib: string='';  //是否本地:0非本地；1本地日历 默认非本地
   private _bi: string=''; //本地日程id
-  private _if: string=''; //日程发送状态0已发送，1未发送
+  private _fi: string=''; //日程发送状态0已发送，1未发送
   /*
    * 创建表
    * @type {string}
@@ -22,7 +22,7 @@ export class RcEntity {
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_C(sI VARCHAR(100) PRIMARY KEY,' +
                           'sN VARCHAR(100),lI VARCHAR(10),uI VARCHAR(100),sd VARCHAR(20),' +
-    'ed VARCHAR(20),ji VARCHAR(20),ib VARCHAR(20),bi VARCHAR(200),if VARCHAR(20));';
+    'ed VARCHAR(20),ji VARCHAR(20),ib VARCHAR(20),bi VARCHAR(200),fi VARCHAR(20));';
   private _drsq:string="DROP TABLE IF EXISTS GTD_C;"
 
   private _isq:string;
@@ -68,9 +68,9 @@ export class RcEntity {
       field=field+',ji';
       values =values+ ',"'+this._ji+'"'
     }
-    if(this._if!=null && this._if!=''){
-      field=field+',if';
-      values =values+ ',"'+this._if+'"'
+    if(this._fi!=null && this._fi!=''){
+      field=field+',fi';
+      values =values+ ',"'+this._fi+'"'
     }
     let sql='insert into GTD_C ' +
       '('+field+') values('+ values+')';
@@ -83,8 +83,8 @@ export class RcEntity {
   }
   get rpsq(): string {
     let sql='replace into GTD_C ' +
-      '(sI,sN,lI,uI,sd,ed,ji,ib,bi,if) values("'+ this._sI+'","'+ this._sN+'","'+this._lI+ '","'+ this._uI
-      +'","'+this._sd+ '","'+ this._ed+'","'+ this._ji+'","'+ this._ib+'","'+ this._bi+'","'+ this._if+'");';
+      '(sI,sN,lI,uI,sd,ed,ji,ib,bi,fi) values("'+ this._sI+'","'+ this._sN+'","'+this._lI+ '","'+ this._uI
+      +'","'+this._sd+ '","'+ this._ed+'","'+ this._ji+'","'+ this._ib+'","'+ this._bi+'","'+ this._fi+'");';
     this._rpsq=sql;
     return this._rpsq;
   }
@@ -112,8 +112,8 @@ export class RcEntity {
     if(this._ji!=null && this._ji!=''){
       sql=sql+' ji="' + this._ji +'",';
     }
-    if(this._if!=null && this._if!=''){
-      sql=sql+' if="' + this._if +'",';
+    if(this._fi!=null && this._fi!=''){
+      sql=sql+' fi="' + this._fi +'",';
     }
     let str = sql.substr(sql.length-1,sql.length);
     if(str == ','){
@@ -254,11 +254,11 @@ export class RcEntity {
     this._bi = value;
   }
 
-  get if(): string {
-    return this._if;
+  get fi(): string {
+    return this._fi;
   }
 
-  set if(value: string) {
-    this._if = value;
+  set fi(value: string) {
+    this._fi = value;
   }
 }
