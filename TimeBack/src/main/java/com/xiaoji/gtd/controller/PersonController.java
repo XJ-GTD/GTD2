@@ -71,12 +71,15 @@ public class PersonController {
             return outDto;
         }
         //入参正确性检测
+        if(inDto.getAccountMobile().length() != 11){
+            outDto.setCode(ResultCode.ERROR_MOBILE);
+            logger.debug("[注册失败]：请输入正确手机号");
+            return outDto;
+        }
         if(!CommonMethods.isInteger(inDto.getAccountMobile())){
-            if(inDto.getAccountMobile().length() != 11){
-                outDto.setCode(ResultCode.ERROR_MOBILE);
-                logger.debug("[注册失败]：请输入正确手机号");
-                return outDto;
-            }
+            outDto.setCode(ResultCode.ERROR_MOBILE);
+            logger.debug("[注册失败]：请输入正确手机号");
+            return outDto;
         }
         if (CommonMethods.checkMySqlReservedWords(inDto.getUserId())) {
             outDto.setCode(ResultCode.ERROR_UUID);
@@ -271,11 +274,14 @@ public class PersonController {
             return outDto;
         }
         if(!CommonMethods.isInteger(inDto.getTargetMobile())){
-            if(inDto.getTargetMobile().length()!=11){
-                outDto.setCode(ResultCode.ERROR_MOBILE);
-                logger.debug("[添加失败]：请输入正确手机号");
-                return outDto;
-            }
+            outDto.setCode(ResultCode.ERROR_MOBILE);
+            logger.debug("[添加失败]：请输入正确手机号");
+            return outDto;
+        }
+        if(inDto.getTargetMobile().length()!=11){
+            outDto.setCode(ResultCode.ERROR_MOBILE);
+            logger.debug("[添加失败]：请输入正确手机号");
+            return outDto;
         }
 
         //业务逻辑

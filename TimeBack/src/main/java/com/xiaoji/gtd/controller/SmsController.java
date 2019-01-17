@@ -43,20 +43,22 @@ public class SmsController {
         //入参验证
         if(inDto.getAccountMobile() == null || "".equals(inDto.getAccountMobile())){
             outDto.setCode(ResultCode.NULL_MOBILE);
-            outDto.setMessage("[获取验证失败]：手机号不可为空");
             logger.debug("[获取验证失败]：手机号不可为空");
             return outDto;
         }
         //入参正确性检测
         if(!CommonMethods.isInteger(inDto.getAccountMobile())){
-            if(inDto.getAccountMobile().length()!=11){
-                outDto.setCode(ResultCode.ERROR_MOBILE);
-                outDto.setMessage("[获取验证失败]：请输入正确手机号");
-                logger.debug("[获取验证失败]：请输入正确手机号");
-                return outDto;
-            }
+            outDto.setCode(ResultCode.ERROR_MOBILE);
+            logger.debug("[获取验证失败]：请输入正确手机号");
+            return outDto;
+        }
+        if(inDto.getAccountMobile().length()!=11){
+            outDto.setCode(ResultCode.ERROR_MOBILE);
+            logger.debug("[获取验证失败]：请输入正确手机号");
+            return outDto;
         }
 
+        //业务逻辑
         try {
             int flag = smsService.getAuthCode(inDto.getAccountMobile());
             if (flag == 0) {

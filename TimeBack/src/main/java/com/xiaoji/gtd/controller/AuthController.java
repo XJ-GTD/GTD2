@@ -188,11 +188,14 @@ public class AuthController {
         }
         //入参正确性检测
         if(!CommonMethods.isInteger(inDto.getAccount())){
-            if(inDto.getAccount().length()!=11){
-                outDto.setCode(ResultCode.ERROR_MOBILE);
-                logger.debug("[登陆失败]：请输入正确手机号");
-                return outDto;
-            }
+            outDto.setCode(ResultCode.ERROR_MOBILE);
+            logger.debug("[登陆失败]：请输入正确手机号");
+            return outDto;
+        }
+        if(inDto.getAccount().length()!=11){
+            outDto.setCode(ResultCode.ERROR_MOBILE);
+            logger.debug("[登陆失败]：请输入正确手机号");
+            return outDto;
         }
         if (CommonMethods.checkMySqlReservedWords(inDto.getDeviceId())) {
             outDto.setCode(ResultCode.NULL_DEVICE_ID);
