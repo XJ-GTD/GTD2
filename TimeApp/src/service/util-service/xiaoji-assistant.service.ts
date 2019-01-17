@@ -176,6 +176,17 @@ export class XiaojiAssistantService{
   }
 
   /**
+   * 停止监听WakeUp
+   */
+  public speakStop(string,success) {
+    try {
+      cordova.plugins.XjBaiduTts.speakStop();
+    } catch (e) {
+      alert("问题："+ e)
+    }
+  }
+
+  /**
    * 停止监听
    */
   public stopListenAudio() {
