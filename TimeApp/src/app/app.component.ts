@@ -6,6 +6,7 @@ import { PageConfig } from "./page.config";
 import {MenuScalePushType} from "../components/menuType/customType";
 import {XiaojiFeedbackService} from "../service/util-service/xiaoji-feedback.service";
 import {NetworkService} from "../service/util-service/network.service";
+import {XiaojiAssistantService} from "../service/util-service/xiaoji-assistant.service";
 
 @Component({
   templateUrl: 'app.html'
@@ -21,6 +22,7 @@ export class MyApp {
     public backgroundMode: BackgroundMode,
     private configService:ConfigService,
     private networkService: NetworkService,
+    private xiaojiSpeech: XiaojiAssistantService,
     private xiaojiFeekback: XiaojiFeedbackService
   ) {
     console.log(' time app start ');
@@ -65,6 +67,7 @@ export class MyApp {
       // this.appCtrl._toastPortal.getActive() || this.appCtrl._loadingPortal.getActive() || this.appCtrl._overlayPortal.getActive();
       let activePortal = this.appCtrl._modalPortal.getActive();
       if (activePortal) {
+        this.xiaojiSpeech.stopSpeak();
         activePortal.dismiss().catch(() => {
         });
         activePortal.onDidDismiss(() => {
