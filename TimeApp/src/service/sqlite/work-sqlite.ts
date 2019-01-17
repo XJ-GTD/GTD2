@@ -59,6 +59,7 @@ export class WorkSqlite{
     return new Promise((resolve, reject) => {
       let sql = "";
       let rcpL = new Array<RcpEntity>();
+      let isMe:boolean = false;
       for (let i = 0; i < rus.length; i++) {
         let ru = rus[i];
         let rgc = new RcpEntity();
@@ -68,6 +69,7 @@ export class WorkSqlite{
         let sa = '0';
         if (ru.rI && ru.rI == rc.uI) {
           rgc.sa = '1';
+          isMe = true;
         }
         rgc.cd = rc.sd;
         rgc.pd = rc.ed;
@@ -77,6 +79,19 @@ export class WorkSqlite{
           ru.sdt = 0;
         }
         rgc.sdt = ru.sdt;
+        sql += rgc.isq;
+        rcpL.push(rgc);
+      }
+      //没有自己则添加自己
+      if(!isMe){
+        let rgc = new RcpEntity();
+        rgc.pI = this.util.getUuid();
+        rgc.sI = rc.sI;
+        rgc.son = rc.sN;
+        let sa = '1';
+        rgc.cd = rc.sd;
+        rgc.pd = rc.ed;
+        rgc.uI = DataConfig.uInfo.uI;
         sql += rgc.isq;
         rcpL.push(rgc);
       }
