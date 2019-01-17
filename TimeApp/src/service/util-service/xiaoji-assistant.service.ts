@@ -160,6 +160,7 @@ export class XiaojiAssistantService{
   public speakText(speechText: string,success) {
     try {
       if (this.islistenAudioing) return;
+      this.stopSpeak();
       this.isSpeaking = true;
 
       cordova.plugins.XjBaiduTts.startSpeak(result=>{
@@ -176,13 +177,14 @@ export class XiaojiAssistantService{
   }
 
   /**
-   * 停止监听WakeUp
+   * 停止语音播报
    */
-  public speakStop(string,success) {
+  public stopSpeak() {
     try {
       cordova.plugins.XjBaiduTts.speakStop();
+      this.isSpeaking = false;
     } catch (e) {
-      alert("问题："+ e)
+      console.log("问题："+ e)
     }
   }
 
@@ -207,10 +209,10 @@ export class XiaojiAssistantService{
         }
         success(true);
       },error=>{
-        alert("报错:" + error);
+        console.log("问题："+ error)
       },"");
     } catch (e) {
-      alert("问题："+ e)
+      console.log("问题："+ e)
     }
   }
 
@@ -221,7 +223,7 @@ export class XiaojiAssistantService{
     try {
         cordova.plugins.XjBaiduWakeUp.wakeUpStop();
     } catch (e) {
-      alert("问题："+ e)
+      console.log("问题："+ e)
     }
   }
 }

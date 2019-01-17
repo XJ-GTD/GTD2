@@ -30,7 +30,7 @@ export class RcRestful{
      st:string,et:string,li:string,ps:Array<PsModel>,sts:string):Promise<any> {
 
     let rcList = new Array<any>();
-    let schedule:any = null;
+    let schedule:any = {};
     schedule.scheduleId = si;
     schedule.scheduleName = sn;
     schedule.startTime = st;
