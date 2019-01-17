@@ -1,4 +1,7 @@
-package com.xiaoji.gtd.dto;
+package com.xiaoji.gtd.dto.player;
+
+import com.xiaoji.gtd.dto.BaseOut;
+import com.xiaoji.gtd.dto.player.PlayerDataDto;
 
 import java.util.List;
 

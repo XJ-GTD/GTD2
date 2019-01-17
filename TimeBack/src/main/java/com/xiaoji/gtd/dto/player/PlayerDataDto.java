@@ -1,4 +1,4 @@
-package com.xiaoji.gtd.dto;
+package com.xiaoji.gtd.dto.player;
 
 /**
  * 业务处理参与人List用

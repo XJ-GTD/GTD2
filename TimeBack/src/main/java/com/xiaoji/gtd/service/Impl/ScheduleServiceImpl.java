@@ -1,8 +1,9 @@
 package com.xiaoji.gtd.service.Impl;
 
-import com.xiaoji.gtd.dto.PlayerDataDto;
-import com.xiaoji.gtd.dto.ScheduleInDto;
-import com.xiaoji.gtd.dto.SearchOutDto;
+import com.xiaoji.gtd.dto.player.PlayerDataDto;
+import com.xiaoji.gtd.dto.schedule.ScheduleDataDto;
+import com.xiaoji.gtd.dto.schedule.ScheduleInDto;
+import com.xiaoji.gtd.dto.player.SearchOutDto;
 import com.xiaoji.gtd.dto.code.ResultCode;
 import com.xiaoji.gtd.dto.mq.WebSocketDataDto;
 import com.xiaoji.gtd.dto.mq.WebSocketOutDto;
@@ -15,14 +16,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 日程接口实现类
@@ -62,47 +59,52 @@ public class ScheduleServiceImpl implements IScheduleService {
 
         String userId = inDto.getUserId();
         String skillType = inDto.getSkillType();
-        String scheduleId = inDto.getScheduleId();
-        String scheduleName = inDto.getScheduleName();
-        String startTime = inDto.getStartTime();
-        String endTime = inDto.getEndTime();
-        String label = inDto.getLabel();
-        String status = inDto.getStatus();
+        List<ScheduleDataDto> scheduleList = inDto.getScheduleList();
+
+        String scheduleId = "";
+        String scheduleName = "";
+        String startTime = "";
+        String endTime = "";
+        String label = "";
+        String status = "";
         List<PlayerDataDto> players;
         String targetUserId = "";
         String targetMobile = "";
 
         try {
 
-            data.setSi(scheduleId);
-            data.setSn(scheduleName);
-            data.setSt(startTime);
-            data.setEt(endTime);
-            data.setLb(label);
-            data.setSt(status);
-            data.setUs(userId);
+            for (ScheduleDataDto sdd : scheduleList) {
+                data.setSi(sdd.getScheduleId());
+                data.setSn(sdd.getScheduleName());
+                data.setSt(sdd.getStartTime());
+                data.setEt(sdd.getEndTime());
+                data.setLb(sdd.getLabel());
+                data.setSt(sdd.getStatus());
+                data.setUs(userId);
 
-            pushDto.setRes(new WebSocketResultDto(data));
-            pushDto.setSk(skillType);
-            pushDto.setVs(VERSION);
+                pushDto.setRes(new WebSocketResultDto(data));
+                pushDto.setSk(skillType);
+                pushDto.setVs(VERSION);
 
-            players = personService.isAgree(userId, inDto.getPlayers());
-            for (PlayerDataDto player: players) {
-                targetMobile = player.getAccountMobile();
-                targetUserId = player.getUserId();
+                players = personService.isAgree(userId, sdd.getPlayers());
+                for (PlayerDataDto player: players) {
+                    targetMobile = player.getAccountMobile();
+                    targetUserId = player.getUserId();
 
-                if (player.isAgree()) {
-                    pushDto.setSs(ResultCode.SUCCESS);
-                    webSocketService.pushTopicMessage(targetUserId, pushDto);
-                    logger.debug("[成功推送日程]:方式 === RABBIT MQ");
-                } else if (!player.isUser()){
+                    if (player.isAgree()) {
+                        pushDto.setSs(ResultCode.SUCCESS);
+                        webSocketService.pushTopicMessage(targetUserId, pushDto);
+                        logger.debug("[成功推送日程]:方式 === RABBIT MQ");
+                    } else if (!player.isUser()){
 //                    smsService.pushSchedule(targetMobile);
-                    logger.debug("[成功推送日程]:方式 === SMS");
-                } else {
-                    logger.debug("[不可推送日程]:原因 === 非对方好友或没有权限");
+                        logger.debug("[成功推送日程]:方式 === SMS");
+                    } else {
+                        logger.debug("[不可推送日程]:原因 === 非对方好友或没有权限");
+                    }
                 }
+                outDto.setPlayers(players);
             }
-            outDto.setPlayers(players);
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("dealWithSchedule日程推送出错");

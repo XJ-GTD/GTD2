@@ -1,4 +1,4 @@
-package com.xiaoji.gtd.dto;
+package com.xiaoji.gtd.dto.player;
 
 import java.util.List;
 import java.util.Map;
