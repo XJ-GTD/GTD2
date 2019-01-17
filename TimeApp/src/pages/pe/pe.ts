@@ -104,7 +104,7 @@ export class PePage {
       return;
     }
 
-    this.relmemService.aru(this.uo.uI,null,null,this.qmc,null,'1',null,null,this.qcy).then(data=>{
+    this.relmemService.aru(this.uo.uI,null,this.qmc,this.qmc,null,'1',null,null,this.qcy).then(data=>{
       if(data.code == 0){
         console.log("添加群成功");
         this.navCtrl.pop();

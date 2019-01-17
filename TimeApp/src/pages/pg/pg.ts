@@ -24,6 +24,7 @@ export class PgPage {
   us:Array<RuModel>;
   sel:Array<RuModel> =  Array<RuModel>();
   callback:any;
+  g:RuModel;
 
 
   constructor(public navCtrl: NavController,
@@ -38,10 +39,13 @@ export class PgPage {
     this.queryAllRel();
     this.callback = this.navParams.get("callback");
     this.sel = this.navParams.get("sel");
+    this.g = this.navParams.get("g");
     if(this.sel != undefined){
       console.log(this.sel.length)
     }
   }
+
+
 
   goBack() {
     this.navCtrl.pop();
@@ -54,8 +58,14 @@ export class PgPage {
     //   console.log("PgPage跳转PePage")
     //   this.navCtrl.pop();
     // })
+    this.relmemService.addRgus(this.g.id,this.sel).then(data=>{
+      console.log("增加成员成功 :: " + JSON.stringify(data));
+      this.viewCtrl.dismiss(this.sel);
+    }).catch(reason => {
+      console.log("增加成员失败 :: " + JSON.stringify(reason));
+      this.viewCtrl.dismiss(this.sel);
+    });
 
-    this.viewCtrl.dismiss(this.sel);
   }
 
 

@@ -100,16 +100,18 @@ export class PdPage {
   };
 
   addQcy(){
-    let modal = this.modalCtl.create(PageConfig.PG_PAGE,{callback:this.getData,sel:this.us});
+    let modal = this.modalCtl.create(PageConfig.PG_PAGE,{callback:this.getData,sel:this.us,g:this.g});
     modal.onDidDismiss((data)=>{
-      console.log(data===this.us);
+      // console.log(data===this.us);
+      //
+      // console.log(JSON.stringify(data));
+      // this.relmemService.addRgus(this.g.id,data).then(data=>{
+      //   console.log("添加成功")
+      // }).catch(reason => {
+      //
+      // })
 
-      console.log(JSON.stringify(data));
-      this.relmemService.addRgus(this.g.id,data).then(data=>{
-        console.log("添加成功")
-      }).catch(reason => {
-
-      })
+      this.queryGAll();
     });
     modal.present();
   }
