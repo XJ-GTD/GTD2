@@ -59,17 +59,34 @@ export class PnRestful{
   }
 
   /**
-   * 用户添加
+   * 添加联系人发送邀请单个
    * @param {string} ui 当前登录人用户ID
    * @param {string} am 添加人手机号
    * @param {string} aui 添加人用户ID
    * @returns {Promise<any>}
    */
   au(ui:string,am:string,aui:string):Promise<any>{
+    let playerList = new Array<any>();
+    let player:any = null;
+    player.targetMobile =am;
+    player.targetUserId =aui;
+    playerList.push(player);
     return this.bs.post(AppConfig.PERSON_ADDU, {
       userId:ui,
-      targetMobile:am,
-      targetUserId:aui
+      playerList:playerList
+    })
+  }
+  /**
+   * 添加联系人发送邀请多个
+   * @param {string} ui 当前登录人用户ID
+   * @param {string} am 添加人手机号
+   * @param {string} aui 添加人用户ID
+   * @returns {Promise<any>}
+   */
+  aus(ui:string,playerList:Array<any>):Promise<any>{
+    return this.bs.post(AppConfig.PERSON_ADDU, {
+      userId:ui,
+      playerList:playerList
     })
   }
 
