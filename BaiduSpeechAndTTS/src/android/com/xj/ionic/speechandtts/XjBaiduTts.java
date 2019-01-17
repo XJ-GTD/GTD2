@@ -67,6 +67,9 @@ public class XjBaiduTts extends CordovaPlugin {
         if (action.equals("speak")) {
             tts.speak(args.getString(0));
             return true;
+        }else if (action.equals("stop")) {
+            tts.stop();
+            return true;
         }
         return false;
     }

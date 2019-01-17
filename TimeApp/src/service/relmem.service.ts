@@ -531,13 +531,12 @@ export class RelmemService {
         if(data && data.rows && data.rows.length>0){
           for(let i=0;i<data.rows.length;i++){
             let ru:any=data.rows.item(i);
-            ru.userId=DataConfig.uInfo.uI;
             ru.targetMobile=ru.rC;
             ru.targetUserId=ru.rI;
             rus.push(ru);
           }
           console.log( "-------- 联网状态，开始发送联系人邀请 --------");
-          return this.pnRes.au('','','');
+          return this.pnRes.aus(DataConfig.uInfo.uI,rus);
         }else{
           bs.code = ReturnConfig.NULL_CODE;
           bs.message = ReturnConfig.NULL_MESSAGE;

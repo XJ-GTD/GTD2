@@ -73,6 +73,18 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     }
 }
 
+- (void)stop:()command
+{
+    NSInteger sentenceID;
+    NSError* err = nil;
+    [[BDSSpeechSynthesizer sharedInstance] setSynthesizerDelegate:self];
+    self.callbackId = command.callbackId;
+    sentenceID =  [[BDSSpeechSynthesizer sharedInstance] cancel:() withError:(&err)];
+    if(err != nil){
+       NSLog(@"Did finish synth, %ld", err);
+    }
+}
+
 #pragma mark - implement BDSSpeechSynthesizerDelegate
 - (void)synthesizerStartWorkingSentence:(NSInteger)SynthesizeSentence{
     NSLog(@"Did synthesizerStartWorkingSentence synth %ld", SynthesizeSentence);
