@@ -212,6 +212,8 @@ export class HbPage {
   //返回方法
   goBack() {
     this.dwEmit.destroyHbData();
+    this.xiaojiSpeech.stopListenAudio();
+    this.xiaojiSpeech.stopSpeak();
     this.viewCtrl.dismiss();
   }
 
