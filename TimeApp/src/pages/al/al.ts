@@ -161,7 +161,10 @@ export class AlPage {
         console.log("al :: 连接websockte成功")
       this.increment(10);
         //检车websockte的状态
-        return this.ContactsService.getContacts();
+        console.log("al :: 查询联系人开始");
+        if(DataConfig.uInfo.uty == '1'){
+          return this.ContactsService.getContacts();
+        }
       }).then(data=>{
         console.log("al :: 查询联系人成功");
       }).then(data=>{

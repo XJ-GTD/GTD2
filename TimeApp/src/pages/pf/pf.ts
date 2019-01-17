@@ -180,38 +180,50 @@ export class PfPage {
       }
       let fields = ['phoneNumbers','displayName'];
 
-      this.conTacts.find(['phoneNumbers'],{
-        filter:this.tel,
-        multiple:true,
-        desiredFields:["displayName","phoneNumbers"]
-      }).then(data=>{
-        console.log(JSON.stringify(data));
-        this.contacts = data;
-        console.log("1 :: " + JSON.stringify(this.contacts));
-        if(this.tel.length > 3){
-          return this.conTacts.find(['phoneNumbers'],{filter:this.utilService.telFormat(this.tel),multiple:true, desiredFields:["displayName","phoneNumbers"]});
-        }
-      }).then(data=>{
-        console.log("2 :: " + JSON.stringify(data));
-        let dataTmp = this.contacts;
-        if(data != undefined){
-          dataTmp = this.contacts.concat(data);
-        }
-        this.contacts = [];
-        for(let i = 0;i< dataTmp.length;i++){
-          for(let j = 0;j< dataTmp[i].phoneNumbers.length;j++){
-            if(dataTmp[i].phoneNumbers[j].value.length>11){
-              dataTmp[i].phoneNumbers[j].value = dataTmp[i].phoneNumbers[j].value.replace(/\s/g,'');
-            }
-            if(this.utilService.checkPhone(dataTmp[i].phoneNumbers[j].value)==3){
-              this.contacts.push(dataTmp[i]);
+      if(this.utilService.isMobile()) {
+
+
+        this.conTacts.find(['phoneNumbers'], {
+          filter: this.tel,
+          multiple: true,
+          desiredFields: ["displayName", "phoneNumbers"]
+        }).then(data => {
+          console.log(JSON.stringify(data));
+          this.contacts = data;
+          console.log("1 :: " + JSON.stringify(this.contacts));
+          if (this.tel.length > 3) {
+            return this.conTacts.find(['phoneNumbers'], {
+              filter: this.utilService.telFormat(this.tel),
+              multiple: true,
+              desiredFields: ["displayName", "phoneNumbers"]
+            });
+          }
+        }).then(data => {
+          console.log("2 :: " + JSON.stringify(data));
+          let dataTmp = this.contacts;
+          if (data != undefined) {
+            dataTmp = this.contacts.concat(data);
+          }
+          this.contacts = [];
+          for (let i = 0; i < dataTmp.length; i++) {
+            for (let j = 0; j < dataTmp[i].phoneNumbers.length; j++) {
+              if (dataTmp[i].phoneNumbers[j].value.length > 11) {
+                dataTmp[i].phoneNumbers[j].value = dataTmp[i].phoneNumbers[j].value.replace(/\s/g, '');
+              }
+              if (this.utilService.checkPhone(dataTmp[i].phoneNumbers[j].value) == 3) {
+                this.contacts.push(dataTmp[i]);
+              }
             }
           }
-        }
 
+          this.checkPhone(null);
+
+        });
+      }else{
         this.checkPhone(null);
+      }
 
-      });
+
       console.log(this.tel);
 
     }else{

@@ -26,7 +26,7 @@ export class  ContactsService{
    * 所有联系人
    * @returns {Promise<any>}
    */
-  getContacts(){
+  getContacts():Promise<BsModel>{
     return new Promise((resolve, reject)=>{
       let bs = new BsModel();
       this.contacts.find(['phoneNumbers'],{
@@ -64,6 +64,19 @@ export class  ContactsService{
   }
 
   dddd(){
+    //手机号排序
+    for(let i = 0;i<ContactsService.contactTel.length;i++){
+      for(let j = 0;j<ContactsService.contactTel.length-i;j++){
+        if(ContactsService.contactTel[j] > ContactsService.contactTel[j+1]){
+          let tmp = ContactsService.contactTel[j];
+          ContactsService.contactTel[j] = ContactsService.contactTel[j+1];
+          ContactsService.contactTel[j+1] = tmp;
+          let tmp2 = ContactsService.contactList[j];
+          ContactsService.contactList[j] = ContactsService.contactList[j+1];
+          ContactsService.contactList[j+1] = tmp2;
+        }
+      }
+    }
 
     let tellist = ContactsService.contactTel;
     console.log("手机号集 :: " + JSON.stringify(tellist));
