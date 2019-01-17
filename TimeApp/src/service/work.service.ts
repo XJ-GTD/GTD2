@@ -738,11 +738,11 @@ W
     return new Promise((resolve, reject)=>{
       let bs = new BsModel();
       let rgcL:any = null
-      console.log( "-------- 联网状态，开始查询未发送邀请联系人信息 --------");
+      console.log( "-------- 联网状态，开始查询日程信息 --------");
       this.workSqlite.getNoSendRgc().then(data=>{
         if(data && data.rows && data.rows.length>0){
           rgcL = data.rows;
-          console.log( "-------- 联网状态，开始发送联系人邀请 --------");
+          console.log( "-------- 联网状态，开始发送日程 --------");
           return this.workSqlite.getNoSendRc();
         }else{
           bs.code = ReturnConfig.NULL_CODE;
@@ -751,20 +751,33 @@ W
       }).then(data=>{
         if(rgcL!=null && rgcL.length>0){
             if(data && data.rows && data.rows.length>0){
+              let scheduleList = new Array<any>();
               for(let i = 0;i<data.rows.length;i++){
-                let rc:RcModel = data.rows.item(i)
+                let schedule:any = null;
+                let rc:RcModel = data.rows.item(i);
+                schedule.scheduleId = rc.sI
+                schedule.scheduleName = rc.sN
+                schedule.startTime = rc.sd;
+                schedule.endTime = rc.ed
+                schedule.label = rc.lI;
+                schedule.status='';
+                let players = new Array<any>();
                 for(let j=0;j<rgcL.length;j++){
-
+                  let rgc:RuModel = rgcL.item(j);
+                  let player:any = null;
+                  player.accountMobile = rgc.rC;
+                  player.userId = rgc.rI;
+                  players.push(player);
                 }
+                schedule.players = players;
+                scheduleList.push(schedule);
               }
             }
-        }
-        if(bs.code==0){
-          console.log( "-------- 联网状态，开始发送联系人邀请成功 --------");
+          console.log( "-------- 联网状态，开始发送日程成功 --------");
         }
         resolve(bs)
       }).catch(e=>{
-        console.error( "-------- 联网状态，查询并发送联系人邀请失败 ：" + JSON.stringify(e));
+        console.error( "-------- 联网状态，查询并发送日程失败 ：" + JSON.stringify(e));
         bs.code=ReturnConfig.ERR_CODE;
         bs.message=ReturnConfig.ERR_MESSAGE;
         reject(bs)
