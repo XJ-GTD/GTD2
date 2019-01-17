@@ -1,7 +1,7 @@
 package com.xiaoji.gtd.service;
 
-import com.xiaoji.gtd.dto.ScheduleInDto;
-import com.xiaoji.gtd.dto.SearchOutDto;
+import com.xiaoji.gtd.dto.schedule.ScheduleInDto;
+import com.xiaoji.gtd.dto.player.SearchOutDto;
 
 /**
  * 日程类接口

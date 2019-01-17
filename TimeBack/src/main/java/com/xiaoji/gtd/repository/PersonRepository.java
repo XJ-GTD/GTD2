@@ -56,12 +56,12 @@ public class PersonRepository {
      * (手机号查询）
      * @return
      */
-    public Object searchUserByMobile(String accountMobile, String type) {
+    public List<Object> searchUserByMobile(List<String> mobileList, String type) {
         String sql = "SELECT TA.USER_ID, TB.USER_NAME, TB.HEAD_IMG \n" +
                 " FROM gtd_login TA \n" +
                 " INNER JOIN gtd_user TB ON TB.USER_ID = TA.USER_ID \n" +
-                " WHERE TA.LOGIN_TYPE = '" + type + "' AND TA.LOGIN_NAME = '" + accountMobile +"'";
-        return em.createNativeQuery(sql).getSingleResult();
+                " WHERE TA.LOGIN_TYPE = '" + type + "' AND TA.LOGIN_NAME IN ('" + mobileList +"')";
+        return em.createNativeQuery(sql).getResultList();
     }
 
     /**

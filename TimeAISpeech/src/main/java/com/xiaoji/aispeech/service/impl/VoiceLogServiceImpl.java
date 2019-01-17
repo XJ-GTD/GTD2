@@ -67,23 +67,29 @@ public class VoiceLogServiceImpl implements IVoiceLogrService {
                 reqText = reqText+ "{result_id:" + sub.getResult_id() + ",text:" + sub.getText() + "},";
 
             }else if("nlp".equals(sub.getSub())){
-                if (sub.getIntent() == null ) continue;
-                if (sub.getIntent().getAnswer() == null ) continue;
-                if (sub.getIntent().getRc() != 0) continue;
-                resAnswer = resAnswer+ "{result_id:" + sub.getResult_id() + ",answer:" + sub.getIntent().getAnswer().getText()+ "},";
-                resService = resService+ "{result_id:" + sub.getResult_id() + ",service:" + sub.getIntent().getService() + "},";
-                List<Semantic> semantics = sub.getIntent().getSemantic();
-                if (semantics == null ) continue;
-                resSlot = resSlot + "[{result_id: + sub.getResult_id() + ,semantic:[";
-                for (Semantic semantic : semantics){
-                    resSlot = resSlot+ "{intent:" + semantic.getIntent() + ",slots:[";
-                    List<Slot> slots = semantic.getSlots();
-                    for (Slot slot : slots){
-                        resSlot = resSlot+ "{name:" + slot.getName() + ",NormValue:" + slot.getNormValue() + ",value:" + slot.getValue() + "},";
+                if (sub.getIntent().getRc() == 0) {
+                    if (sub.getIntent() == null ) continue;
+                    if (sub.getIntent().getAnswer() == null ) continue;
+                    resAnswer = resAnswer+ "{result_id:" + sub.getResult_id() + ",answer:" + sub.getIntent().getAnswer().getText()+ "},";
+                    resService = resService+ "{result_id:" + sub.getResult_id() + ",service:" + sub.getIntent().getService() + "},";
+                    List<Semantic> semantics = sub.getIntent().getSemantic();
+                    if (semantics != null ) {
+                        resSlot = resSlot + "[{result_id:" + sub.getResult_id() + ",semantic:[";
+                        for (Semantic semantic : semantics){
+                            resSlot = resSlot+ "{intent:" + semantic.getIntent() + ",slots:[";
+                            List<Slot> slots = semantic.getSlots();
+                            for (Slot slot : slots){
+                                resSlot = resSlot+ "{name:" + slot.getName() + ",NormValue:" + slot.getNormValue() + ",value:" + slot.getValue() + "},";
+                            }
+                            resSlot = resSlot + "]}";
+                        }
                     }
                     resSlot = resSlot + "]}";
                 }
-                resSlot = resSlot + "]}";
+                if (sub.getIntent().getRc() == 4) {
+                    resAnswer = resAnswer+ "{rc:" + sub.getIntent().getRc() + ",text:" + sub.getIntent().getText()+ "}";
+                }
+
             }
         }
         reqText = reqText + "]";

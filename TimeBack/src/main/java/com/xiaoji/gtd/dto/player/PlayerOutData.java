@@ -1,11 +1,11 @@
-package com.xiaoji.gtd.dto;
+package com.xiaoji.gtd.dto.player;
 
 /**
+ * 参与人出参类
  *
- * create by wzy on 2018/12/05
+ * create by wzy on 2019/01/17
  */
-public class PlayerOutDto extends BaseOut{
-
+public class PlayerOutData {
     private String userId;
     private String headImg;
     private String userName;
