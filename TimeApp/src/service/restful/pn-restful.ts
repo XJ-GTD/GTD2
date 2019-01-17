@@ -67,7 +67,7 @@ export class PnRestful{
    */
   au(ui:string,am:string,aui:string):Promise<any>{
     let playerList = new Array<any>();
-    let player:any = null;
+    let player:any = {};
     player.targetMobile =am;
     player.targetUserId =aui;
     playerList.push(player);

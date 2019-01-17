@@ -737,7 +737,7 @@ W
   nwSendRu():Promise<BsModel>{
     return new Promise((resolve, reject)=>{
       let bs = new BsModel();
-      let rgcL:any = null
+      let rgcL:any = {};
       console.log( "-------- 联网状态，开始查询日程信息 --------");
       this.workSqlite.getNoSendRgc().then(data=>{
         if(data && data.rows && data.rows.length>0){
@@ -753,7 +753,7 @@ W
             if(data && data.rows && data.rows.length>0){
               let scheduleList = new Array<any>();
               for(let i = 0;i<data.rows.length;i++){
-                let schedule:any = null;
+                let schedule:any = {};
                 let rc:RcModel = data.rows.item(i);
                 schedule.scheduleId = rc.sI
                 schedule.scheduleName = rc.sN
@@ -764,7 +764,7 @@ W
                 let players = new Array<any>();
                 for(let j=0;j<rgcL.length;j++){
                   let rgc:RuModel = rgcL.item(j);
-                  let player:any = null;
+                  let player:any = {};
                   player.accountMobile = rgc.rC;
                   player.userId = rgc.rI;
                   players.push(player);
