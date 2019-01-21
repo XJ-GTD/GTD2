@@ -330,6 +330,10 @@ public class PersonController {
                 outDto.setCode(ResultCode.NOT_USER);
                 logger.debug("[所查用户尚未注册]");
             }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.NULL_MOBILE);
+            logger.error("[查询用户失败]：请输入正确手机号");
         } catch (Exception e) {
             e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);

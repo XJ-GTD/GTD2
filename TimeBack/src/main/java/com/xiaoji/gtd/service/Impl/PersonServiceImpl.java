@@ -71,9 +71,11 @@ public class PersonServiceImpl implements IPersonService {
     @Resource
     private GtdUserRepository userRepository;
     @Resource
-    private AuthRepository authRepository;
-    @Resource
     private GtdPlayerRepository playerRepository;
+    @Resource
+    private GtdPersonRepository gtdPersonRepository;
+    @Resource
+    private AuthRepository authRepository;
 
     private final RabbitTemplate rabbitTemplate;
     private final IWebSocketService webSocketService;
@@ -311,7 +313,7 @@ public class PersonServiceImpl implements IPersonService {
                 mobileList.add(pid.getTargetMobile());
             }
             logger.debug("-------- 本次需要查询用户数据 手机号码数量为 " + mobileList.size() + " ------------");
-            List<Object> objList = personRepository.searchUserByMobile(mobileList, LOGIN_TYPE_MOBILE);
+            List<Object> objList = gtdPersonRepository.searchUserByMobile(mobileList, LOGIN_TYPE_MOBILE);
             if (objList.size() > 0) {
                 logger.debug("-------- 本次查询对应用户数据量为 " + objList.size() + " ------------");
                 for (Object obj : objList) {
