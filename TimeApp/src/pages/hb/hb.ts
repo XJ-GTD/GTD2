@@ -21,100 +21,89 @@ declare var cordova: any;
 @IonicPage()
 @Component({
   selector: 'page-hb',
-  // templateUrl: 'hb.html',
-  providers: [],
-  template:'\n' +
-  '<div  class="speechWarp">\n' +
-  '\n' +
-  '  <ion-header >\n' +
-  '    <ion-toolbar>\n' +
-  '      <ion-buttons left>\n' +
-  '        <button ion-button icon-only (click)="goBack()">\n' +
-  '          <ion-icon name="arrow-back" style=" color: white"></ion-icon>\n' +
-  '        </button>\n' +
-  '      </ion-buttons>\n' +
-  '    </ion-toolbar>\n' +
-  '  </ion-header>\n' +
-  '  <ion-content>\n' +
-  '\n' +
-  '    <ion-list class="yyWarp">\n' +
-  '      <ion-item  *ngFor="let message of messages"  on-hold="onMessageHold($event, $index, message)">\n' +
-  '\n' +
-  '        <!-- 判断消息是用户 -->\n' +
-  '        <div *ngIf="U1 == message.tt" class="userTalk animated bounceIn">\n' +
-  '          <h2 [innerHTML]="message.ut"></h2>\n' +
-  '        </div>\n' +
-  '\n' +
-  '        <!-- 判断消息是讯飞 -->\n' +
-  '        <div *ngIf="S1 == message.tt" class="XFTalk animated bounceIn">\n' +
-  '          <!--  wave-->\n' +
-  '          <h2 [innerHTML]="message.at"></h2>\n' +
-  '          <h3></h3>\n' +
-  '        </div>\n' +
-  '\n' +
-  '        <!-- 判断消息是数据：list -->\n' +
-  '        <ion-card *ngIf="S5 == message.tt"  class="scl_list animated bounceIn">\n' +
-  '          <ion-list>\n' +
-  '            <ion-item *ngFor="let sj of message.scL" (click)="showScheduleDetail(sj)">\n' +
-  '              <h2>{{sj.sd}}</h2>\n' +
-  '              <p>\n' +
-  '                <ion-badge>{{sj.sN}}</ion-badge>\n' +
-  '              </p>\n' +
-  '            </ion-item>\n' +
-  '          </ion-list>\n' +
-  '        </ion-card>\n' +
-  '\n' +
-  '        <!-- 判断消息是数据：新增日程 -->\n' +
-  '        <div *ngIf="S4 == message.tt" class="userTalk animated bounceIn">\n' +
-  '              <h2>{{message.sc.sd}}</h2>\n' +
-  '              <p>\n' +
-  '                <ion-badge>{{message.sc.sN}}</ion-badge>\n' +
-  '              </p>\n' +
-  '            <ion-item *ngFor="let ru of message.sc.rus">\n' +
-  '              <p>{{ru.ran}}</p>\n' +
-  '            </ion-item>\n' +
-  '        </div>\n' +
-  '      </ion-item>\n' +
-  '    </ion-list>\n' +
-  '\n' +
-  '    <!--<ion-fab left bottom edge #fab1 color="dark">-->\n' +
-  '    <!--<button ion-fab mini ><ion-icon name="arrow-dropup"></ion-icon></button>-->\n' +
-  '    <!--<ion-fab-list  side="top">-->\n' +
-  '    <!--<button ion-fab (click)="openSocial(1, fab1)" color="dark"><ion-icon name="create"></ion-icon></button>-->\n' +
-  '    <!--<button ion-fab (click)="openSocial(2, fab1)" color="secondary"><ion-icon name="contacts"></ion-icon></button>-->\n' +
-  '    <!--<button ion-fab (click)="openSocial(3, fab1)" color="danger"><ion-icon name="add"></ion-icon></button>-->\n' +
-  '    <!--</ion-fab-list>-->\n' +
-  '    <!--</ion-fab>-->\n' +
-  '  </ion-content>\n' +
-  '\n' +
-  '  <ion-footer style="height: 94px">\n' +
-  '    <ion-toolbar  *ngIf="modeFlag == true; else xjInput">\n' +
-  '      <ion-buttons left>\n' +
-  '        <button ion-button icon-only (click)="switchInput()">\n' +
-  '          <ion-icon name="create" style=" color: white;font-size: 40px"></ion-icon>\n' +
-  '        </button>\n' +
-  '      </ion-buttons>\n' +
-  '\n' +
-  '      <img  src="./assets/imgs/yuying.png"   (click)="startXiaoJi()" class="animated bounceIn"/>\n' +
-  '    </ion-toolbar>\n' +
-  '    <ng-template #xjInput>\n' +
-  '      <ion-toolbar style="margin-top: 18px" class="animated bounceIn faster">\n' +
-  '        <ion-buttons left>\n' +
-  '          <button ion-button icon-only (click)="switchInput()">\n' +
-  '            <ion-icon name="mic" style=" color: white"></ion-icon>\n' +
-  '          </button>\n' +
-  '        </ion-buttons>\n' +
-  '        <ion-input style="margin-left:10px" id="userInput" type="text" [(ngModel)]="inputText" placeholder="打字悄悄告诉我"></ion-input>\n' +
-  '        <ion-buttons end>\n' +
-  '          <button ion-button icon-end color="royal" (click)="startXiaojiText()">\n' +
-  '            <ion-icon name="send" style=" color: white;font-size: 40px"></ion-icon>\n' +
-  '          </button>\n' +
-  '        </ion-buttons>\n' +
-  '      </ion-toolbar>\n' +
-  '    </ng-template>\n' +
-  '    <!--<page-hb01></page-hb01>-->\n' +
-  '  </ion-footer>\n' +
-  '</div>\n',
+  template:'' +
+  '<div  class="speechWarp">' +
+  '  <ion-header >' +
+  '    <ion-toolbar>' +
+  '      <ion-buttons left>' +
+  '        <button ion-button icon-only (click)="goBack()">' +
+  '          <ion-icon name="arrow-back" style=" color: white"></ion-icon>' +
+  '        </button>' +
+  '      </ion-buttons>' +
+  '    </ion-toolbar>' +
+  '  </ion-header>' +
+  '  <ion-content>' +
+  '    <ion-list class="yyWarp">' +
+  '      <ion-item  *ngFor="let message of messages"  on-hold="onMessageHold($event, $index, message)">' +
+  '        <!-- 判断消息是用户 -->' +
+  '        <div *ngIf="U1 == message.tt" class="userTalk animated bounceIn">' +
+  '          <h2 [innerHTML]="message.ut"></h2>' +
+  '        </div>' +
+  '        <!-- 判断消息是讯飞 -->' +
+  '        <div *ngIf="S1 == message.tt" class="XFTalk animated bounceIn">' +
+  '          <!--  wave-->' +
+  '          <h2 [innerHTML]="message.at"></h2>' +
+  '          <h3></h3>' +
+  '        </div>' +
+  '        <!-- 判断消息是数据：list -->' +
+  '        <ion-card *ngIf="S5 == message.tt"  class="scl_list animated bounceIn">' +
+  '          <ion-list>' +
+  '            <ion-item *ngFor="let sj of message.scL" (click)="showScheduleDetail(sj)">' +
+  '              <h2>{{sj.sd}}</h2>' +
+  '              <p>' +
+  '                <ion-badge>{{sj.sN}}</ion-badge>' +
+  '              </p>' +
+  '            </ion-item>' +
+  '          </ion-list>' +
+  '        </ion-card>' +
+  '        <!-- 判断消息是数据：新增日程 -->' +
+  '        <div *ngIf="S4 == message.tt" class="userTalk animated bounceIn">' +
+  '              <h2>{{message.sc.sd}}</h2>' +
+  '              <p>' +
+  '                <ion-badge>{{message.sc.sN}}</ion-badge>' +
+  '              </p>' +
+  '            <ion-item *ngFor="let ru of message.sc.rus">' +
+  '              <p>{{ru.ran}}</p>' +
+  '            </ion-item>' +
+  '        </div>' +
+  '      </ion-item>' +
+  '    </ion-list>' +
+  '    <!--<ion-fab left bottom edge #fab1 color="dark">-->' +
+  '    <!--<button ion-fab mini ><ion-icon name="arrow-dropup"></ion-icon></button>-->' +
+  '    <!--<ion-fab-list  side="top">-->' +
+  '    <!--<button ion-fab (click)="openSocial(1, fab1)" color="dark"><ion-icon name="create"></ion-icon></button>-->' +
+  '    <!--<button ion-fab (click)="openSocial(2, fab1)" color="secondary"><ion-icon name="contacts"></ion-icon></button>-->' +
+  '    <!--<button ion-fab (click)="openSocial(3, fab1)" color="danger"><ion-icon name="add"></ion-icon></button>-->' +
+  '    <!--</ion-fab-list>-->' +
+  '    <!--</ion-fab>-->' +
+  '  </ion-content>' +
+  '  <ion-footer style="height: 94px">' +
+  '    <ion-toolbar  *ngIf="modeFlag == true; else xjInput">' +
+  '      <ion-buttons left>' +
+  '        <button ion-button icon-only (click)="switchInput()">' +
+  '          <ion-icon name="create" style=" color: white;font-size: 40px"></ion-icon>' +
+  '        </button>' +
+  '      </ion-buttons>' +
+  '      <img  src="./assets/imgs/yuying.png"   (click)="startXiaoJi()" class="animated bounceIn"/>' +
+  '    </ion-toolbar>' +
+  '    <ng-template #xjInput>' +
+  '      <ion-toolbar style="margin-top: 18px" class="animated bounceIn faster">' +
+  '        <ion-buttons left>' +
+  '          <button ion-button icon-only (click)="switchInput()">' +
+  '            <ion-icon name="mic" style=" color: white"></ion-icon>' +
+  '          </button>' +
+  '        </ion-buttons>' +
+  '        <ion-input style="margin-left:10px" id="userInput" type="text" [(ngModel)]="inputText" placeholder="打字悄悄告诉我"></ion-input>' +
+  '        <ion-buttons end>' +
+  '          <button ion-button icon-end color="royal" (click)="startXiaojiText()">' +
+  '            <ion-icon name="send" style=" color: white;font-size: 40px"></ion-icon>' +
+  '          </button>' +
+  '        </ion-buttons>' +
+  '      </ion-toolbar>' +
+  '    </ng-template>' +
+  '    <!--<page-hb01></page-hb01>-->' +
+  '  </ion-footer>' +
+  '</div>',
 })
 export class HbPage {
   // @ViewChild(Hb01Page) Hb01Page:Hb01Page;

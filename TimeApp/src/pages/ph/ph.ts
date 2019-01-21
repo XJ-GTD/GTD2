@@ -15,42 +15,34 @@ import {RuModel} from "../../model/ru.model";
 @IonicPage()
 @Component({
   selector: 'page-ph',
-  // templateUrl: 'ph.html',
-  template:'<ion-header>\n' +
-  '\n' +
-  '  <ion-navbar>\n' +
-  '    <ion-title>手机通讯录联系人</ion-title>\n' +
-  '  </ion-navbar>\n' +
-  '\n' +
-  '</ion-header>\n' +
-  '\n' +
-  '\n' +
-  '<ion-content padding>\n' +
-  '\n' +
-  '  <div *ngFor="let ru of rus">\n' +
-  '    <ion-item (click)="toPage(ru)">\n' +
-  '      <ion-avatar item-start >\n' +
-  '        <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">\n' +
-  '      </ion-avatar>\n' +
-  '      <ion-label *ngIf="ru.sdt ==0">\n' +
-  '        <p style="color: #000; line-height: 17px;font-size: 1.7rem">{{ru.rN}}</p>\n' +
-  '        <p >{{ru.rC}}({{ru.ran}})</p>\n' +
-  '      </ion-label>\n' +
-  '      <ion-label *ngIf="ru.sdt ==3">\n' +
-  '        <p style="color: #000; line-height: 17px;font-size: 1.7rem">{{ru.ran}}</p>\n' +
-  '        <p >{{ru.rC}}</p>\n' +
-  '      </ion-label>\n' +
-  '\n' +
-  '      <!--<ion-checkbox item-end ></ion-checkbox>-->\n' +
-  '      <ion-buttons *ngIf="ru.sdt ==0" item-end>\n' +
-  '        <button ion-button ion-only >添加</button>\n' +
-  '      </ion-buttons>\n' +
-  '      <div *ngIf="ru.sdt ==3" item-end>\n' +
-  '        <span>未注册</span>\n' +
-  '      </div>\n' +
-  '    </ion-item>\n' +
-  '  </div>\n' +
-  '\n' +
+  template:'<ion-header>' +
+  '  <ion-navbar>' +
+  '    <ion-title>手机通讯录联系人</ion-title>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '  <div *ngFor="let ru of rus">' +
+  '    <ion-item (click)="toPage(ru)">' +
+  '      <ion-avatar item-start >' +
+  '        <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">' +
+  '      </ion-avatar>' +
+  '      <ion-label *ngIf="ru.sdt ==0">' +
+  '        <p style="color: #000; line-height: 17px;font-size: 1.7rem">{{ru.rN}}</p>' +
+  '        <p >{{ru.rC}}({{ru.ran}})</p>' +
+  '      </ion-label>' +
+  '      <ion-label *ngIf="ru.sdt ==3">' +
+  '        <p style="color: #000; line-height: 17px;font-size: 1.7rem">{{ru.ran}}</p>' +
+  '        <p >{{ru.rC}}</p>' +
+  '      </ion-label>' +
+  '      <!--<ion-checkbox item-end ></ion-checkbox>-->' +
+  '      <ion-buttons *ngIf="ru.sdt ==0" item-end>' +
+  '        <button ion-button ion-only >添加</button>' +
+  '      </ion-buttons>' +
+  '      <div *ngIf="ru.sdt ==3" item-end>' +
+  '        <span>未注册</span>' +
+  '      </div>' +
+  '    </ion-item>' +
+  '  </div>' +
   '</ion-content>',
 })
 export class PhPage {

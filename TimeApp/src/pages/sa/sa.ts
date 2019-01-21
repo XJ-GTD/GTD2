@@ -25,154 +25,141 @@ import {PageConfig} from "../../app/page.config";
 @IonicPage()
 @Component({
   selector: 'page-sa',
-  // templateUrl: 'sa.html',
-  providers: [],
-  template:'\n' +
-  '<ion-header>\n' +
-  '\n' +
-  '  <ion-navbar>\n' +
-  '    <ion-title>日程详情</ion-title>\n' +
-  '    <ion-buttons right>\n' +
-  '      <button  ion-button [hidden]="isEdit" (click)="edit()">编辑</button>\n' +
-  '      <button  ion-button [hidden]="!isEdit" (click)="save()">保存</button>\n' +
-  '    </ion-buttons>\n' +
-  '  </ion-navbar>\n' +
-  '\n' +
-  '</ion-header>\n' +
-  '\n' +
-  '\n' +
-  '<ion-content padding>\n' +
-  '\n' +
-  '\n' +
-  '<div *ngIf="!isEdit">\n' +
-  '  <ion-item>\n' +
-  '    <img src="./assets/imgs/h.png" style="width: 20px" item-start>\n' +
-  '    <ion-label col-3>任务</ion-label>\n' +
-  '    <ion-label >{{rc.sN}}</ion-label>\n' +
-  '  </ion-item>\n' +
-  '  <div padding-left style=" border-bottom: 0.55px solid #e5e5e5;display: flex;" margin-top>\n' +
-  '    <div>\n' +
-  '      <img src="./assets/imgs/g.png" style="width: 20px;margin:8px 16px 8px 0; ">\n' +
-  '    </div>\n' +
-  '    <div col-3>\n' +
-  '      <span class="spanCss">参与人</span>\n' +
-  '    </div>\n' +
-  '    <div col-7 class="divCss">\n' +
-  '      <div item-left *ngFor="let ru of rc.rus" class="ruCss">\n' +
-  '        <div title="{{ru.ran}}">\n' +
-  '          <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">\n' +
-  '            <img [src]="ru.hiu" style="border-radius: 50%;width: 40px;height: 40px">\n' +
-  '          </ion-thumbnail>\n' +
-  '          <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;" text-center >{{ru.ran}}</div>\n' +
-  '        </div>\n' +
-  '      </div>\n' +
-  '      <div item-left [hidden]="!isEdit">\n' +
-  '        <div (click)="showCheckbox()">\n' +
-  '          <ion-thumbnail ion-button  color="light"  style="min-width: 40px !important;min-height: 40px !important;" class="div-add-border button-border" no-margin>\n' +
-  '            <ion-icon name="add"></ion-icon>\n' +
-  '          </ion-thumbnail>\n' +
-  '          <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center >&nbsp;</div>\n' +
-  '        </div>\n' +
-  '      </div>\n' +
-  '    </div>\n' +
-  '  </div>\n' +
-  '  <ion-item>\n' +
-  '    <img src="./assets/imgs/f.png" style="width: 20px" item-start>\n' +
-  '    <ion-label col-3>计划</ion-label>\n' +
-  '    <ion-label >{{rc.jn}}</ion-label>\n' +
-  '  </ion-item>\n' +
-  '  <ion-item>\n' +
-  '    <img src="./assets/imgs/e.png" style="width: 20px" item-start>\n' +
-  '    <ion-label col-3 item-left>标签</ion-label>\n' +
-  '    <div item-left class="lbCss"  *ngIf="rc.lan">\n' +
-  '      <div float-left>{{rc.lan}}</div>\n' +
-  '    </div>\n' +
-  '  </ion-item>\n' +
-  '  <ion-item>\n' +
-  '    <img src="./assets/imgs/d.png" style="width: 20px" item-start>\n' +
-  '    <ion-label col-3>时间</ion-label>\n' +
-  '    <ion-label >{{rc.sd}}</ion-label>\n' +
-  '  </ion-item>\n' +
-  '  <button ion-item>\n' +
-  '    <img src="./assets/imgs/c.png" style="width: 20px" item-start>\n' +
-  '    <ion-label col-3>提醒</ion-label>\n' +
-  '    <ion-label color="primary">提前十分钟</ion-label>\n' +
-  '  </button>\n' +
-  '  <ion-item>\n' +
-  '    <img src="./assets/imgs/b.png" style="width: 20px" item-start>\n' +
-  '    <ion-label col-3>备注</ion-label>\n' +
-  '    <ion-label>哈哈哈</ion-label>\n' +
-  '  </ion-item>\n' +
-  '</div>\n' +
-  '\n' +
-  '<div *ngIf="isEdit">\n' +
-  '  <ion-item>\n' +
-  '    <img src="./assets/imgs/h.png" style="width: 20px" item-start>\n' +
-  '    <ion-label col-3>任务</ion-label>\n' +
-  '    <ion-input [(ngModel)]="rc.sN" placeholder="{{rc.sN}}"></ion-input>\n' +
-  '  </ion-item>\n' +
-  '  <div padding-left style=" border-bottom: 0.55px solid #e5e5e5;display: flex;" margin-top>\n' +
-  '    <div>\n' +
-  '      <img src="./assets/imgs/g.png" style="width: 20px;margin:8px 16px 8px 0; ">\n' +
-  '    </div>\n' +
-  '    <div col-3>\n' +
-  '      <span class="spanCss">参与人</span>\n' +
-  '    </div>\n' +
-  '    <div col-7 class="divCss">\n' +
-  '      <div item-left *ngFor="let ru of rc.rus" class="ruCss">\n' +
-  '        <div title="{{ru.ran}}">\n' +
-  '          <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">\n' +
-  '            <img [src]="ru.hiu" style="border-radius: 50%;width: 40px;height: 40px">\n' +
-  '          </ion-thumbnail>\n' +
-  '          <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;" text-center >{{ru.ran}}</div>\n' +
-  '        </div>\n' +
-  '      </div>\n' +
-  '      <div item-left>\n' +
-  '        <div (click)="showCheckbox()">\n' +
-  '          <ion-thumbnail ion-button  color="light"  style="min-width: 40px !important;min-height: 40px !important;" class="div-add-border button-border" no-margin>\n' +
-  '            <ion-icon name="add"></ion-icon>\n' +
-  '          </ion-thumbnail>\n' +
-  '          <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center >&nbsp;</div>\n' +
-  '        </div>\n' +
-  '      </div>\n' +
-  '    </div>\n' +
-  '  </div>\n' +
-  '  <ion-item>\n' +
-  '    <img src="./assets/imgs/f.png" style="width: 20px" item-start>\n' +
-  '    <ion-label col-3>计划</ion-label>\n' +
-  '    <ion-input [(ngModel)]="rc.jn"  placeholder="{{rc.jn}}"></ion-input>\n' +
-  '  </ion-item>\n' +
-  '  <ion-item>\n' +
-  '    <img src="./assets/imgs/e.png" style="width: 20px" item-start>\n' +
-  '    <ion-label col-3 item-left>标签</ion-label>\n' +
-  '\n' +
-  '    <div item-left>\n' +
-  '      <div float-left>{{rc.lan}}</div>\n' +
-  '    </div>\n' +
-  '  </ion-item>\n' +
-  '  <ion-item>\n' +
-  '    <img src="./assets/imgs/d.png" style="width: 20px" item-start>\n' +
-  '    <ion-label col-3>时间</ion-label>\n' +
-  '    <ion-datetime displayFormat="YYYY年MM月DD日 HH:mm" [(ngModel)]="starttmp"></ion-datetime>\n' +
-  '  </ion-item>\n' +
-  '  <button ion-item>\n' +
-  '    <img src="./assets/imgs/c.png" style="width: 20px" item-start>\n' +
-  '    <ion-label col-3>提醒</ion-label>\n' +
-  '    <ion-label color="primary">提前十分钟</ion-label>\n' +
-  '  </button>\n' +
-  '  <ion-item>\n' +
-  '    <img src="./assets/imgs/b.png" style="width: 20px" item-start>\n' +
-  '    <ion-label col-3>备注</ion-label>\n' +
-  '    <ion-input ></ion-input>\n' +
-  '  </ion-item>\n' +
-  '\n' +
-  '\n' +
-  '</div>\n' +
-  '  <button ion-button (click)="del()" style="margin: 0 auto;">删除</button>\n' +
-  '\n' +
-  '  <button ion-button (click)="setAlarm()">设置提醒闹钟</button>\n' +
-  '\n' +
-  '</ion-content>\n',
+  template:'' +
+  '<ion-header>' +
+  '  <ion-navbar>' +
+  '    <ion-title>日程详情</ion-title>' +
+  '    <ion-buttons right>' +
+  '      <button  ion-button [hidden]="isEdit" (click)="edit()">编辑</button>' +
+  '      <button  ion-button [hidden]="!isEdit" (click)="save()">保存</button>' +
+  '    </ion-buttons>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '<div *ngIf="!isEdit">' +
+  '  <ion-item>' +
+  '    <img src="./assets/imgs/h.png" style="width: 20px" item-start>' +
+  '    <ion-label col-3>任务</ion-label>' +
+  '    <ion-label >{{rc.sN}}</ion-label>' +
+  '  </ion-item>' +
+  '  <div padding-left style=" border-bottom: 0.55px solid #e5e5e5;display: flex;" margin-top>' +
+  '    <div>' +
+  '      <img src="./assets/imgs/g.png" style="width: 20px;margin:8px 16px 8px 0; ">' +
+  '    </div>' +
+  '    <div col-3>' +
+  '      <span class="spanCss">参与人</span>' +
+  '    </div>' +
+  '    <div col-7 class="divCss">' +
+  '      <div item-left *ngFor="let ru of rc.rus" class="ruCss">' +
+  '        <div title="{{ru.ran}}">' +
+  '          <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">' +
+  '            <img [src]="ru.hiu" style="border-radius: 50%;width: 40px;height: 40px">' +
+  '          </ion-thumbnail>' +
+  '          <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;" text-center >{{ru.ran}}</div>' +
+  '        </div>' +
+  '      </div>' +
+  '      <div item-left [hidden]="!isEdit">' +
+  '        <div (click)="showCheckbox()">' +
+  '          <ion-thumbnail ion-button  color="light"  style="min-width: 40px !important;min-height: 40px !important;" class="div-add-border button-border" no-margin>' +
+  '            <ion-icon name="add"></ion-icon>' +
+  '          </ion-thumbnail>' +
+  '          <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center >&nbsp;</div>' +
+  '        </div>' +
+  '      </div>' +
+  '    </div>' +
+  '  </div>' +
+  '  <ion-item>' +
+  '    <img src="./assets/imgs/f.png" style="width: 20px" item-start>' +
+  '    <ion-label col-3>计划</ion-label>' +
+  '    <ion-label >{{rc.jn}}</ion-label>' +
+  '  </ion-item>' +
+  '  <ion-item>' +
+  '    <img src="./assets/imgs/e.png" style="width: 20px" item-start>' +
+  '    <ion-label col-3 item-left>标签</ion-label>' +
+  '    <div item-left class="lbCss"  *ngIf="rc.lan">' +
+  '      <div float-left>{{rc.lan}}</div>' +
+  '    </div>' +
+  '  </ion-item>' +
+  '  <ion-item>' +
+  '    <img src="./assets/imgs/d.png" style="width: 20px" item-start>' +
+  '    <ion-label col-3>时间</ion-label>' +
+  '    <ion-label >{{rc.sd}}</ion-label>' +
+  '  </ion-item>' +
+  '  <button ion-item>' +
+  '    <img src="./assets/imgs/c.png" style="width: 20px" item-start>' +
+  '    <ion-label col-3>提醒</ion-label>' +
+  '    <ion-label color="primary">提前十分钟</ion-label>' +
+  '  </button>' +
+  '  <ion-item>' +
+  '    <img src="./assets/imgs/b.png" style="width: 20px" item-start>' +
+  '    <ion-label col-3>备注</ion-label>' +
+  '    <ion-label>哈哈哈</ion-label>' +
+  '  </ion-item>' +
+  '</div>' +
+  '' +
+  '<div *ngIf="isEdit">' +
+  '  <ion-item>' +
+  '    <img src="./assets/imgs/h.png" style="width: 20px" item-start>' +
+  '    <ion-label col-3>任务</ion-label>' +
+  '    <ion-input [(ngModel)]="rc.sN" placeholder="{{rc.sN}}"></ion-input>' +
+  '  </ion-item>' +
+  '  <div padding-left style=" border-bottom: 0.55px solid #e5e5e5;display: flex;" margin-top>' +
+  '    <div>' +
+  '      <img src="./assets/imgs/g.png" style="width: 20px;margin:8px 16px 8px 0; ">' +
+  '    </div>' +
+  '    <div col-3>' +
+  '      <span class="spanCss">参与人</span>' +
+  '    </div>' +
+  '    <div col-7 class="divCss">' +
+  '      <div item-left *ngFor="let ru of rc.rus" class="ruCss">' +
+  '        <div title="{{ru.ran}}">' +
+  '          <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">' +
+  '            <img [src]="ru.hiu" style="border-radius: 50%;width: 40px;height: 40px">' +
+  '          </ion-thumbnail>' +
+  '          <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;" text-center >{{ru.ran}}</div>' +
+  '        </div>' +
+  '      </div>' +
+  '      <div item-left>' +
+  '        <div (click)="showCheckbox()">' +
+  '          <ion-thumbnail ion-button  color="light"  style="min-width: 40px !important;min-height: 40px !important;" class="div-add-border button-border" no-margin>' +
+  '            <ion-icon name="add"></ion-icon>' +
+  '          </ion-thumbnail>' +
+  '          <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center >&nbsp;</div>' +
+  '        </div>' +
+  '      </div>' +
+  '    </div>' +
+  '  </div>' +
+  '  <ion-item>' +
+  '    <img src="./assets/imgs/f.png" style="width: 20px" item-start>' +
+  '    <ion-label col-3>计划</ion-label>' +
+  '    <ion-input [(ngModel)]="rc.jn"  placeholder="{{rc.jn}}"></ion-input>' +
+  '  </ion-item>' +
+  '  <ion-item>' +
+  '    <img src="./assets/imgs/e.png" style="width: 20px" item-start>' +
+  '    <ion-label col-3 item-left>标签</ion-label>' +
+  '    <div item-left>' +
+  '      <div float-left>{{rc.lan}}</div>' +
+  '    </div>' +
+  '  </ion-item>' +
+  '  <ion-item>' +
+  '    <img src="./assets/imgs/d.png" style="width: 20px" item-start>' +
+  '    <ion-label col-3>时间</ion-label>' +
+  '    <ion-datetime displayFormat="YYYY年MM月DD日 HH:mm" [(ngModel)]="starttmp"></ion-datetime>' +
+  '  </ion-item>' +
+  '  <button ion-item>' +
+  '    <img src="./assets/imgs/c.png" style="width: 20px" item-start>' +
+  '    <ion-label col-3>提醒</ion-label>' +
+  '    <ion-label color="primary">提前十分钟</ion-label>' +
+  '  </button>' +
+  '  <ion-item>' +
+  '    <img src="./assets/imgs/b.png" style="width: 20px" item-start>' +
+  '    <ion-label col-3>备注</ion-label>' +
+  '    <ion-input ></ion-input>' +
+  '  </ion-item>' +
+  '</div>' +
+  '  <button ion-button (click)="del()" style="margin: 0 auto;">删除</button>' +
+  '  <button ion-button (click)="setAlarm()">设置提醒闹钟</button>' +
+  '</ion-content>',
 })
 export class SaPage {
   @ViewChild(Navbar) navBar: Navbar;

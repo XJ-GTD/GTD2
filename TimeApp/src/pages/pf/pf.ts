@@ -11,7 +11,6 @@ import {UtilService} from "../../service/util-service/util.service";
 import {ContactsService} from "../../service/util-service/contacts.service";
 import {ReturnConfig} from "../../app/return.config";
 import {Contacts} from "@ionic-native/contacts";
-import {CordovaInstance} from "@ionic-native/core";
 
 /**
  * Generated class for the PfPage page.
@@ -23,78 +22,70 @@ import {CordovaInstance} from "@ionic-native/core";
 @IonicPage()
 @Component({
   selector: 'page-pf',
-  // templateUrl: 'pf.html',
   providers:[Contacts],
-  template:'<ion-header>\n' +
-  '\n' +
-  '  <ion-toolbar>\n' +
-  '    <ion-buttons left>\n' +
-  '      <button ion-button icon-only (click)="goBack()">\n' +
-  '        <ion-icon name="arrow-back"></ion-icon>\n' +
-  '      </button>\n' +
-  '    </ion-buttons>\n' +
-  '    <ion-title>新建 </ion-title>\n' +
-  '    <ion-buttons right>\n' +
-  '      <button ion-button icon-only (click)="more()">\n' +
-  '        更多\n' +
-  '      </button>\n' +
-  '    </ion-buttons>\n' +
-  '  </ion-toolbar>\n' +
-  '\n' +
-  '</ion-header>\n' +
-  '\n' +
-  '<!--个人添加新建搜索 -->\n' +
-  '<ion-content padding class="page-backgroud-color">\n' +
-  '  <div >\n' +
-  '    <div style="margin: 20px 0px;">\n' +
-  '      <ion-item style="height: 50px">\n' +
-  '        <ion-input type="tel" [(ngModel)]="tel" (ionBlur)="getContacts()" placeholder="请输入手机号" clearInput></ion-input>\n' +
-  '      </ion-item>\n' +
-  '    </div>\n' +
-  '\n' +
-  '    <ion-label *ngIf="contacts.length > 0">本地联系人</ion-label>\n' +
-  '    <div *ngFor="let contact of contacts">\n' +
-  '      <ion-item (click)="select(contact)">\n' +
-  '        <ion-avatar item-start>\n' +
-  '          <img src="./assets/imgs/headImg.jpg">\n' +
-  '        </ion-avatar>\n' +
-  '          <h2>{{contact.phoneNumbers[0].value}}</h2>\n' +
-  '          <p style="">{{contact.displayName}}</p>\n' +
-  '        <div item-end>\n' +
-  '          <!--<span *ngIf="existCode == 1" style="color: red">已添加</span>-->\n' +
-  '          <!--<span *ngIf="existCode == 2" style="color: #488aff">添加</span>-->\n' +
-  '          <!--<span *ngIf="existCode == 3">未注册</span>-->\n' +
-  '        </div>\n' +
-  '      </ion-item>\n' +
-  '    </div>\n' +
-  '\n' +
-  '    <div margin-top>\n' +
-  '      <span style="width: 100%; text-align: center;display: block;padding-bottom: 20px; color: rgb(153,153,153);" *ngIf="checkMobile == false && checkMobileNull == false && isRegist == false">\n' +
-  '        该用户未注册\n' +
-  '      </span>\n' +
-  '      <span style="width: 100%; text-align: center;display: block;padding-bottom: 20px; color: rgb(153,153,153);" *ngIf="errorCode ==1">\n' +
-  '          手机号错误\n' +
-  '      </span>\n' +
-  '    </div>\n' +
-  '\n' +
-  '    <div *ngIf="checkMobile == false && checkMobileNull == false ">\n' +
-  '        <ion-item *ngIf="ru" (click)="toPersonalAddDetail(ru)">\n' +
-  '          <ion-avatar item-start>\n' +
-  '            <img [src]="ru.hiu">\n' +
-  '          </ion-avatar>\n' +
-  '          <ion-label>\n' +
-  '            <span style="font-family: PingFang-SC-Bold">{{ru.rN}}</span>\n' +
-  '          </ion-label>\n' +
-  '          <div item-end>\n' +
-  '            <span *ngIf="existCode == 1" style="color: red">已添加</span>\n' +
-  '            <span *ngIf="existCode == 2" style="color: #488aff">添加</span>\n' +
-  '            <span *ngIf="existCode == 3">未注册</span>\n' +
-  '          </div>\n' +
-  '        </ion-item>\n' +
-  '    </div>\n' +
-  '  </div>\n' +
-  '\n' +
-  '\n' +
+  template:'<ion-header>' +
+  '  <ion-toolbar>' +
+  '    <ion-buttons left>' +
+  '      <button ion-button icon-only (click)="goBack()">' +
+  '        <ion-icon name="arrow-back"></ion-icon>' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '    <ion-title>新建 </ion-title>' +
+  '    <ion-buttons right>' +
+  '      <button ion-button icon-only (click)="more()">' +
+  '        更多' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '  </ion-toolbar>' +
+  '</ion-header>' +
+  '<!--个人添加新建搜索 -->' +
+  '<ion-content padding class="page-backgroud-color">' +
+  '  <div >' +
+  '    <div style="margin: 20px 0px;">' +
+  '      <ion-item style="height: 50px">' +
+  '        <ion-input type="tel" [(ngModel)]="tel" (ionBlur)="getContacts()" placeholder="请输入手机号" clearInput></ion-input>' +
+  '      </ion-item>' +
+  '    </div>' +
+  '    <ion-label *ngIf="contacts.length > 0">本地联系人</ion-label>' +
+  '    <div *ngFor="let contact of contacts">' +
+  '      <ion-item (click)="select(contact)">' +
+  '        <ion-avatar item-start>' +
+  '          <img src="./assets/imgs/headImg.jpg">' +
+  '        </ion-avatar>' +
+  '          <h2>{{contact.phoneNumbers[0].value}}</h2>' +
+  '          <p style="">{{contact.displayName}}</p>' +
+  '        <div item-end>' +
+  '          <!--<span *ngIf="existCode == 1" style="color: red">已添加</span>-->' +
+  '          <!--<span *ngIf="existCode == 2" style="color: #488aff">添加</span>-->' +
+  '          <!--<span *ngIf="existCode == 3">未注册</span>-->' +
+  '        </div>' +
+  '      </ion-item>' +
+  '    </div>' +
+  '    <div margin-top>' +
+  '      <span style="width: 100%; text-align: center;display: block;padding-bottom: 20px; color: rgb(153,153,153);" *ngIf="checkMobile == false && checkMobileNull == false && isRegist == false">' +
+  '        该用户未注册' +
+  '      </span>' +
+  '      <span style="width: 100%; text-align: center;display: block;padding-bottom: 20px; color: rgb(153,153,153);" *ngIf="errorCode ==1">' +
+  '          手机号错误' +
+  '      </span>' +
+  '    </div>' +
+  '' +
+  '    <div *ngIf="checkMobile == false && checkMobileNull == false ">' +
+  '        <ion-item *ngIf="ru" (click)="toPersonalAddDetail(ru)">' +
+  '          <ion-avatar item-start>' +
+  '            <img [src]="ru.hiu">' +
+  '          </ion-avatar>' +
+  '          <ion-label>' +
+  '            <span style="font-family: PingFang-SC-Bold">{{ru.rN}}</span>' +
+  '          </ion-label>' +
+  '          <div item-end>' +
+  '            <span *ngIf="existCode == 1" style="color: red">已添加</span>' +
+  '            <span *ngIf="existCode == 2" style="color: #488aff">添加</span>' +
+  '            <span *ngIf="existCode == 3">未注册</span>' +
+  '          </div>' +
+  '        </ion-item>' +
+  '    </div>' +
+  '  </div>' +
   '</ion-content>',
 })
 export class PfPage {

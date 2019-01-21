@@ -11,49 +11,39 @@ import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular
 @IonicPage()
 @Component({
   selector: 'page-sd',
-  // templateUrl: 'sd.html',
-  providers: [],
-  template:'<ion-header>\n' +
-  '\n' +
-  '  <ion-navbar>\n' +
-  '    <ion-title>Sd</ion-title>\n' +
-  '  </ion-navbar>\n' +
-  '\n' +
-  '</ion-header>\n' +
-  '\n' +
-  '\n' +
-  '<ion-content padding>\n' +
-  '\n' +
-  '  <ion-list radio-group [(ngModel)]="remindText" (ionChange)="checked()">\n' +
-  '    <ion-item>\n' +
-  '      <ion-label>无</ion-label>\n' +
-  '      <ion-radio value="null" item-end></ion-radio>\n' +
-  '    </ion-item>\n' +
-  '    <ion-item>\n' +
-  '      <ion-label>任务发生当天</ion-label>\n' +
-  '      <ion-radio value="zero" item-end></ion-radio>\n' +
-  '    </ion-item>\n' +
-  '    <ion-item>\n' +
-  '      <ion-label>一天前</ion-label>\n' +
-  '      <ion-radio value="one" item-end></ion-radio>\n' +
-  '    </ion-item>\n' +
-  '    <ion-item>\n' +
-  '      <ion-label>两天前</ion-label>\n' +
-  '      <ion-radio value="two" item-end></ion-radio>\n' +
-  '    </ion-item>\n' +
-  '    <ion-item>\n' +
-  '      <ion-label>一周前</ion-label>\n' +
-  '      <ion-radio value="week" item-end></ion-radio>\n' +
-  '    </ion-item>\n' +
-  '  </ion-list>\n' +
-  '\n' +
-  '  <ion-item>\n' +
-  '    <ion-label>提醒时间</ion-label>\n' +
-  '    <ion-datetime displayFormat="HH:mm" [(ngModel)]="remindTime"></ion-datetime>\n' +
-  '  </ion-item>\n' +
-  '\n' +
-  '  <button ion-button color="danger" (click)="setAralmClock()">确定</button><button ion-button (click)="dismiss()">取消</button>\n' +
-  '\n' +
+  template:'<ion-header>' +
+  '  <ion-navbar>' +
+  '    <ion-title>Sd</ion-title>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '  <ion-list radio-group [(ngModel)]="remindText" (ionChange)="checked()">' +
+  '    <ion-item>' +
+  '      <ion-label>无</ion-label>' +
+  '      <ion-radio value="null" item-end></ion-radio>' +
+  '    </ion-item>' +
+  '    <ion-item>' +
+  '      <ion-label>任务发生当天</ion-label>' +
+  '      <ion-radio value="zero" item-end></ion-radio>' +
+  '    </ion-item>' +
+  '    <ion-item>' +
+  '      <ion-label>一天前</ion-label>' +
+  '      <ion-radio value="one" item-end></ion-radio>' +
+  '    </ion-item>' +
+  '    <ion-item>' +
+  '      <ion-label>两天前</ion-label>' +
+  '      <ion-radio value="two" item-end></ion-radio>' +
+  '    </ion-item>' +
+  '    <ion-item>' +
+  '      <ion-label>一周前</ion-label>' +
+  '      <ion-radio value="week" item-end></ion-radio>' +
+  '    </ion-item>' +
+  '  </ion-list>' +
+  '  <ion-item>' +
+  '    <ion-label>提醒时间</ion-label>' +
+  '    <ion-datetime displayFormat="HH:mm" [(ngModel)]="remindTime"></ion-datetime>' +
+  '  </ion-item>' +
+  '  <button ion-button color="danger" (click)="setAralmClock()">确定</button><button ion-button (click)="dismiss()">取消</button>' +
   '</ion-content>',
 })
 export class SdPage {

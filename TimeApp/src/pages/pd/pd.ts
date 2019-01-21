@@ -15,38 +15,33 @@ import {PageConfig} from "../../app/page.config";
 @IonicPage()
 @Component({
   selector: 'page-pd',
-  // templateUrl: 'pd.html',
-  template:'<ion-header>\n' +
-  '  <ion-navbar >\n' +
-  '    <ion-title *ngIf="g != undefined">{{g.rN}}</ion-title>\n' +
-  '    <ion-buttons right margin-right>\n' +
-  '      <button ion-button icon-only (click)="addQcy()">\n' +
-  '        <ion-icon name="add"></ion-icon>\n' +
-  '      </button>\n' +
-  '    </ion-buttons>\n' +
-  '  </ion-navbar>\n' +
-  '\n' +
-  '</ion-header>\n' +
-  '\n' +
-  '\n' +
-  '<ion-content padding class="page-backgroud-color">\n' +
-  '\n' +
-  '  <ion-list>\n' +
-  '    <ion-item-sliding *ngFor="let u of us">\n' +
-  '      <ion-item (click)="toMemberDetail(u)">\n' +
-  '        <ion-avatar item-start >\n' +
-  '          <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">\n' +
-  '        </ion-avatar>\n' +
-  '        <ion-label>\n' +
-  '          <p style="color: #000;font-size: 1.7rem">{{u.ran}}</p>\n' +
-  '          <p></p>\n' +
-  '        </ion-label>\n' +
-  '      </ion-item>\n' +
-  '      <ion-item-options side="right">\n' +
-  '        <button ion-button color="danger" (click)="delete(u)">删除</button>\n' +
-  '      </ion-item-options>\n' +
-  '    </ion-item-sliding>\n' +
-  '  </ion-list>\n' +
+  template:'<ion-header>' +
+  '  <ion-navbar >' +
+  '    <ion-title *ngIf="g != undefined">{{g.rN}}</ion-title>' +
+  '    <ion-buttons right margin-right>' +
+  '      <button ion-button icon-only (click)="addQcy()">' +
+  '        <ion-icon name="add"></ion-icon>' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding class="page-backgroud-color">' +
+  '  <ion-list>' +
+  '    <ion-item-sliding *ngFor="let u of us">' +
+  '      <ion-item (click)="toMemberDetail(u)">' +
+  '        <ion-avatar item-start >' +
+  '          <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">' +
+  '        </ion-avatar>' +
+  '        <ion-label>' +
+  '          <p style="color: #000;font-size: 1.7rem">{{u.ran}}</p>' +
+  '          <p></p>' +
+  '        </ion-label>' +
+  '      </ion-item>' +
+  '      <ion-item-options side="right">' +
+  '        <button ion-button color="danger" (click)="delete(u)">删除</button>' +
+  '      </ion-item-options>' +
+  '    </ion-item-sliding>' +
+  '  </ion-list>' +
   '</ion-content>',
 })
 export class PdPage {

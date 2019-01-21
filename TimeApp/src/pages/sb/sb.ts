@@ -28,118 +28,104 @@ import {JhModel} from "../../model/jh.model";
 @IonicPage()
 @Component({
   selector: 'page-sb',
-  // templateUrl: 'sb.html',
   providers: [],
-  template:'<ion-header>\n' +
-  '\n' +
-  '  <ion-toolbar>\n' +
-  '    <ion-buttons left>\n' +
-  '      <button ion-button icon-only (click)="goBack()">\n' +
-  '        <ion-icon name="arrow-back" ></ion-icon>\n' +
-  '      </button>\n' +
-  '    </ion-buttons>\n' +
-  '    <ion-title>创建日程</ion-title>\n' +
-  '    <ion-buttons right>\n' +
-  '      <button (click)="newProject()"  ion-button>\n' +
-  '          发布\n' +
-  '      </button>\n' +
-  '    </ion-buttons>\n' +
-  '\n' +
-  '  </ion-toolbar>\n' +
-  '\n' +
-  '</ion-header>\n' +
-  '\n' +
-  '\n' +
-  '<ion-content padding>\n' +
-  '  <ion-label></ion-label>\n' +
-  '\n' +
-  '  <ion-textarea placeholder="要发的内容..." [(ngModel)]="title"></ion-textarea>\n' +
-  '\n' +
-  '  <div ion-item no-padding>\n' +
-  '    <div *ngFor="let index of select">\n' +
-  '      <div float-left margin-left title="{{pRelAl[index].ran}}">\n' +
-  '        <ion-thumbnail ion-button color="light" float-start class="button-border padding-0 " no-margin>\n' +
-  '          <img [src]="pRelAl[index].hiu" class="button-border">\n' +
-  '        </ion-thumbnail>\n' +
-  '        <div style="clear: both; font-size:10px;width:56px;overflow: hidden;text-overflow: ellipsis;" text-center >{{pRelAl[index].ran}}</div>\n' +
-  '      </div>\n' +
-  '    </div>\n' +
-  '    <div float-left margin-left (click)="showCheckbox()">\n' +
-  '      <ion-thumbnail ion-button color="light" class="div-add-border button-border" no-margin >\n' +
-  '        <ion-icon name="add"></ion-icon>\n' +
-  '      </ion-thumbnail>\n' +
-  '      <div style="clear: both; font-size:10px" text-center></div>\n' +
-  '    </div>\n' +
-  '  </div>\n' +
-  '  <div class="height56">\n' +
-  '    <ion-label float-right>\n' +
-  '      <ion-buttons>\n' +
-  '        <button class="buttonCssA" (click)="showJhs()" >\n' +
-  '          <div float-left>\n' +
-  '            <img style="height: 12px;width: 9px;margin-top: 3px;" src="./assets/imgs/i.png"/>\n' +
-  '          </div>\n' +
-  '          <div float-left class="divCssA">{{jh.jn}}</div>\n' +
-  '        </button>\n' +
-  '        <button class="buttonCssB bor" (click)="showLbs()">\n' +
-  '          <div float-right style="width: 12px;height: 18px;position: relative;margin-right: 5px;">\n' +
-  '            <div class="arrowCss"></div>\n' +
-  '          </div>\n' +
-  '          <div float-right class="divCssB" style="font-size: 15px">{{lb.lan}}</div>\n' +
-  '        </button>\n' +
-  '      </ion-buttons>\n' +
-  '    </ion-label>\n' +
-  '\n' +
-  '  </div>\n' +
-  '\n' +
-  '  <button ion-item class="padding-left-0 height56">\n' +
-  '    <img src="./assets/imgs/1.png" item-start/>\n' +
-  '    <ion-label>时间</ion-label>\n' +
-  '    <ion-datetime displayFormat="YYYY年MM月DD日 HH:mm" [(ngModel)]="startTime"></ion-datetime>\n' +
-  '  </button>\n' +
-  '  <ion-item *ngIf="showA" class="padding-left-0 height56">\n' +
-  '    <img src="./assets/imgs/4.png" item-start/>\n' +
-  '    <ion-label>重复类型</ion-label>\n' +
-  '    <ion-select item-end [(ngModel)]="repeatType" (ionChange)="chengeType()" >\n' +
-  '      <ion-option  *ngFor="let ztd of repeatTypes" value="{{ztd.zk}}">{{ztd.zkv}}</ion-option>\n' +
-  '    </ion-select>\n' +
-  '  </ion-item>\n' +
-  '  <button ion-item *ngIf="showC" class="padding-left-0 height56" (click)="showRemarks()">\n' +
-  '    <img src="./assets/imgs/b.png" item-start/>\n' +
-  '    <ion-label>备注</ion-label>\n' +
-  '    <ion-input text-end type="text" [(ngModel)]="remarks">2018年11月20日</ion-input>\n' +
-  '  </button>\n' +
-  '  <button ion-item *ngIf="showE" class="padding-left-0 height56" (click)="remindSet()">\n' +
-  '    <img src="./assets/imgs/c.png" item-start/>\n' +
-  '    <ion-label>提醒方式</ion-label>\n' +
-  '    <ion-label color="primary" text-end>{{remindType===undefined?"无":remindType}}</ion-label>\n' +
-  '  </button>\n' +
-  '\n' +
-  '\n' +
-  '</ion-content>\n' +
-  '<div [hidden]="!isShowJh" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();">\n' +
-  '  <div disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></div>\n' +
-  '  <div class="pop-css">\n' +
-  '    <div class="titlecss" text-center>选择计划</div>\n' +
-  '    <div class="flexCss">\n' +
-  '      <div *ngFor="let jh of jhs" class="contentcss">\n' +
-  '        <button name="labJh" style="height:25px ; font-size: 1.5rem;" class="jhCss" (click)="selectJh($event,jh)">{{jh.jn}}</button>\n' +
-  '      </div>\n' +
-  '    </div>\n' +
-  '  </div>\n' +
-  '</div>\n' +
-  '\n' +
-  '\n' +
-  '<div [hidden]="!isShowLb" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();">\n' +
-  '  <div disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></div>\n' +
-  '  <div class="pop-css">\n' +
-  '    <div class="titlecss" text-center>选择标签</div>\n' +
-  '    <div class="flexCss">\n' +
-  '      <div *ngFor="let lb of lbs" class="contentcss">\n' +
-  '        <button name="labLb" style="height:25px ; font-size: 1.5rem;" class="jhCss" (click)="selectLb($event,lb)">{{lb.lan}}</button>\n' +
-  '      </div>\n' +
-  '    </div>\n' +
-  '  </div>\n' +
-  '</div>\n',
+  template:'<ion-header>' +
+  '  <ion-toolbar>' +
+  '    <ion-buttons left>' +
+  '      <button ion-button icon-only (click)="goBack()">' +
+  '        <ion-icon name="arrow-back" ></ion-icon>' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '    <ion-title>创建日程</ion-title>' +
+  '    <ion-buttons right>' +
+  '      <button (click)="newProject()"  ion-button>' +
+  '          发布' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '  </ion-toolbar>' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '  <ion-label></ion-label>' +
+  '  <ion-textarea placeholder="要发的内容..." [(ngModel)]="title"></ion-textarea>' +
+  '  <div ion-item no-padding>' +
+  '    <div *ngFor="let index of select">' +
+  '      <div float-left margin-left title="{{pRelAl[index].ran}}">' +
+  '        <ion-thumbnail ion-button color="light" float-start class="button-border padding-0 " no-margin>' +
+  '          <img [src]="pRelAl[index].hiu" class="button-border">' +
+  '        </ion-thumbnail>' +
+  '        <div style="clear: both; font-size:10px;width:56px;overflow: hidden;text-overflow: ellipsis;" text-center >{{pRelAl[index].ran}}</div>' +
+  '      </div>' +
+  '    </div>' +
+  '    <div float-left margin-left (click)="showCheckbox()">' +
+  '      <ion-thumbnail ion-button color="light" class="div-add-border button-border" no-margin >' +
+  '        <ion-icon name="add"></ion-icon>' +
+  '      </ion-thumbnail>' +
+  '      <div style="clear: both; font-size:10px" text-center></div>' +
+  '    </div>' +
+  '  </div>' +
+  '  <div class="height56">' +
+  '    <ion-label float-right>' +
+  '      <ion-buttons>' +
+  '        <button class="buttonCssA" (click)="showJhs()" >' +
+  '          <div float-left>' +
+  '            <img style="height: 12px;width: 9px;margin-top: 3px;" src="./assets/imgs/i.png"/>' +
+  '          </div>' +
+  '          <div float-left class="divCssA">{{jh.jn}}</div>' +
+  '        </button>' +
+  '        <button class="buttonCssB bor" (click)="showLbs()">' +
+  '          <div float-right style="width: 12px;height: 18px;position: relative;margin-right: 5px;">' +
+  '            <div class="arrowCss"></div>' +
+  '          </div>' +
+  '          <div float-right class="divCssB" style="font-size: 15px">{{lb.lan}}</div>' +
+  '        </button>' +
+  '      </ion-buttons>' +
+  '    </ion-label>' +
+  '  </div>' +
+  '  <button ion-item class="padding-left-0 height56">' +
+  '    <img src="./assets/imgs/1.png" item-start/>' +
+  '    <ion-label>时间</ion-label>' +
+  '    <ion-datetime displayFormat="YYYY年MM月DD日 HH:mm" [(ngModel)]="startTime"></ion-datetime>' +
+  '  </button>' +
+  '  <ion-item *ngIf="showA" class="padding-left-0 height56">' +
+  '    <img src="./assets/imgs/4.png" item-start/>' +
+  '    <ion-label>重复类型</ion-label>' +
+  '    <ion-select item-end [(ngModel)]="repeatType" (ionChange)="chengeType()" >' +
+  '      <ion-option  *ngFor="let ztd of repeatTypes" value="{{ztd.zk}}">{{ztd.zkv}}</ion-option>' +
+  '    </ion-select>' +
+  '  </ion-item>' +
+  '  <button ion-item *ngIf="showC" class="padding-left-0 height56" (click)="showRemarks()">' +
+  '    <img src="./assets/imgs/b.png" item-start/>' +
+  '    <ion-label>备注</ion-label>' +
+  '    <ion-input text-end type="text" [(ngModel)]="remarks">2018年11月20日</ion-input>' +
+  '  </button>' +
+  '  <button ion-item *ngIf="showE" class="padding-left-0 height56" (click)="remindSet()">' +
+  '    <img src="./assets/imgs/c.png" item-start/>' +
+  '    <ion-label>提醒方式</ion-label>' +
+  '    <ion-label color="primary" text-end>{{remindType===undefined?"无":remindType}}</ion-label>' +
+  '  </button>' +
+  '</ion-content>' +
+  '<div [hidden]="!isShowJh" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();">' +
+  '  <div disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></div>' +
+  '  <div class="pop-css">' +
+  '    <div class="titlecss" text-center>选择计划</div>' +
+  '    <div class="flexCss">' +
+  '      <div *ngFor="let jh of jhs" class="contentcss">' +
+  '        <button name="labJh" style="height:25px ; font-size: 1.5rem;" class="jhCss" (click)="selectJh($event,jh)">{{jh.jn}}</button>' +
+  '      </div>' +
+  '    </div>' +
+  '  </div>' +
+  '</div>' +
+  '<div [hidden]="!isShowLb" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();">' +
+  '  <div disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></div>' +
+  '  <div class="pop-css">' +
+  '    <div class="titlecss" text-center>选择标签</div>' +
+  '    <div class="flexCss">' +
+  '      <div *ngFor="let lb of lbs" class="contentcss">' +
+  '        <button name="labLb" style="height:25px ; font-size: 1.5rem;" class="jhCss" (click)="selectLb($event,lb)">{{lb.lan}}</button>' +
+  '      </div>' +
+  '    </div>' +
+  '  </div>' +
+  '</div>',
 
 })
 export class SbPage {

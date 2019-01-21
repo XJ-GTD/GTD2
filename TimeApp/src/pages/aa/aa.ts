@@ -15,42 +15,30 @@ import {XiaojiAlarmclockService} from "../../service/util-service/xiaoji-alarmcl
 @IonicPage()
 @Component({
   selector: 'page-aa',
-  // templateUrl: 'aa.html',
   template:
-  '<ion-header>\n' +
-  '\n' +
-  '  <ion-navbar>\n' +
-  '    <ion-title>设置</ion-title>\n' +
-  '  </ion-navbar>\n' +
-  '\n' +
-  '</ion-header>\n' +
-  '\n' +
-  '\n' +
-  '<ion-content padding class="page-backgroud-color">\n' +
-  '\n' +
-  '  <div>\n' +
-  '\n' +
-  '    <button ion-item (click)="accountSecurity()" class="rowCss">\n' +
-  '      <ion-label>账号与安全</ion-label>\n' +
-  '    </button>\n' +
-  '\n' +
-  '    <button ion-item (click)="newsMessage()" class="rowCss">\n' +
-  '      <ion-label>消息通知</ion-label>\n' +
-  '    </button>\n' +
-  '\n' +
-  '    <button ion-item (click)="cleanCache()" class="rowCss">\n' +
-  '      <ion-label item-start>缓存清理</ion-label>\n' +
-  '      <ion-label item-end text-end>5.5M</ion-label>\n' +
-  '    </button>\n' +
-  '\n' +
-  '    <button ion-item (click)="shareApp()" margin-top class="rowCss">\n' +
-  '      <ion-label>分享APP</ion-label>\n' +
-  '    </button>\n' +
-  '\n' +
-  '    <button ion-item (click)="aboutApp()" margin-top class="rowCss">\n' +
-  '      <ion-label>关于</ion-label>\n' +
-  '    </button>\n' +
-  '\n' +
+  '<ion-header>' +
+  '  <ion-navbar>' +
+  '    <ion-title>设置</ion-title>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding class="page-backgroud-color">' +
+  '  <div>' +
+  '    <button ion-item (click)="accountSecurity()" class="rowCss">' +
+  '      <ion-label>账号与安全</ion-label>' +
+  '    </button>' +
+  '    <button ion-item (click)="newsMessage()" class="rowCss">' +
+  '      <ion-label>消息通知</ion-label>' +
+  '    </button>' +
+  '    <button ion-item (click)="cleanCache()" class="rowCss">' +
+  '      <ion-label item-start>缓存清理</ion-label>' +
+  '      <ion-label item-end text-end>5.5M</ion-label>' +
+  '    </button>' +
+  '    <button ion-item (click)="shareApp()" margin-top class="rowCss">' +
+  '      <ion-label>分享APP</ion-label>' +
+  '    </button>' +
+  '    <button ion-item (click)="aboutApp()" margin-top class="rowCss">' +
+  '      <ion-label>关于</ion-label>' +
+  '    </button>' +
   '    <button ion-item (click)="helpAndFeedback()" class="rowCss">\n' +
   '      <ion-label>帮助及反馈</ion-label>\n' +
   '    </button>\n' +

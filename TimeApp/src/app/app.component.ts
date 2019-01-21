@@ -9,7 +9,7 @@ import {NetworkService} from "../service/util-service/network.service";
 import {XiaojiAssistantService} from "../service/util-service/xiaoji-assistant.service";
 
 @Component({
-  templateUrl: 'app.html'
+  template: '<ion-nav></ion-nav>'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;

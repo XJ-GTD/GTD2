@@ -11,19 +11,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 @IonicPage()
 @Component({
   selector: 'page-ac',
-  // templateUrl: 'ac.html',
-  template: '<ion-header>\n' +
-  '\n' +
-  '  <ion-navbar>\n' +
-  '    <ion-title>Ac</ion-title>\n' +
-  '  </ion-navbar>\n' +
-  '\n' +
-  '</ion-header>\n' +
-  '\n' +
-  '\n' +
-  '<ion-content padding>\n' +
-  '\n' +
-  '</ion-content>\n'
+  template: '<ion-header>' +
+  '  <ion-navbar>' +
+  '    <ion-title>Ac</ion-title>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '</ion-content>'
 })
 export class AcPage {
 

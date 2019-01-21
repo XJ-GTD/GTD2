@@ -23,30 +23,27 @@ import {ContactsService} from "../../service/util-service/contacts.service";
 @IonicPage()
 @Component({
   selector: 'page-al',
-  // templateUrl: 'al.html',
-  template:'<div class="container">\n' +
-  '\n' +
-  '  <div class="progress-wrapper">\n' +
-  '    <div class="current" [ngStyle]="getOverlayStyle()">{{ current }}/{{ max }}</div>\n' +
-  '\n' +
-  '    <round-progress\n' +
-  '      [current]="current"\n' +
-  '      [max]="max"\n' +
-  '      [stroke]="stroke"\n' +
-  '      [radius]="radius"\n' +
-  '      [semicircle]="semicircle"\n' +
-  '      [rounded]="rounded"\n' +
-  '      [responsive]="responsive"\n' +
-  '      [clockwise]="clockwise"\n' +
-  '      [color]="gradient ? \'url(#gradient)\' : color"\n' +
-  '      [background]="background"\n' +
-  '      [duration]="duration"\n' +
-  '      [animation]="animation"\n' +
-  '      [animationDelay]="animationDelay"></round-progress>\n' +
-  '  </div>\n' +
-  '  <div class="text">{{ text }}</div>\n' +
-  '</div>\n' +
-  '\n'
+  template:'<div class="container">' +
+  '  <div class="progress-wrapper">' +
+  '    <div class="current" [ngStyle]="getOverlayStyle()">{{ current }}/{{ max }}</div>' +
+  '    <round-progress' +
+  '      [current]="current"' +
+  '      [max]="max"' +
+  '      [stroke]="stroke"' +
+  '      [radius]="radius"' +
+  '      [semicircle]="semicircle"' +
+  '      [rounded]="rounded"' +
+  '      [responsive]="responsive"' +
+  '      [clockwise]="clockwise"' +
+  '      [color]="gradient ? \'url(#gradient)\' : color"' +
+  '      [background]="background"' +
+  '      [duration]="duration"' +
+  '      [animation]="animation"' +
+  '      [animationDelay]="animationDelay"></round-progress>' +
+  '  </div>' +
+  '  <div class="text">{{ text }}</div>' +
+  '</div>' +
+  ''
 })
 export class AlPage {
 

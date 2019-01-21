@@ -15,40 +15,35 @@ import {PageConfig} from "../../app/page.config";
 @IonicPage()
 @Component({
   selector: 'page-pg',
-  // templateUrl: 'pg.html',
-  template:'<ion-header>\n' +
-  '\n' +
-  '  <ion-navbar [hideBackButton]="true">\n' +
-  '    <ion-buttons left>\n' +
-  '      <button ion-button icon-only (click)="goBack()">\n' +
-  '        取消\n' +
-  '      </button>\n' +
-  '    </ion-buttons>\n' +
-  '    <ion-title>选择群成员</ion-title>\n' +
-  '    <ion-buttons right>\n' +
-  '      <button ion-button icon-only (click)="showSelect()">\n' +
-  '        确定\n' +
-  '      </button>\n' +
-  '    </ion-buttons>\n' +
-  '  </ion-navbar>\n' +
-  '\n' +
-  '</ion-header>\n' +
-  '\n' +
-  '\n' +
-  '<ion-content padding class="page-backgroud-color">\n' +
-  '  <div *ngFor="let u of us">\n' +
-  '    <ion-item>\n' +
-  '      <ion-avatar item-start >\n' +
-  '        <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">\n' +
-  '      </ion-avatar>\n' +
-  '      <ion-label>\n' +
-  '        <p style="color: #000; line-height: 17px;font-size: 1.7rem">{{u.ran}}</p>\n' +
-  '        <!--<p>皮一下很开心</p>-->\n' +
-  '      </ion-label>\n' +
-  '      <ion-checkbox item-end (ionChange)="selected(u,$event)" [checked]="checkSel(u)"></ion-checkbox>\n' +
-  '    </ion-item>\n' +
-  '  </div>\n' +
-  '</ion-content>\n',
+  template:'<ion-header>' +
+  '  <ion-navbar [hideBackButton]="true">' +
+  '    <ion-buttons left>' +
+  '      <button ion-button icon-only (click)="goBack()">' +
+  '        取消' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '    <ion-title>选择群成员</ion-title>' +
+  '    <ion-buttons right>' +
+  '      <button ion-button icon-only (click)="showSelect()">' +
+  '        确定' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding class="page-backgroud-color">' +
+  '  <div *ngFor="let u of us">' +
+  '    <ion-item>' +
+  '      <ion-avatar item-start >' +
+  '        <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">' +
+  '      </ion-avatar>' +
+  '      <ion-label>' +
+  '        <p style="color: #000; line-height: 17px;font-size: 1.7rem">{{u.ran}}</p>' +
+  '        <!--<p>皮一下很开心</p>-->' +
+  '      </ion-label>' +
+  '      <ion-checkbox item-end (ionChange)="selected(u,$event)" [checked]="checkSel(u)"></ion-checkbox>' +
+  '    </ion-item>' +
+  '  </div>' +
+  '</ion-content>',
 })
 export class PgPage {
 

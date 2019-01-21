@@ -15,51 +15,43 @@ import {PageConfig} from "../../app/page.config";
 @IonicPage()
 @Component({
   selector: 'page-pb',
-  // templateUrl: 'pb.html',
-  template:'<ion-header>\n' +
-  '\n' +
-  '  <ion-navbar>\n' +
-  '    <ion-title></ion-title>\n' +
-  '    <ion-buttons right>\n' +
-  '      <button ion-button ion-only *ngIf="state == false" (click)="edit()">\n' +
-  '        编辑\n' +
-  '      </button>\n' +
-  '      <button ion-button ion-only *ngIf="state == true" (click)="confirm()">\n' +
-  '        确定\n' +
-  '      </button>\n' +
-  '    </ion-buttons>\n' +
-  '  </ion-navbar>\n' +
-  '\n' +
-  '</ion-header>\n' +
-  '\n' +
-  '\n' +
-  '<ion-content padding>\n' +
-  '  <div *ngIf="u">\n' +
-  '\n' +
-  '  <ion-item style="height: 40%">\n' +
-  '    <ion-avatar >\n' +
-  '      <img [src]="u.hiu" style="width: 80px;height: 80px ;margin: 0 auto">\n' +
-  '    </ion-avatar>\n' +
-  '    <ion-title style="margin: 0 auto">{{u.rN}}</ion-title>\n' +
-  '  </ion-item>\n' +
-  '  <!--<div >-->\n' +
-  '  <ion-item>\n' +
-  '    <ion-label>备注</ion-label>\n' +
-  '    <ion-input type="text" text-end placeholder="{{name}}" [disabled]="state ? false : true" [(ngModel)]="u.ran"></ion-input>\n' +
-  '  </ion-item>\n' +
-  '  <ion-item>\n' +
-  '    <ion-label>接收该用户的推送</ion-label>\n' +
-  '    <ion-checkbox item-end [disabled]="state ? false : true" [checked]="true" [(ngModel)]="isPush"></ion-checkbox>\n' +
-  '  </ion-item>\n' +
-  '  <ion-item *ngIf="isPop">\n' +
-  '    <ion-label color="danger">他拒收了你的推送</ion-label>\n' +
-  '    <button item-end ion-button>再次发送</button>\n' +
-  '  </ion-item>\n' +
-  '\n' +
-  '\n' +
-  '  <!--</div>-->\n' +
-  '\n' +
-  '  </div>\n' +
+  template:'<ion-header>' +
+  '  <ion-navbar>' +
+  '    <ion-title></ion-title>' +
+  '    <ion-buttons right>' +
+  '      <button ion-button ion-only *ngIf="state == false" (click)="edit()">' +
+  '        编辑' +
+  '      </button>' +
+  '      <button ion-button ion-only *ngIf="state == true" (click)="confirm()">' +
+  '        确定' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '  </ion-navbar>' +
+  '' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '  <div *ngIf="u">' +
+  '  <ion-item style="height: 40%">' +
+  '    <ion-avatar >' +
+  '      <img [src]="u.hiu" style="width: 80px;height: 80px ;margin: 0 auto">' +
+  '    </ion-avatar>' +
+  '    <ion-title style="margin: 0 auto">{{u.rN}}</ion-title>' +
+  '  </ion-item>' +
+  '  <!--<div >-->' +
+  '  <ion-item>' +
+  '    <ion-label>备注</ion-label>' +
+  '    <ion-input type="text" text-end placeholder="{{name}}" [disabled]="state ? false : true" [(ngModel)]="u.ran"></ion-input>' +
+  '  </ion-item>' +
+  '  <ion-item>' +
+  '    <ion-label>接收该用户的推送</ion-label>' +
+  '    <ion-checkbox item-end [disabled]="state ? false : true" [checked]="true" [(ngModel)]="isPush"></ion-checkbox>' +
+  '  </ion-item>' +
+  '  <ion-item *ngIf="isPop">' +
+  '    <ion-label color="danger">他拒收了你的推送</ion-label>' +
+  '    <button item-end ion-button>再次发送</button>' +
+  '  </ion-item>' +
+  '  <!--</div>-->' +
+  '  </div>' +
   '</ion-content>',
 })
 export class PbPage {

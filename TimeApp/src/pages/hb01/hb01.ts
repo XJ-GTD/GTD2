@@ -11,7 +11,6 @@ import {UtilService} from "../../service/util-service/util.service";
 
 @Component({
   selector: 'page-hb01',
-  // templateUrl: 'hb01.html',
   template:'<canvas  #canvas></canvas>',
 })
 export class Hb01Page {

@@ -2,8 +2,6 @@ import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, AlertController, Navbar} from 'ionic-angular';
 import {LsmService} from "../../service/lsm.service";
 import {UtilService} from "../../service/util-service/util.service";
-import {PageConfig} from "../../app/page.config";
-import {DataConfig} from "../../app/data.config";
 import {ReturnConfig} from "../../app/return.config";
 
 /**
@@ -16,44 +14,35 @@ import {ReturnConfig} from "../../app/return.config";
 @IonicPage()
 @Component({
   selector: 'page-ud',
-  // templateUrl: 'ud.html',
-  template:'<ion-header>\n' +
-  '\n' +
-  '  <ion-navbar>\n' +
-  '    <ion-title>短信登录</ion-title>\n' +
-  '  </ion-navbar>\n' +
-  '\n' +
-  '</ion-header>\n' +
-  '\n' +
-  '\n' +
-  '<ion-content padding>\n' +
-  '\n' +
-  '  <div style="padding:10px;margin-top: 40px">\n' +
-  '    <ion-item padding>\n' +
-  '      <ion-icon name="ios-person-outline" item-start></ion-icon>\n' +
-  '      <ion-input type="tel" placeholder="输入您的手机号" [(ngModel)]="accountMobile"  (ionBlur)="checkPhone()"  (input)="format()" clearInput></ion-input>\n' +
-  '    </ion-item>\n' +
-  '    <ion-label *ngIf="this.errorCode == 0" class="error_info">手机号不能为空</ion-label>\n' +
-  '    <ion-label *ngIf="this.errorCode == 1 || this.errorCode == 2" class="error_info">请输入正确11位手机号</ion-label>\n' +
-  '    <ion-item padding>\n' +
-  '      <ion-icon name="ios-lock-outline" item-start></ion-icon>\n' +
-  '      <ion-input type="number" placeholder="验证码" [(ngModel)]="authCode" clearInput></ion-input>\n' +
-  '      <ion-buttons item-right>\n' +
-  '        <button ion-button (click)="sendMsg()">{{timeOut}}</button>\n' +
-  '      </ion-buttons>\n' +
-  '    </ion-item>\n' +
-  '    <ion-label *ngIf="this.agreeFlag == false" class="error_info">请阅读并同意《用户协议》</ion-label>\n' +
-  '\n' +
-  '    <button ion-button block color="danger" class="login_button" (click)="signIn()" style="margin-top: 100px !important;">\n' +
-  '      登录\n' +
-  '    </button>\n' +
-  '    <div margin-top>\n' +
-  '      <span float-end (click)="userAgreement()">我已阅读并同意<span style="text-decoration: underline;color:blue">《用户协议》</span></span>\n' +
-  '      <span style="display: block;" float-end><ion-checkbox [(ngModel)]="agree"></ion-checkbox></span>\n' +
-  '    </div>\n' +
-  '\n' +
-  '\n' +
-  '  </div>\n' +
+  template:'<ion-header>' +
+  '  <ion-navbar>' +
+  '    <ion-title>短信登录</ion-title>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '  <div style="padding:10px;margin-top: 40px">' +
+  '    <ion-item padding>' +
+  '      <ion-icon name="ios-person-outline" item-start></ion-icon>' +
+  '      <ion-input type="tel" placeholder="输入您的手机号" [(ngModel)]="accountMobile"  (ionBlur)="checkPhone()"  (input)="format()" clearInput></ion-input>' +
+  '    </ion-item>' +
+  '    <ion-label *ngIf="this.errorCode == 0" class="error_info">手机号不能为空</ion-label>' +
+  '    <ion-label *ngIf="this.errorCode == 1 || this.errorCode == 2" class="error_info">请输入正确11位手机号</ion-label>' +
+  '    <ion-item padding>' +
+  '      <ion-icon name="ios-lock-outline" item-start></ion-icon>' +
+  '      <ion-input type="number" placeholder="验证码" [(ngModel)]="authCode" clearInput></ion-input>' +
+  '      <ion-buttons item-right>' +
+  '        <button ion-button (click)="sendMsg()">{{timeOut}}</button>' +
+  '      </ion-buttons>' +
+  '    </ion-item>' +
+  '    <ion-label *ngIf="this.agreeFlag == false" class="error_info">请阅读并同意《用户协议》</ion-label>' +
+  '    <button ion-button block color="danger" class="login_button" (click)="signIn()" style="margin-top: 100px !important;">' +
+  '      登录' +
+  '    </button>' +
+  '    <div margin-top>' +
+  '      <span float-end (click)="userAgreement()">我已阅读并同意<span style="text-decoration: underline;color:blue">《用户协议》</span></span>' +
+  '      <span style="display: block;" float-end><ion-checkbox [(ngModel)]="agree"></ion-checkbox></span>' +
+  '    </div>' +
+  '  </div>' +
   '</ion-content>',
 })
 export class UdPage {

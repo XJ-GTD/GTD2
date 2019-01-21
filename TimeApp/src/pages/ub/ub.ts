@@ -18,80 +18,78 @@ import {UtilService} from "../../service/util-service/util.service";
 @IonicPage()
 @Component({
   selector: 'page-ub',
-  // templateUrl: 'ub.html',
   providers: [],
-  template:'<ion-header>\n' +
-  '  <div class="login_header">\n' +
-  '    <ion-navbar>\n' +
-  '      <ion-title></ion-title>\n' +
-  '    </ion-navbar>\n' +
-  '  </div>\n' +
-  '</ion-header>\n' +
-  '\n' +
-  '<ion-content padding>\n' +
-  '  <div class="user_login">\n' +
-  '    <div class="login_body">\n' +
-  '      <div class="login_icon">\n' +
-  '      <span class="xj_icon">\n' +
-  '        <img src="./assets/imgs/logo2.png"/>\n' +
-  '      </span>\n' +
-  '      </div>\n' +
-  '      <div class="login_info">\n' +
-  '        <div class="custom_form">\n' +
-  '          <div class="custom_group">\n' +
-  '            <div class="group_input">\n' +
-  '              <div class="input_icon">\n' +
-  '              <span >\n' +
-  '                 <ion-icon name="ios-person-outline"></ion-icon>\n' +
-  '              </span>\n' +
-  '              </div>\n' +
-  '              <div class="input_text">\n' +
-  '                <ion-item>\n' +
-  '                  <!--  <ion-label no-lines floating>\n' +
-  '                      <span class="input_title">用户名/账号</span>\n' +
-  '                    </ion-label>-->\n' +
-  '                  <ion-input type="text" [(ngModel)]="accountName" pattern="[0-9A-Za-z]*" placeholder="用户名/账号" clearInput></ion-input>\n' +
-  '                </ion-item>\n' +
-  '              </div>\n' +
-  '            </div>\n' +
-  '          </div>\n' +
-  '          <div class="custom_group">\n' +
-  '            <div class="group_input">\n' +
-  '              <div class="input_icon">\n' +
-  '              <span >\n' +
-  '                <ion-icon name="ios-lock-outline"></ion-icon>\n' +
-  '              </span>\n' +
-  '              </div>\n' +
-  '              <div class="input_text">\n' +
-  '                <ion-item>\n' +
-  '                  <!-- <ion-label no-lines floating>\n' +
-  '                     <span class="input_title">输入密码</span>\n' +
-  '                   </ion-label>-->\n' +
-  '                  <ion-input type="password" [(ngModel)]="accountPassword" placeholder="输入密码" clearInput></ion-input>\n' +
-  '                </ion-item>\n' +
-  '              </div>\n' +
-  '              <div class="error_info">\n' +
-  '                <span><!--用户名不能为空--></span>\n' +
-  '              </div>\n' +
-  '            </div>\n' +
-  '          </div>\n' +
-  '          <div class="custom_group">\n' +
-  '            <button ion-button block color="danger" class="login_button" (click)="signIn()" [disabled]="disabled">\n' +
-  '              登录\n' +
-  '            </button>\n' +
-  '            <div class="copywriting">\n' +
-  '              <div>\n' +
-  '                <span (click)="signUp()">注册</span>\n' +
-  '              </div>\n' +
-  '              <div>\n' +
-  '                <span (click)="toUd()">短信登录</span>\n' +
-  '              </div>\n' +
-  '            </div>\n' +
-  '          </div>\n' +
-  '        </div>\n' +
-  '      </div>\n' +
-  '    </div>\n' +
-  '  </div>\n' +
+  template:'<ion-header>' +
+  '  <div class="login_header">' +
+  '    <ion-navbar>' +
+  '      <ion-title></ion-title>' +
+  '    </ion-navbar>' +
+  '  </div>' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '  <div class="user_login">' +
+  '    <div class="login_body">' +
+  '      <div class="login_icon">' +
+  '      <span class="xj_icon">' +
+  '        <img src="./assets/imgs/logo2.png"/>' +
+  '      </span>' +
+  '      </div>' +
+  '      <div class="login_info">' +
+  '        <div class="custom_form">' +
+  '          <div class="custom_group">' +
+  '            <div class="group_input">' +
+  '              <div class="input_icon">' +
+  '              <span >' +
+  '                 <ion-icon name="ios-person-outline"></ion-icon>' +
+  '              </span>' +
+  '              </div>' +
+  '              <div class="input_text">' +
+  '                <ion-item>' +
+  '                  <!--  <ion-label no-lines floating>' +
+  '                      <span class="input_title">用户名/账号</span>' +
+  '                    </ion-label>-->' +
+  '                  <ion-input type="text" [(ngModel)]="accountName" pattern="[0-9A-Za-z]*" placeholder="用户名/账号" clearInput></ion-input>' +
+  '                </ion-item>' +
+  '              </div>' +
+  '            </div>' +
+  '          </div>' +
+  '          <div class="custom_group">' +
+  '            <div class="group_input">' +
+  '              <div class="input_icon">' +
+  '              <span >' +
+  '                <ion-icon name="ios-lock-outline"></ion-icon>' +
+  '              </span>' +
+  '              </div>' +
+  '              <div class="input_text">' +
+  '                <ion-item>' +
+  '                  <!-- <ion-label no-lines floating>' +
+  '                     <span class="input_title">输入密码</span>' +
+  '                   </ion-label>-->' +
+  '                  <ion-input type="password" [(ngModel)]="accountPassword" placeholder="输入密码" clearInput></ion-input>' +
+  '                </ion-item>' +
+  '              </div>' +
+  '              <div class="error_info">' +
+  '                <span><!--用户名不能为空--></span>' +
+  '              </div>' +
+  '            </div>' +
+  '          </div>' +
+  '          <div class="custom_group">' +
+  '            <button ion-button block color="danger" class="login_button" (click)="signIn()" [disabled]="disabled">' +
+  '              登录' +
+  '            </button>' +
+  '            <div class="copywriting">' +
+  '              <div>' +
+  '                <span (click)="signUp()">注册</span>' +
+  '              </div>' +
+  '              <div>' +
+  '                <span (click)="toUd()">短信登录</span>' +
+  '              </div>' +
+  '            </div>' +
+  '          </div>' +
+  '        </div>' +
+  '      </div>' +
+  '    </div>' +
+  '  </div>' +
   '</ion-content>',
 })
 export class UbPage {

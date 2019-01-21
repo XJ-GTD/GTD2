@@ -15,49 +15,44 @@ import {DataConfig} from "../../app/data.config";
 @IonicPage()
 @Component({
   selector: 'page-hz',
-  // templateUrl: 'hz.html',
   providers: [],
-  template:'<!--首页侧边栏-->\n' +
-  '<ion-menu [content]="ha" side="left" swipeEnabled = "false" type="scalePush">\n' +
-  '  <ion-content>\n' +
-  '    <ion-item margin-top margin-bottom (click)="toUc()" [hidden]="uo.uty == 0" id="tag1" style="height:185px" no-lines>\n' +
-  '      <ion-avatar item-start>\n' +
-  '        <img [src]="imgurl" class="img_size">\n' +
-  '      </ion-avatar>\n' +
-  '      <h1 [innerHtml]="uo.uN"></h1>\n' +
-  '      <span [innerHtml]="uo.uCt"></span>\n' +
-  '    </ion-item>\n' +
-  '\n' +
-  '    <ion-item [hidden]="uo.uty != 0" (click)="toUb()" no-lines  style="height:185px" >\n' +
-  '      <button ion-button class="sign_button">\n' +
-  '        登录/注册\n' +
-  '      </button>\n' +
-  '    </ion-item>\n' +
-  '\n' +
-  '\n' +
-  '    <ion-list>\n' +
-  '      <ion-item style="height:76px">\n' +
-  '        <img src="./assets/imgs/13.png" item-start class="icon_size"/>\n' +
-  '        <ion-toggle (ionChange)="inPrivate()"></ion-toggle>\n' +
-  '        <ion-label>隐私模式</ion-label>\n' +
-  '      </ion-item>\n' +
-  '      <ion-item (click)="playerListShow()" style="height:76px">\n' +
-  '        <img src="./assets/imgs/12.png" item-start class="icon_size"/>\n' +
-  '        <ion-label>参与人</ion-label>\n' +
-  '      </ion-item>\n' +
-  '      <ion-item (click)="toSx()" style="height:76px" >\n' +
-  '        <img src="./assets/imgs/11.png" item-start class="icon_size "/>\n' +
-  '        <ion-label>计划</ion-label>\n' +
-  '      </ion-item>\n' +
-  '    </ion-list>\n' +
-  '\n' +
-  '\n' +
-  '  </ion-content>\n' +
-  '  <ion-footer>\n' +
-  '    <ion-item  (click)="userSet()">设置</ion-item>\n' +
-  '  </ion-footer>\n' +
-  '</ion-menu>\n' +
-  '<ion-nav #ha [root]="haPage"></ion-nav>\n',
+  template:'<!--首页侧边栏-->' +
+  '<ion-menu [content]="ha" side="left" swipeEnabled = "false" type="scalePush">' +
+  '  <ion-content>' +
+  '    <ion-item margin-top margin-bottom (click)="toUc()" [hidden]="uo.uty == 0" id="tag1" style="height:185px" no-lines>' +
+  '      <ion-avatar item-start>' +
+  '        <img [src]="imgurl" class="img_size">' +
+  '      </ion-avatar>' +
+  '      <h1 [innerHtml]="uo.uN"></h1>' +
+  '      <span [innerHtml]="uo.uCt"></span>' +
+  '    </ion-item>' +
+  '' +
+  '    <ion-item [hidden]="uo.uty != 0" (click)="toUb()" no-lines  style="height:185px" >' +
+  '      <button ion-button class="sign_button">' +
+  '        登录/注册' +
+  '      </button>' +
+  '    </ion-item>' +
+  '    <ion-list>' +
+  '      <ion-item style="height:76px">' +
+  '        <img src="./assets/imgs/13.png" item-start class="icon_size"/>' +
+  '        <ion-toggle (ionChange)="inPrivate()"></ion-toggle>' +
+  '        <ion-label>隐私模式</ion-label>' +
+  '      </ion-item>' +
+  '      <ion-item (click)="playerListShow()" style="height:76px">' +
+  '        <img src="./assets/imgs/12.png" item-start class="icon_size"/>' +
+  '        <ion-label>参与人</ion-label>' +
+  '      </ion-item>' +
+  '      <ion-item (click)="toSx()" style="height:76px" >' +
+  '        <img src="./assets/imgs/11.png" item-start class="icon_size "/>' +
+  '        <ion-label>计划</ion-label>' +
+  '      </ion-item>' +
+  '    </ion-list>' +
+  '  </ion-content>' +
+  '  <ion-footer>' +
+  '    <ion-item  (click)="userSet()">设置</ion-item>' +
+  '  </ion-footer>' +
+  '</ion-menu>' +
+  '<ion-nav #ha [root]="haPage"></ion-nav>',
 
 })
 export class HzPage {
