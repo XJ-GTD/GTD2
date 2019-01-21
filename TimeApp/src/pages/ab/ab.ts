@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {PageConfig} from "../../app/page.config";
 
 /**
  * Generated class for the AbPage page.
@@ -12,8 +11,21 @@ import {PageConfig} from "../../app/page.config";
 @IonicPage()
 @Component({
   selector: 'page-ab',
-  templateUrl: 'ab.html',
+  template:
+    '<ion-header>\n' +
+    '\n' +
+    '  <ion-navbar>\n' +
+    '    <ion-title>Ab</ion-title>\n' +
+    '  </ion-navbar>\n' +
+    '\n' +
+    '</ion-header>\n' +
+    '\n' +
+    '\n' +
+    '<ion-content padding>\n' +
+    '\n' +
+    '</ion-content>\n'
 })
+
 export class AbPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {

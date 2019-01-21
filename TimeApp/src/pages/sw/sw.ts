@@ -11,7 +11,21 @@ import { IonicPage, NavController, NavParams, Navbar} from 'ionic-angular';
 @IonicPage()
 @Component({
   selector: 'page-sw',
-  templateUrl: 'sw.html',
+  template:'<ion-header>' +
+  '  <ion-navbar>' +
+  '    <ion-title>相关日程</ion-title>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '  <div class="t1 " *ngFor="let index of indexs">' +
+  '    <div class="d4" >' +
+  '      <div ion-item class="d5">' +
+  '        <ion-label stacked>2019年01月{{index}}日</ion-label>' +
+  '        <ion-label>红红火火恍恍惚惚</ion-label>' +
+  '      </div>' +
+  '    </div>' +
+  '  </div>' +
+  '</ion-content>',
 })
 export class SwPage {
 

@@ -15,7 +15,34 @@ import {PageConfig} from "../../app/page.config";
 @IonicPage()
 @Component({
   selector: 'page-pd',
-  templateUrl: 'pd.html',
+  template:'<ion-header>' +
+  '  <ion-navbar >' +
+  '    <ion-title *ngIf="g != undefined">{{g.rN}}</ion-title>' +
+  '    <ion-buttons right margin-right>' +
+  '      <button ion-button icon-only (click)="addQcy()">' +
+  '        <ion-icon name="add"></ion-icon>' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding class="page-backgroud-color">' +
+  '  <ion-list>' +
+  '    <ion-item-sliding *ngFor="let u of us">' +
+  '      <ion-item (click)="toMemberDetail(u)">' +
+  '        <ion-avatar item-start >' +
+  '          <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">' +
+  '        </ion-avatar>' +
+  '        <ion-label>' +
+  '          <p style="color: #000;font-size: 1.7rem">{{u.ran}}</p>' +
+  '          <p></p>' +
+  '        </ion-label>' +
+  '      </ion-item>' +
+  '      <ion-item-options side="right">' +
+  '        <button ion-button color="danger" (click)="delete(u)">删除</button>' +
+  '      </ion-item-options>' +
+  '    </ion-item-sliding>' +
+  '  </ion-list>' +
+  '</ion-content>',
 })
 export class PdPage {
 
@@ -78,7 +105,7 @@ export class PdPage {
   }
 
   delete(u){
-    this.relmemService.delRgu(this.g.rugId,u.id).then(data=>{
+    this.relmemService.delRgu(this.g.id,u.rugId).then(data=>{
       if(data.code == 0 ){
         console.log("删除群组成员成功")
         this.queryGAll();

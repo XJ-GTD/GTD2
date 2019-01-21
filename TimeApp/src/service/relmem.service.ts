@@ -42,9 +42,9 @@ export class RelmemService {
         if(rs.is != '0'){
           rs=data;
           if(data && data.code==0){
-            rs.rI=data.data.userId;
-            rs.hiu=data.data.headImg;
-            rs.rN=data.data.userName;
+            rs.rI=data.data.playerList[0].userId;
+            rs.hiu=data.data.playerList[0].headImg;
+            rs.rN=data.data.playerList[0].userName;
             rs.is='1';
           }
           console.log("------------ RelmemService su() user end : "+JSON.stringify(data));
@@ -375,8 +375,8 @@ export class RelmemService {
           let rugL = new Array<RguEntity>();
           for(let i=0;i<rus.length;i++){
             let rgu = new RguEntity();
-            rgu.bi = rus[i].id;
-            rgu.bmi = id;
+            rgu.bi = id;
+            rgu.bmi = rus[i].id;
             rgu.id = this.util.getUuid();
             rugL.push(rgu);
             sql+=rgu.isq;

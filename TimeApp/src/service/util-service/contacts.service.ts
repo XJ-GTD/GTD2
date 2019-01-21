@@ -5,6 +5,7 @@ import {BsModel} from "../../model/out/bs.model";
 import {UtilService} from "./util.service";
 import {RuModel} from "../../model/ru.model";
 import {PnRestful} from "../restful/pn-restful";
+import {BaseSqlite} from "../sqlite/base-sqlite";
 /**
  * 本地联系人读取
  * 2019/1/16
@@ -17,7 +18,8 @@ export class  ContactsService{
 
   constructor(private contacts:Contacts,
               private utilService: UtilService,
-              private pnRes:PnRestful,){
+              private pnRes:PnRestful,
+              private baseSqlite: BaseSqlite){
 
   }
 
@@ -48,9 +50,11 @@ export class  ContactsService{
             ru.ran = contact.displayName;
             ru.rC = contact.phoneNumbers[i].value;
             ru.rel = '0';
+            ru.sdt = 3;
             ContactsService.contactList.push(ru);
             ContactsService.contactTel.push(contact.phoneNumbers[i].value);
 
+            // this.baseSqlite.save(ru);
           }
         }
         console.log("1111111 :: "+JSON.stringify(ContactsService.contactTel));
@@ -62,6 +66,44 @@ export class  ContactsService{
       });
     })
   }
+
+
+
+  getByDisplayName(name:string){
+    return new Promise((resolve, reject)=>{
+      let bs = new BsModel();
+      this.contacts.find(['displayName'],{
+        filter:name,
+        multiple:true,
+        desiredFields:["displayName","phoneNumbers"]
+      }).then(data=>{
+        console.log("contacts data :: " + JSON.stringify(data));
+        for(let contact of data){
+          for(let i = 0;i<contact.phoneNumbers.length;i++){
+            //去除手机号中的空格
+            contact.phoneNumbers[i].value = contact.phoneNumbers[i].value.replace(/\s/g,'');
+
+            if(this.utilService.checkPhone(contact.phoneNumbers[i].value) != 3){
+              break;
+            }
+            let ru = new RuModel();
+            ru.sdt = 3;
+            ru.ran = contact.displayName;
+            ru.rC = contact.phoneNumbers[i].value;
+            ru.rel = '0';
+            ContactsService.contactList.push(ru);
+            ContactsService.contactTel.push(contact.phoneNumbers[i].value);
+          }
+        }
+        this.dddd();
+        resolve(bs)
+      }).catch(reason => {
+        reject(reason);
+      });
+    })
+
+  }
+
 
   dddd(){
     //手机号排序
@@ -80,28 +122,27 @@ export class  ContactsService{
 
     let tellist = ContactsService.contactTel;
     console.log("手机号集 :: " + JSON.stringify(tellist));
-    let all = [];
-    for(let tel of tellist){
-      all.push(this.pnRes.su(tel));
-    }
-    Promise.all(all).then(data=>{
-      console.log("批量查询结果 :: " + JSON.stringify(data));
-      for(let i = 0 ;i< data.length;i++){
-        if(data[i].code == '0'){
-          ContactsService.contactList[i].sdt = 0;
-          ContactsService.contactList[i].rN = data[i].data.userName;
-        }
-        if(data[i].code == '11500'){
-          ContactsService.contactList[i].sdt = 3;
+    this.pnRes.sus(tellist).then(data=>{
+      console.log("查询结果 :: " + JSON.stringify(data));
+      let list = data.data.playerList;
+      for(let li of list){
+        let tel = li.userName.substr(5,11);
+        console.log(JSON.stringify(tel));
+        for(let i = 0;i<ContactsService.contactList.length;i++){
+          let tmp = ContactsService.contactList[i];
+          if(li.accountMobile == tmp.rC){
+            ContactsService.contactList[i].hiu = li.headImg;
+            ContactsService.contactList[i].rN = li.userName;
+            ContactsService.contactList[i].id = li.userId;
+            ContactsService.contactList[i].rNpy = li.pyOfUserName;
+            ContactsService.contactList[i].sdt = 0;
+          }
         }
       }
-
+      console.log("处理结果::" + JSON.stringify(ContactsService.contactList));
     }).catch(reason => {
-      console.log("批量查询异常 :: " +JSON.stringify(reason));
-        for(let i = 0;i<ContactsService.contactList.length; i++){
-          ContactsService.contactList[i].sdt = 3;
-        }
-    });
+      console.log("查询结果 :: " + JSON.stringify(reason));
+    })
 
   }
 

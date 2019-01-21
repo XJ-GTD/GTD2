@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, Nav } from 'ionic-angular';
-import { AppConfig } from "../../app/app.config";
 import { PageConfig } from "../../app/page.config";
 import { PermissionsService } from "../../service/util-service/permissions.service";
 import { UtilService } from "../../service/util-service/util.service";
@@ -12,7 +11,6 @@ import { LsmService } from "../../service/lsm.service";
 import { DataConfig } from "../../app/data.config";
 import { BsRestful } from "../../service/restful/bs-restful";
 import {SyncService} from "../../service/sync.service";
-import {FiEntity} from "../../entity/fi.entity";
 import {ContactsService} from "../../service/util-service/contacts.service";
 
 /**
@@ -25,7 +23,27 @@ import {ContactsService} from "../../service/util-service/contacts.service";
 @IonicPage()
 @Component({
   selector: 'page-al',
-  templateUrl: 'al.html',
+  template:'<div class="container">' +
+  '  <div class="progress-wrapper">' +
+  '    <div class="current" [ngStyle]="getOverlayStyle()">{{ current }}/{{ max }}</div>' +
+  '    <round-progress' +
+  '      [current]="current"' +
+  '      [max]="max"' +
+  '      [stroke]="stroke"' +
+  '      [radius]="radius"' +
+  '      [semicircle]="semicircle"' +
+  '      [rounded]="rounded"' +
+  '      [responsive]="responsive"' +
+  '      [clockwise]="clockwise"' +
+  '      [color]="gradient ? \'url(#gradient)\' : color"' +
+  '      [background]="background"' +
+  '      [duration]="duration"' +
+  '      [animation]="animation"' +
+  '      [animationDelay]="animationDelay"></round-progress>' +
+  '  </div>' +
+  '  <div class="text">{{ text }}</div>' +
+  '</div>' +
+  ''
 })
 export class AlPage {
 
@@ -162,7 +180,7 @@ export class AlPage {
       this.increment(10);
         //检车websockte的状态
         console.log("al :: 查询联系人开始");
-        if(DataConfig.uInfo.uty == '1'){
+        if(DataConfig.uInfo.uty == '1' && DataConfig.IS_MOBILE){
           return this.ContactsService.getContacts();
         }
       }).then(data=>{
@@ -171,18 +189,18 @@ export class AlPage {
         console.log("al :: 开始更新版本表");
         return this.configService.ufi(null,0)
       }) .then(data => {
-        console.log("al :: 开始更新版本表结束");
+      console.log("al :: 开始更新版本表结束");
+      if(DataConfig.uInfo.uty=='1'){
+        //定时同步
+        this.sync.syncTime();
+      }
+
+    }).then(data => {
         //进入主页
         //loading.dismiss();
         this.increment(10);
         this.text=" 进入主页";
         this.nav.setRoot(this.rootPage);
-
-      }).then(data => {
-        if(DataConfig.uInfo.uty=='1'){
-          //定时同步
-          this.sync.syncTime();
-        }
 
       }).catch(res => {
         console.log("al error :: "+JSON.stringify(res));

@@ -11,7 +11,6 @@ import {UtilService} from "../../service/util-service/util.service";
 import {ContactsService} from "../../service/util-service/contacts.service";
 import {ReturnConfig} from "../../app/return.config";
 import {Contacts} from "@ionic-native/contacts";
-import {CordovaInstance} from "@ionic-native/core";
 
 /**
  * Generated class for the PfPage page.
@@ -23,8 +22,71 @@ import {CordovaInstance} from "@ionic-native/core";
 @IonicPage()
 @Component({
   selector: 'page-pf',
-  templateUrl: 'pf.html',
-  providers:[Contacts]
+  providers:[Contacts],
+  template:'<ion-header>' +
+  '  <ion-toolbar>' +
+  '    <ion-buttons left>' +
+  '      <button ion-button icon-only (click)="goBack()">' +
+  '        <ion-icon name="arrow-back"></ion-icon>' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '    <ion-title>新建 </ion-title>' +
+  '    <ion-buttons right>' +
+  '      <button ion-button icon-only (click)="more()">' +
+  '        更多' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '  </ion-toolbar>' +
+  '</ion-header>' +
+  '<!--个人添加新建搜索 -->' +
+  '<ion-content padding class="page-backgroud-color">' +
+  '  <div >' +
+  '    <div style="margin: 20px 0px;">' +
+  '      <ion-item style="height: 50px">' +
+  '        <ion-input type="tel" [(ngModel)]="tel" (ionBlur)="getContacts()" placeholder="请输入手机号" clearInput></ion-input>' +
+  '      </ion-item>' +
+  '    </div>' +
+  '    <ion-label *ngIf="contacts.length > 0">本地联系人</ion-label>' +
+  '    <div *ngFor="let contact of contacts">' +
+  '      <ion-item (click)="select(contact)">' +
+  '        <ion-avatar item-start>' +
+  '          <img src="./assets/imgs/headImg.jpg">' +
+  '        </ion-avatar>' +
+  '          <h2>{{contact.phoneNumbers[0].value}}</h2>' +
+  '          <p style="">{{contact.displayName}}</p>' +
+  '        <div item-end>' +
+  '          <!--<span *ngIf="existCode == 1" style="color: red">已添加</span>-->' +
+  '          <!--<span *ngIf="existCode == 2" style="color: #488aff">添加</span>-->' +
+  '          <!--<span *ngIf="existCode == 3">未注册</span>-->' +
+  '        </div>' +
+  '      </ion-item>' +
+  '    </div>' +
+  '    <div margin-top>' +
+  '      <span style="width: 100%; text-align: center;display: block;padding-bottom: 20px; color: rgb(153,153,153);" *ngIf="checkMobile == false && checkMobileNull == false && isRegist == false">' +
+  '        该用户未注册' +
+  '      </span>' +
+  '      <span style="width: 100%; text-align: center;display: block;padding-bottom: 20px; color: rgb(153,153,153);" *ngIf="errorCode ==1">' +
+  '          手机号错误' +
+  '      </span>' +
+  '    </div>' +
+  '' +
+  '    <div *ngIf="checkMobile == false && checkMobileNull == false ">' +
+  '        <ion-item *ngIf="ru" (click)="toPersonalAddDetail(ru)">' +
+  '          <ion-avatar item-start>' +
+  '            <img [src]="ru.hiu">' +
+  '          </ion-avatar>' +
+  '          <ion-label>' +
+  '            <span style="font-family: PingFang-SC-Bold">{{ru.rN}}</span>' +
+  '          </ion-label>' +
+  '          <div item-end>' +
+  '            <span *ngIf="existCode == 1" style="color: red">已添加</span>' +
+  '            <span *ngIf="existCode == 2" style="color: #488aff">添加</span>' +
+  '            <span *ngIf="existCode == 3">未注册</span>' +
+  '          </div>' +
+  '        </ion-item>' +
+  '    </div>' +
+  '  </div>' +
+  '</ion-content>',
 })
 export class PfPage {
 
@@ -103,40 +165,41 @@ export class PfPage {
     }
     console.log(this.checkMobile +　" + "　+ this.checkMobileNull);
     if(this.checkMobile == false && this.checkMobileNull == false){
-      // this.getContacts();
       this.ru = undefined;
-      // this.contacts=[];
-      // if(ContactsService.contactList.get(this.tel)){
-      //   this.contacts.push(ContactsService.contactList.get(this.tel));
-      // }
-      // console.log(ContactsService.contactList.get(this.tel));
       console.log("开始查询::" + this.tel);
       this.relmemService.su(this.tel).then(data=>{
-        if(data.code == 0){
+        console.log("         " + JSON.stringify(data));
+        if(data.code == undefined){
           this.isRegist = true;
-          this.existCode = 2;
+          this.existCode = 1;
           this.ru = data;
-          this.ru.rC = this.tel;
         }else{
-          console.log(ReturnConfig.RETURN_MSG.get(data.code.toString()));
-          let alert = this.alertCtrl.create({
-            subTitle: ReturnConfig.RETURN_MSG.get(data.code.toString()),
-          });
-          setTimeout(()=>{
-            alert.dismiss();
-          },1000);
-          alert.present();
-          if(data.code == 11500){
-            this.ru = new RuModel();
-            this.isRegist = false;
-            this.existCode = 3;
-            if(contact != null){
-              this.ru.ran = contact.displayName;
-            }
-            this.ru.rN = this.tel;
+          if(data.code == 0){
+            this.isRegist = true;
+            this.existCode = 2;
+            this.ru = data;
             this.ru.rC = this.tel;
-            this.ru.hiu = DataConfig.defaultHeadImg;
-            this.ru.rI = this.tel;
+          }else {
+            console.log(ReturnConfig.RETURN_MSG.get(data.code.toString()));
+            // let alert = this.alertCtrl.create({
+            //   subTitle: ReturnConfig.RETURN_MSG.get(data.code.toString()),
+            // });
+            // setTimeout(() => {
+            //   alert.dismiss();
+            // }, 1000);
+            // alert.present();
+            if (data.code == 11500) {
+              this.ru = new RuModel();
+              this.isRegist = false;
+              this.existCode = 3;
+              if (contact != null) {
+                this.ru.ran = contact.displayName;
+              }
+              this.ru.rN = this.tel;
+              this.ru.rC = this.tel;
+              this.ru.hiu = DataConfig.defaultHeadImg;
+              this.ru.rI = this.tel;
+            }
           }
         }
         this.contactsTmp = [];
@@ -158,7 +221,7 @@ export class PfPage {
       name : this.name,//名称
       // tel: this.tel,//手机号
       code: this.existCode,
-      ru : ru,//手机号信息
+      u : ru,//手机号信息
     };
     if(this.existCode == 1){
       console.log('PfPage跳转P,bPage')
@@ -173,6 +236,8 @@ export class PfPage {
     if(this.tel != null && this.tel != ''){
       let tmp = this.tel;
       tmp = tmp.replace(/[a-zA-Z]/g,'');
+      tmp = tmp.replace(/\s/g,'');
+
       if(tmp.length >= 11){
         this.tel =tmp.substr(0,11) ;
 

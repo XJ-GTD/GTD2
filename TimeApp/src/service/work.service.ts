@@ -33,7 +33,7 @@ import {MsSqlite} from "./sqlite/ms-sqlite";
  */
 @Injectable()
 export class WorkService {
-W
+
   constructor(private baseSqlite : BaseSqlite,
                 private util : UtilService,
                 private workSqlite : WorkSqlite,
@@ -366,7 +366,7 @@ W
   drc(sI:string,sa:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
-      if(sa == '1'){
+      if(sa != '1'){
         let rc = new RcEntity();
         rc.sI = sI;
         let ruL:Array<RuModel> = new Array<RuModel>();

@@ -15,7 +15,35 @@ import {PageConfig} from "../../app/page.config";
 @IonicPage()
 @Component({
   selector: 'page-pg',
-  templateUrl: 'pg.html',
+  template:'<ion-header>' +
+  '  <ion-navbar [hideBackButton]="true">' +
+  '    <ion-buttons left>' +
+  '      <button ion-button icon-only (click)="goBack()">' +
+  '        取消' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '    <ion-title>选择群成员</ion-title>' +
+  '    <ion-buttons right>' +
+  '      <button ion-button icon-only (click)="showSelect()">' +
+  '        确定' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding class="page-backgroud-color">' +
+  '  <div *ngFor="let u of us">' +
+  '    <ion-item>' +
+  '      <ion-avatar item-start >' +
+  '        <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">' +
+  '      </ion-avatar>' +
+  '      <ion-label>' +
+  '        <p style="color: #000; line-height: 17px;font-size: 1.7rem">{{u.ran}}</p>' +
+  '        <!--<p>皮一下很开心</p>-->' +
+  '      </ion-label>' +
+  '      <ion-checkbox item-end (ionChange)="selected(u,$event)" [checked]="checkSel(u)"></ion-checkbox>' +
+  '    </ion-item>' +
+  '  </div>' +
+  '</ion-content>',
 })
 export class PgPage {
 

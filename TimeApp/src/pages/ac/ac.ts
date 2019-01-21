@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {PageConfig} from "../../app/page.config";
 
 /**
  * Generated class for the AcPage page.
@@ -12,7 +11,13 @@ import {PageConfig} from "../../app/page.config";
 @IonicPage()
 @Component({
   selector: 'page-ac',
-  templateUrl: 'ac.html',
+  template: '<ion-header>' +
+  '  <ion-navbar>' +
+  '    <ion-title>Ac</ion-title>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '</ion-content>'
 })
 export class AcPage {
 

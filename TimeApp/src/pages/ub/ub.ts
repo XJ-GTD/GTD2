@@ -18,8 +18,79 @@ import {UtilService} from "../../service/util-service/util.service";
 @IonicPage()
 @Component({
   selector: 'page-ub',
-  templateUrl: 'ub.html',
-  providers: []
+  providers: [],
+  template:'<ion-header>' +
+  '  <div class="login_header">' +
+  '    <ion-navbar>' +
+  '      <ion-title></ion-title>' +
+  '    </ion-navbar>' +
+  '  </div>' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '  <div class="user_login">' +
+  '    <div class="login_body">' +
+  '      <div class="login_icon">' +
+  '      <span class="xj_icon">' +
+  '        <img src="./assets/imgs/logo2.png"/>' +
+  '      </span>' +
+  '      </div>' +
+  '      <div class="login_info">' +
+  '        <div class="custom_form">' +
+  '          <div class="custom_group">' +
+  '            <div class="group_input">' +
+  '              <div class="input_icon">' +
+  '              <span >' +
+  '                 <ion-icon name="ios-person-outline"></ion-icon>' +
+  '              </span>' +
+  '              </div>' +
+  '              <div class="input_text">' +
+  '                <ion-item>' +
+  '                  <!--  <ion-label no-lines floating>' +
+  '                      <span class="input_title">用户名/账号</span>' +
+  '                    </ion-label>-->' +
+  '                  <ion-input type="text" [(ngModel)]="accountName" pattern="[0-9A-Za-z]*" placeholder="用户名/账号" clearInput></ion-input>' +
+  '                </ion-item>' +
+  '              </div>' +
+  '            </div>' +
+  '          </div>' +
+  '          <div class="custom_group">' +
+  '            <div class="group_input">' +
+  '              <div class="input_icon">' +
+  '              <span >' +
+  '                <ion-icon name="ios-lock-outline"></ion-icon>' +
+  '              </span>' +
+  '              </div>' +
+  '              <div class="input_text">' +
+  '                <ion-item>' +
+  '                  <!-- <ion-label no-lines floating>' +
+  '                     <span class="input_title">输入密码</span>' +
+  '                   </ion-label>-->' +
+  '                  <ion-input type="password" [(ngModel)]="accountPassword" placeholder="输入密码" clearInput></ion-input>' +
+  '                </ion-item>' +
+  '              </div>' +
+  '              <div class="error_info">' +
+  '                <span><!--用户名不能为空--></span>' +
+  '              </div>' +
+  '            </div>' +
+  '          </div>' +
+  '          <div class="custom_group">' +
+  '            <button ion-button block color="danger" class="login_button" (click)="signIn()" [disabled]="disabled">' +
+  '              登录' +
+  '            </button>' +
+  '            <div class="copywriting">' +
+  '              <div>' +
+  '                <span (click)="signUp()">注册</span>' +
+  '              </div>' +
+  '              <div>' +
+  '                <span (click)="toUd()">短信登录</span>' +
+  '              </div>' +
+  '            </div>' +
+  '          </div>' +
+  '        </div>' +
+  '      </div>' +
+  '    </div>' +
+  '  </div>' +
+  '</ion-content>',
 })
 export class UbPage {
 
@@ -66,22 +137,22 @@ export class UbPage {
          this.utilService.unloading();
          console.log("登录成功");
          this.webSocket.connect(data.data.accountQueue);
-         this.utilService.loading("登录成功");
+         // this.utilService.loading("登录成功");
        }else if(data.code == 1){
          this.utilService.unloading();
          console.log("登录失败");
-         this.utilService.loading("登录失败:" + data.message);
+         // this.utilService.loading("登录失败:" + data.message);
        } else{
          this.utilService.unloading();
          let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
          console.log("登录失败 :: " + message );
-         this.utilService.loading("登录失败:" + message);
+         // this.utilService.loading("登录失败:" + message);
        }
 
     }).catch(res=>{
       this.utilService.unloading();
        console.log("登录失败 :: " +　res.message);
-       this.utilService.loading("登录失败:" + res.message);
+       // this.utilService.loading("登录失败:" + res.message);
        console.log(res);
      });
 

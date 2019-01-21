@@ -18,8 +18,107 @@ import {PageConfig} from "../../app/page.config";
 @IonicPage()
 @Component({
   selector: 'page-ua',
-  templateUrl: 'ua.html',
-  providers: []
+  template:'<ion-header>' +
+  '  <div class="register_header">' +
+  '    <ion-navbar>' +
+  '      <div class="header_header">账号注册</div>' +
+  '    </ion-navbar>' +
+  '  </div>' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '  <div class="register_body">' +
+  '    <div class="custom_form">' +
+  '      <div class="custom_group">' +
+  '        <div class="group_input">' +
+  '          <div class="input_icon">' +
+  '              <span>' +
+  '                 <ion-icon name="ios-person-outline"></ion-icon>' +
+  '              </span>' +
+  '          </div>' +
+  '          <div class="input_text">' +
+  '            <ion-item>' +
+  '              <ion-input type="tel" [(ngModel)]="accountMobile" (input)="format()"  (ionBlur)="checkPhone()"  clearInput=true placeholder="输入您的手机号">' +
+  '              </ion-input>' +
+  '            </ion-item>' +
+  '          </div>' +
+  '        </div>' +
+  '        <div>' +
+  '          <div>' +
+  '            <!--*ngIf="true" -->' +
+  '            <div class="error_info">' +
+  '              <span *ngIf="this.errorCode == 0">手机号不能为空</span>' +
+  '              <span *ngIf="this.errorCode == 1 || this.errorCode == 2">请输入正确11位手机号</span>' +
+  '            </div>' +
+  '          </div>' +
+  '        </div>' +
+  '      </div>' +
+  '      <div class="custom_group verification">' +
+  '        <div class="group_input ">' +
+  '          <div class="verification_icon">' +
+  '            <span class="img_span">' +
+  '              <img src="./assets/imgs/verification.png"/>' +
+  '            </span>' +
+  '          </div>' +
+  '          <div class="input_text_verification">' +
+  '            <div class="verification_item">' +
+  '              <ion-item>' +
+  '                <ion-input type="text" [(ngModel)]="authCode" placeholder="验证码" clearInput></ion-input>' +
+  '              </ion-item>' +
+  '            </div>' +
+  '            <div class="button_verification">' +
+  '              <button ion-button (click)="sendMsg()">{{timeOut}}</button>' +
+  '            </div>' +
+  '          </div>' +
+  '        </div>' +
+  '      </div>' +
+  '      <div >' +
+  '        <div >' +
+  '          <!--*ngIf="true" -->' +
+  '          <div class="error_info">' +
+  '          </div>' +
+  '        </div>' +
+  '      </div>' +
+  '      <div class="custom_group">' +
+  '        <div class="group_input">' +
+  '          <div class="input_icon">' +
+  '            <span>' +
+  '              <ion-icon name="ios-lock-outline"></ion-icon>' +
+  '            </span>' +
+  '          </div>' +
+  '          <div class="input_text">' +
+  '            <ion-item>' +
+  '              <ion-input type="password" [(ngModel)]="accountPassword" (ionBlur)="checkPwd()" placeholder="密码" clearInput></ion-input>' +
+  '            </ion-item>' +
+  '          </div>' +
+  '          <div >' +
+  '            <div >' +
+  '              <!--*ngIf="true" -->' +
+  '              <div class="error_info">' +
+  '                <span *ngIf="this.checkBoxClickFlag">不同意协议不能注册</span>' +
+  '                <span *ngIf="this.checkPassword">请输入密码</span>' +
+  '              </div>' +
+  '            </div>' +
+  '          </div>' +
+  '        </div>' +
+  '      </div>' +
+  '      <div class="custom_group padding_0">' +
+  '        <button ion-button block color="danger" (click)="register()" class="region_button" [disabled]="disable">' +
+  '          注册' +
+  '        </button>' +
+  '        <div class="copywriting" margin-top>' +
+  '          <span class="checkbox_span">' +
+  '            <!--<ion-item>-->' +
+  '            <!--<ion-label >已阅读《用户协议》</ion-label>-->' +
+  '              <ion-checkbox [(ngModel)]="checkBoxClick"></ion-checkbox>' +
+  '            <!--</ion-item>-->' +
+  '          <span class="userAgreement_span">我已阅读并同意<span class="userAgreement_span_1"' +
+  '                                                        (click)="userAgreegment()">《用户协议》</span></span>' +
+  '          </span>' +
+  '        </div>' +
+  '      </div>' +
+  '    </div>' +
+  '  </div>' +
+  '</ion-content>',
 })
 export class UaPage {
 
@@ -43,6 +142,7 @@ export class UaPage {
 
 
   rePage:string;
+  disable:boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private formBuilder: FormBuilder,
@@ -68,6 +168,7 @@ export class UaPage {
     {
       this.checkBoxClickFlag=false;
       if(this.errorCode == 3 && this.checkPassword == false ){
+        this.disable = true;
         this.lsmService.sn(this.accountMobile,this.accountPassword,this.authCode).then(data =>{
           console.debug("注册返回信息::" + JSON.stringify(data));
           if(data.code == 0) {
@@ -96,6 +197,7 @@ export class UaPage {
                   }]
                 });
                 alert.present();
+                this.disable = false;
               }else{
                 let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
                 console.log("登录失败");
@@ -114,6 +216,7 @@ export class UaPage {
                   ]
                 });
                 alert.present();
+                this.disable = false;
               }
 
 
@@ -134,6 +237,7 @@ export class UaPage {
                 ]
               });
               alert.present();
+              this.disable = false;
             })
           }else{
             console.debug("注册失败");
@@ -143,6 +247,7 @@ export class UaPage {
               buttons:['确定']
             });
             alert.present();
+            this.disable = false;
           }
         }).catch(reason => {
           console.log("注册失败 ::" + reason.message);
@@ -153,6 +258,7 @@ export class UaPage {
             buttons:['确定']
           });
           alert.present();
+          this.disable = false;
         })
       }
       //用户注册

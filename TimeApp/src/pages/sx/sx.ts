@@ -14,7 +14,29 @@ import {JhModel} from "../../model/jh.model";
 @IonicPage()
 @Component({
   selector: 'page-sx',
-  templateUrl: 'sx.html',
+  template:'<ion-header>' +
+  '  <ion-navbar>' +
+  '    <ion-title>计划一览</ion-title>' +
+  '    <ion-buttons right>' +
+  '      <button ion-button (click)="toSz()">添加</button>' +
+  '    </ion-buttons>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '  <!--<button (click)="toTmd()">1!!!!</button>-->' +
+  '  <ion-list>' +
+  '    <ion-item-sliding *ngFor="let jh of jhs">' +
+  '      <ion-item (click)="toSw(jh)">' +
+  '        <p style="font-size: 1.7rem;line-height: 20px;">{{jh.jn}}</p>' +
+  '        <p style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{jh.jg}}</p>' +
+  '      </ion-item>' +
+  '      <ion-item-options side="right">' +
+  '        <button ion-button color="primary" (click)="toSy(jh)">详情</button>' +
+  '        <button ion-button color="danger" (click)="delJh(jh)">删除</button>' +
+  '      </ion-item-options>' +
+  '    </ion-item-sliding>' +
+  '  </ion-list>' +
+  '</ion-content>',
 })
 export class SxPage {
 

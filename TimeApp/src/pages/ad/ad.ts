@@ -1,8 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
-import { PopoverController } from 'ionic-angular';
 import {DwEmitService} from "../../service/util-service/dw-emit.service";
-import {PageConfig} from "../../app/page.config";
 
 /**
  * Generated class for the AdPage page.
@@ -14,7 +12,32 @@ import {PageConfig} from "../../app/page.config";
 @IonicPage()
 @Component({
   selector: 'page-ad',
-  templateUrl: 'ad.html',
+  template:'<ion-header>' +
+  '  <ion-navbar>' +
+  '    <ion-title>意见反馈</ion-title>' +
+  '    <ion-buttons right>' +
+  '      <button icon-only ion-button >' +
+  '        完成' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '  <ion-label>问题描述</ion-label>' +
+  '  <ion-textarea placeholder="请描述你遇到的问题" (input)="updateEditor()"></ion-textarea>' +
+  '  <div ion-item no-padding>' +
+  '    <div>' +
+  '      <ion-thumbnail ion-button color="light" float-left class="padding-0">' +
+  '        <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg" style="border-radius: 5px">' +
+  '      </ion-thumbnail>' +
+  '    </div>' +
+  '    <div>' +
+  '      <ion-thumbnail ion-button color="light" class="div-add-border" >' +
+  '        <ion-icon name="add"></ion-icon>' +
+  '      </ion-thumbnail>' +
+  '    </div>' +
+  '  </div>' +
+  '</ion-content>'
 })
 export class AdPage {
 

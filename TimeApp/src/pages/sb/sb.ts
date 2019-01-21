@@ -28,8 +28,105 @@ import {JhModel} from "../../model/jh.model";
 @IonicPage()
 @Component({
   selector: 'page-sb',
-  templateUrl: 'sb.html',
-  providers: []
+  providers: [],
+  template:'<ion-header>' +
+  '  <ion-toolbar>' +
+  '    <ion-buttons left>' +
+  '      <button ion-button icon-only (click)="goBack()">' +
+  '        <ion-icon name="arrow-back" ></ion-icon>' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '    <ion-title>创建日程</ion-title>' +
+  '    <ion-buttons right>' +
+  '      <button (click)="newProject()"  ion-button>' +
+  '          发布' +
+  '      </button>' +
+  '    </ion-buttons>' +
+  '  </ion-toolbar>' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '  <ion-label></ion-label>' +
+  '  <ion-textarea placeholder="要发的内容..." [(ngModel)]="title"></ion-textarea>' +
+  '  <div ion-item no-padding>' +
+  '    <div *ngFor="let index of select">' +
+  '      <div float-left margin-left title="{{pRelAl[index].ran}}">' +
+  '        <ion-thumbnail ion-button color="light" float-start class="button-border padding-0 " no-margin>' +
+  '          <img [src]="pRelAl[index].hiu" class="button-border">' +
+  '        </ion-thumbnail>' +
+  '        <div style="clear: both; font-size:10px;width:56px;overflow: hidden;text-overflow: ellipsis;" text-center >{{pRelAl[index].ran}}</div>' +
+  '      </div>' +
+  '    </div>' +
+  '    <div float-left margin-left (click)="showCheckbox()">' +
+  '      <ion-thumbnail ion-button color="light" class="div-add-border button-border" no-margin >' +
+  '        <ion-icon name="add"></ion-icon>' +
+  '      </ion-thumbnail>' +
+  '      <div style="clear: both; font-size:10px" text-center></div>' +
+  '    </div>' +
+  '  </div>' +
+  '  <div class="height56">' +
+  '    <ion-label float-right>' +
+  '      <ion-buttons>' +
+  '        <button class="buttonCssA" (click)="showJhs()" >' +
+  '          <div float-left>' +
+  '            <img style="height: 12px;width: 9px;margin-top: 3px;" src="./assets/imgs/i.png"/>' +
+  '          </div>' +
+  '          <div float-left class="divCssA">{{jh.jn}}</div>' +
+  '        </button>' +
+  '        <button class="buttonCssB bor" (click)="showLbs()">' +
+  '          <div float-right style="width: 12px;height: 18px;position: relative;margin-right: 5px;">' +
+  '            <div class="arrowCss"></div>' +
+  '          </div>' +
+  '          <div float-right class="divCssB" style="font-size: 15px">{{lb.lan}}</div>' +
+  '        </button>' +
+  '      </ion-buttons>' +
+  '    </ion-label>' +
+  '  </div>' +
+  '  <button ion-item class="padding-left-0 height56">' +
+  '    <img src="./assets/imgs/1.png" item-start/>' +
+  '    <ion-label>时间</ion-label>' +
+  '    <ion-datetime displayFormat="YYYY年MM月DD日 HH:mm" [(ngModel)]="startTime"></ion-datetime>' +
+  '  </button>' +
+  '  <ion-item *ngIf="showA" class="padding-left-0 height56">' +
+  '    <img src="./assets/imgs/4.png" item-start/>' +
+  '    <ion-label>重复类型</ion-label>' +
+  '    <ion-select item-end [(ngModel)]="repeatType" (ionChange)="chengeType()" >' +
+  '      <ion-option  *ngFor="let ztd of repeatTypes" value="{{ztd.zk}}">{{ztd.zkv}}</ion-option>' +
+  '    </ion-select>' +
+  '  </ion-item>' +
+  '  <button ion-item *ngIf="showC" class="padding-left-0 height56" (click)="showRemarks()">' +
+  '    <img src="./assets/imgs/b.png" item-start/>' +
+  '    <ion-label>备注</ion-label>' +
+  '    <ion-input text-end type="text" [(ngModel)]="remarks">2018年11月20日</ion-input>' +
+  '  </button>' +
+  '  <button ion-item *ngIf="showE" class="padding-left-0 height56" (click)="remindSet()">' +
+  '    <img src="./assets/imgs/c.png" item-start/>' +
+  '    <ion-label>提醒方式</ion-label>' +
+  '    <ion-label color="primary" text-end>{{remindType===undefined?"无":remindType}}</ion-label>' +
+  '  </button>' +
+  '</ion-content>' +
+  '<div [hidden]="!isShowJh" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();">' +
+  '  <div disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></div>' +
+  '  <div class="pop-css">' +
+  '    <div class="titlecss" text-center>选择计划</div>' +
+  '    <div class="flexCss">' +
+  '      <div *ngFor="let jh of jhs" class="contentcss">' +
+  '        <button name="labJh" style="height:25px ; font-size: 1.5rem;" class="jhCss" (click)="selectJh($event,jh)">{{jh.jn}}</button>' +
+  '      </div>' +
+  '    </div>' +
+  '  </div>' +
+  '</div>' +
+  '<div [hidden]="!isShowLb" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();">' +
+  '  <div disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></div>' +
+  '  <div class="pop-css">' +
+  '    <div class="titlecss" text-center>选择标签</div>' +
+  '    <div class="flexCss">' +
+  '      <div *ngFor="let lb of lbs" class="contentcss">' +
+  '        <button name="labLb" style="height:25px ; font-size: 1.5rem;" class="jhCss" (click)="selectLb($event,lb)">{{lb.lan}}</button>' +
+  '      </div>' +
+  '    </div>' +
+  '  </div>' +
+  '</div>',
+
 })
 export class SbPage {
 
@@ -159,6 +256,12 @@ export class SbPage {
         rul.push(this.pRelAl[this.select[i]]);
       }
     }
+    if(this.title == undefined ||this.title.trim() == ''){
+      this.showWarn("输入为空");
+
+      return;
+    }
+
     this.workService.arc(this.title,this.startTime,this.type,this.jh.ji,this.repeatType,this.remarks,'',rul).then(data=>{
       if(data.code == 0){
         console.log("添加日程成功")
@@ -289,35 +392,6 @@ export class SbPage {
     }
     this.isShowLb = true;
   }
-
-  // showChange(){
-  //   let A= false;
-  //   let B= false;
-  //   let C= false;
-  //   let D= false;
-  //   let E= false;
-  //
-  //   for(let i = 0;this.selectLb != undefined && i<this.selectLb.length;i++){
-  //     switch(this.selectLb[i].lat){
-  //       case '1': A = true;
-  //         break;
-  //       case '2': B = true;
-  //         break;
-  //       case '3': C = true;
-  //         break;
-  //       case '4': D = true;
-  //         break;
-  //       case '5': E = true;
-  //         break;
-  //     }
-  //   }
-  //   this.showA = A;
-  //   this.showB = B;
-  //   this.showC = C;
-  //   this.showD = D;
-  //   this.showE = E;
-  //
-  // }
 
   //时间选择类型
   chengeType(){
@@ -513,6 +587,18 @@ export class SbPage {
     console.log("test");
     let modal = this.modal.create("TmdPage");
     modal.present();
+  }
+
+  showWarn(msg:string){
+    let alert = this.alertCtrl.create({
+      subTitle: msg,
+      enableBackdropDismiss: false,
+
+    });
+    setTimeout(()=>{
+      alert.dismiss();
+    },1000);
+    alert.present();
   }
 
   showRemarks(){

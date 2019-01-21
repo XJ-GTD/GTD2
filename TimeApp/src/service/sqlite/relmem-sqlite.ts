@@ -103,7 +103,7 @@ export class RelmemSqlite {
    */
   getRgus(id:string):Promise<any>{
     let sql="SELECT gb.*,bs.id rugId,bs.bmi FROM GTD_B gb " +
-      "left join GTD_B_X bs on bs.bmi = gb.id where bs.bmi='" + id +"'";
+      "left join GTD_B_X bs on bs.bi = gb.id where bs.bi='" + id +"'";
     return this.baseSqlite.executeSql(sql,[]);
   }
 
@@ -111,16 +111,16 @@ export class RelmemSqlite {
   /**
    * 删除群组人员
    * @param {string} bi 群组主键ID
-   * @param {string} bmi 关系人ID
+   * @param {string} id 关系表ID
    * @returns {Promise<any>}
    */
-  delRgu(id:string,bmi:string):Promise<any>{
+  delRgu(bi:string,id:string):Promise<any>{
     let sql = "delete from GTD_B_X where 1=1";
     if(id != null && id != ''){
        sql=sql + " and id = '"+id+"'";
     }
-    if(bmi != null && bmi != ''){
-      sql=sql + " and bmi = '"+bmi+"'";
+    if(bi != null && bi != ''){
+      sql=sql + " and bi = '"+bi+"'";
     }
     return this.baseSqlite.executeSql(sql,[]);
   }

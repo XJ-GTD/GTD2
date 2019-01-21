@@ -11,7 +11,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 @IonicPage()
 @Component({
   selector: 'page-sc',
-  templateUrl: 'sc.html',
+  template:'<ion-header>' +
+  '  <ion-navbar>' +
+  '    <ion-title>Sc</ion-title>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding>' +
+  '</ion-content>',
 })
 export class ScPage {
 

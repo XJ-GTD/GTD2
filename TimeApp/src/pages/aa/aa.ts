@@ -15,7 +15,49 @@ import {XiaojiAlarmclockService} from "../../service/util-service/xiaoji-alarmcl
 @IonicPage()
 @Component({
   selector: 'page-aa',
-  templateUrl: 'aa.html',
+  template:
+  '<ion-header>' +
+  '  <ion-navbar>' +
+  '    <ion-title>设置</ion-title>' +
+  '  </ion-navbar>' +
+  '</ion-header>' +
+  '<ion-content padding class="page-backgroud-color">' +
+  '  <div>' +
+  '    <button ion-item (click)="accountSecurity()" class="rowCss">' +
+  '      <ion-label>账号与安全</ion-label>' +
+  '    </button>' +
+  '    <button ion-item (click)="newsMessage()" class="rowCss">' +
+  '      <ion-label>消息通知</ion-label>' +
+  '    </button>' +
+  '    <button ion-item (click)="cleanCache()" class="rowCss">' +
+  '      <ion-label item-start>缓存清理</ion-label>' +
+  '      <ion-label item-end text-end>5.5M</ion-label>' +
+  '    </button>' +
+  '    <button ion-item (click)="shareApp()" margin-top class="rowCss">' +
+  '      <ion-label>分享APP</ion-label>' +
+  '    </button>' +
+  '    <button ion-item (click)="aboutApp()" margin-top class="rowCss">' +
+  '      <ion-label>关于</ion-label>' +
+  '    </button>' +
+  '    <button ion-item (click)="helpAndFeedback()" class="rowCss">\n' +
+  '      <ion-label>帮助及反馈</ion-label>\n' +
+  '    </button>\n' +
+  '\n' +
+  '    <button ion-item class="rowCss">\n' +
+  '      <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="testDate"></ion-datetime>\n' +
+  '    </button>\n' +
+  '\n' +
+  '    <button (click)="testAlarm()"> 设置闹钟</button>\n' +
+  '\n' +
+  '  </div>\n' +
+  '</ion-content>\n' +
+  '\n' +
+  '<ion-footer>\n' +
+  '  <ion-item class="rowCss">\n' +
+  '    <ion-label text-center color="danger" (click)="logOut()">退出登录</ion-label>\n' +
+  '  </ion-item>\n' +
+  '\n' +
+  '</ion-footer>\n'
 })
 export class AaPage {
 
