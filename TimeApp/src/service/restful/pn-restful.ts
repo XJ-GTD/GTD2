@@ -54,8 +54,29 @@ export class PnRestful{
    * @param {string} tn token
    */
   su(am:string):Promise<any>{
+    let data:any = [];
+    let sub:any={};
+    sub.accountMobile = am;
+    data.push(sub);
     return this.bs.post(AppConfig.PERSON_SU, {
-      accountMobile:am
+      playerList:data
+    })
+  }
+
+  /**
+   * 用户搜索
+   * @param {string} am 手机号
+   * @param {string} tn token
+   */
+  sus(ams:Array<string>):Promise<any>{
+    let data:any = [];
+    for(let am of ams){
+      let sub:any={};
+      sub.accountMobile = am;
+      data.push(sub);
+    }
+    return this.bs.post(AppConfig.PERSON_SU, {
+      playerList:data
     })
   }
 
