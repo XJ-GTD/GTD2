@@ -18,7 +18,7 @@ public interface GtdPersonRepository extends JpaRepository<GtdUserEntity, Intege
      * (手机号查询）
      * @return
      */
-    @Query(value = "SELECT TA.USER_ID, TB.USER_NAME, TB.HEAD_IMG FROM gtd_login TA " +
+    @Query(value = "SELECT TA.USER_ID, TB.USER_NAME, TB.HEAD_IMG, TA.LOGIN_NAME FROM gtd_login TA " +
             " INNER JOIN gtd_user TB ON TB.USER_ID = TA.USER_ID " +
             " WHERE TA.LOGIN_TYPE = ?2 AND TA.LOGIN_NAME IN ?1", nativeQuery = true)
     List<Object> searchUserByMobile(List<String> mobileList, String type);

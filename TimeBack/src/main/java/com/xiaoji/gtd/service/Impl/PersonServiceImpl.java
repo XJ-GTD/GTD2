@@ -299,6 +299,7 @@ public class PersonServiceImpl implements IPersonService {
         String headImg = "";
         String userId = "";
         String pyOfUserName = "";
+        String accountMobile = "";
 
         try {
             for (PlayerInData pid: playerList) {
@@ -321,6 +322,7 @@ public class PersonServiceImpl implements IPersonService {
                     userId = String.valueOf(objects[0]);
                     userName = String.valueOf(objects[1]);
                     headImg = String.valueOf(objects[2]);
+                    accountMobile = String.valueOf(objects[3]);
                     pyOfUserName = conversionPinyin(userName);
                     logger.debug("目标用户信息： " + userId + " | " + userName + " | " +  headImg);
 
@@ -329,6 +331,7 @@ public class PersonServiceImpl implements IPersonService {
                     data.setHeadImg(headImg);
                     data.setUserName(userName);
                     data.setPyOfUserName(pyOfUserName);
+                    data.setAccountMobile(accountMobile);
 
                     dataList.add(data);
                 }
