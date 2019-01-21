@@ -375,8 +375,8 @@ export class RelmemService {
           let rugL = new Array<RguEntity>();
           for(let i=0;i<rus.length;i++){
             let rgu = new RguEntity();
-            rgu.bi = rus[i].id;
-            rgu.bmi = id;
+            rgu.bi = id;
+            rgu.bmi = rus[i].id;
             rgu.id = this.util.getUuid();
             rugL.push(rgu);
             sql+=rgu.isq;
