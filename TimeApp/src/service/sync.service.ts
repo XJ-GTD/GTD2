@@ -1,12 +1,6 @@
 import {Injectable} from "@angular/core";
-import {UserSqlite} from "./sqlite/user-sqlite";
-import {UEntity} from "../entity/u.entity";
-import {UModel} from "../model/u.model";
 import {BaseSqlite} from "./sqlite/base-sqlite";
 import {BsModel} from "../model/out/bs.model";
-import {PnRestful} from "./restful/pn-restful";
-import { HTTP } from '@ionic-native/http';
-import {LbSqlite} from "./sqlite/lb-sqlite";
 import {SyncRestful} from "./restful/sync-restful";
 import {DataConfig} from "../app/data.config";
 import {ZtdSqlite} from "./sqlite/ztd-sqlite";
@@ -58,7 +52,6 @@ export class SyncService {
                 if(res.type=='dictionary' && res.dataList.length>0){
                   for(let i=0;i<res.dataList.length;i++){
                     let dict = res.dataList[i];
-                    let str = 'key'
                     sql=sql+ 'insert into GTD_X(zt,zv) values("'+ dict.key+'","'+ dict.value+'");';
                   }
                 }

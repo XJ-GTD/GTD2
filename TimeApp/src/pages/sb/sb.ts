@@ -180,7 +180,6 @@ export class SbPage {
               public loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
               private paramsService: ParamsService,
-              private popoverCtrl:PopoverController,
               private actionSheetCtrl: ActionSheetController,
               private relmemService: RelmemService,
               private workService: WorkService,

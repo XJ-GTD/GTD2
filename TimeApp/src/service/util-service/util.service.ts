@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Device } from "@ionic-native/device";
 import {DataConfig} from "../../app/data.config";
 import * as moment from "moment";
-import {Events, LoadingController, ModalController, NavController} from "ionic-angular";
+import {Events, LoadingController} from "ionic-angular";
 
 /**
  * 公共方法

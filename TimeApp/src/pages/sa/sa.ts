@@ -1,12 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import {
-  AlertController, Events, IonicPage, ModalController, Nav, Navbar, NavController,
+  AlertController, Events, IonicPage, ModalController, Navbar, NavController,
   NavParams
 } from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
 import { ScheduleModel } from "../../model/schedule.model";
 import { XiaojiAlarmclockService } from "../../service/util-service/xiaoji-alarmclock.service";
-import {ScheduleOutModel} from "../../model/out/schedule.out.model";
 import {WorkService} from "../../service/work.service";
 import {RcModel} from "../../model/rc.model";
 import {UtilService} from "../../service/util-service/util.service";
@@ -180,7 +179,6 @@ export class SaPage {
               public modalCtrl: ModalController,
               private work:WorkService,
               private alarmClock: XiaojiAlarmclockService,
-              private util: UtilService,
               private alertCtrl: AlertController,
               private relmemService: RelmemService,
               private event: Events) {

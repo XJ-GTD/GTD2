@@ -1,7 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
-import {Contacts,Contact} from "@ionic-native/contacts";
-import {HttpInterceptor} from "@angular/common/http";
 import {ContactsService} from "../../service/util-service/contacts.service";
 import {RuModel} from "../../model/ru.model";
 
