@@ -118,6 +118,7 @@ export class PfPage {
           this.ru = data;
           this.ru.rC = this.tel;
         }else{
+          console.log(ReturnConfig.RETURN_MSG.get(data.code.toString()));
           let alert = this.alertCtrl.create({
             subTitle: ReturnConfig.RETURN_MSG.get(data.code.toString()),
           });
@@ -170,13 +171,13 @@ export class PfPage {
 
   getContacts(){
     if(this.tel != null && this.tel != ''){
-      let tmp = new String(this.tel);
+      let tmp = this.tel;
       tmp = tmp.replace(/[a-zA-Z]/g,'');
       if(tmp.length >= 11){
-        this.tel =new String(tmp.substr(0,11)) ;
+        this.tel =tmp.substr(0,11) ;
 
       }else{
-        this.tel = new String(tmp);
+        this.tel = tmp;
       }
       let fields = ['phoneNumbers','displayName'];
 
