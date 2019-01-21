@@ -18,8 +18,111 @@ import {PageConfig} from "../../app/page.config";
 @IonicPage()
 @Component({
   selector: 'page-ua',
-  templateUrl: 'ua.html',
-  providers: []
+  // templateUrl: 'ua.html',
+  providers: [],
+  template:'<ion-header>\n' +
+  '  <div class="register_header">\n' +
+  '    <ion-navbar>\n' +
+  '      <div class="header_header">账号注册</div>\n' +
+  '    </ion-navbar>\n' +
+  '  </div>\n' +
+  '</ion-header>\n' +
+  '\n' +
+  '\n' +
+  '<ion-content padding>\n' +
+  '  <div class="register_body">\n' +
+  '    <div class="custom_form">\n' +
+  '      <div class="custom_group">\n' +
+  '        <div class="group_input">\n' +
+  '          <div class="input_icon">\n' +
+  '              <span>\n' +
+  '                 <ion-icon name="ios-person-outline"></ion-icon>\n' +
+  '              </span>\n' +
+  '          </div>\n' +
+  '          <div class="input_text">\n' +
+  '            <ion-item>\n' +
+  '              <ion-input type="tel" [(ngModel)]="accountMobile" (input)="format()"  (ionBlur)="checkPhone()"  clearInput=true placeholder="输入您的手机号">\n' +
+  '              </ion-input>\n' +
+  '            </ion-item>\n' +
+  '          </div>\n' +
+  '        </div>\n' +
+  '        <div>\n' +
+  '          <div>\n' +
+  '            <!--*ngIf="true" -->\n' +
+  '            <div class="error_info">\n' +
+  '              <span *ngIf="this.errorCode == 0">手机号不能为空</span>\n' +
+  '              <span *ngIf="this.errorCode == 1 || this.errorCode == 2">请输入正确11位手机号</span>\n' +
+  '            </div>\n' +
+  '          </div>\n' +
+  '        </div>\n' +
+  '      </div>\n' +
+  '      <div class="custom_group verification">\n' +
+  '        <div class="group_input ">\n' +
+  '          <div class="verification_icon">\n' +
+  '            <span class="img_span">\n' +
+  '              <img src="./assets/imgs/verification.png"/>\n' +
+  '            </span>\n' +
+  '          </div>\n' +
+  '          <div class="input_text_verification">\n' +
+  '            <div class="verification_item">\n' +
+  '              <ion-item>\n' +
+  '                <ion-input type="text" [(ngModel)]="authCode" placeholder="验证码" clearInput></ion-input>\n' +
+  '              </ion-item>\n' +
+  '            </div>\n' +
+  '            <div class="button_verification">\n' +
+  '              <button ion-button (click)="sendMsg()">{{timeOut}}</button>\n' +
+  '            </div>\n' +
+  '          </div>\n' +
+  '        </div>\n' +
+  '      </div>\n' +
+  '      <div >\n' +
+  '        <div >\n' +
+  '          <!--*ngIf="true" -->\n' +
+  '          <div class="error_info">\n' +
+  '          </div>\n' +
+  '        </div>\n' +
+  '      </div>\n' +
+  '      <div class="custom_group">\n' +
+  '        <div class="group_input">\n' +
+  '          <div class="input_icon">\n' +
+  '            <span>\n' +
+  '              <ion-icon name="ios-lock-outline"></ion-icon>\n' +
+  '            </span>\n' +
+  '          </div>\n' +
+  '          <div class="input_text">\n' +
+  '            <ion-item>\n' +
+  '              <ion-input type="password" [(ngModel)]="accountPassword" (ionBlur)="checkPwd()" placeholder="密码" clearInput></ion-input>\n' +
+  '            </ion-item>\n' +
+  '          </div>\n' +
+  '          <div >\n' +
+  '            <div >\n' +
+  '              <!--*ngIf="true" -->\n' +
+  '              <div class="error_info">\n' +
+  '                <span *ngIf="this.checkBoxClickFlag">不同意协议不能注册</span>\n' +
+  '                <span *ngIf="this.checkPassword">请输入密码</span>\n' +
+  '              </div>\n' +
+  '            </div>\n' +
+  '          </div>\n' +
+  '        </div>\n' +
+  '      </div>\n' +
+  '      <div class="custom_group padding_0">\n' +
+  '        <button ion-button block color="danger" (click)="register()" class="region_button" [disabled]="disable">\n' +
+  '          注册\n' +
+  '        </button>\n' +
+  '        <div class="copywriting" margin-top>\n' +
+  '          <span class="checkbox_span">\n' +
+  '            <!--<ion-item>-->\n' +
+  '            <!--<ion-label >已阅读《用户协议》</ion-label>-->\n' +
+  '              <ion-checkbox [(ngModel)]="checkBoxClick"></ion-checkbox>\n' +
+  '            <!--</ion-item>-->\n' +
+  '          <span class="userAgreement_span">我已阅读并同意<span class="userAgreement_span_1"\n' +
+  '                                                        (click)="userAgreegment()">《用户协议》</span></span>\n' +
+  '          </span>\n' +
+  '        </div>\n' +
+  '      </div>\n' +
+  '    </div>\n' +
+  '  </div>\n' +
+  '</ion-content>',
 })
 export class UaPage {
 
@@ -43,6 +146,7 @@ export class UaPage {
 
 
   rePage:string;
+  disable:boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private formBuilder: FormBuilder,
@@ -68,6 +172,7 @@ export class UaPage {
     {
       this.checkBoxClickFlag=false;
       if(this.errorCode == 3 && this.checkPassword == false ){
+        this.disable = true;
         this.lsmService.sn(this.accountMobile,this.accountPassword,this.authCode).then(data =>{
           console.debug("注册返回信息::" + JSON.stringify(data));
           if(data.code == 0) {
@@ -96,6 +201,7 @@ export class UaPage {
                   }]
                 });
                 alert.present();
+                this.disable = false;
               }else{
                 let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
                 console.log("登录失败");
@@ -114,6 +220,7 @@ export class UaPage {
                   ]
                 });
                 alert.present();
+                this.disable = false;
               }
 
 
@@ -134,6 +241,7 @@ export class UaPage {
                 ]
               });
               alert.present();
+              this.disable = false;
             })
           }else{
             console.debug("注册失败");
@@ -143,6 +251,7 @@ export class UaPage {
               buttons:['确定']
             });
             alert.present();
+            this.disable = false;
           }
         }).catch(reason => {
           console.log("注册失败 ::" + reason.message);
@@ -153,6 +262,7 @@ export class UaPage {
             buttons:['确定']
           });
           alert.present();
+          this.disable = false;
         })
       }
       //用户注册

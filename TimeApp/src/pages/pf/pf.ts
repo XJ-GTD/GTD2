@@ -23,8 +23,79 @@ import {CordovaInstance} from "@ionic-native/core";
 @IonicPage()
 @Component({
   selector: 'page-pf',
-  templateUrl: 'pf.html',
-  providers:[Contacts]
+  // templateUrl: 'pf.html',
+  providers:[Contacts],
+  template:'<ion-header>\n' +
+  '\n' +
+  '  <ion-toolbar>\n' +
+  '    <ion-buttons left>\n' +
+  '      <button ion-button icon-only (click)="goBack()">\n' +
+  '        <ion-icon name="arrow-back"></ion-icon>\n' +
+  '      </button>\n' +
+  '    </ion-buttons>\n' +
+  '    <ion-title>新建 </ion-title>\n' +
+  '    <ion-buttons right>\n' +
+  '      <button ion-button icon-only (click)="more()">\n' +
+  '        更多\n' +
+  '      </button>\n' +
+  '    </ion-buttons>\n' +
+  '  </ion-toolbar>\n' +
+  '\n' +
+  '</ion-header>\n' +
+  '\n' +
+  '<!--个人添加新建搜索 -->\n' +
+  '<ion-content padding class="page-backgroud-color">\n' +
+  '  <div >\n' +
+  '    <div style="margin: 20px 0px;">\n' +
+  '      <ion-item style="height: 50px">\n' +
+  '        <ion-input type="tel" [(ngModel)]="tel" (ionBlur)="getContacts()" placeholder="请输入手机号" clearInput></ion-input>\n' +
+  '      </ion-item>\n' +
+  '    </div>\n' +
+  '\n' +
+  '    <ion-label *ngIf="contacts.length > 0">本地联系人</ion-label>\n' +
+  '    <div *ngFor="let contact of contacts">\n' +
+  '      <ion-item (click)="select(contact)">\n' +
+  '        <ion-avatar item-start>\n' +
+  '          <img src="./assets/imgs/headImg.jpg">\n' +
+  '        </ion-avatar>\n' +
+  '          <h2>{{contact.phoneNumbers[0].value}}</h2>\n' +
+  '          <p style="">{{contact.displayName}}</p>\n' +
+  '        <div item-end>\n' +
+  '          <!--<span *ngIf="existCode == 1" style="color: red">已添加</span>-->\n' +
+  '          <!--<span *ngIf="existCode == 2" style="color: #488aff">添加</span>-->\n' +
+  '          <!--<span *ngIf="existCode == 3">未注册</span>-->\n' +
+  '        </div>\n' +
+  '      </ion-item>\n' +
+  '    </div>\n' +
+  '\n' +
+  '    <div margin-top>\n' +
+  '      <span style="width: 100%; text-align: center;display: block;padding-bottom: 20px; color: rgb(153,153,153);" *ngIf="checkMobile == false && checkMobileNull == false && isRegist == false">\n' +
+  '        该用户未注册\n' +
+  '      </span>\n' +
+  '      <span style="width: 100%; text-align: center;display: block;padding-bottom: 20px; color: rgb(153,153,153);" *ngIf="errorCode ==1">\n' +
+  '          手机号错误\n' +
+  '      </span>\n' +
+  '    </div>\n' +
+  '\n' +
+  '    <div *ngIf="checkMobile == false && checkMobileNull == false ">\n' +
+  '        <ion-item *ngIf="ru" (click)="toPersonalAddDetail(ru)">\n' +
+  '          <ion-avatar item-start>\n' +
+  '            <img [src]="ru.hiu">\n' +
+  '          </ion-avatar>\n' +
+  '          <ion-label>\n' +
+  '            <span style="font-family: PingFang-SC-Bold">{{ru.rN}}</span>\n' +
+  '          </ion-label>\n' +
+  '          <div item-end>\n' +
+  '            <span *ngIf="existCode == 1" style="color: red">已添加</span>\n' +
+  '            <span *ngIf="existCode == 2" style="color: #488aff">添加</span>\n' +
+  '            <span *ngIf="existCode == 3">未注册</span>\n' +
+  '          </div>\n' +
+  '        </ion-item>\n' +
+  '    </div>\n' +
+  '  </div>\n' +
+  '\n' +
+  '\n' +
+  '</ion-content>',
 })
 export class PfPage {
 
@@ -103,40 +174,41 @@ export class PfPage {
     }
     console.log(this.checkMobile +　" + "　+ this.checkMobileNull);
     if(this.checkMobile == false && this.checkMobileNull == false){
-      // this.getContacts();
       this.ru = undefined;
-      // this.contacts=[];
-      // if(ContactsService.contactList.get(this.tel)){
-      //   this.contacts.push(ContactsService.contactList.get(this.tel));
-      // }
-      // console.log(ContactsService.contactList.get(this.tel));
       console.log("开始查询::" + this.tel);
       this.relmemService.su(this.tel).then(data=>{
-        if(data.code == 0){
+        console.log("         " + JSON.stringify(data));
+        if(data.code == undefined){
           this.isRegist = true;
-          this.existCode = 2;
+          this.existCode = 1;
           this.ru = data;
-          this.ru.rC = this.tel;
         }else{
-          console.log(ReturnConfig.RETURN_MSG.get(data.code.toString()));
-          let alert = this.alertCtrl.create({
-            subTitle: ReturnConfig.RETURN_MSG.get(data.code.toString()),
-          });
-          setTimeout(()=>{
-            alert.dismiss();
-          },1000);
-          alert.present();
-          if(data.code == 11500){
-            this.ru = new RuModel();
-            this.isRegist = false;
-            this.existCode = 3;
-            if(contact != null){
-              this.ru.ran = contact.displayName;
-            }
-            this.ru.rN = this.tel;
+          if(data.code == 0){
+            this.isRegist = true;
+            this.existCode = 2;
+            this.ru = data;
             this.ru.rC = this.tel;
-            this.ru.hiu = DataConfig.defaultHeadImg;
-            this.ru.rI = this.tel;
+          }else {
+            console.log(ReturnConfig.RETURN_MSG.get(data.code.toString()));
+            // let alert = this.alertCtrl.create({
+            //   subTitle: ReturnConfig.RETURN_MSG.get(data.code.toString()),
+            // });
+            // setTimeout(() => {
+            //   alert.dismiss();
+            // }, 1000);
+            // alert.present();
+            if (data.code == 11500) {
+              this.ru = new RuModel();
+              this.isRegist = false;
+              this.existCode = 3;
+              if (contact != null) {
+                this.ru.ran = contact.displayName;
+              }
+              this.ru.rN = this.tel;
+              this.ru.rC = this.tel;
+              this.ru.hiu = DataConfig.defaultHeadImg;
+              this.ru.rI = this.tel;
+            }
           }
         }
         this.contactsTmp = [];
@@ -158,7 +230,7 @@ export class PfPage {
       name : this.name,//名称
       // tel: this.tel,//手机号
       code: this.existCode,
-      ru : ru,//手机号信息
+      u : ru,//手机号信息
     };
     if(this.existCode == 1){
       console.log('PfPage跳转P,bPage')
@@ -173,6 +245,8 @@ export class PfPage {
     if(this.tel != null && this.tel != ''){
       let tmp = this.tel;
       tmp = tmp.replace(/[a-zA-Z]/g,'');
+      tmp = tmp.replace(/\s/g,'');
+
       if(tmp.length >= 11){
         this.tel =tmp.substr(0,11) ;
 

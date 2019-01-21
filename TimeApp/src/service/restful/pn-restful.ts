@@ -75,6 +75,7 @@ export class PnRestful{
       sub.targetMobile = am;
       data.push(sub);
     }
+    console.log("搜索参数 :: " + JSON.stringify(data));
     return this.bs.post(AppConfig.PERSON_SU, {
       playerList:data
     })

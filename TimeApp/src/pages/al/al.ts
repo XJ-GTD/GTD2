@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, Nav } from 'ionic-angular';
-import { AppConfig } from "../../app/app.config";
 import { PageConfig } from "../../app/page.config";
 import { PermissionsService } from "../../service/util-service/permissions.service";
 import { UtilService } from "../../service/util-service/util.service";
@@ -12,7 +11,6 @@ import { LsmService } from "../../service/lsm.service";
 import { DataConfig } from "../../app/data.config";
 import { BsRestful } from "../../service/restful/bs-restful";
 import {SyncService} from "../../service/sync.service";
-import {FiEntity} from "../../entity/fi.entity";
 import {ContactsService} from "../../service/util-service/contacts.service";
 
 /**
@@ -25,7 +23,30 @@ import {ContactsService} from "../../service/util-service/contacts.service";
 @IonicPage()
 @Component({
   selector: 'page-al',
-  templateUrl: 'al.html',
+  // templateUrl: 'al.html',
+  template:'<div class="container">\n' +
+  '\n' +
+  '  <div class="progress-wrapper">\n' +
+  '    <div class="current" [ngStyle]="getOverlayStyle()">{{ current }}/{{ max }}</div>\n' +
+  '\n' +
+  '    <round-progress\n' +
+  '      [current]="current"\n' +
+  '      [max]="max"\n' +
+  '      [stroke]="stroke"\n' +
+  '      [radius]="radius"\n' +
+  '      [semicircle]="semicircle"\n' +
+  '      [rounded]="rounded"\n' +
+  '      [responsive]="responsive"\n' +
+  '      [clockwise]="clockwise"\n' +
+  '      [color]="gradient ? \'url(#gradient)\' : color"\n' +
+  '      [background]="background"\n' +
+  '      [duration]="duration"\n' +
+  '      [animation]="animation"\n' +
+  '      [animationDelay]="animationDelay"></round-progress>\n' +
+  '  </div>\n' +
+  '  <div class="text">{{ text }}</div>\n' +
+  '</div>\n' +
+  '\n'
 })
 export class AlPage {
 

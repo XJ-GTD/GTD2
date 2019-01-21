@@ -21,7 +21,37 @@ import {XiaojiFeedbackService} from "../../service/util-service/xiaoji-feedback.
 @IonicPage()
 @Component({
   selector: 'page-ha',
-  templateUrl: 'ha.html',
+  // templateUrl: 'ha.html',
+  template:'<ion-header no-border>\n' +
+  '  <ion-toolbar color="none">\n' +
+  '    <ion-buttons left no-margin padding-left>\n' +
+  '      <button ion-button icon-only menuToggle no-margin>\n' +
+  '        <img src="./assets/imgs/menu.png"/>\n' +
+  '      </button>\n' +
+  '    </ion-buttons>\n' +
+  '    <ion-buttons end no-margin padding-right>\n' +
+  '      <button ion-button icon-only no-margin (click)="gotoToday()">\n' +
+  '        <img src="./assets/imgs/today.png"/>\n' +
+  '      </button>\n' +
+  '    </ion-buttons>\n' +
+  '  </ion-toolbar>\n' +
+  '</ion-header>\n' +
+  '<ion-content>\n' +
+  '  <div class="haContent">\n' +
+  '    <div class="haCalendar">\n' +
+  '      <ion-calendar [options]="options"\n' +
+  '                    (onSelect)="onSelectDayEvent($event)"\n' +
+  '                    (onPressup)="creNewEvent($event)">\n' +
+  '      </ion-calendar>\n' +
+  '    </div>\n' +
+  '    <p class="tipDay"><span class="showDay animated flipInX">{{showDay}}</span><span\n' +
+  '      class="showDay2">{{showDay2}}</span></p>\n' +
+  '    <page-ha01></page-ha01>\n' +
+  '  </div>\n' +
+  '  <div class=" animated swing  assistant" (click)="openVoice()" #assistant>\n' +
+  '    <img src="./assets/imgs/yuying.png"/>\n' +
+  '  </div>\n' +
+  '</ion-content>',
   providers: []
 })
 export class HaPage {

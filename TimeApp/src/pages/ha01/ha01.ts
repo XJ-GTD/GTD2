@@ -1,10 +1,8 @@
 import {Component, ElementRef, Input, Renderer2} from '@angular/core';
 import {App, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ScheduleModel} from "../../model/schedule.model";
-import {ParamsService} from "../../service/util-service/params.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {WorkService} from "../../service/work.service";
-import {UserService} from "../../service/user.service";
 import * as moment from "moment";
 
 /**
@@ -17,7 +15,72 @@ import * as moment from "moment";
 @IonicPage()
 @Component({
   selector: 'page-ha01',
-  templateUrl: 'ha01.html',
+  // templateUrl: 'ha01.html',
+  template:'<ion-scroll scrollY="true">\n' +
+  '  <ul>\n' +
+  '    <li ion-item *ngFor="let itm of dayEvents ;let i = index" (click)="showScheduleDetail(i)">\n' +
+  '      <p item-start>\n' +
+  '        {{itm.scheduleStartTime}}\n' +
+  '      </p>\n' +
+  '      <ion-icon  [ngStyle]="{\'color\':itm.labelColor}" style="font-size: smaller">{{itm.scheduleType}}</ion-icon>\n' +
+  '      <span>\n' +
+  '     {{itm.scheduleName}}\n' +
+  '    </span>\n' +
+  '    </li>\n' +
+  '  </ul>\n' +
+  '</ion-scroll>\n' +
+  '\n' +
+  '<div [hidden]="noShow" class="backdrop-div" (click)="backdropclick($event)" >\n' +
+  '  <ion-backdrop disable-activated class="itemClass" role="presentation" tappable\n' +
+  '                style="opacity: 0.3; transition-delay: initial; transition-property: none;"></ion-backdrop>\n' +
+  '  <!--<div style="width: 600px;height: 900px" (swipe)="swipeEvent($event)">-->\n' +
+  '  <div class="pop-css" padding style="position: absolute"\n' +
+  '       *ngFor="let event of dayEvents"  (swipe)="swipeEvent($event)">\n' +
+  '      <ion-item style="border-top-left-radius: 20px;border-top-right-radius: 20px;">\n' +
+  '\n' +
+  '        <div>\n' +
+  '          <button (click)="editEvent(event)" ion-item class="buttonWan">编辑</button>\n' +
+  '        </div>\n' +
+  '      </ion-item>\n' +
+  '\n' +
+  '      <ion-item style="border-top-left-radius: 20px;border-top-right-radius: 20px;">\n' +
+  '        <img src="./assets/imgs/h.png" style="width: 20px" item-start>\n' +
+  '        <ion-label col-3>任务</ion-label>\n' +
+  '        <ion-label>{{event.scheduleName}}</ion-label>\n' +
+  '      </ion-item>\n' +
+  '      <ion-item>\n' +
+  '        <img src="./assets/imgs/g.png" style="width: 20px" item-start>\n' +
+  '        <ion-label col-3 item-left style="margin-right: 0px !important;">参与人</ion-label>\n' +
+  '        <div item-left margin-left>\n' +
+  '          <div>\n' +
+  '            <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">\n' +
+  '              <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg"\n' +
+  '                   style="border-radius: 50%;width: 40px;height: 40px">\n' +
+  '            </ion-thumbnail>\n' +
+  '            <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center>\n' +
+  '              张三\n' +
+  '            </div>\n' +
+  '          </div>\n' +
+  '        </div>\n' +
+  '        <div item-left>\n' +
+  '          <div>\n' +
+  '            <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">\n' +
+  '              <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg"\n' +
+  '                   style="border-radius: 50%;width: 40px;height: 40px">\n' +
+  '            </ion-thumbnail>\n' +
+  '            <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center>\n' +
+  '              李四\n' +
+  '            </div>\n' +
+  '          </div>\n' +
+  '        </div>\n' +
+  '      </ion-item>\n' +
+  '      <ion-item>\n' +
+  '        <img src="./assets/imgs/b.png" style="width: 20px" item-start>\n' +
+  '        <ion-label col-3>备注</ion-label>\n' +
+  '        <ion-label>哈哈哈</ion-label>\n' +
+  '      </ion-item>\n' +
+  '    </div>\n' +
+  '</div>\n',
 })
 export class Ha01Page {
 
@@ -26,6 +89,8 @@ export class Ha01Page {
   noShow: boolean = true;
   showNow: ScheduleModel;
   active: number = 0;//当前页面
+
+  dateStr:string;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -94,6 +159,7 @@ export class Ha01Page {
       'month': month - 1,
       'date': day
     }).format('YYYY-MM-DD');
+    this.dateStr = dateStr;
     this.workService.getOd(dateStr).then(data => {
       if (data.code == 0) {
         for (let i = 0; i < data.slc.length; i++) {
@@ -102,9 +168,22 @@ export class Ha01Page {
       }
     })
 
+
+
+
   }
 
-
+  ionViewWillEnter(){
+    if(this.dateStr != undefined){
+      this.workService.getOd(this.dateStr).then(data => {
+        if (data.code == 0) {
+          for (let i = 0; i < data.slc.length; i++) {
+            this.dayEvents.push(data.slc[i]);
+          }
+        }
+      })
+    }
+  }
   // ionViewDidLoad(){
   //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");
   // }

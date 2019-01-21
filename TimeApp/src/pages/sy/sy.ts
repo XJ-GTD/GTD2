@@ -13,7 +13,62 @@ import {JhService} from "../../service/jh.service";
 @IonicPage()
 @Component({
   selector: 'page-sy',
-  templateUrl: 'sy.html',
+  // templateUrl: 'sy.html',
+  template:'<ion-header>\n' +
+  '\n' +
+  '  <ion-navbar>\n' +
+  '    <ion-title>计划详情</ion-title>\n' +
+  '    <ion-buttons right>\n' +
+  '      <button ion-button [hidden]="isEdit" (click)="edit()">编辑</button>\n' +
+  '      <button ion-button [hidden]="!isEdit" (click)="save()">保存</button>\n' +
+  '    </ion-buttons>\n' +
+  '  </ion-navbar>\n' +
+  '\n' +
+  '</ion-header>\n' +
+  '\n' +
+  '\n' +
+  '<ion-content padding>\n' +
+  '  <div *ngIf="isEdit" >\n' +
+  '    <div *ngIf="jh !== undefined">\n' +
+  '      <div style="display: flex; font-size:1.7rem;" class="height56 bortom" padding-left>\n' +
+  '        <div col-3>\n' +
+  '          <div class="margin181">计划名称</div>\n' +
+  '        </div>\n' +
+  '        <div col-9>\n' +
+  '          <ion-input col-12 placeholder="{{jh.jn}}" [(ngModel)]="jn"></ion-input>\n' +
+  '        </div>\n' +
+  '      </div>\n' +
+  '      <div style="display: flex; font-size:1.7rem;" class="bortom" padding-left>\n' +
+  '        <div col-3>\n' +
+  '          <div class="margin181">计划描述</div>\n' +
+  '        </div>\n' +
+  '        <div col-9>\n' +
+  '          <ion-textarea style="border:0.5px solid #cccccc;" col-12 placeholder="{{jh.jg}}" [(ngModel)]="jg"></ion-textarea>\n' +
+  '        </div>\n' +
+  '      </div>\n' +
+  '    </div>\n' +
+  '  </div>\n' +
+  '  <div [hidden]="isEdit" *ngIf="jh !== undefined">\n' +
+  '    <div *ngIf="jh !== undefined">\n' +
+  '      <div style="display: flex; font-size:1.7rem;" class="height56 bortom" padding-left>\n' +
+  '        <div col-3>\n' +
+  '          <div class="margin181">计划名称</div>\n' +
+  '        </div>\n' +
+  '        <div col-9>\n' +
+  '          <div col-12 class="margin181" no-padding>{{jh.jn}}</div>\n' +
+  '        </div>\n' +
+  '      </div>\n' +
+  '      <div style="display: flex; font-size:1.7rem;" class=" bortom" padding-left>\n' +
+  '        <div col-3>\n' +
+  '          <div class="margin181">计划描述</div>\n' +
+  '        </div>\n' +
+  '        <div col-9>\n' +
+  '          <div class="margin181" no-padding style="white-space: pre-wrap">{{jh.jg}}</div>\n' +
+  '        </div>\n' +
+  '      </div>\n' +
+  '    </div>\n' +
+  '  </div>\n' +
+  '</ion-content>\n',
 })
 export class SyPage {
 
