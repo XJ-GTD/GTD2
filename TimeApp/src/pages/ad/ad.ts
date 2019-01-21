@@ -1,8 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
-import { PopoverController } from 'ionic-angular';
 import {DwEmitService} from "../../service/util-service/dw-emit.service";
-import {PageConfig} from "../../app/page.config";
 
 /**
  * Generated class for the AdPage page.
@@ -14,7 +12,38 @@ import {PageConfig} from "../../app/page.config";
 @IonicPage()
 @Component({
   selector: 'page-ad',
-  templateUrl: 'ad.html',
+  // templateUrl: 'ad.html',
+  template:'<ion-header>\n' +
+  '\n' +
+  '  <ion-navbar>\n' +
+  '    <ion-title>意见反馈</ion-title>\n' +
+  '    <ion-buttons right>\n' +
+  '      <button icon-only ion-button >\n' +
+  '        完成\n' +
+  '      </button>\n' +
+  '    </ion-buttons>\n' +
+  '  </ion-navbar>\n' +
+  '\n' +
+  '</ion-header>\n' +
+  '\n' +
+  '\n' +
+  '<ion-content padding>\n' +
+  '  <ion-label>问题描述</ion-label>\n' +
+  '  <ion-textarea placeholder="请描述你遇到的问题" (input)="updateEditor()"></ion-textarea>\n' +
+  '  <div ion-item no-padding>\n' +
+  '    <div>\n' +
+  '      <ion-thumbnail ion-button color="light" float-left class="padding-0">\n' +
+  '        <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg" style="border-radius: 5px">\n' +
+  '      </ion-thumbnail>\n' +
+  '    </div>\n' +
+  '    <div>\n' +
+  '      <ion-thumbnail ion-button color="light" class="div-add-border" >\n' +
+  '        <ion-icon name="add"></ion-icon>\n' +
+  '      </ion-thumbnail>\n' +
+  '    </div>\n' +
+  '  </div>\n' +
+  '\n' +
+  '</ion-content>\n'
 })
 export class AdPage {
 

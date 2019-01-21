@@ -19,7 +19,58 @@ import {DataConfig} from "../../app/data.config";
 @IonicPage()
 @Component({
   selector: 'page-pe',
-  templateUrl: 'pe.html',
+  // templateUrl: 'pe.html',
+  template:'<ion-header>\n' +
+  '\n' +
+  '  <ion-navbar>\n' +
+  '    <ion-title>创建群</ion-title>\n' +
+  '    <ion-buttons right>\n' +
+  '      <button ion-button ion-only (click)="save()">\n' +
+  '        保存\n' +
+  '      </button>\n' +
+  '    </ion-buttons>\n' +
+  '  </ion-navbar>\n' +
+  '\n' +
+  '</ion-header>\n' +
+  '\n' +
+  '\n' +
+  '<ion-content padding class="page-backgroud-color">\n' +
+  '\n' +
+  '  <ion-list class="qunName">\n' +
+  '    <ion-label color="primary" stacked style="padding-left:16px ;">\n' +
+  '      群名称\n' +
+  '    </ion-label>\n' +
+  '    <ion-item class="height57">\n' +
+  '      <ion-input placeholder="请输入" [(ngModel)]="qmc"></ion-input>\n' +
+  '      <img src="./assets/imgs/3.png" height="25" width="25" (click)="toAddGroupMember()" item-end/>\n' +
+  '    </ion-item>\n' +
+  '  </ion-list>\n' +
+  '\n' +
+  '\n' +
+  '  <ion-list class="qunMember">\n' +
+  '    <ion-label color="primary" stacked style="padding-left:16px ;">\n' +
+  '      群成员\n' +
+  '    </ion-label>\n' +
+  '    <div style="width: 100%;height: 35px;color: #000;background-color: #fff">\n' +
+  '      <button  style="font-size: 14px; background-color: #fff;color: rgb(102,102,102);padding: 16px 16px 0 16px" float-end (click)="toAddGroupMember()">添加</button>\n' +
+  '    </div>\n' +
+  '    <ion-item-sliding *ngFor="let cy of qcy">\n' +
+  '      <ion-item>\n' +
+  '        <ion-avatar item-start>\n' +
+  '          <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">\n' +
+  '        </ion-avatar>\n' +
+  '        <span>{{cy.rN}}</span>\n' +
+  '        <p>{{cy.ran}}</p>\n' +
+  '      </ion-item>\n' +
+  '      <ion-item-options side="left">\n' +
+  '      </ion-item-options>\n' +
+  '      <ion-item-options side="right">\n' +
+  '        <button ion-button color="danger" (click)="delete(cy)">删除</button>\n' +
+  '      </ion-item-options>\n' +
+  '    </ion-item-sliding>\n' +
+  '  </ion-list>\n' +
+  '\n' +
+  '</ion-content>\n',
 })
 export class PePage {
 

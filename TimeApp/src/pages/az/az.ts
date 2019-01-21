@@ -12,7 +12,21 @@ import {PageConfig} from "../../app/page.config";
 @IonicPage()
 @Component({
   selector: 'page-az',
-  templateUrl: 'az.html',
+  // templateUrl: 'az.html',
+  template: '<ion-slides>\n' +
+  '  <ion-slide style="background-image:url(assets/imgs/wlcome_2.jpg);background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%; ">\n' +
+  '  </ion-slide>\n' +
+  '  <ion-slide style="background-image:url(assets/imgs/wlcome_1.jpg);background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%; ">\n' +
+  '  </ion-slide>\n' +
+  '  <ion-slide style="background-image:url(assets/imgs/wlcome_3.jpg);background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%; ">\n' +
+  '    <img src="/assets/imgs/wlcome_3.jpg" class="slide-image"/>\n' +
+  '    <button ion-button large clear icon-end color="primary" (click)="startApp()">\n' +
+  '      立即开始\n' +
+  '      <ion-icon name="arrow-forward"></ion-icon>\n' +
+  '    </button>\n' +
+  '  </ion-slide>\n' +
+  '\n' +
+  '</ion-slides>\n'
 })
 export class AzPage {
   constructor(private nav:Nav) {

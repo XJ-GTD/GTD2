@@ -18,7 +18,83 @@ import {UtilService} from "../../service/util-service/util.service";
 @IonicPage()
 @Component({
   selector: 'page-pa',
-  templateUrl: 'pa.html',
+  // templateUrl: 'pa.html',
+  template:'<ion-header>\n' +
+  '\n' +
+  '  <ion-toolbar>\n' +
+  '    <ion-buttons left>\n' +
+  '      <button ion-button icon-only (click)="goBack()">\n' +
+  '        <ion-icon name="arrow-back"></ion-icon>\n' +
+  '      </button>\n' +
+  '    </ion-buttons>\n' +
+  '    <ion-segment [(ngModel)]="relation">\n' +
+  '      <ion-segment-button value="person" >\n' +
+  '        个人\n' +
+  '      </ion-segment-button>\n' +
+  '      <ion-segment-button value="group">\n' +
+  '        群组\n' +
+  '      </ion-segment-button>\n' +
+  '    </ion-segment>\n' +
+  '\n' +
+  '    <ion-buttons right [ngSwitch]="relation" margin-right>\n' +
+  '      <button ion-button icon-only *ngSwitchCase="\'person\'" (click)="toAddMember()">\n' +
+  '        <ion-icon name="person-add"></ion-icon>\n' +
+  '        <!--<img src="./assets/imgs/addPerson.png"/>-->\n' +
+  '      </button>\n' +
+  '      <button ion-button icon-only *ngSwitchCase="\'group\'" (click)="toGroupCreate()">\n' +
+  '        <ion-icon name="add"></ion-icon>\n' +
+  '        <!--<img src="./assets/imgs/aaddGroup.png"/>-->\n' +
+  '      </button>\n' +
+  '    </ion-buttons>\n' +
+  '  </ion-toolbar>\n' +
+  '\n' +
+  '</ion-header>\n' +
+  '\n' +
+  '\n' +
+  '<ion-content padding class="page-backgroud-color">\n' +
+  '  <div [ngSwitch]="relation">\n' +
+  '\n' +
+  '    <ion-list *ngSwitchCase="\'person\'">\n' +
+  '      <ion-item *ngIf="us == undefined">\n' +
+  '        <ion-label>你还没有添加联系人，快点击右上方添加联系人</ion-label>\n' +
+  '      </ion-item>\n' +
+  '      <ion-item-sliding *ngFor="let u of us">\n' +
+  '        <ion-item (click)="toMemberDetail(u)">\n' +
+  '          <ion-avatar item-start >\n' +
+  '            <img [src]="u.hiu">\n' +
+  '          </ion-avatar>\n' +
+  '          <ion-label>\n' +
+  '            <p style="color: #000; line-height: 17px;font-size: 1.7rem;">{{u.ran}}</p>\n' +
+  '            <p></p>\n' +
+  '          </ion-label>\n' +
+  '        </ion-item>\n' +
+  '        <ion-item-options side="right">\n' +
+  '          <button ion-button color="danger" (click)="delPerson(u)">删除</button>\n' +
+  '        </ion-item-options>\n' +
+  '      </ion-item-sliding>\n' +
+  '    </ion-list>\n' +
+  '\n' +
+  '    <ion-list *ngSwitchCase="\'group\'">\n' +
+  '      <ion-item *ngIf="gs == undefined">\n' +
+  '        <ion-label >你还没有创建群组，快点击右上方创建群组</ion-label>\n' +
+  '      </ion-item>\n' +
+  '      <ion-item-sliding *ngFor="let g of gs">\n' +
+  '        <button ion-item (click)="toGroupMember(g)">\n' +
+  '          <ion-avatar item-start >\n' +
+  '            <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">\n' +
+  '          </ion-avatar>\n' +
+  '          <ion-label>\n' +
+  '            {{g.rN}}\n' +
+  '          </ion-label>\n' +
+  '        </button>\n' +
+  '        <ion-item-options side="right">\n' +
+  '          <button ion-button color="danger" (click)="delGroup(g)">删除</button>\n' +
+  '        </ion-item-options>\n' +
+  '      </ion-item-sliding>\n' +
+  '    </ion-list>\n' +
+  '  </div>\n' +
+  '\n' +
+  '</ion-content>',
 })
 export class PaPage {
 
@@ -44,10 +120,10 @@ export class PaPage {
 
 
   toAddMember(){
-    if(this.uo.uty == '0'){
-      this.navCtrl.push(PageConfig.UB_PAGE,{"rePage":PageConfig.PA_PAGE})
-      return;
-    }
+    // if(this.uo.uty == '0'){
+    //   this.navCtrl.push(PageConfig.UB_PAGE,{"rePage":PageConfig.PA_PAGE})
+    //   return;
+    // }
     console.log('PaPage跳转PfPage');
     this.navCtrl.push('PfPage');
   }
@@ -58,10 +134,10 @@ export class PaPage {
   }
 
   toGroupCreate(){
-    if(this.uo.uty == '0'){
-      this.navCtrl.push(PageConfig.UB_PAGE,{"rePage":PageConfig.PA_PAGE})
-      return;
-    }
+    // if(this.uo.uty == '0'){
+    //   this.navCtrl.push(PageConfig.UB_PAGE,{"rePage":PageConfig.PA_PAGE})
+    //   return;
+    // }
     console.log('PaPage跳转PePage');
     this.navCtrl.push("PePage");
   }

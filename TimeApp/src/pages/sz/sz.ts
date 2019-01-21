@@ -12,7 +12,37 @@ import {JhService} from "../../service/jh.service";
 @IonicPage()
 @Component({
   selector: 'page-sz',
-  templateUrl: 'sz.html',
+  // templateUrl: 'sz.html',
+  template:'<ion-header>\n' +
+  '\n' +
+  '  <ion-navbar>\n' +
+  '    <ion-title>添加计划</ion-title>\n' +
+  '    <ion-buttons right>\n' +
+  '      <button ion-button (click)="save()">保存</button>\n' +
+  '    </ion-buttons>\n' +
+  '  </ion-navbar>\n' +
+  '\n' +
+  '</ion-header>\n' +
+  '\n' +
+  '\n' +
+  '<ion-content padding>\n' +
+  '  <!--<ion-list>-->\n' +
+  '    <ion-item>\n' +
+  '      <ion-label>计划名称</ion-label>\n' +
+  '      <ion-input [(ngModel)]="jhmc"></ion-input>\n' +
+  '    </ion-item>\n' +
+  '\n' +
+  '    <div style="display: flex; font-size:1.7rem;" class="bortom" padding-left>\n' +
+  '      <div col-3 no-padding>\n' +
+  '        <div class="margin181">计划描述</div>\n' +
+  '      </div>\n' +
+  '      <div col-9>\n' +
+  '        <ion-textarea style="border:0.5px solid #cccccc;" col-12 [(ngModel)]="jhms"></ion-textarea>\n' +
+  '      </div>\n' +
+  '    </div>\n' +
+  '\n' +
+  '\n' +
+  '</ion-content>\n',
 })
 export class SzPage {
 

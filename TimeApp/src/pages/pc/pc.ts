@@ -18,7 +18,34 @@ import {UtilService} from "../../service/util-service/util.service";
 @IonicPage()
 @Component({
   selector: 'page-pc',
-  templateUrl: 'pc.html',
+  // templateUrl: 'pc.html',
+  template:'<ion-header>\n' +
+  '  <ion-navbar>\n' +
+  '    <ion-title></ion-title>\n' +
+  '  </ion-navbar>\n' +
+  '</ion-header>\n' +
+  '<ion-content padding>\n' +
+  '  <ion-item style="height: 40%" class="flag" *ngIf="ru">\n' +
+  '    <ion-avatar >\n' +
+  '      <img [src]="ru.hiu" style="width: 60px;height: 60px ;margin: 0 auto">\n' +
+  '    </ion-avatar>\n' +
+  '    <ion-title style="margin: 0 auto">{{ru.rN}}</ion-title>\n' +
+  '  </ion-item>\n' +
+  '  <ion-item class="flag" *ngIf="ru">\n' +
+  '    <ion-label>备注</ion-label>\n' +
+  '    <ion-input type="text" text-end placeholder="{{ru.rC}}" [(ngModel)]="ru.ran"></ion-input>\n' +
+  '  </ion-item>\n' +
+  '  <ion-item *ngIf="code == 1 || code == 2" class="flag">\n' +
+  '    <ion-label>接收该用户的推送</ion-label>\n' +
+  '    <ion-checkbox item-end [(ngModel)]="ru.rF"></ion-checkbox>\n' +
+  '  </ion-item>\n' +
+  '  <ion-label></ion-label>\n' +
+  '  <ion-label></ion-label>\n' +
+  '  <ion-label></ion-label>\n' +
+  '  <ion-buttons *ngIf="code == 3 || code == 2" col-10  style="margin: 0 auto">\n' +
+  '    <button ion-button round full (click)="submit()" >确定</button>\n' +
+  '  </ion-buttons>\n' +
+  '</ion-content>\n',
 })
 export class PcPage {
 
@@ -46,11 +73,12 @@ export class PcPage {
     this.name = this.navParams.get("name");
     // this.tel=this.navParams.get("tel");
     this.code = this.navParams.get("code");
-    this.ru = this.navParams.get("ru");
+    this.ru = this.navParams.get("u");
+    console.log("dddddddddddd"+ JSON.stringify(this.ru));
   }
 
   ionViewWillEnter(){
-    console.log("PcPage :: 获取登录用户")
+    console.log("PcPage :: 获取登录用户");
     this.uo = DataConfig.uInfo;
   }
 
