@@ -34,8 +34,8 @@ export class RcRestful{
     let schedule:any = new BsModel();
     schedule.scheduleId = si;
     schedule.scheduleName = sn;
-    schedule.startTime = st;
-    schedule.endTime = et;
+    schedule.startTime = st.replace(new RegExp('/','g'),'-');
+    schedule.endTime = et.replace(new RegExp('/','g'),'-');
     schedule.label = li;
     schedule.players = ps;
     rcList.push(schedule);

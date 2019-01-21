@@ -62,7 +62,10 @@ export class BsRestful {
             AppConfig.HEADER_OPTIONS_JSON.headers.Authorization=DataConfig.uInfo.uT;
           }
           this.httpClient.post(url,body,AppConfig.HEADER_OPTIONS_JSON).subscribe(data=>{
-            resolve(data)
+
+            let dataJson:any = data;
+            dataJson.message=ReturnConfig.RETURN_MSG.get(dataJson.code+"");
+            resolve(dataJson);
           },err => {
             console.error(url + "请求头部：" + DataConfig.uInfo.uT);
             console.error(url + "请求报错：" + JSON.stringify(err));
