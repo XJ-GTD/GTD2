@@ -4,7 +4,6 @@ import {Contacts,Contact} from "@ionic-native/contacts";
 import {HttpInterceptor} from "@angular/common/http";
 import {ContactsService} from "../../service/util-service/contacts.service";
 import {RuModel} from "../../model/ru.model";
-import {PipesModule} from "../../pipes/pipes.module";
 
 /**
  * Generated class for the PhPage page.

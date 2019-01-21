@@ -208,7 +208,15 @@ export class SyncService {
     })
 
   }
-
+  syncTime(){
+    //定时同步
+    setInterval(()=> {
+      // 每隔10秒  刷新时间
+      console.log('000000 更新');
+      this.syncTimeUp();
+      //this.time = (new Date().toTimeString()).substr(0,5); *60*5
+    }, 1000*60*2);
+  }
   /**
    * 定时更新接口
    * @param {string} uI
@@ -217,15 +225,9 @@ export class SyncService {
    * @param sdl
    * @returns {Promise<BsModel>}
    */
-  syncTime():Promise<BsModel>{
+  syncTimeUp():Promise<BsModel>{
     return new Promise((resolve, reject) => {
-      //定时同步
-      setInterval(()=> {
-        // 每隔10秒  刷新时间
-        console.log('000000 更新');
-        this.syncTime();
-        //this.time = (new Date().toTimeString()).substr(0,5); *60*5
-      }, 1000*60*5);
+
       let sql = '';
       let bs = new BsModel();
       let sv = new SyvEntity();

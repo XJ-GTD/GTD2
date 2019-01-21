@@ -51,7 +51,7 @@ export class FiEntity {
       sql=sql+' isup=' + this._isup +',';
     }
     if(this._id != null){
-      sql = sql + ' id=' + this._id +'" where id=' + this._id;
+      sql = sql + ' id=' + this._id +' where id=' + this._id;
     }
     this._usq=sql;
     return this._usq;
