@@ -183,7 +183,7 @@ export class AlPage {
       this.increment(10);
         //检车websockte的状态
         console.log("al :: 查询联系人开始");
-        if(DataConfig.uInfo.uty == '1'){
+        if(DataConfig.uInfo.uty == '1' && DataConfig.IS_MOBILE){
           return this.ContactsService.getContacts();
         }
       }).then(data=>{

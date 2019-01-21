@@ -111,16 +111,16 @@ export class RelmemSqlite {
   /**
    * 删除群组人员
    * @param {string} bi 群组主键ID
-   * @param {string} bmi 关系人ID
+   * @param {string} id 关系表ID
    * @returns {Promise<any>}
    */
-  delRgu(id:string,bmi:string):Promise<any>{
+  delRgu(bi:string,id:string):Promise<any>{
     let sql = "delete from GTD_B_X where 1=1";
     if(id != null && id != ''){
        sql=sql + " and id = '"+id+"'";
     }
-    if(bmi != null && bmi != ''){
-      sql=sql + " and bmi = '"+bmi+"'";
+    if(bi != null && bi != ''){
+      sql=sql + " and bi = '"+bi+"'";
     }
     return this.baseSqlite.executeSql(sql,[]);
   }
