@@ -131,9 +131,8 @@ export class DwMqService {
         // aiui.at = WsEnumModel[mqDate.sk] + UtilService.randInt(0,10);
         aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "10");
       }
-      // mqDate.qData=data;
-      // this.dwEmit.setHbData(mqDate);//测试用
-      // this.toAiui(DataConfig.MQTL,mqDate,data)
+
+      this.dwResultSendToPage(aiui, mqDate.sk);
     }).catch(e=>{
       // this.toAiui(DataConfig.MQTL,mqDate,e)
       // this.dwEmit.setHbData(mqDate);//测试用
@@ -209,9 +208,7 @@ export class DwMqService {
       // var n = new Audio(url);
       // n.src = url;
       // n.play();
-      // mqDate.qData = data;
-      // this.dwEmit.setHbData(mqDate);//测试用
-      // this.toAiui(DataConfig.MQTL,mqDate,data);
+
       this.dwResultSendToPage(aiui, mqDate.sk);
     }).catch(e=>{
       //this.dwEmit.setHbData(mqDate);//测试用

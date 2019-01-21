@@ -52,19 +52,6 @@ public class PersonRepository {
     }
 
     /**
-     * 查询目标用户
-     * (手机号查询）
-     * @return
-     */
-    public List<Object> searchUserByMobile(List<String> mobileList, String type) {
-        String sql = "SELECT TA.USER_ID, TB.USER_NAME, TB.HEAD_IMG \n" +
-                " FROM gtd_login TA \n" +
-                " INNER JOIN gtd_user TB ON TB.USER_ID = TA.USER_ID \n" +
-                " WHERE TA.LOGIN_TYPE = '" + type + "' AND TA.LOGIN_NAME IN ('" + mobileList +"')";
-        return em.createNativeQuery(sql).getResultList();
-    }
-
-    /**
      * 查询用户
      * (userId查询)
      * @return

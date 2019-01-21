@@ -15,6 +15,7 @@ declare var cordova: any;
 @Injectable()
 export class XiaojiAssistantService{
 
+  private failedText: string = '我没有听清楚你说什么';  //暂时替代，录入字典表后删除
   private fileContent: any;
   public isSpeaking:boolean;
   public islistenAudioing:boolean;
@@ -162,6 +163,10 @@ export class XiaojiAssistantService{
       if (this.islistenAudioing) return;
       this.stopSpeak();
       this.isSpeaking = true;
+
+      if (speechText == null || speechText == "") {
+        speechText = this.failedText;
+      }
 
       cordova.plugins.XjBaiduTts.startSpeak(result=>{
         console.log("成功:" + result);
