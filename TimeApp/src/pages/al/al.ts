@@ -192,18 +192,18 @@ export class AlPage {
         console.log("al :: 开始更新版本表");
         return this.configService.ufi(null,0)
       }) .then(data => {
-        console.log("al :: 开始更新版本表结束");
+      console.log("al :: 开始更新版本表结束");
+      if(DataConfig.uInfo.uty=='1'){
+        //定时同步
+        this.sync.syncTime();
+      }
+
+    }).then(data => {
         //进入主页
         //loading.dismiss();
         this.increment(10);
         this.text=" 进入主页";
         this.nav.setRoot(this.rootPage);
-
-      }).then(data => {
-        if(DataConfig.uInfo.uty=='1'){
-          //定时同步
-          this.sync.syncTime();
-        }
 
       }).catch(res => {
         console.log("al error :: "+JSON.stringify(res));
