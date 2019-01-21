@@ -7,8 +7,8 @@ import { ScheduleModel } from "../../model/schedule.model";
 import { XiaojiFeedbackService } from "../../service/util-service/xiaoji-feedback.service";
 import { DwEmitService } from "../../service/util-service/dw-emit.service";
 import { DataConfig } from "../../app/data.config";
-import {WsEnumModel} from "../../model/ws/ws.enum.model";
-import {NetworkService} from "../../service/util-service/network.service";
+import { WsEnumModel } from "../../model/ws/ws.enum.model";
+import { NetworkService } from "../../service/util-service/network.service";
 
 declare var cordova: any;
 /**
@@ -257,7 +257,7 @@ export class HbPage {
         data.tt = $event.tt;
         data.scL = $event.scL;
         this.messages.push(data);
-      }, 1000);
+      }, 1500);
     }
 
   }
