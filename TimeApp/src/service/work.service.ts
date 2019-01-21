@@ -23,7 +23,7 @@ import {RelmemSqlite} from "./sqlite/relmem-sqlite";
 import {RcpEntity} from "../entity/rcp.entity";
 import {ReturnConfig} from "../app/return.config";
 import {RcoModel} from "../model/out/rco.model";
-import {WsResDataModel} from "../model/ws.res.model";
+import {WsResDataModel} from "../model/ws/ws.res.model";
 import {MsSqlite} from "./sqlite/ms-sqlite";
 
 /**

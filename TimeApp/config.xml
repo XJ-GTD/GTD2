@@ -99,6 +99,7 @@
     <plugin name="cordova-plugin-BaiduSpeechAndTTS" spec="../BaiduSpeechAndTTS" />
     <plugin name="cordova-plugin-contacts" spec="3.0.1" />
     <plugin name="cordova-plugin-network-information" spec="2.0.1" />
+    <plugin name="org.nypr.cordova.wakeupplugin" spec="../xjalarmclock" />
     <engine name="android" spec="6.4.0" />
     <engine name="ios" spec="^4.4.0" />
     <engine name="browser" spec="^5.0.4" />

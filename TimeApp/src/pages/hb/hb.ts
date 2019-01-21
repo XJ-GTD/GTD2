@@ -7,7 +7,7 @@ import { ScheduleModel } from "../../model/schedule.model";
 import { XiaojiFeedbackService } from "../../service/util-service/xiaoji-feedback.service";
 import { DwEmitService } from "../../service/util-service/dw-emit.service";
 import { DataConfig } from "../../app/data.config";
-import {WsEnumModel} from "../../model/ws.enum.model";
+import {WsEnumModel} from "../../model/ws/ws.enum.model";
 import {NetworkService} from "../../service/util-service/network.service";
 
 declare var cordova: any;

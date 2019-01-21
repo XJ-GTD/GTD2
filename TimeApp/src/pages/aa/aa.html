@@ -42,6 +42,12 @@
       <ion-label>帮助及反馈</ion-label>
     </button>
 
+    <button ion-item class="rowCss">
+      <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="testDate"></ion-datetime>
+    </button>
+
+    <button (click)="testAlarm()"> 设置闹钟</button>
+
   </div>
 </ion-content>
 

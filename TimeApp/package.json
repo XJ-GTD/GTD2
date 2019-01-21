@@ -85,7 +85,8 @@
     "sw-toolbox": "3.6.0",
     "uk.co.workingedge.cordova.plugin.sqliteporter": "~1.1.0",
     "ws": "3.3.2",
-    "zone.js": "0.8.18"
+    "zone.js": "0.8.18",
+    "org.nypr.cordova.wakeupplugin": "../xjalarmclock"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.0",
@@ -115,7 +116,8 @@
       "cordova-plugin-background-mode": {},
       "cordova-plugin-BaiduSpeechAndTTS": {},
       "cordova-plugin-contacts": {},
-      "cordova-plugin-network-information": {}
+      "cordova-plugin-network-information": {},
+      "org.nypr.cordova.wakeupplugin": {}
     },
     "platforms": [
       "android",

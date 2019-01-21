@@ -3,6 +3,7 @@ import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {PageConfig} from "../../app/page.config";
+import {XiaojiAlarmclockService} from "../../service/util-service/xiaoji-alarmclock.service";
 
 /**
  * Generated class for the AaPage page.
@@ -20,7 +21,10 @@ export class AaPage {
 
   @ViewChild(Navbar) navBar: Navbar;
 
+  testDate: string;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
+              private alarm: XiaojiAlarmclockService,
               private paramsService: ParamsService,
 
               public util: UtilService) {
@@ -42,7 +46,7 @@ export class AaPage {
   logOut() {
     this.paramsService.user = null;
     window.localStorage.clear();
-    console.log('AaPage跳转UbPage')
+    console.log('AaPage跳转UbPage');
     this.navCtrl.push(PageConfig.UB_PAGE);
   }
 
@@ -98,5 +102,11 @@ export class AaPage {
   //   console.log("ionViewCanLeave");
   // }
 
+  testAlarm() {
+    this.testDate = this.testDate.replace("T", " ");
+    this.testDate = this.testDate.replace(":00Z","");
+    console.log('设置完成 时间' + this.testDate);
+    this.alarm.setAlarmClock(this.testDate, "测试闹钟");
+  }
 }
 

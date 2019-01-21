@@ -66,61 +66,22 @@ export class UbPage {
          this.utilService.unloading();
          console.log("登录成功");
          this.webSocket.connect(data.data.accountQueue);
-         let alert = this.alertCtrl.create({
-           title: '提示信息',
-           subTitle: "登录成功",
-           buttons: [{
-             text: '确定', role: 'cancel', handler: () => {
-               if(this.rePage==undefined){
-                 //跳转首页
-                 console.log('UbPage跳转HzPage');
-                 this.navCtrl.setRoot('HzPage');
-               }else{
-                 //登录分析
-                 //登录成功跳转，登录成功返回，
-                 this.navCtrl.getViews().forEach(page=>{
-                   if(page.name == this.rePage){
-                     this.navCtrl.popTo(page);
-                     return;
-                   }
-                 });
-               }
-             }
-           }]
-         });
-         alert.present();
+         this.utilService.loading("登录成功");
        }else if(data.code == 1){
          this.utilService.unloading();
          console.log("登录失败");
-         let alert = this.alertCtrl.create({
-           title:'提示信息',
-           subTitle: data.message,
-           buttons:["确定"]
-         });
-         alert.present();
+         this.utilService.loading("登录失败:" + data.message);
        } else{
          this.utilService.unloading();
          let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
          console.log("登录失败 :: " + message );
-          let alert = this.alertCtrl.create({
-            title:'提示信息',
-            subTitle: message,
-            buttons:["确定"]
-          });
-          alert.present();
+         this.utilService.loading("登录失败:" + message);
        }
 
     }).catch(res=>{
       this.utilService.unloading();
        console.log("登录失败 :: " +　res.message);
-
-       let alert = this.alertCtrl.create({
-         title:'提示信息',
-         subTitle: "登录失败",
-         buttons:["确定"]
-       });
-
-       alert.present();
+       this.utilService.loading("登录失败:" + res.message);
        console.log(res);
      });
 

@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import { WsModel } from "../../model/ws.model";
+import { WsModel } from "../../model/ws/ws.model";
 import { SkillConfig } from "../../app/skill.config";
 import { DwEmitService } from "./dw-emit.service";
 import { WorkService } from "../work.service";
 import { RelmemService } from "../relmem.service";
-import { WsResDataModel } from "../../model/ws.res.model";
+import { WsResDataModel } from "../../model/ws/ws.res.model";
 import { ErrorCodeService } from "./error-code.service";
 import { EmitSpeechService } from "./emit-speech.service";
 import { DataConfig } from "../../app/data.config";
@@ -13,7 +13,7 @@ import { MsSqlite } from "../sqlite/ms-sqlite";
 import { AiuiModel } from "../../model/aiui.model";
 import { XiaojiAssistantService } from "./xiaoji-assistant.service";
 import {UtilService} from "./util.service";
-import {WsEnumModel} from "../../model/ws.enum.model";
+import {WsEnumModel} from "../../model/ws/ws.enum.model";
 import {RcModel} from "../../model/rc.model";
 import {RcoModel} from "../../model/out/rco.model";
 

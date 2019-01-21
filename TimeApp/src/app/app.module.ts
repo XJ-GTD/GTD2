@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {NgModule, ErrorHandler} from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -63,6 +63,8 @@ import { NetworkService } from "../service/util-service/network.service";
 import { Network } from "@ionic-native/network";
 import { Contacts} from "@ionic-native/contacts";
 import { ContactsService} from "../service/util-service/contacts.service";
+import { Vibration } from "@ionic-native/vibration";
+import { NativeAudio } from "@ionic-native/native-audio";
 
 @NgModule({
   declarations: [
@@ -91,6 +93,8 @@ import { ContactsService} from "../service/util-service/contacts.service";
     SplashScreen,
     File,
     Device,
+    Vibration,
+    NativeAudio,
     XiaojiAssistantService,
     XiaojiAlarmclockService,
     UtilService,
