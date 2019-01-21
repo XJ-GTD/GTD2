@@ -753,18 +753,18 @@ W
             if(data && data.rows && data.rows.length>0){
               let scheduleList = new Array<any>();
               for(let i = 0;i<data.rows.length;i++){
-                let schedule:any = {};
+                let schedule:any = bs;
                 let rc:RcModel = data.rows.item(i);
-                schedule.scheduleId = rc.sI
-                schedule.scheduleName = rc.sN
+                schedule.scheduleId = rc.sI;
+                schedule.scheduleName = rc.sN;
                 schedule.startTime = rc.sd;
-                schedule.endTime = rc.ed
+                schedule.endTime = rc.ed;
                 schedule.label = rc.lI;
                 schedule.status='';
                 let players = new Array<any>();
                 for(let j=0;j<rgcL.length;j++){
                   let rgc:RuModel = rgcL.item(j);
-                  let player:any = {};
+                  let player:any = bs;
                   player.accountMobile = rgc.rC;
                   player.userId = rgc.rI;
                   players.push(player);

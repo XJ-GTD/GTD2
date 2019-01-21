@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AppConfig } from "../../app/app.config";
 import { BsRestful } from "./bs-restful";
 import { PsModel } from "../../model/ps.model";
+import {BsModel} from "../../model/out/bs.model";
 
 
 
@@ -30,7 +31,7 @@ export class RcRestful{
      st:string,et:string,li:string,ps:Array<PsModel>,sts:string):Promise<any> {
 
     let rcList = new Array<any>();
-    let schedule:any = {};
+    let schedule:any = new BsModel();
     schedule.scheduleId = si;
     schedule.scheduleName = sn;
     schedule.startTime = st;

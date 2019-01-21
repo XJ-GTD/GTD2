@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AppConfig } from "../../app/app.config";
 import { BsRestful } from "./bs-restful";
+import {BsModel} from "../../model/out/bs.model";
 
 
 
@@ -67,9 +68,9 @@ export class PnRestful{
    */
   au(ui:string,am:string,aui:string):Promise<any>{
     let playerList = new Array<any>();
-    let player:any = {};
-    player.targetMobile =am;
+    let player:any = new BsModel();
     player.targetUserId =aui;
+    player.targetMobile =am;
     playerList.push(player);
     return this.bs.post(AppConfig.PERSON_ADDU, {
       userId:ui,
