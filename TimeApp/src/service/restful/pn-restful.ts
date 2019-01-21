@@ -56,7 +56,7 @@ export class PnRestful{
   su(am:string):Promise<any>{
     let data:any = [];
     let sub:any={};
-    sub.accountMobile = am;
+    sub.targetMobile = am;
     data.push(sub);
     return this.bs.post(AppConfig.PERSON_SU, {
       playerList:data
@@ -72,7 +72,7 @@ export class PnRestful{
     let data:any = [];
     for(let am of ams){
       let sub:any={};
-      sub.accountMobile = am;
+      sub.targetMobile = am;
       data.push(sub);
     }
     return this.bs.post(AppConfig.PERSON_SU, {
