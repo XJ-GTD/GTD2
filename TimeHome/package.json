@@ -1,0 +1,115 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "startbootstrap-stylish-portfolio",
+        "scope": null,
+        "escapedName": "startbootstrap-stylish-portfolio",
+        "name": "startbootstrap-stylish-portfolio",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\GTD2\\TimeHome"
+    ]
+  ],
+  "_cnpm_publish_time": 1536631570045,
+  "_from": "startbootstrap-stylish-portfolio",
+  "_hasShrinkwrap": false,
+  "_id": "startbootstrap-stylish-portfolio@5.0.1",
+  "_location": "/startbootstrap-stylish-portfolio",
+  "_nodeVersion": "10.0.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/startbootstrap-stylish-portfolio_5.0.1_1536631569444_0.207493600378035"
+  },
+  "_npmUser": {
+    "name": "startbootstrap",
+    "email": "feedback@startbootstrap.com"
+  },
+  "_npmVersion": "6.4.0",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "startbootstrap-stylish-portfolio",
+    "scope": null,
+    "escapedName": "startbootstrap-stylish-portfolio",
+    "name": "startbootstrap-stylish-portfolio",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "http://registry.npm.taobao.org/startbootstrap-stylish-portfolio/download/startbootstrap-stylish-portfolio-5.0.1.tgz",
+  "_shasum": "069a3d34a2b486597883f2aeb8ddafb8fe3a3da4",
+  "_shrinkwrap": null,
+  "_spec": "startbootstrap-stylish-portfolio",
+  "_where": "C:\\GTD2\\TimeHome",
+  "author": {
+    "name": "Start Bootstrap"
+  },
+  "bugs": {
+    "url": "https://github.com/BlackrockDigital/startbootstrap-stylish-portfolio/issues",
+    "email": "feedback@startbootstrap.com"
+  },
+  "contributors": [
+    {
+      "name": "David Miller",
+      "url": "http://davidmiller.io/"
+    }
+  ],
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "5.3.1",
+    "bootstrap": "4.1.3",
+    "jquery": "3.3.1",
+    "jquery.easing": "^1.4.1",
+    "simple-line-icons": "^2.4.1"
+  },
+  "description": "A stylish portfolio HTML template built with Bootstrap",
+  "devDependencies": {
+    "browser-sync": "2.24.7",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "6.0.0",
+    "gulp-clean-css": "3.10.0",
+    "gulp-header": "2.0.5",
+    "gulp-rename": "1.4.0",
+    "gulp-sass": "4.0.1",
+    "gulp-uglify": "3.0.1"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "069a3d34a2b486597883f2aeb8ddafb8fe3a3da4",
+    "size": 9230002,
+    "noattachment": false,
+    "tarball": "http://registry.npm.taobao.org/startbootstrap-stylish-portfolio/download/startbootstrap-stylish-portfolio-5.0.1.tgz"
+  },
+  "gitHead": "4b769ee7ad67f287e423309da22719d4e5c44345",
+  "homepage": "https://startbootstrap.com/template-overviews/stylish-portfolio",
+  "keywords": [
+    "css",
+    "sass",
+    "html",
+    "responsive",
+    "theme",
+    "template"
+  ],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "startbootstrap",
+      "email": "feedback@startbootstrap.com"
+    }
+  ],
+  "name": "startbootstrap-stylish-portfolio",
+  "optionalDependencies": {},
+  "publish_time": 1536631570045,
+  "readme": "# [Start Bootstrap - Stylish Portfolio](https://startbootstrap.com/template-overviews/stylish-portfolio/)\n\n[Stylish Portfolio](http://startbootstrap.com/template-overviews/stylish-portfolio/) is a responsive, one page portfolio theme for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/). The theme features multiple content sections with an off canvas navigation menu.\n\n## Preview\n\n[![Stylish Portfolio Preview](https://startbootstrap.com/assets/img/templates/stylish-portfolio.jpg)](https://blackrockdigital.github.io/startbootstrap-stylish-portfolio/)\n\n**[View Live Preview](https://blackrockdigital.github.io/startbootstrap-stylish-portfolio/)**\n\n## Status\n\n[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/BlackrockDigital/startbootstrap-stylish-portfolio/master/LICENSE)\n[![npm version](https://img.shields.io/npm/v/startbootstrap-stylish-portfolio.svg)](https://www.npmjs.com/package/startbootstrap-stylish-portfolio)\n[![Build Status](https://travis-ci.org/BlackrockDigital/startbootstrap-stylish-portfolio.svg?branch=master)](https://travis-ci.org/BlackrockDigital/startbootstrap-stylish-portfolio)\n[![dependencies Status](https://david-dm.org/BlackrockDigital/startbootstrap-stylish-portfolio/status.svg)](https://david-dm.org/BlackrockDigital/startbootstrap-stylish-portfolio)\n[![devDependencies Status](https://david-dm.org/BlackrockDigital/startbootstrap-stylish-portfolio/dev-status.svg)](https://david-dm.org/BlackrockDigital/startbootstrap-stylish-portfolio?type=dev)\n\n## Download and Installation\n\nTo begin using this template, choose one of the following options to get started:\n* [Download the latest release on Start Bootstrap](https://startbootstrap.com/template-overviews/stylish-portfolio/)\n* Install via npm: `npm i startbootstrap-stylish-portfolio`\n* Clone the repo: `git clone https://github.com/BlackrockDigital/startbootstrap-stylish-portfolio.git`\n* [Fork, Clone, or Download on GitHub](https://github.com/BlackrockDigital/startbootstrap-stylish-portfolio)\n\n## Usage\n\n### Basic Usage\n\nAfter downloading, simply edit the HTML and CSS files included with the template in your favorite text editor to make changes. These are the only files you need to worry about, you can ignore everything else! To preview the changes you make to the code, you can open the `index.html` file in your web browser.\n\n### Advanced Usage\n\nAfter installation, run `npm install` and then run `gulp dev` which will open up a preview of the template in your default browser, watch for changes to core template files, and live reload the browser when changes are saved. You can view the `gulpfile.js` to see which tasks are included with the dev environment.\n\n#### Gulp Tasks\n\n- `gulp` the default task that builds everything\n- `gulp dev` browserSync opens the project in your default browser and live reloads when changes are made\n- `gulp css` compiles SCSS files into CSS and minifies the compiled CSS\n- `gulp js` minifies the themes JS file\n- `gulp vendor` copies dependencies from node_modules to the vendor directory\n\nYou must have npm and Gulp installed globally on your machine in order to use these features.\n\n## Troubleshooting and Help\n\nStart Bootstrap has a public Slack channel which is a great place to ask questions about this template and all things related to Start Bootstrap.\n\n**[Click here to join the Slack channel!](https://startbootstrap-slack.herokuapp.com/)**\n\n## Bugs and Issues\n\nHave a bug or an issue with this template? [Open a new issue](https://github.com/BlackrockDigital/startbootstrap-stylish-portfolio/issues) here on GitHub or leave a comment on the [template overview page at Start Bootstrap](http://startbootstrap.com/template-overviews/stylish-portfolio/).\n\n## About\n\nStart Bootstrap is an open source library of free Bootstrap templates and themes. All of the free templates and themes on Start Bootstrap are released under the MIT license, which means you can use them for any purpose, even for commercial projects.\n\n* https://startbootstrap.com\n* https://twitter.com/SBootstrap\n\nStart Bootstrap was created by and is maintained by **[David Miller](http://davidmiller.io/)**, Owner of [Blackrock Digital](http://blackrockdigital.io/).\n\n* http://davidmiller.io\n* https://twitter.com/davidmillerskt\n* https://github.com/davidtmiller\n\nStart Bootstrap is based on the [Bootstrap](http://getbootstrap.com/) framework created by [Mark Otto](https://twitter.com/mdo) and [Jacob Thorton](https://twitter.com/fat).\n\n## Copyright and License\n\nCopyright 2013-2018 Blackrock Digital LLC. Code released under the [MIT](https://github.com/BlackrockDigital/startbootstrap-stylish-portfolio/blob/gh-pages/LICENSE) license.\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlackrockDigital/startbootstrap-stylish-portfolio.git"
+  },
+  "title": "Stylish Portfolio",
+  "version": "5.0.1"
+}
