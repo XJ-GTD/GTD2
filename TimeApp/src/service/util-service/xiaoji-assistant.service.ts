@@ -48,7 +48,6 @@ export class XiaojiAssistantService{
         // 读取录音进行base64转码
         this.file.readAsDataURL(this.file.cacheDirectory,"iat.pcm").then((base64File: string) => {
           this.fileContent = base64File;
-          console.log("base64:" + this.fileContent);
 
           let data = {
             content: this.fileContent,
@@ -56,20 +55,16 @@ export class XiaojiAssistantService{
             deviceId: this.util.getDeviceId(),
             flag: 0
           };
-          console.log("语音识别:" + result);
           success(result);
           this.connetXunfei(data, AppConfig.XF_AUDIO_URL);
         }, (err) => {
-          console.log("异常" + err.toString());
         });
 
         this.islistenAudioing = false;
 
       },error=>{
-        console.log("报错:" + error);
       },true,true);
     } catch (e) {
-      console.log("问题："+ e)
     }
 
   }
@@ -174,9 +169,11 @@ export class XiaojiAssistantService{
         success(result);
       },error=>{
         console.log("报错:" + error);
+        success(false);
         this.isSpeaking = false;
       }, speechText);
     } catch (e) {
+      success(false);
       console.log("问题："+ e)
     }
   }

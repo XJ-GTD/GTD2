@@ -131,7 +131,8 @@ import {PageConfig} from "../../app/page.config";
   '  <ion-item>' +
   '    <img src="./assets/imgs/f.png" style="width: 20px" item-start>' +
   '    <ion-label col-3>计划</ion-label>' +
-  '    <ion-input [(ngModel)]="rc.jn"  placeholder="{{rc.jn}}"></ion-input>' +
+  '    <ion-label >{{rc.jn}}</ion-label>' +
+  // '    <ion-input [(ngModel)]="rc.jn"  placeholder="{{rc.jn}}"></ion-input>' +
   '  </ion-item>' +
   '  <ion-item>' +
   '    <img src="./assets/imgs/e.png" style="width: 20px" item-start>' +
