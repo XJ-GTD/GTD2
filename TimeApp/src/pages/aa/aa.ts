@@ -42,13 +42,6 @@ import {XiaojiAlarmclockService} from "../../service/util-service/xiaoji-alarmcl
   '    <button ion-item (click)="helpAndFeedback()" class="rowCss">\n' +
   '      <ion-label>帮助及反馈</ion-label>\n' +
   '    </button>\n' +
-  '\n' +
-  '    <button ion-item class="rowCss">\n' +
-  '      <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="testDate"></ion-datetime>\n' +
-  '    </button>\n' +
-  '\n' +
-  '    <button (click)="testAlarm()"> 设置闹钟</button>\n' +
-  '\n' +
   '  </div>\n' +
   '</ion-content>\n' +
   '\n' +

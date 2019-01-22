@@ -7,16 +7,16 @@ import { ParamsService } from "../../service/util-service/params.service";
 import { FindOutModel } from "../../model/out/find.out.model";
 import { LabelModel } from "../../model/label.model"
 import { PopoverController,ActionSheetController } from "ionic-angular";
-import {RelmemService} from "../../service/relmem.service";
-import {RuModel} from "../../model/ru.model";
-import {WorkService} from "../../service/work.service";
-import {LbModel} from "../../model/lb.model";
-import {UtilService} from "../../service/util-service/util.service";
+import { RelmemService } from "../../service/relmem.service";
+import { RuModel } from "../../model/ru.model";
+import { WorkService } from "../../service/work.service";
+import { LbModel } from "../../model/lb.model";
+import { UtilService } from "../../service/util-service/util.service";
 import * as moment from "moment";
-import {ZtdModel} from "../../model/ztd.model";
-import {DataConfig} from "../../app/data.config";
-import {JhService} from "../../service/jh.service";
-import {JhModel} from "../../model/jh.model";
+import { ZtdModel } from "../../model/ztd.model";
+import { DataConfig } from "../../app/data.config";
+import { JhService } from "../../service/jh.service";
+import { JhModel } from "../../model/jh.model";
 
 /**
  * Generated class for the SbPage page.
@@ -186,6 +186,7 @@ export class SbPage {
               private util: UtilService,
               private jhService: JhService,
               private modal: ModalController,
+              private utilService: UtilService,
               private events: Events) {
     this.jhtmp = new JhModel();
     this.jhtmp.jn="添加计划";
@@ -263,14 +264,17 @@ export class SbPage {
 
     this.workService.arc(this.title,this.startTime,this.type,this.jh.ji,this.repeatType,this.remarks,'',rul).then(data=>{
       if(data.code == 0){
-        console.log("添加日程成功")
+        console.log("添加日程成功");
         // this.navCtrl.push('HzPage')
+        this.utilService.alert("日程创建成功，已发布");
         this.navCtrl.pop();
       }else{
-        console.log("添加日程失败")
+        console.log("添加日程失败");
+        this.utilService.alert("日程创建失败，请稍后再试");
       }
     }).catch(reason => {
-      console.log("添加日程失败")
+      console.log("添加日程失败");
+      this.utilService.alert("日程创建失败，请稍后再试");
     })
   }
 
@@ -348,7 +352,7 @@ export class SbPage {
 
   //
   backdropclick(e){
-    console.log(e.srcElement)
+    console.log(e.srcElement);
     //判断点击的是否为遮罩层，是的话隐藏遮罩层
     if(e.srcElement.className == 'itemClass'){
       this.isShowJh = false;

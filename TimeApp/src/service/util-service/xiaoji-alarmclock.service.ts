@@ -35,6 +35,19 @@ export class XiaojiAlarmclockService {
       console.log("音频执行失败");
     });
 
+    this.localNotifications.on('click').subscribe(success => {
+      console.log("点击消息通知关闭了闹钟");
+      this.nativeAudio.stop("schedule1");
+    }, error => {
+
+    });
+    this.localNotifications.on('clear').subscribe(success => {
+      console.log("清除消息通知关闭了闹钟");
+      this.nativeAudio.stop("schedule1");
+    }, error => {
+
+    });
+
     this.index = 1;
   }
 
@@ -62,7 +75,8 @@ export class XiaojiAlarmclockService {
           //通知栏消息
           this.localNotifications.schedule({
             id: this.index,//将来清除，取消，更新或检索本地通知所需的唯一标识符默认值：0
-            title:"事件提醒",
+            icon: '../resources/android/icon/drawable-icon.png',
+            title:"闹钟提醒",
             text: "来自日程["+ scheduleName + "]",
             trigger: {at: new Date(new Date().getTime())},//何时触发通知
             //声音设置了无效
@@ -77,7 +91,7 @@ export class XiaojiAlarmclockService {
         } else if(result.type==='set'){
           console.log("检测到闹钟 设定: " + result);
         } else {
-          console.log('检测到未处理的类型 (' + result.type + ')');
+          console.log('检测到未处理的类型 ( '+ result + '|' + result.type + ')');
         }
 
       },
@@ -89,7 +103,7 @@ export class XiaojiAlarmclockService {
         alarms : [{
           type : 'onetime',
           time : { year: this.year, month: this.month, day: this.day, hour : this.hour, minute : this.minute },
-          extra : { message : '提醒闹钟设定完成' },
+          extra : { message : '来自日程[' + scheduleName + ']' },
           message : '闹钟已经过时！'
         }]
       }

@@ -78,9 +78,10 @@ export class WorkService {
       rc.sI=this.util.getUuid();
       let psl = new Array<PsModel>();
       console.log("----- workService arc 添加日程开始-------");
+     // alert(JSON.stringify(rc));
       this.workSqlite.save(rc).then(data=>{
           console.log("----- workService arc 添加日程返回结果：" + JSON.stringify(data));
-
+          //alert('日程添加成功！');
           console.log("----- workService arc 添加日程子表-------");
           return this.workSqlite.addLbData(rc.sI,rc.lI,cft,rm,ac,'0');
         }).then(data=>{
@@ -131,6 +132,7 @@ export class WorkService {
         resolve(bs);
       }).catch(e=>{
         console.error("WorkService arc() Error : " +JSON.stringify(e));
+        //alert('日程添加==='+e.toString());
         bs.code = ReturnConfig.ERR_CODE;
         bs.message=e.message;
         reject(bs);
@@ -371,10 +373,10 @@ export class WorkService {
         rc.sI = sI;
         let ruL:Array<RuModel> = new Array<RuModel>();
         let psl = new Array<PsModel>();
-        console.log('--------- 删除的日程开始 ---------')
+        console.log('--------- 删除的日程开始 ---------');
         this.baseSqlite.delete(rc)
           .then(datad => {
-            console.log('--------- 删除的日程结束 ---------')
+            console.log('--------- 删除的日程结束 ---------');
             console.log('--------- 查询要删除的参与人开始 ---------');
             return this.relmem.getRgusBySi(sI);
         })

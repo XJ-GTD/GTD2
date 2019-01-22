@@ -32,8 +32,7 @@ export class UserService {
    * @returns {Promise<any>}
    */
 
-  upu(uI:string,uN:string,hIU:string,biy:string,rn:string,
-      iC:string,uS:string):Promise<BsModel>{
+  upu(uI:string, uN:string, hIU:string, biy:string, rn:string, iC:string, uS:string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let u = new UEntity();
       u.uI=uI;
@@ -61,7 +60,6 @@ export class UserService {
         console.error("------- UserService upu user error: " + JSON.stringify(e));
         bs.code=1;
         bs.message=e.message;
-        alert("------- UserService upu user error: " + JSON.stringify(e));
         reject(bs)
       })
 

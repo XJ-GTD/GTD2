@@ -1,14 +1,14 @@
-import {Component, ViewChild} from '@angular/core';
-import {Content, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
-import {XiaojiAssistantService} from "../../service/util-service/xiaoji-assistant.service";
-import {ParamsService} from "../../service/util-service/params.service";
-import {AiuiModel} from "../../model/aiui.model";
-import {ScheduleModel} from "../../model/schedule.model";
-import {XiaojiFeedbackService} from "../../service/util-service/xiaoji-feedback.service";
-import {DwEmitService} from "../../service/util-service/dw-emit.service";
-import {DataConfig} from "../../app/data.config";
-import {WsEnumModel} from "../../model/ws/ws.enum.model";
-import {NetworkService} from "../../service/util-service/network.service";
+import { Component, ViewChild } from '@angular/core';
+import { Content, IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { XiaojiAssistantService } from "../../service/util-service/xiaoji-assistant.service";
+import { ParamsService } from "../../service/util-service/params.service";
+import { AiuiModel } from "../../model/aiui.model";
+import { ScheduleModel } from "../../model/schedule.model";
+import { XiaojiFeedbackService } from "../../service/util-service/xiaoji-feedback.service";
+import { DwEmitService } from "../../service/util-service/dw-emit.service";
+import { DataConfig } from "../../app/data.config";
+import { WsEnumModel } from "../../model/ws/ws.enum.model";
+import { NetworkService } from "../../service/util-service/network.service";
 
 declare var cordova: any;
 
@@ -247,8 +247,7 @@ export class HbPage {
     } else if ($event.tt == DataConfig.S1) {
       textX = $event;
       this.messages.unshift(textX);
-      this.xiaojiSpeech.speakText(textX.at, success => {
-      });
+      this.xiaojiSpeech.speakText(textX.at, success => {});
     } else if ($event.tt == DataConfig.S5) {
       textX.tt = DataConfig.S1;
       textX.at = $event.at;
@@ -287,8 +286,7 @@ export class HbPage {
       aiui.tt = this.S1;
       aiui.at = WsEnumModel["E04"] + "1";
       this.messages.push(aiui);
-      this.xiaojiSpeech.speakText(DataConfig.TEXT_CONTENT.get(aiui.at), success => {
-      });
+      this.xiaojiSpeech.speakText(DataConfig.TEXT_CONTENT.get(aiui.at), success=>{});
     }
   }
 

@@ -79,7 +79,7 @@ public class ScheduleServiceImpl implements IScheduleService {
                 data.setSt(sdd.getStartTime());
                 data.setEt(sdd.getEndTime());
                 data.setLb(sdd.getLabel());
-                data.setSt(sdd.getStatus());
+                data.setSs(sdd.getStatus());
                 data.setUs(userId);
 
                 pushDto.setRes(new WebSocketResultDto(data));

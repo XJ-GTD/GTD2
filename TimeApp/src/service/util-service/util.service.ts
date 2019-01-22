@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Device } from "@ionic-native/device";
 import {DataConfig} from "../../app/data.config";
 import * as moment from "moment";
-import {Events, LoadingController} from "ionic-angular";
+import {AlertController, Events, LoadingController} from "ionic-angular";
 
 /**
  * 公共方法
@@ -15,6 +15,7 @@ export class UtilService {
   constructor(public device: Device,
               private loadCtrl: LoadingController,
               private events: Events,
+              private alertCtrl: AlertController,
               ) {}
 
   public static rand(min, max ):number {
@@ -320,5 +321,15 @@ export class UtilService {
     return new String(tmp);
   }
 
+  alert(msg:string){
+    let alert = this.alertCtrl.create({
+      subTitle: msg,
+      enableBackdropDismiss:true
+    });
+    setTimeout(()=>{
+      alert.dismiss();
+    },1000);
+    alert.present();
+  }
 
 }

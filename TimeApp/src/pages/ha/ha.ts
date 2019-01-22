@@ -1,5 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import {IonicPage, ModalController} from 'ionic-angular';
+import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Events, IonicPage, ModalController, NavController} from 'ionic-angular';
 import {RemindModel} from "../../model/remind.model";
 import {
   CalendarComponent,
@@ -10,6 +10,7 @@ import {Ha01Page} from "../ha01/ha01";
 import {PageConfig} from "../../app/page.config";
 import {UtilService} from "../../service/util-service/util.service";
 import {XiaojiFeedbackService} from "../../service/util-service/xiaoji-feedback.service";
+import {ScheduleModel} from "../../model/schedule.model";
 
 /**
  * Generated class for the HaPage page.
@@ -50,7 +51,55 @@ import {XiaojiFeedbackService} from "../../service/util-service/xiaoji-feedback.
   '  <div class=" animated swing  assistant" (click)="openVoice()" #assistant>' +
   '    <img src="./assets/imgs/yuying.png"/>' +
   '  </div>' +
-  '</ion-content>',
+  '</ion-content>' +
+  '<div [hidden]="noShow" class="backdrop-div" (click)="backdropclick($event)" >' +
+  '  <ion-backdrop disable-activated class="itemClass" role="presentation" tappable' +
+  '                style="opacity: 0.3; transition-delay: initial; transition-property: none;"></ion-backdrop>' +
+  '  <div class="pop-css" padding style="position: absolute"' +
+  '       *ngFor="let event of dayEvents"  (swipe)="swipeEvent($event)">' +
+  '      <ion-item style="border-top-left-radius: 20px;border-top-right-radius: 20px;">' +
+  '        <div item-end>' +
+  '          <button (click)="editEvent(event)" ion-item class="buttonWan">编辑</button>' +
+  '        </div>' +
+  '      </ion-item>' +
+  '      <ion-item style="border-top-left-radius: 20px;border-top-right-radius: 20px;">' +
+  '        <img src="./assets/imgs/h.png" style="width: 20px" item-start>' +
+  '        <ion-label col-3>任务</ion-label>' +
+  '        <ion-label>{{event.scheduleName}}</ion-label>' +
+  '      </ion-item>' +
+  '      <ion-item>' +
+  '        <img src="./assets/imgs/g.png" style="width: 20px" item-start>' +
+  '        <ion-label col-3 item-left style="margin-right: 0px !important;">参与人</ion-label>' +
+  '        <div item-left margin-left>' +
+  '          <div>' +
+  '            <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">' +
+  '              <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg"' +
+  '                   style="border-radius: 50%;width: 40px;height: 40px">' +
+  '            </ion-thumbnail>' +
+  '            <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center>' +
+  '              张三' +
+  '            </div>' +
+  '          </div>' +
+  '        </div>' +
+  '        <div item-left>' +
+  '          <div>' +
+  '            <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">' +
+  '              <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg"' +
+  '                   style="border-radius: 50%;width: 40px;height: 40px">' +
+  '            </ion-thumbnail>' +
+  '            <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center>' +
+  '              李四' +
+  '            </div>' +
+  '          </div>' +
+  '        </div>' +
+  '      </ion-item>' +
+  '      <ion-item>' +
+  '        <img src="./assets/imgs/b.png" style="width: 20px" item-start>' +
+  '        <ion-label col-3>备注</ion-label>' +
+  '        <ion-label>哈哈哈</ion-label>' +
+  '      </ion-item>' +
+  '    </div>' +
+  '</div>',
   providers: []
 })
 export class HaPage {
@@ -62,6 +111,9 @@ export class HaPage {
 
   showDay: string;
   showDay2: string;
+  active: number = 0;//当前页面
+  noShow: boolean = true;
+  dayEvents: Array<ScheduleModel>;
 
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
   options: CalendarComponentOptions = {
@@ -72,7 +124,10 @@ export class HaPage {
 
   constructor(private modalCtr: ModalController,
               private utilService: UtilService,
-              private xiaojiFeekback: XiaojiFeedbackService) {
+              private xiaojiFeekback: XiaojiFeedbackService,
+              private events: Events,
+              private el: ElementRef,
+              private navCtrl: NavController) {
     moment.locale('zh-cn');
   }
 
@@ -89,6 +144,39 @@ export class HaPage {
       'date': day
     }).format('YYYY-MM-DD'))
     this.showDay2 = moment().set({'year': year, 'month': month - 1, 'date': day}).format('dddd YYYY 年 MM 月 DD 日');
+    this.events.subscribe("showSchedule",(data)=>{
+      this.dayEvents = data.dayEvents;
+      this.active = data.index;
+      setTimeout(()=>{
+        let domList = this.el.nativeElement.querySelectorAll(".pop-css");
+        console.log(domList.length);
+
+        for (let i = 0; i < domList.length; i++) {
+          if (this.active == i) {
+            domList.item(i).className = "pop-css activeCss";
+          }
+          if (i == this.active - 1) {
+            domList.item(i).className = "pop-css activeCssLeft";
+          }
+          if (i == this.active + 1) {
+            domList.item(i).className = "pop-css activeCssRight";
+          }
+          if (i < this.active - 1) {
+            domList.item(i).className = "pop-css activeCssLeft-1";
+          }
+          if (i > this.active + 1) {
+            domList.item(i).className = "pop-css activeCssRight-1";
+          }
+          console.log("i :: " + i);
+        }
+        this.noShow = false;
+      },100)
+
+    });
+
+    this.events.subscribe("noshow",()=>{
+      this.noShow = true;
+    })
   }
 
   ionViewWillEnter(){
@@ -124,7 +212,10 @@ export class HaPage {
     this.ha01Page.showEvents($event);
 
 
+
   }
+
+
 
   gotoToday() {
     this.ion2calendar.setViewDate(moment().format("YYYY-MM-DD"));
@@ -135,6 +226,88 @@ export class HaPage {
     tab1RootModal.present();
   }
 
+
+  swipeEvent(event) {
+    console.log(event);
+    console.log("当前页面 :: " + this.active);
+    let domList = this.el.nativeElement.querySelectorAll(".pop-css");
+
+
+    if (event.direction == 2) {
+      let index = this.active;
+
+      //   3 4 5 6
+      // 2 3 4 5
+      console.log("向左滑 :: ");
+      if (index == this.dayEvents.length - 1) {
+        console.log("划不动了 :: ");
+        return;
+      }
+
+      //左一左移
+      if (index - 1 >= 0) {
+        let dom2 = domList.item(index - 1);
+        dom2.className = "pop-css activeCssLeft-1";
+      }
+      //当前页面左移
+      let dom: HTMLElement = domList.item(index);
+      console.log(dom)
+      // dom.style.transform = "translate(-105%,10%)"
+      dom.className = "pop-css activeCssLeft ";
+      //右一左移
+      if (index + 1 < this.dayEvents.length) {
+        let dom2 = domList.item(index + 1);
+        dom2.className = "pop-css activeCss";
+      }
+      //右二左移
+      if (index + 2 < this.dayEvents.length) {
+        let dom2 = domList.item(index + 2);
+        dom2.className = "pop-css activeCssRight";
+      }
+
+      this.active++;
+    }
+    if (event.direction == 4) {
+      console.log("向右滑 :: ");
+      let index = this.active;
+      if (this.active == 0) {
+        console.log("划不动了 :: ")
+        return;
+      }
+      let dom = domList.item(index);
+      dom.className = "pop-css activeCssRight ";
+      //右一右移
+      if (index + 1 < domList.length) {
+        let dom2 = domList.item(index + 1);
+        dom2.className = "pop-css activeCssRight-1";
+      }
+      //左一右移
+      if (index - 1 >= 0) {
+        let dom2 = domList.item(index - 1);
+        dom2.className = "pop-css activeCss";
+      }
+      //左二右移
+      if (index - 2 >= 0) {
+        let dom2 = domList.item(index - 2);
+        dom2.className = "pop-css activeCssLeft";
+      }
+      this.active--;
+    }
+  }
+
+  backdropclick = function (e) {
+    //判断点击的是否为遮罩层，是的话隐藏遮罩层
+    if (e.srcElement.className == 'itemClass') {
+      this.noShow = true;
+    }
+    //隐藏滚动条
+    //阻止冒泡
+    // e.stopPropagation();
+  }
+
+  editEvent(schedule:ScheduleModel){
+    this.navCtrl.push("SaPage", schedule);
+  }
 
 }
 

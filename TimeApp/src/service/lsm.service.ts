@@ -165,7 +165,6 @@ export class LsmService {
             console.error("------lsm login 登录请求返回fail");
           }
         }).then(data => {
-          base.message=ReturnConfig.RETURN_MSG.get(data.code);
           console.log("------lsm login 登录请求返回结果后更新rc日程用户ID-------");
           let rc=new RcEntity();
           rc.uI=DataConfig.uInfo.uI;
