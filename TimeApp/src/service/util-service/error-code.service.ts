@@ -1,5 +1,9 @@
 import { Injectable } from "@angular/core";
-import { DwEmitService } from "./dw-emit.service";
+import { EmitSpeechService } from "./emit-speech.service";
+import { WsModel } from "../../model/ws/ws.model";
+import { AiuiModel } from "../../model/aiui.model";
+import { DataConfig } from "../../app/data.config";
+import { WsEnumModel } from "../../model/ws/ws.enum.model";
 
 /**
  * 错误码统一处理
@@ -7,16 +11,18 @@ import { DwEmitService } from "./dw-emit.service";
 @Injectable()
 export class ErrorCodeService {
 
-  constructor(private dwEmit: DwEmitService){
+  constructor(private emitSend: EmitSpeechService){
 
   }
-  public errorHanding(code) {
-    if (code == 50201) {//语音无对应技能
-      this.speechFail();
+  public errorHanding(mqDate: WsModel) {
+    if (mqDate.ss == 50201) {//语音无对应技能
+      console.log("错误处理：无对应技能");
+      let aiui = new AiuiModel();
+      aiui.tt = DataConfig.S1;
+      //WsEnumModel["E01"] + UtilService.randInt(0,10);
+      aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel["E01"] + "1");
+      this.emitSend.send(aiui, null);
     }
   }
 
-  private speechFail() {
-    this.dwEmit.setHbData(1);
-  }
 }

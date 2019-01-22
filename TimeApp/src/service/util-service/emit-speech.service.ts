@@ -22,6 +22,8 @@ export class EmitSpeechService {
       } else if (type == "D") {
         //再根据具体业务返回对应页面
       }
+    } else {
+      this.dwEmit.setHbData(aiui);
     }
   }
 

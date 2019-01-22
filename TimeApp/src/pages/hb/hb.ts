@@ -126,7 +126,7 @@ export class HbPage {
   filePath: string;   //语音文件路径
 
   schedule: ScheduleModel;
-  inputData: AiuiModel;
+  inputData: AiuiModel = new AiuiModel();
   messages: Array<AiuiModel>; //聊天数据队列
   //语音界面数据传递
 
@@ -226,7 +226,7 @@ export class HbPage {
   //语音输入页面处理
   speechInputHanding(text) {
     this.inputData.tt = this.U1;
-    this.inputData.at = text;
+    this.inputData.ut = text;
     this.messages.unshift(this.inputData);
     this.inputData = new AiuiModel();
 
@@ -242,8 +242,8 @@ export class HbPage {
     let data = new AiuiModel();
 
     if ($event.tt == DataConfig.U1) {
-      textU = $event;
-      this.messages.unshift(textU);
+      // textU = $event;
+      // this.messages.unshift(textU);
     } else if ($event.tt == DataConfig.S1) {
       textX = $event;
       this.messages.unshift(textX);
@@ -284,9 +284,9 @@ export class HbPage {
       //WsEnumModel["E04"] + UtilService.randInt(0,10);
       let aiui = new AiuiModel();
       aiui.tt = this.S1;
-      aiui.at = WsEnumModel["E04"] + "1";
+      aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel["E04"] + "1");
       this.messages.push(aiui);
-      this.xiaojiSpeech.speakText(DataConfig.TEXT_CONTENT.get(aiui.at), success=>{});
+      this.xiaojiSpeech.speakText(aiui.at, success=>{});
     }
   }
 

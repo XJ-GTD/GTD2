@@ -95,21 +95,24 @@ public class AIButlerController {
             if("nlp".equals(sub.getSub())){
                 if (sub.getIntent() != null){
                     AiuiIntent intent =  sub.getIntent();
-                    List<Semantic> semantics = intent.getSemantic();
 
                     NlpOutDto nlp = new NlpOutDto();
+                    nlp.setRc(intent.getRc());
                     nlp.setText(intent.getText());
-                    if (intent.getAnswer() != null && !intent.getAnswer().equals("")) {
+                    if (intent.getAnswer() != null) {
                         nlp.setAnswer(intent.getAnswer().getText());
                         nlp.setAnswerImg(intent.getAnswer().getImgUrl());
                         nlp.setAnswerUrl(intent.getAnswer().getUrl());
                     }
-                    nlp.setService(intent.getService());
+                    if (intent.getService() != null) {
+                        nlp.setService(intent.getService());
+                    }
                     if (intent.getShouldEndSession() != null) {
                         nlp.setShouldEndSession(intent.getShouldEndSession());
                     }
 
-                    if (semantics != null) {
+                    if (intent.getSemantic() != null) {
+                        List<Semantic> semantics = intent.getSemantic();
                         for (Semantic semantic : semantics){
                             nlp.setIntent(semantic.getIntent());
                             nlp.setSlots(semantic.getSlots());

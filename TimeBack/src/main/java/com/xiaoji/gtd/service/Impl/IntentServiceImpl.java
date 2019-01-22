@@ -150,6 +150,9 @@ public class IntentServiceImpl implements IIntentService {
             String userId = parseData.getUserId();
             List<NlpOutDto> data = parseData.getData();
 
+            String flag = "";
+            String skillType = "";
+
             String queueName = BaseUtil.getQueueName(userId, deviceId);
             outDto.setVs(version);
 
@@ -160,22 +163,24 @@ public class IntentServiceImpl implements IIntentService {
                 return;
             }
             if (data == null || data.size() == 0) {
-                outDto.setSs(ResultCode.FAIL_XF_SKILL);
-                logger.error("语义解析失败： 无对应技能");
+                outDto.setSs(ResultCode.FAIL_XF);
+                logger.error("语义解析失败： 语义后台报错");
                 webSocketService.pushMessage(queueName, outDto);
                 return;
             }
             for (NlpOutDto nod: data) {
-                if (nod.getService() == null) continue;
-                String flag = WebSocketSkillEnum.getIntentCode(splitStr(nod.getService()));
-                if (nod.getIntent() != null) {
-                    String skillType = WebSocketSkillEnum.getIntentCode(nod.getIntent());
-                    outDto.setSk(skillType);
-                } else {
-                    outDto.setSk(flag);
+
+                if (nod.getService() != null) {
+                    flag = WebSocketSkillEnum.getIntentCode(splitStr(nod.getService()));
                 }
                 if (flag != null && flag.equals("0")) {
                     outDto.setRes(dealWithSlots(nod));
+                }
+                if (nod.getIntent() != null) {
+                    skillType = WebSocketSkillEnum.getIntentCode(nod.getIntent());
+                    outDto.setSk(skillType);
+                } else {
+                    outDto.setSk(flag);
                 }
                 if (nod.getShouldEndSession() != null) {
                     outDto.setSes(nod.getShouldEndSession());
@@ -183,11 +188,20 @@ public class IntentServiceImpl implements IIntentService {
                         outDto.setSk(WebSocketSkillEnum.getIntentCode(nod.getAnswer()));
                     }
                 }
-                outDto.setUt(nod.getText());
-                outDto.setAt(nod.getAnswer());
-                outDto.setAu(nod.getAnswerUrl());
-                outDto.setAi(nod.getAnswerImg());
-                outDto.setSs(ResultCode.SUCCESS);
+                if (nod.getRc() == 0) {
+                    outDto.setUt(nod.getText());
+                    outDto.setAt(nod.getAnswer());
+                    outDto.setAu(nod.getAnswerUrl());
+                    outDto.setAi(nod.getAnswerImg());
+                    outDto.setSs(ResultCode.SUCCESS);
+                    logger.debug("语义解析成功");
+                } else if (nod.getRc() == 4) {
+                    outDto.setUt(nod.getText());
+                    outDto.setSs(ResultCode.FAIL_XF_SKILL);
+                    logger.debug("语义解析失败： 无对应技能");
+                }
+
+
                 webSocketService.pushMessage(queueName, outDto);
                 logger.debug("消息队列：" + queueName + " | 数据：" + outDto);
                 outDto = new WebSocketOutDto();

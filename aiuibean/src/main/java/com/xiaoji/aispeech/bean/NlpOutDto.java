@@ -5,6 +5,7 @@ import com.xiaoji.aispeech.xf.aiuiData.Slot;
 import java.util.List;
 
 public class NlpOutDto{
+    private int rc;
     private String text;
     private String answer;
     private String answerImg;
@@ -76,6 +77,14 @@ public class NlpOutDto{
 
     public void setShouldEndSession(Boolean shouldEndSession) {
         this.shouldEndSession = shouldEndSession;
+    }
+
+    public int getRc() {
+        return rc;
+    }
+
+    public void setRc(int rc) {
+        this.rc = rc;
     }
 }
 
