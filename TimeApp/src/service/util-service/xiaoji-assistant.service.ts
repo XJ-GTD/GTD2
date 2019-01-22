@@ -63,8 +63,10 @@ export class XiaojiAssistantService{
         this.islistenAudioing = false;
 
       },error=>{
+        this.islistenAudioing = false;
       },true,true);
     } catch (e) {
+      this.islistenAudioing = false;
     }
 
   }
@@ -208,7 +210,7 @@ export class XiaojiAssistantService{
         console.log("停止监听");
         cordova.plugins.XjBaiduSpeech.stopListen();
       } else {
-        console.log("停止监听");
+        console.log("停止监听失败");
       }
     } catch (e) {
       console.log("stopListenAudio问题："+ e)
@@ -223,7 +225,6 @@ export class XiaojiAssistantService{
     try {
       cordova.plugins.XjBaiduWakeUp.wakeUpStart(result=>{
         if (this.isSpeaking || this.islistenAudioing) {
-
           success(false);
           return;
         }

@@ -46,7 +46,7 @@ public class PersonRepository {
      * @return
      */
     public Object isPasswordTrue(String userId, String password) {
-        String sql = "SELECT COUNT(*) FROM gtd_login WHERE USER_ID = '" + userId + "' AND \n" +
+        String sql = "SELECT COUNT(1) FROM gtd_login WHERE USER_ID = '" + userId + "' AND \n" +
                 " PASSWORD = '"+ password + "'";
         return em.createNativeQuery(sql).getSingleResult();
     }

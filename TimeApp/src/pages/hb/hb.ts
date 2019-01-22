@@ -168,7 +168,7 @@ export class HbPage {
       if (!isWakeUp) {
         this.initWakeUp();
       }
-      this.xiaojiSpeech.speakText("请说出你让我做的事情", speakRs => {
+      this.xiaojiSpeech.speakText("小吉在呢，请吩咐", speakRs => {
         this.xiaojiSpeech.listenAudio(data => {
           this.initWakeUp();
           this.messageHanding(data);
@@ -251,7 +251,7 @@ export class HbPage {
     } else if ($event.tt == DataConfig.S5) {
       textX.tt = DataConfig.S1;
       textX.at = $event.at;
-      this.messages.unshift(textU);
+      this.messages.unshift(textX);
       this.xiaojiSpeech.speakText(textX.at, success => {
         data.tt = $event.tt;
         data.scL = $event.scL;
