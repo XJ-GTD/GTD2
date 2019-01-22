@@ -42,6 +42,7 @@ export class DataConfig {
   //随机语音播报字典类型
   public static MESSAGE_TYPE:string = '400';
   /* =============== 同步表名 ==================*/
+  public static GTD_A:string='GTD_A'; //用户表
   public static GTD_B:string='GTD_B'; //联系人表
   public static GTD_B_X:string='GTD_B_X'; //群组关联表
   public static GTD_C:string='GTD_C'; //日程表
