@@ -138,6 +138,20 @@ export class UbPage {
          console.log("登录成功");
          this.webSocket.connect(data.data.accountQueue);
          // this.utilService.loading("登录成功");
+         if(this.rePage==undefined){
+           //跳转首页
+           console.log('UbPage跳转HzPage');
+           this.navCtrl.setRoot('HzPage');
+         }else{
+           //登录分析
+           //登录成功跳转，登录成功返回，
+           this.navCtrl.getViews().forEach(page=>{
+             if(page.name == this.rePage){
+               this.navCtrl.popTo(page);
+               return;
+             }
+           });
+         }
        }else if(data.code == 1){
          this.utilService.unloading();
          console.log("登录失败");

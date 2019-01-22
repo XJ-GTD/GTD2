@@ -222,6 +222,7 @@ export class SaPage {
   backButtonClick = (e: UIEvent) => {
     // 重写返回方法
     this.paramsService.schedule=null;
+    this.event.publish('noshow');
     this.navCtrl.pop();
   };
 
@@ -311,6 +312,7 @@ export class SaPage {
     this.work.drc(this.rc.sI,this.rc.sa).then(data=>{
       console.log("删除成功 :: " );
       this.event.publish("reloadHa01");
+      this.event.publish('noshow');
       this.navCtrl.pop();
     }).catch(reason=>{
       console.log("删除失败 :: " );
