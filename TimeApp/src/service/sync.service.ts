@@ -12,6 +12,7 @@ import {RelmemSqlite} from "./sqlite/relmem-sqlite";
 import {JhSqlite} from "./sqlite/jh-sqlite";
 import {SyvEntity} from "../entity/syv.entity";
 import {SyncSqlite} from "./sqlite/sync-sqlite";
+import {UserSqlite} from "./sqlite/user-sqlite";
 
 /**
  * 初始化
@@ -28,6 +29,7 @@ export class SyncService {
                private work:WorkSqlite,
                private relmem:RelmemSqlite,
                private jh:JhSqlite,
+               private userSqlite:UserSqlite,
                private ztd:ZtdSqlite) {
 
   }
@@ -289,6 +291,8 @@ export class SyncService {
       //alert(ud.tableName.substr(0,5));
       if (ud.tableName == DataConfig.GTD_B) {
         sql+=this.relmem.syncToRuSql(ud.dataList);
+      }else if(ud.tableName == DataConfig.GTD_A) {
+        sql+=this.userSqlite.syncToUSql(ud.dataList);
       }else if(ud.tableName == DataConfig.GTD_B_X) {
         sql+=this.relmem.syncToRguSql(ud.dataList);
       }if (ud.tableName == DataConfig.GTD_C) {

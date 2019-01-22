@@ -622,9 +622,14 @@ export class WorkSqlite{
     sync.tableC = en.rm;
     sync.tableD = en.cft;
     sync.tableE = en.ac;
-    sync.tableF = en.dt;
+    if(en.dt != null && en.dt != ''){
+      sync.tableF = moment(en.dt).format('YYYY-MM-DD HH:mm');
+    }
     sync.tableG = en.fh;
-    sync.tableH = en.wd;
+    if(en.wd != null && en.wd != ''){
+      sync.tableH = moment(en.wd).format('YYYY-MM-DD HH:mm');
+    }
+
     sync.action= ac;
     sync.tableName = tn;
     return this.baseSqlite.save(sync);
@@ -642,8 +647,8 @@ export class WorkSqlite{
     sync.tableC = en.lI;
     sync.tableD = en.uI;
     sync.tableE = en.ji;
-    sync.tableF = en.sd;
-    sync.tableG = en.ed;
+    sync.tableF = moment(en.sd).format('YYYY-MM-DD HH:mm');
+    sync.tableG = moment(en.ed).format('YYYY-MM-DD HH:mm');
     sync.action= ac;
     sync.tableName = DataConfig.GTD_C;
     return this.baseSqlite.save(sync);

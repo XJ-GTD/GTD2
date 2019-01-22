@@ -188,7 +188,7 @@ public class IntentServiceImpl implements IIntentService {
                         outDto.setSk(WebSocketSkillEnum.getIntentCode(nod.getAnswer()));
                     }
                 }
-                if (nod.getRc() == 0) {
+                if (nod.getRc() == 0 || nod.getRc() == 3) {
                     outDto.setUt(nod.getText());
                     outDto.setAt(nod.getAnswer());
                     outDto.setAu(nod.getAnswerUrl());

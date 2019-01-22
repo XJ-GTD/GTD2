@@ -146,7 +146,7 @@ export class LsmService {
             let u = new UEntity();
             u.uI = datal.data.userId;
             u.aQ = datal.data.accountQueue;
-            u.biy=datal.data.brithday;
+            u.biy=datal.data.birthday;
             u.hIU=datal.data.headImg;
             u.iC=datal.data.idCard;
             u.uT=datal.data.token;
@@ -235,7 +235,7 @@ export class LsmService {
           let u = new UEntity();
           u.uI = datal.data.userId;
           u.aQ = datal.data.accountQueue;
-          u.biy=datal.data.brithday;
+          u.biy=datal.data.birthday;
           u.hIU=datal.data.headImg;
           u.iC=datal.data.idCard;
           u.uT=datal.data.token;

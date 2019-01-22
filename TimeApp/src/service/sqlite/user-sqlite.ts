@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import {BaseSqlite} from "./base-sqlite";
 import {UEntity} from "../../entity/u.entity";
+import {SyncEntity} from "../../entity/sync.entity";
+import {DataConfig} from "../../app/data.config";
+import {SyncModel} from "../../model/sync.model";
 
 
 /**
@@ -55,6 +58,59 @@ export class UserSqlite {
   getUo():Promise<any>{
       let sql='select * from GTD_A';
       return this.baseSqlite.executeSql(sql,[])
+  }
+
+  update(u:UEntity):Promise<any>{
+    return this.baseSqlite.update(u);
+  }
+  /**
+   * 服务器同步用户表转sql
+   * @param {Array<SyncModel>} syncs
+   * @param {string} tn 子表名
+   */
+  syncToUSql(syncs:Array<SyncModel>){
+    let sql = '';
+    if(syncs != null && syncs.length>0) {
+      for (let i = 0; i < syncs.length; i++) {
+        let sync = syncs[i];
+        let en = new UEntity();
+        en.uI = sync.tableA;
+        en.uN = sync.tableB;
+        en.hIU = sync.tableC;
+        en.biy = sync.tableD;
+        en.rn = sync.tableE;
+        en.iC = sync.tableF;
+        en.uS = sync.tableG;
+        en.uty = sync.tableH;
+        if (sync.action == '2') {
+          sql += en.dsq;
+        } else {
+          sql += en.usq;
+        }
+      }
+    }
+    return sql;
+  }
+  /**
+   * 服务器定时同步用户表
+   * @param {RcEntity} en
+   * @param {string} ac 执行动作0添加，1更新，2删除
+   */
+  syncUTime(en:UEntity,ac:string): Promise<any> {
+    let sql = '';
+    let sync = new SyncEntity();
+    sync.tableA = en.uI ;
+    sync.tableB = en.uN;
+    sync.tableC = en.hIU;
+    sync.tableD = en.biy;
+    sync.tableE = en.rn;
+    sync.tableF = en.iC;
+    sync.tableG = en.uS;
+    sync.tableH = en.uCt;
+    sync.tableI = en.uty;
+    sync.action= ac;
+    sync.tableName = DataConfig.GTD_A;
+    return this.baseSqlite.save(sync);
   }
 
 //   this.sqlite.executeSql('replace into GTD_A(uI,uty) VALUES (?,?)',['6688','0']).then(data=>{

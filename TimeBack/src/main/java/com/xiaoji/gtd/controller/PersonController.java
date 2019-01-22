@@ -219,17 +219,19 @@ public class PersonController {
         }
         //特殊字符检测
         //入参正确性验证
-        if (CommonMethods.checkMySqlReservedWords(inDto.getUserName())) {
-            outDto.setCode(ResultCode.ERROR_USERNAME);
-            logger.debug("[修改失败]：用户名类型或格式错误");
-            return outDto;
-        }
 
         //业务逻辑
         try {
 
-            outDto.setCode(ResultCode.SUCCESS);
-            logger.debug("[修改成功]");
+            int flag = personService.updateUserInfo(inDto);
+            if (flag == 0) {
+                outDto.setCode(ResultCode.SUCCESS);
+                logger.debug("[修改成功]");
+            } else {
+                outDto.setCode(ResultCode.FAIL_USER_INFO);
+                logger.debug("[修改失败]");
+            }
+
         } catch (Exception e) {
           e.printStackTrace();
           outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);

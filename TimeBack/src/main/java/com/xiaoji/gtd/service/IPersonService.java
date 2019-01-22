@@ -42,6 +42,13 @@ public interface IPersonService {
     int updatePassword(UpdatePWDInDto inDto);
 
     /**
+     * 用户信息修改
+     * @param inDto
+     * @return
+     */
+    int updateUserInfo(UserInfoInDto inDto);
+
+    /**
      * 查询密码是否正确
      * @param userId
      * @param password

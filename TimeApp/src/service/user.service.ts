@@ -6,6 +6,7 @@ import {BaseSqlite} from "./sqlite/base-sqlite";
 import {BsModel} from "../model/out/bs.model";
 import {PnRestful} from "./restful/pn-restful";
 import {ReturnConfig} from "../app/return.config";
+import {DataConfig} from "../app/data.config";
 
 /**
  * 用户sevice
@@ -47,20 +48,21 @@ export class UserService {
       console.log("------- 1.UserService restful upu user start --------");
       this.pnRestful.upu(uI,uN,hIU,biy,rn,iC,uS).then(data=>{
         console.log("------- 2.UserService restful upu user end: " + JSON.stringify(data));
-        rsData = data
+        rsData = data;
         bs = data;
-        if(rsData && rsData.code == 0){
-          console.log("------- 3.UserService sqlite upu user start --------");
-          return  this.baseSqlite.update(u)
-        }
+        return  this.userSqlite.update(u);
       }).then(data=>{
         console.log("------- 4.UserService sqlite upu user end: " + JSON.stringify(data));
+        console.log("------- 用户更新成功，开始添加到同步表 ------- ");
+        return  this.userSqlite.syncUTime(u,DataConfig.AC_T);
+      }).then(data=>{
+        console.log("------- 用户更新成功，用户添加到同步表结束：" + JSON.stringify(data));
         resolve(bs);
       }).catch(e=>{
         console.error("------- UserService upu user error: " + JSON.stringify(e));
-        bs.code=1;
-        bs.message=e.message;
-        reject(bs)
+        bs.code=ReturnConfig.ERR_CODE;
+        bs.message=ReturnConfig.ERR_MESSAGE;
+        reject(bs);
       })
 
     })
