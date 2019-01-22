@@ -77,7 +77,7 @@ export class WorkService {
       rc.ji=jhi;
       rc.sI=this.util.getUuid();
       let psl = new Array<PsModel>();
-      console.log("----- workService arc 添加日程开始-------");
+      console.log("----- workService arc 添加日程开始===:" +JSON.stringify(rc));
      // alert(JSON.stringify(rc));
       this.workSqlite.save(rc).then(data=>{
           console.log("----- workService arc 添加日程返回结果：" + JSON.stringify(data));
@@ -476,7 +476,7 @@ export class WorkService {
     d=d.replace(new RegExp('-','g'),'/');
     return new Promise((resolve, reject) =>{
       let rcpo = new RcpoModel();
-      console.log("----- WorkService getOd(获取当天事件) start -----");
+      console.log("----- WorkService getOd(获取当天事件) "+d+" start -----");
       this.workSqlite.getOd(d,DataConfig.uInfo.uI).then(data=>{
         console.log("----- WorkService getOd(获取当天事件) result:" + JSON.stringify(data));
         let rcps = new Array<ScheduleModel>();
