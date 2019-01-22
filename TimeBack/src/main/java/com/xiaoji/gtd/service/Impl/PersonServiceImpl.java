@@ -197,6 +197,7 @@ public class PersonServiceImpl implements IPersonService {
         GtdUserEntity userEntity = new GtdUserEntity();
         int flag = 0;
         try {
+            userEntity.setUserId(inDto.getUserId());
             userEntity.setUserName(inDto.getUserName());
             userEntity.setHeadImg(inDto.getHeadImgUrl());
             userEntity.setUserSex(inDto.getUserSex());
