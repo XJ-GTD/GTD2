@@ -137,7 +137,7 @@ export class UbPage {
          this.utilService.unloading();
          console.log("登录成功");
          this.webSocket.connect(data.data.accountQueue);
-         // this.utilService.loading("登录成功");
+         this.utilService.loading("登录成功");
          if(this.rePage==undefined){
            //跳转首页
            console.log('UbPage跳转HzPage');
@@ -155,18 +155,18 @@ export class UbPage {
        }else if(data.code == 1){
          this.utilService.unloading();
          console.log("登录失败");
-         // this.utilService.loading("登录失败:" + data.message);
+         this.utilService.loading("登录失败:" + data.message);
        } else{
          this.utilService.unloading();
          let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
          console.log("登录失败 :: " + message );
-         // this.utilService.loading("登录失败:" + message);
+         this.utilService.loading("登录失败:" + message);
        }
 
     }).catch(res=>{
       this.utilService.unloading();
        console.log("登录失败 :: " +　res.message);
-       // this.utilService.loading("登录失败:" + res.message);
+       this.utilService.loading("登录失败:" + res.message);
        console.log(res);
      });
 
