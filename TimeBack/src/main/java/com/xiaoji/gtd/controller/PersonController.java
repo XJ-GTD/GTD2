@@ -219,11 +219,6 @@ public class PersonController {
         }
         //特殊字符检测
         //入参正确性验证
-        if (CommonMethods.checkMySqlReservedWords(inDto.getUserName())) {
-            outDto.setCode(ResultCode.ERROR_USERNAME);
-            logger.debug("[修改失败]：用户名类型或格式错误");
-            return outDto;
-        }
 
         //业务逻辑
         try {

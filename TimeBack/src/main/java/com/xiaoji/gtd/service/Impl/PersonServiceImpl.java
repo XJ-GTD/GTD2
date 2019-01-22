@@ -186,6 +186,18 @@ public class PersonServiceImpl implements IPersonService {
     }
 
     /**
+     * 用户信息修改
+     *
+     * @param inDto
+     * @return
+     */
+    @Override
+    public int updateUserInfo(UserInfoInDto inDto) {
+
+        return 0;
+    }
+
+    /**
      * 查询密码是否正确
      * @param userId
      * @param password

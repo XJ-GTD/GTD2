@@ -68,12 +68,15 @@ public class VoiceLogServiceImpl implements IVoiceLogrService {
 
             }else if("nlp".equals(sub.getSub())){
                 if (sub.getIntent() == null ) continue;
-                if (sub.getIntent().getRc() == 0) {
+                if (sub.getIntent().getRc() == 0 || sub.getIntent().getRc() == 3) {
                     if (sub.getIntent().getAnswer() != null ) {
                         resAnswer = resAnswer+ "{result_id:" + sub.getResult_id() + ",answer:" + sub.getIntent().getAnswer().getText()+ "},";
                     }
                     if (sub.getIntent().getService() != null) {
                         resService = resService+ "{result_id:" + sub.getResult_id() + ",service:" + sub.getIntent().getService() + "},";
+                    }
+                    if (sub.getIntent().getData() != null) {
+                        resAnswer += "{ data: " + sub.getIntent().getData() + "},";
                     }
                     if (sub.getIntent().getSemantic() != null) {
                         List<Semantic> semantics = sub.getIntent().getSemantic();
