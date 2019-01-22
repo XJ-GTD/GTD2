@@ -25,6 +25,7 @@ import {ReturnConfig} from "../app/return.config";
 import {RcoModel} from "../model/out/rco.model";
 import {WsResDataModel} from "../model/ws/ws.res.model";
 import {MsSqlite} from "./sqlite/ms-sqlite";
+import {ReadlocalService} from "./readlocal.service";
 
 /**
  * 日程逻辑处理
@@ -40,6 +41,7 @@ export class WorkService {
                 private relmem : RelmemSqlite,
                 private lbSqlite : LbSqlite,
                 private msSqlite : MsSqlite,
+                private readlocal : ReadlocalService,
                 private rcResful:RcRestful) {
   }
 

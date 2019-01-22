@@ -134,7 +134,6 @@ export class WorkSqlite{
    * @param ym 格式‘2018/01’
    */
   getMBs(ym:string,ui:string):Promise<BsModel>{
-    ym = ym.replace(new RegExp('-','g'),'/')
     return new Promise((resolve, reject) => {
       // or gc.uI= "'+ui+'"
       let sql= this.getRcSql() +
@@ -143,8 +142,8 @@ export class WorkSqlite{
       let bs = new BsModel();
       let resL = new Array<any>();
       let rcL = new Array<RcModel>();
+      console.log(' ---- WorkSqlite getMBs 查询sqlite日历数据开始 =：'+sql);
       this.baseSqlite.executeSql(sql,[]).then(data=>{
-
         console.log(' ---- WorkSqlite getMBs 查询sqlite日历数据 ---- ');
         if(data && data.rows && data.rows.length>0){
           for (let i = 0; i < data.rows.length; i++) {
@@ -155,7 +154,7 @@ export class WorkSqlite{
         let date = new Date(ym+'/01');
         let sd = UtilService.getCurrentMonthFirst(date);
         let ed = UtilService.getCurrentMonthLast(date);
-        return this.readlocal.findEventRc(sd,ed,rcL);
+        return this.readlocal.findEventRc('',sd,ed,rcL);
       }) .then(data=>{
         if(data.rcL.length>0){
           for(let i=1;i<=31;i++){
@@ -232,6 +231,7 @@ export class WorkSqlite{
       let bs = new BsModel();
       let resL = new Array<any>();
       let rcL = new Array<RcModel>();
+      console.log(' ---- WorkSqlite getOd 查询sqlite日历数据 ：'+ sql);
       this.baseSqlite.executeSql(sql,[]).then(data=>{
         let localIds:string[] = [];
         console.log(' ---- WorkSqlite getOd 查询sqlite日历数据 ---- ');
@@ -243,7 +243,7 @@ export class WorkSqlite{
         console.log(' ---- WorkSqlite getMBs 查询本地日历数据 ---- ');
         let sd = new Date(d + ' 00:00');
         let ed = new Date(d + ' 23:59');
-        return this.readlocal.findEventRc(sd,ed,rcL);
+        return this.readlocal.findEventRc('',sd,ed,rcL);
       }).then(data=>{
         if(data.rcL.length>0){
           for(let i=0;i<rcL.length;i++){
