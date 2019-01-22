@@ -124,38 +124,33 @@ export class UtilService {
    */
   showDay(day:string):string{
     let str='今天';
-    //今天
-    let tt=moment(moment().format('YYYY/MM/DD')).valueOf();
-    //选中天
-    let dt = moment(day).valueOf();
-    let d=(dt-tt)/(1000 * 60 * 60 * 24);
-    let bool=false;
-    if(d<0){
-      bool=true;
-      d=-d;
-    }
-    let ds = d;
-    if(!bool && d==1){
-      str = '明天';
-    }else if(!bool && d==2){
-      str = '后天';
-    }else if(bool && d==1){
-      str = '昨天';
-    }else if(bool && d==2){
-      str = '前天';
-    }else if(d>=3&& d<30){
-      str=d+'天';
-    }if(d>=30&& d<365){
-      ds = d/30;
-      str=ds.toString().substr(0,1)+"月";
-    }if(d>=365){
-      ds = d/365;
-      str=ds.toString().substr(0,1)+"年";
-    }
-    if(d>=3&&bool){
-      str+='前';
-    }else if(d>=3&&!bool){
-      str+='后';
+    let date = moment(day);
+    let nowDate = moment(moment(new Date()).format("YYYY-MM-DD"));
+    let days = date.diff(nowDate,'days');
+    let months = date.diff(nowDate,'months');
+    let years = date.diff(nowDate,'years');
+    if(years > 0){
+      str = years + '年后'
+    }else if(years <= -1){
+      str = Math.abs(years) + '年前'
+    }else if(months > 0){
+      str = months + '月后';
+    }else if(months < 0){
+      str = Math.abs(months) + '月前'
+    }else if(days == 0 ) {
+      str = '今天';
+    }else if(days == 1){
+      str = '明天'
+    }else if(days == 2){
+      str = '后天'
+    }else if(days >= 3){
+      str = days-1 + '天后'
+    }else if(days == -1){
+      str = '昨天'
+    }else if(days == -2){
+      str = '前天'
+    }else if(days <= -3){
+      str = Math.abs(days)-1 + '天前'
     }
     return str;
   }
