@@ -1,21 +1,17 @@
-import { Injectable } from "@angular/core";
-import { WsModel } from "../../model/ws/ws.model";
-import { SkillConfig } from "../../app/skill.config";
-import { DwEmitService } from "./dw-emit.service";
-import { WorkService } from "../work.service";
-import { RelmemService } from "../relmem.service";
-import { WsResDataModel } from "../../model/ws/ws.res.model";
-import { ErrorCodeService } from "./error-code.service";
-import { EmitSpeechService } from "./emit-speech.service";
-import { DataConfig } from "../../app/data.config";
-import { MsEntity } from "../../entity/ms.entity";
-import { MsSqlite } from "../sqlite/ms-sqlite";
-import { AiuiModel } from "../../model/aiui.model";
-import { XiaojiAssistantService } from "./xiaoji-assistant.service";
-import {UtilService} from "./util.service";
+import {Injectable} from "@angular/core";
+import {WsModel} from "../../model/ws/ws.model";
+import {SkillConfig} from "../../app/skill.config";
+import {WorkService} from "../work.service";
+import {RelmemService} from "../relmem.service";
+import {WsResDataModel} from "../../model/ws/ws.res.model";
+import {ErrorCodeService} from "./error-code.service";
+import {EmitSpeechService} from "./emit-speech.service";
+import {DataConfig} from "../../app/data.config";
+import {MsEntity} from "../../entity/ms.entity";
+import {MsSqlite} from "../sqlite/ms-sqlite";
+import {AiuiModel} from "../../model/aiui.model";
+import {XiaojiAssistantService} from "./xiaoji-assistant.service";
 import {WsEnumModel} from "../../model/ws/ws.enum.model";
-import {RcModel} from "../../model/rc.model";
-import {RcoModel} from "../../model/out/rco.model";
 
 /**
  * webSocket公用处理方法
@@ -25,12 +21,12 @@ import {RcoModel} from "../../model/out/rco.model";
 @Injectable()
 export class DwMqService {
 
-  constructor(private work:WorkService,
-              private relmem :RelmemService,
+  constructor(private work: WorkService,
+              private relmem: RelmemService,
               private errorCode: ErrorCodeService,
-              private msSqlite:MsSqlite,
+              private msSqlite: MsSqlite,
               private xiaojiSpeech: XiaojiAssistantService,
-              private emitSend: EmitSpeechService,){
+              private emitSend: EmitSpeechService,) {
 
   }
 
@@ -104,23 +100,23 @@ export class DwMqService {
    * @param data
    */
   private xfScheduleCreate(mqDate: WsModel) {
-    let md:WsResDataModel= mqDate.res.data;
-    let ca=md.common_A;  //人名原参数value
-    let cb=md.common_B; //人名原参数normValue
+    let md: WsResDataModel = mqDate.res.data;
+    let ca = md.common_A;  //人名原参数value
+    let cb = md.common_B; //人名原参数normValue
     let pln = md.pln //拼音
     let sn = md.sn //标题
     let sd = md.st;
-    if(sd == null || sd==''){
-      sd=md.et;
+    if (sd == null || sd == '') {
+      sd = md.et;
     }
-    let ed=md.et;
-    if(ed == null || ed==''){
-      ed=md.st;
+    let ed = md.et;
+    if (ed == null || ed == '') {
+      ed = md.st;
     }
 
     let aiui = new AiuiModel();
 
-    this.work.xfAddrc(sn,sd,pln,ca,cb).then(data=>{
+    this.work.xfAddrc(sn, sd, pln, ca, cb).then(data => {
       if (data != null) {
         aiui.sc = data;
         aiui.tt = DataConfig.S4;
@@ -133,7 +129,7 @@ export class DwMqService {
       }
 
       this.dwResultSendToPage(aiui, mqDate.sk);
-    }).catch(e=>{
+    }).catch(e => {
       // this.toAiui(DataConfig.MQTL,mqDate,e)
       // this.dwEmit.setHbData(mqDate);//测试用
     });
@@ -143,7 +139,7 @@ export class DwMqService {
    * 语音：日程删除
    */
   private xfScheduleDelete(mqDate: WsModel) {
-    let md:WsResDataModel= mqDate.res.data;
+    let md: WsResDataModel = mqDate.res.data;
     let sI = "";
 
     let aiui = new AiuiModel();
@@ -151,7 +147,7 @@ export class DwMqService {
 
     }
 
-    this.work.delrc(sI).then(data=>{
+    this.work.delrc(sI).then(data => {
       if (data != null) {
         // aiui.sc = data;
         aiui.tt = DataConfig.S1;
@@ -164,7 +160,7 @@ export class DwMqService {
       }
       //this.dwEmit.setHbData(data);
       // this.toAiui(DataConfig.MQTL,mqDate,data);
-    }).catch(e=>{
+    }).catch(e => {
       //this.dwEmit.setHbData(e);
       // this.toAiui(DataConfig.MQTL,mqDate,e);
     });
@@ -175,30 +171,30 @@ export class DwMqService {
    * 语音：日程查询
    */
   private xfScheduleFind(mqDate: WsModel) {
-    let para :WsResDataModel  = mqDate.res.data;
+    let para: WsResDataModel = mqDate.res.data;
     let ct = para.sn;
     let lbN = para.lb;
     let jh = para.pn;
     let sd = para.st;
-    if(sd == null || sd==''){
-      sd=para.et;
+    if (sd == null || sd == '') {
+      sd = para.et;
     }
-    let ed=para.et;
-    if(ed == null || ed==''){
-      ed=para.st;
+    let ed = para.et;
+    if (ed == null || ed == '') {
+      ed = para.st;
     }
 
     let aiui = new AiuiModel();
 
-    this.work.getwL('',sd,ed,'',lbN,jh).then(data=>{
+    this.work.getwL('', sd, ed, '', lbN, jh).then(data => {
       let str = "";
-      if(data && data.rcL && data.rcL.length>0){
+      if (data && data.rcL && data.rcL.length > 0) {
         // str = '您有'+data.rcL.length+"个日程等待您去处理！"
         aiui.scL = data.rcL;
         aiui.tt = DataConfig.S5;
         // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
         aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "1");
-      }else{
+      } else {
         // str="您今天有大把的时间可以利用"
         aiui.tt = DataConfig.S1;
         // aiui.at = WsEnumModel[mqDate.sk] + UtilService.randInt(0,10);
@@ -210,7 +206,7 @@ export class DwMqService {
       // n.play();
 
       this.dwResultSendToPage(aiui, mqDate.sk);
-    }).catch(e=>{
+    }).catch(e => {
       //this.dwEmit.setHbData(mqDate);//测试用
       // this.toAiui(DataConfig.MQTL,mqDate,e);
     });
@@ -220,15 +216,15 @@ export class DwMqService {
    * 语音：参与人添加
    */
   private xfPlayerCreate() {
-    let ran='';
-    let rN='';
+    let ran = '';
+    let rN = '';
     let rC = '';
     let rel = '';
     let rF = '';
-    let qrL=[];
-    this.relmem.aru('','',ran,rN,rC,rel,'',rF,qrL).then(data=>{
+    let qrL = [];
+    this.relmem.aru('', '', ran, rN, rC, rel, '', rF, qrL).then(data => {
 
-    }).catch(e=>{
+    }).catch(e => {
 
     });
   }
@@ -237,10 +233,10 @@ export class DwMqService {
    * 语音：参与人删除
    */
   private xfPlayerDelete() {
-    let id='';
-    this.relmem.delRu(id).then(data=>{
+    let id = '';
+    this.relmem.delRu(id).then(data => {
 
-    }).catch(e=>{
+    }).catch(e => {
 
     });
   }
@@ -249,16 +245,16 @@ export class DwMqService {
    * 语音参与人查询
    */
   private xfPlayerFind() {
-    let ran='';
-    let rN='';
+    let ran = '';
+    let rN = '';
     let rC = '';
     let rel = '';
     let rF = '';
-    let qrL=[];
-    let id='';
-    this.relmem.getrus(id,ran,rN,rC,rel).then(data=>{
+    let qrL = [];
+    let id = '';
+    this.relmem.getrus(id, ran, rN, rC, rel).then(data => {
 
-    }).catch(e=>{
+    }).catch(e => {
 
     });
   }
@@ -267,16 +263,16 @@ export class DwMqService {
    * 语音：参与人授权
    */
   private xfPlayerAuth() {
-    let ran='';
-    let rN='';
+    let ran = '';
+    let rN = '';
     let rC = '';
     let rel = '';
     let rF = '';
-    let qrL=[];
-    let id='';
-    this.relmem.upr(id,ran,rN,rC,rel,rF,qrL,'').then(data=>{
+    let qrL = [];
+    let id = '';
+    this.relmem.upr(id, ran, rN, rC, rel, rF, qrL, '').then(data => {
 
-    }).catch(e=>{
+    }).catch(e => {
 
     });
   }
@@ -292,26 +288,26 @@ export class DwMqService {
    * 业务：日程添加
    */
   private scheduleCreate(data: WsResDataModel) {
-    let ct=data.sn;
-    let sd=data.st;
+    let ct = data.sn;
+    let sd = data.st;
     let ed = data.et;
     let lbI = data.lb;
     let rui = data.us;
-    let sI=data.si;
+    let sI = data.si;
     console.log("----- DwMqService scheduleCreate(业务：日程添加) start---- ");
-    if(rui != DataConfig.uInfo.uI){
-      this.work.arcMq(sI,rui,ct,sd,ed,lbI,'','','').then(data=>{
+    if (rui != DataConfig.uInfo.uI) {
+      this.work.arcMq(sI, rui, ct, sd, ed, lbI, '', '', '').then(data => {
         console.log("----- DwMqService scheduleCreate(业务：日程添加) end ---- ");
         let ms = new MsEntity();
-        ms.mn=ct;
-        ms.md=sd;
-        ms.rI=sI;
-        ms.mt='0';
+        ms.mn = ct;
+        ms.md = sd;
+        ms.rI = sI;
+        ms.mt = '0';
         return this.msSqlite.addMs(ms);
-      }).then(data=>{
+      }).then(data => {
         console.log("----- DwMqService scheduleCreate(业务：日程添加Message) end ---- ");
-      }).catch(e=>{
-        console.log("----- DwMqService scheduleCreate(业务：日程添加) Error : "+JSON.stringify(e));
+      }).catch(e => {
+        console.log("----- DwMqService scheduleCreate(业务：日程添加) Error : " + JSON.stringify(e));
       });
     }
 
@@ -321,25 +317,25 @@ export class DwMqService {
    * 业务：日程更新
    */
   private scheduleUpdate(data: WsResDataModel) {
-    let ct=data.sn;
-    let sd=data.st;
+    let ct = data.sn;
+    let sd = data.st;
     let ed = data.et;
     let lbI = data.lb;
     let rui = data.us;
-    let sI=data.si;
+    let sI = data.si;
     console.log("----- DwMqService scheduleCreate(业务：日程更新) start---- ")
-    this.work.urcMq(sI,rui,ct,sd,ed,lbI,'','','','').then(data=>{
+    this.work.urcMq(sI, rui, ct, sd, ed, lbI, '', '', '', '').then(data => {
       console.log("----- DwMqService scheduleCreate(业务：日程更新) end ---- ")
       let ms = new MsEntity();
-      ms.mn=ct;
-      ms.md=sd;
-      ms.rI=sI;
-      ms.mt='0';
+      ms.mn = ct;
+      ms.md = sd;
+      ms.rI = sI;
+      ms.mt = '0';
       return this.msSqlite.addMs(ms);
-    }).then(data=>{
+    }).then(data => {
       console.log("----- DwMqService scheduleCreate(业务：日程更新Message) end ---- ");
-    }).catch(e=>{
-      console.log("----- DwMqService scheduleCreate(业务：日程更新) Error : "+JSON.stringify(e))
+    }).catch(e => {
+      console.log("----- DwMqService scheduleCreate(业务：日程更新) Error : " + JSON.stringify(e))
     });
   }
 
@@ -348,9 +344,9 @@ export class DwMqService {
    */
   private scheduleDelete(data: WsResDataModel) {
     let sI = data.si;
-    this.work.delrc(sI).then(data=>{
+    this.work.delrc(sI).then(data => {
 
-    }).catch(e=>{
+    }).catch(e => {
 
     })
   }
@@ -365,13 +361,13 @@ export class DwMqService {
     let rc = data.mb;
     let hiu = data.hi;
     let rF = '0';
-    if(data.ia){
-      rF='1'
+    if (data.ia) {
+      rF = '1'
     }
     console.log("----- DwMqService relationAdd(业务：联系人添加) start---- ");
-    this.relmem.aruMq(aui,ran,rN,rc,hiu,rF).then(data=>{
+    this.relmem.aruMq(aui, ran, rN, rc, hiu, rF).then(data => {
       console.log("----- DwMqService relationAdd(业务：联系人添加) end : " + JSON.stringify(data))
-    }).catch(e=>{
+    }).catch(e => {
       console.log("----- DwMqService relationAdd(业务：联系人添加) Error : " + JSON.stringify(e))
     })
   }
@@ -416,7 +412,6 @@ export class DwMqService {
 
     this.emitSend.send(aiui, sk);
   }
-
 
 
   /**
