@@ -25,6 +25,7 @@ import {ReturnConfig} from "../app/return.config";
 import {RcoModel} from "../model/out/rco.model";
 import {WsResDataModel} from "../model/ws/ws.res.model";
 import {MsSqlite} from "./sqlite/ms-sqlite";
+import {ReadlocalService} from "./readlocal.service";
 
 /**
  * 日程逻辑处理
@@ -40,6 +41,7 @@ export class WorkService {
                 private relmem : RelmemSqlite,
                 private lbSqlite : LbSqlite,
                 private msSqlite : MsSqlite,
+                private readlocal : ReadlocalService,
                 private rcResful:RcRestful) {
   }
 
@@ -515,7 +517,7 @@ export class WorkService {
       ed = ed.replace(new RegExp('-','g'),'/');
       this.workSqlite.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
         console.log("----- WorkService getwL(根据条件查询日程) result:" + JSON.stringify(data));
-        let rcs = new Array<RcModel>()
+        let rcs = new Array<RcModel>();
         if(data && data.rows && data.rows.length>0){
           for(let i=0;i<data.rows.length;i++){
             let rc = new RcModel();
@@ -527,6 +529,9 @@ export class WorkService {
           rco.message=ReturnConfig.NULL_MESSAGE;
         }
         rco.rcL=rcs;
+       return this.readlocal.findEventRc(ct,new Date(sd),new Date(ed),rco.rcL);
+      }).then(data=>{
+        rco = data;
         resolve(rco);
       }).catch(e=>{
         console.error("----- WorkService getwL(根据条件查询日程) Error:" + JSON.stringify(e));
