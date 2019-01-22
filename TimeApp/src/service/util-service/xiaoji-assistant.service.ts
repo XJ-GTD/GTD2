@@ -225,7 +225,6 @@ export class XiaojiAssistantService{
     try {
       cordova.plugins.XjBaiduWakeUp.wakeUpStart(result=>{
         if (this.isSpeaking || this.islistenAudioing) {
-
           success(false);
           return;
         }
