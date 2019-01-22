@@ -1,16 +1,13 @@
 import { Component } from '@angular/core';
-import {
-  ActionSheetController, AlertController, IonicPage, LoadingController, NavController,
-  NavParams
-} from 'ionic-angular';
+import { ActionSheetController, IonicPage, LoadingController, NavController, NavParams, ToastController } from 'ionic-angular';
 import { UEntity } from "../../entity/u.entity";
-import { RelmemService} from "../../service/relmem.service";
-import {RuModel} from "../../model/ru.model";
-import {DataConfig} from "../../app/data.config";
-import {UtilService} from "../../service/util-service/util.service";
-import {ContactsService} from "../../service/util-service/contacts.service";
-import {ReturnConfig} from "../../app/return.config";
-import {Contacts} from "@ionic-native/contacts";
+import { RelmemService } from "../../service/relmem.service";
+import { RuModel } from "../../model/ru.model";
+import { DataConfig } from "../../app/data.config";
+import { UtilService } from "../../service/util-service/util.service";
+import { ContactsService } from "../../service/util-service/contacts.service";
+import { ReturnConfig } from "../../app/return.config";
+import { Contacts } from "@ionic-native/contacts";
 
 /**
  * Generated class for the PfPage page.
@@ -111,7 +108,7 @@ export class PfPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
     private relmemService: RelmemService,
     private utilService: UtilService,
     private actionSheetCtrl: ActionSheetController,
@@ -153,13 +150,12 @@ export class PfPage {
       this.checkMobile=true;
       this.errorCode = 1;
       if(this.tel.length == 11){
-        let alert = this.alertCtrl.create({
-          subTitle: "手机号错误",
+        let toast = this.toastCtrl.create({
+          message: '手机号输入错误',
+          duration: 1500,
+          position: 'top'
         });
-        setTimeout(()=>{
-          alert.dismiss();
-        },1000);
-        alert.present();
+        toast.present();
       }
 
     }
@@ -181,13 +177,6 @@ export class PfPage {
             this.ru.rC = this.tel;
           }else {
             console.log(ReturnConfig.RETURN_MSG.get(data.code.toString()));
-            // let alert = this.alertCtrl.create({
-            //   subTitle: ReturnConfig.RETURN_MSG.get(data.code.toString()),
-            // });
-            // setTimeout(() => {
-            //   alert.dismiss();
-            // }, 1000);
-            // alert.present();
             if (data.code == 11500) {
               this.ru = new RuModel();
               this.isRegist = false;

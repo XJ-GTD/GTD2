@@ -60,10 +60,6 @@ export class AdPage {
     this.navCtrl.pop();
   };
 
-  test($event) {
-    alert("测试adpage");
-  }
-
   updateEditor(){
     let el = this.element.nativeElement.querySelector("textarea");
     el.style.overflow = "hidden";
