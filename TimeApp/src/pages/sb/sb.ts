@@ -151,6 +151,7 @@ export class SbPage {
   title:any;
   startTime:any;//开始时间
   repeatType:any;//重复类型
+  naoling:Array<ZtdModel>;
   remarks:any;//备注
 
   isShowLb:any = false;
@@ -215,6 +216,7 @@ export class SbPage {
     this.getAllRel();
     this.findLabel();
     this.getAllJh();
+    this.naoling = DataConfig.ZTD_MAP.get(DataConfig.ALARM_TYPE);
     if(this.startTime === undefined){
       this.startTime = new Date(new Date().getTime()+8*60*60*1000).toISOString();
     }else{

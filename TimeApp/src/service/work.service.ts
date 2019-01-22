@@ -318,7 +318,7 @@ export class WorkService {
   urcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string,subId:string,cft:string,rm:string,ac:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
-      sd=sd.replace(new RegExp('-','g'),'/');;
+      sd=sd.replace(new RegExp('-','g'),'/');
       //先查询当前用户ID
       let rc = new RcEntity();
       rc.uI=cui;
@@ -437,7 +437,7 @@ export class WorkService {
    * @returns {Promise<MbsoModel>}
    */
   getMBs(ym): Promise<MbsoModel> {
-    ym=ym.replace(new RegExp('-','g'),'/');;
+    ym=ym.replace(new RegExp('-','g'),'/');
     return new Promise((resolve, reject) => {
       let mbso = new MbsoModel();
       console.log("----- WorkService getMBs(获取当月标识) start -----");
@@ -516,7 +516,7 @@ export class WorkService {
       ed = ed.replace(new RegExp('-','g'),'/');
       this.workSqlite.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
         console.log("----- WorkService getwL(根据条件查询日程) result:" + JSON.stringify(data));
-        let rcs = new Array<RcModel>()
+        let rcs = new Array<RcModel>();
         if(data && data.rows && data.rows.length>0){
           for(let i=0;i<data.rows.length;i++){
             let rc = new RcModel();
