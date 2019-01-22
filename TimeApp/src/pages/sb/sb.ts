@@ -266,15 +266,15 @@ export class SbPage {
       if(data.code == 0){
         console.log("添加日程成功");
         // this.navCtrl.push('HzPage')
-        this.utilService.loading("日程创建成功，已发布");
+        this.utilService.alert("日程创建成功，已发布");
         this.navCtrl.pop();
       }else{
         console.log("添加日程失败");
-        this.utilService.loading("日程创建失败，请稍后再试");
+        this.utilService.alert("日程创建失败，请稍后再试");
       }
     }).catch(reason => {
       console.log("添加日程失败");
-      this.utilService.loading("日程创建失败，请稍后再试");
+      this.utilService.alert("日程创建失败，请稍后再试");
     })
   }
 

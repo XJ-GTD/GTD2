@@ -34,7 +34,7 @@ export class  ContactsService{
       this.contacts.find(['phoneNumbers'],{
         filter:'',
         multiple:true,
-        desiredFields:["displayName","phoneNumbers"]
+        desiredFields:["displayName","phoneNumbers",'name']
       }).then(data=>{
         console.log("contacts data :: " + JSON.stringify(data));
         for(let contact of data){
@@ -75,7 +75,7 @@ export class  ContactsService{
       this.contacts.find(['displayName'],{
         filter:name,
         multiple:true,
-        desiredFields:["displayName","phoneNumbers"]
+        desiredFields:["displayName","phoneNumbers","name"]
       }).then(data=>{
         console.log("contacts data :: " + JSON.stringify(data));
         for(let contact of data){
