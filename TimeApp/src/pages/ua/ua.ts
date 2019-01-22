@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { ParamsService } from "../../service/util-service/params.service";
+import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import { UtilService} from "../../service/util-service/util.service";
 import {LsmService} from "../../service/lsm.service";
 import {ReturnConfig} from "../../app/return.config";
@@ -122,7 +120,6 @@ import {PageConfig} from "../../app/page.config";
 })
 export class UaPage {
 
-  RegisterForm: FormGroup;
   data: any;
   accountName: any;
   accountPassword: any;
@@ -132,7 +129,6 @@ export class UaPage {
   checkMobile: any;
   checkMobileNull: any;
   checkPassword: any;
-  reAccountPassword: any;
   checkBoxClick: any;
   checkBoxClickFlag:any;
   authCode: any;
@@ -145,10 +141,7 @@ export class UaPage {
   disable:boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private formBuilder: FormBuilder,
-              private loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
-              private paramsService: ParamsService,
               private utilService: UtilService,
               private lsmService: LsmService) {
 
@@ -160,7 +153,6 @@ export class UaPage {
   }
 
   register() {
-    let a=this.checkBoxClick;
     if (!this.checkBoxClick== true)
     {
       this.checkBoxClickFlag=true;

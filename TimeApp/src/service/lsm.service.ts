@@ -12,6 +12,7 @@ import {RcpEntity} from "../entity/rcp.entity";
 import {SyncService} from "./sync.service";
 import {ReturnConfig} from "../app/return.config";
 import {SyncSqlite} from "./sqlite/sync-sqlite";
+import {ContactsService} from "./util-service/contacts.service";
 
 
 
@@ -27,7 +28,8 @@ export class LsmService {
               private basesqlite:BaseSqlite,
               private sync : SyncService,
               private syncSqlite : SyncSqlite,
-              private util: UtilService) {
+              private util: UtilService,
+              private contacts: ContactsService) {
   }
 
   /**
@@ -186,6 +188,16 @@ export class LsmService {
         }).then(data=>{
           if(base.code == ReturnConfig.SUCCESS_CODE) {
             console.log("------lsm login 登录成功请求同步服务器数据结束 result= " + JSON.stringify(data));
+          }
+          console.log("------lsm login 登录成功开始检索通讯录联系人 -------");
+          if(this.util.isMobile()){
+            return this.contacts.getContacts();
+          }
+        }).then(data=>{
+          if(this.util.isMobile()){
+            if(data.code == 0){
+              console.log("------lsm login 登录成功结束检索通讯录联系人" );
+            }
           }
           resolve(base);
         }).catch(eu => {

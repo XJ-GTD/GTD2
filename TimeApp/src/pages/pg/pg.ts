@@ -3,7 +3,6 @@ import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular
 import {UEntity} from "../../entity/u.entity";
 import {RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
-import {PageConfig} from "../../app/page.config";
 
 /**
  * Generated class for the PgPage page.
@@ -132,7 +131,6 @@ export class PgPage {
     if(this.sel == undefined){
       return false;
     }
-    let tmp = new Array<RuModel>();
     for(let i = 0;i<this.sel.length;i++){
       if(u.id == this.sel[i].id){
         return true;

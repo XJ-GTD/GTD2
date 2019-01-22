@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, Navbar, NavController} from 'ionic-angular';
 import {JhService} from "../../service/jh.service";
 
 /**
@@ -44,7 +44,6 @@ export class SzPage {
   jhms:string;
 
   constructor(private navCtrl: NavController,
-              private navParams: NavParams,
               private jhService: JhService) {
   }
 

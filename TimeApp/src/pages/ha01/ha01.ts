@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, Renderer2} from '@angular/core';
-import {App, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {App, Events, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ScheduleModel} from "../../model/schedule.model";
 import {UtilService} from "../../service/util-service/util.service";
 import {WorkService} from "../../service/work.service";
@@ -93,9 +93,13 @@ export class Ha01Page {
               private util: UtilService,
               private rnd: Renderer2,
               private workService: WorkService,
-              private el: ElementRef) {
+              private el: ElementRef,
+              private events: Events) {
     console.log('ionViewDidLoad Ha01Page');
     this.height = window.document.body.clientHeight - 350 - 110;
+    this.events.subscribe("noshow",()=>{
+      this.noShow = true;
+    })
   }
 
   /**
@@ -170,6 +174,7 @@ export class Ha01Page {
   }
 
   ionViewWillEnter(){
+    this.noShow = true;
     if(this.dateStr != undefined){
       this.workService.getOd(this.dateStr).then(data => {
         if (data.code == 0) {
