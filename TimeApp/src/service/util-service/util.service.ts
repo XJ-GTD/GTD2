@@ -255,6 +255,7 @@ export class UtilService {
       let loading = this.loadCtrl.create({
         content:text,
         showBackdrop:false,
+        // duration: 1500,
         cssClass:"loadingcss",
         dismissOnPageChange:true,
       });
