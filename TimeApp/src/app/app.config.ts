@@ -15,7 +15,7 @@ export class AppConfig {
 
   /* RabbitMq WebSocket */
    public static RABBITMQ_WS_URL: string = "wss://www.guobaa.com/ws";
- // public static RABBITMQ_WS_URL: string = "ws://192.168.0.146:15674/ws";
+  //public static RABBITMQ_WS_URL: string = "ws://192.168.0.146:15674/ws";
 
   /* RabbitMq SockJs */
   //public static RABBITMQ_SJ_URL: string = "http://192.168.0.219:15674/stomp";
