@@ -192,9 +192,26 @@ public class PersonServiceImpl implements IPersonService {
      * @return
      */
     @Override
+    @Transactional
     public int updateUserInfo(UserInfoInDto inDto) {
+        GtdUserEntity userEntity = new GtdUserEntity();
+        int flag = 0;
+        try {
+            userEntity.setUserName(inDto.getUserName());
+            userEntity.setHeadImg(inDto.getHeadImgUrl());
+            userEntity.setUserSex(inDto.getUserSex());
+            userEntity.setBirthday(inDto.getBirthday());
+            userEntity.setRealName(inDto.getRealName());
+            userEntity.setIdCard(inDto.getIdCard());
 
-        return 0;
+            userRepository.save(userEntity);
+            logger.debug("用户["+ inDto.getUserId() + "] 更新信息数据成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("用户["+ inDto.getUserId() + "] 更新信息数据失败");
+            flag = 1;
+        }
+        return flag;
     }
 
     /**

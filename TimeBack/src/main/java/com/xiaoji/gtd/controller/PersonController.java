@@ -223,8 +223,15 @@ public class PersonController {
         //业务逻辑
         try {
 
-            outDto.setCode(ResultCode.SUCCESS);
-            logger.debug("[修改成功]");
+            int flag = personService.updateUserInfo(inDto);
+            if (flag == 0) {
+                outDto.setCode(ResultCode.SUCCESS);
+                logger.debug("[修改成功]");
+            } else {
+                outDto.setCode(ResultCode.FAIL_USER_INFO);
+                logger.debug("[修改失败]");
+            }
+
         } catch (Exception e) {
           e.printStackTrace();
           outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
