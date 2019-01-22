@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Device } from "@ionic-native/device";
 import {DataConfig} from "../../app/data.config";
 import * as moment from "moment";
-import {AlertController, Events, LoadingController} from "ionic-angular";
+import {AlertController, Events, LoadingController, ToastController} from "ionic-angular";
 
 /**
  * 公共方法
@@ -16,6 +16,7 @@ export class UtilService {
               private loadCtrl: LoadingController,
               private events: Events,
               private alertCtrl: AlertController,
+              private toastCtrl: ToastController
               ) {}
 
   public static rand(min, max ):number {
@@ -327,4 +328,12 @@ export class UtilService {
     alert.present();
   }
 
+  toast(msg:string){
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 3000,
+      position: 'top',
+    });
+    toast.present();
+  }
 }
