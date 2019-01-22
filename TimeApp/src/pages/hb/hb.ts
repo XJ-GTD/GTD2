@@ -282,9 +282,9 @@ export class HbPage {
       //WsEnumModel["E04"] + UtilService.randInt(0,10);
       let aiui = new AiuiModel();
       aiui.tt = this.S1;
-      aiui.at = WsEnumModel["E04"] + "1";
+      aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel["E04"] + "1");
       this.messages.push(aiui);
-      this.xiaojiSpeech.speakText(DataConfig.TEXT_CONTENT.get(aiui.at), success=>{});
+      this.xiaojiSpeech.speakText(aiui.at, success=>{});
     }
   }
 

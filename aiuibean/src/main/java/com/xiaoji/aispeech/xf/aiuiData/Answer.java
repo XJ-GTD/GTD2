@@ -10,6 +10,9 @@ public class Answer{
    private String url;//url链接
    private String urlDesc;//url链接的描述文字
    private String emotion;//回答的情绪，取值参见附录的情感标签对照表
+    private String answerType;  //openQA开放问答
+    private Question question;
+    private String topicId;
 
    public String getText() {
        return text;
@@ -66,5 +69,29 @@ public class Answer{
    public void setEmotion(String emotion) {
        this.emotion = emotion;
    }
+
+    public String getAnswerType() {
+        return answerType;
+    }
+
+    public void setAnswerType(String answerType) {
+        this.answerType = answerType;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
+    public String getTopicId() {
+        return topicId;
+    }
+
+    public void setTopicId(String topicId) {
+        this.topicId = topicId;
+    }
 }
 

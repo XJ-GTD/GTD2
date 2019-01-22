@@ -67,13 +67,16 @@ public class VoiceLogServiceImpl implements IVoiceLogrService {
                 reqText = reqText+ "{result_id:" + sub.getResult_id() + ",text:" + sub.getText() + "},";
 
             }else if("nlp".equals(sub.getSub())){
+                if (sub.getIntent() == null ) continue;
                 if (sub.getIntent().getRc() == 0) {
-                    if (sub.getIntent() == null ) continue;
-                    if (sub.getIntent().getAnswer() == null ) continue;
-                    resAnswer = resAnswer+ "{result_id:" + sub.getResult_id() + ",answer:" + sub.getIntent().getAnswer().getText()+ "},";
-                    resService = resService+ "{result_id:" + sub.getResult_id() + ",service:" + sub.getIntent().getService() + "},";
-                    List<Semantic> semantics = sub.getIntent().getSemantic();
-                    if (semantics != null ) {
+                    if (sub.getIntent().getAnswer() != null ) {
+                        resAnswer = resAnswer+ "{result_id:" + sub.getResult_id() + ",answer:" + sub.getIntent().getAnswer().getText()+ "},";
+                    }
+                    if (sub.getIntent().getService() != null) {
+                        resService = resService+ "{result_id:" + sub.getResult_id() + ",service:" + sub.getIntent().getService() + "},";
+                    }
+                    if (sub.getIntent().getSemantic() != null) {
+                        List<Semantic> semantics = sub.getIntent().getSemantic();
                         resSlot = resSlot + "[{result_id:" + sub.getResult_id() + ",semantic:[";
                         for (Semantic semantic : semantics){
                             resSlot = resSlot+ "{intent:" + semantic.getIntent() + ",slots:[";
@@ -84,10 +87,16 @@ public class VoiceLogServiceImpl implements IVoiceLogrService {
                             resSlot = resSlot + "]}";
                         }
                     }
+
                     resSlot = resSlot + "]}";
-                }
-                if (sub.getIntent().getRc() == 4) {
-                    resAnswer = resAnswer+ "{rc:" + sub.getIntent().getRc() + ",text:" + sub.getIntent().getText()+ "}";
+                } else if (sub.getIntent().getRc() == 4) {
+                    reqText = reqText+ "{rc:" + sub.getIntent().getRc() + ",text:" + sub.getIntent().getText()+ "}";
+                } else {
+                    resAnswer = resAnswer+ "{text:" + sub.getIntent().getText() + ",service:" + sub.getIntent().getService() +
+                            ",answer: { text:" + sub.getIntent().getAnswer().getText()+ ", topicID:" + sub.getIntent().getAnswer().getTopicId() +
+                            ",question:{ question:"+ sub.getIntent().getAnswer().getQuestion().getQuestion() +
+                            ", question_ws: " + sub.getIntent().getAnswer().getQuestion().getQuestion_ws() + "}" +
+                            "} },";
                 }
 
             }
