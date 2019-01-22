@@ -1,5 +1,5 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {Events, IonicPage, ModalController, NavController} from 'ionic-angular';
+import {App, Events, IonicPage, ModalController, Nav, NavController, ViewController} from 'ionic-angular';
 import {RemindModel} from "../../model/remind.model";
 import {
   CalendarComponent,
@@ -127,7 +127,8 @@ export class HaPage {
               private xiaojiFeekback: XiaojiFeedbackService,
               private events: Events,
               private el: ElementRef,
-              private navCtrl: NavController) {
+              private navCtrl: NavController,
+              private app: App) {
     moment.locale('zh-cn');
   }
 
@@ -306,7 +307,10 @@ export class HaPage {
   }
 
   editEvent(schedule:ScheduleModel){
-    this.navCtrl.push("SaPage", schedule);
+    setTimeout(()=>{
+      this.noShow = true;
+    },1000);
+    this.app.getRootNav().push("SaPage", schedule);
   }
 
 }
