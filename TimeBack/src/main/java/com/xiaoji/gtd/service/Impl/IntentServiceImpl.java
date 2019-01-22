@@ -188,6 +188,7 @@ public class IntentServiceImpl implements IIntentService {
                         outDto.setSk(WebSocketSkillEnum.getIntentCode(nod.getAnswer()));
                     }
                 }
+                logger.debug("rc: " + nod.getRc());
                 if (nod.getRc() == 0 || nod.getRc() == 3) {
                     outDto.setUt(nod.getText());
                     outDto.setAt(nod.getAnswer());
@@ -203,8 +204,9 @@ public class IntentServiceImpl implements IIntentService {
 
 
                 webSocketService.pushMessage(queueName, outDto);
-                logger.debug("消息队列：" + queueName + " | 数据：" + outDto);
+                logger.debug("消息队列：" + queueName + " | 数据：" + outDto.toString());
                 outDto = new WebSocketOutDto();
+                outDto.setVs(version);
             }
         }
 

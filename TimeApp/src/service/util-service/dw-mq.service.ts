@@ -81,7 +81,7 @@ export class DwMqService {
           this.scheduleUpdate(mqDate.res.data);
           break;
         case SkillConfig.BC_PEC: //添加参与人
-          this.relationAdd(mqDate.res.data)
+          this.relationAdd(mqDate.res.data);
           break;
       }
     } else {
