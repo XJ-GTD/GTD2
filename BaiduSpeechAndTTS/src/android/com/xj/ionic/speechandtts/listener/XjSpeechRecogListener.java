@@ -127,7 +127,7 @@ public class XjSpeechRecogListener extends StatusRecogListener {
     }
 
     private void sendStatusMessage(String eventName, String message) {
-        message = "[" + eventName + "]" + message;
+        //message = "[" + eventName + "]" + message;
         sendMessage(message, status);
     }
 
