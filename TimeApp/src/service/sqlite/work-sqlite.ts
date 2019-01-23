@@ -369,7 +369,8 @@ export class WorkSqlite{
    */
   isymwd(cft:string,day:string,sd:string,ed:string):boolean{
     let isTrue = false;
-
+    sd = moment(sd).format('YYYY/MM/DD');
+    ed = moment(ed).format('YYYY/MM/DD');
     if(cft && cft != null && cft !='undefined'){
       if(cft=='1'){//年
         if(sd.substr(4,10)== day.substr(4,10)){
