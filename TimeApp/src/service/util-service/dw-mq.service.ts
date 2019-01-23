@@ -12,6 +12,7 @@ import { MsSqlite } from "../sqlite/ms-sqlite";
 import { AiuiModel } from "../../model/aiui.model";
 import { XiaojiAssistantService } from "./xiaoji-assistant.service";
 import { WsEnumModel } from "../../model/ws/ws.enum.model";
+import {RcModel} from "../../model/rc.model";
 
 /**
  * webSocket公用处理方法
@@ -33,7 +34,7 @@ export class DwMqService {
   //消息类型判断
   public dealWithMq(mqDate: WsModel) {
 
-    console.log("=======开始消息处理=====");
+    console.log("=======Mq消息返回，开始消息处理=====");
     //mq返回则立即回馈语音界面
     this.sendUserToHbPage(mqDate.ut, mqDate.sk);
 
@@ -114,8 +115,9 @@ export class DwMqService {
     }
 
     let aiui = new AiuiModel();
-
+    console.log("========== 讯飞日程添加业务查询参与人处理开始 ========== ");
     this.work.xfAddrc(sn, sd, pln, ca, cb).then(data => {
+      console.log("========== 讯飞日程添加业务查询参与人处理结果： " + JSON.stringify(data));
       if (data != null) {
         aiui.sc = data;
         aiui.tt = DataConfig.S4;
@@ -128,7 +130,26 @@ export class DwMqService {
       }
 
       this.dwResultSendToPage(aiui, mqDate.sk);
-    }).catch(e=>{
+    })
+      .then(data=>{
+      //============ 业务测试添加日程 =============
+      console.log("========== 讯飞日程添加业务开始 ============： " + JSON.stringify(data));
+      if(aiui.sc && aiui.sc.rus.length>0){
+        let rc:RcModel = aiui.sc;
+        this.work.arc(rc.sN,rc.sd,rc.lI,rc.ji,rc.cft,rc.rm,rc.ac,rc.rus).then(data=>{
+          console.log("========== 讯飞日程添加业务结束 ============： " + JSON.stringify(data));
+          this.xiaojiSpeech.speakText('您的发布日程已安排成功', success => {});
+        }).catch(e=>{
+          console.error("========== 讯飞日程添加业务ERROR ============： " + JSON.stringify(e));
+          this.xiaojiSpeech.speakText('您的发布日程安排失败', success => {});
+        })
+      }
+      if(aiui.sc.rus.length==0){
+        this.xiaojiSpeech.speakText('日程发布失败，没有找到对应的联系人', success => {});
+      }
+    })
+    .catch(e=>{
+      console.error("========== 讯飞日程添加 ERROR ============： " + JSON.stringify(e));
       console.log("xfScheduleCreate:" + e.toString());
     });
   }
@@ -179,28 +200,17 @@ export class DwMqService {
     if (ed == null || ed == '') {
       ed = para.st;
     }
-
     let aiui = new AiuiModel();
-
     this.work.getwL('', sd, ed, '', lbN, jh).then(data => {
       let str = "";
       if (data && data.rcL && data.rcL.length > 0) {
-        // str = '您有'+data.rcL.length+"个日程等待您去处理！"
         aiui.scL = data.rcL;
         aiui.tt = DataConfig.S5;
-        // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
         aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "1");
       } else {
-        // str="您今天有大把的时间可以利用"
         aiui.tt = DataConfig.S1;
-        // aiui.at = WsEnumModel[mqDate.sk] + UtilService.randInt(0,10);
         aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "10");
       }
-      // let url = "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&text=" + encodeURI(str);
-      // var n = new Audio(url);
-      // n.src = url;
-      // n.play();
-
       this.dwResultSendToPage(aiui, mqDate.sk);
     }).catch(e=>{
       console.log("xfScheduleFind:" + e.toString());
@@ -395,7 +405,7 @@ export class DwMqService {
       // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[sk] + UtilService.randInt(0,10));
       aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[sk] + "1");
     }
-    console.log("返回界面");
+    console.log("===== MQ返回用户语音消息回传界面 ======");
     this.emitSend.send(aiui, sk);
   }
 
