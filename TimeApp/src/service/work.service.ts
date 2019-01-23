@@ -508,7 +508,7 @@ export class WorkService {
    * @param {string} lbN 标签名称
    * @param {string} jh 计划名称
    */
-  getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string):Promise<RcoModel>{
+  getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string,flag:string):Promise<RcoModel>{
     return new Promise((resolve, reject) =>{
       let rco = new RcoModel();
       console.log("----- WorkService getwL(根据条件查询日程) start -----");
@@ -528,6 +528,14 @@ export class WorkService {
           rco.message=ReturnConfig.NULL_MESSAGE;
         }
         rco.rcL=rcs;
+        rco.rcL=rcs;
+        if(flag == '1'){
+          return this.readlocal.findEventRc(ct,new Date(sd),new Date(ed),rco.rcL);
+        }
+      }).then(data=>{
+        if(flag == '1'){
+          rco = data;
+        }
         resolve(rco);
       }).catch(e=>{
         console.error("----- WorkService getwL(根据条件查询日程) Error:" + JSON.stringify(e));
@@ -593,7 +601,7 @@ export class WorkService {
    * @param {string} sI 主键
    * @returns {Promise<BsModel>}
    */
-  delrc(sI:string):Promise<BsModel> {
+  delrc(sI:string,sn:string,sd:string,ed:string):Promise<BsModel> {
     return new Promise((resolve, reject) => {
       let rc = new RcEntity();
       rc.sI=sI;

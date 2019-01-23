@@ -13,6 +13,7 @@ import { AiuiModel } from "../../model/aiui.model";
 import { XiaojiAssistantService } from "./xiaoji-assistant.service";
 import { WsEnumModel } from "../../model/ws/ws.enum.model";
 import {RcModel} from "../../model/rc.model";
+import * as moment from "moment";
 
 /**
  * webSocket公用处理方法
@@ -159,22 +160,17 @@ export class DwMqService {
    */
   private xfScheduleDelete(mqDate: WsModel) {
     let md: WsResDataModel = mqDate.res.data;
-    let sI = "";
-
+    let sd = md.st;
+    let ed = md.et;
+    let sN = md.sn;
     let aiui = new AiuiModel();
-    if (!mqDate.ses) {
-
-    }
-
-    this.work.delrc(sI).then(data => {
-      if (data != null) {
-        // aiui.sc = data;
-        aiui.tt = DataConfig.S1;
-        // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
+    this.work.getwL(sN, sd, ed, '', '', '','0').then(data => {
+      if (data && data.rcL && data.rcL.length > 0) {
+        aiui.scL = data.rcL;
+        aiui.tt = DataConfig.S5;
         aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "1");
       } else {
         aiui.tt = DataConfig.S1;
-        // aiui.at = WsEnumModel[mqDate.sk] + UtilService.randInt(0,10);
         aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "10");
       }
       this.dwResultSendToPage(aiui, mqDate.sk);
@@ -201,7 +197,7 @@ export class DwMqService {
       ed = para.st;
     }
     let aiui = new AiuiModel();
-    this.work.getwL('', sd, ed, '', lbN, jh).then(data => {
+    this.work.getwL(ct, sd, ed, '', lbN, jh,'1').then(data => {
       let str = "";
       if (data && data.rcL && data.rcL.length > 0) {
         aiui.scL = data.rcL;
@@ -349,7 +345,7 @@ export class DwMqService {
    */
   private scheduleDelete(data: WsResDataModel) {
     let sI = data.si;
-    this.work.delrc(sI).then(data => {
+    this.work.drc(sI,'').then(data => {
 
     }).catch(e => {
 
