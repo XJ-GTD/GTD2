@@ -51,7 +51,6 @@ export class RelmemService {
         }
         resolve(rs);
       }).catch(e=>{
-        alert("user su() Error: " + JSON.stringify(e));
         console.error("RelmemService su() Error: " + JSON.stringify(e));
         rs.code = 1;
         rs.message=e.message;

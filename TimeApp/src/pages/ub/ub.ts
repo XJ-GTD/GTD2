@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
 import { LsmService} from "../../service/lsm.service";
 import { UserService } from "../../service/user.service";
-import {DataConfig} from "../../app/data.config";
-import {ReturnConfig} from "../../app/return.config";
-import {WebsocketService} from "../../service/util-service/websocket.service";
-import {UtilService} from "../../service/util-service/util.service";
+import { WebsocketService } from "../../service/util-service/websocket.service";
+import { UtilService } from "../../service/util-service/util.service";
 
 /**
  * Generated class for the UbPage page.
@@ -106,7 +104,7 @@ export class UbPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
     private paramsService: ParamsService,
     private lsmService: LsmService,
     private webSocket: WebsocketService,
@@ -123,10 +121,12 @@ export class UbPage {
   signIn() {
     console.log("登录按钮被点击");
     if(this.accountName == null && this.accountPassword == null){
-      let alert = this.alertCtrl.create({
-        subTitle: "输入为空",
+      let toast = this.toastCtrl.create({
+        message: '用户名和密码不能为空',
+        duration: 1500,
+        position: 'middle'
       });
-      alert.present();
+      toast.present();
       return;
     }
     this.utilService.loading("登录中");

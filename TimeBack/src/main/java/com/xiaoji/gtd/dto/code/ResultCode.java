@@ -53,6 +53,7 @@ public enum ResultCode {
     FAIL_SEARCH(50103),                    //查询失败
     FAIL_SCHEDULE(50104),                   //日程处理失败
     FAIL_PLAYER(50105),                     //参与人处理失败
+    FAIL_USER_INFO(50106),                  //用户信息更新失败
 
 
     FAIL_XF(50200),                         //讯飞语音调用失败

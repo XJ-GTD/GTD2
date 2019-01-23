@@ -146,9 +146,9 @@ export class UEntity {
       sql=sql+' uty="' + this._uty +'",';
     }
     if(this._oUI != null && this._oUI!=''){
-      sql = sql + ' uI="' + this._uI +'" where uI="' + this._oUI +'"';
+      sql = sql + ' uI="' + this._uI +'" where uI="' + this._oUI +'";';
     }else{
-      sql = sql + ' uI="' + this._uI +'" where uI="' + this._uI +'"';
+      sql = sql + ' uI="' + this._uI +'" where uI="' + this._uI +'";';
     }
     this._usq=sql;
     return this._usq;
@@ -193,7 +193,7 @@ export class UEntity {
     if(this._rn != null && this._rn!=''){
       sql = sql + ' and rn="' + this._rn +'"';
     }
-    this._dsq=sql;
+    this._dsq=sql+";";
     return this._dsq;
   }
 

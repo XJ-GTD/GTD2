@@ -1,10 +1,9 @@
-import {Injectable} from "@angular/core";
-import {SockJS} from 'sockjs-client';
+import { Injectable } from "@angular/core";
+import { SockJS } from 'sockjs-client';
 import Stomp from "@stomp/stompjs";
-import {AppConfig} from "../../app/app.config";
-import {WsModel} from "../../model/ws/ws.model";
-import {DwMqService} from "./dw-mq.service";
-import {XiaojiAssistantService} from "./xiaoji-assistant.service";
+import { AppConfig } from "../../app/app.config";
+import { WsModel } from "../../model/ws/ws.model";
+import { DwMqService } from "./dw-mq.service";
 
 
 /**
@@ -31,8 +30,8 @@ export class WebsocketService {
     this.password = "gtd_mq";
     this.client = Stomp.client(AppConfig.RABBITMQ_WS_URL);
     //呼吸
-    this.client.heartbeat.outgoing = 100;
-    this.client.heartbeat.incoming = 100;
+    this.client.heartbeat.outgoing = 0;
+    this.client.heartbeat.incoming = 0;
   }
 
   /**
@@ -60,12 +59,10 @@ export class WebsocketService {
   }
 
   public close() {
-
     // 连接消息服务器
     this.client.disconnect(() => {
       console.log('socket close!' + event);
     });
-
   }
 
 }

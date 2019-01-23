@@ -25,6 +25,7 @@ import {ReturnConfig} from "../app/return.config";
 import {RcoModel} from "../model/out/rco.model";
 import {WsResDataModel} from "../model/ws/ws.res.model";
 import {MsSqlite} from "./sqlite/ms-sqlite";
+import {ReadlocalService} from "./readlocal.service";
 
 /**
  * 日程逻辑处理
@@ -40,6 +41,7 @@ export class WorkService {
                 private relmem : RelmemSqlite,
                 private lbSqlite : LbSqlite,
                 private msSqlite : MsSqlite,
+                private readlocal : ReadlocalService,
                 private rcResful:RcRestful) {
   }
 
@@ -78,10 +80,9 @@ export class WorkService {
       rc.sI=this.util.getUuid();
       let psl = new Array<PsModel>();
       console.log("----- workService arc 添加日程开始-------");
-     // alert(JSON.stringify(rc));
+
       this.workSqlite.save(rc).then(data=>{
           console.log("----- workService arc 添加日程返回结果：" + JSON.stringify(data));
-          //alert('日程添加成功！');
           console.log("----- workService arc 添加日程子表-------");
           return this.workSqlite.addLbData(rc.sI,rc.lI,cft,rm,ac,'0');
         }).then(data=>{
@@ -132,7 +133,7 @@ export class WorkService {
         resolve(bs);
       }).catch(e=>{
         console.error("WorkService arc() Error : " +JSON.stringify(e));
-        //alert('日程添加==='+e.toString());
+
         bs.code = ReturnConfig.ERR_CODE;
         bs.message=e.message;
         reject(bs);
@@ -317,7 +318,7 @@ export class WorkService {
   urcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string,subId:string,cft:string,rm:string,ac:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
-      sd=sd.replace(new RegExp('-','g'),'/');;
+      sd=sd.replace(new RegExp('-','g'),'/');
       //先查询当前用户ID
       let rc = new RcEntity();
       rc.uI=cui;
@@ -436,7 +437,7 @@ export class WorkService {
    * @returns {Promise<MbsoModel>}
    */
   getMBs(ym): Promise<MbsoModel> {
-    ym=ym.replace(new RegExp('-','g'),'/');;
+    ym=ym.replace(new RegExp('-','g'),'/');
     return new Promise((resolve, reject) => {
       let mbso = new MbsoModel();
       console.log("----- WorkService getMBs(获取当月标识) start -----");
@@ -515,7 +516,7 @@ export class WorkService {
       ed = ed.replace(new RegExp('-','g'),'/');
       this.workSqlite.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
         console.log("----- WorkService getwL(根据条件查询日程) result:" + JSON.stringify(data));
-        let rcs = new Array<RcModel>()
+        let rcs = new Array<RcModel>();
         if(data && data.rows && data.rows.length>0){
           for(let i=0;i<data.rows.length;i++){
             let rc = new RcModel();

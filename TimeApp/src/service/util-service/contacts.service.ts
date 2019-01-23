@@ -38,7 +38,7 @@ export class  ContactsService{
       }).then(data=>{
         console.log("contacts data :: " + JSON.stringify(data));
         for(let contact of data){
-          for(let i = 0;i<contact.phoneNumbers.length;i++){
+          for(let i = 0;contact.phoneNumbers != null && i<contact.phoneNumbers.length;i++){
             //去除手机号中的空格
             // ContactsService.contactMap.set(contact.phoneNumbers[i].value.replace(/\s/g,''),contact);
             contact.phoneNumbers[i].value = contact.phoneNumbers[i].value.replace(/\s/g,'');
@@ -79,7 +79,7 @@ export class  ContactsService{
       }).then(data=>{
         console.log("contacts data :: " + JSON.stringify(data));
         for(let contact of data){
-          for(let i = 0;i<contact.phoneNumbers.length;i++){
+          for(let i = 0;contact.phoneNumbers != null && i<contact.phoneNumbers.length;i++){
             //去除手机号中的空格
             contact.phoneNumbers[i].value = contact.phoneNumbers[i].value.replace(/\s/g,'');
 

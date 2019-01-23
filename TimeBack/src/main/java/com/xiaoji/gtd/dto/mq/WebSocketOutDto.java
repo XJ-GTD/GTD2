@@ -21,6 +21,22 @@ public class WebSocketOutDto extends BaseOut {
     private WebSocketSourceDto src;     //source;
     private WebSocketResultDto res;     //result;
 
+    @Override
+    public String toString() {
+        return "WebSocketOutDto{" +
+                "vs='" + vs + '\'' +
+                ", ut='" + ut + '\'' +
+                ", at='" + at + '\'' +
+                ", au='" + au + '\'' +
+                ", ai='" + ai + '\'' +
+                ", ss=" + ss +
+                ", sk='" + sk + '\'' +
+                ", ses=" + ses +
+                ", src=" + src +
+                ", res=" + res +
+                '}';
+    }
+
     public String getVs() {
         return vs;
     }

@@ -14,6 +14,7 @@ import {RcbModel} from "../../model/rcb.model";
 import {SyncEntity} from "../../entity/sync.entity";
 import {ReadlocalService} from "../readlocal.service";
 import * as moment from "moment";
+import {RcoModel} from "../../model/out/rco.model";
 
 
 /**
@@ -134,7 +135,6 @@ export class WorkSqlite{
    * @param ym 格式‘2018/01’
    */
   getMBs(ym:string,ui:string):Promise<BsModel>{
-    ym = ym.replace(new RegExp('-','g'),'/')
     return new Promise((resolve, reject) => {
       // or gc.uI= "'+ui+'"
       let sql= this.getRcSql() +
@@ -143,8 +143,8 @@ export class WorkSqlite{
       let bs = new BsModel();
       let resL = new Array<any>();
       let rcL = new Array<RcModel>();
+      console.log(' ---- WorkSqlite getMBs 查询sqlite日历数据开始 =：'+sql);
       this.baseSqlite.executeSql(sql,[]).then(data=>{
-
         console.log(' ---- WorkSqlite getMBs 查询sqlite日历数据 ---- ');
         if(data && data.rows && data.rows.length>0){
           for (let i = 0; i < data.rows.length; i++) {
@@ -155,7 +155,7 @@ export class WorkSqlite{
         let date = new Date(ym+'/01');
         let sd = UtilService.getCurrentMonthFirst(date);
         let ed = UtilService.getCurrentMonthLast(date);
-        return this.readlocal.findEventRc(sd,ed,rcL);
+        return this.readlocal.findEventRc('',sd,ed,rcL);
       }) .then(data=>{
         if(data.rcL.length>0){
           for(let i=1;i<=31;i++){
@@ -232,6 +232,7 @@ export class WorkSqlite{
       let bs = new BsModel();
       let resL = new Array<any>();
       let rcL = new Array<RcModel>();
+      console.log(' ---- WorkSqlite getOd 查询sqlite日历数据 ：'+ sql);
       this.baseSqlite.executeSql(sql,[]).then(data=>{
         let localIds:string[] = [];
         console.log(' ---- WorkSqlite getOd 查询sqlite日历数据 ---- ');
@@ -243,7 +244,7 @@ export class WorkSqlite{
         console.log(' ---- WorkSqlite getMBs 查询本地日历数据 ---- ');
         let sd = new Date(d + ' 00:00');
         let ed = new Date(d + ' 23:59');
-        return this.readlocal.findEventRc(sd,ed,rcL);
+        return this.readlocal.findEventRc('',sd,ed,rcL);
       }).then(data=>{
         if(data.rcL.length>0){
           for(let i=0;i<rcL.length;i++){
@@ -299,6 +300,50 @@ export class WorkSqlite{
   }
 
   /**
+   * 查询当前需设置的闹铃
+   * @param d 'yyyy/MM/dd'
+   */
+  getSetColckWork(mm:number):Promise<RcoModel>{
+    return new Promise((resolve, reject) => {
+      let date = new Date().getTime();
+      let agodate = date - mm * 60 * 1000;
+      let today = moment(date).format('YYYY/MM/DD');
+      let d = moment(date).format('YYYY/MM/DD HH:mm');
+      let agod = moment(agodate).format('YYYY/MM/DD HH:mm');
+      let sql= this.getRcSql() + ' left join GTD_F gf on gf.lai=gc.lI '+
+        ' where (substr(gc.sd,1,10) <= "'+today+'" and substr(gc.ed,1,10)>= "'+today+'") ' +
+        ' and (substr(gc.sd,11,16) <= "'+d+'" and substr(gc.sd,11,16)>= "'+agod+'") ' +
+        ' and (gd.uI = "'+DataConfig.uInfo.uI+'" or gc.uI= "'+DataConfig.uInfo.uI+'")';
+      let rco = new RcoModel();
+      let rcL = new Array<RcModel>();
+      rco.rcL = rcL;
+      console.log(' ---- WorkSqlite getOd 查询sqlite日历数据 ：'+ sql);
+      this.baseSqlite.executeSql(sql,[]).then(data=>{
+        let localIds:string[] = [];
+        console.log(' ---- WorkSqlite getOd 查询sqlite日历数据 ---- ');
+        if(data && data.rows && data.rows.length>0){
+          for (let i = 0; i < data.rows.length; i++) {
+            let res:RcModel = data.rows.item(i);
+            let nd = this.getClockDate(res.cft,d,res.sd,res.ed);
+            //nds
+            if(this.isymwd(res.cft,d,res.sd,res.ed)){
+              rcL.push(res);
+            }
+          }
+        }
+        rco.rcL=rcL;
+        resolve(rco);
+      }).catch(e=>{
+        console.error("查询"+mm+"分钟前的日程失败ERROR：" + JSON.stringify(e));
+        console.error("查询"+mm+"分钟前的日程失败ERROR：" + e.toString());
+        rco.code=ReturnConfig.ERR_CODE;
+        rco.message=ReturnConfig.ERR_MESSAGE;
+        reject(rco)
+      })
+    })
+  }
+
+  /**
    * 日程查询SQL
    * @returns {string}
    */
@@ -324,8 +369,7 @@ export class WorkSqlite{
    */
   isymwd(cft:string,day:string,sd:string,ed:string):boolean{
     let isTrue = false;
-    sd = sd.substr(0,10).replace(new RegExp('-','g'),'/');
-    ed= ed.substr(0,10).replace(new RegExp('-','g'),'/');
+
     if(cft && cft != null && cft !='undefined'){
       if(cft=='1'){//年
         if(sd.substr(4,10)== day.substr(4,10)){
@@ -336,8 +380,8 @@ export class WorkSqlite{
           isTrue = true;
         }
       }else if(cft=='3'){ //周
-        let sdz = new Date(sd.replace(new RegExp('-','g'),'/')).getDay();
-        let dayz = new Date(day.replace(new RegExp('-','g'),'/')).getDay();
+        let sdz = new Date(sd).getDay();
+        let dayz = new Date(day).getDay();
         if(sd<=day && sdz == dayz){
           isTrue = true;
         }
@@ -351,6 +395,43 @@ export class WorkSqlite{
       isTrue = true;
     }
     return isTrue;
+  }
+
+  /**
+   * 获取当前日程的闹铃时间
+   * @param {string} cft 重复类型
+   * @param {string} day 当前日期
+   * @param {string} sd 开始日期
+   * @param {string} nd 闹铃时间
+   * @returns {boolean}
+   */
+  getClockDate(cft:string,day:string,sd:string,nd:string):string{
+    let isTrue = false;
+    if(cft && cft != null && cft !='undefined'){
+      if(cft=='1'){//年
+        if(sd.substr(4,10)== day.substr(4,10)){
+          isTrue = true;
+        }
+      }else if(cft=='2'){ //月
+        if(sd.substr(4,6)== day.substr(4,6)){
+          isTrue = true;
+        }
+      }else if(cft=='3'){ //周
+        let sdz = new Date(sd).getDay();
+        let dayz = new Date(day).getDay();
+        if(sdz == dayz){
+          isTrue = true;
+        }
+      }else if(cft=='4'){ //日
+        isTrue = true;
+      }
+    }else{
+      isTrue = true;
+    }
+    if(isTrue){
+      nd = day + " " + nd.substr(11,16);
+    }
+    return nd;
   }
 
   /**
@@ -622,9 +703,14 @@ export class WorkSqlite{
     sync.tableC = en.rm;
     sync.tableD = en.cft;
     sync.tableE = en.ac;
-    sync.tableF = en.dt;
+    if(en.dt != null && en.dt != ''){
+      sync.tableF = moment(en.dt).format('YYYY-MM-DD HH:mm');
+    }
     sync.tableG = en.fh;
-    sync.tableH = en.wd;
+    if(en.wd != null && en.wd != ''){
+      sync.tableH = moment(en.wd).format('YYYY-MM-DD HH:mm');
+    }
+
     sync.action= ac;
     sync.tableName = tn;
     return this.baseSqlite.save(sync);
@@ -642,8 +728,8 @@ export class WorkSqlite{
     sync.tableC = en.lI;
     sync.tableD = en.uI;
     sync.tableE = en.ji;
-    sync.tableF = en.sd;
-    sync.tableG = en.ed;
+    sync.tableF = moment(en.sd).format('YYYY-MM-DD HH:mm');
+    sync.tableG = moment(en.ed).format('YYYY-MM-DD HH:mm');
     sync.action= ac;
     sync.tableName = DataConfig.GTD_C;
     return this.baseSqlite.save(sync);

@@ -10,7 +10,7 @@ public class UserInfoInDto {
     private String userId;
     private String userName;
     private String headImgUrl;
-    private String brithday;
+    private String birthday;
     private String realName;
     private String idCard;
     private Integer userSex;
@@ -39,14 +39,6 @@ public class UserInfoInDto {
         this.headImgUrl = headImgUrl;
     }
 
-    public String getBrithday() {
-        return brithday;
-    }
-
-    public void setBrithday(String brithday) {
-        this.brithday = brithday;
-    }
-
     public String getRealName() {
         return realName;
     }
@@ -69,5 +61,13 @@ public class UserInfoInDto {
 
     public void setUserSex(Integer userSex) {
         this.userSex = userSex;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 }

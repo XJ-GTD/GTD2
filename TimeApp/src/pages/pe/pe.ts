@@ -1,13 +1,10 @@
-import {Component, ViewChild} from '@angular/core';
-import {
-  AlertController, IonicPage, NavController, NavParams, ToastController, Navbar,
-  ModalController
-} from 'ionic-angular';
-import {UEntity} from "../../entity/u.entity";
-import {RuModel} from "../../model/ru.model";
-import {RelmemService} from "../../service/relmem.service";
-import {PageConfig} from "../../app/page.config";
-import {DataConfig} from "../../app/data.config";
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, Navbar, ModalController, ToastController } from 'ionic-angular';
+import { UEntity } from "../../entity/u.entity";
+import { RuModel } from "../../model/ru.model";
+import { RelmemService } from "../../service/relmem.service";
+import { PageConfig } from "../../app/page.config";
+import { DataConfig } from "../../app/data.config";
 
 /**
  * Generated class for the PePage page.
@@ -76,7 +73,7 @@ export class PePage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private relmemService: RelmemService,
-              private alertCtrl: AlertController,
+              private toastCtrl: ToastController,
               private modalCtrl: ModalController) {
   }
 
@@ -135,14 +132,12 @@ export class PePage {
 
   save(){
     if(!this.qmc){
-      let alert = this.alertCtrl.create({
+      let toast = this.toastCtrl.create({
         message: '请输入群组名称',
-        enableBackdropDismiss:false
+        duration: 1500,
+        position: 'top'
       });
-      setTimeout(()=>{
-        alert.dismiss();
-      },1000);
-      alert.present();
+      toast.present();
       return;
     }
 

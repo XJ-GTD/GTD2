@@ -63,8 +63,10 @@ export class XiaojiAssistantService{
         this.islistenAudioing = false;
 
       },error=>{
+        this.islistenAudioing = false;
       },true,true);
     } catch (e) {
+      this.islistenAudioing = false;
     }
 
   }
@@ -174,6 +176,7 @@ export class XiaojiAssistantService{
       }, speechText);
     } catch (e) {
       success(false);
+      this.isSpeaking = false;
       console.log("问题："+ e)
     }
   }
@@ -183,10 +186,18 @@ export class XiaojiAssistantService{
    */
   public stopSpeak() {
     try {
-      cordova.plugins.XjBaiduTts.speakStop();
-      this.isSpeaking = false;
+      if (cordova.plugins.XjBaiduSpeech != null && cordova.plugins.XjBaiduSpeech != undefined) {
+        console.log("停止播报");
+        cordova.plugins.XjBaiduTts.speakStop();
+        this.isSpeaking = false;
+      } else {
+        console.log("语音对象不存在");
+        this.isSpeaking = false;
+      }
+
     } catch (e) {
-      console.log("问题："+ e)
+      this.isSpeaking = false;
+      console.log("stopSpeak问题："+ e)
     }
   }
 
@@ -194,8 +205,17 @@ export class XiaojiAssistantService{
    * 停止监听
    */
   public stopListenAudio() {
-    console.log("停止监听");
-    cordova.plugins.XjBaiduSpeech.stopListen();
+    try {
+      if (cordova.plugins.XjBaiduSpeech != null && cordova.plugins.XjBaiduSpeech != undefined) {
+        console.log("停止监听");
+        cordova.plugins.XjBaiduSpeech.stopListen();
+      } else {
+        console.log("停止监听失败");
+      }
+    } catch (e) {
+      console.log("stopListenAudio问题："+ e)
+    }
+
   }
 
   /**
@@ -205,7 +225,6 @@ export class XiaojiAssistantService{
     try {
       cordova.plugins.XjBaiduWakeUp.wakeUpStart(result=>{
         if (this.isSpeaking || this.islistenAudioing) {
-
           success(false);
           return;
         }
