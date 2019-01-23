@@ -10,7 +10,7 @@ import {
 
 import {
   CalendarMonth, CalendarModalOptions, CalendarComponentOptions, CalendarDay,
-  CalendarComponentPayloadTypes, CalendarComponentMonthChange, CalendarComponentTypeProperty
+  CalendarComponentPayloadTypes, CalendarComponentMonthChange, CalendarComponentTypeProperty, DayConfig
 } from '../calendar.model'
 import { CalendarService } from "../services/calendar.service";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -83,7 +83,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
                               (swipe)="swipeEvent($event)"
                               (cumClick)="monthClick($event)"
                               (onSelect)="onSelect.emit($event)"
-                              (onPressup)="onPressup.emit($event)"
+                              (onPress)="onPress.emit($event)"
                               (onSelectStart)="onSelectStart.emit($event)"
                               (onSelectEnd)="onSelectEnd.emit($event)"
                               [pickMode]="_d.pickMode"
@@ -138,7 +138,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   @Output() onChange: EventEmitter<CalendarComponentPayloadTypes> = new EventEmitter();
   @Output() monthChange: EventEmitter<CalendarComponentMonthChange> = new EventEmitter();
   @Output() onSelect: EventEmitter<CalendarDay> = new EventEmitter();
-  @Output() onPressup: EventEmitter<CalendarDay> = new EventEmitter();
+  @Output() onPress: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectStart: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectEnd: EventEmitter<CalendarDay> = new EventEmitter();
 
@@ -399,6 +399,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(obj: any): void {
+    console.info("*************************************")
     this._writeValue(obj);
     if (obj) {
       if (this._calendarMonthValue[0]) {
@@ -471,6 +472,17 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     this.calSvc.findDayEventForMonth(month).then((data)=>{
       this.options.daysConfig.push(...data);
       this.monthOpt =  this.calSvc.createMonthsByPeriod(time, 1, this._d)[0];
+    })
+  }
+
+  flashDay(day){
+    this.calSvc.findDayEventForDay(day).then((data)=>{
+       let cdays = this.monthOpt.days;
+      for (let i = 0; i < cdays.length; i++) {
+      let dayc:any = cdays[i];
+      if (moment(day).valueOf() == dayc.time )
+        dayc.cssClass = "hassometing animated bounceIn delay-1s slow";
+      }
     })
   }
 }

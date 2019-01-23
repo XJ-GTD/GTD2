@@ -489,10 +489,12 @@ export class WorkSqlite{
       sql = sql + " and gd.son like '%" + ct +"%'"
     }
     if(sd != null && sd != ""){
-      sql = sql + " and substr(gc.sd,1,10) <= '" + moment(sd).format('YYYY/MM/DD') +"'";
+      let sdl = sd.length;
+      sql = sql + " and substr(gc.sd,1,"+sdl+") <= '" + sd +"'";
     }
     if(ed != null && ed != ""){
-      sql = sql + " and substr(gc.ed,1,10) >= '" + moment(ed).format('YYYY/MM/DD') +"'";
+      let edl = ed.length;
+      sql = sql + " and substr(gc.ed,1,"+edl+") >= '" + ed +"'";
     }
     if(lbI != null && lbI != ""){
       sql = sql + " and gf.lan like '%" + lbI +"%'"

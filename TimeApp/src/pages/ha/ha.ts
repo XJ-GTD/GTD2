@@ -41,7 +41,7 @@ import {ScheduleModel} from "../../model/schedule.model";
   '    <div class="haCalendar">' +
   '      <ion-calendar [options]="options"' +
   '                    (onSelect)="onSelectDayEvent($event)"' +
-  '                    (onPressup)="creNewEvent($event)">' +
+  '                    (onPress)="creNewEvent($event)">' +
   '      </ion-calendar>' +
   '    </div>' +
   '    <p class="tipDay"><span class="showDay animated flipInX">{{showDay}}</span><span' +
@@ -211,6 +211,8 @@ export class HaPage {
     this.showDay2 = moment().set({'year': year, 'month': month - 1, 'date': day}).format('dddd YYYY 年 MM 月 DD 日');
 
     this.ha01Page.showEvents($event);
+
+    // this.ion2calendar.flashDay('2019-02-28');
 
 
 
