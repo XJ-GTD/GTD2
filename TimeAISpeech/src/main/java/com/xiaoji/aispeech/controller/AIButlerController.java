@@ -139,7 +139,7 @@ public class AIButlerController {
 
 
         logger.debug("*********************text" + text);
-        JSON repJson = aiButlerService.answerTextResJSON(text,"test");
+        JSON repJson = aiButlerService.answerTextResJSON(text,"8b9133b8519875127034d7c3cb70a383");
         logger.debug("*********************repJson" + repJson);
         AiUiResponse response  = JSON.toJavaObject(repJson,AiUiResponse.class);
         logger.debug("*********************response" + response);
