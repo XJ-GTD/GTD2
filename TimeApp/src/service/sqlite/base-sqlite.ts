@@ -298,7 +298,7 @@ export class BaseSqlite {
           if(sqls[i] != null && sqls[i] !=''){
             this.executeSql(sqls[i],[]);
           }else{
-            console.error("sqls["+i+"]: ("+sqls[i]+ "） ;sqlAll:"+sql);
+            //console.error("sqls["+i+"]: ("+sqls[i]+ "） ;sqlAll:"+sql);
           }
         }
         resolve(sqls.length);

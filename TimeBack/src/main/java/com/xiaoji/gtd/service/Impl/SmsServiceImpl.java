@@ -72,9 +72,10 @@ public class SmsServiceImpl implements ISmsService {
             vars.put("time", TIME);
 
             requestSubMail(mobile, PROJECT_AUTH_CODE, vars);
+            logger.debug("======== 发送成功 短信验证码：[" + code + "] 手机号：[" + mobile + "] =========");
         } catch (Exception e) {
             e.printStackTrace();
-            logger.debug("短信验证接口请求失败");
+            logger.error("短信验证接口请求失败");
         }
 
         return 0;
@@ -92,10 +93,10 @@ public class SmsServiceImpl implements ISmsService {
             JSONObject vars = new JSONObject();
             vars.put("url", BUSINESS_URL);
             requestSubMail(mobile, PROJECT_SCHEDULE, vars);
-            logger.debug("短信推送日程成功");
+            logger.debug("======短信推送日程成功======");
         } catch (Exception e) {
             e.printStackTrace();
-            logger.debug("短信验证接口请求失败");
+            logger.error("短信验证接口请求失败");
         }
 
         return 0;
