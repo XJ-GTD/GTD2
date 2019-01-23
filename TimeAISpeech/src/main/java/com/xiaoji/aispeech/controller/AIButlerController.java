@@ -128,4 +128,30 @@ public class AIButlerController {
         outDto.setData(data);
         return outDto;
     }
+
+    /**
+     * 语音交互（文本）
+     * @return
+     */
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    @ResponseBody
+    public VoiceOutBean test(@RequestParam String text) {
+
+
+        logger.debug("*********************text" + text);
+        JSON repJson = aiButlerService.answerTextResJSON(text,"test");
+        logger.debug("*********************repJson" + repJson);
+        AiUiResponse response  = JSON.toJavaObject(repJson,AiUiResponse.class);
+        logger.debug("*********************response" + response);
+        VoiceInBean voiceInBean = new VoiceInBean();
+        voiceInBean.setContent(text);
+        voiceInBean.setDeviceId("pc_test");
+        voiceInBean.setUserId("pc_test");
+        voiceInBean.setType("text");
+
+        voiceLogrService.saveLog4XF(response,voiceInBean,repJson.toJSONString());
+
+        return tranOutJsonObject(response,voiceInBean);
+    }
+
 }
