@@ -16,16 +16,16 @@ export class WebsocketService {
 
 
   //登陆账户
-  login: string;
-  password: string;
-  client: Stomp.Client;
+  private login: string;
+  private password: string;
+  private client: Stomp.Client;
 
   constructor(private dwService: DwMqService) {
     this.settingWs();
   }
 
 
-  settingWs() {
+  private settingWs() {
     this.login = "gtd_mq";
     this.password = "gtd_mq";
     this.client = Stomp.client(AppConfig.RABBITMQ_WS_URL);
@@ -38,6 +38,9 @@ export class WebsocketService {
    * 监听消息队列
    */
   public connect(queueName: string) {
+
+    console.log("-----MQ开始建立连接----");
+    console.log("-----MQ QUEUE_NAME: [" + queueName +  "] ----");
 
     // 连接消息服务器
     this.client.connect(this.login, this.password, frame => {

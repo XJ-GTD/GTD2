@@ -16,6 +16,17 @@ public class VoiceOutBean {
     private String userId;
     private List<NlpOutDto> data;
 
+    @Override
+    public String toString() {
+        return "VoiceOutBean{" +
+                "code='" + code + '\'' +
+                ", message='" + message + '\'' +
+                ", deviceId='" + deviceId + '\'' +
+                ", userId='" + userId + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     public String getCode() {
         return code;
     }

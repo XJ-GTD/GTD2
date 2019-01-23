@@ -133,7 +133,7 @@ declare var cordova: any;
                 <ion-icon name="mic" style=" color: white"></ion-icon> 
               </button> 
             </ion-buttons> 
-            <ion-input id="userInput" type="text" [(ngModel)]="inputText" placeholder="打字悄悄告诉我"></ion-input> 
+            <ion-input id="userInput" type="text" [(ngModel)]="inputText" placeholder="来传小纸条吧"></ion-input> 
             <ion-buttons end> 
               <button ion-button icon-end color="royal" (click)="startXiaojiText()"> 
                 <ion-icon name="send"></ion-icon> 
