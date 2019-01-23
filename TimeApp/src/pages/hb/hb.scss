@@ -247,6 +247,64 @@ page-hb {
     }
   }
 
+  .cc1{
+    background: #dddddd;margin: 0 auto;border-radius: 10px;
+    .cc2{
+      width: 100%;border-bottom: 0.5px solid #FFFFFF;display: flex;flex-direction: row;
+    }
+    .cc3{
+      width: 60px;height:60px;
+      background: rebeccapurple;
+      border-radius: 50%;
+    }
+    .cc4{
+      width: 60px;
+      font-size: 1.2rem;
+      line-height: 12px;
+      padding: 5px;
+      text-align: center;
+    }
+    .cc5{
+      padding:5px;
+      border-radius: 5px;
+      background-color: #24BEB9;
+      border:0.5px solid #24BEB9;
+      color:#FFFFFF;
+      width: 75px;
+    }
+    //daosanjiao
+    .cc6{
+      width: 12px;height: 18px;position: relative;margin-right: 5px;
+      .cc7{
+        left: 5px;
+        top: 50%;
+        margin-top: -2px;
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-top: 5px solid;
+        border-right: 5px solid transparent;
+        border-left: 5px solid transparent;
+        color: #FFFFFF;
+        pointer-events: none;
+      }
+    }
+
+    .cc8{
+      background: none;
+      width: 100%;display: flex;flex-direction: row;justify-content: flex-end;
+      padding: 20px;
+      .cc9{
+        padding-left: 16px;
+        padding-right: 16px;
+        font-size: 17px;
+        line-height: 28px;
+      }
+    }
+  }
+
+
+
 }
 
 
