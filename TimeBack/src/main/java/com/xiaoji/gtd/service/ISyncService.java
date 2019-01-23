@@ -29,4 +29,18 @@ public interface ISyncService {
      * @return
      */
     SyncOutDto timingSync(SyncInDto inDto);
+
+    /**
+     * 同步上传
+     * @param inDto
+     * @return
+     */
+    int upload(SyncInDto inDto);
+
+    /**
+     * 同步下载
+     * @param inDto
+     * @return
+     */
+    SyncOutDto download(SyncInDto inDto);
 }
