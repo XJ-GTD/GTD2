@@ -35,7 +35,7 @@ export const MONTH_VALUE_ACCESSOR: any = {
                           [class]="'days-btn ' + day.cssClass"
                           [class.today]="day.isToday"
                           (click)="onSelected(day)"
-                          (pressup)="onPressuped(day)"
+                          (press)="onPressed(day)"
                           [class.marked]="day.marked"
                           [class.last-month-day]="day.isLastMonth"
                           [class.next-month-day]="day.isNextMonth"
@@ -96,7 +96,7 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
 
   @Output() onChange: EventEmitter<CalendarDay[]> = new EventEmitter();
   @Output() onSelect: EventEmitter<CalendarDay> = new EventEmitter();
-  @Output() onPressup: EventEmitter<CalendarDay> = new EventEmitter();
+  @Output() onPress: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectStart: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectEnd: EventEmitter<CalendarDay> = new EventEmitter();
 
@@ -240,10 +240,10 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
   }
 
 
-  onPressuped(item: CalendarDay): void {
+  onPressed(item: CalendarDay): void {
     if (this.readonly) return;
     item.selected = true;
-    this.onPressup.emit(item);
+    this.onPress.emit(item);
     if (this.pickMode === pickModes.SINGLE) {
       this._date[0] = item;
       this.onChange.emit(this._date);

@@ -41,7 +41,7 @@ import {ScheduleModel} from "../../model/schedule.model";
   '    <div class="haCalendar">' +
   '      <ion-calendar [options]="options"' +
   '                    (onSelect)="onSelectDayEvent($event)"' +
-  '                    (onPressup)="creNewEvent($event)">' +
+  '                    (onPress)="creNewEvent($event)">' +
   '      </ion-calendar>' +
   '    </div>' +
   '    <p class="tipDay"><span class="showDay animated flipInX">{{showDay}}</span><span' +

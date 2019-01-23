@@ -83,7 +83,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
                               (swipe)="swipeEvent($event)"
                               (cumClick)="monthClick($event)"
                               (onSelect)="onSelect.emit($event)"
-                              (onPressup)="onPressup.emit($event)"
+                              (onPress)="onPress.emit($event)"
                               (onSelectStart)="onSelectStart.emit($event)"
                               (onSelectEnd)="onSelectEnd.emit($event)"
                               [pickMode]="_d.pickMode"
@@ -138,7 +138,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   @Output() onChange: EventEmitter<CalendarComponentPayloadTypes> = new EventEmitter();
   @Output() monthChange: EventEmitter<CalendarComponentMonthChange> = new EventEmitter();
   @Output() onSelect: EventEmitter<CalendarDay> = new EventEmitter();
-  @Output() onPressup: EventEmitter<CalendarDay> = new EventEmitter();
+  @Output() onPress: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectStart: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectEnd: EventEmitter<CalendarDay> = new EventEmitter();
 
