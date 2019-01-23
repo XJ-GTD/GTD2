@@ -7,8 +7,8 @@ page-hz {
   }
 
   .icon_size{
-    width: 28px !important;
-    height: 28px !important;
+    width: 20px !important;
+    height: 20px !important;
   }
 
 
@@ -23,6 +23,10 @@ page-hz {
   ion-list > ion-item:first-child{
     //border-top-color: #e5e5e5 !important;
     border-top:none !important;
+  }
+
+  ion-list ion-label{
+    color: #222222;
   }
 
   #tag1{

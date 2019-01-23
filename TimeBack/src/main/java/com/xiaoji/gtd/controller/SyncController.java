@@ -175,29 +175,115 @@ public class SyncController {
     }
 
     /**
-     * 定时同步(上传)
+     * 同步上传
      * @return
      */
-    /*@RequestMapping(value = "/timing_upload", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
     @AuthCheck
-    public Out timingUpload(@RequestBody BaseInDto inDto) {
+    public Out timingUpload(@RequestBody SyncInDto inDto) {
         Out outDto = new Out();
 
+        //入参检测
+        //非空检测
+        if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
+            outDto.setCode(ResultCode.NULL_UUID);
+            logger.debug("[同步上传失败]：用户ID不可为空");
+            return outDto;
+        }
+        if(inDto.getDeviceId() == null || "".equals(inDto.getDeviceId())){
+            outDto.setCode(ResultCode.NULL_DEVICE_ID);
+            logger.debug("[同步上传失败]：设备ID不可为空");
+            return outDto;
+        }
+        if(inDto.getVersion() == null || "".equals(inDto.getVersion())){
+            outDto.setCode(ResultCode.NULL_DEVICE_ID);
+            logger.debug("[同步上传失败]：版本号不可为空");
+            return outDto;
+        }
+        //入参正确性检测
+        if (CommonMethods.checkMySqlReservedWords(inDto.getUserId())) {
+            outDto.setCode(ResultCode.ERROR_UUID);
+            logger.debug("[同步上传失败]：用户ID类型或格式错误");
+            return outDto;
+        }
+
+        //业务逻辑
+        try {
+
+            int flag = syncService.upload(inDto);
+
+            if (flag == 0) {
+                outDto.setCode(ResultCode.SUCCESS);
+                logger.debug("[同步上传成功]");
+            } else {
+                outDto.setCode(ResultCode.NOT_SYNC);
+                logger.debug("[同步上传成功]：暂无可更新数据");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            logger.error("[同步上传失败]：服务器繁忙");
+        }
+
         return outDto;
-    }*/
+    }
 
     /**
-     * 定时同步(下载)
+     * 同步下载
      * @return
      */
-    /*@RequestMapping(value = "/timing_download", method = RequestMethod.POST)
+    @RequestMapping(value = "/download", method = RequestMethod.POST)
     @ResponseBody
     @AuthCheck
-    public Out timingDownload(@RequestBody BaseInDto inDto) {
+    public Out timingDownload(@RequestBody SyncInDto inDto) {
         Out outDto = new Out();
+        SyncOutDto data;
 
+        //入参检测
+        //非空检测
+        if(inDto.getUserId() == null || "".equals(inDto.getUserId())){
+            outDto.setCode(ResultCode.NULL_UUID);
+            logger.debug("[同步下载失败]：用户ID不可为空");
+            return outDto;
+        }
+        if(inDto.getDeviceId() == null || "".equals(inDto.getDeviceId())){
+            outDto.setCode(ResultCode.NULL_DEVICE_ID);
+            logger.debug("[同步下载失败]：设备ID不可为空");
+            return outDto;
+        }
+        if(inDto.getVersion() == null || "".equals(inDto.getVersion())){
+            outDto.setCode(ResultCode.NULL_DEVICE_ID);
+            logger.debug("[同步下载失败]：版本号不可为空");
+            return outDto;
+        }
+        //入参正确性检测
+        if (CommonMethods.checkMySqlReservedWords(inDto.getUserId())) {
+            outDto.setCode(ResultCode.ERROR_UUID);
+            logger.debug("[同步下载失败]：用户ID类型或格式错误");
+            return outDto;
+        }
+
+        //业务逻辑
+        try {
+            data = syncService.timingSync(inDto);
+
+            if (data != null) {
+                outDto.setData(data);
+                outDto.setCode(ResultCode.SUCCESS);
+                logger.debug("[同步下载成功]");
+            } else {
+                outDto.setCode(ResultCode.NOT_SYNC);
+                logger.debug("[同步下载成功]：暂无可更新数据");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            logger.error("[同步下载失败]：服务器繁忙");
+        }
         return outDto;
-    }*/
+    }
 
 }

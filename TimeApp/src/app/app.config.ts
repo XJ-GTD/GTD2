@@ -10,7 +10,7 @@ export class AppConfig {
   // private static REQUEST_URL: string = "https://www.guobaa.com/gtd";
   // private static REQUEST_URL: string = "http://192.168.0.176:8080/gtd";//连接本地数据库
   // private static REQUEST_URL: string = "http://192.168.99.31:8080/gtd";//连接本地数据库
-  //private static REQUEST_URL: UrlEntity = new UrlEntity("http://192.168.0.176:8080/gtd",false);//连接本地数据库
+  // private static REQUEST_URL: UrlEntity = new UrlEntity("http://192.168.99.24:8080/gtd",false);//连接本地数据库
    private static REQUEST_URL: UrlEntity = new UrlEntity("https://www.guobaa.com/gtd",false);
 
   /* RabbitMq WebSocket */

@@ -253,6 +253,80 @@ public class SyncServiceImpl implements ISyncService {
     }
 
     /**
+     * 同步上传
+     *
+     * @param inDto
+     * @return
+     */
+    @Override
+    public int upload(SyncInDto inDto) {
+
+        List<SyncDataDto> syncDataList = inDto.getSyncDataList();
+        String userId = inDto.getUserId();
+        String deviceId = inDto.getDeviceId();
+        String version = inDto.getVersion();
+        String uploadVersion = BaseUtil.getVersion();
+        logger.debug("本次上传数据版本 [" + version + "] | 本次更新版本库数据版本 [" + uploadVersion + "]");
+
+        if (syncDataList != null && syncDataList.size() > 0) {      //上传数据
+            logger.debug("=========== 上传数据开始 ===========");
+            logger.debug("=========== 上传数据量为：" + syncDataList.size() + " ===========");
+            logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] | 更新版本号[" + uploadVersion + "]：开始上传数据");
+
+            upLoadData(syncDataList, userId, version, deviceId, uploadVersion);
+
+            logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] 上传数据成功 ");
+            logger.debug("=========== 上传数据结束 ===========");
+        } else {
+            logger.debug("=========== [本次无上传更新] ===========");
+            return 1;
+        }
+
+        return 0;
+    }
+
+    /**
+     * 同步下载
+     *
+     * @param inDto
+     * @return
+     */
+    @Override
+    public SyncOutDto download(SyncInDto inDto) {
+        SyncOutDto outDto = new SyncOutDto();
+        List<SyncDataDto> downLoadDataList;
+
+        String userId = inDto.getUserId();
+        String deviceId = inDto.getDeviceId();
+        String version = inDto.getVersion();
+        String downloadSyncVersion = findLatestVersion(userId);
+        logger.debug("本地数据版本号:[" + version + "] | 服务端版本库最新版本号:[" + downloadSyncVersion + "]");
+
+        if (!downloadSyncVersion.equals("") && !version.equals(downloadSyncVersion)) {
+            logger.debug("=========== 下载数据开始 ===========");
+
+            logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] ：开始获取数据");
+
+            downLoadDataList = downLoad(userId, deviceId, version, downloadSyncVersion);
+
+            if (downLoadDataList != null) {
+                logger.debug("获取最新数据 最新版本号：["+ downloadSyncVersion + "] | 本次更新数据量 = " + downLoadDataList.size());
+                outDto.setVersion(downloadSyncVersion);
+                outDto.setUserDataList(downLoadDataList);
+            } else {
+                logger.debug("下载数据失败：服务器暂无该账号数据!");
+                return null;
+            }
+
+            logger.debug("=========== 下载数据结束 ===========");
+        } else {
+            logger.debug("=========== [本地数据无需下载更新] ===========");
+        }
+
+        return outDto;
+    }
+
+    /**
      * 上传的数据
      * @param syncDataList
      * @param userId

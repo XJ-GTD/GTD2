@@ -218,7 +218,7 @@ public class IntentServiceImpl implements IIntentService {
                 for (Slot slot: nod.getSlots()) {
                     switch (slot.getName()) {
                         case "time":
-                            String[] timeList = JSONObject.parseObject(slot.getNormValue()).getString("datetime").split("/");;
+                            String[] timeList = JSONObject.parseObject(slot.getNormValue()).getString("suggestDatetime").split("/");;
                             data.setSt(timeList[0]);
                             if (timeList.length > 1) {
                                 data.setEt(timeList[1]);
