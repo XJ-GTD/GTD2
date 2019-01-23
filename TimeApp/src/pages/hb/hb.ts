@@ -35,45 +35,6 @@ declare var cordova: any;
       <ion-content> 
         <ion-list class="yyWarp">
           
-          <div col-10 class="cc1" [hidden]="true">
-            <div class="cc2">
-              <div style="padding:10px;">
-                <img class="cc3" src="./assets/imgs/headImg.jpg">
-                <div class="cc4">名称</div>
-              </div>
-              <div style="padding:10px;">
-                <div class="cc3">图片</div>
-                <div class="cc4">名称</div>
-              </div>
-              <div style="padding:10px;">
-                <div class="cc3">图片</div>
-                <div class="cc4"></div>
-              </div>
-            </div>
-            <div class="cc2" padding>
-              <div style="border-radius: 5px;">
-                <button class="cc5">
-                  <div float-right class="cc6">
-                    <div class="cc7"></div>
-                  </div>
-                  <div float-right  style="font-size: 15px;padding: 3px;">标签</div>
-                </button>
-              </div>
-              <div style="padding-left: 10px" >
-                <div style="font-size: 19px;padding-bottom: 10px">中午和杨洋在星巴克见面</div>
-                <div>
-                  <div style="border-radius: 5px;border:1px solid #999999;color:#999999;width: fit-content;padding: 6px">14:00AM</div>
-                </div>
-              </div>
-            </div>
-            <div class="cc8">
-              <button class="cc9" style="color: #666666;">取消</button>
-              <button class="cc9" style="color: #222222;">发送</button>
-            </div>
-          </div>
-          
-          
-          
           <ion-item  *ngFor="let message of messages"  on-hold="onMessageHold($event, $index, message)"> 
             <!-- 判断消息是用户 --> 
             <div *ngIf="U1 == message.tt" class="userTalk animated bounceIn"> 
@@ -97,14 +58,43 @@ declare var cordova: any;
               </ion-list> 
             </ion-card> 
             <!-- 判断消息是数据：新增日程 --> 
-            <div *ngIf="S4 == message.tt" class="userTalk animated bounceIn"> 
-                  <h2>{{message.sc.sd}}</h2> 
-                  <p> 
-                    <ion-badge>{{message.sc.sN}}</ion-badge> 
-                  </p> 
-                <ion-item *ngFor="let ru of message.sc.rus"> 
-                  <p>{{ru.ran}}</p> 
-                </ion-item> 
+            <div *ngIf="S4 == message.tt" class="userTalk animated bounceIn">
+              <div col-10 class="cc1" >
+                <div class="cc2">
+                  <div style="padding:10px;">
+                    <img class="cc3" src="./assets/imgs/headImg.jpg">
+                    <div class="cc4">名称</div>
+                  </div>
+                  <div style="padding:10px;">
+                    <div class="cc3">图片</div>
+                    <div class="cc4">名称</div>
+                  </div>
+                  <div style="padding:10px;">
+                    <div class="cc3">图片</div>
+                    <div class="cc4"></div>
+                  </div>
+                </div>
+                <div class="cc2" padding>
+                  <div style="border-radius: 5px;">
+                    <button class="cc5">
+                      <div float-right class="cc6">
+                        <div class="cc7"></div>
+                      </div>
+                      <div float-right  style="font-size: 15px;padding: 3px;">标签</div>
+                    </button>
+                  </div>
+                  <div style="padding-left: 10px" >
+                    <div style="font-size: 19px;padding-bottom: 10px">中午和杨洋在星巴克见面</div>
+                    <div>
+                      <div style="border-radius: 5px;border:1px solid #999999;color:#999999;width: fit-content;padding: 6px">14:00AM</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="cc8">
+                  <button class="cc9" style="color: #666666;">取消</button>
+                  <button class="cc9" style="color: #222222;">发送</button>
+                </div>
+              </div>
             </div> 
           </ion-item> 
         </ion-list> 
@@ -285,10 +275,20 @@ export class HbPage {
       // textU = $event;
       // this.messages.unshift(textU);
     } else if ($event.tt == DataConfig.S1) {
-      textX = $event;
+      textX.tt = $event.tt;
+      textX.at = $event.at;
       this.messages.unshift(textX);
       this.xiaojiSpeech.speakText(textX.at, success => {});
-    } else if ($event.tt == DataConfig.S5) {
+    } else if ($event.tt == DataConfig.S4) {
+      textX.tt = DataConfig.S1;
+      textX.at = $event.at;
+      this.messages.unshift(textX);
+      this.xiaojiSpeech.speakText(textX.at, success => {
+        data.tt = $event.tt;
+        data.sc = $event.sc;
+        this.messages.unshift(data);
+      });
+    }else if ($event.tt == DataConfig.S5) {
       textX.tt = DataConfig.S1;
       textX.at = $event.at;
       this.messages.unshift(textX);
