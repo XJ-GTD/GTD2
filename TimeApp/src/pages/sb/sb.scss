@@ -20,7 +20,7 @@ page-sb {
 
 
   .div-add-border{
-    border: 0.5px dotted #ccc;
+    border: 0.5px solid #ccc;
   }
   .button-border{
     border-radius: 50%;
@@ -36,8 +36,8 @@ page-sb {
   }
 
   .item-ios>img{
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
   }
 
   .pop-css{
@@ -141,8 +141,8 @@ page-sb {
   }
 
   ion-thumbnail img{
-    width: 45px;
-    height: 45px;
+    width: 4.5rem !important;
+    height: 4.5rem !important;
   }
 
   .height56{
