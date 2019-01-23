@@ -157,7 +157,7 @@ export class HbPage {
 
     console.log('ionViewDidLoad HbPage');
     // this.Hb01Page.loadScene();
-    this.initWakeUp();
+    // this.initWakeUp();
 
   }
 
