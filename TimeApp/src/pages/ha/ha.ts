@@ -212,6 +212,8 @@ export class HaPage {
 
     this.ha01Page.showEvents($event);
 
+    // this.ion2calendar.flashDay('2019-02-28');
+
 
 
   }

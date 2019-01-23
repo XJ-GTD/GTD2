@@ -274,7 +274,14 @@ export class CalendarService {
         if(data.code==0){
           for(let i=0;i<data.bs.length;i++){
             let mbs=data.bs[i];
-            let res:any={};
+            let res:DayConfig=new class implements DayConfig {
+              cssClass: string;
+              date: Date;
+              disable: boolean;
+              marked: boolean;
+              subTitle: string;
+              title: string;
+            };
             res.date=mbs.date;
             //事少
             if(!mbs.im){
@@ -296,19 +303,29 @@ export class CalendarService {
     );
   }
 
-  // findDayEventForDay(day):Promise<DayConfig> {
-  //   return new Promise<DayConfig>((resolve, reject) =>
-  //
-  //     this.work.getOd(day).then(data=>{
-  //       if(data && data.slc && data.slc.length>0){
-  //         for(let i=0;i<data.slc.length;i++){
-  //         //  this.scheduleList.push(data.slc[i]);
-  //         }
-  //       }
-  //     })
-  //
-  //   );
-  // }
+  findDayEventForDay(day):Promise<DayConfig> {
+    return new Promise<DayConfig>((resolve, reject) =>
+
+      this.work.getOd(day).then(data=>{
+        // if(data && data.slc && data.slc.length>0){
+        //   for(let i=0;i<data.slc.length;i++){
+        //   // this.scheduleList.push(data.slc[i]);
+        //   }
+        // }
+        let res:DayConfig=new class implements DayConfig {
+          cssClass: string;
+          date: Date;
+          disable: boolean;
+          marked: boolean;
+          subTitle: string;
+          title: string;
+        };
+        res.date=day;
+        res.cssClass = `hassometing animated bounceIn delay-1s slow`;
+        resolve(res);
+      })
+    );
+  }
 
 
 }
