@@ -173,6 +173,7 @@ export class DwMqService {
         aiui.tt = DataConfig.S1;
         aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "10");
       }
+      this.xiaojiSpeech.speakText('发现条要'+ data.rcL.length +'删除的日程', success => {});
       this.dwResultSendToPage(aiui, mqDate.sk);
     }).catch(e=>{
       console.log("xfScheduleDelete:" + e.toString());
