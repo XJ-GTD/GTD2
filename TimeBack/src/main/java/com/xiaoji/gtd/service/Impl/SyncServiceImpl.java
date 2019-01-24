@@ -178,6 +178,7 @@ public class SyncServiceImpl implements ISyncService {
             dataList = downLoad(userId, deviceId, null, null);
         } else {
             logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] ：暂无数据，无需同步");
+            version = BaseUtil.getVersion();
         }
 
 
@@ -214,8 +215,8 @@ public class SyncServiceImpl implements ISyncService {
 
         if (syncDataList != null && syncDataList.size() > 0) {      //需要上传数据
             logger.debug("=========== 上传数据开始 ===========");
-            logger.debug("=========== 上传数据量为：" + syncDataList.size() + " ===========");
-            logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] | 上传版本号[" + uploadVersion + "]：开始上传数据");
+//            logger.debug("=========== 上传数据量为：" + syncDataList.size() + " ===========");
+            logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] | 本次上传版本号[" + uploadVersion + "]：开始上传数据");
 
             upLoadData(syncDataList, userId, version, deviceId, uploadVersion);
 
@@ -336,6 +337,7 @@ public class SyncServiceImpl implements ISyncService {
         List<GtdSyncVersionEntity> syncVersion = new ArrayList<>();
         List<GtdSyncVersionEntity> latestDataList = gtdSyncVersionRepository.compareToHighVersion(userId, version);
 
+        int count = 0;
         String tableName = "";
         List<SyncTableData> dataList;
 
@@ -343,6 +345,7 @@ public class SyncServiceImpl implements ISyncService {
 
             tableName = sdd.getTableName();
             dataList = takeOutData(latestDataList, tableName, sdd.getDataList());
+            count += dataList.size();
             switch (tableName) {
                 case "GTD_B":       //联系人表
                     logger.debug("======== 联系人表上传更新开始 =======");
@@ -557,7 +560,7 @@ public class SyncServiceImpl implements ISyncService {
 
         }
 
-        logger.debug("保存本次更新数据记录, 版本号["+ uploadVersion + "],共" + syncVersion.size() + "条");
+        logger.debug("保存本次更新数据记录, 版本号["+ uploadVersion + "],共" + count + "条");
         gtdSyncVersionRepository.saveAll(syncVersion);
 
         return syncVersion;

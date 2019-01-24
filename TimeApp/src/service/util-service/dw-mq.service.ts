@@ -44,6 +44,7 @@ export class DwMqService {
 
       switch (mqDate.sk) {
         case SkillConfig.XF_NMT: //确认
+
           break;
         case SkillConfig.XF_NMC: //取消
           break;
@@ -95,6 +96,22 @@ export class DwMqService {
   }
 
   /*============  处理方法 start =================*/
+
+  private trueDeal(mqDate: WsModel) {
+    let aiui = new AiuiModel();
+    aiui.tt = DataConfig.T1;
+    // aiui.at = WsEnumModel[mqDate.sk] + UtilService.randInt(0,10);
+    aiui.at = mqDate.at;
+    this.dwResultSendToPage(aiui, mqDate.sk);
+  }
+
+  private falseDeal(mqDate: WsModel) {
+    let aiui = new AiuiModel();
+    aiui.tt = DataConfig.F1;
+    // aiui.at = WsEnumModel[mqDate.sk] + UtilService.randInt(0,10);
+    aiui.at = mqDate.at;
+    this.dwResultSendToPage(aiui, mqDate.sk);
+  }
 
   /**
    * 语音：日程创建
@@ -172,16 +189,9 @@ export class DwMqService {
         aiui.tt = DataConfig.S1;
         aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "10");
       }
-      this.xiaojiSpeech.speakText('发现条要'+ data.rcL.length +'删除的日程', success => {});
+
       this.dwResultSendToPage(aiui, mqDate.sk);
     })
-      .then(data=>{
-        this.work.batchDel(aiui.scL,0).then(data=>{
-          this.xiaojiSpeech.speakText('已删除'+ data.data +'条日程', success => {});
-        }).catch(e=>{
-
-        })
-      })
       .catch(e=>{
       console.log("xfScheduleDelete:" + e.toString());
     });

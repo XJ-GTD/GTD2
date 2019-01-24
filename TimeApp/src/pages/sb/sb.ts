@@ -144,15 +144,15 @@ export class SbPage {
   // selectLb:Array<LbModel>;
 
   lbs: Array<LbModel>;
-  lb:LbModel;
-  lbtmp:LbModel;
-  repeatTypes:Array<ZtdModel>;
-  type: any ;
-  title:any;
-  startTime:any;//开始时间
-  repeatType:any;//重复类型
-  naoling:Array<ZtdModel>;
-  remarks:any;//备注
+  lb: LbModel = new LbModel();
+  lbtmp: LbModel = new LbModel();
+  repeatTypes: Array<ZtdModel>;
+  type: any = "";
+  title: any = "";
+  startTime: any = "";//开始时间
+  repeatType: any = "";//重复类型
+  naoling: Array<ZtdModel>;
+  remarks: any = "";//备注
 
   isShowLb:any = false;
   isShowJh:any = false;
@@ -206,7 +206,7 @@ export class SbPage {
   }
 
   ionViewWillEnter(){
-    console.log("ionViewWillEnter SbPage ::")
+    console.log("ionViewWillEnter SbPage :");
     this.startTime = this.navParams.get("dateStr");
     console.log(this.startTime);
     this.init();
@@ -264,8 +264,8 @@ export class SbPage {
       if(data.code == 0){
         console.log("添加日程成功");
         // this.navCtrl.push('HzPage')
-        this.events.publish("flashDay",{day:moment(new Date(this.startTime).getTime()).format("YYYY-MM-DD")})
-        this.utilService.alert("日程创建成功，已发布");
+        this.events.publish("flashDay",{day:moment(new Date(this.startTime).getTime()).format("YYYY-MM-DD")});
+        this.utilService.alert("日程创建成功");
         this.navCtrl.pop();
       }else{
         console.log("添加日程失败");
