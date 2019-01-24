@@ -189,7 +189,7 @@ export class WorkSqlite{
         //查询Message
         return this.msSqlite.getMonthMs(ym);
       }).then(data=>{
-        if(data&&data.rows&&data.rows.length){
+        if(data&&data.rows&&data.rows.length>0){
           //判断是否有消息
           for(let j=0;j<=data.rows.length;j++){
             let bool = true; //判断当前日是否存在
