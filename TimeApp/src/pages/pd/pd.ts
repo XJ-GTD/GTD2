@@ -15,44 +15,44 @@ import {PageConfig} from "../../app/page.config";
 @IonicPage()
 @Component({
   selector: 'page-pd',
-  template:'<ion-header>' +
-  '  <ion-navbar >' +
-  '    <ion-title *ngIf="g != undefined">{{g.rN}}</ion-title>' +
-  '    <ion-buttons right margin-right>' +
-  '      <button ion-button icon-only (click)="addQcy()">' +
-  '        <ion-icon name="add"></ion-icon>' +
-  '      </button>' +
-  '    </ion-buttons>' +
-  '  </ion-navbar>' +
-  '</ion-header>' +
-  '<ion-content padding class="page-backgroud-color">' +
-  '  <ion-list>' +
-  '    <ion-item-sliding *ngFor="let u of us">' +
-  '      <ion-item (click)="toMemberDetail(u)">' +
-  '        <ion-avatar item-start >' +
-  '          <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">' +
-  '        </ion-avatar>' +
-  '        <ion-label>' +
-  '          <p style="color: #000;font-size: 1.7rem">{{u.ran}}</p>' +
-  '          <p></p>' +
-  '        </ion-label>' +
-  '      </ion-item>' +
-  '      <ion-item-options side="right">' +
-  '        <button ion-button color="danger" (click)="delete(u)">删除</button>' +
-  '      </ion-item-options>' +
-  '    </ion-item-sliding>' +
-  '  </ion-list>' +
-  '</ion-content>',
+  template:`<ion-header> 
+    <ion-navbar > 
+      <ion-title *ngIf="g != undefined">{{g.rN}}</ion-title> 
+      <ion-buttons right style="padding-right: 10px;"> 
+        <button ion-button icon-only (click)="addQcy()"> 
+          <ion-icon name="add"></ion-icon> 
+        </button> 
+      </ion-buttons> 
+    </ion-navbar> 
+  </ion-header> 
+  <ion-content padding class="page-backgroud-color"> 
+    <ion-list> 
+      <ion-item-sliding *ngFor="let u of us"> 
+        <ion-item (click)="toMemberDetail(u)"> 
+          <ion-avatar item-start > 
+            <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg"> 
+          </ion-avatar> 
+          <ion-label> 
+            <p style="color: #000;font-size: 1.7rem">{{u.ran}}</p> 
+            <p></p> 
+          </ion-label> 
+        </ion-item> 
+        <ion-item-options side="right"> 
+          <button ion-button color="danger" (click)="delete(u)">删除</button> 
+        </ion-item-options> 
+      </ion-item-sliding> 
+    </ion-list> 
+  </ion-content>`,
 })
 export class PdPage {
 
   @ViewChild(Navbar) navBar: Navbar;
 
-  uo:UEntity;
-  g:RuModel;
-  us:Array<RuModel>;
+  uo: UEntity;
+  g: RuModel;
+  us: Array<RuModel>;
 
-  qcy:Array<RuModel>;
+  qcy: Array<RuModel>;
 
 
   constructor(public navCtrl: NavController,
@@ -68,7 +68,7 @@ export class PdPage {
     this.g = this.navParams.get('g');
   }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.init();
   }
 
@@ -78,25 +78,25 @@ export class PdPage {
   };
 
 
-  init(){
+  init() {
     this.queryGAll();
   }
 
-  toMemberDetail(u){
+  toMemberDetail(u) {
     console.log("PdPage跳转PbPage")
-    this.navCtrl.push("PbPage",{u:u});
+    this.navCtrl.push("PbPage", {u: u});
   }
 
-  goBack(){
+  goBack() {
     this.navCtrl.pop()
   }
 
-  queryGAll(){
-    this.relmemService.getRgus(this.g.id).then(data=>{
-      if(data.code == 0){
+  queryGAll() {
+    this.relmemService.getRgus(this.g.id).then(data => {
+      if (data.code == 0) {
         console.log("查询群组成员成功")
         this.us = data.us;
-      }else{
+      } else {
         console.log("查询群组成员失败")
       }
     }).catch(reason => {
@@ -104,12 +104,12 @@ export class PdPage {
     })
   }
 
-  delete(u){
-    this.relmemService.delRgu(this.g.id,u.rugId).then(data=>{
-      if(data.code == 0 ){
+  delete(u) {
+    this.relmemService.delRgu(this.g.id, u.rugId).then(data => {
+      if (data.code == 0) {
         console.log("删除群组成员成功")
         this.queryGAll();
-      }else{
+      } else {
         console.log("删除群组成员失败")
       }
     }).catch(reason => {
@@ -117,8 +117,7 @@ export class PdPage {
     })
   }
 
-  getData = (data) =>
-  {
+  getData = (data) => {
     // return new Promise((resolve, reject) => {
     //   console.log(data);
     //   this.qcy = data;
@@ -126,13 +125,13 @@ export class PdPage {
     // });
   };
 
-  addQcy(){
-    let modal = this.modalCtl.create(PageConfig.PG_PAGE,{callback:this.getData,sel:this.us,g:this.g});
-    modal.onDidDismiss((data)=>{
-      console.log(data===this.us);
+  addQcy() {
+    let modal = this.modalCtl.create(PageConfig.PG_PAGE, {callback: this.getData, sel: this.us, g: this.g});
+    modal.onDidDismiss((data) => {
+      console.log(data === this.us);
 
       console.log(JSON.stringify(data));
-      this.relmemService.addRgus(this.g.id,data).then(data=>{
+      this.relmemService.addRgus(this.g.id, data).then(data => {
         console.log("添加成功")
         this.queryGAll();
 

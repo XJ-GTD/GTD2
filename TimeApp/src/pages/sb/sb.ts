@@ -176,6 +176,8 @@ export class SbPage {
   jh:JhModel;
   jhtmp:JhModel;
 
+  event:any;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public loadingCtrl: LoadingController,
@@ -208,6 +210,7 @@ export class SbPage {
   ionViewWillEnter(){
     console.log("ionViewWillEnter SbPage ::")
     this.startTime = this.navParams.get("dateStr");
+    this.event = this.navParams.get("event");
     console.log(this.startTime);
     this.init();
   }
@@ -265,7 +268,7 @@ export class SbPage {
       if(data.code == 0){
         console.log("添加日程成功");
         // this.navCtrl.push('HzPage')
-        this.events.publish("flashDay",{day:moment(new Date(this.startTime).getTime()).format("YYYY-MM-DD")})
+        this.events.publish("flashDay",{day:moment(new Date(this.startTime).getTime()).format("YYYY-MM-DD"),event:this.event});
         this.utilService.alert("日程创建成功，已发布");
         this.navCtrl.pop();
       }else{

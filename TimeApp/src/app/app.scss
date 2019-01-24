@@ -85,3 +85,16 @@ p{
 .input-cover{
   position: static;
 }
+
+.back-button.show-back-button {
+  padding-left: 10px;
+}
+
+.alert-ios .alert-button{
+  border-top: 1px solid #dbdbdf;
+  border-right: 1px solid #dbdbdf;
+}
+
+.alert-ios .alert-radio-group, .alert-ios .alert-checkbox-group{
+  border-top: 1px solid #dbdbdf;
+}

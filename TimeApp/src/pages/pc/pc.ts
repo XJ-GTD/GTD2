@@ -18,33 +18,33 @@ import {UtilService} from "../../service/util-service/util.service";
 @IonicPage()
 @Component({
   selector: 'page-pc',
-  template:'<ion-header>' +
-  '  <ion-navbar>' +
-  '    <ion-title></ion-title>' +
-  '  </ion-navbar>' +
-  '</ion-header>' +
-  '<ion-content padding>' +
-  '  <ion-item style="height: 40%" class="flag" *ngIf="ru">' +
-  '    <ion-avatar >' +
-  '      <img [src]="ru.hiu" style="width: 60px;height: 60px ;margin: 0 auto">' +
-  '    </ion-avatar>' +
-  '    <ion-title style="margin: 0 auto">{{ru.rN}}</ion-title>' +
-  '  </ion-item>' +
-  '  <ion-item class="flag" *ngIf="ru">' +
-  '    <ion-label>备注</ion-label>' +
-  '    <ion-input type="text" text-end placeholder="{{ru.rC}}" [(ngModel)]="ru.ran"></ion-input>' +
-  '  </ion-item>' +
-  '  <ion-item *ngIf="code == 1 || code == 2" class="flag">' +
-  '    <ion-label>接收该用户的推送</ion-label>' +
-  '    <ion-checkbox item-end [(ngModel)]="ru.rF"></ion-checkbox>' +
-  '  </ion-item>' +
-  '  <ion-label></ion-label>' +
-  '  <ion-label></ion-label>' +
-  '  <ion-label></ion-label>' +
-  '  <ion-buttons *ngIf="code == 3 || code == 2" col-10  style="margin: 0 auto">' +
-  '    <button ion-button round full (click)="submit()" >确定</button>' +
-  '  </ion-buttons>' +
-  '</ion-content>',
+  template:`<ion-header> 
+    <ion-navbar> 
+      <ion-title></ion-title> 
+    </ion-navbar> 
+  </ion-header> 
+  <ion-content padding> 
+    <ion-item style="height: 40%" class="flag" *ngIf="ru"> 
+      <ion-avatar > 
+        <img [src]="ru.hiu" style="width: 60px;height: 60px ;margin: 0 auto"> 
+      </ion-avatar> 
+      <ion-title style="margin: 0 auto">{{ru.rN}}</ion-title> 
+    </ion-item> 
+    <ion-item class="flag" *ngIf="ru"> 
+      <ion-label>备注</ion-label> 
+      <ion-input type="text" text-end placeholder="{{ru.rC}}" [(ngModel)]="ru.ran"></ion-input> 
+    </ion-item> 
+    <ion-item *ngIf="code == 1 || code == 2" class="flag"> 
+      <ion-label>接收该用户的推送</ion-label> 
+      <ion-checkbox item-end [(ngModel)]="ru.rF"></ion-checkbox> 
+    </ion-item> 
+    <ion-label></ion-label> 
+    <ion-label></ion-label> 
+    <ion-label></ion-label> 
+    <ion-buttons *ngIf="code == 3 || code == 2" col-10  style="margin: 0 auto"> 
+      <button ion-button round full (click)="submit()" >确定</button> 
+    </ion-buttons> 
+  </ion-content>`,
 })
 export class PcPage {
 
@@ -97,6 +97,9 @@ export class PcPage {
       this.ru.rF = "1"
     }else{
       this.ru.rF = "0"
+    }
+    if(this.ru.hiu == null){
+      this.ru.hiu = DataConfig.defaultHeadImg;
     }
     this.relme.aru(this.uo.uI,this.ru.rI,this.ru.ran,this.ru.rN,  this.ru.rC, '0',this.ru.hiu,this.ru.rF,null).then(data => {
       if(data.code == 0){

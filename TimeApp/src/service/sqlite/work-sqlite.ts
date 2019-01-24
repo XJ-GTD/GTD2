@@ -15,6 +15,7 @@ import {SyncEntity} from "../../entity/sync.entity";
 import {ReadlocalService} from "../readlocal.service";
 import * as moment from "moment";
 import {RcoModel} from "../../model/out/rco.model";
+import {SyncSqlite} from "./sync-sqlite";
 
 
 /**
@@ -28,6 +29,7 @@ export class WorkSqlite{
   constructor( private baseSqlite: BaseSqlite,
             private msSqlite:MsSqlite,
             private readlocal:ReadlocalService,
+            private sync:SyncSqlite,
             private util:UtilService) {
 
   }
@@ -714,7 +716,7 @@ export class WorkSqlite{
 
     sync.action= ac;
     sync.tableName = tn;
-    return this.baseSqlite.save(sync);
+    return this.sync.save(sync.isq);
   }
   /**
    * 服务器定时同步日程表
@@ -733,7 +735,7 @@ export class WorkSqlite{
     sync.tableG = moment(en.ed).format('YYYY-MM-DD HH:mm');
     sync.action= ac;
     sync.tableName = DataConfig.GTD_C;
-    return this.baseSqlite.save(sync);
+    return this.sync.save(sync.isq);
   }
 
   /**
@@ -756,6 +758,6 @@ export class WorkSqlite{
       sync.tableName = DataConfig.GTD_D;
       sql+=sync.isq;
     }
-    return this.baseSqlite.importSqlToDb(sql);
+    return this.sync.save(sql);
   }
 }
