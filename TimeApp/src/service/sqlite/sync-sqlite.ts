@@ -98,6 +98,9 @@ export class SyncSqlite {
           bv=data.rows.item(0).bv;
           fv=data.rows.item(0).fv;
         }
+        if(fv==''){
+          fv='0';
+        }
         console.log("============= 实时调用上传接口 查询版本结果：" + JSON.stringify(data));
         return this.getsyL(bv);
       }).then(data=>{
@@ -119,12 +122,10 @@ export class SyncSqlite {
           }
         }
         console.log("============= 实时调用上传接口发送Result请求参数：" + JSON.stringify(sdl));
-        return this.syncR.syncTime(DataConfig.uInfo.uI,this.util.getUuid(),fv,sdl)
+        return this.syncR.syncUpload(DataConfig.uInfo.uI,this.util.getDeviceId(),fv,sdl)
       }).then(data=>{
-        if (data && data.code == 0 && data.data.userDataList.length > 0) {
-          fv = data.data.version;
-        }
         sv.bv = bv;
+        sv.fv = fv;
         console.log("============= 实时调用上传接口发送Result请求结束 END：" + JSON.stringify(data));
         return this.baseSqlite.update(sv);
       }).then(data=>{

@@ -44,4 +44,17 @@ export class SyncRestful{
       syncDataList:sdl
     })
   }
+
+  /**
+   * 定时更新接口
+   * @returns {Promise<any>}
+   */
+  syncUpload(uI:string,dI:string,vs:string,sdl:any):Promise<any> {
+    return this.bs.post(AppConfig.UPLOAD_TIME_URL, {
+      userId:uI,
+      deviceId: dI,
+      version:vs,
+      syncDataList:sdl
+    })
+  }
 }

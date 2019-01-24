@@ -254,7 +254,7 @@ export class SyncService {
             sdl.push(sd);
           }
         }
-        return this.syncR.syncTime(DataConfig.uInfo.uI,this.util.getUuid(),fv,sdl)
+        return this.syncR.syncTime(DataConfig.uInfo.uI,this.util.getDeviceId(),fv,sdl)
       }).then(data=>{
         if (data && data.code == 0 && data.data.userDataList.length > 0) {
           fv = data.data.version;
