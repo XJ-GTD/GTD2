@@ -9,6 +9,7 @@ import { DwEmitService } from "../../service/util-service/dw-emit.service";
 import { DataConfig } from "../../app/data.config";
 import { WsEnumModel } from "../../model/ws/ws.enum.model";
 import { NetworkService } from "../../service/util-service/network.service";
+import {Hb01Page} from "../hb01/hb01";
 
 declare var cordova: any;
 
@@ -114,7 +115,7 @@ declare var cordova: any;
               <ion-icon name="create"></ion-icon> 
             </button> 
           </ion-buttons> 
-          <img  src="./assets/imgs/yuying.png"   (click)="startXiaoJi()" class="animated bounceIn"/> 
+          <img  src="./assets/imgs/yuying.png"   (click)="startXiaoJi()" /> 
         </ion-toolbar> 
         <ng-template #xjInput> 
           <ion-toolbar style="margin-top: 18px" class="animated bounceIn faster"> 
@@ -131,18 +132,17 @@ declare var cordova: any;
             </ion-buttons> 
           </ion-toolbar> 
         </ng-template> 
-        <!--<page-hb01></page-hb01>--> 
+        <page-hb01></page-hb01>
       </ion-footer> 
     </div>`,
 })
 export class HbPage {
-  // @ViewChild(Hb01Page) Hb01Page:Hb01Page;
+  @ViewChild(Hb01Page) hb01Page:Hb01Page;
   @ViewChild(Content) content: Content;
 
 
   data: any;
   modeFlag: boolean = true;   //判断助手模式 true语音false手输
-  initFlag: boolean = false;   //页面初始化
 
   U1: string = DataConfig.U1;
   S1: string = DataConfig.S1;
@@ -186,7 +186,8 @@ export class HbPage {
     //this.initWakeUp();
 
     console.log('ionViewDidLoad HbPage');
-    // this.Hb01Page.loadScene();
+     this.hb01Page.loadScene();
+    this.hb01Page.setDrawType(1);
     // this.initWakeUp();
 
   }
@@ -225,7 +226,10 @@ export class HbPage {
 
     //切换手动输入模式
     this.modeFlag = !this.modeFlag;
-    this.initFlag = false;
+    if (this.modeFlag)
+      this.hb01Page.setDrawType(1);
+    else
+      this.hb01Page.setDrawType(0);
     return;
   }
 
@@ -236,10 +240,16 @@ export class HbPage {
       this.xiaojiSpeech.stopSpeak();
       return;
     }
+    this.hb01Page.setDrawType(2);
     this.xiaojiSpeech.listenAudio(rs => {
       rs = rs.replace("[asr.partial]", "");
       this.speechInputHanding(rs);
       this.xiaojiFeekback.audioSnare();
+
+      this.hb01Page.setDrawType(0);
+      setTimeout(()=>{
+        this.hb01Page.setDrawType(1);
+      },1000);
     });
   }
 
