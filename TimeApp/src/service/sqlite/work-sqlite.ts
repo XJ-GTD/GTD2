@@ -139,7 +139,7 @@ export class WorkSqlite{
       // or gc.uI= "'+ui+'"
       let sql= this.getRcSql() +
         ' where (gd.uI = "'+ui+ '" or gc.uI= "'+ui+'") and ' +
-        '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'")';
+        '(substr(gc.sd,1,7) <= "'+ym+'" and substr(gc.ed,1,7)>= "'+ym+'")';
       let bs = new BsModel();
       let resL = new Array<any>();
       let rcL = new Array<RcModel>();
