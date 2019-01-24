@@ -5,8 +5,8 @@
 //群组中间表
 export class RguModel {
 
-  private _bi: string=null;   //授权表主键ID
-  private _bmi:string=null; //授权表关系人主键ID
+  private _bi: string='';   //授权表主键ID
+  private _bmi:string=''; //授权表关系人主键ID
 
   get bi(): string {
     return this._bi;

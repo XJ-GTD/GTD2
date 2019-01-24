@@ -47,7 +47,7 @@ export class SyncService {
             console.log("-------SyncService initzdlb restful 初始化字典数据及标签表接口返回结果："+JSON.stringify(data))
             base = data
             if(data.code == 0 && data.data.syncDataList.length>0){
-              let sql=''
+              let sql='';
               for(let a=0;a<data.data.syncDataList.length;a++){
                 let res = data.data.syncDataList[a];
                 //字典类型表
@@ -273,6 +273,70 @@ export class SyncService {
         .then(data=>{
         resolve(bs);
       }).catch(e=>{
+        bs.code = ReturnConfig.ERR_CODE;
+        bs.message = ReturnConfig.ERR_MESSAGE;
+        reject(bs);
+      })
+    })
+  }
+
+  /**
+   * 实时上传数据
+   * @param {string} uI
+   * @param {string} dI
+   * @param {string} vs
+   * @param sdl
+   * @returns {Promise<BsModel>}
+   */
+  syncUplaod():Promise<BsModel>{
+    return new Promise((resolve, reject) => {
+      let sql = '';
+      let bs = new BsModel();
+      let sv = new SyvEntity();
+      sv.si=1;
+      let sdl:any;
+      let bv:number=0;
+      let fv='0';
+      console.log("============= 实时调用上传接口 strat ============");
+      this.base.getOne(sv).then(data=>{
+        if(data&&data.rows&&data.rows.length>0){
+          bv=data.rows.item(0).bv;
+          fv=data.rows.item(0).fv;
+        }
+        console.log("============= 实时调用上传接口 查询版本结果：" + JSON.stringify(data));
+        return this.syncS.getsyL(bv);
+      }).then(data=>{
+        bs = data;
+        let sdl = [];
+        if(data && data.rows && data.rows.length>0){
+          bv = data.rows.item(0).id;
+          for(let tn of DataConfig.TABLE_NAMES){
+            let sd:any = {};
+            sd.tableName = tn;
+            sd.dataList=[];
+            for(let i=0;i<data.rows.length;i++){
+              let tb=data.rows.item(i);
+              if(tb.tableName == tn){
+                sd.dataList.push(tb);
+              }
+            }
+            sdl.push(sd);
+          }
+        }
+        console.log("============= 实时调用上传接口发送Result请求参数：" + JSON.stringify(sdl));
+        return this.syncR.syncTime(DataConfig.uInfo.uI,this.util.getUuid(),fv,sdl)
+      }).then(data=>{
+        if (data && data.code == 0 && data.data.userDataList.length > 0) {
+          fv = data.data.version;
+        }
+        sv.bv = bv;
+        console.log("============= 实时调用上传接口发送Result请求结束 END：" + JSON.stringify(data));
+        return this.base.update(sv);
+      }).then(data=>{
+        console.log("============= 实时调用上传更新版本 END：" + JSON.stringify(data));
+        resolve(bs);
+      }).catch(e=>{
+        console.error("============= 实时调用上传错误 ERROR：" + JSON.stringify(e));
         bs.code = ReturnConfig.ERR_CODE;
         bs.message = ReturnConfig.ERR_MESSAGE;
         reject(bs);

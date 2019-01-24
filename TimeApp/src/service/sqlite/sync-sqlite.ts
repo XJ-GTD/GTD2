@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {BaseSqlite} from "./base-sqlite";
 import {FiEntity} from "../../entity/fi.entity";
 import {DataConfig} from "../../app/data.config";
+import {SyncEntity} from "../../entity/sync.entity";
+import {SyncService} from "../sync.service";
 
 /**
  * 字典数据表
@@ -9,7 +11,9 @@ import {DataConfig} from "../../app/data.config";
 @Injectable()
 export class SyncSqlite {
 
-  constructor(private baseSqlite: BaseSqlite) {}
+  constructor(private baseSqlite: BaseSqlite,
+    private sync:SyncService
+  ) {}
 
   /**
    * 获取最大同步表ID
@@ -43,6 +47,26 @@ export class SyncSqlite {
     //计划
     sql=sql+'update GTD_S_Y set tableD="' +DataConfig.uInfo.uI +'" where tableName ="'+  DataConfig.GTD_J_H+'";';
     return sql
+  }
+
+  /**
+   *
+   * @param {SyncEntity} sync
+   * @returns {Promise<any>}
+   */
+  save(sql:string): Promise<any> {
+    return new Promise((resolve, reject) =>{
+      return this.baseSqlite.importSqlToDb(sql).then(data=>{
+        return this.sync.syncUplaod();
+      }).then(data=>{
+        console.log("====== 添加同步表数据结束："+ JSON.stringify(data));
+        console.log("====== 实时上传结束 ========");
+        resolve(data)
+      }).catch(e=>{
+        console.error("====== 添加同步表报错 Error："+JSON.stringify(e));
+        reject(e)
+      })
+    })
   }
 
 }

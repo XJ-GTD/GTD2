@@ -5,9 +5,9 @@
 //闹铃表
 export class ReEntity {
 
-  private _ri: string=null;   //提醒时间UUID
-  private _pi:string=null; //参与人表ID
-  private _rd: string=null;   //日程提醒时间
+  private _ri: string='';   //提醒时间UUID
+  private _pi:string=''; //参与人表ID
+  private _rd: string='';   //日程提醒时间
 
   get ri(): string {
     return this._ri;

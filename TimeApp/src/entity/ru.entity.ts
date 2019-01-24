@@ -13,7 +13,7 @@ export class RuEntity {
   private _rNpy: string=''; //名称拼音
   private _rC: string=''; // 联系方式
   private _rF: string=''; // 授权标识0未授权1授权
-  private _ot:string;//0是未被添加，1是同意，2是拉黑
+  private _ot:string='';//0是未被添加，1是同意，2是拉黑
   private _rel: string=''; // 联系类型0人;1群组
   private _hiu: string=''; // 联系人头像URL
   private _fi: string=''; //联系人发送邀请状态0已发送，1未发送

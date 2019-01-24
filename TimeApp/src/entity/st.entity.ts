@@ -5,10 +5,10 @@
 //系统设置
 export class StEntity {
 
-  private _si: number=null;   //系统设置自增主键ID
-  private _sn:string=null; //系统设置名称
-  private _ss: string=null;//系统设置状态
-  private _st: string=null; //系统设置类型
+  private _si: number;   //系统设置自增主键ID
+  private _sn:string=''; //系统设置名称
+  private _ss: string='';//系统设置状态
+  private _st: string=''; //系统设置类型
   /*
    * 创建表
    * @type {string}
