@@ -485,14 +485,14 @@ export class WorkSqlite{
       'left join GTD_J_H jh on jh.ji = gc.ji ' +
      // 'where gd.uI="'+DataConfig.uInfo.uI+'"';
       'where 1=1';
-    if(ct != null && ct != ""){
+    if(ct && ct != null && ct != ""){
       sql = sql + " and gd.son like '%" + ct +"%'"
     }
-    if(sd != null && sd != ""){
+    if(sd && sd != null && sd != ""){
       let sdl = sd.length;
       sql = sql + " and substr(gc.sd,1,"+sdl+") <= '" + sd +"'";
     }
-    if(ed != null && ed != ""){
+    if(ed && ed != null && ed != ""){
       let edl = ed.length;
       sql = sql + " and substr(gc.ed,1,"+edl+") >= '" + ed +"'";
     }

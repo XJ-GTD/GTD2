@@ -512,8 +512,12 @@ export class WorkService {
     return new Promise((resolve, reject) =>{
       let rco = new RcoModel();
       console.log("----- WorkService getwL(根据条件查询日程) start -----");
-      sd = sd.replace(new RegExp('-','g'),'/');
-      ed = ed.replace(new RegExp('-','g'),'/');
+      if(sd && sd != null && sd != ''){
+        sd = sd.replace(new RegExp('-','g'),'/');
+      }
+      if(ed && ed != null && ed != ''){
+        ed = ed.replace(new RegExp('-','g'),'/');
+      }
       this.workSqlite.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
         console.log("----- WorkService getwL(根据条件查询日程) result:" + JSON.stringify(data));
         let rcs = new Array<RcModel>();

@@ -143,8 +143,18 @@ export class DwMqService {
    */
   private xfScheduleDelete(mqDate: WsModel) {
     let md: WsResDataModel = mqDate.res.data;
-    let sd = md.st;
-    let ed = md.et;
+    let sd = '';
+    if(md.st && md.st != ''){
+      sd = md.st;
+    }else{
+      sd = md.et;
+    }
+    let ed=''
+    if(md.et && md.et != ''){
+      ed = md.et;
+    }else{
+      ed = sd;
+    }
     let sN = md.sn;
     let aiui = new AiuiModel();
     this.work.getwL(sN, sd, ed, '', '', '','0').then(data => {
