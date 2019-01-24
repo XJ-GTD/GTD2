@@ -298,11 +298,10 @@ export class BaseSqlite {
           if(sqls[i] != null && sqls[i] !=''){
             this.executeSql(sqls[i],[]);
           }else{
-            resolve(sqls.length);
             //console.error("sqls["+i+"]: ("+sqls[i]+ "） ;sqlAll:"+sql);
           }
         }
-
+        resolve(sqls.length);
       }
 
     });
