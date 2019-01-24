@@ -1,6 +1,8 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {App, Events, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
+import {XiaojiFeedbackService} from "../../service/util-service/xiaoji-feedback.service";
+import * as moment from "moment";
 
 /**
  * Generated class for the Hb01Page page.
@@ -8,7 +10,7 @@ import {UtilService} from "../../service/util-service/util.service";
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
+@IonicPage()
 @Component({
   selector: 'page-hb01',
   template:'<canvas  #canvas></canvas>',
@@ -23,7 +25,7 @@ export class Hb01Page {
   ratio: number;
 
 
-  numLines: number = 10000;
+  numLines: number = 8000;
 
   vertices_t: Array<number>;
   velocities_t: Array<number>;
@@ -49,6 +51,14 @@ export class Hb01Page {
   cn: number = 0;
 
   drawType: number = 1;
+  ionViewDidLoad(){
+    this.loadScene();
+
+  }
+
+  setDrawType(type:number){
+    this.drawType = type;
+  }
 
   loadScene() {
     this.gl = this.canvas.nativeElement.getContext('experimental-webgl');
@@ -60,8 +70,9 @@ export class Hb01Page {
     this.cw = window.innerWidth;
     this.ch = window.innerHeight;
     this.canvas.nativeElement.width = this.cw;
-    this.canvas.nativeElement.height = this.ch;
+    this.canvas.nativeElement.height = 180;
     this.gl.viewport(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+
 
 
     //    Load the vertex shader that's defined in a separate script
@@ -129,7 +140,7 @@ export class Hb01Page {
     this.gl.enableVertexAttribArray(vertexPosition);
 
     //    Clear the color buffer (r, g, b, a) with the specified color
-    this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
+   // this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
     //    Clear the depth buffer. The value specified is clamped to the range [0,1].
     //    More info about depth buffers: http://en.wikipedia.org/wiki/Depth_buffer
     this.gl.clearDepth(1.0);
@@ -193,7 +204,7 @@ export class Hb01Page {
     //    Define the viewing frustum parameters
     //    More info: http://en.wikipedia.org/wiki/Viewing_frustum
     //    More info: https://knol.google.com/k/view-frustum
-    let fieldOfView = 30.0;
+    let fieldOfView = 15.0;
     let aspectRatio = this.canvas.nativeElement.width / this.canvas.nativeElement.height;
     let nearPlane = 1.0;
     let farPlane = 10000.0;
@@ -253,9 +264,9 @@ export class Hb01Page {
 
     //setInterval( drawScene, 1000 / 40 );
     this.animate();
-    setTimeout(()=>{
-      this.timer()}, 1500
-    );
+    // setTimeout(()=>{
+    //   this.timer()}, 1500
+    // );
 
   }
 
@@ -468,15 +479,15 @@ draw1() {
 
 
 
-  timer() {
-
-
-    this.drawType = (this.drawType + 1) % 3;
-
-    setTimeout(()=>{
-      this.timer()}, 1500
-    );
-  }
+  // timer() {
+  //
+  //
+  //   this.drawType = (this.drawType + 1) % 3;
+  //
+  //   setTimeout(()=>{
+  //     this.timer()}, 1500
+  //   );
+  // }
 
 
 }
