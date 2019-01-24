@@ -106,7 +106,7 @@ export class RelmemSqlite {
    */
   getRgus(id:string):Promise<any>{
     let sql="SELECT gb.*,bs.id rugId,bs.bmi FROM GTD_B gb " +
-      "left join GTD_B_X bs on bs.bi = gb.id where bs.bi='" + id +"'";
+      "left join GTD_B_X bs on bs.bmi = gb.id where bs.bi='" + id +"'";
     return this.baseSqlite.executeSql(sql,[]);
   }
 
