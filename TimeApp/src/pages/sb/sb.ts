@@ -245,7 +245,8 @@ export class SbPage {
   newProject() {
     console.log("时间格式规整前 :: " + this.startTime);
     /*时间格式规整*/
-    this.startTime = moment(new Date(this.startTime).getTime()).format("YYYY/MM/DD HH:mm");
+    this.startTime=this.startTime.replace(new RegExp('-','g'),'/').replace("T"," ").substr(0,16);
+    // this.startTime = moment(new Date(this.startTime).getTime()).format("YYYY/MM/DD HH:mm");
     console.log("时间格式规整后 :: " + this.startTime);
 
     let rul = new Array<RuModel>();
