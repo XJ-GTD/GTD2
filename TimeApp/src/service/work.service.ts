@@ -777,9 +777,18 @@ export class WorkService {
               }
             }
           }
-        rc.rus=ruL;
+
         rc.noca=noca;
         rc.nocb=nocb;
+        let strL = nocb.split(',');
+        for(let a = 0;a<strL.length;a++){
+          let run = new RuModel();
+          run.rN = strL[0];
+          run.ran = strL[0];
+          run.hiu = DataConfig.NOT_PLAYER;
+          ruL.push(run);
+        }
+        rc.rus=ruL;
         resolve(rc)
       }).catch(e=>{
         console.error("-------- WorkService 讯飞语音添加日程 ERROR : " + JSON.stringify(e));
