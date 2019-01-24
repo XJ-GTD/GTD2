@@ -474,7 +474,7 @@ export class WorkSqlite{
    * @param {string} jh 计划名称
    */
   getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string):Promise<any>{
-    let sql ='select gc.*,gf.lan,jh.jn from GTD_C gc ' +
+    let sql ='select gc.*,gf.lan,jh.jn,lbd.* from GTD_C gc ' +
       'left join (select sI ssI,cft,cf,ac,fh,tk from GTD_C_BO ' +
       'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_C ' +
       'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_RC ' +

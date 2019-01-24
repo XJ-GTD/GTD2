@@ -23,7 +23,7 @@ import {RelmemSqlite} from "./sqlite/relmem-sqlite";
 import {RcpEntity} from "../entity/rcp.entity";
 import {ReturnConfig} from "../app/return.config";
 import {RcoModel} from "../model/out/rco.model";
-import {WsResDataModel} from "../model/ws/ws.res.model";
+import * as moment from "moment";
 import {MsSqlite} from "./sqlite/ms-sqlite";
 import {ReadlocalService} from "./readlocal.service";
 
@@ -522,11 +522,28 @@ export class WorkService {
         console.log("----- WorkService getwL(根据条件查询日程) result:" + JSON.stringify(data));
         let rcs = new Array<RcModel>();
         if(data && data.rows && data.rows.length>0){
-          for(let i=0;i<data.rows.length;i++){
-            let rc = new RcModel();
-            rc = data.rows.item(i);
-            rcs.push(rc);
+          if(sd == ed){
+            for(let i=0;i<data.rows.length;i++){
+              let rc:RcModel = data.rows.item(i);
+              if(this.workSqlite.isymwd(rc.cft,sd,rc.sd,rc.ed)){
+                rcs.push(rc);
+              }
+            }
+          }else{
+            let sdt = new Date(sd.substr(0,10)).getTime();
+            let dv = (new Date(ed.substr(0,10)).getTime() - sdt)/(1000*60*60*24)
+            for(let i=0;i<=dv;i++){
+              let day = moment(sdt+i*1000*60*60*24).format('YYYY/MM/DD')
+              for(let j=0;j<data.rows.length;j++){
+                let rc:RcModel = data.rows.item(j);
+                if(this.workSqlite.isymwd(rc.cft,day,rc.sd,rc.ed)){
+                  rcs.push(rc);
+                }
+              }
+            }
           }
+
+
         }else{
           rco.code=ReturnConfig.NULL_CODE;
           rco.message=ReturnConfig.NULL_MESSAGE;
