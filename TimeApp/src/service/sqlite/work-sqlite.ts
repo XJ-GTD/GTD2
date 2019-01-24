@@ -255,13 +255,13 @@ export class WorkSqlite{
               if(res.san != null){
                 res.scheduleName =res.son;
               }
-              if(res.sd.substr(0,10) == d){
-                res.scheduleStartTime = res.sd.substr(11,16);
-              }else if(res.ed.substr(0,10) == d){
-                res.scheduleStartTime = res.ed.substr(11,16);
-              }else{
-                res.scheduleStartTime="08:00";
-              }
+              // if(res.sd.substr(0,10) == d){
+              //   res.scheduleStartTime = res.sd.substr(11,16);
+              // }else if(res.ed.substr(0,10) == d){
+              //   res.scheduleStartTime = res.ed.substr(11,16);
+              // }else{
+                res.scheduleStartTime=res.sd.substr(11,16);
+              // }
               if(res.lau){
                 res.labelColor = res.lau;
               }

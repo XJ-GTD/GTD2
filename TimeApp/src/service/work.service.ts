@@ -526,6 +526,7 @@ export class WorkService {
             for(let i=0;i<data.rows.length;i++){
               let rc:RcModel = data.rows.item(i);
               if(this.workSqlite.isymwd(rc.cft,sd,rc.sd,rc.ed)){
+                rc.sd = sd.substr(0,10)+" " + rc.sd.substr(11,16);
                 rcs.push(rc);
               }
             }
@@ -537,6 +538,7 @@ export class WorkService {
               for(let j=0;j<data.rows.length;j++){
                 let rc:RcModel = data.rows.item(j);
                 if(this.workSqlite.isymwd(rc.cft,day,rc.sd,rc.ed)){
+                  rc.sd = day.substr(0,10)+" " + rc.sd.substr(11,16);
                   rcs.push(rc);
                 }
               }
