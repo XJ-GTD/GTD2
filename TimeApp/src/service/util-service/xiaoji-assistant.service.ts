@@ -34,7 +34,11 @@ export class XiaojiAssistantService{
    */
   public listenAudio(success) {
     try {
-      if (this.isSpeaking) return;
+      console.log("开始语音录入 | isSpeaking:" + this.isSpeaking + "| islistenAudioing" + this.islistenAudioing)
+      if (this.isSpeaking || this.islistenAudioing) {
+        console.log("正在录入语音");
+        return;
+      }
       this.islistenAudioing = true;
 
       cordova.plugins.XjBaiduSpeech.startListen(result=>{
@@ -187,7 +191,7 @@ export class XiaojiAssistantService{
   public stopSpeak() {
     try {
       if (cordova.plugins.XjBaiduSpeech != null && cordova.plugins.XjBaiduSpeech != undefined) {
-        console.log("停止播报");
+        console.log("停止播报 | isSpeaking:" + this.isSpeaking + "| islistenAudioing" + this.islistenAudioing);
         cordova.plugins.XjBaiduTts.speakStop();
         this.isSpeaking = false;
       } else {
