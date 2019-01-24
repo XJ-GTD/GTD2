@@ -255,13 +255,13 @@ export class WorkSqlite{
               if(res.san != null){
                 res.scheduleName =res.son;
               }
-              if(res.sd.substr(0,10) == d){
-                res.scheduleStartTime = res.sd.substr(11,16);
-              }else if(res.ed.substr(0,10) == d){
-                res.scheduleStartTime = res.ed.substr(11,16);
-              }else{
-                res.scheduleStartTime="08:00";
-              }
+              // if(res.sd.substr(0,10) == d){
+              //   res.scheduleStartTime = res.sd.substr(11,16);
+              // }else if(res.ed.substr(0,10) == d){
+              //   res.scheduleStartTime = res.ed.substr(11,16);
+              // }else{
+                res.scheduleStartTime=res.sd.substr(11,16);
+              // }
               if(res.lau){
                 res.labelColor = res.lau;
               }
@@ -305,15 +305,15 @@ export class WorkSqlite{
    */
   getSetColckWork(mm:number):Promise<RcoModel>{
     return new Promise((resolve, reject) => {
-      let date = new Date().getTime();
+      let date = new Date().getTime(); //当前日期时间
       let agodate = date - mm * 60 * 1000;
-      let today = moment(date).format('YYYY/MM/DD');
-      let d = moment(date).format('YYYY/MM/DD HH:mm');
-      let agod = moment(agodate).format('YYYY/MM/DD HH:mm');
+      let today = moment(date).format('YYYY/MM/DD'); //当前日期
+      let dt = moment(date).format('YYYY/MM/DD HH:mm').substr(11,16); //当前日期时间
+      let agodt = moment(agodate).format('YYYY/MM/DD HH:mm').substr(11,16); //mm分钟前
       let sql= this.getRcSql() + ' left join GTD_F gf on gf.lai=gc.lI '+
         ' where (substr(gc.sd,1,10) <= "'+today+'" and substr(gc.ed,1,10)>= "'+today+'") ' +
-        ' and (substr(gc.sd,11,16) <= "'+d+'" and substr(gc.sd,11,16)>= "'+agod+'") ' +
-        ' and (gd.uI = "'+DataConfig.uInfo.uI+'" or gc.uI= "'+DataConfig.uInfo.uI+'")';
+        ' and (gd.uI = "'+DataConfig.uInfo.uI+'" or gc.uI= "'+DataConfig.uInfo.uI+'") and dt is not null and dt !=""'+
+        ' and (substr(lbd.dt,11,16) <= "'+agodt+'" and substr(lbd.dt,11,16)>= "'+dt+'") ';
       let rco = new RcoModel();
       let rcL = new Array<RcModel>();
       rco.rcL = rcL;
@@ -324,11 +324,9 @@ export class WorkSqlite{
         if(data && data.rows && data.rows.length>0){
           for (let i = 0; i < data.rows.length; i++) {
             let res:RcModel = data.rows.item(i);
-            let nd = this.getClockDate(res.cft,d,res.sd,res.ed);
+            let nd = this.getClockDate(res.cft,today,res.sd,res.ed);
             //nds
-            if(this.isymwd(res.cft,d,res.sd,res.ed)){
-              rcL.push(res);
-            }
+
           }
         }
         rco.rcL=rcL;
@@ -474,7 +472,7 @@ export class WorkSqlite{
    * @param {string} jh 计划名称
    */
   getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string):Promise<any>{
-    let sql ='select gc.*,gf.lan,jh.jn from GTD_C gc ' +
+    let sql ='select gc.*,gf.lan,jh.jn,lbd.* from GTD_C gc ' +
       'left join (select sI ssI,cft,cf,ac,fh,tk from GTD_C_BO ' +
       'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_C ' +
       'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_RC ' +
@@ -485,14 +483,14 @@ export class WorkSqlite{
       'left join GTD_J_H jh on jh.ji = gc.ji ' +
      // 'where gd.uI="'+DataConfig.uInfo.uI+'"';
       'where 1=1';
-    if(ct != null && ct != ""){
+    if(ct && ct != null && ct != ""){
       sql = sql + " and gd.son like '%" + ct +"%'"
     }
-    if(sd != null && sd != ""){
+    if(sd && sd != null && sd != ""){
       let sdl = sd.length;
       sql = sql + " and substr(gc.sd,1,"+sdl+") <= '" + sd +"'";
     }
-    if(ed != null && ed != ""){
+    if(ed && ed != null && ed != ""){
       let edl = ed.length;
       sql = sql + " and substr(gc.ed,1,"+edl+") >= '" + ed +"'";
     }

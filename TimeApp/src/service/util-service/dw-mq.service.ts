@@ -143,14 +143,25 @@ export class DwMqService {
    */
   private xfScheduleDelete(mqDate: WsModel) {
     let md: WsResDataModel = mqDate.res.data;
-    let sd = md.st;
-    let ed = md.et;
+    let sd = '';
+    if(md.st && md.st != ''){
+      sd = md.st;
+    }else{
+      sd = md.et;
+    }
+    let ed=''
+    if(md.et && md.et != ''){
+      ed = md.et;
+    }else{
+      ed = sd;
+    }
     let sN = md.sn;
     let aiui = new AiuiModel();
 
     this.work.getwL(sN, sd, ed, '', '', '','0').then(data => {
+      aiui.scL = data.rcL;
       if (data && data.rcL && data.rcL.length > 0) {
-        aiui.scL = data.rcL;
+        //aiui.scL = data.rcL;
         aiui.tt = DataConfig.S5;
         if (mqDate.ses) {
           aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "1");
@@ -161,8 +172,17 @@ export class DwMqService {
         aiui.tt = DataConfig.S1;
         aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "10");
       }
+      this.xiaojiSpeech.speakText('发现条要'+ data.rcL.length +'删除的日程', success => {});
       this.dwResultSendToPage(aiui, mqDate.sk);
-    }).catch(e=>{
+    })
+      .then(data=>{
+        this.work.batchDel(aiui.scL,0).then(data=>{
+          this.xiaojiSpeech.speakText('已删除'+ data.data +'条日程', success => {});
+        }).catch(e=>{
+
+        })
+      })
+      .catch(e=>{
       console.log("xfScheduleDelete:" + e.toString());
     });
 

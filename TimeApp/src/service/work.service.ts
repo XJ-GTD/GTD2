@@ -23,7 +23,7 @@ import {RelmemSqlite} from "./sqlite/relmem-sqlite";
 import {RcpEntity} from "../entity/rcp.entity";
 import {ReturnConfig} from "../app/return.config";
 import {RcoModel} from "../model/out/rco.model";
-import {WsResDataModel} from "../model/ws/ws.res.model";
+import * as moment from "moment";
 import {MsSqlite} from "./sqlite/ms-sqlite";
 import {ReadlocalService} from "./readlocal.service";
 
@@ -369,7 +369,7 @@ export class WorkService {
   drc(sI:string,sa:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
-      if(sa != '1'){
+      if(sa != '0'){
         let rc = new RcEntity();
         rc.sI = sI;
         let ruL:Array<RuModel> = new Array<RuModel>();
@@ -425,10 +425,37 @@ export class WorkService {
         bs.message = '无权限删除';
         resolve(bs);
       }
+    })
+  }
 
+
+  /**
+   * 批量删除日程
+   * @param {string} rcL 日程List
+   * @param {string} len 默认为零
+   */
+  batchDel(rcL:Array<RcModel>,len:number):Promise<BsModel>{
+    return new Promise((resolve, reject) => {
+      let base = new BsModel();
+      if(len<rcL.length){
+        console.log("======== 批量删除日程开始 Start===========");
+        this.drc(rcL[len].sI,'1').then(data=>{
+          console.log("======== 批量删除日程第"+ len +"次结束===========");
+           this.batchDel(rcL,len+1);
+        }).catch(e=>{
+          base.code=ReturnConfig.ERR_CODE;
+          base.message=ReturnConfig.ERR_MESSAGE;
+          reject(e)
+        })
+      }else{
+        console.log("======== 批量删除日程全部结束  End ===========");
+        base.data = len;
+        resolve(base);
+      }
 
     })
   }
+
 
 
   /**
@@ -512,22 +539,46 @@ export class WorkService {
     return new Promise((resolve, reject) =>{
       let rco = new RcoModel();
       console.log("----- WorkService getwL(根据条件查询日程) start -----");
-      sd = sd.replace(new RegExp('-','g'),'/');
-      ed = ed.replace(new RegExp('-','g'),'/');
+      if(sd && sd != null && sd != ''){
+        sd = sd.replace(new RegExp('-','g'),'/');
+      }
+      if(ed && ed != null && ed != ''){
+        ed = ed.replace(new RegExp('-','g'),'/');
+      }
+      let rcs = new Array<RcModel>();
+      rco.rcL=rcs;
       this.workSqlite.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
         console.log("----- WorkService getwL(根据条件查询日程) result:" + JSON.stringify(data));
-        let rcs = new Array<RcModel>();
+
         if(data && data.rows && data.rows.length>0){
-          for(let i=0;i<data.rows.length;i++){
-            let rc = new RcModel();
-            rc = data.rows.item(i);
-            rcs.push(rc);
+          if(sd == ed){
+            for(let i=0;i<data.rows.length;i++){
+              let rc:RcModel = data.rows.item(i);
+              if(this.workSqlite.isymwd(rc.cft,sd,rc.sd,rc.ed)){
+                rc.sd = sd.substr(0,10)+" " + rc.sd.substr(11,16);
+                rcs.push(rc);
+              }
+            }
+          }else{
+            let sdt = new Date(sd.substr(0,10)).getTime();
+            let dv = (new Date(ed.substr(0,10)).getTime() - sdt)/(1000*60*60*24)
+            for(let i=0;i<=dv;i++){
+              let day = moment(sdt+i*1000*60*60*24).format('YYYY/MM/DD')
+              for(let j=0;j<data.rows.length;j++){
+                let rc:RcModel = data.rows.item(j);
+                if(this.workSqlite.isymwd(rc.cft,day,rc.sd,rc.ed)){
+                  rc.sd = day.substr(0,10)+" " + rc.sd.substr(11,16);
+                  rcs.push(rc);
+                }
+              }
+            }
           }
+
+
         }else{
           rco.code=ReturnConfig.NULL_CODE;
           rco.message=ReturnConfig.NULL_MESSAGE;
         }
-        rco.rcL=rcs;
         rco.rcL=rcs;
         if(flag == '1'){
           return this.readlocal.findEventRc(ct,new Date(sd),new Date(ed),rco.rcL);
@@ -726,9 +777,18 @@ export class WorkService {
               }
             }
           }
-        rc.rus=ruL;
+
         rc.noca=noca;
         rc.nocb=nocb;
+        let strL = nocb.split(',');
+        for(let a = 0;a<strL.length;a++){
+          let run = new RuModel();
+          run.rN = strL[0];
+          run.ran = strL[0];
+          run.hiu = DataConfig.NOT_PLAYER;
+          ruL.push(run);
+        }
+        rc.rus=ruL;
         resolve(rc)
       }).catch(e=>{
         console.error("-------- WorkService 讯飞语音添加日程 ERROR : " + JSON.stringify(e));
