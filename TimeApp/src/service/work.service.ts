@@ -545,9 +545,11 @@ export class WorkService {
       if(ed && ed != null && ed != ''){
         ed = ed.replace(new RegExp('-','g'),'/');
       }
+      let rcs = new Array<RcModel>();
+      rco.rcL=rcs;
       this.workSqlite.getwL(ct,sd,ed,lbI,lbN,jh).then(data=>{
         console.log("----- WorkService getwL(根据条件查询日程) result:" + JSON.stringify(data));
-        let rcs = new Array<RcModel>();
+
         if(data && data.rows && data.rows.length>0){
           if(sd == ed){
             for(let i=0;i<data.rows.length;i++){
@@ -577,7 +579,6 @@ export class WorkService {
           rco.code=ReturnConfig.NULL_CODE;
           rco.message=ReturnConfig.NULL_MESSAGE;
         }
-        rco.rcL=rcs;
         rco.rcL=rcs;
         if(flag == '1'){
           return this.readlocal.findEventRc(ct,new Date(sd),new Date(ed),rco.rcL);
