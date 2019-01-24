@@ -169,7 +169,15 @@ export class DwMqService {
       }
       this.xiaojiSpeech.speakText('发现条要'+ data.rcL.length +'删除的日程', success => {});
       this.dwResultSendToPage(aiui, mqDate.sk);
-    }).catch(e=>{
+    })
+      .then(data=>{
+        this.work.batchDel(aiui.scL,0).then(data=>{
+          this.xiaojiSpeech.speakText('已删除'+ data.data +'条日程', success => {});
+        }).catch(e=>{
+
+        })
+      })
+      .catch(e=>{
       console.log("xfScheduleDelete:" + e.toString());
     });
 

@@ -369,7 +369,7 @@ export class WorkService {
   drc(sI:string,sa:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
-      if(sa != '1'){
+      if(sa != '0'){
         let rc = new RcEntity();
         rc.sI = sI;
         let ruL:Array<RuModel> = new Array<RuModel>();
