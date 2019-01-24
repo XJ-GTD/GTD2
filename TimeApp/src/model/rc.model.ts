@@ -20,7 +20,7 @@ export class RcModel extends BsModel{
   private _sa:string = null; //修改权限 0不可修改，1可修改
   private _pI: string=null;//日程参与人表uuID
   private _son: string=null;//日程别名
-  private _rus : Array<RuModel> //联系人
+  private _rus : Array<RuModel>; //联系人
   //标签数据
   private _subId:string=null; //子表ID
   private _cft:string=null; //重复类型
