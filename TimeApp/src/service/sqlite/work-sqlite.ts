@@ -191,7 +191,7 @@ export class WorkSqlite{
       }).then(data=>{
         if(data&&data.rows&&data.rows.length>0){
           //判断是否有消息
-          for(let j=0;j<=data.rows.length;j++){
+          for(let j=0;j<data.rows.length;j++){
             let bool = true; //判断当前日是否存在
             for(let i=0;i<resL.length;i++){
               if(resL[i].ymd== data.rows.item(j).md){
