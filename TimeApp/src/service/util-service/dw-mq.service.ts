@@ -158,8 +158,9 @@ export class DwMqService {
     let sN = md.sn;
     let aiui = new AiuiModel();
     this.work.getwL(sN, sd, ed, '', '', '','0').then(data => {
+      aiui.scL = data.rcL;
       if (data && data.rcL && data.rcL.length > 0) {
-        aiui.scL = data.rcL;
+        //aiui.scL = data.rcL;
         aiui.tt = DataConfig.S5;
         aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "1");
       } else {
