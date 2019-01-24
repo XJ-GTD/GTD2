@@ -139,7 +139,7 @@ export class WorkSqlite{
       // or gc.uI= "'+ui+'"
       let sql= this.getRcSql() +
         ' where (gd.uI = "'+ui+ '" or gc.uI= "'+ui+'") and ' +
-        '(substr(gc.sd,1,7) = "'+ym+'" or substr(gc.ed,1,7)= "'+ym+'")';
+        '(substr(gc.sd,1,7) <= "'+ym+'" and substr(gc.ed,1,7)>= "'+ym+'")';
       let bs = new BsModel();
       let resL = new Array<any>();
       let rcL = new Array<RcModel>();
@@ -255,13 +255,13 @@ export class WorkSqlite{
               if(res.san != null){
                 res.scheduleName =res.son;
               }
-              if(res.sd.substr(0,10) == d){
-                res.scheduleStartTime = res.sd.substr(11,16);
-              }else if(res.ed.substr(0,10) == d){
-                res.scheduleStartTime = res.ed.substr(11,16);
-              }else{
-                res.scheduleStartTime="08:00";
-              }
+              // if(res.sd.substr(0,10) == d){
+              //   res.scheduleStartTime = res.sd.substr(11,16);
+              // }else if(res.ed.substr(0,10) == d){
+              //   res.scheduleStartTime = res.ed.substr(11,16);
+              // }else{
+                res.scheduleStartTime=res.sd.substr(11,16);
+              // }
               if(res.lau){
                 res.labelColor = res.lau;
               }
@@ -474,7 +474,7 @@ export class WorkSqlite{
    * @param {string} jh 计划名称
    */
   getwL(ct:string,sd:string,ed:string,lbI:string,lbN:string,jh:string):Promise<any>{
-    let sql ='select gc.*,gf.lan,jh.jn from GTD_C gc ' +
+    let sql ='select gc.*,gf.lan,jh.jn,lbd.* from GTD_C gc ' +
       'left join (select sI ssI,cft,cf,ac,fh,tk from GTD_C_BO ' +
       'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_C ' +
       'union select sI ssI,cft,cf,ac,fh,tk from GTD_C_RC ' +
@@ -485,14 +485,14 @@ export class WorkSqlite{
       'left join GTD_J_H jh on jh.ji = gc.ji ' +
      // 'where gd.uI="'+DataConfig.uInfo.uI+'"';
       'where 1=1';
-    if(ct != null && ct != ""){
+    if(ct && ct != null && ct != ""){
       sql = sql + " and gd.son like '%" + ct +"%'"
     }
-    if(sd != null && sd != ""){
+    if(sd && sd != null && sd != ""){
       let sdl = sd.length;
       sql = sql + " and substr(gc.sd,1,"+sdl+") <= '" + sd +"'";
     }
-    if(ed != null && ed != ""){
+    if(ed && ed != null && ed != ""){
       let edl = ed.length;
       sql = sql + " and substr(gc.ed,1,"+edl+") >= '" + ed +"'";
     }
