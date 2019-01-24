@@ -13,7 +13,8 @@ import {SyncSqlite} from "./sync-sqlite";
 @Injectable()
 export class JhSqlite {
 
-  constructor(private baseSqlite: BaseSqlite,private sync: SyncSqlite) {}
+  constructor(private baseSqlite: BaseSqlite,
+              private sync:SyncSqlite) {}
 
   /**
    * 添加计划
@@ -56,8 +57,8 @@ export class JhSqlite {
    * @returns {Promise<any>}
    */
   getOne(ji:string): Promise<any> {
-    let sql = "SELECT * FROM GTD_J_H where ji=?"
-    return this.baseSqlite.executeSql(sql,[ji]);
+    let sql = "SELECT * FROM GTD_J_H where ji='"+ji+"'";
+    return this.baseSqlite.executeSql(sql,[]);
   }
   /**
    * 服务器登录同步计划表转sql
@@ -98,6 +99,8 @@ export class JhSqlite {
       sync.tableName = DataConfig.GTD_J_H;
     return this.sync.save(sync.isq);
   }
+
+
 
 
 }
