@@ -425,10 +425,37 @@ export class WorkService {
         bs.message = '无权限删除';
         resolve(bs);
       }
+    })
+  }
 
+
+  /**
+   * 批量删除日程
+   * @param {string} rcL 日程List
+   * @param {string} len 默认为零
+   */
+  batchDel(rcL:Array<RcModel>,len:number):Promise<BsModel>{
+    return new Promise((resolve, reject) => {
+      let base = new BsModel();
+      if(len<rcL.length){
+        console.log("======== 批量删除日程开始 Start===========");
+        this.drc(rcL[len].sI,'1').then(data=>{
+          console.log("======== 批量删除日程第"+ len +"次结束===========");
+           this.batchDel(rcL,len+1);
+        }).catch(e=>{
+          base.code=ReturnConfig.ERR_CODE;
+          base.message=ReturnConfig.ERR_MESSAGE;
+          reject(e)
+        })
+      }else{
+        console.log("======== 批量删除日程全部结束  End ===========");
+        base.data = len;
+        resolve(base);
+      }
 
     })
   }
+
 
 
   /**
