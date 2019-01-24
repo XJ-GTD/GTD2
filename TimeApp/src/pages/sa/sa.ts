@@ -41,7 +41,18 @@ import {PageConfig} from "../../app/page.config";
       <ion-label col-3>任务</ion-label> 
       <ion-label >{{rc.sN}}</ion-label> 
     </ion-item> 
-    <div padding-left style=" border-bottom: 0.55px solid #e5e5e5;display: flex;" margin-top> 
+    <!--<div padding-left style=" border-bottom: 1px solid #e5e5e5;display: flex;" margin-top>-->
+      <!--<div>-->
+        <!--<img src="./assets/imgs/h.png" style="width: 20px;margin:8px 16px 8px 0; ">-->
+      <!--</div>-->
+      <!--<div col-3>-->
+        <!--<span class="spanCss">任务</span>-->
+      <!--</div>-->
+      <!--<div col-7 >-->
+        <!--{{rc.sN}}-->
+      <!--</div>-->
+    <!--</div>-->
+    <div padding-left style=" border-bottom: 1px solid #e5e5e5;display: flex;" margin-top> 
       <div> 
         <img src="./assets/imgs/g.png" style="width: 20px;margin:8px 16px 8px 0; "> 
       </div> 
@@ -102,7 +113,7 @@ import {PageConfig} from "../../app/page.config";
       <ion-label col-3>任务</ion-label> 
       <ion-input [(ngModel)]="rc.sN" placeholder="{{rc.sN}}"></ion-input> 
     </ion-item> 
-    <div padding-left style=" border-bottom: 0.55px solid #e5e5e5;display: flex;" margin-top> 
+    <div padding-left style=" border-bottom: 1px solid #e5e5e5;display: flex;" margin-top> 
       <div> 
         <img src="./assets/imgs/g.png" style="width: 20px;margin:8px 16px 8px 0; "> 
       </div> 
@@ -157,7 +168,7 @@ import {PageConfig} from "../../app/page.config";
       <ion-input ></ion-input> 
     </ion-item> 
   </div> 
-    <button ion-button *ngIf="rc.sa == 1" (click)="del()" style="margin: 0 auto;">删除</button> 
+    <button ion-button  (click)="del()" style="margin: 0 auto;">删除</button> 
     <button ion-button (click)="setAlarm()">设置提醒闹钟</button> 
   </ion-content>`,
 })
@@ -234,19 +245,19 @@ export class SaPage {
     // this.endtmp = this.util.strToDtime(this.rc.ed);
     this.starttmp = new Date(new Date(this.rc.sd).getTime()+8*60*60*1000).toISOString();
     this.endtmp = new Date(this.rc.ed).toISOString();
-    if(this.rc.sa != '1'){
-      this.utilService.toast("不可编辑");
-      this.canEdit = false;
-      this.isEdit = false;
-    }else {
+    // if(this.rc.sa != '1'){
+    //   this.utilService.toast("不可编辑");
+    //   this.canEdit = false;
+    //   this.isEdit = false;
+    // }else {
       this.isEdit = true;
-    }
+    // }
     console.log(this.starttmp)
 
   }
 
   save(){
-    this.starttmp = moment(new Date(this.starttmp).getTime()-8*60*60*1000).format("YYYY-MM-DD HH:mm");
+    this.starttmp = moment(new Date(this.starttmp).getTime()-8*60*60*1000).format("YYYY/MM/DD HH:mm");
     // this.endtmp = this.endtmp
     console.log(this.starttmp);
     this.rc.sd = this.starttmp;
@@ -254,6 +265,7 @@ export class SaPage {
     console.log("修改日程传入参数 :: " + JSON.stringify(this.rc));
     this.work.urc(this.rc.sI,this.rc.sN,this.rc.sd,'',this.rc.lI,this.rc.ji,this.rc.subId,'','','',this.rc.rus).then(data=>{
       console.log(JSON.stringify(data));
+      this.utilService.alert("保存成功");
     }).catch(reason => {
       console.log(JSON.stringify(reason));
     });
