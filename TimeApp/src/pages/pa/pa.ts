@@ -18,74 +18,74 @@ import {UtilService} from "../../service/util-service/util.service";
 @IonicPage()
 @Component({
   selector: 'page-pa',
-  template:'<ion-header>' +
-  '  <ion-toolbar>' +
-  '    <ion-buttons left>' +
-  '      <button ion-button icon-only (click)="goBack()">' +
-  '        <ion-icon name="arrow-back"></ion-icon>' +
-  '      </button>' +
-  '    </ion-buttons>' +
-  '    <ion-segment [(ngModel)]="relation">' +
-  '      <ion-segment-button value="person" >' +
-  '        个人' +
-  '      </ion-segment-button>' +
-  '      <ion-segment-button value="group">' +
-  '        群组' +
-  '      </ion-segment-button>' +
-  '    </ion-segment>' +
-  '    <ion-buttons right [ngSwitch]="relation" margin-right>' +
-  '      <button ion-button icon-only *ngSwitchCase="\'person\'" (click)="toAddMember()">' +
-  '        <ion-icon name="person-add"></ion-icon>' +
-  '        <!--<img src="./assets/imgs/addPerson.png"/>-->' +
-  '      </button>' +
-  '      <button ion-button icon-only *ngSwitchCase="\'group\'" (click)="toGroupCreate()">' +
-  '        <ion-icon name="add"></ion-icon>' +
-  '        <!--<img src="./assets/imgs/aaddGroup.png"/>-->' +
-  '      </button>' +
-  '    </ion-buttons>' +
-  '  </ion-toolbar>' +
-  '</ion-header>' +
-  '<ion-content padding class="page-backgroud-color">' +
-  '  <div [ngSwitch]="relation">' +
-  '    <ion-list *ngSwitchCase="\'person\'">' +
-  '      <ion-item *ngIf="us == undefined">' +
-  '        <ion-label>你还没有添加联系人，快点击右上方添加联系人</ion-label>' +
-  '      </ion-item>' +
-  '      <ion-item-sliding *ngFor="let u of us">' +
-  '        <ion-item (click)="toMemberDetail(u)">' +
-  '          <ion-avatar item-start >' +
-  '            <img [src]="u.hiu">' +
-  '          </ion-avatar>' +
-  '          <ion-label>' +
-  '            <p style="color: #000; line-height: 17px;font-size: 1.7rem;">{{u.ran}}</p>' +
-  '            <p></p>' +
-  '          </ion-label>' +
-  '        </ion-item>' +
-  '        <ion-item-options side="right">' +
-  '          <button ion-button color="danger" (click)="delPerson(u)">删除</button>' +
-  '        </ion-item-options>' +
-  '      </ion-item-sliding>' +
-  '    </ion-list>' +
-  '    <ion-list *ngSwitchCase="\'group\'">' +
-  '      <ion-item *ngIf="gs == undefined">' +
-  '        <ion-label >你还没有创建群组，快点击右上方创建群组</ion-label>' +
-  '      </ion-item>' +
-  '      <ion-item-sliding *ngFor="let g of gs">' +
-  '        <button ion-item (click)="toGroupMember(g)">' +
-  '          <ion-avatar item-start >' +
-  '            <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">' +
-  '          </ion-avatar>' +
-  '          <ion-label>' +
-  '            {{g.rN}}' +
-  '          </ion-label>' +
-  '        </button>' +
-  '        <ion-item-options side="right">' +
-  '          <button ion-button color="danger" (click)="delGroup(g)">删除</button>' +
-  '        </ion-item-options>' +
-  '      </ion-item-sliding>' +
-  '    </ion-list>' +
-  '  </div>' +
-  '</ion-content>',
+  template:`<ion-header> 
+    <ion-toolbar> 
+      <ion-buttons no-margin left> 
+        <button ion-button icon-only (click)="goBack()" style="padding-left: 10px;"> 
+          <ion-icon name="arrow-back"></ion-icon> 
+        </button> 
+      </ion-buttons> 
+      <ion-segment [(ngModel)]="relation"> 
+        <ion-segment-button value="person" > 
+          个人 
+        </ion-segment-button> 
+        <ion-segment-button value="group"> 
+          群组 
+        </ion-segment-button> 
+      </ion-segment> 
+      <ion-buttons no-margin right [ngSwitch]="relation" style="padding-right: 10px;"> 
+        <button ion-button icon-only *ngSwitchCase="'person'" (click)="toAddMember()"> 
+          <ion-icon name="person-add"></ion-icon> 
+          <!--<img src="./assets/imgs/addPerson.png"/>--> 
+        </button> 
+        <button ion-button icon-only *ngSwitchCase="'group'" (click)="toGroupCreate()"> 
+          <ion-icon name="add"></ion-icon> 
+          <!--<img src="./assets/imgs/aaddGroup.png"/>--> 
+        </button> 
+      </ion-buttons> 
+    </ion-toolbar> 
+  </ion-header> 
+  <ion-content padding class="page-backgroud-color"> 
+    <div [ngSwitch]="relation"> 
+      <ion-list *ngSwitchCase="'person'"> 
+        <ion-item *ngIf="us == undefined"> 
+          <ion-label>你还没有添加联系人，快点击右上方添加联系人</ion-label> 
+        </ion-item> 
+        <ion-item-sliding *ngFor="let u of us"> 
+          <ion-item (click)="toMemberDetail(u)"> 
+            <ion-avatar item-start > 
+              <img [src]="u.hiu"> 
+            </ion-avatar> 
+            <ion-label> 
+              <p style="color: #000; line-height: 17px;font-size: 1.7rem;">{{u.ran}}</p> 
+              <p style="color: #666666;font-size: 12px;">占位占位占位占位占位占位占位占位占位</p> 
+            </ion-label> 
+          </ion-item> 
+          <ion-item-options side="right"> 
+            <button ion-button color="danger" (click)="delPerson(u)">删除</button> 
+          </ion-item-options> 
+        </ion-item-sliding> 
+      </ion-list> 
+      <ion-list *ngSwitchCase="'group'"> 
+        <ion-item *ngIf="gs == undefined"> 
+          <ion-label >你还没有创建群组，快点击右上方创建群组</ion-label> 
+        </ion-item> 
+        <ion-item-sliding *ngFor="let g of gs"> 
+          <button ion-item (click)="toGroupMember(g)"> 
+            <ion-avatar item-start > 
+              <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg"> 
+            </ion-avatar> 
+            <ion-label> 
+              {{g.rN}} 
+            </ion-label> 
+          </button> 
+          <ion-item-options side="right"> 
+            <button ion-button color="danger" (click)="delGroup(g)">删除</button> 
+          </ion-item-options> 
+        </ion-item-sliding> 
+      </ion-list> 
+    </div> 
+  </ion-content>`,
 })
 export class PaPage {
 

@@ -16,7 +16,7 @@ import {DwEmitService} from "../../service/util-service/dw-emit.service";
   '  <ion-navbar>' +
   '    <ion-title>意见反馈</ion-title>' +
   '    <ion-buttons right>' +
-  '      <button icon-only ion-button >' +
+  '      <button icon-only ion-button style="padding-right: 10px;">' +
   '        完成' +
   '      </button>' +
   '    </ion-buttons>' +

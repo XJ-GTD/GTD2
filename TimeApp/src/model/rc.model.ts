@@ -8,27 +8,27 @@ import {RuModel} from "./ru.model";
 //日程表
 export class RcModel extends BsModel{
 
-  private _sI: string=null;   //UUID
-  private _sN:string=null; //日程名
-  private _lI: string=null;   //关联标签ID
-  private _lan: string=null;   //关联标签名称
-  private _ji: string=null;   //关联计划ID
-  private _jn: string=null;   //关联计划名称
-  private _uI: string=null;          //创建人ID
-  private _sd:string=null; //开始时间
-  private _ed:string = null; //结束时间
-  private _sa:string = null; //修改权限 0不可修改，1可修改
-  private _pI: string=null;//日程参与人表uuID
-  private _son: string=null;//日程别名
-  private _rus : Array<RuModel>; //联系人
+  private _sI: string='';   //UUID
+  private _sN:string=''; //日程名
+  private _lI: string='';   //关联标签ID
+  private _lan: string='';   //关联标签名称
+  private _ji: string='';   //关联计划ID
+  private _jn: string='';   //关联计划名称
+  private _uI: string='';          //创建人ID
+  private _sd:string=''; //开始时间
+  private _ed:string = ''; //结束时间
+  private _sa:string = ''; //修改权限 0不可修改，1可修改
+  private _pI: string='';//日程参与人表uuID
+  private _son: string='';//日程别名
+  private _rus : Array<RuModel> //联系人
   //标签数据
-  private _subId:string=null; //子表ID
-  private _cft:string=null; //重复类型
-  private _ac:string=null; //提醒方式
-  private _fh:string=null; //完成情况
-  private _dt:string=null; //日期（具体到天）
-  private _wd:string = null; //完成时间
-  private _rm:string=null; //备注
+  private _subId:string=''; //子表ID
+  private _cft:string=''; //重复类型
+  private _ac:string=''; //提醒方式
+  private _fh:string=''; //完成情况
+  private _dt:string=''; //日期（具体到天）
+  private _wd:string = ''; //完成时间
+  private _rm:string=''; //备注
 
   //本地日历
   private _ib: string='0';  //是否本地:0非本地；1本地日历 默认非本地

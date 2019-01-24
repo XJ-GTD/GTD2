@@ -17,7 +17,7 @@ page-hz {
   }
 
   .item-block.item-ios{
-    border-bottom: 0.55px solid #e5e5e5 ;
+    border-bottom: 1px solid #e5e5e5 ;
   }
 
   ion-list > ion-item:first-child{
@@ -53,6 +53,10 @@ page-hz {
   .centerCss{
     margin: 0 auto;
 
+  }
+
+  .fontcol{
+    color: #666666;
   }
 
 }

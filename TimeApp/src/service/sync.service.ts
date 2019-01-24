@@ -47,7 +47,7 @@ export class SyncService {
             console.log("-------SyncService initzdlb restful 初始化字典数据及标签表接口返回结果："+JSON.stringify(data))
             base = data
             if(data.code == 0 && data.data.syncDataList.length>0){
-              let sql=''
+              let sql='';
               for(let a=0;a<data.data.syncDataList.length;a++){
                 let res = data.data.syncDataList[a];
                 //字典类型表
@@ -254,7 +254,7 @@ export class SyncService {
             sdl.push(sd);
           }
         }
-        return this.syncR.syncTime(DataConfig.uInfo.uI,this.util.getUuid(),fv,sdl)
+        return this.syncR.syncTime(DataConfig.uInfo.uI,this.util.getDeviceId(),fv,sdl)
       }).then(data=>{
         if (data && data.code == 0 && data.data.userDataList.length > 0) {
           fv = data.data.version;

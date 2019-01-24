@@ -24,7 +24,7 @@ import {DataConfig} from "../../app/data.config";
   '        <img [src]="imgurl" class="img_size">' +
   '      </ion-avatar>' +
   '      <h1 [innerHtml]="uo.uN"></h1>' +
-  '      <span [innerHtml]="uo.uCt"></span>' +
+  '      <span [innerHtml]="uo.uCt" class="fontcol"></span>' +
   '    </ion-item>' +
   '' +
   '    <ion-item [hidden]="uo.uty != 0" (click)="toUb()" no-lines  style="height:185px" >' +

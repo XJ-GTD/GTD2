@@ -19,10 +19,10 @@ import {PageConfig} from "../../app/page.config";
   '  <ion-navbar>' +
   '    <ion-title></ion-title>' +
   '    <ion-buttons right>' +
-  '      <button ion-button ion-only *ngIf="state == false" (click)="edit()">' +
+  '      <button ion-button ion-only *ngIf="state == false" (click)="edit()"  style="padding-right: 10px;">' +
   '        编辑' +
   '      </button>' +
-  '      <button ion-button ion-only *ngIf="state == true" (click)="confirm()">' +
+  '      <button ion-button ion-only *ngIf="state == true" (click)="confirm()"  style="padding-right: 10px;">' +
   '        确定' +
   '      </button>' +
   '    </ion-buttons>' +

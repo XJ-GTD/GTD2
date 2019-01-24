@@ -176,6 +176,8 @@ export class SbPage {
   jh:JhModel;
   jhtmp:JhModel;
 
+  event:any;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public loadingCtrl: LoadingController,
@@ -208,6 +210,7 @@ export class SbPage {
   ionViewWillEnter(){
     console.log("ionViewWillEnter SbPage :");
     this.startTime = this.navParams.get("dateStr");
+    this.event = this.navParams.get("event");
     console.log(this.startTime);
     this.init();
   }
@@ -245,7 +248,8 @@ export class SbPage {
   newProject() {
     console.log("时间格式规整前 :: " + this.startTime);
     /*时间格式规整*/
-    this.startTime = moment(new Date(this.startTime).getTime()).format("YYYY/MM/DD HH:mm");
+    this.startTime=this.startTime.replace(new RegExp('-','g'),'/').replace("T"," ").substr(0,16);
+    // this.startTime = moment(new Date(this.startTime).getTime()).format("YYYY/MM/DD HH:mm");
     console.log("时间格式规整后 :: " + this.startTime);
 
     let rul = new Array<RuModel>();
@@ -264,7 +268,7 @@ export class SbPage {
       if(data.code == 0){
         console.log("添加日程成功");
         // this.navCtrl.push('HzPage')
-        this.events.publish("flashDay",{day:moment(new Date(this.startTime).getTime()).format("YYYY-MM-DD")});
+        this.events.publish("flashDay",{day:moment(new Date(this.startTime).getTime()).format("YYYY-MM-DD"),event:this.event});
         this.utilService.alert("日程创建成功");
         this.navCtrl.pop();
       }else{

@@ -157,7 +157,7 @@ export class WorkService {
       let bs = new BsModel();
       //先查询当前用户ID
       let rc = new RcEntity();
-      sd=sd.replace(new RegExp('-','g'),'/');;
+      sd=sd.replace(new RegExp('-','g'),'/');
       rc.uI=cui;
       rc.sN=sN;
       rc.sd=sd;
@@ -169,6 +169,7 @@ export class WorkService {
       if(ed != null && ed != ''){
         rc.ed=ed;
       }
+      rc.ed =rc.ed.replace(new RegExp('-','g'),'/');
       rc.lI=lbI;
       rc.sI=sI;
       console.log("------ WorkService arcMq() Start ------------");
@@ -191,7 +192,8 @@ export class WorkService {
         rcp.son=rc.sN;
         return this.baseSqlite.save(rcp);
       }).then(data=>{
-        console.log("------ WorkService arcMq() End ------------")
+        console.log("------ WorkService arcMq() End ------------");
+        resolve(bs);
       }).catch(e=>{
         console.error("WorkService arcMq() Error : " +JSON.stringify(e));
         bs.code = ReturnConfig.ERR_CODE;

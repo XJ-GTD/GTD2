@@ -15,12 +15,12 @@ page-sb {
   }
 
   .item-block.item-ios{
-    border-bottom: 0.55px solid #e5e5e5 ;
+    border-bottom: 1px solid #e5e5e5 ;
   }
 
 
   .div-add-border{
-    border: 0.5px solid #ccc;
+    border: 1px solid #ccc;
   }
   .button-border{
     border-radius: 50%;
@@ -31,7 +31,7 @@ page-sb {
   }
 
   ion-textarea{
-    border:0.5px solid #f2f2f2;
+    border:1px solid #f2f2f2;
     border-radius: 5px;
   }
 
@@ -111,9 +111,9 @@ page-sb {
 
   .buttonCssA{
     padding:5px 10px 5px 15px;
-    border-radius: 60px;
+    border-radius: 11px;
     background-color: #f0f0f0;
-    //border:0.5px solid #7f8e9e;
+    margin-right: 10px;
     .divCssA{
       font-size: 12px;
       padding: 3px;
@@ -128,7 +128,7 @@ page-sb {
     padding:5px;
     border-radius: 5%;
     background-color: #fff;
-    border:0.5px solid #24BEB9;
+    border:1px solid #24BEB9;
     color:#24BEB9;
     .divCssB{
       padding: 3px;
@@ -140,9 +140,14 @@ page-sb {
     border-radius: 5px;
   }
 
+  .item-ios ion-thumbnail {
+      min-width: 46px;
+      min-height: 46px;
+  }
+
   ion-thumbnail img{
-    width: 4.5rem !important;
-    height: 4.5rem !important;
+    width: 45px !important;
+    height: 45px !important;
   }
 
   .height56{
@@ -220,5 +225,9 @@ page-sb {
 
   .input-cover{
     position: absolute;
+  }
+
+  .malf{
+    margin-left: 10px;
   }
 }

@@ -15,6 +15,7 @@ import {SyncEntity} from "../../entity/sync.entity";
 import {ReadlocalService} from "../readlocal.service";
 import * as moment from "moment";
 import {RcoModel} from "../../model/out/rco.model";
+import {SyncSqlite} from "./sync-sqlite";
 
 
 /**
@@ -28,6 +29,7 @@ export class WorkSqlite{
   constructor( private baseSqlite: BaseSqlite,
             private msSqlite:MsSqlite,
             private readlocal:ReadlocalService,
+            private sync:SyncSqlite,
             private util:UtilService) {
 
   }
@@ -187,11 +189,11 @@ export class WorkSqlite{
         //查询Message
         return this.msSqlite.getMonthMs(ym);
       }).then(data=>{
-        if(data&&data.rows&&data.rows.length){
+        if(data&&data.rows&&data.rows.length>0){
           //判断是否有消息
-          for(let j=0;j<=data.rows.length;j++){
+          for(let j=0;j<data.rows.length;j++){
             let bool = true; //判断当前日是否存在
-            for(let i=0;i<=resL.length;i++){
+            for(let i=0;i<resL.length;i++){
               if(resL[i].ymd== data.rows.item(j).md){
                 resL[i].mdn=1;
                 bool = false;
@@ -714,7 +716,7 @@ export class WorkSqlite{
 
     sync.action= ac;
     sync.tableName = tn;
-    return this.baseSqlite.save(sync);
+    return this.sync.save(sync.isq);
   }
   /**
    * 服务器定时同步日程表
@@ -733,7 +735,7 @@ export class WorkSqlite{
     sync.tableG = moment(en.ed).format('YYYY-MM-DD HH:mm');
     sync.action= ac;
     sync.tableName = DataConfig.GTD_C;
-    return this.baseSqlite.save(sync);
+    return this.sync.save(sync.isq);
   }
 
   /**
@@ -756,6 +758,6 @@ export class WorkSqlite{
       sync.tableName = DataConfig.GTD_D;
       sql+=sync.isq;
     }
-    return this.baseSqlite.importSqlToDb(sql);
+    return this.sync.save(sql);
   }
 }

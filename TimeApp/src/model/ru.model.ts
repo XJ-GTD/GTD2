@@ -6,21 +6,21 @@ import {BsModel} from "./out/bs.model";
 //授权联系人表实体
 export class RuModel extends BsModel{
 
-  private _id: string=null;   //UUID
-  private _ran:string=null; //别名
-  private _ranpy:string=null; //别名拼音
-  private _rI: string=null;  //关联ID
-  private _rN: string=null;  //名称
-  private _rNpy: string=null;  //名称拼音
-  private _rC: string=null;  // 联系方式
-  private _rF: string=null;     // 授权标识0未授权1授权
-  private _rel: string=null; // 联系类型
-  private _hiu: string=null; // 联系人头像URL
+  private _id: string='';   //UUID
+  private _ran:string=''; //别名
+  private _ranpy:string=''; //别名拼音
+  private _rI: string='';  //关联ID
+  private _rN: string='';  //名称
+  private _rNpy: string='';  //名称拼音
+  private _rC: string='';  // 联系方式
+  private _rF: string='';     // 授权标识0未授权1授权
+  private _rel: string=''; // 联系类型
+  private _hiu: string=''; // 联系人头像URL
   private _sdt: number = 0; //日程是否发送状态;0未发送，1同意发送，2拒绝发送，3未注册
   private _ot:string='';//0是未被添加，1是同意，2是拉黑
   private _is:string='';//0本地存在，1本地不存在
-  private _rugId:string; //群组关联ID
-  private _bmi:string; //群组ID
+  private _rugId:string=''; //群组关联ID
+  private _bmi:string=''; //群组ID
   get id(): string {
     return this._id;
   }

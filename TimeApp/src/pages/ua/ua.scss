@@ -122,7 +122,7 @@ page-ua {
       vertical-align: 90%;
     }
     .input_text_verification{
-      border-bottom: 0.55px solid #e5e5e5;
+      border-bottom: 1px solid #e5e5e5;
       display: inline-block;
       padding: 1px;
       margin-left:10px;
@@ -136,7 +136,7 @@ page-ua {
           //padding-left: 10px;
           padding: 0;
           .item-inner {
-            //border-bottom: 0.55px solid #c8c7cc;
+            //border-bottom: 1px solid #c8c7cc;
             border-bottom: 0;
           }
         }
@@ -179,6 +179,6 @@ page-ua {
   }
 
   .item-ios.item-block .item-inner{
-    border-bottom: 0.55px solid #e5e5e5 ;
+    border-bottom: 1px solid #e5e5e5 ;
   }
 }
