@@ -9,6 +9,7 @@ import { DwEmitService } from "../../service/util-service/dw-emit.service";
 import { DataConfig } from "../../app/data.config";
 import { WsEnumModel } from "../../model/ws/ws.enum.model";
 import { NetworkService } from "../../service/util-service/network.service";
+import {Hb01Page} from "../hb01/hb01";
 
 declare var cordova: any;
 
@@ -35,45 +36,6 @@ declare var cordova: any;
       <ion-content> 
         <ion-list class="yyWarp">
           
-          <div col-10 class="cc1" [hidden]="true">
-            <div class="cc2">
-              <div style="padding:10px;">
-                <img class="cc3" src="./assets/imgs/headImg.jpg">
-                <div class="cc4">名称</div>
-              </div>
-              <div style="padding:10px;">
-                <div class="cc3">图片</div>
-                <div class="cc4">名称</div>
-              </div>
-              <div style="padding:10px;">
-                <div class="cc3">图片</div>
-                <div class="cc4"></div>
-              </div>
-            </div>
-            <div class="cc2" padding>
-              <div style="border-radius: 5px;">
-                <button class="cc5">
-                  <div float-right class="cc6">
-                    <div class="cc7"></div>
-                  </div>
-                  <div float-right  style="font-size: 15px;padding: 3px;">标签</div>
-                </button>
-              </div>
-              <div style="padding-left: 10px" >
-                <div style="font-size: 19px;padding-bottom: 10px">中午和杨洋在星巴克见面</div>
-                <div>
-                  <div style="border-radius: 5px;border:1px solid #999999;color:#999999;width: fit-content;padding: 6px">14:00AM</div>
-                </div>
-              </div>
-            </div>
-            <div class="cc8">
-              <button class="cc9" style="color: #666666;">取消</button>
-              <button class="cc9" style="color: #222222;">发送</button>
-            </div>
-          </div>
-          
-          
-          
           <ion-item  *ngFor="let message of messages"  on-hold="onMessageHold($event, $index, message)"> 
             <!-- 判断消息是用户 --> 
             <div *ngIf="U1 == message.tt" class="userTalk animated bounceIn"> 
@@ -97,14 +59,43 @@ declare var cordova: any;
               </ion-list> 
             </ion-card> 
             <!-- 判断消息是数据：新增日程 --> 
-            <div *ngIf="S4 == message.tt" class="userTalk animated bounceIn"> 
-                  <h2>{{message.sc.sd}}</h2> 
-                  <p> 
-                    <ion-badge>{{message.sc.sN}}</ion-badge> 
-                  </p> 
-                <ion-item *ngFor="let ru of message.sc.rus"> 
-                  <p>{{ru.ran}}</p> 
-                </ion-item> 
+            <div *ngIf="S4 == message.tt" class="userTalk animated bounceIn">
+              <div col-10 class="cc1" >
+                <div class="cc2">
+                  <div style="padding:10px;">
+                    <img class="cc3" src="./assets/imgs/headImg.jpg">
+                    <div class="cc4">名称</div>
+                  </div>
+                  <div style="padding:10px;">
+                    <div class="cc3">图片</div>
+                    <div class="cc4">名称</div>
+                  </div>
+                  <div style="padding:10px;">
+                    <div class="cc3">图片</div>
+                    <div class="cc4"></div>
+                  </div>
+                </div>
+                <div class="cc2" padding>
+                  <div style="border-radius: 5px;">
+                    <button class="cc5">
+                      <div float-right class="cc6">
+                        <div class="cc7"></div>
+                      </div>
+                      <div float-right  style="font-size: 15px;padding: 3px;">标签</div>
+                    </button>
+                  </div>
+                  <div style="padding-left: 10px" >
+                    <div style="font-size: 19px;padding-bottom: 10px">中午和杨洋在星巴克见面</div>
+                    <div>
+                      <div style="border-radius: 5px;border:1px solid #999999;color:#999999;width: fit-content;padding: 6px">14:00AM</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="cc8">
+                  <button class="cc9" style="color: #666666;">取消</button>
+                  <button class="cc9" style="color: #222222;">发送</button>
+                </div>
+              </div>
             </div> 
           </ion-item> 
         </ion-list> 
@@ -124,7 +115,7 @@ declare var cordova: any;
               <ion-icon name="create"></ion-icon> 
             </button> 
           </ion-buttons> 
-          <img  src="./assets/imgs/yuying.png"   (click)="startXiaoJi()" class="animated bounceIn"/> 
+          <img  src="./assets/imgs/yuying.png"   (click)="startXiaoJi()" /> 
         </ion-toolbar> 
         <ng-template #xjInput> 
           <ion-toolbar style="margin-top: 18px" class="animated bounceIn faster"> 
@@ -133,7 +124,7 @@ declare var cordova: any;
                 <ion-icon name="mic" style=" color: white"></ion-icon> 
               </button> 
             </ion-buttons> 
-            <ion-input id="userInput" type="text" [(ngModel)]="inputText" placeholder="打字悄悄告诉我"></ion-input> 
+            <ion-input id="userInput" type="text" [(ngModel)]="inputText" placeholder="来传小纸条吧"></ion-input> 
             <ion-buttons end> 
               <button ion-button icon-end color="royal" (click)="startXiaojiText()"> 
                 <ion-icon name="send"></ion-icon> 
@@ -141,18 +132,17 @@ declare var cordova: any;
             </ion-buttons> 
           </ion-toolbar> 
         </ng-template> 
-        <!--<page-hb01></page-hb01>--> 
+        <page-hb01></page-hb01>
       </ion-footer> 
     </div>`,
 })
 export class HbPage {
-  // @ViewChild(Hb01Page) Hb01Page:Hb01Page;
+  @ViewChild(Hb01Page) hb01Page:Hb01Page;
   @ViewChild(Content) content: Content;
 
 
   data: any;
   modeFlag: boolean = true;   //判断助手模式 true语音false手输
-  initFlag: boolean = false;   //页面初始化
 
   U1: string = DataConfig.U1;
   S1: string = DataConfig.S1;
@@ -196,7 +186,8 @@ export class HbPage {
     //this.initWakeUp();
 
     console.log('ionViewDidLoad HbPage');
-    // this.Hb01Page.loadScene();
+     this.hb01Page.loadScene();
+    this.hb01Page.setDrawType(1);
     // this.initWakeUp();
 
   }
@@ -235,7 +226,10 @@ export class HbPage {
 
     //切换手动输入模式
     this.modeFlag = !this.modeFlag;
-    this.initFlag = false;
+    if (this.modeFlag)
+      this.hb01Page.setDrawType(1);
+    else
+      this.hb01Page.setDrawType(0);
     return;
   }
 
@@ -246,10 +240,16 @@ export class HbPage {
       this.xiaojiSpeech.stopSpeak();
       return;
     }
+    this.hb01Page.setDrawType(2);
     this.xiaojiSpeech.listenAudio(rs => {
       rs = rs.replace("[asr.partial]", "");
       this.speechInputHanding(rs);
       this.xiaojiFeekback.audioSnare();
+
+      this.hb01Page.setDrawType(0);
+      setTimeout(()=>{
+        this.hb01Page.setDrawType(1);
+      },1000);
     });
   }
 
@@ -285,10 +285,20 @@ export class HbPage {
       // textU = $event;
       // this.messages.unshift(textU);
     } else if ($event.tt == DataConfig.S1) {
-      textX = $event;
+      textX.tt = $event.tt;
+      textX.at = $event.at;
       this.messages.unshift(textX);
       this.xiaojiSpeech.speakText(textX.at, success => {});
-    } else if ($event.tt == DataConfig.S5) {
+    } else if ($event.tt == DataConfig.S4) {
+      textX.tt = DataConfig.S1;
+      textX.at = $event.at;
+      this.messages.unshift(textX);
+      this.xiaojiSpeech.speakText(textX.at, success => {
+        data.tt = $event.tt;
+        data.sc = $event.sc;
+        this.messages.unshift(data);
+      });
+    }else if ($event.tt == DataConfig.S5) {
       textX.tt = DataConfig.S1;
       textX.at = $event.at;
       this.messages.unshift(textX);

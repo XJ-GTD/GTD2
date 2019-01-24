@@ -14,7 +14,7 @@ public enum WebSocketSkillEnum {
     XF_OTHER_WEATHER("B1000","weather"), XF_OTHER_CALENDAR("B1000","calendar"), XF_OTHER_DATA("B1000","datetimeX"),XF_OTHER_JOKE("B1000","joke"),
     BC_SCHEDULE_CREATE("D1101","schedule_create"), BC_SCHEDULE_DELETE("D1102","schedule_delete"), BC_SCHEDULE_UPDATE("D1103","schedule_update"),
     BC_PLAYER_CREATE("D1201","player_create"),
-    OPEN_QA("B1000","openQA"), QUERY("B1000","QUERY");
+    OPEN_QA("B1000","openQA"), QUERY("B1000","QUERY"), TURING("B1000", "Turing"), IFLYTEKQA("B1000", "iFlytekQA");
 
     private String intent;
     private String code;

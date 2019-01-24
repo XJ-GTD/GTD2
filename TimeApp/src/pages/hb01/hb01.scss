@@ -2,10 +2,10 @@ page-hb01 {
   canvas{
     position: absolute;
     /* top: 200px; */
-    right: 20px;
-    bottom: 20px;
-    background: black;
-    border-radius: 90px;
+    //right: 20px;
+    bottom:calc(100% - 150%)
+    //background: black;
+    //border-radius: 90px;
     //background: transparent;
 
   }

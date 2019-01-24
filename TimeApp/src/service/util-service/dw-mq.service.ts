@@ -132,23 +132,6 @@ export class DwMqService {
 
       this.dwResultSendToPage(aiui, mqDate.sk);
     })
-      .then(data=>{
-      //============ 业务测试添加日程 =============
-      console.log("========== 讯飞日程添加业务开始 ============： " + JSON.stringify(data));
-      if(aiui.sc && aiui.sc.rus.length>0){
-        let rc:RcModel = aiui.sc;
-        this.work.arc(rc.sN,rc.sd,rc.lI,rc.ji,rc.cft,rc.rm,rc.ac,rc.rus).then(data=>{
-          console.log("========== 讯飞日程添加业务结束 ============： " + JSON.stringify(data));
-          this.xiaojiSpeech.speakText('您的发布日程已安排成功', success => {});
-        }).catch(e=>{
-          console.error("========== 讯飞日程添加业务ERROR ============： " + JSON.stringify(e));
-          this.xiaojiSpeech.speakText('您的发布日程安排失败', success => {});
-        })
-      }
-      if(aiui.sc.rus.length==0){
-        this.xiaojiSpeech.speakText('日程发布失败，没有找到对应的联系人', success => {});
-      }
-    })
     .catch(e=>{
       console.error("========== 讯飞日程添加 ERROR ============： " + JSON.stringify(e));
       console.log("xfScheduleCreate:" + e.toString());
@@ -160,8 +143,18 @@ export class DwMqService {
    */
   private xfScheduleDelete(mqDate: WsModel) {
     let md: WsResDataModel = mqDate.res.data;
-    let sd = md.st;
-    let ed = md.et;
+    let sd = '';
+    if(md.st && md.st != ''){
+      sd = md.st;
+    }else{
+      sd = md.et;
+    }
+    let ed=''
+    if(md.et && md.et != ''){
+      ed = md.et;
+    }else{
+      ed = sd;
+    }
     let sN = md.sn;
     let aiui = new AiuiModel();
     this.work.getwL(sN, sd, ed, '', '', '','0').then(data => {
@@ -412,7 +405,7 @@ export class DwMqService {
    * @param sk
    */
   private dwResultSendToPage(aiui: AiuiModel, sk: string) {
-
+    console.log("dwResultSendToPage回应广播发送");
     this.emitSend.send(aiui, sk);
   }
 
