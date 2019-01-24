@@ -32,13 +32,13 @@ import { JhModel } from "../../model/jh.model";
   template:`<ion-header> 
     <ion-toolbar> 
       <ion-buttons left> 
-        <button ion-button icon-only (click)="goBack()"> 
+        <button ion-button icon-only (click)="goBack()" style="padding-left: 10px;"> 
           <ion-icon name="arrow-back" ></ion-icon> 
         </button> 
       </ion-buttons> 
       <ion-title>创建日程</ion-title> 
       <ion-buttons right> 
-        <button (click)="newProject()" ion-button padding-right> 
+        <button (click)="newProject()" ion-button style="padding-right: 10px;"> 
             发送
         </button> 
       </ion-buttons> 
@@ -49,21 +49,21 @@ import { JhModel } from "../../model/jh.model";
     <ion-textarea placeholder="要发的内容..." [(ngModel)]="title"></ion-textarea> 
     <div ion-item no-padding style="border: none;"> 
       <div *ngFor="let index of select"> 
-        <div float-left margin-left title="{{pRelAl[index].ran}}"> 
+        <div float-left title="{{pRelAl[index].ran}}"  class="malf"> 
           <ion-thumbnail ion-button color="light" float-start class="button-border padding-0 " no-margin> 
             <img [src]="pRelAl[index].hiu" class="button-border"> 
           </ion-thumbnail> 
-          <div style="clear: both; font-size:10px;width:56px;overflow: hidden;text-overflow: ellipsis;color:#666666" text-center >{{pRelAl[index].ran}}</div> 
+          <div style="clear: both; font-size:10px;width:45px;overflow: hidden;text-overflow: ellipsis;color:#666666" text-center >{{pRelAl[index].ran}}</div> 
         </div> 
       </div> 
-      <div float-left margin-left (click)="showCheckbox()"> 
+      <div float-left class="malf" (click)="showCheckbox()"> 
         <ion-thumbnail ion-button color="light" class="div-add-border button-border " no-margin  style="background: #FFFFFF"> 
           <ion-icon name="add"></ion-icon> 
         </ion-thumbnail> 
         <div style="clear: both; font-size:10px" text-center></div> 
       </div> 
     </div> 
-    <div class="height56"> 
+    <div class="height56" style="border-bottom:1px solid #e5e5e5"> 
       <ion-label float-right> 
         <ion-buttons> 
           <button class="buttonCssA" (click)="showJhs()" > 
@@ -84,7 +84,7 @@ import { JhModel } from "../../model/jh.model";
     <button ion-item class="padding-left-0 height56"> 
       <img src="./assets/imgs/1.png" item-start/> 
       <ion-label>时间</ion-label> 
-      <ion-datetime displayFormat="YYYY年MM月DD日 HH:mm" [(ngModel)]="startTime"></ion-datetime> 
+      <ion-datetime displayFormat="YYYY 年 MM 月 DD 日 HH:mm" [(ngModel)]="startTime"></ion-datetime> 
     </button> 
     <ion-item *ngIf="showA" class="padding-left-0 height56"> 
       <img src="./assets/imgs/4.png" item-start/> 
@@ -245,10 +245,6 @@ export class SbPage {
   newProject() {
     console.log("时间格式规整前 :: " + this.startTime);
     /*时间格式规整*/
-    if (this.startTime != null && this.startTime != "") {
-      this.startTime = this.startTime.replace("T", " ");
-      this.startTime = this.startTime.replace(":00Z", "");
-    }
     this.startTime = moment(new Date(this.startTime).getTime()).format("YYYY/MM/DD HH:mm");
     console.log("时间格式规整后 :: " + this.startTime);
 
@@ -268,6 +264,7 @@ export class SbPage {
       if(data.code == 0){
         console.log("添加日程成功");
         // this.navCtrl.push('HzPage')
+        this.events.publish("flashDay",{day:moment(new Date(this.startTime).getTime()).format("YYYY-MM-DD")})
         this.utilService.alert("日程创建成功，已发布");
         this.navCtrl.pop();
       }else{
