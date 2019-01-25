@@ -10,6 +10,9 @@ import { DataConfig } from "../../app/data.config";
 import { WsEnumModel } from "../../model/ws/ws.enum.model";
 import { NetworkService } from "../../service/util-service/network.service";
 import {Hb01Page} from "../hb01/hb01";
+import {RcModel} from "../../model/rc.model";
+import * as moment from "../sb/sb";
+import {WorkService} from "../../service/work.service";
 
 declare var cordova: any;
 
@@ -84,8 +87,8 @@ declare var cordova: any;
                   </div>
                 </div>
                 <div class="cc8">
-                  <button class="cc9" style="color: #222222;">发送</button>
-                  <button class="cc9" style="color: #666666;">取消</button>
+                  <button class="cc9" style="color: #222222;" (click)="createSchedule(message.sc, 0)">确认</button>
+                  <button class="cc9" style="color: #666666;" (click)="createSchedule(message.sc, 1)">取消</button>
                 </div>
               </div>
             </div> 
@@ -155,6 +158,7 @@ export class HbPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController,
               private dwEmit: DwEmitService,
+              private workService: WorkService,
               public paramsService: ParamsService,
               public xiaojiSpeech: XiaojiAssistantService,
               private networkService: NetworkService,
@@ -303,15 +307,6 @@ export class HbPage {
 
   }
 
-  //展示数据详情
-  showScheduleDetail(schedule) {
-    this.schedule = new ScheduleModel();
-    this.schedule = schedule;
-    this.paramsService.schedule = this.schedule;
-    console.log("schedule:" + this.paramsService.schedule);
-    this.navCtrl.push("SaPage");
-  }
-
   scrollToBottom() {
     setTimeout(() => {
       this.content.scrollToBottom();
@@ -331,6 +326,56 @@ export class HbPage {
       this.xiaojiSpeech.speakText(aiui.at, success=>{});
     }
   }
+  
+  /*=======================业务逻辑 start=========================*/
+  private createSchedule(sc: RcModel, flag: number) {
+    if (flag == 0) {
+      console.log("添加日程确认");
+      let textX = new AiuiModel();
+      this.workService.arc(sc.sN, sc.sd, sc.lI, sc.ji, sc.cft, sc.rm,sc.ac, sc.rus).then(data=>{
+        if(data.code == 0){
+          console.log("添加日程成功");
+          textX.tt = this.S1;
+          // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
+          textX.at = DataConfig.TEXT_CONTENT.get("A01" + "1");
+          this.messages.unshift(textX);
+          this.xiaojiSpeech.speakText(textX.at, success => {});
+        }else{
+          console.log("添加日程失败");
+          textX.tt = this.S1;
+          // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
+          textX.at = DataConfig.TEXT_CONTENT.get("A01" + "10");
+          this.messages.unshift(textX);
+          this.xiaojiSpeech.speakText(textX.at, success => {});
+        }
+      }).catch(reason => {
+        console.log("添加日程失败");
+
+      })
+    } else {
+      console.log("添加日程取消");
+
+    }
+
+  }
+
+  private deleteSchedule(sc: RcModel, flag: number) {
+
+  }
+
+  //展示数据详情
+  // showScheduleDetail(schedule) {
+  //   this.schedule = new ScheduleModel();
+  //   this.schedule = schedule;
+  //   this.paramsService.schedule = this.schedule;
+  //   console.log("schedule:" + this.paramsService.schedule);
+  //   this.navCtrl.push("SaPage");
+  // }
+
+  private showScheduleDetail(sc: RcModel) {
+
+  }
+  /*===================业务逻辑 end=======================*/
 
   /*==================== 聊天界面 end ===================*/
 

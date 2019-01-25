@@ -44,9 +44,10 @@ export class DwMqService {
 
       switch (mqDate.sk) {
         case SkillConfig.XF_NMT: //确认
-
+          this.trueDeal(mqDate);
           break;
         case SkillConfig.XF_NMC: //取消
+          this.falseDeal(mqDate);
           break;
         case SkillConfig.XF_SCC: //讯飞：日程添加
           this.xfScheduleCreate(mqDate);
@@ -101,7 +102,7 @@ export class DwMqService {
     let aiui = new AiuiModel();
     aiui.tt = DataConfig.T1;
     // aiui.at = WsEnumModel[mqDate.sk] + UtilService.randInt(0,10);
-    aiui.at = mqDate.at;
+    aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "1");
     this.dwResultSendToPage(aiui, mqDate.sk);
   }
 
@@ -109,7 +110,7 @@ export class DwMqService {
     let aiui = new AiuiModel();
     aiui.tt = DataConfig.F1;
     // aiui.at = WsEnumModel[mqDate.sk] + UtilService.randInt(0,10);
-    aiui.at = mqDate.at;
+    aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "1");
     this.dwResultSendToPage(aiui, mqDate.sk);
   }
 
@@ -121,8 +122,8 @@ export class DwMqService {
     let md: WsResDataModel = mqDate.res.data;
     let ca = md.common_A;  //人名原参数value
     let cb = md.common_B; //人名原参数normValue
-    let pln = md.pln //拼音
-    let sn = md.sn //标题
+    let pln = md.pln; //拼音
+    let sn = md.sn; //标题
     let sd = md.st;
     if (sd == null || sd == '') {
       sd = md.et;
