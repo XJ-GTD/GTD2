@@ -322,6 +322,7 @@ export class DwMqService {
         ms.md = sd;
         ms.rI = sI;
         ms.mt = '0';
+        ms.mf = '0';
         return this.msSqlite.addMs(ms);
       }).then(data => {
         console.log("----- DwMqService scheduleCreate(业务：日程添加Message) end ---- ");
@@ -350,6 +351,7 @@ export class DwMqService {
       ms.md = sd;
       ms.rI = sI;
       ms.mt = '0';
+      ms.mf = '0';
       return this.msSqlite.addMs(ms);
     }).then(data => {
       console.log("----- DwMqService scheduleCreate(业务：日程更新Message) end ---- ");
@@ -363,8 +365,19 @@ export class DwMqService {
    */
   private scheduleDelete(data: WsResDataModel) {
     let sI = data.si;
+    let ct = data.sn;
+    let sd = data.st;
+    let ed = data.et;
     this.work.drc(sI,'').then(data => {
-
+      let ms = new MsEntity();
+      ms.mn = ct;
+      ms.md = sd;
+      ms.rI = sI;
+      ms.mt = '0';
+      ms.mf = '0';
+      return this.msSqlite.addMs(ms);
+    }).then(data => {
+      console.log("----- DwMqService scheduleCreate(业务：日程更新Message) end ---- ");
     }).catch(e => {
 
     })
