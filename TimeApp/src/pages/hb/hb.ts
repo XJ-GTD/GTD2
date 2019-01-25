@@ -64,8 +64,8 @@ declare var cordova: any;
             <!-- 判断消息是数据：新增日程 --> 
             <div *ngIf="S4 == message.tt" class="userTalk animated bounceIn">
               <div col-10 class="cc1" >
-                <div class="cc2" *ngFor="let pl of message.sc.rus">
-                  <div style="padding:10px;">
+                <div class="cc2">
+                  <div style="padding:10px;" *ngFor="let pl of message.sc.rus">
                     <img class="cc3" src="{{pl.hiu}}">
                     <div class="cc4">{{pl.ran}}</div>
                   </div>
@@ -82,7 +82,7 @@ declare var cordova: any;
                   <div style="padding-left: 10px" >
                     <div style="font-size: 19px;padding-bottom: 10px">{{message.sc.sN}}</div>
                     <div>
-                      <div style="border-radius: 5px;border:1px solid #999999;color:#999999;width: fit-content;padding: 6px">{{message.sc.sd}}</div>
+                      <div style="border-radius: 5px;border:1px solid #999999;color:#999999;width: fit-content;padding: 6px;font-size: 12px">{{message.sc.sd | date:'yyyy年MM月dd日 HH:mm'}}</div>
                     </div>
                   </div>
                 </div>
@@ -336,7 +336,7 @@ export class HbPage {
       this.xiaojiSpeech.speakText(aiui.at, success=>{});
     }
   }
-  
+
   /*=======================业务逻辑 start=========================*/
   private confirmatoryMethod(aiui: AiuiModel, tg: string) {
 

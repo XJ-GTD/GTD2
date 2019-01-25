@@ -11,6 +11,8 @@ import {PageConfig} from "../../app/page.config";
 import {UtilService} from "../../service/util-service/util.service";
 import {XiaojiFeedbackService} from "../../service/util-service/xiaoji-feedback.service";
 import {ScheduleModel} from "../../model/schedule.model";
+import {WorkService} from "../../service/work.service";
+import {RcModel} from "../../model/rc.model";
 
 /**
  * Generated class for the HaPage page.
@@ -62,26 +64,29 @@ import {ScheduleModel} from "../../model/schedule.model";
             <button (click)="editEvent(event)" ion-item class="buttonWan">编辑</button>
           </div>
         </ion-item>
-        <ion-item style="border-top-left-radius: 20px;border-top-right-radius: 20px;">
+        <ion-item style="border-top-left-radius: 20px;border-top-right-radius: 20px;" no-padding>
           <img src="./assets/imgs/h.png" style="width: 20px" item-start>
           <ion-label col-3>任务</ion-label>
           <ion-label>{{event.scheduleName}}</ion-label>
         </ion-item>
-        <ion-item>
+        <ion-item no-padding>
          <img src="./assets/imgs/g.png" style="width: 20px" item-start>
           <ion-label col-3 item-left style="margin-right: 0px !important;">参与人</ion-label>
-          <div item-left margin-left *ngFor="let pl of event.group">
-            <div>
-              <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">
-                <img [src]="" style="border-radius: 50%;width: 40px;height: 40px">
-              </ion-thumbnail>
-              <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center>
-                张三
+          <div item-left margin-left *ngFor="let rc of rcMd">
+            <div *ngIf="rc.sI == event.scheduleId " style="display: flex">
+              <div *ngFor="let ru of rc.rus.slice(0,3)">
+                <ion-thumbnail style="min-width: 35px !important;min-height: 35px !important;">
+                  <img [src]="ru.hiu" style="border-radius: 50%;width: 35px;height: 35px">
+                </ion-thumbnail>
+                <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;" text-center>
+                  {{ru.ran}}
+                </div>
               </div>
+              
             </div>
           </div>
         </ion-item>
-        <ion-item>
+        <ion-item no-padding>
           <img src="./assets/imgs/b.png" style="width: 20px" item-start>
           <ion-label col-3>备注</ion-label>
           <ion-label>哈哈哈</ion-label>
@@ -102,6 +107,7 @@ export class HaPage {
   active: number = 0;//当前页面
   noShow: boolean = true;
   dayEvents: Array<ScheduleModel>;
+  rcMd: Array<RcModel> = [];
 
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
   options: CalendarComponentOptions = {
@@ -116,7 +122,8 @@ export class HaPage {
               private events: Events,
               private el: ElementRef,
               private navCtrl: NavController,
-              private app: App) {
+              private app: App,
+              private work: WorkService) {
     moment.locale('zh-cn');
   }
 
@@ -136,6 +143,12 @@ export class HaPage {
     this.events.subscribe("showSchedule",(data)=>{
       this.dayEvents = data.dayEvents;
       this.active = data.index;
+      this.rcMd = [];
+      for(let ent of this.dayEvents){
+        this.work.getds(ent.scheduleId).then(data=>{
+           this.rcMd.push(data);
+        })
+      }
       setTimeout(()=>{
         let domList = this.el.nativeElement.querySelectorAll(".pop-css");
         console.log(domList.length);

@@ -1,7 +1,7 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, EventEmitter, ViewChild} from '@angular/core';
 import {
   IonicPage, LoadingController, NavController, NavParams, AlertController, Navbar,
-  ModalController, Events
+  ModalController, Events, Alert
 } from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
 import { FindOutModel } from "../../model/out/find.out.model";
@@ -17,6 +17,7 @@ import { ZtdModel } from "../../model/ztd.model";
 import { DataConfig } from "../../app/data.config";
 import { JhService } from "../../service/jh.service";
 import { JhModel } from "../../model/jh.model";
+import {DateTime} from "ionic-angular/components/datetime/datetime";
 
 /**
  * Generated class for the SbPage page.
@@ -84,7 +85,7 @@ import { JhModel } from "../../model/jh.model";
     <button ion-item class="padding-left-0 height56"> 
       <img src="./assets/imgs/1.png" item-start/> 
       <ion-label>时间</ion-label> 
-      <ion-datetime displayFormat="YYYY 年 MM 月 DD 日 HH:mm" [(ngModel)]="startTime"></ion-datetime> 
+      <ion-datetime  displayFormat="YYYY 年 MM 月 DD 日 HH:mm" [(ngModel)]="startTime"></ion-datetime> 
     </button> 
     <ion-item *ngIf="showA" class="padding-left-0 height56"> 
       <img src="./assets/imgs/4.png" item-start/> 
@@ -132,6 +133,9 @@ export class SbPage {
 
   @ViewChild(Navbar) navBar: Navbar;
 
+  @ViewChild(DateTime) dateTime: DateTime;
+
+  @ViewChild(Alert) alert: Alert;
 
   private data: any;
   group: any;//Array<GroupModel>;
@@ -183,14 +187,13 @@ export class SbPage {
               public loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
               private paramsService: ParamsService,
-              private actionSheetCtrl: ActionSheetController,
               private relmemService: RelmemService,
               private workService: WorkService,
               private util: UtilService,
               private jhService: JhService,
               private modal: ModalController,
               private utilService: UtilService,
-              private events: Events) {
+              private events: Events,) {
     this.jhtmp = new JhModel();
     this.jhtmp.jn="添加计划";
     this.jh = this.jhtmp;
@@ -215,6 +218,17 @@ export class SbPage {
     this.init();
   }
 
+  ionViewWillLeave() {
+    if(this.alert != undefined){
+      this.alert.dismiss();
+    }
+    if(this.dateTime._picker != undefined){
+      this.dateTime._picker.dismiss();
+    }
+  }
+
+
+
   init() {
     this.getAllRel();
     this.findLabel();
@@ -229,6 +243,11 @@ export class SbPage {
     console.log(this.startTime)
 
     this.repeatTypes = DataConfig.ZTD_MAP.get(DataConfig.REPEAT_TYPE); //重复类型
+
+    setTimeout(()=>{
+      console.log(this.alert);
+      this.alert.dismiss();
+    },10000)
   }
 
   //查询系统标签
@@ -326,6 +345,7 @@ export class SbPage {
       }
     });
     alert.present();
+    this.alert = alert;
   }
 
   //所有联系人
@@ -479,6 +499,7 @@ export class SbPage {
 
     });
     alert.present()
+    this.alert = alert;
   }
 
   showLb(){
@@ -505,6 +526,7 @@ export class SbPage {
       ]
     });
     alert.present();
+    this.alert = alert;
   }
 
 

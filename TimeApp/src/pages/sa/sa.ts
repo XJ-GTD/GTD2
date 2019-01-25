@@ -37,13 +37,13 @@ import {PageConfig} from "../../app/page.config";
   <ion-content padding> 
   <div *ngIf="!isEdit"> 
     <ion-item> 
-      <img src="./assets/imgs/h.png" style="width: 20px" item-start> 
+      <img src="./assets/imgs/h.png" style="width: 15px" item-start> 
       <ion-label col-3>任务</ion-label> 
       <ion-label >{{rc.sN}}</ion-label> 
     </ion-item> 
     <!--<div padding-left style=" border-bottom: 1px solid #e5e5e5;display: flex;" margin-top>-->
       <!--<div>-->
-        <!--<img src="./assets/imgs/h.png" style="width: 20px;margin:8px 16px 8px 0; ">-->
+        <!--<img src="./assets/imgs/h.png" style="width: 15px;margin:8px 16px 8px 0; ">-->
       <!--</div>-->
       <!--<div col-3>-->
         <!--<span class="spanCss">任务</span>-->
@@ -54,7 +54,7 @@ import {PageConfig} from "../../app/page.config";
     <!--</div>-->
     <div padding-left style=" border-bottom: 1px solid #e5e5e5;display: flex;" margin-top> 
       <div> 
-        <img src="./assets/imgs/g.png" style="width: 20px;margin:8px 16px 8px 0; "> 
+        <img src="./assets/imgs/g.png" style="width: 15px;margin:8px 16px 8px 0; "> 
       </div> 
       <div col-3> 
         <span class="spanCss">参与人</span> 
@@ -79,29 +79,29 @@ import {PageConfig} from "../../app/page.config";
       </div> 
     </div> 
     <ion-item> 
-      <img src="./assets/imgs/f.png" style="width: 20px" item-start> 
+      <img src="./assets/imgs/f.png" style="width: 15px" item-start> 
       <ion-label col-3>计划</ion-label> 
       <ion-label >{{rc.jn}}</ion-label> 
     </ion-item> 
     <ion-item> 
-      <img src="./assets/imgs/e.png" style="width: 20px" item-start> 
+      <img src="./assets/imgs/e.png" style="width: 15px" item-start> 
       <ion-label col-3 item-left>标签</ion-label> 
       <div item-left class="lbCss"  *ngIf="rc.lan"> 
         <div float-left>{{rc.lan}}</div> 
       </div> 
     </ion-item> 
     <ion-item> 
-      <img src="./assets/imgs/d.png" style="width: 20px" item-start> 
+      <img src="./assets/imgs/d.png" style="width: 15px" item-start> 
       <ion-label col-3>时间</ion-label> 
       <ion-label >{{rc.sd | date:'yyyy年MM月dd日 HH:mm'}}</ion-label> 
     </ion-item> 
     <button ion-item> 
-      <img src="./assets/imgs/c.png" style="width: 20px" item-start> 
+      <img src="./assets/imgs/c.png" style="width: 15px" item-start> 
       <ion-label col-3>提醒</ion-label> 
       <ion-label color="primary">提前十分钟</ion-label> 
     </button> 
     <ion-item> 
-      <img src="./assets/imgs/b.png" style="width: 20px" item-start> 
+      <img src="./assets/imgs/b.png" style="width: 15px" item-start> 
       <ion-label col-3>备注</ion-label> 
       <ion-label>哈哈哈</ion-label> 
     </ion-item> 
@@ -109,13 +109,13 @@ import {PageConfig} from "../../app/page.config";
    
   <div *ngIf="isEdit"> 
     <ion-item> 
-      <img src="./assets/imgs/h.png" style="width: 20px" item-start> 
+      <img src="./assets/imgs/h.png" style="width: 15px" item-start> 
       <ion-label col-3>任务</ion-label> 
       <ion-input [(ngModel)]="rc.sN" placeholder="{{rc.sN}}"></ion-input> 
     </ion-item> 
     <div padding-left style=" border-bottom: 1px solid #e5e5e5;display: flex;" margin-top> 
       <div> 
-        <img src="./assets/imgs/g.png" style="width: 20px;margin:8px 16px 8px 0; "> 
+        <img src="./assets/imgs/g.png" style="width: 15px;margin:8px 16px 8px 0; "> 
       </div> 
       <div col-3> 
         <span class="spanCss">参与人</span> 
@@ -140,30 +140,30 @@ import {PageConfig} from "../../app/page.config";
       </div> 
     </div> 
     <ion-item> 
-      <img src="./assets/imgs/f.png" style="width: 20px" item-start> 
+      <img src="./assets/imgs/f.png" style="width: 15px" item-start> 
       <ion-label col-3>计划</ion-label> 
       <ion-label >{{rc.jn}}</ion-label> 
       <!--<ion-input [(ngModel)]="rc.jn"  placeholder="{{rc.jn}}"></ion-input> -->
     </ion-item> 
     <ion-item> 
-      <img src="./assets/imgs/e.png" style="width: 20px" item-start> 
+      <img src="./assets/imgs/e.png" style="width: 15px" item-start> 
       <ion-label col-3 item-left>标签</ion-label> 
       <div item-left> 
         <div float-left>{{rc.lan}}</div> 
       </div> 
     </ion-item> 
     <ion-item> 
-      <img src="./assets/imgs/d.png" style="width: 20px" item-start> 
+      <img src="./assets/imgs/d.png" style="width: 15px" item-start> 
       <ion-label col-3>时间</ion-label> 
       <ion-datetime displayFormat="YYYY年MM月DD日 HH:mm" [(ngModel)]="starttmp"></ion-datetime> 
     </ion-item> 
     <button ion-item> 
-      <img src="./assets/imgs/c.png" style="width: 20px" item-start> 
+      <img src="./assets/imgs/c.png" style="width: 15px" item-start> 
       <ion-label col-3>提醒</ion-label> 
       <ion-label color="primary">提前十分钟</ion-label> 
     </button> 
     <ion-item> 
-      <img src="./assets/imgs/b.png" style="width: 20px" item-start> 
+      <img src="./assets/imgs/b.png" style="width: 15px" item-start> 
       <ion-label col-3>备注</ion-label> 
       <ion-input ></ion-input> 
     </ion-item> 

@@ -29,17 +29,17 @@ import {XiaojiAlarmclockService} from "../../service/util-service/xiaoji-alarmcl
   '    <button ion-item (click)="newsMessage()" class="rowCss">' +
   '      <ion-label>消息通知</ion-label>' +
   '    </button>' +
-  '    <button ion-item (click)="cleanCache()" class="rowCss">' +
+  '    <button ion-item (click)="cleanCache()" class="rowCss no-border">' +
   '      <ion-label item-start>缓存清理</ion-label>' +
   '      <ion-label item-end text-end>5.5M</ion-label>' +
   '    </button>' +
-  '    <button ion-item (click)="shareApp()" margin-top class="rowCss">' +
+  '    <button ion-item (click)="shareApp()" margin-top class="rowCss no-border">' +
   '      <ion-label>分享APP</ion-label>' +
   '    </button>' +
   '    <button ion-item (click)="aboutApp()" margin-top class="rowCss">' +
   '      <ion-label>关于</ion-label>' +
   '    </button>' +
-  '    <button ion-item (click)="helpAndFeedback()" class="rowCss">\n' +
+  '    <button ion-item (click)="helpAndFeedback()" class="rowCss no-border">\n' +
   '      <ion-label>帮助及反馈</ion-label>\n' +
   '    </button>\n' +
   '  </div>\n' +
