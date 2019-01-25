@@ -142,6 +142,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   @Output() onSelectStart: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onSelectEnd: EventEmitter<CalendarDay> = new EventEmitter();
 
+
   @Input()
   set options(value: CalendarComponentOptions) {
     this._options = value;
@@ -399,7 +400,6 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   writeValue(obj: any): void {
-    console.info("*************************************")
     this._writeValue(obj);
     if (obj) {
       if (this._calendarMonthValue[0]) {
