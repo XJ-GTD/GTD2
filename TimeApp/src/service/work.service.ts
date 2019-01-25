@@ -231,17 +231,13 @@ export class WorkService {
           return this.workSqlite.addLbData(rc.sI,rc.lI,cft,rm,ac,'0');
         })
         .then(data=>{
-        let rcp = new RcpEntity();
-        rcp.uI=DataConfig.uInfo.uI;
-        rcp.sI=sI;
-        rcp.sa='0';
-        if(rcp.uI ==rc.uI){
-          rcp.sa='1';
-        }
-        rcp.pI=this.util.getUuid();
-        rcp.sdt=1;
-        rcp.son=rc.sN;
-        return this.baseSqlite.save(rcp);
+          let ruL=new Array<RuModel>();
+          let ru = new RuModel();
+          ru.rI=DataConfig.uInfo.uI;
+          ru.hiu=DataConfig.uInfo.hIU;
+          ru.rN=DataConfig.uInfo.rn;
+          ruL.push(ru);
+        return this.workSqlite.sRcps(rc,ruL);
       }).then(data=>{
         console.log("------ WorkService arcMq() End ------------");
         resolve(bs);
@@ -430,7 +426,7 @@ export class WorkService {
         let ruL:Array<RuModel> = new Array<RuModel>();
         let psl = new Array<PsModel>();
         console.log('--------- 删除的日程开始 ---------');
-        this.baseSqlite.delete(rc)
+        this.workSqlite.delete(rc)
           .then(datad => {
             console.log('--------- 删除的日程结束 ---------');
             console.log('--------- 查询要删除的参与人开始 ---------');
@@ -480,6 +476,38 @@ export class WorkService {
         bs.message = '无权限删除';
         resolve(bs);
       }
+    })
+  }
+
+  /**
+   * 删除日程
+   * @param {string} sI 日程主键
+   * @param {string} sa 修改权限 0不可修改，1可修改
+   */
+  mqDrc(rc:RcModel):Promise<BsModel>{
+    return new Promise((resolve, reject) => {
+      let bs = new BsModel();
+      let rc = new RcEntity();
+      rc.sI = rc.sI;
+      rc.sN
+      let ruL:Array<RuModel> = new Array<RuModel>();
+      let psl = new Array<PsModel>();
+      console.log('--------- 删除的日程开始 ---------');
+      this.baseSqlite.update(rc)
+        .then(datad => {
+          console.log('--------- 删除的日程结束 ---------');
+          console.log('--------- 删除的参与人开始 ---------');
+          return this.workSqlite.dRcps(rc.sI);
+        })
+        .then(data=>{
+          console.log('--------- 删除的参与人结束 ---------');
+          resolve(bs);
+        })
+        .catch(eu => {
+          bs.code = ReturnConfig.ERR_CODE;
+          bs.message = eu.message;
+          resolve(bs)
+        })
     })
   }
 
