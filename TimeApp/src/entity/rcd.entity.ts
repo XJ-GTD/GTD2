@@ -8,8 +8,10 @@ export class RcdEntity {
   private _dI: string='';   //UUid
   private _sI: string='';   //日程id
   private _uI: string='';          //创建人ID
-  private _sd:string=''; //日期
+  private _sd:string=''; //日期 yyyy/MM/dd
   private _sT: string=''; //状态：0 忽略，1 删除
+
+  private _yM: string=''; //查询用年月yyyyMM
   /*
    * 创建表
    * @type {string}
@@ -100,5 +102,14 @@ export class RcdEntity {
 
   set sT(value: string) {
     this._sT = value;
+  }
+
+
+  get yM(): string {
+    return this._yM;
+  }
+
+  set yM(value: string) {
+    this._yM = value;
   }
 }

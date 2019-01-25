@@ -119,7 +119,7 @@ export class AppConfig {
   public static SYNC_TEMP_URL: UrlEntity = new UrlEntity(AppConfig.SYNC_URL.url + "/temporary",false);   //初始化
   public static SYNC_LOGIN_URL: UrlEntity = new UrlEntity(AppConfig.SYNC_URL.url + "/login_sync",false);   //登录同步
   public static SYNC_TIME_URL: UrlEntity = new UrlEntity(AppConfig.SYNC_URL.url + "/timing_sync",false);   //定时同步
-
+  public static UPLOAD_TIME_URL: UrlEntity = new UrlEntity(AppConfig.SYNC_URL.url + "/upload",false);   //定时同步
   /* ------------------------ 初始化 end--------------------------*/
 
 }
