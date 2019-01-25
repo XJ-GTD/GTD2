@@ -93,6 +93,7 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     [self.asrEventManager setParameter:@[API_KEY_1, SECRET_KEY_1] forKey:BDS_ASR_API_SECRET_KEYS];
     [self.asrEventManager setParameter:APP_ID_1 forKey:BDS_ASR_OFFLINE_APP_CODE];
     //[self.asrEventManager setParameter:@(NO) forKey:BDS_ASR_ENABLE_LONG_SPEECH];
+
     //配置端点检测（二选一）
     [self configModelVAD];
     //[self configDNNMFE];
@@ -107,7 +108,7 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
    //[self configOfflineClient];
 
    //开启声音
-  //[self.asrEventManager setParameter:@(EVRPlayToneAll) forKey:BDS_ASR_PLAY_TONE];
+  [self.asrEventManager setParameter:@(EVRPlayToneAll) forKey:BDS_ASR_PLAY_TONE];
 
 }
 
@@ -130,7 +131,7 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 
 - (void)configModelVAD {
-   NSString *modelVAD_filepath = [[NSBundle mainBundle] pathForResource:@"BDSClientResource.bundle/BDSClientEASRResources/bds_easr_basic_model" ofType:@"dat"];
+   NSString *modelVAD_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_basic_model" ofType:@"dat"];
 
     [self.asrEventManager setParameter:modelVAD_filepath forKey:BDS_ASR_MODEL_VAD_DAT_FILE];
 
@@ -138,14 +139,14 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     // 服务端VAD
     [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_EARLY_RETURN];
     // 本地VAD
-    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_LOCAL_VAD];
+    [self.asrEventManager setParameter:@(NO) forKey:BDS_ASR_ENABLE_LOCAL_VAD];
 
 }
 
 - (void)configDNNMFE {
-    NSString *mfe_dnn_filepath = [[NSBundle mainBundle] pathForResource:@"BDSClientResource.bundle/BDSClientEASRResources/bds_easr_mfe_dnn" ofType:@"dat"];
+    NSString *mfe_dnn_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_mfe_dnn" ofType:@"dat"];
     [self.asrEventManager setParameter:mfe_dnn_filepath forKey:BDS_ASR_MFE_DNN_DAT_FILE];
-    NSString *cmvn_dnn_filepath = [[NSBundle mainBundle] pathForResource:@"BDSClientResource.bundle/BDSClientEASRResources/bds_easr_mfe_cmvn" ofType:@"dat"];
+    NSString *cmvn_dnn_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_mfe_cmvn" ofType:@"dat"];
     [self.asrEventManager setParameter:cmvn_dnn_filepath forKey:BDS_ASR_MFE_CMVN_DAT_FILE];
 
     // 关闭服务端VAD
@@ -161,8 +162,8 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
     // 离线仅可识别自定义语法规则下的词
     [self.asrEventManager setParameter:@(EVR_STRATEGY_BOTH) forKey:BDS_ASR_STRATEGY];
-    NSString* gramm_filepath = [[NSBundle mainBundle] pathForResource:@"BDSClientResource.bundle/BDSClientEASRResources/bds_easr_gramm" ofType:@"dat"];
-    NSString* lm_filepath = [[NSBundle mainBundle] pathForResource:@"BDSClientResource.bundle/BDSClientEASRResources/bds_easr_basic_model" ofType:@"dat"];
+    NSString* gramm_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_gramm" ofType:@"dat"];
+    NSString* lm_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_basic_model" ofType:@"dat"];
     [self.asrEventManager setParameter:APP_ID_1 forKey:BDS_ASR_OFFLINE_APP_CODE];
     [self.asrEventManager setParameter:lm_filepath forKey:BDS_ASR_OFFLINE_ENGINE_DAT_FILE_PATH];
     // 请在 (官网)[http://speech.baidu.com/asr] 参考模板定义语法，下载语法文件后，替换BDS_ASR_OFFLINE_ENGINE_GRAMMER_FILE_PATH参数
@@ -200,8 +201,12 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
         case EVoiceRecognitionClientWorkStatusFinish: {
             if (aObj) {
              if (self.callbackId) {
+
+                // NSString json = [self getDescriptionForDic:aObj];
                 CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self getDescriptionForDic:aObj]];
                 [result setKeepCallbackAsBool:YES];
+                 //json =[json substringWithRange:NSMakeRange(1,[json length] - 2 )];
+//
                 [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
                }
             }
@@ -217,6 +222,13 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
         }
         case EVoiceRecognitionClientWorkStatusError: {
             NSLog(@"Did EVoiceRecognitionClientWorkStatusError");
+            if (aObj) {
+                if (self.callbackId) {
+                    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+                    [result setKeepCallbackAsBool:YES];
+                    [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
+                }
+            }
             break;
         }
         case EVoiceRecognitionClientWorkStatusLoaded: {
@@ -294,9 +306,12 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 - (NSString *)getDescriptionForDic:(NSDictionary *)dic {
     if (dic) {
-        return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dic
-                                                                              options:NSJSONWritingPrettyPrinted
-                                                                                error:nil] encoding:NSUTF8StringEncoding];
+//        return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dic
+//                                                                              options:NSJSONWritingPrettyPrinted
+//                                                                                error:nil] encoding:NSUTF8StringEncoding];
+
+        NSLog(@"*************** %@" , [(NSArray *)[dic objectForKey: @"results_recognition"] objectAtIndex:0]);
+        return [(NSArray *)[dic objectForKey: @"results_recognition"] objectAtIndex:0];
     }
     return nil;
 }
