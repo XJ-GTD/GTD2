@@ -87,8 +87,8 @@ declare var cordova: any;
                   </div>
                 </div>
                 <div class="cc8">
-                  <button class="cc9" style="color: #222222;" (click)="createSchedule(message.sc, 0)">确认</button>
-                  <button class="cc9" style="color: #666666;" (click)="createSchedule(message.sc, 1)">取消</button>
+                  <button class="cc9" style="color: #222222;" (click)="confirmatoryMethod(message, message.tg)">确认</button>
+                  <button class="cc9" style="color: #666666;" (click)="cancelMethod()">取消</button>
                 </div>
               </div>
             </div> 
@@ -154,6 +154,8 @@ export class HbPage {
   inputData: AiuiModel = new AiuiModel();
   messages: Array<AiuiModel>; //聊天数据队列
   //语音界面数据传递
+
+  scL: Array<RcModel>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController,
@@ -295,6 +297,10 @@ export class HbPage {
         this.messages.unshift(data);
       });
     }else if ($event.tt == DataConfig.S5) {
+      if ($event.tg == "1") {
+        this.scL = [];
+        this.scL = $event.scL;
+      }
       textX.tt = DataConfig.S1;
       textX.at = $event.at;
       this.messages.unshift(textX);
@@ -303,6 +309,10 @@ export class HbPage {
         data.scL = $event.scL;
         this.messages.unshift(data);
       });
+    } else if ($event.tt == DataConfig.T1) {
+
+    } else if ($event.tt == DataConfig.F1) {
+
     }
 
   }
@@ -328,8 +338,16 @@ export class HbPage {
   }
   
   /*=======================业务逻辑 start=========================*/
-  private createSchedule(sc: RcModel, flag: number) {
-    if (flag == 0) {
+  private confirmatoryMethod(aiui: AiuiModel, tg: string) {
+
+    if(tg == "0") {
+      this.createSchedule(aiui.sc)
+    } else if (tg == "1") {
+      this.deleteSchedule(aiui.sc);
+    }
+  }
+
+  private createSchedule(sc: RcModel) {
       console.log("添加日程确认");
       let textX = new AiuiModel();
       this.workService.arc(sc.sN, sc.sd, sc.lI, sc.ji, sc.cft, sc.rm,sc.ac, sc.rus).then(data=>{
@@ -350,19 +368,22 @@ export class HbPage {
         }
       }).catch(reason => {
         console.log("添加日程失败");
-
-      })
-    } else {
-      console.log("添加日程取消");
-
-    }
+      });
 
   }
 
-  private deleteSchedule(sc: RcModel, flag: number) {
+  private deleteSchedule(sc: RcModel) {
 
   }
 
+  private cancelMethod() {
+    let textX = new AiuiModel();
+    textX.tt = this.S1;
+    // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
+    textX.at = DataConfig.TEXT_CONTENT.get("A02" + "1");
+    this.messages.unshift(textX);
+    this.xiaojiSpeech.speakText(textX.at, success => {});
+  }
   //展示数据详情
   // showScheduleDetail(schedule) {
   //   this.schedule = new ScheduleModel();

@@ -64,10 +64,10 @@ export class DataConfig {
   /* =============== 语音页面type =============*/
   public static U1: string = "U1"; //用户语音文本 或 需要播报的业务信息
   public static S1: string = "S1"; //回答文本
-  public static S2: string = "S2";//回答链接
+  public static S2: string = "S2"; //回答链接
   public static S3: string = "S3"; //回答图片
   public static S4: string = "S4"; //日程单条数据
-  public static S5: string = "S5";//日程列表数据
+  public static S5: string = "S5"; //日程列表数据
   public static S6: string = "S6";//联系人单条数据
   public static S7: string = "S7";//联系人列表数据
   public static T1: string = "T1";//确认

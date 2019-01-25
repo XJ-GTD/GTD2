@@ -134,6 +134,7 @@ export class DwMqService {
     }
 
     let aiui = new AiuiModel();
+    aiui.tg = "0";
     console.log("========== 讯飞日程添加业务查询参与人处理开始 ========== ");
     this.work.xfAddrc(sn, sd, pln, ca, cb).then(data => {
       console.log("========== 讯飞日程添加业务查询参与人处理结果： " + JSON.stringify(data));
@@ -167,7 +168,7 @@ export class DwMqService {
     }else{
       sd = md.et;
     }
-    let ed=''
+    let ed='';
     if(md.et && md.et != ''){
       ed = md.et;
     }else{
@@ -175,7 +176,7 @@ export class DwMqService {
     }
     let sN = md.sn;
     let aiui = new AiuiModel();
-
+    aiui.tg = "1";
     this.work.getwL(sN, sd, ed, '', '', '','0').then(data => {
       aiui.scL = data.rcL;
       if (data && data.rcL && data.rcL.length > 0) {
