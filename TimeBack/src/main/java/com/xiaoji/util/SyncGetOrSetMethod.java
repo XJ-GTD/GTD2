@@ -94,15 +94,16 @@ public class SyncGetOrSetMethod {
         data.setTableA(gpe.getId());                                //主键
         data.setTableB(gpe.getPlayerAnotherName());                 //别称
         data.setTableC(gpe.getPyOhterName());                       //别称拼音
-        data.setTableD(gpe.getPlayerId());                          //联系人用户ID
+        if (gpe.getPlayerId() != null)
+            data.setTableD(gpe.getPlayerId());                      //联系人用户ID
         data.setTableE(gpe.getPlayerHeadimg());                     //联系人头像
         data.setTableF(gpe.getPlayerName());                        //联系人昵称
         data.setTableG(gpe.getPyPlayerName());                      //联系人昵称拼音
         data.setTableH(gpe.getPlayerContact());                     //联系人手机号
         if (gpe.getPlayerFlag() != null)
-            data.setTableI(String.valueOf(gpe.getPlayerFlag()));        //授权联系人标识
+            data.setTableI(String.valueOf(gpe.getPlayerFlag()));    //授权联系人标识
         if (gpe.getPlayerType() != null)
-            data.setTableJ(String.valueOf(gpe.getPlayerType()));        //联系人类型
+            data.setTableJ(String.valueOf(gpe.getPlayerType()));    //联系人类型
         data.setTableK(gpe.getUserId());                            //联系人数据归属
 
         return data;

@@ -5,14 +5,14 @@
 //日程参与表
 export class RcpModel {
 
-  private _pI: string=null;//日程参与人表uuID
-  private _sI: string=null;   //关联日程UUID
-  private _son:string=null; //日程别名
-  private _sa: string=null;   //修改权限
-  private _ps:string=null; //完成状态
-  private _tm:string=null; //时间
-  private _pd: string=null;   //完成时间
-  private _uI: string=null;  //参与人ID
+  private _pI: string='';//日程参与人表uuID
+  private _sI: string='';   //关联日程UUID
+  private _son:string=''; //日程别名
+  private _sa: string='';   //修改权限
+  private _ps:string=''; //完成状态
+  private _tm:string=''; //时间
+  private _pd: string='';   //完成时间
+  private _uI: string='';  //参与人ID
   private _ib: string='0';  //是否本地:0非本地；1本地日历 默认非本地
 
   get pI(): string {

@@ -23,6 +23,8 @@ export class DataConfig {
 
   public static defaultHeadImg:string = "./assets/imgs/headImg.jpg";
 
+  public static NOT_PLAYER:string = "./assets/imgs/headImg.jpg";
+
   /*========== 语音对应文言 start =========*/
   public static XF_SPEECH_SCHEDULE_CREATE: string = "";
   public static XF_SPEECH_SCHEDULE_DELETE: string = "";
@@ -68,6 +70,8 @@ export class DataConfig {
   public static S5: string = "S5";//日程列表数据
   public static S6: string = "S6";//联系人单条数据
   public static S7: string = "S7";//联系人列表数据
+  public static T1: string = "T1";//确认
+  public static F1: string = "F1";//取消
 
   /* ============ mq返回类型 ===============*/
   public static MQTQ : string = '0'; // 处理逻辑前用户问答

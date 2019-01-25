@@ -61,18 +61,10 @@ declare var cordova: any;
             <!-- 判断消息是数据：新增日程 --> 
             <div *ngIf="S4 == message.tt" class="userTalk animated bounceIn">
               <div col-10 class="cc1" >
-                <div class="cc2">
+                <div class="cc2" *ngFor="let pl of message.sc.rus">
                   <div style="padding:10px;">
-                    <img class="cc3" src="./assets/imgs/headImg.jpg">
-                    <div class="cc4">名称</div>
-                  </div>
-                  <div style="padding:10px;">
-                    <div class="cc3">图片</div>
-                    <div class="cc4">名称</div>
-                  </div>
-                  <div style="padding:10px;">
-                    <div class="cc3">图片</div>
-                    <div class="cc4"></div>
+                    <img class="cc3" src="{{pl.hiu}}">
+                    <div class="cc4">{{pl.ran}}</div>
                   </div>
                 </div>
                 <div class="cc2" padding>
@@ -81,19 +73,19 @@ declare var cordova: any;
                       <div float-right class="cc6">
                         <div class="cc7"></div>
                       </div>
-                      <div float-right  style="font-size: 15px;padding: 3px;">标签</div>
+                      <div float-right  style="font-size: 15px;padding: 3px;">{{message.sc.lan}}</div>
                     </button>
                   </div>
                   <div style="padding-left: 10px" >
-                    <div style="font-size: 19px;padding-bottom: 10px">中午和杨洋在星巴克见面</div>
+                    <div style="font-size: 19px;padding-bottom: 10px">{{message.sc.sN}}</div>
                     <div>
-                      <div style="border-radius: 5px;border:1px solid #999999;color:#999999;width: fit-content;padding: 6px">14:00AM</div>
+                      <div style="border-radius: 5px;border:1px solid #999999;color:#999999;width: fit-content;padding: 6px">{{message.sc.sd}}</div>
                     </div>
                   </div>
                 </div>
                 <div class="cc8">
-                  <button class="cc9" style="color: #666666;">取消</button>
                   <button class="cc9" style="color: #222222;">发送</button>
+                  <button class="cc9" style="color: #666666;">取消</button>
                 </div>
               </div>
             </div> 
@@ -235,7 +227,7 @@ export class HbPage {
 
   //启动语音输入
   startXiaoJi() {
-    console.log("开始语音输入");
+    console.log("HbPage 开始语音输入");
     if (this.xiaojiSpeech.islistenAudioing) {
       this.xiaojiSpeech.stopSpeak();
       return;

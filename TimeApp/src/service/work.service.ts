@@ -157,7 +157,7 @@ export class WorkService {
       let bs = new BsModel();
       //先查询当前用户ID
       let rc = new RcEntity();
-      sd=sd.replace(new RegExp('-','g'),'/');;
+      sd=sd.replace(new RegExp('-','g'),'/');
       rc.uI=cui;
       rc.sN=sN;
       rc.sd=sd;
@@ -169,6 +169,7 @@ export class WorkService {
       if(ed != null && ed != ''){
         rc.ed=ed;
       }
+      rc.ed =rc.ed.replace(new RegExp('-','g'),'/');
       rc.lI=lbI;
       rc.sI=sI;
       console.log("------ WorkService arcMq() Start ------------");
@@ -191,7 +192,8 @@ export class WorkService {
         rcp.son=rc.sN;
         return this.baseSqlite.save(rcp);
       }).then(data=>{
-        console.log("------ WorkService arcMq() End ------------")
+        console.log("------ WorkService arcMq() End ------------");
+        resolve(bs);
       }).catch(e=>{
         console.error("WorkService arcMq() Error : " +JSON.stringify(e));
         bs.code = ReturnConfig.ERR_CODE;
@@ -228,6 +230,7 @@ export class WorkService {
       if(ed != null && ed != ''){
         rc.ed=ed;
       }
+      rc.ed =rc.ed.replace(new RegExp('-','g'),'/');
       if(DataConfig.IS_NETWORK_CONNECT){
         rc.fi='0';
       }else{
@@ -332,6 +335,7 @@ export class WorkService {
       if(ed != null && ed != ''){
         rc.ed=ed;
       }
+      rc.ed =rc.ed.replace(new RegExp('-','g'),'/');
       rc.lI=lbI;
       rc.sI=sI;
       console.log("------ WorkService arcMq() Start ------------");
@@ -369,7 +373,7 @@ export class WorkService {
   drc(sI:string,sa:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
-      if(sa != '1'){
+      if(sa != '0'){
         let rc = new RcEntity();
         rc.sI = sI;
         let ruL:Array<RuModel> = new Array<RuModel>();
@@ -777,9 +781,18 @@ export class WorkService {
               }
             }
           }
-        rc.rus=ruL;
+
         rc.noca=noca;
         rc.nocb=nocb;
+        let strL = nocb.split(',');
+        for(let a = 0;a<strL.length;a++){
+          let run = new RuModel();
+          run.rN = strL[0];
+          run.ran = strL[0];
+          run.hiu = DataConfig.NOT_PLAYER;
+          ruL.push(run);
+        }
+        rc.rus=ruL;
         resolve(rc)
       }).catch(e=>{
         console.error("-------- WorkService 讯飞语音添加日程 ERROR : " + JSON.stringify(e));

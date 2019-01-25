@@ -14,7 +14,6 @@ public class Out {
     private int code;
     private String message;
     private BaseOut data;
-    private List<BaseOut> lsData;
 
     public String getMessage() {
         return message;
@@ -22,14 +21,6 @@ public class Out {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public List<BaseOut> getLsData() {
-        return lsData;
-    }
-
-    public void setLsData(List<BaseOut> lsData) {
-        this.lsData = lsData;
     }
 
     public BaseOut getData() {

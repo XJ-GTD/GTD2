@@ -20,7 +20,7 @@ import { DataConfig } from "../../app/data.config";
   '  <ion-navbar>' +
   '    <ion-title>创建群</ion-title>' +
   '    <ion-buttons right>' +
-  '      <button ion-button ion-only (click)="save()">' +
+  '      <button ion-button ion-only (click)="save()" style="padding-right: 10px;">' +
   '        保存' +
   '      </button>' +
   '    </ion-buttons>' +

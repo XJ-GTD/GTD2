@@ -31,7 +31,7 @@ import {JhService} from "../../service/jh.service";
   '        <div class="margin181">计划描述</div>' +
   '      </div>' +
   '      <div col-9>' +
-  '        <ion-textarea style="border:0.5px solid #cccccc;" col-12 [(ngModel)]="jhms"></ion-textarea>' +
+  '        <ion-textarea style="border:1px solid #cccccc;" col-12 [(ngModel)]="jhms"></ion-textarea>' +
   '      </div>' +
   '    </div>' +
   '</ion-content>',

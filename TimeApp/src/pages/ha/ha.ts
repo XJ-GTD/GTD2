@@ -177,11 +177,19 @@ export class HaPage {
 
     this.events.subscribe("noshow",()=>{
       this.noShow = true;
-    })
+    });
+    this.events.subscribe("flashDay",(data)=>{
+      let day = data.day;
+      let event = data.event;
+      console.log(JSON.stringify(day));
+      this.ion2calendar.flashDay(day);
+      this.onSelectDayEvent(event);
+    });
   }
 
   ionViewWillEnter(){
     console.log("ionViewWillEnter 刷新HaPage :: ")
+
   }
 
 
@@ -190,7 +198,7 @@ export class HaPage {
     console.log($event);
     let eventDate = new Date($event.time);
     let tmp = moment(eventDate).format("YYYY-MM-DD");
-    let sbPageModal = this.modalCtr.create(PageConfig.SB_PAGE,{dateStr:tmp});
+    let sbPageModal = this.modalCtr.create(PageConfig.SB_PAGE,{dateStr:tmp,event:$event});
     sbPageModal.present();
   }
 

@@ -4,9 +4,9 @@
 
 //标签表
 export class JhEntity {
-  private _ji: string=null;   //计划编号
-  private _jn:string=null; //计划名
-  private _jg: string=null; //计划描述
+  private _ji: string='';   //计划编号
+  private _jn:string=''; //计划名
+  private _jg: string=''; //计划描述
   /*
    * 创建表
    * @type {string}

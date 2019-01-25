@@ -5,6 +5,7 @@ import {JhEntity} from "../../entity/jh.entity";
 import {SyncModel} from "../../model/sync.model";
 import {DataConfig} from "../../app/data.config";
 import {SyncEntity} from "../../entity/sync.entity";
+import {SyncSqlite} from "./sync-sqlite";
 
 /**
  * 授权联系人
@@ -12,7 +13,8 @@ import {SyncEntity} from "../../entity/sync.entity";
 @Injectable()
 export class JhSqlite {
 
-  constructor(private baseSqlite: BaseSqlite) {}
+  constructor(private baseSqlite: BaseSqlite,
+              private sync:SyncSqlite) {}
 
   /**
    * 添加计划
@@ -55,8 +57,8 @@ export class JhSqlite {
    * @returns {Promise<any>}
    */
   getOne(ji:string): Promise<any> {
-    let sql = "SELECT * FROM GTD_J_H where ji=?"
-    return this.baseSqlite.executeSql(sql,[ji]);
+    let sql = "SELECT * FROM GTD_J_H where ji='"+ji+"'";
+    return this.baseSqlite.executeSql(sql,[]);
   }
   /**
    * 服务器登录同步计划表转sql
@@ -95,8 +97,10 @@ export class JhSqlite {
       sync.tableD = DataConfig.uInfo.uI;
       sync.action = ac;
       sync.tableName = DataConfig.GTD_J_H;
-    return this.baseSqlite.save(sync);
+    return this.sync.save(sync.isq);
   }
+
+
 
 
 }

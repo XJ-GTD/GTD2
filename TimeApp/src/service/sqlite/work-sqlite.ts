@@ -15,6 +15,7 @@ import {SyncEntity} from "../../entity/sync.entity";
 import {ReadlocalService} from "../readlocal.service";
 import * as moment from "moment";
 import {RcoModel} from "../../model/out/rco.model";
+import {SyncSqlite} from "./sync-sqlite";
 
 
 /**
@@ -28,6 +29,7 @@ export class WorkSqlite{
   constructor( private baseSqlite: BaseSqlite,
             private msSqlite:MsSqlite,
             private readlocal:ReadlocalService,
+            private sync:SyncSqlite,
             private util:UtilService) {
 
   }
@@ -137,7 +139,7 @@ export class WorkSqlite{
   getMBs(ym:string,ui:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       // or gc.uI= "'+ui+'"
-      let sql= this.getRcSql() +
+      let sql= this.getRcSql('') +
         ' where (gd.uI = "'+ui+ '" or gc.uI= "'+ui+'") and ' +
         '(substr(gc.sd,1,7) <= "'+ym+'" and substr(gc.ed,1,7)>= "'+ym+'")';
       let bs = new BsModel();
@@ -187,11 +189,11 @@ export class WorkSqlite{
         //查询Message
         return this.msSqlite.getMonthMs(ym);
       }).then(data=>{
-        if(data&&data.rows&&data.rows.length){
+        if(data&&data.rows&&data.rows.length>0){
           //判断是否有消息
-          for(let j=0;j<=data.rows.length;j++){
+          for(let j=0;j<data.rows.length;j++){
             let bool = true; //判断当前日是否存在
-            for(let i=0;i<=resL.length;i++){
+            for(let i=0;i<resL.length;i++){
               if(resL[i].ymd== data.rows.item(j).md){
                 resL[i].mdn=1;
                 bool = false;
@@ -224,8 +226,8 @@ export class WorkSqlite{
    */
   getOd(d:string,ui:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
-      let sql= this.getRcSql() + ' left join GTD_F gf on gf.lai=gc.lI '+
-        'left join (select substr(md,1,10) md,mf,rI from GTD_H where mf="0" and substr(md,1,10) = "'+ d+
+      let sql= this.getRcSql('mf,') + ' left join GTD_F gf on gf.lai=gc.lI '+
+        'left join (select substr(md,1,10) md,mf,rI from GTD_H where mf="0" and mt="0" and substr(md,1,10) = "'+ d+
         '" group by substr(md,1,10),mf,rI) gh on gc.sI=gh.rI ' +
       ' where (substr(gc.sd,1,10) <= "'+d+'" and substr(gc.ed,1,10)>= "'+d+'") ' +
       ' and (gd.uI = "'+ui+'" or gc.uI= "'+ui+'")';
@@ -310,7 +312,7 @@ export class WorkSqlite{
       let today = moment(date).format('YYYY/MM/DD'); //当前日期
       let dt = moment(date).format('YYYY/MM/DD HH:mm').substr(11,16); //当前日期时间
       let agodt = moment(agodate).format('YYYY/MM/DD HH:mm').substr(11,16); //mm分钟前
-      let sql= this.getRcSql() + ' left join GTD_F gf on gf.lai=gc.lI '+
+      let sql= this.getRcSql('') + ' left join GTD_F gf on gf.lai=gc.lI '+
         ' where (substr(gc.sd,1,10) <= "'+today+'" and substr(gc.ed,1,10)>= "'+today+'") ' +
         ' and (gd.uI = "'+DataConfig.uInfo.uI+'" or gc.uI= "'+DataConfig.uInfo.uI+'") and dt is not null and dt !=""'+
         ' and (substr(lbd.dt,11,16) <= "'+agodt+'" and substr(lbd.dt,11,16)>= "'+dt+'") ';
@@ -345,8 +347,8 @@ export class WorkSqlite{
    * 日程查询SQL
    * @returns {string}
    */
-  getRcSql():string{
-    let sql= 'select gc.*,' +
+  getRcSql(param:string):string{
+    let sql= 'select gc.*,' +param+
       'lbd.cft,lbd.wd,lbd.ac,lbd.fh,lbd.tk,lbd.rm,lbd.dt,lbd.subId from GTD_C gc ' +
       'left join (select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_BO ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_C ' +
@@ -590,7 +592,7 @@ export class WorkSqlite{
    * @returns {string}
    */
   getNoSendRc():Promise<any>{
-      let sql= this.getRcSql()+'where gc.fi !="0"';
+      let sql= this.getRcSql('')+'where gc.fi !="0"';
       return this.baseSqlite.executeSql(sql,[]);
   }
 
@@ -714,7 +716,7 @@ export class WorkSqlite{
 
     sync.action= ac;
     sync.tableName = tn;
-    return this.baseSqlite.save(sync);
+    return this.sync.save(sync.isq);
   }
   /**
    * 服务器定时同步日程表
@@ -733,7 +735,7 @@ export class WorkSqlite{
     sync.tableG = moment(en.ed).format('YYYY-MM-DD HH:mm');
     sync.action= ac;
     sync.tableName = DataConfig.GTD_C;
-    return this.baseSqlite.save(sync);
+    return this.sync.save(sync.isq);
   }
 
   /**
@@ -756,6 +758,6 @@ export class WorkSqlite{
       sync.tableName = DataConfig.GTD_D;
       sql+=sync.isq;
     }
-    return this.baseSqlite.importSqlToDb(sql);
+    return this.sync.save(sql);
   }
 }

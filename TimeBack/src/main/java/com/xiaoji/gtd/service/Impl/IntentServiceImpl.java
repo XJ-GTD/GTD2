@@ -218,11 +218,7 @@ public class IntentServiceImpl implements IIntentService {
                 for (Slot slot: nod.getSlots()) {
                     switch (slot.getName()) {
                         case "time":
-                            String[] timeList = JSONObject.parseObject(slot.getNormValue()).getString("suggestDatetime").split("/");;
-                            data.setSt(timeList[0]);
-                            if (timeList.length > 1) {
-                                data.setEt(timeList[1]);
-                            }
+                            data = dealWithTime(data, slot);
                             break;
                         case "schedule":
                             data.setSn(slot.getNormValue());
@@ -273,6 +269,20 @@ public class IntentServiceImpl implements IIntentService {
                 data.setCommon_B(slot.getNormValue());
             }
 
+            return data;
+        }
+
+        private WebSocketDataDto dealWithTime(WebSocketDataDto data, Slot slot) {
+            String[] suggestTimeList = JSONObject.parseObject(slot.getNormValue()).getString("suggestDatetime").split("/");;
+            data.setSt(suggestTimeList[0]);
+            if (suggestTimeList.length > 1) {
+                data.setEt(suggestTimeList[1]);
+            }
+            String[] timeList = JSONObject.parseObject(slot.getNormValue()).getString("datetime").split("/");;
+            data.setCommon_C(timeList[0]);
+            if (timeList.length > 1) {
+                data.setCommon_D(timeList[1]);
+            }
             return data;
         }
 

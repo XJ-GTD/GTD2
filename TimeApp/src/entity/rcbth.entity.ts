@@ -5,16 +5,16 @@
 //日程标签表-日程标签（聚会、会议、事件、预约、运动）
 export class RcbthEntity {
 
-  private _sI:string=null;   //UUID
-  private _id:string=null; //主键
-  private _tk:string=null;  //标签key值
-  private _cft:string=null; //重复类型：0日，1周，2月，3年
-  private _dt:string=null; //日期（具体到天）
-  private _wd:string = null; //完成时间
-  private _cf:string=null;  //是否重复：0否1是
-  private _rm:string=null; //备注
-  private _ac:string=null; //提醒方式
-  private _fh:string=null; //是否完成0否1是
+  private _sI:string='';   //UUID
+  private _id:string=''; //主键
+  private _tk:string='';  //标签key值
+  private _cft:string=''; //重复类型：0日，1周，2月，3年
+  private _dt:string=''; //日期（具体到天）
+  private _wd:string = ''; //完成时间
+  private _cf:string='';  //是否重复：0否1是
+  private _rm:string=''; //备注
+  private _ac:string=''; //提醒方式
+  private _fh:string=''; //是否完成0否1是
   /*
    * 创建表
    * @type {string}

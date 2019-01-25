@@ -176,6 +176,7 @@ export class RelmemService {
       ru.rF = rF;
       ru.rI=auI;
       ru.hiu=hiu;
+      ru.rel='0';
       if(ru.rN == null || ru.rN == ''){
         ru.rN=rc;
       }

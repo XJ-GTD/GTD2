@@ -6,15 +6,15 @@ import {BsModel} from "./out/bs.model";
 //用户类
 export class UModel extends BsModel{
 
-  private _uI: string=null;   //用户ID
-  private _oUI:string=null; //原用户ID
-  private _uN: string=null;   //昵称
-  private _hIU: string=null;          //头像URL
-  private _biy: string=null;    // 生日
-  private _uS: string=null;     // 性别
-  private _uCt: string=null; // 联系方式
-  private _aQ: string=null;    //消息队列
-  private _uT:string=null; //token
+  private _uI: string='';   //用户ID
+  private _oUI:string=''; //原用户ID
+  private _uN: string='';   //昵称
+  private _hIU: string='';          //头像URL
+  private _biy: string='';    // 生日
+  private _uS: string='';     // 性别
+  private _uCt: string=''; // 联系方式
+  private _aQ: string='';    //消息队列
+  private _uT:string=''; //token
   private _uty:string="0";//0游客1正式用户
   private _rn: string=null;   //真实姓名
 

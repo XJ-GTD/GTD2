@@ -6,6 +6,7 @@ import {BsModel} from "../../model/out/bs.model";
 import {SyncModel} from "../../model/sync.model";
 import {DataConfig} from "../../app/data.config";
 import {SyncEntity} from "../../entity/sync.entity";
+import {SyncSqlite} from "./sync-sqlite";
 
 /**
  * 授权联系人
@@ -13,7 +14,9 @@ import {SyncEntity} from "../../entity/sync.entity";
 @Injectable()
 export class RelmemSqlite {
 
-  constructor(private baseSqlite: BaseSqlite) {}
+  constructor(private baseSqlite: BaseSqlite,
+                private sync:SyncSqlite
+  ) {}
 
   /**
    * 添加授权联系人
@@ -103,7 +106,7 @@ export class RelmemSqlite {
    */
   getRgus(id:string):Promise<any>{
     let sql="SELECT gb.*,bs.id rugId,bs.bmi FROM GTD_B gb " +
-      "left join GTD_B_X bs on bs.bi = gb.id where bs.bi='" + id +"'";
+      "left join GTD_B_X bs on bs.bmi = gb.id where bs.bi='" + id +"'";
     return this.baseSqlite.executeSql(sql,[]);
   }
 
@@ -234,7 +237,7 @@ export class RelmemSqlite {
     sync.tableK = DataConfig.uInfo.uI;
     sync.action =ac;
     sync.tableName = DataConfig.GTD_B
-    return this.baseSqlite.save(sync);
+    return this.sync.save(sync.isq);
   }
 
   /**

@@ -4,6 +4,7 @@ import {UEntity} from "../../entity/u.entity";
 import {SyncEntity} from "../../entity/sync.entity";
 import {DataConfig} from "../../app/data.config";
 import {SyncModel} from "../../model/sync.model";
+import {SyncSqlite} from "./sync-sqlite";
 
 
 /**
@@ -14,7 +15,7 @@ import {SyncModel} from "../../model/sync.model";
 @Injectable()
 export class UserSqlite {
 
-  constructor( private baseSqlite: BaseSqlite) { }
+  constructor( private baseSqlite: BaseSqlite,private sync: SyncSqlite) { }
 
   /**
    * 添加用户
@@ -110,7 +111,7 @@ export class UserSqlite {
     sync.tableI = en.uty;
     sync.action= ac;
     sync.tableName = DataConfig.GTD_A;
-    return this.baseSqlite.save(sync);
+    return this.sync.save(sync.isq);
   }
 
 //   this.sqlite.executeSql('replace into GTD_A(uI,uty) VALUES (?,?)',['6688','0']).then(data=>{
