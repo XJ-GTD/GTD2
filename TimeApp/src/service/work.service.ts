@@ -500,7 +500,7 @@ export class WorkService {
       let ruL:Array<RuModel> = new Array<RuModel>();
       let psl = new Array<PsModel>();
       console.log('--------- MQ逻辑删除的日程开始 ---------');
-      this.baseSqlite.update(rc)
+      this.baseSqlite.update(rce)
         .then(datad => {
           console.log('--------- MQ逻辑删除的日程结束 ---------');
           return this.workSqlite.syncRcTime(rce,DataConfig.AC_D);
@@ -526,7 +526,7 @@ export class WorkService {
       let rce= new RcEntity();
       rce.sI = rc.sI;
       console.log('--------- 删除的日程开始 ---------');
-      this.baseSqlite.delete(rc)
+      this.baseSqlite.delete(rce)
         .then(datad => {
           console.log('--------- 删除的日程结束 ---------');
           console.log('--------- 删除的参与人开始 ---------');
