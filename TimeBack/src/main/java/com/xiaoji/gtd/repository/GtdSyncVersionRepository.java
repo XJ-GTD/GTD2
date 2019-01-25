@@ -51,7 +51,7 @@ SELECT TC.* FROM
     @Query(value = "SELECT TC.* FROM gtd_sync_version TC " +
             " INNER JOIN (" +
             " SELECT MAX(TA.VERSION) VERSION, TA.TABLE_NAME, TA.TABLE_ID FROM gtd_sync_version TA " +
-            " WHERE TA.USER_ID = ?1 AND TA.VERSION > ?2 AND TA.VERSION < ?3 " +
+            " WHERE TA.USER_ID = ?1 AND TA.VERSION > ?2 AND TA.VERSION <= ?3 " +
             " GROUP BY TA.TABLE_NAME, TA.TABLE_ID) TB " +
             " ON TC.TABLE_ID = TB.TABLE_ID AND TC.TABLE_NAME = TB.TABLE_NAME AND TC.VERSION = TB.VERSION", nativeQuery = true)
     List<GtdSyncVersionEntity> downLoadSyncData(String userId, String localVersion, String latestVersion);

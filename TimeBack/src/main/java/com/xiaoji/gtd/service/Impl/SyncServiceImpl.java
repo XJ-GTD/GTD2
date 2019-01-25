@@ -176,6 +176,10 @@ public class SyncServiceImpl implements ISyncService {
         if (!version.equals("")) {
             logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] ：开始获取数据");
             dataList = downLoad(userId, deviceId, null, null);
+            List<SyncDataDto> dataDtoList = downLoad(userId, deviceId, "0", version);
+            if (dataDtoList != null && dataDtoList.size() > 0) {
+                dataList.addAll(dataDtoList);
+            }
         } else {
             logger.debug("用户[" + userId + "] | 设备[" + deviceId + "] ：暂无数据，无需同步");
             version = BaseUtil.getVersion();
@@ -357,7 +361,7 @@ public class SyncServiceImpl implements ISyncService {
                         if (isDelete(std.getAction())) deletePlayerList.add(playerEntity);                      //删除操作
                         else tablePlayerList.add(playerEntity);                                                 //创建或更新操作
 
-                        syncVersion.add(getSyncData(std, userId, version, deviceId, uploadVersion, tableName));                 //填入入库版本表list
+                        syncVersion.add(getSyncData(std, userId, version, deviceId, uploadVersion, tableName));          //填入入库版本表list
 
                     }
                     logger.debug("-------- 联系人表数据删除 " + deletePlayerList.size() + " 条 -------");
@@ -768,46 +772,55 @@ public class SyncServiceImpl implements ISyncService {
                 syncDataList.add(syncData);
 
                 logger.debug("-------- 添加日程表数据 数据量:" + scheduleList.size() + " -------");
+                syncData = new SyncDataDto();
                 syncData.setTableName(SyncTableNameEnum.SCHEDULE.tableName);
                 syncData.setDataList(scheduleList);
                 syncDataList.add(syncData);
 
                 logger.debug("-------- 添加日程参与人表数据 数据量:" + executeList.size() + " -------");
+                syncData = new SyncDataDto();
                 syncData.setTableName(SyncTableNameEnum.EXECUTE.tableName);
                 syncData.setDataList(executeList);
                 syncDataList.add(syncData);
 
                 logger.debug("-------- 添加日程子表（日程）数据 数据量:" + scheduleAList.size() + " -------");
+                syncData = new SyncDataDto();
                 syncData.setTableName(SyncTableNameEnum.SCHEDULE_A.tableName);
                 syncData.setDataList(scheduleAList);
                 syncDataList.add(syncData);
 
                 logger.debug("-------- 添加日程子表（日常生活）数据 数据量:" + scheduleBList.size() + " -------");
+                syncData = new SyncDataDto();
                 syncData.setTableName(SyncTableNameEnum.SCHEDULE_B.tableName);
                 syncData.setDataList(scheduleBList);
                 syncDataList.add(syncData);
 
                 logger.debug("-------- 添加日程子表（任务）数据 数据量:" + scheduleCList.size() + " -------");
+                syncData = new SyncDataDto();
                 syncData.setTableName(SyncTableNameEnum.SCHEDULE_C.tableName);
                 syncData.setDataList(scheduleCList);
                 syncDataList.add(syncData);
 
                 logger.debug("-------- 添加日程子表（纪念日）数据 数据量:" + scheduleDList.size() + " -------");
+                syncData = new SyncDataDto();
                 syncData.setTableName(SyncTableNameEnum.SCHEDULE_D.tableName);
                 syncData.setDataList(scheduleDList);
                 syncDataList.add(syncData);
 
                 logger.debug("-------- 添加日程子表（备忘录）数据 数据量:" + scheduleEList.size() + " -------");
+                syncData = new SyncDataDto();
                 syncData.setTableName(SyncTableNameEnum.SCHEDULE_E.tableName);
                 syncData.setDataList(scheduleEList);
                 syncDataList.add(syncData);
 
                 logger.debug("-------- 添加计划表数据 数据量:" + planList.size() + " -------");
+                syncData = new SyncDataDto();
                 syncData.setTableName(SyncTableNameEnum.PLAN.tableName);
                 syncData.setDataList(planList);
                 syncDataList.add(syncData);
 
                 logger.debug("-------- 添加用户表数据 -------");
+                syncData = new SyncDataDto();
                 syncData.setTableName(SyncTableNameEnum.USER.tableName);
                 syncData.setDataList(userList);
                 syncDataList.add(syncData);

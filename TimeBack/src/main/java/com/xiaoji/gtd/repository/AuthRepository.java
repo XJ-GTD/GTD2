@@ -55,7 +55,7 @@ public class AuthRepository {
             sqlQuery += " AND TB.USER_ID = '" + targetUserId + "' \n";
         }
 
-        String sql = "SELECT DISTINCT TB.USER_ID, TA.PLAYER_FLAG  FROM gtd_login TB \n" +
+        String sql = "SELECT TB.USER_ID, TA.PLAYER_FLAG  FROM gtd_login TB \n" +
                 " LEFT JOIN gtd_player TA ON TA.USER_ID = TB.USER_ID \n" +
                 " AND TA.PLAYER_ID = '" + userId + "'\n" +
                 sqlQuery;
