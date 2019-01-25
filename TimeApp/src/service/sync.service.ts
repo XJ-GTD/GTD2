@@ -177,10 +177,12 @@ export class SyncService {
     return new Promise((resolve, reject) =>{
       let sql='';
       let base = new BsModel();
+      let fv = '0';
       this.syncR.loginSync(DataConfig.uInfo.uI,this.util.getDeviceId())
         .then(data=> {
           if (data && data.code == 0 && data.data.userDataList.length > 0) {
             let uds = data.data.userDataList;
+            fv=data.data.version;
             sql = this.getsql(sql,uds);
           }
           if (sql != '') {
@@ -189,6 +191,12 @@ export class SyncService {
           }
         }).then(data=>{
         console.log('----- 登录同步服务器数据结束 ------' + JSON.stringify(data));
+        let sv = new SyvEntity();
+        sv.si=1;
+        sv.fv=fv;
+        sv.bv=0;
+        return this.base.update(sv);
+      }).then(data=>{
         //10秒后调用定时同步
         setTimeout(() => {
           this.syncTime()

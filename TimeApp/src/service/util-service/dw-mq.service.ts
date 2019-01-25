@@ -366,15 +366,16 @@ export class DwMqService {
    * 业务：日程删除
    */
   private scheduleDelete(data: WsResDataModel) {
-    let sI = data.si;
-    let ct = data.sn;
-    let sd = data.st;
-    let ed = data.et;
-    this.work.drc(sI,'').then(data => {
+    let rc = new RcModel();
+    rc.sI = data.si;
+    rc.sN = data.sn;
+    rc.sd = data.st;
+    rc.ed = data.et;
+    this.work.mqDrc(rc).then(data => {
       let ms = new MsEntity();
-      ms.mn = ct;
-      ms.md = sd;
-      ms.rI = sI;
+      ms.mn = rc.sN;
+      ms.md = rc.sd;
+      ms.rI = rc.sI;
       ms.mt = '0';
       ms.mf = '0';
       return this.msSqlite.addMs(ms);

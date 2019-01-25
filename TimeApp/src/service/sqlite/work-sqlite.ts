@@ -79,6 +79,27 @@ export class WorkSqlite{
    * @param {RcEntity} rc
    * @param {Array<RuModel>} rcps
    */
+  delete(rc:RcEntity):Promise<any>{
+    return new Promise((resolve, reject) => {
+      //添加本地日程
+      this.baseSqlite.delete(rc).then(data=>{
+        //添加本地日程到同步表
+        console.log('------------- WorkSqlite save 同步表--------------')
+        return this.syncRcTime(rc,DataConfig.AC_D);
+      }).then(data=>{
+        resolve(data);
+      }).catch(e=>{
+        console.log('------------- WorkSqlite save Error：' + JSON.stringify(e));
+        reject(e);
+      })
+    })
+  }
+
+  /**
+   * 保存日程参与人信息
+   * @param {RcEntity} rc
+   * @param {Array<RuModel>} rcps
+   */
   sRcps(rc:RcEntity,rus:Array<RuModel>):Promise<any>{
     return new Promise((resolve, reject) => {
       let sql = "";
@@ -120,7 +141,8 @@ export class WorkSqlite{
         rcpL.push(rgc);
       }
       this.baseSqlite.importSqlToDb(sql).then(data=>{
-        this.syncRgcTime(rcpL,DataConfig.AC_O)
+        return this.syncRgcTime(rcpL,DataConfig.AC_O)
+      }).then(data=>{
         resolve(data);
       }).catch(e=>{
         reject(e);
