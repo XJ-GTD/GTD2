@@ -53,6 +53,27 @@ export class WorkSqlite{
       })
     })
   }
+
+  /**
+   * 保存日程参与人信息
+   * @param {RcEntity} rc
+   * @param {Array<RuModel>} rcps
+   */
+  update(rc:RcEntity):Promise<any>{
+    return new Promise((resolve, reject) => {
+      //添加本地日程
+      this.baseSqlite.update(rc).then(data=>{
+        //添加本地日程到同步表
+        console.log('------------- WorkSqlite save 同步表--------------')
+        this.syncRcTime(rc,DataConfig.AC_T);
+        resolve(data);
+      }).catch(e=>{
+        console.log('------------- WorkSqlite save Error：' + JSON.stringify(e));
+        reject(e);
+      })
+    })
+  }
+
   /**
    * 保存日程参与人信息
    * @param {RcEntity} rc
@@ -650,9 +671,12 @@ export class WorkSqlite{
         en.pI = sync.tableA;
         en.sI = sync.tableB;
         en.son = sync.tableC;
-        en.sa = sync.tableD;
-        en.uI = sync.tableE;
-        en.rui = sync.tableF;
+        if(sync.tableD != '' && sync.tableD != null){
+          en.sdt = Number(sync.tableD);
+        }
+        en.sa = sync.tableE;
+        en.uI = sync.tableF;
+        en.rui = sync.tableG;
         if (sync.action == '2') {
           sql += en.dsq;
         } else {

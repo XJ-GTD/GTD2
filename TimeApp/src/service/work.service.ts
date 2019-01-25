@@ -46,6 +46,57 @@ export class WorkService {
   }
 
 
+  /**
+   * 重复类型日程更新
+   * @param {RcModel} rc
+   * @param {string} ed 日程变更时间
+   * @param {string} ia 0更新当天的，1更新以后的，2关闭以后的
+   * @returns {Promise<BsModel>}
+   */
+  repeatRc(orc:RcModel,nrc:RcModel,ed:string,ia:string):Promise<BsModel>{
+    return new Promise((resolve, reject) => {
+      let rce = new RcEntity();
+      rce.sI = orc.sI;
+      rce.ed = ed;
+      let edt = new Date(ed).getTime();
+      rce.ed = moment(edt- 24*60*60*1000).format('YYYY/MM/DD HH:mm');
+      //关闭原日程的结束日期
+      this.workSqlite.update(rce).then(data=>{
+        if(ia != '2'){
+          //插入一条当前最新的
+          return this.arc(nrc.sN,nrc.sd,nrc.lI,nrc.ji,nrc.cft,nrc.rm,nrc.ac,nrc.rus);
+        }
+      }).then(data=>{
+        //重复类型：0日，1周，2月，3年
+        if(ia =='0'  && orc.cft != '' && orc.cft){
+          if(orc.cft =='0'){
+            orc.sd = moment(edt + 24*60*60*1000).format('YYYY/MM/DD HH:mm');
+          }else if(orc.cft =='1'){
+            orc.sd = moment(edt + 7*24*60*60*1000).format('YYYY/MM/DD HH:mm');
+          }else if(orc.cft =='2'){
+            let sdn:number=Number(orc.sd.substr(0,4));
+            let sdm:number=Number(orc.sd.substr(4,2));
+            if(sdm==12){
+              sdn+=1;
+              sdm=101;
+            }else{
+              sdm=100+sdm+1;
+            }
+            let sdms = sdm.toString().substr(1,2);
+            orc.sd = sdn+'/'+sdms+orc.sd.substr(7,8);
+          }else if(orc.cft =='3'){
+            let sdn:number=Number(orc.sd.substr(0,4))+1;
+            orc.sd = sdn+orc.sd.substr(4,10);
+          }
+          //更改以后的
+          return this.arc(orc.sN,orc.sd,orc.lI,orc.ji,orc.cft,orc.rm,orc.ac,orc.rus);
+        }
+      })
+
+
+    })
+  }
+
 
   /**
    * 添加日程
@@ -240,7 +291,7 @@ export class WorkService {
       rc.ji=jhi;
       rc.sI=sI;
       let psl = new Array<PsModel>();
-      this.baseSqlite.update(rc).then(datau=>{
+      this.workSqlite.update(rc).then(datau=>{
         //转化接口对应的参与人参数
         if(ruL && ruL.length>0){
           for(let i=0;i<ruL.length;i++){
