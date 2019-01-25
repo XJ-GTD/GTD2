@@ -1,8 +1,5 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {App, Events, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {UtilService} from "../../service/util-service/util.service";
-import {XiaojiFeedbackService} from "../../service/util-service/xiaoji-feedback.service";
-import * as moment from "moment";
+import {IonicPage} from 'ionic-angular';
 
 /**
  * Generated class for the Hb01Page page.
@@ -22,35 +19,20 @@ export class Hb01Page {
   gl: WebGLRenderingContext;
   cw: number;
   ch: number;
-  ratio: number;
-
 
   numLines: number = 8000;
 
-  vertices_t: Array<number>;
-  velocities_t: Array<number>;
-
-  thetaArr_t: Array<number>;
-  velThetaArr_t: Array<number>;
-  velRadArr_t: Array<number>;
-  freqArr_t: Array<number>;
-
-
   vertices:Float32Array;
-  velocities:Float32Array;
 
   thetaArr:Float32Array;
   velThetaArr:Float32Array;
   velRadArr:Float32Array;
-  freqArr:Float32Array;
 
   randomTargetXArr: Array<number>;
   randomTargetYArr: Array<number>;
 
-  count: number = 0;
-  cn: number = 0;
-
   drawType: number = 1;
+
   ionViewDidLoad(){
     this.loadScene();
 
@@ -105,7 +87,7 @@ export class Hb01Page {
       // "  precision highp float; " +
       // " #endif " +
       " void main(void) {" +
-      "    gl_FragColor = vec4(0.2, 0.3, 0.4, 1.0);" +
+      "   gl_FragColor = vec4(0.1, 0.2, 0.3, 1.0);" +
       "  }";
 
     var fragmentShader = this.gl.createShader(this.gl.FRAGMENT_SHADER);
@@ -143,7 +125,7 @@ export class Hb01Page {
    // this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
     //    Clear the depth buffer. The value specified is clamped to the range [0,1].
     //    More info about depth buffers: http://en.wikipedia.org/wiki/Depth_buffer
-    this.gl.clearDepth(1.0);
+    //this.gl.clearDepth(1.0);
     //    Enable depth testing. This is a technique used for hidden surface removal.
     //    It assigns a value (z) to each pixel that represents the distance from this
     //    pixel to the viewer. When another pixel is drawn at the same location the z
@@ -263,6 +245,7 @@ export class Hb01Page {
     //gl.flush();
 
     //setInterval( drawScene, 1000 / 40 );
+
     this.animate();
     // setTimeout(()=>{
     //   this.timer()}, 1500
@@ -274,7 +257,8 @@ export class Hb01Page {
   animate() {
     requestAnimationFrame(()=>{
       this.drawScene();
-        this.animate();}
+      this.animate();
+    }
       );
 
   }
@@ -284,14 +268,13 @@ export class Hb01Page {
     this.draw();
 
     this.gl.lineWidth(1);
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.vertices), this.gl.DYNAMIC_DRAW);
+    this.gl.bufferData(this.gl.ARRAY_BUFFER, this.vertices, this.gl.DYNAMIC_DRAW);
 
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
-    //gl.drawArrays( gl.LINES_STRIP, 0, numLines );
+    //this.gl.drawArrays( this.gl.LINE_STRIP, 0, this.numLines );
     this.gl.drawArrays(this.gl.LINES, 0, this.numLines);
     //gl.drawArrays( gl.QUAD_STRIP, 0, numLines );
-
     this.gl.flush();
   }
 
@@ -315,34 +298,28 @@ export class Hb01Page {
 // ===================================
   setup() {
 
-    this.vertices_t = [];
-    this.velThetaArr_t = [];
-    this.velRadArr_t = [];
-    this.ratio = this.cw / this.ch;
-    this.velocities_t = [];
-    this.thetaArr_t = [];
-    this.freqArr_t = [];
+    let vertices_t = [];
+    let velThetaArr_t = [];
+    let velRadArr_t = [];
+    let ratio = this.cw / this.ch;
+    let thetaArr_t = [];
     this.randomTargetXArr = [];
-    this.randomTargetYArr=[];
+    this.randomTargetYArr = [];
 
     // -------------------------------
 
     for (var ii = 0; ii < this.numLines; ii++) {
-      var rad = (0.1 + .2 * Math.random());
-      var theta = Math.random() * Math.PI * 2;
-      var velTheta = Math.random() * Math.PI * 2 / 30;
-      var freq = Math.random() * 0.12 + 0.03;
-      var boldRate = Math.random() * .04 + .01;
-      var randomPosX = (Math.random() * 2 - 1) * window.innerWidth / window.innerHeight;
-      var randomPosY = Math.random() * 2 - 1;
+      let rad = (0.1 + .2 * Math.random());
+      let theta = Math.random() * Math.PI * 2;
+      let velTheta = Math.random() * Math.PI * 2 / 30;
+      let randomPosX = (Math.random() * 2 - 1) * window.innerWidth / window.innerHeight;
+      let randomPosY = Math.random() * 2 - 1;
 
-      this.vertices_t.push(rad * Math.cos(theta), rad * Math.sin(theta), 1.83);
-      this.vertices_t.push(rad * Math.cos(theta), rad * Math.sin(theta), 1.83);
+      vertices_t.push(rad * Math.cos(theta), rad * Math.sin(theta), 2.00);
 
-      this.thetaArr_t.push(theta);
-      this.velThetaArr_t.push(velTheta);
-      this.velRadArr_t.push(rad);
-      this.freqArr_t.push(freq);
+      thetaArr_t.push(theta);
+      velThetaArr_t.push(velTheta);
+      velRadArr_t.push(rad);
 
 
       this.randomTargetXArr.push(randomPosX);
@@ -350,27 +327,22 @@ export class Hb01Page {
     }
 
 
-    this.vertices = new Float32Array(this.vertices_t);
-    this.velocities = new Float32Array(this.velocities_t);
+    this.vertices = new Float32Array(vertices_t);
 
-    this.thetaArr = new Float32Array(this.thetaArr_t);
-    this.velThetaArr = new Float32Array(this.velThetaArr_t);
-    this.velRadArr = new Float32Array(this.velRadArr_t);
+    this.thetaArr = new Float32Array(thetaArr_t);
+    this.velThetaArr = new Float32Array(velThetaArr_t);
+    this.velRadArr = new Float32Array(velRadArr_t);
 
-    this.freqArr = new Float32Array(this.freqArr_t);
   }
 
   draw0() {
 
-    var i, n = this.vertices.length, p, bp;
+    var i, bp;
     var px, py;
-    var pTheta;
-    var rad;
     var num;
     var targetX, targetY;
 
     for (i = 0; i < this.numLines * 2; i += 2) {
-      this.count += .3;
       bp = i * 3;
 
       this.vertices[bp] = this.vertices[bp + 3];
@@ -397,7 +369,7 @@ export class Hb01Page {
 // -------------------------------
 draw1() {
 
-    var i, n = this.vertices.length, p, bp;
+    var i, bp;
     var px, py;
     var pTheta;
     var rad;
@@ -405,7 +377,6 @@ draw1() {
     var targetX, targetY;
 
     for (i = 0; i < this.numLines * 2; i += 2) {
-      this.count += .3;
       bp = i * 3;
 
       this.vertices[bp] = this.vertices[bp + 3];
@@ -437,7 +408,6 @@ draw1() {
 
 
   draw2() {
-    this.cn += .1;
 
     var i, n = this.vertices.length, p, bp;
     var px, py;
@@ -446,7 +416,6 @@ draw1() {
     var num;
 
     for (i = 0; i < this.numLines * 2; i += 2) {
-      this.count += .3;
       bp = i * 3;
       // copy old positions
 
@@ -466,7 +435,7 @@ draw1() {
       this.vertices[bp + 3] = px;
 
 
-      //py = (Math.sin(cn) + 1) * .2 * (Math.random() * .5 - .25);
+      //py = (Math.sin(this.cn) + 1) * .2 * (Math.random() * .5 - .25);
       py = this.vertices[bp + 4];
 
       py = py + rad * Math.sin(pTheta) * 0.1;
