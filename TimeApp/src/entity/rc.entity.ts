@@ -128,9 +128,6 @@ export class RcEntity {
     if(this._df!=null && this._df!=''){
       sql=sql+' df="' + this._df +'",';
     }
-    if(this._fi!=null && this._fi!=''){
-      sql=sql+' fi="' + this._fi +'",';
-    }
     let str = sql.substr(sql.length-1,sql.length);
     if(str == ','){
       sql = sql.substr(0,sql.length-1);
