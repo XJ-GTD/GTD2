@@ -230,6 +230,7 @@ export class WorkService {
       if(ed != null && ed != ''){
         rc.ed=ed;
       }
+      rc.ed =rc.ed.replace(new RegExp('-','g'),'/');
       if(DataConfig.IS_NETWORK_CONNECT){
         rc.fi='0';
       }else{
@@ -334,6 +335,7 @@ export class WorkService {
       if(ed != null && ed != ''){
         rc.ed=ed;
       }
+      rc.ed =rc.ed.replace(new RegExp('-','g'),'/');
       rc.lI=lbI;
       rc.sI=sI;
       console.log("------ WorkService arcMq() Start ------------");
