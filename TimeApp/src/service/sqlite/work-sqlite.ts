@@ -390,7 +390,6 @@ export class WorkSqlite{
         if(sd<=day && ed>=day){
           isTrue = true;
         }
-        isTrue = true;
       }
     }else if(sd<=day && ed>=day){
       isTrue = true;
