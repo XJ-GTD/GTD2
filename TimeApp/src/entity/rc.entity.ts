@@ -23,7 +23,7 @@ export class RcEntity {
    * @private
    */
   private _csq:string = 'CREATE TABLE IF NOT EXISTS GTD_C(sI VARCHAR(100) PRIMARY KEY,' +
-                          'orgI VARCHAR(100),sN VARCHAR(100),lI VARCHAR(10),uI VARCHAR(100),sd VARCHAR(20),' +
+                          'sN VARCHAR(100),lI VARCHAR(10),uI VARCHAR(100),sd VARCHAR(20),' +
     'ed VARCHAR(20),ji VARCHAR(20),ib VARCHAR(20),bi VARCHAR(200),fi VARCHAR(20),orgI VARCHAR(100),df VARCHAR(2));';
   private _drsq:string="DROP TABLE IF EXISTS GTD_C;"
 
