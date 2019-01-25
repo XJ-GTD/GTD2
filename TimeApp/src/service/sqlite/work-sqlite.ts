@@ -385,7 +385,7 @@ export class WorkSqlite{
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_RC ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_JN ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
-      'left join (select * from GTD_D where uI ="'+DataConfig.uInfo.uI+'") gd on gc.sI=gd.sI ';
+      'left join (select sI,uI from GTD_D where uI ="'+DataConfig.uInfo.uI+'" group by sI,uI) gd on gc.sI=gd.sI ';
     return sql;
   }
 
