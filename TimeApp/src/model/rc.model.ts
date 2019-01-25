@@ -17,6 +17,9 @@ export class RcModel extends BsModel{
   private _uI: string='';          //创建人ID
   private _sd:string=''; //开始时间
   private _ed:string = ''; //结束时间
+  private _orgI: string=''; //初始日程id
+  private _df: string=''; //删除状态0：未删除，1：以被删除
+
   private _sa:string = ''; //修改权限 0不可修改，1可修改
   private _pI: string='';//日程参与人表uuID
   private _son: string='';//日程别名
@@ -226,5 +229,21 @@ export class RcModel extends BsModel{
 
   set son(value: string) {
     this._son = value;
+  }
+
+  get orgI(): string {
+    return this._orgI;
+  }
+
+  set orgI(value: string) {
+    this._orgI = value;
+  }
+
+  get df(): string {
+    return this._df;
+  }
+
+  set df(value: string) {
+    this._df = value;
   }
 }

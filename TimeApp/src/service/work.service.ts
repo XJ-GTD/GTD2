@@ -499,14 +499,10 @@ export class WorkService {
       rce.df = '1';
       let ruL:Array<RuModel> = new Array<RuModel>();
       let psl = new Array<PsModel>();
-      console.log('--------- 删除的日程开始 ---------');
+      console.log('--------- MQ逻辑删除的日程开始 ---------');
       this.baseSqlite.update(rc)
         .then(datad => {
-          console.log('--------- 删除的日程结束 ---------');
-          console.log('--------- 删除的参与人开始 ---------');
-          return this.workSqlite.dRcps(rc.sI);
-        }).then(data=>{
-          console.log('--------- 删除的参与人结束 ---------');
+          console.log('--------- MQ逻辑删除的日程结束 ---------');
           return this.workSqlite.syncRcTime(rce,DataConfig.AC_D);
         }).then(data=>{
         console.log('--------- 同步上传服务删除的日程 ---------');
@@ -520,7 +516,7 @@ export class WorkService {
   }
 
   /**
-   * 根据消息日程删除状态删除日程
+   * 读取消息后删除fd为1的日程
    * @param {string} sI 日程主键
    * @param {string} sa 修改权限 0不可修改，1可修改
    */
@@ -539,8 +535,7 @@ export class WorkService {
         .then(data=>{
           console.log('--------- 删除的参与人结束 ---------');
           resolve(bs);
-        })
-        .catch(eu => {
+        }).catch(eu => {
           bs.code = ReturnConfig.ERR_CODE;
           bs.message = eu.message;
           resolve(bs)
@@ -756,6 +751,12 @@ export class WorkService {
         let ms = new MsEntity();
         ms.rI=rc.sI;
         return this.msSqlite.updateMs(ms);
+      }).then(data=>{
+        if(rc.df=='1'){
+          console.log("----- WorkService getds(事件详情) 删除df状态是1的日程 -------" );
+          return this.msDrc(rc);
+        }
+        resolve(rc);
       }).then(data=>{
         resolve(rc);
       }).catch(e=>{
