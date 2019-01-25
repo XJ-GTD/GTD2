@@ -127,19 +127,6 @@ export class WorkSqlite{
         sql += rgc.isq;
         rcpL.push(rgc);
       }
-      //没有自己则添加自己
-      if(!isMe){
-        let rgc = new RcpEntity();
-        rgc.pI = this.util.getUuid();
-        rgc.sI = rc.sI;
-        rgc.son = rc.sN;
-        let sa = '1';
-        rgc.cd = rc.sd;
-        rgc.pd = rc.ed;
-        rgc.uI = DataConfig.uInfo.uI;
-        sql += rgc.isq;
-        rcpL.push(rgc);
-      }
       this.baseSqlite.importSqlToDb(sql).then(data=>{
         return this.syncRgcTime(rcpL,DataConfig.AC_O)
       }).then(data=>{

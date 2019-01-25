@@ -134,7 +134,7 @@ export class WorkService {
       rc.sI=this.util.getUuid();
       let psl = new Array<PsModel>();
       console.log("----- workService arc 添加日程开始-------");
-
+      let isMe = false;
       this.workSqlite.save(rc).then(data=>{
           console.log("----- workService arc 添加日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 添加日程子表-------");
@@ -145,12 +145,14 @@ export class WorkService {
             if(ruL && ruL.length>0){
               for(let i=0;i<ruL.length;i++){
                 //排除当前登录人
-                //if(ruL[i].rI != rc.uI){
-                let ps = new PsModel();
-                ps.userId=ruL[i].rI;
-                ps.accountMobile = ruL[i].rC;
-                psl.push(ps);
-                //}
+                if(ruL[i].rI != rc.uI){
+                  let ps = new PsModel();
+                  ps.userId=ruL[i].rI;
+                  ps.accountMobile = ruL[i].rC;
+                  psl.push(ps);
+                }else{
+                  isMe = true;
+                }
               }
             }
 
@@ -179,6 +181,14 @@ export class WorkService {
               }
             }
           }
+        }
+        //没有自己则添加自己
+        if(!isMe){
+          let ru = new RuModel();
+          ru.rI=DataConfig.uInfo.uI;
+          ru.hiu=DataConfig.uInfo.hIU;
+          ru.rN=DataConfig.uInfo.rn;
+          ruL.push(ru);
         }
         return this.workSqlite.sRcps(rc,ruL);
       }).then(data=>{
@@ -295,12 +305,12 @@ export class WorkService {
         if(ruL && ruL.length>0){
           for(let i=0;i<ruL.length;i++){
             //排除当前登录人
-            //if(ruL[i].rI != rc.uI){
+            if(ruL[i].rI != rc.uI){
               let ps = new PsModel();
               ps.userId=ruL[i].rI;
               ps.accountMobile = ruL[i].rC;
               psl.push(ps);
-            //}
+            }
           }
         }
         //参与人大于0则访问后台接口
