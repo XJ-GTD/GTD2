@@ -487,9 +487,9 @@ export class WorkService {
   mqDrc(rc:RcModel):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
-      let rc = new RcEntity();
-      rc.sI = rc.sI;
-      rc.sN
+      let rce= new RcEntity();
+      rce.sI = rc.sI;
+      rce.df = '1';
       let ruL:Array<RuModel> = new Array<RuModel>();
       let psl = new Array<PsModel>();
       console.log('--------- 删除的日程开始 ---------');
