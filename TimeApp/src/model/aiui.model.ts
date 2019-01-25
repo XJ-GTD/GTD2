@@ -14,6 +14,7 @@ export class AiuiModel {
   private _ai: string;      //answerImg;
   private _ut: string;      //用户语音播报字段
 
+  private _tg: string;     //目的 新增0 删除1
   private _tt: string;     //使用人：U1是用户文言，S1是回答文本 S2是回答链接 S3是回答图片
                             //S4是日程：增删查改/单条 S5是日程查询列表 S6是联系人：增删查改/单条 S7是联系人查询列表
 
@@ -22,6 +23,14 @@ export class AiuiModel {
 
   private _pl: RuModel;             //联系人单条
   private _plL: Array<RuModel>;     //联系人数据list
+
+  set tg(value: string) {
+    this._tg = value;
+  }
+
+  get tg(): string {
+    return this._tg;
+  }
 
   get pl(): RuModel {
     return this._pl;

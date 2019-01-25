@@ -391,9 +391,11 @@ public class SyncServiceImpl implements ISyncService {
                     List<GtdScheduleEntity> deleteScheduleList = new ArrayList<>();
                     for (SyncTableData std: dataList) {
 
-                        GtdScheduleEntity scheduleEntity = SyncGetOrSetMethod.scheduleDtoToEntity(std);
-                        if (isDelete(std.getAction())) deleteScheduleList.add(scheduleEntity);
-                        else tableScheduleList.add(scheduleEntity);
+                        if (userId.equals(std.getTableD())) {
+                            GtdScheduleEntity scheduleEntity = SyncGetOrSetMethod.scheduleDtoToEntity(std);
+                            if (isDelete(std.getAction())) deleteScheduleList.add(scheduleEntity);
+                            else tableScheduleList.add(scheduleEntity);
+                        }
 
                         syncVersion.add(getSyncData(std, userId, version, deviceId, uploadVersion, tableName));                 //填入入库版本表list
 

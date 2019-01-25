@@ -43,8 +43,21 @@ export class CalsSqlite{
    * 查询日程中取消或删除的日程
    * @param {string} sI 日程ID
    */
-  getRcd(sI:string):Promise<any>{
-    let sql = 'select * from GTD_C_D where sI=' + sI;
+  getRcd(rcd:RcdEntity):Promise<any>{
+    let sql = 'select * from GTD_C_D where 1=1 '
+    if(rcd.sI!=null && rcd.sI!=''){
+      sql=sql+' and sI="' + rcd.sI +'"';
+    }
+    if(rcd.sd!=null && rcd.sd!=''){
+      sql=sql+' and sd="' + rcd.sd +'"';
+    }
+    if(rcd.dI!=null && rcd.dI!=''){
+      sql=sql+' and dI="' + rcd.dI +'"';
+    }
+
+    if(rcd.dI!=null && rcd.dI!=''){
+      sql=sql+' and substr(ifnull(sd,""),1,7)="' + rcd.yM +'"';
+    }
     return this.baseSqlite.executeSql(sql,[])
   }
 

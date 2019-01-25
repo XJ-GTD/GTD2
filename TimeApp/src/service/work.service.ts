@@ -26,6 +26,8 @@ import {RcoModel} from "../model/out/rco.model";
 import * as moment from "moment";
 import {MsSqlite} from "./sqlite/ms-sqlite";
 import {ReadlocalService} from "./readlocal.service";
+import {SyncSqlite} from "./sqlite/sync-sqlite";
+import {SyncService} from "./sync.service";
 
 /**
  * 日程逻辑处理
@@ -41,10 +43,62 @@ export class WorkService {
                 private relmem : RelmemSqlite,
                 private lbSqlite : LbSqlite,
                 private msSqlite : MsSqlite,
+                private sync : SyncService,
                 private readlocal : ReadlocalService,
                 private rcResful:RcRestful) {
   }
 
+
+  /**
+   * 重复类型日程更新
+   * @param {RcModel} rc
+   * @param {string} ed 日程变更时间
+   * @param {string} ia 0更新当天的，1更新以后的，2关闭以后的
+   * @returns {Promise<BsModel>}
+   */
+  repeatRc(orc:RcModel,nrc:RcModel,ed:string,ia:string):Promise<BsModel>{
+    return new Promise((resolve, reject) => {
+      let rce = new RcEntity();
+      rce.sI = orc.sI;
+      rce.ed = ed;
+      let edt = new Date(ed).getTime();
+      rce.ed = moment(edt- 24*60*60*1000).format('YYYY/MM/DD HH:mm');
+      //关闭原日程的结束日期
+      this.workSqlite.update(rce).then(data=>{
+        if(ia != '2'){
+          //插入一条当前最新的
+          return this.arc(nrc.sN,nrc.sd,nrc.lI,nrc.ji,nrc.cft,nrc.rm,nrc.ac,nrc.rus);
+        }
+      }).then(data=>{
+        //重复类型：0日，1周，2月，3年
+        if(ia =='0'  && orc.cft != '' && orc.cft){
+          if(orc.cft =='0'){
+            orc.sd = moment(edt + 24*60*60*1000).format('YYYY/MM/DD HH:mm');
+          }else if(orc.cft =='1'){
+            orc.sd = moment(edt + 7*24*60*60*1000).format('YYYY/MM/DD HH:mm');
+          }else if(orc.cft =='2'){
+            let sdn:number=Number(orc.sd.substr(0,4));
+            let sdm:number=Number(orc.sd.substr(4,2));
+            if(sdm==12){
+              sdn+=1;
+              sdm=101;
+            }else{
+              sdm=100+sdm+1;
+            }
+            let sdms = sdm.toString().substr(1,2);
+            orc.sd = sdn+'/'+sdms+orc.sd.substr(7,8);
+          }else if(orc.cft =='3'){
+            let sdn:number=Number(orc.sd.substr(0,4))+1;
+            orc.sd = sdn+orc.sd.substr(4,10);
+          }
+          //更改以后的
+          return this.arc(orc.sN,orc.sd,orc.lI,orc.ji,orc.cft,orc.rm,orc.ac,orc.rus);
+        }
+      })
+
+
+    })
+  }
 
 
   /**
@@ -180,17 +234,13 @@ export class WorkService {
           return this.workSqlite.addLbData(rc.sI,rc.lI,cft,rm,ac,'0');
         })
         .then(data=>{
-        let rcp = new RcpEntity();
-        rcp.uI=DataConfig.uInfo.uI;
-        rcp.sI=sI;
-        rcp.sa='0';
-        if(rcp.uI ==rc.uI){
-          rcp.sa='1';
-        }
-        rcp.pI=this.util.getUuid();
-        rcp.sdt=1;
-        rcp.son=rc.sN;
-        return this.baseSqlite.save(rcp);
+          let ruL=new Array<RuModel>();
+          let ru = new RuModel();
+          ru.rI=DataConfig.uInfo.uI;
+          ru.hiu=DataConfig.uInfo.hIU;
+          ru.rN=DataConfig.uInfo.rn;
+          ruL.push(ru);
+        return this.workSqlite.sRcps(rc,ruL);
       }).then(data=>{
         console.log("------ WorkService arcMq() End ------------");
         resolve(bs);
@@ -230,6 +280,7 @@ export class WorkService {
       if(ed != null && ed != ''){
         rc.ed=ed;
       }
+      rc.ed =rc.ed.replace(new RegExp('-','g'),'/');
       if(DataConfig.IS_NETWORK_CONNECT){
         rc.fi='0';
       }else{
@@ -239,7 +290,7 @@ export class WorkService {
       rc.ji=jhi;
       rc.sI=sI;
       let psl = new Array<PsModel>();
-      this.baseSqlite.update(rc).then(datau=>{
+      this.workSqlite.update(rc).then(datau=>{
         //转化接口对应的参与人参数
         if(ruL && ruL.length>0){
           for(let i=0;i<ruL.length;i++){
@@ -334,6 +385,7 @@ export class WorkService {
       if(ed != null && ed != ''){
         rc.ed=ed;
       }
+      rc.ed =rc.ed.replace(new RegExp('-','g'),'/');
       rc.lI=lbI;
       rc.sI=sI;
       console.log("------ WorkService arcMq() Start ------------");
@@ -374,10 +426,11 @@ export class WorkService {
       if(sa != '0'){
         let rc = new RcEntity();
         rc.sI = sI;
-        let ruL:Array<RuModel> = new Array<RuModel>();
+        let ruL= new Array<RuModel>();
+        let rcpL= new Array<RcpEntity>();
         let psl = new Array<PsModel>();
         console.log('--------- 删除的日程开始 ---------');
-        this.baseSqlite.delete(rc)
+        this.workSqlite.delete(rc)
           .then(datad => {
             console.log('--------- 删除的日程结束 ---------');
             console.log('--------- 查询要删除的参与人开始 ---------');
@@ -388,6 +441,7 @@ export class WorkService {
               let rs = data.rows;
               for (let i = 0; i < rs.length; i++) {
                 ruL.push(rs.item(i));
+                rcpL.push(rs.item(i));
               }
             }
             console.log('--------- 删除的参与人开始 ---------');
@@ -410,16 +464,18 @@ export class WorkService {
             }
             console.log("WorkService drc() 删除日程 restful request " + SkillConfig.BC_SCD+" start");
             return this.rcResful.sc(DataConfig.uInfo.uI,SkillConfig.BC_SCD,rc.sI,'123','2019-01-07','2019-01-07','1',psl,'');
-
           }
-
-        })
-          .then(data=>{
+        }).then(data=>{
+          console.log("WorkService drc() 删除日程 restful request END " + JSON.stringify(data));
+          //同步删除参与人表
+          return this.workSqlite.syncRgcTime(rcpL,DataConfig.AC_D)
+        }).then(data=>{
+          console.log("WorkService drc() 删除日程同步上传删除参与人 restful request END " + JSON.stringify(data));
           resolve(bs);
-        })
-          .catch(eu => {
+        }).catch(eu => {
+          console.log("WorkService drc() 删除日程 ERROR " + JSON.stringify(eu));
           bs.code = ReturnConfig.ERR_CODE;
-          bs.message = eu.message;
+          bs.message = ReturnConfig.ERR_MESSAGE;
           resolve(bs)
         })
       }else{
@@ -427,6 +483,63 @@ export class WorkService {
         bs.message = '无权限删除';
         resolve(bs);
       }
+    })
+  }
+
+  /**
+   * 删除日程
+   * @param {string} sI 日程主键
+   * @param {string} sa 修改权限 0不可修改，1可修改
+   */
+  mqDrc(rc:RcModel):Promise<BsModel>{
+    return new Promise((resolve, reject) => {
+      let bs = new BsModel();
+      let rce= new RcEntity();
+      rce.sI = rc.sI;
+      rce.df = '1';
+      let ruL:Array<RuModel> = new Array<RuModel>();
+      let psl = new Array<PsModel>();
+      console.log('--------- MQ逻辑删除的日程开始 ---------');
+      this.baseSqlite.update(rc)
+        .then(datad => {
+          console.log('--------- MQ逻辑删除的日程结束 ---------');
+          return this.workSqlite.syncRcTime(rce,DataConfig.AC_D);
+        }).then(data=>{
+        console.log('--------- 同步上传服务删除的日程 ---------');
+        resolve(bs);
+      }).catch(eu => {
+          bs.code = ReturnConfig.ERR_CODE;
+          bs.message = eu.message;
+          resolve(bs)
+        })
+    })
+  }
+
+  /**
+   * 读取消息后删除fd为1的日程
+   * @param {string} sI 日程主键
+   * @param {string} sa 修改权限 0不可修改，1可修改
+   */
+  msDrc(rc:RcModel):Promise<BsModel>{
+    return new Promise((resolve, reject) => {
+      let bs = new BsModel();
+      let rce= new RcEntity();
+      rce.sI = rc.sI;
+      console.log('--------- 删除的日程开始 ---------');
+      this.baseSqlite.delete(rc)
+        .then(datad => {
+          console.log('--------- 删除的日程结束 ---------');
+          console.log('--------- 删除的参与人开始 ---------');
+          return this.workSqlite.dRcps(rc.sI);
+        })
+        .then(data=>{
+          console.log('--------- 删除的参与人结束 ---------');
+          resolve(bs);
+        }).catch(eu => {
+          bs.code = ReturnConfig.ERR_CODE;
+          bs.message = eu.message;
+          resolve(bs)
+        })
     })
   }
 
@@ -638,6 +751,12 @@ export class WorkService {
         let ms = new MsEntity();
         ms.rI=rc.sI;
         return this.msSqlite.updateMs(ms);
+      }).then(data=>{
+        if(rc.df=='1'){
+          console.log("----- WorkService getds(事件详情) 删除df状态是1的日程 -------" );
+          return this.msDrc(rc);
+        }
+        resolve(rc);
       }).then(data=>{
         resolve(rc);
       }).catch(e=>{

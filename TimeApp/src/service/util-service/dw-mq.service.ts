@@ -44,9 +44,10 @@ export class DwMqService {
 
       switch (mqDate.sk) {
         case SkillConfig.XF_NMT: //确认
-
+          this.trueDeal(mqDate);
           break;
         case SkillConfig.XF_NMC: //取消
+          this.falseDeal(mqDate);
           break;
         case SkillConfig.XF_SCC: //讯飞：日程添加
           this.xfScheduleCreate(mqDate);
@@ -101,7 +102,7 @@ export class DwMqService {
     let aiui = new AiuiModel();
     aiui.tt = DataConfig.T1;
     // aiui.at = WsEnumModel[mqDate.sk] + UtilService.randInt(0,10);
-    aiui.at = mqDate.at;
+    aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "1");
     this.dwResultSendToPage(aiui, mqDate.sk);
   }
 
@@ -109,7 +110,7 @@ export class DwMqService {
     let aiui = new AiuiModel();
     aiui.tt = DataConfig.F1;
     // aiui.at = WsEnumModel[mqDate.sk] + UtilService.randInt(0,10);
-    aiui.at = mqDate.at;
+    aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + "1");
     this.dwResultSendToPage(aiui, mqDate.sk);
   }
 
@@ -121,8 +122,8 @@ export class DwMqService {
     let md: WsResDataModel = mqDate.res.data;
     let ca = md.common_A;  //人名原参数value
     let cb = md.common_B; //人名原参数normValue
-    let pln = md.pln //拼音
-    let sn = md.sn //标题
+    let pln = md.pln; //拼音
+    let sn = md.sn; //标题
     let sd = md.st;
     if (sd == null || sd == '') {
       sd = md.et;
@@ -133,6 +134,7 @@ export class DwMqService {
     }
 
     let aiui = new AiuiModel();
+    aiui.tg = "0";
     console.log("========== 讯飞日程添加业务查询参与人处理开始 ========== ");
     this.work.xfAddrc(sn, sd, pln, ca, cb).then(data => {
       console.log("========== 讯飞日程添加业务查询参与人处理结果： " + JSON.stringify(data));
@@ -166,7 +168,7 @@ export class DwMqService {
     }else{
       sd = md.et;
     }
-    let ed=''
+    let ed='';
     if(md.et && md.et != ''){
       ed = md.et;
     }else{
@@ -174,7 +176,7 @@ export class DwMqService {
     }
     let sN = md.sn;
     let aiui = new AiuiModel();
-
+    aiui.tg = "1";
     this.work.getwL(sN, sd, ed, '', '', '','0').then(data => {
       aiui.scL = data.rcL;
       if (data && data.rcL && data.rcL.length > 0) {
@@ -322,6 +324,7 @@ export class DwMqService {
         ms.md = sd;
         ms.rI = sI;
         ms.mt = '0';
+        ms.mf = '0';
         return this.msSqlite.addMs(ms);
       }).then(data => {
         console.log("----- DwMqService scheduleCreate(业务：日程添加Message) end ---- ");
@@ -350,6 +353,7 @@ export class DwMqService {
       ms.md = sd;
       ms.rI = sI;
       ms.mt = '0';
+      ms.mf = '0';
       return this.msSqlite.addMs(ms);
     }).then(data => {
       console.log("----- DwMqService scheduleCreate(业务：日程更新Message) end ---- ");
@@ -362,9 +366,21 @@ export class DwMqService {
    * 业务：日程删除
    */
   private scheduleDelete(data: WsResDataModel) {
-    let sI = data.si;
-    this.work.drc(sI,'').then(data => {
-
+    let rc = new RcModel();
+    rc.sI = data.si;
+    rc.sN = data.sn;
+    rc.sd = data.st;
+    rc.ed = data.et;
+    this.work.mqDrc(rc).then(data => {
+      let ms = new MsEntity();
+      ms.mn = rc.sN;
+      ms.md = rc.sd;
+      ms.rI = rc.sI;
+      ms.mt = '0';
+      ms.mf = '0';
+      return this.msSqlite.addMs(ms);
+    }).then(data => {
+      console.log("----- DwMqService scheduleCreate(业务：日程更新Message) end ---- ");
     }).catch(e => {
 
     })

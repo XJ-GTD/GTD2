@@ -22,84 +22,72 @@ import {ScheduleModel} from "../../model/schedule.model";
 @IonicPage()
 @Component({
   selector: 'page-ha',
-  template:'<ion-header no-border>' +
-  '  <ion-toolbar color="none">' +
-  '    <ion-buttons left no-margin padding-left>' +
-  '      <button ion-button icon-only menuToggle no-margin>' +
-  '        <img src="./assets/imgs/menu.png"/>' +
-  '      </button>' +
-  '    </ion-buttons>' +
-  '    <ion-buttons end no-margin padding-right>' +
-  '      <button ion-button icon-only no-margin (click)="gotoToday()">' +
-  '        <img src="./assets/imgs/today.png"/>' +
-  '      </button>' +
-  '    </ion-buttons>' +
-  '  </ion-toolbar>' +
-  '</ion-header>' +
-  '<ion-content>' +
-  '  <div class="haContent">' +
-  '    <div class="haCalendar">' +
-  '      <ion-calendar [options]="options"' +
-  '                    (onSelect)="onSelectDayEvent($event)"' +
-  '                    (onPress)="creNewEvent($event)">' +
-  '      </ion-calendar>' +
-  '    </div>' +
-  '    <p class="tipDay"><span class="showDay animated flipInX">{{showDay}}</span><span' +
-  '      class="showDay2">{{showDay2}}</span></p>' +
-  '    <page-ha01></page-ha01>' +
-  '  </div>' +
-  '  <div class=" animated swing  assistant" (click)="openVoice()" #assistant>' +
-  '    <img src="./assets/imgs/yuying.png"/>' +
-  '  </div>' +
-  '</ion-content>' +
-  '<div [hidden]="noShow" class="backdrop-div" (click)="backdropclick($event)" >' +
-  '  <ion-backdrop disable-activated class="itemClass" role="presentation" tappable' +
-  '                style="opacity: 0.3; transition-delay: initial; transition-property: none;"></ion-backdrop>' +
-  '  <div class="pop-css" padding style="position: absolute"' +
-  '       *ngFor="let event of dayEvents"  (swipe)="swipeEvent($event)">' +
-  '      <ion-item style="border-top-left-radius: 20px;border-top-right-radius: 20px;">' +
-  '        <div item-end>' +
-  '          <button (click)="editEvent(event)" ion-item class="buttonWan">编辑</button>' +
-  '        </div>' +
-  '      </ion-item>' +
-  '      <ion-item style="border-top-left-radius: 20px;border-top-right-radius: 20px;">' +
-  '        <img src="./assets/imgs/h.png" style="width: 20px" item-start>' +
-  '        <ion-label col-3>任务</ion-label>' +
-  '        <ion-label>{{event.scheduleName}}</ion-label>' +
-  '      </ion-item>' +
-  '      <ion-item>' +
-  '        <img src="./assets/imgs/g.png" style="width: 20px" item-start>' +
-  '        <ion-label col-3 item-left style="margin-right: 0px !important;">参与人</ion-label>' +
-  '        <div item-left margin-left>' +
-  '          <div>' +
-  '            <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">' +
-  '              <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg"' +
-  '                   style="border-radius: 50%;width: 40px;height: 40px">' +
-  '            </ion-thumbnail>' +
-  '            <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center>' +
-  '              张三' +
-  '            </div>' +
-  '          </div>' +
-  '        </div>' +
-  '        <div item-left>' +
-  '          <div>' +
-  '            <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">' +
-  '              <img src="http://pics.sc.chinaz.com/files/pic/pic9/201811/bpic9202.jpg"' +
-  '                   style="border-radius: 50%;width: 40px;height: 40px">' +
-  '            </ion-thumbnail>' +
-  '            <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center>' +
-  '              李四' +
-  '            </div>' +
-  '          </div>' +
-  '        </div>' +
-  '      </ion-item>' +
-  '      <ion-item>' +
-  '        <img src="./assets/imgs/b.png" style="width: 20px" item-start>' +
-  '        <ion-label col-3>备注</ion-label>' +
-  '        <ion-label>哈哈哈</ion-label>' +
-  '      </ion-item>' +
-  '    </div>' +
-  '</div>',
+  template:`<ion-header no-border>
+    <ion-toolbar color="none">
+      <ion-buttons left no-margin padding-left>
+        <button ion-button icon-only menuToggle no-margin>
+          <img src="./assets/imgs/menu.png"/>
+        </button>
+      </ion-buttons>
+      <ion-buttons end no-margin padding-right>
+        <button ion-button icon-only no-margin (click)="gotoToday()">
+          <img src="./assets/imgs/today.png"/>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+   <div class="haContent">
+      <div class="haCalendar">
+        <ion-calendar [options]="options"
+                      (onSelect)="onSelectDayEvent($event)"
+                      (onPress)="creNewEvent($event)">
+        </ion-calendar>
+      </div>
+      <p class="tipDay"><span class="showDay animated flipInX">{{showDay}}</span><span
+       class="showDay2">{{showDay2}}</span></p>
+      <page-ha01></page-ha01>
+    </div>
+    <div class=" animated swing  assistant" (click)="openVoice()" #assistant>
+      <img src="./assets/imgs/yuying.png"/>
+    </div>
+  </ion-content>
+  <div [hidden]="noShow" class="backdrop-div" (click)="backdropclick($event)" >
+    <ion-backdrop disable-activated class="itemClass" role="presentation" tappable
+                  style="opacity: 0.3; transition-delay: initial; transition-property: none;"></ion-backdrop>
+    <div class="pop-css" padding style="position: absolute"
+         *ngFor="let event of dayEvents"  (swipe)="swipeEvent($event)">
+        <ion-item style="border-top-left-radius: 20px;border-top-right-radius: 20px;">
+          <div item-end>
+            <button (click)="editEvent(event)" ion-item class="buttonWan">编辑</button>
+          </div>
+        </ion-item>
+        <ion-item style="border-top-left-radius: 20px;border-top-right-radius: 20px;">
+          <img src="./assets/imgs/h.png" style="width: 20px" item-start>
+          <ion-label col-3>任务</ion-label>
+          <ion-label>{{event.scheduleName}}</ion-label>
+        </ion-item>
+        <ion-item>
+         <img src="./assets/imgs/g.png" style="width: 20px" item-start>
+          <ion-label col-3 item-left style="margin-right: 0px !important;">参与人</ion-label>
+          <div item-left margin-left *ngFor="let pl of event.group">
+            <div>
+              <ion-thumbnail style="min-width: 40px !important;min-height: 40px !important;">
+                <img [src]="" style="border-radius: 50%;width: 40px;height: 40px">
+              </ion-thumbnail>
+              <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;" text-center>
+                张三
+              </div>
+            </div>
+          </div>
+        </ion-item>
+        <ion-item>
+          <img src="./assets/imgs/b.png" style="width: 20px" item-start>
+          <ion-label col-3>备注</ion-label>
+          <ion-label>哈哈哈</ion-label>
+        </ion-item>
+      </div>
+  </div>`,
   providers: []
 })
 export class HaPage {

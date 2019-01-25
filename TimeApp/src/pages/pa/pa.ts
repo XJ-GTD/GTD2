@@ -58,7 +58,7 @@ import {UtilService} from "../../service/util-service/util.service";
             </ion-avatar> 
             <ion-label> 
               <p style="color: #000; line-height: 17px;font-size: 1.7rem;">{{u.ran}}</p> 
-              <p style="color: #666666;font-size: 12px;">占位占位占位占位占位占位占位占位占位</p> 
+              <p style="color: #666666;font-size: 12px;">{{u.rN}}</p> 
             </ion-label> 
           </ion-item> 
           <ion-item-options side="right"> 
