@@ -141,7 +141,8 @@ export class WorkSqlite{
         rcpL.push(rgc);
       }
       this.baseSqlite.importSqlToDb(sql).then(data=>{
-        this.syncRgcTime(rcpL,DataConfig.AC_O)
+        return this.syncRgcTime(rcpL,DataConfig.AC_O)
+      }).then(data=>{
         resolve(data);
       }).catch(e=>{
         reject(e);
