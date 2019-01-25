@@ -230,4 +230,10 @@ page-sb {
   .malf{
     margin-left: 10px;
   }
+
+
+  ::-webkit-scrollbar {
+    display: none !important;
+  }
+
 }

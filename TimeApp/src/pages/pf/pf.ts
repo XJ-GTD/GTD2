@@ -38,7 +38,7 @@ import { Contacts } from "@ionic-native/contacts";
   <!--个人添加新建搜索 --> 
   <ion-content padding class="page-backgroud-color"> 
     <div > 
-      <div style="margin: 20px 0px;"> 
+      <div style="margin: 0px 0px;"> 
         <ion-item style="height: 50px"> 
           <ion-input type="tel" [(ngModel)]="tel" (ionBlur)="getContacts()" placeholder="请输入手机号" clearInput></ion-input> 
         </ion-item> 

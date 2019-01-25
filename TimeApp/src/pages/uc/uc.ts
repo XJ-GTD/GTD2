@@ -30,7 +30,7 @@ import {DataConfig} from "../../app/data.config";
     </ion-navbar> 
   </ion-header> 
   <ion-content padding class="page-backgroud-color"> 
-    <ion-item no-border> 
+    <ion-item class="no-border"> 
       <ion-label>昵称</ion-label> 
       <ion-input type="text" *ngIf="this.state == true" [(ngModel)]="uo.uN"></ion-input> 
       <ion-input type="text" *ngIf="this.state == false" disabled="true" [(ngModel)]="uo.uN"></ion-input> 
@@ -52,20 +52,20 @@ import {DataConfig} from "../../app/data.config";
         <ion-option value="2">女</ion-option> 
       </ion-select> 
     </ion-item> 
-    <button ion-item class="rowCss" no-border> 
+    <button ion-item class="rowCss no-border"> 
       <ion-label>生日</ion-label> 
       <ion-label item-end text-end *ngIf="this.state == false">{{uo.biy}}</ion-label> 
       <ion-datetime displayFormat="YYYY-MM-DD" *ngIf="this.state == true" item-end text-end float-end [(ngModel)]="uo.biy"></ion-datetime> 
     </button> 
-    <button ion-item margin-top no-border *ngIf="this.state == false" class="rowCss"> 
+    <button ion-item margin-top *ngIf="this.state == false" class="rowCss no-border"> 
       <ion-label>手机号</ion-label> 
       <ion-label item-end text-end >{{uo.uCt}}</ion-label> 
     </button> 
-    <button ion-item margin-top  *ngIf="this.state == true" class="rowCss"> 
+    <button ion-item margin-top  *ngIf="this.state == true" class="rowCss no-border noborder"> 
       <ion-label>手机号</ion-label> 
       <ion-input type="tel" item-end text-end [(ngModel)]="uo.uCt"></ion-input> 
     </button> 
-    <button ion-item (click)="relation()" no-border margin-top class="rowCss">关系人</button> 
+    <button ion-item (click)="relation()" margin-top class="rowCss no-border">关系人</button> 
   </ion-content>`,
 })
 export class UcPage {

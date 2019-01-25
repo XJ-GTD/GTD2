@@ -40,7 +40,7 @@ import {PageConfig} from "../../app/page.config";
   '            </ion-item>' +
   '          </div>' +
   '        </div>' +
-  '        <div>' +
+  '        <div *ngIf="this.errorCode != undefinde">' +
   '          <div>' +
   '            <!--*ngIf="true" -->' +
   '            <div class="error_info">' +
@@ -66,13 +66,6 @@ import {PageConfig} from "../../app/page.config";
   '            <div class="button_verification">' +
   '              <button ion-button (click)="sendMsg()">{{timeOut}}</button>' +
   '            </div>' +
-  '          </div>' +
-  '        </div>' +
-  '      </div>' +
-  '      <div >' +
-  '        <div >' +
-  '          <!--*ngIf="true" -->' +
-  '          <div class="error_info">' +
   '          </div>' +
   '        </div>' +
   '      </div>' +

@@ -127,19 +127,6 @@ export class WorkSqlite{
         sql += rgc.isq;
         rcpL.push(rgc);
       }
-      //没有自己则添加自己
-      if(!isMe){
-        let rgc = new RcpEntity();
-        rgc.pI = this.util.getUuid();
-        rgc.sI = rc.sI;
-        rgc.son = rc.sN;
-        let sa = '1';
-        rgc.cd = rc.sd;
-        rgc.pd = rc.ed;
-        rgc.uI = DataConfig.uInfo.uI;
-        sql += rgc.isq;
-        rcpL.push(rgc);
-      }
       this.baseSqlite.importSqlToDb(sql).then(data=>{
         return this.syncRgcTime(rcpL,DataConfig.AC_O)
       }).then(data=>{
@@ -398,7 +385,7 @@ export class WorkSqlite{
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_RC ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_JN ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
-      'left join (select * from GTD_D where uI ="'+DataConfig.uInfo.uI+'") gd on gc.sI=gd.sI ';
+      'left join (select sI,uI from GTD_D where uI ="'+DataConfig.uInfo.uI+'" group by sI,uI) gd on gc.sI=gd.sI ';
     return sql;
   }
 

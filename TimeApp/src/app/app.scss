@@ -98,3 +98,16 @@ p{
 .alert-ios .alert-radio-group, .alert-ios .alert-checkbox-group{
   border-top: 1px solid #dbdbdf;
 }
+//时间选择
+.picker-ios .picker-toolbar{
+  border-top: 1px solid #dbdbdf;
+}
+
+
+.no-border{
+  border: none !important;
+}
+
+.platform-ios{ .enwrap {  padding-top: 118px;   } }
+
+.platform-ios11{ .enwrap {  padding-top: 98px;   } }
