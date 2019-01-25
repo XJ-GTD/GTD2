@@ -64,8 +64,8 @@ declare var cordova: any;
             <!-- 判断消息是数据：新增日程 --> 
             <div *ngIf="S4 == message.tt" class="userTalk animated bounceIn">
               <div col-10 class="cc1" >
-                <div class="cc2" *ngFor="let pl of message.sc.rus">
-                  <div style="padding:10px;">
+                <div class="cc2" >
+                  <div style="padding:10px;" *ngFor="let pl of message.sc.rus">
                     <img class="cc3" src="{{pl.hiu}}">
                     <div class="cc4">{{pl.ran}}</div>
                   </div>
@@ -88,7 +88,7 @@ declare var cordova: any;
                 </div>
                 <div class="cc8">
                   <button class="cc9" style="color: #222222;" (click)="confirmatoryMethod(message, message.tg)">确认</button>
-                  <button class="cc9" style="color: #666666;" (click)="cancelMethod()">取消</button>
+                  <button class="cc9" style="color: #666666;" (click)="cancelMethod()" disabled="true">取消</button>
                 </div>
               </div>
             </div> 
@@ -290,6 +290,7 @@ export class HbPage {
     } else if ($event.tt == DataConfig.S4) {
       textX.tt = DataConfig.S1;
       textX.at = $event.at;
+      textX.tg = $event.tg;
       this.messages.unshift(textX);
       this.xiaojiSpeech.speakText(textX.at, success => {
         data.tt = $event.tt;
@@ -303,6 +304,7 @@ export class HbPage {
       }
       textX.tt = DataConfig.S1;
       textX.at = $event.at;
+      textX.tg = $event.tg;
       this.messages.unshift(textX);
       this.xiaojiSpeech.speakText(textX.at, success => {
         data.tt = $event.tt;
@@ -339,7 +341,6 @@ export class HbPage {
   
   /*=======================业务逻辑 start=========================*/
   private confirmatoryMethod(aiui: AiuiModel, tg: string) {
-
     if(tg == "0") {
       this.createSchedule(aiui.sc)
     } else if (tg == "1") {
