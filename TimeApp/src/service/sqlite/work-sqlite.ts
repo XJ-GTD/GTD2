@@ -650,9 +650,12 @@ export class WorkSqlite{
         en.pI = sync.tableA;
         en.sI = sync.tableB;
         en.son = sync.tableC;
-        en.sa = sync.tableD;
-        en.uI = sync.tableE;
-        en.rui = sync.tableF;
+        if(sync.tableD != '' && sync.tableD != null){
+          en.sdt = Number(sync.tableD);
+        }
+        en.sa = sync.tableE;
+        en.uI = sync.tableF;
+        en.rui = sync.tableG;
         if (sync.action == '2') {
           sql += en.dsq;
         } else {
