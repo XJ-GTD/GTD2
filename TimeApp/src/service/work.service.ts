@@ -422,7 +422,7 @@ export class WorkService {
         .then(data=>{
           console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 更新日程子表-------");
-          return this.workSqlite.updateLbData(subId,rc.sI,rc.lI,cft,rm,ac,'0',);
+          return this.workSqlite.updateLbData(subId,rc.sI,rc.lI,cft,rm,ac,'0');
         })
         .then(data=>{
         console.log("------ WorkService arcMq() End ------------");
