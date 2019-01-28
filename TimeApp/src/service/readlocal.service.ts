@@ -68,6 +68,7 @@ export class ReadlocalService {
         }
       }
       if(DataConfig.IS_MOBILE){
+        console.log("查询本地日历开始时间："+ sd+ ",结束时间:"+ed);
         this.calendar.findEvent(tit, "", "", sd, ed).then(
           (msg) => {
             console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg));
@@ -83,11 +84,20 @@ export class ReadlocalService {
                   }
                 }
                 if(isTrue){
+
                   let rc = new RcModel();
                   rc.uI = DataConfig.uInfo.uI;
                   rc.sN=msg[i].title;
-                  rc.sd=msg[i].startDate;
-                  rc.ed=msg[i].endDate;
+                  console.log("查询本地日历是否全天："+ msg[i].allday);
+                  if(msg[i].allday){
+                    rc.sd=msg[i].startDate.substr(0,10) + " " + "00:00";
+                    rc.ed=msg[i].startDate.substr(0,10) + " " + "23:59";
+                  }else{
+                    rc.sd=msg[i].startDate;
+                    rc.ed=msg[i].endDate;
+                  }
+                  console.log("查询本地日历开始时间："+ rc.sd+ ",结束时间:"+rc.ed);
+                  console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg[i]));
                   rc.bi=msg[i].id;
                   rc.ib='1';
                   rcL.push(rc);
