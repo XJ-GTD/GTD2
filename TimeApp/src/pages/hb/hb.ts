@@ -290,10 +290,12 @@ export class HbPage {
     } else if ($event.tt == DataConfig.S4) {
       textX.tt = DataConfig.S1;
       textX.at = $event.at;
+      textX.tg = $event.tg;
       this.messages.unshift(textX);
       this.xiaojiSpeech.speakText(textX.at, success => {
         data.tt = $event.tt;
         data.sc = $event.sc;
+        data.tg = $event.tg;
         this.messages.unshift(data);
       });
     }else if ($event.tt == DataConfig.S5) {
@@ -303,10 +305,12 @@ export class HbPage {
       }
       textX.tt = DataConfig.S1;
       textX.at = $event.at;
+      textX.tg = $event.tg;
       this.messages.unshift(textX);
       this.xiaojiSpeech.speakText(textX.at, success => {
         data.tt = $event.tt;
         data.scL = $event.scL;
+        data.tg = $event.tg;
         this.messages.unshift(data);
       });
     } else if ($event.tt == DataConfig.T1) {
@@ -367,7 +371,7 @@ export class HbPage {
           this.xiaojiSpeech.speakText(textX.at, success => {});
         }
       }).catch(reason => {
-        console.log("添加日程失败");
+        console.log("catch 添加日程失败");
       });
 
   }

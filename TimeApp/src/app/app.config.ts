@@ -11,7 +11,7 @@ export class AppConfig {
   // private static REQUEST_URL: string = "http://192.168.0.176:8080/gtd";//连接本地数据库
   // private static REQUEST_URL: string = "http://192.168.99.31:8080/gtd";//连接本地数据库
   // private static REQUEST_URL: UrlEntity = new UrlEntity("http://192.168.0.176:8080/gtd",false);//连接本地数据库
-  // private static REQUEST_URL: UrlEntity = new UrlEntity("http://192.168.99.24:8080/gtd",false);//连接本地数据库
+  // private static REQUEST_URL: UrlEntity = new UrlEntity("http://192.168.99.33:8080/gtd",false);//连接本地数据库
    private static REQUEST_URL: UrlEntity = new UrlEntity("https://www.guobaa.com/gtd",false);
 
   /* RabbitMq WebSocket */
@@ -119,7 +119,8 @@ export class AppConfig {
   public static SYNC_TEMP_URL: UrlEntity = new UrlEntity(AppConfig.SYNC_URL.url + "/temporary",false);   //初始化
   public static SYNC_LOGIN_URL: UrlEntity = new UrlEntity(AppConfig.SYNC_URL.url + "/login_sync",false);   //登录同步
   public static SYNC_TIME_URL: UrlEntity = new UrlEntity(AppConfig.SYNC_URL.url + "/timing_sync",false);   //定时同步
-  public static UPLOAD_TIME_URL: UrlEntity = new UrlEntity(AppConfig.SYNC_URL.url + "/upload",false);   //定时同步
+  public static UPLOAD_TIME_URL: UrlEntity = new UrlEntity(AppConfig.SYNC_URL.url + "/upload",false);   //同步上传
+  public static DOWNLOAD_TIME_URL: UrlEntity = new UrlEntity(AppConfig.SYNC_URL.url + "/download",false);   //同步下载
   /* ------------------------ 初始化 end--------------------------*/
 
 }

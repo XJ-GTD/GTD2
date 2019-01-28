@@ -12,8 +12,7 @@ import { MsSqlite } from "../sqlite/ms-sqlite";
 import { AiuiModel } from "../../model/aiui.model";
 import { XiaojiAssistantService } from "./xiaoji-assistant.service";
 import { WsEnumModel } from "../../model/ws/ws.enum.model";
-import {RcModel} from "../../model/rc.model";
-import * as moment from "moment";
+import { RcModel } from "../../model/rc.model";
 
 /**
  * webSocket公用处理方法
