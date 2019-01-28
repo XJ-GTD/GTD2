@@ -35,7 +35,7 @@ export class RcEntity {
   private _qosq:string;
 
   get qosq(): string {
-    this._qosq = 'select * from GTD_C where sI=' + this._sI;
+    this._qosq = 'select * from GTD_C where sI="' + this._sI +'"';
     return this._qosq;
   }
 
