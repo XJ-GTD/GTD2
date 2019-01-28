@@ -741,6 +741,8 @@ export class WorkService {
           }
           return this.relmem.getRgusBySi(sI);
       }).then(data=>{
+        let rus = new Array<RuModel>();
+        rc.rus = rus;
         if(data && data.rows && data.rows.length>0){
           let rs=data.rows;
           let rus = new Array<RuModel>();
