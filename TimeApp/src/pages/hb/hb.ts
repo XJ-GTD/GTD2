@@ -51,18 +51,19 @@ declare var cordova: any;
               <h3></h3> 
             </div> 
             <!-- 判断消息是数据：list --> 
-            <ion-card *ngIf="S5 == message.tt"  class="scl_list animated bounceIn"> 
+            <ion-card *ngIf="S5 == message.tt"  class="scl_list"> 
               <ion-list> 
-                <ion-item *ngFor="let sj of message.scL" (click)="showScheduleDetail(sj)"> 
-                  <h2>{{sj.sd}}</h2> 
-                  <p> 
-                    <ion-badge>{{sj.sN}}</ion-badge> 
-                  </p> 
+                <ion-item *ngFor="let sj of message.scL" (click)="showScheduleDetail(sj)">
+                  <ion-icon name="information-circle" item-start></ion-icon>
+                  <h2>{{sj.sN}}</h2> 
+                  <span> {{sj.sd}}
+                  </span>
+                 
                 </ion-item> 
               </ion-list> 
             </ion-card> 
             <!-- 判断消息是数据：新增日程 --> 
-            <div *ngIf="S4 == message.tt" class="userTalk animated bounceIn">
+            <div *ngIf="S4 == message.tt" class="userTalk">
               <div col-10 class="cc1" >
                 <div class="cc2">
                   <div style="padding:10px;" *ngFor="let pl of message.sc.rus">
@@ -187,6 +188,23 @@ export class HbPage {
      this.hb01Page.loadScene();
     this.hb01Page.setDrawType(1);
     // this.initWakeUp();
+
+    // let data:AiuiModel = new AiuiModel();
+    // data.tt = this.S5;
+    // data.scL = new Array<RcModel>();
+    //
+    // for (let i = 0;i<4;i++){
+    //   let rc:RcModel = new RcModel();
+    //   rc.sN = "这是一个事情，可能会有一点长。不知道你会出问题吗？尝试一下";
+    //   rc.sd = "2019-12-29 06：45";
+    //
+    //   data.scL.push(rc);
+    //
+    // }
+    //
+    //
+    //   this.messages.unshift(data);
+
 
   }
 
