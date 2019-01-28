@@ -33,7 +33,7 @@ export class RuEntity {
   private _usq:string;
   private _dsq:string;
   //查询单个
-  private _qosq:string = 'select * from GTD_B where id=' + this._id;
+  private _qosq:string = 'select * from GTD_B where id="' + this._id+'"';
 
   get qosq(): string {
     return this._qosq;

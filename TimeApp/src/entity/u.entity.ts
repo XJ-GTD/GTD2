@@ -33,7 +33,7 @@ export class UEntity {
   private _usq:string;
   private _dsq:string;
   //查询单个
-  private _qosq:string = 'select * from GTD_A where uI=' + this._uI;
+  private _qosq:string = 'select * from GTD_A where uI="' + this._uI+'"';
 
   get qosq(): string {
     return this._qosq;
