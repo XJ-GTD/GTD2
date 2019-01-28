@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { Content, IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { Content, IonicPage, NavController, ViewController } from 'ionic-angular';
 import { XiaojiAssistantService } from "../../service/util-service/xiaoji-assistant.service";
-import { ParamsService } from "../../service/util-service/params.service";
 import { AiuiModel } from "../../model/aiui.model";
 import { ScheduleModel } from "../../model/schedule.model";
 import { XiaojiFeedbackService } from "../../service/util-service/xiaoji-feedback.service";
@@ -11,10 +10,7 @@ import { WsEnumModel } from "../../model/ws/ws.enum.model";
 import { NetworkService } from "../../service/util-service/network.service";
 import {Hb01Page} from "../hb01/hb01";
 import {RcModel} from "../../model/rc.model";
-import * as moment from "../sb/sb";
 import {WorkService} from "../../service/work.service";
-
-declare var cordova: any;
 
 /**
  * Generated class for the HbPage page.
@@ -37,7 +33,7 @@ declare var cordova: any;
         </ion-toolbar> 
       </ion-header> 
       <ion-content> 
-        <ion-list class="yyWarp">
+        <ion-list class="yyWarp" no-line>
           
           <ion-item  *ngFor="let message of messages"  on-hold="onMessageHold($event, $index, message)"> 
             <!-- 判断消息是用户 --> 
@@ -62,37 +58,32 @@ declare var cordova: any;
                 </ion-item> 
               </ion-list> 
             </ion-card> 
-            <!-- 判断消息是数据：新增日程 --> 
-            <div *ngIf="S4 == message.tt" class="userTalk">
-              <div col-10 class="cc1" >
-                <div class="cc2">
-                  <div style="padding:10px;" *ngFor="let pl of message.sc.rus">
+            <!-- 判断消息是数据：新增日程 -->
+
+            <ion-card *ngIf="S4 == message.tt"   class="scl_add">
+              <ion-list>
+                <ion-item class="cc2" >
+                  <span  *ngFor="let pl of message.sc.rus">
                     <img class="cc3" src="{{pl.hiu}}">
                     <div class="cc4">{{pl.ran}}</div>
-                  </div>
-                </div>
-                <div class="cc2" padding>
-                  <div style="border-radius: 5px;">
-                    <button class="cc5">
-                      <div float-right class="cc6">
-                        <div class="cc7"></div>
-                      </div>
-                      <div float-right  style="font-size: 15px;padding: 3px;">{{message.sc.lan}}</div>
-                    </button>
-                  </div>
-                  <div style="padding-left: 10px" >
-                    <div style="font-size: 19px;padding-bottom: 10px">{{message.sc.sN}}</div>
-                    <div>
-                      <div style="border-radius: 5px;border:1px solid #999999;color:#999999;width: fit-content;padding: 6px;font-size: 12px">{{message.sc.sd | date:'yyyy年MM月dd日 HH:mm'}}</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="cc8">
-                  <button class="cc9" style="color: #222222;" (click)="confirmatoryMethod(message, message.tg)">确认</button>
-                  <button class="cc9" style="color: #666666;" (click)="cancelMethod()">取消</button>
-                </div>
-              </div>
-            </div> 
+                  </span>
+                </ion-item>
+                <ion-item class="cc5">
+                  <button name="information-circle" item-start>重要</button>
+                  <h2>{{message.sc.sN}}</h2>
+                  <span> {{message.sc.sd | date:'yyyy年MM月dd日 HH:mm'}}
+                  </span>
+                  
+                </ion-item>
+                <ion-item>
+                  <ion-buttons item-end>
+                      <button class="cc9" style="color: #666666;" (click)="cancelMethod()">取消</button>
+                      <button class="cc9" style="color: #222222;" (click)="confirmatoryMethod(message, message.tg)">确认</button>
+                    </ion-buttons>
+                </ion-item>
+              </ion-list>
+            </ion-card>           
+          
           </ion-item> 
         </ion-list> 
         <!--<ion-fab left bottom edge #fab1 color="dark">--> 
@@ -151,18 +142,16 @@ export class HbPage {
   inputText: string = "";    //手动模式输入数据
   filePath: string;   //语音文件路径
 
-  schedule: ScheduleModel;
   inputData: AiuiModel = new AiuiModel();
   messages: Array<AiuiModel>; //聊天数据队列
   //语音界面数据传递
 
   scL: Array<RcModel>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
               private dwEmit: DwEmitService,
               private workService: WorkService,
-              public paramsService: ParamsService,
               public xiaojiSpeech: XiaojiAssistantService,
               private networkService: NetworkService,
               public xiaojiFeekback: XiaojiFeedbackService) {
@@ -416,7 +405,9 @@ export class HbPage {
   // }
 
   private showScheduleDetail(sc: RcModel) {
-
+       let schedule = new ScheduleModel();
+      schedule.scheduleId = sc.sI;
+      this.navCtrl.push("SaPage",schedule);
   }
   /*===================业务逻辑 end=======================*/
 
