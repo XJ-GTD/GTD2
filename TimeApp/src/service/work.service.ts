@@ -748,7 +748,7 @@ export class WorkService {
           let rus = new Array<RuModel>();
           for(let i=0;i<rs.length;i++){
             let ru = new RuModel();
-            if(rs.item(i).uI == rc.uI){
+            if(rs.item(i).uI == DataConfig.uInfo.uI){
               ru.rN=DataConfig.uInfo.uN;
               ru.ran=DataConfig.uInfo.uN;
               ru.rI=DataConfig.uInfo.uI;
