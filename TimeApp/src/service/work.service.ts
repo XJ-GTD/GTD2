@@ -44,6 +44,7 @@ export class WorkService {
                 private lbSqlite : LbSqlite,
                 private msSqlite : MsSqlite,
                 private sync : SyncService,
+                private syncSqlite : SyncSqlite,
                 private readlocal : ReadlocalService,
                 private rcResful:RcRestful) {
   }
@@ -194,6 +195,9 @@ export class WorkService {
       }).then(data=>{
         console.log("WorkService arc() add 参与人 Success : " +JSON.stringify(data));
         //this.drc(rc.sI,'1')
+        //同步上传服务器
+        console.log("============ 日程添加同步上传日历 ================");
+        //this.syncSqlite.syncUplaod();
         resolve(bs);
       }).catch(e=>{
         console.error("WorkService arc() Error : " +JSON.stringify(e));
@@ -253,6 +257,9 @@ export class WorkService {
         return this.workSqlite.sRcps(rc,ruL);
       }).then(data=>{
         console.log("------ WorkService arcMq() End ------------");
+        //同步上传服务器
+        console.log("============ MQ日程添加同步上传日历 ================");
+        //this.syncSqlite.syncUplaod();
         resolve(bs);
       }).catch(e=>{
         console.error("WorkService arcMq() Error : " +JSON.stringify(e));
@@ -348,6 +355,9 @@ export class WorkService {
             this.workSqlite.dRcps(rc.sI).then(data=>{
               return this.workSqlite.sRcps(rc,ruL);
             }).then(data=>{
+              //同步上传服务器
+              console.log("============ 更新日程同步上传日历 ================");
+              //this.syncSqlite.syncUplaod();
               resolve(bs);
             }).catch(e=>{
               console.error("WorkService arc() Error : " +JSON.stringify(e));
@@ -412,10 +422,14 @@ export class WorkService {
         .then(data=>{
           console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 更新日程子表-------");
-          return this.workSqlite.updateLbData(subId,rc.sI,rc.lI,cft,rm,ac,'0',);
+          return this.workSqlite.updateLbData(subId,rc.sI,rc.lI,cft,rm,ac,'0');
         })
         .then(data=>{
         console.log("------ WorkService arcMq() End ------------");
+          //同步上传服务器
+          console.log("============ MQ更新日程同步上传日历 ================");
+          //this.syncSqlite.syncUplaod();
+          resolve(bs);
       }).catch(e=>{
         console.error("WorkService arcMq() Error : " +JSON.stringify(e));
         bs.code = ReturnConfig.ERR_CODE;
@@ -480,13 +494,16 @@ export class WorkService {
           //同步删除参与人表
           return this.workSqlite.syncRgcTime(rcpL,DataConfig.AC_D)
         }).then(data=>{
-          console.log("WorkService drc() 删除日程同步上传删除参与人 restful request END " + JSON.stringify(data));
+          console.log("WorkService drc() 删除参与人 restful request END " + JSON.stringify(data));
+          //同步上传服务器
+          console.log("============ 删除日程同步上传服务 ================");
+          //this.syncSqlite.syncUplaod();
           resolve(bs);
         }).catch(eu => {
           console.log("WorkService drc() 删除日程 ERROR " + JSON.stringify(eu));
           bs.code = ReturnConfig.ERR_CODE;
           bs.message = ReturnConfig.ERR_MESSAGE;
-          resolve(bs)
+          resolve(bs);
         })
       }else{
         bs.code = ReturnConfig.ERR_CODE;
@@ -515,7 +532,9 @@ export class WorkService {
           console.log('--------- MQ逻辑删除的日程结束 ---------');
           return this.workSqlite.syncRcTime(rce,DataConfig.AC_D);
         }).then(data=>{
-        console.log('--------- 同步上传服务删除的日程 ---------');
+        //同步上传服务器
+        console.log("============ 删除日程同步上传服务 ================");
+        //this.syncSqlite.syncUplaod();
         resolve(bs);
       }).catch(eu => {
           bs.code = ReturnConfig.ERR_CODE;
@@ -544,6 +563,9 @@ export class WorkService {
         })
         .then(data=>{
           console.log('--------- 删除的参与人结束 ---------');
+          //同步上传服务器
+          console.log("============ MQ删除日程同步上传服务 ================");
+          //this.syncSqlite.syncUplaod();
           resolve(bs);
         }).catch(eu => {
           bs.code = ReturnConfig.ERR_CODE;

@@ -192,12 +192,14 @@ export class AlPage {
       console.log("al :: 开始更新版本表结束");
       if(DataConfig.uInfo.uty=='1'){
         //定时同步
+        console.log("al :: 定时同步");
         this.sync.syncTime();
       }
 
     }).then(data => {
         //进入主页
         //loading.dismiss();
+      console.log("al :: 进入主页");
         this.increment(10);
         this.text=" 进入主页";
         this.nav.setRoot(this.rootPage);

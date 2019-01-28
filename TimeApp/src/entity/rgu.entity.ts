@@ -86,7 +86,7 @@ export class RguEntity {
     if(this._bmi!=null && this._bmi!=''){
       sql=sql+' and bmi="' + this._bmi +'"';
     }
-    this._dsq=sql;
+    this._dsq=sql+';';
     return this._dsq;
   }
 

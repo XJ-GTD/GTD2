@@ -87,33 +87,15 @@ export class UdPage {
       console.log(data);
       let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
       if (data.code == 0) {
-        let alert = this.alertCtrl.create({
-          title: '提示信息',
-          subTitle: message,
-          buttons: [{
-            text: '确定', role: 'cancel', handler: () => {
-              //跳转首页
-              this.navCtrl.push('HzPage');
-            }
-          }]
-        });
-        alert.present();
+        this.utilService.alert("登陆成功");
+        this.navCtrl.push('HzPage');
       }else{
-        let alert = this.alertCtrl.create({
-          title:'提示信息',
-          subTitle: message,
-          buttons:["确定"]
-        });
-        alert.present();
+        this.utilService.alert(message);
       }
 
     }).catch(res=>{
-      let alert = this.alertCtrl.create({
-        title:'提示信息',
-        subTitle: ReturnConfig.RETURN_MSG.get(res.code),
-        buttons:["确定"]
-      });
-      alert.present();
+      this.utilService.alert(ReturnConfig.RETURN_MSG.get(res.code));
+
       console.log(res);
     });
 
@@ -146,41 +128,26 @@ export class UdPage {
     console.log(11);
     if(this.errorCode == 3){
       this.lsmService.sc(this.accountMobile).then(data=>{
-        console.log("sc::" + data)
-        let alert = this.alertCtrl.create({
-          title:'提示信息',
-          subTitle: data.message,
-          buttons:['确定']
-        });
-        alert.present();
+        console.log("sc::" + data);
+        this.utilService.alert("已发送验证码");
       }).catch(ref =>{
         console.log("ref::" + ref);
-        let alert = this.alertCtrl.create({
-          title:'提示信息',
-          subTitle: ref.message,
-          buttons:['确定']
-        });
-        alert.present();
-      })
+        this.utilService.alert("发送验证码出错");
+      });
 
-      this.timeOut = 10;
+      this.timeOut = 60;
       this.timer = setInterval(()=>{
         this.timeOut --;
         if(this.timeOut <= 0){
-          clearTimeout(this.timer)
-          console.log("清除定时器")
+          clearTimeout(this.timer);
+          console.log("清除定时器");
           this.timeOut="发送验证码"
         }
         console.log(this.timeOut)
       },1000)
 
     }else{
-      let alert = this.alertCtrl.create({
-        title:'提示信息',
-        subTitle: '请填写正确的手机号',
-        buttons:['确定']
-      });
-      alert.present();
+      this.utilService.alert("请填写正确的手机号");
     }
 
   }

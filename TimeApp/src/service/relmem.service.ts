@@ -10,6 +10,7 @@ import { UtilService } from "./util-service/util.service";
 import { PnRestful } from "./restful/pn-restful";
 import {DataConfig} from "../app/data.config";
 import {ReturnConfig} from "../app/return.config";
+import {SyncSqlite} from "./sqlite/sync-sqlite";
 
 
 /**
@@ -18,7 +19,7 @@ import {ReturnConfig} from "../app/return.config";
 @Injectable()
 export class RelmemService {
 
-  constructor(private baseSqlite: BaseSqlite,private pnRes:PnRestful,
+  constructor(private baseSqlite: BaseSqlite,private pnRes:PnRestful,private syncSqlite:SyncSqlite,
               private util:UtilService,private relmemSqlite: RelmemSqlite) {
   }
 
@@ -123,6 +124,9 @@ export class RelmemService {
               return this.relmemSqlite.syncRuTime(ru,DataConfig.AC_O);
             }).then(data=>{
               console.log("--------- 6.RelmemService aru() sync loacl sqlite End: "+JSON.stringify(data));
+              //同步上传服务器
+              console.log("============ 更新联系人同步上传服务 ================");
+              this.syncSqlite.syncUplaod();
               resolve(base);
             }).catch(e=>{
               console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e));
@@ -145,6 +149,9 @@ export class RelmemService {
           return this.relmemSqlite.syncRuTime(ru,DataConfig.AC_O);
         }).then(data=>{
           console.log("--------- 6.RelmemService aru() sync loacl sqlite End: "+JSON.stringify(data));
+          //同步上传服务器
+          console.log("============ 更新联系人同步上传服务 ================");
+          this.syncSqlite.syncUplaod();
           resolve(base);
         }).catch(e=>{
           base.code=ReturnConfig.ERR_CODE;
@@ -188,6 +195,9 @@ export class RelmemService {
       if(data && data.rows && data.rows.length>0){
         console.log("--------- 2.RelmemService aru() sqlite query contact is exsit -------------");
         this.upr('','',rN,rc,'0','',null,'',auI).then(data=>{
+          //同步上传服务器
+          console.log("============ 更新联系人同步上传服务 ================");
+          this.syncSqlite.syncUplaod();
           resolve(base);
         }).catch(e=>{
           console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e));
@@ -205,6 +215,9 @@ export class RelmemService {
           return this.relmemSqlite.syncRuTime(ru,DataConfig.AC_O);
         }).then(data=>{
           console.log("--------- 6.RelmemService aru() sync loacl sqlite End: "+JSON.stringify(data));
+          //同步上传服务器
+          console.log("============ 更新联系人同步上传服务 ================");
+          this.syncSqlite.syncUplaod();
           resolve(base);
         }).catch(e=>{
           console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e));
@@ -260,6 +273,9 @@ export class RelmemService {
         return this.relmemSqlite.syncRuTime(ru,DataConfig.AC_O);
       }).then(data=>{
         console.log("--------- 6.RelmemService aru() sync loacl sqlite End: "+JSON.stringify(data));
+        //同步上传服务器
+        console.log("============ 更新联系人同步上传服务 ================");
+        this.syncSqlite.syncUplaod();
         resolve(base);
       }).catch(e=>{
         base.code=ReturnConfig.ERR_CODE;
@@ -360,6 +376,9 @@ export class RelmemService {
         return this.relmemSqlite.syncRguTime(rugL,DataConfig.AC_O);
       }).then(data=>{
         console.log("--------- 2.RelmemService addRgu() sync loacl sqlite End: "+JSON.stringify(data));
+        //同步上传服务器
+        console.log("============ 更新联系人同步上传服务 ================");
+        this.syncSqlite.syncUplaod();
         resolve(base);
       }).catch(e=>{
         console.log("--------- 3.RelmemService addRgu() sync loacl sqlite ERROR: "+JSON.stringify(e));
@@ -395,6 +414,9 @@ export class RelmemService {
             return this.relmemSqlite.syncRguTime(rugL,DataConfig.AC_O);
           }).then(data=>{
             console.log("--------- 6.RelmemService addRgus() sync loacl sqlite End: "+JSON.stringify(data));
+            //同步上传服务器
+            console.log("============ 更新联系人同步上传服务 ================");
+            this.syncSqlite.syncUplaod();
             resolve(bs);
           }).catch(e=>{
             console.log("--------- RelmemService addRgus() restful add Group personnel Error: "+JSON.stringify(e));
@@ -447,6 +469,9 @@ export class RelmemService {
         return this.relmemSqlite.syncRguTime(rugL,DataConfig.AC_D);
       }).then(data=>{
         console.log("--------- 2.RelmemService addRgu() sync loacl sqlite End: "+JSON.stringify(data));
+        //同步上传服务器
+        console.log("============ 更新联系人同步上传服务 ================");
+        this.syncSqlite.syncUplaod();
         resolve(base);
       }).catch(e=>{
           base.code=1;
@@ -471,6 +496,9 @@ export class RelmemService {
         return this.relmemSqlite.syncRuTime(ru,DataConfig.AC_D);
       }).then(data=>{
         console.log("--------- RelmemService addRgu() sync loacl sqlite End: "+JSON.stringify(data));
+        //同步上传服务器
+        console.log("============ 更新联系人同步上传服务 ================");
+        this.syncSqlite.syncUplaod();
         resolve(base);
       }).catch(e=>{
         base.code=1;

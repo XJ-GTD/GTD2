@@ -18,6 +18,7 @@ import { DataConfig } from "../../app/data.config";
 import { JhService } from "../../service/jh.service";
 import { JhModel } from "../../model/jh.model";
 import {DateTime} from "ionic-angular/components/datetime/datetime";
+import {Select} from "ionic-angular/components/select/select";
 
 /**
  * Generated class for the SbPage page.
@@ -137,6 +138,8 @@ export class SbPage {
 
   @ViewChild(Alert) alert: Alert;
 
+  @ViewChild(Select) repeatTypeSelect: Select;
+
   private data: any;
   group: any;//Array<GroupModel>;
   schedule: any;
@@ -225,9 +228,10 @@ export class SbPage {
     if(this.dateTime._picker != undefined){
       this.dateTime._picker.dismiss();
     }
+    if(this.repeatTypeSelect != undefined){
+      this.repeatTypeSelect.close();
+    }
   }
-
-
 
   init() {
     this.getAllRel();

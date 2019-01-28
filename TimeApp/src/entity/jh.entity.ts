@@ -80,7 +80,7 @@ export class JhEntity {
       sql=sql+' and jg="' + this._jg +'"';
     }
 
-    this._dsq=sql;
+    this._dsq=sql+';';
     return this._dsq;
   }
 

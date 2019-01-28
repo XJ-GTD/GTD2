@@ -166,7 +166,7 @@ export class RuEntity {
       sql=sql+' and hiu="' + this._hiu +'"';
     }
 
-    this._dsq=sql;
+    this._dsq=sql+';';
     return this._dsq;
   }
 
