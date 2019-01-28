@@ -39,7 +39,7 @@ export class RcbModel {
       if(this._sI!=null){
         sql=sql+' and sI="' + this._sI +'"';
       }
-      this._dsq=sql;
+      this._dsq=sql+';';
     }
     return this._dsq;
   }
