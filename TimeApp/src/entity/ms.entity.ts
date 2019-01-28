@@ -84,7 +84,7 @@ export class MsEntity {
       sql=sql+' and mt="' + this._mt +'"';
     }
 
-    this._dsq=sql;
+    this._dsq=sql+';';
     return this._dsq;
   }
 

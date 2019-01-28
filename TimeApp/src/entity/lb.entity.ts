@@ -78,7 +78,7 @@ export class LbEntity {
       sql=sql+' and lau="' + this._lau +'"';
     }
 
-    this._dsq=sql;
+    this._dsq=sql+';';
     return this._dsq;
   }
 
