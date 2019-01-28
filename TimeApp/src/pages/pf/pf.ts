@@ -273,6 +273,8 @@ export class PfPage {
 
           this.checkPhone(null);
 
+        }).catch(e=>{
+          this.checkPhone(null);
         });
       }else{
         this.checkPhone(null);
