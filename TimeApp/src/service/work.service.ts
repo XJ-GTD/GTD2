@@ -167,14 +167,14 @@ export class WorkService {
           let players = data.data.players;
           for(let i=0;i<ruL.length;i++){
             for(let j=0;j<players.length;j++){
-              if(ruL[i].rC == players[i].accountMobile){
-                  if(players[i].agree){
+              if(ruL[i].rC == players[j].accountMobile){
+                  if(players[j].agree){
                     ruL[i].sdt=1;
                     break;
-                  }else if(!players[i].player){
+                  }else if(!players[j].player){
                     ruL[i].sdt=2;
                     break;
-                  }else if(!players[i].user){
+                  }else if(!players[j].user){
                     ruL[i].sdt=3;
                     break;
                   }
@@ -331,19 +331,19 @@ export class WorkService {
           for(let i=0;i<ruL.length;i++){
 
             for(let j=0;j<players.length;j++){
-              if(ruL[i].rC == players[i].accountMobile){
-                if(players[i].agree){
+              if(ruL[i].rC == players[j].accountMobile){
+                if(players[j].agree){
                   ruL[i].sdt=1;
                   break;
-                }else if(!players[i].player){
+                }else if(!players[j].player){
                   ruL[i].sdt=2;
                   break;
-                }else if(!players[i].user){
+                }else if(!players[j].user){
                   ruL[i].sdt=3;
                   break;
                 }
               }
-            }resolve(bs);
+            }
             //先删除再添加
             this.workSqlite.dRcps(rc.sI).then(data=>{
               return this.workSqlite.sRcps(rc,ruL);
@@ -352,7 +352,7 @@ export class WorkService {
             }).catch(e=>{
               console.error("WorkService arc() Error : " +JSON.stringify(e));
               bs.code = ReturnConfig.ERR_CODE;
-              bs.message=e.message;
+              bs.message=ReturnConfig.ERR_MESSAGE;
               reject(bs);
             })
           }
@@ -362,7 +362,7 @@ export class WorkService {
 
       }).catch(eu=>{
         bs.code = ReturnConfig.ERR_CODE;
-        bs.message=eu.message;
+        bs.message=ReturnConfig.ERR_MESSAGE;
         resolve(bs);
       })
     })
@@ -741,12 +741,14 @@ export class WorkService {
           }
           return this.relmem.getRgusBySi(sI);
       }).then(data=>{
+        let rus = new Array<RuModel>();
+        rc.rus = rus;
         if(data && data.rows && data.rows.length>0){
           let rs=data.rows;
           let rus = new Array<RuModel>();
           for(let i=0;i<rs.length;i++){
             let ru = new RuModel();
-            if(rs.item(i).uI == rc.uI){
+            if(rs.item(i).uI == DataConfig.uInfo.uI){
               ru.rN=DataConfig.uInfo.uN;
               ru.ran=DataConfig.uInfo.uN;
               ru.rI=DataConfig.uInfo.uI;

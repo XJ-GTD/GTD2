@@ -244,10 +244,10 @@ export class SbPage {
 
     this.repeatTypes = DataConfig.ZTD_MAP.get(DataConfig.REPEAT_TYPE); //重复类型
 
-    setTimeout(()=>{
-      console.log(this.alert);
-      this.alert.dismiss();
-    },10000)
+    // setTimeout(()=>{
+    //   console.log(this.alert);
+    //   this.alert.dismiss();
+    // },10000)
   }
 
   //查询系统标签

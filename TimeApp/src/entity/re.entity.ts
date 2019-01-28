@@ -21,7 +21,7 @@ export class ReEntity {
   private _usq:string;
   private _dsq:string;
   //查询单个
-  private _qosq:string = 'select * from GTD_E where ri=' + this._ri;
+  private _qosq:string = 'select * from GTD_E where ri="' + this._ri+'"';
 
   get qosq(): string {
     return this._qosq;

@@ -3,6 +3,8 @@ import { HTTP } from '@ionic-native/http';
 import {AppConfig} from "../../app/app.config";
 import {BsRestful} from "./bs-restful";
 import {PsModel} from "../../model/ps.model";
+import {DataConfig} from "../../app/data.config";
+import {BaseModel} from "../../model/base.model";
 
 
 
@@ -50,11 +52,23 @@ export class SyncRestful{
    * @returns {Promise<any>}
    */
   syncUpload(uI:string,dI:string,vs:string,sdl:any):Promise<any> {
-    return this.bs.post(AppConfig.UPLOAD_TIME_URL, {
-      userId:uI,
-      deviceId: dI,
-      version:vs,
-      syncDataList:sdl
+    return new Promise((resolve, reject) => {
+      if(DataConfig.uInfo.uty=='1'){
+        this.bs.post(AppConfig.UPLOAD_TIME_URL, {
+          userId:uI,
+          deviceId: dI,
+          version:vs,
+          syncDataList:sdl
+        }).then(data=>{
+          resolve(data);
+        }).catch(e=>{
+          reject(e);
+        })
+      }else{
+        let bs = new BaseModel();
+        resolve(bs);
+      }
+
     })
   }
 }

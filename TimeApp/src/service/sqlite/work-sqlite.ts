@@ -187,6 +187,7 @@ export class WorkSqlite{
         let date = new Date(ym+'/01');
         let sd = UtilService.getCurrentMonthFirst(date);
         let ed = UtilService.getCurrentMonthLast(date);
+        ed = new Date(ed.getTime() + 23*59*60*1000);
         return this.readlocal.findEventRc('',sd,ed,rcL);
       }) .then(data=>{
         if(data.rcL.length>0){
