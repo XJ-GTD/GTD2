@@ -113,7 +113,7 @@ export class RcbtEntity {
       sql=sql+' and rm="' + this._rm +'"';
     }
 
-    this._dsq=sql;
+    this._dsq=sql+';';
     return this._dsq;
   }
 

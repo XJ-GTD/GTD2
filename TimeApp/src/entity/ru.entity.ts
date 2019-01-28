@@ -103,9 +103,6 @@ export class RuEntity {
     if(this._rNpy!=null && this._rNpy!=''){
       sql=sql+' rNpy="' + this._rNpy +'",';
     }
-    if(this._rC!=null && this._rC!=''){
-      sql=sql+' rC="' + this._rC +'",';
-    }
     if(this._rF!=null && this._rF!=''){
       sql=sql+' rF="' + this._rF +'",';
     }
@@ -121,9 +118,15 @@ export class RuEntity {
     if(this._fi!=null && this._fi!=''){
       sql=sql+' fi="' + this._fi +'",';
     }
+    if((this._id == null || this._id=='')&&this._rC!=null && this._rC!=''){
+      sql = sql + ' rC="' + this._rC +'" where rC="' + this._rC +'"';
+    }else if(this._rC!=null && this._rC!=''){
+      sql=sql+' rC="' + this._rC +'",';
+    }
     if(this._id != null && this._id!=''){
       sql = sql + ' id="' + this._id +'" where id="' + this._id +'"';
     }
+
     this._usq=sql;
     return this._usq;
   }
@@ -163,7 +166,7 @@ export class RuEntity {
       sql=sql+' and hiu="' + this._hiu +'"';
     }
 
-    this._dsq=sql;
+    this._dsq=sql+';';
     return this._dsq;
   }
 

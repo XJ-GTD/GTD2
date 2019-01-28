@@ -202,18 +202,18 @@ public class AuthController {
             logger.debug("[登陆失败]：设备ID类型或格式错误");
             return outDto;
         }
-//        try {
-//            if(!Objects.requireNonNull(TimerUtil.getCache(inDto.getAccount())).getValue().equals(inDto.getAuthCode())){
-//                outDto.setCode(ResultCode.ERROR_AUTH_CODE);
-//                logger.debug("[登陆失败]：请输入正确短信验证码");
-//                return outDto;
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            outDto.setCode(ResultCode.EXPIRE_AUTH_CODE);
-//            logger.debug("[登陆失败]：短信验证码已过期");
-//            return outDto;
-//        }
+        try {
+            if(!Objects.requireNonNull(TimerUtil.getCache(inDto.getAccount())).getValue().equals(inDto.getAuthCode())){
+                outDto.setCode(ResultCode.ERROR_AUTH_CODE);
+                logger.debug("[登陆失败]：请输入正确短信验证码");
+                return outDto;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            outDto.setCode(ResultCode.EXPIRE_AUTH_CODE);
+            logger.debug("[登陆失败]：短信验证码已过期");
+            return outDto;
+        }
 
         //业务逻辑
         try {

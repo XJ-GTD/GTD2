@@ -70,7 +70,7 @@ export class FiEntity {
     if(this._isup!=null){
       sql=sql+' and isup=' + this._isup;
     }
-    this._dsq=sql;
+    this._dsq=sql+';';
     return this._dsq;
   }
 
