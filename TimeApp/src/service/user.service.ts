@@ -7,6 +7,7 @@ import {BsModel} from "../model/out/bs.model";
 import {PnRestful} from "./restful/pn-restful";
 import {ReturnConfig} from "../app/return.config";
 import {DataConfig} from "../app/data.config";
+import {SyncSqlite} from "./sqlite/sync-sqlite";
 
 /**
  * 用户sevice
@@ -16,6 +17,7 @@ import {DataConfig} from "../app/data.config";
 @Injectable()
 export class UserService {
   constructor( private baseSqlite: BaseSqlite,
+               private syncSqlite:SyncSqlite,
                private userSqlite:UserSqlite,
                private pnRestful:PnRestful) {
   }
@@ -57,6 +59,9 @@ export class UserService {
         return  this.userSqlite.syncUTime(u,DataConfig.AC_T);
       }).then(data=>{
         console.log("------- 用户更新成功，用户添加到同步表结束：" + JSON.stringify(data));
+        //同步上传服务器
+        console.log("============ 更新联系人同步上传服务 ================");
+        this.syncSqlite.syncUplaod();
         resolve(bs);
       }).catch(e=>{
         console.error("------- UserService upu user error: " + JSON.stringify(e));

@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import {
+  Alert,
   AlertController, Events, IonicPage, ModalController, Navbar, NavController,
   NavParams
 } from 'ionic-angular';
@@ -13,6 +14,8 @@ import {RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
 import * as moment from "moment";
 import {PageConfig} from "../../app/page.config";
+import {Select} from "ionic-angular/components/select/select";
+import {DateTime} from "ionic-angular/components/datetime/datetime";
 
 /**
  * Generated class for the SaPage page.
@@ -175,6 +178,10 @@ import {PageConfig} from "../../app/page.config";
 export class SaPage {
   @ViewChild(Navbar) navBar: Navbar;
 
+  @ViewChild(DateTime) dateTime: DateTime;
+
+  @ViewChild(Alert) alert: Alert;
+
   data: any;
   schedule: ScheduleModel;
   rc:RcModel;
@@ -197,6 +204,15 @@ export class SaPage {
               private event: Events,
               private utilService: UtilService) {
     this.rc = new RcModel();
+  }
+
+  ionViewWillLeave() {
+    if(this.alert != undefined){
+      this.alert.dismiss();
+    }
+    if(this.dateTime._picker != undefined){
+      this.dateTime._picker.dismiss();
+    }
   }
 
   //设置闹钟
@@ -324,6 +340,7 @@ export class SaPage {
       }
     });
     alert.present();
+    this.alert = alert;
   }
 
 

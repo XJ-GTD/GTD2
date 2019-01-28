@@ -584,36 +584,41 @@ export class WorkSqlite{
    */
   updateLbData(subId:string,sI:string,tk:string,cft:string,rm:string,ac:string,fh:string):Promise<any>{
     return new Promise((resolve, reject) => {
-      let rcb = new RcbModel();
-      rcb.sI = sI;
-      rcb.cft = cft;
-      rcb.rm=rm;
-      rcb.ac=ac;
-      rcb.fh=fh;
-      console.log('----worksqlite updateLbData 先删除原来标签子表----');
-      let rc = new RcEntity();
-      rc.sI=sI;
-      this.baseSqlite.getOne(rc).then(data=>{
-        if(data && data.rows && data.rows.length>0){
-          rcb.id = subId;
-          rcb.tk = data.rows.item(0).lI;
-          return this.baseSqlite.delete(rcb);
-        }
-      }).then(data=>{
-        return this.syncRcbTime(rcb,rcb.tn,DataConfig.AC_D);
-      }).then(data=>{
-        console.log('----worksqlite updateLbData 再保存新标签子表----');
-        rcb.tk = tk;
-        rcb.id = this.util.getUuid();
-        return this.baseSqlite.save(rcb);
-      }).then(data=>{
-        return this.syncRcbTime(rcb,rcb.tn,DataConfig.AC_O);
-      }).then(data=>{
-        resolve(data);
-      }).catch(e=>{
-        console.log('----worksqlite updateLbData 保存新标签子表 ERROR：'+JSON.stringify(e));
-        reject(e);
-      })
+      if(tk != '' && tk !=null){
+        let rcb = new RcbModel();
+        rcb.sI = sI;
+        rcb.cft = cft;
+        rcb.rm=rm;
+        rcb.ac=ac;
+        rcb.fh=fh;
+        console.log('----worksqlite updateLbData 先删除原来标签子表----');
+        let rc = new RcEntity();
+        rc.sI=sI;
+        this.baseSqlite.getOne(rc).then(data=>{
+          if(data && data.rows && data.rows.length>0){
+            rcb.id = subId;
+            rcb.tk = data.rows.item(0).lI;
+            return this.baseSqlite.delete(rcb);
+          }
+        }).then(data=>{
+          return this.syncRcbTime(rcb,rcb.tn,DataConfig.AC_D);
+        }).then(data=>{
+          console.log('----worksqlite updateLbData 再保存新标签子表----');
+          rcb.tk = tk;
+          rcb.id = this.util.getUuid();
+          return this.baseSqlite.save(rcb);
+        }).then(data=>{
+          return this.syncRcbTime(rcb,rcb.tn,DataConfig.AC_O);
+        }).then(data=>{
+          resolve(data);
+        }).catch(e=>{
+          console.log('----worksqlite updateLbData 保存新标签子表 ERROR：'+JSON.stringify(e));
+          reject(e);
+        })
+      }else{
+        let bs = new BsModel();
+        resolve(bs);
+      }
     })
   }
 
@@ -656,8 +661,8 @@ export class WorkSqlite{
         en.ji = sync.tableE;
         en.sd = sync.tableF;
         en.ed = sync.tableG;
-        en.sd = en.sd.substr(0,10).replace(new RegExp('-','g'),'/');
-        en.ed= en.ed.substr(0,10).replace(new RegExp('-','g'),'/');
+        en.sd = en.sd.replace(new RegExp('-','g'),'/');
+        en.ed= en.ed.replace(new RegExp('-','g'),'/');
         if (sync.action == '2') {
           sql += en.dsq;
         } else {

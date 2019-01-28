@@ -166,7 +166,7 @@ export class RcEntity {
       sql=sql+' and ji="' + this._ji +'"';
     }
 
-    this._dsq=sql;
+    this._dsq=sql+';';
     return this._dsq;
   }
 

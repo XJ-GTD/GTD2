@@ -154,7 +154,7 @@ export class RcpEntity {
     if(this._sdt!=null){
       sql=sql+' and sdt=' + this._sdt;
     }
-    this._dsq=sql;
+    this._dsq=sql+';';
     return this._dsq;
   }
 
