@@ -187,9 +187,16 @@ export class RelmemService {
     this.relmemSqlite.getrus('','','',rc,'0').then(data=>{
       if(data && data.rows && data.rows.length>0){
         console.log("--------- 2.RelmemService aru() sqlite query contact is exsit -------------");
-        base.code=ReturnConfig.EXSIT_CODE;
-        base.message=ReturnConfig.EXSIT_MSG;
-        resolve(base);
+        this.upr('','',rN,rc,'0','',null,'',auI).then(data=>{
+          resolve(base);
+        }).catch(e=>{
+          console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e));
+          base.code=ReturnConfig.ERR_CODE;
+          base.message=ReturnConfig.ERR_MESSAGE;
+          reject(base);
+        })
+
+
       }else{
         //添加本地联系人
         return this.relmemSqlite.aru(ru).then(data=>{
@@ -202,7 +209,7 @@ export class RelmemService {
         }).catch(e=>{
           console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e));
           base.code=ReturnConfig.ERR_CODE;
-          base.message=e.message;
+          base.message=ReturnConfig.ERR_MESSAGE;
           reject(base);
         })
       }
@@ -223,24 +230,24 @@ export class RelmemService {
    * @param {string} ot 0是未被添加，1是同意，2是拉黑
    * @returns {Promise<BsModel>}
    */
-  upr(id:string,ran:string,rN:string,rc:string,rel:string,rF:string,qrL:Array<any>,ot:string):Promise<BsModel>{
+  upr(id:string,ran:string,rN:string,rc:string,rel:string,rF:string,qrL:Array<any>,ot:string,rI:string):Promise<BsModel>{
     return new Promise((resolve, reject)=>{
       let ru=new RuEntity();
       ru.id=id;
       ru.ran=ran;
       ru.ot=ot;
-      if(ru.ran == null || ru.ran == ''){
-        ru.ran=rc;
-      }
+      ru.ran=ran;
       ru.rN=rN;
-      if(ru.rN == null || ru.rN == ''){
-        ru.rN=ran;
-      }
       ru.rC=rc;
       ru.rel=rel;
       ru.rF = rF;
-      ru.rNpy = this.util.chineseToPinYin(ru.rN);
-      ru.ranpy = this.util.chineseToPinYin(ru.ran);
+      ru.rI = rI;
+      if(ru.rN != null && ru.rN != ''){
+        ru.rNpy = this.util.chineseToPinYin(ru.rN);
+      }
+      if(ru.ran != null && ru.ran != ''){
+        ru.ranpy = this.util.chineseToPinYin(ru.ran);
+      }
       let base=new BsModel();
       this.relmemSqlite.uru(ru).then(data=>{
         // //如果是群
