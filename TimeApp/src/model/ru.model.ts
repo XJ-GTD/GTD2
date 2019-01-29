@@ -7,6 +7,7 @@ import {BsModel} from "./out/bs.model";
 export class RuModel extends BsModel{
 
   private _id: string='';   //UUID
+  private _pI: string='';   //UUID
   private _ran:string=''; //别名
   private _ranpy:string=''; //别名拼音
   private _rI: string='';  //关联ID
@@ -139,5 +140,13 @@ export class RuModel extends BsModel{
 
   set bmi(value: string) {
     this._bmi = value;
+  }
+
+  get pI(): string {
+    return this._pI;
+  }
+
+  set pI(value: string) {
+    this._pI = value;
   }
 }

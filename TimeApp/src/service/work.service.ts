@@ -234,9 +234,9 @@ export class WorkService {
       }else{
         rc.ed=sd;
       }
-      if(ed != null && ed != ''){
-        rc.ed=ed;
-      }
+      // if(ed != null && ed != ''){
+      //   rc.ed=ed;
+      // }
       rc.ed =rc.ed.replace(new RegExp('-','g'),'/');
       rc.lI=lbI;
       rc.sI=sI;
@@ -308,6 +308,11 @@ export class WorkService {
       rc.sI=sI;
       let psl = new Array<PsModel>();
       this.workSqlite.update(rc).then(datau=>{
+
+        console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(datau));
+        console.log("----- workService arc 更新日程子表-------");
+        return this.workSqlite.updateLbData(subId,rc.sI,rc.lI,cft,rm,ac,'0');
+      }).then(data=>{
         //转化接口对应的参与人参数
         if(ruL && ruL.length>0){
           for(let i=0;i<ruL.length;i++){
@@ -325,13 +330,7 @@ export class WorkService {
           console.log("WorkService urc() restful " + SkillConfig.BC_SCU+" start");
           return this.rcResful.sc(rc.uI,SkillConfig.BC_SCU,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'');
         }
-      })
-        .then(data=>{
-          console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(data));
-          console.log("----- workService arc 更新日程子表-------");
-          return this.workSqlite.updateLbData(subId,rc.sI,rc.lI,cft,rm,ac,'0');
-        })
-        .then(data=>{
+      }).then(data=>{
         console.log("WorkService urc() end : " +JSON.stringify(data));
         if(psl.length>0 && data.code==0 && data.data.players.length>0){
           let players = data.data.players;
@@ -351,21 +350,21 @@ export class WorkService {
                 }
               }
             }
-            //先删除再添加
-            this.workSqlite.dRcps(rc.sI).then(data=>{
-              return this.workSqlite.sRcps(rc,ruL);
-            }).then(data=>{
-              //同步上传服务器
-              console.log("============ 更新日程同步上传日历 ================");
-              //this.syncSqlite.syncUplaod();
-              resolve(bs);
-            }).catch(e=>{
-              console.error("WorkService arc() Error : " +JSON.stringify(e));
-              bs.code = ReturnConfig.ERR_CODE;
-              bs.message=ReturnConfig.ERR_MESSAGE;
-              reject(bs);
-            })
           }
+          //先删除再添加
+          this.workSqlite.dRcps(rc.sI).then(data=>{
+            return this.workSqlite.sRcps(rc,ruL);
+          }).then(data=>{
+            //同步上传服务器
+            console.log("============ 更新日程同步上传日历 ================");
+            //this.syncSqlite.syncUplaod();
+            resolve(bs);
+          }).catch(e=>{
+            console.error("WorkService arc() Error : " +JSON.stringify(e));
+            bs.code = ReturnConfig.ERR_CODE;
+            bs.message=ReturnConfig.ERR_MESSAGE;
+            reject(bs);
+          })
         }else{
           resolve(bs);
         }
@@ -757,6 +756,18 @@ export class WorkService {
         console.log("----- WorkService getds(事件详情) result:" + JSON.stringify(data));
           if(data&&data.rows&&data.rows.length>0){
             rc= data.rows.item(0);
+            rc.ru = data.rows.item(0);
+            if(rc.ru.id || rc.ru.id == null || rc.ru.id == ''){
+              rc.ru = new RuModel();
+              rc.ru.hiu=DataConfig.defaultHeadImg;
+            }
+            if(rc.uI != DataConfig.uInfo.uI){
+              rc.sa = '0';
+            }else{
+              rc.sa='1';
+            }
+            rc.code=ReturnConfig.SUCCESS_CODE;
+            rc.message = ReturnConfig.SUCCESS_MESSAGE;
           }else{
             rc.code=ReturnConfig.NULL_CODE;
             rc.message=ReturnConfig.NULL_MESSAGE;
@@ -784,13 +795,15 @@ export class WorkService {
         }
         let ms = new MsEntity();
         ms.rI=rc.sI;
-        return this.msSqlite.updateMs(ms);
+        if(ms.rI && ms.rI != null && ms.rI != ''){
+          ms.mf='1';
+          return this.msSqlite.updateMs(ms);
+        }
       }).then(data=>{
         if(rc.df=='1'){
           console.log("----- WorkService getds(事件详情) 删除df状态是1的日程 -------" );
           return this.msDrc(rc);
         }
-        resolve(rc);
       }).then(data=>{
         resolve(rc);
       }).catch(e=>{

@@ -15,6 +15,8 @@ import {WorkService} from "../../../service/work.service";
 @Injectable()
 export class CalendarService {
 
+  specially:string = " animated bounceIn slow";
+
   constructor(  private work:WorkService,
   ) {
 
@@ -285,10 +287,10 @@ export class CalendarService {
             res.date=mbs.date;
             //事少
             if(!mbs.im){
-              res.cssClass = `hassometing animated bounceIn delay-1s slow`;
+              res.cssClass = `hassometing ` +　this.specially;
             }else{
               //事多
-              res.cssClass = `busysometing animated bounceIn delay-1s slow`;
+              res.cssClass = `busysometing ` + this.specially;
             }
             //有消息
             if(mbs.iem){
@@ -321,7 +323,7 @@ export class CalendarService {
           title: string;
         };
         res.date=day;
-        res.cssClass = `hassometing animated bounceIn delay-1s slow`;
+        res.cssClass = `hassometing ` + + this.specially;
         resolve(res);
       })
     );

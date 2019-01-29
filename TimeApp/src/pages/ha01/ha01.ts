@@ -15,19 +15,22 @@ import * as moment from "moment";
 @IonicPage()
 @Component({
   selector: 'page-ha01',
-  template:'<ion-scroll scrollY="true">' +
-  '  <ul>' +
-  '    <li ion-item *ngFor="let itm of dayEvents ;let i = index" (click)="showScheduleDetail(i)">' +
-  '      <p item-start>' +
-  '        {{itm.scheduleStartTime}}' +
-  '      </p>' +
-  '      <ion-icon  [ngStyle]="{\'color\':itm.labelColor}" style="font-size: smaller">{{itm.scheduleType}}</ion-icon>' +
-  '      <span>' +
-  '     {{itm.scheduleName}}' +
-  '    </span>' +
-  '    </li>' +
-  '  </ul>' +
-  '</ion-scroll>' ,
+  template:`<ion-scroll scrollY="true">
+    <ul>
+      <li ion-item *ngFor="let itm of dayEvents ;let i = index" (click)="showScheduleDetail(i)">
+        <p item-start>
+          {{itm.scheduleStartTime}}
+        </p>
+
+        <div class="self"  *ngIf="itm.scheduleType=='1'" [ngStyle]="{'background-color':itm.labelColor}"></div>
+        <div class="anther" *ngIf="itm.scheduleType=='2'" [ngStyle]="{'border-bottom-color':itm.labelColor}"></div>
+        <!--<ion-icon name="arrow-dropright-circle"></ion-icon>-->
+        <span>
+       {{itm.scheduleName}}
+      </span>
+      </li>
+    </ul>
+  </ion-scroll>` ,
 
 })
 export class Ha01Page {

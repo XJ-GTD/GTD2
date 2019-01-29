@@ -32,16 +32,21 @@ export const MONTH_VALUE_ACCESSOR: any = {
                 <div class="borderDiv"
                   [class.on-selected]="isSelected(day.time)">
                   <button type='button'
-                          [class]="'days-btn ' + day.cssClass"
+                          [class]="'days-btn '"
+                          [class.someting]="day.cssClass !=''"
                           [class.today]="day.isToday"
                           (click)="onSelected(day)"
                           (press)="onPressed(day)"
-                          [class.marked]="day.marked"
                           [class.last-month-day]="day.isLastMonth"
                           [class.next-month-day]="day.isNextMonth"
                           [disabled]="day.disable">
                     <p>{{day.title}}</p>
                     <small *ngIf="day.subTitle">{{day?.subTitle}}</small>
+                  </button>
+                  <button  *ngIf="!day.isNextMonth && !day.isLastMonth"
+                           [class]="'days-btn warp-days-btn ' + day.cssClass"
+                           [class.marked]="day.marked">
+                    
                   </button>
                 </div>
               </ng-container>

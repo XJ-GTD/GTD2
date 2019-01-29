@@ -1,109 +1,115 @@
 @import "../functions";
+
 @mixin transition-property($args...) {
-    -webkit-transition-property: $args;
-    -moz-transition-property: $args;
-    -ms-transition-property: $args;
-    -o-transition-property: $args;
-    transition-property: $args;
+  -webkit-transition-property: $args;
+  -moz-transition-property: $args;
+  -ms-transition-property: $args;
+  -o-transition-property: $args;
+  transition-property: $args;
 }
 
 @mixin transition-duration($args...) {
-    -webkit-transition-duration: $args;
-    -moz-transition-duration: $args;
-    -ms-transition-duration: $args;
-    -o-transition-duration: $args;
-    transition-duration: $args;
+  -webkit-transition-duration: $args;
+  -moz-transition-duration: $args;
+  -ms-transition-duration: $args;
+  -o-transition-duration: $args;
+  transition-duration: $args;
 }
 
 @mixin transition-timing-function($args...) {
-    -webkit-transition-timing-function: $args;
-    -moz-transition-timing-function: $args;
-    -ms-transition-timing-function: $args;
-    -o-transition-timing-function: $args;
-    transition-timing-function: $args;
+  -webkit-transition-timing-function: $args;
+  -moz-transition-timing-function: $args;
+  -ms-transition-timing-function: $args;
+  -o-transition-timing-function: $args;
+  transition-timing-function: $args;
 }
 
 @mixin month-color($background-color: primary, $color: #fff) {
-    button.days-btn small,
-    .days .marked p,
-    .days .today p {
-        color: bindColors($background-color);
+  button.days-btn small,
+  .days .marked p,
+  .days .today p {
+    color: bindColors($background-color);
+  }
+  .days .today p {
+    font-weight: 700;
+  }
+  .days .last-month-day p,
+  .days .next-month-day p {
+    color: rgba(0, 0, 0, .25);
+  }
+  .days .today.on-selected p,
+  .days .marked.on-selected p {
+    color: $color;
+  }
+  //.days .on-selected,
+  //.startSelection button.days-btn,
+  //.endSelection button.days-btn {
+  //  background-color: bindColors($background-color);
+  //  background: -webkit-linear-gradient(left, rgb(149,58,139),rgb(86,82,222)); /* Safari 5.1 - 6.0 */
+  //  background: -o-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Opera 11.1 - 12.0 */
+  //  background: -moz-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Firefox 3.6 - 15 */
+  //  background: linear-gradient(to right, rgb(149,58,139),rgb(86,82,222)); /* 标准的语法（必须放在最后） */
+  //
+  //  color: $color;
+  //}
+  .startSelection {
+    position: relative;
+
+    &:after {
+      height: 32px;
+      width: 50%;
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: block;
+      background-color: lighten(bindColors($background-color), 12%);
     }
-    .days .today p {
-        font-weight: 700;
+  }
+  .endSelection {
+    position: relative;
+
+    &:after {
+      height: 32px;
+      width: 50%;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      background-color: lighten(bindColors($background-color), 12%);
     }
-    .days .last-month-day p,
-    .days .next-month-day p {
-        color: rgba(0, 0, 0, .25);
+  }
+  .startSelection.endSelection {
+    &:after {
+      background-color: transparent;
     }
-    .days .today.on-selected p,
-    .days .marked.on-selected p {
-        color: $color;
+  }
+  .startSelection button.days-btn {
+    border-radius: 50%
+  }
+  .between button.days-btn {
+    background-color: lighten(bindColors($background-color), 12%);
+    width: 100%;
+    border-radius: 0;
+
+    p {
+      color: $color;
     }
-    //.days .on-selected,
-    //.startSelection button.days-btn,
-    //.endSelection button.days-btn {
-    //  background-color: bindColors($background-color);
-    //  background: -webkit-linear-gradient(left, rgb(149,58,139),rgb(86,82,222)); /* Safari 5.1 - 6.0 */
-    //  background: -o-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Opera 11.1 - 12.0 */
-    //  background: -moz-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Firefox 3.6 - 15 */
-    //  background: linear-gradient(to right, rgb(149,58,139),rgb(86,82,222)); /* 标准的语法（必须放在最后） */
-    //
-    //  color: $color;
-    //}
-    .startSelection {
-        position: relative;
-        &:after {
-            height: 32px;
-            width: 50%;
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            display: block;
-            background-color: lighten(bindColors($background-color), 12%);
-        }
+  }
+  .endSelection button.days-btn {
+    border-radius: 50%;
+
+    p {
+      color: $color;
     }
-    .endSelection {
-        position: relative;
-        &:after {
-            height: 32px;
-            width: 50%;
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: block;
-            background-color: lighten(bindColors($background-color), 12%);
-        }
-    }
-    .startSelection.endSelection {
-        &:after {
-            background-color: transparent;
-        }
-    }
-    .startSelection button.days-btn {
-        border-radius: 50%
-    }
-    .between button.days-btn {
-        background-color: lighten(bindColors($background-color), 12%);
-        width: 100%;
-        border-radius: 0;
-        p {
-            color: $color;
-        }
-    }
-    .endSelection button.days-btn {
-        border-radius: 50%;
-        p {
-            color: $color;
-        }
-    }
+  }
 
   .days.startSelection:nth-child(7n):after,
   .days.between:nth-child(7n) button.days-btn,
   button.days-btn.is-last {
     border-radius: 0 32px 32px 0;
+
     &.on-selected {
       border-radius: 50%
     }
@@ -139,107 +145,135 @@
   //.days .on-selected p {
   //      color: $color;
   //  }
-    .startSelection,
-    .endSelection,
-    .between {
-        button.days-btn {
-            @include transition-property(background-color);
-            @include transition-duration(180ms);
-            @include transition-timing-function(ease-out);
-        }
+  .startSelection,
+  .endSelection,
+  .between {
+    button.days-btn {
+      @include transition-property(background-color);
+      @include transition-duration(180ms);
+      @include transition-timing-function(ease-out);
     }
+  }
 }
 
 ion-calendar-month {
-    display: inline-block;
-    width: 100%;
-    .days-box {
-        padding: 0.5rem;
-    }
-    .days:nth-of-type(7n),
-    .days:nth-of-type(7n+1) {
-        width: 15%;
-    }
-    .days {
-        width: 14%;
-        float: left;
-        text-align: center;
-        height: 32px;
-        margin-bottom: 7px;
-    }
-    .days .marked p {
-        font-weight: 100;
-    }
-    .days .on-selected {
-        border: none;
-        p {
-            font-size: 14px;
-        }
-    }
-    button.days-btn {
-        border-radius: 32px;
-        width: 32px;
-        display: block;
-        margin: 2px;
-        padding: 0;
-        height: 32px;
-        background-color: transparent;
-        position: relative;
-        z-index: 2;
-    }
-    button.days-btn p {
-        margin: 0;
-        font-size: 14px;
-        color: #222222;
-    }
-    button.days-btn.on-selected small {
-        transition: bottom .3s;
-        bottom: -14px;
-    }
-    button.days-btn small {
-        overflow: hidden;
-        display: block;
-        left: 0;
-        right: 0;
-        bottom: -3px;
-        position: absolute;
-        z-index: 1;
-        text-align: center;
-        font-weight: 200;
-    }
-    .primary {
-        @include month-color();
-    }
-    .secondary {
-        @include month-color(secondary);
-    }
-    .danger {
-        @include month-color(danger);
-    }
-    .dark {
-        @include month-color(dark);
-    }
-    .light {
-        @include month-color(light, #a0a0a0);
-        .days .today p {
-            color: #565656;
-        }
+  display: inline-block;
+  width: 100%;
 
+  .days-box {
+    padding: 0.5rem;
+  }
+
+  .days:nth-of-type(7n),
+  .days:nth-of-type(7n+1) {
+    width: 15%;
+  }
+
+  .days {
+    width: 14%;
+    float: left;
+    text-align: center;
+    height: 32px;
+    margin-bottom: 7px;
+  }
+
+  .days .marked p {
+    font-weight: 100;
+  }
+
+  .days .on-selected {
+    border: none;
+
+    p {
+      font-size: 14px;
     }
+  }
+
+  button.days-btn {
+    border-radius: 32px;
+    width: 32px;
+    display: block;
+    margin: 2px;
+    padding: 0;
+    height: 32px;
+    background-color: transparent;
+    position: relative;
+    z-index: 2;
+  }
+
+  button.warp-days-btn {
+    z-index: 0;
+    top: -34px;
+  }
+
+  button.days-btn p {
+    margin: 0;
+    font-size: 14px;
+    color: #222222;
+  }
+
+  button.someting p{
+    color: #ffffff;
+  }
+
+  button.days-btn.on-selected small {
+    transition: bottom .3s;
+    bottom: -14px;
+  }
+
+  button.days-btn small {
+    overflow: hidden;
+    display: block;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    z-index: 1;
+    text-align: center;
+    font-size: 5px;
+    font-weight: 200;
+  }
+
+  .primary {
+    @include month-color();
+  }
+
+  .secondary {
+    @include month-color(secondary);
+  }
+
+  .danger {
+    @include month-color(danger);
+  }
+
+  .dark {
+    @include month-color(dark);
+  }
+
+  .light {
+    @include month-color(light, #a0a0a0);
+
+    .days .today p {
+      color: #565656;
+    }
+
+  }
+
   .cal-color {
 
-    @include month-color(cal-color,#222222);
+    @include month-color(cal-color, #222222);
 
-    .borderDiv{
+    .borderDiv {
       width: 38px;
       height: 38px;
       margin: 0 auto;
 
     }
+
     .on-selected {
       border: 1px solid;
       border-radius: 38px;
-      border-color:#953a8b ;
+      border-color: #953a8b;
       //border-image: -webkit-linear-gradient(left,#953a8b, #5652de) 5 5;
       //border-image: -moz-linear-gradient(left,#953a8b, #5652de) 5 5;
       //border-image: linear-gradient(left,#953a8b, #5652de) 5 5;
@@ -248,38 +282,43 @@ ion-calendar-month {
       }
     }
 
-    .on-selected::after{
+    .on-selected::after {
       content: '';
       //z-index: -1;
     }
+
     .days {
-      .hassometing{
-        background:#7cd8d5;
-        p {
-          color: #ffffff;
-          font-weight: 100;
-        }
-      }
-      .busysometing{
-        background:#24beb9;
-        p {
-        color: #ffffff;
-        font-weight: 100;
-      }
-      }
-      .today {
-        background: -webkit-linear-gradient(left, rgb(149,58,139),rgb(86,82,222)); /* Safari 5.1 - 6.0 */
-        background: -o-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Opera 11.1 - 12.0 */
-        background: -moz-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Firefox 3.6 - 15 */
-        background: linear-gradient(to right, rgb(149,58,139),rgb(86,82,222)); /* 标准的语法（必须放在最后） */
+      .hassometing {
+        background: #7cd8d5;
+
         p {
           color: #ffffff;
           font-weight: 100;
         }
       }
 
-       .last-month-day ,
-       .next-month-day  {
+      .busysometing {
+        background: #24beb9;
+
+        p {
+          color: #ffffff;
+          font-weight: 100;
+        }
+      }
+
+      .today {
+        background: -webkit-linear-gradient(left, rgb(149, 58, 139), rgb(86, 82, 222)); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Firefox 3.6 - 15 */
+        background: linear-gradient(to right, rgb(149, 58, 139), rgb(86, 82, 222)); /* 标准的语法（必须放在最后） */
+        p {
+          color: #ffffff;
+          font-weight: 100;
+        }
+      }
+
+      .last-month-day,
+      .next-month-day {
 
         //display: none;
       }
@@ -287,6 +326,7 @@ ion-calendar-month {
     }
 
   }
+
   //.cus_light {
   //  @include month-color(cus_light, #a0a0a0);
   //  .days .today p {
