@@ -374,7 +374,9 @@ export class WorkService {
                 break;
               }
             }
-            dRul.push(ru);
+            if(!isExsit){
+              dRul.push(ru);
+            }
           }
         }
         if(dRul.length>0){
