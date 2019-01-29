@@ -379,6 +379,11 @@ export class HbPage {
         }
       }).catch(reason => {
         console.log("catch 添加日程失败");
+        textX.tt = this.S1;
+        // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
+        textX.at = DataConfig.TEXT_CONTENT.get("A01" + "10");
+        this.messages.unshift(textX);
+        this.xiaojiSpeech.speakText(textX.at, success => {});
       });
 
   }
