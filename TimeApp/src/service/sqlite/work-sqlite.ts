@@ -188,7 +188,7 @@ export class WorkSqlite{
    * 删除日程关联表
    * @param {string} sI 日程ID
    */
-  dRcps(sI:string):Promise<any>{
+  dRcpBysI(sI:string):Promise<any>{
     let sql = 'delete from GTD_D where sI= "'+ sI +'"';
     return this.baseSqlite.executeSql(sql,[])
   }

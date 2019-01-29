@@ -488,7 +488,7 @@ export class WorkService {
               }
             }
             console.log('--------- 删除的参与人开始 ---------');
-          return this.workSqlite.dRcps(sI);
+          return this.workSqlite.dRcps(rc,ruL);
         }).then(data=>{
             console.log('--------- 删除的参与人结束 ---------');
           if(ruL && ruL.length>0){
@@ -575,7 +575,7 @@ export class WorkService {
       this.baseSqlite.delete(rce).then(datad => {
           console.log('--------- 删除的日程结束 ---------');
           console.log('--------- 删除的参与人开始 ---------');
-          return this.workSqlite.dRcps(rc.sI);
+          return this.workSqlite.dRcpBysI(rc.sI);
         }).then(data=>{
           console.log('--------- 删除的参与人结束 ---------');
           //同步上传服务器
@@ -861,7 +861,7 @@ export class WorkService {
         .then(data=>{
           console.log("----- WorkService delrc(删除日程) result:" + JSON.stringify(data));
           console.log('--------- 删除的参与人开始 ---------');
-          return this.workSqlite.dRcps(sI);
+          return this.workSqlite.dRcpBysI(sI);
       }).then(data=>{
         console.log('--------- 删除的参与人结束 ---------');
         resolve(bs);
