@@ -350,21 +350,21 @@ export class WorkService {
                 }
               }
             }
-            //先删除再添加
-            this.workSqlite.dRcps(rc.sI).then(data=>{
-              return this.workSqlite.sRcps(rc,ruL);
-            }).then(data=>{
-              //同步上传服务器
-              console.log("============ 更新日程同步上传日历 ================");
-              //this.syncSqlite.syncUplaod();
-              resolve(bs);
-            }).catch(e=>{
-              console.error("WorkService arc() Error : " +JSON.stringify(e));
-              bs.code = ReturnConfig.ERR_CODE;
-              bs.message=ReturnConfig.ERR_MESSAGE;
-              reject(bs);
-            })
           }
+          //先删除再添加
+          this.workSqlite.dRcps(rc.sI).then(data=>{
+            return this.workSqlite.sRcps(rc,ruL);
+          }).then(data=>{
+            //同步上传服务器
+            console.log("============ 更新日程同步上传日历 ================");
+            //this.syncSqlite.syncUplaod();
+            resolve(bs);
+          }).catch(e=>{
+            console.error("WorkService arc() Error : " +JSON.stringify(e));
+            bs.code = ReturnConfig.ERR_CODE;
+            bs.message=ReturnConfig.ERR_MESSAGE;
+            reject(bs);
+          })
         }else{
           resolve(bs);
         }
