@@ -22,6 +22,13 @@ public class WebSocketDataDto {
     private Integer sa;     //scheduleAuth
 
     //日程：子表
+    private String id;      //ID
+    private String rm;      //comment
+    private String cft;     //repeatType
+    private String ac;      //remindType
+    private String dt;      //remindTime
+    private String fh;      //finishStatus
+    private String wd;      //finishTime
 
     //联系人
     private String us;      //userId
@@ -156,6 +163,62 @@ public class WebSocketDataDto {
 
     public void setPli(String pli) {
         this.pli = pli;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getRm() {
+        return rm;
+    }
+
+    public void setRm(String rm) {
+        this.rm = rm;
+    }
+
+    public String getCft() {
+        return cft;
+    }
+
+    public void setCft(String cft) {
+        this.cft = cft;
+    }
+
+    public String getAc() {
+        return ac;
+    }
+
+    public void setAc(String ac) {
+        this.ac = ac;
+    }
+
+    public String getDt() {
+        return dt;
+    }
+
+    public void setDt(String dt) {
+        this.dt = dt;
+    }
+
+    public String getFh() {
+        return fh;
+    }
+
+    public void setFh(String fh) {
+        this.fh = fh;
+    }
+
+    public String getWd() {
+        return wd;
+    }
+
+    public void setWd(String wd) {
+        this.wd = wd;
     }
 
     //扩展字段
