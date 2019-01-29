@@ -12,6 +12,7 @@ export class RcModel extends BsModel{
   private _sN:string=''; //日程名
   private _lI: string='';   //关联标签ID
   private _lan: string='';   //关联标签名称
+  private _lau: string='';   //标签颜色
   private _ji: string='';   //关联计划ID
   private _jn: string='';   //关联计划名称
   private _uI: string='';          //创建人ID
@@ -254,5 +255,13 @@ export class RcModel extends BsModel{
 
   set ru(value: RuModel) {
     this._ru = value;
+  }
+
+  get lau(): string {
+    return this._lau;
+  }
+
+  set lau(value: string) {
+    this._lau = value;
   }
 }

@@ -379,13 +379,14 @@ export class WorkSqlite{
    * @returns {string}
    */
   getRcSql(param:string):string{
-    let sql= 'select gc.*,' +param+
+    let sql= 'select gc.*,gf.*,' +param+
       'lbd.cft,lbd.wd,lbd.ac,lbd.fh,lbd.tk,lbd.rm,lbd.dt,lbd.subId from GTD_C gc ' +
       'left join (select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_BO ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_C ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_RC ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_JN ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
+      'left join GTD_F gf on gf.lai=gc.lI '
       'left join (select sI,uI from GTD_D where uI ="'+DataConfig.uInfo.uI+'" group by sI,uI) gd on gc.sI=gd.sI ';
     return sql;
   }
