@@ -17,7 +17,7 @@ import * as moment from "moment";
   selector: 'page-ha01',
   template:`<ion-scroll scrollY="true">
     <ul>
-      <li ion-item *ngFor="let itm of dayEvents ;let i = index" (click)="showScheduleDetail(i)">
+      <li ion-item *ngFor="let itm of dayEvents ;let i = index" (click)="showScheduleDetail(i)"  [class.new-message]="itm.isMessage">
         <p item-start>
           {{itm.scheduleStartTime}}
         </p>
@@ -28,9 +28,10 @@ import * as moment from "moment";
         <span>
        {{itm.scheduleName}}
       </span>
+        <small *ngIf="itm.isMessage">\u2022</small>
       </li>
     </ul>
-  </ion-scroll>` ,
+  </ion-scroll>`
 
 })
 export class Ha01Page {
