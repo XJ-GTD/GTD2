@@ -306,7 +306,9 @@ export class WorkSqlite{
               }
               //是否新消息
               if(res.mf && res.mf=='0'){
-                res.isMessage='·';
+                res.isMessage=true;
+              }else{
+                res.isMessage=false;
               }
               resL.push(res);
             }
