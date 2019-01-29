@@ -358,7 +358,7 @@ export class WorkService {
           }
         }
         //查询原来参与人
-        this.relmem.getRgusBySi(rc.sI);
+        return this.relmem.getRgusBySi(rc.sI);
       }).then(data=>{
         //过滤已不存在的参与人
         let dRul = new Array<RuModel>();
