@@ -1,6 +1,11 @@
 import {Injectable} from "@angular/core";
 import {DwEmitService} from "./dw-emit.service";
 import {AiuiModel} from "../../model/aiui.model";
+import {XiaojiAssistantService} from "./xiaoji-assistant.service";
+import {LocalNotifications} from "@ionic-native/local-notifications";
+import {Vibration} from "@ionic-native/vibration";
+import {NativeAudio} from "@ionic-native/native-audio";
+import {SystemSettingService} from "./system.setting.service";
 
 /**
  * 语音技能对应统一逻辑处理
@@ -10,7 +15,8 @@ import {AiuiModel} from "../../model/aiui.model";
 @Injectable()
 export class EmitSpeechService {
 
-  constructor(private dwEmit: DwEmitService) {}
+  constructor(private dwEmit: DwEmitService,
+              private system: SystemSettingService) {}
 
   //统一广播推送
   public send(aiui: AiuiModel, sk: string) {
@@ -22,6 +28,7 @@ export class EmitSpeechService {
         this.dwEmit.setHbData(aiui);
       } else if (type == "D") {
         //再根据具体业务返回对应页面
+        this.system.newSms();
       }
     } else {
       console.log("无技能 | 推送至HbPage");

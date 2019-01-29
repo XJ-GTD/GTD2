@@ -26,7 +26,6 @@ export class DwMqService {
               private relmem: RelmemService,
               private errorCode: ErrorCodeService,
               private msSqlite: MsSqlite,
-              private xiaojiSpeech: XiaojiAssistantService,
               private emitSend: EmitSpeechService,) {
 
   }

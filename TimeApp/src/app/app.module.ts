@@ -65,6 +65,7 @@ import { Contacts} from "@ionic-native/contacts";
 import { ContactsService} from "../service/util-service/contacts.service";
 import { Vibration } from "@ionic-native/vibration";
 import { NativeAudio } from "@ionic-native/native-audio";
+import { SystemSettingService } from "../service/util-service/system.setting.service";
 
 @NgModule({
   declarations: [
@@ -145,6 +146,7 @@ import { NativeAudio } from "@ionic-native/native-audio";
     SyncService,
     NetworkService,
     ContactsService,
+    SystemSettingService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

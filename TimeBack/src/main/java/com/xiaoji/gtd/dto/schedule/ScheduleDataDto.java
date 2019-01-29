@@ -19,6 +19,18 @@ public class ScheduleDataDto {
     private List<PlayerDataDto> players;     //players 包含accountMobile和userId
     private String status;      //status;
 
+    private String executeId;       //executeId
+    private String playerId;     //playerId;
+    private Integer scheduleAuth;     //scheduleAuth
+
+    private String id;      //子表ID
+    private String comment;     //备注
+    private String repeatType;      //重复类型
+    private String remindType;      //提醒类型
+    private String remindTime;      //提醒时间
+    private String finishStatus;    //完成状态
+    private String finishTime;      //  完成时间
+
     public String getScheduleName() {
         return scheduleName;
     }
@@ -75,4 +87,83 @@ public class ScheduleDataDto {
         this.players = players;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getRepeatType() {
+        return repeatType;
+    }
+
+    public void setRepeatType(String repeatType) {
+        this.repeatType = repeatType;
+    }
+
+    public String getRemindType() {
+        return remindType;
+    }
+
+    public void setRemindType(String remindType) {
+        this.remindType = remindType;
+    }
+
+    public String getRemindTime() {
+        return remindTime;
+    }
+
+    public void setRemindTime(String remindTime) {
+        this.remindTime = remindTime;
+    }
+
+    public String getFinishStatus() {
+        return finishStatus;
+    }
+
+    public void setFinishStatus(String finishStatus) {
+        this.finishStatus = finishStatus;
+    }
+
+    public String getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(String finishTime) {
+        this.finishTime = finishTime;
+    }
+
+    public String getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(String playerId) {
+        this.playerId = playerId;
+    }
+
+    public String getExecuteId() {
+        return executeId;
+    }
+
+    public void setExecuteId(String executeId) {
+        this.executeId = executeId;
+    }
+
+    public Integer getScheduleAuth() {
+        return scheduleAuth;
+    }
+
+    public void setScheduleAuth(Integer scheduleAuth) {
+        this.scheduleAuth = scheduleAuth;
+    }
 }

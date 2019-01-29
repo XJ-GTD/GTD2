@@ -67,6 +67,13 @@ public class ScheduleServiceImpl implements IScheduleService {
         String endTime = "";
         String label = "";
         String status = "";
+        String id = "";      //子表ID
+        String comment = "";     //备注
+        String repeatType = "";      //重复类型
+        String remindType = "";      //提醒类型
+        String remindTime = "";      //提醒时间
+        String finishStatus = "";    //完成状态
+        String finishTime = "";      //  完成时间
         List<PlayerDataDto> players;
         String targetUserId = "";
         String targetMobile = "";
@@ -81,6 +88,15 @@ public class ScheduleServiceImpl implements IScheduleService {
                 data.setLb(sdd.getLabel());
                 data.setSs(sdd.getStatus());
                 data.setUs(userId);
+                data.setId(sdd.getId());
+                data.setRm(sdd.getComment());
+                data.setCft(sdd.getRepeatType());
+                data.setAc(sdd.getRemindType());
+                data.setDt(sdd.getRemindTime());
+                data.setFh(sdd.getFinishStatus());
+                data.setWd(sdd.getFinishTime());
+                data.setEi(sdd.getExecuteId());
+                data.setSa(sdd.getScheduleAuth());
 
                 pushDto.setRes(new WebSocketResultDto(data));
                 pushDto.setSk(skillType);
@@ -96,7 +112,7 @@ public class ScheduleServiceImpl implements IScheduleService {
                         webSocketService.pushTopicMessage(targetUserId, pushDto);
                         logger.debug("[成功推送日程]:方式 === RABBIT MQ");
                     } else if (!player.isUser()){
-//                    smsService.pushSchedule(targetMobile);
+//                        smsService.pushSchedule(targetMobile);
                         logger.debug("[成功推送日程]:方式 === SMS");
                     } else {
                         logger.debug("[不可推送日程]:原因 === 非对方好友或没有权限");
