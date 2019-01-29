@@ -344,15 +344,18 @@ export class DwMqService {
     let lbI = data.lb;
     let rui = data.us;
     let sI = data.si;
-    console.log("----- DwMqService scheduleCreate(业务：日程更新) start---- ")
+    console.log("----- DwMqService scheduleCreate(业务：日程更新) start---- ");
+    let ms = new MsEntity();
     this.work.urcMq(sI, rui, ct, sd, ed, lbI, '', '', '', '').then(data => {
-      console.log("----- DwMqService scheduleCreate(业务：日程更新) end ---- ")
-      let ms = new MsEntity();
-      ms.mn = ct;
-      ms.md = sd;
+      console.log("----- DwMqService scheduleCreate(业务：日程更新) end ---- ");
+      //先删除已存在的
       ms.rI = sI;
+      return this.msSqlite.deletMs(ms);
+    }).then(data=>{
       ms.mt = '0';
       ms.mf = '0';
+      ms.mn = ct;
+      ms.md = sd;
       return this.msSqlite.addMs(ms);
     }).then(data => {
       console.log("----- DwMqService scheduleCreate(业务：日程更新Message) end ---- ");
@@ -447,6 +450,5 @@ export class DwMqService {
     console.log("dwResultSendToPage回应广播发送");
     this.emitSend.send(aiui, sk);
   }
-
 
 }

@@ -47,13 +47,13 @@ export class MsEntity {
 
   get usq(): string {
     let sql='update GTD_H set';
-    if(this._mn!=null){
+    if(this._mn!=null && this._mn !=''){
       sql=sql+' mn="' + this._mn +'",';
     }
-    if(this._md!=null){
+    if(this._md!=null  && this._md !=''){
       sql=sql+' md="' + this._md +'",';
     }
-    if(this._mt!=null){
+    if(this._mt!=null && this._mt !=''){
       sql=sql+' mt="' + this._mt +'",';
     }
     let str = sql.substr(sql.length-1,sql.length);
@@ -72,16 +72,19 @@ export class MsEntity {
   get dsq(): string {
     let sql='DELETE FROM GTD_H WHERE 1=1 ';
     if(this._mi!=null){
-      sql=sql+' and mi="' + this._mi +'"';
+      sql=sql+' and mi=' + this._mi;
     }
-    if(this._mn!=null){
+    if(this._mn!=null && this._mn!=''){
       sql=sql+' and mn="' + this._mn +'"';
     }
-    if(this._md!=null){
+    if(this._md!=null && this._md!=''){
       sql=sql+' and md="' + this._md +'"';
     }
-    if(this._mt!=null){
+    if(this._mt!=null && this._mt!=''){
       sql=sql+' and mt="' + this._mt +'"';
+    }
+    if(this._rI!=null && this._rI!=''){
+      sql=sql+' and rI="' + this._rI +'"';
     }
 
     this._dsq=sql+';';
