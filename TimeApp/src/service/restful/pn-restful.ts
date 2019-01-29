@@ -122,10 +122,11 @@ export class PnRestful{
    * @param {string} rn 用户真实姓名
    * @param {string} iC 用户身份证号
    * @param {string} uS 用户性别（性别0无 1男 2女）
+   * @param uCt 联系方式
    * @returns {Promise<any>}
    */
 
-  upu(ui:string,uN:string,hiu:string,biy:string,rn:string,iC:string,uS:string):Promise<any>{
+  upu(ui:string,uN:string,hiu:string,biy:string,rn:string,iC:string,uS:string, uCt: string):Promise<any>{
     return this.bs.post(AppConfig.PERSON_UP, {
       userId:ui,
       userName:uN,
@@ -133,7 +134,8 @@ export class PnRestful{
       birthday:biy,
       realName:rn,
       idCard:iC,
-      userSex: uS
+      userSex: uS,
+      contact: uCt
     })
   }
 

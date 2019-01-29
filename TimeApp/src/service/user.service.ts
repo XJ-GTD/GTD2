@@ -35,7 +35,7 @@ export class UserService {
    * @returns {Promise<any>}
    */
 
-  upu(uI:string, uN:string, hIU:string, biy:string, rn:string, iC:string, uS:string):Promise<BsModel>{
+  upu(uI:string, uN:string, hIU:string, biy:string, rn:string, iC:string, uS:string, uCt: string):Promise<BsModel>{
     return new Promise((resolve, reject) =>{
       let u = new UEntity();
       u.uI=uI;
@@ -45,10 +45,11 @@ export class UserService {
       u.uS=uS;
       u.rn=rn;
       u.iC=iC;
+      u.uCt = uCt;
       let bs = new BsModel();
       let rsData:any = null;
       console.log("------- 1.UserService restful upu user start --------");
-      this.pnRestful.upu(uI,uN,hIU,biy,rn,iC,uS).then(data=>{
+      this.pnRestful.upu(uI,uN,hIU,biy,rn,iC,uS,uCt).then(data=>{
         console.log("------- 2.UserService restful upu user end: " + JSON.stringify(data));
         rsData = data;
         bs = data;

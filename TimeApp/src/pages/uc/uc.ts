@@ -114,7 +114,7 @@ export class UcPage {
   }
 
   confirm(uo:UEntity){
-    this.userService.upu(uo.uI,uo.uN,uo.hIU,uo.biy,uo.rn,uo.iC,uo.uS).then(data=>{
+    this.userService.upu(uo.uI,uo.uN,uo.hIU,uo.biy,uo.rn,uo.iC,uo.uS, uo.uCt).then(data=>{
       if(data.code == 0){
         this.state = false;
         console.log("修改信息成功");
