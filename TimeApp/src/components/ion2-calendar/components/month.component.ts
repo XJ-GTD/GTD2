@@ -33,6 +33,7 @@ export const MONTH_VALUE_ACCESSOR: any = {
                   [class.on-selected]="isSelected(day.time)">
                   <button type='button'
                           [class]="'days-btn '"
+                          [class.someting]="day.cssClass !=''"
                           [class.today]="day.isToday"
                           (click)="onSelected(day)"
                           (press)="onPressed(day)"

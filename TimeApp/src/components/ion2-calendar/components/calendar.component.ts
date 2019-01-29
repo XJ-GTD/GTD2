@@ -12,11 +12,11 @@ import {
   CalendarMonth, CalendarModalOptions, CalendarComponentOptions, CalendarDay,
   CalendarComponentPayloadTypes, CalendarComponentMonthChange, CalendarComponentTypeProperty, DayConfig
 } from '../calendar.model'
-import { CalendarService } from "../services/calendar.service";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {CalendarService} from "../services/calendar.service";
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import * as moment from 'moment';
-import { defaults, pickModes } from "../config";
+import {defaults, pickModes} from "../config";
 import {XiaojiFeedbackService} from "../../../service/util-service/xiaoji-feedback.service";
 
 export const ION_CAL_VALUE_ACCESSOR: Provider = {
@@ -29,31 +29,35 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
   selector: 'ion-calendar',
   providers: [ION_CAL_VALUE_ACCESSOR],
   template: `
-      <ion-card no-padding >
+    <ion-card no-padding>
       <ion-card-header no-padding>
-        
-        <div class="title animated" [ngClass]="{'jello':css==1,'flash':css==2}" animationend="" >
-          <ng-template [ngIf]="_showMonthPicker" [ngIfElse]="title" >
-          <div float-left >
-          <p  style="font-size: 30px;color: #222222;font-weight: bold;letter-spacing: -1px" float-left >{{monthOpt.original.month<9? "0" + (monthOpt.original.month+1):monthOpt.original.month + 1}}</p>
-          <p  style="display: grid;padding-left:0px;padding-top:5px" float-left no-margin >
-            <span style="font-size: 15px;height: 16px;color: #666666;">{{monthOpt.original.year}}</span>
-            <span style="font-size: 10px;color: #666666;">month</span>
-          </p>
-            <ion-icon style="padding-top:10px;padding-left: 6px;color:#666666" class="arrow-dropdown"
-                      [name]="_view === 'days' ? 'md-arrow-dropright' : 'md-arrow-dropdown'" (click)="switchView()"></ion-icon>
-           </div>
+
+        <div class="title animated" [ngClass]="{'jello':css==1,'flash':css==2}" animationend="">
+          <ng-template [ngIf]="_showMonthPicker" [ngIfElse]="title">
+            <div float-left>
+              <p style="font-size: 30px;color: #222222;font-weight: bold;letter-spacing: -1px"
+                 float-left>{{monthOpt.original.month < 9 ? "0" + (monthOpt.original.month + 1) : monthOpt.original.month + 1}}</p>
+              <p style="display: grid;padding-left:0px;padding-top:5px" float-left no-margin>
+                <span style="font-size: 15px;height: 16px;color: #666666;">{{monthOpt.original.year}}</span>
+                <span style="font-size: 10px;color: #666666;">month</span>
+              </p>
+              <ion-icon style="padding-top:10px;padding-left: 6px;color:#666666" class="arrow-dropdown"
+                        [name]="_view === 'days' ? 'md-arrow-dropright' : 'md-arrow-dropdown'"
+                        (click)="switchView()"></ion-icon>
+            </div>
           </ng-template>
           <ng-template #title>
-            <div class="switch-btn" >
-              <div float-left >
-                <p  style="font-size: 2em" float-left>{{monthOpt.original.month<9? "0" + (monthOpt.original.month+1):monthOpt.original.month + 1}}</p>
-                <p  style="display: grid;margin-left: 0px" float-left>
+            <div class="switch-btn">
+              <div float-left>
+                <p style="font-size: 2em"
+                   float-left>{{monthOpt.original.month < 9 ? "0" + (monthOpt.original.month + 1) : monthOpt.original.month + 1}}</p>
+                <p style="display: grid;margin-left: 0px" float-left>
                   <span style="font-size: 1.3em">{{monthOpt.original.year}}</span>
                   <span>month</span>
                 </p>
-                <ion-icon float-left  padding-top class="arrow-dropdown"
-                          [name]="_view === 'days' ? 'md-arrow-dropdown' : 'md-arrow-dropup'" (click)="switchView()"></ion-icon>
+                <ion-icon float-left padding-top class="arrow-dropdown"
+                          [name]="_view === 'days' ? 'md-arrow-dropdown' : 'md-arrow-dropup'"
+                          (click)="switchView()"></ion-icon>
               </div>
             </div>
           </ng-template>
@@ -99,9 +103,9 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
           </ion-calendar-month-picker>
         </ng-template>
       </ion-card-content>
-      </ion-card>
-    
-   
+    </ion-card>
+
+
   `
 })
 export class CalendarComponent implements ControlValueAccessor, OnInit {
@@ -110,7 +114,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   _options: CalendarComponentOptions;
   _view: 'month' | 'days' = 'days';
   _calendarMonthValue: CalendarDay[] = [null, null];
-  css:number=1;
+  css: number = 1;
 
   _showToggleButtons = false;
   get showToggleButtons(): boolean {
@@ -228,6 +232,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     });
     this.monthOpt = this.createMonth(backTime);
   }
+
   //add by zhangjy
   // refresh(): void {
   //   this.monthOpt = this.createMonth(this.monthOpt.original.time);
@@ -286,41 +291,43 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  nextArray:Array<number>=new Array<number>();
-  newstart:boolean = true;
+  nextArray: Array<number> = new Array<number>();
+  newstart: boolean = true;
+
   swipeEvent($event: any): void {
     const isNext = $event.deltaX < 0;
-   // if (!this.newstart) return;
+    // if (!this.newstart) return;
     if (isNext)
       this.nextArray.push(1);
     else
       this.nextArray.push(0);
-    if (this.newstart){
+    if (this.newstart) {
       this.startSwipe();
     }
   }
-  startSwipe(){
+
+  startSwipe() {
     this.newstart = false;
-    this.swipeEventS().then((d)=>{
+    this.swipeEventS().then((d) => {
       console.info(d);
-      if (this.nextArray.length > 0){
+      if (this.nextArray.length > 0) {
         this.startSwipe();
-      }
-      else{
+      } else {
         //this.configMonthEventDay
         this.newstart = true
       }
     });
   }
-  swipeEventS():Promise<any>{
-    return new Promise<any>((resolve,reject)=>{
 
-      let n:number=this.nextArray.pop();
-      if (n==1 && this.canNext()) {
+  swipeEventS(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+
+      let n: number = this.nextArray.pop();
+      if (n == 1 && this.canNext()) {
         this.nextMonth();
-        this.css =2;
+        this.css = 2;
 
-      } else if (n==0 && this.canBack()) {
+      } else if (n == 0 && this.canBack()) {
         this.backMonth()
 
         this.css = 1;
@@ -328,13 +335,13 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
 
       this.xiaojiFeekback.audioBass();
 
-      window.setTimeout(()=>{
+      window.setTimeout(() => {
         this.css = 100;
         this.onSelect.emit();
-        window.setTimeout(()=>{
+        window.setTimeout(() => {
           resolve(true);
-        },100);
-      },200);
+        }, 100);
+      }, 200);
     })
   }
 
@@ -372,7 +379,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   createMonth(date: number): CalendarMonth {
-    if (this.nextArray.length == 0){
+    if (this.nextArray.length == 0) {
       this.configMonthEventDay(date);
     }
     return this.calSvc.createMonthsByPeriod(date, 1, this._d)[0];
@@ -453,7 +460,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  monthClick(event: CalendarDay){
+  monthClick(event: CalendarDay) {
     if (event.isToday == false && event.isNextMonth) {
       this.nextMonth();
     } else if (event.isToday == false && event.isLastMonth) {
@@ -462,26 +469,36 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
 
-  configMonthEventDay(time){
+  configMonthEventDay(time) {
     let newMonth = this.calSvc.multiFormat(time);
     console.info(newMonth.dateObj);
     let month = moment(newMonth.dateObj).format('YYYY-MM');
 
     let len = this.options.daysConfig.length;
-    this.options.daysConfig.splice(0,len-1);
-    this.calSvc.findDayEventForMonth(month).then((data)=>{
+    this.options.daysConfig.splice(0, len - 1);
+    this.calSvc.findDayEventForMonth(month).then((data) => {
       this.options.daysConfig.push(...data);
-      this.monthOpt =  this.calSvc.createMonthsByPeriod(time, 1, this._d)[0];
+      this.monthOpt = this.calSvc.createMonthsByPeriod(time, 1, this._d)[0];
     })
   }
 
-  flashDay(day){
-    this.calSvc.findDayEventForDay(day).then((data)=>{
-       let cdays = this.monthOpt.days;
+  flashDay(day) {
+    this.calSvc.findDayEventForDay(day).then((data) => {
+      let cdays = this.monthOpt.days;
       for (let i = 0; i < cdays.length; i++) {
-      let dayc:any = cdays[i];
-      if (moment(day).valueOf() == dayc.time )
-        dayc.cssClass = "hassometing animated bounceIn delay-1s slow";
+        let dayc: any = cdays[i];
+        if (moment(day).valueOf() == dayc.time) {
+          if (!dayc.im) {
+            dayc.cssClass = `hassometing ` + this.calSvc.specially;
+          } else {
+            //事多
+            dayc.cssClass = `busysometing ` + this.calSvc.specially;
+          }
+          //有消息
+          if (dayc.iem) {
+            dayc.subTitle = `\u2022`;
+          }
+        }
       }
     })
   }
