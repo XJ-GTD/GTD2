@@ -18,7 +18,7 @@ export class ScheduleModel {
   private _labelName: string;               //标签名称
   private _labelColor: string;               //标签颜色
   private _scheduleType:string;             //日程类型
-  private _isMessage:string; //是否新消息
+  private _isMessage:boolean = false; //是否新消息
   private _group: Array<GroupModel>;                 //参与人
   private _remind: Array<RemindModel>;              //提醒时间
 
@@ -110,11 +110,11 @@ export class ScheduleModel {
     this._scheduleType = value;
   }
 
-  get isMessage(): string {
+  get isMessage(): boolean {
     return this._isMessage;
   }
 
-  set isMessage(value: string) {
+  set isMessage(value: boolean) {
     this._isMessage = value;
   }
 }
