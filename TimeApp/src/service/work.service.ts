@@ -234,9 +234,9 @@ export class WorkService {
       }else{
         rc.ed=sd;
       }
-      if(ed != null && ed != ''){
-        rc.ed=ed;
-      }
+      // if(ed != null && ed != ''){
+      //   rc.ed=ed;
+      // }
       rc.ed =rc.ed.replace(new RegExp('-','g'),'/');
       rc.lI=lbI;
       rc.sI=sI;
