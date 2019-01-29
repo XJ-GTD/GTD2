@@ -257,7 +257,7 @@ export class WorkSqlite{
    */
   getOd(d:string,ui:string):Promise<BsModel>{
     return new Promise((resolve, reject) => {
-      let sql= this.getRcSql('mf,') + ' left join GTD_F gf on gf.lai=gc.lI '+
+      let sql= this.getRcSql('mf,gf.lau,') + ' left join GTD_F gf on gf.lai=gc.lI '+
         'left join (select substr(md,1,10) md,mf,rI from GTD_H where mf="0" and mt="0" and substr(md,1,10) = "'+ d+
         '" group by substr(md,1,10),mf,rI) gh on gc.sI=gh.rI ' +
       ' where (substr(gc.sd,1,10) <= "'+d+'" and substr(gc.ed,1,10)>= "'+d+'") ' +
@@ -343,7 +343,7 @@ export class WorkSqlite{
       let today = moment(date).format('YYYY/MM/DD'); //当前日期
       let dt = moment(date).format('YYYY/MM/DD HH:mm').substr(11,16); //当前日期时间
       let agodt = moment(agodate).format('YYYY/MM/DD HH:mm').substr(11,16); //mm分钟前
-      let sql= this.getRcSql('') + ' left join GTD_F gf on gf.lai=gc.lI '+
+      let sql= this.getRcSql('gf.lau,') + ' left join GTD_F gf on gf.lai=gc.lI '+
         ' where (substr(gc.sd,1,10) <= "'+today+'" and substr(gc.ed,1,10)>= "'+today+'") ' +
         ' and (gd.uI = "'+DataConfig.uInfo.uI+'" or gc.uI= "'+DataConfig.uInfo.uI+'") and dt is not null and dt !=""'+
         ' and (substr(lbd.dt,11,16) <= "'+agodt+'" and substr(lbd.dt,11,16)>= "'+dt+'") ';
@@ -379,14 +379,13 @@ export class WorkSqlite{
    * @returns {string}
    */
   getRcSql(param:string):string{
-    let sql= 'select gc.*,gf.*,' +param+
+    let sql= 'select gc.*,' +param+
       'lbd.cft,lbd.wd,lbd.ac,lbd.fh,lbd.tk,lbd.rm,lbd.dt,lbd.subId from GTD_C gc ' +
       'left join (select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_BO ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_C ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_RC ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_JN ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_MO) lbd on lbd.sI = gc.sI ' +
-      'left join GTD_F gf on gf.lai=gc.lI '+
       'left join (select sI,uI from GTD_D where uI ="'+DataConfig.uInfo.uI+'" group by sI,uI) gd on gc.sI=gd.sI ';
     return sql;
   }

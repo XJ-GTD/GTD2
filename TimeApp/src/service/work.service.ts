@@ -796,7 +796,9 @@ export class WorkService {
         }
         let ms = new MsEntity();
         ms.rI=rc.sI;
-        return this.msSqlite.updateMs(ms);
+        if(ms.rI && ms.rI != null && ms.rI != ''){
+          return this.msSqlite.updateMs(ms);
+        }
       }).then(data=>{
         if(rc.df=='1'){
           console.log("----- WorkService getds(事件详情) 删除df状态是1的日程 -------" );
