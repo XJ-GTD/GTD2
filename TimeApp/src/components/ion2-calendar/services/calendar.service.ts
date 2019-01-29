@@ -15,7 +15,7 @@ import {WorkService} from "../../../service/work.service";
 @Injectable()
 export class CalendarService {
 
-  specially:string = " animated jello slow";
+  specially:string = " animated bounceIn slow";
 
   constructor(  private work:WorkService,
   ) {

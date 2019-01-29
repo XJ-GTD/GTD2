@@ -19,9 +19,12 @@ import * as moment from "moment";
     <ul>
       <li ion-item *ngFor="let itm of dayEvents ;let i = index" (click)="showScheduleDetail(i)">
         <p item-start>
-          {{itm.scheduleStartTime}} {{itm.labelColor}}
+          {{itm.scheduleStartTime}}
         </p>
-        <small  [ngStyle]="{\'color\':itm.labelColor}">{{itm.scheduleType}}</small>
+
+        <div class="self"  *ngIf="itm.scheduleType=='1'" [ngStyle]="{'background-color':itm.labelColor}"></div>
+        <div class="anther" *ngIf="itm.scheduleType=='2'" [ngStyle]="{'border-bottom-color':itm.labelColor}"></div>
+        <!--<ion-icon name="arrow-dropright-circle"></ion-icon>-->
         <span>
        {{itm.scheduleName}}
       </span>

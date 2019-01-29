@@ -308,6 +308,11 @@ export class WorkService {
       rc.sI=sI;
       let psl = new Array<PsModel>();
       this.workSqlite.update(rc).then(datau=>{
+
+        console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(datau));
+        console.log("----- workService arc 更新日程子表-------");
+        return this.workSqlite.updateLbData(subId,rc.sI,rc.lI,cft,rm,ac,'0');
+      }).then(data=>{
         //转化接口对应的参与人参数
         if(ruL && ruL.length>0){
           for(let i=0;i<ruL.length;i++){
@@ -325,13 +330,7 @@ export class WorkService {
           console.log("WorkService urc() restful " + SkillConfig.BC_SCU+" start");
           return this.rcResful.sc(rc.uI,SkillConfig.BC_SCU,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'');
         }
-      })
-        .then(data=>{
-          console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(data));
-          console.log("----- workService arc 更新日程子表-------");
-          return this.workSqlite.updateLbData(subId,rc.sI,rc.lI,cft,rm,ac,'0');
-        })
-        .then(data=>{
+      }).then(data=>{
         console.log("WorkService urc() end : " +JSON.stringify(data));
         if(psl.length>0 && data.code==0 && data.data.players.length>0){
           let players = data.data.players;
@@ -796,7 +795,10 @@ export class WorkService {
         }
         let ms = new MsEntity();
         ms.rI=rc.sI;
-        return this.msSqlite.updateMs(ms);
+        if(ms.rI && ms.rI != null && ms.rI != ''){
+          ms.mf='1';
+          return this.msSqlite.updateMs(ms);
+        }
       }).then(data=>{
         if(rc.df=='1'){
           console.log("----- WorkService getds(事件详情) 删除df状态是1的日程 -------" );

@@ -26,6 +26,27 @@ page-ha01 {
         color: #222222;
       }
 
+      .anther{
+        width:0;
+        height:0;
+        border:5px solid;
+        display:inline-block;
+        /* 平分效果 */
+        /*border-color:red green blue black; */
+
+        /* 单个三角形 */
+        border-color:transparent transparent red transparent;
+        margin: 0px 3px 3px 3px;
+      }
+      .self{
+        width: 7px;
+        height: 7px;
+        background-color: red;
+        display:inline-block;
+        margin: 0px 3px 1px 3px;
+        border-radius: 50%;
+      }
+
       small{
         font-size: 7px;
         margin: 0px 5px 0px 5px;
