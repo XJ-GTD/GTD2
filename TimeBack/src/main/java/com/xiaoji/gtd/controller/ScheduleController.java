@@ -1,10 +1,10 @@
 package com.xiaoji.gtd.controller;
 
 import com.xiaoji.config.interceptor.AuthCheck;
-import com.xiaoji.gtd.dto.*;
+import com.xiaoji.gtd.dto.Out;
 import com.xiaoji.gtd.dto.code.ResultCode;
-import com.xiaoji.gtd.dto.player.SearchOutDto;
 import com.xiaoji.gtd.dto.schedule.ScheduleInDto;
+import com.xiaoji.gtd.dto.schedule.ScheduleOutDto;
 import com.xiaoji.gtd.service.IScheduleService;
 import com.xiaoji.util.CommonMethods;
 import org.apache.logging.log4j.LogManager;
@@ -40,7 +40,7 @@ public class ScheduleController {
     @AuthCheck
     public Out dealWithSchedule(@RequestBody ScheduleInDto inDto) {
         Out outDto = new Out();
-        SearchOutDto data;
+        ScheduleOutDto data;
 
         //入参检测
         //非空检测

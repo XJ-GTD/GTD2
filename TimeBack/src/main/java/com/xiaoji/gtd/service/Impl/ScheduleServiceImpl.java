@@ -1,13 +1,14 @@
 package com.xiaoji.gtd.service.Impl;
 
-import com.xiaoji.gtd.dto.player.PlayerDataDto;
-import com.xiaoji.gtd.dto.schedule.ScheduleDataDto;
-import com.xiaoji.gtd.dto.schedule.ScheduleInDto;
-import com.xiaoji.gtd.dto.player.SearchOutDto;
 import com.xiaoji.gtd.dto.code.ResultCode;
 import com.xiaoji.gtd.dto.mq.WebSocketDataDto;
 import com.xiaoji.gtd.dto.mq.WebSocketOutDto;
 import com.xiaoji.gtd.dto.mq.WebSocketResultDto;
+import com.xiaoji.gtd.dto.player.PlayerDataDto;
+import com.xiaoji.gtd.dto.schedule.ScheduleDataDto;
+import com.xiaoji.gtd.dto.schedule.ScheduleInDto;
+import com.xiaoji.gtd.dto.schedule.ScheduleOutData;
+import com.xiaoji.gtd.dto.schedule.ScheduleOutDto;
 import com.xiaoji.gtd.service.IPersonService;
 import com.xiaoji.gtd.service.IScheduleService;
 import com.xiaoji.gtd.service.ISmsService;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,9 +53,11 @@ public class ScheduleServiceImpl implements IScheduleService {
      * @return
      */
     @Override
-    public SearchOutDto dealWithSchedule(ScheduleInDto inDto) {
+    public ScheduleOutDto dealWithSchedule(ScheduleInDto inDto) {
 
-        SearchOutDto outDto = new SearchOutDto();
+        ScheduleOutDto outDto = new ScheduleOutDto();
+        List<ScheduleOutData> scheduleOutList = new ArrayList<>();
+        ScheduleOutData scheduleData = new ScheduleOutData();
         WebSocketOutDto pushDto = new WebSocketOutDto();
         WebSocketDataDto data = new WebSocketDataDto();
 
@@ -81,7 +85,9 @@ public class ScheduleServiceImpl implements IScheduleService {
         try {
 
             for (ScheduleDataDto sdd : scheduleList) {
-                data.setSi(sdd.getScheduleId());
+                scheduleId = sdd.getScheduleId();
+
+                data.setSi(scheduleId);
                 data.setSn(sdd.getScheduleName());
                 data.setSt(sdd.getStartTime());
                 data.setEt(sdd.getEndTime());
@@ -118,9 +124,12 @@ public class ScheduleServiceImpl implements IScheduleService {
                         logger.debug("[不可推送日程]:原因 === 非对方好友或没有权限");
                     }
                 }
-                outDto.setPlayers(players);
-            }
+                scheduleData.setPlayers(players);
+                scheduleData.setScheduleId(scheduleId);
+                scheduleOutList.add(scheduleData);
 
+            }
+            outDto.setScheduleList(scheduleOutList);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("dealWithSchedule日程推送出错");
