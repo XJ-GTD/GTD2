@@ -52,7 +52,8 @@ export class WorkService {
 
   /**
    * 重复类型日程更新
-   * @param {RcModel} rc
+   * @param {RcModel} orc 老日程信息
+   * @param {RcModel} nrc 新日程信息
    * @param {string} ed 日程变更时间
    * @param {string} ia 0更新当天的，1更新以后的，2关闭以后的
    * @returns {Promise<BsModel>}
@@ -278,15 +279,20 @@ export class WorkService {
    * @param {string} ed 结束时间
    * @param {string} lbI 标签编号
    * @param {string} jhi 计划名称
+   * @param {string} subId 标签子表ID
+   * @param {string} cft 重复类型
+   * @param {string} rm 备注
+   * @param {string} ac 提醒方式
    * @param {Array}  ruL 参与人json数组[ {id,rN,rC} ]（id主键,rN名称,rC联系方式）
    */
-  urc(sI:string,ct:string,sd:string,ed:string,lbI:string,jhi:string,subId:string,cft:string,rm:string,ac:string,ruL:Array<RuModel>):Promise<BsModel>{
+  urc(sI:string,ct:string,sd:string,ed:string,lbI:string,jhi:string,
+      subId :string,cft:string,rm:string,ac:string,ruL:Array<RuModel>):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
       //先查询当前用户ID
       let rc = new RcEntity();
       rc.uI=DataConfig.uInfo.uI;
-      sd=sd.replace(new RegExp('-','g'),'/');;
+      sd=sd.replace(new RegExp('-','g'),'/');
       rc.sN=ct;
       rc.sd=sd;
       if(cft && cft != null && cft != ''){
@@ -301,14 +307,13 @@ export class WorkService {
       if(DataConfig.IS_NETWORK_CONNECT){
         rc.fi='0';
       }else{
-        rc.fi='1'
+        rc.fi='1';
       }
       rc.lI=lbI;
       rc.ji=jhi;
       rc.sI=sI;
       let psl = new Array<PsModel>();
       this.workSqlite.update(rc).then(datau=>{
-
         console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(datau));
         console.log("----- workService arc 更新日程子表-------");
         return this.workSqlite.updateLbData(subId,rc.sI,rc.lI,cft,rm,ac,'0');
@@ -351,24 +356,39 @@ export class WorkService {
               }
             }
           }
-          //先删除再添加
-          this.workSqlite.dRcps(rc.sI).then(data=>{
-            return this.workSqlite.sRcps(rc,ruL);
-          }).then(data=>{
-            //同步上传服务器
-            console.log("============ 更新日程同步上传日历 ================");
-            //this.syncSqlite.syncUplaod();
-            resolve(bs);
-          }).catch(e=>{
-            console.error("WorkService arc() Error : " +JSON.stringify(e));
-            bs.code = ReturnConfig.ERR_CODE;
-            bs.message=ReturnConfig.ERR_MESSAGE;
-            reject(bs);
-          })
-        }else{
-          resolve(bs);
         }
-
+        //查询原来参与人
+        return this.relmem.getRgusBySi(rc.sI);
+      }).then(data=>{
+        //过滤已不存在的参与人
+        let dRul = new Array<RuModel>();
+        if(data && data.rows && data.rows.length>0) {
+          let rs = data.rows;
+          for (let i = 0; i < rs.length; i++) {
+            let ru: RuModel = rs.item(i);
+            let isExsit = false;
+            for(let nru of ruL){
+              if(ru.rI=nru.rI){
+                isExsit = true;
+                nru.pI = ru.pI;
+                break;
+              }
+            }
+            dRul.push(ru);
+          }
+        }
+        if(dRul.length>0){
+          console.log("============ 删除多余的日程参与人："+JSON.stringify(dRul));
+          return this.workSqlite.dRcps(rc,dRul);
+        }
+      }).then(data=>{
+        console.log("============ 更新的日程参与人："+JSON.stringify(ruL));
+        return this.workSqlite.sRcps(rc,ruL);
+        }).then(data=>{
+        //同步上传服务器
+        //console.log("============ 更新日程同步上传日历 ================");
+        //this.syncSqlite.syncUplaod();
+        resolve(bs);
       }).catch(eu=>{
         bs.code = ReturnConfig.ERR_CODE;
         bs.message=ReturnConfig.ERR_MESSAGE;
@@ -468,9 +488,8 @@ export class WorkService {
               }
             }
             console.log('--------- 删除的参与人开始 ---------');
-          return this.workSqlite.dRcps(sI);
-        })
-          .then(data=>{
+          return this.workSqlite.dRcps(rc,ruL);
+        }).then(data=>{
             console.log('--------- 删除的参与人结束 ---------');
           if(ruL && ruL.length>0){
             //转化接口对应的参与人参数
@@ -526,8 +545,7 @@ export class WorkService {
       let ruL:Array<RuModel> = new Array<RuModel>();
       let psl = new Array<PsModel>();
       console.log('--------- MQ逻辑删除的日程开始 ---------');
-      this.baseSqlite.update(rce)
-        .then(datad => {
+      this.baseSqlite.update(rce).then(datad => {
           console.log('--------- MQ逻辑删除的日程结束 ---------');
           return this.workSqlite.syncRcTime(rce,DataConfig.AC_D);
         }).then(data=>{
@@ -554,13 +572,11 @@ export class WorkService {
       let rce= new RcEntity();
       rce.sI = rc.sI;
       console.log('--------- 删除的日程开始 ---------');
-      this.baseSqlite.delete(rce)
-        .then(datad => {
+      this.baseSqlite.delete(rce).then(datad => {
           console.log('--------- 删除的日程结束 ---------');
           console.log('--------- 删除的参与人开始 ---------');
-          return this.workSqlite.dRcps(rc.sI);
-        })
-        .then(data=>{
+          return this.workSqlite.dRcpBysI(rc.sI);
+        }).then(data=>{
           console.log('--------- 删除的参与人结束 ---------');
           //同步上传服务器
           console.log("============ MQ删除日程同步上传服务 ================");
@@ -845,7 +861,7 @@ export class WorkService {
         .then(data=>{
           console.log("----- WorkService delrc(删除日程) result:" + JSON.stringify(data));
           console.log('--------- 删除的参与人开始 ---------');
-          return this.workSqlite.dRcps(sI);
+          return this.workSqlite.dRcpBysI(sI);
       }).then(data=>{
         console.log('--------- 删除的参与人结束 ---------');
         resolve(bs);

@@ -75,7 +75,7 @@ export class WorkSqlite{
   }
 
   /**
-   * 保存日程参与人信息
+   * 删除日程
    * @param {RcEntity} rc
    * @param {Array<RuModel>} rcps
    */
@@ -108,7 +108,11 @@ export class WorkSqlite{
       for (let i = 0; i < rus.length; i++) {
         let ru = rus[i];
         let rgc = new RcpEntity();
-        rgc.pI = this.util.getUuid();
+        if(rgc.pI== '' || rgc.pI == null){
+          rgc.pI = this.util.getUuid();
+        }else{
+          rgc.pI=ru.pI;
+        }
         rgc.sI = rc.sI;
         rgc.son = rc.sN;
         let sa = '0';
@@ -124,11 +128,38 @@ export class WorkSqlite{
           ru.sdt = 0;
         }
         rgc.sdt = ru.sdt;
-        sql += rgc.isq;
+        sql += rgc.rpsq;
         rcpL.push(rgc);
       }
       this.baseSqlite.importSqlToDb(sql).then(data=>{
         return this.syncRgcTime(rcpL,DataConfig.AC_O)
+      }).then(data=>{
+        resolve(data);
+      }).catch(e=>{
+        reject(e);
+      })
+    })
+  }
+
+  /**
+   * 删除日程参与人信息
+   * @param {RcEntity} rc
+   * @param {Array<RuModel>} rcps
+   */
+  dRcps(rc:RcEntity,rus:Array<RuModel>):Promise<any>{
+    return new Promise((resolve, reject) => {
+      let sql = "";
+      let rcpL = new Array<RcpEntity>();
+      let isMe:boolean = false;
+      for (let i = 0; i < rus.length; i++) {
+        let ru = rus[i];
+        let rgc = new RcpEntity();
+        rgc.sI = rc.sI;
+        sql += rgc.dsq;
+        rcpL.push(rgc);
+      }
+      this.baseSqlite.importSqlToDb(sql).then(data=>{
+        return this.syncRgcTime(rcpL,DataConfig.AC_D);
       }).then(data=>{
         resolve(data);
       }).catch(e=>{
@@ -157,7 +188,7 @@ export class WorkSqlite{
    * 删除日程关联表
    * @param {string} sI 日程ID
    */
-  dRcps(sI:string):Promise<any>{
+  dRcpBysI(sI:string):Promise<any>{
     let sql = 'delete from GTD_D where sI= "'+ sI +'"';
     return this.baseSqlite.executeSql(sql,[])
   }
