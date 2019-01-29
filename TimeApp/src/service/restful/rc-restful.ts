@@ -29,21 +29,30 @@ export class RcRestful{
    */
   sc(ui:string,skt:string,si:string,sn:string,
      st:string,et:string,li:string,ps:Array<PsModel>,sts:string):Promise<any> {
-
-    let rcList = new Array<any>();
-    let schedule:any = new BsModel();
-    schedule.scheduleId = si;
-    schedule.scheduleName = sn;
-    schedule.startTime = st.replace(new RegExp('/','g'),'-');
-    schedule.endTime = et.replace(new RegExp('/','g'),'-');
-    schedule.label = li;
-    schedule.players = ps;
-    rcList.push(schedule);
-    return this.bs.post(AppConfig.SCHEDULE_DEAL_URL, {
-      userId: ui,
-      skillType: skt,
-      scheduleList:rcList,
-      status:sts
+    return new Promise((resolve, reject) => {
+      let rcList = new Array<any>();
+      let schedule: any = new BsModel();
+      schedule.scheduleId = si;
+      schedule.scheduleName = sn;
+      schedule.startTime = st.replace(new RegExp('/', 'g'), '-');
+      schedule.endTime = et.replace(new RegExp('/', 'g'), '-');
+      schedule.label = li;
+      schedule.players = ps;
+      rcList.push(schedule);
+      this.bs.post(AppConfig.SCHEDULE_DEAL_URL, {
+        userId: ui,
+        skillType: skt,
+        scheduleList: rcList,
+        status: sts
+      }).then(data=>{
+        data.data.players=[];
+        if(data.code == 0 && data.data.scheduleList && data.data.scheduleList.length>0) {
+          data.data.players = data.data.scheduleList[0].players;
+        }
+        resolve(data)
+      }).catch(e=>{
+        reject(e)
+      })
     })
   }
 
