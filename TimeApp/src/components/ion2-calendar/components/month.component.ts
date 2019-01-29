@@ -32,7 +32,7 @@ export const MONTH_VALUE_ACCESSOR: any = {
                 <div class="borderDiv"
                   [class.on-selected]="isSelected(day.time)">
                   <button type='button'
-                          [class]="'days-btn ' + day.cssClass"
+                          [class]="'days-btn '"
                           [class.today]="day.isToday"
                           (click)="onSelected(day)"
                           (press)="onPressed(day)"
@@ -43,6 +43,7 @@ export const MONTH_VALUE_ACCESSOR: any = {
                     <p>{{day.title}}</p>
                     <small *ngIf="day.subTitle">{{day?.subTitle}}</small>
                   </button>
+                  <button  [class]="'days-btn warp-days-btn ' + day.cssClass"></button>
                 </div>
               </ng-container>
             </div>

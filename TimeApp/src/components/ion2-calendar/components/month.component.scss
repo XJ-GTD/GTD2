@@ -187,6 +187,11 @@ ion-calendar-month {
         position: relative;
         z-index: 2;
     }
+
+    button.warp-days-btn {
+      z-index: 0;
+      top: -34px;
+    }
     button.days-btn p {
         margin: 0;
         font-size: 14px;
