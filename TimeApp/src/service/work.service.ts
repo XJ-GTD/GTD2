@@ -757,6 +757,13 @@ export class WorkService {
         console.log("----- WorkService getds(事件详情) result:" + JSON.stringify(data));
           if(data&&data.rows&&data.rows.length>0){
             rc= data.rows.item(0);
+            rc.ru = data.rows.item(0);
+            if(rc.ru.id || rc.ru.id == null || rc.ru.id == ''){
+              rc.ru = new RuModel();
+              rc.ru.hiu=DataConfig.defaultHeadImg;
+            }
+            rc.code=ReturnConfig.SUCCESS_CODE;
+            rc.message = ReturnConfig.SUCCESS_MESSAGE;
           }else{
             rc.code=ReturnConfig.NULL_CODE;
             rc.message=ReturnConfig.NULL_MESSAGE;
@@ -790,7 +797,6 @@ export class WorkService {
           console.log("----- WorkService getds(事件详情) 删除df状态是1的日程 -------" );
           return this.msDrc(rc);
         }
-        resolve(rc);
       }).then(data=>{
         resolve(rc);
       }).catch(e=>{

@@ -23,7 +23,8 @@ export class RcModel extends BsModel{
   private _sa:string = ''; //修改权限 0不可修改，1可修改
   private _pI: string='';//日程参与人表uuID
   private _son: string='';//日程别名
-  private _rus : Array<RuModel> //联系人
+  private _rus : Array<RuModel>; //联系人
+  private _ru : RuModel; //发布人
   //标签数据
   private _subId:string=''; //子表ID
   private _cft:string=''; //重复类型
@@ -245,5 +246,13 @@ export class RcModel extends BsModel{
 
   set df(value: string) {
     this._df = value;
+  }
+
+  get ru(): RuModel {
+    return this._ru;
+  }
+
+  set ru(value: RuModel) {
+    this._ru = value;
   }
 }
