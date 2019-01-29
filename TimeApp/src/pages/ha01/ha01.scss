@@ -5,6 +5,13 @@ page-ha01 {
     .item-ios.item-block .item-inner{
       border-bottom: 0px solid #c8c7cc;
     }
+    .new-message{
+
+      font-weight: bold;
+      span{
+        font-weight: bold;
+      }
+    }
 
     .item-ios{
       background-color:transparent;
@@ -24,6 +31,10 @@ page-ha01 {
       p{
         font-size: 12px;
         color: #222222;
+      }
+      span{
+        letter-spacing:1px;
+        font-size: 14px;
       }
 
       .anther{
@@ -49,7 +60,9 @@ page-ha01 {
 
       small{
         font-size: 7px;
-        margin: 0px 5px 0px 5px;
+        color: red;
+        position: absolute;
+        right: 15px;
       }
       .input-wrapper{
         height: 30px;
@@ -60,7 +73,6 @@ page-ha01 {
     }
 
     li{
-
     }
   }
   ion-scroll{
