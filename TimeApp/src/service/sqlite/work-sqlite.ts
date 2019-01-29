@@ -470,7 +470,7 @@ export class WorkSqlite{
    * @param pI 日程参与人ID
    */
   getds(sI:string):Promise<any>{
-    let sql = "select jh.jn,gf.lan,gd.sa,gc.*,gb.*" +
+    let sql = "select jh.jn,gf.lan,gd.sa,gc.*,gb.*," +
       "lbd.cft,lbd.wd,lbd.ac,lbd.fh,lbd.tk,lbd.rm,lbd.dt,lbd.subId from GTD_C gc " +
       'left join (select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_BO ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id subId from GTD_C_C ' +
