@@ -762,6 +762,11 @@ export class WorkService {
               rc.ru = new RuModel();
               rc.ru.hiu=DataConfig.defaultHeadImg;
             }
+            if(rc.uI != DataConfig.uInfo.uI){
+              rc.sa = '0';
+            }else{
+              rc.sa='1';
+            }
             rc.code=ReturnConfig.SUCCESS_CODE;
             rc.message = ReturnConfig.SUCCESS_MESSAGE;
           }else{
