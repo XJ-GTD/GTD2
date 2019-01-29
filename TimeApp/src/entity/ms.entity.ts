@@ -56,12 +56,17 @@ export class MsEntity {
     if(this._mt!=null && this._mt !=''){
       sql=sql+' mt="' + this._mt +'",';
     }
+    if(this._rI!=null && this._rI !=''){
+      sql=sql+' rI="' + this._rI +'",';
+    }
     let str = sql.substr(sql.length-1,sql.length);
     if(str == ','){
       sql = sql.substr(0,sql.length-1);
     }
     if(this._mi != null){
-      sql = sql + ' where mi="' + this._mi +'"';
+      sql = sql + ' where mi=' + this._mi;
+    }else if(this._rI!=null && this._rI !=''){
+      sql = sql + 'where rI="' + this._rI +'"';
     }
     this._usq=sql;
     return this._usq;

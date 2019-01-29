@@ -797,6 +797,7 @@ export class WorkService {
         let ms = new MsEntity();
         ms.rI=rc.sI;
         if(ms.rI && ms.rI != null && ms.rI != ''){
+          ms.mf='1';
           return this.msSqlite.updateMs(ms);
         }
       }).then(data=>{
