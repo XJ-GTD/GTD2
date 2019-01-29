@@ -204,6 +204,7 @@ public class PersonServiceImpl implements IPersonService {
             userEntity.setBirthday(inDto.getBirthday());
             userEntity.setRealName(inDto.getRealName());
             userEntity.setIdCard(inDto.getIdCard());
+            userEntity.setUserContact(inDto.getContact());
 
             userRepository.save(userEntity);
             logger.debug("用户["+ inDto.getUserId() + "] 更新信息数据成功");

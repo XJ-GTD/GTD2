@@ -14,6 +14,7 @@ public class UserInfoInDto {
     private String realName;
     private String idCard;
     private Integer userSex;
+    private String contact;
 
     public String getUserId() {
         return userId;
@@ -69,5 +70,13 @@ public class UserInfoInDto {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 }
