@@ -300,9 +300,9 @@ export class WorkSqlite{
               }
               //判断别人还是自己的
               if(res.uI==DataConfig.uInfo.uI){
-                res.scheduleType = '\u25BA';
+                res.scheduleType = '\u2022';
               }else{
-                res.scheduleType = '\u25C4';
+                res.scheduleType = '\u25B2';
               }
               //是否新消息
               if(res.mf && res.mf=='0'){

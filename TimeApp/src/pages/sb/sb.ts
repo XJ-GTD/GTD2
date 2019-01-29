@@ -1,4 +1,4 @@
-import {Component, EventEmitter, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {
   IonicPage, LoadingController, NavController, NavParams, AlertController, Navbar,
   ModalController, Events, Alert
@@ -6,7 +6,6 @@ import {
 import { ParamsService } from "../../service/util-service/params.service";
 import { FindOutModel } from "../../model/out/find.out.model";
 import { LabelModel } from "../../model/label.model"
-import { PopoverController,ActionSheetController } from "ionic-angular";
 import { RelmemService } from "../../service/relmem.service";
 import { RuModel } from "../../model/ru.model";
 import { WorkService } from "../../service/work.service";
@@ -120,14 +119,14 @@ import {Select} from "ionic-angular/components/select/select";
   <div [hidden]="!isShowLb" class="backdrop-div" (click)="backdropclick($event)" ontouchmove="event.preventDefault();event.stopPropagation();"> 
     <div disable-activated class="itemClass" role="presentation" tappable style="opacity: 0.3; transition-delay: initial; transition-property: none;"></div> 
     <div class="pop-css"> 
-      <div class="titlecss" text-center>选择标签</div> 
+      <div class="titlecss" text-center>选择标签更便捷的管理时间哦</div> 
       <div class="flexCss"> 
         <div *ngFor="let lb of lbs" class="contentcss"> 
-          <button name="labLb" style="height:25px ; font-size: 1.5rem;" class="jhCss" (click)="selectLb($event,lb)">{{lb.lan}}</button> 
+          <button name="labLb"  class="jhCss" (click)="selectLb($event,lb);">{{lb.lan}}</button> 
         </div> 
       </div> 
     </div> 
-  </div>`,
+  </div>`
 
 })
 export class SbPage {

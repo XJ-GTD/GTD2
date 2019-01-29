@@ -47,11 +47,11 @@ page-sb {
     left: 0;
     bottom: 0;
     right: 0;
-    width: 80% !important;
-    height: 40% !important;
+    width: 90% !important;
+    height: 60% !important;
     background-color: #FFFFFF;
-    z-index: 1000;
-    border-radius: 20px;
+    z-index: 999;
+    border-radius: 30px;
   }
 
   .selectcss{
@@ -73,26 +73,31 @@ page-sb {
   }
 
   .jhCss{
-    border-radius: 20px;
+    border-radius: 25px;
     border:1px solid #e5e5e5;
     background-color: #FFF;
-    margin-top: 10px;
-    margin-left: 5px;
-    margin-right: 5px;
-    max-width: 100px;
-    min-width: 50px;
+    margin:10px 5px 10px 5px;
+    min-width: 60px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding: 10px 15px 10px 15px;
+    font-size: 15px;
+    font-weight: 300;
+    text-align: center;
+    letter-spacing: 2px;
   }
 
 
 
   .titlecss{
-    font-size: 16px;
-    padding-bottom:16px;
-    border-bottom: 0.58px solid #7f8e9e;
-    margin-top: 16px;
+    font-size: 15px;
+    padding-bottom:15px;
+    border-bottom: 1px solid #cccccc;
+    margin-top: 30px;
+    color: #999999;
+    letter-spacing: 1px;
+    font-weight: 200;
 
   }
 
@@ -104,9 +109,8 @@ page-sb {
     justify-content: center;
     flex-wrap: wrap;
     align-items: center;
-    max-height: 180px;
     overflow: scroll;
-    margin-top: 10px;
+    margin-top: 15px;
   }
 
   .buttonCssA{
