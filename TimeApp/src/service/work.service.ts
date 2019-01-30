@@ -854,17 +854,16 @@ export class WorkService {
         rc.rus = rus;
         if(data && data.rows && data.rows.length>0){
           let rs=data.rows;
-          let rus = new Array<RuModel>();
           for(let i=0;i<rs.length;i++){
             let ru = new RuModel();
-            if(rs.item(i).uI != rc.uI){
+            if(rs.item(i).uI != rc.uI && rs.item(i).uI != DataConfig.uInfo.uI){
               ru = rs.item(i);
-              if(rs.item(i).uI == DataConfig.uInfo.uI){
-                ru.rN=DataConfig.uInfo.uN;
-                ru.ran=DataConfig.uInfo.uN;
-                ru.rI=DataConfig.uInfo.uI;
-                ru.hiu=DataConfig.uInfo.hIU;
-              }
+              // if(rs.item(i).uI == DataConfig.uInfo.uI){
+              //   ru.rN=DataConfig.uInfo.uN;
+              //   ru.ran=DataConfig.uInfo.uN;
+              //   ru.rI=DataConfig.uInfo.uI;
+              //   ru.hiu=DataConfig.uInfo.hIU;
+              // }
               rus.push(ru);
             }
           }
