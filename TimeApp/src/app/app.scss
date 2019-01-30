@@ -67,6 +67,7 @@ p{
 .scroll-content{
   overflow-x: hidden;
   overflow-y: hidden;
+  contain: none;
 }
 
 .toolbar-background-ios{
