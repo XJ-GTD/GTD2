@@ -12,7 +12,6 @@ import {Ha01PageModule} from "../ha01/ha01.module";
   imports: [
     IonicPageModule.forChild(HaPage),
     CalendarModule,
-    Hb01PageModule,
     Ha01PageModule
   ],
   entryComponents: [

@@ -7,150 +7,69 @@ page-ha {
     background-color: transparent;
   }
 
-
-  .pop-css{
-    margin: auto;
+  .haContent {
     position: absolute;
-    top: 10%;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    width: 85% !important;
-    height: 80% !important;
+    top: 0px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
     background-color: #FFFFFF;
-    z-index: 50;
-    border-radius: 20px;
+    background-image: url('../assets/imgs/homebackImg.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
 
-    transition:width 100ms, height 100ms;
-    -moz-transition:width 1s, height 1s, -moz-transform 1s; /* Firefox 4 */
-    -webkit-transition:width 0.5s, height 0.5s, -webkit-transform 1s; /* Safari and Chrome */
-    -o-transition:width 1s, height 1s, -o-transform 1s; /* Opera */
+    ion-app.ios page-home ion-header [padding-left] {
+      padding-left: 10px
+    }
 
-    .item-ios{
-      height: 60px;
+    ion-app.ios page-home ion-header [padding-right] {
+      padding-right: 10px;
+    }
+
+    .tipDay {
+      margin-top: -8px;
+      margin-left: 15px;
+      margin-right: 15px;
+      color: #222222;
+      height: 25px;
+      border-bottom: 1px solid #2ec95c;
+
+      .showDay {
+        font-size: 15px;
+        font-weight: bold;
+        width: 55px;
+        display: inline-block;
+      }
+
+      .showDay2 {
+        font-size: 12px;
+      }
+
+    }
+    .haCalendar {
+      width: 100%;
+      //background-color: #fff;
+      position: relative;
+      height: 350px;
     }
   }
-  .buttonWan{
-    display: block;
-    margin: 0 auto;
-    border-radius: 25px;
-    letter-spacing:5px;
-    background: -webkit-linear-gradient(left, rgb(149,58,139),rgb(86,82,222)); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to right, rgb(149,58,139),rgb(86,82,222)); /* 标准的语法（必须放在最后） */
-  }
 
-  .itemClass{
-    z-index: 40 !important;
-    height: inherit;
-    //z-index: 10 !important;
+  .assistant {
+    //   height:50px;
+    border-radius: 100%;
+    //background-color: red;
+    background-color: rgba(0, 0, 0, 0.0);
+    right: 10px;
+    bottom: 10px;
     position: absolute;
-    width: 100%;
-    background: black;
-    opacity: 0.3;
-    height: 100%;
-
-  }
-
-  .activeCss{
-    transform: translate(0,0);
-
-  }
-
-  .activeCssLeft{
-    transform: translate(-105%,5%);
-    z-index: 40;
-  }
-
-  .activeCssRight{
-    transform: translate(105%,5%);
-    z-index: 40;
-  }
-
-  .activeCssLeft-1{
-    transform: translate(-205%,5%);
-    z-index: 40;
-  }
-
-  .activeCssRight-1{
-    transform: translate(205%,5%);
-    z-index: 40;
-  }
-
-  .lb1{
-    font-size: 15px;
-    color: #999999;
-  }
-
-}
-
-.haContent {
-  position: absolute;
-  top: 0px;
-  left: 10px;
-  right: 10px;
-  bottom: 10px;
-  background-color: #FFFFFF;
-  background-image: url('../assets/imgs/homebackImg.png');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  -moz-background-size: 100% 100%;
-
-  ion-app.ios page-home ion-header [padding-left] {
-    padding-left: 10px
-  }
-
-  ion-app.ios page-home ion-header [padding-right] {
-    padding-right: 10px;
-  }
-
-  .tipDay {
-    margin-top: -8px;
-    margin-left: 15px;
-    margin-right: 15px;
-    color: #222222;
-    height: 25px;
-    border-bottom: 1px solid #2ec95c;
-
-    .showDay {
-      font-size: 15px;
-      font-weight: bold;
-      width: 55px;
-      display: inline-block;
-
+    z-index: 19;
+    img {
+      height: 90px;
     }
-
-    .showDay2 {
-      font-size: 12px;
-
-    }
-
-  }
-
-  .haCalendar {
-    width: 100%;
-    //background-color: #fff;
-    position: relative;
-    height: 350px;
-  }
-
-}
-
-.assistant {
-  //   height:50px;
-  border-radius: 100%;
-  //background-color: red;
-  background-color: rgba(0, 0, 0, 0.0);
-  right: 10px;
-  bottom: 10px;
-  position: absolute;
-  z-index: 19;
-
-  img {
-    height: 90px;
   }
 }
+
 
 
 
