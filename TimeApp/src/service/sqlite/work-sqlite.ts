@@ -293,7 +293,7 @@ export class WorkSqlite{
         'left join (select substr(md,1,10) md,mf,rI from GTD_H where mf="0" and mt="0" and substr(md,1,10) = "'+ d+
         '" group by substr(md,1,10),mf,rI) gh on gc.sI=gh.rI ' +
       ' where (substr(gc.sd,1,10) <= "'+d+'" and substr(gc.ed,1,10)>= "'+d+'") ' +
-      ' and (gd.uI = "'+ui+'" or gc.uI= "'+ui+'")';
+      ' and (gd.uI = "'+ui+'" or gc.uI= "'+ui+'") order by substr(gc.sd,12,5)';
       let bs = new BsModel();
       let resL = new Array<any>();
       let rcL = new Array<RcModel>();

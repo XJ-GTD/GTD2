@@ -74,7 +74,7 @@ export class MsSqlite {
    * @returns {Promise<any>}
    */
   getMonthMs(month:string):Promise<any>{
-    let sql="select mi,mn,substr(md,1,10) md,mt,rI from GTD_H where mt='0' and substr(md,1,7)='"+month +"'";
+    let sql="select mi,mn,substr(md,1,10) md,mt,rI from GTD_H where mf='0' and substr(md,1,7)='"+month +"'";
     return this.baseSqlite.executeSql(sql,[]);
   }
 
