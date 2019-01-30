@@ -829,18 +829,19 @@ export class WorkService {
         console.log("----- WorkService getds(事件详情) result:" + JSON.stringify(data));
           if(data&&data.rows&&data.rows.length>0){
             rc= data.rows.item(0);
-            rc.ru = new RuModel();
+            let ru:RuModel = new RuModel();
+
             if(rc.uI != DataConfig.uInfo.uI){
               rc.sa = '0';
-              rc.ru.rN=DataConfig.uInfo.uN;
-              rc.ru.ran=DataConfig.uInfo.uN;
-              rc.ru.rI=DataConfig.uInfo.uI;
-              rc.ru.hiu=DataConfig.uInfo.hIU;
+              ru = data.rows.item(0);
             }else{
               rc.sa='1';
-              rc.ru = data.rows.item(0);
+              ru.rN=DataConfig.uInfo.uN;
+              ru.ran=DataConfig.uInfo.uN;
+              ru.rI=DataConfig.uInfo.uI;
+              ru.hiu=DataConfig.uInfo.hIU;
             }
-
+            rc.ru=ru;
             rc.code=ReturnConfig.SUCCESS_CODE;
             rc.message = ReturnConfig.SUCCESS_MESSAGE;
           }else{
