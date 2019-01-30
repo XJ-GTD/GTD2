@@ -56,6 +56,9 @@ export class MsEntity {
     if(this._mt!=null && this._mt !=''){
       sql=sql+' mt="' + this._mt +'",';
     }
+    if(this._mf!=null && this._mf !=''){
+      sql=sql+' mf="' + this._mf +'",';
+    }
     if(this._rI!=null && this._rI !=''){
       sql=sql+' rI="' + this._rI +'",';
     }
