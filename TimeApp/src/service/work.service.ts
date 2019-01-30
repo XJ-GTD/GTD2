@@ -126,6 +126,9 @@ export class WorkService {
       //先查询当前用户ID
       let rc = new RcEntity();
       sd=sd.replace(new RegExp('-','g'),'/');
+      if(sd.length<=10){
+        sd = sd + " 08:00";
+      }
       rc.uI=DataConfig.uInfo.uI;
       rc.sN=ct;
       rc.sd=sd;
