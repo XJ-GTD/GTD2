@@ -13,6 +13,10 @@ export class ReturnConfig {
   public static EXSIT_MSG : string= '该数据已存在！';
   public static NOT_NETWORK_CODE : number= 4;
   public static NOT_NETWORK_MSG : string= '当前没有网络！';
+  public static QX_NOT_CODE : number = 5;
+  public static QX_NOT_MESSAGE : string='您没有权限！';
+  public static NOT_PARA_CODE : number = 6;
+  public static NOT_PARA_MESSAGE : string='参数不能为空！';
 
   public static RETURN_MSG:Map<string,any>=new Map<string,any>();
 

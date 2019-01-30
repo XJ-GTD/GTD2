@@ -66,6 +66,7 @@ import { ContactsService} from "../service/util-service/contacts.service";
 import { Vibration } from "@ionic-native/vibration";
 import { NativeAudio } from "@ionic-native/native-audio";
 import { SystemSettingService } from "../service/util-service/system.setting.service";
+import {RcbSqlite} from "../service/sqlite/rcb-sqlite";
 
 @NgModule({
   declarations: [
@@ -119,6 +120,7 @@ import { SystemSettingService } from "../service/util-service/system.setting.ser
     WorkSqlite,
     ZtdSqlite,
     SyncSqlite,
+    RcbSqlite,
     AuRestful,
     BsRestful,
     DxRestful,
