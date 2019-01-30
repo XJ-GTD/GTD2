@@ -89,7 +89,7 @@ import {RcModel} from "../../model/rc.model";
         <ion-item no-padding>
           <img src="./assets/imgs/b.png" style="width: 20px" item-start>
           <ion-label col-3>备注</ion-label>
-          <ion-label>哈哈哈</ion-label>
+          <ion-label>{{event.rm}}</ion-label>
         </ion-item>
       </div>
   </div>`,

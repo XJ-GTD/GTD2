@@ -168,7 +168,7 @@ import {DateTime} from "ionic-angular/components/datetime/datetime";
     <ion-item> 
       <img src="./assets/imgs/b.png" style="width: 15px" item-start> 
       <ion-label col-3>备注</ion-label> 
-      <ion-input ></ion-input> 
+      <ion-input >{{rc.rm}}</ion-input> 
     </ion-item> 
   </div> 
     <button ion-button  (click)="del()" style="margin: 0 auto;">删除</button> 
