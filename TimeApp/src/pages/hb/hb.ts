@@ -77,8 +77,8 @@ import {WorkService} from "../../service/work.service";
                 </ion-item>
                 <ion-item>
                   <ion-buttons item-end>
-                      <button class="cc9" style="color: #666666;" (click)="cancelMethod()">取消</button>
-                      <button class="cc9" style="color: #222222;" (click)="confirmatoryMethod(message, message.tg)">确认</button>
+                      <button class="cc9" style="color: #666666;" [disabled]="message.isValid" (click)="confirmatoryMethod(message)">取消</button>
+                      <button class="cc9" style="color: #222222;" [disabled]="message.isValid" (click)="confirmatoryMethod(message, message.tg)">确认</button>
                     </ion-buttons>
                 </ion-item>
               </ion-list>
@@ -126,7 +126,6 @@ import {WorkService} from "../../service/work.service";
 export class HbPage {
   @ViewChild(Hb01Page) hb01Page:Hb01Page;
   @ViewChild(Content) content: Content;
-
 
   data: any;
   modeFlag: boolean = true;   //判断助手模式 true语音false手输
@@ -348,14 +347,24 @@ export class HbPage {
     }
   }
 
-  /*=======================业务逻辑 start=========================*/
+  /*======================= 业务逻辑 start =========================*/
   private confirmatoryMethod(aiui: AiuiModel, tg: string) {
-
+    aiui.isValid = !aiui.isValid;
     if(tg == "0") {
       this.createSchedule(aiui.sc)
     } else if (tg == "1") {
       this.deleteSchedule(aiui.sc);
     }
+
+    if (tg == null || tg == "") {
+      let textX = new AiuiModel();
+      textX.tt = this.S1;
+      // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
+      textX.at = DataConfig.TEXT_CONTENT.get("A02" + "1");
+      this.messages.unshift(textX);
+      this.xiaojiSpeech.speakText(textX.at, success => {});
+    }
+
   }
 
   private createSchedule(sc: RcModel) {
@@ -392,14 +401,6 @@ export class HbPage {
 
   }
 
-  private cancelMethod() {
-    let textX = new AiuiModel();
-    textX.tt = this.S1;
-    // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
-    textX.at = DataConfig.TEXT_CONTENT.get("A02" + "1");
-    this.messages.unshift(textX);
-    this.xiaojiSpeech.speakText(textX.at, success => {});
-  }
   //展示数据详情
   // showScheduleDetail(schedule) {
   //   this.schedule = new ScheduleModel();
@@ -410,7 +411,7 @@ export class HbPage {
   // }
 
   private showScheduleDetail(sc: RcModel) {
-       let schedule = new ScheduleModel();
+      let schedule = new ScheduleModel();
       schedule.scheduleId = sc.sI;
       this.navCtrl.push("SaPage",schedule);
   }
