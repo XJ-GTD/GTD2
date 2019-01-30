@@ -31,6 +31,7 @@ import {SyncService} from "./sync.service";
 import {RcbModel} from "../model/rcb.model";
 import {RcbSqlite} from "./sqlite/rcb-sqlite";
 import {ScheduleDetailsModel} from "../model/scheduleDetails.model";
+import {RelmemService} from "./relmem.service";
 
 /**
  * 日程逻辑处理
@@ -50,6 +51,7 @@ export class WorkService {
                 private syncSqlite : SyncSqlite,
                 private rcbSqlite:RcbSqlite,
                 private readlocal : ReadlocalService,
+                private relmemServ : RelmemService,
                 private rcResful:RcRestful) {
   }
 
@@ -116,12 +118,19 @@ export class WorkService {
    * @param {string} jhi 计划名称
    * @param {Array}  ruL 参与人json数组[ {id,rN,rC} ]（id主键,rN名称,rC联系方式）
    */
-  arc(ct:string,sd:string,lbI:string,jhi:string,cft:string,rm:string,ac:string,ruL:Array<RuModel>):Promise<BsModel>{
+  arc(ct:string,sd:string,lbI:string,jhi:string,cft:string,rm:string,ac:string,ruList:Array<RuModel>):Promise<BsModel>{
     return new Promise((resolve, reject) => {
+      let ruL:Array<RuModel> = new Array<RuModel>();
+      for(let ruu of ruList){
+        ruL.push(ruu);
+      }
       let bs = new BsModel();
       //先查询当前用户ID
       let rc = new RcEntity();
       sd=sd.replace(new RegExp('-','g'),'/');
+      if(sd.length<=10){
+        sd = sd + " 08:00";
+      }
       rc.uI=DataConfig.uInfo.uI;
       rc.sN=ct;
       rc.sd=sd;
@@ -973,68 +982,85 @@ export class WorkService {
       rc.rus=ruL;
       console.log("---------- WorkService 讯飞语音添加日程 Start ------------");
       console.log("  ------ WorkService 讯飞语音添加日程: 匹配参与人 ----");
-      this.relmem.xfGetRu(py).then(data=>{
+      this.relmemServ.getrus('','','','','0').then(data=>{
         console.log("  ------ WorkService 讯飞语音添加日程: 匹配参与人查询结果：" + JSON.stringify(data));
-          if(data && data.rows&&data.rows.length>0){
-            //获取不存在的联系人 pinyin名称
-            for(let i=0;i<data.rows.length;i++){
-              let ru:RuModel = data.rows.item(i);
+        if(data && data.code==0&&data.us.length>0){
+          for(let ru of data.us){
+            let ranpy = ru.ranpy;
+            let rnpy = ru.rNpy;
+            if(py.indexOf(ranpy)!=-1){
               ruL.push(ru);
-              let npy = '';
-              let istrue = false;
-              if(ru.ran && ru.ran != null && ru.ran != ''){
-                npy = this.util.chineseToPinYin(ru.ran);
-                nopy = nopy.replace(npy,'');
-                istrue = true;
-              }
-              if(!istrue&&ru.rN && ru.rN != null && ru.rN != ''){
-                npy = this.util.chineseToPinYin(ru.rN);
-                nopy = nopy.replace(npy,'');
-              }
+            }else if(py.indexOf(rnpy)!=-1){
+              ruL.push(ru);
             }
           }
-
-          let nopyL:Array<string> = nopy.split(",");
-          let caL = ca.split(",");
-          let cbL = cb.split(",");
-          let noca='';//获取不存在的联系人中文名称
-          let nocb='';//获取不存在的联系人 解析中文名称
-          for(let j=0;j<nopyL.length;j++){
-            for(let a=0;a<caL.length;a++){
-              let capy = this.util.chineseToPinYin(caL[a]);
-              if(nopyL[j] == capy){
-                if(noca == ''){
-                  noca = caL[a];
-                }else{
-                  noca = "," + caL[a];
-                }
-              }
-            }
-            for(let b=0;b<cbL.length;b++){
-              let cbpy = this.util.chineseToPinYin(cbL[b]);
-              if(nopyL[j] == cbpy){
-                if(nocb == ''){
-                  nocb = caL[b];
-                }else{
-                  nocb = "," + caL[b];
-                }
-              }
-            }
-          }
-
-        rc.noca=noca;
-        rc.nocb=nocb;
-        let strL = nocb.split(',');
-        for(let a = 0;a<strL.length;a++){
-          let run = new RuModel();
-          run.rN = strL[0];
-          run.ran = strL[0];
-          run.hiu = DataConfig.NOT_PLAYER;
-          ruL.push(run);
         }
         rc.rus=ruL;
-        resolve(rc)
-      }).catch(e=>{
+        resolve(rc);
+      })
+      // this.relmem.xfGetRu(py).then(data=>{
+      //   console.log("  ------ WorkService 讯飞语音添加日程: 匹配参与人查询结果：" + JSON.stringify(data));
+      //     if(data && data.rows&&data.rows.length>0){
+      //       //获取不存在的联系人 pinyin名称
+      //       for(let i=0;i<data.rows.length;i++){
+      //         let ru:RuModel = data.rows.item(i);
+      //         ruL.push(ru);
+      //         let npy = '';
+      //         let istrue = false;
+      //         if(ru.ran && ru.ran != null && ru.ran != ''){
+      //           npy = this.util.chineseToPinYin(ru.ran);
+      //           nopy = nopy.replace(npy,'');
+      //           istrue = true;
+      //         }
+      //         if(!istrue&&ru.rN && ru.rN != null && ru.rN != ''){
+      //           npy = this.util.chineseToPinYin(ru.rN);
+      //           nopy = nopy.replace(npy,'');
+      //         }
+      //       }
+      //     }
+      //
+      //     let nopyL:Array<string> = nopy.split(",");
+      //     let caL = ca.split(",");
+      //     let cbL = cb.split(",");
+      //     let noca='';//获取不存在的联系人中文名称
+      //     let nocb='';//获取不存在的联系人 解析中文名称
+      //     for(let j=0;j<nopyL.length;j++){
+      //       for(let a=0;a<caL.length;a++){
+      //         let capy = this.util.chineseToPinYin(caL[a]);
+      //         if(nopyL[j] == capy){
+      //           if(noca == ''){
+      //             noca = caL[a];
+      //           }else{
+      //             noca = "," + caL[a];
+      //           }
+      //         }
+      //       }
+      //       for(let b=0;b<cbL.length;b++){
+      //         let cbpy = this.util.chineseToPinYin(cbL[b]);
+      //         if(nopyL[j] == cbpy){
+      //           if(nocb == ''){
+      //             nocb = caL[b];
+      //           }else{
+      //             nocb = "," + caL[b];
+      //           }
+      //         }
+      //       }
+      //     }
+      //
+      //   rc.noca=noca;
+      //   rc.nocb=nocb;
+      //   // let strL = nocb.split(',');
+      //   // for(let a = 0;a<strL.length;a++){
+      //   //   let run = new RuModel();
+      //   //   run.rN = strL[0];
+      //   //   run.ran = strL[0];
+      //   //   run.hiu = DataConfig.NOT_PLAYER;
+      //   //   ruL.push(run);
+      //   // }
+      //   rc.rus=ruL;
+      //   resolve(rc)
+      // })
+      .catch(e=>{
         console.error("-------- WorkService 讯飞语音添加日程 ERROR : " + JSON.stringify(e));
         rc.code=ReturnConfig.ERR_CODE;
         rc.message=ReturnConfig.ERR_MESSAGE;
