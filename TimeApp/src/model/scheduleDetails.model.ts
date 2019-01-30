@@ -18,7 +18,7 @@ export class ScheduleDetailsModel extends BsModel{
   private _scheduleFinishDate: string;              // 完成时间
   private _labelName: string;               //标签名称
   private _labelColor: string;               //标签颜色
-  private _scheduleType:string;             //日程类型
+  private _scheduleType:string;             //日程类型1自己;2他人推送
   private _planId:string;             //计划ID
   private _planName:string;             //计划名称
   private _isMessage:boolean = false; //是否新消息
@@ -26,6 +26,11 @@ export class ScheduleDetailsModel extends BsModel{
   private _comment:string; //备注
   private _repeatType:string; //重复类型
   private _remindTime :string; //提醒方式
+  private _publisherName :string; //发布人姓名
+  private _publisherInfo: RuModel;      //参与人信息
+  private _modifyAuth: string; // 修改状态0不可修改，1可修改
+
+
 
   get scheduleStatus(): string {
     return this._scheduleStatus;
@@ -147,5 +152,29 @@ export class ScheduleDetailsModel extends BsModel{
 
   set group(value: Array<RuModel>) {
     this._group = value;
+  }
+
+  get publisherName(): string {
+    return this._publisherName;
+  }
+
+  set publisherName(value: string) {
+    this._publisherName = value;
+  }
+
+  get publisherInfo(): RuModel {
+    return this._publisherInfo;
+  }
+
+  set publisherInfo(value: RuModel) {
+    this._publisherInfo = value;
+  }
+
+  get modifyAuth(): string {
+    return this._modifyAuth;
+  }
+
+  set modifyAuth(value: string) {
+    this._modifyAuth = value;
   }
 }

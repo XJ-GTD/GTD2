@@ -333,11 +333,11 @@ export class RelmemService {
     return new Promise((resolve, reject)=>{
       let ruo=new RuoModel();
       let rus = new Array<RuModel>();
-      let ru = new RuModel();
-      ru.hiu=DataConfig.uInfo.hIU;
-      ru.ran=DataConfig.uInfo.uN;
-      ru.rI=DataConfig.uInfo.uI;
-      rus.push(ru);
+      // let ru = new RuModel();
+      // ru.hiu=DataConfig.uInfo.hIU;
+      // ru.ran=DataConfig.uInfo.uN;
+      // ru.rI=DataConfig.uInfo.uI;
+      // rus.push(ru);
       ruo.us=rus;
       this.relmemSqlite.getrus('','','','','0').then(data=>{
         if(data&& data.rows && data.rows.length>0){

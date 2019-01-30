@@ -798,6 +798,15 @@ export class WorkService {
           sd.scheduleDeadline=data.ed;
           sd.scheduleStatus = data.fh;
           sd.scheduleFinishDate=data.wd;
+          sd.publisherInfo =data.ru;
+          sd.publisherName=data.ru.rN;
+          sd.isMessage=false;
+          if(data.uI == DataConfig.uInfo.uI){
+            sd.scheduleType='1';
+          }else{
+            sd.scheduleType='2';
+          }
+          sd.modifyAuth = data.sa;
         }
         resolve(sd);
       }).catch(e=>{
@@ -820,16 +829,18 @@ export class WorkService {
         console.log("----- WorkService getds(事件详情) result:" + JSON.stringify(data));
           if(data&&data.rows&&data.rows.length>0){
             rc= data.rows.item(0);
-            rc.ru = data.rows.item(0);
-            if(rc.ru.id || rc.ru.id == null || rc.ru.id == ''){
-              rc.ru = new RuModel();
-              rc.ru.hiu=DataConfig.defaultHeadImg;
-            }
+            rc.ru = new RuModel();
             if(rc.uI != DataConfig.uInfo.uI){
               rc.sa = '0';
+              rc.ru.rN=DataConfig.uInfo.uN;
+              rc.ru.ran=DataConfig.uInfo.uN;
+              rc.ru.rI=DataConfig.uInfo.uI;
+              rc.ru.hiu=DataConfig.uInfo.hIU;
             }else{
               rc.sa='1';
+              rc.ru = data.rows.item(0);
             }
+
             rc.code=ReturnConfig.SUCCESS_CODE;
             rc.message = ReturnConfig.SUCCESS_MESSAGE;
           }else{
@@ -845,15 +856,10 @@ export class WorkService {
           let rus = new Array<RuModel>();
           for(let i=0;i<rs.length;i++){
             let ru = new RuModel();
-            if(rs.item(i).uI == DataConfig.uInfo.uI){
-              ru.rN=DataConfig.uInfo.uN;
-              ru.ran=DataConfig.uInfo.uN;
-              ru.rI=DataConfig.uInfo.uI;
-              ru.hiu=DataConfig.uInfo.hIU;
-            }else{
+            if(rs.item(i).uI != rc.uI){
               ru = rs.item(i);
+              rus.push(ru);
             }
-            rus.push(ru);
           }
           rc.rus = rus;
         }
