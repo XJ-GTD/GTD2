@@ -859,6 +859,12 @@ export class WorkService {
             let ru = new RuModel();
             if(rs.item(i).uI != rc.uI){
               ru = rs.item(i);
+              if(rs.item(i).uI == DataConfig.uInfo.uI){
+                ru.rN=DataConfig.uInfo.uN;
+                ru.ran=DataConfig.uInfo.uN;
+                ru.rI=DataConfig.uInfo.uI;
+                ru.hiu=DataConfig.uInfo.hIU;
+              }
               rus.push(ru);
             }
           }
