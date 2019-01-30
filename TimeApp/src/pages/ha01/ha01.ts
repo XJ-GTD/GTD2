@@ -45,48 +45,31 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
           </ion-card-header>
           <ion-card-content>
             <ion-list>
-              {{schedule.scheduleType}}
-              <div ion-item *ngIf="schedule.group.length > 0">
-                <img src="./assets/imgs/g.png" style="width: 20px" item-start>
-                <ion-label col-3 item-left style="margin-right: 0px !important;">参与人</ion-label>
+              <div class="content" ion-item>
+                <img src="./assets/imgs/h.png" class="ico-img" item-start>
+                <ion-textarea value="{{schedule.scheduleName}}"></ion-textarea >
+              </div>
+
+              <ion-item>
+                <button (click)="editSchedule(event)" class="buttonWan">编辑</button>
+              </ion-item>
+
+              <ion-item>
+                <button (click)="editSchedule(event)" class="buttonWan">编辑</button>
+              </ion-item>
+              <div ion-item *ngIf="schedule.group.length > 0" class="group">
+                <img src="./assets/imgs/g.png" item-start class="ico-img">
                 <div item-left margin-left *ngFor="let rc of schedule.group" >
                   <div style="display: flow-root">
-                      <ion-thumbnail style="min-width: 35px !important;min-height: 35px !important;">
-                        <img [src]="rc.hiu" style="border-radius: 50%;width: 35px;height: 35px">
-                      </ion-thumbnail>
-                      <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;" text-center>
-                        {{rc.ran}}
-                      </div>
-                  </div>
-                </div>
-                <div item-left margin-left *ngFor="let rc of schedule.group">
-                  <div style="display: flow-root">
-                    <ion-thumbnail style="min-width: 35px !important;min-height: 35px !important;">
-                      <img [src]="rc.hiu" style="border-radius: 50%;width: 35px;height: 35px">
+                    <ion-thumbnail>
+                      <img [src]="rc.hiu">
                     </ion-thumbnail>
-                    <div style="clear: both; font-size:10px;width:40px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;" text-center>
+                    <span>
                       {{rc.ran}}
-                    </div>
+                    </span>
                   </div>
-                </div>
+                </div>               
               </div>
-              <ion-item>
-                <img src="./assets/imgs/h.png" style="width: 20px" item-start>
-                <ion-label>任务</ion-label>
-              </ion-item>
-              <ion-item>
-                      <ion-label>{{schedule.scheduleName}}</ion-label>
-              </ion-item>
-
-
-              <ion-item>
-                <button (click)="editSchedule(event)" class="buttonWan">编辑</button>
-              </ion-item>
-
-              <ion-item>
-                <button (click)="editSchedule(event)" class="buttonWan">编辑</button>
-              </ion-item>
-
             </ion-list>
           </ion-card-content>
 
