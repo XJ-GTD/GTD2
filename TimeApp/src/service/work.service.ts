@@ -30,6 +30,7 @@ import {SyncSqlite} from "./sqlite/sync-sqlite";
 import {SyncService} from "./sync.service";
 import {RcbModel} from "../model/rcb.model";
 import {RcbSqlite} from "./sqlite/rcb-sqlite";
+import {ScheduleDetailsModel} from "../model/scheduleDetails.model";
 
 /**
  * 日程逻辑处理
@@ -772,7 +773,42 @@ export class WorkService {
   }
 
   /**
-   * 事件详情
+   * 获取ScheduleDetails日程事件详情
+   * @param {string} sI
+   * @returns {Promise<RcModel>}
+   */
+  getScheduleDetails(sI:string):Promise<ScheduleDetailsModel>{
+    return new Promise((resolve, reject) =>{
+      let sd = new ScheduleDetailsModel();
+      this.getds(sI).then(data=>{
+        sd.code=data.code;
+        sd.message=data.message;
+        if(data.code==0){
+          sd.scheduleId=data.sI;
+          sd.scheduleName=data.sN;
+          sd.group=data.rus;
+          sd.labelName=data.lan;
+          sd.labelColor=data.lau;
+          sd.planId=data.ji;
+          sd.planName=data.jn;
+          sd.comment=data.rm;
+          sd.repeatType=data.cft;
+          sd.remindTime=data.ac;
+          sd.scheduleStartTime=data.sd;
+          sd.scheduleDeadline=data.ed;
+          sd.scheduleStatus = data.fh;
+          sd.scheduleFinishDate=data.wd;
+        }
+        resolve(sd);
+      }).catch(e=>{
+        sd.code=e.code;
+        sd.message=e.message;
+        reject(e);
+      })
+    })
+  }
+  /**
+   * rc事件详情
    * @param {string} pI 日程ID
    * @returns {Promise<RcpModel>}
    */
