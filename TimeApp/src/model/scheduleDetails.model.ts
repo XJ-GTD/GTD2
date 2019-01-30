@@ -10,7 +10,6 @@ import {BsModel} from "./out/bs.model";
  */
 export class ScheduleDetailsModel extends BsModel{
 
-  private _code: number;                              //消息状态值
   private _scheduleId: string;                        // 日程事件ID
   private _scheduleName: string;                    // 日程事件名称
   private _scheduleStartTime: string;              // 开始时间
@@ -61,14 +60,6 @@ export class ScheduleDetailsModel extends BsModel{
   }
   set scheduleId(value: string) {
     this._scheduleId = value;
-  }
-
-  get code(): number {
-    return this._code;
-  }
-
-  set code(value: number) {
-    this._code = value;
   }
 
   get labelName(): string {
