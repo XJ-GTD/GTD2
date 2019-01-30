@@ -121,7 +121,9 @@ export class WorkService {
   arc(ct:string,sd:string,lbI:string,jhi:string,cft:string,rm:string,ac:string,ruList:Array<RuModel>):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let ruL:Array<RuModel> = new Array<RuModel>();
-      ruL.concat(ruList);
+      for(let ruu of ruList){
+        ruL.push(ruu);
+      }
       let bs = new BsModel();
       //先查询当前用户ID
       let rc = new RcEntity();
