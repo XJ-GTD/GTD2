@@ -205,9 +205,13 @@ export class RelmemService {
           base.message=ReturnConfig.ERR_MESSAGE;
           reject(base);
         })
-
-
       }else{
+        if(ru.rN!=null && ru.rN!=''){
+          ru.rNpy = this.util.chineseToPinYin(ru.rN)
+        }
+        if(ru.ran!=null && ru.ran!=''){
+          ru.ranpy = this.util.chineseToPinYin(ru.ran)
+        }
         //添加本地联系人
         return this.relmemSqlite.aru(ru).then(data=>{
           console.log("--------- 2.RelmemService aru() sqlite add contact end: "+JSON.stringify(data));
