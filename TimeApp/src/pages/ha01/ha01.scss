@@ -23,7 +23,6 @@ page-ha01 {
     ion-card {
       height: 95%;
       border-radius: 20px;
-      background-color: #eeeeee;
 
       ion-card-header{
 
@@ -40,12 +39,11 @@ page-ha01 {
       }
 
       .ico-img {
-        width: 20px;
-        height: 20px;
+        font-size: 1.5em;
+        color: #666666;
       }
       ion-item{
-        background-color: #eeeeee;
-        margin:10px;
+        margin-top:10px;
       }
 
       .card-footer{
@@ -59,28 +57,15 @@ page-ha01 {
       }
 
       .content{
-        height: 120px;
+        height: 80px;
         .input-wrapper{
           display: inline;
         }
-        h2 {
-          font-size: 16px;
-          color: #333333;
-          white-space: normal;
-          display: contents;
-        }
-
       }
       .comment{
-        height: 120px;
+        height: 80px;
         .input-wrapper{
           display: inline;
-        }
-        h2 {
-          font-size: 16px;
-          color: #333333;
-          white-space: normal;
-          display: contents;
         }
 
 
@@ -117,6 +102,13 @@ page-ha01 {
         background: -moz-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Firefox 3.6 - 15 */
         background: linear-gradient(to right, rgb(149, 58, 139), rgb(86, 82, 222)); /* 标准的语法（必须放在最后） */
 
+      }
+
+      h2 {
+        font-size: 14px;
+        color: #222222;
+        white-space: normal;
+        display: contents;
       }
     }
 
