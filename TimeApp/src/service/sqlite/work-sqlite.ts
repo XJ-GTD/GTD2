@@ -438,11 +438,13 @@ export class WorkSqlite{
     ed = moment(ed).format('YYYY/MM/DD');
     if(cft && cft != null && cft !='undefined'){
       if(cft=='1'){//年
-        if(sd.substr(4,10)== day.substr(4,10)){
+        sd = sd.substr(4,6);
+        if(sd == day.substr(4,6)){
           isTrue = true;
         }
       }else if(cft=='2'){ //月
-        if(sd.substr(4,6)== day.substr(4,6)){
+        sd = sd.substr(8,2);
+        if(sd== day.substr(8,2)){
           isTrue = true;
         }
       }else if(cft=='3'){ //周
