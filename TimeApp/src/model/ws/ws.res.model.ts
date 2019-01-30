@@ -34,6 +34,13 @@ export class WsResDataModel {
   private _hi: string;      //headImg
   private _mb: string;      //mobile
   private _ia: string;      //isAgree
+  //日程子表字段
+  private _id:string=''; //主键
+  private _cft:string=''; //重复类型：0日，1周，2月，3年
+  private _wd:string = ''; //完成时间
+  private _rm:string=''; //备注
+  private _ac:string=''; //提醒方式
+  private _fh:string=''; //是否完成0否1是
 
   //扩展字段
   private _common_A: string;        //人名原参数value
@@ -389,5 +396,53 @@ export class WsResDataModel {
 
   set common_Z(value: string) {
     this._common_Z = value;
+  }
+
+  get id(): string {
+    return this._id;
+  }
+
+  set id(value: string) {
+    this._id = value;
+  }
+
+  get cft(): string {
+    return this._cft;
+  }
+
+  set cft(value: string) {
+    this._cft = value;
+  }
+
+  get wd(): string {
+    return this._wd;
+  }
+
+  set wd(value: string) {
+    this._wd = value;
+  }
+
+  get rm(): string {
+    return this._rm;
+  }
+
+  set rm(value: string) {
+    this._rm = value;
+  }
+
+  get ac(): string {
+    return this._ac;
+  }
+
+  set ac(value: string) {
+    this._ac = value;
+  }
+
+  get fh(): string {
+    return this._fh;
+  }
+
+  set fh(value: string) {
+    this._fh = value;
   }
 }

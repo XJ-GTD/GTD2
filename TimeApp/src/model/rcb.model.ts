@@ -1,9 +1,10 @@
 /**
  * create by on 2018/11/19
  */
+import {BsModel} from "./out/bs.model";
 
 //日程子表-纪念日标签（特殊日期,法定假日）
-export class RcbModel {
+export class RcbModel extends BsModel {
 
   private _sI:string='';   //UUID
   private _id:string=''; //主键

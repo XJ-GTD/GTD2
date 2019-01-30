@@ -3,6 +3,7 @@ import { AppConfig } from "../../app/app.config";
 import { BsRestful } from "./bs-restful";
 import { PsModel } from "../../model/ps.model";
 import {BsModel} from "../../model/out/bs.model";
+import {RcbModel} from "../../model/rcb.model";
 
 
 
@@ -28,7 +29,7 @@ export class RcRestful{
    * @returns {Promise<any>}
    */
   sc(ui:string,skt:string,si:string,sn:string,
-     st:string,et:string,li:string,ps:Array<PsModel>,sts:string):Promise<any> {
+     st:string,et:string,li:string,ps:Array<PsModel>,sts:string,rcb:RcbModel):Promise<any> {
     return new Promise((resolve, reject) => {
       let rcList = new Array<any>();
       let schedule: any = new BsModel();
@@ -38,6 +39,12 @@ export class RcRestful{
       schedule.endTime = et.replace(new RegExp('/', 'g'), '-');
       schedule.label = li;
       schedule.players = ps;
+      schedule.id=rcb.id;
+      schedule.comment=rcb.rm;
+      schedule.repeatType = rcb.cft;
+      schedule.remindTime = rcb.ac;
+      schedule.finishStatus = rcb.fh;
+      schedule.finishTime = rcb.wd;
       rcList.push(schedule);
       this.bs.post(AppConfig.SCHEDULE_DEAL_URL, {
         userId: ui,

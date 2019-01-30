@@ -13,6 +13,7 @@ import {JhSqlite} from "./sqlite/jh-sqlite";
 import {SyvEntity} from "../entity/syv.entity";
 import {SyncSqlite} from "./sqlite/sync-sqlite";
 import {UserSqlite} from "./sqlite/user-sqlite";
+import {RcbSqlite} from "./sqlite/rcb-sqlite";
 
 /**
  * 初始化
@@ -30,6 +31,7 @@ export class SyncService {
                private relmem:RelmemSqlite,
                private jh:JhSqlite,
                private userSqlite:UserSqlite,
+               private rcbSqlite:RcbSqlite,
                private ztd:ZtdSqlite) {
 
   }
@@ -308,7 +310,7 @@ export class SyncService {
       }else if(ud.tableName == DataConfig.GTD_D) {
         sql+=this.work.syncToRcpSql(ud.dataList);
       }else if(ud.tableName.substr(0,5)==DataConfig.GTD_C){
-        sql+=this.work.syncToRcbSql(ud.dataList,ud.tableName);
+        sql+=this.rcbSqlite.syncToRcbSql(ud.dataList,ud.tableName);
       }else if(ud.tableName==DataConfig.GTD_J_H){
         sql+=this.jh.syncToJhSql(ud.dataList);
       }

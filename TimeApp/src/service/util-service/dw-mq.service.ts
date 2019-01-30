@@ -13,6 +13,7 @@ import { AiuiModel } from "../../model/aiui.model";
 import { XiaojiAssistantService } from "./xiaoji-assistant.service";
 import { WsEnumModel } from "../../model/ws/ws.enum.model";
 import { RcModel } from "../../model/rc.model";
+import {RcbModel} from "../../model/rcb.model";
 
 /**
  * webSocket公用处理方法
@@ -313,9 +314,15 @@ export class DwMqService {
     let lbI = data.lb;
     let rui = data.us;
     let sI = data.si;
+    let cft = data.cft;
+    //标签子表
+    let da:any = data;
+    let rcb:RcbModel = da;
+    rcb.sI = data.si;
+    rcb.tk = data.lb;
     console.log("----- DwMqService scheduleCreate(业务：日程添加) start---- ");
     if (rui != DataConfig.uInfo.uI) {
-      this.work.arcMq(sI, rui, ct, sd, ed, lbI, '', '', '').then(data => {
+      this.work.arcMq(sI, rui, ct, sd, ed, lbI, rcb).then(data => {
         console.log("----- DwMqService scheduleCreate(业务：日程添加) end ---- ");
         let ms = new MsEntity();
         ms.mn = ct;
@@ -343,6 +350,11 @@ export class DwMqService {
     let lbI = data.lb;
     let rui = data.us;
     let sI = data.si;
+    //标签子表
+    let da:any = data;
+    let rcb:RcbModel = da;
+    rcb.sI = data.si;
+    rcb.tk = data.lb;
     console.log("----- DwMqService scheduleCreate(业务：日程更新) start---- ");
     let ms = new MsEntity();
     this.work.urcMq(sI, rui, ct, sd, ed, lbI, '', '', '', '').then(data => {
