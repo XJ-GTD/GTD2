@@ -19,16 +19,70 @@ page-ha01 {
     -webkit-transition: width 0.5s, height 0.5s, -webkit-transform 1s; /* Safari and Chrome */
     -o-transition: width 1s, height 1s, -o-transform 1s; /* Opera */
 
+
     ion-card {
       height: 95%;
       border-radius: 20px;
+      background-color: #eeeeee;
+
+      ion-card-header{
+
+        height: 20%;
+        border-bottom: 1px solid #000000;
+        ul{
+          padding-inline-start:20px
+        }
+
+        li{
+          list-style: none;
+          margin: 8px;
+        }
+      }
 
       .ico-img {
         width: 20px;
         height: 20px;
       }
+      ion-item{
+        background-color: #eeeeee;
+        margin:10px;
+      }
+
+      .card-footer{
+        position: absolute;
+        bottom: 35px;
+        right: 35px;
+        color: #666666;
+        font-size: 20px;
+        font-weight: bold;
+        text-align:right;
+      }
 
       .content{
+        height: 120px;
+        .input-wrapper{
+          display: inline;
+        }
+        h2 {
+          font-size: 16px;
+          color: #333333;
+          white-space: normal;
+          display: contents;
+        }
+
+      }
+      .comment{
+        height: 120px;
+        .input-wrapper{
+          display: inline;
+        }
+        h2 {
+          font-size: 16px;
+          color: #333333;
+          white-space: normal;
+          display: contents;
+        }
+
 
       }
       .group {
@@ -51,14 +105,18 @@ page-ha01 {
       }
 
       .buttonWan {
-        display: block;
-        margin: 0 auto;
-        border-radius: 25px;
+        display: inline;
         letter-spacing: 5px;
+        position: absolute;
+        right: 25px;
+        height:40px;
+        width:55px;
+        top:30px;
         background: -webkit-linear-gradient(left, rgb(149, 58, 139), rgb(86, 82, 222)); /* Safari 5.1 - 6.0 */
         background: -o-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Opera 11.1 - 12.0 */
         background: -moz-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Firefox 3.6 - 15 */
         background: linear-gradient(to right, rgb(149, 58, 139), rgb(86, 82, 222)); /* 标准的语法（必须放在最后） */
+
       }
     }
 

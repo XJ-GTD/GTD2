@@ -40,25 +40,35 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
            (swipe)="swipe($event)" 
            [ngStyle]="{'background-color':schedule.labelColor}" >
         <ion-card>          
-          <ion-card-header>
-            {{schedule.publisherName}}
+          <ion-card-header [ngStyle]="{'border-bottom-color':schedule.labelColor}">
+
+           <ul>
+             <li>
+               <ion-icon name="pricetag" item-start ></ion-icon>
+               <span>{{schedule.labelName}}</span>
+               
+             </li>
+             <li>
+               <ion-icon name="notifications" item-start ></ion-icon>
+               <span>{{schedule.remindTime}}</span>
+
+             </li>
+           </ul>
+
+            <button (click)="editSchedule(schedule)" class="buttonWan" item-right>编辑</button>
           </ion-card-header>
           <ion-card-content>
             <ion-list>
-              <div class="content" ion-item>
-                <img src="./assets/imgs/h.png" class="ico-img" item-start>
-                <ion-textarea value="{{schedule.scheduleName}}"></ion-textarea >
-              </div>
-
-              <ion-item>
-                <button (click)="editSchedule(event)" class="buttonWan">编辑</button>
+              <ion-item class="content">
+                <ion-icon name="calendar" item-start [ngStyle]="{'color':schedule.labelColor}"></ion-icon>
+                <h2>{{schedule.scheduleName}}</h2>
               </ion-item>
-
-              <ion-item>
-                <button (click)="editSchedule(event)" class="buttonWan">编辑</button>
+              <ion-item class="content">
+                <ion-icon name="paper" item-start [ngStyle]="{'color':schedule.labelColor}"></ion-icon>
+                <h2>{{schedule.comment}}</h2 >
               </ion-item>
-              <div ion-item *ngIf="schedule.group.length > 0" class="group">
-                <img src="./assets/imgs/g.png" item-start class="ico-img">
+              <ion-item *ngIf="schedule.group.length > 0" class="group">
+                <ion-icon name="contacts" item-start [ngStyle]="{'color':schedule.labelColor}"></ion-icon>
                 <div item-left margin-left *ngFor="let rc of schedule.group" >
                   <div style="display: flow-root">
                     <ion-thumbnail>
@@ -69,10 +79,19 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
                     </span>
                   </div>
                 </div>               
-              </div>
+              </ion-item>
+              
+
+
             </ion-list>
           </ion-card-content>
 
+          <div class="card-footer">
+            <p>{{schedule.publisherName}}</p>
+            <p>
+              {{schedule.scheduleStartTime}}</p>
+          </div>
+          
         </ion-card>
         
       </div>
