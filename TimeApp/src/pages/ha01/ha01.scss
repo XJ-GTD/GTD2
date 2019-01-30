@@ -1,86 +1,174 @@
 page-ha01 {
   display: block;
-  ul{
 
-    .item-ios.item-block .item-inner{
+  .pop-css {
+    margin: auto;
+    position: absolute;
+    top: -50px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 85% !important;
+    height: 90% !important;
+    background-color: #FFFFFF;
+    z-index: 50;
+    border-radius: 20px;
+
+    transition: width 100ms, height 100ms;
+    -moz-transition: width 1s, height 1s, -moz-transform 1s; /* Firefox 4 */
+    -webkit-transition: width 0.5s, height 0.5s, -webkit-transform 1s; /* Safari and Chrome */
+    -o-transition: width 1s, height 1s, -o-transform 1s; /* Opera */
+
+    ion-card{
+      height: 95%;
+      border-radius: 20px;
+    }
+    .buttonWan {
+      display: block;
+      margin: 0 auto;
+      border-radius: 25px;
+      letter-spacing: 5px;
+      background: -webkit-linear-gradient(left, rgb(149, 58, 139), rgb(86, 82, 222)); /* Safari 5.1 - 6.0 */
+      background: -o-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Opera 11.1 - 12.0 */
+      background: -moz-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Firefox 3.6 - 15 */
+      background: linear-gradient(to right, rgb(149, 58, 139), rgb(86, 82, 222)); /* 标准的语法（必须放在最后） */
+    }
+
+  }
+
+
+
+  .backdrop {
+    opacity: 0.5;
+    position:fixed;
+    height: 100%;
+
+    .close{
+      /* display: block; */
+      font-size: 50px;
+      margin: 0 auto;
+      bottom: 5px;
+      position: absolute;
+      color: antiquewhite;
+      left: calc(45%);
+    }
+
+  }
+
+  .activeCss {
+    transform: translate(0, 0);
+
+  }
+
+  .activeCssLeft {
+    transform: translate(-105%, 5%);
+    z-index: 40;
+  }
+
+  .activeCssRight {
+    transform: translate(105%, 5%);
+    z-index: 40;
+  }
+
+  .activeCssLeft-1 {
+    transform: translate(-205%, 5%);
+    z-index: 40;
+  }
+
+  .activeCssRight-1 {
+    transform: translate(205%, 5%);
+    z-index: 40;
+  }
+
+  .lb1 {
+    font-size: 15px;
+    color: #999999;
+  }
+
+  ul {
+
+    .item-ios.item-block .item-inner {
       border-bottom: 0px solid #c8c7cc;
     }
-    .new-message{
 
+    .new-message {
       font-weight: bold;
-      span{
+
+      span {
         font-weight: bold;
       }
     }
 
-    .item-ios{
-      background-color:transparent;
+    .item-ios {
+      background-color: transparent;
       font-size: 14px;
       color: #222222;
 
-      white-space: nowrap;  /*强制span不换行*/
-      overflow: hidden;  /*超出宽度部分隐藏*/
-      text-overflow: ellipsis;  /*超出部分以点号代替*/
-      min-height:0px;
-      list-style-type:none;
+      white-space: nowrap; /*强制span不换行*/
+      overflow: hidden; /*超出宽度部分隐藏*/
+      text-overflow: ellipsis; /*超出部分以点号代替*/
+      min-height: 0px;
+      list-style-type: none;
       padding-left: 0px;
-      margin-left:-20px;
+      margin-left: -20px;
       margin-top: 10px;
 
 
-      p{
+      p {
         font-size: 12px;
         color: #222222;
       }
-      span{
-        letter-spacing:1px;
+
+      span {
+        letter-spacing: 1px;
         font-size: 14px;
       }
 
-      .anther{
-        width:0;
-        height:0;
-        border:5px solid;
-        display:inline-block;
+      .anther {
+        width: 0;
+        height: 0;
+        border: 5px solid;
+        display: inline-block;
         /* 平分效果 */
         /*border-color:red green blue black; */
 
         /* 单个三角形 */
-        border-color:transparent transparent red transparent;
+        border-color: transparent transparent red transparent;
         margin: 0px 3px 3px 3px;
       }
-      .self{
+
+      .self {
         width: 7px;
         height: 7px;
         background-color: red;
-        display:inline-block;
+        display: inline-block;
         margin: 0px 3px 1px 3px;
         border-radius: 50%;
       }
 
-      small{
+      small {
         font-size: 7px;
         color: red;
         position: absolute;
         right: 15px;
       }
-      .input-wrapper{
+
+      .input-wrapper {
         height: 30px;
       }
     }
-    .item-ios [item-start]{
+
+    .item-ios [item-start] {
       margin: 2px 5px 0px 0px;
     }
 
-    li{
+    li {
     }
   }
-  ion-scroll{
+
+  ion-scroll {
     min-height: 100px;
     height: 100%;
   }
-
-
-
 
 }
