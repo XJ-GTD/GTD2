@@ -66,7 +66,7 @@ export class MsEntity {
     if(this._mi != null){
       sql = sql + ' where mi=' + this._mi;
     }else if(this._rI!=null && this._rI !=''){
-      sql = sql + 'where rI="' + this._rI +'"';
+      sql = sql + ' where rI="' + this._rI +'"';
     }
     this._usq=sql;
     return this._usq;
