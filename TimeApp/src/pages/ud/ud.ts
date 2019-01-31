@@ -88,7 +88,7 @@ export class UdPage {
       let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
       if (data.code == 0) {
         this.utilService.alert("登陆成功");
-        this.navCtrl.push('HzPage');
+        this.navCtrl.setRoot('HzPage');
       }else{
         this.utilService.alert(message);
       }
