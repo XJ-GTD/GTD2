@@ -124,7 +124,7 @@ export class WorkService {
       for(let ruu of ruList){
         ruL.push(ruu);
       }
-      ac='5';
+      // ac='5';
       let bs = new BsModel();
       //先查询当前用户ID
       let rc = new RcEntity();
