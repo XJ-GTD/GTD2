@@ -91,13 +91,16 @@ export class RcbSqlite{
         rcb.rm=rm;
         rcb.ac=ac;
         rcb.fh=fh;
+        rcb.tk = tk;
         console.log('----worksqlite updateLbData 先删除原来标签子表----');
         let rc = new RcEntity();
         rc.sI=sI;
         this.getRcbSql(sI).then(data=>{
           if(data && data.rows && data.rows.length>0){
-            rcb.id = subId;
-            rcb.tk = data.rows.item(0).tk;
+            let oldRcb:RcbModel = new RcbModel();
+            oldRcb.id = data.rows.item(0).id;
+            oldRcb.sI =sI;
+            oldRcb.tk = data.rows.item(0).tk;
             if(rcb.tk != tk){
               return this.baseSqlite.delete(rcb);
             }
@@ -108,6 +111,52 @@ export class RcbSqlite{
           console.log('----worksqlite updateLbData 再保存新标签子表----');
           rcb.tk = tk;
           rcb.id = this.util.getUuid();
+          return this.baseSqlite.save(rcb);
+        }).then(data=>{
+          return this.syncRcbTime(rcb,rcb.tn,DataConfig.AC_O);
+        }).then(data=>{
+          resolve(data);
+        }).catch(e=>{
+          console.log('----worksqlite updateLbData 保存新标签子表 ERROR：'+JSON.stringify(e));
+          reject(e);
+        })
+      }else{
+        let bs = new BsModel();
+        resolve(bs);
+      }
+    })
+  }
+
+  /**
+   * 更新对应标签表数据
+   * @param {string} sI 日程主键
+   * @param {string} tk 标签类型
+   * @param {string} cft 重复类型
+   * @param {string} rm 备注
+   * @param {string} ac 闹铃类型
+   * @param {string} fh 是否完成0未完成，1完成
+   * @returns {Promise<any>}
+   */
+  updateLbDataMq(sI:string,rcb:RcbModel):Promise<any>{
+    return new Promise((resolve, reject) => {
+      if(rcb.tk != '' && rcb.tk !=null){
+        console.log('----worksqlite updateLbData 先删除原来标签子表----');
+        let rc = new RcEntity();
+        rc.sI=sI;
+        this.getRcbSql(sI).then(data=>{
+          if(data && data.rows && data.rows.length>0){
+            let oldRcb:RcbModel = new RcbModel();
+            oldRcb.id = data.rows.item(0).id;
+            oldRcb.sI =sI;
+            oldRcb.tk = data.rows.item(0).tk;
+            if(rcb.tk != oldRcb.tk){
+              return this.baseSqlite.delete(oldRcb);
+            }
+          }
+        }).then(data=>{
+          return this.syncRcbTime(rcb,rcb.tn,DataConfig.AC_D);
+        }).then(data=>{
+          console.log('----worksqlite updateLbData 再保存新标签子表----');
           return this.baseSqlite.save(rcb);
         }).then(data=>{
           return this.syncRcbTime(rcb,rcb.tn,DataConfig.AC_O);
@@ -136,6 +185,33 @@ export class RcbSqlite{
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id  from GTD_C_JN ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id  from GTD_C_MO) lbd on lbd.sI = gc.sI  where gc.sI="'+sI+'"';
     return this.baseSqlite.executeSql(sql,[]);
+  }
+
+  /**
+   * 添加对应标签表数据
+   * @param {string} sI 日程主键
+   * @param {RcbModel} en 子表对象
+   * @returns {Promise<any>}
+   */
+  addLbSub(sI:string,en:RcbModel):Promise<RcbModel>{
+    return new Promise((resolve, reject) => {
+      if(en.tn != null && en.tn != ''){
+        this.baseSqlite.executeSql(en.rpsq,[]).then(data=>{
+          //添加本地日程到同步表
+          console.log('------------- WorkSqlite addLbData 同步表--------------');
+          this.syncRcbTime(en,en.tn,DataConfig.AC_O);
+          resolve(en);
+        }).catch(e=>{
+          console.log('------------- WorkSqlite addLbData Error：' + JSON.stringify(e));
+          en.code= ReturnConfig.ERR_CODE;
+          en.message=ReturnConfig.ERR_MESSAGE;
+          reject(e);
+        })
+      }else{
+        resolve(en);
+      }
+
+    })
   }
 
   /**

@@ -259,7 +259,7 @@ export class WorkService {
         .then(data=>{
           console.log("----- workService arc 添加日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 添加日程子表-------");
-          return this.rcbSqlite.addLbData(rc.sI,rc.lI,rcb.cft,rcb.rm,rcb.ac,'0');
+          return this.rcbSqlite.addLbSub(rc.sI,rcb);
         })
         .then(data=>{
           let ruL=new Array<RuModel>();
@@ -422,7 +422,7 @@ export class WorkService {
    * @param {string} jhi 计划名称
    * @param {Array}  ruL 参与人json数组[ {id,rN,rC} ]（id主键,rN名称,rC联系方式）
    */
-  urcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string,subId:string,cft:string,rm:string,ac:string):Promise<BsModel>{
+  urcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string,rcb:RcbModel):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
       sd=sd.replace(new RegExp('-','g'),'/');
@@ -431,7 +431,7 @@ export class WorkService {
       rc.uI=cui;
       rc.sN=sN;
       rc.sd=sd;
-      if(cft && cft != null && cft != ''){
+      if(rcb.cft && rcb.cft != null && rcb.cft != ''){
         rc.ed='2999/12/31 23:59';
       }else{
         rc.ed=sd;
@@ -443,7 +443,7 @@ export class WorkService {
       rc.lI=lbI;
       rc.sI=sI;
       console.log("------ WorkService arcMq() Start ------------");
-      this.baseSqlite.update(rc).then(data=>{
+      this.workSqlite.update(rc).then(data=>{
         let rcp = new RcpEntity();
         rcp.uI=DataConfig.uInfo.uI;
         rcp.sI=sI;
@@ -456,7 +456,7 @@ export class WorkService {
         .then(data=>{
           console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 更新日程子表-------");
-          return this.rcbSqlite.updateLbData(subId,rc.sI,rc.lI,cft,rm,ac,'0');
+          return this.rcbSqlite.updateLbDataMq(rc.sI,rcb);
         })
         .then(data=>{
         console.log("------ WorkService arcMq() End ------------");
