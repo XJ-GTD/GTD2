@@ -53,7 +53,7 @@ export class RcbSqlite{
       en.rm=rm;
       if(ac && ac != null && ac != ''){
         en.ac=ac;
-        let sdt = new Date(rc.sd).getTime - Number(en.ac) * 60 * 1000;
+        let sdt = new Date(rc.sd).getTime() - Number(en.ac) * 60 * 1000;
         en.dt=moment(sdt).format('YYYY/MM/DD HH:mm')
       }
 
@@ -96,7 +96,7 @@ export class RcbSqlite{
         rcb.rm=rm;
         if(ac && ac != null && ac != ''){
           rcb.ac=ac;
-          let sdt = new Date(rc.sd).getTime - Number(rcb.ac) * 60 * 1000;
+          let sdt = new Date(rc.sd).getTime() - Number(rcb.ac) * 60 * 1000;
           rcb.dt=moment(sdt).format('YYYY/MM/DD HH:mm')
         }
         rcb.fh=fh;
@@ -149,7 +149,8 @@ export class RcbSqlite{
       if(rcb.tk != '' && rcb.tk !=null){
         console.log('----worksqlite updateLbData 先删除原来标签子表----');
         if(rcb.ac && rcb.ac != null && rcb.ac != ''){
-          let sdt = new Date(rc.sd).getTime - Number(rcb.ac) * 60 * 1000;
+          let str:string =rc.sd;
+          let sdt:number = new Date(str).getTime() - parseInt(rcb.ac) * 60 * 1000;
           rcb.dt=moment(sdt).format('YYYY/MM/DD HH:mm')
         }
         this.getRcbSql(rc.sI).then(data=>{
@@ -208,7 +209,7 @@ export class RcbSqlite{
 
       if(en.tn != null && en.tn != ''){
         if(en.ac && en.ac != null && en.ac != ''){
-          let sdt = new Date(rc.sd).getTime - Number(en.ac) * 60 * 1000;
+          let sdt = new Date(rc.sd).getTime() - Number(en.ac) * 60 * 1000;
           en.dt=moment(sdt).format('YYYY/MM/DD HH:mm')
         }
         this.baseSqlite.executeSql(en.rpsq,[]).then(data=>{
