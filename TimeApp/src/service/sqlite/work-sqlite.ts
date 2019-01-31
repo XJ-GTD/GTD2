@@ -321,6 +321,11 @@ export class WorkSqlite{
             if(this.isymwd(res.cft,d,res.sd,res.ed)){
               res.scheduleId = res.sI;
               res.scheduleName = res.sN;
+              if(!res.sI || res.sI== '' || res.sI == null){
+                res.scheduleIsLocal = true;
+              }else{
+                res.scheduleIsLocal = false;
+              }
               if(res.san != null){
                 res.scheduleName =res.son;
               }

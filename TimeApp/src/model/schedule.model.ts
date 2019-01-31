@@ -21,7 +21,7 @@ export class ScheduleModel {
   private _isMessage:boolean = false; //是否新消息
   private _group: Array<GroupModel>;                 //参与人
   private _remind: Array<RemindModel>;              //提醒时间
-
+  private _scheduleIsLocal:boolean = false; //是否本地日历
   get scheduleStatus(): string {
     return this._scheduleStatus;
   }
@@ -116,5 +116,13 @@ export class ScheduleModel {
 
   set isMessage(value: boolean) {
     this._isMessage = value;
+  }
+
+  get scheduleIsLocal(): boolean {
+    return this._scheduleIsLocal;
+  }
+
+  set scheduleIsLocal(value: boolean) {
+    this._scheduleIsLocal = value;
   }
 }
