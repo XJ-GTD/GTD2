@@ -319,11 +319,17 @@ export class DwMqService {
     let rcb:RcbModel = new RcbModel();
     rcb.sI = data.si;
     rcb.tk = data.lb;
-    rcb.id=data.id;
-    rcb.cft=data.cft;
-    rcb.rm = data.rm;
-    rcb.fh =data.fh;
-    rcb.ac =data.ac;
+    rcb.id = data.id;
+    rcb.cft= data.cft;
+    if(data.rm){
+      rcb.rm = data.rm;
+    }
+    if(data.fh){
+      rcb.fh =data.fh;
+    }
+    if(data.ac){
+      rcb.ac =data.ac;
+    }
     rcb.wd=data.wd;
     console.log("----- DwMqService scheduleCreate(业务：日程添加) start---- ");
     if (rui != DataConfig.uInfo.uI) {
@@ -361,9 +367,15 @@ export class DwMqService {
     rcb.tk = data.lb;
     rcb.id=data.id;
     rcb.cft=data.cft;
-    rcb.rm = data.rm;
-    rcb.fh =data.fh;
-    rcb.ac =data.ac;
+    if(data.rm){
+      rcb.rm = data.rm;
+    }
+    if(data.fh){
+      rcb.fh =data.fh;
+    }
+    if(data.ac){
+      rcb.ac =data.ac;
+    }
     rcb.wd=data.wd;
     console.log("----- DwMqService scheduleCreate(业务：日程更新) start---- ");
     let ms = new MsEntity();
