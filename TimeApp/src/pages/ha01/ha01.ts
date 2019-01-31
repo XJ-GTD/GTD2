@@ -41,34 +41,24 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
            [ngStyle]="{'background-color':schedule.labelColor}" >
         <ion-card>          
           <ion-card-header [ngStyle]="{'border-bottom-color':schedule.labelColor}">
-
-           <ul>
-             <li>
-               <ion-icon name="pricetag" item-start ></ion-icon>
-               <span>{{schedule.labelName}}</span>
-               
-             </li>
-             <li>
-               <ion-icon name="notifications" item-start ></ion-icon>
-               <span>{{schedule.remindTime}}</span>
-
-             </li>
-           </ul>
-
-            <button (click)="editSchedule(schedule)" class="buttonWan" item-right>编辑</button>
+            <ion-item  no-padding>
+              <ion-icon name="pricetag" item-start class="ico-img"></ion-icon>
+              <h2>{{schedule.labelName}}</h2>
+            </ion-item>
+            <button (click)="editSchedule(schedule)" class="buttonWan" item-right>详细</button>
           </ion-card-header>
           <ion-card-content>
             <ion-list>
-              <ion-item class="content">
-                <ion-icon name="calendar" item-start [ngStyle]="{'color':schedule.labelColor}"></ion-icon>
+              <ion-item class="content" no-padding>
+                <ion-icon name="calendar" item-start class="ico-img"></ion-icon>
                 <h2>{{schedule.scheduleName}}</h2>
               </ion-item>
-              <ion-item class="content">
-                <ion-icon name="paper" item-start [ngStyle]="{'color':schedule.labelColor}"></ion-icon>
-                <h2>{{schedule.comment}}</h2 >
-              </ion-item>
-              <ion-item *ngIf="schedule.group.length > 0" class="group">
-                <ion-icon name="contacts" item-start [ngStyle]="{'color':schedule.labelColor}"></ion-icon>
+              <!--<ion-item class="content" no-padding>-->
+                <!--<ion-icon name="paper" item-start class="ico-img"></ion-icon>-->
+                <!--<h2>{{schedule.comment}}</h2 >-->
+              <!--</ion-item>-->
+              <ion-item *ngIf="schedule.group.length > 0" class="group" no-padding>
+                <ion-icon name="contacts" item-start class="ico-img"></ion-icon>
                 <div item-left margin-left *ngFor="let rc of schedule.group" >
                   <div style="display: flow-root">
                     <ion-thumbnail>
@@ -80,9 +70,10 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
                   </div>
                 </div>               
               </ion-item>
-              
-
-
+              <ion-item  no-padding>
+                <ion-icon name="notifications" item-start class="ico-img"></ion-icon>
+                <h2>{{schedule.remindTime}}</h2>
+              </ion-item>
             </ion-list>
           </ion-card-content>
 

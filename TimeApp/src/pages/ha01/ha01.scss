@@ -13,6 +13,7 @@ page-ha01 {
     background-color: #FFFFFF;
     z-index: 50;
     border-radius: 20px;
+    opacity: 0.95;
 
     transition: width 100ms, height 100ms;
     -moz-transition: width 1s, height 1s, -moz-transform 1s; /* Firefox 4 */
@@ -21,13 +22,14 @@ page-ha01 {
 
 
     ion-card {
-      height: 95%;
+      height: calc(100% - 10px);
+      width: calc(100% - 10px);
+      margin: 5px;
       border-radius: 20px;
-      background-color: #eeeeee;
 
       ion-card-header{
 
-        height: 20%;
+        height: 110px;
         border-bottom: 1px solid #000000;
         ul{
           padding-inline-start:20px
@@ -37,15 +39,17 @@ page-ha01 {
           list-style: none;
           margin: 8px;
         }
+        .item-block.item-ios{
+          border-bottom: none;
+        }
       }
 
       .ico-img {
-        width: 20px;
-        height: 20px;
+        font-size: 1.5em;
+        color: #666666;
       }
       ion-item{
-        background-color: #eeeeee;
-        margin:10px;
+        margin-top:10px;
       }
 
       .card-footer{
@@ -63,24 +67,11 @@ page-ha01 {
         .input-wrapper{
           display: inline;
         }
-        h2 {
-          font-size: 16px;
-          color: #333333;
-          white-space: normal;
-          display: contents;
-        }
-
       }
       .comment{
-        height: 120px;
+        height: 80px;
         .input-wrapper{
           display: inline;
-        }
-        h2 {
-          font-size: 16px;
-          color: #333333;
-          white-space: normal;
-          display: contents;
         }
 
 
@@ -112,11 +103,20 @@ page-ha01 {
         height:40px;
         width:55px;
         top:30px;
+        box-shadow:black 0px 0px 10px;
+
         background: -webkit-linear-gradient(left, rgb(149, 58, 139), rgb(86, 82, 222)); /* Safari 5.1 - 6.0 */
         background: -o-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Opera 11.1 - 12.0 */
         background: -moz-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Firefox 3.6 - 15 */
         background: linear-gradient(to right, rgb(149, 58, 139), rgb(86, 82, 222)); /* 标准的语法（必须放在最后） */
 
+      }
+
+      h2 {
+        font-size: 14px;
+        color: #222222;
+        white-space: normal;
+        display: contents;
       }
     }
 
