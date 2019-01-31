@@ -12,6 +12,7 @@ import { DataConfig } from "../../app/data.config";
 import { BsRestful } from "../../service/restful/bs-restful";
 import {SyncService} from "../../service/sync.service";
 import {ContactsService} from "../../service/util-service/contacts.service";
+import {WorkService} from "../../service/work.service";
 
 /**
  * Generated class for the AlPage page.
@@ -78,6 +79,7 @@ export class AlPage {
               private webSocketService: WebsocketService,
               private sync:SyncService,
               private _ease: RoundProgressEase,
+              private work:WorkService,
               private ContactsService: ContactsService) {
     this.text="正在初始化";
   }
@@ -195,7 +197,8 @@ export class AlPage {
         console.log("al :: 定时同步");
         this.sync.syncTime();
       }
-
+      console.log("al ::定时查询闹铃");
+      this.work.setColckWork();
     }).then(data => {
         //进入主页
         //loading.dismiss();

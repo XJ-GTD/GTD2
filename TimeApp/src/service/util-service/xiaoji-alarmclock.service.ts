@@ -53,7 +53,7 @@ export class XiaojiAlarmclockService {
 
   public setAlarmClock(date: string, scheduleName: string) {
 
-    //data 入参格式 yyyy-MM-dd HH:ss
+    //data 入参格式 YYYY/MM/DD HH:ss
     this.formatDate(date);
 
     //铃声设置
@@ -149,7 +149,7 @@ export class XiaojiAlarmclockService {
 
     this.date = date.split(" ");
 
-    this.dateOfYMD = this.date[0].split("-"); //分割年月日
+    this.dateOfYMD = this.date[0].split("/"); //分割年月日
     this.dateOfHM = this.date[1].split(":");  //分割时分
 
     this.year = parseInt(this.dateOfYMD[0]);

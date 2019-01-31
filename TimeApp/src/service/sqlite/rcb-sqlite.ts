@@ -43,15 +43,20 @@ export class RcbSqlite{
    * @param {string} fh 是否完成0未完成，1完成
    * @returns {Promise<any>}
    */
-  addLbData(sI:string,tk:string,cft:string,rm:string,ac:string,fh:string):Promise<RcbModel>{
+  addLbData(rc:RcEntity,tk:string,cft:string,rm:string,ac:string,fh:string):Promise<RcbModel>{
     return new Promise((resolve, reject) => {
       let en = new RcbModel();
       en.id = this.util.getUuid();
-      en.sI=sI;
+      en.sI=rc.sI;
       en.tk=tk;
       en.cft=cft;
       en.rm=rm;
-      en.ac=ac;
+      if(ac && ac != null && ac != ''){
+        en.ac=ac;
+        let sdt = new Date(rc.sd).getTime - Number(en.ac) * 60 * 1000;
+        en.dt=moment(sdt).format('YYYY/MM/DD HH:mm')
+      }
+
       en.fh=fh;
       if(en.tn != null && en.tn != ''){
         this.baseSqlite.executeSql(en.rpsq,[]).then(data=>{
@@ -82,24 +87,26 @@ export class RcbSqlite{
    * @param {string} fh 是否完成0未完成，1完成
    * @returns {Promise<any>}
    */
-  updateLbData(subId:string,sI:string,tk:string,cft:string,rm:string,ac:string,fh:string):Promise<any>{
+  updateLbData(subId:string,rc:RcEntity,tk:string,cft:string,rm:string,ac:string,fh:string):Promise<any>{
     return new Promise((resolve, reject) => {
       if(tk != '' && tk !=null){
         let rcb = new RcbModel();
-        rcb.sI = sI;
+        rcb.sI = rc.sI;
         rcb.cft = cft;
         rcb.rm=rm;
-        rcb.ac=ac;
+        if(ac && ac != null && ac != ''){
+          rcb.ac=ac;
+          let sdt = new Date(rc.sd).getTime - Number(rcb.ac) * 60 * 1000;
+          rcb.dt=moment(sdt).format('YYYY/MM/DD HH:mm')
+        }
         rcb.fh=fh;
         rcb.tk = tk;
         console.log('----worksqlite updateLbData 先删除原来标签子表----');
-        let rc = new RcEntity();
-        rc.sI=sI;
-        this.getRcbSql(sI).then(data=>{
+        this.getRcbSql(rc.sI).then(data=>{
           if(data && data.rows && data.rows.length>0){
             let oldRcb:RcbModel = new RcbModel();
             oldRcb.id = data.rows.item(0).id;
-            oldRcb.sI =sI;
+            oldRcb.sI =rc.sI;
             oldRcb.tk = data.rows.item(0).tk;
             if(rcb.tk != tk){
               return this.baseSqlite.delete(rcb);
@@ -137,17 +144,19 @@ export class RcbSqlite{
    * @param {string} fh 是否完成0未完成，1完成
    * @returns {Promise<any>}
    */
-  updateLbDataMq(sI:string,rcb:RcbModel):Promise<any>{
+  updateLbDataMq(rc:RcEntity,rcb:RcbModel):Promise<any>{
     return new Promise((resolve, reject) => {
       if(rcb.tk != '' && rcb.tk !=null){
         console.log('----worksqlite updateLbData 先删除原来标签子表----');
-        let rc = new RcEntity();
-        rc.sI=sI;
-        this.getRcbSql(sI).then(data=>{
+        if(rcb.ac && rcb.ac != null && rcb.ac != ''){
+          let sdt = new Date(rc.sd).getTime - Number(rcb.ac) * 60 * 1000;
+          rcb.dt=moment(sdt).format('YYYY/MM/DD HH:mm')
+        }
+        this.getRcbSql(rc.sI).then(data=>{
           if(data && data.rows && data.rows.length>0){
             let oldRcb:RcbModel = new RcbModel();
             oldRcb.id = data.rows.item(0).id;
-            oldRcb.sI =sI;
+            oldRcb.sI =rc.sI;
             oldRcb.tk = data.rows.item(0).tk;
             if(rcb.tk != oldRcb.tk){
               return this.baseSqlite.delete(oldRcb);
@@ -193,9 +202,15 @@ export class RcbSqlite{
    * @param {RcbModel} en 子表对象
    * @returns {Promise<any>}
    */
-  addLbSub(sI:string,en:RcbModel):Promise<RcbModel>{
+  addLbSub(rc:RcEntity,en:RcbModel):Promise<RcbModel>{
     return new Promise((resolve, reject) => {
+      en.sI=rc.sI;
+
       if(en.tn != null && en.tn != ''){
+        if(en.ac && en.ac != null && en.ac != ''){
+          let sdt = new Date(rc.sd).getTime - Number(en.ac) * 60 * 1000;
+          en.dt=moment(sdt).format('YYYY/MM/DD HH:mm')
+        }
         this.baseSqlite.executeSql(en.rpsq,[]).then(data=>{
           //添加本地日程到同步表
           console.log('------------- WorkSqlite addLbData 同步表--------------');

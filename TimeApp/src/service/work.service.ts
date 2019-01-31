@@ -124,6 +124,7 @@ export class WorkService {
       for(let ruu of ruList){
         ruL.push(ruu);
       }
+      ac='5';
       let bs = new BsModel();
       //先查询当前用户ID
       let rc = new RcEntity();
@@ -153,7 +154,7 @@ export class WorkService {
       this.workSqlite.save(rc).then(data=>{
           console.log("----- workService arc 添加日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 添加日程子表-------");
-          return this.rcbSqlite.addLbData(rc.sI,rc.lI,cft,rm,ac,'0');
+          return this.rcbSqlite.addLbData(rc,rc.lI,cft,rm,ac,'0');
         }).then(data=>{
           if(ruL && ruL.length>0){
             //转化接口对应的参与人参数
@@ -259,7 +260,7 @@ export class WorkService {
         .then(data=>{
           console.log("----- workService arc 添加日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 添加日程子表-------");
-          return this.rcbSqlite.addLbSub(rc.sI,rcb);
+          return this.rcbSqlite.addLbSub(rc,rcb);
         })
         .then(data=>{
           let ruL=new Array<RuModel>();
@@ -329,7 +330,7 @@ export class WorkService {
       this.workSqlite.update(rc).then(datau=>{
         console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(datau));
         console.log("----- workService arc 更新日程子表-------");
-        return this.rcbSqlite.updateLbData(subId,rc.sI,rc.lI,cft,rm,ac,'0');
+        return this.rcbSqlite.updateLbData(subId,rc,rc.lI,cft,rm,ac,'0');
       }).then(data=>{
         //转化接口对应的参与人参数
         if(ruL && ruL.length>0){
@@ -456,7 +457,7 @@ export class WorkService {
         .then(data=>{
           console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 更新日程子表-------");
-          return this.rcbSqlite.updateLbDataMq(rc.sI,rcb);
+          return this.rcbSqlite.updateLbDataMq(rc,rcb);
         })
         .then(data=>{
         console.log("------ WorkService arcMq() End ------------");
@@ -1127,4 +1128,19 @@ export class WorkService {
       })
     })
   }
+  /**
+   * 查询当前需设置的闹铃，并设置闹铃
+   * @param mm 提前mm分钟提醒
+   */
+  setColckWork(){
+      //定时查询需要设置的设置闹铃
+      setInterval(()=> {
+        // 每隔10秒  刷新时间
+        console.log('000000 更新');
+        this.workSqlite.setColckWork(5);
+        //this.time = (new Date().toTimeString()).substr(0,5); *60*5
+      }, 1000*60*5);
+
+  }
+
 }

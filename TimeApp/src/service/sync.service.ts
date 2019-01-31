@@ -220,7 +220,7 @@ export class SyncService {
       console.log('000000 更新');
       this.syncTimeUp();
       //this.time = (new Date().toTimeString()).substr(0,5); *60*5
-    }, 1000*60*2);
+    }, 1000*60*5);
   }
   /**
    * 定时更新接口
