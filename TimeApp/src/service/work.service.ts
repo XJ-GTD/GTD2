@@ -803,8 +803,8 @@ export class WorkService {
           sd.comment=data.rm;
           sd.repeatType=data.cft;
           sd.remindTime=data.ac;
-          sd.scheduleStartTime=data.sd.substr(11,5);
-          sd.scheduleStartDate=data.sd.substr(0,10);
+          sd.scheduleStartTime=data.sTime;
+          sd.scheduleStartDate=data.sDate;
           sd.scheduleDeadline=data.ed;
           sd.scheduleStatus = data.fh;
           sd.scheduleFinishDate=data.wd;
@@ -833,12 +833,13 @@ export class WorkService {
    */
   getds(sI:string):Promise<RcModel>{
     return new Promise((resolve, reject) =>{
-      let rc= new RcModel();
+      let rc:RcModel= new RcModel();
       console.log("----- WorkService getds(事件详情) start -----");
       this.workSqlite.getds(sI).then(data=>{
         console.log("----- WorkService getds(事件详情) result:" + JSON.stringify(data));
           if(data&&data.rows&&data.rows.length>0){
-            rc= data.rows.item(0);
+           // rc= data.rows.item(0);
+            Object.assign(rc,data.rows.item(0)); //beanCopybean
             let ru:RuModel = new RuModel();
 
             if(rc.uI != DataConfig.uInfo.uI){
