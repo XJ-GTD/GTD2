@@ -447,13 +447,13 @@ export class WorkSqlite{
         }
       }else if(cft=='2'){ //月
         sd = sd.substr(8,2);
-        if(sd== day.substr(8,2)){
+        if(sd<= day && sd== day.substr(8,2) && day<=ed){
           isTrue = true;
         }
       }else if(cft=='3'){ //周
         let sdz = new Date(sd).getDay();
         let dayz = new Date(day).getDay();
-        if(sd<=day && sdz == dayz){
+        if(sd<=day && sdz == dayz  && day<=ed){
           isTrue = true;
         }
       }else if(cft=='4'){ //日
