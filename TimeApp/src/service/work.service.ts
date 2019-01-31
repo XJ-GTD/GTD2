@@ -984,7 +984,7 @@ export class WorkService {
       console.log("  ------ WorkService 讯飞语音添加日程: 匹配参与人 ----");
       this.relmemServ.getrus('','','','','0').then(data=>{
         console.log("  ------ WorkService 讯飞语音添加日程: 匹配参与人查询结果：" + JSON.stringify(data));
-        if(data && data.code==0&&data.us.length>0){
+        if(py && data && data.code==0&&data.us.length>0){
           for(let ru of data.us){
             let ranpy = ru.ranpy;
             let rnpy = ru.rNpy;
