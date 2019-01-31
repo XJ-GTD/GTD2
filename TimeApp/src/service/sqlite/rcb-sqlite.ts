@@ -210,7 +210,7 @@ export class RcbSqlite{
       if(en.tn != null && en.tn != ''){
         if(en.ac && en.ac != null && en.ac != ''){
           let sdt = new Date(rc.sd).getTime() - Number(en.ac) * 60 * 1000;
-          en.dt=moment(sdt).format('YYYY/MM/DD HH:mm')
+          en.dt=moment(sdt).format('YYYY/MM/DD HH:mm');
         }
         this.baseSqlite.executeSql(en.rpsq,[]).then(data=>{
           //添加本地日程到同步表

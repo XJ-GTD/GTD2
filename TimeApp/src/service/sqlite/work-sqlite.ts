@@ -384,8 +384,8 @@ export class WorkSqlite{
       let agodt = moment(agodate).format('YYYY/MM/DD HH:mm').substr(11,16); //mm分钟前
       let sql= this.getRcSql('gf.lau,') + ' left join GTD_F gf on gf.lai=gc.lI '+
         ' where (substr(gc.sd,1,10) <= "'+today+'" and substr(gc.ed,1,10)>= "'+today+'") ' +
-        ' and (gd.uI = "'+DataConfig.uInfo.uI+'" and dt is not null and dt !=""'+
-        ' and (substr(lbd.dt,12,5) <= "'+agodt+'" and substr(lbd.dt,12,5)>= "'+dt+'") ';
+        ' and gd.uI = "'+DataConfig.uInfo.uI+'" '
+        +  ' and (substr(lbd.dt,12,5) >= "'+agodt+'" and substr(lbd.dt,12,5)<= "'+dt+'") ';
       let rco = new RcoModel();
       let rcL = new Array<RcModel>();
       rco.rcL = rcL;
@@ -397,8 +397,9 @@ export class WorkSqlite{
           for (let i = 0; i < data.rows.length; i++) {
             let res:RcModel = data.rows.item(i);
             //设置闹铃
-            if(this.isymwd(res.cft,today,res.sd,res.ed) && res.ac != '' && res.ac !=null){
-              res.dt = today + dt.substr(10,6);
+            if(this.isymwd(res.cft,today,res.sd,res.ed) && res.dt != '' && res.dt !=null){
+              res.dt = today + res.dt.substr(10,6);
+              console.log("设置闹铃主题："+res.sN+ ",闹铃时间："+res.dt);
               this.xiaoji.setAlarmClock(res.dt,res.sN);
             }
 

@@ -1136,10 +1136,10 @@ export class WorkService {
       //定时查询需要设置的设置闹铃
       setInterval(()=> {
         // 每隔10秒  刷新时间
-        console.log('000000 更新');
+        console.log('================= 定时设闹铃开始 =================');
         this.workSqlite.setColckWork(5);
         //this.time = (new Date().toTimeString()).substr(0,5); *60*5
-      }, 1000*60*5);
+      }, 1000*60*2);
 
   }
 
