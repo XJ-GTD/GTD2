@@ -57,7 +57,7 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
                 <!--<ion-icon name="paper" item-start class="ico-img"></ion-icon>-->
                 <!--<h2>{{schedule.comment}}</h2 >-->
               <!--</ion-item>-->
-              <ion-item *ngIf="schedule.group.length > 0" class="group" no-padding>
+              <ion-item *ngIf="schedule.group && schedule.group.length > 0" class="group" no-padding>
                 <ion-icon name="contacts" item-start class="ico-img"></ion-icon>
                 <div item-left margin-left *ngFor="let rc of schedule.group" >
                   <div style="display: flow-root">
