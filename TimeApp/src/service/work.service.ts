@@ -803,7 +803,8 @@ export class WorkService {
           sd.comment=data.rm;
           sd.repeatType=data.cft;
           sd.remindTime=data.ac;
-          sd.scheduleStartTime=data.sd;
+          sd.scheduleStartTime=data.sd.substr(12,5);
+          sd.scheduleStartDate=data.sd.substr(0,10);
           sd.scheduleDeadline=data.ed;
           sd.scheduleStatus = data.fh;
           sd.scheduleFinishDate=data.wd;
