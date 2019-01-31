@@ -45,7 +45,7 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
               <ion-icon name="pricetag" item-start class="ico-img"></ion-icon>
               <h2>{{schedule.labelName}}</h2>
             </ion-item>
-            <button (click)="editSchedule(schedule)" class="buttonWan" item-right>编辑</button>
+            <button (click)="editSchedule(schedule)" class="buttonWan" item-right>详细</button>
           </ion-card-header>
           <ion-card-content>
             <ion-list>
@@ -53,10 +53,10 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
                 <ion-icon name="calendar" item-start class="ico-img"></ion-icon>
                 <h2>{{schedule.scheduleName}}</h2>
               </ion-item>
-              <ion-item class="content" no-padding>
-                <ion-icon name="paper" item-start class="ico-img"></ion-icon>
-                <h2>{{schedule.comment}}</h2 >
-              </ion-item>
+              <!--<ion-item class="content" no-padding>-->
+                <!--<ion-icon name="paper" item-start class="ico-img"></ion-icon>-->
+                <!--<h2>{{schedule.comment}}</h2 >-->
+              <!--</ion-item>-->
               <ion-item *ngIf="schedule.group.length > 0" class="group" no-padding>
                 <ion-icon name="contacts" item-start class="ico-img"></ion-icon>
                 <div item-left margin-left *ngFor="let rc of schedule.group" >
