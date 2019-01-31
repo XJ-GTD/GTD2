@@ -303,7 +303,9 @@ export class WorkSqlite{
         console.log(' ---- WorkSqlite getOd 查询sqlite日历数据 ---- ');
         if(data && data.rows && data.rows.length>0){
           for (let i = 0; i < data.rows.length; i++) {
-            rcL.push(data.rows.item(i));
+            let rc:RcModel = new RcModel();
+            Object.assign(rc,data.rows.item(i));
+            rcL.push(rc);
           }
         }
         console.log(' ---- WorkSqlite getMBs 查询本地日历数据 ---- ');
@@ -325,7 +327,8 @@ export class WorkSqlite{
               // }else if(res.ed.substr(0,10) == d){
               //   res.scheduleStartTime = res.ed.substr(11,16);
               // }else{
-                res.scheduleStartTime=res.sd.substr(11,16);
+                res.scheduleStartTime=res.sTime;
+                res.scheduleStartDate=res.sDate;
               // }
               if(res.lau){
                 res.labelColor = res.lau;
