@@ -92,18 +92,15 @@ import {Select} from "ionic-angular/components/select/select";
       <ion-label>时间</ion-label>
       <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="startTime"></ion-datetime>
     </button>
-    <el-collapse [model]="[1]" [accordion]="true">
-      <el-collapse-item label="重复类型" value="1" *ngIf="showA" class="padding-left-0 height56">
-        <ng-template #label>
-          <img src="./assets/imgs/4.png" item-start/>
-          <ion-label>重复类型</ion-label>
-          <i class="header-icon el-icon-information"></i>
-        </ng-template>
+    <button ion-item class="padding-left-0 height56">
+      <img src="./assets/imgs/4.png" item-start/>
+      <ion-label>重复类型</ion-label>
 
-        <ion-select item-end [(ngModel)]="repeatType" (ionChange)="chengeType()" >
-          <ion-option  *ngFor="let ztd of repeatTypes" value="{{ztd.zk}}">{{ztd.zkv}}</ion-option>
-        </ion-select>
-      </el-collapse-item>
+      <ion-select item-end [(ngModel)]="repeatType" (ionChange)="chengeType()" >
+        <ion-option  *ngFor="let ztd of repeatTypes" value="{{ztd.zk}}">{{ztd.zkv}}</ion-option>
+      </ion-select>
+    </button>
+    <el-collapse [model]="[1]" [accordion]="true">
       <el-collapse-item label="反馈 Feedback" value="2">
         <div>控制反馈：通过界面样式和交互动效让用户可以清晰的感知自己的操作；</div>
         <div>页面反馈：操作后，通过页面元素的变化清晰地展现当前状态。</div>

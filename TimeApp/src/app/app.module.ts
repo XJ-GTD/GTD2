@@ -67,12 +67,16 @@ import { Vibration } from "@ionic-native/vibration";
 import { NativeAudio } from "@ionic-native/native-audio";
 import { SystemSettingService } from "../service/util-service/system.setting.service";
 import {RcbSqlite} from "../service/sqlite/rcb-sqlite";
+import { ElModule } from 'element-angular'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { RouterModule } from '@angular/router'
 
 @NgModule({
   declarations: [
     MyApp,
   ],
   imports: [
+    ElModule,
     BrowserModule,
     IonicModule.forRoot(MyApp, {
       tabsHideOnSubPages: 'true',
@@ -82,12 +86,15 @@ import {RcbSqlite} from "../service/sqlite/rcb-sqlite";
     }),
     IonicStorageModule.forRoot(),
     HttpClientModule,
+    BrowserAnimationsModule,
+    RouterModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
   ],
   providers: [
+    ElModule,
     HTTP,
     Network,
     Contacts,
