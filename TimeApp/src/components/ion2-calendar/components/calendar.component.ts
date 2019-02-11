@@ -502,4 +502,9 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
       }
     })
   }
+
+  flashMonth(date:number){
+    this.initOpt();
+    this.monthOpt = this.createMonth(date);
+  }
 }

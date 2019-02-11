@@ -194,6 +194,8 @@ export class SaPage {
   isEdit:boolean = false;
   canEdit: boolean = true;
 
+  dateStr:string;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private paramsService: ParamsService,
               public modalCtrl: ModalController,
@@ -207,6 +209,7 @@ export class SaPage {
   }
 
   ionViewWillLeave() {
+    this.event.publish("flashDay")
     if(this.alert != undefined){
       this.alert.dismiss();
     }
@@ -234,7 +237,9 @@ export class SaPage {
   }
 
   ionViewWillEnter(){
-    this.schedule = this.navParams.data
+    this.schedule = this.navParams.get("schedule");
+    this.event = this.navParams.get("event");
+    this.dateStr = this.navParams.get("dateStr");
     console.log("传入日程数据 ::" + JSON.stringify(this.schedule));
     this.rc = new RcModel();
     //查询日程详情

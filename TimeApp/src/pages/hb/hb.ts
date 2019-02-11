@@ -77,8 +77,8 @@ import {WorkService} from "../../service/work.service";
                 </ion-item>
                 <ion-item>
                   <ion-buttons item-end>
-                      <button class="cc9" style="color: #666666;" (click)="cancelMethod()">取消</button>
-                      <button class="cc9" style="color: #222222;" (click)="confirmatoryMethod(message, message.tg)">确认</button>
+                      <button class="cc9" style="color: #666666;" (click)="cancelMethod(message)"  [disabled]="message.op">取消</button>
+                      <button class="cc9" style="color: #222222;" (click)="confirmatoryMethod(message, message.tg)" [disabled]="message.op" >确认</button>
                     </ion-buttons>
                 </ion-item>
               </ion-list>
@@ -298,6 +298,8 @@ export class HbPage {
       textX.tt = DataConfig.S1;
       textX.at = $event.at;
       textX.tg = $event.tg;
+      console.log("是否操作：" +　$event.op);
+      textX.op = false;
       this.messages.unshift(textX);
       this.xiaojiSpeech.speakText(textX.at, success => {
         data.tt = $event.tt;
@@ -350,7 +352,9 @@ export class HbPage {
 
   /*=======================业务逻辑 start=========================*/
   private confirmatoryMethod(aiui: AiuiModel, tg: string) {
-
+    console.log("test:" + JSON.stringify(aiui))
+    aiui.op = true;
+    console.log("test:" + JSON.stringify(aiui))
     if(tg == "0") {
       this.createSchedule(aiui.sc)
     } else if (tg == "1") {
@@ -392,7 +396,8 @@ export class HbPage {
 
   }
 
-  private cancelMethod() {
+  private cancelMethod(aiui: AiuiModel) {
+    aiui.op = true;
     let textX = new AiuiModel();
     textX.tt = this.S1;
     // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));

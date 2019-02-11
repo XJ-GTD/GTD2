@@ -98,6 +98,8 @@ export class Ha01Page {
 
   active: number = 0;//当前页面
 
+  event:any;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private util: UtilService,
@@ -163,6 +165,7 @@ export class Ha01Page {
 
   //查询日程
   showScheduleLs($event) {
+    this.event = $event;
     let eventDate = new Date($event.time);
     let year = eventDate.getFullYear();
     let month = eventDate.getMonth() + 1;
@@ -264,7 +267,9 @@ export class Ha01Page {
     setTimeout(() => {
       this.noShow = true;
     }, 100);
-    this.navCtrl.push("SaPage", schedule);
+    let eventDate = new Date(this.event.time);
+    let tmp = moment(eventDate).format("YYYY-MM-DD");
+    this.navCtrl.push("SaPage", {'schedule':schedule,'dateStr':tmp,'event':this.event});
   }
 
 
