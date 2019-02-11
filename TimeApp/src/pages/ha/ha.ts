@@ -63,6 +63,7 @@ export class HaPage {
 
   showDay: string;
   showDay2: string;
+  selectDay: Date;
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
   options: CalendarComponentOptions = {
     pickMode: 'single',
@@ -80,6 +81,7 @@ export class HaPage {
   ionViewDidLoad() {
 
     let eventDate = new Date();
+    this.selectDay = eventDate;
     let year = eventDate.getFullYear();
     let month = eventDate.getMonth() + 1;
     let day = eventDate.getDate();
@@ -117,6 +119,7 @@ export class HaPage {
       return;
     }
     let eventDate = new Date($event.time);
+    this.selectDay = eventDate;
     let year = eventDate.getFullYear();
     let month = eventDate.getMonth() + 1;
     let day = eventDate.getDate();
@@ -136,6 +139,11 @@ export class HaPage {
 
   openVoice() {
     let tab1RootModal = this.modalCtr.create(PageConfig.HB_PAGE);
+    tab1RootModal.onDidDismiss(()=>{
+      //刷新月份事件标识
+      console.log(this.selectDay)
+      this.ion2calendar.flashMonth(this.selectDay.getTime());
+    });
     tab1RootModal.present();
   }
 

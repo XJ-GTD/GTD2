@@ -194,6 +194,9 @@ export class SaPage {
   isEdit:boolean = false;
   canEdit: boolean = true;
 
+  dateStr:string;
+  event:any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private paramsService: ParamsService,
               public modalCtrl: ModalController,
@@ -201,12 +204,17 @@ export class SaPage {
               private alarmClock: XiaojiAlarmclockService,
               private alertCtrl: AlertController,
               private relmemService: RelmemService,
-              private event: Events,
+              private events: Events,
               private utilService: UtilService) {
     this.rc = new RcModel();
   }
 
   ionViewWillLeave() {
+    //日程修改后可能更新两个日期
+    this.events.publish("flashDay",{day:this.dateStr,event:this.event});
+    // this.events.publish("flashDay",{day:this.starttmp,event:this.event});
+
+
     if(this.alert != undefined){
       this.alert.dismiss();
     }
@@ -234,7 +242,10 @@ export class SaPage {
   }
 
   ionViewWillEnter(){
-    this.schedule = this.navParams.data
+    this.schedule = this.navParams.get("schedule");
+    this.event = this.navParams.get("event");
+    this.dateStr = this.navParams.get("dateStr");
+    // this.schedule = this.navParams.data;
     console.log("传入日程数据 ::" + JSON.stringify(this.schedule));
     this.rc = new RcModel();
     //查询日程详情
@@ -252,7 +263,7 @@ export class SaPage {
   backButtonClick = (e: UIEvent) => {
     // 重写返回方法
     this.paramsService.schedule=null;
-    this.event.publish('noshow');
+    // this.events.publish('noshow');
     this.navCtrl.pop();
   };
 
@@ -349,8 +360,8 @@ export class SaPage {
     console.log(JSON.stringify(this.rc))
     this.work.drc(this.rc.sI,this.rc.sa).then(data=>{
       console.log("删除成功 :: " );
-      this.event.publish("reloadHa01");
-      this.event.publish('noshow');
+      this.events.publish("reloadHa01");
+      this.events.publish('noshow');
       this.navCtrl.pop();
     }).catch(reason=>{
       console.log("删除失败 :: " );
