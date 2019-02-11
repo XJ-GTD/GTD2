@@ -111,7 +111,7 @@ import {Select} from "ionic-angular/components/select/select";
       <div class="titlecss" text-center>选择计划</div> 
       <div class="flexCss"> 
         <div *ngFor="let jh of jhs" class="contentcss"> 
-          <button name="labJh" style="height:25px ; font-size: 1.5rem;" class="jhCss" (click)="selectJh($event,jh)">{{jh.jn}}</button> 
+          <button name="labJh" class="jhCss" (click)="selectJh($event,jh)">{{jh.jn}}</button> 
         </div> 
       </div> 
     </div> 
@@ -122,7 +122,7 @@ import {Select} from "ionic-angular/components/select/select";
       <div class="titlecss" text-center>选择标签更便捷的管理时间哦</div> 
       <div class="flexCss"> 
         <div *ngFor="let lb of lbs" class="contentcss"> 
-          <button name="labLb"  class="jhCss" (click)="selectLb($event,lb);">{{lb.lan}}</button> 
+          <button name="labLb" class="jhCss" (click)="selectLb($event,lb);">{{lb.lan}}</button> 
         </div> 
       </div> 
     </div> 
@@ -247,10 +247,6 @@ export class SbPage {
 
     this.repeatTypes = DataConfig.ZTD_MAP.get(DataConfig.REPEAT_TYPE); //重复类型
 
-    // setTimeout(()=>{
-    //   console.log(this.alert);
-    //   this.alert.dismiss();
-    // },10000)
   }
 
   //查询系统标签

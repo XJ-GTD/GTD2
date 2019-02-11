@@ -269,7 +269,8 @@ export class Ha01Page {
     }, 100);
     let eventDate = new Date(this.event.time);
     let tmp = moment(eventDate).format("YYYY-MM-DD");
-    this.navCtrl.push("SaPage", {'schedule':schedule,'dateStr':tmp,'event':this.event});
+    // this.navCtrl.push("SaPage", schedule);
+    this.navCtrl.push("SaPage",{"schedule":schedule,"dateStr":tmp,"event":this.event});
   }
 
 
