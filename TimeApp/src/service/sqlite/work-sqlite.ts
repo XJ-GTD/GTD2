@@ -17,6 +17,7 @@ import * as moment from "moment";
 import {RcoModel} from "../../model/out/rco.model";
 import {SyncSqlite} from "./sync-sqlite";
 import {RcbSqlite} from "./rcb-sqlite";
+import {XiaojiAlarmclockService} from "../util-service/xiaoji-alarmclock.service";
 
 
 /**
@@ -30,6 +31,7 @@ export class WorkSqlite{
   constructor( private baseSqlite: BaseSqlite,
             private msSqlite:MsSqlite,
             private readlocal:ReadlocalService,
+            private xiaoji: XiaojiAlarmclockService,
             private sync:SyncSqlite,
             private util:UtilService) {
 
@@ -303,7 +305,9 @@ export class WorkSqlite{
         console.log(' ---- WorkSqlite getOd 查询sqlite日历数据 ---- ');
         if(data && data.rows && data.rows.length>0){
           for (let i = 0; i < data.rows.length; i++) {
-            rcL.push(data.rows.item(i));
+            let rc:RcModel = new RcModel();
+            Object.assign(rc,data.rows.item(i));
+            rcL.push(rc);
           }
         }
         console.log(' ---- WorkSqlite getMBs 查询本地日历数据 ---- ');
@@ -317,6 +321,11 @@ export class WorkSqlite{
             if(this.isymwd(res.cft,d,res.sd,res.ed)){
               res.scheduleId = res.sI;
               res.scheduleName = res.sN;
+              if(!res.sI || res.sI== '' || res.sI == null){
+                res.scheduleIsLocal = true;
+              }else{
+                res.scheduleIsLocal = false;
+              }
               if(res.san != null){
                 res.scheduleName =res.son;
               }
@@ -325,7 +334,8 @@ export class WorkSqlite{
               // }else if(res.ed.substr(0,10) == d){
               //   res.scheduleStartTime = res.ed.substr(11,16);
               // }else{
-                res.scheduleStartTime=res.sd.substr(11,16);
+                res.scheduleStartTime=res.sTime;
+                res.scheduleStartDate=res.sDate;
               // }
               if(res.lau){
                 res.labelColor = res.lau;
@@ -368,9 +378,9 @@ export class WorkSqlite{
 
   /**
    * 查询当前需设置的闹铃
-   * @param d 'yyyy/MM/dd'
+   * @param mm 提前mm分钟提醒
    */
-  getSetColckWork(mm:number):Promise<RcoModel>{
+  setColckWork(mm:number):Promise<RcoModel>{
     return new Promise((resolve, reject) => {
       let date = new Date().getTime(); //当前日期时间
       let agodate = date - mm * 60 * 1000;
@@ -379,8 +389,8 @@ export class WorkSqlite{
       let agodt = moment(agodate).format('YYYY/MM/DD HH:mm').substr(11,16); //mm分钟前
       let sql= this.getRcSql('gf.lau,') + ' left join GTD_F gf on gf.lai=gc.lI '+
         ' where (substr(gc.sd,1,10) <= "'+today+'" and substr(gc.ed,1,10)>= "'+today+'") ' +
-        ' and (gd.uI = "'+DataConfig.uInfo.uI+'" or gc.uI= "'+DataConfig.uInfo.uI+'") and dt is not null and dt !=""'+
-        ' and (substr(lbd.dt,11,16) <= "'+agodt+'" and substr(lbd.dt,11,16)>= "'+dt+'") ';
+        ' and gd.uI = "'+DataConfig.uInfo.uI+'" '
+        +  ' and (substr(lbd.dt,12,5) >= "'+agodt+'" and substr(lbd.dt,12,5)<= "'+dt+'") ';
       let rco = new RcoModel();
       let rcL = new Array<RcModel>();
       rco.rcL = rcL;
@@ -391,8 +401,12 @@ export class WorkSqlite{
         if(data && data.rows && data.rows.length>0){
           for (let i = 0; i < data.rows.length; i++) {
             let res:RcModel = data.rows.item(i);
-            let nd = this.getClockDate(res.cft,today,res.sd,res.ed);
-            //nds
+            //设置闹铃
+            if(this.isymwd(res.cft,today,res.sd,res.ed) && res.dt != '' && res.dt !=null){
+              res.dt = today + res.dt.substr(10,6);
+              console.log("设置闹铃主题："+res.sN+ ",闹铃时间："+res.dt);
+              this.xiaoji.setAlarmClock(res.dt,res.sN);
+            }
 
           }
         }
@@ -444,13 +458,13 @@ export class WorkSqlite{
         }
       }else if(cft=='2'){ //月
         sd = sd.substr(8,2);
-        if(sd== day.substr(8,2)){
+        if(sd<= day && sd== day.substr(8,2) && day<=ed){
           isTrue = true;
         }
       }else if(cft=='3'){ //周
         let sdz = new Date(sd).getDay();
         let dayz = new Date(day).getDay();
-        if(sd<=day && sdz == dayz){
+        if(sd<=day && sdz == dayz  && day<=ed){
           isTrue = true;
         }
       }else if(cft=='4'){ //日
@@ -462,43 +476,6 @@ export class WorkSqlite{
       isTrue = true;
     }
     return isTrue;
-  }
-
-  /**
-   * 获取当前日程的闹铃时间
-   * @param {string} cft 重复类型
-   * @param {string} day 当前日期
-   * @param {string} sd 开始日期
-   * @param {string} nd 闹铃时间
-   * @returns {boolean}
-   */
-  getClockDate(cft:string,day:string,sd:string,nd:string):string{
-    let isTrue = false;
-    if(cft && cft != null && cft !='undefined'){
-      if(cft=='1'){//年
-        if(sd.substr(4,10)== day.substr(4,10)){
-          isTrue = true;
-        }
-      }else if(cft=='2'){ //月
-        if(sd.substr(4,6)== day.substr(4,6)){
-          isTrue = true;
-        }
-      }else if(cft=='3'){ //周
-        let sdz = new Date(sd).getDay();
-        let dayz = new Date(day).getDay();
-        if(sdz == dayz){
-          isTrue = true;
-        }
-      }else if(cft=='4'){ //日
-        isTrue = true;
-      }
-    }else{
-      isTrue = true;
-    }
-    if(isTrue){
-      nd = day + " " + nd.substr(11,16);
-    }
-    return nd;
   }
 
   /**

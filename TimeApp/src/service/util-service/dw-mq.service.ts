@@ -316,10 +316,21 @@ export class DwMqService {
     let sI = data.si;
     let cft = data.cft;
     //标签子表
-    let da:any = data;
-    let rcb:RcbModel = da;
+    let rcb:RcbModel = new RcbModel();
     rcb.sI = data.si;
     rcb.tk = data.lb;
+    rcb.id = data.id;
+    rcb.cft= data.cft;
+    if(data.rm){
+      rcb.rm = data.rm;
+    }
+    if(data.fh){
+      rcb.fh =data.fh;
+    }
+    if(data.ac){
+      rcb.ac =data.ac;
+    }
+    rcb.wd=data.wd;
     console.log("----- DwMqService scheduleCreate(业务：日程添加) start---- ");
     if (rui != DataConfig.uInfo.uI) {
       this.work.arcMq(sI, rui, ct, sd, ed, lbI, rcb).then(data => {
@@ -351,13 +362,24 @@ export class DwMqService {
     let rui = data.us;
     let sI = data.si;
     //标签子表
-    let da:any = data;
-    let rcb:RcbModel = da;
+    let rcb:RcbModel = new RcbModel();
     rcb.sI = data.si;
     rcb.tk = data.lb;
+    rcb.id=data.id;
+    rcb.cft=data.cft;
+    if(data.rm){
+      rcb.rm = data.rm;
+    }
+    if(data.fh){
+      rcb.fh =data.fh;
+    }
+    if(data.ac){
+      rcb.ac =data.ac;
+    }
+    rcb.wd=data.wd;
     console.log("----- DwMqService scheduleCreate(业务：日程更新) start---- ");
     let ms = new MsEntity();
-    this.work.urcMq(sI, rui, ct, sd, ed, lbI, '', '', '', '').then(data => {
+    this.work.urcMq(sI, rui, ct, sd, ed, lbI, rcb).then(data => {
       console.log("----- DwMqService scheduleCreate(业务：日程更新) end ---- ");
       //先删除已存在的
       ms.rI = sI;

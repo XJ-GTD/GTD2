@@ -78,6 +78,9 @@ export class WsResDataModel {
   }
 
   get st(): string {
+    if(this._st != null && this._st !=''){
+      this._st = this._st.replace('T','')
+    }
     return this._st;
   }
 
@@ -86,6 +89,9 @@ export class WsResDataModel {
   }
 
   get et(): string {
+    if(this._et != null && this._et !=''){
+      this._et = this._et.replace('T','')
+    }
     return this._et;
   }
 
