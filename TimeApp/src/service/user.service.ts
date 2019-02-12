@@ -55,6 +55,11 @@ export class UserService {
         bs = data;
         return  this.userSqlite.update(u);
       }).then(data=>{
+        return  this.baseSqlite.getOne(u);
+      }).then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          Object.assign(u,data.rows.item(0));
+        }
         console.log("------- 4.UserService sqlite upu user end: " + JSON.stringify(data));
         console.log("------- 用户更新成功，开始添加到同步表 ------- ");
         return  this.userSqlite.syncUTime(u,DataConfig.AC_T);

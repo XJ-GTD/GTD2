@@ -251,15 +251,41 @@ export class LsmService {
           return this.basesqlite.update(u);
         }
       }).then(data => {
-          if(base.code == ReturnConfig.SUCCESS_CODE) {
-            console.log("------lsm login 短信登录成功请求开始同步服务器数据 -------");
-          }
-          return this.sync.loginSync();
-        })
+        console.log("------lsm login 登录请求返回结果后更新rc日程用户ID-------");
+        let rc=new RcEntity();
+        rc.uI=DataConfig.uInfo.uI;
+        return this.basesqlite.update(rc);
+      })
         .then(data=>{
-          console.log("------lsm login 短信登录成功请求同步服务器数据结束 -------");
-          resolve(base);
-        })
+          let rcp=new RcpEntity();
+          rcp.uI=DataConfig.uInfo.uI;
+          console.log("------lsm login 登录请求返回结果后更新rcp日程参与人用户ID-------");
+          return this.basesqlite.update(rcp);
+        }).then(data=>{
+        console.log("------lsm login 登录请求返回结果后更新sync同步表用户ID-------");
+        let sql = this.syncSqlite.syncUpuISql();
+        return this.basesqlite.importSqlToDb(sql);
+      }).then(data=>{
+        if(base.code == ReturnConfig.SUCCESS_CODE){
+          console.log("------lsm login 登录成功请求开始同步服务器数据 -------");
+          return this.sync.loginSync();
+        }
+      }).then(data=>{
+        if(base.code == ReturnConfig.SUCCESS_CODE) {
+          console.log("------lsm login 登录成功请求同步服务器数据结束 result= " + JSON.stringify(data));
+        }
+        console.log("------lsm login 登录成功开始检索通讯录联系人 -------");
+        if(this.util.isMobile()){
+          return this.contacts.getContacts();
+        }
+      }).then(data=>{
+        if(this.util.isMobile()){
+          if(data.code == 0){
+            console.log("------lsm login 登录成功结束检索通讯录联系人" );
+          }
+        }
+        resolve(base);
+      })
         .catch(eu => {
         base.code = 1;
         base.message = eu.message;
