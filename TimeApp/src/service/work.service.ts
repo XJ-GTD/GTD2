@@ -383,13 +383,18 @@ export class WorkService {
             let ru: RuModel = rs.item(i);
             let isExsit = false;
             for(let nru of ruL){
-              if(ru.rI=nru.rI){
+              if(nru.rI != '' && ru.rI != '' && ru.rI==nru.rI ){
+                isExsit = true;
+                nru.pI = ru.pI;
+                break;
+              }
+              if(ru.id==nru.id){
                 isExsit = true;
                 nru.pI = ru.pI;
                 break;
               }
             }
-            if(!isExsit){
+            if(!isExsit && ru.rI != DataConfig.uInfo.uI){
               dRul.push(ru);
             }
           }

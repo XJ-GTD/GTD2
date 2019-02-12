@@ -431,9 +431,9 @@ export class DwMqService {
     let rc = data.mb;
     let hiu = data.hi;
     let rF = '0';
-    if (data.ia) {
-      rF = '1'
-    }
+    // if (data.ia) {
+    //   rF = '1'
+    // }
     console.log("----- DwMqService relationAdd(业务：联系人添加) start---- ");
     this.relmem.aruMq(aui, ran, rN, rc, hiu, rF).then(data => {
       console.log("----- DwMqService relationAdd(业务：联系人添加) end : " + JSON.stringify(data))

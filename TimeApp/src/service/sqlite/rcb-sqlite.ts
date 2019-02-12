@@ -102,23 +102,29 @@ export class RcbSqlite{
         rcb.fh=fh;
         rcb.tk = tk;
         console.log('----worksqlite updateLbData 先删除原来标签子表----');
+        let oldRcb:RcbModel = new RcbModel();
         this.getRcbSql(rc.sI).then(data=>{
           if(data && data.rows && data.rows.length>0){
-            let oldRcb:RcbModel = new RcbModel();
             oldRcb.id = data.rows.item(0).id;
             oldRcb.sI =rc.sI;
-            oldRcb.tk = data.rows.item(0).tk;
-            if(rcb.tk != tk){
-              return this.baseSqlite.delete(rcb);
+            oldRcb.tk = data.rows.item(0).lI;
+            if(oldRcb.tk != tk){
+              return this.baseSqlite.delete(oldRcb);
+            }else{
+              rcb.id = oldRcb.id
             }
           }
         }).then(data=>{
-          return this.syncRcbTime(rcb,rcb.tn,DataConfig.AC_D);
+          if(data){
+            return this.syncRcbTime(oldRcb,oldRcb.tn,DataConfig.AC_D);
+          }
         }).then(data=>{
           console.log('----worksqlite updateLbData 再保存新标签子表----');
-          rcb.tk = tk;
-          rcb.id = this.util.getUuid();
-          return this.baseSqlite.save(rcb);
+          if(data){
+            rcb.tk = tk;
+            rcb.id = this.util.getUuid();
+          }
+          return this.baseSqlite.executeSql(rcb.rpsq,[]);
         }).then(data=>{
           return this.syncRcbTime(rcb,rcb.tn,DataConfig.AC_O);
         }).then(data=>{
@@ -153,21 +159,23 @@ export class RcbSqlite{
           let sdt:number = new Date(str).getTime() - parseInt(rcb.ac) * 60 * 1000;
           rcb.dt=moment(sdt).format('YYYY/MM/DD HH:mm')
         }
+        let oldRcb:RcbModel = new RcbModel();
         this.getRcbSql(rc.sI).then(data=>{
           if(data && data.rows && data.rows.length>0){
-            let oldRcb:RcbModel = new RcbModel();
             oldRcb.id = data.rows.item(0).id;
             oldRcb.sI =rc.sI;
-            oldRcb.tk = data.rows.item(0).tk;
+            oldRcb.tk = data.rows.item(0).lI;
             if(rcb.tk != oldRcb.tk){
               return this.baseSqlite.delete(oldRcb);
             }
           }
         }).then(data=>{
-          return this.syncRcbTime(rcb,rcb.tn,DataConfig.AC_D);
+          if(data){
+            return this.syncRcbTime(oldRcb,oldRcb.tn,DataConfig.AC_D);
+          }
         }).then(data=>{
           console.log('----worksqlite updateLbData 再保存新标签子表----');
-          return this.baseSqlite.save(rcb);
+          return this.baseSqlite.executeSql(rcb.rpsq,[]);
         }).then(data=>{
           return this.syncRcbTime(rcb,rcb.tn,DataConfig.AC_O);
         }).then(data=>{
@@ -189,11 +197,11 @@ export class RcbSqlite{
    */
   getRcbSql(sI:string):Promise<any>{
     let sql= 'select gc.*,lbd.* from GTD_C gc ' +
-      'left join (select sI,cft,wd,ac,fh,tk,rm,dt,id from GTD_C_BO ' +
+      'inner join (select sI,cft,wd,ac,fh,tk,rm,dt,id from GTD_C_BO ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id  from GTD_C_C ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id  from GTD_C_RC ' +
       'union select sI,cft,wd,ac,fh,tk,rm,dt,id  from GTD_C_JN ' +
-      'union select sI,cft,wd,ac,fh,tk,rm,dt,id  from GTD_C_MO) lbd on lbd.sI = gc.sI  where gc.sI="'+sI+'"';
+      'union select sI,cft,wd,ac,fh,tk,rm,dt,id  from GTD_C_MO) lbd on lbd.sI = gc.sI  where gc.sI="'+sI+'"' ;
     return this.baseSqlite.executeSql(sql,[]);
   }
 

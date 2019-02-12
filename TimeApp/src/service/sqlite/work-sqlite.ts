@@ -111,10 +111,11 @@ export class WorkSqlite{
       for (let i = 0; i < rus.length; i++) {
         let ru = rus[i];
         let rgc = new RcpEntity();
-        if(rgc.pI== '' || rgc.pI == null){
+        if(ru.pI== '' || ru.pI == null){
           rgc.pI = this.util.getUuid();
         }else{
           rgc.pI=ru.pI;
+          continue;
         }
         rgc.sI = rc.sI;
         rgc.son = rc.sN;
@@ -134,13 +135,18 @@ export class WorkSqlite{
         sql += rgc.rpsq;
         rcpL.push(rgc);
       }
-      this.baseSqlite.importSqlToDb(sql).then(data=>{
-        return this.syncRgcTime(rcpL,DataConfig.AC_O)
-      }).then(data=>{
-        resolve(data);
-      }).catch(e=>{
-        reject(e);
-      })
+      if(sql != ''){
+        this.baseSqlite.importSqlToDb(sql).then(data=>{
+          return this.syncRgcTime(rcpL,DataConfig.AC_O)
+        }).then(data=>{
+          resolve(data);
+        }).catch(e=>{
+          reject(e);
+        })
+      }else{
+        resolve(rcpL);
+      }
+
     })
   }
 
