@@ -128,6 +128,7 @@ export class WorkService {
       let bs = new BsModel();
       //先查询当前用户ID
       let rc = new RcEntity();
+      sd=sd.replace("T"," ");
       sd=sd.replace(new RegExp('-','g'),'/');
       if(sd.length<=10){
         sd = sd + " 08:00";

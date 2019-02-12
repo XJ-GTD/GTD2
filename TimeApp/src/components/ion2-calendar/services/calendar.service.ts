@@ -323,7 +323,13 @@ export class CalendarService {
           title: string;
         };
         res.date=day;
-        res.cssClass = `hassometing ` + + this.specially;
+        if(data.slc.length == 0){
+          res.cssClass = ``;
+        }else if(data.slc.length > 0 &&　data.slc.length < 5){
+          res.cssClass = `hassometing ` + this.specially;
+        }else{
+          res.cssClass = `busysometing ` + this.specially;
+        }
         resolve(res);
       })
     );
