@@ -132,7 +132,7 @@ public class ScheduleServiceImpl implements IScheduleService {
             outDto.setScheduleList(scheduleOutList);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("dealWithSchedule日程推送出错");
+            logger.error("dealWithSchedule日程推送出错",e);
             outDto = null;
         }
 
