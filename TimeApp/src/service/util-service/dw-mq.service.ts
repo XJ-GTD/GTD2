@@ -379,7 +379,15 @@ export class DwMqService {
     rcb.wd=data.wd;
     console.log("----- DwMqService scheduleCreate(业务：日程更新) start---- ");
     let ms = new MsEntity();
-    this.work.urcMq(sI, rui, ct, sd, ed, lbI, rcb).then(data => {
+    this.work.getRcBySi(sI).then(data=>{
+      if(data.code == 0){
+        //存在则更新
+        return this.work.urcMq(sI, rui, ct, sd, ed, lbI, rcb);
+      }else{
+        //不存在则添加
+        return this.work.arcMq(sI, rui, ct, sd, ed, lbI, rcb)
+      }
+    }).then(data => {
       console.log("----- DwMqService scheduleCreate(业务：日程更新) end ---- ");
       //先删除已存在的
       ms.rI = sI;
