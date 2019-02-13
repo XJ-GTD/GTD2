@@ -987,7 +987,7 @@ public class SyncServiceImpl implements ISyncService {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("查询下载数据异常", e); // 席理加修改
             return null;
         }
 
