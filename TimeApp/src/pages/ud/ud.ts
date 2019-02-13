@@ -83,9 +83,11 @@ export class UdPage {
       return ;
     }
     this.agreeFlag = true;
+    this.utilService.loading("登录中");
     this.lsmService.ml(this.accountMobile, this.authCode).then(data=> {
       console.log(data);
       let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
+      this.utilService.unloading();
       if (data.code == 0) {
         this.utilService.alert("登陆成功");
         this.navCtrl.setRoot('HzPage');
@@ -94,8 +96,8 @@ export class UdPage {
       }
 
     }).catch(res=>{
+      this.utilService.unloading();
       this.utilService.alert(ReturnConfig.RETURN_MSG.get(res.code));
-
       console.log(res);
     });
 

@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, Renderer2} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {App, NavController, NavParams} from 'ionic-angular';
 import {ScheduleModel} from "../../model/schedule.model";
 import {UtilService} from "../../service/util-service/util.service";
 import {WorkService} from "../../service/work.service";
@@ -105,7 +105,8 @@ export class Ha01Page {
               private util: UtilService,
               private rnd: Renderer2,
               private workService: WorkService,
-              private el: ElementRef) {
+              private el: ElementRef,
+              private app: App) {
     this.height = window.document.body.clientHeight - 350 - 110;
 
     this.init();
@@ -172,11 +173,7 @@ export class Ha01Page {
     let day = eventDate.getDate();
 
     this.scheduleLs = [];
-    let dateStr = moment().set({
-      'year': year,
-      'month': month - 1,
-      'date': day
-    }).format('YYYY-MM-DD');
+    let dateStr = moment($event.time).format("YYYY-MM-DD");
     this.workService.getOd(dateStr).then(data => {
       if (data.code == 0) {
         for (let i = 0; i < data.slc.length; i++) {
@@ -270,7 +267,7 @@ export class Ha01Page {
     let eventDate = new Date(this.event.time);
     let tmp = moment(eventDate).format("YYYY-MM-DD");
     // this.navCtrl.push("SaPage", schedule);
-    this.navCtrl.push("SaPage",{"schedule":schedule,"dateStr":tmp,"event":this.event});
+    this.app.getRootNav().push("SaPage",{"schedule":schedule,"dateStr":tmp,"event":this.event});
   }
 
 

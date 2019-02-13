@@ -214,11 +214,11 @@ export class SaPage {
     this.events.publish("flashDay",{day:this.dateStr,event:this.event});
     // this.events.publish("flashDay",{day:this.starttmp,event:this.event});
 
-
+    console.log("test::" + this.alert + "   " + this.dateTime)
     if(this.alert != undefined){
       this.alert.dismiss();
     }
-    if(this.dateTime._picker != undefined){
+    if(this.dateTime != undefined && this.dateTime._picker != undefined){
       this.dateTime._picker.dismiss();
     }
   }
