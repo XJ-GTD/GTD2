@@ -338,6 +338,7 @@ public class SyncServiceImpl implements ISyncService {
      */
     private List<GtdSyncVersionEntity> upLoadData(List<SyncDataDto> syncDataList, String userId, String version, String deviceId, String uploadVersion) {
 
+        logger.debug("DEBUG++ version : " + version + ", uploadversion : " + uploadVersion); // 席理加增加
         List<GtdSyncVersionEntity> syncVersion = new ArrayList<>();
         List<GtdSyncVersionEntity> latestDataList = gtdSyncVersionRepository.compareToHighVersion(userId, version);
 
