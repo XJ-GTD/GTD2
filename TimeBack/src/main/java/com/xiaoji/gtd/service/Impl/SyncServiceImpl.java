@@ -1030,6 +1030,7 @@ public class SyncServiceImpl implements ISyncService {
 
         for (SyncTableData std: dataList) {
             for (GtdSyncVersionEntity gsve : dataCompare) {
+                logger.debug(gsve.getTableId() + " ?= " + std.getTableA() + " and " + gsve.getSyncAction() + " is delete?"); // 席理加增加
                 if (gsve.getTableId().equals(std.getTableA()) && !isDelete(gsve.getSyncAction())) {
                     newDataList.remove(std);      //匹配到对应id且不为删除数据就跳过不更新取最高版本
                     logger.debug(tableName + "表 数据[ID: " + gsve.getTableId() + "] 以高版本未删除操作为优先不做更新");
