@@ -57,7 +57,7 @@ public class AuthRepository {
 
         String sql = "SELECT TB.USER_ID, TA.PLAYER_FLAG  FROM gtd_login TB \n" +
                 " LEFT JOIN gtd_player TA ON TA.USER_ID = TB.USER_ID \n" +
-                " AND TA.PLAYER_ID = '" + userId + "'\n"+
+//                " AND TA.PLAYER_ID = '" + userId + "'\n"+
                 sqlQuery+" limit 1";
 
         return em.createNativeQuery(sql).getSingleResult();
