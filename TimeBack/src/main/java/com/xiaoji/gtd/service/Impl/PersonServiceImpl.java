@@ -445,6 +445,7 @@ public class PersonServiceImpl implements IPersonService {
             Object[] objects = (Object[]) authRepository.isAcceptThePush(userId, targetUserId, targetMobile);
 
             if (objects[0] != null && !objects[0].equals("")) {
+            	logger.debug("DEBUG++ authRepository.isAcceptThePush " + objects[0] + ", " + objects[1]);
                 sqlTargetUserId = objects[0].toString();
                 if (objects[1] != null && !objects[1].equals("")) {
                     isAgree = Integer.valueOf(objects[1].toString()) != 0;
