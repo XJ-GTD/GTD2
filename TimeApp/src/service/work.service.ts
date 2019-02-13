@@ -383,13 +383,18 @@ export class WorkService {
             let ru: RuModel = rs.item(i);
             let isExsit = false;
             for(let nru of ruL){
-              if(ru.rI=nru.rI){
+              if(nru.rI != '' && ru.rI != '' && ru.rI==nru.rI ){
+                isExsit = true;
+                nru.pI = ru.pI;
+                break;
+              }
+              if(ru.id==nru.id){
                 isExsit = true;
                 nru.pI = ru.pI;
                 break;
               }
             }
-            if(!isExsit){
+            if(!isExsit && ru.rI != DataConfig.uInfo.uI){
               dRul.push(ru);
             }
           }
@@ -414,7 +419,25 @@ export class WorkService {
     })
   }
 
-
+  /**
+   * 根据日程ID获取日程信息
+   * @param {string} sI
+   * @returns {Promise<BsModel>}
+   */
+  getRcBySi(sI:string):Promise<BsModel>{
+    return new Promise((resolve, reject) => {
+      let rc = new RcEntity();
+      rc.sI=sI;
+      let bs = new BsModel();
+      this.baseSqlite.getOne(rc).then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          bs.code = ReturnConfig.SUCCESS_CODE;
+        }else{
+          bs.code = ReturnConfig.NULL_CODE;
+        }
+      })
+    })
+  }
   /**
    * Mq更新日程
    * @param {string} sN 标题
@@ -427,9 +450,11 @@ export class WorkService {
   urcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string,rcb:RcbModel):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
+      let rc = new RcEntity();
+      rc.sI=sI;
       sd=sd.replace(new RegExp('-','g'),'/');
       //先查询当前用户ID
-      let rc = new RcEntity();
+
       rc.uI=cui;
       rc.sN=sN;
       rc.sd=sd;
@@ -443,7 +468,6 @@ export class WorkService {
       }
       rc.ed =rc.ed.replace(new RegExp('-','g'),'/');
       rc.lI=lbI;
-      rc.sI=sI;
       console.log("------ WorkService arcMq() Start ------------");
       this.workSqlite.update(rc).then(data=>{
         let rcp = new RcpEntity();

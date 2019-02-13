@@ -266,6 +266,7 @@ export class RelmemService {
         ru.ranpy = this.util.chineseToPinYin(ru.ran);
       }
       let base=new BsModel();
+      console.log("========== 联系人更新开始 ==========");
       this.relmemSqlite.uru(ru).then(data=>{
         // //如果是群
         // if(rel=='1' && qrL != null && qrL.length>0){
@@ -273,6 +274,14 @@ export class RelmemService {
         //     this.addRgu(ru.id,qrL[i].id);
         //   }
         // }
+        console.log("========== 联系人更新成功，开始查询联系人信息 ==========");
+        //查询联系人详情
+        return this.baseSqlite.getOne(ru);
+      }).then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          Object.assign(ru,data.rows.item(0));
+        }
+        console.log("============ 开始入本地库 ================");
         //入本地库
         return this.relmemSqlite.syncRuTime(ru,DataConfig.AC_O);
       }).then(data=>{
