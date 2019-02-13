@@ -1,10 +1,12 @@
 package com.xiaoji.gtd.repository;
 
-import com.xiaoji.gtd.entity.GtdUserEntity;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.xiaoji.gtd.entity.GtdUserEntity;
 
 /**
  * 用户表DAO层 继承类
@@ -26,4 +28,7 @@ public interface GtdUserRepository extends JpaRepository<GtdUserEntity,Integer> 
      * @return
      */
     GtdUserEntity findByUserId(String id);
+
+    @Query(value = "SELECT * FROM gtd_user WHERE USER_ID IN ?1", nativeQuery = true)
+    List<GtdUserEntity> findByUserIds(List<String> ids);
 }

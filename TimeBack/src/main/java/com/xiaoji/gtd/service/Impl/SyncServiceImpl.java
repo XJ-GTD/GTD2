@@ -15,7 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 同步接口实现类
@@ -607,6 +609,30 @@ public class SyncServiceImpl implements ISyncService {
                 List<SyncTableData> planList = new ArrayList<>();
                 List<SyncTableData> userList = new ArrayList<>();
 
+                List<String> playerIdList = new ArrayList<>();
+                List<String> memberIdList = new ArrayList<>();
+                List<String> scheduleIdList = new ArrayList<>();
+                List<String> executeIdList = new ArrayList<>();
+                List<String> scheduleAIdList = new ArrayList<>();
+                List<String> scheduleBIdList = new ArrayList<>();
+                List<String> scheduleCIdList = new ArrayList<>();
+                List<String> scheduleDIdList = new ArrayList<>();
+                List<String> scheduleEIdList = new ArrayList<>();
+                List<String> planIdList = new ArrayList<>();
+                List<String> userIdList = new ArrayList<>();
+                
+                Map<String, String> playerActionList = new HashMap<>();
+                Map<String, String> memberActionList = new HashMap<>();
+                Map<String, String> scheduleActionList = new HashMap<>();
+                Map<String, String> executeActionList = new HashMap<>();
+                Map<String, String> scheduleAActionList = new HashMap<>();
+                Map<String, String> scheduleBActionList = new HashMap<>();
+                Map<String, String> scheduleCActionList = new HashMap<>();
+                Map<String, String> scheduleDActionList = new HashMap<>();
+                Map<String, String> scheduleEActionList = new HashMap<>();
+                Map<String, String> planActionList = new HashMap<>();
+                Map<String, String> userActionList = new HashMap<>();
+
                 for (GtdSyncVersionEntity gsve : latestDataList) {
                     switch (gsve.getTableName()) {
                         case "GTD_B":       //联系人表
@@ -617,12 +643,14 @@ public class SyncServiceImpl implements ISyncService {
                                 data.setAction(gsve.getSyncAction());
                                 playerList.add(data);
                             } else {
-                                GtdPlayerEntity playerEntity = gtdPlayerRepository.findById(gsve.getTableId());
-                                if (playerEntity != null) { // 席理加增加
-                                    data = SyncGetOrSetMethod.playerEntityToDto(playerEntity);
-                                    data.setAction(gsve.getSyncAction());
-                                    playerList.add(data);
-                                }
+                            	playerIdList.add(gsve.getTableId());
+                            	playerActionList.put(gsve.getTableId(), gsve.getSyncAction());
+//                                GtdPlayerEntity playerEntity = gtdPlayerRepository.findById(gsve.getTableId());
+//                                if (playerEntity != null) { // 席理加增加
+//                                    data = SyncGetOrSetMethod.playerEntityToDto(playerEntity);
+//                                    data.setAction(gsve.getSyncAction());
+//                                    playerList.add(data);
+//                                }
                             }
                             break;
                         case "GTD_B_X":     //群组表
@@ -633,12 +661,14 @@ public class SyncServiceImpl implements ISyncService {
                                 data.setAction(gsve.getSyncAction());
                                 memberList.add(data);
                             } else {
-                                GtdPlayerMemberEntity memberEntity = gtdPlayerMemberRepository.findById(gsve.getTableId());
-                                if (memberEntity != null) { // 席理加增加
-                                    data = SyncGetOrSetMethod.memberEntityToDto(memberEntity);
-                                    data.setAction(gsve.getSyncAction());
-                                    memberList.add(data);
-                                }
+                                memberIdList.add(gsve.getTableId());
+                                memberActionList.put(gsve.getTableId(), gsve.getSyncAction());
+//                                GtdPlayerMemberEntity memberEntity = gtdPlayerMemberRepository.findById(gsve.getTableId());
+//                                if (memberEntity != null) { // 席理加增加
+//                                    data = SyncGetOrSetMethod.memberEntityToDto(memberEntity);
+//                                    data.setAction(gsve.getSyncAction());
+//                                    memberList.add(data);
+//                                }
                             }
                             break;
                         case "GTD_C":       //日程表
@@ -649,12 +679,14 @@ public class SyncServiceImpl implements ISyncService {
                                 data.setAction(gsve.getSyncAction());
                                 scheduleList.add(data);
                             } else {
-                                GtdScheduleEntity scheduleEntity = gtdScheduleRepository.findByScheduleId(gsve.getTableId());
-                                if (scheduleEntity != null) { // 席理加增加
-                                    data = SyncGetOrSetMethod.scheduleEntityToDto(scheduleEntity);
-                                    data.setAction(gsve.getSyncAction());
-                                    scheduleList.add(data);
-                                }
+                            	scheduleIdList.add(gsve.getTableId());
+                            	scheduleActionList.put(gsve.getTableId(), gsve.getSyncAction());
+//                                GtdScheduleEntity scheduleEntity = gtdScheduleRepository.findByScheduleId(gsve.getTableId());
+//                                if (scheduleEntity != null) { // 席理加增加
+//                                    data = SyncGetOrSetMethod.scheduleEntityToDto(scheduleEntity);
+//                                    data.setAction(gsve.getSyncAction());
+//                                    scheduleList.add(data);
+//                                }
                             }
                             break;
                         case "GTD_D":       //日程参与人表
@@ -665,12 +697,14 @@ public class SyncServiceImpl implements ISyncService {
                                 data.setAction(gsve.getSyncAction());
                                 executeList.add(data);
                             } else {
-                                GtdExecuteEntity executeEntity = gtdExecuteRepository.findByExecuteId(gsve.getTableId());
-                                if (executeEntity != null) { // 席理加增加
-                                    data = SyncGetOrSetMethod.executeEntityToDto(executeEntity);
-                                    data.setAction(gsve.getSyncAction());
-                                    executeList.add(data);
-                                }
+                            	executeIdList.add(gsve.getTableId());
+                            	executeActionList.put(gsve.getTableId(), gsve.getSyncAction());
+//                                GtdExecuteEntity executeEntity = gtdExecuteRepository.findByExecuteId(gsve.getTableId());
+//                                if (executeEntity != null) { // 席理加增加
+//                                    data = SyncGetOrSetMethod.executeEntityToDto(executeEntity);
+//                                    data.setAction(gsve.getSyncAction());
+//                                    executeList.add(data);
+//                                }
                             }
                             break;
                         case "GTD_J_H":       //计划表
@@ -681,12 +715,14 @@ public class SyncServiceImpl implements ISyncService {
                                 data.setAction(gsve.getSyncAction());
                                 planList.add(data);
                             } else {
-                                GtdPlanEntity planEntity = gtdPlanRepository.findByPlanId(gsve.getTableId());
-                                if (planEntity != null) { // 席理加增加
-                                    data = SyncGetOrSetMethod.planEntityToDto(planEntity);
-                                    data.setAction(gsve.getSyncAction());
-                                    planList.add(data);
-                                }
+                            	planIdList.add(gsve.getTableId());
+                            	planActionList.put(gsve.getTableId(), gsve.getSyncAction());
+//                                GtdPlanEntity planEntity = gtdPlanRepository.findByPlanId(gsve.getTableId());
+//                                if (planEntity != null) { // 席理加增加
+//                                    data = SyncGetOrSetMethod.planEntityToDto(planEntity);
+//                                    data.setAction(gsve.getSyncAction());
+//                                    planList.add(data);
+//                                }
                             }
                             break;
                         case "GTD_C_RC":        //日程子表（日程）
@@ -697,12 +733,14 @@ public class SyncServiceImpl implements ISyncService {
                                 data.setAction(gsve.getSyncAction());
                                 scheduleAList.add(data);
                             } else {
-                                GtdScheduleAEntity scheduleAEntity = gtdScheduleARepository.findById(gsve.getTableId());
-                                if (scheduleAEntity != null) { // 席理加增加
-                                    data = SyncGetOrSetMethod.scheduleAEntityToDto(scheduleAEntity);
-                                    data.setAction(gsve.getSyncAction());
-                                    scheduleAList.add(data);
-                                }
+                            	scheduleAIdList.add(gsve.getTableId());
+                            	scheduleAActionList.put(gsve.getTableId(), gsve.getSyncAction());
+//                                GtdScheduleAEntity scheduleAEntity = gtdScheduleARepository.findById(gsve.getTableId());
+//                                if (scheduleAEntity != null) { // 席理加增加
+//                                    data = SyncGetOrSetMethod.scheduleAEntityToDto(scheduleAEntity);
+//                                    data.setAction(gsve.getSyncAction());
+//                                    scheduleAList.add(data);
+//                                }
                             }
                             break;
                         case "GTD_C_C":        //日程子表（日常生活）
@@ -713,12 +751,14 @@ public class SyncServiceImpl implements ISyncService {
                                 data.setAction(gsve.getSyncAction());
                                 scheduleBList.add(data);
                             } else {
-                                GtdScheduleBEntity scheduleBEntity = gtdScheduleBRepository.findById(gsve.getTableId());
-                                if (scheduleBEntity != null) { // 席理加增加
-                                    data = SyncGetOrSetMethod.scheduleBEntityToDto(scheduleBEntity);
-                                    data.setAction(gsve.getSyncAction());
-                                    scheduleBList.add(data);
-                                }
+                            	scheduleBIdList.add(gsve.getTableId());
+                            	scheduleBActionList.put(gsve.getTableId(), gsve.getSyncAction());
+//                                GtdScheduleBEntity scheduleBEntity = gtdScheduleBRepository.findById(gsve.getTableId());
+//                                if (scheduleBEntity != null) { // 席理加增加
+//                                    data = SyncGetOrSetMethod.scheduleBEntityToDto(scheduleBEntity);
+//                                    data.setAction(gsve.getSyncAction());
+//                                    scheduleBList.add(data);
+//                                }
                             }
                             break;
                         case "GTD_C_BO":        //日程子表（任务）
@@ -729,12 +769,14 @@ public class SyncServiceImpl implements ISyncService {
                                 data.setAction(gsve.getSyncAction());
                                 scheduleCList.add(data);
                             } else {
-                                GtdScheduleCEntity scheduleCEntity = gtdScheduleCRepository.findById(gsve.getTableId());
-                                if (scheduleCEntity != null) { // 席理加增加
-                                    data = SyncGetOrSetMethod.scheduleCEntityToDto(scheduleCEntity);
-                                    data.setAction(gsve.getSyncAction());
-                                    scheduleCList.add(data);
-                                }
+                            	scheduleCIdList.add(gsve.getTableId());
+                            	scheduleCActionList.put(gsve.getTableId(), gsve.getSyncAction());
+//                                GtdScheduleCEntity scheduleCEntity = gtdScheduleCRepository.findById(gsve.getTableId());
+//                                if (scheduleCEntity != null) { // 席理加增加
+//                                    data = SyncGetOrSetMethod.scheduleCEntityToDto(scheduleCEntity);
+//                                    data.setAction(gsve.getSyncAction());
+//                                    scheduleCList.add(data);
+//                                }
                             }
                             break;
                         case "GTD_C_JN":         //日程子表（纪念日）
@@ -745,12 +787,14 @@ public class SyncServiceImpl implements ISyncService {
                                 data.setAction(gsve.getSyncAction());
                                 scheduleDList.add(data);
                             } else {
-                                GtdScheduleDEntity scheduleDEntity = gtdScheduleDRepository.findById(gsve.getTableId());
-                                if (scheduleDEntity != null) { // 席理加增加
-                                    data = SyncGetOrSetMethod.scheduleDEntityToDto(scheduleDEntity);
-                                    data.setAction(gsve.getSyncAction());
-                                    scheduleDList.add(data);
-                                }
+                            	scheduleDIdList.add(gsve.getTableId());
+                            	scheduleDActionList.put(gsve.getTableId(), gsve.getSyncAction());
+//                                GtdScheduleDEntity scheduleDEntity = gtdScheduleDRepository.findById(gsve.getTableId());
+//                                if (scheduleDEntity != null) { // 席理加增加
+//                                    data = SyncGetOrSetMethod.scheduleDEntityToDto(scheduleDEntity);
+//                                    data.setAction(gsve.getSyncAction());
+//                                    scheduleDList.add(data);
+//                                }
                             }
                             break;
                         case "GTD_C_MO":        //日程子表（备忘录）
@@ -761,12 +805,14 @@ public class SyncServiceImpl implements ISyncService {
                                 data.setAction(gsve.getSyncAction());
                                 scheduleEList.add(data);
                             } else {
-                                GtdScheduleEEntity scheduleEEntity = gtdScheduleERepository.findById(gsve.getTableId());
-                                if (scheduleEEntity != null) { // 席理加增加
-                                    data = SyncGetOrSetMethod.scheduleEEntityToDto(scheduleEEntity);
-                                    data.setAction(gsve.getSyncAction());
-                                    scheduleEList.add(data);
-                                }
+                            	scheduleEIdList.add(gsve.getTableId());
+                            	scheduleEActionList.put(gsve.getTableId(), gsve.getSyncAction());
+//                                GtdScheduleEEntity scheduleEEntity = gtdScheduleERepository.findById(gsve.getTableId());
+//                                if (scheduleEEntity != null) { // 席理加增加
+//                                    data = SyncGetOrSetMethod.scheduleEEntityToDto(scheduleEEntity);
+//                                    data.setAction(gsve.getSyncAction());
+//                                    scheduleEList.add(data);
+//                                }
                             }
                             break;
                         case "GTD_A":         //用户表
@@ -777,16 +823,120 @@ public class SyncServiceImpl implements ISyncService {
                                 data.setAction(gsve.getSyncAction());
                                 userList.add(data);
                             } else {
-                                GtdUserEntity userEntity = gtdUserRepository.findByUserId(gsve.getTableId());
-                                if (userEntity != null) { // 席理加增加
-                                    data = SyncGetOrSetMethod.userEntityToDto(userEntity);
-                                    data.setAction(gsve.getSyncAction());
-                                    userList.add(data);
-                                }
+                            	userIdList.add(gsve.getTableId());
+                            	userActionList.put(gsve.getTableId(), gsve.getSyncAction());
+//                                GtdUserEntity userEntity = gtdUserRepository.findByUserId(gsve.getTableId());
+//                                if (userEntity != null) { // 席理加增加
+//                                    data = SyncGetOrSetMethod.userEntityToDto(userEntity);
+//                                    data.setAction(gsve.getSyncAction());
+//                                    userList.add(data);
+//                                }
                             }
                             break;
                     }
                 }
+                
+
+                List<GtdPlayerEntity> playerEntitylist = gtdPlayerRepository.findByIds(playerIdList);
+                if (playerEntitylist != null && !playerEntitylist.isEmpty()) { // 席理加增加
+                    for (GtdPlayerEntity playerEntity : playerEntitylist) {
+                        data = SyncGetOrSetMethod.playerEntityToDto(playerEntity);
+                        data.setAction(playerActionList.get(playerEntity.getId()));
+                        playerList.add(data);
+                    }
+                }
+
+                List<GtdPlayerMemberEntity> memberEntitylist = gtdPlayerMemberRepository.findByIds(memberIdList);
+                if (memberEntitylist != null && !memberEntitylist.isEmpty()) { // 席理加增加
+                    for (GtdPlayerMemberEntity memberEntity : memberEntitylist) {
+                        data = SyncGetOrSetMethod.memberEntityToDto(memberEntity);
+                        data.setAction(memberActionList.get(memberEntity.getId()));
+                        memberList.add(data);
+                    }
+                }
+
+                List<GtdScheduleEntity> scheduleEntitylist = gtdScheduleRepository.findByScheduleIds(scheduleIdList);
+                if (scheduleEntitylist != null && !scheduleEntitylist.isEmpty()) { // 席理加增加
+                    for (GtdScheduleEntity scheduleEntity : scheduleEntitylist) {
+                        data = SyncGetOrSetMethod.scheduleEntityToDto(scheduleEntity);
+                        data.setAction(scheduleActionList.get(scheduleEntity.getScheduleId()));
+                        scheduleList.add(data);
+                    }
+                }
+
+                List<GtdExecuteEntity> executeEntitylist = gtdExecuteRepository.findByExecuteIds(executeIdList);
+                if (executeEntitylist != null && !executeEntitylist.isEmpty()) { // 席理加增加
+                    for (GtdExecuteEntity executeEntity : executeEntitylist) {
+                        data = SyncGetOrSetMethod.executeEntityToDto(executeEntity);
+                        data.setAction(executeActionList.get(executeEntity.getExecuteId()));
+                        executeList.add(data);
+                    }
+                }
+
+                List<GtdPlanEntity> planEntitylist = gtdPlanRepository.findByPlanIds(planIdList);
+                if (planEntitylist != null && !planEntitylist.isEmpty()) { // 席理加增加
+                    for (GtdPlanEntity planEntity : planEntitylist) {
+                        data = SyncGetOrSetMethod.planEntityToDto(planEntity);
+                        data.setAction(planActionList.get(planEntity.getPlanId()));
+                        executeList.add(data);
+                    }
+                }
+
+                List<GtdScheduleAEntity> scheduleAEntitylist = gtdScheduleARepository.findByIds(scheduleAIdList);
+                if (scheduleAEntitylist != null && !scheduleAEntitylist.isEmpty()) { // 席理加增加
+                    for (GtdScheduleAEntity scheduleAEntity : scheduleAEntitylist) {
+                        data = SyncGetOrSetMethod.scheduleAEntityToDto(scheduleAEntity);
+                        data.setAction(scheduleAActionList.get(scheduleAEntity.getId()));
+                        scheduleAList.add(data);
+                    }
+                }
+
+                List<GtdScheduleBEntity> scheduleBEntitylist = gtdScheduleBRepository.findByIds(scheduleBIdList);
+                if (scheduleBEntitylist != null && !scheduleBEntitylist.isEmpty()) { // 席理加增加
+                    for (GtdScheduleBEntity scheduleBEntity : scheduleBEntitylist) {
+                        data = SyncGetOrSetMethod.scheduleBEntityToDto(scheduleBEntity);
+                        data.setAction(scheduleBActionList.get(scheduleBEntity.getId()));
+                        scheduleBList.add(data);
+                    }
+                }
+
+                List<GtdScheduleCEntity> scheduleCEntitylist = gtdScheduleCRepository.findByIds(scheduleCIdList);
+                if (scheduleCEntitylist != null && !scheduleCEntitylist.isEmpty()) { // 席理加增加
+                    for (GtdScheduleCEntity scheduleCEntity : scheduleCEntitylist) {
+                        data = SyncGetOrSetMethod.scheduleCEntityToDto(scheduleCEntity);
+                        data.setAction(scheduleCActionList.get(scheduleCEntity.getId()));
+                        scheduleCList.add(data);
+                    }
+                }
+
+                List<GtdScheduleDEntity> scheduleDEntitylist = gtdScheduleDRepository.findByIds(scheduleDIdList);
+                if (scheduleDEntitylist != null && !scheduleDEntitylist.isEmpty()) { // 席理加增加
+                    for (GtdScheduleDEntity scheduleDEntity : scheduleDEntitylist) {
+                        data = SyncGetOrSetMethod.scheduleDEntityToDto(scheduleDEntity);
+                        data.setAction(scheduleDActionList.get(scheduleDEntity.getId()));
+                        scheduleDList.add(data);
+                    }
+                }
+
+                List<GtdScheduleEEntity> scheduleEEntitylist = gtdScheduleERepository.findByIds(scheduleEIdList);
+                if (scheduleEEntitylist != null && !scheduleEEntitylist.isEmpty()) { // 席理加增加
+                    for (GtdScheduleEEntity scheduleEEntity : scheduleEEntitylist) {
+                        data = SyncGetOrSetMethod.scheduleEEntityToDto(scheduleEEntity);
+                        data.setAction(scheduleEActionList.get(scheduleEEntity.getId()));
+                        scheduleDList.add(data);
+                    }
+                }
+
+                List<GtdUserEntity> userEntitylist = gtdUserRepository.findByUserIds(userIdList);
+                if (userEntitylist != null && !userEntitylist.isEmpty()) { // 席理加增加
+                    for (GtdUserEntity userEntity : userEntitylist) {
+                        data = SyncGetOrSetMethod.userEntityToDto(userEntity);
+                        data.setAction(userActionList.get(userEntity.getUserId()));
+                        userList.add(data);
+                    }
+                }
+
+
                 logger.debug("======== [查询下载完成 开始整合] =======");
                 logger.debug("-------- 添加联系人表数据 数据量:" + playerList.size() + " -------");
                 syncData = new SyncDataDto();
