@@ -1036,6 +1036,15 @@ public class SyncServiceImpl implements ISyncService {
     }
 
     /**
+     * 判断是否为更新操作
+     * @param action
+     * @return
+     */
+    private boolean isUpdate(String action) {
+        return action.equals("1");
+    }
+
+    /**
      * 分类取版本更新数据
      * @param latestDataList
      * @param tableName
@@ -1054,7 +1063,7 @@ public class SyncServiceImpl implements ISyncService {
         for (SyncTableData std: dataList) {
             for (GtdSyncVersionEntity gsve : dataCompare) {
                 logger.debug(gsve.getTableId() + " ?= " + std.getTableA() + " and " + gsve.getSyncAction() + " is delete?"); // 席理加增加
-                if (gsve.getTableId().equals(std.getTableA()) && !isDelete(gsve.getSyncAction())) {
+                if (gsve.getTableId().equals(std.getTableA()) && !isDelete(gsve.getSyncAction()) && !isUpdate(gsve.getSyncAction())) { // 席理加修改
                     newDataList.remove(std);      //匹配到对应id且不为删除数据就跳过不更新取最高版本
                     logger.debug(tableName + "表 数据[ID: " + gsve.getTableId() + "] 以高版本未删除操作为优先不做更新");
                     break;
