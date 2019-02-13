@@ -1014,7 +1014,7 @@ public class SyncServiceImpl implements ISyncService {
             logger.error("查询下载数据异常", e); // 席理加修改
             return null;
         }
-        long cost = start - System.currentTimeMillis();
+        long cost = System.currentTimeMillis() - start;
         logger.debug("DEBUG++ download cost time " + cost / 1000);
         
         return syncDataList;
