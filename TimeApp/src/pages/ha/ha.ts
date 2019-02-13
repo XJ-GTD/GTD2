@@ -99,6 +99,15 @@ export class HaPage {
       this.ion2calendar.flashDay(day);
       this.onSelectDayEvent(event);
     });
+
+    this.events.subscribe("flashMonth",(data)=>{
+      this.ion2calendar.flashMonth(this.selectDay.getTime());
+      if(this.event != undefined){
+        this.onSelectDayEvent(this.event);
+      }else{
+        this.ha01Page.showScheduleLs({time:moment().valueOf()});
+      }
+    });
   }
 
   ionViewWillEnter(){
@@ -144,13 +153,8 @@ export class HaPage {
     let tab1RootModal = this.modalCtr.create(PageConfig.HB_PAGE);
     tab1RootModal.onDidDismiss(()=>{
       //刷新月份事件标识
-      console.log(this.selectDay)
-      this.ion2calendar.flashMonth(this.selectDay.getTime());
-      if(this.event != undefined){
-        this.onSelectDayEvent(this.event);
-      }else{
-        this.ha01Page.showScheduleLs({time:moment().valueOf()});
-      }
+      console.log(this.selectDay);
+      this.events.publish("flashMonth");
     });
     tab1RootModal.present();
   }

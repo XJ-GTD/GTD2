@@ -48,10 +48,12 @@ export class PgPage {
 
   uo:UEntity;
 
-  us:Array<RuModel>;
-  sel:Array<RuModel> =  Array<RuModel>();
+  us:Array<RuModel>;//所有可供选择的数据
+  sel:Array<RuModel> =  Array<RuModel>();//原先选中的数据
   callback:any;
-  // g:RuModel;
+  g:RuModel;
+
+  select:Array<RuModel> = Array<RuModel>();//选中的数据
 
 
   constructor(public navCtrl: NavController,
@@ -66,12 +68,11 @@ export class PgPage {
     this.queryAllRel();
     this.callback = this.navParams.get("callback");
     this.sel = this.navParams.get("sel");
-    // this.g = this.navParams.get("g");
+    this.g = this.navParams.get("g");
     if(this.sel != undefined){
       console.log(this.sel.length)
     }
   }
-
 
 
   goBack() {
@@ -80,7 +81,11 @@ export class PgPage {
 
   showSelect(){
     console.log("点击确定");
+    this.relmemService.updRgus(this.g.id, this.select).then(data => {
+      console.log("添加成功");
+    }).catch(reason => {
 
+    });
     // this.callback(this.sel).then(()=>{
     //   console.log("PgPage跳转PePage")
     //   this.navCtrl.pop();
@@ -93,7 +98,7 @@ export class PgPage {
     //   this.viewCtrl.dismiss(this.sel);
     // });
 
-    this.viewCtrl.dismiss(this.sel);
+    this.viewCtrl.dismiss(this.select);
 
   }
 
@@ -103,6 +108,14 @@ export class PgPage {
       console.log(data.us.length)
       if(data.code == 0){
         this.us = data.us;
+        for(let i=0;i<this.us.length;i++){
+          for(let j= 0;j<this.sel.length;j++){
+            if(this.us[i].id == this.sel[j].id){
+              this.select.push(this.us[i]);
+              break;
+            }
+          }
+        }
       }
     }).catch(reason => {
 
@@ -110,21 +123,21 @@ export class PgPage {
   }
 
   selected(u,event){
-    if(this.sel == undefined){
-      this.sel = new Array<RuModel>();
+    if(this.select == undefined){
+      this.select = new Array<RuModel>();
     }
     if(event.checked){
-      this.sel.push(u)
+      this.select.push(u)
     }else{
       let tmp = new Array<RuModel>();
-      for(let i = 0;i<this.sel.length;i++){
-        if(u.id != this.sel[i].id){
-          tmp.push(this.sel[i]);
+      for(let i = 0;i<this.select.length;i++){
+        if(u.id != this.select[i].id){
+          tmp.push(this.select[i]);
         }
       }
-      this.sel = tmp;
+      this.select = tmp;
     }
-    console.log(this.sel.length)
+    console.log(this.select.length)
   }
 
   checkSel(u){
