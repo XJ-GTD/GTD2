@@ -72,9 +72,9 @@ public class SyncGetOrSetMethod {
         playerEntity.setPlayerName(std.getTableF());            //联系人昵称
         playerEntity.setPyPlayerName(std.getTableG());          //联系人昵称拼音
         playerEntity.setPlayerContact(std.getTableH());         //联系人手机号
-        if (std.getTableI() != null && !std.getTableI().equals(""))
+        if (std.getTableI() != null && !std.getTableI().equals("") && !std.getTableI().equals("null"))
             playerEntity.setPlayerFlag(Integer.valueOf(std.getTableI()));   //授权联系人标识
-        if (std.getTableJ() != null && !std.getTableJ().equals(""))
+        if (std.getTableJ() != null && !std.getTableJ().equals("") && !std.getTableJ().equals("null"))
             playerEntity.setPlayerType(Integer.valueOf(std.getTableJ()));   //联系人类型
         playerEntity.setUserId(std.getTableK());                //联系人数据归属
         playerEntity.setCreateId(std.getTableK());
