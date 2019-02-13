@@ -22,9 +22,10 @@ export class LbEntity {
   private _usq:string;
   private _dsq:string;
   //查询单个
-  private _qosq:string = 'select * from GTD_F where lai="' + this._lai +'"';
+  private _qosq:string;
 
   get qosq(): string {
+    this._qosq = 'select * from GTD_F where lai="' + this._lai +'"';
     return this._qosq;
   }
 
