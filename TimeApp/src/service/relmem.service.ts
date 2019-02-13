@@ -283,7 +283,7 @@ export class RelmemService {
         }
         console.log("============ 开始入本地库 ================");
         //入本地库
-        return this.relmemSqlite.syncRuTime(ru,DataConfig.AC_O);
+        return this.relmemSqlite.syncRuTime(ru,DataConfig.AC_T);
       }).then(data=>{
         console.log("--------- 6.RelmemService aru() sync loacl sqlite End: "+JSON.stringify(data));
         //同步上传服务器
