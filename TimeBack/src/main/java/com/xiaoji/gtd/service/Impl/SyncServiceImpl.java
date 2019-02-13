@@ -837,105 +837,126 @@ public class SyncServiceImpl implements ISyncService {
                 }
                 
 
-                List<GtdPlayerEntity> playerEntitylist = gtdPlayerRepository.findByIds(playerIdList);
-                if (playerEntitylist != null && !playerEntitylist.isEmpty()) { // 席理加增加
-                    for (GtdPlayerEntity playerEntity : playerEntitylist) {
-                        data = SyncGetOrSetMethod.playerEntityToDto(playerEntity);
-                        data.setAction(playerActionList.get(playerEntity.getId()));
-                        playerList.add(data);
-                    }
+                if (playerIdList != null && !playerIdList.isEmpty()) {
+	                List<GtdPlayerEntity> playerEntitylist = gtdPlayerRepository.findByIds(playerIdList);
+	                if (playerEntitylist != null && !playerEntitylist.isEmpty()) { // 席理加增加
+	                    for (GtdPlayerEntity playerEntity : playerEntitylist) {
+	                        data = SyncGetOrSetMethod.playerEntityToDto(playerEntity);
+	                        data.setAction(playerActionList.get(playerEntity.getId()));
+	                        playerList.add(data);
+	                    }
+	                }
+                }
+                
+                if (memberIdList != null && !memberIdList.isEmpty()) {
+	                List<GtdPlayerMemberEntity> memberEntitylist = gtdPlayerMemberRepository.findByIds(memberIdList);
+	                if (memberEntitylist != null && !memberEntitylist.isEmpty()) { // 席理加增加
+	                    for (GtdPlayerMemberEntity memberEntity : memberEntitylist) {
+	                        data = SyncGetOrSetMethod.memberEntityToDto(memberEntity);
+	                        data.setAction(memberActionList.get(memberEntity.getId()));
+	                        memberList.add(data);
+	                    }
+	                }
+                }
+                
+                if (scheduleIdList != null && !scheduleIdList.isEmpty()) {
+	                List<GtdScheduleEntity> scheduleEntitylist = gtdScheduleRepository.findByScheduleIds(scheduleIdList);
+	                if (scheduleEntitylist != null && !scheduleEntitylist.isEmpty()) { // 席理加增加
+	                    for (GtdScheduleEntity scheduleEntity : scheduleEntitylist) {
+	                        data = SyncGetOrSetMethod.scheduleEntityToDto(scheduleEntity);
+	                        data.setAction(scheduleActionList.get(scheduleEntity.getScheduleId()));
+	                        scheduleList.add(data);
+	                    }
+	                }
                 }
 
-                List<GtdPlayerMemberEntity> memberEntitylist = gtdPlayerMemberRepository.findByIds(memberIdList);
-                if (memberEntitylist != null && !memberEntitylist.isEmpty()) { // 席理加增加
-                    for (GtdPlayerMemberEntity memberEntity : memberEntitylist) {
-                        data = SyncGetOrSetMethod.memberEntityToDto(memberEntity);
-                        data.setAction(memberActionList.get(memberEntity.getId()));
-                        memberList.add(data);
-                    }
+                if (executeIdList != null && !executeIdList.isEmpty()) {
+	                List<GtdExecuteEntity> executeEntitylist = gtdExecuteRepository.findByExecuteIds(executeIdList);
+	                if (executeEntitylist != null && !executeEntitylist.isEmpty()) { // 席理加增加
+	                    for (GtdExecuteEntity executeEntity : executeEntitylist) {
+	                        data = SyncGetOrSetMethod.executeEntityToDto(executeEntity);
+	                        data.setAction(executeActionList.get(executeEntity.getExecuteId()));
+	                        executeList.add(data);
+	                    }
+	                }
                 }
 
-                List<GtdScheduleEntity> scheduleEntitylist = gtdScheduleRepository.findByScheduleIds(scheduleIdList);
-                if (scheduleEntitylist != null && !scheduleEntitylist.isEmpty()) { // 席理加增加
-                    for (GtdScheduleEntity scheduleEntity : scheduleEntitylist) {
-                        data = SyncGetOrSetMethod.scheduleEntityToDto(scheduleEntity);
-                        data.setAction(scheduleActionList.get(scheduleEntity.getScheduleId()));
-                        scheduleList.add(data);
-                    }
+                if (planIdList != null && !planIdList.isEmpty()) {
+	                List<GtdPlanEntity> planEntitylist = gtdPlanRepository.findByPlanIds(planIdList);
+	                if (planEntitylist != null && !planEntitylist.isEmpty()) { // 席理加增加
+	                    for (GtdPlanEntity planEntity : planEntitylist) {
+	                        data = SyncGetOrSetMethod.planEntityToDto(planEntity);
+	                        data.setAction(planActionList.get(planEntity.getPlanId()));
+	                        executeList.add(data);
+	                    }
+	                }
                 }
 
-                List<GtdExecuteEntity> executeEntitylist = gtdExecuteRepository.findByExecuteIds(executeIdList);
-                if (executeEntitylist != null && !executeEntitylist.isEmpty()) { // 席理加增加
-                    for (GtdExecuteEntity executeEntity : executeEntitylist) {
-                        data = SyncGetOrSetMethod.executeEntityToDto(executeEntity);
-                        data.setAction(executeActionList.get(executeEntity.getExecuteId()));
-                        executeList.add(data);
-                    }
+                if (scheduleAIdList != null && !scheduleAIdList.isEmpty()) {
+	                List<GtdScheduleAEntity> scheduleAEntitylist = gtdScheduleARepository.findByIds(scheduleAIdList);
+	                if (scheduleAEntitylist != null && !scheduleAEntitylist.isEmpty()) { // 席理加增加
+	                    for (GtdScheduleAEntity scheduleAEntity : scheduleAEntitylist) {
+	                        data = SyncGetOrSetMethod.scheduleAEntityToDto(scheduleAEntity);
+	                        data.setAction(scheduleAActionList.get(scheduleAEntity.getId()));
+	                        scheduleAList.add(data);
+	                    }
+	                }
                 }
 
-                List<GtdPlanEntity> planEntitylist = gtdPlanRepository.findByPlanIds(planIdList);
-                if (planEntitylist != null && !planEntitylist.isEmpty()) { // 席理加增加
-                    for (GtdPlanEntity planEntity : planEntitylist) {
-                        data = SyncGetOrSetMethod.planEntityToDto(planEntity);
-                        data.setAction(planActionList.get(planEntity.getPlanId()));
-                        executeList.add(data);
-                    }
+                if (scheduleBIdList != null && !scheduleBIdList.isEmpty()) {
+	                List<GtdScheduleBEntity> scheduleBEntitylist = gtdScheduleBRepository.findByIds(scheduleBIdList);
+	                if (scheduleBEntitylist != null && !scheduleBEntitylist.isEmpty()) { // 席理加增加
+	                    for (GtdScheduleBEntity scheduleBEntity : scheduleBEntitylist) {
+	                        data = SyncGetOrSetMethod.scheduleBEntityToDto(scheduleBEntity);
+	                        data.setAction(scheduleBActionList.get(scheduleBEntity.getId()));
+	                        scheduleBList.add(data);
+	                    }
+	                }
                 }
 
-                List<GtdScheduleAEntity> scheduleAEntitylist = gtdScheduleARepository.findByIds(scheduleAIdList);
-                if (scheduleAEntitylist != null && !scheduleAEntitylist.isEmpty()) { // 席理加增加
-                    for (GtdScheduleAEntity scheduleAEntity : scheduleAEntitylist) {
-                        data = SyncGetOrSetMethod.scheduleAEntityToDto(scheduleAEntity);
-                        data.setAction(scheduleAActionList.get(scheduleAEntity.getId()));
-                        scheduleAList.add(data);
-                    }
+                if (scheduleCIdList != null && !scheduleCIdList.isEmpty()) {
+	                List<GtdScheduleCEntity> scheduleCEntitylist = gtdScheduleCRepository.findByIds(scheduleCIdList);
+	                if (scheduleCEntitylist != null && !scheduleCEntitylist.isEmpty()) { // 席理加增加
+	                    for (GtdScheduleCEntity scheduleCEntity : scheduleCEntitylist) {
+	                        data = SyncGetOrSetMethod.scheduleCEntityToDto(scheduleCEntity);
+	                        data.setAction(scheduleCActionList.get(scheduleCEntity.getId()));
+	                        scheduleCList.add(data);
+	                    }
+	                }
                 }
 
-                List<GtdScheduleBEntity> scheduleBEntitylist = gtdScheduleBRepository.findByIds(scheduleBIdList);
-                if (scheduleBEntitylist != null && !scheduleBEntitylist.isEmpty()) { // 席理加增加
-                    for (GtdScheduleBEntity scheduleBEntity : scheduleBEntitylist) {
-                        data = SyncGetOrSetMethod.scheduleBEntityToDto(scheduleBEntity);
-                        data.setAction(scheduleBActionList.get(scheduleBEntity.getId()));
-                        scheduleBList.add(data);
-                    }
+                if (scheduleDIdList != null && !scheduleDIdList.isEmpty()) {
+	                List<GtdScheduleDEntity> scheduleDEntitylist = gtdScheduleDRepository.findByIds(scheduleDIdList);
+	                if (scheduleDEntitylist != null && !scheduleDEntitylist.isEmpty()) { // 席理加增加
+	                    for (GtdScheduleDEntity scheduleDEntity : scheduleDEntitylist) {
+	                        data = SyncGetOrSetMethod.scheduleDEntityToDto(scheduleDEntity);
+	                        data.setAction(scheduleDActionList.get(scheduleDEntity.getId()));
+	                        scheduleDList.add(data);
+	                    }
+	                }
                 }
 
-                List<GtdScheduleCEntity> scheduleCEntitylist = gtdScheduleCRepository.findByIds(scheduleCIdList);
-                if (scheduleCEntitylist != null && !scheduleCEntitylist.isEmpty()) { // 席理加增加
-                    for (GtdScheduleCEntity scheduleCEntity : scheduleCEntitylist) {
-                        data = SyncGetOrSetMethod.scheduleCEntityToDto(scheduleCEntity);
-                        data.setAction(scheduleCActionList.get(scheduleCEntity.getId()));
-                        scheduleCList.add(data);
-                    }
+                if (scheduleEIdList != null && !scheduleEIdList.isEmpty()) {
+	                List<GtdScheduleEEntity> scheduleEEntitylist = gtdScheduleERepository.findByIds(scheduleEIdList);
+	                if (scheduleEEntitylist != null && !scheduleEEntitylist.isEmpty()) { // 席理加增加
+	                    for (GtdScheduleEEntity scheduleEEntity : scheduleEEntitylist) {
+	                        data = SyncGetOrSetMethod.scheduleEEntityToDto(scheduleEEntity);
+	                        data.setAction(scheduleEActionList.get(scheduleEEntity.getId()));
+	                        scheduleDList.add(data);
+	                    }
+	                }
                 }
 
-                List<GtdScheduleDEntity> scheduleDEntitylist = gtdScheduleDRepository.findByIds(scheduleDIdList);
-                if (scheduleDEntitylist != null && !scheduleDEntitylist.isEmpty()) { // 席理加增加
-                    for (GtdScheduleDEntity scheduleDEntity : scheduleDEntitylist) {
-                        data = SyncGetOrSetMethod.scheduleDEntityToDto(scheduleDEntity);
-                        data.setAction(scheduleDActionList.get(scheduleDEntity.getId()));
-                        scheduleDList.add(data);
-                    }
+                if (userIdList != null && !userIdList.isEmpty()) {
+	                List<GtdUserEntity> userEntitylist = gtdUserRepository.findByUserIds(userIdList);
+	                if (userEntitylist != null && !userEntitylist.isEmpty()) { // 席理加增加
+	                    for (GtdUserEntity userEntity : userEntitylist) {
+	                        data = SyncGetOrSetMethod.userEntityToDto(userEntity);
+	                        data.setAction(userActionList.get(userEntity.getUserId()));
+	                        userList.add(data);
+	                    }
+	                }
                 }
-
-                List<GtdScheduleEEntity> scheduleEEntitylist = gtdScheduleERepository.findByIds(scheduleEIdList);
-                if (scheduleEEntitylist != null && !scheduleEEntitylist.isEmpty()) { // 席理加增加
-                    for (GtdScheduleEEntity scheduleEEntity : scheduleEEntitylist) {
-                        data = SyncGetOrSetMethod.scheduleEEntityToDto(scheduleEEntity);
-                        data.setAction(scheduleEActionList.get(scheduleEEntity.getId()));
-                        scheduleDList.add(data);
-                    }
-                }
-
-                List<GtdUserEntity> userEntitylist = gtdUserRepository.findByUserIds(userIdList);
-                if (userEntitylist != null && !userEntitylist.isEmpty()) { // 席理加增加
-                    for (GtdUserEntity userEntity : userEntitylist) {
-                        data = SyncGetOrSetMethod.userEntityToDto(userEntity);
-                        data.setAction(userActionList.get(userEntity.getUserId()));
-                        userList.add(data);
-                    }
-                }
-
 
                 logger.debug("======== [查询下载完成 开始整合] =======");
                 logger.debug("-------- 添加联系人表数据 数据量:" + playerList.size() + " -------");
