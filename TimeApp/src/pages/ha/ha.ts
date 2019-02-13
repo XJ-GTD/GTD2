@@ -71,6 +71,7 @@ export class HaPage {
     daysConfig: []
   };
 
+  event:any ;
   constructor(private modalCtr: ModalController,
               private utilService: UtilService,
               private xiaojiFeekback: XiaojiFeedbackService,
@@ -107,6 +108,7 @@ export class HaPage {
 
   creNewEvent($event) {
     this.xiaojiFeekback.audioHighhat();
+    this.event = $event;
     let eventDate = new Date($event.time);
     let tmp = moment(eventDate).format("YYYY-MM-DD");
     let sbPageModal = this.modalCtr.create(PageConfig.SB_PAGE,{dateStr:tmp,event:$event});
@@ -118,6 +120,7 @@ export class HaPage {
     if (!$event) {
       return;
     }
+    this.event = $event;
     let eventDate = new Date($event.time);
     this.selectDay = eventDate;
     let year = eventDate.getFullYear();
@@ -143,6 +146,11 @@ export class HaPage {
       //刷新月份事件标识
       console.log(this.selectDay)
       this.ion2calendar.flashMonth(this.selectDay.getTime());
+      if(this.event != undefined){
+        this.onSelectDayEvent(this.event);
+      }else{
+        this.ha01Page.showScheduleLs({time:moment().valueOf()});
+      }
     });
     tab1RootModal.present();
   }
