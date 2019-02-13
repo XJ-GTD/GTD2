@@ -1,10 +1,12 @@
 package com.xiaoji.gtd.repository;
 
-import com.xiaoji.gtd.entity.GtdExecuteEntity;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.xiaoji.gtd.entity.GtdExecuteEntity;
 
 /**
  * 日程参与人表DAO层 继承类
@@ -26,4 +28,7 @@ public interface GtdExecuteRepository extends JpaRepository<GtdExecuteEntity, In
      * @return
      */
     GtdExecuteEntity findByExecuteId(String id);
+
+    @Query(value = "SELECT * FROM gtd_execute WHERE EXECUTE_ID IN ?1", nativeQuery = true)
+    List<GtdExecuteEntity> findByExecuteIds(List<String> ids);
 }

@@ -1,10 +1,12 @@
 package com.xiaoji.gtd.repository;
 
-import com.xiaoji.gtd.entity.GtdPlanEntity;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.xiaoji.gtd.entity.GtdPlanEntity;
 
 /**
  * 计划表DAO层 继承类
@@ -26,4 +28,7 @@ public interface GtdPlanRepository extends JpaRepository<GtdPlanEntity, Integer>
      * @return
      */
     GtdPlanEntity findByPlanId(String id);
+
+    @Query(value = "SELECT * FROM gtd_plan WHERE PLAN_ID IN ?1", nativeQuery = true)
+    List<GtdPlanEntity> findByPlanIds(List<String> ids);
 }
