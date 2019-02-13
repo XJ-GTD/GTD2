@@ -158,6 +158,7 @@ export class WorkService {
           return this.rcbSqlite.addLbData(rc,rc.lI,cft,rm,ac,'0');
         }).then(data=>{
           if(ruL && ruL.length>0){
+            console.log("----- workService arc 日程参与人："+JSON.stringify(ruList));
             //转化接口对应的参与人参数
             if(ruL && ruL.length>0){
               for(let i=0;i<ruL.length;i++){
@@ -174,12 +175,12 @@ export class WorkService {
             }
 
             if(DataConfig.uInfo.uty=='1'){
-              console.log("WorkService arc() restful request " + SkillConfig.BC_SCC+" start");
+              console.log("WorkService arc() restful request " + SkillConfig.BC_SCC+" start,参与人psl:" + JSON.stringify(psl));
               return this.rcResful.sc(rc.uI,SkillConfig.BC_SCC,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'',data);
             }
           }
       }).then(data=>{
-        console.log("WorkService arc() restful request end : " +JSON.stringify(data));
+        console.log("WorkService arc() restful request end(日程添加推送成功) : " +JSON.stringify(data));
         if(psl.length>0 && data != null && data.code==0 && data.data.players.length>0){
           let players = data.data.players;
           for(let i=0;i<ruL.length;i++){
