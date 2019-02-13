@@ -21,9 +21,10 @@ export class FiEntity {
   private _usq:string;
   private _dsq:string;
   //查询单个
-  private _qosq:string = 'select * from GTD_FI where id=' + this._id;
+  private _qosq:string;
 
   get qosq(): string {
+    this._qosq = 'select * from GTD_FI where id=' + this._id
     return this._qosq;
   }
 

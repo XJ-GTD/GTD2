@@ -267,9 +267,11 @@ export class SyncService {
         return this.syncR.syncTime(DataConfig.uInfo.uI,this.util.getDeviceId(),fv,sdl)
       }).then(data=>{
         if (data && data.code == 0 && data.data.userDataList.length > 0) {
+          console.log('----- 本地版本号：'+ fv +', 服务器返回版本号：'+data.data.version);
           fv = data.data.version;
           let uds = data.data.userDataList;
           sql = this.getsql(sql,uds);
+          console.log('本地同步更新数据：'+sql.split(';').length);
         }
         if (sql != '') {
           console.log('----- 定时同步服务器数据导入本地库 ------');

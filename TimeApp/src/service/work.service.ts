@@ -213,7 +213,7 @@ export class WorkService {
         //this.drc(rc.sI,'1')
         //同步上传服务器
         console.log("============ 日程添加同步上传日历 ================");
-        //this.syncSqlite.syncUplaod();
+        this.syncSqlite.syncUplaod();
         resolve(bs);
       }).catch(e=>{
         console.error("WorkService arc() Error : " +JSON.stringify(e));
@@ -275,7 +275,7 @@ export class WorkService {
         console.log("------ WorkService arcMq() End ------------");
         //同步上传服务器
         console.log("============ MQ日程添加同步上传日历 ================");
-        //this.syncSqlite.syncUplaod();
+        this.syncSqlite.syncUplaod();
         resolve(bs);
       }).catch(e=>{
         console.error("WorkService arcMq() Error : " +JSON.stringify(e));
@@ -409,7 +409,7 @@ export class WorkService {
         }).then(data=>{
         //同步上传服务器
         //console.log("============ 更新日程同步上传日历 ================");
-        //this.syncSqlite.syncUplaod();
+        this.syncSqlite.syncUplaod();
         resolve(bs);
       }).catch(eu=>{
         bs.code = ReturnConfig.ERR_CODE;
@@ -538,16 +538,16 @@ export class WorkService {
               if(ruL && ruL.length>0){
                 for(let i=0;i<ruL.length;i++){
                   //排除当前登录人
-                  //if(ruL[i].rI != rc.uI){
-                  let ps = new PsModel();
-                  ps.userId=ruL[i].rI;
-                  ps.accountMobile = ruL[i].rC;
-                  psl.push(ps);
-                  //}
+                 // if(ruL[i].rI != rc.uI){
+                    let ps = new PsModel();
+                    ps.userId=ruL[i].rI;
+                    ps.accountMobile = ruL[i].rC;
+                    psl.push(ps);
+                 // }
                 }
               }
               console.log("WorkService drc() 删除日程 restful request " + SkillConfig.BC_SCD+" start");
-              return this.rcResful.sc(DataConfig.uInfo.uI,SkillConfig.BC_SCD,rc.sI,'123','2019-01-07','2019-01-07','1',psl,'',null);
+              return this.rcResful.sc(DataConfig.uInfo.uI,SkillConfig.BC_SCD,rc.sI,'','','','',psl,'',new RcbModel());
             }
           }).then(data=>{
             console.log("WorkService drc() 删除日程 restful request END " + JSON.stringify(data));

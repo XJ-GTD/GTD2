@@ -151,7 +151,7 @@ public class SyncGetOrSetMethod {
 
         scheduleEntity.setScheduleId(std.getTableA());                          //日程事件ID
         scheduleEntity.setScheduleName(std.getTableB());                        //日程事件名称
-        if (std.getTableC() != null && !std.getTableC().equals(""))
+        if (std.getTableC() != null && !std.getTableC().equals("") && !std.getTableC().equals("null"))
             scheduleEntity.setLabelId(Integer.valueOf(std.getTableC()));            //标签ID
         scheduleEntity.setUserId(std.getTableD());                              //创建者
         scheduleEntity.setPlanId(std.getTableE());                              //计划ID
@@ -194,9 +194,9 @@ public class SyncGetOrSetMethod {
         executeEntity.setExecuteId(std.getTableA());                          //日程参与人表ID
         executeEntity.setScheduleId(std.getTableB());                         //日程事件ID
         executeEntity.setScheduleOtherName(std.getTableC());                  //日程主题备注
-        if (std.getTableD() != null && !std.getTableD().equals(""))
+        if (std.getTableD() != null && !std.getTableD().equals("") && !std.getTableD().equals("null"))
             executeEntity.setScheduleAuth(Integer.valueOf(std.getTableD()));      //修改权限
-        if (std.getTableE() != null && !std.getTableE().equals(""))
+        if (std.getTableE() != null && !std.getTableE().equals("") && !std.getTableE().equals("null"))
             executeEntity.setExecuteStatus(Integer.valueOf(std.getTableE()));     //参与状态
         executeEntity.setUserId(std.getTableF());                             //参与人用户ID
         executeEntity.setId(std.getTableG());                                 //授权表ID
@@ -309,11 +309,11 @@ public class SyncGetOrSetMethod {
         scheduleCEntity.setScheduleId(std.getTableB());                             //日程事件ID
         scheduleCEntity.setComment(std.getTableC());                                //备注
         scheduleCEntity.setRemindType(std.getTableE());                             //提醒方式
-        if (std.getTableF() != null && !std.getTableF().equals(""))
+        if (std.getTableF() != null && !std.getTableF().equals("") && !std.getTableF().equals("null"))
             scheduleCEntity.setRemindTime(CommonMethods.dateToStamp(std.getTableF()));  //提醒时间
-        if (std.getTableG() != null && !std.getTableG().equals(""))
+        if (std.getTableG() != null && !std.getTableG().equals("") && !std.getTableG().equals("null"))
             scheduleCEntity.setFinishStatus(Integer.valueOf(std.getTableG()));          //完成状态
-        if (std.getTableH() != null && !std.getTableH().equals(""))
+        if (std.getTableH() != null && !std.getTableH().equals("") && !std.getTableH().equals("null"))
             scheduleCEntity.setFinishTime(CommonMethods.dateToStamp(std.getTableH()));  //完成时间
 
         return scheduleCEntity;
