@@ -32,9 +32,10 @@ export class RcpEntity {
   private _usq:string;
   private _dsq:string;
   //查询单个
-  private _qosq:string = 'select * from GTD_D where pI="' + this._pI+'"';
+  private _qosq:string;
 
   get qosq(): string {
+    this._qosq = 'select * from GTD_D where pI="' + this._pI+'"';
     return this._qosq;
   }
 

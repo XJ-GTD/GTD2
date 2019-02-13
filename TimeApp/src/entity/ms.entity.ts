@@ -27,6 +27,7 @@ export class MsEntity {
   private _qosq:string = 'select * from GTD_H where mi=' + this._mi;
 
   get qosq(): string {
+    this._qosq  = 'select * from GTD_H where mi=' + this._mi;
     return this._qosq;
   }
 

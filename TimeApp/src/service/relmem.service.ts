@@ -197,7 +197,7 @@ export class RelmemService {
         this.upr('','',rN,rc,'0','',null,'',auI).then(data=>{
           //同步上传服务器
           console.log("============ 更新联系人同步上传服务 ================");
-          this.syncSqlite.syncUplaod();
+          //this.syncSqlite.syncUplaod();
           resolve(base);
         }).catch(e=>{
           console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e));
