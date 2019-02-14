@@ -249,7 +249,11 @@ export class RcbSqlite{
       for (let i = 0; i < syncs.length; i++) {
         let sync = syncs[i];
         let en = new RcbModel();
-        en.id = sync.tableA;
+        if(sync.tableA && sync.tableA != '' && sync.tableA != null){
+          en.id = sync.tableA;
+        }else{
+          continue;
+        }
         en.sI = sync.tableB;
         en.rm = sync.tableC;
         en.cft = sync.tableD;

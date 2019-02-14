@@ -163,6 +163,7 @@ export class WorkSqlite{
       for (let i = 0; i < rus.length; i++) {
         let ru = rus[i];
         let rgc = new RcpEntity();
+        rgc.pI = ru.pI;
         rgc.sI = rc.sI;
         sql += rgc.dsq;
         rcpL.push(rgc);
@@ -586,7 +587,11 @@ export class WorkSqlite{
       for (let i = 0; i < syncs.length; i++) {
         let sync = syncs[i];
         let en = new RcEntity();
-        en.sI = sync.tableA;
+        if(sync.tableA && sync.tableA != '' && sync.tableA != null){
+          en.sI = sync.tableA;
+        }else{
+          continue;
+        }
         en.sN = sync.tableB;
         en.lI = sync.tableC;
         en.uI = sync.tableD;
@@ -615,7 +620,11 @@ export class WorkSqlite{
       for (let i = 0; i < syncs.length; i++) {
         let sync = syncs[i];
         let en = new RcpEntity();
-        en.pI = sync.tableA;
+        if(sync.tableA && sync.tableA != '' && sync.tableA != null){
+          en.pI = sync.tableA;
+        }else{
+          continue;
+        }
         en.sI = sync.tableB;
         en.son = sync.tableC;
         if(sync.tableD != '' && sync.tableD != null){

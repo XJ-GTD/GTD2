@@ -62,16 +62,21 @@ export class SyncSqlite {
    */
   save(sql:string): Promise<any> {
     return new Promise((resolve, reject) =>{
-      return this.baseSqlite.importSqlToDb(sql).then(data=>{
-      //   return this.syncUplaod();
-      // }).then(data=>{
-      //   console.log("====== 添加同步表数据结束："+ JSON.stringify(data));
-      //   console.log("====== 实时上传结束 ========");
-        resolve(data)
-      }).catch(e=>{
-        console.error("====== 添加同步表报错 Error："+JSON.stringify(e));
-        reject(e)
-      })
+      if(sql != ''){
+        return this.baseSqlite.importSqlToDb(sql).then(data=>{
+          //   return this.syncUplaod();
+          // }).then(data=>{
+          //   console.log("====== 添加同步表数据结束："+ JSON.stringify(data));
+          //   console.log("====== 实时上传结束 ========");
+          resolve(data);
+        }).catch(e=>{
+          console.error("====== 添加同步表报错 Error："+JSON.stringify(e));
+          reject(e);
+        })
+      }else{
+        resolve('sync-sqlite同步SQL TableA为空！');
+      }
+
     })
   }
 
