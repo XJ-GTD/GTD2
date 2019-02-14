@@ -1235,6 +1235,8 @@ public class SyncServiceImpl implements ISyncService {
         }
         logger.debug(tableName + "表更新数据有 " + dataCompare.size() + "条");
 
+        // 删除版本判断
+        /*
         for (SyncTableData std: dataList) {
             for (GtdSyncVersionEntity gsve : dataCompare) {
                 logger.debug(gsve.getTableId() + " ?= " + std.getTableA() + " and " + gsve.getSyncAction() + " is delete?"); // 席理加增加
@@ -1244,7 +1246,7 @@ public class SyncServiceImpl implements ISyncService {
                     break;
                 }
             }
-        }
+        }*/
 
         return newDataList;
     }
