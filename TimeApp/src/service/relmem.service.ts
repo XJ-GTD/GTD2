@@ -494,6 +494,42 @@ export class RelmemService {
     })
   }
 
+  updRgus(id:string,rus:Array<RuModel>):Promise<BsModel>{
+    return new Promise((resolve, reject)=>{
+      let bs = new BsModel();
+      let sql='';
+      let rugL = new Array<RguEntity>();
+      for(let i=0;i<rus.length;i++){
+        let rgu = new RguEntity();
+        rgu.bi = id;
+        rgu.bmi = rus[i].id;
+        rgu.id = this.util.getUuid();
+        rugL.push(rgu);
+        sql+=rgu.isq;
+      }
+      this.relmemSqlite.delRgu(id,null).then(data=>{
+        console.log("--------- RelmemService addRgus() add Group personnel sql: "+sql);
+        return this.baseSqlite.importSqlToDb(sql);
+      }).then(data=>{
+        console.log("--------- RelmemService addRgus() restful add Group personnel End: "+JSON.stringify(data));
+        console.log("--------- 5.RelmemService addRgus() sync loacl sqlite start --------");
+        return this.relmemSqlite.syncRguTime(rugL,DataConfig.AC_T);
+      }).then(data=>{
+        console.log("--------- 6.RelmemService addRgus() sync loacl sqlite End: "+JSON.stringify(data));
+        //同步上传服务器
+        console.log("============ 更新联系人同步上传服务 ================");
+        this.syncSqlite.syncUplaod();
+        resolve(bs);
+      }).catch(e=>{
+        console.log("--------- RelmemService addRgus() restful add Group personnel Error: "+JSON.stringify(e));
+        bs.code=ReturnConfig.ERR_CODE;
+        bs.message=e.message;
+        reject(bs);
+      })
+
+    })
+  }
+
   /**
    * 删除联系人/群组
    * @param {string} id 联系人/群组ID

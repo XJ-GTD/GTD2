@@ -73,6 +73,7 @@ export class PcPage {
     // this.tel=this.navParams.get("tel");
     this.code = this.navParams.get("code");
     this.ru = this.navParams.get("u");
+    this.ru.ran = this.ru.rN;
     console.log("dddddddddddd"+ JSON.stringify(this.ru));
   }
 

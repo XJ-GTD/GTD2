@@ -272,13 +272,13 @@ export class SaPage {
     // this.endtmp = this.util.strToDtime(this.rc.ed);
     this.starttmp = new Date(new Date(this.rc.sd).getTime()+8*60*60*1000).toISOString();
     this.endtmp = new Date(this.rc.ed).toISOString();
-    // if(this.rc.sa != '1'){
-    //   this.utilService.toast("不可编辑");
-    //   this.canEdit = false;
-    //   this.isEdit = false;
-    // }else {
+    if(this.rc.sa != '1'){
+      this.utilService.toast("不可编辑");
+      this.canEdit = false;
+      this.isEdit = false;
+    }else {
       this.isEdit = true;
-    // }
+    }
     console.log(this.starttmp)
 
   }

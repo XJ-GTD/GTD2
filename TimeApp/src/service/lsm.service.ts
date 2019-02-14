@@ -13,6 +13,7 @@ import {SyncService} from "./sync.service";
 import {ReturnConfig} from "../app/return.config";
 import {SyncSqlite} from "./sqlite/sync-sqlite";
 import {ContactsService} from "./util-service/contacts.service";
+import {Events} from "ionic-angular";
 
 
 
@@ -29,7 +30,8 @@ export class LsmService {
               private sync : SyncService,
               private syncSqlite : SyncSqlite,
               private util: UtilService,
-              private contacts: ContactsService) {
+              private contacts: ContactsService,
+              private events: Events) {
   }
 
   /**
@@ -202,7 +204,12 @@ export class LsmService {
           }
           if(base.code == ReturnConfig.SUCCESS_CODE){
             console.log("------lsm login 登录成功请求开始同步服务器数据 -------");
-            this.sync.loginSync();
+            this.sync.loginSync().then(data=>{
+              if(data.code == 0){
+                this.util.toast("同步成功");
+                this.events.publish("flashMonth");
+              }
+            });
           }
           resolve(base);
         }).catch(eu => {
@@ -284,7 +291,10 @@ export class LsmService {
         }
         if(base.code == ReturnConfig.SUCCESS_CODE){
           console.log("------lsm login 登录成功请求开始同步服务器数据 -------");
-          this.sync.loginSync();
+          this.sync.loginSync().then(data=>{
+            this.util.toast("同步成功");
+            this.events.publish("flashMonth");
+          });
         }
         resolve(base);
       })

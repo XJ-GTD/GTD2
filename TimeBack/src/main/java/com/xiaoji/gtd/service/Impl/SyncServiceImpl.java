@@ -365,7 +365,7 @@ public class SyncServiceImpl implements ISyncService {
                         else tablePlayerList.add(playerEntity);                                                 //创建或更新操作
 
                         if (playerEntity != null) { // 席理加增加
-                        	logger.debug("DEBUG++ " + playerEntity.getCreateId() + " -> " + playerEntity.getPlayerAnotherName() + " <-> " + playerEntity.getPlayerFlag());
+                        	logger.debug("DEBUG++ " + playerEntity.getCreateId() + " -> " + playerEntity.getPlayerId() + " : " + playerEntity.getPlayerAnotherName() + " <-> " + playerEntity.getPlayerFlag());
                         }
 
                         syncVersion.add(getSyncData(std, userId, version, deviceId, uploadVersion, tableName));          //填入入库版本表list
@@ -1235,6 +1235,8 @@ public class SyncServiceImpl implements ISyncService {
         }
         logger.debug(tableName + "表更新数据有 " + dataCompare.size() + "条");
 
+        // 删除版本判断
+        /*
         for (SyncTableData std: dataList) {
             for (GtdSyncVersionEntity gsve : dataCompare) {
                 logger.debug(gsve.getTableId() + " ?= " + std.getTableA() + " and " + gsve.getSyncAction() + " is delete?"); // 席理加增加
@@ -1244,7 +1246,7 @@ public class SyncServiceImpl implements ISyncService {
                     break;
                 }
             }
-        }
+        }*/
 
         return newDataList;
     }

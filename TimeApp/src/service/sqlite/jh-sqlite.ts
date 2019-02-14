@@ -70,7 +70,11 @@ export class JhSqlite {
       for (let i = 0; i < syncs.length; i++) {
         let sync = syncs[i];
         let en = new JhEntity();
-        en.ji = sync.tableA;
+        if(sync.tableA && sync.tableA != '' && sync.tableA != null){
+          en.ji = sync.tableA;
+        }else{
+          continue;
+        }
         en.jn = sync.tableB;
         en.jg = sync.tableC;
         sync.tableD = DataConfig.uInfo.uI;

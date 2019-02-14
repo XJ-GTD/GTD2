@@ -85,7 +85,7 @@ import {Select} from "ionic-angular/components/select/select";
     <button ion-item class="padding-left-0 height56"> 
       <img src="./assets/imgs/1.png" item-start/> 
       <ion-label>日期</ion-label> 
-      <ion-datetime  displayFormat="YYYY 年 MM 月 DD 日" [(ngModel)]="startTime"></ion-datetime> 
+      <ion-datetime  displayFormat="YYYY 年 MM 月 DD 日" [(ngModel)]="startDate"></ion-datetime> 
     </button>
     <button ion-item class="padding-left-0 height56">
       <img src="./assets/imgs/1.png" item-start/>
@@ -202,6 +202,7 @@ export class SbPage {
   repeatTypes: Array<ZtdModel>;
   type: any = "";
   title: any = "";
+  startDate:any ="";//开始日期
   startTime: any = "";//开始时间
   repeatType: any = "";//重复类型
   naoling: Array<ZtdModel>;
@@ -268,6 +269,9 @@ export class SbPage {
   }
 
   ionViewWillLeave() {
+
+    this.events.publish("flashDay",{day:moment(new Date(this.startTime).getTime()).format("YYYY-MM-DD"),event:this.event});
+
     if(this.alert != undefined){
       this.alert.dismiss();
     }
@@ -278,8 +282,6 @@ export class SbPage {
         this.dateTimes.toArray()[i]._picker.dismiss();
       }
     }
-
-
     if(this.repeatTypeSelect != undefined){
       this.repeatTypeSelect.close();
     }
@@ -295,8 +297,8 @@ export class SbPage {
     }else{
       this.startTime = new Date(this.startTime).toISOString();
     }
-
-    console.log(this.startTime)
+    this.startDate = this.startTime.substring(0,10);
+    this.startTime = moment(new Date()).format("HH:mm");
 
     this.repeatTypes = DataConfig.ZTD_MAP.get(DataConfig.REPEAT_TYPE); //重复类型
 
@@ -320,8 +322,11 @@ export class SbPage {
     console.log("时间格式规整前 :: " + this.startTime);
     /*时间格式规整*/
     this.startTime=this.startTime.replace(new RegExp('-','g'),'/').replace("T"," ").substr(0,16);
+    this.startDate=this.startDate.replace(new RegExp('-','g'),'/').replace("T"," ").substr(0,16);
     // this.startTime = moment(new Date(this.startTime).getTime()).format("YYYY/MM/DD HH:mm");
     console.log("时间格式规整后 :: " + this.startTime);
+    let date = this.startDate + " " + this.startTime;
+    console.log(date);
 
     let rul = new Array<RuModel>();
     if(this.select){
@@ -335,11 +340,11 @@ export class SbPage {
       return;
     }
 
-    this.workService.arc(this.title,this.startTime,this.type,this.jh.ji,this.repeatType,this.remarks,'',rul).then(data=>{
+    this.workService.arc(this.title,date,this.type,this.jh.ji,this.repeatType,this.remarks,'',rul).then(data=>{
       if(data.code == 0){
         console.log("添加日程成功");
         // this.navCtrl.push('HzPage')
-        this.events.publish("flashDay",{day:moment(new Date(this.startTime).getTime()).format("YYYY-MM-DD"),event:this.event});
+
         this.utilService.alert("日程创建成功");
         this.navCtrl.pop();
       }else{

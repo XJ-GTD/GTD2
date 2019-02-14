@@ -49,8 +49,8 @@ public class ProducerUtil implements RabbitTemplate.ConfirmCallback {
      * @param sendMsg
      */
     public void topicSend(String exchangeName, String userId, String sendMsg) {
-        logger.debug("topic广播 exchangeName:" + exchangeName + "| userId:" + userId + "| 消息 : "+ sendMsg);
         String queueName = userId + ".all";
+        logger.debug("topic广播 exchangeName:" + exchangeName + "(" + queueName + ")" + "| userId:" + userId + "| 消息 : "+ sendMsg);
         this.amqpTemplate.convertAndSend(exchangeName, queueName, sendMsg);
     }
 
