@@ -136,6 +136,7 @@ public class SmsServiceImpl implements ISmsService {
         requestData.put("to", to);
 
         if(!vars.isEmpty()){
+        	logger.debug("DEBUG++ " + vars);
             requestData.put("vars",vars.toString());
         }
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
@@ -179,6 +180,7 @@ public class SmsServiceImpl implements ISmsService {
                         TimerUtil.putCache(to, new TimerDto(to, vars.get("code"), System.currentTimeMillis() + 10 * 1000 * 60));
                     }
                 } else {
+                	logger.debug("DEBUG++ " + jsonStr);
                     logger.error("赛邮短信接口请求报错");
                 }
             }
