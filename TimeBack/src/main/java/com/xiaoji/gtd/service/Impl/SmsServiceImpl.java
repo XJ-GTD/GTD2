@@ -136,6 +136,7 @@ public class SmsServiceImpl implements ISmsService {
         requestData.put("to", to);
 
         if(!vars.isEmpty()){
+        	logger.debug("DEBUG++ " + vars);
             requestData.put("vars",vars.toString());
         }
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
