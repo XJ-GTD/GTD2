@@ -133,12 +133,12 @@ export class PdPage {
       console.log(JSON.stringify(data));
 
       if(data != undefined){
-        // this.relmemService.updRgus(this.g.id, data).then(data => {
-        //   console.log("添加成功");
-        //   this.queryGAll();
-        // }).catch(reason => {
-        //
-        // });
+        this.relmemService.updRgus(this.g.id, data).then(data => {
+          console.log("添加成功");
+          this.queryGAll();
+        }).catch(reason => {
+
+        });
       }else{
         // this.queryGAll();
       }

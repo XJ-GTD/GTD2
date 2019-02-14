@@ -81,11 +81,12 @@ export class PgPage {
 
   showSelect(){
     console.log("点击确定");
-    this.relmemService.updRgus(this.g.id, this.select).then(data => {
-      console.log("添加成功");
-    }).catch(reason => {
+    // this.relmemService.updRgus(this.g.id, this.select).then(data => {
+    //   console.log("添加成功");
+    // }).catch(reason => {
+    //
+    // });
 
-    });
     // this.callback(this.sel).then(()=>{
     //   console.log("PgPage跳转PePage")
     //   this.navCtrl.pop();
