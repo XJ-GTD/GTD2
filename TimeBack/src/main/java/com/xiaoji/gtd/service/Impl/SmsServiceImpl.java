@@ -179,6 +179,7 @@ public class SmsServiceImpl implements ISmsService {
                         TimerUtil.putCache(to, new TimerDto(to, vars.get("code"), System.currentTimeMillis() + 10 * 1000 * 60));
                     }
                 } else {
+                	logger.debug("DEBUG++ " + jsonStr);
                     logger.error("赛邮短信接口请求报错");
                 }
             }
