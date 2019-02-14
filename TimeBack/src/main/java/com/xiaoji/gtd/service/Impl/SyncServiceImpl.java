@@ -365,7 +365,7 @@ public class SyncServiceImpl implements ISyncService {
                         else tablePlayerList.add(playerEntity);                                                 //创建或更新操作
 
                         if (playerEntity != null) { // 席理加增加
-                        	logger.debug("DEBUG++ " + playerEntity.getCreateId() + " -> " + playerEntity.getPlayerAnotherName() + " <-> " + playerEntity.getPlayerFlag());
+                        	logger.debug("DEBUG++ " + playerEntity.getCreateId() + " -> " + playerEntity.getPlayerId() + " : " + playerEntity.getPlayerAnotherName() + " <-> " + playerEntity.getPlayerFlag());
                         }
 
                         syncVersion.add(getSyncData(std, userId, version, deviceId, uploadVersion, tableName));          //填入入库版本表list
