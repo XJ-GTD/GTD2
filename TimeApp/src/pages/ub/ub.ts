@@ -134,6 +134,7 @@ export class UbPage {
     this.lsmService.login(this.accountName, this.accountPassword).then(data=> {
        console.log(data);
        if (data.code == 0) {
+         this.webSocket.close();
          // this.userService.getUo();
          this.utilService.unloading();
          console.log("ub:" + data.message);

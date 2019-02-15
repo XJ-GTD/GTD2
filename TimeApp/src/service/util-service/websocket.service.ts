@@ -65,6 +65,9 @@ export class WebsocketService {
     // 连接消息服务器
     this.client.disconnect(() => {
       console.log('socket close!' + event);
+    },{
+      login: "gtd_mq",
+      passcode: "gtd_mq"
     });
   }
 
