@@ -525,7 +525,7 @@ export class WorkService {
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
       if(sI && sI != null && sI !=''){
-        if(sa != '0'){
+        //if(sa != '0'){
           let rc = new RcEntity();
           rc.sI = sI;
           let ruL= new Array<RuModel>();
@@ -555,16 +555,18 @@ export class WorkService {
               if(ruL && ruL.length>0){
                 for(let i=0;i<ruL.length;i++){
                   //排除当前登录人
-                 // if(ruL[i].rI != rc.uI){
+                 if(ruL[i].rI != '' && ruL[i].rI !=null && ruL[i].rI != rc.uI){
                     let ps = new PsModel();
                     ps.userId=ruL[i].rI;
                     ps.accountMobile = ruL[i].rC;
                     psl.push(ps);
-                 // }
+                 }
                 }
               }
-              console.log("WorkService drc() 删除日程 restful request " + SkillConfig.BC_SCD+" start");
-              return this.rcResful.sc(DataConfig.uInfo.uI,SkillConfig.BC_SCD,rc.sI,'','','','',psl,'',new RcbModel());
+              if(psl.length>0){
+                console.log("WorkService drc() 删除日程 restful request " + SkillConfig.BC_SCD+" start");
+                return this.rcResful.sc(DataConfig.uInfo.uI,SkillConfig.BC_SCD,rc.sI,'','','','',psl,'',new RcbModel());
+              }
             }
           }).then(data=>{
             console.log("WorkService drc() 删除日程 restful request END " + JSON.stringify(data));
@@ -582,11 +584,11 @@ export class WorkService {
             bs.message = ReturnConfig.ERR_MESSAGE;
             resolve(bs);
           })
-        }else{
-          bs.code = ReturnConfig.QX_NOT_CODE;
-          bs.message = ReturnConfig.QX_NOT_MESSAGE;
-          resolve(bs);
-        }
+        // }else{
+        //   bs.code = ReturnConfig.QX_NOT_CODE;
+        //   bs.message = ReturnConfig.QX_NOT_MESSAGE;
+        //   resolve(bs);
+        // }
       }else{
         bs.code = ReturnConfig.NOT_PARA_CODE;
         bs.message = ReturnConfig.NOT_PARA_MESSAGE;
