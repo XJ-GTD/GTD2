@@ -177,7 +177,7 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
       <ion-input >{{rc.rm}}</ion-input> 
     </ion-item>
   </div> 
-    <button ion-button *ngIf="rc.sa == 1"  (click)="del()" style="margin: 0 auto;">删除</button> 
+    <button ion-button (click)="del()" style="margin: 0 auto;">删除</button> 
     <button ion-button (click)="setAlarm()">设置提醒闹钟</button> 
   </ion-content>`,
 })
