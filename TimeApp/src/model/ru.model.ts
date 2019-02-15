@@ -21,7 +21,8 @@ export class RuModel extends BsModel{
   private _ot:string='';//0是未被添加，1是同意，2是拉黑
   private _is:string='';//0本地存在，1本地不存在
   private _rugId:string=''; //群组关联ID
-  private _bmi:string=''; //群组ID
+  private _bi:string=''; //群组ID
+  private _us:Array<RuModel>;
   get id(): string {
     return this._id;
   }
@@ -134,12 +135,12 @@ export class RuModel extends BsModel{
     this._rugId = value;
   }
 
-  get bmi(): string {
-    return this._bmi;
+  get bi(): string {
+    return this._bi;
   }
 
-  set bmi(value: string) {
-    this._bmi = value;
+  set bi(value: string) {
+    this._bi = value;
   }
 
   get pI(): string {
@@ -148,5 +149,13 @@ export class RuModel extends BsModel{
 
   set pI(value: string) {
     this._pI = value;
+  }
+
+  get us(): Array<RuModel> {
+    return this._us;
+  }
+
+  set us(value: Array<RuModel>) {
+    this._us = value;
   }
 }
