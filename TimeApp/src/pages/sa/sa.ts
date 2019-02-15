@@ -16,6 +16,7 @@ import * as moment from "moment";
 import {PageConfig} from "../../app/page.config";
 import {Select} from "ionic-angular/components/select/select";
 import {DateTime} from "ionic-angular/components/datetime/datetime";
+import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
 
 /**
  * Generated class for the SaPage page.
@@ -107,7 +108,12 @@ import {DateTime} from "ionic-angular/components/datetime/datetime";
       <img src="./assets/imgs/b.png" style="width: 15px" item-start> 
       <ion-label col-3>备注</ion-label> 
       <ion-label>哈哈哈</ion-label> 
-    </ion-item> 
+    </ion-item>
+    <ion-item>
+      <img src="./assets/imgs/b.png" style="width: 15px" item-start>
+      <ion-label col-3>发布人</ion-label>
+      <ion-label >{{schedule.publisherName}}</ion-label>
+    </ion-item>
   </div> 
    
   <div *ngIf="isEdit"> 
@@ -169,9 +175,9 @@ import {DateTime} from "ionic-angular/components/datetime/datetime";
       <img src="./assets/imgs/b.png" style="width: 15px" item-start> 
       <ion-label col-3>备注</ion-label> 
       <ion-input >{{rc.rm}}</ion-input> 
-    </ion-item> 
+    </ion-item>
   </div> 
-    <button ion-button  (click)="del()" style="margin: 0 auto;">删除</button> 
+    <button ion-button *ngIf="rc.sa == 1"  (click)="del()" style="margin: 0 auto;">删除</button> 
     <button ion-button (click)="setAlarm()">设置提醒闹钟</button> 
   </ion-content>`,
 })
@@ -183,7 +189,7 @@ export class SaPage {
   @ViewChild(Alert) alert: Alert;
 
   data: any;
-  schedule: ScheduleModel;
+  schedule: ScheduleDetailsModel;
   rc:RcModel;
   // lbs:Array<LbModel>;
 
@@ -207,6 +213,7 @@ export class SaPage {
               private events: Events,
               private utilService: UtilService) {
     this.rc = new RcModel();
+    this.schedule = new ScheduleDetailsModel();
   }
 
   ionViewWillLeave() {
@@ -247,6 +254,7 @@ export class SaPage {
     this.dateStr = this.navParams.get("dateStr");
     // this.schedule = this.navParams.data;
     console.log("传入日程数据 ::" + JSON.stringify(this.schedule));
+    console.log(this.schedule.publisherName)
     this.rc = new RcModel();
     //查询日程详情
     this.work.getds(this.schedule.scheduleId).then(data=>{
@@ -273,7 +281,7 @@ export class SaPage {
     this.starttmp = new Date(new Date(this.rc.sd).getTime()+8*60*60*1000).toISOString();
     this.endtmp = new Date(this.rc.ed).toISOString();
     if(this.rc.sa != '1'){
-      this.utilService.toast("不可编辑");
+      // this.utilService.toast("不可编辑");
       this.canEdit = false;
       this.isEdit = false;
     }else {

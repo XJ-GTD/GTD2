@@ -120,6 +120,7 @@ export class UbPage {
 
   signIn() {
     console.log("登录按钮被点击");
+    this.webSocket.close();
     if(this.accountName == null && this.accountPassword == null){
       let toast = this.toastCtrl.create({
         message: '用户名和密码不能为空',

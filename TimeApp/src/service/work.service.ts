@@ -401,7 +401,19 @@ export class WorkService {
           }
         }
         if(dRul.length>0){
-          console.log("============ 删除多余的日程参与人："+JSON.stringify(dRul));
+          let dpsl = new Array<PsModel>();
+          for(let i=0;i<dRul.length;i++){
+            //排除当前登录人
+            if(dRul[i].rI && dRul[i].rI!=null && dRul[i].rI !='' && dRul[i].rI != rc.uI){
+              let ps = new PsModel();
+              ps.userId=dRul[i].rI;
+              ps.accountMobile = dRul[i].rC;
+              dpsl.push(ps);
+            }
+          }
+          console.log("============ 更新删除多余的日程参与人resful请求："+JSON.stringify(dpsl));
+          this.rcResful.sc(rc.uI,SkillConfig.BC_SCD,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,dpsl,'',new RcbModel());
+          console.log("============ 更新删除多余的日程参与人："+JSON.stringify(dRul));
           return this.workSqlite.dRcps(rc,dRul);
         }
       }).then(data=>{

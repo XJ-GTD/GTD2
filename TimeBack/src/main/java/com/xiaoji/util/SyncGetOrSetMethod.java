@@ -151,7 +151,7 @@ public class SyncGetOrSetMethod {
 
         scheduleEntity.setScheduleId(std.getTableA());                          //日程事件ID
         scheduleEntity.setScheduleName(std.getTableB());                        //日程事件名称
-        if (std.getTableC() != null && !std.getTableC().equals("") && !std.getTableC().equals("null"))
+        if (std.getTableC() != null && !std.getTableC().equals("") && !std.getTableC().equals("null") && !std.getTableC().equals("undefined"))
             scheduleEntity.setLabelId(Integer.valueOf(std.getTableC()));            //标签ID
         scheduleEntity.setUserId(std.getTableD());                              //创建者
         scheduleEntity.setPlanId(std.getTableE());                              //计划ID

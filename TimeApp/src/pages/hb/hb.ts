@@ -415,7 +415,7 @@ export class HbPage {
   // }
 
   private showScheduleDetail(sc: RcModel) {
-       let schedule = new ScheduleModel();
+      let schedule = new ScheduleModel();
       schedule.scheduleId = sc.sI;
       this.navCtrl.push("SaPage",schedule);
   }

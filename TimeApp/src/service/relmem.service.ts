@@ -138,6 +138,10 @@ export class RelmemService {
         })
       }else{
         //如果是群
+        if(auI == null || auI == ''){
+          auI = this.util.getUuid();
+          ru.rI = auI;
+        }
         this.relmemSqlite.aru(ru).then(data=>{
           if(rel=='1' && qrL != null && qrL.length>0){
             // for(let i=0;i<qrL.length;i++){
@@ -352,7 +356,7 @@ export class RelmemService {
       // ru.rI=DataConfig.uInfo.uI;
       // rus.push(ru);
       ruo.us=rus;
-      this.relmemSqlite.getrus('','','','','0').then(data=>{
+      this.relmemSqlite.getrus('','','','',null).then(data=>{
         if(data&& data.rows && data.rows.length>0){
           for(let i=0;i<data.rows.length;i++){
             rus.push(data.rows.item(i));
