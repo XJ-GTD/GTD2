@@ -381,7 +381,7 @@ export class WorkService {
         if(data && data.rows && data.rows.length>0) {
           let rs = data.rows;
           for (let i = 0; i < rs.length; i++) {
-            let ru: RuModel = rs.item(i);
+            let ru = rs.item(i);
             let isExsit = false;
             for(let nru of ruL){
               if(nru.rI != '' && ru.rI != '' && ru.rI==nru.rI ){
@@ -395,13 +395,25 @@ export class WorkService {
                 break;
               }
             }
-            if(!isExsit && ru.rI != DataConfig.uInfo.uI){
+            if(!isExsit && ru.uI != DataConfig.uInfo.uI){
               dRul.push(ru);
             }
           }
         }
         if(dRul.length>0){
-          console.log("============ 删除多余的日程参与人："+JSON.stringify(dRul));
+          let dpsl = new Array<PsModel>();
+          for(let i=0;i<dRul.length;i++){
+            //排除当前登录人
+            if(dRul[i].rI && dRul[i].rI!=null && dRul[i].rI !='' && dRul[i].rI != rc.uI){
+              let ps = new PsModel();
+              ps.userId=dRul[i].rI;
+              ps.accountMobile = dRul[i].rC;
+              dpsl.push(ps);
+            }
+          }
+          console.log("============ 更新删除多余的日程参与人resful请求："+JSON.stringify(dpsl));
+          this.rcResful.sc(rc.uI,SkillConfig.BC_SCD,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,dpsl,'',new RcbModel());
+          console.log("============ 更新删除多余的日程参与人："+JSON.stringify(dRul));
           return this.workSqlite.dRcps(rc,dRul);
         }
       }).then(data=>{
@@ -410,12 +422,12 @@ export class WorkService {
         }).then(data=>{
         //同步上传服务器
         //console.log("============ 更新日程同步上传日历 ================");
-        this.syncSqlite.syncUplaod();
+        //this.syncSqlite.syncUplaod();
         resolve(bs);
       }).catch(eu=>{
         bs.code = ReturnConfig.ERR_CODE;
         bs.message=ReturnConfig.ERR_MESSAGE;
-        resolve(bs);
+        reject(bs);
       })
     })
   }
@@ -436,6 +448,10 @@ export class WorkService {
         }else{
           bs.code = ReturnConfig.NULL_CODE;
         }
+        resolve(bs);
+      }).catch(e=>{
+        bs.code=ReturnConfig.ERR_CODE;
+        reject(bs);
       })
     })
   }

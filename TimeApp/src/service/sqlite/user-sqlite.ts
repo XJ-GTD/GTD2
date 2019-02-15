@@ -75,7 +75,11 @@ export class UserSqlite {
       for (let i = 0; i < syncs.length; i++) {
         let sync = syncs[i];
         let en = new UEntity();
-        en.uI = sync.tableA;
+        if(sync.tableA && sync.tableA != '' && sync.tableA != null){
+          en.uI = sync.tableA;
+        }else{
+          continue;
+        }
         en.uN = sync.tableB;
         en.hIU = sync.tableC;
         en.biy = sync.tableD;
