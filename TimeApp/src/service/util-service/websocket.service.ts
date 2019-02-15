@@ -52,11 +52,11 @@ export class WebsocketService {
         this.dwService.dealWithMq(wsModel);
       });
     }, error => {
-      console.log('webSocket error! :' + error);
+      console.log('错误回调webSocket error! :' + error);
       this.connect(queueName);
 
     }, event => {
-      console.log('socket close!' + event);
+      console.log('关闭回调socket close!' + event);
     }, '/');
 
   }
@@ -64,7 +64,7 @@ export class WebsocketService {
   public close() {
     // 连接消息服务器
     this.client.disconnect(() => {
-      console.log('socket close!' + event);
+      console.log('调用关闭方法socket close!' + event);
     },{
       login: "gtd_mq",
       passcode: "gtd_mq"
