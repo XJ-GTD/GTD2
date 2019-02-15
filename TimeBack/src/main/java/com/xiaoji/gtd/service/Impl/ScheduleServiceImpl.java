@@ -118,7 +118,7 @@ public class ScheduleServiceImpl implements IScheduleService {
                         webSocketService.pushTopicMessage(targetUserId, pushDto);
                         logger.debug("[成功推送日程]:方式 === RABBIT MQ");
                     } else if (!player.isUser()){
-//                        smsService.pushSchedule(targetMobile);
+                        smsService.pushSchedule(targetMobile);
                         logger.debug("[成功推送日程]:方式 === SMS");
                     } else {
                         logger.debug("[不可推送日程]:原因 === 非对方好友或没有权限");

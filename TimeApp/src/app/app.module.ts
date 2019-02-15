@@ -61,12 +61,12 @@ import { HttpClientModule } from "@angular/common/http";
 import { SyncSqlite } from "../service/sqlite/sync-sqlite";
 import { NetworkService } from "../service/util-service/network.service";
 import { Network } from "@ionic-native/network";
-import { Contacts} from "@ionic-native/contacts";
-import { ContactsService} from "../service/util-service/contacts.service";
+import { Contacts } from "@ionic-native/contacts";
+import { ContactsService } from "../service/util-service/contacts.service";
 import { Vibration } from "@ionic-native/vibration";
 import { NativeAudio } from "@ionic-native/native-audio";
 import { SystemSettingService } from "../service/util-service/system.setting.service";
-import {RcbSqlite} from "../service/sqlite/rcb-sqlite";
+import { RcbSqlite } from "../service/sqlite/rcb-sqlite";
 import { ElModule } from 'element-angular'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterModule } from '@angular/router'
