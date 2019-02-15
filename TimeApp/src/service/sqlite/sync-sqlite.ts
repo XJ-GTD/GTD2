@@ -49,7 +49,7 @@ export class SyncSqlite {
     //日程
     sql=sql+'update GTD_S_Y set tableD="' +DataConfig.uInfo.uI +'" where tableName ="'+  DataConfig.GTD_C+'";';
     //联系人
-    sql=sql+'update GTD_S_Y set tableD="' +DataConfig.uInfo.uI +'" where tableName ="'+  DataConfig.GTD_B+'";';
+    sql=sql+'update GTD_S_Y set tableK="' +DataConfig.uInfo.uI +'" where tableName ="'+  DataConfig.GTD_B+'";';
     //计划
     sql=sql+'update GTD_S_Y set tableD="' +DataConfig.uInfo.uI +'" where tableName ="'+  DataConfig.GTD_J_H+'";';
     return sql
