@@ -19,6 +19,7 @@ export class WebsocketService {
   private login: string;
   private password: string;
   private client: Stomp.Client;
+  private queue: string;
 
   constructor(private dwService: DwMqService) {
     this.settingWs();
@@ -38,6 +39,8 @@ export class WebsocketService {
    * 监听消息队列
    */
   public connect(queueName: string) {
+
+    this.queue = queueName;
 
     console.log("-----MQ开始建立连接----");
     console.log("-----MQ QUEUE_NAME: [" + queueName +  "] ----");
@@ -63,6 +66,10 @@ export class WebsocketService {
 
   public close() {
     // 连接消息服务器
+    this.client.unsubscribe("/queue/" + this.queue,{
+      login: "gtd_mq",
+      passcode: "gtd_mq"
+    });
     this.client.disconnect(() => {
       console.log('调用关闭方法socket close!' + event);
     },{
