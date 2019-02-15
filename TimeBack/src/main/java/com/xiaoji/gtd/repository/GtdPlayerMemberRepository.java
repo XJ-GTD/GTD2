@@ -1,11 +1,12 @@
 package com.xiaoji.gtd.repository;
 
-import com.xiaoji.gtd.entity.GtdPlayerMemberEntity;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.xiaoji.gtd.entity.GtdPlayerMemberEntity;
 
 /**
  * 联系人群组表DAO层 继承类
@@ -28,4 +29,7 @@ public interface GtdPlayerMemberRepository extends JpaRepository<GtdPlayerMember
      * @return
      */
     GtdPlayerMemberEntity findById(String id);
+
+    @Query(value = "SELECT * FROM gtd_player_member WHERE ID IN ?1", nativeQuery = true)
+    List<GtdPlayerMemberEntity> findByIds(List<String> ids);
 }

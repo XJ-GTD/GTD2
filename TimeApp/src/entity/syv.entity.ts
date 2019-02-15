@@ -24,7 +24,7 @@ export class SyvEntity {
   private _qosq:string;
 
   get qosq(): string {
-    this._qosq = 'select * from GTD_S_V where si=' + this._si
+    this._qosq = 'select * from GTD_S_V where si=' + this._si;
     return this._qosq;
   }
 

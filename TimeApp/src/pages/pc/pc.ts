@@ -32,7 +32,7 @@ import {UtilService} from "../../service/util-service/util.service";
     </ion-item> 
     <ion-item class="flag" *ngIf="ru"> 
       <ion-label>备注</ion-label> 
-      <ion-input type="text" text-end placeholder="{{ru.rC}}" [(ngModel)]="ru.ran"></ion-input> 
+      <ion-input type="text" text-end placeholder="{{ru.rN}}" [(ngModel)]="ru.ran"></ion-input> 
     </ion-item> 
     <ion-item *ngIf="code == 1 || code == 2" class="flag"> 
       <ion-label>接收该用户的推送</ion-label> 
@@ -73,6 +73,7 @@ export class PcPage {
     // this.tel=this.navParams.get("tel");
     this.code = this.navParams.get("code");
     this.ru = this.navParams.get("u");
+    this.ru.ran = this.ru.rN;
     console.log("dddddddddddd"+ JSON.stringify(this.ru));
   }
 

@@ -49,7 +49,7 @@ export class SyncSqlite {
     //日程
     sql=sql+'update GTD_S_Y set tableD="' +DataConfig.uInfo.uI +'" where tableName ="'+  DataConfig.GTD_C+'";';
     //联系人
-    sql=sql+'update GTD_S_Y set tableD="' +DataConfig.uInfo.uI +'" where tableName ="'+  DataConfig.GTD_B+'";';
+    sql=sql+'update GTD_S_Y set tableK="' +DataConfig.uInfo.uI +'" where tableName ="'+  DataConfig.GTD_B+'";';
     //计划
     sql=sql+'update GTD_S_Y set tableD="' +DataConfig.uInfo.uI +'" where tableName ="'+  DataConfig.GTD_J_H+'";';
     return sql
@@ -62,16 +62,21 @@ export class SyncSqlite {
    */
   save(sql:string): Promise<any> {
     return new Promise((resolve, reject) =>{
-      return this.baseSqlite.importSqlToDb(sql).then(data=>{
-      //   return this.syncUplaod();
-      // }).then(data=>{
-      //   console.log("====== 添加同步表数据结束："+ JSON.stringify(data));
-      //   console.log("====== 实时上传结束 ========");
-        resolve(data)
-      }).catch(e=>{
-        console.error("====== 添加同步表报错 Error："+JSON.stringify(e));
-        reject(e)
-      })
+      if(sql != ''){
+        return this.baseSqlite.importSqlToDb(sql).then(data=>{
+          //   return this.syncUplaod();
+          // }).then(data=>{
+          //   console.log("====== 添加同步表数据结束："+ JSON.stringify(data));
+          //   console.log("====== 实时上传结束 ========");
+          resolve(data);
+        }).catch(e=>{
+          console.error("====== 添加同步表报错 Error："+JSON.stringify(e));
+          reject(e);
+        })
+      }else{
+        resolve('sync-sqlite同步SQL TableA为空！');
+      }
+
     })
   }
 

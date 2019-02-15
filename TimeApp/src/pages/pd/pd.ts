@@ -131,13 +131,19 @@ export class PdPage {
       console.log(data === this.us);
 
       console.log(JSON.stringify(data));
-      this.relmemService.addRgus(this.g.id, data).then(data => {
-        console.log("添加成功")
-        this.queryGAll();
 
-      }).catch(reason => {
+      if(data != undefined){
+        this.relmemService.updRgus(this.g.id, data).then(data => {
+          console.log("添加成功");
+          this.queryGAll();
+        }).catch(reason => {
 
-      })
+        });
+      }else{
+        // this.queryGAll();
+      }
+      this.queryGAll();
+
     });
     modal.present();
   }

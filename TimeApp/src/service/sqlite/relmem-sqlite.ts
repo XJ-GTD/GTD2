@@ -134,7 +134,7 @@ export class RelmemSqlite {
    * @returns {Promise<any>}
    */
   getRgusBySi(sI:string):Promise<any>{
-    let sql = 'select gb.*,gd.* from GTD_D gd left join GTD_B gb on gd.rui = gb.id where gd.sI="'+sI+'"';
+    let sql = 'select gb.*,gd.* from GTD_D gd inner join GTD_B gb on gd.rui = gb.id where gd.sI="'+sI+'"';
     return this.baseSqlite.executeSql(sql,[]);
   }
 
@@ -171,7 +171,11 @@ export class RelmemSqlite {
         for (let i = 0; i < syncs.length; i++) {
           let sync = syncs[i];
           let en = new RuEntity();
-          en.id = sync.tableA;
+          if(sync.tableA && sync.tableA != '' && sync.tableA != null){
+            en.id = sync.tableA;
+          }else{
+            continue;
+          }
           en.ran = sync.tableB;
           en.ranpy = sync.tableC;
           en.rI = sync.tableD;
@@ -204,7 +208,11 @@ export class RelmemSqlite {
       for (let i = 0; i < syncs.length; i++) {
         let sync = syncs[i];
         let en = new RguEntity();
-        en.id = sync.tableA;
+        if(sync.tableA && sync.tableA != '' && sync.tableA != null){
+          en.id = sync.tableA;
+        }else{
+          continue;
+        }
         en.bi = sync.tableB;
         en.bmi = sync.tableC;
         if (sync.action == '2') {
@@ -236,7 +244,7 @@ export class RelmemSqlite {
     sync.tableJ = en.rel;
     sync.tableK = DataConfig.uInfo.uI;
     sync.action =ac;
-    sync.tableName = DataConfig.GTD_B
+    sync.tableName = DataConfig.GTD_B;
     return this.sync.save(sync.isq);
   }
 

@@ -24,8 +24,7 @@ export class AiuiModel {
   private _pl: RuModel;             //联系人单条
   private _plL: Array<RuModel>;     //联系人数据list
 
-  private _isValid: boolean;
-
+  private _op: boolean;             //是否进行操作
   set tg(value: string) {
     this._tg = value;
   }
@@ -106,11 +105,11 @@ export class AiuiModel {
     this._sc = value;
   }
 
-  get isValid(): boolean {
-    return this._isValid;
+  get op(): boolean {
+    return this._op;
   }
 
-  set isValid(value: boolean) {
-    this._isValid = value;
+  set op(value: boolean) {
+    this._op = value;
   }
 }

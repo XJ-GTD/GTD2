@@ -124,9 +124,11 @@ export class WorkService {
       for(let ruu of ruList){
         ruL.push(ruu);
       }
+      // ac='5';
       let bs = new BsModel();
       //先查询当前用户ID
       let rc = new RcEntity();
+      sd=sd.replace("T"," ");
       sd=sd.replace(new RegExp('-','g'),'/');
       if(sd.length<=10){
         sd = sd + " 08:00";
@@ -153,9 +155,10 @@ export class WorkService {
       this.workSqlite.save(rc).then(data=>{
           console.log("----- workService arc 添加日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 添加日程子表-------");
-          return this.rcbSqlite.addLbData(rc.sI,rc.lI,cft,rm,ac,'0');
+          return this.rcbSqlite.addLbData(rc,rc.lI,cft,rm,ac,'0');
         }).then(data=>{
           if(ruL && ruL.length>0){
+            console.log("----- workService arc 日程参与人："+JSON.stringify(ruList));
             //转化接口对应的参与人参数
             if(ruL && ruL.length>0){
               for(let i=0;i<ruL.length;i++){
@@ -172,12 +175,12 @@ export class WorkService {
             }
 
             if(DataConfig.uInfo.uty=='1'){
-              console.log("WorkService arc() restful request " + SkillConfig.BC_SCC+" start");
+              console.log("WorkService arc() restful request " + SkillConfig.BC_SCC+" start,参与人psl:" + JSON.stringify(psl));
               return this.rcResful.sc(rc.uI,SkillConfig.BC_SCC,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,psl,'',data);
             }
           }
       }).then(data=>{
-        console.log("WorkService arc() restful request end : " +JSON.stringify(data));
+        console.log("WorkService arc() restful request end(日程添加推送成功) : " +JSON.stringify(data));
         if(psl.length>0 && data != null && data.code==0 && data.data.players.length>0){
           let players = data.data.players;
           for(let i=0;i<ruL.length;i++){
@@ -211,7 +214,7 @@ export class WorkService {
         //this.drc(rc.sI,'1')
         //同步上传服务器
         console.log("============ 日程添加同步上传日历 ================");
-        //this.syncSqlite.syncUplaod();
+        this.syncSqlite.syncUplaod();
         resolve(bs);
       }).catch(e=>{
         console.error("WorkService arc() Error : " +JSON.stringify(e));
@@ -259,7 +262,7 @@ export class WorkService {
         .then(data=>{
           console.log("----- workService arc 添加日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 添加日程子表-------");
-          return this.rcbSqlite.addLbData(rc.sI,rc.lI,rcb.cft,rcb.rm,rcb.ac,'0');
+          return this.rcbSqlite.addLbSub(rc,rcb);
         })
         .then(data=>{
           let ruL=new Array<RuModel>();
@@ -273,7 +276,7 @@ export class WorkService {
         console.log("------ WorkService arcMq() End ------------");
         //同步上传服务器
         console.log("============ MQ日程添加同步上传日历 ================");
-        //this.syncSqlite.syncUplaod();
+        this.syncSqlite.syncUplaod();
         resolve(bs);
       }).catch(e=>{
         console.error("WorkService arcMq() Error : " +JSON.stringify(e));
@@ -329,7 +332,7 @@ export class WorkService {
       this.workSqlite.update(rc).then(datau=>{
         console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(datau));
         console.log("----- workService arc 更新日程子表-------");
-        return this.rcbSqlite.updateLbData(subId,rc.sI,rc.lI,cft,rm,ac,'0');
+        return this.rcbSqlite.updateLbData(subId,rc,rc.lI,cft,rm,ac,'0');
       }).then(data=>{
         //转化接口对应的参与人参数
         if(ruL && ruL.length>0){
@@ -378,22 +381,39 @@ export class WorkService {
         if(data && data.rows && data.rows.length>0) {
           let rs = data.rows;
           for (let i = 0; i < rs.length; i++) {
-            let ru: RuModel = rs.item(i);
+            let ru = rs.item(i);
             let isExsit = false;
             for(let nru of ruL){
-              if(ru.rI=nru.rI){
+              if(nru.rI != '' && ru.rI != '' && ru.rI==nru.rI ){
+                isExsit = true;
+                nru.pI = ru.pI;
+                break;
+              }
+              if(ru.id==nru.id){
                 isExsit = true;
                 nru.pI = ru.pI;
                 break;
               }
             }
-            if(!isExsit){
+            if(!isExsit && ru.uI != DataConfig.uInfo.uI){
               dRul.push(ru);
             }
           }
         }
         if(dRul.length>0){
-          console.log("============ 删除多余的日程参与人："+JSON.stringify(dRul));
+          let dpsl = new Array<PsModel>();
+          for(let i=0;i<dRul.length;i++){
+            //排除当前登录人
+            if(dRul[i].rI && dRul[i].rI!=null && dRul[i].rI !='' && dRul[i].rI != rc.uI){
+              let ps = new PsModel();
+              ps.userId=dRul[i].rI;
+              ps.accountMobile = dRul[i].rC;
+              dpsl.push(ps);
+            }
+          }
+          console.log("============ 更新删除多余的日程参与人resful请求："+JSON.stringify(dpsl));
+          this.rcResful.sc(rc.uI,SkillConfig.BC_SCD,rc.sI,rc.sN,rc.sd,rc.ed,rc.lI,dpsl,'',new RcbModel());
+          console.log("============ 更新删除多余的日程参与人："+JSON.stringify(dRul));
           return this.workSqlite.dRcps(rc,dRul);
         }
       }).then(data=>{
@@ -407,12 +427,34 @@ export class WorkService {
       }).catch(eu=>{
         bs.code = ReturnConfig.ERR_CODE;
         bs.message=ReturnConfig.ERR_MESSAGE;
-        resolve(bs);
+        reject(bs);
       })
     })
   }
 
-
+  /**
+   * 根据日程ID获取日程信息
+   * @param {string} sI
+   * @returns {Promise<BsModel>}
+   */
+  getRcBySi(sI:string):Promise<BsModel>{
+    return new Promise((resolve, reject) => {
+      let rc = new RcEntity();
+      rc.sI=sI;
+      let bs = new BsModel();
+      this.baseSqlite.getOne(rc).then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          bs.code = ReturnConfig.SUCCESS_CODE;
+        }else{
+          bs.code = ReturnConfig.NULL_CODE;
+        }
+        resolve(bs);
+      }).catch(e=>{
+        bs.code=ReturnConfig.ERR_CODE;
+        reject(bs);
+      })
+    })
+  }
   /**
    * Mq更新日程
    * @param {string} sN 标题
@@ -422,16 +464,18 @@ export class WorkService {
    * @param {string} jhi 计划名称
    * @param {Array}  ruL 参与人json数组[ {id,rN,rC} ]（id主键,rN名称,rC联系方式）
    */
-  urcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string,subId:string,cft:string,rm:string,ac:string):Promise<BsModel>{
+  urcMq(sI:string,cui:string,sN:string,sd:string,ed:string,lbI:string,rcb:RcbModel):Promise<BsModel>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel();
+      let rc = new RcEntity();
+      rc.sI=sI;
       sd=sd.replace(new RegExp('-','g'),'/');
       //先查询当前用户ID
-      let rc = new RcEntity();
+
       rc.uI=cui;
       rc.sN=sN;
       rc.sd=sd;
-      if(cft && cft != null && cft != ''){
+      if(rcb.cft && rcb.cft != null && rcb.cft != ''){
         rc.ed='2999/12/31 23:59';
       }else{
         rc.ed=sd;
@@ -441,9 +485,8 @@ export class WorkService {
       }
       rc.ed =rc.ed.replace(new RegExp('-','g'),'/');
       rc.lI=lbI;
-      rc.sI=sI;
       console.log("------ WorkService arcMq() Start ------------");
-      this.baseSqlite.update(rc).then(data=>{
+      this.workSqlite.update(rc).then(data=>{
         let rcp = new RcpEntity();
         rcp.uI=DataConfig.uInfo.uI;
         rcp.sI=sI;
@@ -456,7 +499,7 @@ export class WorkService {
         .then(data=>{
           console.log("----- workService arc 更新日程返回结果：" + JSON.stringify(data));
           console.log("----- workService arc 更新日程子表-------");
-          return this.rcbSqlite.updateLbData(subId,rc.sI,rc.lI,cft,rm,ac,'0');
+          return this.rcbSqlite.updateLbDataMq(rc,rcb);
         })
         .then(data=>{
         console.log("------ WorkService arcMq() End ------------");
@@ -512,16 +555,16 @@ export class WorkService {
               if(ruL && ruL.length>0){
                 for(let i=0;i<ruL.length;i++){
                   //排除当前登录人
-                  //if(ruL[i].rI != rc.uI){
-                  let ps = new PsModel();
-                  ps.userId=ruL[i].rI;
-                  ps.accountMobile = ruL[i].rC;
-                  psl.push(ps);
-                  //}
+                 // if(ruL[i].rI != rc.uI){
+                    let ps = new PsModel();
+                    ps.userId=ruL[i].rI;
+                    ps.accountMobile = ruL[i].rC;
+                    psl.push(ps);
+                 // }
                 }
               }
               console.log("WorkService drc() 删除日程 restful request " + SkillConfig.BC_SCD+" start");
-              return this.rcResful.sc(DataConfig.uInfo.uI,SkillConfig.BC_SCD,rc.sI,'123','2019-01-07','2019-01-07','1',psl,'',null);
+              return this.rcResful.sc(DataConfig.uInfo.uI,SkillConfig.BC_SCD,rc.sI,'','','','',psl,'',new RcbModel());
             }
           }).then(data=>{
             console.log("WorkService drc() 删除日程 restful request END " + JSON.stringify(data));
@@ -803,7 +846,8 @@ export class WorkService {
           sd.comment=data.rm;
           sd.repeatType=data.cft;
           sd.remindTime=data.ac;
-          sd.scheduleStartTime=data.sd;
+          sd.scheduleStartTime=data.sTime;
+          sd.scheduleStartDate=data.sDate;
           sd.scheduleDeadline=data.ed;
           sd.scheduleStatus = data.fh;
           sd.scheduleFinishDate=data.wd;
@@ -832,12 +876,13 @@ export class WorkService {
    */
   getds(sI:string):Promise<RcModel>{
     return new Promise((resolve, reject) =>{
-      let rc= new RcModel();
+      let rc:RcModel= new RcModel();
       console.log("----- WorkService getds(事件详情) start -----");
       this.workSqlite.getds(sI).then(data=>{
         console.log("----- WorkService getds(事件详情) result:" + JSON.stringify(data));
           if(data&&data.rows&&data.rows.length>0){
-            rc= data.rows.item(0);
+           // rc= data.rows.item(0);
+            Object.assign(rc,data.rows.item(0)); //beanCopybean
             let ru:RuModel = new RuModel();
 
             if(rc.uI != DataConfig.uInfo.uI){
@@ -984,7 +1029,7 @@ export class WorkService {
       console.log("  ------ WorkService 讯飞语音添加日程: 匹配参与人 ----");
       this.relmemServ.getrus('','','','','0').then(data=>{
         console.log("  ------ WorkService 讯飞语音添加日程: 匹配参与人查询结果：" + JSON.stringify(data));
-        if(data && data.code==0&&data.us.length>0){
+        if(py && data && data.code==0&&data.us.length>0){
           for(let ru of data.us){
             let ranpy = ru.ranpy;
             let rnpy = ru.rNpy;
@@ -1125,4 +1170,19 @@ export class WorkService {
       })
     })
   }
+  /**
+   * 查询当前需设置的闹铃，并设置闹铃
+   * @param mm 提前mm分钟提醒
+   */
+  setColckWork(){
+      //定时查询需要设置的设置闹铃
+      setInterval(()=> {
+        // 每隔10秒  刷新时间
+        console.log('================= 定时设闹铃开始 =================');
+        this.workSqlite.setColckWork(5);
+        //this.time = (new Date().toTimeString()).substr(0,5); *60*5
+      }, 1000*60*2);
+
+  }
+
 }

@@ -21,9 +21,10 @@ export class JhEntity {
   private _usq:string;
   private _dsq:string;
   //查询单个
-  private _qosq:string = 'select * from GTD_J_H where ji="' + this._ji +'"';
+  private _qosq:string;
 
   get qosq(): string {
+    this._qosq = 'select * from GTD_J_H where ji="' + this._ji +'"';
     return this._qosq;
   }
 

@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {
   IonicPage, LoadingController, NavController, NavParams, AlertController, Navbar,
   ModalController, Events, Alert
@@ -84,16 +84,63 @@ import {Select} from "ionic-angular/components/select/select";
     </div> 
     <button ion-item class="padding-left-0 height56"> 
       <img src="./assets/imgs/1.png" item-start/> 
-      <ion-label>时间</ion-label> 
-      <ion-datetime  displayFormat="YYYY 年 MM 月 DD 日 HH:mm" [(ngModel)]="startTime"></ion-datetime> 
-    </button> 
-    <ion-item *ngIf="showA" class="padding-left-0 height56"> 
-      <img src="./assets/imgs/4.png" item-start/> 
-      <ion-label>重复类型</ion-label> 
-      <ion-select item-end [(ngModel)]="repeatType" (ionChange)="chengeType()" > 
-        <ion-option  *ngFor="let ztd of repeatTypes" value="{{ztd.zk}}">{{ztd.zkv}}</ion-option> 
-      </ion-select> 
-    </ion-item> 
+      <ion-label>日期</ion-label> 
+      <ion-datetime  displayFormat="YYYY 年 MM 月 DD 日" [(ngModel)]="startDate"></ion-datetime> 
+    </button>
+    <button ion-item class="padding-left-0 height56">
+      <img src="./assets/imgs/1.png" item-start/>
+      <ion-label>时间</ion-label>
+      <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="startTime"></ion-datetime>
+    </button>
+    <button ion-item class="padding-left-0 height56">
+      <img src="./assets/imgs/4.png" item-start/>
+      <ion-label>重复类型</ion-label>
+
+      <ion-select item-end [(ngModel)]="repeatType" (ionChange)="chengeType()" >
+        <ion-option  *ngFor="let ztd of repeatTypes" value="{{ztd.zk}}">{{ztd.zkv}}</ion-option>
+      </ion-select>
+    </button>
+    <el-collapse [model]="[1]" [accordion]="true">
+      <el-collapse-item label="反馈 Feedback" value="2">
+        <div>控制反馈：通过界面样式和交互动效让用户可以清晰的感知自己的操作；</div>
+        <div>页面反馈：操作后，通过页面元素的变化清晰地展现当前状态。</div>
+      </el-collapse-item>
+      <el-collapse-item label="效率 Efficiency" value="3">
+        <div>简化流程：设计简洁直观的操作流程；</div>
+        <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
+        <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
+      </el-collapse-item>
+      <el-collapse-item label="可控 Controllability" value="4">
+        <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
+        <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
+      </el-collapse-item>
+    </el-collapse>
+
+    <el-collapse [model]="[1]">
+      <el-collapse-item label="一致性 Consistency" value="1">
+
+        <ng-template #label>
+          一致性 Consistency<i class="header-icon el-icon-information"></i>
+        </ng-template>
+
+        <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
+        <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
+      </el-collapse-item>
+      <el-collapse-item label="反馈 Feedback" value="2">
+        <div>控制反馈：通过界面样式和交互动效让用户可以清晰的感知自己的操作；</div>
+        <div>页面反馈：操作后，通过页面元素的变化清晰地展现当前状态。</div>
+      </el-collapse-item>
+      <el-collapse-item label="效率 Efficiency" value="3">
+        <div>简化流程：设计简洁直观的操作流程；</div>
+        <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
+        <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
+      </el-collapse-item>
+      <el-collapse-item label="可控 Controllability" value="4">
+        <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
+        <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
+      </el-collapse-item>
+    </el-collapse>
+    
     <button ion-item *ngIf="showC" class="padding-left-0 height56" (click)="showRemarks()"> 
       <img src="./assets/imgs/b.png" item-start/> 
       <ion-label>备注</ion-label> 
@@ -111,7 +158,7 @@ import {Select} from "ionic-angular/components/select/select";
       <div class="titlecss" text-center>选择计划</div> 
       <div class="flexCss"> 
         <div *ngFor="let jh of jhs" class="contentcss"> 
-          <button name="labJh" style="height:25px ; font-size: 1.5rem;" class="jhCss" (click)="selectJh($event,jh)">{{jh.jn}}</button> 
+          <button name="labJh" class="jhCss" (click)="selectJh($event,jh)">{{jh.jn}}</button> 
         </div> 
       </div> 
     </div> 
@@ -122,7 +169,7 @@ import {Select} from "ionic-angular/components/select/select";
       <div class="titlecss" text-center>选择标签更便捷的管理时间哦</div> 
       <div class="flexCss"> 
         <div *ngFor="let lb of lbs" class="contentcss"> 
-          <button name="labLb"  class="jhCss" (click)="selectLb($event,lb);">{{lb.lan}}</button> 
+          <button name="labLb" class="jhCss" (click)="selectLb($event,lb);">{{lb.lan}}</button> 
         </div> 
       </div> 
     </div> 
@@ -133,7 +180,7 @@ export class SbPage {
 
   @ViewChild(Navbar) navBar: Navbar;
 
-  @ViewChild(DateTime) dateTime: DateTime;
+  @ViewChildren(DateTime) dateTimes: QueryList<DateTime>;
 
   @ViewChild(Alert) alert: Alert;
 
@@ -155,6 +202,7 @@ export class SbPage {
   repeatTypes: Array<ZtdModel>;
   type: any = "";
   title: any = "";
+  startDate:any ="";//开始日期
   startTime: any = "";//开始时间
   repeatType: any = "";//重复类型
   naoling: Array<ZtdModel>;
@@ -221,11 +269,18 @@ export class SbPage {
   }
 
   ionViewWillLeave() {
+
+    this.events.publish("flashDay",{day:moment(new Date(this.startTime).getTime()).format("YYYY-MM-DD"),event:this.event});
+
     if(this.alert != undefined){
       this.alert.dismiss();
     }
-    if(this.dateTime._picker != undefined){
-      this.dateTime._picker.dismiss();
+
+    console.log(this.dateTimes.toArray());
+    for(let i = 0;i<this.dateTimes.toArray().length;i++){
+      if(this.dateTimes.toArray()[i]._picker != undefined){
+        this.dateTimes.toArray()[i]._picker.dismiss();
+      }
     }
     if(this.repeatTypeSelect != undefined){
       this.repeatTypeSelect.close();
@@ -242,15 +297,11 @@ export class SbPage {
     }else{
       this.startTime = new Date(this.startTime).toISOString();
     }
-
-    console.log(this.startTime)
+    this.startDate = this.startTime.substring(0,10);
+    this.startTime = moment(new Date()).format("HH:mm");
 
     this.repeatTypes = DataConfig.ZTD_MAP.get(DataConfig.REPEAT_TYPE); //重复类型
 
-    // setTimeout(()=>{
-    //   console.log(this.alert);
-    //   this.alert.dismiss();
-    // },10000)
   }
 
   //查询系统标签
@@ -271,8 +322,11 @@ export class SbPage {
     console.log("时间格式规整前 :: " + this.startTime);
     /*时间格式规整*/
     this.startTime=this.startTime.replace(new RegExp('-','g'),'/').replace("T"," ").substr(0,16);
+    this.startDate=this.startDate.replace(new RegExp('-','g'),'/').replace("T"," ").substr(0,16);
     // this.startTime = moment(new Date(this.startTime).getTime()).format("YYYY/MM/DD HH:mm");
     console.log("时间格式规整后 :: " + this.startTime);
+    let date = this.startDate + " " + this.startTime;
+    console.log(date);
 
     let rul = new Array<RuModel>();
     if(this.select){
@@ -286,11 +340,11 @@ export class SbPage {
       return;
     }
 
-    this.workService.arc(this.title,this.startTime,this.type,this.jh.ji,this.repeatType,this.remarks,'',rul).then(data=>{
+    this.workService.arc(this.title,date,this.type,this.jh.ji,this.repeatType,this.remarks,'',rul).then(data=>{
       if(data.code == 0){
         console.log("添加日程成功");
         // this.navCtrl.push('HzPage')
-        this.events.publish("flashDay",{day:moment(new Date(this.startTime).getTime()).format("YYYY-MM-DD"),event:this.event});
+
         this.utilService.alert("日程创建成功");
         this.navCtrl.pop();
       }else{

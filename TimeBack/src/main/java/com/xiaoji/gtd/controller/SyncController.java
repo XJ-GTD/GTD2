@@ -109,9 +109,9 @@ public class SyncController {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            logger.error("[同步失败]：服务器繁忙");
+            logger.error("[同步失败]：服务器繁忙", e);
         }
 
         return outDto;
@@ -166,9 +166,9 @@ public class SyncController {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            logger.error("[定时同步失败]：服务器繁忙");
+            logger.error("[定时同步失败]：服务器繁忙", e);
         }
 
         return outDto;
@@ -222,9 +222,9 @@ public class SyncController {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            logger.error("[同步上传失败]：服务器繁忙");
+            logger.error("[同步上传失败]：服务器繁忙", e);
         }
 
         return outDto;
@@ -279,9 +279,9 @@ public class SyncController {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             outDto.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            logger.error("[同步下载失败]：服务器繁忙");
+            logger.error("[同步下载失败]：服务器繁忙", e);
         }
         return outDto;
     }

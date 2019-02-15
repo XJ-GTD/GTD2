@@ -22,9 +22,10 @@ export class RguEntity {
   private _usq:string;
   private _dsq:string;
   //查询单个
-  private _qosq:string = 'select * from GTD_B_X where bi="' + this._bi+'"';
+  private _qosq:string;
 
   get qosq(): string {
+    this._qosq = 'select * from GTD_B_X where bi="' + this._bi+'"';
     return this._qosq;
   }
 

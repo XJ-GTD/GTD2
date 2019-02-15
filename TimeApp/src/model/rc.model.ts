@@ -16,7 +16,9 @@ export class RcModel extends BsModel{
   private _ji: string='';   //关联计划ID
   private _jn: string='';   //关联计划名称
   private _uI: string='';          //创建人ID
-  private _sd:string=''; //开始时间
+  private _sd:string=''; //开始日期时间（YYYY/MM/DD HH:mm）
+  private _sDate:string=''; //开始日期 （YYYY/MM/DD）
+  private _sTime:string='';//开始时间 （HH:mm）
   private _ed:string = ''; //结束时间
   private _orgI: string=''; //初始日程id
   private _df: string=''; //删除状态0：未删除，1：以被删除
@@ -76,11 +78,36 @@ export class RcModel extends BsModel{
 
 
   get sd(): string {
+    if(this._sDate != null && this._sDate !='' && this._sTime != null && this._sTime !=''){
+      this._sd = this._sDate+' '+this._sTime;
+    }
     return this._sd;
   }
 
   set sd(value: string) {
     this._sd = value;
+  }
+
+  get sDate(): string {
+    if(this._sd != null && this._sd !=''){
+      this._sDate = this._sd.substr(0,10);
+    }
+    return this._sDate;
+  }
+
+  set sDate(value: string) {
+    this._sDate = value;
+  }
+
+  get sTime(): string {
+    if(this._sd != null && this._sd !=''){
+      this._sTime = this._sd.substr(11,5);
+    }
+    return this._sTime;
+  }
+
+  set sTime(value: string) {
+    this._sTime = value;
   }
 
   get ed(): string {

@@ -138,6 +138,10 @@ export class RelmemService {
         })
       }else{
         //如果是群
+        if(auI == null || auI == ''){
+          auI = this.util.getUuid();
+          ru.rI = auI;
+        }
         this.relmemSqlite.aru(ru).then(data=>{
           if(rel=='1' && qrL != null && qrL.length>0){
             // for(let i=0;i<qrL.length;i++){
@@ -197,7 +201,7 @@ export class RelmemService {
         this.upr('','',rN,rc,'0','',null,'',auI).then(data=>{
           //同步上传服务器
           console.log("============ 更新联系人同步上传服务 ================");
-          this.syncSqlite.syncUplaod();
+          //this.syncSqlite.syncUplaod();
           resolve(base);
         }).catch(e=>{
           console.log("--------- RelmemService aru() add contact Error: "+JSON.stringify(e));
@@ -266,6 +270,7 @@ export class RelmemService {
         ru.ranpy = this.util.chineseToPinYin(ru.ran);
       }
       let base=new BsModel();
+      console.log("========== 联系人更新开始 ==========");
       this.relmemSqlite.uru(ru).then(data=>{
         // //如果是群
         // if(rel=='1' && qrL != null && qrL.length>0){
@@ -273,8 +278,16 @@ export class RelmemService {
         //     this.addRgu(ru.id,qrL[i].id);
         //   }
         // }
+        console.log("========== 联系人更新成功，开始查询联系人信息 ==========");
+        //查询联系人详情
+        return this.baseSqlite.getOne(ru);
+      }).then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          Object.assign(ru,data.rows.item(0));
+        }
+        console.log("============ 开始入本地库 ================");
         //入本地库
-        return this.relmemSqlite.syncRuTime(ru,DataConfig.AC_O);
+        return this.relmemSqlite.syncRuTime(ru,DataConfig.AC_T);
       }).then(data=>{
         console.log("--------- 6.RelmemService aru() sync loacl sqlite End: "+JSON.stringify(data));
         //同步上传服务器
@@ -343,7 +356,7 @@ export class RelmemService {
       // ru.rI=DataConfig.uInfo.uI;
       // rus.push(ru);
       ruo.us=rus;
-      this.relmemSqlite.getrus('','','','','0').then(data=>{
+      this.relmemSqlite.getrus('','','','',null).then(data=>{
         if(data&& data.rows && data.rows.length>0){
           for(let i=0;i<data.rows.length;i++){
             rus.push(data.rows.item(i));
@@ -482,6 +495,42 @@ export class RelmemService {
           base.message=e.message;
           reject(base);
         })
+    })
+  }
+
+  updRgus(id:string,rus:Array<RuModel>):Promise<BsModel>{
+    return new Promise((resolve, reject)=>{
+      let bs = new BsModel();
+      let sql='';
+      let rugL = new Array<RguEntity>();
+      for(let i=0;i<rus.length;i++){
+        let rgu = new RguEntity();
+        rgu.bi = id;
+        rgu.bmi = rus[i].id;
+        rgu.id = this.util.getUuid();
+        rugL.push(rgu);
+        sql+=rgu.isq;
+      }
+      this.relmemSqlite.delRgu(id,null).then(data=>{
+        console.log("--------- RelmemService addRgus() add Group personnel sql: "+sql);
+        return this.baseSqlite.importSqlToDb(sql);
+      }).then(data=>{
+        console.log("--------- RelmemService addRgus() restful add Group personnel End: "+JSON.stringify(data));
+        console.log("--------- 5.RelmemService addRgus() sync loacl sqlite start --------");
+        return this.relmemSqlite.syncRguTime(rugL,DataConfig.AC_T);
+      }).then(data=>{
+        console.log("--------- 6.RelmemService addRgus() sync loacl sqlite End: "+JSON.stringify(data));
+        //同步上传服务器
+        console.log("============ 更新联系人同步上传服务 ================");
+        this.syncSqlite.syncUplaod();
+        resolve(bs);
+      }).catch(e=>{
+        console.log("--------- RelmemService addRgus() restful add Group personnel Error: "+JSON.stringify(e));
+        bs.code=ReturnConfig.ERR_CODE;
+        bs.message=e.message;
+        reject(bs);
+      })
+
     })
   }
 

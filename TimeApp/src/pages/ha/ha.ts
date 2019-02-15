@@ -63,6 +63,7 @@ export class HaPage {
 
   showDay: string;
   showDay2: string;
+  selectDay: Date;
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
   options: CalendarComponentOptions = {
     pickMode: 'single',
@@ -70,6 +71,7 @@ export class HaPage {
     daysConfig: []
   };
 
+  event:any ;
   constructor(private modalCtr: ModalController,
               private utilService: UtilService,
               private xiaojiFeekback: XiaojiFeedbackService,
@@ -80,6 +82,7 @@ export class HaPage {
   ionViewDidLoad() {
 
     let eventDate = new Date();
+    this.selectDay = eventDate;
     let year = eventDate.getFullYear();
     let month = eventDate.getMonth() + 1;
     let day = eventDate.getDate();
@@ -96,6 +99,15 @@ export class HaPage {
       this.ion2calendar.flashDay(day);
       this.onSelectDayEvent(event);
     });
+
+    this.events.subscribe("flashMonth",(data)=>{
+      this.ion2calendar.flashMonth(this.selectDay.getTime());
+      if(this.event != undefined){
+        this.onSelectDayEvent(this.event);
+      }else{
+        this.ha01Page.showScheduleLs({time:moment().valueOf()});
+      }
+    });
   }
 
   ionViewWillEnter(){
@@ -105,6 +117,7 @@ export class HaPage {
 
   creNewEvent($event) {
     this.xiaojiFeekback.audioHighhat();
+    this.event = $event;
     let eventDate = new Date($event.time);
     let tmp = moment(eventDate).format("YYYY-MM-DD");
     let sbPageModal = this.modalCtr.create(PageConfig.SB_PAGE,{dateStr:tmp,event:$event});
@@ -116,7 +129,9 @@ export class HaPage {
     if (!$event) {
       return;
     }
+    this.event = $event;
     let eventDate = new Date($event.time);
+    this.selectDay = eventDate;
     let year = eventDate.getFullYear();
     let month = eventDate.getMonth() + 1;
     let day = eventDate.getDate();
@@ -136,6 +151,11 @@ export class HaPage {
 
   openVoice() {
     let tab1RootModal = this.modalCtr.create(PageConfig.HB_PAGE);
+    tab1RootModal.onDidDismiss(()=>{
+      //刷新月份事件标识
+      console.log(this.selectDay);
+      this.events.publish("flashMonth");
+    });
     tab1RootModal.present();
   }
 

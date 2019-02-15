@@ -1,11 +1,12 @@
 package com.xiaoji.gtd.repository;
 
-import com.xiaoji.gtd.entity.GtdScheduleDEntity;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.xiaoji.gtd.entity.GtdScheduleDEntity;
 
 /**
  * 日程事件子表(纪念日)DAO层 继承类
@@ -28,4 +29,7 @@ public interface GtdScheduleDRepository extends JpaRepository<GtdScheduleDEntity
      * @return
      */
     GtdScheduleDEntity findById(String id);
+
+    @Query(value = "SELECT * FROM gtd_schedule_d WHERE ID IN ?1", nativeQuery = true)
+    List<GtdScheduleDEntity> findByIds(List<String> ids);
 }

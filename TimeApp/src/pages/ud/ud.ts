@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams, AlertController, Navbar} from 'ioni
 import {LsmService} from "../../service/lsm.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {ReturnConfig} from "../../app/return.config";
+import {WebsocketService} from "../../service/util-service/websocket.service";
 
 /**
  * Generated class for the UdPage page.
@@ -61,7 +62,8 @@ export class UdPage {
               public navParams: NavParams,
               public lsmService: LsmService,
               public alertCtrl: AlertController,
-              public utilService: UtilService) {
+              public utilService: UtilService,
+              private  webSocket: WebsocketService) {
   }
 
   ionViewDidLoad() {
@@ -82,20 +84,23 @@ export class UdPage {
       this.agreeFlag = this.agree;
       return ;
     }
+    this.webSocket.close();
     this.agreeFlag = true;
+    this.utilService.loading("登录中");
     this.lsmService.ml(this.accountMobile, this.authCode).then(data=> {
       console.log(data);
       let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
+      this.utilService.unloading();
       if (data.code == 0) {
         this.utilService.alert("登陆成功");
-        this.navCtrl.push('HzPage');
+        this.navCtrl.setRoot('HzPage');
       }else{
         this.utilService.alert(message);
       }
 
     }).catch(res=>{
+      this.utilService.unloading();
       this.utilService.alert(ReturnConfig.RETURN_MSG.get(res.code));
-
       console.log(res);
     });
 

@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, Renderer2} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {App, NavController, NavParams} from 'ionic-angular';
 import {ScheduleModel} from "../../model/schedule.model";
 import {UtilService} from "../../service/util-service/util.service";
 import {WorkService} from "../../service/work.service";
@@ -45,7 +45,7 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
               <ion-icon name="pricetag" item-start class="ico-img"></ion-icon>
               <h2>{{schedule.labelName}}</h2>
             </ion-item>
-            <button (click)="editSchedule(schedule)" class="buttonWan" item-right>编辑</button>
+            <button (click)="editSchedule(schedule)" class="buttonWan" item-right>详细</button>
           </ion-card-header>
           <ion-card-content>
             <ion-list>
@@ -53,11 +53,11 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
                 <ion-icon name="calendar" item-start class="ico-img"></ion-icon>
                 <h2>{{schedule.scheduleName}}</h2>
               </ion-item>
-              <ion-item class="content" no-padding>
-                <ion-icon name="paper" item-start class="ico-img"></ion-icon>
-                <h2>{{schedule.comment}}</h2 >
-              </ion-item>
-              <ion-item *ngIf="schedule.group.length > 0" class="group" no-padding>
+              <!--<ion-item class="content" no-padding>-->
+                <!--<ion-icon name="paper" item-start class="ico-img"></ion-icon>-->
+                <!--<h2>{{schedule.comment}}</h2 >-->
+              <!--</ion-item>-->
+              <ion-item *ngIf="schedule.group && schedule.group.length > 0" class="group" no-padding>
                 <ion-icon name="contacts" item-start class="ico-img"></ion-icon>
                 <div item-left margin-left *ngFor="let rc of schedule.group" >
                   <div style="display: flow-root">
@@ -98,12 +98,15 @@ export class Ha01Page {
 
   active: number = 0;//当前页面
 
+  event:any;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private util: UtilService,
               private rnd: Renderer2,
               private workService: WorkService,
-              private el: ElementRef) {
+              private el: ElementRef,
+              private app: App) {
     this.height = window.document.body.clientHeight - 350 - 110;
 
     this.init();
@@ -163,17 +166,14 @@ export class Ha01Page {
 
   //查询日程
   showScheduleLs($event) {
+    this.event = $event;
     let eventDate = new Date($event.time);
     let year = eventDate.getFullYear();
     let month = eventDate.getMonth() + 1;
     let day = eventDate.getDate();
 
     this.scheduleLs = [];
-    let dateStr = moment().set({
-      'year': year,
-      'month': month - 1,
-      'date': day
-    }).format('YYYY-MM-DD');
+    let dateStr = moment($event.time).format("YYYY-MM-DD");
     this.workService.getOd(dateStr).then(data => {
       if (data.code == 0) {
         for (let i = 0; i < data.slc.length; i++) {
@@ -264,7 +264,10 @@ export class Ha01Page {
     setTimeout(() => {
       this.noShow = true;
     }, 100);
-    this.navCtrl.push("SaPage", schedule);
+    let eventDate = new Date(this.event.time);
+    let tmp = moment(eventDate).format("YYYY-MM-DD");
+    // this.navCtrl.push("SaPage", schedule);
+    this.app.getRootNav().push("SaPage",{"schedule":schedule,"dateStr":tmp,"event":this.event});
   }
 
 

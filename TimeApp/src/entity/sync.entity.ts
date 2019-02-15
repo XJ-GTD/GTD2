@@ -47,7 +47,7 @@ export class SyncEntity {
                           'tableO VARCHAR(100),tableP VARCHAR(100),tableQ VARCHAR(100),tableR VARCHAR(100),' +
                           'tableS VARCHAR(100),tableT VARCHAR(100),tableU VARCHAR(100),tableV VARCHAR(100),' +
                           'tableW VARCHAR(100),tableX VARCHAR(100),tableY VARCHAR(100),tableZ VARCHAR(100));';
-  private _drsq:string="DROP TABLE IF EXISTS GTD_S_Y;"
+  private _drsq:string="DROP TABLE IF EXISTS GTD_S_Y;";
 
   private _isq:string;
 
@@ -63,7 +63,13 @@ export class SyncEntity {
       '","'+ this._tableM+'","'+ this._tableN+'","'+ this._tableO+'","'+this._tableP+'","'+ this._tableQ+
       '","'+ this._tableR+'","'+ this._tableS+'","'+ this._tableT+'","'+this._tableU+'","'+ this._tableV+
       '","'+ this._tableW+'","'+ this._tableX+'","'+ this._tableY+'","'+this._tableZ+'");';
-    this._isq=sql;
+    if(this._tableA && this._tableA != '' && this._tableA !=null){
+      this._isq=sql;
+    }else{
+      this._isq = '';
+      console.error("本同步数据TableA为空："+sql);
+    }
+
     return this._isq;
   }
 

@@ -13,6 +13,7 @@ export class ScheduleDetailsModel extends BsModel{
   private _scheduleId: string;                        // 日程事件ID
   private _scheduleName: string;                    // 日程事件名称
   private _scheduleStartTime: string;              // 开始时间
+  private _scheduleStartDate: string;              // 开始日期
   private _scheduleDeadline: string;               // 截止时间
   private _scheduleStatus: string;                 // 完成状态
   private _scheduleFinishDate: string;              // 完成时间
@@ -176,5 +177,13 @@ export class ScheduleDetailsModel extends BsModel{
 
   set modifyAuth(value: string) {
     this._modifyAuth = value;
+  }
+
+  get scheduleStartDate(): string {
+    return this._scheduleStartDate;
+  }
+
+  set scheduleStartDate(value: string) {
+    this._scheduleStartDate = value;
   }
 }

@@ -8,11 +8,12 @@ page-ha01 {
     left: 0;
     bottom: 0;
     right: 0;
-    width: 85% !important;
+    width: 92% !important;
     height: 90% !important;
     background-color: #FFFFFF;
     z-index: 50;
     border-radius: 20px;
+    opacity: 0.95;
 
     transition: width 100ms, height 100ms;
     -moz-transition: width 1s, height 1s, -moz-transform 1s; /* Firefox 4 */
@@ -21,12 +22,14 @@ page-ha01 {
 
 
     ion-card {
-      height: 95%;
+      height: calc(100% - 10px);
+      width: calc(100% - 10px);
+      margin: 5px;
       border-radius: 20px;
 
       ion-card-header{
 
-        height: 20%;
+        height: 110px;
         border-bottom: 1px solid #000000;
         ul{
           padding-inline-start:20px
@@ -35,6 +38,9 @@ page-ha01 {
         li{
           list-style: none;
           margin: 8px;
+        }
+        .item-block.item-ios{
+          border-bottom: none;
         }
       }
 
@@ -57,7 +63,7 @@ page-ha01 {
       }
 
       .content{
-        height: 80px;
+        height: 120px;
         .input-wrapper{
           display: inline;
         }
@@ -83,8 +89,15 @@ page-ha01 {
         }
 
         span {
+          display: block;
           color: #999999;
           font-size: 10px;
+          padding: 3px;
+          text-align: center;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 35px;
         }
 
       }
@@ -97,6 +110,8 @@ page-ha01 {
         height:40px;
         width:55px;
         top:30px;
+        box-shadow:black 0px 0px 10px;
+
         background: -webkit-linear-gradient(left, rgb(149, 58, 139), rgb(86, 82, 222)); /* Safari 5.1 - 6.0 */
         background: -o-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Opera 11.1 - 12.0 */
         background: -moz-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Firefox 3.6 - 15 */

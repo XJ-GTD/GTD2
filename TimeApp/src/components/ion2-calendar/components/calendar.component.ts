@@ -484,16 +484,20 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
 
   flashDay(day) {
     this.calSvc.findDayEventForDay(day).then((data) => {
+      console.log("test : " + JSON.stringify(data));
       let cdays = this.monthOpt.days;
       for (let i = 0; i < cdays.length; i++) {
         let dayc: any = cdays[i];
         if (moment(day).valueOf() == dayc.time) {
-          if (!dayc.im) {
-            dayc.cssClass = `hassometing ` + this.calSvc.specially;
-          } else {
-            //事多
-            dayc.cssClass = `busysometing ` + this.calSvc.specially;
-          }
+          console.log("test:" + JSON.stringify(dayc) + "   " + moment(day).valueOf());
+          console.log("test:" + dayc.im);
+          // if (!dayc.im) {
+          //   dayc.cssClass = `hassometing ` + this.calSvc.specially;
+          // } else {
+          //   //事多
+          //   dayc.cssClass = `busysometing ` + this.calSvc.specially;
+          // }
+          dayc.cssClass = data.cssClass;
           //有消息
           if (dayc.iem) {
             dayc.subTitle = `\u2022`;
@@ -501,5 +505,10 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
         }
       }
     })
+  }
+
+  flashMonth(date:number){
+    this.initOpt();
+    this.monthOpt = this.createMonth(date);
   }
 }

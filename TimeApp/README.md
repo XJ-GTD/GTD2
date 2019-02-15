@@ -44,3 +44,9 @@
 ##ionic cordova plugin add ../BaiduSpeechAndTTS
 ##ionic cordova plugin add cordova-plugin-contacts
 ##ionic cordova plugin add cordova-plugin-network-information
+
+
+
+## ionic cordova plugin add cordova-sqlite-storage cordova-plugin-statusbar uk.co.workingedge.cordova.plugin.sqliteporter cordova-sqlite-storage cordova-plugin-whitelist com.telerik.plugins.nativepagetransitions cordova-plugin-nativeaudio cordova-plugin-vibration cordova-plugin-file-transfer cordova-plugin-local-notification cordova-plugin-ionic-webview cordova-plugin-splashscreen ionic-plugin-keyboard cordova-plugin-device cordova-plugin-console cordova-plugin-file cordova-plugin-calendar cordova-plugin-advanced-http cordova-plugin-android-permissions cordova-plugin-background-mode ../BaiduSpeechAndTTS cordova-plugin-contacts cordova-plugin-network-information
+
+

@@ -32,9 +32,10 @@ export class RcpEntity {
   private _usq:string;
   private _dsq:string;
   //查询单个
-  private _qosq:string = 'select * from GTD_D where pI="' + this._pI+'"';
+  private _qosq:string;
 
   get qosq(): string {
+    this._qosq = 'select * from GTD_D where pI="' + this._pI+'"';
     return this._qosq;
   }
 
@@ -142,18 +143,18 @@ export class RcpEntity {
     if(this._uI!=null && this._uI!=''){
       sql=sql+' and uI="' + this._uI +'"';
     }
-    if(this._ib!=null && this._ib!=''){
-      sql=sql+' and ib="' + this._ib +'"';
-    }
-    if(this._bi!=null && this._bi!=''){
-      sql=sql+' and bi="' + this._bi +'"';
-    }
+    // if(this._ib!=null && this._ib!=''){
+    //   sql=sql+' and ib="' + this._ib +'"';
+    // }
+    // if(this._bi!=null && this._bi!=''){
+    //   sql=sql+' and bi="' + this._bi +'"';
+    // }
     if(this._rui!=null && this._rui!=''){
       sql=sql+' and rui="' + this._rui +'"';
     }
-    if(this._sdt!=null){
-      sql=sql+' and sdt=' + this._sdt;
-    }
+    // if(this._sdt!=null){
+    //   sql=sql+' and sdt=' + this._sdt;
+    // }
     this._dsq=sql+';';
     return this._dsq;
   }
