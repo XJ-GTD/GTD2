@@ -356,10 +356,22 @@ export class RelmemService {
       // ru.rI=DataConfig.uInfo.uI;
       // rus.push(ru);
       ruo.us=rus;
-      this.relmemSqlite.getrus('','','','',null).then(data=>{
+      this.relmemSqlite.getrus('','','','','').then(data=>{
         if(data&& data.rows && data.rows.length>0){
           for(let i=0;i<data.rows.length;i++){
-            rus.push(data.rows.item(i));
+            let ru = new RuModel();
+            Object.assign(ru,data.rows.item(i));
+            if(ru.rel=='1'){
+              let us = new Array<RuModel>();
+              for(let j=0;j<data.rows.length;j++){
+                if(ru.id == data.rows.item(j).bi){
+                  us.push(data.rows.item(j));
+                }
+              }
+              ru.us = us;
+            }
+
+            rus.push(ru);
           }
         }
         ruo.us=rus;

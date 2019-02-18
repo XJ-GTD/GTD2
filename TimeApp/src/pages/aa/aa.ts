@@ -43,14 +43,14 @@ import {XiaojiAlarmclockService} from "../../service/util-service/xiaoji-alarmcl
   '      <ion-label>帮助及反馈</ion-label>\n' +
   '    </button>\n' +
   '  </div>\n' +
-  '</ion-content>\n' +
-  '\n' +
-  '<ion-footer>\n' +
-  '  <ion-item class="rowCss">\n' +
-  '    <ion-label text-center color="danger" (click)="logOut()">退出登录</ion-label>\n' +
-  '  </ion-item>\n' +
-  '\n' +
-  '</ion-footer>\n'
+  '</ion-content>\n',
+  // '\n' +
+  // '<ion-footer>\n' +
+  // '  <ion-item class="rowCss">\n' +
+  // '    <ion-label text-center color="danger" (click)="logOut()">退出登录</ion-label>\n' +
+  // '  </ion-item>\n' +
+  // '\n' +
+  // '</ion-footer>\n'
 })
 export class AaPage {
 

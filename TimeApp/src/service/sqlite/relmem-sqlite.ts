@@ -41,7 +41,7 @@ export class RelmemSqlite {
    * @param {string} rel  0联系人,1群组
    */
   getrus(id:string,ran:string,rN:string,rC:string,rel:string):Promise<any>{
-    let sql="SELECT * FROM GTD_B where 1=1";
+    let sql="SELECT gb.*,gbx.bi FROM GTD_B gb left join GTD_B_X gbx on gbx.bmi = gb.id where 1=1";
     if(id != null && id !=''){
       sql = sql + " and id='"+id+"'";
     }

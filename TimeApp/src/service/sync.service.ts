@@ -77,7 +77,7 @@ export class SyncService {
               }
 
               if(sql != null){
-                console.log("------SyncService initzdlb insert into table  --------")
+                console.log("------SyncService initzdlb insert into table  --------");
                 return this.base.importSqlToDb(sql);
               }
             }
@@ -87,13 +87,13 @@ export class SyncService {
           }
           resolve(base);
         }).catch(e=>{
-          console.error("-------SyncService initzdlb restful 初始化字典数据及标签表 Error："+JSON.stringify(e))
-          base.message = e.message
-          base.code = 1
+          console.error("-------SyncService initzdlb restful 初始化字典数据及标签表 Error："+JSON.stringify(e));
+          base.message = e.message;
+          base.code = 1;
           reject(base)
         })
       }else{
-        console.log("------SyncService initzdlb restful 已初始化字典数据及标签表 --------")
+        console.log("------SyncService initzdlb restful 已初始化字典数据及标签表 --------");
         // this.initLocalData().then(data=>{
         //   if(ReturnConfig.RETURN_MSG.size==0){
         //     this.initzdlb()
@@ -180,6 +180,7 @@ export class SyncService {
       let sql='';
       let base = new BsModel();
       let fv = '0';
+      let sv = new SyvEntity();
       this.syncR.loginSync(DataConfig.uInfo.uI,this.util.getDeviceId())
         .then(data=> {
           if (data && data.code == 0 && data.data.userDataList.length > 0) {
@@ -193,10 +194,17 @@ export class SyncService {
           }
         }).then(data=>{
         console.log('----- 登录同步服务器数据结束 ------' + JSON.stringify(data));
-        let sv = new SyvEntity();
         sv.si=1;
+        return this.base.getOne(sv);
+      }).then(data=>{
+        if(data&&data.rows&&data.rows.length>0){
+          sv.bv=data.rows.item(0).bv;
+          fv=data.rows.item(0).fv;
+        }
         sv.fv=fv;
-        sv.bv=0;
+        if(!sv.bv ||  sv.bv == null){
+          sv.bv=0;
+        }
         return this.base.update(sv);
       }).then(data=>{
         //10秒后调用定时同步
