@@ -15,7 +15,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
     '<ion-header>\n' +
     '\n' +
     '  <ion-navbar>\n' +
-    '    <ion-title>Ab</ion-title>\n' +
+    '    <ion-title>AbAb</ion-title>\n' +
     '  </ion-navbar>\n' +
     '\n' +
     '</ion-header>\n' +
