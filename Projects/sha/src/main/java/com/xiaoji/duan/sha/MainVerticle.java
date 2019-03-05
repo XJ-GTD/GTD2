@@ -108,21 +108,21 @@ public class MainVerticle extends AbstractVerticle {
 			return;
 		}
 		
-		String accountid = ctx.request().getHeader("ai");
-		
-		if (accountid == null || accountid.isEmpty()) {
-			ret.put("rc", "-2");
-			ret.put("rm", "非法请求!");
-
-			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
-			return;
-		}
-		
 		JsonObject req = ctx.getBodyAsJson();
 		
 		if (req == null || req.isEmpty()) {
 			ret.put("rc", "-1");
 			ret.put("rm", "请求参数不存在, 非法请求!");
+
+			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+			return;
+		}
+		
+		String accountid = req.getString("ai");
+		
+		if (accountid == null || accountid.isEmpty()) {
+			ret.put("rc", "-2");
+			ret.put("rm", "非法请求!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
@@ -211,21 +211,21 @@ public class MainVerticle extends AbstractVerticle {
 			return;
 		}
 		
-		String accountid = ctx.request().getHeader("ai");
-		
-		if (accountid == null || accountid.isEmpty()) {
-			ret.put("rc", "-2");
-			ret.put("rm", "非法请求!");
-
-			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
-			return;
-		}
-		
 		JsonObject req = ctx.getBodyAsJson();
 		
 		if (req == null || req.isEmpty()) {
 			ret.put("rc", "-1");
 			ret.put("rm", "请求参数不存在, 非法请求!");
+
+			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+			return;
+		}
+		
+		String accountid = req.getString("ai");
+		
+		if (accountid == null || accountid.isEmpty()) {
+			ret.put("rc", "-2");
+			ret.put("rm", "非法请求!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
