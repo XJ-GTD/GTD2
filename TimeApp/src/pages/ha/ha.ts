@@ -6,7 +6,7 @@ import {
   CalendarComponentOptions
 } from "../../components/ion2-calendar";
 import * as moment from "moment";
-import {Ha01Page} from "../ha01/ha01";
+import {TdlPage} from "../tdl/tdl";
 import {PageConfig} from "../../app/page.config";
 import {UtilService} from "../../service/util-service/util.service";
 import {XiaojiFeedbackService} from "../../service/util-service/xiaoji-feedback.service";
@@ -46,7 +46,7 @@ import {RcModel} from "../../model/rc.model";
       </div>
       <p class="tipDay"><span class="showDay animated flipInX">{{showDay}}</span><span
        class="showDay2">{{showDay2}}</span></p>
-      <page-ha01></page-ha01>
+      <page-tdl></page-tdl>
     </div>
     <div class=" animated swing  assistant" (click)="openVoice()" #assistant>
       <img src="./assets/imgs/yuying.png"/>
@@ -56,7 +56,7 @@ import {RcModel} from "../../model/rc.model";
 })
 export class HaPage {
   @ViewChild(CalendarComponent) ion2calendar: CalendarComponent;
-  @ViewChild(Ha01Page) ha01Page: Ha01Page;
+  @ViewChild(TdlPage) ha01Page: TdlPage;
 
   remindScheduleList: Array<RemindModel>;//提醒时间数据
   remindList: Array<string>;  //全部提醒时间
@@ -120,7 +120,7 @@ export class HaPage {
     this.event = $event;
     let eventDate = new Date($event.time);
     let tmp = moment(eventDate).format("YYYY-MM-DD");
-    let sbPageModal = this.modalCtr.create(PageConfig.SB_PAGE,{dateStr:tmp,event:$event});
+    let sbPageModal = this.modalCtr.create(PageConfig.TDC_PAGE,{dateStr:tmp,event:$event});
     sbPageModal.present();
   }
 

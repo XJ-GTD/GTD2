@@ -106,7 +106,7 @@ export class HzPage {
 
   toUb(){
     console.log("跳转用户详情HzPage跳转UbPage");
-    this.navCtrl.push(PageConfig.UB_PAGE);
+    this.navCtrl.push(PageConfig.LS_PAGE);
   }
 
   showHistory() {

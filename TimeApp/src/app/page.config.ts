@@ -5,6 +5,18 @@ import {HaPage} from "../pages/ha/ha";
  */
 export class PageConfig {
 
+  private static _TDL_PAGE: any = "TdlPage";    // 日程 - 日程列表
+  private static _TDC_PAGE: any = "TdcPage";      // 日程 - 日程详情新建
+  private static _TDDI_PAGE: any = "TddiPage";     // 日程 - 日程详情（受邀）
+  private static _TDDJ_PAGE: any = "TddjPage";     // 日程 - 日程详情
+  private static _M_PAGE: any = "MPage";        // 辅助功能 - 菜单
+  private static _R_PAGE: any = "RPage";        // 登陆注册 - 注册
+  private static _LP_PAGE: any = "LpPage";       // 登陆注册 - 登陆（密码）
+  private static _LS_PAGE: any = "LsPage";       // 登陆注册 - 登录（验证码）
+  private static _PP_PAGE: any = "PPage";        // 登陆注册 - 条款
+  private static _HL_PAGE: any = "HlPage";       // 登陆注册 - 帮助
+
+
   private static _AZ_PAGE: any = "AzPage";
   private static _AA_PAGE: any = "AaPage";
   private static _AB_PAGE: any = "AbPage";
@@ -17,7 +29,7 @@ export class PageConfig {
   private static _HA01_PAGE: any = "Ha01Page";
   private static _HZ_PAGE: any = "HzPage";
   private static _SA_PAGE: any = "SaPage";
-  private static _SB_PAGE: any = "SbPage";
+  //private static _TDC_PAGE: any = "TdcPage";
   private static _SC_PAGE: any = "ScPage";
   private static _SD_PAGE: any = "SdPage";
   private static _SW_PAGE: any = "SwPage";
@@ -109,12 +121,12 @@ export class PageConfig {
     this._HB01_PAGE = value;
   }
 
-  static get HA01_PAGE(): any {
-    return this._HA01_PAGE;
+  static get TDL_PAGE(): any {
+    return this._TDL_PAGE;
   }
 
-  static set HA01_PAGE(value: any) {
-    this._HA01_PAGE = value;
+  static set TDL_PAGE(value: any) {
+    this._TDL_PAGE = value;
   }
 
   static get HZ_PAGE(): any {
@@ -125,28 +137,28 @@ export class PageConfig {
     this._HZ_PAGE = value;
   }
 
-  static get SA_PAGE(): any {
-    return this._SA_PAGE;
+  static get TDDI_PAGE(): any {
+    return this._TDDI_PAGE;
   }
 
-  static set SA_PAGE(value: any) {
-    this._SA_PAGE = value;
+  static set TDDI_PAGE(value: any) {
+    this._TDDI_PAGE = value;
   }
 
-  static get SB_PAGE(): any {
-    return this._SB_PAGE;
+  static get TDC_PAGE(): any {
+    return this._TDC_PAGE;
   }
 
-  static set SB_PAGE(value: any) {
-    this._SB_PAGE = value;
+  static set TDC_PAGE(value: any) {
+    this._TDC_PAGE = value;
   }
 
-  static get SC_PAGE(): any {
-    return this._SC_PAGE;
+  static get TDDJ_PAGE(): any {
+    return this._TDDJ_PAGE;
   }
 
-  static set SC_PAGE(value: any) {
-    this._SC_PAGE = value;
+  static set TDDJ_PAGE(value: any) {
+    this._TDDJ_PAGE = value;
   }
 
   static get SD_PAGE(): any {
@@ -253,12 +265,12 @@ export class PageConfig {
     this._UA_PAGE = value;
   }
 
-  static get UB_PAGE(): any {
-    return this._UB_PAGE;
+  static get LS_PAGE(): any {
+    return this._LS_PAGE;
   }
 
-  static set UB_PAGE(value: any) {
-    this._UB_PAGE = value;
+  static set LS_PAGE(value: any) {
+    this._LS_PAGE = value;
   }
 
   static get UC_PAGE(): any {

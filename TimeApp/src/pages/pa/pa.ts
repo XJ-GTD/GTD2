@@ -112,7 +112,7 @@ export class PaPage {
 
   toAddMember(){
     if(this.uo.uty == '0'){
-      this.navCtrl.push(PageConfig.UB_PAGE,{"rePage":PageConfig.PA_PAGE})
+      this.navCtrl.push(PageConfig.LS_PAGE,{"rePage":PageConfig.PA_PAGE})
       return;
     }
     console.log('PaPage跳转PfPage');
@@ -126,7 +126,7 @@ export class PaPage {
 
   toGroupCreate(){
     if(this.uo.uty == '0'){
-      this.navCtrl.push(PageConfig.UB_PAGE,{"rePage":PageConfig.PA_PAGE})
+      this.navCtrl.push(PageConfig.LS_PAGE,{"rePage":PageConfig.PA_PAGE})
       return;
     }
     console.log('PaPage跳转PePage');
