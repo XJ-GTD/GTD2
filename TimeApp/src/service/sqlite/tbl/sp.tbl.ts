@@ -19,7 +19,7 @@ export class SpTbl extends BaseTbl implements ITbl{
     let sq =' CREATE TABLE IF NOT EXISTS GTD_SP(spI varchar(50) PRIMARY KEY ,sI varchar(50)  ,' +
       'spN varchar(50)  ,sd varchar(20)' +
       '  ,st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,ji varchar(50)  ,bz varchar(50)  ,' +
-      'sta int);';
+      'sta varchar(4);';
 
     return this._execT(sq);
   }
@@ -51,42 +51,76 @@ export class SpTbl extends BaseTbl implements ITbl{
       sq = sq + ', bz="' + pro.bz +'"';
     }
     if(pro.sta != null){
-      sq = sq + ', sta=' + pro.sta ;
+      sq = sq + ', sta="' + pro.sta +'"';
     }
     sq = sq + ' where spI = "'+ pro.spI +'"';
     return this._execT(sq);
   }
 
   dT(pro:SpPro):Promise<any> {
-    let sq = '';
+    let sq = 'delete from GTD_SP where spI = "' + pro.spI +'"';
     return this._execT(sq);
   }
 
   sloT(pro:SpPro):Promise<any> {
-    let sq='';
+    let sq='select * GTD_SP where spI = "'+ pro.spI +'"';
     return this._execT(sq);
   }
 
   slT(pro:SpPro):Promise<any> {
-    let sq=' ';
+    let sq='select *  GTD_SP where  1=1 ';
+    if(pro.sI!=null){
+      sq=sq+' and sI="' + pro.sI +'"';
+    }
+    if(pro.spN!=null){
+      sq=sq+' and spN="' + pro.spN +'"';
+    }
+    if(pro.sd != null){
+      sq = sq + ' and sd="' + pro.sd +'"';
+    }
+    if(pro.st != null){
+      sq = sq + ' and st="' + pro.st +'"';
+    }
+    if(pro.ed != null){
+      sq = sq + ' and ed="' + pro.ed +'"';
+    }
+    if(pro.et != null){
+      sq = sq + ' and et="' + pro.et +'"';
+    }
+    if(pro.ji != null){
+      sq = sq + ' and ji="' + pro.ji +'"';
+    }
+    if(pro.bz != null){
+      sq = sq + ' and bz="' + pro.bz +'"';
+    }
+    if(pro.sta != null){
+      sq = sq + ' and sta="' + pro.sta +'"';
+    }
+    if(pro.spI != null){
+      sq = sq + ' and spI="' + pro.spI +'"';
+    }
 
     return this._execT(sq);
   }
 
   drT():Promise<any> {
 
-    let sq ='';
+    let sq ='DROP TABLE IF EXISTS GTD_SP;';
     return this._execT(sq);
   }
 
   inT(pro:SpPro):Promise<any> {
-    let sq =' ' ;
+    let sq ='insert into GTD_SP ' +
+      '( spI ,sI ,spN ,sd ,st ,ed ,et ,ji ,bz ,sta) values("'+ pro.spI+'","'+ pro.sI+'","'+pro.spN+ '"' +
+      ',"'+pro.sd+ '","'+pro.st+ '","'+pro.ed+ '","'+pro.et+ '","'+pro.ji+ '","'+pro.bz+ '","'+pro.sta+ '")';
 
     return this._execT(sq);
   }
 
   rpT(pro:SpPro):Promise<any> {
-    let sq =' ' ;
+    let sq ='replace into GTD_SP ' +
+      '( spI ,sI ,spN ,sd ,st ,ed ,et ,ji ,bz ,sta) values("'+ pro.spI+'","'+ pro.sI+'","'+pro.spN+ '"' +
+      ',"'+pro.sd+ '","'+pro.st+ '","'+pro.ed+ '","'+pro.et+ '","'+pro.ji+ '","'+pro.bz+ '","'+pro.sta+ '")';
 
     return this._execT(sq);
   }
