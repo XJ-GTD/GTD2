@@ -55,12 +55,12 @@ export class UTbl extends BaseTbl implements ITbl{
   }
 
   sloT(pro:BPro):Promise<any> {
-    let sq='select * GTD_U where uI = "'+ pro.uI +'"';
+    let sq='select * from GTD_U where uI = "'+ pro.uI +'"';
     return this._execT(sq);
   }
 
   slT(pro:BPro):Promise<any> {
-    let sq='select *  GTD_U where  1=1 ';
+    let sq='select * from  GTD_U where  1=1 ';
     if(pro.hIU!=null){
       sq=sq+' and hIU="' + pro.hIU +'"';
     }

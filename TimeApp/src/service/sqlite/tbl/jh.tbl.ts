@@ -40,12 +40,12 @@ export class JhTbl extends BaseTbl implements ITbl{
   }
 
   sloT(pro:JhPro):Promise<any> {
-    let sq='select * GTD_J_H where ji = "'+ pro.ji +'"';
+    let sq='select * from GTD_J_H where ji = "'+ pro.ji +'"';
     return this._execT(sq);
   }
 
   slT(pro:JhPro):Promise<any> {
-    let sq='select *  GTD_J_H where  1=1 ';
+    let sq='select * from  GTD_J_H where  1=1 ';
     if(pro.jn!=null){
       sq=sq+' and jn="' + pro.jn +'"';
     }
