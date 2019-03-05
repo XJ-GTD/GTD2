@@ -18,6 +18,7 @@ import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.CorsHandler;
 
 public class MainVerticle extends AbstractVerticle {
 
@@ -33,6 +34,9 @@ public class MainVerticle extends AbstractVerticle {
 		mongodb = MongoClient.createShared(vertx, config);
 
 		Router router = Router.router(vertx);
+		
+		router.route().handler(CorsHandler.create("*").allowedHeader("*"));
+
 		router.route("/ini/parameters").handler(BodyHandler.create());
 
 		router.route("/ini/parameters").handler(this::initparams);
