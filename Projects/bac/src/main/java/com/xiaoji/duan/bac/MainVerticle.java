@@ -16,6 +16,7 @@ import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.CorsHandler;
 
 public class MainVerticle extends AbstractVerticle {
 
@@ -31,6 +32,9 @@ public class MainVerticle extends AbstractVerticle {
 		mongodb = MongoClient.createShared(vertx, config);
 
 		Router router = Router.router(vertx);
+		
+		router.route().handler(CorsHandler.create("*").allowedHeader("*"));
+
 		router.route("/bac/backup").handler(BodyHandler.create());
 		router.route("/bac/recover").handler(BodyHandler.create());
 		router.route("/bac/latest").handler(BodyHandler.create());

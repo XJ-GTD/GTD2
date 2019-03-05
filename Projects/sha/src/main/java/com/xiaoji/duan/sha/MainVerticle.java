@@ -1,8 +1,10 @@
 package com.xiaoji.duan.sha;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -19,6 +21,7 @@ import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.CorsHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.handler.TemplateHandler;
 import io.vertx.ext.web.templ.thymeleaf.ThymeleafTemplateEngine;
@@ -48,6 +51,8 @@ public class MainVerticle extends AbstractVerticle {
 
 		Router router = Router.router(vertx);
 		
+		router.route().handler(CorsHandler.create("*").allowedHeader("*"));
+		
 		StaticHandler staticfiles = StaticHandler.create().setCachingEnabled(false).setWebRoot("static");
 		router.route("/sha/static/*").handler(staticfiles);
 		router.route("/sha").pathRegex("\\/.+\\.json").handler(staticfiles);
@@ -63,7 +68,7 @@ public class MainVerticle extends AbstractVerticle {
 		router.route("/sha/agendashare").handler(this::agendashare);
 		router.route("/sha/agenda/share/:shareid").handler(this::agendashareview);
 
-		router.route("/sha/planshare").handler(this::planshare);
+		router.route("/sha/planshare").consumes("application/json").produces("application/json").handler(this::planshare);
 		router.route("/sha/plan/share/:shareid").handler(this::planshareview);
 		
 		router.route("/sha/plan/buildin/download").handler(this::buildinplandownload);
@@ -85,6 +90,8 @@ public class MainVerticle extends AbstractVerticle {
 	}
 
 	private void agendashare(RoutingContext ctx) {
+		System.out.println("headers: " + ctx.request().headers());
+		System.out.println("body: " + ctx.getBodyAsString());
 		JsonObject ret = new JsonObject();
 		ret.put("rc", "0");
 		ret.put("rm", "");
