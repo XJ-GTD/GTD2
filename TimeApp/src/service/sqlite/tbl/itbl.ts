@@ -7,21 +7,19 @@ import {Injectable} from "@angular/core";
 //接口
 export interface ITbl {
 
-  ssqC();
+  cT():Promise<any> ;
 
-  ssqUp();
+  upT(arg :any):Promise<any> ;
 
-  ssqD();
+  dT(arg :any):Promise<any> ;
 
-  ssqSlo();
+  sloT(arg :any):Promise<any> ;
 
-  ssqSl();
+  slT(arg :any):Promise<any> ;
 
-  ssqDr();
+  drT():Promise<any> ;
 
-  ssqIn();
+  inT(arg :any):Promise<any> ;
 
-  ssqRp();
-
-  clp();
+  rpT(arg :any):Promise<any> ;
 }

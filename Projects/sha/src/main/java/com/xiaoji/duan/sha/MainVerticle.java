@@ -1,10 +1,8 @@
 package com.xiaoji.duan.sha;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -73,8 +71,24 @@ public class MainVerticle extends AbstractVerticle {
 		
 		router.route("/sha/plan/buildin/download").handler(this::buildinplandownload);
 
-		router.route("/sha").path("/agenda/share").handler(templatehandler);
-		router.route("/sha").path("/plan/share").handler(templatehandler);
+		router.route("/sha/agenda/share/:shareid").handler(ctx -> {
+			thymeleaf.render(new JsonObject(ctx.data()), "/templates/agenda/share", res -> {
+				if (res.succeeded()) {
+					ctx.response().putHeader("Content-Type", "text/html").end(res.result());
+				} else {
+					ctx.fail(res.cause());
+				}
+			});
+		});
+		router.route("/sha/plan/share/:shareid").handler(ctx -> {
+			thymeleaf.render(new JsonObject(ctx.data()), "/templates/plan/share", res -> {
+				if (res.succeeded()) {
+					ctx.response().putHeader("Content-Type", "text/html").end(res.result());
+				} else {
+					ctx.fail(res.cause());
+				}
+			});
+		});
 
 		HttpServerOptions option = new HttpServerOptions();
 		option.setCompressionSupported(true);
@@ -173,6 +187,8 @@ public class MainVerticle extends AbstractVerticle {
 	}
 
 	private void agendashareview(RoutingContext ctx) {
+		System.out.println("headers: " + ctx.request().headers());
+		System.out.println("body: " + ctx.getBodyAsString());
 		String shareId = ctx.request().getParam("shareid");
 
 		if (!StringUtils.isEmpty(shareId)) {
@@ -300,6 +316,8 @@ public class MainVerticle extends AbstractVerticle {
 	}
 
 	private void buildinplandownload(RoutingContext ctx) {
+		System.out.println("headers: " + ctx.request().headers());
+		System.out.println("body: " + ctx.getBodyAsString());
 		JsonObject ret = new JsonObject();
 		ret.put("rc", "0");
 		ret.put("rm", "");
@@ -336,9 +354,9 @@ public class MainVerticle extends AbstractVerticle {
 			return;
 		}
 		
-		JsonObject buildinplan = data.getJsonObject("bipi");
+		String buildinplan = data.getString("pi");
 		
-		if (buildinplan == null || buildinplan.isEmpty()) {
+		if (buildinplan == null || StringUtils.isEmpty(buildinplan)) {
 			ret.put("rc", "-1");
 			ret.put("rm", "内建计划数据不存在, 非法请求!");
 
@@ -352,6 +370,7 @@ public class MainVerticle extends AbstractVerticle {
 		futures.add(buildin);
 		
 		mongodb.findOne("sha_plan_buildin", new JsonObject().put("planid", buildinplan), new JsonObject(), findOne -> {
+			System.out.println("Find build-in plan returned.");
 			if (findOne.succeeded()) {
 				buildin.complete(new JsonObject().put("name", "plan").put("value", findOne.result()));
 			} else {
@@ -363,28 +382,31 @@ public class MainVerticle extends AbstractVerticle {
 		futures.add(buildinagendas);
 
 		mongodb.find("sha_plan_buildin_agendas", new JsonObject().put("planid", buildinplan), find -> {
+			System.out.println("Find agendas returned.");
 			if (find.succeeded()) {
 				buildinagendas.complete(new JsonObject().put("name", "agendas").put("value", find.result()));
 			} else {
 				buildinagendas.fail(find.cause());
 			}
 		});
-		
+
 		CompositeFuture.all(Arrays.asList(futures.toArray(new Future[futures.size()])))
 		.map(v -> futures.stream().map(Future::result).collect(Collectors.toList()))
 		.setHandler(handler -> {
+			System.out.println("All search returned.");
 			if (handler.succeeded()) {
 				List<JsonObject> results = handler.result();
 				
 				JsonObject retdata = new JsonObject();
 
 				for (JsonObject result : results) {
+					System.out.println(result.encode());
 					if ("plan".equals(result.getString("name"))) {
-						retdata.put("pn", result.getJsonObject("value"));
+						retdata.put("pn", result.getValue("value"));
 					}
 					
 					if ("agendas".equals(result.getString("name"))) {
-						retdata.put("pa", result.getJsonObject("value"));
+						retdata.put("pa", result.getValue("value"));
 					}
 				}
 				
@@ -398,5 +420,6 @@ public class MainVerticle extends AbstractVerticle {
 				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			}
 		});
+
 	}
 }

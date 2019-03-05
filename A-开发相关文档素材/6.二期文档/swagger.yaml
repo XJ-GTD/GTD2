@@ -28,7 +28,6 @@ paths:
       - "share"
       summary: "分享日程"
       description: ""
-      operationId: "addPet"
       consumes:
       - "application/json"
       produces:
@@ -54,21 +53,11 @@ paths:
         type: "string"
         description: "设备ID"
         required: true
-      - name: "ai"
+      - name: "dt"
         in: "header"
         type: "string"
-        description: "帐户ID"
-        required: false
-      - name: "oai"
-        in: "header"
-        type: "string"
-        description: "操作帐户ID"
-        required: false
-      - name: "ompn"
-        in: "header"
-        type: "string"
-        description: "操作手机号码"
-        required: false
+        description: "设备类型"
+        required: true
       - name: "body"
         in: "body"
         description: "当前分享日程对象"
@@ -76,6 +65,18 @@ paths:
         schema:
           type: "object"
           properties:
+            ai:
+              type: "string"
+              description: "帐户ID"
+            oai:
+              type: "string"
+              description: "操作帐户ID"
+            ompn:
+              type: "string"
+              description: "操作手机号码"
+            c:
+              type: "object"
+              description: "上下文"
             d:
               type: "object"
               properties:
@@ -97,6 +98,193 @@ paths:
                 properties:
                   asurl:
                     type: "string"
+        405:
+          description: "Invalid input"
+  /sha/agenda/share/{shareid}:
+    get:
+      tags:
+      - "share"
+      summary: "分享日程浏览"
+      description: ""
+      produces:
+      - "text/html"
+      parameters:
+      - name: "shareid"
+        in: "path"
+        description: "共享ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "显示分享日程"
+  /sha/planshare:
+    post:
+      tags:
+      - "share"
+      summary: "分享计划"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lt"
+        in: "header"
+        type: "string"
+        description: "登录令牌"
+        required: false
+      - name: "pi"
+        in: "header"
+        type: "string"
+        description: "产品ID"
+        required: true
+      - name: "pv"
+        in: "header"
+        type: "string"
+        description: "产品版本"
+        required: true
+      - name: "di"
+        in: "header"
+        type: "string"
+        description: "设备ID"
+        required: true
+      - name: "dt"
+        in: "header"
+        type: "string"
+        description: "设备类型"
+        required: true
+      - name: "body"
+        in: "body"
+        description: "当前分享计划对象"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            ai:
+              type: "string"
+              description: "帐户ID"
+            oai:
+              type: "string"
+              description: "操作帐户ID"
+            ompn:
+              type: "string"
+              description: "操作手机号码"
+            c:
+              type: "object"
+              description: "上下文"
+            d:
+              type: "object"
+              properties:
+                p:
+                  $ref: "#/definitions/Plan"
+      responses:
+        200:
+          description: "计划分享成功"
+          schema:
+            type: "object"
+            properties:
+              rc:
+                type: "integer"
+              rm:
+                type: "string"
+              d:
+                type: "object"
+                properties:
+                  asurl:
+                    type: "string"
+        405:
+          description: "Invalid input"
+  /sha/plan/share/{shareid}:
+    get:
+      tags:
+      - "share"
+      summary: "分享计划浏览"
+      description: ""
+      produces:
+      - "text/html"
+      parameters:
+      - name: "shareid"
+        in: "path"
+        description: "共享ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "显示分享计划"
+  /sha/plan/buildin/download:
+    post:
+      tags:
+      - "share"
+      summary: "内建计划下载"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lt"
+        in: "header"
+        type: "string"
+        description: "登录令牌"
+        required: false
+      - name: "pi"
+        in: "header"
+        type: "string"
+        description: "产品ID"
+        required: true
+      - name: "pv"
+        in: "header"
+        type: "string"
+        description: "产品版本"
+        required: true
+      - name: "di"
+        in: "header"
+        type: "string"
+        description: "设备ID"
+        required: true
+      - name: "dt"
+        in: "header"
+        type: "string"
+        description: "设备类型"
+        required: true
+      - name: "body"
+        in: "body"
+        description: "内建计划下载条件"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            ai:
+              type: "string"
+              description: "帐户ID"
+            oai:
+              type: "string"
+              description: "操作帐户ID"
+            ompn:
+              type: "string"
+              description: "操作手机号码"
+            c:
+              type: "object"
+              description: "上下文"
+            d:
+              type: "object"
+              properties:
+                pi:
+                  type: "string"
+                  description: "计划ID"
+      responses:
+        200:
+          description: "下载内建计划成功"
+          schema:
+            type: "object"
+            properties:
+              rc:
+                type: "integer"
+              rm:
+                type: "string"
+              d:
+                $ref: "#/definitions/Plan"
+                    
         405:
           description: "Invalid input"
   /pet/findByStatus:
@@ -614,6 +802,16 @@ definitions:
         type: "array"
         items:
           type: "object"
+  Plan:
+    type: "object"
+    description: "计划"
+    properties:
+      pn:
+        type: "object"
+      pa:
+        type: "array"
+        items:
+          $ref: "#/definitions/Agenda"
   Contact:
     type: "object"
     description: "联系人"
