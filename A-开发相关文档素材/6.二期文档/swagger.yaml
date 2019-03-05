@@ -15,21 +15,19 @@ tags:
 - name: "share"
   description: "日程与计划分享, 内建计划下载"
 - name: "initial"
-  description: "产品初始化数据"
+  description: "产品初始化参数"
 - name: "backup"
   description: "客户端数据备份与恢复"
 schemes:
 - "https"
 - "http"
 paths:
-  /sha/agendashare:
-    post:
+  /ini/parameters:
+    get:
       tags:
-      - "share"
-      summary: "分享日程"
+      - "initial"
+      summary: "获取产品初始化参数"
       description: ""
-      consumes:
-      - "application/json"
       produces:
       - "application/json"
       parameters:
@@ -58,6 +56,72 @@ paths:
         type: "string"
         description: "设备类型"
         required: true
+      responses:
+        200:
+          description: "获取初始化参数成功"
+          schema:
+            type: "object"
+            properties:
+              rc:
+                type: "integer"
+              rm:
+                type: "string"
+              d:
+                type: "object"
+                properties:
+                  apil:
+                    type: "array"
+                    items:
+                      type: "object"
+                  bipl:
+                    type: "array"
+                    items:
+                      type: "object"
+                  vrs:
+                    type: "array"
+                    items:
+                      type: "object"
+  /sha/agendashare:
+    post:
+      tags:
+      - "share"
+      summary: "分享日程"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lt"
+        in: "header"
+        type: "string"
+        description: "登录令牌"
+        required: false
+      - name: "pi"
+        in: "header"
+        type: "string"
+        description: "产品ID"
+        required: true
+      - name: "pv"
+        in: "header"
+        type: "string"
+        description: "产品版本"
+        required: true
+      - name: "ai"
+        in: "header"
+        type: "string"
+        description: "帐户ID"
+        required: true
+      - name: "di"
+        in: "header"
+        type: "string"
+        description: "设备ID"
+        required: true
+      - name: "dt"
+        in: "header"
+        type: "string"
+        description: "设备类型"
+        required: true
       - name: "body"
         in: "body"
         description: "当前分享日程对象"
@@ -65,9 +129,6 @@ paths:
         schema:
           type: "object"
           properties:
-            ai:
-              type: "string"
-              description: "帐户ID"
             oai:
               type: "string"
               description: "操作帐户ID"
@@ -143,6 +204,11 @@ paths:
         type: "string"
         description: "产品版本"
         required: true
+      - name: "ai"
+        in: "header"
+        type: "string"
+        description: "帐户ID"
+        required: true
       - name: "di"
         in: "header"
         type: "string"
@@ -160,9 +226,6 @@ paths:
         schema:
           type: "object"
           properties:
-            ai:
-              type: "string"
-              description: "帐户ID"
             oai:
               type: "string"
               description: "操作帐户ID"
@@ -237,6 +300,11 @@ paths:
         type: "string"
         description: "产品版本"
         required: true
+      - name: "ai"
+        in: "header"
+        type: "string"
+        description: "帐户ID"
+        required: false
       - name: "di"
         in: "header"
         type: "string"
@@ -254,9 +322,6 @@ paths:
         schema:
           type: "object"
           properties:
-            ai:
-              type: "string"
-              description: "帐户ID"
             oai:
               type: "string"
               description: "操作帐户ID"
@@ -324,6 +389,90 @@ paths:
       - petstore_auth:
         - "write:pets"
         - "read:pets"
+  /bac/backup:
+    post:
+      tags:
+      - "backup"
+      summary: "备份日历数据"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lt"
+        in: "header"
+        type: "string"
+        description: "登录令牌"
+        required: false
+      - name: "pi"
+        in: "header"
+        type: "string"
+        description: "产品ID"
+        required: true
+      - name: "pv"
+        in: "header"
+        type: "string"
+        description: "产品版本"
+        required: true
+      - name: "di"
+        in: "header"
+        type: "string"
+        description: "设备ID"
+        required: true
+      - name: "dt"
+        in: "header"
+        type: "string"
+        description: "设备类型"
+        required: true
+      - name: "ai"
+        in: "header"
+        type: "string"
+        description: "帐户ID"
+        required: true
+      - name: "body"
+        in: "body"
+        description: "备份版本识别符和备份数据"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            oai:
+              type: "string"
+              description: "操作帐户ID"
+            ompn:
+              type: "string"
+              description: "操作手机号码"
+            c:
+              type: "object"
+              description: "上下文"
+            d:
+              type: "object"
+              properties:
+                bts:
+                  type: "integer"
+                  format: "int64"
+                  description: "备份时间戳"
+                default:
+                  description: "备份数据, 表名作为字段名, 表数据为数组对象值, 无数据放空数组"
+      responses:
+        200:
+          description: "备份成功"
+          schema:
+            type: "object"
+            properties:
+              rc:
+                type: "integer"
+              rm:
+                type: "string"
+              d:
+                type: "object"
+                properties:
+                  bts:
+                    type: "string"
+                    description: "备份时间戳"
+        405:
+          description: "Invalid input"
   /pet/findByTags:
     get:
       tags:
