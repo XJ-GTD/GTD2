@@ -33,6 +33,8 @@ public class MainVerticle extends AbstractVerticle {
 		config.put("keepAlive", true);
 		mongodb = MongoClient.createShared(vertx, config);
 
+		init();
+		
 		Router router = Router.router(vertx);
 		
 		router.route().handler(CorsHandler.create("*").allowedHeader("*"));
