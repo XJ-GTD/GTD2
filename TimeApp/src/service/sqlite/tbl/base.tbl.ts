@@ -7,53 +7,13 @@ import {Injectable} from "@angular/core";
 @Injectable()
 export class BaseTbl{
 
-  private _sq :string;
-
   constructor(private baseSqlite: BaseSqlite) {}
 
-
-  get sq(): string {
-    return this._sq;
-  }
-
-  set sq(value: string) {
-    this._sq = value;
-  }
-
-  cT():Promise<any> {
-    return this._doT(this._sq);
-  }
-
-  upT():Promise<any> {
-    return this._doT(this._sq);
-  }
-
-  dT():Promise<any> {
-    return this._doT(this._sq);
-  }
-
-  sloT():Promise<any> {
-    return this._doT(this._sq);
-  }
-
-  slT():Promise<any> {
-    return this._doT(this._sq);
-  }
-
-  drT():Promise<any> {
-    return this._doT(this._sq);
-  }
-
-  inT():Promise<any> {
-    return this._doT(this._sq);
-  }
-
-  rpT():Promise<any> {
-    return this._doT(this._sq);
-  }
-
-  _doT(sq):Promise<any> {
+  _execT(sq):Promise<any> {
       return this.baseSqlite.executeSql(sq,[]);
   }
 
+  _batT(sq):Promise<any> {
+    return this.baseSqlite.executeSql(sq,[]);
+  }
 }
