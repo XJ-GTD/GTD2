@@ -13,7 +13,6 @@ export class SmsRestful {
 
   //发送短信验证码 SSMIC
   getcode(): Promise<any> {
-
     return new Promise((resolve, reject) => {
     });
   }
