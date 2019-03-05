@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { SbPage } from './sb';
+import { TdcPage } from './tdc';
 import { ElModule } from 'element-angular'
 
 @NgModule({
   declarations: [
-    SbPage,
+    TdcPage,
   ],
   imports: [
-    IonicPageModule.forChild(SbPage),
+    IonicPageModule.forChild(TdcPage),
     ElModule
   ],
 })
-export class SbPageModule {}
+export class TdcPageModule {}

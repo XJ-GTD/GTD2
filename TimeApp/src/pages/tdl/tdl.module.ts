@@ -1,20 +1,20 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {IonicModule} from 'ionic-angular';
-import { Ha01Page } from './ha01';
+import {TdlPage } from './tdl';
 
 @NgModule({
   declarations: [
-    Ha01Page,
+    TdlPage,
   ],
   imports: [
     IonicModule,
   ],
-  exports: [Ha01Page]
+  exports: [TdlPage]
 })
-export class Ha01PageModule {
+export class TdlPageModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: Ha01PageModule
+      ngModule: TdlPageModule
     };
   }
 }

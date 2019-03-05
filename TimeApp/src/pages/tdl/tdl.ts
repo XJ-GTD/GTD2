@@ -7,13 +7,13 @@ import * as moment from "moment";
 import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
 
 /**
- * Generated class for the Ha01Page page.
+ * Generated class for the TdlPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
 @Component({
-  selector: 'page-ha01',
+  selector: 'page-tdl',
   template: `
     <ion-scroll scrollY="true">
       <ul>
@@ -89,7 +89,7 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
     </div>`
 
 })
-export class Ha01Page {
+export class TdlPage {
 
   scheduleLs: Array<ScheduleModel> = [];
   scheduleDetailLs: Array<ScheduleDetailsModel> = [];

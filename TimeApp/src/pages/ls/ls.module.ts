@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { ScPage } from './sc';
+import { LsPage } from './ls';
 
 @NgModule({
   declarations: [
-    ScPage,
+    LsPage,
   ],
   imports: [
-    IonicPageModule.forChild(ScPage),
+    IonicPageModule.forChild(LsPage),
   ],
 })
-export class ScPageModule {}
+export class LsPageModule {}

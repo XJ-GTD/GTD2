@@ -20,7 +20,7 @@ import {DateTime} from "ionic-angular/components/datetime/datetime";
 import {Select} from "ionic-angular/components/select/select";
 
 /**
- * Generated class for the SbPage page.
+ * Generated class for the TdcPage page.
  * create by wzy
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -28,7 +28,7 @@ import {Select} from "ionic-angular/components/select/select";
 
 @IonicPage()
 @Component({
-  selector: 'page-sb',
+  selector: 'page-tdc',
   providers: [],
   template:`<ion-header> 
     <ion-toolbar> 
@@ -176,7 +176,7 @@ import {Select} from "ionic-angular/components/select/select";
   </div>`
 
 })
-export class SbPage {
+export class TdcPage {
 
   @ViewChild(Navbar) navBar: Navbar;
 
@@ -218,7 +218,7 @@ export class SbPage {
   showD:boolean = false;
   showE:boolean = false;//闹钟
 
-  repeatTime:any = SbPage.yType;
+  repeatTime:any = TdcPage.yType;
   static yType:any = "MM月DD日";
   static mType:any = "DD日 HH时mm分";
   static wType:any = "";
@@ -479,13 +479,13 @@ export class SbPage {
   //时间选择类型
   chengeType(){
     switch(this.repeatType){
-      case "y": this.repeatTime = SbPage.yType;
+      case "y": this.repeatTime = TdcPage.yType;
         break;
-      case "m": this.repeatTime = SbPage.mType;
+      case "m": this.repeatTime = TdcPage.mType;
         break;
-      case "w": this.repeatTime = SbPage.wType;
+      case "w": this.repeatTime = TdcPage.wType;
         break;
-      case "d": this.repeatTime = SbPage.dType;
+      case "d": this.repeatTime = TdcPage.dType;
         break;
     }
   }
