@@ -82,7 +82,7 @@ export class AaPage {
     this.paramsService.user = null;
     window.localStorage.clear();
     console.log('AaPage跳转UbPage');
-    this.navCtrl.push(PageConfig.UB_PAGE);
+    this.navCtrl.push(PageConfig.LS_PAGE);
   }
 
   accountSecurity() {
