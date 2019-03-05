@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Calendar } from "@ionic-native/calendar";
-import { Ha01Page } from "../pages/ha01/ha01";
+import { TdlPage } from "../pages/tdl/tdl";
 import { UtilService } from "./util-service/util.service";
 import { BaseSqlite } from "./sqlite/base-sqlite";
 import { PlayerService } from "./player.service";

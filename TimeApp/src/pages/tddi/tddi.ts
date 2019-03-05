@@ -19,7 +19,7 @@ import {DateTime} from "ionic-angular/components/datetime/datetime";
 import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
 
 /**
- * Generated class for the SaPage page.
+ * Generated class for the TddiPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -27,7 +27,7 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
 
 @IonicPage()
 @Component({
-  selector: 'page-sa',
+  selector: 'page-tddi',
   template:`
   <ion-header> 
     <ion-navbar> 
@@ -181,7 +181,7 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
     <button ion-button (click)="setAlarm()">设置提醒闹钟</button> 
   </ion-content>`,
 })
-export class SaPage {
+export class TddiPage {
   @ViewChild(Navbar) navBar: Navbar;
 
   @ViewChild(DateTime) dateTime: DateTime;

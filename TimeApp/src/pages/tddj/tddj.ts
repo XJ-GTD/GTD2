@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
- * Generated class for the ScPage page.
+ * Generated class for the TddjPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -10,7 +10,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-sc',
+  selector: 'page-tddj',
   template:'<ion-header>' +
   '  <ion-navbar>' +
   '    <ion-title>Sc</ion-title>' +
@@ -19,7 +19,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   '<ion-content padding>' +
   '</ion-content>',
 })
-export class ScPage {
+export class TddjPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
