@@ -63,12 +63,12 @@ export class SpTbl extends BaseTbl implements ITbl{
   }
 
   sloT(pro:SpPro):Promise<any> {
-    let sq='select * GTD_SP where spI = "'+ pro.spI +'"';
+    let sq='select * from GTD_SP where spI = "'+ pro.spI +'"';
     return this._execT(sq);
   }
 
   slT(pro:SpPro):Promise<any> {
-    let sq='select *  GTD_SP where  1=1 ';
+    let sq='select * from  GTD_SP where  1=1 ';
     if(pro.sI!=null){
       sq=sq+' and sI="' + pro.sI +'"';
     }

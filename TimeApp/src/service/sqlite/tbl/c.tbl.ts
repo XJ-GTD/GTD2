@@ -58,12 +58,12 @@ export class CTbl extends BaseTbl implements ITbl{
   }
 
   sloT(pro:CPro):Promise<any> {
-    let sq='select * GTD_C where sI = "'+ pro.sI +'"';
+    let sq='select * from GTD_C where sI = "'+ pro.sI +'"';
     return this._execT(sq);
   }
 
   slT(pro:CPro):Promise<any> {
-    let sq='select *  GTD_C where  1=1 ';
+    let sq='select * from  GTD_C where  1=1 ';
     if(pro.sN!=null){
       sq=sq+' and sN="' + pro.sN +'"';
     }
