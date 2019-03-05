@@ -17,7 +17,7 @@ export class ETbl extends BaseTbl implements ITbl{
   cT():Promise<any> {
 
     let sq ='CREATE TABLE IF NOT EXISTS GTD_E(  wI varchar(50) PRIMARY KEY ,sI varchar(50)  ,' +
-      'sT varchar(50)  ,wD varchar(20)  ,wT varchar(20)';
+      'sT varchar(50)  ,wD varchar(20)  ,wT varchar(20))';
 
     return this._execT(sq);
   }

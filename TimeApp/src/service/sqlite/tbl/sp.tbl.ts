@@ -19,7 +19,7 @@ export class SpTbl extends BaseTbl implements ITbl{
     let sq =' CREATE TABLE IF NOT EXISTS GTD_SP(spI varchar(50) PRIMARY KEY ,sI varchar(50)  ,' +
       'spN varchar(50)  ,sd varchar(20)' +
       '  ,st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,ji varchar(50)  ,bz varchar(50)  ,' +
-      'sta varchar(4);';
+      'sta varchar(4));';
 
     return this._execT(sq);
   }

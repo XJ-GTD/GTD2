@@ -17,7 +17,7 @@ export class CTbl extends BaseTbl implements ITbl{
   cT():Promise<any> {
 
     let sq =' sI varchar(50) PRIMARY KEY ,sN varchar(50)  ,uI varchar(50)  ,sd varchar(20)  ' +
-      ',st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,rT varchar(4)  ,ji varchar(50);';
+      ',st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,rT varchar(4)  ,ji varchar(50));';
 
     return this._execT(sq);
   }
