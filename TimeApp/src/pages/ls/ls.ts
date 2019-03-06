@@ -67,7 +67,7 @@ export class LsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UdPage');
+    console.log('ionViewDidLoad LsPage');
     this.navBar.backButtonClick = this.backButtonClick;
     this.navBar.setBackButtonText("");
   }
@@ -93,7 +93,7 @@ export class LsPage {
       this.utilService.unloading();
       if (data.code == 0) {
         this.utilService.alert("登陆成功");
-        this.navCtrl.setRoot('HzPage');
+        this.navCtrl.setRoot('MPage');
       }else{
         this.utilService.alert(message);
       }
@@ -124,7 +124,7 @@ export class LsPage {
   }
 
   userAgreement() {
-    this.navCtrl.push('HcPage');
+    this.navCtrl.push('PPage');
     this.agree = true;
   }
 

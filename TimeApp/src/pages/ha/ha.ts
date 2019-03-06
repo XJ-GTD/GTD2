@@ -56,7 +56,7 @@ import {RcModel} from "../../model/rc.model";
 })
 export class HaPage {
   @ViewChild(CalendarComponent) ion2calendar: CalendarComponent;
-  @ViewChild(TdlPage) ha01Page: TdlPage;
+  @ViewChild(TdlPage) tdlPage: TdlPage;
 
   remindScheduleList: Array<RemindModel>;//提醒时间数据
   remindList: Array<string>;  //全部提醒时间
@@ -105,7 +105,7 @@ export class HaPage {
       if(this.event != undefined){
         this.onSelectDayEvent(this.event);
       }else{
-        this.ha01Page.showScheduleLs({time:moment().valueOf()});
+        this.tdlPage.showScheduleLs({time:moment().valueOf()});
       }
     });
   }
@@ -142,7 +142,7 @@ export class HaPage {
     }).format('YYYY-MM-DD'));
     this.showDay2 = moment().set({'year': year, 'month': month - 1, 'date': day}).format('dddd YYYY 年 MM 月 DD 日');
 
-    this.ha01Page.showScheduleLs($event);
+    this.tdlPage.showScheduleLs($event);
   }
 
   gotoToday() {

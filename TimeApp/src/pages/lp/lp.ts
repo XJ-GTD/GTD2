@@ -80,7 +80,7 @@ import { UtilService } from "../../service/util-service/util.service";
   '                <span (click)="signUp()">注册</span>' +
   '              </div>' +
   '              <div>' +
-  '                <span (click)="toUd()">短信登录</span>' +
+  '                <span (click)="toLs()">短信登录</span>' +
   '              </div>' +
   '            </div>' +
   '          </div>' +
@@ -113,7 +113,7 @@ export class LpPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UbPage');
+    console.log('ionViewDidLoad LpPage');
     this.rePage = this.navParams.get("rePage");
     console.log(this.rePage)
   }
@@ -142,8 +142,8 @@ export class LpPage {
          this.utilService.alert("登录成功");
          if(this.rePage==undefined){
            //跳转首页
-           console.log('UbPage跳转HzPage');
-           this.navCtrl.setRoot('HzPage');
+           console.log('LpPage跳转MPage');
+           this.navCtrl.setRoot('MPage');
          }else{
            //登录分析
            //登录成功跳转，登录成功返回，
@@ -173,12 +173,12 @@ export class LpPage {
   }
 
   signUp() {
-    console.log('UbPage跳转UaPage');
-    this.navCtrl.push('UaPage',{"rePage":this.rePage});
+    console.log('LpPage跳转RPage');
+    this.navCtrl.push('RPage',{"rePage":this.rePage});
   }
 
-  toUd() {
-    console.log('UbPage跳转UdPage');
-    this.navCtrl.push('UdPage',{"rePage":this.rePage});
+  toLs() {
+    console.log('LpPage跳转lsPage');
+    this.navCtrl.push('LsPage',{"rePage":this.rePage});
   }
 }
