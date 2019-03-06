@@ -48,7 +48,7 @@ export class BsRestful {
         if(DataConfig.uInfo.uty == '0' && url.hasCheck){
 
           this.getNavCtrl();
-          this.navCtrl.push(PageConfig.LS_PAGE);
+          this.navCtrl.push(PageConfig.LP_PAGE);
           reject({message:"登录可用"});
           return;
         }

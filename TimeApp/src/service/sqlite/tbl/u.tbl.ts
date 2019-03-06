@@ -17,7 +17,7 @@ export class UTbl extends BaseTbl implements ITbl{
 
     let sq ='CREATE TABLE IF NOT EXISTS GTD_U( uI varchar(50) PRIMARY KEY ,aI varchar(50)  ,' +
       'uN varchar(10)  ,hIU varchar(200)  ,biy varchar(10)  ,rn varchar(10)  ,iC varchar(20)  ,' +
-      'uS varchar(4)  ,uCt varchar(11);';
+      'uS varchar(4)  ,uCt varchar(11));';
 
     return this._execT(sq);
   }

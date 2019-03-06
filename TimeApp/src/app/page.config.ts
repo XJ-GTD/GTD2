@@ -5,16 +5,25 @@ import {HaPage} from "../pages/ha/ha";
  */
 export class PageConfig {
 
-  private static _TDL_PAGE: any = "TdlPage";    // 日程 - 日程列表
-  private static _TDC_PAGE: any = "TdcPage";      // 日程 - 日程详情新建
-  private static _TDDI_PAGE: any = "TddiPage";     // 日程 - 日程详情（受邀）
-  private static _TDDJ_PAGE: any = "TddjPage";     // 日程 - 日程详情
-  private static _M_PAGE: any = "MPage";        // 辅助功能 - 菜单
-  private static _R_PAGE: any = "RPage";        // 登陆注册 - 注册
+  private static _TDL_PAGE: any = "TdlPage";        // 日程 - 日程列表
+  private static _TDC_PAGE: any = "TdcPage";        // 日程 - 日程详情新建
+  private static _TDDI_PAGE: any = "TddiPage";      // 日程 - 日程详情（受邀）
+  private static _TDDJ_PAGE: any = "TddjPage";      // 日程 - 日程详情
+
   private static _LP_PAGE: any = "LpPage";       // 登陆注册 - 登陆（密码）
   private static _LS_PAGE: any = "LsPage";       // 登陆注册 - 登录（验证码）
+  private static _R_PAGE: any = "RPage";         // 登陆注册 - 注册
   private static _PP_PAGE: any = "PPage";        // 登陆注册 - 条款
-  private static _HL_PAGE: any = "HlPage";       // 登陆注册 - 帮助
+
+  private static _M_PAGE: any = "MPage";         // 辅助功能 - 菜单
+  private static _PL_PAGE: any = "PlPage";       // 辅助功能 - 计划
+  private static _PC_PAGE: any = "PcPage";       // 辅助功能 - 计划新建
+  private static _PD_PAGE: any = "PdPage";       // 辅助功能 - 计划展
+  private static _SS_PAGE: any = "SsPage";       // 辅助功能 - 系统设置
+  private static _HL_PAGE: any = "HlPage";       // 辅助功能 - 帮助及反馈
+  private static _GL_PAGE: any = "GlPage";       // 辅助功能 - 群组列表
+  private static _GC_PAGE: any = "GcPage";       // 辅助功能 - 群组编辑
+  private static _PS_PAGE: any = "PsPage";       // 辅助功能 - 个人设置
 
 
   private static _AZ_PAGE: any = "AzPage";
@@ -38,8 +47,8 @@ export class PageConfig {
   private static _SZ_PAGE: any = "SzPage";
   private static _PA_PAGE: any = "PaPage";
   private static _PB_PAGE: any = "PbPage";
-  private static _PC_PAGE: any = "PcPage";
-  private static _PD_PAGE: any = "PdPage";
+  //private static _PC_PAGE: any = "PcPage";
+  //private static _PD_PAGE: any = "PdPage";
   private static _PE_PAGE: any = "PePage";
   private static _PF_PAGE: any = "PfPage";
   private static _PG_PAGE: any = "PgPage";
@@ -57,12 +66,12 @@ export class PageConfig {
     this._AZ_PAGE = value;
   }
 
-  static get AA_PAGE(): any {
-    return this._AA_PAGE;
+  static get SS_PAGE(): any {
+    return this._SS_PAGE;
   }
 
-  static set AA_PAGE(value: any) {
-    this._AA_PAGE = value;
+  static set SS_PAGE(value: any) {
+    this._SS_PAGE = value;
   }
 
   static get AB_PAGE(): any {
@@ -81,12 +90,12 @@ export class PageConfig {
     this._AC_PAGE = value;
   }
 
-  static get AD_PAGE(): any {
-    return this._AD_PAGE;
+  static get HL_PAGE(): any {
+    return this._HL_PAGE;
   }
 
-  static set AD_PAGE(value: any) {
-    this._AD_PAGE = value;
+  static set HL_PAGE(value: any) {
+    this._HL_PAGE = value;
   }
 
   static get HA_PAGE(): any {
@@ -129,12 +138,12 @@ export class PageConfig {
     this._TDL_PAGE = value;
   }
 
-  static get HZ_PAGE(): any {
-    return this._HZ_PAGE;
+  static get M_PAGE(): any {
+    return this._M_PAGE;
   }
 
-  static set HZ_PAGE(value: any) {
-    this._HZ_PAGE = value;
+  static set M_PAGE(value: any) {
+    this._M_PAGE = value;
   }
 
   static get TDDI_PAGE(): any {
@@ -169,20 +178,20 @@ export class PageConfig {
     this._SD_PAGE = value;
   }
 
-  static get SW_PAGE(): any {
-    return this._SW_PAGE;
+  static get PD_PAGE(): any {
+    return this._PD_PAGE;
   }
 
-  static set SW_PAGE(value: any) {
-    this._SW_PAGE = value;
+  static set PD_PAGE(value: any) {
+    this._PD_PAGE = value;
   }
 
-  static get SX_PAGE(): any {
-    return this._SX_PAGE;
+  static get PL_PAGE(): any {
+    return this._PL_PAGE;
   }
 
-  static set SX_PAGE(value: any) {
-    this._SX_PAGE = value;
+  static set PL_PAGE(value: any) {
+    this._PL_PAGE = value;
   }
 
   static get SY_PAGE(): any {
@@ -193,20 +202,20 @@ export class PageConfig {
     this._SY_PAGE = value;
   }
 
-  static get SZ_PAGE(): any {
-    return this._SZ_PAGE;
+  static get PC_PAGE(): any {
+    return this._PC_PAGE;
   }
 
-  static set SZ_PAGE(value: any) {
-    this._SZ_PAGE = value;
+  static set PC_PAGE(value: any) {
+    this._PC_PAGE = value;
   }
 
-  static get PA_PAGE(): any {
-    return this._PA_PAGE;
+  static get GL_PAGE(): any {
+    return this._GL_PAGE;
   }
 
-  static set PA_PAGE(value: any) {
-    this._PA_PAGE = value;
+  static set GL_PAGE(value: any) {
+    this._GL_PAGE = value;
   }
 
   static get PB_PAGE(): any {
@@ -217,7 +226,7 @@ export class PageConfig {
     this._PB_PAGE = value;
   }
 
-  static get PC_PAGE(): any {
+  /*static get PC_PAGE(): any {
     return this._PC_PAGE;
   }
 
@@ -231,14 +240,14 @@ export class PageConfig {
 
   static set PD_PAGE(value: any) {
     this._PD_PAGE = value;
+  }*/
+
+  static get GC_PAGE(): any {
+    return this._GC_PAGE;
   }
 
-  static get PE_PAGE(): any {
-    return this._PE_PAGE;
-  }
-
-  static set PE_PAGE(value: any) {
-    this._PE_PAGE = value;
+  static set GC_PAGE(value: any) {
+    this._GC_PAGE = value;
   }
 
   static get PF_PAGE(): any {
@@ -265,20 +274,20 @@ export class PageConfig {
     this._UA_PAGE = value;
   }
 
-  static get LS_PAGE(): any {
-    return this._LS_PAGE;
+  static get LP_PAGE(): any {
+    return this._LP_PAGE;
   }
 
-  static set LS_PAGE(value: any) {
-    this._LS_PAGE = value;
+  static set LP_PAGE(value: any) {
+    this._LP_PAGE = value;
   }
 
-  static get UC_PAGE(): any {
-    return this._UC_PAGE;
+  static get PS_PAGE(): any {
+    return this._PS_PAGE;
   }
 
-  static set UC_PAGE(value: any) {
-    this._UC_PAGE = value;
+  static set PS_PAGE(value: any) {
+    this._PS_PAGE = value;
   }
 
   static set AL_PAGE(value: any) {

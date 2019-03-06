@@ -1,0 +1,114 @@
+// http://ionicframework.com/docs/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+*{font-family:PingFang-SC-Regular,PingFang-SC,"微软雅黑",Georgia}
+
+.ios .ion-page.show-page ~ .nav-decor{
+  background: transparent;
+}
+
+page-home{
+  background: -webkit-linear-gradient(left,color($background-color-content,first,start), color($background-color-content,first,end)); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(right,color($background-color-content,first,start), color($background-color-content,first,end)); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(right, color($background-color-content,first,start), color($background-color-content,first,end)); /* Firefox 3.6 - 15 */
+  background: linear-gradient(to right,color($background-color-content,first,start), color($background-color-content,first,end)); /* 标准的语法（必须放在最后） */
+  .content-ios{
+     background-color:transparent;
+  }
+}
+
+ion-header img{
+  width: 20px;
+}
+
+ion-item{
+  height: 80px;
+}
+ion-header{
+  font-size: 20px !important;
+}
+
+ion-header ion-toolbar{
+  height: 60px;
+}
+
+
+ion-header ion-navbar{
+  height: 60px;
+}
+
+ion-header ion-segment{
+  height: 60px;
+}
+
+ion-header ion-title{
+  height: 60px;
+}
+.page-backgroud-color{
+  background-color: #f5f5f5;
+}
+
+p{
+  padding: 1px;
+}
+.scroll-content{
+  overflow-x: hidden;
+  overflow-y: hidden;
+  contain: none;
+}
+
+.toolbar-background-ios{
+  background: #FFFFFF;
+}
+
+.header-ios .toolbar-ios:last-child .toolbar-background-ios {
+  border-width: 0 0 0;
+}
+
+.list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block{
+  border-bottom: none;
+}
+
+//防止input框获取焦点抖动
+.input-cover{
+  position: static;
+}
+
+.back-button.show-back-button {
+  padding-left: 10px;
+}
+
+.alert-ios .alert-button{
+  border-top: 1px solid #dbdbdf;
+  border-right: 1px solid #dbdbdf;
+}
+
+.alert-ios .alert-radio-group, .alert-ios .alert-checkbox-group{
+  border-top: 1px solid #dbdbdf;
+}
+//时间选择
+.picker-ios .picker-toolbar{
+  border-top: 1px solid #dbdbdf;
+}
+
+
+.no-border{
+  border: none !important;
+}
+
+.platform-ios{ .enwrap {  padding-top: 118px;   } }
+
+.platform-ios11{ .enwrap {  padding-top: 98px;   } }

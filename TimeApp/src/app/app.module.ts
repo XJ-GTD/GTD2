@@ -71,6 +71,8 @@ import { ElModule } from 'element-angular'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterModule } from '@angular/router'
 
+import {RestFulConfig} from "../service/restful/restful.config";
+
 @NgModule({
   declarations: [
     MyApp,
@@ -128,6 +130,7 @@ import { RouterModule } from '@angular/router'
     ZtdSqlite,
     SyncSqlite,
     RcbSqlite,
+    RestFulConfig,
     AuRestful,
     BsRestful,
     DxRestful,

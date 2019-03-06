@@ -1,0 +1,29 @@
+page-pl {
+
+  .scroll-content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .item-inner{
+    border-bottom: 0 !important;
+  }
+
+  .item-block.item-ios{
+    border-bottom: 1px solid #e5e5e5 ;
+  }
+
+  p{
+    color: #000 !important;
+  }
+  //.item-block.item-ios:nth-of-type(1){
+  //  border-bottom: 0px !important;
+  //  box-shadow: none !important;
+  //}
+
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+}
