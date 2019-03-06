@@ -1,0 +1,62 @@
+page-hz {
+
+  .img_size{
+    width: 80px !important;
+    height:80px !important;
+
+  }
+
+  .icon_size{
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+
+  .item-inner{
+    border-bottom: 0px !important;
+  }
+
+  .item-block.item-ios{
+    border-bottom: 1px solid #e5e5e5 ;
+  }
+
+  ion-list > ion-item:first-child{
+    //border-top-color: #e5e5e5 !important;
+    border-top:none !important;
+  }
+
+  ion-list ion-label{
+    color: #222222;
+  }
+
+  #tag1{
+    border: 0px;
+  }
+
+  .sign_button{
+    border-radius: 25px;
+    letter-spacing:5px;
+    background: -webkit-linear-gradient(left, rgb(149,58,139),rgb(86,82,222)); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, rgb(149,58,139),rgb(86,82,222)); /* 标准的语法（必须放在最后） */
+  }
+
+  ion-item{
+    height: 76px;
+  }
+
+  .headDiv{
+    height: 165px;
+  }
+
+  .centerCss{
+    margin: 0 auto;
+
+  }
+
+  .fontcol{
+    color: #666666;
+  }
+
+}
