@@ -833,6 +833,90 @@ paths:
                 type: string
               data:
                 type: object
+  /aup/user/{unionid}:
+    get:
+      tags:
+      - account service
+      summary: "取得帐户信息"
+      description: ""
+      produces: 
+        - application/json
+      parameters: 
+        - name: unionid
+          in: path
+          type: string
+          description: 帐户唯一ID
+          required: true
+      responses:
+        '200':
+          description: 帐户信息取得成功
+          schema:
+            type: object
+            properties:
+              errcode:
+                type: integer
+              errmsg:
+                type: string
+              data:
+                type: object
+    put:
+      tags:
+      - account service
+      summary: "更新用户信息(包括密码)"
+      description: ""
+      produces: 
+        - application/json
+      parameters: 
+        - name: unionid
+          in: path
+          type: string
+          description: 帐户唯一ID
+          required: true
+        - name: body
+          in: body
+          description: 帐户信息更新请求数据
+          required: true
+          schema:
+            type: object
+            properties:
+              nickname:
+                type: string
+                description: 姓名
+              password:
+                type: string
+                description: 密码
+              sex:
+                type: string
+                enum: ['0', '1', '2']
+                description: 性别 0 未知, 1 男性, 2 女性
+              avatar:
+                type: string
+                description: 头像
+              birthday:
+                type: string
+                format: date
+                description: 出生日期
+              province:
+                type: string
+                description: 省市/地区
+              city:
+                type: string
+                description: 城市
+              country:
+                type: string
+                description: 国家
+      responses:
+        '200':
+          description: 帐户信息更新成功
+          schema:
+            type: object
+            properties:
+              errcode:
+                type: integer
+              errmsg:
+                type: string
+              data:
+                type: object
   /aup/api/access_token:
     get:
       tags:
