@@ -1,0 +1,13 @@
+{
+  "debug": true,
+  "mongo.host": "mongodb",
+  "mongo.port": 27017,
+  "mongo.keepalive": true,
+  "apps.default.appid": "www.guobaa.com",
+  "apps.default.secret": "secret@www.guobaa.com",
+  "apps.default.site": "www.guobaa.com",
+  "sms.service.port": 8080,
+  "sms.service.host": "sa-sms",
+  "sms.service.starter.singlesend": "/sms/send",
+  "sms.expiretime": 60
+}
