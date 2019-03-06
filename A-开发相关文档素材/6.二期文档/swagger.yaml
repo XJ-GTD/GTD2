@@ -20,6 +20,8 @@ tags:
     description: 客户端数据备份与恢复
   - name: inteligence service
     description: 智能服务
+  - name: account service
+    description: 帐户服务
 schemes:
   - https
   - http
@@ -702,6 +704,330 @@ paths:
       responses:
         '200':
           description: 语音服务请求成功
+          schema:
+            type: object
+            properties:
+              rc:
+                type: integer
+              rm:
+                type: string
+              d:
+                type: object
+  /aup/dologin:
+    post:
+      tags:
+      - account service
+      summary: "帐户登录"
+      description: ""
+      consumes:
+        - application/json
+      produces: 
+        - application/json
+      parameters: 
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: false
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
+        - name: ai
+          in: header
+          type: string
+          description: 帐户ID
+          required: false
+        - name: body
+          in: body
+          description: 帐户登录请求数据
+          required: true
+          schema:
+            type: object
+            properties:
+              c:
+                type: object
+                description: 上下文
+              d:
+                type: object
+                properties:
+                  text:
+                    type: string
+                    description: 文本文字
+      responses:
+        '200':
+          description: 帐户登录请求成功
+          schema:
+            type: object
+            properties:
+              rc:
+                type: integer
+              rm:
+                type: string
+              d:
+                type: object
+  /aup/doregister:
+    post:
+      tags:
+      - account service
+      summary: "帐户注册"
+      description: ""
+      consumes:
+        - application/json
+      produces: 
+        - application/json
+      parameters: 
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: false
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
+        - name: ai
+          in: header
+          type: string
+          description: 帐户ID
+          required: false
+        - name: body
+          in: body
+          description: 帐户注册请求数据
+          required: true
+          schema:
+            type: object
+            properties:
+              c:
+                type: object
+                description: 上下文
+              d:
+                type: object
+                properties:
+                  text:
+                    type: string
+                    description: 文本文字
+      responses:
+        '200':
+          description: 帐户注册成功
+          schema:
+            type: object
+            properties:
+              rc:
+                type: integer
+              rm:
+                type: string
+              d:
+                type: object
+  /aup/verifycode:
+    post:
+      tags:
+      - account service
+      summary: "发送短信验证码"
+      description: ""
+      consumes:
+        - application/json
+      produces: 
+        - application/json
+      parameters: 
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: false
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
+        - name: ai
+          in: header
+          type: string
+          description: 帐户ID
+          required: false
+        - name: body
+          in: body
+          description: 短信验证码发送请求数据
+          required: true
+          schema:
+            type: object
+            properties:
+              c:
+                type: object
+                description: 上下文
+              d:
+                type: object
+                properties:
+                  text:
+                    type: string
+                    description: 文本文字
+      responses:
+        '200':
+          description: 短信验证码发送请求成功
+          schema:
+            type: object
+            properties:
+              rc:
+                type: integer
+              rm:
+                type: string
+              d:
+                type: object
+  /aup/api/access_token:
+    post:
+      tags:
+      - account service
+      summary: "登录令牌获取"
+      description: ""
+      consumes:
+        - application/json
+      produces: 
+        - application/json
+      parameters: 
+        - name: body
+          in: body
+          description: 获取登录令牌请求数据
+          required: true
+          schema:
+            type: object
+            properties:
+              c:
+                type: object
+                description: 上下文
+              d:
+                type: object
+                properties:
+                  text:
+                    type: string
+                    description: 文本文字
+      responses:
+        '200':
+          description: 登录令牌获取成功
+          schema:
+            type: object
+            properties:
+              rc:
+                type: integer
+              rm:
+                type: string
+              d:
+                type: object
+  /aup/api/refresh_token:
+    post:
+      tags:
+      - account service
+      summary: "刷新登录令牌"
+      description: ""
+      consumes:
+        - application/json
+      produces: 
+        - application/json
+      parameters: 
+        - name: body
+          in: body
+          description: 刷新登录令牌请求数据
+          required: true
+          schema:
+            type: object
+            properties:
+              c:
+                type: object
+                description: 上下文
+              d:
+                type: object
+                properties:
+                  text:
+                    type: string
+                    description: 文本文字
+      responses:
+        '200':
+          description: 登录令牌刷新成功
+          schema:
+            type: object
+            properties:
+              rc:
+                type: integer
+              rm:
+                type: string
+              d:
+                type: object
+  /aup/api/userinfo:
+    post:
+      tags:
+      - account service
+      summary: "获取帐户信息"
+      description: ""
+      consumes:
+        - application/json
+      produces: 
+        - application/json
+      parameters: 
+        - name: body
+          in: body
+          description: 获取帐户信息请求数据
+          required: true
+          schema:
+            type: object
+            properties:
+              c:
+                type: object
+                description: 上下文
+              d:
+                type: object
+                properties:
+                  text:
+                    type: string
+                    description: 文本文字
+      responses:
+        '200':
+          description: 帐户信息获取成功
           schema:
             type: object
             properties:
