@@ -9,8 +9,8 @@ export class PageConfig {
   private static _TDC_PAGE: any = "TdcPage";      // 日程 - 日程详情新建
   private static _TDDI_PAGE: any = "TddiPage";     // 日程 - 日程详情（受邀）
   private static _TDDJ_PAGE: any = "TddjPage";     // 日程 - 日程详情
-  //private static _M_PAGE: any = "MPage";        // 辅助功能 - 菜单
-  //private static _R_PAGE: any = "RPage";        // 登陆注册 - 注册
+  private static _M_PAGE: any = "MPage";        // 辅助功能 - 菜单
+  private static _R_PAGE: any = "RPage";        // 登陆注册 - 注册
   private static _LP_PAGE: any = "LpPage";       // 登陆注册 - 登陆（密码）
   private static _LS_PAGE: any = "LsPage";       // 登陆注册 - 登录（验证码）
   private static _PP_PAGE: any = "PPage";        // 登陆注册 - 条款

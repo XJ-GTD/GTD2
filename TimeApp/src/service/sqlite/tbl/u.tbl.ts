@@ -17,7 +17,7 @@ export class UTbl extends BaseTbl implements ITbl{
 
     let sq ='CREATE TABLE IF NOT EXISTS GTD_U( uI varchar(50) PRIMARY KEY ,aI varchar(50)  ,' +
       'uN varchar(10)  ,hIU varchar(200)  ,biy varchar(10)  ,rn varchar(10)  ,iC varchar(20)  ,' +
-      'uS int  ,uCt varchar(11);';
+      'uS varchar(4)  ,uCt varchar(11));';
 
     return this._execT(sq);
   }
@@ -40,7 +40,7 @@ export class UTbl extends BaseTbl implements ITbl{
       sq = sq + ', iC="' + pro.iC +'"';
     }
     if(pro.uS != null){
-      sq = sq + ', uS=' + pro.uS ;
+      sq = sq + ', uS="' + pro.uS +'"';
     }
     if(pro.uCt != null){
       sq = sq + ', uCt="' + pro.uCt +'"';
@@ -55,12 +55,12 @@ export class UTbl extends BaseTbl implements ITbl{
   }
 
   sloT(pro:BPro):Promise<any> {
-    let sq='select * GTD_U where uI = "'+ pro.uI +'"';
+    let sq='select * from GTD_U where uI = "'+ pro.uI +'"';
     return this._execT(sq);
   }
 
   slT(pro:BPro):Promise<any> {
-    let sq='select *  GTD_U where  1=1 ';
+    let sq='select * from  GTD_U where  1=1 ';
     if(pro.hIU!=null){
       sq=sq+' and hIU="' + pro.hIU +'"';
     }
@@ -74,7 +74,7 @@ export class UTbl extends BaseTbl implements ITbl{
       sq = sq + ' and iC="' + pro.iC +'"';
     }
     if(pro.uS != null){
-      sq = sq + ' and uS=' + pro.uS ;
+      sq = sq + ', uS="' + pro.uS +'"';
     }
     if(pro.uCt != null){
       sq = sq + ' and uCt="' + pro.uCt +'"';
@@ -92,14 +92,14 @@ export class UTbl extends BaseTbl implements ITbl{
   inT(pro:BPro):Promise<any> {
     let sq ='insert into GTD_U ' +
       '( uI ,aI ,uN ,hIU ,biy ,rn ,iC ,uS ,uCt) values("'+ pro.uI+'","'+ pro.aI+'","'+pro.uN+ '"' +
-      ',"'+pro.hIU+ '","'+pro.biy+ '","'+pro.rn+ '","'+pro.iC+ '",'+ pro.uS + ',"'+pro.uCt+ '")';
+      ',"'+pro.hIU+ '","'+pro.biy+ '","'+pro.rn+ '","'+pro.iC+ '","'+ pro.uS + '","'+pro.uCt+ '")';
     return this._execT(sq);
   }
 
   rpT(pro:BPro):Promise<any> {
     let sq ='replace into GTD_U ' +
       '( uI ,aI ,uN ,hIU ,biy ,rn ,iC ,uS ,uCt) values("'+ pro.uI+'","'+ pro.aI+'","'+pro.uN+ '"' +
-      ',"'+pro.hIU+ '","'+pro.biy+ '","'+pro.rn+ '","'+pro.iC+ '",'+ pro.uS + ',"'+pro.uCt+ '")';
+      ',"'+pro.hIU+ '","'+pro.biy+ '","'+pro.rn+ '","'+pro.iC+ '","'+ pro.uS + '","'+pro.uCt+ '")';
 
     return this._execT(sq);
   }
