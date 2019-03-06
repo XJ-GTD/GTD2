@@ -1,9 +1,11 @@
-import {HaPage} from "../pages/ha/ha";
+import {HPage} from "../pages/h/h";
 
 /**
  * 页面迁移用
  */
 export class PageConfig {
+
+  private static _H_PAGE: any = "HPage";         // 首页 - 首页
 
   private static _TDL_PAGE: any = "TdlPage";        // 日程 - 日程列表
   private static _TDC_PAGE: any = "TdcPage";        // 日程 - 日程详情新建
@@ -98,12 +100,12 @@ export class PageConfig {
     this._HL_PAGE = value;
   }
 
-  static get HA_PAGE(): any {
-    return this._HA_PAGE;
+  static get H_PAGE(): any {
+    return this._H_PAGE;
   }
 
-  static set HA_PAGE(value: any) {
-    this._HA_PAGE = value;
+  static set H_PAGE(value: any) {
+    this._H_PAGE = value;
   }
 
   static get HB_PAGE(): any {

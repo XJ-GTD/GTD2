@@ -13,7 +13,7 @@ import {XiaojiFeedbackService} from "../../service/util-service/xiaoji-feedback.
 import {RcModel} from "../../model/rc.model";
 
 /**
- * Generated class for the HaPage page.
+ * Generated class for the HPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -21,7 +21,7 @@ import {RcModel} from "../../model/rc.model";
 
 @IonicPage()
 @Component({
-  selector: 'page-ha',
+  selector: 'page-h',
   template:`<ion-header no-border>
     <ion-toolbar color="none">
       <ion-buttons left no-margin padding-left>
@@ -54,7 +54,7 @@ import {RcModel} from "../../model/rc.model";
   </ion-content>`,
   providers: []
 })
-export class HaPage {
+export class HPage {
   @ViewChild(CalendarComponent) ion2calendar: CalendarComponent;
   @ViewChild(TdlPage) tdlPage: TdlPage;
 

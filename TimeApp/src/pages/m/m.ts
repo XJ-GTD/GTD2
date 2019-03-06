@@ -52,13 +52,13 @@ import {DataConfig} from "../../app/data.config";
   '    <ion-item  (click)="userSet()">设置</ion-item>' +
   '  </ion-footer>' +
   '</ion-menu>' +
-  '<ion-nav #ha [root]="haPage"></ion-nav>',
+  '<ion-nav #ha [root]="hPage"></ion-nav>',
 
 })
 export class MPage {
   @ViewChild('myTabs') tabRef: Tabs;
 
-  haPage: any = PageConfig.HA_PAGE;
+  hPage: any = PageConfig.H_PAGE;
   // uo: UModel;
   uo:UEntity;
   imgurl:any;
