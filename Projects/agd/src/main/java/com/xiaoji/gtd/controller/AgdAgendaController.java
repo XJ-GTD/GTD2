@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,12 +42,12 @@ public class AgdAgendaController {
     	if(!"".equals(relId) && relId != null){
     		blacklist.setFc(relId);
     		AgdAgenda xj = agendaService.save(blacklist);
-    		out.setData(xj);
-    		out.setCode(ReturnMessage.SUCCESS_CODE);
-    		out.setMessage(ReturnMessage.SUCCESS_MSG);
+    		out.setD(xj);
+    		out.setRc(ReturnMessage.SUCCESS_CODE);
+    		out.setRm(ReturnMessage.SUCCESS_MSG);
     	}else{
-    		out.setCode(ReturnMessage.ERROR_CODE);
-    		out.setMessage(ReturnMessage.ERROR_MSG);
+    		out.setRc(ReturnMessage.ERROR_CODE);
+    		out.setRm(ReturnMessage.ERROR_MSG);
     	}
 
         return out;
@@ -64,12 +65,12 @@ public class AgdAgendaController {
     	String relId = request.getHeader("ai");
     	if(!"".equals(relId) && relId != null){
     		blacklist.setFc(relId);
-    		contanctService.save(blacklist);
-    		out.setCode(ReturnMessage.SUCCESS_CODE);
-    		out.setMessage(ReturnMessage.SUCCESS_MSG);
+    		agendaService.findById(blacklist.getAi());
+    		out.setRc(ReturnMessage.SUCCESS_CODE);
+    		out.setRm(ReturnMessage.SUCCESS_MSG);
     	}else{
-    		out.setCode(ReturnMessage.ERROR_CODE);
-    		out.setMessage(ReturnMessage.ERROR_MSG);
+    		out.setRc(ReturnMessage.ERROR_CODE);
+    		out.setRm(ReturnMessage.ERROR_MSG);
     	}
         return out;
     }
@@ -88,11 +89,11 @@ public class AgdAgendaController {
     	if(!"".equals(relId) && relId != null){
     		blacklist.setFc(relId);
     		agendaService.deleteById(blacklist);
-    		out.setCode(ReturnMessage.SUCCESS_CODE);
-    		out.setMessage(ReturnMessage.SUCCESS_MSG);
+    		out.setRc(ReturnMessage.SUCCESS_CODE);
+    		out.setRm(ReturnMessage.SUCCESS_MSG);
     	}else{
-    		out.setCode(ReturnMessage.ERROR_CODE);
-    		out.setMessage(ReturnMessage.ERROR_MSG);
+    		out.setRc(ReturnMessage.ERROR_CODE);
+    		out.setRm(ReturnMessage.ERROR_MSG);
     	}
         return out;
     }
@@ -111,11 +112,11 @@ public class AgdAgendaController {
     	if(!"".equals(relId) && relId != null){
     		blacklist.setFc(relId);
     		contanctService.save(blacklist);
-    		out.setCode(ReturnMessage.SUCCESS_CODE);
-    		out.setMessage(ReturnMessage.SUCCESS_MSG);
+    		out.setRc(ReturnMessage.SUCCESS_CODE);
+    		out.setRm(ReturnMessage.SUCCESS_MSG);
     	}else{
-    		out.setCode(ReturnMessage.ERROR_CODE);
-    		out.setMessage(ReturnMessage.ERROR_MSG);
+    		out.setRc(ReturnMessage.ERROR_CODE);
+    		out.setRm(ReturnMessage.ERROR_MSG);
     	}
         return out;
     }

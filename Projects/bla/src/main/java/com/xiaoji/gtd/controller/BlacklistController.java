@@ -41,12 +41,12 @@ public class BlacklistController {
     	if(!"".equals(relId) && relId != null){
     		blacklist.setRelId(relId);
     		boolean xj = blackService.add(blacklist);
-    		out.setData(xj);
-    		out.setCode(ReturnMessage.SUCCESS_CODE);
-    		out.setMessage(ReturnMessage.SUCCESS_MSG);
+    		out.setD(xj);
+    		out.setRc(ReturnMessage.SUCCESS_CODE);
+    		out.setRm(ReturnMessage.SUCCESS_MSG);
     	}else{
-    		out.setCode(ReturnMessage.ERROR_CODE);
-    		out.setMessage(ReturnMessage.ERROR_MSG);
+    		out.setRc(ReturnMessage.ERROR_CODE);
+    		out.setRm(ReturnMessage.ERROR_MSG);
     	}
 
         return out;
@@ -65,11 +65,11 @@ public class BlacklistController {
     	if(!"".equals(relId) && relId != null){
     		blacklist.setRelId(relId);
     		blackService.delete(blacklist);
-    		out.setCode(ReturnMessage.SUCCESS_CODE);
-    		out.setMessage(ReturnMessage.SUCCESS_MSG);
+    		out.setRc(ReturnMessage.SUCCESS_CODE);
+    		out.setRm(ReturnMessage.SUCCESS_MSG);
     	}else{
-    		out.setCode(ReturnMessage.ERROR_CODE);
-    		out.setMessage(ReturnMessage.ERROR_MSG);
+    		out.setRc(ReturnMessage.ERROR_CODE);
+    		out.setRm(ReturnMessage.ERROR_MSG);
     	}
         return out;
     }
@@ -88,12 +88,12 @@ public class BlacklistController {
     	if(!"".equals(relId) && relId != null){
     		blacklist.setRelId(relId);
     		List<BlaBlacklist> xjList = blackService.findAll();
-    		out.setData(xjList);
-    		out.setCode(ReturnMessage.SUCCESS_CODE);
-    		out.setMessage(ReturnMessage.SUCCESS_MSG);
+    		out.setD(xjList);
+    		out.setRc(ReturnMessage.SUCCESS_CODE);
+    		out.setRm(ReturnMessage.SUCCESS_MSG);
     	}else{
-    		out.setCode(ReturnMessage.ERROR_CODE);
-    		out.setMessage(ReturnMessage.ERROR_MSG);
+    		out.setRc(ReturnMessage.ERROR_CODE);
+    		out.setRm(ReturnMessage.ERROR_MSG);
     	}
         return out;
     }
