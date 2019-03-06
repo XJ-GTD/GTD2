@@ -121,14 +121,21 @@ public class MainVerticle extends AbstractVerticle {
 		
 		List<Future> futures = new ArrayList<Future>();
 		
-		for (String tablename : req.fieldNames()) {
-			Object tablevalues = req.getValue(tablename);
-			
+		for (String tablename : data.fieldNames()) {
+			Object tablevalues = data.getValue(tablename);
+			System.out.println(tablevalues.getClass().getName());
 			if (tablevalues instanceof JsonArray) {
 				Future future = Future.future();
 				
 				futures.add(future);
 				backuptable(future, accountid, tablename, backuptimestamp, (JsonArray) tablevalues);
+			}
+
+			if (tablevalues instanceof List) {
+				Future future = Future.future();
+				
+				futures.add(future);
+				backuptable(future, accountid, tablename, backuptimestamp, new JsonArray((List) tablevalues));
 			}
 		}
 		

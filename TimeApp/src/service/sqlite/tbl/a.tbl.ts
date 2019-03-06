@@ -46,12 +46,12 @@ export class ATbl extends BaseTbl implements ITbl{
   }
 
   sloT(pro:APro):Promise<any> {
-    let sq='select * GTD_A where aI = "'+ pro.aI +'"';
+    let sq='select * from GTD_A where aI = "'+ pro.aI +'"';
     return this._execT(sq);
   }
 
   slT(pro:APro):Promise<any> {
-    let sq='select *  GTD_A where  1=1 ';
+    let sq='select * from  GTD_A where  1=1 ';
     if(pro.aI != null){
       sq = sq + ' and aI="' + pro.aI +'"';
     }
