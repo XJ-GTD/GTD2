@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { BlPage } from './bl';
+import {BlService} from "../bl/bl.service";
 
 @NgModule({
   declarations: [
@@ -8,6 +9,9 @@ import { BlPage } from './bl';
   ],
   imports: [
     IonicPageModule.forChild(BlPage),
+  ],
+  providers: [
+    BlService,
   ],
 })
 export class BlPageModule {}

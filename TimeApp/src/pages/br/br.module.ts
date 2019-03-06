@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { BrPage } from './br';
+import {BrService} from "./br.service";
 
 @NgModule({
   declarations: [
@@ -8,6 +9,9 @@ import { BrPage } from './br';
   ],
   imports: [
     IonicPageModule.forChild(BrPage),
+  ],
+  providers: [
+    BrService,
   ],
 })
 export class BrPageModule {}

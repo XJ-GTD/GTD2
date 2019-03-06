@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TddiPage } from './tddi';
+import {TddiService} from "./tddi.service";
 
 @NgModule({
   declarations: [
@@ -11,6 +12,9 @@ import { TddiPage } from './tddi';
   ],
   entryComponents: [
     TddiPage,
-  ]
+  ],
+  providers: [
+    TddiService,
+  ],
 })
 export class TddiPageModule {}

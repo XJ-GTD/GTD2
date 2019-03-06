@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { PsPage } from './ps';
+import {PsService} from "./ps.service";
 
 @NgModule({
   declarations: [
@@ -9,5 +10,8 @@ import { PsPage } from './ps';
   imports: [
     IonicPageModule.forChild(PsPage),
   ],
+  providers: [
+    PsService,
+  ],
 })
-export class UcPageModule {}
+export class PsPageModule {}

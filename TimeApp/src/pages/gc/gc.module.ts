@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { GcPage } from './gc';
+import {GcService} from "./gc.service";
 
 @NgModule({
   declarations: [
@@ -8,6 +9,9 @@ import { GcPage } from './gc';
   ],
   imports: [
     IonicPageModule.forChild(GcPage),
+  ],
+  providers: [
+    GcService,
   ],
 })
 export class GcPageModule {}

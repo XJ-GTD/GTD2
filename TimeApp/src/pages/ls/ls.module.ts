@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { LsPage } from './ls';
+import {LsService} from "./ls.service";
 
 @NgModule({
   declarations: [
@@ -8,6 +9,9 @@ import { LsPage } from './ls';
   ],
   imports: [
     IonicPageModule.forChild(LsPage),
+  ],
+  providers: [
+    LsService,
   ],
 })
 export class LsPageModule {}
