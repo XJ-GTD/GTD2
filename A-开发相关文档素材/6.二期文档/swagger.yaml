@@ -1,623 +1,758 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  description: "效吉软件日历产品Client-Server接口交互定义."
-  version: "1.0.0"
-  title: "Swagger 效吉日历"
-  termsOfService: "https://pluto.guobaa.com/terms/"
+  description: 效吉软件日历产品Client-Server接口交互定义.
+  version: 1.0.0
+  title: Swagger 效吉日历
+  termsOfService: 'https://pluto.guobaa.com/terms/'
   contact:
-    email: "apiteam@guobaa.com"
+    email: apiteam@guobaa.com
   license:
-    name: "效吉软件版权所有"
-    url: "http://pluto.guobaa.com/LICENSE-1.0.html"
-host: "www.guobaa.com"
-basePath: "/"
+    name: 效吉软件版权所有
+    url: 'http://pluto.guobaa.com/LICENSE-1.0.html'
+host: www.guobaa.com
+basePath: /
 tags:
-- name: "share"
-  description: "日程与计划分享, 内建计划下载"
-- name: "initial"
-  description: "产品初始化参数"
-- name: "backup"
-  description: "客户端数据备份与恢复"
+  - name: share
+    description: '日程与计划分享, 内建计划下载'
+  - name: initial
+    description: 产品初始化参数
+  - name: backup
+    description: 客户端数据备份与恢复
+  - name: inteligence service
+    description: 智能服务
 schemes:
-- "https"
-- "http"
+  - https
+  - http
 paths:
   /ini/parameters:
     get:
       tags:
-      - "initial"
-      summary: "获取产品初始化参数"
-      description: ""
+        - initial
+      summary: 获取产品初始化参数
+      description: ''
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: "lt"
-        in: "header"
-        type: "string"
-        description: "登录令牌"
-        required: false
-      - name: "pi"
-        in: "header"
-        type: "string"
-        description: "产品ID"
-        required: true
-      - name: "pv"
-        in: "header"
-        type: "string"
-        description: "产品版本"
-        required: true
-      - name: "di"
-        in: "header"
-        type: "string"
-        description: "设备ID"
-        required: true
-      - name: "dt"
-        in: "header"
-        type: "string"
-        description: "设备类型"
-        required: true
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: false
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
       responses:
-        200:
-          description: "获取初始化参数成功"
+        '200':
+          description: 获取初始化参数成功
           schema:
-            type: "object"
+            type: object
             properties:
               rc:
-                type: "integer"
+                type: integer
               rm:
-                type: "string"
+                type: string
               d:
-                type: "object"
+                type: object
                 properties:
                   apil:
-                    type: "array"
+                    type: array
                     items:
-                      type: "object"
+                      type: object
                   bipl:
-                    type: "array"
+                    type: array
                     items:
-                      type: "object"
+                      type: object
                   vrs:
-                    type: "array"
+                    type: array
                     items:
-                      type: "object"
+                      type: object
   /sha/agendashare:
     post:
       tags:
-      - "share"
-      summary: "分享日程"
-      description: ""
+        - share
+      summary: 分享日程
+      description: ''
       consumes:
-      - "application/json"
+        - application/json
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: "lt"
-        in: "header"
-        type: "string"
-        description: "登录令牌"
-        required: false
-      - name: "pi"
-        in: "header"
-        type: "string"
-        description: "产品ID"
-        required: true
-      - name: "pv"
-        in: "header"
-        type: "string"
-        description: "产品版本"
-        required: true
-      - name: "ai"
-        in: "header"
-        type: "string"
-        description: "帐户ID"
-        required: true
-      - name: "di"
-        in: "header"
-        type: "string"
-        description: "设备ID"
-        required: true
-      - name: "dt"
-        in: "header"
-        type: "string"
-        description: "设备类型"
-        required: true
-      - name: "body"
-        in: "body"
-        description: "当前分享日程对象"
-        required: true
-        schema:
-          type: "object"
-          properties:
-            oai:
-              type: "string"
-              description: "操作帐户ID"
-            ompn:
-              type: "string"
-              description: "操作手机号码"
-            c:
-              type: "object"
-              description: "上下文"
-            d:
-              type: "object"
-              properties:
-                a:
-                  type: "object"
-                  $ref: "#/definitions/Agenda"
-      responses:
-        200:
-          description: "日程分享成功"
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: false
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: ai
+          in: header
+          type: string
+          description: 帐户ID
+          required: true
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
+        - name: body
+          in: body
+          description: 当前分享日程对象
+          required: true
           schema:
-            type: "object"
+            type: object
+            properties:
+              oai:
+                type: string
+                description: 操作帐户ID
+              ompn:
+                type: string
+                description: 操作手机号码
+              c:
+                type: object
+                description: 上下文
+              d:
+                type: object
+                properties:
+                  a:
+                    type: object
+                    $ref: '#/definitions/Agenda'
+      responses:
+        '200':
+          description: 日程分享成功
+          schema:
+            type: object
             properties:
               rc:
-                type: "integer"
+                type: integer
               rm:
-                type: "string"
+                type: string
               d:
-                type: "object"
+                type: object
                 properties:
                   asurl:
-                    type: "string"
-        405:
-          description: "Invalid input"
-  /sha/agenda/share/{shareid}:
+                    type: string
+        '405':
+          description: Invalid input
+  '/sha/agenda/share/{shareid}':
     get:
       tags:
-      - "share"
-      summary: "分享日程浏览"
-      description: ""
+        - share
+      summary: 分享日程浏览
+      description: ''
       produces:
-      - "text/html"
+        - text/html
       parameters:
-      - name: "shareid"
-        in: "path"
-        description: "共享ID"
-        required: true
-        type: "string"
+        - name: shareid
+          in: path
+          description: 共享ID
+          required: true
+          type: string
       responses:
-        200:
-          description: "显示分享日程"
+        '200':
+          description: 显示分享日程
   /sha/planshare:
     post:
       tags:
-      - "share"
-      summary: "分享计划"
-      description: ""
+        - share
+      summary: 分享计划
+      description: ''
       consumes:
-      - "application/json"
+        - application/json
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: "lt"
-        in: "header"
-        type: "string"
-        description: "登录令牌"
-        required: false
-      - name: "pi"
-        in: "header"
-        type: "string"
-        description: "产品ID"
-        required: true
-      - name: "pv"
-        in: "header"
-        type: "string"
-        description: "产品版本"
-        required: true
-      - name: "ai"
-        in: "header"
-        type: "string"
-        description: "帐户ID"
-        required: true
-      - name: "di"
-        in: "header"
-        type: "string"
-        description: "设备ID"
-        required: true
-      - name: "dt"
-        in: "header"
-        type: "string"
-        description: "设备类型"
-        required: true
-      - name: "body"
-        in: "body"
-        description: "当前分享计划对象"
-        required: true
-        schema:
-          type: "object"
-          properties:
-            oai:
-              type: "string"
-              description: "操作帐户ID"
-            ompn:
-              type: "string"
-              description: "操作手机号码"
-            c:
-              type: "object"
-              description: "上下文"
-            d:
-              type: "object"
-              properties:
-                p:
-                  $ref: "#/definitions/Plan"
-      responses:
-        200:
-          description: "计划分享成功"
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: false
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: ai
+          in: header
+          type: string
+          description: 帐户ID
+          required: true
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
+        - name: body
+          in: body
+          description: 当前分享计划对象
+          required: true
           schema:
-            type: "object"
+            type: object
+            properties:
+              oai:
+                type: string
+                description: 操作帐户ID
+              ompn:
+                type: string
+                description: 操作手机号码
+              c:
+                type: object
+                description: 上下文
+              d:
+                type: object
+                properties:
+                  p:
+                    $ref: '#/definitions/Plan'
+      responses:
+        '200':
+          description: 计划分享成功
+          schema:
+            type: object
             properties:
               rc:
-                type: "integer"
+                type: integer
               rm:
-                type: "string"
+                type: string
               d:
-                type: "object"
+                type: object
                 properties:
                   asurl:
-                    type: "string"
-        405:
-          description: "Invalid input"
-  /sha/plan/share/{shareid}:
+                    type: string
+        '405':
+          description: Invalid input
+  '/sha/plan/share/{shareid}':
     get:
       tags:
-      - "share"
-      summary: "分享计划浏览"
-      description: ""
+        - share
+      summary: 分享计划浏览
+      description: ''
       produces:
-      - "text/html"
+        - text/html
       parameters:
-      - name: "shareid"
-        in: "path"
-        description: "共享ID"
-        required: true
-        type: "string"
+        - name: shareid
+          in: path
+          description: 共享ID
+          required: true
+          type: string
       responses:
-        200:
-          description: "显示分享计划"
+        '200':
+          description: 显示分享计划
   /sha/plan/buildin/download:
     post:
       tags:
-      - "share"
-      summary: "内建计划下载"
-      description: ""
+        - share
+      summary: 内建计划下载
+      description: ''
       consumes:
-      - "application/json"
+        - application/json
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: "lt"
-        in: "header"
-        type: "string"
-        description: "登录令牌"
-        required: false
-      - name: "pi"
-        in: "header"
-        type: "string"
-        description: "产品ID"
-        required: true
-      - name: "pv"
-        in: "header"
-        type: "string"
-        description: "产品版本"
-        required: true
-      - name: "ai"
-        in: "header"
-        type: "string"
-        description: "帐户ID"
-        required: false
-      - name: "di"
-        in: "header"
-        type: "string"
-        description: "设备ID"
-        required: true
-      - name: "dt"
-        in: "header"
-        type: "string"
-        description: "设备类型"
-        required: true
-      - name: "body"
-        in: "body"
-        description: "内建计划下载条件"
-        required: true
-        schema:
-          type: "object"
-          properties:
-            oai:
-              type: "string"
-              description: "操作帐户ID"
-            ompn:
-              type: "string"
-              description: "操作手机号码"
-            c:
-              type: "object"
-              description: "上下文"
-            d:
-              type: "object"
-              properties:
-                pi:
-                  type: "string"
-                  description: "计划ID"
-      responses:
-        200:
-          description: "下载内建计划成功"
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: false
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: ai
+          in: header
+          type: string
+          description: 帐户ID
+          required: false
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
+        - name: body
+          in: body
+          description: 内建计划下载条件
+          required: true
           schema:
-            type: "object"
+            type: object
+            properties:
+              oai:
+                type: string
+                description: 操作帐户ID
+              ompn:
+                type: string
+                description: 操作手机号码
+              c:
+                type: object
+                description: 上下文
+              d:
+                type: object
+                properties:
+                  pi:
+                    type: string
+                    description: 计划ID
+      responses:
+        '200':
+          description: 下载内建计划成功
+          schema:
+            type: object
             properties:
               rc:
-                type: "integer"
+                type: integer
               rm:
-                type: "string"
+                type: string
               d:
-                $ref: "#/definitions/Plan"
-                    
-        405:
-          description: "Invalid input"
+                $ref: '#/definitions/Plan'
+        '405':
+          description: Invalid input
   /bac/backup:
     post:
       tags:
-      - "backup"
-      summary: "备份日历数据"
-      description: ""
+        - backup
+      summary: 备份日历数据
+      description: ''
       consumes:
-      - "application/json"
+        - application/json
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: "lt"
-        in: "header"
-        type: "string"
-        description: "登录令牌"
-        required: false
-      - name: "pi"
-        in: "header"
-        type: "string"
-        description: "产品ID"
-        required: true
-      - name: "pv"
-        in: "header"
-        type: "string"
-        description: "产品版本"
-        required: true
-      - name: "di"
-        in: "header"
-        type: "string"
-        description: "设备ID"
-        required: true
-      - name: "dt"
-        in: "header"
-        type: "string"
-        description: "设备类型"
-        required: true
-      - name: "ai"
-        in: "header"
-        type: "string"
-        description: "帐户ID"
-        required: true
-      - name: "body"
-        in: "body"
-        description: "备份版本识别符和备份数据"
-        required: true
-        schema:
-          type: "object"
-          properties:
-            oai:
-              type: "string"
-              description: "操作帐户ID"
-            ompn:
-              type: "string"
-              description: "操作手机号码"
-            c:
-              type: "object"
-              description: "上下文"
-            d:
-              type: "object"
-              properties:
-                bts:
-                  type: "integer"
-                  format: "int64"
-                  description: "备份时间戳"
-                default:
-                  description: "备份数据, 表名作为字段名, 表数据为数组对象值, 无数据放空数组"
-      responses:
-        200:
-          description: "备份成功"
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: false
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
+        - name: ai
+          in: header
+          type: string
+          description: 帐户ID
+          required: true
+        - name: body
+          in: body
+          description: 备份版本识别符和备份数据
+          required: true
           schema:
-            type: "object"
+            type: object
             properties:
-              rc:
-                type: "integer"
-              rm:
-                type: "string"
+              oai:
+                type: string
+                description: 操作帐户ID
+              ompn:
+                type: string
+                description: 操作手机号码
+              c:
+                type: object
+                description: 上下文
               d:
-                type: "object"
+                type: object
                 properties:
                   bts:
-                    type: "string"
-                    format: "int64"
-                    description: "备份时间戳"
-        405:
-          description: "Invalid input"
+                    type: integer
+                    format: int64
+                    description: 备份时间戳
+                  default:
+                    description: '备份数据, 表名作为字段名, 表数据为数组对象值, 无数据放空数组'
+      responses:
+        '200':
+          description: 备份成功
+          schema:
+            type: object
+            properties:
+              rc:
+                type: integer
+              rm:
+                type: string
+              d:
+                type: object
+                properties:
+                  bts:
+                    type: string
+                    format: int64
+                    description: 备份时间戳
+        '405':
+          description: Invalid input
   /bac/recover:
     post:
       tags:
-      - "backup"
-      summary: "恢复日历数据"
-      description: ""
+        - backup
+      summary: 恢复日历数据
+      description: ''
       consumes:
-      - "application/json"
+        - application/json
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: "lt"
-        in: "header"
-        type: "string"
-        description: "登录令牌"
-        required: false
-      - name: "pi"
-        in: "header"
-        type: "string"
-        description: "产品ID"
-        required: true
-      - name: "pv"
-        in: "header"
-        type: "string"
-        description: "产品版本"
-        required: true
-      - name: "di"
-        in: "header"
-        type: "string"
-        description: "设备ID"
-        required: true
-      - name: "dt"
-        in: "header"
-        type: "string"
-        description: "设备类型"
-        required: true
-      - name: "ai"
-        in: "header"
-        type: "string"
-        description: "帐户ID"
-        required: true
-      - name: "body"
-        in: "body"
-        description: "恢复指定备份时间戳的日历数据"
-        required: true
-        schema:
-          type: "object"
-          properties:
-            oai:
-              type: "string"
-              description: "操作帐户ID"
-            ompn:
-              type: "string"
-              description: "操作手机号码"
-            c:
-              type: "object"
-              description: "上下文"
-            d:
-              type: "object"
-              properties:
-                bts:
-                  type: "integer"
-                  format: "int64"
-                  description: "备份时间戳"
-      responses:
-        200:
-          description: "获取备份数据成功"
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: false
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
+        - name: ai
+          in: header
+          type: string
+          description: 帐户ID
+          required: true
+        - name: body
+          in: body
+          description: 恢复指定备份时间戳的日历数据
+          required: true
           schema:
-            type: "object"
+            type: object
+            properties:
+              oai:
+                type: string
+                description: 操作帐户ID
+              ompn:
+                type: string
+                description: 操作手机号码
+              c:
+                type: object
+                description: 上下文
+              d:
+                type: object
+                properties:
+                  bts:
+                    type: integer
+                    format: int64
+                    description: 备份时间戳
+      responses:
+        '200':
+          description: 获取备份数据成功
+          schema:
+            type: object
             properties:
               rc:
-                type: "integer"
+                type: integer
               rm:
-                type: "string"
+                type: string
               d:
-                type: "object"
+                type: object
                 properties:
                   default:
-                    description: "备份日历数据"
-        405:
-          description: "Invalid input"
+                    description: 备份日历数据
+        '405':
+          description: Invalid input
   /bac/latest:
     get:
       tags:
-      - "backup"
-      summary: "获取日历数据备份时间戳"
-      description: ""
+        - backup
+      summary: 获取日历数据备份时间戳
+      description: ''
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: "lt"
-        in: "header"
-        type: "string"
-        description: "登录令牌"
-        required: false
-      - name: "pi"
-        in: "header"
-        type: "string"
-        description: "产品ID"
-        required: true
-      - name: "pv"
-        in: "header"
-        type: "string"
-        description: "产品版本"
-        required: true
-      - name: "di"
-        in: "header"
-        type: "string"
-        description: "设备ID"
-        required: true
-      - name: "dt"
-        in: "header"
-        type: "string"
-        description: "设备类型"
-        required: true
-      - name: "ai"
-        in: "header"
-        type: "string"
-        description: "帐户ID"
-        required: true
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: false
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
+        - name: ai
+          in: header
+          type: string
+          description: 帐户ID
+          required: true
       responses:
-        200:
-          description: "获取备份数据成功"
+        '200':
+          description: 获取备份数据成功
           schema:
-            type: "object"
+            type: object
             properties:
               rc:
-                type: "integer"
+                type: integer
               rm:
-                type: "string"
+                type: string
               d:
-                type: "object"
+                type: object
                 properties:
                   bts:
-                    type: "integer"
-                    format: "int64"
-                    description: "备份时间戳"
-        405:
-          description: "Invalid input"
+                    type: integer
+                    format: int64
+                    description: 备份时间戳
+        '405':
+          description: Invalid input
+  /ias/starter/audio:
+    post:
+      tags:
+      - inteligence service
+      summary: "智能音频语音服务"
+      description: ""
+      produces: 
+        - application/json
+      parameters: 
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: false
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
+        - name: ai
+          in: header
+          type: string
+          description: 帐户ID
+          required: true
+        - name: body
+          in: body
+          description: 语音服务请求数据
+          required: true
+          schema:
+            type: object
+            properties:
+              c:
+                type: object
+                description: 上下文
+              d:
+                type: object
+                properties:
+                  vb64:
+                    type: string
+                    description: Base64编码语音
+      responses:
+        '200':
+          description: 语音服务请求成功
+          schema:
+            type: object
+            properties:
+              rc:
+                type: integer
+              rm:
+                type: string
+              d:
+                type: object
+  /ias/starter/text:
+    post:
+      tags:
+      - inteligence service
+      summary: "智能文本语音服务"
+      description: ""
+      produces: 
+        - application/json
+      parameters: 
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: false
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
+        - name: ai
+          in: header
+          type: string
+          description: 帐户ID
+          required: true
+        - name: body
+          in: body
+          description: 语音服务请求数据
+          required: true
+          schema:
+            type: object
+            properties:
+              c:
+                type: object
+                description: 上下文
+              d:
+                type: object
+                properties:
+                  text:
+                    type: string
+                    description: 文本文字
+      responses:
+        '200':
+          description: 语音服务请求成功
+          schema:
+            type: object
+            properties:
+              rc:
+                type: integer
+              rm:
+                type: string
+              d:
+                type: object
 definitions:
   Agenda:
-    type: "object"
-    description: "日程"
+    type: object
+    description: 日程
     properties:
       ai:
-        type: "string"
+        type: string
       at:
-        type: "string"
+        type: string
       adt:
-        type: "string"
-        format: "date"
+        type: string
+        format: date
       ap:
-        type: "string"
+        type: string
       ar:
-        type: "string"
+        type: string
       aa:
-        type: "string"
+        type: string
       am:
-        type: "string"
+        type: string
       ac:
-        type: "array"
+        type: array
         items:
-          type: "object"
+          type: object
   Plan:
-    type: "object"
-    description: "计划"
+    type: object
+    description: 计划
     properties:
       pn:
-        type: "object"
+        type: object
       pa:
-        type: "array"
+        type: array
         items:
-          $ref: "#/definitions/Agenda"
+          $ref: '#/definitions/Agenda'
   Contact:
-    type: "object"
-    description: "联系人"
+    type: object
+    description: 联系人
     properties:
       ai:
-        type: "string"
+        type: string
       mpn:
-        type: "string"
+        type: string
 externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"
+  description: Find out more about Swagger
+  url: 'http://swagger.io'

@@ -120,7 +120,7 @@ export class AlPage {
       content: 'Please wait...<ion-label></ion-label>'
     });
     //loading.present();
-    this.rootPage = PageConfig.HZ_PAGE;
+    this.rootPage = PageConfig.M_PAGE;
 
     console.log("权限申请开始");
     this.permissionsService.checkAllPermissiions()
@@ -258,7 +258,7 @@ export class AlPage {
     //     // alert("MyApp查询版本号失败")
     //     //首次打开App,初始化创建数据库建表
     //     this.baseSqlite.createTable();
-    //     this.rootPage = PageConfig.HZ_PAGE;
+    //     this.rootPage = PageConfig.M_PAGE;
     //     this.events.subscribe('db:create', () => {
     //       //创建数据库与表成功
     //
@@ -303,7 +303,7 @@ export class AlPage {
     //         alert("MyApp获取Token失败");
     //         console.error("MyApp获取Token失败" + e.message)
     //       });
-    //       this.rootPage = PageConfig.HZ_PAGE;
+    //       this.rootPage = PageConfig.M_PAGE;
     //     }
     //     this.nav.setRoot(this.rootPage);
     //   }).catch(e => {

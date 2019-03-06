@@ -263,7 +263,7 @@ export class TddiPage {
       this.edit();
     }).catch(e=>{
       alert(e.message)
-      this.navCtrl.setRoot(PageConfig.HZ_PAGE);
+      this.navCtrl.setRoot(PageConfig.M_PAGE);
     });
     this.getAllRel();
   }
@@ -368,7 +368,7 @@ export class TddiPage {
     console.log(JSON.stringify(this.rc))
     this.work.drc(this.rc.sI,this.rc.sa).then(data=>{
       console.log("删除成功 :: " );
-      this.events.publish("reloadHa01");
+      this.events.publish("reloadTdl");
       this.events.publish('noshow');
       this.navCtrl.pop();
     }).catch(reason=>{
