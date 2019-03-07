@@ -1,5 +1,3 @@
-import {UEntity} from "../entity/u.entity";
-
 /**
  * 公共配置用
  */
@@ -11,8 +9,6 @@ export class DataConfig {
   /*----===== 网络状态值 =====----- */
   public static IS_NETWORK_CONNECT: boolean = true;
 
-  //用户信息
-  public static uInfo:UEntity = new UEntity();
   /**
    * 0正常进入1首次进入2无数据3更新后进入
    * @type {string}
