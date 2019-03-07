@@ -22,6 +22,12 @@ tags:
     description: 智能服务
   - name: account service
     description: 帐户服务
+  - name: "agenda"
+    description: "日程"
+  - name: "black"
+    description: "黑名单"
+  - name: "sms"
+    description: "短信接口"
 schemes:
   - https
   - http
@@ -1047,6 +1053,580 @@ paths:
                 type: string
               data:
                 type: object
+  /agd/agenda/save:
+    post:
+      tags:
+      - "agenda"
+      summary: "日程保存/更新"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lt"
+        in: "header"
+        type: "string"
+        description: "登录令牌"
+        required: false
+      - name: "pi"
+        in: "header"
+        type: "string"
+        description: "产品ID"
+        required: true
+      - name: "pv"
+        in: "header"
+        type: "string"
+        description: "产品版本"
+        required: true
+      - name: "ai"
+        in: "header"
+        type: "string"
+        description: "帐户ID"
+        required: false
+      - name: "di"
+        in: "header"
+        type: "string"
+        description: "设备ID"
+        required: true
+      - name: "dt"
+        in: "header"
+        type: "string"
+        description: "设备类型"
+        required: true
+      - name: "body"
+        in: "body"
+        description: "日程保存/更新"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            rai:
+              type: "string"
+              description: "关联日程ID"
+            fc:
+              type: "string"
+              description: "来自于谁(日程发送人用户ID)"
+            ai:
+              type: "string"
+              description: "日程ID"
+            at:
+              type: "string"
+              description: "主题"
+            adt:
+              type: "string"
+              description: "时间(YYYY/MM/DD HH:mm)"
+            ap:
+              type: "string"
+              description: "计划"
+            ar:
+              type: "string"
+              description: "重复"
+            aa:
+              type: "string"
+              description: "提醒"
+            am:
+              type: "string"
+              description: "备注"
+            ac:
+              type: "object"
+              properties:
+                ai:
+                  type: "string"
+                  description: "帐户ID"
+                mpn:
+                  type: "string"
+                  description: "手机号码"
+                n:
+                  type: "string"
+                  description: "姓名"
+                a:
+                  type: "string"
+                  description: "头像"
+                s:
+                  type: "string"
+                  description: "性别"
+                bd:
+                  type: "string"
+                  description: "生日"
+      responses:
+        200:
+          description: "保存/更新成功"
+          schema:
+            type: "object"
+            properties:
+              rc:
+                type: "integer"
+              rm:
+                type: "string"
+              d:
+                type: "object"
+        405:
+          description: "Invalid input"
+  /agd/agenda/info:
+    post:
+      tags:
+      - "agenda"
+      summary: "根据日程ID获取信息"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lt"
+        in: "header"
+        type: "string"
+        description: "登录令牌"
+        required: false
+      - name: "pi"
+        in: "header"
+        type: "string"
+        description: "产品ID"
+        required: true
+      - name: "pv"
+        in: "header"
+        type: "string"
+        description: "产品版本"
+        required: true
+      - name: "ai"
+        in: "header"
+        type: "string"
+        description: "帐户ID"
+        required: false
+      - name: "di"
+        in: "header"
+        type: "string"
+        description: "设备ID"
+        required: true
+      - name: "dt"
+        in: "header"
+        type: "string"
+        description: "设备类型"
+        required: true
+      - name: "body"
+        in: "body"
+        description: 日程获取信息条件日程ID"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            ai:
+              type: "string"
+              description: "日程ID"  
+      responses:
+        200:
+          description: "日程获取信息成功"
+          schema:
+            type: "object"
+            properties:
+              rc:
+                type: "integer"
+              rm:
+                type: "string"
+              d:
+                type: "object"
+        405:
+          description: "Invalid input"
+  /agd/agenda/remove:
+    post:
+      tags:
+      - "agenda"
+      summary: "根据日程ID删除日程信息"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lt"
+        in: "header"
+        type: "string"
+        description: "登录令牌"
+        required: false
+      - name: "pi"
+        in: "header"
+        type: "string"
+        description: "产品ID"
+        required: true
+      - name: "pv"
+        in: "header"
+        type: "string"
+        description: "产品版本"
+        required: true
+      - name: "ai"
+        in: "header"
+        type: "string"
+        description: "帐户ID"
+        required: false
+      - name: "di"
+        in: "header"
+        type: "string"
+        description: "设备ID"
+        required: true
+      - name: "dt"
+        in: "header"
+        type: "string"
+        description: "设备类型"
+        required: true
+      - name: "body"
+        in: "body"
+        description: "删除日程条件日程ID"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            ai:
+              type: "string"
+              description: "删除日程条件日程ID"
+      responses:
+        200:
+          description: "删除日程信息成功"
+          schema:
+            type: "object"
+            properties:
+              rc:
+                type: "integer"
+              rm:
+                type: "string"
+              d:
+                type: "object"
+        405:
+          description: "Invalid input"
+  /agd/agendacontacts/save:
+    post:
+      tags:
+      - "agenda"
+      summary: "保存日程参与人"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lt"
+        in: "header"
+        type: "string"
+        description: "登录令牌"
+        required: false
+      - name: "pi"
+        in: "header"
+        type: "string"
+        description: "产品ID"
+        required: true
+      - name: "pv"
+        in: "header"
+        type: "string"
+        description: "产品版本"
+        required: true
+      - name: "ai"
+        in: "header"
+        type: "string"
+        description: "帐户ID"
+        required: false
+      - name: "di"
+        in: "header"
+        type: "string"
+        description: "设备ID"
+        required: true
+      - name: "dt"
+        in: "header"
+        type: "string"
+        description: "设备类型"
+        required: true
+      - name: "body"
+        in: "body"
+        description: "保存日程参与人条件"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            ai:
+              type: "string"
+              description: "日程ID"
+            ac:
+              type: "object"
+              properties:
+                ai:
+                  type: "string"
+                  description: "帐户ID"
+                mpn:
+                  type: "string"
+                  description: "手机号码"
+                n:
+                  type: "string"
+                  description: "姓名"
+                a:
+                  type: "string"
+                  description: "头像"
+                s:
+                  type: "string"
+                  description: "性别"
+                bd:
+                  type: "string"
+                  description: "生日"
+      responses:
+        200:
+          description: "保存日程参与人成功"
+          schema:
+            type: "object"
+            properties:
+              rc:
+                type: "integer"
+              rm:
+                type: "string"
+              d:
+                type: "object"
+        405:
+          description: "Invalid input"
+  /bla/target/add:
+    post:
+      tags:
+      - "black"
+      summary: "添加黑名单"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lt"
+        in: "header"
+        type: "string"
+        description: "登录令牌"
+        required: false
+      - name: "pi"
+        in: "header"
+        type: "string"
+        description: "产品ID"
+        required: true
+      - name: "pv"
+        in: "header"
+        type: "string"
+        description: "产品版本"
+        required: true
+      - name: "ai"
+        in: "header"
+        type: "string"
+        description: "帐户ID"
+        required: false
+      - name: "di"
+        in: "header"
+        type: "string"
+        description: "设备ID"
+        required: true
+      - name: "dt"
+        in: "header"
+        type: "string"
+        description: "设备类型"
+        required: true
+      - name: "body"
+        in: "body"
+        description: "添加黑名单人员信息"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            ai:
+              type: "string"
+              description: "帐户ID"
+            mpn:
+              type: "string"
+              description: "手机号码"
+            n:
+              type: "string"
+              description: "姓名"
+            a:
+              type: "string"
+              description: "头像"
+            s:
+              type: "string"
+              description: "性别"
+            bd:
+              type: "string"
+              description: "生日"
+      responses:
+        200:
+          description: "添加黑名单人员成功"
+          schema:
+            type: "object"
+            properties:
+              rc:
+                type: "integer"
+              rm:
+                type: "string"
+              d:
+                type: "object"
+        405:
+          description: "Invalid input"  
+  /bla/target/remove:
+    post:
+      tags:
+      - "black"
+      summary: "删除单个黑名单人员"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lt"
+        in: "header"
+        type: "string"
+        description: "登录令牌"
+        required: false
+      - name: "pi"
+        in: "header"
+        type: "string"
+        description: "产品ID"
+        required: true
+      - name: "pv"
+        in: "header"
+        type: "string"
+        description: "产品版本"
+        required: true
+      - name: "ai"
+        in: "header"
+        type: "string"
+        description: "帐户ID"
+        required: false
+      - name: "di"
+        in: "header"
+        type: "string"
+        description: "设备ID"
+        required: true
+      - name: "dt"
+        in: "header"
+        type: "string"
+        description: "设备类型"
+        required: true
+      - name: "body"
+        in: "body"
+        description: "添加黑名单人员信息"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            ai:
+              type: "string"
+              description: "帐户ID"
+            mpn:
+              type: "string"
+              description: "手机号码"
+      responses:
+        200:
+          description: "删除单个黑名单人员"
+          schema:
+            type: "object"
+            properties:
+              rc:
+                type: "integer"
+              rm:
+                type: "string"
+              d:
+                type: "object"
+        405:
+          description: "Invalid input" 
+  /bla/list:
+    post:
+      tags:
+      - "black"
+      summary: "获取黑名单信息成功"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lt"
+        in: "header"
+        type: "string"
+        description: "登录令牌"
+        required: false
+      - name: "pi"
+        in: "header"
+        type: "string"
+        description: "产品ID"
+        required: true
+      - name: "pv"
+        in: "header"
+        type: "string"
+        description: "产品版本"
+        required: true
+      - name: "ai"
+        in: "header"
+        type: "string"
+        description: "帐户ID"
+        required: false
+      - name: "di"
+        in: "header"
+        type: "string"
+        description: "设备ID"
+        required: true
+      - name: "dt"
+        in: "header"
+        type: "string"
+        description: "设备类型"
+        required: true
+      responses:
+        200:
+          description: "获取黑名单信息成功"
+          schema:
+            type: "object"
+            properties:
+              rc:
+                type: "integer"
+              rm:
+                type: "string"
+              d:
+                type: "object"
+        405:
+          description: "Invalid input"
+  /sms/send:
+    post:
+      tags:
+      - "sms"
+      summary: "短信发送接口"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "platformType"
+        in: "query"
+        type: "string"
+        description: "平台"
+        required: false
+      - name: "mobile"
+        in: "query"
+        type: "string"
+        description: "手机号"
+        required: true
+      - name: "sendType"
+        in: "query"
+        type: "string"
+        description: "模板ID  0:验证码   1:日程共享发送未注册"
+        required: true
+      - name: "sendContent"
+        in: "header"
+        type: "string"
+        description: "发送内容  sendType=0是改内容为超时时间"
+        required: false
+      responses:
+        200:
+          description: "获取黑名单信息成功"
+          schema:
+            type: "object"
+            properties:
+              rc:
+                type: "integer"
+              rm:
+                type: "string"
+              d:
+                type: "object"
+        405:
+          description: "Invalid input" 
 definitions:
   Agenda:
     type: object
