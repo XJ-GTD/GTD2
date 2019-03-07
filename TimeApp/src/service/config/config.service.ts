@@ -57,34 +57,6 @@ export class ConfigService {
     });
     return p;
   }
-  //判断初始化进入页面
-  isIntoBoot():Promise<boolean>{
-    return  new Promise((resolve, reject)=>{
-      //先判断是否手机还是网页
-      this.util.isMobile()
-      console.log("--------- 是否是手机模式打开 ： " + this.util.isMobile())
-      //先创建或连接数据
-      this.baseSqlite.createDb().then(data=>{
-        console.log("config.service isIntoBoot createDb:: "+　JSON.stringify(data))
-        if(data.code != 0){
-          resolve(true)
-        }
-        console.log("--------- 判断是否是首次打开 start --------- ")
-        return this.fi.isFi()
-      }).then(data=>{
-        console.log("config.service isIntoBoot Fi:: "+　JSON.stringify(data))
-        //在判断版本表是否存在
-        if(data.code>0){
-          resolve(true)
-        }else{
-          resolve(false)
-        }
-      }).catch(e=>{
-        console.log("config.service isIntoBoot error: "+　e.message)
-        resolve(true)
-      })
-    });
-  }
 
   /**
    * 更新版本表

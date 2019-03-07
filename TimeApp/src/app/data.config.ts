@@ -7,8 +7,6 @@ export class DataConfig {
 
   /*0游客身份，1登录*/
   public static IL:number=0;
-  /* 判断是手机还是网页true是false不是 */
-  public static IS_MOBILE : boolean=true;
 
   /*----===== 网络状态值 =====----- */
   public static IS_NETWORK_CONNECT: boolean = true;

@@ -110,10 +110,10 @@ export class UtilService {
     if(this.wins.cordova){
       str = this.wins.cordova.platformId;
     }else{
-      DataConfig.IS_MOBILE = false;
+      return false;
     }
     if(str === "browser"){
-      DataConfig.IS_MOBILE = false;
+      return false;
     }
     return DataConfig.IS_MOBILE;
   }
