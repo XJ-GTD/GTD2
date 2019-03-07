@@ -1,0 +1,16 @@
+{
+  "debug": true,
+  "mongo.host": "mongodb",
+  "mongo.port": 27017,
+  "mongo.keepalive": true,
+  "stomp.server.host": "sa-amq",
+  "stomp.server.port": 5672,
+  "amq.app.id": "xfy",
+  "xfyun.openapi.aiui": "http://openapi.xfyun.cn/v2/aiui",
+  "xfyun.openapi.appid": "5b554446",
+  "xfyun.openapi.authid": "8b9133b8519875127034d7c3cb70a383",
+  "xfyun.openapi.aue": "raw",
+  "xfyun.openapi.samplerate": "16000",
+  "xfyun.openapi.scene": "main",
+  "xfyun.openapi.apikey": "880d370a20234c95a33e961c70de3ed5"
+}
