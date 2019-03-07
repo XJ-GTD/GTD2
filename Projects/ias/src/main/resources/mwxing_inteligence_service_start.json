@@ -17,6 +17,18 @@
             ],
             "outputs": [
                 "xunfeiyun"
+            ],
+            "next": [
+                {
+                  "name": "数据清洗与转换",
+                  "trigger": "acj",
+                  "parameters": [
+                      "datasouce;$.parent.outputs.xunfeiyun"
+                  ],
+                  "outputs": [
+                      "cleaned"
+                  ]
+                }
             ]
         }
     ]
