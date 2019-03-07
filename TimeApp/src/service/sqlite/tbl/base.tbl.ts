@@ -1,5 +1,6 @@
-import {BaseSqlite} from "../base-sqlite";
 import {Injectable} from "@angular/core";
+import {SQLiteObject} from "@ionic-native/sqlite";
+import {FactionDb} from "./faction.db";
 /**
  * create by on 2019/3/5
  */
@@ -7,13 +8,35 @@ import {Injectable} from "@angular/core";
 @Injectable()
 export class BaseTbl{
 
-  constructor(private baseSqlite: BaseSqlite) {}
+  private _database :SQLiteObject;
+
+  constructor(private factionDb: FactionDb) {
+    this._database = this.factionDb.database;
+  }
 
   _execT(sq):Promise<any> {
-      return this.baseSqlite.executeSql(sq,[]);
+      return this._executeSql(sq,[]);
   }
 
-  _batT(sq):Promise<any> {
-    return this.baseSqlite.executeSql(sq,[]);
+  /**
+   * 执行语句
+   */
+  _executeSql(sql: string, array: Array<any>): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._database.transaction(function(tx) {
+        tx.executeSql(sql, array,  (tx, res)=>{
+          resolve(res);
+        }, (tx, err) =>{
+          console.log('error: ' + err.message);
+          console.log("sql: "+sql);
+          reject(err);
+        });
+      });
+
+    });
   }
+
+/*  _batT(sq):Promise<any> {
+
+  }*/
 }

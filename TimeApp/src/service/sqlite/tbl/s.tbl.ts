@@ -1,6 +1,5 @@
 import{Injectable}from'@angular/core';
 import {BaseTbl} from "./base.tbl";
-import {BaseSqlite} from "../base-sqlite";
 import {ITbl} from "./itbl";
 
 /**
@@ -8,9 +7,9 @@ import {ITbl} from "./itbl";
  */
 @Injectable()
 export class STbl extends BaseTbl implements ITbl{
-  constructor( private bs: BaseSqlite ){
+  constructor( arg ){
 
-    super( bs );
+    super( arg );
   }
 
 
