@@ -16,25 +16,23 @@ export class SQLiteFactory{
   private _win: any = window;//window对象
 
   constructor( private sqlite: SQLite,
-               private util: UtilService,
-               private sqlitePorter: SQLitePorter,
-               private events: Events) { }
+               private sqlitePorter: SQLitePorter) {
+
+    this.generateDb();
+
+
+  }
 
 
   get database(): SQLiteObject {
     return this._database;
   }
 
-  set database(value: SQLiteObject) {
-    this._database = value;
-  }
-
   /**
    * 创建数据库
    */
-  generateDb(): Promise<BsModel> {
+  generateDb(): Promise<any> {
     return new Promise((resolve, reject) => {
-      let bs = new BsModel();
       console.log( " start create Db mingWX.db")
       if (DataConfig.IS_MOBILE) {
         this.sqlite.create({
@@ -43,20 +41,17 @@ export class SQLiteFactory{
         }).then((db: SQLiteObject) => {
           console.log( " create Db success")
           this._database = db;
-          resolve(bs)
+          resolve()
         }).catch(e => {
           console.log( " create Db fail：" + e.message)
-          this.events.publish('db:create');
-          bs.code = 1
-          resolve(bs);
+          reject();
         });
       } else {
         //H5数据库存储
         this._database = this._win.openDatabase("mingWX.db", '1.0', 'database', 5 * 1024 * 1024);//声明H5 数据库大小
         console.log( " create H5 Db success")
-        resolve(bs)
+        resolve()
       }
-      //alert('创建数据成功！')
     });
   }
 
