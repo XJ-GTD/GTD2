@@ -16,7 +16,7 @@ export class GTbl extends BaseTbl implements ITbl{
 
     let sq ='CREATE TABLE IF NOT EXISTS GTD_G(  gI varchar(50) PRIMARY KEY ,gN varchar(50)  ,gM varchar(50));';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   upT(pro:GPro):Promise<any> {
@@ -28,17 +28,17 @@ export class GTbl extends BaseTbl implements ITbl{
       sq=sq+', gM="' + pro.gM +'"';
     }
     sq = sq + ' where gI = "'+ pro.gI +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   dT(pro:GPro):Promise<any> {
     let sq = 'delete from GTD_G where gI = "' + pro.gI +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   sloT(pro:GPro):Promise<any> {
     let sq='select * from GTD_G where gI = "'+ pro.gI +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   slT(pro:GPro):Promise<any> {
@@ -49,27 +49,27 @@ export class GTbl extends BaseTbl implements ITbl{
     if(pro.gM!=null){
       sq=sq+', gM="' + pro.gM +'"';
     }
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   drT():Promise<any> {
 
     let sq ='DROP TABLE IF EXISTS GTD_G;';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   inT(pro:GPro):Promise<any> {
     let sq ='insert into GTD_G ' +
       '( gI ,gN ,gM) values("'+ pro.gI+'","'+ pro.gN+'","'+pro.gM+ '")';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   rpT(pro:GPro):Promise<any> {
     let sq ='replace into GTD_G ' +
       '( gI ,gN ,gM) values("'+ pro.gI+'","'+ pro.gN+'","'+pro.gM+ '")';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
 }

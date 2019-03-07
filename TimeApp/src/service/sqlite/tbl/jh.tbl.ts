@@ -18,7 +18,7 @@ export class JhTbl extends BaseTbl implements ITbl{
     let sq ='CREATE TABLE IF NOT EXISTS GTD_J_H(  ji VARCHAR(50) PRIMARY KEY ,jn VARCHAR(100)  ,jg VARCHAR(100)' +
       ',jc VARCHAR(10));';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   upT(pro:JhPro):Promise<any> {
@@ -33,17 +33,17 @@ export class JhTbl extends BaseTbl implements ITbl{
       sq=sq+', jc="' + pro.jc +'"';
     }
     sq = sq + ' where ji = "'+ pro.ji +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   dT(pro:JhPro):Promise<any> {
     let sq = 'delete from GTD_J_H where ji = "' + pro.ji +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   sloT(pro:JhPro):Promise<any> {
     let sq='select * from GTD_J_H where ji = "'+ pro.ji +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   slT(pro:JhPro):Promise<any> {
@@ -57,27 +57,27 @@ export class JhTbl extends BaseTbl implements ITbl{
     if(pro.jc!=null){
       sq=sq+' and jc="' + pro.jc +'"';
     }
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   drT():Promise<any> {
 
     let sq ='DROP TABLE IF EXISTS GTD_J_H;';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   inT(pro:JhPro):Promise<any> {
     let sq ='insert into GTD_J_H ' +
       '(  ji ,jn ,jg,jc) values("'+ pro.ji+'","'+ pro.jn+'","'+pro.jg+ '","'+pro.jc+ '")';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   rpT(pro:JhPro):Promise<any> {
     let sq ='replace into GTD_J_H ' +
       '(  ji ,jn ,jg,jc) values("'+ pro.ji+'","'+ pro.jn+'","'+pro.jg+ '","'+pro.jc+ '")';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
 }

@@ -14,14 +14,10 @@ export class BaseTbl{
     this._database = this.factionDb.database;
   }
 
-  _execT(sq):Promise<any> {
-      return this._executeSql(sq,[]);
-  }
-
   /**
    * 执行语句
    */
-  _executeSql(sql: string, array: Array<any>): Promise<any> {
+  _execSql(sql: string, array: Array<any>): Promise<any> {
     return new Promise((resolve, reject) => {
       this._database.transaction(function(tx) {
         tx.executeSql(sql, array,  (tx, res)=>{
@@ -36,7 +32,7 @@ export class BaseTbl{
     });
   }
 
-/*  _batT(sq):Promise<any> {
+  _batExecSql(sqlist:Array<string>):Promise<any> {
 
-  }*/
+  }
 }
