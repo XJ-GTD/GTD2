@@ -7,7 +7,7 @@ import { MenuScalePushType } from "../components/menuType/customType";
 import { XiaojiFeedbackService } from "../service/util-service/xiaoji-feedback.service";
 import { NetworkService } from "../service/util-service/network.service";
 import { XiaojiAssistantService } from "../service/util-service/xiaoji-assistant.service";
-import {RestFulConfig} from "../service/restful/restful.config";
+import {RestFulConfig} from "../service/config/restful.config";
 
 @Component({
   template: '<ion-nav></ion-nav>'

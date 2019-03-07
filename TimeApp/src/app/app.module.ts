@@ -71,7 +71,7 @@ import { ElModule } from 'element-angular'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterModule } from '@angular/router'
 
-import {RestFulConfig} from "../service/restful/restful.config";
+import {RestFulConfig} from "../service/config/restful.config";
 
 @NgModule({
   declarations: [
