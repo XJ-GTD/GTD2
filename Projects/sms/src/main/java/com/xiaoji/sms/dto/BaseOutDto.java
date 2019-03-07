@@ -1,4 +1,4 @@
-package com.xiaoji.gtd.dto;
+package com.xiaoji.sms.dto;
 
 public class BaseOutDto {
 	private String rc;

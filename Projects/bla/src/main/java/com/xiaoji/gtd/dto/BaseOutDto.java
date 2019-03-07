@@ -1,26 +1,26 @@
 package com.xiaoji.gtd.dto;
 
 public class BaseOutDto {
-	private String code;
-	private String message;
-	private Object data;
-	public String getCode() {
-		return code;
+	private String rc;
+	private String rm;
+	private Object d;
+	public String getRc() {
+		return rc;
 	}
-	public void setCode(String code) {
-		this.code = code;
+	public void setRc(String rc) {
+		this.rc = rc;
 	}
-	public String getMessage() {
-		return message;
+	public String getRm() {
+		return rm;
 	}
-	public void setMessage(String message) {
-		this.message = message;
+	public void setRm(String rm) {
+		this.rm = rm;
 	}
-	public Object getData() {
-		return data;
+	public Object getD() {
+		return d;
 	}
-	public void setData(Object data) {
-		this.data = data;
+	public void setD(Object d) {
+		this.d = d;
 	}
 	
 }
