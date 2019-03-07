@@ -19,7 +19,7 @@ export class SpTbl extends BaseTbl implements ITbl{
       '  ,st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,ji varchar(50)  ,bz varchar(50)  ,' +
       'sta varchar(4));';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   upT(pro:SpPro):Promise<any> {
@@ -52,17 +52,17 @@ export class SpTbl extends BaseTbl implements ITbl{
       sq = sq + ', sta="' + pro.sta +'"';
     }
     sq = sq + ' where spI = "'+ pro.spI +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   dT(pro:SpPro):Promise<any> {
     let sq = 'delete from GTD_SP where spI = "' + pro.spI +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   sloT(pro:SpPro):Promise<any> {
     let sq='select * from GTD_SP where spI = "'+ pro.spI +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   slT(pro:SpPro):Promise<any> {
@@ -98,13 +98,13 @@ export class SpTbl extends BaseTbl implements ITbl{
       sq = sq + ' and spI="' + pro.spI +'"';
     }
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   drT():Promise<any> {
 
     let sq ='DROP TABLE IF EXISTS GTD_SP;';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   inT(pro:SpPro):Promise<any> {
@@ -112,7 +112,7 @@ export class SpTbl extends BaseTbl implements ITbl{
       '( spI ,sI ,spN ,sd ,st ,ed ,et ,ji ,bz ,sta) values("'+ pro.spI+'","'+ pro.sI+'","'+pro.spN+ '"' +
       ',"'+pro.sd+ '","'+pro.st+ '","'+pro.ed+ '","'+pro.et+ '","'+pro.ji+ '","'+pro.bz+ '","'+pro.sta+ '")';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   rpT(pro:SpPro):Promise<any> {
@@ -120,7 +120,7 @@ export class SpTbl extends BaseTbl implements ITbl{
       '( spI ,sI ,spN ,sd ,st ,ed ,et ,ji ,bz ,sta) values("'+ pro.spI+'","'+ pro.sI+'","'+pro.spN+ '"' +
       ',"'+pro.sd+ '","'+pro.st+ '","'+pro.ed+ '","'+pro.et+ '","'+pro.ji+ '","'+pro.bz+ '","'+pro.sta+ '")';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
 }

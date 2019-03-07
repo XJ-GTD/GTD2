@@ -18,7 +18,7 @@ export class STbl extends BaseTbl implements ITbl{
     let sq ='CREATE TABLE IF NOT EXISTS GTD_S( si varchar(50) PRIMARY KEY ,st VARCHAR(20)  ,' +
       'stn VARCHAR(20)  ,sn VARCHAR(20)  ,yk VARCHAR(20)  ,yv VARCHAR(400)   );';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   upT(pro:SPro):Promise<any> {
@@ -39,17 +39,17 @@ export class STbl extends BaseTbl implements ITbl{
       sq = sq + ', yv="' + pro.yv +'"';
     }
     sq = sq + ' where si = "'+ pro.si +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   dT(pro:SPro):Promise<any> {
     let sq = 'delete from GTD_S where si = "' + pro.si +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   sloT(pro:SPro):Promise<any> {
     let sq='select * from GTD_S where si = "'+ pro.si +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   slT(pro:SPro):Promise<Array<SPro>>
@@ -70,13 +70,13 @@ export class STbl extends BaseTbl implements ITbl{
     if(pro.yv != null){
       sq = sq + ' and yv="' + pro.yv +'"';
     }
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   drT():Promise<any> {
 
     let sq ='DROP TABLE IF EXISTS GTD_S;';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   inT(pro:SPro):Promise<any> {
@@ -84,7 +84,7 @@ export class STbl extends BaseTbl implements ITbl{
       '( si ,st ,stn ,sn ,yk ,yv) values("'+ pro.si+'","'+ pro.st+'","'+pro.stn+ '"' +
       ',"'+pro.sn+ '","'+pro.yk+ '","'+pro.yv+ '")';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   rpT(pro:SPro):Promise<any> {
@@ -92,7 +92,7 @@ export class STbl extends BaseTbl implements ITbl{
       '( si ,st ,stn ,sn ,yk ,yv) values("'+ pro.si+'","'+ pro.st+'","'+pro.stn+ '"' +
       ',"'+pro.sn+ '","'+pro.yk+ '","'+pro.yv+ '")';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
 }

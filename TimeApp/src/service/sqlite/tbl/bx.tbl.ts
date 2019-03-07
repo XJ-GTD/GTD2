@@ -17,7 +17,7 @@ export class BxTbl extends BaseTbl implements ITbl{
 
     let sq ='CREATE TABLE IF NOT EXISTS GTD_B_X( bi varchar(50) PRIMARY KEY ,bmi varchar(50));';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   upT(pro:BxPro):Promise<any> {
@@ -26,17 +26,17 @@ export class BxTbl extends BaseTbl implements ITbl{
       sq=sq+', bmi="' + pro.bmi +'"';
     }
     sq = sq + ' where bi = "'+ pro.bi +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   dT(pro:BxPro):Promise<any> {
     let sq = 'delete from GTD_B_X where bi = "' + pro.bi +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   sloT(pro:BxPro):Promise<any> {
     let sq='select * from GTD_B_X where bi = "'+ pro.bi +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   slT(pro:BxPro):Promise<any> {
@@ -44,27 +44,27 @@ export class BxTbl extends BaseTbl implements ITbl{
     if(pro.bmi!=null){
       sq=sq+' and bmi="' + pro.bmi +'"';
     }
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   drT():Promise<any> {
 
     let sq ='DROP TABLE IF EXISTS GTD_B_X;';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   inT(pro:BxPro):Promise<any> {
     let sq ='insert into GTD_G ' +
       '(  bi ,bmi) values("'+ pro.bi+'","'+ pro.bmi+'")';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   rpT(pro:BxPro):Promise<any> {
     let sq ='replace into GTD_G ' +
       '(  bi ,bmi) values("'+ pro.bi+'","'+ pro.bmi+'")';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
 }

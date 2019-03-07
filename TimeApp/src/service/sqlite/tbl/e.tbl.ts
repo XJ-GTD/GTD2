@@ -18,7 +18,7 @@ export class ETbl extends BaseTbl implements ITbl{
     let sq ='CREATE TABLE IF NOT EXISTS GTD_E(  wI varchar(50) PRIMARY KEY ,sI varchar(50)  ,' +
       'sT varchar(50)  ,wD varchar(20)  ,wT varchar(20))';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   upT(pro:EPro):Promise<any> {
@@ -36,18 +36,18 @@ export class ETbl extends BaseTbl implements ITbl{
       sq = sq + ', wT="' + pro.wT +'"';
     }
     sq = sq + ' where wI = "'+ pro.wI +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   dT(pro:EPro):Promise<any> {
     let sq = 'delete from GTD_E where wI = "' + pro.wI +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   sloT(pro:EPro):Promise<any> {
     let sq='select * from GTD_E where wI = "'+ pro.wI +'"';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   slT(pro:EPro):Promise<any> {
@@ -64,13 +64,13 @@ export class ETbl extends BaseTbl implements ITbl{
     if(pro.wT != null){
       sq = sq + ' and wT="' + pro.wT +'"';
     }
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   drT():Promise<any> {
 
     let sq ='DROP TABLE IF EXISTS GTD_E;';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   inT(pro:EPro):Promise<any> {
@@ -78,7 +78,7 @@ export class ETbl extends BaseTbl implements ITbl{
       '(  wI ,sI ,sT ,wD ,wT) values("'+ pro.wI+'","'+ pro.sI+'","'+pro.sT+ '"' +
       ',"'+pro.wD+ '","'+pro.wT+ '")';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   rpT(pro:EPro):Promise<any> {
@@ -86,7 +86,7 @@ export class ETbl extends BaseTbl implements ITbl{
       '(  wI ,sI ,sT ,wD ,wT) values("'+ pro.wI+'","'+ pro.sI+'","'+pro.sT+ '"' +
       ',"'+pro.wD+ '","'+pro.wT+ '")';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
 }

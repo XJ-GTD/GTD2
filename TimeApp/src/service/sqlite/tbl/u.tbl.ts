@@ -18,7 +18,7 @@ export class UTbl extends BaseTbl implements ITbl{
       'uN varchar(10)  ,hIU varchar(200)  ,biy varchar(10)  ,rn varchar(10)  ,iC varchar(20)  ,' +
       'uS varchar(4)  ,uCt varchar(11));';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   upT(pro:BPro):Promise<any> {
@@ -45,17 +45,17 @@ export class UTbl extends BaseTbl implements ITbl{
       sq = sq + ', uCt="' + pro.uCt +'"';
     }
     sq = sq + ' where uI = "'+ pro.uI +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   dT(pro:BPro):Promise<any> {
     let sq = 'delete from GTD_U where uI = "' + pro.uI +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   sloT(pro:BPro):Promise<any> {
     let sq='select * from GTD_U where uI = "'+ pro.uI +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   slT(pro:BPro):Promise<any> {
@@ -79,20 +79,20 @@ export class UTbl extends BaseTbl implements ITbl{
       sq = sq + ' and uCt="' + pro.uCt +'"';
     }
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   drT():Promise<any> {
 
     let sq ='DROP TABLE IF EXISTS GTD_U;';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   inT(pro:BPro):Promise<any> {
     let sq ='insert into GTD_U ' +
       '( uI ,aI ,uN ,hIU ,biy ,rn ,iC ,uS ,uCt) values("'+ pro.uI+'","'+ pro.aI+'","'+pro.uN+ '"' +
       ',"'+pro.hIU+ '","'+pro.biy+ '","'+pro.rn+ '","'+pro.iC+ '","'+ pro.uS + '","'+pro.uCt+ '")';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   rpT(pro:BPro):Promise<any> {
@@ -100,7 +100,7 @@ export class UTbl extends BaseTbl implements ITbl{
       '( uI ,aI ,uN ,hIU ,biy ,rn ,iC ,uS ,uCt) values("'+ pro.uI+'","'+ pro.aI+'","'+pro.uN+ '"' +
       ',"'+pro.hIU+ '","'+pro.biy+ '","'+pro.rn+ '","'+pro.iC+ '","'+ pro.uS + '","'+pro.uCt+ '")';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
 

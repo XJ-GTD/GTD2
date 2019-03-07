@@ -18,7 +18,7 @@ export class CTbl extends BaseTbl implements ITbl{
     let sq =' sI varchar(50) PRIMARY KEY ,sN varchar(50)  ,uI varchar(50)  ,sd varchar(20)  ' +
       ',st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,rT varchar(4)  ,ji varchar(50));';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   upT(pro:CPro):Promise<any> {
@@ -48,17 +48,17 @@ export class CTbl extends BaseTbl implements ITbl{
       sq = sq + ', ji="' + pro.ji +'"';
     }
     sq = sq + ' where sI = "'+ pro.sI +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   dT(pro:CPro):Promise<any> {
     let sq = 'delete from GTD_C where sI = "' + pro.sI +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   sloT(pro:CPro):Promise<any> {
     let sq='select * from GTD_C where sI = "'+ pro.sI +'"';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   slT(pro:CPro):Promise<any> {
@@ -90,13 +90,13 @@ export class CTbl extends BaseTbl implements ITbl{
     if(pro.sI != null){
       sq = sq + ' and sI="' + pro.sI +'"';
     }
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   drT():Promise<any> {
 
     let sq ='DROP TABLE IF EXISTS GTD_C;';
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   inT(pro:CPro):Promise<any> {
@@ -104,7 +104,7 @@ export class CTbl extends BaseTbl implements ITbl{
       '( sI ,sN ,uI ,sd ,st ,ed ,et ,rT ,ji) values("'+ pro.sI+'","'+ pro.sN+'","'+pro.uI+ '"' +
       ',"'+pro.sd+ '","'+pro.st+ '","'+pro.ed+ '","'+pro.et+ '","'+pro.rT+ '","'+pro.ji+ '")';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
   rpT(pro:CPro):Promise<any> {
@@ -112,7 +112,7 @@ export class CTbl extends BaseTbl implements ITbl{
       '( sI ,sN ,uI ,sd ,st ,ed ,et ,rT ,ji) values("'+ pro.sI+'","'+ pro.sN+'","'+pro.uI+ '"' +
       ',"'+pro.sd+ '","'+pro.st+ '","'+pro.ed+ '","'+pro.et+ '","'+pro.rT+ '","'+pro.ji+ '")';
 
-    return this._execT(sq);
+    return this._execSql(sq,[]);
   }
 
 }
