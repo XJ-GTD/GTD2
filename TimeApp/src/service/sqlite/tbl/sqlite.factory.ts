@@ -1,13 +1,9 @@
 import{Injectable}from'@angular/core';
 import {SQLite, SQLiteObject} from "@ionic-native/sqlite";
 import {DataConfig} from "../../../app/data.config";
-import {BsModel} from "../../../model/out/bs.model";
 import {SQLitePorter} from "@ionic-native/sqlite-porter";
 import {UtilService} from "../../util-service/util.service";
 import {Events} from "ionic-angular";
-import {UEntity} from "../../../entity/u.entity";
-import {FiEntity} from "../../../entity/fi.entity";
-import {SyvEntity} from "../../../entity/syv.entity";
 
 /**
  * create by on 2019/3/5
