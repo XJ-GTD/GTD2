@@ -16,7 +16,8 @@ export class JhTbl extends BaseTbl implements ITbl{
 
   cT():Promise<any> {
 
-    let sq ='CREATE TABLE IF NOT EXISTS GTD_J_H(  ji VARCHAR(50) PRIMARY KEY ,jn VARCHAR(100)  ,jg VARCHAR(100));';
+    let sq ='CREATE TABLE IF NOT EXISTS GTD_J_H(  ji VARCHAR(50) PRIMARY KEY ,jn VARCHAR(100)  ,jg VARCHAR(100)' +
+      ',jc VARCHAR(10));';
 
     return this._execT(sq);
   }
@@ -29,7 +30,9 @@ export class JhTbl extends BaseTbl implements ITbl{
     if(pro.jg!=null){
       sq=sq+', jg="' + pro.jg +'"';
     }
-
+    if(pro.jc!=null){
+      sq=sq+', jc="' + pro.jc +'"';
+    }
     sq = sq + ' where ji = "'+ pro.ji +'"';
     return this._execT(sq);
   }
@@ -52,6 +55,9 @@ export class JhTbl extends BaseTbl implements ITbl{
     if(pro.jg!=null){
       sq=sq+' and jg="' + pro.jg +'"';
     }
+    if(pro.jc!=null){
+      sq=sq+' and jc="' + pro.jc +'"';
+    }
     return this._execT(sq);
   }
 
@@ -63,14 +69,14 @@ export class JhTbl extends BaseTbl implements ITbl{
 
   inT(pro:JhPro):Promise<any> {
     let sq ='insert into GTD_J_H ' +
-      '(  ji ,jn ,jg) values("'+ pro.ji+'","'+ pro.jn+'","'+pro.jg+ '")';
+      '(  ji ,jn ,jg,jc) values("'+ pro.ji+'","'+ pro.jn+'","'+pro.jg+ '","'+pro.jc+ '")';
 
     return this._execT(sq);
   }
 
   rpT(pro:JhPro):Promise<any> {
     let sq ='replace into GTD_J_H ' +
-      '(  ji ,jn ,jg) values("'+ pro.ji+'","'+ pro.jn+'","'+pro.jg+ '")';
+      '(  ji ,jn ,jg,jc) values("'+ pro.ji+'","'+ pro.jn+'","'+pro.jg+ '","'+pro.jc+ '")';
 
     return this._execT(sq);
   }
@@ -82,7 +88,15 @@ class JhPro{
   private _ji: string;
   private _jn: string;
   private _jg: string;
+  private _jc: string;
 
+  get jc(): string {
+    return this._jc;
+  }
+
+  set jc(value: string) {
+    this._jc = value;
+  }
 
   get ji(): string {
     return this._ji;
