@@ -1,0 +1,11 @@
+{
+  "name": "冥王星语音服务自然语言解析处理流",
+  "trigger": "mwxing_inteligence_service_start",
+  "parameters": ["userId", "content", "contentType"],
+  "follows": [{
+    "name": "讯飞云AIUI语义分析",
+    "trigger": "xfy",
+    "parameters": ["userId:parent.parameters.userId", "dataType:parent.parameters.contentType", "content:parent.parameters.content"],
+    "outputs": ["nlp"]
+  }]
+}
