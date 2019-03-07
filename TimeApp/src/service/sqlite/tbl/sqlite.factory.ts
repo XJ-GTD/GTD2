@@ -13,7 +13,7 @@ import {SyvEntity} from "../../../entity/syv.entity";
  * create by on 2019/3/5
  */
 @Injectable()
-export class FactionDb{
+export class SQLiteFactory{
 
   private _database: SQLiteObject;
 

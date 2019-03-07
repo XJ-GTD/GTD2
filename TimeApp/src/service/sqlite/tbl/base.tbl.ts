@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {SQLiteObject} from "@ionic-native/sqlite";
-import {FactionDb} from "./faction.db";
+import {FactionDb} from "./sqlite.factory";
 /**
  * create by on 2019/3/5
  */
