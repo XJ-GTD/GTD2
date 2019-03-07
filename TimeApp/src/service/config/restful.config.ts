@@ -1,13 +1,41 @@
-import {UrlEntity} from "../../entity/url.entity";
+
+import {SPro, STbl} from "../sqlite/tbl/s.tbl";
 
 export class RestFulConfig {
 
-  constructor(){
+
+  private urlLs: Map<string, UrlEntity>;
+
+  constructor(private stbl: STbl) {
+    this.init();
   }
 
 
   createHeader():RestFulHeader{
     return new RestFulHeader();
+  }
+
+  //初始化全局 restful Url 信息
+  init() {
+    this.urlLs = new Map<string, UrlEntity>();
+    let sPro = new SPro();
+    sPro.st = "URL";
+    this.stbl.slT(sPro).then(sPros => {
+
+      console.log(sPros);
+
+      for(let data of sPros){
+        let urlentity:UrlEntity = new UrlEntity();
+        urlentity.key = data.yk;
+        urlentity.key = data.yv;
+        this.urlLs.set(data.yk,urlentity);
+      }
+    })
+  }
+
+  //获取url
+  getRestFulUrl(key: string): UrlEntity {
+    return this.urlLs.get(key);
   }
 
 
@@ -18,7 +46,7 @@ export class RestFulConfig {
   // private static REQUEST_URL: string = "http://192.168.99.31:8080/gtd";//连接本地数据库
   // private static REQUEST_URL: UrlEntity = new UrlEntity("http://192.168.0.176:8080/gtd",false);//连接本地数据库
   // private static REQUEST_URL: UrlEntity = new UrlEntity("http://192.168.99.21:8080/gtd",false);//连接本地数据库
-   private static REQUEST_URL: UrlEntity = new UrlEntity("https://www.guobaa.com/gtd",false);
+  // private static REQUEST_URL: UrlEntity = new UrlEntity("https://www.guobaa.com/gtd",false);
 
   /* RabbitMq WebSocket */
    public static RABBITMQ_WS_URL: string = "wss://www.guobaa.com/ws";
@@ -132,4 +160,27 @@ class RestFulHeader{
   di:string  ="４";//设备ID
   ai:string ="５";//帐户ID
   dt:string  = "６";//设别类型
+}
+
+
+export class UrlEntity {
+  private _url: string;
+  private _key: string;
+
+
+  get url(): string {
+    return this._url;
+  }
+
+  set url(value: string) {
+    this._url = value;
+  }
+
+  get key(): string {
+    return this._key;
+  }
+
+  set key(value: string) {
+    this._key = value;
+  }
 }

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {RestfulClient} from "./restful.client";
-import {UrlEntity, UrlUntil} from "./url.restful";
+import {RestFulConfig, UrlEntity} from "../config/restful.config";
 
 
 /**
@@ -8,14 +8,14 @@ import {UrlEntity, UrlUntil} from "./url.restful";
  */
 @Injectable()
 export class AuthRestful {
-  constructor(private request: RestfulClient, private urlUntil: UrlUntil) {
+  constructor(private request: RestfulClient, private config: RestFulConfig) {
   }
 
   // 短信登录 SML
   loginbycode(body: any): Promise<any> {
 
     return new Promise((resolve, reject) => {
-      let url: UrlEntity = this.urlUntil.getRestFulUrl("SML");
+      let url: UrlEntity = this.config.getRestFulUrl("SML");
       this.request.post(url, body).then(data => {
 
         //处理返回结果
@@ -33,7 +33,7 @@ export class AuthRestful {
   loginbypass(body: any): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      let url: UrlEntity = this.urlUntil.getRestFulUrl("PL");
+      let url: UrlEntity = this.config.getRestFulUrl("PL");
       this.request.post(url, body).then(data => {
 
         //处理返回结果
@@ -46,8 +46,5 @@ export class AuthRestful {
       })
     });
   }
-
-);
-}
 
 }
