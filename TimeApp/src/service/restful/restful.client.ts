@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { DataConfig } from "../../app/data.config";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import { HTTP } from "@ionic-native/http";
-import {UrlEntity} from "../../entity/url.entity";
 import {RestFulConfig} from "./restful.config";
+import {UrlEntity} from "./url.restful";
 
 /**
  * 基础resful请求
