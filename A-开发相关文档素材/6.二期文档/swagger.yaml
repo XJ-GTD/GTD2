@@ -579,15 +579,18 @@ paths:
                     description: 备份时间戳
         '405':
           description: Invalid input
+      security:
+      - mwxing_auth:
+        - "any"
   /ias/starter/audio:
     post:
       tags:
-      - inteligence service
-      summary: "智能音频语音服务"
-      description: ""
-      produces: 
+        - inteligence service
+      summary: 智能音频语音服务
+      description: ''
+      produces:
         - application/json
-      parameters: 
+      parameters:
         - name: lt
           in: header
           type: string
@@ -649,12 +652,12 @@ paths:
   /ias/starter/text:
     post:
       tags:
-      - inteligence service
-      summary: "智能文本语音服务"
-      description: ""
-      produces: 
+        - inteligence service
+      summary: 智能文本语音服务
+      description: ''
+      produces:
         - application/json
-      parameters: 
+      parameters:
         - name: lt
           in: header
           type: string
@@ -716,14 +719,14 @@ paths:
   /aup/dologin:
     post:
       tags:
-      - account service
-      summary: "帐户登录"
-      description: ""
+        - account service
+      summary: 帐户登录
+      description: ''
       consumes:
         - application/json
-      produces: 
+      produces:
         - application/json
-      parameters: 
+      parameters:
         - name: body
           in: body
           description: 帐户登录请求数据
@@ -758,14 +761,14 @@ paths:
   /aup/doregister:
     post:
       tags:
-      - account service
-      summary: "帐户注册"
-      description: ""
+        - account service
+      summary: 帐户注册
+      description: ''
       consumes:
         - application/json
-      produces: 
+      produces:
         - application/json
-      parameters: 
+      parameters:
         - name: body
           in: body
           description: 帐户注册请求数据
@@ -803,14 +806,14 @@ paths:
   /aup/verifycode:
     post:
       tags:
-      - account service
-      summary: "发送短信验证码"
-      description: ""
+        - account service
+      summary: 发送短信验证码
+      description: ''
       consumes:
         - application/json
-      produces: 
+      produces:
         - application/json
-      parameters: 
+      parameters:
         - name: body
           in: body
           description: 短信验证码发送请求数据
@@ -833,15 +836,15 @@ paths:
                 type: string
               data:
                 type: object
-  /aup/user/{unionid}:
+  '/aup/user/{unionid}':
     get:
       tags:
-      - account service
-      summary: "取得帐户信息"
-      description: ""
-      produces: 
+        - account service
+      summary: 取得帐户信息
+      description: ''
+      produces:
         - application/json
-      parameters: 
+      parameters:
         - name: unionid
           in: path
           type: string
@@ -861,12 +864,12 @@ paths:
                 type: object
     put:
       tags:
-      - account service
-      summary: "更新用户信息(包括密码)"
-      description: ""
-      produces: 
+        - account service
+      summary: 更新用户信息(包括密码)
+      description: ''
+      produces:
         - application/json
-      parameters: 
+      parameters:
         - name: unionid
           in: path
           type: string
@@ -887,8 +890,11 @@ paths:
                 description: 密码
               sex:
                 type: string
-                enum: ['0', '1', '2']
-                description: 性别 0 未知, 1 男性, 2 女性
+                enum:
+                  - '0'
+                  - '1'
+                  - '2'
+                description: '性别 0 未知, 1 男性, 2 女性'
               avatar:
                 type: string
                 description: 头像
@@ -920,12 +926,12 @@ paths:
   /aup/api/access_token:
     get:
       tags:
-      - account service
-      summary: "登录令牌获取"
-      description: ""
-      produces: 
+        - account service
+      summary: 登录令牌获取
+      description: ''
+      produces:
         - application/json
-      parameters: 
+      parameters:
         - name: appid
           in: query
           type: string
@@ -969,12 +975,12 @@ paths:
   /aup/api/refresh_token:
     get:
       tags:
-      - account service
-      summary: "刷新登录令牌"
-      description: ""
-      produces: 
+        - account service
+      summary: 刷新登录令牌
+      description: ''
+      produces:
         - application/json
-      parameters: 
+      parameters:
         - name: appid
           in: query
           type: string
@@ -1013,12 +1019,12 @@ paths:
   /aup/api/userinfo:
     get:
       tags:
-      - account service
-      summary: "获取帐户信息"
-      description: ""
-      produces: 
+        - account service
+      summary: 获取帐户信息
+      description: ''
+      produces:
         - application/json
-      parameters: 
+      parameters:
         - name: openid
           in: query
           type: string
@@ -1083,6 +1089,14 @@ definitions:
         type: string
       mpn:
         type: string
+securityDefinitions:
+  mwxing_auth:
+    type: "oauth2"
+    authorizationUrl: "https://www.guobaa.com/auo/login?appid=d3d3Lmd1b2JhYS5jb20"
+    tokenUrl: https://www.guobaa.com/auo/api/access_token
+    flow: "accessCode"
+    scopes:
+      any: "do anythings in your account"
 externalDocs:
   description: Find out more about Swagger
   url: 'http://swagger.io'
