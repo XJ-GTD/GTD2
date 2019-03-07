@@ -16,6 +16,8 @@ tags:
   description: "日程推送"
 - name: "black"
   description: "黑名单"
+- name: "sms"
+  description: "短信接口"
 schemes:
 - "https"
 - "http"
@@ -555,7 +557,53 @@ paths:
                 type: "object"
                     
         405:
-          description: "Invalid input"           
+          description: "Invalid input"
+  /sms/send:
+    post:
+      tags:
+      - "sms"
+      summary: "短信发送接口"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "platformType"
+        in: "query"
+        type: "string"
+        description: "平台"
+        required: false
+      - name: "mobile"
+        in: "query"
+        type: "string"
+        description: "手机号"
+        required: true
+      - name: "sendType"
+        in: "query"
+        type: "string"
+        description: "模板ID  0:验证码   1:日程共享发送未注册"
+        required: true
+      - name: "sendContent"
+        in: "header"
+        type: "string"
+        description: "发送内容  sendType=0是改内容为超时时间"
+        required: false
+      responses:
+        200:
+          description: "获取黑名单信息成功"
+          schema:
+            type: "object"
+            properties:
+              rc:
+                type: "integer"
+              rm:
+                type: "string"
+              d:
+                type: "object"
+                    
+        405:
+          description: "Invalid input" 
 definitions:
   Agenda:
     type: "object"

@@ -53,7 +53,8 @@ export class STbl extends BaseTbl implements ITbl{
     return this._execT(sq);
   }
 
-  slT(pro:SPro):Promise<any> {
+  slT(pro:SPro):Promise<Array<SPro>>
+  {
     let sq='select * from  GTD_S where  1=1 ';
     if(pro.st!=null){
       sq=sq+' and st="' + pro.st +'"';
@@ -97,7 +98,7 @@ export class STbl extends BaseTbl implements ITbl{
 
 }
 
-class SPro{
+export class SPro{
   private _si: string;
   private _st: string;
   private _stn: string;

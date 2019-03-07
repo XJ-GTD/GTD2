@@ -1,8 +1,4 @@
 import { Injectable } from '@angular/core';
-
-import { AppConfig } from "../../app/app.config";
-import { UtilService } from "../util-service/util.service";
-import { BsRestful } from "./bs-restful";
 import {RestfulClient} from "./restful.client";
 
 
