@@ -13,7 +13,7 @@ public class BaseUtil {
 	 * @param inDto
 	 * @return
 	 */
-	public static AgdAgendaContacts inAgdToAgd(AgdContactsDto inDto){
+	public static AgdAgendaContacts dtoToContacts(AgdContactsDto inDto){
 		AgdAgendaContacts agd = new AgdAgendaContacts();
 		agd.setAccountId(inDto.getAi()); //联系人账户ID
 		agd.setRelAgendaId(inDto.getRi());//关联日程主键
@@ -22,6 +22,21 @@ public class BaseUtil {
 		agd.setPhone(inDto.getMpn());//电话
 		return agd;
 	}
+	/**
+	 * 日程入参类转日程实体类
+	 * @param agd
+	 * @param inDto
+	 * @return
+	 */
+	public static AgdContactsDto AgdToContactsDto(AgdAgendaContacts agd){
+		AgdContactsDto inDto = new AgdContactsDto();
+		inDto.setAi(agd.getAccountId()); //联系人账户ID
+		inDto.setRi(agd.getRelAgendaId());//关联日程主键
+		inDto.setCi(agd.getContactsId());//联系人ID
+		inDto.setN(agd.getContactsName());//名称
+		inDto.setMpn(agd.getPhone());//电话
+		return inDto;
+	}
 	
 	/**
 	 * 日程入参类转日程实体类
@@ -29,7 +44,7 @@ public class BaseUtil {
 	 * @param inDto
 	 * @return
 	 */
-	public static AgdAgenda inAgdToAgd(AgdAgendaDto inDto){
+	public static AgdAgenda dtoAgdToAgd(AgdAgendaDto inDto){
 		AgdAgenda agd = new AgdAgenda();
 		agd.setAgendaId(inDto.getAi()); //日程主键
 		agd.setRelAgendaId(inDto.getRai());//关联日程主键
@@ -41,5 +56,25 @@ public class BaseUtil {
 		agd.setRemindFlag(inDto.getAa());//提醒方式
 		agd.setRemarks(inDto.getAm());//备注
 		return agd;
+	}
+	
+	/**
+	 * 日程入参类转日程实体类
+	 * @param agd
+	 * @param inDto
+	 * @return
+	 */
+	public static AgdAgendaDto agdToDtoAgd(AgdAgenda agd){
+		AgdAgendaDto inDto = new AgdAgendaDto();
+		inDto.setAi(agd.getAgendaId()); //日程主键
+		inDto.setRai(agd.getRelAgendaId());//关联日程主键
+		inDto.setAt(agd.getTitle());//标题
+		inDto.setAdt(agd.getAgendaDate());//时间
+		inDto.setAr(agd.getRepeatType()); //重复
+		inDto.setFc(agd.getCreaterId());//来自于谁（创建人）
+		inDto.setAp(agd.getPlanFlag()); //计划
+		inDto.setAa(agd.getRemindFlag());//提醒方式
+		inDto.setAm(agd.getRemarks());//备注
+		return inDto;
 	}
 }

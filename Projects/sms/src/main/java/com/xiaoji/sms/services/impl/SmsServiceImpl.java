@@ -14,8 +14,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,7 @@ import com.xiaoji.sms.util.TimerUtil;
 @Service
 public class SmsServiceImpl implements ISmsService {
 
-    private Logger logger = LogManager.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(SmsServiceImpl.class);
 
     @Value("${submail.messageXsend.business.time}")
     private String TIME;
@@ -60,15 +60,16 @@ public class SmsServiceImpl implements ISmsService {
      * @return
      */
     @Override
-    public int getAuthCode(String mobile,int timeOut) {
+    public int getAuthCode(String mobile,String code) {
 
         try {
             JSONObject vars = new JSONObject();
 
-            String code = new Random().nextInt(10) + String.valueOf((new Random().nextInt(89999)) + 10000);;
+//            String code = new Random().nextInt(10) + String.valueOf((new Random().nextInt(89999)) + 10000);;
+//          vars.put("timeOut", timeOut);
             vars.put("code", code);
             vars.put("time", TIME);
-            vars.put("timeOut", timeOut);
+
             requestSubMail(mobile, PROJECT_AUTH_CODE, vars);
             logger.debug("======== 发送成功 短信验证码：[" + code + "] 手机号：[" + mobile + "] =========");
         } catch (Exception e) {
@@ -124,8 +125,9 @@ public class SmsServiceImpl implements ISmsService {
     /**
      * 请求赛邮短信推送API
      * @param to
+     * @throws Exception 
      */
-    private void requestSubMail(String to, String project, JSONObject vars) {
+    private boolean requestSubMail(String to, String project, JSONObject vars) throws Exception {
 
         TreeMap<String, Object> requestData = new TreeMap<String, Object>();
 
@@ -159,25 +161,26 @@ public class SmsServiceImpl implements ISmsService {
                 JSONObject jsonStr = JSONObject.parseObject(EntityUtils.toString(httpEntity, "UTF-8"));
                 String status = jsonStr.getString("status");
                 if ("success".equals(status)) {
-                    logger.debug("赛邮短信接口请求成功");
-                    if (project.equals(PROJECT_AUTH_CODE)) {
-                    	//验证码超时时间
-                    	long timeOut = System.currentTimeMillis();
-                    	if(vars.getIntValue("timeOut") !=0){
-                    		timeOut+=vars.getIntValue("timeOut");
-                    	}else{
-                    		timeOut+=60 * 1000 * 60;
-                    	}
-                        TimerUtil.putCache(to, new TimerDto(to, vars.get("code"), timeOut));
-                    }
+                    logger.debug("--------- 赛邮短信接口请求成功 ------------:"+jsonStr.toString());
+//                    if (project.equals(PROJECT_AUTH_CODE)) {
+//                    	//验证码超时时间
+//                    	long timeOut = System.currentTimeMillis();
+//                    	if(vars.getIntValue("timeOut") !=0){
+//                    		timeOut+=vars.getIntValue("timeOut");
+//                    	}else{
+//                    		timeOut+=1 * 1000 * 60;
+//                    	}
+//                        TimerUtil.putCache(to, new TimerDto(to, vars.get("code"), timeOut));
+//                    }
+                    return true;
                 } else {
                 	logger.debug("DEBUG++ " + jsonStr);
                     logger.error("赛邮短信接口请求报错");
                 }
             }
         } catch(IOException e){
-//            throw new ServiceException();
+            throw new Exception();
         }
-
+        return false;
     }
 }
