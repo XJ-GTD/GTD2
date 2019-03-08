@@ -51,8 +51,8 @@ public class XjBlacklistServiceImpl implements IXjBlacklistService{
 		return false;
 	}
 
-	public List<BlaBlacklist> findAll() {
-		List<BlaBlacklist> list = xjBlackRep.findAll();
+	public List<BlaBlacklist> findByRelId(String relAccountId) {
+		List<BlaBlacklist> list = xjBlackRep.findByRelId(relAccountId);
 		return list;
 	}
 

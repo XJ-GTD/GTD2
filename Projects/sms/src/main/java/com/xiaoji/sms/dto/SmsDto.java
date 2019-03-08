@@ -4,7 +4,7 @@ public class SmsDto {
 	private String platformType; //平台 
 	private String mobile; //手机号 
 	private String sendType; //模板ID  0:验证码   1:日程共享发送未注册用户下载App邀请
-	private String sendContent; //发送内容  sendType=0是改内容为超时时间
+	private String sendContent; //发送内容   sendType=0发送内容为验证码
 	public String getPlatformType() {
 		return platformType;
 	}
