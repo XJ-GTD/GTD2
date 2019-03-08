@@ -12,6 +12,7 @@ import {STbl} from "./tbl/s.tbl";
 import {UTbl} from "./tbl/u.tbl";
 import {YTbl} from "./tbl/y.tbl";
 import {SqliteExec} from "../util-service/sqlite.exec";
+import {UtilService} from "../util-service/util.service";
 
 /**
  * create by on 2019/3/5
@@ -24,7 +25,7 @@ export class SqliteInit {
               private ctbl: CTbl, private dtbl: DTbl, private ebtl: ETbl,
               private gtbl: GTbl, private jhtbl: JhTbl, private stbl: STbl,
               private sptbl: SpTbl, private utbl: UTbl, private ytbl: YTbl,
-              private sqlexec: SqliteExec) {
+              private sqlexec: SqliteExec,private util: UtilService) {
   }
 
   /**
@@ -118,23 +119,62 @@ export class SqliteInit {
   initData(): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      /*console.log("-------------------BaseSqlite initData table  data to start ------------------")
+      console.log("-------------------BaseSqlite initData table  data to start ------------------")
 
-      let stbl = new STbl();
+      //服务器URL数据
+      let urlList : Array<string>;
+      let s1 :Array<Object>;
+      for (var j = 0, len = s1.length; j < len; j++) {
+        let stbl = new STbl();
+        stbl.si = this.util.getUuid();
+        stbl.st = "URL";
+        stbl.stn = "URL";
+        stbl.sn = "";
+        stbl.yk ="";
+        stbl.yv ="";
+        urlList.push(stbl.inT());
+      }
+
+      //服务器 语音数据
+      let speechList : Array<string>;
+      let s2 :Array<Object>;
+      for (var j = 0, len = s2.length; j < len; j++) {
+        let stbl = new STbl();
+        stbl.si = this.util.getUuid();
+        stbl.st = "speech";
+        stbl.stn = "语音";
+        stbl.sn = "";
+        stbl.yk ="";
+        stbl.yv ="";
+        speechList.push(stbl.inT());
+      }
+
+      //服务器 计划数据
+      let jhList : Array<string>;
+      let jh :Array<Object>;
+      for (var j = 0, len = jh.length; j < len; j++) {
+        let jhtbl = new JhTbl();
+        jhtbl.ji = "";
+        jhtbl.jn = "";
+        jhtbl.jg = "";
+        jhtbl.jc = "";
+        jhtbl.jt ="1";
+        jhList.push(jhtbl.inT());
+      }
+
       //web端
-      this.sqlexec.save(u).then(data => {
-        console.log("-------------------BaseSqlite initData GTD_A to table data: " + JSON.stringify(data))
-        return this.save(fi);
+      this.sqlexec.batExecSql(urlList).then(data => {
+        console.log("-------------------init url data GTD_S  ok: " + JSON.stringify(data))
+        return this.sqlexec.batExecSql(speechList);
       }).then(data => {
-        console.log("-------------------BaseSqlite initData GTD_A to table data: " + JSON.stringify(data))
-        return this.save(syv);
+        console.log("-------------------init speech data GTD_S ok: " + JSON.stringify(data))
+        return this.sqlexec.batExecSql(jhList);
       }).then(data => {
-        console.log("-------------------BaseSqlite initData GTD_FI to table data: " + JSON.stringify(data))
         resolve(data);
       }).catch(e => {
         console.error("------------------BaseSqlite createTable: " + e.message)
         reject(e);
-      })*/
+      })
 
 
     })
