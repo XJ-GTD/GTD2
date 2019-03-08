@@ -1,18 +1,31 @@
 
 import {SPro, STbl} from "../sqlite/tbl/s.tbl";
+import {APro, ATbl} from "../sqlite/tbl/a.tbl";
 
 export class RestFulConfig {
 
 
   private urlLs: Map<string, UrlEntity>;
 
-  constructor(private stbl: STbl) {
+  constructor(private stbl: STbl,private atbl: ATbl,) {
     this.init();
   }
 
 
-  createHeader():RestFulHeader{
-    return new RestFulHeader();
+  async createHeader():Promise<RestFulHeader>{
+    let apro = new APro();
+    let header = new RestFulHeader();
+    apro = await this.atbl.sloT();
+    //帐户ID
+    header.ai = apro.aI;
+    //设备ID
+    header.di = apro.aE;
+    //设别类型
+    header.dt = "";
+    //登录码
+    header.lt = apro.aT;
+
+    return header;
   }
 
   //初始化全局 restful Url 信息
@@ -154,12 +167,12 @@ export class RestFulConfig {
 
 class RestFulHeader{
   "Content-Type":string = "application/json";
-  lt:string = "１";//登录码
-  pi:string = "２";//产品ID
-  pv:string ="３";//产品版本
-  di:string  ="４";//设备ID
-  ai:string ="５";//帐户ID
-  dt:string  = "６";//设别类型
+  lt:string = "";//登录码
+  pi:string = "cn.sh.com.xj.timeApp";//产品ID
+  pv:string ="v1";//产品版本
+  di:string  ="";//设备ID
+  ai:string ="";//帐户ID
+  dt:string  = "";//设别类型
 }
 
 

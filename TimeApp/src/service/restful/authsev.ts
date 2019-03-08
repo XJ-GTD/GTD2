@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {RestfulClient} from "./restful.client";
+import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 
 

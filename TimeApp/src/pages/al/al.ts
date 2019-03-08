@@ -74,20 +74,23 @@ export class AlPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AlPage');
-    this.alService.checkAllPermissiions().then(data=>{
+    this.alService.checkAllPermissions().then(data=>{
       this.text="权限申请完成,初始化创建数据库开始";
       //初始化创建数据库
       this.increment(10);
-       this.alService.a();
+      return this.alService.initDataBase();
     }).then(data=>{
-      return this.alService.b();
+      this.increment(10);
+      //判断是否初始化完成
+      return this.alService.initComplete();
     }).then(data=>{
+      this.increment(10);
       if (!data){
         return
       }
       return data;
     }).then(data=>{
-
+      this.increment(10);
     });
     for (let prop in this._ease) {
       if (prop.toLowerCase().indexOf('ease') > -1) {
