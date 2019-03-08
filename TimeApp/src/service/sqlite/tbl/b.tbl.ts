@@ -5,7 +5,6 @@ import {ITbl} from "./itbl";
 
 
 export class BTbl implements ITbl{
-
   private _pwI: string="";
   private _ran: string="";
   private _ranpy: string="";

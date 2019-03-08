@@ -79,21 +79,11 @@ export class AlPage {
         this.text="帮您初始化系统";
         return  this.alService.createSystemData();
       };
-    }).then(data=>{
-      this.increment(10);
-      this.text=data;
-      return this.alService.connWebSocket();
     }).then(data => {
       this.increment(10);
-      this.text=data;
-      return this.alService.setSetting();
-    }).then(data => {
-      this.increment(10);
-      this.text=data;
       return this.alService.checkUserInfo();
     }).then(data=>{
       this.increment(10);
-      this.text=data;
       console.log("al " +data.rows.length);
       if(data.rows.length == 0){
         this.rootPage = PageConfig._LP_PAGE;

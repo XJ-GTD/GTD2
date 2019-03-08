@@ -541,39 +541,43 @@ public class MainVerticle extends AbstractVerticle {
 			return;
 		}
 
+		String password = req.getString("userpassword");
 		String verifykey = req.getString("verifykey");
-		
-		if (verifykey == null || StringUtils.isEmpty(verifykey)) {
-			ret.put("errcode", "-1");
-			ret.put("errmsg", "验证码key参数不存在, 非法请求!");
-
-			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
-			return;
-		}
-		
 		String verifycode = req.getString("verifycode");
 		
-		if (verifycode == null || StringUtils.isEmpty(verifycode)) {
-			ret.put("errcode", "-1");
-			ret.put("errmsg", "验证码key参数不存在, 非法请求!");
-
-			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
-			return;
-		}
-		
-		String password = req.getString("userpassword");
-		System.out.println(DigestUtils.md5Hex(password));
-		if (password == null || StringUtils.isEmpty(password)) {
-			ret.put("errcode", "-1");
-			ret.put("errmsg", "密码参数不存在, 非法请求!");
-
-			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
-			return;
+		if (StringUtils.isEmpty(password)) {
+			if (verifykey == null || StringUtils.isEmpty(verifykey)) {
+				ret.put("errcode", "-1");
+				ret.put("errmsg", "验证码key参数不存在, 非法请求!");
+	
+				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+				return;
+			}
+			
+			
+			if (verifycode == null || StringUtils.isEmpty(verifycode)) {
+				ret.put("errcode", "-1");
+				ret.put("errmsg", "验证码key参数不存在, 非法请求!");
+	
+				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+				return;
+			}
+		} else {
+			System.out.println(DigestUtils.md5Hex(password));
+			if (password == null || StringUtils.isEmpty(password)) {
+				ret.put("errcode", "-1");
+				ret.put("errmsg", "密码参数不存在, 非法请求!");
+	
+				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+				return;
+			}
 		}
 		
 		String state = req.getString("state", "");
 
-		mongodb.findOne("aup_verifycode_cache", new JsonObject()
+		// 短信登录
+		if (StringUtils.isEmpty(password)) {
+			mongodb.findOne("aup_verifycode_cache", new JsonObject()
 				.put("verifykey", verifykey)
 				.put("verifyphone", phoneno)
 				.put("verifycode", verifycode), new JsonObject(), findOne -> {
@@ -588,8 +592,7 @@ public class MainVerticle extends AbstractVerticle {
 								
 								mongodb.findOne("aup_user_info",
 										new JsonObject()
-										.put("openid", phoneno)
-										.put("password", DigestUtils.md5Hex(password)),
+										.put("openid", phoneno),
 										new JsonObject(),
 										findOneUser -> {
 											if (findOneUser.succeeded()) {
@@ -653,7 +656,57 @@ public class MainVerticle extends AbstractVerticle {
 						ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 					}
 				});
-		
+		} else {
+
+			// 密码登录
+			mongodb.findOne("aup_user_info",
+				new JsonObject()
+				.put("openid", phoneno)
+				.put("password", DigestUtils.md5Hex(password)),
+				new JsonObject(),
+				findOneUser -> {
+					if (findOneUser.succeeded()) {
+						JsonObject userinfo = findOneUser.result();
+						
+						if (userinfo != null && !userinfo.isEmpty()) {
+
+							userinfo.put("_id", Base64.encodeBase64URLSafeString(UUID.randomUUID().toString().getBytes()));
+							mongodb.save("aup_user_access", userinfo, insert -> {
+								if (insert.succeeded()) {
+
+									JsonObject access = new JsonObject()
+											.put("code", userinfo.getString("_id"))
+											.put("openid", userinfo.getString("openid"))
+											.put("unionid", userinfo.getString("unionid"))
+											.put("state", state);
+
+									mongodb.save("aup_user_access", new JsonObject().mergeIn(req.copy()).mergeIn(userinfo).mergeIn(access), save -> {});
+									ret.mergeIn(access);
+									ret.put("data", access);
+									
+									ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+								} else {
+									ret.put("errcode", "-3");
+									ret.put("errmsg", "服务器异常, 用户登录失败!");
+
+									ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+								}
+							});
+							
+						} else {
+							ret.put("errcode", "10031");
+							ret.put("errmsg", "密码错误或用户不存在, 登录失败!");
+
+							ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+						}
+					} else {
+						ret.put("errcode", "-3");
+						ret.put("errmsg", "服务器异常, 用户登录失败!");
+
+						ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+					}
+				});
+		}
 	}
 	
 	private void login(RoutingContext ctx) {

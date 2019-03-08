@@ -5,8 +5,6 @@ import {ITbl} from "./itbl";
 
 
 export class DTbl implements ITbl {
-
-
   private _pI: string="";
   private _sI: string="";
   private _sT: string="";
