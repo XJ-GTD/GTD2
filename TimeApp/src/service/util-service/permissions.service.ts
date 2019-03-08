@@ -31,7 +31,7 @@ export class PermissionsService {
   constructor(
     private androidPermissions: AndroidPermissions
   ) {
-    console.debug("androidPermissions request init");
+    console.debug("android Permissions request init");
 
   }
 
