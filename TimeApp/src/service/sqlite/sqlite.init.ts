@@ -13,7 +13,7 @@ import {UTbl} from "./tbl/u.tbl";
 import {YTbl} from "./tbl/y.tbl";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {UtilService} from "../util-service/util.service";
-import {Apil, SyncRestful} from "../restful/syncsev";
+import {SyncRestful} from "../restful/syncsev";
 
 /**
  * create by on 2019/3/5
