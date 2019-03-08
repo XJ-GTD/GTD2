@@ -7,6 +7,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.MessageConsumer;
+import io.vertx.core.eventbus.MessageProducer;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -122,7 +123,7 @@ public class MainVerticle extends AbstractVerticle {
 						
 						System.out.println("User info fetched with " + openid);
 						System.out.println(userinfo.encode());
-						String unionId = userinfo.getString("unionId");
+						String unionId = userinfo.getJsonObject("data").getString("unionid");
 						
 						if (unionId == null || StringUtils.isEmpty(unionId)) {
 							System.out.println("announce by sms to " + openid);
@@ -144,10 +145,17 @@ public class MainVerticle extends AbstractVerticle {
 				getUserInfo(future, openid);
 			}
 		}
+		
+		JsonObject nextctx = new JsonObject().put("context", new JsonObject().put("complete", new JsonObject()));
+		
+		MessageProducer<JsonObject> producer = bridge.createProducer(next);
+		producer.send(new JsonObject().put("body", nextctx));
+		System.out.println("Consumer " + consumer + " send to [" + next + "] result [" + nextctx.encode() + "]");
+
 	}
 
 	private void sendMQMessages(String queuename, JsonObject content) {
-		rabbitmq.basicPublish("", queuename, new JsonObject().put("body", content), resultHandler -> {
+		rabbitmq.basicPublish("", queuename, new JsonObject().put("body", content.encode()), resultHandler -> {
 			if (resultHandler.succeeded()) {
 				System.out.println("Send rabbit mq message successed.");
 			} else {
