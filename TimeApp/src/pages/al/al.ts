@@ -67,12 +67,6 @@ export class AlPage {
     console.log('ionViewDidLoad AlPage');
 
     console.log("al :: 权限申请开始");
-    this.syncRestful.initData().then(data=>{
-      console.log("********************");
-      console.log(data);
-      console.log("********************");
-    })
-
     this.rootPage = PageConfig._M_PAGE;
     this.alService.checkAllPermissions().then(data=>{
       console.log("al :: 权限申请完成");

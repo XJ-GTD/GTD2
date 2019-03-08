@@ -93,7 +93,7 @@ export class SqliteExec {
    * @returns {Promise<T>}
    */
   getOne(itbl: ITbl) {
-    return this.execSql(itbl.sloT())
+    return this.execSql(itbl.sloT());
   }
 
   /**
