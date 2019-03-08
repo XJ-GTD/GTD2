@@ -2,30 +2,46 @@ import {Injectable} from "@angular/core";
 import {PageConfig} from "../../app/page.config";
 import {DataConfig} from "../../app/data.config";
 import {PermissionsService} from "../../service/util-service/permissions.service";
+import {SyncService} from "../../service/sync.service";
+import {WebsocketService} from "../../service/util-service/websocket.service";
 
 @Injectable()
 export class AlService {
 
 
-  constructor(private permissionsService: PermissionsService,) {
+  constructor(private permissionsService: PermissionsService,
+                private webSocketService: WebsocketService,
+                private syncService:SyncService,
+              ) {
   }
 
   //权限申请
-  checkAllPermissiions():Promise<any>{
+  checkAllPermissions():Promise<any>{
     return this.permissionsService.checkAllPermissiions();
 }
 
   //数据库连接
-
-  a():Promise<any>{
-
+  initDataBase():Promise<any>{
+    //创建或链接数据库
+    return this.baseSqlLite.createDb();
   }
 
   //判断是否初始化完成
+  /*initComplete():Promise<any>{
+
+  }*/
+
 
   //创建数据库表,初始化系统数据,初始化数据完成写入
+  initVariables():Promise<any>{
+    //初始化生成数据
+    return this.baseSqlLite.initData()
+  }
 
-  //
+  //连接webSocket
+  /*initWebSocket():Promise<any>{
+    return this.webSocketService.connect(DataConfig.uInfo.aQ);
+  }*/
 
   //
 
