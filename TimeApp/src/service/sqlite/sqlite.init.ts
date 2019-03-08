@@ -120,8 +120,7 @@ export class SqliteInit {
 
       this.syncRestful.initData().then(data => {
         //服务器URL数据
-        let urlList: Array<string>;
-        ;
+        let urlList: Array<string> = [];
         for (let apil of data.apil) {
           let stbl = new STbl();
           stbl.si = this.util.getUuid();
