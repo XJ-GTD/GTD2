@@ -2,7 +2,6 @@ import {Injectable} from "@angular/core";
 import {PermissionsService} from "../../service/util-service/permissions.service";
 import {SqliteConfig} from "../../service/config/sqlite.config";
 import {SqliteInit} from "../../service/sqlite/sqlite.init";
-import {STbl} from "../../service/sqlite/tbl/s.tbl";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 
 @Injectable()
@@ -48,15 +47,19 @@ export class AlService {
 
 
   //创建数据库表,初始化系统数据,初始化数据完成写入
-  createTables():Promise<any>{
-    return this.sqlLiteInit.createTables().then(data=>{
-      return this.initComplete()
+  createTables():Promise<boolean>{
+    return new Promise((resolve, reject) => {
+      this.sqlLiteConfig.generateDb().then(data=>{
+        return this.sqlLiteInit.createTables();
+      }).then(data=>{
+        return this.sqlLiteInit.initData();
+      }).then(data=>{
+        resolve(true);
+      }).catch(e=>{
+        reject(false);
+      })
     });
-  }
 
-  //初始化系统数据
-  initData():Promise<any>{
-    return this.sqlLiteInit.initData();
   }
 
   //连接webSocket

@@ -73,15 +73,10 @@ export class AlPage {
       this.text="权限申请完成";
       this.increment(10);
       console.log("al :: 初始化创建数据库");
-      return this.alService.initDataBase();
-    }).then(data=>{
-      console.log("al :: 创建数据库表");
       return this.alService.createTables();
     }).then(data=>{
-      console.log("al :: 初始化系统数据");
-      return this.alService.initData();
-    }).then(data=>{
       // TODO 判断是否初始化完成
+      console.log("11111111111"+data);
       this.text="al :: 判断是否初始化完成";
       if (!data){
         return
