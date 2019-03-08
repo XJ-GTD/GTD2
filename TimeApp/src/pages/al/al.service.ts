@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {PermissionsService} from "../../service/util-service/permissions.service";
 import {SqliteConfig} from "../../service/config/sqlite.config";
+import {SqliteInit} from "../../service/sqlite/sqlite.init";
 
 @Injectable()
 export class AlService {
@@ -8,6 +9,7 @@ export class AlService {
 
   constructor(private permissionsService: PermissionsService,
                 private sqlLiteConfig:SqliteConfig,
+                //private sqlLiteInit:SqliteInit,
               ) {
   }
 
@@ -28,10 +30,16 @@ export class AlService {
 
 
   //创建数据库表,初始化系统数据,初始化数据完成写入
-  /*initVariables():Promise<any>{
-    //初始化生成数据
-    return this.baseSqlLite.initData()
-  }*/
+  initVariables():Promise<any>{
+    //创建数据库
+    //this.sqlLiteConfig.generateDb();
+    //创建/更新表
+    //this.sqlLiteInit.createTables();
+    //初始化表数据
+    //this.sqlLiteInit.initData();
+
+    return this.sqlLiteConfig.generateDb();
+  }
 
   //连接webSocket
   /*initWebSocket():Promise<any>{
