@@ -33,6 +33,7 @@ import {AibutlerRestful} from "../service/restful/aibutlersev";
 import {RestfulClient} from "../service/util-service/restful.client";
 import {RestFulConfig} from "../service/config/restful.config";
 import {SyncRestful} from "../service/restful/syncsev";
+import {SqliteInit} from "../service/sqlite/sqlite.init";
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import {SyncRestful} from "../service/restful/syncsev";
     AibutlerRestful,
     RestfulClient,
     SyncRestful,
+    SqliteInit,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

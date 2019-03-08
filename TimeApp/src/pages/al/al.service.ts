@@ -9,7 +9,7 @@ export class AlService {
 
   constructor(private permissionsService: PermissionsService,
                 private sqlLiteConfig:SqliteConfig,
-                //private sqlLiteInit:SqliteInit,
+                private sqlLiteInit:SqliteInit,
               ) {
   }
 
@@ -30,15 +30,13 @@ export class AlService {
 
 
   //创建数据库表,初始化系统数据,初始化数据完成写入
-  initVariables():Promise<any>{
-    //创建数据库
-    //this.sqlLiteConfig.generateDb();
-    //创建/更新表
-    //this.sqlLiteInit.createTables();
-    //初始化表数据
-    //this.sqlLiteInit.initData();
+  createTables():Promise<any>{
+    return this.sqlLiteInit.createTables();
+  }
 
-    return this.sqlLiteConfig.generateDb();
+  //初始化系统数据
+  initData():Promise<any>{
+    return this.sqlLiteInit.initData();
   }
 
   //连接webSocket
