@@ -1,9 +1,13 @@
 import {ITbl} from "./itbl";
+import {UtilService} from "../../util-service/util.service";
 
 /**
  * create by on 2019/3/5
  */
 export class JhTbl  implements ITbl{
+  constructor(private util : UtilService){
+
+  }
   private _ji: string="";
   private _jn: string="";
   private _jg: string="";
@@ -116,6 +120,7 @@ export class JhTbl  implements ITbl{
   }
 
   inT():string{
+    this._ji = this.util.getUuid();
     let sq ='insert into GTD_J_H ' +
       '(  ji ,jn ,jg,jc,jt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '","'+this._jt+ '")';
 
@@ -123,6 +128,7 @@ export class JhTbl  implements ITbl{
   }
 
   rpT():string{
+    this._ji = this.util.getUuid();
     let sq ='replace into GTD_J_H ' +
       '(  ji ,jn ,jg,jc,jt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '","'+this._jt+ '")';
 

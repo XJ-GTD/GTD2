@@ -2,10 +2,13 @@
  * create by on 2019/3/5
  */
 import {ITbl} from "./itbl";
+import {UtilService} from "../../util-service/util.service";
 
 
 export class BTbl implements ITbl{
+  constructor(private util : UtilService){
 
+  }
   private _pwI: string="";
   private _ran: string="";
   private _ranpy: string="";
@@ -236,6 +239,7 @@ export class BTbl implements ITbl{
   }
 
   inT():string {
+    this._pwI = this.util.getUuid();
     let sq ='insert into GTD_B ' +
       '(  pwI ,ran ,ranpy ,rI ,hiu ,rN ,rNpy ,rC ,rF ,ot ,rel ,uI) values("'+ this._pwI+'",' +
       '"'+ this._ran+'","'+this._ranpy+ '"' +
@@ -246,6 +250,7 @@ export class BTbl implements ITbl{
   }
 
   rpT():string {
+    this._pwI = this.util.getUuid();
     let sq ='replace into GTD_B ' +
       '(  pwI ,ran ,ranpy ,rI ,hiu ,rN ,rNpy ,rC ,rF ,ot ,rel ,uI) values("'+ this._pwI+'",' +
       '"'+ this._ran+'","'+this._ranpy+ '"' +

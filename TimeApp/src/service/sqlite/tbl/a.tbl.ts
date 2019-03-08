@@ -1,10 +1,13 @@
 import {ITbl} from "./itbl";
+import {UtilService} from "../../util-service/util.service";
 
 /**
  * create by on 2019/3/5
  */
 export class ATbl implements ITbl {
+  constructor(private util : UtilService){
 
+  }
   private _aI :string="";
 
   private _aN :string="";
@@ -130,6 +133,7 @@ export class ATbl implements ITbl {
   }
 
   inT():string {
+    this._aI = this.util.getUuid();
     let sq ='insert into GTD_A ' +
       '(aI,aN,aM,aE,aT,aQ) values("'+ this._aI+'","'+ this._aN+'","'+this._aM+ '"' +
       ',"'+this._aE+ '","'+this._aT+ '","'+this._aQ+ '")';
@@ -138,6 +142,7 @@ export class ATbl implements ITbl {
   }
 
   rpT():string {
+    this._aI = this.util.getUuid();
     let sq ='replace into GTD_A ' +
       '(aI,aN,aM,aE,aT,aQ) values("'+ this._aI+'","'+ this._aN+'","'+this._aM+ '"' +
       ',"'+this._aE+ '","'+this._aT+ '","'+this._aQ+ '")';

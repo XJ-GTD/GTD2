@@ -1,11 +1,14 @@
 
 import {ITbl} from "./itbl";
+import {UtilService} from "../../util-service/util.service";
 
 /**
  * create by on 2019/3/5
  */
 export class SpTbl  implements ITbl {
+  constructor(private util : UtilService){
 
+  }
   private _spI: string="";
   private _sI: string="";
   private _spN: string="";
@@ -195,6 +198,7 @@ export class SpTbl  implements ITbl {
   }
 
   inT():string {
+    this._spI = this.util.getUuid();
     let sq ='insert into GTD_SP ' +
       '( spI ,sI ,spN ,sd ,st ,ed ,et ,ji ,bz ,sta) values("'+ this._spI+'","'+ this._sI+'","'+this._spN+ '"' +
       ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._ji+ '","'+this._bz+ '","'+this._sta+ '")';
@@ -203,6 +207,7 @@ export class SpTbl  implements ITbl {
   }
 
   rpT():string {
+    this._spI = this.util.getUuid();
     let sq ='replace into GTD_SP ' +
       '( spI ,sI ,spN ,sd ,st ,ed ,et ,ji ,bz ,sta) values("'+ this._spI+'","'+ this._sI+'","'+this._spN+ '"' +
       ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._ji+ '","'+this._bz+ '","'+this._sta+ '")';
