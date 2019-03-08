@@ -1,15 +1,18 @@
 import{Injectable}from'@angular/core';
 import {BaseTbl} from "./base.tbl";
 import {ITbl} from "./itbl";
+import {UtilService} from "../../util-service/util.service";
+import {SQLiteFactory} from "./sqlite.factory";
+import {SQLitePorter} from "@ionic-native/sqlite-porter";
 
 /**
  * create by on 2019/3/5
  */
 @Injectable()
 export class ATbl extends BaseTbl implements ITbl{
-  constructor( args ){
-
-    super( args );
+  constructor( private sqlFactory1: SQLiteFactory,private sqlitePorter1: SQLitePorter,
+               private util1:UtilService ){
+    super( sqlFactory1,sqlitePorter1,util1 );
   }
 
 
@@ -44,8 +47,8 @@ export class ATbl extends BaseTbl implements ITbl{
     return this._execSql(sq,[]);
   }
 
-  sloT(pro:APro):Promise<any> {
-    let sq='select * from GTD_A where aI = "'+ pro.aI +'"';
+  sloT():Promise<any> {
+    let sq='select * from GTD_A';
     return this._execSql(sq,[]);
   }
 
@@ -94,7 +97,7 @@ export class ATbl extends BaseTbl implements ITbl{
 
 }
 
-class APro{
+export class APro{
   private _aI :string;
 
   private _aN :string;

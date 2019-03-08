@@ -18,11 +18,14 @@ export class MyApp {
   ) {
     MenuController.registerType('scalePush', MenuScalePushType);
     this.platform.ready().then(() => {
-      //跳转页面
+
 
       //允许进入后台模式
       this.backgroundMode.enable();
-      this.nav.setRoot(PageConfig.AL_PAGE);
+      //设置返回键盘（android）
+      this.registerBackButtonAction();
+      //跳转页面
+      this.nav.setRoot(PageConfig._AL_PAGE);
     });
   }
 
