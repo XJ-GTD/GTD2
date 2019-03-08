@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import { UtilService} from "../../service/util-service/util.service";
-import {LsmService} from "../../service/lsm.service";
 import {ReturnConfig} from "../../app/return.config";
 import {PageConfig} from "../../app/page.config";
+import {RService} from "./r.service";
 
 
 /**
@@ -136,7 +136,8 @@ export class RPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private alertCtrl: AlertController,
               private utilService: UtilService,
-              private lsmService: LsmService) {
+              private rService: RService,
+  ) {
 
   }
 
@@ -154,12 +155,12 @@ export class RPage {
       this.checkBoxClickFlag=false;
       if(this.errorCode == 3 && this.checkPassword == false ){
         this.disable = true;
-        this.lsmService.sn(this.accountMobile,this.accountPassword,this.authCode).then(data =>{
+        this.rService.signup(this.accountMobile,this.accountPassword,this.authCode).then(data =>{
           console.debug("注册返回信息::" + JSON.stringify(data));
           if(data.code == 0) {
             console.log("注册成功");
             //注册成功执行登陆
-            this.lsmService.login(this.accountMobile, this.accountPassword).then(data1 => {
+            this.rService.login(this.accountMobile, this.accountPassword).then(data1 => {
               console.debug("登录返回信息::" + JSON.stringify(data));
               // 登陆成功
               if(data1.code == 0) {
@@ -176,7 +177,7 @@ export class RPage {
                           }
                         })
                       }else{
-                        this.navCtrl.setRoot(PageConfig.M_PAGE);
+                        this.navCtrl.setRoot(PageConfig._M_PAGE);
                       }
                     }
                   }]
@@ -281,7 +282,7 @@ export class RPage {
 
   sendMsg(){
     if(this.errorCode == 3){
-      this.lsmService.sc(this.accountMobile).then(data=>{
+      this.rService.sc(this.accountMobile).then(data=>{
         console.log("sc::" + data)
         let alert = this.alertCtrl.create({
           title:'提示信息',

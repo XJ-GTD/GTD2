@@ -127,6 +127,7 @@ export class YTbl implements ITbl {
   }
 
   inT(): string {
+
     let sq = 'insert into GTD_Y ' +
       '(  yi ,yt ,ytn ,yn ,yk ,yv) values("' + this._yi + '","' + this._yt + '","' + this._ytn + '"' +
       ',"' + this._yn + '","' + this._yk + '","' + this._yv + '")';
@@ -135,6 +136,7 @@ export class YTbl implements ITbl {
   }
 
   rpT(): string {
+
     let sq = 'replace into GTD_Y ' +
       '(  yi ,yt ,ytn ,yn ,yk ,yv) values("' + this._yi + '","' + this._yt + '","' + this._ytn + '"' +
       ',"' + this._yn + '","' + this._yk + '","' + this._yv + '")';

@@ -155,6 +155,17 @@ export class SqliteInit {
           urlList.push(jhtbl.inT());
         }
 
+        //服务器 用户偏好数据
+        for (let bipl of data.bipl) {
+          let ytbl = new YTbl();
+          ytbl.yi = this.util.getUuid();;
+          ytbl.yt = "";
+          ytbl.ytn = "";
+          ytbl.yk = "";
+          ytbl.yv = "";
+          urlList.push(ytbl.inT());
+        }
+
         //web端
         this.sqlexec.batExecSql(urlList).then(data => {
             resolve(data);

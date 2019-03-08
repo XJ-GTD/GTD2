@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import {AlertController, IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
-import { LsmService} from "../../service/lsm.service";
-import { UserService } from "../../service/user.service";
-import { WebsocketService } from "../../service/util-service/websocket.service";
 import { UtilService } from "../../service/util-service/util.service";
+import {LpService} from "./lp.service";
 
 /**
  * Generated class for the LpPage page.
@@ -106,10 +104,11 @@ export class LpPage {
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private paramsService: ParamsService,
-    private lsmService: LsmService,
+    /*private lsmService: LsmService,
     private webSocket: WebsocketService,
-    private userService: UserService,
-    private utilService: UtilService) {
+    private userService: UserService,*/
+    private utilService: UtilService,
+    private lpService: LpService) {
   }
 
   ionViewDidLoad() {
@@ -120,7 +119,7 @@ export class LpPage {
 
   signIn() {
     console.log("登录按钮被点击");
-    this.webSocket.close();
+    //this.webSocket.close();
     if(this.accountName == null && this.accountPassword == null){
       let toast = this.toastCtrl.create({
         message: '用户名和密码不能为空',
@@ -130,8 +129,8 @@ export class LpPage {
       toast.present();
       return;
     }
-    this.utilService.loading("登录中");
-    this.lsmService.login(this.accountName, this.accountPassword).then(data=> {
+    //this.utilService.loading("登录中");
+    this.lpService.login(this.accountName, this.accountPassword).then(data=> {
        console.log(data);
        if (data.code == 0) {
          this.webSocket.close();
