@@ -1,20 +1,11 @@
-import {UEntity} from "../entity/u.entity";
-
 /**
  * 公共配置用
  */
 export class DataConfig {
 
-  /*0游客身份，1登录*/
-  public static IL:number=0;
-  /* 判断是手机还是网页true是false不是 */
-  public static IS_MOBILE : boolean=true;
-
   /*----===== 网络状态值 =====----- */
   public static IS_NETWORK_CONNECT: boolean = true;
 
-  //用户信息
-  public static uInfo:UEntity = new UEntity();
   /**
    * 0正常进入1首次进入2无数据3更新后进入
    * @type {string}

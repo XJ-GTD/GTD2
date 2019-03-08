@@ -1,130 +1,11 @@
-import{Injectable}from'@angular/core';
-import {BaseTbl} from "./base.tbl";
-import {ITbl} from "./itbl";
-
 /**
  * create by on 2019/3/5
  */
-@Injectable()
-export class DTbl extends BaseTbl implements ITbl{
-  constructor( arg ){
-
-    super( arg );
-  }
+import {ITbl} from "./itbl";
 
 
-  cT():Promise<any> {
+export class DTbl implements ITbl {
 
-    let sq ='CREATE TABLE IF NOT EXISTS GTD_D( pI varchar(50) PRIMARY KEY ,sI varchar(50)  ,' +
-      'sT varchar(50)  ,son varchar(50)  ,sa varchar(4)  ,aI varchar(50)  ,ib varchar(4)  ,' +
-      'bi varchar(50)  ,sdt varchar(4));';
-
-    return this._execSql(sq,[]);
-  }
-
-  upT(pro:DPro):Promise<any> {
-    let sq='update GTD_D set 1=1 ';
-    if(pro.sI!=null){
-      sq=sq+', sI="' + pro.sI +'"';
-    }
-    if(pro.sT!=null){
-      sq=sq+', sT="' + pro.sT +'"';
-    }
-    if(pro.son != null){
-      sq = sq + ', son="' + pro.son +'"';
-    }
-    if(pro.sa != null){
-      sq = sq + ', sa="' + pro.sa +'"';
-    }
-    if(pro.aI != null){
-      sq = sq + ', aI="' + pro.aI +'"';
-    }
-    if(pro.sa != null){
-      sq = sq + ', sa="' + pro.sa +'"';
-    }
-    if(pro.ib != null){
-      sq = sq + ', ib="' + pro.ib +'"';
-    }
-    if(pro.bi != null){
-      sq = sq + ', bi="' + pro.bi +'"';
-    }
-    if(pro.sdt != null){
-      sq = sq + ', sdt="' + pro.sdt +'"';
-    }
-    sq = sq + ' where pI = "'+ pro.pI +'"';
-    return this._execSql(sq,[]);
-  }
-
-  dT(pro:DPro):Promise<any> {
-    let sq = 'delete from GTD_D where pI = "' + pro.pI +'"';
-    return this._execSql(sq,[]);
-  }
-
-  sloT(pro:DPro):Promise<any> {
-    let sq='select * from GTD_D where pI = "'+ pro.pI +'"';
-    return this._execSql(sq,[]);
-  }
-
-  slT(pro:DPro):Promise<any> {
-    let sq='select * from  GTD_D where  1=1 ';
-    if(pro.sI!=null){
-      sq=sq+' and sI="' + pro.sI +'"';
-    }
-    if(pro.sT!=null){
-      sq=sq+' and sT="' + pro.sT +'"';
-    }
-    if(pro.son != null){
-      sq = sq + ' and son="' + pro.son +'"';
-    }
-    if(pro.sa != null){
-      sq = sq + ' and sa="' + pro.sa +'"';
-    }
-    if(pro.aI != null){
-      sq = sq + ' and aI="' + pro.aI +'"';
-    }
-    if(pro.sa != null){
-      sq = sq + ' and sa="' + pro.sa +'"';
-    }
-    if(pro.ib != null){
-      sq = sq + ' and ib="' + pro.ib +'"';
-    }
-    if(pro.bi != null){
-      sq = sq + ', bi="' + pro.bi +'"';
-    }
-    if(pro.sdt != null){
-      sq = sq + ' and sdt="' + pro.sdt +'"';
-    }
-    if(pro.pI != null){
-      sq = sq + ' and pI="' + pro.pI +'"';
-    }
-    return this._execSql(sq,[]);
-  }
-
-  drT():Promise<any> {
-
-    let sq ='DROP TABLE IF EXISTS GTD_D;';
-    return this._execSql(sq,[]);
-  }
-
-  inT(pro:DPro):Promise<any> {
-    let sq ='insert into GTD_D ' +
-      '( pI ,sI ,sT ,son ,sa ,aI ,ib ,bi ,sdt) values("'+ pro.pI+'","'+ pro.sI+'","'+pro.sT+ '"' +
-      ',"'+pro.son+ '","'+pro.sa+ '","'+pro.aI+ '","'+pro.ib+ '","'+pro.bi+ '","'+pro.sdt+ '")';
-
-    return this._execSql(sq,[]);
-  }
-
-  rpT(pro:DPro):Promise<any> {
-    let sq ='replace into GTD_D ' +
-      '( pI ,sI ,sT ,son ,sa ,aI ,ib ,bi ,sdt) values("'+ pro.pI+'","'+ pro.sI+'","'+pro.sT+ '"' +
-      ',"'+pro.son+ '","'+pro.sa+ '","'+pro.aI+ '","'+pro.ib+ '","'+pro.bi+ '","'+pro.sdt+ '")';
-
-    return this._execSql(sq,[]);
-  }
-
-}
-
-class DPro{
 
   private _pI: string;
   private _sI: string;
@@ -220,6 +101,116 @@ class DPro{
     this._sdt=null;
 
   };
+
+
+  cT():string {
+
+    let sq ='CREATE TABLE IF NOT EXISTS GTD_D( pI varchar(50) PRIMARY KEY ,sI varchar(50)  ,' +
+      'sT varchar(50)  ,son varchar(50)  ,sa varchar(4)  ,aI varchar(50)  ,ib varchar(4)  ,' +
+      'bi varchar(50)  ,sdt varchar(4));';
+
+    return sq;
+  }
+
+  upT():string {
+    let sq='update GTD_D set 1=1 ';
+    if(this._sI!=null){
+      sq=sq+', sI="' + this._sI +'"';
+    }
+    if(this._sT!=null){
+      sq=sq+', sT="' + this._sT +'"';
+    }
+    if(this._son != null){
+      sq = sq + ', son="' + this._son +'"';
+    }
+    if(this._sa != null){
+      sq = sq + ', sa="' + this._sa +'"';
+    }
+    if(this._aI != null){
+      sq = sq + ', aI="' + this._aI +'"';
+    }
+    if(this._sa != null){
+      sq = sq + ', sa="' + this._sa +'"';
+    }
+    if(this._ib != null){
+      sq = sq + ', ib="' + this._ib +'"';
+    }
+    if(this._bi != null){
+      sq = sq + ', bi="' + this._bi +'"';
+    }
+    if(this._sdt != null){
+      sq = sq + ', sdt="' + this._sdt +'"';
+    }
+    sq = sq + ' where pI = "'+ this._pI +'"';
+    return sq;
+  }
+
+  dT():string {
+    let sq = 'delete from GTD_D where pI = "' + this._pI +'"';
+    return sq;
+  }
+
+  sloT():string {
+    let sq='select * from GTD_D where pI = "'+ this._pI +'"';
+    return sq;
+  }
+
+  slT():string {
+    let sq='select * from  GTD_D where  1=1 ';
+    if(this._sI!=null){
+      sq=sq+' and sI="' + this._sI +'"';
+    }
+    if(this._sT!=null){
+      sq=sq+' and sT="' + this._sT +'"';
+    }
+    if(this._son != null){
+      sq = sq + ' and son="' + this._son +'"';
+    }
+    if(this._sa != null){
+      sq = sq + ' and sa="' + this._sa +'"';
+    }
+    if(this._aI != null){
+      sq = sq + ' and aI="' + this._aI +'"';
+    }
+    if(this._sa != null){
+      sq = sq + ' and sa="' + this._sa +'"';
+    }
+    if(this._ib != null){
+      sq = sq + ' and ib="' + this._ib +'"';
+    }
+    if(this._bi != null){
+      sq = sq + ', bi="' + this._bi +'"';
+    }
+    if(this._sdt != null){
+      sq = sq + ' and sdt="' + this._sdt +'"';
+    }
+    if(this._pI != null){
+      sq = sq + ' and pI="' + this._pI +'"';
+    }
+    return sq;
+  }
+
+  drT():string {
+
+    let sq ='DROP TABLE IF EXISTS GTD_D;';
+    return sq;
+  }
+
+  inT():string {
+    let sq ='insert into GTD_D ' +
+      '( pI ,sI ,sT ,son ,sa ,aI ,ib ,bi ,sdt) values("'+ this._pI+'","'+ this._sI+'","'+this._sT+ '"' +
+      ',"'+this._son+ '","'+this._sa+ '","'+this._aI+ '","'+this._ib+ '","'+this._bi+ '","'+this._sdt+ '")';
+
+    return sq;
+  }
+
+  rpT():string {
+    let sq ='replace into GTD_D ' +
+      '( pI ,sI ,sT ,son ,sa ,aI ,ib ,bi ,sdt) values("'+ this._pI+'","'+ this._sI+'","'+this._sT+ '"' +
+      ',"'+this._son+ '","'+this._sa+ '","'+this._aI+ '","'+this._ib+ '","'+this._bi+ '","'+this._sdt+ '")';
+
+    return sq;
+  }
 
 }
 

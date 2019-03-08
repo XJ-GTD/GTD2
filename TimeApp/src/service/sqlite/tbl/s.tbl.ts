@@ -1,103 +1,10 @@
-import{Injectable}from'@angular/core';
-import {BaseTbl} from "./base.tbl";
 import {ITbl} from "./itbl";
 
 /**
  * create by on 2019/3/5
  */
-@Injectable()
-export class STbl extends BaseTbl implements ITbl{
-  constructor( arg ){
+export class STbl implements ITbl   {
 
-    super( arg );
-  }
-
-
-  cT():Promise<any> {
-
-    let sq ='CREATE TABLE IF NOT EXISTS GTD_S( si varchar(50) PRIMARY KEY ,st VARCHAR(20)  ,' +
-      'stn VARCHAR(20)  ,sn VARCHAR(20)  ,yk VARCHAR(20)  ,yv VARCHAR(400)   );';
-
-    return this._execSql(sq,[]);
-  }
-
-  upT(pro:SPro):Promise<any> {
-    let sq='update GTD_S set 1=1 ';
-    if(pro.st!=null){
-      sq=sq+', st="' + pro.st +'"';
-    }
-    if(pro.stn!=null){
-      sq=sq+', stn="' + pro.stn +'"';
-    }
-    if(pro.sn != null){
-      sq = sq + ', sn="' + pro.sn +'"';
-    }
-    if(pro.yk != null){
-      sq = sq + ', yk="' + pro.yk +'"';
-    }
-    if(pro.yv != null){
-      sq = sq + ', yv="' + pro.yv +'"';
-    }
-    sq = sq + ' where si = "'+ pro.si +'"';
-    return this._execSql(sq,[]);
-  }
-
-  dT(pro:SPro):Promise<any> {
-    let sq = 'delete from GTD_S where si = "' + pro.si +'"';
-    return this._execSql(sq,[]);
-  }
-
-  sloT(pro:SPro):Promise<any> {
-    let sq='select * from GTD_S where si = "'+ pro.si +'"';
-    return this._execSql(sq,[]);
-  }
-
-  slT(pro:SPro):Promise<Array<SPro>>
-  {
-    let sq='select * from  GTD_S where  1=1 ';
-    if(pro.st!=null){
-      sq=sq+' and st="' + pro.st +'"';
-    }
-    if(pro.stn!=null){
-      sq=sq+' and stn="' + pro.stn +'"';
-    }
-    if(pro.sn != null){
-      sq = sq + ' and sn="' + pro.sn +'"';
-    }
-    if(pro.yk != null){
-      sq = sq + ' and yk="' + pro.yk +'"';
-    }
-    if(pro.yv != null){
-      sq = sq + ' and yv="' + pro.yv +'"';
-    }
-    return this._execSql(sq,[]);
-  }
-
-  drT():Promise<any> {
-
-    let sq ='DROP TABLE IF EXISTS GTD_S;';
-    return this._execSql(sq,[]);
-  }
-
-  inT(pro:SPro):Promise<any> {
-    let sq ='insert into GTD_S ' +
-      '( si ,st ,stn ,sn ,yk ,yv) values("'+ pro.si+'","'+ pro.st+'","'+pro.stn+ '"' +
-      ',"'+pro.sn+ '","'+pro.yk+ '","'+pro.yv+ '")';
-
-    return this._execSql(sq,[]);
-  }
-
-  rpT(pro:SPro):Promise<any> {
-    let sq ='replace into GTD_S ' +
-      '( si ,st ,stn ,sn ,yk ,yv) values("'+ pro.si+'","'+ pro.st+'","'+pro.stn+ '"' +
-      ',"'+pro.sn+ '","'+pro.yk+ '","'+pro.yv+ '")';
-
-    return this._execSql(sq,[]);
-  }
-
-}
-
-export class SPro{
   private _si: string;
   private _st: string;
   private _stn: string;
@@ -153,16 +60,89 @@ export class SPro{
   set yv(value: string) {
     this._yv = value;
   }
+ 
 
-  clp(){
-    this._si=null;
-    this._st=null;
-    this._stn=null;
-    this._sn=null;
-    this._yk=null;
-    this._yv=null;
+  cT():string {
 
-  };
+    let sq ='CREATE TABLE IF NOT EXISTS GTD_S( si varchar(50) PRIMARY KEY ,st VARCHAR(20)  ,' +
+      'stn VARCHAR(20)  ,sn VARCHAR(20)  ,yk VARCHAR(20)  ,yv VARCHAR(400)   );';
+
+    return sq;
+  }
+
+  upT():string {
+    let sq='update GTD_S set 1=1 ';
+    if(this._st!=null){
+      sq=sq+', st="' + this._st +'"';
+    }
+    if(this._stn!=null){
+      sq=sq+', stn="' + this._stn +'"';
+    }
+    if(this._sn != null){
+      sq = sq + ', sn="' + this._sn +'"';
+    }
+    if(this._yk != null){
+      sq = sq + ', yk="' + this._yk +'"';
+    }
+    if(this._yv != null){
+      sq = sq + ', yv="' + this._yv +'"';
+    }
+    sq = sq + ' where si = "'+ this._si +'"';
+    return sq;
+  }
+
+  dT():string {
+    let sq = 'delete from GTD_S where si = "' + this._si +'"';
+    return sq;
+  }
+
+  sloT():string {
+    let sq='select * from GTD_S where si = "'+ this._si +'"';
+    return sq;
+  }
+
+  slT():string
+  {
+    let sq='select * from  GTD_S where  1=1 ';
+    if(this._st!=null){
+      sq=sq+' and st="' + this._st +'"';
+    }
+    if(this._stn!=null){
+      sq=sq+' and stn="' + this._stn +'"';
+    }
+    if(this._sn != null){
+      sq = sq + ' and sn="' + this._sn +'"';
+    }
+    if(this._yk != null){
+      sq = sq + ' and yk="' + this._yk +'"';
+    }
+    if(this._yv != null){
+      sq = sq + ' and yv="' + this._yv +'"';
+    }
+    return sq;
+  }
+
+  drT():string {
+
+    let sq ='DROP TABLE IF EXISTS GTD_S;';
+    return sq;
+  }
+
+  inT():string {
+    let sq ='insert into GTD_S ' +
+      '( si ,st ,stn ,sn ,yk ,yv) values("'+ this._si+'","'+ this._st+'","'+this._stn+ '"' +
+      ',"'+this._sn+ '","'+this._yk+ '","'+this._yv+ '")';
+
+    return sq;
+  }
+
+  rpT():string {
+    let sq ='replace into GTD_S ' +
+      '( si ,st ,stn ,sn ,yk ,yv) values("'+ this._si+'","'+ this._st+'","'+this._stn+ '"' +
+      ',"'+this._sn+ '","'+this._yk+ '","'+this._yv+ '")';
+
+    return sq;
+  }
 
 }
 

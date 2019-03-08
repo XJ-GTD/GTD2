@@ -1,13 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
-import { Platform, Nav, IonicApp, MenuController } from 'ionic-angular';
-import { BackgroundMode } from '@ionic-native/background-mode';
-import { ConfigService } from "../service/config.service";
-import { PageConfig } from "./page.config";
-import { MenuScalePushType } from "../components/menuType/customType";
-import { XiaojiFeedbackService } from "../service/util-service/xiaoji-feedback.service";
-import { NetworkService } from "../service/util-service/network.service";
-import { XiaojiAssistantService } from "../service/util-service/xiaoji-assistant.service";
-import {RestFulConfig} from "../service/config/restful.config";
+import {Component, ViewChild} from '@angular/core';
+import {Platform, Nav, MenuController, IonicApp} from 'ionic-angular';
+import {MenuScalePushType} from "../components/menuType/customType";
+import {BackgroundMode} from '@ionic-native/background-mode';
+import {XiaojiAssistantService} from "../service/util-service/xiaoji-assistant.service";
+import {PageConfig} from "./page.config";
 
 @Component({
   template: '<ion-nav></ion-nav>'
@@ -15,57 +11,23 @@ import {RestFulConfig} from "../service/config/restful.config";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = PageConfig.AL_PAGE;
+  constructor(private platform: Platform,
+              private appCtrl: IonicApp,
+              private backgroundMode: BackgroundMode,
+              private speechService: XiaojiAssistantService) {
 
-  constructor(
-    public platform: Platform,
-    public appCtrl: IonicApp,
-    public backgroundMode: BackgroundMode,
-    private configService:ConfigService,
-    private networkService: NetworkService,
-    private xiaojiSpeech: XiaojiAssistantService,
-    private xiaojiFeekback: XiaojiFeedbackService,
-   private config:RestFulConfig
-  ) {
-
-    let header = this.config.createHeader();
-
-    console.info("****************************　ｈｅａｄｅｒ" + header);
     console.log(' time app start ');
-
     MenuController.registerType('scalePush', MenuScalePushType);
-    this.platform.ready().then(() => {
 
+    this.platform.ready().then(() => {
       //允许进入后台模式
       this.backgroundMode.enable();
-      this.xiaojiFeekback.initAudio();
-      //设置返回键（android）
+      //设置返回键盘（android）
       this.registerBackButtonAction();
-      //全局网络监控
-      this.networkService.monitorNetwork();
-
-      //判断是否进入boot页面
-      this.configService.isIntoBoot().then(isInto=>{
-        console.log("app.component isInto :: " + isInto );
-        if (isInto){
-          this.rootPage = PageConfig.AZ_PAGE;
-        }
-        console.log("app.component rootPage :: " + this.rootPage )
-      }).then(data=>{
-
-      })
-        .then(data=>{
-        console.debug(' time app into go to ' +  this.rootPage);
-        this.nav.setRoot(this.rootPage);
-      }).catch(err=>{
-
-        this.rootPage = PageConfig.AZ_PAGE;
-        console.debug(' time app start err' +  err + 'go to ' + this.rootPage);
-        this.nav.setRoot(this.rootPage);
-      })
+      //跳转页面
+      this.nav.setRoot(PageConfig._AL_PAGE);
     });
   }
-
 
   registerBackButtonAction(): void {
     this.platform.registerBackButtonAction(() => {
@@ -73,7 +35,7 @@ export class MyApp {
       // this.appCtrl._toastPortal.getActive() || this.appCtrl._loadingPortal.getActive() || this.appCtrl._overlayPortal.getActive();
       let activePortal = this.appCtrl._modalPortal.getActive();
       if (activePortal) {
-        this.xiaojiSpeech.stopSpeak();
+        this.speechService.stopSpeak();
         activePortal.dismiss().catch(() => {
         });
         activePortal.onDidDismiss(() => {
@@ -81,7 +43,7 @@ export class MyApp {
         return;
       }
 
-      if (this.nav.canGoBack())  {
+      if (this.nav.canGoBack()) {
         this.nav.pop();
       } else {
         this.backgroundMode.moveToBackground();
@@ -89,5 +51,4 @@ export class MyApp {
 
     }, 1);
   }
-
 }
