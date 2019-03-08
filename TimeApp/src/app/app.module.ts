@@ -32,6 +32,7 @@ import {XiaojiAssistantService} from "../service/util-service/xiaoji-assistant.s
 import {AibutlerRestful} from "../service/restful/aibutlersev";
 import {RestfulClient} from "../service/util-service/restful.client";
 import {RestFulConfig} from "../service/config/restful.config";
+import {SyncRestful} from "../service/restful/syncsev";
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import {RestFulConfig} from "../service/config/restful.config";
     XiaojiAssistantService,
     AibutlerRestful,
     RestfulClient,
+    SyncRestful,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
