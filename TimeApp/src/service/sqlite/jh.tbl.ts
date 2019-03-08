@@ -1,24 +1,22 @@
 import{Injectable}from'@angular/core';
-import {BaseTbl} from "./base.tbl";
-import {ITbl} from "./itbl";
+import {SqliteExec} from "../util-service/sqlite.exec";
 
 /**
  * create by on 2019/3/5
  */
 @Injectable()
-export class JhTbl extends BaseTbl implements ITbl{
-  constructor( arg ){
+export class JhTbl  {
 
-    super( arg );
+  constructor( private sqlExec: SqliteExec ){
+
   }
-
 
   cT():Promise<any> {
 
     let sq ='CREATE TABLE IF NOT EXISTS GTD_J_H(  ji VARCHAR(50) PRIMARY KEY ,jn VARCHAR(100)  ,jg VARCHAR(100)' +
       ',jc VARCHAR(10));';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   upT(pro:JhPro):Promise<any> {
@@ -33,17 +31,17 @@ export class JhTbl extends BaseTbl implements ITbl{
       sq=sq+', jc="' + pro.jc +'"';
     }
     sq = sq + ' where ji = "'+ pro.ji +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   dT(pro:JhPro):Promise<any> {
     let sq = 'delete from GTD_J_H where ji = "' + pro.ji +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   sloT(pro:JhPro):Promise<any> {
     let sq='select * from GTD_J_H where ji = "'+ pro.ji +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   slT(pro:JhPro):Promise<any> {
@@ -57,27 +55,27 @@ export class JhTbl extends BaseTbl implements ITbl{
     if(pro.jc!=null){
       sq=sq+' and jc="' + pro.jc +'"';
     }
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   drT():Promise<any> {
 
     let sq ='DROP TABLE IF EXISTS GTD_J_H;';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   inT(pro:JhPro):Promise<any> {
     let sq ='insert into GTD_J_H ' +
       '(  ji ,jn ,jg,jc) values("'+ pro.ji+'","'+ pro.jn+'","'+pro.jg+ '","'+pro.jc+ '")';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   rpT(pro:JhPro):Promise<any> {
     let sq ='replace into GTD_J_H ' +
       '(  ji ,jn ,jg,jc) values("'+ pro.ji+'","'+ pro.jn+'","'+pro.jg+ '","'+pro.jc+ '")';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
 }

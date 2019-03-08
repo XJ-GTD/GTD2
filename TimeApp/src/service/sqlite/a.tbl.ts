@@ -1,18 +1,13 @@
 import{Injectable}from'@angular/core';
-import {BaseTbl} from "./base.tbl";
-import {ITbl} from "./itbl";
-import {UtilService} from "../../util-service/util.service";
-import {SQLiteFactory} from "./sqlite.factory";
-import {SQLitePorter} from "@ionic-native/sqlite-porter";
+import {SqliteExec} from "../util-service/sqlite.exec";
 
 /**
  * create by on 2019/3/5
  */
 @Injectable()
-export class ATbl extends BaseTbl implements ITbl{
-  constructor( private sqlFactory1: SQLiteFactory,private sqlitePorter1: SQLitePorter,
-               private util1:UtilService ){
-    super( sqlFactory1,sqlitePorter1,util1 );
+export class ATbl  {
+  constructor( private sqlExec: SqliteExec ){
+
   }
 
 
@@ -21,7 +16,7 @@ export class ATbl extends BaseTbl implements ITbl{
     let sq ='CREATE TABLE IF NOT EXISTS GTD_A(aI VARCHAR(50) PRIMARY KEY,' +
       'aN varchar(10),aM varchar(11),aE varchar(20) ,aT varchar(50) ,aQ varchar(100));';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   upT(pro:APro):Promise<any> {
@@ -39,17 +34,17 @@ export class ATbl extends BaseTbl implements ITbl{
       sq = sq + ', aQ="' + pro.aQ +'"';
     }
     sq = sq + ' where aI = "'+ pro.aI +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   dT(pro:APro):Promise<any> {
     let sq = 'delete from GTD_A where aI = "' + pro.aI +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   sloT():Promise<any> {
     let sq='select * from GTD_A';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   slT(pro:APro):Promise<any> {
@@ -70,13 +65,13 @@ export class ATbl extends BaseTbl implements ITbl{
       sq = sq + ' and aQ="' + pro.aQ +'"';
     }
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   drT():Promise<any> {
 
     let sq ='DROP TABLE IF EXISTS GTD_A;';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   inT(pro:APro):Promise<any> {
@@ -84,7 +79,7 @@ export class ATbl extends BaseTbl implements ITbl{
       '(aI,aN,aM,aE,aT,aQ) values("'+ pro.aI+'","'+ pro.aN+'","'+pro.aM+ '"' +
       ',"'+pro.aE+ '","'+pro.aT+ '","'+pro.aQ+ '")';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   rpT(pro:APro):Promise<any> {
@@ -92,7 +87,7 @@ export class ATbl extends BaseTbl implements ITbl{
       '(aI,aN,aM,aE,aT,aQ) values("'+ pro.aI+'","'+ pro.aN+'","'+pro.aM+ '"' +
       ',"'+pro.aE+ '","'+pro.aT+ '","'+pro.aQ+ '")';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
 }

@@ -1,6 +1,6 @@
 
-import {SPro, STbl} from "../sqlite/tbl/s.tbl";
-import {APro, ATbl} from "../sqlite/tbl/a.tbl";
+import {SPro, STbl} from "../sqlite/s.tbl";
+import {APro, ATbl} from "../sqlite/a.tbl";
 
 export class RestFulConfig {
 

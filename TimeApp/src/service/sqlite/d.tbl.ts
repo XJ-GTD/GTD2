@@ -1,15 +1,14 @@
 import{Injectable}from'@angular/core';
-import {BaseTbl} from "./base.tbl";
-import {ITbl} from "./itbl";
+import {SqliteExec} from "../util-service/sqlite.exec";
 
 /**
  * create by on 2019/3/5
  */
 @Injectable()
-export class DTbl extends BaseTbl implements ITbl{
-  constructor( arg ){
+export class DTbl  {
 
-    super( arg );
+  constructor( private sqlExec: SqliteExec ){
+
   }
 
 
@@ -19,7 +18,7 @@ export class DTbl extends BaseTbl implements ITbl{
       'sT varchar(50)  ,son varchar(50)  ,sa varchar(4)  ,aI varchar(50)  ,ib varchar(4)  ,' +
       'bi varchar(50)  ,sdt varchar(4));';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   upT(pro:DPro):Promise<any> {
@@ -52,17 +51,17 @@ export class DTbl extends BaseTbl implements ITbl{
       sq = sq + ', sdt="' + pro.sdt +'"';
     }
     sq = sq + ' where pI = "'+ pro.pI +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   dT(pro:DPro):Promise<any> {
     let sq = 'delete from GTD_D where pI = "' + pro.pI +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   sloT(pro:DPro):Promise<any> {
     let sq='select * from GTD_D where pI = "'+ pro.pI +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   slT(pro:DPro):Promise<any> {
@@ -97,13 +96,13 @@ export class DTbl extends BaseTbl implements ITbl{
     if(pro.pI != null){
       sq = sq + ' and pI="' + pro.pI +'"';
     }
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   drT():Promise<any> {
 
     let sq ='DROP TABLE IF EXISTS GTD_D;';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   inT(pro:DPro):Promise<any> {
@@ -111,7 +110,7 @@ export class DTbl extends BaseTbl implements ITbl{
       '( pI ,sI ,sT ,son ,sa ,aI ,ib ,bi ,sdt) values("'+ pro.pI+'","'+ pro.sI+'","'+pro.sT+ '"' +
       ',"'+pro.son+ '","'+pro.sa+ '","'+pro.aI+ '","'+pro.ib+ '","'+pro.bi+ '","'+pro.sdt+ '")';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   rpT(pro:DPro):Promise<any> {
@@ -119,7 +118,7 @@ export class DTbl extends BaseTbl implements ITbl{
       '( pI ,sI ,sT ,son ,sa ,aI ,ib ,bi ,sdt) values("'+ pro.pI+'","'+ pro.sI+'","'+pro.sT+ '"' +
       ',"'+pro.son+ '","'+pro.sa+ '","'+pro.aI+ '","'+pro.ib+ '","'+pro.bi+ '","'+pro.sdt+ '")';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
 }

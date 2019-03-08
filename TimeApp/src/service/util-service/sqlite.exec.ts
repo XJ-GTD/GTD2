@@ -1,26 +1,26 @@
 import {Injectable} from "@angular/core";
 import {SQLitePorter} from "@ionic-native/sqlite-porter";
-import {SQLiteFactory} from "./sqlite.factory";
-import {UtilService} from "../../util-service/util.service";
+import {UtilService} from "../util-service/util.service";
+import {SqliteConfig} from "../config/sqlite.config";
 /**
  * create by on 2019/3/5
  */
 
 @Injectable()
-export class BaseTbl{
+export class SqliteExec{
 
 
 
-  constructor(private sqlFactory: SQLiteFactory,private sqlitePorter: SQLitePorter,
+  constructor(private sqlliteConfig: SqliteConfig,private sqlitePorter: SQLitePorter,
               private util:UtilService) {
   }
 
   /**
    * 执行语句
    */
-  _execSql(sql: string, array: Array<any>): Promise<any> {
+  execSql(sql: string, array: Array<any>): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.sqlFactory.database.transaction(function(tx) {
+      this.sqlliteConfig.database.transaction(function(tx) {
         tx.executeSql(sql, array,  (tx, res)=>{
           resolve(res);
         }, (tx, err) =>{
@@ -33,7 +33,7 @@ export class BaseTbl{
     });
   }
 
-  _batExecSql(sqlist:Array<string>):Promise<any> {
+  batExecSql(sqlist:Array<string>):Promise<any> {
       return new Promise((resolve, reject) => {
         let sql : string ;
         for(var j = 0,len = sqlist.length; j < len; j++){
@@ -41,7 +41,7 @@ export class BaseTbl{
         }
 
         if(this.util.isMobile()){
-          this.sqlitePorter.importSqlToDb(this.sqlFactory.database, sql)
+          this.sqlitePorter.importSqlToDb(this.sqlliteConfig.database, sql)
             .then((count) => {
               console.log('Imported');
 
@@ -55,7 +55,7 @@ export class BaseTbl{
         }else{
           for(var j = 0,len = sqlist.length; j < len; j++){
             if(sqlist[j] != null && sqlist[j] !=''){
-              this._execSql(sqlist[j],[]);
+              this.execSql(sqlist[j],[]);
             }else{
               //console.error("sqls["+i+"]: ("+sqls[i]+ "） ;sqlAll:"+sql);
             }

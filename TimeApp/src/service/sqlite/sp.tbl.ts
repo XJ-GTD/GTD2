@@ -1,15 +1,14 @@
 import{Injectable}from'@angular/core';
-import {BaseTbl} from "./base.tbl";
-import {ITbl} from "./itbl";
+import {SqliteExec} from "../util-service/sqlite.exec";
 
 /**
  * create by on 2019/3/5
  */
 @Injectable()
-export class SpTbl extends BaseTbl implements ITbl{
-  constructor( arg ){
+export class SpTbl  {
 
-    super( arg );
+  constructor( private sqlExec: SqliteExec ){
+
   }
 
   cT():Promise<any> {
@@ -19,7 +18,7 @@ export class SpTbl extends BaseTbl implements ITbl{
       '  ,st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,ji varchar(50)  ,bz varchar(50)  ,' +
       'sta varchar(4));';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   upT(pro:SpPro):Promise<any> {
@@ -52,17 +51,17 @@ export class SpTbl extends BaseTbl implements ITbl{
       sq = sq + ', sta="' + pro.sta +'"';
     }
     sq = sq + ' where spI = "'+ pro.spI +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   dT(pro:SpPro):Promise<any> {
     let sq = 'delete from GTD_SP where spI = "' + pro.spI +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   sloT(pro:SpPro):Promise<any> {
     let sq='select * from GTD_SP where spI = "'+ pro.spI +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   slT(pro:SpPro):Promise<any> {
@@ -98,13 +97,13 @@ export class SpTbl extends BaseTbl implements ITbl{
       sq = sq + ' and spI="' + pro.spI +'"';
     }
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   drT():Promise<any> {
 
     let sq ='DROP TABLE IF EXISTS GTD_SP;';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   inT(pro:SpPro):Promise<any> {
@@ -112,7 +111,7 @@ export class SpTbl extends BaseTbl implements ITbl{
       '( spI ,sI ,spN ,sd ,st ,ed ,et ,ji ,bz ,sta) values("'+ pro.spI+'","'+ pro.sI+'","'+pro.spN+ '"' +
       ',"'+pro.sd+ '","'+pro.st+ '","'+pro.ed+ '","'+pro.et+ '","'+pro.ji+ '","'+pro.bz+ '","'+pro.sta+ '")';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   rpT(pro:SpPro):Promise<any> {
@@ -120,7 +119,7 @@ export class SpTbl extends BaseTbl implements ITbl{
       '( spI ,sI ,spN ,sd ,st ,ed ,et ,ji ,bz ,sta) values("'+ pro.spI+'","'+ pro.sI+'","'+pro.spN+ '"' +
       ',"'+pro.sd+ '","'+pro.st+ '","'+pro.ed+ '","'+pro.et+ '","'+pro.ji+ '","'+pro.bz+ '","'+pro.sta+ '")';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
 }

@@ -1,23 +1,21 @@
 import{Injectable}from'@angular/core';
-import {BaseTbl} from "./base.tbl";
-import {ITbl} from "./itbl";
+import {SqliteExec} from "../util-service/sqlite.exec";
 
 /**
  * create by on 2019/3/5
  */
 @Injectable()
-export class BxTbl extends BaseTbl implements ITbl{
-  constructor( arg ){
+export class BxTbl {
 
-    super( arg );
+  constructor( private sqlExec: SqliteExec ){
+
   }
-
 
   cT():Promise<any> {
 
     let sq ='CREATE TABLE IF NOT EXISTS GTD_B_X( bi varchar(50) PRIMARY KEY ,bmi varchar(50));';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   upT(pro:BxPro):Promise<any> {
@@ -26,17 +24,17 @@ export class BxTbl extends BaseTbl implements ITbl{
       sq=sq+', bmi="' + pro.bmi +'"';
     }
     sq = sq + ' where bi = "'+ pro.bi +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   dT(pro:BxPro):Promise<any> {
     let sq = 'delete from GTD_B_X where bi = "' + pro.bi +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   sloT(pro:BxPro):Promise<any> {
     let sq='select * from GTD_B_X where bi = "'+ pro.bi +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   slT(pro:BxPro):Promise<any> {
@@ -44,27 +42,27 @@ export class BxTbl extends BaseTbl implements ITbl{
     if(pro.bmi!=null){
       sq=sq+' and bmi="' + pro.bmi +'"';
     }
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   drT():Promise<any> {
 
     let sq ='DROP TABLE IF EXISTS GTD_B_X;';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   inT(pro:BxPro):Promise<any> {
     let sq ='insert into GTD_G ' +
       '(  bi ,bmi) values("'+ pro.bi+'","'+ pro.bmi+'")';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   rpT(pro:BxPro):Promise<any> {
     let sq ='replace into GTD_G ' +
       '(  bi ,bmi) values("'+ pro.bi+'","'+ pro.bmi+'")';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
 }

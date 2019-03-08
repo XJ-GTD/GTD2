@@ -1,15 +1,14 @@
 import{Injectable}from'@angular/core';
-import {BaseTbl} from "./base.tbl";
-import {ITbl} from "./itbl";
+import {SqliteExec} from "../util-service/sqlite.exec";
 
 /**
  * create by on 2019/3/5
  */
 @Injectable()
-export class YTbl extends BaseTbl implements ITbl{
-  constructor( arg ){
+export class YTbl  {
 
-    super( arg );
+  constructor( private sqlExec: SqliteExec ){
+
   }
 
 
@@ -18,7 +17,7 @@ export class YTbl extends BaseTbl implements ITbl{
     let sq ='CREATE TABLE IF NOT EXISTS GTD_Y(  yi varchar(50) PRIMARY KEY ,yt VARCHAR(20)  ,' +
       'ytn VARCHAR(20)  ,yn VARCHAR(20)  ,yk VARCHAR(20)  ,yv VARCHAR(400)   );';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   upT(pro:YPro):Promise<any> {
@@ -39,17 +38,17 @@ export class YTbl extends BaseTbl implements ITbl{
       sq = sq + ', yv="' + pro.yv +'"';
     }
     sq = sq + ' where yi = "'+ pro.yi +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   dT(pro:YPro):Promise<any> {
     let sq = 'delete from GTD_Y where yi = "' + pro.yi +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   sloT(pro:YPro):Promise<any> {
     let sq='select * from GTD_Y where yi = "'+ pro.yi +'"';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   slT(pro:YPro):Promise<any> {
@@ -69,13 +68,13 @@ export class YTbl extends BaseTbl implements ITbl{
     if(pro.yv != null){
       sq = sq + ' and yv="' + pro.yv +'"';
     }
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   drT():Promise<any> {
 
     let sq ='DROP TABLE IF EXISTS GTD_Y;';
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   inT(pro:YPro):Promise<any> {
@@ -83,7 +82,7 @@ export class YTbl extends BaseTbl implements ITbl{
       '(  yi ,yt ,ytn ,yn ,yk ,yv) values("'+ pro.yi+'","'+ pro.yt+'","'+pro.ytn+ '"' +
       ',"'+pro.yn+ '","'+pro.yk+ '","'+pro.yv+ '")';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
   rpT(pro:YPro):Promise<any> {
@@ -91,7 +90,7 @@ export class YTbl extends BaseTbl implements ITbl{
       '(  yi ,yt ,ytn ,yn ,yk ,yv) values("'+ pro.yi+'","'+ pro.yt+'","'+pro.ytn+ '"' +
       ',"'+pro.yn+ '","'+pro.yk+ '","'+pro.yv+ '")';
 
-    return this._execSql(sq,[]);
+    return this.sqlExec.execSql(sq,[]);
   }
 
 }

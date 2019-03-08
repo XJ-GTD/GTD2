@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {SQLite, SQLiteObject} from "@ionic-native/sqlite";
-import {UtilService} from "../../util-service/util.service";
+import {UtilService} from "../util-service/util.service";
 import {SpTbl} from "./sp.tbl";
 import {ATbl} from "./a.tbl";
 import {BTbl} from "./b.tbl";
@@ -18,50 +18,14 @@ import {YTbl} from "./y.tbl";
  * create by on 2019/3/5
  */
 @Injectable()
-export class SQLiteFactory {
+export class SqliteInit {
 
-  private _database: SQLiteObject;
 
-  private _win: any = window;//window对象
 
-  constructor(private sqlite: SQLite,
-              private util:UtilService,
-              private atbl:ATbl, private btbl:BTbl, private bxtbl:BxTbl,
+  constructor(private atbl:ATbl, private btbl:BTbl, private bxtbl:BxTbl,
               private ctbl:CTbl, private dtbl:DTbl, private ebtl:ETbl,
               private gtbl:GTbl, private jhtbl:JhTbl,private stbl :STbl,
               private sptbl:SpTbl,private utbl:UTbl,private ytbl :YTbl) {
-  }
-
-
-  get database(): SQLiteObject {
-    return this._database;
-  }
-
-  /**
-   * 创建数据库
-   */
-  generateDb(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      console.log(" start create Db mingWX.db")
-      if (this.util.isMobile()) {
-        this.sqlite.create({
-          name: 'mingWX.db',
-          location: 'default'
-        }).then((db: SQLiteObject) => {
-          console.log(" create Db success")
-          this._database = db;
-          resolve()
-        }).catch(e => {
-          console.log(" create Db fail：" + e.message)
-          reject();
-        });
-      } else {
-        //H5数据库存储
-        this._database = this._win.openDatabase("mingWX.db", '1.0', 'database', 5 * 1024 * 1024);//声明H5 数据库大小
-        console.log(" create H5 Db success");
-        resolve()
-      }
-    });
   }
 
   /**
@@ -72,6 +36,7 @@ export class SQLiteFactory {
   createTables(): Promise<any> {
 
     return new Promise((resolve, reject) => {
+      this.atbl.cT()
         //判断是否是手机端
         if (this.util.isMobile()) {
 
