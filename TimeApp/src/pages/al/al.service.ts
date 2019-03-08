@@ -30,13 +30,19 @@ export class AlService {
 
 
   //创建数据库表,初始化系统数据,初始化数据完成写入
-  createTables():Promise<any>{
-    return this.sqlLiteInit.createTables();
-  }
+  createTables():Promise<boolean>{
+    return new Promise((resolve, reject) => {
+      this.sqlLiteConfig.generateDb().then(data=>{
+        return this.sqlLiteInit.createTables();
+      }).then(data=>{
+        return this.sqlLiteInit.initData();
+      }).then(data=>{
+        resolve(true);
+      }).catch(e=>{
+        reject(false);
+      })
+    });
 
-  //初始化系统数据
-  initData():Promise<any>{
-    return this.sqlLiteInit.initData();
   }
 
   //连接webSocket
