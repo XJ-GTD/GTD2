@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {SQLitePorter} from "@ionic-native/sqlite-porter";
 import {UtilService} from "../util-service/util.service";
 import {SqliteConfig} from "../config/sqlite.config";
+import {ITbl} from "../sqlite/tbl/itbl";
 /**
  * create by on 2019/3/5
  */
@@ -31,6 +32,77 @@ export class SqliteExec{
       });
 
     });
+  }
+
+  /**
+   * 创建表
+   * @param et 对应实体类
+   * @returns {Promise<any>}
+   */
+  create(itbl:ITbl){
+    return this.execSql(itbl.cT(),[]);
+  }
+
+  /**
+   * 删除表
+   * @param et 对应实体类
+   * @returns {Promise<any>}
+   */
+  drop(itbl:ITbl){
+    return this.execSql(itbl.drT(),[])
+  }
+
+  /**
+   * 保存
+   * @param et 对应实体类
+   * @returns {Promise<any>}
+   */
+  save(itbl:ITbl){
+    return this.execSql(itbl.inT(),[])
+  }
+
+  /**
+   * 更新
+   */
+  update(itbl:ITbl){
+    return this.execSql(itbl.upT(),[])
+
+  }
+
+  /**
+   * 删除
+   * @param param
+   * @returns {Promise<any>}
+   */
+  delete(itbl:ITbl){
+    return this.execSql(itbl.dT(),[])
+  }
+
+  /**
+   * 查询
+   * @param t
+   * @returns {Promise<T>}
+   */
+  getList(itbl:ITbl){
+    return this.execSql(itbl.slT(),[])
+  }
+
+  /**
+   * 根据ID查询
+   * @param t
+   * @returns {Promise<T>}
+   */
+  getOne(itbl:ITbl){
+    return this.execSql(itbl.sloT(),[])
+  }
+
+  /**
+   * 表数据替换
+   * @param t
+   * @returns {Promise<T>}
+   */
+  replaceT(itbl:ITbl){
+    return this.execSql(itbl.rpT(),[])
   }
 
   async batExecSql(sqlist:Array<string>) {
