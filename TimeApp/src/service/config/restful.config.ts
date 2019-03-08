@@ -1,19 +1,20 @@
 
-import {SPro, STbl} from "../sqlite/tbl/s.tbl";
-import {APro, ATbl} from "../sqlite/tbl/a.tbl";
+import {STbl} from "../sqlite/tbl/s.tbl";
+import {ATbl} from "../sqlite/tbl/a.tbl";
+import {SqliteExec} from "../util-service/sqlite.exec";
 
 export class RestFulConfig {
 
 
   private urlLs: Map<string, UrlEntity>;
 
-  constructor(private stbl: STbl,private atbl: ATbl,) {
+  constructor(private stbl: STbl,private atbl: ATbl,private sqlitexec:SqliteExec) {
     this.init();
   }
 
 
   async createHeader():Promise<RestFulHeader>{
-    let apro = new APro();
+    let apro = new ATbl();
     let header = new RestFulHeader();
     apro = await this.atbl.sloT();
     //帐户ID
