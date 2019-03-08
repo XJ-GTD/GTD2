@@ -1,12 +1,8 @@
-= 语音智能服务Ias
+= Ann
 
 image:https://img.shields.io/badge/vert.x-3.6.3-purple.svg[link="https://vertx.io"]
 
 This application was generated using http://start.vertx.io
-
-== 开发与运维
-
-http://xiaoji.guobaa.com/mex/db/DEFAULT_DB/aah_jobflows/%25225c80b73d6b12920007fb8bf2%2522[冥王星语音服务自然语言解析处理流]
 
 == Building
 
