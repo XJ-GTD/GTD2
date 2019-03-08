@@ -22,4 +22,6 @@ export interface ITbl {
   inT(arg :any):string ;
 
   rpT(arg :any):string ;
+
+  clp();
 }
