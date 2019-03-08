@@ -81,6 +81,12 @@ export class AlPage {
       console.log("al :: 初始化创建数据库");
       return this.alService.initDataBase();
     }).then(data=>{
+      console.log("al :: 创建数据库表");
+      return this.alService.createTables();
+    }).then(data=>{
+      console.log("al :: 初始化系统数据");
+      return this.alService.initData();
+    }).then(data=>{
       // TODO 判断是否初始化完成
       this.text="al :: 判断是否初始化完成";
       if (!data){
