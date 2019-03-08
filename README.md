@@ -55,12 +55,50 @@
 ##### ionic cordova plugin add cordova-plugin-vibration
 ##### npm install --save @ionic-native/vibration
 
-## springboot
+## 后台服务
 
+后台服务使用短应用™微服务架构提供服务<br>
+[客户端-服务端接口文档](https://xiaoji.guobaa.com/swu/)<br>
+<br>
+[ZuulServer 微服务网关认证与授权拦截](http://192.168.0.205:8082/svn/shortApp/zuulserver/)<br>
+[ABD 授权](http://192.168.0.205:8082/svn/shortApp/abd/abd/)<br>
+[ABA 认证](http://192.168.0.205:8082/svn/shortApp/aba/)
 
-## rabbitMQ
+### 客户端参数初始化
 
+[INI 源代码](https://github.com/XJ-GTD/GTD2/tree/develop/Projects/ini)
 
-## 讯飞AIUI
+### 帐户注册与认证
 
+[AUP 源代码](https://github.com/XJ-GTD/GTD2/tree/develop/Projects/aup)
+
+### 智能语音服务与讯飞语音AIUI
+
+#### 智能语音服务
+[IAS 源代码](https://github.com/XJ-GTD/GTD2/tree/develop/Projects/ias)
+
+#### 智能服务
+[AAH 源代码](http://192.168.0.205:8082/svn/shortApp/aah/)
+
+##### 讯飞语音AIUI接入
+[XFY 源代码](https://github.com/XJ-GTD/GTD2/tree/develop/Projects/xfy)
+##### 短信接入
+[SMS 源代码](https://github.com/XJ-GTD/GTD2/tree/develop/Projects/sms)
+##### 数据清洗与转换接入
+[ACJ 源代码](http://192.168.0.205:8082/svn/shortApp/acj/)
+##### 通知服务接入
+[ANN 源代码](https://github.com/XJ-GTD/GTD2/tree/develop/ann)
+
+### 日程、计划与共享/分享
+
+[ADG 日程、计划与共享源代码](https://github.com/XJ-GTD/GTD2/tree/develop/Projects/agd)<br>
+[SHA 日程、计划分享源代码](https://github.com/XJ-GTD/GTD2/tree/develop/Projects/sha)
+
+### 黑名单
+
+[BLA 源代码](https://github.com/XJ-GTD/GTD2/tree/develop/Projects/bla)
+
+### 备份与恢复
+
+[BAC 源代码](https://github.com/XJ-GTD/GTD2/tree/develop/Projects/bac)
 

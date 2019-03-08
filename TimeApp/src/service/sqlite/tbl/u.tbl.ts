@@ -6,23 +6,23 @@ import {ITbl} from "./itbl";
 export class UTbl  implements ITbl{
 
 
-  private _uI :string;
+  private _uI :string="";
 
-  private _aI :string;
+  private _aI :string="";
 
-  private _uN :string;
+  private _uN :string="";
 
-  private _hIU :string;
+  private _hIU :string="";
 
-  private _biy :string;
+  private _biy :string="";
 
-  private _rn :string;
+  private _rn :string="";
 
-  private _iC :string;
+  private _iC :string="";
 
-  private _uS :string;
+  private _uS :string="";
 
-  private _uCt :string;
+  private _uCt :string="";
 
 
   get uI(): string {

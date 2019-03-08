@@ -6,8 +6,8 @@ import {ITbl} from "./itbl";
 
 export class BxTbl implements ITbl{
 
-  private _bi: string;
-  private _bmi: string;
+  private _bi: string="";
+  private _bmi: string="";
 
 
   get bi(): string {

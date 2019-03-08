@@ -5,12 +5,12 @@ import {ITbl} from "./itbl";
  */
 export class STbl implements ITbl   {
 
-  private _si: string;
-  private _st: string;
-  private _stn: string;
-  private _sn: string;
-  private _yk: string;
-  private _yv: string;
+  private _si: string="";
+  private _st: string="";
+  private _stn: string="";
+  private _sn: string="";
+  private _yk: string="";
+  private _yv: string="";
 
 
   get si(): string {
@@ -60,7 +60,7 @@ export class STbl implements ITbl   {
   set yv(value: string) {
     this._yv = value;
   }
- 
+
 
   cT():string {
 
