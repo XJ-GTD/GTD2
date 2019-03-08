@@ -1,8 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, Tabs } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Tabs } from 'ionic-angular';
 import {PageConfig} from "../../app/page.config";
-import {UserService} from "../../service/user.service";
-import {UEntity} from "../../entity/u.entity";
 import {DataConfig} from "../../app/data.config";
 
 /**
@@ -58,14 +56,10 @@ import {DataConfig} from "../../app/data.config";
 export class MPage {
   @ViewChild('myTabs') tabRef: Tabs;
 
-  hPage: any = PageConfig.H_PAGE;
-  // uo: UModel;
-  uo:UEntity;
+  hPage: any = PageConfig._H_PAGE;
   imgurl:any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              public userService: UserService) {
-    this.uo = DataConfig.uInfo;
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
@@ -96,7 +90,7 @@ export class MPage {
 
   toPl(){
     console.log("跳转计划一览PlPage");
-    this.navCtrl.push(PageConfig.PL_PAGE);
+    this.navCtrl.push(PageConfig._PL_PAGE);
   }
 
   toUc(){
@@ -106,7 +100,7 @@ export class MPage {
 
   toUb(){
     console.log("跳转用户详情MPage跳转LpPage");
-    this.navCtrl.push(PageConfig.LP_PAGE);
+    this.navCtrl.push(PageConfig._LP_PAGE);
   }
 
   showHistory() {
@@ -117,8 +111,6 @@ export class MPage {
     // console.log("2.0 ionViewWillEnter 顾名思义，当将要进入页面时触发");
     //this.getuo();
     console.log("ionViewWillEnter 刷新MPage :: ");
-    this.uo = DataConfig.uInfo;
-    console.log("m 获取用户信息："+JSON.stringify(this.uo));
   }
   // ionViewDidEnter(){
   //   console.log("3.0 ionViewDidEnter 当进入页面时触发");

@@ -1,6 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, Navbar, NavController} from 'ionic-angular';
-import {JhService} from "../../service/jh.service";
 
 /**
  * Generated class for the PcPage page.
@@ -43,8 +42,7 @@ export class PcPage {
   jhmc:string;
   jhms:string;
 
-  constructor(private navCtrl: NavController,
-              private jhService: JhService) {
+  constructor(private navCtrl: NavController) {
   }
 
   ionViewDidLoad() {
@@ -64,11 +62,11 @@ export class PcPage {
       alert("输入项有为空");
       return;
     }
-    this.jhService.ajh(this.jhmc,this.jhms).then(data=>{
-      console.log("计划添加成功 :: " + JSON.stringify(data));
-      this.navCtrl.pop();
-    }).catch(reason => {
-      console.log("计划添加失败 :: " + JSON.stringify(reason));
-    })
+    // this.jhService.ajh(this.jhmc,this.jhms).then(data=>{
+    //   console.log("计划添加成功 :: " + JSON.stringify(data));
+    //   this.navCtrl.pop();
+    // }).catch(reason => {
+    //   console.log("计划添加失败 :: " + JSON.stringify(reason));
+    // })
   }
 }

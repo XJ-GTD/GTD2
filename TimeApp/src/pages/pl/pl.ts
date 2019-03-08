@@ -1,7 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, Navbar, ViewController} from 'ionic-angular';
 import {PageConfig} from "../../app/page.config";
-import {JhService} from "../../service/jh.service";
 import {JhModel} from "../../model/jh.model";
 
 /**
@@ -45,8 +44,7 @@ export class PlPage {
   jhs:Array<JhModel>;
 
   constructor(private navCtrl: NavController,
-              private navParams: NavParams,
-              private jhService: JhService,) {
+              private navParams: NavParams,) {
   }
 
   ionViewDidLoad() {
@@ -57,17 +55,17 @@ export class PlPage {
 
   toSy(jh:JhModel){
     console.log("跳转计划详情页");
-    this.navCtrl.push(PageConfig.PD_PAGE,{"jh":jh});
+    this.navCtrl.push(PageConfig._PD_PAGE,{"jh":jh});
   }
 
   toPc(){
     console.log("跳转添加计划页");
-    this.navCtrl.push(PageConfig.PC_PAGE,{});
+    this.navCtrl.push(PageConfig._PC_PAGE,{});
   }
 
   toPd(){
     console.log("跳转该计划的所有日程");
-    this.navCtrl.push(PageConfig.PD_PAGE,{});
+    this.navCtrl.push(PageConfig._PD_PAGE,{});
 
   }
 
@@ -78,22 +76,22 @@ export class PlPage {
 
 
   getAllJh(){
-    this.jhService.getJhs(null).then(data=>{
-      this.jhs = data.jhs;
-      console.log("获取计划成功")
-    }).catch(reason => {
-      console.log("获取计划失败")
-    });
+    // this.jhService.getJhs(null).then(data=>{
+    //   this.jhs = data.jhs;
+    //   console.log("获取计划成功")
+    // }).catch(reason => {
+    //   console.log("获取计划失败")
+    // });
   }
 
 
   delJh(jh:JhModel) {
     console.log("Pc点击删除 :: ")
-    this.jhService.djh(jh.ji).then(data=>{
-      this.getAllJh();
-    }).catch(reason => {
-
-    });
+    // this.jhService.djh(jh.ji).then(data=>{
+    //   this.getAllJh();
+    // }).catch(reason => {
+    //
+    // });
   }
 
   ionViewWillEnter(){

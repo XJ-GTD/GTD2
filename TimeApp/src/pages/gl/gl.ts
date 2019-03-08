@@ -1,8 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
-import {UEntity} from "../../entity/u.entity";
-import {UserService} from "../../service/user.service";
-import { RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
 import {DataConfig} from "../../app/data.config";
 import {PageConfig} from "../../app/page.config";
@@ -90,7 +87,6 @@ import {UtilService} from "../../service/util-service/util.service";
 export class GlPage {
 
   relation: any = 'person' ;
-  uo:UEntity;
 
   us: Array<RuModel>;
   gs: Array<RuModel>;
@@ -98,8 +94,6 @@ export class GlPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public view: ViewController,
-              public userService: UserService,
-              public relmemService: RelmemService,
               public utilService: UtilService) {
 
   }
@@ -112,7 +106,7 @@ export class GlPage {
 
   toAddMember(){
     if(this.uo.uty == '0'){
-      this.navCtrl.push(PageConfig.LP_PAGE,{"rePage":PageConfig.GL_PAGE})
+      this.navCtrl.push(PageConfig._LP_PAGE,{"rePage":PageConfig._GL_PAGE})
       return;
     }
     console.log('PaPage跳转PfPage');
@@ -126,7 +120,7 @@ export class GlPage {
 
   toGroupCreate(){
     if(this.uo.uty == '0'){
-      this.navCtrl.push(PageConfig.LP_PAGE,{"rePage":PageConfig.GL_PAGE})
+      this.navCtrl.push(PageConfig._LP_PAGE,{"rePage":PageConfig._GL_PAGE})
       return;
     }
     console.log('PaPage跳转PePage');

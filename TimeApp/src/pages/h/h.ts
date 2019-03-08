@@ -10,7 +10,6 @@ import {TdlPage} from "../tdl/tdl";
 import {PageConfig} from "../../app/page.config";
 import {UtilService} from "../../service/util-service/util.service";
 import {XiaojiFeedbackService} from "../../service/util-service/xiaoji-feedback.service";
-import {RcModel} from "../../model/rc.model";
 
 /**
  * Generated class for the HPage page.
@@ -120,7 +119,7 @@ export class HPage {
     this.event = $event;
     let eventDate = new Date($event.time);
     let tmp = moment(eventDate).format("YYYY-MM-DD");
-    let sbPageModal = this.modalCtr.create(PageConfig.TDC_PAGE,{dateStr:tmp,event:$event});
+    let sbPageModal = this.modalCtr.create(PageConfig._TDC_PAGE,{dateStr:tmp,event:$event});
     sbPageModal.present();
   }
 
@@ -150,7 +149,7 @@ export class HPage {
   }
 
   openVoice() {
-    let tab1RootModal = this.modalCtr.create(PageConfig.HB_PAGE);
+    let tab1RootModal = this.modalCtr.create(PageConfig._HB_PAGE);
     tab1RootModal.onDidDismiss(()=>{
       //刷新月份事件标识
       console.log(this.selectDay);

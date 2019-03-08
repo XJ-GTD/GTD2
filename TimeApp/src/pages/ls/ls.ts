@@ -1,9 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, AlertController, Navbar} from 'ionic-angular';
-import {LsmService} from "../../service/lsm.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {ReturnConfig} from "../../app/return.config";
-import {WebsocketService} from "../../service/util-service/websocket.service";
 
 /**
  * Generated class for the LsPage page.
@@ -60,10 +58,8 @@ export class LsPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public lsmService: LsmService,
               public alertCtrl: AlertController,
-              public utilService: UtilService,
-              private  webSocket: WebsocketService) {
+              public utilService: UtilService) {
   }
 
   ionViewDidLoad() {

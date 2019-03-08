@@ -10,7 +10,6 @@ import { WsEnumModel } from "../../model/ws/ws.enum.model";
 import { NetworkService } from "../../service/util-service/network.service";
 import {Hb01Page} from "../hb01/hb01";
 import {RcModel} from "../../model/rc.model";
-import {WorkService} from "../../service/work.service";
 
 /**
  * Generated class for the HbPage page.
@@ -151,7 +150,6 @@ export class HbPage {
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
               private dwEmit: DwEmitService,
-              private workService: WorkService,
               public xiaojiSpeech: XiaojiAssistantService,
               private networkService: NetworkService,
               public xiaojiFeekback: XiaojiFeedbackService) {
