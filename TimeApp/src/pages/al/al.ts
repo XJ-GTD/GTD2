@@ -64,26 +64,24 @@ export class AlPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AlPage');
-
-    console.log("al :: 权限申请开始");
     this.rootPage = PageConfig._M_PAGE;
     this.alService.checkAllPermissions().then(data=>{
-      console.log("al :: 权限申请完成");
-      this.text="权限申请完成";
+      this.text=data;
       this.increment(10);
-      console.log("al :: 初始化创建数据库");
-      return this.alService.createTables();
+      return this.alService.createDB();
+
     }).then(data=>{
-      // TODO 判断是否初始化完成
-      console.log("11111111111"+data);
+      this.text=data;
+      this.increment(10);
+      return this.alService.checkSystem();
+    }).then(data=>{
       this.text="al :: 判断是否初始化完成";
       if (!data){
-        return
-      }
-      return data;
+        this.text="帮您初始化系统";
+        return  this.alService.createSystemData();
+      };
     }).then(data=>{
-      this.text="初始化创建数据库完成";
+      this.text=data;
       this.increment(10);
       console.log("al :: 初始化本地变量");
       //return this.alService.initComplete();
