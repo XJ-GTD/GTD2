@@ -32,8 +32,8 @@ public class MainVerticle extends AbstractVerticle {
 		AmqpBridgeOptions options = new AmqpBridgeOptions();
 		bridge = AmqpBridge.create(vertx, options);
 
-		bridge.close(close -> {
-			//connectStompServer();
+		bridge.endHandler(endHandler -> {
+			connectStompServer();
 		});
 		connectStompServer();
 
