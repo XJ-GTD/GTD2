@@ -22,11 +22,7 @@ import {SyncRestful} from "../restful/syncsev";
 export class SqliteInit {
 
 
-  constructor(private atbl: ATbl, private btbl: BTbl, private bxtbl: BxTbl,
-              private ctbl: CTbl, private dtbl: DTbl, private ebtl: ETbl,
-              private gtbl: GTbl, private jhtbl: JhTbl, private stbl: STbl,
-              private sptbl: SpTbl, private utbl: UTbl, private ytbl: YTbl,
-              private sqlexec: SqliteExec, private util: UtilService, private syncRestful: SyncRestful) {
+  constructor(private sqlexec: SqliteExec, private util: UtilService, private syncRestful: SyncRestful) {
   }
 
   /**
