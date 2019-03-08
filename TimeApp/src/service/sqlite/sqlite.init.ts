@@ -20,12 +20,11 @@ import {SqliteExec} from "../util-service/sqlite.exec";
 export class SqliteInit {
 
 
-
-  constructor(private atbl:ATbl, private btbl:BTbl, private bxtbl:BxTbl,
-              private ctbl:CTbl, private dtbl:DTbl, private ebtl:ETbl,
-              private gtbl:GTbl, private jhtbl:JhTbl,private stbl :STbl,
-              private sptbl:SpTbl,private utbl:UTbl,private ytbl :YTbl,
-              private sqlexec : SqliteExec) {
+  constructor(private atbl: ATbl, private btbl: BTbl, private bxtbl: BxTbl,
+              private ctbl: CTbl, private dtbl: DTbl, private ebtl: ETbl,
+              private gtbl: GTbl, private jhtbl: JhTbl, private stbl: STbl,
+              private sptbl: SpTbl, private utbl: UTbl, private ytbl: YTbl,
+              private sqlexec: SqliteExec) {
   }
 
   /**
@@ -33,18 +32,111 @@ export class SqliteInit {
    * @param {string} updateSql 更新SQL
    * @returns {Promise<any>}
    */
-  async createTables(){
+  async createTables() {
     let count = 0;
-    count ++ ;
-    let a:ATbl = new ATbl();
+    count++;
+    let a: ATbl = new ATbl();
     await this.sqlexec.drop(a);
-    count ++ ;
+    count++;
     await this.sqlexec.create(a);
+    count++;
 
-    count ++;
-    await this.atbl.cT();
+    let b: BTbl = new BTbl();
+    await this.sqlexec.drop(b);
+    count++;
+    await this.sqlexec.create(b);
+    count++;
 
+    let bx: BxTbl = new BxTbl();
+    await this.sqlexec.drop(bx);
+    count++;
+    await this.sqlexec.create(bx);
+    count++;
+
+    let c: CTbl = new CTbl();
+    await this.sqlexec.drop(c);
+    count++;
+    await this.sqlexec.create(c);
+    count++;
+
+    let d: DTbl = new DTbl();
+    await this.sqlexec.drop(d);
+    count++;
+    await this.sqlexec.create(d);
+    count++;
+
+    let e: ETbl = new ETbl();
+    await this.sqlexec.drop(e);
+    count++;
+    await this.sqlexec.create(e);
+    count++;
+
+    let g: GTbl = new GTbl();
+    await this.sqlexec.drop(g);
+    count++;
+    await this.sqlexec.create(g);
+    count++;
+
+    let jh: JhTbl = new JhTbl();
+    await this.sqlexec.drop(jh);
+    count++;
+    await this.sqlexec.create(jh);
+    count++;
+
+    let s: STbl = new STbl();
+    await this.sqlexec.drop(s);
+    count++;
+    await this.sqlexec.create(s);
+    count++;
+
+    let sp: SpTbl = new SpTbl();
+    await this.sqlexec.drop(sp);
+    count++;
+    await this.sqlexec.create(sp);
+    count++;
+
+    let u: UTbl = new UTbl();
+    await this.sqlexec.drop(u);
+    count++;
+    await this.sqlexec.create(u);
+    count++;
+
+    let y: YTbl = new YTbl();
+    await this.sqlexec.drop(y);
+    count++;
+    await this.sqlexec.create(y);
+    count++;
     return count;
 
+  }
+
+  /**
+   * 初始化表数据
+   * @param {BsModel} data
+   * @returns {Promise<any>}
+   */
+  initData(): Promise<any> {
+    return new Promise((resolve, reject) => {
+
+      console.log("-------------------BaseSqlite initData table  data to start ------------------")
+
+      let stbl = new STbl();
+      //web端
+      this.sqlexec.save(u).then(data => {
+        console.log("-------------------BaseSqlite initData GTD_A to table data: " + JSON.stringify(data))
+        return this.save(fi);
+      }).then(data => {
+        console.log("-------------------BaseSqlite initData GTD_A to table data: " + JSON.stringify(data))
+        return this.save(syv);
+      }).then(data => {
+        console.log("-------------------BaseSqlite initData GTD_FI to table data: " + JSON.stringify(data))
+        resolve(data);
+      }).catch(e => {
+        console.error("------------------BaseSqlite createTable: " + e.message)
+        reject(e);
+      })
+
+
+    })
   }
 }
