@@ -37,6 +37,7 @@ export class SybcData {
   apil: Array<Apil>;
   bipl: Array<Bipl>;
   vrs: Array<Vrs>;
+  dpfu:Array<Dpfu>;
 }
 
 export class Apil {
@@ -50,6 +51,12 @@ export class Bipl {
   planid: string;
   planmark: string;
   planname: string;
+}
+
+export class Dpfu {
+  desc: string;
+  name: string;
+  value: string;
 }
 
 export class Vrs {
