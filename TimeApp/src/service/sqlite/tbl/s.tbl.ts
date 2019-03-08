@@ -1,6 +1,6 @@
 import{Injectable}from'@angular/core';
 import {ITbl} from "./itbl";
-import {SqliteExec} from "../util-service/sqlite.exec";
+import {SqliteExec} from "../../util-service/sqlite.exec";
 
 /**
  * create by on 2019/3/5

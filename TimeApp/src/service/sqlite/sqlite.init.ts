@@ -1,18 +1,18 @@
 import {Injectable} from '@angular/core';
 import {SQLite, SQLiteObject} from "@ionic-native/sqlite";
 import {UtilService} from "../util-service/util.service";
-import {SpTbl} from "./sp.tbl";
-import {APro, ATbl} from "./a.tbl";
-import {BTbl} from "./b.tbl";
-import {BxTbl} from "./bx.tbl";
-import {CTbl} from "./c.tbl";
-import {DTbl} from "./d.tbl";
-import {ETbl} from "./e.tbl";
-import {GTbl} from "./g.tbl";
-import {JhTbl} from "./jh.tbl";
-import {STbl} from "./s.tbl";
-import {UTbl} from "./u.tbl";
-import {YTbl} from "./y.tbl";
+import {SpTbl} from "./tbl/sp.tbl";
+import {APro, ATbl} from "./tbl/a.tbl";
+import {BTbl} from "./tbl/b.tbl";
+import {BxTbl} from "./tbl/bx.tbl";
+import {CTbl} from "./tbl/c.tbl";
+import {DTbl} from "./tbl/d.tbl";
+import {ETbl} from "./tbl/e.tbl";
+import {GTbl} from "./tbl/g.tbl";
+import {JhTbl} from "./tbl/jh.tbl";
+import {STbl} from "./tbl/s.tbl";
+import {UTbl} from "./tbl/u.tbl";
+import {YTbl} from "./tbl/y.tbl";
 import {SqliteExec} from "../util-service/sqlite.exec";
 
 /**
