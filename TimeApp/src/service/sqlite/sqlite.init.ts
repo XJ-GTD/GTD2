@@ -13,6 +13,7 @@ import {UTbl} from "./tbl/u.tbl";
 import {YTbl} from "./tbl/y.tbl";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {UtilService} from "../util-service/util.service";
+import {Apil, SyncRestful} from "../restful/syncsev";
 
 /**
  * create by on 2019/3/5
@@ -25,7 +26,7 @@ export class SqliteInit {
               private ctbl: CTbl, private dtbl: DTbl, private ebtl: ETbl,
               private gtbl: GTbl, private jhtbl: JhTbl, private stbl: STbl,
               private sptbl: SpTbl, private utbl: UTbl, private ytbl: YTbl,
-              private sqlexec: SqliteExec,private util: UtilService) {
+              private sqlexec: SqliteExec, private util: UtilService, private syncRestful: SyncRestful) {
   }
 
   /**
@@ -119,64 +120,52 @@ export class SqliteInit {
   initData(): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      console.log("-------------------BaseSqlite initData table  data to start ------------------")
+      console.log("-------------------BaseSqlite initData table  data to start ------------------");
 
-      //服务器URL数据
-      let urlList : Array<string>;
-      let s1 :Array<Object>;
-      for (var j = 0, len = s1.length; j < len; j++) {
-        let stbl = new STbl();
-        stbl.si = this.util.getUuid();
-        stbl.st = "URL";
-        stbl.stn = "URL";
-        stbl.sn = "";
-        stbl.yk ="";
-        stbl.yv ="";
-        urlList.push(stbl.inT());
-      }
+      this.syncRestful.initData().then(data => {
+        //服务器URL数据
+        let urlList: Array<string>;
+        ;
+        for (let apil of data.apil) {
+          let stbl = new STbl();
+          stbl.si = this.util.getUuid();
+          stbl.st = "URL";
+          stbl.stn = "URL";
+          stbl.sn = apil.desc;
+          stbl.yk = apil.name;
+          stbl.yv = apil.value;
+          urlList.push(stbl.inT());
+        }
 
-      //服务器 语音数据
-      let speechList : Array<string>;
-      let s2 :Array<Object>;
-      for (var j = 0, len = s2.length; j < len; j++) {
-        let stbl = new STbl();
-        stbl.si = this.util.getUuid();
-        stbl.st = "speech";
-        stbl.stn = "语音";
-        stbl.sn = "";
-        stbl.yk ="";
-        stbl.yv ="";
-        speechList.push(stbl.inT());
-      }
+        //服务器 语音数据
+        for (let vrs of data.vrs) {
+          let stbl = new STbl();
+          stbl.si = this.util.getUuid();
+          stbl.st = "SPEECH";
+          stbl.stn = "语音";
+          stbl.sn = vrs.desc;
+          stbl.yk = vrs.name;
+          stbl.yv = vrs.value;
+          urlList.push(stbl.inT());
+        }
 
-      //服务器 计划数据
-      let jhList : Array<string>;
-      let jh :Array<Object>;
-      for (var j = 0, len = jh.length; j < len; j++) {
-        let jhtbl = new JhTbl();
-        jhtbl.ji = "";
-        jhtbl.jn = "";
-        jhtbl.jg = "";
-        jhtbl.jc = "";
-        jhtbl.jt ="1";
-        jhList.push(jhtbl.inT());
-      }
+        //服务器 计划数据
+        for (let bipl of data.bipl) {
+          let jhtbl = new JhTbl();
+          jhtbl.ji = bipl.planid;
+          jhtbl.jn = bipl.planname;
+          jhtbl.jg = bipl.plandesc;
+          jhtbl.jc = bipl.planmark;
+          jhtbl.jt = "1";
+          urlList.push(jhtbl.inT());
+        }
 
-      //web端
-      this.sqlexec.batExecSql(urlList).then(data => {
-        console.log("-------------------init url data GTD_S  ok: " + JSON.stringify(data))
-        return this.sqlexec.batExecSql(speechList);
-      }).then(data => {
-        console.log("-------------------init speech data GTD_S ok: " + JSON.stringify(data))
-        return this.sqlexec.batExecSql(jhList);
-      }).then(data => {
-        resolve(data);
-      }).catch(e => {
-        console.error("------------------BaseSqlite createTable: " + e.message)
-        reject(e);
+        //web端
+        return this.sqlexec.batExecSql(urlList);
       })
 
-
     })
+
+
   }
 }

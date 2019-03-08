@@ -26,8 +26,8 @@ export class SyncRestful {
       ;//设别类型
 
       this.request.specPost(this.initDataUrl, header, {}).then(reps => {
-        let initData: SybcData = reps.d;
-        resolve(initData);
+        let data: SybcData = reps.d;
+        resolve(data);
       });
     });
   }
