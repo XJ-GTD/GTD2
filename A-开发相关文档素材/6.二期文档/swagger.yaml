@@ -933,6 +933,63 @@ paths:
                 type: string
               data:
                 type: object
+  '/aup/user/{phoneno}/userinfo':
+    get:
+      tags:
+        - account service
+      summary: 通过手机查询帐户概要信息
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: phoneno
+          in: path
+          type: string
+          description: 手机号码
+          required: true
+      responses:
+        '200':
+          description: 帐户概要信息取得成功
+          schema:
+            type: object
+            properties:
+              errcode:
+                type: integer
+              errmsg:
+                type: string
+              data:
+                type: object
+  '/aup/user/{phoneno}/avatar':
+    get:
+      tags:
+        - account service
+      summary: 通过手机查询帐户头像
+      description: '匹配到帐户时,返回base64编码的图片,其它情况返回json格式错误信息'
+      produces:
+        - application/json
+        - text/plain
+      parameters:
+        - name: phoneno
+          in: path
+          type: string
+          description: 手机号码
+          required: true
+      responses:
+        '200':
+          description: 头像取得返回
+          schema:
+            type: string
+        default:
+          description: 未知异常
+          schema:
+            type: object
+            properties:
+              errcode:
+                type: integer
+              errmsg:
+                type: string
+              data:
+                type: object
   /aup/api/access_token:
     get:
       tags:
