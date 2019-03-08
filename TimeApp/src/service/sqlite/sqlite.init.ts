@@ -156,7 +156,11 @@ export class SqliteInit {
         }
 
         //web端
-        return this.sqlexec.batExecSql(urlList);
+        this.sqlexec.batExecSql(urlList).then(data => {
+            resolve(data);
+
+          }
+        )
       })
 
     })
