@@ -1,0 +1,20 @@
+{
+  "roles": [
+    {"role": "Manager"},
+    {"role": "Normal", "default": "true"}
+  ],
+  "paths": [
+    {
+      "path": "/user/**",
+      "grants": [
+        {"role": "Normal"}
+      ]
+    },
+    {
+      "path": "/data/**",
+      "grants": [
+        {"role": "Manager"}
+      ]
+    }
+  ]
+}
