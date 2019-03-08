@@ -1,103 +1,12 @@
-import{Injectable}from'@angular/core';
-import {SqliteExec} from "../../util-service/sqlite.exec";
-
 /**
  * create by on 2019/3/5
  */
-@Injectable()
 export class ETbl  {
-
-  constructor( private sqlExec: SqliteExec ){
-
-  }
-
-
-  cT():Promise<any> {
-
-    let sq ='CREATE TABLE IF NOT EXISTS GTD_E(  wI varchar(50) PRIMARY KEY ,sI varchar(50)  ,' +
-      'sT varchar(50)  ,wD varchar(20)  ,wT varchar(20))';
-
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-  upT(pro:EPro):Promise<any> {
-    let sq='update GTD_E set 1=1 ';
-    if(pro.sI!=null){
-      sq=sq+', sI="' + pro.sI +'"';
-    }
-    if(pro.sT!=null){
-      sq=sq+', sT="' + pro.sT +'"';
-    }
-    if(pro.wD != null){
-      sq = sq + ', wD="' + pro.wD +'"';
-    }
-    if(pro.wT != null){
-      sq = sq + ', wT="' + pro.wT +'"';
-    }
-    sq = sq + ' where wI = "'+ pro.wI +'"';
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-  dT(pro:EPro):Promise<any> {
-    let sq = 'delete from GTD_E where wI = "' + pro.wI +'"';
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-  sloT(pro:EPro):Promise<any> {
-    let sq='select * from GTD_E where wI = "'+ pro.wI +'"';
-
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-  slT(pro:EPro):Promise<any> {
-    let sq='select * from  GTD_E where  1=1 ';
-    if(pro.sI!=null){
-      sq=sq+' and sI="' + pro.sI +'"';
-    }
-    if(pro.sT!=null){
-      sq=sq+' and sT="' + pro.sT +'"';
-    }
-    if(pro.wD != null){
-      sq = sq + ' and wD="' + pro.wD +'"';
-    }
-    if(pro.wT != null){
-      sq = sq + ' and wT="' + pro.wT +'"';
-    }
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-  drT():Promise<any> {
-
-    let sq ='DROP TABLE IF EXISTS GTD_E;';
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-  inT(pro:EPro):Promise<any> {
-    let sq ='insert into GTD_E ' +
-      '(  wI ,sI ,sT ,wD ,wT) values("'+ pro.wI+'","'+ pro.sI+'","'+pro.sT+ '"' +
-      ',"'+pro.wD+ '","'+pro.wT+ '")';
-
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-  rpT(pro:EPro):Promise<any> {
-    let sq ='replace into GTD_E ' +
-      '(  wI ,sI ,sT ,wD ,wT) values("'+ pro.wI+'","'+ pro.sI+'","'+pro.sT+ '"' +
-      ',"'+pro.wD+ '","'+pro.wT+ '")';
-
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-}
-
-class EPro{
-
   private _wI: string;
   private _sI: string;
   private _sT: string;
   private _wD: string;
   private _wT: string;
-
 
   get wI(): string {
     return this._wI;
@@ -147,5 +56,80 @@ class EPro{
     this._wT=null;
   };
 
-}
+  cT():string{
 
+    let sq ='CREATE TABLE IF NOT EXISTS GTD_E(  wI varchar(50) PRIMARY KEY ,sI varchar(50)  ,' +
+      'sT varchar(50)  ,wD varchar(20)  ,wT varchar(20))';
+
+    return sq;
+  }
+
+  upT():string{
+    let sq='update GTD_E set 1=1 ';
+    if(this._sI!=null){
+      sq=sq+', sI="' + this._sI +'"';
+    }
+    if(this._sT!=null){
+      sq=sq+', sT="' + this._sT +'"';
+    }
+    if(this._wD != null){
+      sq = sq + ', wD="' + this._wD +'"';
+    }
+    if(this._wT != null){
+      sq = sq + ', wT="' + this._wT +'"';
+    }
+    sq = sq + ' where wI = "'+ this._wI +'"';
+    return sq;
+  }
+
+  dT():string{
+    let sq = 'delete from GTD_E where wI = "' + this._wI +'"';
+    return sq;
+  }
+
+  sloT():string{
+    let sq='select * from GTD_E where wI = "'+ this._wI +'"';
+
+    return sq;
+  }
+
+  slT():string{
+    let sq='select * from  GTD_E where  1=1 ';
+    if(this._sI!=null){
+      sq=sq+' and sI="' + this._sI +'"';
+    }
+    if(this._sT!=null){
+      sq=sq+' and sT="' + this._sT +'"';
+    }
+    if(this._wD != null){
+      sq = sq + ' and wD="' + this._wD +'"';
+    }
+    if(this._wT != null){
+      sq = sq + ' and wT="' + this._wT +'"';
+    }
+    return sq;
+  }
+
+  drT():string{
+
+    let sq ='DROP TABLE IF EXISTS GTD_E;';
+    return sq;
+  }
+
+  inT():string{
+    let sq ='insert into GTD_E ' +
+      '(  wI ,sI ,sT ,wD ,wT) values("'+ this._wI+'","'+ this._sI+'","'+this._sT+ '"' +
+      ',"'+this._wD+ '","'+this._wT+ '")';
+
+    return sq;
+  }
+
+  rpT():string{
+    let sq ='replace into GTD_E ' +
+      '(  wI ,sI ,sT ,wD ,wT) values("'+ this._wI+'","'+ this._sI+'","'+this._sT+ '"' +
+      ',"'+this._wD+ '","'+this._wT+ '")';
+
+    return sq;
+  }
+
+}

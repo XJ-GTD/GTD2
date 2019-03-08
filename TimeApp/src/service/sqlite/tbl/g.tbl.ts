@@ -1,79 +1,7 @@
-import{Injectable}from'@angular/core';
-import {SqliteExec} from "../../util-service/sqlite.exec";
-
 /**
  * create by on 2019/3/5
  */
-@Injectable()
 export class GTbl  {
-
-  constructor( private sqlExec: SqliteExec ){
-
-  }
-
-  cT():Promise<any> {
-
-    let sq ='CREATE TABLE IF NOT EXISTS GTD_G(  gI varchar(50) PRIMARY KEY ,gN varchar(50)  ,gM varchar(50));';
-
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-  upT(pro:GPro):Promise<any> {
-    let sq='update GTD_G set 1=1 ';
-    if(pro.gN!=null){
-      sq=sq+', gN="' + pro.gN +'"';
-    }
-    if(pro.gM!=null){
-      sq=sq+', gM="' + pro.gM +'"';
-    }
-    sq = sq + ' where gI = "'+ pro.gI +'"';
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-  dT(pro:GPro):Promise<any> {
-    let sq = 'delete from GTD_G where gI = "' + pro.gI +'"';
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-  sloT(pro:GPro):Promise<any> {
-    let sq='select * from GTD_G where gI = "'+ pro.gI +'"';
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-  slT(pro:GPro):Promise<any> {
-    let sq='select * from  GTD_G where  1=1 ';
-    if(pro.gN!=null){
-      sq=sq+', gN="' + pro.gN +'"';
-    }
-    if(pro.gM!=null){
-      sq=sq+', gM="' + pro.gM +'"';
-    }
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-  drT():Promise<any> {
-
-    let sq ='DROP TABLE IF EXISTS GTD_G;';
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-  inT(pro:GPro):Promise<any> {
-    let sq ='insert into GTD_G ' +
-      '( gI ,gN ,gM) values("'+ pro.gI+'","'+ pro.gN+'","'+pro.gM+ '")';
-
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-  rpT(pro:GPro):Promise<any> {
-    let sq ='replace into GTD_G ' +
-      '( gI ,gN ,gM) values("'+ pro.gI+'","'+ pro.gN+'","'+pro.gM+ '")';
-
-    return this.sqlExec.execSql(sq,[]);
-  }
-
-}
-
-class GPro{
 
   private _gI: string;
   private _gN: string;
@@ -109,6 +37,66 @@ class GPro{
     this._gM = null;
 
   };
+
+  cT():string{
+
+    let sq ='CREATE TABLE IF NOT EXISTS GTD_G(  gI varchar(50) PRIMARY KEY ,gN varchar(50)  ,gM varchar(50));';
+
+    return sq;
+  }
+
+  upT():string{
+    let sq='update GTD_G set 1=1 ';
+    if(this._gN!=null){
+      sq=sq+', gN="' + this._gN +'"';
+    }
+    if(this._gM!=null){
+      sq=sq+', gM="' + this._gM +'"';
+    }
+    sq = sq + ' where gI = "'+ this._gI +'"';
+    return sq;
+  }
+
+  dT():string{
+    let sq = 'delete from GTD_G where gI = "' + this._gI +'"';
+    return sq;
+  }
+
+  sloT():string{
+    let sq='select * from GTD_G where gI = "'+ this._gI +'"';
+    return sq;
+  }
+
+  slT():string{
+    let sq='select * from  GTD_G where  1=1 ';
+    if(this._gN!=null){
+      sq=sq+', gN="' + this._gN +'"';
+    }
+    if(this._gM!=null){
+      sq=sq+', gM="' + this._gM +'"';
+    }
+    return sq;
+  }
+
+  drT():string{
+
+    let sq ='DROP TABLE IF EXISTS GTD_G;';
+    return sq;
+  }
+
+  inT():string{
+    let sq ='insert into GTD_G ' +
+      '( gI ,gN ,gM) values("'+ this._gI+'","'+ this._gN+'","'+this._gM+ '")';
+
+    return sq;
+  }
+
+  rpT():string{
+    let sq ='replace into GTD_G ' +
+      '( gI ,gN ,gM) values("'+ this._gI+'","'+ this._gN+'","'+this._gM+ '")';
+
+    return sq;
+  }
 
 }
 

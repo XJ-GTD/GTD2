@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
-import {PageConfig} from "../../app/page.config";
-import {DataConfig} from "../../app/data.config";
 import {PermissionsService} from "../../service/util-service/permissions.service";
 import {SyncService} from "../../service/sync.service";
 import {WebsocketService} from "../../service/util-service/websocket.service";
+import {SqliteConfig} from "../../service/config/sqlite.config";
+import {DataConfig} from "../../app/data.config";
 
 @Injectable()
 export class AlService {
@@ -12,18 +12,18 @@ export class AlService {
   constructor(private permissionsService: PermissionsService,
                 private webSocketService: WebsocketService,
                 private syncService:SyncService,
+                private sqlLiteConfig:SqliteConfig,
               ) {
   }
 
   //权限申请
   checkAllPermissions():Promise<any>{
-    return this.permissionsService.checkAllPermissiions();
+    return this.permissionsService.checkAllPermissions();
 }
 
-  //数据库连接
+  //创建或连接数据库
   initDataBase():Promise<any>{
-    //创建或链接数据库
-    return this.baseSqlLite.createDb();
+    return this.sqlLiteConfig.generateDb();
   }
 
   //判断是否初始化完成
@@ -33,10 +33,10 @@ export class AlService {
 
 
   //创建数据库表,初始化系统数据,初始化数据完成写入
-  initVariables():Promise<any>{
+  /*initVariables():Promise<any>{
     //初始化生成数据
     return this.baseSqlLite.initData()
-  }
+  }*/
 
   //连接webSocket
   /*initWebSocket():Promise<any>{
@@ -52,6 +52,7 @@ export class AlService {
 
 
 
+/*
 
   initSystem():Promise<any> {
     this.xiaojiFeekback.initAudio();
@@ -147,6 +148,7 @@ export class AlService {
       //loading.dismiss();
       this.nav.setRoot(this.rootPage);
     })
+*/
 
 
     //   //
@@ -262,5 +264,5 @@ export class AlService {
     //   this.baseSqlite.createDb();
     // }
 
-  }
+  //}
 }
