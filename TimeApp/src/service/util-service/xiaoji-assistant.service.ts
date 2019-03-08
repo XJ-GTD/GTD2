@@ -1,10 +1,7 @@
 import { Injectable } from "@angular/core";
-import { AppConfig } from "../../app/app.config";
 import { File } from "@ionic-native/file";
-
-import { DataConfig } from "../../app/data.config";
 import { UtilService } from "./util.service";
-import { BsRestful } from "../restful/bs-restful";
+import {AibutlerRestful} from "../restful/aibutlersev";
 declare var cordova: any;
 
 /**
@@ -16,14 +13,13 @@ declare var cordova: any;
 export class XiaojiAssistantService{
 
   private failedText: string = '我没有听清楚你说什么';  //暂时替代，录入字典表后删除
-  private fileContent: any;
   public isSpeaking:boolean;
   public islistenAudioing:boolean;
   public isWakeUp:boolean;
 
   constructor(private file: File,
-              private util: UtilService,
-              private bsRestful: BsRestful) {
+             private util: UtilService,
+              private aibutlerRestful: AibutlerRestful) {
     this.isSpeaking = false;
     this.islistenAudioing = false;
   }
@@ -51,16 +47,25 @@ export class XiaojiAssistantService{
 
         // 读取录音进行base64转码
         this.file.readAsDataURL(this.file.cacheDirectory,"iat.pcm").then((base64File: string) => {
-          this.fileContent = base64File;
 
-          let data = {
-            content: this.fileContent,
-            userId: DataConfig.uInfo.uI,
-            deviceId: this.util.getDeviceId(),
-            flag: 0
-          };
+
+          /**
+           * 录音文件传输后台服务解析
+           * @param {string} url 后台服务路径
+           */
+
+          this.aibutlerRestful.postaudio(base64File)
+            .then(data => {
+              console.log("data code：" + data.code);
+              //接收Object JSON数据
+
+            }).catch(e=>{
+            console.error("XiaojiAssistantService connetXunfei error:" + JSON.stringify(e));
+            this.speakText("现在我遇到了小麻烦，请您稍后再来找我吧", success=>{});
+          });
+
           success(result);
-          this.connetXunfei(data, AppConfig.XF_AUDIO_URL);
+
         }, (err) => {
         });
 
@@ -123,37 +128,21 @@ export class XiaojiAssistantService{
       if (text == null){
         return 0;
       }
-      this.fileContent = text;
-      let data = {
-        content: this.fileContent,
-        userId: DataConfig.uInfo.uI,
-        deviceId: this.util.getDeviceId(),
-      };
-      this.connetXunfei(data, AppConfig.XF_TEXT_URL);
+
+      this.aibutlerRestful.posttext(text)
+        .then(data => {
+          console.log("data code：" + data.code);
+          //接收Object JSON数据
+
+        }).catch(e=>{
+        console.error("XiaojiAssistantService connetXunfei error:" + JSON.stringify(e));
+        this.speakText("现在我遇到了小麻烦，请您稍后再来找我吧", success=>{});
+      });
 
     } catch (e) {
       console.log("问题："+ e)
     }
 
-  }
-
-  /**
-   * 录音文件传输后台服务解析
-   * @param {string} url 后台服务路径
-   */
-  private connetXunfei(audioData, url) {
-    console.log("调用成功:" + this.fileContent);
-    console.log("调用URL:" + url);
-    //调用讯飞语音服务
-    this.bsRestful.post(url, audioData)
-      .then(data => {
-        console.log("data code：" + data.code);
-        //接收Object JSON数据
-
-      }).catch(e=>{
-        console.error("XiaojiAssistantService connetXunfei error:" + JSON.stringify(e));
-        this.speakText("现在我遇到了小麻烦，请您稍后再来找我吧", success=>{});
-    })
   }
 
   /**

@@ -1,67 +1,36 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule, ErrorHandler} from '@angular/core';
 import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
-import {MyApp} from './app.component';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {IonicStorageModule} from "@ionic/storage";
 import {File} from "@ionic-native/file";
 import {LocalNotifications} from "@ionic-native/local-notifications";
-import {XiaojiAssistantService} from "../service/util-service/xiaoji-assistant.service";
-import {XiaojiFeedbackService} from "../service/util-service/xiaoji-feedback.service";
 import {SQLite} from '@ionic-native/sqlite';
 import {Calendar} from "@ionic-native/calendar";
-import {ReadlocalService} from "../service/readlocal.service";
 import {Device} from "@ionic-native/device";
 import {SQLitePorter} from '@ionic-native/sqlite-porter';
-import {BaseSqlite} from "../service/sqlite/base-sqlite";
-import {UserService} from "../service/user.service";
-import {WorkService} from "../service/work.service";
-import {LsmService} from "../service/lsm.service";
-import {PlayerService} from "../service/player.service";
-import {PlayerSqlite} from "../service/sqlite/player-sqlite";
-import {MsService} from "../service/ms.service";
-import {MsSqlite} from "../service/sqlite/ms-sqlite";
-import {RelmemService} from "../service/relmem.service";
-import {RemindService} from "../service/remind.service";
-import {RemindSqlite} from "../service/sqlite/remind-sqlite";
-import {SystemService} from "../service/system.service";
-import {SystemSqlite} from "../service/sqlite/system-sqlite";
-import {XiaojiAlarmclockService} from "../service/util-service/xiaoji-alarmclock.service";
-import {JhService} from "../service/jh.service";
-import {DwEmitService} from "../service/util-service/dw-emit.service";
-import {FiSqlite} from "../service/sqlite/fi-sqlite";
-import {ParamsService} from "../service/util-service/params.service";
-import {WebsocketService} from "../service/util-service/websocket.service";
-import {DwMqService} from "../service/util-service/dw-mq.service";
-import {UtilService} from "../service/util-service/util.service";
 import {BackgroundMode} from '@ionic-native/background-mode';
-import {PermissionsService} from "../service/util-service/permissions.service";
 import {AndroidPermissions} from '@ionic-native/android-permissions';
 import {ErrorCodeService} from "../service/util-service/error-code.service";
 import {EmitSpeechService} from "../service/util-service/emit-speech.service";
-import {JhSqlite} from "../service/sqlite/jh-sqlite";
-import {LbSqlite} from "../service/sqlite/lb-sqlite";
-import {RelmemSqlite} from "../service/sqlite/relmem-sqlite";
-import {UserSqlite} from "../service/sqlite/user-sqlite";
-import {WorkSqlite} from "../service/sqlite/work-sqlite";
-import {SyncService} from "../service/sync.service";
 import {HTTP} from "@ionic-native/http";
-import {ZtdSqlite} from "../service/sqlite/ztd-sqlite";
 import {HttpClientModule} from "@angular/common/http";
-import {SyncSqlite} from "../service/sqlite/sync-sqlite";
-import {NetworkService} from "../service/util-service/network.service";
 import {Network} from "@ionic-native/network";
 import {Contacts} from "@ionic-native/contacts";
-import {ContactsService} from "../service/util-service/contacts.service";
 import {Vibration} from "@ionic-native/vibration";
 import {NativeAudio} from "@ionic-native/native-audio";
-import {SystemSettingService} from "../service/util-service/system.setting.service";
-import {RcbSqlite} from "../service/sqlite/rcb-sqlite";
 import {ElModule} from 'element-angular'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {RouterModule} from '@angular/router'
-
+import {MyApp} from './app.component';
+import {SqliteExec} from "../service/util-service/sqlite.exec";
+import {PermissionsService} from "../service/util-service/permissions.service";
+import {UtilService} from "../service/util-service/util.service";
+import {SqliteConfig} from "../service/config/sqlite.config";
+import {XiaojiAssistantService} from "../service/util-service/xiaoji-assistant.service";
+import {AibutlerRestful} from "../service/restful/aibutlersev";
+import {RestfulClient} from "../service/util-service/restful.client";
 import {RestFulConfig} from "../service/config/restful.config";
 
 @NgModule({
@@ -97,52 +66,22 @@ import {RestFulConfig} from "../service/config/restful.config";
     Device,
     Vibration,
     NativeAudio,
-    XiaojiAssistantService,
-    XiaojiAlarmclockService,
-    UtilService,
     LocalNotifications,
-    XiaojiFeedbackService,
     SQLite,
     Calendar,
-    ReadlocalService,
-    DwEmitService,
     SQLitePorter,
-    BaseSqlite,
-    FiSqlite,
-    JhSqlite,
-    LbSqlite,
-    MsSqlite,
-    PlayerSqlite,
-    RelmemSqlite,
-    RemindSqlite,
-    SystemSqlite,
-    UserSqlite,
-    WorkSqlite,
-    ZtdSqlite,
-    SyncSqlite,
-    RcbSqlite,
-    RestFulConfig,
-    UserService,
-    WorkService,
-    LsmService,
-    PlayerService,
-    MsService,
-    RelmemService,
-    RemindService,
-    SystemService,
-    JhService,
-    ParamsService,
-    WebsocketService,
-    DwMqService,
     BackgroundMode,
     AndroidPermissions,
-    PermissionsService,
     ErrorCodeService,
     EmitSpeechService,
-    SyncService,
-    NetworkService,
-    ContactsService,
-    SystemSettingService,
+    UtilService,
+    SqliteConfig,
+    SqliteExec,
+    RestFulConfig,
+    PermissionsService,
+    XiaojiAssistantService,
+    AibutlerRestful,
+    RestfulClient,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

@@ -1,5 +1,3 @@
-import {Injectable} from "@angular/core";
-
 /**
  * create by on 2019/3/5
  */
@@ -7,19 +5,19 @@ import {Injectable} from "@angular/core";
 //接口
 export interface ITbl {
 
-  cT():Promise<any> ;
+  cT():string ;
 
-  upT(arg :any):Promise<any> ;
+  upT():string ;
 
-  dT(arg :any):Promise<any> ;
+  dT():string ;
 
-  sloT(arg :any):Promise<any> ;
+  sloT():string ;
 
-  slT(arg :any):Promise<any> ;
+  slT():string ;
 
-  drT():Promise<any> ;
+  drT():string ;
 
-  inT(arg :any):Promise<any> ;
+  inT():string ;
 
-  rpT(arg :any):Promise<any> ;
+  rpT():string ;
 }

@@ -1,18 +1,6 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Nav } from 'ionic-angular';
-import { PageConfig } from "../../app/page.config";
-import { PermissionsService } from "../../service/util-service/permissions.service";
-import { UtilService } from "../../service/util-service/util.service";
-import { ReadlocalService } from "../../service/readlocal.service";
-import { ConfigService } from "../../service/config.service";
-import { WebsocketService } from "../../service/util-service/websocket.service";
-import { RoundProgressEase } from 'angular-svg-round-progressbar';
-import { LsmService } from "../../service/lsm.service";
-import { DataConfig } from "../../app/data.config";
-import { BsRestful } from "../../service/restful/bs-restful";
-import {SyncService} from "../../service/sync.service";
-import {ContactsService} from "../../service/util-service/contacts.service";
-import {WorkService} from "../../service/work.service";
+import {Component} from '@angular/core';
+import {IonicPage} from 'ionic-angular';
+import {RoundProgressEase} from 'angular-svg-round-progressbar';
 import {AlService} from "./al.service";
 
 /**
@@ -74,26 +62,34 @@ export class AlPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AlPage');
-    this.alService.checkAllPermissiions().then(data=>{
-      this.text="权限申请完成,初始化创建数据库开始";
-      //初始化创建数据库
-      this.increment(10);
-       this.alService.a();
-    }).then(data=>{
-      return this.alService.b();
-    }).then(data=>{
-      if (!data){
-        return
-      }
-      return data;
-    }).then(data=>{
 
-    });
-    for (let prop in this._ease) {
-      if (prop.toLowerCase().indexOf('ease') > -1) {
-        this.animations.push(prop);
-      };
-    }
+    console.log("al :: 权限申请开始");
+    // this.alService.checkAllPermissions().then(data=>{
+    //   console.log("al :: 权限申请完成");
+    //   this.increment(10);
+    //   this.text="权限申请完成,初始化创建数据库开始";
+    //   console.log("al :: 初始化创建数据库开始");
+    //   return this.alService.initDataBase();
+    // }).then(data=>{
+    //   this.increment(10);
+    //   console.log("al :: 创建数据库完成,初始化开始");
+    //   //return this.alService.initComplete();
+    // }).then(data=>{
+    //   this.increment(10);
+    //   console.log("al :: 判断是否初始化完成");
+    //   if (!data){
+    //     return
+    //   }
+    //   return data;
+    // }).then(data=>{
+    //   this.increment(10);
+    //   console.log("al :: 开始连接webSocket");
+    // });
+    // for (let prop in this._ease) {
+    //   if (prop.toLowerCase().indexOf('ease') > -1) {
+    //     this.animations.push(prop);
+    //   };
+    // }
   }
 
   increment(amount = 1) {
@@ -114,6 +110,5 @@ export class AlPage {
       'font-size': this.radius / 3.5 + 'px'
     };
   }
-
 
 }

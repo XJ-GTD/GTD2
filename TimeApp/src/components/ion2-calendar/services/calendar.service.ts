@@ -10,14 +10,13 @@ import {
 } from '../calendar.model'
 import * as moment from 'moment';
 import { defaults, pickModes } from "../config";
-import {WorkService} from "../../../service/work.service";
 
 @Injectable()
 export class CalendarService {
 
   specially:string = " animated bounceIn slow";
 
-  constructor(  private work:WorkService,
+  constructor(
   ) {
 
   }
@@ -269,70 +268,13 @@ export class CalendarService {
   }
 
   findDayEventForMonth(month):Promise<Array<DayConfig>> {
-    return new Promise<Array<DayConfig>>((resolve, reject) =>
-      this.work.getMBs(month).then(data=>{
-        //成功
-        let dayConfigs:Array<DayConfig> = new Array<DayConfig>();
-        if(data.code==0){
-          for(let i=0;i<data.bs.length;i++){
-            let mbs=data.bs[i];
-            let res:DayConfig=new class implements DayConfig {
-              cssClass: string;
-              date: Date;
-              disable: boolean;
-              marked: boolean;
-              subTitle: string;
-              title: string;
-            };
-            res.date=mbs.date;
-            //事少
-            if(!mbs.im){
-              res.cssClass = `hassometing ` +　this.specially;
-            }else{
-              //事多
-              res.cssClass = `busysometing ` + this.specially;
-            }
-            //有消息
-            if(mbs.iem){
-              res.subTitle=`\u2022`;
-            }
-            dayConfigs.push(res);
-          }
-          resolve(dayConfigs);
+    return new Promise<Array<DayConfig>>((resolve, reject) =>{resolve()}
 
-        }
-      })
     );
   }
 
   findDayEventForDay(day):Promise<DayConfig> {
-    return new Promise<DayConfig>((resolve, reject) =>
-
-      this.work.getOd(day).then(data=>{
-        // if(data && data.slc && data.slc.length>0){
-        //   for(let i=0;i<data.slc.length;i++){
-        //   // this.scheduleList.push(data.slc[i]);
-        //   }
-        // }
-        let res:DayConfig=new class implements DayConfig {
-          cssClass: string;
-          date: Date;
-          disable: boolean;
-          marked: boolean;
-          subTitle: string;
-          title: string;
-        };
-        res.date=day;
-        if(data.slc.length == 0){
-          res.cssClass = ``;
-        }else if(data.slc.length > 0 &&　data.slc.length < 5){
-          res.cssClass = `hassometing ` + this.specially;
-        }else{
-          res.cssClass = `busysometing ` + this.specially;
-        }
-        resolve(res);
-      })
-    );
+    return new Promise<DayConfig>((resolve, reject) =>{resolve()});
   }
 
 

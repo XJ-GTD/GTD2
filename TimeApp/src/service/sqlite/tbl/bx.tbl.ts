@@ -1,75 +1,11 @@
-import{Injectable}from'@angular/core';
-import {BaseTbl} from "./base.tbl";
-import {ITbl} from "./itbl";
-
 /**
  * create by on 2019/3/5
  */
-@Injectable()
-export class BxTbl extends BaseTbl implements ITbl{
-  constructor( arg ){
-
-    super( arg );
-  }
+import {ITbl} from "./itbl";
 
 
-  cT():Promise<any> {
+export class BxTbl implements ITbl{
 
-    let sq ='CREATE TABLE IF NOT EXISTS GTD_B_X( bi varchar(50) PRIMARY KEY ,bmi varchar(50));';
-
-    return this._execSql(sq,[]);
-  }
-
-  upT(pro:BxPro):Promise<any> {
-    let sq='update GTD_B_X set 1=1 ';
-    if(pro.bmi!=null){
-      sq=sq+', bmi="' + pro.bmi +'"';
-    }
-    sq = sq + ' where bi = "'+ pro.bi +'"';
-    return this._execSql(sq,[]);
-  }
-
-  dT(pro:BxPro):Promise<any> {
-    let sq = 'delete from GTD_B_X where bi = "' + pro.bi +'"';
-    return this._execSql(sq,[]);
-  }
-
-  sloT(pro:BxPro):Promise<any> {
-    let sq='select * from GTD_B_X where bi = "'+ pro.bi +'"';
-    return this._execSql(sq,[]);
-  }
-
-  slT(pro:BxPro):Promise<any> {
-    let sq='select * from GTD_B_X where  1=1 ';
-    if(pro.bmi!=null){
-      sq=sq+' and bmi="' + pro.bmi +'"';
-    }
-    return this._execSql(sq,[]);
-  }
-
-  drT():Promise<any> {
-
-    let sq ='DROP TABLE IF EXISTS GTD_B_X;';
-    return this._execSql(sq,[]);
-  }
-
-  inT(pro:BxPro):Promise<any> {
-    let sq ='insert into GTD_G ' +
-      '(  bi ,bmi) values("'+ pro.bi+'","'+ pro.bmi+'")';
-
-    return this._execSql(sq,[]);
-  }
-
-  rpT(pro:BxPro):Promise<any> {
-    let sq ='replace into GTD_G ' +
-      '(  bi ,bmi) values("'+ pro.bi+'","'+ pro.bmi+'")';
-
-    return this._execSql(sq,[]);
-  }
-
-}
-
-class BxPro{
   private _bi: string;
   private _bmi: string;
 
@@ -95,5 +31,58 @@ class BxPro{
     this._bmi = null;
   };
 
-}
+  cT():string {
 
+    let sq ='CREATE TABLE IF NOT EXISTS GTD_B_X( bi varchar(50) PRIMARY KEY ,bmi varchar(50));';
+
+    return sq;
+  }
+
+  upT():string {
+    let sq='update GTD_B_X set 1=1 ';
+    if(this._bmi!=null){
+      sq=sq+', bmi="' + this._bmi +'"';
+    }
+    sq = sq + ' where bi = "'+ this._bi +'"';
+    return sq;
+  }
+
+  dT():string {
+    let sq = 'delete from GTD_B_X where bi = "' + this._bi +'"';
+    return sq;
+  }
+
+  sloT():string {
+    let sq='select * from GTD_B_X where bi = "'+ this._bi +'"';
+    return sq;
+  }
+
+  slT():string {
+    let sq='select * from GTD_B_X where  1=1 ';
+    if(this._bmi!=null){
+      sq=sq+' and bmi="' + this._bmi +'"';
+    }
+    return sq;
+  }
+
+  drT():string {
+
+    let sq ='DROP TABLE IF EXISTS GTD_B_X;';
+    return sq;
+  }
+
+  inT():string {
+    let sq ='insert into GTD_G ' +
+      '(  bi ,bmi) values("'+ this._bi+'","'+ this._bmi+'")';
+
+    return sq;
+  }
+
+  rpT():string {
+    let sq ='replace into GTD_G ' +
+      '(  bi ,bmi) values("'+ this._bi+'","'+ this._bmi+'")';
+
+    return sq;
+  }
+
+}
