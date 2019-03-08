@@ -2,14 +2,9 @@
  * create by on 2019/3/5
  */
 import {ITbl} from "./itbl";
-import {UtilService} from "../../util-service/util.service";
 
 
 export class DTbl implements ITbl {
-
-  constructor(private util : UtilService){
-
-  }
   private _pI: string="";
   private _sI: string="";
   private _sT: string="";
@@ -200,7 +195,6 @@ export class DTbl implements ITbl {
   }
 
   inT():string {
-    this._pI = this.util.getUuid();
     let sq ='insert into GTD_D ' +
       '( pI ,sI ,sT ,son ,sa ,aI ,ib ,bi ,sdt) values("'+ this._pI+'","'+ this._sI+'","'+this._sT+ '"' +
       ',"'+this._son+ '","'+this._sa+ '","'+this._aI+ '","'+this._ib+ '","'+this._bi+ '","'+this._sdt+ '")';
@@ -209,7 +203,6 @@ export class DTbl implements ITbl {
   }
 
   rpT():string {
-    this._pI = this.util.getUuid();
     let sq ='replace into GTD_D ' +
       '( pI ,sI ,sT ,son ,sa ,aI ,ib ,bi ,sdt) values("'+ this._pI+'","'+ this._sI+'","'+this._sT+ '"' +
       ',"'+this._son+ '","'+this._sa+ '","'+this._aI+ '","'+this._ib+ '","'+this._bi+ '","'+this._sdt+ '")';

@@ -2,13 +2,10 @@
  * create by on 2019/3/5
  */
 import {ITbl} from "./itbl";
-import {UtilService} from "../../util-service/util.service";
 
 
 export class BxTbl implements ITbl{
-  constructor(private util : UtilService){
 
-  }
   private _bi: string="";
   private _bmi: string="";
 
@@ -75,7 +72,6 @@ export class BxTbl implements ITbl{
   }
 
   inT():string {
-    this._bi = this.util.getUuid();
     let sq ='insert into GTD_G ' +
       '(  bi ,bmi) values("'+ this._bi+'","'+ this._bmi+'")';
 
@@ -83,7 +79,6 @@ export class BxTbl implements ITbl{
   }
 
   rpT():string {
-    this._bi = this.util.getUuid();
     let sq ='replace into GTD_G ' +
       '(  bi ,bmi) values("'+ this._bi+'","'+ this._bmi+'")';
 

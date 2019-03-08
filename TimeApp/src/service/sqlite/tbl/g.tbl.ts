@@ -1,13 +1,10 @@
 import {ITbl} from "./itbl";
-import {UtilService} from "../../util-service/util.service";
 
 /**
  * create by on 2019/3/5
  */
 export class GTbl implements ITbl {
-  constructor(private util : UtilService){
 
-  }
   private _gI: string="";
   private _gN: string="";
   private _gM: string="";
@@ -90,7 +87,6 @@ export class GTbl implements ITbl {
   }
 
   inT():string{
-    this._gI = this.util.getUuid();
     let sq ='insert into GTD_G ' +
       '( gI ,gN ,gM) values("'+ this._gI+'","'+ this._gN+'","'+this._gM+ '")';
 
@@ -98,7 +94,6 @@ export class GTbl implements ITbl {
   }
 
   rpT():string{
-    this._gI = this.util.getUuid();
     let sq ='replace into GTD_G ' +
       '( gI ,gN ,gM) values("'+ this._gI+'","'+ this._gN+'","'+this._gM+ '")';
 

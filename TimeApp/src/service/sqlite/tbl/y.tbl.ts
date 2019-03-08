@@ -1,14 +1,10 @@
 import {ITbl} from "./itbl";
-import {UtilService} from "../../util-service/util.service";
 
 /**
  * create by on 2019/3/5
  */
 export class YTbl implements ITbl {
 
-  constructor(private util : UtilService){
-
-  }
   private _yi: string="";
   private _yt: string="";
   private _ytn: string="";
@@ -131,7 +127,7 @@ export class YTbl implements ITbl {
   }
 
   inT(): string {
-    this._yi = this.util.getUuid();
+
     let sq = 'insert into GTD_Y ' +
       '(  yi ,yt ,ytn ,yn ,yk ,yv) values("' + this._yi + '","' + this._yt + '","' + this._ytn + '"' +
       ',"' + this._yn + '","' + this._yk + '","' + this._yv + '")';
@@ -140,7 +136,7 @@ export class YTbl implements ITbl {
   }
 
   rpT(): string {
-    this._yi = this.util.getUuid();
+
     let sq = 'replace into GTD_Y ' +
       '(  yi ,yt ,ytn ,yn ,yk ,yv) values("' + this._yi + '","' + this._yt + '","' + this._ytn + '"' +
       ',"' + this._yn + '","' + this._yk + '","' + this._yv + '")';
