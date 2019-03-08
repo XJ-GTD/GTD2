@@ -1,22 +1,23 @@
-
 import {STbl} from "../sqlite/tbl/s.tbl";
 import {ATbl} from "../sqlite/tbl/a.tbl";
 import {SqliteExec} from "../util-service/sqlite.exec";
+import {Injectable} from "@angular/core";
 
+@Injectable()
 export class RestFulConfig {
 
 
   private urlLs: Map<string, UrlEntity>;
 
-  constructor(private stbl: STbl,private atbl: ATbl,private sqlitexec:SqliteExec) {
-    this.init();
+  constructor(private sqlitexec: SqliteExec) {
+    //this.init();
   }
 
 
-  async createHeader():Promise<RestFulHeader>{
+  async createHeader(): Promise<RestFulHeader> {
     let apro = new ATbl();
     let header = new RestFulHeader();
-    apro = await this.atbl.sloT();
+    apro = await this.sqlitexec.getOne(apro);
     //帐户ID
     header.ai = apro.aI;
     //设备ID
@@ -32,17 +33,17 @@ export class RestFulConfig {
   //初始化全局 restful Url 信息
   init() {
     this.urlLs = new Map<string, UrlEntity>();
-    let sPro = new SPro();
+    let sPro = new STbl();
     sPro.st = "URL";
-    this.stbl.slT(sPro).then(sPros => {
+    this.sqlitexec.getOne(sPro).then(sPros => {
 
       console.log(sPros);
 
-      for(let data of sPros){
-        let urlentity:UrlEntity = new UrlEntity();
+      for (let data of sPros) {
+        let urlentity: UrlEntity = new UrlEntity();
         urlentity.key = data.yk;
         urlentity.key = data.yv;
-        this.urlLs.set(data.yk,urlentity);
+        this.urlLs.set(data.yk, urlentity);
       }
     })
   }
@@ -51,7 +52,6 @@ export class RestFulConfig {
   getRestFulUrl(key: string): UrlEntity {
     return this.urlLs.get(key);
   }
-
 
 
   /* 环境URL 头部 */
@@ -63,7 +63,7 @@ export class RestFulConfig {
   // private static REQUEST_URL: UrlEntity = new UrlEntity("https://www.guobaa.com/gtd",false);
 
   /* RabbitMq WebSocket */
-   public static RABBITMQ_WS_URL: string = "wss://www.guobaa.com/ws";
+  public static RABBITMQ_WS_URL: string = "wss://www.guobaa.com/ws";
   //public static RABBITMQ_WS_URL: string = "ws://192.168.0.146:15674/ws";
 
   /* RabbitMq SockJs */
@@ -166,14 +166,14 @@ export class RestFulConfig {
 
 }
 
-class RestFulHeader{
-  "Content-Type":string = "application/json";
-  lt:string = "";//登录码
-  pi:string = "cn.sh.com.xj.timeApp";//产品ID
-  pv:string ="v1";//产品版本
-  di:string  ="";//设备ID
-  ai:string ="";//帐户ID
-  dt:string  = "";//设别类型
+class RestFulHeader {
+  "Content-Type": string = "application/json";
+  lt: string = "";//登录码
+  pi: string = "cn.sh.com.xj.timeApp";//产品ID
+  pv: string = "v1";//产品版本
+  di: string = "";//设备ID
+  ai: string = "";//帐户ID
+  dt: string = "";//设别类型
 }
 
 

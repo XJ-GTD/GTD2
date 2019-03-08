@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DataConfig } from "../../app/data.config";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import { HTTP } from "@ionic-native/http";
 import {UrlEntity,RestFulConfig} from "../config/restful.config";
 import {UtilService} from "./util.service";

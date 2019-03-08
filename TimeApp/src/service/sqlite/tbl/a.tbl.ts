@@ -65,14 +65,6 @@ export class ATbl implements ITbl {
     this._aQ = value;
   }
 
-  clp(){
-    this._aI = null;
-    this._aN = null;
-    this._aM = null;
-    this._aE = null;
-    this._aT = null;
-    this._aQ = null;
-  };
 
   cT():string {
 
@@ -100,7 +92,7 @@ export class ATbl implements ITbl {
     return sq;
   }
 
-  dT(pro):string {
+  dT():string {
     let sq = 'delete from GTD_A where aI = "' + this._aI +'"';
     return sq;
   }
@@ -110,7 +102,7 @@ export class ATbl implements ITbl {
     return sq;
   }
 
-  slT(pro):string {
+  slT():string {
     let sq='select * from  GTD_A where  1=1 ';
     if(this._aI != null){
       sq = sq + ' and aI="' + this._aI +'"';
@@ -137,7 +129,7 @@ export class ATbl implements ITbl {
     return sq;
   }
 
-  inT(pro):string {
+  inT():string {
     let sq ='insert into GTD_A ' +
       '(aI,aN,aM,aE,aT,aQ) values("'+ this._aI+'","'+ this._aN+'","'+this._aM+ '"' +
       ',"'+this._aE+ '","'+this._aT+ '","'+this._aQ+ '")';
@@ -145,7 +137,7 @@ export class ATbl implements ITbl {
     return sq;
   }
 
-  rpT(pro):string {
+  rpT():string {
     let sq ='replace into GTD_A ' +
       '(aI,aN,aM,aE,aT,aQ) values("'+ this._aI+'","'+ this._aN+'","'+this._aM+ '"' +
       ',"'+this._aE+ '","'+this._aT+ '","'+this._aQ+ '")';

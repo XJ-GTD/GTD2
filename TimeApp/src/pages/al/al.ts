@@ -64,32 +64,32 @@ export class AlPage {
     console.log('ionViewDidLoad AlPage');
 
     console.log("al :: 权限申请开始");
-    this.alService.checkAllPermissions().then(data=>{
-      console.log("al :: 权限申请完成");
-      this.increment(10);
-      this.text="权限申请完成,初始化创建数据库开始";
-      console.log("al :: 初始化创建数据库开始");
-      return this.alService.initDataBase();
-    }).then(data=>{
-      this.increment(10);
-      console.log("al :: 创建数据库完成,初始化开始");
-      //return this.alService.initComplete();
-    }).then(data=>{
-      this.increment(10);
-      console.log("al :: 判断是否初始化完成");
-      if (!data){
-        return
-      }
-      return data;
-    }).then(data=>{
-      this.increment(10);
-      console.log("al :: 开始连接webSocket");
-    });
-    for (let prop in this._ease) {
-      if (prop.toLowerCase().indexOf('ease') > -1) {
-        this.animations.push(prop);
-      };
-    }
+    // this.alService.checkAllPermissions().then(data=>{
+    //   console.log("al :: 权限申请完成");
+    //   this.increment(10);
+    //   this.text="权限申请完成,初始化创建数据库开始";
+    //   console.log("al :: 初始化创建数据库开始");
+    //   return this.alService.initDataBase();
+    // }).then(data=>{
+    //   this.increment(10);
+    //   console.log("al :: 创建数据库完成,初始化开始");
+    //   //return this.alService.initComplete();
+    // }).then(data=>{
+    //   this.increment(10);
+    //   console.log("al :: 判断是否初始化完成");
+    //   if (!data){
+    //     return
+    //   }
+    //   return data;
+    // }).then(data=>{
+    //   this.increment(10);
+    //   console.log("al :: 开始连接webSocket");
+    // });
+    // for (let prop in this._ease) {
+    //   if (prop.toLowerCase().indexOf('ease') > -1) {
+    //     this.animations.push(prop);
+    //   };
+    // }
   }
 
   increment(amount = 1) {

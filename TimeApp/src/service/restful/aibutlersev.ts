@@ -12,14 +12,14 @@ export class AibutlerRestful{
   }
 
   //语音上传 VU
-  postaudio():Promise<any> {
+  postaudio(audio:string):Promise<any> {
 
     return new Promise((resolve, reject) => {
     });
   }
 
   //文本上传 TU
-  posttext():Promise<any> {
+  posttext(text:string):Promise<any> {
 
     return new Promise((resolve, reject) => {
 

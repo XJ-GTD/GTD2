@@ -1,17 +1,12 @@
 import {Injectable} from "@angular/core";
 import {PermissionsService} from "../../service/util-service/permissions.service";
-import {SyncService} from "../../service/sync.service";
-import {WebsocketService} from "../../service/util-service/websocket.service";
 import {SqliteConfig} from "../../service/config/sqlite.config";
-import {DataConfig} from "../../app/data.config";
 
 @Injectable()
 export class AlService {
 
 
   constructor(private permissionsService: PermissionsService,
-                private webSocketService: WebsocketService,
-                private syncService:SyncService,
                 private sqlLiteConfig:SqliteConfig,
               ) {
   }

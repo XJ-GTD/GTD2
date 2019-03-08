@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { Device } from "@ionic-native/device";
-import {DataConfig} from "../../app/data.config";
 import * as moment from "moment";
 import {AlertController, Events, LoadingController, ToastController} from "ionic-angular";
 
@@ -115,7 +114,7 @@ export class UtilService {
     if(str === "browser"){
       return false;
     }
-    return DataConfig.IS_MOBILE;
+    return true;
   }
 
   /**

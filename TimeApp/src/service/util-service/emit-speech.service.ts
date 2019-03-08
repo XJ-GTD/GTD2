@@ -1,10 +1,6 @@
 import {Injectable} from "@angular/core";
 import {DwEmitService} from "./dw-emit.service";
 import {AiuiModel} from "../../model/aiui.model";
-import {XiaojiAssistantService} from "./xiaoji-assistant.service";
-import {LocalNotifications} from "@ionic-native/local-notifications";
-import {Vibration} from "@ionic-native/vibration";
-import {NativeAudio} from "@ionic-native/native-audio";
 import {SystemSettingService} from "./system.setting.service";
 
 /**
