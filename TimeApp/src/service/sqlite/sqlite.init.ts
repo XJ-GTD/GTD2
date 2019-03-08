@@ -156,13 +156,14 @@ export class SqliteInit {
         }
 
         //服务器 用户偏好数据
-        for (let bipl of data.bipl) {
+        for (let dpfu of data.dpfu) {
           let ytbl = new YTbl();
           ytbl.yi = this.util.getUuid();;
-          ytbl.yt = "";
-          ytbl.ytn = "";
-          ytbl.yk = "";
-          ytbl.yv = "";
+          ytbl.yt = dpfu.name;
+          ytbl.ytn = dpfu.desc;
+          ytbl.yn = dpfu.desc;
+          ytbl.yk = dpfu.name;
+          ytbl.yv = dpfu.value;
           urlList.push(ytbl.inT());
         }
 
