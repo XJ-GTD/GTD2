@@ -585,7 +585,7 @@ paths:
         description: "模板ID  0:验证码   1:日程共享发送未注册"
         required: true
       - name: "sendContent"
-        in: "header"
+        in: "query"
         type: "string"
         description: "发送内容  sendType=0是改内容为超时时间"
         required: false

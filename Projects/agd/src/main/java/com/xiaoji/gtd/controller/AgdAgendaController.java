@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +22,7 @@ import com.xiaoji.gtd.util.ReturnMessage;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/")
+@RequestMapping(value = "/agd")
 public class AgdAgendaController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class AgdAgendaController {
      */
     @RequestMapping(value="/agenda/save")
     @ResponseBody
-    public BaseOutDto add(AgdAgendaDto blacklist,HttpServletRequest request) {
+    public BaseOutDto add(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
     	if(!"".equals(relId) && relId != null){
@@ -60,7 +60,7 @@ public class AgdAgendaController {
      */
     @RequestMapping(value="/agenda/info")
     @ResponseBody
-    public BaseOutDto getInfo(AgdAgendaDto blacklist,HttpServletRequest request) {
+    public BaseOutDto getInfo(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
     	if(!"".equals(relId) && relId != null){
@@ -82,7 +82,7 @@ public class AgdAgendaController {
      */
     @RequestMapping(value="agenda/remove")
     @ResponseBody
-    public BaseOutDto remove(AgdAgendaDto blacklist,HttpServletRequest request) {
+    public BaseOutDto remove(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
     	
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
@@ -105,7 +105,7 @@ public class AgdAgendaController {
      */
     @RequestMapping(value="/agendacontacts/save")
     @ResponseBody
-    public BaseOutDto saveContacts(AgdAgendaDto blacklist,HttpServletRequest request) {
+    public BaseOutDto saveContacts(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
     	
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
