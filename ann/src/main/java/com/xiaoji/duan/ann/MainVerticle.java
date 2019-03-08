@@ -114,7 +114,7 @@ public class MainVerticle extends AbstractVerticle {
 		if ("agenda_from_share".equals(announceType)) {
 			for (int pos = 0; pos < announceTo.size(); pos++) {
 				String openid = announceTo.getString(pos);
-				
+				System.out.println("Announce to " + openid + " start process.");
 				Future<JsonObject> future = Future.future();
 				
 				future.setHandler(handler -> {
@@ -128,7 +128,7 @@ public class MainVerticle extends AbstractVerticle {
 						if (unionId == null || StringUtils.isEmpty(unionId)) {
 							System.out.println("announce by sms to " + openid);
 							
-							sendShortMessages(openid, "");
+							sendShortMessages(openid, "// todo:");
 
 						} else {
 							System.out.println("announce by mwxing message to " + unionId);
@@ -144,6 +144,8 @@ public class MainVerticle extends AbstractVerticle {
 				
 				getUserInfo(future, openid);
 			}
+		} else {
+			System.out.println("Received process undefined messages.");
 		}
 		
 		JsonObject nextctx = new JsonObject().put("context", new JsonObject().put("complete", new JsonObject()));
@@ -170,15 +172,20 @@ public class MainVerticle extends AbstractVerticle {
 				config().getInteger("sms.service.port", 8080),
 				config().getString("sms.service.host", "sa-sms"),
 				config().getString("sms.service.starter.singlesend", "/sms/send"))
-		.sendJsonObject(
-				new JsonObject()
-				.put("platformType", "*")
-				.put("mobile", phoneno)
-				.put("sendType", "1")
-				.put("sendContent", content),
-				handler -> {
+		.method(HttpMethod.POST)
+		.addQueryParam("platformType", "*")
+		.addQueryParam("mobile", phoneno)
+		.addQueryParam("sendType", "1")
+		.addQueryParam("sendContent", content)
+		.send(handler -> {
+				if (handler.succeeded()) {
+					System.out.println("sms response " + handler.result().statusCode() + " " + handler.result().bodyAsString());
 					System.out.println("sms sent announce message to " + phoneno + " completed. [" + content + "]");
+				} else {
+					handler.cause().printStackTrace();
+					System.out.println("sms sent announce message to " + phoneno + " failed. [" + content + "]");
 				}
+			}
 		);
 		System.out.println("sms end.");
 	}
@@ -204,6 +211,7 @@ public class MainVerticle extends AbstractVerticle {
 				
 				future.complete(userinfo);
 			} else {
+				handler.cause().printStackTrace();
 				future.fail(handler.cause());
 			}
 		});
