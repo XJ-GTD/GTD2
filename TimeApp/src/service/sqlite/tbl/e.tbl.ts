@@ -1,7 +1,9 @@
+import {ITbl} from "./itbl";
+
 /**
  * create by on 2019/3/5
  */
-export class ETbl  {
+export class ETbl  implements ITbl {
   private _wI: string;
   private _sI: string;
   private _sT: string;
