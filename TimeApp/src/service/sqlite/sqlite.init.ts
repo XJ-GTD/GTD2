@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {SQLite, SQLiteObject} from "@ionic-native/sqlite";
 import {UtilService} from "../util-service/util.service";
 import {SpTbl} from "./sp.tbl";
-import {ATbl} from "./a.tbl";
+import {APro, ATbl} from "./a.tbl";
 import {BTbl} from "./b.tbl";
 import {BxTbl} from "./bx.tbl";
 import {CTbl} from "./c.tbl";
@@ -39,6 +39,8 @@ export class SqliteInit {
     let count = 0;
     count ++ ;
     await this.atbl.drT();
+    let a:APro = new APro();
+    this.sqlexec.execSql(a)
     count ++;
     await this.atbl.cT();
 
