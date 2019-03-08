@@ -14,6 +14,7 @@ import com.xiaoji.gtd.dto.BaseOutDto;
 import com.xiaoji.gtd.entity.AgdAgenda;
 import com.xiaoji.gtd.services.IAgendaService;
 import com.xiaoji.gtd.services.IContactsService;
+import com.xiaoji.gtd.util.BaseUtil;
 import com.xiaoji.gtd.util.ReturnMessage;
 
 /**
@@ -62,10 +63,12 @@ public class AgdAgendaController {
     @ResponseBody
     public BaseOutDto getInfo(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
     	BaseOutDto out = new BaseOutDto();
-    	String relId = request.getHeader("ai");
-    	if(!"".equals(relId) && relId != null){
-    		blacklist.setFc(relId);
-    		agendaService.findById(blacklist.getAi());
+    	//String relId = request.getHeader("ai");
+    	String agdId = blacklist.getAi();
+    	if(!"".equals(agdId) && agdId != null){
+//    		blacklist.setFc(relId);
+    		AgdAgenda agd = agendaService.findById(blacklist.getAi());
+    		out.setD(BaseUtil.agdToDtoAgd(agd));
     		out.setRc(ReturnMessage.SUCCESS_CODE);
     		out.setRm(ReturnMessage.SUCCESS_MSG);
     	}else{

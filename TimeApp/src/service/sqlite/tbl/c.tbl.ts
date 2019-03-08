@@ -103,7 +103,7 @@ export class CTbl implements  ITbl{
 
   cT():string {
 
-    let sq =' sI varchar(50) PRIMARY KEY ,sN varchar(50)  ,uI varchar(50)  ,sd varchar(20)  ' +
+    let sq =' CREATE TABLE IF NOT EXISTS GTD_C(  sI varchar(50) PRIMARY KEY ,sN varchar(50)  ,uI varchar(50)  ,sd varchar(20)  ' +
       ',st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,rT varchar(4)  ,ji varchar(50));';
 
     return sq;
