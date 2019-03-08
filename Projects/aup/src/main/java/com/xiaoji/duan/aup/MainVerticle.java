@@ -94,6 +94,12 @@ public class MainVerticle extends AbstractVerticle {
 		router.get("/aup/user/:unionid").produces("application/json").handler(ctx -> this.getUserInfo(ctx));
 		router.put("/aup/user/:unionid").produces("application/json").handler(ctx -> this.updateUserInfo(ctx));
 
+		router.route("/aup/user/:phoneno/userinfo").handler(datahandler);
+		router.get("/aup/user/:phoneno/userinfo").produces("application/json").handler(ctx -> this.getUserInfoSimpleByPhone(ctx));
+
+		router.route("/aup/user/:phoneno/avatar").handler(datahandler);
+		router.get("/aup/user/:phoneno/avatar").handler(ctx -> this.getAvatarByPhone(ctx));
+
 		router.route("/aup/data/:phoneno/userinfo").handler(datahandler);
 		router.get("/aup/data/:phoneno/userinfo").produces("application/json").handler(ctx -> this.getUserInfoByPhone(ctx));
 		
@@ -120,6 +126,76 @@ public class MainVerticle extends AbstractVerticle {
 		});
 	}
 
+	private void getUserInfoSimpleByPhone(RoutingContext ctx) {
+        String phoneno = ctx.request().getParam("phoneno");
+
+		JsonObject ret = new JsonObject();
+		ret.put("errcode", "0");
+		ret.put("errmsg", "");
+		ret.put("data", new JsonObject());
+
+        mongodb.findOne("aup_user_info", new JsonObject().put("$or", new JsonArray()
+        		.add(new JsonObject().put("openid", phoneno))
+        		.add(new JsonObject().put("phoneno", phoneno))
+        		), new JsonObject(), findOne -> {
+        	if (findOne.succeeded()) {
+        		JsonObject userinfo = findOne.result();
+        		
+        		if (userinfo == null || userinfo.isEmpty()) {
+        			ret.put("errcode", "10041");
+        			ret.put("errmsg", "用户不存在!");
+
+        			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+        		} else {
+        			ret.put("data", new JsonObject()
+        					.put("phoneno", userinfo.getString("phoneno"))
+        					.put("nickname", userinfo.getString("nickname"))
+        					.put("avatar", userinfo.getString("avatar"))
+        					);
+        			
+        			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+        		}
+        	} else {
+				ret.put("errcode", "-3");
+				ret.put("errmsg", "服务器异常, 用户获取失败!");
+
+				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+        	}
+        });
+	}
+	
+	private void getAvatarByPhone(RoutingContext ctx) {
+        String phoneno = ctx.request().getParam("phoneno");
+
+		JsonObject ret = new JsonObject();
+		ret.put("errcode", "0");
+		ret.put("errmsg", "");
+		ret.put("data", new JsonObject());
+
+        mongodb.findOne("aup_user_info", new JsonObject().put("$or", new JsonArray()
+        		.add(new JsonObject().put("openid", phoneno))
+        		.add(new JsonObject().put("phoneno", phoneno))
+        		), new JsonObject(), findOne -> {
+        	if (findOne.succeeded()) {
+        		JsonObject userinfo = findOne.result();
+        		
+        		if (userinfo == null || userinfo.isEmpty()) {
+        			ret.put("errcode", "10041");
+        			ret.put("errmsg", "用户不存在!");
+
+        			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+        		} else {
+        			ctx.response().putHeader("Content-Type", "text/plain").end(userinfo.getString("avatar"));
+        		}
+        	} else {
+				ret.put("errcode", "-3");
+				ret.put("errmsg", "服务器异常, 用户获取失败!");
+
+				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+        	}
+        });
+	}
+	
 	private void getUserInfoByPhone(RoutingContext ctx) {
         String phoneno = ctx.request().getParam("phoneno");
 

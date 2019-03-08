@@ -59,21 +59,18 @@ export class RService {
     return new Promise((resolve, reject) => {
       //数据
       let aTbl: ATbl = new ATbl();
-      this.restfulConfig.createHeader().then(data=>{
-        aTbl.aI = data.ai;
-        aTbl.aN = "时光旅行者"+body.accountMobile;
-        aTbl.aM = body.accountMobile;
-        aTbl.aE = data.di;
-        aTbl.aT = '';
-        aTbl.aQ = '';
-      }).then(data=>{
-        this.sqlExce.replaceT(aTbl).then(data => {
-          console.log(data);
-          resolve("保存成功");
+      aTbl.aI = this.util.getUuid();
+      aTbl.aN = "时光旅行者"+body.accountMobile;
+      aTbl.aM = body.accountMobile;
+      aTbl.aE = this.util.deviceId();
+      aTbl.aT = '';
+      aTbl.aQ = '';
+      this.sqlExce.replaceT(aTbl).then(data => {
+        console.log(data);
+        resolve("保存成功");
 
-        }).catch(err => {
-          resolve("保存失败");
-        })
+      }).catch(err => {
+        resolve("保存失败");
       })
 
 
