@@ -1,9 +1,15 @@
 package com.xiaoji.gtd.services.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +28,13 @@ import com.xiaoji.gtd.util.BaseUtil;
 @Service
 @Transactional
 public class IContactsServiceImpl implements IContactsService {
-	
+	Logger log = LoggerFactory.getLogger(IContactsServiceImpl.class);
 	@Autowired
 	private AgdContactsRepository agdContactsRep;
-
+	@Autowired
+    private JmsMessagingTemplate jmsMessagingTemplate;
+	@Value("${active.destinationName}")
+	private String destinationName;
 	/**
 	 * 保存日程参与人
 	 */
@@ -56,18 +65,43 @@ public class IContactsServiceImpl implements IContactsService {
 			
 			if(addList.size()>0){
 				for (AgdContactsDto add : inDto.getAc()) {
-					AgdAgendaContacts agd = BaseUtil.inAgdToAgd(add);
+					AgdAgendaContacts agd = BaseUtil.dtoToContacts(add);
 					agd = agdContactsRep.save(agd);
 					//TODO 发送添加日程消息
+					//TODO 生产消息MQ
+					Map<String,Object> map = new HashMap<String,Object>();
+			        map.put("to", inDto.getAc());
+			        map.put("agenda", inDto);
+			        map.put("notifyType", "add");
+			        try{
+			        	jmsMessagingTemplate.convertAndSend(destinationName, map);
+				        System.out.println("map发送成功");	
+			        }catch(Exception e){
+			        	log.error("------- 发送失败  --------" + map.toString());
+			        }
 				}
 				
 			}
 		}
 		if(delList.size()>0){
+			List<AgdContactsDto> dels = new ArrayList<AgdContactsDto>();
 			for (AgdAgendaContacts agdAgendaContacts : delList) {
+				dels.add(BaseUtil.AgdToContactsDto(agdAgendaContacts));
 				agdContactsRep.deleteById(agdAgendaContacts.getRecId());
 				//TODO 发送删除日程消息
 			}
+			//TODO 生产消息MQ
+			Map<String,Object> map = new HashMap<String,Object>();
+	        map.put("to", inDto.getAc());
+	        map.put("agenda", dels);
+	        map.put("notifyType", "delete");
+	        try{
+	        	jmsMessagingTemplate.convertAndSend(destinationName, map);
+		        System.out.println("map发送成功");	
+	        }catch(Exception e){
+	        	log.error("------- 发送失败  --------" + map.toString());
+	        }
+	        
 		}
 		
 		return null;

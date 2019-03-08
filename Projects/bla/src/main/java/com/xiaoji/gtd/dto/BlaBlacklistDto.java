@@ -18,6 +18,7 @@ public class BlaBlacklistDto implements Serializable {
 	private String a;//头像
 	private String n; // 名称
 	private String relId; //关联ID
+	
 	public Long getId() {
 		return Id;
 	}

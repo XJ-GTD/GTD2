@@ -11,7 +11,7 @@ public interface ISmsService {
      * @param mobile
      * @return
      */
-    int getAuthCode(String mobile,int timeOut);
+    int getAuthCode(String mobile,String code);
 
     /**
      * 推送短信日程
