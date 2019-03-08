@@ -4,11 +4,11 @@ import {ITbl} from "./itbl";
  * create by on 2019/3/5
  */
 export class ETbl  implements ITbl {
-  private _wI: string;
-  private _sI: string;
-  private _sT: string;
-  private _wD: string;
-  private _wT: string;
+  private _wI: string="";
+  private _sI: string="";
+  private _sT: string="";
+  private _wD: string="";
+  private _wT: string="";
 
   get wI(): string {
     return this._wI;

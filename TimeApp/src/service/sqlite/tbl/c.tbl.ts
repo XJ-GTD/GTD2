@@ -6,15 +6,15 @@ import {ITbl} from "./itbl";
 
 export class CTbl implements  ITbl{
 
-  private _sI: string;
-  private _sN: string;
-  private _uI: string;
-  private _sd: string;
-  private _st: string;
-  private _ed: string;
-  private _et: string;
-  private _rT: string;
-  private _ji: string;
+  private _sI: string="";
+  private _sN: string="";
+  private _uI: string="";
+  private _sd: string="";
+  private _st: string="";
+  private _ed: string="";
+  private _et: string="";
+  private _rT: string="";
+  private _ji: string="";
 
 
   get sI(): string {
