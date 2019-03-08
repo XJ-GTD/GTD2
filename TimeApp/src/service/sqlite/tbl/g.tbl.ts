@@ -5,9 +5,9 @@ import {ITbl} from "./itbl";
  */
 export class GTbl implements ITbl {
 
-  private _gI: string;
-  private _gN: string;
-  private _gM: string;
+  private _gI: string="";
+  private _gN: string="";
+  private _gM: string="";
 
   get gI(): string {
     return this._gI;

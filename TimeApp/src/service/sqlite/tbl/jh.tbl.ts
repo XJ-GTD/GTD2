@@ -4,11 +4,11 @@ import {ITbl} from "./itbl";
  * create by on 2019/3/5
  */
 export class JhTbl  implements ITbl{
-  private _ji: string;
-  private _jn: string;
-  private _jg: string;
-  private _jc: string;
-  private _jt: string;
+  private _ji: string="";
+  private _jn: string="";
+  private _jg: string="";
+  private _jc: string="";
+  private _jt: string="";
 
   get jc(): string {
     return this._jc;

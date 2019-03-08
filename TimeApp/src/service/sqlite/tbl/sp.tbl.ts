@@ -6,16 +6,16 @@ import {ITbl} from "./itbl";
  */
 export class SpTbl  implements ITbl {
 
-  private _spI: string;
-  private _sI: string;
-  private _spN: string;
-  private _sd: string;
-  private _st: string;
-  private _ed: string;
-  private _et: string;
-  private _ji: string;
-  private _bz: string;
-  private _sta: string;
+  private _spI: string="";
+  private _sI: string="";
+  private _spN: string="";
+  private _sd: string="";
+  private _st: string="";
+  private _ed: string="";
+  private _et: string="";
+  private _ji: string="";
+  private _bz: string="";
+  private _sta: string="";
 
 
   get spI(): string {

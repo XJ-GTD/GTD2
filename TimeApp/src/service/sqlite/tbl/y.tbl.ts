@@ -5,12 +5,12 @@ import {ITbl} from "./itbl";
  */
 export class YTbl implements ITbl {
 
-  private _yi: string;
-  private _yt: string;
-  private _ytn: string;
-  private _yn: string;
-  private _yk: string;
-  private _yv: string;
+  private _yi: string="";
+  private _yt: string="";
+  private _ytn: string="";
+  private _yn: string="";
+  private _yk: string="";
+  private _yv: string="";
 
 
   get yi(): string {

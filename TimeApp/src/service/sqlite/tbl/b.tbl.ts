@@ -6,18 +6,18 @@ import {ITbl} from "./itbl";
 
 export class BTbl implements ITbl{
 
-  private _pwI: string;
-  private _ran: string;
-  private _ranpy: string;
-  private _rI: string;
-  private _hiu: string;
-  private _rN: string;
-  private _rNpy: string;
-  private _rC: string;
-  private _rF: string;
-  private _ot: string;
-  private _rel: string;
-  private _uI: string;
+  private _pwI: string="";
+  private _ran: string="";
+  private _ranpy: string="";
+  private _rI: string="";
+  private _hiu: string="";
+  private _rN: string="";
+  private _rNpy: string="";
+  private _rC: string="";
+  private _rF: string="";
+  private _ot: string="";
+  private _rel: string="";
+  private _uI: string="";
 
 
   get pwI(): string {

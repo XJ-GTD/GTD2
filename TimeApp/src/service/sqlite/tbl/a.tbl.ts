@@ -5,17 +5,17 @@ import {ITbl} from "./itbl";
  */
 export class ATbl implements ITbl {
 
-  private _aI :string;
+  private _aI :string="";
 
-  private _aN :string;
+  private _aN :string="";
 
-  private _aM :string;
+  private _aM :string="";
 
-  private _aE :string;
+  private _aE :string="";
 
-  private _aT :string;
+  private _aT :string="";
 
-  private _aQ :string;
+  private _aQ :string="";
 
   get aI(): string {
     return this._aI;

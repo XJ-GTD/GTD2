@@ -7,15 +7,15 @@ import {ITbl} from "./itbl";
 export class DTbl implements ITbl {
 
 
-  private _pI: string;
-  private _sI: string;
-  private _sT: string;
-  private _son: string;
-  private _sa: string;
-  private _aI: string;
-  private _ib: string;
-  private _bi: string;
-  private _sdt: string;
+  private _pI: string="";
+  private _sI: string="";
+  private _sT: string="";
+  private _son: string="";
+  private _sa: string="";
+  private _aI: string="";
+  private _ib: string="";
+  private _bi: string="";
+  private _sdt: string="";
 
   get pI(): string {
     return this._pI;
