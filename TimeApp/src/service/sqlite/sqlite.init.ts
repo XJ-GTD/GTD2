@@ -158,7 +158,7 @@ export class SqliteInit {
         //服务器 用户偏好数据
         for (let bipl of data.bipl) {
           let ytbl = new YTbl();
-          ytbl.yi = "";
+          ytbl.yi = this.util.getUuid();;
           ytbl.yt = "";
           ytbl.ytn = "";
           ytbl.yk = "";

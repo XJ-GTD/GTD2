@@ -68,6 +68,7 @@ export class AlService {
         //初始化数据完成写入
         let sTbl: STbl = new STbl();
         sTbl.st = "FI";
+        sTbl.si = this.util.getUuid();
         sTbl.yk = "FI";
         sTbl.yv = "0";
         this.sqlExce.replaceT(sTbl).then(data => {
