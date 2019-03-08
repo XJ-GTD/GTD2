@@ -35,14 +35,14 @@ export class RestFulConfig {
     this.urlLs = new Map<string, UrlEntity>();
     let sPro = new STbl();
     sPro.st = "URL";
-    this.sqlitexec.getOne(sPro).then(sPros => {
+    this.sqlitexec.getList(sPro).then(sPros => {
 
       console.log(sPros);
 
       for (let data of sPros) {
         let urlentity: UrlEntity = new UrlEntity();
         urlentity.key = data.yk;
-        urlentity.key = data.yv;
+        urlentity.url = data.yv;
         this.urlLs.set(data.yk, urlentity);
       }
     })
