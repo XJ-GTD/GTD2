@@ -34,6 +34,9 @@ import {RestfulClient} from "../service/util-service/restful.client";
 import {RestFulConfig} from "../service/config/restful.config";
 import {SyncRestful} from "../service/restful/syncsev";
 import {SqliteInit} from "../service/sqlite/sqlite.init";
+import {ParamsService} from "../service/util-service/params.service";
+import {PersonRestful} from "../service/restful/personsev";
+import {SmsRestful} from "../service/restful/smssev";
 
 @NgModule({
   declarations: [
@@ -86,6 +89,9 @@ import {SqliteInit} from "../service/sqlite/sqlite.init";
     RestfulClient,
     SyncRestful,
     SqliteInit,
+    ParamsService,
+    PersonRestful,
+    SmsRestful,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
