@@ -1,8 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Platform, Nav, MenuController, IonicApp} from 'ionic-angular';
-import { PageConfig } from "./page.config";
-import { MenuScalePushType } from "../components/menuType/customType";
-import { BackgroundMode } from '@ionic-native/background-mode';
+import {PageConfig} from "./page.config";
+import {MenuScalePushType} from "../components/menuType/customType";
+import {BackgroundMode} from '@ionic-native/background-mode';
 import {XiaojiAssistantService} from "../service/util-service/xiaoji-assistant.service";
 
 @Component({
@@ -10,16 +10,15 @@ import {XiaojiAssistantService} from "../service/util-service/xiaoji-assistant.s
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  constructor(
-    private platform: Platform,
-    private appCtrl: IonicApp,
-    private backgroundMode: BackgroundMode,
-    private speechService: XiaojiAssistantService,
-  ) {
+
+  constructor(private platform: Platform,
+              private appCtrl: IonicApp,
+              private backgroundMode: BackgroundMode,
+              private speechService: XiaojiAssistantService,) {
+
+    console.log(' time app start ');
     MenuController.registerType('scalePush', MenuScalePushType);
     this.platform.ready().then(() => {
-
-
       //允许进入后台模式
       this.backgroundMode.enable();
       //设置返回键盘（android）
@@ -43,7 +42,7 @@ export class MyApp {
         return;
       }
 
-      if (this.nav.canGoBack())  {
+      if (this.nav.canGoBack()) {
         this.nav.pop();
       } else {
         this.backgroundMode.moveToBackground();

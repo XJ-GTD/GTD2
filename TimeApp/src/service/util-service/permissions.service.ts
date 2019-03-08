@@ -35,44 +35,44 @@ export class PermissionsService {
 
   }
 
-  public checkAllPermissiions(): Promise<any> {
+  public checkAllPermissions(): Promise<any> {
     let i = 0;
-    return this.checkPermissiion(this.list_all[i++])
+    return this.checkPermission(this.list_all[i++])
       .then(res => {
-        return this.checkPermissiion(this.list_all[i++]);
+        return this.checkPermission(this.list_all[i++]);
       })
       .then(res => {
-        return this.checkPermissiion(this.list_all[i++]);
+        return this.checkPermission(this.list_all[i++]);
       }).then(res => {
-        return this.checkPermissiion(this.list_all[i++]);
+        return this.checkPermission(this.list_all[i++]);
       }).then(res => {
-        return this.checkPermissiion(this.list_all[i++]);
+        return this.checkPermission(this.list_all[i++]);
       }).then(res => {
-        return this.checkPermissiion(this.list_all[i++]);
+        return this.checkPermission(this.list_all[i++]);
       }).then(res => {
-        return this.checkPermissiion(this.list_all[i++]);
+        return this.checkPermission(this.list_all[i++]);
       }).then(res => {
-        return this.checkPermissiion(this.list_all[i++]);
+        return this.checkPermission(this.list_all[i++]);
       }).then(res => {
-        return this.checkPermissiion(this.list_all[i++]);
+        return this.checkPermission(this.list_all[i++]);
       }).then(res => {
-        return this.checkPermissiion(this.list_all[i++]);
+        return this.checkPermission(this.list_all[i++]);
       }).then(res => {
-        return this.checkPermissiion(this.list_all[i++]);
+        return this.checkPermission(this.list_all[i++]);
       }).then(res => {
-        return this.checkPermissiion(this.list_all[i++]);
+        return this.checkPermission(this.list_all[i++]);
       }).then(res => {
-        return this.checkPermissiion(this.list_all[i++]);
+        return this.checkPermission(this.list_all[i++]);
       }).then(res => {
-        return this.checkPermissiion(this.list_all[i++]);
+        return this.checkPermission(this.list_all[i++]);
       }).then(res => {
-        return this.checkPermissiion(this.list_all[i++]);
+        return this.checkPermission(this.list_all[i++]);
       }).catch(err=>{
         return;
       })
   }
 
-  public checkPermissiion(permission: string): Promise<any> {
+  public checkPermission(permission: string): Promise<any> {
     return this.androidPermissions.checkPermission(permission).then(
       (result) => {
         console.log('Has permission ' + permission + " " + result.hasPermission);
