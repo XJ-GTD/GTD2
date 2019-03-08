@@ -294,15 +294,20 @@ public class MainVerticle extends AbstractVerticle {
 				config().getInteger("sms.service.port", 8080),
 				config().getString("sms.service.host", "sa-sms"),
 				config().getString("sms.service.starter.singlesend", "/sms/send"))
-		.sendJsonObject(
-				new JsonObject()
-				.put("platformType", "*")
-				.put("mobile", phoneno)
-				.put("sendType", "0")
-				.put("sendContent", code),
-				handler -> {
+		.method(HttpMethod.POST)
+		.addQueryParam("platformType", "*")
+		.addQueryParam("mobile", phoneno)
+		.addQueryParam("sendType", "0")
+		.addQueryParam("sendContent", code)
+		.send(handler -> {
+				if (handler.succeeded()) {
+					System.out.println("sms response " + handler.result().statusCode() + " " + handler.result().bodyAsString());
 					System.out.println("sms sent verify code message to " + phoneno + " completed. [" + code + "]");
+				} else {
+					handler.cause().printStackTrace();
+					System.out.println("sms sent verify code message to " + phoneno + " failed. [" + code + "]");
 				}
+			}
 		);
 		System.out.println("sms end.");
 
