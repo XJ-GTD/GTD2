@@ -166,14 +166,14 @@ export class RestFulConfig {
 
 }
 
-class RestFulHeader {
+export class RestFulHeader {
   "Content-Type": string = "application/json";
   lt: string = "";//登录码
+  ai: string = "";//帐户ID
   pi: string = "cn.sh.com.xj.timeApp";//产品ID
   pv: string = "v1";//产品版本
-  di: string = "";//设备ID
-  ai: string = "";//帐户ID
-  dt: string = "";//设别类型
+  di: string = "11111";//设备ID
+  dt: string = "1111";//设别类型
 }
 
 

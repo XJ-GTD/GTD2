@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Device } from "@ionic-native/device";
 import * as moment from "moment";
-import {AlertController, Events, LoadingController, ToastController} from "ionic-angular";
 
 /**
  * 公共方法
@@ -11,12 +10,7 @@ import {AlertController, Events, LoadingController, ToastController} from "ionic
 @Injectable()
 export class UtilService {
   wins: any = window;//window对象
-  constructor(public device: Device,
-              private loadCtrl: LoadingController,
-              private events: Events,
-              private alertCtrl: AlertController,
-              private toastCtrl: ToastController
-              ) {}
+  constructor(public device: Device ) {}
 
   public static rand(min, max ):number {
     return Math.random() * ( max - min ) + min;
@@ -69,7 +63,7 @@ export class UtilService {
    * 获取设备ID
    * @returns {string}
    */
-  public getDeviceId() {
+  public deviceId() {
     let deviceId = this.device.uuid;
     if(deviceId && deviceId != null && deviceId !=''){
     }else{
@@ -104,7 +98,7 @@ export class UtilService {
    * 是否真机环境
    * @return {boolean}
    */
-  isMobile():boolean{
+  public isMobile():boolean{
     let str='';
     if(this.wins.cordova){
       str = this.wins.cordova.platformId;
@@ -115,6 +109,16 @@ export class UtilService {
       return false;
     }
     return true;
+  }
+
+  /**
+   * 是否真机环境
+   * @return {boolean}
+   */
+  public deviceType():string{
+    let platform = "";
+    if (this.device.platform != null) platform = this.device.platform;
+    return platform;
   }
 
   /**
@@ -246,28 +250,28 @@ export class UtilService {
     }
   }
 
-  loading(text:string){
-    this.events.subscribe("loading",()=>{
-      let loading = this.loadCtrl.create({
-        content:text,
-        showBackdrop:false,
-        cssClass:"loadingcss",
-        dismissOnPageChange:true,
-      });
-      loading.present();
-      this.events.subscribe("unloading",()=>{
-        loading.dismiss();
-        this.events.unsubscribe("loading");
-        this.events.unsubscribe("unloading");
-      })
-    });
-
-    this.events.publish("loading");
-  }
-
-  unloading(){
-    this.events.publish("unloading");
-  }
+  // loading(text:string){
+  //   this.events.subscribe("loading",()=>{
+  //     let loading = this.loadCtrl.create({
+  //       content:text,
+  //       showBackdrop:false,
+  //       cssClass:"loadingcss",
+  //       dismissOnPageChange:true,
+  //     });
+  //     loading.present();
+  //     this.events.subscribe("unloading",()=>{
+  //       loading.dismiss();
+  //       this.events.unsubscribe("loading");
+  //       this.events.unsubscribe("unloading");
+  //     })
+  //   });
+  //
+  //   this.events.publish("loading");
+  // }
+  //
+  // unloading(){
+  //   this.events.publish("unloading");
+  // }
 
   /**
    * dateString to YYYY/MM/DD hh:mm:ss
@@ -316,23 +320,23 @@ export class UtilService {
     return new String(tmp);
   }
 
-  alert(msg:string){
-    let alert = this.alertCtrl.create({
-      subTitle: msg,
-      enableBackdropDismiss:true
-    });
-    setTimeout(()=>{
-      alert.dismiss();
-    },1000);
-    alert.present();
-  }
-
-  toast(msg:string){
-    let toast = this.toastCtrl.create({
-      message: msg,
-      duration: 3000,
-      position: 'top',
-    });
-    toast.present();
-  }
+  // alert(msg:string){
+  //   let alert = this.alertCtrl.create({
+  //     subTitle: msg,
+  //     enableBackdropDismiss:true
+  //   });
+  //   setTimeout(()=>{
+  //     alert.dismiss();
+  //   },1000);
+  //   alert.present();
+  // }
+  //
+  // toast(msg:string){
+  //   let toast = this.toastCtrl.create({
+  //     message: msg,
+  //     duration: 3000,
+  //     position: 'top',
+  //   });
+  //   toast.present();
+  // }
 }

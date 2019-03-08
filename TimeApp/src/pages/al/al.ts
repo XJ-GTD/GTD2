@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage} from 'ionic-angular';
 import {RoundProgressEase} from 'angular-svg-round-progressbar';
 import {AlService} from "./al.service";
+import {SyncRestful} from "../../service/restful/syncsev";
 
 /**
  * Generated class for the AlPage page.
@@ -56,7 +57,8 @@ export class AlPage {
   gradient: boolean = false;
   text:string;
   constructor(private alService: AlService,
-              private _ease: RoundProgressEase,) {
+              private _ease: RoundProgressEase,
+              private syncRestful:SyncRestful) {
     this.text="正在初始化";
   }
 
@@ -64,6 +66,11 @@ export class AlPage {
     console.log('ionViewDidLoad AlPage');
 
     console.log("al :: 权限申请开始");
+    this.syncRestful.initData().then(data=>{
+      console.log("********************");
+      console.log(data);
+      console.log("********************");
+    })
     // this.alService.checkAllPermissions().then(data=>{
     //   console.log("al :: 权限申请完成");
     //   this.increment(10);
