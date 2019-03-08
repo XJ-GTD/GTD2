@@ -33,36 +33,25 @@ export class SqliteExec{
     });
   }
 
-  batExecSql(sqlist:Array<string>):Promise<any> {
-      return new Promise((resolve, reject) => {
-        let sql : string ;
-        for(var j = 0,len = sqlist.length; j < len; j++){
-          sql = sql + sqlist[j];
-        }
-
+  async batExecSql(sqlist:Array<string>) {
         if(this.util.isMobile()){
-          this.sqlitePorter.importSqlToDb(this.sqlliteConfig.database, sql)
-            .then((count) => {
-              console.log('Imported');
+          let sql : string ;
+          for(var j = 0,len = sqlist.length; j < len; j++){
+            sql = sql + sqlist[j];
+          }
+          return this.sqlitePorter.importSqlToDb(this.sqlliteConfig.database, sql)
 
-              resolve(count);
-            })
-            .catch((error)=> {
-              console.error(error);
-              alert("批量sql执行错误:"+error.message);
-              reject(error);
-            });
         }else{
+          let count = 0;
           for(var j = 0,len = sqlist.length; j < len; j++){
             if(sqlist[j] != null && sqlist[j] !=''){
-              this.execSql(sqlist[j],[]);
+              count ++ ;
+              await this.execSql(sqlist[j],[]);
             }else{
               //console.error("sqls["+i+"]: ("+sqls[i]+ "） ;sqlAll:"+sql);
             }
           }
-          resolve(sqlist.length);
+          return count;
         }
-
-      });
   }
 }

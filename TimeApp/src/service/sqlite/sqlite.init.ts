@@ -13,6 +13,7 @@ import {JhTbl} from "./jh.tbl";
 import {STbl} from "./s.tbl";
 import {UTbl} from "./u.tbl";
 import {YTbl} from "./y.tbl";
+import {SqliteExec} from "../util-service/sqlite.exec";
 
 /**
  * create by on 2019/3/5
@@ -25,7 +26,8 @@ export class SqliteInit {
   constructor(private atbl:ATbl, private btbl:BTbl, private bxtbl:BxTbl,
               private ctbl:CTbl, private dtbl:DTbl, private ebtl:ETbl,
               private gtbl:GTbl, private jhtbl:JhTbl,private stbl :STbl,
-              private sptbl:SpTbl,private utbl:UTbl,private ytbl :YTbl) {
+              private sptbl:SpTbl,private utbl:UTbl,private ytbl :YTbl,
+              private sqlexec : SqliteExec) {
   }
 
   /**
@@ -33,9 +35,18 @@ export class SqliteInit {
    * @param {string} updateSql 更新SQL
    * @returns {Promise<any>}
    */
-  createTables(): Promise<any> {
+  async createTables(){
+    let count = 0;
+    count ++ ;
+    await this.atbl.drT();
+    count ++;
+    await this.atbl.cT();
 
-    return new Promise((resolve, reject) => {
+    return count;
+
+
+      return this.sqlexec.batExecSql([])
+
       this.atbl.cT()
         //判断是否是手机端
         if (this.util.isMobile()) {
