@@ -7,10 +7,7 @@ import {ITbl} from "./itbl";
  */
 @Injectable()
 export class ATbl extends BaseTbl implements ITbl{
-  constructor( args ){
 
-    super( args );
-  }
 
 
   cT():Promise<any> {

@@ -1,10 +1,18 @@
 import {Injectable} from '@angular/core';
 import {SQLite, SQLiteObject} from "@ionic-native/sqlite";
-import {DataConfig} from "../../../app/data.config";
-import {SQLitePorter} from "@ionic-native/sqlite-porter";
 import {UtilService} from "../../util-service/util.service";
-import {Events} from "ionic-angular";
-import {BsModel} from "../../../model/out/bs.model";
+import {SpTbl} from "./sp.tbl";
+import {ATbl} from "./a.tbl";
+import {BTbl} from "./b.tbl";
+import {BxTbl} from "./bx.tbl";
+import {CTbl} from "./c.tbl";
+import {DTbl} from "./d.tbl";
+import {ETbl} from "./e.tbl";
+import {GTbl} from "./g.tbl";
+import {JhTbl} from "./jh.tbl";
+import {STbl} from "./s.tbl";
+import {UTbl} from "./u.tbl";
+import {YTbl} from "./y.tbl";
 
 /**
  * create by on 2019/3/5
@@ -17,7 +25,11 @@ export class SQLiteFactory {
   private _win: any = window;//window对象
 
   constructor(private sqlite: SQLite,
-              private util:UtilService) {
+              private util:UtilService,
+              private atbl:ATbl, private btbl:BTbl, private bxtbl:BxTbl,
+              private ctbl:CTbl, private dtbl:DTbl, private ebtl:ETbl,
+              private gtbl:GTbl, private jhtbl:JhTbl,private stbl :STbl,
+              private sptbl:SpTbl,private utbl:UTbl,private ytbl :YTbl) {
   }
 
 
@@ -57,18 +69,16 @@ export class SQLiteFactory {
    * @param {string} updateSql 更新SQL
    * @returns {Promise<any>}
    */
-  createOrUpdateTable(updateSql:string): Promise<any> {
+  createTables(): Promise<any> {
+
     return new Promise((resolve, reject) => {
         //判断是否是手机端
-        if (DataConfig.IS_MOBILE) {
-          // let a = true;
-          // if (a) {
-          //1先删除表
-          let delsql = new UEntity().drsq + new RcEntity().drsq + new RcpEntity().drsq + new RuEntity().drsq
-            + new LbEntity().drsq + new ReEntity().drsq + new StEntity().drsq + new MsEntity().drsq
-            + new ZtEntity().drsq + new ZtdEntity().drsq + new JhEntity().drsq + new RguEntity().drsq
-            + new FiEntity().drsq+new RcboEntity().drsq + new RcbtEntity().drsq + new RcbthEntity().drsq
-            + new RcbfEntity().drsq + new RcbfvEntity().drsq + new SyvEntity().drsq + new SyncEntity().drsq;
+        if (this.util.isMobile()) {
+
+          //先删除表
+          this.atbl.drT().then(data =>{
+
+          }).then(this.btbl.drT());
           //再建表
           this.importSqlToDb(delsql).then(data=>{
             console.log("-------------------BaseSqlite createTable delete table success: "+JSON.stringify(data))
