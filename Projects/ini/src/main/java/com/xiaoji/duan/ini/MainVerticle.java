@@ -60,6 +60,7 @@ public class MainVerticle extends AbstractVerticle {
 		tablenames.add("apil");
 		tablenames.add("bipl");
 		tablenames.add("vrs");
+		tablenames.add("dpfu");
 	}
 
 	private void initparams(RoutingContext ctx) {
