@@ -118,7 +118,7 @@ export class SqliteInit {
   initData(): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      console.log("-------------------BaseSqlite initData table  data to start ------------------")
+      /*console.log("-------------------BaseSqlite initData table  data to start ------------------")
 
       let stbl = new STbl();
       //web端
@@ -134,7 +134,7 @@ export class SqliteInit {
       }).catch(e => {
         console.error("------------------BaseSqlite createTable: " + e.message)
         reject(e);
-      })
+      })*/
 
 
     })
