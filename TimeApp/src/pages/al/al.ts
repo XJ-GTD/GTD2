@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage} from 'ionic-angular';
+import {IonicPage, Nav} from 'ionic-angular';
 import {RoundProgressEase} from 'angular-svg-round-progressbar';
 import {AlService} from "./al.service";
 import {SyncRestful} from "../../service/restful/syncsev";
@@ -59,74 +59,60 @@ export class AlPage {
   text:string;
   constructor(private alService: AlService,
               private _ease: RoundProgressEase,
-              private syncRestful:SyncRestful) {
+              private syncRestful:SyncRestful,
+              private nav: Nav,) {
     this.text="正在初始化";
   }
 
   ionViewDidLoad() {
-    this.rootPage = PageConfig._M_PAGE;
+    this.rootPage = PageConfig._R_PAGE;
     this.alService.checkAllPermissions().then(data=>{
-      this.text=data;
       this.increment(10);
+      this.text=data;
       return this.alService.createDB();
-
     }).then(data=>{
-      this.text=data;
       this.increment(10);
+      this.text=data;
       return this.alService.checkSystem();
     }).then(data=>{
-      this.text="al :: 判断是否初始化完成";
       if (!data){
         this.text="帮您初始化系统";
         return  this.alService.createSystemData();
       };
     }).then(data=>{
+      this.increment(10);
       this.text=data;
+      return this.alService.connWebSocket();
+    }).then(data => {
       this.increment(10);
-      console.log("al :: 初始化本地变量");
-      //return this.alService.initComplete();
-      this.text="初始化本地变量完成";
+      this.text=data;
+      return this.alService.setSetting();
+    }).then(data => {
       this.increment(10);
-      console.log("al :: 开始查询账户信息");
-      this.increment(10);
-      //游客登陆
-      //return this.lsm.visitor()
+      this.text=data;
+      return this.alService.checkUserInfo();
     }).then(data=>{
-      this.text="开始查询账户信息完成";
       this.increment(10);
-      console.log("al :: 开始连接webSocket");
+      this.text=data;
+      console.log("al " +data.rows.length);
+      if(data.rows.length == 0){
+        this.rootPage = PageConfig._LP_PAGE;
+        return "进入登录页面";
+      }else{
+        return "进入主页";
+      }
     }).then(data => {
-      this.text="开始连接webSocket成功";
       this.increment(10);
-      console.log("al :: 开始查询联系人");
-      /*if(DataConfig.uInfo.uty == '1' && DataConfig.IS_MOBILE){
-        return this.ContactsService.getContacts();
-      }*/
-    }).then(data=>{
-      this.text="开始查询联系人成功";
       this.increment(10);
-      console.log("al :: 开始更新版本表");
-      //return this.configService.ufi(null,0)
-    }).then(data => {
-      this.text="开始更新版本表成功";
       this.increment(10);
-      /*if(DataConfig.uInfo.uty=='1'){
-        //定时同步
-        console.log("al :: 定时同步");
-        this.sync.syncTime();
-      }*/
       this.increment(10);
-      console.log("al :: 开始定时查询闹铃");
-      //this.work.setColckWork();
-    }).then(data => {
-      console.log("al :: 进入主页");
-      this.text="进入主页";
-      this.increment(10);
-      //this.nav.setRoot(this.rootPage);
+      this.text=data;
+      console.log("al :: " +data);
+      this.nav.setRoot(this.rootPage);
     }).catch(res => {
       console.log("al error :: "+JSON.stringify(res));
       //loading.dismiss();
-      //this.nav.setRoot(this.rootPage);
+      this.nav.setRoot(this.rootPage);
     });
     // for (let prop in this._ease) {
     //   if (prop.toLowerCase().indexOf('ease') > -1) {

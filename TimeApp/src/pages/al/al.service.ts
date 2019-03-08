@@ -5,19 +5,19 @@ import {SqliteInit} from "../../service/sqlite/sqlite.init";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {STbl} from "../../service/sqlite/tbl/s.tbl";
 import {UtilService} from "../../service/util-service/util.service";
+import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 
 @Injectable()
 export class AlService {
-
 
   constructor(private permissionsService: PermissionsService,
               private sqlLiteConfig: SqliteConfig,
               private sqlLiteInit: SqliteInit,
               private sqlExce: SqliteExec,
-              private util: UtilService) {
+              private util: UtilService,) {
   }
 
-  //权限申请
+//权限申请
   checkAllPermissions(): Promise<string> {
     return new Promise((resolve, reject) => {
       this.permissionsService.checkAllPermissions().then(data => {
@@ -25,7 +25,6 @@ export class AlService {
       });
     });
   }
-
 
 //创建或连接数据库
   createDB(): Promise<string> {
@@ -57,7 +56,6 @@ export class AlService {
     })
   }
 
-
 //创建数据库表,初始化系统数据,初始化数据完成写入
   createSystemData(): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -86,15 +84,31 @@ export class AlService {
   }
 
 //连接webSocket
-  /*initWebSocket():Promise<any>{
-    return this.webSocketService.connect(DataConfig.uInfo.aQ);
-  }*/
-
-//
+  connWebSocket():Promise<any>{
+    return new Promise((resolve, reject) => {
+      // TODO 连接webSocket成功
+      resolve("连接webSocket成功");
+    });
+  }
 
 //系统设置
+  setSetting():Promise<any>{
+    return new Promise((resolve, reject) => {
+      // TODO 系统设置
+      resolve("系统设置");
+    });
+  }
 
 //判断用户是否登陆
+  checkUserInfo():Promise<any>{
+    return new Promise((resolve, reject) => {
+      // TODO 判断用户是否登陆
+      let aTbl: ATbl = new ATbl();
+      this.sqlExce.getList(aTbl).then(data=>{
+        resolve(data);
+      });
+    });
+  }
 
 
   /*
