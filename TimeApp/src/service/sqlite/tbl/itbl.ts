@@ -9,17 +9,17 @@ export interface ITbl {
 
   cT():string ;
 
-  upT(arg :any):string ;
+  upT():string ;
 
-  dT(arg :any):string ;
+  dT():string ;
 
-  sloT(arg :any):string ;
+  sloT():string ;
 
-  slT(arg :any):string ;
+  slT():string ;
 
   drT():string ;
 
-  inT(arg :any):string ;
+  inT():string ;
 
-  rpT(arg :any):string ;
+  rpT():string ;
 }
