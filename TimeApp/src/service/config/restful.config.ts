@@ -35,14 +35,14 @@ export class RestFulConfig {
     this.urlLs = new Map<string, UrlEntity>();
     let sPro = new STbl();
     sPro.st = "URL";
-    this.sqlitexec.getOne(sPro).then(sPros => {
+    this.sqlitexec.getList(sPro).then(sPros => {
 
       console.log(sPros);
 
       for (let data of sPros) {
         let urlentity: UrlEntity = new UrlEntity();
         urlentity.key = data.yk;
-        urlentity.key = data.yv;
+        urlentity.url = data.yv;
         this.urlLs.set(data.yk, urlentity);
       }
     })
@@ -166,14 +166,14 @@ export class RestFulConfig {
 
 }
 
-class RestFulHeader {
+export class RestFulHeader {
   "Content-Type": string = "application/json";
   lt: string = "";//登录码
+  ai: string = "";//帐户ID
   pi: string = "cn.sh.com.xj.timeApp";//产品ID
   pv: string = "v1";//产品版本
-  di: string = "";//设备ID
-  ai: string = "";//帐户ID
-  dt: string = "";//设别类型
+  di: string = "11111";//设备ID
+  dt: string = "1111";//设别类型
 }
 
 

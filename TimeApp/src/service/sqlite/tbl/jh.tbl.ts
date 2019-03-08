@@ -8,6 +8,7 @@ export class JhTbl  implements ITbl{
   private _jn: string;
   private _jg: string;
   private _jc: string;
+  private _jt: string;
 
   get jc(): string {
     return this._jc;
@@ -41,16 +42,24 @@ export class JhTbl  implements ITbl{
     this._jg = value;
   }
 
+  get jt(): string {
+    return this._jt;
+  }
+
+  set jt(value: string) {
+    this._jt = value;
+  }
   clp(){
     this._ji = null;
     this._jn = null;
     this._jg = null;
+    this._jt = null;
   };
 
   cT():string{
 
     let sq ='CREATE TABLE IF NOT EXISTS GTD_J_H(  ji VARCHAR(50) PRIMARY KEY ,jn VARCHAR(100)  ,jg VARCHAR(100)' +
-      ',jc VARCHAR(10));';
+      ',jc VARCHAR(10),jt VARCHAR(4));';
 
     return sq;
   }
@@ -65,6 +74,9 @@ export class JhTbl  implements ITbl{
     }
     if(this._jc!=null){
       sq=sq+', jc="' + this._jc +'"';
+    }
+    if(this._jt!=null){
+      sq=sq+', jt="' + this._jt +'"';
     }
     sq = sq + ' where ji = "'+ this._ji +'"';
     return sq;
@@ -91,6 +103,9 @@ export class JhTbl  implements ITbl{
     if(this._jc!=null){
       sq=sq+' and jc="' + this._jc +'"';
     }
+    if(this._jt!=null){
+      sq=sq+' and jt="' + this._jt +'"';
+    }
     return sq;
   }
 
@@ -102,14 +117,14 @@ export class JhTbl  implements ITbl{
 
   inT():string{
     let sq ='insert into GTD_J_H ' +
-      '(  ji ,jn ,jg,jc) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '")';
+      '(  ji ,jn ,jg,jc,jt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '","'+this._jt+ '")';
 
     return sq;
   }
 
   rpT():string{
     let sq ='replace into GTD_J_H ' +
-      '(  ji ,jn ,jg,jc) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '")';
+      '(  ji ,jn ,jg,jc,jt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '","'+this._jt+ '")';
 
     return sq;
   }

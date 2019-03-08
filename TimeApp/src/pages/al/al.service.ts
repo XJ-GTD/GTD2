@@ -1,6 +1,8 @@
 import {Injectable} from "@angular/core";
 import {PermissionsService} from "../../service/util-service/permissions.service";
 import {SqliteConfig} from "../../service/config/sqlite.config";
+import {SqliteInit} from "../../service/sqlite/sqlite.init";
+import {SqliteExec} from "../../service/util-service/sqlite.exec";
 
 @Injectable()
 export class AlService {
@@ -8,6 +10,8 @@ export class AlService {
 
   constructor(private permissionsService: PermissionsService,
                 private sqlLiteConfig:SqliteConfig,
+                private sqlLiteInit:SqliteInit,
+                private sqlExce :SqliteExec,
               ) {
   }
 
@@ -17,21 +21,46 @@ export class AlService {
 }
 
   //创建或连接数据库
-  initDataBase():Promise<any>{
-    return this.sqlLiteConfig.generateDb();
+  initDataBase():Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.sqlLiteConfig.generateDb().then(data => {
+        resolve("数据库初始化完成");
+      })
+    })
   }
 
   //判断是否初始化完成
-  /*initComplete():Promise<any>{
+  initComplete():Promise<boolean>{
+    return new Promise((resolve, reject) => {
+      let sTbl :STbl = new STbl();
+      sTbl.st="FI";
+      this.sqlExce.getOne(sTbl).then(data=>{
 
-  }*/
+        console.log(data);
+        resolve(false);
+
+      }).catch(err=>{
+        resolve(false);
+      })
+    })
+  }
 
 
   //创建数据库表,初始化系统数据,初始化数据完成写入
-  /*initVariables():Promise<any>{
-    //初始化生成数据
-    return this.baseSqlLite.initData()
-  }*/
+  createTables():Promise<boolean>{
+    return new Promise((resolve, reject) => {
+      this.sqlLiteConfig.generateDb().then(data=>{
+        return this.sqlLiteInit.createTables();
+      }).then(data=>{
+        return this.sqlLiteInit.initData();
+      }).then(data=>{
+        resolve(true);
+      }).catch(e=>{
+        reject(false);
+      })
+    });
+
+  }
 
   //连接webSocket
   /*initWebSocket():Promise<any>{
