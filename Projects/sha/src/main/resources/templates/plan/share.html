@@ -59,6 +59,15 @@ body {
   min-width: 90px;
 }
 
+.agenda-card-past {
+  width: 70vmin;
+  background: rgb(59, 102, 106);
+  border-radius: .25rem;
+  padding: 8px 16px;
+  max-width: 450px;
+  min-width: 200px;
+}
+
 .agenda-card {
   width: 70vmin;
   background: rgb(192, 10, 35);
@@ -124,10 +133,10 @@ body {
   <div th:each="agenda,iterStat : ${plan.pa}" class="d-flex flex-row justify-content-center mt-2">
   <div>
 	  <div th:if="${(iterStat.index == 0) or (agenda.getString('adt') != plan.pa.getJsonObject(iterStat.index - 1).getString('adt'))}" class="d-flex flex-row justify-content-center mb-2">
-      <p class="app-user-text" th:text="${agenda.getString('adt')}">第一天</p>
+      <p class="app-user-text" th:text="${agenda.getString('adt')}">1900-01-01</p>
 	  </div>
-	  <div th:with="preday=${agenda.getString('adt')}" class="d-flex flex-row justify-content-center">
-		  <div class="agenda-card">
+	  <div class="d-flex flex-row justify-content-center">
+		  <div th:class="${(#calendars.format(today,'yyyy-MM-dd') > agenda.getString('adt'))? 'agenda-card-past' : 'agenda-card'}">
 		  <div class="d-flex flex-row justify-content-center">
 		    <h5 class="text-center" th:text="${agenda.getString('at')}">日程</h5>
 		  </div>

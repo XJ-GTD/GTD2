@@ -1,6 +1,7 @@
 package com.xiaoji.duan.sha;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -304,6 +305,7 @@ public class MainVerticle extends AbstractVerticle {
 				if (findOne.succeeded()) {
 					JsonObject plan = findOne.result();
 
+					ctx.put("today", Calendar.getInstance());
 					ctx.put("plan", plan.mapTo(Map.class));
 					ctx.next();
 				} else {
