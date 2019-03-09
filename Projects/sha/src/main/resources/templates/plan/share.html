@@ -128,7 +128,7 @@ body {
   </div>
 
   <div class="d-flex flex-row justify-content-center">
-  <h1 th:text="${plan.pn.getString('pt')}">分享计划</h1>
+  <h1 class="text-center" th:text="${plan.pn.getString('pt')}">分享计划</h1>
   </div>
 
   <div th:each="agenda,iterStat : ${plan.pa}" class="d-flex flex-row justify-content-center mt-2">
