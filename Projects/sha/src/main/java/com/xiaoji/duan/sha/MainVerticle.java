@@ -3,6 +3,7 @@ package com.xiaoji.duan.sha;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -199,7 +200,7 @@ public class MainVerticle extends AbstractVerticle {
 				if (findOne.succeeded()) {
 					JsonObject agenda = findOne.result();
 					
-					ctx.put("agenda", agenda);
+					ctx.put("agenda", agenda.mapTo(Map.class));
 					ctx.next();
 				} else {
 					ctx.response().setStatusCode(404).end();
@@ -302,8 +303,8 @@ public class MainVerticle extends AbstractVerticle {
 			mongodb.findOne("sha_plan", condition, new JsonObject(), findOne -> {
 				if (findOne.succeeded()) {
 					JsonObject plan = findOne.result();
-					
-					ctx.put("plan", plan);
+
+					ctx.put("plan", plan.mapTo(Map.class));
 					ctx.next();
 				} else {
 					ctx.response().setStatusCode(404).end();
