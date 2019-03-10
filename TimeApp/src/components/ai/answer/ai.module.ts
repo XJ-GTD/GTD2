@@ -4,8 +4,7 @@ import { HbPage } from './ai';
 import { ParamsService } from "../../../service/util-service/params.service";
 import { XiaojiAssistantService } from "../../../service/util-service/xiaoji-assistant.service";
 import { XiaojiFeedbackService } from "../../../service/util-service/xiaoji-feedback.service";
-import { Hb01PageModule } from "../hb01/hb01.module";
-import {HbService} from "./ai.service";
+import {AiService} from "./ai.service";
 
 @NgModule({
   declarations: [
@@ -13,13 +12,12 @@ import {HbService} from "./ai.service";
   ],
   imports: [
     IonicPageModule.forChild(HbPage),
-    Hb01PageModule,
   ],
   providers: [
     ParamsService,
     XiaojiAssistantService,
     XiaojiFeedbackService,
-    HbService,
+    AiService,
   ],
   entryComponents: [
     HbPage,
