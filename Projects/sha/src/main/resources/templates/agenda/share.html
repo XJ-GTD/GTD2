@@ -3,9 +3,150 @@
 <head>
 <!-- Required meta tags -->
 <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
   content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<meta property="og:title" content="冥王星分享"/>
+<meta property="og:image" content="/sha/static/images/mwxing/icon.png"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="/sha/static/bootstrap/css/bootstrap.min.css"
+  integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+  crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+<title th:text="${agenda.at} + ' via 冥王星'">分享日程 via 冥王星</title>
+
+<style type="text/css">
+body {
+  background: rgb(29, 36, 36);
+  color: #fff;
+  display: table-cell;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.main {
+  height: auto;
+  background: #1d2424;
+  padding-top: 2vmin;
+  padding-bottom: 5vmin;
+}
+
+.agenda-type-image {
+  height: 30vmin;
+  display: block;
+}
+
+.footer {
+  padding-top: 3vmin;
+  padding-bottom: 5vmin;
+  text-align: center;
+  display: block;
+  height: auto;
+  background: black;
+  flex-grow: 1;
+}
+
+.app-icon {
+  width: 20vmin;
+  margin: auto;
+  display: block;
+  max-width: 180px;
+  min-width: 90px;
+}
+
+.app-user-avatar {
+  height: 5vmin;
+  margin: auto;
+  display: block;
+  max-height: 45px;
+  min-height: 25px;
+  border-radius: 50%;
+}
+
+.app-user-text {
+  font-weight: 200;
+  margin: auto;
+  display: block;
+  font-size: 2.2vmin;
+}
+
+.app-download-text {
+  font-weight: 200;
+  margin: auto;
+  display: block;
+  font-size: 2.2vmin;
+  width: 60vw;
+  padding: 2vmin;
+}
+
+.app-store-button {
+  width: 20vmin;
+  margin: auto;
+  display: block;
+  max-width: 200px;
+  min-width: 150px;
+}
+
+.full {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  background: #1d2424;
+}
+</style>
 </head>
 <body>
+<div class="full">
+<div class="main">
+	<div class="d-flex flex-row justify-content-center">
+	<img class="agenda-type-image" src="/sha/static/images/shares/Anxious.png">
+	</div>
+
+	<div class="d-flex flex-row justify-content-center">
+	<h1 class="text-center" th:text="${agenda.at}">分享日程</h1>
+  </div>
+  <div class="d-flex flex-row justify-content-center">
+  <p th:text="${agenda.adt}"></p>
+  </div>
+  <div class="d-flex flex-row justify-content-center">
+  <div th:each="contact : ${agenda.ac}" class="mr-2">
+	  <div class="d-flex flex-row justify-content-center">
+    <img class="app-user-avatar" th:src="${contact.getString('avatar')}">
+	  </div>
+    <div class="d-flex flex-row justify-content-center mt-1">
+    <p class="app-user-text" th:text="${contact.getString('nickname')}">赵阳</p>
+    </div>
+  </div>
+  </div>
+</div>
+<div class="footer">
+  <div class="d-flex flex-row justify-content-center">
+  <a href="weixin://">
+    <img class="app-icon" src="/sha/static/images/mwxing/icon.png">
+  </a>
+  </div>
+
+  <div class="d-flex flex-row justify-content-center">
+  <p class="app-download-text">下载冥王星, 给您的朋友或者伙伴们推送日程提醒吧。</p>
+  </div>
+
+  <div class="d-flex flex-row justify-content-center">
+  <a href="itms://cn.sh.com.xj.timeApp/index.html">
+    <img class="app-store-button" src="/sha/static/images/thirdparts/appstore.png">
+  </a>
+  </div>
+</div>
+</div>
+<script src="/auo/static/jquery/js/jquery.min.js"></script>
+<script src="/auo/static/bootstrap/js/bootstrap.min.js"
+  integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+  crossorigin="anonymous"></script>
 </body>
 </html>
