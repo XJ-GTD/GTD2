@@ -3,7 +3,7 @@ import {IonicPage, Nav} from 'ionic-angular';
 import {RoundProgressEase} from 'angular-svg-round-progressbar';
 import {AlService} from "./al.service";
 import {SyncRestful} from "../../service/restful/syncsev";
-import {PageConfig} from "../../app/page.config";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the AlPage page.
@@ -65,7 +65,7 @@ export class AlPage {
   }
 
   ionViewDidLoad() {
-    this.rootPage = PageConfig._R_PAGE;
+    this.rootPage = DataConfig.PAGE._R_PAGE;
     this.alService.checkAllPermissions().then(data=>{
       this.increment(10);
       this.text=data;
@@ -86,7 +86,7 @@ export class AlPage {
       this.increment(10);
       console.log("al " +data.rows.length);
       if(data.rows.length == 0){
-        this.rootPage = PageConfig._LP_PAGE;
+        this.rootPage = DataConfig.PAGE._LP_PAGE;
         return "进入登录页面";
       }else{
         return "进入主页";

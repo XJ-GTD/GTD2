@@ -1,15 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, IonicPage, NavController, ViewController } from 'ionic-angular';
-import { XiaojiAssistantService } from "../../service/util-service/xiaoji-assistant.service";
-import { AiuiModel } from "../../model/aiui.model";
-import { ScheduleModel } from "../../model/schedule.model";
-import { XiaojiFeedbackService } from "../../service/util-service/xiaoji-feedback.service";
-import { DwEmitService } from "../../service/util-service/dw-emit.service";
-import { DataConfig } from "../../app/data.config";
-import { WsEnumModel } from "../../model/ws/ws.enum.model";
-import { NetworkService } from "../../service/util-service/network.service";
-import {Hb01Page} from "../hb01/hb01";
-import {RcModel} from "../../model/rc.model";
+import { XiaojiAssistantService } from "../../../service/util-service/xiaoji-assistant.service";
+import { AiuiModel } from "../../../model/aiui.model";
+import { ScheduleModel } from "../../../model/schedule.model";
+import { XiaojiFeedbackService } from "../../../service/util-service/xiaoji-feedback.service";
+import { DwEmitService } from "../../../service/util-service/dw-emit.service";
+import { DataConfig } from "../../../service/config/data.config";
+import { WsEnumModel } from "../../../model/ws/ws.enum.model";
+import { NetworkService } from "../../../service/util-service/network.service";
+import {Hb01Page} from "../point/hb01";
+import {RcModel} from "../../../model/rc.model";
 
 /**
  * Generated class for the HbPage page.
@@ -363,30 +363,30 @@ export class HbPage {
   private createSchedule(sc: RcModel) {
       console.log("添加日程确认");
       let textX = new AiuiModel();
-      this.workService.arc(sc.sN, sc.sd, sc.lI, sc.ji, sc.cft, sc.rm,sc.ac, sc.rus).then(data=>{
-        if(data.code == 0){
-          console.log("添加日程成功");
-          textX.tt = this.S1;
-          // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
-          textX.at = DataConfig.TEXT_CONTENT.get("A01" + "1");
-          this.messages.unshift(textX);
-          this.xiaojiSpeech.speakText(textX.at, success => {});
-        }else{
-          console.log("添加日程失败");
-          textX.tt = this.S1;
-          // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
-          textX.at = DataConfig.TEXT_CONTENT.get("A01" + "10");
-          this.messages.unshift(textX);
-          this.xiaojiSpeech.speakText(textX.at, success => {});
-        }
-      }).catch(reason => {
-        console.log("catch 添加日程失败");
-        textX.tt = this.S1;
-        // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
-        textX.at = DataConfig.TEXT_CONTENT.get("A01" + "10");
-        this.messages.unshift(textX);
-        this.xiaojiSpeech.speakText(textX.at, success => {});
-      });
+      // this.workService.arc(sc.sN, sc.sd, sc.lI, sc.ji, sc.cft, sc.rm,sc.ac, sc.rus).then(data=>{
+      //   if(data.code == 0){
+      //     console.log("添加日程成功");
+      //     textX.tt = this.S1;
+      //     // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
+      //     textX.at = DataConfig.TEXT_CONTENT.get("A01" + "1");
+      //     this.messages.unshift(textX);
+      //     this.xiaojiSpeech.speakText(textX.at, success => {});
+      //   }else{
+      //     console.log("添加日程失败");
+      //     textX.tt = this.S1;
+      //     // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
+      //     textX.at = DataConfig.TEXT_CONTENT.get("A01" + "10");
+      //     this.messages.unshift(textX);
+      //     this.xiaojiSpeech.speakText(textX.at, success => {});
+      //   }
+      // }).catch(reason => {
+      //   console.log("catch 添加日程失败");
+      //   textX.tt = this.S1;
+      //   // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
+      //   textX.at = DataConfig.TEXT_CONTENT.get("A01" + "10");
+      //   this.messages.unshift(textX);
+      //   this.xiaojiSpeech.speakText(textX.at, success => {});
+      // });
 
   }
 

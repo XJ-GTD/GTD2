@@ -1,80 +1,67 @@
 import {Injectable} from "@angular/core";
-import {PermissionsService} from "../../service/util-service/permissions.service";
-import {SqliteInit} from "../../service/sqlite/sqlite.init";
-import {SqliteConfig} from "../../service/config/sqlite.config";
-import {UtilService} from "../../service/util-service/util.service";
-import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {PersonRestful} from "../../service/restful/personsev";
-import {RestFulConfig, RestFulHeader} from "../../service/config/restful.config";
+import {PersonRestful, SignupData} from "../../service/restful/personsev";
 import {SmsRestful} from "../../service/restful/smssev";
-import {STbl} from "../../service/sqlite/tbl/s.tbl";
-import {ATbl} from "../../service/sqlite/tbl/a.tbl";
+import {LpData, LpService} from "../lp/lp.service";
 
 @Injectable()
 export class RService {
 
   constructor(private personRestful: PersonRestful,
-                private smsRestful: SmsRestful,
-                private sqlExce: SqliteExec,
-                private util: UtilService,
-                private restfulConfig: RestFulConfig,
-                ) {
+              private smsRestful: SmsRestful,
+              private lpService: LpService,
+  ) {
   }
 
   //注册
-  signup(accountMobile:string,accountPassword:string,authCode:any): Promise<string> {
-    console.log(accountMobile+"////"+accountPassword+"////"+authCode);
+  signup(rdata: RData): Promise<RData> {
+    console.log(rdata.mobile + "////" + rdata.password + "////" + rdata.authCode);
     return new Promise((resolve, reject) => {
-      this.personRestful.signup().then(data=>{
-        // TODO 注册
-        resolve(data)
-      })
-    });
-  }
 
-  //登录
-  login(accountMobile:string,accountPassword:string): Promise<string> {
-    console.log(accountMobile+"////"+accountPassword+"////");
-    return new Promise((resolve, reject) => {
-      this.personRestful.signup().then(data=>{
-        // TODO 登录
-        resolve(data)
-      })
-    });
-  }
+      //restful 注册用户
+      let restData: SignupData = new SignupData();
+      restData.reqData.mobile = rdata.mobile;
+      restData.reqData.authCode = rdata.authCode;
+      restData.reqData.password = rdata.password;
+      return this.personRestful.signup(restData).then(data => {
+        if (data.repData.code != "0")
+          throw data.repData.message;
 
-//短信验证码
-  sc(accountMobile:string): Promise<string> {
-    console.log(accountMobile+"////");
-    return new Promise((resolve, reject) => {
-      this.smsRestful.getcode().then(data=>{
-        // TODO 短信验证码
-        resolve(data)
-      })
-    });
-  }
+        //登陆(密码)service登陆逻辑
+        let lpdata: LpData = new LpData();
+        lpdata.mobile = rdata.mobile;
+        lpdata.password = rdata.password;
 
-//保存创建用户的信息
-  createSystemData(body:any): Promise<string> {
-    return new Promise((resolve, reject) => {
-      //数据
-      let aTbl: ATbl = new ATbl();
-      aTbl.aI = this.util.getUuid();
-      aTbl.aN = "时光旅行者"+body.accountMobile;
-      aTbl.aM = body.accountMobile;
-      aTbl.aE = this.util.deviceId();
-      aTbl.aT = '';
-      aTbl.aQ = '';
-      this.sqlExce.replaceT(aTbl).then(data => {
-        console.log(data);
-        resolve("保存成功");
+        return this.lpService.login(lpdata);
+
+      }).then(data => {
+
+        if (data.retData.code == "0") {
+          resolve(rdata)
+        } else {
+          throw data.retData.message;
+        }
 
       }).catch(err => {
-        resolve("保存失败");
+        reject(err);
       })
-
-
-    })
+    });
   }
 
+
+//短信验证码
+  sc(rdata: RData): Promise<RData> {
+    console.log(rdata.mobile + "////");
+    return new Promise((resolve, reject) => {
+      this.smsRestful.getcode().then(data => {
+        // TODO 短信验证码
+        resolve(rdata)
+      })
+    });
+  }
+}
+
+export class RData {
+  mobile: string = "";
+  password: string = "";
+  authCode: string = "";
 }

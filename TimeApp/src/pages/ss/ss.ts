@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
 import {UtilService} from "../../service/util-service/util.service";
-import {PageConfig} from "../../app/page.config";
+import {PageConfig} from "../../service/config/page.config";
 import {XiaojiAlarmclockService} from "../../service/util-service/xiaoji-alarmclock.service";
 
 /**

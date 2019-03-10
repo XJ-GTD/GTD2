@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { EmitSpeechService } from "./emit-speech.service";
 import { WsModel } from "../../model/ws/ws.model";
 import { AiuiModel } from "../../model/aiui.model";
-import { DataConfig } from "../../app/data.config";
+import { DataConfig } from "../config/data.config";
 import { WsEnumModel } from "../../model/ws/ws.enum.model";
 
 /**

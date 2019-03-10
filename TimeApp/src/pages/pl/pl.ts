@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, Navbar, ViewController} from 'ionic-angular';
-import {PageConfig} from "../../app/page.config";
 import {JhModel} from "../../model/jh.model";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the PlPage page.
@@ -55,17 +55,17 @@ export class PlPage {
 
   toSy(jh:JhModel){
     console.log("跳转计划详情页");
-    this.navCtrl.push(PageConfig._PD_PAGE,{"jh":jh});
+    this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{"jh":jh});
   }
 
   toPc(){
     console.log("跳转添加计划页");
-    this.navCtrl.push(PageConfig._PC_PAGE,{});
+    this.navCtrl.push(DataConfig.PAGE._PC_PAGE,{});
   }
 
   toPd(){
     console.log("跳转该计划的所有日程");
-    this.navCtrl.push(PageConfig._PD_PAGE,{});
+    this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{});
 
   }
 

@@ -7,12 +7,11 @@ import {
 } from "../../components/ion2-calendar";
 import * as moment from "moment";
 import {TdlPage} from "../tdl/tdl";
-import {PageConfig} from "../../app/page.config";
 import {UtilService} from "../../service/util-service/util.service";
 import {XiaojiFeedbackService} from "../../service/util-service/xiaoji-feedback.service";
 
 /**
- * Generated class for the HPage page.
+ * Generated class for the 首页 page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -119,8 +118,8 @@ export class HPage {
     this.event = $event;
     let eventDate = new Date($event.time);
     let tmp = moment(eventDate).format("YYYY-MM-DD");
-    let sbPageModal = this.modalCtr.create(PageConfig._TDC_PAGE,{dateStr:tmp,event:$event});
-    sbPageModal.present();
+    //let sbPageModal = this.modalCtr.create(PageConfig._TDC_PAGE,{dateStr:tmp,event:$event});
+    //sbPageModal.present();
   }
 
   //查询当天日程
@@ -149,13 +148,13 @@ export class HPage {
   }
 
   openVoice() {
-    let tab1RootModal = this.modalCtr.create(PageConfig._HB_PAGE);
-    tab1RootModal.onDidDismiss(()=>{
-      //刷新月份事件标识
-      console.log(this.selectDay);
-      this.events.publish("flashMonth");
-    });
-    tab1RootModal.present();
+    // let tab1RootModal = this.modalCtr.create(PageConfig._HB_PAGE);
+    // tab1RootModal.onDidDismiss(()=>{
+    //   //刷新月份事件标识
+    //   console.log(this.selectDay);
+    //   this.events.publish("flashMonth");
+    // });
+    // tab1RootModal.present();
   }
 
 

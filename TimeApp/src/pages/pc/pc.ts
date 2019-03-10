@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {IonicPage, Navbar, NavController} from 'ionic-angular';
 
 /**
- * Generated class for the PcPage page.
+ * Generated class for the 计划新建 page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.

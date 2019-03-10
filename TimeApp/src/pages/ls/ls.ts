@@ -1,10 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, AlertController, Navbar} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
-import {ReturnConfig} from "../../app/return.config";
 
 /**
- * Generated class for the LsPage page.
+ * Generated class for the 登陆（短信） page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -75,30 +74,30 @@ export class LsPage {
 
 
   signIn() {
-    if(this.agree != true || this.errorCode != 3){
-      this.checkPhone();
-      this.agreeFlag = this.agree;
-      return ;
-    }
-    this.webSocket.close();
-    this.agreeFlag = true;
-    this.utilService.loading("登录中");
-    this.lsmService.ml(this.accountMobile, this.authCode).then(data=> {
-      console.log(data);
-      let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
-      this.utilService.unloading();
-      if (data.code == 0) {
-        this.utilService.alert("登陆成功");
-        this.navCtrl.setRoot('MPage');
-      }else{
-        this.utilService.alert(message);
-      }
-
-    }).catch(res=>{
-      this.utilService.unloading();
-      this.utilService.alert(ReturnConfig.RETURN_MSG.get(res.code));
-      console.log(res);
-    });
+    // if(this.agree != true || this.errorCode != 3){
+    //   this.checkPhone();
+    //   this.agreeFlag = this.agree;
+    //   return ;
+    // }
+    // this.webSocket.close();
+    // this.agreeFlag = true;
+    // this.utilService.loading("登录中");
+    // this.lsmService.ml(this.accountMobile, this.authCode).then(data=> {
+    //   console.log(data);
+    //   let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
+    //   this.utilService.unloading();
+    //   if (data.code == 0) {
+    //     this.utilService.alert("登陆成功");
+    //     this.navCtrl.setRoot('MPage');
+    //   }else{
+    //     this.utilService.alert(message);
+    //   }
+    //
+    // }).catch(res=>{
+    //   this.utilService.unloading();
+    //   this.utilService.alert(ReturnConfig.RETURN_MSG.get(res.code));
+    //   console.log(res);
+    // });
 
   }
 
@@ -126,30 +125,30 @@ export class LsPage {
 
 
   sendMsg(){
-    console.log(11);
-    if(this.errorCode == 3){
-      this.lsmService.sc(this.accountMobile).then(data=>{
-        console.log("sc::" + data);
-        this.utilService.alert("已发送验证码");
-      }).catch(ref =>{
-        console.log("ref::" + ref);
-        this.utilService.alert("发送验证码出错");
-      });
-
-      this.timeOut = 60;
-      this.timer = setInterval(()=>{
-        this.timeOut --;
-        if(this.timeOut <= 0){
-          clearTimeout(this.timer);
-          console.log("清除定时器");
-          this.timeOut="发送验证码"
-        }
-        console.log(this.timeOut)
-      },1000)
-
-    }else{
-      this.utilService.alert("请填写正确的手机号");
-    }
+    // console.log(11);
+    // if(this.errorCode == 3){
+    //   this.lsmService.sc(this.accountMobile).then(data=>{
+    //     console.log("sc::" + data);
+    //     this.utilService.alert("已发送验证码");
+    //   }).catch(ref =>{
+    //     console.log("ref::" + ref);
+    //     this.utilService.alert("发送验证码出错");
+    //   });
+    //
+    //   this.timeOut = 60;
+    //   this.timer = setInterval(()=>{
+    //     this.timeOut --;
+    //     if(this.timeOut <= 0){
+    //       clearTimeout(this.timer);
+    //       console.log("清除定时器");
+    //       this.timeOut="发送验证码"
+    //     }
+    //     console.log(this.timeOut)
+    //   },1000)
+    //
+    // }else{
+    //   this.utilService.alert("请填写正确的手机号");
+    // }
 
   }
 

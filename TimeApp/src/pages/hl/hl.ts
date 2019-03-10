@@ -1,9 +1,8 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
-import {DwEmitService} from "../../service/util-service/dw-emit.service";
 
 /**
- * Generated class for the HlPage page.
+ * Generated class for the 帮助 page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -45,7 +44,6 @@ export class HlPage {
 
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
-              private dwEmit: DwEmitService,
               private element: ElementRef) {
   }
 

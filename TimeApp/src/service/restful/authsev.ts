@@ -12,39 +12,68 @@ export class AuthRestful {
   }
 
   // 短信登录 SML
-  loginbycode(body: any): Promise<any> {
+  loginbycode(loginData: LoginData): Promise<LoginData> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("SML");
-      this.request.post(url, body).then(data => {
+      this.request.post(url, loginData.reqAData).then(data => {
 
         //处理返回结果
-
-        resolve();
+        loginData.repData = data;
+        resolve(loginData);
 
       }).catch(error => {
         //处理返回错误
-        reject();
+        reject(error);
 
       })
     });
   }
 
-  loginbypass(body: any): Promise<any> {
+  loginbypass(loginData: LoginData): Promise<LoginData> {
     return new Promise((resolve, reject) => {
 
       let url: UrlEntity = this.config.getRestFulUrl("PL");
-      this.request.post(url, body).then(data => {
+      this.request.post(url, loginData.reqPData).then(data => {
 
         //处理返回结果
-        resolve();
+        loginData.repData = data;
+        resolve(loginData);
 
       }).catch(error => {
         //处理返回错误
-        reject();
+        reject(error);
 
       })
     });
   }
 
 }
+
+export class LoginData {
+  //用户密码请求登陆
+  reqPData = {
+    mobile:"",
+    password:"",
+  }
+
+  //用户验证码请求登陆
+  reqAData = {
+    mobile:"",
+    authCode:""
+  }
+  repData = {
+    code:"",
+    message:"",
+    data:{
+      "code": "",
+      "openid": "",
+      "unionid": "",
+      "state": ""
+    },
+  }
+
+  errData = {
+  }
+}
+

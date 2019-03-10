@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { HbPage } from './hb';
-import { ParamsService } from "../../service/util-service/params.service";
-import { XiaojiAssistantService } from "../../service/util-service/xiaoji-assistant.service";
-import { XiaojiFeedbackService } from "../../service/util-service/xiaoji-feedback.service";
+import { HbPage } from './ai';
+import { ParamsService } from "../../../service/util-service/params.service";
+import { XiaojiAssistantService } from "../../../service/util-service/xiaoji-assistant.service";
+import { XiaojiFeedbackService } from "../../../service/util-service/xiaoji-feedback.service";
 import { Hb01PageModule } from "../hb01/hb01.module";
-import {HbService} from "./hb.service";
+import {HbService} from "./ai.service";
 
 @NgModule({
   declarations: [

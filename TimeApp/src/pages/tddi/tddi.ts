@@ -13,7 +13,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {RelmemService} from "../../service/relmem.service";
 import {RuModel} from "../../model/ru.model";
 import * as moment from "moment";
-import {PageConfig} from "../../app/page.config";
+import {PageConfig} from "../../service/config/page.config";
 import {Select} from "ionic-angular/components/select/select";
 import {DateTime} from "ionic-angular/components/datetime/datetime";
 import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
