@@ -802,41 +802,55 @@ public class MainVerticle extends AbstractVerticle {
         
         System.out.println(oauth.encode());
         
-        String site = "";
-        
-        try {
-			site = new URL(redirectUri).getHost();
-			
-			if (site.contains(":")) {
-				site = site.substring(0, site.indexOf(":"));
+        if (redirectUri != null && !StringUtils.isEmpty(redirectUri)) {
+        	// OAuth
+	        String site = "";
+	        
+	        try {
+				site = new URL(redirectUri).getHost();
+				
+				if (site.contains(":")) {
+					site = site.substring(0, site.indexOf(":"));
+				}
+			} catch (MalformedURLException e) {
+				System.out.println(e.getMessage());
 			}
-		} catch (MalformedURLException e) {
-			System.out.println(e.getMessage());
-		}
-        
-        JsonObject query = new JsonObject()
-        		.put("appid", appId)
-        		.put("site", site);
-        
-        if (config().getBoolean("debug")) {
+	        
+	        JsonObject query = new JsonObject()
+	        		.put("appid", appId)
+	        		.put("site", site);
+	        
+	        if (config().getBoolean("debug")) {
+				ctx.put("oauth", oauth.mapTo(Map.class));
+				ctx.next();
+	        } else {
+	        
+		        mongodb.findOne("aup_oauth_apps", query, new JsonObject(), ar -> {
+		        	if (ar.succeeded()) {
+		        		JsonObject oauthapp = ar.result();
+		        		
+		        		if (oauthapp != null && !oauthapp.isEmpty()) {
+		        			ctx.put("oauth", oauth.mapTo(Map.class));
+		        			ctx.next();
+		        		} else {
+		        			ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/plain;charset=utf-8").end("非法AppId或网站请求!");
+		        		}
+		        	} else {
+		    			ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/plain;charset=utf-8").end("非法AppId或网站请求!");
+		        	}
+		        });
+	        }
+        } else {
+        	// Origin auth
+        	oauth
+			.put("appid", Base64.encodeBase64URLSafeString(config().getString("apps.default.appid", "www.guobaa.com").getBytes()))
+    		.put("redirecturi", "https://www.guobaa.com")
+    		.put("responsetype", "code")
+    		.put("scope", "snsapi_login")
+    		.put("state", "");
+
 			ctx.put("oauth", oauth.mapTo(Map.class));
 			ctx.next();
-        } else {
-        
-	        mongodb.findOne("aup_oauth_apps", query, new JsonObject(), ar -> {
-	        	if (ar.succeeded()) {
-	        		JsonObject oauthapp = ar.result();
-	        		
-	        		if (oauthapp != null && !oauthapp.isEmpty()) {
-	        			ctx.put("oauth", oauth.mapTo(Map.class));
-	        			ctx.next();
-	        		} else {
-	        			ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/plain;charset=utf-8").end("非法AppId或网站请求!");
-	        		}
-	        	} else {
-	    			ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/plain;charset=utf-8").end("非法AppId或网站请求!");
-	        	}
-	        });
         }
 	}
 

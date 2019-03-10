@@ -855,6 +855,36 @@ paths:
       produces:
         - application/json
       parameters:
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: true
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
+        - name: ai
+          in: header
+          type: string
+          description: 帐户ID
+          required: true
         - name: unionid
           in: path
           type: string
@@ -880,6 +910,36 @@ paths:
       produces:
         - application/json
       parameters:
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: true
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
+        - name: ai
+          in: header
+          type: string
+          description: 帐户ID
+          required: true
         - name: unionid
           in: path
           type: string
