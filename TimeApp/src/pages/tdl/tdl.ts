@@ -1,8 +1,5 @@
 import {Component, ElementRef, Input, Renderer2} from '@angular/core';
 import {App, NavController, NavParams} from 'ionic-angular';
-import {ScheduleModel} from "../../model/schedule.model";
-import {UtilService} from "../../service/util-service/util.service";
-import {WorkService} from "../../service/work.service";
 import * as moment from "moment";
 import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
 
@@ -91,7 +88,6 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
 })
 export class TdlPage {
 
-  scheduleLs: Array<ScheduleModel> = [];
   scheduleDetailLs: Array<ScheduleDetailsModel> = [];
 
   noShow: boolean = true;
@@ -102,9 +98,7 @@ export class TdlPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private util: UtilService,
               private rnd: Renderer2,
-              private workService: WorkService,
               private el: ElementRef,
               private app: App) {
     this.height = window.document.body.clientHeight - 350 - 110;

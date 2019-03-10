@@ -13,7 +13,7 @@ import { LbModel } from "../../model/lb.model";
 import { UtilService } from "../../service/util-service/util.service";
 import * as moment from "moment";
 import { ZtdModel } from "../../model/ztd.model";
-import { DataConfig } from "../../app/data.config";
+import { DataConfig } from "../../service/config/data.config";
 import { JhService } from "../../service/jh.service";
 import { JhModel } from "../../model/jh.model";
 import {DateTime} from "ionic-angular/components/datetime/datetime";

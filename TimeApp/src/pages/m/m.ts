@@ -1,10 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Tabs } from 'ionic-angular';
-import {PageConfig} from "../../app/page.config";
-import {DataConfig} from "../../app/data.config";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
- * Generated class for the MPage page.
+ * Generated class for the 菜单 page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -56,7 +55,7 @@ import {DataConfig} from "../../app/data.config";
 export class MPage {
   @ViewChild('myTabs') tabRef: Tabs;
 
-  hPage: any = PageConfig._H_PAGE;
+  hPage: any = DataConfig.PAGE._H_PAGE;
   imgurl:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
@@ -90,17 +89,17 @@ export class MPage {
 
   toPl(){
     console.log("跳转计划一览PlPage");
-    this.navCtrl.push(PageConfig._PL_PAGE);
+    this.navCtrl.push(DataConfig.PAGE._PL_PAGE);
   }
 
   toUc(){
     console.log("跳转用户详情MPage跳转UcPage");
-    this.navCtrl.push('UcPage',{popPage:'MPage',uo:this.uo});
+    //this.navCtrl.push('UcPage',{popPage:'MPage',uo:this.uo});
   }
 
   toUb(){
     console.log("跳转用户详情MPage跳转LpPage");
-    this.navCtrl.push(PageConfig._LP_PAGE);
+    this.navCtrl.push(DataConfig.PAGE._LP_PAGE);
   }
 
   showHistory() {

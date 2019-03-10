@@ -3,7 +3,7 @@ import {Platform, Nav, MenuController, IonicApp} from 'ionic-angular';
 import {MenuScalePushType} from "../components/menuType/customType";
 import {BackgroundMode} from '@ionic-native/background-mode';
 import {XiaojiAssistantService} from "../service/util-service/xiaoji-assistant.service";
-import {PageConfig} from "./page.config";
+import {DataConfig} from "../service/config/data.config";
 
 @Component({
   template: '<ion-nav></ion-nav>'
@@ -16,7 +16,7 @@ export class MyApp {
               private backgroundMode: BackgroundMode,
               private speechService: XiaojiAssistantService) {
 
-    console.log(' time app start ');
+    //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
 
     this.platform.ready().then(() => {
@@ -24,10 +24,11 @@ export class MyApp {
       this.backgroundMode.enable();
       //设置返回键盘（android）
       this.registerBackButtonAction();
-      //跳转页面
-      this.nav.setRoot(PageConfig._AL_PAGE);
+      //跳转页面（过渡页面）
+      this.nav.setRoot(DataConfig.PAGE._AL_PAGE);
     });
   }
+
 
   registerBackButtonAction(): void {
     this.platform.registerBackButtonAction(() => {
@@ -35,6 +36,7 @@ export class MyApp {
       // this.appCtrl._toastPortal.getActive() || this.appCtrl._loadingPortal.getActive() || this.appCtrl._overlayPortal.getActive();
       let activePortal = this.appCtrl._modalPortal.getActive();
       if (activePortal) {
+        //语音停止
         this.speechService.stopSpeak();
         activePortal.dismiss().catch(() => {
         });

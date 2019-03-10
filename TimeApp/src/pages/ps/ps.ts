@@ -1,12 +1,10 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams, Navbar} from 'ionic-angular';
 import {ParamsService} from "../../service/util-service/params.service";
-import {UEntity} from "../../entity/u.entity";
-import {UserService} from "../../service/user.service";
-import {DataConfig} from "../../app/data.config";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
- * Generated class for the PsPage page.
+ * Generated class for the 个人设置 page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -74,11 +72,9 @@ export class PsPage {
 
   //编辑控制
   state:any = false;
-  uo:UEntity;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private userService: UserService,
               private loadingCtrl: LoadingController,
               private paramsService: ParamsService) {
     this.init();
@@ -96,8 +92,8 @@ export class PsPage {
   };
 
   init() {
-    this.uo = DataConfig.uInfo;
-    console.log("uc 获取用户信息："+JSON.stringify(this.uo))
+    // this.uo = DataConfig.uInfo;
+    // console.log("uc 获取用户信息："+JSON.stringify(this.uo))
   }
 
   updateUserInfo() {
@@ -113,24 +109,24 @@ export class PsPage {
     this.state = true;
   }
 
-  confirm(uo:UEntity){
-    this.userService.upu(uo.uI,uo.uN,uo.hIU,uo.biy,uo.rn,uo.iC,uo.uS, uo.uCt).then(data=>{
-      if(data.code == 0){
-        this.state = false;
-        console.log("修改信息成功");
-        this.userService.getUo().then(data=>{
-          if(data.code == 0){
-
-          }
-        })
-      }else{
-        this.state = true;
-        console.log("修改信息失败")
-      }
-    }).catch(reason => {
-      this.state = true;
-      console.log("修改信息失败")
-    })
+  confirm(){
+    // this.userService.upu(uo.uI,uo.uN,uo.hIU,uo.biy,uo.rn,uo.iC,uo.uS, uo.uCt).then(data=>{
+    //   if(data.code == 0){
+    //     this.state = false;
+    //     console.log("修改信息成功");
+    //     this.userService.getUo().then(data=>{
+    //       if(data.code == 0){
+    //
+    //       }
+    //     })
+    //   }else{
+    //     this.state = true;
+    //     console.log("修改信息失败")
+    //   }
+    // }).catch(reason => {
+    //   this.state = true;
+    //   console.log("修改信息失败")
+    // })
 
   }
 

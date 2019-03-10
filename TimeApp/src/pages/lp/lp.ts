@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
 import { UtilService } from "../../service/util-service/util.service";
-import {LpService} from "./lp.service";
+import {LpData, LpService} from "./lp.service";
 
 /**
- * Generated class for the LpPage page.
+ * Generated class for the 登陆（密码） page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -103,11 +103,6 @@ export class LpPage {
     public navParams: NavParams,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
-    private paramsService: ParamsService,
-    /*private lsmService: LsmService,
-    private webSocket: WebsocketService,
-    private userService: UserService,*/
-    private utilService: UtilService,
     private lpService: LpService) {
   }
 
@@ -130,43 +125,46 @@ export class LpPage {
       return;
     }
     //this.utilService.loading("登录中");
-    this.lpService.login(this.accountName, this.accountPassword).then(data=> {
+    let lp:LpData = new LpData();
+    lp.user = this.accountName;
+    lp.pass = this.accountPassword;
+    this.lpService.login(lp).then(data=> {
        console.log(data);
-       if (data.code == 0) {
-         this.webSocket.close();
-         // this.userService.getUo();
-         this.utilService.unloading();
-         console.log("ub:" + data.message);
-         this.webSocket.connect(data.data.accountQueue);
-         this.utilService.alert("登录成功");
-         if(this.rePage==undefined){
-           //跳转首页
-           console.log('LpPage跳转MPage');
-           this.navCtrl.setRoot('MPage');
-         }else{
-           //登录分析
-           //登录成功跳转，登录成功返回，
-           this.navCtrl.getViews().forEach(page=>{
-             if(page.name == this.rePage){
-               this.navCtrl.popTo(page);
-               return;
-             }
-           });
-         }
-       }else if(data.code == 1){
-         this.utilService.unloading();
-         console.log("ub: " + data.message);
-         this.utilService.alert(data.message);
-       } else{
-         this.utilService.unloading();
-         console.log("ub: " + data.message);
-         this.utilService.alert(data.message);
-       }
+       // if (data.code == 0) {
+       //   this.webSocket.close();
+       //   // this.userService.getUo();
+       //   this.utilService.unloading();
+       //   console.log("ub:" + data.message);
+       //   this.webSocket.connect(data.data.accountQueue);
+       //   this.utilService.alert("登录成功");
+       //   if(this.rePage==undefined){
+       //     //跳转首页
+       //     console.log('LpPage跳转MPage');
+       //     this.navCtrl.setRoot('MPage');
+       //   }else{
+       //     //登录分析
+       //     //登录成功跳转，登录成功返回，
+       //     this.navCtrl.getViews().forEach(page=>{
+       //       if(page.name == this.rePage){
+       //         this.navCtrl.popTo(page);
+       //         return;
+       //       }
+       //     });
+       //   }
+       // }else if(data.code == 1){
+       //   this.utilService.unloading();
+       //   console.log("ub: " + data.message);
+       //   this.utilService.alert(data.message);
+       // } else{
+       //   this.utilService.unloading();
+       //   console.log("ub: " + data.message);
+       //   this.utilService.alert(data.message);
+       // }
 
     }).catch(res=>{
-      this.utilService.unloading();
-       console.log("ub : " +　res.message);
-       this.utilService.alert(res.message);
+      // this.utilService.unloading();
+      //  console.log("ub : " +　res.message);
+      //  this.utilService.alert(res.message);
      });
 
   }

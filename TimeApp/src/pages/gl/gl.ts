@@ -1,12 +1,8 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
-import {RuModel} from "../../model/ru.model";
-import {DataConfig} from "../../app/data.config";
-import {PageConfig} from "../../app/page.config";
-import {UtilService} from "../../service/util-service/util.service";
 
 /**
- * Generated class for the GlPage page.
+ * Generated class for the 群组列表 page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -88,13 +84,10 @@ export class GlPage {
 
   relation: any = 'person' ;
 
-  us: Array<RuModel>;
-  gs: Array<RuModel>;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public view: ViewController,
-              public utilService: UtilService) {
+              public view: ViewController,) {
 
   }
 
@@ -105,31 +98,31 @@ export class GlPage {
 
 
   toAddMember(){
-    if(this.uo.uty == '0'){
-      this.navCtrl.push(PageConfig._LP_PAGE,{"rePage":PageConfig._GL_PAGE})
-      return;
-    }
-    console.log('PaPage跳转PfPage');
-    this.navCtrl.push('PfPage');
+    // if(this.uo.uty == '0'){
+    //   this.navCtrl.push(PageConfig._LP_PAGE,{"rePage":PageConfig._GL_PAGE})
+    //   return;
+    // }
+    // console.log('PaPage跳转PfPage');
+    // this.navCtrl.push('PfPage');
   }
 
   toGroupMember(g){
-    console.log('PaPage跳转PdPage');
-    this.navCtrl.push('PdPage',{g:g});
+    // console.log('PaPage跳转PdPage');
+    // this.navCtrl.push('PdPage',{g:g});
   }
 
   toGroupCreate(){
-    if(this.uo.uty == '0'){
-      this.navCtrl.push(PageConfig._LP_PAGE,{"rePage":PageConfig._GL_PAGE})
-      return;
-    }
-    console.log('PaPage跳转PePage');
-    this.navCtrl.push("PePage");
+    // if(this.uo.uty == '0'){
+    //   this.navCtrl.push(PageConfig._LP_PAGE,{"rePage":PageConfig._GL_PAGE})
+    //   return;
+    // }
+    // console.log('PaPage跳转PePage');
+    // this.navCtrl.push("PePage");
   }
 
-  toMemberDetail(u:RuModel){
-    console.log('PaPage跳转PbPage');
-    this.navCtrl.push("PbPage",{u:u});
+  toMemberDetail(){
+    // console.log('PaPage跳转PbPage');
+    // this.navCtrl.push("PbPage",{u:u});
   }
 
   goBack() {
@@ -137,70 +130,70 @@ export class GlPage {
   }
 
   queryPerson(){
-    this.relmemService.getrus("","","","","0").then(data=>{
-      console.log(data);
-      if(data.us != null && data.us.length > 0){
-        console.log(data.us.length + "联系人不为空::" + data.us);
-        this.us = data.us;
-      }else{
-        console.log("个人查询为空");
-        this.us = undefined;
-      }
-    }).catch( reason => {
-      console.log("个人查询错误::" + reason.message);
-      this.us = undefined;
-    });
+    // this.relmemService.getrus("","","","","0").then(data=>{
+    //   console.log(data);
+    //   if(data.us != null && data.us.length > 0){
+    //     console.log(data.us.length + "联系人不为空::" + data.us);
+    //     this.us = data.us;
+    //   }else{
+    //     console.log("个人查询为空");
+    //     this.us = undefined;
+    //   }
+    // }).catch( reason => {
+    //   console.log("个人查询错误::" + reason.message);
+    //   this.us = undefined;
+    // });
   }
 
   delPerson(u){
-    this.relmemService.delRu(u.id).then(data=>{
-      if(data.code == 0){
-        console.log("个人删除成功");
-        this.queryPerson()
-      }else{
-        console.log("个人删除失败");
-      }
-    }).catch(reason => {
-      console.log("个人删除异常::" + reason.message);
-    })
+    // this.relmemService.delRu(u.id).then(data=>{
+    //   if(data.code == 0){
+    //     console.log("个人删除成功");
+    //     this.queryPerson()
+    //   }else{
+    //     console.log("个人删除失败");
+    //   }
+    // }).catch(reason => {
+    //   console.log("个人删除异常::" + reason.message);
+    // })
   }
 
   delGroup(g){
-    this.relmemService.delRu(g.id).then(data=>{
-      if(data.code == 0){
-        console.log("群组删除成功");
-        this.queryGroup()
-      }else{
-        console.log("群组删除失败");
-      }
-    }).catch(reason => {
-      console.log("群组删除异常::" + reason.message);
-    })
+    // this.relmemService.delRu(g.id).then(data=>{
+    //   if(data.code == 0){
+    //     console.log("群组删除成功");
+    //     this.queryGroup()
+    //   }else{
+    //     console.log("群组删除失败");
+    //   }
+    // }).catch(reason => {
+    //   console.log("群组删除异常::" + reason.message);
+    // })
   }
 
   queryGroup(){
-    this.relmemService.getrus(null,null,null,null,'1').then(data=>{
-      if(data.code == 0 && data.us != null && data.us.length > 0 ){
-        console.log("查询群组成功");
-        this.gs = data.us;
-      }else{
-        console.log("查询群组为空");
-        this.gs = undefined;
-      }
-    }).catch(reason => {
-      console.log("查询群组失败");
-      this.gs = undefined;
-
-    });
+    // this.relmemService.getrus(null,null,null,null,'1').then(data=>{
+    //   if(data.code == 0 && data.us != null && data.us.length > 0 ){
+    //     console.log("查询群组成功");
+    //     this.gs = data.us;
+    //   }else{
+    //     console.log("查询群组为空");
+    //     this.gs = undefined;
+    //   }
+    // }).catch(reason => {
+    //   console.log("查询群组失败");
+    //   this.gs = undefined;
+    //
+    // });
   }
 
   ionViewWillEnter(){
-    console.log("查询登陆用户");
-    this.uo = DataConfig.uInfo;
-    console.log("查询个人");
-    this.queryPerson();
-    console.log("查询群组");
-    this.queryGroup();
+    // console.log("查询登陆用户");
+    // this.uo = DataConfig.uInfo;
+    // console.log("查询个人");
+    // this.queryPerson();
+    // console.log("查询群组");
+    // this.queryGroup();
   }
 
 

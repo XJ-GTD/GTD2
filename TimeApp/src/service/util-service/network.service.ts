@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Network} from "@ionic-native/network";
 import {ToastController} from "ionic-angular";
-import {DataConfig} from "../../app/data.config";
+import {DataConfig} from "../config/data.config";
 
 /**
  * 网络监控工具类
