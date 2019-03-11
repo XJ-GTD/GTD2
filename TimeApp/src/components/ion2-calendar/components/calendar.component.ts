@@ -17,7 +17,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import * as moment from 'moment';
 import {defaults, pickModes} from "../config";
-import {XiaojiFeedbackService} from "../../../service/cordova/feedback.service";
+import {FeedbackService} from "../../../service/cordova/feedback.service";
 
 export const ION_CAL_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
@@ -162,7 +162,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
 
-  constructor(public calSvc: CalendarService, public xiaojiFeekback: XiaojiFeedbackService) {
+  constructor(public calSvc: CalendarService, public feekback: FeedbackService) {
 
   }
 
@@ -333,7 +333,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
         this.css = 1;
       }
 
-      this.xiaojiFeekback.audioBass();
+      this.feekback.audioBass();
 
       window.setTimeout(() => {
         this.css = 100;

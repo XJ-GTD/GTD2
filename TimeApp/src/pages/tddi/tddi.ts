@@ -4,15 +4,10 @@ import {
   AlertController, Events, IonicPage, ModalController, Navbar, NavController,
   NavParams
 } from 'ionic-angular';
-import { ParamsService } from "../../service/util-service/params.service";
-import { ScheduleModel } from "../../model/schedule.model";
-import { XiaojiAlarmclockService } from "../../service/util-service/xiaoji-alarmclock.service";
-import {RcModel} from "../../model/rc.model";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
 import {Select} from "ionic-angular/components/select/select";
 import {DateTime} from "ionic-angular/components/datetime/datetime";
-import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
 
 /**
  * Generated class for the TddiPage page.
@@ -178,222 +173,222 @@ import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
   </ion-content>`,
 })
 export class TddiPage {
-  @ViewChild(Navbar) navBar: Navbar;
-
-  @ViewChild(DateTime) dateTime: DateTime;
-
-  @ViewChild(Alert) alert: Alert;
-
-  data: any;
-  schedule: ScheduleDetailsModel;
-  rc:RcModel;
-  // lbs:Array<LbModel>;
-
-  starttmp:string;//开始时间
-  endtmp:string;//结束时间
-
-  isEdit:boolean = false;
-  canEdit: boolean = true;
-
-  dateStr:string;
-  event:any;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              private paramsService: ParamsService,
-              public modalCtrl: ModalController,
-              private alarmClock: XiaojiAlarmclockService,
-              private alertCtrl: AlertController,
-              private events: Events,
-              private utilService: UtilService) {
-    this.rc = new RcModel();
-    this.schedule = new ScheduleDetailsModel();
-  }
-
-  ionViewWillLeave() {
-    //日程修改后可能更新两个日期
-    this.events.publish("flashDay",{day:this.dateStr,event:this.event});
-    // this.events.publish("flashDay",{day:this.starttmp,event:this.event});
-
-    console.log("test::" + this.alert + "   " + this.dateTime)
-    if(this.alert != undefined){
-      this.alert.dismiss();
-    }
-    if(this.dateTime != undefined && this.dateTime._picker != undefined){
-      this.dateTime._picker.dismiss();
-    }
-  }
-
-  //设置闹钟
-  setAlarm() {
-    let myModal = this.modalCtrl.create('SdPage');
-    myModal.onDidDismiss(data => {
-      console.log("remindTime" + data);
-      this.alarmClock.setAlarmClock(data, this.rc.sN);
-    });
-    myModal.present();
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SaPage');
-    this.navBar.backButtonClick = this.backButtonClick;
-    this.navBar.setBackButtonText("");
-    // this.init();
-    // this.getAllRel();
-  }
-
-  ionViewWillEnter(){
-    this.schedule = this.navParams.get("schedule");
-    this.event = this.navParams.get("event");
-    this.dateStr = this.navParams.get("dateStr");
-    // this.schedule = this.navParams.data;
-    console.log("传入日程数据 ::" + JSON.stringify(this.schedule));
-    console.log(this.schedule.publisherName)
-    this.rc = new RcModel();
-    //查询日程详情
-    /*this.work.getds(this.schedule.scheduleId).then(data=>{
-      this.rc = data;
-      console.log("日程 :: " + JSON.stringify(this.rc));
-      this.edit();
-    }).catch(e=>{
-      alert(e.message)
-      this.navCtrl.setRoot(PageConfig.M_PAGE);
-    });*/
-    this.getAllRel();
-  }
-
-  backButtonClick = (e: UIEvent) => {
-    // 重写返回方法
-    this.paramsService.schedule=null;
-    // this.events.publish('noshow');
-    this.navCtrl.pop();
-  };
-
-  edit(){
-    // this.starttmp = this.util.strToDtime(this.rc.sd);
-    // this.endtmp = this.util.strToDtime(this.rc.ed);
-    this.starttmp = new Date(new Date(this.rc.sd).getTime()+8*60*60*1000).toISOString();
-    this.endtmp = new Date(this.rc.ed).toISOString();
-    if(this.rc.sa != '1'){
-      // this.utilService.toast("不可编辑");
-      this.canEdit = false;
-      this.isEdit = false;
-    }else {
-      this.isEdit = true;
-    }
-    console.log(this.starttmp)
-
-  }
-
-  save(){
-    this.starttmp = moment(new Date(this.starttmp).getTime()-8*60*60*1000).format("YYYY/MM/DD HH:mm");
-    // this.endtmp = this.endtmp
-    console.log(this.starttmp);
-    this.rc.sd = this.starttmp;
-    // this.rc.ed = this.endtmp;
-    console.log("修改日程传入参数 :: " + JSON.stringify(this.rc));
-    /*this.work.urc(this.rc.sI,this.rc.sN,this.rc.sd,'',this.rc.lI,this.rc.ji,this.rc.subId,'','','',this.rc.rus).then(data=>{
-      console.log(JSON.stringify(data));
-      this.utilService.alert("保存成功");
-    }).catch(reason => {
-      console.log(JSON.stringify(reason));
-    });*/
-    this.isEdit = false;
-  }
-
-
-  //所有联系
-  getAllRel(){
-    /*this.relmemService.rcGetRus().then(data=>{
-      console.log(data);
-      if(data.code == 0){
-        this.rus = data.us;
-      }else{
-        console.log("查询失败");
-      }
-
-    }).catch(reason => {
-      console.log("查询失败");
-    })*/
-  }
-
-  showCheckbox(){
-    //已选择参与人
-    let rus = this.rc.rus;
-    //所有可选择参与人
-    let alert = this.alertCtrl.create();
-    alert.setTitle('选择参与人');
-    //设置可选项
-    /*for(let i = 0;i<this.rus.length;i++){
-      let selected = false;
-      for(let j = 0;rus &&　j<rus.length;j++){
-        if(this.rus[i].id == rus[j].id){
-          selected = true;
-          break;
-        }
-      }
-      alert.addInput({
-        type: 'checkbox',
-        //label: this.rus[i].ran,
-        value: i.toString(),
-        checked: selected
-      });
-    }*/
-    alert.addButton('取消');
-    alert.addButton({
-      text: '确定',
-      handler: data => {
-        console.log('Checkbox data:', data);
-        /*rus = new Array<RuModel>();
-        for(let i = 0;i<data.length;i++){
-          rus.push(this.rus[data[i]]);
-        }
-        this.rc.rus = rus;
-        console.log("选择的参与人 :: " + JSON.stringify(this.rc.rus));*/
-      }
-    });
-    alert.present();
-    this.alert = alert;
-  }
-
-
-  del(){
-    console.log(" :: click delete");
-    console.log(JSON.stringify(this.rc))
-   /* this.work.drc(this.rc.sI,this.rc.sa).then(data=>{
-      console.log("删除成功 :: " );
-      this.events.publish("reloadTdl");
-      this.events.publish('noshow');
-      this.navCtrl.pop();
-    }).catch(reason=>{
-      console.log("删除失败 :: " );
-    })*/
-  }
-  // ionViewDidLoad(){
-  //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");
+  // @ViewChild(Navbar) navBar: Navbar;
+  //
+  // @ViewChild(DateTime) dateTime: DateTime;
+  //
+  // @ViewChild(Alert) alert: Alert;
+  //
+  // data: any;
+  // schedule: ScheduleDetailsModel;
+  // rc:RcModel;
+  // // lbs:Array<LbModel>;
+  //
+  // starttmp:string;//开始时间
+  // endtmp:string;//结束时间
+  //
+  // isEdit:boolean = false;
+  // canEdit: boolean = true;
+  //
+  // dateStr:string;
+  // event:any;
+  //
+  // constructor(public navCtrl: NavController, public navParams: NavParams,
+  //             private paramsService: ParamsService,
+  //             public modalCtrl: ModalController,
+  //             private alarmClock: XiaojiAlarmclockService,
+  //             private alertCtrl: AlertController,
+  //             private events: Events,
+  //             private utilService: UtilService) {
+  //   this.rc = new RcModel();
+  //   this.schedule = new ScheduleDetailsModel();
   // }
+  //
+  // ionViewWillLeave() {
+  //   //日程修改后可能更新两个日期
+  //   this.events.publish("flashDay",{day:this.dateStr,event:this.event});
+  //   // this.events.publish("flashDay",{day:this.starttmp,event:this.event});
+  //
+  //   console.log("test::" + this.alert + "   " + this.dateTime)
+  //   if(this.alert != undefined){
+  //     this.alert.dismiss();
+  //   }
+  //   if(this.dateTime != undefined && this.dateTime._picker != undefined){
+  //     this.dateTime._picker.dismiss();
+  //   }
+  // }
+  //
+  // //设置闹钟
+  // setAlarm() {
+  //   let myModal = this.modalCtrl.create('SdPage');
+  //   myModal.onDidDismiss(data => {
+  //     console.log("remindTime" + data);
+  //     this.alarmClock.setAlarmClock(data, this.rc.sN);
+  //   });
+  //   myModal.present();
+  // }
+  //
+  // ionViewDidLoad() {
+  //   console.log('ionViewDidLoad SaPage');
+  //   this.navBar.backButtonClick = this.backButtonClick;
+  //   this.navBar.setBackButtonText("");
+  //   // this.init();
+  //   // this.getAllRel();
+  // }
+  //
   // ionViewWillEnter(){
-  //   console.log("2.0 ionViewWillEnter 顾名思义，当将要进入页面时触发");
-  // }
-  // ionViewDidEnter(){
-  //   console.log("3.0 ionViewDidEnter 当进入页面时触发");
-  // }
-  // ionViewWillLeave(){
-  //   console.log("4.0 ionViewWillLeave 当将要从页面离开时触发");
-  // }
-  // ionViewDidLeave(){
-  //   console.log("5.0 ionViewDidLeave 离开页面时触发");
-  // }
-  // ionViewWillUnload(){
-  //   console.log("6.0 ionViewWillUnload 当页面将要销毁同时页面上元素移除时触发");
+  //   this.schedule = this.navParams.get("schedule");
+  //   this.event = this.navParams.get("event");
+  //   this.dateStr = this.navParams.get("dateStr");
+  //   // this.schedule = this.navParams.data;
+  //   console.log("传入日程数据 ::" + JSON.stringify(this.schedule));
+  //   console.log(this.schedule.publisherName)
+  //   this.rc = new RcModel();
+  //   //查询日程详情
+  //   /*this.work.getds(this.schedule.scheduleId).then(data=>{
+  //     this.rc = data;
+  //     console.log("日程 :: " + JSON.stringify(this.rc));
+  //     this.edit();
+  //   }).catch(e=>{
+  //     alert(e.message)
+  //     this.navCtrl.setRoot(PageConfig.M_PAGE);
+  //   });*/
+  //   this.getAllRel();
   // }
   //
-  // ionViewCanEnter(){
-  //   console.log("ionViewCanEnter");
+  // backButtonClick = (e: UIEvent) => {
+  //   // 重写返回方法
+  //   this.paramsService.schedule=null;
+  //   // this.events.publish('noshow');
+  //   this.navCtrl.pop();
+  // };
+  //
+  // edit(){
+  //   // this.starttmp = this.util.strToDtime(this.rc.sd);
+  //   // this.endtmp = this.util.strToDtime(this.rc.ed);
+  //   this.starttmp = new Date(new Date(this.rc.sd).getTime()+8*60*60*1000).toISOString();
+  //   this.endtmp = new Date(this.rc.ed).toISOString();
+  //   if(this.rc.sa != '1'){
+  //     // this.utilService.toast("不可编辑");
+  //     this.canEdit = false;
+  //     this.isEdit = false;
+  //   }else {
+  //     this.isEdit = true;
+  //   }
+  //   console.log(this.starttmp)
+  //
   // }
   //
-  // ionViewCanLeave(){
-  //   console.log("ionViewCanLeave");
+  // save(){
+  //   this.starttmp = moment(new Date(this.starttmp).getTime()-8*60*60*1000).format("YYYY/MM/DD HH:mm");
+  //   // this.endtmp = this.endtmp
+  //   console.log(this.starttmp);
+  //   this.rc.sd = this.starttmp;
+  //   // this.rc.ed = this.endtmp;
+  //   console.log("修改日程传入参数 :: " + JSON.stringify(this.rc));
+  //   /*this.work.urc(this.rc.sI,this.rc.sN,this.rc.sd,'',this.rc.lI,this.rc.ji,this.rc.subId,'','','',this.rc.rus).then(data=>{
+  //     console.log(JSON.stringify(data));
+  //     this.utilService.alert("保存成功");
+  //   }).catch(reason => {
+  //     console.log(JSON.stringify(reason));
+  //   });*/
+  //   this.isEdit = false;
   // }
+  //
+  //
+  // //所有联系
+  // getAllRel(){
+  //   /*this.relmemService.rcGetRus().then(data=>{
+  //     console.log(data);
+  //     if(data.code == 0){
+  //       this.rus = data.us;
+  //     }else{
+  //       console.log("查询失败");
+  //     }
+  //
+  //   }).catch(reason => {
+  //     console.log("查询失败");
+  //   })*/
+  // }
+  //
+  // showCheckbox(){
+  //   //已选择参与人
+  //   let rus = this.rc.rus;
+  //   //所有可选择参与人
+  //   let alert = this.alertCtrl.create();
+  //   alert.setTitle('选择参与人');
+  //   //设置可选项
+  //   /*for(let i = 0;i<this.rus.length;i++){
+  //     let selected = false;
+  //     for(let j = 0;rus &&　j<rus.length;j++){
+  //       if(this.rus[i].id == rus[j].id){
+  //         selected = true;
+  //         break;
+  //       }
+  //     }
+  //     alert.addInput({
+  //       type: 'checkbox',
+  //       //label: this.rus[i].ran,
+  //       value: i.toString(),
+  //       checked: selected
+  //     });
+  //   }*/
+  //   alert.addButton('取消');
+  //   alert.addButton({
+  //     text: '确定',
+  //     handler: data => {
+  //       console.log('Checkbox data:', data);
+  //       /*rus = new Array<RuModel>();
+  //       for(let i = 0;i<data.length;i++){
+  //         rus.push(this.rus[data[i]]);
+  //       }
+  //       this.rc.rus = rus;
+  //       console.log("选择的参与人 :: " + JSON.stringify(this.rc.rus));*/
+  //     }
+  //   });
+  //   alert.present();
+  //   this.alert = alert;
+  // }
+  //
+  //
+  // del(){
+  //   console.log(" :: click delete");
+  //   console.log(JSON.stringify(this.rc))
+  //  /* this.work.drc(this.rc.sI,this.rc.sa).then(data=>{
+  //     console.log("删除成功 :: " );
+  //     this.events.publish("reloadTdl");
+  //     this.events.publish('noshow');
+  //     this.navCtrl.pop();
+  //   }).catch(reason=>{
+  //     console.log("删除失败 :: " );
+  //   })*/
+  // }
+  // // ionViewDidLoad(){
+  // //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");
+  // // }
+  // // ionViewWillEnter(){
+  // //   console.log("2.0 ionViewWillEnter 顾名思义，当将要进入页面时触发");
+  // // }
+  // // ionViewDidEnter(){
+  // //   console.log("3.0 ionViewDidEnter 当进入页面时触发");
+  // // }
+  // // ionViewWillLeave(){
+  // //   console.log("4.0 ionViewWillLeave 当将要从页面离开时触发");
+  // // }
+  // // ionViewDidLeave(){
+  // //   console.log("5.0 ionViewDidLeave 离开页面时触发");
+  // // }
+  // // ionViewWillUnload(){
+  // //   console.log("6.0 ionViewWillUnload 当页面将要销毁同时页面上元素移除时触发");
+  // // }
+  // //
+  // // ionViewCanEnter(){
+  // //   console.log("ionViewCanEnter");
+  // // }
+  // //
+  // // ionViewCanLeave(){
+  // //   console.log("ionViewCanLeave");
+  // // }
 
 
 }

@@ -1,6 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams, Navbar} from 'ionic-angular';
-import {ParamsService} from "../../service/util-service/params.service";
 import {DataConfig} from "../../service/config/data.config";
 
 /**
@@ -75,8 +74,7 @@ export class PsPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private loadingCtrl: LoadingController,
-              private paramsService: ParamsService) {
+              private loadingCtrl: LoadingController) {
     this.init();
   }
 

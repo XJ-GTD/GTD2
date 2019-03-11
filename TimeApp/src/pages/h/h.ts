@@ -1,6 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
 import { Events, IonicPage, ModalController} from 'ionic-angular';
-import {RemindModel} from "../../model/remind.model";
 import {
   CalendarComponent,
   CalendarComponentOptions
@@ -8,7 +7,7 @@ import {
 import * as moment from "moment";
 import {TdlPage} from "../tdl/tdl";
 import {UtilService} from "../../service/util-service/util.service";
-import {XiaojiFeedbackService} from "../../service/cordova/feedback.service";
+import {FeedbackService} from "../../service/cordova/feedback.service";
 
 /**
  * Generated class for the 首页 page.
@@ -56,8 +55,6 @@ export class HPage {
   @ViewChild(CalendarComponent) ion2calendar: CalendarComponent;
   @ViewChild(TdlPage) tdlPage: TdlPage;
 
-  remindScheduleList: Array<RemindModel>;//提醒时间数据
-  remindList: Array<string>;  //全部提醒时间
 
   showDay: string;
   showDay2: string;
@@ -72,7 +69,7 @@ export class HPage {
   event:any ;
   constructor(private modalCtr: ModalController,
               private utilService: UtilService,
-              private xiaojiFeekback: XiaojiFeedbackService,
+              private xiaojiFeekback: FeedbackService,
               private events: Events) {
     moment.locale('zh-cn');
   }

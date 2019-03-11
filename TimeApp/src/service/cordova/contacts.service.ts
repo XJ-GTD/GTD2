@@ -1,6 +1,5 @@
 import {Contacts, Contact} from "@ionic-native/contacts";
 import {Injectable} from "@angular/core";
-import {BsModel} from "../../model/out/bs.model";
 /**
  * 本地联系人读取
  * 2019/1/16
@@ -19,42 +18,42 @@ export class  ContactsService{
    * 所有联系人
    * @returns {Promise<any>}
    */
-  getContacts():Promise<BsModel>{
+  getContacts():Promise<any>{
     return new Promise((resolve, reject)=>{
-      let bs = new BsModel();
-      this.contacts.find(['phoneNumbers'],{
-        filter:'',
-        multiple:true,
-        desiredFields:["displayName","phoneNumbers",'name']
-      }).then(data=>{
-        console.log("contacts data :: " + JSON.stringify(data));
-        for(let contact of data){
-          for(let i = 0;contact.phoneNumbers != null && i<contact.phoneNumbers.length;i++){
-            //去除手机号中的空格
-            // ContactsService.contactMap.set(contact.phoneNumbers[i].value.replace(/\s/g,''),contact);
-            contact.phoneNumbers[i].value = contact.phoneNumbers[i].value.replace(/\s/g,'');
-
-            // if(this.utilService.checkPhone(contact.phoneNumbers[i].value) != 3){
-            //   break;
-            // }
-            // let ru = new RuModel();
-            // ru.ran = contact.displayName;
-            // ru.rC = contact.phoneNumbers[i].value;
-            // ru.rel = '0';
-            // ru.sdt = 3;
-            // ContactsService.contactList.push(ru);
-            // ContactsService.contactTel.push(contact.phoneNumbers[i].value);
-
-            // this.baseSqlite.save(ru);
-          }
-        }
-        // console.log("1111111 :: "+JSON.stringify(ContactsService.contactTel));
-        // console.log("2222222 :: "+JSON.stringify(ContactsService.contactList));
-        this.dddd();
-        resolve(bs)
-      }).catch(reason => {
-        reject(reason);
-      });
+      // let bs = new BsModel();
+      // this.contacts.find(['phoneNumbers'],{
+      //   filter:'',
+      //   multiple:true,
+      //   desiredFields:["displayName","phoneNumbers",'name']
+      // }).then(data=>{
+      //   console.log("contacts data :: " + JSON.stringify(data));
+      //   for(let contact of data){
+      //     for(let i = 0;contact.phoneNumbers != null && i<contact.phoneNumbers.length;i++){
+      //       //去除手机号中的空格
+      //       // ContactsService.contactMap.set(contact.phoneNumbers[i].value.replace(/\s/g,''),contact);
+      //       contact.phoneNumbers[i].value = contact.phoneNumbers[i].value.replace(/\s/g,'');
+      //
+      //       // if(this.utilService.checkPhone(contact.phoneNumbers[i].value) != 3){
+      //       //   break;
+      //       // }
+      //       // let ru = new RuModel();
+      //       // ru.ran = contact.displayName;
+      //       // ru.rC = contact.phoneNumbers[i].value;
+      //       // ru.rel = '0';
+      //       // ru.sdt = 3;
+      //       // ContactsService.contactList.push(ru);
+      //       // ContactsService.contactTel.push(contact.phoneNumbers[i].value);
+      //
+      //       // this.baseSqlite.save(ru);
+      //     }
+      //   }
+      //   // console.log("1111111 :: "+JSON.stringify(ContactsService.contactTel));
+      //   // console.log("2222222 :: "+JSON.stringify(ContactsService.contactList));
+      //   this.dddd();
+      //   resolve(bs)
+      // }).catch(reason => {
+      //   reject(reason);
+      // });
     })
   }
 
@@ -62,35 +61,35 @@ export class  ContactsService{
 
   getByDisplayName(name:string){
     return new Promise((resolve, reject)=>{
-      let bs = new BsModel();
-      this.contacts.find(['displayName'],{
-        filter:name,
-        multiple:true,
-        desiredFields:["displayName","phoneNumbers","name"]
-      }).then(data=>{
-        console.log("contacts data :: " + JSON.stringify(data));
-        for(let contact of data){
-          for(let i = 0;contact.phoneNumbers != null && i<contact.phoneNumbers.length;i++){
-            //去除手机号中的空格
-            contact.phoneNumbers[i].value = contact.phoneNumbers[i].value.replace(/\s/g,'');
-
-            // if(this.utilService.checkPhone(contact.phoneNumbers[i].value) != 3){
-            //   break;
-            // }
-            // let ru = new RuModel();
-            // ru.sdt = 3;
-            // ru.ran = contact.displayName;
-            // ru.rC = contact.phoneNumbers[i].value;
-            // ru.rel = '0';
-            // ContactsService.contactList.push(ru);
-            // ContactsService.contactTel.push(contact.phoneNumbers[i].value);
-          }
-        }
-        this.dddd();
-        resolve(bs)
-      }).catch(reason => {
-        reject(reason);
-      });
+      // let bs = new BsModel();
+      // this.contacts.find(['displayName'],{
+      //   filter:name,
+      //   multiple:true,
+      //   desiredFields:["displayName","phoneNumbers","name"]
+      // }).then(data=>{
+      //   console.log("contacts data :: " + JSON.stringify(data));
+      //   for(let contact of data){
+      //     for(let i = 0;contact.phoneNumbers != null && i<contact.phoneNumbers.length;i++){
+      //       //去除手机号中的空格
+      //       contact.phoneNumbers[i].value = contact.phoneNumbers[i].value.replace(/\s/g,'');
+      //
+      //       // if(this.utilService.checkPhone(contact.phoneNumbers[i].value) != 3){
+      //       //   break;
+      //       // }
+      //       // let ru = new RuModel();
+      //       // ru.sdt = 3;
+      //       // ru.ran = contact.displayName;
+      //       // ru.rC = contact.phoneNumbers[i].value;
+      //       // ru.rel = '0';
+      //       // ContactsService.contactList.push(ru);
+      //       // ContactsService.contactTel.push(contact.phoneNumbers[i].value);
+      //     }
+      //   }
+      //   this.dddd();
+      //   resolve(bs)
+      // }).catch(reason => {
+      //   reject(reason);
+      // });
     })
 
   }

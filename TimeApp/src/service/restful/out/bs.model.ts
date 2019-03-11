@@ -1,8 +1,8 @@
 /**
  * create by on 2018/11/19
  */
+import {DataConfig} from "../../config/data.config";
 
-import {DataConfig} from "../../service/config/data.config";
 
 //用户类
 export class BsModel<T> {

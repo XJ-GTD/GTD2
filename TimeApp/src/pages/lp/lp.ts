@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
-import { ParamsService } from "../../service/util-service/params.service";
 import { UtilService } from "../../service/util-service/util.service";
 import {LpData, LpService} from "./lp.service";
 
