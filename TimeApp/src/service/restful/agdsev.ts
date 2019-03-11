@@ -312,7 +312,7 @@ export class SharePro{
   private _oai :string;
   //操作手机号码
   private _ompn:string;
-  //
+  //上下文（可以为空）
   private _c:object;
 
   //日程
