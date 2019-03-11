@@ -49,11 +49,11 @@ export class RService {
 
 
 //短信验证码
-  sc(mobile: string): Promise<SmsData> {
-    console.log(mobile + "////");
+  sc(rdata: RData): Promise<SmsData> {
+    console.log(rdata.mobile + "////");
     return new Promise((resolve, reject) => {
       let smsData:SmsData = new SmsData();
-      smsData.reqData.phoneno = mobile;
+      smsData.reqData.phoneno = rdata.mobile;
       this.smsRestful.getcode(smsData).then(data => {
         resolve(data)
       }).catch(err => {
