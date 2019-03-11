@@ -112,7 +112,7 @@ export class AgdRestful{
         //处理返回结果
         bsModel.code = data.rc;
         bsModel.message = data.rm;
-        bsModel.data.asurl = data.d.asurl;
+        bsModel.data = data.d;
         resolve(bsModel);
 
       }).catch(error => {
@@ -146,7 +146,7 @@ export class AgdPro{
   //备注
   am: string;
   //参与人
-  ac:Array<ContactPerPro>;
+  ac:Array<ContactPerPro> =new Array<ContactPerPro>();
 
 }
 
@@ -154,7 +154,7 @@ export class AgdPro{
 //参与人
 export class ContactPerPro{
   //帐户ID
-  ac: string;
+  ai: string;
   //手机号码
   mpn: string;
   //姓名
@@ -177,13 +177,13 @@ export class SharePro{
   //上下文（可以为空）
   c:object;
   //日程
-  d:ShareProSub;
+  d:ShareProSub = new ShareProSub();
 
 }
 
 export class ShareProSub{
 
-  a :AgdPro;
+  a :AgdPro = new AgdPro();
 
 
 }
