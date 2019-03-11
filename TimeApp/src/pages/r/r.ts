@@ -158,9 +158,13 @@ export class RPage {
     testp.aa="h";
     testp.am="i";
     testp.ac = new Array<ContactPerPro>();
-    this.testful.save(testp).then(data =>
+    /*this.testful.save(testp).then(data =>
     {
       console.log("testful agd:"+ JSON.stringify(data));
+    })*/
+
+    this.testful.get(testp).then(data=>{
+      console.log("testful get agd:"+ JSON.stringify(data));
     })
   }
 
