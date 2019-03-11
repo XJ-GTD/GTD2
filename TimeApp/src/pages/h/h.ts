@@ -100,7 +100,7 @@ export class HPage {
       if(this.event != undefined){
         this.onSelectDayEvent(this.event);
       }else{
-        this.tdlPage.showScheduleLs({time:moment().valueOf()});
+        //this.tdlPage.showScheduleLs({time:moment().valueOf()});
       }
     });
   }
@@ -137,7 +137,7 @@ export class HPage {
     }).format('YYYY-MM-DD'));
     this.showDay2 = moment().set({'year': year, 'month': month - 1, 'date': day}).format('dddd YYYY 年 MM 月 DD 日');
 
-    this.tdlPage.showScheduleLs($event);
+    //this.tdlPage.showScheduleLs($event);
   }
 
   gotoToday() {

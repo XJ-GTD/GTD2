@@ -68,18 +68,7 @@ export class AgdRestful{
         //处理返回结果
         bsModel.code = data.rc;
         bsModel.message = data.rm;
-        if (data.d && data.d.length > 0 ){
-          bsModel.data.rai = data.d[0].rai;
-          bsModel.data.fc = data.d[0].fc;
-          bsModel.data.ai = data.d[0].ai;
-          bsModel.data.at = data.d[0].at;
-          bsModel.data.adt = data.d[0].adt;
-          bsModel.data.ap = data.d[0].ap;
-          bsModel.data.ar = data.d[0].ar;
-          bsModel.data.aa = data.d[0].aa;
-          bsModel.data.am = data.d[0].aa;
-          bsModel.data.ac = data.d[0].ac;
-        }
+        bsModel.data = data.d;
         resolve(bsModel);
 
       }).catch(error => {
@@ -139,241 +128,69 @@ export class AgdRestful{
 //日程
 export class AgdPro{
   //关联日程ID
-  private _rai: string;
+  rai: string;
   //日程发送人用户ID
-  private _fc: string;
+  fc: string;
   //日程ID
-  private _ai: string;
+  ai: string;
   //主题
-  private _at: string;
+  at: string;
   //时间(YYYY/MM/DD HH:mm)
-  private _adt: string;
+  adt: string;
   //计划
-  private _ap: string;
+  ap: string;
   //重复
-  private _ar: string;
+  ar: string;
   //提醒
-  private _aa: string;
+  aa: string;
   //备注
-  private _am: string;
+  am: string;
   //参与人
-  private _ac:Array<ContactPerPro>;
+  ac:Array<ContactPerPro>;
 
-  get ac(): Array<ContactPerPro> {
-    return this._ac;
-  }
-
-  set ac(value: Array<ContactPerPro>) {
-    this._ac = value;
-  }
-
-  get rai(): string {
-    return this._rai;
-  }
-
-  set rai(value: string) {
-    this._rai = value;
-  }
-
-  get fc(): string {
-    return this._fc;
-  }
-
-  set fc(value: string) {
-    this._fc = value;
-  }
-
-  get ai(): string {
-    return this._ai;
-  }
-
-  set ai(value: string) {
-    this._ai = value;
-  }
-
-  get at(): string {
-    return this._at;
-  }
-
-  set at(value: string) {
-    this._at = value;
-  }
-
-  get adt(): string {
-    return this._adt;
-  }
-
-  set adt(value: string) {
-    this._adt = value;
-  }
-
-  get ap(): string {
-    return this._ap;
-  }
-
-  set ap(value: string) {
-    this._ap = value;
-  }
-
-  get ar(): string {
-    return this._ar;
-  }
-
-  set ar(value: string) {
-    this._ar = value;
-  }
-
-  get aa(): string {
-    return this._aa;
-  }
-
-  set aa(value: string) {
-    this._aa = value;
-  }
-
-  get am(): string {
-    return this._am;
-  }
-
-  set am(value: string) {
-    this._am = value;
-  }
 }
 
 
 //参与人
 export class ContactPerPro{
   //帐户ID
-  private _ac: string;
+  ac: string;
   //手机号码
-  private _mpn: string;
+  mpn: string;
   //姓名
-  private _n: string;
+  n: string;
   //头像
-  private _a: string;
+  a: string;
   //性别
-  private _s: string;
+  s: string;
   //生日
-  private _bd: string;
+  bd: string;
 
-
-  get ac(): string {
-    return this._ac;
-  }
-
-  set ac(value: string) {
-    this._ac = value;
-  }
-
-  get mpn(): string {
-    return this._mpn;
-  }
-
-  set mpn(value: string) {
-    this._mpn = value;
-  }
-
-  get n(): string {
-    return this._n;
-  }
-
-  set n(value: string) {
-    this._n = value;
-  }
-
-  get a(): string {
-    return this._a;
-  }
-
-  set a(value: string) {
-    this._a = value;
-  }
-
-  get s(): string {
-    return this._s;
-  }
-
-  set s(value: string) {
-    this._s = value;
-  }
-
-  get bd(): string {
-    return this._bd;
-  }
-
-  set bd(value: string) {
-    this._bd = value;
-  }
 }
 
 //日程分享
 export class SharePro{
   //操作帐户ID
-  private _oai :string;
+  oai :string;
   //操作手机号码
-  private _ompn:string;
-  //
-  private _c:object;
-
+  ompn:string;
+  //上下文（可以为空）
+  c:object;
   //日程
-  private _d:ShareProSub;
+  d:ShareProSub;
 
-  get oai(): string {
-    return this._oai;
-  }
-
-  set oai(value: string) {
-    this._oai = value;
-  }
-
-  get ompn(): string {
-    return this._ompn;
-  }
-
-  set ompn(value: string) {
-    this._ompn = value;
-  }
-
-  get c(): object {
-    return this._c;
-  }
-
-  set c(value: object) {
-    this._c = value;
-  }
-
-  get d(): ShareProSub {
-    return this._d;
-  }
-
-  set d(value: ShareProSub) {
-    this._d = value;
-  }
 }
 
 export class ShareProSub{
 
-  private _a :AgdPro;
+  a :AgdPro;
 
-  get a(): AgdPro {
-    return this._a;
-  }
 
-  set a(value: AgdPro) {
-    this._a = value;
-  }
 }
 
 
 export class OutSharePro{
 
-  private _asurl :string;
+  asurl :string;
 
-  get asurl(): string {
-    return this._asurl;
-  }
-
-  set asurl(value: string) {
-    this._asurl = value;
-  }
 }
