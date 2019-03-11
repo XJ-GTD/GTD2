@@ -68,9 +68,23 @@ export class AgdRestful{
 
 export class AgdSave{
   reqData = {
-    mobile:"",
-    password:"",
-    authCode:""
+    "rai": "",
+    "fc": "",
+    "ai": "",
+    "at": "",
+    "adt": "",
+    "ap": "",
+    "ar": "",
+    "aa": "",
+    "am": "",
+    "ac": {
+      "ai": "",
+      "mpn": "",
+      "n": "",
+      "a": "",
+      "s": "",
+      "bd": ""
+    }
   }
   repData = {
     code:"",

@@ -17,15 +17,15 @@ export class RestFulConfig {
   async createHeader(): Promise<RestFulHeader> {
     let apro = new ATbl();
     let header = new RestFulHeader();
-    apro = await this.sqlitexec.getOne(apro);
-    //帐户ID
-    header.ai = apro.aI;
-    //设备ID
-    header.di = apro.aE;
-    //设别类型
-    header.dt = "";
-    //登录码
-    header.lt = apro.aT;
+    // apro = await this.sqlitexec.getOne(apro);
+    // //帐户ID
+    // header.ai = apro.aI;
+    // //设备ID
+    // header.di = apro.aE;
+    // //设别类型
+    // header.dt = "";
+    // //登录码
+    // header.lt = apro.aT;
 
     return header;
   }
@@ -168,8 +168,8 @@ export class RestFulConfig {
 
 export class RestFulHeader {
   "Content-Type": string = "application/json";
-  lt: string = "";//登录码
-  ai: string = "";//帐户ID
+  lt: string = "NzJkM2VjM2QtNGE3Zi00Y2Y3LTliNmQtZjllMTJlMGNiODVm";//登录码
+  ai: string = "13661617252";//帐户ID
   pi: string = "cn.sh.com.xj.timeApp";//产品ID
   pv: string = "v1";//产品版本
   di: string = "11111";//设备ID

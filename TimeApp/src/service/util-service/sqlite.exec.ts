@@ -83,7 +83,7 @@ export class SqliteExec {
    * @param t
    * @returns {Promise<T>}
    */
-  getList(itbl: ITbl): Promise<Array<ITbl>> {
+  getList(itbl: ITbl): Promise<Array<any>> {
     return this.execSql(itbl.slT())
   }
 
