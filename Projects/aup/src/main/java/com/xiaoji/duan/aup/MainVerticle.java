@@ -394,7 +394,7 @@ public class MainVerticle extends AbstractVerticle {
 				.put("verifyphone", phoneno)
 				.put("verifycode", code)
 				.put("createtime", System.currentTimeMillis())
-				.put("expiretime", config().getLong("sms.expiretime", 60L)),
+				.put("expiretime", config().getLong("sms.expiretime", 10 * 60L)),
 				save -> {
 					if (save.succeeded()) {
 						JsonObject retdata = new JsonObject();
@@ -506,7 +506,7 @@ public class MainVerticle extends AbstractVerticle {
 							Long createtime = result.getLong("createtime", 0L);
 							Long expiretime = result.getLong("expiretime", 0L);
 							
-							if (System.currentTimeMillis() > (createtime + expiretime * 1000)) {
+							if (System.currentTimeMillis() <= (createtime + expiretime * 1000)) {
 								
 								mongodb.findOne("aup_user_info",
 										new JsonObject().put("openid", phoneno),
@@ -664,7 +664,7 @@ public class MainVerticle extends AbstractVerticle {
 							Long createtime = result.getLong("createtime", 0L);
 							Long expiretime = result.getLong("expiretime", 0L);
 							
-							if (System.currentTimeMillis() > (createtime + expiretime * 1000)) {
+							if (System.currentTimeMillis() <= (createtime + expiretime * 1000)) {
 								
 								mongodb.findOne("aup_user_info",
 										new JsonObject()
@@ -890,7 +890,7 @@ public class MainVerticle extends AbstractVerticle {
                 							.put("access_token", Base64.encodeBase64URLSafeString(UUID.randomUUID().toString().getBytes()))
                 							.put("refresh_token", Base64.encodeBase64URLSafeString(UUID.randomUUID().toString().getBytes()))
                 							.put("access_time", System.currentTimeMillis())
-                							.put("expires_in", 60 * 60 * 12);
+                							.put("expires_in", 60 * 60 * 24 * 31);
         									
         									mongodb.save("aup_user_access", access, updateAT -> {});
         									
@@ -929,7 +929,7 @@ public class MainVerticle extends AbstractVerticle {
 							Long accessTime = refreshTokenUser.getLong("access_time");
 							Long expiresIn = refreshTokenUser.getLong("expires_in");
 							
-							if (System.currentTimeMillis() > accessTime + (expiresIn * 1000)) {
+							if (System.currentTimeMillis() <= accessTime + (expiresIn * 1000)) {
 						        System.out.println("Refresh token get failed for expired.");
 		        				ctx.response().end(new JsonObject().put("errcode", 10004).put("errmsg", "登录已失效,请重新登录.").encode());
 							} else {
