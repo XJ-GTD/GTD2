@@ -97,7 +97,13 @@ export class SqliteExec {
    * @returns {Promise<T>}
    */
   getOne(itbl: ITbl): Promise<any> {
-    return this.execSql(itbl.sloT());
+    return new Promise((resolve, reject) => {
+      return this.execSql(itbl.sloT()).then(data=>{
+        if (data.rows && data.rows.length > 0 ){
+          resolve(data.rows[0]);
+        }
+      });
+    })
   }
 
   /**
