@@ -79,13 +79,18 @@ export class AlPage {
         this.text="帮您初始化系统";
         return  this.alService.createSystemData();
       };
+    }).then(data=>{
+
+        this.text="系统设置";
+        return  this.alService.setSetting();
+
     }).then(data => {
       this.increment(10);
       return this.alService.checkUserInfo();
     }).then(data=>{
       this.increment(10);
-      console.log("al " +data.rows.length);
-      if(data.rows.length == 0){
+      console.log("al " +data.length);
+      if(data.length == 0){
         this.rootPage = DataConfig.PAGE._LP_PAGE;
         return "进入登录页面";
       }else{

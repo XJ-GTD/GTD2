@@ -1,6 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, AlertController, Navbar} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
+import {LsData, LsService} from "./ls.service";
+import {ReturnConfig} from "../../../../TimeApp（v1）/src/app/return.config";
 
 /**
  * Generated class for the 登陆（短信） page.
@@ -58,7 +60,8 @@ export class LsPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public alertCtrl: AlertController,
-              public utilService: UtilService) {
+              public utilService: UtilService,
+              private lsService: LsService,) {
   }
 
   ionViewDidLoad() {
@@ -74,30 +77,26 @@ export class LsPage {
 
 
   signIn() {
-    // if(this.agree != true || this.errorCode != 3){
-    //   this.checkPhone();
-    //   this.agreeFlag = this.agree;
-    //   return ;
-    // }
-    // this.webSocket.close();
-    // this.agreeFlag = true;
-    // this.utilService.loading("登录中");
-    // this.lsmService.ml(this.accountMobile, this.authCode).then(data=> {
-    //   console.log(data);
-    //   let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
-    //   this.utilService.unloading();
-    //   if (data.code == 0) {
-    //     this.utilService.alert("登陆成功");
-    //     this.navCtrl.setRoot('MPage');
-    //   }else{
-    //     this.utilService.alert(message);
-    //   }
-    //
-    // }).catch(res=>{
-    //   this.utilService.unloading();
-    //   this.utilService.alert(ReturnConfig.RETURN_MSG.get(res.code));
-    //   console.log(res);
-    // });
+    if(this.agree != true || this.errorCode != 3){
+      this.checkPhone();
+      this.agreeFlag = this.agree;
+      return ;
+    }
+    this.agreeFlag = true;
+    let lsData:LsData = new LsData();
+    lsData.mobile = this.accountMobile;
+    lsData.authCode = this.authCode;
+    this.lsService.login(lsData).then(data=> {
+      console.log(data);
+      let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
+      if (data.code == 0) {
+        this.navCtrl.setRoot('MPage');
+      }else{
+      }
+
+    }).catch(res=>{
+      console.log(res);
+    });
 
   }
 
@@ -125,6 +124,11 @@ export class LsPage {
 
 
   sendMsg(){
+    this.lsService.getSMSCode(this.accountMobile).then(data=>{
+      console.log("sc::" + data);
+    }).catch(ref =>{
+      console.log("ref::" + ref);
+    });
     // console.log(11);
     // if(this.errorCode == 3){
     //   this.lsmService.sc(this.accountMobile).then(data=>{

@@ -5,14 +5,14 @@
 import {DataConfig} from "../../service/config/data.config";
 
 //用户类
-export class BsModel {
+export class BsModel<T> {
 
   /**
    * 数量
    */
   private _code:number = DataConfig.SUCCESS_CODE; //code
   private _message: string = DataConfig.SUCCESS_MESSAGE; //消息
-  private _data:any = null;
+  private _data:T = null;
 
 
   get code(): number {
@@ -30,11 +30,11 @@ export class BsModel {
   set message(value: string) {
     this._message = value;
   }
-  get data(): any {
+  get data(): T {
     return this._data;
   }
 
-  set data(value: any) {
+  set data(value: T) {
     this._data = value;
   }
 }

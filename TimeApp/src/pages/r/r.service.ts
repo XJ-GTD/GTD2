@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {PersonRestful, SignupData} from "../../service/restful/personsev";
-import {SmsRestful} from "../../service/restful/smssev";
+import {SmsData, SmsRestful} from "../../service/restful/smssev";
 import {LpData, LpService} from "../lp/lp.service";
 
 @Injectable()
@@ -19,9 +19,9 @@ export class RService {
 
       //restful 注册用户
       let restData: SignupData = new SignupData();
-      restData.reqData.mobile = rdata.mobile;
-      restData.reqData.authCode = rdata.authCode;
-      restData.reqData.password = rdata.password;
+      restData.reqData.phoneno = rdata.mobile;
+      restData.reqData.verifycode = rdata.authCode;
+      restData.reqData.userpassword = rdata.password;
       return this.personRestful.signup(restData).then(data => {
         if (data.repData.code != "0")
           throw data.repData.message;
@@ -49,12 +49,15 @@ export class RService {
 
 
 //短信验证码
-  sc(rdata: RData): Promise<RData> {
-    console.log(rdata.mobile + "////");
+  sc(mobile: string): Promise<SmsData> {
+    console.log(mobile + "////");
     return new Promise((resolve, reject) => {
-      this.smsRestful.getcode().then(data => {
-        // TODO 短信验证码
-        resolve(rdata)
+      let smsData:SmsData = new SmsData();
+      smsData.reqData.phoneno = mobile;
+      this.smsRestful.getcode(smsData).then(data => {
+        resolve(data)
+      }).catch(err => {
+        reject(err);
       })
     });
   }

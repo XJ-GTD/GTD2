@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {settings} from "cluster";
 import {YTbl} from "../sqlite/tbl/y.tbl";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {ATbl} from "../sqlite/tbl/a.tbl";

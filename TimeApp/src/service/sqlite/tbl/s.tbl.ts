@@ -72,19 +72,19 @@ export class STbl implements ITbl   {
 
   upT():string {
     let sq='update GTD_S set 1=1 ';
-    if(this._st!=null){
+    if(this._st!=null && this._st !=""){
       sq=sq+', st="' + this._st +'"';
     }
-    if(this._stn!=null){
+    if(this._stn!=null && this._stn!=""){
       sq=sq+', stn="' + this._stn +'"';
     }
-    if(this._sn != null){
+    if(this._sn != null &&this._sn !=""){
       sq = sq + ', sn="' + this._sn +'"';
     }
-    if(this._yk != null){
+    if(this._yk != null&&this._yk != ""){
       sq = sq + ', yk="' + this._yk +'"';
     }
-    if(this._yv != null){
+    if(this._yv != null&&this._yv !=""){
       sq = sq + ', yv="' + this._yv +'"';
     }
     sq = sq + ' where si = "'+ this._si +'"';
@@ -104,19 +104,19 @@ export class STbl implements ITbl   {
   slT():string
   {
     let sq='select * from  GTD_S where  1=1 ';
-    if(this._st!=null){
+    if(this._st!=null && this._st!=""){
       sq=sq+' and st="' + this._st +'"';
     }
-    if(this._stn!=null){
+    if(this._stn!=null && this._stn!=""){
       sq=sq+' and stn="' + this._stn +'"';
     }
-    if(this._sn != null){
+    if(this._sn != null && this._sn != ""){
       sq = sq + ' and sn="' + this._sn +'"';
     }
-    if(this._yk != null){
+    if(this._yk != null && this._yk != ""){
       sq = sq + ' and yk="' + this._yk +'"';
     }
-    if(this._yv != null){
+    if(this._yv != null && this._yv != ""){
       sq = sq + ' and yv="' + this._yv +'"';
     }
     return sq;
