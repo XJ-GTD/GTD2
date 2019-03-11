@@ -208,7 +208,7 @@ export class RPage {
 
   sendMsg() {
     if(this.errorCode == 3){
-      this.rService.sc(this.rdata).then(data => {
+      this.rService.sc(this.rdata.mobile).then(data => {
         console.log("sc::" + data)
         console.log("sc:: verifykey :" + this.data.reqData.data.verifykey)
         /*let alert = this.alertCtrl.create({

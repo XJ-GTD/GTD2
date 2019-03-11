@@ -17,8 +17,8 @@ export class LpService {
     console.log(lpdata.mobile + "////" + lpdata.password + "////");
     return new Promise((resolve, reject) => {
       let restloginData: LoginData = new LoginData();
-      restloginData.reqPData.mobile = lpdata.mobile;
-      restloginData.reqPData.password = lpdata.password;
+      restloginData.reqPData.phoneno = lpdata.mobile;
+      restloginData.reqPData.userpassword = lpdata.password;
       // 验证用户名密码
       this.authRestful.loginbypass(restloginData).then(data => {
         if (data.repData.code != null){
