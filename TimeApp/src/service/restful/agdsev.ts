@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
+import {RestFulConfig, UrlEntity} from "../config/restful.config";
 
 
 
@@ -8,16 +9,29 @@ import {RestfulClient} from "../util-service/restful.client";
  */
 @Injectable()
 export class AgdRestful{
-  constructor(private request: RestfulClient) {
+  constructor(private request: RestfulClient, private config: RestFulConfig) {
+
   }
 
 
   //日程保存 AS
-  save():Promise<any> {
+  save(agdSave:AgdSave):Promise<AgdSave> {
 
     return new Promise((resolve, reject) => {
+      let url: UrlEntity = this.config.getRestFulUrl("AS");
+      this.request.post(url, agdSave.repData).then(data => {
+        //处理返回结果
+        agdSave.reqData = data;
+        resolve(agdSave);
 
+      }).catch(error => {
+        //处理返回错误
+        agdSave.errData = error;
+        resolve(agdSave);
+
+      })
     });
+
   }
 
   //日程参与人保存 ACS
@@ -50,4 +64,21 @@ export class AgdRestful{
 
     });
   }
+}
+
+export class AgdSave{
+  reqData = {
+    mobile:"",
+    password:"",
+    authCode:""
+  }
+  repData = {
+    code:"",
+    message:"",
+    data:{},
+  }
+
+  errData = {
+  }
+
 }
