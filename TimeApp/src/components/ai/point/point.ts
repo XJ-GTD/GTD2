@@ -9,10 +9,10 @@ import {IonicPage} from 'ionic-angular';
  */
 @IonicPage()
 @Component({
-  selector: 'page-hb01',
+  selector: 'PointComponent',
   template:'<canvas  #canvas></canvas>',
 })
-export class Hb01Page {
+export class PointComponent {
   @ViewChild('canvas')
   canvas: ElementRef;
 

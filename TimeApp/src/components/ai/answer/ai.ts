@@ -1,15 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, IonicPage, NavController, ViewController } from 'ionic-angular';
-import { XiaojiAssistantService } from "../../../service/cordova/assistant.service";
+import { AssistantService } from "../../../service/cordova/assistant.service";
 import { AiuiModel } from "../../../model/aiui.model";
-import { ScheduleModel } from "../../../model/schedule.model";
-import { XiaojiFeedbackService } from "../../../service/cordova/feedback.service";
+import { FeedbackService } from "../../../service/cordova/feedback.service";
 import { EmitService } from "../../../service/util-service/emit.service";
 import { DataConfig } from "../../../service/config/data.config";
-import { WsEnumModel } from "../../../model/ws/ws.enum.model";
 import { NetworkService } from "../../../service/cordova/network.service";
-import {Hb01Page} from "../point/hb01";
-import {RcModel} from "../../../model/rc.model";
+import {PointComponent} from "../point/point";
 
 /**
  * Generated class for the HbPage page.
@@ -122,8 +119,8 @@ import {RcModel} from "../../../model/rc.model";
       </ion-footer> 
     </div>`,
 })
-export class HbPage {
-  @ViewChild(Hb01Page) hb01Page:Hb01Page;
+export class AiComponent {
+  @ViewChild(PointComponent) hb01Page:PointComponent;
   @ViewChild(Content) content: Content;
 
 
@@ -145,14 +142,14 @@ export class HbPage {
   messages: Array<AiuiModel>; //聊天数据队列
   //语音界面数据传递
 
-  scL: Array<RcModel>;
+  //scL: Array<RcModel>;
 
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
               private dwEmit: EmitService,
-              public xiaojiSpeech: XiaojiAssistantService,
+              public xiaojiSpeech: AssistantService,
               private networkService: NetworkService,
-              public xiaojiFeekback: XiaojiFeedbackService) {
+              public xiaojiFeekback: FeedbackService) {
 
   }
 
