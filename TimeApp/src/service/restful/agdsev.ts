@@ -15,21 +15,21 @@ export class AgdRestful{
 
 
   //日程保存 AS
-  save(agdSave:AgdSave):Promise<AgdSave> {
+  save(agdSavePro:AgdSavePro):Promise<AgdSavePro> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AS");
-      this.request.post(url, agdSave.reqData).then(data => {
+      this.request.post(url, agdSavePro.reqData).then(data => {
         //处理返回结果
-        agdSave.repData.code = data.rc;
-        agdSave.repData.message = data.rm;
-        agdSave.repData.data = data.d;
-        resolve(agdSave);
+        agdSavePro.repData.code = data.rc;
+        agdSavePro.repData.message = data.rm;
+        agdSavePro.repData.data = data.d;
+        resolve(agdSavePro);
 
       }).catch(error => {
         //处理返回错误
-        agdSave.repData.code = "-99";
-        resolve(agdSave);
+        agdSavePro.repData.code = "-99";
+        resolve(agdSavePro);
 
       })
     });
@@ -37,21 +37,21 @@ export class AgdRestful{
   }
 
   //日程参与人保存 ACS
-  contactssave():Promise<any> {
+  contactssave(contactSavePro : ContactSavePro):Promise<ContactSavePro> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AS");
-      this.request.post(url, agdSave.reqData).then(data => {
+      this.request.post(url, contactSavePro.reqData).then(data => {
         //处理返回结果
-        agdSave.repData.code = data.rc;
-        agdSave.repData.message = data.rm;
-        agdSave.repData.data = data.d;
-        resolve(agdSave);
+        contactSavePro.repData.code = data.rc;
+        contactSavePro.repData.message = data.rm;
+        contactSavePro.repData.data = data.d;
+        resolve(contactSavePro);
 
       }).catch(error => {
         //处理返回错误
-        agdSave.repData.code = "-99";
-        resolve(agdSave);
+        contactSavePro.repData.code = "-99";
+        resolve(contactSavePro);
 
       })
     });
@@ -81,7 +81,7 @@ export class AgdRestful{
   }
 }
 
-export class AgdSave{
+export class AgdSavePro{
   reqData = {
     "rai": "1",
     "fc": "2",
@@ -100,7 +100,7 @@ export class AgdSave{
   }
 }
 
-export class ContactSave{
+export class ContactSavePro{
   reqData = {
     "rai": "1",
     "fc": "2",
