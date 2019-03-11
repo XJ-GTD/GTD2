@@ -61,7 +61,6 @@ export class AgdRestful{
   }
   //日程获取 AG
   get():Promise<any> {
-
     return new Promise((resolve, reject) => {
 
     });
