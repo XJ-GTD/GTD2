@@ -122,7 +122,7 @@ export class TdlPage {
     new Promise((resolve, reject) =>{
 
       let tmpls:Array<ScheduleDetailsModel> = [];
-      let ii = this.scheduleLs.length;
+      /*let ii = this.scheduleLs.length;
       for (let schedule of this.scheduleLs) {
         this.workService.getScheduleDetails(schedule.scheduleId).then(data => {
           tmpls.push(data);
@@ -134,7 +134,7 @@ export class TdlPage {
             },100);
           }
         });
-      }
+      }*/
     }).then((data) => {
       let domList = this.el.nativeElement.querySelectorAll(".pop-css");
       for (let i = 0; i < domList.length; i++) {
@@ -166,7 +166,7 @@ export class TdlPage {
     let month = eventDate.getMonth() + 1;
     let day = eventDate.getDate();
 
-    this.scheduleLs = [];
+ /*   this.scheduleLs = [];
     let dateStr = moment($event.time).format("YYYY-MM-DD");
     this.workService.getOd(dateStr).then(data => {
       if (data.code == 0) {
@@ -174,12 +174,12 @@ export class TdlPage {
           this.scheduleLs.push(data.slc[i]);
         }
       }
-    })
+    })*/
 
   }
 
   init() {
-    this.scheduleLs= [];
+    //this.scheduleLs= [];
     this.scheduleDetailLs = [];
 
     this.noShow= true;
@@ -254,7 +254,7 @@ export class TdlPage {
     this.noShow = true;
   }
 
-  editSchedule(schedule: ScheduleModel) {
+/*  editSchedule(schedule: ScheduleModel) {
     setTimeout(() => {
       this.noShow = true;
     }, 100);
@@ -262,7 +262,7 @@ export class TdlPage {
     let tmp = moment(eventDate).format("YYYY-MM-DD");
     // this.navCtrl.push("SaPage", schedule);
     this.app.getRootNav().push("TddiPage",{"schedule":schedule,"dateStr":tmp,"event":this.event});
-  }
+  }*/
 
 
 }

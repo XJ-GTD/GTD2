@@ -70,23 +70,23 @@ export class AgdRestful{
 
 export class AgdSave{
   reqData = {
-    "rai": "",
-    "fc": "",
-    "ai": "",
-    "at": "",
-    "adt": "",
-    "ap": "",
-    "ar": "",
-    "aa": "",
-    "am": "",
-    "ac": {
-      "ai": "",
-      "mpn": "",
-      "n": "",
-      "a": "",
-      "s": "",
-      "bd": ""
-    }
+    "rai": "1",
+    "fc": "2",
+    "ai": "3",
+    "at": "4",
+    "adt": "5",
+    "ap": "6",
+    "ar": "7",
+    "aa": "8",
+    "am": "9",
+    "ac": [{
+      "ai": "1",
+      "mpn": "2",
+      "n": "3",
+      "a": "4",
+      "s": "5",
+      "bd": "6"
+    }]
   }
   repData = {
     code:"",

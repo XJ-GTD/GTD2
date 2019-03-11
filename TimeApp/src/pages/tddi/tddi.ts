@@ -7,13 +7,9 @@ import {
 import { ParamsService } from "../../service/util-service/params.service";
 import { ScheduleModel } from "../../model/schedule.model";
 import { XiaojiAlarmclockService } from "../../service/util-service/xiaoji-alarmclock.service";
-import {WorkService} from "../../service/work.service";
 import {RcModel} from "../../model/rc.model";
 import {UtilService} from "../../service/util-service/util.service";
-import {RelmemService} from "../../service/relmem.service";
-import {RuModel} from "../../model/ru.model";
 import * as moment from "moment";
-import {PageConfig} from "../../service/config/page.config";
 import {Select} from "ionic-angular/components/select/select";
 import {DateTime} from "ionic-angular/components/datetime/datetime";
 import {ScheduleDetailsModel} from "../../model/scheduleDetails.model";
@@ -195,7 +191,6 @@ export class TddiPage {
 
   starttmp:string;//开始时间
   endtmp:string;//结束时间
-  rus:Array<RuModel>;//所有联系人
 
   isEdit:boolean = false;
   canEdit: boolean = true;
@@ -206,10 +201,8 @@ export class TddiPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private paramsService: ParamsService,
               public modalCtrl: ModalController,
-              private work:WorkService,
               private alarmClock: XiaojiAlarmclockService,
               private alertCtrl: AlertController,
-              private relmemService: RelmemService,
               private events: Events,
               private utilService: UtilService) {
     this.rc = new RcModel();
@@ -257,14 +250,14 @@ export class TddiPage {
     console.log(this.schedule.publisherName)
     this.rc = new RcModel();
     //查询日程详情
-    this.work.getds(this.schedule.scheduleId).then(data=>{
+    /*this.work.getds(this.schedule.scheduleId).then(data=>{
       this.rc = data;
       console.log("日程 :: " + JSON.stringify(this.rc));
       this.edit();
     }).catch(e=>{
       alert(e.message)
       this.navCtrl.setRoot(PageConfig.M_PAGE);
-    });
+    });*/
     this.getAllRel();
   }
 
@@ -298,19 +291,19 @@ export class TddiPage {
     this.rc.sd = this.starttmp;
     // this.rc.ed = this.endtmp;
     console.log("修改日程传入参数 :: " + JSON.stringify(this.rc));
-    this.work.urc(this.rc.sI,this.rc.sN,this.rc.sd,'',this.rc.lI,this.rc.ji,this.rc.subId,'','','',this.rc.rus).then(data=>{
+    /*this.work.urc(this.rc.sI,this.rc.sN,this.rc.sd,'',this.rc.lI,this.rc.ji,this.rc.subId,'','','',this.rc.rus).then(data=>{
       console.log(JSON.stringify(data));
       this.utilService.alert("保存成功");
     }).catch(reason => {
       console.log(JSON.stringify(reason));
-    });
+    });*/
     this.isEdit = false;
   }
 
 
   //所有联系
   getAllRel(){
-    this.relmemService.rcGetRus().then(data=>{
+    /*this.relmemService.rcGetRus().then(data=>{
       console.log(data);
       if(data.code == 0){
         this.rus = data.us;
@@ -320,7 +313,7 @@ export class TddiPage {
 
     }).catch(reason => {
       console.log("查询失败");
-    })
+    })*/
   }
 
   showCheckbox(){
@@ -330,7 +323,7 @@ export class TddiPage {
     let alert = this.alertCtrl.create();
     alert.setTitle('选择参与人');
     //设置可选项
-    for(let i = 0;i<this.rus.length;i++){
+    /*for(let i = 0;i<this.rus.length;i++){
       let selected = false;
       for(let j = 0;rus &&　j<rus.length;j++){
         if(this.rus[i].id == rus[j].id){
@@ -340,22 +333,22 @@ export class TddiPage {
       }
       alert.addInput({
         type: 'checkbox',
-        label: this.rus[i].ran,
+        //label: this.rus[i].ran,
         value: i.toString(),
         checked: selected
       });
-    }
+    }*/
     alert.addButton('取消');
     alert.addButton({
       text: '确定',
       handler: data => {
         console.log('Checkbox data:', data);
-        rus = new Array<RuModel>();
+        /*rus = new Array<RuModel>();
         for(let i = 0;i<data.length;i++){
           rus.push(this.rus[data[i]]);
         }
         this.rc.rus = rus;
-        console.log("选择的参与人 :: " + JSON.stringify(this.rc.rus));
+        console.log("选择的参与人 :: " + JSON.stringify(this.rc.rus));*/
       }
     });
     alert.present();
@@ -366,14 +359,14 @@ export class TddiPage {
   del(){
     console.log(" :: click delete");
     console.log(JSON.stringify(this.rc))
-    this.work.drc(this.rc.sI,this.rc.sa).then(data=>{
+   /* this.work.drc(this.rc.sI,this.rc.sa).then(data=>{
       console.log("删除成功 :: " );
       this.events.publish("reloadTdl");
       this.events.publish('noshow');
       this.navCtrl.pop();
     }).catch(reason=>{
       console.log("删除失败 :: " );
-    })
+    })*/
   }
   // ionViewDidLoad(){
   //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");

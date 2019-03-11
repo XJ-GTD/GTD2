@@ -1,6 +1,5 @@
 import {ScheduleModel} from "./schedule.model";
 import {RcModel} from "./rc.model";
-import {RuModel} from "./ru.model";
 
 /**
  * 讯飞语音消息回传类
@@ -21,8 +20,8 @@ export class AiuiModel {
   private _sc: RcModel;             //日程单条
   private _scL: Array<RcModel>;    //日程数据list
 
-  private _pl: RuModel;             //联系人单条
-  private _plL: Array<RuModel>;     //联系人数据list
+  //private _pl: RuModel;             //联系人单条
+  //private _plL: Array<RuModel>;     //联系人数据list
 
   private _op: boolean;             //是否进行操作
   set tg(value: string) {
@@ -33,7 +32,7 @@ export class AiuiModel {
     return this._tg;
   }
 
-  get pl(): RuModel {
+  /*get pl(): RuModel {
     return this._pl;
   }
 
@@ -47,7 +46,7 @@ export class AiuiModel {
 
   set plL(value: Array<RuModel>) {
     this._plL = value;
-  }
+  }*/
 
   get at(): string {
     return this._at;

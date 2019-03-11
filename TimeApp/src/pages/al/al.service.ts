@@ -6,6 +6,7 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {STbl} from "../../service/sqlite/tbl/s.tbl";
 import {UtilService} from "../../service/util-service/util.service";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
+import {RestFulConfig} from "../../service/config/restful.config";
 
 @Injectable()
 export class AlService {
@@ -14,7 +15,8 @@ export class AlService {
               private sqlLiteConfig: SqliteConfig,
               private sqlLiteInit: SqliteInit,
               private sqlExce: SqliteExec,
-              private util: UtilService,) {
+              private util: UtilService,
+              private restfulConfig : RestFulConfig) {
   }
 
 //权限申请
@@ -95,7 +97,12 @@ export class AlService {
   setSetting():Promise<any>{
     return new Promise((resolve, reject) => {
       // TODO 系统设置
-      resolve("系统设置");
+      this.restfulConfig.init().then(data =>{
+        resolve("系统设置完成");
+      }).catch(error =>{
+        resolve("系统设置失败");
+      });
+
     });
   }
 

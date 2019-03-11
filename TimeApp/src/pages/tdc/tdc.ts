@@ -4,17 +4,12 @@ import {
   ModalController, Events, Alert
 } from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
-import { FindOutModel } from "../../model/out/find.out.model";
 import { LabelModel } from "../../model/label.model"
-import { RelmemService } from "../../service/relmem.service";
-import { RuModel } from "../../model/ru.model";
-import { WorkService } from "../../service/work.service";
 import { LbModel } from "../../model/lb.model";
 import { UtilService } from "../../service/util-service/util.service";
 import * as moment from "moment";
 import { ZtdModel } from "../../model/ztd.model";
 import { DataConfig } from "../../service/config/data.config";
-import { JhService } from "../../service/jh.service";
 import { JhModel } from "../../model/jh.model";
 import {DateTime} from "ionic-angular/components/datetime/datetime";
 import {Select} from "ionic-angular/components/select/select";
@@ -189,10 +184,8 @@ export class TdcPage {
   private data: any;
   group: any;//Array<GroupModel>;
   schedule: any;
-  groupFind: FindOutModel;
   label: Array<LabelModel>;
 
-  pRelAl:Array<RuModel>;//所有联系人
   select:any = [];
   // selectLb:Array<LbModel>;
 
@@ -237,10 +230,7 @@ export class TdcPage {
               public loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
               private paramsService: ParamsService,
-              private relmemService: RelmemService,
-              private workService: WorkService,
               private util: UtilService,
-              private jhService: JhService,
               private modal: ModalController,
               private utilService: UtilService,
               private events: Events,) {
@@ -306,14 +296,14 @@ export class TdcPage {
 
   //查询系统标签
   findLabel() {
-    this.workService.getlbs().then(data=>{
+    /*this.workService.getlbs().then(data=>{
       if(data.code == 0){
         this.lbs = data.lbs;
         console.log('标签查询成功')
       }
     }).catch(reason => {
 
-    })
+    })*/
 
   }
 
@@ -328,33 +318,33 @@ export class TdcPage {
     let date = this.startDate + " " + this.startTime;
     console.log(date);
 
-    let rul = new Array<RuModel>();
+    /*let rul = new Array<RuModel>();
     if(this.select){
       for(let i = 0;i< this.select.length;i++){
         rul.push(this.pRelAl[this.select[i]]);
       }
-    }
+    }*/
     if(this.title == undefined ||this.title.trim() == ''){
       this.showWarn("输入为空");
 
       return;
     }
 
-    this.workService.arc(this.title,date,this.type,this.jh.ji,this.repeatType,this.remarks,'',rul).then(data=>{
+    /*this.workService.arc(this.title,date,this.type,this.jh.ji,this.repeatType,this.remarks,'',rul).then(data=>{
       if(data.code == 0){
         console.log("添加日程成功");
         // this.navCtrl.push('HzPage')
 
-        this.utilService.alert("日程创建成功");
+        //this.utilService.alert("日程创建成功");
         this.navCtrl.pop();
       }else{
         console.log("添加日程失败");
-        this.utilService.alert("日程创建失败，请稍后再试");
+        //this.utilService.alert("日程创建失败，请稍后再试");
       }
     }).catch(reason => {
       console.log("添加日程失败");
-      this.utilService.alert("日程创建失败，请稍后再试");
-    })
+      //this.utilService.alert("日程创建失败，请稍后再试");
+    })*/
   }
 
 
@@ -377,7 +367,7 @@ export class TdcPage {
     let alert = this.alertCtrl.create();
     alert.setTitle('选择参与人');
 
-    for(let i = 0;i<this.pRelAl.length;i++){
+    /*for(let i = 0;i<this.pRelAl.length;i++){
       let selected = false;
       for(let j = 0;j<this.select.length;j++){
         if(i == this.select[j]){
@@ -392,7 +382,7 @@ export class TdcPage {
         value: i.toString(),
         checked: selected
       });
-    }
+    }*/
     alert.addButton('取消');
     alert.addButton({
       text: '确定',
@@ -407,7 +397,7 @@ export class TdcPage {
 
   //所有联系人
   getAllRel(){
-    this.relmemService.rcGetRus().then(data=>{
+    /*this.relmemService.rcGetRus().then(data=>{
       console.log(data);
       if(data.code == 0){
         this.pRelAl = data.us;
@@ -417,17 +407,17 @@ export class TdcPage {
 
     }).catch(reason => {
       console.log("查询失败");
-    })
+    })*/
   }
 
   //所有计划
   getAllJh(){
-    this.jhService.getJhs(null).then(data=>{
+    /*this.jhService.getJhs(null).then(data=>{
       console.log("获取所有计划选项 :: " + JSON.stringify(data));
       this.jhs = data.jhs;
     }).catch(reason => {
       console.log("获取所有计划选项 :: err " + JSON.stringify(reason));
-    })
+    })*/
   }
 
   //

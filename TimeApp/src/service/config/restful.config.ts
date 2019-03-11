@@ -31,11 +31,11 @@ export class RestFulConfig {
   }
 
   //初始化全局 restful Url 信息
-  init() {
+  init():Promise<any> {
     this.urlLs = new Map<string, UrlEntity>();
     let sPro = new STbl();
     sPro.st = "URL";
-    this.sqlitexec.getList(sPro).then(sPros => {
+    return this.sqlitexec.getList(sPro).then(sPros => {
 
       console.log(sPros);
 

@@ -3,6 +3,7 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import {UtilService} from "../../service/util-service/util.service";
 import {RData, RService} from "./r.service";
 import {DataConfig} from "../../service/config/data.config";
+import {AgdRestful, AgdSave} from "../../service/restful/agdsev";
 
 
 /**
@@ -138,8 +139,14 @@ export class RPage {
               private alertCtrl: AlertController,
               private utilService: UtilService,
               private rService: RService,
+              private testful : AgdRestful
   ) {
+    let testp = new AgdSave();
 
+    testful.save(testp).then(data =>
+    {
+      console.log("testful agd:"+ data);
+    })
   }
 
   ionViewDidLoad() {

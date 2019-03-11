@@ -79,6 +79,11 @@ export class AlPage {
         this.text="帮您初始化系统";
         return  this.alService.createSystemData();
       };
+    }).then(data=>{
+
+        this.text="系统设置";
+        return  this.alService.setSetting();
+
     }).then(data => {
       this.increment(10);
       return this.alService.checkUserInfo();
