@@ -20,5 +20,4 @@ export class BlService {
 }
 
 export class BlData{
-
 }

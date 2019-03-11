@@ -1,13 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, IonicPage, NavController, ViewController } from 'ionic-angular';
-import { XiaojiAssistantService } from "../../../service/util-service/xiaoji-assistant.service";
+import { XiaojiAssistantService } from "../../../service/cordova/assistant.service";
 import { AiuiModel } from "../../../model/aiui.model";
 import { ScheduleModel } from "../../../model/schedule.model";
-import { XiaojiFeedbackService } from "../../../service/util-service/xiaoji-feedback.service";
-import { DwEmitService } from "../../../service/util-service/dw-emit.service";
+import { XiaojiFeedbackService } from "../../../service/cordova/feedback.service";
+import { EmitService } from "../../../service/util-service/emit.service";
 import { DataConfig } from "../../../service/config/data.config";
 import { WsEnumModel } from "../../../model/ws/ws.enum.model";
-import { NetworkService } from "../../../service/util-service/network.service";
+import { NetworkService } from "../../../service/cordova/network.service";
 import {Hb01Page} from "../point/hb01";
 import {RcModel} from "../../../model/rc.model";
 
@@ -149,7 +149,7 @@ export class HbPage {
 
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
-              private dwEmit: DwEmitService,
+              private dwEmit: EmitService,
               public xiaojiSpeech: XiaojiAssistantService,
               private networkService: NetworkService,
               public xiaojiFeekback: XiaojiFeedbackService) {

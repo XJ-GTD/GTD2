@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {Platform, Nav, MenuController, IonicApp} from 'ionic-angular';
 import {MenuScalePushType} from "../components/menuType/customType";
 import {BackgroundMode} from '@ionic-native/background-mode';
-import {XiaojiAssistantService} from "../service/util-service/xiaoji-assistant.service";
+import {AssistantService} from "../service/cordova/assistant.service";
 import {DataConfig} from "../service/config/data.config";
 
 @Component({
@@ -14,7 +14,7 @@ export class MyApp {
   constructor(private platform: Platform,
               private appCtrl: IonicApp,
               private backgroundMode: BackgroundMode,
-              private speechService: XiaojiAssistantService) {
+              private speechService: AssistantService) {
 
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);

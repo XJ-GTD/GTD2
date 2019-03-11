@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {PermissionsService} from "../../service/util-service/permissions.service";
+import {PermissionsService} from "../../service/cordova/permissions.service";
 import {SqliteConfig} from "../../service/config/sqlite.config";
 import {SqliteInit} from "../../service/sqlite/sqlite.init";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";

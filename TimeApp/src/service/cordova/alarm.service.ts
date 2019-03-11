@@ -11,7 +11,7 @@ declare var cordova: any;
  * create by wzy on 2018/08/07.
  */
 @Injectable()
-export class XiaojiAlarmclockService {
+export class AlarmService {
 
   private index: number;
   private date: string[];

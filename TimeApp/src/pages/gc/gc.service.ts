@@ -1,10 +1,12 @@
 import {Injectable} from "@angular/core";
 import {BlData} from "../bl/bl.service";
 import {FsData} from "../fs/fs.service";
+import {GTbl} from "../../service/sqlite/tbl/g.tbl";
+import {SqliteExec} from "../../service/util-service/sqlite.exec";
 
 @Injectable()
 export class GcService {
-  constructor() {
+  constructor(  private sqlExce: SqliteExec,) {
   }
 
   //编辑群名称
@@ -19,7 +21,15 @@ export class GcService {
   delete(gId:string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       //删除本地群成员
-      //删除群
+
+
+      //删除本地群
+      let gtbl:GTbl = new GTbl();
+      gtbl.gI = gId;
+      this.sqlExce.delete(gtbl).then(data=>{
+
+      })
+
     })
   }
 

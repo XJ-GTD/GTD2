@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {NativeAudio} from "@ionic-native/native-audio";
-import {XiaojiAssistantService} from "./xiaoji-assistant.service";
+import {XiaojiAssistantService} from "../cordova/assistant.service";
 
 /**
  * 系统设置方法类

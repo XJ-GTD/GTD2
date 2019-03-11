@@ -36,21 +36,7 @@ export class DataConfig {
   public static TEXT_CONTENT:Map<string,any> = new Map<string,any>();
   //随机语音播报字典类型
   public static MESSAGE_TYPE:string = '400';
-  /* =============== 同步表名 ==================*/
-  public static GTD_A:string='GTD_A'; //用户表
-  public static GTD_B:string='GTD_B'; //联系人表
-  public static GTD_B_X:string='GTD_B_X'; //群组关联表
-  public static GTD_C:string='GTD_C'; //日程表
-  public static GTD_D:string='GTD_D'; //日程参与人表
-  public static GTD_C_RC:string='GTD_C_RC'; //日程子表
-  public static GTD_C_C:string='GTD_C_C';//日程子表
-  public static GTD_C_BO:string='GTD_C_BO';//日程子表
-  public static GTD_C_JN:string='GTD_C_JN';//日程子表
-  public static GTD_C_MO:string='GTD_C_MO';//日程子表
-  public static GTD_J_H:string='GTD_J_H';//计划表
 
-  public static TABLE_NAMES:Array<string>=['GTD_B','GTD_B_X','GTD_C','GTD_D',
-    'GTD_C_RC','GTD_C_C','GTD_C_BO','GTD_C_JN','GTD_C_MO','GTD_J_H'];//计划表
 
   /* =============== 语音页面type =============*/
   public static U1: string = "U1"; //用户语音文本 或 需要播报的业务信息
