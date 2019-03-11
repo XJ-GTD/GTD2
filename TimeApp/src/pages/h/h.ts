@@ -8,7 +8,7 @@ import {
 import * as moment from "moment";
 import {TdlPage} from "../tdl/tdl";
 import {UtilService} from "../../service/util-service/util.service";
-import {XiaojiFeedbackService} from "../../service/util-service/xiaoji-feedback.service";
+import {XiaojiFeedbackService} from "../../service/cordova/feedback.service";
 
 /**
  * Generated class for the 首页 page.

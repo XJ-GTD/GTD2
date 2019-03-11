@@ -17,7 +17,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import * as moment from 'moment';
 import {defaults, pickModes} from "../config";
-import {XiaojiFeedbackService} from "../../../service/util-service/xiaoji-feedback.service";
+import {XiaojiFeedbackService} from "../../../service/cordova/feedback.service";
 
 export const ION_CAL_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,

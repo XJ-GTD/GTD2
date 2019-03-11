@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { File } from "@ionic-native/file";
-import { UtilService } from "./util.service";
+import { UtilService } from "../util-service/util.service";
 import {AibutlerRestful} from "../restful/aibutlersev";
 declare var cordova: any;
 
@@ -10,7 +10,7 @@ declare var cordova: any;
  * create by wzy on 2018/08/07.
  */
 @Injectable()
-export class XiaojiAssistantService{
+export class AssistantService{
 
   private failedText: string = '我没有听清楚你说什么';  //暂时替代，录入字典表后删除
   public isSpeaking:boolean;

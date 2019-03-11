@@ -7,7 +7,7 @@ import { NativeAudio } from '@ionic-native/native-audio';
  * create by wzy on 2018/10/28.
  */
 @Injectable()
-export class XiaojiFeedbackService {
+export class FeedbackService {
   private onSuccess: any;
 
   private onError: any;

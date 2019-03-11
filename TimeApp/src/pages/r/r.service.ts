@@ -24,7 +24,7 @@ export class RService {
       restData.reqData.password = rdata.password;
       return this.personRestful.signup(restData).then(data => {
         if (data.repData.code != "0")
-          throw data.repData.message;
+          reject(data.repData.message);
 
         //登陆(密码)service登陆逻辑
         let lpdata: LpData = new LpData();

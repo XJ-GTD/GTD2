@@ -6,7 +6,7 @@ import {
 } from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
 import { ScheduleModel } from "../../model/schedule.model";
-import { XiaojiAlarmclockService } from "../../service/util-service/xiaoji-alarmclock.service";
+import { XiaojiAlarmclockService } from "../../service/cordova/alarm.service";
 import {WorkService} from "../../service/work.service";
 import {RcModel} from "../../model/rc.model";
 import {UtilService} from "../../service/util-service/util.service";

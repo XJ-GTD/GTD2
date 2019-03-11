@@ -25,10 +25,10 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {RouterModule} from '@angular/router'
 import {MyApp} from './app.component';
 import {SqliteExec} from "../service/util-service/sqlite.exec";
-import {PermissionsService} from "../service/util-service/permissions.service";
+import {PermissionsService} from "../service/cordova/permissions.service";
 import {UtilService} from "../service/util-service/util.service";
 import {SqliteConfig} from "../service/config/sqlite.config";
-import {XiaojiAssistantService} from "../service/util-service/xiaoji-assistant.service";
+import {XiaojiAssistantService} from "../service/cordova/assistant.service";
 import {AibutlerRestful} from "../service/restful/aibutlersev";
 import {RestfulClient} from "../service/util-service/restful.client";
 import {RestFulConfig} from "../service/config/restful.config";
