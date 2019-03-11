@@ -3,7 +3,7 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import {UtilService} from "../../service/util-service/util.service";
 import {RData, RService} from "./r.service";
 import {DataConfig} from "../../service/config/data.config";
-import {AgdRestful, AgdSave} from "../../service/restful/agdsev";
+import {AgdRestful, AgdPro, ContactPerPro} from "../../service/restful/agdsev";
 
 
 /**
@@ -141,11 +141,20 @@ export class RPage {
               private rService: RService,
               private testful : AgdRestful
   ) {
-    let testp = new AgdSave();
-
+    let testp = new AgdPro();
+    testp.rai="a";
+    testp.fc="b";
+    testp.ai="c";
+    testp.at="d";
+    testp.adt="e";
+    testp.ap="f";
+    testp.ar="g";
+    testp.aa="h";
+    testp.am="i";
+    testp.ac = new Array<ContactPerPro>();
     testful.save(testp).then(data =>
     {
-      console.log("testful agd:"+ data);
+      console.log("testful agd:"+ JSON.stringify(data));
     })
   }
 
