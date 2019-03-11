@@ -27,7 +27,7 @@ export class SqliteExec {
         }, (tx, err) => {
           console.log('error: ' + err.message);
           console.log("sql: " + sql);
-          reject(err);
+          resolve(err);
         });
       });
 

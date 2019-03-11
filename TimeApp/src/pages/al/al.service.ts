@@ -44,7 +44,7 @@ export class AlService {
       sTbl.st = "FI";
       this.sqlExce.getList(sTbl).then(data => {
 
-        let stbls:Array<STbl> = data.rows;
+        let stbls:Array<STbl> = data;
         if (stbls.length > 0 && stbls[0].yv == "0"){
           resolve(true);
         }
