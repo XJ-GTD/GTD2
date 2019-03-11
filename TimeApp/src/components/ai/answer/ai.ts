@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, IonicPage, NavController, ViewController } from 'ionic-angular';
 import { AssistantService } from "../../../service/cordova/assistant.service";
-import { AiuiModel } from "../../../model/aiui.model";
 import { FeedbackService } from "../../../service/cordova/feedback.service";
 import { EmitService } from "../../../service/util-service/emit.service";
 import { DataConfig } from "../../../service/config/data.config";
@@ -138,8 +137,8 @@ export class AiComponent {
   inputText: string = "";    //手动模式输入数据
   filePath: string;   //语音文件路径
 
-  inputData: AiuiModel = new AiuiModel();
-  messages: Array<AiuiModel>; //聊天数据队列
+  // inputData: AiuiModel = new AiuiModel();
+  // messages: Array<AiuiModel>; //聊天数据队列
   //语音界面数据传递
 
   //scL: Array<RcModel>;
@@ -154,281 +153,281 @@ export class AiComponent {
   }
 
 
-  ionViewDidLoad() {
-
-    this.dwEmit.getHbData((data) => {
-      this.messageHanding(data);
-    });
-
-    this.netNetwork();
-
-    this.messages = [];
-    this.inputData = new AiuiModel();
-
-    //语音唤醒冲突暂时关闭
-    //this.initWakeUp();
-
-    console.log('ionViewDidLoad HbPage');
-     this.hb01Page.loadScene();
-    this.hb01Page.setDrawType(1);
-    // this.initWakeUp();
-
-    // let data:AiuiModel = new AiuiModel();
-    // data.tt = this.S5;
-    // data.scL = new Array<RcModel>();
-    //
-    // for (let i = 0;i<4;i++){
-    //   let rc:RcModel = new RcModel();
-    //   rc.sN = "这是一个事情，可能会有一点长。不知道你会出问题吗？尝试一下";
-    //   rc.sd = "2019-12-29 06：45";
-    //
-    //   data.scL.push(rc);
-    //
-    // }
-    //
-    //
-    //   this.messages.unshift(data);
-
-
-  }
-
-
-  initWakeUp() {
-    this.xiaojiSpeech.initbaiduWakeUp(isWakeUp => {
-      this.xiaojiSpeech.baiduWakeUpStop();
-      if (!isWakeUp) {
-        this.initWakeUp();
-      }
-      this.xiaojiSpeech.speakText("小吉在呢，请吩咐", speakRs => {
-        this.xiaojiSpeech.listenAudio(data => {
-          this.initWakeUp();
-          this.messageHanding(data);
-        })
-      })
-    });
-
-  }
-
-  //添加日程
-  addSchedule() {
-    this.navCtrl.push("TdcPage")
-  }
-
-  //群组详情
-  groupListShow() {
-    this.navCtrl.push('GlPage', {popPage: 'HbPage'});
-  }
-
-  /*==================== 聊天界面 start ===================*/
-
-  switchInput() {
-    this.xiaojiFeekback.audioBass();
-
-    //切换手动输入模式
-    this.modeFlag = !this.modeFlag;
-    if (this.modeFlag)
-      this.hb01Page.setDrawType(1);
-    else
-      this.hb01Page.setDrawType(0);
-    return;
-  }
-
-  //启动语音输入
-  startXiaoJi() {
-    console.log("HbPage 开始语音输入");
-    if (this.xiaojiSpeech.islistenAudioing) {
-      this.xiaojiSpeech.stopSpeak();
-      return;
-    }
-    this.hb01Page.setDrawType(2);
-    this.xiaojiSpeech.listenAudio(rs => {
-      rs = rs.replace("[asr.partial]", "");
-      this.speechInputHanding(rs);
-      this.xiaojiFeekback.audioSnare();
-
-      this.hb01Page.setDrawType(0);
-      setTimeout(()=>{
-        this.hb01Page.setDrawType(1);
-      },1000);
-    });
-  }
-
-  //启动手动输入
-  startXiaojiText() {
-
-    if (this.inputText != null && this.inputText != "") {
-      this.speechInputHanding(this.inputText);
-      this.xiaojiSpeech.listenText(this.inputText);
-    }
-    this.inputText = "";
-  }
-
-  //语音输入页面处理
-  speechInputHanding(text) {
-    this.inputData.tt = this.U1;
-    this.inputData.ut = text;
-    this.messages.unshift(this.inputData);
-    this.inputData = new AiuiModel();
-
-  }
-
-  //回传数据处理
-  messageHanding($event: AiuiModel) {
-
-    console.log("这是语音HbPage页面数据处理：messageHanding方法");
-
-    let textU = new AiuiModel();
-    let textX = new AiuiModel();
-    let data = new AiuiModel();
-
-    if ($event.tt == DataConfig.U1) {
-      // textU = $event;
-      // this.messages.unshift(textU);
-    } else if ($event.tt == DataConfig.S1) {
-      textX.tt = $event.tt;
-      textX.at = $event.at;
-      this.messages.unshift(textX);
-      this.xiaojiSpeech.speakText(textX.at, success => {});
-    } else if ($event.tt == DataConfig.S4) {
-      textX.tt = DataConfig.S1;
-      textX.at = $event.at;
-      textX.tg = $event.tg;
-      console.log("是否操作：" +　$event.op);
-      textX.op = false;
-      this.messages.unshift(textX);
-      this.xiaojiSpeech.speakText(textX.at, success => {
-        data.tt = $event.tt;
-        data.sc = $event.sc;
-        data.tg = $event.tg;
-        this.messages.unshift(data);
-      });
-    }else if ($event.tt == DataConfig.S5) {
-      if ($event.tg == "1") {
-        this.scL = [];
-        this.scL = $event.scL;
-      }
-      textX.tt = DataConfig.S1;
-      textX.at = $event.at;
-      textX.tg = $event.tg;
-      this.messages.unshift(textX);
-      this.xiaojiSpeech.speakText(textX.at, success => {
-        data.tt = $event.tt;
-        data.scL = $event.scL;
-        data.tg = $event.tg;
-        this.messages.unshift(data);
-      });
-    } else if ($event.tt == DataConfig.T1) {
-
-    } else if ($event.tt == DataConfig.F1) {
-
-    }
-
-  }
-
-  scrollToBottom() {
-    setTimeout(() => {
-      this.content.scrollToBottom();
-    }, 100);
-  }
-
-  /**
-   * 没网络禁用语音按钮
-   */
-  private netNetwork() {
-    if (this.networkService.getNetworkType() === 'none') {
-      //WsEnumModel["E04"] + UtilService.randInt(0,10);
-      let aiui = new AiuiModel();
-      aiui.tt = this.S1;
-      aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel["E04"] + "1");
-      this.messages.push(aiui);
-      this.xiaojiSpeech.speakText(aiui.at, success=>{});
-    }
-  }
-
-  /*=======================业务逻辑 start=========================*/
-  private confirmatoryMethod(aiui: AiuiModel, tg: string) {
-    console.log("test:" + JSON.stringify(aiui))
-    aiui.op = true;
-    console.log("test:" + JSON.stringify(aiui))
-    if(tg == "0") {
-      this.createSchedule(aiui.sc)
-    } else if (tg == "1") {
-      this.deleteSchedule(aiui.sc);
-    }
-  }
-
-  private createSchedule(sc: RcModel) {
-      console.log("添加日程确认");
-      let textX = new AiuiModel();
-      // this.workService.arc(sc.sN, sc.sd, sc.lI, sc.ji, sc.cft, sc.rm,sc.ac, sc.rus).then(data=>{
-      //   if(data.code == 0){
-      //     console.log("添加日程成功");
-      //     textX.tt = this.S1;
-      //     // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
-      //     textX.at = DataConfig.TEXT_CONTENT.get("A01" + "1");
-      //     this.messages.unshift(textX);
-      //     this.xiaojiSpeech.speakText(textX.at, success => {});
-      //   }else{
-      //     console.log("添加日程失败");
-      //     textX.tt = this.S1;
-      //     // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
-      //     textX.at = DataConfig.TEXT_CONTENT.get("A01" + "10");
-      //     this.messages.unshift(textX);
-      //     this.xiaojiSpeech.speakText(textX.at, success => {});
-      //   }
-      // }).catch(reason => {
-      //   console.log("catch 添加日程失败");
-      //   textX.tt = this.S1;
-      //   // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
-      //   textX.at = DataConfig.TEXT_CONTENT.get("A01" + "10");
-      //   this.messages.unshift(textX);
-      //   this.xiaojiSpeech.speakText(textX.at, success => {});
-      // });
-
-  }
-
-  private deleteSchedule(sc: RcModel) {
-
-  }
-
-  private cancelMethod(aiui: AiuiModel) {
-    aiui.op = true;
-    let textX = new AiuiModel();
-    textX.tt = this.S1;
-    // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
-    textX.at = DataConfig.TEXT_CONTENT.get("A02" + "1");
-    this.messages.unshift(textX);
-    this.xiaojiSpeech.speakText(textX.at, success => {});
-  }
-  //展示数据详情
-  // showScheduleDetail(schedule) {
-  //   this.schedule = new ScheduleModel();
-  //   this.schedule = schedule;
-  //   this.paramsService.schedule = this.schedule;
-  //   console.log("schedule:" + this.paramsService.schedule);
-  //   this.navCtrl.push("SaPage");
+  // ionViewDidLoad() {
+  //
+  //   this.dwEmit.getHbData((data) => {
+  //     this.messageHanding(data);
+  //   });
+  //
+  //   this.netNetwork();
+  //
+  //   this.messages = [];
+  //   this.inputData = new AiuiModel();
+  //
+  //   //语音唤醒冲突暂时关闭
+  //   //this.initWakeUp();
+  //
+  //   console.log('ionViewDidLoad HbPage');
+  //    this.hb01Page.loadScene();
+  //   this.hb01Page.setDrawType(1);
+  //   // this.initWakeUp();
+  //
+  //   // let data:AiuiModel = new AiuiModel();
+  //   // data.tt = this.S5;
+  //   // data.scL = new Array<RcModel>();
+  //   //
+  //   // for (let i = 0;i<4;i++){
+  //   //   let rc:RcModel = new RcModel();
+  //   //   rc.sN = "这是一个事情，可能会有一点长。不知道你会出问题吗？尝试一下";
+  //   //   rc.sd = "2019-12-29 06：45";
+  //   //
+  //   //   data.scL.push(rc);
+  //   //
+  //   // }
+  //   //
+  //   //
+  //   //   this.messages.unshift(data);
+  //
+  //
   // }
-
-  private showScheduleDetail(sc: RcModel) {
-      let schedule = new ScheduleModel();
-      schedule.scheduleId = sc.sI;
-      this.navCtrl.push("TddiPage",schedule);
-  }
-  /*===================业务逻辑 end=======================*/
-
-  /*==================== 聊天界面 end ===================*/
-
-  //返回方法
-  goBack() {
-    this.dwEmit.destroyHbData();
-    this.xiaojiSpeech.stopListenAudio();
-    this.xiaojiSpeech.stopSpeak();
-    this.viewCtrl.dismiss();
-  }
-
-  // reset(){
-  //   this.Hb01Page.startHue += 60;
-  //   this.Hb01Page.reset();
+  //
+  //
+  // initWakeUp() {
+  //   this.xiaojiSpeech.initbaiduWakeUp(isWakeUp => {
+  //     this.xiaojiSpeech.baiduWakeUpStop();
+  //     if (!isWakeUp) {
+  //       this.initWakeUp();
+  //     }
+  //     this.xiaojiSpeech.speakText("小吉在呢，请吩咐", speakRs => {
+  //       this.xiaojiSpeech.listenAudio(data => {
+  //         this.initWakeUp();
+  //         this.messageHanding(data);
+  //       })
+  //     })
+  //   });
+  //
   // }
+  //
+  // //添加日程
+  // addSchedule() {
+  //   this.navCtrl.push("TdcPage")
+  // }
+  //
+  // //群组详情
+  // groupListShow() {
+  //   this.navCtrl.push('GlPage', {popPage: 'HbPage'});
+  // }
+  //
+  // /*==================== 聊天界面 start ===================*/
+  //
+  // switchInput() {
+  //   this.xiaojiFeekback.audioBass();
+  //
+  //   //切换手动输入模式
+  //   this.modeFlag = !this.modeFlag;
+  //   if (this.modeFlag)
+  //     this.hb01Page.setDrawType(1);
+  //   else
+  //     this.hb01Page.setDrawType(0);
+  //   return;
+  // }
+  //
+  // //启动语音输入
+  // startXiaoJi() {
+  //   console.log("HbPage 开始语音输入");
+  //   if (this.xiaojiSpeech.islistenAudioing) {
+  //     this.xiaojiSpeech.stopSpeak();
+  //     return;
+  //   }
+  //   this.hb01Page.setDrawType(2);
+  //   this.xiaojiSpeech.listenAudio(rs => {
+  //     rs = rs.replace("[asr.partial]", "");
+  //     this.speechInputHanding(rs);
+  //     this.xiaojiFeekback.audioSnare();
+  //
+  //     this.hb01Page.setDrawType(0);
+  //     setTimeout(()=>{
+  //       this.hb01Page.setDrawType(1);
+  //     },1000);
+  //   });
+  // }
+  //
+  // //启动手动输入
+  // startXiaojiText() {
+  //
+  //   if (this.inputText != null && this.inputText != "") {
+  //     this.speechInputHanding(this.inputText);
+  //     this.xiaojiSpeech.listenText(this.inputText);
+  //   }
+  //   this.inputText = "";
+  // }
+  //
+  // //语音输入页面处理
+  // speechInputHanding(text) {
+  //   this.inputData.tt = this.U1;
+  //   this.inputData.ut = text;
+  //   this.messages.unshift(this.inputData);
+  //   this.inputData = new AiuiModel();
+  //
+  // }
+  //
+  // //回传数据处理
+  // messageHanding($event: AiuiModel) {
+  //
+  //   console.log("这是语音HbPage页面数据处理：messageHanding方法");
+  //
+  //   let textU = new AiuiModel();
+  //   let textX = new AiuiModel();
+  //   let data = new AiuiModel();
+  //
+  //   if ($event.tt == DataConfig.U1) {
+  //     // textU = $event;
+  //     // this.messages.unshift(textU);
+  //   } else if ($event.tt == DataConfig.S1) {
+  //     textX.tt = $event.tt;
+  //     textX.at = $event.at;
+  //     this.messages.unshift(textX);
+  //     this.xiaojiSpeech.speakText(textX.at, success => {});
+  //   } else if ($event.tt == DataConfig.S4) {
+  //     textX.tt = DataConfig.S1;
+  //     textX.at = $event.at;
+  //     textX.tg = $event.tg;
+  //     console.log("是否操作：" +　$event.op);
+  //     textX.op = false;
+  //     this.messages.unshift(textX);
+  //     this.xiaojiSpeech.speakText(textX.at, success => {
+  //       data.tt = $event.tt;
+  //       data.sc = $event.sc;
+  //       data.tg = $event.tg;
+  //       this.messages.unshift(data);
+  //     });
+  //   }else if ($event.tt == DataConfig.S5) {
+  //     if ($event.tg == "1") {
+  //       this.scL = [];
+  //       this.scL = $event.scL;
+  //     }
+  //     textX.tt = DataConfig.S1;
+  //     textX.at = $event.at;
+  //     textX.tg = $event.tg;
+  //     this.messages.unshift(textX);
+  //     this.xiaojiSpeech.speakText(textX.at, success => {
+  //       data.tt = $event.tt;
+  //       data.scL = $event.scL;
+  //       data.tg = $event.tg;
+  //       this.messages.unshift(data);
+  //     });
+  //   } else if ($event.tt == DataConfig.T1) {
+  //
+  //   } else if ($event.tt == DataConfig.F1) {
+  //
+  //   }
+  //
+  // }
+  //
+  // scrollToBottom() {
+  //   setTimeout(() => {
+  //     this.content.scrollToBottom();
+  //   }, 100);
+  // }
+  //
+  // /**
+  //  * 没网络禁用语音按钮
+  //  */
+  // private netNetwork() {
+  //   if (this.networkService.getNetworkType() === 'none') {
+  //     //WsEnumModel["E04"] + UtilService.randInt(0,10);
+  //     let aiui = new AiuiModel();
+  //     aiui.tt = this.S1;
+  //     aiui.at = DataConfig.TEXT_CONTENT.get(WsEnumModel["E04"] + "1");
+  //     this.messages.push(aiui);
+  //     this.xiaojiSpeech.speakText(aiui.at, success=>{});
+  //   }
+  // }
+  //
+  // /*=======================业务逻辑 start=========================*/
+  // private confirmatoryMethod(aiui: AiuiModel, tg: string) {
+  //   console.log("test:" + JSON.stringify(aiui))
+  //   aiui.op = true;
+  //   console.log("test:" + JSON.stringify(aiui))
+  //   if(tg == "0") {
+  //     this.createSchedule(aiui.sc)
+  //   } else if (tg == "1") {
+  //     this.deleteSchedule(aiui.sc);
+  //   }
+  // }
+  //
+  // private createSchedule(sc: RcModel) {
+  //     console.log("添加日程确认");
+  //     let textX = new AiuiModel();
+  //     // this.workService.arc(sc.sN, sc.sd, sc.lI, sc.ji, sc.cft, sc.rm,sc.ac, sc.rus).then(data=>{
+  //     //   if(data.code == 0){
+  //     //     console.log("添加日程成功");
+  //     //     textX.tt = this.S1;
+  //     //     // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
+  //     //     textX.at = DataConfig.TEXT_CONTENT.get("A01" + "1");
+  //     //     this.messages.unshift(textX);
+  //     //     this.xiaojiSpeech.speakText(textX.at, success => {});
+  //     //   }else{
+  //     //     console.log("添加日程失败");
+  //     //     textX.tt = this.S1;
+  //     //     // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
+  //     //     textX.at = DataConfig.TEXT_CONTENT.get("A01" + "10");
+  //     //     this.messages.unshift(textX);
+  //     //     this.xiaojiSpeech.speakText(textX.at, success => {});
+  //     //   }
+  //     // }).catch(reason => {
+  //     //   console.log("catch 添加日程失败");
+  //     //   textX.tt = this.S1;
+  //     //   // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
+  //     //   textX.at = DataConfig.TEXT_CONTENT.get("A01" + "10");
+  //     //   this.messages.unshift(textX);
+  //     //   this.xiaojiSpeech.speakText(textX.at, success => {});
+  //     // });
+  //
+  // }
+  //
+  // private deleteSchedule(sc: RcModel) {
+  //
+  // }
+  //
+  // private cancelMethod(aiui: AiuiModel) {
+  //   aiui.op = true;
+  //   let textX = new AiuiModel();
+  //   textX.tt = this.S1;
+  //   // aiui.ut = DataConfig.TEXT_CONTENT.get(WsEnumModel[mqDate.sk] + UtilService.randInt(0,9));
+  //   textX.at = DataConfig.TEXT_CONTENT.get("A02" + "1");
+  //   this.messages.unshift(textX);
+  //   this.xiaojiSpeech.speakText(textX.at, success => {});
+  // }
+  // //展示数据详情
+  // // showScheduleDetail(schedule) {
+  // //   this.schedule = new ScheduleModel();
+  // //   this.schedule = schedule;
+  // //   this.paramsService.schedule = this.schedule;
+  // //   console.log("schedule:" + this.paramsService.schedule);
+  // //   this.navCtrl.push("SaPage");
+  // // }
+  //
+  // private showScheduleDetail(sc: RcModel) {
+  //     let schedule = new ScheduleModel();
+  //     schedule.scheduleId = sc.sI;
+  //     this.navCtrl.push("TddiPage",schedule);
+  // }
+  // /*===================业务逻辑 end=======================*/
+  //
+  // /*==================== 聊天界面 end ===================*/
+  //
+  // //返回方法
+  // goBack() {
+  //   this.dwEmit.destroyHbData();
+  //   this.xiaojiSpeech.stopListenAudio();
+  //   this.xiaojiSpeech.stopSpeak();
+  //   this.viewCtrl.dismiss();
+  // }
+  //
+  // // reset(){
+  // //   this.Hb01Page.startHue += 60;
+  // //   this.Hb01Page.reset();
+  // // }
 
 }

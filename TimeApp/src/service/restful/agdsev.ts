@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
-import {BsModel} from "../../model/out/bs.model";
+import {BsModel} from "./out/bs.model";
 
 
 
