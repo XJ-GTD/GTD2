@@ -23,7 +23,7 @@ import com.xiaoji.gtd.util.ReturnMessage;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/agd")
+@RequestMapping(value = "/")
 public class AgdAgendaController {
 
     @Autowired
@@ -68,7 +68,9 @@ public class AgdAgendaController {
     	if(!"".equals(agdId) && agdId != null){
 //    		blacklist.setFc(relId);
     		AgdAgenda agd = agendaService.findById(blacklist.getAi());
-    		out.setD(BaseUtil.agdToDtoAgd(agd));
+    		if(agd != null){
+    			out.setD(BaseUtil.agdToDtoAgd(agd));
+    		}
     		out.setRc(ReturnMessage.SUCCESS_CODE);
     		out.setRm(ReturnMessage.SUCCESS_MSG);
     	}else{
@@ -80,16 +82,16 @@ public class AgdAgendaController {
     
     /**
      * 删除日程
-     * @param map
+     * @param map  @RequestBody
      * @return
      */
-    @RequestMapping(value="agenda/remove")
+    @RequestMapping(value="/agenda/remove")
     @ResponseBody
     public BaseOutDto remove(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
     	
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
-    	if(!"".equals(relId) && relId != null){
+    	if(!"".equals(blacklist.getAi()) && blacklist.getAi() != null){
     		blacklist.setFc(relId);
     		agendaService.deleteById(blacklist);
     		out.setRc(ReturnMessage.SUCCESS_CODE);

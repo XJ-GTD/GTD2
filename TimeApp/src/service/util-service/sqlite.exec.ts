@@ -39,7 +39,7 @@ export class SqliteExec {
    * @param et 对应实体类
    * @returns {Promise<any>}
    */
-  create(itbl: ITbl) {
+  create(itbl: ITbl): Promise<any> {
     return this.execSql(itbl.cT());
   }
 
@@ -48,7 +48,7 @@ export class SqliteExec {
    * @param et 对应实体类
    * @returns {Promise<any>}
    */
-  drop(itbl: ITbl) {
+  drop(itbl: ITbl): Promise<any> {
     return this.execSql(itbl.drT())
   }
 
@@ -57,14 +57,14 @@ export class SqliteExec {
    * @param et 对应实体类
    * @returns {Promise<any>}
    */
-  save(itbl: ITbl) {
+  save(itbl: ITbl): Promise<any> {
     return this.execSql(itbl.inT())
   }
 
   /**
    * 更新
    */
-  update(itbl: ITbl) {
+  update(itbl: ITbl): Promise<any> {
     return this.execSql(itbl.upT())
 
   }
@@ -74,7 +74,7 @@ export class SqliteExec {
    * @param param
    * @returns {Promise<any>}
    */
-  delete(itbl: ITbl) {
+  delete(itbl: ITbl): Promise<number> {
     return this.execSql(itbl.dT())
   }
 
@@ -83,7 +83,7 @@ export class SqliteExec {
    * @param t
    * @returns {Promise<T>}
    */
-  getList(itbl: ITbl) {
+  getList(itbl: ITbl): Promise<Array<any>> {
     return this.execSql(itbl.slT())
   }
 
@@ -92,7 +92,7 @@ export class SqliteExec {
    * @param t
    * @returns {Promise<T>}
    */
-  getOne(itbl: ITbl) {
+  getOne(itbl: ITbl): Promise<any> {
     return this.execSql(itbl.sloT());
   }
 
@@ -101,7 +101,7 @@ export class SqliteExec {
    * @param t
    * @returns {Promise<T>}
    */
-  replaceT(itbl: ITbl) {
+  replaceT(itbl: ITbl): Promise<any> {
     return this.execSql(itbl.rpT())
   }
 
