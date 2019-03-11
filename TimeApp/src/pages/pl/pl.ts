@@ -1,6 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, Navbar, ViewController} from 'ionic-angular';
-import {JhModel} from "../../model/jh.model";
 import {DataConfig} from "../../service/config/data.config";
 
 /**
@@ -41,7 +40,7 @@ export class PlPage {
 
   @ViewChild(Navbar) navBar: Navbar;
 
-  jhs:Array<JhModel>;
+  //jhs:Array<JhModel>;
 
   constructor(private navCtrl: NavController,
               private navParams: NavParams,) {
@@ -53,10 +52,10 @@ export class PlPage {
     this.navBar.setBackButtonText("");
   }
 
-  toSy(jh:JhModel){
+/*  toSy(jh:JhModel){
     console.log("跳转计划详情页");
     this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{"jh":jh});
-  }
+  }*/
 
   toPc(){
     console.log("跳转添加计划页");
@@ -85,14 +84,14 @@ export class PlPage {
   }
 
 
-  delJh(jh:JhModel) {
+/*  delJh(jh:JhModel) {
     console.log("Pc点击删除 :: ")
     // this.jhService.djh(jh.ji).then(data=>{
     //   this.getAllJh();
     // }).catch(reason => {
     //
     // });
-  }
+  }*/
 
   ionViewWillEnter(){
     this.getAllJh();
