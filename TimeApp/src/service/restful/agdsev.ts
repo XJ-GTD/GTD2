@@ -11,7 +11,6 @@ import {BsModel} from "../../model/out/bs.model";
 @Injectable()
 export class AgdRestful{
   constructor(private request: RestfulClient, private config: RestFulConfig) {
-
   }
 
 
