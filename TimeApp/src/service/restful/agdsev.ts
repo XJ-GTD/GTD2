@@ -19,14 +19,16 @@ export class AgdRestful{
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AS");
-      this.request.post(url, agdSave.repData).then(data => {
+      this.request.post(url, agdSave.reqData).then(data => {
         //处理返回结果
-        agdSave.reqData = data;
+        agdSave.repData.code = data.rc;
+        agdSave.repData.message = data.rm;
+        agdSave.repData.data = data.d;
         resolve(agdSave);
 
       }).catch(error => {
         //处理返回错误
-        agdSave.errData = error;
+        agdSave.repData.code = "-99";
         resolve(agdSave);
 
       })
@@ -92,7 +94,5 @@ export class AgdSave{
     data:{},
   }
 
-  errData = {
-  }
 
 }
