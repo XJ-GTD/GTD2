@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { HbPage } from './ai';
-import { ParamsService } from "../../../service/util-service/params.service";
-import { XiaojiAssistantService } from "../../../service/cordova/assistant.service";
-import { XiaojiFeedbackService } from "../../../service/cordova/feedback.service";
+import { AssistantService } from "../../../service/cordova/assistant.service";
+import { FeedbackService } from "../../../service/cordova/feedback.service";
 import {AiService} from "./ai.service";
 
 @NgModule({
@@ -14,9 +13,8 @@ import {AiService} from "./ai.service";
     IonicPageModule.forChild(HbPage),
   ],
   providers: [
-    ParamsService,
-    XiaojiAssistantService,
-    XiaojiFeedbackService,
+    AssistantService,
+    FeedbackService,
     AiService,
   ],
   entryComponents: [
