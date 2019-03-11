@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,70 +53,77 @@ public class IContactsServiceImpl implements IContactsService {
 			delList.addAll(agdList); //删除日程的参与人
 			log.debug("------- 开始查询 ------- ");
 			//获取日程详情
-			AgdAgenda agenL = agdAgendaRep.findByStrId(inDto.getAi());;
-			inDto = BaseUtil.agdToDtoAgd(agenL);
-			//获取删除的参与人和新添加的参与人
-			if(agdList.size()>0){
-				for (AgdContactsDto add : inDto.getAc()) {
-					boolean isExsit = false;
-					for (AgdAgendaContacts agd : agdList) {
-						if(add.getMpn().equals(agd.getPhone())){
-							isExsit=true;
-							delList.remove(agd); //移除存在的参与人
-							break;
+			AgdAgenda agenL = null;
+			Optional<AgdAgenda> agen = agdAgendaRep.findById(inDto.getAi());
+			if(agen.isPresent()){
+				agenL = agen.get();
+				
+				inDto = BaseUtil.agdToDtoAgd(agenL);
+				//获取删除的参与人和新添加的参与人
+				if(agdList.size()>0){
+					for (AgdContactsDto add : inDto.getAc()) {
+						boolean isExsit = false;
+						for (AgdAgendaContacts agd : agdList) {
+							if(add.getMpn().equals(agd.getPhone())){
+								isExsit=true;
+								delList.remove(agd); //移除存在的参与人
+								break;
+							}
 						}
+						//添加不存在的参与人
+						if(!isExsit){
+							addList.add(add); 
+						}
+						
 					}
-					//添加不存在的参与人
-					if(!isExsit){
-						addList.add(add); 
+				}
+				
+				if(addList.size()>0){
+					for (AgdContactsDto add : addList) {
+						AgdAgendaContacts agd = BaseUtil.dtoToContacts(add);
+						agd.setRelAgendaId(agenL.getAgendaId());
+						agd = agdContactsRep.save(agd);
 					}
+					//TODO 发送添加日程消息
+					Map<String,Object> map = new HashMap<String,Object>();
+			        map.put("to", JSONObject.toJSONString(addList));
+			        map.put("agenda", JSONObject.toJSONString(inDto));
+			        map.put("notifyType", "add");
+			        try{
+			        	Map<String,Object> map2 = new HashMap<String,Object>();
+			        	map2.put("context", map);
+			        	jmsMessagingTemplate.convertAndSend(destinationName, map2);
+			        	log.info("------- 添加日程发送成功  --------" + map.toString());
+			        }catch(Exception e){
+			        	log.error("------- 添加日程发送失败  --------" + map.toString());
+			        }
 					
 				}
-			}
-			
-			if(addList.size()>0){
-				for (AgdContactsDto add : addList) {
-					AgdAgendaContacts agd = BaseUtil.dtoToContacts(add);
-					agd = agdContactsRep.save(agd);
-				}
-				//TODO 发送添加日程消息
-				Map<String,Object> map = new HashMap<String,Object>();
-		        map.put("to", JSONObject.toJSONString(addList));
-		        map.put("agenda", JSONObject.toJSONString(inDto));
-		        map.put("notifyType", "add");
-		        try{
-		        	Map<String,Object> map2 = new HashMap<String,Object>();
-		        	map2.put("context", map);
-		        	jmsMessagingTemplate.convertAndSend(destinationName, map2);
-		        	log.info("------- 添加日程发送成功  --------" + map.toString());
-		        }catch(Exception e){
-		        	log.error("------- 添加日程发送失败  --------" + map.toString());
-		        }
 				
+				if(delList.size()>0){
+					List<AgdContactsDto> dels = new ArrayList<AgdContactsDto>();
+					for (AgdAgendaContacts agdAgendaContacts : delList) {
+						dels.add(BaseUtil.AgdToContactsDto(agdAgendaContacts));
+						agdContactsRep.deleteById(agdAgendaContacts.getRecId());
+						//TODO 发送删除日程消息
+					}
+					//TODO 生产消息MQ
+					Map<String,Object> map = new HashMap<String,Object>();
+			        map.put("to", JSONObject.toJSONString(dels));
+			        map.put("agenda", JSONObject.toJSONString(inDto));
+			        map.put("notifyType", "delete");
+			        try{
+			        	Map<String,Object> map2 = new HashMap<String,Object>();
+			        	map2.put("context", map);
+			        	jmsMessagingTemplate.convertAndSend(destinationName, map2);
+			        	log.info("------- 删除日程发送成功  --------" + map.toString());
+			        }catch(Exception e){
+			        	log.error("------- 删除日程发送失败  --------" + map.toString());
+			        }
+			        
+				}
 			}
 			
-			if(delList.size()>0){
-				List<AgdContactsDto> dels = new ArrayList<AgdContactsDto>();
-				for (AgdAgendaContacts agdAgendaContacts : delList) {
-					dels.add(BaseUtil.AgdToContactsDto(agdAgendaContacts));
-					agdContactsRep.deleteById(agdAgendaContacts.getRecId());
-					//TODO 发送删除日程消息
-				}
-				//TODO 生产消息MQ
-				Map<String,Object> map = new HashMap<String,Object>();
-		        map.put("to", JSONObject.toJSONString(dels));
-		        map.put("agenda", JSONObject.toJSONString(inDto));
-		        map.put("notifyType", "delete");
-		        try{
-		        	Map<String,Object> map2 = new HashMap<String,Object>();
-		        	map2.put("context", map);
-		        	jmsMessagingTemplate.convertAndSend(destinationName, map2);
-		        	log.info("------- 删除日程发送成功  --------" + map.toString());
-		        }catch(Exception e){
-		        	log.error("------- 删除日程发送失败  --------" + map.toString());
-		        }
-		        
-			}
 		}
 		
 		

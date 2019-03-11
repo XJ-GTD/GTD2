@@ -558,6 +558,42 @@ paths:
                     
         405:
           description: "Invalid input"
+  /bla/getOne:
+      post:
+        tags:
+        - "black"
+        summary: "添加黑名单"
+        description: ""
+        consumes:
+        - "application/json"
+        produces:
+        - "application/json"
+        parameters:
+        - name: "relId"
+          in: "query"
+          type: "string"
+          description: "关联账户ID"
+          required: false
+        - name: "mpn"
+          in: "query"
+          type: "string"
+          description: "加入黑名单的手机号"
+          required: true
+        responses:
+          200:
+            description: "添加黑名单人员成功"
+            schema:
+              type: "object"
+              properties:
+                rc:
+                  type: "integer"
+                rm:
+                  type: "string"
+                d:
+                  type: "object"
+
+          405:
+            description: "Invalid input"
   /sms/send:
     post:
       tags:

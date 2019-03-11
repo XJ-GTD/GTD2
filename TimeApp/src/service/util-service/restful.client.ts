@@ -31,7 +31,8 @@ export class RestfulClient {
             console.log(data.status);
             console.log(data.data); // data received by server
             console.log(data.headers);
-            resolve(data.data);
+            let jsonData = JSON.parse(data.data);
+            resolve(jsonData);
           }).catch(e=>{
             reject(e);
           })

@@ -53,13 +53,13 @@ export class AuthRestful {
 export class LoginData {
   //用户密码请求登陆
   reqPData = {
-    mobile:"",
-    password:"",
+    phoneno:"",
+    userpassword:"",
   }
 
   //用户验证码请求登陆
   reqAData = {
-    mobile:"",
+    phoneno:"",
     authCode:""
   }
   repData = {

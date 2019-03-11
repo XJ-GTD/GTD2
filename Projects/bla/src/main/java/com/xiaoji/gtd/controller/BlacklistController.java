@@ -85,7 +85,7 @@ public class BlacklistController {
      */
     @RequestMapping(value="/list")
     @ResponseBody
-    public BaseOutDto getList(@RequestBody BlaBlacklistDto blacklist,HttpServletRequest request) {
+    public BaseOutDto getList(BlaBlacklistDto blacklist,HttpServletRequest request) {
     	
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
