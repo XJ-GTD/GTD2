@@ -39,7 +39,7 @@ export class RestfulClient {
         }else{
           //浏览器测试使用
           let warHeader:any={};
-          warHeader.header = header;
+          warHeader.headers = header;
           this.httpClient.post(url.url,body,warHeader).subscribe(data=>{
             resolve(data);
           },err => {

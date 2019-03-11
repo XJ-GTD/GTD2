@@ -141,6 +141,12 @@ export class RPage {
               private rService: RService,
               private testful : AgdRestful
   ) {
+
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad RPage');
+    this.rePage = this.navParams.get("RPage");
     let testp = new AgdPro();
     testp.rai="a";
     testp.fc="b";
@@ -152,15 +158,10 @@ export class RPage {
     testp.aa="h";
     testp.am="i";
     testp.ac = new Array<ContactPerPro>();
-    testful.save(testp).then(data =>
+    this.testful.save(testp).then(data =>
     {
       console.log("testful agd:"+ JSON.stringify(data));
     })
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad RPage');
-    this.rePage = this.navParams.get("RPage");
   }
 
   register() {
