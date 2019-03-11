@@ -37,6 +37,8 @@ import {SqliteInit} from "../service/sqlite/sqlite.init";
 import {ParamsService} from "../service/util-service/params.service";
 import {PersonRestful} from "../service/restful/personsev";
 import {SmsRestful} from "../service/restful/smssev";
+import {AuthRestful} from "../service/restful/authsev";
+import {LpService} from "../pages/lp/lp.service";
 
 @NgModule({
   declarations: [
@@ -92,6 +94,8 @@ import {SmsRestful} from "../service/restful/smssev";
     ParamsService,
     PersonRestful,
     SmsRestful,
+    AuthRestful,
+    LpService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

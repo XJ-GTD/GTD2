@@ -34,10 +34,10 @@ import {DataConfig} from "../../service/config/data.config";
     '          </div>' +
     '          <div class="input_text">' +
     '            <ion-item>' +
-    '              <ion-input type="tel" [(ngModel)]="rdata.mo" (input)="format()"  (ionBlur)="checkPhone()"  clearInput=true placeholder="输入您的手机号">' +
+    '              <ion-input type="tel" [(ngModel)]="rdata.mobile" (input)="format()"  (ionBlur)="checkPhone()"  clearInput=true placeholder="输入您的手机号">' +
     '              </ion-input>' +
     '            </ion-item>' +
-    '          </div> {{rdata.}}' +
+    '          </div>' +
     '        </div>' +
     '        <div *ngIf="this.errorCode != undefinde">' +
     '          <div>' +
@@ -59,7 +59,7 @@ import {DataConfig} from "../../service/config/data.config";
     '          <div class="input_text_verification">' +
     '            <div class="verification_item">' +
     '              <ion-item>' +
-    '                <ion-input type="text" [(ngModel)]="authCode" placeholder="验证码" clearInput></ion-input>' +
+    '                <ion-input type="text" [(ngModel)]="rdata.authCode" placeholder="验证码" clearInput></ion-input>' +
     '              </ion-item>' +
     '            </div>' +
     '            <div class="button_verification">' +
@@ -77,7 +77,7 @@ import {DataConfig} from "../../service/config/data.config";
     '          </div>' +
     '          <div class="input_text">' +
     '            <ion-item>' +
-    '              <ion-input type="password" [(ngModel)]="accountPassword" (ionBlur)="checkPwd()" placeholder="密码" clearInput></ion-input>' +
+    '              <ion-input type="password" [(ngModel)]="rdata.password" (ionBlur)="checkPwd()" placeholder="密码" clearInput></ion-input>' +
     '            </ion-item>' +
     '          </div>' +
     '          <div >' +
@@ -148,37 +148,92 @@ export class RPage {
   }
 
   register() {
-    //注册成功
-    this.rService.signup(this.rdata).then(data => {
-      let alert = this.alertCtrl.create({
-        title: '提示信息',
-        subTitle: "注册成功",
-        buttons: [{
-          text: '确定', role: 'cancel', handler: () => {
-            if (this.rePage != undefined) {
-              this.navCtrl.getViews().forEach(page => {
-                if (page.name == this.rePage) {
-                  this.navCtrl.popTo(page);
-                }
-              })
-            } else {
-              this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
+    if(this.errorCode == undefined)   //判断手机号是否为空
+      this.errorCode = 0;
+    else if (this.rdata.password == null || this.rdata.password == "" || this.rdata.password == undefined)     //判断密码是否为空
+      this.checkPassword = true;
+    else if (this.checkBoxClick != true)  //判断用户协议是否选择
+      this.checkBoxClickFlag=true;
+    else
+    {
+      this.checkBoxClickFlag=false;
+      //注册成功
+      this.rService.signup(this.rdata).then(data => {
+        console.debug("注册返回信息::" + JSON.stringify(data));
+        let alert = this.alertCtrl.create({
+          title: '提示信息',
+          subTitle: "注册成功",
+          buttons: [{
+            text: '确定', role: 'cancel', handler: () => {
+              if (this.rePage != undefined) {
+                this.navCtrl.getViews().forEach(page => {
+                  if (page.name == this.rePage) {
+                    this.navCtrl.popTo(page);
+                  }
+                })
+              } else {
+                this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
+              }
             }
-          }
-        }]
+          }]
+        });
+        alert.present();
+        this.disable = false;
+
+      }).catch(err=>{
+        //注册异常
+      });
+    }
+  }
+
+  userAgreegment() {
+    this.navCtrl.push('PPage');
+  }
+
+  sendMsg() {
+    if(this.errorCode == 3){
+      this.rService.sc(this.rdata).then(data => {
+        console.log("sc::" + data)
+        console.log("sc:: verifykey :" + this.data.reqData.data.verifykey)
+        /*let alert = this.alertCtrl.create({
+          title:'提示信息',
+          subTitle: data.repData.message,
+          buttons:['确定']
+        });
+        alert.present();*/
+      }).catch(ref =>{
+        /*console.log("ref::" + ref);
+        let alert = this.alertCtrl.create({
+          title:'提示信息',
+          subTitle: ref.message,
+          buttons:['确定']
+        });
+        alert.present();*/
+      })
+
+      this.timeOut = 10;
+      this.timer = setInterval(()=>{
+        this.timeOut --;
+        if(this.timeOut <= 0){
+          clearTimeout(this.timer)
+          console.log("清除定时器")
+          this.timeOut="发送验证码"
+        }
+        console.log(this.timeOut)
+      },1000)
+
+    }else{
+      let alert = this.alertCtrl.create({
+        title:'提示信息',
+        subTitle: '请填写正确的手机号',
+        buttons:['确定']
       });
       alert.present();
-      this.disable = false;
-
-    }).catch(err=>{
-      //注册异常
-    });
-
+    }
   }
 
   checkPhone() {
-
-    this.errorCode = this.utilService.checkPhone(this.accountMobile);
+    this.errorCode = this.utilService.checkPhone(this.rdata.mobile);
     if (this.errorCode == 0) {
       this.checkMobileNull = true;
     }
@@ -190,30 +245,17 @@ export class RPage {
       this.checkMobile = false;
       this.checkMobileNull = false;
     }
-
   }
 
   checkPwd() {
-    if (this.accountPassword == null || this.accountPassword == "" || this.accountPassword === undefined) {      //判断字符是否为空
+    if (this.rdata.password == null || this.rdata.password == "" || this.rdata.password == undefined) {      //判断字符是否为空
       this.checkPassword = true;
     } else {
       this.checkPassword = false;
     }
   }
 
-  userAgreegment() {
-    this.navCtrl.push('PPage');
-  }
-
-  sendMsg() {
-    this.rService.sc(this.rdata).then(data => {
-      console.log("sc::" + data)
-    });
-
-  }
-
   format() {
-    this.accountMobile = this.utilService.remo(this.accountMobile);
+    this.rdata.mobile = this.utilService.remo(this.rdata.mobile).toString();
   }
 }
-

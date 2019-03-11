@@ -8,7 +8,8 @@ import {RestFulConfig, UrlEntity} from "../config/restful.config";
 @Injectable()
 export class PersonRestful {
 
-  constructor(private request: RestfulClient, private config: RestFulConfig) {
+  constructor(private request: RestfulClient,
+              private config: RestFulConfig) {
   }
 
   //帐户信息更新	AIU	personsev.ts
@@ -61,23 +62,11 @@ export class PersonRestful {
 
 export class SignupData {
   reqData = {
-    rai: "", //关联日程ID
-
-    fc: "", //来自于谁(日程发送人用户ID)
-
-    ai: "", //日程ID
-
-    at: "", //主题
-
-    adt: "",  //时间(YYYY/MM/DD HH:mm)
-
-    ap: "", //
-
-    ar: "", //
-
-    aa: "", //
-
-    am: "", //
+    phoneno:"",//手机号码
+    verifykey:"",//短信验证码KEY
+    verifycode:"",//短信验证码
+    username:"",//姓名
+    userpassword:"",//帐户密码
   }
   repData = {
     code: "",
