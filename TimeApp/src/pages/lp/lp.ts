@@ -75,7 +75,7 @@ import {LpData, LpService} from "./lp.service";
   '            </button>' +
   '            <div class="copywriting">' +
   '              <div>' +
-  '                <span (click)="signUp()">注册</span>' +
+  '                <span (click)="toR()">注册</span>' +
   '              </div>' +
   '              <div>' +
   '                <span (click)="toLs()">短信登录</span>' +
@@ -115,7 +115,7 @@ export class LpPage {
   signIn() {
     console.log("登录按钮被点击");
     //this.webSocket.close();
-    if(this.accountName == null && this.accountPassword == null){
+    if(this.accountName == null || this.accountPassword == null){
       let toast = this.toastCtrl.create({
         message: '用户名和密码不能为空',
         duration: 1500,
@@ -126,8 +126,8 @@ export class LpPage {
     }
     //this.utilService.loading("登录中");
     let lp:LpData = new LpData();
-    lp.user = this.accountName;
-    lp.pass = this.accountPassword;
+    lp.mobile = this.accountName;
+    lp.password = this.accountPassword;
     this.lpService.login(lp).then(data=> {
        console.log(data);
        // if (data.code == 0) {
@@ -169,7 +169,7 @@ export class LpPage {
 
   }
 
-  signUp() {
+  toR() {
     console.log('LpPage跳转RPage');
     this.navCtrl.push('RPage',{"rePage":this.rePage});
   }

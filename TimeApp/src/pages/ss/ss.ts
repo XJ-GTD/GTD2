@@ -2,7 +2,6 @@ import {Component, ViewChild} from '@angular/core';
 import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
 import { ParamsService } from "../../service/util-service/params.service";
 import {UtilService} from "../../service/util-service/util.service";
-import {PageConfig} from "../../service/config/page.config";
 import {XiaojiAlarmclockService} from "../../service/util-service/xiaoji-alarmclock.service";
 
 /**
@@ -82,7 +81,7 @@ export class SsPage {
     this.paramsService.user = null;
     window.localStorage.clear();
     console.log('SsPage跳转LpPage');
-    this.navCtrl.push(PageConfig.LP_PAGE);
+    //this.navCtrl.push(PageConfig.LP_PAGE);
   }
 
   accountSecurity() {
@@ -107,7 +106,7 @@ export class SsPage {
 
   helpAndFeedback() {
     console.log('SsPage跳转HlPage')
-    this.navCtrl.push(PageConfig.HL_PAGE);
+    //this.navCtrl.push(PageConfig.HL_PAGE);
   }
 
   // ionViewDidLoad(){
