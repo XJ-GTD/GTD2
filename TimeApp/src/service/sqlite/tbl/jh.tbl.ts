@@ -60,14 +60,14 @@ export class JhTbl  implements ITbl{
 
   cT():string{
 
-    let sq ='CREATE TABLE IF NOT EXISTS GTD_J_H(  ji VARCHAR(50) PRIMARY KEY ,jn VARCHAR(100)  ,jg VARCHAR(100)' +
-      ',jc VARCHAR(10),jt VARCHAR(4));';
+    let sq ='create table if not exists gtd_j_h(  ji varchar(50) primary key ,jn varchar(100)  ,jg varchar(100)' +
+      ',jc varchar(10),jt varchar(4));';
 
     return sq;
   }
 
   upT():string{
-    let sq='update GTD_J_H set 1=1 ';
+    let sq='update gtd_j_h set 1=1 ';
     if(this._jn!=null){
       sq=sq+', jn="' + this._jn +'"';
     }
@@ -85,17 +85,17 @@ export class JhTbl  implements ITbl{
   }
 
   dT():string{
-    let sq = 'delete from GTD_J_H where ji = "' + this._ji +'"';
+    let sq = 'delete from gtd_j_h where ji = "' + this._ji +'"';
     return sq;
   }
 
   sloT():string{
-    let sq='select * from GTD_J_H where ji = "'+ this._ji +'"';
+    let sq='select * from gtd_j_h where ji = "'+ this._ji +'"';
     return sq;
   }
 
   slT():string{
-    let sq='select * from  GTD_J_H where  1=1 ';
+    let sq='select * from  gtd_j_h where  1=1 ';
     if(this._jn!=null){
       sq=sq+' and jn="' + this._jn +'"';
     }
@@ -113,19 +113,19 @@ export class JhTbl  implements ITbl{
 
   drT():string{
 
-    let sq ='DROP TABLE IF EXISTS GTD_J_H;';
+    let sq ='drop table if exists gtd_j_h;';
     return sq;
   }
 
   inT():string{
-    let sq ='insert into GTD_J_H ' +
+    let sq ='insert into gtd_j_h ' +
       '(  ji ,jn ,jg,jc,jt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '","'+this._jt+ '")';
 
     return sq;
   }
 
   rpT():string{
-    let sq ='replace into GTD_J_H ' +
+    let sq ='replace into gtd_j_h ' +
       '(  ji ,jn ,jg,jc,jt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '","'+this._jt+ '")';
 
     return sq;

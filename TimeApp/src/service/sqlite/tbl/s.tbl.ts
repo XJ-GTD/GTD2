@@ -64,14 +64,14 @@ export class STbl implements ITbl   {
 
   cT():string {
 
-    let sq ='CREATE TABLE IF NOT EXISTS GTD_S( si varchar(50) PRIMARY KEY ,st VARCHAR(20)  ,' +
-      'stn VARCHAR(20)  ,sn VARCHAR(20)  ,yk VARCHAR(20)  ,yv VARCHAR(400)   );';
+    let sq ='create table if not exists gtd_s( si varchar(50) primary key ,st varchar(20)  ,' +
+      'stn varchar(20)  ,sn varchar(20)  ,yk varchar(20)  ,yv varchar(400)   );';
 
     return sq;
   }
 
   upT():string {
-    let sq='update GTD_S set 1=1 ';
+    let sq='update gtd_s set 1=1 ';
     if(this._st!=null && this._st !=""){
       sq=sq+', st="' + this._st +'"';
     }
@@ -92,18 +92,18 @@ export class STbl implements ITbl   {
   }
 
   dT():string {
-    let sq = 'delete from GTD_S where si = "' + this._si +'"';
+    let sq = 'delete from gtd_s where si = "' + this._si +'"';
     return sq;
   }
 
   sloT():string {
-    let sq='select * from GTD_S where si = "'+ this._si +'"';
+    let sq='select * from gtd_s where si = "'+ this._si +'"';
     return sq;
   }
 
   slT():string
   {
-    let sq='select * from  GTD_S where  1=1 ';
+    let sq='select * from  gtd_s where  1=1 ';
     if(this._st!=null && this._st!=""){
       sq=sq+' and st="' + this._st +'"';
     }
@@ -124,12 +124,12 @@ export class STbl implements ITbl   {
 
   drT():string {
 
-    let sq ='DROP TABLE IF EXISTS GTD_S;';
+    let sq ='drop table if exists gtd_s;';
     return sq;
   }
 
   inT():string {
-    let sq ='insert into GTD_S ' +
+    let sq ='insert into gtd_s ' +
       '( si ,st ,stn ,sn ,yk ,yv) values("'+ this._si+'","'+ this._st+'","'+this._stn+ '"' +
       ',"'+this._sn+ '","'+this._yk+ '","'+this._yv+ '")';
 
@@ -137,7 +137,7 @@ export class STbl implements ITbl   {
   }
 
   rpT():string {
-    let sq ='replace into GTD_S ' +
+    let sq ='replace into gtd_s ' +
       '( si ,st ,stn ,sn ,yk ,yv) values("'+ this._si+'","'+ this._st+'","'+this._stn+ '"' +
       ',"'+this._sn+ '","'+this._yk+ '","'+this._yv+ '")';
 

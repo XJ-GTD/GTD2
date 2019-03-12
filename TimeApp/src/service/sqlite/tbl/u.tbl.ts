@@ -6,55 +6,55 @@ import {ITbl} from "./itbl";
 export class UTbl  implements ITbl{
 
 
-  private _uI :string="";
+  private _ui :string="";
 
-  private _aI :string="";
+  private _ai :string="";
 
-  private _uN :string="";
+  private _un :string="";
 
-  private _hIU :string="";
+  private _hiu :string="";
 
   private _biy :string="";
 
   private _rn :string="";
 
-  private _iC :string="";
+  private _ic :string="";
 
-  private _uS :string="";
+  private _us :string="";
 
-  private _uCt :string="";
+  private _uct :string="";
 
 
-  get uI(): string {
-    return this._uI;
+  get ui(): string {
+    return this._ui;
   }
 
-  set uI(value: string) {
-    this._uI = value;
+  set ui(value: string) {
+    this._ui = value;
   }
 
-  get aI(): string {
-    return this._aI;
+  get ai(): string {
+    return this._ai;
   }
 
-  set aI(value: string) {
-    this._aI = value;
+  set ai(value: string) {
+    this._ai = value;
   }
 
-  get uN(): string {
-    return this._uN;
+  get un(): string {
+    return this._un;
   }
 
-  set uN(value: string) {
-    this._uN = value;
+  set un(value: string) {
+    this._un = value;
   }
 
-  get hIU(): string {
-    return this._hIU;
+  get hiu(): string {
+    return this._hiu;
   }
 
-  set hIU(value: string) {
-    this._hIU = value;
+  set hiu(value: string) {
+    this._hiu = value;
   }
 
   get biy(): string {
@@ -73,47 +73,47 @@ export class UTbl  implements ITbl{
     this._rn = value;
   }
 
-  get iC(): string {
-    return this._iC;
+  get ic(): string {
+    return this._ic;
   }
 
-  set iC(value: string) {
-    this._iC = value;
+  set ic(value: string) {
+    this._ic = value;
   }
 
-  get uS(): string {
-    return this._uS;
+  get us(): string {
+    return this._us;
   }
 
-  set uS(value: string) {
-    this._uS = value;
+  set us(value: string) {
+    this._us = value;
   }
 
-  get uCt(): string {
-    return this._uCt;
+  get uct(): string {
+    return this._uct;
   }
 
-  set uCt(value: string) {
-    this._uCt = value;
+  set uct(value: string) {
+    this._uct = value;
   }
 
 
   cT():string {
 
-    let sq ='CREATE TABLE IF NOT EXISTS GTD_U( uI varchar(50) PRIMARY KEY ,aI varchar(50)  ,' +
-      'uN varchar(10)  ,hIU varchar(200)  ,biy varchar(10)  ,rn varchar(10)  ,iC varchar(20)  ,' +
-      'uS varchar(4)  ,uCt varchar(11));';
+    let sq ='create table if not exists gtd_u( ui varchar(50) primary key ,ai varchar(50)  ,' +
+      'un varchar(10)  ,hiu varchar(200)  ,biy varchar(10)  ,rn varchar(10)  ,ic varchar(20)  ,' +
+      'us varchar(4)  ,uct varchar(11));';
 
     return sq;
   }
 
   upT():string {
-    let sq='update GTD_U set 1=1 ';
-    if(this._uN!=null){
-      sq=sq+', uN="' + this._uN +'"';
+    let sq='update gtd_u set 1=1 ';
+    if(this._un!=null){
+      sq=sq+', un="' + this._un +'"';
     }
-    if(this._hIU!=null){
-      sq=sq+', hIU="' + this._hIU +'"';
+    if(this._hiu!=null){
+      sq=sq+', hiu="' + this._hiu +'"';
     }
     if(this._biy != null){
       sq = sq + ', biy="' + this._biy +'"';
@@ -121,33 +121,33 @@ export class UTbl  implements ITbl{
     if(this._rn != null){
       sq = sq + ', rn="' + this._rn +'"';
     }
-    if(this._iC != null){
-      sq = sq + ', iC="' + this._iC +'"';
+    if(this._ic != null){
+      sq = sq + ', ic="' + this._ic +'"';
     }
-    if(this._uS != null){
-      sq = sq + ', uS="' + this._uS +'"';
+    if(this._us != null){
+      sq = sq + ', us="' + this._us +'"';
     }
-    if(this._uCt != null){
-      sq = sq + ', uCt="' + this._uCt +'"';
+    if(this._uct != null){
+      sq = sq + ', uct="' + this._uct +'"';
     }
-    sq = sq + ' where uI = "'+ this._uI +'"';
+    sq = sq + ' where ui = "'+ this._ui +'"';
     return sq;
   }
 
   dT():string {
-    let sq = 'delete from GTD_U where uI = "' + this._uI +'"';
+    let sq = 'delete from gtd_u where ui = "' + this._ui +'"';
     return sq;
   }
 
   sloT():string {
-    let sq='select * from GTD_U where uI = "'+ this._uI +'"';
+    let sq='select * from gtd_u where ui = "'+ this._ui +'"';
     return sq;
   }
 
   slT():string {
-    let sq='select * from  GTD_U where  1=1 ';
-    if(this._hIU!=null){
-      sq=sq+' and hIU="' + this._hIU +'"';
+    let sq='select * from  gtd_u where  1=1 ';
+    if(this._hiu!=null){
+      sq=sq+' and hiu="' + this._hiu +'"';
     }
     if(this._biy != null){
       sq = sq + ' and biy="' + this._biy +'"';
@@ -155,14 +155,14 @@ export class UTbl  implements ITbl{
     if(this._rn != null){
       sq = sq + ' and rn="' + this._rn +'"';
     }
-    if(this._iC != null){
-      sq = sq + ' and iC="' + this._iC +'"';
+    if(this._ic != null){
+      sq = sq + ' and ic="' + this._ic +'"';
     }
-    if(this._uS != null){
-      sq = sq + ', uS="' + this._uS +'"';
+    if(this._us != null){
+      sq = sq + ', us="' + this._us +'"';
     }
-    if(this._uCt != null){
-      sq = sq + ' and uCt="' + this._uCt +'"';
+    if(this._uct != null){
+      sq = sq + ' and uct="' + this._uct +'"';
     }
 
     return sq;
@@ -170,21 +170,21 @@ export class UTbl  implements ITbl{
 
   drT():string {
 
-    let sq ='DROP TABLE IF EXISTS GTD_U;';
+    let sq ='drop table if exists gtd_u;';
     return sq;
   }
 
   inT():string {
-    let sq ='insert into GTD_U ' +
-      '( uI ,aI ,uN ,hIU ,biy ,rn ,iC ,uS ,uCt) values("'+ this._uI+'","'+ this._aI+'","'+this._uN+ '"' +
-      ',"'+this._hIU+ '","'+this._biy+ '","'+this._rn+ '","'+this._iC+ '","'+ this._uS + '","'+this._uCt+ '")';
+    let sq ='insert into gtd_u ' +
+      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct) values("'+ this._ui+'","'+ this._ai+'","'+this._un+ '"' +
+      ',"'+this._hiu+ '","'+this._biy+ '","'+this._rn+ '","'+this._ic+ '","'+ this._us + '","'+this._uct+ '")';
     return sq;
   }
 
   rpT():string {
-    let sq ='replace into GTD_U ' +
-      '( uI ,aI ,uN ,hIU ,biy ,rn ,iC ,uS ,uCt) values("'+ this._uI+'","'+ this._aI+'","'+this._uN+ '"' +
-      ',"'+this._hIU+ '","'+this._biy+ '","'+this._rn+ '","'+this._iC+ '","'+ this._uS + '","'+this._uCt+ '")';
+    let sq ='replace into gtd_u ' +
+      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct) values("'+ this._ui+'","'+ this._ai+'","'+this._un+ '"' +
+      ',"'+this._hiu+ '","'+this._biy+ '","'+this._rn+ '","'+this._ic+ '","'+ this._us + '","'+this._uct+ '")';
 
     return sq;
   }

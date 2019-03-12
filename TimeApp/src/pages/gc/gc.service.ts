@@ -25,7 +25,7 @@ export class GcService {
 
       //删除本地群
       let gtbl:GTbl = new GTbl();
-      gtbl.gI = gId;
+      gtbl.gi = gId;
       this.sqlExce.delete(gtbl).then(data=>{
 
       })
