@@ -8,7 +8,8 @@ import {RestFulConfig, UrlEntity} from "../config/restful.config";
  */
 @Injectable()
 export class AuthRestful {
-  constructor(private request: RestfulClient, private config: RestFulConfig) {
+  constructor(private request: RestfulClient,
+              private config: RestFulConfig,) {
   }
 
   // 短信登录 SML
@@ -35,7 +36,6 @@ export class AuthRestful {
 
       let url: UrlEntity = this.config.getRestFulUrl("PL");
       this.request.post(url, loginData.reqPData).then(data => {
-
         //处理返回结果
         loginData.repData = data;
         resolve(loginData);
@@ -55,23 +55,28 @@ export class LoginData {
   reqPData = {
     phoneno:"",
     userpassword:"",
-  }
+  };
 
   //用户验证码请求登陆
   reqAData = {
     phoneno:"",
     authCode:""
-  }
+  };
+
   repData = {
-    code:"",
-    message:"",
     data:{
       "code": "",
       "openid": "",
       "unionid": "",
       "state": ""
     },
-  }
+    errcode:"",
+    errmsg:"",
+    code:"",
+    openid:"",
+    unionid:"",
+    state:"",
+  };
 
   errData = {
   }

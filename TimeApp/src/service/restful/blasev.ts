@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
+import {BsModel} from "./out/bs.model";
 
 
 
@@ -12,43 +13,74 @@ export class BlaRestful{
   constructor(private request: RestfulClient, private config: RestFulConfig) {
   }
   // 黑名单手机/帐户添加 BLA
-  add(bla:Bla):Promise<Bla> {
+  add(bla:Bla):Promise<BsModel<Bla>> {
     //Object.assign(rc,data.rows.item(i));
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("BLA");
-      this.request.post(url, bla.reqData).then(data => {
+      let bs = new BsModel<Bla>();
+      this.request.post(url, bla).then(data => {
+
         //处理返回结果
-        bla.repData.code = data.rc;
-        bla.repData.message = data.rm;
-        bla.repData.data = data.d;
-        resolve(bla);
+        bs.code = data.rc;
+        bs.message = data.rm;
+        bs.data = data.d;
+        resolve(bs);
 
       }).catch(error => {
         //处理返回错误
-        bla.repData.code = "-99";
-        resolve(bla);
+        bs.code = -99;
+        bs.message=error.message;
+        resolve(bs);
       })
     });
   }
 
 
   // 黑名单手机/帐户删除 BLR
-  remove():Promise<any> {
+  remove(bla:Bla):Promise<BsModel<Bla>> {
 
     return new Promise((resolve, reject) => {
+      let url: UrlEntity = this.config.getRestFulUrl("BLR");
+      let bs = new BsModel<Bla>();
+      this.request.post(url, bla).then(data => {
+        //处理返回结果
+        bs.code = data.rc;
+        bs.message = data.rm;
+        resolve(bs);
+
+      }).catch(error => {
+        //处理返回错误
+        bs.code = -99;
+        bs.message=error.message;
+        resolve(bs);
+      })
     });
   }
 
   //黑名单获取 BLG
-  list():Promise<any> {
-
+  list():Promise<BsModel<Array<Bla>>> {
     return new Promise((resolve, reject) => {
+      let url: UrlEntity = this.config.getRestFulUrl("BLG");
+      let bs = new BsModel<Array<Bla>>();
+      this.request.post(url, null).then(data => {
+        //处理返回结果
+        bs.code = data.rc;
+        bs.message = data.rm;
+        bs.data = data.d;
+        resolve(bs);
+
+      }).catch(error => {
+        //处理返回错误
+        bs.code = -99;
+        bs.message=error.message;
+        resolve(bs);
+      })
     });
   }
 
 }
 
-export class Bla {
+/*export class Bla {
   reqData = {
     "ai": "15737921611",
     "mpn": "15737921611",
@@ -62,4 +94,22 @@ export class Bla {
     message: "",
     data: {},
   }
+}*/
+
+//参与人
+export class Bla{
+  //帐户ID
+  ai: string;
+  //手机号码
+  mpn: string;
+  //姓名
+  n: string;
+  //头像
+  a: string;
+  //性别
+  s: string;
+  //生日
+  bd: string;
+
 }
+

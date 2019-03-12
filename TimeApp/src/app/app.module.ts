@@ -37,6 +37,9 @@ import {AuthRestful} from "../service/restful/authsev";
 import {LpService} from "../pages/lp/lp.service";
 import {AgdRestful} from "../service/restful/agdsev";
 import {AssistantService} from "../service/cordova/assistant.service";
+import {BlaRestful} from "../service/restful/blasev";
+import {BacRestful} from "../service/restful/bacsev";
+import {ShaeRestful} from "../service/restful/shaesev";
 
 @NgModule({
   declarations: [
@@ -91,6 +94,9 @@ import {AssistantService} from "../service/cordova/assistant.service";
     AuthRestful,
     LpService,
     AgdRestful,
+    BlaRestful,
+    BacRestful,
+    ShaeRestful,
     AssistantService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

@@ -3,7 +3,7 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import {UtilService} from "../../service/util-service/util.service";
 import {RData, RService} from "./r.service";
 import {DataConfig} from "../../service/config/data.config";
-import {AgdRestful, AgdPro, ContactPerPro} from "../../service/restful/agdsev";
+import {AgdRestful, AgdPro, ContactPerPro, SharePro} from "../../service/restful/agdsev";
 
 
 /**
@@ -162,9 +162,29 @@ export class RPage {
     {
       console.log("testful agd:"+ JSON.stringify(data));
     })*/
+    let testp1 = new SharePro();
+    testp1.oai = "a13661617252";
+    testp1.ompn="13661617252";
+    testp1.d.a.rai="a";
+    testp1.d.a.fc="b";
+    testp1.d.a.ai="c";
+    testp1.d.a.at="d";
+    testp1.d.a.adt="2019/03/11 09:33";
+    testp1.d.a.ap="f";
+    testp1.d.a.ar="g";
+    testp1.d.a.aa="h";
+    testp1.d.a.am="i";
+    let cp = new ContactPerPro();
+    cp.ai ="a15737921611"
+    cp.bd="1990/07/01"
+    cp.mpn="15737921611"
+    cp.n="ding"
+    cp.s="f"
 
-    this.testful.get(testp).then(data=>{
-      console.log("testful get agd:"+ JSON.stringify(data));
+
+    testp1.d.a.ac.push(cp) ;
+    this.testful.share(testp1).then(data=>{
+      console.log("testful share agd:"+ JSON.stringify(data));
     })
   }
 
