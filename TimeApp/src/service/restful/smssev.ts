@@ -12,19 +12,20 @@ export class SmsRestful {
   }
 
   //发送短信验证码 SSMIC
-  getcode(smsData:SmsData): Promise<SmsData> {
+  getcode(smsData:InData): Promise<OutData> {
 
+    let outData:OutData = new OutData();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("SSMIC");
-      this.request.post(url, smsData.reqData).then(data => {
+      this.request.post(url, smsData).then(data => {
         //处理返回结果
-        smsData.repData = data;
-        resolve(smsData);
+        outData = data;
+        resolve(outData);
 
       }).catch(error => {
         //处理返回错误
-        smsData.errData = error;
-        resolve(smsData);
+        outData = error;
+        resolve(outData);
 
       })
     });
@@ -33,18 +34,15 @@ export class SmsRestful {
 
 }
 
-export class SmsData{
-  reqData = {
-    phoneno:"",//手机号码
-  };
+export class InData{
+  phoneno:string; //手机号码
+}
 
-  repData = {
-    code: "",
-    message: "",
-    data: {
-      verifykey:"",
-    },
-  };
-
-  errData = {}
+export class OutData{
+  code: string;
+  message: string;
+  data:Key = new Key();
+}
+export class Key{
+  verifykey:string;
 }

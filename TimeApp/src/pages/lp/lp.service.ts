@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {AuthRestful, LoginData} from "../../service/restful/authsev";
-import {PersonData, PersonRestful} from "../../service/restful/personsev";
+import {PersonRestful} from "../../service/restful/personsev";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {WebsocketService} from "../../ws/websocket.service";
@@ -20,46 +20,58 @@ export class LpService {
   //登录
   login(lpdata: LpData): Promise<LpData> {
     return new Promise((resolve, reject) => {
-      let restloginData: LoginData = new LoginData();
-      restloginData.reqPData.phoneno = lpdata.mobile;
-      restloginData.reqPData.userpassword = lpdata.password;
+      let loginData: LoginData = new LoginData();
+      loginData.phoneno = lpdata.mobile;
+      loginData.userpassword = lpdata.password;
 
       let aTbl:ATbl = new ATbl();
       let uTbl:UTbl = new UTbl();
       // 验证用户名密码
-      this.authRestful.loginbypass(restloginData).then(data => {
-        if (data.repData.errcode != "0"){ //data.repData.errcode == 0 为登陆成功状态
-          throw  data.repData.errmsg;
+      this.authRestful.loginbypass(loginData).then(data => {
+        if (data.errcode != "0"){ //data.repData.errcode == 0 为登陆成功状态
+          throw  data.errmsg;
         }
         //获得token，放入头部header登录码
-        let code = data.repData.code;
+        let code = data.code;
         return this.personRestful.getToken(code);
       }).then(data=>{
         //更新账户表
 
         //账户表赋值
         aTbl.ai = this.util.getUuid();
-        aTbl.an = data.repTokenData.nickname;
-        aTbl.am = data.repTokenData.openid;
+        aTbl.an = data.nickname;
+        aTbl.am = data.openid;
         aTbl.ae = "";
-        aTbl.at = data.repTokenData.access_token;
-        aTbl.aq = "";
+        aTbl.at = data.access_token;
+        aTbl.aq = data.cmq;
 
         //用户表赋值
         uTbl.ui = this.util.getUuid();
         uTbl.ai = aTbl.ai;
-        uTbl.un = data.repTokenData.nickname; //用户名
-        uTbl.hiu = data.repTokenData.avatar;
+        uTbl.un = data.nickname; //用户名
+        uTbl.hiu = data.avatar;
         uTbl.biy = "";
-        uTbl.rn = data.repTokenData.nickname; //真实姓名
+        uTbl.rn = data.nickname; //真实姓名
         uTbl.ic = "";
-        uTbl.us = data.repTokenData.sex;
+        uTbl.us = data.sex;
         uTbl.uct = "";
-
-        return this.sqlExce.save(aTbl);
+        return this.sqlExce.getList<ATbl>(aTbl);
       }).then(data=>{
-        //更新用户表
-        return this.sqlExce.save(uTbl);
+        let atbls:Array<ATbl> = data;
+        if (atbls.length < 1 ){//保存账户表
+          return this.sqlExce.save(aTbl);
+        }else{//更新账户表
+          return this.sqlExce.update(aTbl);
+        }
+      }).then(data=>{
+        return this.sqlExce.getList<UTbl>(uTbl);
+      }).then(data=>{
+        let utbls:Array<UTbl> = data;
+        if (utbls.length < 1 ){//保存用户表
+          return this.sqlExce.save(uTbl);
+        }else{//更新用户表
+          return this.sqlExce.update(uTbl);
+        }
       }).then(data=>{
         // 同步数据（调用brService方法恢复数据）
         //建立websoct连接（调用websoctService）
