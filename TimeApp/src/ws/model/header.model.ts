@@ -7,6 +7,6 @@ export class WsHeader{
   version:string = "";
   sender:string = "";
   datetime:string="";
-  escribe:Array<string>=[];
+  describe:Array<string>=[];
 }
 
