@@ -389,7 +389,7 @@ public class MainVerticle extends AbstractVerticle {
 					ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 				} else {
 					JsonObject retdata = new JsonObject();
-					retdata.put("backuptimestamp", results.get(0).getLong("results"));
+					retdata.put("bts", results.get(0).getLong("backuptimestamp"));
 					
 					ret.put("d", retdata);
 					
