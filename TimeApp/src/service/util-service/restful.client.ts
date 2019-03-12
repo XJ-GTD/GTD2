@@ -14,9 +14,7 @@ export class RestfulClient {
     this.http.setDataSerializer("json");
     this.http.setSSLCertMode("nocheck").then(data=>{
       console.log("----------- BsRestful setSSLCertMode Success : "  +  JSON.stringify(data));
-    }).catch(err=>{
-      console.error("----------- BsRestful setSSLCertMode Error: " + JSON.stringify(err))
-    });
+    })
   }
 
   post(url:UrlEntity, body:any):Promise<any> {
@@ -110,10 +108,7 @@ export class RestfulClient {
     return new Promise((resolve, reject) => {
         if(this.util.isMobile()){
           return this.http.post(url,body,header).then(data=>{
-            console.log(data.status);
-            console.log(data.data); // data received by server
-            console.log(data.headers);
-            resolve(data.data);
+            resolve(JSON.parse(data.data));
           }).catch(e=>{
             reject(e);
           })
