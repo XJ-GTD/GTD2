@@ -12,7 +12,7 @@ import {CudscdPara} from "../model/cudscd.para";
  */
 @Injectable()
 export class CudscdProcess implements MQProcess{
-  constructor(private factory:ProcessFactory,private emitService:EmitService) {
+  constructor(private emitService:EmitService) {
   }
 
 

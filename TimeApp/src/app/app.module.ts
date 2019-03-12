@@ -40,6 +40,12 @@ import {AssistantService} from "../service/cordova/assistant.service";
 import {BlaRestful} from "../service/restful/blasev";
 import {BacRestful} from "../service/restful/bacsev";
 import {ShaeRestful} from "../service/restful/shaesev";
+import {WebsocketService} from "../ws/websocket.service";
+import {DispatchService} from "../ws/dispatch.service";
+import {ProcessFactory} from "../ws/process.factory";
+import {CudscdProcess} from "../ws/process/cudscd.process";
+import {EmitService} from "../service/util-service/emit.service";
+import {FindFriendProcess} from "../ws/process/findfriend.process";
 
 @NgModule({
   declarations: [
@@ -98,6 +104,13 @@ import {ShaeRestful} from "../service/restful/shaesev";
     BacRestful,
     ShaeRestful,
     AssistantService,
+    ProcessFactory,
+    WebsocketService,
+    ProcessFactory,
+    CudscdProcess,
+    DispatchService,
+    EmitService,
+    FindFriendProcess,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

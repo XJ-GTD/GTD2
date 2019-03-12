@@ -8,7 +8,7 @@ export class WsContent {
   option: string = "";
   parmeter: any;
   post: WsContent;
-  processRs:any;
+  processRs:Map<string,any>;
   prvData:WsContent;
 }
 
