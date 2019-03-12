@@ -1,5 +1,17 @@
 import { Injectable } from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
+import {ITbl} from "../sqlite/tbl/itbl";
+import {ATbl} from "../sqlite/tbl/a.tbl";
+import {BTbl} from "../sqlite/tbl/b.tbl";
+import {SpTbl} from "../sqlite/tbl/sp.tbl";
+import {ETbl} from "../sqlite/tbl/e.tbl";
+import {DTbl} from "../sqlite/tbl/d.tbl";
+import {GTbl} from "../sqlite/tbl/g.tbl";
+import {JhTbl} from "../sqlite/tbl/jh.tbl";
+import {BsModel} from "./out/bs.model";
+import {RestFulConfig, UrlEntity} from "../config/restful.config";
+import {OutSharePro} from "./agdsev";
+import {CTbl} from "../sqlite/tbl/c.tbl";
 
 
 
@@ -8,36 +20,139 @@ import {RestfulClient} from "../util-service/restful.client";
  */
 @Injectable()
 export class BacRestful{
-  constructor(private request: RestfulClient) {
+  constructor(private request: RestfulClient, private config: RestFulConfig) {
   }
 
   // 备份 B
-  backup():Promise<any> {
+  backup(backupPro:BackupPro):Promise<BsModel<OutBackupPro>> {
 
     return new Promise((resolve, reject) => {
+      let url: UrlEntity = this.config.getRestFulUrl("B");
+      let bsModel = new BsModel<OutBackupPro>();
+      this.request.post(url, backupPro).then(data => {
+        //处理返回结果
+        bsModel.code = data.rc;
+        bsModel.message = data.rm;
+        bsModel.data = data.d;
+        resolve(bsModel);
+
+      }).catch(error => {
+        //处理返回错误
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        resolve(bsModel);
+
+      })
     });
   }
 
 
   // 恢复 R
-  recover():Promise<any> {
+  recover(backupPro:BackupPro):Promise<BsModel<OutRecoverPro>> {
 
     return new Promise((resolve, reject) => {
+      let url: UrlEntity = this.config.getRestFulUrl("R");
+      let bsModel = new BsModel<OutRecoverPro>();
+      this.request.post(url, backupPro).then(data => {
+        //处理返回结果
+        bsModel.code = data.rc;
+        bsModel.message = data.rm;
+        bsModel.data = data.d;
+        resolve(bsModel);
+
+      }).catch(error => {
+        //处理返回错误
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        resolve(bsModel);
+
+      })
     });
   }
 
-  // 备份查询 BS
-  getlastest():Promise<any> {
+  // 获取日历备份时间戳 BS
+  getlastest():Promise<BsModel<OutBackupPro>> {
 
     return new Promise((resolve, reject) => {
+      let url: UrlEntity = this.config.getRestFulUrl("BS");
+      let bsModel = new BsModel<OutBackupPro>();
+      this.request.get(url).then(data => {
+        //处理返回结果
+        bsModel.code = data.rc;
+        bsModel.message = data.rm;
+        bsModel.data = data.d;
+        resolve(bsModel);
+
+      }).catch(error => {
+        //处理返回错误
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        resolve(bsModel);
+
+      })
     });
   }
 }
 
 //备份入参
-export class backupPro{
+export class BackupPro{
+  //操作帐户ID
   oai:string ;
+  //操作手机号码
   ompn:string;
-  c:object;
-  d:{bts:string};
+  //上下文
+  c:any;
+  d:BackupProSub = new BackupProSub();
+}
+
+export class BackupProSub{
+  //备份时间戳
+  bts:Number;
+  //本地日历数据
+  c:Array<ITbl> = new Array<CTbl>();
+  //本地联系人数据
+  b:Array<ITbl> = new Array<BTbl>();
+  //获取特殊日历
+  sp:Array<ITbl> = new Array<SpTbl>();
+  //获取提醒数据
+  e:Array<ITbl> = new Array<ETbl>();
+  //获取日程参与人信息
+  d:Array<ITbl> = new Array<DTbl>();
+  //获取群组信息
+  g:Array<ITbl> = new Array<GTbl>();
+  //获取本地计划
+  jh:Array<ITbl> = new Array<JhTbl>();
+}
+export class OutBackupPro{
+
+  bts :string;
+
+}
+//还原入参
+export class RecoverPro{
+  //操作帐户ID
+  oai:string ;
+  //操作手机号码
+  ompn:string;
+  //上下文
+  c:any;
+  d:BackupProSub = new BackupProSub();
+}
+export class OutRecoverPro{
+
+  //本地日历数据
+  c:Array<ITbl> = new Array<CTbl>();
+  //获取特殊日历
+  sp:Array<ITbl> = new Array<SpTbl>();
+  //获取提醒数据
+  e:Array<ITbl> = new Array<ETbl>();
+  //获取日程参与人信息
+  d:Array<ITbl> = new Array<DTbl>();
+  //本地联系人数据
+  b:Array<ITbl> = new Array<BTbl>();
+  //获取群组信息
+  g:Array<ITbl> = new Array<GTbl>();
+  //获取本地计划
+  jh:Array<ITbl> = new Array<JhTbl>();
+
 }

@@ -179,7 +179,7 @@ export class SharePro{
   //操作手机号码
   ompn:string;
   //上下文（可以为空）
-  c:object;
+  c:any;
   //日程
   d:ShareProSub = new ShareProSub();
 }
