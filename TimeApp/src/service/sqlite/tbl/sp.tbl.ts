@@ -209,7 +209,18 @@ export class SpTbl  implements ITbl {
 
     return sq;
   }
-
+  clp(){
+    this._spi="";
+    this._si="";
+    this._spn="";
+    this._sd="";
+    this._st="";
+    this._ed="";
+    this._et="";
+    this._ji="";
+    this._bz="";
+    this._sta="";
+  }
 }
 
 

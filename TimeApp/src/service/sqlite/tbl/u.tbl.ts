@@ -188,7 +188,25 @@ export class UTbl  implements ITbl{
 
     return sq;
   }
+  clp(){
+  this._ui ="";
 
+  this._ai ="";
+
+  this._un ="";
+
+  this._hiu ="";
+
+  this._biy ="";
+
+  this._rn ="";
+
+  this._ic ="";
+
+  this._us ="";
+
+  this._uct ="";
+  }
 
 }
 

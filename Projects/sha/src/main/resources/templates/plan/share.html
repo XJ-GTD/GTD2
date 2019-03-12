@@ -17,11 +17,13 @@
   integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
   crossorigin="anonymous">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<link rel="stylesheet" href="/sha/static/xiaoji/xiaoji-fonts.css">
 
 <title th:text="${plan.pn.getString('pt')} + ' via 冥王星'">分享计划 via 冥王星</title>
 
 <style type="text/css">
 body {
+  font-family: "PingFangSC-Regular";
   background: rgb(29, 36, 36);
   color: #fff;
   display: table-cell;
@@ -52,6 +54,30 @@ body {
   flex-grow: 1;
 }
 
+.agenda-content:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0.5vmin;
+  background: #b72537;
+  margin-left: -4.4vmin;
+  margin-top: 10px;
+  margin-bottom: -18px;
+}
+
+.plan-color-pointer {
+  margin: auto;
+  color: rgb(183, 37, 55);
+  font-size: 2vmin;
+  font-weight: 200;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  z-index: 9999;
+}
+
 .app-icon {
   width: 20vmin;
   margin: auto;
@@ -61,21 +87,12 @@ body {
 }
 
 .agenda-card-past {
-  width: 70vmin;
-  background: rgb(59, 102, 106);
-  border-radius: .25rem;
-  padding: 8px 16px;
-  max-width: 450px;
-  min-width: 200px;
+  opacity:0.4;
+  font-family: "PingFangSC-Regular";
 }
 
 .agenda-card {
-  width: 70vmin;
-  background: rgb(192, 10, 35);
-  border-radius: .25rem;
-  padding: 8px 16px;
-  max-width: 450px;
-  min-width: 200px;
+  font-family: "PingFangSC-Regular";
 }
 
 .app-user-avatar {
@@ -89,9 +106,17 @@ body {
 
 .app-user-text {
   font-weight: 200;
-  margin: auto;
   display: block;
-  font-size: 2.2vmin;
+  font-size: 2.8vmin;
+  color: #999999;
+}
+
+.app-agenda-title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 4.5vmin;
+  margin-bottom: 0;
 }
 
 .app-download-text {
@@ -101,6 +126,18 @@ body {
   font-size: 2.2vmin;
   width: 60vw;
   padding: 2vmin;
+}
+
+.right-off {
+  padding-right: 0;
+}
+
+.left-off {
+  padding-left: 0;
+}
+
+.left-5 {
+  padding-left: 5px;
 }
 
 .app-store-button {
@@ -124,31 +161,31 @@ body {
 <div class="full">
 <div class="main">
   <div class="d-flex flex-row justify-content-center">
-  <img class="agenda-type-image" src="/sha/static/images/shares/Anxious.png">
+  <img class="agenda-type-image" src="/sha/static/images/shares/Celebration.png">
   </div>
 
   <div class="d-flex flex-row justify-content-center">
   <h1 class="text-center" th:text="${plan.pn.getString('pt')}">分享计划</h1>
   </div>
 
-  <div th:each="agenda,iterStat : ${plan.pa}" class="d-flex flex-row justify-content-center mt-2">
-  <div>
-	  <div th:if="${(iterStat.index == 0) or (agenda.getString('adt') != plan.pa.getJsonObject(iterStat.index - 1).getString('adt'))}" class="d-flex flex-row justify-content-center mb-2">
-      <p class="app-user-text" th:text="${agenda.getString('adt')}">1900-01-01</p>
-	  </div>
-	  <div class="d-flex flex-row justify-content-center">
-		  <div th:class="${(#calendars.format(today,'yyyy-MM-dd') > agenda.getString('adt'))? 'agenda-card-past' : 'agenda-card'}">
-		  <div class="d-flex flex-row justify-content-center">
-		    <h5 class="text-center" th:text="${agenda.getString('at')}">日程</h5>
-		  </div>
-		  <div class="d-flex flex-row justify-content-center">
-		    <p class="app-user-text text-center" th:text="${agenda.getString('am')}">日程描述</p>
-		  </div>
-		  </div>
-	  </div>
+  <div th:each="agenda,iterStat : ${plan.pa}" class="d-flex flex-row justify-content-center mt-2" th:classappend="${(#calendars.format(today,'yyyy-MM-dd') > #strings.substring(agenda.getString('adt'),0,10))? 'agenda-card-past' : 'agenda-card'}">
+  <div class="container-fluid">
+    <div th:if="${(iterStat.index == 0) or (#strings.substring(agenda.getString('adt'),0,4) != #strings.substring(plan.pa.getJsonObject(iterStat.index - 1).getString('adt'),0,4))}" class="d-flex flex-row justify-content-start mb-2">
+      <h3 style="color: #666666;" th:text="${#strings.substring(agenda.getString('adt'),0,4)}">1900</h3>
+    </div>
+    <div class="d-flex flex-row justify-content-center align-items-start row">
+      <div th:if="${(iterStat.index == 0) or (agenda.getString('adt') != plan.pa.getJsonObject(iterStat.index - 1).getString('adt'))}" class="d-flex justify-content-start col-2 right-off" th:text="${#strings.substring(agenda.getString('adt'),5,10)}">
+      </div>
+      <div th:unless="${(iterStat.index == 0) or (agenda.getString('adt') != plan.pa.getJsonObject(iterStat.index - 1).getString('adt'))}" class="d-flex justify-content-start col-2 right-off">
+      </div>
+      <div class="d-flex flex-row justify-content-start col-2 right-off left-off">全天<span class="plan-color-pointer"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
+      <div class="d-flex flex-column justify-content-start col-8 left-off" th:classappend="${((iterStat.count == plan.pa.size())? false : (agenda.getString('adt') == plan.pa.getJsonObject(iterStat.index).getString('adt')))}? 'agenda-content'">
+        <p class="text-left app-agenda-title" th:text="${agenda.getString('at')}">日程</p>
+        <p class="app-user-text text-left" th:text="${agenda.getString('am')}">日程描述</p>
+      </div>
+    </div>
   </div>
   </div>
-  </th:block>
 </div>
 <div class="footer">
   <div class="d-flex flex-row justify-content-center">
