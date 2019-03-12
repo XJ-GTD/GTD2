@@ -16,15 +16,15 @@ import {DataConfig} from "../../service/config/data.config";
   template:'<!--首页侧边栏-->' +
   '<ion-menu [content]="ha" side="left" swipeEnabled = "false" type="scalePush">' +
   '  <ion-content>' +
-  '    <ion-item margin-top margin-bottom (click)="toUc()" [hidden]="uo.uty == 0" id="tag1" style="height:185px" no-lines>' +
+  '    <ion-item margin-top margin-bottom (click)="toUc()" id="tag1" style="height:185px" no-lines>' +
   '      <ion-avatar item-start>' +
   '        <img [src]="imgurl" class="img_size">' +
   '      </ion-avatar>' +
-  '      <h1 [innerHtml]="uo.uN"></h1>' +
-  '      <span [innerHtml]="uo.uCt" class="fontcol"></span>' +
+  '      <h1></h1>' +
+  '      <span class="fontcol"></span>' +
   '    </ion-item>' +
   '' +
-  '    <ion-item [hidden]="uo.uty != 0" (click)="toUb()" no-lines  style="height:185px" >' +
+  '    <ion-item (click)="toUb()" no-lines  style="height:185px" >' +
   '      <button ion-button class="sign_button">' +
   '        登录/注册' +
   '      </button>' +

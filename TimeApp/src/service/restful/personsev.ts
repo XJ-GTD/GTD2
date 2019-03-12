@@ -18,11 +18,11 @@ export class PersonRestful {
 
     let personData:PersonData = new PersonData();
     return new Promise((resolve, reject) => {
-      let url: UrlEntity = this.config.getRestFulUrl("TK");
+      let url: UrlEntity = this.config.getRestFulUrl("AAT");
       url.url = url.url + '?appid=d3d3Lmd1b2JhYS5jb20&secret=c2VjcmV0QHd3dy5ndW9iYWEuY29t&code='+ code +'&grant_type=any';
       this.request.get(url).then(data => {
         //处理返回结果
-        personData.repGetData = data;
+        personData.repTokenData = data;
         resolve(personData);
 
       }).catch(error => {
@@ -183,6 +183,31 @@ export class SignupData {
 }
 
 export class PersonData {
+
+  repTokenData = {
+    _id:"",
+    phoneno  :"",
+    verifykey  :"",
+    verifycode  :"",
+    userpassword  :"",
+    openid  :"",
+    nickname: "",   //姓名
+    password:"",
+    unionid:"",
+    sex:"",
+    province:"",
+    city: "",
+    country: "",
+    avatar: "",     //头像
+    privilege:[],
+    code:"",
+    state:"",
+    appid:"",
+    access_token:"",
+    refresh_token:"",
+    access_time:"",
+    expires_in:"",
+  };
 
   reqGet = {
     phoneno: "",

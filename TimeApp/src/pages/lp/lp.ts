@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
 import { UtilService } from "../../service/util-service/util.service";
 import {LpData, LpService} from "./lp.service";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 登陆（密码） page.
@@ -129,6 +130,9 @@ export class LpPage {
     lp.password = this.accountPassword;
     this.lpService.login(lp).then(data=> {
        console.log(data);
+       //跳转首页
+       console.log('LpPage跳转MPage');
+       this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
        // if (data.code == 0) {
        //   this.webSocket.close();
        //   // this.userService.getUo();
