@@ -12,11 +12,11 @@ export class UtilService {
   wins: any = window;//window对象
   constructor(public device: Device ) {}
 
-  public static rand(min, max ):number {
+  public rand(min, max ):number {
     return Math.random() * ( max - min ) + min;
   }
 
-  public static randInt(min, max ):number {
+  public randInt(min, max ):number {
     return Math.floor( min + Math.random() * ( max - min + 1 ) );
   };
 

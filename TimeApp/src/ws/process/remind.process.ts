@@ -23,8 +23,6 @@ export class RemindProcess implements MQProcess{
       content.prvData
       //处理结果
       content.processRs
-      //判断后处理处理
-      content.post
     })
   }
 

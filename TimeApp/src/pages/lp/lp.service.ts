@@ -1,18 +1,17 @@
 import {Injectable} from "@angular/core";
-import {RestFulConfig} from "../../service/config/restful.config";
-import {UtilService} from "../../service/util-service/util.service";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {SmsRestful} from "../../service/restful/smssev";
 import {AuthRestful, LoginData} from "../../service/restful/authsev";
 import {PersonData, PersonRestful} from "../../service/restful/personsev";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
+import {WebsocketService} from "../../ws/websocket.service";
 
 @Injectable()
 export class LpService {
   constructor(private authRestful: AuthRestful,
               private sqlExce: SqliteExec,
-              private personRestful: PersonRestful
+              private personRestful: PersonRestful,
+              private websocketService:WebsocketService
   ) {
   }
 
@@ -47,6 +46,7 @@ export class LpService {
         //更新账户表
         // 同步数据（调用brService方法恢复数据）
         //建立websoct连接（调用websoctService）
+        this.websocketService.connect();
         resolve(lpdata)
       }).catch(error=>{
 

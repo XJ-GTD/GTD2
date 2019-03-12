@@ -40,6 +40,19 @@ import {AssistantService} from "../service/cordova/assistant.service";
 import {BlaRestful} from "../service/restful/blasev";
 import {BacRestful} from "../service/restful/bacsev";
 import {ShaeRestful} from "../service/restful/shaesev";
+import {WebsocketService} from "../ws/websocket.service";
+import {DispatchService} from "../ws/dispatch.service";
+import {ProcessFactory} from "../ws/process.factory";
+import {CudscdProcess} from "../ws/process/cudscd.process";
+import {EmitService} from "../service/util-service/emit.service";
+import {FindFriendProcess} from "../ws/process/findfriend.process";
+import {FindScdProcess} from "../ws/process/findscd.process";
+import {RemindProcess} from "../ws/process/remind.process";
+import {SendProcess} from "../ws/process/send.process";
+import {SpeechProcess} from "../ws/process/speech.process";
+import {ThirdProcess} from "../ws/process/third.process";
+import {DefaultProcess} from "../ws/process/default.process";
+import {FeedbackService} from "../service/cordova/feedback.service";
 
 @NgModule({
   declarations: [
@@ -98,6 +111,20 @@ import {ShaeRestful} from "../service/restful/shaesev";
     BacRestful,
     ShaeRestful,
     AssistantService,
+    ProcessFactory,
+    WebsocketService,
+    ProcessFactory,
+    CudscdProcess,
+    DispatchService,
+    EmitService,
+    FindFriendProcess,
+    FindScdProcess,
+    RemindProcess,
+    SendProcess,
+    SpeechProcess,
+    ThirdProcess,
+    DefaultProcess,
+    FeedbackService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
