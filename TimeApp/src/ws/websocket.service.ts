@@ -54,7 +54,9 @@ export class WebsocketService {
       this.client.connect(this.login, this.password, frame => {
         console.log(this.client);
         this.subscription = this.client.subscribe("/queue/" + this.queue, data => {
-          this.dispatchService.dispatch(data.body);
+          this.dispatchService.dispatch(data.body).then(data=>{
+            console.log("message====>" + data + "=====>处理完毕");
+          })
         });
       }, error => {
         console.log('错误回调webSocket error! :' + error);

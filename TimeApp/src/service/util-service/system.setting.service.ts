@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {NativeAudio} from "@ionic-native/native-audio";
-import {XiaojiAssistantService} from "../cordova/assistant.service";
+import {AssistantService} from "../cordova/assistant.service";
 
 /**
  * 系统设置方法类
@@ -19,7 +19,7 @@ export class SystemSettingService {
 
   constructor(private localNotifications: LocalNotifications,
               private nativeAudio: NativeAudio,
-              private xiaojiSpeech: XiaojiAssistantService) {
+              private xiaojiSpeech: AssistantService) {
     //id为音频文件的唯一ID
     //assetPath音频资产的相对路径或绝对URL（包括http：//）
     //官网还有更多的配置，这里只需要两个参数就行了，后面的回调记得带上
