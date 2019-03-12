@@ -35,9 +35,9 @@ export class RestFulConfig {
     this.urlLs = new Map<string, UrlEntity>();
     let sPro = new STbl();
     sPro.st = "URL";
-    return this.sqlitexec.getList(sPro).then(sPros => {
+    return this.sqlitexec.getList<STbl>(sPro).then(sPros => {
       for (let i = 0;i<sPros.length;i++) {
-        let data = sPros.item(i);
+        let data = sPros[i];
         let urlentity: UrlEntity = new UrlEntity();
         urlentity.key = data.yk;
         urlentity.url = data.yv;

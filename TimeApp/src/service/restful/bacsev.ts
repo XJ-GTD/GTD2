@@ -125,6 +125,7 @@ export class BackupProSub{
   bx:Array<ITbl> = new Array<BxTbl>();
   //获取本地计划
   jh:Array<ITbl> = new Array<JhTbl>();
+
 }
 export class OutBackupPro{
 
