@@ -50,7 +50,7 @@ export class LsService {
       // 验证用户名密码
       this.authRestful.loginbypass(restloginData).then(data => {
         if (data.repData.code != null){
-          throw  data.repData.message;
+          throw  data.repData.errmsg;
         }
 
         //获取登陆用户信息
