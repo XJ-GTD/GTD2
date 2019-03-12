@@ -46,6 +46,13 @@ import {ProcessFactory} from "../ws/process.factory";
 import {CudscdProcess} from "../ws/process/cudscd.process";
 import {EmitService} from "../service/util-service/emit.service";
 import {FindFriendProcess} from "../ws/process/findfriend.process";
+import {FindScdProcess} from "../ws/process/findscd.process";
+import {RemindProcess} from "../ws/process/remind.process";
+import {SendProcess} from "../ws/process/send.process";
+import {SpeechProcess} from "../ws/process/speech.process";
+import {ThirdProcess} from "../ws/process/third.process";
+import {DefaultProcess} from "../ws/process/default.process";
+import {FeedbackService} from "../service/cordova/feedback.service";
 
 @NgModule({
   declarations: [
@@ -111,6 +118,13 @@ import {FindFriendProcess} from "../ws/process/findfriend.process";
     DispatchService,
     EmitService,
     FindFriendProcess,
+    FindScdProcess,
+    RemindProcess,
+    SendProcess,
+    SpeechProcess,
+    ThirdProcess,
+    DefaultProcess,
+    FeedbackService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

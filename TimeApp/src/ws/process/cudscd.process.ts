@@ -27,8 +27,6 @@ export class CudscdProcess implements MQProcess{
       //处理结果
       //emit
       this.emitService.emitDatas(content.processRs);
-      //判断后处理处理
-      content.post
     })
   }
 

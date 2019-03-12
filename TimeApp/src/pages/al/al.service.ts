@@ -122,8 +122,11 @@ export class AlService {
       // TODO 系统设置 restHttps设置 用户偏好设置 用户信息 。。。
       this.restfulConfig.init().then(data =>{
         alData.text = "系统设置完成";
+        resolve(alData)
       }).catch(error =>{
         alData.text = "系统设置失败";
+
+        resolve(alData)
       });
 
     });
@@ -136,8 +139,15 @@ export class AlService {
       let aTbl: ATbl = new ATbl();
       let alData:AlData = new AlData();
       this.sqlExce.getList(aTbl).then(data=>{
-        alData.text = "用户已登录";
-        alData.islogin = true;
+        if (data.length > 0){
+          alData.text = "用户已登录";
+          alData.islogin = true;
+        }else{
+          alData.text = "用户未登录";
+          alData.islogin = false;
+          resolve(alData);
+        }
+
         resolve(alData);
       }).catch(err=>{
         alData.text = "用户未登录";

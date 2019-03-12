@@ -20,8 +20,7 @@ export class SpeechProcess implements MQProcess {
     a: "AN",//直接读文本播报
     b: "AP" //本地语言查询后参数替换播报
   }
-  constructor(private factory: ProcessFactory,
-              private assistant: AssistantService,
+  constructor(private assistant: AssistantService,
               private sqliteExec: SqliteExec,
               private utilService: UtilService) {
   }
@@ -62,15 +61,9 @@ export class SpeechProcess implements MQProcess {
       this.assistant.speakText(speakText, (data) => {
         //处理结果
         content.processRs = content.prvData.processRs
-        //判断后处理处理
 
-        if (!content.post) {
-          let wsContent: WsContent = content.post;
-          wsContent.prvData = content;
-          this.factory.findProcess(content.post.option).go(wsContent).then(data => {
-            resolve(content);
-          })
-        }
+        resolve(content);
+
       });
     })
   }
