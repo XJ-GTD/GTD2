@@ -99,6 +99,9 @@ public class MainVerticle extends AbstractVerticle {
 			return;
 		}
 		
+		String productid = ctx.request().getHeader("pi") == null ? "None product id." : ctx.request().getHeader("pi");
+		String productversion = ctx.request().getHeader("pv") == null ? "None product version." : ctx.request().getHeader("pv");
+		
 		JsonObject req = ctx.getBodyAsJson();
 		
 		if (req == null || req.isEmpty()) {
@@ -145,7 +148,11 @@ public class MainVerticle extends AbstractVerticle {
 		if (futures.size() > 0) {
 			CompositeFuture.all(Arrays.asList(futures.toArray(new Future[futures.size()]))).setHandler(handler -> {
 				if (handler.succeeded()) {
-					savelatest(accountid, backuptimestamp);
+					savelatest(accountid, productid, productversion, backuptimestamp);
+					
+					JsonObject retdata = new JsonObject().put("bts", backuptimestamp);
+					ret.put("d", retdata);
+					
 					ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 				} else {
 					ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
@@ -346,8 +353,13 @@ public class MainVerticle extends AbstractVerticle {
 		});
 	}
 	
-	private void savelatest(String accountid, Long backuptimestamp) {
-		mongodb.save("bac_latest", new JsonObject().put("accountid", accountid).put("backuptimestamp", backuptimestamp), save -> {});
+	private void savelatest(String accountid, String productid, String productversion, Long backuptimestamp) {
+		mongodb.save("bac_latest",
+				new JsonObject()
+				.put("productid", productid)
+				.put("productversion", productversion)
+				.put("accountid", accountid)
+				.put("backuptimestamp", backuptimestamp), save -> {});
 	}
 	
 	private void latest(RoutingContext ctx) {
