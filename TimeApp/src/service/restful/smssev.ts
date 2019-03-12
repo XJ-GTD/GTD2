@@ -17,9 +17,9 @@ export class SmsRestful {
   getcode(smsData:SmsData): Promise<SmsData> {
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("SSMIC");
-      this.request.post(url, smsData.repData).then(data => {
+      this.request.post(url, smsData.reqData).then(data => {
         //处理返回结果
-        smsData.reqData = data;
+        smsData.repData = data;
         resolve(smsData);
 
       }).catch(error => {
@@ -40,7 +40,9 @@ export class SmsData{
   repData = {
     code: "",
     message: "",
-    data: {},
+    data: {
+      verifykey:"",
+    },
   }
 
   errData = {}

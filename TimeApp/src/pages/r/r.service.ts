@@ -22,10 +22,13 @@ export class RService {
       restData.reqData.phoneno = rdata.mobile;
       restData.reqData.verifycode = rdata.authCode;
       restData.reqData.userpassword = rdata.password;
+      restData.reqData.verifykey = rdata.verifykey;
+      restData.reqData.username = rdata.username;
       return this.personRestful.signup(restData).then(data => {
         if (data.repData.code != "0")
           reject(data.repData.message);
 
+        console.log("注册输出 text :"+ JSON.stringify(data));
         //登陆(密码)service登陆逻辑
         let lpdata: LpData = new LpData();
         lpdata.mobile = rdata.mobile;
@@ -34,7 +37,7 @@ export class RService {
         return this.lpService.login(lpdata);
 
       }).then(data => {
-
+        console.log("testful text:"+ JSON.stringify(data));
         if (data.retData.code == "0") {
           resolve(rdata)
         } else {
@@ -67,4 +70,6 @@ export class RData {
   mobile: string = "";
   password: string = "";
   authCode: string = "";
+  verifykey:string = "";
+  username:string="";
 }

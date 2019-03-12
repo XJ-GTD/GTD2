@@ -199,6 +199,7 @@ export class RPage {
   }
 
   register() {
+
     if(this.errorCode == undefined)   //判断手机号是否为空
       this.errorCode = 0;
     else if (this.rdata.password == null || this.rdata.password == "" || this.rdata.password == undefined)     //判断密码是否为空
@@ -208,6 +209,8 @@ export class RPage {
     else
     {
       this.checkBoxClickFlag=false;
+
+      console.log("signup::111111111" + this.rdata)
       //注册成功
       this.rService.signup(this.rdata).then(data => {
         console.debug("注册返回信息::" + JSON.stringify(data));
@@ -245,7 +248,8 @@ export class RPage {
     if(this.errorCode == 3){
       this.rService.sc(this.rdata).then(data => {
         console.log("sc::" + data)
-        console.log("sc:: verifykey :" + this.data.reqData.data.verifykey)
+        console.log("sc:: verifykey :" + data.repData.data.verifykey)
+        this.rdata.verifykey = data.repData.data.verifykey;
         /*let alert = this.alertCtrl.create({
           title:'提示信息',
           subTitle: data.repData.message,
