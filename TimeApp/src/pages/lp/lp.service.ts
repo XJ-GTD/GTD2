@@ -35,11 +35,11 @@ export class LpService {
       }).then(data=>{
         //更新用户表
         let uTbl:UTbl = new UTbl();
-        uTbl.uI = data.repSelfData.data._id;
-        uTbl.aI = data.repSelfData.data.openid;
-        uTbl.uN = data.repSelfData.data.nickname;
-        uTbl.hIU = data.repSelfData.data.avatar;
-        uTbl.uS = data.repSelfData.data.sex;
+        uTbl.ui = data.repSelfData.data._id;
+        uTbl.ai = data.repSelfData.data.openid;
+        uTbl.un = data.repSelfData.data.nickname;
+        uTbl.hiu = data.repSelfData.data.avatar;
+        uTbl.us = data.repSelfData.data.sex;
 
         this.sqlExce.save(uTbl);
         let aTbl:ATbl = new ATbl();

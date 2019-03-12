@@ -6,9 +6,9 @@ import {ITbl} from "./itbl";
  */
 export class SpTbl  implements ITbl {
 
-  private _spI: string="";
-  private _sI: string="";
-  private _spN: string="";
+  private _spi: string="";
+  private _si: string="";
+  private _spn: string="";
   private _sd: string="";
   private _st: string="";
   private _ed: string="";
@@ -18,28 +18,28 @@ export class SpTbl  implements ITbl {
   private _sta: string="";
 
 
-  get spI(): string {
-    return this._spI;
+  get spi(): string {
+    return this._spi;
   }
 
-  set spI(value: string) {
-    this._spI = value;
+  set spi(value: string) {
+    this._spi = value;
   }
 
-  get sI(): string {
-    return this._sI;
+  get si(): string {
+    return this._si;
   }
 
-  set sI(value: string) {
-    this._sI = value;
+  set si(value: string) {
+    this._si = value;
   }
 
-  get spN(): string {
-    return this._spN;
+  get spn(): string {
+    return this._spn;
   }
 
-  set spN(value: string) {
-    this._spN = value;
+  set spn(value: string) {
+    this._spn = value;
   }
 
   get sd(): string {
@@ -101,8 +101,8 @@ export class SpTbl  implements ITbl {
 
   cT():string {
 
-    let sq =' CREATE TABLE IF NOT EXISTS GTD_SP(spI varchar(50) PRIMARY KEY ,sI varchar(50)  ,' +
-      'spN varchar(50)  ,sd varchar(20)' +
+    let sq =' create table if not exists gtd_sp(spi varchar(50) primary key ,si varchar(50)  ,' +
+      'spn varchar(50)  ,sd varchar(20)' +
       '  ,st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,ji varchar(50)  ,bz varchar(50)  ,' +
       'sta varchar(4));';
 
@@ -110,12 +110,12 @@ export class SpTbl  implements ITbl {
   }
 
   upT():string {
-    let sq='update GTD_SP set 1=1 ';
-    if(this._sI!=null){
-      sq=sq+', sI="' + this._sI +'"';
+    let sq='update gtd_sp set 1=1 ';
+    if(this._si!=null){
+      sq=sq+', si="' + this._si +'"';
     }
-    if(this._spN!=null){
-      sq=sq+', spN="' + this._spN +'"';
+    if(this._spn!=null){
+      sq=sq+', spn="' + this._spn +'"';
     }
     if(this._sd != null){
       sq = sq + ', sd="' + this._sd +'"';
@@ -138,27 +138,27 @@ export class SpTbl  implements ITbl {
     if(this._sta != null){
       sq = sq + ', sta="' + this._sta +'"';
     }
-    sq = sq + ' where spI = "'+ this._spI +'"';
+    sq = sq + ' where spi = "'+ this._spi +'"';
     return sq;
   }
 
   dT():string {
-    let sq = 'delete from GTD_SP where spI = "' + this._spI +'"';
+    let sq = 'delete from gtd_sp where spi = "' + this._spi +'"';
     return sq;
   }
 
   sloT():string {
-    let sq='select * from GTD_SP where spI = "'+ this._spI +'"';
+    let sq='select * from gtd_sp where spi = "'+ this._spi +'"';
     return sq;
   }
 
   slT():string {
-    let sq='select * from  GTD_SP where  1=1 ';
-    if(this._sI!=null){
-      sq=sq+' and sI="' + this._sI +'"';
+    let sq='select * from  gtd_sp where  1=1 ';
+    if(this._si!=null){
+      sq=sq+' and si="' + this._si +'"';
     }
-    if(this._spN!=null){
-      sq=sq+' and spN="' + this._spN +'"';
+    if(this._spn!=null){
+      sq=sq+' and spn="' + this._spn +'"';
     }
     if(this._sd != null){
       sq = sq + ' and sd="' + this._sd +'"';
@@ -181,8 +181,8 @@ export class SpTbl  implements ITbl {
     if(this._sta != null){
       sq = sq + ' and sta="' + this._sta +'"';
     }
-    if(this._spI != null){
-      sq = sq + ' and spI="' + this._spI +'"';
+    if(this._spi != null){
+      sq = sq + ' and spi="' + this._spi +'"';
     }
 
     return sq;
@@ -190,21 +190,21 @@ export class SpTbl  implements ITbl {
 
   drT():string {
 
-    let sq ='DROP TABLE IF EXISTS GTD_SP;';
+    let sq ='drop table if exists gtd_sp;';
     return sq;
   }
 
   inT():string {
-    let sq ='insert into GTD_SP ' +
-      '( spI ,sI ,spN ,sd ,st ,ed ,et ,ji ,bz ,sta) values("'+ this._spI+'","'+ this._sI+'","'+this._spN+ '"' +
+    let sq ='insert into gtd_sp ' +
+      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta) values("'+ this._spi+'","'+ this._si+'","'+this._spn+ '"' +
       ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._ji+ '","'+this._bz+ '","'+this._sta+ '")';
 
     return sq;
   }
 
   rpT():string {
-    let sq ='replace into GTD_SP ' +
-      '( spI ,sI ,spN ,sd ,st ,ed ,et ,ji ,bz ,sta) values("'+ this._spI+'","'+ this._sI+'","'+this._spN+ '"' +
+    let sq ='replace into gtd_sp ' +
+      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta) values("'+ this._spi+'","'+ this._si+'","'+this._spn+ '"' +
       ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._ji+ '","'+this._bz+ '","'+this._sta+ '")';
 
     return sq;

@@ -63,14 +63,14 @@ export class YTbl implements ITbl {
 
   cT(): string {
 
-    let sq = 'CREATE TABLE IF NOT EXISTS GTD_Y(  yi varchar(50) PRIMARY KEY ,yt VARCHAR(20)  ,' +
-      'ytn VARCHAR(20)  ,yn VARCHAR(20)  ,yk VARCHAR(20)  ,yv VARCHAR(400)   );';
+    let sq = 'create table if not exists gtd_y(  yi varchar(50) primary key ,yt varchar(20)  ,' +
+      'ytn varchar(20)  ,yn varchar(20)  ,yk varchar(20)  ,yv varchar(400)   );';
 
     return sq;
   }
 
   upT(): string {
-    let sq = 'update GTD_Y set 1=1 ';
+    let sq = 'update gtd_y set 1=1 ';
     if (this._yt != null) {
       sq = sq + ', yt="' + this._yt + '"';
     }
@@ -91,17 +91,17 @@ export class YTbl implements ITbl {
   }
 
   dT(): string {
-    let sq = 'delete from GTD_Y where yi = "' + this._yi + '"';
+    let sq = 'delete from gtd_y where yi = "' + this._yi + '"';
     return sq;
   }
 
   sloT(): string {
-    let sq = 'select * from GTD_Y where yi = "' + this._yi + '"';
+    let sq = 'select * from gtd_y where yi = "' + this._yi + '"';
     return sq;
   }
 
   slT(): string {
-    let sq = 'select * from  GTD_Y where  1=1 ';
+    let sq = 'select * from  gtd_y where  1=1 ';
     if (this._yt != null) {
       sq = sq + ' and yt="' + this._yt + '"';
     }
@@ -122,13 +122,13 @@ export class YTbl implements ITbl {
 
   drT(): string {
 
-    let sq = 'DROP TABLE IF EXISTS GTD_Y;';
+    let sq = 'drop table if exists gtd_y;';
     return sq;
   }
 
   inT(): string {
 
-    let sq = 'insert into GTD_Y ' +
+    let sq = 'insert into gtd_y ' +
       '(  yi ,yt ,ytn ,yn ,yk ,yv) values("' + this._yi + '","' + this._yt + '","' + this._ytn + '"' +
       ',"' + this._yn + '","' + this._yk + '","' + this._yv + '")';
 
@@ -137,7 +137,7 @@ export class YTbl implements ITbl {
 
   rpT(): string {
 
-    let sq = 'replace into GTD_Y ' +
+    let sq = 'replace into gtd_y ' +
       '(  yi ,yt ,ytn ,yn ,yk ,yv) values("' + this._yi + '","' + this._yt + '","' + this._ytn + '"' +
       ',"' + this._yn + '","' + this._yk + '","' + this._yv + '")';
 
