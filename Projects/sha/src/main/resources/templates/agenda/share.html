@@ -61,7 +61,7 @@ body {
 }
 
 .app-user-avatar {
-  height: 5vmin;
+  height: 12vmin;
   margin: auto;
   display: block;
   max-height: 45px;
@@ -89,8 +89,8 @@ body {
   width: 20vmin;
   margin: auto;
   display: block;
-  max-width: 200px;
-  min-width: 150px;
+  max-width: 250px;
+  min-width: 200px;
 }
 
 .full {
@@ -116,7 +116,7 @@ body {
   <p th:text="${agenda.adt}"></p>
   </div>
   <div class="d-flex flex-row justify-content-center">
-  <div th:each="contact : ${agenda.ac}" class="mr-2">
+  <div th:each="contact,contactStat : ${agenda.ac}" th:class="${contactStat.count != agenda.ac.size()}? 'mr-3'">
 	  <div class="d-flex flex-row justify-content-center">
     <img class="app-user-avatar" th:src="${contact.getString('avatar')}">
 	  </div>
@@ -140,9 +140,14 @@ body {
   <p class="app-download-text">下载冥王星, 给您的朋友或者伙伴们推送日程提醒吧。</p>
   </div>
 
+  <div class="d-flex flex-row justify-content-center mb-2">
+  <a href="itms://cn.sh.com.xj.timeApp/index.html">
+    <img class="app-store-button" src="/sha/static/images/thirdparts/iphone.png">
+  </a>
+  </div>
   <div class="d-flex flex-row justify-content-center">
   <a href="itms://cn.sh.com.xj.timeApp/index.html">
-    <img class="app-store-button" src="/sha/static/images/thirdparts/appstore.png">
+    <img class="app-store-button" src="/sha/static/images/thirdparts/android.png">
   </a>
   </div>
 </div>
