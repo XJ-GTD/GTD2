@@ -1,7 +1,7 @@
 import {SockJS} from 'sockjs-client';
 import Stomp, {StompSubscription} from "@stomp/stompjs";
 import {DispatchService} from "./dispatch.service";
-import {WsModel} from "./model/ws.model";
+import {Injectable, NgModule} from "@angular/core";
 
 
 /**
@@ -9,6 +9,7 @@ import {WsModel} from "./model/ws.model";
  *
  * create by wzy on 2018/07/22.
  */
+@Injectable()
 export class WebsocketService {
   RABBITMQ_WS_URL: string = "wss://www.guobaa.com/ws";
 
@@ -45,16 +46,17 @@ export class WebsocketService {
   /**
    * 监听消息队列
    */
-  public connect() {
-    this.settingWs().then(resolve => {
+  public connect():Promise<any> {
+    return this.settingWs().then(resolve => {
       console.log("-----MQ开始建立连接----");
       console.log("-----MQ QUEUE_NAME: [" + this.queue + "] ----");
 
       // 连接消息服务器
       this.client.connect(this.login, this.password, frame => {
         console.log(this.client);
+        resolve();
         this.subscription = this.client.subscribe("/queue/" + this.queue, data => {
-          this.dispatchService.dispatch(data.body).then(data=>{
+          this.dispatchService.dispatch(data.body).then(data => {
             console.log("message====>" + data + "=====>处理完毕");
           })
         });

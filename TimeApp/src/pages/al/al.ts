@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {IonicPage, Nav} from 'ionic-angular';
 import {RoundProgressEase} from 'angular-svg-round-progressbar';
-import {AlService} from "./al.service";
+import {AlData, AlService} from "./al.service";
 import {SyncRestful} from "../../service/restful/syncsev";
 import {DataConfig} from "../../service/config/data.config";
 
@@ -33,13 +33,11 @@ import {DataConfig} from "../../service/config/data.config";
   '      [animation]="animation"' +
   '      [animationDelay]="animationDelay"></round-progress>' +
   '  </div>' +
-  '  <div class="text">{{ text }}</div>' +
+  '  <div class="text">{{ alData.text }}</div>' +
   '</div>' +
   ''
 })
 export class AlPage {
-
-  rootPage:any;
 
   current: number = 0;
   max: number = 100;
@@ -56,64 +54,43 @@ export class AlPage {
   animationDelay: number = 50
   animations: string[] = [];
   gradient: boolean = false;
-  text:string;
+  alData:AlData = new AlData();
   constructor(private alService: AlService,
               private _ease: RoundProgressEase,
               private syncRestful:SyncRestful,
               private nav: Nav,) {
-    this.text="正在初始化";
+    this.alData.text="正在初始化";
   }
 
   ionViewDidLoad() {
-    this.rootPage = DataConfig.PAGE._R_PAGE;
-    this.alService.checkAllPermissions().then(data=>{
-      this.increment(10);
-      this.text=data;
-      return this.alService.createDB();
-    }).then(data=>{
-      this.increment(10);
-      this.text=data;
-      return this.alService.checkSystem();
-    }).then(data=>{
-      if (!data){
-        this.text="帮您初始化系统";
-        return  this.alService.createSystemData();
-      };
-    }).then(data=>{
+    this.alinit();
+  }
 
-        this.text="系统设置";
-        return  this.alService.setSetting();
-
-    }).then(data => {
-      this.increment(10);
-      return this.alService.checkUserInfo();
-    }).then(data=>{
-      this.increment(10);
-      console.log("al " +data.length);
-      if(data.length == 0){
-        this.rootPage = DataConfig.PAGE._LP_PAGE;
-        return "进入登录页面";
-      }else{
-        return "进入主页";
-      }
-    }).then(data => {
-      this.increment(10);
-      this.increment(10);
-      this.increment(10);
-      this.increment(10);
-      this.text=data;
-      console.log("al :: " +data);
-      this.nav.setRoot(this.rootPage);
-    }).catch(res => {
-      console.log("al error :: "+JSON.stringify(res));
-      //loading.dismiss();
-      this.nav.setRoot(this.rootPage);
-    });
-    // for (let prop in this._ease) {
-    //   if (prop.toLowerCase().indexOf('ease') > -1) {
-    //     this.animations.push(prop);
-    //   };
-    // }
+  async alinit(){
+    this.alData = await this.alService.checkAllPermissions();
+    console.log( this.alData.text)
+    this.increment(20);
+    this.alData = await this.alService.createDB();
+    console.log( this.alData.text)
+    this.increment(10);
+    this.alData = await this.alService.checkSystem();
+    console.log( this.alData.text)
+    this.increment(10);
+    if (!this.alData.checkSystem){
+      this.alData = await this.alService.createSystemData();
+      console.log( this.alData.text)
+    }
+    this.increment(20);
+    this.alData = await this.alService.setSetting();
+    console.log( this.alData.text)
+    this.increment(20);
+    this.alData = await this.alService.checkUserInfo();
+    console.log( this.alData.text)
+    if (!this.alData.islogin){
+      this.nav.setRoot(DataConfig.PAGE._LP_PAGE);
+    }else{
+      this.nav.setRoot(DataConfig.PAGE._H_PAGE);
+    }
   }
 
   increment(amount = 1) {

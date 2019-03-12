@@ -178,7 +178,7 @@ export class DTbl implements ITbl {
       sq = sq + ' and ib="' + this._ib +'"';
     }
     if(this._bi != null){
-      sq = sq + ', bi="' + this._bi +'"';
+      sq = sq + ' and bi="' + this._bi +'"';
     }
     if(this._sdt != null){
       sq = sq + ' and sdt="' + this._sdt +'"';

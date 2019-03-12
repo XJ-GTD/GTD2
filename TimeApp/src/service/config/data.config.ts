@@ -1,3 +1,5 @@
+import {Setting} from "./user.config";
+
 /**
  * 公共配置用
  */
@@ -84,6 +86,45 @@ export class DataConfig {
     _HB_PAGE: "HbPage",
     _HB01_PAGE: "Hb01Page",
     _AL_PAGE: "AlPage"
+  }
+
+
+
+  static settins: Map<string, Setting> = new Map<string, Setting>();
+
+  static user = {
+    //账户ID
+    id: "",
+    //用户名
+    name: "",
+    //用户头像
+    aevter: "",
+    //出生日期
+    bothday: "",
+    //真实姓名
+    realname: "",
+    //身份证
+    No: "",
+    //性别
+    sex: "",
+    //联系方式
+    contact: "",
+  }
+
+
+  static account = {
+    // 账户ID
+    id: "",
+    // 账户名
+    name: "",
+    // 手机号
+    phone: "",
+    // 设备号
+    device: "",
+    // token
+    token: "",
+    // 账户消息队列
+    mq: "",
   }
 
   /* ============ 返回值配置 ===============*/

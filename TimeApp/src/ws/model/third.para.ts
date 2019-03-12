@@ -4,6 +4,6 @@
  *
  * create by zhangjy on 2019/03/12.
  */
-export class SpeechPara {
+export class ThirdPara {
 
 }

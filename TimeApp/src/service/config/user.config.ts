@@ -3,6 +3,7 @@ import {YTbl} from "../sqlite/tbl/y.tbl";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {ATbl} from "../sqlite/tbl/a.tbl";
 import {UTbl} from "../sqlite/tbl/u.tbl";
+import {DataConfig} from "./data.config";
 
 /**
  * create by on 2019/3/5
@@ -10,89 +11,53 @@ import {UTbl} from "../sqlite/tbl/u.tbl";
 @Injectable()
 export class UserConfig {
 
-  private settins: Map<string, Setting> = new Map<string, Setting>();
 
   constructor(private sqlliteExec: SqliteExec) {
   }
 
-  user = {
-    //账户ID
-    id: "",
-    //用户名
-    name: "",
-    //用户头像
-    aevter: "",
-    //出生日期
-    bothday: "",
-    //真实姓名
-    realname: "",
-    //身份证
-    No: "",
-    //性别
-    sex: "",
-    //联系方式
-    contact: "",
-  }
-
-
-  account = {
-    // 账户ID
-    id: "",
-    // 账户名
-    name: "",
-    // 手机号
-    phone: "",
-    // 设备号
-    device: "",
-    // token
-    token: "",
-    // 账户消息队列
-    mq: "",
-  }
-
   getSetting(key: string) {
-    return this.settins.get(key);
+    return DataConfig.settins.get(key);
   }
 
   init():Promise<any> {
     return new Promise((resolve,reject)=>{
       let yTbl: YTbl = new YTbl();
       //获取偏好设置
-      this.sqlliteExec.getList(yTbl).then(data => {
-        for (let y of data.rows) {
+      this.sqlliteExec.getList(yTbl).then(rows => {
+        for (let y of rows) {
           let setting:Setting = new Setting();
           setting.bname = y.ytn;
           setting.typeB = y.yt;
           setting.name = y.yn;
           setting.type = y.yk;
           setting.value = y.yv;
-          this.settins.set(setting.type,setting);
+          DataConfig.settins.set(setting.type,setting);
         }
         //获取账号信息
         let aTbl: ATbl = new ATbl();
         return this.sqlliteExec.getList(aTbl);
-      }).then(data=>{
-        if (data.rows.length() >0){
-          this.account.id = data.rows[0].aI;
-          this.account.name = data.rows[0].aN;
-          this.account.phone = data.rows[0].aM;
-          this.account.device = data.rows[0].aE;
-          this.account.token = data.rows[0].aT;
-          this.account.mq = data.rows[0].aQ;
+      }).then(rows=>{
+        if (rows.length >0){
+          DataConfig.account.id = rows[0].aI;
+          DataConfig.account.name = rows[0].aN;
+          DataConfig.account.phone = rows[0].aM;
+          DataConfig.account.device = rows[0].aE;
+          DataConfig.account.token = rows[0].aT;
+          DataConfig.account.mq = rows[0].aQ;
         }
         //获取用户信息
         let uTbl: UTbl = new UTbl();
         return this.sqlliteExec.getList(uTbl);
-      }).then(data=>{
-        if (data.rows.length() >0){
-          this.user.id = data.rows[0].aI;
-          this.user.name = data.rows[0].uN;
-          this.user.aevter = data.rows[0].hIU;
-          this.user.bothday = data.rows[0].biy;
-          this.user.No = data.rows[0].iC;
-          this.user.realname = data.rows[0].rn;
-          this.user.sex = data.rows[0].uS;
-          this.user.contact = data.rows[0].uCt;
+      }).then(rows=>{
+        if (rows.length >0){
+          DataConfig.user.id = rows[0].aI;
+          DataConfig.user.name = rows[0].uN;
+          DataConfig.user.aevter = rows[0].hIU;
+          DataConfig.user.bothday = rows[0].biy;
+          DataConfig.user.No = rows[0].iC;
+          DataConfig.user.realname = rows[0].rn;
+          DataConfig.user.sex = rows[0].uS;
+          DataConfig.user.contact = rows[0].uCt;
         }
 
         resolve();

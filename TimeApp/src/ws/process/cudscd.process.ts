@@ -12,7 +12,7 @@ import {CudscdPara} from "../model/cudscd.para";
  */
 @Injectable()
 export class CudscdProcess implements MQProcess{
-  constructor(private factory:ProcessFactory,private emitService:EmitService) {
+  constructor(private emitService:EmitService) {
   }
 
 
@@ -27,8 +27,6 @@ export class CudscdProcess implements MQProcess{
       //处理结果
       //emit
       this.emitService.emitDatas(content.processRs);
-      //判断后处理处理
-      content.post
     })
   }
 
