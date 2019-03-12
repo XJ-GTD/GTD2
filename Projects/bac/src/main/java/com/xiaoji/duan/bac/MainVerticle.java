@@ -119,7 +119,8 @@ public class MainVerticle extends AbstractVerticle {
 			return;
 		}
 		
-		Long backuptimestamp = data.getLong("bts", System.currentTimeMillis());
+		// 0表示没有备份时间戳
+		Long backuptimestamp = data.getLong("bts", System.currentTimeMillis()) == 0 ? Long.valueOf(System.currentTimeMillis()) : data.getLong("bts", System.currentTimeMillis());
 		
 		List<Future> futures = new ArrayList<Future>();
 		

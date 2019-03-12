@@ -890,11 +890,18 @@ public class MainVerticle extends AbstractVerticle {
                 							.put("access_token", Base64.encodeBase64URLSafeString(UUID.randomUUID().toString().getBytes()))
                 							.put("refresh_token", Base64.encodeBase64URLSafeString(UUID.randomUUID().toString().getBytes()))
                 							.put("access_time", System.currentTimeMillis())
-                							.put("expires_in", 60 * 60 * 24 * 31);
+                							.put("expires_in", 0);	// 0表示永不过期, 一个月过期设置 60 * 60 * 24 * 31
         									
         									mongodb.save("aup_user_access", access, updateAT -> {});
         									
-        									ctx.response().end(access.encode());
+        									JsonObject retaccess = access.copy();
+        									retaccess.remove("_id");
+        									retaccess.remove("userpassword");
+        									retaccess.remove("password");
+        									retaccess.remove("code");
+        									retaccess.remove("state");
+        									
+        									ctx.response().end(retaccess.encode());
         								} else {
         		            				ctx.response().end(new JsonObject().put("errcode", 10001).put("errmsg", "Access Token取得失败").encode());
         								}
@@ -929,7 +936,7 @@ public class MainVerticle extends AbstractVerticle {
 							Long accessTime = refreshTokenUser.getLong("access_time");
 							Long expiresIn = refreshTokenUser.getLong("expires_in");
 							
-							if (System.currentTimeMillis() <= accessTime + (expiresIn * 1000)) {
+							if (expiresIn != 0 && System.currentTimeMillis() <= accessTime + (expiresIn * 1000)) {
 						        System.out.println("Refresh token get failed for expired.");
 		        				ctx.response().end(new JsonObject().put("errcode", 10004).put("errmsg", "登录已失效,请重新登录.").encode());
 							} else {
