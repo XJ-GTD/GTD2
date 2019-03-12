@@ -170,16 +170,16 @@ body {
 
   <div th:each="agenda,iterStat : ${plan.pa}" class="d-flex flex-row justify-content-center mt-2" th:classappend="${(#calendars.format(today,'yyyy-MM-dd') > #strings.substring(agenda.getString('adt'),0,10))? 'agenda-card-past' : 'agenda-card'}">
   <div class="container-fluid">
-    <div th:if="${(iterStat.index == 0) or (#strings.substring(agenda.getString('adt'),0,4) != #strings.substring(plan.pa.get(iterStat.index - 1).getString('adt'),0,4))}" class="d-flex flex-row justify-content-start mb-2">
+    <div th:if="${(iterStat.index == 0) or (#strings.substring(agenda.getString('adt'),0,4) != #strings.substring(plan.pa.getJsonObject(iterStat.index - 1).getString('adt'),0,4))}" class="d-flex flex-row justify-content-start mb-2">
       <h3 style="color: #666666;" th:text="${#strings.substring(agenda.getString('adt'),0,4)}">1900</h3>
     </div>
     <div class="d-flex flex-row justify-content-center align-items-start row">
-      <div th:if="${(iterStat.index == 0) or (agenda.getString('adt') != plan.pa.get(iterStat.index - 1).getString('adt'))}" class="d-flex justify-content-start col-2 right-off" th:text="${#strings.substring(agenda.getString('adt'),5,10)}">
+      <div th:if="${(iterStat.index == 0) or (agenda.getString('adt') != plan.pa.getJsonObject(iterStat.index - 1).getString('adt'))}" class="d-flex justify-content-start col-2 right-off" th:text="${#strings.substring(agenda.getString('adt'),5,10)}">
       </div>
-      <div th:unless="${(iterStat.index == 0) or (agenda.getString('adt') != plan.pa.get(iterStat.index - 1).getString('adt'))}" class="d-flex justify-content-start col-2 right-off">
+      <div th:unless="${(iterStat.index == 0) or (agenda.getString('adt') != plan.pa.getJsonObject(iterStat.index - 1).getString('adt'))}" class="d-flex justify-content-start col-2 right-off">
       </div>
       <div class="d-flex flex-row justify-content-start col-2 right-off left-off">全天<span class="plan-color-pointer"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
-      <div class="d-flex flex-column justify-content-start col-8 left-off" th:classappend="${((iterStat.count == iterStat.size)? false : (agenda.getString('adt') == plan.pa.get(iterStat.index + 1).getString('adt')))}? 'agenda-content'">
+      <div class="d-flex flex-column justify-content-start col-8 left-off" th:classappend="${((iterStat.count == plan.pa.size())? false : (agenda.getString('adt') == plan.pa.getJsonObject(iterStat.index).getString('adt')))}? 'agenda-content'">
         <p class="text-left app-agenda-title" th:text="${agenda.getString('at')}">日程</p>
         <p class="app-user-text text-left" th:text="${agenda.getString('am')}">日程描述</p>
       </div>
