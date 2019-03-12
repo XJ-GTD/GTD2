@@ -33,3 +33,11 @@ export class BacRestful{
     });
   }
 }
+
+//备份入参
+export class backupPro{
+  oai:string ;
+  ompn:string;
+  c:object;
+  d:{bts:string};
+}

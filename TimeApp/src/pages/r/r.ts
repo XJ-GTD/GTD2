@@ -4,6 +4,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {RData, RService} from "./r.service";
 import {DataConfig} from "../../service/config/data.config";
 import {AgdRestful, AgdPro, ContactPerPro, SharePro} from "../../service/restful/agdsev";
+import {AibutlerRestful, AudioPro, TextPro} from "../../service/restful/aibutlersev";
 
 
 /**
@@ -139,7 +140,7 @@ export class RPage {
               private alertCtrl: AlertController,
               private utilService: UtilService,
               private rService: RService,
-              private testful : AgdRestful
+              private testful : AibutlerRestful
   ) {
 
   }
@@ -147,7 +148,7 @@ export class RPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad RPage');
     this.rePage = this.navParams.get("RPage");
-    let testp = new AgdPro();
+    /*let testp = new AgdPro();
     testp.rai="a";
     testp.fc="b";
     testp.ai="c";
@@ -158,10 +159,10 @@ export class RPage {
     testp.aa="h";
     testp.am="i";
     testp.ac = new Array<ContactPerPro>();
-    /*this.testful.save(testp).then(data =>
+    /!*this.testful.save(testp).then(data =>
     {
       console.log("testful agd:"+ JSON.stringify(data));
-    })*/
+    })*!/
     let testp1 = new SharePro();
     testp1.oai = "a13661617252";
     testp1.ompn="13661617252";
@@ -180,11 +181,20 @@ export class RPage {
     cp.mpn="15737921611"
     cp.n="ding"
     cp.s="f"
-
-
     testp1.d.a.ac.push(cp) ;
-    this.testful.share(testp1).then(data=>{
+        this.testful.share(testp1).then(data=>{
       console.log("testful share agd:"+ JSON.stringify(data));
+    })*/
+
+    /*let testp = new AudioPro();
+    testp.d.vb64="sdfasfdasfsafdfafa";
+    this.testful.postaudio(testp).then(data=>{
+      console.log("testful audio ai:"+ JSON.stringify(data));
+    })*/
+    let testp:TextPro = new TextPro();
+    testp.d.text="你好";
+    this.testful.posttext(testp).then(data=>{
+      console.log("testful text ai:"+ JSON.stringify(data));
     })
   }
 
