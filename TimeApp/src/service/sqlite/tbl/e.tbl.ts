@@ -5,132 +5,133 @@ import {ITbl} from "./itbl";
  */
 export class ETbl  implements ITbl {
 
-  private _wI: string="";
-  private _sI: string="";
-  private _sT: string="";
-  private _wD: string="";
-  private _wT: string="";
+  private _wi: string="";
+  private _si: string="";
+  private _st: string="";
+  private _wd: string="";
+  private _wt: string="";
 
-  get wI(): string {
-    return this._wI;
+
+  get wi(): string {
+    return this._wi;
   }
 
-  set wI(value: string) {
-    this._wI = value;
+  set wi(value: string) {
+    this._wi = value;
   }
 
-  get sI(): string {
-    return this._sI;
+  get si(): string {
+    return this._si;
   }
 
-  set sI(value: string) {
-    this._sI = value;
+  set si(value: string) {
+    this._si = value;
   }
 
-  get sT(): string {
-    return this._sT;
+  get st(): string {
+    return this._st;
   }
 
-  set sT(value: string) {
-    this._sT = value;
+  set st(value: string) {
+    this._st = value;
   }
 
-  get wD(): string {
-    return this._wD;
+  get wd(): string {
+    return this._wd;
   }
 
-  set wD(value: string) {
-    this._wD = value;
+  set wd(value: string) {
+    this._wd = value;
   }
 
-  get wT(): string {
-    return this._wT;
+  get wt(): string {
+    return this._wt;
   }
 
-  set wT(value: string) {
-    this._wT = value;
+  set wt(value: string) {
+    this._wt = value;
   }
 
   clp(){
-    this._wI=null;
-    this._sI=null;
-    this._sT=null;
-    this._wD=null;
-    this._wT=null;
+    this._wi=null;
+    this._si=null;
+    this._st=null;
+    this._wd=null;
+    this._wt=null;
   };
 
   cT():string{
 
-    let sq ='CREATE TABLE IF NOT EXISTS GTD_E(  wI varchar(50) PRIMARY KEY ,sI varchar(50)  ,' +
-      'sT varchar(50)  ,wD varchar(20)  ,wT varchar(20))';
+    let sq ='create table if not exists gtd_e(  wi varchar(50) primary key ,si varchar(50)  ,' +
+      'st varchar(50)  ,wd varchar(20)  ,wt varchar(20))';
 
     return sq;
   }
 
   upT():string{
-    let sq='update GTD_E set 1=1 ';
-    if(this._sI!=null){
-      sq=sq+', sI="' + this._sI +'"';
+    let sq='update gtd_e set 1=1 ';
+    if(this._si!=null){
+      sq=sq+', si="' + this._si +'"';
     }
-    if(this._sT!=null){
-      sq=sq+', sT="' + this._sT +'"';
+    if(this._st!=null){
+      sq=sq+', st="' + this._st +'"';
     }
-    if(this._wD != null){
-      sq = sq + ', wD="' + this._wD +'"';
+    if(this._wd != null){
+      sq = sq + ', wd="' + this._wd +'"';
     }
-    if(this._wT != null){
-      sq = sq + ', wT="' + this._wT +'"';
+    if(this._wt != null){
+      sq = sq + ', wt="' + this._wt +'"';
     }
-    sq = sq + ' where wI = "'+ this._wI +'"';
+    sq = sq + ' where wi = "'+ this._wi +'"';
     return sq;
   }
 
   dT():string{
-    let sq = 'delete from GTD_E where wI = "' + this._wI +'"';
+    let sq = 'delete from gtd_e where wi = "' + this._wi +'"';
     return sq;
   }
 
   sloT():string{
-    let sq='select * from GTD_E where wI = "'+ this._wI +'"';
+    let sq='select * from gtd_e where wi = "'+ this._wi +'"';
 
     return sq;
   }
 
   slT():string{
-    let sq='select * from  GTD_E where  1=1 ';
-    if(this._sI!=null){
-      sq=sq+' and sI="' + this._sI +'"';
+    let sq='select * from  gtd_e where  1=1 ';
+    if(this._si!=null){
+      sq=sq+' and si="' + this._si +'"';
     }
-    if(this._sT!=null){
-      sq=sq+' and sT="' + this._sT +'"';
+    if(this._st!=null){
+      sq=sq+' and st="' + this._st +'"';
     }
-    if(this._wD != null){
-      sq = sq + ' and wD="' + this._wD +'"';
+    if(this._wd != null){
+      sq = sq + ' and wd="' + this._wd +'"';
     }
-    if(this._wT != null){
-      sq = sq + ' and wT="' + this._wT +'"';
+    if(this._wt != null){
+      sq = sq + ' and wt="' + this._wt +'"';
     }
     return sq;
   }
 
   drT():string{
 
-    let sq ='DROP TABLE IF EXISTS GTD_E;';
+    let sq ='drop table if exists gtd_e;';
     return sq;
   }
 
   inT():string{
-    let sq ='insert into GTD_E ' +
-      '(  wI ,sI ,sT ,wD ,wT) values("'+ this._wI+'","'+ this._sI+'","'+this._sT+ '"' +
-      ',"'+this._wD+ '","'+this._wT+ '")';
+    let sq ='insert into gtd_e ' +
+      '(  wi ,si ,st ,wd ,wt) values("'+ this._wi+'","'+ this._si+'","'+this._st+ '"' +
+      ',"'+this._wd+ '","'+this._wt+ '")';
 
     return sq;
   }
 
   rpT():string{
-    let sq ='replace into GTD_E ' +
-      '(  wI ,sI ,sT ,wD ,wT) values("'+ this._wI+'","'+ this._sI+'","'+this._sT+ '"' +
-      ',"'+this._wD+ '","'+this._wT+ '")';
+    let sq ='replace into gtd_e ' +
+      '(  wi ,si ,st ,wd ,wt) values("'+ this._wi+'","'+ this._si+'","'+this._st+ '"' +
+      ',"'+this._wd+ '","'+this._wt+ '")';
 
     return sq;
   }
