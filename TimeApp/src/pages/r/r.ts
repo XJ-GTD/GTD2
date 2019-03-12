@@ -191,10 +191,10 @@ export class RPage {
     if(this.errorCode == 3){
       this.rService.sc(this.rdata).then(data => {
         //短信验证码KEY 赋值给注册信息
-        this.rdata.verifykey = data.repData.data.verifykey;
+        this.rdata.verifykey = data.data.verifykey;
         let alert = this.alertCtrl.create({
           title:'提示信息',
-          subTitle: data.repData.message,
+          subTitle: data.message,
           buttons:['确定']
         });
         alert.present();
