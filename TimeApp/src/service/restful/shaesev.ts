@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
+import {AgdPro, ContactPerPro} from "./agdsev";
 /**
  * 计划
  */
@@ -10,18 +11,18 @@ export class ShaeRestful{
               private config: RestFulConfig) {
   }
   //计划	计划上传	PU
-  share(shaeData : ShaeData):Promise<ShaeData> {
+  share(shaeData : ShareData):Promise<ShareData> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("PU");
-      this.request.post(url, shaeData.reqPUData).then(data => {
+      this.request.post(url, shaeData).then(data => {
         //处理返回结果
-        shaeData.repData = data;
+        shaeData = data;
         resolve(shaeData);
 
       }).catch(error => {
         //处理返回错误
-        shaeData.errData = error;
+        shaeData = error;
         resolve(shaeData);
 
       })
@@ -30,77 +31,79 @@ export class ShaeRestful{
 
 
   //内建计划下载	BIPD
-  downsysname(shaeData : ShaeData):Promise<ShaeData> {
+  downsysname(shareData : BipdshaeData):Promise<RepBipdData> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("BIPD");
-      this.request.post(url, shaeData.reqBIPDData).then(data => {
+      let rep:RepBipdData = new RepBipdData;
+      this.request.post(url, shareData).then(data => {
         //处理返回结果
-        shaeData.repData = data;
-        resolve(shaeData);
+        rep = data;
+        resolve(rep);
 
       }).catch(error => {
         //处理返回错误
-        shaeData.errData = error;
-        resolve(shaeData);
+        rep = error;
+        resolve(rep);
 
       })
     });
   }
 }
 
-export class ShaeData{
-  reqPUData = {   //计划上传
-    //操作帐户ID
-    oai : "",
-    //操作手机号码
-    ompn:"",
-    //上下文（可以为空）
-    c:"",
-    //日程
-    d:D,
-  };
-
-  reqBIPDData = {   //内建计划下载
-    //操作帐户ID
-    oai : "",
-    //操作手机号码
-    ompn:"",
-    //上下文（可以为空）
-    c:"",
-    //日程
-    d:SharePro,
-  };
-
-  repData = {
-    code: "",
-    message: "",
-    data: {},
-  };
-
-  errData = {}
+//计划上传
+export  class ShareData{
+  //操作帐户ID
+  oai : string;
+  //操作手机号码
+  ompn:string;
+  //上下文（可以为空）
+  c:string;
+  //日程
+  d:D = new D();
 }
 
 export class D{
-  p:P;
+  p:P = new P();
 }
 
 export class P{
-  pn :{};
-  pa :Pa;
+  pn :any;
+  // 计划内日程，复用日程分享实体
+  pa :Array<AgdPro> =new Array<AgdPro>();
 }
 
-export class Pa{
-  ai :string;
-  at :string;
-  adt :string;
-  ap :string;
-  ar :string;
-  aa :string;
-  am :string;
-  ac :[any];
+//计划上传出参
+export  class RepSharedData{
+  rc : string;
+  rm : string;
+  d: RepSharedDData = new RepSharedDData();
+}
+export class RepSharedDData{
+  psurl:string;
+}
+
+
+
+//内建计划下载
+export  class BipdshaeData{
+  //操作帐户ID
+  oai : string;
+  //操作手机号码
+  ompn:string;
+  //上下文（可以为空）
+  c:string;
+  //日程
+  d:SharePro = new SharePro();
 }
 
 export class SharePro{
   pi :string;
+}
+
+//内建计划下载出参
+export  class RepBipdData{
+  rc : string;
+  rm:string;
+  d:P= new P();
 }
