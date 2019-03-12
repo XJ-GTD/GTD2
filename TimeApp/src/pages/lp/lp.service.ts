@@ -27,10 +27,9 @@ export class LpService {
         if (data.repData.errcode != "0"){ //data.repData.errcode == 0 为登陆成功状态
           throw  data.repData.errmsg;
         }
-        //获取登陆用户信息
-        let personData: PersonData = new PersonData();
-        personData.reqSelf.unionid = data.repData.unionid;
-        return this.personRestful.getself(personData);
+        //获得token，放入头部header登录码
+        let code = data.repData.code;
+        return this.personRestful.getToken(code);
       }).then(data=>{
         //更新用户表
         let uTbl:UTbl = new UTbl();

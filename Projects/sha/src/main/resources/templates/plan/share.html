@@ -62,8 +62,8 @@ body {
   width: 0.5vmin;
   background: #b72537;
   margin-left: -4.4vmin;
-  margin-top: 10px;
-  margin-bottom: -18px;
+  margin-top: 12px;
+  margin-bottom: -20px;
 }
 
 .plan-color-pointer {
@@ -93,6 +93,33 @@ body {
 
 .agenda-card {
   font-family: "PingFangSC-Regular";
+}
+
+.agenda-col-date {
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  max-width: 16.667vmin;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.agenda-col-time {
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  max-width: 18.667vmin;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.agenda-col-content {
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  max-width: 64.666vmin;
+  padding-right: 15px;
+  padding-left: 15px;
 }
 
 .app-user-avatar {
@@ -148,6 +175,16 @@ body {
   min-width: 200px;
 }
 
+.time-slot {
+  margin: auto;
+}
+
+.pointer-slot {
+  width: 5vmin;
+  margin: auto;
+  margin-right: 0;
+}
+
 .full {
   height: 100vh;
   width: 100vw;
@@ -158,6 +195,9 @@ body {
 </style>
 </head>
 <body>
+<div th:fragment="time-agenda (time)" style="display:none;">
+<div class="time-slot" th:text="${time != null and #strings.length(time) == 10}? '全天' : ${#strings.substring(time,11,16)}"></div><div class="pointer-slot"><span class="plan-color-pointer"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
+</div>
 <div class="full">
 <div class="main">
   <div class="d-flex flex-row justify-content-center">
@@ -174,12 +214,12 @@ body {
       <h3 style="color: #666666;" th:text="${#strings.substring(agenda.getString('adt'),0,4)}">1900</h3>
     </div>
     <div class="d-flex flex-row justify-content-center align-items-start row">
-      <div th:if="${(iterStat.index == 0) or (agenda.getString('adt') != plan.pa.getJsonObject(iterStat.index - 1).getString('adt'))}" class="d-flex justify-content-start col-2 right-off" th:text="${#strings.substring(agenda.getString('adt'),5,10)}">
+      <div th:if="${(iterStat.index == 0) or (#strings.substring(agenda.getString('adt'),0,10) != #strings.substring(plan.pa.getJsonObject(iterStat.index - 1).getString('adt'),0,10))}" class="d-flex justify-content-start agenda-col-date right-off" th:text="${#strings.substring(agenda.getString('adt'),5,10)}">
       </div>
-      <div th:unless="${(iterStat.index == 0) or (agenda.getString('adt') != plan.pa.getJsonObject(iterStat.index - 1).getString('adt'))}" class="d-flex justify-content-start col-2 right-off">
+      <div th:unless="${(iterStat.index == 0) or (#strings.substring(agenda.getString('adt'),0,10) != #strings.substring(plan.pa.getJsonObject(iterStat.index - 1).getString('adt'),0,10))}" class="d-flex justify-content-start agenda-col-date right-off">
       </div>
-      <div class="d-flex flex-row justify-content-start col-2 right-off left-off">全天<span class="plan-color-pointer"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
-      <div class="d-flex flex-column justify-content-start col-8 left-off" th:classappend="${((iterStat.count == plan.pa.size())? false : (agenda.getString('adt') == plan.pa.getJsonObject(iterStat.index).getString('adt')))}? 'agenda-content'">
+      <div class="d-flex flex-row justify-content-between agenda-col-time right-off left-off" th:include="::time-agenda (${agenda.getString('adt')})">全天<span class="plan-color-pointer"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
+      <div class="d-flex flex-column justify-content-start agenda-col-content left-off" th:classappend="${((iterStat.count == plan.pa.size())? false : (agenda.getString('adt') == plan.pa.getJsonObject(iterStat.index + 1).getString('adt')))}? 'agenda-content'">
         <p class="text-left app-agenda-title" th:text="${agenda.getString('at')}">日程</p>
         <p class="app-user-text text-left" th:text="${agenda.getString('am')}">日程描述</p>
       </div>
