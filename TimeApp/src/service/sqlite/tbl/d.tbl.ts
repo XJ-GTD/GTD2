@@ -5,38 +5,39 @@ import {ITbl} from "./itbl";
 
 
 export class DTbl implements ITbl {
-  private _pI: string="";
-  private _sI: string="";
-  private _sT: string="";
+  private _pi: string="";
+  private _si: string="";
+  private _st: string="";
   private _son: string="";
   private _sa: string="";
-  private _aI: string="";
+  private _ai: string="";
   private _ib: string="";
   private _bi: string="";
   private _sdt: string="";
 
-  get pI(): string {
-    return this._pI;
+
+  get pi(): string {
+    return this._pi;
   }
 
-  set pI(value: string) {
-    this._pI = value;
+  set pi(value: string) {
+    this._pi = value;
   }
 
-  get sI(): string {
-    return this._sI;
+  get si(): string {
+    return this._si;
   }
 
-  set sI(value: string) {
-    this._sI = value;
+  set si(value: string) {
+    this._si = value;
   }
 
-  get sT(): string {
-    return this._sT;
+  get st(): string {
+    return this._st;
   }
 
-  set sT(value: string) {
-    this._sT = value;
+  set st(value: string) {
+    this._st = value;
   }
 
   get son(): string {
@@ -55,12 +56,12 @@ export class DTbl implements ITbl {
     this._sa = value;
   }
 
-  get aI(): string {
-    return this._aI;
+  get ai(): string {
+    return this._ai;
   }
 
-  set aI(value: string) {
-    this._aI = value;
+  set ai(value: string) {
+    this._ai = value;
   }
 
   get ib(): string {
@@ -88,12 +89,12 @@ export class DTbl implements ITbl {
   }
 
   clp(){
-    this._pI=null;
-    this._sI=null;
-    this._sT=null;
+    this._pi=null;
+    this._si=null;
+    this._st=null;
     this._son=null;
     this._sa=null;
-    this._aI=null;
+    this._ai=null;
     this._ib=null;
     this._bi=null;
     this._sdt=null;
@@ -103,20 +104,20 @@ export class DTbl implements ITbl {
 
   cT():string {
 
-    let sq ='CREATE TABLE IF NOT EXISTS GTD_D( pI varchar(50) PRIMARY KEY ,sI varchar(50)  ,' +
-      'sT varchar(50)  ,son varchar(50)  ,sa varchar(4)  ,aI varchar(50)  ,ib varchar(4)  ,' +
+    let sq ='create table if not exists gtd_d( pi varchar(50) primary key ,si varchar(50)  ,' +
+      'st varchar(50)  ,son varchar(50)  ,sa varchar(4)  ,ai varchar(50)  ,ib varchar(4)  ,' +
       'bi varchar(50)  ,sdt varchar(4));';
 
     return sq;
   }
 
   upT():string {
-    let sq='update GTD_D set 1=1 ';
-    if(this._sI!=null){
-      sq=sq+', sI="' + this._sI +'"';
+    let sq='update gtd_d set 1=1 ';
+    if(this._si!=null){
+      sq=sq+', si="' + this._si +'"';
     }
-    if(this._sT!=null){
-      sq=sq+', sT="' + this._sT +'"';
+    if(this._st!=null){
+      sq=sq+', st="' + this._st +'"';
     }
     if(this._son != null){
       sq = sq + ', son="' + this._son +'"';
@@ -124,8 +125,8 @@ export class DTbl implements ITbl {
     if(this._sa != null){
       sq = sq + ', sa="' + this._sa +'"';
     }
-    if(this._aI != null){
-      sq = sq + ', aI="' + this._aI +'"';
+    if(this._ai != null){
+      sq = sq + ', ai="' + this._ai +'"';
     }
     if(this._sa != null){
       sq = sq + ', sa="' + this._sa +'"';
@@ -139,27 +140,27 @@ export class DTbl implements ITbl {
     if(this._sdt != null){
       sq = sq + ', sdt="' + this._sdt +'"';
     }
-    sq = sq + ' where pI = "'+ this._pI +'"';
+    sq = sq + ' where pi = "'+ this._pi +'"';
     return sq;
   }
 
   dT():string {
-    let sq = 'delete from GTD_D where pI = "' + this._pI +'"';
+    let sq = 'delete from gtd_d where pi = "' + this._pi +'"';
     return sq;
   }
 
   sloT():string {
-    let sq='select * from GTD_D where pI = "'+ this._pI +'"';
+    let sq='select * from gtd_d where pi = "'+ this._pi +'"';
     return sq;
   }
 
   slT():string {
-    let sq='select * from  GTD_D where  1=1 ';
-    if(this._sI!=null){
-      sq=sq+' and sI="' + this._sI +'"';
+    let sq='select * from  gtd_d where  1=1 ';
+    if(this._si!=null){
+      sq=sq+' and si="' + this._si +'"';
     }
-    if(this._sT!=null){
-      sq=sq+' and sT="' + this._sT +'"';
+    if(this._st!=null){
+      sq=sq+' and st="' + this._st +'"';
     }
     if(this._son != null){
       sq = sq + ' and son="' + this._son +'"';
@@ -167,8 +168,8 @@ export class DTbl implements ITbl {
     if(this._sa != null){
       sq = sq + ' and sa="' + this._sa +'"';
     }
-    if(this._aI != null){
-      sq = sq + ' and aI="' + this._aI +'"';
+    if(this._ai != null){
+      sq = sq + ' and ai="' + this._ai +'"';
     }
     if(this._sa != null){
       sq = sq + ' and sa="' + this._sa +'"';
@@ -182,30 +183,30 @@ export class DTbl implements ITbl {
     if(this._sdt != null){
       sq = sq + ' and sdt="' + this._sdt +'"';
     }
-    if(this._pI != null){
-      sq = sq + ' and pI="' + this._pI +'"';
+    if(this._pi != null){
+      sq = sq + ' and pi="' + this._pi +'"';
     }
     return sq;
   }
 
   drT():string {
 
-    let sq ='DROP TABLE IF EXISTS GTD_D;';
+    let sq ='drop table if exists gtd_d;';
     return sq;
   }
 
   inT():string {
-    let sq ='insert into GTD_D ' +
-      '( pI ,sI ,sT ,son ,sa ,aI ,ib ,bi ,sdt) values("'+ this._pI+'","'+ this._sI+'","'+this._sT+ '"' +
-      ',"'+this._son+ '","'+this._sa+ '","'+this._aI+ '","'+this._ib+ '","'+this._bi+ '","'+this._sdt+ '")';
+    let sq ='insert into gtd_d ' +
+      '( pi ,si ,st ,son ,sa ,ai ,ib ,bi ,sdt) values("'+ this._pi+'","'+ this._si+'","'+this._st+ '"' +
+      ',"'+this._son+ '","'+this._sa+ '","'+this._ai+ '","'+this._ib+ '","'+this._bi+ '","'+this._sdt+ '")';
 
     return sq;
   }
 
   rpT():string {
-    let sq ='replace into GTD_D ' +
-      '( pI ,sI ,sT ,son ,sa ,aI ,ib ,bi ,sdt) values("'+ this._pI+'","'+ this._sI+'","'+this._sT+ '"' +
-      ',"'+this._son+ '","'+this._sa+ '","'+this._aI+ '","'+this._ib+ '","'+this._bi+ '","'+this._sdt+ '")';
+    let sq ='replace into gtd_d ' +
+      '( pi ,si ,st ,son ,sa ,ai ,ib ,bi ,sdt) values("'+ this._pi+'","'+ this._si+'","'+this._st+ '"' +
+      ',"'+this._son+ '","'+this._sa+ '","'+this._ai+ '","'+this._ib+ '","'+this._bi+ '","'+this._sdt+ '")';
 
     return sq;
   }

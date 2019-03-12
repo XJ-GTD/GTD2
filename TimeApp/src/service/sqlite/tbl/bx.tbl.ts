@@ -33,13 +33,13 @@ export class BxTbl implements ITbl{
 
   cT():string {
 
-    let sq ='CREATE TABLE IF NOT EXISTS GTD_B_X( bi varchar(50) PRIMARY KEY ,bmi varchar(50));';
+    let sq ='create table if not exists gtd_b_x( bi varchar(50) primary key ,bmi varchar(50));';
 
     return sq;
   }
 
   upT():string {
-    let sq='update GTD_B_X set 1=1 ';
+    let sq='update gtd_b_x set 1=1 ';
     if(this._bmi!=null){
       sq=sq+', bmi="' + this._bmi +'"';
     }
@@ -48,17 +48,17 @@ export class BxTbl implements ITbl{
   }
 
   dT():string {
-    let sq = 'delete from GTD_B_X where bi = "' + this._bi +'"';
+    let sq = 'delete from gtd_b_x where bi = "' + this._bi +'"';
     return sq;
   }
 
   sloT():string {
-    let sq='select * from GTD_B_X where bi = "'+ this._bi +'"';
+    let sq='select * from gtd_b_x where bi = "'+ this._bi +'"';
     return sq;
   }
 
   slT():string {
-    let sq='select * from GTD_B_X where  1=1 ';
+    let sq='select * from gtd_b_x where  1=1 ';
     if(this._bmi!=null){
       sq=sq+' and bmi="' + this._bmi +'"';
     }
@@ -67,19 +67,19 @@ export class BxTbl implements ITbl{
 
   drT():string {
 
-    let sq ='DROP TABLE IF EXISTS GTD_B_X;';
+    let sq ='drop table if exists gtd_b_x;';
     return sq;
   }
 
   inT():string {
-    let sq ='insert into GTD_G ' +
+    let sq ='insert into gtd_g ' +
       '(  bi ,bmi) values("'+ this._bi+'","'+ this._bmi+'")';
 
     return sq;
   }
 
   rpT():string {
-    let sq ='replace into GTD_G ' +
+    let sq ='replace into gtd_g ' +
       '(  bi ,bmi) values("'+ this._bi+'","'+ this._bmi+'")';
 
     return sq;

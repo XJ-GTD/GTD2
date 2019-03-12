@@ -5,97 +5,97 @@ import {ITbl} from "./itbl";
  */
 export class GTbl implements ITbl {
 
-  private _gI: string="";
-  private _gN: string="";
-  private _gM: string="";
+  private _gi: string="";
+  private _gn: string="";
+  private _gm: string="";
 
-  get gI(): string {
-    return this._gI;
+  get gi(): string {
+    return this._gi;
   }
 
-  set gI(value: string) {
-    this._gI = value;
+  set gi(value: string) {
+    this._gi = value;
   }
 
-  get gN(): string {
-    return this._gN;
+  get gn(): string {
+    return this._gn;
   }
 
-  set gN(value: string) {
-    this._gN = value;
+  set gn(value: string) {
+    this._gn = value;
   }
 
-  get gM(): string {
-    return this._gM;
+  get gm(): string {
+    return this._gm;
   }
 
-  set gM(value: string) {
-    this._gM = value;
+  set gm(value: string) {
+    this._gm = value;
   }
 
   clp(){
-    this._gI = null;
-    this._gN = null;
-    this._gM = null;
+    this._gi = null;
+    this._gn = null;
+    this._gm = null;
 
   };
 
   cT():string{
 
-    let sq ='CREATE TABLE IF NOT EXISTS GTD_G(  gI varchar(50) PRIMARY KEY ,gN varchar(50)  ,gM varchar(50));';
+    let sq ='create table if not exists gtd_g(  gi varchar(50) primary key ,gn varchar(50)  ,gm varchar(50));';
 
     return sq;
   }
 
   upT():string{
-    let sq='update GTD_G set 1=1 ';
-    if(this._gN!=null){
-      sq=sq+', gN="' + this._gN +'"';
+    let sq='update gtd_g set 1=1 ';
+    if(this._gn!=null){
+      sq=sq+', gn="' + this._gn +'"';
     }
-    if(this._gM!=null){
-      sq=sq+', gM="' + this._gM +'"';
+    if(this._gm!=null){
+      sq=sq+', gm="' + this._gm +'"';
     }
-    sq = sq + ' where gI = "'+ this._gI +'"';
+    sq = sq + ' where gi = "'+ this._gi +'"';
     return sq;
   }
 
   dT():string{
-    let sq = 'delete from GTD_G where gI = "' + this._gI +'"';
+    let sq = 'delete from gtd_g where gi = "' + this._gi +'"';
     return sq;
   }
 
   sloT():string{
-    let sq='select * from GTD_G where gI = "'+ this._gI +'"';
+    let sq='select * from gtd_g where gi = "'+ this._gi +'"';
     return sq;
   }
 
   slT():string{
-    let sq='select * from  GTD_G where  1=1 ';
-    if(this._gN!=null){
-      sq=sq+', gN="' + this._gN +'"';
+    let sq='select * from  gtd_g where  1=1 ';
+    if(this._gn!=null){
+      sq=sq+', gn="' + this._gn +'"';
     }
-    if(this._gM!=null){
-      sq=sq+', gM="' + this._gM +'"';
+    if(this._gm!=null){
+      sq=sq+', gm="' + this._gm +'"';
     }
     return sq;
   }
 
   drT():string{
 
-    let sq ='DROP TABLE IF EXISTS GTD_G;';
+    let sq ='drop table if exists gtd_g;';
     return sq;
   }
 
   inT():string{
-    let sq ='insert into GTD_G ' +
-      '( gI ,gN ,gM) values("'+ this._gI+'","'+ this._gN+'","'+this._gM+ '")';
+    let sq ='insert into gtd_g ' +
+      '( gi ,gn ,gm) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+ '")';
 
     return sq;
   }
 
   rpT():string{
-    let sq ='replace into GTD_G ' +
-      '( gI ,gN ,gM) values("'+ this._gI+'","'+ this._gN+'","'+this._gM+ '")';
+    let sq ='replace into gtd_g ' +
+      '( gi ,gn ,gm) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+ '")';
 
     return sq;
   }

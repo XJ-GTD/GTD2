@@ -119,9 +119,9 @@ export class PersonRestful {
   signup(signupData: SignupData): Promise<SignupData> {
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("RA");
-      this.request.post(url, signupData.repData).then(data => {
+      this.request.post(url, signupData.reqData).then(data => {
         //处理返回结果
-        signupData.reqData = data;
+        signupData.repData = data;
         resolve(signupData);
 
       }).catch(error => {

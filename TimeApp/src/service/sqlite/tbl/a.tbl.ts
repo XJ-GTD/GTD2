@@ -5,119 +5,119 @@ import {ITbl} from "./itbl";
  */
 export class ATbl implements ITbl {
 
-  private _aI :string="";
+  private _ai :string="";
 
-  private _aN :string="";
+  private _an :string="";
 
-  private _aM :string="";
+  private _am :string="";
 
-  private _aE :string="";
+  private _ae :string="";
 
-  private _aT :string="";
+  private _at :string="";
 
-  private _aQ :string="";
+  private _aq :string="";
 
-  get aI(): string {
-    return this._aI;
+
+  get ai(): string {
+    return this._ai;
   }
 
-  set aI(value: string) {
-    this._aI = value;
+  set ai(value: string) {
+    this._ai = value;
   }
 
-  get aN(): string {
-    return this._aN;
+  get an(): string {
+    return this._an;
   }
 
-  set aN(value: string) {
-    this._aN = value;
+  set an(value: string) {
+    this._an = value;
   }
 
-  get aM(): string {
-    return this._aM;
+  get am(): string {
+    return this._am;
   }
 
-  set aM(value: string) {
-    this._aM = value;
+  set am(value: string) {
+    this._am = value;
   }
 
-  get aE(): string {
-    return this._aE;
+  get ae(): string {
+    return this._ae;
   }
 
-  set aE(value: string) {
-    this._aE = value;
+  set ae(value: string) {
+    this._ae = value;
   }
 
-  get aT(): string {
-    return this._aT;
+  get at(): string {
+    return this._at;
   }
 
-  set aT(value: string) {
-    this._aT = value;
+  set at(value: string) {
+    this._at = value;
   }
 
-  get aQ(): string {
-    return this._aQ;
+  get aq(): string {
+    return this._aq;
   }
 
-  set aQ(value: string) {
-    this._aQ = value;
+  set aq(value: string) {
+    this._aq = value;
   }
-
 
   cT():string {
 
-    let sq ='CREATE TABLE IF NOT EXISTS GTD_A(aI VARCHAR(50) PRIMARY KEY,' +
-      'aN varchar(10),aM varchar(11),aE varchar(20) ,aT varchar(50) ,aQ varchar(100));';
+    let sq ='create table if not exists gtd_a(ai varchar(50) primary key,' +
+      'an varchar(10),am varchar(11),ae varchar(20) ,at varchar(50) ,aq varchar(100));';
 
     return sq;
   }
 
   upT():string {
-    let sq='update GTD_A set 1=1 ';
-    if(this._aN!=null){
-      sq=sq+', aN="' + this._aN +'"';
+    let sq='update gtd_a set 1=1 ';
+    if(this._an!=null){
+      sq=sq+', an="' + this._an +'"';
     }
-    if(this._aM!=null){
-      sq=sq+', aM="' + this._aM +'"';
+    if(this._am!=null){
+      sq=sq+', am="' + this._am +'"';
     }
-    if(this._aE != null){
-      sq = sq + ', aE="' + this._aE +'"';
+    if(this._ae != null){
+      sq = sq + ', ae="' + this._ae +'"';
     }
-    if(this._aQ != null){
-      sq = sq + ', aQ="' + this._aQ +'"';
+    if(this._aq != null){
+      sq = sq + ', aq="' + this._aq +'"';
     }
-    sq = sq + ' where aI = "'+ this._aI +'"';
+    sq = sq + ' where ai = "'+ this._ai +'"';
     return sq;
   }
 
   dT():string {
-    let sq = 'delete from GTD_A where aI = "' + this._aI +'"';
+    let sq = 'delete from gtd_a where ai = "' + this._ai +'"';
     return sq;
   }
 
   sloT():string {
-    let sq='select * from GTD_A';
+    let sq='select * from gtd_a';
     return sq;
   }
 
   slT():string {
-    let sq='select * from  GTD_A where  1=1 ';
-    if(this._aI != null){
-      sq = sq + ' and aI="' + this._aI +'"';
+    let sq='select * from  gtd_a where  1=1 ';
+    if(this._ai != null){
+      sq = sq + ' and ai="' + this._ai +'"';
     }
-    if(this._aN!=null){
-      sq=sq+' and aN="' + this._aN +'"';
+    if(this._an!=null){
+      sq=sq+' and an="' + this._an +'"';
     }
-    if(this._aM!=null){
-      sq=sq+' and aM="' + this._aM +'"';
+    if(this._am!=null){
+      sq=sq+' and am="' + this._am +'"';
     }
-    if(this._aE != null){
-      sq = sq + ' and aE="' + this._aE +'"';
+    if(this._ae != null){
+      sq = sq + ' and ae="' + this._ae +'"';
     }
-    if(this._aQ != null){
-      sq = sq + ' and aQ="' + this._aQ +'"';
+    if(this._aq != null){
+      sq = sq + ' and aq="' + this._aq +'"';
     }
 
     return sq;
@@ -125,25 +125,31 @@ export class ATbl implements ITbl {
 
   drT():string {
 
-    let sq ='DROP TABLE IF EXISTS GTD_A;';
+    let sq ='drop table if exists gtd_a;';
     return sq;
   }
 
   inT():string {
-    let sq ='insert into GTD_A ' +
-      '(aI,aN,aM,aE,aT,aQ) values("'+ this._aI+'","'+ this._aN+'","'+this._aM+ '"' +
-      ',"'+this._aE+ '","'+this._aT+ '","'+this._aQ+ '")';
+    let sq ='insert into gtd_a ' +
+      '(ai,an,am,ae,at,aq) values("'+ this._ai+'","'+ this._an+'","'+this._am+ '"' +
+      ',"'+this._ae+ '","'+this._at+ '","'+this._aq+ '")';
 
     return sq;
   }
 
   rpT():string {
-    let sq ='replace into GTD_A ' +
-      '(aI,aN,aM,aE,aT,aQ) values("'+ this._aI+'","'+ this._aN+'","'+this._aM+ '"' +
-      ',"'+this._aE+ '","'+this._aT+ '","'+this._aQ+ '")';
+    let sq ='replace into gtd_a ' +
+      '(ai,an,am,ae,at,aq) values("'+ this._ai+'","'+ this._an+'","'+this._am+ '"' +
+      ',"'+this._ae+ '","'+this._at+ '","'+this._aq+ '")';
 
     return sq;
   }
-
+  clp(){
+    this._ai = null;
+    this._an = null;
+    this._ae= null;
+    this._at = null;
+    this._aq= null;
+  };
 }
 

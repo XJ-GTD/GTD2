@@ -6,39 +6,40 @@ import {ITbl} from "./itbl";
 
 export class CTbl implements  ITbl{
 
-  private _sI: string="";
-  private _sN: string="";
-  private _uI: string="";
+  private _si: string="";
+  private _sn: string="";
+  private _ui: string="";
   private _sd: string="";
   private _st: string="";
   private _ed: string="";
   private _et: string="";
-  private _rT: string="";
+  private _rt: string="";
   private _ji: string="";
+  private _sr: string =""
 
 
-  get sI(): string {
-    return this._sI;
+  get si(): string {
+    return this._si;
   }
 
-  set sI(value: string) {
-    this._sI = value;
+  set si(value: string) {
+    this._si = value;
   }
 
-  get sN(): string {
-    return this._sN;
+  get sn(): string {
+    return this._sn;
   }
 
-  set sN(value: string) {
-    this._sN = value;
+  set sn(value: string) {
+    this._sn = value;
   }
 
-  get uI(): string {
-    return this._uI;
+  get ui(): string {
+    return this._ui;
   }
 
-  set uI(value: string) {
-    this._uI = value;
+  set ui(value: string) {
+    this._ui = value;
   }
 
   get sd(): string {
@@ -73,12 +74,12 @@ export class CTbl implements  ITbl{
     this._et = value;
   }
 
-  get rT(): string {
-    return this._rT;
+  get rt(): string {
+    return this._rt;
   }
 
-  set rT(value: string) {
-    this._rT = value;
+  set rt(value: string) {
+    this._rt = value;
   }
 
   get ji(): string {
@@ -89,33 +90,41 @@ export class CTbl implements  ITbl{
     this._ji = value;
   }
 
+  get sr(): string {
+    return this._sr;
+  }
+
+  set sr(value: string) {
+    this._sr = value;
+  }
+
   clp(){
-    this._sI = null;
-    this._sN = null;
-    this._uI = null;
+    this._si = null;
+    this._sn = null;
+    this._ui = null;
     this._sd = null;
     this._st = null;
     this._ed = null;
     this._et = null;
-    this._rT = null;
+    this._rt = null;
     this._ji = null;
   };
 
   cT():string {
 
-    let sq =' CREATE TABLE IF NOT EXISTS GTD_C(  sI varchar(50) PRIMARY KEY ,sN varchar(50)  ,uI varchar(50)  ,sd varchar(20)  ' +
-      ',st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,rT varchar(4)  ,ji varchar(50));';
+    let sq =' create table if not exists gtd_c(  si varchar(50) primary key ,sn varchar(50)  ,ui varchar(50)  ,sd varchar(20)  ' +
+      ',st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,rt varchar(4)  ,ji varchar(50),sr varchar(50));';
 
     return sq;
   }
 
   upT():string {
-    let sq='update GTD_C set 1=1 ';
-    if(this._sN!=null){
-      sq=sq+', sN="' + this._sN +'"';
+    let sq='update gtd_c set 1=1 ';
+    if(this._sn!=null){
+      sq=sq+', sn="' + this._sn +'"';
     }
-    if(this._uI!=null){
-      sq=sq+', uI="' + this._uI +'"';
+    if(this._ui!=null){
+      sq=sq+', ui="' + this._ui +'"';
     }
     if(this._sd != null){
       sq = sq + ', sd="' + this._sd +'"';
@@ -129,33 +138,36 @@ export class CTbl implements  ITbl{
     if(this._et != null){
       sq = sq + ', et="' + this._et +'"';
     }
-    if(this._rT != null){
-      sq = sq + ', rT="' + this._rT +'"';
+    if(this._rt != null){
+      sq = sq + ', rt="' + this._rt +'"';
     }
     if(this._ji != null){
       sq = sq + ', ji="' + this._ji +'"';
     }
-    sq = sq + ' where sI = "'+ this._sI +'"';
+    if(this._sr != null){
+      sq = sq + ', sr="' + this._sr +'"';
+    }
+    sq = sq + ' where si = "'+ this._si +'"';
     return sq;
   }
 
   dT():string {
-    let sq = 'delete from GTD_C where sI = "' + this._sI +'"';
+    let sq = 'delete from gtd_c where si = "' + this._si +'"';
     return sq;
   }
 
   sloT():string {
-    let sq='select * from GTD_C where sI = "'+ this._sI +'"';
+    let sq='select * from gtd_c where si = "'+ this._si +'"';
     return sq;
   }
 
   slT():string {
-    let sq='select * from  GTD_C where  1=1 ';
-    if(this._sN!=null){
-      sq=sq+' and sN="' + this._sN +'"';
+    let sq='select * from  gtd_c where  1=1 ';
+    if(this._sn!=null){
+      sq=sq+' and sn="' + this._sn +'"';
     }
-    if(this._uI!=null){
-      sq=sq+' and uI="' + this._uI +'"';
+    if(this._ui!=null){
+      sq=sq+' and ui="' + this._ui +'"';
     }
     if(this._sd != null){
       sq = sq + ' and sd="' + this._sd +'"';
@@ -169,36 +181,41 @@ export class CTbl implements  ITbl{
     if(this._et != null){
       sq = sq + ' and et="' + this._et +'"';
     }
-    if(this._rT != null){
-      sq = sq + ' and rT="' + this._rT +'"';
+    if(this._rt != null){
+      sq = sq + ' and rt="' + this._rt +'"';
     }
     if(this._ji != null){
       sq = sq + ' and ji="' + this._ji +'"';
     }
-    if(this._sI != null){
-      sq = sq + ' and sI="' + this._sI +'"';
+    if(this._si != null){
+      sq = sq + ' and si="' + this._si +'"';
+    }
+    if(this._sr != null){
+      sq = sq + ' and sr="' + this._sr +'"';
     }
     return sq;
   }
 
   drT():string {
 
-    let sq ='DROP TABLE IF EXISTS GTD_C;';
+    let sq ='drop table if exists gtd_c;';
     return sq;
   }
 
   inT():string {
-    let sq ='insert into GTD_C ' +
-      '( sI ,sN ,uI ,sd ,st ,ed ,et ,rT ,ji) values("'+ this._sI+'","'+ this._sN+'","'+this._uI+ '"' +
-      ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._rT+ '","'+this._ji+ '")';
+    let sq ='insert into gtd_c ' +
+      '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr) values("'+ this._si+'","'+ this._sn+'","'+this._ui+ '"' +
+      ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._rt+ '","'+this._ji+ '"' +
+      ',"'+this._sr+ '")';
 
     return sq;
   }
 
   rpT():string {
-    let sq ='replace into GTD_C ' +
-      '( sI ,sN ,uI ,sd ,st ,ed ,et ,rT ,ji) values("'+ this._sI+'","'+ this._sN+'","'+this._uI+ '"' +
-      ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._rT+ '","'+this._ji+ '")';
+    let sq ='replace into gtd_c ' +
+      '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr) values("'+ this._si+'","'+ this._sn+'","'+this._ui+ '"' +
+      ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._rt+ '","'+this._ji+ '"' +
+      ',"'+this._sr+ '")';
 
     return sq;
   }
