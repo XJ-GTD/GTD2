@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {RData, RService} from "./r.service";
 import {DataConfig} from "../../service/config/data.config";
@@ -41,15 +41,6 @@ import {AibutlerRestful, AudioPro, TextPro} from "../../service/restful/aibutler
     '            </ion-item>' +
     '          </div>' +
     '        </div>' +
-    '        <div *ngIf="this.errorCode != undefinde">' +
-    '          <div>' +
-    '            <!--*ngIf="true" -->' +
-    '            <div class="error_info">' +
-    '              <span *ngIf="this.errorCode == 0">手机号不能为空</span>' +
-    '              <span *ngIf="this.errorCode == 1 || this.errorCode == 2">请输入正确11位手机号</span>' +
-    '            </div>' +
-    '          </div>' +
-    '        </div>' +
     '      </div>' +
     '      <div class="custom_group verification">' +
     '        <div class="group_input ">' +
@@ -79,17 +70,8 @@ import {AibutlerRestful, AudioPro, TextPro} from "../../service/restful/aibutler
     '          </div>' +
     '          <div class="input_text">' +
     '            <ion-item>' +
-    '              <ion-input type="password" [(ngModel)]="rdata.password" (ionBlur)="checkPwd()" placeholder="密码" clearInput></ion-input>' +
+    '              <ion-input type="password" [(ngModel)]="rdata.password" placeholder="密码" clearInput></ion-input>' +
     '            </ion-item>' +
-    '          </div>' +
-    '          <div >' +
-    '            <div >' +
-    '              <!--*ngIf="true" -->' +
-    '              <div class="error_info">' +
-    '                <span *ngIf="this.checkBoxClickFlag">不同意协议不能注册</span>' +
-    '                <span *ngIf="this.checkPassword">请输入密码</span>' +
-    '              </div>' +
-    '            </div>' +
     '          </div>' +
     '        </div>' +
     '      </div>' +
@@ -99,12 +81,8 @@ import {AibutlerRestful, AudioPro, TextPro} from "../../service/restful/aibutler
     '        </button>' +
     '        <div class="copywriting" margin-top>' +
     '          <span class="checkbox_span">' +
-    '            <!--<ion-item>-->' +
-    '            <!--<ion-label >已阅读《用户协议》</ion-label>-->' +
     '              <ion-checkbox [(ngModel)]="checkBoxClick"></ion-checkbox>' +
-    '            <!--</ion-item>-->' +
-    '          <span class="userAgreement_span">我已阅读并同意<span class="userAgreement_span_1"' +
-    '                                                        (click)="userAgreegment()">《用户协议》</span></span>' +
+    '          <span class="userAgreement_span">我已阅读并同意<span class="userAgreement_span_1" (click)="userAgreegment()">《用户协议》</span></span>' +
     '          </span>' +
     '        </div>' +
     '      </div>' +
@@ -118,15 +96,12 @@ export class RPage {
 
   data: any;
   accountName: any;
-  accountPassword: any;
   accountMobile: any;
   userName: any;
   deviceId: any;
   checkMobile: any;
   checkMobileNull: any;
-  checkPassword: any;
   checkBoxClick: any;
-  checkBoxClickFlag: any;
   authCode: any;
   errorCode: any;
   timeOut: any = "发送验证码";
@@ -140,7 +115,7 @@ export class RPage {
               private alertCtrl: AlertController,
               private utilService: UtilService,
               private rService: RService,
-              private testful : AibutlerRestful
+              private toastCtrl: ToastController,
   ) {
 
   }
@@ -148,96 +123,64 @@ export class RPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad RPage');
     this.rePage = this.navParams.get("RPage");
-    /*let testp = new AgdPro();
-    testp.rai="a";
-    testp.fc="b";
-    testp.ai="c";
-    testp.at="d";
-    testp.adt="e";
-    testp.ap="f";
-    testp.ar="g";
-    testp.aa="h";
-    testp.am="i";
-    testp.ac = new Array<ContactPerPro>();
-    /!*this.testful.save(testp).then(data =>
-    {
-      console.log("testful agd:"+ JSON.stringify(data));
-    })*!/
-    let testp1 = new SharePro();
-    testp1.oai = "a13661617252";
-    testp1.ompn="13661617252";
-    testp1.d.a.rai="a";
-    testp1.d.a.fc="b";
-    testp1.d.a.ai="c";
-    testp1.d.a.at="d";
-    testp1.d.a.adt="2019/03/11 09:33";
-    testp1.d.a.ap="f";
-    testp1.d.a.ar="g";
-    testp1.d.a.aa="h";
-    testp1.d.a.am="i";
-    let cp = new ContactPerPro();
-    cp.ai ="a15737921611"
-    cp.bd="1990/07/01"
-    cp.mpn="15737921611"
-    cp.n="ding"
-    cp.s="f"
-    testp1.d.a.ac.push(cp) ;
-        this.testful.share(testp1).then(data=>{
-      console.log("testful share agd:"+ JSON.stringify(data));
-    })*/
+  }
 
-    /*let testp = new AudioPro();
-    testp.d.vb64="sdfasfdasfsafdfafa";
-    this.testful.postaudio(testp).then(data=>{
-      console.log("testful audio ai:"+ JSON.stringify(data));
-    })*/
-    let testp:TextPro = new TextPro();
-    testp.d.text="你好";
-    this.testful.posttext(testp).then(data=>{
-      console.log("testful text ai:"+ JSON.stringify(data));
-    })
+  title(message){
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 1500,
+      position: 'middle'
+    });
+    toast.present();
+    return;
   }
 
   register() {
+    if(this.errorCode == undefined || this.errorCode == 0 ){  //判断手机号是否为空
+      this.title("手机号不能为空");
+    }else if(this.errorCode == 3){ //验证手机号是否符合规范
 
-    if(this.errorCode == undefined)   //判断手机号是否为空
-      this.errorCode = 0;
-    else if (this.rdata.password == null || this.rdata.password == "" || this.rdata.password == undefined)     //判断密码是否为空
-      this.checkPassword = true;
-    else if (this.checkBoxClick != true)  //判断用户协议是否选择
-      this.checkBoxClickFlag=true;
-    else
-    {
-      this.checkBoxClickFlag=false;
+      if (this.rdata.authCode == null || this.rdata.authCode == "" || this.rdata.authCode == undefined){     //判断验证码是否为空
+        this.title("验证码不能为空");
+      } else if (this.rdata.password == null || this.rdata.password == "" || this.rdata.password == undefined){     //判断密码是否为空
+        this.title("密码不能为空");
+      } else if (this.checkBoxClick != true){  //判断用户协议是否选择
+        this.title("请读阅并勾选用户协议");
+      } else if(this.rdata.verifykey == "") {
+        this.title("请发送短信并填写正确的短信验证码");
+      } else{
 
-      console.log("signup::111111111" + this.rdata)
-      //注册成功
-      this.rService.signup(this.rdata).then(data => {
-        console.debug("注册返回信息::" + JSON.stringify(data));
-        let alert = this.alertCtrl.create({
-          title: '提示信息',
-          subTitle: "注册成功",
-          buttons: [{
-            text: '确定', role: 'cancel', handler: () => {
-              if (this.rePage != undefined) {
-                this.navCtrl.getViews().forEach(page => {
-                  if (page.name == this.rePage) {
-                    this.navCtrl.popTo(page);
-                  }
-                })
-              } else {
-                this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
+        //注册成功
+        this.rService.signup(this.rdata).then(data => {
+          console.debug("注册返回信息::" + JSON.stringify(data));
+          /*let alert = this.alertCtrl.create({
+            title: '提示信息',
+            subTitle: "注册成功",
+            buttons: [{
+              text: '确定', role: 'cancel', handler: () => {
+                if (this.rePage != undefined) {
+                  this.navCtrl.getViews().forEach(page => {
+                    if (page.name == this.rePage) {
+                      this.navCtrl.popTo(page);
+                    }
+                  })
+                } else {
+                  this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
+                }
               }
-            }
-          }]
-        });
-        alert.present();
-        this.disable = false;
+            }]
+          });
+          alert.present();
+          this.disable = false;*/
 
-      }).catch(err=>{
-        //注册异常
-      });
+        }).catch(err=>{
+          //注册异常
+        });
+      }
+    }else {
+      this.title("请输入正确11位手机号");
     }
+
   }
 
   userAgreegment() {
@@ -247,15 +190,14 @@ export class RPage {
   sendMsg() {
     if(this.errorCode == 3){
       this.rService.sc(this.rdata).then(data => {
-        console.log("sc::" + data)
-        console.log("sc:: verifykey :" + data.repData.data.verifykey)
+        //短信验证码KEY 赋值给注册信息
         this.rdata.verifykey = data.repData.data.verifykey;
-        /*let alert = this.alertCtrl.create({
+        let alert = this.alertCtrl.create({
           title:'提示信息',
           subTitle: data.repData.message,
           buttons:['确定']
         });
-        alert.present();*/
+        alert.present();
       }).catch(ref =>{
         /*console.log("ref::" + ref);
         let alert = this.alertCtrl.create({
@@ -264,7 +206,7 @@ export class RPage {
           buttons:['确定']
         });
         alert.present();*/
-      })
+      });
 
       this.timeOut = 10;
       this.timer = setInterval(()=>{
@@ -278,12 +220,12 @@ export class RPage {
       },1000)
 
     }else{
-      let alert = this.alertCtrl.create({
+      /*let alert = this.alertCtrl.create({
         title:'提示信息',
         subTitle: '请填写正确的手机号',
         buttons:['确定']
       });
-      alert.present();
+      alert.present();*/
     }
   }
 
@@ -299,14 +241,6 @@ export class RPage {
     if (this.errorCode == 3) {
       this.checkMobile = false;
       this.checkMobileNull = false;
-    }
-  }
-
-  checkPwd() {
-    if (this.rdata.password == null || this.rdata.password == "" || this.rdata.password == undefined) {      //判断字符是否为空
-      this.checkPassword = true;
-    } else {
-      this.checkPassword = false;
     }
   }
 

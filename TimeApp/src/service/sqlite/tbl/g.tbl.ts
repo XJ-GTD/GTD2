@@ -72,10 +72,10 @@ export class GTbl implements ITbl {
   slT():string{
     let sq='select * from  gtd_g where  1=1 ';
     if(this._gn!=null){
-      sq=sq+', gn="' + this._gn +'"';
+      sq=sq+' and gn="' + this._gn +'"';
     }
     if(this._gm!=null){
-      sq=sq+', gm="' + this._gm +'"';
+      sq=sq+' and gm="' + this._gm +'"';
     }
     return sq;
   }

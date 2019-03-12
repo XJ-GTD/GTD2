@@ -81,7 +81,9 @@ public class MainVerticle extends AbstractVerticle {
 	 * @param ctx
 	 */
 	private void backup(RoutingContext ctx) {
-		
+		System.out.println("headers: " + ctx.request().headers());
+		System.out.println("body: " + ctx.getBodyAsString());
+
 		JsonObject ret = new JsonObject();
 		ret.put("rc", "0");
 		ret.put("rm", "");
@@ -232,7 +234,9 @@ public class MainVerticle extends AbstractVerticle {
 	}
 
 	private void recover(RoutingContext ctx) {
-		
+		System.out.println("headers: " + ctx.request().headers());
+		System.out.println("body: " + ctx.getBodyAsString());
+
 		JsonObject ret = new JsonObject();
 		ret.put("rc", "0");
 		ret.put("rm", "");
@@ -346,6 +350,8 @@ public class MainVerticle extends AbstractVerticle {
 	}
 	
 	private void latest(RoutingContext ctx) {
+		System.out.println("headers: " + ctx.request().headers());
+		System.out.println("body: " + ctx.getBodyAsString());
 
 		JsonObject ret = new JsonObject();
 		ret.put("rc", "0");

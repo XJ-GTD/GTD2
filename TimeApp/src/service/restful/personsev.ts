@@ -9,7 +9,30 @@ import {RestFulConfig, UrlEntity} from "../config/restful.config";
 export class PersonRestful {
 
   constructor(private request: RestfulClient,
-              private config: RestFulConfig) {
+              private config: RestFulConfig,) {
+  }
+
+
+  //token信息获取，头部登录码 get
+  getToken(code:string): Promise<PersonData> {
+
+    let personData:PersonData = new PersonData();
+    return new Promise((resolve, reject) => {
+      let url: UrlEntity = this.config.getRestFulUrl("TK");
+      url.url = url.url + '?appid=d3d3Lmd1b2JhYS5jb20&secret=c2VjcmV0QHd3dy5ndW9iYWEuY29t&code='+ code +'&grant_type=any';
+      this.request.get(url).then(data => {
+        //处理返回结果
+        personData.repGetData = data;
+        resolve(personData);
+
+      }).catch(error => {
+        //处理返回错误
+        personData.errData = error;
+        resolve(personData);
+
+      })
+    });
+
   }
 
   //帐户信息获取	AIG get
@@ -30,6 +53,7 @@ export class PersonRestful {
 
       })
     });
+
   }
 
   //帐户头像获取	AAG get
@@ -55,6 +79,7 @@ export class PersonRestful {
 
       })
     });
+
   }
 
   //获取个人信息	AIU	获取个人信息 get
@@ -75,6 +100,7 @@ export class PersonRestful {
 
       })
     });
+
   }
 
   //帐户信息更新	AIU	更新用户信息(包括密码) put
@@ -94,10 +120,12 @@ export class PersonRestful {
 
       })
     });
+
   }
 
   //修改密码 MP put
   updatepass(personData:PersonData): Promise<PersonData> {
+
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("MP");
       this.request.put(url, personData.updateSelfData).then(data => {
@@ -112,11 +140,12 @@ export class PersonRestful {
 
       })
     });
-  }
 
+  }
 
   //注册帐户	RA post
   signup(signupData: SignupData): Promise<SignupData> {
+
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("RA");
       this.request.post(url, signupData.reqData).then(data => {
@@ -131,7 +160,9 @@ export class PersonRestful {
 
       })
     });
+
   }
+
 }
 
 export class SignupData {

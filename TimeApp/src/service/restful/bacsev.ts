@@ -12,6 +12,7 @@ import {BsModel} from "./out/bs.model";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {OutSharePro} from "./agdsev";
 import {CTbl} from "../sqlite/tbl/c.tbl";
+import {BxTbl} from "../sqlite/tbl/bx.tbl";
 
 
 
@@ -120,6 +121,8 @@ export class BackupProSub{
   d:Array<ITbl> = new Array<DTbl>();
   //获取群组信息
   g:Array<ITbl> = new Array<GTbl>();
+  //获取群组人员信息
+  bx:Array<ITbl> = new Array<BxTbl>();
   //获取本地计划
   jh:Array<ITbl> = new Array<JhTbl>();
 }
@@ -152,6 +155,8 @@ export class OutRecoverPro{
   b:Array<ITbl> = new Array<BTbl>();
   //获取群组信息
   g:Array<ITbl> = new Array<GTbl>();
+  //获取群组人员信息
+  bx:Array<ITbl> = new Array<BxTbl>();
   //获取本地计划
   jh:Array<ITbl> = new Array<JhTbl>();
 

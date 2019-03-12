@@ -205,7 +205,7 @@ export class BTbl implements ITbl{
       sq = sq + ' and hiu="' + this._hiu +'"';
     }
     if(this._rn != null){
-      sq = sq + ', rn="' + this._rn +'"';
+      sq = sq + ' and rn="' + this._rn +'"';
     }
     if(this._rnpy != null){
       sq = sq + ' and rnpy="' + this._rnpy +'"';

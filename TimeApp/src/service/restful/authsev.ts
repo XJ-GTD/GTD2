@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 
-
 /**
  * 登录
  */
@@ -18,7 +17,6 @@ export class AuthRestful {
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("SML");
       this.request.post(url, loginData.reqAData).then(data => {
-
         //处理返回结果
         loginData.repData = data;
         resolve(loginData);
