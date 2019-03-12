@@ -18,7 +18,7 @@ export class BrService {
   }
 
   //备份方法，需要传入页面 ，画面显示备份进度条
-  async backup(): Promise<any> {
+  async backup(){
     //定义上传信息JSSON List
 
     let backupPro: BackupPro = new BackupPro();
@@ -62,9 +62,7 @@ export class BrService {
     backupPro.d.jh = await this.sqlexec.getList(jh);
 
     //restFul上传
-    await this.bacRestful.backup(backupPro);
-
-    return null
+    return await this.bacRestful.backup(backupPro);
 
   }
 
