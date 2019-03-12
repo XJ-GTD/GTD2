@@ -40,7 +40,7 @@ export class SpeechProcess implements MQProcess {
         stbl.yk = spData.t;
 
         //获取本地回答语音文本
-        let datas = await this.sqliteExec.getList(stbl);
+        let datas = await this.sqliteExec.getList<STbl>(stbl);
         //回答语音list
         let len = datas.length;
         //随机选取一条

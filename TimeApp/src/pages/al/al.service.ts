@@ -49,7 +49,7 @@ export class AlService {
       let alData:AlData = new AlData();
       let sTbl: STbl = new STbl();
       sTbl.st = "FI";
-      this.sqlExce.getList(sTbl).then(data => {
+      this.sqlExce.getList<STbl>(sTbl).then(data => {
 
         let stbls:Array<STbl> = data;
         if (stbls.length > 0 && stbls[0].yv == "0"){
@@ -138,7 +138,7 @@ export class AlService {
       // TODO 判断用户是否登陆
       let aTbl: ATbl = new ATbl();
       let alData:AlData = new AlData();
-      this.sqlExce.getList(aTbl).then(data=>{
+      this.sqlExce.getList<ATbl>(aTbl).then(data=>{
         if (data.length > 0){
           alData.text = "用户已登录";
           alData.islogin = true;
