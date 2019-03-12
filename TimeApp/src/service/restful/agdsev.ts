@@ -54,6 +54,7 @@ export class AgdRestful{
       }).catch(error => {
         //处理返回错误
         bsModel.code = -99;
+        bsModel.message = "处理出错";
         resolve(bsModel);
 
       })
@@ -74,6 +75,7 @@ export class AgdRestful{
       }).catch(error => {
         //处理返回错误
         bsModel.code = -99;
+        bsModel.message = "处理出错";
         resolve(bsModel);
 
       })
@@ -96,6 +98,7 @@ export class AgdRestful{
       }).catch(error => {
         //处理返回错误
         bsModel.code = -99;
+        bsModel.message = "处理出错";
         resolve(bsModel);
 
       })
@@ -118,6 +121,7 @@ export class AgdRestful{
       }).catch(error => {
         //处理返回错误
         bsModel.code = -99;
+        bsModel.message = "处理出错";
         resolve(bsModel);
 
       })
@@ -178,7 +182,6 @@ export class SharePro{
   c:object;
   //日程
   d:ShareProSub = new ShareProSub();
-
 }
 
 export class ShareProSub{

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { File } from "@ionic-native/file";
 import { UtilService } from "../util-service/util.service";
-import {AibutlerRestful} from "../restful/aibutlersev";
+import {AibutlerRestful, AudioPro, TextPro} from "../restful/aibutlersev";
 declare var cordova: any;
 
 /**
@@ -53,8 +53,9 @@ export class AssistantService{
            * 录音文件传输后台服务解析
            * @param {string} url 后台服务路径
            */
-
-          this.aibutlerRestful.postaudio(base64File)
+          let audioPro = new AudioPro();
+          audioPro.d.vb64 = base64File;
+          this.aibutlerRestful.postaudio(audioPro)
             .then(data => {
               console.log("data code：" + data.code);
               //接收Object JSON数据
@@ -128,8 +129,9 @@ export class AssistantService{
       if (text == null){
         return 0;
       }
-
-      this.aibutlerRestful.posttext(text)
+      let textPro = new TextPro();
+      textPro.d.text = text;
+      this.aibutlerRestful.posttext(textPro)
         .then(data => {
           console.log("data code：" + data.code);
           //接收Object JSON数据
