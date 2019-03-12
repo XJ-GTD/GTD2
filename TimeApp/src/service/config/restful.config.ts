@@ -36,13 +36,12 @@ export class RestFulConfig {
     let sPro = new STbl();
     sPro.st = "URL";
     return this.sqlitexec.getList(sPro).then(sPros => {
-
-      console.log(sPros);
-
-      for (let data of sPros) {
+      for (let i = 0;i<sPros.length;i++) {
+        let data = sPros.item(i);
         let urlentity: UrlEntity = new UrlEntity();
         urlentity.key = data.yk;
         urlentity.url = data.yv;
+
         this.urlLs.set(data.yk, urlentity);
       }
     })
