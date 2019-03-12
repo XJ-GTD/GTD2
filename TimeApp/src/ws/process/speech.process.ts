@@ -1,6 +1,7 @@
 import {WsContent} from "../model/content.model";
 import {MQProcess} from "./interface.process";
 import {Injectable} from "@angular/core";
+import {AssistantService} from "../../service/cordova/assistant.service";
 
 /**
  * webSocket公用处理方法
@@ -9,7 +10,10 @@ import {Injectable} from "@angular/core";
  */
 @Injectable()
 export class SpeechProcess implements MQProcess{
-  constructor() {
+  constructor(private assistant:AssistantService) {
+  }
+  option:{
+
   }
 
   go(content: WsContent):Promise<WsContent> {
@@ -17,8 +21,9 @@ export class SpeechProcess implements MQProcess{
       //处理区分
       content.option
       //处理所需要参数
-      content.parmeter
+      let spData:string = content.parmeter.get("anwser")
       //上次处理参数结果
+      this.assistant.speakText(spData,{})
       content.prvData
       //处理结果
       content.processRs
@@ -28,3 +33,4 @@ export class SpeechProcess implements MQProcess{
   }
 
 }
+

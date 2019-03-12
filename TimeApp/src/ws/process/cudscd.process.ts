@@ -3,6 +3,7 @@ import {WsContent} from "../model/content.model";
 import {ProcessFactory} from "../process.factory";
 import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
+import {CudscdPara} from "../model/cudscd.para";
 
 /**
  * 日历修改处理
@@ -20,7 +21,7 @@ export class CudscdProcess implements MQProcess{
       //处理区分
       content.option
       //处理所需要参数
-      content.parmeter
+      let cudPara:CudscdPara = content.parmeter;
       //上次处理参数结果
       content.prvData
       //处理结果

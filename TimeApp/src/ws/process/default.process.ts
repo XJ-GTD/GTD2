@@ -13,7 +13,6 @@ export class DefaultProcess implements MQProcess{
   }
 
   go(content: WsContent):Promise<WsContent> {
-
     return new Promise<WsContent>(resolve => {
       resolve(content);
     })
