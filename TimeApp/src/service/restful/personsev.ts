@@ -12,37 +12,15 @@ export class PersonRestful {
               private config: RestFulConfig) {
   }
 
-  //TODO 此接口需要 GET PUT  请求方法
-
-  //帐户信息更新	AIU	personsev.ts
-  updateself(personData:PersonData): Promise<PersonData> {
-
-    return new Promise((resolve, reject) => {
-      let url: UrlEntity = this.config.getRestFulUrl("AIU");
-      this.request.put(url,personData.reqData).then(data => {
-        //处理返回结果
-        personData.reqData = data;
-        resolve(personData);
-
-      }).catch(error => {
-        //处理返回错误
-        personData.errData = error;
-        resolve(personData);
-
-      })
-    });
-  }
-
-
-  //帐户信息获取	AIG
+  //帐户信息获取	AIG get
   get(personData:PersonData): Promise<PersonData> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIG");
-      url.url = url+"?unionid="+personData.reqGet.unionid;
+      url.url = url.url.replace("{phoneno}",personData.reqGet.phoneno);
       this.request.get(url).then(data => {
         //处理返回结果
-        personData.reqData = data;
+        personData.repGetData = data;
         resolve(personData);
 
       }).catch(error => {
@@ -54,12 +32,12 @@ export class PersonRestful {
     });
   }
 
-  //帐户头像获取	AAG
+  //帐户头像获取	AAG get
   getavatar(personData:PersonData): Promise<PersonData> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AAG");
-      url.url = url+"?phoneno="+personData.reqGetAvatar.phoneno;
+      url.url = url.url.replace("{phoneno}",personData.reqGet.phoneno);
       this.request.get(url).then(data => {
         //处理返回结果
         if(data.errcode == 0){
@@ -79,13 +57,52 @@ export class PersonRestful {
     });
   }
 
-  //修改密码 MP
+  //获取个人信息	AIU	获取个人信息 get
+  getself(personData:PersonData): Promise<PersonData> {
+
+    return new Promise((resolve, reject) => {
+      let url: UrlEntity = this.config.getRestFulUrl("AIU");
+      url.url = url.url.replace("{unionid}",personData.reqSelf.unionid);
+      this.request.get(url).then(data => {
+        //处理返回结果
+        personData.repSelfData = data;
+        resolve(personData);
+
+      }).catch(error => {
+        //处理返回错误
+        personData.errData = error;
+        resolve(personData);
+
+      })
+    });
+  }
+
+  //帐户信息更新	AIU	更新用户信息(包括密码) put
+  updateself(personData:PersonData): Promise<PersonData> {
+
+    return new Promise((resolve, reject) => {
+      let url: UrlEntity = this.config.getRestFulUrl("AIU");
+      this.request.put(url,personData.updateSelfData).then(data => {
+        //处理返回结果
+        personData.repData = data;
+        resolve(personData);
+
+      }).catch(error => {
+        //处理返回错误
+        personData.errData = error;
+        resolve(personData);
+
+      })
+    });
+  }
+
+  //修改密码 MP put
   updatepass(personData:PersonData): Promise<PersonData> {
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("MP");
-      this.request.put(url, personData.reqData).then(data => {
+      this.request.put(url, personData.updateSelfData).then(data => {
         //处理返回结果
-        personData.reqData = data;
+        personData.repData = data;
         resolve(personData);
 
       }).catch(error => {
@@ -98,7 +115,7 @@ export class PersonRestful {
   }
 
 
-  //注册帐户	RA
+  //注册帐户	RA post
   signup(signupData: SignupData): Promise<SignupData> {
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("RA");
@@ -137,14 +154,42 @@ export class SignupData {
 export class PersonData {
 
   reqGet = {
-    unionid: "fbdfab15-f911-4b50-8752-fdb306bb48d4",
-  };
-
-  reqGetAvatar = {
     phoneno: "",
   };
 
-  reqData = {
+  repGetData = {
+    errcode: "",
+    errmsg: "",
+    data: {
+      phoneno:"",
+      nickname: "",   //姓名
+      avatar: "",     //头像
+    },
+  };
+
+  reqSelf = {
+    unionid: "",
+  };
+
+  repSelfData = {
+    errcode: "",
+    errmsg: "",
+    data: {
+      _id:"",
+      openid  :"",
+      nickname: "",   //姓名
+      password:"",
+      unionid:"",
+      sex:"",
+      province:"",
+      city: "",
+      country: "",
+      avatar: "",     //头像
+      privilege:[],
+    },
+  };
+
+  updateSelfData = {
     nickname: "",   //姓名
     password: "",   //密码
     sex: "0",       //性别 0 未知, 1 男性, 2 女性 Enum: [ 0, 1, 2 ]
@@ -152,10 +197,8 @@ export class PersonData {
     birthday: "", //出生日期  2019-03-11
     province: "", //省市/地区
     city: "",
-    country: ""
+    country: "",
   };
-
-
 
   repData = {
     code: "",
