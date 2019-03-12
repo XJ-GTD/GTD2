@@ -76,7 +76,7 @@ export class AudioProSub{
 export class TextPro{
   //上下文
   c : object;
-  d : {text:string}
+  d : TextProSub = new TextProSub();
 }
 export class TextProSub{
   //文本文字
