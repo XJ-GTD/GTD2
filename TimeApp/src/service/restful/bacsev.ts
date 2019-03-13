@@ -110,7 +110,7 @@ export class BackupPro{
 
 export class BackupProSub{
   //备份时间戳
-  bts:string="";
+  bts:Number=0;
   //本地日历数据
   c:Array<CTbl> = new Array<CTbl>();
   //获取特殊日历
@@ -160,9 +160,9 @@ export class RecoverPro{
 
 export class RecoverProSub{
 
-  bts :string="";
+  bts :Number=0;
   //恢复表的名称
-  rdn:Array<string> = ["c","sp","e","d","b","g","bx","jh","s"] ;
+  rdn:Array<string> = ["c","sp","e","d","b","g","bx","jh","s","u"] ;
 }
 //恢复出参
 export class OutRecoverPro{

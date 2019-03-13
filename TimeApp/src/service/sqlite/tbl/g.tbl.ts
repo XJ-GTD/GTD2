@@ -63,7 +63,7 @@ export class GTbl implements ITbl {
   }
 
   dT():string{
-    let sq = 'delete from gtd_g where 1=1 ;';
+    let sq = 'delete from gtd_g where 1=1 ';
     if(this._gi != null && this._gi!=""){
       sq = sq + 'and  gi ="' + this._gi +'"';
     }
