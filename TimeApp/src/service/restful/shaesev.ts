@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
-import {AgdPro, ContactPerPro} from "./agdsev";
+import {AgdPro} from "./agdsev";
+import {BsModel} from "./out/bs.model";
+
 /**
  * 计划
  */
@@ -11,19 +13,23 @@ export class ShaeRestful{
               private config: RestFulConfig) {
   }
   //计划	计划上传	PU
-  share(shaeData : ShareData):Promise<ShareData> {
+  share(shaeData : ShareData):Promise<BsModel<P>> {
 
+    let bsModel = new BsModel<P>();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("PU");
       this.request.post(url, shaeData).then(data => {
         //处理返回结果
-        shaeData = data;
-        resolve(shaeData);
+        bsModel.code = data.rc;
+        bsModel.message = data.rm;
+        bsModel.data = data.d;
+        resolve(bsModel);
 
       }).catch(error => {
         //处理返回错误
-        shaeData = error;
-        resolve(shaeData);
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        resolve(bsModel);
 
       })
     });
@@ -31,20 +37,23 @@ export class ShaeRestful{
 
 
   //内建计划下载	BIPD
-  downsysname(shareData : BipdshaeData):Promise<RepBipdData> {
+  downsysname(shareData : BipdshaeData):Promise<BsModel<PSurl>> {
 
+    let bsModel = new BsModel<PSurl>();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("BIPD");
-      let rep:RepBipdData = new RepBipdData;
       this.request.post(url, shareData).then(data => {
         //处理返回结果
-        rep = data;
-        resolve(rep);
+        bsModel.code = data.rc;
+        bsModel.message = data.rm;
+        bsModel.data = data.d;
+        resolve(bsModel);
 
       }).catch(error => {
         //处理返回错误
-        rep = error;
-        resolve(rep);
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        resolve(bsModel);
 
       })
     });
@@ -74,13 +83,8 @@ export class P{
 }
 
 //计划上传出参
-export  class RepSharedData{
-  rc : string;
-  rm : string;
-  d: RepSharedDData = new RepSharedDData();
-}
-export class RepSharedDData{
-  psurl:string;
+export class PSurl{
+  psurl:string = "";
 }
 
 
@@ -99,11 +103,4 @@ export  class BipdshaeData{
 
 export class SharePro{
   pi :string;
-}
-
-//内建计划下载出参
-export  class RepBipdData{
-  rc : string;
-  rm:string;
-  d:P= new P();
 }
