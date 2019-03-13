@@ -34,17 +34,20 @@ export class PdService {
 
     let ctbls = await this.sqlExce.getList<CTbl>(ctbl);
 
-    let si:Array<string> = new Array<string>();
-
+    let paList:Array<AgdPro> = Array<AgdPro>();
     for (var j = 0, len = ctbls.length; j < len; j++) {
-      let sptbl:SpTbl = new SpTbl();
-      sptbl.si = ctbls[j].si;
-      let spTbl = await this.sqlExce.getList<SpTbl>(sptbl);
-      if(spTbl.length>0){
-        si.push(spTbl[0].si);
-      }
+      let pa:AgdPro = new AgdPro();
+      pa.ai = ctbls[j].si;//日程ID
+      pa.at = ctbls[j].sn;//主题
+      pa.adt = ctbls[j].sd + " " + ctbls[j].st;//时间(YYYY/MM/DD HH:mm)
+      pa.ap = ctbls[j].ji;//计划
+      pa.ar = ctbls[j].rt;//重复
+      pa.aa = ctbls[j].sn;//提醒
+      //参与人
+
+      paList.push(pa);
     }
-    console.error("重复日程ID si :"+si);
+    console.log("testful shareData "+ JSON.stringify(paList));
     //显示处理
 
   }
