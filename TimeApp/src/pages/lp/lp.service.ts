@@ -1,54 +1,84 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {AuthRestful, LoginData} from "../../service/restful/authsev";
-import {PersonData, PersonRestful} from "../../service/restful/personsev";
+import {PersonRestful, PersonTokenData} from "../../service/restful/personsev";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {WebsocketService} from "../../ws/websocket.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 @Injectable()
 export class LpService {
   constructor(private authRestful: AuthRestful,
               private sqlExce: SqliteExec,
               private personRestful: PersonRestful,
-              private websocketService:WebsocketService
+              private websocketService:WebsocketService,
+              private util: UtilService,
   ) {
   }
 
   //登录
   login(lpdata: LpData): Promise<LpData> {
-    console.log(lpdata.mobile + "////" + lpdata.password + "////");
     return new Promise((resolve, reject) => {
-      let restloginData: LoginData = new LoginData();
-      restloginData.reqPData.phoneno = lpdata.mobile;
-      restloginData.reqPData.userpassword = lpdata.password;
+      let loginData: LoginData = new LoginData();
+      loginData.phoneno = lpdata.mobile;
+      loginData.userpassword = lpdata.password;
+
+      let aTbl:ATbl = new ATbl();
+      let uTbl:UTbl = new UTbl();
       // 验证用户名密码
-      this.authRestful.loginbypass(restloginData).then(data => {
-        if (data.repData.errcode != "0"){ //data.repData.errcode == 0 为登陆成功状态
-          throw  data.repData.errmsg;
-        }
+      this.authRestful.loginbypass(loginData).then(data => {
+        if (data.code != 0)
+          throw  data.message;
+
         //获得token，放入头部header登录码
-        let code = data.repData.code;
+        let code = data.data.code;
         return this.personRestful.getToken(code);
       }).then(data=>{
-        //更新用户表
-        let uTbl:UTbl = new UTbl();
-        uTbl.ui = data.repSelfData.data._id;
-        uTbl.ai = data.repSelfData.data.openid;
-        uTbl.un = data.repSelfData.data.nickname;
-        uTbl.hiu = data.repSelfData.data.avatar;
-        uTbl.us = data.repSelfData.data.sex;
-
-        this.sqlExce.save(uTbl);
-        let aTbl:ATbl = new ATbl();
-
         //更新账户表
+
+        //账户表赋值
+        aTbl.ai = this.util.getUuid();
+        aTbl.an = data.nickname;
+        aTbl.am = data.openid;
+        aTbl.ae = "";
+        aTbl.at = data.access_token;
+        aTbl.aq = data.cmq;
+
+        //用户表赋值
+        uTbl.ui = this.util.getUuid();
+        uTbl.ai = aTbl.ai;
+        uTbl.un = data.nickname; //用户名
+        uTbl.hiu = data.avatar;
+        uTbl.biy = "";
+        uTbl.rn = data.nickname; //真实姓名
+        uTbl.ic = "";
+        uTbl.us = data.sex;
+        uTbl.uct = "";
+        return this.sqlExce.getList<ATbl>(aTbl);
+      }).then(data=>{
+        let atbls:Array<ATbl> = data;
+        if (atbls.length < 1 ){//保存账户表
+          return this.sqlExce.save(aTbl);
+        }else{//更新账户表
+          return this.sqlExce.update(aTbl);
+        }
+      }).then(data=>{
+        return this.sqlExce.getList<UTbl>(uTbl);
+      }).then(data=>{
+        let utbls:Array<UTbl> = data;
+        if (utbls.length < 1 ){//保存用户表
+          return this.sqlExce.save(uTbl);
+        }else{//更新用户表
+          return this.sqlExce.update(uTbl);
+        }
+      }).then(data=>{
         // 同步数据（调用brService方法恢复数据）
         //建立websoct连接（调用websoctService）
-        this.websocketService.connect();
+        //this.websocketService.connect();
         resolve(lpdata)
       }).catch(error=>{
-
+        resolve(error)
       })
     });
   }

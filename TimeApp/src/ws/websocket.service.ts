@@ -54,7 +54,6 @@ export class WebsocketService {
       // 连接消息服务器
       this.client.connect(this.login, this.password, frame => {
         console.log(this.client);
-        resolve();
         this.subscription = this.client.subscribe("/queue/" + this.queue, data => {
           this.dispatchService.dispatch(data.body).then(data => {
             console.log("message====>" + data + "=====>处理完毕");
@@ -67,6 +66,8 @@ export class WebsocketService {
       }, event => {
         console.log('关闭回调socket close!' + event);
       }, '/');
+
+      resolve();
     })
   }
 

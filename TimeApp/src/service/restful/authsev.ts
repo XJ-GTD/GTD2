@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
+import {BsModel} from "./out/bs.model";
 
 /**
  * 登录
@@ -12,14 +13,15 @@ export class AuthRestful {
   }
 
   // 短信登录 SML
-  loginbycode(loginData: LoginData): Promise<LoginData> {
+  loginbycode(loginData: LoginData): Promise<OutData> {
 
+    let outData:OutData = new OutData();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("SML");
-      this.request.post(url, loginData.reqAData).then(data => {
+      this.request.post(url, loginData).then(data => {
         //处理返回结果
-        loginData.repData = data;
-        resolve(loginData);
+        outData = data;
+        resolve(outData);
 
       }).catch(error => {
         //处理返回错误
@@ -29,18 +31,23 @@ export class AuthRestful {
     });
   }
 
-  loginbypass(loginData: LoginData): Promise<LoginData> {
-    return new Promise((resolve, reject) => {
+  loginbypass(loginData: LoginData): Promise<BsModel<OutData>> {
 
+    let bsModel = new BsModel<OutData>();
+    return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("PL");
-      this.request.post(url, loginData.reqPData).then(data => {
+      this.request.post(url, loginData).then(data => {
         //处理返回结果
-        loginData.repData = data;
-        resolve(loginData);
+        bsModel.code = data.errcode;
+        bsModel.message = data.errmsg;
+        bsModel.data = data.data;
+        resolve(bsModel);
 
       }).catch(error => {
         //处理返回错误
-        reject(error);
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        reject(bsModel);
 
       })
     });
@@ -48,35 +55,26 @@ export class AuthRestful {
 
 }
 
-export class LoginData {
-  //用户密码请求登陆
-  reqPData = {
-    phoneno:"",
-    userpassword:"",
-  };
+export class LoginData{
+  phoneno:string;
+  userpassword:string;
+  authCode:string;
+}
 
-  //用户验证码请求登陆
-  reqAData = {
-    phoneno:"",
-    authCode:""
-  };
+export class OutData{
+  errcode:string;
+  errmsg:string;
+  code:string;
+  openid:string;
+  unionid:string;
+  state:string;
+  data:Data = new Data();
+}
 
-  repData = {
-    data:{
-      "code": "",
-      "openid": "",
-      "unionid": "",
-      "state": ""
-    },
-    errcode:"",
-    errmsg:"",
-    code:"",
-    openid:"",
-    unionid:"",
-    state:"",
-  };
-
-  errData = {
-  }
+export class Data{
+  code: string;
+  openid: string;
+  unionid: string;
+  state:string;
 }
 

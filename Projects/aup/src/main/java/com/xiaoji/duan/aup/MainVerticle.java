@@ -884,7 +884,7 @@ public class MainVerticle extends AbstractVerticle {
         							update -> {
         								if (update.succeeded()) {
         									JsonObject access = update.result();
-        									System.out.println("Exist user login " + access.encode());
+
         									access
         					        		.put("appid", appId)
                 							.put("access_token", Base64.encodeBase64URLSafeString(UUID.randomUUID().toString().getBytes()))
@@ -901,6 +901,11 @@ public class MainVerticle extends AbstractVerticle {
         									retaccess.remove("code");
         									retaccess.remove("state");
         									
+        									String deviceId = Base64.encodeBase64URLSafeString(req.getHeader("di") == null ? req.getHeader("x-real-ip").getBytes() : req.getHeader("di").getBytes());
+        									retaccess.put("cmq", retaccess.getString("openid") + "." + deviceId);
+
+        									System.out.println("Exist user login " + retaccess.encode());
+
         									ctx.response().end(retaccess.encode());
         								} else {
         		            				ctx.response().end(new JsonObject().put("errcode", 10001).put("errmsg", "Access Token»°µ√ ß∞‹").encode());

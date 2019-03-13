@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {PersonRestful} from "../../service/restful/personsev";
-import {SmsData, SmsRestful} from "../../service/restful/smssev";
+import {InData, SmsRestful} from "../../service/restful/smssev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
 import {RestFulConfig} from "../../service/config/restful.config";
@@ -26,9 +26,9 @@ export class LsService {
       //倒计时
       console.log(mobile + "////");
       return new Promise((resolve, reject) => {
-        let smsData:SmsData = new SmsData();
-        smsData.reqData.phoneno = mobile;
-        this.smsRestful.getcode(smsData).then(data => {
+        let inData:InData = new InData();
+        inData.phoneno = mobile;
+        this.smsRestful.getcode(inData).then(data => {
           resolve(data)
         }).catch(err => {
           reject(err);
@@ -44,13 +44,13 @@ export class LsService {
     console.log(lsData.mobile + "////" + lsData.authCode + "////");
     return new Promise((resolve, reject) => {
       //参考lp登陆方法
-      let restloginData: LoginData = new LoginData();
-      restloginData.reqAData.phoneno = lsData.mobile;
-      restloginData.reqAData.authCode = lsData.authCode;
+      let loginData: LoginData = new LoginData();
+      loginData.phoneno = lsData.mobile;
+      loginData.authCode = lsData.authCode;
       // 验证用户名密码
-      this.authRestful.loginbypass(restloginData).then(data => {
-        if (data.repData.code != null){
-          throw  data.repData.errmsg;
+      this.authRestful.loginbypass(loginData).then(data => {
+        if (data.code != null){
+          throw  data.message;
         }
 
         //获取登陆用户信息
