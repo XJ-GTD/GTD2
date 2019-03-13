@@ -514,6 +514,12 @@ paths:
                     type: integer
                     format: int64
                     description: 备份时间戳
+                  cdn:
+                    type: array
+                    description: 恢复数据表名称列表
+                    items:
+                      type: string
+                    
       responses:
         '200':
           description: 获取备份数据成功
