@@ -155,7 +155,11 @@ export class CTbl implements  ITbl{
   }
 
   dT():string {
-    let sq = 'delete from gtd_c where si = "' + this._si +'";';
+    let sq = 'delete from gtd_c where 1=1';
+    if(this._si != null && this._si!=""){
+      sq = sq + 'and  si ="' + this._si +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 

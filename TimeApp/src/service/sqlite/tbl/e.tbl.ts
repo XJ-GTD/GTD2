@@ -90,7 +90,11 @@ export class ETbl  implements ITbl {
   }
 
   dT():string{
-    let sq = 'delete from gtd_e where wi = "' + this._wi +'";';
+    let sq = 'delete from gtd_e where 1=1 ';
+    if(this._wi != null && this._wi!=""){
+      sq = sq + 'and  wi ="' + this._wi +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 

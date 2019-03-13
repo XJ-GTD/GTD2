@@ -95,7 +95,11 @@ export class STbl implements ITbl   {
   }
 
   dT():string {
-    let sq = 'delete from gtd_s where si = "' + this._si +'";';
+    let sq = 'delete from gtd_s where 1=1 ';
+    if(this._si != null && this._si!=""){
+      sq = sq + 'and  si ="' + this._si +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 

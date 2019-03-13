@@ -139,7 +139,11 @@ export class UTbl  implements ITbl{
   }
 
   dT():string {
-    let sq = 'delete from gtd_u where ui = "' + this._ui +'";';
+    let sq = 'delete from gtd_u where 1=1 ';
+    if(this._ui != null && this._ui!=""){
+      sq = sq + 'and  ui ="' + this._ui +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 

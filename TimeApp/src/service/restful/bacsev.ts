@@ -14,6 +14,7 @@ import {OutSharePro} from "./agdsev";
 import {CTbl} from "../sqlite/tbl/c.tbl";
 import {BxTbl} from "../sqlite/tbl/bx.tbl";
 import {STbl} from "../sqlite/tbl/s.tbl";
+import {UTbl} from "../sqlite/tbl/u.tbl";
 
 
 
@@ -111,23 +112,25 @@ export class BackupProSub{
   //备份时间戳
   bts:string="";
   //本地日历数据
-  c:Array<ITbl> = new Array<CTbl>();
-  //本地联系人数据
-  b:Array<ITbl> = new Array<BTbl>();
+  c:Array<CTbl> = new Array<CTbl>();
   //获取特殊日历
-  sp:Array<ITbl> = new Array<SpTbl>();
+  sp:Array<SpTbl> = new Array<SpTbl>();
   //获取提醒数据
-  e:Array<ITbl> = new Array<ETbl>();
+  e:Array<ETbl> = new Array<ETbl>();
   //获取日程参与人信息
-  d:Array<ITbl> = new Array<DTbl>();
+  d:Array<DTbl> = new Array<DTbl>();
+  //本地联系人数据
+  b:Array<BTbl> = new Array<BTbl>();
   //获取群组信息
-  g:Array<ITbl> = new Array<GTbl>();
+  g:Array<GTbl> = new Array<GTbl>();
   //获取群组人员信息
-  bx:Array<ITbl> = new Array<BxTbl>();
+  bx:Array<BxTbl> = new Array<BxTbl>();
   //获取本地计划
-  jh:Array<ITbl> = new Array<JhTbl>();
+  jh:Array<JhTbl> = new Array<JhTbl>();
+  //用户偏好
+  u:Array<UTbl> = new Array<UTbl>();
   //系统表（测试用）
-  s:Array<ITbl> = new Array<STbl>();
+  s:Array<STbl> = new Array<STbl>();
 
 }
 //备份出参
@@ -165,21 +168,23 @@ export class RecoverProSub{
 export class OutRecoverPro{
 
   //本地日历数据
-  c:Array<ITbl> = new Array<CTbl>();
+  c:Array<CTbl> = new Array<CTbl>();
   //获取特殊日历
-  sp:Array<ITbl> = new Array<SpTbl>();
+  sp:Array<SpTbl> = new Array<SpTbl>();
   //获取提醒数据
-  e:Array<ITbl> = new Array<ETbl>();
+  e:Array<ETbl> = new Array<ETbl>();
   //获取日程参与人信息
-  d:Array<ITbl> = new Array<DTbl>();
+  d:Array<DTbl> = new Array<DTbl>();
   //本地联系人数据
-  b:Array<ITbl> = new Array<BTbl>();
+  b:Array<BTbl> = new Array<BTbl>();
   //获取群组信息
-  g:Array<ITbl> = new Array<GTbl>();
+  g:Array<GTbl> = new Array<GTbl>();
   //获取群组人员信息
-  bx:Array<ITbl> = new Array<BxTbl>();
+  bx:Array<BxTbl> = new Array<BxTbl>();
   //获取本地计划
-  jh:Array<ITbl> = new Array<JhTbl>();
+  jh:Array<JhTbl> = new Array<JhTbl>();
+  //用户偏好
+  u:Array<UTbl> = new Array<UTbl>();
   //系统表（测试用）
-  s:Array<ITbl> = new Array<STbl>();
+  s:Array<STbl> = new Array<STbl>();
 }

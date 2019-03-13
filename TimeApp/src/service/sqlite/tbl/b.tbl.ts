@@ -189,7 +189,11 @@ export class BTbl implements ITbl{
   }
 
   sloT():string {
-    let sq='select * from gtd_b where pwi = "'+ this._pwi +'";';
+    let sq='select * from gtd_b where 1=1 ';
+    if(this._pwi != null && this._pwi!=""){
+      sq = sq + 'and  pwi ="' + this._pwi +'"';
+    }
+    sq = sq + ';';
     return sq;
   }
 

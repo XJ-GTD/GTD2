@@ -51,7 +51,11 @@ export class BxTbl implements ITbl{
   }
 
   dT():string {
-    let sq = 'delete from gtd_b_x where bi = "' + this._bi +'";';
+    let sq = 'delete from gtd_b_x where 1=1 ';
+    if(this._bi != null && this._bi!=""){
+      sq = sq + 'and  bi ="' + this._bi +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 
