@@ -69,7 +69,7 @@ export class ETbl  implements ITbl {
   }
 
   upT():string{
-    let sq='update gtd_e set  ';
+    let sq='';
     if(this._si!=null && this._si!=""){
       sq=sq+', si="' + this._si +'"';
     }
@@ -82,12 +82,19 @@ export class ETbl  implements ITbl {
     if(this._wt != null && this._wt!=""){
       sq = sq + ', wt="' + this._wt +'"';
     }
-    sq = sq + ' where wi = "'+ this._wi +'";';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq = 'update gtd_e set  '+sq + ' where wi = "'+ this._wi +'";';
     return sq;
   }
 
   dT():string{
-    let sq = 'delete from gtd_e where wi = "' + this._wi +'";';
+    let sq = 'delete from gtd_e where 1=1 ';
+    if(this._wi != null && this._wi!=""){
+      sq = sq + 'and  wi ="' + this._wi +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { LpPage } from './lp';
 import {LpService} from "./lp.service";
+import {BrService} from "../br/br.service";
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import {LpService} from "./lp.service";
   ],
   providers:[
     LpService,
+    BrService,
   ],
 })
 export class LpPageModule {}

@@ -39,16 +39,23 @@ export class BxTbl implements ITbl{
   }
 
   upT():string {
-    let sq='update gtd_b_x set  ';
+    let sq='';
     if(this._bmi!=null && this._bmi!=""){
       sq=sq+', bmi="' + this._bmi +'"';
     }
-    sq = sq + ' where bi = "'+ this._bi +'";';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq ='update gtd_b_x set  '+ sq + ' where bi = "'+ this._bi +'";';
     return sq;
   }
 
   dT():string {
-    let sq = 'delete from gtd_b_x where bi = "' + this._bi +'";';
+    let sq = 'delete from gtd_b_x where 1=1 ';
+    if(this._bi != null && this._bi!=""){
+      sq = sq + 'and  bi ="' + this._bi +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 

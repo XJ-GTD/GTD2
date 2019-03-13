@@ -48,19 +48,26 @@ export class GTbl implements ITbl {
   }
 
   upT():string{
-    let sq='update gtd_g set  ';
+    let sq='';
     if(this._gn!=null && this._gn!=""){
       sq=sq+', gn="' + this._gn +'"';
     }
     if(this._gm!=null && this._gm!=""){
       sq=sq+', gm="' + this._gm +'"';
     }
-    sq = sq + ' where gi = "'+ this._gi +'";';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq = 'update gtd_g set  '+sq + ' where gi = "'+ this._gi +'";';
     return sq;
   }
 
   dT():string{
-    let sq = 'delete from gtd_g where gi = "' + this._gi +'";';
+    let sq = 'delete from gtd_g where 1=1 ;';
+    if(this._gi != null && this._gi!=""){
+      sq = sq + 'and  gi ="' + this._gi +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 

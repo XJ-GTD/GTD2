@@ -70,7 +70,7 @@ export class YTbl implements ITbl {
   }
 
   upT(): string {
-    let sq = 'update gtd_y set  ';
+    let sq = '';
     if (this._yt != null && this._yt!="") {
       sq = sq + ', yt="' + this._yt + '"';
     }
@@ -86,12 +86,19 @@ export class YTbl implements ITbl {
     if (this._yv != null && this._yv!="") {
       sq = sq + ', yv="' + this._yv + '"';
     }
-    sq = sq + ' where yi = "' + this._yi + '";';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq = 'update gtd_y set  ' + sq + ' where yi = "' + this._yi + '";';
     return sq;
   }
 
   dT(): string {
-    let sq = 'delete from gtd_y where yi = "' + this._yi + '";';
+    let sq = 'delete from gtd_y where 1=1 ';
+    if(this._yi != null && this._yi!=""){
+      sq = sq + 'and  yi ="' + this._yi +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 

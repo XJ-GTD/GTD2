@@ -110,7 +110,7 @@ export class SpTbl  implements ITbl {
   }
 
   upT():string {
-    let sq='update gtd_sp set  ';
+    let sq='';
     if(this._si!=null && this._si!=""){
       sq=sq+', si="' + this._si +'"';
     }
@@ -138,12 +138,19 @@ export class SpTbl  implements ITbl {
     if(this._sta != null && this._sta!=""){
       sq = sq + ', sta="' + this._sta +'"';
     }
-    sq = sq + ' where spi = "'+ this._spi +'";';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq = 'update gtd_sp set  '+sq + ' where spi = "'+ this._spi +'";';
     return sq;
   }
 
   dT():string {
-    let sq = 'delete from gtd_sp where spi = "' + this._spi +'";';
+    let sq = 'delete from gtd_sp where 1=1 ';
+    if(this._spi != null && this._spi!=""){
+      sq = sq + 'and  spi ="' + this._spi +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 

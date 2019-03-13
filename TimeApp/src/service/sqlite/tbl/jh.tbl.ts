@@ -67,7 +67,7 @@ export class JhTbl  implements ITbl{
   }
 
   upT():string{
-    let sq='update gtd_j_h set  ';
+    let sq='';
     if(this._jn!=null && this._jn!=""){
       sq=sq+', jn="' + this._jn +'"';
     }
@@ -80,12 +80,19 @@ export class JhTbl  implements ITbl{
     if(this._jt!=null && this._jt!=""){
       sq=sq+', jt="' + this._jt +'"';
     }
-    sq = sq + ' where ji = "'+ this._ji +'";';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq = 'update gtd_j_h set  ' +sq + ' where ji = "'+ this._ji +'";';
     return sq;
   }
 
   dT():string{
-    let sq = 'delete from gtd_j_h where ji = "' + this._ji +'";';
+    let sq = 'delete from gtd_j_h where 1=1 ';
+    if(this._ji != null && this._ji!=""){
+      sq = sq + 'and  ji ="' + this._ji +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 

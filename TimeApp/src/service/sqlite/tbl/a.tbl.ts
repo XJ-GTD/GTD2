@@ -75,7 +75,7 @@ export class ATbl implements ITbl {
   }
 
   upT():string {
-    let sq='update gtd_a set  ';
+    let sq='';
     if(this._an!=null && this._an!=""){
       sq=sq+', an="' + this._an +'"';
     }
@@ -88,12 +88,19 @@ export class ATbl implements ITbl {
     if(this._aq != null && this._aq!=""){
       sq = sq + ', aq="' + this._aq +'"';
     }
-    sq = sq + ' where ai = "'+ this._ai +'";';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq ='update gtd_a set  ' + sq + ' where ai = "'+ this._ai +'";';
     return sq;
   }
 
   dT():string {
-    let sq = 'delete from gtd_a where ai = "' + this._ai +'";';
+    let sq = 'delete from gtd_a where 1=1 ';
+    if(this._ai != null && this._ai!=""){
+      sq = sq + 'and  ai ="' + this._ai +'"';
+    }
+    sq = sq + ';';
     return sq;
   }
 

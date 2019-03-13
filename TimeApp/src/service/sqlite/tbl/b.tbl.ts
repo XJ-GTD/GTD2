@@ -142,7 +142,7 @@ export class BTbl implements ITbl{
   }
 
   upT():string {
-    let sq='update gtd_b set  ';
+    let sq='';
     if(this._ran!=null && this._ran!=""){
       sq=sq+', ran="' + this._ran +'"';
     }
@@ -176,7 +176,10 @@ export class BTbl implements ITbl{
     if(this._ui != null && this._ui!=""){
       sq = sq + ', ui="' + this._ui +'"';
     }
-    sq = sq + ' where pwi = "'+ this._pwi +'";';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq ='update gtd_b set ' + sq + ' where pwi = "'+ this._pwi +'";';
     return sq;
   }
 
@@ -186,7 +189,11 @@ export class BTbl implements ITbl{
   }
 
   sloT():string {
-    let sq='select * from gtd_b where pwi = "'+ this._pwi +'";';
+    let sq='select * from gtd_b where 1=1 ';
+    if(this._pwi != null && this._pwi!=""){
+      sq = sq + 'and  pwi ="' + this._pwi +'"';
+    }
+    sq = sq + ';';
     return sq;
   }
 

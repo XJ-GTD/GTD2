@@ -112,7 +112,7 @@ export class DTbl implements ITbl {
   }
 
   upT():string {
-    let sq='update gtd_d set  ';
+    let sq='';
     if(this._si!=null && this._si!=""){
       sq=sq+', si="' + this._si +'"';
     }
@@ -137,12 +137,19 @@ export class DTbl implements ITbl {
     if(this._sdt != null && this._sdt!=""){
       sq = sq + ', sdt="' + this._sdt +'"';
     }
-    sq = sq + ' where pi = "'+ this._pi +'";';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq ='update gtd_d set  '+ sq + ' where pi = "'+ this._pi +'";';
     return sq;
   }
 
   dT():string {
-    let sq = 'delete from gtd_d where pi = "' + this._pi +'";';
+    let sq = 'delete from gtd_d where 1=1 ';
+    if(this._pi != null && this._pi!=""){
+      sq = sq + 'and  pi ="' + this._pi +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 
