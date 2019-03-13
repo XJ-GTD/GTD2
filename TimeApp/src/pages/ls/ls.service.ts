@@ -117,7 +117,7 @@ export class LsService {
         return this.brService.recover("");
       }).then(data=>{
         //建立websoct连接（调用websoctService）
-        this.websocketService.connect(aTbl.aq);
+        this.websocketService.connect();
         resolve(lsData)
       }).catch(error=>{
         resolve(error)
