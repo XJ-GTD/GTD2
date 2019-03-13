@@ -8,11 +8,4 @@
 export class CudscdPara {
   //日程ID
   id:string;
-  //日程主题
-  d:string;
-  //日程时间
-  t:string;
-  //日程日期
-  ti:string;
-
 }

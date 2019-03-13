@@ -1,9 +1,10 @@
-import {MQProcess} from "./interface.process";
+import {MQProcess} from "../interface.process";
 import {WsContent} from "../model/content.model";
 import {ProcessFactory} from "../process.factory";
 import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
 import {CudscdPara} from "../model/cudscd.para";
+import {ProcesRs} from "../model/proces.rs";
 
 /**
  * 日历修改处理
@@ -16,17 +17,15 @@ export class CudscdProcess implements MQProcess{
   }
 
 
-  go(content: WsContent):Promise<WsContent> {
-    return new Promise<WsContent>(resolve => {
+  go(content: WsContent,processRs:ProcesRs):Promise<ProcesRs> {
+    return new Promise<ProcesRs>(resolve => {
       //处理区分
       content.option
       //处理所需要参数
       let cudPara:CudscdPara = content.parmeter;
-      //上次处理参数结果
-      content.prvData
       //处理结果
       //emit
-      this.emitService.emitDatas(content.processRs);
+      this.emitService.emitDatas(processRs);
     })
   }
 
