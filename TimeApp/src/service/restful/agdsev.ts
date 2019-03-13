@@ -158,28 +158,28 @@ export class AgdPro{
 //参与人
 export class ContactPerPro{
   //帐户ID
-  ai: string;
+  ai: string="";
   //手机号码
-  mpn: string;
+  mpn: string="";
   //姓名
-  n: string;
+  n: string="";
   //头像
-  a: string;
+  a: string="";
   //性别
-  s: string;
+  s: string="";
   //生日
-  bd: string;
+  bd: string="";
 
 }
 
 //日程分享
 export class SharePro{
   //操作帐户ID
-  oai :string;
+  oai :string="";
   //操作手机号码
-  ompn:string;
+  ompn:string="";
   //上下文（可以为空）
-  c:any;
+  c:any="";
   //日程
   d:ShareProSub = new ShareProSub();
 }
@@ -194,6 +194,6 @@ export class ShareProSub{
 
 export class OutSharePro{
 
-  asurl :string;
+  asurl :string="";
 
 }

@@ -70,53 +70,61 @@ export class YTbl implements ITbl {
   }
 
   upT(): string {
-    let sq = 'update gtd_y set 1=1 ';
-    if (this._yt != null) {
+    let sq = '';
+    if (this._yt != null && this._yt!="") {
       sq = sq + ', yt="' + this._yt + '"';
     }
-    if (this._ytn != null) {
+    if (this._ytn != null && this._ytn!="") {
       sq = sq + ', ytn="' + this._ytn + '"';
     }
-    if (this._yn != null) {
+    if (this._yn != null && this._yn!="") {
       sq = sq + ', yn="' + this._yn + '"';
     }
-    if (this._yk != null) {
+    if (this._yk != null && this._yk!="") {
       sq = sq + ', yk="' + this._yk + '"';
     }
-    if (this._yv != null) {
+    if (this._yv != null && this._yv!="") {
       sq = sq + ', yv="' + this._yv + '"';
     }
-    sq = sq + ' where yi = "' + this._yi + '"';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq = 'update gtd_y set  ' + sq + ' where yi = "' + this._yi + '";';
     return sq;
   }
 
   dT(): string {
-    let sq = 'delete from gtd_y where yi = "' + this._yi + '"';
+    let sq = 'delete from gtd_y where 1=1 ';
+    if(this._yi != null && this._yi!=""){
+      sq = sq + 'and  yi ="' + this._yi +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 
   sloT(): string {
-    let sq = 'select * from gtd_y where yi = "' + this._yi + '"';
+    let sq = 'select * from gtd_y where yi = "' + this._yi + '";';
     return sq;
   }
 
   slT(): string {
     let sq = 'select * from  gtd_y where  1=1 ';
-    if (this._yt != null) {
+    if (this._yt != null && this._yt!="") {
       sq = sq + ' and yt="' + this._yt + '"';
     }
-    if (this._ytn != null) {
+    if (this._ytn != null && this._ytn!="") {
       sq = sq + ' and ytn="' + this._ytn + '"';
     }
-    if (this._yn != null) {
+    if (this._yn != null && this._yn!="") {
       sq = sq + ' and yn="' + this._yn + '"';
     }
-    if (this._yk != null) {
+    if (this._yk != null && this._yk!="") {
       sq = sq + ' and yk="' + this._yk + '"';
     }
-    if (this._yv != null) {
+    if (this._yv != null && this._yv!="") {
       sq = sq + ' and yv="' + this._yv + '"';
     }
+    sq = sq +';'
     return sq;
   }
 
@@ -130,7 +138,7 @@ export class YTbl implements ITbl {
 
     let sq = 'insert into gtd_y ' +
       '(  yi ,yt ,ytn ,yn ,yk ,yv) values("' + this._yi + '","' + this._yt + '","' + this._ytn + '"' +
-      ',"' + this._yn + '","' + this._yk + '","' + this._yv + '")';
+      ',"' + this._yn + '","' + this._yk + '","' + this._yv + '");';
 
     return sq;
   }
@@ -139,7 +147,7 @@ export class YTbl implements ITbl {
 
     let sq = 'replace into gtd_y ' +
       '(  yi ,yt ,ytn ,yn ,yk ,yv) values("' + this._yi + '","' + this._yt + '","' + this._ytn + '"' +
-      ',"' + this._yn + '","' + this._yk + '","' + this._yv + '")';
+      ',"' + this._yn + '","' + this._yk + '","' + this._yv + '");';
 
     return sq;
   }

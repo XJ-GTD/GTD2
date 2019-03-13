@@ -12,7 +12,7 @@ import {BrService} from "../br/br.service";
     IonicPageModule.forChild(RPage),
   ],
   providers: [
-    RService,BrService
+    RService
   ],
 })
 export class RPageModule {}

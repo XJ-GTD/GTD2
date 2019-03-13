@@ -75,51 +75,58 @@ export class ATbl implements ITbl {
   }
 
   upT():string {
-    let sq='update gtd_a set 1=1 ';
-    if(this._an!=null){
+    let sq='';
+    if(this._an!=null && this._an!=""){
       sq=sq+', an="' + this._an +'"';
     }
-    if(this._am!=null){
+    if(this._am!=null && this._am!=""){
       sq=sq+', am="' + this._am +'"';
     }
-    if(this._ae != null){
+    if(this._ae != null && this._ae!=""){
       sq = sq + ', ae="' + this._ae +'"';
     }
-    if(this._aq != null){
+    if(this._aq != null && this._aq!=""){
       sq = sq + ', aq="' + this._aq +'"';
     }
-    sq = sq + ' where ai = "'+ this._ai +'"';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq ='update gtd_a set  ' + sq + ' where ai = "'+ this._ai +'";';
     return sq;
   }
 
   dT():string {
-    let sq = 'delete from gtd_a where ai = "' + this._ai +'"';
+    let sq = 'delete from gtd_a where 1=1 ';
+    if(this._ai != null && this._ai!=""){
+      sq = sq + 'and  ai ="' + this._ai +'"';
+    }
+    sq = sq + ';';
     return sq;
   }
 
   sloT():string {
-    let sq='select * from gtd_a';
+    let sq='select * from gtd_a;';
     return sq;
   }
 
   slT():string {
     let sq='select * from  gtd_a where  1=1 ';
-    if(this._ai != null){
+    if(this._ai != null && this._ai!=""){
       sq = sq + ' and ai="' + this._ai +'"';
     }
-    if(this._an!=null){
+    if(this._an!=null && this._an!=""){
       sq=sq+' and an="' + this._an +'"';
     }
-    if(this._am!=null){
+    if(this._am!=null && this._am!=""){
       sq=sq+' and am="' + this._am +'"';
     }
-    if(this._ae != null){
+    if(this._ae != null && this._ae!=""){
       sq = sq + ' and ae="' + this._ae +'"';
     }
-    if(this._aq != null){
+    if(this._aq != null && this._aq!=""){
       sq = sq + ' and aq="' + this._aq +'"';
     }
-
+    sq = sq + ';';
     return sq;
   }
 
@@ -132,7 +139,7 @@ export class ATbl implements ITbl {
   inT():string {
     let sq ='insert into gtd_a ' +
       '(ai,an,am,ae,at,aq) values("'+ this._ai+'","'+ this._an+'","'+this._am+ '"' +
-      ',"'+this._ae+ '","'+this._at+ '","'+this._aq+ '")';
+      ',"'+this._ae+ '","'+this._at+ '","'+this._aq+ '");';
 
     return sq;
   }
@@ -140,16 +147,16 @@ export class ATbl implements ITbl {
   rpT():string {
     let sq ='replace into gtd_a ' +
       '(ai,an,am,ae,at,aq) values("'+ this._ai+'","'+ this._an+'","'+this._am+ '"' +
-      ',"'+this._ae+ '","'+this._at+ '","'+this._aq+ '")';
+      ',"'+this._ae+ '","'+this._at+ '","'+this._aq+ '");';
 
     return sq;
   }
   clp(){
-    this._ai = null;
-    this._an = null;
-    this._ae= null;
-    this._at = null;
-    this._aq= null;
+    this._ai = "";
+    this._an = "";
+    this._ae= "";
+    this._at = "";
+    this._aq= "";
   };
 }
 

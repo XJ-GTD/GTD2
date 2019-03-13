@@ -116,18 +116,18 @@ export class BTbl implements ITbl{
   }
 
   clp(){
-    this._pwi = null;
-    this._ran = null;
-    this._ranpy = null;
-    this._ri = null;
-    this._hiu = null;
-    this._rn = null;
-    this._rnpy = null;
-    this._rc = null;
-    this._rf = null;
-    this._ot = null;
-    this._rel = null;
-    this._ui = null;
+    this._pwi = "";
+    this._ran = "";
+    this._ranpy = "";
+    this._ri = "";
+    this._hiu = "";
+    this._rn = "";
+    this._rnpy = "";
+    this._rc = "";
+    this._rf = "";
+    this._ot = "";
+    this._rel = "";
+    this._ui = "";
 
   };
 
@@ -142,89 +142,97 @@ export class BTbl implements ITbl{
   }
 
   upT():string {
-    let sq='update gtd_b set 1=1 ';
-    if(this._ran!=null){
+    let sq='';
+    if(this._ran!=null && this._ran!=""){
       sq=sq+', ran="' + this._ran +'"';
     }
-    if(this._ranpy!=null){
+    if(this._ranpy!=null && this._ranpy!=""){
       sq=sq+', ranpy="' + this._ranpy +'"';
     }
-    if(this._ri != null){
+    if(this._ri != null && this._ri!=""){
       sq = sq + ', ri="' + this._ri +'"';
     }
-    if(this._hiu != null){
+    if(this._hiu != null && this._hiu!=""){
       sq = sq + ', hiu="' + this._hiu +'"';
     }
-    if(this._rn != null){
+    if(this._rn != null && this._rn!=""){
       sq = sq + ', rn="' + this._rn +'"';
     }
-    if(this._rnpy != null){
+    if(this._rnpy != null && this._rnpy!=""){
       sq = sq + ', rnpy="' + this._rnpy +'"';
     }
-    if(this._rc != null){
+    if(this._rc != null && this._rc!=""){
       sq = sq + ', rc="' + this._rc +'"';
     }
-    if(this._rf != null){
+    if(this._rf != null && this._rf!=""){
       sq = sq + ', rf="' + this._rf +'"';
     }
-    if(this._ot != null){
+    if(this._ot != null && this._ot!=""){
       sq = sq + ', ot="' + this._ot +'"';
     }
-    if(this._rel != null){
+    if(this._rel != null && this._rel!=""){
       sq = sq + ', rel="' + this._rel +'"';
     }
-    if(this._ui != null){
+    if(this._ui != null && this._ui!=""){
       sq = sq + ', ui="' + this._ui +'"';
     }
-    sq = sq + ' where pwi = "'+ this._pwi +'"';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq ='update gtd_b set ' + sq + ' where pwi = "'+ this._pwi +'";';
     return sq;
   }
 
   dT():string {
-    let sq = 'delete from gtd_b where pwi = "' + this._pwi +'"';
+    let sq = 'delete from gtd_b where pwi = "' + this._pwi +'";';
     return sq;
   }
 
   sloT():string {
-    let sq='select * from gtd_b where pwi = "'+ this._pwi +'"';
+    let sq='select * from gtd_b where 1=1 ';
+    if(this._pwi != null && this._pwi!=""){
+      sq = sq + 'and  pwi ="' + this._pwi +'"';
+    }
+    sq = sq + ';';
     return sq;
   }
 
   slT():string {
     let sq='select * from  gtd_b where  1=1 ';
-    if(this._ran!=null){
+    if(this._ran!=null && this._ran!=""){
       sq=sq+' and ran="' + this._ran +'"';
     }
-    if(this._ranpy!=null){
+    if(this._ranpy!=null && this._ranpy!=""){
       sq=sq+' and ranpy="' + this._ranpy +'"';
     }
-    if(this._ri != null){
+    if(this._ri != null && this._ri!=""){
       sq = sq + ' and ri="' + this._ri +'"';
     }
-    if(this._hiu != null){
+    if(this._hiu != null && this._hiu!=""){
       sq = sq + ' and hiu="' + this._hiu +'"';
     }
-    if(this._rn != null){
+    if(this._rn != null && this._rn!=""){
       sq = sq + ' and rn="' + this._rn +'"';
     }
-    if(this._rnpy != null){
+    if(this._rnpy != null && this._rnpy!=""){
       sq = sq + ' and rnpy="' + this._rnpy +'"';
     }
-    if(this._rc != null){
+    if(this._rc != null && this._rc!=""){
       sq = sq + ' and rc="' + this._rc +'"';
     }
-    if(this._rf != null){
+    if(this._rf != null && this._rf!=""){
       sq = sq + ' and rf="' + this._rf +'"';
     }
-    if(this._ot != null){
+    if(this._ot != null && this._ot!=""){
       sq = sq + ' and ot="' + this._ot +'"';
     }
-    if(this._rel != null){
+    if(this._rel != null && this._rel!=""){
       sq = sq + ' and rel="' + this._rel +'"';
     }
-    if(this._ui != null){
+    if(this._ui != null && this._ui!=""){
       sq = sq + ' and ui="' + this._ui +'"';
     }
+    sq = sq +';';
     return sq;
   }
 
@@ -239,7 +247,7 @@ export class BTbl implements ITbl{
       '(  pwi ,ran ,ranpy ,ri ,hiu ,rn ,rnpy ,rc ,rf ,ot ,rel ,ui) values("'+ this._pwi+'",' +
       '"'+ this._ran+'","'+this._ranpy+ '"' +
       ',"'+this._ri+ '","'+this._hiu+ '","'+this._rn+ '","'+this._rnpy+ '","'+this._rc+ '","'+this._rf+ '",' +
-      '"'+this._ot+ '","'+this._rel+ '","'+this._ui+ '")';
+      '"'+this._ot+ '","'+this._rel+ '","'+this._ui+ '");';
 
     return sq;
   }
@@ -249,7 +257,7 @@ export class BTbl implements ITbl{
       '(  pwi ,ran ,ranpy ,ri ,hiu ,rn ,rnpy ,rc ,rf ,ot ,rel ,ui) values("'+ this._pwi+'",' +
       '"'+ this._ran+'","'+this._ranpy+ '"' +
       ',"'+this._ri+ '","'+this._hiu+ '","'+this._rn+ '","'+this._rnpy+ '","'+this._rc+ '","'+this._rf+ '",' +
-      '"'+this._ot+ '","'+this._rel+ '","'+this._ui+ '")';
+      '"'+this._ot+ '","'+this._rel+ '","'+this._ui+ '");';
 
     return sq;
   }

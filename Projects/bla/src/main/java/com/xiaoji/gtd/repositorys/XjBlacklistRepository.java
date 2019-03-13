@@ -13,10 +13,10 @@ import com.xiaoji.gtd.entity.BlaBlacklist;
  */
 public interface XjBlacklistRepository extends JpaRepository<BlaBlacklist, Long> {
 
-	@Query("select xj.id,xj.accountId,xj.phone,xj.contactsName,xj.relAccountId from BlaBlacklist xj where xj.relAccountId = ?1 and xj.phone = ?2")
+	@Query("select new BlaBlacklist(xj.id,xj.accountId,xj.phone,xj.contactsName,xj.relAccountId) from BlaBlacklist xj where xj.relAccountId = ?1 and xj.phone = ?2")
 	public List<BlaBlacklist> findBlacklist(String relAccountId,String phone);
 	
-	@Query("select xj.id,xj.accountId,xj.phone,xj.contactsName,xj.relAccountId from BlaBlacklist xj where xj.relAccountId = ?1")
+	@Query("select new BlaBlacklist(xj.id,xj.accountId,xj.phone,xj.contactsName,xj.relAccountId) from BlaBlacklist xj where xj.relAccountId = ?1")
 	public List<BlaBlacklist> findByRelId(String relAccountId);
 	
 //	@Modifying

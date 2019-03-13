@@ -47,6 +47,8 @@ import {ReturnConfig} from "../../../../TimeApp（v1）/src/app/return.config";
 })
 export class LsPage {
 
+  lsData:LsData = new LsData();
+
   @ViewChild(Navbar) navBar: Navbar;
 
   accountMobile:any;
@@ -126,6 +128,8 @@ export class LsPage {
   sendMsg(){
     this.lsService.getSMSCode(this.accountMobile).then(data=>{
       console.log("sc::" + data);
+      //短信验证码KEY 赋值给验证码登录信息
+      this.lsData.verifykey = data.data.verifykey;
     }).catch(ref =>{
       console.log("ref::" + ref);
     });

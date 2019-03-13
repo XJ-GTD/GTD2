@@ -16,7 +16,15 @@ export class CTbl implements  ITbl{
   private _rt: string="";
   private _ji: string="";
   private _sr: string =""
+  private _bz: string =""
 
+  get bz(): string {
+    return this._bz;
+  }
+
+  set bz(value: string) {
+    this._bz = value;
+  }
 
   get si(): string {
     return this._si;
@@ -99,100 +107,111 @@ export class CTbl implements  ITbl{
   }
 
   clp(){
-    this._si = null;
-    this._sn = null;
-    this._ui = null;
-    this._sd = null;
-    this._st = null;
-    this._ed = null;
-    this._et = null;
-    this._rt = null;
-    this._ji = null;
+    this._si = "";
+    this._sn = "";
+    this._ui = "";
+    this._sd = "";
+    this._st = "";
+    this._ed = "";
+    this._et = "";
+    this._rt = "";
+    this._ji = "";
   };
 
   cT():string {
 
     let sq =' create table if not exists gtd_c(  si varchar(50) primary key ,sn varchar(50)  ,ui varchar(50)  ,sd varchar(20)  ' +
-      ',st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,rt varchar(4)  ,ji varchar(50),sr varchar(50));';
+      ',st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,rt varchar(4)  ,ji varchar(50),sr varchar(50),sr varchar(50));';
 
     return sq;
   }
 
   upT():string {
-    let sq='update gtd_c set 1=1 ';
-    if(this._sn!=null){
+    let sq='';
+    if(this._sn!=null && this._sn!=""){
       sq=sq+', sn="' + this._sn +'"';
     }
-    if(this._ui!=null){
+    if(this._ui!=null && this._ui!=""){
       sq=sq+', ui="' + this._ui +'"';
     }
-    if(this._sd != null){
+    if(this._sd != null && this._sd!=""){
       sq = sq + ', sd="' + this._sd +'"';
     }
-    if(this._st != null){
+    if(this._st != null && this._st!=""){
       sq = sq + ', st="' + this._st +'"';
     }
-    if(this._ed != null){
+    if(this._ed != null && this._ed!=""){
       sq = sq + ', ed="' + this._ed +'"';
     }
-    if(this._et != null){
+    if(this._et != null && this._et!=""){
       sq = sq + ', et="' + this._et +'"';
     }
-    if(this._rt != null){
+    if(this._rt != null && this._rt!=""){
       sq = sq + ', rt="' + this._rt +'"';
     }
-    if(this._ji != null){
+    if(this._ji != null && this._ji!=""){
       sq = sq + ', ji="' + this._ji +'"';
     }
-    if(this._sr != null){
+    if(this._sr != null && this._sr!=""){
       sq = sq + ', sr="' + this._sr +'"';
     }
-    sq = sq + ' where si = "'+ this._si +'"';
+    if(this._bz != null && this._bz!=""){
+      sq = sq + ', bz="' + this._bz +'"';
+    }
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq ='update gtd_c set '+ sq + ' where si = "'+ this._si +'";';
     return sq;
   }
 
   dT():string {
-    let sq = 'delete from gtd_c where si = "' + this._si +'"';
+    let sq = 'delete from gtd_c where 1=1';
+    if(this._si != null && this._si!=""){
+      sq = sq + 'and  si ="' + this._si +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 
   sloT():string {
-    let sq='select * from gtd_c where si = "'+ this._si +'"';
+    let sq='select * from gtd_c where si = "'+ this._si +'";';
     return sq;
   }
 
   slT():string {
     let sq='select * from  gtd_c where  1=1 ';
-    if(this._sn!=null){
+    if(this._sn!=null && this._sn!=""){
       sq=sq+' and sn="' + this._sn +'"';
     }
-    if(this._ui!=null){
+    if(this._ui!=null && this._ui!=""){
       sq=sq+' and ui="' + this._ui +'"';
     }
-    if(this._sd != null){
+    if(this._sd != null && this._sd!=""){
       sq = sq + ' and sd="' + this._sd +'"';
     }
-    if(this._st != null){
+    if(this._st != null && this._st!=""){
       sq = sq + ' and st="' + this._st +'"';
     }
-    if(this._ed != null){
+    if(this._ed != null && this._ed!=""){
       sq = sq + ' and ed="' + this._ed +'"';
     }
-    if(this._et != null){
+    if(this._et != null && this._et!=""){
       sq = sq + ' and et="' + this._et +'"';
     }
-    if(this._rt != null){
+    if(this._rt != null && this._rt!=""){
       sq = sq + ' and rt="' + this._rt +'"';
     }
-    if(this._ji != null){
+    if(this._ji != null && this._ji!=""){
       sq = sq + ' and ji="' + this._ji +'"';
     }
-    if(this._si != null){
+    if(this._si != null && this._si!=""){
       sq = sq + ' and si="' + this._si +'"';
     }
-    if(this._sr != null){
+    if(this._sr != null && this._sr!=""){
       sq = sq + ' and sr="' + this._sr +'"';
     }
+    sq = sq +';';
     return sq;
   }
 
@@ -206,7 +225,7 @@ export class CTbl implements  ITbl{
     let sq ='insert into gtd_c ' +
       '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr) values("'+ this._si+'","'+ this._sn+'","'+this._ui+ '"' +
       ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._rt+ '","'+this._ji+ '"' +
-      ',"'+this._sr+ '")';
+      ',"'+this._sr+ '","'+this._bz+ '");';
 
     return sq;
   }
@@ -215,7 +234,7 @@ export class CTbl implements  ITbl{
     let sq ='replace into gtd_c ' +
       '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr) values("'+ this._si+'","'+ this._sn+'","'+this._ui+ '"' +
       ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._rt+ '","'+this._ji+ '"' +
-      ',"'+this._sr+ '")';
+      ',"'+this._sr+ '","'+this._bz+ '");';
 
     return sq;
   }
