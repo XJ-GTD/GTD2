@@ -74,17 +74,20 @@ export class BrService {
     backupPro.d.s = await this.sqlexec.getList<STbl>(s);
 
     //restFul上传
-    return await this.bacRestful.backup(backupPro);
+    await this.bacRestful.backup(backupPro);
 
+    let ret = new BsModel();
+    ret.code = 0;
+    return ret;
   }
 
   //页面获取最后更新时间
-  getLastDt(): Promise<BsModel<BrData>> {
+  getLastDt(): Promise<BsModel<PageBrDataPro>> {
     //restFul 获取服务器 日历条数
     return new Promise((resolve, reject) => {
-      let bsModel = new BsModel<BrData>();
+      let bsModel = new BsModel<PageBrDataPro>();
       this.bacRestful.getlastest().then(data => {
-        bsModel.data = new BrData();
+        bsModel.data = new PageBrDataPro();
         bsModel.data.bts = data.data.bts;
         bsModel.data.dt = this.util.tranDate(bsModel.data.bts, "yyyy/MM/dd hh:mm")
         resolve(bsModel)
@@ -257,12 +260,15 @@ export class BrService {
       si.yv = bsModel.data.s[j].yv;
       await this.sqlexec.save(si);
     }
-    return 0;
+
+    let ret = new BsModel();
+    ret.code = 0
+    return ret;
   }
 }
 
 
-export class BrData {
+export class PageBrDataPro {
   //画面时间戳
   bts: string = "";
 
