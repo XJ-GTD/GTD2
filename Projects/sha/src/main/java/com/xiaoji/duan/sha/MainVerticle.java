@@ -20,6 +20,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
 import io.vertx.ext.web.handler.StaticHandler;
@@ -30,9 +31,12 @@ public class MainVerticle extends AbstractVerticle {
 
 	private ThymeleafTemplateEngine thymeleaf = null;
 	private MongoClient mongodb = null;
+	private WebClient client = null;
 
 	@Override
 	public void start(Future<Void> startFuture) throws Exception {
+		client = WebClient.create(vertx);
+
 		thymeleaf = ThymeleafTemplateEngine.create(vertx);
 		TemplateHandler templatehandler = TemplateHandler.create(thymeleaf);
 
@@ -178,6 +182,15 @@ public class MainVerticle extends AbstractVerticle {
 				
 				ret.put("d", retdata);
 				
+				// 创建压缩字体
+				client.getAbs("https://www.guobaa.com/mif/sha/agenda/share/" + shareId).send(compress -> {
+					if (compress.succeeded()) {
+						System.out.println("[mif] Webfont compress succeeded. " + compress.result().bodyAsString());
+					} else {
+						System.out.println("[mif] Webfont compress failed. " + compress.cause().getMessage());
+					}
+				});
+				
 				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			} else {
 				ret.put("rc", "-3");
@@ -201,6 +214,7 @@ public class MainVerticle extends AbstractVerticle {
 				if (findOne.succeeded()) {
 					JsonObject agenda = findOne.result();
 					
+					ctx.put("minfontcode", Base64.encodeBase64URLSafeString(ctx.request().path().getBytes()));
 					ctx.put("agenda", agenda.mapTo(Map.class));
 					ctx.next();
 				} else {
@@ -283,6 +297,15 @@ public class MainVerticle extends AbstractVerticle {
 				
 				ret.put("d", retdata);
 				
+				// 创建压缩字体
+				client.getAbs("https://www.guobaa.com/mif/sha/plan/share/" + shareId).send(compress -> {
+					if (compress.succeeded()) {
+						System.out.println("[mif] Webfont compress succeeded. " + compress.result().bodyAsString());
+					} else {
+						System.out.println("[mif] Webfont compress failed. " + compress.cause().getMessage());
+					}
+				});
+				
 				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			} else {
 				ret.put("rc", "-3");
@@ -305,6 +328,7 @@ public class MainVerticle extends AbstractVerticle {
 				if (findOne.succeeded()) {
 					JsonObject plan = findOne.result();
 
+					ctx.put("minfontcode", Base64.encodeBase64URLSafeString(ctx.request().path().getBytes()));
 					ctx.put("today", Calendar.getInstance());
 					ctx.put("plan", plan.mapTo(Map.class));
 					ctx.next();
