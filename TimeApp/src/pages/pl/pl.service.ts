@@ -27,7 +27,17 @@ export class PlService {
   getPlan(pid:string):Promise<any>{
     return new Promise<any>((resolve, reject) => {
       //获取本地计划
+
       //获取计划管理日程（日程数量）
     })
   }
+}
+//页面项目
+export class PagePlPro{
+  //计划名
+  jn:string="";
+  //计划描述
+  jg:string="";
+  //计划颜色标记
+  jc:string="";
 }
