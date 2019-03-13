@@ -6,6 +6,7 @@ import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {WebsocketService} from "../../ws/websocket.service";
 import {UtilService} from "../../service/util-service/util.service";
+import {BrService} from "../br/br.service";
 
 @Injectable()
 export class LpService {
@@ -14,7 +15,7 @@ export class LpService {
               private personRestful: PersonRestful,
               private websocketService:WebsocketService,
               private util: UtilService,
-  ) {
+              private brService: BrService,) {
   }
 
   //登录
@@ -38,7 +39,6 @@ export class LpService {
         //更新账户表
 
         //账户表赋值
-        aTbl.ai = this.util.getUuid();
         aTbl.an = data.nickname;
         aTbl.am = data.openid;
         aTbl.ae = "";
@@ -46,7 +46,6 @@ export class LpService {
         aTbl.aq = data.cmq;
 
         //用户表赋值
-        uTbl.ui = this.util.getUuid();
         uTbl.ai = aTbl.ai;
         uTbl.un = data.nickname; //用户名
         uTbl.hiu = data.avatar;
@@ -55,27 +54,43 @@ export class LpService {
         uTbl.ic = "";
         uTbl.us = data.sex;
         uTbl.uct = "";
-        return this.sqlExce.getList<ATbl>(aTbl);
+
+        //查询账户表
+        let aTbl1:ATbl = new ATbl();
+        aTbl1.clp();
+        return this.sqlExce.getList<ATbl>(aTbl1);
       }).then(data=>{
         let atbls:Array<ATbl> = data;
-        if (atbls.length < 1 ){//保存账户表
-          return this.sqlExce.save(aTbl);
-        }else{//更新账户表
+
+        if (atbls.length > 0 ){//更新账户表
+          aTbl.ai = atbls[0].ai;
           return this.sqlExce.update(aTbl);
+        }else{//保存账户表
+          aTbl.ai = this.util.getUuid();
+          return this.sqlExce.save(aTbl);
         }
+
       }).then(data=>{
-        return this.sqlExce.getList<UTbl>(uTbl);
+        //查询用户表
+        let uTbl1:UTbl = new UTbl();
+        uTbl1.clp();
+        return this.sqlExce.getList<UTbl>(uTbl1);
       }).then(data=>{
         let utbls:Array<UTbl> = data;
-        if (utbls.length < 1 ){//保存用户表
-          return this.sqlExce.save(uTbl);
-        }else{//更新用户表
+
+        if (utbls.length > 0 ){//更新用户表
+          uTbl.ui = utbls[0].ai;
+          return this.sqlExce.update(uTbl);
+        }else{//保存用户表
+          uTbl.ui = this.util.getUuid();
           return this.sqlExce.update(uTbl);
         }
       }).then(data=>{
         // 同步数据（调用brService方法恢复数据）
+        return this.brService.recover();
+      }).then(data=>{
         //建立websoct连接（调用websoctService）
-        //this.websocketService.connect();
+        this.websocketService.connect(aTbl.aq);
         resolve(lpdata)
       }).catch(error=>{
         resolve(error)
@@ -85,10 +100,6 @@ export class LpService {
 }
 
 export class LpData {
-  mobile: string;
-  password: string;
-  retData = {
-    code: "",
-    message: ""
-  };
+  mobile: string = "";
+  password: string = "";
 }
