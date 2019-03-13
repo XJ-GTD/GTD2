@@ -514,7 +514,7 @@ paths:
                     type: integer
                     format: int64
                     description: 备份时间戳
-                  cdn:
+                  rdn:
                     type: array
                     description: 恢复数据表名称列表
                     items:
