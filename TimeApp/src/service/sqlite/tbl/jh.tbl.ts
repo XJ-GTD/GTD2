@@ -52,10 +52,10 @@ export class JhTbl  implements ITbl{
     this._jt = value;
   }
   clp(){
-    this._ji = null;
-    this._jn = null;
-    this._jg = null;
-    this._jt = null;
+    this._ji = "";
+    this._jn = "";
+    this._jg = "";
+    this._jt = "";
   };
 
   cT():string{
@@ -67,47 +67,48 @@ export class JhTbl  implements ITbl{
   }
 
   upT():string{
-    let sq='update gtd_j_h set 1=1 ';
-    if(this._jn!=null){
+    let sq='update gtd_j_h set  ';
+    if(this._jn!=null && this._jn!=""){
       sq=sq+', jn="' + this._jn +'"';
     }
-    if(this._jg!=null){
+    if(this._jg!=null && this._jg!=""){
       sq=sq+', jg="' + this._jg +'"';
     }
-    if(this._jc!=null){
+    if(this._jc!=null && this._jc!=""){
       sq=sq+', jc="' + this._jc +'"';
     }
-    if(this._jt!=null){
+    if(this._jt!=null && this._jt!=""){
       sq=sq+', jt="' + this._jt +'"';
     }
-    sq = sq + ' where ji = "'+ this._ji +'"';
+    sq = sq + ' where ji = "'+ this._ji +'";';
     return sq;
   }
 
   dT():string{
-    let sq = 'delete from gtd_j_h where ji = "' + this._ji +'"';
+    let sq = 'delete from gtd_j_h where ji = "' + this._ji +'";';
     return sq;
   }
 
   sloT():string{
-    let sq='select * from gtd_j_h where ji = "'+ this._ji +'"';
+    let sq='select * from gtd_j_h where ji = "'+ this._ji +'";';
     return sq;
   }
 
   slT():string{
     let sq='select * from  gtd_j_h where  1=1 ';
-    if(this._jn!=null){
+    if(this._jn!=null && this._jn!=""){
       sq=sq+' and jn="' + this._jn +'"';
     }
-    if(this._jg!=null){
+    if(this._jg!=null && this._jg!=""){
       sq=sq+' and jg="' + this._jg +'"';
     }
-    if(this._jc!=null){
+    if(this._jc!=null && this._jc!=""){
       sq=sq+' and jc="' + this._jc +'"';
     }
-    if(this._jt!=null){
+    if(this._jt!=null && this._jt!=""){
       sq=sq+' and jt="' + this._jt +'"';
     }
+    sq = sq +';';
     return sq;
   }
 
@@ -119,14 +120,14 @@ export class JhTbl  implements ITbl{
 
   inT():string{
     let sq ='insert into gtd_j_h ' +
-      '(  ji ,jn ,jg,jc,jt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '","'+this._jt+ '")';
+      '(  ji ,jn ,jg,jc,jt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '","'+this._jt+ '");';
 
     return sq;
   }
 
   rpT():string{
     let sq ='replace into gtd_j_h ' +
-      '(  ji ,jn ,jg,jc,jt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '","'+this._jt+ '")';
+      '(  ji ,jn ,jg,jc,jt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '","'+this._jt+ '");';
 
     return sq;
   }

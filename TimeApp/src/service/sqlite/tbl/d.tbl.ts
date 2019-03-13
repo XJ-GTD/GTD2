@@ -89,15 +89,15 @@ export class DTbl implements ITbl {
   }
 
   clp(){
-    this._pi=null;
-    this._si=null;
-    this._st=null;
-    this._son=null;
-    this._sa=null;
-    this._ai=null;
-    this._ib=null;
-    this._bi=null;
-    this._sdt=null;
+    this._pi="";
+    this._si="";
+    this._st="";
+    this._son="";
+    this._sa="";
+    this._ai="";
+    this._ib="";
+    this._bi="";
+    this._sdt="";
 
   };
 
@@ -112,45 +112,42 @@ export class DTbl implements ITbl {
   }
 
   upT():string {
-    let sq='update gtd_d set 1=1 ';
-    if(this._si!=null){
+    let sq='update gtd_d set  ';
+    if(this._si!=null && this._si!=""){
       sq=sq+', si="' + this._si +'"';
     }
-    if(this._st!=null){
+    if(this._st!=null && this._st!=""){
       sq=sq+', st="' + this._st +'"';
     }
-    if(this._son != null){
+    if(this._son != null && this._son!=""){
       sq = sq + ', son="' + this._son +'"';
     }
-    if(this._sa != null){
+    if(this._sa != null && this._sa!=""){
       sq = sq + ', sa="' + this._sa +'"';
     }
-    if(this._ai != null){
+    if(this._ai != null && this._ai!=""){
       sq = sq + ', ai="' + this._ai +'"';
     }
-    if(this._sa != null){
-      sq = sq + ', sa="' + this._sa +'"';
-    }
-    if(this._ib != null){
+    if(this._ib != null && this._ib!=""){
       sq = sq + ', ib="' + this._ib +'"';
     }
-    if(this._bi != null){
+    if(this._bi != null && this._bi!=""){
       sq = sq + ', bi="' + this._bi +'"';
     }
-    if(this._sdt != null){
+    if(this._sdt != null && this._sdt!=""){
       sq = sq + ', sdt="' + this._sdt +'"';
     }
-    sq = sq + ' where pi = "'+ this._pi +'"';
+    sq = sq + ' where pi = "'+ this._pi +'";';
     return sq;
   }
 
   dT():string {
-    let sq = 'delete from gtd_d where pi = "' + this._pi +'"';
+    let sq = 'delete from gtd_d where pi = "' + this._pi +'";';
     return sq;
   }
 
   sloT():string {
-    let sq='select * from gtd_d where pi = "'+ this._pi +'"';
+    let sq='select * from gtd_d where pi = "'+ this._pi +'";';
     return sq;
   }
 
@@ -186,6 +183,7 @@ export class DTbl implements ITbl {
     if(this._pi != null){
       sq = sq + ' and pi="' + this._pi +'"';
     }
+    sq =sq +';';
     return sq;
   }
 
@@ -198,7 +196,7 @@ export class DTbl implements ITbl {
   inT():string {
     let sq ='insert into gtd_d ' +
       '( pi ,si ,st ,son ,sa ,ai ,ib ,bi ,sdt) values("'+ this._pi+'","'+ this._si+'","'+this._st+ '"' +
-      ',"'+this._son+ '","'+this._sa+ '","'+this._ai+ '","'+this._ib+ '","'+this._bi+ '","'+this._sdt+ '")';
+      ',"'+this._son+ '","'+this._sa+ '","'+this._ai+ '","'+this._ib+ '","'+this._bi+ '","'+this._sdt+ '");';
 
     return sq;
   }
@@ -206,7 +204,7 @@ export class DTbl implements ITbl {
   rpT():string {
     let sq ='replace into gtd_d ' +
       '( pi ,si ,st ,son ,sa ,ai ,ib ,bi ,sdt) values("'+ this._pi+'","'+ this._si+'","'+this._st+ '"' +
-      ',"'+this._son+ '","'+this._sa+ '","'+this._ai+ '","'+this._ib+ '","'+this._bi+ '","'+this._sdt+ '")';
+      ',"'+this._son+ '","'+this._sa+ '","'+this._ai+ '","'+this._ib+ '","'+this._bi+ '","'+this._sdt+ '");';
 
     return sq;
   }
