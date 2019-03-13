@@ -123,7 +123,7 @@ export class SqliteExec {
 
   async batExecSql(sqlist: Array<string>) {
     if (this.util.isMobile()) {
-      let sql: string;
+      let sql: string ="";
       for (var j = 0, len = sqlist.length; j < len; j++) {
         sql = sql + sqlist[j];
       }

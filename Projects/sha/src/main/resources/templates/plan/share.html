@@ -17,11 +17,15 @@
   integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
   crossorigin="anonymous">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-<link rel="stylesheet" href="/sha/static/xiaoji/xiaoji-fonts.css">
 
 <title th:text="${plan.pn.getString('pt')} + ' via 冥王星'">分享计划 via 冥王星</title>
 
 <style type="text/css">
+@font-face {
+    font-family: PingFangSC-Regular;
+    src:url('/mif/static/xiaoji/fonts/[(${minfontcode})]/PingFang-Regular.ttf');
+}
+
 body {
   font-family: "PingFangSC-Regular";
   background: rgb(29, 36, 36);

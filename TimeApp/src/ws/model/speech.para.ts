@@ -7,8 +7,6 @@
 export class SpeechPara  {
   //回答文本
   an:string = "";
-  //参数替换
-  pa:Map<string,string>;
   //本地语音类型
   t:string = "";
 

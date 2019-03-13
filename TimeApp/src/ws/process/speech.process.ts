@@ -1,40 +1,36 @@
 import {WsContent} from "../model/content.model";
-import {MQProcess} from "./interface.process";
+import {MQProcess} from "../interface.process";
 import {Injectable} from "@angular/core";
 import {AssistantService} from "../../service/cordova/assistant.service";
 import {SpeechPara} from "../model/speech.para";
 import {STbl} from "../../service/sqlite/tbl/s.tbl";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
-import {ProcessFactory} from "../process.factory";
+import {ProcesRs} from "../model/proces.rs";
+import {S} from "../model/ws.enum";
 
 /**
- * webSocket公用处理方法
+ * 播报类型处理
  *
  * create by wzy on 2018/11/30.
  */
 @Injectable()
 export class SpeechProcess implements MQProcess {
 
-  speechOpt = {
-    a: "AN",//直接读文本播报
-    b: "AP" //本地语言查询后参数替换播报
-  }
   constructor(private assistant: AssistantService,
               private sqliteExec: SqliteExec,
               private utilService: UtilService) {
   }
 
-  go(content: WsContent): Promise<WsContent> {
-    return new Promise<WsContent>(async resolve => {
+  go(content: WsContent,processRs:ProcesRs): Promise<ProcesRs> {
+    return new Promise<ProcesRs>(async resolve => {
 
       //处理所需要参数
       let spData: SpeechPara = content.parmeter;
       //默认语音
       let speakText = spData.an;
       //处理区分
-      if (content.option == this.speechOpt.b) {
-        let pa: Map<string, string> = spData.pa;
+      if (content.option == S.AN) {
         let stbl: STbl = new STbl();
         stbl.st = "SPEECH";
         stbl.yk = spData.t;
@@ -50,19 +46,18 @@ export class SpeechProcess implements MQProcess {
       }
 
       //替换参数变量
-      let prvrs: Map<string, any> = content.prvData.processRs;
-      content.parmeter.forEach((value, key) => {
-        speakText = speakText.replace("{key}", value);
-      });
-      prvrs.forEach((value, key) => {
-        speakText = speakText.replace("{key}", value);
-      });
+      // let prvrs: Map<string, any> = content.prvData.processRs;
+      // content.parmeter.forEach((value, key) => {
+      //   speakText = speakText.replace("{key}", value);
+      // });
+      // prvrs.forEach((value, key) => {
+      //   speakText = speakText.replace("{key}", value);
+      // });
 
       this.assistant.speakText(speakText, (data) => {
         //处理结果
-        content.processRs = content.prvData.processRs
-
-        resolve(content);
+        processRs.sucess = true;
+        resolve(processRs);
 
       });
     })
