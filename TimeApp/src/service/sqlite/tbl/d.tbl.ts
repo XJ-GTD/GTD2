@@ -145,7 +145,11 @@ export class DTbl implements ITbl {
   }
 
   dT():string {
-    let sq = 'delete from gtd_d where pi = "' + this._pi +'";';
+    let sq = 'delete from gtd_d where 1=1 ';
+    if(this._pi != null && this._pi!=""){
+      sq = sq + 'and  pi ="' + this._pi +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 

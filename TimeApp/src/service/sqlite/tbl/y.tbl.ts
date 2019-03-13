@@ -94,7 +94,11 @@ export class YTbl implements ITbl {
   }
 
   dT(): string {
-    let sq = 'delete from gtd_y where yi = "' + this._yi + '";';
+    let sq = 'delete from gtd_y where 1=1 ';
+    if(this._yi != null && this._yi!=""){
+      sq = sq + 'and  yi ="' + this._yi +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 

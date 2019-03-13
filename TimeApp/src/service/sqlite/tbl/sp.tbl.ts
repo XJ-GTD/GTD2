@@ -146,7 +146,11 @@ export class SpTbl  implements ITbl {
   }
 
   dT():string {
-    let sq = 'delete from gtd_sp where spi = "' + this._spi +'";';
+    let sq = 'delete from gtd_sp where 1=1 ';
+    if(this._spi != null && this._spi!=""){
+      sq = sq + 'and  spi ="' + this._spi +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 

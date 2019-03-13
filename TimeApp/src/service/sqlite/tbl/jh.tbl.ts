@@ -88,7 +88,11 @@ export class JhTbl  implements ITbl{
   }
 
   dT():string{
-    let sq = 'delete from gtd_j_h where ji = "' + this._ji +'";';
+    let sq = 'delete from gtd_j_h where 1=1 ';
+    if(this._ji != null && this._ji!=""){
+      sq = sq + 'and  ji ="' + this._ji +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 

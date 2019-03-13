@@ -96,7 +96,11 @@ export class ATbl implements ITbl {
   }
 
   dT():string {
-    let sq = 'delete from gtd_a where ai = "' + this._ai +'";';
+    let sq = 'delete from gtd_a where 1=1 ';
+    if(this._ai != null && this._ai!=""){
+      sq = sq + 'and  ai ="' + this._ai +'"';
+    }
+    sq = sq + ';';
     return sq;
   }
 
