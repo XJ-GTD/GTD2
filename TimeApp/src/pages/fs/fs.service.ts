@@ -1,5 +1,4 @@
 import {Injectable} from "@angular/core";
-import {BlData} from "../bl/bl.service";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {AgdPro, AgdRestful, ContactPerPro} from "../../service/restful/agdsev";
@@ -13,14 +12,14 @@ export class FsService {
   }
 
   //根据条件查询参与人
-  getfriend(fs:FsData):Promise<Array<FsData>>{
-    return new Promise<Array<FsData>>((resolve, reject)=>{
+  getfriend(fs:PageFsData):Promise<Array<PageFsData>>{
+    return new Promise<Array<PageFsData>>((resolve, reject)=>{
       //获取本地参与人
-      let fsList =  new Array<FsData>();
+      let fsList =  new Array<PageFsData>();
       let bt = new BTbl();
       Object.assign(bt,fs);
       console.log('---------- getfriend 根据条件查询参与人 条件:'+ JSON.stringify(bt));
-      this.sqlite.getList<FsData>(bt).then(data=>{
+      this.sqlite.getList<PageFsData>(bt).then(data=>{
         fsList = data;
         console.log('---------- getfriend 根据条件查询参与人 结果:'+ JSON.stringify(data));
         resolve(fsList);
@@ -35,12 +34,12 @@ export class FsService {
   /**
    * 获取分享日程的参与人
    * @param {string} calId 日程ID
-   * @returns {Promise<Array<FsData>>}
+   * @returns {Promise<Array<PageFsData>>}
    */
-  getCalfriend(calId:string):Promise<Array<FsData>>{
-    return new Promise<Array<FsData>>((resolve, reject)=>{
+  getCalfriend(calId:string):Promise<Array<PageFsData>>{
+    return new Promise<Array<PageFsData>>((resolve, reject)=>{
       let sql ='select gd.pi,gd.si,gb.* from gtd_d gd inner join gtd_b gb on gb.pwi = gd.ai where si="'+calId+'"';
-      let fsList =  new Array<FsData>();
+      let fsList =  new Array<PageFsData>();
       console.log('---------- getCalfriend 获取分享日程的参与人 sql:'+ sql);
       this.sqlite.execSql(sql).then(data=>{
         if(data && data.rows && data.rows.length>0){
@@ -60,10 +59,10 @@ export class FsService {
   /**
    * 分享给参与人操作
    * @param {string} si 日程ID
-   * @param {Array<FsData>} fsList 日程参与人列表
-   * @returns {Promise<Array<FsData>>}
+   * @param {Array<PageFsData>} fsList 日程参与人列表
+   * @returns {Promise<Array<PageFsData>>}
    */
-  sharefriend(si:string,fsList:Array<FsData>):Promise<BsModel<any>>{
+  sharefriend(si:string,fsList:Array<PageFsData>):Promise<BsModel<any>>{
     return new Promise<BsModel<any>>((resolve, reject)=>{
       let bs = new BsModel<any>();
       //restFul 通知参与人
@@ -110,22 +109,22 @@ export class FsService {
   }
 
   //查询群组中的参与人
-  getfriend4group(groupId:string):Promise<Array<FsData>>{
-    return new Promise<Array<FsData>>((resolve, reject)=>{
+  getfriend4group(groupId:string):Promise<Array<PageFsData>>{
+    return new Promise<Array<PageFsData>>((resolve, reject)=>{
       //查询本地群组中的参与人
       let sql ='select gb.* from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi where gbx.bi="'+groupId+'"';
-      let fsList =  new Array<FsData>();
-      console.log('---------- getCalfriend 获取分享日程的参与人 sql:'+ sql);
+      let fsList =  new Array<PageFsData>();
+      console.log('---------- getfriend4group 查询群组中的参与人 sql:'+ sql);
       this.sqlite.execSql(sql).then(data=>{
         if(data && data.rows && data.rows.length>0){
           for(let i=0,len =data.rows.length;i<len;i++ ){
             fsList.push(data.rows.item(i))
           }
         }
-        console.log('---------- getCalfriend 获取分享日程的参与人结果:'+ JSON.stringify(fsList));
+        console.log('---------- getfriend4group 查询群组中的参与人 结果:'+ JSON.stringify(fsList));
         resolve(fsList);
       }).catch(e=>{
-        console.error('---------- getCalfriend 获取分享日程的参与人出错:'+ e.message);
+        console.error('---------- getfriend4group 查询群组中的参与人 出错:'+ e.message);
         resolve(fsList);
       })
     })
@@ -135,7 +134,7 @@ export class FsService {
 /**
  * 联系人视图
  */
-export class FsData {
+export class PageFsData {
   pi: string=""; //日程参与人表ID
   si: string=""; //日程事件ID
   pwi: string=""; //授权表主键
