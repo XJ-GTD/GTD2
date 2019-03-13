@@ -1,10 +1,12 @@
 import {Injectable} from "@angular/core";
 import {NavController, NavParams} from "ionic-angular";
+import {BlaRestful} from "../../service/restful/blasev";
+import {FdService} from "../fd/fd.service";
 
 @Injectable()
 export class BlService {
 
-  constructor() {
+  constructor(private blaRes: BlaRestful) {
 
   }
 
@@ -13,11 +15,26 @@ export class BlService {
 
     return new Promise<Array<BlData>>((resolve, reject)=>{
       //rest获取黑名单
+      this.blaRes.list().then(data=>{
+        let blaList:Array<BlData> = data.data;
+        resolve(blaList);
+      })
     })
   }
-
-
 }
 
 export class BlData{
+  //帐户ID
+  ai: string;
+  //手机号码
+  mpn: string;
+  //姓名
+  n: string;
+  //头像
+  a: string;
+  //性别
+  s: string;
+  //生日
+  bd: string;
+
 }

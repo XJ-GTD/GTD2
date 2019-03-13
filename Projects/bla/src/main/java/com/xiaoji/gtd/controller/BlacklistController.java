@@ -113,7 +113,7 @@ public class BlacklistController {
      */
     @RequestMapping(value="/getOne")
     @ResponseBody
-    public BaseOutDto getOne(@RequestBody BlaBlacklistDto blacklist,HttpServletRequest request) {
+    public BaseOutDto getOne(BlaBlacklistDto blacklist,HttpServletRequest request) {
     	BaseOutDto out = new BaseOutDto();
     	String relId = blacklist.getRelId();
     	String mobile = blacklist.getMpn();
