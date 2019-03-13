@@ -110,7 +110,7 @@ export class LsService {
           return this.sqlExce.update(uTbl);
         }else{//保存用户表
           uTbl.ui = this.util.getUuid();
-          return this.sqlExce.update(uTbl);
+          return this.sqlExce.save(uTbl);
         }
       }).then(data=>{
         // 同步数据（调用brService方法恢复数据）
