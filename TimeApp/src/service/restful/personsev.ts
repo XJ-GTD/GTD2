@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
+import {BsModel} from "./out/bs.model";
 
 /**
  * 帐户 注册
@@ -36,21 +37,24 @@ export class PersonRestful {
   }
 
   //帐户信息获取	AIG get
-  get(personData:PersonInData): Promise<PersonOutData> {
+  get(personData:PersonInData): Promise<BsModel<any>> {
 
-    let outData:PersonOutData = new PersonOutData();
+    let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIG");
       url.url = url.url.replace("{phoneno}",personData.phoneno);
       this.request.get(url).then(data => {
         //处理返回结果
-        outData = data;
-        resolve(outData);
+        bsModel.code = data.code;
+        bsModel.message = data.message;
+        bsModel.data = data.data;
+        resolve(bsModel);
 
       }).catch(error => {
         //处理返回错误
-        outData = error;
-        resolve(outData);
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        reject(bsModel);
 
       })
     });
@@ -58,26 +62,24 @@ export class PersonRestful {
   }
 
   //帐户头像获取	AAG get
-  getavatar(personData:PersonInData): Promise<PersonOutData> {
+  getavatar(personData:PersonInData): Promise<BsModel<any>> {
 
-    let outData:PersonOutData = new PersonOutData();
+    let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AAG");
       url.url = url.url.replace("{phoneno}",personData.phoneno);
       this.request.get(url).then(data => {
         //处理返回结果
-        if(data.errcode == 0){
-          outData = data;
-          resolve(outData);
-        }else {
-          outData = data;
-          resolve(outData);
-        }
+        bsModel.code = data.code;
+        bsModel.message = data.message;
+        bsModel.data = data.data;
+        resolve(bsModel);
 
       }).catch(error => {
         //处理返回错误
-        outData = error;
-        resolve(outData);
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        reject(bsModel);
 
       })
     });
@@ -85,21 +87,24 @@ export class PersonRestful {
   }
 
   //获取个人信息	AIU	获取个人信息 get
-  getself(personData:PersonInData): Promise<PersonOutData> {
+  getself(personData:PersonInData): Promise<BsModel<any>> {
 
-    let outData:PersonOutData = new PersonOutData();
+    let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIU");
       url.url = url.url.replace("{unionid}",personData.unionid);
       this.request.get(url).then(data => {
         //处理返回结果
-        outData = data;
-        resolve(outData);
+        bsModel.code = data.code;
+        bsModel.message = data.message;
+        bsModel.data = data.data;
+        resolve(bsModel);
 
       }).catch(error => {
         //处理返回错误
-        outData = error;
-        resolve(outData);
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        reject(bsModel);
 
       })
     });
@@ -149,32 +154,29 @@ export class PersonRestful {
   }
 
   //注册帐户	RA post
-  signup(signData: SignData): Promise<OutData> {
+  signup(signData: SignData): Promise<BsModel<any>> {
 
-    let outData:OutData = new OutData();
+    let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("RA");
       this.request.post(url, signData).then(data => {
         //处理返回结果
-        outData = data;
-        resolve(outData);
+        bsModel.code = data.code;
+        bsModel.message = data.message;
+        bsModel.data = data.data;
+        resolve(bsModel);
 
       }).catch(error => {
         //处理返回错误
-        outData = error;
-        resolve(outData);
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        reject(bsModel);
 
       })
     });
 
   }
 
-}
-
-export class OutData{
-  code: string;
-  message: string;
-  data: {};
 }
 
 export class SignData{
@@ -196,12 +198,6 @@ export class PersonInData{
   province: string; //省市/地区
   city: string;
   country: string;
-}
-
-export class PersonOutData{
-  code: string;
-  message: string;
-  data: {};
 }
 
 export class PersonTokenData{

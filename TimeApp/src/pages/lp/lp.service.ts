@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {AuthRestful, LoginData} from "../../service/restful/authsev";
-import {PersonRestful} from "../../service/restful/personsev";
+import {PersonRestful, PersonTokenData} from "../../service/restful/personsev";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {WebsocketService} from "../../ws/websocket.service";
@@ -28,11 +28,11 @@ export class LpService {
       let uTbl:UTbl = new UTbl();
       // 验证用户名密码
       this.authRestful.loginbypass(loginData).then(data => {
-        if (data.errcode != "0"){ //data.repData.errcode == 0 为登陆成功状态
-          throw  data.errmsg;
-        }
+        if (data.code != 0)
+          throw  data.message;
+
         //获得token，放入头部header登录码
-        let code = data.code;
+        let code = data.data.code;
         return this.personRestful.getToken(code);
       }).then(data=>{
         //更新账户表
