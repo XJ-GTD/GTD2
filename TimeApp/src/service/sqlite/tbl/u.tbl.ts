@@ -108,7 +108,7 @@ export class UTbl  implements ITbl{
   }
 
   upT():string {
-    let sq='update gtd_u set  ';
+    let sq='';
     if(this._un!=null && this._un!=""){
       sq=sq+', un="' + this._un +'"';
     }
@@ -130,8 +130,11 @@ export class UTbl  implements ITbl{
     if(this._uct != null && this._uct!=""){
       sq = sq + ', uct="' + this._uct +'"';
     }
-    sq = sq + ' where ui = "'+ this._ui +'"';
-    sq = sq +';';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq ='update gtd_u set  ' + sq + ' where ui = "'+ this._ui +'";';
+
     return sq;
   }
 

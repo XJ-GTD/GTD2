@@ -71,7 +71,7 @@ export class STbl implements ITbl   {
   }
 
   upT():string {
-    let sq='update gtd_s set  ';
+    let sq='';
     if(this._st!=null && this._st !=""){
       sq=sq+', st="' + this._st +'"';
     }
@@ -87,7 +87,10 @@ export class STbl implements ITbl   {
     if(this._yv != null&&this._yv !=""){
       sq = sq + ', yv="' + this._yv +'"';
     }
-    sq = sq + ' where si = "'+ this._si +'";';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq ='update gtd_s set  '+ sq + ' where si = "'+ this._si +'";';
     return sq;
   }
 

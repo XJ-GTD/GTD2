@@ -119,7 +119,7 @@ export class CTbl implements  ITbl{
   }
 
   upT():string {
-    let sq='update gtd_c set ';
+    let sq='';
     if(this._sn!=null && this._sn!=""){
       sq=sq+', sn="' + this._sn +'"';
     }
@@ -147,7 +147,10 @@ export class CTbl implements  ITbl{
     if(this._sr != null && this._sr!=""){
       sq = sq + ', sr="' + this._sr +'"';
     }
-    sq = sq + ' where si = "'+ this._si +'";';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq ='update gtd_c set '+ sq + ' where si = "'+ this._si +'";';
     return sq;
   }
 

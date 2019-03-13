@@ -11,10 +11,12 @@ import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {BxTbl} from "../../service/sqlite/tbl/bx.tbl";
 import {STbl} from "../../service/sqlite/tbl/s.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
+import {UtilService} from "../../service/util-service/util.service";
 
 @Injectable()
 export class BrService {
-  constructor(private bacRestful: BacRestful,private sqlexec :SqliteExec) {
+  constructor(private bacRestful: BacRestful,private sqlexec :SqliteExec,
+              private util :UtilService) {
 
   }
 
@@ -71,56 +73,64 @@ export class BrService {
 
   }
 
-  getCount(): Promise<number> {
+  //页面获取最后更新时间
+  getLastDt(): Promise<BsModel<BrData>> {
     //restFul 获取服务器 日历条数
-    return null
+    return new Promise((resolve,reject)=>{
+      let bsModel = new BsModel<BrData>();
+      this.bacRestful.getlastest().then(data =>{
+        bsModel.data.bts = data.data.bts;
+        bsModel.data.dt = this.util.tranDate(bsModel.data.bts,"yyyy/MM/dd hh:mm")
+        resolve(bsModel)
+      })
+    })
   }
 
-
-  recover(): Promise<BsModel<any>> {
+  //恢复
+  recover(bts :string): Promise<BsModel<any>> {
     return new Promise((resolve,reject)=>{
       let bsModel = new BsModel<any>();
-      this.bacRestful.getlastest().then(data =>{
 
         let recoverPro: RecoverPro = new RecoverPro();
         //操作账户ID
         recoverPro.oai="a13661617252"
         //操作手机号码
         recoverPro.ompn="13661617252";
-        recoverPro.d.bts = data.data.bts;
+        recoverPro.d.bts = bts;
         // 设定恢复指定表
         // recoverPro.d.rdn=[];
         this.bacRestful.recover(recoverPro).then(data =>{
-          resolve(data);
+          //resolve(data);
+
+          //restFul 下载用户数据
+
+          //插入本地日历（插入前删除）
+
+          //插入特殊日历（插入前删除）
+          //插入提醒数据（插入前删除）
+          //插入特殊提醒数据（插入前删除）
+          //插入联系人信息（插入前删除）
+          //插入群组信息（插入前删除）
+          //插入本地计划（插入前删除）
+          //插入本地用户设置（插入前删除）
+
         }).catch(err =>{
           //处理返回错误
           bsModel.code = -98;
           bsModel.message = "页面服务处理出错";
-          resolve(data);
+          resolve(bsModel);
 
         })
-      })
+
     })
-    //restFul 下载用户数据
-
-
-    //插入本地日历（插入前删除）
-    //插入特殊日历（插入前删除）
-    //插入提醒数据（插入前删除）
-    //插入特殊提醒数据（插入前删除）
-    //插入联系人信息（插入前删除）
-    //插入群组信息（插入前删除）
-    //插入本地计划（插入前删除）
-    //插入本地用户设置（插入前删除）
-
-
   }
 }
 
 
 export class BrData {
-  //日历list
-  a1: Array<any>
-  //提醒数据list。。。。。
+  //画面时间戳
+  bts:string ="";
 
+  //页面时间
+  dt:string ="";
 }
