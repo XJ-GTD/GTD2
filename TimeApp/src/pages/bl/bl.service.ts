@@ -11,19 +11,19 @@ export class BlService {
   }
 
   //获取黑名单列表
-  get():Promise<Array<BlData>>{
+  get():Promise<Array<PageBlData>>{
 
-    return new Promise<Array<BlData>>((resolve, reject)=>{
+    return new Promise<Array<PageBlData>>((resolve, reject)=>{
       //rest获取黑名单
       this.blaRes.list().then(data=>{
-        let blaList:Array<BlData> = data.data;
+        let blaList:Array<PageBlData> = data.data;
         resolve(blaList);
       })
     })
   }
 }
 
-export class BlData{
+export class PageBlData{
   //帐户ID
   ai: string;
   //手机号码
