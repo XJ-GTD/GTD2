@@ -54,7 +54,7 @@ export class WebsocketService {
       // 连接消息服务器
       this.client.connect(this.login, this.password, frame => {
         console.log(this.client);
-        this.subscription = this.client.subscribe("/queue/1111" , data => {
+        this.subscription = this.client.subscribe("/queue/" + this.queue, data => {
           this.dispatchService.dispatch(data.body).then(data => {
             console.log("message====>" + data + "=====>处理完毕");
           })

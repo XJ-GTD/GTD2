@@ -90,7 +90,7 @@ export class LpService {
         return this.brService.recover("");
       }).then(data=>{
         //建立websoct连接（调用websoctService）
-        this.websocketService.connect(aTbl.aq);
+        this.websocketService.connect();
         resolve(lpdata)
       }).catch(error=>{
         resolve(error)
