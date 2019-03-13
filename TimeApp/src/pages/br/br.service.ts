@@ -1,8 +1,7 @@
 import {Injectable} from "@angular/core";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
-import {BackupPro, BacRestful} from "../../service/restful/bacsev";
+import {BackupPro, BacRestful, OutRecoverPro, RecoverPro} from "../../service/restful/bacsev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {UserConfig} from "../../service/config/user.config";
 import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
 import {ETbl} from "../../service/sqlite/tbl/e.tbl";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
@@ -11,6 +10,7 @@ import {GTbl} from "../../service/sqlite/tbl/g.tbl";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {BxTbl} from "../../service/sqlite/tbl/bx.tbl";
 import {STbl} from "../../service/sqlite/tbl/s.tbl";
+import {BsModel} from "../../service/restful/out/bs.model";
 
 @Injectable()
 export class BrService {
@@ -28,7 +28,7 @@ export class BrService {
     //操作手机号码
     backupPro.ompn="13661617252";
     //时间戳
-    backupPro.d.bts=0;
+    backupPro.d.bts="0";
 
     //获取本地日历
     let c = new CTbl();
@@ -62,11 +62,10 @@ export class BrService {
     let jh = new JhTbl();
     backupPro.d.jh = await this.sqlexec.getList<JhTbl>(jh);
 
-    /*//test
+    //test
     let s = new STbl();
-    let aa : Array<STbl> =new Array<STbl>();
-    aa = await this.sqlexec.getList<STbl>(s);
-    console.log(aa[0]);*/
+    backupPro.d.s = await this.sqlexec.getList<STbl>(s);
+
     //restFul上传
     return await this.bacRestful.backup(backupPro);
 
@@ -78,7 +77,30 @@ export class BrService {
   }
 
 
-  recover(): Promise<any> {
+  recover(): Promise<BsModel<any>> {
+    return new Promise((resolve,reject)=>{
+      let bsModel = new BsModel<any>();
+      this.bacRestful.getlastest().then(data =>{
+
+        let recoverPro: RecoverPro = new RecoverPro();
+        //操作账户ID
+        recoverPro.oai="a13661617252"
+        //操作手机号码
+        recoverPro.ompn="13661617252";
+        recoverPro.d.bts = data.data.bts;
+        // 设定恢复指定表
+        // recoverPro.d.rdn=[];
+        this.bacRestful.recover(recoverPro).then(data =>{
+          resolve(data);
+        }).catch(err =>{
+          //处理返回错误
+          bsModel.code = -98;
+          bsModel.message = "页面服务处理出错";
+          resolve(data);
+
+        })
+      })
+    })
     //restFul 下载用户数据
 
 
@@ -91,7 +113,6 @@ export class BrService {
     //插入本地计划（插入前删除）
     //插入本地用户设置（插入前删除）
 
-    return null;
 
   }
 }

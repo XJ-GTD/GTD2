@@ -13,6 +13,7 @@ import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {OutSharePro} from "./agdsev";
 import {CTbl} from "../sqlite/tbl/c.tbl";
 import {BxTbl} from "../sqlite/tbl/bx.tbl";
+import {STbl} from "../sqlite/tbl/s.tbl";
 
 
 
@@ -49,12 +50,12 @@ export class BacRestful{
 
 
   // 恢复 R
-  recover(backupPro:BackupPro):Promise<BsModel<OutRecoverPro>> {
+  recover(recoverPro:RecoverPro):Promise<BsModel<OutRecoverPro>> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("R");
       let bsModel = new BsModel<OutRecoverPro>();
-      this.request.post(url, backupPro).then(data => {
+      this.request.post(url, recoverPro).then(data => {
         //处理返回结果
         bsModel.code = data.rc;
         bsModel.message = data.rm;
@@ -72,7 +73,7 @@ export class BacRestful{
   }
 
   // 获取日历备份时间戳 BS
-  getlastest():Promise<BsModel<OutBackupPro>> {
+  getlastest():Promise<BsModel<OutTimestampPro>> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("BS");
@@ -98,17 +99,17 @@ export class BacRestful{
 //备份入参
 export class BackupPro{
   //操作帐户ID
-  oai:string ;
+  oai:string="" ;
   //操作手机号码
-  ompn:string;
+  ompn:string="";
   //上下文
-  c:any;
+  c:any="";
   d:BackupProSub = new BackupProSub();
 }
 
 export class BackupProSub{
   //备份时间戳
-  bts:Number;
+  bts:string="";
   //本地日历数据
   c:Array<ITbl> = new Array<CTbl>();
   //本地联系人数据
@@ -125,23 +126,42 @@ export class BackupProSub{
   bx:Array<ITbl> = new Array<BxTbl>();
   //获取本地计划
   jh:Array<ITbl> = new Array<JhTbl>();
+  //系统表（测试用）
+  s:Array<ITbl> = new Array<STbl>();
 
 }
+//备份出参
 export class OutBackupPro{
 
-  bts :string;
+  bts :string="";
 
 }
+
+//获取日历备份时间戳出参
+export class OutTimestampPro{
+
+  bts :string="";
+
+}
+
 //还原入参
 export class RecoverPro{
   //操作帐户ID
-  oai:string ;
+  oai:string ="";
   //操作手机号码
-  ompn:string;
+  ompn:string="";
   //上下文
-  c:any;
-  d:BackupProSub = new BackupProSub();
+  c:any="";
+  d:RecoverProSub = new RecoverProSub();
 }
+
+export class RecoverProSub{
+
+  bts :string="";
+  //恢复表的名称
+  rdn:Array<string> = ["c","sp","e","d","b","g","bx","jh","s"] ;
+}
+//恢复出参
 export class OutRecoverPro{
 
   //本地日历数据
@@ -160,5 +180,6 @@ export class OutRecoverPro{
   bx:Array<ITbl> = new Array<BxTbl>();
   //获取本地计划
   jh:Array<ITbl> = new Array<JhTbl>();
-
+  //系统表（测试用）
+  s:Array<ITbl> = new Array<STbl>();
 }
