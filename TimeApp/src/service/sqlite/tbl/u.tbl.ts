@@ -108,63 +108,71 @@ export class UTbl  implements ITbl{
   }
 
   upT():string {
-    let sq='update gtd_u set 1=1 ';
-    if(this._un!=null){
+    let sq='';
+    if(this._un!=null && this._un!=""){
       sq=sq+', un="' + this._un +'"';
     }
-    if(this._hiu!=null){
+    if(this._hiu!=null && this._hiu!=""){
       sq=sq+', hiu="' + this._hiu +'"';
     }
-    if(this._biy != null){
+    if(this._biy != null && this._biy!=""){
       sq = sq + ', biy="' + this._biy +'"';
     }
-    if(this._rn != null){
+    if(this._rn != null && this._rn!=""){
       sq = sq + ', rn="' + this._rn +'"';
     }
-    if(this._ic != null){
+    if(this._ic != null && this._ic!=""){
       sq = sq + ', ic="' + this._ic +'"';
     }
-    if(this._us != null){
+    if(this._us != null && this._us!=""){
       sq = sq + ', us="' + this._us +'"';
     }
-    if(this._uct != null){
+    if(this._uct != null && this._uct!=""){
       sq = sq + ', uct="' + this._uct +'"';
     }
-    sq = sq + ' where ui = "'+ this._ui +'"';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq ='update gtd_u set  ' + sq + ' where ui = "'+ this._ui +'";';
+
     return sq;
   }
 
   dT():string {
-    let sq = 'delete from gtd_u where ui = "' + this._ui +'"';
+    let sq = 'delete from gtd_u where 1=1 ';
+    if(this._ui != null && this._ui!=""){
+      sq = sq + 'and  ui ="' + this._ui +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 
   sloT():string {
-    let sq='select * from gtd_u where ui = "'+ this._ui +'"';
+    let sq='select * from gtd_u where ui = "'+ this._ui +'";';
     return sq;
   }
 
   slT():string {
     let sq='select * from  gtd_u where  1=1 ';
-    if(this._hiu!=null){
+    if(this._hiu!=null && this._hiu!=""){
       sq=sq+' and hiu="' + this._hiu +'"';
     }
-    if(this._biy != null){
+    if(this._biy != null && this._biy!=""){
       sq = sq + ' and biy="' + this._biy +'"';
     }
-    if(this._rn != null){
+    if(this._rn != null && this._rn!=""){
       sq = sq + ' and rn="' + this._rn +'"';
     }
-    if(this._ic != null){
+    if(this._ic != null && this._ic!=""){
       sq = sq + ' and ic="' + this._ic +'"';
     }
-    if(this._us != null){
+    if(this._us != null && this._us!=""){
       sq = sq + ', us="' + this._us +'"';
     }
-    if(this._uct != null){
+    if(this._uct != null && this._uct!=""){
       sq = sq + ' and uct="' + this._uct +'"';
     }
-
+    sq = sq +';';
     return sq;
   }
 
@@ -177,14 +185,14 @@ export class UTbl  implements ITbl{
   inT():string {
     let sq ='insert into gtd_u ' +
       '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct) values("'+ this._ui+'","'+ this._ai+'","'+this._un+ '"' +
-      ',"'+this._hiu+ '","'+this._biy+ '","'+this._rn+ '","'+this._ic+ '","'+ this._us + '","'+this._uct+ '")';
+      ',"'+this._hiu+ '","'+this._biy+ '","'+this._rn+ '","'+this._ic+ '","'+ this._us + '","'+this._uct+ '");';
     return sq;
   }
 
   rpT():string {
     let sq ='replace into gtd_u ' +
       '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct) values("'+ this._ui+'","'+ this._ai+'","'+this._un+ '"' +
-      ',"'+this._hiu+ '","'+this._biy+ '","'+this._rn+ '","'+this._ic+ '","'+ this._us + '","'+this._uct+ '")';
+      ',"'+this._hiu+ '","'+this._biy+ '","'+this._rn+ '","'+this._ic+ '","'+ this._us + '","'+this._uct+ '");';
 
     return sq;
   }

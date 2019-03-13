@@ -34,9 +34,9 @@ export class GTbl implements ITbl {
   }
 
   clp(){
-    this._gi = null;
-    this._gn = null;
-    this._gm = null;
+    this._gi = "";
+    this._gn = "";
+    this._gm = "";
 
   };
 
@@ -48,35 +48,43 @@ export class GTbl implements ITbl {
   }
 
   upT():string{
-    let sq='update gtd_g set 1=1 ';
-    if(this._gn!=null){
+    let sq='';
+    if(this._gn!=null && this._gn!=""){
       sq=sq+', gn="' + this._gn +'"';
     }
-    if(this._gm!=null){
+    if(this._gm!=null && this._gm!=""){
       sq=sq+', gm="' + this._gm +'"';
     }
-    sq = sq + ' where gi = "'+ this._gi +'"';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq = 'update gtd_g set  '+sq + ' where gi = "'+ this._gi +'";';
     return sq;
   }
 
   dT():string{
-    let sq = 'delete from gtd_g where gi = "' + this._gi +'"';
+    let sq = 'delete from gtd_g where 1=1 ;';
+    if(this._gi != null && this._gi!=""){
+      sq = sq + 'and  gi ="' + this._gi +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 
   sloT():string{
-    let sq='select * from gtd_g where gi = "'+ this._gi +'"';
+    let sq='select * from gtd_g where gi = "'+ this._gi +'";';
     return sq;
   }
 
   slT():string{
     let sq='select * from  gtd_g where  1=1 ';
-    if(this._gn!=null){
+    if(this._gn!=null && this._gn!=""){
       sq=sq+' and gn="' + this._gn +'"';
     }
-    if(this._gm!=null){
+    if(this._gm!=null && this._gm!=""){
       sq=sq+' and gm="' + this._gm +'"';
     }
+    sq = sq +';';
     return sq;
   }
 
@@ -88,14 +96,14 @@ export class GTbl implements ITbl {
 
   inT():string{
     let sq ='insert into gtd_g ' +
-      '( gi ,gn ,gm) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+ '")';
+      '( gi ,gn ,gm) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+ '");';
 
     return sq;
   }
 
   rpT():string{
     let sq ='replace into gtd_g ' +
-      '( gi ,gn ,gm) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+ '")';
+      '( gi ,gn ,gm) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+ '");';
 
     return sq;
   }

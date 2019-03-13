@@ -27,8 +27,8 @@ export class BxTbl implements ITbl{
   }
 
   clp(){
-    this._bi = null;
-    this._bmi = null;
+    this._bi = "";
+    this._bmi = "";
   };
 
   cT():string {
@@ -39,29 +39,37 @@ export class BxTbl implements ITbl{
   }
 
   upT():string {
-    let sq='update gtd_b_x set 1=1 ';
-    if(this._bmi!=null){
+    let sq='';
+    if(this._bmi!=null && this._bmi!=""){
       sq=sq+', bmi="' + this._bmi +'"';
     }
-    sq = sq + ' where bi = "'+ this._bi +'"';
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
+    sq ='update gtd_b_x set  '+ sq + ' where bi = "'+ this._bi +'";';
     return sq;
   }
 
   dT():string {
-    let sq = 'delete from gtd_b_x where bi = "' + this._bi +'"';
+    let sq = 'delete from gtd_b_x where 1=1 ';
+    if(this._bi != null && this._bi!=""){
+      sq = sq + 'and  bi ="' + this._bi +'"';
+    }
+    sq = sq + ';'
     return sq;
   }
 
   sloT():string {
-    let sq='select * from gtd_b_x where bi = "'+ this._bi +'"';
+    let sq='select * from gtd_b_x where bi = "'+ this._bi +'";';
     return sq;
   }
 
   slT():string {
     let sq='select * from gtd_b_x where  1=1 ';
-    if(this._bmi!=null){
+    if(this._bmi!=null && this._bmi!=""){
       sq=sq+' and bmi="' + this._bmi +'"';
     }
+    sq = sq +';';
     return sq;
   }
 
@@ -73,14 +81,14 @@ export class BxTbl implements ITbl{
 
   inT():string {
     let sq ='insert into gtd_g ' +
-      '(  bi ,bmi) values("'+ this._bi+'","'+ this._bmi+'")';
+      '(  bi ,bmi) values("'+ this._bi+'","'+ this._bmi+'");';
 
     return sq;
   }
 
   rpT():string {
     let sq ='replace into gtd_g ' +
-      '(  bi ,bmi) values("'+ this._bi+'","'+ this._bmi+'")';
+      '(  bi ,bmi) values("'+ this._bi+'","'+ this._bmi+'");';
 
     return sq;
   }

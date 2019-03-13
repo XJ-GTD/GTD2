@@ -13,6 +13,8 @@ import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {OutSharePro} from "./agdsev";
 import {CTbl} from "../sqlite/tbl/c.tbl";
 import {BxTbl} from "../sqlite/tbl/bx.tbl";
+import {STbl} from "../sqlite/tbl/s.tbl";
+import {UTbl} from "../sqlite/tbl/u.tbl";
 
 
 
@@ -49,12 +51,12 @@ export class BacRestful{
 
 
   // 恢复 R
-  recover(backupPro:BackupPro):Promise<BsModel<OutRecoverPro>> {
+  recover(recoverPro:RecoverPro):Promise<BsModel<OutRecoverPro>> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("R");
       let bsModel = new BsModel<OutRecoverPro>();
-      this.request.post(url, backupPro).then(data => {
+      this.request.post(url, recoverPro).then(data => {
         //处理返回结果
         bsModel.code = data.rc;
         bsModel.message = data.rm;
@@ -72,7 +74,7 @@ export class BacRestful{
   }
 
   // 获取日历备份时间戳 BS
-  getlastest():Promise<BsModel<OutBackupPro>> {
+  getlastest():Promise<BsModel<OutTimestampPro>> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("BS");
@@ -98,67 +100,91 @@ export class BacRestful{
 //备份入参
 export class BackupPro{
   //操作帐户ID
-  oai:string ;
+  oai:string="" ;
   //操作手机号码
-  ompn:string;
+  ompn:string="";
   //上下文
-  c:any;
+  c:any="";
   d:BackupProSub = new BackupProSub();
 }
 
 export class BackupProSub{
   //备份时间戳
-  bts:Number;
+  bts:string="";
   //本地日历数据
-  c:Array<ITbl> = new Array<CTbl>();
-  //本地联系人数据
-  b:Array<ITbl> = new Array<BTbl>();
+  c:Array<CTbl> = new Array<CTbl>();
   //获取特殊日历
-  sp:Array<ITbl> = new Array<SpTbl>();
+  sp:Array<SpTbl> = new Array<SpTbl>();
   //获取提醒数据
-  e:Array<ITbl> = new Array<ETbl>();
+  e:Array<ETbl> = new Array<ETbl>();
   //获取日程参与人信息
-  d:Array<ITbl> = new Array<DTbl>();
+  d:Array<DTbl> = new Array<DTbl>();
+  //本地联系人数据
+  b:Array<BTbl> = new Array<BTbl>();
   //获取群组信息
-  g:Array<ITbl> = new Array<GTbl>();
+  g:Array<GTbl> = new Array<GTbl>();
   //获取群组人员信息
-  bx:Array<ITbl> = new Array<BxTbl>();
+  bx:Array<BxTbl> = new Array<BxTbl>();
   //获取本地计划
-  jh:Array<ITbl> = new Array<JhTbl>();
+  jh:Array<JhTbl> = new Array<JhTbl>();
+  //用户偏好
+  u:Array<UTbl> = new Array<UTbl>();
+  //系统表（测试用）
+  s:Array<STbl> = new Array<STbl>();
 
 }
+//备份出参
 export class OutBackupPro{
 
-  bts :string;
+  bts :string="";
 
 }
+
+//获取日历备份时间戳出参
+export class OutTimestampPro{
+
+  bts :string="";
+
+}
+
 //还原入参
 export class RecoverPro{
   //操作帐户ID
-  oai:string ;
+  oai:string ="";
   //操作手机号码
-  ompn:string;
+  ompn:string="";
   //上下文
-  c:any;
-  d:BackupProSub = new BackupProSub();
+  c:any="";
+  d:RecoverProSub = new RecoverProSub();
 }
+
+export class RecoverProSub{
+
+  bts :string="";
+  //恢复表的名称
+  rdn:Array<string> = ["c","sp","e","d","b","g","bx","jh","s"] ;
+}
+//恢复出参
 export class OutRecoverPro{
 
   //本地日历数据
-  c:Array<ITbl> = new Array<CTbl>();
+  c:Array<CTbl> = new Array<CTbl>();
   //获取特殊日历
-  sp:Array<ITbl> = new Array<SpTbl>();
+  sp:Array<SpTbl> = new Array<SpTbl>();
   //获取提醒数据
-  e:Array<ITbl> = new Array<ETbl>();
+  e:Array<ETbl> = new Array<ETbl>();
   //获取日程参与人信息
-  d:Array<ITbl> = new Array<DTbl>();
+  d:Array<DTbl> = new Array<DTbl>();
   //本地联系人数据
-  b:Array<ITbl> = new Array<BTbl>();
+  b:Array<BTbl> = new Array<BTbl>();
   //获取群组信息
-  g:Array<ITbl> = new Array<GTbl>();
+  g:Array<GTbl> = new Array<GTbl>();
   //获取群组人员信息
-  bx:Array<ITbl> = new Array<BxTbl>();
+  bx:Array<BxTbl> = new Array<BxTbl>();
   //获取本地计划
-  jh:Array<ITbl> = new Array<JhTbl>();
-
+  jh:Array<JhTbl> = new Array<JhTbl>();
+  //用户偏好
+  u:Array<UTbl> = new Array<UTbl>();
+  //系统表（测试用）
+  s:Array<STbl> = new Array<STbl>();
 }

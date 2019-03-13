@@ -54,6 +54,7 @@ public class IAgendaServiceImpl implements IAgendaService {
 	 */
 	public AgdAgenda save(AgdAgendaDto inDto) {
 		AgdAgenda agd = BaseUtil.dtoAgdToAgd(inDto);
+		log.info("------保存日程AgdAgenda: ------" + JSONObject.toJSONString(agd));
 		agd = agdAgenda.save(agd);
 		List<AgdAgendaContacts> agdList = agdContactsRep.findContactsByRelId(inDto.getAi());
 		if(agdList != null && agdList.size()>0){

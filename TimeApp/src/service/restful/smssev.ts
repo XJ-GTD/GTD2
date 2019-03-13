@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
+import {BsModel} from "./out/bs.model";
 
 /**
  * 验证码
@@ -12,19 +13,23 @@ export class SmsRestful {
   }
 
   //发送短信验证码 SSMIC
-  getcode(smsData:SmsData): Promise<SmsData> {
+  getcode(smsData:InData): Promise<BsModel<Key>> {
 
+    let bsModel = new BsModel<Key>();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("SSMIC");
-      this.request.post(url, smsData.reqData).then(data => {
+      this.request.post(url, smsData).then(data => {
         //处理返回结果
-        smsData.repData = data;
-        resolve(smsData);
+        bsModel.code = data.code;
+        bsModel.message = data.message;
+        bsModel.data = data.data;
+        resolve(bsModel);
 
       }).catch(error => {
         //处理返回错误
-        smsData.errData = error;
-        resolve(smsData);
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        reject(bsModel);
 
       })
     });
@@ -33,18 +38,10 @@ export class SmsRestful {
 
 }
 
-export class SmsData{
-  reqData = {
-    phoneno:"",//手机号码
-  };
+export class InData{
+  phoneno:string; //手机号码
+}
 
-  repData = {
-    code: "",
-    message: "",
-    data: {
-      verifykey:"",
-    },
-  };
-
-  errData = {}
+export class Key{
+  verifykey:string;
 }

@@ -2,13 +2,17 @@ package com.xiaoji.gtd.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xiaoji.gtd.dto.AgdAgendaDto;
 import com.xiaoji.gtd.dto.BaseOutDto;
 import com.xiaoji.gtd.entity.AgdAgenda;
@@ -23,9 +27,9 @@ import com.xiaoji.gtd.util.ReturnMessage;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/")
+@RequestMapping(value = "/agd")
 public class AgdAgendaController {
-
+	Logger log = LoggerFactory.getLogger(AgdAgendaController.class);
     @Autowired
     IAgendaService agendaService;
     @Autowired
@@ -35,12 +39,16 @@ public class AgdAgendaController {
      * @param map ,method = RequestMethod.GET
      * @return
      */
-    @RequestMapping(value="/agenda/save")
+    @RequestMapping(value="/agenda/save",method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto add(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
-    	if(!"".equals(relId) && relId != null){
+    	BaseUtil.getRequestParams(request, log);
+    	log.info("---- 保存日程获取头部ai  -----" + relId);
+    	log.info("---- 保存日程获取获取参数  -----" + JSONObject.toJSONString(blacklist));
+    	if(!"".equals(relId) && relId != null && 
+    			blacklist.getAi() != null &&!"".equals(blacklist.getAi())){
     		blacklist.setFc(relId);
     		AgdAgenda xj = agendaService.save(blacklist);
     		out.setD(xj);
@@ -48,7 +56,7 @@ public class AgdAgendaController {
     		out.setRm(ReturnMessage.SUCCESS_MSG);
     	}else{
     		out.setRc(ReturnMessage.ERROR_CODE);
-    		out.setRm(ReturnMessage.ERROR_MSG);
+    		out.setRm(ReturnMessage.ERROR_MSG+"ai 不能为空！");
     	}
 
         return out;
@@ -59,11 +67,13 @@ public class AgdAgendaController {
      * @param map
      * @return
      */
-    @RequestMapping(value="/agenda/info")
+    @RequestMapping(value="/agenda/info",method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto getInfo(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
     	BaseOutDto out = new BaseOutDto();
+    	
     	//String relId = request.getHeader("ai");
+    	log.info("---- 保存日程获取获取参数  -----" + JSONObject.toJSONString(blacklist));
     	String agdId = blacklist.getAi();
     	if(!"".equals(agdId) && agdId != null){
 //    		blacklist.setFc(relId);
@@ -85,12 +95,13 @@ public class AgdAgendaController {
      * @param map  @RequestBody
      * @return
      */
-    @RequestMapping(value="/agenda/remove")
+    @RequestMapping(value="/agenda/remove",method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto remove(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
     	
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
+    	log.info("---- 保存日程获取获取参数  -----" + JSONObject.toJSONString(blacklist));
     	if(!"".equals(blacklist.getAi()) && blacklist.getAi() != null){
     		blacklist.setFc(relId);
     		agendaService.deleteById(blacklist);
@@ -108,10 +119,10 @@ public class AgdAgendaController {
      * @param map
      * @return
      */
-    @RequestMapping(value="/agendacontacts/save")
+    @RequestMapping(value="/agendacontacts/save",method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto saveContacts(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
-    	
+    	log.info("---- 保存日程获取获取参数  -----" + JSONObject.toJSONString(blacklist));
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
     	if(!"".equals(relId) && relId != null){
