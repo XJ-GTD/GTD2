@@ -13,11 +13,11 @@ export class BlaRestful{
   constructor(private request: RestfulClient, private config: RestFulConfig) {
   }
   // 黑名单手机/帐户添加 BLA
-  add(bla:Bla):Promise<BsModel<Bla>> {
+  add(bla:BlaReq):Promise<BsModel<BlaReq>> {
     //Object.assign(rc,data.rows.item(i));
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("BLA");
-      let bs = new BsModel<Bla>();
+      let bs = new BsModel<BlaReq>();
       this.request.post(url, bla).then(data => {
 
         //处理返回结果
@@ -37,11 +37,11 @@ export class BlaRestful{
 
 
   // 黑名单手机/帐户删除 BLR
-  remove(bla:Bla):Promise<BsModel<Bla>> {
+  remove(bla:BlaReq):Promise<BsModel<BlaReq>> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("BLR");
-      let bs = new BsModel<Bla>();
+      let bs = new BsModel<BlaReq>();
       this.request.post(url, bla).then(data => {
         //处理返回结果
         bs.code = data.rc;
@@ -58,10 +58,10 @@ export class BlaRestful{
   }
 
   //黑名单获取 BLG
-  list():Promise<BsModel<Array<Bla>>> {
+  list():Promise<BsModel<Array<BlaReq>>> {
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("BLG");
-      let bs = new BsModel<Array<Bla>>();
+      let bs = new BsModel<Array<BlaReq>>();
       this.request.post(url, null).then(data => {
         //处理返回结果
         bs.code = data.rc;
@@ -97,7 +97,7 @@ export class BlaRestful{
 }*/
 
 //参与人
-export class Bla{
+export class BlaReq{
   //帐户ID
   ai: string;
   //手机号码

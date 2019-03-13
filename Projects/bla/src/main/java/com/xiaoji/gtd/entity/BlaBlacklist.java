@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * BlaBlacklist 实体�?
+ * BlaBlacklist 实体�?
  *
  */
 @Entity
@@ -19,6 +19,16 @@ public class BlaBlacklist implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public BlaBlacklist(){
+		
+	}
+	public BlaBlacklist(Long id,String accountId,String phone,String contactsName,String relAccountId){
+		setId(id);
+		setAccountId(accountId);
+		setPhone(phone);
+		setContactsName(contactsName);
+		setRelAccountId(relAccountId);
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

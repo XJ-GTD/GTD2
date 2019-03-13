@@ -46,22 +46,22 @@ export class WebsocketService {
   /**
    * 监听消息队列
    */
-  public connect():Promise<any> {
+  public connect(queue:string):Promise<any> {
     return this.settingWs().then(resolve => {
       console.log("-----MQ开始建立连接----");
-      console.log("-----MQ QUEUE_NAME: [" + this.queue + "] ----");
+      console.log("-----MQ QUEUE_NAME: [" + queue + "] ----");
 
       // 连接消息服务器
       this.client.connect(this.login, this.password, frame => {
         console.log(this.client);
-        this.subscription = this.client.subscribe("/queue/" + this.queue, data => {
+        this.subscription = this.client.subscribe("/queue/" + queue, data => {
           this.dispatchService.dispatch(data.body).then(data => {
             console.log("message====>" + data + "=====>处理完毕");
           })
         });
       }, error => {
         console.log('错误回调webSocket error! :' + error);
-        this.connect();
+        this.connect(queue);
 
       }, event => {
         console.log('关闭回调socket close!' + event);

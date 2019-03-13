@@ -13,19 +13,23 @@ export class AuthRestful {
   }
 
   // 短信登录 SML
-  loginbycode(loginData: LoginData): Promise<OutData> {
+  loginbycode(loginData: LoginData): Promise<BsModel<OutData>> {
 
-    let outData:OutData = new OutData();
+    let bsModel = new BsModel<OutData>();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("SML");
       this.request.post(url, loginData).then(data => {
         //处理返回结果
-        outData = data;
-        resolve(outData);
+        bsModel.code = data.errcode;
+        bsModel.message = data.errmsg;
+        bsModel.data = data.data;
+        resolve(bsModel);
 
       }).catch(error => {
         //处理返回错误
-        reject(error);
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        reject(bsModel);
 
       })
     });
@@ -58,7 +62,8 @@ export class AuthRestful {
 export class LoginData{
   phoneno:string;
   userpassword:string;
-  authCode:string;
+  verifykey:string;
+  verifycode:string;
 }
 
 export class OutData{
