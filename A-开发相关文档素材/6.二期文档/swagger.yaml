@@ -519,7 +519,6 @@ paths:
                     description: 恢复数据表名称列表
                     items:
                       type: string
-                    
       responses:
         '200':
           description: 获取备份数据成功
@@ -1819,6 +1818,22 @@ definitions:
     properties:
       pn:
         type: object
+        properties:
+          pt:
+            type: string
+            description: '计划标题'
+          pd:
+            type: string
+            description: '计划描述'
+          pm:
+            type: string
+            description: '计划颜色标记'
+          pc:
+            type: string
+            description: '计划类型'
+            enum:
+            - 'build-in'
+            - 'custom'
       pa:
         type: array
         items:

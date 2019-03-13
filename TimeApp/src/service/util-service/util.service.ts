@@ -343,7 +343,7 @@ export class UtilService {
   //时间戳转时间
   tranDate(TimeNow,fmt) {
 
-    let date = new Date(TimeNow*1000)
+    let date = new Date(TimeNow)
 
     if(/(y+)/.test(fmt)){
       fmt = fmt.replace(RegExp.$1,(date.getFullYear()+'').substr(4-RegExp.$1.length));
