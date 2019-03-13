@@ -125,6 +125,7 @@ export class BrService {
       ci.rt = bsModel.data.c[j].rt;
       ci.ji = bsModel.data.c[j].ji;
       ci.sr = bsModel.data.c[j].sr;
+      ci.bz = bsModel.data.c[j].bz;
       await this.sqlexec.save(ci);
     }
 
