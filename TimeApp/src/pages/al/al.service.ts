@@ -108,7 +108,7 @@ export class AlService {
     let alData:AlData = new AlData();
     return new Promise((resolve, reject) => {
       // 连接webSocket成功
-      this.wsserivce.connect().then(data=>{
+      this.wsserivce.connect(alData.mq).then(data=>{
         alData.text = "连接webSocket成功";
         resolve(alData);
       })
@@ -378,4 +378,5 @@ export class AlData{
   text:string;
   checkSystem:boolean;
   islogin:boolean;
+  mq:string;
 }

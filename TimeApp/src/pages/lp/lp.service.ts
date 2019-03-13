@@ -87,7 +87,7 @@ export class LpService {
         }
       }).then(data=>{
         // 同步数据（调用brService方法恢复数据）
-        return this.brService.recover();
+        return this.brService.recover("");
       }).then(data=>{
         //建立websoct连接（调用websoctService）
         this.websocketService.connect(aTbl.aq);
