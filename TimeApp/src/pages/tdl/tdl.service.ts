@@ -47,17 +47,17 @@ export class ScdData {
   }
 
   //参与人
-  fss: Array<fsData> = [];
+  fss: Array<fsData> =new Array<fsData>();
 
   //发起人
-  fs: fsData;
+  fs: fsData =new fsData();
 
 
   //提醒设置
-  r: RemindData;
+  r: RemindData = new RemindData();
 
   //所属计划
-  p:PlData;
+  p:PlData = new PlData();
 
 
 }
