@@ -9,6 +9,7 @@ import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
 import {ETbl} from "../../service/sqlite/tbl/e.tbl";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
+import {BsModel} from "../../service/restful/out/bs.model";
 
 @Injectable()
 export class PdService {
@@ -50,6 +51,12 @@ export class PdService {
     console.log("testful shareData "+ JSON.stringify(paList));
     //显示处理
 
+
+    // 返出参
+    let ret = new BsModel();
+    ret.code = 0;
+    ret.data = paList
+    return ret;
   }
 
   //分享计划
@@ -119,6 +126,12 @@ export class PdService {
     //restful上传计划
     let bs = await this.shareRestful.share(shareData);
     console.log("testful shareData "+ JSON.stringify(bs));
+
+    // 返出参
+    let ret = new BsModel();
+    ret.code = 0;
+    ret.data = bs
+    return ret;
   }
 
   //删除计划
@@ -157,6 +170,11 @@ export class PdService {
     await this.sqlExce.delete(jhTbl);
 
     // TODO restful删除分享计划
+
+    // 返出参
+    let ret = new BsModel();
+    ret.code = 0;
+    return ret;
   }
 
 }
