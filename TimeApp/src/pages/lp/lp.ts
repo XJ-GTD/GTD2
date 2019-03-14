@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
-import { UtilService } from "../../service/util-service/util.service";
-import {LpData, LpService} from "./lp.service";
+import {LpService, PageLpData} from "./lp.service";
 import {DataConfig} from "../../service/config/data.config";
 
 /**
@@ -125,7 +124,7 @@ export class LpPage {
       return;
     }
     //this.utilService.loading("登录中");
-    let lp:LpData = new LpData();
+    let lp:PageLpData = new PageLpData();
     lp.mobile = this.accountName;
     lp.password = this.accountPassword;
     this.lpService.login(lp).then(data=> {

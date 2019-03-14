@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams, AlertController, Navbar} from 'ionic-angular';
+import {AlertController, IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
-import {LsData, LsService} from "./ls.service";
+import {LsService, PageLsData} from "./ls.service";
 import {ReturnConfig} from "../../../../TimeApp（v1）/src/app/return.config";
 
 /**
@@ -47,7 +47,7 @@ import {ReturnConfig} from "../../../../TimeApp（v1）/src/app/return.config";
 })
 export class LsPage {
 
-  lsData:LsData = new LsData();
+  lsData:PageLsData = new PageLsData();
 
   @ViewChild(Navbar) navBar: Navbar;
 
@@ -85,7 +85,7 @@ export class LsPage {
       return ;
     }
     this.agreeFlag = true;
-    let lsData:LsData = new LsData();
+    let lsData:PageLsData = new PageLsData();
     lsData.mobile = this.accountMobile;
     lsData.authCode = this.authCode;
     this.lsService.login(lsData).then(data=> {

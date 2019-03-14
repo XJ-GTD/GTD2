@@ -67,6 +67,7 @@ export class JhTbl  implements ITbl{
     this._jn = "";
     this._jg = "";
     this._jt = "";
+    this._wtt = 0;
   };
 
   cT():string{
@@ -138,7 +139,7 @@ export class JhTbl  implements ITbl{
 
   inT():string{
     let sq ='insert into gtd_j_h ' +
-      '(  ji ,jn ,jg,jc,jt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '",' +
+      '(  ji ,jn ,jg,jc,jt,wtt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '",' +
       '"'+this._jt+ '",'+  moment().unix() +');';
 
     return sq;
@@ -146,7 +147,7 @@ export class JhTbl  implements ITbl{
 
   rpT():string{
     let sq ='replace into gtd_j_h ' +
-      '(  ji ,jn ,jg,jc,jt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '",' +
+      '(  ji ,jn ,jg,jc,jt,wtt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '",' +
       '"'+this._jt+ '",'+  moment().unix() +');';
 
     return sq;

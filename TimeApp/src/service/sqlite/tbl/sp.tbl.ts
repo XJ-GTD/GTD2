@@ -218,7 +218,7 @@ export class SpTbl  implements ITbl {
 
   inT():string {
     let sq ='insert into gtd_sp ' +
-      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx) values("'+ this._spi+'","'+ this._si+'","'+this._spn+ '"' +
+      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx,wtt) values("'+ this._spi+'","'+ this._si+'","'+this._spn+ '"' +
       ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._ji+ '","'+this._bz+ '",' +
       '"'+this._sta+ '","'+this._tx+ '",'+  moment().unix() +');';
 
@@ -227,24 +227,25 @@ export class SpTbl  implements ITbl {
 
   rpT():string {
     let sq ='replace into gtd_sp ' +
-      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx) values("'+ this._spi+'","'+ this._si+'","'+this._spn+ '"' +
+      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx,wtt) values("'+ this._spi+'","'+ this._si+'","'+this._spn+ '"' +
       ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._ji+ '","'+this._bz+ '",' +
       '"'+this._sta+ '","'+this._tx+'",'+  moment().unix() +');';
 
     return sq;
   }
   clp(){
-    this._spi="";
-    this._si="";
-    this._spn="";
-    this._sd="";
-    this._st="";
-    this._ed="";
-    this._et="";
-    this._ji="";
-    this._bz="";
-    this._sta="";
-    this._tx="";
+    this._spi = "";
+    this._si = "";
+    this._spn = "";
+    this._sd = "";
+    this._st = "";
+    this._ed = "";
+    this._et = "";
+    this._ji = "";
+    this._bz = "";
+    this._sta = "";
+    this._tx = "";
+    this._wtt = 0;
   }
 }
 

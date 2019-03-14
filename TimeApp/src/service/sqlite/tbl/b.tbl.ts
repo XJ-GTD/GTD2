@@ -209,7 +209,7 @@ export class BTbl implements ITbl{
 
   inT():string {
     let sq ='insert into gtd_b ' +
-      '(  pwi ,ran ,ranpy ,ri ,hiu ,rn ,rnpy ,rc ,rf ,ot ,rel ,ui) values("'+ this._pwi+'",' +
+      '(  pwi ,ran ,ranpy ,ri ,hiu ,rn ,rnpy ,rc ,rf ,ot ,rel ,ui,wtt) values("'+ this._pwi+'",' +
       '"'+ this._ran+'","'+this._ranpy+ '"' +
       ',"'+this._hiu+ '","'+this._rn+ '","'+this._rnpy+ '","'+this._rc+ '",' +
       '"'+this._rel+ '","'+this._ui+ '",'+  moment().unix() + ');';
@@ -219,7 +219,7 @@ export class BTbl implements ITbl{
 
   rpT():string {
     let sq ='replace into gtd_b ' +
-      '(  pwi ,ran ,ranpy ,ri ,hiu ,rn ,rnpy ,rc ,rf ,ot ,rel ,ui) values("'+ this._pwi+'",' +
+      '(  pwi ,ran ,ranpy ,ri ,hiu ,rn ,rnpy ,rc ,rf ,ot ,rel ,ui,wtt) values("'+ this._pwi+'",' +
       '"'+ this._ran+'","'+this._ranpy+ '"' +
       ',"'+this._hiu+ '","'+this._rn+ '","'+this._rnpy+ '","'+this._rc+ '",' +
       '"'+this._rel+ '","'+this._ui+ '",'+  moment().unix() + ');';
