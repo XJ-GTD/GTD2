@@ -105,6 +105,9 @@ export class ETbl implements ITbl {
     if (this._wi != null && this._wi != "") {
       sq = sq + 'and  wi ="' + this._wi + '"';
     }
+    if(this._si != null && this._si!=""){
+      sq = sq + 'and  si ="' + this._si +'"';
+    }
     sq = sq + ';'
     return sq;
   }
