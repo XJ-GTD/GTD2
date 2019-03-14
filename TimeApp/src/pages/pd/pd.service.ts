@@ -134,7 +134,6 @@ export class PdService {
     //获取本地计划
     let jhTbl: JhTbl = new JhTbl();
     jhTbl.ji = pid;
-
     jhTbl = await this.sqlExce.getOne<JhTbl>(jhTbl);
 
     // 删除本地计划日程关联
@@ -168,4 +167,15 @@ export class PdService {
     return ret;
   }
 
+}
+
+//页面项目
+export class PagePlPro{
+  ji: string="";//计划ID
+  jn: string="";//计划名
+  jg: string="";//计划描述
+  jc: string="";//计划颜色标记
+  jt: string="";//计划类型
+
+  js: number=0; //日程数量
 }
