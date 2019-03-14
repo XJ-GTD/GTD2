@@ -6,32 +6,22 @@ import * as moment from "moment";
  */
 export class UTbl  implements ITbl{
 
-
   private _ui :string="";
-
   private _ai :string="";
-
   private _un :string="";
-
   private _hiu :string="";
-
   private _biy :string="";
-
   private _rn :string="";
-
   private _ic :string="";
-
   private _us :string="";
-
   private _uct :string="";
+  private _wtt :Number = 0;
 
-  private _wtt :string ="";
-
-  get wtt(): string {
+  get wtt(): Number {
     return this._wtt;
   }
 
-  set wtt(value: string) {
+  set wtt(value: Number) {
     this._wtt = value;
   }
 
@@ -194,7 +184,7 @@ export class UTbl  implements ITbl{
 
   inT():string {
     let sq ='insert into gtd_u ' +
-      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct) values("'+ this._ui+'","'+ this._ai+'","'+this._un+ '"' +
+      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct,wtt) values("'+ this._ui+'","'+ this._ai+'","'+this._un+ '"' +
       ',"'+this._hiu+ '","'+this._biy+ '","'+this._rn+ '","'+this._ic+ '","'+ this._us + '","'+this._uct+ '"' +
       ','+  moment().unix() +');';
     return sq;
@@ -202,30 +192,23 @@ export class UTbl  implements ITbl{
 
   rpT():string {
     let sq ='replace into gtd_u ' +
-      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct) values("'+ this._ui+'","'+ this._ai+'","'+this._un+ '"' +
+      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct,wtt) values("'+ this._ui+'","'+ this._ai+'","'+this._un+ '"' +
       ',"'+this._hiu+ '","'+this._biy+ '","'+this._rn+ '","'+this._ic+ '","'+ this._us + '","'+this._uct+ '"' +
       ','+  moment().unix() +');';
 
     return sq;
   }
   clp(){
-  this._ui ="";
-
-  this._ai ="";
-
-  this._un ="";
-
-  this._hiu ="";
-
-  this._biy ="";
-
-  this._rn ="";
-
-  this._ic ="";
-
-  this._us ="";
-
-  this._uct ="";
+    this._ui ="";
+    this._ai ="";
+    this._un ="";
+    this._hiu ="";
+    this._biy ="";
+    this._rn ="";
+    this._ic ="";
+    this._us ="";
+    this._uct ="";
+    this._wtt = 0;
   }
 
 }

@@ -98,16 +98,16 @@ export class DTbl implements ITbl {
   }
 
   clp(){
-    this._pi="";
-    this._si="";
-    this._st="";
-    this._son="";
-    this._sa="";
-    this._ai="";
-    this._ib="";
-    this._bi="";
-    this._sdt="";
-
+    this._pi = "";
+    this._si = "";
+    this._st = "";
+    this._son = "";
+    this._sa = "";
+    this._ai = "";
+    this._ib = "";
+    this._bi = "";
+    this._sdt = "";
+    this._wtt = 0;
   };
 
 
@@ -211,7 +211,7 @@ export class DTbl implements ITbl {
 
   inT():string {
     let sq ='insert into gtd_d ' +
-      '( pi ,si ,st ,son ,sa ,ai ,ib ,bi ,sdt) values("'+ this._pi+'","'+ this._si+'","'+this._st+ '"' +
+      '( pi ,si ,st ,son ,sa ,ai ,ib ,bi ,sdt,wtt) values("'+ this._pi+'","'+ this._si+'","'+this._st+ '"' +
       ',"'+this._son+ '","'+this._sa+ '","'+this._ai+ '","'+this._ib+ '","'+this._bi+ '",' +
       '"'+this._sdt+ '",'+  moment().unix() +');';
 
@@ -220,7 +220,7 @@ export class DTbl implements ITbl {
 
   rpT():string {
     let sq ='replace into gtd_d ' +
-      '( pi ,si ,st ,son ,sa ,ai ,ib ,bi ,sdt) values("'+ this._pi+'","'+ this._si+'","'+this._st+ '"' +
+      '( pi ,si ,st ,son ,sa ,ai ,ib ,bi ,sdt,wtt) values("'+ this._pi+'","'+ this._si+'","'+this._st+ '"' +
       ',"'+this._son+ '","'+this._sa+ '","'+this._ai+ '","'+this._ib+ '","'+this._bi+ '",' +
       '"'+this._sdt+ '",'+  moment().unix() +');';
 

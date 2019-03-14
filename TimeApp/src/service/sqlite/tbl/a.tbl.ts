@@ -148,7 +148,7 @@ export class ATbl implements ITbl {
 
   inT():string {
     let sq ='insert into gtd_a ' +
-      '(ai,an,am,ae,at,aq) values("'+ this._ai+'","'+ this._an+'","'+this._am+ '"' +
+      '(ai,an,am,ae,at,aq,wtt) values("'+ this._ai+'","'+ this._an+'","'+this._am+ '"' +
       ',"'+this._ae+ '","'+this._at+ '","'+this._aq+ '",'+  moment().unix() +');';
 
     return sq;
@@ -156,7 +156,7 @@ export class ATbl implements ITbl {
 
   rpT():string {
     let sq ='replace into gtd_a ' +
-      '(ai,an,am,ae,at,aq) values("'+ this._ai+'","'+ this._an+'","'+this._am+ '"' +
+      '(ai,an,am,ae,at,aq,wtt) values("'+ this._ai+'","'+ this._an+'","'+this._am+ '"' +
       ',"'+this._ae+ '","'+this._at+ '","'+this._aq+ '",'+  moment().unix() +');';
 
     return sq;
@@ -164,9 +164,10 @@ export class ATbl implements ITbl {
   clp(){
     this._ai = "";
     this._an = "";
-    this._ae= "";
+    this._ae = "";
     this._at = "";
-    this._aq= "";
+    this._aq = "";
+    this._wtt = 0;
   };
 }
 
