@@ -23,6 +23,7 @@ export class SpeechProcess implements MQProcess {
   }
 
   go(content: WsContent,processRs:ProcesRs): Promise<ProcesRs> {
+
     return new Promise<ProcesRs>(async resolve => {
 
       //处理所需要参数

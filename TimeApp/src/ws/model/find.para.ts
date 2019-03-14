@@ -5,9 +5,9 @@
  *
  * create by zhangjy on 2019/03/12.
  */
-export class findPara{
+export class FindPara{
   //参与人
-  ns:[{
+  fs:[{
     n:string
   }];
 
