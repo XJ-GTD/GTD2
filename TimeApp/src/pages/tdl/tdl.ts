@@ -3,7 +3,7 @@ import {App, NavController, NavParams} from 'ionic-angular';
 import * as moment from "moment";
 
 /**
- * Generated class for the TdlPage page.
+ * Generated class for the 日程列表 page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.

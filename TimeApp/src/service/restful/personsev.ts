@@ -45,8 +45,8 @@ export class PersonRestful {
       url.url = url.url.replace("{phoneno}",personData.phoneno);
       this.request.get(url).then(data => {
         //处理返回结果
-        bsModel.code = data.code;
-        bsModel.message = data.message;
+        bsModel.code = data.errcode;
+        bsModel.message = data.errmsg;
         bsModel.data = data.data;
         resolve(bsModel);
 
@@ -70,8 +70,8 @@ export class PersonRestful {
       url.url = url.url.replace("{phoneno}",personData.phoneno);
       this.request.get(url).then(data => {
         //处理返回结果
-        bsModel.code = data.code;
-        bsModel.message = data.message;
+        bsModel.code = data.errcode;
+        bsModel.message = data.errmsg;
         bsModel.data = data.data;
         resolve(bsModel);
 
@@ -95,8 +95,8 @@ export class PersonRestful {
       url.url = url.url.replace("{unionid}",personData.unionid);
       this.request.get(url).then(data => {
         //处理返回结果
-        bsModel.code = data.code;
-        bsModel.message = data.message;
+        bsModel.code = data.errcode;
+        bsModel.message = data.errmsg;
         bsModel.data = data.data;
         resolve(bsModel);
 
@@ -112,20 +112,23 @@ export class PersonRestful {
   }
 
   //帐户信息更新	AIU	更新用户信息(包括密码) put
-  updateself(personData:PersonInData): Promise<PersonPutData> {
+  updateself(personData:PersonInData): Promise<BsModel<any>>  {
 
-    let outData:PersonPutData = new PersonPutData();
+    let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIU");
       this.request.put(url,personData).then(data => {
         //处理返回结果
-        outData = data;
-        resolve(outData);
+        bsModel.code = data.errcode;
+        bsModel.message = data.errmsg;
+        bsModel.data = data.data;
+        resolve(bsModel);
 
       }).catch(error => {
         //处理返回错误
-        outData = error;
-        resolve(outData);
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        reject(bsModel);
 
       })
     });
@@ -133,20 +136,23 @@ export class PersonRestful {
   }
 
   //修改密码 MP put
-  updatepass(personData:PersonInData): Promise<PersonPutData> {
+  updatepass(personData:PersonInData): Promise<BsModel<any>> {
 
-    let outData:PersonPutData = new PersonPutData();
+    let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("MP");
       this.request.put(url, personData).then(data => {
         //处理返回结果
-        outData = data;
-        resolve(outData);
+        bsModel.code = data.errcode;
+        bsModel.message = data.errmsg;
+        bsModel.data = data.data;
+        resolve(bsModel);
 
       }).catch(error => {
         //处理返回错误
-        outData = error;
-        resolve(outData);
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        reject(bsModel);
 
       })
     });
@@ -180,59 +186,49 @@ export class PersonRestful {
 }
 
 export class SignData{
-  phoneno:string;//手机号码
-  verifykey:string;//短信验证码KEY
-  verifycode:string;//短信验证码
-  username:string;//姓名
-  userpassword:string;//帐户密码
+  phoneno:string = "";//手机号码
+  verifykey:string = "";//短信验证码KEY
+  verifycode:string = "";//短信验证码
+  username:string = "";//真实姓名
+  userpassword:string = "";//帐户密码
 }
 
 export class PersonInData{
-  phoneno: string;
-  unionid: string;
-  nickname: string;   //姓名
-  password: string;   //密码
+  phoneno: string = "";
+  unionid: string = "";
+
+  nickname: string = "";   //姓名
+  password: string = "";   //密码
   sex: "0";      //性别 0 未知, 1 男性, 2 女性 Enum: [ 0, 1, 2 ]
-  avatar: string;     //头像
-  birthday: string; //出生日期  2019-03-11
-  province: string; //省市/地区
-  city: string;
-  country: string;
+  avatar: string = "";     //头像
+  birthday: string = ""; //出生日期  2019-03-11
+  province: string = ""; //省市/地区
+  city: string = "";
+  country: string = "";
 }
 
 export class PersonTokenData{
-  _id:string;
-  phoneno  :string;
-  verifykey  :string;
-  verifycode  :string;
-  userpassword  :string;
-  openid  :string;
-  nickname: string;   //姓名
-  password:string;
-  unionid:string;
-  sex:string;
-  province:string;
-  city: string;
-  country: string;
-  avatar: string;     //头像
+  _id:string = "";
+  phoneno  :string = "";
+  verifykey  :string = "";
+  verifycode  :string = "";
+  userpassword  :string = "";
+  openid  :string = "";
+  nickname: string = "";   //姓名
+  password:string = "";
+  unionid:string = "";
+  sex:string = "";
+  province:string = "";
+  city: string = "";
+  country: string = "";
+  avatar: string = "";     //头像
   privilege:object;
-  code:string;
-  state:string;
-  appid:string;
-  access_token:string;
-  refresh_token:string;
-  access_time:string;
-  expires_in:string;
-  cmq:string;
-}
-
-export class PersonPutData{
-  nickname: string;   //姓名
-  password: string;   //密码
-  sex: "0";     //性别 0 未知, 1 男性, 2 女性 Enum: [ 0, 1, 2 ]
-  avatar: string;     //头像
-  birthday: string; //出生日期  2019-03-11
-  province: string; //省市/地区
-  city: string;
-  country: string;
+  code:string = "";
+  state:string = "";
+  appid:string = "";
+  access_token:string = "";
+  refresh_token:string = "";
+  access_time:string = "";
+  expires_in:string = "";
+  cmq:string = "";
 }

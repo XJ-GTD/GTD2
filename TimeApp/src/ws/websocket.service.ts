@@ -10,6 +10,7 @@ import {Injectable, NgModule} from "@angular/core";
  * create by wzy on 2018/07/22.
  */
 @Injectable()
+@NgModule()
 export class WebsocketService {
   RABBITMQ_WS_URL: string = "wss://www.guobaa.com/ws";
 

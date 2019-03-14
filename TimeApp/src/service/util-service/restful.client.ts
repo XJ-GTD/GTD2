@@ -11,10 +11,13 @@ import {UtilService} from "./util.service";
 export class RestfulClient {
 
   constructor(private http: HTTP,private httpClient:HttpClient,private restConfig:RestFulConfig,private util:UtilService){
-    this.http.setDataSerializer("json");
-    this.http.setSSLCertMode("nocheck").then(data=>{
-      console.log("----------- BsRestful setSSLCertMode Success : "  +  JSON.stringify(data));
-    })
+    if (util.isMobile()){
+      this.http.setDataSerializer("json");
+      this.http.setSSLCertMode("nocheck").then(data=>{
+        console.log("----------- BsRestful setSSLCertMode Success : "  +  JSON.stringify(data));
+      })
+
+    }
   }
 
   post(url:UrlEntity, body:any):Promise<any> {

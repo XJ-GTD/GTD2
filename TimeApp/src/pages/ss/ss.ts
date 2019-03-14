@@ -4,7 +4,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {AlarmService} from "../../service/cordova/alarm.service";
 
 /**
- * Generated class for the SsPage page.
+ * Generated class for the 设置画面 page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.

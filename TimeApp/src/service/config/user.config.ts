@@ -12,14 +12,57 @@ import {DataConfig} from "./data.config";
 export class UserConfig {
 
 
+  static user = {
+    //账户ID
+    id: "",
+    //用户名
+    name: "",
+    //用户头像
+    aevter: "",
+    //出生日期
+    bothday: "",
+    //真实姓名
+    realname: "",
+    //身份证
+    No: "",
+    //性别
+    sex: "",
+    //联系方式
+    contact: "",
+  }
+
+  static account = {
+    // 账户ID
+    id: "",
+    // 账户名
+    name: "",
+    // 手机号
+    phone: "",
+    // 设备号
+    device: "",
+    // token
+    token: "",
+    // 账户消息队列
+    mq: "",
+  }
+
+  static settins: Map<string, Setting> = new Map<string, Setting>();
+
+
   constructor(private sqlliteExec: SqliteExec) {
   }
 
-  getSetting(key: string) {
-    return DataConfig.settins.get(key);
+  async init(){
+    await this.RefreshYTbl();
+    await this.RefreshUTbl();
+    await this.RefreshATbl();
   }
 
-  init():Promise<any> {
+  getSetting(key: string) {
+    return UserConfig.settins.get(key).value;
+  }
+
+  RefreshYTbl():Promise<any> {
     return new Promise((resolve,reject)=>{
       let yTbl: YTbl = new YTbl();
       //获取偏好设置
@@ -31,42 +74,50 @@ export class UserConfig {
           setting.name = y.yn;
           setting.type = y.yk;
           setting.value = y.yv;
-          DataConfig.settins.set(setting.type,setting);
+          UserConfig.settins.set(setting.type,setting);
         }
-        //获取账号信息
-        let aTbl: ATbl = new ATbl();
-        return this.sqlliteExec.getList<ATbl>(aTbl);
-      }).then(rows=>{
-        if (rows.length >0){
-          DataConfig.account.id = rows[0].ai;
-          DataConfig.account.name = rows[0].an;
-          DataConfig.account.phone = rows[0].am;
-          DataConfig.account.device = rows[0].ae;
-          DataConfig.account.token = rows[0].at;
-          DataConfig.account.mq = rows[0].aq;
-        }
-        //获取用户信息
-        let uTbl: UTbl = new UTbl();
-        return this.sqlliteExec.getList<UTbl>(uTbl);
-      }).then(rows=>{
-        if (rows.length >0){
-          DataConfig.user.id = rows[0].ai;
-          DataConfig.user.name = rows[0].un;
-          DataConfig.user.aevter = rows[0].hiu;
-          DataConfig.user.bothday = rows[0].biy;
-          DataConfig.user.No = rows[0].ic;
-          DataConfig.user.realname = rows[0].rn;
-          DataConfig.user.sex = rows[0].us;
-          DataConfig.user.contact = rows[0].uct;
-        }
-
-        resolve();
-      }).catch(err=>{
-        reject(err);
-      })
+      });
     })
   }
 
+  RefreshUTbl():Promise<any> {
+    return new Promise((resolve, reject) => {
+      //获取用户信息
+      let uTbl: UTbl = new UTbl();
+      return this.sqlliteExec.getList<UTbl>(uTbl).then(rows=>{
+        if (rows.length >0){
+          UserConfig.user.id = rows[0].ai
+          UserConfig.user.name = rows[0].un;
+          UserConfig.user.aevter = rows[0].hiu;
+          UserConfig.user.bothday = rows[0].biy;
+          UserConfig.user.No = rows[0].ic;
+          UserConfig.user.realname = rows[0].rn;
+          UserConfig.user.sex = rows[0].us;
+          UserConfig.user.contact = rows[0].uct;
+        }
+
+        resolve();
+      })
+
+    });
+  }
+
+  RefreshATbl():Promise<any> {
+
+    //获取账号信息
+    let aTbl: ATbl = new ATbl();
+    return this.sqlliteExec.getList<ATbl>(aTbl).then(rows=>{
+      if (rows.length >0){
+        UserConfig.account.id = rows[0].ai;
+        UserConfig.account.name = rows[0].an;
+        UserConfig.account.phone = rows[0].am;
+        UserConfig.account.device = rows[0].ae;
+        UserConfig.account.token = rows[0].at;
+        UserConfig.account.mq = rows[0].aq;
+      }
+
+    });
+  }
 }
 
 export class Setting {

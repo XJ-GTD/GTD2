@@ -18,7 +18,7 @@ export class LsService {
               private util: UtilService,
               private restfulConfig: RestFulConfig,
               private authRestful: AuthRestful,
-              private brService: BrService,
+              //private brService: BrService,
               private websocketService:WebsocketService,
   ) {
   }
@@ -114,8 +114,7 @@ export class LsService {
         }
       }).then(data=>{
         // 同步数据（调用brService方法恢复数据）
-        return this.brService.recover("");
-      }).then(data=>{
+        //return this.brService.recover(0);
         //建立websoct连接（调用websoctService）
         this.websocketService.connect();
         resolve(lsData)

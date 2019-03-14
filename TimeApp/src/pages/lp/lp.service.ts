@@ -15,7 +15,8 @@ export class LpService {
               private personRestful: PersonRestful,
               private websocketService:WebsocketService,
               private util: UtilService,
-              private brService: BrService,) {
+              //private brService: BrService,
+              ) {
   }
 
   //登录
@@ -87,8 +88,7 @@ export class LpService {
         }
       }).then(data=>{
         // 同步数据（调用brService方法恢复数据）
-        return this.brService.recover("");
-      }).then(data=>{
+        //return this.brService.recover(0);
         //建立websoct连接（调用websoctService）
         this.websocketService.connect();
         resolve(lpdata)
