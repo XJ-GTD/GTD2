@@ -1,8 +1,7 @@
-import { Injectable } from "@angular/core";
-import { File } from "@ionic-native/file";
-import { UtilService } from "../util-service/util.service";
+import {Injectable} from "@angular/core";
+import {File} from "@ionic-native/file";
 import {AibutlerRestful, AudioPro, TextPro} from "../restful/aibutlersev";
-declare var cordova: any;
+
 
 /**
  * 小吉语音助手
@@ -10,18 +9,24 @@ declare var cordova: any;
  * create by wzy on 2018/08/07.
  */
 @Injectable()
-export class AssistantService{
+export class AssistantService {
 
   private failedText: string = '我没有听清楚你说什么';  //暂时替代，录入字典表后删除
-  public isSpeaking:boolean;
-  public islistenAudioing:boolean;
-  public isWakeUp:boolean;
+  public isSpeaking: boolean;
+  public islistenAudioing: boolean;
+  public isWakeUp: boolean;
+  wins: any = window;
+  cordova: any;
 
   constructor(private file: File,
-             private util: UtilService,
               private aibutlerRestful: AibutlerRestful) {
     this.isSpeaking = false;
     this.islistenAudioing = false;
+    if (this.wins.cordova) {
+      this.cordova = this.wins.cordova;
+    } else {
+      this.cordova = {};
+    }
   }
 
 
@@ -37,16 +42,17 @@ export class AssistantService{
       }
       this.islistenAudioing = true;
 
-      cordova.plugins.XjBaiduSpeech.startListen(result=>{
+      if (!this.cordova) return;
+      this.cordova.plugins.XjBaiduSpeech.startListen(result => {
 
         //讯飞语音录音设置默认存储路径
         //this.filePath = this.file.cacheDirectory + "iat.pcm";
 
-       //this.filePath = this.file.externalRootDirectory + "/xjASR/iat.pcm";
+        //this.filePath = this.file.externalRootDirectory + "/xjASR/iat.pcm";
         console.log("文件路径：" + this.file.cacheDirectory);
 
         // 读取录音进行base64转码
-        this.file.readAsDataURL(this.file.cacheDirectory,"iat.pcm").then((base64File: string) => {
+        this.file.readAsDataURL(this.file.cacheDirectory, "iat.pcm").then((base64File: string) => {
 
 
           /**
@@ -60,9 +66,10 @@ export class AssistantService{
               console.log("data code：" + data.code);
               //接收Object JSON数据
 
-            }).catch(e=>{
+            }).catch(e => {
             console.error("XiaojiAssistantService connetXunfei error:" + JSON.stringify(e));
-            this.speakText("现在我遇到了小麻烦，请您稍后再来找我吧", success=>{});
+            this.speakText("现在我遇到了小麻烦，请您稍后再来找我吧", success => {
+            });
           });
 
           success(result);
@@ -72,16 +79,16 @@ export class AssistantService{
 
         this.islistenAudioing = false;
 
-      },error=>{
+      }, error => {
         this.islistenAudioing = false;
-      },true,true);
+      }, true, true);
     } catch (e) {
       this.islistenAudioing = false;
     }
 
   }
 
-  testBase64Ios(sucess){
+  testBase64Ios(sucess) {
     console.log("testBase64Ios:" + 1);
     var c = document.createElement('canvas');
 
@@ -93,7 +100,7 @@ export class AssistantService{
 
     console.log("testBase64Ios:" + 4);
 
-    img.onload = function() {
+    img.onload = function () {
 
       console.log("testBase64Ios:" + 11);
 
@@ -126,7 +133,7 @@ export class AssistantService{
   public listenText(text: string) {
     try {
 
-      if (text == null){
+      if (text == null) {
         return 0;
       }
       let textPro = new TextPro();
@@ -136,13 +143,14 @@ export class AssistantService{
           console.log("data code：" + data.code);
           //接收Object JSON数据
 
-        }).catch(e=>{
+        }).catch(e => {
         console.error("XiaojiAssistantService connetXunfei error:" + JSON.stringify(e));
-        this.speakText("现在我遇到了小麻烦，请您稍后再来找我吧", success=>{});
+        this.speakText("现在我遇到了小麻烦，请您稍后再来找我吧", success => {
+        });
       });
 
     } catch (e) {
-      console.log("问题："+ e)
+      console.log("问题：" + e)
     }
 
   }
@@ -150,7 +158,7 @@ export class AssistantService{
   /**
    * 返回语音播报
    */
-  public speakText(speechText: string,success) {
+  public speakText(speechText: string, success) {
     try {
       if (this.islistenAudioing) return;
       this.stopSpeak();
@@ -159,12 +167,12 @@ export class AssistantService{
       if (speechText == null || speechText == "") {
         speechText = this.failedText;
       }
-
-      cordova.plugins.XjBaiduTts.startSpeak(result=>{
+      if (!this.cordova) return;
+      this.cordova.plugins.XjBaiduTts.startSpeak(result => {
         console.log("成功:" + result);
         this.isSpeaking = false;
         success(result);
-      },error=>{
+      }, error => {
         console.log("报错:" + error);
         success(false);
         this.isSpeaking = false;
@@ -172,7 +180,7 @@ export class AssistantService{
     } catch (e) {
       success(false);
       this.isSpeaking = false;
-      console.log("问题："+ e)
+      console.log("问题：" + e)
     }
   }
 
@@ -181,18 +189,16 @@ export class AssistantService{
    */
   public stopSpeak() {
     try {
-      if (cordova.plugins.XjBaiduSpeech != null && cordova.plugins.XjBaiduSpeech != undefined) {
-        console.log("停止播报 | isSpeaking:" + this.isSpeaking + "| islistenAudioing" + this.islistenAudioing);
-        cordova.plugins.XjBaiduTts.speakStop();
-        this.isSpeaking = false;
-      } else {
-        console.log("语音对象不存在");
-        this.isSpeaking = false;
-      }
+
+      if (!this.cordova) return;
+      console.log("停止播报 | isSpeaking:" + this.isSpeaking + "| islistenAudioing" + this.islistenAudioing);
+      this.cordova.plugins.XjBaiduTts.speakStop();
+      this.isSpeaking = false;
+
 
     } catch (e) {
       this.isSpeaking = false;
-      console.log("stopSpeak问题："+ e)
+      console.log("stopSpeak问题：" + e)
     }
   }
 
@@ -201,14 +207,13 @@ export class AssistantService{
    */
   public stopListenAudio() {
     try {
-      if (cordova.plugins.XjBaiduSpeech != null && cordova.plugins.XjBaiduSpeech != undefined) {
-        console.log("停止监听");
-        cordova.plugins.XjBaiduSpeech.stopListen();
-      } else {
-        console.log("停止监听失败");
-      }
+
+      if (!this.cordova) return;
+
+      console.log("停止监听");
+      this.cordova.plugins.XjBaiduSpeech.stopListen();
     } catch (e) {
-      console.log("stopListenAudio问题："+ e)
+      console.log("stopListenAudio问题：" + e)
     }
 
   }
@@ -218,17 +223,18 @@ export class AssistantService{
    */
   public initbaiduWakeUp(success) {
     try {
-      cordova.plugins.XjBaiduWakeUp.wakeUpStart(result=>{
+      if (!this.cordova) return;
+      this.cordova.plugins.XjBaiduWakeUp.wakeUpStart(result => {
         if (this.isSpeaking || this.islistenAudioing) {
           success(false);
           return;
         }
         success(true);
-      },error=>{
-        console.log("问题："+ error)
-      },"");
+      }, error => {
+        console.log("问题：" + error)
+      }, "");
     } catch (e) {
-      console.log("问题："+ e)
+      console.log("问题：" + e)
     }
   }
 
@@ -237,9 +243,10 @@ export class AssistantService{
    */
   public baiduWakeUpStop() {
     try {
-        cordova.plugins.XjBaiduWakeUp.wakeUpStop();
+      if (!this.cordova) return;
+      this.cordova.plugins.XjBaiduWakeUp.wakeUpStop();
     } catch (e) {
-      console.log("问题："+ e)
+      console.log("问题：" + e)
     }
   }
 }
