@@ -13,9 +13,9 @@ export class ShaeRestful{
               private config: RestFulConfig) {
   }
   //计划	计划上传	PU
-  share(shaeData : ShareData):Promise<BsModel<P>> {
+  share(shaeData : ShareData):Promise<BsModel<PSurl>> {
 
-    let bsModel = new BsModel<P>();
+    let bsModel = new BsModel<PSurl>();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("PU");
       this.request.post(url, shaeData).then(data => {
@@ -37,9 +37,9 @@ export class ShaeRestful{
 
 
   //内建计划下载	BIPD
-  downsysname(shareData : BipdshaeData):Promise<BsModel<PSurl>> {
+  downsysname(shareData : BipdshaeData):Promise<BsModel<P>> {
 
-    let bsModel = new BsModel<PSurl>();
+    let bsModel = new BsModel<P>();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("BIPD");
       this.request.post(url, shareData).then(data => {
@@ -60,7 +60,7 @@ export class ShaeRestful{
   }
 }
 
-//计划上传
+//计划上传入参
 export  class ShareData{
   //操作帐户ID
   oai : string;
@@ -88,19 +88,14 @@ export class PSurl{
 }
 
 
-
-//内建计划下载
+//内建计划下载入参
 export  class BipdshaeData{
-  //操作帐户ID
-  oai : string;
-  //操作手机号码
-  ompn:string;
-  //上下文（可以为空）
-  c:string;
-  //日程
-  d:SharePro = new SharePro();
+  oai : string = "";//操作帐户ID
+  ompn : string = "";//操作手机号码
+  c : string = "";//上下文（可以为空）
+  d:SharePro = new SharePro();//日程
 }
 
 export class SharePro{
-  pi :string;
+  pi : string = "";//计划ID
 }

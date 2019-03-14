@@ -90,13 +90,13 @@ public class MainVerticle extends AbstractVerticle {
 	        	body = Buffer.buffer(Base64.decodeBase64(content.substring(content.indexOf(",") + 1)));
 	        }
 	        
-	        nlp(consumer, body, paramBase64, curTime, checkSum, next, 1);
+	        nlp(consumer, userId, body, paramBase64, curTime, checkSum, next, 1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void nlp(String consumer, Buffer body, String paramBase64, String curTime, String checkSum, String nextTask, Integer retry) {
+	private void nlp(String consumer, String userId, Buffer body, String paramBase64, String curTime, String checkSum, String nextTask, Integer retry) {
 
 		System.out.println("X-Param: " + paramBase64);
 		System.out.println("X-CurTime: " + curTime);
@@ -117,7 +117,7 @@ public class MainVerticle extends AbstractVerticle {
 					if (200 == response.statusCode()) {
 						JsonObject result = response.bodyAsJsonObject();
 	
-						JsonObject nextctx = new JsonObject().put("context", new JsonObject().put("xunfeiyun", result));
+						JsonObject nextctx = new JsonObject().put("context", new JsonObject().put("xunfeiyun", result.put("_context", new JsonObject().put("userId", userId))));
 						
 						MessageProducer<JsonObject> producer = bridge.createProducer(nextTask);
 						producer.send(new JsonObject().put("body", nextctx));
@@ -130,7 +130,7 @@ public class MainVerticle extends AbstractVerticle {
 					if (retry > 3) {
 						System.out.println("Xunfei yun nlp retried over 3 times with follow error:");
 					} else {
-				        nlp(consumer, body, paramBase64, curTime, checkSum, nextTask, retry + 1);
+				        nlp(consumer, userId, body, paramBase64, curTime, checkSum, nextTask, retry + 1);
 					}
 				}
 			});
@@ -139,7 +139,7 @@ public class MainVerticle extends AbstractVerticle {
 			if (retry > 3) {
 				System.out.println("Xunfei yun nlp retried over 3 times with follow error:");
 			} else {
-		        nlp(consumer, body, paramBase64, curTime, checkSum, nextTask, retry + 1);
+		        nlp(consumer, userId, body, paramBase64, curTime, checkSum, nextTask, retry + 1);
 			}
 		}
 	}

@@ -19,8 +19,6 @@ export class PdService {
 
   //获取计划 计划详情
   async getPlan(pid:string){
-    pid = "chinese_famous_2019";
-
     //获取本地计划
     let jhTbl: JhTbl = new JhTbl();
     jhTbl.ji = pid;
@@ -34,7 +32,7 @@ export class PdService {
     let ctbls = await this.sqlExce.getList<CTbl>(ctbl);
 
     let paList:Array<AgdPro> = Array<AgdPro>();
-    for (var j = 0, len = ctbls.length; j < len; j++) {
+    for (let j = 0, len = ctbls.length; j < len; j++) {
       let pa:AgdPro = new AgdPro();
       pa.ai = ctbls[j].si;//日程ID
       pa.at = ctbls[j].sn;//主题
@@ -59,8 +57,6 @@ export class PdService {
 
   //分享计划
   async sharePlan(pid:string){
-    pid = "chinese_famous_2019";
-
     //获取本地计划
     let jhTbl: JhTbl = new JhTbl();
     jhTbl.ji = pid;
@@ -74,7 +70,7 @@ export class PdService {
     let ctbls = await this.sqlExce.getList<CTbl>(ctbl);
 
     let paList:Array<AgdPro> = Array<AgdPro>();
-    for (var j = 0, len = ctbls.length; j < len; j++) {
+    for (let j = 0, len = ctbls.length; j < len; j++) {
       let pa:AgdPro = new AgdPro();
       pa.ai = ctbls[j].si;//日程ID
       pa.at = ctbls[j].sn;//主题
@@ -99,7 +95,7 @@ export class PdService {
       let dtbl:DTbl =new DTbl();
       dtbl.si = ctbls[j].si;
       let dList = await this.sqlExce.getList<DTbl>(dtbl);
-      for (var d = 0, len = dList.length; d < len; d++) {
+      for (let d = 0, len = dList.length; d < len; d++) {
         let btbl:BTbl =new BTbl();
         btbl.pwi = dList[d].ai;
         btbl = await this.sqlExce.getOne<BTbl>(btbl);
@@ -135,8 +131,6 @@ export class PdService {
 
   //删除计划
   async delete(pid:string){
-    pid = "chinese_famous_2019";
-
     //获取本地计划
     let jhTbl: JhTbl = new JhTbl();
     jhTbl.ji = pid;
@@ -149,9 +143,7 @@ export class PdService {
     ctbl.ji = jhTbl.ji;
 
     let ctbls = await this.sqlExce.getList<CTbl>(ctbl);
-
-    for (var j = 0, len = ctbls.length; j < len; j++) {
-
+    for (let j = 0, len = ctbls.length; j < len; j++) {
       //提醒删除
       let etbl:ETbl =new ETbl();
       etbl.si = ctbls[j].si;
@@ -161,10 +153,10 @@ export class PdService {
       let dtbl:DTbl =new DTbl();
       dtbl.si = ctbls[j].si;
       await this.sqlExce.delete(dtbl);
-
-      //计划关联日程删除
-      await this.sqlExce.delete(ctbl);
     }
+    //计划关联日程删除
+    await this.sqlExce.delete(ctbl);
+
     // 删除本地计划
     await this.sqlExce.delete(jhTbl);
 

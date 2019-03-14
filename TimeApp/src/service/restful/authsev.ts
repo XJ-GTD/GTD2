@@ -60,26 +60,16 @@ export class AuthRestful {
 }
 
 export class LoginData{
-  phoneno:string;
-  userpassword:string;
-  verifykey:string;
-  verifycode:string;
+  phoneno:string = "";
+  userpassword:string = "";
+  verifykey:string = "";
+  verifycode:string = "";
 }
 
 export class OutData{
-  errcode:string;
-  errmsg:string;
-  code:string;
-  openid:string;
-  unionid:string;
-  state:string;
-  data:Data = new Data();
-}
-
-export class Data{
-  code: string;
-  openid: string;
-  unionid: string;
-  state:string;
+  code: string = "";
+  openid: string = "";
+  unionid: string = "";
+  state:string = "";
 }
 
