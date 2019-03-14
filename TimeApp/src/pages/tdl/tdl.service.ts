@@ -39,40 +39,79 @@ export class ScdData {
 
 
   //特殊日期日程
-  specScds: Map<string,SpecScd> = new Map<string, SpecScd>();
+  specScds: Map<string, SpecScdData> = new Map<string, SpecScdData>();
 
   //当天关联的特殊日程
-  specScd(): SpecScd{
+  specScd(): SpecScdData {
     return this.specScds.get(this.sd);
   }
 
   //参与人
-  //fs: Array<>
+  fss: Array<fsData> = [];
 
   //发起人
+  fs: fsData;
 
 
   //提醒设置
+  r: RemindData;
 
   //所属计划
+  p:PlData;
+
 
 }
 
 
-export class SpecScd{
-  spi:string="" //日程特殊事件ID
-  si:string=""//日程事件ID
-  spn:string=""//日程特殊事件主题
-  sd:string=""//开始日期
-  st:string=""//开始时间
-  ed:string=""//结束时间
-  et:string=""//结束时间
-  ji:string=""//计划ID
-  bz:string=""//备注
-  sta:string=""//特殊类型
-  tx:string=""//提醒方式
+//特殊事件
+export class SpecScdData {
+  spi: string = "" //日程特殊事件ID
+  si: string = ""//日程事件ID
+  spn: string = ""//日程特殊事件主题
+  sd: string = ""//开始日期
+  st: string = ""//开始时间
+  ed: string = ""//结束时间
+  et: string = ""//结束时间
+  ji: string = ""//计划ID
+  bz: string = ""//备注
+  sta: string = ""//特殊类型
+  tx: string = ""//提醒方式
   wtt: number;//时间戳
 
 }
+
+//参与人
+export class fsData {
+  pwi: string = ""; //主键
+  ran: string = ""; //联系人别称
+  ranpy: string = ""; //联系人别称拼音
+  hiu: string = "";  // 联系人头像
+  rn: string = "";  // 联系人名称
+  rnpy: string = "";  //联系人名称拼音
+  rc: string = "";  //联系人联系方式
+  rel: string = ""; //系类型 1是个人，2是群，0未注册用户
+  ui: string = "";  //数据归属人ID
+
+}
+
+
+//提醒时间
+export class RemindData {
+  wi: string = "";//提醒时间ID
+  si: string = "";//日程事件ID
+  st: string = ""; //日程事件类型
+  wd: string = "";//日程提醒日期
+  wt: string = "";//日程提醒时间
+  wtt: number;//创建时间戳
+}
+//计划
+export class PlData{
+  ji: string="";//计划ID
+  jn: string="";//计划名
+  jg: string="";//计划描述
+  jc: string="";//计划颜色标记
+  jt: string="";//计划类型
+}
+
 
 
