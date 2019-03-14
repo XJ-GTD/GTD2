@@ -8,6 +8,7 @@ export class GTbl implements ITbl {
   private _gi: string="";
   private _gn: string="";
   private _gm: string="";
+  private _gnpy: string="";
 
   get gi(): string {
     return this._gi;
@@ -33,16 +34,24 @@ export class GTbl implements ITbl {
     this._gm = value;
   }
 
+  get gnpy(): string {
+    return this._gnpy;
+  }
+
+  set gnpy(value: string) {
+    this._gnpy = value;
+  }
+
   clp(){
     this._gi = "";
     this._gn = "";
     this._gm = "";
-
+    this._gnpy = "";
   };
 
   cT():string{
 
-    let sq ='create table if not exists gtd_g(  gi varchar(50) primary key ,gn varchar(50)  ,gm varchar(50));';
+    let sq ='create table if not exists gtd_g(  gi varchar(50) primary key ,gn varchar(50)  ,gm varchar(50),gnpy varchar(50));';
 
     return sq;
   }
@@ -51,6 +60,9 @@ export class GTbl implements ITbl {
     let sq='';
     if(this._gn!=null && this._gn!=""){
       sq=sq+', gn="' + this._gn +'"';
+    }
+    if(this._gnpy!=null && this._gnpy!=""){
+      sq=sq+', gnpy="' + this._gnpy +'"';
     }
     if(this._gm!=null && this._gm!=""){
       sq=sq+', gm="' + this._gm +'"';
@@ -84,6 +96,9 @@ export class GTbl implements ITbl {
     if(this._gm!=null && this._gm!=""){
       sq=sq+' and gm="' + this._gm +'"';
     }
+    if(this._gnpy!=null && this._gnpy!=""){
+      sq=sq+' and gnpy="' + this._gnpy +'"';
+    }
     sq = sq +';';
     return sq;
   }
@@ -96,14 +111,14 @@ export class GTbl implements ITbl {
 
   inT():string{
     let sq ='insert into gtd_g ' +
-      '( gi ,gn ,gm) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+ '");';
+      '( gi ,gn ,gm,gnpy) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+ '","'+this._gnpy+'");';
 
     return sq;
   }
 
   rpT():string{
     let sq ='replace into gtd_g ' +
-      '( gi ,gn ,gm) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+ '");';
+      '( gi ,gn ,gm,gnpy) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+'","'+this._gnpy+ '");';
 
     return sq;
   }
