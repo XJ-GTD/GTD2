@@ -7,14 +7,14 @@ import {BsModel} from "../../service/restful/out/bs.model";
 
 @Injectable()
 export class GcService {
-  constructor(  private sqlExce: SqliteExec,) {
+  constructor(  private sqlExce: SqliteExec) {
   }
 
   //编辑群名称(添加群成员)
   save(dc:PageDcData): Promise<BsModel<any>> {
     return new Promise<BsModel<any>>((resolve, reject) => {
       let bs = new BsModel<any>();
-      console.log('---------- GcService save 编辑群名称(添加群成员) 入参:'+ JSON.stringify(dc));
+      console.log('---------- GcService save 添加/编辑群名称(添加群成员) 入参:'+ JSON.stringify(dc));
       if(dc.gi != null &&dc.gi != '' && dc.fsl.length>0){
          let bxL = new Array<string>();
          for(let fs of dc.fsl){
@@ -34,8 +34,35 @@ export class GcService {
            bs.message = e.message;
            resolve(bs);
          })
+      }else if(dc.gi == null || dc.gi == ''){
+        let gc = new GTbl();
+        Object.assign(gc,dc);
+        console.log('---------- GcService save 添加群名称(添加群成员) 入参:'+ JSON.stringify(gc));
+        this.sqlExce.save(gc).then(data=>{
+          console.log('---------- GcService save 添加群名称 结果:'+ JSON.stringify(data));
+          if(dc.fsl.length>0){
+            let bxL = new Array<string>();
+            for(let fs of dc.fsl){
+              let bx = new BxTbl();
+              bx.bi = dc.gi;
+              bx.bmi = fs.pwi;
+              bxL.push(bx.rpT());
+            }
+            console.log('---------- GcService save 添加添加群成员 sql:'+ JSON.stringify(bxL));
+            return this.sqlExce.batExecSql(bxL);
+          }
+        }).then(data=>{
+          console.log('---------- GcService save 添加添加群成员 结果:'+ JSON.stringify(data));
+          bs.data = data;
+          resolve(bs);
+        }).catch(e=>{
+          console.error('---------- GcService save 添加群名称(添加群成员) 错误:'+ JSON.stringify(e));
+          bs.code=-99;
+          bs.message = e.message;
+          resolve(bs);
+        })
       }
-      //保存群成员到本地
+
     })
   }
 
