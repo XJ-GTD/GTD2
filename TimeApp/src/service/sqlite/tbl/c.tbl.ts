@@ -2,6 +2,7 @@
  * create by on 2019/3/5
  */
 import {ITbl} from "./itbl";
+import * as moment from "moment";
 
 
 export class CTbl implements  ITbl{
@@ -18,6 +19,15 @@ export class CTbl implements  ITbl{
   private _sr: string ="";
   private _bz: string ="";
   private _tx: string ="";
+  private _wtt: Number=0;
+
+  get wtt(): Number {
+    return this._wtt;
+  }
+
+  set wtt(value: Number) {
+    this._wtt = value;
+  }
 
   get bz(): string {
     return this._bz;
@@ -131,7 +141,8 @@ export class CTbl implements  ITbl{
   cT():string {
 
     let sq =' create table if not exists gtd_c(  si varchar(50) primary key ,sn varchar(50)  ,ui varchar(50)  ,sd varchar(20)  ' +
-      ',st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,rt varchar(4)  ,ji varchar(50),sr varchar(50),sr varchar(50),tx varcher(10));';
+      ',st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,rt varchar(4)  ,ji varchar(50),sr varchar(50),sr varchar(50),tx varcher(10),' +
+      'wtt integer);';
 
     return sq;
   }
@@ -241,7 +252,7 @@ export class CTbl implements  ITbl{
     let sq ='insert into gtd_c ' +
       '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,tx) values("'+ this._si+'","'+ this._sn+'","'+this._ui+ '"' +
       ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._rt+ '","'+this._ji+ '"' +
-      ',"'+this._sr+ '","'+this._bz+  '","'+this._tx+'");';
+      ',"'+this._sr+ '","'+this._bz+  '","'+this._tx+'",'+  moment().unix() +');';
 
     return sq;
   }
@@ -250,7 +261,7 @@ export class CTbl implements  ITbl{
     let sq ='replace into gtd_c ' +
       '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,tx) values("'+ this._si+'","'+ this._sn+'","'+this._ui+ '"' +
       ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._rt+ '","'+this._ji+ '"' +
-      ',"'+this._sr+ '","'+this._bz+ '","' + this._tx + '");';
+      ',"'+this._sr+ '","'+this._bz+ '","' + this._tx + '",'+  moment().unix() +');';
     return sq;
   }
 

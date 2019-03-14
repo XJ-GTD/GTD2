@@ -145,7 +145,7 @@ export class ETbl implements ITbl {
   inT(): string {
     let sq = 'insert into gtd_e ' +
       '(  wi ,si ,st ,wd ,wt,wtt) values("' + this._wi + '","' + this._si + '","' + this._st + '"' +
-      ',"' + this._wd + '","' + this._wt + ',"' + moment().unix() + ');';
+      ',"' + this._wd + '","' + this._wt + '",' + moment().unix() + ');';
 
     return sq;
   }
@@ -153,7 +153,7 @@ export class ETbl implements ITbl {
   rpT(): string {
     let sq = 'replace into gtd_e ' +
       '(  wi ,si ,st ,wd ,wt,wtt) values("' + this._wi + '","' + this._si + '","' + this._st + '"' +
-      ',"' + this._wd + '","' + this._wt + ',"' + moment().unix() + ');';
+      ',"' + this._wd + '","' + this._wt + '",' + moment().unix() + ');';
 
     return sq;
   }

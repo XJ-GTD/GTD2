@@ -18,7 +18,7 @@ export class BTbl implements ITbl{
   private _ot: string="";
   private _rel: string="";
   private _ui: string="";
-  private _wtt: number;
+  private _wtt: number=0;
 
 
   get wtt(): number {
