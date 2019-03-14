@@ -107,6 +107,8 @@ export class SqliteExec {
       return this.execSql(itbl.sloT()).then(data=>{
         if (data.rows && data.rows.length > 0 ){
           resolve(data.rows.item(0));
+        }else{
+          resolve(null);
         }
       });
     })
