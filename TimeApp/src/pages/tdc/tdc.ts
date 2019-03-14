@@ -10,7 +10,7 @@ import {DateTime} from "ionic-angular/components/datetime/datetime";
 import {Select} from "ionic-angular/components/select/select";
 
 /**
- * Generated class for the TdcPage page.
+ * Generated class for the 新建日程 page.
  * create by wzy
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.

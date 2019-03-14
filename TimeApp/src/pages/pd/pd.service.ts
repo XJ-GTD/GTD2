@@ -26,7 +26,7 @@ export class PdService {
     let jhTbl: JhTbl = new JhTbl();
     jhTbl.ji = pid;
 
-    jhTbl = await this.sqlExce.getOne(jhTbl);
+    jhTbl = await this.sqlExce.getOne<JhTbl>(jhTbl);
 
     // 获取计划管理日程（重复日程处理等）
     let ctbl:CTbl =new CTbl();
