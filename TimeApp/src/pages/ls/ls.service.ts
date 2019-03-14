@@ -3,11 +3,9 @@ import {PersonRestful} from "../../service/restful/personsev";
 import {InData, SmsRestful} from "../../service/restful/smssev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
-import {RestFulConfig} from "../../service/config/restful.config";
 import {AuthRestful, LoginData} from "../../service/restful/authsev";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
-import {BrService} from "../br/br.service";
 import {WebsocketService} from "../../ws/websocket.service";
 
 @Injectable()
@@ -16,7 +14,6 @@ export class LsService {
               private smsRestful: SmsRestful,
               private sqlExce: SqliteExec,
               private util: UtilService,
-              private restfulConfig: RestFulConfig,
               private authRestful: AuthRestful,
               //private brService: BrService,
               private websocketService:WebsocketService,
@@ -42,7 +39,7 @@ export class LsService {
   }
 
   //登陆
-  login(lsData:LsData): Promise<any> {
+  login(lsData:PageLsData): Promise<any> {
     console.log(lsData.mobile + "////" + lsData.authCode + "////");
     return new Promise((resolve, reject) => {
       //参考lp登陆方法
@@ -124,7 +121,7 @@ export class LsService {
     });
   }
 }
-export class LsData {
+export class PageLsData {
   mobile: string = "";
   authCode: string = "";
   verifykey:string = "";
