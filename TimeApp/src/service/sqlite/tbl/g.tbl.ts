@@ -1,4 +1,5 @@
 import {ITbl} from "./itbl";
+import * as moment from "moment";
 
 /**
  * create by on 2019/3/5
@@ -9,6 +10,15 @@ export class GTbl implements ITbl {
   private _gn: string="";
   private _gm: string="";
   private _gnpy: string="";
+  private _wtt :Number=0;
+
+  get wtt(): Number {
+    return this._wtt;
+  }
+
+  set wtt(value: Number) {
+    this._wtt = value;
+  }
 
   get gi(): string {
     return this._gi;
@@ -51,7 +61,8 @@ export class GTbl implements ITbl {
 
   cT():string{
 
-    let sq ='create table if not exists gtd_g(  gi varchar(50) primary key ,gn varchar(50)  ,gm varchar(50),gnpy varchar(50));';
+    let sq ='create table if not exists gtd_g(  gi varchar(50) primary key ,gn varchar(50)  ,' +
+      'gm varchar(50),gnpy varchar(50),wtt integer);';
 
     return sq;
   }
@@ -111,14 +122,14 @@ export class GTbl implements ITbl {
 
   inT():string{
     let sq ='insert into gtd_g ' +
-      '( gi ,gn ,gm,gnpy) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+ '","'+this._gnpy+'");';
+      '( gi ,gn ,gm,gnpy) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+ '","'+this._gnpy+'",'+  moment().unix() +');';
 
     return sq;
   }
 
   rpT():string{
     let sq ='replace into gtd_g ' +
-      '( gi ,gn ,gm,gnpy) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+'","'+this._gnpy+ '");';
+      '( gi ,gn ,gm,gnpy) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+'","'+this._gnpy+ '",'+  moment().unix() +');';
 
     return sq;
   }

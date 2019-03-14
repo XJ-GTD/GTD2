@@ -2,6 +2,7 @@
  * create by on 2019/3/5
  */
 import {ITbl} from "./itbl";
+import * as moment from "moment";
 
 
 export class DTbl implements ITbl {
@@ -14,7 +15,15 @@ export class DTbl implements ITbl {
   private _ib: string="";
   private _bi: string="";
   private _sdt: string="";
+  private _wtt:Number=0;
 
+  get wtt(): Number {
+    return this._wtt;
+  }
+
+  set wtt(value: Number) {
+    this._wtt = value;
+  }
 
   get pi(): string {
     return this._pi;
@@ -106,7 +115,7 @@ export class DTbl implements ITbl {
 
     let sq ='create table if not exists gtd_d( pi varchar(50) primary key ,si varchar(50)  ,' +
       'st varchar(50)  ,son varchar(50)  ,sa varchar(4)  ,ai varchar(50)  ,ib varchar(4)  ,' +
-      'bi varchar(50)  ,sdt varchar(4));';
+      'bi varchar(50)  ,sdt varchar(4),wtt integer);';
 
     return sq;
   }
@@ -203,7 +212,8 @@ export class DTbl implements ITbl {
   inT():string {
     let sq ='insert into gtd_d ' +
       '( pi ,si ,st ,son ,sa ,ai ,ib ,bi ,sdt) values("'+ this._pi+'","'+ this._si+'","'+this._st+ '"' +
-      ',"'+this._son+ '","'+this._sa+ '","'+this._ai+ '","'+this._ib+ '","'+this._bi+ '","'+this._sdt+ '");';
+      ',"'+this._son+ '","'+this._sa+ '","'+this._ai+ '","'+this._ib+ '","'+this._bi+ '",' +
+      '"'+this._sdt+ '",'+  moment().unix() +');';
 
     return sq;
   }
@@ -211,7 +221,8 @@ export class DTbl implements ITbl {
   rpT():string {
     let sq ='replace into gtd_d ' +
       '( pi ,si ,st ,son ,sa ,ai ,ib ,bi ,sdt) values("'+ this._pi+'","'+ this._si+'","'+this._st+ '"' +
-      ',"'+this._son+ '","'+this._sa+ '","'+this._ai+ '","'+this._ib+ '","'+this._bi+ '","'+this._sdt+ '");';
+      ',"'+this._son+ '","'+this._sa+ '","'+this._ai+ '","'+this._ib+ '","'+this._bi+ '",' +
+      '"'+this._sdt+ '",'+  moment().unix() +');';
 
     return sq;
   }

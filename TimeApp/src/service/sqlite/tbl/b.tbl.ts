@@ -2,6 +2,7 @@
  * create by on 2019/3/5
  */
 import {ITbl} from "./itbl";
+import * as moment from "moment";
 
 
 export class BTbl implements ITbl{
@@ -17,7 +18,16 @@ export class BTbl implements ITbl{
   private _ot: string="";
   private _rel: string="";
   private _ui: string="";
+  private _wtt: number=0;
 
+
+  get wtt(): number {
+    return this._wtt;
+  }
+
+  set wtt(value: number) {
+    this._wtt = value;
+  }
 
   get pwi(): string {
     return this._pwi;
@@ -128,7 +138,7 @@ export class BTbl implements ITbl{
     this._ot = "";
     this._rel = "";
     this._ui = "";
-
+    this._wtt =0;
   };
 
   cT():string {
@@ -136,7 +146,7 @@ export class BTbl implements ITbl{
     let sq =' create table if not exists gtd_b( pwi varchar(50) primary key ,ran varchar(50)  ,' +
       'ranpy varchar(20)  ,ri varchar(50)  ,hiu varchar(200)  ,rn varchar(20)  ,' +
       'rnpy varchar(20)  ,rc varchar(20)  ,rf varchar(4)  ,ot varchar(4)  ,rel varchar(4)  ,' +
-      'ui varchar(50) );';
+      'ui varchar(50),wtt integer );';
 
     return sq;
   }
@@ -247,7 +257,7 @@ export class BTbl implements ITbl{
       '(  pwi ,ran ,ranpy ,ri ,hiu ,rn ,rnpy ,rc ,rf ,ot ,rel ,ui) values("'+ this._pwi+'",' +
       '"'+ this._ran+'","'+this._ranpy+ '"' +
       ',"'+this._ri+ '","'+this._hiu+ '","'+this._rn+ '","'+this._rnpy+ '","'+this._rc+ '","'+this._rf+ '",' +
-      '"'+this._ot+ '","'+this._rel+ '","'+this._ui+ '");';
+      '"'+this._ot+ '","'+this._rel+ '","'+this._ui+ '",'+  moment().unix() + ');';
 
     return sq;
   }
@@ -257,7 +267,7 @@ export class BTbl implements ITbl{
       '(  pwi ,ran ,ranpy ,ri ,hiu ,rn ,rnpy ,rc ,rf ,ot ,rel ,ui) values("'+ this._pwi+'",' +
       '"'+ this._ran+'","'+this._ranpy+ '"' +
       ',"'+this._ri+ '","'+this._hiu+ '","'+this._rn+ '","'+this._rnpy+ '","'+this._rc+ '","'+this._rf+ '",' +
-      '"'+this._ot+ '","'+this._rel+ '","'+this._ui+ '");';
+      '"'+this._ot+ '","'+this._rel+ '","'+this._ui+ '",'+ moment().unix() + ');';
 
     return sq;
   }

@@ -1,4 +1,5 @@
 import {ITbl} from "./itbl";
+import * as moment from "moment";
 
 /**
  * create by on 2019/3/5
@@ -24,6 +25,15 @@ export class UTbl  implements ITbl{
 
   private _uct :string="";
 
+  private _wtt :string ="";
+
+  get wtt(): string {
+    return this._wtt;
+  }
+
+  set wtt(value: string) {
+    this._wtt = value;
+  }
 
   get ui(): string {
     return this._ui;
@@ -102,7 +112,7 @@ export class UTbl  implements ITbl{
 
     let sq ='create table if not exists gtd_u( ui varchar(50) primary key ,ai varchar(50)  ,' +
       'un varchar(10)  ,hiu varchar(200)  ,biy varchar(10)  ,rn varchar(10)  ,ic varchar(20)  ,' +
-      'us varchar(4)  ,uct varchar(11));';
+      'us varchar(4)  ,uct varchar(11),wtt integer);';
 
     return sq;
   }
@@ -185,14 +195,16 @@ export class UTbl  implements ITbl{
   inT():string {
     let sq ='insert into gtd_u ' +
       '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct) values("'+ this._ui+'","'+ this._ai+'","'+this._un+ '"' +
-      ',"'+this._hiu+ '","'+this._biy+ '","'+this._rn+ '","'+this._ic+ '","'+ this._us + '","'+this._uct+ '");';
+      ',"'+this._hiu+ '","'+this._biy+ '","'+this._rn+ '","'+this._ic+ '","'+ this._us + '","'+this._uct+ '"' +
+      ','+  moment().unix() +');';
     return sq;
   }
 
   rpT():string {
     let sq ='replace into gtd_u ' +
       '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct) values("'+ this._ui+'","'+ this._ai+'","'+this._un+ '"' +
-      ',"'+this._hiu+ '","'+this._biy+ '","'+this._rn+ '","'+this._ic+ '","'+ this._us + '","'+this._uct+ '");';
+      ',"'+this._hiu+ '","'+this._biy+ '","'+this._rn+ '","'+this._ic+ '","'+ this._us + '","'+this._uct+ '"' +
+      ','+  moment().unix() +');';
 
     return sq;
   }
