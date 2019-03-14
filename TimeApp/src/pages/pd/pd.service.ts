@@ -2,10 +2,9 @@ import {Injectable} from "@angular/core";
 import {PersonRestful} from "../../service/restful/personsev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
-import {P, ShaeRestful, ShareData} from "../../service/restful/shaesev";
+import {ShaeRestful, ShareData} from "../../service/restful/shaesev";
 import {AgdPro, ContactPerPro} from "../../service/restful/agdsev";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
-import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
 import {ETbl} from "../../service/sqlite/tbl/e.tbl";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
@@ -13,8 +12,7 @@ import {BsModel} from "../../service/restful/out/bs.model";
 
 @Injectable()
 export class PdService {
-  constructor(private personRestful: PersonRestful,
-              private sqlExce: SqliteExec,
+  constructor(private sqlExce: SqliteExec,
               private shareRestful:ShaeRestful,
   ) {
   }
@@ -27,7 +25,7 @@ export class PdService {
     let jhTbl: JhTbl = new JhTbl();
     jhTbl.ji = pid;
 
-    jhTbl = await this.sqlExce.getOne(jhTbl);
+    jhTbl = await this.sqlExce.getOne<JhTbl>(jhTbl);
 
     // 获取计划管理日程（重复日程处理等）
     let ctbl:CTbl =new CTbl();
@@ -55,7 +53,7 @@ export class PdService {
     // 返出参
     let ret = new BsModel();
     ret.code = 0;
-    ret.data = paList
+    ret.data = paList;
     return ret;
   }
 
@@ -67,7 +65,7 @@ export class PdService {
     let jhTbl: JhTbl = new JhTbl();
     jhTbl.ji = pid;
 
-    jhTbl = await this.sqlExce.getOne(jhTbl);
+    jhTbl = await this.sqlExce.getOne<JhTbl>(jhTbl);
 
     // 获取计划管理日程（重复日程处理等）
     let ctbl:CTbl =new CTbl();
@@ -90,7 +88,8 @@ export class PdService {
       etbl.si = ctbls[j].si;
 
       if(ctbls[j].rt == "0"){
-        pa.am = await this.sqlExce.getOne(etbl);
+        etbl = await this.sqlExce.getOne<ETbl>(etbl);
+        //pa.am = etbl.  TODO
       }else {
         //TODO
         await this.sqlExce.getList<ETbl>(etbl);
@@ -103,7 +102,7 @@ export class PdService {
       for (var d = 0, len = dList.length; d < len; d++) {
         let btbl:BTbl =new BTbl();
         btbl.pwi = dList[d].ai;
-        btbl = await this.sqlExce.getOne(btbl);
+        btbl = await this.sqlExce.getOne<BTbl>(btbl);
         //赋值给参与人信息
         let cp:ContactPerPro =new ContactPerPro();
         cp.ai = btbl.pwi;//帐户ID
@@ -130,7 +129,7 @@ export class PdService {
     // 返出参
     let ret = new BsModel();
     ret.code = 0;
-    ret.data = bs
+    ret.data = bs;
     return ret;
   }
 
@@ -142,7 +141,7 @@ export class PdService {
     let jhTbl: JhTbl = new JhTbl();
     jhTbl.ji = pid;
 
-    jhTbl = await this.sqlExce.getOne(jhTbl);
+    jhTbl = await this.sqlExce.getOne<JhTbl>(jhTbl);
 
     // 删除本地计划日程关联
     //获取计划管理日程
