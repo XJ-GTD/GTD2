@@ -33,7 +33,7 @@ export class BxTbl implements ITbl{
 
   cT():string {
 
-    let sq ='create table if not exists gtd_b_x( bi varchar(50) primary key ,bmi varchar(50));';
+    let sq ='create table if not exists gtd_b_x( bi varchar(50) ,bmi varchar(50));';
 
     return sq;
   }
@@ -54,6 +54,9 @@ export class BxTbl implements ITbl{
     let sq = 'delete from gtd_b_x where 1=1 ';
     if(this._bi != null && this._bi!=""){
       sq = sq + 'and  bi ="' + this._bi +'"';
+    }
+    if(this._bmi != null && this._bmi!=""){
+      sq = sq + 'and  bmi ="' + this._bmi +'"';
     }
     sq = sq + ';'
     return sq;
