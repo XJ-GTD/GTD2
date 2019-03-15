@@ -1,28 +1,17 @@
 import {Injectable} from "@angular/core";
-import {PersonRestful} from "../../service/restful/personsev";
-import {SmsRestful} from "../../service/restful/smssev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {UtilService} from "../../service/util-service/util.service";
-import {RestFulConfig} from "../../service/config/restful.config";
-import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
-import {BsModel} from "../../service/restful/out/bs.model";
-import {AgdPro, ContactPerPro} from "../../service/restful/agdsev";
-import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {BipdshaeData, ShaeRestful} from "../../service/restful/shaesev";
+import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
+import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {ETbl} from "../../service/sqlite/tbl/e.tbl";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
-import {BTbl} from "../../service/sqlite/tbl/b.tbl";
-import {PagePlPro} from "../pd/pd.service";
-import {PageGlData} from "../gl/gl.service";
+import {BsModel} from "../../service/restful/out/bs.model";
+import {PagePDPro} from "../pd/pd.service";
 
 @Injectable()
 export class PlService {
 
-  constructor(private personRestful: PersonRestful,
-              private smsRestful: SmsRestful,
-              private sqlExce: SqliteExec,
-              private util: UtilService,
-              private restfulConfig: RestFulConfig,
+  constructor(private sqlExce: SqliteExec,
               private shareRestful:ShaeRestful,
   ) {
   }
@@ -92,7 +81,7 @@ export class PlService {
     console.log('---------- PlService getPlan 获取计划开始 ----------------');
     let pld = new PagePlData();
     //获取本地计划
-    let jhCtbl: Array<PagePlPro> = await this.sqlExce.getList<PagePlPro>(new JhTbl());
+    let jhCtbl: Array<PagePDPro> = await this.sqlExce.getList<PagePDPro>(new JhTbl());
     if(jhCtbl.length>0){
       console.log('---------- PlService getPlan 获取计划日程数量开始 ----------------');
       //获取计划日程数量
@@ -113,6 +102,6 @@ export class PlService {
 
 export class PagePlData {
 
-  pl:Array<PagePlPro> = new Array<PagePlPro>(); //计划列表
+  pl:Array<PagePDPro> = new Array<PagePDPro>(); //计划列表
 
 }

@@ -57,6 +57,7 @@ export class GTbl implements ITbl {
     this._gn = "";
     this._gm = "";
     this._gnpy = "";
+    this._wtt = 0;
   };
 
   cT():string{
@@ -122,14 +123,14 @@ export class GTbl implements ITbl {
 
   inT():string{
     let sq ='insert into gtd_g ' +
-      '( gi ,gn ,gm,gnpy) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+ '","'+this._gnpy+'",'+  moment().unix() +');';
+      '( gi ,gn ,gm,gnpy,wtt) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+ '","'+this._gnpy+'",'+  moment().unix() +');';
 
     return sq;
   }
 
   rpT():string{
     let sq ='replace into gtd_g ' +
-      '( gi ,gn ,gm,gnpy) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+'","'+this._gnpy+ '",'+  moment().unix() +');';
+      '( gi ,gn ,gm,gnpy,wtt) values("'+ this._gi+'","'+ this._gn+'","'+this._gm+'","'+this._gnpy+ '",'+  moment().unix() +');';
 
     return sq;
   }

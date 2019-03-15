@@ -20,6 +20,7 @@ export class CTbl implements  ITbl{
   private _bz: string ="";
   private _tx: string ="";
   private _wtt: Number=0;
+  private _pni: string ="";
 
   get wtt(): Number {
     return this._wtt;
@@ -125,6 +126,14 @@ export class CTbl implements  ITbl{
     this._tx = value;
   }
 
+  get pni(): string {
+    return this._pni;
+  }
+
+  set pni(value: string) {
+    this._pni = value;
+  }
+
   clp(){
     this._si = "";
     this._sn = "";
@@ -136,13 +145,15 @@ export class CTbl implements  ITbl{
     this._rt = "";
     this._ji = "";
     this._tx = "";
+    this._pni= "";
+    this._wtt= 0;
   };
 
   cT():string {
 
     let sq =' create table if not exists gtd_c(  si varchar(50) primary key ,sn varchar(50)  ,ui varchar(50)  ,sd varchar(20)  ' +
       ',st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,rt varchar(4)  ,ji varchar(50),sr varchar(50),sr varchar(50),tx varcher(10),' +
-      'wtt integer);';
+      'wtt integer,pni varchar(50));';
 
     return sq;
   }
@@ -181,6 +192,9 @@ export class CTbl implements  ITbl{
     }
     if(this._tx != null && this._tx!=""){
       sq = sq + ', tx="' + this._tx +'"';
+    }
+    if(this._pni != null && this._pni!=""){
+      sq = sq + ', pni="' + this._pni +'"';
     }
     if (sq != null && sq != ""){
       sq = sq.substr(1);
@@ -238,6 +252,9 @@ export class CTbl implements  ITbl{
     if(this._tx != null && this._tx!=""){
       sq = sq + ' and tx="' + this._tx +'"';
     }
+    if(this._pni != null && this._pni!=""){
+      sq = sq + ' and pni="' + this._pni +'"';
+    }
     sq = sq +';';
     return sq;
   }
@@ -250,18 +267,18 @@ export class CTbl implements  ITbl{
 
   inT():string {
     let sq ='insert into gtd_c ' +
-      '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,tx) values("'+ this._si+'","'+ this._sn+'","'+this._ui+ '"' +
+      '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,tx,wtt,pni) values("'+ this._si+'","'+ this._sn+'","'+this._ui+ '"' +
       ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._rt+ '","'+this._ji+ '"' +
-      ',"'+this._sr+ '","'+this._bz+  '","'+this._tx+'",'+  moment().unix() +');';
+      ',"'+this._sr+ '","'+this._bz+  '","'+this._tx+'",'+  moment().unix() + '","'+this._pni+'");';
 
     return sq;
   }
 
   rpT():string {
     let sq ='replace into gtd_c ' +
-      '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,tx) values("'+ this._si+'","'+ this._sn+'","'+this._ui+ '"' +
+      '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,tx,wtt,pni) values("'+ this._si+'","'+ this._sn+'","'+this._ui+ '"' +
       ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._rt+ '","'+this._ji+ '"' +
-      ',"'+this._sr+ '","'+this._bz+ '","' + this._tx + '",'+  moment().unix() +');';
+      ',"'+this._sr+ '","'+this._bz+ '","' + this._tx + '",'+  moment().unix() +'","'+this._pni+'");';
     return sq;
   }
 

@@ -149,6 +149,8 @@ export class AgdPro{
   aa: string;
   //备注
   am: string;
+  //重复类型日程的父ID
+  pni: string;
   //参与人
   ac:Array<ContactPerPro> =new Array<ContactPerPro>();
 
