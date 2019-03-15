@@ -128,17 +128,17 @@ public class MainVerticle extends AbstractVerticle {
 						if (unionId == null || StringUtils.isEmpty(unionId)) {
 							System.out.println("announce by sms to " + openid);
 							
-							sendShortMessages(openid, "// todo:");
+							sendShortMessages(openid, announceContent.getJsonObject("sms"));
 
 						} else {
 							System.out.println("announce by mwxing message to " + unionId);
-							sendMQMessages(unionId + ".*", announceContent);
+							sendMQMessages(unionId + ".*", announceContent.getJsonObject("mwxing"));
 						}
 						
 					} else {
 						System.out.println("User info fetched error with " + handler.cause().getMessage());
 						System.out.println("announce by sms to " + openid);
-						sendShortMessages(openid, "");
+						sendShortMessages(openid, announceContent.getJsonObject("sms"));
 					}
 				});
 				
@@ -166,7 +166,7 @@ public class MainVerticle extends AbstractVerticle {
 		});
 	}
 	
-	private void sendShortMessages(String phoneno, String content) {
+	private void sendShortMessages(String phoneno, JsonObject content) {
 		System.out.println("sms starting...");
 		client.head(
 				config().getInteger("sms.service.port", 8080),
@@ -175,8 +175,8 @@ public class MainVerticle extends AbstractVerticle {
 		.method(HttpMethod.POST)
 		.addQueryParam("platformType", "*")
 		.addQueryParam("mobile", phoneno)
-		.addQueryParam("sendType", "1")
-		.addQueryParam("sendContent", content)
+		.addQueryParam("sendType", content.getString("template"))
+		.addQueryParam("sendContent", content.getString("content"))
 		.send(handler -> {
 				if (handler.succeeded()) {
 					System.out.println("sms response " + handler.result().statusCode() + " " + handler.result().bodyAsString());
