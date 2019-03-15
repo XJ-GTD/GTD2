@@ -1,5 +1,6 @@
 
 import {ITbl} from "./itbl";
+import * as moment from "moment";
 
 /**
  * create by on 2019/3/5
@@ -16,7 +17,8 @@ export class SpTbl  implements ITbl {
   private _ji: string="";
   private _bz: string="";
   private _sta: string="";
-
+  private _tx: string ="";
+  private _wtt:Number=0;
 
   get spi(): string {
     return this._spi;
@@ -98,13 +100,20 @@ export class SpTbl  implements ITbl {
     this._sta = value;
   }
 
+  get tx(): string {
+    return this._tx;
+  }
+
+  set tx(value: string) {
+    this._tx = value;
+  }
 
   cT():string {
 
     let sq =' create table if not exists gtd_sp(spi varchar(50) primary key ,si varchar(50)  ,' +
       'spn varchar(50)  ,sd varchar(20)' +
       '  ,st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,ji varchar(50)  ,bz varchar(50)  ,' +
-      'sta varchar(4));';
+      'sta varchar(4),tx varchar(4),wtt integer);';
 
     return sq;
   }
@@ -137,6 +146,9 @@ export class SpTbl  implements ITbl {
     }
     if(this._sta != null && this._sta!=""){
       sq = sq + ', sta="' + this._sta +'"';
+    }
+    if(this._tx != null && this._tx!=""){
+      sq = sq + ', tx="' + this._tx +'"';
     }
     if (sq != null && sq != ""){
       sq = sq.substr(1);
@@ -191,6 +203,9 @@ export class SpTbl  implements ITbl {
     if(this._spi != null && this._spi!=""){
       sq = sq + ' and spi="' + this._spi +'"';
     }
+    if(this._tx != null && this._tx!=""){
+      sq = sq + ' and tx="' + this._tx +'"';
+    }
     sq = sq +';';
     return sq;
   }
@@ -203,30 +218,34 @@ export class SpTbl  implements ITbl {
 
   inT():string {
     let sq ='insert into gtd_sp ' +
-      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta) values("'+ this._spi+'","'+ this._si+'","'+this._spn+ '"' +
-      ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._ji+ '","'+this._bz+ '","'+this._sta+ '");';
+      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx,wtt) values("'+ this._spi+'","'+ this._si+'","'+this._spn+ '"' +
+      ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._ji+ '","'+this._bz+ '",' +
+      '"'+this._sta+ '","'+this._tx+ '",'+  moment().unix() +');';
 
     return sq;
   }
 
   rpT():string {
     let sq ='replace into gtd_sp ' +
-      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta) values("'+ this._spi+'","'+ this._si+'","'+this._spn+ '"' +
-      ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._ji+ '","'+this._bz+ '","'+this._sta+ '");';
+      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx,wtt) values("'+ this._spi+'","'+ this._si+'","'+this._spn+ '"' +
+      ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._ji+ '","'+this._bz+ '",' +
+      '"'+this._sta+ '","'+this._tx+'",'+  moment().unix() +');';
 
     return sq;
   }
   clp(){
-    this._spi="";
-    this._si="";
-    this._spn="";
-    this._sd="";
-    this._st="";
-    this._ed="";
-    this._et="";
-    this._ji="";
-    this._bz="";
-    this._sta="";
+    this._spi = "";
+    this._si = "";
+    this._spn = "";
+    this._sd = "";
+    this._st = "";
+    this._ed = "";
+    this._et = "";
+    this._ji = "";
+    this._bz = "";
+    this._sta = "";
+    this._tx = "";
+    this._wtt = 0;
   }
 }
 

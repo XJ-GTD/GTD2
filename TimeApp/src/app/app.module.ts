@@ -42,6 +42,8 @@ import {BacRestful} from "../service/restful/bacsev";
 import {ShaeRestful} from "../service/restful/shaesev";
 import {EmitService} from "../service/util-service/emit.service";
 import {WebsocketModule} from "../ws/websocket.module";
+import {BrService} from "../pages/br/br.service";
+import {AgdbusiService} from "../service/util-service/agdbusi.service";
 
 @NgModule({
   declarations: [
@@ -102,6 +104,7 @@ import {WebsocketModule} from "../ws/websocket.module";
     ShaeRestful,
     AssistantService,
     EmitService,
+    AgdbusiService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

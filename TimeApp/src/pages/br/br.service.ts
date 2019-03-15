@@ -115,17 +115,7 @@ export class BrService {
 
     for (let j = 0, len = bsModel.data.c.length; j < len; j++) {
       let ci = new CTbl();
-      ci.si = bsModel.data.c[j].si;
-      ci.sn = bsModel.data.c[j].sn;
-      ci.ui = bsModel.data.c[j].ui;
-      ci.sd = bsModel.data.c[j].sd;
-      ci.st = bsModel.data.c[j].st;
-      ci.ed = bsModel.data.c[j].ed;
-      ci.et = bsModel.data.c[j].et;
-      ci.rt = bsModel.data.c[j].rt;
-      ci.ji = bsModel.data.c[j].ji;
-      ci.sr = bsModel.data.c[j].sr;
-      ci.bz = bsModel.data.c[j].bz;
+      Object.assign(ci,bsModel.data.c[j]) ;
       await this.sqlexec.save(ci);
     }
 
@@ -135,16 +125,7 @@ export class BrService {
 
     for (let j = 0, len = bsModel.data.sp.length; j < len; j++) {
       let spi = new SpTbl();
-      spi.spi = bsModel.data.sp[j].spi;
-      spi.si  = bsModel.data.sp[j].si ;
-      spi.spn = bsModel.data.sp[j].spn;
-      spi.sd  = bsModel.data.sp[j].sd ;
-      spi.st  = bsModel.data.sp[j].st ;
-      spi.ed  = bsModel.data.sp[j].ed ;
-      spi.et  = bsModel.data.sp[j].et ;
-      spi.ji  = bsModel.data.sp[j].ji ;
-      spi.bz  = bsModel.data.sp[j].bz ;
-      spi.sta = bsModel.data.sp[j].sta;
+      Object.assign(spi,bsModel.data.sp[j]) ;
       await this.sqlexec.save(spi);
     }
     //插入提醒数据（插入前删除）
@@ -153,11 +134,7 @@ export class BrService {
 
     for (let j = 0, len = bsModel.data.e.length; j < len; j++) {
       let ei = new ETbl();
-      ei.wi = bsModel.data.e[j].wi;
-      ei.si = bsModel.data.e[j].si;
-      ei.st = bsModel.data.e[j].st;
-      ei.wd = bsModel.data.e[j].wd;
-      ei.wt = bsModel.data.e[j].wt;
+      Object.assign(ei,bsModel.data.e[j]) ;
       await this.sqlexec.save(ei);
     }
 
@@ -167,14 +144,7 @@ export class BrService {
 
     for (let j = 0, len = bsModel.data.d.length; j < len; j++) {
       let di = new DTbl();
-      di.pi  = bsModel.data.d[j].pi ;
-      di.si  = bsModel.data.d[j].si ;
-      di.st  = bsModel.data.d[j].st ;
-      di.son = bsModel.data.d[j].son;
-      di.sa  = bsModel.data.d[j].sa ;
-      di.ai  = bsModel.data.d[j].ai ;
-      di.ib  = bsModel.data.d[j].ib ;
-      di.bi  = bsModel.data.d[j].bi ;
+      Object.assign(di,bsModel.data.d[j]) ;
       await this.sqlexec.save(di);
     }
 
@@ -184,18 +154,7 @@ export class BrService {
 
     for (let j = 0, len = bsModel.data.b.length; j < len; j++) {
       let bi = new BTbl();
-      bi.pwi = bsModel.data.b[j].pwi;
-      bi.ran = bsModel.data.b[j].ran;
-      bi.ranpy = bsModel.data.b[j].ranpy;
-      bi.ri  = bsModel.data.b[j].ri ;
-      bi.hiu = bsModel.data.b[j].hiu;
-      bi.rn  = bsModel.data.b[j].rn ;
-      bi.rnpy = bsModel.data.b[j].rnpy;
-      bi.rc  = bsModel.data.b[j].rc ;
-      bi.rf  = bsModel.data.b[j].rf ;
-      bi.ot  = bsModel.data.b[j].ot ;
-      bi.rel = bsModel.data.b[j].rel;
-      bi.ui  = bsModel.data.b[j].ui;
+      Object.assign(bi,bsModel.data.b[j]) ;
       await this.sqlexec.save(bi);
     }
     //插入群组信息（插入前删除）
@@ -204,9 +163,7 @@ export class BrService {
 
     for (let j = 0, len = bsModel.data.g.length; j < len; j++) {
       let gi = new GTbl();
-      gi.gi = bsModel.data.g[j].gi;
-      gi.gn = bsModel.data.g[j].gn;
-      gi.gm = bsModel.data.g[j].gm;
+      Object.assign(gi,bsModel.data.g[j]) ;
       await this.sqlexec.save(gi);
     }
     //插入本地参与人（插入前删除 ）
@@ -215,8 +172,7 @@ export class BrService {
 
     for (let j = 0, len = bsModel.data.bx.length; j < len; j++) {
       let bxi = new BxTbl();
-      bxi.bi = bsModel.data.bx[j].bi;
-      bxi.bmi = bsModel.data.bx[j].bmi;
+      Object.assign(bxi,bsModel.data.bx[j]) ;
       await this.sqlexec.save(bxi);
     }
     //插入本地计划（插入前删除）
@@ -225,11 +181,7 @@ export class BrService {
 
     for (let j = 0, len = bsModel.data.jh.length; j < len; j++) {
       let jhi = new JhTbl();
-      jhi.ji = bsModel.data.jh[j].ji;
-      jhi.jn = bsModel.data.jh[j].jn;
-      jhi.jg = bsModel.data.jh[j].jg;
-      jhi.jc = bsModel.data.jh[j].jc;
-      jhi.jt = bsModel.data.jh[j].jt;
+      Object.assign(jhi,bsModel.data.jh[j]) ;
 
       await this.sqlexec.save(jhi);
     }
@@ -239,11 +191,7 @@ export class BrService {
 
     for (let j = 0, len = bsModel.data.u.length; j < len; j++) {
       let ui = new UTbl();
-      ui.ui  = bsModel.data.u[j].ui ;
-      ui.ai  = bsModel.data.u[j].ai ;
-      ui.un  = bsModel.data.u[j].un ;
-      ui.hiu = bsModel.data.u[j].hiu;
-      ui.biy = bsModel.data.u[j].biy;
+      Object.assign(ui,bsModel.data.u[j]) ;
       await this.sqlexec.save(ui);
     }
 
@@ -253,12 +201,7 @@ export class BrService {
 
     for (let j = 0, len = bsModel.data.s.length; j < len; j++) {
       let si = new STbl();
-      si.si = bsModel.data.s[j].si;
-      si.st = bsModel.data.s[j].st;
-      si.stn = bsModel.data.s[j].stn;
-      si.sn = bsModel.data.s[j].sn;
-      si.yk = bsModel.data.s[j].yk;
-      si.yv = bsModel.data.s[j].yv;
+      Object.assign(si,bsModel.data.s[j]) ;
       await this.sqlexec.save(si);
     }
 

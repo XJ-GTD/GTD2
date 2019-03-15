@@ -1,10 +1,7 @@
 import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
-import {RData, RService} from "./r.service";
-import {DataConfig} from "../../service/config/data.config";
-import {AgdRestful, AgdPro, ContactPerPro, SharePro} from "../../service/restful/agdsev";
-import {AibutlerRestful, AudioPro, TextPro} from "../../service/restful/aibutlersev";
+import {PageRData, RService} from "./r.service";
 
 
 /**
@@ -92,7 +89,7 @@ import {AibutlerRestful, AudioPro, TextPro} from "../../service/restful/aibutler
 })
 export class RPage {
 
-  rdata: RData = new RData();
+  rdata: PageRData = new PageRData();
 
   data: any;
   accountName: any;

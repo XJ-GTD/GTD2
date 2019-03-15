@@ -1,4 +1,5 @@
 import {ITbl} from "./itbl";
+import * as moment from "moment";
 
 /**
  * create by on 2019/3/5
@@ -17,6 +18,15 @@ export class ATbl implements ITbl {
 
   private _aq :string="";
 
+  private _wtt :Number=0;
+
+  get wtt(): Number {
+    return this._wtt;
+  }
+
+  set wtt(value: Number) {
+    this._wtt = value;
+  }
 
   get ai(): string {
     return this._ai;
@@ -69,7 +79,7 @@ export class ATbl implements ITbl {
   cT():string {
 
     let sq ='create table if not exists gtd_a(ai varchar(50) primary key,' +
-      'an varchar(10),am varchar(11),ae varchar(20) ,at varchar(50) ,aq varchar(100));';
+      'an varchar(10),am varchar(11),ae varchar(20) ,at varchar(50) ,aq varchar(100),wtt integer);';
 
     return sq;
   }
@@ -138,25 +148,26 @@ export class ATbl implements ITbl {
 
   inT():string {
     let sq ='insert into gtd_a ' +
-      '(ai,an,am,ae,at,aq) values("'+ this._ai+'","'+ this._an+'","'+this._am+ '"' +
-      ',"'+this._ae+ '","'+this._at+ '","'+this._aq+ '");';
+      '(ai,an,am,ae,at,aq,wtt) values("'+ this._ai+'","'+ this._an+'","'+this._am+ '"' +
+      ',"'+this._ae+ '","'+this._at+ '","'+this._aq+ '",'+  moment().unix() +');';
 
     return sq;
   }
 
   rpT():string {
     let sq ='replace into gtd_a ' +
-      '(ai,an,am,ae,at,aq) values("'+ this._ai+'","'+ this._an+'","'+this._am+ '"' +
-      ',"'+this._ae+ '","'+this._at+ '","'+this._aq+ '");';
+      '(ai,an,am,ae,at,aq,wtt) values("'+ this._ai+'","'+ this._an+'","'+this._am+ '"' +
+      ',"'+this._ae+ '","'+this._at+ '","'+this._aq+ '",'+  moment().unix() +');';
 
     return sq;
   }
   clp(){
     this._ai = "";
     this._an = "";
-    this._ae= "";
+    this._ae = "";
     this._at = "";
-    this._aq= "";
+    this._aq = "";
+    this._wtt = 0;
   };
 }
 

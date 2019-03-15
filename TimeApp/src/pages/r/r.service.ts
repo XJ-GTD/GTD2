@@ -1,9 +1,8 @@
 import {Injectable} from "@angular/core";
 import {PersonRestful, SignData} from "../../service/restful/personsev";
 import {InData, SmsRestful} from "../../service/restful/smssev";
-import {LpData, LpService} from "../lp/lp.service";
+import {LpService, PageLpData} from "../lp/lp.service";
 import {BsModel} from "../../service/restful/out/bs.model";
-import {OutData} from "../../service/restful/authsev";
 
 @Injectable()
 export class RService {
@@ -14,7 +13,7 @@ export class RService {
   }
 
   //注册
-  signup(rdata: RData): Promise<RData> {
+  signup(rdata: PageRData): Promise<PageRData> {
 
     return new Promise((resolve, reject) => {
       //restful 注册用户
@@ -29,7 +28,7 @@ export class RService {
           reject(data.message);
 
         //登陆(密码)service登陆逻辑
-        let lpdata: LpData = new LpData();
+        let lpdata: PageLpData = new PageLpData();
         lpdata.mobile = rdata.mobile;
         lpdata.password = rdata.password;
         return this.lpService.login(lpdata);
@@ -46,7 +45,7 @@ export class RService {
 
 
 //短信验证码
-  sc(rdata: RData): Promise<BsModel<any>> {
+  sc(rdata: PageRData): Promise<BsModel<any>> {
 
     return new Promise((resolve, reject) => {
       let inData:InData = new InData();
@@ -62,7 +61,7 @@ export class RService {
 
 }
 
-export class RData {
+export class PageRData {
   mobile: string = "";
   password: string = "";
   authCode: string = "";

@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {AuthRestful, LoginData} from "../../service/restful/authsev";
-import {PersonRestful, PersonTokenData} from "../../service/restful/personsev";
+import {PersonRestful} from "../../service/restful/personsev";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {WebsocketService} from "../../ws/websocket.service";
@@ -20,7 +20,7 @@ export class LpService {
   }
 
   //登录
-  login(lpdata: LpData): Promise<LpData> {
+  login(lpdata: PageLpData): Promise<PageLpData> {
     return new Promise((resolve, reject) => {
       let loginData: LoginData = new LoginData();
       loginData.phoneno = lpdata.mobile;
@@ -99,7 +99,7 @@ export class LpService {
   }
 }
 
-export class LpData {
+export class PageLpData {
   mobile: string = "";
   password: string = "";
 }

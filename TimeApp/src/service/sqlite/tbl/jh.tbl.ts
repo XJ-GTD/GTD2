@@ -1,4 +1,5 @@
 import {ITbl} from "./itbl";
+import * as moment from "moment";
 
 /**
  * create by on 2019/3/5
@@ -11,6 +12,16 @@ export class JhTbl  implements ITbl{
   private _jg: string="";
   private _jc: string="";
   private _jt: string="";
+  private _wtt :Number=0;
+
+
+  get wtt(): Number {
+    return this._wtt;
+  }
+
+  set wtt(value: Number) {
+    this._wtt = value;
+  }
 
   get jc(): string {
     return this._jc;
@@ -56,12 +67,13 @@ export class JhTbl  implements ITbl{
     this._jn = "";
     this._jg = "";
     this._jt = "";
+    this._wtt = 0;
   };
 
   cT():string{
 
     let sq ='create table if not exists gtd_j_h(  ji varchar(50) primary key ,jn varchar(100)  ,jg varchar(100)' +
-      ',jc varchar(10),jt varchar(4));';
+      ',jc varchar(10),jt varchar(4),wtt integer);';
 
     return sq;
   }
@@ -127,14 +139,16 @@ export class JhTbl  implements ITbl{
 
   inT():string{
     let sq ='insert into gtd_j_h ' +
-      '(  ji ,jn ,jg,jc,jt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '","'+this._jt+ '");';
+      '(  ji ,jn ,jg,jc,jt,wtt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '",' +
+      '"'+this._jt+ '",'+  moment().unix() +');';
 
     return sq;
   }
 
   rpT():string{
     let sq ='replace into gtd_j_h ' +
-      '(  ji ,jn ,jg,jc,jt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '","'+this._jt+ '");';
+      '(  ji ,jn ,jg,jc,jt,wtt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '",' +
+      '"'+this._jt+ '",'+  moment().unix() +');';
 
     return sq;
   }

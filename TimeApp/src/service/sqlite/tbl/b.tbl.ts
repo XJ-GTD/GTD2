@@ -2,22 +2,29 @@
  * create by on 2019/3/5
  */
 import {ITbl} from "./itbl";
+import * as moment from "moment";
 
 
 export class BTbl implements ITbl{
   private _pwi: string="";
   private _ran: string="";
   private _ranpy: string="";
-  private _ri: string="";
   private _hiu: string="";
   private _rn: string="";
   private _rnpy: string="";
   private _rc: string="";
-  private _rf: string="";
-  private _ot: string="";
   private _rel: string="";
   private _ui: string="";
+  private _wtt: number=0;
 
+
+  get wtt(): number {
+    return this._wtt;
+  }
+
+  set wtt(value: number) {
+    this._wtt = value;
+  }
 
   get pwi(): string {
     return this._pwi;
@@ -41,14 +48,6 @@ export class BTbl implements ITbl{
 
   set ranpy(value: string) {
     this._ranpy = value;
-  }
-
-  get ri(): string {
-    return this._ri;
-  }
-
-  set ri(value: string) {
-    this._ri = value;
   }
 
   get hiu(): string {
@@ -83,22 +82,6 @@ export class BTbl implements ITbl{
     this._rc = value;
   }
 
-  get rf(): string {
-    return this._rf;
-  }
-
-  set rf(value: string) {
-    this._rf = value;
-  }
-
-  get ot(): string {
-    return this._ot;
-  }
-
-  set ot(value: string) {
-    this._ot = value;
-  }
-
   get rel(): string {
     return this._rel;
   }
@@ -119,24 +102,21 @@ export class BTbl implements ITbl{
     this._pwi = "";
     this._ran = "";
     this._ranpy = "";
-    this._ri = "";
     this._hiu = "";
     this._rn = "";
     this._rnpy = "";
     this._rc = "";
-    this._rf = "";
-    this._ot = "";
     this._rel = "";
     this._ui = "";
-
+    this._wtt =0;
   };
 
   cT():string {
 
     let sq =' create table if not exists gtd_b( pwi varchar(50) primary key ,ran varchar(50)  ,' +
-      'ranpy varchar(20)  ,ri varchar(50)  ,hiu varchar(200)  ,rn varchar(20)  ,' +
-      'rnpy varchar(20)  ,rc varchar(20)  ,rf varchar(4)  ,ot varchar(4)  ,rel varchar(4)  ,' +
-      'ui varchar(50) );';
+      'ranpy varchar(20)  ,hiu varchar(200)  ,rn varchar(20)  ,' +
+      'rnpy varchar(20)  ,rc varchar(20)    ,rel varchar(4)  ,' +
+      'ui varchar(50),wtt integer );';
 
     return sq;
   }
@@ -149,9 +129,7 @@ export class BTbl implements ITbl{
     if(this._ranpy!=null && this._ranpy!=""){
       sq=sq+', ranpy="' + this._ranpy +'"';
     }
-    if(this._ri != null && this._ri!=""){
-      sq = sq + ', ri="' + this._ri +'"';
-    }
+
     if(this._hiu != null && this._hiu!=""){
       sq = sq + ', hiu="' + this._hiu +'"';
     }
@@ -164,12 +142,7 @@ export class BTbl implements ITbl{
     if(this._rc != null && this._rc!=""){
       sq = sq + ', rc="' + this._rc +'"';
     }
-    if(this._rf != null && this._rf!=""){
-      sq = sq + ', rf="' + this._rf +'"';
-    }
-    if(this._ot != null && this._ot!=""){
-      sq = sq + ', ot="' + this._ot +'"';
-    }
+
     if(this._rel != null && this._rel!=""){
       sq = sq + ', rel="' + this._rel +'"';
     }
@@ -205,9 +178,7 @@ export class BTbl implements ITbl{
     if(this._ranpy!=null && this._ranpy!=""){
       sq=sq+' and ranpy="' + this._ranpy +'"';
     }
-    if(this._ri != null && this._ri!=""){
-      sq = sq + ' and ri="' + this._ri +'"';
-    }
+
     if(this._hiu != null && this._hiu!=""){
       sq = sq + ' and hiu="' + this._hiu +'"';
     }
@@ -219,12 +190,6 @@ export class BTbl implements ITbl{
     }
     if(this._rc != null && this._rc!=""){
       sq = sq + ' and rc="' + this._rc +'"';
-    }
-    if(this._rf != null && this._rf!=""){
-      sq = sq + ' and rf="' + this._rf +'"';
-    }
-    if(this._ot != null && this._ot!=""){
-      sq = sq + ' and ot="' + this._ot +'"';
     }
     if(this._rel != null && this._rel!=""){
       sq = sq + ' and rel="' + this._rel +'"';
@@ -244,20 +209,20 @@ export class BTbl implements ITbl{
 
   inT():string {
     let sq ='insert into gtd_b ' +
-      '(  pwi ,ran ,ranpy ,ri ,hiu ,rn ,rnpy ,rc ,rf ,ot ,rel ,ui) values("'+ this._pwi+'",' +
+      '(  pwi ,ran ,ranpy ,ri ,hiu ,rn ,rnpy ,rc ,rf ,ot ,rel ,ui,wtt) values("'+ this._pwi+'",' +
       '"'+ this._ran+'","'+this._ranpy+ '"' +
-      ',"'+this._ri+ '","'+this._hiu+ '","'+this._rn+ '","'+this._rnpy+ '","'+this._rc+ '","'+this._rf+ '",' +
-      '"'+this._ot+ '","'+this._rel+ '","'+this._ui+ '");';
+      ',"'+this._hiu+ '","'+this._rn+ '","'+this._rnpy+ '","'+this._rc+ '",' +
+      '"'+this._rel+ '","'+this._ui+ '",'+  moment().unix() + ');';
 
     return sq;
   }
 
   rpT():string {
     let sq ='replace into gtd_b ' +
-      '(  pwi ,ran ,ranpy ,ri ,hiu ,rn ,rnpy ,rc ,rf ,ot ,rel ,ui) values("'+ this._pwi+'",' +
+      '(  pwi ,ran ,ranpy ,ri ,hiu ,rn ,rnpy ,rc ,rf ,ot ,rel ,ui,wtt) values("'+ this._pwi+'",' +
       '"'+ this._ran+'","'+this._ranpy+ '"' +
-      ',"'+this._ri+ '","'+this._hiu+ '","'+this._rn+ '","'+this._rnpy+ '","'+this._rc+ '","'+this._rf+ '",' +
-      '"'+this._ot+ '","'+this._rel+ '","'+this._ui+ '");';
+      ',"'+this._hiu+ '","'+this._rn+ '","'+this._rnpy+ '","'+this._rc+ '",' +
+      '"'+this._rel+ '","'+this._ui+ '",'+  moment().unix() + ');';
 
     return sq;
   }
