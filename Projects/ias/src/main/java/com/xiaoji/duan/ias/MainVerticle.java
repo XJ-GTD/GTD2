@@ -117,6 +117,9 @@ public class MainVerticle extends AbstractVerticle {
 			return;
 		}
 		
+		// 客户端或服务端上下文,用于协调一个连续事务多次请求
+		JsonObject context = req.getJsonObject("c", new JsonObject());
+		
 		// 通知智能服务, 处理语音服务请求
 		String base64key = Base64.encodeBase64URLSafeString(accountid.getBytes());
 
@@ -124,7 +127,8 @@ public class MainVerticle extends AbstractVerticle {
 		message.put("userId", accountid);
 		message.put("content", voicecontent);
 		message.put("contentType", "audio");
-		
+		message.put("context", context);
+
 		MessageProducer<JsonObject> producer = bridge.createProducer("mwxing_inteligence_service_start");
 		producer.send(new JsonObject()
 				.put("body", new JsonObject()
@@ -192,7 +196,7 @@ public class MainVerticle extends AbstractVerticle {
 		}
 		
 		// 客户端或服务端上下文,用于协调一个连续事务多次请求
-		JsonObject context = data.getJsonObject("c", new JsonObject());
+		JsonObject context = req.getJsonObject("c", new JsonObject());
 		
 		// 通知智能服务, 处理语音服务请求
 		String base64key = Base64.encodeBase64URLSafeString(accountid.getBytes());

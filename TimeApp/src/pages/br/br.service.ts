@@ -119,7 +119,7 @@ export class BrService {
       await this.sqlexec.save(ci);
     }
 
-    //插入特殊日历（插入前删除）
+    /*//插入特殊日历（插入前删除）
     let sp = new SpTbl();
     await this.sqlexec.delete(sp);
 
@@ -127,7 +127,7 @@ export class BrService {
       let spi = new SpTbl();
       Object.assign(spi,bsModel.data.sp[j]) ;
       await this.sqlexec.save(spi);
-    }
+    }*/
     //插入提醒数据（插入前删除）
     let e = new ETbl();
     await this.sqlexec.delete(e);
