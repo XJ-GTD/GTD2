@@ -108,17 +108,73 @@ export class SqliteInit {
 
   }
 
+
+  /**
+   * 初始化表数据
+   * @param {BsModel} data
+   * @returns {Promise<any>}
+   */
+  initDataSub(): Promise<any> {
+    return new Promise( (resolve, reject) => {
+
+      console.log("-------------------系统 ------------------");
+
+      this.syncRestful.initData().then(async data => {
+        let s: STbl = new STbl();
+        await this.sqlexec.drop(s);
+        await this.sqlexec.create(s);
+        //服务器URL数据
+        let urlList: Array<string> = [];
+        for (let apil of data.apil) {
+          let stbl = new STbl();
+          stbl.si = this.util.getUuid();
+          stbl.st = "URL";
+          stbl.stn = "URL";
+          stbl.sn = apil.desc;
+          stbl.yk = apil.name;
+          stbl.yv = apil.value;
+          urlList.push(stbl.inT());
+        }
+
+        //服务器 语音数据
+        for (let vrs of data.vrs) {
+          let stbl = new STbl();
+          stbl.si = this.util.getUuid();
+          stbl.st = "SPEECH";
+          stbl.stn = "语音";
+          stbl.sn = vrs.desc;
+          stbl.yk = vrs.name;
+          stbl.yv = vrs.value;
+          urlList.push(stbl.inT());
+        }
+
+        //web端
+        this.sqlexec.batExecSql(urlList).then(data => {
+            resolve(data);
+
+          }
+        )
+      })
+
+    })
+
+
+  }
+
   /**
    * 初始化表数据
    * @param {BsModel} data
    * @returns {Promise<any>}
    */
   initData(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise( (resolve, reject) => {
 
       console.log("-------------------BaseSqlite initData table  data to start ------------------");
 
-      this.syncRestful.initData().then(data => {
+      this.syncRestful.initData().then(async data => {
+        let s: STbl = new STbl();
+        await this.sqlexec.drop(s);
+        await this.sqlexec.create(s);
         //服务器URL数据
         let urlList: Array<string> = [];
         for (let apil of data.apil) {
@@ -166,6 +222,8 @@ export class SqliteInit {
           ytbl.yv = dpfu.value;
           urlList.push(ytbl.inT());
         }
+
+
 
         //web端
         this.sqlexec.batExecSql(urlList).then(data => {

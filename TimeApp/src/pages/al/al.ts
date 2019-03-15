@@ -4,6 +4,7 @@ import {RoundProgressEase} from 'angular-svg-round-progressbar';
 import {AlData, AlService} from "./al.service";
 import {SyncRestful} from "../../service/restful/syncsev";
 import {DataConfig} from "../../service/config/data.config";
+import {SqliteInit} from "../../service/sqlite/sqlite.init";
 
 /**
  * Generated class for the AlPage page.
@@ -58,7 +59,7 @@ export class AlPage {
   constructor(private alService: AlService,
               private _ease: RoundProgressEase,
               private syncRestful:SyncRestful,
-              private nav: Nav,) {
+              private nav: Nav) {
     this.alData.text="正在初始化";
   }
 
@@ -80,6 +81,7 @@ export class AlPage {
       this.alData = await this.alService.createSystemData();
       console.log( this.alData.text)
     }
+
     this.increment(20);
     this.alData = await this.alService.setSetting();
     console.log( this.alData.text)
@@ -89,6 +91,9 @@ export class AlPage {
     if (!this.alData.islogin){
       this.nav.setRoot(DataConfig.PAGE._LP_PAGE);
     }else{
+      this.alData.text = "正在连接服务器。。。"
+      this.alData = await this.alService.connWebSocket();
+       this.alData.text = "进入您的日历"
       this.nav.setRoot(DataConfig.PAGE._M_PAGE);
     }
   }
