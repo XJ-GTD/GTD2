@@ -91,26 +91,14 @@ export class RPage {
 
   rdata: PageRData = new PageRData();
 
-  data: any;
-  accountName: any;
-  accountMobile: any;
-  userName: any;
-  deviceId: any;
-  checkMobile: any;
-  checkMobileNull: any;
   checkBoxClick: any;
-  authCode: any;
   errorCode: any;
   timeOut: any = "发送验证码";
   timer: any;
 
-
-  rePage: string;
-  disable: boolean = false;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
               private alertCtrl: AlertController,
-              private utilService: UtilService,
               private rService: RService,
               private toastCtrl: ToastController,
   ) {
@@ -119,7 +107,6 @@ export class RPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RPage');
-    this.rePage = this.navParams.get("RPage");
   }
 
   title(message){
@@ -130,6 +117,15 @@ export class RPage {
     });
     toast.present();
     return;
+  }
+
+  alert(message){
+    let alert = this.alertCtrl.create({
+      title:'提示信息',
+      subTitle: message,
+      buttons:['确定']
+    });
+    alert.present();
   }
 
   register() {
@@ -146,38 +142,21 @@ export class RPage {
       } else if(this.rdata.verifykey == "") {
         this.title("请发送短信并填写正确的短信验证码");
       } else{
-
         //注册成功
         this.rService.signup(this.rdata).then(data => {
-          console.debug("注册返回信息::" + JSON.stringify(data));
-          /*let alert = this.alertCtrl.create({
-            title: '提示信息',
-            subTitle: "注册成功",
-            buttons: [{
-              text: '确定', role: 'cancel', handler: () => {
-                if (this.rePage != undefined) {
-                  this.navCtrl.getViews().forEach(page => {
-                    if (page.name == this.rePage) {
-                      this.navCtrl.popTo(page);
-                    }
-                  })
-                } else {
-                  this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
-                }
-              }
-            }]
-          });
-          alert.present();
-          this.disable = false;*/
+          if (data.code != 0)
+            throw  data;
 
-        }).catch(err=>{
+          console.debug("注册成功返回信息::" + JSON.stringify(data));
+        }).catch(res=>{
           //注册异常
+          console.log(res);
+          this.alert(res.message);
         });
       }
     }else {
       this.title("请输入正确11位手机号");
     }
-
   }
 
   userAgreegment() {
@@ -187,22 +166,13 @@ export class RPage {
   sendMsg() {
     if(this.errorCode == 3){
       this.rService.sc(this.rdata).then(data => {
+        console.log("短信发送成功"+ JSON.stringify(data));
         //短信验证码KEY 赋值给注册信息
         this.rdata.verifykey = data.data.verifykey;
-        let alert = this.alertCtrl.create({
-          title:'提示信息',
-          subTitle: data.message,
-          buttons:['确定']
-        });
-        alert.present();
+        this.alert("短信发送成功");
       }).catch(ref =>{
-        /*console.log("ref::" + ref);
-        let alert = this.alertCtrl.create({
-          title:'提示信息',
-          subTitle: ref.message,
-          buttons:['确定']
-        });
-        alert.present();*/
+        console.log("ref::" + ref);
+        this.alert("短信发送失败");
       });
 
       this.timeOut = 10;
@@ -217,31 +187,20 @@ export class RPage {
       },1000)
 
     }else{
-      /*let alert = this.alertCtrl.create({
-        title:'提示信息',
-        subTitle: '请填写正确的手机号',
-        buttons:['确定']
-      });
-      alert.present();*/
+      this.title("请输入正确11位手机号");
     }
   }
 
   checkPhone() {
-    this.errorCode = this.utilService.checkPhone(this.rdata.mobile);
-    if (this.errorCode == 0) {
-      this.checkMobileNull = true;
-    }
-    if (this.errorCode == 1 || this.errorCode == 2) {
-      this.checkMobileNull = false;
-      this.checkMobile = true;
-    }
-    if (this.errorCode == 3) {
-      this.checkMobile = false;
-      this.checkMobileNull = false;
-    }
+    this.rService.checkPhone(this.rdata.mobile).then(data=>{
+      this.errorCode = data;
+    })
   }
 
   format() {
-    this.rdata.mobile = this.utilService.remo(this.rdata.mobile).toString();
+    this.rService.remo(this.rdata.mobile).then(data=>{
+      this.rdata.mobile = data;
+    })
   }
+
 }

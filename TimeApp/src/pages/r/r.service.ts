@@ -3,13 +3,15 @@ import {PersonRestful, SignData} from "../../service/restful/personsev";
 import {InData, SmsRestful} from "../../service/restful/smssev";
 import {LpService, PageLpData} from "../lp/lp.service";
 import {BsModel} from "../../service/restful/out/bs.model";
+import {UtilService} from "../../service/util-service/util.service";
 
 @Injectable()
 export class RService {
 
   constructor(private personRestful: PersonRestful,
               private smsRestful: SmsRestful,
-              private lpService: LpService,) {
+              private lpService: LpService,
+              private util: UtilService,) {
   }
 
   //注册
@@ -25,7 +27,7 @@ export class RService {
       restData.username = rdata.username;
       return this.personRestful.signup(restData).then(data => {
         if (data.code != 0)
-          reject(data.message);
+          throw  data;
 
         //登陆(密码)service登陆逻辑
         let lpdata: PageLpData = new PageLpData();
@@ -52,13 +54,25 @@ export class RService {
       inData.phoneno = rdata.mobile;
       this.smsRestful.getcode(inData).then(data => {
         resolve(data)
-      }).catch(err => {
-        reject(err);
+      }).catch(error => {
+        resolve(error)
       })
     });
 
   }
 
+
+  checkPhone(mobile:string):Promise<any>{
+    return new Promise((resolve, reject) => {
+      resolve(this.util.checkPhone(mobile));
+    });
+  }
+
+  remo(mobile:string):Promise<any>{
+    return new Promise((resolve, reject) => {
+      resolve(this.util.remo(mobile));
+    });
+  }
 }
 
 export class PageRData {
@@ -66,5 +80,7 @@ export class PageRData {
   password: string = "";
   authCode: string = "";
   verifykey:string = "";
-  username:string ="";
+  username:string = "name";//注册暂定
+  code: number = 0;
+  message: string = "";
 }

@@ -40,7 +40,6 @@ export class LsService {
 
   //登陆
   login(lsData:PageLsData): Promise<any> {
-    console.log(lsData.mobile + "////" + lsData.authCode + "////");
     return new Promise((resolve, reject) => {
       //参考lp登陆方法
       let loginData: LoginData = new LoginData();
@@ -54,7 +53,7 @@ export class LsService {
       // 验证手机号及验证码
       this.authRestful.loginbycode(loginData).then(data => {
         if (data.code != 0)
-          throw  data.message;
+          throw  data;
 
         //获得token，放入头部header登录码
         let code = data.data.code;
@@ -120,9 +119,23 @@ export class LsService {
       })
     });
   }
+
+  checkPhone(mobile:string):Promise<any>{
+    return new Promise((resolve, reject) => {
+      resolve(this.util.checkPhone(mobile));
+    });
+  }
+
+  remo(mobile:string):Promise<any>{
+    return new Promise((resolve, reject) => {
+      resolve(this.util.remo(mobile));
+    });
+  }
 }
 export class PageLsData {
   mobile: string = "";
   authCode: string = "";
   verifykey:string = "";
+  code: number = 0;
+  message: string = "";
 }
