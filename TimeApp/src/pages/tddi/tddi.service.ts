@@ -40,6 +40,7 @@ export class TddiService {
     }else{
       //更新日程表
       this.setCtbl(newc,bs.data);
+      //本地日程的备注和提醒不被更新
       newc.bz = c.bz;
       newc.tx = c.tx;
       await this.sqlExce.replaceT(newc);
