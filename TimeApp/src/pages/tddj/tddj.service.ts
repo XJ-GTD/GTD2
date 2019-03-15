@@ -379,10 +379,16 @@ export class TddjService {
   }
 
   //获取计划列表
-  getPlans(): Promise<any> {
+  getPlans(): Promise<BsModel<Array<JhTbl>>> {
     return new Promise((resolve, reject) => {
       //获取本地计划列表
-
+      let jh = new JhTbl();
+      let bs = new BsModel<Array<JhTbl>>();
+      this.sqlExce.getList<JhTbl>(jh).then(data =>{
+        bs.code =0;
+        bs.data = data;
+        resolve(bs);
+      })
     });
   }
 }
