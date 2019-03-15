@@ -167,8 +167,8 @@ export class PersonRestful {
       let url: UrlEntity = this.config.getRestFulUrl("RA");
       this.request.post(url, signData).then(data => {
         //处理返回结果
-        bsModel.code = data.code;
-        bsModel.message = data.message;
+        bsModel.code = data.errcode;
+        bsModel.message = data.errmsg;
         bsModel.data = data.data;
         resolve(bsModel);
 

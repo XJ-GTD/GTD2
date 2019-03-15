@@ -136,4 +136,6 @@ export class PageLsData {
   mobile: string = "";
   authCode: string = "";
   verifykey:string = "";
+  code: number = 0;
+  message: string = "";
 }

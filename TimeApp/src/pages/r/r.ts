@@ -96,17 +96,6 @@ export class RPage {
   timeOut: any = "发送验证码";
   timer: any;
 
-  data: any;
-  accountName: any;
-  accountMobile: any;
-  userName: any;
-  deviceId: any;
-  authCode: any;
-
-
-  rePage: string;
-  disable: boolean = false;
-
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private alertCtrl: AlertController,
@@ -118,7 +107,6 @@ export class RPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RPage');
-    this.rePage = this.navParams.get("RPage");
   }
 
   title(message){
