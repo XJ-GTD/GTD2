@@ -48,7 +48,15 @@
 ```
 ## 备份/恢复
 
-## 黑名单
+## 设置
+### 菜单
+* [菜单](https://www.guobaa.com/fdd/thymeleaf/9738/json/9739) [[Source View](https://xiaoji.guobaa.com/abl/store/local/getContent/9738)] [[Data View](https://xiaoji.guobaa.com/abl/store/local/getContent/9739)]
+```
+\\192.168.0.158\fileshare\abl\ce\cec839c8cd1d9ce9b5ad4154c65bb3b9a26907f7a44edd90e5c2c1db81e515bb\6b360504-c201-453f-8d95-3f15ab61e325-1552624702316.html
+\\192.168.0.158\fileshare\abl\a4\a4873ba00c443386e6d1384993819d236b25d20c7656c34f619c1ee09ad64cc7\ec05a9a5-499d-42cf-9e6b-a518020e5d2e-1552624814152.json
+```
+
+### 黑名单
 * [黑名单](https://www.guobaa.com/fdd/thymeleaf/9736/json/9737) [[Source View](https://xiaoji.guobaa.com/abl/store/local/getContent/9736)] [[Data View](https://xiaoji.guobaa.com/abl/store/local/getContent/9737)]
 ```
 \\192.168.0.158\fileshare\abl\ce\cec839c8cd1d9ce9b5ad4154c65bb3b9a26907f7a44edd90e5c2c1db81e515bb\19bdefc1-7e24-48af-939a-cfc815b94b67-1552618854313.html
