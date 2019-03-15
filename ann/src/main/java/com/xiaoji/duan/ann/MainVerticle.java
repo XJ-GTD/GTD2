@@ -151,6 +151,35 @@ public class MainVerticle extends AbstractVerticle {
 				
 				getUserInfo(future, openid);
 			}
+		} else if ("inteligence_mix".equals(announceType)) {
+			for (int pos = 0; pos < announceTo.size(); pos++) {
+				String openid = announceTo.getString(pos);
+				System.out.println("Announce to " + openid + " start process.");
+				Future<JsonObject> future = Future.future();
+				
+				future.setHandler(handler -> {
+					if (handler.succeeded()) {
+						JsonObject userinfo = handler.result();
+						
+						System.out.println("User info fetched with " + openid);
+						System.out.println(userinfo.encode());
+						String unionId = userinfo.getJsonObject("data").getString("unionid");
+						
+						if (unionId == null || StringUtils.isEmpty(unionId)) {
+							System.out.println("inteligence message can not announce by sms to " + openid);
+						} else {
+							System.out.println("announce by mwxing message to " + unionId);
+							sendMQMessages(unionId + ".*", announceContent.getJsonObject("mwxing"));
+						}
+						
+					} else {
+						System.out.println("User info fetched error with " + handler.cause().getMessage());
+						System.out.println("inteligence message can not announce by sms to " + openid);
+					}
+				});
+				
+				getUserInfo(future, openid);
+			}
 		} else {
 			System.out.println("Received process undefined messages.");
 		}
