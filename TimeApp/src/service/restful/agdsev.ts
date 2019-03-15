@@ -139,11 +139,14 @@ export class AgdPro{
   ai: string;
   //主题
   at: string;
-  //时间(YYYY/MM/DD HH:mm)
-  adt: string;//开始日期
-  st: string;//开始时间
-  ed: string;//结束日期
-  et: string;//结束时间
+  //时间(YYYY/MM/DD)
+  adt: string;
+  //开始时间
+  st:string;
+  //结束日期
+  ed:string;
+  //结束时间
+  et:string;
   //计划
   ap: string;
   //重复

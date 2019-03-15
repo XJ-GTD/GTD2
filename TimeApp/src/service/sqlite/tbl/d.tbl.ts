@@ -158,6 +158,9 @@ export class DTbl implements ITbl {
     if(this._pi != null && this._pi!=""){
       sq = sq + 'and  pi ="' + this._pi +'"';
     }
+    if(this._si != null && this._si!=""){
+      sq = sq + 'and  si ="' + this._si +'"';
+    }
     sq = sq + ';'
     return sq;
   }
