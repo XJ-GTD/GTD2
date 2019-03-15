@@ -388,6 +388,9 @@ export class TddjService {
         bs.code =0;
         bs.data = data;
         resolve(bs);
+      }).catch(err =>{
+        bs.code =-98;
+        resolve(bs);
       })
     });
   }
