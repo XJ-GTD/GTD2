@@ -1,5 +1,5 @@
-import {ModuleWithProviders, NgModule} from '@angular/core';
-import {IonicModule} from 'ionic-angular';
+import {NgModule} from '@angular/core';
+import { IonicPageModule} from 'ionic-angular';
 import {TdlPage } from './tdl';
 import {TdlService} from "./tdl.service";
 
@@ -8,19 +8,11 @@ import {TdlService} from "./tdl.service";
     TdlPage,
   ],
   imports: [
-    IonicModule,
-  ],
-  exports: [
-    TdlPage,
+    IonicPageModule.forChild(TdlPage),
   ],
   providers: [
     TdlService,
   ],
 })
 export class TdlPageModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: TdlPageModule
-    };
-  }
 }

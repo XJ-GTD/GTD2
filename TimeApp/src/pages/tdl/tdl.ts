@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, Renderer2} from '@angular/core';
-import {App, NavController, NavParams} from 'ionic-angular';
+import {App, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import * as moment from "moment";
 
 /**
@@ -8,84 +8,33 @@ import * as moment from "moment";
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
+@IonicPage()
 @Component({
   selector: 'page-tdl',
-  template: `
-    <ion-scroll scrollY="true">
-      <ul>
-        <li ion-item *ngFor="let itm of scheduleLs ;let i = index" (click)="showScheduleDetail(i)"
-            [class.new-message]="itm.isMessage">
-          <p item-start>
-            {{itm.scheduleStartTime}}
-          </p>
-
-          <div class="self" *ngIf="itm.scheduleType=='1'" [ngStyle]="{'background-color':itm.labelColor}"></div>
-          <div class="anther" *ngIf="itm.scheduleType=='2'" [ngStyle]="{'border-bottom-color':itm.labelColor}"></div>
-          <!--<ion-icon name="arrow-dropright-circle"></ion-icon>-->
-          <span>
-       {{itm.scheduleName}}
-      </span>
-          <small *ngIf="itm.isMessage">\u2022</small>
-        </li>
-      </ul>
-    </ion-scroll>
-    <div [hidden]="noShow" class="backdrop-div" >
-      <ion-backdrop disable-activated class="backdrop"> <ion-icon ios="ios-close" md="md-close" class="close" (click)="backdropclick($event)"></ion-icon></ion-backdrop>
-      <div class="pop-css" 
-           *ngFor="let schedule of scheduleDetailLs" 
-           (swipe)="swipe($event)" 
-           [ngStyle]="{'background-color':schedule.labelColor}" >
-        <ion-card>          
-          <ion-card-header [ngStyle]="{'border-bottom-color':schedule.labelColor}">
-            <ion-item  no-padding>
-              <ion-icon name="pricetag" item-start class="ico-img"></ion-icon>
-              <h2>{{schedule.labelName}}</h2>
-            </ion-item>
-            <button (click)="editSchedule(schedule)" class="buttonWan" item-right>详细</button>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-list>
-              <ion-item class="content" no-padding>
-                <ion-icon name="calendar" item-start class="ico-img"></ion-icon>
-                <h2>{{schedule.scheduleName}}</h2>
-              </ion-item>
-              <!--<ion-item class="content" no-padding>-->
-                <!--<ion-icon name="paper" item-start class="ico-img"></ion-icon>-->
-                <!--<h2>{{schedule.comment}}</h2 >-->
-              <!--</ion-item>-->
-              <ion-item *ngIf="schedule.group && schedule.group.length > 0" class="group" no-padding>
-                <ion-icon name="contacts" item-start class="ico-img"></ion-icon>
-                <div item-left margin-left *ngFor="let rc of schedule.group" >
-                  <div style="display: flow-root">
-                    <ion-thumbnail>
-                      <img [src]="rc.hiu">
-                    </ion-thumbnail>
-                    <span>
-                      {{rc.ran}}
-                    </span>
-                  </div>
-                </div>               
-              </ion-item>
-              <ion-item  no-padding>
-                <ion-icon name="notifications" item-start class="ico-img"></ion-icon>
-                <h2>{{schedule.remindTime}}</h2>
-              </ion-item>
-            </ion-list>
-          </ion-card-content>
-
-          <div class="card-footer">
-            <p>{{schedule.publisherName}}</p>
-            <p>
-              {{schedule.scheduleStartTime}}</p>
-          </div>
-          
-        </ion-card>
-        
-      </div>
-    </div>`
+  template: `<ion-header>
+    <ion-toolbar>
+      <ion-title>
+        Description
+      </ion-title>
+      <ion-buttons start>
+        <button ion-button (click)="dismiss()">
+          <span ion-text color="primary" >Cancel</span>
+          <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content style="background: red">
+     <ion-list>
+    </ion-list>
+  </ion-content>`
 
 })
 export class TdlPage {
+  dismiss(){
+    this.viewCtrl.dismiss({},"",{direction:"right",});
+
+  }
 //
 //   scheduleDetailLs: Array<ScheduleDetailsModel> = [];
 //
@@ -95,16 +44,9 @@ export class TdlPage {
 //
 //   event:any;
 //
-//   constructor(public navCtrl: NavController,
-//               public navParams: NavParams,
-//               private rnd: Renderer2,
-//               private el: ElementRef,
-//               private app: App) {
-//     this.height = window.document.body.clientHeight - 350 - 110;
-//
-//     this.init();
-//
-//   }
+  constructor(public viewCtrl: ViewController) {
+
+  }
 //
 //   /**
 //    * Height of the tabs

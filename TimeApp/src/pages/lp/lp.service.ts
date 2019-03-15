@@ -90,7 +90,11 @@ export class LpService {
         // 同步数据（调用brService方法恢复数据）
         //return this.brService.recover(0);
         //建立websoct连接（调用websoctService）
-        this.websocketService.connect();
+        return this.websocketService.connect();
+      }).then(data=>{
+        // 同步数据（调用brService方法恢复数据）
+        //return this.brService.recover(0);
+        //建立websoct连接（调用websoctService）
         resolve(lpdata)
       }).catch(error=>{
         resolve(error)

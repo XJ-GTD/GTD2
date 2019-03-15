@@ -12,11 +12,11 @@ export class DataConfig {
    * 0正常进入1首次进入2无数据3更新后进入
    * @type {string}
    */
-  public static isFirst:number = 1;
+  public static isFirst: number = 1;
 
-  public static defaultHeadImg:string = "./assets/imgs/headImg.jpg";
+  public static defaultHeadImg: string = "./assets/imgs/headImg.jpg";
 
-  public static NOT_PLAYER:string = "./assets/imgs/headImg.jpg";
+  public static NOT_PLAYER: string = "./assets/imgs/headImg.jpg";
 
   /*========== 语音对应文言 start =========*/
   public static XF_SPEECH_SCHEDULE_CREATE: string = "";
@@ -28,16 +28,16 @@ export class DataConfig {
   /*========== 语音对应文言  end  =========*/
 
   /* ------- 字典数据 ---------*/
-  public static ZTD_MAP:Map<string,any> = new Map<string,any>();
-  public static REPEAT_TYPE:string = '12';
+  public static ZTD_MAP: Map<string, any> = new Map<string, any>();
+  public static REPEAT_TYPE: string = '12';
   //随机语音播报字典类型
-  public static TEXT_TYPE:string = '401';
+  public static TEXT_TYPE: string = '401';
   //提醒方式
-  public static ALARM_TYPE:string = '13';
+  public static ALARM_TYPE: string = '13';
   //随机语音播报字典内容
-  public static TEXT_CONTENT:Map<string,any> = new Map<string,any>();
+  public static TEXT_CONTENT: Map<string, any> = new Map<string, any>();
   //随机语音播报字典类型
-  public static MESSAGE_TYPE:string = '400';
+  public static MESSAGE_TYPE: string = '400';
 
 
   /* =============== 语音页面type =============*/
@@ -53,14 +53,14 @@ export class DataConfig {
   public static F1: string = "F1";//取消
 
   /* ============ mq返回类型 ===============*/
-  public static MQTQ : string = '0'; // 处理逻辑前用户问答
-  public static MQTM : string = '1'; // 处理逻辑前讯飞回答
-  public static MQTL : string = '2'; // 处理逻辑后
+  public static MQTQ: string = '0'; // 处理逻辑前用户问答
+  public static MQTM: string = '1'; // 处理逻辑前讯飞回答
+  public static MQTL: string = '2'; // 处理逻辑后
 
   /* ============ Sql执行类型 ===============*/
-  public static AC_O : string = '0'; // 添加
-  public static AC_T : string = '1'; // 更新
-  public static AC_D : string = '2'; // 删除
+  public static AC_O: string = '0'; // 添加
+  public static AC_T: string = '1'; // 更新
+  public static AC_D: string = '2'; // 删除
 
   /* ============ 页面名字配置 ===============*/
   static PAGE = {
@@ -83,28 +83,27 @@ export class DataConfig {
     _GL_PAGE: "GlPage",       // 辅助功能 - 群组列表
     _GC_PAGE: "GcPage",       // 辅助功能 - 群组编辑
     _PS_PAGE: "PsPage",       // 辅助功能 - 个人设置
-    _HB_PAGE: "HbPage",
-    _HB01_PAGE: "Hb01Page",
-    _AL_PAGE: "AlPage"
+    _BL_PAGE: "BlPage",       // 辅助功能 - 黑名单
+    _AL_PAGE: "AlPage"        //启动页
   }
 
   /* ============ 返回值配置 ===============*/
-  public static SUCCESS_CODE : number = 0;
-  public static SUCCESS_MESSAGE : string ='成功！';
-  public static ERR_CODE : number = 1;
-  public static ERR_MESSAGE : string='系统出错！';
-  public static NULL_CODE : number= 2;
-  public static NULL_MESSAGE : string='查询结果不存在！';
-  public static EXSIT_CODE : number= 3;
-  public static EXSIT_MSG : string= '该数据已存在！';
-  public static NOT_NETWORK_CODE : number= 4;
-  public static NOT_NETWORK_MSG : string= '当前没有网络！';
-  public static QX_NOT_CODE : number = 5;
-  public static QX_NOT_MESSAGE : string='您没有权限！';
-  public static NOT_PARA_CODE : number = 6;
-  public static NOT_PARA_MESSAGE : string='参数不能为空！';
+  public static SUCCESS_CODE: number = 0;
+  public static SUCCESS_MESSAGE: string = '成功！';
+  public static ERR_CODE: number = 1;
+  public static ERR_MESSAGE: string = '系统出错！';
+  public static NULL_CODE: number = 2;
+  public static NULL_MESSAGE: string = '查询结果不存在！';
+  public static EXSIT_CODE: number = 3;
+  public static EXSIT_MSG: string = '该数据已存在！';
+  public static NOT_NETWORK_CODE: number = 4;
+  public static NOT_NETWORK_MSG: string = '当前没有网络！';
+  public static QX_NOT_CODE: number = 5;
+  public static QX_NOT_MESSAGE: string = '您没有权限！';
+  public static NOT_PARA_CODE: number = 6;
+  public static NOT_PARA_MESSAGE: string = '参数不能为空！';
 
-  public static RETURN_MSG:Map<string,any>=new Map<string,any>();
+  public static RETURN_MSG: Map<string, any> = new Map<string, any>();
 
 
   /* ============ webscoct  需要用配置 ===============*/
@@ -133,7 +132,6 @@ export class DataConfig {
   public static BC_SCD: string = "D1102";    //删除日程
   public static BC_SCU: string = "D1103";    //更新日程
   public static BC_PEC: string = "D1201";    //添加参与人
-
 
 
 }

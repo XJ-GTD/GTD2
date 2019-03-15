@@ -35,7 +35,7 @@ export class WebsocketService {
       this.client = Stomp.client(this.RABBITMQ_WS_URL);
 
       //获取websocte  queue TODO
-      this.queue = "";
+      this.queue = "123";
       //呼吸
       this.client.heartbeat.outgoing = 0;
       this.client.heartbeat.incoming = 0;
@@ -47,29 +47,32 @@ export class WebsocketService {
   /**
    * 监听消息队列
    */
-  public connect():Promise<any> {
-    return this.settingWs().then(resolve => {
-      console.log("-----MQ开始建立连接----");
-      console.log("-----MQ QUEUE_NAME: [" + this.queue + "] ----");
+  public connect(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this.settingWs().then(data => {
+        console.log("-----MQ开始建立连接----");
+        console.log("-----MQ QUEUE_NAME: [" + this.queue + "] ----");
 
-      // 连接消息服务器
-      this.client.connect(this.login, this.password, frame => {
-        console.log(this.client);
-        this.subscription = this.client.subscribe("/queue/" + this.queue, data => {
-          this.dispatchService.dispatch(data.body).then(data => {
-            console.log("message====>" + data + "=====>处理完毕");
-          })
-        });
-      }, error => {
-        console.log('错误回调webSocket error! :' + error);
-        this.connect();
+        // 连接消息服务器
+        this.client.connect(this.login, this.password, frame => {
+          console.log(this.client);
+          resolve();
+          this.subscription = this.client.subscribe("/queue/" + this.queue, data => {
+            this.dispatchService.dispatch(data.body).then(data => {
+              console.log("message====>" + data + "=====>处理完毕");
+            })
+          });
+        }, error => {
+          console.log('错误回调webSocket error! :' + error);
+          this.connect();
 
-      }, event => {
-        console.log('关闭回调socket close!' + event);
-      }, '/');
+        }, event => {
+          console.log('关闭回调socket close!' + event);
+        }, '/');
 
-      resolve();
+      })
     })
+
   }
 
   public close() {

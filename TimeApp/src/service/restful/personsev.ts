@@ -21,7 +21,7 @@ export class PersonRestful {
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AAT");
       url.url = url.url + '?appid=d3d3Lmd1b2JhYS5jb20&secret=c2VjcmV0QHd3dy5ndW9iYWEuY29t&code='+ code +'&grant_type=any';
-      this.request.get(url).then(data => {
+      return this.request.get(url).then(data => {
         //处理返回结果
         personData = data;
         resolve(personData);
