@@ -128,17 +128,53 @@ public class MainVerticle extends AbstractVerticle {
 						if (unionId == null || StringUtils.isEmpty(unionId)) {
 							System.out.println("announce by sms to " + openid);
 							
-							sendShortMessages(openid, "// todo:");
+							JsonObject sms = announceContent.getJsonObject("sms");
+							
+							sms.put("templateid", sms.getJsonObject("template").getString("newuser"));
+							
+							sendShortMessages(openid, sms);
 
 						} else {
 							System.out.println("announce by mwxing message to " + unionId);
-							sendMQMessages(unionId + ".*", announceContent);
+							sendMQMessages(unionId + ".*", announceContent.getJsonObject("mwxing"));
 						}
 						
 					} else {
 						System.out.println("User info fetched error with " + handler.cause().getMessage());
 						System.out.println("announce by sms to " + openid);
-						sendShortMessages(openid, "");
+						JsonObject sms = announceContent.getJsonObject("sms");
+						
+						sms.put("templateid", sms.getJsonObject("template").getString("newuser"));
+						sendShortMessages(openid, sms);
+					}
+				});
+				
+				getUserInfo(future, openid);
+			}
+		} else if ("inteligence_mix".equals(announceType)) {
+			for (int pos = 0; pos < announceTo.size(); pos++) {
+				String openid = announceTo.getString(pos);
+				System.out.println("Announce to " + openid + " start process.");
+				Future<JsonObject> future = Future.future();
+				
+				future.setHandler(handler -> {
+					if (handler.succeeded()) {
+						JsonObject userinfo = handler.result();
+						
+						System.out.println("User info fetched with " + openid);
+						System.out.println(userinfo.encode());
+						String unionId = userinfo.getJsonObject("data").getString("unionid");
+						
+						if (unionId == null || StringUtils.isEmpty(unionId)) {
+							System.out.println("inteligence message can not announce by sms to " + openid);
+						} else {
+							System.out.println("announce by mwxing message to " + unionId);
+							sendMQMessages(unionId + ".*", announceContent.getJsonObject("mwxing"));
+						}
+						
+					} else {
+						System.out.println("User info fetched error with " + handler.cause().getMessage());
+						System.out.println("inteligence message can not announce by sms to " + openid);
 					}
 				});
 				
@@ -166,7 +202,7 @@ public class MainVerticle extends AbstractVerticle {
 		});
 	}
 	
-	private void sendShortMessages(String phoneno, String content) {
+	private void sendShortMessages(String phoneno, JsonObject content) {
 		System.out.println("sms starting...");
 		client.head(
 				config().getInteger("sms.service.port", 8080),
@@ -175,8 +211,8 @@ public class MainVerticle extends AbstractVerticle {
 		.method(HttpMethod.POST)
 		.addQueryParam("platformType", "*")
 		.addQueryParam("mobile", phoneno)
-		.addQueryParam("sendType", "1")
-		.addQueryParam("sendContent", content)
+		.addQueryParam("sendType", content.getString("templateid"))
+		.addQueryParam("sendContent", content.getString("content"))
 		.send(handler -> {
 				if (handler.succeeded()) {
 					System.out.println("sms response " + handler.result().statusCode() + " " + handler.result().bodyAsString());

@@ -373,8 +373,8 @@ public class MainVerticle extends AbstractVerticle {
 		.method(HttpMethod.POST)
 		.addQueryParam("platformType", "*")
 		.addQueryParam("mobile", phoneno)
-		.addQueryParam("sendType", "0")
-		.addQueryParam("sendContent", code)
+		.addQueryParam("sendType", config().getString("sms.service.template.verifycode", "v94vW2"))
+		.addQueryParam("sendContent", new JsonObject().put("code", code).put("time", (config().getLong("sms.expiretime", 10 * 60L) / 60) + "·ÖÖÓ").encode())
 		.send(handler -> {
 				if (handler.succeeded()) {
 					System.out.println("sms response " + handler.result().statusCode() + " " + handler.result().bodyAsString());
@@ -394,7 +394,7 @@ public class MainVerticle extends AbstractVerticle {
 				.put("verifyphone", phoneno)
 				.put("verifycode", code)
 				.put("createtime", System.currentTimeMillis())
-				.put("expiretime", config().getLong("sms.expiretime", 10 * 60L)),
+				.put("expiretime", config().getLong("sms.expiretime", config().getLong("sms.service.verifycode.expiretime", 10 * 60L))),
 				save -> {
 					if (save.succeeded()) {
 						JsonObject retdata = new JsonObject();
