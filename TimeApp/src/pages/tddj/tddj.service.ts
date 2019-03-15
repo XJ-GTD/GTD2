@@ -19,7 +19,7 @@ export class TddjService {
   }
 
   //获取日程
-  async get(si: string, type: string) {
+  async get(si: string) {
     let bs = new BsModel<ScdData>();
     //获取本地日程
 
