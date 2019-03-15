@@ -44,6 +44,8 @@ import {EmitService} from "../service/util-service/emit.service";
 import {WebsocketModule} from "../ws/websocket.module";
 import {BrService} from "../pages/br/br.service";
 import {AgdbusiService} from "../service/util-service/agdbusi.service";
+import {FeedbackService} from "../service/cordova/feedback.service";
+import {AlarmService} from "../service/cordova/alarm.service";
 
 @NgModule({
   declarations: [
@@ -105,6 +107,8 @@ import {AgdbusiService} from "../service/util-service/agdbusi.service";
     AssistantService,
     EmitService,
     AgdbusiService,
+    FeedbackService,
+    AlarmService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

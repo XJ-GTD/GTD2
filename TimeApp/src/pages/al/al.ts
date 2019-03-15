@@ -89,7 +89,7 @@ export class AlPage {
     if (!this.alData.islogin){
       this.nav.setRoot(DataConfig.PAGE._LP_PAGE);
     }else{
-      this.nav.setRoot(DataConfig.PAGE._H_PAGE);
+      this.nav.setRoot(DataConfig.PAGE._M_PAGE);
     }
   }
 

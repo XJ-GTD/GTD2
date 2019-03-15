@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import { Events, IonicPage, ModalController} from 'ionic-angular';
+import {Events, IonicPage, ModalController, NavController} from 'ionic-angular';
 import {
   CalendarComponent,
   CalendarComponentOptions
@@ -8,6 +8,7 @@ import * as moment from "moment";
 import {TdlPage} from "../tdl/tdl";
 import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 首页 page.
@@ -43,7 +44,6 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
       </div>
       <p class="tipDay"><span class="showDay animated flipInX">{{showDay}}</span><span
        class="showDay2">{{showDay2}}</span></p>
-      <page-tdl></page-tdl>
     </div>
     <div class=" animated swing  assistant" (click)="openVoice()" #assistant>
       <img src="./assets/imgs/yuying.png"/>
@@ -53,7 +53,6 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 })
 export class HPage {
   @ViewChild(CalendarComponent) ion2calendar: CalendarComponent;
-  @ViewChild(TdlPage) tdlPage: TdlPage;
 
 
   showDay: string;
@@ -70,7 +69,8 @@ export class HPage {
   constructor(private modalCtr: ModalController,
               private utilService: UtilService,
               private xiaojiFeekback: FeedbackService,
-              private events: Events) {
+              private events: Events,
+              private navController:NavController) {
     moment.locale('zh-cn');
   }
 
@@ -121,22 +121,23 @@ export class HPage {
 
   //查询当天日程
   onSelectDayEvent($event) {
-    if (!$event) {
-      return;
-    }
-    this.event = $event;
-    let eventDate = new Date($event.time);
-    this.selectDay = eventDate;
-    let year = eventDate.getFullYear();
-    let month = eventDate.getMonth() + 1;
-    let day = eventDate.getDate();
-    this.showDay = this.utilService.showDay(moment().set({
-      'year': year,
-      'month': month - 1,
-      'date': day
-    }).format('YYYY-MM-DD'));
-    this.showDay2 = moment().set({'year': year, 'month': month - 1, 'date': day}).format('dddd YYYY 年 MM 月 DD 日');
+    // if (!$event) {
+    //   return;
+    // }
+    // this.event = $event;
+    // let eventDate = new Date($event.time);
+    // this.selectDay = eventDate;
+    // let year = eventDate.getFullYear();
+    // let month = eventDate.getMonth() + 1;
+    // let day = eventDate.getDate();
+    // this.showDay = this.utilService.showDay(moment().set({
+    //   'year': year,
+    //   'month': month - 1,
+    //   'date': day
+    // }).format('YYYY-MM-DD'));
+    // this.showDay2 = moment().set({'year': year, 'month': month - 1, 'date': day}).format('dddd YYYY 年 MM 月 DD 日');
 
+    this.navController.push(DataConfig.PAGE._TDL_PAGE,{selectDay:$event},{direction:"back",animation:"push"});
     //this.tdlPage.showScheduleLs($event);
   }
 

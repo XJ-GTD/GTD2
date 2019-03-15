@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 
 /**
  * Generated class for the 黑名单列表 page.
@@ -11,7 +11,20 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 @IonicPage()
 @Component({
   selector: 'page-bl',
-  templateUrl: 'bl.html',
+  template: `
+    <ion-header>
+
+      <ion-navbar>
+        <ion-title>黑名单</ion-title>
+      </ion-navbar>
+
+    </ion-header>
+
+
+    <ion-content padding>
+
+    </ion-content>
+  `
 })
 export class BlPage {
 
