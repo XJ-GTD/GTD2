@@ -19,7 +19,7 @@ export class TddjService {
   }
 
   //获取日程
-  async get(si: string, type: string) {
+  async get(si: string) {
     let bs = new BsModel<ScdData>();
     //获取本地日程
 
@@ -379,10 +379,19 @@ export class TddjService {
   }
 
   //获取计划列表
-  getPlans(): Promise<any> {
+  getPlans(): Promise<BsModel<Array<JhTbl>>> {
     return new Promise((resolve, reject) => {
       //获取本地计划列表
-
+      let jh = new JhTbl();
+      let bs = new BsModel<Array<JhTbl>>();
+      this.sqlExce.getList<JhTbl>(jh).then(data =>{
+        bs.code =0;
+        bs.data = data;
+        resolve(bs);
+      }).catch(err =>{
+        bs.code =-98;
+        resolve(bs);
+      })
     });
   }
 }
