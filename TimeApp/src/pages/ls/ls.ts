@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {AlertController, IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, Navbar, NavController, NavParams, ToastController} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {LsService, PageLsData} from "./ls.service";
 import {ReturnConfig} from "../../../../TimeApp（v1）/src/app/return.config";
@@ -23,46 +23,38 @@ import {ReturnConfig} from "../../../../TimeApp（v1）/src/app/return.config";
   '  <div style="padding:10px;margin-top: 40px">' +
   '    <ion-item padding>' +
   '      <ion-icon name="ios-person-outline" item-start></ion-icon>' +
-  '      <ion-input type="tel" placeholder="输入您的手机号" [(ngModel)]="accountMobile"  (ionBlur)="checkPhone()"  (input)="format()" clearInput></ion-input>' +
+  '      <ion-input type="tel" placeholder="输入您的手机号" [(ngModel)]="lsData.mobile" pattern="[0-9A-Za-z]*"  (ionBlur)="checkPhone()"  (input)="format()" clearInput></ion-input>' +
   '    </ion-item>' +
-  '    <ion-label *ngIf="this.errorCode == 0" class="error_info">手机号不能为空</ion-label>' +
-  '    <ion-label *ngIf="this.errorCode == 1 || this.errorCode == 2" class="error_info">请输入正确11位手机号</ion-label>' +
   '    <ion-item padding>' +
   '      <ion-icon name="ios-lock-outline" item-start></ion-icon>' +
-  '      <ion-input type="number" placeholder="验证码" [(ngModel)]="authCode" clearInput></ion-input>' +
+  '      <ion-input type="number" placeholder="验证码" [(ngModel)]="lsData.authCode" clearInput></ion-input>' +
   '      <ion-buttons item-right>' +
   '        <button ion-button (click)="sendMsg()">{{timeOut}}</button>' +
   '      </ion-buttons>' +
   '    </ion-item>' +
-  '    <ion-label *ngIf="this.agreeFlag == false" class="error_info">请阅读并同意《用户协议》</ion-label>' +
   '    <button ion-button block color="danger" class="login_button" (click)="signIn()" style="margin-top: 100px !important;">' +
   '      登录' +
   '    </button>' +
   '    <div margin-top>' +
   '      <span float-end (click)="userAgreement()">我已阅读并同意<span style="text-decoration: underline;color:blue">《用户协议》</span></span>' +
-  '      <span style="display: block;" float-end><ion-checkbox [(ngModel)]="agree"></ion-checkbox></span>' +
+  '      <span style="display: block;" float-end><ion-checkbox [(ngModel)]="checkBoxClick"></ion-checkbox></span>' +
   '    </div>' +
   '  </div>' +
   '</ion-content>',
 })
 export class LsPage {
 
-  lsData:PageLsData = new PageLsData();
-
   @ViewChild(Navbar) navBar: Navbar;
 
-  accountMobile:any;
-  authCode:any;
+  lsData:PageLsData = new PageLsData();
   errorCode:any;
-  agree:any = false;
-  agreeFlag:any = true;
+  checkBoxClick:any = true;
   timeOut:any = "发送验证码";
   timer:any;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
               public alertCtrl: AlertController,
-              public utilService: UtilService,
+              private toastCtrl: ToastController,
               private lsService: LsService,) {
   }
 
@@ -77,88 +69,97 @@ export class LsPage {
     this.navCtrl.pop();
   };
 
-
-  signIn() {
-    if(this.agree != true || this.errorCode != 3){
-      this.checkPhone();
-      this.agreeFlag = this.agree;
-      return ;
-    }
-    this.agreeFlag = true;
-    let lsData:PageLsData = new PageLsData();
-    lsData.mobile = this.accountMobile;
-    lsData.authCode = this.authCode;
-    this.lsService.login(lsData).then(data=> {
-      console.log(data);
-      let message = ReturnConfig.RETURN_MSG.get(data.code.toString());
-      if (data.code == 0) {
-        this.navCtrl.setRoot('MPage');
-      }else{
-      }
-
-    }).catch(res=>{
-      console.log(res);
+  title(message){
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 1500,
+      position: 'middle'
     });
-
+    toast.present();
+    return;
   }
 
-  checkPhone(){
+  alert(message){
+    let alert = this.alertCtrl.create({
+      title:'提示信息',
+      subTitle: message,
+      buttons:['确定']
+    });
+    alert.present();
+  }
 
-    this.errorCode = this.utilService.checkPhone(this.accountMobile);
-    // if(this.errorCode == 0){
-    //   this.checkMoblieNull = true;
-    //   this.checkMoblie = true;
-    // }
-    // if(this.errorCode == 3){
-    //   this.checkMoblie = false;
-    //   this.checkMoblieNull = false;
-    //  }
-    // if(this.errorCode == 1 || this.errorCode == 2){
-    //   this.checkMoblieNull = false;
-    // }
+  signIn() {
+    if(this.errorCode == undefined || this.errorCode == 0 ){  //判断手机号是否为空
+      this.title("手机号不能为空");
+    }else if(this.errorCode == 3){ //验证手机号是否符合规范
 
+      this.navCtrl.setRoot('MPage');
+      if (this.lsData.authCode == null || this.lsData.authCode == "" || this.lsData.authCode == undefined){     //判断验证码是否为空
+        this.title("验证码不能为空");
+      } else if (this.checkBoxClick != true){  //判断用户协议是否选择
+        this.title("请读阅并勾选用户协议");
+      }else if(this.lsData.verifykey == "") {
+        this.title("请发送短信并填写正确的短信验证码");
+      } else{
+        this.lsService.login(this.lsData).then(data=> {
+          if (data.code != 0)
+            throw  data;
+
+          console.log("手机验证码登录成功"+ JSON.stringify(data));
+          this.navCtrl.setRoot('MPage');
+        }).catch(res=>{
+          console.log(res);
+          this.alert(res.message);
+        });
+      }
+    }else {
+      this.title("请输入正确11位手机号");
+    }
   }
 
   userAgreement() {
     this.navCtrl.push('PPage');
-    this.agree = true;
   }
-
 
   sendMsg(){
-    this.lsService.getSMSCode(this.accountMobile).then(data=>{
-      console.log("sc::" + data);
-      //短信验证码KEY 赋值给验证码登录信息
-      this.lsData.verifykey = data.data.verifykey;
-    }).catch(ref =>{
-      console.log("ref::" + ref);
-    });
-    // console.log(11);
-    // if(this.errorCode == 3){
-    //   this.lsmService.sc(this.accountMobile).then(data=>{
-    //     console.log("sc::" + data);
-    //     this.utilService.alert("已发送验证码");
-    //   }).catch(ref =>{
-    //     console.log("ref::" + ref);
-    //     this.utilService.alert("发送验证码出错");
-    //   });
-    //
-    //   this.timeOut = 60;
-    //   this.timer = setInterval(()=>{
-    //     this.timeOut --;
-    //     if(this.timeOut <= 0){
-    //       clearTimeout(this.timer);
-    //       console.log("清除定时器");
-    //       this.timeOut="发送验证码"
-    //     }
-    //     console.log(this.timeOut)
-    //   },1000)
-    //
-    // }else{
-    //   this.utilService.alert("请填写正确的手机号");
-    // }
+    if(this.errorCode == 3) {
+      this.lsService.getSMSCode(this.lsData.mobile).then(data => {
+        console.log("短信发送成功"+ JSON.stringify(data));
+        //短信验证码KEY 赋值给验证码登录信息
+        this.lsData.verifykey = data.data.verifykey;
+        this.alert("短信发送成功");
+      }).catch(ref => {
+        console.log("ref::" + ref);
+        this.alert("短信发送失败");
+      });
 
+      this.timeOut = 10;
+      this.timer = setInterval(()=>{
+        this.timeOut --;
+        if(this.timeOut <= 0){
+          clearTimeout(this.timer);
+          console.log("清除定时器");
+          this.timeOut="发送验证码"
+        }
+        console.log(this.timeOut)
+      },1000)
+    }else{
+      this.title("请填写正确的手机号");
+    }
   }
+
+  checkPhone() {
+    this.lsService.checkPhone(this.lsData.mobile).then(data=>{
+      this.errorCode = data;
+    })
+  }
+
+  format() {
+    this.lsService.remo(this.lsData.mobile).then(data=>{
+      this.lsData.mobile = data;
+    })
+  }
+
 
   // ionViewDidLoad(){
   //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");
@@ -186,9 +187,4 @@ export class LsPage {
   // ionViewCanLeave(){
   //   console.log("ionViewCanLeave");
   // }
-
-
-  format(){
-    this.accountMobile = this.utilService.remo(this.accountMobile);
-  }
 }

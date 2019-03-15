@@ -20,8 +20,8 @@ export class SmsRestful {
       let url: UrlEntity = this.config.getRestFulUrl("SSMIC");
       this.request.post(url, smsData).then(data => {
         //处理返回结果
-        bsModel.code = data.code;
-        bsModel.message = data.message;
+        bsModel.code = data.errcode;
+        bsModel.message = data.errmsg;
         bsModel.data = data.data;
         resolve(bsModel);
 
@@ -39,7 +39,8 @@ export class SmsRestful {
 }
 
 export class InData{
-  phoneno:string; //手机号码
+  phoneno:string = ""; //手机号码
+  timeOut:any = 0;
 }
 
 export class Key{
