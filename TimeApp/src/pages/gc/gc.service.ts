@@ -143,6 +143,7 @@ export class PageDcData {
 
   gi: string=""; //关系群组主键ID
   gn: string="";//组名
+  gnpy: string="";//组名拼音
   gm: string=""; //备注
   gc:number = 0; //群组人数
   fsl:Array<PageFsData> = new Array<PageFsData>(); //群组成员
