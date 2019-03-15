@@ -31,7 +31,7 @@ export class LpService {
       // 验证用户名密码
       this.authRestful.loginbypass(loginData).then(data => {
         if (data.code != 0)
-          throw  data.message;
+          throw  data;
 
         //获得token，放入头部header登录码
         let code = data.data.code;
@@ -101,9 +101,23 @@ export class LpService {
       })
     });
   }
+
+  checkPhone(mobile:string):Promise<any>{
+    return new Promise((resolve, reject) => {
+      resolve(this.util.checkPhone(mobile));
+    });
+  }
+
+  remo(mobile:string):Promise<any>{
+    return new Promise((resolve, reject) => {
+      resolve(this.util.remo(mobile));
+    });
+  }
 }
 
 export class PageLpData {
   mobile: string = "";
   password: string = "";
+  code: number = 0;
+  message: string = "";
 }
