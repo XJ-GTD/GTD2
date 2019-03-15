@@ -35,6 +35,7 @@ export class ScdData {
   sr: string = "";//日程关联ID
   bz: string = "";//备注
   tx: string = "";//提醒方式
+  pni:string = "";//日程原始ID
   wtt: number;//时间戳
 
 
