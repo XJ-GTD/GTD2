@@ -1,5 +1,7 @@
 # 冥王星App静态画面
 
+[ionic组件](https://ionicframework.com/docs/components)
+
 ## 帐户
 * [密码登录](https://www.guobaa.com/fdd/thymeleaf/9723/json/9722) [[Source View](https://xiaoji.guobaa.com/abl/store/local/getContent/9723)] [[Data View](https://xiaoji.guobaa.com/abl/store/local/getContent/9722)]
 ```
@@ -45,5 +47,12 @@
 \\192.168.0.158\fileshare\abl\a4\a4873ba00c443386e6d1384993819d236b25d20c7656c34f619c1ee09ad64cc7\b37c71ad-0d0b-4877-a6b8-8903ad9cbf21-1552358445052.json
 ```
 ## 备份/恢复
+
+## 黑名单
+* [黑名单](https://www.guobaa.com/fdd/thymeleaf/9736/json/9737) [[Source View](https://xiaoji.guobaa.com/abl/store/local/getContent/9736)] [[Data View](https://xiaoji.guobaa.com/abl/store/local/getContent/9737)]
+```
+\\192.168.0.158\fileshare\abl\ce\cec839c8cd1d9ce9b5ad4154c65bb3b9a26907f7a44edd90e5c2c1db81e515bb\19bdefc1-7e24-48af-939a-cfc815b94b67-1552618854313.html
+\\192.168.0.158\fileshare\abl\a4\a4873ba00c443386e6d1384993819d236b25d20c7656c34f619c1ee09ad64cc7\6221fc3b-4205-45f2-b5d6-82516d4f3fd2-1552618750715.json
+```
 
 ## 官网
