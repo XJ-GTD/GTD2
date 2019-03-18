@@ -1,51 +1,64 @@
 page-pc {
+  /*@font-face {
+    font-family: 'PingFang-Regular';
+    src: url('../assets/font/PingFang Regular.ttf');
+  }*/
 
-  .scroll-content {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    padding-bottom: 0 !important;
+  ion-content {
+    font-family: "PingFang-Regular";
   }
 
-  .item-inner{
-    border-bottom: 0px !important;
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: #000;
   }
 
-  .item-block.item-ios{
-    border-bottom: 1px solid #e5e5e5 ;
+  ion-content.content {
+    background-color: #000;
+    color: #fff;
   }
 
-  //.item-block.item-ios:nth-of-type(1){
-  //  border-bottom: 0px !important;
-  //  box-shadow: none !important;
-  //}
-
-  ion-item{
-    height: 60px;
+  ion-content .plan-list-item {
+    background-color: #000;
+    color: #fff;
   }
 
-  .height56{
-    height: 56px;
+  ion-list-header.plan-list-item {
+    color: rgb(153,153,153);
   }
 
-  .margin181{
-    margin:15px 8px 15px 0;
+  .color-dot {
+    width: 2vmin;
+    height: 2vmin;
+    background-color: #fff;
+    border-radius: 50%;
   }
 
-  textarea.text-input{
-    height:120px;
+  .color-pink {
+    background-color: rgb(192,119,219);
   }
 
-  ion-textarea{
-    border:1px solid #f2f2f2;
-    border-radius: 5px;
+  .color-blue {
+    background-color: rgb(81,170,242);
   }
 
-  .bortom{
-    border-bottom: 1px solid #cccccc;
+  .w-auto {
+    flex: 1;
   }
 
-  .scroll-content{
-    overflow-x: auto;
-    overflow-y: auto;
+  .grid .row {
+    height: 100%;
+  }
+
+  .list {
+    width: 100%;
+  }
+
+  .list-header, .list-header-md, .list-header-ios {
+    border: 0;
+  }
+
+  .name-input {
+    margin-top: 2vmin;
+    margin-bottom: 8vmin;
   }
 }
