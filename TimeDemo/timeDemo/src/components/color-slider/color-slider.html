@@ -1,0 +1,12 @@
+<!-- Generated template for the ColorSliderComponent component -->
+<div class="grid">
+  <div class="row" justify-content-center>
+    <div class="color-slider-circles" (pan)="panEvent($event)" justify-content-around>
+      <div class="color-slider-circle" index='0' [ngClass]="{'color-slider-circle-pop': isPanned[0]}"></div>
+      <div class="color-slider-circle" index='1' [ngClass]="{'color-slider-circle-pop': isPanned[1]}"></div>
+      <div class="color-slider-circle" index='2' [ngClass]="{'color-slider-circle-pop': isPanned[2]}"></div>
+      <div class="color-slider-circle" index='3' [ngClass]="{'color-slider-circle-pop': isPanned[3]}"></div>
+      <div class="color-slider-circle" index='4' [ngClass]="{'color-slider-circle-pop': isPanned[4]}"></div>
+    </div>
+  </div>
+</div>

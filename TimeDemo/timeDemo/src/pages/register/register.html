@@ -1,0 +1,47 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="goBack()" color="success">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-buttons right>
+      <button ion-button color="success">
+        帮助
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+<h1 ion-text>您的详细信息</h1>
+
+<ion-grid class="grid-login-basic no-padding-lr">
+  <ion-row justify-content-between align-items-center>
+    <div class="w-auto">
+      <ion-input type="tel" placeholder="手机号码"></ion-input>
+    </div>
+    <div>
+      <button ion-fab color="success"><ion-icon name="arrow-forward"></ion-icon></button>
+    </div>
+  </ion-row>
+  <ion-row justify-content-start align-items-center>
+    <div class="w-auto">
+      <ion-input type="number" placeholder="短信验证码"></ion-input>
+    </div>
+  </ion-row>
+  <ion-row justify-content-start align-items-center>
+    <div class="w-auto">
+      <ion-input type="text" placeholder="姓名"></ion-input>
+    </div>
+  </ion-row>
+  <ion-row justify-content-start align-items-center>
+    <div class="w-auto">
+      <ion-input type="password" placeholder="选择密码"></ion-input>
+    </div>
+  </ion-row>
+</ion-grid>
+  
+  <p class="text-agreement">创建帐户即表示您同意我们的 <a class="text-anchor" href="">服务条款</a> 和 <a class="text-anchor" href="">隐私政策</a> 。</p>
+</ion-content>
