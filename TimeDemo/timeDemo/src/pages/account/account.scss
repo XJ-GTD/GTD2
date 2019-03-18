@@ -1,0 +1,36 @@
+page-account {
+  background-color: #000;
+  
+  .grid-login-basic {
+    width: 100%;
+  }
+  
+  .w-auto {
+    flex: 1;
+  }
+  
+  .no-padding {
+    padding: 0;
+  }
+  
+  .no-padding-lr {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .no-margin-lr {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .text-anchor {
+    color: #18884d;
+    text-decoration: none;
+  }
+  
+  .text-agreement {
+    font-size: 1.2rem;
+  }
+
+
+}

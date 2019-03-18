@@ -1,0 +1,22 @@
+<ion-content>
+<ion-grid>
+  <ion-row>
+    <div class="w-auto">
+      <p padding></p>
+      <h1 ion-text class="no-padding-tb">
+      二月
+      </h1>
+      <p class="no-padding-tb">2019</p>
+      <ion-calendar [(ngModel)]="date"
+                    (change)="onChange($event)"
+                    [type]="type"
+                    [options]="optionsRange"
+                    [format]="'YYYY-MM-DD'">
+      </ion-calendar>
+
+      <color-slider></color-slider>
+    </div>
+    <div class="w-5 rightside" color="success"></div>
+  </ion-row>
+</ion-grid>
+</ion-content>

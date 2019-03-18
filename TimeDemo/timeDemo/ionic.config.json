@@ -1,0 +1,7 @@
+{
+  "name": "timeDemo",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

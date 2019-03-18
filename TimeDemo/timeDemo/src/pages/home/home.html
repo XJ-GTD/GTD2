@@ -1,0 +1,46 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-title>冥王星</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <button ion-item (click)="openNavDetailsPage('login')" icon-start>
+      <ion-icon name="git-branch" item-start></ion-icon>
+      帐户登录
+    </button>
+    <button ion-item (click)="openNavDetailsPage('register')">
+      <ion-icon name="git-commit" item-start></ion-icon>
+      帐户注册
+    </button>
+    <button ion-item (click)="openNavDetailsPage('calendar')">
+      <ion-icon name="git-compare" item-start></ion-icon>
+      日历
+    </button>
+    <button ion-item (click)="openNavDetailsPage('agendaList')">
+      <ion-icon name="git-merge" item-start></ion-icon>
+      日程列表
+    </button>
+    <button ion-item (click)="openNavDetailsPage('menu')">
+      <ion-icon name="git-network" item-start></ion-icon>
+      菜单
+    </button>
+    <button ion-item (click)="openNavDetailsPage('blackList')">
+      <ion-icon name="git-pull-request" item-start></ion-icon>
+      黑名单
+    </button>
+    <button ion-item (click)="openNavDetailsPage('contactGroup')">
+      <ion-icon name="contact" item-start></ion-icon>
+      群组
+    </button>
+    <button ion-item (click)="openNavDetailsPage('setup')">
+      <ion-icon name="wifi" item-start></ion-icon>
+      设置
+    </button>
+    <button ion-item (click)="openNavDetailsPage('account')">
+      <ion-icon name="information-circle" item-start></ion-icon>
+      帐号
+    </button>
+  </ion-list>
+</ion-content>

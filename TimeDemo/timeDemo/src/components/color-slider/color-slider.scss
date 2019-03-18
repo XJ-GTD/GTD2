@@ -1,0 +1,34 @@
+color-slider {
+
+  .color-slider-circles[justify-content-around] {
+    -webkit-justify-content: space-around;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+  }
+  
+  .color-slider-circles {
+    width: 12vmin;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+
+  .color-slider-circle {
+    width: 2vmin;
+    height: 2vmin;
+    border: solid 1px #fff;
+    border-radius: 50%;
+  }
+  
+  .color-slider-circle-pop {
+    width: 5vmin;
+    height: 5vmin;
+    background-color: #fff;
+    border: 0;
+  }
+  
+}
