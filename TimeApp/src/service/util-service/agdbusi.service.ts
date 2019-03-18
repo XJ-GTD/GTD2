@@ -78,13 +78,26 @@ export class AgdbusiService {
 
   }
 
-  //当前日期是否在以前的所有日期中存在
+  //当前日期是否在日程的日期中存在
   ishave(date: string,cTbldata : CTbl):boolean{
 
     //日程开始日期
     let startD = moment(cTbldata.sd);
+
+    //日程结束日期
+    let endD = moment(cTbldata.ed);
+
     //重复类型
     let type = cTbldata.rt;
+
+    //当前日期在开始日之前
+    if (moment(date).isBefore(startD)){
+      return false;
+    }
+    //当前日期在结束日之后
+    if (cTbldata.ed !='' && cTbldata.ed != null && moment(date).isAfter(endD)){
+      return false;
+    }
 
     //0：关闭，1：每日，2：每周，3：每月，4：每年
     while(moment(date).isAfter(startD)) {
@@ -100,6 +113,9 @@ export class AgdbusiService {
       }else if (type=="4"){
         startD = startD.add(1,"y");
 
+      }else if (type=="0"){
+        return moment(date).isSame(startD);
+
       }else{
         return false;
       }
@@ -108,6 +124,10 @@ export class AgdbusiService {
         return true;
       }
 
+      //开始日累计日期在结束日之后
+      if (cTbldata.ed !='' && cTbldata.ed != null && moment(startD).isAfter(endD)){
+        return false;
+      }
     }
     return false;
 
@@ -127,6 +147,8 @@ export class  AgendaDtPro {
   rt: string="";
   ji: string="";
   sr: string =""
-  bz: string =""
+  bz: string ="";
+  wtt:string ="";
+  tx:string="";
 
 }
