@@ -14,33 +14,49 @@ import {ReturnConfig} from "../../../../TimeApp（v1）/src/app/return.config";
 @IonicPage()
 @Component({
   selector: 'page-ls',
-  template:'<ion-header>' +
-  '  <ion-navbar>' +
-  '    <ion-title>短信登录</ion-title>' +
-  '  </ion-navbar>' +
-  '</ion-header>' +
-  '<ion-content padding>' +
-  '  <div style="padding:10px;margin-top: 40px">' +
-  '    <ion-item padding>' +
-  '      <ion-icon name="ios-person-outline" item-start></ion-icon>' +
-  '      <ion-input type="tel" placeholder="输入您的手机号" [(ngModel)]="lsData.mobile" pattern="[0-9A-Za-z]*"  (ionBlur)="checkPhone()"  (input)="format()" clearInput></ion-input>' +
-  '    </ion-item>' +
-  '    <ion-item padding>' +
-  '      <ion-icon name="ios-lock-outline" item-start></ion-icon>' +
-  '      <ion-input type="number" placeholder="验证码" [(ngModel)]="lsData.authCode" clearInput></ion-input>' +
-  '      <ion-buttons item-right>' +
-  '        <button ion-button (click)="sendMsg()">{{timeOut}}</button>' +
-  '      </ion-buttons>' +
-  '    </ion-item>' +
-  '    <button ion-button block color="danger" class="login_button" (click)="signIn()" style="margin-top: 100px !important;">' +
-  '      登录' +
-  '    </button>' +
-  '    <div margin-top>' +
-  '      <span float-end (click)="userAgreement()">我已阅读并同意<span style="text-decoration: underline;color:blue">《用户协议》</span></span>' +
-  '      <span style="display: block;" float-end><ion-checkbox [(ngModel)]="checkBoxClick"></ion-checkbox></span>' +
-  '    </div>' +
-  '  </div>' +
-  '</ion-content>',
+  template:
+  `
+  <ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="goBack()" color="success">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-buttons right>
+      <button ion-button color="success">
+        帮助
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+<h1 ion-text>您的手机号码是?</h1>
+
+<ion-grid class="grid-login-basic no-padding-lr">
+  <ion-row justify-content-start align-items-center>
+    <div class="w-auto">
+      <ion-input type="tel" placeholder="手机号码" [(ngModel)]="lsData.mobile"></ion-input>
+    </div>
+  </ion-row>
+  <ion-row justify-content-between align-items-center>
+    <div class="w-auto">
+      <ion-input type="password" placeholder="短信验证码" [(ngModel)]="lsData.authCode" ></ion-input> <button ion-button (click)="sendMsg()">{{timeOut}}</button>
+    </div>
+    <div>
+      <button ion-fab color="success"><ion-icon name="arrow-forward" (click)="signIn()"></ion-icon></button>
+    </div>
+  </ion-row>
+</ion-grid>
+
+  <button ion-button clear color="dark" (click)="openLoginPasswordPage()" class="no-padding no-margin-lr">改为用冥王星帐户登录</button>
+  
+  <p class="text-agreement">创建帐户即表示您同意我们的 <a class="text-anchor" href="">服务条款</a> 和 <a class="text-anchor" href="">隐私政策</a> 。</p>
+</ion-content>
+
+  `
 })
 export class LsPage {
 
