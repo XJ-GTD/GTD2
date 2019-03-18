@@ -1,5 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar} from 'ionic-angular';
+import {PagePDPro, PdService} from "./pd.service";
+import {DataConfig} from "../../../../TimeApp（v1）/src/app/data.config";
 
 /**
  * Generated class for the 计划展示 page.
@@ -34,9 +36,11 @@ export class PdPage {
   indexs:any = [];
   focusItem:any;
 
+  jh:PagePDPro;
 
   constructor(private navCtrl: NavController,
-              private navParams: NavParams) {
+              private navParams: NavParams,
+              private pdService:PdService) {
   }
 
   ionViewDidLoad() {
@@ -63,6 +67,15 @@ export class PdPage {
         });
       }
     },100);
+
+    console.log(this.jh);
+    this.jh = this.navParams.get("jh");
+
+    console.log("传入jh ::" + JSON.stringify(this.jh));
+
+    this.pdService.getPlan(this.jh.ji).then(data=>{
+      console.log("数据 ::" + JSON.stringify(data));
+    })
   }
 
 

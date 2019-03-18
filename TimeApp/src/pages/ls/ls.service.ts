@@ -120,16 +120,8 @@ export class LsService {
     });
   }
 
-  checkPhone(mobile:string):Promise<any>{
-    return new Promise((resolve, reject) => {
-      resolve(this.util.checkPhone(mobile));
-    });
-  }
-
-  remo(mobile:string):Promise<any>{
-    return new Promise((resolve, reject) => {
-      resolve(this.util.remo(mobile));
-    });
+  checkPhone(mobile:string):number{
+    return this.util.checkPhone(mobile);
   }
 }
 export class PageLsData {

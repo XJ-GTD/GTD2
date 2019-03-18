@@ -37,7 +37,7 @@ import {UtilService} from "../../service/util-service/util.service";
 
     <button ion-button clear color="dark" (click)="toLs()" class="no-padding no-margin-lr">改为用手机短信登录</button>
 
-    <p class="text-agreement"> <a class="text-anchor" href="#" (click)="toR()">创建帐户</a>即表示您同意我们的 <a class="text-anchor" href="">服务条款</a> 和 <a class="text-anchor" href="">隐私政策</a> 。</p>
+    <p class="text-agreement"> <a class="text-anchor" href="#" (click)="toR()">创建帐户</a>即表示您同意我们的 <a class="text-anchor" (click)="userAgreement()">服务条款</a> 和 <a class="text-anchor" (click)="userAgreement()">隐私政策</a> 。</p>
   </ion-content>`
 })
 export class LpPage {
@@ -48,8 +48,7 @@ export class LpPage {
   constructor(public navCtrl: NavController,
               public alertCtrl: AlertController,
               private toastCtrl: ToastController,
-              private lpService: LpService,
-  private utilService:UtilService) {
+              private lpService: LpService,) {
   }
 
   ionViewDidLoad() {
