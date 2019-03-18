@@ -20,7 +20,7 @@ export class TdcService {
    * @param {PageRcData} rc 日程信息
    * @returns {Promise<BsModel<any>>}
    */
-  save(rc : PageRcData):Promise<BsModel<any>>{
+  save(rc : ScdData):Promise<BsModel<any>>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel<any>();
       let str =this.checkRc(rc);
@@ -81,7 +81,7 @@ export class TdcService {
    * @param {PageRcData} rc
    * @returns {string}
    */
-  checkRc(rc:PageRcData):string{
+  checkRc(rc:ScdData):string{
     let str = '';
     //check 日程必输项
     if(rc.sn == ''){
@@ -167,33 +167,4 @@ export class TdcService {
     return isTrue;
   }
 
-}
-
-export class PageRcData {
-  si: string="";  //日程事件ID
-  sn: string="";  //日程事件主题
-  ui: string="";  //创建者
-  sd: string="";  //开始日期
-  st: string="";  //开始时间
-  ed: string="";  //结束日期
-  et: string="";  //结束时间
-  rt: string="";  //重复类型
-  ji: string="";  //计划ID
-  sr: string ="";  //日程关联ID
-  bz: string ="";  //备注
-  tx: string ="";  //提醒方式
-  lxrL:Array<PageLxrData> = new Array<PageLxrData>(); //日程参与人
-}
-
-export class PageLxrData{
-  pi: string=""; //日程参与人表ID
-  si: string=""; //日程事件ID
-  pwi: string=""; //联系人主键
-  ran: string=""; //别称
-  ranpy: string=""; //联系人别称拼音
-  hiu: string="";  // 联系人头像
-  rn: string="";  // 联系人名称
-  rnpy: string="";  //联系人名称拼音
-  rc: string="";  //联系人联系方式
-  ui: string="";  //数据归属人ID
 }

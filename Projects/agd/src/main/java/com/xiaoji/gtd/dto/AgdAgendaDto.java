@@ -17,11 +17,15 @@ public class AgdAgendaDto implements Serializable {
 	private String fc;	//	来自于
 	private String ai;	//	日程ID
 	private String at;	//	主题
-	private String adt;	//	时间
+	private String adt;	//	开始日期
+	private String st;	//	开始时间
+	private String ed;	//	结束日期
+	private String et;	//	结束时间
 	private String ap;	//	计划
 	private String ar;	//	重复
 	private String aa;	//	提醒
 	private String am;	//	备注
+	private String wtt; // 创建时间戳
 	private List<AgdContactsDto> ac;	//	参与人
 	public String getRai() {
 		return rai;
@@ -82,6 +86,30 @@ public class AgdAgendaDto implements Serializable {
 	}
 	public void setAc(List<AgdContactsDto> ac) {
 		this.ac = ac;
+	}
+	public String getSt() {
+		return st;
+	}
+	public void setSt(String st) {
+		this.st = st;
+	}
+	public String getEd() {
+		return ed;
+	}
+	public void setEd(String ed) {
+		this.ed = ed;
+	}
+	public String getEt() {
+		return et;
+	}
+	public void setEt(String et) {
+		this.et = et;
+	}
+	public String getWtt() {
+		return wtt;
+	}
+	public void setWtt(String wtt) {
+		this.wtt = wtt;
 	}
 	
 }

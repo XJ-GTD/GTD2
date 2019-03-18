@@ -16,7 +16,7 @@ export class TdlService {
     if(next != null && next !=""){
       let mp:Map<string,any> = new Map<string,any>();
       //获取本地日程
-      let sqll="select * from where sd<'"+ next+"' order by ed desc";
+      let sqll="select gc.* from gtd_c gc where gc.sd<'"+ next+"' order by gc.ed desc";
       let rclL = await this.sqlExce.execSql(sqll);
       if(rclL && rclL.rows && rclL.rows.length>0){
         let len = rclL.rows.length-1;
@@ -41,7 +41,7 @@ export class TdlService {
       }
 
       //正序查出比当前日期大的日程
-      let sql="select * from where ed<='"+ next+"' or ed is null order by ed asc";
+      let sql="select * from gtd_c gc where ed<='"+ next+"' or ed is null order by ed asc";
       let rcnL = await this.sqlExce.execSql(sql);
 
       if(rcnL && rcnL.rows && rcnL.rows.length>0){
