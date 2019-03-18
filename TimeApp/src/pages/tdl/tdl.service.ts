@@ -3,6 +3,7 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UserConfig} from "../../service/config/user.config";
 import {BsModel} from "../../service/restful/out/bs.model";
 import * as moment from "moment";
+import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 
 @Injectable()
 export class TdlService {
@@ -13,8 +14,9 @@ export class TdlService {
 
   //获取日程 （每次返回30条数据，下拉返回日期之前，上推返回日期之后）
   async get(next:string){
+    let mp:Map<string,any> = new Map<string,any>();
     if(next != null && next !=""){
-      let mp:Map<string,any> = new Map<string,any>();
+
       //获取本地日程jn jg jc jt
       let sqll="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt from gtd_c gc inner join gtd_j_h jh on jh.ji = gc.ji  " +
         "where gc.sd<'"+ next+"'  or gd.ed is null or gd.ed >='"+next+"'order by gc.ed desc";
@@ -32,6 +34,12 @@ export class TdlService {
             if(sc.sd>day){
               break;
             }else if(this.isymwd(sc.rt,day,sc.sd,sc.ed)){
+              let dt = new DTbl();
+              dt.si = sc.si;
+              let fsL = await this.sqlExce.getList<fsData>(dt);
+              sc.fss = fsL;
+              Object.assign(sc.fs,rclL.rows.item(j));
+              Object.assign(sc.p,rclL.rows.item(j));
               dcL.push(sc);
               i++;
             }
@@ -59,6 +67,12 @@ export class TdlService {
             if(sc.sd>day){
               break;
             }else if(this.isymwd(sc.rt,day,sc.sd,sc.ed)){
+              let dt = new DTbl();
+              dt.si = sc.si;
+              let fsL = await this.sqlExce.getList<fsData>(dt);
+              sc.fss = fsL;
+              Object.assign(sc.fs,rclL.rows.item(j));
+              Object.assign(sc.p,rclL.rows.item(j));
               dcL.push(sc);
               i++;
             }
@@ -69,7 +83,7 @@ export class TdlService {
       }
 
     }
-
+    return mp;
       //获取日程对应参与人或发起人
 
       //获取计划对应色标
