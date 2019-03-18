@@ -421,7 +421,7 @@ export class AlService {
       ss.push("看过不良人吗");
       ss.push("周末加班");
 
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 4000; i++) {
         start = moment('2019/03/01');
         let r = this.util.randInt(-90, 90);
         let t = this.util.randInt(0, 24);
