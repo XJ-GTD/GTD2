@@ -223,7 +223,7 @@ export class SpecScdData {
   sta: string = ""//特殊类型
   tx: string = ""//提醒方式
   wtt: number;//时间戳
-
+  gs:string;//归属
 }
 
 //参与人
