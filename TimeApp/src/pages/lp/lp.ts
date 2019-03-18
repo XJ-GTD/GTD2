@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, ToastController} from 'ionic-angular';
+import {AlertController, IonicPage,  NavController, ToastController} from 'ionic-angular';
 import {LpService, PageLpData} from "./lp.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 登陆（密码） page.
@@ -74,9 +75,12 @@ export class LpPage {
   }
 
   signIn() {
-    if(this.errorCode == undefined || this.errorCode == 0 ){  //判断手机号是否为空
+
+    this.lpData.mobile = this.lpService.remo(this.lpData.mobile);
+
+    if(this.lpData.mobile == undefined || this.lpData.mobile == "" ){  //判断手机号是否为空
       this.title("手机号不能为空");
-    }else if(this.errorCode == 3){ //验证手机号是否符合规范
+    }else if(this.lpService.checkPhone(this.lpData.mobile ) == 3){ //验证手机号是否符合规范
 
       if (this.lpData.password == null || this.lpData.password == "" || this.lpData.password == undefined){     //判断密码是否为空
         this.title("密码不能为空");
@@ -98,9 +102,6 @@ export class LpPage {
     }
   }
 
-  userAgreement() {
-    this.navCtrl.push('PPage');
-  }
 
   toR() {
     console.log('LpPage跳转RPage');

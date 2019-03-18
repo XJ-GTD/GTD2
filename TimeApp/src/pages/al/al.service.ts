@@ -8,8 +8,9 @@ import {UtilService} from "../../service/util-service/util.service";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {RestFulConfig} from "../../service/config/restful.config";
 import {WebsocketService} from "../../ws/websocket.service";
-import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {YTbl} from "../../service/sqlite/tbl/y.tbl";
+import * as moment from "moment";
+import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 
 @Injectable()
 export class AlService {
@@ -93,6 +94,8 @@ export class AlService {
       yTbl.yv = "0";
       await this.sqlExce.replaceT(yTbl);
 
+      await this.createTestData();
+
       console.log("**************************Fi" + "*************写入"  );
 
       alData.text = "系统初始化完成";
@@ -150,6 +153,39 @@ export class AlService {
 
       });
     });
+  }
+
+  createTestData():Promise<boolean>{
+    return new Promise<boolean>((resolve, reject) => {
+      let start = moment('2019/03/01');
+      let sqls = [];
+      for (let i=0;i<4000;i++){
+        start = moment('2019/03/01');
+        let r = this.util.randInt(-90,90);
+        let t = this.util.randInt(0,24);
+        console.log("start=====" + start.format('YYYY/MM/DD'));
+
+        let d = start.add(r,'d').add(t,'h');
+        let c:CTbl = new CTbl();
+
+        c.si = this.util.getUuid();
+        c.sn = '这是一个测试日程';
+        c.ui = 'slef';
+        c.sd = d.format('YYYY/MM/DD');
+        c.st =d.format('hh:mm');
+        c.ed = '9999/12/31'
+        c.et ='24:00'
+        c.rt = '0';
+        c.sr =c.si
+        c.bz ='今天我可能开会';
+        sqls.push(c.inT());
+      }
+
+      this.sqlExce.batExecSql(sqls).then(c=>{
+        console.log("插入数据=====" + c);
+        resolve(true);
+      })
+    })
   }
 
 }
