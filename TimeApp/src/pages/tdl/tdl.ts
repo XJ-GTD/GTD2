@@ -24,15 +24,54 @@ import * as moment from "moment";
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
-  <ion-content style="background: red">
+  <ion-content>
      <ion-list>
+       <ion-item>
+         dddddd
+       </ion-item>
+       <ion-item>
+         dddddd
+       </ion-item>
+       <ion-item>
+         dddddd
+       </ion-item>
+       <ion-item>
+         dddddd
+       </ion-item>
+       <ion-item>
+         dddddd
+       </ion-item>
+       <ion-item>
+         dddddd
+       </ion-item>
+       <ion-item>
+         dddddd
+       </ion-item>
+       <ion-item>
+         dddddd
+       </ion-item>
+       <ion-item>
+         dddddd
+       </ion-item>
+       <ion-item>
+         dddddd
+       </ion-item>
+       <ion-item>
+         dddddd
+       </ion-item>
+       <ion-item>
+         dddddd
+       </ion-item>
+       <ion-item>
+         dddddd
+       </ion-item>
     </ion-list>
   </ion-content>`
 
 })
 export class TdlPage {
   dismiss(){
-    this.viewCtrl.dismiss({},"",{direction:"right",});
+    this.navCtrl.pop({direction:"forward"});
 
   }
 //
@@ -44,7 +83,8 @@ export class TdlPage {
 //
 //   event:any;
 //
-  constructor(public viewCtrl: ViewController) {
+  constructor(public viewCtrl: ViewController,
+              private navCtrl:NavController) {
 
   }
 //

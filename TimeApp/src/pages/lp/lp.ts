@@ -3,6 +3,8 @@ import {AlertController, IonicPage, LoadingController, NavController, NavParams,
 import {LpService, PageLpData} from "./lp.service";
 import {DataConfig} from "../../service/config/data.config";
 import {LsService, PageLsData} from "../ls/ls.service";
+import * as Util from "util";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 登陆（密码） page.
@@ -15,72 +17,45 @@ import {LsService, PageLsData} from "../ls/ls.service";
 @Component({
   selector: 'page-lp',
   providers: [],
-  template:'<ion-header>' +
-  '  <div class="login_header">' +
-  '    <ion-navbar>' +
-  '      <ion-title></ion-title>' +
-  '    </ion-navbar>' +
-  '  </div>' +
-  '</ion-header>' +
-  '<ion-content padding>' +
-  '  <div class="user_login">' +
-  '    <div class="login_body">' +
-  '      <div class="login_icon">' +
-  '      <span class="xj_icon">' +
-  '        <img src="./assets/imgs/logo2.png"/>' +
-  '      </span>' +
-  '      </div>' +
-  '      <div class="login_info">' +
-  '        <div class="custom_form">' +
-  '          <div class="custom_group">' +
-  '            <div class="group_input">' +
-  '              <div class="input_icon">' +
-  '              <span >' +
-  '                 <ion-icon name="ios-person-outline"></ion-icon>' +
-  '              </span>' +
-  '              </div>' +
-  '              <div class="input_text">' +
-  '                <ion-item>' +
-  '                  <ion-input type="text" [(ngModel)]="lpData.mobile" pattern="[0-9A-Za-z]*" placeholder="用户名/账号" (ionBlur)="checkPhone()"  (input)="format()"  clearInput></ion-input>' +
-  '                </ion-item>' +
-  '              </div>' +
-  '            </div>' +
-  '          </div>' +
-  '          <div class="custom_group">' +
-  '            <div class="group_input">' +
-  '              <div class="input_icon">' +
-  '              <span >' +
-  '                <ion-icon name="ios-lock-outline"></ion-icon>' +
-  '              </span>' +
-  '              </div>' +
-  '              <div class="input_text">' +
-  '                <ion-item>' +
-  '                  <ion-input type="password" [(ngModel)]="lpData.password" placeholder="输入密码" clearInput></ion-input>' +
-  '                </ion-item>' +
-  '              </div>' +
-  '              <div class="error_info">' +
-  '                <span><!--用户名不能为空--></span>' +
-  '              </div>' +
-  '            </div>' +
-  '          </div>' +
-  '          <div class="custom_group">' +
-  '            <button ion-button block color="danger" class="login_button" (click)="signIn()" [disabled]="disabled">' +
-  '              登录' +
-  '            </button>' +
-  '            <div class="copywriting">' +
-  '              <div>' +
-  '                <span (click)="toR()">注册</span>' +
-  '              </div>' +
-  '              <div>' +
-  '                <span (click)="toLs()">短信登录</span>' +
-  '              </div>' +
-  '            </div>' +
-  '          </div>' +
-  '        </div>' +
-  '      </div>' +
-  '    </div>' +
-  '  </div>' +
-  '</ion-content>',
+  template:` <ion-header no-border>
+    <ion-toolbar>
+      <ion-buttons left>
+        <button ion-button icon-only (click)="goBack()" color="success">
+          <ion-icon name="arrow-back"></ion-icon>
+        </button>
+      </ion-buttons>
+
+      <ion-buttons right>
+        <button ion-button color="success">
+          帮助
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content padding>
+    <h1 ion-text>您的手机号码是?</h1>
+
+    <ion-grid class="grid-login-basic no-padding-lr">
+      <ion-row justify-content-start align-items-center>
+        <div class="w-auto">
+          <ion-input type="tel" placeholder="手机号码" [(ngModel)]="lpData.mobile"></ion-input>
+        </div>
+      </ion-row>
+      <ion-row justify-content-between align-items-center>
+        <div class="w-auto">
+          <ion-input type="password" placeholder="密码" [(ngModel)]="lpData.password"></ion-input>
+        </div>
+        <div>
+          <button ion-fab color="success" (click)="signIn()"><ion-icon name="arrow-forward"></ion-icon></button>
+        </div>
+      </ion-row>
+    </ion-grid>
+
+    <button ion-button clear color="dark" (click)="toLs()" class="no-padding no-margin-lr">改为用手机短信登录</button>
+
+    <p class="text-agreement"> <a class="text-anchor" href="#" (click)="toR()">创建帐户</a>即表示您同意我们的 <a class="text-anchor" href="">服务条款</a> 和 <a class="text-anchor" href="">隐私政策</a> 。</p>
+  </ion-content>`
 })
 export class LpPage {
   lpData:PageLpData = new PageLpData();
@@ -90,7 +65,8 @@ export class LpPage {
   constructor(public navCtrl: NavController,
               public alertCtrl: AlertController,
               private toastCtrl: ToastController,
-              private lpService: LpService) {
+              private lpService: LpService,
+  private utilService:UtilService) {
   }
 
   ionViewDidLoad() {
@@ -117,9 +93,12 @@ export class LpPage {
   }
 
   signIn() {
-    if(this.errorCode == undefined || this.errorCode == 0 ){  //判断手机号是否为空
+
+    this.lpData.mobile = this.lpService.remo(this.lpData.mobile);
+
+    if(this.lpData.mobile == undefined || this.lpData.mobile == "" ){  //判断手机号是否为空
       this.title("手机号不能为空");
-    }else if(this.errorCode == 3){ //验证手机号是否符合规范
+    }else if(this.lpService.checkPhone(this.lpData.mobile ) == 3){ //验证手机号是否符合规范
 
       if (this.lpData.password == null || this.lpData.password == "" || this.lpData.password == undefined){     //判断密码是否为空
         this.title("密码不能为空");
@@ -141,17 +120,6 @@ export class LpPage {
     }
   }
 
-  checkPhone() {
-    this.lpService.checkPhone(this.lpData.mobile).then(data=>{
-      this.errorCode = data;
-    })
-  }
-
-  format() {
-    this.lpService.remo(this.lpData.mobile).then(data=>{
-      this.lpData.mobile = data;
-    })
-  }
 
   toR() {
     console.log('LpPage跳转RPage');
