@@ -1,3 +1,104 @@
 page-menu {
+  ion-content ion-header ion-toolbar .toolbar-background,.toolbar-background-md {
+    background-color: #000;
+  }
 
+  .menu-header {
+    background-color: #3b666a;
+    border-radius: 5px;
+    padding-top: 14px;
+  }
+  
+  .menu-header h1,h2,h3,h4,h5,p {
+    color: #fff;
+  }
+  
+  .menu-header p {
+    padding-bottom: 8px;
+  }
+  
+  .w-auto {
+    flex: 1;
+  }
+  
+  .w-5 {
+    width: 5vmin;
+  }
+  
+  .w-10 {
+    width: 10vmin;
+  }
+  
+  .w-25 {
+    width: 25vmin;
+  }
+  
+  ion-list .item {
+    background-color: transparent;
+    color: #fff;
+  }
+  
+  ion-content ion-grid.grid {
+    background-color: #000;
+    padding: 0;
+    height: 100%;
+  }
+  
+  ion-content ion-grid ion-row {
+    height: 100%;
+  }
+  
+  ion-content ion-calendar {
+    background-color: transparent;
+  }
+
+  ion-content ion-calendar .days .today {
+    background-color: #fff;
+    color: #b72537;
+    border-radius: 50%;
+  }
+  
+  ion-content ion-calendar .days p {
+    color: #fff;
+  }
+  
+  ion-content ion-calendar .days .on-selected {
+    border: solid 1px #fff;
+    background-color: #fff;
+    border-radius: 50%;
+  }
+  
+  ion-content h1 {
+    color: #fff;
+  }
+  
+  .leftside {
+    background-color: #c70031;
+  }
+  
+  .no-padding {
+    padding: 0;
+  }
+  
+  .no-padding-lr {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .no-padding-tb {
+    padding: 0 16px;
+  }
+
+  .no-margin-lr {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  ion-calendar {
+    padding: 0;
+  }
+  
+  ion-calendar .title {
+    display: none;
+  }
 }
