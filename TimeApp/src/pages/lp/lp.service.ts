@@ -105,10 +105,6 @@ export class LpService {
   checkPhone(mobile:string):number{
       return this.util.checkPhone(mobile);
   }
-
-  remo(mobile:string):string{
-    return this.util.remo(mobile);
-  }
 }
 
 export class PageLpData {

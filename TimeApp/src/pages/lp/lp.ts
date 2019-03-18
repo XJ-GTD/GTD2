@@ -1,10 +1,6 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, ToastController} from 'ionic-angular';
 import {LpService, PageLpData} from "./lp.service";
-import {DataConfig} from "../../service/config/data.config";
-import {LsService, PageLsData} from "../ls/ls.service";
-import * as Util from "util";
-import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 登陆（密码） page.
@@ -40,7 +36,7 @@ import {UtilService} from "../../service/util-service/util.service";
 
     <button ion-button clear color="dark" (click)="toLs()" class="no-padding no-margin-lr">改为用手机短信登录</button>
 
-    <p class="text-agreement"> <a class="text-anchor" href="#" (click)="toR()">创建帐户</a>即表示您同意我们的 <a class="text-anchor" href="">服务条款</a> 和 <a class="text-anchor" href="">隐私政策</a> 。</p>
+    <p class="text-agreement"> <a class="text-anchor" href="#" (click)="toR()">创建帐户</a>即表示您同意我们的 <a class="text-anchor" (click)="userAgreement()">服务条款</a> 和 <a class="text-anchor" (click)="userAgreement()">隐私政策</a> 。</p>
   </ion-content>`
 })
 export class LpPage {
@@ -51,8 +47,7 @@ export class LpPage {
   constructor(public navCtrl: NavController,
               public alertCtrl: AlertController,
               private toastCtrl: ToastController,
-              private lpService: LpService,
-  private utilService:UtilService) {
+              private lpService: LpService,) {
   }
 
   ionViewDidLoad() {
@@ -79,12 +74,9 @@ export class LpPage {
   }
 
   signIn() {
-
-    this.lpData.mobile = this.lpService.remo(this.lpData.mobile);
-
-    if(this.lpData.mobile == undefined || this.lpData.mobile == "" ){  //判断手机号是否为空
+    if(this.errorCode == undefined || this.errorCode == 0 ){  //判断手机号是否为空
       this.title("手机号不能为空");
-    }else if(this.lpService.checkPhone(this.lpData.mobile ) == 3){ //验证手机号是否符合规范
+    }else if(this.errorCode == 3){ //验证手机号是否符合规范
 
       if (this.lpData.password == null || this.lpData.password == "" || this.lpData.password == undefined){     //判断密码是否为空
         this.title("密码不能为空");
@@ -106,6 +98,9 @@ export class LpPage {
     }
   }
 
+  userAgreement() {
+    this.navCtrl.push('PPage');
+  }
 
   toR() {
     console.log('LpPage跳转RPage');
