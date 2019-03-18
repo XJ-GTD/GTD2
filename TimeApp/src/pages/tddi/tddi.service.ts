@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UserConfig} from "../../service/config/user.config";
-import {PageRcData} from "../tdc/tdc.service";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import * as moment from "moment";
 import {UtilService} from "../../service/util-service/util.service";
@@ -176,7 +175,7 @@ export class TddiService {
 }
 
 export class PageTddIData{
-  tdl : PageRcData = new PageRcData();  //日程事件表信息
+  tdl : ScdData = new ScdData();  //日程事件表信息
 
 
 }
