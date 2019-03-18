@@ -17,37 +17,23 @@ import {UtilService} from "../../service/util-service/util.service";
 @Component({
   selector: 'page-lp',
   providers: [],
-  template:` <ion-header no-border>
-    <ion-toolbar>
-      <ion-buttons left>
-        <button ion-button icon-only (click)="goBack()" color="success">
-          <ion-icon name="arrow-back"></ion-icon>
-        </button>
-      </ion-buttons>
+  template:` 
 
-      <ion-buttons right>
-        <button ion-button color="success">
-          帮助
-        </button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-content padding>
-    <h1 ion-text>您的手机号码是?</h1>
-
+    
+  <ion-content>
+    <h1>账号登录</h1>
     <ion-grid class="grid-login-basic no-padding-lr">
       <ion-row justify-content-start align-items-center>
         <div class="w-auto">
-          <ion-input type="tel" placeholder="手机号码" [(ngModel)]="lpData.mobile"></ion-input>
+          <ion-input type="tel" placeholder="输入手机号码" [(ngModel)]="lpData.mobile"></ion-input>
+        </div>
+        <div style="margin-right: 30px;">
+          <button ion-fab color="success" (click)="signIn()"><ion-icon name="arrow-forward"></ion-icon></button>
         </div>
       </ion-row>
       <ion-row justify-content-between align-items-center>
         <div class="w-auto">
-          <ion-input type="password" placeholder="密码" [(ngModel)]="lpData.password"></ion-input>
-        </div>
-        <div>
-          <button ion-fab color="success" (click)="signIn()"><ion-icon name="arrow-forward"></ion-icon></button>
+          <ion-input type="password" placeholder="输入密码" [(ngModel)]="lpData.password"></ion-input>
         </div>
       </ion-row>
     </ion-grid>
