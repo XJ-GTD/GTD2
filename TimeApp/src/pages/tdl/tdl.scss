@@ -1,4 +1,13 @@
 page-tdl {
+  @font-face {
+    font-family: 'PingFang-Regular';
+    src: url('../../assets/fonts/PingFang Regular.ttf');
+  }
+
+  ion-content {
+    font-family: "PingFang-Regular";
+  }
+
   .leftside ion-grid.grid {
     background-color: #000;
     color: #fff;
@@ -16,6 +25,14 @@ page-tdl {
     -webkit-transform: rotate(270deg);
     -ms-transform: rotate(270deg);
     -o-transform: rotate(270deg);
+  }
+
+  .week {
+    font-size: 2.2vmin;
+  }
+
+  .day {
+    font-size: 5.2vmin;
   }
 
   .w-auto {
