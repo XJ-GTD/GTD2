@@ -2,7 +2,7 @@ page-home {
   background-color: #000;
   @font-face {
     font-family: 'PingFang-Regular';
-    src: url('../assets/font/PingFang Regular.ttf');
+    src: url('../assets/font/PingFang Regular.ttf') format('ttf');
   }
 
   ion-content {

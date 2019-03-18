@@ -14,12 +14,13 @@ export class TdlService {
 
   //获取日程 （每次返回30条数据，下拉返回日期之前，上推返回日期之后）
   async get(next:string){
-    let mp:Map<string,any> = new Map<string,any>();
+    let mpL = new Array<ScdlData>();
+
     if(next != null && next !=""){
 
       //获取本地日程jn jg jc jt
       let sqll="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt from gtd_c gc inner join gtd_j_h jh on jh.ji = gc.ji  " +
-        "where gc.sd<'"+ next+"'  or gd.ed is null or gd.ed >='"+next+"'order by gc.ed desc";
+        "where gc.sd<'"+ next+"'  or gc.ed is null or gc.ed >='"+next+"'order by gc.ed desc";
       let rclL = await this.sqlExce.execSql(sqll);
       if(rclL && rclL.rows && rclL.rows.length>0){
         let len = rclL.rows.length-1;
@@ -28,7 +29,7 @@ export class TdlService {
         //循环获取30条数据
         while(i>30 || i==len){
           let day = moment(new Date(next).getTime() - d*60*60*100).format("YYYY/MM/DD");
-          let dcL = new Array<ScdData>();
+          let mp:ScdlData = new ScdlData();
           for(let j=0;j<100;j++){
             let sc:ScdData = rclL.rows.item(j);
             if(sc.sd>day){
@@ -40,12 +41,16 @@ export class TdlService {
               sc.fss = fsL;
               Object.assign(sc.fs,rclL.rows.item(j));
               Object.assign(sc.p,rclL.rows.item(j));
-              dcL.push(sc);
+              mp.scdl.push(sc);
               i++;
             }
           }
           d++;
-          mp.set(day,dcL);
+          if(mp.scdl.length>0){
+            mp.d = day;
+            mpL.push(mp);
+          }
+
         }
       }
 
@@ -61,7 +66,7 @@ export class TdlService {
         //循环获取60条数据
         while(i>60 || i==len){
           let day = moment(new Date(next).getTime() + d*60*60*100).format("YYYY/MM/DD");
-          let dcL = new Array<ScdData>();
+          let mp:ScdlData = new ScdlData();
           for(let j=0;j<100;j++){
             let sc:ScdData = rcnL.rows.item(j);
             if(sc.sd>day){
@@ -73,17 +78,20 @@ export class TdlService {
               sc.fss = fsL;
               Object.assign(sc.fs,rclL.rows.item(j));
               Object.assign(sc.p,rclL.rows.item(j));
-              dcL.push(sc);
+              mp.scdl.push(sc);
               i++;
             }
           }
           d++;
-          mp.set(day,dcL);
+          if(mp.scdl.length>0){
+            mp.d = day;
+            mpL.push(mp);
+          }
         }
       }
 
     }
-    return mp;
+    return mpL;
       //获取日程对应参与人或发起人
 
       //获取计划对应色标
@@ -165,6 +173,13 @@ export class TdlService {
 
 
 }
+
+export class ScdlData{
+  d :string;
+  scdl:Array<ScdData> = new Array<ScdData>();
+
+}
+
 
 export class ScdData {
   si: string = "";//日程事件ID
