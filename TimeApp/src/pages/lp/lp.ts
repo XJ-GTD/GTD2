@@ -1,9 +1,6 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {AlertController, IonicPage,  NavController, ToastController} from 'ionic-angular';
 import {LpService, PageLpData} from "./lp.service";
-import {DataConfig} from "../../service/config/data.config";
-import {LsService, PageLsData} from "../ls/ls.service";
-import * as Util from "util";
 import {UtilService} from "../../service/util-service/util.service";
 
 /**
