@@ -2,7 +2,16 @@ page-menu {
   ion-content ion-header ion-toolbar .toolbar-background,.toolbar-background-md {
     background-color: #000;
   }
+  
+  @font-face {
+    font-family: 'PingFang-Regular';
+    src: url('../assets/font/PingFang Regular.ttf');
+  }
 
+  ion-content {
+    font-family: "PingFang-Regular";
+  }
+  
   .menu-header {
     background-color: #3b666a;
     border-radius: 5px;
