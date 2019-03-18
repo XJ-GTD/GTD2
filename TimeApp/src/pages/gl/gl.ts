@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
+import {GlService} from "./gl.service";
+import {GcService, PageDcData} from "../gc/gc.service";
 
 /**
  * Generated class for the 群组列表 page.
@@ -11,100 +13,54 @@ import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular
 @IonicPage()
 @Component({
   selector: 'page-gl',
-  template:`<ion-header> 
-    <ion-toolbar> 
-      <ion-buttons no-margin left> 
-        <button ion-button icon-only (click)="goBack()" style="padding-left: 10px;"> 
-          <ion-icon name="arrow-back"></ion-icon> 
-        </button> 
-      </ion-buttons> 
-      <ion-segment [(ngModel)]="relation"> 
-        <ion-segment-button value="person" > 
-          个人 
-        </ion-segment-button> 
-        <ion-segment-button value="group"> 
-          群组 
-        </ion-segment-button> 
-      </ion-segment> 
-      <ion-buttons no-margin right [ngSwitch]="relation" style="padding-right: 10px;"> 
-        <button ion-button icon-only *ngSwitchCase="'person'" (click)="toAddMember()"> 
-          <ion-icon name="person-add"></ion-icon> 
-          <!--<img src="./assets/imgs/addPerson.png"/>--> 
-        </button> 
-        <button ion-button icon-only *ngSwitchCase="'group'" (click)="toGroupCreate()"> 
-          <ion-icon name="add"></ion-icon> 
-          <!--<img src="./assets/imgs/aaddGroup.png"/>--> 
-        </button> 
-      </ion-buttons> 
-    </ion-toolbar> 
-  </ion-header> 
-  <ion-content padding class="page-backgroud-color"> 
-    <div [ngSwitch]="relation"> 
-      <ion-list *ngSwitchCase="'person'"> 
-        <ion-item *ngIf="us == undefined"> 
-          <ion-label>你还没有添加联系人，快点击右上方添加联系人</ion-label> 
-        </ion-item> 
-        <ion-item-sliding *ngFor="let u of us"> 
-          <ion-item (click)="toMemberDetail(u)"> 
-            <ion-avatar item-start > 
-              <img [src]="u.hiu"> 
-            </ion-avatar> 
-            <ion-label> 
-              <p style="color: #000; line-height: 17px;font-size: 1.7rem;">{{u.ran}}</p> 
-              <p style="color: #666666;font-size: 12px;">{{u.rN}}</p> 
-            </ion-label> 
-          </ion-item> 
-          <ion-item-options side="right"> 
-            <button ion-button color="danger" (click)="delPerson(u)">删除</button> 
-          </ion-item-options> 
-        </ion-item-sliding> 
-      </ion-list> 
-      <ion-list *ngSwitchCase="'group'"> 
-        <ion-item *ngIf="gs == undefined"> 
-          <ion-label >你还没有创建群组，快点击右上方创建群组</ion-label> 
-        </ion-item> 
-        <ion-item-sliding *ngFor="let g of gs"> 
-          <button ion-item (click)="toGroupMember(g)"> 
-            <ion-avatar item-start > 
-              <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg"> 
-            </ion-avatar> 
-            <ion-label> 
-              {{g.rN}} 
-            </ion-label> 
-          </button> 
-          <ion-item-options side="right"> 
-            <button ion-button color="danger" (click)="delGroup(g)">删除</button> 
-          </ion-item-options> 
-        </ion-item-sliding> 
-      </ion-list> 
-    </div> 
-  </ion-content>`,
+  template:`
+    <ion-header no-border>
+      <ion-toolbar>
+        <ion-buttons left>
+          <button ion-button icon-only (click)="goBack()" color="danger">
+            <ion-icon name="arrow-back"></ion-icon>
+          </button>
+        </ion-buttons>
+        <ion-title>群组</ion-title>
+        <ion-buttons right>
+          <button ion-button (click)="toGroupCreate()" color="danger">
+            <ion-icon name="add"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content padding>
+      <ion-grid>
+        <ion-row>
+          <ion-list no-lines>
+            <ion-item class="plan-list-item" *ngFor="let g of gl">
+              {{g.gn}}
+              <button ion-button color="danger" (click)="delGroup(g)" clear item-end>删除</button>
+            </ion-item>
+          </ion-list>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
+`,
 })
 export class GlPage {
-
-  relation: any = 'person' ;
-
+  gl:Array<PageDcData> = new Array<PageDcData>()
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public view: ViewController,) {
+              public view: ViewController,
+              private gcService:GcService,
+              private glService:GlService,
+              public modalCtrl: ModalController) {
 
   }
 
   ionViewDidLoad() {
+    this.getGroups()
     console.log('ionViewDidLoad PaPage');
   }
 
-
-
-  toAddMember(){
-    // if(this.uo.uty == '0'){
-    //   this.navCtrl.push(PageConfig._LP_PAGE,{"rePage":PageConfig._GL_PAGE})
-    //   return;
-    // }
-    // console.log('PaPage跳转PfPage');
-    // this.navCtrl.push('PfPage');
-  }
 
   toGroupMember(g){
     // console.log('PaPage跳转PdPage');
@@ -112,6 +68,8 @@ export class GlPage {
   }
 
   toGroupCreate(){
+    this.modalCtrl.create(ModalContentPage,2);
+   // alert("123");
     // if(this.uo.uty == '0'){
     //   this.navCtrl.push(PageConfig._LP_PAGE,{"rePage":PageConfig._GL_PAGE})
     //   return;
@@ -120,9 +78,12 @@ export class GlPage {
     // this.navCtrl.push("PePage");
   }
 
-  toMemberDetail(){
-    // console.log('PaPage跳转PbPage');
-    // this.navCtrl.push("PbPage",{u:u});
+  getGroups(){
+    this.glService.getGroups().then(data=>{
+      this.gl = data.gl;
+    }).catch(e=>{
+      alert(e.message);
+    })
   }
 
   goBack() {
@@ -158,7 +119,14 @@ export class GlPage {
     // })
   }
 
-  delGroup(g){
+  delGroup(g:PageDcData){
+    this.gcService.delete(g.gi).then(data=>{
+      if(data.code==0){
+        this.getGroups();
+        console.log('delGroup ============== 删除成功')
+      }
+
+    })
     // this.relmemService.delRu(g.id).then(data=>{
     //   if(data.code == 0){
     //     console.log("群组删除成功");
@@ -225,4 +193,89 @@ export class GlPage {
   // }
 
 
+}
+
+
+@Component({
+  template: `
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Description
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="primary" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="{{character.image}}">
+        </ion-avatar>
+        <h2>{{character.name}}</h2>
+        <p>{{character.quote}}</p>
+      </ion-item>
+
+      <ion-item *ngFor="let item of character['items']">
+        {{item.title}}
+        <ion-note item-end>
+          {{item.note}}
+        </ion-note>
+      </ion-item>
+  </ion-list>
+</ion-content>
+`
+})
+export class ModalContentPage {
+  character;
+
+  constructor(
+    // public platform: Platform,
+    public params: NavParams,
+    public viewCtrl: ViewController
+  ) {
+    var characters = [
+      {
+        name: 'Gollum',
+        quote: 'Sneaky little hobbitses!',
+        image: 'assets/img/avatar-gollum.jpg',
+        items: [
+          { title: 'Race', note: 'Hobbit' },
+          { title: 'Culture', note: 'River Folk' },
+          { title: 'Alter Ego', note: 'Smeagol' }
+        ]
+      },
+      {
+        name: 'Frodo',
+        quote: 'Go back, Sam! I\'m going to Mordor alone!',
+        image: 'assets/img/avatar-frodo.jpg',
+        items: [
+          { title: 'Race', note: 'Hobbit' },
+          { title: 'Culture', note: 'Shire Folk' },
+          { title: 'Weapon', note: 'Sting' }
+        ]
+      },
+      {
+        name: 'Samwise Gamgee',
+        quote: 'What we need is a few good taters.',
+        image: 'assets/img/avatar-samwise.jpg',
+        items: [
+          { title: 'Race', note: 'Hobbit' },
+          { title: 'Culture', note: 'Shire Folk' },
+          { title: 'Nickname', note: 'Sam' }
+        ]
+      }
+    ];
+    this.character = characters[this.params.get('charNum')];
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
 }

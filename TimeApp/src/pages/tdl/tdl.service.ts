@@ -20,7 +20,7 @@ export class TdlService {
 
       //获取本地日程jn jg jc jt
       let sqll="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt from gtd_c gc inner join gtd_j_h jh on jh.ji = gc.ji  " +
-        "where gc.sd<'"+ next+"'  or gd.ed is null or gd.ed >='"+next+"'order by gc.ed desc";
+        "where gc.sd<'"+ next+"'  or gc.ed is null or gc.ed >='"+next+"'order by gc.ed desc";
       let rclL = await this.sqlExce.execSql(sqll);
       if(rclL && rclL.rows && rclL.rows.length>0){
         let len = rclL.rows.length-1;

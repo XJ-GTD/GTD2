@@ -1,35 +1,61 @@
 page-gl {
-
-  .scroll-content {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    padding-bottom: 0 !important;
+  @font-face {
+    font-family: 'PingFang-Regular';
+    //src: url('../assets/font/PingFang Regular.ttf');
+  }
+  ion-content {
+    font-family: "PingFang-Regular";
   }
 
-  .item-inner{
-    border-bottom: 0px !important;
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: #000;
   }
 
-  .item-block.item-ios{
-    border-bottom: 1px solid #e5e5e5 ;
+  ion-content.content {
+    background-color: #000;
+    color: #fff;
   }
 
-  ion-item{
-    height: 80px;
+  ion-content .plan-list-item {
+    background-color: #000;
+    color: #fff;
   }
 
-  ion-avatar img{
-    width: 40px !important;
-    height: 40px !important;
+  ion-list-header.plan-list-item {
+    color: rgb(153,153,153);
   }
 
-  ion-item-sliding button{
-    height: 80px;
+  .color-dot {
+    width: 2vmin;
+    height: 2vmin;
+    background-color: #fff;
+    border-radius: 50%;
   }
 
-  .scroll-content{
-    overflow-x: auto;
-    overflow-y: auto;
+  .color-pink {
+    background-color: rgb(192,119,219);
   }
 
+  .color-blue {
+    background-color: rgb(81,170,242);
+  }
+
+  .w-auto {
+    flex: 1;
+  }
+
+  .grid .row {
+    height: 100%;
+  }
+
+  .list {
+    width: 100%;
+  }
+
+  .list-header, .list-header-md, .list-header-ios {
+    border: 0;
+  }
+  .toolbar-title-ios{
+    color:#ffffff;
+  }
 }
