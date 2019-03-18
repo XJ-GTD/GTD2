@@ -18,45 +18,47 @@ import {LoginPasswordPage} from "../../../../TimeDemo/timeDemo/src/pages/login-p
   template:
   `
   <ion-header no-border>
-  <ion-toolbar>
-    <ion-buttons left>
-      <button ion-button icon-only (click)="goBack()" color="success">
-        <ion-icon name="arrow-back"></ion-icon>
-      </button>
-    </ion-buttons>
-
-    <ion-buttons right>
-      <button ion-button color="success">
-        帮助
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content padding>
-<h1 ion-text>您的手机号码是?</h1>
-
-<ion-grid class="grid-login-basic no-padding-lr">
-  <ion-row justify-content-start align-items-center>
-    <div class="w-auto">
-      <ion-input type="tel" placeholder="手机号码" [(ngModel)]="lsData.mobile" (ionBlur)="checkPhone()"></ion-input>
-    </div>
-  </ion-row>
-  <ion-row justify-content-between align-items-center>
-    <div class="w-auto">
-      <ion-input type="password" placeholder="短信验证码" [(ngModel)]="lsData.authCode" ></ion-input> <button ion-button (click)="sendMsg()">{{timeOut}}</button>
-    </div>
-    <div>
-      <button ion-fab color="success"><ion-icon name="arrow-forward" (click)="signIn()"></ion-icon></button>
-    </div>
-  </ion-row>
-</ion-grid>
-
-  <button ion-button clear color="dark" (click)="openLoginPasswordPage()" class="no-padding no-margin-lr">改为用冥王星帐户登录</button>
-
-  <p class="text-agreement"> <a class="text-anchor" href="#" (click)="toR()">创建帐户</a>即表示您同意我们的 <a class="text-anchor" (click)="userAgreement()">服务条款</a> 和 <a class="text-anchor" (click)="userAgreement()">隐私政策</a> 。</p>
-</ion-content>
-
+    <ion-toolbar>
+      <ion-buttons left>
+        <button ion-button icon-only (click)="goBack()" color="success">
+          <ion-icon name="arrow-back"></ion-icon>
+        </button>
+      </ion-buttons>
+  
+      <ion-buttons right>
+        <button ion-button color="success">
+          帮助
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content padding>
+  <h1 ion-text>您的手机号码是?</h1>
+  
+  <ion-grid class="grid-login-basic no-padding-lr">
+    <ion-row justify-content-start align-items-center>
+      <div class="w-auto">
+        <ion-input type="tel" placeholder="手机号码" [(ngModel)]="lsData.mobile" (ionBlur)="checkPhone()"></ion-input>
+      </div>
+      <div style="margin-right: 30px;">
+        <button ion-fab color="success" (click)="signIn()"><ion-icon name="arrow-forward"></ion-icon></button>
+      </div>
+    </ion-row>
+    <ion-row justify-content-between align-items-center>
+      <div class="w-auto">
+        <ion-input type="password" placeholder="短信验证码" [(ngModel)]="lsData.authCode" ></ion-input>
+      </div>
+      <div>
+        <button ion-button (click)="sendMsg()">{{timeOut}}</button>
+      </div>
+    </ion-row>
+  </ion-grid>
+  
+    <button ion-button clear color="dark" (click)="toLp()" class="no-padding no-margin-lr">改为用冥王星帐户登录</button>
+  
+    <p class="text-agreement"> <a class="text-anchor" href="#" (click)="toR()">创建帐户</a>即表示您同意我们的 <a class="text-anchor" (click)="userAgreement()">服务条款</a> 和 <a class="text-anchor" (click)="userAgreement()">隐私政策</a> 。</p>
+  </ion-content>
   `
 })
 export class LsPage {
@@ -83,7 +85,7 @@ export class LsPage {
     this.navCtrl.pop();
   }
 
-  openLoginPasswordPage(item) {
+  toLp(item) {
     this.navCtrl.push('LpPage');
   }
 
@@ -132,6 +134,11 @@ export class LsPage {
     }else {
       this.title("请输入正确11位手机号");
     }
+  }
+
+  toR() {
+    console.log('LpPage跳转RPage');
+    this.navCtrl.push('RPage');
   }
 
   userAgreement() {
