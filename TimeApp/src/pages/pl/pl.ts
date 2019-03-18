@@ -1,6 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, Navbar, ViewController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
+import {PagePlData, PlService} from "./pl.service";
+import {PageRData} from "../r/r.service";
+import {PagePDPro} from "../pd/pd.service";
 
 /**
  * Generated class for the PlPage page.
@@ -25,7 +28,7 @@ import {DataConfig} from "../../service/config/data.config";
   '  <ion-list>' +
   '    <ion-item-sliding *ngFor="let jh of jhs">' +
   '      <ion-item (click)="toPd(jh)">' +
-  '        <p style="font-size: 1.7rem;line-height: 20px;">{{jh.jn}}</p>' +
+  '        <p style="font-size: 1.7rem;line-height: 20px;">{{jh.jn}}<strong>({{jh.js}})</strong></p>' +
   '        <p style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{jh.jg}}</p>' +
   '      </ion-item>' +
   '      <ion-item-options side="right">' +
@@ -40,10 +43,13 @@ export class PlPage {
 
   @ViewChild(Navbar) navBar: Navbar;
 
+  jhs:any;
+
   //jhs:Array<JhModel>;
 
   constructor(private navCtrl: NavController,
-              private navParams: NavParams,) {
+              private navParams: NavParams,
+              private plService:PlService) {
   }
 
   ionViewDidLoad() {
@@ -52,37 +58,41 @@ export class PlPage {
     this.navBar.setBackButtonText("");
   }
 
-/*  toSy(jh:JhModel){
-    console.log("跳转计划详情页");
-    this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{"jh":jh});
-  }*/
+  ionViewWillEnter(){
+    this.getAllJh();
+  }
+
+  getAllJh(){
+    this.plService.getPlan().then(data=>{
+      console.log("获取计划成功");
+      console.debug("成功返回信息::" + JSON.stringify(data));
+      this.jhs = data.pl;
+    }).catch(res=>{
+      console.log("获取计划失败")
+    });
+  }
 
   toPc(){
     console.log("跳转添加计划页");
     this.navCtrl.push(DataConfig.PAGE._PC_PAGE,{});
   }
 
-  toPd(){
+  toPd(jh:PagePDPro){
+    console.debug("PD_PAGE::" + JSON.stringify(jh));
     console.log("跳转该计划的所有日程");
-    this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{});
+    this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{"jh":jh});
 
   }
+
+/*  toSy(jh:JhModel){
+    console.log("跳转计划详情页");
+    this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{"jh":jh});
+  }*/
 
   backButtonClick = (e: UIEvent) => {
     // 重写返回方法
     this.navCtrl.pop();
   }
-
-
-  getAllJh(){
-    // this.jhService.getJhs(null).then(data=>{
-    //   this.jhs = data.jhs;
-    //   console.log("获取计划成功")
-    // }).catch(reason => {
-    //   console.log("获取计划失败")
-    // });
-  }
-
 
 /*  delJh(jh:JhModel) {
     console.log("Pc点击删除 :: ")
@@ -93,9 +103,6 @@ export class PlPage {
     // });
   }*/
 
-  ionViewWillEnter(){
-    this.getAllJh();
-  }
 
 
 
