@@ -314,10 +314,10 @@ export class UtilService {
    * @param inStr
    * @returns {String}
    */
-  remo(inStr){
+  remo(inStr):string{
     let tmp = inStr.replace(/[a-zA-Z]/g,'');
     tmp = tmp.substr(0,11);
-    return new String(tmp);
+    return tmp;
   }
 
   // alert(msg:string){
