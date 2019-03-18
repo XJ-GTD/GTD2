@@ -1,9 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
-import {AlertController, IonicPage, Navbar, NavController, NavParams, ToastController} from 'ionic-angular';
-import {UtilService} from "../../service/util-service/util.service";
+import {AlertController, IonicPage, Navbar, NavController, ToastController} from 'ionic-angular';
 import {LsService, PageLsData} from "./ls.service";
-import {ReturnConfig} from "../../../../TimeApp（v1）/src/app/return.config";
-import {LoginPasswordPage} from "../../../../TimeDemo/timeDemo/src/pages/login-password/login-password";
 
 /**
  * Generated class for the 登陆（短信） page.
