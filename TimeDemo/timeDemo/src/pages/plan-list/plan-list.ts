@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NewPlanPage } from '../new-plan/new-plan';
 
 /**
  * Generated class for the PlanListPage page.
@@ -22,4 +23,7 @@ export class PlanListPage {
     console.log('ionViewDidLoad PlanListPage');
   }
 
+  newPlan() {
+    this.navCtrl.push(NewPlanPage, { });
+  }
 }

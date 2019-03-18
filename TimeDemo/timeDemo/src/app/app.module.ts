@@ -17,6 +17,7 @@ import { BlackListPage } from '../pages/black-list/black-list';
 import { CalendarPage } from '../pages/calendar/calendar';
 import { AgendaListPage } from '../pages/agenda-list/agenda-list';
 import { PlanListPage } from '../pages/plan-list/plan-list';
+import { NewPlanPage } from '../pages/new-plan/new-plan';
 import { MenuPage } from '../pages/menu/menu';
 import { ContactGroupPage } from '../pages/contact-group/contact-group';
 import { AccountPage } from '../pages/account/account';
@@ -36,6 +37,7 @@ import { NewPasswordPage } from '../pages/new-password/new-password';
     CalendarPage,
     AgendaListPage,
     PlanListPage,
+    NewPlanPage,
     MenuPage,
     ContactGroupPage,
     AccountPage,
@@ -61,6 +63,7 @@ import { NewPasswordPage } from '../pages/new-password/new-password';
     CalendarPage,
     AgendaListPage,
     PlanListPage,
+    NewPlanPage,
     MenuPage,
     ContactGroupPage,
     AccountPage,

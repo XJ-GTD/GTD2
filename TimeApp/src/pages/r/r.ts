@@ -14,78 +14,59 @@ import {PageRData, RService} from "./r.service";
 @IonicPage()
 @Component({
   selector: 'page-r',
-  template: '<ion-header>' +
-    '  <div class="register_header">' +
-    '    <ion-navbar>' +
-    '      <div class="header_header">账号注册</div>' +
-    '    </ion-navbar>' +
-    '  </div>' +
-    '</ion-header>' +
-    '<ion-content padding>' +
-    '  <div class="register_body">' +
-    '    <div class="custom_form">' +
-    '      <div class="custom_group">' +
-    '        <div class="group_input">' +
-    '          <div class="input_icon">' +
-    '              <span>' +
-    '                 <ion-icon name="ios-person-outline"></ion-icon>' +
-    '              </span>' +
-    '          </div>' +
-    '          <div class="input_text">' +
-    '            <ion-item>' +
-    '              <ion-input type="tel" [(ngModel)]="rdata.mobile" (input)="format()"  (ionBlur)="checkPhone()"  clearInput=true placeholder="输入您的手机号">' +
-    '              </ion-input>' +
-    '            </ion-item>' +
-    '          </div>' +
-    '        </div>' +
-    '      </div>' +
-    '      <div class="custom_group verification">' +
-    '        <div class="group_input ">' +
-    '          <div class="verification_icon">' +
-    '            <span class="img_span">' +
-    '              <img src="./assets/imgs/verification.png"/>' +
-    '            </span>' +
-    '          </div>' +
-    '          <div class="input_text_verification">' +
-    '            <div class="verification_item">' +
-    '              <ion-item>' +
-    '                <ion-input type="text" [(ngModel)]="rdata.authCode" placeholder="验证码" clearInput></ion-input>' +
-    '              </ion-item>' +
-    '            </div>' +
-    '            <div class="button_verification">' +
-    '              <button ion-button (click)="sendMsg()">{{timeOut}}</button>' +
-    '            </div>' +
-    '          </div>' +
-    '        </div>' +
-    '      </div>' +
-    '      <div class="custom_group">' +
-    '        <div class="group_input">' +
-    '          <div class="input_icon">' +
-    '            <span>' +
-    '              <ion-icon name="ios-lock-outline"></ion-icon>' +
-    '            </span>' +
-    '          </div>' +
-    '          <div class="input_text">' +
-    '            <ion-item>' +
-    '              <ion-input type="password" [(ngModel)]="rdata.password" placeholder="密码" clearInput></ion-input>' +
-    '            </ion-item>' +
-    '          </div>' +
-    '        </div>' +
-    '      </div>' +
-    '      <div class="custom_group padding_0">' +
-    '        <button ion-button block color="danger" (click)="register()" class="region_button" [disabled]="disable">' +
-    '          注册' +
-    '        </button>' +
-    '        <div class="copywriting" margin-top>' +
-    '          <span class="checkbox_span">' +
-    '              <ion-checkbox [(ngModel)]="checkBoxClick"></ion-checkbox>' +
-    '          <span class="userAgreement_span">我已阅读并同意<span class="userAgreement_span_1" (click)="userAgreegment()">《用户协议》</span></span>' +
-    '          </span>' +
-    '        </div>' +
-    '      </div>' +
-    '    </div>' +
-    '  </div>' +
-    '</ion-content>',
+  template:
+    `
+    <ion-header no-border>
+      <ion-toolbar>
+        <ion-buttons left>
+          <button ion-button icon-only (click)="goBack()" color="success">
+            <ion-icon name="arrow-back"></ion-icon>
+          </button>
+        </ion-buttons>
+
+        <ion-buttons right>
+          <button ion-button color="success">
+            帮助
+          </button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content padding>
+      <h1 ion-text>您的详细信息</h1>
+
+      <ion-grid class="grid-login-basic no-padding-lr">
+        <ion-row justify-content-between align-items-center>
+          <div class="w-auto">
+            <ion-input type="tel" placeholder="手机号码" [(ngModel)]="rdata.mobile" (ionBlur)="checkPhone()"></ion-input>
+          </div>
+          <div>
+            <button ion-fab color="success"><ion-icon name="arrow-forward" (click)="register()" ></ion-icon></button>
+          </div>
+        </ion-row>
+        <ion-row justify-content-start align-items-center>
+          <div class="w-auto">
+            <ion-input type="number" placeholder="短信验证码" [(ngModel)]="rdata.authCode"></ion-input>
+          </div>
+          <div>
+            <button ion-button (click)="sendMsg()">{{timeOut}}</button>
+          </div>
+        </ion-row>
+        <ion-row justify-content-start align-items-center>
+          <div class="w-auto">
+            <ion-input type="text" placeholder="姓名" [(ngModel)]="rdata.username"></ion-input>
+          </div>
+        </ion-row>
+        <ion-row justify-content-start align-items-center>
+          <div class="w-auto">
+            <ion-input type="password" placeholder="选择密码" [(ngModel)]="rdata.password"></ion-input>
+          </div>
+        </ion-row>
+      </ion-grid>
+
+      <p class="text-agreement">创建帐户即表示您同意我们的 <a class="text-anchor" (click)="userAgreement()">服务条款</a> 和 <a class="text-anchor" (click)="userAgreement()">隐私政策</a> 。</p>
+    </ion-content>
+  `,
 })
 export class RPage {
 
@@ -107,6 +88,14 @@ export class RPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RPage');
+  }
+
+  goBack() {
+    this.navCtrl.pop();
+  }
+
+  userAgreement() {
+    this.navCtrl.push('PPage');
   }
 
   title(message){
@@ -137,7 +126,9 @@ export class RPage {
         this.title("验证码不能为空");
       } else if (this.rdata.password == null || this.rdata.password == "" || this.rdata.password == undefined){     //判断密码是否为空
         this.title("密码不能为空");
-      } else if (this.checkBoxClick != true){  //判断用户协议是否选择
+      } else if (this.rdata.username == null || this.rdata.username == "" || this.rdata.username == undefined){     //用户名是否为空
+        this.title("用户名不能为空");
+      }else if (this.checkBoxClick != true){  //判断用户协议是否选择
         this.title("请读阅并勾选用户协议");
       } else if(this.rdata.verifykey == "") {
         this.title("请发送短信并填写正确的短信验证码");
@@ -157,10 +148,6 @@ export class RPage {
     }else {
       this.title("请输入正确11位手机号");
     }
-  }
-
-  userAgreegment() {
-    this.navCtrl.push('PPage');
   }
 
   sendMsg() {
@@ -192,15 +179,7 @@ export class RPage {
   }
 
   checkPhone() {
-    this.rService.checkPhone(this.rdata.mobile).then(data=>{
-      this.errorCode = data;
-    })
-  }
-
-  format() {
-    this.rService.remo(this.rdata.mobile).then(data=>{
-      this.rdata.mobile = data;
-    })
+    this.errorCode = this.rService.checkPhone(this.rdata.mobile);
   }
 
 }
