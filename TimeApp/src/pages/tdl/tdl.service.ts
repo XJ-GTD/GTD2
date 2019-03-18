@@ -1,6 +1,8 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UserConfig} from "../../service/config/user.config";
+import {BsModel} from "../../service/restful/out/bs.model";
+import * as moment from "moment";
 
 @Injectable()
 export class TdlService {
@@ -10,16 +12,142 @@ export class TdlService {
   }
 
   //获取日程 （每次返回30条数据，下拉返回日期之前，上推返回日期之后）
-  get(): Promise<any> {
-    return new Promise((resolve, reject) => {
-
+  async get(next:string){
+    if(next != null && next !=""){
+      let mp:Map<string,any> = new Map<string,any>();
       //获取本地日程
+      let sqll="select * from where sd<'"+ next+"' order by ed desc";
+      let rclL = await this.sqlExce.execSql(sqll);
+      if(rclL && rclL.rows && rclL.rows.length>0){
+        let len = rclL.rows.length-1;
+        let i=0;
+        let d=0;
+        //循环获取30条数据
+        while(i>30 || i==len){
+          let day = moment(new Date(next).getTime() - d*60*60*100).format("YYYY/MM/DD");
+          let dcL = new Array<ScdData>();
+          for(let j=0;j<100;j++){
+            let sc:ScdData = rclL.rows.item(j);
+            if(sc.sd>day){
+              break;
+            }else if(this.isymwd(sc.rt,day,sc.sd,sc.ed)){
+              dcL.push(sc);
+              i++;
+            }
+          }
+          d++;
+          mp.set(day,dcL);
+        }
+      }
+
+      //正序查出比当前日期大的日程
+      let sql="select * from where ed<='"+ next+"' or ed is null order by ed asc";
+      let rcnL = await this.sqlExce.execSql(sql);
+
+      if(rcnL && rcnL.rows && rcnL.rows.length>0){
+        let len = rcnL.rows.length-1;
+        let i=0;
+        let d=0;
+        //循环获取60条数据
+        while(i>60 || i==len){
+          let day = moment(new Date(next).getTime() + d*60*60*100).format("YYYY/MM/DD");
+          let dcL = new Array<ScdData>();
+          for(let j=0;j<100;j++){
+            let sc:ScdData = rcnL.rows.item(j);
+            if(sc.sd>day){
+              break;
+            }else if(this.isymwd(sc.rt,day,sc.sd,sc.ed)){
+              dcL.push(sc);
+              i++;
+            }
+          }
+          d++;
+          mp.set(day,dcL);
+        }
+      }
+
+    }
 
       //获取日程对应参与人或发起人
 
       //获取计划对应色标
-    });
+
   }
+
+  /**
+   * 查询当天的日程
+   * @param {string} day  YYYY/MM/DD
+   * @returns {Promise<BsModel<any>>}
+   */
+  getOneDayRc(day:string):Promise<BsModel<any>>{
+    return new Promise((resolve, reject) => {
+      let sql = 'select si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,tx from gtd_c gc  ' +
+        'where (gc.sd <="' + day +'" and gc.ed is null ) or (gc.sd <="' + day +'" and gc.ed>='+day+'")';
+      let bs = new BsModel<Array<ScdData>>();
+      this.sqlExce.execSql(sql).then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          let spl = new Array<ScdData>();
+          for(let i=0,len=data.rows.length;i<len;i++){
+            let sp:ScdData = data.rows.item(i);
+            if(this.isymwd(sp.rt,day,sp.sd,sp.ed)){
+              spl.push(sp);
+            }
+          }
+          bs.data = spl;
+        }
+        resolve(bs);
+      }).catch(e=>{
+        bs.code = -99;
+        bs.message = e.message;
+        resolve(bs);
+      })
+    })
+  }
+
+  /**
+   * 判断当前日期是否对应重复类型
+   * @param {string} cft 重复类型
+   * @param {string} day 当前日期
+   * @param {string} sd 开始日期
+   * @param {string} ed 结束日期
+   * @returns {boolean}
+   */
+  isymwd(cft:string,day:string,sd:string,ed:string):boolean{
+    let isTrue = false;
+    if(ed == '' || ed == null){
+      ed = null;
+    }
+    if(cft && cft != null && cft !='undefined'){
+      if(cft=='1'){//年
+        sd = sd.substr(4,6);
+        if(sd == day.substr(4,6)){
+          isTrue = true;
+        }
+      }else if(cft=='2'){ //月
+        sd = sd.substr(8,2);
+        if(sd<= day && sd== day.substr(8,2) && day<=ed){
+          isTrue = true;
+        }
+      }else if(cft=='3'){ //周
+        let sdz = new Date(sd).getDay();
+        let dayz = new Date(day).getDay();
+        if(sd<=day && sdz == dayz  && day<=ed){
+          isTrue = true;
+        }
+      }else if(cft=='4'){ //日
+        if(sd<=day && ed>=day){
+          isTrue = true;
+        }
+      }
+    }else if(sd<=day && ed>=day){
+      isTrue = true;
+    }
+    return isTrue;
+  }
+
+
+
+
 }
 
 export class ScdData {

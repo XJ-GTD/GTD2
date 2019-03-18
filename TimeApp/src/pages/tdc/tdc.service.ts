@@ -8,6 +8,7 @@ import {AgdPro, AgdRestful} from "../../service/restful/agdsev";
 import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
 
 import * as moment from "moment";
+import {ScdData, SpecScdData} from "../tdl/tdl.service";
 
 @Injectable()
 export class TdcService {
@@ -66,131 +67,6 @@ export class TdcService {
     });
   }
 
-  /**
-   * 添加特殊日程表（更新非重复类型的）
-   * @param {PageRcData} rc 日程信息
-   * @param {string} flag 1：修改，2：删除
-   * @returns {Promise<BsModel<any>>}
-   */
-  savesp(rc : PageRcData,flag:string):Promise<BsModel<any>>{
-    return new Promise((resolve, reject) => {
-      let bs = new BsModel<any>();
-      let str =this.checkRc(rc);
-      if(str != ''){
-        bs.code = 1;
-        bs.message = str;
-        resolve(bs);
-      }else{
-        let ct = new SpTbl();
-        Object.assign(ct,rc);
-        ct.spi = this.util.getUuid();
-        ct.ed = ct.sd;
-        ct.et = ct.st;
-        ct.sta = flag;
-        ct.spn = rc.sn;
-        let et = new ETbl();//提醒表
-        et.si = rc.si;
-        //保存本地日程
-        this.sqlExce.replaceT(ct).then(data=>{
-          //先删除提醒表
-          return this.sqlExce.delete(et);
-        }).then(data=>{
-          et.wi = this.util.getUuid();
-          et.wt = '1';
-          et.wd=rc.sd;
-          et.st = rc.st;
-          //保存本地提醒表
-          return this.sqlExce.save(et);
-        }).then(data=>{
-          let adgPro:AgdPro = new AgdPro();
-          adgPro.ai=rc.si; //日程ID
-          adgPro.rai=rc.sr;//日程发送人用户ID
-          adgPro.fc=rc.ui; //创建人
-          adgPro.at=rc.sn;//主题
-          adgPro.adt=rc.sd + " " + rc.st; //时间(YYYY/MM/DD HH:mm)
-          adgPro.ap=rc.ji;//计划
-          adgPro.ar=rc.rt;//重复
-          adgPro.aa=rc.tx;//提醒
-          adgPro.am=rc.bz;//备注
-          //restFul保存日程
-          return this.agdRest.save(adgPro)
-        }).then(data=>{
-          bs = data;
-          resolve(bs);
-        }).catch(e=>{
-          bs.code = -99;
-          bs.message = e.message;
-          resolve(bs);
-        })
-      }
-    });
-  }
-
-  /**
-   * 重复类型日程更新/删除 以后的日程
-   * @param {PageRcData} rc 日程信息
-   * @param {string} flag 1：修改，2：删除
-   * @returns {Promise<BsModel<any>>}
-   */
-  upOrdelrp(rc:PageRcData,flag:string):Promise<BsModel<any>>{
-    return new Promise((resolve, reject) => {
-      let bs = new BsModel<any>();
-      let str =this.checkRc(rc);
-      if(str != ''){
-        bs.code = 1;
-        bs.message = str;
-        resolve(bs);
-      }else{
-        let nowSd = moment(new Date(rc.sd).getTime() - 24*60*60*1000).format("YYYY/MM/DD");
-        let ct = new CTbl();
-        ct.si = rc.si;
-        ct.ed = nowSd;
-        let et = new ETbl();//提醒表
-        et.si = rc.si;
-        //更新原日程结束日期
-        this.sqlExce.update(ct).then(data=>{
-          if(flag == '1'){
-            Object.assign(ct,rc);
-            ct.si = this.util.getUuid();
-            ct.pni = rc.si;
-            //保存新日程
-            return this.sqlExce.save(ct);
-          }
-        }).then(data=>{
-          if(flag == '1'){
-            et.wi = this.util.getUuid();
-            et.wt = '1';
-            et.wd=rc.sd;
-            et.st = rc.st;
-            //保存本地提醒表
-            return this.sqlExce.save(et);
-          }
-        }).then(data=>{
-          let adgPro:AgdPro = new AgdPro();
-          adgPro.ai=rc.si; //日程ID
-          adgPro.rai=rc.sr;//日程发送人用户ID
-          adgPro.fc=rc.ui; //创建人
-          adgPro.at=rc.sn;//主题
-          adgPro.adt=rc.sd + " " + rc.st; //时间(YYYY/MM/DD HH:mm)
-          adgPro.ap=rc.ji;//计划
-          adgPro.ar=rc.rt;//重复
-          adgPro.aa=rc.tx;//提醒
-          adgPro.am=rc.bz;//备注
-          adgPro.pni = ct.si;
-          //restFul保存日程
-          return this.agdRest.save(adgPro)
-        }).then(data=>{
-          bs = data;
-          resolve(bs);
-        }).catch(e=>{
-          bs.code = -99;
-          bs.message = e.message;
-          resolve(bs);
-        })
-      }
-    });
-  }
-
   //获取计划列表
   getPlans():Promise<any>{
     return new Promise((resolve, reject) => {
@@ -218,6 +94,77 @@ export class TdcService {
       str += '日期不能为空;/n';
     }
     return str;
+  }
+
+  /**
+   * 查询当天的日程
+   * @param {string} day  YYYY/MM/DD
+   * @returns {Promise<BsModel<any>>}
+   */
+  getOneDayRc(day:string):Promise<BsModel<any>>{
+    return new Promise((resolve, reject) => {
+      let sql = 'select gc.* from gtd_c gc  ' +
+        'where (gc.sd <="' + day +'" and gc.ed is null ) or (gc.sd <="' + day +'" and gc.ed>='+day+'")';
+      let bs = new BsModel<Array<ScdData>>();
+      this.sqlExce.execSql(sql).then(data=>{
+          if(data && data.rows && data.rows.length>0){
+            let spl = new Array<ScdData>();
+            for(let i=0,len=data.rows.length;i<len;i++){
+              let sp:ScdData = data.rows.item(i);
+              if(this.isymwd(sp.rt,day,sp.sd,sp.ed)){
+                spl.push(sp);
+              }
+            }
+            bs.data = spl;
+          }
+          resolve(bs);
+      }).catch(e=>{
+        bs.code = -99;
+        bs.message = e.message;
+        resolve(bs);
+      })
+    })
+  }
+
+  /**
+   * 判断当前日期是否对应重复类型
+   * @param {string} cft 重复类型
+   * @param {string} day 当前日期
+   * @param {string} sd 开始日期
+   * @param {string} ed 结束日期
+   * @returns {boolean}
+   */
+  isymwd(cft:string,day:string,sd:string,ed:string):boolean{
+    let isTrue = false;
+    if(ed == '' || ed == null){
+      ed = null;
+    }
+    if(cft && cft != null && cft !='undefined'){
+      if(cft=='1'){//年
+        sd = sd.substr(4,6);
+        if(sd == day.substr(4,6)){
+          isTrue = true;
+        }
+      }else if(cft=='2'){ //月
+        sd = sd.substr(8,2);
+        if(sd<= day && sd== day.substr(8,2) && day<=ed){
+          isTrue = true;
+        }
+      }else if(cft=='3'){ //周
+        let sdz = new Date(sd).getDay();
+        let dayz = new Date(day).getDay();
+        if(sd<=day && sdz == dayz  && day<=ed){
+          isTrue = true;
+        }
+      }else if(cft=='4'){ //日
+        if(sd<=day && ed>=day){
+          isTrue = true;
+        }
+      }
+    }else if(sd<=day && ed>=day){
+      isTrue = true;
+    }
+    return isTrue;
   }
 
 }
