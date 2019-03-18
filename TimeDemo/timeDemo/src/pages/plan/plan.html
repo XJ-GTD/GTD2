@@ -31,13 +31,13 @@
       </ion-row>
       <ion-row justify-content-center align-items-start>
         <div *ngIf="(i === 0) || (agenda.adt.slice(0,10) !== plan.pa[i - 1]['adt'].slice(0,10))" class="agenda-col-date left-off right-off" justify-content-start>
-        <p class="app-agenda-title">{{agenda.adt.slice(5,10)}}</p>
+        <p class="app-agenda-day">{{agenda.adt.slice(5,10)}}</p>
         </div>
         <div *ngIf="(i !== 0) && (agenda.adt.slice(0,10) === plan.pa[i - 1]['adt'].slice(0,10))" class="agenda-col-date left-off right-off" justify-content-start>
         </div>
         <div class="agenda-col-time right-off left-off" justify-content-between>
           <div class="time-slot">
-          <p class="app-agenda-title">{{(agenda.adt != null && agenda.adt.length === 10)? '全天' : agenda.adt.slice(11, 16)}}</p>
+          <p class="app-agenda-time">{{(agenda.adt != null && agenda.adt.length === 10)? '全天' : agenda.adt.slice(11, 16)}}</p>
           </div>
           <div class="pointer-slot"><span class="plan-color-pointer"><div class="color-dot color-blue"></div></span></div>
         </div>
