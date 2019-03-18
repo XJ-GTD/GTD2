@@ -81,8 +81,9 @@ export class PlService {
     console.log('---------- PlService getPlan 获取计划开始 ----------------');
     let pld = new PagePlData();
     //获取本地计划
-    let jhCtbl: Array<PagePDPro> = await this.sqlExce.getList<PagePDPro>(new JhTbl());
-    if(jhCtbl.length>0){
+    let jhtbl:JhTbl = new JhTbl();
+    let jhCtbl: Array<PagePDPro> = await this.sqlExce.getList<PagePDPro>(jhtbl);
+    if(jhCtbl.length > 0){
       console.log('---------- PlService getPlan 获取计划日程数量开始 ----------------');
       //获取计划日程数量
       for(let jhc of jhCtbl){
