@@ -95,7 +95,7 @@ export class AgdbusiService {
       return false;
     }
     //当前日期在结束日之后
-    if (cTbldata.ed !='' && cTbldata.ed != null && moment(date).isAfter(endD)){
+    if (cTbldata.ed !='9999/12/31'  && moment(date).isAfter(endD)){
       return false;
     }
 
@@ -125,7 +125,7 @@ export class AgdbusiService {
       }
 
       //开始日累计日期在结束日之后
-      if (cTbldata.ed !='' && cTbldata.ed != null && moment(startD).isAfter(endD)){
+      if (cTbldata.ed !='9999/12/31'  && moment(startD).isAfter(endD)){
         return false;
       }
     }
