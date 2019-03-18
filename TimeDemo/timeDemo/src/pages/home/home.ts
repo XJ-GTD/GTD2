@@ -6,6 +6,7 @@ import { SetupPage } from '../setup/setup';
 import { BlackListPage } from '../black-list/black-list';
 import { CalendarPage } from '../calendar/calendar';
 import { AgendaListPage } from '../agenda-list/agenda-list';
+import { PlanListPage } from '../plan-list/plan-list';
 import { MenuPage } from '../menu/menu';
 import { ContactGroupPage } from '../contact-group/contact-group';
 import { AccountPage } from '../account/account';
@@ -33,6 +34,8 @@ export class HomePage {
       this.navCtrl.push(CalendarPage, { item: item });
     else if (item === 'agendaList')
       this.navCtrl.push(AgendaListPage, { item: item });
+    else if (item === 'planList')
+      this.navCtrl.push(PlanListPage, { item: item });
     else if (item === 'menu')
       this.navCtrl.push(MenuPage, { item: item });
     else if (item === 'account')

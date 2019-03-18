@@ -1,0 +1,59 @@
+page-plan-list {
+  @font-face {
+    font-family: 'PingFang-Regular';
+    src: url('../assets/font/PingFang Regular.ttf');
+  }
+
+  ion-content {
+    font-family: "PingFang-Regular";
+  }
+  
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: #000;
+  }
+
+  ion-content.content {
+    background-color: #000;
+    color: #fff;
+  }
+  
+  ion-content .plan-list-item {
+    background-color: #000;
+    color: #fff;
+  }
+  
+  ion-list-header.plan-list-item {
+    color: rgb(153,153,153);
+  }
+  
+  .color-dot {
+    width: 2vmin;
+    height: 2vmin;
+    background-color: #fff;
+    border-radius: 50%;
+  }
+  
+  .color-pink {
+    background-color: rgb(192,119,219);
+  }
+  
+  .color-blue {
+    background-color: rgb(81,170,242);
+  }
+  
+  .w-auto {
+    flex: 1;
+  }
+  
+  .grid .row {
+    height: 100%;
+  }
+  
+  .list {
+    width: 100%;
+  }
+  
+  .list-header, .list-header-md, .list-header-ios {
+    border: 0;
+  } 
+}
