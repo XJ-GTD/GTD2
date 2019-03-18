@@ -46,6 +46,7 @@ import {BrService} from "../pages/br/br.service";
 import {AgdbusiService} from "../service/util-service/agdbusi.service";
 import {FeedbackService} from "../service/cordova/feedback.service";
 import {AlarmService} from "../service/cordova/alarm.service";
+import {UserConfig} from "../service/config/user.config";
 
 @NgModule({
   declarations: [
@@ -109,6 +110,7 @@ import {AlarmService} from "../service/cordova/alarm.service";
     AgdbusiService,
     FeedbackService,
     AlarmService,
+    UserConfig,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
