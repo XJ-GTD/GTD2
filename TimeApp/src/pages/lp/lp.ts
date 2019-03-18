@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage,  NavController, ToastController} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, ToastController} from 'ionic-angular';
 import {LpService, PageLpData} from "./lp.service";
-import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 登陆（密码） page.
@@ -14,9 +13,8 @@ import {UtilService} from "../../service/util-service/util.service";
 @Component({
   selector: 'page-lp',
   providers: [],
-  template:` 
-
-    
+  template:
+  `
   <ion-content>
     <h1>账号登录</h1>
     <ion-grid class="grid-login-basic no-padding-lr">
@@ -75,9 +73,6 @@ export class LpPage {
   }
 
   signIn() {
-
-    this.lpData.mobile = this.lpService.remo(this.lpData.mobile);
-
     if(this.lpData.mobile == undefined || this.lpData.mobile == "" ){  //判断手机号是否为空
       this.title("手机号不能为空");
     }else if(this.lpService.checkPhone(this.lpData.mobile ) == 3){ //验证手机号是否符合规范

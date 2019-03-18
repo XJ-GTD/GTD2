@@ -77,7 +77,7 @@ export class UtilService {
    * @param str
    * @returns {number}
    */
-  public checkPhone(str){
+  public checkPhone(str):number{
     if(str == undefined|| str == null || str == ''){
       return 0;//输入为空
     }
