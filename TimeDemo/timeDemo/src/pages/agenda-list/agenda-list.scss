@@ -1,3 +1,54 @@
 page-agenda-list {
-
+  .leftside ion-grid.grid {
+    background-color: #000;
+    color: #fff;
+  }
+  
+  .rightside {
+    background-color: #b72537;
+    color: #fff;
+  }
+  
+  div.text-rotate-90 {
+    width: 500px;
+    white-space: nowrap;
+    -moz-transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+  }
+  
+  .w-auto {
+    flex: 1;
+  }
+  
+  ion-list .item {
+    background-color: transparent;
+    color: #fff;
+  }
+  
+  .w-5 {
+    width: 5vmin;
+  }
+  
+  .w-10 {
+    width: 10vmin;
+  }
+  
+  .w-15 {
+    width: 15vmin;
+  }
+  
+  .w-25 {
+    width: 25vmin;
+  }
+  
+  .grid {
+    height: 100%;
+    padding: 0;
+  }
+  
+  .grid .row {
+    height: 100%;
+  }
 }
