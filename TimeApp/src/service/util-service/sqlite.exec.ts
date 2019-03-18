@@ -98,6 +98,25 @@ export class SqliteExec {
   }
 
   /**
+   * sql字符串查询
+   * @param t
+   * @returns {Promise<T>}
+   */
+  getExtList<T>(sql: string): Promise<Array<T>> {
+    return new Promise((resolve, reject) => {
+      this.execSql(sql).then(data => {
+        let arr : Array<T> = new Array<T>();
+        if (data.rows && data.rows.length > 0 ){
+          for (let j = 0, len = data.rows.length; j < len; j++) {
+            arr.push(data.rows.item(j))
+          }
+        }
+        resolve(arr);
+      })
+    })
+  }
+
+  /**
    * 根据ID查询
    * @param t
    * @returns {Promise<T>}
