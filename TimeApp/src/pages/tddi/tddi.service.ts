@@ -69,6 +69,10 @@ export class TddiService {
     c.tx = agd.aa  ;
     //备注
     c.bz = agd.am  ;
+    //他人创建
+    c.gs = "0";
+    //新消息未读
+    c.du = "0";
   }
 
   private async setDtbl(d :DTbl,cp:ContactPerPro){
@@ -150,17 +154,22 @@ export class TddiService {
 
   }
 
-  //修改本地日程
-  update():Promise<any>{
-    return new Promise((resolve, reject) => {
+  //修改本地日程详情
+  async updateDetail(scd:ScdData){
 
-      //修改本地本地日程（修改范围备注，计划，和提醒）
 
-      //删除本地提醒表
+    //更新日程
+    let c = new CTbl();
+    Object.assign(c,scd);
+    //消息设为已读
+    c.du= "1";
+    await  this.sqlExce.update(c);
 
-      //插入本地提醒表
+    //更新提醒时间
+    let e = new ETbl();
+    Object.assign(e,scd.r);
+    await this.sqlExce.update(c);
 
-    });
   }
 
 
