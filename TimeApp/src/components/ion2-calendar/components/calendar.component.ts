@@ -35,11 +35,9 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
         <div class="title animated" [ngClass]="{'jello':css==1,'flash':css==2}" animationend="">
           <ng-template [ngIf]="_showMonthPicker" [ngIfElse]="title">
             <div float-left>
-              <p style="font-size: 30px;color: #222222;font-weight: bold;letter-spacing: -1px"
-                 float-left>{{monthOpt.original.month < 9 ? "0" + (monthOpt.original.month + 1) : monthOpt.original.month + 1}}</p>
-              <p style="display: grid;padding-left:0px;padding-top:5px" float-left no-margin>
-                <span style="font-size: 15px;height: 16px;color: #666666;">{{monthOpt.original.year}}</span>
-                <span style="font-size: 10px;color: #666666;">month</span>
+              <p >{{monthOpt.original.month < 9 ? "0" + (monthOpt.original.month + 1) : monthOpt.original.month + 1}}</p>
+              <p float-left no-margin>
+                <span>{{monthOpt.original.year}}</span>
               </p>
               <ion-icon style="padding-top:10px;padding-left: 6px;color:#666666" class="arrow-dropdown"
                         [name]="_view === 'days' ? 'md-arrow-dropright' : 'md-arrow-dropdown'"

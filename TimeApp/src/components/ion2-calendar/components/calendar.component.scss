@@ -11,9 +11,8 @@ ion-calendar {
   letter-spacing:-1px;
 
   .card-ios{
-    margin:10px;
     border-radius:0px;
-    width:calc(100% - 20px);
+    width:calc(100% - 14px);
     background: transparent;
     box-shadow:none;
     -webkit-box-shadow:none;
@@ -27,7 +26,16 @@ ion-calendar {
 
     //padding: 0 $btn-width 0 $btn-width;
     overflow: hidden;
-    height: 45px;
+    height: 70px;
+    font-weight: bold;
+    letter-spacing: 10px;
+    p{
+      color:#d32746;
+      font-size: 24px;
+      span{
+        font-size: 15px;
+      }
+    }
 
     .back, .forward, .switch-btn {
       display: block;

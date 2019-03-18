@@ -4,6 +4,7 @@ import {HPage} from './h';
 import {CalendarModule} from "../../components/ion2-calendar";
 import {TdlPageModule} from "../tdl/tdl.module";
 import {HService} from "./h.service";
+import {BackComponentModule} from "../../components/backComponent/back.module";
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import {HService} from "./h.service";
   imports: [
     IonicPageModule.forChild(HPage),
     CalendarModule,
-    TdlPageModule
+    TdlPageModule,
+    BackComponentModule
   ],
   entryComponents: [
     HPage

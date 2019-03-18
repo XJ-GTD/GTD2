@@ -9,6 +9,7 @@ import {TdlPage} from "../tdl/tdl";
 import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DataConfig} from "../../service/config/data.config";
+import {BackComponent} from "../../components/backComponent/back";
 
 /**
  * Generated class for the 首页 page.
@@ -20,20 +21,8 @@ import {DataConfig} from "../../service/config/data.config";
 @IonicPage()
 @Component({
   selector: 'page-h',
-  template:`<ion-header no-border>
-    <ion-toolbar color="none">
-      <ion-buttons left no-margin padding-left>
-        <button ion-button icon-only menuToggle no-margin>
-          <img src="./assets/imgs/menu.png"/>
-        </button>
-      </ion-buttons>
-      <ion-buttons end no-margin padding-right>
-        <button ion-button icon-only no-margin (click)="gotoToday()">
-          <img src="./assets/imgs/today.png"/>
-        </button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
+  template:`    
+    <BackComponent></BackComponent>
   <ion-content>
    <div class="haContent">
       <div class="haCalendar">
@@ -42,8 +31,6 @@ import {DataConfig} from "../../service/config/data.config";
                       (onPress)="creNewEvent($event)">
         </ion-calendar>
       </div>
-      <p class="tipDay"><span class="showDay animated flipInX">{{showDay}}</span><span
-       class="showDay2">{{showDay2}}</span></p>
     </div>
     <div class=" animated swing  assistant" (click)="openVoice()" #assistant>
       <img src="./assets/imgs/yuying.png"/>
@@ -53,6 +40,7 @@ import {DataConfig} from "../../service/config/data.config";
 })
 export class HPage {
   @ViewChild(CalendarComponent) ion2calendar: CalendarComponent;
+  @ViewChild(BackComponent) back:BackComponent;
 
 
   showDay: string;
@@ -75,6 +63,7 @@ export class HPage {
   }
 
   ionViewDidLoad() {
+    this.back.loadScene(20);
 
     let eventDate = new Date();
     this.selectDay = eventDate;
