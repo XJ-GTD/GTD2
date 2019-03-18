@@ -1,3 +1,15 @@
 page-black-list {
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: #000;
+  }
 
+  ion-content.content {
+    background-color: #000;
+    color: #fff;
+  }
+  
+  ion-content .black-list-item {
+    background-color: #000;
+    color: #fff;
+  }
 }
