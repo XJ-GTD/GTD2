@@ -1,4 +1,13 @@
 page-black-list {
+  @font-face {
+    font-family: 'PingFang-Regular';
+    src: url('../assets/font/PingFang Regular.ttf');
+  }
+
+  ion-content {
+    font-family: "PingFang-Regular";
+  }
+  
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
     background-color: #000;
   }
