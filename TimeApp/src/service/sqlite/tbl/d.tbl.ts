@@ -54,8 +54,7 @@ export class DTbl implements ITbl {
 
   cT(): string {
 
-    let sq = 'create table if not exists gtd_d( pi varchar(50) primary key ,si varchar(50)  ,' +
-      'ai varchar(50) bi varchar(50) ,wtt integer);';
+    let sq = 'create table if not exists gtd_d( pi varchar(50) primary key ,si varchar(50)  ,ai varchar(50) ,wtt integer);';
 
     return sq;
   }
@@ -119,7 +118,7 @@ export class DTbl implements ITbl {
 
   inT(): string {
     let sq = 'insert into gtd_d ' +
-      '( pi ,si ,ai ,wtt) values("' + this._pi + '","' + this._si + ' ",' + this._ai + "'," + moment().unix() + ');';
+      '( pi ,si ,ai ,wtt) values("' + this._pi + '","' + this._si + ' ","' + this._ai + '",' + moment().unix() + ');';
 
     return sq;
   }

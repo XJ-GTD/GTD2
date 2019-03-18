@@ -463,10 +463,13 @@ export class AlService {
 
         sqls.push(c.inT());
 
+        c_r2 = 6;
         if (!(c_r > 6 && c_r < 0)) {
-          while (c_r => 0) {
+          while (c_r > -1) {
+
+            c_r2 = this.util.randInt(0, c_r2-1);
             c_r--;
-            c_r2 = this.util.randInt(0, 5);
+            if (c_r2 <1) break;
 
             let dtbl: DTbl = new DTbl();
 
