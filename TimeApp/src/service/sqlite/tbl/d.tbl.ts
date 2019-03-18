@@ -6,25 +6,6 @@ import * as moment from "moment";
 
 
 export class DTbl implements ITbl {
-  private _pi: string="";
-  private _si: string="";
-  private _st: string="";
-  private _son: string="";
-  private _sa: string="";
-  private _ai: string="";
-  private _ib: string="";
-  private _bi: string="";
-  private _sdt: string="";
-  private _wtt:Number=0;
-
-  get wtt(): Number {
-    return this._wtt;
-  }
-
-  set wtt(value: Number) {
-    this._wtt = value;
-  }
-
   get pi(): string {
     return this._pi;
   }
@@ -41,30 +22,6 @@ export class DTbl implements ITbl {
     this._si = value;
   }
 
-  get st(): string {
-    return this._st;
-  }
-
-  set st(value: string) {
-    this._st = value;
-  }
-
-  get son(): string {
-    return this._son;
-  }
-
-  set son(value: string) {
-    this._son = value;
-  }
-
-  get sa(): string {
-    return this._sa;
-  }
-
-  set sa(value: string) {
-    this._sa = value;
-  }
-
   get ai(): string {
     return this._ai;
   }
@@ -73,159 +30,103 @@ export class DTbl implements ITbl {
     this._ai = value;
   }
 
-  get ib(): string {
-    return this._ib;
+  get wtt(): Number {
+    return this._wtt;
   }
 
-  set ib(value: string) {
-    this._ib = value;
+  set wtt(value: Number) {
+    this._wtt = value;
   }
 
-  get bi(): string {
-    return this._bi;
-  }
+  private _pi: string = "";
+  private _si: string = "";
+  private _ai: string = "";
+  private _wtt: Number = 0;
 
-  set bi(value: string) {
-    this._bi = value;
-  }
 
-  get sdt(): string {
-    return this._sdt;
-  }
-
-  set sdt(value: string) {
-    this._sdt = value;
-  }
-
-  clp(){
+  clp() {
     this._pi = "";
     this._si = "";
-    this._st = "";
-    this._son = "";
-    this._sa = "";
     this._ai = "";
-    this._ib = "";
-    this._bi = "";
-    this._sdt = "";
     this._wtt = 0;
   };
 
 
-  cT():string {
+  cT(): string {
 
-    let sq ='create table if not exists gtd_d( pi varchar(50) primary key ,si varchar(50)  ,' +
-      'st varchar(50)  ,son varchar(50)  ,sa varchar(4)  ,ai varchar(50)  ,ib varchar(4)  ,' +
-      'bi varchar(50)  ,sdt varchar(4),wtt integer);';
+    let sq = 'create table if not exists gtd_d( pi varchar(50) primary key ,si varchar(50)  ,' +
+      'ai varchar(50) bi varchar(50) ,wtt integer);';
 
     return sq;
   }
 
-  upT():string {
-    let sq='';
-    if(this._si!=null && this._si!=""){
-      sq=sq+', si="' + this._si +'"';
+  upT(): string {
+    let sq = '';
+    if (this._si != null && this._si != "") {
+      sq = sq + ', si="' + this._si + '"';
     }
-    if(this._st!=null && this._st!=""){
-      sq=sq+', st="' + this._st +'"';
+
+    if (this._ai != null && this._ai != "") {
+      sq = sq + ', ai="' + this._ai + '"';
     }
-    if(this._son != null && this._son!=""){
-      sq = sq + ', son="' + this._son +'"';
-    }
-    if(this._sa != null && this._sa!=""){
-      sq = sq + ', sa="' + this._sa +'"';
-    }
-    if(this._ai != null && this._ai!=""){
-      sq = sq + ', ai="' + this._ai +'"';
-    }
-    if(this._ib != null && this._ib!=""){
-      sq = sq + ', ib="' + this._ib +'"';
-    }
-    if(this._bi != null && this._bi!=""){
-      sq = sq + ', bi="' + this._bi +'"';
-    }
-    if(this._sdt != null && this._sdt!=""){
-      sq = sq + ', sdt="' + this._sdt +'"';
-    }
-    if (sq != null && sq != ""){
+    if (sq != null && sq != "") {
       sq = sq.substr(1);
     }
-    sq ='update gtd_d set  '+ sq + ' where pi = "'+ this._pi +'";';
+    sq = 'update gtd_d set  ' + sq + ' where pi = "' + this._pi + '";';
     return sq;
   }
 
-  dT():string {
+  dT(): string {
     let sq = 'delete from gtd_d where 1=1 ';
-    if(this._pi != null && this._pi!=""){
-      sq = sq + 'and  pi ="' + this._pi +'"';
+    if (this._pi != null && this._pi != "") {
+      sq = sq + 'and  pi ="' + this._pi + '"';
     }
-    if(this._si != null && this._si!=""){
-      sq = sq + 'and  si ="' + this._si +'"';
+    if (this._si != null && this._si != "") {
+      sq = sq + 'and  si ="' + this._si + '"';
     }
     sq = sq + ';'
     return sq;
   }
 
-  sloT():string {
-    let sq='select * from gtd_d where pi = "'+ this._pi +'";';
+  sloT(): string {
+    let sq = 'select * from gtd_d where pi = "' + this._pi + '";';
     return sq;
   }
 
-  slT():string {
-    let sq='select * from  gtd_d where  1=1 ';
-    if(this._si!=null){
-      sq=sq+' and si="' + this._si +'"';
+  slT(): string {
+    let sq = 'select * from  gtd_d where  1=1 ';
+
+    if (this.pi != null) {
+      sq = sq + ' and pi="' + this._pi + '"';
     }
-    if(this._st!=null){
-      sq=sq+' and st="' + this._st +'"';
+
+    if (this._si != null) {
+      sq = sq + ' and si="' + this._si + '"';
     }
-    if(this._son != null){
-      sq = sq + ' and son="' + this._son +'"';
+    if (this._ai != null) {
+      sq = sq + ' and ai="' + this._ai + '"';
     }
-    if(this._sa != null){
-      sq = sq + ' and sa="' + this._sa +'"';
-    }
-    if(this._ai != null){
-      sq = sq + ' and ai="' + this._ai +'"';
-    }
-    if(this._sa != null){
-      sq = sq + ' and sa="' + this._sa +'"';
-    }
-    if(this._ib != null){
-      sq = sq + ' and ib="' + this._ib +'"';
-    }
-    if(this._bi != null){
-      sq = sq + ' and bi="' + this._bi +'"';
-    }
-    if(this._sdt != null){
-      sq = sq + ' and sdt="' + this._sdt +'"';
-    }
-    if(this._pi != null){
-      sq = sq + ' and pi="' + this._pi +'"';
-    }
-    sq =sq +';';
+
+    sq = sq + ';';
     return sq;
   }
 
-  drT():string {
+  drT(): string {
 
-    let sq ='drop table if exists gtd_d;';
+    let sq = 'drop table if exists gtd_d;';
     return sq;
   }
 
-  inT():string {
-    let sq ='insert into gtd_d ' +
-      '( pi ,si ,st ,son ,sa ,ai ,ib ,bi ,sdt,wtt) values("'+ this._pi+'","'+ this._si+'","'+this._st+ '"' +
-      ',"'+this._son+ '","'+this._sa+ '","'+this._ai+ '","'+this._ib+ '","'+this._bi+ '",' +
-      '"'+this._sdt+ '",'+  moment().unix() +');';
+  inT(): string {
+    let sq = 'insert into gtd_d ' +
+      '( pi ,si ,ai ,wtt) values("' + this._pi + '","' + this._si + ' ",' + this._ai + "'," + moment().unix() + ');';
 
     return sq;
   }
 
-  rpT():string {
-    let sq ='replace into gtd_d ' +
-      '( pi ,si ,st ,son ,sa ,ai ,ib ,bi ,sdt,wtt) values("'+ this._pi+'","'+ this._si+'","'+this._st+ '"' +
-      ',"'+this._son+ '","'+this._sa+ '","'+this._ai+ '","'+this._ib+ '","'+this._bi+ '",' +
-      '"'+this._sdt+ '",'+  moment().unix() +');';
+  rpT(): string {
+    let sq = 'replace into gtd_d ' +
+      '( pi ,si   ,ai   ,wtt) values("' + this._pi + '","' + this._ai + '","' + moment().unix() + ');';
 
     return sq;
   }
