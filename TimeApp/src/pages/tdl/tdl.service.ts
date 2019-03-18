@@ -167,6 +167,7 @@ export class ScdData {
   tx: string = "";//提醒方式
   pni:string = "";//日程原始ID
   wtt: number;//时间戳
+  du:string ="";//消息读取状态
 
 
   //特殊日期日程

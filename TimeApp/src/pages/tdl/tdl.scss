@@ -1,267 +1,54 @@
 page-tdl {
-  display: block;
-
-  .pop-css {
-    margin: auto;
-    position: absolute;
-    top: -50px;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    width: 92% !important;
-    height: 90% !important;
-    background-color: #FFFFFF;
-    z-index: 50;
-    border-radius: 20px;
-    opacity: 0.95;
-
-    transition: width 100ms, height 100ms;
-    -moz-transition: width 1s, height 1s, -moz-transform 1s; /* Firefox 4 */
-    -webkit-transition: width 0.5s, height 0.5s, -webkit-transform 1s; /* Safari and Chrome */
-    -o-transition: width 1s, height 1s, -o-transform 1s; /* Opera */
-
-
-    ion-card {
-      height: calc(100% - 10px);
-      width: calc(100% - 10px);
-      margin: 5px;
-      border-radius: 20px;
-
-      ion-card-header{
-
-        height: 110px;
-        border-bottom: 1px solid #000000;
-        ul{
-          padding-inline-start:20px
-        }
-
-        li{
-          list-style: none;
-          margin: 8px;
-        }
-        .item-block.item-ios{
-          border-bottom: none;
-        }
-      }
-
-      .ico-img {
-        font-size: 1.5em;
-        color: #666666;
-      }
-      ion-item{
-        margin-top:10px;
-      }
-
-      .card-footer{
-        position: absolute;
-        bottom: 35px;
-        right: 35px;
-        color: #666666;
-        font-size: 20px;
-        font-weight: bold;
-        text-align:right;
-      }
-
-      .content{
-        height: 120px;
-        .input-wrapper{
-          display: inline;
-        }
-      }
-      .comment{
-        height: 80px;
-        .input-wrapper{
-          display: inline;
-        }
-
-
-      }
-      .group {
-        ion-thumbnail {
-          min-width:35px;
-          min-height:35px;
-          img {
-            width: 35px;
-            height: 35px;
-            border-radius: 35px;
-          }
-
-        }
-
-        span {
-          display: block;
-          color: #999999;
-          font-size: 10px;
-          padding: 3px;
-          text-align: center;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          width: 35px;
-        }
-
-      }
-
-      .buttonWan {
-        display: inline;
-        letter-spacing: 5px;
-        position: absolute;
-        right: 25px;
-        height:40px;
-        width:55px;
-        top:30px;
-        box-shadow:black 0px 0px 10px;
-
-        background: -webkit-linear-gradient(left, rgb(149, 58, 139), rgb(86, 82, 222)); /* Safari 5.1 - 6.0 */
-        background: -o-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Opera 11.1 - 12.0 */
-        background: -moz-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Firefox 3.6 - 15 */
-        background: linear-gradient(to right, rgb(149, 58, 139), rgb(86, 82, 222)); /* 标准的语法（必须放在最后） */
-
-      }
-
-      h2 {
-        font-size: 14px;
-        color: #222222;
-        white-space: normal;
-        display: contents;
-      }
-    }
-
-
+  .leftside ion-grid.grid {
+    background-color: #000;
+    color: #fff;
   }
 
+  .rightside {
+    background-color: #b72537;
+    color: #fff;
+  }
 
-  .backdrop {
-    opacity: 0.5;
-    position: fixed;
+  div.text-rotate-90 {
+    width: 500px;
+    white-space: nowrap;
+    -moz-transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+  }
+
+  .w-auto {
+    flex: 1;
+  }
+
+  ion-list .item {
+    background-color: transparent;
+    color: #fff;
+  }
+
+  .w-5 {
+    width: 5vmin;
+  }
+
+  .w-10 {
+    width: 10vmin;
+  }
+
+  .w-15 {
+    width: 15vmin;
+  }
+
+  .w-25 {
+    width: 25vmin;
+  }
+
+  .grid {
     height: 100%;
-
-    .close {
-      /* display: block; */
-      font-size: 50px;
-      margin: 0 auto;
-      bottom: 5px;
-      position: absolute;
-      color: antiquewhite;
-      left: calc(45%);
-    }
-
+    padding: 0;
   }
 
-  .activeCss {
-    transform: translate(0, 0);
-
-  }
-
-  .activeCssLeft {
-    transform: translate(-105%, 5%);
-    z-index: 40;
-  }
-
-  .activeCssRight {
-    transform: translate(105%, 5%);
-    z-index: 40;
-  }
-
-  .activeCssLeft-1 {
-    transform: translate(-205%, 5%);
-    z-index: 40;
-  }
-
-  .activeCssRight-1 {
-    transform: translate(205%, 5%);
-    z-index: 40;
-  }
-
-  .lb1 {
-    font-size: 15px;
-    color: #999999;
-  }
-
-  ul {
-
-    .item-ios.item-block .item-inner {
-      border-bottom: 0px solid #c8c7cc;
-    }
-
-    .new-message {
-      font-weight: bold;
-
-      span {
-        font-weight: bold;
-      }
-    }
-
-    .item-ios {
-      background-color: transparent;
-      font-size: 14px;
-      color: #222222;
-
-      white-space: nowrap; /*强制span不换行*/
-      overflow: hidden; /*超出宽度部分隐藏*/
-      text-overflow: ellipsis; /*超出部分以点号代替*/
-      min-height: 0px;
-      list-style-type: none;
-      padding-left: 0px;
-      margin-left: -20px;
-      margin-top: 10px;
-
-
-      p {
-        font-size: 12px;
-        color: #222222;
-      }
-
-      span {
-        letter-spacing: 1px;
-        font-size: 14px;
-      }
-
-      .anther {
-        width: 0;
-        height: 0;
-        border: 5px solid;
-        display: inline-block;
-        /* 平分效果 */
-        /*border-color:red green blue black; */
-
-        /* 单个三角形 */
-        border-color: transparent transparent red transparent;
-        margin: 0px 3px 3px 3px;
-      }
-
-      .self {
-        width: 7px;
-        height: 7px;
-        background-color: red;
-        display: inline-block;
-        margin: 0px 3px 1px 3px;
-        border-radius: 50%;
-      }
-
-      small {
-        font-size: 7px;
-        color: red;
-        position: absolute;
-        right: 15px;
-      }
-
-      .input-wrapper {
-        height: 30px;
-      }
-    }
-
-    .item-ios [item-start] {
-      margin: 2px 5px 0px 0px;
-    }
-
-    li {
-    }
-  }
-
-  ion-scroll {
-    min-height: 100px;
+  .grid .row {
     height: 100%;
   }
-
 }
