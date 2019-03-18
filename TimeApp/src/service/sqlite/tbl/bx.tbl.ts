@@ -83,14 +83,14 @@ export class BxTbl implements ITbl{
   }
 
   inT():string {
-    let sq ='insert into gtd_g ' +
+    let sq ='insert into gtd_b_x ' +
       '(  bi ,bmi) values("'+ this._bi+'","'+ this._bmi+'");';
 
     return sq;
   }
 
   rpT():string {
-    let sq ='replace into gtd_g ' +
+    let sq ='replace into gtd_b_x ' +
       '(  bi ,bmi) values("'+ this._bi+'","'+ this._bmi+'");';
 
     return sq;
