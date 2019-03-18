@@ -64,8 +64,8 @@ public class IAgendaServiceImpl implements IAgendaService {
 				agdContactsRep.deleteById(agdAgendaContacts.getRecId());
 				//TODO 发送更新日程消息
 				Map<String,Object> map = new HashMap<String,Object>();
-		        map.put("to", JSONObject.toJSONString(agdOList));
-		        map.put("agenda", JSONObject.toJSONString(inDto));
+		        map.put("to", JSONObject.toJSON(agdOList));
+		        map.put("agenda", JSONObject.toJSON(inDto));
 		        map.put("notifyType", "update");
 		        try{
 		        	Map<String,Object> map2 = new HashMap<String,Object>();
@@ -126,9 +126,9 @@ public class IAgendaServiceImpl implements IAgendaService {
 				}
 				// 生产删除消息MQ
 				Map<String,Object> map = new HashMap<String,Object>();
-		        map.put("to", JSONObject.toJSONString(dels));
+		        map.put("to", JSONObject.toJSON(dels));
 		        inDto = BaseUtil.agdToDtoAgd(agd);
-		        map.put("agenda", JSONObject.toJSONString(inDto));
+		        map.put("agenda", JSONObject.toJSON(inDto));
 		        map.put("notifyType", "delete");
 		        try{
 		        	Map<String,Object> map2 = new HashMap<String,Object>();

@@ -2,20 +2,18 @@ package com.xiaoji.sms.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaoji.sms.dto.BaseOutDto;
 import com.xiaoji.sms.dto.SmsDto;
-import com.xiaoji.sms.dto.TimerDto;
 import com.xiaoji.sms.services.ISmsService;
 import com.xiaoji.sms.util.ReturnMessage;
-import com.xiaoji.sms.util.TimerUtil;
 
 /**
  * SmsController短信发送平台
@@ -25,7 +23,7 @@ import com.xiaoji.sms.util.TimerUtil;
 @CrossOrigin
 @RequestMapping(value = "/")
 public class SmsController {
-
+	Logger logger = LoggerFactory.getLogger(SmsController.class);
     @Autowired
     ISmsService smsService;
 
@@ -40,23 +38,20 @@ public class SmsController {
     	BaseOutDto out = new BaseOutDto();
 		out.setRc(ReturnMessage.ERROR_CODE);
 		out.setRm(ReturnMessage.ERROR_MSG);
+		logger.info("======== 发送类型：" + dto.getSendType() + " =========");
+		logger.info("======== 发送手机号：" + dto.getMobile() + " =========");
+		logger.info("======== 发送内容：" + dto.getSendContent() + " =========");
     	boolean isSuccess = false;
-    	if(dto.getMobile() != null && !"".equals(dto.getMobile())){
-    		if("0".equals(dto.getSendType())){
-    			//发送短信验证码
-        		if(dto.getSendContent()!=null && !"".equals(dto.getSendContent())){
-        			smsService.getAuthCode(dto.getMobile(),dto.getSendContent());
-        			isSuccess = true;
-        		}else{
-        			out.setRc(ReturnMessage.NULL_CODE);
-        			out.setRm(ReturnMessage.NULL_MSG);
-        		}
-        		
-        	}else if("1".equals(dto.getSendType())){
-        		//发送下载链接验证码
-        		smsService.pushSchedule(dto.getMobile());
-        		isSuccess = true;
-        	}
+    	if(dto.getMobile() != null && !"".equals(dto.getMobile()) && dto.getSendType() != null 
+    			&& !"".equals(dto.getSendType())){
+			//发送短信验证码
+			if(dto.getSendContent()!=null && !"".equals(dto.getSendContent())){
+				smsService.sendSms(dto.getMobile(),dto.getSendType(),dto.getSendContent());
+				isSuccess = true;
+			}else{
+				out.setRc(ReturnMessage.NULL_CODE);
+				out.setRm(ReturnMessage.NULL_MSG);
+			}
     	}
     	if(isSuccess){
     		out.setRc(ReturnMessage.SUCCESS_CODE);

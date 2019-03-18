@@ -7,23 +7,11 @@ package com.xiaoji.sms.services;
 public interface ISmsService {
 
     /**
-     * 获取短信验证码
+     * 获取短信
      * @param mobile
      * @return
      */
-    int getAuthCode(String mobile,String code);
+    int sendSms(String mobile,String sendType,String code);
 
-    /**
-     * 推送短信日程
-     * @param mobile
-     * @return
-     */
-    int pushSchedule(String mobile);
-
-    /**
-     * 推送好友邀请
-     * @param mobile
-     * @return
-     */
-    int pushPlayer(String mobile);
+  
 }

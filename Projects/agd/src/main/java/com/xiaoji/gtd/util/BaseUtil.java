@@ -1,17 +1,5 @@
 package com.xiaoji.gtd.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Enumeration;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-
-import com.alibaba.dubbo.common.utils.IOUtils;
 import com.xiaoji.gtd.dto.AgdAgendaDto;
 import com.xiaoji.gtd.dto.AgdContactsDto;
 import com.xiaoji.gtd.entity.AgdAgenda;
@@ -65,12 +53,16 @@ public class BaseUtil {
 		agd.setAgendaId(inDto.getAi()); // 日程主键
 		agd.setRelAgendaId(inDto.getRai());// 关联日程主键
 		agd.setTitle(inDto.getAt());// 标题
-		agd.setAgendaDate(inDto.getAdt());// 时间
+		agd.setAgendaDate(inDto.getAdt());// 开始日期
+		agd.setAgendaTime(inDto.getSt()); //开始时间
+		agd.setEndDate(inDto.getEd());// 结束日期
+		agd.setEndTime(inDto.getEt());//结束时间
 		agd.setRepeatType(inDto.getAr()); // 重复
 		agd.setCreaterId(inDto.getFc());// 来自于谁（创建人）
 		agd.setPlanFlag(inDto.getAp()); // 计划
 		agd.setRemindFlag(inDto.getAa());// 提醒方式
 		agd.setRemarks(inDto.getAm());// 备注
+		agd.setWtt(inDto.getWtt());// 创建时间戳
 		return agd;
 	}
 
@@ -92,43 +84,11 @@ public class BaseUtil {
 		inDto.setAp(agd.getPlanFlag()); // 计划
 		inDto.setAa(agd.getRemindFlag());// 提醒方式
 		inDto.setAm(agd.getRemarks());// 备注
+		inDto.setSt(agd.getAgendaTime()); //开始时间
+		inDto.setEd(agd.getEndDate());// 结束日期
+		inDto.setEt(agd.getEndTime());//结束时间
+		inDto.setWtt(agd.getWtt());// 创建时间戳
 		return inDto;
 	}
 
-	/**
-	 * 打印 request BodyInfo
-	 * 
-	 * @param request
-	 * @param log
-	 */
-	public static void getRequestParams(HttpServletRequest request, Logger log) {
-		Enumeration enu = request.getParameterNames();
-		Map<String, String[]> map = request.getParameterMap();
-		//String str = request.getScheme();
-		String str1 = request.getQueryString();
-		StringBuffer stb = new StringBuffer();
-		
-		BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        String line = null;
-        StringBuilder sb = new StringBuilder();
-        try {
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-		while (enu.hasMoreElements()) {
-			String paraName = (String) enu.nextElement();
-			stb.append(paraName + ": " + request.getParameter(paraName) + " ;");
-		}
-		log.info("---- 保存日程获取头部request:" + stb.toString());
-	}
 }
