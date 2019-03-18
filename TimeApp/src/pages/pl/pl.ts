@@ -15,29 +15,67 @@ import {PagePDPro} from "../pd/pd.service";
 @IonicPage()
 @Component({
   selector: 'page-pl',
-  template:'<ion-header>' +
-  '  <ion-navbar>' +
-  '    <ion-title>计划一览</ion-title>' +
-  '    <ion-buttons right>' +
-  '      <button ion-button (click)="toPc()">添加</button>' +
-  '    </ion-buttons>' +
-  '  </ion-navbar>' +
-  '</ion-header>' +
-  '<ion-content padding>' +
-  '  <!--<button (click)="toTmd()">1!!!!</button>-->' +
-  '  <ion-list>' +
-  '    <ion-item-sliding *ngFor="let jh of jhs">' +
-  '      <ion-item (click)="toPd(jh)">' +
-  '        <p style="font-size: 1.7rem;line-height: 20px;">{{jh.jn}}<strong>({{jh.js}})</strong></p>' +
-  '        <p style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{jh.jg}}</p>' +
-  '      </ion-item>' +
-  '      <ion-item-options side="right">' +
-  '        <button ion-button color="primary" (click)="toSy(jh)">详情</button>' +
-  '        <button ion-button color="danger" (click)="delJh(jh)">删除</button>' +
-  '      </ion-item-options>' +
-  '    </ion-item-sliding>' +
-  '  </ion-list>' +
-  '</ion-content>',
+  template:
+    `
+    <ion-header no-border>
+      <ion-toolbar>
+        <ion-buttons left>
+          <button ion-button icon-only (click)="goBack()" color="danger">
+            <ion-icon name="arrow-back"></ion-icon>
+          </button>
+        </ion-buttons>
+        <ion-title>计划</ion-title>
+        <ion-buttons right>
+          <button ion-button (click)="newPlan()" color="danger">
+            <ion-icon name="add"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content padding>
+      <ion-grid>
+        <ion-row>
+          <ion-list no-lines>
+            <ion-list-header class="plan-list-item">
+              全部计划
+            </ion-list-header>
+            <ion-item class="plan-list-item">
+              <div class="color-dot color-blue" item-start></div>
+              普吉岛休闲游计划 (自由行)
+            </ion-item>
+            <ion-item class="plan-list-item">
+              <div class="color-dot color-pink" item-start></div>
+              冥王星计划
+            </ion-item>
+            <ion-list-header class="plan-list-item">
+              <div>系统计划</div><small>长按系统计划可清除</small>
+            </ion-list-header>
+            <ion-item class="plan-list-item">
+              节假日
+              <button ion-button color="danger" clear item-end>下载</button>
+            </ion-item>
+            <ion-item class="plan-list-item">
+              世界杯小组赛
+              <button ion-button color="danger" clear item-end>
+                <ion-icon name="sync"></ion-icon>
+              </button>
+            </ion-item>
+            <ion-list>
+            <ion-item-sliding *ngFor="let jh of jhs">
+              <ion-item class="plan-list-item" (click)="toPd(jh)">
+                  {{jh.jn}}
+                <button ion-button color="danger" clear item-end>
+                  <ion-icon name="sync"></ion-icon>
+                </button>
+              </ion-item>
+            </ion-item-sliding>
+            </ion-list>
+          </ion-list>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
+  `,
 })
 export class PlPage {
 
@@ -54,8 +92,6 @@ export class PlPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PlPage');
-    this.navBar.backButtonClick = this.backButtonClick;
-    this.navBar.setBackButtonText("");
   }
 
   ionViewWillEnter(){
@@ -64,22 +100,24 @@ export class PlPage {
 
   getAllJh(){
     this.plService.getPlan().then(data=>{
-      console.log("获取计划成功");
-      console.debug("成功返回信息::" + JSON.stringify(data));
+      console.debug("获取计划成功，成功返回信息::" + JSON.stringify(data));
       this.jhs = data.pl;
     }).catch(res=>{
       console.log("获取计划失败")
     });
   }
 
-  toPc(){
+  goBack() {
+    this.navCtrl.pop();
+  }
+
+  newPlan(){
     console.log("跳转添加计划页");
     this.navCtrl.push(DataConfig.PAGE._PC_PAGE,{});
   }
 
   toPd(jh:PagePDPro){
-    console.debug("PD_PAGE::" + JSON.stringify(jh));
-    console.log("跳转该计划的所有日程");
+    console.debug("跳转该计划的所有日程::" + JSON.stringify(jh));
     this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{"jh":jh});
 
   }
@@ -88,11 +126,6 @@ export class PlPage {
     console.log("跳转计划详情页");
     this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{"jh":jh});
   }*/
-
-  backButtonClick = (e: UIEvent) => {
-    // 重写返回方法
-    this.navCtrl.pop();
-  }
 
 /*  delJh(jh:JhModel) {
     console.log("Pc点击删除 :: ")

@@ -1,6 +1,7 @@
 import {Component, ElementRef, Input, Renderer2} from '@angular/core';
 import {App, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import * as moment from "moment";
+import {ScdData, TdlService} from "./tdl.service";
 
 /**
  * Generated class for the 日程列表 page.
@@ -58,11 +59,19 @@ import * as moment from "moment";
 
 })
 export class TdlPage {
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private tdlServ : TdlService) {
   }
+
+  dtmap :Map<string,any> = new Map<string,any>();
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AgendaListPage');
+  }
+
+  init() {
+    this.tdlServ.get(this.navParams.get("dt")).then(data =>{
+      this.dtmap = data;
+    })
   }
 
 

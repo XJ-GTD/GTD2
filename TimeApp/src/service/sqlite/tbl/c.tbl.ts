@@ -22,6 +22,16 @@ export class CTbl implements  ITbl{
   private _wtt: Number=0;
   private _pni: string ="";
   private _du:string="";
+  private _gs:string = "";
+
+
+  get gs(): string {
+    return this._gs;
+  }
+
+  set gs(value: string) {
+    this._gs = value;
+  }
 
   get du(): string {
     return this._du;
@@ -163,7 +173,7 @@ export class CTbl implements  ITbl{
 
     let sq =' create table if not exists gtd_c(  si varchar(50) primary key ,sn varchar(50)  ,ui varchar(50)  ,sd varchar(20)  ' +
       ',st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,rt varchar(4)  ,ji varchar(50),sr varchar(50),bz varchar(50),tx varcher(10),' +
-      'wtt integer,pni varchar(50),du varchar(4));';
+      'wtt integer,pni varchar(50),du varchar(4),gs varchar(4));';
 
     return sq;
   }
@@ -208,6 +218,9 @@ export class CTbl implements  ITbl{
     }
     if(this._du != null && this._du!=""){
       sq = sq + ', du="' + this._du +'"';
+    }
+    if(this._gs != null && this._gs!=""){
+      sq = sq + ', gs="' + this._gs +'"';
     }
     if (sq != null && sq != ""){
       sq = sq.substr(1);
@@ -271,6 +284,9 @@ export class CTbl implements  ITbl{
     if(this._du != null && this._du!=""){
       sq = sq + ' and du="' + this._du +'"';
     }
+    if(this._gs != null && this._gs!=""){
+      sq = sq + ' and gs="' + this._gs +'"';
+    }
     sq = sq +';';
     return sq;
   }
@@ -283,9 +299,10 @@ export class CTbl implements  ITbl{
 
   inT():string {
     let sq ='insert into gtd_c ' +
-      '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,bz,tx,wtt,pni,du) values("'+ this._si+'","'+ this._sn+'","'+this._ui+ '"' +
+      '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,bz,tx,wtt,pni,du,gs) values("'+ this._si+'","'+ this._sn+'","'+this._ui+ '"' +
       ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._rt+ '","'+this._ji+ '"' +
-      ',"'+this._sr+ '","'+this._bz+  '","'+this._tx+'",'+  moment().unix() + ',"'+this._pni+'","'+this._du+'");';
+      ',"'+this._sr+ '","'+this._bz+  '","'+this._tx+'",'+  moment().unix() + ',"'+this._pni+'","'+this._du+'"' +
+      ',"'+this._gs+'");';
 
     return sq;
   }
@@ -294,7 +311,8 @@ export class CTbl implements  ITbl{
     let sq ='replace into gtd_c ' +
       '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,bz,tx,wtt,pni) values("'+ this._si+'","'+ this._sn+'","'+this._ui+ '"' +
       ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._rt+ '","'+this._ji+ '"' +
-      ',"'+this._sr+ '","'+this._bz+ '","' + this._tx + '",'+  moment().unix() +',"'+this._pni+'","'+this._du+'");';
+      ',"'+this._sr+ '","'+this._bz+ '","' + this._tx + '",'+  moment().unix() +',"'+this._pni+'","'+this._du+'"' +
+      ',"'+this._gs+'");';
     return sq;
   }
 

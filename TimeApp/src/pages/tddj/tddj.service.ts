@@ -59,7 +59,29 @@ export class TddjService {
   }
 
 //删除日程
-  async delete(dt:string,type: string,rcId:string){
+  async delete(rcId:string){
+    let agdPro:AgdPro = new AgdPro();
+    let ctbl:CTbl =new CTbl();
+
+    //日程Id
+    ctbl.si = rcId;
+
+    let etbl:ETbl =new ETbl();
+    etbl.si = ctbl.si;
+    await this.sqlExce.delete(etbl);//本地删除提醒
+    let dtbl:DTbl =new DTbl();
+    dtbl.si = ctbl.si;
+    await this.sqlExce.delete(dtbl);//本地删除日程参与人
+
+    await this.sqlExce.delete(ctbl); //本地删除日程表
+
+    //restFul 删除日程
+    let a:AgdPro = new AgdPro();
+    a.ai = ctbl.si;//日程ID
+    await this.agdful.remove(a);
+
+  }
+  /*async delete(dt:string,type: string,rcId:string){
     let agdPro:AgdPro = new AgdPro();
     let ctbl:CTbl =new CTbl();
     //日程Id
@@ -101,7 +123,7 @@ export class TddjService {
       a.ai = ctbl.si;//日程ID
       await this.agdful.remove(a);
     }
-  }
+  }*/
 
   //修改本地日程详情
   async updateDetail(scd:ScdData){
@@ -110,12 +132,38 @@ export class TddjService {
     //更新日程
     let c = new CTbl();
     Object.assign(c,scd);
+    //消息设为已读
+    c.du = "1";
     await  this.sqlExce.update(c);
 
     //更新提醒时间
     let e = new ETbl();
     Object.assign(e,scd.r);
     await this.sqlExce.update(c);
+
+    //restful用参数
+    let agd = new AgdPro();
+    this.setAdgPro(agd,c);
+    await this.agdful.save(agd);
+  }
+
+  //添加本地日程详情
+  async addDetail(scd:ScdData){
+
+
+    //更新日程
+    let c = new CTbl();
+    Object.assign(c,scd);
+    //消息设为已读
+    c.du = "1";
+    //本人创建
+    c.gs = "1";
+    await  this.sqlExce.save(c);
+
+    //更新提醒时间
+    let e = new ETbl();
+    Object.assign(e,scd.r);
+    await this.sqlExce.save(c);
 
     //restful用参数
     let agd = new AgdPro();
@@ -191,7 +239,7 @@ export class TddjService {
 
   }
 
-  //修改本地日程（可修改重复日程的某一天，暂不使用此功能）
+  //修改本地日程 可修改重复日程的某一天（暂不使用此功能）
   async update(updDt: string, scd: ScdData, type: string) {
 
     //设置原始日程id

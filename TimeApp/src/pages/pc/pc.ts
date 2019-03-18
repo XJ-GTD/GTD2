@@ -1,5 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, Navbar, NavController} from 'ionic-angular';
+import {PagePcPro, PcService} from "./pc.service";
 
 /**
  * Generated class for the 计划新建 page.
@@ -11,57 +12,83 @@ import {IonicPage, Navbar, NavController} from 'ionic-angular';
 @IonicPage()
 @Component({
   selector: 'page-pc',
-  template:'<ion-header>' +
-  '  <ion-navbar>' +
-  '    <ion-title>添加计划</ion-title>' +
-  '    <ion-buttons right>' +
-  '      <button ion-button (click)="save()">保存</button>' +
-  '    </ion-buttons>' +
-  '  </ion-navbar>' +
-  '</ion-header>' +
-  '<ion-content padding>' +
-  '  <!--<ion-list>-->' +
-  '    <ion-item>' +
-  '      <ion-label>计划名称</ion-label>' +
-  '      <ion-input [(ngModel)]="jhmc"></ion-input>' +
-  '    </ion-item>' +
-  '    <div style="display: flex; font-size:1.7rem;" class="bortom" padding-left>' +
-  '      <div col-3 no-padding>' +
-  '        <div class="margin181">计划描述</div>' +
-  '      </div>' +
-  '      <div col-9>' +
-  '        <ion-textarea style="border:1px solid #cccccc;" col-12 [(ngModel)]="jhms"></ion-textarea>' +
-  '      </div>' +
-  '    </div>' +
-  '</ion-content>',
+  template:
+    `<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="goBack()" color="danger">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-buttons right>
+      <button ion-button color="danger" (click)="save()">
+        保存
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+<ion-grid>
+  <ion-row justify-content-center>
+    <div class="name-input w-auto">
+    <ion-input type="text" placeholder="输入计划名称" [(ngModel)]="jhData.jn" text-center></ion-input>
+    </div>
+  </ion-row>
+  <ion-row>
+    <ion-list no-lines radio-group>
+      <ion-list-header class="plan-list-item">
+        选择颜色
+      </ion-list-header>
+
+      <ion-item class="plan-list-item">
+      <div class="color-dot color-blue" item-start></div>
+        <ion-label>
+        牛皮棕
+        </ion-label>
+        <ion-radio checked="true" value="go"></ion-radio>
+      </ion-item>
+
+      <ion-item class="plan-list-item">
+      <div class="color-dot color-pink" item-start></div>
+        <ion-label>
+        向日葵黄
+        </ion-label>
+        <ion-radio value="rust"></ion-radio>
+      </ion-item>
+
+      <ion-item class="plan-list-item">
+      <div class="color-dot color-blue" item-start></div>
+        <ion-label>
+        橙黄
+        </ion-label>
+        <ion-radio value="python"></ion-radio>
+      </ion-item>
+    </ion-list>
+  </ion-row>
+</ion-grid>
+</ion-content>`,
 })
 export class PcPage {
+  jhData:PagePcPro = new PagePcPro;
 
-  @ViewChild(Navbar) navBar: Navbar;
-
-  jhmc:string;
-  jhms:string;
-
-  constructor(private navCtrl: NavController) {
+  constructor(private navCtrl: NavController,
+              private pcService:PcService) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PcPage');
-    this.navBar.backButtonClick = this.backButtonClick;
-    this.navBar.setBackButtonText("");
   }
 
-  backButtonClick = (e: UIEvent) => {
-    // 重写返回方法
+  goBack() {
     this.navCtrl.pop();
-  };
+  }
+
 
   save(){
-    console.log("计划添加 :: 计划名称 " + this.jhmc +　" 计划描述 " + this.jhms );
-    if(this.jhmc === undefined || this.jhms === undefined){
-      alert("输入项有为空");
-      return;
-    }
+    console.log("计划添加 :: " + this.jhData.jn +"--"+ this.jhData.jg +"--color:"+this.jhData.jc);
+
     // this.jhService.ajh(this.jhmc,this.jhms).then(data=>{
     //   console.log("计划添加成功 :: " + JSON.stringify(data));
     //   this.navCtrl.pop();

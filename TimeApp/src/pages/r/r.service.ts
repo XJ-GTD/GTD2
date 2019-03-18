@@ -62,16 +62,8 @@ export class RService {
   }
 
 
-  checkPhone(mobile:string):Promise<any>{
-    return new Promise((resolve, reject) => {
-      resolve(this.util.checkPhone(mobile));
-    });
-  }
-
-  remo(mobile:string):Promise<any>{
-    return new Promise((resolve, reject) => {
-      resolve(this.util.remo(mobile));
-    });
+  checkPhone(mobile:string):number{
+    return this.util.checkPhone(mobile);
   }
 }
 
@@ -80,7 +72,7 @@ export class PageRData {
   password: string = "";
   authCode: string = "";
   verifykey:string = "";
-  username:string = "name";//注册暂定
+  username:string = "";
   code: number = 0;
   message: string = "";
 }
