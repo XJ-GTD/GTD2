@@ -16,7 +16,6 @@ export class ColorSliderComponent {
 
   constructor() {
     console.log('Hello ColorSliderComponent Component');
-    this.text = 'Hello World';
   }
 
   panEvent(e) {

@@ -102,16 +102,12 @@ export class LpService {
     });
   }
 
-  checkPhone(mobile:string):Promise<any>{
-    return new Promise((resolve, reject) => {
-      resolve(this.util.checkPhone(mobile));
-    });
+  checkPhone(mobile:string):number{
+      return this.util.checkPhone(mobile);
   }
 
-  remo(mobile:string):Promise<any>{
-    return new Promise((resolve, reject) => {
-      resolve(this.util.remo(mobile));
-    });
+  remo(mobile:string):string{
+    return this.util.remo(mobile);
   }
 }
 
