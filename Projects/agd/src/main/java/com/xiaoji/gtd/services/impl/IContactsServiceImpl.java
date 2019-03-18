@@ -45,23 +45,27 @@ public class IContactsServiceImpl implements IContactsService {
 	 * 保存日程参与人
 	 */
 	public AgdAgendaContacts save(AgdAgendaDto inDto) {
-		
+		log.info("---- 传入保存日程参与人  -----" + JSONObject.toJSONString(inDto.getAc()));
 		if(inDto.getAc() != null && inDto.getAc().size()>0){
 			List<AgdAgendaContacts> agdList = agdContactsRep.findContactsByRelId(inDto.getAi());
+			log.info("---- 查询已有日程参与人  -----" + JSONObject.toJSONString(agdList));
 			List<AgdContactsDto> addList = new ArrayList<AgdContactsDto>(); //入参：参与人
 			List<AgdAgendaContacts> delList = new ArrayList<AgdAgendaContacts>();
 			delList.addAll(agdList); //删除日程的参与人
-			log.debug("------- 开始查询 ------- ");
+			List<AgdContactsDto> acList = inDto.getAc();
 			//获取日程详情
 			AgdAgenda agenL = null;
+			log.info("------- 开始获取日程详情 ------- ");
 			Optional<AgdAgenda> agen = agdAgendaRep.findById(inDto.getAi());
+			
 			if(agen.isPresent()){
 				agenL = agen.get();
+				log.info("------- 获取日程详情信息："+ JSONObject.toJSONString(agenL));
 				
 				inDto = BaseUtil.agdToDtoAgd(agenL);
 				//获取删除的参与人和新添加的参与人
 				if(agdList.size()>0){
-					for (AgdContactsDto add : inDto.getAc()) {
+					for (AgdContactsDto add : acList) {
 						boolean isExsit = false;
 						for (AgdAgendaContacts agd : agdList) {
 							if(add.getMpn().equals(agd.getPhone())){
@@ -76,8 +80,10 @@ public class IContactsServiceImpl implements IContactsService {
 						}
 						
 					}
+				}else{
+					addList.addAll(acList);
 				}
-				
+				log.info("------- 添加参与人："+ JSONObject.toJSONString(addList));
 				if(addList.size()>0){
 					for (AgdContactsDto add : addList) {
 						AgdAgendaContacts agd = BaseUtil.dtoToContacts(add);
@@ -86,8 +92,8 @@ public class IContactsServiceImpl implements IContactsService {
 					}
 					//TODO 发送添加日程消息
 					Map<String,Object> map = new HashMap<String,Object>();
-			        map.put("to", JSONObject.toJSONString(addList));
-			        map.put("agenda", JSONObject.toJSONString(inDto));
+			        map.put("to", JSONObject.toJSON(addList));
+			        map.put("agenda", JSONObject.toJSON(inDto));
 			        map.put("notifyType", "add");
 			        try{
 			        	Map<String,Object> map2 = new HashMap<String,Object>();
@@ -99,7 +105,7 @@ public class IContactsServiceImpl implements IContactsService {
 			        }
 					
 				}
-				
+				log.info("------- 删除参与人："+ JSONObject.toJSONString(delList));
 				if(delList.size()>0){
 					List<AgdContactsDto> dels = new ArrayList<AgdContactsDto>();
 					for (AgdAgendaContacts agdAgendaContacts : delList) {
@@ -109,8 +115,8 @@ public class IContactsServiceImpl implements IContactsService {
 					}
 					//TODO 生产消息MQ
 					Map<String,Object> map = new HashMap<String,Object>();
-			        map.put("to", JSONObject.toJSONString(dels));
-			        map.put("agenda", JSONObject.toJSONString(inDto));
+			        map.put("to", JSONObject.toJSON(dels));
+			        map.put("agenda", JSONObject.toJSON(inDto));
 			        map.put("notifyType", "delete");
 			        try{
 			        	Map<String,Object> map2 = new HashMap<String,Object>();

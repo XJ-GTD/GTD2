@@ -2,7 +2,6 @@ package com.xiaoji.sms.services.impl;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Random;
 import java.util.TreeMap;
 
 import org.apache.http.HttpEntity;
@@ -20,9 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xiaoji.sms.dto.TimerDto;
 import com.xiaoji.sms.services.ISmsService;
-import com.xiaoji.sms.util.TimerUtil;
 
 /**
  * 短信接口实现类
@@ -55,23 +52,31 @@ public class SmsServiceImpl implements ISmsService {
 
 
     /**
-     * 获取验证码
+     * 发送短信
      * @param mobile
      * @return
      */
     @Override
-    public int getAuthCode(String mobile,String code) {
+    public int sendSms(String mobile,String sendType,String content) {
 
         try {
-            JSONObject vars = new JSONObject();
-
+            //JSONObject vars = new JSONObject();
+        	JSONObject contentJson = JSONObject.parseObject(content);
+        	JSONObject vars = contentJson;
+//        	if(contentJson.containsKey("vars")){
+//        		vars = contentJson.getJSONObject("vars");
+//        	}
+        	/*JSONObject links = null;
+        	if(contentJson.containsKey("links")){
+        		links = contentJson.getJSONObject("links");
+        	}*/
 //            String code = new Random().nextInt(10) + String.valueOf((new Random().nextInt(89999)) + 10000);;
 //          vars.put("timeOut", timeOut);
-            vars.put("code", code);
-            vars.put("time", TIME);
+            /*vars.put("code", code);
+            vars.put("time", TIME);*/
 
-            requestSubMail(mobile, PROJECT_AUTH_CODE, vars);
-            logger.debug("======== 发送成功 短信验证码：[" + code + "] 手机号：[" + mobile + "] =========");
+            requestSubMail(mobile, sendType, vars , null);
+            logger.info("======== 发送成功,发送内容 ：" + content + " 手机号：" + mobile + " =========");
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("短信验证接口请求失败");
@@ -80,54 +85,13 @@ public class SmsServiceImpl implements ISmsService {
         return 0;
     }
 
-    /**
-     * 推送短信日程
-     * @param mobile
-     * @return
-     */
-    @Override
-    public int pushSchedule(String mobile) {
-
-        try {
-            JSONObject vars = new JSONObject();
-            vars.put("url", BUSINESS_URL);
-            requestSubMail(mobile, PROJECT_SCHEDULE, vars);
-            logger.debug("======短信推送日程成功======");
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("短信验证接口请求失败");
-        }
-
-        return 0;
-    }
-
-    /**
-     * 推送好友邀请
-     *
-     * @param mobile
-     * @return
-     */
-    @Override
-    public int pushPlayer(String mobile) {
-        try {
-            JSONObject vars = new JSONObject();
-            vars.put("url", BUSINESS_URL);
-            requestSubMail(mobile, PROJECT_PLAYER, vars);
-            logger.debug("短信推送好友邀请成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.debug("短信验证接口请求失败");
-        }
-
-        return 0;
-    }
 
     /**
      * 请求赛邮短信推送API
      * @param to
      * @throws Exception 
      */
-    private boolean requestSubMail(String to, String project, JSONObject vars) throws Exception {
+    private boolean requestSubMail(String to, String project, JSONObject vars, JSONObject links) throws Exception {
 
         TreeMap<String, Object> requestData = new TreeMap<String, Object>();
 
@@ -135,10 +99,16 @@ public class SmsServiceImpl implements ISmsService {
         requestData.put("project", project);
         requestData.put("to", to);
 
-        if(!vars.isEmpty()){
-        	logger.debug("DEBUG++ " + vars);
+        if(vars != null && !vars.isEmpty()){
             requestData.put("vars",vars.toString());
+            logger.info("======= vars: " + vars.toString());
         }
+        
+        if( links != null && ! links.isEmpty()){
+            requestData.put(" links", links.toString());
+            logger.info("======= links: " + links.toString());
+        }
+        
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         @SuppressWarnings("deprecation")
         ContentType contentType = ContentType.create(HTTP.PLAIN_TEXT_TYPE,HTTP.UTF_8);
@@ -159,9 +129,10 @@ public class SmsServiceImpl implements ISmsService {
             HttpEntity httpEntity = response.getEntity();
             if(httpEntity != null){
                 JSONObject jsonStr = JSONObject.parseObject(EntityUtils.toString(httpEntity, "UTF-8"));
+                logger.info("--------- 赛邮短信接口请求返回结果 ------------:"+jsonStr.toString());
                 String status = jsonStr.getString("status");
                 if ("success".equals(status)) {
-                    logger.debug("--------- 赛邮短信接口请求成功 ------------:"+jsonStr.toString());
+                    logger.info("--------- 赛邮短信接口请求成功 ------------:"+jsonStr.toString());
 //                    if (project.equals(PROJECT_AUTH_CODE)) {
 //                    	//验证码超时时间
 //                    	long timeOut = System.currentTimeMillis();
@@ -175,8 +146,10 @@ public class SmsServiceImpl implements ISmsService {
                     return true;
                 } else {
                 	logger.debug("DEBUG++ " + jsonStr);
-                    logger.error("赛邮短信接口请求报错");
+                    logger.error("赛邮短信接口请求返回出错");
                 }
+            }else{
+            	logger.error("httpEntity 赛邮短信接口请求报错");
             }
         } catch(IOException e){
             throw new Exception();

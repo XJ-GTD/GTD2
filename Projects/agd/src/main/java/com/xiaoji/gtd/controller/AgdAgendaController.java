@@ -27,7 +27,7 @@ import com.xiaoji.gtd.util.ReturnMessage;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/agd")
+@RequestMapping(value = "/")
 public class AgdAgendaController {
 	Logger log = LoggerFactory.getLogger(AgdAgendaController.class);
     @Autowired
@@ -44,10 +44,42 @@ public class AgdAgendaController {
     public BaseOutDto add(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
-    	BaseUtil.getRequestParams(request, log);
     	log.info("---- 保存日程获取头部ai  -----" + relId);
     	log.info("---- 保存日程获取获取参数  -----" + JSONObject.toJSONString(blacklist));
-    	if(!"".equals(relId) && relId != null && 
+    	
+    	AgdAgenda agd = agendaService.findById(blacklist.getAi());
+    	boolean isDef = false; 
+		if(agd != null){
+			if(!agd.getTitle().equals(blacklist.getAt())){
+				isDef = true;
+			}
+			if(!agd.getAgendaDate().equals(blacklist.getAdt())){
+				isDef = true;
+			}
+			if(!agd.getAgendaTime().equals(blacklist.getSt())){
+				isDef = true;
+			}
+			if(!agd.getEndDate().equals(blacklist.getEd())){
+				isDef = true;
+			}
+			if(!agd.getEndTime().equals(blacklist.getEt())){
+				isDef = true;
+			}
+			if(!agd.getRemindFlag().equals(blacklist.getAa())){
+				isDef = true;
+			}
+			if(!agd.getRepeatType().equals(blacklist.getAr())){
+				isDef = true;
+			}
+		}else{
+			isDef = true;
+		}
+    	
+		if(!isDef){
+			log.info("---- 日程信息没有发生变化不做更新  -----");
+		}
+		
+    	if(isDef && !"".equals(relId) && relId != null && 
     			blacklist.getAi() != null &&!"".equals(blacklist.getAi())){
     		blacklist.setFc(relId);
     		AgdAgenda xj = agendaService.save(blacklist);
@@ -122,7 +154,7 @@ public class AgdAgendaController {
     @RequestMapping(value="/agendacontacts/save",method = RequestMethod.POST)
     @ResponseBody
     public BaseOutDto saveContacts(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
-    	log.info("---- 保存日程获取获取参数  -----" + JSONObject.toJSONString(blacklist));
+    	log.info("---- 保存日程参与人获取获取参数  -----" + JSONObject.toJSONString(blacklist));
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
     	if(!"".equals(relId) && relId != null){
