@@ -1,0 +1,48 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="goBack()" color="danger">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>计划</ion-title>
+    <ion-buttons right>
+      <button ion-button (click)="newPlan()" color="danger">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+<ion-grid>
+  <ion-row>
+  <ion-list no-lines>
+    <ion-list-header class="plan-list-item">
+      全部计划
+    </ion-list-header>
+    <ion-item class="plan-list-item">
+      <div class="color-dot color-blue" item-start></div>
+    普吉岛休闲游计划 (自由行)
+    </ion-item>
+    <ion-item class="plan-list-item">
+      <div class="color-dot color-pink" item-start></div>
+    冥王星计划
+    </ion-item>
+    <ion-list-header class="plan-list-item">
+      <div>系统计划</div><small>长按系统计划可清除</small>
+    </ion-list-header>
+    <ion-item class="plan-list-item">
+    节假日
+    <button ion-button color="danger" clear item-end>下载</button>
+    </ion-item>
+    <ion-item class="plan-list-item">
+    世界杯小组赛
+    <button ion-button color="danger" clear item-end>
+      <ion-icon name="sync"></ion-icon>
+    </button>
+    </ion-item>
+  </ion-list>
+  </ion-row>
+</ion-grid>
+</ion-content>

@@ -181,6 +181,7 @@ export class ScdData {
   tx: string = "";//提醒方式
   pni:string = "";//日程原始ID
   wtt: number;//时间戳
+  du:string ="";//消息读取状态
 
 
   //特殊日期日程
@@ -256,6 +257,7 @@ export class PlData{
   jg: string="";//计划描述
   jc: string="";//计划颜色标记
   jt: string="";//计划类型
+  wtt: Number;//创建时间戳
 }
 
 
