@@ -1,0 +1,149 @@
+page-plan {
+  @font-face {
+    font-family: 'PingFang-Regular';
+    src: url('../assets/font/PingFang Regular.ttf');
+  }
+
+  ion-content {
+    font-family: "PingFang-Regular";
+  }
+  
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: #000;
+  }
+
+  ion-content.content {
+    background-color: #000;
+    color: #fff;
+  }
+  
+  .agenda-content:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0.5vmin;
+    background: #b72537;
+    margin-left: -4.4vmin;
+    margin-top: 12px;
+    margin-bottom: -20px;
+  }
+
+  .agenda-card-past {
+    opacity:0.4;
+  }
+
+  .agenda-card {
+  }
+
+  .agenda-col-date {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    max-width: calc(16.667vmin - 13px);
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .agenda-col-time {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    max-width: calc(18.667vmin - 13px);
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .agenda-col-content {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    max-width: calc(64.666vmin - 6px);
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .app-user-avatar {
+    height: 12vmin;
+    margin: auto;
+    display: block;
+    max-height: 45px;
+    min-height: 22px;
+    border-radius: 50%;
+  }
+
+  .app-user-text {
+    font-weight: 200;
+    display: block;
+    font-size: 2.8vmin;
+    color: #999999;
+  }
+
+  .app-agenda-title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 4.5vmin;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .app-download-text {
+    font-weight: 200;
+    margin: auto;
+    display: block;
+    font-size: 2.2vmin;
+    width: 60vw;
+    padding: 2vmin;
+  }
+
+  .right-off {
+    padding-right: 0;
+  }
+
+  .left-off {
+    padding-left: 0;
+  }
+
+  .left-5 {
+    padding-left: 5px;
+  }
+
+  .app-store-button {
+    width: 20vmin;
+    margin: auto;
+    display: block;
+    max-width: 250px;
+    min-width: 200px;
+  }
+
+  .time-slot {
+    margin: auto;
+  }
+
+  .pointer-slot {
+    width: 5vmin;
+    margin: auto;
+    margin-top: -10px;
+    margin-right: 0;
+  }
+  
+  .color-dot {
+    width: 2vmin;
+    height: 2vmin;
+    background-color: #fff;
+    border-radius: 50%;
+  }
+  
+  .color-pink {
+    background-color: rgb(192,119,219);
+  }
+  
+  .color-blue {
+    background-color: #b72537;
+  }
+
+  .grid {
+    padding: 0;
+  }
+}
