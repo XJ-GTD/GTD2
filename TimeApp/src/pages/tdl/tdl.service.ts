@@ -20,7 +20,7 @@ export class TdlService {
 
       //获取本地日程jn jg jc jt
       let sqll="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt from gtd_c gc inner join gtd_j_h jh on jh.ji = gc.ji  " +
-        "where gc.sd<'"+ next+"'  or gc.ed is null or gc.ed >='"+next+"'order by gc.ed desc";
+        "where gc.sd<'"+ next+"' order by gc.ed desc";
       let rclL = await this.sqlExce.execSql(sqll);
       if(rclL && rclL.rows && rclL.rows.length>0){
         let len = rclL.rows.length-1;
@@ -56,7 +56,7 @@ export class TdlService {
 
       //正序查出比当前日期大的日程
       let sql="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt from gtd_c gc inner join gtd_j_h jh on jh.ji = gc.ji " +
-        "where gc.ed<='"+ next+"' or gc.ed is null order by gc.ed asc";
+        "where gc.ed>='"+ next+"' order by gc.sd asc";
       let rcnL = await this.sqlExce.execSql(sql);
 
       if(rcnL && rcnL.rows && rcnL.rows.length>0){
