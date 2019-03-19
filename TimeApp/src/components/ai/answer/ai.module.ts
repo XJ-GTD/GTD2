@@ -1,9 +1,8 @@
-import { NgModule } from '@angular/core';
+import {ModuleWithProviders, NgModule} from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { AiComponent } from './ai';
-import { AssistantService } from "../../../service/cordova/assistant.service";
-import { FeedbackService } from "../../../service/cordova/feedback.service";
 import {AiService} from "./ai.service";
+import {PointComponentModule} from "../point/point.module";
 
 @NgModule({
   declarations: [
@@ -11,14 +10,19 @@ import {AiService} from "./ai.service";
   ],
   imports: [
     IonicPageModule.forChild(AiComponent),
+    PointComponentModule
   ],
   providers: [
-    AssistantService,
-    FeedbackService,
-    AiService,
+    AiService
   ],
-  entryComponents: [
+  exports: [
     AiComponent,
   ],
 })
-export class HbPageModule {}
+export class AiComponentModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: AiComponent
+    };
+  }
+}

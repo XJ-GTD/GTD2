@@ -5,7 +5,6 @@ import {
   CalendarComponentOptions
 } from "../../components/ion2-calendar";
 import * as moment from "moment";
-import {TdlPage} from "../tdl/tdl";
 import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DataConfig} from "../../service/config/data.config";
@@ -22,7 +21,6 @@ import {BackComponent} from "../../components/backComponent/back";
 @Component({
   selector: 'page-h',
   template:`    
-    <BackComponent></BackComponent>
   <ion-content>
    <div class="haContent">
       <div class="haCalendar">
@@ -32,9 +30,11 @@ import {BackComponent} from "../../components/backComponent/back";
         </ion-calendar>
       </div>
     </div>
-    <div class=" animated swing  assistant" (click)="openVoice()" #assistant>
-      <img src="./assets/imgs/yuying.png"/>
+    <div class="rightm">
+      &nbsp;
     </div>
+    <BackComponent></BackComponent>
+    <AiComponent></AiComponent>
   </ion-content>`,
   providers: []
 })
@@ -63,7 +63,6 @@ export class HPage {
   }
 
   ionViewDidLoad() {
-    this.back.loadScene(20);
 
     let eventDate = new Date();
     this.selectDay = eventDate;
@@ -110,9 +109,9 @@ export class HPage {
 
   //查询当天日程
   onSelectDayEvent($event) {
-    // if (!$event) {
-    //   return;
-    // }
+    if (!$event) {
+      return;
+    }
     // this.event = $event;
     // let eventDate = new Date($event.time);
     // this.selectDay = eventDate;

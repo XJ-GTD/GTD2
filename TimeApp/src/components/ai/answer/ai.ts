@@ -6,6 +6,7 @@ import { EmitService } from "../../../service/util-service/emit.service";
 import { DataConfig } from "../../../service/config/data.config";
 import { NetworkService } from "../../../service/cordova/network.service";
 import {PointComponent} from "../point/point";
+import {AiService} from "./ai.service";
 
 /**
  * Generated class for the HbPage page.
@@ -16,121 +17,26 @@ import {PointComponent} from "../point/point";
 
 @IonicPage()
 @Component({
-  selector: 'page-hb',
-  template: `<div  class="speechWarp"> 
-      <ion-header > 
-        <ion-toolbar> 
-          <ion-buttons left> 
-            <button ion-button icon-only (click)="goBack()"> 
-              <ion-icon name="arrow-back" style=" color: white"></ion-icon> 
-            </button> 
-          </ion-buttons> 
-        </ion-toolbar> 
-      </ion-header> 
+  selector: 'AiComponent',
+  template: ` 
       <ion-content> 
         <ion-list class="yyWarp" no-line>
           
-          <ion-item  *ngFor="let message of messages"  on-hold="onMessageHold($event, $index, message)"> 
-            <!-- 判断消息是用户 --> 
-            <div *ngIf="U1 == message.tt" class="userTalk animated bounceIn"> 
-              <h2 [innerHTML]="message.ut"></h2> 
-            </div> 
-            <!-- 判断消息是讯飞 --> 
-            <div *ngIf="S1 == message.tt" class="XFTalk animated bounceIn"> 
-              <!--  wave--> 
-              <h2 [innerHTML]="message.at"></h2> 
-              <h3></h3> 
-            </div> 
-            <!-- 判断消息是数据：list --> 
-            <ion-card *ngIf="S5 == message.tt"  class="scl_list"> 
-              <ion-list> 
-                <ion-item *ngFor="let sj of message.scL" (click)="showScheduleDetail(sj)">
-                  <ion-icon name="information-circle" item-start></ion-icon>
-                  <h2>{{sj.sN}}</h2> 
-                  <span> {{sj.sd}}
-                  </span>
-                 
-                </ion-item> 
-              </ion-list> 
-            </ion-card> 
-            <!-- 判断消息是数据：新增日程 -->
-
-            <ion-card *ngIf="S4 == message.tt"   class="scl_add">
-              <ion-list>
-                <ion-item class="cc2" >
-                  <span  *ngFor="let pl of message.sc.rus">
-                    <img class="cc3" src="{{pl.hiu}}">
-                    <div class="cc4">{{pl.ran}}</div>
-                  </span>
-                </ion-item>
-                <ion-item class="cc5">
-                  <button name="information-circle" item-start>重要</button>
-                  <h2>{{message.sc.sN}}</h2>
-                  <span> {{message.sc.sd | date:'yyyy年MM月dd日 HH:mm'}}
-                  </span>
-                  
-                </ion-item>
-                <ion-item>
-                  <ion-buttons item-end>
-                      <button class="cc9" style="color: #666666;" (click)="cancelMethod(message)"  [disabled]="message.op">取消</button>
-                      <button class="cc9" style="color: #222222;" (click)="confirmatoryMethod(message, message.tg)" [disabled]="message.op" >确认</button>
-                    </ion-buttons>
-                </ion-item>
-              </ion-list>
-            </ion-card>           
-          
+          <ion-item  *ngFor="let message of messages"  on-hold="onMessageHold($event, $index, message)" class="yyitem"> 
+           {{message}}
           </ion-item> 
-        </ion-list> 
-        <!--<ion-fab left bottom edge #fab1 color="dark">--> 
-        <!--<button ion-fab mini ><ion-icon name="arrow-dropup"></ion-icon></button>--> 
-        <!--<ion-fab-list  side="top">--> 
-        <!--<button ion-fab (click)="openSocial(1, fab1)" color="dark"><ion-icon name="create"></ion-icon></button>--> 
-        <!--<button ion-fab (click)="openSocial(2, fab1)" color="secondary"><ion-icon name="contacts"></ion-icon></button>--> 
-        <!--<button ion-fab (click)="openSocial(3, fab1)" color="danger"><ion-icon name="add"></ion-icon></button>--> 
-        <!--</ion-fab-list>--> 
-        <!--</ion-fab>--> 
-      </ion-content> 
-      <ion-footer> 
-        <ion-toolbar  *ngIf="modeFlag == true; else xjInput"> 
-          <ion-buttons left> 
-            <button ion-button icon-only (click)="switchInput()"> 
-              <ion-icon name="create"></ion-icon> 
-            </button> 
-          </ion-buttons> 
-          <img  src="./assets/imgs/yuying.png"   (click)="startXiaoJi()" /> 
-        </ion-toolbar> 
-        <ng-template #xjInput> 
-          <ion-toolbar style="margin-top: 18px" class="animated bounceIn faster"> 
-            <ion-buttons left> 
-              <button ion-button icon-only (click)="switchInput()"> 
-                <ion-icon name="mic" style=" color: white"></ion-icon> 
-              </button> 
-            </ion-buttons> 
-            <ion-input id="userInput" type="text" [(ngModel)]="inputText" placeholder="来传小纸条吧"></ion-input> 
-            <ion-buttons end> 
-              <button ion-button icon-end color="royal" (click)="startXiaojiText()"> 
-                <ion-icon name="send"></ion-icon> 
-              </button> 
-            </ion-buttons> 
-          </ion-toolbar> 
-        </ng-template> 
-        <page-hb01></page-hb01>
-      </ion-footer> 
-    </div>`,
+        </ion-list>
+      </ion-content>
+      <PointComponent></PointComponent>
+      `,
 })
 export class AiComponent {
-  @ViewChild(PointComponent) hb01Page:PointComponent;
-  @ViewChild(Content) content: Content;
+  @ViewChild(PointComponent) point:PointComponent;
+  // @ViewChild(Content) content: Content;
 
 
   data: any;
   modeFlag: boolean = true;   //判断助手模式 true语音false手输
-
-  U1: string = DataConfig.U1;
-  S1: string = DataConfig.S1;
-  S4: string = DataConfig.S4;
-  S5: string = DataConfig.S5;
-  S6: string = DataConfig.S6;
 
   userText: string; //用户输入显示文本
   speech: string;   //语音助手显示文本
@@ -138,17 +44,12 @@ export class AiComponent {
   filePath: string;   //语音文件路径
 
   // inputData: AiuiModel = new AiuiModel();
-  // messages: Array<AiuiModel>; //聊天数据队列
+  // messages: Array<any> = ["dddd","dddd22","ddddd234","ddddd234sss",'12344',"ddddd234sss"]; //聊天数据队列
   //语音界面数据传递
 
   //scL: Array<RcModel>;
 
-  constructor(public navCtrl: NavController,
-              public viewCtrl: ViewController,
-              private dwEmit: EmitService,
-              public xiaojiSpeech: AssistantService,
-              private networkService: NetworkService,
-              public xiaojiFeekback: FeedbackService) {
+  constructor(public aiService: AiService) {
 
   }
 
@@ -168,8 +69,7 @@ export class AiComponent {
   //   //this.initWakeUp();
   //
   //   console.log('ionViewDidLoad HbPage');
-  //    this.hb01Page.loadScene();
-  //   this.hb01Page.setDrawType(1);
+
   //   // this.initWakeUp();
   //
   //   // let data:AiuiModel = new AiuiModel();

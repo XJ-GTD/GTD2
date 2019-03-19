@@ -17,7 +17,7 @@ import {PointService} from "./point.service";
     PointService,
   ],
 })
-export class Hb01PageModule {
+export class PointComponentModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: PointComponent

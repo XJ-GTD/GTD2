@@ -1,5 +1,7 @@
 page-m {
 
+  background: #96162d;
+
   .img_size{
     width: 80px !important;
     height:80px !important;
@@ -16,17 +18,9 @@ page-m {
     border-bottom: 0px !important;
   }
 
-  .item-block.item-ios{
-    border-bottom: 1px solid #e5e5e5 ;
-  }
-
   ion-list > ion-item:first-child{
     //border-top-color: #e5e5e5 !important;
     border-top:none !important;
-  }
-
-  ion-list ion-label{
-    color: #222222;
   }
 
   #tag1{

@@ -8,68 +8,21 @@ page-h {
 
   .content-ios {
     background-color: transparent;
-    margin-top:33px;
   }
 
   .haContent {
     position: absolute;
-    top: 0px;
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    -moz-background-size: 100% 100%;
-
-    ion-app.ios page-home ion-header [padding-left] {
-      padding-left: 10px
-    }
-
-    ion-app.ios page-home ion-header [padding-right] {
-      padding-right: 10px;
-    }
-
-    .tipDay {
-      margin-top: -8px;
-      margin-left: 15px;
-      margin-right: 15px;
-      color: #222222;
-      height: 25px;
-      border-bottom: 1px solid #2ec95c;
-
-      .showDay {
-        font-size: 15px;
-        font-weight: bold;
-        width: 55px;
-        display: inline-block;
-      }
-
-      .showDay2 {
-        font-size: 12px;
-      }
-
-    }
-    .haCalendar {
-      width: 100%;
-      //background-color: #fff;
-      position: relative;
-      height: 350px;
-    }
+    width: calc(100% - 14px);
+    margin-top:33px;
   }
-
-  .assistant {
-    //   height:50px;
-    border-radius: 100%;
-    //background-color: red;
-    background-color: rgba(0, 0, 0, 0.0);
-    right: 10px;
-    bottom: 10px;
+  .rightm{
+    height: 100%;
     position: absolute;
-    z-index: 19;
-    img {
-      height: 90px;
-    }
+    right: 0px;
+    width: 14px;
+    background: #96162d;
   }
+
 }
 
 

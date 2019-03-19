@@ -1,17 +1,42 @@
-page-hb01 {
-  canvas{
-    position: absolute;
-    /* top: 200px; */
-    //right: 20px;
-    bottom:calc(100% - 150%)
-    //background: black;
-    //border-radius: 90px;
-    //background: transparent;
-
-  }
-  overflow: hidden;
+pointcomponent {
   canvas {
+
+    //background: -moz-linear-gradient(top, #2b657b 0%, #1f2857 100%);
+    //background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2b657b), color-stop(100%,#1f2857));
+    //background: -webkit-linear-gradient(top, #2b657b 0%,#1f2857 100%);
+    background: linear-gradient(right top, #843094 0%,#25134f 30%,#1b1148 60%,#1f2857 90%,#2b657b 100%);
+  //#
+
+  margin-top: 1px;
     display: block;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    margin: 0 auto;
+    margin-top: 1px;
+
   }
 
+
+  .spinner, .spinner:before {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    top: 85%;
+    left: calc(50% - 30px);
+    border-radius: 50%;
+  }
+
+  .spinner:before {
+    z-index: -1;
+    background: conic-gradient(#8c83bd, #8556a0, #a057b4);
+    animation: r 2s linear infinite;
+    content: '';
+  }
+
+  @keyframes r {
+    to {
+      transform: rotate(1turn);
+    }
+  }
 }

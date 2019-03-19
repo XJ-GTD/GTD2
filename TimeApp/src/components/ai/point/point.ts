@@ -1,5 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {IonicPage} from 'ionic-angular';
+import {UtilService} from "../../../service/util-service/util.service";
 
 /**
  * Generated class for the Hb01Page page.
@@ -10,453 +11,163 @@ import {IonicPage} from 'ionic-angular';
 @IonicPage()
 @Component({
   selector: 'PointComponent',
-  template:'<canvas  #canvas></canvas>',
+  template: `
+    <div class="spinner">
+      <canvas #canvas></canvas>
+    </div>
+  `,
 })
 export class PointComponent {
   @ViewChild('canvas')
   canvas: ElementRef;
 
-  gl: WebGLRenderingContext;
-  cw: number;
-  ch: number;
+  ctx: any;
+  width: number;
+  height: number;
+  rotation = 0;
+  dots = [];
+  DOTS_AMOUNT = 500;
+  GLOBE_RADIUS: number;
+  GLOBE_CENTER_Z: number;
 
-  numLines: number = 8000;
+  PROJECTION_CENTER_X: number;
+  PROJECTION_CENTER_Y: number;
+  FIELD_OF_VIEW: number;
 
-  vertices:Float32Array;
+  DOT_RADIUS = 4;
 
-  thetaArr:Float32Array;
-  velThetaArr:Float32Array;
-  velRadArr:Float32Array;
-
-  randomTargetXArr: Array<number>;
-  randomTargetYArr: Array<number>;
-
-  drawType: number = 1;
-
-  ionViewDidLoad(){
-    this.loadScene();
+  constructor(private utilService: UtilService) {
 
   }
 
-  setDrawType(type:number){
-    this.drawType = type;
-  }
-
-  loadScene() {
-    this.gl = this.canvas.nativeElement.getContext('experimental-webgl');
-    if (!this.gl) {
-      alert("There's no WebGL context available.");
-      return;
-    }
-    //    Set the viewport to the canvas width and height
-    this.cw = window.innerWidth;
-    this.ch = window.innerHeight;
-    this.canvas.nativeElement.width = this.cw;
-    this.canvas.nativeElement.height = 180;
-    this.gl.viewport(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+  ngOnInit(): void {
+    this.ctx = this.canvas.nativeElement.getContext('2d');
+    this.width = this.canvas.nativeElement.width;
+    this.height = this.canvas.nativeElement.height;
+    this.GLOBE_RADIUS = this.width * 0.7;
+    this.GLOBE_CENTER_Z = this.GLOBE_RADIUS * -1;
+    this.PROJECTION_CENTER_X = this.width / 2;
+    this.PROJECTION_CENTER_Y = this.height / 2;
+    this.FIELD_OF_VIEW = this.width;
 
 
+// Populate the dots array with random dots
+    this.createDots();
 
-    //    Load the vertex shader that's defined in a separate script
-    //    block at the top of this page.
-    //    More info about shaders: http://en.wikipedia.org/wiki/Shader_Model
-    //    More info about GLSL: http://en.wikipedia.org/wiki/GLSL
-    //    More info about vertex shaders: http://en.wikipedia.org/wiki/Vertex_shader
-
-    //    Grab the script element
-    var vertexShaderScript =
-      " attribute vec3 vertexPosition; " +
-      "  uniform mat4 modelViewMatrix; " +
-      "  uniform mat4 perspectiveMatrix; " +
-      " void main(void) {" +
-      "   gl_Position = perspectiveMatrix * modelViewMatrix * vec4(  vertexPosition, 1.0); " +
-      " }";
-    let vertexShader = this.gl.createShader(this.gl.VERTEX_SHADER);
-    this.gl.shaderSource(vertexShader, vertexShaderScript);
-    this.gl.compileShader(vertexShader);
-    if (!this.gl.getShaderParameter(vertexShader, this.gl.COMPILE_STATUS)) {
-      alert("Couldn't compile the vertex shader");
-      this.gl.deleteShader(vertexShader);
-      return;
-    }
-
-    //    Load the fragment shader that's defined in a separate script
-    //    More info about fragment shaders: http://en.wikipedia.org/wiki/Fragment_shader
-    var fragmentShaderScript =
-      // " #ifdef GL_ES " +
-      // "  precision highp float; " +
-      // " #endif " +
-      " void main(void) {" +
-      "   gl_FragColor = vec4(0.1, 0.2, 0.3, 1.0);" +
-      "  }";
-
-    var fragmentShader = this.gl.createShader(this.gl.FRAGMENT_SHADER);
-    this.gl.shaderSource(fragmentShader, fragmentShaderScript);
-    this.gl.compileShader(fragmentShader);
-    if (!this.gl.getShaderParameter(fragmentShader, this.gl.COMPILE_STATUS)) {
-      alert("Couldn't compile the fragment shader");
-      this.gl.deleteShader(fragmentShader);
-      return;
-    }
-
-    //    Create a shader program.
-    let program: WebGLProgram;
-    program = this.gl.createProgram();
-    this.gl.attachShader(program, vertexShader);
-    this.gl.attachShader(program, fragmentShader);
-    this.gl.linkProgram(program);
-    if (!this.gl.getProgramParameter(program, this.gl.LINK_STATUS)) {
-      alert("Unable to initialise shaders");
-      this.gl.deleteProgram(program);
-      this.gl.deleteProgram(vertexShader);
-      this.gl.deleteProgram(fragmentShader);
-      return;
-    }
-    //    Install the program as part of the current rendering state
-    this.gl.useProgram(program);
-    //    Get the vertexPosition attribute from the linked shader program
-    var vertexPosition = this.gl.getAttribLocation(program, "vertexPosition");
-    //    Enable the vertexPosition vertex attribute array. If enabled, the array
-    //    will be accessed an used for rendering when calls are made to commands like
-    //    gl.drawArrays, gl.drawElements, etc.
-    this.gl.enableVertexAttribArray(vertexPosition);
-
-    //    Clear the color buffer (r, g, b, a) with the specified color
-   // this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
-    //    Clear the depth buffer. The value specified is clamped to the range [0,1].
-    //    More info about depth buffers: http://en.wikipedia.org/wiki/Depth_buffer
-    //this.gl.clearDepth(1.0);
-    //    Enable depth testing. This is a technique used for hidden surface removal.
-    //    It assigns a value (z) to each pixel that represents the distance from this
-    //    pixel to the viewer. When another pixel is drawn at the same location the z
-    //    values are compared in order to determine which pixel should be drawn.
-    //gl.enable(gl.DEPTH_TEST);
-
-    this.gl.enable(this.gl.BLEND);
-    this.gl.disable(this.gl.DEPTH_TEST);
-    this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
-
-    //    Specify which function to use for depth buffer comparisons. It compares the
-    //    value of the incoming pixel against the one stored in the depth buffer.
-    //    Possible values are (from the OpenGL documentation):
-    //    GL_NEVER - Never passes.
-    //    GL_LESS - Passes if the incoming depth value is less than the stored depth value.
-    //    GL_EQUAL - Passes if the incoming depth value is equal to the stored depth value.
-    //    GL_LEQUAL - Passes if the incoming depth value is less than or equal to the stored depth value.
-    //    GL_GREATER - Passes if the incoming depth value is greater than the stored depth value.
-    //    GL_NOTEQUAL - Passes if the incoming depth value is not equal to the stored depth value.
-    //    GL_GEQUAL - Passes if the incoming depth value is greater than or equal to the stored depth value.
-    //    GL_ALWAYS - Always passes.
-    //gl.depthFunc(gl.LEQUAL);
-
-    //    Now create a shape.
-    //    First create a vertex buffer in which we can store our data.
-    var vertexBuffer = this.gl.createBuffer();
-    //    Bind the buffer object to the ARRAY_BUFFER target.
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, vertexBuffer);
-    //    Specify the vertex positions (x, y, z)
-
-    // ------------------
-
-    this.setup();
-
-    // ------------------
-
-
-
-    //    Creates a new data store for the vertices array which is bound to the ARRAY_BUFFER.
-    //    The third paramater indicates the usage pattern of the data store. Possible values are
-    //    (from the OpenGL documentation):
-    //    The frequency of access may be one of these:
-    //    STREAM - The data store contents will be modified once and used at most a few times.
-    //    STATIC - The data store contents will be modified once and used many times.
-    //    DYNAMIC - The data store contents will be modified repeatedly and used many times.
-    //    The nature of access may be one of these:
-    //    DRAW - The data store contents are modified by the application, and used as the source for
-    //           GL drawing and image specification commands.
-    //    READ - The data store contents are modified by reading data from the GL, and used to return
-    //           that data when queried by the application.
-    //    COPY - The data store contents are modified by reading data from the GL, and used as the source
-    //           for GL drawing and image specification commands.
-    this.gl.bufferData(this.gl.ARRAY_BUFFER,  this.vertices, this.gl.DYNAMIC_DRAW);
-
-    //    Clear the color buffer and the depth buffer
-    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-
-    //    Define the viewing frustum parameters
-    //    More info: http://en.wikipedia.org/wiki/Viewing_frustum
-    //    More info: https://knol.google.com/k/view-frustum
-    let fieldOfView = 15.0;
-    let aspectRatio = this.canvas.nativeElement.width / this.canvas.nativeElement.height;
-    let nearPlane = 1.0;
-    let farPlane = 10000.0;
-    let top = nearPlane * Math.tan(fieldOfView * Math.PI / 360.0);
-    let bottom = -top;
-    let right = top * aspectRatio;
-    let left = -right;
-
-    //     Create the perspective matrix. The OpenGL function that's normally used for this,
-    //     glFrustum() is not included in the WebGL API. That's why we have to do it manually here.
-    //     More info: http://www.cs.utk.edu/~vose/c-stuff/opengl/glFrustum.html
-    let a = (right + left) / (right - left);
-    let b = (top + bottom) / (top - bottom);
-    let c = (farPlane + nearPlane) / (farPlane - nearPlane);
-    let d = (2 * farPlane * nearPlane) / (farPlane - nearPlane);
-    let x = (2 * nearPlane) / (right - left);
-    let y = (2 * nearPlane) / (top - bottom);
-    let perspectiveMatrix = [
-      x, 0, a, 0,
-      0, y, b, 0,
-      0, 0, c, d,
-      0, 0, -1, 0
-    ];
-
-    //     Create the modelview matrix
-    //     More info about the modelview matrix: http://3dengine.org/Modelview_matrix
-    //     More info about the identity matrix: http://en.wikipedia.org/wiki/Identity_matrix
-    let modelViewMatrix = [
-      1, 0, 0, 0,
-      0, 1, 0, 0,
-      0, 0, 1, 0,
-      0, 0, 0, 1
-    ];
-    //     Get the vertex position attribute location from the shader program
-    let vertexPosAttribLocation = this.gl.getAttribLocation(program, "vertexPosition");
-    //				colorLoc = gl.getVaryingLocation(gl.program, "vColor");
-    //				alert("color loc : " + colorLoc );
-    //     Specify the location and format of the vertex position attribute
-    this.gl.vertexAttribPointer(vertexPosAttribLocation, 3.0, this.gl.FLOAT, false, 0, 0);
-    //gl.vertexAttribPointer(colorLoc, 4.0, gl.FLOAT, false, 0, 0);
-    //     Get the location of the "modelViewMatrix" uniform variable from the
-    //     shader program
-    let uModelViewMatrix = this.gl.getUniformLocation(program, "modelViewMatrix");
-    //     Get the location of the "perspectiveMatrix" uniform variable from the
-    //     shader program
-    var uPerspectiveMatrix = this.gl.getUniformLocation(program, "perspectiveMatrix");
-    //     Set the values
-    this.gl.uniformMatrix4fv(uModelViewMatrix, false, new Float32Array(perspectiveMatrix));
-    this.gl.uniformMatrix4fv(uPerspectiveMatrix, false, new Float32Array(modelViewMatrix));
-    //	gl.varyingVector4fv(
-    //     Draw the triangles in the vertex buffer. The first parameter specifies what
-    //     drawing mode to use. This can be GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP,
-    //     GL_LINES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES, GL_QUAD_STRIP,
-    //     GL_QUADS, and GL_POLYGON
-    //gl.drawArrays( gl.LINES, 0, numLines );
-    //gl.flush();
-
-    //setInterval( drawScene, 1000 / 40 );
-
-    this.animate();
-    // setTimeout(()=>{
-    //   this.timer()}, 1500
-    // );
+// Render the scene
+    window.requestAnimationFrame((a) => {
+      this.render(a);
+    });
 
   }
 
 
-  animate() {
-    requestAnimationFrame(()=>{
-      this.drawScene();
-      this.animate();
-    }
-      );
+  createDots() {
+    // Empty the array of dots
+    this.dots = [];
 
-  }
+    // Create a new dot based on the amount needed
+    for (let i = 0; i < this.DOTS_AMOUNT; i++) {
+      const theta = Math.random() * 2 * Math.PI; // Random value between [0, 2PI]
+      const phi = Math.acos((Math.random() * 2) - 1); // Random value between [-1, 1];
+      let a = this.utilService.rand(0.1, 1);
+      let rgba = "";
+      if (this.utilService.randInt(0, 10) > 5) {
+        rgba = "rgba(132,48,148," + a + ")"
+      } else {
+        rgba = "rgba(102,200,201," + a + ")"
+      }
 
-
-  drawScene() {
-    this.draw();
-
-    this.gl.lineWidth(1);
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, this.vertices, this.gl.DYNAMIC_DRAW);
-
-    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-
-    //this.gl.drawArrays( this.gl.LINE_STRIP, 0, this.numLines );
-    this.gl.drawArrays(this.gl.LINES, 0, this.numLines);
-    //gl.drawArrays( gl.QUAD_STRIP, 0, numLines );
-    this.gl.flush();
-  }
-
-
-  draw() {
-
-    switch (this.drawType) {
-      case 0:
-        this.draw0();
-        break;
-      case 1:
-        this.draw1();
-        break;
-      case 2:
-        this.draw2();
-        break;
+      // Calculate the [x, y, z] coordinates of the dot along the globe
+      const x = this.GLOBE_RADIUS * Math.sin(phi) * Math.cos(theta);
+      const y = this.GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta);
+      const z = (this.GLOBE_RADIUS * Math.cos(phi)) + this.GLOBE_CENTER_Z;
+      this.dots.push(new Dot(x, y, z, this.ctx, this.GLOBE_CENTER_Z, this.FIELD_OF_VIEW, this.PROJECTION_CENTER_X, this.PROJECTION_CENTER_Y, this.DOT_RADIUS, rgba));
     }
   }
 
+  /* ====================== */
+  /* ======== RENDER ====== */
 
-// ===================================
-  setup() {
+  /* ====================== */
+  render(a) {
+    // Clear the scene
+    this.ctx.clearRect(0, 0, this.width, this.height);
 
-    let vertices_t = [];
-    let velThetaArr_t = [];
-    let velRadArr_t = [];
-    let ratio = this.cw / this.ch;
-    let thetaArr_t = [];
-    this.randomTargetXArr = [];
-    this.randomTargetYArr = [];
+    // Increase the globe rotation
+    this.rotation = a * 0.0004;
 
-    // -------------------------------
+    const sineRotation = Math.sin(this.rotation); // Sine of the rotation
+    const cosineRotation = Math.cos(this.rotation); // Cosine of the rotation
 
-    for (var ii = 0; ii < this.numLines; ii++) {
-      let rad = (0.1 + .2 * Math.random());
-      let theta = Math.random() * Math.PI * 2;
-      let velTheta = Math.random() * Math.PI * 2 / 30;
-      let randomPosX = (Math.random() * 2 - 1) * window.innerWidth / window.innerHeight;
-      let randomPosY = Math.random() * 2 - 1;
-
-      vertices_t.push(rad * Math.cos(theta), rad * Math.sin(theta), 2.00);
-
-      thetaArr_t.push(theta);
-      velThetaArr_t.push(velTheta);
-      velRadArr_t.push(rad);
-
-
-      this.randomTargetXArr.push(randomPosX);
-      this.randomTargetYArr.push(randomPosY);
+    // Loop through the dots array and draw every dot
+    for (var i = 0; i < this.dots.length; i++) {
+      this.dots[i].draw(sineRotation, cosineRotation);
     }
 
-
-    this.vertices = new Float32Array(vertices_t);
-
-    this.thetaArr = new Float32Array(thetaArr_t);
-    this.velThetaArr = new Float32Array(velThetaArr_t);
-    this.velRadArr = new Float32Array(velRadArr_t);
-
+    window.requestAnimationFrame((a) => {
+      this.render(a);
+    });
   }
-
-  draw0() {
-
-    var i, bp;
-    var px, py;
-    var num;
-    var targetX, targetY;
-
-    for (i = 0; i < this.numLines * 2; i += 2) {
-      bp = i * 3;
-
-      this.vertices[bp] = this.vertices[bp + 3];
-      this.vertices[bp + 1] = this.vertices[bp + 4];
-
-      num = Math.floor(i / 2);
-      targetX = this.randomTargetXArr[num];
-      targetY = this.randomTargetYArr[num];
-
-
-      px = this.vertices[bp + 3];
-      px += (targetX - px) * (Math.random() * .04 + .06);
-      this.vertices[bp + 3] = px;
-
-
-      //py = (Math.sin(cn) + 1) * .2 * (Math.random() * .5 - .25);
-      py = this.vertices[bp + 4];
-      py += (targetY - py) * (Math.random() * .04 + .06);
-      this.vertices[bp + 4] = py;
-
-    }
-  }
-
-// -------------------------------
-draw1() {
-
-    var i, bp;
-    var px, py;
-    var pTheta;
-    var rad;
-    var num;
-    var targetX, targetY;
-
-    for (i = 0; i < this.numLines * 2; i += 2) {
-      bp = i * 3;
-
-      this.vertices[bp] = this.vertices[bp + 3];
-      this.vertices[bp + 1] = this.vertices[bp + 4];
-
-      num = Math.floor(i / 2);
-      pTheta = this.thetaArr[num];
-      rad = this.velRadArr[num];
-
-      pTheta = pTheta + this.velThetaArr[num];
-      this.thetaArr[num] = pTheta;
-
-      targetX = rad * Math.cos(pTheta);
-      targetY = rad * Math.sin(pTheta);
-
-      px = this.vertices[bp + 3];
-      px += (targetX - px) * (Math.random() * .1 + .1);
-      this.vertices[bp + 3] = px;
-
-
-      //py = (Math.sin(cn) + 1) * .2 * (Math.random() * .5 - .25);
-      py = this.vertices[bp + 4];
-      py += (targetY - py) * (Math.random() * .1 + .1);
-      this.vertices[bp + 4] = py;
-    }
-  }
-
-// -------------------------------
-
-
-  draw2() {
-
-    var i, n = this.vertices.length, p, bp;
-    var px, py;
-    var pTheta;
-    var rad;
-    var num;
-
-    for (i = 0; i < this.numLines * 2; i += 2) {
-      bp = i * 3;
-      // copy old positions
-
-      this.vertices[bp] = this.vertices[bp + 3];
-      this.vertices[bp + 1] = this.vertices[bp + 4];
-
-      num = Math.floor(i / 2);
-      pTheta = this.thetaArr[num];
-
-      rad = this.velRadArr[num];
-
-      pTheta = pTheta + this.velThetaArr[num];
-      this.thetaArr[num] = pTheta;
-
-      px = this.vertices[bp + 3];
-      px = rad * Math.cos(pTheta) * 0.1 + px;
-      this.vertices[bp + 3] = px;
-
-
-      //py = (Math.sin(this.cn) + 1) * .2 * (Math.random() * .5 - .25);
-      py = this.vertices[bp + 4];
-
-      py = py + rad * Math.sin(pTheta) * 0.1;
-      //p *= ( Math.random() -.5);
-      this.vertices[bp + 4] = py;
-    }
-  }
-
-// -------------------------------
-
-
-
-  // timer() {
-  //
-  //
-  //   this.drawType = (this.drawType + 1) % 3;
-  //
-  //   setTimeout(()=>{
-  //     this.timer()}, 1500
-  //   );
-  // }
 
 
 }
+
+class Dot {
+  x: number;
+  y: number;
+  z: number;
+  xProject: number;
+  yProject: number;
+  sizeProjection: number;
+  ctx: any;
+  GLOBE_CENTER_Z: number;
+  FIELD_OF_VIEW: number;
+  PROJECTION_CENTER_X: number;
+  PROJECTION_CENTER_Y: number;
+  DOT_RADIUS: number;
+  rgba: string;
+
+  constructor(x, y, z, ctx, GLOBE_CENTER_Z, FIELD_OF_VIEW, PROJECTION_CENTER_X, PROJECTION_CENTER_Y, DOT_RADIUS, rgba) {
+    this.ctx = ctx;
+    this.x = x;
+    this.y = y;
+    this.z = z;
+
+    this.xProject = 0;
+    this.yProject = 0;
+    this.sizeProjection = 0;
+
+    this.GLOBE_CENTER_Z = GLOBE_CENTER_Z;
+    this.FIELD_OF_VIEW = FIELD_OF_VIEW;
+    this.PROJECTION_CENTER_X = PROJECTION_CENTER_X;
+    this.PROJECTION_CENTER_Y = PROJECTION_CENTER_Y;
+    this.DOT_RADIUS = DOT_RADIUS;
+    this.rgba = rgba;
+
+
+  }
+
+  // Do some math to project the 3D position into the 2D canvas
+  project(sin, cos) {
+    const rotX = cos * this.x + sin * (this.z - this.GLOBE_CENTER_Z);
+    const rotZ = -sin * this.x + cos * (this.z - this.GLOBE_CENTER_Z) + this.GLOBE_CENTER_Z;
+    this.sizeProjection = this.FIELD_OF_VIEW / (this.FIELD_OF_VIEW - rotZ);
+    this.xProject = (rotX * this.sizeProjection) + this.PROJECTION_CENTER_X;
+    this.yProject = (this.y * this.sizeProjection) + this.PROJECTION_CENTER_Y;
+  }
+
+  // Draw the dot on the canvas
+  draw(sin, cos) {
+    this.project(sin, cos);
+    // ctx.fillRect(this.xProject - DOT_RADIUS, this.yProject - DOT_RADIUS, DOT_RADIUS * 2 * this.sizeProjection, DOT_RADIUS * 2 * this.sizeProjection);
+    this.ctx.beginPath();
+    this.ctx.arc(this.xProject, this.yProject, this.DOT_RADIUS * this.sizeProjection, 0, Math.PI * 2);
+    //let rgba = 'rgba(29,13,178, 1)'
+    //this.ctx.fillStyle = 'rgba(29,13,178, 1)';
+    this.ctx.fillStyle = this.rgba;
+    this.ctx.closePath();
+    this.ctx.fill();
+  }
+}
+

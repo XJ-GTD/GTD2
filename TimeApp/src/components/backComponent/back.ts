@@ -1,5 +1,6 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {IonicPage} from 'ionic-angular';
+import {ControlValueAccessor} from "@angular/forms";
 
 /**
  * Generated class for the BackComponent page.
@@ -12,7 +13,7 @@ import {IonicPage} from 'ionic-angular';
   selector: 'BackComponent',
   template: `<canvas  #canvas></canvas>`,
 })
-export class BackComponent {
+export class BackComponent{
   @ViewChild('canvas')
   canvas: ElementRef;
 
@@ -21,6 +22,9 @@ export class BackComponent {
   w: number;
   h: number;
 
+  ngOnInit(): void {
+    this.loadScene(20);
+  }
 
   loadScene(num:number) {
     this.ctx = this.canvas.nativeElement.getContext('2d');
@@ -88,7 +92,7 @@ class Circle
     var dx = this.x - _circle.x;
     var dy = this.y - _circle.y;
     var d = Math.sqrt(dx * dx + dy * dy);
-    if (d < 90) {
+    if (d < 60) {
       ctx.beginPath();
       ctx.moveTo(this.x, this.y);//起点
       ctx.lineTo(_circle.x, _circle.y);//终点
