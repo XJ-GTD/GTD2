@@ -65,7 +65,7 @@ export class TdlService {
         let i=0;
         let d=0;
         //循环获取60条数据
-        while(i<=0 && d<300){
+        while(i<=60 && d<300){
           let day = moment(next).add(d,'d').format("YYYY/MM/DD");
           let mp:ScdlData = new ScdlData();
           for(let j=0;j<rcnL.rows.length;j++){
