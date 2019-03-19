@@ -12,24 +12,8 @@ export class JhTbl  implements ITbl{
   private _jg: string="";
   private _jc: string="";
   private _jt: string="";
+  private _jtd: string="";
   private _wtt :Number=0;
-
-
-  get wtt(): Number {
-    return this._wtt;
-  }
-
-  set wtt(value: Number) {
-    this._wtt = value;
-  }
-
-  get jc(): string {
-    return this._jc;
-  }
-
-  set jc(value: string) {
-    this._jc = value;
-  }
 
   get ji(): string {
     return this._ji;
@@ -55,6 +39,14 @@ export class JhTbl  implements ITbl{
     this._jg = value;
   }
 
+  get jc(): string {
+    return this._jc;
+  }
+
+  set jc(value: string) {
+    this._jc = value;
+  }
+
   get jt(): string {
     return this._jt;
   }
@@ -62,18 +54,37 @@ export class JhTbl  implements ITbl{
   set jt(value: string) {
     this._jt = value;
   }
+
+  get jtd(): string {
+    return this._jtd;
+  }
+
+  set jtd(value: string) {
+    this._jtd = value;
+  }
+
+  get wtt(): Number {
+    return this._wtt;
+  }
+
+  set wtt(value: Number) {
+    this._wtt = value;
+  }
+
   clp(){
     this._ji = "";
     this._jn = "";
+    this._jc = "";
     this._jg = "";
     this._jt = "";
+    this._jtd = "";
     this._wtt = 0;
   };
 
   cT():string{
 
     let sq ='create table if not exists gtd_j_h(  ji varchar(50) primary key ,jn varchar(100)  ,jg varchar(100)' +
-      ',jc varchar(10),jt varchar(4),wtt integer);';
+      ',jc varchar(10),jt varchar(4),jtd varchar(4),wtt integer);';
 
     return sq;
   }
@@ -91,6 +102,9 @@ export class JhTbl  implements ITbl{
     }
     if(this._jt!=null && this._jt!=""){
       sq=sq+', jt="' + this._jt +'"';
+    }
+    if(this._jtd!=null && this._jtd!=""){
+      sq=sq+', jtd="' + this._jtd +'"';
     }
     if (sq != null && sq != ""){
       sq = sq.substr(1);
@@ -139,16 +153,14 @@ export class JhTbl  implements ITbl{
 
   inT():string{
     let sq ='insert into gtd_j_h ' +
-      '(  ji ,jn ,jg,jc,jt,wtt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '",' +
-      '"'+this._jt+ '",'+  moment().unix() +');';
+      '(  ji ,jn ,jg,jc,jt,jtd,wtt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '","'+this._jt+ '","'+this._jtd+ '",'+  moment().unix() +');';
 
     return sq;
   }
 
   rpT():string{
     let sq ='replace into gtd_j_h ' +
-      '(  ji ,jn ,jg,jc,jt,wtt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '",' +
-      '"'+this._jt+ '",'+  moment().unix() +');';
+      '(  ji ,jn ,jg,jc,jt,jtd,wtt) values("'+ this._ji+'","'+ this._jn+'","'+this._jg+ '","'+this._jc+ '",' + '"'+this._jt+ '","'+this._jtd+ '",'+  moment().unix() +');';
 
     return sq;
   }

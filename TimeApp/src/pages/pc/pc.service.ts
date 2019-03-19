@@ -21,7 +21,7 @@ export class PcService {
       //保存本地计划
       let jh = new JhTbl();
       jh.ji = this.util.getUuid();
-      jh.ji = pcData.jc;
+      jh.jc = pcData.jc;
       jh.jg = pcData.jg;
       jh.jn = pcData.jn;
       jh.jt = "2";

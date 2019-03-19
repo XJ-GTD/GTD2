@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {PagePcPro, PcService} from "./pc.service";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 计划新建 page.
@@ -47,7 +48,7 @@ import {PagePcPro, PcService} from "./pc.service";
         <ion-label>
         牛皮棕
         </ion-label>
-        <ion-radio value="palm" checked></ion-radio>
+        <ion-radio value="#9B5E4B" checked></ion-radio>
       </ion-item>
 
       <ion-item class="plan-list-item">
@@ -55,7 +56,7 @@ import {PagePcPro, PcService} from "./pc.service";
         <ion-label>
         向日葵黄
         </ion-label>
-        <ion-radio value="sunflower"></ion-radio>
+        <ion-radio value="#996A29"></ion-radio>
       </ion-item>
 
       <ion-item class="plan-list-item">
@@ -63,7 +64,7 @@ import {PagePcPro, PcService} from "./pc.service";
         <ion-label>
         橙黄
         </ion-label>
-        <ion-radio value="aurantia"></ion-radio>
+        <ion-radio value="#CF4425"></ion-radio>
       </ion-item>
 
       <ion-item class="plan-list-item">
@@ -71,7 +72,7 @@ import {PagePcPro, PcService} from "./pc.service";
         <ion-label>
           橙色
         </ion-label>
-        <ion-radio value="orange"></ion-radio>
+        <ion-radio value="#AF2B24"></ion-radio>
       </ion-item>
 
       <ion-item class="plan-list-item">
@@ -79,7 +80,7 @@ import {PagePcPro, PcService} from "./pc.service";
         <ion-label>
           粉红色
         </ion-label>
-        <ion-radio value="pink"></ion-radio>
+        <ion-radio value="#AD8387"></ion-radio>
       </ion-item>
 
       <ion-item class="plan-list-item">
@@ -87,7 +88,7 @@ import {PagePcPro, PcService} from "./pc.service";
         <ion-label>
           淡紫
         </ion-label>
-        <ion-radio value="lavender"></ion-radio>
+        <ion-radio value="#C077DB"></ion-radio>
       </ion-item>
 
       <ion-item class="plan-list-item">
@@ -95,7 +96,7 @@ import {PagePcPro, PcService} from "./pc.service";
         <ion-label>
           亮紫
         </ion-label>
-        <ion-radio value="fuchsia"></ion-radio>
+        <ion-radio value="#453B93"></ion-radio>
       </ion-item>
 
       <ion-item class="plan-list-item">
@@ -103,7 +104,7 @@ import {PagePcPro, PcService} from "./pc.service";
         <ion-label>
           天蓝色
         </ion-label>
-        <ion-radio value="sky"></ion-radio>
+        <ion-radio value="#51AAF2"></ion-radio>
       </ion-item>
 
       <ion-item class="plan-list-item">
@@ -111,7 +112,7 @@ import {PagePcPro, PcService} from "./pc.service";
         <ion-label>
           深水蓝
         </ion-label>
-        <ion-radio value="blue"></ion-radio>
+        <ion-radio value="#3591A5"></ion-radio>
       </ion-item>
 
       <ion-item class="plan-list-item">
@@ -119,11 +120,11 @@ import {PagePcPro, PcService} from "./pc.service";
         <ion-label>
           氧化铁绿
         </ion-label>
-        <ion-radio value="daphnite"></ion-radio>
+        <ion-radio value="#308158"></ion-radio>
       </ion-item>
       
     </ion-list>
-  </ion-row>
+  </ion-row>    
 </ion-grid>
 </ion-content>`,
 })
@@ -137,7 +138,7 @@ export class PcPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PcPage');
-    this.jhcData.jc = "palm";
+    this.jhcData.jc = "#9B5E4B"; // 默认选中颜色  牛皮棕
   }
 
   goBack() {
@@ -148,7 +149,8 @@ export class PcPage {
     if(this.jhcData.jn != "" && this.jhcData.jn != null ){
       if(this.jhcData.jc != "" && this.jhcData.jc != null ){
         this.pcService.savePlan(this.jhcData).then(data=>{
-          console.log("计划添加成功 :: " + JSON.stringify(this.jhcData)+"===="+JSON.stringify(data));
+          console.log("计划添加成功===="+JSON.stringify(data));
+          this.navCtrl.setRoot(DataConfig.PAGE._PL_PAGE);
         }).catch(res=>{
           console.log("计划添加失败 :: " + JSON.stringify(res));
         });
