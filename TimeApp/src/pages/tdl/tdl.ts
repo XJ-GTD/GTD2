@@ -1,7 +1,7 @@
 import {Component, ElementRef, Input, Renderer2} from '@angular/core';
 import {App, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import * as moment from "moment";
-import {ScdData, TdlService} from "./tdl.service";
+import {ScdData, ScdlData, TdlService} from "./tdl.service";
 
 /**
  * Generated class for the 日程列表 page.
@@ -14,45 +14,9 @@ import {ScdData, TdlService} from "./tdl.service";
   selector: 'page-tdl',
   template: `<ion-content>
     <ion-grid>
-      <ion-row>
-        <div class="w-10 leftside">
-          <ion-grid>
-            <ion-row justify-content-center align-items-center>
-              <div class="text-rotate-90">二月 2019</div>
-            </ion-row>
-          </ion-grid>
-        </div>
-        <div class="w-15 leftside">
-          <ion-grid>
-            <ion-row justify-content-center align-items-center>
-              <div>
-                <div>周二</div><div>18</div>
-              </div>
-            </ion-row>
-            <ion-row justify-content-center align-items-center>
-              <div>
-                <div>周三</div><div>19</div>
-              </div>
-            </ion-row>
-            <ion-row justify-content-center align-items-center>
-              <div>
-                <div>周四</div><div>20</div>
-              </div>
-            </ion-row>
-            <ion-row justify-content-center align-items-center>
-              <div>
-                <div>周五</div><div>21</div>
-              </div>
-            </ion-row>
-          </ion-grid>
-        </div>
-        <div class="w-auto rightside">
-          <ion-list no-lines>
-            <ion-item>
-              test
-            </ion-item>
-          </ion-list>
-        </div>
+      <ion-row *ngFor="let sdl of scdlData">
+        <div class="w-15 leftside">{{sdl.d}}</div>
+        <div class="w-auto rightside" *ngFor ="let scd of sdl.scdl">{{scd.sn}}</div>
       </ion-row>
     </ion-grid>
   </ion-content>`
@@ -62,15 +26,21 @@ export class TdlPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,private tdlServ : TdlService) {
   }
 
-  dtmap :Map<string,any> = new Map<string,any>();
+  scdlData :Array<ScdlData> = new Array<ScdlData>();
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AgendaListPage');
   }
 
+  ionViewWillEnter() {
+    this.init();
+  }
+
   init() {
-    this.tdlServ.get(this.navParams.get("dt")).then(data =>{
-      this.dtmap = data;
+    let condi =this.navParams.get("dt");
+    condi = "2019/01/01";
+    this.tdlServ.get(condi).then(data =>{
+      this.scdlData = data;
     })
   }
 

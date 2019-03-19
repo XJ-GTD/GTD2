@@ -26,8 +26,8 @@ export class HService {
 
     //获取时间段内日程信息
     let sql = 'select * from gtd_c  where ' +
-      ' (ed <> "" and sd <= "'+ eday +'" and ed >= "'+ sday +'" ) ' +
-      ' or (ed = "" and sd <= "'+ eday +'")';
+      ' (ed <> "9999/12/31" and sd <= "'+ eday +'" and ed >= "'+ sday +'" ) ' +
+      ' or (ed = "9999/12/31" and sd <= "'+ eday +'")';
 
     let data = new Array<CTbl>();
     data = await this.sqlexec.getExtList<CTbl>(sql);
