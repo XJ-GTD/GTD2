@@ -12,10 +12,11 @@ ion-calendar {
 
   .card-ios{
     border-radius:0px;
-    width:calc(100% - 14px);
+    width:calc(100% - 24px);
     background: transparent;
     box-shadow:none;
     -webkit-box-shadow:none;
+    margin:12px
   }
 
   .card-content-ios{
@@ -23,12 +24,12 @@ ion-calendar {
   }
 
   .title {
-
     //padding: 0 $btn-width 0 $btn-width;
     overflow: hidden;
     height: 70px;
     font-weight: bold;
     letter-spacing: 10px;
+    margin-left:5%;
     p{
       color:#d32746;
       font-size: 24px;

@@ -56,7 +56,7 @@
     position: relative;
 
     &:after {
-      height: 32px;
+      height: 34px;
       width: 50%;
       content: '';
       position: absolute;
@@ -70,7 +70,7 @@
     position: relative;
 
     &:after {
-      height: 32px;
+      height: 34px;
       width: 50%;
       content: '';
       position: absolute;
@@ -108,7 +108,7 @@
   .days.startSelection:nth-child(7n):after,
   .days.between:nth-child(7n) button.days-btn,
   button.days-btn.is-last {
-    border-radius: 0 32px 32px 0;
+    border-radius: 0 34px 34px 0;
 
     &.on-selected {
       border-radius: 50%
@@ -118,7 +118,7 @@
   .days.endSelection:nth-child(7n+1):after,
   .days.between:nth-child(7n+1) button.days-btn,
   button.days-btn.is-first {
-    border-radius: 32px 0 0 32px;
+    border-radius: 34px 0 0 34px;
   }
 
   .startSelection button.days-btn.is-first,
@@ -132,13 +132,13 @@
 
   .startSelection.is-last-wrap {
     &::after {
-      border-radius: 0 32px 32px 0;
+      border-radius: 0 34px 34px 0;
     }
   }
 
   .endSelection.is-first-wrap {
     &::after {
-      border-radius: 32px 0 0 32px;
+      border-radius: 34px 0 0 34px;
     }
   }
 
@@ -161,20 +161,19 @@ ion-calendar-month {
   width: 100%;
 
   .days-box {
-    padding: 0.5rem;
+    padding: 0.5rem 0 0.5rem 0;
   }
 
   .days:nth-of-type(7n),
   .days:nth-of-type(7n+1) {
-    width: 15%;
+    width: 14.2%;
   }
 
   .days {
-    width: 14%;
+    width: 14.2%;
     float: left;
     text-align: center;
-    height: 32px;
-    margin-bottom: 7px;
+    height: 50px;
   }
 
   .days .marked p {
@@ -190,12 +189,12 @@ ion-calendar-month {
   }
 
   button.days-btn {
-    border-radius: 32px;
-    width: 32px;
+    border-radius: 34px;
+    width: 34px;
     display: block;
-    margin: 2px;
+    margin: 2px auto;
     padding: 0;
-    height: 32px;
+    height: 34px;
     background-color: transparent;
     position: relative;
     z-index: 2;
@@ -210,6 +209,7 @@ ion-calendar-month {
     margin: 0;
     font-size: 12px;
     color: #ffffff;
+    letter-spacing: -1px;
   }
 
   button.someting p{
@@ -231,7 +231,7 @@ ion-calendar-month {
     z-index: 1;
     text-align: center;
     font-size: 5px;
-    font-weight: 200;
+    font-weight: 100;
   }
 
   .primary {
@@ -266,7 +266,7 @@ ion-calendar-month {
     .borderDiv {
       width: 38px;
       height: 38px;
-      margin: 0 auto;
+      margin: 6px auto;
 
     }
 
