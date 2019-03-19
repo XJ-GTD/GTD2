@@ -221,6 +221,7 @@ export class ScdData {
   du:string ="";//消息读取状态
   gs:string ="";//归属
   fssshow:string =""//参与人画面显示用
+  cbkcolor:string =""//每个日程颜色画面显示用
 
 
   //特殊日期日程

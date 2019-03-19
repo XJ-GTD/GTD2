@@ -14,7 +14,7 @@ page-tdl {
   }
 
   .rightside {
-    background-color: #b72537;
+    background-color: #96162D;
     color: #fff;
   }
 
@@ -66,10 +66,19 @@ page-tdl {
   .w-44 {
     width: 48px;
   }
-  .ym-size {
+  .ym-fsize {
     font-size: 11px;
   }
-  .d-size {
+  .tm-fsize {
+    font-size: 11px;
+  }
+  .d-fsize {
+    font-size: 15px;
+  }
+  .p-fsize {
+    font-size: 11px;
+  }
+  .text-fsize {
     font-size: 15px;
   }
   .grid .row {
@@ -85,14 +94,23 @@ page-tdl {
     padding-bottom: 21px;
     padding-top: 32px;
     padding-left:17px ;
-    padding-left:15px ;
+    padding-right:15px ;
   }
   .color-dot {
-    width: 2vmin;
-    height: 2vmin;
+    width: 6px;
+    height: 6px;
     background-color: #fff;
     border-radius: 50%;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 6px;
   }
+  .floatleft{     float: left;}
 
-
+  .tm-margin{margin-top: 1px;}
+  .more-set{width:12px;}
+  .dt-set{
+      width: 100%;
+      padding-right: 19px;
+    }
 }
