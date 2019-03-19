@@ -27,12 +27,12 @@ export class TdlService {
         let i=0;
         let d=0;
         //循环获取30条数据
-        while(i>30 || i==len){
-          let day = moment(new Date(next).getTime() - d*60*60*100).format("YYYY/MM/DD");
+        while(i<=30 && i!=len){
+          let day = moment(next).subtract(1,'d').format("YYYY/MM/DD");
           let mp:ScdlData = new ScdlData();
-          for(let j=0;j<100;j++){
+          for(let j=0;j<rclL.rows.length;j++){
             let sc:ScdData = rclL.rows.item(j);
-            if(sc.sd>day){
+            if(moment(sc.sd).isAfter(day)){
               break;
             }else if(this.isymwd(sc.rt,day,sc.sd,sc.ed)){
               let dt = new DTbl();
@@ -64,12 +64,12 @@ export class TdlService {
         let i=0;
         let d=0;
         //循环获取60条数据
-        while(i>60 || i==len){
-          let day = moment(new Date(next).getTime() + d*60*60*100).format("YYYY/MM/DD");
+        while(i<=60 && i!=len){
+          let day = moment(next).add(1,'d').format("YYYY/MM/DD");
           let mp:ScdlData = new ScdlData();
-          for(let j=0;j<100;j++){
+          for(let j=0;j<rclL.rows.length;j++){
             let sc:ScdData = rcnL.rows.item(j);
-            if(sc.sd>day){
+            if(moment(sc.sd).isAfter(day)){
               break;
             }else if(this.isymwd(sc.rt,day,sc.sd,sc.ed)){
               let dt = new DTbl();
