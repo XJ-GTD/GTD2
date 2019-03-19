@@ -199,6 +199,7 @@ export class ScdData {
   pni:string = "";//日程原始ID
   wtt: number;//时间戳
   du:string ="";//消息读取状态
+  gs:string ="";//归属
 
 
   //特殊日期日程

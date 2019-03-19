@@ -1,7 +1,7 @@
 import {Component, ElementRef, Input, Renderer2} from '@angular/core';
 import {App, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import * as moment from "moment";
-import {ScdData, ScdlData, TdlService} from "./tdl.service";
+import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
 
 /**
  * Generated class for the 日程列表 page.
@@ -14,9 +14,11 @@ import {ScdData, ScdlData, TdlService} from "./tdl.service";
   selector: 'page-tdl',
   template: `<ion-content>
     <ion-grid>
-      <ion-row *ngFor="let sdl of scdlData">
-        <div class="w-15 leftside">{{sdl.d}}</div>
-        <div class="w-auto rightside" *ngFor ="let scd of sdl.scdl">{{scd.sn}}</div>
+      <ion-row *ngFor="let sdl of scdlDataList">
+        <div class="w-15 leftside"><div>{{sdl.d | formatedate:"YYYY-MM":"DD"}}</div>
+          <div>{{sdl.d | formatedate}} </div></div>
+        <div class="w-auto rightside" >
+          <div *ngFor ="let scd of sdl.scdl">{{scd.sn}}</div></div>
       </ion-row>
     </ion-grid>
   </ion-content>`
@@ -26,7 +28,7 @@ export class TdlPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,private tdlServ : TdlService) {
   }
 
-  scdlData :Array<ScdlData> = new Array<ScdlData>();
+  scdlDataList :Array<ScdlData> = new Array<ScdlData>();
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AgendaListPage');
@@ -37,11 +39,103 @@ export class TdlPage {
   }
 
   init() {
-    let condi =this.navParams.get("dt");
+
+
+    for (let k=1 ; k<5;k++){
+      let scdldata = new ScdlData();
+      let a  : string = "";
+      if (k>9){
+        a = k + "";
+      }else {
+        a = "0" + k;
+      }
+      scdldata.d='2019/01/'+ a;
+      scdldata.scdl = new Array<ScdData>();
+      for (let i=0 ;i<k ;i++){
+        let scd = new ScdData();
+        scd.sd = scdldata.d;
+        scd.st = "11:0"+ i
+        scd.sn = "开会需要测试" + scd.st;
+        scd.p.jc = "#fff";
+        scd.gs="0";
+        scdldata.scdl.push(scd);
+        if (i>20){
+          break;
+        }
+      }
+      this.scdlDataList.push(scdldata);
+    }
+
+
+    for (let k=1 ; k<10;k++){
+      let scdldata = new ScdlData();
+      let a  : string = "";
+      if (k>9){
+        a = k + "";
+      }else {
+        a = "0" + k;
+      }
+      scdldata.d='2019/02/'+ a;
+      scdldata.scdl = new Array<ScdData>();
+      for (let i=0 ;i<k ;i++){
+        let scd = new ScdData();
+        scd.sd = scdldata.d;
+        scd.st = "11:0"+ i
+        scd.sn = "跑步需要测试" + scd.st;
+        scd.p.jc = "#000";
+        scd.gs="1";
+        for (let m=0;m<4;m++){
+          let fss = new fsData();
+          fss.rn = "参与人"+m;
+          scd.fss.push(fss);
+        }
+        scdldata.scdl.push(scd);
+        if (i>20){
+          break;
+        }
+      }
+      this.scdlDataList.push(scdldata);
+    }
+
+    for (let k=1 ; k<30;k++){
+      let scdldata = new ScdlData();
+      let a  : string = "";
+      if (k>9){
+        a = k + "";
+      }else {
+        a = "0" + k;
+      }
+      scdldata.d='2019/03/'+ a;
+      scdldata.scdl = new Array<ScdData>();
+      for (let i=0 ;i<k ;i++){
+        let scd = new ScdData();
+        scd.sd = scdldata.d;
+        scd.st = "11:0"+ i
+        scd.sn = "吃饭需要测试" + scd.st;
+        scd.p.jc = "red";
+        scd.gs="0";
+        for (let m=0;m<2;m++){
+          let fss = new fsData();
+          fss.rn = "参与人"+m;
+          scd.fss.push(fss);
+        }
+        scdldata.scdl.push(scd);
+        if (i>20){
+          break;
+        }
+      }
+      this.scdlDataList.push(scdldata);
+    }
+
+
+
+
+
+/*    let condi =this.navParams.get("dt");
     condi = "2019/01/01";
     this.tdlServ.get(condi).then(data =>{
       this.scdlData = data;
-    })
+    })*/
   }
 
 

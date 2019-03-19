@@ -47,6 +47,7 @@ import {AgdbusiService} from "../service/util-service/agdbusi.service";
 import {FeedbackService} from "../service/cordova/feedback.service";
 import {AlarmService} from "../service/cordova/alarm.service";
 import {UserConfig} from "../service/config/user.config";
+import {PipesModule} from "../pipes/pipes.module";
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import {UserConfig} from "../service/config/user.config";
     HttpClientModule,
     BrowserAnimationsModule,
     RouterModule,
-    WebsocketModule
+    WebsocketModule,
+    PipesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
