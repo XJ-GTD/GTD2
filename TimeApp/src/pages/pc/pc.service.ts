@@ -3,10 +3,8 @@ import {PersonRestful} from "../../service/restful/personsev";
 import {SmsRestful} from "../../service/restful/smssev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
-import {RestFulConfig} from "../../service/config/restful.config";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
-import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 
 @Injectable()
 export class PcService {
@@ -14,22 +12,18 @@ export class PcService {
               private smsRestful: SmsRestful,
               private sqlExce: SqliteExec,
               private util: UtilService,
-              private restfulConfig: RestFulConfig,
   ) {
   }
 
   //保存计划
-  savePlan():Promise<BsModel<any>>{
+  savePlan(pcData:PagePcPro):Promise<BsModel<any>>{
     return new Promise<any>((resolve, reject) => {
-
       //保存本地计划
-      let ppc = new PagePcPro();
-
       let jh = new JhTbl();
       jh.ji = this.util.getUuid();
-      jh.ji = ppc.jc;
-      jh.jg = ppc.jg;
-      jh.jn = ppc.jn;
+      jh.ji = pcData.jc;
+      jh.jg = pcData.jg;
+      jh.jn = pcData.jn;
       jh.jt = "2";
       this.sqlExce.save(jh).then(data =>{
         let bsmodel = new BsModel();

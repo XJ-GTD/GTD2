@@ -45,7 +45,7 @@ export class PdPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PdPage');
-    this.navBar.backButtonClick = this.backButtonClick;
+    /*this.navBar.backButtonClick = this.backButtonClick;
     this.navBar.setBackButtonText("");
     this.indexs = ['01','02','03','04','05','06','07','08','09','10'];
 
@@ -66,20 +66,17 @@ export class PdPage {
           }
         });
       }
-    },100);
+    },100);*/
 
-    console.log(this.jh);
     this.jh = this.navParams.get("jh");
 
-    console.log("传入jh ::" + JSON.stringify(this.jh));
-
     this.pdService.getPlan(this.jh.ji).then(data=>{
-      console.log("数据 ::" + JSON.stringify(data));
+      //console.log("数据 ::" + JSON.stringify(data));
     })
   }
 
 
-  change = function($event){
+  /*change = function($event){
     console.log($event)
     $event.srcElement.classList.add("highlight");
   }
@@ -97,7 +94,7 @@ export class PdPage {
   backButtonClick = (e: UIEvent) => {
     // 重写返回方法
     this.navCtrl.pop();
-  }
+  }*/
 
 
 }

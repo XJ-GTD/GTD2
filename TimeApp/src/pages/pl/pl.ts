@@ -40,18 +40,25 @@ import {PagePDPro} from "../pd/pd.service";
             <ion-list-header class="plan-list-item">
               全部计划
             </ion-list-header>
-            <ion-item class="plan-list-item">
+            <ion-list>
+              <ion-item-sliding *ngFor="let jh of jhs">
+                <ion-item class="plan-list-item" (click)="toPd(jh)" *ngIf="jh.jt=='2'">
+                  {{jh.jn}}({{jh.js}})
+                </ion-item>
+              </ion-item-sliding>
+            </ion-list>
+            <!--<ion-item class="plan-list-item">
               <div class="color-dot color-blue" item-start></div>
               普吉岛休闲游计划 (自由行)
             </ion-item>
             <ion-item class="plan-list-item">
               <div class="color-dot color-pink" item-start></div>
               冥王星计划
-            </ion-item>
+            </ion-item>-->
             <ion-list-header class="plan-list-item">
               <div>系统计划</div><small>长按系统计划可清除</small>
             </ion-list-header>
-            <ion-item class="plan-list-item">
+            <!--<ion-item class="plan-list-item">
               节假日
               <button ion-button color="danger" clear item-end>下载</button>
             </ion-item>
@@ -60,11 +67,11 @@ import {PagePDPro} from "../pd/pd.service";
               <button ion-button color="danger" clear item-end>
                 <ion-icon name="sync"></ion-icon>
               </button>
-            </ion-item>
+            </ion-item>-->
             <ion-list>
             <ion-item-sliding *ngFor="let jh of jhs">
-              <ion-item class="plan-list-item" (click)="toPd(jh)">
-                  {{jh.jn}}
+              <ion-item class="plan-list-item" (click)="toPd(jh)" *ngIf="jh.jt=='1'">
+                  {{jh.jn}}({{jh.js}})
                 <button ion-button color="danger" clear item-end>
                   <ion-icon name="sync"></ion-icon>
                 </button>
@@ -100,7 +107,7 @@ export class PlPage {
 
   getAllJh(){
     this.plService.getPlan().then(data=>{
-      console.debug("获取计划成功，成功返回信息::" + JSON.stringify(data));
+      //console.debug("获取计划成功，成功返回信息::" + JSON.stringify(data));
       this.jhs = data.pl;
     }).catch(res=>{
       console.log("获取计划失败")

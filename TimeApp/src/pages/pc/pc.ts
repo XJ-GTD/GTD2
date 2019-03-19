@@ -1,5 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import {IonicPage, Navbar, NavController} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {PagePcPro, PcService} from "./pc.service";
 
 /**
@@ -33,67 +33,140 @@ import {PagePcPro, PcService} from "./pc.service";
 <ion-grid>
   <ion-row justify-content-center>
     <div class="name-input w-auto">
-    <ion-input type="text" placeholder="输入计划名称" [(ngModel)]="jhData.jn" text-center></ion-input>
+    <ion-input type="text" placeholder="输入计划名称" [(ngModel)]="jhcData.jn" text-center></ion-input>
     </div>
   </ion-row>
   <ion-row>
-    <ion-list no-lines radio-group>
+    <ion-list no-lines radio-group [(ngModel)]="jhcData.jc">
       <ion-list-header class="plan-list-item">
         选择颜色
       </ion-list-header>
 
       <ion-item class="plan-list-item">
-      <div class="color-dot color-blue" item-start></div>
+      <div class="color-dot color-palm" item-start></div>
         <ion-label>
         牛皮棕
         </ion-label>
-        <ion-radio checked="true" value="go"></ion-radio>
+        <ion-radio value="palm" checked></ion-radio>
       </ion-item>
 
       <ion-item class="plan-list-item">
-      <div class="color-dot color-pink" item-start></div>
+      <div class="color-dot color-sunflower " item-start></div>
         <ion-label>
         向日葵黄
         </ion-label>
-        <ion-radio value="rust"></ion-radio>
+        <ion-radio value="sunflower"></ion-radio>
       </ion-item>
 
       <ion-item class="plan-list-item">
-      <div class="color-dot color-blue" item-start></div>
+      <div class="color-dot color-aurantia" item-start></div>
         <ion-label>
         橙黄
         </ion-label>
-        <ion-radio value="python"></ion-radio>
+        <ion-radio value="aurantia"></ion-radio>
       </ion-item>
+
+      <ion-item class="plan-list-item">
+        <div class="color-dot color-orange" item-start></div>
+        <ion-label>
+          橙色
+        </ion-label>
+        <ion-radio value="orange"></ion-radio>
+      </ion-item>
+
+      <ion-item class="plan-list-item">
+        <div class="color-dot color-pink" item-start></div>
+        <ion-label>
+          粉红色
+        </ion-label>
+        <ion-radio value="pink"></ion-radio>
+      </ion-item>
+
+      <ion-item class="plan-list-item">
+        <div class="color-dot color-lavender" item-start></div>
+        <ion-label>
+          淡紫
+        </ion-label>
+        <ion-radio value="lavender"></ion-radio>
+      </ion-item>
+
+      <ion-item class="plan-list-item">
+        <div class="color-dot color-fuchsia" item-start></div>
+        <ion-label>
+          亮紫
+        </ion-label>
+        <ion-radio value="fuchsia"></ion-radio>
+      </ion-item>
+
+      <ion-item class="plan-list-item">
+        <div class="color-dot color-sky" item-start></div>
+        <ion-label>
+          天蓝色
+        </ion-label>
+        <ion-radio value="sky"></ion-radio>
+      </ion-item>
+
+      <ion-item class="plan-list-item">
+        <div class="color-dot color-blue" item-start></div>
+        <ion-label>
+          深水蓝
+        </ion-label>
+        <ion-radio value="blue"></ion-radio>
+      </ion-item>
+
+      <ion-item class="plan-list-item">
+        <div class="color-dot color-daphnite" item-start></div>
+        <ion-label>
+          氧化铁绿
+        </ion-label>
+        <ion-radio value="daphnite"></ion-radio>
+      </ion-item>
+      
     </ion-list>
   </ion-row>
 </ion-grid>
 </ion-content>`,
 })
 export class PcPage {
-  jhData:PagePcPro = new PagePcPro;
+  jhcData:PagePcPro = new PagePcPro;
 
   constructor(private navCtrl: NavController,
+              private alertCtrl: AlertController,
               private pcService:PcService) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PcPage');
+    this.jhcData.jc = "palm";
   }
 
   goBack() {
     this.navCtrl.pop();
   }
 
-
   save(){
-    console.log("计划添加 :: " + this.jhData.jn +"--"+ this.jhData.jg +"--color:"+this.jhData.jc);
+    if(this.jhcData.jn != "" && this.jhcData.jn != null ){
+      if(this.jhcData.jc != "" && this.jhcData.jc != null ){
+        this.pcService.savePlan(this.jhcData).then(data=>{
+          console.log("计划添加成功 :: " + JSON.stringify(this.jhcData)+"===="+JSON.stringify(data));
+        }).catch(res=>{
+          console.log("计划添加失败 :: " + JSON.stringify(res));
+        });
+      }else{
+        this.alert("计划颜色不能为空");
+      }
+    }else{
+      this.alert("计划名称不能为空");
+    }
 
-    // this.jhService.ajh(this.jhmc,this.jhms).then(data=>{
-    //   console.log("计划添加成功 :: " + JSON.stringify(data));
-    //   this.navCtrl.pop();
-    // }).catch(reason => {
-    //   console.log("计划添加失败 :: " + JSON.stringify(reason));
-    // })
+  }
+
+  alert(message){
+    let alert = this.alertCtrl.create({
+      title:'',
+      subTitle: message,
+      buttons:['确定']
+    });
+    alert.present();
   }
 }

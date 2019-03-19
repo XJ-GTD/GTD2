@@ -78,13 +78,13 @@ export class PlService {
 
   //获取计划
   async getPlan(){
-    console.log('---------- PlService getPlan 获取计划开始 ----------------');
+    //console.log('---------- PlService getPlan 获取计划开始 ----------------');
     let pld = new PagePlData();
     //获取本地计划
     let jhtbl:JhTbl = new JhTbl();
     let jhCtbl: Array<PagePDPro> = await this.sqlExce.getList<PagePDPro>(jhtbl);
     if(jhCtbl.length > 0){
-      console.log('---------- PlService getPlan 获取计划日程数量开始 ----------------');
+      //console.log('---------- PlService getPlan 获取计划日程数量开始 ----------------');
       //获取计划日程数量
       for(let jhc of jhCtbl){
         let c:CTbl =new CTbl();
@@ -93,9 +93,9 @@ export class PlService {
         jhc.js = cl.length;
       }
       pld.pl = jhCtbl;
-      console.log('---------- PlService getPlan 获取计划日程数量结束 ----------------');
+      //console.log('---------- PlService getPlan 获取计划日程数量结束 ----------------');
     }
-    console.log('---------- PlService getPlan 获取计划结束 ----------------');
+    //console.log('---------- PlService getPlan 获取计划结束 ----------------');
     return pld;
   }
 
