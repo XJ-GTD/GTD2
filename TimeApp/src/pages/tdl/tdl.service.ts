@@ -40,6 +40,16 @@ export class TdlService {
               dt.si = sc.si;
               let fsL = await this.sqlExce.getList<fsData>(dt);
               sc.fss = fsL;
+              let str = "";
+              for (let j = 0, len = sc.fss.length; j < len; j++) {
+                let rn = sc.fss[j].rn ==""||sc.fss[j].rn == null?sc.fss[j].rc:sc.fss[j].rn;
+                str = str + ',' + rn ;
+                if (j== len -1){
+                  str = str.substr(1)
+                }
+              }
+              sc.fssshow = str
+
               Object.assign(sc.fs,rclL.rows.item(j));
               Object.assign(sc.p,rclL.rows.item(j));
               mp.scdl.push(sc);
@@ -78,6 +88,16 @@ export class TdlService {
               dt.si = sc.si;
               let fsL = await this.sqlExce.getList<fsData>(dt);
               sc.fss = fsL;
+              let str = "";
+              for (let j = 0, len = sc.fss.length; j < len; j++) {
+                let rn = sc.fss[j].rn ==""||sc.fss[j].rn == null?sc.fss[j].rc:sc.fss[j].rn;
+                str = str + ',' + rn ;
+                if (j== len -1){
+                  str = str.substr(1)
+                }
+              }
+              sc.fssshow = str
+
               Object.assign(sc.fs,rcnL.rows.item(j));
               Object.assign(sc.p,rcnL.rows.item(j));
               mp.scdl.push(sc);
@@ -200,6 +220,7 @@ export class ScdData {
   wtt: number;//时间戳
   du:string ="";//消息读取状态
   gs:string ="";//归属
+  fssshow:string =""//参与人画面显示用
 
 
   //特殊日期日程

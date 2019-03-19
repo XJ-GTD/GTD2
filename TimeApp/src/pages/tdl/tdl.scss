@@ -60,14 +60,39 @@ page-tdl {
     width: 25vmin;
   }
 
-  .grid {
-    height: 100%;
-    padding: 0;
+  .w-75 {
+    width: 75px;
   }
-
+  .w-44 {
+    width: 48px;
+  }
+  .ym-size {
+    font-size: 11px;
+  }
+  .d-size {
+    font-size: 15px;
+  }
   .grid .row {
     height: 100%;
   }
+  .leftpanding {
+    padding-bottom: 21px;
+    padding-top: 32px;
+    padding-left:18px ;
+    padding-right: 11px;
+  }
+  .rightpanding {
+    padding-bottom: 21px;
+    padding-top: 32px;
+    padding-left:17px ;
+    padding-left:15px ;
+  }
+  .color-dot {
+    width: 2vmin;
+    height: 2vmin;
+    background-color: #fff;
+    border-radius: 50%;
+  }
 
-  .div-inline{ display:inline}
+
 }

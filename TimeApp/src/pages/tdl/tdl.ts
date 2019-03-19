@@ -15,10 +15,21 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
   template: `<ion-content>
     <ion-grid>
       <ion-row *ngFor="let sdl of scdlDataList">
-        <div class="w-15 leftside"><div>{{sdl.d | formatedate:"YYYY-MM":"DD"}}</div>
-          <div>{{sdl.d | formatedate}} </div></div>
-        <div class="w-auto rightside" >
-          <div *ngFor ="let scd of sdl.scdl">{{scd.sn}}</div></div>
+        <div class="w-75 leftside leftpanding">
+          <div class ="w-44  ">
+            <div class="ym-size">{{sdl.d | formatedate:"YYYY-MM"}}</div>
+            <div class="d-size">{{sdl.d | formatedate :"DD"}}</div>
+          </div>
+        </div>
+        <div class="w-auto rightside  " >
+          <div class="rightpanding" *ngFor ="let scd of sdl.scdl">
+            <div *ngif="scd.gs == '1'">{{scd.fssshow}}</div>
+            <div *ngif="scd.gs == '0'">{{scd.fs.rn==""||scd.fs.rn ==null ?scd.fs.rc:scd.fs.rn}}</div>
+            <div>{{scd.st}}</div>
+            <<div class="color-dot" ngStyle="{background-color:scd.jc}" ></div>
+            <div>{{scd.sn}}</div>
+          </div>
+        </div>
       </ion-row>
     </ion-grid>
   </ion-content>`
