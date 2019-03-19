@@ -17,17 +17,20 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
       <ion-row *ngFor="let sdl of scdlDataList">
         <div class="w-75 leftside leftpanding">
           <div class ="w-44  ">
-            <div class="ym-size">{{sdl.d | formatedate:"YYYY-MM"}}</div>
-            <div class="d-size">{{sdl.d | formatedate :"DD"}}</div>
+            <div class="ym-fsize">{{sdl.d | formatedate:"YYYY-MM"}}</div>
+            <div class="d-fsize">{{sdl.d | formatedate :"DD"}}</div>
           </div>
         </div>
         <div class="w-auto rightside  " >
-          <div class="rightpanding" *ngFor ="let scd of sdl.scdl">
-            <div *ngif="scd.gs == '1'">{{scd.fssshow}}</div>
-            <div *ngif="scd.gs == '0'">{{scd.fs.rn==""||scd.fs.rn ==null ?scd.fs.rc:scd.fs.rn}}</div>
-            <div>{{scd.st}}</div>
-            <<div class="color-dot" ngStyle="{background-color:scd.jc}" ></div>
-            <div>{{scd.sn}}</div>
+          <div class="rightpanding" *ngFor ="let scd of sdl.scdl" [ngStyle]="{'background-color':scd.cbkcolor}">
+            <div class="floatleft dt-set" [ngStyle]="{'background-color':scd.cbkcolor}">
+              <div class="floatleft tm-fsize tm-margin">{{scd.st}}</div>
+              <div class="color-dot floatleft text-fsize" [ngStyle]="{'background-color':scd.p.jc}" ></div>
+              <div >{{scd.sn}}</div>
+              <div class="p-fsize" *ngIf="scd.gs == '1'">{{scd.fssshow}}</div>
+              <div class="p-fsize" *ngIf="scd.gs == '0'">{{scd.fs.rn==""||scd.fs.rn ==null ?scd.fs.rc:scd.fs.rn}}</div>
+            </div>
+            <div class = "more-set"><ion-icon ios="ios-more" md="md-more"></ion-icon></div>
           </div>
         </div>
       </ion-row>
@@ -66,9 +69,10 @@ export class TdlPage {
         let scd = new ScdData();
         scd.sd = scdldata.d;
         scd.st = "11:0"+ i
-        scd.sn = "开会需要测试" + scd.st;
-        scd.p.jc = "#fff";
+        scd.sn = "开会需要测试开会需要测试开会需要测试开会需要测开会需要测开会需要测试" + scd.st;
+        scd.p.jc = "#FFFF00";
         scd.gs="0";
+        scd.fs.rn = "测试人员"+i;
         scdldata.scdl.push(scd);
         if (i>20){
           break;
@@ -95,6 +99,7 @@ export class TdlPage {
         scd.sn = "跑步需要测试" + scd.st;
         scd.p.jc = "#000";
         scd.gs="1";
+        scd.fssshow="测试人员5，测试人员6，测试人员7";
         for (let m=0;m<4;m++){
           let fss = new fsData();
           fss.rn = "参与人"+m;
@@ -125,6 +130,7 @@ export class TdlPage {
         scd.sn = "吃饭需要测试" + scd.st;
         scd.p.jc = "red";
         scd.gs="0";
+        scd.fs.rn = "测试人员a"+i;
         for (let m=0;m<2;m++){
           let fss = new fsData();
           fss.rn = "参与人"+m;
@@ -139,8 +145,22 @@ export class TdlPage {
     }
 
 
+    // 设定日期的交替背景色
+    let flag = 0;
+    for (let j = 0, len = this.scdlDataList.length; j < len; j++) {
+      let tmp = this.scdlDataList[j];
+      for (let k = 0, len = tmp.scdl.length; k < len; k++) {
+        if (flag == 0){
+          tmp.scdl[k].cbkcolor = "#96162D";
+          flag =1
+        }else{
+          tmp.scdl[k].cbkcolor = "#8E172B";
+          flag =0
+        }
+      }
+    }
 
-
+    let aa :string ="";
 
 /*    let condi =this.navParams.get("dt");
     condi = "2019/01/01";
