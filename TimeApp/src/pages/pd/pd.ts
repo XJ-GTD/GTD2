@@ -1,9 +1,7 @@
-import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
 import {PagePDPro, PdService} from "./pd.service";
 import {AgdPro} from "../../service/restful/agdsev";
-import {PromiseUtil} from "../../../../TimeApp（v1）/node_modules/@ionic/cli-framework/utils/promise";
-import any = PromiseUtil.any;
 
 /**
  * Generated class for the 计划展示 page.
@@ -78,7 +76,7 @@ export class PdPage {
   jh:PagePDPro;
   today: string = new Date(new Date()).toISOString();
   plan:any ={
-    "pn": any,
+    "pn": {},
     "pa":new Array<AgdPro>(),
   };
 

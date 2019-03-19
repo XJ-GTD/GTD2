@@ -39,16 +39,17 @@ import {PagePDPro} from "../pd/pd.service";
             <ion-list-header class="plan-list-item">
               全部计划
             </ion-list-header>
-            <ion-item-sliding *ngFor="let jh of jhs">
+            <div *ngFor="let jh of jhs">
               <ion-item class="plan-list-item" (click)="toPd(jh)" *ngIf="jh.jt=='2'">
+                <div class="color-dot" [ngStyle]="{'background-color': jh.jc }" item-start></div>
                 {{jh.jn}}({{jh.js}})
               </ion-item>
-            </ion-item-sliding>
+            </div>
             <ion-list-header class="plan-list-item">
               <div>系统计划</div><small>长按系统计划可清除</small>
             </ion-list-header>
-            <ion-item-sliding *ngFor="let jh of jhs">
-              <ion-item class="plan-list-item" *ngIf="jh.jt=='1'" (press)="pressEvent(jh)">
+            <div *ngFor="let jh of jhs">
+              <ion-item class="plan-list-item" *ngIf="jh.jt=='1'" (press)="pressEvent(jh)" >
                 <div (click)="toPd(jh)">{{jh.jn}}({{jh.js}})</div>
                 <button ion-button color="danger" clear item-end (click)="download(jh)" >
                   <div *ngIf="jh.jtd == '0'">
@@ -59,7 +60,7 @@ import {PagePDPro} from "../pd/pd.service";
                   </div>
                 </button>
               </ion-item>
-            </ion-item-sliding>
+            </div>
           </ion-list>
         </ion-row>
       </ion-grid>
