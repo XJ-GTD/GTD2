@@ -20,18 +20,19 @@ export class TdlService {
 
       //获取本地日程jn jg jc jt
       let sqll="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt from gtd_c gc inner join gtd_j_h jh on jh.ji = gc.ji  " +
-        "where gc.sd<'"+ next+"' order by gc.ed desc";
+        "where gc.sd<'"+ next+"' order by gc.ed desc limit 500";
       let rclL = await this.sqlExce.execSql(sqll);
       if(rclL && rclL.rows && rclL.rows.length>0){
         let len = rclL.rows.length-1;
         let i=0;
         let d=0;
         //循环获取30条数据
-        while(i<=30 && i!=len){
-          let day = moment(next).subtract(1,'d').format("YYYY/MM/DD");
+        while(i<30 && d<300){
+          let day = moment(next).subtract(d,'d').format("YYYY/MM/DD");
           let mp:ScdlData = new ScdlData();
           for(let j=0;j<rclL.rows.length;j++){
-            let sc:ScdData = rclL.rows.item(j);
+            let sc:ScdData = new ScdData();
+            Object.assign(sc,rclL.rows.item(j));
             if(moment(sc.sd).isAfter(day)){
               break;
             }else if(this.isymwd(sc.rt,day,sc.sd,sc.ed)){
@@ -56,7 +57,7 @@ export class TdlService {
 
       //正序查出比当前日期大的日程
       let sql="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt from gtd_c gc inner join gtd_j_h jh on jh.ji = gc.ji " +
-        "where gc.ed>='"+ next+"' order by gc.sd asc";
+        "where gc.ed>='"+ next+"' order by gc.sd asc limit 500";
       let rcnL = await this.sqlExce.execSql(sql);
 
       if(rcnL && rcnL.rows && rcnL.rows.length>0){
@@ -64,11 +65,12 @@ export class TdlService {
         let i=0;
         let d=0;
         //循环获取60条数据
-        while(i<=60 && i!=len){
-          let day = moment(next).add(1,'d').format("YYYY/MM/DD");
+        while(i<=60 && d<300){
+          let day = moment(next).add(d,'d').format("YYYY/MM/DD");
           let mp:ScdlData = new ScdlData();
-          for(let j=0;j<rclL.rows.length;j++){
-            let sc:ScdData = rcnL.rows.item(j);
+          for(let j=0;j<rcnL.rows.length;j++){
+            let sc:ScdData = new ScdData();
+            Object.assign(sc,rcnL.rows.item(j));
             if(moment(sc.sd).isAfter(day)){
               break;
             }else if(this.isymwd(sc.rt,day,sc.sd,sc.ed)){
@@ -76,8 +78,8 @@ export class TdlService {
               dt.si = sc.si;
               let fsL = await this.sqlExce.getList<fsData>(dt);
               sc.fss = fsL;
-              Object.assign(sc.fs,rclL.rows.item(j));
-              Object.assign(sc.p,rclL.rows.item(j));
+              Object.assign(sc.fs,rcnL.rows.item(j));
+              Object.assign(sc.p,rcnL.rows.item(j));
               mp.scdl.push(sc);
               i++;
             }
@@ -141,29 +143,29 @@ export class TdlService {
     if(ed == '' || ed == null){
       ed = null;
     }
-    if(cft && cft != null && cft !='undefined'){
-      if(cft=='1'){//年
+    if(cft && cft != null && cft !='undefined'&&cft != '0'){
+      if(cft=='4'){//年
         sd = sd.substr(4,6);
         if(sd == day.substr(4,6)){
           isTrue = true;
         }
-      }else if(cft=='2'){ //月
+      }else if(cft=='3'){ //月
         sd = sd.substr(8,2);
         if(sd<= day && sd== day.substr(8,2) && day<=ed){
           isTrue = true;
         }
-      }else if(cft=='3'){ //周
+      }else if(cft=='2'){ //周
         let sdz = new Date(sd).getDay();
         let dayz = new Date(day).getDay();
         if(sd<=day && sdz == dayz  && day<=ed){
           isTrue = true;
         }
-      }else if(cft=='4'){ //日
+      }else if(cft=='1'){ //日
         if(sd<=day && ed>=day){
           isTrue = true;
         }
       }
-    }else if(sd<=day && ed>=day){
+    }else if(sd ==day){
       isTrue = true;
     }
     return isTrue;
