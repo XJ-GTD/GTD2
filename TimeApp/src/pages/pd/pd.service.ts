@@ -180,11 +180,12 @@ export class PdService {
 
 //页面项目
 export class PagePDPro{
-  ji: string="";//计划ID
-  jn: string="";//计划名
-  jg: string="";//计划描述
-  jc: string="";//计划颜色标记
-  jt: string="";//计划类型
+  ji: string = "";//计划ID
+  jn: string = "";//计划名
+  jg: string = "";//计划描述
+  jc: string = "";//计划颜色标记
+  jt: string = "";//计划类型
 
-  js: number=0; //日程数量
+  js: number = 0; //日程数量
+  jtd: string = "0"; //系统计划区别是否下载
 }
