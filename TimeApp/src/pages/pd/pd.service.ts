@@ -25,9 +25,9 @@ export class PdService {
     jh = await this.sqlExce.getOne<JhTbl>(jh);
 
     // 获取计划管理日程（重复日程处理等）
-    let c:CTbl =new CTbl();
-    c.ji = pid;
-    let cs = await this.sqlExce.getList<CTbl>(c);
+    let sql = 'select * from gtd_c  where ji ="'+ pid +'" order by sd';
+    let cs = new  Array<CTbl>();
+    cs = await this.sqlExce.getExtList<CTbl>(sql);
 
     let paList:Array<AgdPro> = Array<AgdPro>();
     if(cs.length>0){
@@ -43,7 +43,6 @@ export class PdService {
         pa.aa = jhc.sn;//提醒
         paList.push(pa)
       }
-      console.log("testful shareData "+ JSON.stringify(paList));
       console.log('---------- PlService getPlan 获取计划日程结束 ----------------');
     }
     //显示处理
