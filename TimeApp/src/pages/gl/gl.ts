@@ -34,9 +34,13 @@ import {GcService, PageDcData} from "../gc/gc.service";
       <ion-grid>
         <ion-row>
           <ion-list no-lines>
-            <ion-item class="plan-list-item" *ngFor="let g of gl">
-              {{g.gn}}
-              <button ion-button color="danger" (click)="delGroup(g)" clear item-end>删除</button>
+            <ion-item class="plan-list-item"  *ngFor="let g of gl">
+              <ion-item (click)="toGroupMember(g)" style="background-color: black;color:#ffffff">
+                {{g.gn}}({{g.gc}})
+              </ion-item>
+              <button ion-button color="danger" (click)="delGroup(g)" clear item-end>
+                <img src="./assets/imgs/del_group.png">
+              </button>
             </ion-item>
           </ion-list>
         </ion-row>
@@ -63,8 +67,8 @@ export class GlPage {
 
 
   toGroupMember(g){
-    // console.log('PaPage跳转PdPage');
-    // this.navCtrl.push('PdPage',{g:g});
+    console.log('PaPage跳转PdPage');
+    this.navCtrl.push('GcPage',{g:g});
   }
 
   toGroupCreate(){

@@ -24,7 +24,9 @@ page-gl {
   ion-list-header.plan-list-item {
     color: rgb(153,153,153);
   }
-
+  ion-item {
+    height: 60px;
+  }
   .color-dot {
     width: 2vmin;
     height: 2vmin;

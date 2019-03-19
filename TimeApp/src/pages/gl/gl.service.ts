@@ -17,7 +17,9 @@ export class GlService {
     if(dcl.length>0){
       //和单群人数
       for(let dc of dcl){
-        let fsl:Array<any> = await this.sqlExce.getList<any>(new BxTbl());
+        let bx = new BxTbl();
+        bx.bi = dc.gi;
+        let fsl:Array<any> = await this.sqlExce.getList<any>(bx);
         dc.gc = fsl.length;
       }
       gld.gl = dcl;
