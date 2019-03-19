@@ -2,6 +2,8 @@ import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, Navbar, ModalController, ToastController} from 'ionic-angular';
 
 import {DataConfig} from "../../service/config/data.config";
+import {GcService, PageDcData} from "./gc.service";
+import {FsService, PageFsData} from "../fs/fs.service";
 
 /**
  * Generated class for the 群组编辑 page.
@@ -13,60 +15,65 @@ import {DataConfig} from "../../service/config/data.config";
 @IonicPage()
 @Component({
   selector: 'page-gc',
-  template: '<ion-header>' +
-    '  <ion-navbar>' +
-    '    <ion-title>创建群</ion-title>' +
-    '    <ion-buttons right>' +
-    '      <button ion-button ion-only (click)="save()" style="padding-right: 10px;">' +
-    '        保存' +
-    '      </button>' +
-    '    </ion-buttons>' +
-    '  </ion-navbar>' +
-    '</ion-header>' +
-    '<ion-content padding class="page-backgroud-color">' +
-    '  <ion-list class="qunName">' +
-    '    <ion-label color="primary" stacked style="padding-left:16px ;">' +
-    '      群名称' +
-    '    </ion-label>' +
-    '    <ion-item class="height57">' +
-    '      <ion-input placeholder="请输入" [(ngModel)]="qmc"></ion-input>' +
-    '      <img src="./assets/imgs/3.png" height="25" width="25" (click)="toAddGroupMember()" item-end/>' +
-    '    </ion-item>' +
-    '  </ion-list>' +
-    '  <ion-list class="qunMember">' +
-    '    <ion-label color="primary" stacked style="padding-left:16px ;">' +
-    '      群成员' +
-    '    </ion-label>' +
-    '    <div style="width: 100%;height: 35px;color: #000;background-color: #fff">' +
-    '      <button  style="font-size: 14px; background-color: #fff;color: rgb(102,102,102);padding: 16px 16px 0 16px" float-end (click)="toAddGroupMember()">添加</button>' +
-    '    </div>' +
-    '    <ion-item-sliding *ngFor="let cy of qcy">' +
-    '      <ion-item>' +
-    '        <ion-avatar item-start>' +
-    '          <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">' +
-    '        </ion-avatar>' +
-    '        <span>{{cy.rN}}</span>' +
-    '        <p>{{cy.ran}}</p>' +
-    '      </ion-item>' +
-    '      <ion-item-options side="left">' +
-    '      </ion-item-options>' +
-    '      <ion-item-options side="right">' +
-    '        <button ion-button color="danger" (click)="delete(cy)">删除</button>' +
-    '      </ion-item-options>' +
-    '    </ion-item-sliding>' +
-    '  </ion-list>' +
-    '</ion-content>',
+   template: `
+     <ion-header no-border>
+       <ion-toolbar>
+         <ion-buttons left>
+           <button ion-button icon-only (click)="goBack()" color="danger">
+             <ion-icon name="arrow-back"></ion-icon>
+           </button>
+         </ion-buttons>
+         <ion-title>好朋友</ion-title>
+         <ion-buttons right>
+           <button ion-button (click)="toAddGroupMember()" color="danger">
+             <!--<ion-icon name="add"></ion-icon>--> 添加
+           </button>
+         </ion-buttons>
+       </ion-toolbar>
+     </ion-header>
+     
+     <ion-content padding>
+       <ion-grid>
+         <ion-row>
+           <ion-list no-lines>
+             <ion-item class="plan-list-item"  *ngFor="let g of fsl">
+               <ion-avatar item-start >
+                 <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
+               </ion-avatar>
+                 <!--<ion-item (click)="toGroupMember(g)" style="background-color: black;color:#ffffff;margin-left: -15px;">-->
+                   <!--{{g.rn}} <span>{{g.rc}}</span>-->
+                 <!--</ion-item>-->
+               <ion-label (click)="toGroupMember(g)">
+                 {{g.rn}} 
+                 <span style="font-size:14px;color:rgb(102,102,102);">
+                   {{g.rc}}
+                 </span>
+               </ion-label>               
+               <button ion-button color="danger" (click)="delete(g)" clear item-end>
+                 <img src="./assets/imgs/del_member.png">
+               </button>
+             </ion-item>
+           </ion-list>
+         </ion-row>
+       </ion-grid>
+     </ion-content>
+   `,
 })
 export class GcPage {
-
+  dc:PageDcData = null;
+  fsl:Array<PageFsData> = new Array<PageFsData>();
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private toastCtrl: ToastController,
+              private gcService: GcService,
+              private fsService:FsService,
               private modalCtrl: ModalController) {
   }
 
   ionViewDidLoad() {
+    this.dc = this.navParams.get("g");
     console.log('ionViewDidLoad PePage');
+    this.getData();
   }
 
   ionViewWillEnter() {
@@ -77,6 +84,10 @@ export class GcPage {
     this.navCtrl.pop();
   };
 
+  goBack(){
+    console.log('GcPage返回GlPage');
+    this.navCtrl.push("GlPage");
+  }
   toAddGroupMember() {
     console.log("PePage跳转PgPage");
     // this.navCtrl.push("PgPage",{callback:this.getData,sel:this.qcy});
@@ -91,26 +102,22 @@ export class GcPage {
 
   }
 
-  delete(select: any) {
-    // let flag = this.qcy.indexOf(select);
-    // console.log(flag);
-    // let tmp = new Array<RuModel>();
-    // for(let i = 0; i< this.qcy.length;i++){
-    //   if(i==flag){
-    //     continue;
-    //   }
-    //   tmp.push(this.qcy[i]);
-    // }
-    // this.qcy = tmp;
+  delete(g:PageFsData) {
+   this.gcService.deleteBx(this.dc.gi,g.pwi).then(data=>{
+     if(data.code == 0){
+       this.getData();
+       alert("删除成功")
+     }
+   })
 
   }
 
-  getData = (data) => {
-    // return new Promise((resolve, reject) => {
-    //   console.log(data);
-    //   this.qcy = data;
-    //   resolve();
-    // });
+  getData() {
+    this.fsService.getfriendgroup(this.dc.gi).then(data=>{
+      if(data.length>0){
+        this.fsl = data;
+      }
+    })
   };
 
   save() {

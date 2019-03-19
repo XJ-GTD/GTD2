@@ -134,11 +134,11 @@ export class PcPage {
   constructor(private navCtrl: NavController,
               private alertCtrl: AlertController,
               private pcService:PcService) {
+    this.jhcData.jc = "#9B5E4B"; // 默认选中颜色  牛皮棕
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PcPage');
-    this.jhcData.jc = "#9B5E4B"; // 默认选中颜色  牛皮棕
   }
 
   goBack() {

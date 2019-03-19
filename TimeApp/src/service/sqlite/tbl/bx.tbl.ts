@@ -72,6 +72,9 @@ export class BxTbl implements ITbl{
     if(this._bmi!=null && this._bmi!=""){
       sq=sq+' and bmi="' + this._bmi +'"';
     }
+    if(this._bi!=null && this._bi!=""){
+      sq=sq+' and bi="' + this._bi +'"';
+    }
     sq = sq +';';
     return sq;
   }
