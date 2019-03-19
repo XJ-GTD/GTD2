@@ -10,6 +10,7 @@ import { PlanListPage } from '../plan-list/plan-list';
 import { MenuPage } from '../menu/menu';
 import { ContactGroupPage } from '../contact-group/contact-group';
 import { AccountPage } from '../account/account';
+import { NewAgendaPage } from '../new-agenda/new-agenda';
     
 @Component({
   selector: 'page-home',
@@ -40,6 +41,8 @@ export class HomePage {
       this.navCtrl.push(MenuPage, { item: item });
     else if (item === 'account')
       this.navCtrl.push(AccountPage, { item: item });
+    else if (item === 'newAgenda')
+      this.navCtrl.push(NewAgendaPage, { item: item });
     else
       this.navCtrl.push(ContactGroupPage, { item: item });
   }

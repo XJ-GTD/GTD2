@@ -56,4 +56,9 @@ page-pl {
   .list-header, .list-header-md, .list-header-ios {
     border: 0;
   }
+
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
+  }
 }

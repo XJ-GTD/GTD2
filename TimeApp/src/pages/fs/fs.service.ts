@@ -109,7 +109,7 @@ export class FsService {
   }
 
   //查询群组中的参与人
-  getfriend4group(groupId:string):Promise<Array<PageFsData>>{
+  getfriendgroup(groupId:string):Promise<Array<PageFsData>>{
     return new Promise<Array<PageFsData>>((resolve, reject)=>{
       //查询本地群组中的参与人
       let sql ='select gb.* from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi where gbx.bi="'+groupId+'"';

@@ -24,6 +24,7 @@ import { ContactGroupPage } from '../pages/contact-group/contact-group';
 import { AccountPage } from '../pages/account/account';
 import { ChangePasswordPage } from '../pages/change-password/change-password';
 import { NewPasswordPage } from '../pages/new-password/new-password';
+import { NewAgendaPage } from '../pages/new-agenda/new-agenda';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { NewPasswordPage } from '../pages/new-password/new-password';
     MenuPage,
     ContactGroupPage,
     AccountPage,
+    NewAgendaPage,
     ChangePasswordPage,
     NewPasswordPage
   ],
@@ -70,6 +72,7 @@ import { NewPasswordPage } from '../pages/new-password/new-password';
     MenuPage,
     ContactGroupPage,
     AccountPage,
+    NewAgendaPage,
     ChangePasswordPage,
     NewPasswordPage
   ],

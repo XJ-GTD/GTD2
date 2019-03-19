@@ -20,6 +20,7 @@ page-pc {
   ion-content .plan-list-item {
     background-color: #000;
     color: #fff;
+    height: 50px;
   }
 
   ion-list-header.plan-list-item {
@@ -33,12 +34,44 @@ page-pc {
     border-radius: 50%;
   }
 
+  .color-palm {
+    background-color: rgb(155,94,70);
+  }
+
+  .color-sunflower {
+    background-color: rgb(135,106,41);
+  }
+
+  .color-aurantia {
+    background-color: rgb(207,68,37);
+  }
+
+  .color-orange {
+    background-color: rgb(175,43,36);
+  }
+
   .color-pink {
+    background-color: rgb(173,131,135);
+  }
+
+  .color-lavender {
     background-color: rgb(192,119,219);
   }
 
-  .color-blue {
+  .color-fuchsia {
+    background-color: rgb(69,59,147);
+  }
+
+  .color-sky {
     background-color: rgb(81,170,242);
+  }
+
+  .color-blue {
+    background-color: rgb(53,145,165);
+  }
+
+  .color-daphnite {
+    background-color: rgb(48,129,88);
   }
 
   .w-auto {

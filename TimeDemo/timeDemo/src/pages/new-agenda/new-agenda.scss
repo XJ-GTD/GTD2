@@ -1,0 +1,34 @@
+page-new-agenda {
+  ion-content.content {
+    background-color: #c00a23;
+    color: #fff;
+  }
+  
+  button.text-btn {
+    color: #fff;
+  }
+  
+  ion-scroll {
+    width: 100%;
+    height: calc(100vmin * (180 / 1242) + 32px);
+  }
+
+  ion-scroll .scroll-content {
+    padding: 0;
+  }
+  
+  .svg-scroller {
+    margin-left: -16px;
+  }
+  
+  .full-width {
+    margin-left: -21px;
+    margin-right: -21px;
+    overflow: hidden;
+  }
+  
+  #timerange-picker {
+    width: 200vmin;
+    height: calc(100vmin * (180 / 1242))
+  }
+}

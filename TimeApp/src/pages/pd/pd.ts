@@ -1,7 +1,9 @@
-import {Component, ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams, Navbar} from 'ionic-angular';
+import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
 import {PagePDPro, PdService} from "./pd.service";
-import {DataConfig} from "../../../../TimeApp（v1）/src/app/data.config";
+import {AgdPro} from "../../service/restful/agdsev";
+import {PromiseUtil} from "../../../../TimeApp（v1）/node_modules/@ionic/cli-framework/utils/promise";
+import any = PromiseUtil.any;
 
 /**
  * Generated class for the 计划展示 page.
@@ -13,91 +15,90 @@ import {DataConfig} from "../../../../TimeApp（v1）/src/app/data.config";
 @IonicPage()
 @Component({
   selector: 'page-pd',
-  template:'<ion-header>' +
-  '  <ion-navbar>' +
-  '    <ion-title>相关日程</ion-title>' +
-  '  </ion-navbar>' +
-  '</ion-header>' +
-  '<ion-content padding>' +
-  '  <div class="t1 " *ngFor="let index of indexs">' +
-  '    <div class="d4" >' +
-  '      <div ion-item class="d5">' +
-  '        <ion-label stacked>2019年01月{{index}}日</ion-label>' +
-  '        <ion-label>红红火火恍恍惚惚</ion-label>' +
-  '      </div>' +
-  '    </div>' +
-  '  </div>' +
-  '</ion-content>',
+  template:
+  `
+    <ion-header no-border>
+      <ion-toolbar>
+        <ion-buttons left>
+          <button ion-button icon-only (click)="goBack()" color="danger">
+            <ion-icon name="arrow-back"></ion-icon>
+          </button>
+        </ion-buttons>
+
+        <ion-buttons right>
+          <button ion-button color="danger">
+            <ion-icon name="remove-circle-outline"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content padding>
+      <ion-grid>
+        <ion-row>
+          <ion-card color="danger" [ngStyle]="{'background-color': plan.pn.jc }">
+            <ion-card-content text-center>
+              <h1>{{plan.pn.jn}}</h1>
+            </ion-card-content>
+          </ion-card>
+          <div padding></div>
+        </ion-row>
+        <ion-row *ngFor="let agenda of plan.pa; let i = index" [ngClass]="{'agenda-card-past': today > agenda.adt, 'agenda-card': today <= agenda.adt}" justify-content-center>
+          <ion-grid>
+            <ion-row *ngIf="(i === 0) || (agenda.adt.slice(0,4) !== plan.pa[i - 1]['adt'].slice(0,4))" justify-content-start>
+              <h3 class="plan-year">{{agenda.adt.slice(0,4)}}</h3>
+            </ion-row>
+            <ion-row justify-content-center align-items-start>
+              <div *ngIf="(i === 0) || (agenda.adt.slice(0,10) !== plan.pa[i - 1]['adt'].slice(0,10))" class="agenda-col-date left-off right-off" justify-content-start>
+                <p class="app-agenda-day">{{agenda.adt.slice(5,10)}}</p>
+              </div>
+              <div *ngIf="(i !== 0) && (agenda.adt.slice(0,10) === plan.pa[i - 1]['adt'].slice(0,10))" class="agenda-col-date left-off right-off" justify-content-start>
+              </div>
+              <div class="agenda-col-time right-off left-off" justify-content-between>
+                <div class="time-slot">
+                  <p class="app-agenda-time">{{(agenda.adt != null && agenda.adt.length === 10)? '全天' : agenda.adt.slice(11, 16)}}</p>
+                </div>
+                <div class="pointer-slot"><span class="plan-color-pointer"><div class="color-dot color-blue" [ngStyle]="{'background-color': plan.pn.jc }"></div></span></div>
+              </div>
+              <div class="agenda-col-content right-off left-off" [ngClass]="{'agenda-content': ((i + 1) === plan.pa.length)? false : (agenda.adt.slice(0, 10) === plan.pa[i + 1]['adt'].slice(0, 10))}" justify-content-start>
+                <p class="text-left app-agenda-title">{{agenda.at}}</p>
+                <p class="app-user-text text-left">{{agenda.am}}</p>
+              </div>
+            </ion-row>
+          </ion-grid>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
+  `,
 })
 export class PdPage {
 
   @ViewChild(Navbar) navBar: Navbar;
 
-  indexs:any = [];
-  focusItem:any;
-
   jh:PagePDPro;
+  today: string = new Date(new Date()).toISOString();
+  plan:any ={
+    "pn": any,
+    "pa":new Array<AgdPro>(),
+  };
 
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
               private pdService:PdService) {
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PdPage');
-    this.navBar.backButtonClick = this.backButtonClick;
-    this.navBar.setBackButtonText("");
-    this.indexs = ['01','02','03','04','05','06','07','08','09','10'];
 
-    setTimeout(function () {
-      let domlist = document.getElementsByClassName('t1');
-      this.focusItem = domlist[0];
-      console.log(this.focusItem)
-      this.focusItem.classList.add('highlight');
-      for(let i = 0;i<domlist.length;i++){
-        domlist[i].addEventListener('click', (e)=> {
-          let $listItem = PdPage.closest(e.target, 't1');
-          console.log($listItem);
-          console.log(this.focusItem)
-          if ($listItem && $listItem != this.focusItem) {
-            this.focusItem.classList.remove('highlight');
-            this.focusItem = $listItem;
-            this.focusItem.classList.add('highlight');
-          }
-        });
-      }
-    },100);
-
-    console.log(this.jh);
     this.jh = this.navParams.get("jh");
-
-    console.log("传入jh ::" + JSON.stringify(this.jh));
-
     this.pdService.getPlan(this.jh.ji).then(data=>{
-      console.log("数据 ::" + JSON.stringify(data));
+      this.plan.pn = this.jh;
+      this.plan.pa = data.data;
     })
   }
 
-
-  change = function($event){
-    console.log($event)
-    $event.srcElement.classList.add("highlight");
-  }
-
-  //迭代
-  static closest = function(el, className) {
-    if (el.classList.contains(className)) return el;
-    if (el.parentNode) {
-      return PdPage.closest(el.parentNode, className);
-    }
-    return null;
-  };
-
-
-  backButtonClick = (e: UIEvent) => {
-    // 重写返回方法
+  goBack() {
     this.navCtrl.pop();
   }
-
-
 }

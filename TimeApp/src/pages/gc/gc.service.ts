@@ -4,10 +4,11 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {PageFsData} from "../fs/fs.service";
 import {BxTbl} from "../../service/sqlite/tbl/bx.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
+import {UtilService} from "../../service/util-service/util.service";
 
 @Injectable()
 export class GcService {
-  constructor(  private sqlExce: SqliteExec) {
+  constructor(  private sqlExce: SqliteExec,private util:UtilService) {
   }
 
   //编辑群名称(添加群成员)
@@ -37,6 +38,8 @@ export class GcService {
       }else if(dc.gi == null || dc.gi == ''){
         let gc = new GTbl();
         Object.assign(gc,dc);
+        gc.gi = this.util.getUuid();
+        gc.gnpy = this.util.chineseToPinYin(gc.gn);
         console.log('---------- GcService save 添加群名称(添加群成员) 入参:'+ JSON.stringify(gc));
         this.sqlExce.save(gc).then(data=>{
           console.log('---------- GcService save 添加群名称 结果:'+ JSON.stringify(data));
