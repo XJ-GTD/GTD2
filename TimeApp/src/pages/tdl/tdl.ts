@@ -12,48 +12,70 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
 @IonicPage()
 @Component({
   selector: 'page-tdl',
-  template: `<ion-content>
+  template: `<ion-header no-border>
+    <ion-toolbar>
+      <ion-grid>
+        <ion-row >
+          <div class="daynav h-auto">
+            <ion-buttons left class ="backbtn-set">
+              <button  ion-button icon-only (click)="goBack()" color="danger">
+                <ion-icon name="arrow-back"></ion-icon>
+              </button>
+            </ion-buttons>
+          </div>
+          <div class="dayagendas w-auto h-auto"></div>
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content no-bounce>
+    <div class = "spacediv-set"> </div>
     <ion-scroll id="ddd" #contentScroll scrollY="true">
-    <ion-grid>
-      <ion-row *ngFor="let sdl of scdlDataList">
-        <div class="w-75 leftside leftpanding">
-          <div class ="w-44  ">
-            <div class="ym-fsize">{{sdl.d | formatedate:"YYYY-MM"}}</div>
-            <div class="d-fsize">{{sdl.d | formatedate :"DD"}}</div>
-          </div>
-        </div>
-        <div class="w-auto rightside  " >
-          <div id="{{scd.anchorid}}" class="rightpanding" *ngFor ="let scd of sdl.scdl;" [ngStyle]="{'background-color':scd.cbkcolor}">
-            <div class="floatleft detail-set" [ngStyle]="{'background-color':scd.cbkcolor}">
-              <div class ="detailsub-set">{{this.pageLoadOver(scd.anchorid)}}
-                <div class="floatleft tm-set">{{scd.st}}</div>
-                <div class="floatleft dot-set " [ngStyle]="{'background-color':scd.p.jc}" ></div>
-                <div class ="title-set">{{scd.sn}}</div>
-              </div>
-              <div class="people-set" *ngIf="scd.gs == '1'">{{scd.fssshow}}</div>
-              <div class="people-set" *ngIf="scd.gs == '0'">{{scd.fs.rn==""||scd.fs.rn ==null ?scd.fs.rc:scd.fs.rn}}</div>
+      <ion-grid>
+        <ion-row *ngFor="let sdl of scdlDataList">
+          <div class="daynav">
+            <div class ="dayheader w-auto">
+              <div class="ym-fsize text-center">{{sdl.d | formatedate:"YYYY-MM"}}</div>
+              <div class="d-fsize text-center">{{sdl.d | formatedate :"DD"}}</div>
             </div>
-            <div class = "more-set"><ion-icon ios="ios-more" md="md-more"></ion-icon></div>
           </div>
-        </div>
-      </ion-row>
-    </ion-grid>
+          <div class="dayagendas w-auto" >
+            <div id="{{scd.anchorid}}" class="dayagenda row" *ngFor ="let scd of sdl.scdl;" [ngStyle]="{'background-color':scd.cbkcolor}">
+              <div class="dayagendacontent w-auto" [ngStyle]="{'background-color':scd.cbkcolor}">
+                <div class ="agendaline1 row">{{this.pageLoadOver(scd.anchorid)}}
+                  <div class="agenda-st">{{scd.st}}</div>
+                  <div class="dot-set " [ngStyle]="{'background-color':scd.p.jc}" ></div>
+                  <div class ="agenda-sn">{{scd.sn}}</div>
+                </div>
+                <div class="agendaline2" *ngIf="scd.gs == '1'">{{scd.fssshow}}</div>
+                <div class="agendaline2" *ngIf="scd.gs == '0'">{{scd.fs.rn==""||scd.fs.rn ==null ?scd.fs.rc:scd.fs.rn}}</div>
+              </div>
+              <div class = "dayagendaoperation"><ion-icon ios="ios-more" md="md-more"></ion-icon></div>
+            </div>
+          </div>
+        </ion-row>
+      </ion-grid>
     </ion-scroll>
+    <ion-fab center  bottom>
+      <button ion-fab  color="light"><ion-icon name="arrow-down"></ion-icon></button>
+    </ion-fab>
   </ion-content>`
 
 })
 export class TdlPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,private tdlServ : TdlService,
               public events: Events) {
-    events.subscribe('user:created', (data) => {
+    events.subscribe('po', (data) => {
 
-        if (data !="" && data !=null){
-          //画面scroll至锚点
-          let el = document.getElementById(data.toString());
-          el.scrollIntoView(true);
-          //设置后初始化锚点
-          this.dtanchor = "";
-        }
+      if (data !="" && data !=null){
+        //画面scroll至锚点
+        let el = document.getElementById(data.toString());
+
+        el.scrollIntoView(true);
+        //el.scrollTop = 44;
+        //设置后初始化锚点
+        this.dtanchor = "";
+      }
     });
   }
 
@@ -85,7 +107,8 @@ export class TdlPage {
     let anchorid = 1;
 
     let sel =this.navParams.get("selectDay");
-    let condi = moment(sel.time).format("YYYY/MM/DD");
+    let condi = moment(sel).format("YYYY/MM/DD");
+    condi ="2018/12/28"
     console.log("selectDay:"+condi);
     this.tdlServ.get(condi).then(data =>{
       this.scdlDataList = data;
@@ -144,9 +167,13 @@ export class TdlPage {
       //当画面传入的anchorid与数据中的最后一个锚点一致时，表示加载结束
       if (anchorid == b[b.length-1].anchorid){
         this.pageLoaded = true;
-        this.events.publish('user:created',this.dtanchor);
+        this.events.publish('po',this.dtanchor);
       }
     }
     return "";
+  }
+
+  goBack(){
+    this.navCtrl.pop();
   }
 }

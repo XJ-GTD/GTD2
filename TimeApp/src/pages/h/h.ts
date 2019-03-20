@@ -151,7 +151,7 @@ export class HPage {
 
   gotolist() {
 
-    this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: this.selectDay}, {direction: "back", animation: "push"});
+    this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: this.selectDay.time}, {direction: "back", animation: "push"});
   }
 
 }

@@ -139,9 +139,6 @@ export class PlService {
       //更新系统计划jdt数据
       await this.upPlan(jh);
 
-      // 删除本地计划
-      //await this.sqlExce.delete(jhTbl);
-
       // TODO restful删除分享计划
 
     }else {
@@ -156,26 +153,6 @@ export class PlService {
 
   //获取计划
   async getPlan(){
-
-    /*let start = moment('2019/03/01 11:30');
-
-    for (let i = 0; i < 20; i++) {
-      let c: CTbl = new CTbl();
-
-      c.si = "2000"+i;
-      c.sn = "冥王星计划";
-      c.sd = start.format('YYYY/MM/DD');
-      c.st = start.format('hh:mm');
-      c.ed = '9999/12/31'
-      c.et = '24:00'
-      c.rt = '0';
-      c.sr = c.si;
-      c.ji = "2b30de319600c1eca736f49ec6324837";
-
-      this.sqlExce.save(c).then(c => {
-        console.log("插入数据=====" + c);
-      });
-    }*/
 
     console.log('---------- PlService getPlan 获取计划开始 ----------------');
     let pld = new PagePlData();

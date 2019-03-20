@@ -1,0 +1,43 @@
+scroll-range-picker {
+  width: 100vmin;
+  
+  .scroll-box {
+    flex: 1;
+    width: 100%;
+    height: calc(100vmin * (180 / 1242) + 32px);
+    position: relative;
+  }
+  
+  .scroll-box-content {
+    overflow-x: auto;
+    overflow-y: hidden;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    z-index: 1;
+    display: block;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px;
+    will-change: scroll-position;
+    contain: size style layout;
+  }
+  
+  .scroll-box-zoom-wrapper {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    float: left;
+    margin: 0 -32.5px;
+    overflow: hidden;
+  }
+
+  .svg-scroller {
+    margin-left: -16px;
+  }
+}

@@ -189,7 +189,7 @@ export class BTbl implements ITbl{
       sq = sq + ' and rnpy="' + this._rnpy +'"';
     }
     if(this._rc != null && this._rc!=""){
-      sq = sq + ' and rc="' + this._rc +'"';
+      sq = sq + ' and rc like "' + this._rc +'%"';
     }
     if(this._rel != null && this._rel!=""){
       sq = sq + ' and rel="' + this._rel +'"';

@@ -90,7 +90,7 @@ export class PlPage {
   }
 
   goBack() {
-    this.navCtrl.pop();
+    this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
   }
 
   newPlan(){

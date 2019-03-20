@@ -65,10 +65,13 @@ export class GlPage {
   }
 
   ionViewDidLoad() {
-    this.getGroups()
+
     console.log('ionViewDidLoad PaPage');
   }
-
+  ionViewDidEnter(){
+    console.log("3.0 ionViewDidEnter 当进入页面时触发");
+    this.getGroups();
+  }
 
   toGroupMember(g){
     console.log('PaPage跳转PdPage');
@@ -76,11 +79,8 @@ export class GlPage {
   }
 
   toGroupCreate(){
-    // let profileModal = this.modalCtrl.create('ModalContentPage',{"charNum":0});
-    // profileModal.present();
-    const prompt = this.alertCtrl.create({
+    let alert = this.alertCtrl.create({
      title: '新建群组',
-      /*    message: "Enter a name for this new album you're so keen on adding",*/
       inputs: [
         {
           name: 'title',
@@ -88,20 +88,14 @@ export class GlPage {
         },
       ],
       buttons: [
-        // {
-        //   text: 'Cancel',
-        //   handler: data => {
-        //     console.log('Cancel clicked');
-        //   }
-        // },
         {
-          text: 'Save',
+          text: '√',
           handler: data => {
             let tt = data.title;
-            console.log('title:' + tt);
+            // console.log('title:' + tt);
             if(tt == null || tt ==""){
-              //alert("群组名不能为空")
-              this.toGroupCreate()
+              return false;
+              //this.toGroupCreate()
             }else{
               let dc:PageDcData = new PageDcData();
               dc.gn = tt;
@@ -116,8 +110,7 @@ export class GlPage {
         }
       ]
     });
-    prompt.present();
-
+    alert.present();
   }
 
   getGroups(){
