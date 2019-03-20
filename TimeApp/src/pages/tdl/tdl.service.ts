@@ -175,9 +175,6 @@ export class TdlService {
     return isTrue;
   }
 
-
-
-
 }
 
 export class ScdlData{
