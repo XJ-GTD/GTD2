@@ -6,7 +6,7 @@
 -->
 <ion-content padding>
 <ion-grid>
-<ion-row justify-content-center>
+<!--<ion-row justify-content-center>
 <ul class="sphere-inner">
 <li class="a"><div class="container">
 <div class="wave"></div>
@@ -21,7 +21,7 @@
 <div class="wave3"></div>
 </div></li>
 </ul>
-</ion-row>
+</ion-row>-->
 <ion-row justify-content-center>
 <h1>今天</h1>
 </ion-row>
@@ -58,10 +58,16 @@
 <ion-row justify-content-center>
   <ion-input type="text" value="" placeholder="喜马拉雅儿子的生日聚会" text-center></ion-input>
 </ion-row>
-<ion-row justify-content-center>
+<!--<ion-row justify-content-center>
 <div class="container">
 <div class="wave"></div>
 </div>
+</ion-row>-->
+<ion-row justify-content-center>
+<scroll-select [options]="labels" [value]="0"></scroll-select>
+</ion-row>
+<ion-row justify-content-center>
+<scroll-select [options]="months" [value]="01"></scroll-select>
 </ion-row>
 </ion-grid>
 </ion-content>
