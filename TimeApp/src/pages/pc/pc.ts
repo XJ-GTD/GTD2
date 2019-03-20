@@ -135,9 +135,6 @@ export class PcPage {
               private alertCtrl: AlertController,
               private pcService:PcService) {
     this.jhcData.jc = "#9B5E4B"; // 默认选中颜色  牛皮棕
-  }
-
-  ionViewDidLoad() {
     console.log('ionViewDidLoad PcPage');
   }
 

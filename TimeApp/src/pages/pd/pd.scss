@@ -1,14 +1,11 @@
 page-pd {
-  ion-content {
-    font-family: "PingFang-Regular";
-  }
+  /*@font-face {
+    font-family: 'PingFang-Regular';
+    src: url('../assets/font/PingFang Regular.ttf');
+  }*/
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
     background-color: #000;
-  }
-
-  ion-header ion-toolbar{
-    margin-top: 20px;
   }
 
   ion-content ion-card-content {
@@ -161,10 +158,6 @@ page-pd {
     height: 2vmin;
     background-color: #fff;
     border-radius: 50%;
-  }
-
-  .color-blue {
-    background-color: #b72537;
   }
 
   .grid {

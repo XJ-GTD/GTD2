@@ -230,9 +230,12 @@ export class CTbl implements  ITbl{
   }
 
   dT():string {
-    let sq = 'delete from gtd_c where 1=1';
+    let sq = 'delete from gtd_c where 1=1 ';
     if(this._si != null && this._si!=""){
       sq = sq + 'and  si ="' + this._si +'"';
+    }
+    if(this._ji != null && this._ji!=""){
+      sq = sq + 'and  ji ="' + this._ji +'"';
     }
     sq = sq + ';'
     return sq;

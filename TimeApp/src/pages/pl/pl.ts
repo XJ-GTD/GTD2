@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "./pl.service";
 import {PagePDPro} from "../pd/pd.service";
@@ -25,8 +25,8 @@ import {PagePDPro} from "../pd/pd.service";
         </ion-buttons>
         <ion-title>计划</ion-title>
         <ion-buttons right>
-          <button ion-button (click)="newPlan()" color="danger">
-            <ion-icon name="add"></ion-icon>
+          <button ion-button color="danger" (click)="newPlan()">
+            添加
           </button>
         </ion-buttons>
       </ion-toolbar>
@@ -49,7 +49,7 @@ import {PagePDPro} from "../pd/pd.service";
               <div>系统计划</div><small>长按系统计划可清除</small>
             </ion-list-header>
             <div *ngFor="let jh of jhs">
-              <ion-item class="plan-list-item" *ngIf="jh.jt=='1'" (press)="pressEvent(jh)" >
+              <ion-item class="plan-list-item" *ngIf="jh.jt=='1'" (press)="delPlan(jh)" >
                 <div (click)="toPd(jh)">{{jh.jn}}({{jh.js}})</div>
                 <button ion-button color="danger" clear item-end (click)="download(jh)" >
                   <div *ngIf="jh.jtd == '0'">
@@ -74,9 +74,6 @@ export class PlPage {
   constructor(private navCtrl: NavController,
               private alertCtrl: AlertController,
               private plService:PlService) {
-  }
-
-  ionViewDidLoad() {
     console.log('ionViewDidLoad PlPage');
   }
 
@@ -92,15 +89,6 @@ export class PlPage {
     });
   }
 
-  alert(message){
-    let alert = this.alertCtrl.create({
-      title:'',
-      subTitle: message,
-      buttons:['确定']
-    });
-    alert.present();
-  }
-
   goBack() {
     this.navCtrl.pop();
   }
@@ -111,22 +99,29 @@ export class PlPage {
 
   toPd(jh:PagePDPro){
     this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{"jh":jh});
-
   }
 
-  pressEvent(jh:PagePDPro){
+  delPlan(jh:PagePDPro){
     if(jh.jtd == '0') { //下载
-      this.alert('请先下载系统计划：' + jh.jn);
+      let alert = this.alertCtrl.create({
+        title:'',
+        subTitle: '请先下载系统计划：' + jh.jn,
+        buttons:['确定']
+      });
+      alert.present();
     }else{
       let alert = this.alertCtrl.create({
         title: '',
-        subTitle: '确认删除：' + jh.jn,
+        subTitle: '确定要删除计划“' + jh.jn +"”?",
         buttons: [{
-          text: '确定', role: '取消', handler: () => {
-            this.plService.delete(jh);
-            jh.jtd = '0';
-          }
-        }]
+          text: '取消',
+          }, {
+            text: '确定',
+            handler: () => {
+              this.plService.delete(jh);
+              jh.jtd = '0';
+            }
+          }]
       });
       alert.present();
     }
@@ -137,12 +132,15 @@ export class PlPage {
     if(jh.jtd == '0'){ //下载
       jh.jtd = '1';
       message = "下载成功";
-      this.plService.upPlan(jh);
+      this.plService.upPlan(jh);//系统计划 jtd 变更
     }
     this.plService.downloadPlan(jh.ji).then(data=>{
-      //console.debug("downloadPlan::" + JSON.stringify(data));
-      this.alert(message);
+      let alert = this.alertCtrl.create({
+        title:'',
+        subTitle: message,
+        buttons:['确定']
+      });
+      alert.present();
     })
   }
-
 }
