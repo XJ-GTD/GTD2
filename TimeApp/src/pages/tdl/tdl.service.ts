@@ -56,7 +56,8 @@ export class TdlService {
 
         }
       }
-      mpL.sort();
+      mpL.reverse()
+      //mpL.sort();
       //正序查出比当前日期大的日程
       let sql="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
         "left join gtd_b gb on gb.ui = gc.ui inner join gtd_j_h jh on jh.ji = gc.ji " +
