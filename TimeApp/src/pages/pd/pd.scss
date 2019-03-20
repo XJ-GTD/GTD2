@@ -26,16 +26,16 @@ page-pd {
   }
 
   .agenda-content:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 0.3vmin;
-    background: #F5F5DC	;
-    margin-left: -4.2vmin;
-    margin-top: 3vmin;
-    margin-bottom: -3.5vmin;
-  }
+     content: '';
+     position: absolute;
+     top: 0;
+     bottom: 0;
+     width: 0.3vmin;
+     background: #F5F5DC	;
+     margin-left: -3vmin;
+     margin-top: 3vmin;
+     margin-bottom: -3.5vmin;
+   }
 
   .agenda-card-past {
     opacity:0.4;
@@ -147,7 +147,7 @@ page-pd {
   }
 
   .pointer-slot {
-    width: 5vmin;
+    width: 4vmin;
     margin: auto;
     margin-top: -3vmin;
     margin-right: 0;
