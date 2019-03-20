@@ -28,7 +28,7 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
       </ion-grid>
     </ion-toolbar>
   </ion-header>
-    <ion-content >
+    <ion-content no-bounce>
       <div class = "spacediv-set"> </div>
     <ion-scroll id="ddd" #contentScroll scrollY="true">
     <ion-grid>
