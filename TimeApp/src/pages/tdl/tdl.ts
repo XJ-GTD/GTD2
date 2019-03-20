@@ -25,9 +25,11 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
         <div class="w-auto rightside  " >
           <div id="cid{{scd.cid}}" class="rightpanding" *ngFor ="let scd of sdl.scdl" [ngStyle]="{'background-color':scd.cbkcolor}">
             <div class="floatleft dt-set" [ngStyle]="{'background-color':scd.cbkcolor}">
-              <div class="floatleft tm-fsize tm-margin">{{scd.st}}</div>
-              <div class="color-dot floatleft text-fsize" [ngStyle]="{'background-color':scd.p.jc}" ></div>
-              <div >{{scd.sn}}</div>
+              <div>
+                <div class="floatleft tm-fsize tm-margin">{{scd.st}}</div>
+                <div class="color-dot floatleft text-fsize" [ngStyle]="{'background-color':scd.p.jc}" ></div>
+                <div >{{scd.sn}}</div>
+              </div>>
               <div class="p-fsize" *ngIf="scd.gs == '1'">{{scd.fssshow}}</div>
               <div class="p-fsize" *ngIf="scd.gs == '0'">{{scd.fs.rn==""||scd.fs.rn ==null ?scd.fs.rc:scd.fs.rn}}</div>
             </div>
