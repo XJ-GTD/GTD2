@@ -38,16 +38,18 @@ export class PdService {
         pa.ai = jhc.si;//日程ID
         pa.at = jhc.sn;//主题
         pa.adt = jhc.sd;//时间(YYYY/MM/DD HH:mm)
+        pa.st = jhc.st;//开始时间
+        pa.et = jhc.et;//结束日期
+        pa.ed = jhc.ed;//结束时间
         pa.ap = jhc.ji;//计划
         pa.ar = jhc.rt;//重复
         pa.aa = jhc.sn;//提醒
-        paList.push(pa)
+        pa.am = jhc.bz;//备注
+        paList.push(pa);
       }
       console.log('---------- PlService getPlan 获取计划日程结束 ----------------');
     }
     //显示处理
-
-
     console.log('---------- PdService getPlan 获取计划结束 ----------------');
     // 返出参
     let bs = new BsModel();

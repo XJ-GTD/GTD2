@@ -12,6 +12,15 @@ page-pc {
     background-color: #000;
   }
 
+  ion-header ion-toolbar{
+    margin-top: 20px;
+
+  }
+
+  ion-header span{
+    font-size: 13px;
+  }
+
   ion-content.content {
     background-color: #000;
     color: #fff;
@@ -20,8 +29,11 @@ page-pc {
   ion-content .plan-list-item {
     background-color: #000;
     color: #fff;
-    height: 40px;
-    font-size: 14px;
+    height: 50px;
+  }
+
+  ion-item ion-label{
+    font-size: 15px;
   }
 
   ion-list-header.plan-list-item {
@@ -94,5 +106,10 @@ page-pc {
   .name-input {
     margin-top: 2vmin;
     margin-bottom: 8vmin;
+  }
+
+  .scroll-content{
+    overflow-x: hidden;
+    overflow-y: hidden;
   }
 }

@@ -36,7 +36,7 @@ import {AgdPro} from "../../service/restful/agdsev";
         <ion-row>
           <ion-card color="danger" [ngStyle]="{'background-color': plan.pn.jc }">
             <ion-card-content text-center>
-              <h1>{{plan.pn.jn}}</h1>
+              <div>{{plan.pn.jn}}</div>
             </ion-card-content>
           </ion-card>
           <div padding></div>
@@ -54,7 +54,7 @@ import {AgdPro} from "../../service/restful/agdsev";
               </div>
               <div class="agenda-col-time right-off left-off" justify-content-between>
                 <div class="time-slot">
-                  <p class="app-agenda-time">{{(agenda.adt != null && agenda.adt.length === 10)? '全天' : agenda.adt.slice(11, 16)}}</p>
+                  <p class="app-agenda-time">{{(agenda.st != null && agenda.st.length === 0)? '全天' : agenda.st.slice(0, 5)}}</p>
                 </div>
                 <div class="pointer-slot"><span class="plan-color-pointer"><div class="color-dot color-blue" [ngStyle]="{'background-color': plan.pn.jc }"></div></span></div>
               </div>
