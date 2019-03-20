@@ -222,6 +222,7 @@ export class ScdData {
   gs:string ="";//归属
   fssshow:string =""//参与人画面显示用
   cbkcolor:string =""//每个日程颜色画面显示用
+  cid:Number =0//scroll锚点
 
 
   //特殊日期日程

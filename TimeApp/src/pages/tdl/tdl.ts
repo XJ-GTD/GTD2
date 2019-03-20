@@ -1,5 +1,5 @@
-import {Component, ElementRef, Input, Renderer2} from '@angular/core';
-import {App, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
+import {Component, ViewChild, ElementRef, Input, Renderer2} from '@angular/core';
+import {App, IonicPage, NavController, NavParams, Scroll, ViewController} from 'ionic-angular';
 import * as moment from "moment";
 import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
 
@@ -13,6 +13,7 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
 @Component({
   selector: 'page-tdl',
   template: `<ion-content>
+    <ion-scroll id="ddd" #contentScroll scrollY="true">
     <ion-grid>
       <ion-row *ngFor="let sdl of scdlDataList">
         <div class="w-75 leftside leftpanding">
@@ -22,7 +23,7 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
           </div>
         </div>
         <div class="w-auto rightside  " >
-          <div class="rightpanding" *ngFor ="let scd of sdl.scdl" [ngStyle]="{'background-color':scd.cbkcolor}">
+          <div id="cid{{scd.cid}}" class="rightpanding" *ngFor ="let scd of sdl.scdl" [ngStyle]="{'background-color':scd.cbkcolor}">
             <div class="floatleft dt-set" [ngStyle]="{'background-color':scd.cbkcolor}">
               <div class="floatleft tm-fsize tm-margin">{{scd.st}}</div>
               <div class="color-dot floatleft text-fsize" [ngStyle]="{'background-color':scd.p.jc}" ></div>
@@ -35,6 +36,7 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
         </div>
       </ion-row>
     </ion-grid>
+    </ion-scroll>
   </ion-content>`
 
 })
@@ -43,13 +45,33 @@ export class TdlPage {
   }
 
   scdlDataList :Array<ScdlData> = new Array<ScdlData>();
+  @ViewChild('contentScroll') contentScroll: Scroll;
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AgendaListPage');
+    this.contentScroll.addScrollEventListener(this.timepickerChange);
+
+  }
+
+  timepickerChange(e) {
+    console.log(e);
   }
 
   ionViewWillEnter() {
     this.init();
+    this.contentScroll._scrollContent.nativeElement.scrollTop = 100;
+    //id0,id1...
+    //el.scrollIntoView(true);
+    console.log("ionViewWillEnter")
+  }
+  ionViewDidEnter() {
+    let el = document.getElementById('cid4');
+    el.scrollIntoView(true);
+   /* setTimeout(()=>{
+    let el = document.getElementById('id'+10);
+    el.scrollIntoView(true);
+  },200);*/
+    console.log("ionViewDidEnter")
   }
 
   init() {
@@ -113,7 +135,7 @@ export class TdlPage {
       this.scdlDataList.push(scdldata);
     }
 
-    for (let k=1 ; k<30;k++){
+    /*for (let k=1 ; k<30;k++){
       let scdldata = new ScdlData();
       let a  : string = "";
       if (k>9){
@@ -142,26 +164,47 @@ export class TdlPage {
         }
       }
       this.scdlDataList.push(scdldata);
-    }
+    }*/
 
 
-    // 设定日期的交替背景色
+
     let flag = 0;
+    let cid = 1;
     for (let j = 0, len = this.scdlDataList.length; j < len; j++) {
       let tmp = this.scdlDataList[j];
+
+      // 设定日程的交替背景色
       for (let k = 0, len = tmp.scdl.length; k < len; k++) {
+        let tmpscd =  tmp.scdl[k];
         if (flag == 0){
-          tmp.scdl[k].cbkcolor = "#96162D";
+          tmpscd.cbkcolor = "#96162D";
           flag =1
         }else{
-          tmp.scdl[k].cbkcolor = "#8E172B";
+          tmpscd.cbkcolor = "#8E172B";
           flag =0
         }
+        //设置日程锚点
+        cid = cid +1;
+        tmpscd.cid =cid;
+
+        //设置参与人画面显示内容
+        let str = "";
+        for (let f = 0, len = tmpscd.fss.length; f< len; f++) {
+          let rn = tmpscd.fss[f].rn ==""||tmpscd.fss[f].rn == null?tmpscd.fss[f].rc:tmpscd.fss[f].rn;
+          str = str + ',' + rn ;
+          if (j== len -1){
+            str = str.substr(1)
+          }
+        }
+        tmpscd.fssshow = str;
       }
+
     }
 
-    let aa :string ="";
-
+    /*setTimeout(()=>{
+      let el = document.getElementById('id'+10);
+      el.scrollIntoView(true);
+    },200);*/
 /*    let condi =this.navParams.get("dt");
     condi = "2019/01/01";
     this.tdlServ.get(condi).then(data =>{
@@ -169,5 +212,16 @@ export class TdlPage {
     })*/
   }
 
+  moreDataCanBeLoaded(){
 
+    return true;
+  }
+
+
+
+  loadMoreData(evt){
+    this.init();
+    evt.complete();
+    console.log("****************************************loadmoredata");
+  }
 }
