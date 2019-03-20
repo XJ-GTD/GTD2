@@ -29,13 +29,14 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
   selector: 'ion-calendar',
   providers: [ION_CAL_VALUE_ACCESSOR],
   template: `
-    <ion-card no-padding>
+    <ion-card no-padding class="animated "
+              [ngClass]="{'fadeInUp faster':css==1,'fadeInDown faster':css==2}">
       <ion-card-header no-padding>
 
         <div class="title">
           <ng-template [ngIf]="_showMonthPicker" [ngIfElse]="title">
             <div float-left>
-              <p><b class="animated" [ngClass]="{'jello':css==1,'flash':css==2}">{{monthOpt.original.month < 9 ? "0" + (monthOpt.original.month + 1) : monthOpt.original.month + 1}}</b>月</p>
+              <p><b class="animated" [ngClass]="{'flash fast':css==1,'flash fast':css==2}">{{monthOpt.original.month < 9 ? "0" + (monthOpt.original.month + 1) : monthOpt.original.month + 1}}</b>月</p>
               <p float-left no-margin>
                 <span>{{monthOpt.original.year}}</span>
               </p>
@@ -56,14 +57,13 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
         </div>
       </ion-card-header>
       <ion-card-content>
-        <ng-template [ngIf]="_view === 'days'" [ngIfElse]="monthPicker">
+        <ng-template [ngIf]="_view === 'days'" [ngIfElse]="monthPicker" >
           <ion-calendar-week color="transparent"
                              [weekArray]="_d.weekdays"
                              [weekStart]="_d.weekStart">
           </ion-calendar-week>
 
-          <ion-calendar-month class="component-mode animated faster"
-                              [ngClass]="{'slideInLeft':css==1,'slideInRight':css==2}"
+          <ion-calendar-month class="component-mode" 
                               [(ngModel)]="_calendarMonthValue"
                               [month]="monthOpt"
                               [readonly]="readonly"
@@ -279,13 +279,17 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   newstart: boolean = true;
 
   swipeEvent($event: any): void {
-    const isNext = $event.deltaX < 0;
+    console.log("***********************" + $event.angle + "*********************")
+    let d: number = 0;
+    if (45 < $event.angle && $event.angle < 135) d = 1;
+    if (-45 > $event.angle && $event.angle > -135) d = 2;
+    //const isNext = 45< $event.angle < 135;
     // if (!this.newstart) return;
-    if (isNext)
+    if (d==1)
       this.nextArray.push(1);
-    else
+    else if(d==2)
       this.nextArray.push(0);
-    if (this.newstart) {
+    if (this.newstart && d >0) {
       this.startSwipe();
     }
   }
@@ -322,10 +326,8 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
       window.setTimeout(() => {
         this.css = 100;
         this.onSelect.emit();
-        window.setTimeout(() => {
-          resolve(true);
-        }, 100);
-      }, 200);
+        resolve(true);
+      }, 300);
     })
   }
 
