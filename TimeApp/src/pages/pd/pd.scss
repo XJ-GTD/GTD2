@@ -1,10 +1,19 @@
 page-pd {
-  ion-content {
-    font-family: "PingFang-Regular";
-  }
+  /*@font-face {
+    font-family: 'PingFang-Regular';
+    src: url('../assets/font/PingFang Regular.ttf');
+  }*/
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
     background-color: #000;
+  }
+
+  ion-content ion-card-content {
+    height: 75px;
+  }
+
+  ion-content ion-card-content div{
+    margin-top: 12px;
   }
 
   ion-content.content {
@@ -12,16 +21,20 @@ page-pd {
     color: #fff;
   }
 
+  ion-content .plan-year {
+    font-size: 18px;
+  }
+
   .agenda-content:before {
     content: '';
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 0.5vmin;
+    width: 0.3vmin;
     background: #F5F5DC	;
-    margin-left: -4.4vmin;
+    margin-left: -4.2vmin;
     margin-top: 3vmin;
-    margin-bottom: -4vmin;
+    margin-bottom: -3.5vmin;
   }
 
   .agenda-card-past {
@@ -71,7 +84,7 @@ page-pd {
   .app-agenda-day {
     white-space: nowrap;
     overflow: hidden;
-    font-size: 3.5vmin;
+    font-size: 3vmin;
     margin-top: 0.85vmin;
     margin-bottom: 0;
   }
@@ -79,8 +92,8 @@ page-pd {
   .app-agenda-time {
     white-space: nowrap;
     overflow: hidden;
-    font-size: 2.5vmin;
-    margin-top: 1.75vmin;
+    font-size: 2vmin;
+    margin-top: 0.85vmin;
     margin-bottom: 0;
   }
 
@@ -95,8 +108,7 @@ page-pd {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    font-size: 4.5vmin;
-
+    font-size: 3.5vmin;
     margin-top: 0;
     margin-bottom: 0;
   }
@@ -146,10 +158,6 @@ page-pd {
     height: 2vmin;
     background-color: #fff;
     border-radius: 50%;
-  }
-
-  .color-blue {
-    background-color: #b72537;
   }
 
   .grid {

@@ -1,5 +1,5 @@
 page-pl {
- /* @font-face {
+  /*@font-face {
     font-family: 'PingFang-Regular';
     src: url('../assets/font/PingFang Regular.ttf');
   }*/
@@ -67,5 +67,9 @@ page-pl {
   .scroll-content{
     overflow-x: auto;
     overflow-y: auto;
+  }
+
+  .item-block{
+    min-height: 3.5rem;
   }
 }

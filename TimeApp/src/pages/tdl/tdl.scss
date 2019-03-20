@@ -69,16 +69,7 @@ page-tdl {
   .ym-fsize {
     font-size: 11px;
   }
-  .tm-fsize {
-    font-size: 11px;
-  }
   .d-fsize {
-    font-size: 15px;
-  }
-  .p-fsize {
-    font-size: 11px;
-  }
-  .text-fsize {
     font-size: 15px;
   }
   .grid .row {
@@ -96,7 +87,7 @@ page-tdl {
     padding-left:17px ;
     padding-right:15px ;
   }
-  .color-dot {
+  .dot-set {
     width: 6px;
     height: 6px;
     background-color: #fff;
@@ -104,13 +95,30 @@ page-tdl {
     margin-left: 4px;
     margin-right: 4px;
     margin-top: 6px;
+    font-size: 15px;
   }
-  .floatleft{     float: left;}
+  .floatleft{float: left;}
 
-  .tm-margin{margin-top: 1px;}
   .more-set{width:12px;}
-  .dt-set{
+  .detailsub-set {
+
+  }
+  .detail-set{
       width: 100%;
       padding-right: 19px;
     }
+
+  .title-set {
+
+  }
+  .people-set {
+    font-size: 11px;
+  }
+  .tm-set {
+    margin-top: 1px;
+    font-size: 11px;
+  }
+  ion-scroll {
+   height: 100%;
+  }
 }

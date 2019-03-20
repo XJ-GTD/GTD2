@@ -1,7 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
 import {PagePDPro, PdService} from "./pd.service";
 import {AgdPro} from "../../service/restful/agdsev";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 计划展示 page.
@@ -24,7 +25,7 @@ import {AgdPro} from "../../service/restful/agdsev";
         </ion-buttons>
 
         <ion-buttons right>
-          <button ion-button color="danger">
+          <button ion-button color="danger" (click)="delPlan(jh)">
             <ion-icon name="remove-circle-outline"></ion-icon>
           </button>
         </ion-buttons>
@@ -36,7 +37,7 @@ import {AgdPro} from "../../service/restful/agdsev";
         <ion-row>
           <ion-card color="danger" [ngStyle]="{'background-color': plan.pn.jc }">
             <ion-card-content text-center>
-              <h1>{{plan.pn.jn}}</h1>
+              <div>{{plan.pn.jn}}</div>
             </ion-card-content>
           </ion-card>
           <div padding></div>
@@ -54,7 +55,7 @@ import {AgdPro} from "../../service/restful/agdsev";
               </div>
               <div class="agenda-col-time right-off left-off" justify-content-between>
                 <div class="time-slot">
-                  <p class="app-agenda-time">{{(agenda.adt != null && agenda.adt.length === 10)? '全天' : agenda.adt.slice(11, 16)}}</p>
+                  <p class="app-agenda-time">{{(agenda.st != null && agenda.st.length === 0)? '全天' : agenda.st.slice(0, 5)}}</p>
                 </div>
                 <div class="pointer-slot"><span class="plan-color-pointer"><div class="color-dot color-blue" [ngStyle]="{'background-color': plan.pn.jc }"></div></span></div>
               </div>
@@ -74,7 +75,7 @@ export class PdPage {
   @ViewChild(Navbar) navBar: Navbar;
 
   jh:PagePDPro;
-  today: string = new Date(new Date()).toISOString();
+  today: string = new Date().toISOString();
   plan:any ={
     "pn": {},
     "pa":new Array<AgdPro>(),
@@ -82,13 +83,13 @@ export class PdPage {
 
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
+              private alertCtrl: AlertController,
               private pdService:PdService) {
 
+    console.log('ionViewDidLoad PdPage');
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PdPage');
-
+  ionViewWillEnter() {
     this.jh = this.navParams.get("jh");
     this.pdService.getPlan(this.jh.ji).then(data=>{
       this.plan.pn = this.jh;
@@ -98,5 +99,23 @@ export class PdPage {
 
   goBack() {
     this.navCtrl.pop();
+  }
+
+  delPlan(jh:PagePDPro){
+    let alert = this.alertCtrl.create({
+      title: '',
+      subTitle: '确定要删除计划“' + jh.jn +"”?",
+      buttons: [{
+        text: '取消',
+      }, {
+        text: '确定',
+        handler: () => {
+          this.pdService.delete(jh.ji).then(data=>{
+            this.navCtrl.push(DataConfig.PAGE._PL_PAGE,{});
+          })
+        }
+      }]
+    });
+    alert.present();
   }
 }

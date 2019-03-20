@@ -38,16 +38,18 @@ export class PdService {
         pa.ai = jhc.si;//日程ID
         pa.at = jhc.sn;//主题
         pa.adt = jhc.sd;//时间(YYYY/MM/DD HH:mm)
+        pa.st = jhc.st;//开始时间
+        pa.et = jhc.et;//结束日期
+        pa.ed = jhc.ed;//结束时间
         pa.ap = jhc.ji;//计划
         pa.ar = jhc.rt;//重复
         pa.aa = jhc.sn;//提醒
-        paList.push(pa)
+        pa.am = jhc.bz;//备注
+        paList.push(pa);
       }
       console.log('---------- PlService getPlan 获取计划日程结束 ----------------');
     }
     //显示处理
-
-
     console.log('---------- PdService getPlan 获取计划结束 ----------------');
     // 返出参
     let bs = new BsModel();
@@ -137,7 +139,7 @@ export class PdService {
   }
 
   //删除计划
-  async delete(pid:string){
+  async delete(pid:string):Promise<BsModel<any>>{
     console.log('---------- PdService delete 删除计划开始 ----------------');
     //获取本地计划
     let jhTbl: JhTbl = new JhTbl();
@@ -150,22 +152,31 @@ export class PdService {
     ctbl.ji = jhTbl.ji;
     let ctbls = await this.sqlExce.getList<CTbl>(ctbl);
 
-    for (let j = 0, len = ctbls.length; j < len; j++) {
-      //提醒删除
-      let etbl:ETbl =new ETbl();
-      etbl.si = ctbls[j].si;
-      await this.sqlExce.delete(etbl);
+    if(ctbls.length > 0){
+      for (let j = 0, len = ctbls.length; j < len; j++) {
+        //提醒删除
+        let etbl:ETbl =new ETbl();
+        etbl.si = ctbls[j].si;
+        await this.sqlExce.delete(etbl);
 
-      //日程参与人删除
-      let dtbl:DTbl =new DTbl();
-      dtbl.si = ctbls[j].si;
-      await this.sqlExce.delete(dtbl);
+        //日程参与人删除
+        let dtbl:DTbl =new DTbl();
+        dtbl.si = ctbls[j].si;
+        await this.sqlExce.delete(dtbl);
+      }
+      //计划关联日程删除
+      await this.sqlExce.delete(ctbl);
+
+    }else{
+      console.log('---------- PdService delete 计划管理日程无数据 ----------------');
     }
-    //计划关联日程删除
-    await this.sqlExce.delete(ctbl);
 
     // 删除本地计划
-    await this.sqlExce.delete(jhTbl);
+    let tbl: JhTbl = new JhTbl();
+    tbl.ji = jhTbl.ji;
+    await this.sqlExce.delete(tbl);
+
+
 
     // TODO restful删除分享计划
     console.log('---------- PdService delete 删除计划结束 ----------------');

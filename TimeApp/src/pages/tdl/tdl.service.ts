@@ -19,15 +19,16 @@ export class TdlService {
     if(next != null && next !=""){
 
       //获取本地日程jn jg jc jt
-      let sqll="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt from gtd_c gc inner join gtd_j_h jh on jh.ji = gc.ji  " +
-        "where gc.sd<'"+ next+"' order by gc.ed desc limit 500";
+      let sqll="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
+        "left join gtd_b gb on gb.ui = gc.ui inner join gtd_j_h jh on jh.ji = gc.ji  " +
+        "where gc.sd<'"+ next+"' order by gc.sd asc limit 300";
       let rclL = await this.sqlExce.execSql(sqll);
       if(rclL && rclL.rows && rclL.rows.length>0){
         let len = rclL.rows.length-1;
         let i=0;
         let d=0;
         //循环获取30条数据
-        while(i<30 && d<300){
+        while(i<30 && d<100){
           let day = moment(next).subtract(d,'d').format("YYYY/MM/DD");
           let mp:ScdlData = new ScdlData();
           for(let j=0;j<rclL.rows.length;j++){
@@ -40,15 +41,6 @@ export class TdlService {
               dt.si = sc.si;
               let fsL = await this.sqlExce.getList<fsData>(dt);
               sc.fss = fsL;
-              let str = "";
-              for (let j = 0, len = sc.fss.length; j < len; j++) {
-                let rn = sc.fss[j].rn ==""||sc.fss[j].rn == null?sc.fss[j].rc:sc.fss[j].rn;
-                str = str + ',' + rn ;
-                if (j== len -1){
-                  str = str.substr(1)
-                }
-              }
-              sc.fssshow = str
 
               Object.assign(sc.fs,rclL.rows.item(j));
               Object.assign(sc.p,rclL.rows.item(j));
@@ -64,18 +56,19 @@ export class TdlService {
 
         }
       }
-
+      mpL.reverse()
+      //mpL.sort();
       //正序查出比当前日期大的日程
-      let sql="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt from gtd_c gc inner join gtd_j_h jh on jh.ji = gc.ji " +
-        "where gc.ed>='"+ next+"' order by gc.sd asc limit 500";
+      let sql="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
+        "left join gtd_b gb on gb.ui = gc.ui inner join gtd_j_h jh on jh.ji = gc.ji " +
+        "where gc.ed>='"+ next+"' order by gc.sd asc limit 300";
       let rcnL = await this.sqlExce.execSql(sql);
-
       if(rcnL && rcnL.rows && rcnL.rows.length>0){
         let len = rcnL.rows.length-1;
         let i=0;
         let d=0;
         //循环获取60条数据
-        while(i<=60 && d<300){
+        while(i<=60 && d<100){
           let day = moment(next).add(d,'d').format("YYYY/MM/DD");
           let mp:ScdlData = new ScdlData();
           for(let j=0;j<rcnL.rows.length;j++){
@@ -88,15 +81,6 @@ export class TdlService {
               dt.si = sc.si;
               let fsL = await this.sqlExce.getList<fsData>(dt);
               sc.fss = fsL;
-              let str = "";
-              for (let j = 0, len = sc.fss.length; j < len; j++) {
-                let rn = sc.fss[j].rn ==""||sc.fss[j].rn == null?sc.fss[j].rc:sc.fss[j].rn;
-                str = str + ',' + rn ;
-                if (j== len -1){
-                  str = str.substr(1)
-                }
-              }
-              sc.fssshow = str
 
               Object.assign(sc.fs,rcnL.rows.item(j));
               Object.assign(sc.p,rcnL.rows.item(j));
@@ -220,8 +204,9 @@ export class ScdData {
   wtt: number;//时间戳
   du:string ="";//消息读取状态
   gs:string ="";//归属
-  fssshow:string =""//参与人画面显示用
-  cbkcolor:string =""//每个日程颜色画面显示用
+  fssshow:string ="";//参与人画面显示用
+  cbkcolor:string ="";//每个日程颜色画面显示用
+  anchorid:string ="";//scroll锚点
 
 
   //特殊日期日程
