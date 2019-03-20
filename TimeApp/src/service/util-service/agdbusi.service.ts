@@ -3,6 +3,8 @@ import {SqliteExec} from "./sqlite.exec";
 import {CTbl} from "../sqlite/tbl/c.tbl";
 import {UtilService} from "./util.service";
 import * as moment from "moment";
+import {BsModel} from "../restful/out/bs.model";
+import {ScdData} from "../../pages/tdl/tdl.service";
 
 @Injectable()
 export class AgdbusiService {
@@ -131,6 +133,38 @@ export class AgdbusiService {
     }
     return false;
 
+  }
+
+  /**
+   * 查询当天的日程
+   * @param {string} day  YYYY/MM/DD
+   * @returns {Promise<BsModel<Array<ScdData>>>}
+   */
+  getOdAgd(day:string):Promise<BsModel<Array<ScdData>>>{
+    return new Promise((resolve, reject) => {
+      let sql = 'select si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,tx from gtd_c gc  ' +
+        'where gc.sd <="' + day +'" and gc.ed>="'+day+'"';
+      let bs = new BsModel<Array<ScdData>>();
+      this.sqlexec.execSql(sql).then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          let scdL = new Array<ScdData>();
+          for(let i=0,len=data.rows.length;i<len;i++){
+            let sp:ScdData = data.rows.item(i);
+            let cTbldata : CTbl = new CTbl();
+            Object.assign(cTbldata,sp);
+            if(this.ishave(day,cTbldata)){
+              scdL.push(sp);
+            }
+          }
+          bs.data = scdL;
+        }
+        resolve(bs);
+      }).catch(e=>{
+        bs.code = -99;
+        bs.message = e.message;
+        resolve(bs);
+      })
+    })
   }
 
 }

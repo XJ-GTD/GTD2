@@ -73,9 +73,12 @@ export class GcPage {
   ionViewDidLoad() {
     this.dc = this.navParams.get("g");
     console.log('ionViewDidLoad PePage');
+    //this.getData();
+  }
+  ionViewDidEnter(){
+    console.log("3.0 ionViewDidEnter 当进入页面时触发");
     this.getData();
   }
-
   ionViewWillEnter() {
   }
 
@@ -86,10 +89,11 @@ export class GcPage {
 
   goBack(){
     console.log('GcPage返回GlPage');
-    this.navCtrl.push("GlPage");
+    this.navCtrl.pop();
   }
   toAddGroupMember() {
     console.log("PePage跳转PgPage");
+    this.navCtrl.push("FsPage",{tpara:this.dc,addType:'gc'});
     // this.navCtrl.push("PgPage",{callback:this.getData,sel:this.qcy});
     //
     // let modal = this.modalCtrl.create(PageConfig.PG_PAGE,{callback:this.getData,sel:this.qcy});
