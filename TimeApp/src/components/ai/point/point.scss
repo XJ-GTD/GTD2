@@ -13,17 +13,17 @@ pointcomponent {
     height: 58px;
     border-radius: 50%;
     margin: 0 auto;
-    margin-top: 1px;
+    margin-top: 2px;
 
   }
 
 
   .spinner, .spinner:before {
     position: fixed;
-    width: 60px;
-    height: 60px;
-    top: 85%;
-    left: calc(50% - 30px);
+    width: 62px;
+    height: 62px;
+    top: calc(100% - 88px);
+    left: calc(50% - 31px);
     border-radius: 50%;
   }
 

@@ -32,33 +32,19 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
     <ion-card no-padding>
       <ion-card-header no-padding>
 
-        <div class="title animated" [ngClass]="{'jello':css==1,'flash':css==2}" animationend="">
+        <div class="title">
           <ng-template [ngIf]="_showMonthPicker" [ngIfElse]="title">
             <div float-left>
-              <p >{{monthOpt.original.month < 9 ? "0" + (monthOpt.original.month + 1) : monthOpt.original.month + 1}}</p>
+              <p><b class="animated" [ngClass]="{'jello':css==1,'flash':css==2}">{{monthOpt.original.month < 9 ? "0" + (monthOpt.original.month + 1) : monthOpt.original.month + 1}}</b>月</p>
               <p float-left no-margin>
                 <span>{{monthOpt.original.year}}</span>
               </p>
-              <ion-icon style="padding-top:10px;padding-left: 6px;color:#666666" class="arrow-dropdown"
+
+              <ion-icon class="arrow-dropdown"
                         [name]="_view === 'days' ? 'md-arrow-dropright' : 'md-arrow-dropdown'"
                         (click)="switchView()"></ion-icon>
             </div>
-          </ng-template>
-          <ng-template #title>
-            <div class="switch-btn">
-              <div float-left>
-                <p style="font-size: 2em"
-                   float-left>{{monthOpt.original.month < 9 ? "0" + (monthOpt.original.month + 1) : monthOpt.original.month + 1}}</p>
-                <p style="display: grid;margin-left: 0px" float-left>
-                  <span style="font-size: 1.3em">{{monthOpt.original.year}}</span>
-                  <span>month</span>
-                </p>
-                <ion-icon float-left padding-top class="arrow-dropdown"
-                          [name]="_view === 'days' ? 'md-arrow-dropdown' : 'md-arrow-dropup'"
-                          (click)="switchView()"></ion-icon>
-              </div>
-            </div>
-          </ng-template>
+          </ng-template>         
           <ng-template [ngIf]="_showToggleButtons">
             <button type='button' ion-button clear class="back" [disabled]="!canBack()" (click)="prev()">
               <ion-icon name="ios-arrow-back"></ion-icon>
