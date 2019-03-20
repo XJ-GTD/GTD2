@@ -12,15 +12,6 @@ page-pc {
     background-color: #000;
   }
 
-  ion-header ion-toolbar{
-    margin-top: 20px;
-
-  }
-
-  ion-header span{
-    font-size: 13px;
-  }
-
   ion-content.content {
     background-color: #000;
     color: #fff;
@@ -29,7 +20,6 @@ page-pc {
   ion-content .plan-list-item {
     background-color: #000;
     color: #fff;
-    height: 50px;
   }
 
   ion-item ion-label{
@@ -41,8 +31,8 @@ page-pc {
   }
 
   .color-dot {
-    width: 2vmin;
-    height: 2vmin;
+    width: 3vmin;
+    height: 3vmin;
     background-color: #fff;
     border-radius: 50%;
   }
@@ -91,6 +81,11 @@ page-pc {
     flex: 1;
   }
 
+  .name-input {
+    margin-top: 2vmin;
+    margin-bottom: 8vmin;
+  }
+
   .grid .row {
     height: 100%;
   }
@@ -103,13 +98,12 @@ page-pc {
     border: 0;
   }
 
-  .name-input {
-    margin-top: 2vmin;
-    margin-bottom: 8vmin;
-  }
-
   .scroll-content{
     overflow-x: hidden;
     overflow-y: hidden;
+  }
+
+  .item-block{
+    min-height: 3.5rem;
   }
 }

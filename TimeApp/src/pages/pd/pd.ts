@@ -1,7 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
 import {PagePDPro, PdService} from "./pd.service";
 import {AgdPro} from "../../service/restful/agdsev";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 计划展示 page.
@@ -24,7 +25,7 @@ import {AgdPro} from "../../service/restful/agdsev";
         </ion-buttons>
 
         <ion-buttons right>
-          <button ion-button color="danger">
+          <button ion-button color="danger" (click)="delPlan(jh)">
             <ion-icon name="remove-circle-outline"></ion-icon>
           </button>
         </ion-buttons>
@@ -74,7 +75,7 @@ export class PdPage {
   @ViewChild(Navbar) navBar: Navbar;
 
   jh:PagePDPro;
-  today: string = new Date(new Date()).toISOString();
+  today: string = new Date().toISOString();
   plan:any ={
     "pn": {},
     "pa":new Array<AgdPro>(),
@@ -82,13 +83,13 @@ export class PdPage {
 
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
+              private alertCtrl: AlertController,
               private pdService:PdService) {
 
+    console.log('ionViewDidLoad PdPage');
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PdPage');
-
+  ionViewWillEnter() {
     this.jh = this.navParams.get("jh");
     this.pdService.getPlan(this.jh.ji).then(data=>{
       this.plan.pn = this.jh;
@@ -98,5 +99,23 @@ export class PdPage {
 
   goBack() {
     this.navCtrl.pop();
+  }
+
+  delPlan(jh:PagePDPro){
+    let alert = this.alertCtrl.create({
+      title: '',
+      subTitle: '确定要删除计划“' + jh.jn +"”?",
+      buttons: [{
+        text: '取消',
+      }, {
+        text: '确定',
+        handler: () => {
+          this.pdService.delete(jh.ji).then(data=>{
+            this.navCtrl.push(DataConfig.PAGE._PL_PAGE,{});
+          })
+        }
+      }]
+    });
+    alert.present();
   }
 }

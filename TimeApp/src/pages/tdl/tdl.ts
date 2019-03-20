@@ -24,14 +24,14 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
         </div>
         <div class="w-auto rightside  " >
           <div id="{{scd.anchorid}}" class="rightpanding" *ngFor ="let scd of sdl.scdl" [ngStyle]="{'background-color':scd.cbkcolor}">
-            <div class="floatleft dt-set" [ngStyle]="{'background-color':scd.cbkcolor}">
-              <div>
-                <div class="floatleft tm-fsize tm-margin">{{scd.st}}</div>
-                <div class="color-dot floatleft text-fsize" [ngStyle]="{'background-color':scd.p.jc}" ></div>
-                <div >{{scd.sn}}</div>
+            <div class="floatleft detail-set" [ngStyle]="{'background-color':scd.cbkcolor}">
+              <div class ="detailsub-set">
+                <div class="floatleft tm-set">{{scd.st}}</div>
+                <div class="floatleft dot-set " [ngStyle]="{'background-color':scd.p.jc}" ></div>
+                <div class ="title-set">{{scd.sn}}</div>
               </div>
-              <div class="p-fsize" *ngIf="scd.gs == '1'">{{scd.fssshow}}</div>
-              <div class="p-fsize" *ngIf="scd.gs == '0'">{{scd.fs.rn==""||scd.fs.rn ==null ?scd.fs.rc:scd.fs.rn}}</div>
+              <div class="people-set" *ngIf="scd.gs == '1'">{{scd.fssshow}}</div>
+              <div class="people-set" *ngIf="scd.gs == '0'">{{scd.fs.rn==""||scd.fs.rn ==null ?scd.fs.rc:scd.fs.rn}}</div>
             </div>
             <div class = "more-set"><ion-icon ios="ios-more" md="md-more"></ion-icon></div>
           </div>
@@ -63,9 +63,6 @@ export class TdlPage {
 
   ionViewWillEnter() {
     this.init();
-    this.contentScroll._scrollContent.nativeElement.scrollTop = 100;
-    //id0,id1...
-    //el.scrollIntoView(true);
     console.log("ionViewWillEnter")
   }
   ionViewDidEnter() {
@@ -114,36 +111,6 @@ export class TdlPage {
       this.scdlDataList.push(scdldata);
     }
 
-
-    for (let k=1 ; k<10;k++){
-      let scdldata = new ScdlData();
-      let a  : string = "";
-      if (k>9){
-        a = k + "";
-      }else {
-        a = "0" + k;
-      }
-      scdldata.d='2019/02/'+ a;
-      scdldata.scdl = new Array<ScdData>();
-      for (let i=0 ;i<k ;i++){
-        let scd = new ScdData();
-        scd.sd = scdldata.d;
-        scd.st = "11:0"+ i
-        scd.sn = "跑步需要测试" + scd.st;
-        scd.p.jc = "#000";
-        scd.gs="1";
-        scd.fssshow="测试人员5，测试人员6，测试人员7";
-        for (let m=0;m<4;m++){
-          let fss = new fsData();
-          fss.rn = "参与人"+m;
-          scd.fss.push(fss);
-        }
-        scdldata.scdl.push(scd);
-        if (i>20){
-          break;
-        }
-      }
-      this.scdlDataList.push(scdldata);
     }*/
 
     let flag = 0;
@@ -197,15 +164,6 @@ export class TdlPage {
       }
     })
 
-    /*setTimeout(()=>{
-      let el = document.getElementById('id'+10);
-      el.scrollIntoView(true);
-    },200);*/
-/*    let condi =this.navParams.get("dt");
-    condi = "2019/01/01";
-    this.tdlServ.get(condi).then(data =>{
-      this.scdlData = data;
-    })*/
   }
 
 

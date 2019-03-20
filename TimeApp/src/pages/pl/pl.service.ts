@@ -8,6 +8,7 @@ import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {PagePDPro} from "../pd/pd.service";
 import {PagePcPro} from "../pc/pc.service";
+import * as moment from "moment";
 
 @Injectable()
 export class PlService {
@@ -155,6 +156,27 @@ export class PlService {
 
   //获取计划
   async getPlan(){
+
+    /*let start = moment('2019/03/01 11:30');
+
+    for (let i = 0; i < 20; i++) {
+      let c: CTbl = new CTbl();
+
+      c.si = "2000"+i;
+      c.sn = "冥王星计划";
+      c.sd = start.format('YYYY/MM/DD');
+      c.st = start.format('hh:mm');
+      c.ed = '9999/12/31'
+      c.et = '24:00'
+      c.rt = '0';
+      c.sr = c.si;
+      c.ji = "2b30de319600c1eca736f49ec6324837";
+
+      this.sqlExce.save(c).then(c => {
+        console.log("插入数据=====" + c);
+      });
+    }*/
+
     console.log('---------- PlService getPlan 获取计划开始 ----------------');
     let pld = new PagePlData();
     //获取本地计划
