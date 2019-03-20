@@ -96,7 +96,7 @@ public class BlacklistController {
     		for (BlaBlacklist bla : xjList) {
     			dtoList.add(this.blaToBlaDto(bla));
 			}
-    		out.setD(xjList);
+    		out.setD(dtoList);
     		out.setRc(ReturnMessage.SUCCESS_CODE);
     		out.setRm(ReturnMessage.SUCCESS_MSG);
     	}else{

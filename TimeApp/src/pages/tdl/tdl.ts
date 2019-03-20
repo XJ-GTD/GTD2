@@ -1,5 +1,5 @@
 import {Component, ViewChild, ElementRef, Input, Renderer2} from '@angular/core';
-import {App, IonicPage, NavController, NavParams, Scroll, ViewController} from 'ionic-angular';
+import {App, Events, IonicPage, NavController, NavParams, Scroll, ViewController} from 'ionic-angular';
 import * as moment from "moment";
 import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
 
@@ -23,9 +23,9 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
           </div>
         </div>
         <div class="w-auto rightside  " >
-          <div id="{{scd.anchorid}}" class="rightpanding" *ngFor ="let scd of sdl.scdl" [ngStyle]="{'background-color':scd.cbkcolor}">
+          <div id="{{scd.anchorid}}" class="rightpanding" *ngFor ="let scd of sdl.scdl;" [ngStyle]="{'background-color':scd.cbkcolor}">
             <div class="floatleft detail-set" [ngStyle]="{'background-color':scd.cbkcolor}">
-              <div class ="detailsub-set">
+              <div class ="detailsub-set">{{this.pageLoadOver(scd.anchorid)}}
                 <div class="floatleft tm-set">{{scd.st}}</div>
                 <div class="floatleft dot-set " [ngStyle]="{'background-color':scd.p.jc}" ></div>
                 <div class ="title-set">{{scd.sn}}</div>
@@ -43,22 +43,31 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
 
 })
 export class TdlPage {
-  constructor(public navCtrl: NavController, public navParams: NavParams,private tdlServ : TdlService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private tdlServ : TdlService,
+              public events: Events) {
+    events.subscribe('user:created', (data) => {
+
+        if (data !="" && data !=null){
+          //画面scroll至锚点
+          let el = document.getElementById(data.toString());
+          el.scrollIntoView(true);
+          //设置后初始化锚点
+          this.dtanchor = "";
+        }
+    });
   }
 
   scdlDataList :Array<ScdlData> = new Array<ScdlData>();
   //初始锚点
   dtanchor : string ="";
+
+  pageLoaded :boolean = false;
   @ViewChild('contentScroll') contentScroll: Scroll;
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AgendaListPage');
-    this.contentScroll.addScrollEventListener(this.timepickerChange);
+    //this.contentScroll.addScrollEventListener(this.timepickerChange);
 
-  }
-
-  timepickerChange(e) {
-    console.log(e);
   }
 
   ionViewWillEnter() {
@@ -66,53 +75,12 @@ export class TdlPage {
     console.log("ionViewWillEnter")
   }
   ionViewDidEnter() {
-    if (this.dtanchor !="" && this.dtanchor !=null){
-      //画面scroll至锚点
-      let el = document.getElementById(this.dtanchor);
-      el.scrollIntoView(true);
-      //设置后初始化锚点
-      this.dtanchor = "";
-    }
 
-   /* setTimeout(()=>{
-    let el = document.getElementById('id'+10);
-    el.scrollIntoView(true);
-  },200);*/
     console.log("ionViewDidEnter")
   }
 
   init() {
-
-
-
-    /*for (let k=1 ; k<5;k++){
-      let scdldata = new ScdlData();
-      let a  : string = "";
-      if (k>9){
-        a = k + "";
-      }else {
-        a = "0" + k;
-      }
-      scdldata.d='2019/01/'+ a;
-      scdldata.scdl = new Array<ScdData>();
-      for (let i=0 ;i<k ;i++){
-        let scd = new ScdData();
-        scd.sd = scdldata.d;
-        scd.st = "11:0"+ i
-        scd.sn = "开会需要测试开会需要测试开会需要测试开会需要测开会需要测开会需要测试" + scd.st;
-        scd.p.jc = "#FFFF00";
-        scd.gs="0";
-        scd.fs.rn = "测试人员"+i;
-        scdldata.scdl.push(scd);
-        if (i>20){
-          break;
-        }
-      }
-      this.scdlDataList.push(scdldata);
-    }
-
-    }*/
-
+    this.pageLoaded = false;
     let flag = 0;
     let anchorid = 1;
 
@@ -166,13 +134,19 @@ export class TdlPage {
 
   }
 
-
-
-
-
-  loadMoreData(evt){
-    this.init();
-    evt.complete();
-    console.log("****************************************loadmoredata");
+  pageLoadOver(anchorid){
+    if (this.pageLoaded ){
+      return ""
+    }
+    if (this.scdlDataList.length >0 ){
+      let a = this.scdlDataList;
+      let b = a[a.length-1].scdl;
+      //当画面传入的anchorid与数据中的最后一个锚点一致时，表示加载结束
+      if (anchorid == b[b.length-1].anchorid){
+        this.pageLoaded = true;
+        this.events.publish('user:created',this.dtanchor);
+      }
+    }
+    return "";
   }
 }
