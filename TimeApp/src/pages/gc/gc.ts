@@ -23,7 +23,7 @@ import {FsService, PageFsData} from "../fs/fs.service";
              <ion-icon name="arrow-back"></ion-icon>
            </button>
          </ion-buttons>
-         <ion-title>好朋友</ion-title>
+         <ion-title>{{dc.gn}}({{dc.gc}})</ion-title>
          <ion-buttons right>
            <button ion-button (click)="toAddGroupMember()" color="danger">
              <!--<ion-icon name="add"></ion-icon>--> 添加
@@ -60,7 +60,7 @@ import {FsService, PageFsData} from "../fs/fs.service";
    `,
 })
 export class GcPage {
-  dc:PageDcData = null;
+  dc:PageDcData = new PageDcData();
   fsl:Array<PageFsData> = new Array<PageFsData>();
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
