@@ -2,9 +2,11 @@ package com.xiaoji.duan.sha;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -15,6 +17,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
@@ -55,7 +58,27 @@ public class MainVerticle extends AbstractVerticle {
 
 		Router router = Router.router(vertx);
 		
-		router.route().handler(CorsHandler.create("*").allowedHeader("*"));
+		Set<HttpMethod> allowedMethods = new HashSet<HttpMethod>();
+		allowedMethods.add(HttpMethod.OPTIONS);
+		allowedMethods.add(HttpMethod.GET);
+		allowedMethods.add(HttpMethod.POST);
+		allowedMethods.add(HttpMethod.PUT);
+		allowedMethods.add(HttpMethod.DELETE);
+		allowedMethods.add(HttpMethod.CONNECT);
+		allowedMethods.add(HttpMethod.PATCH);
+		allowedMethods.add(HttpMethod.HEAD);
+		allowedMethods.add(HttpMethod.TRACE);
+
+		router.route().handler(CorsHandler.create("*")
+				.allowedMethods(allowedMethods)
+				.allowedHeader("*")
+				.allowedHeader("Content-Type")
+				.allowedHeader("lt")
+				.allowedHeader("pi")
+				.allowedHeader("pv")
+				.allowedHeader("di")
+				.allowedHeader("dt")
+				.allowedHeader("ai"));
 		
 		StaticHandler staticfiles = StaticHandler.create().setCachingEnabled(false).setWebRoot("static");
 		router.route("/sha/static/*").handler(staticfiles);

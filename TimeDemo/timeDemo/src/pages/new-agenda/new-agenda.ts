@@ -69,9 +69,9 @@ export class NewAgendaPage {
   getTimeString(scrollLeft, clientWidth, scrollWidth) {
     let timeGap = (scrollLeft + (clientWidth / 2)) / scrollWidth * 2484;
     
-    let hour = timeGap / (this.blockGap * this.hourLines);
-    let minute = (timeGap - (hour * (this.blockGap * this.hourLines))) / this.blockGap * this.viewMinTime;
-    
+    let hour = Math.floor(timeGap / (this.blockGap * this.hourLines));
+    let minute = Math.floor((timeGap - (hour * (this.blockGap * this.hourLines))) / this.blockGap) * this.viewMinTime;
+
     return NewAgendaPage.formatNumber(hour, '00') + ":" + NewAgendaPage.formatNumber(minute, '00');
   }
   
@@ -91,7 +91,6 @@ export class NewAgendaPage {
   }
   
   timepickerChange(e) {
-    console.log(e);
     let scrollLeft = e.target.scrollLeft;
     let scrollWidth = e.target.scrollWidth;
     let clientWidth = e.target.clientWidth;
@@ -99,11 +98,16 @@ export class NewAgendaPage {
     let data = eval('(' + e.target.parentNode.attributes['data-g'].value + ')');
     
     function getTimeString(data, scrollLeft, clientWidth, scrollWidth) {
-      let timeGap = (scrollLeft + (clientWidth / 2)) / scrollWidth * 2484;
+      let timeGap = (scrollLeft + (clientWidth / 2)) * 2484 / scrollWidth;
       
-      let hour = timeGap / (data.blockGap * data.hourLines);
-      let minute = (timeGap - (hour * (data.blockGap * data.hourLines))) / data.blockGap * data.viewMinTime;
-      
+      let hour = Math.floor(timeGap / (data.blockGap * data.hourLines));
+      let minute = Math.floor((timeGap - (hour * (data.blockGap * data.hourLines))) / data.blockGap) * data.viewMinTime;
+      console.log(JSON.stringify(data) + "''" + scrollLeft + ".." + clientWidth + ".." + scrollWidth + ".." + hour + ".." + minute);
+
+      if (minute < 0) {
+        minute = 0;
+      }
+          
       return NewAgendaPage.formatNumber(hour, '00') + ":" + NewAgendaPage.formatNumber(minute, '00');
     }
 
@@ -111,13 +115,14 @@ export class NewAgendaPage {
       let hour = parseInt(time.slice(0, 2));
       let minute = parseInt(time.slice(3, 5));
 
-      return ((hour * data.hourLines + minute / data.viewMinTime) * data.blockGap) / 2484 * width;
+      return ((hour * data.hourLines + minute / data.viewMinTime) * data.blockGap) * width / 2484;
     }
   
     let time = getTimeString(data, scrollLeft, clientWidth, scrollWidth);
     document.getElementById('rangestart').childNodes[0].textContent = time;
     document.getElementById('svg_start').x1.baseVal.value = getTimeX(data, time, 2484);
     document.getElementById('svg_start').x2.baseVal.value = getTimeX(data, time, 2484);
+    console.log('timepicker changed');
   }
 
   public static formatNumber(num, pattern) {
@@ -129,7 +134,7 @@ export class NewAgendaPage {
     var fmt = fmtarr[0];
     var i = str.length - 1;
     var comma = false;
-    for (var f = fmt.length - 1; f >= 0; f--) {
+    for (let f = fmt.length - 1; f >= 0; f--) {
       switch (fmt.substr(f, 1)) {
       case '#':
         if (i >= 0)
@@ -163,7 +168,7 @@ export class NewAgendaPage {
     str = strarr.length > 1 ? strarr[1] : '';
     fmt = fmtarr.length > 1 ? fmtarr[1] : '';
     i = 0;
-    for (var f = 0; f < fmt.length; f++) {
+    for (let f = 0; f < fmt.length; f++) {
       switch (fmt.substr(f, 1)) {
       case '#':
         if (i < str.length)
