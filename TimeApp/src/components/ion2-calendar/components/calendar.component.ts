@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter,
   forwardRef,
-  Provider
+  Provider, ViewChild
 } from '@angular/core';
 
 import {
@@ -18,6 +18,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import * as moment from 'moment';
 import {defaults, pickModes} from "../config";
 import {FeedbackService} from "../../../service/cordova/feedback.service";
+import {MonthComponent} from "./month.component";
 
 export const ION_CAL_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
@@ -36,14 +37,17 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
         <div class="title">
           <ng-template [ngIf]="_showMonthPicker" [ngIfElse]="title">
             <div float-left>
-              <p><b class="animated" [ngClass]="{'flash fast':css==1,'flash fast':css==2}">{{monthOpt.original.month < 9 ? "0" + (monthOpt.original.month + 1) : monthOpt.original.month + 1}}</b>月</p>
+              <p><b class="animated" [ngClass]="{'flash fast':css==1,'flash fast':css==2}" [class.thisM]="_thisMonth" >{{_showMonth}}</b></p>
               <p float-left no-margin>
-                <span>{{monthOpt.original.year}}</span>
+                <span [class.thisM]="_thisMonth">{{monthOpt.original.year}}</span>
               </p>
 
               <ion-icon class="arrow-dropdown"
                         [name]="_view === 'days' ? 'md-arrow-dropright' : 'md-arrow-dropdown'"
-                        (click)="switchView()"></ion-icon>
+                        (click)="switchView()"  [class.thisM]="_thisMonth"></ion-icon>
+            </div>
+            <div float-right *ngIf="!_thisMonth" (click)="gotoToday()">
+              <img src="./assets/imgs/fhby.png" />
             </div>
           </ng-template>         
           <ng-template [ngIf]="_showToggleButtons">
@@ -94,11 +98,14 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
 })
 export class CalendarComponent implements ControlValueAccessor, OnInit {
 
+
   _d: CalendarModalOptions;
   _options: CalendarComponentOptions;
   _view: 'month' | 'days' = 'days';
   _calendarMonthValue: CalendarDay[] = [null, null];
   css: number = 1;
+  _showMonth;string;
+  _thisMonth:boolean;
 
   _showToggleButtons = false;
   get showToggleButtons(): boolean {
@@ -119,6 +126,8 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   monthOpt: CalendarMonth;
+  @ViewChild(MonthComponent)
+  monthComponent:MonthComponent;
 
   @Input() format: string = defaults.DATE_FORMAT;
   @Input() type: CalendarComponentTypeProperty = 'string';
@@ -138,11 +147,22 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     if (this.monthOpt && this.monthOpt.original) {
       this.monthOpt = this.createMonth(this.monthOpt.original.time);
 
+      this.showMonth();
+      this.thisMonth();
+
     }
   }
 
   get options(): CalendarComponentOptions {
     return this._options;
+  }
+
+  showMonth(){
+    this._showMonth = defaults.MONTH_FORMAT[this.monthOpt.original.month];
+  }
+
+  thisMonth(){
+    this._thisMonth = this.monthOpt.original.month == moment().month();
   }
 
 
@@ -184,23 +204,36 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   prevYear(): void {
+
+    //重新创建月清除选择状态    //
+    // this.monthComponent.onSelected(null);
     if (moment(this.monthOpt.original.time).year() === 1970) return;
     const backTime = moment(this.monthOpt.original.time).subtract(1, 'year').valueOf();
     this.monthOpt = this.createMonth(backTime);
+
   }
 
   nextYear(): void {
+
+    //重新创建月清除选择状态    //
+    // this.monthComponent.onSelected(null);
     const nextTime = moment(this.monthOpt.original.time).add(1, 'year').valueOf();
     this.monthOpt = this.createMonth(nextTime);
+
   }
 
   nextMonth(): void {
+
+    //重新创建月清除选择状态
+
+    // this.monthComponent.onSelected(null);
     const nextTime = moment(this.monthOpt.original.time).add(1, 'months').valueOf();
     this.monthChange.emit({
       oldMonth: this.calSvc.multiFormat(this.monthOpt.original.time),
       newMonth: this.calSvc.multiFormat(nextTime)
     });
     this.monthOpt = this.createMonth(nextTime);
+
   }
 
   canNext(): boolean {
@@ -209,12 +242,17 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   backMonth(): void {
+
+    //重新创建月清除选择状态
+    // this.monthComponent.onSelected(null);
+
     const backTime = moment(this.monthOpt.original.time).subtract(1, 'months').valueOf();
     this.monthChange.emit({
       oldMonth: this.calSvc.multiFormat(this.monthOpt.original.time),
       newMonth: this.calSvc.multiFormat(backTime)
     });
     this.monthOpt = this.createMonth(backTime);
+
   }
 
   //add by zhangjy
@@ -365,10 +403,14 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   createMonth(date: number): CalendarMonth {
+
     if (this.nextArray.length == 0) {
       this.configMonthEventDay(date);
     }
-    return this.calSvc.createMonthsByPeriod(date, 1, this._d)[0];
+    this.monthOpt =  this.calSvc.createMonthsByPeriod(date, 1, this._d)[0];
+    this.showMonth();
+    this.thisMonth();
+    return this.monthOpt ;
   }
 
   _createCalendarDay(value: CalendarComponentPayloadTypes): CalendarDay {
@@ -456,16 +498,18 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
 
 
   configMonthEventDay(time) {
-    let newMonth = this.calSvc.multiFormat(time);
-    console.info(newMonth.dateObj);
-    let month = moment(newMonth.dateObj).format('YYYY-MM');
 
-    let len = this.options.daysConfig.length;
-    this.options.daysConfig.splice(0, len - 1);
-    this.calSvc.findDayEventForMonth(month).then((data) => {
-      this.options.daysConfig.push(...data);
-      this.monthOpt = this.calSvc.createMonthsByPeriod(time, 1, this._d)[0];
-    })
+    // let newMonth = this.calSvc.multiFormat(time);
+    // console.info(newMonth.dateObj);
+    // let month = moment(newMonth.dateObj).format('YYYY-MM');
+    //
+    // let len = this.options.daysConfig.length;
+    // this.options.daysConfig.splice(0, len - 1);
+    // this.calSvc.findDayEventForMonth(month).then((data) => {
+    //   this.options.daysConfig.push(...data);
+    //   //this.monthOpt = this.calSvc.createMonthsByPeriod(time, 1, this._d)[0];
+    //
+    // })
   }
 
   flashDay(day) {
@@ -496,5 +540,9 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   flashMonth(date:number){
     this.initOpt();
     this.monthOpt = this.createMonth(date);
+  }
+
+  gotoToday() {
+    this.setViewDate(moment().format("YYYY/MM/DD"));
   }
 }

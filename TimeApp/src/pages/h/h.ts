@@ -20,32 +20,40 @@ import {BackComponent} from "../../components/backComponent/back";
 @IonicPage()
 @Component({
   selector: 'page-h',
-  template:`    
-  <ion-content>
-   <div class="haContent">
-      <div class="haCalendar">
-        <ion-calendar [options]="options"
-                      (onSelect)="onSelectDayEvent($event)"
-                      (onPress)="creNewEvent($event)">
-        </ion-calendar>
+  template: `
+    <ion-content>
+      <div class="haContent">
+        <div class="haCalendar">
+          <ion-calendar [options]="options"
+                        (onSelect)="onSelect($event)"
+                        (onPress)="onPress($event)">
+          </ion-calendar>
+        </div>
+        <ng-template [ngIf]="showDay">
+          <p class="tipDay"><span class="showDay">{{showDay}}</span><span
+            class="showDay2">{{showDay2}}</span></p>
+          <p class="tipDay"><a class="cls" (click)="gotolist()">
+            <ion-icon name="done-all"></ion-icon>
+            18 个事件</a></p>
+          <p class="tipDay"><a class="cls" (click)="newcd()">
+            <ion-icon name="add"></ion-icon>
+            添加新事件</a></p>
+        </ng-template>
       </div>
-    </div>
-    <div class="rightm">
-      &nbsp;
-    </div>
-    <BackComponent></BackComponent>
-    <AiComponent></AiComponent>
-  </ion-content>`,
+      <div class="rightm">
+        &nbsp;
+      </div>
+      <BackComponent></BackComponent>
+      <AiComponent></AiComponent>
+    </ion-content>`,
   providers: []
 })
 export class HPage {
   @ViewChild(CalendarComponent) ion2calendar: CalendarComponent;
-  @ViewChild(BackComponent) back:BackComponent;
-
-
+  @ViewChild(BackComponent) back: BackComponent;
   showDay: string;
   showDay2: string;
-  selectDay: Date;
+  selectDay: any;
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
   options: CalendarComponentOptions = {
     pickMode: 'single',
@@ -53,96 +61,98 @@ export class HPage {
     daysConfig: []
   };
 
-  event:any ;
+
   constructor(private modalCtr: ModalController,
               private utilService: UtilService,
               private xiaojiFeekback: FeedbackService,
               private events: Events,
-              private navController:NavController) {
+              private navController: NavController) {
     moment.locale('zh-cn');
   }
 
   ionViewDidLoad() {
 
-    let eventDate = new Date();
-    this.selectDay = eventDate;
-    let year = eventDate.getFullYear();
-    let month = eventDate.getMonth() + 1;
-    let day = eventDate.getDate();
-    this.showDay = this.utilService.showDay(moment().set({
-      'year': year,
-      'month': month - 1,
-      'date': day
-    }).format('YYYY-MM-DD'))
-    this.showDay2 = moment().set({'year': year, 'month': month - 1, 'date': day}).format('dddd YYYY 年 MM 月 DD 日');
-
-    this.events.subscribe("flashDay",(data)=>{
-      let day = data.day;
-      let event = data.event;
-      this.ion2calendar.flashDay(day);
-      this.onSelectDayEvent(event);
-    });
-
-    this.events.subscribe("flashMonth",(data)=>{
-      this.ion2calendar.flashMonth(this.selectDay.getTime());
-      if(this.event != undefined){
-        this.onSelectDayEvent(this.event);
-      }else{
-        //this.tdlPage.showScheduleLs({time:moment().valueOf()});
-      }
-    });
-  }
-
-  ionViewWillEnter(){
-
-  }
-
-
-  creNewEvent($event) {
-    this.xiaojiFeekback.audioHighhat();
-    this.event = $event;
-    let eventDate = new Date($event.time);
-    let tmp = moment(eventDate).format("YYYY-MM-DD");
-    //let sbPageModal = this.modalCtr.create(PageConfig._TDC_PAGE,{dateStr:tmp,event:$event});
-    //sbPageModal.present();
-  }
-
-  //查询当天日程
-  onSelectDayEvent($event) {
-    if (!$event) {
-      return;
-    }
-    // this.event = $event;
-    // let eventDate = new Date($event.time);
+    // let eventDate = new Date();
     // this.selectDay = eventDate;
     // let year = eventDate.getFullYear();
     // let month = eventDate.getMonth() + 1;
     // let day = eventDate.getDate();
-    // this.showDay = this.utilService.showDay(moment().set({
+    //
+    // this.showDay = moment().set({'year': year, 'month': month - 1, 'date': day}).format('dddd  MM月DD日');
+    // this.showDay2 = this.utilService.showDay(moment().set({
     //   'year': year,
     //   'month': month - 1,
     //   'date': day
-    // }).format('YYYY-MM-DD'));
-    // this.showDay2 = moment().set({'year': year, 'month': month - 1, 'date': day}).format('dddd YYYY 年 MM 月 DD 日');
+    // }).format('YYYY-MM-DD'))
 
-    this.navController.push(DataConfig.PAGE._TDL_PAGE,{selectDay:$event},{direction:"back",animation:"push"});
+    //
+    // this.events.subscribe("flashDay", (data) => {
+    //   let day = data.day;
+    //   let event = data.event;
+    //   this.ion2calendar.flashDay(day);
+    //   this.onSelectDayEvent(event);
+    // });
+    //
+    // this.events.subscribe("flashMonth", (data) => {
+    //   this.ion2calendar.flashMonth(this.selectDay.getTime());
+    //   if (this.event != undefined) {
+    //     this.onSelectDayEvent(this.event);
+    //   } else {
+    //     //this.tdlPage.showScheduleLs({time:moment().valueOf()});
+    //   }
+    // });
+  }
+
+  ionViewWillEnter() {
+
+  }
+
+
+  onPress($event) {
+    this.xiaojiFeekback.audioHighhat();
+    this.selectDay = $event;
+    this.newcd();
+  }
+
+  newcd() {
+    let eventDate = new Date(this.selectDay);
+    let tmp = moment(eventDate).format("YYYY/MM/DD");
+    let sbPageModal = this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {dateStr: tmp, event: this.selectDay});
+    sbPageModal.present();
+  }
+
+  //查询当天日程
+  onSelect($event) {
+    if (!$event) {
+      this.selectDay = $event;
+      this.showDay = null;
+      return;
+    }
+
+    if (this.selectDay == $event) {
+      this.gotolist();
+    } else {
+      this.selectDay = $event;
+      let eventDate = new Date($event.time);
+      let year = eventDate.getFullYear();
+      let month = eventDate.getMonth() + 1;
+      let day = eventDate.getDate();
+      this.showDay = moment().set({'year': year, 'month': month - 1, 'date': day}).format('dddd MM月DD日');
+      this.showDay2 = this.utilService.showDay(moment().set({
+        'year': year,
+        'month': month - 1,
+        'date': day
+      }).format('YYYY-MM-DD'));
+    }
+
+    //
     //this.tdlPage.showScheduleLs($event);
   }
 
-  gotoToday() {
-    this.ion2calendar.setViewDate(moment().format("YYYY-MM-DD"));
-  }
+  gotolist() {
 
-  openVoice() {
-    // let tab1RootModal = this.modalCtr.create(PageConfig._HB_PAGE);
-    // tab1RootModal.onDidDismiss(()=>{
-    //   //刷新月份事件标识
-    //   console.log(this.selectDay);
-    //   this.events.publish("flashMonth");
-    // });
-    // tab1RootModal.present();
+    this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: this.selectDay}, {direction: "back", animation: "push"});
   }
-
 
 }
 

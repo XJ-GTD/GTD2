@@ -129,7 +129,7 @@ export class UtilService {
   showDay(day:string):string{
     let str='今天';
     let date = moment(day);
-    let nowDate = moment(moment(new Date()).format("YYYY-MM-DD"));
+    let nowDate = moment(moment(new Date()).format("YYYY/MM/DD"));
     let days = date.diff(nowDate,'days');
     let months = date.diff(nowDate,'months');
     let years = date.diff(nowDate,'years');

@@ -1,21 +1,25 @@
 aicomponent{
   position: fixed;
   bottom: 0px;
-  height: 60%;
-  width: 100%;
-  z-index: -1;
+  width: 90%;
+  z-index: 1;
+  height: auto;
 
   .yyWarp{
-    bottom: 100px;
+    bottom: 90px;
     position: fixed;
     width: 100%;
-    opacity: 0.5;
+    opacity: .7;
+    height: auto
+  ;
+    background: #000;
   }
   .yyitem{
     background-color: transparent;
     font-size: 15px;
-    color: red;
     height: auto;
+    z-index: 999;
+    color: red;
   }
   .yyWarp > .yyitem:last-child{
     border-bottom: 0px !important;
