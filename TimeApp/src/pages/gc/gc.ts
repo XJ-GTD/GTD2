@@ -86,7 +86,7 @@ export class GcPage {
 
   goBack(){
     console.log('GcPage返回GlPage');
-    this.navCtrl.push("GlPage");
+    this.navCtrl.pop();
   }
   toAddGroupMember() {
     console.log("PePage跳转PgPage");

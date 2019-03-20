@@ -64,7 +64,9 @@ export class BlPage {
     console.log('ionViewDidLoad BlPage');
     this.getBl();
   }
-
+  goBack(){
+    this.navCtrl.pop();
+  }
   getBl(){
     this.blService.get().then(data=>{
       if(data != null){
