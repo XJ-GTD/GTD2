@@ -1,5 +1,8 @@
 package com.xiaoji.duan.ias;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 
@@ -8,6 +11,7 @@ import io.vertx.amqpbridge.AmqpBridgeOptions;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.eventbus.MessageProducer;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
@@ -39,7 +43,27 @@ public class MainVerticle extends AbstractVerticle {
 
 		Router router = Router.router(vertx);
 		
-		router.route().handler(CorsHandler.create("*").allowedHeader("*"));
+		Set<HttpMethod> allowedMethods = new HashSet<HttpMethod>();
+		allowedMethods.add(HttpMethod.OPTIONS);
+		allowedMethods.add(HttpMethod.GET);
+		allowedMethods.add(HttpMethod.POST);
+		allowedMethods.add(HttpMethod.PUT);
+		allowedMethods.add(HttpMethod.DELETE);
+		allowedMethods.add(HttpMethod.CONNECT);
+		allowedMethods.add(HttpMethod.PATCH);
+		allowedMethods.add(HttpMethod.HEAD);
+		allowedMethods.add(HttpMethod.TRACE);
+
+		router.route().handler(CorsHandler.create("*")
+				.allowedMethods(allowedMethods)
+				.allowedHeader("*")
+				.allowedHeader("Content-Type")
+				.allowedHeader("lt")
+				.allowedHeader("pi")
+				.allowedHeader("pv")
+				.allowedHeader("di")
+				.allowedHeader("dt")
+				.allowedHeader("ai"));
 
 		router.route("/ias/starter/audio").handler(BodyHandler.create());
 		router.route("/ias/starter/text").handler(BodyHandler.create());

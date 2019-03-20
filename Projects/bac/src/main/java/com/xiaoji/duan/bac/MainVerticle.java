@@ -2,12 +2,15 @@ package com.xiaoji.duan.bac;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -33,7 +36,27 @@ public class MainVerticle extends AbstractVerticle {
 
 		Router router = Router.router(vertx);
 		
-		router.route().handler(CorsHandler.create("*").allowedHeader("*"));
+		Set<HttpMethod> allowedMethods = new HashSet<HttpMethod>();
+		allowedMethods.add(HttpMethod.OPTIONS);
+		allowedMethods.add(HttpMethod.GET);
+		allowedMethods.add(HttpMethod.POST);
+		allowedMethods.add(HttpMethod.PUT);
+		allowedMethods.add(HttpMethod.DELETE);
+		allowedMethods.add(HttpMethod.CONNECT);
+		allowedMethods.add(HttpMethod.PATCH);
+		allowedMethods.add(HttpMethod.HEAD);
+		allowedMethods.add(HttpMethod.TRACE);
+
+		router.route().handler(CorsHandler.create("*")
+				.allowedMethods(allowedMethods)
+				.allowedHeader("*")
+				.allowedHeader("Content-Type")
+				.allowedHeader("lt")
+				.allowedHeader("pi")
+				.allowedHeader("pv")
+				.allowedHeader("di")
+				.allowedHeader("dt")
+				.allowedHeader("ai"));
 
 		router.route("/bac/backup").handler(BodyHandler.create());
 		router.route("/bac/recover").handler(BodyHandler.create());
