@@ -1,5 +1,5 @@
 page-pl {
- /* @font-face {
+  /*@font-face {
     font-family: 'PingFang-Regular';
     src: url('../assets/font/PingFang Regular.ttf');
   }*/
@@ -10,10 +10,6 @@ page-pl {
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
     background-color: #000;
-  }
-
-  ion-header ion-toolbar{
-    margin-top: 20px;
   }
 
   ion-content.content {
@@ -71,5 +67,9 @@ page-pl {
   .scroll-content{
     overflow-x: auto;
     overflow-y: auto;
+  }
+
+  .item-block{
+    min-height: 3.5rem;
   }
 }
