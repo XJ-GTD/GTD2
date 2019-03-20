@@ -35,7 +35,7 @@ import {LpService, PageLpData} from "./lp.service";
 
     <button ion-button clear color="dark" (click)="toLs()" class="no-padding no-margin-lr">改为用手机短信登录</button>
 
-    <p class="text-agreement"> <a class="text-anchor" href="#" (click)="toR()">创建帐户</a>即表示您同意我们的 <a class="text-anchor" (click)="userAgreement()">服务条款</a> 和 <a class="text-anchor" (click)="userAgreement()">隐私政策</a> 。</p>
+    <p class="text-agreement"> <a class="text-anchor" (click)="toR()">创建帐户</a>即表示您同意我们的 <a class="text-anchor" (click)="userAgreement()">服务条款</a> 和 <a class="text-anchor" (click)="userAgreement()">隐私政策</a> 。</p>
   </ion-content>`
 })
 export class LpPage {
@@ -47,9 +47,6 @@ export class LpPage {
               public alertCtrl: AlertController,
               private toastCtrl: ToastController,
               private lpService: LpService,) {
-  }
-
-  ionViewDidLoad() {
     console.log('ionViewDidLoad LpPage');
   }
 
@@ -78,9 +75,9 @@ export class LpPage {
     }else if(this.lpService.checkPhone(this.lpData.mobile ) == 3){ //验证手机号是否符合规范
 
       if (this.lpData.password == null || this.lpData.password == "" || this.lpData.password == undefined){     //判断密码是否为空
-        this.title("密码不能为空");
+        this.title("密码不console.log(\"登录按钮被点击\");能为空");
       } else{
-        console.log("登录按钮被点击");
+
         this.lpService.login(this.lpData).then(data=> {
           if (data.code != 0)
             throw  data;
