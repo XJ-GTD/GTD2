@@ -71,8 +71,17 @@ public class MainVerticle extends AbstractVerticle {
 		allowedMethods.add(HttpMethod.PATCH);
 		allowedMethods.add(HttpMethod.HEAD);
 		allowedMethods.add(HttpMethod.TRACE);
-		
-		router.route().handler(CorsHandler.create("*").allowedMethods(allowedMethods).allowedHeader("*"));
+
+		router.route().handler(CorsHandler.create("*")
+				.allowedMethods(allowedMethods)
+				.allowedHeader("*")
+				.allowedHeader("Content-Type")
+				.allowedHeader("lt")
+				.allowedHeader("pi")
+				.allowedHeader("pv")
+				.allowedHeader("di")
+				.allowedHeader("dt")
+				.allowedHeader("ai"));
 
 		StaticHandler staticfiles = StaticHandler.create().setCachingEnabled(false).setWebRoot("static");
 		router.route("/aup/static/*").handler(staticfiles);

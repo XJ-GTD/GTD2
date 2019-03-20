@@ -21,14 +21,14 @@ export class TdlService {
       //获取本地日程jn jg jc jt
       let sqll="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
         "left join gtd_b gb on gb.ui = gc.ui inner join gtd_j_h jh on jh.ji = gc.ji  " +
-        "where gc.sd<'"+ next+"' order by gc.ed asc limit 1000";
+        "where gc.sd<'"+ next+"' order by gc.sd asc limit 300";
       let rclL = await this.sqlExce.execSql(sqll);
       if(rclL && rclL.rows && rclL.rows.length>0){
         let len = rclL.rows.length-1;
         let i=0;
         let d=0;
         //循环获取30条数据
-        while(i<30 && d<300){
+        while(i<30 && d<100){
           let day = moment(next).subtract(d,'d').format("YYYY/MM/DD");
           let mp:ScdlData = new ScdlData();
           for(let j=0;j<rclL.rows.length;j++){
@@ -56,18 +56,19 @@ export class TdlService {
 
         }
       }
-
+      mpL.reverse()
+      //mpL.sort();
       //正序查出比当前日期大的日程
       let sql="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
         "left join gtd_b gb on gb.ui = gc.ui inner join gtd_j_h jh on jh.ji = gc.ji " +
-        "where gc.ed>='"+ next+"' order by gc.sd asc limit 500";
+        "where gc.ed>='"+ next+"' order by gc.sd asc limit 300";
       let rcnL = await this.sqlExce.execSql(sql);
       if(rcnL && rcnL.rows && rcnL.rows.length>0){
         let len = rcnL.rows.length-1;
         let i=0;
         let d=0;
         //循环获取60条数据
-        while(i<=60 && d<300){
+        while(i<=60 && d<100){
           let day = moment(next).add(d,'d').format("YYYY/MM/DD");
           let mp:ScdlData = new ScdlData();
           for(let j=0;j<rcnL.rows.length;j++){
@@ -203,9 +204,9 @@ export class ScdData {
   wtt: number;//时间戳
   du:string ="";//消息读取状态
   gs:string ="";//归属
-  fssshow:string =""//参与人画面显示用
-  cbkcolor:string =""//每个日程颜色画面显示用
-  cid:Number =0//scroll锚点
+  fssshow:string ="";//参与人画面显示用
+  cbkcolor:string ="";//每个日程颜色画面显示用
+  anchorid:string ="";//scroll锚点
 
 
   //特殊日期日程
