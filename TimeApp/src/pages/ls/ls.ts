@@ -54,7 +54,7 @@ import {LsService, PageLsData} from "./ls.service";
   
     <button ion-button clear color="dark" (click)="toLp()" class="no-padding no-margin-lr">改为用冥王星帐户登录</button>
   
-    <p class="text-agreement"> <a class="text-anchor" href="#" (click)="toR()">创建帐户</a>即表示您同意我们的 <a class="text-anchor" (click)="userAgreement()">服务条款</a> 和 <a class="text-anchor" (click)="userAgreement()">隐私政策</a> 。</p>
+    <p class="text-agreement"> <a class="text-anchor" (click)="toR()">创建帐户</a>即表示您同意我们的 <a class="text-anchor" (click)="userAgreement()">服务条款</a> 和 <a class="text-anchor" (click)="userAgreement()">隐私政策</a> 。</p>
   </ion-content>
   `
 })
@@ -64,7 +64,6 @@ export class LsPage {
 
   lsData:PageLsData = new PageLsData();
   errorCode:any;
-  checkBoxClick:any = true;
   timeOut:any = "发送验证码";
   timer:any;
 
@@ -72,9 +71,6 @@ export class LsPage {
               public alertCtrl: AlertController,
               private toastCtrl: ToastController,
               private lsService: LsService,) {
-  }
-
-  ionViewDidLoad() {
     console.log('ionViewDidLoad LsPage');
   }
 
@@ -82,7 +78,7 @@ export class LsPage {
     this.navCtrl.pop();
   }
 
-  toLp(item) {
+  toLp() {
     this.navCtrl.push('LpPage');
   }
 
@@ -112,9 +108,7 @@ export class LsPage {
 
       if (this.lsData.authCode == null || this.lsData.authCode == "" || this.lsData.authCode == undefined){     //判断验证码是否为空
         this.title("验证码不能为空");
-      } else if (this.checkBoxClick != true){  //判断用户协议是否选择
-        this.title("请读阅并勾选用户协议");
-      }else if(this.lsData.verifykey == "") {
+      } else if(this.lsData.verifykey == "") {
         this.title("请发送短信并填写正确的短信验证码");
       } else{
         this.lsService.login(this.lsData).then(data=> {

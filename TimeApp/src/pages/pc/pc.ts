@@ -139,7 +139,7 @@ export class PcPage {
   }
 
   goBack() {
-    this.navCtrl.pop();
+    this.navCtrl.setRoot(DataConfig.PAGE._PL_PAGE);
   }
 
   save(){

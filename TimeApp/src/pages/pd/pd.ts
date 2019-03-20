@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {AlertController, IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
+import {ActionSheetController, AlertController, IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
 import {PagePDPro, PdService} from "./pd.service";
 import {AgdPro} from "../../service/restful/agdsev";
 import {DataConfig} from "../../service/config/data.config";
@@ -25,7 +25,7 @@ import {DataConfig} from "../../service/config/data.config";
         </ion-buttons>
 
         <ion-buttons right>
-          <button ion-button color="danger" (click)="delPlan(jh)">
+          <button ion-button color="danger" (click)="more(jh)">
             <ion-icon name="remove-circle-outline"></ion-icon>
           </button>
         </ion-buttons>
@@ -57,7 +57,7 @@ import {DataConfig} from "../../service/config/data.config";
                 <div class="time-slot">
                   <p class="app-agenda-time">{{(agenda.st != null && agenda.st.length === 0)? '全天' : agenda.st.slice(0, 5)}}</p>
                 </div>
-                <div class="pointer-slot"><span class="plan-color-pointer"><div class="color-dot color-blue" [ngStyle]="{'background-color': plan.pn.jc }"></div></span></div>
+                <div class="pointer-slot"><span class="plan-color-pointer"><div class="color-dot" [ngStyle]="{'background-color': plan.pn.jc }"></div></span></div>
               </div>
               <div class="agenda-col-content right-off left-off" [ngClass]="{'agenda-content': ((i + 1) === plan.pa.length)? false : (agenda.adt.slice(0, 10) === plan.pa[i + 1]['adt'].slice(0, 10))}" justify-content-start>
                 <p class="text-left app-agenda-title">{{agenda.at}}</p>
@@ -84,6 +84,7 @@ export class PdPage {
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
               private alertCtrl: AlertController,
+              private actionSheetCtrl: ActionSheetController,
               private pdService:PdService) {
 
     console.log('ionViewDidLoad PdPage');
@@ -98,24 +99,60 @@ export class PdPage {
   }
 
   goBack() {
-    this.navCtrl.pop();
+    this.navCtrl.setRoot(DataConfig.PAGE._PL_PAGE);
   }
 
-  delPlan(jh:PagePDPro){
-    let alert = this.alertCtrl.create({
-      title: '',
-      subTitle: '确定要删除计划“' + jh.jn +"”?",
-      buttons: [{
-        text: '取消',
-      }, {
-        text: '确定',
-        handler: () => {
-          this.pdService.delete(jh.ji).then(data=>{
-            this.navCtrl.push(DataConfig.PAGE._PL_PAGE,{});
-          })
+  more(jh:PagePDPro){
+    let actionSheet = this.actionSheetCtrl.create({
+      //title: 'Modify your album',
+      buttons: [
+        {
+          text: '分享',
+          role: 'share',
+          handler: () => {
+            console.log('share clicked');
+          }
+        },
+        {
+          text: '删除',
+          handler: () => {
+            if(jh.jt == "1"){
+              let alert = this.alertCtrl.create({
+                title: '',
+                subTitle: '系统计划请在计划一栏页面长按删除',
+                buttons: [{
+                  text: '取消',
+                }]
+              });
+              alert.present();
+            }else{
+              let alert = this.alertCtrl.create({
+                title: '',
+                subTitle: '确定要删除计划“' + jh.jn +"”?",
+                buttons: [{
+                  text: '取消',
+                }, {
+                  text: '确定',
+                  handler: () => {
+                    this.pdService.delete(jh.ji).then(data=>{
+                      this.navCtrl.setRoot(DataConfig.PAGE._PL_PAGE);
+                    })
+                  }
+                }]
+              });
+              alert.present();
+            }
+          }
+        },
+        {
+          text: '取消',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
         }
-      }]
+      ]
     });
-    alert.present();
+    actionSheet.present();
   }
 }
