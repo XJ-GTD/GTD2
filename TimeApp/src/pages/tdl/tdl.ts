@@ -12,7 +12,24 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
 @IonicPage()
 @Component({
   selector: 'page-tdl',
-  template: `<ion-content>
+  template: `<ion-header no-border>
+    <ion-toolbar>
+      <ion-grid>
+        <ion-row >
+          <div class="w-75 leftside leftpanding ">
+            <ion-buttons left>
+              <button class ="backbtn-set" ion-button icon-only (click)="goBack()" color="danger">
+                <ion-icon name="arrow-back"></ion-icon>
+              </button>
+            </ion-buttons>
+          </div>
+          <div class="w-auto rightside  "></div>
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+  </ion-header>
+    <ion-content >
+      <div class = "spacediv-set"> </div>
     <ion-scroll id="ddd" #contentScroll scrollY="true">
     <ion-grid>
       <ion-row *ngFor="let sdl of scdlDataList">
@@ -50,7 +67,9 @@ export class TdlPage {
         if (data !="" && data !=null){
           //画面scroll至锚点
           let el = document.getElementById(data.toString());
+
           el.scrollIntoView(true);
+          //el.scrollTop = 44;
           //设置后初始化锚点
           this.dtanchor = "";
         }
@@ -85,7 +104,8 @@ export class TdlPage {
     let anchorid = 1;
 
     let sel =this.navParams.get("selectDay");
-    let condi = moment(sel.time).format("YYYY/MM/DD");
+    let condi = moment(sel).format("YYYY/MM/DD");
+    condi ="2018/12/28"
     console.log("selectDay:"+condi);
     this.tdlServ.get(condi).then(data =>{
       this.scdlDataList = data;
@@ -148,5 +168,9 @@ export class TdlPage {
       }
     }
     return "";
+  }
+
+  goBack(){
+    this.navCtrl.pop();
   }
 }

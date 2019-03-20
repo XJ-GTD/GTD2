@@ -124,4 +124,22 @@ page-tdl {
   ion-scroll {
    height: 100%;
   }
+
+  .scroll-content{
+    margin-top: 0px;
+  }
+
+  .toolbar-ios {
+    padding: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    height: 44px;
+  }
+
+  .spacediv-set {
+    height: 44px;
+  }
+  .backbtn-set{
+    top:-4px;
+  }
 }

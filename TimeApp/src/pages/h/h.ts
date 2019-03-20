@@ -125,7 +125,7 @@ export class HPage {
     // }).format('YYYY-MM-DD'));
     // this.showDay2 = moment().set({'year': year, 'month': month - 1, 'date': day}).format('dddd YYYY 年 MM 月 DD 日');
 
-    this.navController.push(DataConfig.PAGE._TDL_PAGE,{selectDay:$event},{direction:"back",animation:"push"});
+    this.navController.push(DataConfig.PAGE._TDL_PAGE,{selectDay:$event.time},{direction:"back",animation:"push"});
     //this.tdlPage.showScheduleLs($event);
   }
 
