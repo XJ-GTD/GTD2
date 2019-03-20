@@ -95,11 +95,9 @@ export class FdService {
   removeBlack(mpn:string):Promise<BsModel<any>>{
     return new Promise<BsModel<any>>((resolve, reject)=>{
       let bla = new BlaReq();
-      if(!bla || !bla.mpn){
-        bla.mpn= "15737921611";
-      }
       let bs = new BsModel<any>();
-      this.blasev.add(bla).then(data=>{
+      bla.mpn = mpn;
+      this.blasev.remove(bla).then(data=>{
         bs = data;
         resolve(bs);
       })
