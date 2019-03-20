@@ -1,0 +1,52 @@
+scroll-select {
+  width: 100vmin;
+  
+  .img-btn {
+    background-color: transparent;
+  }
+  
+  .slide-btn {
+    height: 6.8vmin;
+    width: 1.2vmin;
+  }
+  
+  div.option {
+    position: relative;
+    width: 100vmin;
+    text-align: center;
+  }
+  
+  .scroll-box {
+    flex: 1;
+    height: 6.8vmin;
+    position: relative;
+  }
+  
+  .scroll-box-content {
+    overflow-x: auto;
+    overflow-y: hidden;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    z-index: 1;
+    display: block;
+    -webkit-overflow-scrolling: touch;
+    will-change: scroll-position;
+    contain: size style layout;
+  }
+  
+  .scroll-box-zoom-wrapper {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    float: left;
+    margin: 0 -43.5px;
+    overflow: hidden;
+  }
+}

@@ -1,0 +1,22 @@
+<!-- Generated template for the ScrollSelectComponent component -->
+<div class="grid">
+  <div class="row" align-items-center justify-content-between>
+    <div>
+      <button ion-button class="img-btn" (click)="prev()" clear [disabled]="isFirst()">
+        <img class="slide-btn" src="./assets/imgs/page-prev.png">
+      </button>
+    </div>
+    <div class="scroll-box">
+      <div class="scroll-box-content" id="scroll-box-content" #scrollBox>
+        <div class="scroll-box-zoom-wrapper">
+          <div class="option align-items-center" *ngFor="let option of options;" [attr.value]="option.value">{{option.caption}}</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button ion-button class="img-btn" (click)="next()" clear [disabled]="isLast()">
+        <img class="slide-btn" src="./assets/imgs/page-next.png">
+      </button>
+    </div>
+  </div>
+</div>

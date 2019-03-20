@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Scroll } from 'ionic-angular';
 
 /**
  * Generated class for the NewAgendaPage page.
@@ -28,6 +28,8 @@ export class NewAgendaPage {
   blockGap: number;
   hourLines: number;
   scrolldata: string = '{}';
+  labels: array = [{value:0,caption:'工作'}, {value:1,caption:'个人'}];
+  months: array = [{value:'01',caption:'一月'}, {value:'02',caption:'二月'}, {value:'03',caption:'三月'}, {value:'04',caption:'四月'}, {value:'05',caption:'五月'}, {value:'06',caption:'六月'}, {value:'07',caption:'七月'}, {value:'08',caption:'八月'}, {value:'09',caption:'九月'}, {value:'10',caption:'十月'}, {value:'11',caption:'十一月'}, {value:'12',caption:'十二月'}];
   
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.hourLines = 60 / this.viewMinTime;

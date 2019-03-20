@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, ToastController} from 'ionic-angular';
 import {PageRData, RService} from "./r.service";
-
 
 /**
  * Generated class for the 注册 page.
@@ -40,7 +39,7 @@ import {PageRData, RService} from "./r.service";
             <ion-input type="tel" placeholder="手机号码" [(ngModel)]="rdata.mobile" (ionBlur)="checkPhone()"></ion-input>
           </div>
           <div>
-            <button ion-fab color="success"><ion-icon name="arrow-forward" (click)="register()" ></ion-icon></button>
+            <button ion-fab color="success" (click)="register()"><ion-icon name="arrow-forward" ></ion-icon></button>
           </div>
         </ion-row>
         <ion-row justify-content-start align-items-center>
@@ -71,21 +70,14 @@ export class RPage {
 
   rdata: PageRData = new PageRData();
 
-  checkBoxClick: any;
-  errorCode: any;
+  errorCode: number = 0;
   timeOut: any = "发送验证码";
   timer: any;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
               private alertCtrl: AlertController,
-              private rService: RService,
               private toastCtrl: ToastController,
-  ) {
-
-  }
-
-  ionViewDidLoad() {
+              private rService: RService,) {
     console.log('ionViewDidLoad RPage');
   }
 
@@ -127,17 +119,16 @@ export class RPage {
         this.title("密码不能为空");
       } else if (this.rdata.username == null || this.rdata.username == "" || this.rdata.username == undefined){     //用户名是否为空
         this.title("用户名不能为空");
-      }else if (this.checkBoxClick != true){  //判断用户协议是否选择
-        this.title("请读阅并勾选用户协议");
       } else if(this.rdata.verifykey == "") {
         this.title("请发送短信并填写正确的短信验证码");
       } else{
-        //注册成功
+        console.log("注册按钮被点击");
         this.rService.signup(this.rdata).then(data => {
           if (data.code != 0)
             throw  data;
 
-          console.debug("注册成功返回信息::" + JSON.stringify(data));
+          console.debug("注册并密码登录成功::" + JSON.stringify(data));
+          this.navCtrl.setRoot('MPage');
         }).catch(res=>{
           //注册异常
           console.log(res);

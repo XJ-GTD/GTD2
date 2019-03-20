@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
 import {PersonRestful, SignData} from "../../service/restful/personsev";
 import {InData, SmsRestful} from "../../service/restful/smssev";
-import {LpService, PageLpData} from "../lp/lp.service";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {UtilService} from "../../service/util-service/util.service";
+import {LpService, PageLpData} from "../lp/lp.service";
 
 @Injectable()
 export class RService {
@@ -36,7 +36,6 @@ export class RService {
         return this.lpService.login(lpdata);
 
       }).then(data => {
-        console.log("注册跳转登录成功"+ JSON.stringify(data));
         resolve(rdata)
       }).catch(err => {
         reject(err);
@@ -68,11 +67,11 @@ export class RService {
 }
 
 export class PageRData {
-  mobile: string = "";
-  password: string = "";
-  authCode: string = "";
-  verifykey:string = "";
-  username:string = "";
-  code: number = 0;
-  message: string = "";
+  mobile : string = "";
+  password : string = "";
+  authCode : string = "";
+  verifykey : string = "";
+  username : string = "";
+  code : number = 0;
+  message : string = "";
 }
