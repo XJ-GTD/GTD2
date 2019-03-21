@@ -9,7 +9,7 @@
     <div class="scroll-box">
       <div class="scroll-box-content" id="scroll-box-content" #scrollBox>
         <div class="scroll-box-zoom-wrapper">
-          <div class="option align-items-center" *ngFor="let option of options;" [attr.value]="option.value">{{option.caption}}</div>
+          <div class="option align-items-center" *ngFor="let option of options;" [attr.value]="option.value" [innerHtml]="assembleHTML(option.caption)"></div>
         </div>
       </div>
     </div>
