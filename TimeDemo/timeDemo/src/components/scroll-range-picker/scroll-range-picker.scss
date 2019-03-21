@@ -24,6 +24,26 @@ scroll-range-picker {
     contain: size style layout;
   }
   
+  .scroll-box-pointer {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 16px 0;
+    width: 100%;
+    position: absolute;
+  }
+  
+  .scroll-box-pointer .scroll-box-zoom-wrapper {
+    margin: 0;
+  }
+  
+  .scroll-box-pointer .scroll-box-zoom-wrapper,
+  .scroll-box-pointer .svg-scroller {
+    width: 100vmin;
+    height: 100%;
+  }
+  
   .scroll-box-zoom-wrapper {
     display: -webkit-box;
     display: -webkit-flex;
@@ -33,11 +53,16 @@ scroll-range-picker {
     -ms-flex-wrap: nowrap;
     flex-wrap: nowrap;
     float: left;
-    margin: 0 -32.5px;
+    margin: 0 -16.5px;
     overflow: hidden;
   }
 
+  .scroll-box-pointer .svg-scroller,
+  .scroll-box-pointer #timerange-picker-pointer {
+    margin: 0;
+    height: 100%;
+  }
+
   .svg-scroller {
-    margin-left: -16px;
   }
 }

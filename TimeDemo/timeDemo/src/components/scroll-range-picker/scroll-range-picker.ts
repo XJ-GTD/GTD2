@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, ViewChild, Input } from '@angular/core';
+import { ElementRef, Events } from 'ionic-angular';
 
 /**
  * Generated class for the ScrollRangePickerComponent component.
@@ -12,15 +13,17 @@ import { Component, Input } from '@angular/core';
 })
 export class ScrollRangePickerComponent {
 
+  @ViewChild('scrollBox', { read: ElementRef }) _scrollBox: ElementRef;
   viewBox: string = '0 0 2484 180';
+  viewBoxPointer: string = '0 0 2484 180';
   @Input('max')
   viewHours: number = 24; // 12小时
   @Input('min')
   viewMinTime: number = 5; // 5分钟
-  timeLines: array = [];
+  timeLines: Array = [];
   @Input()
   titles: any = {'6': '上午', '12': '下午', '20': '晚上'};
-  blockTitles: array = [];
+  blockTitles: Array = [];
   pushedtitles: any = {'6': false, '12': false, '20': false};
   startX: number;
   endX: number;
@@ -54,6 +57,95 @@ export class ScrollRangePickerComponent {
         this.timeLines.push(timeLineX);
       }
     }
+    
+    let clientWidth = this._scrollBox.nativeElement.clientWidth;
+    let scrollWidth = this._scrollBox.nativeElement.scrollWidth;
+    this.startX = this.getTimeX('6:00', 2484);
+    let scrollLeft = this.getScrollLeft('15:00', clientWidth, scrollWidth);
+    this._scrollBox.nativeElement.scrollLeft = scrollLeft;
   }
 
+  getTimeString(scrollLeft, clientWidth, scrollWidth) {
+    let timeGap = (scrollLeft + (clientWidth / 2)) / scrollWidth * 2484;
+    
+    let hour = Math.floor(timeGap / (this.blockGap * this.hourLines));
+    let minute = Math.floor((timeGap - (hour * (this.blockGap * this.hourLines))) / this.blockGap) * this.viewMinTime;
+
+    return this.formatNumber(hour, '00') + ":" + this.formatNumber(minute, '00');
+  }
+  
+  getTimeX(time, width) {
+    let hour = parseInt(time.slice(0, 2));
+    let minute = parseInt(time.slice(3, 5));
+
+    return (Math.floor((hour * this.hourLines + minute / this.viewMinTime)) * this.blockGap) / 2484 * width;
+  }
+  
+  getScrollLeft(time, clientWidth, scrollWidth) {
+    let timeX = this.getTimeX(time, scrollWidth);
+    
+    let leftX = timeX - (clientWidth / 2);
+    
+    return leftX >= 0 ? leftX : 0;
+  }
+  
+  formatNumber(num, pattern) {
+    var strarr = num ? num.toString().split('.') : ['0'];
+    var fmtarr = pattern ? pattern.split('.') : [''];
+    var retstr = '';
+    // 整数部分
+    var str = strarr[0];
+    var fmt = fmtarr[0];
+    var i = str.length - 1;
+    var comma = false;
+    for (let f = fmt.length - 1; f >= 0; f--) {
+      switch (fmt.substr(f, 1)) {
+      case '#':
+        if (i >= 0)
+          retstr = str.substr(i--, 1) + retstr;
+        break;
+      case '0':
+        if (i >= 0)
+          retstr = str.substr(i--, 1) + retstr;
+        else
+          retstr = '0' + retstr;
+        break;
+      case ',':
+        comma = true;
+        retstr = ',' + retstr;
+        break;
+      }
+    }
+    if (i >= 0) {
+      if (comma) {
+        var l = str.length;
+        for (; i >= 0; i--) {
+          retstr = str.substr(i, 1) + retstr;
+          if (i > 0 && ((l - i) % 3) == 0)
+            retstr = ',' + retstr;
+        }
+      } else
+        retstr = str.substr(0, i + 1) + retstr;
+    }
+    retstr = retstr + '.';
+    // 处理小数部分
+    str = strarr.length > 1 ? strarr[1] : '';
+    fmt = fmtarr.length > 1 ? fmtarr[1] : '';
+    i = 0;
+    for (let f = 0; f < fmt.length; f++) {
+      switch (fmt.substr(f, 1)) {
+      case '#':
+        if (i < str.length)
+          retstr += str.substr(i++, 1);
+        break;
+      case '0':
+        if (i < str.length)
+          retstr += str.substr(i++, 1);
+        else
+          retstr += '0';
+        break;
+      }
+    }
+    return retstr.replace(/^,+/, '').replace(/\.$/, '');
+  }
 }
