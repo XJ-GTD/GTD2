@@ -16,7 +16,7 @@ export class TdlService {
    * @param {string} next
    * @returns {Promise<ScdlData[]>}
    */
-  async down(next:string){
+  async down(next:string,maxd){
     let mpL = new Array<ScdlData>();
     if(next != null && next !=""){
 
@@ -30,7 +30,7 @@ export class TdlService {
         let i=0;
         let d=0;
         //循环获取30条数据
-        while(i<30 && d<100){
+        while(i<30 && d<maxd){
           let day = moment(next).subtract(d,'d').format("YYYY/MM/DD");
           let mp:ScdlData = new ScdlData();
           for(let j=0;j<rclL.rows.length;j++){
@@ -67,7 +67,7 @@ export class TdlService {
    * @param {string} next
    * @returns {Promise<ScdlData[]>}
    */
-  async up(next:string){
+  async up(next:string,maxd){
     let mpL = new Array<ScdlData>();
 
     if(next != null && next !=""){
@@ -81,7 +81,7 @@ export class TdlService {
         let i=0;
         let d=0;
         //循环获取60条数据
-        while(i<=60 && d<100){
+        while(i<=60 && d<maxd){
           let day = moment(next).add(d,'d').format("YYYY/MM/DD");
           let mp:ScdlData = new ScdlData();
           for(let j=0;j<rcnL.rows.length;j++){
