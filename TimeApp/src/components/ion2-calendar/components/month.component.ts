@@ -32,21 +32,18 @@ export const MONTH_VALUE_ACCESSOR: any = {
                 <div class="borderDiv"
                   [class.on-selected]="isSelected(day.time)">
                   <button type='button'
-                          [class]="'days-btn '"
-                          [class.someting]="day.cssClass !=''"
-                          [class.today]="day.isToday"
+                          [class]="'days-btn warp-days-btn'"                          
+                          [class.marked]="day.marked"
+                          [class.hassometing]="day.hassometing"
+                          [class.busysometing]="day.busysometing"
                           (click)="onSelected(day)"
                           (press)="onPressed(day)"
                           [class.last-month-day]="day.isLastMonth"
                           [class.next-month-day]="day.isNextMonth"
+                          [class.today]="day.isToday"
                           [disabled]="day.disable">
                     <p>{{day.title}}</p>
                     <small *ngIf="day.subTitle">{{day?.subTitle}}</small>
-                  </button>
-                  <button  *ngIf="!day.isNextMonth && !day.isLastMonth"
-                           [class]="'days-btn warp-days-btn ' + day.cssClass"
-                           [class.marked]="day.marked">
-                    
                   </button>
                 </div>
               </ng-container>
@@ -54,37 +51,7 @@ export const MONTH_VALUE_ACCESSOR: any = {
           </ng-template>
         </div>
       </ng-template>
-
-      <ng-template #rangeBox>
-        <div class="days-box">
-          <ng-template ngFor let-day [ngForOf]="month.days" [ngForTrackBy]="trackByTime">
-            <div class="days"
-                 [class.startSelection]="isStartSelection(day)"
-                 [class.endSelection]="isEndSelection(day)"
-                 [class.is-first-wrap]="day?.isFirst"
-                 [class.is-last-wrap]="day?.isLast"
-                 [class.between]="isBetween(day)">
-              <ng-container *ngIf="day">
-                <button type='button'
-                        [class]="'days-btn ' + day.cssClass"
-                        [class.today]="day.isToday"
-                        (click)="onSelected(day)"
-                        [class.marked]="day.marked"
-                        [class.last-month-day]="day.isLastMonth"
-                        [class.next-month-day]="day.isNextMonth"
-                        [class.is-first]="day.isFirst"
-                        [class.is-last]="day.isLast"
-                        [class.on-selected]="isSelected(day.time)"
-                        [disabled]="day.disable">
-                  <p>{{day.title}}</p>
-                  <small *ngIf="day.subTitle">{{day?.subTitle}}</small>
-                </button>
-              </ng-container>
-
-            </div>
-          </ng-template>
-        </div>
-      </ng-template>
+      
     </div>
   `
 })

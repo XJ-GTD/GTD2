@@ -102,7 +102,7 @@ export class AgdbusiService {
     }
 
     //0：关闭，1：每日，2：每周，3：每月，4：每年
-    while(moment(date).isAfter(startD)) {
+    while(moment(date).isAfter(startD) || moment(date).isSame(startD)) {
       if (type == "1"){
         startD = startD.add(1,"d");
       }else if (type=="2"){
@@ -143,7 +143,7 @@ export class AgdbusiService {
   getOdAgd(day:string):Promise<BsModel<Array<ScdData>>>{
     return new Promise((resolve, reject) => {
       let sql = 'select si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,tx from gtd_c gc  ' +
-        'where gc.sd <="' + day +'" and gc.ed>="'+day+'"';
+        'where gc.sd ="' + day + '"';
       let bs = new BsModel<Array<ScdData>>();
       this.sqlexec.execSql(sql).then(data=>{
         if(data && data.rows && data.rows.length>0){

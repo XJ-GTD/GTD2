@@ -10,11 +10,14 @@ import {
 } from '../calendar.model'
 import * as moment from 'moment';
 import { defaults, pickModes } from "../config";
+import {AgdbusiService} from "../../../service/util-service/agdbusi.service";
+import {ScdData} from "../../../pages/tdl/tdl.service";
 
 @Injectable()
 export class CalendarService {
 
   constructor(
+    private busiService:AgdbusiService
   ) {
 
   }
@@ -97,7 +100,7 @@ export class CalendarService {
     }
   }
 
-  findDayConfig(day: any, opt: CalendarModalOptions): any {
+  findDayConfig(day: any, opt: CalendarModalOptions): DayConfig {
 
     if (opt.daysConfig.length <= 0) return null;
     return opt.daysConfig.find((n) => day.isSame(n.date, 'day'))
@@ -162,7 +165,12 @@ export class CalendarService {
       cssClass: dayConfig ? dayConfig.cssClass || '' : '',
       disable: _disable,
       isFirst: date.date() === 1,
-      isLast: date.date() === date.daysInMonth()
+      isLast: date.date() === date.daysInMonth(),
+      hasting: dayConfig ? dayConfig.hasting || false : false,
+      things:dayConfig ? dayConfig.things || 0 : 0,
+      newmessage: dayConfig ? dayConfig.newmessage || 0 : 0,
+      hassometing:dayConfig ? dayConfig.hassometing || false : false,
+      busysometing:dayConfig ? dayConfig.busysometing || false :false,
     }
   }
 
@@ -271,8 +279,68 @@ export class CalendarService {
     );
   }
 
-  findDayEventForDay(day):Promise<DayConfig> {
-    return new Promise<DayConfig>((resolve, reject) =>{resolve()});
+  //参数 ‘YYYY/MM/DD’
+  findDayEventForDay(day:string):Promise<CalendarDay> {
+    return new Promise<CalendarDay>((resolve, reject) =>{
+     this.busiService.getOdAgd(day).then(localDay=>{
+
+       let calendarDay:CalendarDay = new class implements CalendarDay {
+         busysometing: boolean;
+         cssClass: string;
+         disable: boolean;
+         hassometing: boolean;
+         hasting: boolean;
+         isFirst: boolean;
+         isLast: boolean;
+         isLastMonth: boolean;
+         isNextMonth: boolean;
+         isToday: boolean;
+         marked: boolean;
+         newmessage: number;
+         selected: boolean;
+         style: { title?: string; subTitle?: string };
+         subTitle: string;
+         things: number;
+         time: number;
+         title: string;
+       }
+
+       if (!localDay.data){
+
+         resolve(calendarDay);
+         return;
+       }
+       let thing:number = localDay.data.length;
+       let cssClass:string = "";
+       let newmessage:number = 0;
+       if (thing > 0 ){
+         cssClass = "hassometing";
+       }else if (thing > 5 ){
+         cssClass = "busysometing";
+       }
+       for(let scdData of localDay.data){
+         if (scdData.du == "0"){
+           newmessage ++;
+         }
+       }
+       calendarDay.time = moment(day).valueOf();
+       calendarDay.disable = false;
+       calendarDay.cssClass = cssClass;
+       calendarDay.hasting = thing > 0;
+       calendarDay.marked = false;
+       calendarDay.newmessage = newmessage;
+       calendarDay.subTitle = newmessage > 0?`\u2022`:"";
+       calendarDay.things = thing;
+       calendarDay.title = new Date(moment(day).valueOf()).getDate().toString();
+       calendarDay.isToday = moment().isSame(calendarDay.time, 'days');
+       calendarDay.marked = false;
+       calendarDay.busysometing =  cssClass == "busysometing";
+       calendarDay.hassometing =  cssClass == "hassometing";
+
+       resolve(calendarDay);
+
+     })
+    });
   }
 
 

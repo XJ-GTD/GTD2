@@ -24,11 +24,18 @@ export interface CalendarDay {
   };
   isFirst?: boolean;
   isLast?: boolean;
+
+  hasting?: boolean;
+  things?: number;
+  newmessage?: number;
+  hassometing:boolean;
+  busysometing:boolean;
 }
 
 export class CalendarMonth {
   original: CalendarOriginal;
-  days: Array<CalendarDay | void>;
+  //days: Array<CalendarDay | void>;
+  days: Array<CalendarDay>;
 }
 
 export interface DayConfig {
@@ -38,6 +45,11 @@ export interface DayConfig {
   title?: string;
   subTitle?: string;
   cssClass?: string;
+  hasting?: boolean;
+  things?: number;
+  newmessage?: number;
+  hassometing:boolean;
+  busysometing:boolean;
 }
 
 export interface ModalOptions {
