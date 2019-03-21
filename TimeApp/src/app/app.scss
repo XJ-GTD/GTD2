@@ -14,7 +14,19 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-*{font-family:PingFang-SC-Regular,PingFang-SC,"微软雅黑",Georgia}
+//*{font-family:PingFang-SC-Regular,PingFang-SC,"微软雅黑",Georgia}
+@font-face {
+  font-family: 'PingFang-Regular';
+  src: url('../assets/fonts/PingFang Regular.ttf') format('truetype'),
+  url('../assets/fonts/PingFang Regular.eot') format('embedded-opentype'),
+  url('../assets/fonts/PingFang Regular.otf') format('opentype'),
+  url('../assets/fonts/PingFang Regular.woff') format('woff'),
+  url('../assets/fonts/PingFang Regular.woff2') format('woff2'),
+  url('../assets/fonts/PingFang Regular.svg') format('svg');
+}
+* {
+    font-family: 'PingFang-Regular' !important;
+}
 
 .ios .ion-page.show-page ~ .nav-decor{
   background: transparent;

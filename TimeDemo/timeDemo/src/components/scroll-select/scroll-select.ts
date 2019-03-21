@@ -16,9 +16,15 @@ export class ScrollSelectComponent {
 
   @ViewChild('scrollBox', { read: ElementRef }) _scrollBox: ElementRef;
   @Input()
-  options: array = [];
+  type: string = 'scroll-with-button';  // 'scroll-with-button', 'scroll-without-button'
+  @Input()
+  options: Array = [];
   @Input()
   value: any;
+  @Input()
+  items: number = 1;
+  befores: Array = [];
+  afters: Array = [];
   @Output("changed")
   changedPropEvent = new EventEmitter();
   unsubscribe: () => void;
@@ -44,12 +50,18 @@ export class ScrollSelectComponent {
   ngOnInit() {
     const that = this;
     const ele = this._scrollBox.nativeElement;
+    console.log(this.value + ',' + this.items);
+
+    if (this.items > 1) {
+      this.befores = Array(Math.floor(this.items / 2)).fill().map((x,i)=>i);
+      this.afters = Array(Math.floor(this.items / 2)).fill().map((x,i)=>i);
+    }
 
     ele.addEventListener('scroll', (event) => {
       clearTimeout(this.timer);
 
       if (!this.autoscroll) {
-        this.timer = setTimeout(this.isScrollEnd, 100, this);
+        this.timer = setTimeout(this.isScrollEnd, 500, this);
         this.t1 = event.target.scrollLeft;
       }
       this.autoscroll = false;
@@ -74,25 +86,25 @@ export class ScrollSelectComponent {
   }
   
   ngAfterViewInit() {
-    this.lastScrollLeft = this.index * this.slideWidth;
+    this.lastScrollLeft = this.index * (this.slideWidth / this.items);
     this.autoscroll = true;
-    this._scrollBox.nativeElement.scrollLeft = this.index * this.slideWidth;
+    this._scrollBox.nativeElement.scrollLeft = this.index * (this.slideWidth / this.items);
   }
 
   prev() {
     this.index = (this.index - 1) > 0 ? (this.index - 1) : 0;
     this.value = this.options[this.index].value;
 
-    this.lastScrollLeft = this.index * this.slideWidth;
-    this._scrollBox.nativeElement.scrollLeft = this.index * this.slideWidth;
+    this.lastScrollLeft = this.index * (this.slideWidth / this.items);
+    this._scrollBox.nativeElement.scrollLeft = this.index * (this.slideWidth / this.items);
   }
   
   next() {
     this.index = (this.index + 1) >= this.options.length ? this.index : (this.index + 1);
     this.value = this.options[this.index].value;
 
-    this.lastScrollLeft = this.index * this.slideWidth;
-    this._scrollBox.nativeElement.scrollLeft = this.index * this.slideWidth;
+    this.lastScrollLeft = this.index * (this.slideWidth / this.items);
+    this._scrollBox.nativeElement.scrollLeft = this.index * (this.slideWidth / this.items);
   }
   
   isFirst() {
@@ -107,18 +119,18 @@ export class ScrollSelectComponent {
     if (this._scrollBox.nativeElement.scrollLeft !== this.lastScrollLeft) {
 
       console.log('change pos');
-      let index = Math.floor(this._scrollBox.nativeElement.scrollLeft / this.slideWidth);
+      let index = Math.floor(this._scrollBox.nativeElement.scrollLeft / (this.slideWidth / this.items));
 
-      if ((this._scrollBox.nativeElement.scrollLeft - (index * this.slideWidth)) >= (Math.floor(this.slideWidth / 2))) {
+      if ((this._scrollBox.nativeElement.scrollLeft - (index * (this.slideWidth / this.items))) >= (Math.floor((this.slideWidth / this.items) / 2))) {
         index = (index + 1) >= this.options.length ? index : (index + 1);
       }
       
       this.index = index;
       this.value = this.options[index].value;
       
-      this.lastScrollLeft = index * this.slideWidth;
+      this.lastScrollLeft = index * (this.slideWidth / this.items);
       this.autoscroll = true;
-      this._scrollBox.nativeElement.scrollLeft = index * this.slideWidth;
+      this._scrollBox.nativeElement.scrollLeft = index * (this.slideWidth / this.items);
     }
   }
   

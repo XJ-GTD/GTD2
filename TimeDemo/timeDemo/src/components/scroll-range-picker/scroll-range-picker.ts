@@ -17,13 +17,15 @@ export class ScrollRangePickerComponent {
   viewBox: string = '0 0 ' + 2484 * 3 + ' 180';
   viewHiddenWidth: number = 2484 * 24 / 24;
   viewBoxPointer: string = '0 0 2484 180';
+  @Input('type')
+  viewType: string = 'day-range-picker';  // day-range-picker
   @Input('max')
   viewHours: number = 24; // 12小时
   @Input('min')
   viewMinTime: number = 5; // 5分钟
   timeLines: Array = [];
   @Input()
-  titles: any = {'6': '上午', '12': '下午', '20': '晚上'};
+  titles: any = {'4': '清早', '9': '上午', '14': '下午', '17': '晚上', '22': '深夜'};
   blockTitles: Array = [];
   pushedtitles: any = {'6': false, '12': false, '20': false};
   startX: number;
