@@ -27,7 +27,10 @@ import {PageRData, RService} from "./r.service";
             <ion-input class="register-tel" type="tel" placeholder="开始输入电话号码" [(ngModel)]="rData.mobile" (ionBlur)="checkPhone()"></ion-input>
           </div>
           <div>
-            <button ion-fab color="success" (click)="register()"><ion-icon name="arrow-forward" ></ion-icon></button>
+            <button ion-fab color="success" (click)="register()">
+            <img class="img-content-enter" src="../../assets/imgs/xyb.png">
+            <!--<ion-icon name="arrow-forward" ></ion-icon>-->
+          </button>
           </div>
         </ion-row>
         <ion-row justify-content-start align-items-center>

@@ -1,11 +1,13 @@
 page-pl {
-  /*@font-face {
-    font-family: 'PingFang-Regular';
-    src: url('../assets/font/PingFang Regular.ttf');
-  }*/
+  background-color: #000;
 
-  ion-content {
-    font-family: "PingFang-Regular";
+  @font-face {
+    font-family: 'PingFang-Regular';
+    src: url('../../assets/fonts/PingFang Regular.ttf');
+  }
+
+  ion-content{
+    font-family: PingFang-Regular;
   }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
@@ -20,8 +22,7 @@ page-pl {
   ion-content .plan-list-item {
     background-color: #000;
     color: #fff;
-    height: 45px;
-    font-size: 14px;
+    font-size: 1.4rem;
   }
 
   ion-list-header.plan-list-item {
@@ -69,7 +70,39 @@ page-pl {
     overflow-y: auto;
   }
 
+  .img-header-left{
+    width: 15px;
+    height: 15px;
+    margin-left: 20px;
+  }
+
+  .img-content-plan{
+    width: 9px;
+    height: 4px;
+    margin-left: 3px;
+    margin-bottom: 3px;
+  }
+
+  .content-download{
+    color: white;
+  }
+
+  .img-content-refresh{
+    width: 15px;
+    height: 12px;
+  }
+
+  .toolbar-title{
+    color: white;
+    letter-spacing: 3px;
+    font-size: 1.5rem;
+  }
+
+  .bar-button-ios{
+    font-size: 1.3rem;
+  }
+
   .item-block{
-    min-height: 3.5rem;
+    min-height: 3rem;
   }
 }

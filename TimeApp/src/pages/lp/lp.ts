@@ -23,7 +23,10 @@ import {LpService, PageLpData} from "./lp.service";
           <ion-input class="login-tel" type="tel" placeholder="开始输入账号" [(ngModel)]="lpData.mobile"></ion-input>
         </div>
         <div class="login-enter">
-          <button ion-fab color="success" (click)="signIn()"><ion-icon name="arrow-forward"></ion-icon></button>
+          <button ion-fab color="success" (click)="signIn()">
+            <img class="img-content-enter" src="../../assets/imgs/xyb.png">
+            <!--<ion-icon name="arrow-forward"></ion-icon>-->
+          </button>
         </div>
       </ion-row>
       <ion-row justify-content-between align-items-center>

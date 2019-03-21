@@ -20,7 +20,7 @@ import {PagePDPro} from "../pd/pd.service";
       <ion-toolbar>
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack()" color="danger">
-            <ion-icon name="arrow-back"></ion-icon>
+            <img class="img-header-left" src="../../assets/imgs/fh2.png">
           </button>
         </ion-buttons>
         <ion-title>计划</ion-title>
@@ -37,7 +37,7 @@ import {PagePDPro} from "../pd/pd.service";
         <ion-row>
           <ion-list no-lines>
             <ion-list-header class="plan-list-item">
-              全部计划
+              全部计划<img class="img-content-plan" src="../../assets/imgs/xl.png">
             </ion-list-header>
             <div *ngFor="let jh of jhs">
               <ion-item class="plan-list-item" (click)="toPd(jh)" *ngIf="jh.jt=='2'">
@@ -51,12 +51,12 @@ import {PagePDPro} from "../pd/pd.service";
             <div *ngFor="let jh of jhs">
               <ion-item class="plan-list-item" *ngIf="jh.jt=='1'" (press)="delPlan(jh)" >
                 <div (click)="toPd(jh)">{{jh.jn}}({{jh.js}})</div>
-                <button ion-button color="danger" clear item-end (click)="download(jh)" >
-                  <div *ngIf="jh.jtd == '0'">
+                <button ion-button clear item-end (click)="download(jh)" >
+                  <div *ngIf="jh.jtd == '0'" class="content-download">
                     下载
                   </div>
                   <div *ngIf="jh.jtd=='1'">
-                    <ion-icon name="sync"></ion-icon>
+                    <img class="img-content-refresh" src="../../assets/imgs/sx.png">
                   </div>
                 </button>
               </ion-item>
@@ -90,6 +90,7 @@ export class PlPage {
   }
 
   goBack() {
+    //this.navCtrl.pop();
     this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
   }
 
