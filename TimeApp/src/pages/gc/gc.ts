@@ -1,7 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, Navbar, ModalController, ToastController} from 'ionic-angular';
 
-import {DataConfig} from "../../service/config/data.config";
 import {GcService, PageDcData} from "./gc.service";
 import {FsService, PageFsData} from "../fs/fs.service";
 
@@ -43,6 +42,7 @@ import {FsService, PageFsData} from "../fs/fs.service";
                  <!--<ion-item (click)="toGroupMember(g)" style="background-color: black;color:#ffffff;margin-left: -15px;">-->
                    <!--{{g.rn}} <span>{{g.rc}}</span>-->
                  <!--</ion-item>-->
+               
                <ion-label (click)="toGroupMember(g)">
                  {{g.rn}} 
                  <span style="font-size:14px;color:rgb(102,102,102);">

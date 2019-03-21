@@ -7,7 +7,7 @@ page-gl {
     font-family: "PingFang-Regular";
   }
 
-  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+  ion-header ion-toolbar .toolbar-background, .toolbar-background-md, .toolbar-background-ios {
     background-color: #000;
   }
   ion-header {
@@ -24,7 +24,7 @@ page-gl {
   }
 
   ion-list-header.plan-list-item {
-    color: rgb(153,153,153);
+    color: rgb(153, 153, 153);
   }
   ion-item {
     height: 60px;
@@ -37,11 +37,11 @@ page-gl {
   }
 
   .color-pink {
-    background-color: rgb(192,119,219);
+    background-color: rgb(192, 119, 219);
   }
 
   .color-blue {
-    background-color: rgb(81,170,242);
+    background-color: rgb(81, 170, 242);
   }
 
   .w-auto {
@@ -59,7 +59,8 @@ page-gl {
   .list-header, .list-header-md, .list-header-ios {
     border: 0;
   }
-  .toolbar-title-ios{
-    color:#ffffff;
+  .toolbar-title-ios {
+    color: #ffffff;
   }
+
 }
