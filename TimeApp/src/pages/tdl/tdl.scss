@@ -197,16 +197,20 @@ page-tdl {
     position: relative;
     padding-top: 44px;
   }
-  .ashshare {
+
+}
+.zm-action-button {
+  .btn-share {
     font-size: 20px;
     color:red;
   }
-  .ashdel {
+  .btn-del {
     font-size: 20px;
     color:#222222;
   }
-  .ashcancel {
+  .btn-cancel {
     font-size: 20px;
     color:#35919C;
+    font-weight:normal
   }
 }

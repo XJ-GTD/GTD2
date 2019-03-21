@@ -5,6 +5,8 @@ import {
 } from 'ionic-angular';
 import * as moment from "moment";
 import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
+import {TddjService} from "../tddj/tddj.service";
+import {TddiService} from "../tddi/tddi.service";
 
 /**
  * Generated class for the 日程列表 page.
@@ -67,7 +69,8 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
 })
 export class TdlPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,private tdlServ : TdlService,
-              public events: Events,public actionSheetCtrl: ActionSheetController) {
+              public events: Events,public actionSheetCtrl: ActionSheetController,
+              private tddjServ : TddjService,private tddiServ : TddiService) {
 
     //初始化锚点位置
     events.subscribe('po', (data) => {
@@ -363,28 +366,29 @@ export class TdlPage {
   }
 
   //弹出操作按钮
-  presentActionSheet(scd) {
+  presentActionSheet(scd :ScdData) {
 
     scd.morecolor = "#35919C";
     const actionSheet = this.actionSheetCtrl.create({
+      cssClass:'zm-action-button',
       buttons: [
         {
           text: '分享',
           role: 'destructive',
-          cssClass:'ashshare',
+          cssClass:'btn-share',
           handler: () => {
             console.log('Destructive clicked');
           }
         },{
           text: '删除',
-          cssClass:'ashdel',
+          cssClass:'btn-del',
           handler: () => {
-            console.log('Archive clicked');
+            this.delAgenda(scd);
           }
         },{
           text: '取消',
           role: 'cancel',
-          cssClass:'ashcancel',
+          cssClass:'btn-cancel',
           handler: () => {
             scd.morecolor = "#FFFFFF";
           }
@@ -393,4 +397,44 @@ export class TdlPage {
     });
     actionSheet.present();
   }
+
+  //删除日程
+  private delAgenda(scd :ScdData){
+    if (scd.gs == "0"){
+      //作为受邀人进行删除
+      this.tddiServ.delete(scd.si).then(data =>{
+        this.removeListEl(scd);
+      });
+    }else{
+      //作为发起人进行删除
+      this.tddjServ.delete(scd.si).then(data =>{
+        this.removeListEl(scd);
+      });
+    }
+  }
+
+  //从显示list中移除删除的日程
+  private removeListEl(scd :ScdData){
+    let newList :Array<ScdlData> = new Array<ScdlData>();
+    for (let j = 0, len = this.scdlDataList.length; j < len; j++) {
+      let tmpscdl = this.scdlDataList[j];
+      let newscdl : ScdlData= new ScdlData();
+
+      for (let k = 0, len = tmpscdl.scdl.length; k < len; k++) {
+        let tmpscd = tmpscdl.scdl[k];
+        if (tmpscd.si != scd.si){
+          newscdl.scdl.push(tmpscd);
+        }
+      }
+
+      if (newscdl.scdl.length >0){
+        newscdl.d = tmpscdl.d;
+        newList.push(newscdl);
+      }
+    }
+
+    this.scdlDataList = newList;
+
+  }
+
 }
