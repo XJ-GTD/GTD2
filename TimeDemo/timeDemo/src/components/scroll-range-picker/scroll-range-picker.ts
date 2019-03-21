@@ -14,7 +14,8 @@ import { ElementRef, Events } from 'ionic-angular';
 export class ScrollRangePickerComponent {
 
   @ViewChild('scrollBox', { read: ElementRef }) _scrollBox: ElementRef;
-  viewBox: string = '0 0 2484 180';
+  viewBox: string = '0 0 ' + 2484 * 3 + ' 180';
+  viewHiddenWidth: number = 2484 * 24 / 24;
   viewBoxPointer: string = '0 0 2484 180';
   @Input('max')
   viewHours: number = 24; // 12小时
@@ -33,9 +34,11 @@ export class ScrollRangePickerComponent {
   changedPropEvent = new EventEmitter();
   lastScrollLeft: number = 0;
   value: string = '12:00';
+  guid: string = '';
 
   constructor(public events: Events) {
-    this.events.subscribe('_scrollBox:change', (dest) => {
+    this.guid = this.createGuid();
+    this.events.subscribe('_scrollBox' + this.guid + ':change', (dest) => {
       this.valueChanged(this.lastScrollLeft, dest);
     });
   }
@@ -44,16 +47,31 @@ export class ScrollRangePickerComponent {
     const that = this;
     const ele = this._scrollBox.nativeElement;
     ele.addEventListener('scroll', (event) => {
-      that.events.publish('_scrollBox:change', event.target.scrollLeft, Date.now());
+      that.events.publish('_scrollBox' + this.guid + ':change', event.target.scrollLeft, Date.now());
     }, {passive: true}, false);
     
     this.hourLines = 60 / this.viewMinTime;
     let viewLines = this.viewHours * this.hourLines;
-    this.blockGap = 2484 / (viewLines + 1);
+    this.blockGap = 2484 / (viewLines);
     
+    // 画范围外时间线 (包括范围之前和范围之后)
     for (let hour = 0; hour < this.viewHours; hour++) {
       for (let block = 1; block <= this.hourLines; block++) {
         let timeLineX = this.blockGap * ((hour * this.hourLines) + block);
+
+        if (timeLineX > this.viewHiddenWidth) {
+          break;
+        }
+        
+        this.timeLines.push(timeLineX);
+        this.timeLines.push(timeLineX + 2484 + this.viewHiddenWidth);
+      }
+    }
+
+    // 画设置时间段内时间线
+    for (let hour = 0; hour < this.viewHours; hour++) {
+      for (let block = 1; block <= this.hourLines; block++) {
+        let timeLineX = this.viewHiddenWidth + this.blockGap * ((hour * this.hourLines) + block);
 
         if (this.titles[hour.toString()] && !this.pushedtitles[hour.toString()]) {
           this.blockTitles.push({x: timeLineX, title: this.titles[hour.toString()]});
@@ -165,4 +183,12 @@ export class ScrollRangePickerComponent {
     }
     return retstr.replace(/^,+/, '').replace(/\.$/, '');
   }
+  
+  
+  createGuid() {
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+			var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+			return v.toString(16);
+		});
+	}
 }

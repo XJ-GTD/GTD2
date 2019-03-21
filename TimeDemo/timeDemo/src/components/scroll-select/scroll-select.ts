@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ElementRef, Events } from 'ionic-angular';
+import { DomSanitizer } from '@angular/platform-browser';
 
 /**
  * Generated class for the ScrollSelectComponent component.
@@ -25,11 +26,17 @@ export class ScrollSelectComponent {
   index: number = 0;
   interval: any = null;
   lastScrollLeft: number = 0;
+  guid: string = '';
+  timer: any = null;
+  t1: number;
+  t2: number;
+  autoscroll: boolean = false;
 
-  constructor(public events: Events) {
+  constructor(public events: Events, public sanitizer: DomSanitizer) {
     console.log('Hello ScrollSelectComponent Component');
+    this.guid = this.createGuid();
     this.slideWidth = document.body.clientWidth;
-    this.events.subscribe('_scrollBox:change', (target) => {
+    this.events.subscribe('_scrollBox' + this.guid + ':change', (target) => {
       this.optionChanged(target);
     });
   }
@@ -37,11 +44,41 @@ export class ScrollSelectComponent {
   ngOnInit() {
     const that = this;
     const ele = this._scrollBox.nativeElement;
+
     ele.addEventListener('scroll', (event) => {
-      that.events.publish('_scrollBox:change', event.target.scrollLeft, Date.now());
+      clearTimeout(this.timer);
+
+      if (!this.autoscroll) {
+        this.timer = setTimeout(this.isScrollEnd, 100, this);
+        this.t1 = event.target.scrollLeft;
+      }
+      this.autoscroll = false;
     }, {passive: true}, false);
+
+    let i = 0;
+    for (let option in this.options) {
+      if (this.options[option].value === this.value) {
+        this.index = i;
+        break;
+      }
+      i++;
+    }
+  }
+
+  isScrollEnd(that) {
+    that.t2 = that._scrollBox.nativeElement.scrollLeft;
+    
+    if (that.t1 == that.t2) {
+      that.events.publish('_scrollBox' + that.guid + ':change', that.t1, Date.now());
+    }
   }
   
+  ngAfterViewInit() {
+    this.lastScrollLeft = this.index * this.slideWidth;
+    this.autoscroll = true;
+    this._scrollBox.nativeElement.scrollLeft = this.index * this.slideWidth;
+  }
+
   prev() {
     this.index = (this.index - 1) > 0 ? (this.index - 1) : 0;
     this.value = this.options[this.index].value;
@@ -67,26 +104,32 @@ export class ScrollSelectComponent {
   }
   
   optionChanged(target) {
-    if (this.interval === null) {
-      this.interval = setInterval(() => {
-        this.interval = null;
+    if (this._scrollBox.nativeElement.scrollLeft !== this.lastScrollLeft) {
 
-        if (this._scrollBox.nativeElement.scrollLeft !== this.lastScrollLeft) {
+      console.log('change pos');
+      let index = Math.floor(this._scrollBox.nativeElement.scrollLeft / this.slideWidth);
 
-          console.log('change pos');
-          let index = Math.floor(this._scrollBox.nativeElement.scrollLeft / this.slideWidth);
-
-          if ((this._scrollBox.nativeElement.scrollLeft - (index * this.slideWidth)) >= (Math.floor(this.slideWidth / 2))) {
-            index = (index + 1) >= this.options.length ? index : (index + 1);
-          }
-          
-          this.index = index;
-          this.value = this.options[index].value;
-          
-          this.lastScrollLeft = index * this.slideWidth;
-          this._scrollBox.nativeElement.scrollLeft = index * this.slideWidth;
-        }
-      }, 1000);
+      if ((this._scrollBox.nativeElement.scrollLeft - (index * this.slideWidth)) >= (Math.floor(this.slideWidth / 2))) {
+        index = (index + 1) >= this.options.length ? index : (index + 1);
+      }
+      
+      this.index = index;
+      this.value = this.options[index].value;
+      
+      this.lastScrollLeft = index * this.slideWidth;
+      this.autoscroll = true;
+      this._scrollBox.nativeElement.scrollLeft = index * this.slideWidth;
     }
   }
+  
+  assembleHTML(strHTML: any) {
+    return this.sanitizer.bypassSecurityTrustHtml(strHTML);
+  }
+
+  createGuid() {
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+			var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+			return v.toString(16);
+		});
+	}
 }

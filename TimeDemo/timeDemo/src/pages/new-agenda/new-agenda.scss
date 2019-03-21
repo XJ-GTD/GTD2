@@ -21,6 +21,23 @@ page-new-agenda {
     margin-left: -16px;
   }
   
+  scroll-select.image-scroll-select .scroll-box {
+    height: 40vmin;
+  }
+  
+  scroll-select.image-scroll-select .scroll-box-zoom-wrapper {
+    margin: 0 -43.5px;
+  }
+  
+  scroll-select.image-scroll-select div.option {
+
+  }
+  
+  scroll-select.image-scroll-select .image-option {
+    width: 40vmin;
+    height: 40vmin;
+  }
+  
   .full-width {
     margin-left: -21px;
     margin-right: -21px;
@@ -28,7 +45,7 @@ page-new-agenda {
   }
   
   #timerange-picker {
-    width: 200vmin;
+    width: 600vmin;
     height: calc(100vmin * (180 / 1242))
   }
 /*  
