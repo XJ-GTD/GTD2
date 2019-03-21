@@ -5,6 +5,7 @@ import {BackgroundMode} from '@ionic-native/background-mode';
 import {AssistantService} from "../service/cordova/assistant.service";
 import {DataConfig} from "../service/config/data.config";
 import {RestfulClient} from "../service/util-service/restful.client";
+import {FeedbackService} from "../service/cordova/feedback.service";
 
 @Component({
   template: '<ion-nav></ion-nav>'
@@ -16,7 +17,8 @@ export class MyApp {
               private appCtrl: IonicApp,
               private backgroundMode: BackgroundMode,
               private speechService: AssistantService,
-              private restfulClient:RestfulClient) {
+              private restfulClient:RestfulClient,
+              private feekback:FeedbackService) {
 
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
@@ -26,6 +28,7 @@ export class MyApp {
       this.backgroundMode.enable();
       //设置返回键盘（android）
       this.registerBackButtonAction();
+      this.feekback.initAudio();
 
       this.restfulClient.init();
       //跳转页面（过渡页面）

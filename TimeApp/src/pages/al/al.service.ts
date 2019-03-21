@@ -90,7 +90,6 @@ export class AlService {
       let count = await this.sqlLiteInit.createTables();
 
       await this.sqlLiteInit.initData();
-      console.log("**************************createTables" + "*************" + count);
       let yTbl: YTbl = new YTbl();
       yTbl.yi = this.util.getUuid();
       yTbl.yt = "FI";
@@ -99,8 +98,6 @@ export class AlService {
       await this.sqlExce.replaceT(yTbl);
 
       await this.createTestData();
-
-      console.log("**************************Fi" + "*************写入");
 
       alData.text = "系统初始化完成";
       resolve(alData);
@@ -421,9 +418,9 @@ export class AlService {
       ss.push("看过不良人吗");
       ss.push("周末加班");
 
-      for (let i = 0; i < 4000; i++) {
+      for (let i = 0; i < 400; i++) {
         start = moment('2019/03/01');
-        let r = this.util.randInt(-90, 90);
+        let r = this.util.randInt(-365, 365);
         let t = this.util.randInt(0, 24);
         let jh_i = this.util.randInt(0, 20);
         let jh_id = "";
@@ -435,9 +432,9 @@ export class AlService {
         if (jh_i < 10) {
           jh_id = jhs[jh_i].ji;
         }
-        console.log("start=====" + start.format('YYYY/MM/DD'));
 
         let d = start.add(r, 'd').add(t, 'h');
+        console.log("start=====" + d.format('YYYY/MM/DD'));
         let c: CTbl = new CTbl();
 
         c.si = this.util.getUuid();
@@ -467,9 +464,9 @@ export class AlService {
         if (!(c_r > 6 && c_r < 0)) {
           while (c_r > -1) {
 
-            c_r2 = this.util.randInt(0, c_r2-1);
+            c_r2 = this.util.randInt(0, c_r2 - 1);
             c_r--;
-            if (c_r2 <1) break;
+            if (c_r2 < 1) break;
 
             let dtbl: DTbl = new DTbl();
 
