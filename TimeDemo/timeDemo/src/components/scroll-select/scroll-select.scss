@@ -16,6 +16,33 @@ scroll-select {
     text-align: center;
   }
   
+  div.option.option-3 {
+    width: calc(100vmin / 3);
+  }
+
+  div.option.option-5 {
+    width: calc(100vmin / 5);
+  }
+
+  div.option.option-7 {
+    width: calc(100vmin / 7);
+  }
+
+  div.selected-circle {
+    top: calc(-3.5vmin - 3px);
+    left: calc((100vmin - 14vmin) / 2 - 27px);
+    position: absolute;
+    display: flex;
+    justify-content: center;
+  }
+  
+  div.selected-circle > div {
+    height: 14vmin;
+    width: 14vmin;
+    border: solid 2px #fff;
+    border-radius: 50%;
+  }
+  
   .scroll-box {
     flex: 1;
     height: 6.8vmin;
@@ -35,6 +62,10 @@ scroll-select {
     -webkit-overflow-scrolling: touch;
     will-change: scroll-position;
     contain: size style layout;
+  }
+  
+  .scroll-box.scroll-without-button .scroll-box-zoom-wrapper {
+    margin: 0 -27px;
   }
   
   .scroll-box-zoom-wrapper {
