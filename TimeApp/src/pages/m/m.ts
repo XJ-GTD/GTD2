@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Tabs } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, NavController, NavParams, Tabs} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 
 /**
@@ -13,39 +13,45 @@ import {DataConfig} from "../../service/config/data.config";
 @Component({
   selector: 'page-m',
   providers: [],
-  template:'<!--首页侧边栏-->' +
-  '<ion-menu [content]="ha" side="right" swipeEnabled = "true" type="scalePush">' +
-  '  <ion-content>' +
-  '    <ion-item margin-top margin-bottom (click)="goPsPage()" id="tag1" style="height:185px" no-lines>' +
-  '      <ion-avatar item-start>' +
-  '        <img [src]="imgurl" class="img_size">' +
-  '      </ion-avatar>' +
-  '      <h1>冥王星</h1>' +
-  '      <span class="fontcol"></span>' +
-  '    </ion-item>' +
-  '' +
-  '    <ion-list>' +
-  '      <ion-item style="height:76px" (click)="goGlPage()">' +
-  '        <ion-label>群组</ion-label>' +
-  '      </ion-item>' +
-  '      <ion-item (click)="goPlPage()" style="height:76px">' +
-  '        <ion-label>计划</ion-label>' +
-  '      </ion-item>' +
-  '      <ion-item (click)="goBlPage()" style="height:76px" >' +
-  '        <ion-label>黑名单</ion-label>' +
-  '      </ion-item>' +
-    '      <ion-item (click)="goSsPage()" style="height:76px" >' +
-    '        <ion-label>设置</ion-label>' +
-    '      </ion-item>' +
-  '    </ion-list>' +
-  '  </ion-content>' +
-  '</ion-menu>' +
-  '<ion-nav #ha [root]="hPage"></ion-nav>',
+  template: `
+    <ion-menu [content]="ha" side="right" swipeEnabled="true" type="scalePush">
+      <ion-content>
+
+        <ion-list>
+          <ion-list-header (click)="goPsPage()">
+            <ion-item>
+              <ion-avatar item-start>
+                <img [src]="imgurl" class="img_size">
+              </ion-avatar>
+              <!--<h2>{{UserConfig.user.name}}</h2>-->
+              <h2>小冥星</h2>
+              <p (click)="goPsPage()"><u>改变信息</u></p>
+            </ion-item>
+          </ion-list-header>
+          <ion-item (click)="goGlPage()">
+            <h1>冥王星</h1>
+          </ion-item>
+          <ion-item (click)="goGlPage()">
+            <h3>朋友群</h3>
+          </ion-item>
+          <ion-item (click)="goPlPage()">
+            <h3>活动群</h3>
+          </ion-item>
+          <ion-item (click)="goBlPage()">
+            <h3>禁止分享人</h3>
+          </ion-item>
+          <ion-item (click)="goSsPage()">
+            <h3>系统设置</h3>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-nav #ha [root]="hPage"></ion-nav>`
 
 })
 export class MPage {
   hPage: any = DataConfig.PAGE._H_PAGE;
-  imgurl:any;
+  imgurl: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -63,18 +69,18 @@ export class MPage {
   //系统设置
   goSsPage() {
 
-      this.navCtrl.push(DataConfig.PAGE._SS_PAGE);
+    this.navCtrl.push(DataConfig.PAGE._SS_PAGE);
   }
 
   // 群组列表
   goGlPage() {
 
-      this.navCtrl.push(DataConfig.PAGE._GL_PAGE);
+    this.navCtrl.push(DataConfig.PAGE._GL_PAGE);
   }
 
   // 个人设置
   goPsPage() {
-      this.navCtrl.push(DataConfig.PAGE._PS_PAGE);
+    this.navCtrl.push(DataConfig.PAGE._PS_PAGE);
   }
 
 
@@ -82,8 +88,6 @@ export class MPage {
   goBlPage() {
     this.navCtrl.push(DataConfig.PAGE._BL_PAGE);
   }
-
-
 
 
 }
