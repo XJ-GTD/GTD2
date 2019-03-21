@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams, Navbar, ModalController, ToastContr
 
 import {GcService, PageDcData} from "./gc.service";
 import {FsService, PageFsData} from "../fs/fs.service";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 群组编辑 page.
@@ -89,7 +90,7 @@ export class GcPage {
 
   goBack(){
     console.log('GcPage返回GlPage');
-    this.navCtrl.pop();
+    this.navCtrl.push(DataConfig.PAGE._GL_PAGE);
   }
   toAddGroupMember() {
     console.log("PePage跳转PgPage");
