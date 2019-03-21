@@ -35,7 +35,7 @@
 <div>
 <button ion-button clear class="text-btn" id="rangestart">3:00下午</button>
 →
-<button ion-button clear class="text-btn">4:00下午</button>
+<button ion-button clear class="text-btn">{{rangeEnd}}</button>
 </div>
 </ion-row>
 <ion-row class="full-width" justify-content-center>
@@ -70,7 +70,7 @@
 <scroll-select [options]="months" [value]="01"></scroll-select>
 </ion-row>
 <ion-row class="full-width" justify-content-center>
-<scroll-range-picker max="24" min="10"></scroll-range-picker>
+<scroll-range-picker max="24" min="5" value="18:00" (changed)="timechanged($event)"></scroll-range-picker>
 </ion-row>
 </ion-grid>
 </ion-content>

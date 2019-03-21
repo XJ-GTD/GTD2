@@ -1,20 +1,54 @@
 page-ls {
-  /*background-color: #000;
+  background-color: #000;
   @font-face {
     font-family: 'PingFang-Regular';
-    src: url('../assets/font/PingFang Regular.ttf');
-  }*/
-
-  ion-content {
-    font-family: "PingFang-Regular";
+    src: url('../../assets/fonts/PingFang Regular.ttf');
   }
 
-  .grid-login-basic {
-    width: 100%;
+  h1{
+    font-size: 24px;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    margin-top:85px;
+    letter-spacing: 1px;
+  }
+
+  ion-input{
+    font-size: 1.5rem;
+    width:85%;
   }
 
   .w-auto {
     flex: 1;
+  }
+
+  .login-tel{
+    margin-top: 30px;
+  }
+
+  .login-code{
+    font-size: 1.5rem;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .login-enter{
+    margin-right: 30px;
+    margin-top: 35px;
+  }
+
+  .login-div{
+    margin-top: 12px;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    //font-weight:bold;
+  }
+
+  .grid-login-basic {
+    width: 100%;
   }
 
   .no-padding {
@@ -37,6 +71,31 @@ page-ls {
   }
 
   .text-agreement {
+    margin-top: 20px;
     font-size: 1.2rem;
   }
+  .scroll-content{
+    margin-left: 25px;
+  }
+
+  .scroll-content{
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  .fab {
+    width: 45px;
+    height: 45px;
+    background-color:#429A81;
+  }
+
+  .login-send{
+    margin-right: 155px;
+    margin-top: 0px;
+    font-size: 1.2rem;
+    color: #429A81;
+    border: 1px solid #429A81;
+    background-color: white;
+  }
+
 }
