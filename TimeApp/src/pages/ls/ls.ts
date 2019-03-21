@@ -1,5 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import {AlertController, IonicPage, Navbar, NavController, ToastController} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {AlertController, IonicPage, NavController, ToastController} from 'ionic-angular';
 import {LsService, PageLsData} from "./ls.service";
 
 /**
@@ -19,7 +19,7 @@ import {LsService, PageLsData} from "./ls.service";
     <ion-grid class="grid-login-basic no-padding-lr">
       <ion-row justify-content-start align-items-center>
         <div class="w-auto">
-          <ion-input type="tel" placeholder="开始输入手机号" [(ngModel)]="lsData.mobile" class="login-tel" (ionBlur)="checkPhone()"></ion-input>
+          <ion-input class="login-tel" type="tel" placeholder="开始输入手机号" [(ngModel)]="lsData.mobile" (ionBlur)="checkPhone()"></ion-input>
         </div>
         <div class="login-enter">
           <button ion-fab color="success" (click)="signIn()"><ion-icon name="arrow-forward"></ion-icon></button>
@@ -27,10 +27,10 @@ import {LsService, PageLsData} from "./ls.service";
       </ion-row>
       <ion-row justify-content-between align-items-center>
         <div class="w-auto">
-          <ion-input type="password" placeholder="验证码" [(ngModel)]="lsData.authCode" class="login-code"></ion-input>
+          <ion-input class="login-code" type="password" placeholder="验证码" [(ngModel)]="lsData.authCode"></ion-input>
         </div>
         <div>
-          <button ion-button (click)="sendMsg()" class="login-send">{{timeOut}}</button>
+          <button ion-button class="login-send" (click)="sendMsg()">{{timeOut}}</button>
         </div>
       </ion-row>
     </ion-grid>
@@ -45,11 +45,9 @@ import {LsService, PageLsData} from "./ls.service";
 })
 export class LsPage {
 
-  @ViewChild(Navbar) navBar: Navbar;
-
   lsData:PageLsData = new PageLsData();
   errorCode:any;
-  timeOut:any = "发送验证码";
+  timeOut:any = "获取验证码";
   timer:any;
 
   constructor(public navCtrl: NavController,
@@ -151,7 +149,6 @@ export class LsPage {
   checkPhone() {
     this.errorCode = this.lsService.checkPhone(this.lsData.mobile);
   }
-
 
   // ionViewDidLoad(){
   //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");
