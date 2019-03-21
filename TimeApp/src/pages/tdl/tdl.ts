@@ -248,7 +248,7 @@ export class TdlPage {
     //获取当前日期之前的30条记录
     this.tdlServ.down(condi,30).then(dwdata =>{
 
-      //获取当前日期之后的60条记录
+      //获取当前日期之后的30条记录
       let condi2 = moment(condi).add(1,'d').format("YYYY/MM/DD");
       this.tdlServ.up(condi2,30).then(data =>{
 
