@@ -1,5 +1,8 @@
 import {Component, ViewChild, ElementRef, Input, Renderer2} from '@angular/core';
-import {App, Content, Events, IonicPage, NavController, NavParams, Scroll, ViewController} from 'ionic-angular';
+import {
+  ActionSheetController, App, Content, Events, IonicPage, NavController, NavParams, Scroll,
+  ViewController
+} from 'ionic-angular';
 import * as moment from "moment";
 import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
 
@@ -48,7 +51,9 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
                 <div class="agendaline2" *ngIf="scd.gs == '1'">{{scd.fssshow}}</div>
                 <div class="agendaline2" *ngIf="scd.gs == '0'">{{scd.fs.rn==""||scd.fs.rn ==null ?scd.fs.rc:scd.fs.rn}}</div>
               </div>
-              <div class = "dayagendaoperation"><ion-icon ios="ios-more" md="md-more"></ion-icon></div>
+              <div class = "dayagendaoperation" (click)="presentActionSheet(scd);">
+                <ion-icon ios="ios-more" md="md-more" [ngStyle]="{'color':scd.morecolor}" ></ion-icon>
+              </div>
             </div>
           </div>
         </ion-row>
@@ -62,7 +67,7 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
 })
 export class TdlPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,private tdlServ : TdlService,
-              public events: Events) {
+              public events: Events,public actionSheetCtrl: ActionSheetController) {
 
     //初始化锚点位置
     events.subscribe('po', (data) => {
@@ -80,6 +85,8 @@ export class TdlPage {
     });
   }
 
+
+  //画面数据List
   scdlDataList :Array<ScdlData> = new Array<ScdlData>();
   //初始锚点
   dtanchor : string ="";
@@ -196,7 +203,7 @@ export class TdlPage {
               this.scrollDownEarlydt =tmpscdl.d;
 
               //加入画面显示用list
-              this.scdlDataList.push(tmpscdl);
+              this.scdlDataList.unshift(tmpscdl);
             }
           }
         })
@@ -353,5 +360,37 @@ export class TdlPage {
     this.contentD.scrollTo(0,this.initscrolltop).then(data =>{
       this.downorup = 0;
     });
+  }
+
+  //弹出操作按钮
+  presentActionSheet(scd) {
+
+    scd.morecolor = "#35919C";
+    const actionSheet = this.actionSheetCtrl.create({
+      buttons: [
+        {
+          text: '分享',
+          role: 'destructive',
+          cssClass:'ashshare',
+          handler: () => {
+            console.log('Destructive clicked');
+          }
+        },{
+          text: '删除',
+          cssClass:'ashdel',
+          handler: () => {
+            console.log('Archive clicked');
+          }
+        },{
+          text: '取消',
+          role: 'cancel',
+          cssClass:'ashcancel',
+          handler: () => {
+            scd.morecolor = "#FFFFFF";
+          }
+        }
+      ]
+    });
+    actionSheet.present();
   }
 }

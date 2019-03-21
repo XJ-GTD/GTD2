@@ -305,6 +305,7 @@ export class ScdData {
   fssshow:string ="";//参与人画面显示用
   cbkcolor:string ="";//每个日程颜色画面显示用
   anchorid:string ="";//scroll锚点
+  morecolor:string ="#FFFFFF";//more颜色画面显示
 
 
   //特殊日期日程
