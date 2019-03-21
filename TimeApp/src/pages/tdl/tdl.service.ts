@@ -11,6 +11,107 @@ export class TdlService {
     private sqlExce: SqliteExec,
     private userConfig: UserConfig) {
   }
+  /**
+   * （每次返回30条数据，下拉返回日期之前）
+   * @param {string} next
+   * @returns {Promise<ScdlData[]>}
+   */
+  async down(next:string){
+    let mpL = new Array<ScdlData>();
+    if(next != null && next !=""){
+
+      //获取本地日程jn jg jc jt
+      let sqll="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
+        "left join gtd_b gb on gb.ui = gc.ui inner join gtd_j_h jh on jh.ji = gc.ji  " +
+        "where gc.sd<='"+ next+"' order by gc.sd asc limit 300";
+      let rclL = await this.sqlExce.execSql(sqll);
+      if(rclL && rclL.rows && rclL.rows.length>0){
+        let len = rclL.rows.length-1;
+        let i=0;
+        let d=0;
+        //循环获取30条数据
+        while(i<30 && d<100){
+          let day = moment(next).subtract(d,'d').format("YYYY/MM/DD");
+          let mp:ScdlData = new ScdlData();
+          for(let j=0;j<rclL.rows.length;j++){
+            let sc:ScdData = new ScdData();
+            Object.assign(sc,rclL.rows.item(j));
+            if(moment(sc.sd).isAfter(day)){
+              break;
+            }else if(this.isymwd(sc.rt,day,sc.sd,sc.ed)){
+              let dt = new DTbl();
+              dt.si = sc.si;
+              let fsL = await this.sqlExce.getList<fsData>(dt);
+              sc.fss = fsL;
+
+              Object.assign(sc.fs,rclL.rows.item(j));
+              Object.assign(sc.p,rclL.rows.item(j));
+              mp.scdl.push(sc);
+              i++;
+            }
+          }
+          d++;
+          if(mp.scdl.length>0){
+            mp.d = day;
+            mpL.push(mp);
+          }
+        }
+      }
+      mpL.reverse();
+    }
+    return mpL;
+  }
+
+  /**
+   * （每次返回60条数据，上推返回日期之后）
+   * @param {string} next
+   * @returns {Promise<ScdlData[]>}
+   */
+  async up(next:string){
+    let mpL = new Array<ScdlData>();
+
+    if(next != null && next !=""){
+      //正序查出比当前日期大的日程
+      let sql="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
+        "left join gtd_b gb on gb.ui = gc.ui inner join gtd_j_h jh on jh.ji = gc.ji " +
+        "where gc.ed>='"+ next+"' order by gc.sd asc limit 300";
+      let rcnL = await this.sqlExce.execSql(sql);
+      if(rcnL && rcnL.rows && rcnL.rows.length>0){
+        let len = rcnL.rows.length-1;
+        let i=0;
+        let d=0;
+        //循环获取60条数据
+        while(i<=60 && d<100){
+          let day = moment(next).add(d,'d').format("YYYY/MM/DD");
+          let mp:ScdlData = new ScdlData();
+          for(let j=0;j<rcnL.rows.length;j++){
+            let sc:ScdData = new ScdData();
+            Object.assign(sc,rcnL.rows.item(j));
+            if(moment(sc.sd).isAfter(day)){
+              break;
+            }else if(this.isymwd(sc.rt,day,sc.sd,sc.ed)){
+              let dt = new DTbl();
+              dt.si = sc.si;
+              let fsL = await this.sqlExce.getList<fsData>(dt);
+              sc.fss = fsL;
+
+              Object.assign(sc.fs,rcnL.rows.item(j));
+              Object.assign(sc.p,rcnL.rows.item(j));
+              mp.scdl.push(sc);
+              i++;
+            }
+          }
+          d++;
+          if(mp.scdl.length>0){
+            mp.d = day;
+            mpL.push(mp);
+          }
+        }
+      }
+
+    }
+    return mpL;
+  }
 
   //获取日程 （每次返回30条数据，下拉返回日期之前，上推返回日期之后）
   async get(next:string){

@@ -6,6 +6,7 @@ import {
 import {GlService} from "./gl.service";
 import {GcService, PageDcData} from "../gc/gc.service";
 import {GcPage} from "../gc/gc";
+import {DomSanitizer} from "@angular/platform-browser";
 
 /**
  * Generated class for the 群组列表 page.
@@ -53,19 +54,18 @@ import {GcPage} from "../gc/gc";
 `,
 })
 export class GlPage {
-  gl:Array<PageDcData> = new Array<PageDcData>()
-
+  gl:Array<PageDcData> = new Array<PageDcData>();
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public view: ViewController,
               private gcService:GcService,
               private glService:GlService,
+              private sanitizer: DomSanitizer,
               public alertCtrl: AlertController) {
 
   }
 
   ionViewDidLoad() {
-
     console.log('ionViewDidLoad PaPage');
   }
   ionViewDidEnter(){
@@ -80,7 +80,8 @@ export class GlPage {
 
   toGroupCreate(){
     let alert = this.alertCtrl.create({
-     title: '新建群组',
+      title: '新建群组',
+      cssClass:'gl-alert-top',
       inputs: [
         {
           name: 'title',

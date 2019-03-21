@@ -33,9 +33,11 @@ export class ScrollRangePickerComponent {
   changedPropEvent = new EventEmitter();
   lastScrollLeft: number = 0;
   value: string = '12:00';
+  guid: string = '';
 
   constructor(public events: Events) {
-    this.events.subscribe('_scrollBox:change', (dest) => {
+    this.guid = this.createGuid();
+    this.events.subscribe('_scrollBox' + this.guid + ':change', (dest) => {
       this.valueChanged(this.lastScrollLeft, dest);
     });
   }
@@ -44,7 +46,7 @@ export class ScrollRangePickerComponent {
     const that = this;
     const ele = this._scrollBox.nativeElement;
     ele.addEventListener('scroll', (event) => {
-      that.events.publish('_scrollBox:change', event.target.scrollLeft, Date.now());
+      that.events.publish('_scrollBox' + this.guid + ':change', event.target.scrollLeft, Date.now());
     }, {passive: true}, false);
     
     this.hourLines = 60 / this.viewMinTime;
@@ -165,4 +167,12 @@ export class ScrollRangePickerComponent {
     }
     return retstr.replace(/^,+/, '').replace(/\.$/, '');
   }
+  
+  
+  createGuid() {
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+			var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+			return v.toString(16);
+		});
+	}
 }

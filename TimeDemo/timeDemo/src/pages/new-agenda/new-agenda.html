@@ -67,10 +67,13 @@
 <scroll-select [options]="labels" [value]="0"></scroll-select>
 </ion-row>
 <ion-row justify-content-center>
-<scroll-select [options]="months" [value]="01"></scroll-select>
+<scroll-select [options]="months" [value]="'10'"></scroll-select>
 </ion-row>
 <ion-row class="full-width" justify-content-center>
 <scroll-range-picker max="24" min="5" value="18:00" (changed)="timechanged($event)"></scroll-range-picker>
+</ion-row>
+<ion-row justify-content-center>
+<scroll-select class="image-scroll-select" [options]="motions" [value]="'Party'"></scroll-select>
 </ion-row>
 </ion-grid>
 </ion-content>

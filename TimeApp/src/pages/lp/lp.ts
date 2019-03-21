@@ -20,7 +20,7 @@ import {LpService, PageLpData} from "./lp.service";
     <ion-grid class="grid-login-basic no-padding-lr">
       <ion-row justify-content-start align-items-center>
         <div class="w-auto">
-          <ion-input type="tel" placeholder="开始输入账号" [(ngModel)]="lpData.mobile" class="login-tel"></ion-input>
+          <ion-input class="login-tel" type="tel" placeholder="开始输入账号" [(ngModel)]="lpData.mobile"></ion-input>
         </div>
         <div class="login-enter">
           <button ion-fab color="success" (click)="signIn()"><ion-icon name="arrow-forward"></ion-icon></button>
@@ -28,7 +28,7 @@ import {LpService, PageLpData} from "./lp.service";
       </ion-row>
       <ion-row justify-content-between align-items-center>
         <div class="w-auto">
-          <ion-input type="password" placeholder="输入密码" [(ngModel)]="lpData.password" class="login-pwd"></ion-input>
+          <ion-input class="login-pwd" type="password" placeholder="输入密码" [(ngModel)]="lpData.password"></ion-input>
         </div>
       </ion-row>
     </ion-grid>
