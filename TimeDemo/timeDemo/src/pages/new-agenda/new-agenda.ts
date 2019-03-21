@@ -25,6 +25,7 @@ export class NewAgendaPage {
   pushedtitles: any = {'6': false, '12': false, '20': false};
   startX: number;
   endX: number;
+  rangeEnd: string = '15:00';
   blockGap: number;
   hourLines: number;
   scrolldata: string = '{}';
@@ -66,6 +67,14 @@ export class NewAgendaPage {
     this.startX = this.getTimeX('15:00', 2484);
     let scrollLeft = this.getScrollLeft('15:00', clientWidth, scrollWidth);
     this.timepickerScroll._scrollContent.nativeElement.scrollLeft = scrollLeft;
+  }
+  
+  timechanged(changed) {
+    if (changed !== undefined) {
+      let src = changed.src;
+      let dest = changed.dest;
+      this.rangeEnd = dest;
+    }
   }
   
   getTimeString(scrollLeft, clientWidth, scrollWidth) {

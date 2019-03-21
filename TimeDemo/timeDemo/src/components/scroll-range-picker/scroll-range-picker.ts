@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input } from '@angular/core';
+import { Component, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { ElementRef, Events } from 'ionic-angular';
 
 /**
@@ -29,21 +29,27 @@ export class ScrollRangePickerComponent {
   endX: number;
   blockGap: number;
   hourLines: number;
-  scrolldata: string = '{}';
+  @Output("changed")
+  changedPropEvent = new EventEmitter();
+  lastScrollLeft: number = 0;
+  value: string = '12:00';
 
-  constructor() {
+  constructor(public events: Events) {
+    this.events.subscribe('_scrollBox:change', (dest) => {
+      this.valueChanged(this.lastScrollLeft, dest);
+    });
   }
   
   ngOnInit() {
+    const that = this;
+    const ele = this._scrollBox.nativeElement;
+    ele.addEventListener('scroll', (event) => {
+      that.events.publish('_scrollBox:change', event.target.scrollLeft, Date.now());
+    }, {passive: true}, false);
+    
     this.hourLines = 60 / this.viewMinTime;
     let viewLines = this.viewHours * this.hourLines;
     this.blockGap = 2484 / (viewLines + 1);
-    
-    this.scrolldata = JSON.stringify({
-      'blockGap': this.blockGap,
-      'hourLines': this.hourLines,
-      'viewMinTime': this.viewMinTime
-    });
     
     for (let hour = 0; hour < this.viewHours; hour++) {
       for (let block = 1; block <= this.hourLines; block++) {
@@ -61,10 +67,21 @@ export class ScrollRangePickerComponent {
     let clientWidth = this._scrollBox.nativeElement.clientWidth;
     let scrollWidth = this._scrollBox.nativeElement.scrollWidth;
     this.startX = this.getTimeX('6:00', 2484);
-    let scrollLeft = this.getScrollLeft('15:00', clientWidth, scrollWidth);
+    let scrollLeft = this.getScrollLeft(this.value, clientWidth, scrollWidth);
     this._scrollBox.nativeElement.scrollLeft = scrollLeft;
   }
 
+  valueChanged(src, dest) {
+    if (src !== dest) {
+      let clientWidth = this._scrollBox.nativeElement.clientWidth;
+      let scrollWidth = this._scrollBox.nativeElement.scrollWidth;
+      
+      let time = this.getTimeString(dest, clientWidth, scrollWidth);
+      this.changedPropEvent.emit({src: this.value, dest: time});
+      this.value = time;
+    }
+  }
+  
   getTimeString(scrollLeft, clientWidth, scrollWidth) {
     let timeGap = (scrollLeft + (clientWidth / 2)) / scrollWidth * 2484;
     
