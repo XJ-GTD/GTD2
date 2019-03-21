@@ -1,5 +1,5 @@
 import {Component, ViewChild, ElementRef, Input, Renderer2} from '@angular/core';
-import {App, Events, IonicPage, NavController, NavParams, Scroll, ViewController} from 'ionic-angular';
+import {App, Content, Events, IonicPage, NavController, NavParams, Scroll, ViewController} from 'ionic-angular';
 import * as moment from "moment";
 import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
 
@@ -28,9 +28,7 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
       </ion-grid>
     </ion-toolbar>
   </ion-header>
-  <ion-content no-bounce>
-    <div class = "spacediv-set"> </div>
-    <ion-scroll id="ddd" #contentScroll scrollY="true">
+  <ion-content #contentD class="content-set">
       <ion-grid>
         <ion-row *ngFor="let sdl of scdlDataList">
           <div class="daynav">
@@ -55,9 +53,9 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
           </div>
         </ion-row>
       </ion-grid>
-    </ion-scroll>
     <ion-fab center  bottom>
-      <button ion-fab  color="light"><ion-icon name="arrow-down"></ion-icon></button>
+      <button *ngIf="downorup == 1" ion-fab  color="light" (click)="backtoTop();"><ion-icon name="arrow-up" color="danger" isActive="true"></ion-icon></button>
+      <button *ngIf="downorup == 2" ion-fab  color="light" (click)="backtoTop();"><ion-icon name="arrow-down" color="danger" isActive="true"></ion-icon></button>
     </ion-fab>
   </ion-content>`
 
@@ -65,17 +63,20 @@ import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
 export class TdlPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,private tdlServ : TdlService,
               public events: Events) {
+
+    //初始化锚点位置
     events.subscribe('po', (data) => {
 
       if (data !="" && data !=null){
         //画面scroll至锚点
         let el = document.getElementById(data.toString());
-
         el.scrollIntoView(true);
-        //el.scrollTop = 44;
         //设置后初始化锚点
         this.dtanchor = "";
       }
+
+      this.initanchor  = true;
+
     });
   }
 
@@ -84,12 +85,48 @@ export class TdlPage {
   dtanchor : string ="";
 
   pageLoaded :boolean = false;
-  @ViewChild('contentScroll') contentScroll: Scroll;
 
+  //是否正在初始化锚点
+  initanchor : boolean = false;
+  //记住初始化scroll位置
+  scrolltop : number =0;
+
+  //向上或向下按钮显示控制 0：两个都不显示 ，1：显示up，2：显示down
+  downorup:number = 0;
+
+  @ViewChild('contentD') contentD: Content;
   ionViewDidLoad() {
     console.log('ionViewDidLoad AgendaListPage');
-    //this.contentScroll.addScrollEventListener(this.timepickerChange);
 
+    this.contentD.ionScroll.subscribe(($event: any) => {
+
+        console.log("scrollTop:"+this.contentD.scrollTop);
+
+    });
+
+    this.contentD.ionScrollStart.subscribe(($event: any) => {
+      if ($event == null){
+        return;
+      }
+      //获取初始化锚点的scrolltop
+      if (this.initanchor){
+        this.scrolltop  = $event.scrollTop;
+        this.initanchor = false;
+      }else{
+        console.log(" Start this.scrollTop:"+this.scrolltop)
+        console.log(" Start $event.scrollTop:"+$event.scrollTop)
+        if ($event.scrollTop > this.scrolltop  ){
+          this.downorup = 1;
+          console.log("向上滑动");
+        }else if($event.scrollTop < this.scrolltop){
+          this.downorup = 2;
+          console.log("向下滑动");
+        }else{
+          this.downorup = 0;
+        }
+      }
+
+    });
   }
 
   ionViewWillEnter() {
@@ -101,6 +138,7 @@ export class TdlPage {
     console.log("ionViewDidEnter")
   }
 
+  //初始化数据
   init() {
     this.pageLoaded = false;
     let flag = 0;
@@ -109,7 +147,7 @@ export class TdlPage {
     let sel =this.navParams.get("selectDay");
     let condi = moment(sel).format("YYYY/MM/DD");
     condi ="2018/12/28"
-    console.log("selectDay:"+condi);
+
     this.tdlServ.get(condi).then(data =>{
       this.scdlDataList = data;
 
@@ -157,6 +195,7 @@ export class TdlPage {
 
   }
 
+  //判断页面数据加载结束后，触发初始化定位至锚点事件
   pageLoadOver(anchorid){
     if (this.pageLoaded ){
       return ""
@@ -173,7 +212,15 @@ export class TdlPage {
     return "";
   }
 
+  //回主页
   goBack(){
     this.navCtrl.pop();
+  }
+
+  //滑动回初始位置
+  backtoTop(){
+    this.contentD.scrollTo(0,this.scrolltop).then(data =>{
+      this.downorup = 0;
+    });
   }
 }
