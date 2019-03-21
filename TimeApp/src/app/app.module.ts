@@ -1,4 +1,4 @@
-import {BrowserModule} from '@angular/platform-browser';
+import {BrowserModule, HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
 import {NgModule, ErrorHandler} from '@angular/core';
 import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
@@ -48,6 +48,7 @@ import {FeedbackService} from "../service/cordova/feedback.service";
 import {AlarmService} from "../service/cordova/alarm.service";
 import {UserConfig} from "../service/config/user.config";
 import {PipesModule} from "../pipes/pipes.module";
+import {HammerDIRECTIONALLConfig} from "./my-hammer.config";
 
 @NgModule({
   declarations: [
@@ -113,7 +114,8 @@ import {PipesModule} from "../pipes/pipes.module";
     FeedbackService,
     AlarmService,
     UserConfig,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    {provide: HAMMER_GESTURE_CONFIG,useClass: HammerDIRECTIONALLConfig }
   ]
 })
 export class AppModule {

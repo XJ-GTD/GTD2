@@ -19,17 +19,18 @@ export class NewAgendaPage {
   viewBox: string = '0 0 2484 180';
   viewHours: number = 24; // 12小时
   viewMinTime: number = 5; // 5分钟
-  timeLines: array = [];
+  timeLines: Array = [];
   titles: any = {'6': '上午', '12': '下午', '20': '晚上'};
-  blockTitles: array = [];
+  blockTitles: Array = [];
   pushedtitles: any = {'6': false, '12': false, '20': false};
   startX: number;
   endX: number;
+  rangeEnd: string = '15:00';
   blockGap: number;
   hourLines: number;
   scrolldata: string = '{}';
-  labels: array = [{value:0,caption:'工作'}, {value:1,caption:'个人'}];
-  months: array = [{value:'01',caption:'一月'}, {value:'02',caption:'二月'}, {value:'03',caption:'三月'}, {value:'04',caption:'四月'}, {value:'05',caption:'五月'}, {value:'06',caption:'六月'}, {value:'07',caption:'七月'}, {value:'08',caption:'八月'}, {value:'09',caption:'九月'}, {value:'10',caption:'十月'}, {value:'11',caption:'十一月'}, {value:'12',caption:'十二月'}];
+  labels: Array = [{value:0,caption:'工作'}, {value:1,caption:'个人'}];
+  months: Array = [{value:'01',caption:'一月'}, {value:'02',caption:'二月'}, {value:'03',caption:'三月'}, {value:'04',caption:'四月'}, {value:'05',caption:'五月'}, {value:'06',caption:'六月'}, {value:'07',caption:'七月'}, {value:'08',caption:'八月'}, {value:'09',caption:'九月'}, {value:'10',caption:'十月'}, {value:'11',caption:'十一月'}, {value:'12',caption:'十二月'}];
   
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.hourLines = 60 / this.viewMinTime;
@@ -66,6 +67,14 @@ export class NewAgendaPage {
     this.startX = this.getTimeX('15:00', 2484);
     let scrollLeft = this.getScrollLeft('15:00', clientWidth, scrollWidth);
     this.timepickerScroll._scrollContent.nativeElement.scrollLeft = scrollLeft;
+  }
+  
+  timechanged(changed) {
+    if (changed !== undefined) {
+      let src = changed.src;
+      let dest = changed.dest;
+      this.rangeEnd = dest;
+    }
   }
   
   getTimeString(scrollLeft, clientWidth, scrollWidth) {

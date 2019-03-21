@@ -75,7 +75,7 @@ class Circle
    drawCircle(ctx) {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.r, 0, 360);
-    ctx.fillStyle = 'rgba(255,255,255, 0.1)';
+    ctx.fillStyle = 'rgba(255,255,255, 0.2)';
     ctx.fill();
   }
 

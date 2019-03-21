@@ -1,4 +1,14 @@
 ion-calendar {
+  .animated.faster {
+    -webkit-animation-duration: .3s;
+    animation-duration: .3s
+  }
+
+  .animated.fast {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s
+  }
+
 
   $btn-width: 16px;
 
@@ -6,37 +16,54 @@ ion-calendar {
   box-sizing: border-box;
   display: inline-block;
   //background-color: #fff;
-  background-color:transparent;
+  background-color: transparent;
   width: 100%;
-  letter-spacing:-1px;
+  letter-spacing: -1px;
 
-  .card-ios{
-    border-radius:0px;
-    width:calc(100% - 14px);
+  .card-ios {
+    border-radius: 0px;
+    width: calc(100% - 24px);
     background: transparent;
-    box-shadow:none;
-    -webkit-box-shadow:none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    margin: 12px
   }
 
-  .card-content-ios{
-    padding:0px;
+  .card-content-ios {
+    padding: 0px;
   }
-
+  .thisM{
+    color: #96162d;
+  }
   .title {
-
     //padding: 0 $btn-width 0 $btn-width;
     overflow: hidden;
     height: 70px;
     font-weight: bold;
-    letter-spacing: 10px;
-    p{
-      color:#d32746;
+    margin-left: 5%;
+    color: #fff;
+
+    img{
+      width: 16px;
+      margin: 20px;
+    }
+
+    b{
+      letter-spacing: 5px;
+    }
+    p {
       font-size: 24px;
-      span{
+      color: #fff;
+      span {
         font-size: 15px;
+        letter-spacing: 3px;
       }
     }
 
+    .arrow-dropdown {
+      padding-top: 10px;
+      padding-left: 3px;
+    }
     .back, .forward, .switch-btn {
       display: block;
       position: relative;
@@ -97,8 +124,8 @@ ion-calendar {
   }
 
   .animated.faster {
+    animation-duration: .2s;
     -webkit-animation-duration: .2s;
-    animation-duration: .2s
   }
 
 }
