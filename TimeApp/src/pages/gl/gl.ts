@@ -91,7 +91,6 @@ export class GlPage {
       buttons: [
         {
           text: '√',
-          cssClass: 'alert-button2',
           handler: data => {
             let tt = data.title;
             // console.log('title:' + tt);
