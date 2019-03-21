@@ -41,11 +41,11 @@ import {DataConfig} from "../../service/config/data.config";
         <ion-row>
           <ion-list no-lines>
             <ion-item class="plan-list-item"  *ngFor="let g of gl">
-              <ion-item (click)="toGroupMember(g)" style="background-color: black;color:#ffffff">
+              <ion-label (click)="toGroupMember(g)" style="background-color: black;color:#ffffff">
                 {{g.gn}}({{g.gc}})
-              </ion-item>
+              </ion-label>
               <button ion-button color="danger" (click)="delGroup(g)" clear item-end>
-                <img src="./assets/imgs/del_group.png">
+                <img class="content-gc" src="./assets/imgs/del_group.png">
               </button>
             </ion-item>
           </ion-list>
