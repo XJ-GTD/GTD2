@@ -7,6 +7,7 @@ import {GlService} from "./gl.service";
 import {GcService, PageDcData} from "../gc/gc.service";
 import {GcPage} from "../gc/gc";
 import {DomSanitizer} from "@angular/platform-browser";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 群组列表 page.
@@ -60,7 +61,7 @@ export class GlPage {
               public view: ViewController,
               private gcService:GcService,
               private glService:GlService,
-              private sanitizer: DomSanitizer,
+              public modalCtrl: ModalController,
               public alertCtrl: AlertController) {
 
   }
@@ -74,44 +75,13 @@ export class GlPage {
   }
 
   toGroupMember(g){
-    console.log('PaPage跳转PdPage');
-    this.navCtrl.push('GcPage',{g:g});
+    console.log('=======跳转:' + DataConfig.PAGE._GC_PAGE);
+    this.navCtrl.push(DataConfig.PAGE._GC_PAGE,{g:g});
   }
 
   toGroupCreate(){
-    let alert = this.alertCtrl.create({
-      title: '新建群组',
-      cssClass:'gl-alert-top',
-      inputs: [
-        {
-          name: 'title',
-          placeholder: '群组名称'
-        },
-      ],
-      buttons: [
-        {
-          text: '√',
-          handler: data => {
-            let tt = data.title;
-            // console.log('title:' + tt);
-            if(tt == null || tt ==""){
-              return false;
-              //this.toGroupCreate()
-            }else{
-              let dc:PageDcData = new PageDcData();
-              dc.gn = tt;
-              this.gcService.save(dc).then(data=>{
-                if(data.code == 0){
-                  this.getGroups();
-                }
-              })
-            }
-
-          }
-        }
-      ]
-    });
-    alert.present();
+    let profileModal = this.modalCtrl.create(DataConfig.PAGE._GA_PAGE);
+    profileModal.present();
   }
 
   getGroups(){
@@ -123,7 +93,8 @@ export class GlPage {
   }
 
   goBack() {
-    this.navCtrl.pop();
+    console.log('=======跳转:' + DataConfig.PAGE._M_PAGE);
+    this.navCtrl.push(DataConfig.PAGE._M_PAGE);
   }
 
   queryPerson(){
@@ -156,6 +127,44 @@ export class GlPage {
     // console.log("查询群组");
     // this.queryGroup();
   }
+
+
+  // toGroupCreate(){
+  //   let alert = this.alertCtrl.create({
+  //     title: '新建群组',
+  //     cssClass:'gl-alert-top',
+  //     inputs: [
+  //       {
+  //         name: 'title',
+  //         placeholder: '群组名称'
+  //       },
+  //     ],
+  //     buttons: [
+  //       {
+  //         text: "√",
+  //         cssClass:'gl-alert-button',
+  //         handler: data => {
+  //           let tt = data.title;
+  //           // console.log('title:' + tt);
+  //           if(tt == null || tt ==""){
+  //             return false;
+  //             //this.toGroupCreate()
+  //           }else{
+  //             let dc:PageDcData = new PageDcData();
+  //             dc.gn = tt;
+  //             this.gcService.save(dc).then(data=>{
+  //               if(data.code == 0){
+  //                 this.getGroups();
+  //               }
+  //             })
+  //           }
+  //
+  //         }
+  //       }
+  //     ]
+  //   });
+  //   alert.present();
+  // }
 
 }
 
