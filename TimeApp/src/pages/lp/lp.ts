@@ -20,22 +20,24 @@ import {LpService, PageLpData} from "./lp.service";
     <ion-grid class="grid-login-basic no-padding-lr">
       <ion-row justify-content-start align-items-center>
         <div class="w-auto">
-          <ion-input type="tel" placeholder="输入手机号码" [(ngModel)]="lpData.mobile"></ion-input>
+          <ion-input type="tel" placeholder="开始输入账号" [(ngModel)]="lpData.mobile" class="login-tel"></ion-input>
         </div>
-        <div style="margin-right: 30px;">
+        <div class="login-enter">
           <button ion-fab color="success" (click)="signIn()"><ion-icon name="arrow-forward"></ion-icon></button>
         </div>
       </ion-row>
       <ion-row justify-content-between align-items-center>
         <div class="w-auto">
-          <ion-input type="password" placeholder="输入密码" [(ngModel)]="lpData.password"></ion-input>
+          <ion-input type="password" placeholder="输入密码" [(ngModel)]="lpData.password" class="login-pwd"></ion-input>
         </div>
       </ion-row>
     </ion-grid>
 
-    <button ion-button clear color="dark" (click)="toLs()" class="no-padding no-margin-lr">改为用手机短信登录</button>
+    <div class="login-div">忘记密码?</div>
+    <div class="login-div" (click)="toLs()">改为用短信登录</div>
+    <div class="login-div" (click)="toR()">没有账号，立即注册</div>
 
-    <p class="text-agreement"> <a class="text-anchor" (click)="toR()">创建帐户</a>即表示您同意我们的 <a class="text-anchor" (click)="userAgreement()">服务条款</a> 和 <a class="text-anchor" (click)="userAgreement()">隐私政策</a> 。</p>
+    <p class="text-agreement">创建帐户即表示您同意我们的 <a class="text-anchor" (click)="userAgreement()">服务条款</a> 和 <a class="text-anchor" (click)="userAgreement()">隐私政策</a> 。</p>
   </ion-content>`
 })
 export class LpPage {
@@ -75,9 +77,9 @@ export class LpPage {
     }else if(this.lpService.checkPhone(this.lpData.mobile ) == 3){ //验证手机号是否符合规范
 
       if (this.lpData.password == null || this.lpData.password == "" || this.lpData.password == undefined){     //判断密码是否为空
-        this.title("密码不console.log(\"登录按钮被点击\");能为空");
+        this.title("密码不能为空");
       } else{
-
+        console.log("登录按钮被点击");
         this.lpService.login(this.lpData).then(data=> {
           if (data.code != 0)
             throw  data;
@@ -94,6 +96,9 @@ export class LpPage {
     }
   }
 
+  userAgreement() {
+    this.navCtrl.push('PPage');
+  }
 
   toR() {
     console.log('LpPage跳转RPage');
