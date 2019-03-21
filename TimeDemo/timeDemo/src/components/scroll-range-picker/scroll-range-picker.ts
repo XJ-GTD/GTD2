@@ -17,6 +17,8 @@ export class ScrollRangePickerComponent {
   viewBox: string = '0 0 ' + 2484 * 3 + ' 180';
   viewHiddenWidth: number = 2484 * 24 / 24;
   viewBoxPointer: string = '0 0 2484 180';
+  @Input('type')
+  viewType: string = 'day-range-picker';  // day-range-picker
   @Input('max')
   viewHours: number = 24; // 12小时
   @Input('min')

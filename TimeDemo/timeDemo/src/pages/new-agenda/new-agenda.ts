@@ -17,6 +17,7 @@ export class NewAgendaPage {
 
   labels: Array = [{value:0,caption:'工作'}, {value:1,caption:'个人'}];
   months: Array = [{value:'01',caption:'一月'}, {value:'02',caption:'二月'}, {value:'03',caption:'三月'}, {value:'04',caption:'四月'}, {value:'05',caption:'五月'}, {value:'06',caption:'六月'}, {value:'07',caption:'七月'}, {value:'08',caption:'八月'}, {value:'09',caption:'九月'}, {value:'10',caption:'十月'}, {value:'11',caption:'十一月'}, {value:'12',caption:'十二月'}];
+  years: Array = [];
   motions: Array = [
     {value:'Anxious',caption:`<img class="image-option" src="../assets/imgs/Anxious.png">`},
     {value:'Birthday',caption:`<img class="image-option" src="../assets/imgs/Birthday.png">`},
@@ -31,7 +32,9 @@ export class NewAgendaPage {
   ];
   
   constructor(public navCtrl: NavController, public navParams: NavParams) {
- 
+    for (let year = 2009; year <= 2029; year++) {
+      this.years.push({value:year.toString(),caption:year.toString()});
+    }
   }
 
   ionViewDidLoad() {
