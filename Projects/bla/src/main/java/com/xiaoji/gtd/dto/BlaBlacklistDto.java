@@ -1,6 +1,7 @@
 package com.xiaoji.gtd.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * XjBlacklistDto
@@ -18,7 +19,7 @@ public class BlaBlacklistDto implements Serializable {
 	private String a;//头像
 	private String n; // 名称
 	private String relId; //关联ID
-	
+	private List<BlaBlacklistDto> bls;
 	public Long getId() {
 		return Id;
 	}
@@ -54,6 +55,12 @@ public class BlaBlacklistDto implements Serializable {
 	}
 	public void setRelId(String relId) {
 		this.relId = relId;
+	}
+	public List<BlaBlacklistDto> getBls() {
+		return bls;
+	}
+	public void setBls(List<BlaBlacklistDto> bls) {
+		this.bls = bls;
 	}
 	
 }

@@ -196,7 +196,7 @@ page-tdl {
   }
   .content-set {
     position: relative;
-    padding-top: 44px;
+    margin-top: 28px;
   }
 
 }
@@ -214,4 +214,11 @@ page-tdl {
     color:#35919C;
     font-weight:normal
   }
+
+}
+.toolbar-background-ios {
+  background: none;
+}
+.toolbar-background-md {
+  background:none;
 }

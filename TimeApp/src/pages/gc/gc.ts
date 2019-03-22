@@ -39,6 +39,7 @@ import {DataConfig} from "../../service/config/data.config";
              <ion-item class="plan-list-item"  *ngFor="let g of fsl">
                <ion-avatar item-start >
                  <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
+                 <!--<ion-icon name="contact"></ion-icon>-->
                </ion-avatar>
                  <!--<ion-item (click)="toGroupMember(g)" style="background-color: black;color:#ffffff;margin-left: -15px;">-->
                    <!--{{g.rn}} <span>{{g.rc}}</span>-->
