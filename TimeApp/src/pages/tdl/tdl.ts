@@ -79,8 +79,6 @@ export class TdlPage {
         //画面scroll至锚点
         let el = document.getElementById(data.toString());
         el.scrollIntoView(true);
-        //设置后初始化锚点
-        this.dtanchor = "";
       }
 
       //设置锚点会触发scrollstart,scrollend事件，在2事件内处理相应初始化内容
@@ -92,8 +90,7 @@ export class TdlPage {
 
   //画面数据List
   scdlDataList :Array<ScdlData> = new Array<ScdlData>();
-  //初始锚点，仅为初始化使用
-  dtanchor : string ="";
+
 
   //交替背景色
   cbkcolor1 :string ="#96162D";
@@ -102,6 +99,8 @@ export class TdlPage {
   //仅在pageLoadOver方法内使用
   pageLoaded :boolean = false;
 
+  //初始锚点，仅为初始化使用
+  dtanchor : string ="";
   //是否正在初始化锚点
   initanchor : boolean = false;
   //记住初始化scroll位置
