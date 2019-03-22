@@ -84,6 +84,7 @@ export class DataConfig {
     _GC_PAGE: "GcPage",       // 辅助功能 - 群组编辑
     _PS_PAGE: "PsPage",       // 辅助功能 - 个人设置
     _BL_PAGE: "BlPage",       // 辅助功能 - 黑名单
+    _BR_PAGE: "BrPage",       // 辅助功能 - 备份
     _AL_PAGE: "AlPage"        //启动页
   }
 

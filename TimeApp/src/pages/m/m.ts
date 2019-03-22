@@ -43,11 +43,13 @@ import {DataConfig} from "../../service/config/data.config";
           <ion-item (click)="goSsPage()">
             <h3>系统设置</h3>
           </ion-item>
+          <ion-item (click)="goBrPage()">
+            <h3>备份恢复</h3>
+          </ion-item>
         </ion-list>
       </ion-content>
     </ion-menu>
     <ion-nav #ha [root]="hPage"></ion-nav>`
-
 })
 export class MPage {
   hPage: any = DataConfig.PAGE._H_PAGE;
@@ -70,6 +72,12 @@ export class MPage {
   goSsPage() {
 
     this.navCtrl.push(DataConfig.PAGE._SS_PAGE);
+  }
+
+  //备份
+  goBrPage() {
+
+    this.navCtrl.push(DataConfig.PAGE._BR_PAGE);
   }
 
   // 群组列表

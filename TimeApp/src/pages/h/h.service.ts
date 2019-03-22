@@ -1,13 +1,31 @@
 import {Injectable} from "@angular/core";
 import * as moment from "moment";
-import {CalendarDay} from "../../components/ion2-calendar";
+import {CalendarDay, DayConfig} from "../../components/ion2-calendar";
 import {FeedbackService} from "../../service/cordova/feedback.service";
+import {AgdbusiService} from "../../service/util-service/agdbusi.service";
+import {ScdData} from "../tdl/tdl.service";
+import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 
 @Injectable()
 export class HService {
-  constructor(private feekback: FeedbackService) {
+  constructor(private feekback: FeedbackService,private busiService:AgdbusiService) {
     moment.locale('zh-cn');
   }
+  //
+  // //缓存测试
+  // findDayEventToCache():Promise<any> {
+  //   return new Promise<DayConfig>(async (resolve, reject) =>{
+  //
+  //     let _moment = moment();
+  //     for(let d=1; d<=365;d++){
+  //       _moment = _moment.add(1,'d');
+  //       let day:string = _moment.format("YYYY/MM/DD");
+  //       console.log("****************************************==>" + day + "start");
+  //       await this.busiService.getOdAgd(day);
+  //       console.log("****************************************==>" + day + "end");
+  //     }
+  //   });
+  // }
 
   centerShow(select: CalendarDay): Promise<HData> {
 

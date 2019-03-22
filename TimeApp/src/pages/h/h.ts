@@ -4,11 +4,7 @@ import {
   CalendarComponent,
   CalendarComponentOptions
 } from "../../components/ion2-calendar";
-import * as moment from "moment";
-import {UtilService} from "../../service/util-service/util.service";
-import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DataConfig} from "../../service/config/data.config";
-import {BackComponent} from "../../components/backComponent/back";
 import {HData, HService} from "./h.service";
 
 /**
@@ -62,6 +58,10 @@ export class HPage {
               private navController: NavController,
               private modalCtr: ModalController) {
     this.hdata = new HData();
+  }
+  ngOnInit(){
+
+   // this.hService.findDayEventToCache();
   }
 
   onPress(pressDay) {
