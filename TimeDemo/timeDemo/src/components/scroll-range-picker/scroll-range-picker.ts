@@ -23,10 +23,10 @@ export class ScrollRangePickerComponent {
   viewHours: number = 24; // 12小时
   @Input('min')
   viewMinTime: number = 5; // 5分钟
-  timeLines: Array = [];
+  timeLines: any = [];
   @Input()
   titles: any = {'4': '清早', '9': '上午', '14': '下午', '17': '晚上', '22': '深夜'};
-  blockTitles: Array = [];
+  blockTitles: any = [];
   pushedtitles: any = {'6': false, '12': false, '20': false};
   startX: number;
   endX: number;
