@@ -94,7 +94,7 @@ export class GcPage {
   }
   toAddGroupMember() {
     console.log("PePage跳转PgPage");
-    this.navCtrl.push("FsPage",{tpara:this.dc,addType:'gc'});
+    this.navCtrl.push(DataConfig.PAGE._FS_PAGE,{tpara:this.dc,addType:'gc'});
     // this.navCtrl.push("PgPage",{callback:this.getData,sel:this.qcy});
     //
     // let modal = this.modalCtrl.create(PageConfig.PG_PAGE,{callback:this.getData,sel:this.qcy});
