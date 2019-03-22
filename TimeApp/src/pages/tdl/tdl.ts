@@ -17,7 +17,7 @@ import {TddiService} from "../tddi/tddi.service";
 @IonicPage()
 @Component({
   selector: 'page-tdl',
-  template: `<ion-header no-border  >
+  template: `<ion-header no-border *ngIf="headershow" >
     <ion-toolbar>
       <ion-grid>
         <ion-row >
@@ -87,7 +87,7 @@ export class TdlPage {
     });
   }
 
-  headshow :boolean =false;
+  headershow :boolean =false;
   //画面数据List
   scdlDataList :Array<ScdlData> = new Array<ScdlData>();
 
@@ -321,7 +321,7 @@ export class TdlPage {
       //获取当前日期之后的30条记录
       let condi2 = moment(condi).add(1,'d').format("YYYY/MM/DD");
       this.tdlServ.up(condi2,30).then(data =>{
-        this.headshow = true;
+        this.headershow = true;
 
         this.scdlDataList = this.scdlDataList.concat(dwdata,data);
         let flag = 0;
