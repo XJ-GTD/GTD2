@@ -1,15 +1,83 @@
 pointcomponent {
+
+  .loading {
+    cursor: pointer;
+    font-size: 0.5em;
+    color: white;
+    font-weight: 100;
+    width: 58px;
+    height: 58px;
+    position: fixed;
+    top: calc(100% - 88px);
+    left: calc(50% - 28px);
+    border-radius: 100%;
+    //border: .05px solid #3583d7;
+    animation: pulse 1.4s linear infinite;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+  .loading:before {
+    box-sizing: border-box;
+    content: "";
+    border-radius: 100%;
+    animation: rotate 0.45s linear infinite;
+    transition: opacity 1s ease 0.6s, border 0.4s ease 0s, width 0.4s ease 0.2s, height 0.4s ease 0.2s, margin 0.4s ease 0.2s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 4em;
+    height: 4em;
+    margin-left: -2em;
+    margin-top: -2em;
+    border-top: 1px solid #3583d7;
+    border-bottom: 1px solid #3583d7;
+  }
+  .loading.danger {
+    border-color: #3583d7;
+    box-shadow: 0 0 20px 4px #3583d7;
+    animation: none;
+  }
+  .loading.danger:before {
+    border-color: #3583d7;
+    opacity: 0;
+    width: 8em;
+    height: 8em;
+    margin-left: -4em;
+    margin-top: -4em;
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 #17212b, 0 0 2px 3px #00aaff, 0 0 1px 20px #17212b, 0 0 20px 15px #00aaff;
+    }
+    49.9% {
+      box-shadow: 0 0 1px 20px #17212b, 0 0 20px 15px #00aaff, 0 0 1px 32px #17212b, 0 0 30px 15px #00aaff;
+    }
+    50% {
+      box-shadow: 0 0 0 0 #17212b, 0 0 2px 3px #00aaff, 0 0 1px 20px #17212b, 0 0 20px 15px #00aaff;
+    }
+    100% {
+      box-shadow: 0 0 1px 20px #17212b, 0 0 20px 15px #00aaff, 0 0 1px 32px #17212b, 0 0 30px 15px #00aaff;
+    }
+  }
+
   canvas {
 
     //background: -moz-linear-gradient(top, #2b657b 0%, #1f2857 100%);
     //background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2b657b), color-stop(100%,#1f2857));
     //background: -webkit-linear-gradient(top, #2b657b 0%,#1f2857 100%);
     background: linear-gradient(right top, #843094 0%,#25134f 30%,#1b1148 60%,#1f2857 90%,#2b657b 100%);
-
     z-index: 100;
   //#
 
-  margin-top: 1px;
     display: block;
     width: 58px;
     height: 58px;
@@ -24,8 +92,8 @@ pointcomponent {
     position: fixed;
     width: 62px;
     height: 62px;
-    top: calc(100% - 88px);
-    left: calc(50% - 31px);
+    top: calc(100% - 90px);
+    left: calc(50% - 30px);
     border-radius: 50%;
   }
 
@@ -34,6 +102,20 @@ pointcomponent {
     background: conic-gradient(#8c83bd, #8556a0, #a057b4);
     animation: r 2s linear infinite;
     content: '';
+  }
+
+  .input{
+    position: fixed;
+    width: 62px;
+    height: 62px;
+    top: calc(100% - 90px);
+    left: 15%;
+    border-radius: 50%;
+
+    img{
+      width: 28px;
+      margin: 17px 20%;
+    }
   }
 
   @keyframes r {

@@ -38,6 +38,7 @@ export class AssistantService {
       console.log("开始语音录入 | isSpeaking:" + this.isSpeaking + "| islistenAudioing" + this.islistenAudioing)
       if (this.isSpeaking || this.islistenAudioing) {
         console.log("正在录入语音");
+        success("");
         return;
       }
       this.islistenAudioing = true;
@@ -53,8 +54,6 @@ export class AssistantService {
 
         // 读取录音进行base64转码
         this.file.readAsDataURL(this.file.cacheDirectory, "iat.pcm").then((base64File: string) => {
-
-
           /**
            * 录音文件传输后台服务解析
            * @param {string} url 后台服务路径
@@ -69,21 +68,26 @@ export class AssistantService {
             }).catch(e => {
             console.error("XiaojiAssistantService connetXunfei error:" + JSON.stringify(e));
             this.speakText("现在我遇到了小麻烦，请您稍后再来找我吧", success => {
+
             });
           });
 
           success(result);
 
         }, (err) => {
+
+          success(result);
         });
 
         this.islistenAudioing = false;
 
       }, error => {
         this.islistenAudioing = false;
+        success();
       }, true, true);
     } catch (e) {
       this.islistenAudioing = false;
+      success();
     }
 
   }
