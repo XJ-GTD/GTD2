@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xiaoji.gtd.dto.BaseOutDto;
 import com.xiaoji.gtd.dto.BlaBlacklistDto;
 import com.xiaoji.gtd.entity.BlaBlacklist;
@@ -28,7 +31,9 @@ import com.xiaoji.gtd.util.ReturnMessage;
 @CrossOrigin
 @RequestMapping(value = "/")
 public class BlacklistController {
-
+	
+	Logger log = LoggerFactory.getLogger(BlacklistController.class);
+	
     @Autowired
     IXjBlacklistService blackService;
 
@@ -42,9 +47,36 @@ public class BlacklistController {
     public BaseOutDto add(@RequestBody BlaBlacklistDto blacklist,HttpServletRequest request) {
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
-    	if(!"".equals(relId) && relId != null){
+    	if(relId != null && !"".equals(relId)   
+    			&& blacklist.getMpn() != null && !"".equals(blacklist.getMpn())){
     		blacklist.setRelId(relId);
-    		boolean xj = blackService.add(blacklist);
+    		BlaBlacklist xj = blackService.add(blacklist);
+    		out.setD(xj);
+    		out.setRc(ReturnMessage.SUCCESS_CODE);
+    		out.setRm(ReturnMessage.SUCCESS_MSG);
+    	}else{
+    		log.error("入参不能为空："+ JSONObject.toJSONString(blacklist));
+    		out.setRc(ReturnMessage.ERROR_CODE);
+    		out.setRm(ReturnMessage.ERROR_MSG);
+    	}
+
+        return out;
+    }
+    
+    /**
+     * 添加黑名单
+     * @param map
+     * @return
+     */
+    @RequestMapping(value="/target/addList")
+    @ResponseBody
+    public BaseOutDto addList(@RequestBody BlaBlacklistDto blacklist,HttpServletRequest request) {
+    	BaseOutDto out = new BaseOutDto();
+    	String relId = request.getHeader("ai");
+    	if(!"".equals(relId) && relId != null 
+    			&& blacklist.getBls() != null && blacklist.getBls().size()>0){
+    		blacklist.setRelId(relId);
+    		BlaBlacklist xj = blackService.add(blacklist);
     		out.setD(xj);
     		out.setRc(ReturnMessage.SUCCESS_CODE);
     		out.setRm(ReturnMessage.SUCCESS_MSG);
@@ -72,6 +104,7 @@ public class BlacklistController {
     		out.setRc(ReturnMessage.SUCCESS_CODE);
     		out.setRm(ReturnMessage.SUCCESS_MSG);
     	}else{
+    		log.error("删除黑名单失败，入参不能为空："+ JSONObject.toJSONString(blacklist));
     		out.setRc(ReturnMessage.ERROR_CODE);
     		out.setRm(ReturnMessage.ERROR_MSG);
     	}

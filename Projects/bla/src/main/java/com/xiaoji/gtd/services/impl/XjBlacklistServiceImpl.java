@@ -24,21 +24,25 @@ public class XjBlacklistServiceImpl implements IXjBlacklistService{
 	/**
 	 * 
 	 */
-	public boolean add(BlaBlacklistDto black) {
-		
+	public BlaBlacklist add(BlaBlacklistDto black) {
+		BlaBlacklist bla = null;
 		List<BlaBlacklist> list = xjBlackRep.findBlacklist(
 				black.getRelId(), black.getMpn());
 		if(list.size()<1){
-			BlaBlacklist bla = new BlaBlacklist();
+			bla = new BlaBlacklist();
 			bla.setAccountId(black.getAi());
 			bla.setContactsName(black.getN());
 			bla.setPhone(black.getMpn());
 			bla.setRelAccountId(black.getRelId());
 			bla.setHeadImg(black.getA());
 			xjBlackRep.save(bla);
-			return true;
+			return bla;
 		}
-		return false;
+		return bla;
+	}
+	
+	public List<BlaBlacklist> addList(BlaBlacklistDto blacklist){
+		return null;	
 	}
 
 	public boolean delete(BlaBlacklistDto blacklist) {

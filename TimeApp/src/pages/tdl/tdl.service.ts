@@ -140,8 +140,8 @@ export class TdlService {
             }else if(this.isymwd(sc.rt,day,sc.sd,sc.ed)){
               let dt = new DTbl();
               dt.si = sc.si;
-              let fsL = await this.sqlExce.getList<fsData>(dt);
-              sc.fss = fsL;
+              // let fsL = await this.sqlExce.getList<fsData>(dt);
+              // sc.fss = fsL;
 
               Object.assign(sc.fs,rclL.rows.item(j));
               Object.assign(sc.p,rclL.rows.item(j));
@@ -162,7 +162,7 @@ export class TdlService {
       //正序查出比当前日期大的日程
       let sql="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
         "left join gtd_b gb on gb.ui = gc.ui inner join gtd_j_h jh on jh.ji = gc.ji " +
-        "where gc.ed>='"+ next+"' order by gc.sd asc limit 300";
+        "where (rt='0' and gc.sd>='"+ next+"') or (rt!='0' and gc.ed>='"+ next+"') order by gc.sd asc limit 300";
       let rcnL = await this.sqlExce.execSql(sql);
       if(rcnL && rcnL.rows && rcnL.rows.length>0){
         let len = rcnL.rows.length-1;
@@ -180,8 +180,8 @@ export class TdlService {
             }else if(this.isymwd(sc.rt,day,sc.sd,sc.ed)){
               let dt = new DTbl();
               dt.si = sc.si;
-              let fsL = await this.sqlExce.getList<fsData>(dt);
-              sc.fss = fsL;
+              // let fsL = await this.sqlExce.getList<fsData>(dt);
+              // sc.fss = fsL;
 
               Object.assign(sc.fs,rcnL.rows.item(j));
               Object.assign(sc.p,rcnL.rows.item(j));

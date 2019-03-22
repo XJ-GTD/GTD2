@@ -1,0 +1,27 @@
+<!-- Generated template for the ScrollSelectComponent component -->
+<div class="grid">
+  <div class="row" align-items-center justify-content-between>
+    <div *ngIf="type == 'scroll-with-button';">
+      <button ion-button class="img-btn" (click)="prev()" clear [disabled]="isFirst()">
+        <img class="slide-btn" src="./assets/imgs/page-prev.png">
+      </button>
+    </div>
+    <div class="scroll-box" [ngClass]="{'scroll-with-button': type == 'scroll-with-button', 'scroll-without-button': type == 'scroll-without-button'}">
+      <div class="scroll-box-content" id="scroll-box-content" #scrollBox>
+        <div class="scroll-box-zoom-wrapper">
+          <div class="option align-items-center before" [ngClass]="{'option-3': items == 3,'option-5': items == 5,'option-7': items == 7}" *ngFor="let before of befores;"></div>
+          <div class="option align-items-center" [ngClass]="{'option-3': items == 3,'option-5': items == 5,'option-7': items == 7}" *ngFor="let option of options;" [attr.value]="option.value" [innerHtml]="assembleHTML(option.caption)"></div>
+          <div class="option align-items-center after" [ngClass]="{'option-3': items == 3,'option-5': items == 5,'option-7': items == 7}" *ngFor="let after of afters;"></div>
+        </div>
+      </div>
+      <div class="selected-circle" *ngIf="items > 1">
+        <div></div>
+      </div>
+    </div>
+    <div *ngIf="type == 'scroll-with-button';">
+      <button ion-button class="img-btn" (click)="next()" clear [disabled]="isLast()">
+        <img class="slide-btn" src="./assets/imgs/page-next.png">
+      </button>
+    </div>
+  </div>
+</div>
