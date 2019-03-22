@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {PagePcPro, PcService} from "./pc.service";
 
@@ -33,7 +33,7 @@ import {PagePcPro, PcService} from "./pc.service";
 <ion-grid>
   <ion-row justify-content-center>
     <div class="name-input w-auto">
-    <ion-input type="text" placeholder="输入计划名称" [(ngModel)]="jhcData.jn" text-center></ion-input>
+    <ion-input #input type="text" placeholder="输入计划名称" [(ngModel)]="jhcData.jn" text-center></ion-input>
     </div>
   </ion-row>
   <ion-row>
@@ -128,6 +128,8 @@ import {PagePcPro, PcService} from "./pc.service";
 </ion-content>`,
 })
 export class PcPage {
+
+  @ViewChild('input') input ;
   jhcData:PagePcPro = new PagePcPro;
 
   constructor(private navCtrl: NavController,
@@ -138,6 +140,12 @@ export class PcPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PcPage');
+  }
+
+  ionViewDidEnter(){
+    setTimeout(() => {
+      this.input.setFocus();//为输入框设置焦点
+    },150);
   }
 
   goBack() {

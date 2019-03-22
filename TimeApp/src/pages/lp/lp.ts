@@ -52,6 +52,9 @@ export class LpPage {
               public alertCtrl: AlertController,
               private toastCtrl: ToastController,
               private lpService: LpService,) {
+  }
+
+  ionViewDidLoad() {
     console.log('ionViewDidLoad LpPage');
   }
 
