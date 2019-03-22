@@ -90,7 +90,7 @@ export class AlPage {
     console.log( this.alData.text)
 
     //缓存测试
-    await this.alService.createCachefromserver();
+    //await this.alService.createCachefromserver();
     if (!this.alData.islogin){
       this.nav.setRoot(DataConfig.PAGE._LP_PAGE);
     }else{

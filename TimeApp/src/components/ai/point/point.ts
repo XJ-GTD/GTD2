@@ -1,6 +1,8 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, Renderer, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage} from 'ionic-angular';
 import {UtilService} from "../../../service/util-service/util.service";
+import {AssistantService} from "../../../service/cordova/assistant.service";
+import set = Reflect.set;
 
 /**
  * Generated class for the Hb01Page page.
@@ -12,14 +14,22 @@ import {UtilService} from "../../../service/util-service/util.service";
 @Component({
   selector: 'PointComponent',
   template: `
-    <div class="spinner">
+    <b class="loading danger" #light>
+    <div class="spinner" (click)="speakstart()">
       <canvas #canvas></canvas>
     </div>
+    </b>
+
+      <div class="input" (click)="inputstart()">
+        <img src="./assets/imgs/h-input.png">
+      </div>
   `,
 })
 export class PointComponent {
   @ViewChild('canvas')
   canvas: ElementRef;
+  @ViewChild('light')
+  light: ElementRef;
 
   ctx: any;
   width: number;
@@ -36,8 +46,27 @@ export class PointComponent {
 
   DOT_RADIUS = 4;
 
-  constructor(private utilService: UtilService) {
+  speed:number = 0.0004;
 
+  constructor(private utilService: UtilService,private assistantService:AssistantService,private _renderer: Renderer2) {
+
+  }
+
+  speakstart(){
+    this.speed =  0.004;
+    this._renderer.removeClass(this.light.nativeElement,"danger");
+    this.assistantService.listenAudio((text)=>{
+      // setTimeout(()=>{
+      //   this._renderer.addClass(this.light.nativeElement,"danger");
+      //   this.speed =  0.0004;
+      //
+      // },3000)
+      this._renderer.addClass(this.light.nativeElement,"danger");
+      this.speed =  0.0004;
+      this.assistantService.speakText("你说的是" + text,()=>{
+        alert(text);
+      });
+    })
   }
 
   ngOnInit(): void {
@@ -72,7 +101,7 @@ export class PointComponent {
       const phi = Math.acos((Math.random() * 2) - 1); // Random value between [-1, 1];
       let a = this.utilService.rand(0.1, 1);
       let rgba = "";
-      if (this.utilService.randInt(0, 10) > 5) {
+      if (this.utilService.randInt(0, 15) > 5) {
         rgba = "rgba(132,48,148," + a + ")"
       } else {
         rgba = "rgba(102,200,201," + a + ")"
@@ -95,7 +124,7 @@ export class PointComponent {
     this.ctx.clearRect(0, 0, this.width, this.height);
 
     // Increase the globe rotation
-    this.rotation = a * 0.0004;
+    this.rotation = a * this.speed;
 
     const sineRotation = Math.sin(this.rotation); // Sine of the rotation
     const cosineRotation = Math.cos(this.rotation); // Cosine of the rotation
@@ -109,7 +138,6 @@ export class PointComponent {
       this.render(a);
     });
   }
-
 
 }
 
@@ -162,7 +190,7 @@ class Dot {
     this.project(sin, cos);
     // ctx.fillRect(this.xProject - DOT_RADIUS, this.yProject - DOT_RADIUS, DOT_RADIUS * 2 * this.sizeProjection, DOT_RADIUS * 2 * this.sizeProjection);
     this.ctx.beginPath();
-    this.ctx.arc(this.xProject, this.yProject, this.DOT_RADIUS * this.sizeProjection, 0, Math.PI * 2);
+    this.ctx.arc(this.xProject, this.yProject, this.DOT_RADIUS * this.sizeProjection, 0, Math.PI);
     //let rgba = 'rgba(29,13,178, 1)'
     //this.ctx.fillStyle = 'rgba(29,13,178, 1)';
     this.ctx.fillStyle = this.rgba;
