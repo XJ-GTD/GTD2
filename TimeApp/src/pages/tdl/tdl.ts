@@ -184,10 +184,12 @@ export class TdlPage {
 
           this.upoffset = $event.scrollTop;
 
-          //上滑获取数据
-          this.upgetdata = true;
+
 
           if (data.length >0 ) {
+
+            //上滑获取数据
+            this.upgetdata = true;
 
             for (let j = 0, len = data.length; j < len; j++) {
               let tmpscdl = data[j];
@@ -236,10 +238,13 @@ export class TdlPage {
 
           this.downoffset = $event.scrollTop;
 
-          //下滑获取数据
-          this.downgetdata = true;
+
 
           if (data.length > 0){
+
+            //下滑获取数据
+            this.downgetdata = true;
+
             for (let  len = data.length, j = len -1; j >= 0; j--) {
               let tmpscdl = data[j];
 
