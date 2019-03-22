@@ -21,6 +21,12 @@ export class FormatedatePipe implements PipeTransform {
       if (args[0] == "DD"){
         return moment(value).format("DD");
       }
+      if (args[0] == "YYYY"){
+        return moment(value).format("YYYY");
+      }
+      if (args[0] == "MM-DD"){
+        return moment(value).format("MM-DD");
+      }
     }
     return value;
   }
