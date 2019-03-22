@@ -19,7 +19,7 @@ import {PageRData, RService} from "./r.service";
       <ion-grid class="grid-login-basic no-padding-lr">
         <ion-row justify-content-start align-items-center>
           <div class="w-auto">
-            <ion-input class="register-name"  type="text" placeholder="您的尊称" [(ngModel)]="rData.username"></ion-input>
+            <ion-input class="register-name"  type="text" placeholder="您的尊称" [(ngModel)]="rData.username" (ionBlur)="checkName()"></ion-input>
           </div>
         </ion-row>
         <ion-row justify-content-between align-items-center>
@@ -27,24 +27,23 @@ import {PageRData, RService} from "./r.service";
             <ion-input class="register-tel" type="tel" placeholder="开始输入电话号码" [(ngModel)]="rData.mobile" (ionBlur)="checkPhone()"></ion-input>
           </div>
           <div>
-            <button ion-fab color="success" (click)="register()">
+            <button ion-fab color="success" (click)="register()" [ngClass]="{'show': inputBoolean == false , 'show-true': inputBoolean == true}">
             <img class="img-content-enter" src="../../assets/imgs/xyb.png">
-            <!--<ion-icon name="arrow-forward" ></ion-icon>-->
           </button>
           </div>
         </ion-row>
         <ion-row justify-content-start align-items-center>
           <div class="w-auto">
-            <ion-input class="register-code"  type="number" placeholder="短信验证码" [(ngModel)]="rData.authCode"></ion-input>
+            <ion-input class="register-code"  type="number" placeholder="短信验证码" [(ngModel)]="rData.authCode" (ionBlur)="checkCode()"></ion-input>
           </div>
           <div>
-            <button ion-button class="register-send" (click)="sendMsg()">{{timeOut}}</button>
+            <button ion-button class="register-send" (click)="sendMsg()">{{timeText}}</button>
           </div>
         </ion-row>
         
         <ion-row justify-content-start align-items-center>
           <div class="w-auto">
-            <ion-input class="register-pwd" type="password" placeholder="密码" [(ngModel)]="rData.password"></ion-input>
+            <ion-input class="register-pwd" type="password" placeholder="密码" [(ngModel)]="rData.password" (ionBlur)="checkPwd()"></ion-input>
           </div>
         </ion-row>
       </ion-grid>
@@ -58,10 +57,13 @@ import {PageRData, RService} from "./r.service";
 export class RPage {
 
   rData: PageRData = new PageRData();
-
-  errorCode: any;
-  timeOut: any = "获取验证码";
-  timer: any;
+  errorPhone:number = 0; // 0：初始化（输入为空） 1：手机号长度小于11位 2：手机号格式错误 3：手机号正确
+  errorCode:number = 0; // 0：初始化；1：验证码输入
+  errorPwd:number = 0; // 0：初始化；1：密码输入
+  errorName:number = 0; // 0：初始化；1：用户名输入
+  inputBoolean:boolean = false;  // false： show ; true show-true
+  timeText:any = "获取验证码";
+  timer:any;
 
   constructor(public navCtrl: NavController,
               private alertCtrl: AlertController,
@@ -74,12 +76,12 @@ export class RPage {
     this.navCtrl.pop();
   }
 
-  toLp() {
-    this.navCtrl.push('LpPage');
-  }
-
   userAgreement() {
     this.navCtrl.push('PPage');
+  }
+
+  toLp() {
+    this.navCtrl.push('LpPage');
   }
 
   title(message){
@@ -89,7 +91,6 @@ export class RPage {
       position: 'middle'
     });
     toast.present();
-    return;
   }
 
   alert(message){
@@ -101,10 +102,42 @@ export class RPage {
     alert.present();
   }
 
-  register() {
-    if(this.errorCode == undefined || this.errorCode == 0 ){  //判断手机号是否为空
+  sendMsg(){
+
+    if(this.errorPhone == 0){  //判断手机号是否为空
       this.title("手机号不能为空");
-    }else if(this.errorCode == 3){ //验证手机号是否符合规范
+    }else if(this.errorPhone == 1){
+      this.title("手机号长度小于11位");
+    }else if(this.errorPhone == 2){
+      this.title("手机号格式错误");
+    }else {
+      this.rService.sc(this.rData).then(data => {
+        //console.log("短信发送成功" + JSON.stringify(data));
+        //短信验证码KEY 赋值给验证码登录信息
+        this.rData.verifykey = data.data.verifykey;
+        this.alert("短信发送成功");
+      }).catch(ref =>{
+        console.log("ref::" + ref);
+        this.alert("短信发送失败");
+      });
+
+      this.timeText = 60;
+      console.log("开始" + this.timeText + "定时器");
+      this.timer = setInterval(() => {
+        this.timeText--;
+        if (this.timeText <= 0) {
+          clearTimeout(this.timer);
+          console.log("清除定时器");
+          this.timeText = "发送验证码"
+        }
+      }, 1000)
+    }
+  }
+
+  register() {
+    if(this.errorPhone == undefined || this.errorPhone == 0 ){  //判断手机号是否为空
+      this.title("手机号不能为空");
+    }else if(this.errorPhone == 3){ //验证手机号是否符合规范
       if (this.rData.username == null || this.rData.username == "" || this.rData.username == undefined){     //用户名是否为空
         this.title("用户名不能为空");
       }else  if (this.rData.authCode == null || this.rData.authCode == "" || this.rData.authCode == undefined){     //判断验证码是否为空
@@ -120,6 +153,7 @@ export class RPage {
             throw  data;
 
           console.debug("注册并密码登录成功::" + JSON.stringify(data));
+          clearTimeout(this.timer);
           this.navCtrl.setRoot('MPage');
         }).catch(res=>{
           //注册异常
@@ -132,36 +166,44 @@ export class RPage {
     }
   }
 
-  sendMsg() {
-    if(this.errorCode == 3){
-      this.rService.sc(this.rData).then(data => {
-        console.log("短信发送成功"+ JSON.stringify(data));
-        //短信验证码KEY 赋值给注册信息
-        this.rData.verifykey = data.data.verifykey;
-        this.alert("短信发送成功");
-      }).catch(ref =>{
-        console.log("ref::" + ref);
-        this.alert("短信发送失败");
-      });
-
-      this.timeOut = 10;
-      this.timer = setInterval(()=>{
-        this.timeOut --;
-        if(this.timeOut <= 0){
-          clearTimeout(this.timer)
-          console.log("清除定时器")
-          this.timeOut="发送验证码"
-        }
-        console.log(this.timeOut)
-      },1000)
-
-    }else{
-      this.title("请输入正确11位手机号");
+  check(){
+    if (this.errorPhone == 3 && this.errorCode == 1 && this.errorPwd == 1 && this.errorName){
+      this.inputBoolean = true;
+    }else {
+      this.inputBoolean = false;
     }
   }
 
   checkPhone() {
-    this.errorCode = this.rService.checkPhone(this.rData.mobile);
+    this.errorPhone = this.rService.checkPhone(this.rData.mobile);
+    this.check();
+  }
+
+  checkCode(){
+    if (this.rData.authCode != null && this.rData.authCode != "" && this.rData.authCode != undefined){     //判断验证码是否为空
+      this.errorCode = 1;
+    }else {
+      this.errorCode = 0;
+    }
+    this.check();
+  }
+
+  checkPwd(){
+    if (this.rData.password != null && this.rData.password != "" && this.rData.password != undefined){     //判断密码是否为空
+      this.errorPwd = 1;
+    }else {
+      this.errorPwd = 0;
+    }
+    this.check();
+  }
+
+  checkName(){
+    if (this.rData.username != null && this.rData.username != "" && this.rData.username != undefined){     //判断用户名是否为空
+      this.errorName = 1;
+    }else {
+      this.errorName = 0;
+    }
+    this.check();
   }
 
 }

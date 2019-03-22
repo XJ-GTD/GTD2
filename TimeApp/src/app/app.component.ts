@@ -5,6 +5,7 @@ import {BackgroundMode} from '@ionic-native/background-mode';
 import {AssistantService} from "../service/cordova/assistant.service";
 import {DataConfig} from "../service/config/data.config";
 import {RestfulClient} from "../service/util-service/restful.client";
+import {FeedbackService} from "../service/cordova/feedback.service";
 
 @Component({
   template: '<ion-nav></ion-nav>'
@@ -20,19 +21,16 @@ export class MyApp {
 
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
-
     this.platform.ready().then(() => {
       //允许进入后台模式
       this.backgroundMode.enable();
       //设置返回键盘（android）
       this.registerBackButtonAction();
-
       this.restfulClient.init();
       //跳转页面（过渡页面）
       this.nav.setRoot(DataConfig.PAGE._AL_PAGE);
     });
   }
-
 
   registerBackButtonAction(): void {
     this.platform.registerBackButtonAction(() => {

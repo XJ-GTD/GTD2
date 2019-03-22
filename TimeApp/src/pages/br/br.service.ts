@@ -13,6 +13,8 @@ import {STbl} from "../../service/sqlite/tbl/s.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {UtilService} from "../../service/util-service/util.service";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
+import {UserConfig} from "../../service/config/user.config";
+import * as moment from "moment";
 
 @Injectable()
 export class BrService {
@@ -27,11 +29,11 @@ export class BrService {
 
     let backupPro: BackupPro = new BackupPro();
     //操作账户ID
-    backupPro.oai = "a13661617252"
+    backupPro.oai = UserConfig.account.id
     //操作手机号码
-    backupPro.ompn = "13661617252";
+    backupPro.ompn = UserConfig.account.phone;
     //时间戳
-    backupPro.d.bts = 0;
+    backupPro.d.bts = moment().unix();
 
     //获取本地日历
     let c = new CTbl();
@@ -89,7 +91,7 @@ export class BrService {
       this.bacRestful.getlastest().then(data => {
         bsModel.data = new PageBrDataPro();
         bsModel.data.bts = data.data.bts;
-        bsModel.data.dt = this.util.tranDate(bsModel.data.bts, "yyyy/MM/dd hh:mm")
+        bsModel.data.dt = this.util.tranDate(bsModel.data.bts, "YYYY/MM/DD hh:mm")
         resolve(bsModel)
       })
     })

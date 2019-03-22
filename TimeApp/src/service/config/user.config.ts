@@ -63,10 +63,9 @@ export class UserConfig {
   }
 
   RefreshYTbl():Promise<any> {
-    return new Promise((resolve,reject)=>{
       let yTbl: YTbl = new YTbl();
       //获取偏好设置
-      this.sqlliteExec.getList<YTbl>(yTbl).then(rows => {
+      return this.sqlliteExec.getList<YTbl>(yTbl).then(rows => {
         for (let y of rows) {
           let setting:Setting = new Setting();
           setting.bname = y.ytn;
@@ -76,12 +75,10 @@ export class UserConfig {
           setting.value = y.yv;
           UserConfig.settins.set(setting.type,setting);
         }
-      });
     })
   }
 
   RefreshUTbl():Promise<any> {
-    return new Promise((resolve, reject) => {
       //获取用户信息
       let uTbl: UTbl = new UTbl();
       return this.sqlliteExec.getList<UTbl>(uTbl).then(rows=>{
@@ -95,11 +92,7 @@ export class UserConfig {
           UserConfig.user.sex = rows[0].us;
           UserConfig.user.contact = rows[0].uct;
         }
-
-        resolve();
       })
-
-    });
   }
 
   RefreshATbl():Promise<any> {
@@ -115,7 +108,6 @@ export class UserConfig {
         UserConfig.account.token = rows[0].at;
         UserConfig.account.mq = rows[0].aq;
       }
-
     });
   }
 }

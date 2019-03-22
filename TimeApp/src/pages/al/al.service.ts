@@ -16,6 +16,10 @@ import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {GTbl} from "../../service/sqlite/tbl/g.tbl";
 import {BxTbl} from "../../service/sqlite/tbl/bx.tbl";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
+import {FeedbackService} from "../../service/cordova/feedback.service";
+import {ScdData} from "../tdl/tdl.service";
+import {UserConfig} from "../../service/config/user.config";
+import {AgdRestful} from "../../service/restful/agdsev";
 
 @Injectable()
 export class AlService {
@@ -26,7 +30,10 @@ export class AlService {
               private sqlExce: SqliteExec,
               private util: UtilService,
               private restfulConfig: RestFulConfig,
-              private wsserivce: WebsocketService) {
+              private wsserivce: WebsocketService,
+              private feekback: FeedbackService,
+              private userConfig: UserConfig,
+              private agdRestful: AgdRestful) {
   }
 
 //权限申请
@@ -90,7 +97,6 @@ export class AlService {
       let count = await this.sqlLiteInit.createTables();
 
       await this.sqlLiteInit.initData();
-      console.log("**************************createTables" + "*************" + count);
       let yTbl: YTbl = new YTbl();
       yTbl.yi = this.util.getUuid();
       yTbl.yt = "FI";
@@ -99,8 +105,6 @@ export class AlService {
       await this.sqlExce.replaceT(yTbl);
 
       await this.createTestData();
-
-      console.log("**************************Fi" + "*************写入");
 
       alData.text = "系统初始化完成";
       resolve(alData);
@@ -124,9 +128,17 @@ export class AlService {
     let alData: AlData = new AlData();
     return new Promise(async (resolve, reject) => {
       // TODO 系统设置 restHttps设置 用户偏好设置 用户信息 。。。
-      await this.restfulConfig.init()
+      await this.restfulConfig.init();
 
+      await this.feekback.initAudio().catch(e => {
+      });
+
+
+      //重新获取服务器数据
       await this.sqlLiteInit.initDataSub();
+
+      //用户设置信息初始化
+      this.userConfig.init();
       alData.text = "系统设置完成";
       resolve(alData)
 
@@ -423,7 +435,7 @@ export class AlService {
 
       for (let i = 0; i < 4000; i++) {
         start = moment('2019/03/01');
-        let r = this.util.randInt(-90, 90);
+        let r = this.util.randInt(-365 * 10, 365 * 10);
         let t = this.util.randInt(0, 24);
         let jh_i = this.util.randInt(0, 20);
         let jh_id = "";
@@ -431,22 +443,24 @@ export class AlService {
         let r_i2 = this.util.randInt(0, 15);
         let c_r = this.util.randInt(-5, 10);
         let c_r2 = this.util.randInt(0, 5);
+        let c_r3 = this.util.randInt(0, 4);
 
         if (jh_i < 10) {
           jh_id = jhs[jh_i].ji;
         }
-        console.log("start=====" + start.format('YYYY/MM/DD'));
 
         let d = start.add(r, 'd').add(t, 'h');
+        console.log("start=====" + d.format('YYYY/MM/DD'));
         let c: CTbl = new CTbl();
 
         c.si = this.util.getUuid();
         c.sn = ss[r_i];
         c.sd = d.format('YYYY/MM/DD');
         c.st = d.format('hh:mm');
-        c.ed = '9999/12/31'
+        if (c_r3 > 0) c.ed = '9999/12/31';
+        else c.ed = c.sd;
         c.et = '24:00'
-        c.rt = '0';
+        c.rt = c_r3.toString();
         c.sr = c.si;
         c.ji = jh_id;
         c.bz = ss[r_i2];
@@ -467,9 +481,9 @@ export class AlService {
         if (!(c_r > 6 && c_r < 0)) {
           while (c_r > -1) {
 
-            c_r2 = this.util.randInt(0, c_r2-1);
+            c_r2 = this.util.randInt(0, c_r2 - 1);
             c_r--;
-            if (c_r2 <1) break;
+            if (c_r2 < 1) break;
 
             let dtbl: DTbl = new DTbl();
 
@@ -488,6 +502,133 @@ export class AlService {
       });
     })
   }
+
+  async createCachefromserver() {
+    const ctbl: CTbl = new CTbl();
+    ctbl.sd = '2019/01/01';
+    ctbl.rt = "0";
+    let ds = await this.sqlExce.getList<CTbl>(ctbl);
+
+    let dd = await this.agdRestful.cachefromserver(ds)
+    console.log("***************************" + dd.data);
+  }
+
+  // //测试用
+  // private _testMap: Map<moment.Moment, Array<CTbl>> = new Map<moment.Moment, Array<CTbl>>();
+  //
+  //
+  // ishave(date: moment.Moment, cTbldata: CTbl): boolean {
+  //
+  //   //日程开始日期
+  //   let startD = moment(cTbldata.sd);
+  //
+  //   //日程结束日期
+  //   let endD = moment(cTbldata.ed);
+  //
+  //   //重复类型
+  //   let type = cTbldata.rt;
+  //
+  //   //当前日期在开始日之前
+  //   if (date.isBefore(startD)) {
+  //     return false;
+  //   }
+  //   //当前日期在结束日之后
+  //   if (cTbldata.ed != '9999/12/31' && date.isAfter(endD)) {
+  //     return false;
+  //   }
+  //   //开始日累计日期在结束日之后
+  //   if (cTbldata.ed != '9999/12/31' && moment(startD).isAfter(endD)) {
+  //     return false;
+  //   }
+  //
+  //   //0：关闭，1：每日，2：每周，3：每月，4：每年
+  //   while (!startD.isAfter(date)) {
+  //
+  //     // if (date.isSame(startD)) {
+  //     //   return true;
+  //     // }
+  //
+  //     if (type == "1") {
+  //       startD = startD.add(1, "d").clone();
+  //     } else if (type == "2") {
+  //
+  //       startD = startD.add(1, "w").clone();
+  //
+  //     } else if (type == "3") {
+  //       startD = startD.add(1, "M").clone();
+  //
+  //     } else if (type == "4") {
+  //       startD = startD.add(1, "y").clone();
+  //
+  //     } else if (type == "0") {
+  //       return date.isSame(startD);
+  //
+  //     } else {
+  //       return false;
+  //     }
+  //
+  //   }
+  //   return false;
+  //
+  // }
+  //
+  //
+  // createCache() {
+  //   const ctbl: CTbl = new CTbl();
+  //   // ctbl.sd = '2019/01/01';
+  //   ctbl.rt = "0";
+  //   this.sqlExce.getList<CTbl>(ctbl).then(ds=>{
+  //     console.log("******************************sqlite=====select==" + ds.length);
+  //     let ln = moment().unix();
+  //     let co = 0;
+  //     for (let c of ds) {
+  //       let start: moment.Moment = moment(c.sd);
+  //       let end: moment.Moment = moment(c.ed);
+  //       let today: moment.Moment = moment();
+  //       if (today.add(3, 'y').isBefore(end)) {
+  //         end = today.clone();
+  //       }
+  //       if (c.rt == "0") {
+  //         end = start.clone();
+  //       }
+  //       this.fsprocess(start,end,c).then(d=>{
+  //         console.log("******************************cache=====completer==" + c.si);
+  //
+  //       });
+  //     }
+  //
+  //     console.log("******************************cache=====completer==" + (moment().unix() - ln));
+  //   })
+  //
+  // }
+  //
+  // fsprocess(start: moment.Moment, end: moment.Moment, ctbl: CTbl): Promise<any> {
+  //   return new Promise<any>((resolve, reject) => {
+  //     let co = 0;
+  //     resolve();
+  //     while (!end.isBefore(start)) {
+  //       {
+  //         console.log("******************************process=======" + (co++));
+  //         let ls: Array<CTbl> = this._testMap.get(start);
+  //         if (!ls) {
+  //           ls = new Array<CTbl>();
+  //           this._testMap.set(start, ls);
+  //         }
+  //
+  //         //if (this.ishave(start, c)) {
+  //         ls.push(ctbl);
+  //         //}
+  //         start = start.add(1, 'd');
+  //
+  //       }
+  //
+  //
+  //     }
+  //   })
+  //
+  // }
+  //
+  // //测试用
 
 }
 

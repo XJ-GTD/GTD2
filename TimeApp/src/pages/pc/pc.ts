@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {PagePcPro, PcService} from "./pc.service";
-import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 计划新建 page.
@@ -135,11 +134,14 @@ export class PcPage {
               private alertCtrl: AlertController,
               private pcService:PcService) {
     this.jhcData.jc = "#9B5E4B"; // 默认选中颜色  牛皮棕
+  }
+
+  ionViewDidLoad() {
     console.log('ionViewDidLoad PcPage');
   }
 
   goBack() {
-    this.navCtrl.setRoot(DataConfig.PAGE._PL_PAGE);
+    this.navCtrl.pop();
   }
 
   save(){
@@ -147,7 +149,7 @@ export class PcPage {
       if(this.jhcData.jc != "" && this.jhcData.jc != null ){
         this.pcService.savePlan(this.jhcData).then(data=>{
           console.log("计划添加成功===="+JSON.stringify(data));
-          this.navCtrl.setRoot(DataConfig.PAGE._PL_PAGE);
+          this.navCtrl.pop();
         }).catch(res=>{
           console.log("计划添加失败 :: " + JSON.stringify(res));
         });

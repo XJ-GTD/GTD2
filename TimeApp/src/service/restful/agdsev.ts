@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {BsModel} from "./out/bs.model";
+import {CTbl} from "../sqlite/tbl/c.tbl";
 
 
 
@@ -112,6 +113,34 @@ export class AgdRestful{
       let url: UrlEntity = this.config.getRestFulUrl("ASU");
       let bsModel = new BsModel<OutSharePro>();
       this.request.post(url, sharePro).then(data => {
+        //处理返回结果
+        bsModel.code = data.rc;
+        bsModel.message = data.rm;
+        bsModel.data = data.d;
+        resolve(bsModel);
+
+      }).catch(error => {
+        //处理返回错误
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        resolve(bsModel);
+
+      })
+    });
+  }
+
+
+
+  //测试缓存
+  //日程转发(分享)上传 ASU
+  cachefromserver(ctbl:Array<CTbl>):Promise<BsModel<OutSharePro>> {
+    return new Promise((resolve, reject) => {
+      let url: UrlEntity = this.config.getRestFulUrl("CC");
+      let bsModel = new BsModel<OutSharePro>();
+      let ag:any = {};
+      ag.d = ctbl;
+
+      this.request.post(url, ag).then(data => {
         //处理返回结果
         bsModel.code = data.rc;
         bsModel.message = data.rm;

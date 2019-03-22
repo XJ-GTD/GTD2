@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {AlertController, IonicPage, Navbar, NavController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "./pl.service";
 import {PagePDPro} from "../pd/pd.service";
@@ -36,10 +36,11 @@ import {PagePDPro} from "../pd/pd.service";
       <ion-grid>
         <ion-row>
           <ion-list no-lines>
-            <ion-list-header class="plan-list-item">
-              全部计划<img class="img-content-plan" src="../../assets/imgs/xl.png">
+            <ion-list-header class="plan-list-item" (click)="change()">
+              全部计划
+              <img class="img-content-plan" src="../../assets/imgs/{{picture}}">
             </ion-list-header>
-            <div *ngFor="let jh of jhs">
+            <div *ngFor="let jh of jhs" [ngClass]="{'div-show-true': show == true , 'div-show-false': show == false}">
               <ion-item class="plan-list-item" (click)="toPd(jh)" *ngIf="jh.jt=='2'">
                 <div class="color-dot" [ngStyle]="{'background-color': jh.jc }" item-start></div>
                 {{jh.jn}}({{jh.js}})
@@ -69,11 +70,17 @@ import {PagePDPro} from "../pd/pd.service";
 })
 export class PlPage {
 
+  @ViewChild(Navbar) navBar: Navbar;
   jhs:any;
+  show:any = true;
+  picture:any;
 
   constructor(private navCtrl: NavController,
               private alertCtrl: AlertController,
               private plService:PlService) {
+  }
+
+  ionViewDidLoad() {
     console.log('ionViewDidLoad PlPage');
   }
 
@@ -90,8 +97,7 @@ export class PlPage {
   }
 
   goBack() {
-    //this.navCtrl.pop();
-    this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
+    this.navCtrl.pop();
   }
 
   newPlan(){
@@ -100,6 +106,16 @@ export class PlPage {
 
   toPd(jh:PagePDPro){
     this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{"jh":jh});
+  }
+
+  change(){
+    if(this.show){
+      this.show = false;
+      this.picture = "gdxz 2.png";
+    }else{
+      this.show = true;
+      this.picture = "xl.png";
+    }
   }
 
   delPlan(jh:PagePDPro){
