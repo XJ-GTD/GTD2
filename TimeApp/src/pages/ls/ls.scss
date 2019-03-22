@@ -53,11 +53,17 @@ page-ls {
     height: 15px;
   }
 
-  .fab {
+  .show {
     width: 45px;
     height: 45px;
     background-color:#429A81;
     opacity: 0.4;
+  }
+
+  .show-true{
+    width: 45px;
+    height: 45px;
+    background-color:#429A81;
   }
 
   .login-send{

@@ -61,11 +61,17 @@ page-r {
     background-color: white;
   }
 
-  .fab {
+  .show {
     width: 45px;
     height: 45px;
     background-color:#429A81;
     opacity: 0.4;
+  }
+
+  .show-true{
+    width: 45px;
+    height: 45px;
+    background-color:#429A81;
   }
 
   .grid-login-basic {
