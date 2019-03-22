@@ -83,6 +83,7 @@ export class TdlPage {
         this.dtanchor = "";
       }
 
+      //设置锚点会触发scrollstart,scrollend事件，在2事件内处理相应初始化内容
       this.initanchor  = true;
 
     });
@@ -91,13 +92,14 @@ export class TdlPage {
 
   //画面数据List
   scdlDataList :Array<ScdlData> = new Array<ScdlData>();
-  //初始锚点
+  //初始锚点，仅为初始化使用
   dtanchor : string ="";
 
   //交替背景色
   cbkcolor1 :string ="#96162D";
   cbkcolor2 :string ="#8E172B";
 
+  //仅在pageLoadOver方法内使用
   pageLoaded :boolean = false;
 
   //是否正在初始化锚点
@@ -125,6 +127,12 @@ export class TdlPage {
   //记住向下每次滑动的预加载的最早的颜色
   scrollDownEarlycolor:string ="";
 
+  //上滑的取数据过程中，再次上滑不再获取数据
+  upingdata :boolean = false;
+
+  //下滑的取数据过程中，再次下滑不再获取数据
+  downingdata:boolean = false;
+
   @ViewChild('contentD') contentD: Content;
   ionViewDidLoad() {
     console.log('ionViewDidLoad AgendaListPage');
@@ -134,6 +142,7 @@ export class TdlPage {
         return;
       }
 
+      //设置初始化结束标志
       if (this.initanchor){
         this.initanchor = false;
         return ;
@@ -142,9 +151,14 @@ export class TdlPage {
 
       if ($event.scrollTop > this.startScrolltop  ){
         console.log("上滑");
+        //如果上滑的数据正在获取中，则上滑不在获取新的数据
+        if (this.upingdata){
+          return ;
+        }
+        this.upingdata = true;
         //获取当前日期之后的60条记录
         let condi = moment(this.scrollUpLastdt).add(1,'d').format("YYYY/MM/DD");
-        this.tdlServ.up(condi,10).then(data =>{
+        this.tdlServ.up(condi,30).then(data =>{
           console.log("上滑获取数据量："+data.length);
           if (data.length >0 ) {
 
@@ -174,13 +188,20 @@ export class TdlPage {
               this.scdlDataList.push(tmpscdl);
             }
           }
+          this.upingdata = false;
         })
 
       }else{
         console.log("下滑");
+        //如果下滑的数据正在获取中，则下滑不在获取新的数据
+        if (this.downingdata){
+          return ;
+        }
+        this.downingdata = true;
+
         //获取当前日期之前的30条记录
         let condi = moment(this.scrollDownEarlydt).subtract(1,'d').format("YYYY/MM/DD");
-        this.tdlServ.down(condi,10).then(data =>{
+        this.tdlServ.down(condi,30).then(data =>{
           console.log("下滑获取数据量："+data.length);
           if (data.length > 0){
             for (let  len = data.length, j = len -1; j >= 0; j--) {
@@ -209,9 +230,9 @@ export class TdlPage {
               this.scdlDataList.unshift(tmpscdl);
             }
           }
+          this.downingdata = false;
         })
       }
-      console.log("结束结束结束结束结束结束结束结束")
 
 
     })
@@ -223,10 +244,12 @@ export class TdlPage {
       //记住滑动开始时的scrolltop，以便在滑动结束时判断是上滑还是下滑
       this.startScrolltop  = $event.scrollTop;
 
-      //获取初始化锚点的scrolltop
+
       if (this.initanchor){
+        //获取初始化锚点的scrolltop
         this.initscrolltop  = $event.scrollTop;
       }else{
+        //设置向上或向下按钮显隐控制
         if ($event.scrollTop > this.initscrolltop  ){
           this.downorup = 1;
           console.log("相对初始位置向下滑动");
