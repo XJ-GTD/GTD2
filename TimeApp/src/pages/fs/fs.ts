@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {FsService, PageFsData} from "./fs.service";
 import {GcService, PageDcData} from "../gc/gc.service";
+import {DataConfig} from "../../service/config/data.config";
+import {FdData, FdService} from "../fd/fd.service";
 
 /**
  * Generated class for the 参与人选择 page.
@@ -31,10 +33,13 @@ import {GcService, PageDcData} from "../gc/gc.service";
     </ion-header>
 
     <ion-content padding>
-      <div style="margin: 0px 0px;">
-        <ion-item style="height: 50px">
-          <ion-input type="tel" [(ngModel)]="tel" (ionBlur)="getContacts()" placeholder="请输入手机号" clearInput></ion-input>
-        </ion-item>
+      <!--<div style="margin: 0px 0px;">-->
+        <!--<ion-item style="height: 50px">-->
+          <!--<ion-input type="tel" [(ngModel)]="tel" (ionBlur)="getContacts()" placeholder="请输入手机号" clearInput></ion-input>-->
+        <!--</ion-item>-->
+      <!--</div>-->
+      <div class="name-input w-auto">
+        <ion-input type="text" placeholder="请输入手机号" [(ngModel)]="tel"  text-center></ion-input>
       </div>
       <ion-grid>
         <ion-row>
@@ -58,13 +63,16 @@ import {GcService, PageDcData} from "../gc/gc.service";
   `,
 })
 export class FsPage {
-  tel:any;
+  tel:any;//手机号
   fsl:Array<PageFsData> = new Array<PageFsData>();
-  addType:string = ''; // gc,rc
-  tpara:any = null;
+  addType:string = ''; // 群组成员gc,日程共享rc,bl黑名单
+  tpara:any = null; //跳转传参
   selFsl:Map<string,PageFsData> = new Map<string,PageFsData>();
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              private fsService:FsService,private gsService : GcService) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private fsService:FsService,
+              private fdService:FdService,
+              private gsService : GcService) {
   }
 
   ionViewDidLoad() {
@@ -84,8 +92,8 @@ export class FsPage {
       if(this.addType == 'rc'){
         this.fsService.sharefriend(this.tpara.si,list).then(data=>{
           if(data.code==0){
-            alert("分享成功");
-            this.goBack('');
+            alert("共享享成功");
+            this.goBack('','');
           }
         })
       }else if(this.addType == 'gc'){
@@ -93,15 +101,32 @@ export class FsPage {
         dc.fsl = list;
         this.gsService.save(dc).then(data=>{
           if(data.code==0){
+            alert("添加群组成员成功");
+            this.goBack(DataConfig.PAGE._GC_PAGE,{g:this.tpara});
+          }
+        })
+      }else if(this.addType == 'bl'){
+
+        if(list.length>1){
+          alert("每次只能添加一人")
+          return;
+        }
+        let fd:FdData = new FdData();
+        Object.assign(fd,list[0]);
+        this.fdService.putBlack(fd).then(data=>{
+          if(data.code==0){
             alert("添加黑名单成功");
-            this.goBack('GcPage');
+            this.goBack(DataConfig.PAGE._BL_PAGE,'');
           }
         })
       }else{
-        this.goBack('');
+        this.goBack('','');
       }
 
+    }else{
+      alert("请先选择人员");
     }
+
   }
 
   addsel(fs:PageFsData){
@@ -112,10 +137,10 @@ export class FsPage {
     }
   }
 
-  goBack(page:string) {
+  goBack(page:string,para:any) {
     console.log('PfPage跳转PaPage');
     if(page != ''){
-      this.navCtrl.push(page);
+      this.navCtrl.push(page,para);
     }else{
       this.navCtrl.pop();
     }
