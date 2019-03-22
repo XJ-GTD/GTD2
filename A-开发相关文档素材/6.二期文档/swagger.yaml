@@ -22,6 +22,8 @@ tags:
     description: 智能服务
   - name: account service
     description: 帐户服务
+  - name: caculate service
+    description: 计算服务
   - name: agenda
     description: 日程
   - name: black
@@ -32,6 +34,58 @@ schemes:
   - https
   - http
 paths:
+  /cdc/{caculateid}/starter:
+    post:
+      tags:
+        - caculate service
+      summary: 获取产品初始化参数
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: caculateid
+          in: path
+          type: string
+          description: 计算ID
+          required: true
+        - name: body
+          in: body
+          description: 日程计算目标日程数据
+          required: true
+          schema:
+            type: object
+            properties:
+              d:
+                type: object
+      responses:
+        '200':
+          description: 获取初始化参数成功
+          schema:
+            type: object
+            properties:
+              rc:
+                type: integer
+              rm:
+                type: string
+              d:
+                type: object
+                properties:
+                  apil:
+                    type: array
+                    items:
+                      type: object
+                  bipl:
+                    type: array
+                    items:
+                      type: object
+                  vrs:
+                    type: array
+                    items:
+                      type: object
+                  dpfu:
+                    type: array
+                    items:
+                      type: object
   /ini/parameters:
     get:
       tags:
@@ -1821,19 +1875,19 @@ definitions:
         properties:
           pt:
             type: string
-            description: '计划标题'
+            description: 计划标题
           pd:
             type: string
-            description: '计划描述'
+            description: 计划描述
           pm:
             type: string
-            description: '计划颜色标记'
+            description: 计划颜色标记
           pc:
             type: string
-            description: '计划类型'
+            description: 计划类型
             enum:
-            - 'build-in'
-            - 'custom'
+              - build-in
+              - custom
       pa:
         type: array
         items:
