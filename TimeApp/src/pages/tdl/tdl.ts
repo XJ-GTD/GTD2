@@ -17,7 +17,7 @@ import {TddiService} from "../tddi/tddi.service";
 @IonicPage()
 @Component({
   selector: 'page-tdl',
-  template: `<ion-header no-border>
+  template: `<ion-header no-border  >
     <ion-toolbar>
       <ion-grid>
         <ion-row >
@@ -38,8 +38,8 @@ import {TddiService} from "../tddi/tddi.service";
         <ion-row *ngFor="let sdl of scdlDataList">
           <div class="daynav">
             <div class ="dayheader w-auto">
-              <div class="ym-fsize text-center">{{sdl.d | formatedate:"YYYY-MM"}}</div>
-              <div class="d-fsize text-center">{{sdl.d | formatedate :"DD"}}</div>
+              <div class="ym-fsize text-center">{{sdl.d | formatedate:"YYYY"}}</div>
+              <div class="d-fsize text-center">{{sdl.d | formatedate :"MM-DD"}}</div>
             </div>
           </div>
           <div class="dayagendas w-auto" >
@@ -53,9 +53,9 @@ import {TddiService} from "../tddi/tddi.service";
                 <div class="agendaline2" *ngIf="scd.gs == '1'">{{scd.fssshow}}</div>
                 <div class="agendaline2" *ngIf="scd.gs == '0'">{{scd.fs.rn==""||scd.fs.rn ==null ?scd.fs.rc:scd.fs.rn}}</div>
               </div>
-              <div class = "dayagendaoperation" (click)="presentActionSheet(scd);">
+              <!--<div class = "dayagendaoperation" (click)="presentActionSheet(scd);">
                 <ion-icon ios="ios-more" md="md-more" [ngStyle]="{'color':scd.morecolor}" ></ion-icon>
-              </div>
+              </div>-->
             </div>
           </div>
         </ion-row>
@@ -87,7 +87,7 @@ export class TdlPage {
     });
   }
 
-
+  headshow :boolean =false;
   //画面数据List
   scdlDataList :Array<ScdlData> = new Array<ScdlData>();
 
@@ -116,41 +116,63 @@ export class TdlPage {
 
   //记住向上每次滑动的预加载的最后日期
   scrollUpLastdt:string ="";
-
   //记住向下每次滑动的预加载的最早日期
   scrollDownEarlydt:string ="";
 
   //记住向上每次滑动的预加载的最后的颜色
   scrollUpLastcolor:string ="";
-
   //记住向下每次滑动的预加载的最早的颜色
   scrollDownEarlycolor:string ="";
 
-  //上滑的取数据过程中，再次上滑不再获取数据
+  //上滑的取数据进行过程中，再次上滑不再获取数据
   upingdata :boolean = false;
-
-  //下滑的取数据过程中，再次下滑不再获取数据
+  //下滑的取数据进行过程中，再次下滑不再获取数据
   downingdata:boolean = false;
+
+  //处于上滑取数据状态，后续自动触发scrollend，scrollstart事件中使用，重新设定初始scrollTop
+  upgetdata :boolean = false;
+  //处于下滑取数据状态，后续自动触发scrollend，scrollstart事件中使用，重新设定初始scrollTop
+  downgetdata:boolean = false;
+
+  //记住上滑加载数据自动触发scroll事件后，与初始srolltop的偏移量
+  upoffset :number = 0;
+  //记住下滑滑加载数据自动触发scroll事件后，与初始srolltop的偏移量
+  downoffset:number = 0;
 
   @ViewChild('contentD') contentD: Content;
   ionViewDidLoad() {
     console.log('ionViewDidLoad AgendaListPage');
 
     this.contentD.ionScrollEnd.subscribe(($event: any) => {
-      if ($event == null){
+      if ($event == null) {
         return;
       }
 
       //设置初始化结束标志
-      if (this.initanchor){
+      if (this.initanchor) {
         this.initanchor = false;
-        return ;
+        return;
       }
 
+      /*在异步获取数据，添加到显示list内时，会自动触发scrollstart，scroolend，
+      并且此时开始的srcolltop与结束的scrolltop一致
+      由于新的数据添加到了显示list，这种场合需要的处理，重新设定initscrolltop的值*/
+      console.log("initscrolltop:" + this.initscrolltop);
+      if ($event.scrollTop == this.startScrolltop && this.upgetdata) {
+        this.initscrolltop = this.initscrolltop - $event.scrollTop + this.upoffset;
+        this.upgetdata = false;
+      }
+      if ($event.scrollTop == this.startScrolltop && this.downgetdata) {
+        this.initscrolltop = $event.scrollTop + this.initscrolltop - this.downoffset;
+        console.log("do initscrolltop:" + this.initscrolltop);
+        this.downgetdata = false;
+      }
 
+      console.log("startScrolltop:"+this.startScrolltop);
+      console.log("endscrollTop:"+$event.scrollTop);
       if ($event.scrollTop > this.startScrolltop  ){
         console.log("上滑");
-        //如果上滑的数据正在获取中，则上滑不在获取新的数据
+        //如果上滑的数据正在获取中，则上滑不在获取新的数据操作
         if (this.upingdata){
           return ;
         }
@@ -159,6 +181,12 @@ export class TdlPage {
         let condi = moment(this.scrollUpLastdt).add(1,'d').format("YYYY/MM/DD");
         this.tdlServ.up(condi,30).then(data =>{
           console.log("上滑获取数据量："+data.length);
+
+          this.upoffset = $event.scrollTop;
+
+          //上滑获取数据
+          this.upgetdata = true;
+
           if (data.length >0 ) {
 
             for (let j = 0, len = data.length; j < len; j++) {
@@ -185,13 +213,16 @@ export class TdlPage {
 
               //加入画面显示用list
               this.scdlDataList.push(tmpscdl);
+
             }
           }
+          //获取数据结束
           this.upingdata = false;
         })
 
-      }else{
+      }else if ($event.scrollTop < this.startScrolltop){
         console.log("下滑");
+
         //如果下滑的数据正在获取中，则下滑不在获取新的数据
         if (this.downingdata){
           return ;
@@ -202,6 +233,12 @@ export class TdlPage {
         let condi = moment(this.scrollDownEarlydt).subtract(1,'d').format("YYYY/MM/DD");
         this.tdlServ.down(condi,30).then(data =>{
           console.log("下滑获取数据量："+data.length);
+
+          this.downoffset = $event.scrollTop;
+
+          //下滑获取数据
+          this.downgetdata = true;
+
           if (data.length > 0){
             for (let  len = data.length, j = len -1; j >= 0; j--) {
               let tmpscdl = data[j];
@@ -227,8 +264,10 @@ export class TdlPage {
 
               //加入画面显示用list
               this.scdlDataList.unshift(tmpscdl);
+
             }
           }
+          //获取数据结束
           this.downingdata = false;
         })
       }
@@ -275,7 +314,6 @@ export class TdlPage {
 
     let sel =this.navParams.get("selectDay");
     let condi = moment(sel).format("YYYY/MM/DD");
-    condi ="2018/12/28"
 
     //获取当前日期之前的30条记录
     this.tdlServ.down(condi,30).then(dwdata =>{
@@ -283,6 +321,7 @@ export class TdlPage {
       //获取当前日期之后的30条记录
       let condi2 = moment(condi).add(1,'d').format("YYYY/MM/DD");
       this.tdlServ.up(condi2,30).then(data =>{
+        this.headshow = true;
 
         this.scdlDataList = this.scdlDataList.concat(dwdata,data);
         let flag = 0;
