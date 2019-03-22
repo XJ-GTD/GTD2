@@ -22,20 +22,21 @@ import {LsService, PageLsData} from "./ls.service";
           <ion-input class="login-tel" type="tel" placeholder="开始输入手机号" [(ngModel)]="lsData.mobile" (ionBlur)="checkPhone()"></ion-input>
         </div>
         <div class="login-enter">
-          <button ion-fab color="success" (click)="signIn()"><ion-icon name="arrow-forward"></ion-icon></button>
+          <button ion-fab color="success" (click)="signIn()" [ngClass]="{'show': inputBoolean == false , 'show-true': inputBoolean == true}">
+            <img class="img-content-enter" src="../../assets/imgs/xyb.png">
+          </button>
         </div>
       </ion-row>
       <ion-row justify-content-between align-items-center>
         <div class="w-auto">
-          <ion-input class="login-code" type="password" placeholder="验证码" [(ngModel)]="lsData.authCode"></ion-input>
+          <ion-input class="login-code" type="password" placeholder="验证码" [(ngModel)]="lsData.authCode" (ionBlur)="checkCode()"></ion-input>
         </div>
         <div>
-          <button ion-button class="login-send" (click)="sendMsg()">{{timeOut}}</button>
+          <button ion-button class="login-send" (click)="sendMsg()">{{timeText}}</button>
         </div>
       </ion-row>
     </ion-grid>
-
-    <div class="login-div">忘记密码?</div>
+    
     <div class="login-div" (click)="toLp()">改为用密码登录</div>
     <div class="login-div" (click)="toR()">没有账号，立即注册</div>
 
@@ -46,8 +47,10 @@ import {LsService, PageLsData} from "./ls.service";
 export class LsPage {
 
   lsData:PageLsData = new PageLsData();
-  errorCode:any;
-  timeOut:any = "获取验证码";
+  errorPhone:number = 0; // 0：初始化（输入为空） 1：手机号长度小于11位 2：手机号格式错误 3：手机号正确
+  errorCode:number = 0; // 0：初始化；1：验证码输入
+  inputBoolean:boolean = false;  // false： show ; true show-true
+  timeText:any = "获取验证码";
   timer:any;
 
   constructor(public navCtrl: NavController,
@@ -59,6 +62,14 @@ export class LsPage {
 
   goBack() {
     this.navCtrl.pop();
+  }
+
+  userAgreement() {
+    this.navCtrl.push('PPage');
+  }
+
+  toR() {
+    this.navCtrl.push('RPage');
   }
 
   toLp() {
@@ -84,70 +95,83 @@ export class LsPage {
     alert.present();
   }
 
-  signIn() {
-    if(this.errorCode == undefined || this.errorCode == 0 ){  //判断手机号是否为空
-      this.title("手机号不能为空");
-    }else if(this.errorCode == 3){ //验证手机号是否符合规范
-
-      if (this.lsData.authCode == null || this.lsData.authCode == "" || this.lsData.authCode == undefined){     //判断验证码是否为空
-        this.title("验证码不能为空");
-      } else if(this.lsData.verifykey == "") {
-        this.title("请发送短信并填写正确的短信验证码");
-      } else{
-        this.lsService.login(this.lsData).then(data=> {
-          if (data.code != 0)
-            throw  data;
-
-          console.log("手机验证码登录成功"+ JSON.stringify(data));
-          this.navCtrl.setRoot('MPage');
-        }).catch(res=>{
-          console.log(res);
-          this.alert(res.message);
-        });
-      }
-    }else {
-      this.title("请输入正确11位手机号");
-    }
-  }
-
-  toR() {
-    console.log('LpPage跳转RPage');
-    this.navCtrl.push('RPage');
-  }
-
-  userAgreement() {
-    this.navCtrl.push('PPage');
-  }
-
   sendMsg(){
-    if(this.errorCode == 3) {
+    if(this.errorPhone == 0){  //判断手机号是否为空
+      this.title("手机号不能为空");
+    }else if(this.errorPhone == 1){
+      this.title("手机号长度小于11位");
+    }else if(this.errorPhone == 2){
+      this.title("手机号格式错误");
+    }else {
       this.lsService.getSMSCode(this.lsData.mobile).then(data => {
-        console.log("短信发送成功"+ JSON.stringify(data));
+        //console.log("短信发送成功" + JSON.stringify(data));
         //短信验证码KEY 赋值给验证码登录信息
         this.lsData.verifykey = data.data.verifykey;
         this.alert("短信发送成功");
+
       }).catch(ref => {
         console.log("ref::" + ref);
         this.alert("短信发送失败");
       });
 
-      this.timeOut = 10;
-      this.timer = setInterval(()=>{
-        this.timeOut --;
-        if(this.timeOut <= 0){
+      this.timeText = 60;
+      console.log("开始" + this.timeText + "定时器");
+      this.timer = setInterval(() => {
+        this.timeText--;
+        if (this.timeText <= 0) {
           clearTimeout(this.timer);
           console.log("清除定时器");
-          this.timeOut="发送验证码"
+          this.timeText = "发送验证码"
         }
-        console.log(this.timeOut)
-      },1000)
-    }else{
-      this.title("请填写正确的手机号");
+      }, 1000)
+    }
+  }
+
+  signIn() {
+    if(this.errorPhone == 0){  //判断手机号是否为空
+      this.title("手机号不能为空");
+    }else if(this.errorPhone == 1){
+      this.title("手机号长度小于11位");
+    }else if(this.errorPhone == 2){
+      this.title("手机号格式错误");
+    }else if(this.errorCode == 0){ //判断密码是否为空
+      this.title("验证码不能为空");
+    }else {
+      console.log("手机验证码登录被点击");
+      this.lsService.login(this.lsData).then(data=> {
+        if (data.code != 0)
+          throw  data;
+
+        console.log("手机验证码登录成功"+ JSON.stringify(data));
+        clearTimeout(this.timer);
+        this.navCtrl.setRoot('MPage');
+      }).catch(res=>{
+        console.log("手机验证码登录失败"+res);
+        this.alert(res.message);
+      });
+    }
+  }
+
+  check(){
+    if (this.errorPhone == 3 && this.errorCode == 1){
+      this.inputBoolean = true;
+    }else {
+      this.inputBoolean = false;
     }
   }
 
   checkPhone() {
-    this.errorCode = this.lsService.checkPhone(this.lsData.mobile);
+    this.errorPhone = this.lsService.checkPhone(this.lsData.mobile);
+    this.check();
+  }
+
+  checkCode(){
+    if (this.lsData.authCode != null && this.lsData.authCode != "" && this.lsData.authCode != undefined){     //判断验证码是否为空
+      this.errorCode = 1;
+    }else {
+      this.errorCode = 0;
+    }
+    this.check();
   }
 
   // ionViewDidLoad(){

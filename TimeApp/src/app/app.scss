@@ -14,7 +14,37 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-*{font-family:PingFang-SC-Regular,PingFang-SC,"微软雅黑",Georgia}
+//*{font-family:PingFang-SC-Regular,PingFang-SC,"微软雅黑",Georgia}
+@font-face {
+  font-family: 'PingFang-Regular';
+  src: url('../assets/fonts/PingFang Regular.ttf') format('truetype'),
+  url('../assets/fonts/PingFang Regular.eot') format('embedded-opentype'),
+  url('../assets/fonts/PingFang Regular.otf') format('opentype'),
+  url('../assets/fonts/PingFang Regular.woff') format('woff'),
+  url('../assets/fonts/PingFang Regular.woff2') format('woff2'),
+  url('../assets/fonts/PingFang Regular.svg') format('svg');
+}
+@font-face {
+  font-family: 'PingFang-Bold';
+  src: url('../assets/fonts/PingFang Bold.ttf') format('truetype'),
+  url('../assets/fonts/PingFang Bold.eot') format('embedded-opentype'),
+  url('../assets/fonts/PingFang Bold.otf') format('opentype'),
+  url('../assets/fonts/PingFang Bold.woff') format('woff'),
+  url('../assets/fonts/PingFang Bold.woff2') format('woff2'),
+  url('../assets/fonts/PingFang Bold.svg') format('svg');
+}
+@font-face {
+  font-family: 'PingFang-Medium';
+  src: url('../assets/fonts/PingFang Medium.ttf') format('truetype'),
+  url('../assets/fonts/PingFang Medium.eot') format('embedded-opentype'),
+  url('../assets/fonts/PingFang Medium.otf') format('opentype'),
+  url('../assets/fonts/PingFang Medium.woff') format('woff'),
+  url('../assets/fonts/PingFang Medium.woff2') format('woff2'),
+  url('../assets/fonts/PingFang Medium.svg') format('svg');
+}
+* {
+    font-family: 'PingFang-Regular',Georgia;
+}
 
 .ios .ion-page.show-page ~ .nav-decor{
   background: transparent;

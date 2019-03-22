@@ -82,6 +82,8 @@ export class DataConfig {
     _HL_PAGE: "HlPage",       // 辅助功能 - 帮助及反馈
     _GL_PAGE: "GlPage",       // 辅助功能 - 群组列表
     _GC_PAGE: "GcPage",       // 辅助功能 - 群组编辑
+    _GA_PAGE: "GaPage",       // 辅助功能 - 群组添加
+    _FS_PAGE: "FsPage",       // 辅助功能 - 群组添加
     _PS_PAGE: "PsPage",       // 辅助功能 - 个人设置
     _BL_PAGE: "BlPage",       // 辅助功能 - 黑名单
     _BR_PAGE: "BrPage",       // 辅助功能 - 备份

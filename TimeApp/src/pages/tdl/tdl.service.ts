@@ -16,7 +16,7 @@ export class TdlService {
    * @param {string} next
    * @returns {Promise<ScdlData[]>}
    */
-  async down(next:string){
+  async down(next:string,maxn){
     let mpL = new Array<ScdlData>();
     if(next != null && next !=""){
 
@@ -30,7 +30,7 @@ export class TdlService {
         let i=0;
         let d=0;
         //循环获取30条数据
-        while(i<30 && d<100){
+        while(i<maxn && d<100){
           let day = moment(next).subtract(d,'d').format("YYYY/MM/DD");
           let mp:ScdlData = new ScdlData();
           for(let j=0;j<rclL.rows.length;j++){
@@ -67,7 +67,7 @@ export class TdlService {
    * @param {string} next
    * @returns {Promise<ScdlData[]>}
    */
-  async up(next:string){
+  async up(next:string,maxn){
     let mpL = new Array<ScdlData>();
 
     if(next != null && next !=""){
@@ -81,7 +81,7 @@ export class TdlService {
         let i=0;
         let d=0;
         //循环获取60条数据
-        while(i<=60 && d<100){
+        while(i<=maxn && d<100){
           let day = moment(next).add(d,'d').format("YYYY/MM/DD");
           let mp:ScdlData = new ScdlData();
           for(let j=0;j<rcnL.rows.length;j++){
@@ -140,8 +140,8 @@ export class TdlService {
             }else if(this.isymwd(sc.rt,day,sc.sd,sc.ed)){
               let dt = new DTbl();
               dt.si = sc.si;
-              let fsL = await this.sqlExce.getList<fsData>(dt);
-              sc.fss = fsL;
+              // let fsL = await this.sqlExce.getList<fsData>(dt);
+              // sc.fss = fsL;
 
               Object.assign(sc.fs,rclL.rows.item(j));
               Object.assign(sc.p,rclL.rows.item(j));
@@ -162,7 +162,7 @@ export class TdlService {
       //正序查出比当前日期大的日程
       let sql="select gc.*,jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
         "left join gtd_b gb on gb.ui = gc.ui inner join gtd_j_h jh on jh.ji = gc.ji " +
-        "where gc.ed>='"+ next+"' order by gc.sd asc limit 300";
+        "where (rt='0' and gc.sd>='"+ next+"') or (rt!='0' and gc.ed>='"+ next+"') order by gc.sd asc limit 300";
       let rcnL = await this.sqlExce.execSql(sql);
       if(rcnL && rcnL.rows && rcnL.rows.length>0){
         let len = rcnL.rows.length-1;
@@ -180,8 +180,8 @@ export class TdlService {
             }else if(this.isymwd(sc.rt,day,sc.sd,sc.ed)){
               let dt = new DTbl();
               dt.si = sc.si;
-              let fsL = await this.sqlExce.getList<fsData>(dt);
-              sc.fss = fsL;
+              // let fsL = await this.sqlExce.getList<fsData>(dt);
+              // sc.fss = fsL;
 
               Object.assign(sc.fs,rcnL.rows.item(j));
               Object.assign(sc.p,rcnL.rows.item(j));
@@ -305,6 +305,7 @@ export class ScdData {
   fssshow:string ="";//参与人画面显示用
   cbkcolor:string ="";//每个日程颜色画面显示用
   anchorid:string ="";//scroll锚点
+  morecolor:string ="#FFFFFF";//more颜色画面显示
 
 
   //特殊日期日程

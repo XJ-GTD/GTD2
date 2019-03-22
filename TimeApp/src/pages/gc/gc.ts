@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams, Navbar, ModalController, ToastContr
 
 import {GcService, PageDcData} from "./gc.service";
 import {FsService, PageFsData} from "../fs/fs.service";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 群组编辑 page.
@@ -38,6 +39,7 @@ import {FsService, PageFsData} from "../fs/fs.service";
              <ion-item class="plan-list-item"  *ngFor="let g of fsl">
                <ion-avatar item-start >
                  <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
+                 <!--<ion-icon name="contact"></ion-icon>-->
                </ion-avatar>
                  <!--<ion-item (click)="toGroupMember(g)" style="background-color: black;color:#ffffff;margin-left: -15px;">-->
                    <!--{{g.rn}} <span>{{g.rc}}</span>-->
@@ -89,11 +91,11 @@ export class GcPage {
 
   goBack(){
     console.log('GcPage返回GlPage');
-    this.navCtrl.pop();
+    this.navCtrl.push(DataConfig.PAGE._GL_PAGE);
   }
   toAddGroupMember() {
     console.log("PePage跳转PgPage");
-    this.navCtrl.push("FsPage",{tpara:this.dc,addType:'gc'});
+    this.navCtrl.push(DataConfig.PAGE._FS_PAGE,{tpara:this.dc,addType:'gc'});
     // this.navCtrl.push("PgPage",{callback:this.getData,sel:this.qcy});
     //
     // let modal = this.modalCtrl.create(PageConfig.PG_PAGE,{callback:this.getData,sel:this.qcy});

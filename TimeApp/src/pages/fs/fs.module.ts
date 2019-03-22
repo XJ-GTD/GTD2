@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { FsPage } from './fs';
 import {FsService} from "./fs.service";
 import {GcService} from "../gc/gc.service";
+import {FdService} from "../fd/fd.service";
 
 @NgModule({
   declarations: [
@@ -12,7 +13,7 @@ import {GcService} from "../gc/gc.service";
     IonicPageModule.forChild(FsPage),
   ],
   providers: [
-    FsService,GcService
+    FsService,GcService,FdService
   ],
 })
 export class FsPageModule {}

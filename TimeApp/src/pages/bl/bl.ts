@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {BlService, PageBlData} from "./bl.service";
 import {FdService} from "../fd/fd.service";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 黑名单列表 page.
@@ -22,11 +23,11 @@ import {FdService} from "../fd/fd.service";
           </button>
         </ion-buttons>
         <ion-title>黑名单</ion-title>
-<!--        <ion-buttons right>
-          <button ion-button (click)="toAddGroupMember()" color="danger">
-            &lt;!&ndash;<ion-icon name="add"></ion-icon>&ndash;&gt; 添加
+        <ion-buttons right>
+          <button ion-button (click)="toAdd()" color="danger">
+            <ion-icon name="add"></ion-icon>
           </button>
-        </ion-buttons>-->
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
@@ -57,15 +58,25 @@ import {FdService} from "../fd/fd.service";
 export class BlPage {
   bls:Array<PageBlData>;
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public blService : BlService,public fdService : FdService) {
+              public blService : BlService,public fdService : FdService,
+              public modalCtrl: ModalController) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad BlPage');
+  }
+  ionViewDidEnter(){
+    console.log("3.0 ionViewDidEnter 当进入页面时触发");
     this.getBl();
   }
   goBack(){
-    this.navCtrl.pop();
+    //this.navCtrl.push(DataConfig.PAGE._M_PAGE);
+    this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
+  }
+
+  toAdd(){
+    let profileModal = this.modalCtrl.create(DataConfig.PAGE._FS_PAGE,{addType:'bl'});
+    profileModal.present();
   }
   getBl(){
     this.blService.get().then(data=>{

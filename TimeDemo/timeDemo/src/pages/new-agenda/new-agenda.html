@@ -38,23 +38,6 @@
 <button ion-button clear class="text-btn">{{rangeEnd}}</button>
 </div>
 </ion-row>
-<ion-row class="full-width" justify-content-center>
-<ion-scroll #timepickerScroll scrollX="true" zoom="false" [attr.data-g]="scrolldata">
-<div class="svg-scroller">
-  <svg id="timerange-picker" xmlns="http://www.w3.org/2000/svg" [attr.viewBox]="viewBox">
-      <defs>
-          <style>.time-line{stroke:#fff;}.time-block-title{fill:#fff;}</style>
-      </defs>
-      <title>timerange-picker</title>
-      <line *ngFor="let x of timeLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_u' + i" y2="59" [attr.x2]="x" y1="0" [attr.x1]="x" stroke-width="1.5" fill="none"/>
-      <line *ngFor="let x of timeLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_d' + i" y2="179" [attr.x2]="x" y1="120" [attr.x1]="x" stroke-width="1.5" fill="none"/>
-      <line *ngIf="startX" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_start" y2="179" [attr.x2]="startX" y1="0" [attr.x1]="startX" stroke-width="1.5" fill="none"/>
-      <line *ngIf="endX" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_end" y2="179" [attr.x2]="endX" y1="0" [attr.x1]="endX" stroke-width="1.5" fill="none"/>
-      <text *ngFor="let title of blockTitles;" class="time-block-title" stroke="#000" xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_4" y="98" [attr.x]="title.x" fill-opacity="null" stroke-opacity="null" stroke-width="0">{{title.title}}</text>
-  </svg>
-</div>
-</ion-scroll>
-</ion-row>
 <ion-row justify-content-center>
   <ion-input type="text" value="" placeholder="喜马拉雅儿子的生日聚会" text-center></ion-input>
 </ion-row>
@@ -69,6 +52,15 @@
 <ion-row justify-content-center>
 <scroll-select [options]="months" [value]="'10'"></scroll-select>
 </ion-row>
+<p padding></p>
+<ion-row justify-content-center>
+<scroll-select [options]="months" [value]="'03'" [type]="'scroll-without-button'" [items]="5"></scroll-select>
+</ion-row>
+<p padding></p>
+<ion-row justify-content-center>
+<scroll-select [options]="years" [value]="'2019'" [type]="'scroll-without-button'" [items]="7"></scroll-select>
+</ion-row>
+<p padding></p>
 <ion-row class="full-width" justify-content-center>
 <scroll-range-picker max="24" min="5" value="18:00" (changed)="timechanged($event)"></scroll-range-picker>
 </ion-row>

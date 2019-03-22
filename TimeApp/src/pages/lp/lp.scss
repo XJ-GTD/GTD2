@@ -1,5 +1,5 @@
 page-lp {
-  background-color: #000;
+  //background-color: #000;
 
   @font-face {
     font-family: 'PingFang-Regular';
@@ -45,14 +45,26 @@ page-lp {
     margin-top: 12px;
     font-size: 1.5rem;
     word-spacing: 1px;
+    width: 140px;
     //font-weight:bold;
   }
 
-  .fab {
+  .img-content-enter{
+    width: 17px;
+    height: 15px;
+  }
+
+  .show {
     width: 45px;
     height: 45px;
     background-color:#429A81;
     opacity: 0.4;
+  }
+
+  .show-true{
+    width: 45px;
+    height: 45px;
+    background-color:#429A81;
   }
 
   .grid-login-basic {

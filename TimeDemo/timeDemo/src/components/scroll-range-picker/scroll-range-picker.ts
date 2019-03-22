@@ -14,16 +14,19 @@ import { ElementRef, Events } from 'ionic-angular';
 export class ScrollRangePickerComponent {
 
   @ViewChild('scrollBox', { read: ElementRef }) _scrollBox: ElementRef;
-  viewBox: string = '0 0 2484 180';
+  viewBox: string = '0 0 ' + 2484 * 3 + ' 180';
+  viewHiddenWidth: number = 2484 * 24 / 24;
   viewBoxPointer: string = '0 0 2484 180';
+  @Input('type')
+  viewType: string = 'day-range-picker';  // day-range-picker
   @Input('max')
   viewHours: number = 24; // 12小时
   @Input('min')
   viewMinTime: number = 5; // 5分钟
-  timeLines: Array = [];
+  timeLines: any = [];
   @Input()
-  titles: any = {'6': '上午', '12': '下午', '20': '晚上'};
-  blockTitles: Array = [];
+  titles: any = {'4': '清早', '9': '上午', '14': '下午', '17': '晚上', '22': '深夜'};
+  blockTitles: any = [];
   pushedtitles: any = {'6': false, '12': false, '20': false};
   startX: number;
   endX: number;
@@ -51,11 +54,26 @@ export class ScrollRangePickerComponent {
     
     this.hourLines = 60 / this.viewMinTime;
     let viewLines = this.viewHours * this.hourLines;
-    this.blockGap = 2484 / (viewLines + 1);
+    this.blockGap = 2484 / (viewLines);
     
+    // 画范围外时间线 (包括范围之前和范围之后)
     for (let hour = 0; hour < this.viewHours; hour++) {
       for (let block = 1; block <= this.hourLines; block++) {
         let timeLineX = this.blockGap * ((hour * this.hourLines) + block);
+
+        if (timeLineX > this.viewHiddenWidth) {
+          break;
+        }
+        
+        this.timeLines.push(timeLineX);
+        this.timeLines.push(timeLineX + 2484 + this.viewHiddenWidth);
+      }
+    }
+
+    // 画设置时间段内时间线
+    for (let hour = 0; hour < this.viewHours; hour++) {
+      for (let block = 1; block <= this.hourLines; block++) {
+        let timeLineX = this.viewHiddenWidth + this.blockGap * ((hour * this.hourLines) + block);
 
         if (this.titles[hour.toString()] && !this.pushedtitles[hour.toString()]) {
           this.blockTitles.push({x: timeLineX, title: this.titles[hour.toString()]});
