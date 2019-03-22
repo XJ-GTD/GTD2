@@ -207,7 +207,7 @@ export class TdlPage {
                 this.scrollUpLastcolor = tmpscd.cbkcolor;
 
                 //设置参与人画面显示内容
-                tmpscd.fssshow = this.getFssshow(tmpscd);
+                //tmpscd.fssshow = this.getFssshow(tmpscd);
               }
 
               //记住向上每次滑动的预加载的最后日期
@@ -261,7 +261,7 @@ export class TdlPage {
                 this.scrollDownEarlycolor = tmpscd.cbkcolor;
 
                 //设置参与人画面显示内容
-                tmpscd.fssshow = this.getFssshow(tmpscd);
+                //tmpscd.fssshow = this.getFssshow(tmpscd);
               }
 
               //记住向上每次滑动的预加载的最后日期
@@ -358,7 +358,7 @@ export class TdlPage {
             }
 
             //设置参与人画面显示内容
-            tmpscd.fssshow = this.getFssshow(tmpscd);
+            //tmpscd.fssshow = this.getFssshow(tmpscd);
           }
         }
 

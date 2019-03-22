@@ -88,6 +88,9 @@ export class AlPage {
     this.increment(20);
     this.alData = await this.alService.checkUserInfo();
     console.log( this.alData.text)
+
+    //缓存测试
+    //await this.alService.createCachefromserver();
     if (!this.alData.islogin){
       this.nav.setRoot(DataConfig.PAGE._LP_PAGE);
     }else{

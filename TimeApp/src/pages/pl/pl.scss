@@ -78,9 +78,7 @@ page-pl {
 
   .img-content-plan{
     width: 9px;
-    height: 4px;
-    margin-left: 3px;
-    margin-bottom: 3px;
+    height: 9px;
   }
 
   .content-download{
@@ -104,5 +102,13 @@ page-pl {
 
   .item-block{
     min-height: 3rem;
+  }
+
+  .div-show-true{
+    display: block;
+  }
+
+  .div-show-false{
+    display: none;
   }
 }

@@ -4,6 +4,7 @@ page-tdl {
     src: url('../../assets/fonts/PingFang Regular.ttf');
   }
 
+
   ion-content {
     font-family: "PingFang-Regular";
   }
@@ -214,4 +215,12 @@ page-tdl {
     color:#35919C;
     font-weight:normal
   }
+
+
+}
+.toolbar-background-ios {
+  background: none;
+}
+.toolbar-background-md {
+  background:none;
 }

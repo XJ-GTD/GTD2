@@ -95,8 +95,9 @@ export class GlPage {
   }
 
   goBack() {
-    console.log('=======跳转:' + DataConfig.PAGE._M_PAGE);
-    this.navCtrl.push(DataConfig.PAGE._M_PAGE);
+    console.log('=======跳转:' + DataConfig.PAGE._H_PAGE);
+    // this.navCtrl.push(DataConfig.PAGE._M_PAGE);
+    this.navCtrl.setRoot(DataConfig.PAGE._H_PAGE);
   }
 
   queryPerson(){

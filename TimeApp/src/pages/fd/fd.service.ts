@@ -7,11 +7,14 @@ import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {UtilService} from "../../service/util-service/util.service";
 import {BlaReq, BlaRestful} from "../../service/restful/blasev";
 import {BsModel} from "../../service/restful/out/bs.model";
+import {ViewController} from "ionic-angular";
 
 @Injectable()
 export class FdService {
   constructor(private personRes:PersonRestful,private blasev:BlaRestful,
-              private util:UtilService,private sqlite:SqliteExec) {
+              private util:UtilService,
+
+              private sqlite:SqliteExec) {
   }
 
   /**
@@ -19,23 +22,25 @@ export class FdService {
    * @param {String} id
    * @returns {Promise<FdData>}
    */
-  get(phoneno:string):Promise<FdData>{
+  get(id:string):Promise<FdData>{
 
     return new Promise<FdData>((resolve, reject)=>{
-      let fd = new FdData();
+      let fd:FdData = new FdData();
       let bTbl = new BTbl();
+      bTbl.pwi = id;
       //获取本地参与人信息
       this.sqlite.getOne(bTbl).then(data=>{
         if(data != null){
           Object.assign(bTbl,data);
+          Object.assign(fd,data);
+          //rest获取用户信息（包括头像）
+          let personData:PersonInData = new PersonInData();
+          personData.phoneno=bTbl.rc;
+          return  this.personRes.get(personData);
         }
-        //rest获取用户信息（包括头像）
-        let personData:PersonInData = new PersonInData();
-        personData.phoneno=phoneno;
-        return  this.personRes.get(personData);
       }).then(data=>{
         //更新本地用户信息
-        if(data.code == 0){
+        if(data && data.code == 0){
           bTbl.hiu = data.data.avatar;
           bTbl.rn = data.data.nickname;
           if(bTbl.rn && bTbl.rn != null && bTbl.rn != ''){
@@ -51,7 +56,7 @@ export class FdService {
         Object.assign(fd,bTbl);
         if(data.data.length>0){
           for(let bla of data.data){
-            if(bla.mpn == phoneno){
+            if(bla.mpn == bTbl.rc){
               fd.isbla = true; //是黑名单；
               break;
             }
@@ -62,6 +67,7 @@ export class FdService {
     })
 
   }
+
   //restFul 加入黑名单
   putBlack(fd:FdData):Promise<BsModel<FdData>>{
     return new Promise<BsModel<FdData>>((resolve, reject)=>{

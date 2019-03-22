@@ -16,7 +16,9 @@ public interface IXjBlacklistService {
 	 * 添加黑名�?
 	 * @param blacklist
 	 */
-	boolean add(BlaBlacklistDto blacklist);
+	BlaBlacklist add(BlaBlacklistDto blacklist);
+	
+	List<BlaBlacklist> addList(BlaBlacklistDto blacklist);
 	
 	/**
 	 * 删除黑名�?

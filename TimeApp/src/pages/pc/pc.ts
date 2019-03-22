@@ -1,7 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {PagePcPro, PcService} from "./pc.service";
-import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 计划新建 page.
@@ -34,7 +33,7 @@ import {DataConfig} from "../../service/config/data.config";
 <ion-grid>
   <ion-row justify-content-center>
     <div class="name-input w-auto">
-    <ion-input type="text" placeholder="输入计划名称" [(ngModel)]="jhcData.jn" text-center></ion-input>
+    <ion-input #input type="text" placeholder="输入计划名称" [(ngModel)]="jhcData.jn" text-center></ion-input>
     </div>
   </ion-row>
   <ion-row>
@@ -129,17 +128,28 @@ import {DataConfig} from "../../service/config/data.config";
 </ion-content>`,
 })
 export class PcPage {
+
+  @ViewChild('input') input ;
   jhcData:PagePcPro = new PagePcPro;
 
   constructor(private navCtrl: NavController,
               private alertCtrl: AlertController,
               private pcService:PcService) {
     this.jhcData.jc = "#9B5E4B"; // 默认选中颜色  牛皮棕
+  }
+
+  ionViewDidLoad() {
     console.log('ionViewDidLoad PcPage');
   }
 
+  ionViewDidEnter(){
+    setTimeout(() => {
+      this.input.setFocus();//为输入框设置焦点
+    },150);
+  }
+
   goBack() {
-    this.navCtrl.setRoot(DataConfig.PAGE._PL_PAGE);
+    this.navCtrl.pop();
   }
 
   save(){
@@ -147,7 +157,7 @@ export class PcPage {
       if(this.jhcData.jc != "" && this.jhcData.jc != null ){
         this.pcService.savePlan(this.jhcData).then(data=>{
           console.log("计划添加成功===="+JSON.stringify(data));
-          this.navCtrl.setRoot(DataConfig.PAGE._PL_PAGE);
+          this.navCtrl.pop();
         }).catch(res=>{
           console.log("计划添加失败 :: " + JSON.stringify(res));
         });

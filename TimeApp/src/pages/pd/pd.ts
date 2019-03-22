@@ -1,8 +1,7 @@
-import {Component, ViewChild} from '@angular/core';
-import {ActionSheetController, AlertController, IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {ActionSheetController, AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {PagePDPro, PdService} from "./pd.service";
 import {AgdPro} from "../../service/restful/agdsev";
-import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 计划展示 page.
@@ -35,7 +34,7 @@ import {DataConfig} from "../../service/config/data.config";
     <ion-content padding>
       <ion-grid>
         <ion-row>
-          <ion-card color="danger" [ngStyle]="{'background-color': plan.pn.jc }">
+          <ion-card [ngStyle]="{'background-color': plan.pn.jc }">
             <ion-card-content text-center>
               <div>{{plan.pn.jn}}</div>
             </ion-card-content>
@@ -72,8 +71,6 @@ import {DataConfig} from "../../service/config/data.config";
 })
 export class PdPage {
 
-  @ViewChild(Navbar) navBar: Navbar;
-
   jh:PagePDPro;
   today: string = new Date().toISOString();
   plan:any ={
@@ -86,7 +83,9 @@ export class PdPage {
               private alertCtrl: AlertController,
               private actionSheetCtrl: ActionSheetController,
               private pdService:PdService) {
+  }
 
+  ionViewDidLoad() {
     console.log('ionViewDidLoad PdPage');
   }
 
@@ -99,7 +98,7 @@ export class PdPage {
   }
 
   goBack() {
-    this.navCtrl.setRoot(DataConfig.PAGE._PL_PAGE);
+    this.navCtrl.pop();
   }
 
   more(jh:PagePDPro){
@@ -135,7 +134,7 @@ export class PdPage {
                   text: '确定',
                   handler: () => {
                     this.pdService.delete(jh.ji).then(data=>{
-                      this.navCtrl.setRoot(DataConfig.PAGE._PL_PAGE);
+                      this.navCtrl.pop();
                     })
                   }
                 }]
