@@ -19,7 +19,7 @@ import {FdData, FdService} from "../fd/fd.service";
     <ion-header no-border>
       <ion-toolbar>
         <ion-buttons left>
-          <button ion-button icon-only (click)="goBack('')" color="danger">
+          <button ion-button icon-only (click)="goBack('','')" color="danger">
             <ion-icon name="arrow-back"></ion-icon>
           </button>
         </ion-buttons>
@@ -45,7 +45,7 @@ import {FdData, FdService} from "../fd/fd.service";
         <ion-row>
           <ion-list no-lines>
             <ion-item class="plan-list-item"  *ngFor="let g of fsl">
-              <ion-avatar item-start >
+              <ion-avatar item-start>
                 <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
               </ion-avatar>
               <ion-label>
