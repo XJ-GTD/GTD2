@@ -36,7 +36,7 @@ import {PagePDPro} from "../pd/pd.service";
       <ion-grid>
         <ion-row>
           <ion-list no-lines>
-            <ion-list-header class="plan-list-item" (click)="change($event)">
+            <ion-list-header class="plan-list-item" (click)="change()">
               全部计划
               <img class="img-content-plan" src="../../assets/imgs/{{picture}}">
             </ion-list-header>
@@ -108,15 +108,14 @@ export class PlPage {
     this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{"jh":jh});
   }
 
-  change(e){
+  change(){
     if(this.show){
       this.show = false;
-      this.picture = "xl.png";
+      this.picture = "gdxz 2.png";
     }else{
       this.show = true;
-      this.picture = "gdxz 2.png";
+      this.picture = "xl.png";
     }
-    console.log(e);
   }
 
   delPlan(jh:PagePDPro){

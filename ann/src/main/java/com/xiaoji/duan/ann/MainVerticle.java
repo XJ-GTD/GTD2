@@ -111,7 +111,18 @@ public class MainVerticle extends AbstractVerticle {
 			return;
 		}
 		
-		if ("agenda_from_share".equals(announceType)) {
+		if ("duan_announce".equals(announceType)) {
+			// 短应用内部通知
+			for (int pos = 0; pos < announceTo.size(); pos++) {
+				String address = announceTo.getString(pos);
+
+				MessageProducer<JsonObject> producer = bridge.createProducer(address);
+				producer.send(new JsonObject()
+						.put("body", new JsonObject()
+								.put("context", announceContent)));
+			}
+			
+		} else if ("agenda_from_share".equals(announceType)) {
 			for (int pos = 0; pos < announceTo.size(); pos++) {
 				String openid = announceTo.getString(pos);
 				System.out.println("Announce to " + openid + " start process.");

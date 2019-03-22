@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {PagePcPro, PcService} from "./pc.service";
-import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 计划新建 page.
