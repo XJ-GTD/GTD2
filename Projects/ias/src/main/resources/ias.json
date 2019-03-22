@@ -5,5 +5,5 @@
   "mongo.keepalive": true,
   "stomp.server.host": "sa-amq",
   "stomp.server.port": 5672,
-  "amq.app.id": "xfy",
+  "amq.app.id": "ias",
 }
