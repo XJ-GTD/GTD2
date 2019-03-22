@@ -25,12 +25,14 @@ import {DataConfig} from "../../service/config/data.config";
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack()" color="danger">
             <ion-icon name="arrow-back"></ion-icon>
+            <!--<img class="img-header-left" src="../../assets/imgs/fh2.png">-->
           </button>
         </ion-buttons>
         <ion-title>群组</ion-title>
         <ion-buttons right>
           <button ion-button (click)="toGroupCreate()" color="danger">
             <ion-icon name="add"></ion-icon>
+            <!--<img class="img-header-left" src="../../assets/imgs/tj.png">-->
           </button>
         </ion-buttons>
       </ion-toolbar>

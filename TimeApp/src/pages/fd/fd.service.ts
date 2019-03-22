@@ -66,7 +66,7 @@ export class FdService {
   putBlack(fd:FdData):Promise<BsModel<FdData>>{
     return new Promise<BsModel<FdData>>((resolve, reject)=>{
       let bla = new BlaReq();
-       if(!fd || !fd.rc){
+       if(fd && fd.rc){
          bla.ai=fd.ui;
          bla.mpn= fd.rc;
          bla.n= fd.rn;
