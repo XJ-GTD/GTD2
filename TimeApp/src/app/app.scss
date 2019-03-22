@@ -24,6 +24,24 @@
   url('../assets/fonts/PingFang Regular.woff2') format('woff2'),
   url('../assets/fonts/PingFang Regular.svg') format('svg');
 }
+@font-face {
+  font-family: 'PingFang-Bold';
+  src: url('../assets/fonts/PingFang Bold.ttf') format('truetype'),
+  url('../assets/fonts/PingFang Bold.eot') format('embedded-opentype'),
+  url('../assets/fonts/PingFang Bold.otf') format('opentype'),
+  url('../assets/fonts/PingFang Bold.woff') format('woff'),
+  url('../assets/fonts/PingFang Bold.woff2') format('woff2'),
+  url('../assets/fonts/PingFang Bold.svg') format('svg');
+}
+@font-face {
+  font-family: 'PingFang-Medium';
+  src: url('../assets/fonts/PingFang Medium.ttf') format('truetype'),
+  url('../assets/fonts/PingFang Medium.eot') format('embedded-opentype'),
+  url('../assets/fonts/PingFang Medium.otf') format('opentype'),
+  url('../assets/fonts/PingFang Medium.woff') format('woff'),
+  url('../assets/fonts/PingFang Medium.woff2') format('woff2'),
+  url('../assets/fonts/PingFang Medium.svg') format('svg');
+}
 * {
     font-family: 'PingFang-Regular',Georgia;
 }
