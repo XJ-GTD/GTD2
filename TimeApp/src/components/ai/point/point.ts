@@ -61,6 +61,8 @@ export class PointComponent {
       //   this.speed =  0.0004;
       //
       // },3000)
+      this._renderer.addClass(this.light.nativeElement,"danger");
+      this.speed =  0.0004;
       this.assistantService.speakText("你说的是" + text,()=>{
         alert(text);
       });
