@@ -1,52 +1,37 @@
 page-tdc {
   ion-content.content {
-    background-color: #c00a23;
+    background-color: #000000;
     color: #fff;
   }
 
-  button.text-btn {
-    color: #fff;
+  .input-set{
+    font-size: 24px;
+    margin-top: 69px;
+    margin-left: 26px;
+    margin-right: 20px;
   }
 
-  ion-scroll {
-    width: 100%;
-    height: calc(100vmin * (180 / 1242) + 32px);
+  .btn-set{
+    font-size: 11px;
+    width: 70px;
+    height: 24px;
+  }
+  .sel-btn-set{
+    font-size: 10px;
+    width: 36px;
+    height: 36px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .date-set{
+    font-size: 16px;
+  }
+  .allday-set{
+    background-color: #000000;
+    width:120px;
   }
 
-  ion-scroll .scroll-content {
-    padding: 0;
+  .memo-set{
+    font-size: 14px;
   }
-
-  ion-scroll .svg-scroller {
-    margin-left: -16px;
-  }
-
-  scroll-select.image-scroll-select .scroll-box {
-    height: 40vmin;
-  }
-
-  scroll-select.image-scroll-select .scroll-box-zoom-wrapper {
-    margin: 0 -43.5px;
-  }
-
-  scroll-select.image-scroll-select div.option {
-
-  }
-
-  scroll-select.image-scroll-select .image-option {
-    width: 40vmin;
-    height: 40vmin;
-  }
-
-  .full-width {
-    margin-left: -21px;
-    margin-right: -21px;
-    overflow: hidden;
-  }
-
-  #timerange-picker {
-    width: 600vmin;
-    height: calc(100vmin * (180 / 1242))
-  }
-
 }

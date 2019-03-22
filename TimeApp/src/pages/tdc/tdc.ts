@@ -14,105 +14,153 @@ import { IonicPage, NavController, NavParams, Scroll } from 'ionic-angular';
   providers: [],
   template:`<ion-content padding>
     <ion-grid>
-      <!--<ion-row justify-content-center>
-      <ul class="sphere-inner">
-      <li class="a"><div class="container">
-      <div class="wave"></div>
-      </div></li>
-      <li class="b"><div class="container">
-      <div class="wave1"></div>
-      </div></li>
-      <li class="c"><div class="container">
-      <div class="wave2"></div>
-      </div></li>
-      <li class="d"><div class="container">
-      <div class="wave3"></div>
-      </div></li>
-      </ul>
-      </ion-row>-->
       <ion-row justify-content-center>
-        <h1>今天</h1>
-      </ion-row>
-      <ion-row justify-content-center>
-        <p>二月 23</p>
-      </ion-row>
-      <ion-row justify-content-center>
-        <div>
-          <button ion-button clear class="text-btn">设置全天</button>
-        </div>
-        <div>
-          <button ion-button clear class="text-btn" id="rangestart">3:00下午</button>
-          →
-          <button ion-button clear class="text-btn">{{rangeEnd}}</button>
+        <div class = "input-set">
+          <ion-input type="text" placeholder="我想..."></ion-input>
         </div>
       </ion-row>
-      <ion-row justify-content-center>
-        <ion-input type="text" value="" placeholder="喜马拉雅儿子的生日聚会" text-center></ion-input>
+      <ion-row justify-content-left>
+        <div >
+            <button ion-button  round class ="btn-set">添加计划</button>
+        </div>
       </ion-row>
-      <!--<ion-row justify-content-center>
-      <div class="container">
-      <div class="wave"></div>
-      </div>
-      </ion-row>-->
-      <ion-row justify-content-center>
-        <scroll-select [options]="labels" [value]="0"></scroll-select>
+      <ion-row justify-content-left>
+        <div class ="date-set"><ion-label>{{'2019/03/22' | formatedate : "CYYYY/MM/DD"}}</ion-label></div>&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class ="date-set"><ion-label>{{'2019/03/22' | formatedate : "CWEEK" }}</ion-label></div>&nbsp;&nbsp;
+        <div><ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label></div>
       </ion-row>
-      <ion-row justify-content-center>
-        <scroll-select [options]="months" [value]="'10'"></scroll-select>
+      <ion-row justify-content-left>
+        <div><ion-label>全天</ion-label></div>
+        <div><ion-item ><ion-toggle checked="true" color="danger"></ion-toggle></ion-item></div>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <div><ion-label>12:00</ion-label></div>&nbsp;&nbsp;
+        <div><ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label></div>
       </ion-row>
-      <p padding></p>
-      <ion-row justify-content-center>
-        <scroll-select [options]="months" [value]="'03'" [type]="'scroll-without-button'" [items]="5"></scroll-select>
+      <ion-row justify-content-left>
+        <div><ion-label>重复</ion-label></div>
+        <div><button ion-button  round class ="sel-btn-set" 
+                     [ngStyle]="{'background-color':wake.close.bkcolor,'color':wake.close.color}"
+                     (click)="clickwake(1)">关</button></div>
+        <div><button ion-button  round class ="sel-btn-set"
+                     [ngStyle]="{'background-color':wake.d.bkcolor,'color':wake.d.color}"
+                     (click)="clickwake(2)">天</button></div>
+        <div><button ion-button  round class ="sel-btn-set"
+                     [ngStyle]="{'background-color':wake.w.bkcolor,'color':wake.w.color}"
+                     (click)="clickwake(3)">周</button></div>
+        <div><button ion-button  round class ="sel-btn-set" 
+                     [ngStyle]="{'background-color':wake.m.bkcolor,'color':wake.m.color}"
+                     (click)="clickwake(4)">月</button></div>
+        <div><button ion-button  round class ="sel-btn-set" 
+                     [ngStyle]="{'background-color':wake.y.bkcolor,'color':wake.y.color}"
+                     (click)="clickwake(5)">年</button></div>
       </ion-row>
-      <p padding></p>
-      <ion-row justify-content-center>
-        <scroll-select [options]="years" [value]="'2019'" [type]="'scroll-without-button'" [items]="7"></scroll-select>
+      <ion-row justify-content-left>
+        <div><ion-label>提醒</ion-label></div>
+        <div><button ion-button  round class ="sel-btn-set">5分钟</button></div>
+        <div><button ion-button  round class ="sel-btn-set">10分钟</button></div>
+        <div><button ion-button  round class ="sel-btn-set">15分钟</button></div>
+        <div><button ion-button  round class ="sel-btn-set">30分钟</button></div>
+        <div><button ion-button  round class ="sel-btn-set">1小时</button></div>
+        <div><button ion-button  round class ="sel-btn-set">4小时</button></div>
+        <div><button ion-button  round class ="sel-btn-set">1天</button></div>
       </ion-row>
-      <p padding></p>
-      <ion-row class="full-width" justify-content-center>
-        <scroll-range-picker max="24" min="5" value="18:00" (changed)="timechanged($event)"></scroll-range-picker>
-      </ion-row>
-      <ion-row justify-content-center>
-        <scroll-select class="image-scroll-select" [options]="motions" [value]="'Party'"></scroll-select>
+      <ion-row justify-content-left>
+        <div class = "memo-set">
+          <ion-input type="text" placeholder="备注"></ion-input>
+        </div>
       </ion-row>
     </ion-grid>
   </ion-content>`
 
 })
 export class TdcPage {
-  //
-  labels: Array<any> = [{value:0,caption:'工作'}, {value:1,caption:'个人'}];
-  months: Array<any> = [{value:'01',caption:'一月'}, {value:'02',caption:'二月'}, {value:'03',caption:'三月'}, {value:'04',caption:'四月'}, {value:'05',caption:'五月'}, {value:'06',caption:'六月'}, {value:'07',caption:'七月'}, {value:'08',caption:'八月'}, {value:'09',caption:'九月'}, {value:'10',caption:'十月'}, {value:'11',caption:'十一月'}, {value:'12',caption:'十二月'}];
-  years: Array<any> = [];
-  rangeEnd: string = '4:30下午';
-  motions: Array<any> = [
-    {value:'Anxious',caption:`<img class="image-option" src="../assets/imgs/Anxious.png">`},
-    {value:'Birthday',caption:`<img class="image-option" src="../assets/imgs/Birthday.png">`},
-    {value:'Celebration',caption:`<img class="image-option" src="../assets/imgs/Celebration.png">`},
-    {value:'Competition',caption:`<img class="image-option" src="../assets/imgs/Competition.png">`},
-    {value:'Excited',caption:`<img class="image-option" src="../assets/imgs/Excited.png">`},
-    {value:'Party',caption:`<img class="image-option" src="../assets/imgs/Party.png">`},
-    {value:'Romance',caption:`<img class="image-option" src="../assets/imgs/Romance.png">`},
-    {value:'Sport',caption:`<img class="image-option" src="../assets/imgs/Sport.png">`},
-    {value:'Study',caption:`<img class="image-option" src="../assets/imgs/Study.png">`},
-    {value:'Travel',caption:`<img class="image-option" src="../assets/imgs/Travel.png">`}
-  ];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    for (let year = 2009; year <= 2029; year++) {
-      this.years.push({value:year.toString(),caption:year.toString()});
-    }
+
   }
+
+
+  selbkcolor :string ="#932C16";
+  selcolor:string ="#FFFFFF";
+  calcolor:string ="#666666";
+  calbkcolor:string ="";
+  wake = {
+    close:{value:1,bkcolor:this.selbkcolor,color:this.selcolor},
+    d:{value:0,bkcolor:this.calbkcolor,color:this.calcolor},
+    w:{value:0,bkcolor:this.calbkcolor,color:this.calcolor},
+    m:{value:0,bkcolor:this.calbkcolor,color:this.calcolor},
+    y:{value:0,bkcolor:this.calbkcolor,color:this.calcolor}
+  };
+  event = {timeStarts :"2019/03/22"};
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad NewAgendaPage');
   }
 
-  timechanged(changed) {
-    if (changed !== undefined) {
-      let src = changed.src;
-      let dest = changed.dest;
-      this.rangeEnd = dest;
+  //提醒按钮显示控制
+  clickwake(type){
+    switch (type){
+      case 1:
+        if (this.wake.close.value == 0){
+          this.wake.close.value = 1;
+          this.wake.close.bkcolor = this.selbkcolor;
+          this.wake.close.color = this.selcolor;
+        }else{
+          this.wake.close.value = 0;
+          this.wake.close.bkcolor = this.calbkcolor;
+          this.wake.close.color = this.calcolor;
+        }
+
+      case 2:
+        if (this.wake.d.value == 0){
+          this.wake.d.value = 1;
+          this.wake.d.bkcolor = this.selbkcolor;
+          this.wake.d.color = this.selcolor;
+        }else{
+          this.wake.d.value = 0;
+          this.wake.d.bkcolor = this.calbkcolor;
+          this.wake.d.color = this.calcolor;
+        }
+      case 3:
+        if (this.wake.w.value == 0){
+          this.wake.w.value = 1;
+          this.wake.w.bkcolor = this.selbkcolor;
+          this.wake.w.color = this.selcolor;
+        }else{
+          this.wake.w.value = 0;
+          this.wake.w.bkcolor = this.calbkcolor;
+          this.wake.w.color = this.calcolor;
+        }
+      case 4:
+        if (this.wake.m.value == 0){
+          this.wake.m.value = 1;
+          this.wake.m.bkcolor = this.selbkcolor;
+          this.wake.m.color = this.selcolor;
+        }else{
+          this.wake.m.value = 0;
+          this.wake.m.bkcolor = this.calbkcolor;
+          this.wake.m.color = this.calcolor;
+        }
+      case 5:
+        if (this.wake.y.value == 0){
+          this.wake.y.value = 1;
+          this.wake.y.bkcolor = this.selbkcolor;
+          this.wake.y.color = this.selcolor;
+        }else{
+          this.wake.y.value = 0;
+          this.wake.y.bkcolor = this.calbkcolor;
+          this.wake.y.color = this.calcolor;
+        }
+      default:
+        if (this.wake.close.value == 0){
+          this.wake.close.value = 1;
+          this.wake.close.bkcolor = this.selbkcolor;
+          this.wake.close.color = this.selcolor;
+        }else{
+          this.wake.close.value = 0;
+          this.wake.close.bkcolor = this.calbkcolor;
+          this.wake.close.color = this.calcolor;
+        }
     }
   }
 
