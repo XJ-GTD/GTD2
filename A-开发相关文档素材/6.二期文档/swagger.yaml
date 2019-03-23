@@ -34,6 +34,28 @@ schemes:
   - https
   - http
 paths:
+  /nlp/api/parsetext:
+    get:
+      tags:
+        - inteligence service
+      summary: 自然语言分析
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: text
+          in: query
+          type: string
+          description: 中文句子
+          required: true
+      responses:
+        '200':
+          description: 中文语义分析成功返回
+          schema:
+            type: object
+            properties:
+              function:
+                type: string
   /cdc/{caculateid}/starter:
     post:
       tags:
