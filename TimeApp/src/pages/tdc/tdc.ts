@@ -79,11 +79,6 @@ export class TdcPage {
 
   }
 
-
-  selbkcolor :string ="#932C16";
-  selcolor:string ="#FFFFFF";
-  calcolor:string ="#666666";
-  unbkcolor:string ="";
   wake = {
     close:1,
     d:0,
