@@ -25,16 +25,22 @@ export class FormatedatePipe implements PipeTransform {
         switch (d) {
           case "1":
             ret = "周一";
+            break;
           case "2":
             ret =  "周二";
+            break;
           case "3":
             ret =  "周三";
+            break;
           case "4":
             ret =  "周四";
+            break;
           case "5":
             ret =  "周五";
+            break;
           case "6":
             ret =  "周六";
+            break;
           default:
             ret =  "周日";
         };

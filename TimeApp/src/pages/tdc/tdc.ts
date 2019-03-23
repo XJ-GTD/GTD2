@@ -38,20 +38,20 @@ import { IonicPage, NavController, NavParams, Scroll } from 'ionic-angular';
       </ion-row>
       <ion-row justify-content-left>
         <div><ion-label>重复</ion-label></div>
-        <div><button ion-button  round class ="sel-btn-set" 
-                     [ngStyle]="{'background-color':wake.close.bkcolor,'color':wake.close.color}"
+        <div><button ion-button  round clear class ="sel-btn-set"
+                     [ngClass]="wake.close == 1?'sel-btn-seled':'sel-btn-unsel'"  
                      (click)="clickwake(1)">关</button></div>
-        <div><button ion-button  round class ="sel-btn-set"
-                     [ngStyle]="{'background-color':wake.d.bkcolor,'color':wake.d.color}"
+        <div><button ion-button  round clear class ="sel-btn-set"
+                     [ngClass]="wake.d == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickwake(2)">天</button></div>
-        <div><button ion-button  round class ="sel-btn-set"
-                     [ngStyle]="{'background-color':wake.w.bkcolor,'color':wake.w.color}"
+        <div><button ion-button  round  clear class ="sel-btn-set"
+                     [ngClass]="wake.w == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickwake(3)">周</button></div>
-        <div><button ion-button  round class ="sel-btn-set" 
-                     [ngStyle]="{'background-color':wake.m.bkcolor,'color':wake.m.color}"
+        <div><button ion-button  round clear class ="sel-btn-set"
+                     [ngClass]="wake.m == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickwake(4)">月</button></div>
-        <div><button ion-button  round class ="sel-btn-set" 
-                     [ngStyle]="{'background-color':wake.y.bkcolor,'color':wake.y.color}"
+        <div><button ion-button  round clear class ="sel-btn-set"
+                     [ngClass]="wake.y == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickwake(5)">年</button></div>
       </ion-row>
       <ion-row justify-content-left>
@@ -83,13 +83,13 @@ export class TdcPage {
   selbkcolor :string ="#932C16";
   selcolor:string ="#FFFFFF";
   calcolor:string ="#666666";
-  calbkcolor:string ="";
+  unbkcolor:string ="";
   wake = {
-    close:{value:1,bkcolor:this.selbkcolor,color:this.selcolor},
-    d:{value:0,bkcolor:this.calbkcolor,color:this.calcolor},
-    w:{value:0,bkcolor:this.calbkcolor,color:this.calcolor},
-    m:{value:0,bkcolor:this.calbkcolor,color:this.calcolor},
-    y:{value:0,bkcolor:this.calbkcolor,color:this.calcolor}
+    close:1,
+    d:0,
+    w:0,
+    m:0,
+    y:0
   };
   event = {timeStarts :"2019/03/22"};
 
@@ -101,66 +101,46 @@ export class TdcPage {
   clickwake(type){
     switch (type){
       case 1:
-        if (this.wake.close.value == 0){
-          this.wake.close.value = 1;
-          this.wake.close.bkcolor = this.selbkcolor;
-          this.wake.close.color = this.selcolor;
-        }else{
-          this.wake.close.value = 0;
-          this.wake.close.bkcolor = this.calbkcolor;
-          this.wake.close.color = this.calcolor;
-        }
-
+        this.wake.close = 1;
+        this.wake.d = 0;
+        this.wake.w = 0;
+        this.wake.m = 0;
+        this.wake.y = 0;
+        break;
       case 2:
-        if (this.wake.d.value == 0){
-          this.wake.d.value = 1;
-          this.wake.d.bkcolor = this.selbkcolor;
-          this.wake.d.color = this.selcolor;
-        }else{
-          this.wake.d.value = 0;
-          this.wake.d.bkcolor = this.calbkcolor;
-          this.wake.d.color = this.calcolor;
-        }
+        this.wake.close = 0;
+        this.wake.d = 1;
+        this.wake.w = 0;
+        this.wake.m = 0;
+        this.wake.y = 0;
+        break;
       case 3:
-        if (this.wake.w.value == 0){
-          this.wake.w.value = 1;
-          this.wake.w.bkcolor = this.selbkcolor;
-          this.wake.w.color = this.selcolor;
-        }else{
-          this.wake.w.value = 0;
-          this.wake.w.bkcolor = this.calbkcolor;
-          this.wake.w.color = this.calcolor;
-        }
+        this.wake.close = 0;
+        this.wake.d = 0;
+        this.wake.w = 1;
+        this.wake.m = 0;
+        this.wake.y = 0;
+        break;
       case 4:
-        if (this.wake.m.value == 0){
-          this.wake.m.value = 1;
-          this.wake.m.bkcolor = this.selbkcolor;
-          this.wake.m.color = this.selcolor;
-        }else{
-          this.wake.m.value = 0;
-          this.wake.m.bkcolor = this.calbkcolor;
-          this.wake.m.color = this.calcolor;
-        }
+        this.wake.close = 0;
+        this.wake.d = 0;
+        this.wake.w = 0;
+        this.wake.m = 1;
+        this.wake.y = 0;
+        break;
       case 5:
-        if (this.wake.y.value == 0){
-          this.wake.y.value = 1;
-          this.wake.y.bkcolor = this.selbkcolor;
-          this.wake.y.color = this.selcolor;
-        }else{
-          this.wake.y.value = 0;
-          this.wake.y.bkcolor = this.calbkcolor;
-          this.wake.y.color = this.calcolor;
-        }
+        this.wake.close = 0;
+        this.wake.d = 0;
+        this.wake.w = 0;
+        this.wake.m = 0;
+        this.wake.y = 1;
+        break;
       default:
-        if (this.wake.close.value == 0){
-          this.wake.close.value = 1;
-          this.wake.close.bkcolor = this.selbkcolor;
-          this.wake.close.color = this.selcolor;
-        }else{
-          this.wake.close.value = 0;
-          this.wake.close.bkcolor = this.calbkcolor;
-          this.wake.close.color = this.calcolor;
-        }
+        this.wake.close = 1;
+        this.wake.d = 0;
+        this.wake.w = 0;
+        this.wake.m = 0;
+        this.wake.y = 0;
     }
   }
 
