@@ -1,0 +1,66 @@
+{
+  "_id": ObjectID(),
+  "name": "冥王星重复日程计算处理流",
+  "trigger": "cdc_calendar_caculate_start",
+  "parameters": [
+      "callback",
+      "caculateid",
+      "data"
+  ],
+  "follows": [
+    {
+      "name": "数据清洗与转换 每个日程分配一个处理子任务",
+      "trigger": "acj",
+      "parameters": [
+          "datasource;$.parent.parameters"
+      ],
+      "outputs": [
+          "cleaned"
+      ],
+      "next": [
+         {
+           "type": "loop",
+           "variable": "agenda;$.parent.outputs.cleaned.agendas[*]",
+           "start": "0",
+           "end": "size",
+           "task": {
+             "name": "数据清洗与转换 每个子任务计算重复日程到日历",
+             "trigger": "acj",
+             "parameters": [
+                 "datasource;$.parent.outputs.cleaned.agendas[##agenda_value##]"
+             ],
+             "outputs": [
+                 "cleaned"
+             ]
+           },
+           "complete": {
+             "all": {
+               "name": "数据清洗与转换 所有计算完成合并结果",
+               "trigger": "acj",
+               "parameters": [
+                   "datasource;$.loop.outputs"
+               ],
+               "outputs": [
+                   "cleaned"
+               ],
+               "next": [
+                   {
+                      "name": "冥王星通知服务",
+                      "trigger": "ann",
+                      "parameters": [
+                          "announceTo;$.root.parameters.callback",
+                          "announceType;duan_announce",
+                          "announceContent;$.parent.outputs.cleaned.announceContent"
+                      ],
+                      "outputs": [
+                          "result"
+                      ]
+                   }
+                ]
+             }
+           }
+         }
+      ]
+    }
+  ]
+}

@@ -69,6 +69,9 @@ export class RPage {
               private alertCtrl: AlertController,
               private toastCtrl: ToastController,
               private rService: RService,) {
+  }
+
+  ionViewDidLoad() {
     console.log('ionViewDidLoad RPage');
   }
 

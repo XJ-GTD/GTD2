@@ -45,7 +45,7 @@ import {DataConfig} from "../../service/config/data.config";
                    <!--{{g.rn}} <span>{{g.rc}}</span>-->
                  <!--</ion-item>-->
                
-               <ion-label (click)="toGroupMember(g)">
+               <ion-label (click)="toMemberInfo(g)">
                  {{g.rn}} 
                  <span style="font-size:14px;color:rgb(102,102,102);">
                    {{g.rc}}
@@ -126,29 +126,16 @@ export class GcPage {
     })
   };
 
-  save() {
-    // if(!this.qmc){
-    //   let toast = this.toastCtrl.create({
-    //     message: '请输入群组名称',
-    //     duration: 1500,
-    //     position: 'top'
-    //   });
-    //   toast.present();
-    //   return;
-    // }
-    //
-    // this.relmemService.aru(this.uo.uI,null,this.qmc,this.qmc,'','1','','',this.qcy).then(data=>{
-    //   if(data.code == 0){
-    //     console.log("添加群成功");
-    //     this.navCtrl.pop();
-    //
-    //   }else{
-    //     console.log("添加群失败")
-    //   }
-    // }).catch(reason => {
-    //   console.log("添加群失败")
-    // })
-  }
+  /**
+   * 人员详情
+   */
+  // toMemberInfo(g:PageFsData){
+  //   let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{pwi:g.pwi});
+  //   modal.onDidDismiss((data)=>{
+  //     console.log(JSON.stringify(data));
+  //   });
+  //   modal.present();
+  // }
 
   // ionViewDidLoad(){
   //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");

@@ -102,8 +102,21 @@ public class MainVerticle extends AbstractVerticle {
 		JsonObject data = received.body().getJsonObject("body");
 
 		String announceType = data.getJsonObject("context").getString("announceType");
-		JsonArray announceTo = data.getJsonObject("context").getJsonArray("announceTo");
-		JsonObject announceContent = data.getJsonObject("context").getJsonObject("announceContent");
+		JsonArray announceTo = new JsonArray();
+		if (data.getJsonObject("context").getValue("announceTo") instanceof JsonArray) {
+			announceTo.addAll(data.getJsonObject("context").getJsonArray("announceTo"));
+		} else {
+			announceTo.add(data.getJsonObject("context").getValue("announceTo"));
+		}
+		JsonObject announceContent = new JsonObject();
+		if (data.getJsonObject("context").getValue("announceContent") != null) {
+			System.out.println(data.getJsonObject("context").getValue("announceContent").getClass().getName());
+		}
+		if (data.getJsonObject("context").getValue("announceContent") instanceof JsonObject) {
+			announceContent.mergeIn(data.getJsonObject("context").getJsonObject("announceContent"));
+		} else {
+			announceContent.mergeIn(new JsonObject().put("data", data.getJsonObject("context").getValue("announceContent")));
+		}
 		String next = data.getJsonObject("context").getString("next");
 
 		if (announceTo == null || announceTo.isEmpty()) {
@@ -115,6 +128,7 @@ public class MainVerticle extends AbstractVerticle {
 			// 短应用内部通知
 			for (int pos = 0; pos < announceTo.size(); pos++) {
 				String address = announceTo.getString(pos);
+				System.out.println("Announced to " + address + " " + announceContent.encode());
 
 				MessageProducer<JsonObject> producer = bridge.createProducer(address);
 				producer.send(new JsonObject()

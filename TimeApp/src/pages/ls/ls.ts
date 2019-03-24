@@ -57,6 +57,9 @@ export class LsPage {
               public alertCtrl: AlertController,
               private toastCtrl: ToastController,
               private lsService: LsService,) {
+  }
+
+  ionViewDidLoad() {
     console.log('ionViewDidLoad LsPage');
   }
 

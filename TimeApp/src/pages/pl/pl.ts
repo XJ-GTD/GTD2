@@ -1,5 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import {AlertController, IonicPage, Navbar, NavController} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "./pl.service";
 import {PagePDPro} from "../pd/pd.service";
@@ -70,10 +70,9 @@ import {PagePDPro} from "../pd/pd.service";
 })
 export class PlPage {
 
-  @ViewChild(Navbar) navBar: Navbar;
   jhs:any;
   show:any = true;
-  picture:any;
+  picture:any = "xl.png" ;
 
   constructor(private navCtrl: NavController,
               private alertCtrl: AlertController,

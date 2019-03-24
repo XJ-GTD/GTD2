@@ -1,35 +1,66 @@
 {
-    "name": "冥王星语音服务自然语言解析处理流",
-    "trigger": "mwxing_inteligence_service_start",
+  "name": "冥王星语音服务自然语言解析处理流",
+  "trigger": "mwxing_inteligence_service_start",
+  "parameters": [
+      "userId",
+      "context",
+      "content",
+      "contentType"
+  ],
+  "follows": [{
+    "name": "讯飞云AIUI语义分析",
+    "trigger": "xfy",
     "parameters": [
-        "userId",
-        "content",
-        "contentType"
+        "userId;$.parent.parameters.userId",
+        "dataType;$.parent.parameters.contentType",
+        "content;$.parent.parameters.content",
+        "context;$.parent.parameters.context"
     ],
-    "follows": [
-        {
-            "name": "讯飞云AIUI语义分析",
-            "trigger": "xfy",
-            "parameters": [
-                "userId;$.parent.parameters.userId",
-                "dataType;$.parent.parameters.contentType",
-                "content;$.parent.parameters.content"
-            ],
-            "outputs": [
-                "xunfeiyun"
-            ],
-            "next": [
-                {
-                  "name": "数据清洗与转换",
-                  "trigger": "acj",
-                  "parameters": [
-                      "datasouce;$.parent.outputs.xunfeiyun"
-                  ],
-                  "outputs": [
-                      "cleaned"
-                  ]
-                }
-            ]
+    "outputs": [
+        "xunfeiyun",
+        "userId"
+      ],
+      "next": [
+          {
+      "name": "数据清洗与转换 迅飞返回结果格式整理",
+      "trigger": "acj",
+      "parameters": ["datasource;$.parent.outputs.xunfeiyun"],
+      "outputs": ["cleaned"]
+    },
+    {
+      "name": "取得文本中的中文人名",
+      "trigger": "nlp",
+      "parameters": ["function;NlpAnalysis",
+      "text;$.root.parameters.content"],
+      "outputs": ["function",
+      "text",
+      "parsed"]
+    }],
+    "complete": {
+      "next": {
+        "all": {
+          "name": "数据清洗与转换 整合迅飞语音和人名识别的结果",
+          "trigger": "acj",
+          "parameters": ["datasource;$.complete.outputs"],
+          "outputs": ["cleaned"],
+          "next": [{
+            "name": "中文拼音转换参与人姓名",
+            "trigger": "pin",
+            "parameters": ["type;IN_DATA_COVERAGE",
+            "data;$.parent.outputs.cleaned",
+            "text-paths;json-path.announceContent.content..parameters.fs[*].n"],
+            "outputs": ["pinyin"],
+            "next": [{
+              "name": "冥王星通知服务",
+              "trigger": "ann",
+              "parameters": ["announceTo;$.parent.outputs.pinyin.announceTo",
+              "announceType;$.parent.outputs.pinyin.announceType",
+              "announceContent;$.parent.outputs.pinyin.announceContent"],
+              "outputs": ["result"]
+            }]
+          }]
         }
-    ]
+      }
+    }
+  }]
 }

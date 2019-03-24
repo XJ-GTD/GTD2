@@ -4,9 +4,6 @@ page-tdl {
     src: url('../../assets/fonts/PingFang Regular.ttf');
   }
 
-  ion-fab[bottom] {
-    bottom: 38px;
-  }
 
   ion-content {
     font-family: "PingFang-Regular";
@@ -200,7 +197,7 @@ page-tdl {
   }
   .content-set {
     position: relative;
-    margin-top: 28px;
+    padding-top: 44px;
   }
 
 }
