@@ -1,6 +1,11 @@
 pointcomponent {
+  .aitool{
+    position: relative;
+    display: block;
+  }
 
-  .loading {
+
+  .speaking {
     cursor: pointer;
     font-size: 0.5em;
     color: white;
@@ -16,7 +21,7 @@ pointcomponent {
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
   }
-  .loading:before {
+  .speaking:before {
     box-sizing: border-box;
     content: "";
     border-radius: 100%;
@@ -32,12 +37,12 @@ pointcomponent {
     border-top: 1px solid #3583d7;
     border-bottom: 1px solid #3583d7;
   }
-  .loading.danger {
+  .speaking.danger {
     border-color: #3583d7;
     box-shadow: 0 0 30px 10px #3583d7;
     animation: none;
   }
-  .loading.danger:before {
+  .speaking.danger:before {
     border-color: #3583d7;
     opacity: 0;
     width: 10em;

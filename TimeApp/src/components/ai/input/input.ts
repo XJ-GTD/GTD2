@@ -36,26 +36,30 @@ export class InputComponent {
 
     this.keyboard.onKeyboardHide().subscribe(next => {
       setTimeout(()=>{
-        this._renderer.setStyle(this.el.nativeElement, "display", "none");
+        this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(-9999px)");
+        //this._renderer.setStyle(this.el.nativeElement, "display", "none");
       },100);
       this.input.setBlur();
 
     }, error1 => {
       setTimeout(()=>{
-        this._renderer.setStyle(this.el.nativeElement, "display", "none");
+        this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(-9999px)");
+        //this._renderer.setStyle(this.el.nativeElement, "display", "none");
       },100);
       this.input.setBlur();
 
     });
     this.input.blur.subscribe(next => {
       setTimeout(()=>{
-        this._renderer.setStyle(this.el.nativeElement, "display", "none");
+        //this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(-9999px)");
+        //this._renderer.setStyle(this.el.nativeElement, "display", "none");
       },100);
       this.input.setBlur();
 
     }, error1 => {
       setTimeout(()=>{
-        this._renderer.setStyle(this.el.nativeElement, "display", "none");
+        this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(-9999px)");
+        //this._renderer.setStyle(this.el.nativeElement, "display", "none");
       },100);
       this.input.setBlur();
 
@@ -64,7 +68,7 @@ export class InputComponent {
 
 
   inputStart() {
-    this._renderer.setStyle(this.el.nativeElement, "display", "block");
+    this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(0px)");
     this.input.clearTextInput();
     this.input.setFocus();
   }
@@ -75,7 +79,8 @@ export class InputComponent {
       this.assistantService.listenText(this.input.value);
     }
 
-    this._renderer.setStyle(this.el.nativeElement, "display", "none");
+    this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(-9999px)");
+    //this._renderer.setStyle(this.el.nativeElement, "display", "none");
     this.input.setBlur();
   }
 

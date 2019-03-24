@@ -14,7 +14,8 @@ import {InputComponent} from "../input/input";
 @Component({
   selector: 'PointComponent',
   template: `
-    <b class="loading danger" #light>
+    <div class="aitool" #aitool>
+    <b class=" speaking  danger" #light>
     <div class="spinner" (click)="speakstart()">
       <canvas #canvas></canvas>
     </div>
@@ -24,6 +25,7 @@ import {InputComponent} from "../input/input";
         <img src="./assets/imgs/h-input.png">
       </div>
     <InputComponent #inputComponent></InputComponent>
+    </div>
   `,
 })
 export class PointComponent {
@@ -31,6 +33,8 @@ export class PointComponent {
   canvas: ElementRef;
   @ViewChild('light')
   light: ElementRef;
+  @ViewChild('aitool')
+  aitool: ElementRef;
 
   @ViewChild('inputComponent')
   inputComponent:InputComponent;
@@ -52,7 +56,7 @@ export class PointComponent {
 
   speed:number = 0.0004;
 
-  constructor(private utilService: UtilService,private assistantService:AssistantService,private _renderer: Renderer2,private modalController :ModalController ) {
+  constructor(private utilService: UtilService,private assistantService:AssistantService,private _renderer: Renderer2 ) {
 
   }
 
@@ -75,6 +79,9 @@ export class PointComponent {
   }
 
   ngOnInit(): void {
+    this._renderer.setStyle(this.aitool.nativeElement,"top",window.innerHeight);
+
+
     this.ctx = this.canvas.nativeElement.getContext('2d');
     this.width = this.canvas.nativeElement.width;
     this.height = this.canvas.nativeElement.height;

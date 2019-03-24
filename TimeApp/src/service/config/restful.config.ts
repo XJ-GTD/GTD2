@@ -2,7 +2,6 @@ import {STbl} from "../sqlite/tbl/s.tbl";
 import {ATbl} from "../sqlite/tbl/a.tbl";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {Injectable} from "@angular/core";
-import {UserConfig} from "./user.config";
 
 @Injectable()
 export class RestFulConfig {
@@ -42,7 +41,7 @@ export class RestFulConfig {
         let urlentity: UrlEntity = new UrlEntity();
         urlentity.key = data.yk;
         urlentity.url = data.yv;
-
+        urlentity.desc = data.sn;
         this.urlLs.set(data.yk, urlentity);
       }
     })
@@ -178,8 +177,16 @@ export class RestFulHeader {
 
 
 export class UrlEntity {
+  get desc(): string {
+    return this._desc;
+  }
+
+  set desc(value: string) {
+    this._desc = value;
+  }
   private _url: string;
   private _key: string;
+  private _desc: string;
 
 
   get url(): string {
