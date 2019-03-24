@@ -10,6 +10,9 @@
 }
 
 ion-calendar-week {
+  ion-toolbar{
+    z-index: 0;
+  }
 
   .toolbar-background-md, .toolbar-background-ios {
     background: transparent;

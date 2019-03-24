@@ -8,8 +8,8 @@ pointcomponent {
     width: 58px;
     height: 58px;
     position: fixed;
-    top: calc(100% - 88px);
-    left: calc(50% - 28px);
+    top: calc(100% - 87px);
+    left: calc(50% - 27px);
     border-radius: 100%;
     //border: .05px solid #3583d7;
     animation: pulse 1.4s linear infinite;
@@ -34,16 +34,16 @@ pointcomponent {
   }
   .loading.danger {
     border-color: #3583d7;
-    box-shadow: 0 0 20px 4px #3583d7;
+    box-shadow: 0 0 30px 10px #3583d7;
     animation: none;
   }
   .loading.danger:before {
     border-color: #3583d7;
     opacity: 0;
-    width: 8em;
-    height: 8em;
-    margin-left: -4em;
-    margin-top: -4em;
+    width: 10em;
+    height: 10em;
+    margin-left: -5em;
+    margin-top: -5em;
   }
 
   @keyframes rotate {
@@ -75,7 +75,6 @@ pointcomponent {
     //background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2b657b), color-stop(100%,#1f2857));
     //background: -webkit-linear-gradient(top, #2b657b 0%,#1f2857 100%);
     background: linear-gradient(right top, #843094 0%,#25134f 30%,#1b1148 60%,#1f2857 90%,#2b657b 100%);
-    z-index: 100;
   //#
 
     display: block;
@@ -83,15 +82,15 @@ pointcomponent {
     height: 58px;
     border-radius: 50%;
     margin: 0 auto;
-    margin-top: 2px;
+    margin-top: 3px;
 
   }
 
 
   .spinner, .spinner:before {
     position: fixed;
-    width: 62px;
-    height: 62px;
+    width: 64px;
+    height: 64px;
     top: calc(100% - 90px);
     left: calc(50% - 30px);
     border-radius: 50%;
@@ -104,7 +103,7 @@ pointcomponent {
     content: '';
   }
 
-  .input{
+  .inputioc{
     position: fixed;
     width: 62px;
     height: 62px;

@@ -154,6 +154,9 @@ export class SqliteInit {
 
           }
         )
+      }).catch(err=>{
+
+        resolve(err);
       })
 
     })

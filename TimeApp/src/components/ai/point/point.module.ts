@@ -1,7 +1,9 @@
-import {ModuleWithProviders, NgModule} from '@angular/core';
+import { NgModule} from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { PointComponent } from './point';
+import {PointComponent} from './point';
 import {PointService} from "./point.service";
+import {InputComponentModule} from "../input/input.module";
+
 
 @NgModule({
   declarations: [
@@ -9,6 +11,7 @@ import {PointService} from "./point.service";
   ],
   imports: [
     IonicPageModule.forChild(PointComponent),
+    InputComponentModule
   ],
   exports: [
     PointComponent,
@@ -16,11 +19,10 @@ import {PointService} from "./point.service";
   providers:[
     PointService,
   ],
+
+  entryComponents:[
+    PointComponent
+  ],
 })
 export class PointComponentModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: PointComponent
-    };
-  }
 }

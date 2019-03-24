@@ -14,7 +14,8 @@ import {AiComponentModule} from "../../components/ai/answer/ai.module";
     IonicPageModule.forChild(HPage),
     CalendarModule,
     BackComponentModule,
-    AiComponentModule
+    AiComponentModule,
+
   ],
   entryComponents: [
     HPage
