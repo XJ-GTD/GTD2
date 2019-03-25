@@ -121,7 +121,7 @@ export class GcPage {
 
   getData() {
     this.fsService.getfriendgroup(this.dc.gi).then(data=>{
-      if(data.length>0){
+      if(data && data != null){
         this.fsl = data;
         this.dc.gc = this.fsl.length;
       }

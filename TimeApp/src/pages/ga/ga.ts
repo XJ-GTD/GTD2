@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {GcService, PageDcData} from "../gc/gc.service";
 import {DataConfig} from "../../service/config/data.config";
 
@@ -45,7 +45,9 @@ import {DataConfig} from "../../service/config/data.config";
 })
 export class GaPage {
   tt:string;
-  constructor(public navCtrl: NavController, public navParams: NavParams,private gcService:GcService,) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              public viewCtrl: ViewController,
+              private gcService:GcService,) {
   }
   @ViewChild('nameInput') nameInput ;
   ionViewDidLoad() {
@@ -61,7 +63,8 @@ export class GaPage {
 
   goBack(){
     console.log('PaPage跳转PdPage');
-    this.navCtrl.push(DataConfig.PAGE._GL_PAGE);
+    //this.navCtrl.push(DataConfig.PAGE._GL_PAGE);
+    this.viewCtrl.dismiss();
   }
   save(){
     let dc:PageDcData = new PageDcData();
