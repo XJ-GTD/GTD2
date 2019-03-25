@@ -10,7 +10,7 @@ import {PointComponentModule} from "../point/point.module";
   ],
   imports: [
     IonicPageModule.forChild(AiComponent),
-    PointComponentModule
+    PointComponentModule,
   ],
   providers: [
     AiService

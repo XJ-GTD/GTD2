@@ -20,6 +20,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {ScdData} from "../tdl/tdl.service";
 import {UserConfig} from "../../service/config/user.config";
 import {AgdRestful} from "../../service/restful/agdsev";
+import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
 
 @Injectable()
 export class AlService {
@@ -126,6 +127,10 @@ export class AlService {
 //系统设置
   setSetting(): Promise<AlData> {
     let alData: AlData = new AlData();
+
+    //重新获取服务器数据
+    this.sqlLiteInit.initDataSub()
+
     return new Promise(async (resolve, reject) => {
       // TODO 系统设置 restHttps设置 用户偏好设置 用户信息 。。。
       await this.restfulConfig.init();
@@ -133,16 +138,12 @@ export class AlService {
       await this.feekback.initAudio().catch(e => {
       });
 
-
-      //重新获取服务器数据
-      await this.sqlLiteInit.initDataSub();
-
       //用户设置信息初始化
       this.userConfig.init();
       alData.text = "系统设置完成";
       resolve(alData)
 
-    });
+    })
   }
 
 //判断用户是否登陆
@@ -331,7 +332,7 @@ export class AlService {
       btbl.hiu = '';
       btbl.rn = '罗建飞';
       btbl.rnpy = 'luojianfei';
-      btbl.rc = '18602150145';
+      btbl.rc = '18602150135';
       btbl.rel = '1';
       btbl.ui = btbl.pwi;
       sqls.push(btbl.inT());
@@ -344,7 +345,7 @@ export class AlService {
       btbl.hiu = '';
       btbl.rn = '丁朝辉';
       btbl.rnpy = 'dingchaohui';
-      btbl.rc = '18602150145';
+      btbl.rc = '18602152145';
       btbl.rel = '1';
       btbl.ui = btbl.pwi;
       sqls.push(btbl.inT());
@@ -357,7 +358,7 @@ export class AlService {
       btbl.hiu = '';
       btbl.rn = '薛震洋';
       btbl.rnpy = 'xuezhenyang';
-      btbl.rc = '18602150145';
+      btbl.rc = '18602151145';
       btbl.rel = '1';
       btbl.ui = btbl.pwi;
       sqls.push(btbl.inT());
@@ -433,7 +434,7 @@ export class AlService {
       ss.push("看过不良人吗");
       ss.push("周末加班");
 
-      for (let i = 0; i < 4000; i++) {
+      for (let i = 0; i < 1000; i++) {
         start = moment('2019/03/01');
         let r = this.util.randInt(-365 * 10, 365 * 10);
         let t = this.util.randInt(0, 24);
@@ -477,6 +478,26 @@ export class AlService {
 
         sqls.push(c.inT());
 
+        let len = 1;
+        if(c.rt=='1'){
+          len = 80;
+        }else if(c.rt=='2'){
+          len = 24;
+        }else if(c.rt=='3'){
+          len = 96;
+        }else if(c.rt=='4'){
+          len = 365;
+        }
+        let sql=new Array<string>();
+        for(let i=0;i<len;i++){
+          let sp = new SpTbl();
+          sp.spi = this.util.getUuid()
+          sp.si = c.si;
+          sp.sd = moment(c.sd).add(i,'d').format("YYYY/MM/DD");
+          sp.st = c.st;
+          sqls.push(sp.inT());
+        }
+
         c_r2 = 6;
         if (!(c_r > 6 && c_r < 0)) {
           while (c_r > -1) {
@@ -505,8 +526,8 @@ export class AlService {
 
   async createCachefromserver() {
     const ctbl: CTbl = new CTbl();
-    ctbl.sd = '2019/01/01';
-    ctbl.rt = "0";
+    // ctbl.sd = '2019/01/01';
+    // ctbl.rt = "0";
     let ds = await this.sqlExce.getList<CTbl>(ctbl);
 
     let dd = await this.agdRestful.cachefromserver(ds)

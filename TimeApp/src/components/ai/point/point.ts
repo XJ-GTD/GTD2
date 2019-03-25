@@ -1,8 +1,8 @@
-import {Component, ElementRef, Renderer, Renderer2, ViewChild} from '@angular/core';
-import {IonicPage} from 'ionic-angular';
+import {Component, ElementRef,Renderer2, ViewChild} from '@angular/core';
+import {IonicPage, ModalController} from 'ionic-angular';
 import {UtilService} from "../../../service/util-service/util.service";
 import {AssistantService} from "../../../service/cordova/assistant.service";
-import set = Reflect.set;
+import {InputComponent} from "../input/input";
 
 /**
  * Generated class for the Hb01Page page.
@@ -14,15 +14,18 @@ import set = Reflect.set;
 @Component({
   selector: 'PointComponent',
   template: `
-    <b class="loading danger" #light>
+    <div class="aitool" #aitool>
+    <b class=" speaking  danger" #light>
     <div class="spinner" (click)="speakstart()">
       <canvas #canvas></canvas>
     </div>
     </b>
 
-      <div class="input" (click)="inputstart()">
+      <div class="inputioc" (click)="inputstart()">
         <img src="./assets/imgs/h-input.png">
       </div>
+    <InputComponent #inputComponent></InputComponent>
+    </div>
   `,
 })
 export class PointComponent {
@@ -30,6 +33,11 @@ export class PointComponent {
   canvas: ElementRef;
   @ViewChild('light')
   light: ElementRef;
+  @ViewChild('aitool')
+  aitool: ElementRef;
+
+  @ViewChild('inputComponent')
+  inputComponent:InputComponent;
 
   ctx: any;
   width: number;
@@ -48,28 +56,32 @@ export class PointComponent {
 
   speed:number = 0.0004;
 
-  constructor(private utilService: UtilService,private assistantService:AssistantService,private _renderer: Renderer2) {
+  constructor(private utilService: UtilService,private assistantService:AssistantService,private _renderer: Renderer2 ) {
 
   }
 
+  inputstart(){
+    this.inputComponent.inputStart();
+  }
   speakstart(){
     this.speed =  0.004;
     this._renderer.removeClass(this.light.nativeElement,"danger");
     this.assistantService.listenAudio((text)=>{
-      // setTimeout(()=>{
-      //   this._renderer.addClass(this.light.nativeElement,"danger");
-      //   this.speed =  0.0004;
-      //
-      // },3000)
       this._renderer.addClass(this.light.nativeElement,"danger");
       this.speed =  0.0004;
-      this.assistantService.speakText("你说的是" + text,()=>{
-        alert(text);
-      });
+      setTimeout(()=>{
+        this.assistantService.speakText("你说的是" + text,()=>{
+        });
+
+      },500)
+
     })
   }
 
   ngOnInit(): void {
+    this._renderer.setStyle(this.aitool.nativeElement,"top",window.innerHeight);
+
+
     this.ctx = this.canvas.nativeElement.getContext('2d');
     this.width = this.canvas.nativeElement.width;
     this.height = this.canvas.nativeElement.height;

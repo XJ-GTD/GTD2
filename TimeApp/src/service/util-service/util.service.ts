@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Device } from "@ionic-native/device";
 import * as moment from "moment";
+import {Loading, LoadingController, ToastController} from "ionic-angular";
 
 /**
  * 公共方法
@@ -10,7 +11,8 @@ import * as moment from "moment";
 @Injectable()
 export class UtilService {
   wins: any = window;//window对象
-  constructor(public device: Device ) {}
+  constructor(public device: Device,private toastCtrl:ToastController,private loadingCtrl:LoadingController) {
+  }
 
   public rand(min, max ):number {
     return Math.random() * ( max - min ) + min;
@@ -293,14 +295,29 @@ export class UtilService {
   //   alert.present();
   // }
   //
-  // toast(msg:string){
-  //   let toast = this.toastCtrl.create({
-  //     message: msg,
-  //     duration: 3000,
-  //     position: 'top',
-  //   });
-  //   toast.present();
-  // }
+
+  loading:Loading;
+  loadingStart(){
+    this.loading = this.loadingCtrl.create({
+      spinner: 'circles',
+    });
+
+    this.loading.present();
+  }
+
+  loadingEnd(){
+    if (this.loading)
+    this.loading.dismissAll();
+  }
+
+  toast(msg:string,long:number){
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration:long,
+      position: 'top',
+    });
+    toast.present();
+  }
 
   //时间戳转时间
   tranDate(TimeNow,fmt) {

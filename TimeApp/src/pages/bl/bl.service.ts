@@ -1,23 +1,25 @@
 import {Injectable} from "@angular/core";
-import {NavController, NavParams} from "ionic-angular";
 import {BlaRestful} from "../../service/restful/blasev";
-import {FdService} from "../fd/fd.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 @Injectable()
 export class BlService {
 
-  constructor(private blaRes: BlaRestful) {
+  constructor(private blaRes: BlaRestful,private util:UtilService) {
 
   }
 
   //获取黑名单列表
   get():Promise<Array<PageBlData>>{
 
+    this.util.loadingStart();
     return new Promise<Array<PageBlData>>((resolve, reject)=>{
       //rest获取黑名单
       this.blaRes.list().then(data=>{
         let blaList:Array<PageBlData> = data.data;
         resolve(blaList);
+
+        this.util.loadingEnd();
       })
     })
   }

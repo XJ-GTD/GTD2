@@ -1,10 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Content, IonicPage, NavController, ViewController } from 'ionic-angular';
-import { AssistantService } from "../../../service/cordova/assistant.service";
-import { FeedbackService } from "../../../service/cordova/feedback.service";
-import { EmitService } from "../../../service/util-service/emit.service";
-import { DataConfig } from "../../../service/config/data.config";
-import { NetworkService } from "../../../service/cordova/network.service";
+import { Content, IonicPage } from 'ionic-angular';
 import {PointComponent} from "../point/point";
 import {AiService} from "./ai.service";
 
