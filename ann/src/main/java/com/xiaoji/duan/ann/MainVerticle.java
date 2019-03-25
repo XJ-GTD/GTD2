@@ -101,10 +101,10 @@ public class MainVerticle extends AbstractVerticle {
 		System.out.println("Consumer " + consumer + " received [" + received.body().encode() + "]");
 		JsonObject data = received.body().getJsonObject("body");
 
-		String announceType = data.getJsonObject("context").getString("announceType");
+		String announceType = data.getJsonObject("context").getString("announceType", "");
 		JsonArray announceTo = new JsonArray();
-		if (data.getJsonObject("context").getValue("announceTo") instanceof JsonArray) {
-			announceTo.addAll(data.getJsonObject("context").getJsonArray("announceTo"));
+		if (data.getJsonObject("context").getValue("announceTo", new JsonArray()) instanceof JsonArray) {
+			announceTo.addAll(data.getJsonObject("context").getJsonArray("announceTo", new JsonArray()));
 		} else {
 			announceTo.add(data.getJsonObject("context").getValue("announceTo"));
 		}
@@ -112,10 +112,10 @@ public class MainVerticle extends AbstractVerticle {
 		if (data.getJsonObject("context").getValue("announceContent") != null) {
 			System.out.println(data.getJsonObject("context").getValue("announceContent").getClass().getName());
 		}
-		if (data.getJsonObject("context").getValue("announceContent") instanceof JsonObject) {
-			announceContent.mergeIn(data.getJsonObject("context").getJsonObject("announceContent"));
+		if (data.getJsonObject("context").getValue("announceContent", new JsonObject()) instanceof JsonObject) {
+			announceContent.mergeIn(data.getJsonObject("context").getJsonObject("announceContent", new JsonObject()));
 		} else {
-			announceContent.mergeIn(new JsonObject().put("data", data.getJsonObject("context").getValue("announceContent")));
+			announceContent.mergeIn(new JsonObject().put("data", data.getJsonObject("context").getValue("announceContent", new JsonObject())));
 		}
 		String next = data.getJsonObject("context").getString("next");
 
