@@ -188,13 +188,14 @@ public class MainVerticle extends AbstractVerticle {
 						
 						System.out.println("User info fetched with " + openid);
 						System.out.println(userinfo.encode());
-						String unionId = userinfo.getJsonObject("data").getString("unionid");
+						//String unionId = userinfo.getJsonObject("data").getString("unionid");
+						String openId = userinfo.getJsonObject("data").getString("openid");
 						
-						if (unionId == null || StringUtils.isEmpty(unionId)) {
+						if (openId == null || StringUtils.isEmpty(openId)) {
 							System.out.println("inteligence message can not announce by sms to " + openid);
 						} else {
-							System.out.println("announce by mwxing message to " + unionId);
-							sendMQMessages(unionId + ".*", announceContent.getJsonObject("mwxing"));
+							System.out.println("announce by mwxing message to " + openId);
+							sendMQMessages(openId + ".*", announceContent.getJsonObject("mwxing"));
 						}
 						
 					} else {
