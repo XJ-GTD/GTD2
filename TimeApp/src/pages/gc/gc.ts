@@ -91,7 +91,8 @@ export class GcPage {
 
   goBack(){
     console.log('GcPage返回GlPage');
-    this.navCtrl.push(DataConfig.PAGE._GL_PAGE);
+    //this.navCtrl.push(DataConfig.PAGE._GL_PAGE);
+    this.navCtrl.pop();
   }
   toAddGroupMember() {
     console.log("PePage跳转PgPage");
