@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import { HTTP } from "@ionic-native/http";
 import {UrlEntity, RestFulConfig, RestFulHeader} from "../config/restful.config";
 import {UtilService} from "./util.service";
+import {ToastController} from "ionic-angular";
 
 /**
  * 基础resful请求
@@ -10,7 +11,7 @@ import {UtilService} from "./util.service";
 @Injectable()
 export class RestfulClient {
 
-  constructor(private http: HTTP,private httpClient:HttpClient,private restConfig:RestFulConfig,private util:UtilService){
+  constructor(private http: HTTP,private httpClient:HttpClient,private restConfig:RestFulConfig,private util:UtilService,private toastCtrl: ToastController){
       this.init()
   }
 
@@ -28,12 +29,13 @@ export class RestfulClient {
       this.restConfig.createHeader().then(header=>{
         if(this.util.isMobile()){
           return this.http.post(url.url,body,header).then(data=>{
-            console.log(data.status);
-            console.log(data.data); // data received by server
-            console.log(data.headers);
+            // console.log(data.status);
+            // console.log(data.data); // data received by server
+            // console.log(data.headers);
             let jsonData = JSON.parse(data.data);
             resolve(jsonData);
           }).catch(e=>{
+            this.util.toast("服务" + url.desc + "访问失败",2000);
             reject(e);
           })
         }else{
@@ -43,6 +45,7 @@ export class RestfulClient {
           this.httpClient.post(url.url,body,warHeader).subscribe(data=>{
             resolve(data);
           },err => {
+            this.util.toast("服务" + url.desc + "访问失败",2000);
             reject(err)
           })
         }
@@ -61,6 +64,7 @@ export class RestfulClient {
             let jsonData = JSON.parse(data.data);
             resolve(jsonData);
           }).catch(e=>{
+            this.util.toast("服务" + url.desc + "访问失败",2000);
             reject(e);
           })
         }else{
@@ -70,6 +74,7 @@ export class RestfulClient {
           this.httpClient.get(url.url,warHeader).subscribe(data=>{
             resolve(data);
           },err => {
+            this.util.toast("服务" + url.desc + "访问失败",2000);
             reject(err)
           })
         }
@@ -88,6 +93,7 @@ export class RestfulClient {
             let jsonData = JSON.parse(data.data);
             resolve(jsonData);
           }).catch(e=>{
+            this.util.toast("服务" + url.desc + "访问失败",2000);
             reject(e);
           })
         }else{
@@ -97,6 +103,7 @@ export class RestfulClient {
           this.httpClient.put(url.url,warHeader).subscribe(data=>{
             resolve(data);
           },err => {
+            this.util.toast("服务" + url.desc + "访问失败",2000);
             reject(err)
           })
         }
@@ -116,7 +123,8 @@ export class RestfulClient {
           return this.http.post(url,body,header).then(data=>{
             resolve(JSON.parse(data.data));
           }).catch(e=>{
-            reject(e);
+            this.util.toast("服务初始化数据访问失败",2000);
+            //reject(e);
           })
         }else{
           //浏览器测试使用
@@ -125,7 +133,8 @@ export class RestfulClient {
           this.httpClient.post(url,body,warHeader).subscribe(data=>{
             resolve(data);
           },err => {
-            reject(err)
+            this.util.toast("服务初始化数据访问失败",2000);
+            //reject(err)
           })
         }
     });

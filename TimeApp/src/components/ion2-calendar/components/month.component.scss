@@ -198,7 +198,6 @@ ion-calendar-month {
     height: 34px;
     background-color: transparent;
     position: relative;
-    z-index: 100;
   }
 
   button.warp-days-btn {
@@ -228,7 +227,6 @@ ion-calendar-month {
     right: 0;
     bottom: 0;
     position: absolute;
-    z-index: 1;
     text-align: center;
     font-size: 5px;
     font-weight: 100;

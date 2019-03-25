@@ -2,7 +2,6 @@ aicomponent{
   position: fixed;
   bottom: 0px;
   width: 90%;
-  z-index: 1;
   height: auto;
 
   .yyWarp{
@@ -18,8 +17,6 @@ aicomponent{
     background-color: transparent;
     font-size: 15px;
     height: auto;
-    z-index: 999;
-    color: red;
   }
   .yyWarp > .yyitem:last-child{
     border-bottom: 0px !important;

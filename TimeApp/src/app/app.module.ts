@@ -18,7 +18,6 @@ import {Network} from "@ionic-native/network";
 import {Contacts} from "@ionic-native/contacts";
 import {Vibration} from "@ionic-native/vibration";
 import {NativeAudio} from "@ionic-native/native-audio";
-import {ElModule} from 'element-angular'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {RouterModule} from '@angular/router'
 import {MyApp} from './app.component';
@@ -42,7 +41,6 @@ import {BacRestful} from "../service/restful/bacsev";
 import {ShaeRestful} from "../service/restful/shaesev";
 import {EmitService} from "../service/util-service/emit.service";
 import {WebsocketModule} from "../ws/websocket.module";
-import {BrService} from "../pages/br/br.service";
 import {AgdbusiService} from "../service/util-service/agdbusi.service";
 import {FeedbackService} from "../service/cordova/feedback.service";
 import {AlarmService} from "../service/cordova/alarm.service";
@@ -51,13 +49,13 @@ import {PipesModule} from "../pipes/pipes.module";
 import {HammerDIRECTIONALLConfig} from "./my-hammer.config";
 import {TddjService} from "../pages/tddj/tddj.service";
 import {TddiService} from "../pages/tddi/tddi.service";
+import {Keyboard} from "@ionic-native/keyboard";
 
 @NgModule({
   declarations: [
     MyApp,
   ],
   imports: [
-    ElModule,
     BrowserModule,
     IonicModule.forRoot(MyApp, {
       tabsHideOnSubPages: 'true',
@@ -77,7 +75,6 @@ import {TddiService} from "../pages/tddi/tddi.service";
     MyApp,
   ],
   providers: [
-    ElModule,
     HTTP,
     Network,
     Contacts,
@@ -87,6 +84,7 @@ import {TddiService} from "../pages/tddi/tddi.service";
     Device,
     Vibration,
     NativeAudio,
+    Keyboard,
     LocalNotifications,
     SQLite,
     Calendar,

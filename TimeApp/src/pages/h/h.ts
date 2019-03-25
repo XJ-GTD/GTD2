@@ -1,7 +1,6 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {Events, IonicPage, ModalController, NavController} from 'ionic-angular';
 import {
-  CalendarComponent,
   CalendarComponentOptions
 } from "../../components/ion2-calendar";
 import {DataConfig} from "../../service/config/data.config";
@@ -18,7 +17,7 @@ import {HData, HService} from "./h.service";
 @Component({
   selector: 'page-h',
   template: `
-    <ion-content>
+    <ion-content #ha>
       <div class="haContent">
         <div class="haCalendar">
           <ion-calendar [options]="options"
@@ -42,7 +41,8 @@ import {HData, HService} from "./h.service";
       </div>
       <BackComponent></BackComponent>
       <AiComponent></AiComponent>
-    </ion-content>`,
+    </ion-content>
+    `,
 })
 export class HPage {
 
@@ -58,6 +58,7 @@ export class HPage {
               private navController: NavController,
               private modalCtr: ModalController) {
     this.hdata = new HData();
+
   }
   ngOnInit(){
 

@@ -126,6 +126,10 @@ export class AlService {
 //系统设置
   setSetting(): Promise<AlData> {
     let alData: AlData = new AlData();
+
+    //重新获取服务器数据
+    this.sqlLiteInit.initDataSub()
+
     return new Promise(async (resolve, reject) => {
       // TODO 系统设置 restHttps设置 用户偏好设置 用户信息 。。。
       await this.restfulConfig.init();
@@ -133,16 +137,12 @@ export class AlService {
       await this.feekback.initAudio().catch(e => {
       });
 
-
-      //重新获取服务器数据
-      await this.sqlLiteInit.initDataSub();
-
       //用户设置信息初始化
       this.userConfig.init();
       alData.text = "系统设置完成";
       resolve(alData)
 
-    });
+    })
   }
 
 //判断用户是否登陆
@@ -505,8 +505,8 @@ export class AlService {
 
   async createCachefromserver() {
     const ctbl: CTbl = new CTbl();
-    ctbl.sd = '2019/01/01';
-    ctbl.rt = "0";
+    // ctbl.sd = '2019/01/01';
+    // ctbl.rt = "0";
     let ds = await this.sqlExce.getList<CTbl>(ctbl);
 
     let dd = await this.agdRestful.cachefromserver(ds)

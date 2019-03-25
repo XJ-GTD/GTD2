@@ -6,6 +6,7 @@ import {AssistantService} from "../service/cordova/assistant.service";
 import {DataConfig} from "../service/config/data.config";
 import {RestfulClient} from "../service/util-service/restful.client";
 import {FeedbackService} from "../service/cordova/feedback.service";
+import {PlatformLocation} from "@angular/common";
 
 @Component({
   template: '<ion-nav></ion-nav>'
@@ -18,7 +19,6 @@ export class MyApp {
               private backgroundMode: BackgroundMode,
               private speechService: AssistantService,
               private restfulClient:RestfulClient) {
-
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
     this.platform.ready().then(() => {
