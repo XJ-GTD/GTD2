@@ -61,12 +61,26 @@ export class TdcService {
             return this.sqlExce.batExecSql(sql);
           }
         }).then(data=>{
-          et.wi = this.util.getUuid();
-          et.wt = '0';
-          et.wd=rc.sd;
-          et.st = rc.st;
           //保存本地提醒表
-          return this.sqlExce.save(et);
+          if(rc.tx != '0'){
+            et.wi = this.util.getUuid();
+            et.wt = '0';
+            let time = 10; //分钟
+            if(rc.tx == "2"){
+              time = 30;
+            }else if(rc.tx == "3"){
+              time = 60;
+            }else if(rc.tx == "4"){
+              time = 240;
+            }else if(rc.tx == "5"){
+              time = 360;
+            }
+            let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD mm:ss");
+            et.wd=date.substr(0,10);
+            et.st = date.substr(11,5);
+            return this.sqlExce.save(et);
+          }
+
         }).then(data=>{
           let adgPro:AgdPro = new AgdPro();
           adgPro.ai=rc.si; //日程ID
