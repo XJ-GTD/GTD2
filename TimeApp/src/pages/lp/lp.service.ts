@@ -102,9 +102,6 @@ export class LpService {
     });
   }
 
-  checkPhone(mobile:string):number{
-      return this.util.checkPhone(mobile);
-  }
 }
 
 export class PageLpData {

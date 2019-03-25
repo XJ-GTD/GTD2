@@ -120,9 +120,6 @@ export class LsService {
     });
   }
 
-  checkPhone(mobile:string):number{
-    return this.util.checkPhone(mobile);
-  }
 }
 export class PageLsData {
   mobile: string = "";
