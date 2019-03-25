@@ -101,13 +101,25 @@ public class MainVerticle extends AbstractVerticle {
 		System.out.println("Consumer " + consumer + " received [" + received.body().encode() + "]");
 		JsonObject data = received.body().getJsonObject("body");
 
-		String announceType = data.getJsonObject("context").getString("announceType", "");
 		JsonArray announceTo = new JsonArray();
-		if (data.getJsonObject("context").getValue("announceTo", new JsonArray()) instanceof JsonArray) {
-			announceTo.addAll(data.getJsonObject("context").getJsonArray("announceTo", new JsonArray()));
-		} else {
-			announceTo.add(data.getJsonObject("context").getValue("announceTo"));
+		
+		if (data.getJsonObject("context").getValue("announceTo") != null) {
+			if (data.getJsonObject("context").getValue("announceTo", new JsonArray()) instanceof JsonArray) {
+				announceTo.addAll(data.getJsonObject("context").getJsonArray("announceTo", new JsonArray()));
+			} else {
+				announceTo.add(data.getJsonObject("context").getValue("announceTo", new JsonObject()));
+			}
 		}
+
+		if (announceTo == null || announceTo.isEmpty()) {
+			System.out.println("No announce target, process stopped.");
+			return;
+		} else {
+			System.out.println("Announce target exist, process next.");
+		}
+		
+		String announceType = data.getJsonObject("context").getString("announceType", "");
+
 		JsonObject announceContent = new JsonObject();
 		if (data.getJsonObject("context").getValue("announceContent") != null) {
 			System.out.println(data.getJsonObject("context").getValue("announceContent").getClass().getName());
@@ -119,11 +131,6 @@ public class MainVerticle extends AbstractVerticle {
 		}
 		String next = data.getJsonObject("context").getString("next");
 
-		if (announceTo == null || announceTo.isEmpty()) {
-			System.out.println("No announce target, process stopped.");
-			return;
-		}
-		
 		if ("duan_announce".equals(announceType)) {
 			// 短应用内部通知
 			for (int pos = 0; pos < announceTo.size(); pos++) {
