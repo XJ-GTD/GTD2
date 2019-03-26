@@ -8,7 +8,9 @@ import {AgdPro, AgdRestful} from "../../service/restful/agdsev";
 import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
 
 import * as moment from "moment";
-import {ScdData, SpecScdData} from "../tdl/tdl.service";
+import {fsData, ScdData, SpecScdData} from "../tdl/tdl.service";
+import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
+import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 
 @Injectable()
 export class TdcService {
@@ -209,6 +211,45 @@ export class TdcService {
       isTrue = true;
     }
     return isTrue;
+  }
+
+  //获取日程
+  async get(si: string){
+    let bs = new BsModel<ScdData>();
+    //获取本地日程
+
+    let scdData = new ScdData();
+
+    let ctbl = new CTbl();
+    ctbl.si = si;
+    ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
+    Object.assign(scdData, ctbl);
+
+    //获取计划对应色标
+    let jh = new JhTbl();
+    jh.ji = scdData.ji;
+    jh = await this.sqlExce.getOne<JhTbl>(jh);
+    Object.assign(scdData.p, jh);
+
+    //获取日程参与人表
+    let d = new DTbl();
+    d.si = si;
+    let dList = await this.sqlExce.getList<DTbl>(d);
+    for (let j = 0, len = dList.length; j < len; j++) {
+      let fsd = new fsData();
+      Object.assign(fsd, dList[j]);
+      scdData.fss.push(fsd);
+    }
+
+    //获取提醒时间
+    let e = new ETbl();
+    e.si = si;
+    e = await this.sqlExce.getOne<ETbl>(e);
+    Object.assign(scdData.r, e);
+
+    bs.code = 0;
+    bs.data = scdData;
+    return bs;
   }
 
 }

@@ -8,6 +8,7 @@ import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
 import {TddjService} from "../tddj/tddj.service";
 import {TddiService} from "../tddi/tddi.service";
+import {BsModel} from "../../service/restful/out/bs.model";
 
 /**
  * Generated class for the 新建日程 page.
@@ -139,7 +140,6 @@ export class TdcPage {
               private tddjServ :TddjService,private  tddiServ : TddiService) {
 
   }
-  aa= "disabled"
   //画面状态：0：新建 ，1：本人修改 ，2：受邀人修改
   pagestate : string ="0";
   //画面数据
@@ -184,13 +184,37 @@ export class TdcPage {
       return ;
     }
 
-    //本人修改的场合初始化
-    if (this.navParams.get("XXX")){
-      this.pagestate = "1";
+
+    if (this.navParams.get("si")){
+      this.tdcServ.get(this.navParams.get("si")).then(data=>{
+        let bs : BsModel<ScdData> = data;
+        Object.assign(this.scd,bs.data);
+
+
+        this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
+        this.scd.st = moment().format("HH:mm");
+
+        this.clickrept(parseInt(this.scd.rt));
+
+        this.clickwake(parseInt(this.scd.tx));
+
+        //受邀人修改的场合初始化
+        if (bs.data.gs == "0"){
+          this.pagestate = "2";
+        }
+
+        //本人修改的场合初始化
+        if (bs.data.gs == "1"){
+          this.pagestate = "1";
+        }
+      })
+
+
+
       return;
     }
 
-    //受邀人修改的场合初始化
+
     if (this.navParams.get("XXX")){
       this.pagestate = "2";
       return ;
@@ -244,6 +268,7 @@ export class TdcPage {
         this.rept.w = 0;
         this.rept.m = 0;
         this.rept.y = 0;
+        this.scd.rt = "0";
     }
   }
 
@@ -308,6 +333,7 @@ export class TdcPage {
         this.wake.oh = 0;
         this.wake.foh = 0;
         this.wake.od=0;
+        this.scd.tx = "0";
     }
   }
 
@@ -357,8 +383,9 @@ export class TdcPage {
     //新建数据
     if (this.pagestate =="0"){
       this.tdcServ.save(this.scd).then(data=>{
-        let ctbl = data.data
+        let ctbl = data.data;
         this.scd.si = ctbl.si;
+        this.pagestate =="1";
         this.util.toast("保存成功",2000);
       });
     }
