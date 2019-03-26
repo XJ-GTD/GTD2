@@ -1,4 +1,5 @@
 page-pd {
+
   @font-face {
     font-family: 'PingFang-Regular';
     src: url('../../assets/fonts/PingFang Regular.ttf');
@@ -14,6 +15,7 @@ page-pd {
 
   ion-content ion-card-content div{
     margin-top: 12px;
+    font-size: 1.7rem;
   }
 
   ion-content.content {
@@ -22,7 +24,7 @@ page-pd {
   }
 
   ion-content .plan-year {
-    font-size: 18px;
+    font-size: 1.8rem;
   }
 
   .agenda-content:before {
@@ -84,7 +86,7 @@ page-pd {
   .app-agenda-day {
     white-space: nowrap;
     overflow: hidden;
-    font-size: 3.5vmin;
+    font-size: 1.4vmin;
     margin-top: 0.85vmin;
     margin-bottom: 0;
   }
@@ -92,7 +94,7 @@ page-pd {
   .app-agenda-time {
     white-space: nowrap;
     overflow: hidden;
-    font-size: 3.2vmin;
+    font-size: 1.1vmin;
     margin-top: 0.85vmin;
     margin-bottom: 0;
   }
@@ -100,16 +102,16 @@ page-pd {
   .app-user-text {
     font-weight: 200;
     display: block;
-    font-size: 2.8vmin;
+    font-size: 1vmin;
     color: #999999;
-    //margin-top: 0;
+    margin-top: 2px;
   }
 
   .app-agenda-title {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    font-size: 3.8vmin;
+    font-size: 1.6vmin;
     margin-top: 0;
     margin-bottom: 0;
   }
@@ -155,8 +157,8 @@ page-pd {
   }
 
   .color-dot {
-    width: 2vmin;
-    height: 2vmin;
+    width: 1.4vmin;
+    height: 1.5vmin;
     background-color: #fff;
     border-radius: 50%;
   }

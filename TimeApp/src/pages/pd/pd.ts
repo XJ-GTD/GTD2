@@ -86,6 +86,7 @@ export class PdPage {
   }
 
   ionViewDidLoad() {
+    console.log('ionViewDidLoad PdPage');
   }
 
   ionViewWillEnter() {
@@ -126,7 +127,7 @@ export class PdPage {
             }else{
               let alert = this.alertCtrl.create({
                 title: '',
-                subTitle: '确定要删除计划“' + jh.jn +"”?",
+                subTitle: '确定要删除计划“' + jh.jn +"”以及它的所有日程吗？",
                 buttons: [{
                   text: '取消',
                 }, {
