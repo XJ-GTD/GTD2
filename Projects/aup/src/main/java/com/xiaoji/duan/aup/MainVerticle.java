@@ -15,6 +15,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerOptions;
@@ -24,6 +25,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
@@ -209,7 +211,18 @@ public class MainVerticle extends AbstractVerticle {
 
         			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         		} else {
-        			ctx.response().putHeader("Content-Type", "text/plain").end(userinfo.getString("avatar"));
+        			if (userinfo.getString("avatar").startsWith("http")) {
+            			client.getAbs(userinfo.getString("avatar")).send(handler -> {
+            				if (handler.succeeded()) {
+            					HttpResponse<Buffer> resp = handler.result();
+                    			ctx.response().putHeader("Content-Type", "text/plain").end(resp.bodyAsString());
+            				} else {
+                    			ctx.response().putHeader("Content-Type", "text/plain").end("");
+            				}
+            			});
+        			} else {
+            			ctx.response().putHeader("Content-Type", "text/plain").end(userinfo.getString("avatar"));
+        			}
         		}
         	} else {
 				ret.put("errcode", "-3");
@@ -443,6 +456,19 @@ public class MainVerticle extends AbstractVerticle {
 		ctx.next();
 	}
 	
+	private String getAvatarUrl(String username) {
+		StringBuffer url = new StringBuffer("https://www.guobaa.com/aaf/base64/aup/256/avatar.png?name=");
+		
+		if (username.matches("[a-zA-Z0-9]+.*"))
+			url.append(username.charAt(0));
+		else if (username.length() > 2)
+			url.append(username.substring(username.length() - 3));
+		else
+			url.append(username);
+		
+		return url.toString();
+	}
+	
 	private void doRegister(RoutingContext ctx) {
 		System.out.println("headers: " + ctx.request().headers());
 		System.out.println("body: " + ctx.getBodyAsString());
@@ -550,7 +576,7 @@ public class MainVerticle extends AbstractVerticle {
 															.put("province", "")
 															.put("city", "")
 															.put("country", "")
-															.put("avatar", "")
+															.put("avatar", getAvatarUrl(username))
 															.put("privilege", new JsonArray());
 													mongodb.save("aup_user_info", userinfo, save -> {
 														if (save.succeeded()) {
@@ -924,8 +950,8 @@ public class MainVerticle extends AbstractVerticle {
         									retaccess.remove("password");
         									retaccess.remove("code");
         									retaccess.remove("state");
-        									
-        									String deviceId = Base64.encodeBase64URLSafeString(req.getHeader("di") == null ? req.getHeader("x-real-ip").getBytes() : req.getHeader("di").getBytes());
+
+        									String deviceId = Base64.encodeBase64URLSafeString((req.getHeader("di") == null || "".equals(req.getHeader("di"))) ? req.getHeader("x-real-ip").getBytes() : req.getHeader("di").getBytes());
         									String queue = retaccess.getString("openid") + "." + deviceId;
         									String exchange = "exchange.mwxing.fanout";
         									String routingkey = "mwxing." + retaccess.getString("unionid") + ".#";
