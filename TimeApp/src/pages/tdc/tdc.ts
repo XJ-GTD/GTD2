@@ -321,6 +321,8 @@ export class TdcPage {
     this.scd.gs = '1';
 
     this.tdcServ.save(this.scd).then(data=>{
+      let ctbl = data.data
+      this.scd.si = ctbl.si;
       this.util.toast("保存成功",2000);
     });
   }

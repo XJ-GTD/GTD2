@@ -7,106 +7,18 @@ import * as moment from "moment";
  */
 export class SpTbl  implements ITbl {
 
-  private _spi: string="";
-  private _si: string="";
-  private _spn: string="";
-  private _sd: string="";
-  private _st: string="";
-  private _ed: string="";
-  private _et: string="";
-  private _ji: string="";
-  private _bz: string="";
-  private _sta: string="";
-  private _tx: string ="";
-  private _wtt:Number=0;
-
-  get spi(): string {
-    return this._spi;
-  }
-
-  set spi(value: string) {
-    this._spi = value;
-  }
-
-  get si(): string {
-    return this._si;
-  }
-
-  set si(value: string) {
-    this._si = value;
-  }
-
-  get spn(): string {
-    return this._spn;
-  }
-
-  set spn(value: string) {
-    this._spn = value;
-  }
-
-  get sd(): string {
-    return this._sd;
-  }
-
-  set sd(value: string) {
-    this._sd = value;
-  }
-
-  get st(): string {
-    return this._st;
-  }
-
-  set st(value: string) {
-    this._st = value;
-  }
-
-  get ed(): string {
-    return this._ed;
-  }
-
-  set ed(value: string) {
-    this._ed = value;
-  }
-
-  get et(): string {
-    return this._et;
-  }
-
-  set et(value: string) {
-    this._et = value;
-  }
-
-  get ji(): string {
-    return this._ji;
-  }
-
-  set ji(value: string) {
-    this._ji = value;
-  }
-
-  get bz(): string {
-    return this._bz;
-  }
-
-  set bz(value: string) {
-    this._bz = value;
-  }
-
-  get sta(): string {
-    return this._sta;
-  }
-
-  set sta(value: string) {
-    this._sta = value;
-  }
-
-  get tx(): string {
-    return this._tx;
-  }
-
-  set tx(value: string) {
-    this._tx = value;
-  }
+  spi: string="";
+  si: string="";
+  spn: string="";
+  sd: string="";
+  st: string="";
+  ed: string="";
+  et: string="";
+  ji: string="";
+  bz: string="";
+  sta: string="";
+  tx: string ="";
+  wtt:Number=0;
 
   cT():string {
 
@@ -120,91 +32,91 @@ export class SpTbl  implements ITbl {
 
   upT():string {
     let sq='';
-    if(this._si!=null && this._si!=""){
-      sq=sq+', si="' + this._si +'"';
+    if(this.si!=null && this.si!=""){
+      sq=sq+', si="' + this.si +'"';
     }
-    if(this._spn!=null && this._spn!=""){
-      sq=sq+', spn="' + this._spn +'"';
+    if(this.spn!=null && this.spn!=""){
+      sq=sq+', spn="' + this.spn +'"';
     }
-    if(this._sd != null && this._sd!=""){
-      sq = sq + ', sd="' + this._sd +'"';
+    if(this.sd != null && this.sd!=""){
+      sq = sq + ', sd="' + this.sd +'"';
     }
-    if(this._st != null && this._st!=""){
-      sq = sq + ', st="' + this._st +'"';
+    if(this.st != null && this.st!=""){
+      sq = sq + ', st="' + this.st +'"';
     }
-    if(this._ed != null && this._ed!=""){
-      sq = sq + ', ed="' + this._ed +'"';
+    if(this.ed != null && this.ed!=""){
+      sq = sq + ', ed="' + this.ed +'"';
     }
-    if(this._et != null && this._et!=""){
-      sq = sq + ', et="' + this._et +'"';
+    if(this.et != null && this.et!=""){
+      sq = sq + ', et="' + this.et +'"';
     }
-    if(this._ji != null && this._ji!=""){
-      sq = sq + ', ji="' + this._ji +'"';
+    if(this.ji != null && this.ji!=""){
+      sq = sq + ', ji="' + this.ji +'"';
     }
-    if(this._bz != null && this._bz!=""){
-      sq = sq + ', bz="' + this._bz +'"';
+    if(this.bz != null && this.bz!=""){
+      sq = sq + ', bz="' + this.bz +'"';
     }
-    if(this._sta != null && this._sta!=""){
-      sq = sq + ', sta="' + this._sta +'"';
+    if(this.sta != null && this.sta!=""){
+      sq = sq + ', sta="' + this.sta +'"';
     }
-    if(this._tx != null && this._tx!=""){
-      sq = sq + ', tx="' + this._tx +'"';
+    if(this.tx != null && this.tx!=""){
+      sq = sq + ', tx="' + this.tx +'"';
     }
     if (sq != null && sq != ""){
       sq = sq.substr(1);
     }
-    sq = 'update gtd_sp set  '+sq + ' where spi = "'+ this._spi +'";';
+    sq = 'update gtd_sp set  '+sq + ' where spi = "'+ this.spi +'";';
     return sq;
   }
 
   dT():string {
     let sq = 'delete from gtd_sp where 1=1 ';
-    if(this._spi != null && this._spi!=""){
-      sq = sq + 'and  spi ="' + this._spi +'"';
+    if(this.spi != null && this.spi!=""){
+      sq = sq + 'and  spi ="' + this.spi +'"';
     }
     sq = sq + ';'
     return sq;
   }
 
   sloT():string {
-    let sq='select * from gtd_sp where spi = "'+ this._spi +'";';
+    let sq='select * from gtd_sp where spi = "'+ this.spi +'";';
     return sq;
   }
 
   slT():string {
     let sq='select * from  gtd_sp where  1=1 ';
-    if(this._si!=null && this._si!=""){
-      sq=sq+' and si="' + this._si +'"';
+    if(this.si!=null && this.si!=""){
+      sq=sq+' and si="' + this.si +'"';
     }
-    if(this._spn!=null && this._spn!=""){
-      sq=sq+' and spn="' + this._spn +'"';
+    if(this.spn!=null && this.spn!=""){
+      sq=sq+' and spn="' + this.spn +'"';
     }
-    if(this._sd != null && this._sd!=""){
-      sq = sq + ' and sd="' + this._sd +'"';
+    if(this.sd != null && this.sd!=""){
+      sq = sq + ' and sd="' + this.sd +'"';
     }
-    if(this._st != null && this._st!=""){
-      sq = sq + ' and st="' + this._st +'"';
+    if(this.st != null && this.st!=""){
+      sq = sq + ' and st="' + this.st +'"';
     }
-    if(this._ed != null && this._ed!=""){
-      sq = sq + ' and ed="' + this._ed +'"';
+    if(this.ed != null && this.ed!=""){
+      sq = sq + ' and ed="' + this.ed +'"';
     }
-    if(this._et != null && this._et!=""){
-      sq = sq + ' and et="' + this._et +'"';
+    if(this.et != null && this.et!=""){
+      sq = sq + ' and et="' + this.et +'"';
     }
-    if(this._ji != null && this._ji!=""){
-      sq = sq + ' and ji="' + this._ji +'"';
+    if(this.ji != null && this.ji!=""){
+      sq = sq + ' and ji="' + this.ji +'"';
     }
-    if(this._bz != null && this._bz!=""){
-      sq = sq + ' and bz="' + this._bz +'"';
+    if(this.bz != null && this.bz!=""){
+      sq = sq + ' and bz="' + this.bz +'"';
     }
-    if(this._sta != null && this._sta!=""){
-      sq = sq + ' and sta="' + this._sta +'"';
+    if(this.sta != null && this.sta!=""){
+      sq = sq + ' and sta="' + this.sta +'"';
     }
-    if(this._spi != null && this._spi!=""){
-      sq = sq + ' and spi="' + this._spi +'"';
+    if(this.spi != null && this.spi!=""){
+      sq = sq + ' and spi="' + this.spi +'"';
     }
-    if(this._tx != null && this._tx!=""){
-      sq = sq + ' and tx="' + this._tx +'"';
+    if(this.tx != null && this.tx!=""){
+      sq = sq + ' and tx="' + this.tx +'"';
     }
     sq = sq +';';
     return sq;
@@ -218,34 +130,34 @@ export class SpTbl  implements ITbl {
 
   inT():string {
     let sq ='insert into gtd_sp ' +
-      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx,wtt) values("'+ this._spi+'","'+ this._si+'","'+this._spn+ '"' +
-      ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._ji+ '","'+this._bz+ '",' +
-      '"'+this._sta+ '","'+this._tx+ '",'+  moment().unix() +');';
+      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx,wtt) values("'+ this.spi+'","'+ this.si+'","'+this.spn+ '"' +
+      ',"'+this.sd+ '","'+this.st+ '","'+this.ed+ '","'+this.et+ '","'+this.ji+ '","'+this.bz+ '",' +
+      '"'+this.sta+ '","'+this.tx+ '",'+  moment().unix() +');';
 
     return sq;
   }
 
   rpT():string {
     let sq ='replace into gtd_sp ' +
-      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx,wtt) values("'+ this._spi+'","'+ this._si+'","'+this._spn+ '"' +
-      ',"'+this._sd+ '","'+this._st+ '","'+this._ed+ '","'+this._et+ '","'+this._ji+ '","'+this._bz+ '",' +
-      '"'+this._sta+ '","'+this._tx+'",'+  moment().unix() +');';
+      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx,wtt) values("'+ this.spi+'","'+ this.si+'","'+this.spn+ '"' +
+      ',"'+this.sd+ '","'+this.st+ '","'+this.ed+ '","'+this.et+ '","'+this.ji+ '","'+this.bz+ '",' +
+      '"'+this.sta+ '","'+this.tx+'",'+  moment().unix() +');';
 
     return sq;
   }
   clp(){
-    this._spi = "";
-    this._si = "";
-    this._spn = "";
-    this._sd = "";
-    this._st = "";
-    this._ed = "";
-    this._et = "";
-    this._ji = "";
-    this._bz = "";
-    this._sta = "";
-    this._tx = "";
-    this._wtt = 0;
+    this.spi = "";
+    this.si = "";
+    this.spn = "";
+    this.sd = "";
+    this.st = "";
+    this.ed = "";
+    this.et = "";
+    this.ji = "";
+    this.bz = "";
+    this.sta = "";
+    this.tx = "";
+    this.wtt = 0;
   }
 }
 
