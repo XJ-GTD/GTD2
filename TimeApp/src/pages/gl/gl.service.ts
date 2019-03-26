@@ -3,6 +3,7 @@ import {PageDcData} from "../gc/gc.service";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {GTbl} from "../../service/sqlite/tbl/g.tbl";
 import {BxTbl} from "../../service/sqlite/tbl/bx.tbl";
+import {PageFsData} from "../fs/fs.service";
 
 @Injectable()
 export class GlService {
@@ -19,8 +20,9 @@ export class GlService {
       for(let dc of dcl){
         let bx = new BxTbl();
         bx.bi = dc.gi;
-        let fsl:Array<any> = await this.sqlExce.getList<any>(bx);
+        let fsl:Array<any> = await this.sqlExce.getList<PageFsData>(bx);
         dc.gc = fsl.length;
+        dc.fsl = fsl;
       }
       gld.gl = dcl;
     }

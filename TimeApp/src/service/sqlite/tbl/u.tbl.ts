@@ -6,96 +6,18 @@ import * as moment from "moment";
  */
 export class UTbl  implements ITbl{
 
-  private _ui :string="";
-  private _ai :string="";
-  private _un :string="";
-  private _hiu :string="";
-  private _biy :string="";
-  private _rn :string="";
-  private _ic :string="";
-  private _us :string="";
-  private _uct :string="";
-  private _wtt :Number = 0;
+  ui :string="";
+  ai :string="";
+  un :string="";
+  hiu :string="";
+  biy :string="";
+  rn :string="";
+  ic :string="";
+  us :string="";
+  uct :string="";
+  wtt :Number = 0;
 
-  get wtt(): Number {
-    return this._wtt;
-  }
 
-  set wtt(value: Number) {
-    this._wtt = value;
-  }
-
-  get ui(): string {
-    return this._ui;
-  }
-
-  set ui(value: string) {
-    this._ui = value;
-  }
-
-  get ai(): string {
-    return this._ai;
-  }
-
-  set ai(value: string) {
-    this._ai = value;
-  }
-
-  get un(): string {
-    return this._un;
-  }
-
-  set un(value: string) {
-    this._un = value;
-  }
-
-  get hiu(): string {
-    return this._hiu;
-  }
-
-  set hiu(value: string) {
-    this._hiu = value;
-  }
-
-  get biy(): string {
-    return this._biy;
-  }
-
-  set biy(value: string) {
-    this._biy = value;
-  }
-
-  get rn(): string {
-    return this._rn;
-  }
-
-  set rn(value: string) {
-    this._rn = value;
-  }
-
-  get ic(): string {
-    return this._ic;
-  }
-
-  set ic(value: string) {
-    this._ic = value;
-  }
-
-  get us(): string {
-    return this._us;
-  }
-
-  set us(value: string) {
-    this._us = value;
-  }
-
-  get uct(): string {
-    return this._uct;
-  }
-
-  set uct(value: string) {
-    this._uct = value;
-  }
 
 
   cT():string {
@@ -109,68 +31,68 @@ export class UTbl  implements ITbl{
 
   upT():string {
     let sq='';
-    if(this._un!=null && this._un!=""){
-      sq=sq+', un="' + this._un +'"';
+    if(this.un!=null && this.un!=""){
+      sq=sq+', un="' + this.un +'"';
     }
-    if(this._hiu!=null && this._hiu!=""){
-      sq=sq+', hiu="' + this._hiu +'"';
+    if(this.hiu!=null && this.hiu!=""){
+      sq=sq+', hiu="' + this.hiu +'"';
     }
-    if(this._biy != null && this._biy!=""){
-      sq = sq + ', biy="' + this._biy +'"';
+    if(this.biy != null && this.biy!=""){
+      sq = sq + ', biy="' + this.biy +'"';
     }
-    if(this._rn != null && this._rn!=""){
-      sq = sq + ', rn="' + this._rn +'"';
+    if(this.rn != null && this.rn!=""){
+      sq = sq + ', rn="' + this.rn +'"';
     }
-    if(this._ic != null && this._ic!=""){
-      sq = sq + ', ic="' + this._ic +'"';
+    if(this.ic != null && this.ic!=""){
+      sq = sq + ', ic="' + this.ic +'"';
     }
-    if(this._us != null && this._us!=""){
-      sq = sq + ', us="' + this._us +'"';
+    if(this.us != null && this.us!=""){
+      sq = sq + ', us="' + this.us +'"';
     }
-    if(this._uct != null && this._uct!=""){
-      sq = sq + ', uct="' + this._uct +'"';
+    if(this.uct != null && this.uct!=""){
+      sq = sq + ', uct="' + this.uct +'"';
     }
     if (sq != null && sq != ""){
       sq = sq.substr(1);
     }
-    sq ='update gtd_u set  ' + sq + ' where ui = "'+ this._ui +'";';
+    sq ='update gtd_u set  ' + sq + ' where ui = "'+ this.ui +'";';
 
     return sq;
   }
 
   dT():string {
     let sq = 'delete from gtd_u where 1=1 ';
-    if(this._ui != null && this._ui!=""){
-      sq = sq + 'and  ui ="' + this._ui +'"';
+    if(this.ui != null && this.ui!=""){
+      sq = sq + 'and  ui ="' + this.ui +'"';
     }
     sq = sq + ';'
     return sq;
   }
 
   sloT():string {
-    let sq='select * from gtd_u where ui = "'+ this._ui +'";';
+    let sq='select * from gtd_u where ui = "'+ this.ui +'";';
     return sq;
   }
 
   slT():string {
     let sq='select * from  gtd_u where  1=1 ';
-    if(this._hiu!=null && this._hiu!=""){
-      sq=sq+' and hiu="' + this._hiu +'"';
+    if(this.hiu!=null && this.hiu!=""){
+      sq=sq+' and hiu="' + this.hiu +'"';
     }
-    if(this._biy != null && this._biy!=""){
-      sq = sq + ' and biy="' + this._biy +'"';
+    if(this.biy != null && this.biy!=""){
+      sq = sq + ' and biy="' + this.biy +'"';
     }
-    if(this._rn != null && this._rn!=""){
-      sq = sq + ' and rn="' + this._rn +'"';
+    if(this.rn != null && this.rn!=""){
+      sq = sq + ' and rn="' + this.rn +'"';
     }
-    if(this._ic != null && this._ic!=""){
-      sq = sq + ' and ic="' + this._ic +'"';
+    if(this.ic != null && this.ic!=""){
+      sq = sq + ' and ic="' + this.ic +'"';
     }
-    if(this._us != null && this._us!=""){
-      sq = sq + ', us="' + this._us +'"';
+    if(this.us != null && this.us!=""){
+      sq = sq + ', us="' + this.us +'"';
     }
-    if(this._uct != null && this._uct!=""){
-      sq = sq + ' and uct="' + this._uct +'"';
+    if(this.uct != null && this.uct!=""){
+      sq = sq + ' and uct="' + this.uct +'"';
     }
     sq = sq +';';
     return sq;
@@ -184,21 +106,20 @@ export class UTbl  implements ITbl{
 
   inT():string {
     let sq ='insert into gtd_u ' +
-      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct,wtt) values("'+ this._ui+'","'+ this._ai+'","'+this._un+ '"' +
-      ',"'+this._hiu+ '","'+this._biy+ '","'+this._rn+ '","'+this._ic+ '","'+ this._us + '","'+this._uct+ '"' +
+      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct,wtt) values("'+ this.ui+'","'+ this.ai+'","'+this.un+ '"' +
+      ',"'+this.hiu+ '","'+this.biy+ '","'+this.rn+ '","'+this.ic+ '","'+ this.us + '","'+this.uct+ '"' +
       ','+  moment().unix() +');';
     return sq;
   }
 
   rpT():string {
     let sq ='replace into gtd_u ' +
-      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct,wtt) values("'+ this._ui+'","'+ this._ai+'","'+this._un+ '"' +
-      ',"'+this._hiu+ '","'+this._biy+ '","'+this._rn+ '","'+this._ic+ '","'+ this._us + '","'+this._uct+ '"' +
+      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct,wtt) values("'+ this.ui+'","'+ this.ai+'","'+this.un+ '"' +
+      ',"'+this.hiu+ '","'+this.biy+ '","'+this.rn+ '","'+this.ic+ '","'+ this.us + '","'+this.uct+ '"' +
       ','+  moment().unix() +');';
 
     return sq;
   }
-
 
 }
 
