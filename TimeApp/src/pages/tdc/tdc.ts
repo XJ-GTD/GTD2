@@ -6,6 +6,8 @@ import {TdcService} from "./tdc.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
+import {TddjService} from "../tddj/tddj.service";
+import {TddiService} from "../tddi/tddi.service";
 
 /**
  * Generated class for the 新建日程 page.
@@ -22,12 +24,12 @@ import {DataConfig} from "../../service/config/data.config";
     <ion-grid>
       <ion-row justify-content-center>
         <div class = "input-set">
-          <ion-input type="text" [(ngModel)]="scd.sn" placeholder="我想..."></ion-input>
+          <ion-input type="text" [(ngModel)]="scd.sn" [disabled]="disControl()"  placeholder="我想..."></ion-input>
         </div>
       </ion-row>
       <ion-row justify-content-left>
-        <ion-item>
-            <button ion-button  round class ="btn-set">添加计划</button>
+        <ion-item > 
+            <button [disabled]="disControl()" ion-button  round class ="btn-set">添加计划</button>
         </ion-item>
       </ion-row>
       <ion-row justify-content-left>
@@ -39,33 +41,33 @@ import {DataConfig} from "../../service/config/data.config";
         </div>&nbsp;&nbsp;
         <div><ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label></div>-->
         <ion-item>
-          <ion-datetime displayFormat="YYYY年MM月DD日 DDDD" [(ngModel)]="scd.sd" dayNames="周日,周一,周二,周三,周四,周五,周六"></ion-datetime>
+          <ion-datetime [disabled]="disControl()" displayFormat="YYYY年MM月DD日 DDDD" [(ngModel)]="scd.sd" dayNames="周日,周一,周二,周三,周四,周五,周六"></ion-datetime>
           <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
         </ion-item>
       </ion-row>
       <ion-row justify-content-left>
         <ion-item>
           <ion-label>全天</ion-label>
-          <ion-toggle  [(ngModel)]="alld" color="danger"></ion-toggle>
-          <ion-datetime displayFormat="HH:mm" [(ngModel)]="scd.st" ></ion-datetime>
+          <ion-toggle [disabled]="disControl()" [(ngModel)]="alld" color="danger"></ion-toggle>
+          <ion-datetime [disabled]="disControl()" displayFormat="HH:mm" [(ngModel)]="scd.st" ></ion-datetime>
           <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
         </ion-item>
       </ion-row>
       <ion-row justify-content-left>
         <div><ion-label>重复</ion-label></div>
-        <div><button ion-button  round clear class ="sel-btn-set"
+        <div><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.close == 1?'sel-btn-seled':'sel-btn-unsel'"  
                      (click)="clickrept(0)">关</button></div>
-        <div><button ion-button  round clear class ="sel-btn-set"
+        <div><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.d == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept(1)">天</button></div>
-        <div><button ion-button  round  clear class ="sel-btn-set"
+        <div><button [disabled]="disControl()" ion-button  round  clear class ="sel-btn-set"
                      [ngClass]="rept.w == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept(2)">周</button></div>
-        <div><button ion-button  round clear class ="sel-btn-set"
+        <div><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.m == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept(3)">月</button></div>
-        <div><button ion-button  round clear class ="sel-btn-set"
+        <div><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.y == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept(4)">年</button></div>
       </ion-row>
@@ -133,10 +135,14 @@ import {DataConfig} from "../../service/config/data.config";
 export class TdcPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private tdcServ :TdcService,private util:UtilService) {
+              private tdcServ :TdcService,private util:UtilService,
+              private tddjServ :TddjService,private  tddiServ : TddiService) {
 
   }
-
+  aa= "disabled"
+  //画面状态：0：新建 ，1：本人修改 ，2：受邀人修改
+  pagestate : string ="0";
+  //画面数据
   scd :ScdData = new ScdData();
 
   rept = {
@@ -174,16 +180,19 @@ export class TdcPage {
       this.scd.st = moment().format("HH:mm");
       this.scd.rt = "0";
       this.scd.tx = "0";
+      this.pagestate = "0";
       return ;
     }
 
     //本人修改的场合初始化
     if (this.navParams.get("XXX")){
+      this.pagestate = "1";
       return;
     }
 
     //受邀人修改的场合初始化
     if (this.navParams.get("XXX")){
+      this.pagestate = "2";
       return ;
     }
 
@@ -311,41 +320,65 @@ export class TdcPage {
     if (!this.chkinput()){
       return
     }
-
-    //开始时间格式转换
-    this.scd.sd = moment(this.scd.sd).format("YYYY/MM/DD");
-
-
-    //结束日期设置
-    //重复场合
-    if (this.scd.rt !="0" ){
-      this.scd.ed = "9999/12/31";
-    }else{
-      this.scd.ed = this.scd.sd;
-    }
-
-    //结束时间设置
-    //全天的场合
-    if (this.alld){
-      this.scd.et = "99:99";
-    }else{
-      this.scd.et = this.scd.st;
-    }
-
     //提醒内容设置
     this.scd.ui = UserConfig.account.id;
 
-    //归属
-    this.scd.gs = '1';
+    //消息设为已读
+    this.scd.du = "1";
+
+    //本人新建或修改时，下记画面项目可以修改
+    if (this.pagestate == "0" || this.pagestate == "1") {
+      //开始时间格式转换
+      this.scd.sd = moment(this.scd.sd).format("YYYY/MM/DD");
+
+
+      //结束日期设置
+      //重复场合
+      if (this.scd.rt != "0") {
+        this.scd.ed = "9999/12/31";
+      } else {
+        this.scd.ed = this.scd.sd;
+      }
+
+      //结束时间设置
+      //全天的场合
+      if (this.alld) {
+        this.scd.et = "99:99";
+      } else {
+        this.scd.et = this.scd.st;
+      }
+
+      //归属 本人创建
+      this.scd.gs = '1';
+
+    }
+
 
     //新建数据
-    if (this.scd.si ==""){
+    if (this.pagestate =="0"){
       this.tdcServ.save(this.scd).then(data=>{
         let ctbl = data.data
         this.scd.si = ctbl.si;
         this.util.toast("保存成功",2000);
       });
     }
+    //本人创建
+    if (this.pagestate =="1") {
+
+      this.tddjServ.updateDetail(this.scd).then(data =>{
+
+        this.util.toast("保存成功",2000);
+      })
+    }
+    //他人创建
+    if (this.pagestate =="2"){
+      //归属 他人创建
+      this.scd.gs = '0';
+      this.tddiServ.updateDetail(this.scd).then(data=>{
+        this.util.toast("保存成功",2000);
+      })
+    }
+
   }
 
   chkinput():boolean{
@@ -359,6 +392,14 @@ export class TdcPage {
   goShare(){
     //日程分享打开参与人选择rc日程类型
     this.navCtrl.push(DataConfig.PAGE._FS_PAGE,{addType:'rc',tpara:this.alld});
+  }
+
+  disControl():boolean{
+    if (this.pagestate == "0" || this.pagestate =="1"){
+      return false;
+    }else{
+      return true;
+    }
   }
 }
 
