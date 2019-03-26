@@ -196,7 +196,7 @@ public class MainVerticle extends AbstractVerticle {
 					openid.append(ids[0]);
 					deviceid.append(ids[1]);
 				}
-				System.out.println("Announce to " + openid + " start process.");
+				System.out.println("Announce to " + openid + "[" + deviceid + "]" + " start process.");
 				Future<JsonObject> future = Future.future();
 				
 				future.setHandler(handler -> {
