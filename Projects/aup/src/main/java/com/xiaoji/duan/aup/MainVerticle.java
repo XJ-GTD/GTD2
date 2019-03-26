@@ -30,17 +30,32 @@ import io.vertx.ext.web.handler.CorsHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.handler.TemplateHandler;
 import io.vertx.ext.web.templ.thymeleaf.ThymeleafTemplateEngine;
+import io.vertx.rabbitmq.RabbitMQClient;
+import io.vertx.rabbitmq.RabbitMQOptions;
 
 public class MainVerticle extends AbstractVerticle {
 
 	private ThymeleafTemplateEngine thymeleaf = null;
 	private MongoClient mongodb = null;
 	private WebClient client = null;
+	private RabbitMQClient rabbitmq = null;
 
 	@Override
 	public void start(Future<Void> startFuture) throws Exception {
 		client = WebClient.create(vertx);
 
+		RabbitMQOptions rmqconfig = new RabbitMQOptions(config().getJsonObject("rabbitmq"));
+
+		rabbitmq = RabbitMQClient.create(vertx, rmqconfig);
+		
+		rabbitmq.start(handler -> {
+			if (handler.succeeded()) {
+				System.out.println("rabbitmq connected.");
+			} else {
+				System.out.println("rabbitmq connect failed with " + handler.cause().getMessage());
+			}
+		});
+		
 		JsonObject config = new JsonObject();
 		config.put("host", config().getString("mongo.host", "mongodb"));
 		config.put("port", config().getInteger("mongo.port", 27017));
@@ -911,8 +926,33 @@ public class MainVerticle extends AbstractVerticle {
         									retaccess.remove("state");
         									
         									String deviceId = Base64.encodeBase64URLSafeString(req.getHeader("di") == null ? req.getHeader("x-real-ip").getBytes() : req.getHeader("di").getBytes());
-        									retaccess.put("cmq", retaccess.getString("openid") + "." + deviceId);
+        									String queue = retaccess.getString("openid") + "." + deviceId;
+        									String exchange = "exchange.mwxing.fanout";
+        									String routingkey = "mwxing." + retaccess.getString("unionid") + ".#";
+        									retaccess.put("cmq", queue);
 
+        									rabbitmq.exchangeDeclare(exchange, "fanout", true, false, handler -> {
+        										if (handler.succeeded()) {
+        										    System.out.println("Exchange " + exchange + " successfully declared with fanout");
+        										} else {
+        											handler.cause().printStackTrace();
+        										}
+        									});
+        									rabbitmq.queueDeclare(queue, true, false, false, handler -> {
+        										if (handler.succeeded()) {
+        										    System.out.println("Queue " + queue + " successfully declared");
+        										} else {
+        											handler.cause().printStackTrace();
+        										}
+        									});
+        									rabbitmq.queueBind(queue, exchange, routingkey, handler -> {
+        										if (handler.succeeded()) {
+        										    System.out.println("Queue " + queue + " successfully binded to Exchange " + exchange + " with routing key " + routingkey);
+        										} else {
+        											handler.cause().printStackTrace();
+        										}
+        									});
+        									
         									System.out.println("Exist user login " + retaccess.encode());
 
         									ctx.response().end(retaccess.encode());
