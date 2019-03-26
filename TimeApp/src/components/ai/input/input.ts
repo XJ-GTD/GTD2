@@ -14,7 +14,7 @@ import {AssistantService} from "../../../service/cordova/assistant.service";
   selector: 'InputComponent',
   template: `
     <ion-content>
-      <div class="waper">
+      <div class="waper" #waperInput>
         <ion-textarea class="text" #input></ion-textarea>
         <button (click)="confirm()">发送</button>
       </div>
@@ -24,6 +24,8 @@ import {AssistantService} from "../../../service/cordova/assistant.service";
 export class InputComponent {
   @ViewChild("input")
   input: TextInput
+  @ViewChild("waperInput")
+  waperInput: ElementRef
 
   constructor(private _renderer: Renderer2, private el: ElementRef,
               private keyboard: Keyboard,
@@ -36,31 +38,31 @@ export class InputComponent {
 
     this.keyboard.onKeyboardHide().subscribe(next => {
       setTimeout(()=>{
-        this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(-9999px)");
-        //this._renderer.setStyle(this.el.nativeElement, "display", "none");
-      },100);
+        this._renderer.setStyle(this.el.nativeElement, "display", "none");
+        this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(-9999px)");
+      },300);
       this.input.setBlur();
 
     }, error1 => {
       setTimeout(()=>{
-        this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(-9999px)");
-        //this._renderer.setStyle(this.el.nativeElement, "display", "none");
-      },100);
+        this._renderer.setStyle(this.el.nativeElement, "display", "none");
+        this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(-9999px)");
+      },300);
       this.input.setBlur();
 
     });
     this.input.blur.subscribe(next => {
+      this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(-9999px)");
       setTimeout(()=>{
-        //this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(-9999px)");
-        //this._renderer.setStyle(this.el.nativeElement, "display", "none");
-      },100);
+        this._renderer.setStyle(this.el.nativeElement, "display", "none");
+      },300);
       this.input.setBlur();
 
     }, error1 => {
+      this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(-9999px)");
       setTimeout(()=>{
-        this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(-9999px)");
-        //this._renderer.setStyle(this.el.nativeElement, "display", "none");
-      },100);
+        this._renderer.setStyle(this.el.nativeElement, "display", "none");
+      },300);
       this.input.setBlur();
 
     });
@@ -68,7 +70,8 @@ export class InputComponent {
 
 
   inputStart() {
-    this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(0px)");
+    this._renderer.setStyle(this.el.nativeElement, "display", "block");
+    this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(-0px)");
     this.input.clearTextInput();
     this.input.setFocus();
   }
@@ -79,7 +82,8 @@ export class InputComponent {
       this.assistantService.listenText(this.input.value);
     }
 
-    this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(-9999px)");
+    // this._renderer.setStyle(this.el.nativeElement, "display", "none");
+    // this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(-9999px)");
     //this._renderer.setStyle(this.el.nativeElement, "display", "none");
     this.input.setBlur();
   }

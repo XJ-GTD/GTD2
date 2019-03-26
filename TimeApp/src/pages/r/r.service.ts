@@ -60,10 +60,6 @@ export class RService {
 
   }
 
-
-  checkPhone(mobile:string):number{
-    return this.util.checkPhone(mobile);
-  }
 }
 
 export class PageRData {
