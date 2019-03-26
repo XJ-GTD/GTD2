@@ -86,7 +86,6 @@ export class PdPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PdPage');
   }
 
   ionViewWillEnter() {

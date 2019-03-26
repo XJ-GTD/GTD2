@@ -23,6 +23,7 @@ import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
 import {DurationInputArg2} from "moment";
 import {unitOfTime} from "moment";
 import DurationAs = moment.unitOfTime.DurationAs;
+import {StTbl} from "../../service/sqlite/tbl/st.tbl";
 
 @Injectable()
 export class AlService {
@@ -179,6 +180,7 @@ export class AlService {
 
       let start = moment('2019/03/01');
       let sqls = [];
+      let stMap:Map<string,StTbl> = new Map<string,StTbl>();
 
       //计划
       let jhs: Array<JhTbl> = [];
@@ -438,7 +440,7 @@ export class AlService {
 
       for (let i = 0; i < 500; i++) {
         start = moment('2019/03/01');
-        let r = this.util.randInt(-365 * 10, 365 * 10);
+        let r = this.util.randInt(-365 * 3, 365 * 3);
         let t = this.util.randInt(0, 24);
         let jh_i = this.util.randInt(0, 20);
         let jh_id = "";
@@ -499,7 +501,7 @@ export class AlService {
 
         sqls.push(c.inT());
 
-        let len = 1;
+        let len = 0;
         let add:unitOfTime.DurationConstructor;
 
         if(c.rt=='1'){
@@ -515,6 +517,9 @@ export class AlService {
         }else if(c.rt=='4'){
           len = 30;
           add = "y"
+        }else if(c.rt=='0'){
+          len = 1;
+          add = "d"
         }
         let sql=new Array<string>();
         for(let i=0;i<len;i++){
@@ -524,6 +529,19 @@ export class AlService {
           sp.sd = moment(c.sd).add(i,add).format("YYYY/MM/DD");
           sp.st = c.st;
           sqls.push(sp.inT());
+          if (!stMap.get(sp.sd)){
+            let st:StTbl = new StTbl();
+            st.c = 0;
+            st.bz = "";
+            st.n = false;
+            if(c.rt=='0'){
+              st.n = true;
+            }
+            st.d = sp.sd;
+            stMap.set(sp.sd,st);
+          }else{
+            stMap.get(sp.sd).c = (stMap.get(sp.sd).c + 1);
+          }
         }
 
         c_r2 = 6;
@@ -544,6 +562,9 @@ export class AlService {
 
         }
       }
+      stMap.forEach((v,k,map) =>{
+        sqls.push(v.inT());
+      })
 
       this.sqlExce.batExecSql(sqls).then(c => {
         console.log("插入数据=====" + c);

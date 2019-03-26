@@ -421,10 +421,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   createMonth(date: number): CalendarMonth {
-
-    console.log(this.monthOpt )
     this.monthOpt = this.calSvc.createMonthsByPeriod(date, 1, this._d)[0];
-    console.log(this.monthOpt )
     this.showMonth();
     this.thisMonth();
     return this.monthOpt;

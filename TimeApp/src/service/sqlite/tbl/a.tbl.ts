@@ -107,13 +107,6 @@ export class ATbl implements ITbl {
 
     return sq;
   }
-  clp(){
-    this.ai = "";
-    this.an = "";
-    this.ae = "";
-    this.at = "";
-    this.aq = "";
-    this.wtt = 0;
-  };
+
 }
 

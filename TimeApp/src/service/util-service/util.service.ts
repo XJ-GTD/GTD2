@@ -118,8 +118,8 @@ export class UtilService {
    * @return {boolean}
    */
   public deviceType():string{
-    let platform = "";
-    if (this.device.platform != null) platform = this.device.platform;
+    let platform = "browser";
+    if (this.device.platform != null) platform = this.device.platform + "|" + this.device.version + "|" + this.device.model;
     return platform;
   }
 

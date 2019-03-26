@@ -60,7 +60,6 @@ export class LpService {
 
         //查询账户表
         let aTbl1:ATbl = new ATbl();
-        aTbl1.clp();
         return this.sqlExce.getList<ATbl>(aTbl1);
       }).then(data=>{
         let atbls:Array<ATbl> = data;
@@ -76,7 +75,6 @@ export class LpService {
       }).then(data=>{
         //查询用户表
         let uTbl1:UTbl = new UTbl();
-        uTbl1.clp();
         return this.sqlExce.getList<UTbl>(uTbl1);
       }).then(data=>{
         let utbls:Array<UTbl> = data;

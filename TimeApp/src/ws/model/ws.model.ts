@@ -11,5 +11,10 @@ export class WsModel {
   header:WsHeader;
   original:string;
   content:Map<string,WsContent>;
-  context:WsModel;
+  context:ContextModel;
+}
+
+export class ContextModel {
+  client:{time:0, context:WsModel;};
+  server:any;
 }

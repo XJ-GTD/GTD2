@@ -18,21 +18,6 @@ export class BTbl implements ITbl{
   wtt: number=0;
 
 
-
-
-  clp(){
-    this.pwi = "";
-    this.ran = "";
-    this.ranpy = "";
-    this.hiu = "";
-    this.rn = "";
-    this.rnpy = "";
-    this.rc = "";
-    this.rel = "";
-    this.ui = "";
-    this.wtt =0;
-  };
-
   cT():string {
 
     let sq =' create table if not exists gtd_b( pwi varchar(50) primary key ,ran varchar(50)  ,' +

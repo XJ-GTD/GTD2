@@ -14,14 +14,6 @@ export class DTbl implements ITbl {
  wtt: Number = 0;
 
 
-  clp() {
-    this.pi = "";
-    this.si = "";
-    this.ai = "";
-    this.wtt = 0;
-  };
-
-
   cT(): string {
 
     let sq = 'create table if not exists gtd_d( pi varchar(50) primary key ,si varchar(50)  ,ai varchar(50) ,wtt integer);';

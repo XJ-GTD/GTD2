@@ -13,15 +13,6 @@ export class GTbl implements ITbl {
   wtt :Number=0;
 
 
-
-  clp(){
-    this.gi = "";
-    this.gn = "";
-    this.gm = "";
-    this.gnpy = "";
-    this.wtt = 0;
-  };
-
   cT():string{
 
     let sq ='create table if not exists gtd_g(  gi varchar(50) primary key ,gn varchar(50)  ,' +

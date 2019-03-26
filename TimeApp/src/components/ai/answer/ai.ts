@@ -4,7 +4,6 @@ import {AiService} from "./ai.service";
 import {UtilService} from "../../../service/util-service/util.service";
 import {EmitService, ScdEmData, ScdLsEmData, SpeechEmData} from "../../../service/util-service/emit.service";
 import {AssistantService} from "../../../service/cordova/assistant.service";
-import set = Reflect.set;
 
 /**
  * Generated class for the HbPage page.
@@ -144,39 +143,7 @@ export class AiComponent {
 
 
   ngAfterViewInit() {
-    // this.aiData3.speechAi = new SpeechAiData();
-    // this.aiData3.speechAi.org = "今天我有什么安排？";
-    // this.aiData3.speechAi.an = "以下是您的安排,以下是您的安排";
-    //
-    // this.aiData2.scdList = new ScdLsAiData();
-    // this.aiData2.scdList.desc = "查询了您的行程啊啊";
-    // this.aiData2.scdList.datas = new Array<ScdAiData>();
-    //
-    // let scd1: ScdAiData = new ScdAiData();
-    // scd1.d = "2019/3/21";
-    // scd1.t = "15:30";
-    // scd1.ti = "天气这么好，晒太阳去";
-    // this.aiData2.scdList.datas.push(scd1);
-    // this.aiData2.scdList.datas.push(scd1);
-    // this.aiData2.scdList.datas.push(scd1);
-    // this.aiData2.scdList.datas.push(scd1);
-    // this.aiData2.scdList.datas.push(scd1);
-    //
-    // this.aiData1.scd = scd1;
-    // this.aiData1.scd.friends = new Array<FriendAiData>();
-    // let f1: FriendAiData = new FriendAiData();
-    // f1.n = "飞飞";
-    // f1.a = this.base64;
-    // this.aiData1.scd.friends.push(f1);
-    // f1.n = "席席";
-    // this.aiData1.scd.friends.push(f1);
-    // f1.n = "天天";
-    // this.aiData1.scd.friends.push(f1);
-    // f1.n = "席席";
-    // this.aiData1.scd.friends.push(f1);
 
-
-    //this.calcheight();
     this.emitService.registerScdLs(data => {
       this.callbackScdLs(data);
     });
@@ -239,6 +206,10 @@ export class AiComponent {
     this.aiData1.speechAi = new SpeechAiData();
 
     let scd1: ScdAiData = new ScdAiData();
+    scd1.d = "2019/3/21";
+    scd1.t = "15:30";
+    scd1.ti = "天气这么好，晒太阳去";
+
     this.aiData1.scd = scd1;
     this.aiData1.scd.friends = new Array<FriendAiData>();
     let f1: FriendAiData = new FriendAiData();
@@ -258,13 +229,8 @@ export class AiComponent {
   }
 
   close() {
-    if (!this.b) {
-      this._renderer.setStyle(this.aiWarp.nativeElement, "transform", "translateY(-9999px)");
+    this._renderer.setStyle(this.aiWarp.nativeElement, "transform", "translateY(-9999px)");
 
-    } else {
-      this._renderer.setStyle(this.aiWarp.nativeElement, "transform", "translateY(0px)");
-    }
-    this.b = !this.b;
     this.aiData1 = new AiData();
     this.aiData2 = new AiData();
     this.aiData3 = new AiData();
@@ -282,30 +248,9 @@ export class AiComponent {
   confirmScd(Scd: ScdAiData) {
 
   }
-
-  rad() {
-    let r = this.util.randInt(0, 10);
-    // this.messages0 = ["dddd", "dddd22", "ddddd234", "ddddd234sss", '12344', "ddddd234", "ddddd234sss", '12344', "ddddd234", "ddddd234sss", '12344', "ddddd234", "ddddd234sss", '12344', "ddddd234", "ddddd234sss", '12344', "ddddd234", "ddddd234sss", '12344', "ddddd234", "ddddd234sss", '12344', "ddddd234", "ddddd234sss", '12344', "ddddd234sss", "dddd22", "ddddd234", "ddddd234sss", '12344', "ddddd234sss", "dddd22", "ddddd234", "ddddd234sss", '12344', "ddddd234sss"]; //聊天数据队列
-    // this.messages1 = ["dddd"]; //聊天数据队列
-    // this.messages2 = ["dddd", "dddd22", "ddddd234"]; //聊天数据队列
-    // if (r > 5 && r < 10) {
-    //   this.messages0 = [];
-    // } else if (r > 2 && r < 5) {
-    //   this.messages1 = [];
-    // } else if (r = 1) {
-    //   this.messages1 = [];
-    //   this.messages2 = [];
-    // } else {
-    //
-    //   this.messages2 = [];
-    // }
-    setTimeout(() => {
-      this.calcheight();
-
-    }, 100);
-  }
-
   private calcheight() {
+
+    this._renderer.setStyle(this.aiWarp.nativeElement, "transform", "translateY(0px)");
     let winhi = window.innerHeight;
     let aiWarpHi = winhi * 0.80;
     let top = -105 - aiWarpHi;

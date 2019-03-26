@@ -4,6 +4,7 @@ import {WsContent} from "./model/content.model";
 import {ProcessFactory} from "./process.factory";
 import {ProcesRs} from "./model/proces.rs";
 import {EmitService} from "../service/util-service/emit.service";
+import * as moment from 'moment';
 
 /**
  * 消息处理分发
@@ -14,6 +15,8 @@ import {EmitService} from "../service/util-service/emit.service";
 export class DispatchService {
   constructor(private factory:ProcessFactory,  private emitService: EmitService,){}
   async dispatch(message: string) {
+    let model: WsModel = JSON.parse(message);
+    console.log(moment().unix() - model.context.client.time)
     setTimeout(()=>{
       this.emitService.emitScd(null);
       setTimeout(()=>{
@@ -27,7 +30,7 @@ export class DispatchService {
 
     },1000);
     // //消息格式化
-    // let model: WsModel = JSON.parse(message);
+     //let model: WsModel = JSON.parse(message);
     // //循环处理消息
     // let process:ProcesRs = new ProcesRs();
     // for (let opt of model.header.describe) {

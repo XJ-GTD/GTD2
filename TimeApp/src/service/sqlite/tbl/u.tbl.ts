@@ -120,18 +120,6 @@ export class UTbl  implements ITbl{
 
     return sq;
   }
-  clp(){
-    this.ui ="";
-    this.ai ="";
-    this.un ="";
-    this.hiu ="";
-    this.biy ="";
-    this.rn ="";
-    this.ic ="";
-    this.us ="";
-    this.uct ="";
-    this.wtt = 0;
-  }
 
 }
 

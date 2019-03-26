@@ -58,7 +58,7 @@ export class WebsocketService {
         this.client.connect(this.login, this.password, frame => {
           console.log(this.client);
           resolve();
-          this.subscription = this.client.subscribe("/queue/" + this.queue, (message:Message) => {
+          this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
             message.ack();
             this.dispatchService.dispatch(message.body).then(data => {
               console.log("message====>" + data + "=====>处理完毕");
@@ -66,10 +66,13 @@ export class WebsocketService {
           });
         }, error => {
           console.log('错误回调webSocket error! :' + error);
-          this.connect();
+          //this.connect();
 
         }, event => {
           console.log('关闭回调socket close!' + event);
+          if (event.wasClean) {
+            this.connect();
+          }
         }, '/');
 
       })

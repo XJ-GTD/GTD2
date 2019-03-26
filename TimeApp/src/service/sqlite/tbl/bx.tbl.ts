@@ -11,12 +11,6 @@ export class BxTbl implements ITbl{
 
 
 
-
-  clp(){
-    this.bi = "";
-    this.bmi = "";
-  };
-
   cT():string {
 
     let sq ='create table if not exists gtd_b_x( bi varchar(50) ,bmi varchar(50));';

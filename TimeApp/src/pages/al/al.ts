@@ -72,25 +72,19 @@ export class AlPage {
   async alinit(){
 
     this.alData = await this.alService.checkAllPermissions();
-    console.log( this.alData.text)
     this.increment(20);
     this.alData = await this.alService.createDB();
-    console.log( this.alData.text)
     this.increment(10);
     this.alData = await this.alService.checkSystem();
-    console.log( this.alData.text)
     this.increment(10);
     if (!this.alData.checkSystem){
       this.alData = await this.alService.createSystemData();
-      console.log( this.alData.text)
     }
 
     this.increment(20);
     this.alData = await this.alService.setSetting();
-    console.log( this.alData.text)
     this.increment(20);
     this.alData = await this.alService.checkUserInfo();
-    console.log( this.alData.text)
 
     //缓存测试
     //await this.alService.createCachefromserver();

@@ -139,7 +139,6 @@ export class PcPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PcPage');
   }
 
   ionViewDidEnter(){
@@ -156,10 +155,8 @@ export class PcPage {
     if(this.jhcData.jn != "" && this.jhcData.jn != null ){
       if(this.jhcData.jc != "" && this.jhcData.jc != null ){
         this.pcService.savePlan(this.jhcData).then(data=>{
-          console.log("计划添加成功===="+JSON.stringify(data));
           this.navCtrl.pop();
         }).catch(res=>{
-          console.log("计划添加失败 :: " + JSON.stringify(res));
         });
       }else{
         this.alert("计划颜色不能为空");

@@ -14,17 +14,6 @@ export class ETbl implements ITbl {
   wtt: number;
 
 
-
-
-  clp() {
-    this.wi = "";
-    this.si = "";
-    this.st = "";
-    this.wd = "";
-    this.wt = "";
-    this.wtt = 0;
-  };
-
   cT(): string {
 
     let sq = 'create table if not exists gtd_e(  wi varchar(50) primary key ,si varchar(50)  ,' +

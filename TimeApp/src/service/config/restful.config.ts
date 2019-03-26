@@ -3,6 +3,7 @@ import {ATbl} from "../sqlite/tbl/a.tbl";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {Injectable} from "@angular/core";
 import {UserConfig} from "./user.config";
+import {UtilService} from "../util-service/util.service";
 
 @Injectable()
 export class RestFulConfig {
@@ -10,7 +11,7 @@ export class RestFulConfig {
 
   private urlLs: Map<string, UrlEntity>;
 
-  constructor(private sqlitexec: SqliteExec) {
+  constructor(private sqlitexec: SqliteExec,private util:UtilService) {
     //this.init();
   }
 
@@ -21,9 +22,9 @@ export class RestFulConfig {
     // //帐户ID
     header.ai = UserConfig.account.phone;
     //设备ID
-    header.di = UserConfig.account.phone;
+    header.di = this.util.deviceId();
     // //设别类型
-    header.dt = "m";
+    header.dt = this.util.deviceType();
     // //登录码
     header.lt = UserConfig.account.token;
 

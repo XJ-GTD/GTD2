@@ -103,13 +103,5 @@ export class STbl implements ITbl   {
 
     return sq;
   }
-  clp(){
-    this.si ="";
-    this.st ="";
-    this.stn ="";
-    this.sn ="";
-    this.yk ="";
-    this.yv ="";
-  }
 }
 
