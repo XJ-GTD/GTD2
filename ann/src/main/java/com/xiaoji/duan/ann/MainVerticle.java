@@ -187,7 +187,15 @@ public class MainVerticle extends AbstractVerticle {
 			}
 		} else if ("inteligence_mix".equals(announceType)) {
 			for (int pos = 0; pos < announceTo.size(); pos++) {
-				String openid = announceTo.getString(pos);
+				StringBuffer openid = new StringBuffer(announceTo.getString(pos));
+				StringBuffer deviceid = new StringBuffer();
+				if (openid.indexOf(";") > 0) {
+					String[] ids = openid.toString().split(";");
+					
+					openid.delete(0, openid.length());
+					openid.append(ids[0]);
+					deviceid.append(ids[1]);
+				}
 				System.out.println("Announce to " + openid + " start process.");
 				Future<JsonObject> future = Future.future();
 				
@@ -203,9 +211,15 @@ public class MainVerticle extends AbstractVerticle {
 						if (openId == null || StringUtils.isEmpty(openId)) {
 							System.out.println("inteligence message can not announce by sms to " + openid);
 						} else {
-							String routingkey = "mwxing." + unionId + "." + openId;
-							System.out.println("announce by mwxing message to " + routingkey);
-							sendMQMessages(config().getString("exchange.mwxing.fanout", "exchange.mwxing.fanout"), routingkey, announceContent.getJsonObject("mwxing"));
+							if ("".equals(deviceid)) {
+								String routingkey = "mwxing.announce." + unionId;
+								System.out.println("announce by mwxing message to " + routingkey);
+								sendMQMessages(config().getString("exchange.mwxing.fanout", "exchange.mwxing.fanout"), routingkey, announceContent.getJsonObject("mwxing"));
+							} else {
+								String routingkey = "mwxing." + unionId + "." + deviceid;
+								System.out.println("announce by mwxing message to " + routingkey);
+								sendMQMessages(config().getString("exchange.mwxing.fanout", "exchange.mwxing.fanout"), routingkey, announceContent.getJsonObject("mwxing"));
+							}
 						}
 						
 					} else {
@@ -214,7 +228,7 @@ public class MainVerticle extends AbstractVerticle {
 					}
 				});
 				
-				getUserInfo(future, openid);
+				getUserInfo(future, openid.toString());
 			}
 		} else {
 			System.out.println("Received process undefined messages.");
