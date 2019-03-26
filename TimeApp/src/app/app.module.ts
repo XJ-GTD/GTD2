@@ -50,6 +50,8 @@ import {HammerDIRECTIONALLConfig} from "./my-hammer.config";
 import {TddjService} from "../pages/tddj/tddj.service";
 import {TddiService} from "../pages/tddi/tddi.service";
 import {Keyboard} from "@ionic-native/keyboard";
+import {AiService} from "../components/ai/answer/ai.service";
+import {AlService} from "../pages/al/al.service";
 
 @NgModule({
   declarations: [
@@ -108,6 +110,8 @@ import {Keyboard} from "@ionic-native/keyboard";
     BlaRestful,
     BacRestful,
     ShaeRestful,
+    AiService,
+    AlService,
     AssistantService,
     EmitService,
     AgdbusiService,

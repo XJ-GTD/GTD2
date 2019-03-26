@@ -69,7 +69,7 @@ export class UtilService {
     let deviceId = this.device.uuid;
     if(deviceId && deviceId != null && deviceId !=''){
     }else{
-      deviceId='1232321';
+      deviceId='';
     }
     return deviceId;
   }
