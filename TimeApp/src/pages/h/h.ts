@@ -1,7 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Events, IonicPage, ModalController, NavController} from 'ionic-angular';
 import {
-  CalendarComponentOptions
+  CalendarComponent,
+  CalendarComponentOptions, DayConfig
 } from "../../components/ion2-calendar";
 import {DataConfig} from "../../service/config/data.config";
 import {HData, HService} from "./h.service";
@@ -62,7 +63,15 @@ export class HPage {
   }
   ngOnInit(){
 
-   // this.hService.findDayEventToCache();
+   this.hService.configDay().then(data=>{
+     this.options.daysConfig.push(...data);
+
+     setTimeout(()=>{
+       console.log("********************" + data.length);
+       this.options.daysConfig.splice(0,this.options.daysConfig.length);
+       //this.options.daysConfig.push(...data);
+     },2000);
+   })
   }
 
   onPress(pressDay) {

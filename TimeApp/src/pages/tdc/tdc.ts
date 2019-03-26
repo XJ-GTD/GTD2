@@ -46,7 +46,7 @@ import {DataConfig} from "../../service/config/data.config";
       <ion-row justify-content-left>
         <ion-item>
           <ion-label>全天</ion-label>
-          <ion-toggle  [(ngModel)]="alld" color="danger"></ion-toggle>
+          <ion-toggle  [(ngModel)]="alld" color="danger"  [class.allday]="b"></ion-toggle>
           <ion-datetime displayFormat="HH:mm" [(ngModel)]="scd.st" ></ion-datetime>
           <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
         </ion-item>
@@ -138,6 +138,7 @@ export class TdcPage {
   }
 
   scd :ScdData = new ScdData();
+  b:boolean = true;
 
   rept = {
     close:1,
