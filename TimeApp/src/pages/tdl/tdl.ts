@@ -1,12 +1,13 @@
 import {Component, ViewChild, ElementRef, Input, Renderer2} from '@angular/core';
 import {
-  ActionSheetController, App, Content, Events, IonicPage, NavController, NavParams, Scroll,
+  ActionSheetController, App, Content, Events, IonicPage, ModalController, NavController, NavParams, Scroll,
   ViewController
 } from 'ionic-angular';
 import * as moment from "moment";
 import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
 import {TddjService} from "../tddj/tddj.service";
 import {TddiService} from "../tddi/tddi.service";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 日程列表 page.
@@ -43,7 +44,8 @@ import {TddiService} from "../tddi/tddi.service";
             </div>
           </div>
           <div class="dayagendas w-auto" >
-            <div id="{{scd.anchorid}}" class="dayagenda row" *ngFor ="let scd of sdl.scdl;" [ngStyle]="{'background-color':scd.cbkcolor}">
+            <div id="{{scd.anchorid}}" class="dayagenda row" *ngFor ="let scd of sdl.scdl;" 
+                 [ngStyle]="{'background-color':scd.cbkcolor}" (click)="toDetail(scd.si)">
               <div class="dayagendacontent w-auto" [ngStyle]="{'background-color':scd.cbkcolor}">
                 <div class ="agendaline1 row">{{this.pageLoadOver(scd.anchorid)}}
                   <div class="agenda-st">{{scd.st}}</div>
@@ -70,7 +72,8 @@ import {TddiService} from "../tddi/tddi.service";
 export class TdlPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,private tdlServ : TdlService,
               public events: Events,public actionSheetCtrl: ActionSheetController,
-              private tddjServ : TddjService,private tddiServ : TddiService) {
+              private tddjServ : TddjService,private tddiServ : TddiService,
+              private modalCtr: ModalController) {
 
     //初始化锚点位置
     events.subscribe('po', (data) => {
@@ -501,6 +504,10 @@ export class TdlPage {
 
     this.scdlDataList = newList;
 
+  }
+
+  toDetail(si){
+    this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {si: si}).present();
   }
 
 }

@@ -8,7 +8,10 @@ import {AgdPro, AgdRestful} from "../../service/restful/agdsev";
 import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
 
 import * as moment from "moment";
-import {ScdData, SpecScdData} from "../tdl/tdl.service";
+import {fsData, ScdData, SpecScdData} from "../tdl/tdl.service";
+import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
+import {DTbl} from "../../service/sqlite/tbl/d.tbl";
+import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 
 @Injectable()
 export class TdcService {
@@ -80,7 +83,7 @@ export class TdcService {
             }else if(rc.tx == "5"){
               time = 360;
             }
-            let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD mm:ss");
+            let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD HH:mm");
             et.wd=date.substr(0,10);
             et.st = date.substr(11,5);
             return this.sqlExce.save(et);
@@ -209,6 +212,45 @@ export class TdcService {
       isTrue = true;
     }
     return isTrue;
+  }
+
+  //获取日程
+  async get(si: string){
+    let bs = new BsModel<ScdData>();
+    //获取本地日程
+
+    let scdData = new ScdData();
+
+    let ctbl = new CTbl();
+    ctbl.si = si;
+    ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
+    Object.assign(scdData, ctbl);
+
+    //获取计划对应色标
+    let jh = new JhTbl();
+    jh.ji = scdData.ji;
+    jh = await this.sqlExce.getOne<JhTbl>(jh);
+    Object.assign(scdData.p, jh);
+
+    //获取日程参与人表
+
+    let ssql = "select b.* from gtd_d d ,gtd_b b where a.ai = b.pwi and d.si ='"+ si +"' " ;
+    let bList = await this.sqlExce.getExtList<BTbl>(ssql);
+    for (let j = 0, len = bList.length; j < len; j++) {
+      let fsd = new fsData();
+      Object.assign(fsd, bList[j]);
+      scdData.fss.push(fsd);
+    }
+
+    //获取提醒时间
+    let e = new ETbl();
+    e.si = si;
+    e = await this.sqlExce.getOne<ETbl>(e);
+    Object.assign(scdData.r, e);
+
+    bs.code = 0;
+    bs.data = scdData;
+    return bs;
   }
 
 }

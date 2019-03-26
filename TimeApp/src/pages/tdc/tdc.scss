@@ -55,77 +55,72 @@ page-tdc {
     color: #fff;
   }
 
-  .input-set {
+  .input-set{
     font-size: 24px;
     margin-top: 69px;
     margin-left: 26px;
     margin-right: 20px;
   }
 
-  .btn-set {
+  .btn-set{
     font-size: 11px;
     width: 70px;
     height: 24px;
   }
-
-  .sel-btn-set {
+  .sel-btn-set{
     font-size: 10px;
     width: 36px;
     height: 36px;
     padding-left: 0px;
     padding-right: 0px;
   }
-
-  .date-set {
+  .date-set{
     font-size: 16px;
   }
-
-  .allday-set {
-    background-color: #000000;
-    width: 120px;
+  .allday-set{
+    background-color: #96162d;
+    width:120px;
   }
 
-  .memo-set {
+  .memo-set{
     font-size: 14px;
   }
 
-  .sel-btn-seled {
-    background-color: #932C16;
-    color: #FFFFFF;
+  .sel-btn-seled{
+    background-color:#932C16;
+    color:#FFFFFF;
   }
 
-  .sel-btn-unsel {
-    background-color: #000000;
-    color: #666666;
+  .sel-btn-unsel{
+    background-color:#96162d;
+    color:#666666;
   }
 
-  .foot-set {
+  .foot-set{
     background-color: #ffffff;
   }
 
-  .dobtn-set {
+  .dobtn-set{
     width: 100%;
     text-align: center;
   }
-
-  .okbtn-set {
+  .okbtn-set{
     float: right;
   }
-
-  .cancelbtn-set {
+  .cancelbtn-set{
     float: left;
   }
 
   ion-item.item {
-    background-color: #000;
+    background-color: #96162d;
     color: #fff;
+    padding: 0;
+  }
+  .item-ios.item-block .item-inner{
+    border: 0;
   }
 
-  .item-ios.item-block .item-inner {
-    border-bottom-color: black;
-  }
-
-  .item-md.item-block .item-inner {
-    border-bottom-color: black;
+  .item-md.item-block .item-inner{
+    border: 0;
   }
 }
