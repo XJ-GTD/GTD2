@@ -120,8 +120,8 @@ import {BsModel} from "../../service/restful/out/bs.model";
               </div>
               <div>
                 <ion-buttons>
-                  <button  ion-button icon-only (click)="goShare()" color="dark">
-                    <ion-icon name="share" ></ion-icon>
+                  <button [hidden]="disControl()" ion-button icon-only (click)="goShare()" color="dark">发送
+                    
                   </button>
                 </ion-buttons>
               </div>
@@ -256,7 +256,7 @@ export class TdcPage {
         this.rept.y = 0;
         break;
       case 4:
-        this.wake.close = 0;
+        this.rept.close = 0;
         this.rept.d = 0;
         this.rept.w = 0;
         this.rept.m = 0;
@@ -341,7 +341,7 @@ export class TdcPage {
     this.navCtrl.pop();
   }
 
-  save(){
+  save(share){
 
     if (!this.chkinput()){
       return
@@ -387,6 +387,11 @@ export class TdcPage {
         this.scd.si = ctbl.si;
         this.pagestate =="1";
         this.util.toast("保存成功",2000);
+        if(typeof(eval(share))=="function")
+        {
+          share();
+        }
+
       });
     }
     //本人创建
@@ -395,6 +400,10 @@ export class TdcPage {
       this.tddjServ.updateDetail(this.scd).then(data =>{
 
         this.util.toast("保存成功",2000);
+        if(typeof(eval(share))=="function")
+        {
+          share();
+        }
       })
     }
     //他人创建
@@ -403,8 +412,10 @@ export class TdcPage {
       this.scd.gs = '0';
       this.tddiServ.updateDetail(this.scd).then(data=>{
         this.util.toast("保存成功",2000);
+
       })
     }
+
 
   }
 
@@ -418,7 +429,10 @@ export class TdcPage {
 
   goShare(){
     //日程分享打开参与人选择rc日程类型
-    this.navCtrl.push(DataConfig.PAGE._FS_PAGE,{addType:'rc',tpara:this.alld});
+    this.save(()=>{
+      this.navCtrl.push(DataConfig.PAGE._FS_PAGE,{addType:'rc',tpara:this.scd.si});
+    })
+
   }
 
   disControl():boolean{
