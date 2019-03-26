@@ -22,7 +22,7 @@ import {DataConfig} from "../../service/config/data.config";
     <ion-grid>
       <ion-row justify-content-center>
         <div class = "input-set">
-          <ion-input type="text" [ngModel]="scd.sn" placeholder="我想..."></ion-input>
+          <ion-input type="text" [(ngModel)]="scd.sn" placeholder="我想..."></ion-input>
         </div>
       </ion-row>
       <ion-row justify-content-left>
@@ -46,7 +46,7 @@ import {DataConfig} from "../../service/config/data.config";
       <ion-row justify-content-left>
         <ion-item>
           <ion-label>全天</ion-label>
-          <ion-toggle  [ngModel]="alld" color="danger"></ion-toggle>
+          <ion-toggle  [(ngModel)]="alld" color="danger"></ion-toggle>
           <ion-datetime displayFormat="HH:mm" [(ngModel)]="scd.st" ></ion-datetime>
           <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
         </ion-item>
@@ -92,7 +92,7 @@ import {DataConfig} from "../../service/config/data.config";
       </ion-row>
       <ion-row justify-content-left>
         <div class = "memo-set">
-          <ion-input type="text" placeholder="备注" [ngModel]="scd.bz"></ion-input>
+          <ion-input type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-input>
         </div>
       </ion-row>
     </ion-grid>
@@ -110,7 +110,7 @@ import {DataConfig} from "../../service/config/data.config";
               </div>
               <div >
                 <ion-buttons class ="okbtn-set" >
-                  <button  ion-button icon-only (click)="ok()" color="dark">
+                  <button  ion-button icon-only (click)="save()" color="dark">
                     <ion-icon name="checkmark"></ion-icon>
                   </button>
                 </ion-buttons>
@@ -165,9 +165,27 @@ export class TdcPage {
   }
 
   ionViewWillEnter() {
-    this.scd.sd = this.navParams.get("dateStr");
-    this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
-    this.scd.st = moment().format("HH:mm");
+
+
+    //新建的场合初始化
+    if (this.navParams.get("dateStr")){
+      this.scd.sd = this.navParams.get("dateStr");
+      this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
+      this.scd.st = moment().format("HH:mm");
+      this.scd.rt = "0";
+      this.scd.tx = "0";
+      return ;
+    }
+
+    //本人修改的场合初始化
+    if (this.navParams.get("XXX")){
+      return;
+    }
+
+    //受邀人修改的场合初始化
+    if (this.navParams.get("XXX")){
+      return ;
+    }
 
   }
 
@@ -320,11 +338,14 @@ export class TdcPage {
     //归属
     this.scd.gs = '1';
 
-    this.tdcServ.save(this.scd).then(data=>{
-      let ctbl = data.data
-      this.scd.si = ctbl.si;
-      this.util.toast("保存成功",2000);
-    });
+    //新建数据
+    if (this.scd.si ==""){
+      this.tdcServ.save(this.scd).then(data=>{
+        let ctbl = data.data
+        this.scd.si = ctbl.si;
+        this.util.toast("保存成功",2000);
+      });
+    }
   }
 
   chkinput():boolean{
