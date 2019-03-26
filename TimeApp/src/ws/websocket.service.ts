@@ -1,5 +1,5 @@
 import {SockJS} from 'sockjs-client';
-import Stomp, {StompSubscription} from "@stomp/stompjs";
+import Stomp, {Message, StompSubscription} from "@stomp/stompjs";
 import {DispatchService} from "./dispatch.service";
 import {Injectable, NgModule} from "@angular/core";
 import {UserConfig} from "../service/config/user.config";
@@ -58,8 +58,9 @@ export class WebsocketService {
         this.client.connect(this.login, this.password, frame => {
           console.log(this.client);
           resolve();
-          this.subscription = this.client.subscribe("/queue/" + this.queue, data => {
-            this.dispatchService.dispatch(data.body).then(data => {
+          this.subscription = this.client.subscribe("/queue/" + this.queue, (message:Message) => {
+            message.ack();
+            this.dispatchService.dispatch(message.body).then(data => {
               console.log("message====>" + data + "=====>处理完毕");
             })
           });
