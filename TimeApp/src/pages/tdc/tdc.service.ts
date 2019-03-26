@@ -83,7 +83,7 @@ export class TdcService {
             }else if(rc.tx == "5"){
               time = 360;
             }
-            let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD mm:ss");
+            let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD HH:mm");
             et.wd=date.substr(0,10);
             et.st = date.substr(11,5);
             return this.sqlExce.save(et);
