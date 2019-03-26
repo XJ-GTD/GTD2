@@ -101,14 +101,18 @@ export class FsPage {
       let list = [];
       this.selFsl.forEach((value , key) =>{
         if(value.gc && value.gc>0){
-          list.push(value.fsl);//群组人员
+          let arr:Array<any> = value.fsl;
+          for(let ar of arr) {
+            list.push(ar);
+          }
+          //list.push(arr);//群组人员
         }else{
           list.push(value);
         }
       });
 
       if(this.addType == 'rc'){
-        this.fsService.sharefriend(this.tpara.si,list).then(data=>{
+        this.fsService.sharefriend(this.tpara,list).then(data=>{
           if(data.code==0){
             //alert("共享享成功");
             this.goBack('','');
