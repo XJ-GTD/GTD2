@@ -41,7 +41,6 @@ import {BacRestful} from "../service/restful/bacsev";
 import {ShaeRestful} from "../service/restful/shaesev";
 import {EmitService} from "../service/util-service/emit.service";
 import {WebsocketModule} from "../ws/websocket.module";
-import {AgdbusiService} from "../service/util-service/agdbusi.service";
 import {FeedbackService} from "../service/cordova/feedback.service";
 import {AlarmService} from "../service/cordova/alarm.service";
 import {UserConfig} from "../service/config/user.config";
@@ -114,7 +113,6 @@ import {AlService} from "../pages/al/al.service";
     AlService,
     AssistantService,
     EmitService,
-    AgdbusiService,
     FeedbackService,
     AlarmService,
     UserConfig,

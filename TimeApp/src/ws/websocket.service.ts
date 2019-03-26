@@ -59,7 +59,7 @@ export class WebsocketService {
           console.log(this.client);
           resolve();
           this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
-            message.ack();
+            //message.ack(message.headers);
             this.dispatchService.dispatch(message.body).then(data => {
               console.log("message====>" + data + "=====>处理完毕");
             })

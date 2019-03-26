@@ -11,6 +11,7 @@ import * as moment from "moment";
 import {fsData, ScdData, SpecScdData} from "../tdl/tdl.service";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
+import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 
 @Injectable()
 export class TdcService {
@@ -82,7 +83,7 @@ export class TdcService {
             }else if(rc.tx == "5"){
               time = 360;
             }
-            let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD mm:ss");
+            let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD HH:mm");
             et.wd=date.substr(0,10);
             et.st = date.substr(11,5);
             return this.sqlExce.save(et);
@@ -232,12 +233,12 @@ export class TdcService {
     Object.assign(scdData.p, jh);
 
     //获取日程参与人表
-    let d = new DTbl();
-    d.si = si;
-    let dList = await this.sqlExce.getList<DTbl>(d);
-    for (let j = 0, len = dList.length; j < len; j++) {
+
+    let ssql = "select b.* from gtd_d d ,gtd_b b where a.ai = b.pwi and d.si ='"+ si +"' " ;
+    let bList = await this.sqlExce.getExtList<BTbl>(ssql);
+    for (let j = 0, len = bList.length; j < len; j++) {
       let fsd = new fsData();
-      Object.assign(fsd, dList[j]);
+      Object.assign(fsd, bList[j]);
       scdData.fss.push(fsd);
     }
 
