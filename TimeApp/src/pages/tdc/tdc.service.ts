@@ -49,7 +49,7 @@ export class TdcService {
           let sql=new Array<string>();
           for(let i=0;i<len;i++){
             let sp = new SpTbl();
-            sp.spi = this.util.getUuid()
+            sp.spi = this.util.getUuid();
             sp.si = rc.si;
             sp.sd = moment(rc.sd).add(i,'d').format("YYYY/MM/DD");
             sp.st = rc.st;
@@ -95,7 +95,7 @@ export class TdcService {
           //restFul保存日程
           return this.agdRest.save(adgPro)
         }).then(data=>{
-          bs = data;
+          bs.data=ct;
           resolve(bs);
         }).catch(e=>{
           bs.code = -99;
