@@ -37,21 +37,26 @@ export class TdcService {
         //保存本地日程
         this.sqlExce.save(ct).then(data=>{
           let len = 1;
+          let add:any = 'd';
           if(rc.rt=='1'){
-            len = 80;
-          }else if(rc.rt=='2'){
-            len = 24;
-          }else if(rc.rt=='3'){
-            len = 96;
-          }else if(rc.rt=='4'){
             len = 365;
+          }else if(rc.rt=='2'){
+            len = 96;
+            add = 'w';
+          }else if(rc.rt=='3'){
+            len = 24;
+            add = 'M';
+          }else if(rc.rt=='4'){
+            len = 20;
+            add = 'y';
           }
           let sql=new Array<string>();
           for(let i=0;i<len;i++){
             let sp = new SpTbl();
             sp.spi = this.util.getUuid();
             sp.si = rc.si;
-            sp.sd = moment(rc.sd).add(i,'d').format("YYYY/MM/DD");
+           // sp.sd = moment(rc.sd).add(i,'d').format("YYYY/MM/DD");
+            sp.sd = moment(rc.sd).add(i,add).format("YYYY/MM/DD");
             sp.st = rc.st;
             sql.push(sp.inT());
           }
