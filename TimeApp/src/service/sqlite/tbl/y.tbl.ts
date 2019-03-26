@@ -152,13 +152,5 @@ export class YTbl implements ITbl {
     return sq;
   }
 
-  clp() {
-    this._yi="";
-    this._yt="";
-    this._ytn="";
-    this._yn="";
-    this._yk="";
-    this._yv="";
-  }
 }
 

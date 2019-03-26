@@ -161,13 +161,5 @@ export class ATbl implements ITbl {
 
     return sq;
   }
-  clp(){
-    this._ai = "";
-    this._an = "";
-    this._ae = "";
-    this._at = "";
-    this._aq = "";
-    this._wtt = 0;
-  };
 }
 

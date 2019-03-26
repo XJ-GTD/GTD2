@@ -61,14 +61,6 @@ export class ETbl implements ITbl {
     this._wt = value;
   }
 
-  clp() {
-    this._wi = "";
-    this._si = "";
-    this._st = "";
-    this._wd = "";
-    this._wt = "";
-    this._wtt = 0;
-  };
 
   cT(): string {
 

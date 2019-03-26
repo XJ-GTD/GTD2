@@ -71,15 +71,6 @@ export class JhTbl  implements ITbl{
     this._wtt = value;
   }
 
-  clp(){
-    this._ji = "";
-    this._jn = "";
-    this._jc = "";
-    this._jg = "";
-    this._jt = "";
-    this._jtd = "";
-    this._wtt = 0;
-  };
 
   cT():string{
 

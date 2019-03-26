@@ -98,18 +98,6 @@ export class BTbl implements ITbl{
     this._ui = value;
   }
 
-  clp(){
-    this._pwi = "";
-    this._ran = "";
-    this._ranpy = "";
-    this._hiu = "";
-    this._rn = "";
-    this._rnpy = "";
-    this._rc = "";
-    this._rel = "";
-    this._ui = "";
-    this._wtt =0;
-  };
 
   cT():string {
 

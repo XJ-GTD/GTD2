@@ -153,22 +153,6 @@ export class CTbl implements  ITbl{
     this._pni = value;
   }
 
-  clp(){
-    this._si = "";
-    this._sn = "";
-    this._ui = "";
-    this._sd = "";
-    this._st = "";
-    this._ed = "";
-    this._et = "";
-    this._rt = "";
-    this._ji = "";
-    this._tx = "";
-    this._pni= "";
-    this._wtt= 0;
-    this.du="";
-  };
-
   cT():string {
 
     let sq =' create table if not exists gtd_c(  si varchar(50) primary key ,sn varchar(50)  ,ui varchar(50)  ,sd varchar(20)  ' +

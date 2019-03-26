@@ -44,12 +44,6 @@ export class DTbl implements ITbl {
   private _wtt: Number = 0;
 
 
-  clp() {
-    this._pi = "";
-    this._si = "";
-    this._ai = "";
-    this._wtt = 0;
-  };
 
 
   cT(): string {

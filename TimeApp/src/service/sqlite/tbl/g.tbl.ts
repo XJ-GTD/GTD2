@@ -52,14 +52,6 @@ export class GTbl implements ITbl {
     this._gnpy = value;
   }
 
-  clp(){
-    this._gi = "";
-    this._gn = "";
-    this._gm = "";
-    this._gnpy = "";
-    this._wtt = 0;
-  };
-
   cT():string{
 
     let sq ='create table if not exists gtd_g(  gi varchar(50) primary key ,gn varchar(50)  ,' +
