@@ -1,6 +1,57 @@
 page-tdc {
+  .allday.toggle-checked .toggle-icon {
+    background-color: red;
+  }
+
+  .allday .toggle-icon {
+    background-color: #fff;
+  }
+
+  .allday {
+    width: 75px;
+  }
+
+  .allday.toggle-checked .toggle-inner {
+    transform: translate3d(43px, 0, 0);
+  }
+
+  .allday .toggle-icon::before {
+    content: "全天";
+    color: black;
+    font-size: 12px;
+    text-align: right;
+    transform: scale3d(1, 1, 1);
+    margin-top: 4px;
+    margin-right: 10px;
+    font-weight: 900;
+    letter-spacing: 2px;
+  }
+
+  .allday.toggle-checked .toggle-icon::before {
+    content: "全天";
+    color: black;
+    font-size: 12px;
+
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-align: left;
+    transform: scale3d(1, 1, 1);
+    background: red;
+    margin-left: 10px;
+    margin-top: 4px;
+    color: #fff;
+  }
+
+  .allday.toggle-checked .toggle-icon {
+    content: "全天";
+    color: black;
+    font-size: 10px;
+    text-align: left;
+  }
+
+
   ion-content.content {
-    background-color: #96162d;
+    background-color: #000000;
     color: #fff;
   }
 

@@ -49,7 +49,7 @@ import {BsModel} from "../../service/restful/out/bs.model";
       <ion-row justify-content-left>
         <ion-item>
           <ion-label>全天</ion-label>
-          <ion-toggle [disabled]="disControl()" [(ngModel)]="alld" color="danger"></ion-toggle>
+          <ion-toggle [disabled]="disControl()" [(ngModel)]="alld" color="danger" [class.allday]="b"></ion-toggle>
           <ion-datetime [disabled]="disControl()" displayFormat="HH:mm" [(ngModel)]="scd.st" ></ion-datetime>
           <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
         </ion-item>
@@ -150,6 +150,7 @@ export class TdcPage {
   pagestate : string ="0";
   //画面数据
   scd :ScdData = new ScdData();
+  b:boolean = true;
 
   rept = {
     close:1,

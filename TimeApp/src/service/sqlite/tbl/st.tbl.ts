@@ -8,13 +8,13 @@ import * as moment from "moment";
 export class StTbl implements ITbl {
   d: string = "";
   c: number = 0;
-  n: boolean;
+  n: number = 0;
   bz: string = "";
   wtt: number = 0;
 
   cT(): string {
 
-    let sq = ' create table if not exists gtd_st(d varchar(10) primary key ,c integer ,n boolean  ,bz varchar(50)  ,wtt integer);';
+    let sq = ' create table if not exists gtd_st(d varchar(10) primary key ,c integer ,n integer  ,bz varchar(50)  ,wtt integer);';
 
     return sq;
   }

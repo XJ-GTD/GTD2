@@ -533,9 +533,9 @@ export class AlService {
             let st:StTbl = new StTbl();
             st.c = 0;
             st.bz = "";
-            st.n = false;
+            st.n = 0;
             if(c.rt=='0'){
-              st.n = true;
+              st.n = st.n  + 1;
             }
             st.d = sp.sd;
             stMap.set(sp.sd,st);

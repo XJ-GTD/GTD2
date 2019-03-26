@@ -152,16 +152,17 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
 
   @Input()
   set options(value: CalendarComponentOptions) {
+    console.log("时间更新了");
     this._options = value;
     this.initOpt();
     if (this.monthOpt && this.monthOpt.original) {
-      this.createMonth(this.monthOpt.original.time);
+      //新日程进来不需要刷新日历
+      //this.createMonth(this.monthOpt.original.time);
     }
   }
 
+
   constructor(public calSvc: CalendarService, public feekback: FeedbackService) {
-
-
   }
 
   get options(): CalendarComponentOptions {
@@ -281,12 +282,6 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
 
   }
 
-  //add by zhangjy
-  // refresh(): void {
-  //   this.monthOpt = this.createMonth(this.monthOpt.original.time);
-  // }
-
-
   canBack(): boolean {
     if (!this._d.from || this._view !== 'days') return true;
     return this.monthOpt.original.time > moment(this._d.from).valueOf();
@@ -348,8 +343,6 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     let nextan: boolean = false;
     if (45 < $event.angle && $event.angle < 135) nextan = true;
     if (-45 > $event.angle && $event.angle > -135) nextan = false;
-    //const isNext = 45< $event.angle < 135;
-    // if (!this.newstart) return;
     this.nextArray.push(nextan);
   }
 
@@ -425,12 +418,6 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     this.showMonth();
     this.thisMonth();
     return this.monthOpt;
-    // return new Promise<CalendarMonth>((resolve, reject) => {
-    //   this.configDay(date).then(data => {
-    //     resolve(this.monthOpt);
-    //   })
-    //
-    // })
   }
 
   _createCalendarDay(value: CalendarComponentPayloadTypes): CalendarDay {
@@ -514,112 +501,6 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     } else if (event.isToday == false && event.isLastMonth) {
       this.backMonth()
     }
-  }
-
-
-  async configDay(time) {
-    const _moment = moment(time);
-    const lastDay = _moment.daysInMonth();
-    let start: string = moment(_moment.format('YYYY/MM') + "/01", "YYYY/MM/D").format("YYYY/MM/DD");
-    let end: string = moment(_moment.format('YYYY/MM') + "/31", "YYYY/MM/D").format("YYYY/MM/DD");
-    await this.calSvc.dayConfigMonth(start, end).then((data) => {
-      this._d.daysConfig.splice(0, this._d.daysConfig.length);
-      this._d.daysConfig.push(...data);
-      return data;
-    });
-  }
-
-  // configMonthEventDay(time) {
-  //   const _moment = moment(time);
-  //   const lastDay = _moment.daysInMonth();
-  //   let start: string = moment(_moment.format('YYYY/MM') + "/01", "YYYY/MM/D").format("YYYY/MM/DD");
-  //   let end: string = moment(_moment.format('YYYY/MM') + "/31", "YYYY/MM/D").format("YYYY/MM/DD");
-  //   this.calSvc.findDayEventForMonth(start, end).then((data) => {
-  //     console.log("开始替换")
-  //     for (let config of data) {
-  //       let og = this.monthOpt.days.find((n) => config.time == n.time);
-  //       og.cssClass = config.cssClass;
-  //       og.newmessage = config.newmessage;
-  //       og.marked = config.marked;
-  //       og.hasting = config.hasting;
-  //       og.subTitle = config.subTitle;
-  //       og.things = config.things;
-  //       og.isToday = config.isToday;
-  //       og.hassometing = config.hassometing;
-  //       og.busysometing = config.busysometing;
-  //       if (this.selectDay) {
-  //         if (this.selectDay.time == og.time) {
-  //           this.onSelect.emit(og);
-  //         }
-  //
-  //       }
-  //
-  //     }
-  //     console.log("开始替换完成")
-  //   });
-  //
-  //
-  // }
-
-  // configMonthEventDay(time) {
-  //   const _moment = moment(time);
-  //
-  //   for(let d=1; d<=_moment.daysInMonth();d++){
-  //
-  //     let day:string = moment(_moment.format('YYYY/MM') + "/" + d,"YYYY/MM/D").format("YYYY/MM/DD");
-  //     this.calSvc.findDayEventForDay(day).then((data) => {
-  //       // this.options.daysConfig.push(data);
-  //       let c:number = 0;
-  //       for (let calendarDay of this.monthOpt.days){
-  //         if (calendarDay.time == data.time){
-  //           this.monthOpt.days[c].cssClass = data.cssClass;
-  //           this.monthOpt.days[c].newmessage = data.newmessage;
-  //           this.monthOpt.days[c].marked = data.marked;
-  //           this.monthOpt.days[c].hasting = data.hasting;
-  //           this.monthOpt.days[c].subTitle = data.subTitle;
-  //           this.monthOpt.days[c].things = data.things;
-  //           this.monthOpt.days[c].isToday = data.isToday;
-  //           this.monthOpt.days[c].hassometing = data.hassometing;
-  //           this.monthOpt.days[c].busysometing = data.busysometing;
-  //
-  //           if (this.selectDay){
-  //             if ( this.selectDay.time == data.time){
-  //               this.onSelect.emit(this.monthOpt.days[c]);
-  //             }
-  //           }
-  //         }
-  //         c++
-  //       }
-  //     })
-  //   }
-  //
-  // }
-
-  // flashDay(day) {
-  //   this.calSvc.findDayEventForDay(day).then((data) => {
-  //     let cdays = this.monthOpt.days;
-  //     for (let i = 0; i < cdays.length; i++) {
-  //       let dayc: any = cdays[i];
-  //       if (moment(day).valueOf() == dayc.time) {
-  //         // if (!dayc.im) {
-  //         //   dayc.cssClass = `hassometing ` + this.calSvc.specially;
-  //         // } else {
-  //         //   //事多
-  //         //   dayc.cssClass = `busysometing ` + this.calSvc.specially;
-  //         // }
-  //         dayc.cssClass = data.cssClass;
-  //         //有消息
-  //         if (dayc.iem) {
-  //           dayc.subTitle = `\u2022`;
-  //         }
-  //       }
-  //     }
-  //   })
-  // }
-
-  flashMonth(date: number) {
-    this.initOpt();
-    this.createMonth(date);
   }
 
   gotoToday() {
