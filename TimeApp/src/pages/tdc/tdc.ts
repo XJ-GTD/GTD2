@@ -5,6 +5,7 @@ import * as moment from "moment";
 import {TdcService} from "./tdc.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 新建日程 page.
@@ -330,6 +331,11 @@ export class TdcPage {
       return false;
     }
     return true;
+  }
+
+  goShare(){
+    //日程分享打开参与人选择rc日程类型
+    this.navCtrl.push(DataConfig.PAGE._FS_PAGE,{addType:'rc',tpara:this.alld});
   }
 }
 

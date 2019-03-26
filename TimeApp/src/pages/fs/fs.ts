@@ -139,11 +139,12 @@ export class FsPage {
 
   goBack(page:string,para:any) {
     console.log('PfPage跳转PaPage');
-    if(page != ''){
-      this.navCtrl.push(page,para);
-    }else{
-      this.navCtrl.pop();
-    }
+    // if(page != ''){
+    //   this.navCtrl.push(page,para);
+    // }else{
+    //   this.navCtrl.pop();
+    // }
+    this.navCtrl.pop();
 
   }
 
