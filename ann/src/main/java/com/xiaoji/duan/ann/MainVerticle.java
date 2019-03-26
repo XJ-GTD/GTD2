@@ -156,8 +156,9 @@ public class MainVerticle extends AbstractVerticle {
 						System.out.println("User info fetched with " + openid);
 						System.out.println(userinfo.encode());
 						String unionId = userinfo.getJsonObject("data").getString("unionid");
-						
-						if (unionId == null || StringUtils.isEmpty(unionId)) {
+						String openId = userinfo.getJsonObject("data").getString("openid");
+
+						if (openId == null || StringUtils.isEmpty(openId)) {
 							System.out.println("announce by sms to " + openid);
 							
 							JsonObject sms = announceContent.getJsonObject("sms");
@@ -167,8 +168,9 @@ public class MainVerticle extends AbstractVerticle {
 							sendShortMessages(openid, sms);
 
 						} else {
-							System.out.println("announce by mwxing message to " + unionId);
-							sendMQMessages(unionId + ".*", announceContent.getJsonObject("mwxing"));
+							String routingkey = "mwxing." + unionId + "." + openId;
+							System.out.println("announce by mwxing message to " + routingkey);
+							sendMQMessages(config().getString("exchange.mwxing.fanout", "exchange.mwxing.fanout"), routingkey, announceContent.getJsonObject("mwxing"));
 						}
 						
 					} else {
@@ -195,14 +197,15 @@ public class MainVerticle extends AbstractVerticle {
 						
 						System.out.println("User info fetched with " + openid);
 						System.out.println(userinfo.encode());
-						//String unionId = userinfo.getJsonObject("data").getString("unionid");
+						String unionId = userinfo.getJsonObject("data").getString("unionid");
 						String openId = userinfo.getJsonObject("data").getString("openid");
 						
 						if (openId == null || StringUtils.isEmpty(openId)) {
 							System.out.println("inteligence message can not announce by sms to " + openid);
 						} else {
-							System.out.println("announce by mwxing message to " + openId);
-							sendMQMessages(openId + ".*", announceContent.getJsonObject("mwxing"));
+							String routingkey = "mwxing." + unionId + "." + openId;
+							System.out.println("announce by mwxing message to " + routingkey);
+							sendMQMessages(config().getString("exchange.mwxing.fanout", "exchange.mwxing.fanout"), routingkey, announceContent.getJsonObject("mwxing"));
 						}
 						
 					} else {
@@ -225,8 +228,8 @@ public class MainVerticle extends AbstractVerticle {
 
 	}
 
-	private void sendMQMessages(String queuename, JsonObject content) {
-		rabbitmq.basicPublish("", queuename, new JsonObject().put("body", content.encode()), resultHandler -> {
+	private void sendMQMessages(String exchange, String routingkey, JsonObject content) {
+		rabbitmq.basicPublish(exchange, routingkey, new JsonObject().put("body", content.encode()), resultHandler -> {
 			if (resultHandler.succeeded()) {
 				System.out.println("Send rabbit mq message successed.");
 			} else {

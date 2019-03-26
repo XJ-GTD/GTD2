@@ -9,5 +9,19 @@
   "sms.service.port": 8080,
   "sms.service.host": "sa-sms",
   "sms.service.starter.singlesend": "/sms/send",
-  "sms.expiretime": 60
+  "sms.expiretime": 60,
+  "rabbitmq": {
+    "user": "user1",
+    "password": "password1",
+    "host": "sa-rmq",
+    "port": 5672,
+    "virtualHost": "vhost1",
+    "connectionTimeout": 6000,
+    "connectionRetries": 5,
+    "requestedHeartbeat": 60,
+    "handshakeTimeout": 6000,
+    "requestedChannelMax": 5,
+    "networkRecoveryInterval": 500,
+    "automaticRecoveryEnabled": true
+  }
 }

@@ -59,6 +59,11 @@
       <version>${vertx.version}</version>
     </dependency>
     <dependency>
+       <groupId>io.vertx</groupId>
+       <artifactId>vertx-rabbitmq-client</artifactId>
+       <version>${vertx.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
       <version>${slf4j.version}</version>
