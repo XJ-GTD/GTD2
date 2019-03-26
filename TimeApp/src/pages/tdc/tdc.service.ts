@@ -31,9 +31,9 @@ export class TdcService {
       }else{
         let ct = new CTbl();
         Object.assign(ct,rc);
-        rc.si = this.util.getUuid();
+        ct.si = this.util.getUuid();
         let et = new ETbl();//提醒表
-        et.si = rc.si;
+        et.si = ct.si;
         //保存本地日程
         this.sqlExce.save(ct).then(data=>{
           let len = 1;
@@ -54,7 +54,7 @@ export class TdcService {
           for(let i=0;i<len;i++){
             let sp = new SpTbl();
             sp.spi = this.util.getUuid();
-            sp.si = rc.si;
+            sp.si = ct.si;
            // sp.sd = moment(rc.sd).add(i,'d').format("YYYY/MM/DD");
             sp.sd = moment(rc.sd).add(i,add).format("YYYY/MM/DD");
             sp.st = rc.st;
@@ -88,7 +88,7 @@ export class TdcService {
 
         }).then(data=>{
           let adgPro:AgdPro = new AgdPro();
-          adgPro.ai=rc.si; //日程ID
+          adgPro.ai=ct.si; //日程ID
           adgPro.rai=rc.sr;//日程发送人用户ID
           adgPro.fc=rc.ui; //创建人
           adgPro.at=rc.sn;//主题
