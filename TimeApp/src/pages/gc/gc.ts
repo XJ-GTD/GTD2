@@ -38,14 +38,14 @@ import {DataConfig} from "../../service/config/data.config";
            <ion-list no-lines>
              <ion-item class="plan-list-item"  *ngFor="let g of fsl">
                <ion-avatar item-start >
-                 <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
-                 <!--<ion-icon name="contact"></ion-icon>-->
+                 <!--<img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">-->
+                 <ion-icon name="contact"  style="font-size: 3.0em;color: red;"></ion-icon>
                </ion-avatar>
                  <!--<ion-item (click)="toGroupMember(g)" style="background-color: black;color:#ffffff;margin-left: -15px;">-->
                    <!--{{g.rn}} <span>{{g.rc}}</span>-->
                  <!--</ion-item>-->
                
-               <ion-label (click)="toMemberInfo(g)">
+               <ion-label>
                  {{g.rn}} 
                  <span style="font-size:14px;color:rgb(102,102,102);">
                    {{g.rc}}
@@ -121,8 +121,9 @@ export class GcPage {
 
   getData() {
     this.fsService.getfriendgroup(this.dc.gi).then(data=>{
-      if(data.length>0){
+      if(data && data != null){
         this.fsl = data;
+        this.dc.gc = this.fsl.length;
       }
     })
   };

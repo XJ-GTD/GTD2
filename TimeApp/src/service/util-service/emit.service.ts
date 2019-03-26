@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable } from "@angular/core";
+import {EventEmitter, Injectable} from "@angular/core";
 
 /**
  * 数据传递广播处理类
@@ -7,66 +7,112 @@ import { EventEmitter, Injectable } from "@angular/core";
 export class EmitService {
 
   //新消息透传(共享数据 入库)
-  private newMessage: EventEmitter<any> = new EventEmitter();
+  private scdedEm: EventEmitter<ScdEmData> = new EventEmitter<ScdEmData>();
   //查询数据透传(语音界面返回显示)
-  private findDatas: EventEmitter<any> = new EventEmitter();
+  private scdLsEm: EventEmitter<ScdLsEmData> = new EventEmitter<ScdLsEmData>();
   //语音播报透传 （语音播报内容）
-  private strSpeech: EventEmitter<any> = new EventEmitter();
+  private speechEm: EventEmitter<SpeechEmData> = new EventEmitter<SpeechEmData>();
+  //新建修改删除 （语音界面使用）
+  private scdEm: EventEmitter<ScdEmData> = new EventEmitter<ScdEmData>();
 
-  registerMessage(callback){
-    if (this.newMessage.closed)  {
-      this.newMessage = new EventEmitter();
+  registerScded(callback) {
+    if (this.scdedEm.closed) {
+      this.scdedEm = new EventEmitter();
     }
-    this.newMessage.subscribe($data => {
+    this.scdedEm.subscribe($data => {
       callback($data);
     });
   };
 
-  emitMessage($data){
-    if (!this.newMessage.isStopped) {
-      this.newMessage.emit($data);
+  emitScded($data) {
+    if (!this.scdedEm.isStopped) {
+      this.scdedEm.emit($data);
     }
   }
 
-  destroyMessage(emit: EventEmitter<any>) {
-    this.newMessage.unsubscribe();
+  destroyScded(emit: EventEmitter<any>) {
+    this.scdedEm.unsubscribe();
   }
 
-  registerDatas(callback){
-    if (this.findDatas.closed)  {
-      this.findDatas = new EventEmitter();
+  registerScdLs(callback) {
+    if (this.scdLsEm.closed) {
+      this.scdLsEm = new EventEmitter();
     }
-    this.findDatas.subscribe($data => {
+    this.scdLsEm.subscribe($data => {
       callback($data);
     });
   };
 
-  emitDatas($data){
-    if (!this.findDatas.isStopped) {
-      this.findDatas.emit($data);
+  emitScdLs($data) {
+    if (!this.scdLsEm.isStopped) {
+      this.scdLsEm.emit($data);
     }
   }
 
-  destroyDatas(emit: EventEmitter<any>) {
-    this.findDatas.unsubscribe();
+  destroyScdLs(emit: EventEmitter<any>) {
+    this.scdLsEm.unsubscribe();
   }
 
-  registerSpeech(callback){
-    if (this.strSpeech.closed)  {
-      this.strSpeech = new EventEmitter();
+  registerSpeech(callback) {
+    if (this.speechEm.closed) {
+      this.speechEm = new EventEmitter();
     }
-    this.strSpeech.subscribe($data => {
+    this.speechEm.subscribe($data => {
       callback($data);
     });
   };
 
-  emitSpeech($data){
-    if (!this.strSpeech.isStopped) {
-      this.strSpeech.emit($data);
+  emitSpeech($data) {
+    if (!this.speechEm.isStopped) {
+      this.speechEm.emit($data);
     }
   }
 
   destroySpeech(emit: EventEmitter<any>) {
-    this.strSpeech.unsubscribe();
+    this.speechEm.unsubscribe();
   }
+
+
+  registerScd(callback) {
+    if (this.scdEm.closed) {
+      this.scdEm = new EventEmitter();
+    }
+    this.scdEm.subscribe($data => {
+      callback($data);
+    });
+  };
+
+  emitScd($data) {
+    if (!this.speechEm.isStopped) {
+      this.scdEm.emit($data);
+    }
+  }
+
+  destroyScd(emit: EventEmitter<any>) {
+    this.scdEm.unsubscribe();
+  }
+}
+
+export class ScdLsEmData {
+  desc: string = "";
+  datas: Array<ScdEmData> = new Array<ScdEmData>();
+}
+export class ScdEmData {
+  id: string = "";
+  d: string = "";
+  t: string = "";
+  ti: string = "";
+  datas: Array<FriendEmData> = new Array<FriendEmData>();
+}
+
+export class FriendEmData {
+  id: string = "";
+  n: string = "";
+  m: string = "";
+  p: string = "";
+  a: string = "";
+}
+export class SpeechEmData {
+  an: string = "";
+  org: string = "";
 }

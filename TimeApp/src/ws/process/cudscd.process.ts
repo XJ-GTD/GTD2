@@ -25,7 +25,7 @@ export class CudscdProcess implements MQProcess{
       let cudPara:CudscdPara = content.parmeter;
       //处理结果
       //emit
-      this.emitService.emitDatas(processRs);
+      //this.emitService.emitDatas(processRs);
     })
   }
 

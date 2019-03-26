@@ -64,3 +64,19 @@
   border: none !important;
 }
 
+.toast-ios {
+  .toast-message {
+    font-size: 10px;
+    color: #fff;
+    padding: 1.5rem;
+  }
+  .toast-wrapper{
+    background:#1f2324;
+    width: 85%;
+  }
+}
+
+.loading-ios .loading-wrapper{
+  background:transparent;
+}
+

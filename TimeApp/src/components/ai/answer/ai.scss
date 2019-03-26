@@ -1,27 +1,148 @@
-aicomponent{
+aicomponent {
+  transition: all 1.5s ease 0.2s;
   position: fixed;
   bottom: 0px;
   width: 90%;
   height: auto;
 
-  .yyWarp{
-    bottom: 90px;
-    position: fixed;
+  //.backspace {
+  //  display: block;
+  //  font-size: 1.2em;
+  //  position: absolute;
+  //  top: -205px;
+  //  right: 20px;
+  //
+  //}
+
+  .close {
+    display: block;
+    font-size: 1.2em;
+    position: absolute;
+    top: -205px;
+    right: 20px;
+  }
+
+  .aiWarp {
+    position: relative;
+    overflow-y: auto;
+    background: black;
+    opacity: .95;
+    padding: 5px;
     width: 100%;
-    opacity: .7;
-    height: auto
-  ;
-    background: #000;
   }
-  .yyitem{
-    background-color: transparent;
-    font-size: 15px;
-    height: auto;
+
+  .scroll-content {
+    .item-block, .item-inner {
+      min-height: 0px;
+    }
+
+    .card {
+      background: #2b3340;
+      position: relative;
+      margin: 8px 0px 8px 15px;
+      width: 85%;
+      border-radius: 12px 12px 12px 0px;
+
+      .self {
+        color: #999999;
+        font-size: 12px;
+      }
+
+      .aiAn {
+        color: #fff;
+        font-size: 14px;
+      }
+
+      .scdList {
+        .volume[item-end] {
+          color: #999999;
+          margin-left: 0;
+          margin-top: 0px;
+          margin-bottom: 0px;
+          margin-right: 0px;
+          font-size: 2.5rem;
+          min-height: 0px;
+        }
+
+        .date {
+          color: #666666;
+          font-size: 12px;
+        }
+
+        .ti {
+          color: #ffffff;
+          font-size: 14px;
+
+        }
+
+      }
+
+      .scd {
+        span{
+          float: left;
+          padding-right:10px ;
+        }
+        .friend{
+          .avatar{
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+          }
+          .fn{
+            color: #FFFFFF;
+            font-size: 10px;
+            white-space:nowrap;
+            width: 30px;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+        .scdTip{
+
+        }
+        button {
+          color: #348e99;
+          background-color: transparent;
+          font-size: 14px;
+          letter-spacing: 1px;
+          margin-right: 0px;
+          margin-left: 5px;
+        }
+
+        .date {
+          color: #666666;
+          font-size: 12px;
+        }
+
+        .ti {
+          color: #ffffff;
+          font-size: 14px;
+        }
+      }
+
+
+    }
+
+    .card-ios {
+      .list-ios {
+        margin: 0px !important;
+      }
+
+    }
+
   }
-  .yyWarp > .yyitem:last-child{
-    border-bottom: 0px !important;
-    border-top: 0px !important;
-    box-shadow: none !important;
+
+  ion-label {
+    white-space: normal;
+  }
+
+  .label-ios {
+    margin: 6px auto;
+  }
+
+  .item-ios {
+    padding-left: 10px;
   }
 }
 

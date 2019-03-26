@@ -7,6 +7,7 @@ import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {WebsocketService} from "../../ws/websocket.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {BrService} from "../br/br.service";
+import {AlService} from "../al/al.service";
 
 @Injectable()
 export class LpService {
@@ -15,6 +16,7 @@ export class LpService {
               private personRestful: PersonRestful,
               private websocketService:WebsocketService,
               private util: UtilService,
+              private alService:AlService
               //private brService: BrService,
               ) {
   }
@@ -95,16 +97,16 @@ export class LpService {
         // 同步数据（调用brService方法恢复数据）
         //return this.brService.recover(0);
         //建立websoct连接（调用websoctService）
+        return this.alService.setSetting();
+      }).then(data=>{
         resolve(lpdata)
+
       }).catch(error=>{
         resolve(error)
       })
     });
   }
 
-  checkPhone(mobile:string):number{
-      return this.util.checkPhone(mobile);
-  }
 }
 
 export class PageLpData {

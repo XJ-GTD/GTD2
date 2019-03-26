@@ -7,6 +7,7 @@ import {AuthRestful, LoginData} from "../../service/restful/authsev";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {WebsocketService} from "../../ws/websocket.service";
+import {AlService} from "../al/al.service";
 
 @Injectable()
 export class LsService {
@@ -17,6 +18,7 @@ export class LsService {
               private authRestful: AuthRestful,
               //private brService: BrService,
               private websocketService:WebsocketService,
+              private alService:AlService
   ) {
   }
 
@@ -112,17 +114,21 @@ export class LsService {
         // 同步数据（调用brService方法恢复数据）
         //return this.brService.recover(0);
         //建立websoct连接（调用websoctService）
-        this.websocketService.connect();
-        resolve(lsData)
+        return this.alService.setSetting();
+      }).then(data=>{
+        // 同步数据（调用brService方法恢复数据）
+        //return this.brService.recover(0);
+        //建立websoct连接（调用websoctService）
+        return this.websocketService.connect();
+      }).then(data=>{
+        resolve(lsData);
+
       }).catch(error=>{
         resolve(error)
       })
     });
   }
 
-  checkPhone(mobile:string):number{
-    return this.util.checkPhone(mobile);
-  }
 }
 export class PageLsData {
   mobile: string = "";

@@ -26,7 +26,7 @@ export class RestfulClient {
 
   post(url:UrlEntity, body:any):Promise<any> {
     return new Promise((resolve, reject) => {
-      this.restConfig.createHeader().then(header=>{
+      let header = this.restConfig.createHeader();
         if(this.util.isMobile()){
           return this.http.post(url.url,body,header).then(data=>{
             // console.log(data.status);
@@ -50,12 +50,11 @@ export class RestfulClient {
           })
         }
       });
-    })
   }
 
   get(url:UrlEntity):Promise<any> {
     return new Promise((resolve, reject) => {
-      this.restConfig.createHeader().then(header=>{
+      let header = this.restConfig.createHeader();
         if(this.util.isMobile()){
           return this.http.get(url.url,{},header).then(data=>{
             console.log(data.status);
@@ -79,12 +78,11 @@ export class RestfulClient {
           })
         }
       });
-    })
   }
 
   put(url:UrlEntity, body:any):Promise<any> {
     return new Promise((resolve, reject) => {
-      this.restConfig.createHeader().then(header=>{
+      let header = this.restConfig.createHeader();
         if(this.util.isMobile()){
           return this.http.put(url.url,body,header).then(data=>{
             console.log(data.status);
@@ -108,7 +106,6 @@ export class RestfulClient {
           })
         }
       });
-    })
   }
 
   /**
