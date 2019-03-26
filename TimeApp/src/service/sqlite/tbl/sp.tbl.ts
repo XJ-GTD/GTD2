@@ -19,13 +19,14 @@ export class SpTbl  implements ITbl {
   sta: string="";
   tx: string ="";
   wtt:Number=0;
+  itx:Number=0;
 
   cT():string {
 
     let sq =' create table if not exists gtd_sp(spi varchar(50) primary key ,si varchar(50)  ,' +
       'spn varchar(50)  ,sd varchar(20)' +
       '  ,st varchar(20)  ,ed varchar(20)  ,et varchar(20)  ,ji varchar(50)  ,bz varchar(50)  ,' +
-      'sta varchar(4),tx varchar(4),wtt integer);';
+      'sta varchar(4),tx varchar(4),wtt integer,itx integer);';
 
     return sq;
   }
@@ -61,6 +62,9 @@ export class SpTbl  implements ITbl {
     }
     if(this.tx != null && this.tx!=""){
       sq = sq + ', tx="' + this.tx +'"';
+    }
+    if(this.itx != null){
+      sq = sq + ', itx=' + this.itx;
     }
     if (sq != null && sq != ""){
       sq = sq.substr(1);
@@ -130,9 +134,9 @@ export class SpTbl  implements ITbl {
 
   inT():string {
     let sq ='insert into gtd_sp ' +
-      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx,wtt) values("'+ this.spi+'","'+ this.si+'","'+this.spn+ '"' +
+      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx,wtt,itx) values("'+ this.spi+'","'+ this.si+'","'+this.spn+ '"' +
       ',"'+this.sd+ '","'+this.st+ '","'+this.ed+ '","'+this.et+ '","'+this.ji+ '","'+this.bz+ '",' +
-      '"'+this.sta+ '","'+this.tx+ '",'+  moment().unix() +');';
+      '"'+this.sta+ '","'+this.tx+ '",'+  moment().unix() +','+this.itx+');';
 
     return sq;
   }
@@ -141,7 +145,7 @@ export class SpTbl  implements ITbl {
     let sq ='replace into gtd_sp ' +
       '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx,wtt) values("'+ this.spi+'","'+ this.si+'","'+this.spn+ '"' +
       ',"'+this.sd+ '","'+this.st+ '","'+this.ed+ '","'+this.et+ '","'+this.ji+ '","'+this.bz+ '",' +
-      '"'+this.sta+ '","'+this.tx+'",'+  moment().unix() +');';
+      '"'+this.sta+ '","'+this.tx+'",'+  moment().unix()+','+this.itx+');';
 
     return sq;
   }
