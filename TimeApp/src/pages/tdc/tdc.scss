@@ -1,6 +1,6 @@
 page-tdc {
   ion-content.content {
-    background-color: #000000;
+    background-color: #96162d;
     color: #fff;
   }
 
@@ -27,7 +27,7 @@ page-tdc {
     font-size: 16px;
   }
   .allday-set{
-    background-color: #000000;
+    background-color: #96162d;
     width:120px;
   }
 
@@ -41,7 +41,7 @@ page-tdc {
   }
 
   .sel-btn-unsel{
-    background-color:#000000;
+    background-color:#96162d;
     color:#666666;
   }
 
@@ -61,14 +61,15 @@ page-tdc {
   }
 
   ion-item.item {
-    background-color: #000;
+    background-color: #96162d;
     color: #fff;
+    padding: 0;
   }
   .item-ios.item-block .item-inner{
-    border-bottom-color: black;
+    border: 0;
   }
 
   .item-md.item-block .item-inner{
-    border-bottom-color: black;
+    border: 0;
   }
 }

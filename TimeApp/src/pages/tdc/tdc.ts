@@ -98,6 +98,11 @@ import {BsModel} from "../../service/restful/out/bs.model";
           <ion-input type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-input>
         </div>
       </ion-row>
+      <ion-row justify-content-left>
+        <div   *ngFor ="let fss of scd.fss;">
+          <div >{{fss.ran}}</div>
+        </div>
+      </ion-row>
     </ion-grid>
     <ion-footer class ="foot-set">
       <ion-toolbar>
