@@ -23,8 +23,7 @@ export class SyncRestful {
       let header: RestFulHeader = new RestFulHeader();
       header.di = this.uitl.deviceId();
       header.dt = this.uitl.deviceType();
-      ;//设别类型
-
+      //设别类型
       this.request.specPost(this.initDataUrl, header, {}).then(reps => {
         let data: SybcData = reps.d;
         resolve(data);

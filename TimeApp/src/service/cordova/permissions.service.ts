@@ -31,7 +31,6 @@ export class PermissionsService {
   constructor(
     private androidPermissions: AndroidPermissions
   ) {
-    console.debug("android Permissions request init");
 
   }
 
@@ -75,7 +74,6 @@ export class PermissionsService {
   public checkPermission(permission: string): Promise<any> {
     return this.androidPermissions.checkPermission(permission).then(
       (result) => {
-        console.log('Has permission ' + permission + " " + result.hasPermission);
         if (!result.hasPermission) {
           return this.androidPermissions.requestPermission(permission);
         }

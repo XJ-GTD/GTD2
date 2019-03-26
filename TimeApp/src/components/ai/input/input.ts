@@ -77,7 +77,6 @@ export class InputComponent {
   }
 
   confirm() {
-    console.log("打的文字是======》"+ this.input.value );
     if (this.input.value != null && this.input.value != "") {
       this.assistantService.listenText(this.input.value);
     }
