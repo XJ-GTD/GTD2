@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController, ToastController} from 'ionic-angular';
 import {PageRData, RService} from "./r.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 注册 page.
@@ -66,8 +67,7 @@ export class RPage {
   timer:any;
 
   constructor(public navCtrl: NavController,
-              private alertCtrl: AlertController,
-              private toastCtrl: ToastController,
+              private util:UtilService,
               private rService: RService,) {
   }
 
@@ -87,41 +87,18 @@ export class RPage {
     this.navCtrl.push('LpPage');
   }
 
-  title(message){
-    let toast = this.toastCtrl.create({
-      message: message,
-      duration: 1500,
-      position: 'middle'
-    });
-    toast.present();
-  }
-
-  alert(message){
-    let alert = this.alertCtrl.create({
-      title:'提示信息',
-      subTitle: message,
-      buttons:['确定']
-    });
-    alert.present();
-  }
-
   sendMsg(){
-
-    if(this.errorPhone == 0){  //判断手机号是否为空
-      this.title("手机号不能为空");
-    }else if(this.errorPhone == 1){
-      this.title("手机号长度小于11位");
-    }else if(this.errorPhone == 2){
-      this.title("手机号格式错误");
-    }else {
+    if(this.errorPhone == 3){
       this.rService.sc(this.rData).then(data => {
         //console.log("短信发送成功" + JSON.stringify(data));
         //短信验证码KEY 赋值给验证码登录信息
         this.rData.verifykey = data.data.verifykey;
-        this.alert("短信发送成功");
-      }).catch(ref =>{
-        console.log("ref::" + ref);
-        this.alert("短信发送失败");
+        //this.alert("短信发送成功");
+        this.util.toast("短信发送成功",1500);
+
+      }).catch(error => {
+        console.log("短信发送失败" + JSON.stringify(error));
+        this.util.toast("短信发送失败",1500);
       });
 
       this.timeText = 60;
@@ -134,39 +111,37 @@ export class RPage {
           this.timeText = "发送验证码"
         }
       }, 1000)
+    }else {
+      this.util.toast("请填写正确的手机号",1500);
     }
   }
 
   register() {
-    if(this.errorPhone == undefined || this.errorPhone == 0 ){  //判断手机号是否为空
-      this.title("手机号不能为空");
-    }else if(this.errorPhone == 3){ //验证手机号是否符合规范
-      if (this.rData.username == null || this.rData.username == "" || this.rData.username == undefined){     //用户名是否为空
-        this.title("用户名不能为空");
-      }else  if (this.rData.authCode == null || this.rData.authCode == "" || this.rData.authCode == undefined){     //判断验证码是否为空
-        this.title("验证码不能为空");
-      } else if (this.rData.password == null || this.rData.password == "" || this.rData.password == undefined){     //判断密码是否为空
-        this.title("密码不能为空");
-      } else if(this.rData.verifykey == "") {
-        this.title("请发送短信并填写正确的短信验证码");
-      } else{
-        console.log("注册按钮被点击");
+    if(this.inputBoolean) {
+      console.log("注册被点击");
+      if(this.rData.verifykey != null && this.rData.verifykey != "" && this.rData.verifykey != undefined){
+        this.util.loadingStart();
         this.rService.signup(this.rData).then(data => {
           if (data.code != 0)
             throw  data;
 
-          console.debug("注册并密码登录成功::" + JSON.stringify(data));
+          console.log("注册并密码登录成功"+ JSON.stringify(data));
           clearTimeout(this.timer);
+          this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
-        }).catch(res=>{
-          //注册异常
-          console.log(res);
-          this.alert(res.message);
+        }).catch(error=>{
+          console.log("注册失败"+JSON.stringify(error));
+          this.util.loadingEnd();
+          //this.alert(error.message);
+          this.util.toast("注册失败",1500);
         });
+      }else{
+        this.util.toast("请发送短信并填写正确的短信验证码",1500);
       }
     }else {
-      this.title("请输入正确11位手机号");
+      this.util.toast("请将信息填写完整",1500);
     }
+
   }
 
   check(){
@@ -178,8 +153,16 @@ export class RPage {
   }
 
   checkPhone() {
-    this.errorPhone = this.rService.checkPhone(this.rData.mobile);
+    this.errorPhone = this.util.checkPhone(this.rData.mobile);
     this.check();
+
+    if(this.errorPhone == 0){  //判断手机号是否为空
+      this.util.toast("手机号不能为空",1500);
+    }else if(this.errorPhone == 1){
+      this.util.toast("手机号长度小于11位",1500);
+    }else if(this.errorPhone == 2){
+      this.util.toast("手机号格式错误",1500);
+    }
   }
 
   checkCode(){
@@ -189,6 +172,10 @@ export class RPage {
       this.errorCode = 0;
     }
     this.check();
+
+    if(this.errorCode == 0){  //判断验证码是否为空
+      this.util.toast("验证码不能为空",1500);
+    }
   }
 
   checkPwd(){
@@ -198,6 +185,10 @@ export class RPage {
       this.errorPwd = 0;
     }
     this.check();
+
+    if(this.errorPwd == 0){  //判断密码是否为空
+      this.util.toast("密码不能为空",1500);
+    }
   }
 
   checkName(){
@@ -207,6 +198,10 @@ export class RPage {
       this.errorName = 0;
     }
     this.check();
+
+    if(this.errorName == 0){  //判断用户名是否为空
+      this.util.toast("用户名不能为空",1500);
+    }
   }
 
 }

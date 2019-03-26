@@ -44,4 +44,31 @@ page-tdc {
     background-color:#000000;
     color:#666666;
   }
+
+  .foot-set{
+    background-color: #ffffff;
+  }
+
+  .dobtn-set{
+    width: 100%;
+    text-align: center;
+  }
+  .okbtn-set{
+    float: right;
+  }
+  .cancelbtn-set{
+    float: left;
+  }
+
+  ion-item.item {
+    background-color: #000;
+    color: #fff;
+  }
+  .item-ios.item-block .item-inner{
+    border-bottom-color: black;
+  }
+
+  .item-md.item-block .item-inner{
+    border-bottom-color: black;
+  }
 }

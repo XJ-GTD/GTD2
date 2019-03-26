@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController, ToastController} from 'ionic-angular';
 import {LsService, PageLsData} from "./ls.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 登陆（短信） page.
@@ -29,7 +30,7 @@ import {LsService, PageLsData} from "./ls.service";
       </ion-row>
       <ion-row justify-content-between align-items-center>
         <div class="w-auto">
-          <ion-input class="login-code" type="password" placeholder="验证码" [(ngModel)]="lsData.authCode" (ionBlur)="checkCode()"></ion-input>
+          <ion-input class="login-code" type="tel" placeholder="验证码" [(ngModel)]="lsData.authCode" (ionBlur)="checkCode()"></ion-input>
         </div>
         <div>
           <button ion-button class="login-send" (click)="sendMsg()">{{timeText}}</button>
@@ -54,8 +55,7 @@ export class LsPage {
   timer:any;
 
   constructor(public navCtrl: NavController,
-              public alertCtrl: AlertController,
-              private toastCtrl: ToastController,
+              private util:UtilService,
               private lsService: LsService,) {
   }
 
@@ -79,42 +79,18 @@ export class LsPage {
     this.navCtrl.push('LpPage');
   }
 
-  title(message){
-    let toast = this.toastCtrl.create({
-      message: message,
-      duration: 1500,
-      position: 'middle'
-    });
-    toast.present();
-    return;
-  }
-
-  alert(message){
-    let alert = this.alertCtrl.create({
-      title:'提示信息',
-      subTitle: message,
-      buttons:['确定']
-    });
-    alert.present();
-  }
-
   sendMsg(){
-    if(this.errorPhone == 0){  //判断手机号是否为空
-      this.title("手机号不能为空");
-    }else if(this.errorPhone == 1){
-      this.title("手机号长度小于11位");
-    }else if(this.errorPhone == 2){
-      this.title("手机号格式错误");
-    }else {
+    if(this.errorPhone == 3){
       this.lsService.getSMSCode(this.lsData.mobile).then(data => {
         //console.log("短信发送成功" + JSON.stringify(data));
         //短信验证码KEY 赋值给验证码登录信息
         this.lsData.verifykey = data.data.verifykey;
-        this.alert("短信发送成功");
+        //this.alert("短信发送成功");
+        this.util.toast("短信发送成功",1500);
 
-      }).catch(ref => {
-        console.log("ref::" + ref);
-        this.alert("短信发送失败");
+      }).catch(error => {
+        console.log("短信发送失败" + JSON.stringify(error));
+        this.util.toast("短信发送失败",1500);
       });
 
       this.timeText = 60;
@@ -127,31 +103,33 @@ export class LsPage {
           this.timeText = "发送验证码"
         }
       }, 1000)
+    }else {
+      this.util.toast("请填写正确的手机号",1500);
     }
   }
 
   signIn() {
-    if(this.errorPhone == 0){  //判断手机号是否为空
-      this.title("手机号不能为空");
-    }else if(this.errorPhone == 1){
-      this.title("手机号长度小于11位");
-    }else if(this.errorPhone == 2){
-      this.title("手机号格式错误");
-    }else if(this.errorCode == 0){ //判断密码是否为空
-      this.title("验证码不能为空");
-    }else {
+    if(this.inputBoolean) {
       console.log("手机验证码登录被点击");
-      this.lsService.login(this.lsData).then(data=> {
-        if (data.code != 0)
-          throw  data;
+      if(this.lsData.verifykey != null && this.lsData.verifykey != "" && this.lsData.verifykey != undefined){
+        this.util.loadingStart();
+        this.lsService.login(this.lsData).then(data=> {
+          if (data.code != 0)
+            throw  data;
 
-        console.log("手机验证码登录成功"+ JSON.stringify(data));
-        clearTimeout(this.timer);
-        this.navCtrl.setRoot('MPage');
-      }).catch(res=>{
-        console.log("手机验证码登录失败"+res);
-        this.alert(res.message);
-      });
+          console.log("手机验证码登录成功"+ JSON.stringify(data));
+          clearTimeout(this.timer);
+          this.util.loadingEnd();
+          this.navCtrl.setRoot('MPage');
+        }).catch(error=>{
+          console.log("手机验证码登录失败"+JSON.stringify(error));
+          this.util.loadingEnd();
+          //this.alert(error.message);
+          this.util.toast("手机验证码登录失败",1500);
+        });
+      }else{
+        this.util.toast("请发送短信并填写正确的短信验证码",1500);
+      }
     }
   }
 
@@ -164,8 +142,16 @@ export class LsPage {
   }
 
   checkPhone() {
-    this.errorPhone = this.lsService.checkPhone(this.lsData.mobile);
+    this.errorPhone = this.util.checkPhone(this.lsData.mobile);
     this.check();
+
+    if(this.errorPhone == 0){  //判断手机号是否为空
+      this.util.toast("手机号不能为空",1500);
+    }else if(this.errorPhone == 1){
+      this.util.toast("手机号长度小于11位",1500);
+    }else if(this.errorPhone == 2){
+      this.util.toast("手机号格式错误",1500);
+    }
   }
 
   checkCode(){
@@ -175,6 +161,10 @@ export class LsPage {
       this.errorCode = 0;
     }
     this.check();
+
+    if(this.errorCode == 0){ //判断密码是否为空
+      this.util.toast("验证码不能为空",1500);
+    }
   }
 
   // ionViewDidLoad(){

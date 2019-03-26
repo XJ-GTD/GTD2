@@ -101,29 +101,36 @@ public class MainVerticle extends AbstractVerticle {
 		System.out.println("Consumer " + consumer + " received [" + received.body().encode() + "]");
 		JsonObject data = received.body().getJsonObject("body");
 
-		String announceType = data.getJsonObject("context").getString("announceType");
 		JsonArray announceTo = new JsonArray();
-		if (data.getJsonObject("context").getValue("announceTo") instanceof JsonArray) {
-			announceTo.addAll(data.getJsonObject("context").getJsonArray("announceTo"));
-		} else {
-			announceTo.add(data.getJsonObject("context").getValue("announceTo"));
+		
+		if (data.getJsonObject("context").getValue("announceTo") != null) {
+			if (data.getJsonObject("context").getValue("announceTo", new JsonArray()) instanceof JsonArray) {
+				announceTo.addAll(data.getJsonObject("context").getJsonArray("announceTo", new JsonArray()));
+			} else {
+				announceTo.add(data.getJsonObject("context").getValue("announceTo", new JsonObject()));
+			}
 		}
-		JsonObject announceContent = new JsonObject();
-		if (data.getJsonObject("context").getValue("announceContent") != null) {
-			System.out.println(data.getJsonObject("context").getValue("announceContent").getClass().getName());
-		}
-		if (data.getJsonObject("context").getValue("announceContent") instanceof JsonObject) {
-			announceContent.mergeIn(data.getJsonObject("context").getJsonObject("announceContent"));
-		} else {
-			announceContent.mergeIn(new JsonObject().put("data", data.getJsonObject("context").getValue("announceContent")));
-		}
-		String next = data.getJsonObject("context").getString("next");
 
 		if (announceTo == null || announceTo.isEmpty()) {
 			System.out.println("No announce target, process stopped.");
 			return;
+		} else {
+			System.out.println("Announce target exist, process next.");
 		}
 		
+		String announceType = data.getJsonObject("context").getString("announceType", "");
+
+		JsonObject announceContent = new JsonObject();
+		if (data.getJsonObject("context").getValue("announceContent") != null) {
+			System.out.println(data.getJsonObject("context").getValue("announceContent").getClass().getName());
+		}
+		if (data.getJsonObject("context").getValue("announceContent", new JsonObject()) instanceof JsonObject) {
+			announceContent.mergeIn(data.getJsonObject("context").getJsonObject("announceContent", new JsonObject()));
+		} else {
+			announceContent.mergeIn(new JsonObject().put("data", data.getJsonObject("context").getValue("announceContent", new JsonObject())));
+		}
+		String next = data.getJsonObject("context").getString("next");
+
 		if ("duan_announce".equals(announceType)) {
 			// 短应用内部通知
 			for (int pos = 0; pos < announceTo.size(); pos++) {
@@ -188,13 +195,14 @@ public class MainVerticle extends AbstractVerticle {
 						
 						System.out.println("User info fetched with " + openid);
 						System.out.println(userinfo.encode());
-						String unionId = userinfo.getJsonObject("data").getString("unionid");
+						//String unionId = userinfo.getJsonObject("data").getString("unionid");
+						String openId = userinfo.getJsonObject("data").getString("openid");
 						
-						if (unionId == null || StringUtils.isEmpty(unionId)) {
+						if (openId == null || StringUtils.isEmpty(openId)) {
 							System.out.println("inteligence message can not announce by sms to " + openid);
 						} else {
-							System.out.println("announce by mwxing message to " + unionId);
-							sendMQMessages(unionId + ".*", announceContent.getJsonObject("mwxing"));
+							System.out.println("announce by mwxing message to " + openId);
+							sendMQMessages(openId + ".*", announceContent.getJsonObject("mwxing"));
 						}
 						
 					} else {

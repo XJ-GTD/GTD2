@@ -1,5 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Scroll } from 'ionic-angular';
+import {ScdData} from "../tdl/tdl.service";
+import * as moment from "moment";
+import {TdcService} from "./tdc.service";
+import {UtilService} from "../../service/util-service/util.service";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the 新建日程 page.
@@ -16,128 +21,315 @@ import { IonicPage, NavController, NavParams, Scroll } from 'ionic-angular';
     <ion-grid>
       <ion-row justify-content-center>
         <div class = "input-set">
-          <ion-input type="text" placeholder="我想..."></ion-input>
+          <ion-input type="text" [ngModel]="scd.sn" placeholder="我想..."></ion-input>
         </div>
       </ion-row>
       <ion-row justify-content-left>
-        <div >
+        <ion-item>
             <button ion-button  round class ="btn-set">添加计划</button>
-        </div>
+        </ion-item>
       </ion-row>
       <ion-row justify-content-left>
-        <div class ="date-set"><ion-label>{{'2019/03/22' | formatedate : "CYYYY/MM/DD"}}</ion-label></div>&nbsp;&nbsp;&nbsp;&nbsp;
-        <div class ="date-set"><ion-label>{{'2019/03/22' | formatedate : "CWEEK" }}</ion-label></div>&nbsp;&nbsp;
-        <div><ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label></div>
+        <!--<div class ="date-set">
+          <ion-label>{{scd.sd | formatedate : "CYYYY/MM/DD"}}</ion-label>
+        </div>&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class ="date-set">
+          <ion-label>{{scd.sd | formatedate : "CWEEK" }}</ion-label>
+        </div>&nbsp;&nbsp;
+        <div><ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label></div>-->
+        <ion-item>
+          <ion-datetime displayFormat="YYYY年MM月DD日 DDDD" [(ngModel)]="scd.sd" dayNames="周日,周一,周二,周三,周四,周五,周六"></ion-datetime>
+          <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
+        </ion-item>
       </ion-row>
       <ion-row justify-content-left>
-        <div><ion-label>全天</ion-label></div>
-        <div><ion-item ><ion-toggle checked="true" color="danger"></ion-toggle></ion-item></div>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <div><ion-label>12:00</ion-label></div>&nbsp;&nbsp;
-        <div><ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label></div>
+        <ion-item>
+          <ion-label>全天</ion-label>
+          <ion-toggle  [ngModel]="alld" color="danger"></ion-toggle>
+          <ion-datetime displayFormat="HH:mm" [(ngModel)]="scd.st" ></ion-datetime>
+          <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
+        </ion-item>
       </ion-row>
       <ion-row justify-content-left>
         <div><ion-label>重复</ion-label></div>
         <div><button ion-button  round clear class ="sel-btn-set"
-                     [ngClass]="wake.close == 1?'sel-btn-seled':'sel-btn-unsel'"  
-                     (click)="clickwake(1)">关</button></div>
+                     [ngClass]="rept.close == 1?'sel-btn-seled':'sel-btn-unsel'"  
+                     (click)="clickrept(0)">关</button></div>
         <div><button ion-button  round clear class ="sel-btn-set"
-                     [ngClass]="wake.d == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(2)">天</button></div>
+                     [ngClass]="rept.d == 1?'sel-btn-seled':'sel-btn-unsel'"
+                     (click)="clickrept(1)">天</button></div>
         <div><button ion-button  round  clear class ="sel-btn-set"
-                     [ngClass]="wake.w == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(3)">周</button></div>
+                     [ngClass]="rept.w == 1?'sel-btn-seled':'sel-btn-unsel'"
+                     (click)="clickrept(2)">周</button></div>
         <div><button ion-button  round clear class ="sel-btn-set"
-                     [ngClass]="wake.m == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(4)">月</button></div>
+                     [ngClass]="rept.m == 1?'sel-btn-seled':'sel-btn-unsel'"
+                     (click)="clickrept(3)">月</button></div>
         <div><button ion-button  round clear class ="sel-btn-set"
-                     [ngClass]="wake.y == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(5)">年</button></div>
+                     [ngClass]="rept.y == 1?'sel-btn-seled':'sel-btn-unsel'"
+                     (click)="clickrept(4)">年</button></div>
       </ion-row>
       <ion-row justify-content-left>
         <div><ion-label>提醒</ion-label></div>
-        <div><button ion-button  round class ="sel-btn-set">5分钟</button></div>
-        <div><button ion-button  round class ="sel-btn-set">10分钟</button></div>
-        <div><button ion-button  round class ="sel-btn-set">15分钟</button></div>
-        <div><button ion-button  round class ="sel-btn-set">30分钟</button></div>
-        <div><button ion-button  round class ="sel-btn-set">1小时</button></div>
-        <div><button ion-button  round class ="sel-btn-set">4小时</button></div>
-        <div><button ion-button  round class ="sel-btn-set">1天</button></div>
+        <div><button ion-button  round clear class ="sel-btn-set"
+                     [ngClass]="wake.close == 1?'sel-btn-seled':'sel-btn-unsel'"
+                     (click)="clickwake(0)">关</button></div>
+        <div><button ion-button  round clear  class ="sel-btn-set"
+                     [ngClass]="wake.tenm == 1?'sel-btn-seled':'sel-btn-unsel'"
+                     (click)="clickwake(1)">10分钟</button></div>
+        <div><button ion-button  round clear  class ="sel-btn-set"
+                     [ngClass]="wake.thirm == 1?'sel-btn-seled':'sel-btn-unsel'"
+                     (click)="clickwake(2)">30分钟</button></div>
+        <div><button ion-button  round clear  class ="sel-btn-set"
+                     [ngClass]="wake.oh == 1?'sel-btn-seled':'sel-btn-unsel'"
+                     (click)="clickwake(3)">1小时</button></div>
+        <div><button ion-button  round clear  class ="sel-btn-set"
+                     [ngClass]="wake.foh == 1?'sel-btn-seled':'sel-btn-unsel'"
+                     (click)="clickwake(4)">4小时</button></div>
+        <div><button ion-button  round clear  class ="sel-btn-set"
+                     [ngClass]="wake.od == 1?'sel-btn-seled':'sel-btn-unsel'"
+                     (click)="clickwake(5)">1天</button></div>
       </ion-row>
       <ion-row justify-content-left>
         <div class = "memo-set">
-          <ion-input type="text" placeholder="备注"></ion-input>
+          <ion-input type="text" placeholder="备注" [ngModel]="scd.bz"></ion-input>
         </div>
       </ion-row>
     </ion-grid>
+    <ion-footer class ="foot-set">
+      <ion-toolbar>
+        <ion-grid>
+          <ion-row >
+            <div class="dobtn-set">
+              <div class ="cancelbtn-set">
+                <ion-buttons  >
+                  <button  ion-button icon-only (click)="cancel()" color="dark">
+                    <ion-icon name="close"></ion-icon>
+                  </button>
+                </ion-buttons>
+              </div>
+              <div >
+                <ion-buttons class ="okbtn-set" >
+                  <button  ion-button icon-only (click)="ok()" color="dark">
+                    <ion-icon name="checkmark"></ion-icon>
+                  </button>
+                </ion-buttons>
+              </div>
+              <div>
+                <ion-buttons>
+                  <button  ion-button icon-only (click)="goShare()" color="dark">
+                    <ion-icon name="share" ></ion-icon>
+                  </button>
+                </ion-buttons>
+              </div>
+            </div>
+          </ion-row>
+        </ion-grid>
+      </ion-toolbar>
+    </ion-footer>
   </ion-content>`
 
 })
 export class TdcPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private tdcServ :TdcService,private util:UtilService) {
 
   }
 
-  wake = {
+  scd :ScdData = new ScdData();
+
+  rept = {
     close:1,
     d:0,
     w:0,
     m:0,
     y:0
   };
-  event = {timeStarts :"2019/03/22"};
+
+  wake = {
+    close:1,
+    tenm:0,
+    thirm:0,
+    oh:0,
+    foh:0,
+    od:0
+  };
+
+  //全天
+  alld:boolean = false;
 
   ionViewDidLoad() {
+
     console.log('ionViewDidLoad NewAgendaPage');
+  }
+
+  ionViewWillEnter() {
+    this.scd.sd = this.navParams.get("dateStr");
+    this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
+    this.scd.st = moment().format("HH:mm");
+
+  }
+
+  //重复按钮显示控制
+  clickrept(type){
+    this.scd.rt = type;
+
+    switch (type){
+      case 0:
+        this.rept.close = 1;
+        this.rept.d = 0;
+        this.rept.w = 0;
+        this.rept.m = 0;
+        this.rept.y = 0;
+        break;
+      case 1:
+        this.rept.close = 0;
+        this.rept.d = 1;
+        this.rept.w = 0;
+        this.rept.m = 0;
+        this.rept.y = 0;
+        break;
+      case 2:
+        this.rept.close = 0;
+        this.rept.d = 0;
+        this.rept.w = 1;
+        this.rept.m = 0;
+        this.rept.y = 0;
+        break;
+      case 3:
+        this.rept.close = 0;
+        this.rept.d = 0;
+        this.rept.w = 0;
+        this.rept.m = 1;
+        this.rept.y = 0;
+        break;
+      case 4:
+        this.wake.close = 0;
+        this.rept.d = 0;
+        this.rept.w = 0;
+        this.rept.m = 0;
+        this.rept.y = 1;
+        break;
+      default:
+        this.rept.close = 1;
+        this.rept.d = 0;
+        this.rept.w = 0;
+        this.rept.m = 0;
+        this.rept.y = 0;
+    }
   }
 
   //提醒按钮显示控制
   clickwake(type){
+
+    this.scd.tx = type;
+
     switch (type){
-      case 1:
+      case 0:
         this.wake.close = 1;
-        this.wake.d = 0;
-        this.wake.w = 0;
-        this.wake.m = 0;
-        this.wake.y = 0;
+        this.wake.tenm = 0;
+        this.wake.thirm = 0;
+        this.wake.oh = 0;
+        this.wake.foh = 0;
+        this.wake.od=0;
+        break;
+      case 1:
+        this.wake.close = 0;
+        this.wake.tenm = 1;
+        this.wake.thirm = 0;
+        this.wake.oh = 0;
+        this.wake.foh = 0;
+        this.wake.od=0;
         break;
       case 2:
         this.wake.close = 0;
-        this.wake.d = 1;
-        this.wake.w = 0;
-        this.wake.m = 0;
-        this.wake.y = 0;
+        this.wake.tenm = 0;
+        this.wake.thirm = 1;
+        this.wake.oh = 0;
+        this.wake.foh = 0;
+        this.wake.od=0;
         break;
       case 3:
         this.wake.close = 0;
-        this.wake.d = 0;
-        this.wake.w = 1;
-        this.wake.m = 0;
-        this.wake.y = 0;
+        this.wake.tenm = 0;
+        this.wake.thirm = 0;
+        this.wake.oh = 1;
+        this.wake.foh = 0;
+        this.wake.od=0;
         break;
       case 4:
         this.wake.close = 0;
-        this.wake.d = 0;
-        this.wake.w = 0;
-        this.wake.m = 1;
-        this.wake.y = 0;
+        this.wake.tenm = 0;
+        this.wake.thirm = 0;
+        this.wake.oh = 0;
+        this.wake.foh = 1;
+        this.wake.od=0;
         break;
       case 5:
         this.wake.close = 0;
-        this.wake.d = 0;
-        this.wake.w = 0;
-        this.wake.m = 0;
-        this.wake.y = 1;
+        this.wake.tenm = 0;
+        this.wake.thirm = 0;
+        this.wake.oh = 0;
+        this.wake.foh = 0;
+        this.wake.od=1;
         break;
       default:
         this.wake.close = 1;
-        this.wake.d = 0;
-        this.wake.w = 0;
-        this.wake.m = 0;
-        this.wake.y = 0;
+        this.wake.tenm = 0;
+        this.wake.thirm = 0;
+        this.wake.oh = 0;
+        this.wake.foh = 0;
+        this.wake.od=0;
     }
   }
 
+  cancel(){
+    this.navCtrl.pop();
+  }
+
+  save(){
+
+    if (!this.chkinput()){
+      return
+    }
+
+    //开始时间格式转换
+    this.scd.sd = moment(this.scd.sd).format("YYYY/MM/DD");
+
+
+    //结束日期设置
+    //重复场合
+    if (this.scd.rt !="0" ){
+      this.scd.ed = "9999/12/31";
+    }else{
+      this.scd.ed = this.scd.sd;
+    }
+
+    //结束时间设置
+    //全天的场合
+    if (this.alld){
+      this.scd.et = "99:99";
+    }else{
+      this.scd.et = this.scd.st;
+    }
+
+    //提醒内容设置
+    this.scd.ui = UserConfig.account.id;
+
+    //归属
+    this.scd.gs = '1';
+
+    this.tdcServ.save(this.scd).then(data=>{
+      this.util.toast("保存成功",2000);
+    });
+  }
+
+  chkinput():boolean{
+    if (this.scd.sn == ""){
+      this.util.toast("请输入主题",2000);
+      return false;
+    }
+    return true;
+  }
 }
 

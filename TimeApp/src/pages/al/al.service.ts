@@ -20,6 +20,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {ScdData} from "../tdl/tdl.service";
 import {UserConfig} from "../../service/config/user.config";
 import {AgdRestful} from "../../service/restful/agdsev";
+import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
 
 @Injectable()
 export class AlService {
@@ -433,7 +434,7 @@ export class AlService {
       ss.push("看过不良人吗");
       ss.push("周末加班");
 
-      for (let i = 0; i < 400; i++) {
+      for (let i = 0; i < 4000; i++) {
         start = moment('2019/03/01');
         let r = this.util.randInt(-365 * 10, 365 * 10);
         let t = this.util.randInt(0, 24);
@@ -476,6 +477,26 @@ export class AlService {
         }
 
         sqls.push(c.inT());
+
+        let len = 1;
+        if(c.rt=='1'){
+          len = 80;
+        }else if(c.rt=='2'){
+          len = 24;
+        }else if(c.rt=='3'){
+          len = 96;
+        }else if(c.rt=='4'){
+          len = 365;
+        }
+        let sql=new Array<string>();
+        for(let i=0;i<len;i++){
+          let sp = new SpTbl();
+          sp.spi = this.util.getUuid()
+          sp.si = c.si;
+          sp.sd = moment(c.sd).add(i,'d').format("YYYY/MM/DD");
+          sp.st = c.st;
+          sqls.push(sp.inT());
+        }
 
         c_r2 = 6;
         if (!(c_r > 6 && c_r < 0)) {

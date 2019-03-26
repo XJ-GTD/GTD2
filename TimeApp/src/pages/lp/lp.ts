@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, ToastController} from 'ionic-angular';
+import {IonicPage, NavController} from 'ionic-angular';
 import {LpService, PageLpData} from "./lp.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 登陆（密码） page.
@@ -49,8 +50,7 @@ export class LpPage {
   inputBoolean:boolean = false;  // false： show ; true show-true
 
   constructor(public navCtrl: NavController,
-              public alertCtrl: AlertController,
-              private toastCtrl: ToastController,
+              private util:UtilService,
               private lpService: LpService,) {
   }
 
@@ -74,44 +74,22 @@ export class LpPage {
     this.navCtrl.push('LsPage');
   }
 
-  title(message){
-    let toast = this.toastCtrl.create({
-      message: message,
-      duration: 1500,
-      position: 'middle'
-    });
-    toast.present();
-  }
-
-  alert(message){
-    let alert = this.alertCtrl.create({
-      title:'提示信息',
-      subTitle: message,
-      buttons:['确定']
-    });
-    alert.present();
-  }
-
   signIn() {
-    if(this.errorPhone == 0){  //判断手机号是否为空
-      this.title("手机号不能为空");
-    }else if(this.errorPhone == 1){
-      this.title("手机号长度小于11位");
-    }else if(this.errorPhone == 2){
-      this.title("手机号格式错误");
-    }else if(this.errorPwd == 0){ //判断密码是否为空
-      this.title("密码不能为空");
-    }else {
+    if(this.inputBoolean){
       console.log("手机密码登录按钮被点击");
+      this.util.loadingStart();
       this.lpService.login(this.lpData).then(data=> {
         if (data.code != 0)
           throw  data;
 
         console.log("手机密码登录成功"+ JSON.stringify(data));
+        this.util.loadingEnd();
         this.navCtrl.setRoot('MPage');
-      }).catch(res=>{
-        console.log("手机密码登录失败"+res);
-        this.alert(res.message);
+      }).catch(error=>{
+        console.log("手机密码登录失败"+JSON.stringify(error));
+        this.util.loadingEnd();
+        //this.alert(error.message);
+        this.util.toast("手机密码登录失败",1500);
       });
     }
   }
@@ -125,9 +103,16 @@ export class LpPage {
   }
 
   checkPhone() {
-    this.errorPhone = this.lpService.checkPhone(this.lpData.mobile);
+    this.errorPhone = this.util.checkPhone(this.lpData.mobile);
     this.check();
 
+    if(this.errorPhone == 0){  //判断手机号是否为空
+      this.util.toast("手机号不能为空",1500);
+    }else if(this.errorPhone == 1){
+      this.util.toast("手机号长度小于11位",1500);
+    }else if(this.errorPhone == 2){
+      this.util.toast("手机号格式错误",1500);
+    }
   }
 
   checkPwd(){
@@ -137,5 +122,10 @@ export class LpPage {
       this.errorPwd = 0;
     }
     this.check();
+
+    if(this.errorPwd == 0){ //判断密码是否为空
+      this.util.toast("密码不能为空",1500);
+    }
   }
+
 }
