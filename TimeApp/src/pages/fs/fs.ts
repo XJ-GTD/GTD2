@@ -100,7 +100,11 @@ export class FsPage {
     if(this.selFsl.size>0){
       let list = [];
       this.selFsl.forEach((value , key) =>{
-        list.push(value);
+        if(value.gc && value.gc>0){
+          list.push(value.fsl);//群组人员
+        }else{
+          list.push(value);
+        }
       });
 
       if(this.addType == 'rc'){
