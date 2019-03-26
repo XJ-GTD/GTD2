@@ -14,6 +14,7 @@ import {YTbl} from "./tbl/y.tbl";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {UtilService} from "../util-service/util.service";
 import {SyncRestful} from "../restful/syncsev";
+import {StTbl} from "./tbl/st.tbl";
 
 /**
  * create by on 2019/3/5
@@ -103,6 +104,12 @@ export class SqliteInit {
     await this.sqlexec.drop(y);
     count++;
     await this.sqlexec.create(y);
+    count++;
+
+    let st: StTbl = new StTbl();
+    await this.sqlexec.drop(st);
+    count++;
+    await this.sqlexec.create(st);
     count++;
     return count;
 

@@ -1,6 +1,8 @@
 import {Injectable} from "@angular/core";
 import {File} from "@ionic-native/file";
 import {AibutlerRestful, AudioPro, TextPro} from "../restful/aibutlersev";
+import * as moment from 'moment';
+import {WsModel} from "../../ws/model/ws.model";
 
 
 /**
@@ -142,6 +144,7 @@ export class AssistantService {
       }
       let textPro = new TextPro();
       textPro.d.text = text;
+      textPro.c.client = {time:moment().unix(),context:new WsModel()};
       this.aibutlerRestful.posttext(textPro)
         .then(data => {
           console.log("data code：" + data.code);

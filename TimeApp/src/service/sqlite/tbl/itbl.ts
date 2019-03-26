@@ -20,6 +20,4 @@ export interface ITbl {
   inT():string ;
 
   rpT():string ;
-
-  clp();
 }

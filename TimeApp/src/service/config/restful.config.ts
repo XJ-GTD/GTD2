@@ -3,6 +3,7 @@ import {ATbl} from "../sqlite/tbl/a.tbl";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {Injectable} from "@angular/core";
 import {UserConfig} from "./user.config";
+import {UtilService} from "../util-service/util.service";
 
 @Injectable()
 export class RestFulConfig {
@@ -10,7 +11,7 @@ export class RestFulConfig {
 
   private urlLs: Map<string, UrlEntity>;
 
-  constructor(private sqlitexec: SqliteExec) {
+  constructor(private sqlitexec: SqliteExec,private util:UtilService) {
     //this.init();
   }
 
@@ -21,9 +22,9 @@ export class RestFulConfig {
     // //帐户ID
     header.ai = UserConfig.account.phone;
     //设备ID
-    header.di = UserConfig.account.phone;
+    header.di = this.util.deviceId();
     // //设别类型
-    header.dt = "m";
+    header.dt = this.util.deviceType();
     // //登录码
     header.lt = UserConfig.account.token;
 
@@ -167,12 +168,12 @@ export class RestFulConfig {
 
 export class RestFulHeader {
   "Content-Type": string = "application/json";
-  lt: string = "NzJkM2VjM2QtNGE3Zi00Y2Y3LTliNmQtZjllMTJlMGNiODVm";//登录码
-  ai: string = "13661617252";//帐户ID
+  lt: string = "";//登录码
+  ai: string = "";//帐户ID
   pi: string = "cn.sh.com.xj.timeApp";//产品ID
   pv: string = "v1";//产品版本
-  di: string = "11111";//设备ID
-  dt: string = "1111";//设别类型
+  di: string = "";//设备ID
+  dt: string = "";//设别类型
 }
 
 

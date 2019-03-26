@@ -17,10 +17,13 @@ import {GTbl} from "../../service/sqlite/tbl/g.tbl";
 import {BxTbl} from "../../service/sqlite/tbl/bx.tbl";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {FeedbackService} from "../../service/cordova/feedback.service";
-import {ScdData} from "../tdl/tdl.service";
 import {UserConfig} from "../../service/config/user.config";
 import {AgdRestful} from "../../service/restful/agdsev";
 import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
+import {DurationInputArg2} from "moment";
+import {unitOfTime} from "moment";
+import DurationAs = moment.unitOfTime.DurationAs;
+import {StTbl} from "../../service/sqlite/tbl/st.tbl";
 
 @Injectable()
 export class AlService {
@@ -177,6 +180,7 @@ export class AlService {
 
       let start = moment('2019/03/01');
       let sqls = [];
+      let stMap:Map<string,StTbl> = new Map<string,StTbl>();
 
       //计划
       let jhs: Array<JhTbl> = [];
@@ -434,9 +438,9 @@ export class AlService {
       ss.push("看过不良人吗");
       ss.push("周末加班");
 
-      for (let i = 0; i < 4000; i++) {
+      for (let i = 0; i < 500; i++) {
         start = moment('2019/03/01');
-        let r = this.util.randInt(-365 * 10, 365 * 10);
+        let r = this.util.randInt(-365 * 3, 365 * 3);
         let t = this.util.randInt(0, 24);
         let jh_i = this.util.randInt(0, 20);
         let jh_id = "";
@@ -444,7 +448,7 @@ export class AlService {
         let r_i2 = this.util.randInt(0, 15);
         let c_r = this.util.randInt(-5, 10);
         let c_r2 = this.util.randInt(0, 5);
-        let c_r3 = this.util.randInt(0, 4);
+        let c_r3 = this.util.randInt(-10, 4);
 
         if (jh_i < 10) {
           jh_id = jhs[jh_i].ji;
@@ -458,10 +462,29 @@ export class AlService {
         c.sn = ss[r_i];
         c.sd = d.format('YYYY/MM/DD');
         c.st = d.format('hh:mm');
-        if (c_r3 > 0) c.ed = '9999/12/31';
-        else c.ed = c.sd;
+        if (c_r3 == 1){
+          c.ed = moment(c.sd).add(1,"y").format("YYYY/MM/DD");
+          c.rt = "1";
+        }
+        else if (c_r3 == 2){
+          c.ed = moment(c.sd).add(1,"y").format("YYYY/MM/DD");
+          c.rt = "2";
+        }
+        else if (c_r3 == 3){
+          c.ed = moment(c.sd).add(3,"y").format("YYYY/MM/DD");
+          c.rt = "3";
+
+        }
+        else if (c_r3 == 4){
+          c.ed = moment(c.sd).add(20,"y").format("YYYY/MM/DD");
+          c.rt = "4";
+        }
+        else {
+          c.ed = c.sd;
+          c.rt = "0";
+        }
         c.et = '24:00'
-        c.rt = c_r3.toString();
+
         c.sr = c.si;
         c.ji = jh_id;
         c.bz = ss[r_i2];
@@ -478,24 +501,47 @@ export class AlService {
 
         sqls.push(c.inT());
 
-        let len = 1;
+        let len = 0;
+        let add:unitOfTime.DurationConstructor;
+
         if(c.rt=='1'){
-          len = 80;
-        }else if(c.rt=='2'){
-          len = 24;
-        }else if(c.rt=='3'){
-          len = 96;
-        }else if(c.rt=='4'){
           len = 365;
+          add ='d';
+
+        }else if(c.rt=='2'){
+          len = 53;
+          add = "w";
+        }else if(c.rt=='3'){
+          len = 36;
+          add = "M"
+        }else if(c.rt=='4'){
+          len = 30;
+          add = "y"
+        }else if(c.rt=='0'){
+          len = 1;
+          add = "d"
         }
         let sql=new Array<string>();
         for(let i=0;i<len;i++){
           let sp = new SpTbl();
           sp.spi = this.util.getUuid()
           sp.si = c.si;
-          sp.sd = moment(c.sd).add(i,'d').format("YYYY/MM/DD");
+          sp.sd = moment(c.sd).add(i,add).format("YYYY/MM/DD");
           sp.st = c.st;
           sqls.push(sp.inT());
+          if (!stMap.get(sp.sd)){
+            let st:StTbl = new StTbl();
+            st.c = 0;
+            st.bz = "";
+            st.n = false;
+            if(c.rt=='0'){
+              st.n = true;
+            }
+            st.d = sp.sd;
+            stMap.set(sp.sd,st);
+          }else{
+            stMap.get(sp.sd).c = (stMap.get(sp.sd).c + 1);
+          }
         }
 
         c_r2 = 6;
@@ -516,6 +562,9 @@ export class AlService {
 
         }
       }
+      stMap.forEach((v,k,map) =>{
+        sqls.push(v.inT());
+      })
 
       this.sqlExce.batExecSql(sqls).then(c => {
         console.log("插入数据=====" + c);

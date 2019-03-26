@@ -31,27 +31,32 @@ export class TdcService {
       }else{
         let ct = new CTbl();
         Object.assign(ct,rc);
-        rc.si = this.util.getUuid();
+        ct.si = this.util.getUuid();
         let et = new ETbl();//提醒表
-        et.si = rc.si;
+        et.si = ct.si;
         //保存本地日程
         this.sqlExce.save(ct).then(data=>{
           let len = 1;
+          let add:any = 'd';
           if(rc.rt=='1'){
-            len = 80;
-          }else if(rc.rt=='2'){
-            len = 24;
-          }else if(rc.rt=='3'){
-            len = 96;
-          }else if(rc.rt=='4'){
             len = 365;
+          }else if(rc.rt=='2'){
+            len = 96;
+            add = 'w';
+          }else if(rc.rt=='3'){
+            len = 24;
+            add = 'M';
+          }else if(rc.rt=='4'){
+            len = 20;
+            add = 'y';
           }
           let sql=new Array<string>();
           for(let i=0;i<len;i++){
             let sp = new SpTbl();
-            sp.spi = this.util.getUuid()
-            sp.si = rc.si;
-            sp.sd = moment(rc.sd).add(i,'d').format("YYYY/MM/DD");
+            sp.spi = this.util.getUuid();
+            sp.si = ct.si;
+           // sp.sd = moment(rc.sd).add(i,'d').format("YYYY/MM/DD");
+            sp.sd = moment(rc.sd).add(i,add).format("YYYY/MM/DD");
             sp.st = rc.st;
             sql.push(sp.inT());
           }
@@ -61,15 +66,29 @@ export class TdcService {
             return this.sqlExce.batExecSql(sql);
           }
         }).then(data=>{
-          et.wi = this.util.getUuid();
-          et.wt = '0';
-          et.wd=rc.sd;
-          et.st = rc.st;
           //保存本地提醒表
-          return this.sqlExce.save(et);
+          if(rc.tx != '0'){
+            et.wi = this.util.getUuid();
+            et.wt = '0';
+            let time = 10; //分钟
+            if(rc.tx == "2"){
+              time = 30;
+            }else if(rc.tx == "3"){
+              time = 60;
+            }else if(rc.tx == "4"){
+              time = 240;
+            }else if(rc.tx == "5"){
+              time = 360;
+            }
+            let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD mm:ss");
+            et.wd=date.substr(0,10);
+            et.st = date.substr(11,5);
+            return this.sqlExce.save(et);
+          }
+
         }).then(data=>{
           let adgPro:AgdPro = new AgdPro();
-          adgPro.ai=rc.si; //日程ID
+          adgPro.ai=ct.si; //日程ID
           adgPro.rai=rc.sr;//日程发送人用户ID
           adgPro.fc=rc.ui; //创建人
           adgPro.at=rc.sn;//主题
@@ -81,7 +100,7 @@ export class TdcService {
           //restFul保存日程
           return this.agdRest.save(adgPro)
         }).then(data=>{
-          bs = data;
+          bs.data=ct;
           resolve(bs);
         }).catch(e=>{
           bs.code = -99;

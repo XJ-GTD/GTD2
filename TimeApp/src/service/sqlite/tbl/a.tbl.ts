@@ -6,75 +6,21 @@ import * as moment from "moment";
  */
 export class ATbl implements ITbl {
 
-  private _ai :string="";
+  ai :string="";
 
-  private _an :string="";
+  an :string="";
 
-  private _am :string="";
+  am :string="";
 
-  private _ae :string="";
+  ae :string="";
 
-  private _at :string="";
+  at :string="";
 
-  private _aq :string="";
+  aq :string="";
 
-  private _wtt :Number=0;
+  wtt :Number=0;
 
-  get wtt(): Number {
-    return this._wtt;
-  }
 
-  set wtt(value: Number) {
-    this._wtt = value;
-  }
-
-  get ai(): string {
-    return this._ai;
-  }
-
-  set ai(value: string) {
-    this._ai = value;
-  }
-
-  get an(): string {
-    return this._an;
-  }
-
-  set an(value: string) {
-    this._an = value;
-  }
-
-  get am(): string {
-    return this._am;
-  }
-
-  set am(value: string) {
-    this._am = value;
-  }
-
-  get ae(): string {
-    return this._ae;
-  }
-
-  set ae(value: string) {
-    this._ae = value;
-  }
-
-  get at(): string {
-    return this._at;
-  }
-
-  set at(value: string) {
-    this._at = value;
-  }
-
-  get aq(): string {
-    return this._aq;
-  }
-
-  set aq(value: string) {
-    this._aq = value;
-  }
 
   cT():string {
 
@@ -86,29 +32,29 @@ export class ATbl implements ITbl {
 
   upT():string {
     let sq='';
-    if(this._an!=null && this._an!=""){
-      sq=sq+', an="' + this._an +'"';
+    if(this.an!=null && this.an!=""){
+      sq=sq+', an="' + this.an +'"';
     }
-    if(this._am!=null && this._am!=""){
-      sq=sq+', am="' + this._am +'"';
+    if(this.am!=null && this.am!=""){
+      sq=sq+', am="' + this.am +'"';
     }
-    if(this._ae != null && this._ae!=""){
-      sq = sq + ', ae="' + this._ae +'"';
+    if(this.ae != null && this.ae!=""){
+      sq = sq + ', ae="' + this.ae +'"';
     }
-    if(this._aq != null && this._aq!=""){
-      sq = sq + ', aq="' + this._aq +'"';
+    if(this.aq != null && this.aq!=""){
+      sq = sq + ', aq="' + this.aq +'"';
     }
     if (sq != null && sq != ""){
       sq = sq.substr(1);
     }
-    sq ='update gtd_a set  ' + sq + ' where ai = "'+ this._ai +'";';
+    sq ='update gtd_a set  ' + sq + ' where ai = "'+ this.ai +'";';
     return sq;
   }
 
   dT():string {
     let sq = 'delete from gtd_a where 1=1 ';
-    if(this._ai != null && this._ai!=""){
-      sq = sq + 'and  ai ="' + this._ai +'"';
+    if(this.ai != null && this.ai!=""){
+      sq = sq + 'and  ai ="' + this.ai +'"';
     }
     sq = sq + ';';
     return sq;
@@ -121,20 +67,20 @@ export class ATbl implements ITbl {
 
   slT():string {
     let sq='select * from  gtd_a where  1=1 ';
-    if(this._ai != null && this._ai!=""){
-      sq = sq + ' and ai="' + this._ai +'"';
+    if(this.ai != null && this.ai!=""){
+      sq = sq + ' and ai="' + this.ai +'"';
     }
-    if(this._an!=null && this._an!=""){
-      sq=sq+' and an="' + this._an +'"';
+    if(this.an!=null && this.an!=""){
+      sq=sq+' and an="' + this.an +'"';
     }
-    if(this._am!=null && this._am!=""){
-      sq=sq+' and am="' + this._am +'"';
+    if(this.am!=null && this.am!=""){
+      sq=sq+' and am="' + this.am +'"';
     }
-    if(this._ae != null && this._ae!=""){
-      sq = sq + ' and ae="' + this._ae +'"';
+    if(this.ae != null && this.ae!=""){
+      sq = sq + ' and ae="' + this.ae +'"';
     }
-    if(this._aq != null && this._aq!=""){
-      sq = sq + ' and aq="' + this._aq +'"';
+    if(this.aq != null && this.aq!=""){
+      sq = sq + ' and aq="' + this.aq +'"';
     }
     sq = sq + ';';
     return sq;
@@ -148,26 +94,19 @@ export class ATbl implements ITbl {
 
   inT():string {
     let sq ='insert into gtd_a ' +
-      '(ai,an,am,ae,at,aq,wtt) values("'+ this._ai+'","'+ this._an+'","'+this._am+ '"' +
-      ',"'+this._ae+ '","'+this._at+ '","'+this._aq+ '",'+  moment().unix() +');';
+      '(ai,an,am,ae,at,aq,wtt) values("'+ this.ai+'","'+ this.an+'","'+this.am+ '"' +
+      ',"'+this.ae+ '","'+this.at+ '","'+this.aq+ '",'+  moment().unix() +');';
 
     return sq;
   }
 
   rpT():string {
     let sq ='replace into gtd_a ' +
-      '(ai,an,am,ae,at,aq,wtt) values("'+ this._ai+'","'+ this._an+'","'+this._am+ '"' +
-      ',"'+this._ae+ '","'+this._at+ '","'+this._aq+ '",'+  moment().unix() +');';
+      '(ai,an,am,ae,at,aq,wtt) values("'+ this.ai+'","'+ this.an+'","'+this.am+ '"' +
+      ',"'+this.ae+ '","'+this.at+ '","'+this.aq+ '",'+  moment().unix() +');';
 
     return sq;
   }
-  clp(){
-    this._ai = "";
-    this._an = "";
-    this._ae = "";
-    this._at = "";
-    this._aq = "";
-    this._wtt = 0;
-  };
+
 }
 

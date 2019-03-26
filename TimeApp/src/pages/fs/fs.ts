@@ -4,6 +4,8 @@ import {FsService, PageFsData} from "./fs.service";
 import {GcService, PageDcData} from "../gc/gc.service";
 import {DataConfig} from "../../service/config/data.config";
 import {FdData, FdService} from "../fd/fd.service";
+import {UtilService} from "../../service/util-service/util.service";
+import {GlService} from "../gl/gl.service";
 
 /**
  * Generated class for the 参与人选择 page.
@@ -43,10 +45,19 @@ import {FdData, FdService} from "../fd/fd.service";
       </div>
       <ion-grid>
         <ion-row>
+          <ion-list *ngIf="addType=='rc'" no-lines>
+            <ion-item class="plan-list-item" *ngFor="let g of gl">
+              <ion-label>
+                {{g.gn}}({{g.gc}})
+              </ion-label>
+              <ion-checkbox (click)="addgl(g)"></ion-checkbox>
+            </ion-item>
+          </ion-list>
           <ion-list no-lines>
             <ion-item class="plan-list-item"  *ngFor="let g of fsl">
               <ion-avatar item-start>
-                <img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
+                <!--<img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">-->
+                <ion-icon name="contact"  style="font-size: 3.0em;color: red;"></ion-icon>
               </ion-avatar>
               <ion-label>
                 {{g.rn}}
@@ -65,34 +76,41 @@ import {FdData, FdService} from "../fd/fd.service";
 export class FsPage {
   tel:any;//手机号
   fsl:Array<PageFsData> = new Array<PageFsData>();
+  gl:Array<PageDcData> = new Array<PageDcData>();
   addType:string = ''; // 群组成员gc,日程共享rc,bl黑名单
   tpara:any = null; //跳转传参
-  selFsl:Map<string,PageFsData> = new Map<string,PageFsData>();
+  selFsl:Map<string,any> = new Map<string,any>();
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private fsService:FsService,
+              private util:UtilService,
               private fdService:FdService,
+              private glService:GlService,
               private gsService : GcService) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FsPage');
-    this.getFdl(new PageFsData());
     this.addType = this.navParams.get('addType');
     this.tpara = this.navParams.get('tpara');
+    this.getFdl(new PageFsData());
   }
 
   save(){
     if(this.selFsl.size>0){
       let list = [];
       this.selFsl.forEach((value , key) =>{
-        list.push(value);
+        if(value.gc && value.gc>0){
+          list.push(value.fsl);//群组人员
+        }else{
+          list.push(value);
+        }
       });
 
       if(this.addType == 'rc'){
         this.fsService.sharefriend(this.tpara.si,list).then(data=>{
           if(data.code==0){
-            alert("共享享成功");
+            //alert("共享享成功");
             this.goBack('','');
           }
         })
@@ -101,21 +119,22 @@ export class FsPage {
         dc.fsl = list;
         this.gsService.save(dc).then(data=>{
           if(data.code==0){
-            alert("添加群组成员成功");
+            //alert("添加群组成员成功");
             this.goBack(DataConfig.PAGE._GC_PAGE,{g:this.tpara});
           }
         })
       }else if(this.addType == 'bl'){
 
         if(list.length>1){
-          alert("每次只能添加一人")
+          //alert("每次只能添加一人")
+          this.util.toast('每次只能添加一人',2000);
           return;
         }
         let fd:FdData = new FdData();
         Object.assign(fd,list[0]);
         this.fdService.putBlack(fd).then(data=>{
           if(data.code==0){
-            alert("添加黑名单成功");
+            //alert("添加黑名单成功");
             this.goBack(DataConfig.PAGE._BL_PAGE,'');
           }
         })
@@ -129,7 +148,7 @@ export class FsPage {
 
   }
 
-  addsel(fs:PageFsData){
+  addsel(fs:any){
     if(this.selFsl.get(fs.pwi) != null){
       this.selFsl.delete(fs.pwi);
     }else{
@@ -137,18 +156,33 @@ export class FsPage {
     }
   }
 
+  addgl(fs:any){
+    if(this.selFsl.get(fs.gi) != null){
+      this.selFsl.delete(fs.gi);
+    }else{
+      this.selFsl.set(fs.gi,fs);
+    }
+  }
+
   goBack(page:string,para:any) {
     console.log('PfPage跳转PaPage');
-    if(page != ''){
-      this.navCtrl.push(page,para);
-    }else{
-      this.navCtrl.pop();
-    }
+    // if(page != ''){
+    //   this.navCtrl.push(page,para);
+    // }else{
+    //   this.navCtrl.pop();
+    // }
+    this.navCtrl.pop();
 
   }
 
   getFdl(fs:PageFsData){
-
+    if(this.addType=='rc'){
+      this.glService.getGroups().then(data=>{
+        if(data && data.gl){
+          this.gl = data.gl;
+        }
+      })
+    }
     this.fsService.getfriend(fs).then(data=>{
       if(data){
         this.fsl = data;
