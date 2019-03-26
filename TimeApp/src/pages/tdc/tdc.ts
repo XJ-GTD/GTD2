@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Scroll } from 'ionic-angular';
+import {Events, IonicPage, NavController, NavParams, Scroll} from 'ionic-angular';
 import {ScdData} from "../tdl/tdl.service";
 import * as moment from "moment";
 import {TdcService} from "./tdc.service";
@@ -142,7 +142,8 @@ export class TdcPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private tdcServ :TdcService,private util:UtilService,
-              private tddjServ :TddjService,private  tddiServ : TddiService) {
+              private tddjServ :TddjService,private  tddiServ : TddiService,
+              ) {
 
   }
   //画面状态：0：新建 ，1：本人修改 ，2：受邀人修改
@@ -217,12 +218,6 @@ export class TdcPage {
 
 
       return;
-    }
-
-
-    if (this.navParams.get("XXX")){
-      this.pagestate = "2";
-      return ;
     }
 
   }
@@ -344,6 +339,7 @@ export class TdcPage {
 
   cancel(){
     this.navCtrl.pop();
+
   }
 
   save(share){

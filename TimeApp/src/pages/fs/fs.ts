@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Events, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {FsService, PageFsData} from "./fs.service";
 import {GcService, PageDcData} from "../gc/gc.service";
 import {DataConfig} from "../../service/config/data.config";
@@ -86,7 +86,8 @@ export class FsPage {
               private util:UtilService,
               private fdService:FdService,
               private glService:GlService,
-              private gsService : GcService) {
+              private gsService : GcService,
+              private events :Events) {
   }
 
   ionViewDidLoad() {
@@ -175,7 +176,17 @@ export class FsPage {
     // }else{
     //   this.navCtrl.pop();
     // }
-    this.navCtrl.pop();
+
+
+/*      let popindex ;
+      let viewArray:Array<ViewController> = this.navCtrl.getViews();
+      viewArray.forEach((value, index) => {
+        if (value.id == DataConfig.PAGE._H_PAGE){
+          popindex = index;
+        }
+      });*/
+
+    this.navCtrl.push(DataConfig.PAGE._H_PAGE);
 
   }
 
