@@ -4,6 +4,7 @@ import {SqliteExec} from "../util-service/sqlite.exec";
 import {ATbl} from "../sqlite/tbl/a.tbl";
 import {UTbl} from "../sqlite/tbl/u.tbl";
 import {DataConfig} from "./data.config";
+import {UtilService} from "../util-service/util.service";
 
 /**
  * create by on 2019/3/5
@@ -49,7 +50,7 @@ export class UserConfig {
   static settins: Map<string, Setting> = new Map<string, Setting>();
 
 
-  constructor(private sqlliteExec: SqliteExec) {
+  constructor(private sqlliteExec: SqliteExec,private util:UtilService) {
   }
 
   async init(){
@@ -107,6 +108,14 @@ export class UserConfig {
         UserConfig.account.device = rows[0].ae;
         UserConfig.account.token = rows[0].at;
         UserConfig.account.mq = rows[0].aq;
+      }else{
+        UserConfig.account.name = "";
+        UserConfig.account.phone = "";
+        UserConfig.account.device = this.util.deviceId();
+        UserConfig.account.token = "";
+        UserConfig.account.mq = "";
+
+
       }
     });
   }
