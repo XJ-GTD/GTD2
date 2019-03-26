@@ -2,6 +2,7 @@ import {SockJS} from 'sockjs-client';
 import Stomp, {StompSubscription} from "@stomp/stompjs";
 import {DispatchService} from "./dispatch.service";
 import {Injectable, NgModule} from "@angular/core";
+import {UserConfig} from "../service/config/user.config";
 
 
 /**
@@ -35,7 +36,7 @@ export class WebsocketService {
       this.client = Stomp.client(this.RABBITMQ_WS_URL);
 
       //获取websocte  queue TODO
-      this.queue = "123";
+      this.queue = UserConfig.account.mq;
       //呼吸
       this.client.heartbeat.outgoing = 0;
       this.client.heartbeat.incoming = 0;

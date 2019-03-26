@@ -2,6 +2,7 @@ import {STbl} from "../sqlite/tbl/s.tbl";
 import {ATbl} from "../sqlite/tbl/a.tbl";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {Injectable} from "@angular/core";
+import {UserConfig} from "./user.config";
 
 @Injectable()
 export class RestFulConfig {
@@ -14,18 +15,17 @@ export class RestFulConfig {
   }
 
 
-  async createHeader(): Promise<RestFulHeader> {
-    let apro = new ATbl();
+  createHeader() {
     let header = new RestFulHeader();
     // // apro = await this.sqlitexec.getOne(apro);
     // //帐户ID
-    // header.ai = UserConfig.account.phone;
-    // //设备ID
-    // header.di = UserConfig.account.phone;
+    header.ai = UserConfig.account.phone;
+    //设备ID
+    header.di = UserConfig.account.phone;
     // //设别类型
-    // // header.dt = "";
+    header.dt = "m";
     // //登录码
-    // header.lt = UserConfig.account.token;
+    header.lt = UserConfig.account.token;
 
     return header;
   }

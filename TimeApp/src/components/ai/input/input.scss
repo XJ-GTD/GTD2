@@ -1,12 +1,12 @@
 
 inputcomponent {
-  transition: all 0.5s ease-in-out 0.2s;
-  z-index: 100;
+  display: none;
   .waper{
+    transform: translateY(-9999px);
+    transition: all 0.3s ease-in-out 0s;
     position: absolute;
     bottom: 0px;
     width: 100%;
-    z-index:100;
     button{
       width: calc(100% - 28px);
       height: 40px;
@@ -22,7 +22,6 @@ inputcomponent {
     }
   }
 
-  transform: translateY(-9999px);
   width: 100%;
   height: 100%;
   background: #000;

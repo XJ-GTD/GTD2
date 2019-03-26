@@ -63,7 +63,7 @@ export class AibutlerRestful{
 //音频入参
 export class AudioPro{
   //上下文
-  c : any="";
+  c : any = {};
   d : AudioProSub = new AudioProSub();
 }
 export class AudioProSub{
@@ -75,7 +75,7 @@ export class AudioProSub{
 //文本入参
 export class TextPro{
   //上下文
-  c : any="";
+  c : any = {};
   d : TextProSub = new TextProSub();
 }
 export class TextProSub{

@@ -138,7 +138,7 @@ export class AlService {
       });
 
       //用户设置信息初始化
-      this.userConfig.init();
+      await this.userConfig.init();
       alData.text = "系统设置完成";
       resolve(alData)
 
@@ -433,7 +433,7 @@ export class AlService {
       ss.push("看过不良人吗");
       ss.push("周末加班");
 
-      for (let i = 0; i < 4000; i++) {
+      for (let i = 0; i < 400; i++) {
         start = moment('2019/03/01');
         let r = this.util.randInt(-365 * 10, 365 * 10);
         let t = this.util.randInt(0, 24);
