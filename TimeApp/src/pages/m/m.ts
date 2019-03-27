@@ -18,7 +18,7 @@ import {DataConfig} from "../../service/config/data.config";
       <ion-content>
 
         <ion-list>
-          <ion-list-header (click)="goPsPage()">
+          <ion-list-header>
             <ion-item>
               <ion-avatar item-start>
                 <img [src]="imgurl" class="img_size">
