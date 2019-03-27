@@ -81,6 +81,9 @@ export class PlPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PlPage');
+  }
+
+  ionViewDidEnter(){
     this.getAllJh();
   }
 

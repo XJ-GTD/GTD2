@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {ActionSheetController, AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {PagePDPro, PdService, ScdData} from "./pd.service";
-import {AgdPro} from "../../service/restful/agdsev";
 
 /**
  * Generated class for the 计划展示 page.
@@ -90,6 +89,10 @@ export class PdPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PdPage');
+
+  }
+
+  ionViewDidEnter(){
     this.pdService.getPlan(this.jh.ji).then(data=>{
       this.plan.pa = data.data;
     })
