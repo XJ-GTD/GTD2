@@ -84,16 +84,13 @@ export class PdPage {
               private alertCtrl: AlertController,
               private actionSheetCtrl: ActionSheetController,
               private pdService:PdService) {
+    this.jh = this.navParams.get("jh");
+    this.plan.pn = this.jh;
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PdPage');
-  }
-
-  ionViewWillEnter() {
-    this.jh = this.navParams.get("jh");
     this.pdService.getPlan(this.jh.ji).then(data=>{
-      this.plan.pn = this.jh;
       this.plan.pa = data.data;
     })
   }
