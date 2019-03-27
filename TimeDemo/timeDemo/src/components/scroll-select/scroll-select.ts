@@ -54,8 +54,8 @@ export class ScrollSelectComponent {
     console.log(this.value + ',' + this.items);
 
     if (this.items > 1) {
-      this.befores = Array(Math.floor(this.items / 2)).fill().map((x,i)=>i);
-      this.afters = Array(Math.floor(this.items / 2)).fill().map((x,i)=>i);
+      this.befores = Array(Math.floor(this.items / 2)).fill(0).map((x,i)=>i);
+      this.afters = Array(Math.floor(this.items / 2)).fill(0).map((x,i)=>i);
     }
 
     ele.addEventListener('touchstart', (event) => {
