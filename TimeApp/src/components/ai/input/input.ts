@@ -78,7 +78,7 @@ export class InputComponent {
 
   confirm() {
     if (this.input.value != null && this.input.value != "") {
-      this.assistantService.listenText(this.input.value);
+      this.assistantService.putText(this.input.value)
     }
 
     // this._renderer.setStyle(this.el.nativeElement, "display", "none");

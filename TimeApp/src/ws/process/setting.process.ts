@@ -7,12 +7,12 @@ import {CudscdPara} from "../model/cudscd.para";
 import {ProcesRs} from "../model/proces.rs";
 
 /**
- * 日历修改处理
+ * 设置
  *
  * create by wzy on 2018/11/30.
  */
 @Injectable()
-export class CudscdProcess implements MQProcess{
+export class SettingProcess implements MQProcess{
   constructor(private emitService:EmitService) {
   }
 

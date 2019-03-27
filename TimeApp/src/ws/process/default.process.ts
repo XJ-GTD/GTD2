@@ -15,6 +15,9 @@ export class DefaultProcess implements MQProcess{
 
   go(content: WsContent,processRs:ProcesRs):Promise<ProcesRs> {
     return new Promise<ProcesRs>(resolve => {
+      console.log("测试消息content******************************"+ JSON.stringify(content));
+      console.log("测试消息processRs******************************"+ JSON.stringify(content));
+      console.log("测试消息processRs******************************"+ JSON.stringify(content));
       processRs.sucess = true;
       resolve(processRs);
     })

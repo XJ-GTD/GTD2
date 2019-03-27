@@ -19,7 +19,7 @@ export class ThirdProcess implements MQProcess {
       //处理区分
       content.option
       //处理所需要参数
-      content.parmeter
+      content.parameters
     })
   }
 

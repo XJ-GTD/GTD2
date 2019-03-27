@@ -32,14 +32,14 @@ export class WebsocketService {
 
       this.login = "gtd_mq";
       this.password = "gtd_mq";
-      //获取websocte 链接 TODO
+      //获取websocte 链接
       this.client = Stomp.client(this.RABBITMQ_WS_URL);
 
-      //获取websocte  queue TODO
+      //获取websocte  queue
       this.queue = UserConfig.account.mq;
       //呼吸
-      this.client.heartbeat.outgoing = 0;
-      this.client.heartbeat.incoming = 0;
+      this.client.heartbeat.outgoing = 2000;
+      this.client.heartbeat.incoming = 2000;
 
       resolve();
     })
@@ -51,9 +51,6 @@ export class WebsocketService {
   public connect(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.settingWs().then(data => {
-        console.log("-----MQ开始建立连接----");
-        console.log("-----MQ QUEUE_NAME: [" + this.queue + "] ----");
-
         // 连接消息服务器
         this.client.connect(this.login, this.password, frame => {
           console.log(this.client);

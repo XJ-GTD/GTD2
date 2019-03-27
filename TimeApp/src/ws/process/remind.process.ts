@@ -26,7 +26,7 @@ export class RemindProcess implements MQProcess {
   go(content: WsContent, processRs: ProcesRs): Promise<ProcesRs> {
     return new Promise<ProcesRs>(async resolve => {
       //处理所需要参数
-      let rdData: RemindPara = content.parmeter;
+      let rdData: RemindPara = content.parameters;
 
       //处理区分
       //闹铃设置无日程
@@ -43,7 +43,7 @@ export class RemindProcess implements MQProcess {
       //内部调用process
       let inner: WsContent = new WsContent();
       inner.option = S.P;
-      inner.parmeter = {
+      inner.parameters = {
         //TODO 替换提醒语音Type
         t:""
       }

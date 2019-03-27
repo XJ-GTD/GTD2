@@ -47,7 +47,7 @@ export class SystemSettingService {
 
 
   public newSms() {
-    this.xiaojiSpeech.speakText("你有一条新消息", success => {});
+    this.xiaojiSpeech.speakText("你有一条新消息");
     //铃声启动
     this.nativeAudio.play('sms').then(success => {
       console.log("闹钟铃声播放成功");

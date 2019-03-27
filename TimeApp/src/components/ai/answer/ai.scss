@@ -15,17 +15,18 @@ aicomponent {
   //}
 
   .close {
+    transition: all 1.5s ease 0.2s;
     display: block;
-    font-size: 1.2em;
+    font-size: 2.2em;
     position: absolute;
-    top: -205px;
+    top: -95px;
     right: 20px;
+    transform:translateY(-9999px);
   }
 
   .aiWarp {
     position: relative;
     overflow-y: auto;
-    background: black;
     opacity: .95;
     padding: 5px;
     width: 100%;
