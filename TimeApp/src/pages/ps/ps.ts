@@ -2,6 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams, Navbar} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {PageUData, PsService} from "./ps.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 个人设置 page.
@@ -30,8 +31,8 @@ import {PageUData, PsService} from "./ps.service";
   <ion-content padding class="page-backgroud-color"> 
     <ion-item class="no-border"> 
       <ion-label>昵称</ion-label> 
-      <ion-input type="text" *ngIf="this.state == true" [(ngModel)]="uo.uN"></ion-input> 
-      <ion-input type="text" *ngIf="this.state == false" disabled="true" [(ngModel)]="uo.uN"></ion-input> 
+      <ion-input type="text" *ngIf="this.state == true" [(ngModel)]="uo.user.name"></ion-input> 
+      <ion-input type="text" *ngIf="this.state == false" disabled="true" [(ngModel)]="uo.user.name"></ion-input> 
       <ion-avatar item-end> 
         <img src="./assets/imgs/headImg.jpg" style="width: 60px;height: 60px"> 
       </ion-avatar> 
@@ -53,7 +54,7 @@ import {PageUData, PsService} from "./ps.service";
     <button ion-item class="rowCss no-border"> 
       <ion-label>生日</ion-label> 
       <ion-label item-end text-end *ngIf="this.state == false">{{uo.user.bothday}}</ion-label> 
-      <ion-datetime displayFormat="YYYY-MM-DD" *ngIf="this.state == true" item-end text-end float-end [(ngModel)]="uo.biy"></ion-datetime> 
+      <ion-datetime displayFormat="YYYY-MM-DD" *ngIf="this.state == true" item-end text-end float-end [(ngModel)]="uo.user.bothday"></ion-datetime> 
     </button> 
     <button ion-item margin-top *ngIf="this.state == false" class="rowCss no-border"> 
       <ion-label>手机号</ion-label> 
@@ -76,7 +77,7 @@ export class PsPage {
   constructor(public navCtrl: NavController,
               private psService:PsService,
               public navParams: NavParams,
-              private loadingCtrl: LoadingController) {
+              private util: UtilService) {
   }
 
   ionViewDidLoad() {
@@ -112,6 +113,14 @@ export class PsPage {
 
   edit(){
     this.state = true;
+  }
+
+  save(){
+    this.psService.saveUser(this.uo).then(data=>{
+      if(data.code ==0){
+        this.util.toast('保存成功！',2000);
+      }
+    })
   }
 
   confirm(){
