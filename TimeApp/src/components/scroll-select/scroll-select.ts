@@ -51,7 +51,7 @@ export class ScrollSelectComponent {
   befores: Array<any> = [];
   afters: Array<any> = [];
   @Output("changed")
-  changedPropEvent = new EventEmitter();
+  changedPropEvent:EventEmitter<number> = new EventEmitter<number>();
   unsubscribe: () => void;
   slideWidth: number;
   index: number = 0;
@@ -142,8 +142,6 @@ export class ScrollSelectComponent {
 
   optionChanged(target) {
     if (this._scrollBox.nativeElement.scrollLeft !== this.lastScrollLeft) {
-
-      console.log('change pos');
       let index = Math.floor(this._scrollBox.nativeElement.scrollLeft / (this.slideWidth / this.items));
 
       if ((this._scrollBox.nativeElement.scrollLeft - (index * (this.slideWidth / this.items))) >= (Math.floor((this.slideWidth / this.items) / 2))) {
@@ -156,6 +154,10 @@ export class ScrollSelectComponent {
       this.lastScrollLeft = index * (this.slideWidth / this.items);
       this.autoscroll = true;
       this._scrollBox.nativeElement.scrollLeft = index * (this.slideWidth / this.items);
+      setTimeout(()=> {
+        this.changedPropEvent.emit(this.value);
+
+      },500);
     }
   }
 
