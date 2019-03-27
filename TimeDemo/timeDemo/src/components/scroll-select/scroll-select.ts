@@ -18,13 +18,13 @@ export class ScrollSelectComponent {
   @Input()
   type: string = 'scroll-with-button';  // 'scroll-with-button', 'scroll-without-button'
   @Input()
-  options: Array = [];
+  options: any = [];
   @Input()
   value: any;
   @Input()
   items: number = 1;
-  befores: Array = [];
-  afters: Array = [];
+  befores: any = [];
+  afters: any = [];
   @Output("changed")
   changedPropEvent = new EventEmitter();
   unsubscribe: () => void;
@@ -42,13 +42,14 @@ export class ScrollSelectComponent {
     console.log('Hello ScrollSelectComponent Component');
     this.guid = this.createGuid();
     this.slideWidth = document.body.clientWidth;
+
     this.events.subscribe('_scrollBox' + this.guid + ':change', (target) => {
       this.optionChanged(target);
     });
   }
 
   ngOnInit() {
-    const that = this;
+    const _self = this;
     const ele = this._scrollBox.nativeElement;
     console.log(this.value + ',' + this.items);
 
@@ -57,14 +58,28 @@ export class ScrollSelectComponent {
       this.afters = Array(Math.floor(this.items / 2)).fill().map((x,i)=>i);
     }
 
-    ele.addEventListener('scroll', (event) => {
+    ele.addEventListener('touchstart', (event) => {
+      
+    });
+
+    ele.addEventListener('touchend', (event) => {
+      console.log('Touch end triggered');
       clearTimeout(this.timer);
+
+      this.timer = setTimeout(this.isScrollEnd, 100, this);
+      this.t1 = event.target.scrollLeft;
+
+      this.autoscroll = false;
+    });
+
+    ele.addEventListener('scroll', (event) => {
+      /*clearTimeout(this.timer);
 
       if (!this.autoscroll) {
         this.timer = setTimeout(this.isScrollEnd, 500, this);
         this.t1 = event.target.scrollLeft;
       }
-      this.autoscroll = false;
+      this.autoscroll = false;*/
     }, {passive: true}, false);
 
     let i = 0;
@@ -82,6 +97,11 @@ export class ScrollSelectComponent {
     
     if (that.t1 == that.t2) {
       that.events.publish('_scrollBox' + that.guid + ':change', that.t1, Date.now());
+    } else {
+      clearTimeout(that.timer);
+
+      that.timer = setTimeout(that.isScrollEnd, 100, that);
+      that.t1 = that._scrollBox.nativeElement.scrollLeft;
     }
   }
   
