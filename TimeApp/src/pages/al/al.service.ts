@@ -455,7 +455,6 @@ export class AlService {
         }
 
         let d = start.add(r, 'd').add(t, 'h');
-        console.log("start=====" + d.format('YYYY/MM/DD'));
         let c: CTbl = new CTbl();
 
         c.si = this.util.getUuid();
@@ -571,7 +570,6 @@ export class AlService {
       // })
 
       this.sqlExce.batExecSql(sqls).then(c => {
-        console.log("插入数据=====" + c);
         resolve(true);
       });
     })
@@ -584,7 +582,6 @@ export class AlService {
     let ds = await this.sqlExce.getList<CTbl>(ctbl);
 
     let dd = await this.agdRestful.cachefromserver(ds)
-    console.log("***************************" + dd.data);
   }
 
   // //测试用

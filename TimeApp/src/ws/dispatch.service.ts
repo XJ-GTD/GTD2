@@ -15,28 +15,29 @@ import * as moment from 'moment';
 export class DispatchService {
   constructor(private factory:ProcessFactory,  private emitService: EmitService,){}
   async dispatch(message: string) {
+    //消息格式化
     let model: WsModel = JSON.parse(message);
-    console.log(moment().unix() - model.context.client.time)
-    setTimeout(()=>{
-      this.emitService.emitScd(null);
-      setTimeout(()=>{
-        this.emitService.emitScdLs(null);
-
-      },3000);
-      setTimeout(()=>{
-        this.emitService.emitSpeech(null);
-
-      },5000);
-
-    },1000);
-    // //消息格式化
-     //let model: WsModel = JSON.parse(message);
-    // //循环处理消息
-    // let process:ProcesRs = new ProcesRs();
-    // for (let opt of model.header.describe) {
-    //   let wsContent: WsContent = model.content.get(opt);
-    //   process = await this.factory.findProcess(opt).go(wsContent,process);
-    // }
+    console.log(moment().unix() - model.context.client.time);
+    // setTimeout(()=>{
+    //   this.emitService.emitScd(null);
+    //   setTimeout(()=>{
+    //     this.emitService.emitScdLs(null);
+    //
+    //   },3000);
+    //   setTimeout(()=>{
+    //     this.emitService.emitSpeech(null);
+    //
+    //   },5000);
+    //
+    // },1000);
+    //循环处理消息
+    let process:ProcesRs = new ProcesRs();
+    for (let opt of model.header.describe) {
+      let wsContent: WsContent = model.content[opt];
+      //保存上下文
+      wsContent.thisContent = model;
+      process = await this.factory.getProcess(opt).go(wsContent,process);
+    }
     return;
   }
 }

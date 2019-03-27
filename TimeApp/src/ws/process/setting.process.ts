@@ -1,0 +1,32 @@
+import {MQProcess} from "../interface.process";
+import {WsContent} from "../model/content.model";
+import {ProcessFactory} from "../process.factory";
+import {EmitService} from "../../service/util-service/emit.service";
+import {Injectable} from "@angular/core";
+import {CudscdPara} from "../model/cudscd.para";
+import {ProcesRs} from "../model/proces.rs";
+
+/**
+ * 设置
+ *
+ * create by wzy on 2018/11/30.
+ */
+@Injectable()
+export class SettingProcess implements MQProcess{
+  constructor(private emitService:EmitService) {
+  }
+
+
+  go(content: WsContent,processRs:ProcesRs):Promise<ProcesRs> {
+    return new Promise<ProcesRs>(resolve => {
+      //处理区分
+      content.option
+      //处理所需要参数
+      let cudPara:CudscdPara = content.parmeter;
+      //处理结果
+      //emit
+      //this.emitService.emitDatas(processRs);
+    })
+  }
+
+}
