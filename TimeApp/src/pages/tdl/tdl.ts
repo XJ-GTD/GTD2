@@ -44,9 +44,9 @@ import {DataConfig} from "../../service/config/data.config";
             </div>
           </div>
           <div class="dayagendas w-auto" >
-            <div id="{{scd.anchorid}}" class="dayagenda row" *ngFor ="let scd of sdl.scdl;" 
-                 [ngStyle]="{'background-color':scd.cbkcolor}" (click)="toDetail(scd.si,sdl.d)">
-              <div class="dayagendacontent w-auto" [ngStyle]="{'background-color':scd.cbkcolor}">
+            <div  class="dayagenda row" *ngFor ="let scd of sdl.scdl;let idx = index" 
+                 [ngStyle]="{'background-color':idx/2==0?'#96162D':'#8E172B'}" (click)="toDetail(scd.si,sdl.d)">
+              <div class="dayagendacontent w-auto" [ngStyle]="{'background-color':idx/2==0?'#96162D':'#8E172B'}">
                 <div class ="agendaline1 row">{{this.pageLoadOver(scd.anchorid)}}
                   <div class="agenda-st">{{scd.st}}</div>
                   <div class="dot-set " [ngStyle]="{'background-color':scd.p.jc}" ></div>

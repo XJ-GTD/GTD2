@@ -49,6 +49,8 @@ import {HammerDIRECTIONALLConfig} from "./my-hammer.config";
 import {Keyboard} from "@ionic-native/keyboard";
 import {AiService} from "../components/ai/answer/ai.service";
 import {AlService} from "../pages/al/al.service";
+import {TddjService} from "../pages/tddj/tddj.service";
+import {TddiService} from "../pages/tddi/tddi.service";
 
 @NgModule({
   declarations: [
@@ -114,6 +116,8 @@ import {AlService} from "../pages/al/al.service";
     FeedbackService,
     AlarmService,
     UserConfig,
+    TddjService,
+    TddiService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG,useClass: HammerDIRECTIONALLConfig }
   ]
