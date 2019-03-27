@@ -3,7 +3,6 @@ import {YTbl} from "../sqlite/tbl/y.tbl";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {ATbl} from "../sqlite/tbl/a.tbl";
 import {UTbl} from "../sqlite/tbl/u.tbl";
-import {DataConfig} from "./data.config";
 import {UtilService} from "../util-service/util.service";
 
 /**
@@ -69,6 +68,7 @@ export class UserConfig {
       return this.sqlliteExec.getList<YTbl>(yTbl).then(rows => {
         for (let y of rows) {
           let setting:Setting = new Setting();
+          setting.yi = y.yi;
           setting.bname = y.ytn;
           setting.typeB = y.yt;
           setting.name = y.yn;
@@ -122,6 +122,8 @@ export class UserConfig {
 }
 
 export class Setting {
+  // 偏好ID
+  yi: string = "";
   // 偏好设置类型
   typeB: string = "";
   // 偏好设置类型名称
