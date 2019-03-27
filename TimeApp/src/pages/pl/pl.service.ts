@@ -7,8 +7,6 @@ import {ETbl} from "../../service/sqlite/tbl/e.tbl";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {PagePDPro} from "../pd/pd.service";
-import {PagePcPro} from "../pc/pc.service";
-import * as moment from "moment";
 
 @Injectable()
 export class PlService {
@@ -163,10 +161,11 @@ export class PlService {
       //console.log('---------- PlService getPlan 获取计划日程数量开始 ----------------');
       //获取计划日程数量
       for(let jhc of jhCtbl){
-        let c:CTbl =new CTbl();
-        c.ji = jhc.ji;
-        let cl:Array<any> = await this.sqlExce.getList<CTbl>(c);
-        jhc.js = cl.length;
+        let sql = 'select gc.si from gtd_c gc ' +
+         'left join gtd_sp sp on sp.si = gc.si ' +
+         'where gc.ji = "'+ jhc.ji + '"';
+        let cs = await this.sqlExce.getExtList<CTbl>(sql);
+        jhc.js = cs.length;
 
         if(jhc.jtd == null || jhc.jtd == ""){
           jhc.jtd = "0";
