@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ActionSheetController, AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
-import {PagePDPro, PdService} from "./pd.service";
+import {PagePDPro, PdService, ScdData} from "./pd.service";
 import {AgdPro} from "../../service/restful/agdsev";
 
 /**
@@ -25,7 +25,8 @@ import {AgdPro} from "../../service/restful/agdsev";
 
         <ion-buttons right>
           <button ion-button color="danger" (click)="more(jh)">
-            <ion-icon name="remove-circle-outline"></ion-icon>
+            <img class="img-header-right" src="../../assets/imgs/more.png">
+            <!--<ion-icon name="remove-circle-outline"></ion-icon>-->
           </button>
         </ion-buttons>
       </ion-toolbar>
@@ -59,8 +60,8 @@ import {AgdPro} from "../../service/restful/agdsev";
                 <div class="pointer-slot"><span class="plan-color-pointer"><div class="color-dot" [ngStyle]="{'background-color': plan.pn.jc }"></div></span></div>
               </div>
               <div class="agenda-col-content right-off left-off" [ngClass]="{'agenda-content': ((i + 1) === plan.pa.length)? false : (agenda.adt.slice(0, 10) === plan.pa[i + 1]['adt'].slice(0, 10))}" justify-content-start>
-                <p class="text-left app-agenda-title">{{agenda.at}}</p>
-                <p class="app-user-text text-left">{{agenda.am}}</p>
+                <p class="text-left app-agenda-title">{{agenda.sn}}</p>
+                <p class="app-user-text text-left">{{agenda.bz}}</p>
               </div>
             </ion-row>
           </ion-grid>
@@ -75,7 +76,7 @@ export class PdPage {
   today: string = new Date().toISOString();
   plan:any ={
     "pn": {},
-    "pa":new Array<AgdPro>(),
+    "pa":new Array<ScdData>(),
   };
 
   constructor(private navCtrl: NavController,
@@ -86,6 +87,7 @@ export class PdPage {
   }
 
   ionViewDidLoad() {
+    console.log('ionViewDidLoad PdPage');
   }
 
   ionViewWillEnter() {
@@ -126,7 +128,7 @@ export class PdPage {
             }else{
               let alert = this.alertCtrl.create({
                 title: '',
-                subTitle: '确定要删除计划“' + jh.jn +"”?",
+                subTitle: '确定要删除计划“' + jh.jn +"”以及它的所有日程吗？",
                 buttons: [{
                   text: '取消',
                 }, {

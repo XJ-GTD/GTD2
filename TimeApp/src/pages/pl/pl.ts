@@ -110,7 +110,7 @@ export class PlPage {
   change(){
     if(this.show){
       this.show = false;
-      this.picture = "gdxz 2.png";
+      this.picture = "xlr.png";
     }else{
       this.show = true;
       this.picture = "xl.png";
