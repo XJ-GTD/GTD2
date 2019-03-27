@@ -85,9 +85,14 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
         </ng-template>
 
         <ng-template #monthPicker>
-          <ion-calendar-month-picker [color]="_d.color"
-                                     [monthFormat]="_options?.monthPickerFormat"
-                                     (onSelect)="monthOnSelect($event)"
+          <!--<ion-calendar-month-picker [color]="_d.color"-->
+                                     <!--[monthFormat]="_options?.monthPickerFormat"-->
+                                     <!--(onMonthSelect)="monthOnSelect($event)"-->
+                                     <!--(onYearSelect)="yearOnSelect($event)"-->
+                                     <!--[month]="monthOpt">-->
+          <!--</ion-calendar-month-picker>-->
+          <ion-calendar-month-picker (onMonthSelect)="monthOnSelect($event)"
+                                     (onYearSelect)="yearOnSelect($event)"
                                      [month]="monthOpt">
           </ion-calendar-month-picker>
         </ng-template>
@@ -152,7 +157,6 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
 
   @Input()
   set options(value: CalendarComponentOptions) {
-    console.log("时间更新了");
     this._options = value;
     this.initOpt();
     if (this.monthOpt && this.monthOpt.original) {
@@ -285,6 +289,17 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   canBack(): boolean {
     if (!this._d.from || this._view !== 'days') return true;
     return this.monthOpt.original.time > moment(this._d.from).valueOf();
+  }
+
+
+  yearOnSelect(year: number): void {
+    this._view = 'days';
+    const newMonth = moment(this.monthOpt.original.time).year(year).valueOf();
+    this.monthChange.emit({
+      oldMonth: this.calSvc.multiFormat(this.monthOpt.original.time),
+      newMonth: this.calSvc.multiFormat(newMonth)
+    });
+    this.createMonth(newMonth);
   }
 
   monthOnSelect(month: number): void {

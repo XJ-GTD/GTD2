@@ -112,7 +112,7 @@ export class CalendarService {
     let dayConfig = this.findDayConfig(_time, opt);
     let _rangeBeg = moment(opt.from).valueOf();
     let _rangeEnd = moment(opt.to).valueOf();
-    let isBetween = true;
+    let isBetween = false;
     let disableWee = opt.disableWeeks.indexOf(_time.toDate().getDay()) !== -1;
     if (_rangeBeg > 0 && _rangeEnd > 0) {
       if (!opt.canBackwardsSelected) {
@@ -282,7 +282,6 @@ export class CalendarService {
     let sql:string = "select sd,count(*) scds,sum(itx) news from gtd_sp where sd>='" + moment(_startMonth).format("YYYY/MM/DD")+ "' and sd<='" +  moment(_endMonth).format("YYYY/MM/DD") + "' group by sd";
     this.sqlite.getExtList<MonthData>(sql).then(data=>{
       for (let d of data){
-        console.log(d.sd +"|" + d.scds +"|" + d.news)
         let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
 
         calendarDay.things = d.scds;

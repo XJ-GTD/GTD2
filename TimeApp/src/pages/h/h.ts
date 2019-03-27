@@ -49,7 +49,8 @@ export class HPage {
   hdata: HData;
   options: CalendarComponentOptions = {
     pickMode: 'single',
-    from: new Date(1930, 0, 1),
+    from: new Date(1900, 0, 1),
+    to: new Date(2299, 0, 1),
     daysConfig: []
   };
 
@@ -62,16 +63,15 @@ export class HPage {
   }
   ngOnInit(){
 
-   this.hService.configDay().then(data=>{
-     console.log("**************************3333333333333")
-     this.options.daysConfig.push(...data);
-     //
-     // setTimeout(()=>{
-     //   console.log("********************" + data.length);
-     //   this.options.daysConfig.splice(0,this.options.daysConfig.length);
-     //   //this.options.daysConfig.push(...data);
-     // },2000);
-   })
+   // this.hService.configDay().then(data=>{
+   //   this.options.daysConfig.push(...data);
+   //   //
+   //   // setTimeout(()=>{
+   //   //   console.log("********************" + data.length);
+   //   //   this.options.daysConfig.splice(0,this.options.daysConfig.length);
+   //   //   //this.options.daysConfig.push(...data);
+   //   // },2000);
+   // })
   }
 
   onPress(pressDay) {

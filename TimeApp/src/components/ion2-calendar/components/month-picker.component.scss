@@ -15,6 +15,37 @@
 }
 
 ion-calendar-month-picker {
+  .warp{
+    padding-top: 40px;
+    width: 95%;
+    margin: 10px auto;
+  }
+  .grid{
+    padding-top: 40px;
+  }
+
+  scroll-select div.selected-circle > div{
+    background-color:#3c909b;
+    border: solid 1px #e8e8e8;
+    height: 12vmin;
+    width: 12vmin;
+    background: transparent;
+  }
+
+  scroll-select div.selected-circle {
+    top: calc(-3vmin - 3px);
+    left: calc((100vmin - 12vmin) / 2 - 27px);
+    position: absolute;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    background: transparent;
+  }
 
   .month-picker {
     margin: 20px 0;
