@@ -170,7 +170,7 @@ public class MainVerticle extends AbstractVerticle {
 						} else {
 							String routingkey = "mwxing." + unionId + "." + openId;
 							System.out.println("announce by mwxing message to " + routingkey);
-							sendMQMessages(config().getString("exchange.mwxing.fanout", "exchange.mwxing.fanout"), routingkey, announceContent.getJsonObject("mwxing"));
+							sendMQMessages(config().getString("exchange.mwxing.direct", "exchange.mwxing.direct"), routingkey, announceContent.getJsonObject("mwxing"));
 						}
 						
 					} else {
@@ -214,11 +214,11 @@ public class MainVerticle extends AbstractVerticle {
 							if ("".equals(deviceid)) {
 								String routingkey = "mwxing.announce." + unionId;
 								System.out.println("announce by mwxing message to " + routingkey);
-								sendMQMessages(config().getString("exchange.mwxing.fanout", "exchange.mwxing.fanout"), routingkey, announceContent.getJsonObject("mwxing"));
+								sendMQMessages(config().getString("exchange.mwxing.direct", "exchange.mwxing.direct"), routingkey, announceContent.getJsonObject("mwxing"));
 							} else {
 								String routingkey = "mwxing." + unionId + "." + deviceid;
 								System.out.println("announce by mwxing message to " + routingkey);
-								sendMQMessages(config().getString("exchange.mwxing.fanout", "exchange.mwxing.fanout"), routingkey, announceContent.getJsonObject("mwxing"));
+								sendMQMessages(config().getString("exchange.mwxing.direct", "exchange.mwxing.direct"), routingkey, announceContent.getJsonObject("mwxing"));
 							}
 						}
 						

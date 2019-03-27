@@ -15,11 +15,12 @@ import { IonicPage, NavController, NavParams, Scroll } from 'ionic-angular';
 })
 export class NewAgendaPage {
 
-  labels: Array = [{value:0,caption:'工作'}, {value:1,caption:'个人'}];
-  months: Array = [{value:'01',caption:'一月'}, {value:'02',caption:'二月'}, {value:'03',caption:'三月'}, {value:'04',caption:'四月'}, {value:'05',caption:'五月'}, {value:'06',caption:'六月'}, {value:'07',caption:'七月'}, {value:'08',caption:'八月'}, {value:'09',caption:'九月'}, {value:'10',caption:'十月'}, {value:'11',caption:'十一月'}, {value:'12',caption:'十二月'}];
-  years: Array = [];
+  repeats: any = [{value: 0, caption: '关闭'}, {value: 1, caption: '每天'}, {value: 2, caption: '每周'}, {value: 3, caption: '每月'}, {value: 4, caption: '每年'}];
+  labels: any = [{value:0,caption:'工作'}, {value:1,caption:'个人'}];
+  months: any = [{value:'01',caption:'一月'}, {value:'02',caption:'二月'}, {value:'03',caption:'三月'}, {value:'04',caption:'四月'}, {value:'05',caption:'五月'}, {value:'06',caption:'六月'}, {value:'07',caption:'七月'}, {value:'08',caption:'八月'}, {value:'09',caption:'九月'}, {value:'10',caption:'十月'}, {value:'11',caption:'十一月'}, {value:'12',caption:'十二月'}];
+  years: any = [];
   rangeEnd: string = '4:30下午';
-  motions: Array = [
+  motions: any = [
     {value:'Anxious',caption:`<img class="image-option" src="../assets/imgs/Anxious.png">`},
     {value:'Birthday',caption:`<img class="image-option" src="../assets/imgs/Birthday.png">`},
     {value:'Celebration',caption:`<img class="image-option" src="../assets/imgs/Celebration.png">`},
