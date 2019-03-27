@@ -10,21 +10,17 @@ import {
 } from '../calendar.model'
 import * as moment from 'moment';
 import {defaults, pickModes} from "../config";
-import {AgdbusiService} from "../../../service/util-service/agdbusi.service";
 import {ScdData} from "../../../pages/tdl/tdl.service";
 
 @Injectable()
 export class CalendarService {
 
-  constructor(
-    private busiService: AgdbusiService
-  ) {
-
-  }
+  constructor() {}
 
   safeOpt(calendarOptions: any): CalendarModalOptions {
     const _disableWeeks: number[] = [];
     const _daysConfig: DayConfig[] = [];
+    const _dayMapConfig:Map<Date,DayConfig> = new Map<Date,DayConfig>();
     let {
       from = new Date(),
       to = 0,
@@ -48,6 +44,7 @@ export class CalendarService {
       color = defaults.COLOR,
       weekdays = defaults.WEEKS_FORMAT,
       daysConfig = _daysConfig,
+      daysConfigCopy = _dayMapConfig,
       disableWeeks = _disableWeeks,
       showAdjacentMonthDay = true
     } = calendarOptions || {};
@@ -274,18 +271,6 @@ export class CalendarService {
   }
 
 
-  dayConfigMonth(start: string, end: string): Promise<Array<DayConfig>> {
-    return new Promise<Array<DayConfig>>((resolve, reject) => {
-      this.busiService.getRegionAgd(start, end).then(d => {
-        let dayConfig: Array<DayConfig> = new Array<DayConfig>();
-        d.data.forEach( (value, key, map) =>{
-          dayConfig.push(this.traDayConfig(value, key.format("YYYY/MM/DD")));
-        });
-        resolve(dayConfig);
-      })
-    });
-  }
-
   traDayConfig(s: Array<ScdData>, day): DayConfig {
     let dayConfig: DayConfig = new class implements DayConfig {
       busysometing: boolean;
@@ -332,84 +317,5 @@ export class CalendarService {
     return dayConfig;
 
   }
-
-
-  // findDayEventForMonth(start: string, end: string): Promise<Array<CalendarDay>> {
-  //   return new Promise<Array<CalendarDay>>((resolve, reject) => {
-  //     this.busiService.getRegionAgd(start, end).then(d => {
-  //       let calendardays: Array<CalendarDay> = new Array<CalendarDay>();
-  //       d.data.forEach( (value, key, map) =>{
-  //         calendardays.push(this.34(value, key.format("YYYY/MM/DD")));
-  //       });
-  //       resolve(calendardays);
-  //     })
-  //   });
-  // }
-  //
-  // //参数 ‘YYYY/MM/DD’
-  // findDayEventForDay(day: string): Promise<CalendarDay> {
-  //   return new Promise<CalendarDay>((resolve, reject) => {
-  //     this.busiService.getOdAgd(day).then(localDay => {
-  //
-  //       resolve(this.34(localDay.data, day));
-  //     })
-  //   });
-  // }
-  //
-  // customCalendarDay(s: Array<ScdData>, day): CalendarDay {
-  //   let calendarDay: CalendarDay = new class implements CalendarDay {
-  //     busysometing: boolean;
-  //     cssClass: string;
-  //     disable: boolean;
-  //     hassometing: boolean;
-  //     hasting: boolean;
-  //     isFirst: boolean;
-  //     isLast: boolean;
-  //     isLastMonth: boolean;
-  //     isNextMonth: boolean;
-  //     isToday: boolean;
-  //     marked: boolean;
-  //     newmessage: number;
-  //     selected: boolean;
-  //     style: { title?: string; subTitle?: string };
-  //     subTitle: string;
-  //     things: number;
-  //     time: number;
-  //     title: string;
-  //   }
-  //
-  //   if (!s) {
-  //     return calendarDay;
-  //   }
-  //   let thing: number = s.length;
-  //   let cssClass: string = "";
-  //   let newmessage: number = 0;
-  //   if (thing > 0) {
-  //     cssClass = "hassometing";
-  //   } else if (thing > 5) {
-  //     cssClass = "busysometing";
-  //   }
-  //   for (let scdData of s) {
-  //     if (scdData.du == "0") {
-  //       newmessage++;
-  //     }
-  //   }
-  //   calendarDay.time = moment(day).valueOf();
-  //   calendarDay.disable = false;
-  //   calendarDay.cssClass = cssClass;
-  //   calendarDay.hasting = thing > 0;
-  //   calendarDay.marked = false;
-  //   calendarDay.newmessage = newmessage;
-  //   calendarDay.subTitle = newmessage > 0 ? `\u2022` : "";
-  //   calendarDay.things = thing;
-  //   calendarDay.title = new Date(moment(day).valueOf()).getDate().toString();
-  //   calendarDay.isToday = moment().isSame(calendarDay.time, 'days');
-  //   calendarDay.marked = false;
-  //   calendarDay.busysometing = cssClass == "busysometing";
-  //   calendarDay.hassometing = cssClass == "hassometing";
-  //   return calendarDay;
-  //
-  // }
-
 
 }

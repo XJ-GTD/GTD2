@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Scroll } from 'ionic-angular';
+import {Events, IonicPage, NavController, NavParams, Scroll} from 'ionic-angular';
 import {ScdData} from "../tdl/tdl.service";
 import * as moment from "moment";
 import {TdcService} from "./tdc.service";
@@ -49,7 +49,7 @@ import {BsModel} from "../../service/restful/out/bs.model";
       <ion-row justify-content-left>
         <ion-item>
           <ion-label>全天</ion-label>
-          <ion-toggle [disabled]="disControl()" [(ngModel)]="alld" color="danger"></ion-toggle>
+          <ion-toggle [disabled]="disControl()" [(ngModel)]="alld" color="danger" [class.allday]="b"></ion-toggle>
           <ion-datetime [disabled]="disControl()" displayFormat="HH:mm" [(ngModel)]="scd.st" ></ion-datetime>
           <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
         </ion-item>
@@ -98,6 +98,11 @@ import {BsModel} from "../../service/restful/out/bs.model";
           <ion-input type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-input>
         </div>
       </ion-row>
+      <ion-row justify-content-left>
+        <div   *ngFor ="let fss of scd.fss;">
+          <div >{{fss.ran}}</div>
+        </div>
+      </ion-row>
     </ion-grid>
     <ion-footer class ="foot-set">
       <ion-toolbar>
@@ -137,13 +142,15 @@ export class TdcPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private tdcServ :TdcService,private util:UtilService,
-              private tddjServ :TddjService,private  tddiServ : TddiService) {
+              private tddjServ :TddjService,private  tddiServ : TddiService,
+              ) {
 
   }
   //画面状态：0：新建 ，1：本人修改 ，2：受邀人修改
   pagestate : string ="0";
   //画面数据
   scd :ScdData = new ScdData();
+  b:boolean = true;
 
   rept = {
     close:1,
@@ -212,12 +219,6 @@ export class TdcPage {
 
 
       return;
-    }
-
-
-    if (this.navParams.get("XXX")){
-      this.pagestate = "2";
-      return ;
     }
 
   }
@@ -339,6 +340,7 @@ export class TdcPage {
 
   cancel(){
     this.navCtrl.pop();
+
   }
 
   save(share){

@@ -2,30 +2,51 @@ import {Injectable} from "@angular/core";
 import * as moment from "moment";
 import {CalendarDay, DayConfig} from "../../components/ion2-calendar";
 import {FeedbackService} from "../../service/cordova/feedback.service";
-import {AgdbusiService} from "../../service/util-service/agdbusi.service";
-import {ScdData} from "../tdl/tdl.service";
-import {CTbl} from "../../service/sqlite/tbl/c.tbl";
+import {StTbl} from "../../service/sqlite/tbl/st.tbl";
+import {SqliteExec} from "../../service/util-service/sqlite.exec";
 
 @Injectable()
 export class HService {
-  constructor(private feekback: FeedbackService,private busiService:AgdbusiService) {
+  constructor(private feekback: FeedbackService,private sqliteExec:SqliteExec
+  ) {
     moment.locale('zh-cn');
   }
-  //
-  // //缓存测试
-  // findDayEventToCache():Promise<any> {
-  //   return new Promise<DayConfig>(async (resolve, reject) =>{
-  //
-  //     let _moment = moment();
-  //     for(let d=1; d<=365;d++){
-  //       _moment = _moment.add(1,'d');
-  //       let day:string = _moment.format("YYYY/MM/DD");
-  //       console.log("****************************************==>" + day + "start");
-  //       await this.busiService.getOdAgd(day);
-  //       console.log("****************************************==>" + day + "end");
-  //     }
-  //   });
-  // }
+
+   configDay():Promise<Array<DayConfig>> {
+    return new Promise<Array<DayConfig>>((resolve, reject) => {
+      let sts:StTbl = new StTbl();
+      let days:Array<DayConfig> = new Array<DayConfig>();
+      this.sqliteExec.getList<StTbl>(sts).then(sts=>{
+        for(let st of sts){
+          let day:DayConfig = new class implements DayConfig {
+            busysometing: boolean;
+            cssClass: string;
+            date: Date;
+            disable: boolean;
+            hassometing: boolean;
+            hasting: boolean;
+            marked: boolean;
+            newmessage: number;
+            subTitle: string;
+            things: number;
+            title: string;
+          };
+          day.things = st.c;
+          day.hassometing = st.c < 3;
+          day.busysometing = st.c >= 3;
+          day.newmessage = st.n;
+          day.hasting = st.c > 0;
+          day.date = moment(st.d).toDate();
+          day.subTitle = st.n > 0? `\u2022`: "";
+          day.marked = false;
+          days.push(day);
+        }
+        resolve(days);
+      })
+
+    })
+
+  }
 
   centerShow(select: CalendarDay): Promise<HData> {
 
