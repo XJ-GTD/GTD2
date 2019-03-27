@@ -1,7 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, Navbar, NavController, NavParams} from 'ionic-angular';
-import {UtilService} from "../../service/util-service/util.service";
-import {AlarmService} from "../../service/cordova/alarm.service";
+import {IonicPage, Navbar, NavController} from 'ionic-angular';
+import {DataConfig} from "../../service/config/data.config";
+import {Setting, UserConfig} from "../../service/config/user.config";
+import {PageY, SsService} from "./ss.service";
 
 /**
  * Generated class for the 设置画面 page.
@@ -14,128 +15,94 @@ import {AlarmService} from "../../service/cordova/alarm.service";
 @Component({
   selector: 'page-ss',
   template:
-    '<ion-header>' +
-    '  <ion-navbar>' +
-    '    <ion-title>设置</ion-title>' +
-    '  </ion-navbar>' +
-    '</ion-header>' +
-    '<ion-content padding class="page-backgroud-color">' +
-    '  <div>' +
-    '    <button ion-item (click)="accountSecurity()" class="rowCss">' +
-    '      <ion-label>账号与安全</ion-label>' +
-    '    </button>' +
-    '    <button ion-item (click)="newsMessage()" class="rowCss">' +
-    '      <ion-label>消息通知</ion-label>' +
-    '    </button>' +
-    '    <button ion-item (click)="cleanCache()" class="rowCss no-border">' +
-    '      <ion-label item-start>缓存清理</ion-label>' +
-    '      <ion-label item-end text-end>5.5M</ion-label>' +
-    '    </button>' +
-    '    <button ion-item (click)="shareApp()" margin-top class="rowCss no-border">' +
-    '      <ion-label>分享APP</ion-label>' +
-    '    </button>' +
-    '    <button ion-item (click)="aboutApp()" margin-top class="rowCss">' +
-    '      <ion-label>关于</ion-label>' +
-    '    </button>' +
-    '    <button ion-item (click)="helpAndFeedback()" class="rowCss no-border">\n' +
-    '      <ion-label>帮助及反馈</ion-label>\n' +
-    '    </button>\n' +
-    '  </div>\n' +
-    '</ion-content>\n',
-  // '\n' +
-  // '<ion-footer>\n' +
-  // '  <ion-item class="rowCss">\n' +
-  // '    <ion-label text-center color="danger" (click)="logOut()">退出登录</ion-label>\n' +
-  // '  </ion-item>\n' +
-  // '\n' +
-  // '</ion-footer>\n'
+  `
+    <ion-header>
+      <ion-navbar>
+        <ion-title>
+          设置
+        </ion-title>
+      </ion-navbar>
+    </ion-header>
+    <ion-header no-border>
+      <ion-toolbar>
+        <ion-buttons left>
+          <button ion-button icon-only (click)="goBack()" color="danger">
+            <img class="img-header-left" src="../../assets/imgs/fh2.png">
+          </button>
+        </ion-buttons>
+        <ion-title>设置</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-grid>
+        <ion-row>
+          <ion-list no-lines>
+            <ion-item class="plan-list-item" >
+              <ion-label>语音唤醒</ion-label>
+              <ion-toggle [(ngModel)]="h.value" (ionChange)="save(h)"></ion-toggle>
+            </ion-item>
+
+            <ion-item class="plan-list-item" >
+              <ion-label>语音播报</ion-label>
+              <ion-toggle [(ngModel)]="b.value" (ionChange)="save(b)"></ion-toggle>
+            </ion-item>
+
+            <ion-item class="plan-list-item" >
+              <ion-label>振动</ion-label>
+              <ion-toggle [(ngModel)]="z.value" (ionChange)="save(z)"></ion-toggle>
+            </ion-item>
+
+            <ion-item class="plan-list-item" >
+              <ion-label>新消息提醒</ion-label>
+              <ion-toggle [(ngModel)]="t.value" (ionChange)="save(t)"></ion-toggle>
+            </ion-item>
+          </ion-list>
+        </ion-row>
+      </ion-grid>
+
+    </ion-content>
+  `,
 })
 export class SsPage {
 
-  @ViewChild(Navbar) navBar: Navbar;
+  h:Setting; //唤醒
+  t:Setting;//新消息提醒
+  b:Setting;//语音播报
+  z:Setting;//振动
 
-  testDate: string;
+  constructor(private navCtrl: NavController,
+              public ssService:SsService,) {
+    this.h = UserConfig.settins.get("H");
+    this.t = UserConfig.settins.get("T");
+    this.b = UserConfig.settins.get("B");
+    this.z = UserConfig.settins.get("Z");
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              public util: UtilService,
-              private alarm: AlarmService) {
+    this.h.value = this.h.value == "0" ? "false":"true";
+    this.t.value = this.t.value == "0" ? "false":"true";
+    this.b.value = this.b.value == "0" ? "false":"true";
+    this.z.value = this.z.value == "0" ? "false":"true";
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SsPage');
-    this.navBar.backButtonClick = this.backButtonClick;
-    this.navBar.setBackButtonText("");
   }
 
-  backButtonClick = (e: UIEvent) => {
-    // 重写返回方法
+  goBack() {
     this.navCtrl.pop();
-  };
-
-
-  logOut() {
-    window.localStorage.clear();
-    console.log('SsPage跳转LpPage');
-    //this.navCtrl.push(PageConfig.LP_PAGE);
   }
 
-  accountSecurity() {
+  save(setting){
 
-  }
+    let set:PageY = new PageY();
+    set.yi = setting.yi;//偏好主键ID
+    set.ytn = setting.bname; //偏好设置类型名称
+    set.yt = setting.typeB; //偏好设置类型
+    set.yn = setting.name;//偏好设置名称
+    set.yk = setting.type ;//偏好设置key
+    set.yv = setting.value == true ? "1":"0";//偏好设置value
 
-  newsMessage() {
-
-  }
-
-  cleanCache() {
-
-  }
-
-  shareApp() {
-
-  }
-
-  aboutApp() {
-
-  }
-
-  helpAndFeedback() {
-    console.log('SsPage跳转HlPage')
-    //this.navCtrl.push(PageConfig.HL_PAGE);
-  }
-
-// ionViewDidLoad(){
-//   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");
-// }
-// ionViewWillEnter(){
-//   console.log("2.0 ionViewWillEnter 顾名思义，当将要进入页面时触发");
-// }
-// ionViewDidEnter(){
-//   console.log("3.0 ionViewDidEnter 当进入页面时触发");
-// }
-// ionViewWillLeave(){
-//   console.log("4.0 ionViewWillLeave 当将要从页面离开时触发");
-// }
-// ionViewDidLeave(){
-//   console.log("5.0 ionViewDidLeave 离开页面时触发");
-// }
-// ionViewWillUnload(){
-//   console.log("6.0 ionViewWillUnload 当页面将要销毁同时页面上元素移除时触发");
-// }
-//
-// ionViewCanEnter(){
-//   console.log("ionViewCanEnter");
-// }
-//
-// ionViewCanLeave(){
-//   console.log("ionViewCanLeave");
-// }
-
-  testAlarm() {
-    this.testDate = this.testDate.replace("T", " ");
-    this.testDate = this.testDate.replace(":00Z", "");
-    console.log('设置完成 时间' + this.testDate);
-    this.alarm.setAlarmClock(this.testDate, "测试闹钟");
+    this.ssService.save(set);
   }
 }
 

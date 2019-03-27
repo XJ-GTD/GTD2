@@ -953,14 +953,23 @@ public class MainVerticle extends AbstractVerticle {
 
         									String deviceId = Base64.encodeBase64URLSafeString((req.getHeader("di") == null || "".equals(req.getHeader("di"))) ? req.getHeader("x-real-ip").getBytes() : req.getHeader("di").getBytes());
         									String queue = retaccess.getString("openid") + "." + deviceId;
-        									String exchange = "exchange.mwxing.fanout";
-        									String routingkey = "mwxing.announce." + retaccess.getString("unionid") + ".#";
-        									String routingkeyDevice = "mwxing." + retaccess.getString("unionid") + "." + deviceId + ".#";
+        									String exchange = "exchange.mwxing.direct";
+        									String announceexchange = "exchange.mwxing.fanout";
+        									String routingkey = "mwxing.announce";
+        									String routingkeyAccount = "mwxing." + retaccess.getString("unionid");
+        									String routingkeyDevice = "mwxing." + retaccess.getString("unionid") + "." + deviceId;
         									retaccess.put("cmq", queue);
 
-        									rabbitmq.exchangeDeclare(exchange, "fanout", true, false, handler -> {
+        									rabbitmq.exchangeDeclare(exchange, "direct", true, false, handler -> {
         										if (handler.succeeded()) {
         										    System.out.println("Exchange " + exchange + " successfully declared with fanout");
+        										} else {
+        											handler.cause().printStackTrace();
+        										}
+        									});
+        									rabbitmq.exchangeDeclare(announceexchange, "fanout", true, false, handler -> {
+        										if (handler.succeeded()) {
+        										    System.out.println("Exchange " + announceexchange + " successfully declared with fanout");
         										} else {
         											handler.cause().printStackTrace();
         										}
@@ -972,9 +981,16 @@ public class MainVerticle extends AbstractVerticle {
         											handler.cause().printStackTrace();
         										}
         									});
-        									rabbitmq.queueBind(queue, exchange, routingkey, handler -> {
+        									rabbitmq.queueBind(queue, announceexchange, routingkey, handler -> {
         										if (handler.succeeded()) {
-        										    System.out.println("Queue " + queue + " successfully binded to Exchange " + exchange + " with routing key " + routingkey);
+        										    System.out.println("Queue " + queue + " successfully binded to Exchange " + announceexchange + " with routing key " + routingkey);
+        										} else {
+        											handler.cause().printStackTrace();
+        										}
+        									});
+        									rabbitmq.queueBind(queue, exchange, routingkeyAccount, handler -> {
+        										if (handler.succeeded()) {
+        										    System.out.println("Queue " + queue + " successfully binded to Exchange " + exchange + " with routing key " + routingkeyAccount);
         										} else {
         											handler.cause().printStackTrace();
         										}

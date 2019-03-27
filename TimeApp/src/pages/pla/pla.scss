@@ -9,7 +9,7 @@ page-pla {
   }
 
   ion-content.nobackground {
-    opacity: 0.8;
+    opacity: 0; // 0 没有阴影   0.8 显示阴影
     height: 60vmax;
   }
 

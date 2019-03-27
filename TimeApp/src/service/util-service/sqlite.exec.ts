@@ -163,4 +163,33 @@ export class SqliteExec {
       return count;
     }
   }
+
+  /**
+   * 批量执行
+   * @param arrLen
+   * @param {Array<string>} sqlist
+   * @returns {Promise<any[]>}
+   */
+  batchPromiseSql(arrLen,sqlist: Array<string>){
+    let pro:Array<Promise<any>> = new Array<Promise<any>>();
+    if(sqlist.length>arrLen){
+      let len = sqlist.length/arrLen;
+      len =Number(len.toString().split('.')[0]);
+      for(let i=0;i<arrLen;i++){
+        let sqla = new Array<string>();
+        if(i==arrLen-1){
+          sqla = sqlist.slice(i*len,sqlist.length);
+        }else{
+          sqla = sqlist.slice(i*len,i*len+len);
+        }
+        pro.push(this.batExecSql(sqla));
+      }
+    }
+    return Promise.all(pro).then(values =>{
+        // 返回的values由 promiseX 与 promiseY返回的值所构成的数组。
+        console.log('batchPromiseSql:'+JSON.stringify(values));
+      })
+  }
+
+
 }
