@@ -10,7 +10,32 @@ import { DomSanitizer } from '@angular/platform-browser';
  */
 @Component({
   selector: 'scroll-select',
-  templateUrl: 'scroll-select.html'
+  template: `<div class="grid">
+    <div class="row" align-items-center justify-content-between>
+      <div *ngIf="type == 'scroll-with-button';">
+        <button ion-button class="img-btn" (click)="prev()" clear [disabled]="isFirst()">
+          <img class="slide-btn" src="./assets/imgs/page-prev.png">
+        </button>
+      </div>
+      <div class="scroll-box" [ngClass]="{'scroll-with-button': type == 'scroll-with-button', 'scroll-without-button': type == 'scroll-without-button'}">
+        <div class="scroll-box-content" id="scroll-box-content" #scrollBox>
+          <div class="scroll-box-zoom-wrapper">
+            <div class="option align-items-center before" [ngClass]="{'option-3': items == 3,'option-5': items == 5,'option-7': items == 7}" *ngFor="let before of befores;"></div>
+            <div class="option align-items-center" [ngClass]="{'option-3': items == 3,'option-5': items == 5,'option-7': items == 7}" *ngFor="let option of options;" [attr.value]="option.value">{{option.caption}}</div>
+            <div class="option align-items-center after" [ngClass]="{'option-3': items == 3,'option-5': items == 5,'option-7': items == 7}" *ngFor="let after of afters;"></div>
+          </div>
+        </div>
+        <div class="selected-circle" *ngIf="items > 1">
+          <div></div>
+        </div>
+      </div>
+      <div *ngIf="type == 'scroll-with-button';">
+        <button ion-button class="img-btn" (click)="next()" clear [disabled]="isLast()">
+          <img class="slide-btn" src="./assets/imgs/page-next.png">
+        </button>
+      </div>
+    </div>
+  </div>`
 })
 export class ScrollSelectComponent {
 
@@ -26,7 +51,7 @@ export class ScrollSelectComponent {
   befores: Array<any> = [];
   afters: Array<any> = [];
   @Output("changed")
-  changedPropEvent = new EventEmitter();
+  changedPropEvent:EventEmitter<number> = new EventEmitter<number>();
   unsubscribe: () => void;
   slideWidth: number;
   index: number = 0;
@@ -117,8 +142,6 @@ export class ScrollSelectComponent {
 
   optionChanged(target) {
     if (this._scrollBox.nativeElement.scrollLeft !== this.lastScrollLeft) {
-
-      console.log('change pos');
       let index = Math.floor(this._scrollBox.nativeElement.scrollLeft / (this.slideWidth / this.items));
 
       if ((this._scrollBox.nativeElement.scrollLeft - (index * (this.slideWidth / this.items))) >= (Math.floor((this.slideWidth / this.items) / 2))) {
@@ -131,6 +154,10 @@ export class ScrollSelectComponent {
       this.lastScrollLeft = index * (this.slideWidth / this.items);
       this.autoscroll = true;
       this._scrollBox.nativeElement.scrollLeft = index * (this.slideWidth / this.items);
+      setTimeout(()=> {
+        this.changedPropEvent.emit(this.value);
+
+      },500);
     }
   }
 

@@ -35,8 +35,8 @@ page-pl {
   }
 
   .color-dot {
-    width: 3vmin;
-    height: 3vmin;
+    width: 2.7vmin;
+    height: 2.5vmin;
     background-color: #fff;
     border-radius: 50%;
   }
@@ -71,28 +71,28 @@ page-pl {
   }
 
   .img-header-left{
-    width: 15px;
-    height: 15px;
-    margin-left: 20px;
+    width: 4vmin;
+    height: 4vmin;
+    margin-left: 5vmin;
   }
 
   .img-content-plan{
-    width: 9px;
-    height: 9px;
+    width: 2vmin;
+    height: 2vmin;
+  }
+
+  .img-content-refresh{
+    width: 3.5vmin;
+    height: 3vmin;
   }
 
   .content-download{
     color: white;
   }
 
-  .img-content-refresh{
-    width: 15px;
-    height: 12px;
-  }
-
   .toolbar-title{
     color: white;
-    letter-spacing: 3px;
+    letter-spacing: 0.5vmin;
     font-size: 1.5rem;
   }
 
@@ -101,7 +101,7 @@ page-pl {
   }
 
   .item-block{
-    min-height: 3rem;
+    min-height: 9vmin;
   }
 
   .div-show-true{

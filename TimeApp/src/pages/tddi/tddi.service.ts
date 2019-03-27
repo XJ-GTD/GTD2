@@ -93,29 +93,7 @@ export class TddiService {
 
 
 
-  //删除日程
-  async delete(rcId:string){
-    let agdPro:AgdPro = new AgdPro();
-    let ctbl:CTbl =new CTbl();
 
-    //日程Id
-    ctbl.si = rcId;
-
-    let etbl:ETbl =new ETbl();
-    etbl.si = ctbl.si;
-    await this.sqlExce.delete(etbl);//本地删除提醒
-    let dtbl:DTbl =new DTbl();
-    dtbl.si = ctbl.si;
-    await this.sqlExce.delete(dtbl);//本地删除日程参与人
-
-    await this.sqlExce.delete(ctbl); //本地删除日程表
-
-    //restFul 删除日程
-    let a:AgdPro = new AgdPro();
-    a.ai = ctbl.si;//日程ID
-    await this.agdRestful.remove(a);
-
-  }
 
   //修改本地日程详情
   async updateDetail(scd:ScdData){

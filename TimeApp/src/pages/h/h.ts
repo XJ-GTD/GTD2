@@ -1,8 +1,7 @@
-import {Component, ViewChild} from '@angular/core';
-import {Events, IonicPage, ModalController, NavController} from 'ionic-angular';
+import {Component} from '@angular/core';
+import { IonicPage, ModalController, NavController} from 'ionic-angular';
 import {
-  CalendarComponent,
-  CalendarComponentOptions, DayConfig
+  CalendarComponentOptions
 } from "../../components/ion2-calendar";
 import {DataConfig} from "../../service/config/data.config";
 import {HData, HService} from "./h.service";
@@ -50,7 +49,8 @@ export class HPage {
   hdata: HData;
   options: CalendarComponentOptions = {
     pickMode: 'single',
-    from: new Date(1975, 0, 1),
+    from: new Date(1900, 0, 1),
+    to: new Date(2299, 0, 1),
     daysConfig: []
   };
 
@@ -63,15 +63,15 @@ export class HPage {
   }
   ngOnInit(){
 
-   this.hService.configDay().then(data=>{
-     this.options.daysConfig.push(...data);
-
-     setTimeout(()=>{
-       console.log("********************" + data.length);
-       this.options.daysConfig.splice(0,this.options.daysConfig.length);
-       //this.options.daysConfig.push(...data);
-     },2000);
-   })
+   // this.hService.configDay().then(data=>{
+   //   this.options.daysConfig.push(...data);
+   //   //
+   //   // setTimeout(()=>{
+   //   //   console.log("********************" + data.length);
+   //   //   this.options.daysConfig.splice(0,this.options.daysConfig.length);
+   //   //   //this.options.daysConfig.push(...data);
+   //   // },2000);
+   // })
   }
 
   onPress(pressDay) {
@@ -88,6 +88,7 @@ export class HPage {
 
   //查询当天日程
   onSelect(selectDay) {
+    console.log("**********************************1111");
 
     this.hService.centerShow(selectDay).then(d => {
       //双机进入列表

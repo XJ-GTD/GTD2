@@ -11,11 +11,12 @@ import {
 import * as moment from 'moment';
 import {defaults, pickModes} from "../config";
 import {ScdData} from "../../../pages/tdl/tdl.service";
+import {SqliteExec} from "../../../service/util-service/sqlite.exec";
 
 @Injectable()
 export class CalendarService {
 
-  constructor() {}
+  constructor(private sqlite:SqliteExec) {}
 
   safeOpt(calendarOptions: any): CalendarModalOptions {
     const _disableWeeks: number[] = [];
@@ -111,7 +112,7 @@ export class CalendarService {
     let dayConfig = this.findDayConfig(_time, opt);
     let _rangeBeg = moment(opt.from).valueOf();
     let _rangeEnd = moment(opt.to).valueOf();
-    let isBetween = true;
+    let isBetween = false;
     let disableWee = opt.disableWeeks.indexOf(_time.toDate().getDay()) !== -1;
     if (_rangeBeg > 0 && _rangeEnd > 0) {
       if (!opt.canBackwardsSelected) {
@@ -271,51 +272,33 @@ export class CalendarService {
   }
 
 
-  traDayConfig(s: Array<ScdData>, day): DayConfig {
-    let dayConfig: DayConfig = new class implements DayConfig {
-      busysometing: boolean;
-      cssClass: string;
-      date: Date;
-      disable: boolean;
-      hassometing: boolean;
-      hasting: boolean;
-      marked: boolean;
-      newmessage: number;
-      subTitle: string;
-      things: number;
-      title: string;
-    }
 
-    if (!s) {
-      return dayConfig;
-    }
-    let thing: number = s.length;
-    let cssClass: string = "";
-    let newmessage: number = 0;
-    if (thing > 0) {
-      cssClass = "hassometing";
-    } else if (thing > 5) {
-      cssClass = "busysometing";
-    }
-    for (let scdData of s) {
-      if (scdData.du == "0") {
-        newmessage++;
+  getMonthData(month:CalendarMonth){
+
+    let _start = new Date(month.original.time);
+    let _startMonth = moment(moment(_start).format("YYYY/MM/") + "1");
+    let _endMonth = moment(moment(_start).format("YYYY/MM/") + _startMonth.daysInMonth());
+
+    let sql:string = "select sd,count(*) scds,sum(itx) news from gtd_sp where sd>='" + moment(_startMonth).format("YYYY/MM/DD")+ "' and sd<='" +  moment(_endMonth).format("YYYY/MM/DD") + "' group by sd";
+    this.sqlite.getExtList<MonthData>(sql).then(data=>{
+      for (let d of data){
+        let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
+
+        calendarDay.things = d.scds;
+        calendarDay.hassometing = d.scds < 3;
+        calendarDay.busysometing = d.scds >= 3;
+        calendarDay.newmessage = d.news
+        calendarDay.hasting = d.scds > 0;
+        calendarDay.subTitle = d.news > 0? `\u2022`: "";
+        calendarDay.marked = false;
       }
-    }
-    dayConfig.date = moment(day).toDate();
-    dayConfig.disable = false;
-    dayConfig.cssClass = cssClass;
-    dayConfig.hasting = thing > 0;
-    dayConfig.marked = false;
-    dayConfig.newmessage = newmessage;
-    dayConfig.subTitle = newmessage > 0 ? `\u2022` : "";
-    dayConfig.things = thing;
-    dayConfig.title = new Date(moment(day).valueOf()).getDate().toString();
-    dayConfig.marked = false;
-    dayConfig.busysometing = cssClass == "busysometing";
-    dayConfig.hassometing = cssClass == "hassometing";
-    return dayConfig;
-
+    })
   }
 
+
+}
+class MonthData{
+ sd:string;
+ scds:number;
+ news:number;
 }
