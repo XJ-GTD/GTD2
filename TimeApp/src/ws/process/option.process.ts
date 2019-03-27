@@ -5,6 +5,7 @@ import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
 import {CudscdPara} from "../model/cudscd.para";
 import {ProcesRs} from "../model/proces.rs";
+import {O} from "../model/ws.enum";
 
 /**
  * 确认操作
@@ -20,12 +21,20 @@ export class OptionProcess implements MQProcess{
   go(content: WsContent,processRs:ProcesRs):Promise<ProcesRs> {
     return new Promise<ProcesRs>(resolve => {
       //处理区分
-      content.option
+      let opt = content.option;
       //处理所需要参数
-      let cudPara:CudscdPara = content.parmeter;
-      //处理结果
-      //emit
-      //this.emitService.emitDatas(processRs);
+      let cudPara:CudscdPara = content.parameters
+
+      if (opt == O.O){
+        //确认操作
+
+      }else if(opt == O.S){
+        //追问操作
+
+      }else{
+        //取消操作
+
+      }
     })
   }
 

@@ -33,25 +33,16 @@ export class SpeechProcess implements MQProcess {
       let speakText = spData.an;
       //处理区分
       if (spData.t) {
-        let stbl: STbl = new STbl();
-        stbl.st = "SPEECH";
-        stbl.yk = spData.t;
 
-        //获取本地回答语音文本
-        let datas = await this.sqliteExec.getList<STbl>(stbl);
-        //回答语音list
-        let len = datas.length;
-        //随机选取一条
-        let rand = this.utilService.randInt(0, len - 1);
-        let anO: STbl = datas[rand];
+        speakText = await this.assistant.getSpeakText(spData.t);
+
         //替换参数变量
-        let count = processRs.scd.length;;
+        let count = processRs.scd.length;
         content.parameters.forEach((value, key) => {
           speakText = speakText.replace("{" + key + "}", value);
         });
         speakText = speakText.replace("{" + count + "}", count.toString());
 
-        speakText = anO.yk;
       }
 
       this.assistant.speakText(speakText, (data) => {

@@ -3,6 +3,10 @@ import {File} from "@ionic-native/file";
 import {AibutlerRestful, AudioPro, TextPro} from "../restful/aibutlersev";
 import * as moment from 'moment';
 import {WsModel} from "../../ws/model/ws.model";
+import {STbl} from "../sqlite/tbl/s.tbl";
+import {DataConfig} from "../config/data.config";
+import {SqliteExec} from "../util-service/sqlite.exec";
+import {UtilService} from "../util-service/util.service";
 
 
 /**
@@ -13,7 +17,6 @@ import {WsModel} from "../../ws/model/ws.model";
 @Injectable()
 export class AssistantService {
 
-  private failedText: string = '我没有听清楚你说什么';  //暂时替代，录入字典表后删除
   public isSpeaking: boolean;
   public islistenAudioing: boolean;
   public isWakeUp: boolean;
@@ -21,7 +24,10 @@ export class AssistantService {
   cordova: any;
 
   constructor(private file: File,
-              private aibutlerRestful: AibutlerRestful) {
+              private aibutlerRestful: AibutlerRestful,
+              private sqliteExec:SqliteExec,
+              private utilService:UtilService) {
+
     this.isSpeaking = false;
     this.islistenAudioing = false;
     if (this.wins.cordova) {
@@ -255,5 +261,23 @@ export class AssistantService {
     } catch (e) {
       console.log("问题：" + e)
     }
+  }
+
+
+  public async getSpeakText(t:string){
+
+    let stbl: STbl = new STbl();
+    stbl.st = DataConfig.SPEECH;
+    stbl.yk = t;
+
+    //获取本地回答语音文本
+    let datas = await this.sqliteExec.getList<STbl>(stbl);
+    //回答语音list
+    let len = datas.length;
+    //随机选取一条
+    let rand = this.utilService.randInt(0, len - 1);
+    let an: STbl = datas[rand];
+
+    return an.yv;
   }
 }

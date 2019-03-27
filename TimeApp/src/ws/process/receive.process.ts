@@ -22,7 +22,7 @@ export class ReceiveProcess implements MQProcess{
       //处理区分
       content.option
       //处理所需要参数
-      let cudPara:CudscdPara = content.parmeter;
+      let cudPara:CudscdPara = content.parameters;
       //处理结果
       //emit
       //this.emitService.emitDatas(processRs);
