@@ -11,6 +11,7 @@ import * as moment from "moment";
 import {UtilService} from "../../service/util-service/util.service";
 import {AgdPro, AgdRestful, ContactPerPro} from "../../service/restful/agdsev";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
+import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
 
 @Injectable()
 export class TddjService {
@@ -19,30 +20,49 @@ export class TddjService {
   }
 
 
-
-//删除日程
-  async delete(rcId:string){
+  //删除日程 type：1 删除当前以后所有 ，2 删除所有
+  async delete(rcId:string,type :string,d:string){
     let agdPro:AgdPro = new AgdPro();
     let ctbl:CTbl =new CTbl();
 
     //日程Id
     ctbl.si = rcId;
 
-    let etbl:ETbl =new ETbl();
-    etbl.si = ctbl.si;
-    await this.sqlExce.delete(etbl);//本地删除提醒
-    let dtbl:DTbl =new DTbl();
-    dtbl.si = ctbl.si;
-    await this.sqlExce.delete(dtbl);//本地删除日程参与人
 
-    await this.sqlExce.delete(ctbl); //本地删除日程表
+    if (type =="2"){
+      let etbl:ETbl =new ETbl();
+      etbl.si = ctbl.si;
+      await this.sqlExce.delete(etbl);//本地删除提醒
+      let dtbl:DTbl =new DTbl();
+      dtbl.si = ctbl.si;
+      await this.sqlExce.delete(dtbl);//本地删除日程参与人
 
-    //restFul 删除日程
-    let a:AgdPro = new AgdPro();
-    a.ai = ctbl.si;//日程ID
-    await this.agdful.remove(a);
+      await this.sqlExce.delete(ctbl); //本地删除日程表
+
+      let sptbl = new SpTbl();
+      sptbl.si = rcId;
+      await this.sqlExce.delete(sptbl);//本地删除日程子表
+
+      //restFul 删除日程
+      let a:AgdPro = new AgdPro();
+      a.ai = ctbl.si;//日程ID
+      await this.agdful.remove(a);
+
+    }else{
+      let sql ="delete from gtd_sp where si = '"+ rcId +"' and sd>= '"+ d +"'";
+      await this.sqlExce.execSql(sql);
+
+      ctbl.sd = d;
+      await this.sqlExce.update(ctbl);
+
+      let a = new AgdPro();
+      a.ai = ctbl.si;//日程ID
+      a.adt = d;
+      await this.agdful.save(a);
+    }
 
   }
+
   /*async delete(dt:string,type: string,rcId:string){
     let agdPro:AgdPro = new AgdPro();
     let ctbl:CTbl =new CTbl();
@@ -201,7 +221,7 @@ export class TddjService {
 
   }
 
-  //修改本地日程 可修改重复日程的某一天（暂不使用此功能）
+  /*//修改本地日程 可修改重复日程的某一天（暂不使用此功能）
   async update(updDt: string, scd: ScdData, type: string) {
 
     //设置原始日程id
@@ -215,30 +235,30 @@ export class TddjService {
 
     //修改当天日程
     if (type == "0"){
-      /*当前日期之前日程更新为有结束的日程*/
+      /!*当前日期之前日程更新为有结束的日程*!/
       updDate = moment(updDate).subtract(1, 'd').to("YYYY/MM/DD");
       await this.setCurBefore(updDate,scd,pni);
 
-      /*为修改的当前日期添加一条新的日程*/
+      /!*为修改的当前日期添加一条新的日程*!/
       updDate = moment(updDate).to("YYYY/MM/DD");
       await this.setCur(updDate,scd,pni);
 
-      /*添加当前日期之后的日程(开始日期为当前日期+1,结束日为日程结束日)，日程内容设定与原日程相同*/
+      /!*添加当前日期之后的日程(开始日期为当前日期+1,结束日为日程结束日)，日程内容设定与原日程相同*!/
       updDate = moment(updDate).add(1,'d').to("YYYY/MM/DD");
       await this.setCurAfter(updDate,scd,pni);
     }
 
     //修改当天以后所有
     if (type == "1"){
-      /*当前日期之前日程更新为有结束的日程*/
+      /!*当前日期之前日程更新为有结束的日程*!/
       updDate = moment(updDate).subtract(1, 'd').to("YYYY/MM/DD");
       await this.setCurBefore(updDate,scd,pni);
 
-      /*删除当前日期之后的所有日程（包含当前日期）*/
+      /!*删除当前日期之后的所有日程（包含当前日期）*!/
       updDate = moment(updDate).to("YYYY/MM/DD");
       await this.delFromCur(updDate,scd);
 
-      /*添加当前日期之后的日程(开始日期为当前日期)，日程内容设定与原日程相同*/
+      /!*添加当前日期之后的日程(开始日期为当前日期)，日程内容设定与原日程相同*!/
       updDate = moment(updDate).to("YYYY/MM/DD");
       await this.setCurAfter(updDate,scd,pni);
 
@@ -259,7 +279,7 @@ export class TddjService {
     c.ed = updDate;
     await this.sqlExce.update(c);
 
-    /*restFul修改日程*/
+    /!*restFul修改日程*!/
     //当前日期之前日程的修改更新到服务器
     let agd = new AgdPro();
     this.setAdgPro(agd,c);
@@ -308,7 +328,7 @@ export class TddjService {
     e.si = cnew.si;
     await this.sqlExce.save(e);
 
-    /*restFul修改日程*/
+    /!*restFul修改日程*!/
     //修改的当前日期的日程相关信息更新到服务器
     //日程
     await this.agdful.save(agd);
@@ -373,7 +393,7 @@ export class TddjService {
     e.si = cnew.si;
     await this.sqlExce.save(e);
 
-    /*restFul修改日程*/
+    /!*restFul修改日程*!/
     //当前日期之后日程相关信息更新到服务器
     //日程
     await this.agdful.save(agd);
@@ -386,7 +406,7 @@ export class TddjService {
   //删除当前日期之后的所有日程（包含当前日期）
   private async delFromCur(updDate: string, scd: ScdData){
 
-  }
+  }*/
 
   //获取计划列表
   getPlans(): Promise<BsModel<Array<JhTbl>>> {

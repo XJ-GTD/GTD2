@@ -45,7 +45,7 @@ import {DataConfig} from "../../service/config/data.config";
           </div>
           <div class="dayagendas w-auto" >
             <div id="{{scd.anchorid}}" class="dayagenda row" *ngFor ="let scd of sdl.scdl;" 
-                 [ngStyle]="{'background-color':scd.cbkcolor}" (click)="toDetail(scd.si)">
+                 [ngStyle]="{'background-color':scd.cbkcolor}" (click)="toDetail(scd.si,sdl.d)">
               <div class="dayagendacontent w-auto" [ngStyle]="{'background-color':scd.cbkcolor}">
                 <div class ="agendaline1 row">{{this.pageLoadOver(scd.anchorid)}}
                   <div class="agenda-st">{{scd.st}}</div>
@@ -434,54 +434,6 @@ export class TdlPage {
     });
   }
 
-  //弹出操作按钮
-  presentActionSheet(scd :ScdData) {
-
-    scd.morecolor = "#35919C";
-    const actionSheet = this.actionSheetCtrl.create({
-      cssClass:'zm-action-button',
-      buttons: [
-        {
-          text: '分享',
-          role: 'destructive',
-          cssClass:'btn-share',
-          handler: () => {
-            console.log('Destructive clicked');
-          }
-        },{
-          text: '删除',
-          cssClass:'btn-del',
-          handler: () => {
-            this.delAgenda(scd);
-          }
-        },{
-          text: '取消',
-          role: 'cancel',
-          cssClass:'btn-cancel',
-          handler: () => {
-            scd.morecolor = "#FFFFFF";
-          }
-        }
-      ]
-    });
-    actionSheet.present();
-  }
-
-  //删除日程
-  private delAgenda(scd :ScdData){
-    if (scd.gs == "0"){
-      //作为受邀人进行删除
-      this.tddiServ.delete(scd.si).then(data =>{
-        this.removeListEl(scd);
-      });
-    }else{
-      //作为发起人进行删除
-      this.tddjServ.delete(scd.si).then(data =>{
-        this.removeListEl(scd);
-      });
-    }
-  }
-
   //从显示list中移除删除的日程
   private removeListEl(scd :ScdData){
     let newList :Array<ScdlData> = new Array<ScdlData>();
@@ -506,8 +458,8 @@ export class TdlPage {
 
   }
 
-  toDetail(si){
-    this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {si: si}).present();
+  toDetail(si,d){
+    this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {si: si,d:d}).present();
   }
 
 }

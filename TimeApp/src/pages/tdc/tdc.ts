@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import {Events, IonicPage, NavController, NavParams, Scroll} from 'ionic-angular';
+import {ActionSheetController, Events, IonicPage, NavController, NavParams, Scroll} from 'ionic-angular';
 import {ScdData} from "../tdl/tdl.service";
 import * as moment from "moment";
 import {TdcService} from "./tdc.service";
@@ -21,7 +21,22 @@ import {BsModel} from "../../service/restful/out/bs.model";
 @Component({
   selector: 'page-tdc',
   providers: [],
-  template:`<ion-content padding>
+  template:`<ion-header no-border >
+    <ion-toolbar>
+      <ion-grid>
+        <ion-row >
+          <div class="h-auto header-set" >
+            <ion-buttons right>
+              <button [disabled]="pagestate == '0'?true:false" ion-button icon-only (click)="presentActionSheet()" color="light">
+                <img  class="imgdel-set" src="../../assets/imgs/del.png">
+              </button>
+            </ion-buttons>
+          </div>
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content padding>
     <ion-grid>
       <ion-row justify-content-center>
         <div class = "input-set">
@@ -143,6 +158,7 @@ export class TdcPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private tdcServ :TdcService,private util:UtilService,
               private tddjServ :TddjService,private  tddiServ : TddiService,
+              public actionSheetCtrl: ActionSheetController
               ) {
 
   }
@@ -444,5 +460,51 @@ export class TdcPage {
       return true;
     }
   }
+
+  presentActionSheet() {
+    let d = this.navParams.get("d");
+    if (this.scd.rt != "0" && this.scd.sd != d) {
+      //重复日程删除
+      const actionSheet = this.actionSheetCtrl.create({
+        buttons: [
+          {
+            text: '删除当前日期开始所有日程',
+            role: 'destructive',
+            cssClass:'btn-del',
+            handler: () => {
+              this.tddjServ.delete(this.scd.si,"1",d).then(data=>{
+                this.cancel();
+              });
+            }
+          }, {
+            text: '删除所有日程',
+            cssClass:'btn-delall',
+            handler: () => {
+              this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
+                this.cancel();
+              });
+            }
+          }, {
+            text: '取消',
+            role: 'cancel',
+            cssClass:'btn-cancel',
+            handler: () => {
+
+            }
+          }
+        ]
+      });
+      actionSheet.present();
+    }else{
+      //非重复日程删除
+      this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
+        this.cancel();
+      });
+    }
+
+
+  }
+
+
 }
 
