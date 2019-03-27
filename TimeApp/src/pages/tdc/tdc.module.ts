@@ -9,8 +9,6 @@ import {PipesModule} from "../../pipes/pipes.module";
 @NgModule({
   declarations: [
     TdcPage,
-    ScrollSelectComponent,
-    ScrollRangePickerComponent
   ],
   imports: [
     IonicPageModule.forChild(TdcPage),

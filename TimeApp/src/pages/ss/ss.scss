@@ -1,23 +1,46 @@
 page-ss {
+  background-color: #000;
 
-
-  .scroll-content {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    padding-bottom: 0 !important;
+  @font-face {
+    font-family: 'PingFang-Regular';
+    src: url('../../assets/fonts/PingFang Regular.ttf');
   }
 
-  .item-inner{
-    border-bottom: 0px !important;
+  ion-content{
+    font-family: PingFang-Regular;
   }
 
-  .item-block.item-ios{
-    border-bottom: 1px solid #e5e5e5 ;
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: #000;
   }
 
-  .rowCss{
-    height:56px;
+  .toolbar-title{
+    color: white;
+    letter-spacing: 0.5vmin;
+    font-size: 1.5rem;
   }
 
+  ion-content.content {
+    background-color: #000;
+    color: #fff;
+  }
+
+  ion-content .plan-list-item {
+    width: 97vmin;
+    background-color: #000;
+    color: #fff;
+    font-size: 1.7rem;
+    font-weight: 200;
+  }
+
+  .img-header-left{
+    width: 4vmin;
+    height: 4vmin;
+    margin-left: 5vmin;
+  }
+
+  .toggle-ios.toggle-checked .toggle-icon {
+    background-color: rgb(60,144,155);
+  }
 
 }

@@ -12,41 +12,41 @@ export class HService {
     moment.locale('zh-cn');
   }
 
-   configDay():Promise<Array<DayConfig>> {
-    return new Promise<Array<DayConfig>>((resolve, reject) => {
-      let sts:StTbl = new StTbl();
-      let days:Array<DayConfig> = new Array<DayConfig>();
-      this.sqliteExec.getList<StTbl>(sts).then(sts=>{
-        for(let st of sts){
-          let day:DayConfig = new class implements DayConfig {
-            busysometing: boolean;
-            cssClass: string;
-            date: Date;
-            disable: boolean;
-            hassometing: boolean;
-            hasting: boolean;
-            marked: boolean;
-            newmessage: number;
-            subTitle: string;
-            things: number;
-            title: string;
-          };
-          day.things = st.c;
-          day.hassometing = st.c < 3;
-          day.busysometing = st.c >= 3;
-          day.newmessage = st.n;
-          day.hasting = st.c > 0;
-          day.date = moment(st.d).toDate();
-          day.subTitle = st.n > 0? `\u2022`: "";
-          day.marked = false;
-          days.push(day);
-        }
-        resolve(days);
-      })
-
-    })
-
-  }
+  //  configDay():Promise<Array<DayConfig>> {
+  //   return new Promise<Array<DayConfig>>((resolve, reject) => {
+  //     let sts:StTbl = new StTbl();
+  //     let days:Array<DayConfig> = new Array<DayConfig>();
+  //     this.sqliteExec.getList<StTbl>(sts).then(sts=>{
+  //       for(let st of sts){
+  //         let day:DayConfig = new class implements DayConfig {
+  //           busysometing: boolean;
+  //           cssClass: string;
+  //           date: Date;
+  //           disable: boolean;
+  //           hassometing: boolean;
+  //           hasting: boolean;
+  //           marked: boolean;
+  //           newmessage: number;
+  //           subTitle: string;
+  //           things: number;
+  //           title: string;
+  //         };
+  //         day.things = st.c;
+  //         day.hassometing = st.c < 3;
+  //         day.busysometing = st.c >= 3;
+  //         day.newmessage = st.n;
+  //         day.hasting = st.c > 0;
+  //         day.date = moment(st.d).toDate();
+  //         day.subTitle = st.n > 0? `\u2022`: "";
+  //         day.marked = false;
+  //         days.push(day);
+  //       }
+  //       resolve(days);
+  //     })
+  //
+  //   })
+  //
+  // }
 
   centerShow(select: CalendarDay): Promise<HData> {
 

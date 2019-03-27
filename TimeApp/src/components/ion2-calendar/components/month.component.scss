@@ -30,6 +30,19 @@
   .days .today p {
     //color: bindColors($background-color);
   }
+  button.days-btn small{
+    overflow: hidden;
+    display: block;
+    left: calc(50% - 2px);
+    right: 0;
+    top: 75%;
+    bottom: 0;
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: conic-gradient(#8c83bd, #8556a0, #a057b4);
+    border-radius: 4px;
+  }
   .days .today p {
     //font-weight: 700;
   }

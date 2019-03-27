@@ -62,6 +62,7 @@ scroll-select {
     -webkit-overflow-scrolling: touch;
     will-change: scroll-position;
     contain: size style layout;
+    z-index: 2;
   }
   
   .scroll-box.scroll-without-button .scroll-box-zoom-wrapper {

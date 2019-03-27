@@ -26,25 +26,29 @@ export class PdService {
 
     // 获取计划管理日程（重复日程处理等）
     let sql = 'select * from gtd_c  where ji ="'+ pid +'" order by sd';
+
+    sql = 'select gc.si,gc.sn,gc.bz,sp.sd,sp.st from gtd_c gc ' +
+      'left join gtd_sp sp on sp.si = gc.si ' +
+      'where gc.ji = "'+ pid + '" order by sp.sd,sp.st desc';
     let cs = new  Array<CTbl>();
     cs = await this.sqlExce.getExtList<CTbl>(sql);
 
-    let paList:Array<AgdPro> = Array<AgdPro>();
+    let paList:Array<ScdData> = Array<ScdData>();
     if(cs.length>0){
       console.log('---------- PdService getPlan 获取计划日程开始 ----------------');
       //获取计划日程
       for(let jhc of cs){
-        let pa:AgdPro = new AgdPro();
-        pa.ai = jhc.si;//日程ID
-        pa.at = jhc.sn;//主题
+        let pa:ScdData = new ScdData();
+        pa.si = jhc.si;//日程ID
+        pa.sn = jhc.sn;//主题
         pa.adt = jhc.sd;//时间(YYYY/MM/DD HH:mm)
         pa.st = jhc.st;//开始时间
         pa.et = jhc.et;//结束日期
         pa.ed = jhc.ed;//结束时间
-        pa.ap = jhc.ji;//计划
-        pa.ar = jhc.rt;//重复
-        pa.aa = jhc.sn;//提醒
-        pa.am = jhc.bz;//备注
+        pa.ji = jhc.ji;//计划
+        pa.rt = jhc.rt;//重复
+        pa.sn = jhc.sn;//提醒
+        pa.bz = jhc.bz;//备注
         paList.push(pa);
       }
       console.log('---------- PlService getPlan 获取计划日程结束 ----------------');
@@ -198,4 +202,23 @@ export class PagePDPro{
 
   js: number = 0; //日程数量
   jtd: string = "0"; //系统计划区别是否下载
+}
+
+export class ScdData {
+  si: string = "";//日程事件ID
+  sn: string = "";//日程事件主题
+  ui: string = "";//创建者
+  adt: string = "";//开始日期
+  st: string = "";//开始时间
+  ed: string = "";//结束日期
+  et: string = "";//结束时间
+  rt: string = "";//重复类型
+  ji: string = "";//计划ID
+  sr: string = "";//日程关联ID
+  bz: string = "";//备注
+  tx: string = "";//提醒方式
+  pni:string = "";//日程原始ID
+  wtt: number;//时间戳
+  du:string ="";//消息读取状态
+  gs:string ="";//归属
 }

@@ -43,7 +43,7 @@ export const MONTH_VALUE_ACCESSOR: any = {
                           [class.today]="day.isToday"
                           [disabled]="day.disable">
                     <p>{{day.title}}</p>
-                    <small *ngIf="day.subTitle">{{day?.subTitle}}</small>
+                    <small *ngIf="day.newmessage > 0"></small>
                   </button>
                 </div>
               </ng-container>
