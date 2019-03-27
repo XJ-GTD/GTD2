@@ -1,6 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams, Navbar} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
+import {PageUData, PsService} from "./ps.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 个人设置 page.
@@ -29,21 +31,21 @@ import {DataConfig} from "../../service/config/data.config";
   <ion-content padding class="page-backgroud-color"> 
     <ion-item class="no-border"> 
       <ion-label>昵称</ion-label> 
-      <ion-input type="text" *ngIf="this.state == true" [(ngModel)]="uo.uN"></ion-input> 
-      <ion-input type="text" *ngIf="this.state == false" disabled="true" [(ngModel)]="uo.uN"></ion-input> 
+      <ion-input type="text" *ngIf="this.state == true" [(ngModel)]="uo.user.name"></ion-input> 
+      <ion-input type="text" *ngIf="this.state == false" disabled="true" [(ngModel)]="uo.user.name"></ion-input> 
       <ion-avatar item-end> 
         <img src="./assets/imgs/headImg.jpg" style="width: 60px;height: 60px"> 
       </ion-avatar> 
     </ion-item> 
     <button ion-item margin-top *ngIf="this.state == false" class="rowCss"> 
       <ion-label item-start>性别</ion-label> 
-      <ion-label item-end text-end *ngIf="uo.uS == 0">无</ion-label> 
-      <ion-label item-end text-end *ngIf="uo.uS == 1">男</ion-label> 
-      <ion-label item-end text-end *ngIf="uo.uS == 2">女</ion-label> 
+      <ion-label item-end text-end *ngIf="uo.user.sex == 0">无</ion-label> 
+      <ion-label item-end text-end *ngIf="uo.user.sex == 1">男</ion-label> 
+      <ion-label item-end text-end *ngIf="uo.user.sex == 2">女</ion-label> 
     </button> 
     <ion-item margin-top *ngIf="this.state == true" class="rowCss"> 
       <ion-label>性别</ion-label> 
-      <ion-select  item-end [(ngModel)]="uo.uS"> 
+      <ion-select  item-end [(ngModel)]="uo.user.sex"> 
         <ion-option value="0">无</ion-option> 
         <ion-option value="1">男</ion-option> 
         <ion-option value="2">女</ion-option> 
@@ -51,18 +53,17 @@ import {DataConfig} from "../../service/config/data.config";
     </ion-item> 
     <button ion-item class="rowCss no-border"> 
       <ion-label>生日</ion-label> 
-      <ion-label item-end text-end *ngIf="this.state == false">{{uo.biy}}</ion-label> 
-      <ion-datetime displayFormat="YYYY-MM-DD" *ngIf="this.state == true" item-end text-end float-end [(ngModel)]="uo.biy"></ion-datetime> 
+      <ion-label item-end text-end *ngIf="this.state == false">{{uo.user.bothday}}</ion-label> 
+      <ion-datetime displayFormat="YYYY-MM-DD" *ngIf="this.state == true" item-end text-end float-end [(ngModel)]="uo.user.bothday"></ion-datetime> 
     </button> 
     <button ion-item margin-top *ngIf="this.state == false" class="rowCss no-border"> 
       <ion-label>手机号</ion-label> 
-      <ion-label item-end text-end >{{uo.uCt}}</ion-label> 
+      <ion-label item-end text-end >{{uo.user.No}}</ion-label> 
     </button> 
     <button ion-item margin-top  *ngIf="this.state == true" class="rowCss no-border noborder"> 
       <ion-label>手机号</ion-label> 
-      <ion-input type="tel" item-end text-end [(ngModel)]="uo.uCt"></ion-input> 
-    </button> 
-    <button ion-item (click)="relation()" margin-top class="rowCss no-border">关系人</button> 
+      <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.No"></ion-input> 
+    </button>
   </ion-content>`,
 })
 export class PsPage {
@@ -71,15 +72,17 @@ export class PsPage {
 
   //编辑控制
   state:any = false;
+  uo:PageUData = new PageUData();
 
-
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              private loadingCtrl: LoadingController) {
-    this.init();
+  constructor(public navCtrl: NavController,
+              private psService:PsService,
+              public navParams: NavParams,
+              private util: UtilService) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UcPage');
+    this.init();
     this.navBar.backButtonClick = this.backButtonClick;
     this.navBar.setBackButtonText("");
   }
@@ -90,6 +93,11 @@ export class PsPage {
   };
 
   init() {
+    this.psService.getUser().then(data=>{
+      if(data && data.user){
+        this.uo = data;
+      }
+    })
     // this.uo = DataConfig.uInfo;
     // console.log("uc 获取用户信息："+JSON.stringify(this.uo))
   }
@@ -105,6 +113,14 @@ export class PsPage {
 
   edit(){
     this.state = true;
+  }
+
+  save(){
+    this.psService.saveUser(this.uo).then(data=>{
+      if(data.code ==0){
+        this.util.toast('保存成功！',2000);
+      }
+    })
   }
 
   confirm(){

@@ -1,7 +1,37 @@
 /**
  * 公共配置用
  */
+import {WsModel} from "../../ws/model/ws.model";
+
 export class DataConfig {
+
+  //WS上下文环境使用
+  clearWsContext(){
+    this.wsContext.splice(0,this.wsContext.length);
+  }
+
+  putWsContext(_wsContext:WsModel){
+    this.wsContext.push(_wsContext);
+  }
+
+  getWsContext(){
+    return this.wsContext.pop();
+  }
+
+  get wsContext(): Array<WsModel> {
+    return this._wsContext;
+  }
+
+  set wsContext(value: Array<WsModel>) {
+    this._wsContext = value;
+  }
+
+  private _wsContext:Array<WsModel> = new Array<WsModel>();
+
+  //WS上下文环境使用
+
+
+
 
   /*----===== 网络状态值 =====----- */
   public static IS_NETWORK_CONNECT: boolean = true;
@@ -38,28 +68,6 @@ export class DataConfig {
   public static MESSAGE_TYPE: string = '400';
 
 
-  /* =============== 语音页面type =============*/
-  public static U1: string = "U1"; //用户语音文本 或 需要播报的业务信息
-  public static S1: string = "S1"; //回答文本
-  public static S2: string = "S2"; //回答链接
-  public static S3: string = "S3"; //回答图片
-  public static S4: string = "S4"; //日程单条数据
-  public static S5: string = "S5"; //日程列表数据
-  public static S6: string = "S6";//联系人单条数据
-  public static S7: string = "S7";//联系人列表数据
-  public static T1: string = "T1";//确认
-  public static F1: string = "F1";//取消
-
-  /* ============ mq返回类型 ===============*/
-  public static MQTQ: string = '0'; // 处理逻辑前用户问答
-  public static MQTM: string = '1'; // 处理逻辑前讯飞回答
-  public static MQTL: string = '2'; // 处理逻辑后
-
-  /* ============ Sql执行类型 ===============*/
-  public static AC_O: string = '0'; // 添加
-  public static AC_T: string = '1'; // 更新
-  public static AC_D: string = '2'; // 删除
-
   /* ============ 页面名字配置 ===============*/
   static PAGE = {
 
@@ -90,6 +98,18 @@ export class DataConfig {
     _BR_PAGE: "BrPage",       // 辅助功能 - 备份
     _AL_PAGE: "AlPage"        //启动页
   }
+
+  public static SPEECH: string = "SPEECH";    //系统表语音key
+  public static HL: string	= "HL";                  //问候语
+  public static LH: string	= "LH";	                  //	进入教程
+  public static AA: string	= "AA";	                  //	确认操作后回答
+  public static BB: string	= "BB";	                  //	取消操作后回答
+  public static CC: string	= "CC";	                  //	查询后回答（数量）
+  public static DD: string	= "DD";	                  //	设置后回答
+  public static EE: string	= "EE";	                 //	确认取消回答
+  public static FF: string	= "FF";	                  //	异常回答
+
+
 
   /* ============ 返回值配置 ===============*/
   public static SUCCESS_CODE: number = 0;
@@ -136,6 +156,10 @@ export class DataConfig {
   public static BC_SCD: string = "D1102";    //删除日程
   public static BC_SCU: string = "D1103";    //更新日程
   public static BC_PEC: string = "D1201";    //添加参与人
+
+
+
+
 
 
 }

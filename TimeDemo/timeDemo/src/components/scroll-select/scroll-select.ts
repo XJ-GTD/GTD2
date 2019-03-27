@@ -155,6 +155,7 @@ export class ScrollSelectComponent {
   }
   
   assembleHTML(strHTML: any) {
+    console.log('test');
     return this.sanitizer.bypassSecurityTrustHtml(strHTML);
   }
 

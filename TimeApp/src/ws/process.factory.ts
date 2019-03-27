@@ -6,6 +6,10 @@ import {ThirdProcess} from "./process/third.process";
 import {SpeechProcess} from "./process/speech.process";
 import {DefaultProcess} from "./process/default.process";
 import {FindProcess} from "./process/find.process";
+import {OptionProcess} from "./process/option.process";
+import {ContextProcess} from "./process/context.process";
+import {ReceiveProcess} from "./process/receive.process";
+import {SettingProcess} from "./process/setting.process";
 
 /**
  * webSocket公用处理方法
@@ -21,16 +25,25 @@ export class ProcessFactory {
               private speechProcess: SpeechProcess,
               private thirdProcess: ThirdProcess,
               private defaultProcess: DefaultProcess,
-              private find:FindProcess,
+              private findProcess:FindProcess,
+              private optionProcess:OptionProcess,
+              private contextProcess:ContextProcess,
+              private receiveProcess:ReceiveProcess,
+              private settingProcess:SettingProcess
   ) {
+
     this.factory.set("S", this.speechProcess);
-    this.factory.set("F", this.find);
+    this.factory.set("F", this.findProcess);
     this.factory.set("SS", this.cudscdProcess);
     this.factory.set("R", this.remindProcess);
-    this.factory.set("TH", this.thirdProcess);
+    this.factory.set("T", this.thirdProcess);
+    this.factory.set("O", this.optionProcess);
+    this.factory.set("SC", this.contextProcess);
+    this.factory.set("SH", this.receiveProcess);
+    this.factory.set("SY", this.settingProcess);
   }
 
-  findProcess(processKey: string): MQProcess {
+  getProcess(processKey: string): MQProcess {
     let process: MQProcess = this.factory.get(processKey);
     if (process == null) return this.defaultProcess;
     return process;

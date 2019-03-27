@@ -8,6 +8,7 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
 import {ProcesRs} from "../model/proces.rs";
 import {S} from "../model/ws.enum";
+import {EmitService, SpeechEmData} from "../../service/util-service/emit.service";
 
 /**
  * 播报类型处理
@@ -19,7 +20,7 @@ export class SpeechProcess implements MQProcess {
 
   constructor(private assistant: AssistantService,
               private sqliteExec: SqliteExec,
-              private utilService: UtilService) {
+              private utilService: UtilService, private emitService: EmitService) {
   }
 
   go(content: WsContent,processRs:ProcesRs): Promise<ProcesRs> {
@@ -27,40 +28,35 @@ export class SpeechProcess implements MQProcess {
     return new Promise<ProcesRs>(async resolve => {
 
       //处理所需要参数
-      let spData: SpeechPara = content.parmeter;
+      let spData: SpeechPara = content.parameters;
       //默认语音
       let speakText = spData.an;
       //处理区分
-      if (content.option == S.AN) {
-        let stbl: STbl = new STbl();
-        stbl.st = "SPEECH";
-        stbl.yk = spData.t;
+      if (spData.t) {
 
-        //获取本地回答语音文本
-        let datas = await this.sqliteExec.getList<STbl>(stbl);
-        //回答语音list
-        let len = datas.length;
-        //随机选取一条
-        let rand = this.utilService.randInt(0, len - 1);
-        let anO: STbl = datas[rand];
-        speakText = anO.yk;
+        speakText = await this.assistant.getSpeakText(spData.t);
+
+        //替换参数变量
+        let count = processRs.scd.length;
+        content.parameters.forEach((value, key) => {
+          speakText = speakText.replace("{" + key + "}", value);
+        });
+        speakText = speakText.replace("{" + count + "}", count.toString());
+
       }
 
-      //替换参数变量
-      // let prvrs: Map<string, any> = content.prvData.processRs;
-      // content.parmeter.forEach((value, key) => {
-      //   speakText = speakText.replace("{key}", value);
-      // });
-      // prvrs.forEach((value, key) => {
-      //   speakText = speakText.replace("{key}", value);
-      // });
-
-      this.assistant.speakText(speakText, (data) => {
+      this.assistant.speakText(speakText).then((data) => {
         //处理结果
         processRs.sucess = true;
         resolve(processRs);
 
       });
+
+      //通知页面显示播报文本
+      let emspeech:SpeechEmData = new SpeechEmData();
+      emspeech.an = speakText;
+      emspeech.org = content.thisContent.original;
+      this.emitService.emitSpeech(emspeech);
     })
   }
 }

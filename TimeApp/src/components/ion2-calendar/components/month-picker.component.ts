@@ -7,8 +7,8 @@ import * as moment from 'moment';
   selector: 'ion-calendar-month-picker',
   template: `
     <div class="warp">
-      <scroll-select [options]="years" [value]="thisYear" [type]="'scroll-without-button'" [items]="7" (change)="_onSelect(i)"></scroll-select>
-      <scroll-select [options]="months" [value]="thisMonth" [type]="'scroll-without-button'" [items]="7"></scroll-select>
+      <scroll-select [options]="years" [value]="thisYear" [type]="'scroll-without-button'" [items]="7"  (changed)="_onYearSelect($event)"></scroll-select>
+      <scroll-select [options]="months" [value]="thisMonth" [type]="'scroll-without-button'" [items]="7"  (changed)="_onMonthSelect($event)"></scroll-select>
     </div>
   `
 })
@@ -50,10 +50,12 @@ export class MonthPickerComponent {
   }
 
   _onMonthSelect(month: number): void {
+    console.log(month)
     this.onMonthSelect.emit(month);
   }
 
   _onYearSelect(year: number): void {
+    console.log(year)
     this.onYearSelect.emit(year);
   }
 }

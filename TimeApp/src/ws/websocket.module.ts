@@ -9,6 +9,10 @@ import {SpeechProcess} from "./process/speech.process";
 import {ThirdProcess} from "./process/third.process";
 import {DefaultProcess} from "./process/default.process";
 import {FindProcess} from "./process/find.process";
+import {OptionProcess} from "./process/option.process";
+import {ContextProcess} from "./process/context.process";
+import {ReceiveProcess} from "./process/receive.process";
+import {SettingProcess} from "./process/setting.process";
 
 
 /**
@@ -19,7 +23,13 @@ import {FindProcess} from "./process/find.process";
 @NgModule({
   imports: [IonicModule],
   providers: [WebsocketService,
-    ProcessFactory, DispatchService, CudscdProcess, RemindProcess, SpeechProcess, ThirdProcess, DefaultProcess, FindProcess],
+    ProcessFactory, DispatchService,
+    CudscdProcess, RemindProcess,
+    SpeechProcess, ThirdProcess,
+    DefaultProcess, FindProcess,
+    OptionProcess, ContextProcess,
+    ReceiveProcess,SettingProcess
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class WebsocketModule {

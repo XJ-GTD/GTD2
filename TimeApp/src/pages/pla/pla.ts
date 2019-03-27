@@ -46,13 +46,11 @@ export class PlaPage {
               public navParams: NavParams,
               public viewCtrl: ViewController,
               private plService:PlService,) {
+    this.jhData.ji = this.navParams.get("ji");
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PlaPage');
-  }
-
-  ionViewWillEnter(){
     this.getAllJh();
   }
 

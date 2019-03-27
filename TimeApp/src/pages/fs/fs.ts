@@ -104,7 +104,9 @@ export class FsPage {
         if(value.gc && value.gc>0){
           let arr:Array<any> = value.fsl;
           for(let ar of arr) {
-            list.push(ar);
+            if(!this.selFsl.get(ar.pwi)){
+              list.push(ar);
+            }
           }
           //list.push(arr);//群组人员
         }else{
@@ -116,7 +118,8 @@ export class FsPage {
         this.fsService.sharefriend(this.tpara,list).then(data=>{
           if(data.code==0){
             //alert("共享享成功");
-            this.goBack('','');
+            //this.goBack('','');
+            this.navCtrl.push(DataConfig.PAGE._H_PAGE);
           }
         })
       }else if(this.addType == 'gc'){
@@ -171,11 +174,13 @@ export class FsPage {
 
   goBack(page:string,para:any) {
     console.log('PfPage跳转PaPage');
-    // if(page != ''){
-    //   this.navCtrl.push(page,para);
-    // }else{
-    //   this.navCtrl.pop();
-    // }
+    if(this.addType == 'rc'){
+      this.navCtrl.push(DataConfig.PAGE._H_PAGE);
+    }else if(page != ''){
+      this.navCtrl.push(page,para);
+    }else{
+      this.navCtrl.pop();
+    }
 
 
 /*      let popindex ;
@@ -186,7 +191,7 @@ export class FsPage {
         }
       });*/
 
-    this.navCtrl.push(DataConfig.PAGE._H_PAGE);
+    // this.navCtrl.push(DataConfig.PAGE._H_PAGE);
 
   }
 

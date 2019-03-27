@@ -23,7 +23,7 @@ export class FindProcess implements MQProcess{
 
     return new Promise<ProcesRs>(async resolve => {
       //处理所需要参数
-      let findData: FindPara = content.parmeter;
+      let findData: FindPara = content.parameters;
       findData.fs[0]
 
       //查找联系人

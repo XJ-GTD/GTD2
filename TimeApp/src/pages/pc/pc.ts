@@ -129,7 +129,8 @@ import {PagePcPro, PcService} from "./pc.service";
 })
 export class PcPage {
 
-  @ViewChild('input') input ;
+  @ViewChild('input') input;
+
   jhcData:PagePcPro = new PagePcPro;
 
   constructor(private navCtrl: NavController,

@@ -24,8 +24,11 @@ export class PsService {
     return new Promise<PageUData>((resolve, reject) => {
       //获取本地用户信息（系统静态变量获取）
       let pu = new PageUData();
-      this.sqlExce.getOne<UTbl>(new UTbl()).then(data =>{
-        if(data != null){
+      let u = new UTbl();
+      u.ui=UserConfig.user.id;
+      this.sqlExce.execSql('select * from gtd_u').then(data =>{
+        if(data && data.rows && data.rows.length){
+          data = data.rows.item(0);
           pu.user.id = data.ui;
           pu.user.name=data.un;
           pu.user.realname = data.rn;
@@ -35,10 +38,13 @@ export class PsService {
           pu.user.sex = data.us;
           pu.user.contact=data.uct;
           UserConfig.user = pu.user;
-          return this.sqlExce.getOne<ATbl>(new ATbl())
+          let a = new ATbl();
+          a.ai=UserConfig.account.id;
+          return this.sqlExce.execSql('select * from gtd_a')
         }
       }).then(data=>{
-        if(data && data != null){
+        if(data && data.rows && data.rows.length){
+          data = data.rows.item(0);
           pu.account.id = data.ai;
           pu.account.name=data.an;
           pu.account.phone = data.am;
