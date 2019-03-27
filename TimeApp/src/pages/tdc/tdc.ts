@@ -1,5 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import {ActionSheetController, Events, IonicPage, NavController, NavParams, Scroll} from 'ionic-angular';
+import {
+  ActionSheetController, Events, IonicPage, ModalController, NavController, NavParams,
+  Scroll
+} from 'ionic-angular';
 import {ScdData} from "../tdl/tdl.service";
 import * as moment from "moment";
 import {TdcService} from "./tdc.service";
@@ -21,13 +24,13 @@ import {BsModel} from "../../service/restful/out/bs.model";
 @Component({
   selector: 'page-tdc',
   providers: [],
-  template:`<ion-header no-border >
+  template:`<ion-header no-border class="header-set">
     <ion-toolbar>
       <ion-grid>
-        <ion-row >
-          <div class="h-auto header-set" >
+        <ion-row right>
+          <div class="h-auto " >
             <ion-buttons right>
-              <button [disabled]="pagestate == '0'?true:false" ion-button icon-only (click)="presentActionSheet()" color="light">
+              <button [disabled]="pagestate == '0'?true:false" [hidden]="pagestate == '0'" ion-button icon-only (click)="presentActionSheet()" color="light">
                 <img  class="imgdel-set" src="../../assets/imgs/del.png">
               </button>
             </ion-buttons>
@@ -36,19 +39,19 @@ import {BsModel} from "../../service/restful/out/bs.model";
       </ion-grid>
     </ion-toolbar>
   </ion-header>
-  <ion-content padding>
+  <ion-content class ="content-set">
     <ion-grid>
-      <ion-row justify-content-center>
+      <ion-row >
         <div class = "input-set">
           <ion-input type="text" [(ngModel)]="scd.sn" [disabled]="disControl()"  placeholder="我想..."></ion-input>
         </div>
       </ion-row>
-      <ion-row justify-content-left>
-        <ion-item > 
-            <button [disabled]="disControl()" ion-button  round class ="btn-set">添加计划</button>
-        </ion-item>
+      <ion-row >
+        <div >
+            <button [disabled]="disControl()" (click)="toPlanChoose()" ion-button  round class ="btn-jh">添加计划</button>
+        </div>
       </ion-row>
-      <ion-row justify-content-left>
+      <ion-row >
         <!--<div class ="date-set">
           <ion-label>{{scd.sd | formatedate : "CYYYY/MM/DD"}}</ion-label>
         </div>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -56,59 +59,68 @@ import {BsModel} from "../../service/restful/out/bs.model";
           <ion-label>{{scd.sd | formatedate : "CWEEK" }}</ion-label>
         </div>&nbsp;&nbsp;
         <div><ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label></div>-->
-        <ion-item>
+        <div class="date-set">
+          <ion-item>
           <ion-datetime [disabled]="disControl()" displayFormat="YYYY年MM月DD日 DDDD" [(ngModel)]="scd.sd" dayNames="周日,周一,周二,周三,周四,周五,周六"></ion-datetime>
-          <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
-        </ion-item>
+          </ion-item> 
+        </div>
+         <div class="arrow1">
+           <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
+         </div>
       </ion-row>
-      <ion-row justify-content-left>
-        <ion-item>
-          <ion-label>全天</ion-label>
-          <ion-toggle [disabled]="disControl()" [(ngModel)]="alld" color="danger" [class.allday]="b"></ion-toggle>
-          <ion-datetime [disabled]="disControl()" displayFormat="HH:mm" [(ngModel)]="scd.st" ></ion-datetime>
+      <ion-row >
+        <div class = "tog-set"><ion-item>
+                <ion-toggle [disabled]="disControl()" [(ngModel)]="alld"  [class.allday]="b"></ion-toggle>
+            </ion-item>
+        </div>
+          <div class = "tm-set" [hidden]="alld"><ion-item>
+            <ion-datetime [disabled]="disControl()" displayFormat="HH:mm" [(ngModel)]="scd.st" ></ion-datetime>
+          </ion-item>
+          </div>
+        <div class = "arrow2" [hidden]="alld">
           <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
-        </ion-item>
+        </div>
       </ion-row>
-      <ion-row justify-content-left>
-        <div><ion-label>重复</ion-label></div>
-        <div><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
+      <ion-row >
+        <div class ="reptlbl repttop"><ion-label>重复</ion-label></div>
+        <div class ="repttop1"><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.close == 1?'sel-btn-seled':'sel-btn-unsel'"  
                      (click)="clickrept(0)">关</button></div>
-        <div><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
+        <div class ="repttop1"><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.d == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept(1)">天</button></div>
-        <div><button [disabled]="disControl()" ion-button  round  clear class ="sel-btn-set"
+        <div class ="repttop1"><button [disabled]="disControl()" ion-button  round  clear class ="sel-btn-set"
                      [ngClass]="rept.w == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept(2)">周</button></div>
-        <div><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
+        <div class ="repttop1"><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.m == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept(3)">月</button></div>
-        <div><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
+        <div class ="repttop1"><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.y == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept(4)">年</button></div>
       </ion-row>
-      <ion-row justify-content-left>
-        <div><ion-label>提醒</ion-label></div>
-        <div><button ion-button  round clear class ="sel-btn-set"
+      <ion-row >
+        <div class ="reptlbl txtop"><ion-label>提醒</ion-label></div>
+        <div class ="txtop1"><button ion-button  round clear class ="sel-btn-set"
                      [ngClass]="wake.close == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickwake(0)">关</button></div>
-        <div><button ion-button  round clear  class ="sel-btn-set"
+        <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.tenm == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickwake(1)">10分钟</button></div>
-        <div><button ion-button  round clear  class ="sel-btn-set"
+        <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.thirm == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickwake(2)">30分钟</button></div>
-        <div><button ion-button  round clear  class ="sel-btn-set"
+        <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.oh == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickwake(3)">1小时</button></div>
-        <div><button ion-button  round clear  class ="sel-btn-set"
+        <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.foh == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickwake(4)">4小时</button></div>
-        <div><button ion-button  round clear  class ="sel-btn-set"
+        <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.od == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickwake(5)">1天</button></div>
       </ion-row>
-      <ion-row justify-content-left>
+      <ion-row >
         <div class = "memo-set">
           <ion-input type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-input>
         </div>
@@ -126,26 +138,26 @@ import {BsModel} from "../../service/restful/out/bs.model";
             <div class="dobtn-set">
               <div class ="cancelbtn-set">
                 <ion-buttons  >
-                  <button  ion-button icon-only (click)="cancel()" color="dark">
+                  <button  ion-button icon-only (click)="cancel()" color="light">
                     <ion-icon name="close"></ion-icon>
                   </button>
                 </ion-buttons>
               </div>
               <div >
                 <ion-buttons class ="okbtn-set" >
-                  <button  ion-button icon-only (click)="save()" color="dark">
+                  <button  ion-button icon-only (click)="save()" color="light">
                     <ion-icon name="checkmark"></ion-icon>
                   </button>
                 </ion-buttons>
               </div>
               <div>
                 <ion-buttons>
-                  <button [hidden]="disControl()" ion-button icon-only (click)="goShare()" color="dark">发送
+                  <button [hidden]="disControl()" ion-button icon-only (click)="goShare()" color="light">发送
                     
                   </button>
                 </ion-buttons>
               </div>
-            </div>
+            </div> 
           </ion-row>
         </ion-grid>
       </ion-toolbar>
@@ -158,7 +170,8 @@ export class TdcPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private tdcServ :TdcService,private util:UtilService,
               private tddjServ :TddjService,private  tddiServ : TddiService,
-              public actionSheetCtrl: ActionSheetController
+              public actionSheetCtrl: ActionSheetController,
+              public modalCtrl: ModalController
               ) {
 
   }
@@ -504,7 +517,13 @@ export class TdcPage {
 
 
   }
-
+  toPlanChoose(){
+    let profileModal = this.modalCtrl.create(DataConfig.PAGE._PLA_PAGE,{ji:this.scd.ji});
+    profileModal.onWillDismiss((data: any) => {
+      this.scd.ji= data.ji;
+    });
+    profileModal.present();
+  }
 
 }
 
