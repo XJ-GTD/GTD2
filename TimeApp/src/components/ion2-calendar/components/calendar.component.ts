@@ -157,7 +157,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     this.initOpt();
     if (this.monthOpt && this.monthOpt.original) {
       //新日程进来不需要刷新日历
-      //this.createMonth(this.monthOpt.original.time);
+      this.createMonth(this.monthOpt.original.time);
     }
   }
 
@@ -417,6 +417,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     this.monthOpt = this.calSvc.createMonthsByPeriod(date, 1, this._d)[0];
     this.showMonth();
     this.thisMonth();
+    this.calSvc.getMonthData(this.monthOpt);
     return this.monthOpt;
   }
 

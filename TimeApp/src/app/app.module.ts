@@ -46,8 +46,6 @@ import {AlarmService} from "../service/cordova/alarm.service";
 import {UserConfig} from "../service/config/user.config";
 import {PipesModule} from "../pipes/pipes.module";
 import {HammerDIRECTIONALLConfig} from "./my-hammer.config";
-import {TddjService} from "../pages/tddj/tddj.service";
-import {TddiService} from "../pages/tddi/tddi.service";
 import {Keyboard} from "@ionic-native/keyboard";
 import {AiService} from "../components/ai/answer/ai.service";
 import {AlService} from "../pages/al/al.service";
@@ -116,8 +114,6 @@ import {AlService} from "../pages/al/al.service";
     FeedbackService,
     AlarmService,
     UserConfig,
-    TddjService,
-    TddiService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG,useClass: HammerDIRECTIONALLConfig }
   ]

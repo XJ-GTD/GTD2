@@ -528,20 +528,24 @@ export class AlService {
           sp.si = c.si;
           sp.sd = moment(c.sd).add(i,add).format("YYYY/MM/DD");
           sp.st = c.st;
+          if (c.rt=='0')
+          sp.itx = 1;
+          else
+            sp.itx = 0;
           sqls.push(sp.inT());
-          if (!stMap.get(sp.sd)){
-            let st:StTbl = new StTbl();
-            st.c = 0;
-            st.bz = "";
-            st.n = 0;
-            if(c.rt=='0'){
-              st.n = st.n  + 1;
-            }
-            st.d = sp.sd;
-            stMap.set(sp.sd,st);
-          }else{
-            stMap.get(sp.sd).c = (stMap.get(sp.sd).c + 1);
-          }
+          // if (!stMap.get(sp.sd)){
+          //   let st:StTbl = new StTbl();
+          //   st.c = 0;
+          //   st.bz = "";
+          //   st.n = 0;
+          //   if(c.rt=='0'){
+          //     st.n = st.n  + 1;
+          //   }
+          //   st.d = sp.sd;
+          //   stMap.set(sp.sd,st);
+          // }else{
+          //   stMap.get(sp.sd).c = (stMap.get(sp.sd).c + 1);
+          // }
         }
 
         c_r2 = 6;
@@ -562,9 +566,9 @@ export class AlService {
 
         }
       }
-      stMap.forEach((v,k,map) =>{
-        sqls.push(v.inT());
-      })
+      // stMap.forEach((v,k,map) =>{
+      //   sqls.push(v.inT());
+      // })
 
       this.sqlExce.batExecSql(sqls).then(c => {
         console.log("插入数据=====" + c);
