@@ -45,7 +45,7 @@ export class SpeechProcess implements MQProcess {
 
       }
 
-      this.assistant.speakText(speakText, (data) => {
+      this.assistant.speakText(speakText).then((data) => {
         //处理结果
         processRs.sucess = true;
         resolve(processRs);

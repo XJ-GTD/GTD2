@@ -100,6 +100,15 @@ export class DataConfig {
   }
 
   public static SPEECH: string = "SPEECH";    //系统表语音key
+  public static HL: string	= "HL";                  //问候语
+  public static LH: string	= "LH";	                  //	进入教程
+  public static AA: string	= "AA";	                  //	确认操作后回答
+  public static BB: string	= "BB";	                  //	取消操作后回答
+  public static CC: string	= "CC";	                  //	查询后回答（数量）
+  public static DD: string	= "DD";	                  //	设置后回答
+  public static EE: string	= "EE";	                 //	确认取消回答
+  public static FF: string	= "FF";	                  //	异常回答
+
 
 
   /* ============ 返回值配置 ===============*/

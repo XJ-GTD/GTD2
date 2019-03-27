@@ -8,6 +8,7 @@ import {DataConfig} from "../config/data.config";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {UtilService} from "../util-service/util.service";
 
+declare var cordova: any;
 
 /**
  * 小吉语音助手
@@ -20,251 +21,72 @@ export class AssistantService {
   public isSpeaking: boolean;
   public islistenAudioing: boolean;
   public isWakeUp: boolean;
-  wins: any = window;
-  cordova: any;
-
   constructor(private file: File,
               private aibutlerRestful: AibutlerRestful,
-              private sqliteExec:SqliteExec,
-              private utilService:UtilService) {
+              private sqliteExec: SqliteExec,
+              private utilService: UtilService) {
 
     this.isSpeaking = false;
     this.islistenAudioing = false;
-    if (this.wins.cordova) {
-      this.cordova = this.wins.cordova;
-    } else {
-      this.cordova = {};
-    }
   }
 
-
-  /**
-   * 语音助手录音录入 AUDIO
-   */
-  public listenAudio(success) {
-    try {
-      console.log("开始语音录入 | isSpeaking:" + this.isSpeaking + "| islistenAudioing" + this.islistenAudioing)
-      if (this.isSpeaking || this.islistenAudioing) {
-        console.log("正在录入语音");
-        success("");
-        return;
-      }
-      this.islistenAudioing = true;
-
-      if (!this.cordova) return;
-      this.cordova.plugins.XjBaiduSpeech.startListen(result => {
-
-        //讯飞语音录音设置默认存储路径
-        //this.filePath = this.file.cacheDirectory + "iat.pcm";
-
-        //this.filePath = this.file.externalRootDirectory + "/xjASR/iat.pcm";
-        console.log("文件路径：" + this.file.cacheDirectory);
-
-        // 读取录音进行base64转码
-        this.file.readAsDataURL(this.file.cacheDirectory, "iat.pcm").then((base64File: string) => {
-          /**
-           * 录音文件传输后台服务解析
-           * @param {string} url 后台服务路径
-           */
-          let audioPro = new AudioPro();
-          audioPro.d.vb64 = base64File;
-          this.aibutlerRestful.postaudio(audioPro)
-            .then(data => {
-              console.log("data code：" + data.code);
-              //接收Object JSON数据
-
-            }).catch(e => {
-            console.error("XiaojiAssistantService connetXunfei error:" + JSON.stringify(e));
-            this.speakText("现在我遇到了小麻烦，请您稍后再来找我吧", success => {
-
-            });
-          });
-
-          success(result);
-
-        }, (err) => {
-
-          success(result);
-        });
-
-        this.islistenAudioing = false;
-
-      }, error => {
-        this.islistenAudioing = false;
-        success();
-      }, true, true);
-    } catch (e) {
-      this.islistenAudioing = false;
-      success();
-    }
-
-  }
-
-  testBase64Ios(sucess) {
-    console.log("testBase64Ios:" + 1);
-    var c = document.createElement('canvas');
-
-    console.log("testBase64Ios:" + 2);
-    var ctx = c.getContext("2d");
-
-    console.log("testBase64Ios:" + 3);
-    var img = new Image();
-
-    console.log("testBase64Ios:" + 4);
-
-    img.onload = function () {
-
-      console.log("testBase64Ios:" + 11);
-
-      c.width = 100;
-      c.height = 100;
-
-      console.log("testBase64Ios:" + 12);
-
-      ctx.drawImage(img, 0, 0);
-
-      console.log("testBase64Ios:" + 13);
-
-      var dataUri = c.toDataURL("image/png");
-
-      console.log("testBase64Ios:" + 14);
-
-      sucess(dataUri);
-
-      console.log("testBase64Ios:" + 15);
-    };
-    var filePath = this.file.cacheDirectory + "xjASR/iat.pcm";
-    console.log("testBase64Ios:" + 5 + "====>" + filePath);
-    img.src = filePath;
-    console.log("testBase64Ios:" + 5);
-  }
-
-  /**
-   * 语音助手手动输入 TEXT
-   */
-  public listenText(text: string) {
-    try {
-
-      if (text == null) {
-        return 0;
-      }
-      let textPro = new TextPro();
-      textPro.d.text = text;
-      textPro.c.client = {time:moment().unix(),context:new WsModel()};
-      this.aibutlerRestful.posttext(textPro)
-        .then(data => {
-          console.log("data code：" + data.code);
-          //接收Object JSON数据
-
-        }).catch(e => {
-        console.error("XiaojiAssistantService connetXunfei error:" + JSON.stringify(e));
-        this.speakText("现在我遇到了小麻烦，请您稍后再来找我吧", success => {
-        });
-      });
-
-    } catch (e) {
-      console.log("问题：" + e)
-    }
-
-  }
-
-  /**
-   * 返回语音播报
-   */
-  public speakText(speechText: string, success) {
-    try {
-      if (this.islistenAudioing) return;
-      this.stopSpeak();
-      this.isSpeaking = true;
-
-      if (speechText == null || speechText == "") {
-        speechText = this.failedText;
-      }
-      if (!this.cordova) return;
-      this.cordova.plugins.XjBaiduTts.startSpeak(result => {
-        console.log("成功:" + result);
-        this.isSpeaking = false;
-        success(result);
-      }, error => {
-        console.log("报错:" + error);
-        success(false);
-        this.isSpeaking = false;
-      }, speechText);
-    } catch (e) {
-      success(false);
-      this.isSpeaking = false;
-      console.log("问题：" + e)
-    }
-  }
 
   /**
    * 停止语音播报
    */
   public stopSpeak() {
-    try {
 
-      if (!this.cordova) return;
-      console.log("停止播报 | isSpeaking:" + this.isSpeaking + "| islistenAudioing" + this.islistenAudioing);
-      this.cordova.plugins.XjBaiduTts.speakStop();
-      this.isSpeaking = false;
-
-
-    } catch (e) {
-      this.isSpeaking = false;
-      console.log("stopSpeak问题：" + e)
-    }
+    if (!this.utilService.isMobile()) return;
+    cordova.plugins.XjBaiduTts.speakStop();
+    this.isSpeaking = false;
   }
 
   /**
    * 停止监听
    */
   public stopListenAudio() {
-    try {
 
-      if (!this.cordova) return;
+    if (!this.utilService.isMobile()) return;
 
-      console.log("停止监听");
-      this.cordova.plugins.XjBaiduSpeech.stopListen();
-    } catch (e) {
-      console.log("stopListenAudio问题：" + e)
-    }
-
+    cordova.plugins.XjBaiduSpeech.stopListen();
   }
 
   /**
    * 启动监听WakeUp
    */
-  public initbaiduWakeUp(success) {
-    try {
-      if (!this.cordova) return;
-      this.cordova.plugins.XjBaiduWakeUp.wakeUpStart(result => {
-        if (this.isSpeaking || this.islistenAudioing) {
-          success(false);
-          return;
-        }
-        success(true);
-      }, error => {
-        console.log("问题：" + error)
-      }, "");
-    } catch (e) {
-      console.log("问题：" + e)
-    }
+  public startWakeUp() {
+    if (!this.utilService.isMobile()) return;
+    cordova.plugins.XjBaiduWakeUp.wakeUpStart(async (result) => {
+      if (this.isSpeaking || this.islistenAudioing) {
+        this.stopWakeUp();
+        setTimeout(() => {
+          this.startWakeUp();
+        }, 2000);
+        return;
+      } else {
+        let text: string = await this.getSpeakText(DataConfig.HL);
+        await this.speakText(text);
+        this.listenAudio().then(data => {
+          this.startWakeUp();
+        })
+
+      }
+    }, error => {
+      console.log("问题：" + error)
+    });
   }
+
 
   /**
    * 停止监听WakeUp
    */
-  public baiduWakeUpStop() {
-    try {
-      if (!this.cordova) return;
-      this.cordova.plugins.XjBaiduWakeUp.wakeUpStop();
-    } catch (e) {
-      console.log("问题：" + e)
-    }
+  public stopWakeUp() {
+    if (!this.utilService.isMobile()) return;
+    cordova.plugins.XjBaiduWakeUp.wakeUpStop();
   }
 
 
-  public async getSpeakText(t:string){
+  public async getSpeakText(t: string) {
 
     let stbl: STbl = new STbl();
     stbl.st = DataConfig.SPEECH;
@@ -279,5 +101,84 @@ export class AssistantService {
     let an: STbl = datas[rand];
 
     return an.yv;
+  }
+
+
+  /**
+   * 返回语音播报
+   */
+  async speakText(speechText: string) {
+    if  (!this.utilService.isMobile()) return "";
+
+    if (speechText == null || speechText == "" || this.islistenAudioing) {
+      return ""
+    }
+
+    this.stopSpeak();
+    this.isSpeaking = true;
+
+    cordova.plugins.XjBaiduTts.startSpeak(result => {
+      this.isSpeaking = false;
+      return result;
+    }, error => {
+      this.isSpeaking = false;
+      return error;
+    }, speechText);
+  }
+
+
+
+  /**
+   * 语音助手手动输入 TEXT
+   */
+  async putText(text:string){
+    let textPro = new TextPro();
+    textPro.d.text = text;
+    textPro.c.client = {time: moment().unix(), context: new WsModel()};
+    this.aibutlerRestful.posttext(textPro)
+      .then(data => {
+        console.log("data code：" + data.code);
+        //接收Object JSON数据
+
+      }).catch(async e => {
+      let text = await this.getSpeakText(DataConfig.FF);
+      this.speakText(text);
+    });
+
+    return text;
+  }
+
+
+
+
+  /**
+   * 语音助手录音录入 AUDIO
+   */
+   listenAudio():Promise<string>{
+
+    return new Promise<string>(async (resolve, reject) => {
+      if (!this.utilService.isMobile())  resolve("");;
+      if (!this.isSpeaking && !this.islistenAudioing ) {
+        this.islistenAudioing = true;
+
+        await cordova.plugins.XjBaiduSpeech.startListen(async result => {
+          this.islistenAudioing = false;
+
+          // 读取录音进行base64转码
+          let base64File: string = await this.file.readAsDataURL(this.file.cacheDirectory, "iat.pcm");
+          let audioPro = new AudioPro();
+          audioPro.d.vb64 = base64File;
+          audioPro.c.client = {time: moment().unix(), context: new WsModel()};
+          await this.aibutlerRestful.postaudio(audioPro)
+          resolve(result);
+        }, async error => {
+          this.islistenAudioing = false;
+          let text = await this.getSpeakText(DataConfig.FF);
+          this.speakText(text);
+          resolve(text);
+        });
+      }
+    })
+
   }
 }
