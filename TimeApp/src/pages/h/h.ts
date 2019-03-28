@@ -17,9 +17,9 @@ import {HData, HService} from "./h.service";
 @Component({
   selector: 'page-h',
   template: `
-    <ion-content #ha class="animated fadeInUpBig">
-      <div class="haContent">
-        <div class="haCalendar">
+    <ion-content #ha >
+      <div class="haContent" >
+        <div class="haCalendar" class="animated fadeInDownBig">
           <ion-calendar [options]="options"
                         (onSelect)="onSelect($event)"
                         (onPress)="onPress($event)">
@@ -40,7 +40,7 @@ import {HData, HService} from "./h.service";
         &nbsp;
       </div>
       <BackComponent></BackComponent>
-      <AiComponent></AiComponent>
+      <AiComponent class="animated fadeInUpBig"></AiComponent>
     </ion-content>
     `,
 })
