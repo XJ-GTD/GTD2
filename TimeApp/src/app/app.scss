@@ -80,3 +80,23 @@
   background:transparent;
 }
 
+.picker-ios .picker-wrapper {
+  height: 260px;
+  border-top: 1px solid #c8c7cc;
+  background: #95042b;
+}
+.picker-md .picker-wrapper {
+  height: 260px;
+  border-top: 1px solid #c8c7cc;
+  background: #95042b;
+}
+.picker-ios .picker-toolbar {
+  height: 0px;
+  border: 0px;
+}
+
+.picker-md .picker-toolbar {
+  height: 0px;
+  border: 0px;
+}
+

@@ -196,6 +196,7 @@ page-tdc {
   .tm-set{
     margin-top: 0px;
     margin-left: -17px;
+    height:20px;
   }
 
   .tog-set{
@@ -226,9 +227,16 @@ page-tdc {
   .footer-ios .toolbar-ios:first-child .toolbar-background-ios{
     border-width:0px;
   }
-  .footer-md .toolbar-ios:first-child .toolbar-background-md{
+  .footer-md .toolbar-md:first-child .toolbar-background-md{
     border-width:0px;
   }
 
-
+  .picker-ios .picker-toolbar::before {
+    height: 0px;
+    border: 0px;
+  }
+  .picker-md .picker-toolbar {
+    height: 0px;
+    border: 0px;
+  }
 }
