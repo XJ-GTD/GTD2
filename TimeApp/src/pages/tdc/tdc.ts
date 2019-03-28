@@ -64,7 +64,7 @@ import {BsModel} from "../../service/restful/out/bs.model";
           <ion-datetime [disabled]="disControl()" displayFormat="YYYY年MM月DD日 DDDD"
                         pickerFormat = "YYYY MM DD" color="light"
                         [(ngModel)]="scd.sd" dayNames="周日,周一,周二,周三,周四,周五,周六"
-                        min="1999-01-01" max="2039-12-31"  (ionCancel)="getaa($event)"
+                        min="1999-01-01" max="2039-12-31"  (ionCancel)="getDtPickerSel($event)"
                         ></ion-datetime>
           </ion-item> 
         </div>
@@ -80,7 +80,7 @@ import {BsModel} from "../../service/restful/out/bs.model";
           <div class = "tm-set" [hidden]="alld">
             <ion-item>
                 <ion-datetime [disabled]="disControl()" displayFormat="HH:mm" [(ngModel)]="scd.st"
-                              pickerFormat="HH mm"></ion-datetime>
+                              pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)"></ion-datetime>
               </ion-item>
           </div>
         <div class = "arrow2" [hidden]="alld">
@@ -570,9 +570,22 @@ export class TdcPage {
     }
   }
 
-  getaa(evt){
-    let aa =evt;
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+  getDtPickerSel(evt){
+
+    let el = document.getElementsByClassName("picker-opt-selected")
+
+    if (el && el.length==3){
+      this.scd.sd = el[0].textContent + "-" +el[1].textContent +"-" +el[2].textContent;
+    }
+  }
+
+  getHmPickerSel(evt){
+
+    let el = document.getElementsByClassName("picker-opt-selected")
+
+    if (el && el.length==2){
+      this.scd.st = el[0].textContent + ":" +el[1].textContent;
+    }
   }
   /*async openPicker(){
     let picker = await this.pickerCtl.create({

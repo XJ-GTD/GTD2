@@ -75,7 +75,7 @@ export class TdlPage {
               private tddjServ : TddjService,private tddiServ : TddiService,
               private modalCtr: ModalController) {
 
-    //初始化锚点位置
+  /*  //初始化锚点位置
     events.subscribe('po', (data) => {
 
       if (data !="" && data !=null){
@@ -87,7 +87,7 @@ export class TdlPage {
       //设置锚点会触发scrollstart,scrollend事件，在2事件内处理相应初始化内容
       this.initanchor  = true;
 
-    });
+    });*/
   }
 
   headershow :boolean =false;
