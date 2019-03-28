@@ -60,7 +60,7 @@ export class WebsocketService {
             this.dispatchService.dispatch(message.body).then(data => {
               console.log("message====>" + data + "=====>处理完毕");
             })
-          });
+          }, {ack: 'client'});
         }, error => {
           console.log('错误回调webSocket error! :' + error);
           //this.connect();
