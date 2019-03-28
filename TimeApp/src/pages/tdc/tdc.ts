@@ -168,7 +168,29 @@ import {BsModel} from "../../service/restful/out/bs.model";
         </ion-grid>
       </ion-toolbar>
     </ion-footer>
-  </ion-content>`
+  </ion-content>
+
+  <ion-content padding class="select-plan" *ngIf="isShowPlan">
+    <ion-grid>
+      <ion-row>
+
+        <ion-list  no-lines  radio-group [(ngModel)]="scd.ji">
+          <ion-item class="plan-list-item" *ngFor="let option of jhs">
+            <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
+            <ion-label>{{option.jn}}</ion-label>
+            <ion-radio value="{{option.ji}}" [ngStyle]="{'checked': option.ji == scd.ji , 'none': option.ji != scd.ji}"></ion-radio>
+          </ion-item>
+        </ion-list>
+
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+
+  <!--遮罩层-->
+  <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>
+  
+  
+  `
 
 })
 export class TdcPage {
@@ -208,6 +230,10 @@ export class TdcPage {
   //全天
   alld:boolean = false;
 
+  isShowPlan: boolean = false;
+  IsShowCover: boolean = false;
+  jhs:any;
+
   ionViewDidLoad() {
 
     console.log('ionViewDidLoad NewAgendaPage');
@@ -215,6 +241,12 @@ export class TdcPage {
 
   ionViewWillEnter() {
 
+    this.tdcServ.getPlans().then(data=>{
+      this.jhs = data;
+      //console.log("111" + JSON.stringify(this.jhs));
+    }).catch(res=>{
+      console.log("获取计划失败" + JSON.stringify(res));
+    });
 
     //新建的场合初始化
     if (this.navParams.get("dateStr")){
@@ -525,11 +557,17 @@ export class TdcPage {
 
   }
   toPlanChoose(){
-    let profileModal = this.modalCtrl.create(DataConfig.PAGE._PLA_PAGE,{ji:this.scd.ji});
-    profileModal.onWillDismiss((data: any) => {
-      this.scd.ji= data.ji;
-    });
-    profileModal.present();
+    this.isShowPlan = true;
+    this.IsShowCover = true;
+  }
+
+  closeDialog() {
+    if (this.isShowPlan) {
+      this.isShowPlan = false;
+      this.IsShowCover = false;
+
+      console.log("check:"+this.scd.ji);
+    }
   }
 
   /*async openPicker(){
