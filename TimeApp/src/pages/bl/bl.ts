@@ -19,13 +19,15 @@ import {DataConfig} from "../../service/config/data.config";
       <ion-toolbar>
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack()" color="danger">
-            <ion-icon name="arrow-back"></ion-icon>
+            <!--<ion-icon name="arrow-back"></ion-icon>-->
+            <img class="img-header-left" src="./assets/imgs/fh2.png">
           </button>
         </ion-buttons>
         <ion-title>黑名单</ion-title>
         <ion-buttons right>
-          <button ion-button (click)="toAdd()" color="danger">
-            <ion-icon name="add"></ion-icon>
+          <button ion-button color="danger" (click)="toAdd()">
+            <!--<ion-icon name="add"></ion-icon>-->
+            添加
           </button>
         </ion-buttons>
       </ion-toolbar>
@@ -46,7 +48,7 @@ import {DataConfig} from "../../service/config/data.config";
                  </span>
               </ion-label>
               <button ion-button color="danger" (click)="delete(g)" clear item-end>
-                <img src="./assets/imgs/del_member.png">
+                <img class="img-delete"  src="./assets/imgs/yc.png">
               </button>
             </ion-item>
           </ion-list>
@@ -78,6 +80,7 @@ export class BlPage {
     let profileModal = this.modalCtrl.create(DataConfig.PAGE._FS_PAGE,{addType:'bl'});
     profileModal.present();
   }
+
   getBl(){
     this.blService.get().then(data=>{
       if(data != null){
