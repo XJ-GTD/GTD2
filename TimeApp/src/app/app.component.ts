@@ -5,12 +5,12 @@ import {BackgroundMode} from '@ionic-native/background-mode';
 import {AssistantService} from "../service/cordova/assistant.service";
 import {DataConfig} from "../service/config/data.config";
 import {RestfulClient} from "../service/util-service/restful.client";
-import {FeedbackService} from "../service/cordova/feedback.service";
-import {PlatformLocation} from "@angular/common";
 import {UtilService} from "../service/util-service/util.service";
 
 @Component({
-  template: '<ion-nav></ion-nav>'
+  template: `
+    <ion-nav></ion-nav>
+  `
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;

@@ -16,13 +16,6 @@ import {PageY, SsService} from "./ss.service";
   selector: 'page-ss',
   template:
   `
-    <ion-header>
-      <ion-navbar>
-        <ion-title>
-          设置
-        </ion-title>
-      </ion-navbar>
-    </ion-header>
     <ion-header no-border>
       <ion-toolbar>
         <ion-buttons left>
@@ -78,10 +71,15 @@ export class SsPage {
     this.b = UserConfig.settins.get("B");
     this.z = UserConfig.settins.get("Z");
 
-    this.h.value = this.h.value == "0" ? "false":"true";
-    this.t.value = this.t.value == "0" ? "false":"true";
-    this.b.value = this.b.value == "0" ? "false":"true";
-    this.z.value = this.z.value == "0" ? "false":"true";
+    /*console.log(this.h.value+"1");
+    console.log(this.t.value+"2");
+    console.log(this.b.value+"3");
+    console.log(this.z.value+"4");*/
+
+    this.h.value = this.h.value == "1" ? "true":"false";
+    this.t.value = this.t.value == "1" ? "true":"false";
+    this.b.value = this.b.value == "1" ? "true":"false";
+    this.z.value = this.z.value == "1" ? "true":"false";
   }
 
   ionViewDidLoad() {

@@ -44,7 +44,7 @@ export class PointComponent {
   height: number;
   rotation = 0;
   dots = [];
-  DOTS_AMOUNT = 500;
+  DOTS_AMOUNT = 1000;
   GLOBE_RADIUS: number;
   GLOBE_CENTER_Z: number;
 
@@ -72,18 +72,11 @@ export class PointComponent {
 
       this.speed = 0.0004;
 
-      setTimeout(() => {
-        this.assistantService.speakText("你说的是" + data);
-
-      }, 500)
-
     });
   }
 
   ngOnInit(): void {
     this._renderer.setStyle(this.aitool.nativeElement, "top", window.innerHeight);
-
-
     this.ctx = this.canvas.nativeElement.getContext('2d');
     this.width = this.canvas.nativeElement.width;
     this.height = this.canvas.nativeElement.height;
@@ -115,7 +108,7 @@ export class PointComponent {
       const phi = Math.acos((Math.random() * 2) - 1); // Random value between [-1, 1];
       let a = this.utilService.rand(0.1, 1);
       let rgba = "";
-      if (this.utilService.randInt(0, 15) > 5) {
+      if (this.utilService.randInt(0, 10) > 5) {
         rgba = "rgba(132,48,148," + a + ")"
       } else {
         rgba = "rgba(102,200,201," + a + ")"

@@ -66,6 +66,7 @@ public class MainVerticle extends AbstractVerticle {
 		JsonObject data = received.body().getJsonObject("body");
 
 		String deviceId = data.getJsonObject("context").getString("deviceId", "default");
+		String clientIp = data.getJsonObject("context").getString("clientIp", "");
 		String userId = data.getJsonObject("context").getString("userId", "default");
 		String dataType = data.getJsonObject("context").getString("dataType", "audio");
 		String content = data.getJsonObject("context").getString("content");
@@ -74,14 +75,50 @@ public class MainVerticle extends AbstractVerticle {
 
 		try {
 	        String curTime = System.currentTimeMillis() / 1000L + "";
-	        String param = "";
+	        StringBuffer param = new StringBuffer();
 	        
 	        if ("text".equals(dataType)) {
-	        	param = "{\"auth_id\":\""+ config().getString("xfyun.openapi.authid") +"\",\"data_type\":\""+ dataType +"\",\"scene\":\""+config().getString("xfyun.openapi.scene", "main")+"\"}";
+	        	param.append("{");
+	        	param.append("\"auth_id\":\"");
+	        	param.append(config().getString("xfyun.openapi.authid"));
+	        	param.append("\",");
+	        	param.append("\"data_type\":\"");
+	        	param.append(dataType);
+	        	param.append("\",");
+	        	if (!"".equals(clientIp)) {
+		        	param.append("\"client_ip\":\"");
+		        	param.append(clientIp);
+		        	param.append("\",");
+	        	}
+	        	param.append("\"scene\":\"");
+	        	param.append(config().getString("xfyun.openapi.scene", "main"));
+	        	param.append("\"");
+	        	param.append("}");
 	        } else {
-	        	param = "{\"aue\":\""+ config().getString("xfyun.openapi.aue", "raw") +"\",\"sample_rate\":\""+ config().getString("xfyun.openapi.samplerate", "16000") +"\",\"auth_id\":\""+ config().getString("xfyun.openapi.authid") +"\",\"data_type\":\""+ dataType +"\",\"scene\":\""+config().getString("xfyun.openapi.scene", "main")+"\"}";
+	        	param.append("{");
+	        	param.append("\"aue\":\"");
+	        	param.append(config().getString("xfyun.openapi.aue", "raw"));
+	        	param.append("\"");
+	        	param.append(",\"sample_rate\":\"");
+	        	param.append(config().getString("xfyun.openapi.samplerate", "16000"));
+	        	param.append("\",");
+	        	param.append("\"auth_id\":\"");
+	        	param.append(config().getString("xfyun.openapi.authid"));
+	        	param.append("\",");
+	        	param.append("\"data_type\":\"");
+	        	param.append(dataType);
+	        	param.append("\",");
+	        	if (!"".equals(clientIp)) {
+		        	param.append("\"client_ip\":\"");
+		        	param.append(clientIp);
+		        	param.append("\",");
+	        	}
+	        	param.append("\"scene\":\"");
+	        	param.append(config().getString("xfyun.openapi.scene", "main"));
+	        	param.append("\"");
+	        	param.append("}");
 	        }
-	        String paramBase64 = new String(Base64.encodeBase64(param.getBytes("UTF-8")));
+	        String paramBase64 = new String(Base64.encodeBase64(param.toString().getBytes("UTF-8")));
 	        String checkSum = DigestUtils.md5Hex(config().getString("xfyun.openapi.apikey") + curTime + paramBase64);
 	
 	        Buffer body = Buffer.buffer();

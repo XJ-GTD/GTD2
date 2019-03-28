@@ -121,10 +121,12 @@ public class MainVerticle extends AbstractVerticle {
 			return;
 		}
 		
+		String clientIp = ctx.request().getHeader("x-real-ip");
+		
 		String deviceId = ctx.request().getHeader("di");
 		
 		if (deviceId == null || deviceId.isEmpty()) {
-			deviceId = ctx.request().getHeader("x-real-ip");
+			deviceId = clientIp;
 		}
 
 		deviceId = Base64.encodeBase64URLSafeString(deviceId.getBytes());
@@ -157,6 +159,7 @@ public class MainVerticle extends AbstractVerticle {
 
 		JsonObject message = new JsonObject();
 		message.put("deviceId", deviceId);
+		message.put("clientIp", clientIp);
 		message.put("userId", accountid);
 		message.put("content", voicecontent);
 		message.put("contentType", "audio");
@@ -208,10 +211,12 @@ public class MainVerticle extends AbstractVerticle {
 			return;
 		}
 		
+		String clientIp = ctx.request().getHeader("x-real-ip");
+
 		String deviceId = ctx.request().getHeader("di");
 		
 		if (deviceId == null || deviceId.isEmpty()) {
-			deviceId = ctx.request().getHeader("x-real-ip");
+			deviceId = clientIp;
 		}
 
 		deviceId = Base64.encodeBase64URLSafeString(deviceId.getBytes());
@@ -241,6 +246,7 @@ public class MainVerticle extends AbstractVerticle {
 		
 		JsonObject message = new JsonObject();
 		message.put("deviceId", deviceId);
+		message.put("clientIp", clientIp);
 		message.put("userId", accountid);
 		message.put("content", textcontent);
 		message.put("contentType", "text");

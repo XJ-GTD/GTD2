@@ -27,7 +27,7 @@ export class MenuScalePushType extends MenuType {
     this.ani.add(menuAni);
     const contentApi = new Animation(plt, menu.getContentElement());
     contentApi.fromTo('translateX', '0px', contentOpenedX);
-    contentApi.fromTo('scale',1,.8);
+    contentApi.fromTo('scale',1,.9);
     this.ani.add(contentApi);
   }
 }

@@ -1,4 +1,5 @@
 page-al {
+  background: black;
   * {
     box-sizing: border-box;
   }
@@ -22,13 +23,15 @@ page-al {
 
   .current {
     position: absolute;
-    color: #bbb;
+    color: #fff;
     font-weight: 100;
     line-height: 1;
   }
 
   round-progress {
     margin: auto;
+    width: 100px;
+    height: 100px;
   }
 
   .container {
@@ -48,5 +51,6 @@ page-al {
   }
   .text{
     text-align:center;
+    color: #FFFFFF;
   }
 }
