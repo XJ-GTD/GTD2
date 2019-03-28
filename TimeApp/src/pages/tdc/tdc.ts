@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import {
   ActionSheetController, Events, IonicPage, ModalController, NavController, NavParams,
-  Scroll
+  Scroll, PickerController, Picker,
 } from 'ionic-angular';
 import {ScdData} from "../tdl/tdl.service";
 import * as moment from "moment";
@@ -61,7 +61,11 @@ import {BsModel} from "../../service/restful/out/bs.model";
         <div><ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label></div>-->
         <div class="date-set">
           <ion-item>
-          <ion-datetime [disabled]="disControl()" displayFormat="YYYY年MM月DD日 DDDD" [(ngModel)]="scd.sd" dayNames="周日,周一,周二,周三,周四,周五,周六"></ion-datetime>
+          <ion-datetime [disabled]="disControl()" displayFormat="YYYY年MM月DD日 DDDD"
+                        pickerFormat = "YYYY MM DD"
+                        [(ngModel)]="scd.sd" dayNames="周日,周一,周二,周三,周四,周五,周六"
+                        min="1999-01-01" max="2039-12-31" 
+                        ></ion-datetime>
           </ion-item> 
         </div>
          <div class="arrow1">
@@ -73,9 +77,11 @@ import {BsModel} from "../../service/restful/out/bs.model";
                 <ion-toggle [disabled]="disControl()" [(ngModel)]="alld"  [class.allday]="b"></ion-toggle>
             </ion-item>
         </div>
-          <div class = "tm-set" [hidden]="alld"><ion-item>
-            <ion-datetime [disabled]="disControl()" displayFormat="HH:mm" [(ngModel)]="scd.st" ></ion-datetime>
-          </ion-item>
+          <div class = "tm-set" [hidden]="alld">
+            <ion-item>
+                <ion-datetime [disabled]="disControl()" displayFormat="HH:mm" [(ngModel)]="scd.st"
+                              pickerFormat="HH mm"></ion-datetime>
+              </ion-item>
           </div>
         <div class = "arrow2" [hidden]="alld">
           <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
@@ -162,7 +168,29 @@ import {BsModel} from "../../service/restful/out/bs.model";
         </ion-grid>
       </ion-toolbar>
     </ion-footer>
-  </ion-content>`
+  </ion-content>
+
+  <ion-content padding class="select-plan" *ngIf="isShowPlan">
+    <ion-grid>
+      <ion-row>
+
+        <ion-list  no-lines  radio-group [(ngModel)]="scd.ji">
+          <ion-item class="plan-list-item" *ngFor="let option of jhs">
+            <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
+            <ion-label>{{option.jn}}</ion-label>
+            <ion-radio value="{{option.ji}}" [ngStyle]="{'checked': option.ji == scd.ji , 'none': option.ji != scd.ji}"></ion-radio>
+          </ion-item>
+        </ion-list>
+
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+
+  <!--遮罩层-->
+  <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>
+  
+  
+  `
 
 })
 export class TdcPage {
@@ -171,10 +199,11 @@ export class TdcPage {
               private tdcServ :TdcService,private util:UtilService,
               private tddjServ :TddjService,private  tddiServ : TddiService,
               public actionSheetCtrl: ActionSheetController,
-              public modalCtrl: ModalController
+              public modalCtrl: ModalController,public pickerCtl:PickerController
               ) {
 
   }
+
   //画面状态：0：新建 ，1：本人修改 ，2：受邀人修改
   pagestate : string ="0";
   //画面数据
@@ -201,6 +230,10 @@ export class TdcPage {
   //全天
   alld:boolean = false;
 
+  isShowPlan: boolean = false;
+  IsShowCover: boolean = false;
+  jhs:any;
+
   ionViewDidLoad() {
 
     console.log('ionViewDidLoad NewAgendaPage');
@@ -208,6 +241,12 @@ export class TdcPage {
 
   ionViewWillEnter() {
 
+    this.tdcServ.getPlans().then(data=>{
+      this.jhs = data;
+      //console.log("111" + JSON.stringify(this.jhs));
+    }).catch(res=>{
+      console.log("获取计划失败" + JSON.stringify(res));
+    });
 
     //新建的场合初始化
     if (this.navParams.get("dateStr")){
@@ -518,12 +557,47 @@ export class TdcPage {
 
   }
   toPlanChoose(){
-    let profileModal = this.modalCtrl.create(DataConfig.PAGE._PLA_PAGE,{ji:this.scd.ji});
-    profileModal.onWillDismiss((data: any) => {
-      this.scd.ji= data.ji;
-    });
-    profileModal.present();
+    this.isShowPlan = true;
+    this.IsShowCover = true;
   }
+
+  closeDialog() {
+    if (this.isShowPlan) {
+      this.isShowPlan = false;
+      this.IsShowCover = false;
+
+      console.log("check:"+this.scd.ji);
+    }
+  }
+
+  /*async openPicker(){
+    let picker = await this.pickerCtl.create({
+      columns: this.cols,
+    });
+    await picker.present();
+
+
+    picker .ionChange.subscribe((change) => {
+      let a =change;
+      console.log(JSON.stringify(a));
+      /!*if(change.Year.value !== yr) {
+      yr = change.Year.value;
+      this.updatePickerMonthOptions(yr);
+      picker.refresh();
+      }*!/
+    });
+  }*/
+
 
 }
 
+/*class col{
+  name :string ="";
+  options:Array<coloptions> = new Array<coloptions>();
+
+}
+
+class coloptions{
+  text : string ="";
+  value:string ="";
+}*/

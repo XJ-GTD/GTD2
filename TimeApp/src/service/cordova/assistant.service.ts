@@ -114,16 +114,19 @@ export class AssistantService {
       return ""
     }
 
-    this.stopSpeak();
-    this.isSpeaking = true;
-
-    cordova.plugins.XjBaiduTts.startSpeak(result => {
+    setTimeout(() => {
+      this.stopSpeak();
+      this.isSpeaking = true;
+      cordova.plugins.XjBaiduTts.startSpeak(result => {
       this.isSpeaking = false;
       return result;
     }, error => {
       this.isSpeaking = false;
       return error;
     }, speechText);
+
+    }, 50)
+
   }
 
 

@@ -69,7 +69,7 @@ import {TddiService} from "../pages/tddi/tddi.service";
     BrowserAnimationsModule,
     RouterModule,
     WebsocketModule,
-    PipesModule
+    PipesModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -1,6 +1,13 @@
-page-m {
 
-  background: #96162d;
+
+  page-m {
+  :before{
+    background: #000;
+  }
+
+//  background: #96162d;
+
+    background: #000;
 
   .content-ios {
     color: #fff;
