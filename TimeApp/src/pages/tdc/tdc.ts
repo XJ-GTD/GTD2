@@ -62,9 +62,9 @@ import {BsModel} from "../../service/restful/out/bs.model";
         <div class="date-set">
           <ion-item>
           <ion-datetime [disabled]="disControl()" displayFormat="YYYY年MM月DD日 DDDD"
-                        pickerFormat = "YYYY MM DD"
+                        pickerFormat = "YYYY MM DD" color="light"
                         [(ngModel)]="scd.sd" dayNames="周日,周一,周二,周三,周四,周五,周六"
-                        min="1999-01-01" max="2039-12-31" 
+                        min="1999-01-01" max="2039-12-31"  (ionCancel)="getaa($event)"
                         ></ion-datetime>
           </ion-item> 
         </div>
@@ -570,6 +570,10 @@ export class TdcPage {
     }
   }
 
+  getaa(evt){
+    let aa =evt;
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+  }
   /*async openPicker(){
     let picker = await this.pickerCtl.create({
       columns: this.cols,
