@@ -1,4 +1,7 @@
 page-bl {
+
+  background-color: #000;
+
   ion-content {
     font-family: "PingFang-Regular";
   }
@@ -58,4 +61,26 @@ page-bl {
   .toolbar-title-ios{
     color:#ffffff;
   }
+
+  .img-header-left{
+    width: 4vmin;
+    height: 4vmin;
+    margin-left: 5vmin;
+  }
+
+  .toolbar-title{
+    color: white;
+    letter-spacing: 0.5vmin;
+    font-size: 1.5rem;
+  }
+
+  .bar-button-ios{
+    font-size: 1.3rem;
+  }
+
+  .img-delete{
+    width: 4vmin;
+    height: 4vmin;
+  }
+
 }
