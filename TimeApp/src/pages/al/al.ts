@@ -16,27 +16,29 @@ import {Location} from '@angular/common';
 @IonicPage()
 @Component({
   selector: 'page-al',
-  template:'<div class="container">' +
-  '  <div class="progress-wrapper">' +
-  '    <div class="current" [ngStyle]="getOverlayStyle()">{{ current }}/{{ max }}</div>' +
-  '    <round-progress' +
-  '      [current]="current"' +
-  '      [max]="max"' +
-  '      [stroke]="stroke"' +
-  '      [radius]="radius"' +
-  '      [semicircle]="semicircle"' +
-  '      [rounded]="rounded"' +
-  '      [responsive]="responsive"' +
-  '      [clockwise]="clockwise"' +
-  '      [color]="gradient ? \'url(#gradient)\' : color"' +
-  '      [background]="background"' +
-  '      [duration]="duration"' +
-  '      [animation]="animation"' +
-  '      [animationDelay]="animationDelay"></round-progress>' +
-  '  </div>' +
-  '  <div class="text">{{ alData.text }}</div>' +
-  '</div>' +
-  ''
+  template: `
+   <div class="container">
+    <div class="progress-wrapper">
+      <div class="current" [ngStyle]="getOverlayStyle()">{{ current }}/{{ max }}</div>
+      <round-progress
+        [current]="current"
+        [max]="max"
+        [stroke]="stroke"
+        [radius]="radius"
+        [semicircle]="semicircle"
+        [rounded]="rounded"
+        [responsive]="responsive"
+        [clockwise]="clockwise"
+        [color]="gradient ? \'url(#gradient)\' : color"
+        [background]="background"
+        [duration]="duration"
+        [animation]="animation"
+        [animationDelay]="animationDelay"></round-progress>
+    </div>
+    <div class="text">{{ alData.text }}</div>
+  </div>
+   <BackComponent></BackComponent>
+  `
 })
 export class AlPage {
 

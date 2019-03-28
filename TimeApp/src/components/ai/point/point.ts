@@ -72,11 +72,6 @@ export class PointComponent {
 
       this.speed = 0.0004;
 
-      setTimeout(() => {
-        this.assistantService.speakText("你说的是" + data);
-
-      }, 500)
-
     });
   }
 
