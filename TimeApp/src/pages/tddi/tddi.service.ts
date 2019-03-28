@@ -11,6 +11,7 @@ import {fsData, ScdData} from "../tdl/tdl.service";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
+import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
 
 @Injectable()
 export class TddiService {
@@ -91,7 +92,48 @@ export class TddiService {
 
   }
 
+  //删除日程 type：1 删除当前以后所有 ，2 删除所有
+  async delete(rcId:string,type :string,d:string){
+    let agdPro:AgdPro = new AgdPro();
+    let ctbl:CTbl =new CTbl();
 
+    //日程Id
+    ctbl.si = rcId;
+
+
+    if (type =="2"){
+      let etbl:ETbl =new ETbl();
+      etbl.si = ctbl.si;
+      await this.sqlExce.delete(etbl);//本地删除提醒
+      let dtbl:DTbl =new DTbl();
+      dtbl.si = ctbl.si;
+      await this.sqlExce.delete(dtbl);//本地删除日程参与人
+
+      await this.sqlExce.delete(ctbl); //本地删除日程表
+
+      let sptbl = new SpTbl();
+      sptbl.si = rcId;
+      await this.sqlExce.delete(sptbl);//本地删除日程子表
+
+      //restFul 删除日程
+      let a:AgdPro = new AgdPro();
+      a.ai = ctbl.si;//日程ID
+      await this.agdRestful.remove(a);
+
+    }else{
+      let sql ="delete from gtd_sp where si = '"+ rcId +"' and sd>= '"+ d +"'";
+      await this.sqlExce.execSql(sql);
+
+      ctbl.sd = d;
+      await this.sqlExce.update(ctbl);
+
+      let a = new AgdPro();
+      a.ai = ctbl.si;//日程ID
+      a.adt = d;
+      await this.agdRestful.save(a);
+    }
+
+  }
 
 
 

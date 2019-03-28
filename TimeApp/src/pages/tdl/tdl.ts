@@ -45,7 +45,7 @@ import {DataConfig} from "../../service/config/data.config";
           </div>
           <div class="dayagendas w-auto" >
             <div  class="dayagenda row" *ngFor ="let scd of sdl.scdl;let idx = index" 
-                 [ngStyle]="{'background-color':idx/2==0?'#96162D':'#8E172B'}" (click)="toDetail(scd.si,sdl.d)">
+                 [ngStyle]="{'background-color':idx/2==0?'#96162D':'#8E172B'}" (click)="toDetail(scd.si,sdl.d,scd.gs)">
               <div class="dayagendacontent w-auto" [ngStyle]="{'background-color':idx/2==0?'#96162D':'#8E172B'}">
                 <div class ="agendaline1 row">{{this.pageLoadOver(scd.anchorid)}}
                   <div class="agenda-st">{{scd.st}}</div>
@@ -458,8 +458,15 @@ export class TdlPage {
 
   }
 
-  toDetail(si,d){
-    this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {si: si,d:d}).present();
+  toDetail(si,d,gs){
+    if (gs == "1"){
+      //本人画面
+      this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {si: si,d:d}).present();
+    }else{
+      //受邀人画面
+      this.modalCtr.create(DataConfig.PAGE._TDDI_PAGE, {si: si,d:d}).present();
+    }
+
   }
 
 }
