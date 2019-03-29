@@ -1,16 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import {
-  ActionSheetController, Events, IonicPage, ModalController, NavController, NavParams,
+  ActionSheetController,  IonicPage, ModalController, NavController, NavParams,
 } from 'ionic-angular';
-import {ScdData} from "../tdl/tdl.service";
 import * as moment from "moment";
 import {TdcService} from "./tdc.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
-import {TddjService} from "../tddj/tddj.service";
-import {TddiService} from "../tddi/tddi.service";
 import {BsModel} from "../../service/restful/out/bs.model";
+import {ScdData} from "../../service/pagecom/pgbusi.service";
 
 /**
  * Generated class for the 新建日程 page.
@@ -189,10 +187,8 @@ export class TdcPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private tdcServ :TdcService,private util:UtilService,
-              private tddjServ :TddjService,private  tddiServ : TddiService,
               public actionSheetCtrl: ActionSheetController,
-              public modalCtrl: ModalController,
-              ) {
+              public modalCtrl: ModalController              ) {
 
   }
 
@@ -452,7 +448,7 @@ export class TdcPage {
     //本人创建
     if (this.pagestate =="1") {
 
-      this.tddjServ.updateDetail(this.scd).then(data =>{
+      this.tdcServ.updateDetail(this.scd).then(data =>{
 
         this.util.toast("保存成功",2000);
         if(typeof(eval(share))=="function")
@@ -492,7 +488,7 @@ export class TdcPage {
             role: 'destructive',
             cssClass:'btn-del',
             handler: () => {
-              this.tddjServ.delete(this.scd.si,"1",d).then(data=>{
+              this.tdcServ.delete(this.scd.si,"1",d).then(data=>{
                 this.cancel();
               });
             }
@@ -500,7 +496,7 @@ export class TdcPage {
             text: '删除所有日程',
             cssClass:'btn-delall',
             handler: () => {
-              this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
+              this.tdcServ.delete(this.scd.si,"2",d).then(data=>{
                 this.cancel();
               });
             }
@@ -517,7 +513,7 @@ export class TdcPage {
       actionSheet.present();
     }else{
       //非重复日程删除
-      this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
+      this.tdcServ.delete(this.scd.si,"2",d).then(data=>{
         this.cancel();
       });
     }

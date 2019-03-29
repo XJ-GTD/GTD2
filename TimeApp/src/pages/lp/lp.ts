@@ -13,25 +13,24 @@ import {UtilService} from "../../service/util-service/util.service";
 @IonicPage()
 @Component({
   selector: 'page-lp',
-  providers: [],
   template:
   `
-  <ion-content>
+  <ion-content padding>
     <h1>账号登录</h1>
     <ion-grid class="grid-login-basic no-padding-lr">
       <ion-row justify-content-start align-items-center>
         <div class="w-auto">
           <ion-input class="login-tel" type="tel" placeholder="开始输入账号" [(ngModel)]="lpData.mobile" (ionBlur)="checkPhone()"></ion-input>
         </div>
-        <div class="login-enter">
-          <button ion-fab color="success" (click)="signIn()" [ngClass]="{'show': inputBoolean == false , 'show-true': inputBoolean == true}">
-            <img class="img-content-enter" src="../../assets/imgs/xyb.png">
+        <div>
+          <button ion-fab class="login-enter" (click)="signIn()" [ngClass]="{'show': inputBoolean == false , 'show-true': inputBoolean == true}">
+            <img class="img-content-enter" src="./assets/imgs/xyb.png">
           </button>
         </div>
       </ion-row>
       <ion-row justify-content-between align-items-center>
         <div class="w-auto">
-          <ion-input class="login-pwd" type="password" placeholder="输入密码" [(ngModel)]="lpData.password" (ionBlur)="checkPwd()"></ion-input>
+          <ion-input class="login-pwd" type="password" placeholder="密码" [(ngModel)]="lpData.password" (ionBlur)="checkPwd()"></ion-input>
         </div>
       </ion-row>
     </ion-grid>
@@ -106,13 +105,13 @@ export class LpPage {
     this.errorPhone = this.util.checkPhone(this.lpData.mobile);
     this.check();
 
-    if(this.errorPhone == 0){  //判断手机号是否为空
+    /*if(this.errorPhone == 0){  //判断手机号是否为空
       this.util.toast("手机号不能为空",1500);
     }else if(this.errorPhone == 1){
       this.util.toast("手机号长度小于11位",1500);
     }else if(this.errorPhone == 2){
       this.util.toast("手机号格式错误",1500);
-    }
+    }*/
   }
 
   checkPwd(){
@@ -123,9 +122,9 @@ export class LpPage {
     }
     this.check();
 
-    if(this.errorPwd == 0){ //判断密码是否为空
+    /*if(this.errorPwd == 0){ //判断密码是否为空
       this.util.toast("密码不能为空",1500);
-    }
+    }*/
   }
 
 }

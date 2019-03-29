@@ -139,11 +139,9 @@ export class DataConfig {
     _PP_PAGE: "PPage",        // 登陆注册 - 条款
     _M_PAGE: "MPage",         // 辅助功能 - 菜单
     _PL_PAGE: "PlPage",       // 辅助功能 - 计划
-    _PLA_PAGE: "PlaPage",       //  日程 - 计划
     _PC_PAGE: "PcPage",       // 辅助功能 - 计划新建
     _PD_PAGE: "PdPage",       // 辅助功能 - 计划展
     _SS_PAGE: "SsPage",       // 辅助功能 - 系统设置
-    _SST_PAGE: "SstPage",    // 辅助功能 - 系统设置 - 提醒设置
     _HL_PAGE: "HlPage",       // 辅助功能 - 帮助及反馈
     _GL_PAGE: "GlPage",       // 辅助功能 - 群组列表
     _GC_PAGE: "GcPage",       // 辅助功能 - 群组编辑

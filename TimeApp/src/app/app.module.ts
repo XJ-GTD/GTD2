@@ -51,6 +51,8 @@ import {AiService} from "../components/ai/answer/ai.service";
 import {AlService} from "../pages/al/al.service";
 import {TddjService} from "../pages/tddj/tddj.service";
 import {TddiService} from "../pages/tddi/tddi.service";
+import {PgBusiService} from "../service/pagecom/pgbusi.service";
+import {TdcService} from "../pages/tdc/tdc.service";
 
 @NgModule({
   declarations: [
@@ -118,6 +120,8 @@ import {TddiService} from "../pages/tddi/tddi.service";
     UserConfig,
     TddjService,
     TddiService,
+    PgBusiService,
+    TdcService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG,useClass: HammerDIRECTIONALLConfig }
   ]

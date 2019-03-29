@@ -8,6 +8,7 @@ import {ETbl} from "../../service/sqlite/tbl/e.tbl";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
+import {ScdData} from "../../service/pagecom/pgbusi.service";
 
 @Injectable()
 export class PdService {
@@ -41,7 +42,7 @@ export class PdService {
         let pa:ScdData = new ScdData();
         pa.si = jhc.si;//日程ID
         pa.sn = jhc.sn;//主题
-        pa.adt = jhc.sd;//时间(YYYY/MM/DD HH:mm)
+        pa.sd = jhc.sd;//时间(YYYY/MM/DD HH:mm)
         pa.st = jhc.st;//开始时间
         pa.et = jhc.et;//结束日期
         pa.ed = jhc.ed;//结束时间
@@ -202,23 +203,4 @@ export class PagePDPro{
 
   js: number = 0; //日程数量
   jtd: string = "0"; //系统计划区别是否下载
-}
-
-export class ScdData {
-  si: string = "";//日程事件ID
-  sn: string = "";//日程事件主题
-  ui: string = "";//创建者
-  adt: string = "";//开始日期
-  st: string = "";//开始时间
-  ed: string = "";//结束日期
-  et: string = "";//结束时间
-  rt: string = "";//重复类型
-  ji: string = "";//计划ID
-  sr: string = "";//日程关联ID
-  bz: string = "";//备注
-  tx: string = "";//提醒方式
-  pni:string = "";//日程原始ID
-  wtt: number;//时间戳
-  du:string ="";//消息读取状态
-  gs:string ="";//归属
 }
