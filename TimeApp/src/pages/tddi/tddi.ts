@@ -36,7 +36,7 @@ import { ScdData} from "../../service/pagecom/pgbusi.service";
     <ion-grid>
       <ion-row >
         <div class = "input-set">
-          <ion-input type="text" [(ngModel)]="scd.sn" [disabled]="true"  placeholder="我想..."></ion-input>
+          <ion-label >{{scd.sn}}</ion-label>
         </div>
       </ion-row>
       <ion-row >
