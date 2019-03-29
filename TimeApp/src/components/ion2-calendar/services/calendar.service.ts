@@ -10,7 +10,6 @@ import {
 } from '../calendar.model'
 import * as moment from 'moment';
 import {defaults, pickModes} from "../config";
-import {ScdData} from "../../../pages/tdl/tdl.service";
 import {SqliteExec} from "../../../service/util-service/sqlite.exec";
 
 @Injectable()
