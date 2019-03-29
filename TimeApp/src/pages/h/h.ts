@@ -82,7 +82,7 @@ export class HPage {
   }
 
   newcd() {
-    this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {dateStr: this.hdata.selectDay}).present();
+    this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {dateStr: this.hdata.selectDay.time}).present();
     ;
   }
 

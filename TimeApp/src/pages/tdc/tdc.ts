@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   ActionSheetController,  IonicPage, ModalController, NavController, NavParams,
 } from 'ionic-angular';
@@ -45,7 +45,7 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
       </ion-row>
       <ion-row >
         <div >
-            <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">添加计划</button>
+            <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">{{scd.p.jn==""?"添加计划":scd.p.jn}}</button>
         </div>
       </ion-row>
       <ion-row >
@@ -164,11 +164,11 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
     <ion-grid>
       <ion-row>
 
-        <ion-list  no-lines  radio-group [(ngModel)]="scd.ji">
+        <ion-list  no-lines  radio-group [(ngModel)]="scd.p">
           <ion-item class="plan-list-item" *ngFor="let option of jhs">
             <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
             <ion-label>{{option.jn}}</ion-label>
-            <ion-radio value="{{option.ji}}" [ngStyle]="{'checked': option.ji == scd.ji , 'none': option.ji != scd.ji}"></ion-radio>
+            <ion-radio [value]="option"  [ngStyle]="{'checked': option.ji == scd.ji , 'none': option.ji != scd.ji}"></ion-radio>
           </ion-item>
         </ion-list>
 
@@ -177,10 +177,7 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
   </ion-content>
 
   <!--遮罩层-->
-  <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>
-  
-  
-  `
+  <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>`
 
 })
 export class TdcPage {
@@ -411,32 +408,30 @@ export class TdcPage {
     this.scd.du = "1";
 
     //本人新建或修改时，下记画面项目可以修改
-    if (this.pagestate == "0" || this.pagestate == "1") {
-      //开始时间格式转换
-      this.scd.sd = moment(this.scd.sd).format("YYYY/MM/DD");
+    //开始时间格式转换
+    this.scd.sd = moment(this.scd.sd).format("YYYY/MM/DD");
 
 
-      //结束日期设置
-      //重复场合
-      if (this.scd.rt != "0") {
-        this.scd.ed = "9999/12/31";
-      } else {
-        this.scd.ed = this.scd.sd;
-      }
-
-      //结束时间设置
-      //全天的场合
-      if (this.alld) {
-        this.scd.et = "99:99";
-      } else {
-        this.scd.et = this.scd.st;
-      }
-
-      //归属 本人创建
-      this.scd.gs = '1';
-
+    //结束日期设置
+    //重复场合
+    if (this.scd.rt != "0") {
+      this.scd.ed = "9999/12/31";
+    } else {
+      this.scd.ed = this.scd.sd;
     }
 
+    //结束时间设置
+    //全天的场合
+    if (this.alld) {
+      this.scd.et = "99:99";
+    } else {
+      this.scd.et = this.scd.st;
+    }
+
+    //归属 本人创建
+    this.scd.gs = '1';
+
+    this.scd.ji = this.scd.p.ji;
 
     //新建数据
     if (this.pagestate =="0"){
@@ -541,6 +536,7 @@ export class TdcPage {
       this.IsShowCover = false;
 
       console.log("check:"+this.scd.ji);
+      console.log("check1:"+this.scd.p.ji);
     }
   }
 
