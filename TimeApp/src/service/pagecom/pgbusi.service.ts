@@ -40,7 +40,7 @@ export class PgBusiService {
     let ssql = "select b.* from gtd_d d ,gtd_b b where a.ai = b.pwi and d.si ='"+ si +"' " ;
     let bList = await this.sqlExce.getExtList<BTbl>(ssql);
     for (let j = 0, len = bList.length; j < len; j++) {
-      let fsd = new fsData();
+      let fsd = new FsData();
       Object.assign(fsd, bList[j]);
       scdData.fss.push(fsd);
     }
@@ -237,8 +237,18 @@ export class PgBusiService {
     Object.assign(e,scd.r);
     await this.sqlExce.update(c);
 
-    //restful用参数
+
     if (type == "1") {
+      //特殊表操作
+      let bs :BsModel<ScdData> = await this.get(scd.si);
+      if (bs.data.sd != scd.sd || bs.data.rt != scd.rt){
+
+      }else{
+        if (bs.data.st != scd.st){
+
+        }
+      }
+      //restful用参数
       let agd = new AgdPro();
       this.setAdgPro(agd,c);
 
@@ -357,10 +367,10 @@ export class ScdData {
   }
 
   //参与人
-  fss: Array<fsData> =new Array<fsData>();
+  fss: Array<FsData> =new Array<FsData>();
 
   //发起人
-  fs: fsData =new fsData();
+  fs: FsData =new FsData();
 
 
   //提醒设置
@@ -391,7 +401,7 @@ export class SpecScdData {
 }
 
 //参与人
-export class fsData {
+export class FsData {
   pwi: string = ""; //主键
   ran: string = ""; //联系人别称
   ranpy: string = ""; //联系人别称拼音

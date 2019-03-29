@@ -1,42 +1,23 @@
 page-al {
-  background-image:url('../assets/imgs/alback.jpg');
-  background-repeat:no-repeat;
-  background-size:100% 100%;
-  -moz-background-size:100% 100%;
+  background-color: #fff;
+  background-image: url('../assets/imgs/alback.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
 
-  .cf:before,
-  .cf:after {
-    content: ' ';
-    display: table;
-  }
-
-  .cf:after {
-    clear: both;
-  }
-
-  .progress-wrapper {
-    position: relative;
-    margin: 50% auto;
-    font-size: 40px;
-  }
-
-  .current {
-    position: absolute;
-    color: #fff;
-    font-weight: 100;
-    line-height: 1;
-  }
-
-  round-progress {
-    margin: auto;
-    width: 100px;
-    height: 100px;
-  }
 
   .container {
     width: 100%;
     height: 100%;
   }
+
+  .text {
+    text-align: center;
+    color: #FFFFFF;
+    position: relative;
+    margin-top: calc(100% + 50%);
+  }
+
 
   .loading {
     position: fixed;
@@ -48,10 +29,33 @@ page-al {
     font-size: 3em;
     color: #bbb;
   }
-  .text{
-    text-align: center;
-    color: #FFFFFF;
-    position: relative;
-    margin-top: calc(100% + 50%);
-  }
+  //
+  //.cf:before,
+  //.cf:after {
+  //  content: ' ';
+  //  display: table;
+  //}
+  //
+  //.cf:after {
+  //  clear: both;
+  //}
+  //
+  //.progress-wrapper {
+  //  position: relative;
+  //  margin: 50% auto;
+  //  font-size: 40px;
+  //}
+  //
+  //.current {
+  //  position: absolute;
+  //  color: #fff;
+  //  font-weight: 100;
+  //  line-height: 1;
+  //}
+  //
+  //round-progress {
+  //  margin: auto;
+  //  width: 100px;
+  //  height: 100px;
+  //}
 }

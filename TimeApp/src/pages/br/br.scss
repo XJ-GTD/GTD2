@@ -1,3 +1,31 @@
 page-br {
 
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: #000;
+  }
+
+  .toolbar-title{
+    color: white;
+    letter-spacing: 0.5vmin;
+    font-size: 1.5rem;
+  }
+
+  .img-header-left{
+    width: 4vmin;
+    height: 4vmin;
+    margin-left: 5vmin;
+  }
+
+  ion-content.content {
+    background-color: #000;
+    color: #fff;
+  }
+
+  ion-content .plan-list-item {
+    width: 97vmin;
+    background-color: #000;
+    color: #fff;
+    font-size: 1.7rem;
+    font-weight: 200;
+  }
 }

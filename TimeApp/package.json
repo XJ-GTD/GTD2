@@ -35,7 +35,8 @@
     "@ionic-native/local-notifications": "^4.18.0",
     "@ionic-native/native-audio": "^4.18.0",
     "@ionic-native/native-page-transitions": "^4.18.0",
-    "@ionic-native/network": "^4.19.0",
+    "@ionic-native/network": "^4.18.0",
+    "@ionic-native/screen-orientation": "^4.18.0",
     "@ionic-native/splash-screen": "^4.18.0",
     "@ionic-native/sqlite": "^4.18.0",
     "@ionic-native/sqlite-porter": "^4.18.0",
@@ -124,7 +125,8 @@
       "cordova-plugin-BaiduSpeechAndTTS": {},
       "cordova-plugin-contacts": {},
       "cordova-plugin-network-information": {},
-      "org.nypr.cordova.wakeupplugin": {}
+      "org.nypr.cordova.wakeupplugin": {},
+      "cordova-plugin-screen-orientation": {}
     },
     "platforms": [
       "ios",
