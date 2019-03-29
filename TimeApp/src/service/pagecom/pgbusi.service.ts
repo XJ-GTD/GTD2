@@ -234,6 +234,8 @@ export class PgBusiService {
    */
   async updateDetail(scd:ScdData,type :string){
 
+    //特殊表操作
+    let bs :BsModel<ScdData> = await this.get(scd.si);
 
     //更新日程
     let c = new CTbl();
@@ -249,9 +251,6 @@ export class PgBusiService {
 
 
     if (type == "1") {
-      //特殊表操作
-      let bs :BsModel<ScdData> = await this.get(c.si);
-
       if (bs.data.sd != c.sd || bs.data.rt != c.rt){
         //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
         let sptbl = new SpTbl();
