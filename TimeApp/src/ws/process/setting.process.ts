@@ -7,7 +7,6 @@ import {PageY, SsService} from "../../pages/ss/ss.service";
 import {Setting, UserConfig} from "../../service/config/user.config";
 import {SettingPara} from "../model/settingpara";
 import {FdData, FdService} from "../../pages/fd/fd.service";
-import {fsData} from "../../pages/tdl/tdl.service";
 
 /**
  * 设置
