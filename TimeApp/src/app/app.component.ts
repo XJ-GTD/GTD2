@@ -6,6 +6,7 @@ import {AssistantService} from "../service/cordova/assistant.service";
 import {DataConfig} from "../service/config/data.config";
 import {RestfulClient} from "../service/util-service/restful.client";
 import {UtilService} from "../service/util-service/util.service";
+import {ScreenOrientation} from "@ionic-native/screen-orientation";
 
 @Component({
   template: `
@@ -20,7 +21,8 @@ export class MyApp {
               private backgroundMode: BackgroundMode,
               private speechService: AssistantService,
               private restfulClient:RestfulClient,
-              private util:UtilService) {
+              private util:UtilService,
+              private screenOrientation: ScreenOrientation) {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
     this.platform.ready().then(() => {
@@ -30,6 +32,9 @@ export class MyApp {
       //设置返回键盘（android）
       this.registerBackButtonAction();
       this.restfulClient.init();
+      // set to landscape
+      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+
       //跳转页面（过渡页面）
       this.nav.setRoot(DataConfig.PAGE._AL_PAGE);
     });
