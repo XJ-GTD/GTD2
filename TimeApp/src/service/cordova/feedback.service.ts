@@ -1,6 +1,8 @@
 import {Injectable} from "@angular/core";
 import {Vibration} from '@ionic-native/vibration';
 import {NativeAudio} from '@ionic-native/native-audio';
+import {UserConfig} from "../config/user.config";
+import {DataConfig} from "../config/data.config";
 
 /**
  * 界面操作回馈
@@ -37,12 +39,15 @@ export class FeedbackService {
 
   public audioBass():Promise<any> {
     return this.audio.play('bass').then(d => {
+
+      if (UserConfig.settins.get(DataConfig.SYS_Z).value == "0")  return "";
       this.vibration.vibrate(200);
     });
   }
 
   public audioSnare():Promise<any> {
     return this.audio.play('snare').then(d => {
+      if (UserConfig.settins.get(DataConfig.SYS_Z).value == "0")  return "";
       this.vibration.vibrate(200);
     });
   }
@@ -50,6 +55,7 @@ export class FeedbackService {
   public audioHighhat():Promise<any> {
 
     return this.audio.play('highhat').then(d => {
+      if (UserConfig.settins.get(DataConfig.SYS_Z).value == "0")  return "";
       this.vibration.vibrate(200);
     });
   }
@@ -57,6 +63,7 @@ export class FeedbackService {
   public audioBongo():Promise<any> {
 
     return this.audio.play('bongo').then(d => {
+      if (UserConfig.settins.get(DataConfig.SYS_Z).value == "0")  return "";
       this.vibration.vibrate(200);
     });
   }

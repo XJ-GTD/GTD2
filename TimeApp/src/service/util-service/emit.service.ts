@@ -17,78 +17,78 @@ export class EmitService {
 
   registerScded(callback) {
     if (this.scdedEm.closed) {
-      this.scdedEm = new EventEmitter();
+      this.scdedEm = new EventEmitter<ScdEmData>();
     }
-    this.scdedEm.subscribe($data => {
+    this.scdedEm.subscribe(($data: ScdEmData) => {
       callback($data);
     });
   };
 
-  emitScded($data) {
+  emitScded($data: ScdEmData) {
     if (!this.scdedEm.isStopped) {
       this.scdedEm.emit($data);
     }
   }
 
-  destroyScded(emit: EventEmitter<any>) {
+  destroyScded(emit: EventEmitter<ScdEmData>) {
     this.scdedEm.unsubscribe();
   }
 
   registerScdLs(callback) {
     if (this.scdLsEm.closed) {
-      this.scdLsEm = new EventEmitter();
+      this.scdLsEm = new EventEmitter<ScdLsEmData>();
     }
-    this.scdLsEm.subscribe($data => {
+    this.scdLsEm.subscribe(($data: ScdLsEmData) => {
       callback($data);
     });
   };
 
-  emitScdLs($data) {
+  emitScdLs($data: ScdLsEmData) {
     if (!this.scdLsEm.isStopped) {
       this.scdLsEm.emit($data);
     }
   }
 
-  destroyScdLs(emit: EventEmitter<any>) {
+  destroyScdLs(emit: EventEmitter<ScdLsEmData>) {
     this.scdLsEm.unsubscribe();
   }
 
   registerSpeech(callback) {
     if (this.speechEm.closed) {
-      this.speechEm = new EventEmitter();
+      this.speechEm = new EventEmitter<SpeechEmData>();
     }
-    this.speechEm.subscribe($data => {
+    this.speechEm.subscribe(($data: SpeechEmData) => {
       callback($data);
     });
   };
 
-  emitSpeech($data) {
+  emitSpeech($data: SpeechEmData) {
     if (!this.speechEm.isStopped) {
       this.speechEm.emit($data);
     }
   }
 
-  destroySpeech(emit: EventEmitter<any>) {
+  destroySpeech(emit: EventEmitter<SpeechEmData>) {
     this.speechEm.unsubscribe();
   }
 
 
   registerScd(callback) {
     if (this.scdEm.closed) {
-      this.scdEm = new EventEmitter();
+      this.scdEm = new EventEmitter<ScdEmData>();
     }
-    this.scdEm.subscribe($data => {
+    this.scdEm.subscribe(($data: ScdEmData) => {
       callback($data);
     });
   };
 
-  emitScd($data) {
+  emitScd($data: ScdEmData) {
     if (!this.speechEm.isStopped) {
       this.scdEm.emit($data);
     }
   }
 
-  destroyScd(emit: EventEmitter<any>) {
+  destroyScd(emit: EventEmitter<ScdEmData>) {
     this.scdEm.unsubscribe();
   }
 }
@@ -97,6 +97,7 @@ export class ScdLsEmData {
   desc: string = "";
   datas: Array<ScdEmData> = new Array<ScdEmData>();
 }
+
 export class ScdEmData {
   id: string = "";
   d: string = "";
@@ -112,6 +113,7 @@ export class FriendEmData {
   p: string = "";
   a: string = "";
 }
+
 export class SpeechEmData {
   an: string = "";
   org: string = "";

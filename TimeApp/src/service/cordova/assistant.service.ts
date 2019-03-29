@@ -7,6 +7,8 @@ import {STbl} from "../sqlite/tbl/s.tbl";
 import {DataConfig} from "../config/data.config";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {UtilService} from "../util-service/util.service";
+import {SsService} from "../../pages/ss/ss.service";
+import {UserConfig} from "../config/user.config";
 
 declare var cordova: any;
 
@@ -110,6 +112,8 @@ export class AssistantService {
   async speakText(speechText: string) {
     if  (!this.utilService.isMobile()) return "";
 
+    if (UserConfig.settins.get(DataConfig.SYS_B).value == "0")  return "";
+
     if (speechText == null || speechText == "" || this.islistenAudioing) {
       return ""
     }
@@ -134,21 +138,23 @@ export class AssistantService {
   /**
    * 语音助手手动输入 TEXT
    */
-  async putText(text:string){
-    let textPro = new TextPro();
-    textPro.d.text = text;
-    textPro.c.client = {time: moment().unix(), context: new WsModel()};
-    this.aibutlerRestful.posttext(textPro)
-      .then(data => {
-        console.log("data code：" + data.code);
-        //接收Object JSON数据
+  putText(text:string):Promise<string>{
+    return new Promise<string>(async (resolve, reject) => {
 
-      }).catch(async e => {
-      let text = await this.getSpeakText(DataConfig.FF);
-      this.speakText(text);
+      let textPro = new TextPro();
+      textPro.d.text = text;
+      textPro.c.client.time = moment().unix();
+      textPro.c.client.cxt = DataConfig.getWsContext();
+      textPro.c.server = DataConfig.wsServerContext;
+      await this.aibutlerRestful.posttext(textPro)
+        .then(data => {
+          console.log("data code：" + data.code);
+          //接收Object JSON数据
+          resolve(text);
+
+        });
     });
 
-    return text;
   }
 
 
@@ -160,7 +166,10 @@ export class AssistantService {
    listenAudio():Promise<string>{
 
     return new Promise<string>(async (resolve, reject) => {
-      if (!this.utilService.isMobile())  resolve("");;
+      if (!this.utilService.isMobile()) {
+        resolve("");
+        return;
+      }
       if (!this.isSpeaking && !this.islistenAudioing ) {
         this.islistenAudioing = true;
 
@@ -171,7 +180,10 @@ export class AssistantService {
           let base64File: string = await this.file.readAsDataURL(this.file.cacheDirectory, "iat.pcm");
           let audioPro = new AudioPro();
           audioPro.d.vb64 = base64File;
-          audioPro.c.client = {time: moment().unix(), context: new WsModel()};
+          audioPro.c.client.time = moment().unix();
+          audioPro.c.client.cxt = DataConfig.getWsContext();
+          audioPro.c.client.option = DataConfig.getWsOpt();
+          audioPro.c.server = DataConfig.wsServerContext;
           await this.aibutlerRestful.postaudio(audioPro)
           resolve(result);
         }, async error => {

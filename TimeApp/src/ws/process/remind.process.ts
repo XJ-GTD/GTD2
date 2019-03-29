@@ -10,6 +10,7 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {SpeechProcess} from "./speech.process";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import * as moment from 'moment';
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * 提醒设置
@@ -44,10 +45,10 @@ export class RemindProcess implements MQProcess {
       let inner: WsContent = new WsContent();
       inner.option = S.P;
       inner.parameters = {
-        //TODO 替换提醒语音Type
-        t:""
+        //替换提醒语音Type
+        t: DataConfig.GG
       }
-      return await  this.speechProcess.go(inner,processRs);
+      return await this.speechProcess.go(inner, processRs);
 
     })
   }
@@ -56,7 +57,7 @@ export class RemindProcess implements MQProcess {
   private async saveETbl1(rdData: RemindPara) {
     let etbl: ETbl = new ETbl();
     etbl.wi = this.utitl.getUuid();
-    etbl.st = "2"
+    etbl.st = DataConfig.RMNONESCD;
     etbl.wd = rdData.d;
     etbl.wt = rdData.t;
 
@@ -65,14 +66,16 @@ export class RemindProcess implements MQProcess {
 
   //保存提醒表管理日程
   private async saveETbl2(rdData: RemindPara, ctbl: CTbl) {
-    let etbl: ETbl = new ETbl();
 
     //需要删除之前的提醒数据
+    let etbl: ETbl = new ETbl();
     etbl.wi = this.utitl.getUuid();
     etbl.si = ctbl.si;
-    etbl.st = "2"
+    etbl.st =  DataConfig.RMNONESCD;
     etbl.wd = rdData.d;
     etbl.wt = rdData.t;
+
+    await this.sqliteExec.delete(etbl);
 
     //提前延后时间设置
     if (rdData.s != null) {

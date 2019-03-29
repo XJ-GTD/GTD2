@@ -1,35 +1,92 @@
 /**
  * 公共配置用
  */
-import {WsModel} from "../../ws/model/ws.model";
+import {ContextModel, WsModel} from "../../ws/model/ws.model";
+import {ProcesRs} from "../../ws/model/proces.rs";
+import {UserConfig} from "./user.config";
 
 export class DataConfig {
 
-  //WS上下文环境使用
-  clearWsContext(){
+
+  /*----===== WS上下文环境使用 =====----- */
+  public static clearWsContext(){
     this.wsContext.splice(0,this.wsContext.length);
   }
 
-  putWsContext(_wsContext:WsModel){
+  public static putWsContext(_wsContext:ProcesRs){
     this.wsContext.push(_wsContext);
   }
 
-  getWsContext(){
-    return this.wsContext.pop();
+  public static getWsContext():ProcesRs{
+    return this.wsContext.shift();
   }
 
-  get wsContext(): Array<WsModel> {
+  public static get wsContext(): Array<ProcesRs> {
     return this._wsContext;
   }
 
-  set wsContext(value: Array<WsModel>) {
+  public static set wsContext(value: Array<ProcesRs>) {
     this._wsContext = value;
   }
 
-  private _wsContext:Array<WsModel> = new Array<WsModel>();
+  private static _wsContext:Array<ProcesRs> = new Array<ProcesRs>();
 
-  //WS上下文环境使用
+  //操作区分
+  public static clearWsOpts(){
+    this._wsOpts.splice(0,this._wsOpts.length);
+  }
 
+  public static putWsOpt(_opt:string){
+    this._wsOpts.push(_opt);
+  }
+
+  public static getWsOpt():string{
+    return this._wsOpts.shift();
+  }
+
+  public static get wsWsOpt(): Array<string> {
+    return this._wsOpts;
+  }
+
+  public static set wsWsOpt(value: Array<string>) {
+    this._wsOpts = value;
+  }
+
+  private static _wsOpts:Array<string> = new Array<string>();
+
+
+
+
+  public static get wsServerContext():any {
+    return this._wsServerContext?this._wsServerContext:{};
+  }
+
+  public static set wsServerContext(value:any) {
+    this._wsServerContext = value;
+  }
+
+  private static _wsServerContext:any = {};
+
+  /*----===== WS上下文环境使用 =====----- */
+
+  /*========== 设置提醒区分 =========*/
+  //1：日程事件，
+  public static RMSCD: string = "1";
+  //2：无关联日程提醒
+  public static RMNONESCD: string = "2";
+  /*========== 设置提醒区分 =========*/
+
+
+  /*========== 系统设置区分 =========*/
+  //唤醒
+  public static SYS_H: string = "H";
+  //新消息提醒
+  public static SYS_T: string = "T";
+  //语音播报
+  public static SYS_B: string = "B";
+  //震动
+  public static SYS_Z: string = "Z";
+  /*========== 系统设置区分 =========*/
 
 
 
@@ -98,7 +155,9 @@ export class DataConfig {
     _BR_PAGE: "BrPage",       // 辅助功能 - 备份
     _AL_PAGE: "AlPage"        //启动页
   }
+  /* ============ 页面名字配置 ===============*/
 
+  /*----===== 语音区分 =====----- */
   public static SPEECH: string = "SPEECH";    //系统表语音key
   public static HL: string	= "HL";                  //问候语
   public static LH: string	= "LH";	                  //	进入教程
@@ -108,6 +167,10 @@ export class DataConfig {
   public static DD: string	= "DD";	                  //	设置后回答
   public static EE: string	= "EE";	                 //	确认取消回答
   public static FF: string	= "FF";	                  //	异常回答
+  public static UNKNOWN: string	= "UNKNOWN";	                 //	确认取消回答
+  public static GG: string	= "GG";	                  //	提醒设置完毕
+  /*----===== 语音区分 =====----- */
+
 
 
 

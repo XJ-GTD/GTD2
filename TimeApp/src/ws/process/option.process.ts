@@ -6,6 +6,7 @@ import {Injectable} from "@angular/core";
 import {CudscdPara} from "../model/cudscd.para";
 import {ProcesRs} from "../model/proces.rs";
 import {O} from "../model/ws.enum";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * 确认操作
@@ -32,8 +33,9 @@ export class OptionProcess implements MQProcess{
         //追问操作
 
       }else{
-        //取消操作
-
+        //取消操作 清除上下文
+        DataConfig.clearWsOpts();
+        DataConfig.clearWsContext();
       }
     })
   }
