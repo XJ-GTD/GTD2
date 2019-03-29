@@ -375,7 +375,9 @@ public class MainVerticle extends AbstractVerticle {
 		futures.add(lessfuture);
 		
 		client.postAbs("https://www.guobaa.com/sho/linkless")
-		.sendJsonObject(new JsonObject().put("type", "default").put("src", "https://pluto.guobaa.com/sha/plan/share/" + shareId),
+		.sendJsonObject(new JsonObject()
+				.put("type", "default")
+				.put("src", "https://pluto.guobaa.com/sha/plan/share/" + shareId),
 				handler -> {
 			if (handler.succeeded()) {
 				HttpResponse<Buffer> resp = handler.result();

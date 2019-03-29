@@ -63,10 +63,10 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
           </div>
         </ion-row>
       </ion-grid>
-    <ion-fab center  bottom>
+<!--    <ion-fab center  bottom>
       <button *ngIf="downorup == 2" ion-fab  color="light" (click)="backtoTop();"><ion-icon name="arrow-up" color="danger" isActive="true"></ion-icon></button>
       <button *ngIf="downorup == 1" ion-fab  color="light" (click)="backtoTop();"><ion-icon name="arrow-down" color="danger" isActive="true"></ion-icon></button>
-    </ion-fab>
+    </ion-fab>-->
   </ion-content>`
 
 })

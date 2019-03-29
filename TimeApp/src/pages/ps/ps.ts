@@ -83,8 +83,8 @@ export class PsPage {
   init() {
     this.psService.getUser().then(data=>{
       if(data && data.user){
-        this.uo = data;
-        this.olduo=data;
+        Object.assign(this.uo,data);
+        this.olduo.user = JSON.parse(JSON.stringify(data));
         this.bothday = this.uo.user.bothday.replace(new RegExp('/','g'),'-');
         if(this.uo.user.sex=='0'){
           this.sex = '男';
