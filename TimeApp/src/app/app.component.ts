@@ -33,6 +33,7 @@ export class MyApp {
       this.registerBackButtonAction();
       this.restfulClient.init();
       // set to landscape
+      if (this.util.isMobile())
       this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
 
       //跳转页面（过渡页面）
