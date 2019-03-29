@@ -13,20 +13,33 @@ import {BrService} from "./br.service";
 @Component({
   selector: 'page-br',
   template: `
-    <ion-header>
-
-      <ion-navbar>
+    <ion-header no-border>
+      <ion-toolbar>
+        <ion-buttons left>
+          <button ion-button icon-only (click)="goBack()" color="danger">
+            <img class="img-header-left" src="./assets/imgs/fh2.png">
+          </button>
+        </ion-buttons>
         <ion-title>备份恢复</ion-title>
-      </ion-navbar>
+      </ion-toolbar>
     </ion-header>
 
     <ion-content padding>
-      <ion-buttons>
-        <button (click)="backup()">备份</button>
-        <button>恢复</button>
-        
-      </ion-buttons>
+      <ion-grid>
+        <ion-row>
+          <ion-list no-lines>
+            
+            <ion-item class="plan-list-item" (click)="backup()">
+              <ion-label>备份</ion-label>
+            </ion-item>
 
+            <ion-item class="plan-list-item" >
+              <ion-label>恢复</ion-label>
+            </ion-item>
+
+          </ion-list>
+        </ion-row>
+      </ion-grid>
     </ion-content>
   `,
 })
@@ -37,6 +50,10 @@ export class BrPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad BrPage');
+  }
+
+  goBack() {
+    this.navCtrl.pop();
   }
 
   backup(){

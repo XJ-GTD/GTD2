@@ -2,7 +2,6 @@ import {Injectable} from "@angular/core";
 import {PersonRestful, SignData} from "../../service/restful/personsev";
 import {InData, SmsRestful} from "../../service/restful/smssev";
 import {BsModel} from "../../service/restful/out/bs.model";
-import {UtilService} from "../../service/util-service/util.service";
 import {LpService, PageLpData} from "../lp/lp.service";
 
 @Injectable()
@@ -10,8 +9,7 @@ export class RService {
 
   constructor(private personRestful: PersonRestful,
               private smsRestful: SmsRestful,
-              private lpService: LpService,
-              private util: UtilService,) {
+              private lpService: LpService,) {
   }
 
   //注册
