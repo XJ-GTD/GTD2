@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import {
   ActionSheetController, Events, IonicPage, ModalController, NavController, NavParams,
-  Scroll, PickerController, Picker,
 } from 'ionic-angular';
 import {ScdData} from "../tdl/tdl.service";
 import * as moment from "moment";
@@ -43,28 +42,21 @@ import {BsModel} from "../../service/restful/out/bs.model";
     <ion-grid>
       <ion-row >
         <div class = "input-set">
-          <ion-input type="text" [(ngModel)]="scd.sn" [disabled]="disControl()"  placeholder="我想..."></ion-input>
+          <ion-input type="text" [(ngModel)]="scd.sn"   placeholder="我想..."></ion-input>
         </div>
       </ion-row>
       <ion-row >
         <div >
-            <button [disabled]="disControl()" (click)="toPlanChoose()" ion-button  round class ="btn-jh">添加计划</button>
+            <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">添加计划</button>
         </div>
       </ion-row>
       <ion-row >
-        <!--<div class ="date-set">
-          <ion-label>{{scd.sd | formatedate : "CYYYY/MM/DD"}}</ion-label>
-        </div>&nbsp;&nbsp;&nbsp;&nbsp;
-        <div class ="date-set">
-          <ion-label>{{scd.sd | formatedate : "CWEEK" }}</ion-label>
-        </div>&nbsp;&nbsp;
-        <div><ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label></div>-->
         <div class="date-set">
           <ion-item>
-          <ion-datetime [disabled]="disControl()" displayFormat="YYYY年MM月DD日 DDDD"
-                        pickerFormat = "YYYY MM DD"
+          <ion-datetime  displayFormat="YYYY年MM月DD日 DDDD"
+                        pickerFormat = "YYYY MM DD" color="light"
                         [(ngModel)]="scd.sd" dayNames="周日,周一,周二,周三,周四,周五,周六"
-                        min="1999-01-01" max="2039-12-31" 
+                        min="1999-01-01" max="2039-12-31"  (ionCancel)="getDtPickerSel($event)"
                         ></ion-datetime>
           </ion-item> 
         </div>
@@ -74,13 +66,13 @@ import {BsModel} from "../../service/restful/out/bs.model";
       </ion-row>
       <ion-row >
         <div class = "tog-set"><ion-item>
-                <ion-toggle [disabled]="disControl()" [(ngModel)]="alld"  [class.allday]="b"></ion-toggle>
+                <ion-toggle  [(ngModel)]="alld"  [class.allday]="b"></ion-toggle>
             </ion-item>
         </div>
           <div class = "tm-set" [hidden]="alld">
             <ion-item>
-                <ion-datetime [disabled]="disControl()" displayFormat="HH:mm" [(ngModel)]="scd.st"
-                              pickerFormat="HH mm"></ion-datetime>
+                <ion-datetime  displayFormat="HH:mm" [(ngModel)]="scd.st"
+                              pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)"></ion-datetime>
               </ion-item>
           </div>
         <div class = "arrow2" [hidden]="alld">
@@ -89,19 +81,19 @@ import {BsModel} from "../../service/restful/out/bs.model";
       </ion-row>
       <ion-row >
         <div class ="reptlbl repttop"><ion-label>重复</ion-label></div>
-        <div class ="repttop1"><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
+        <div class ="repttop1"><button  ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.close == 1?'sel-btn-seled':'sel-btn-unsel'"  
                      (click)="clickrept(0)">关</button></div>
-        <div class ="repttop1"><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
+        <div class ="repttop1"><button  ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.d == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept(1)">天</button></div>
-        <div class ="repttop1"><button [disabled]="disControl()" ion-button  round  clear class ="sel-btn-set"
+        <div class ="repttop1"><button  ion-button  round  clear class ="sel-btn-set"
                      [ngClass]="rept.w == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept(2)">周</button></div>
-        <div class ="repttop1"><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
+        <div class ="repttop1"><button  ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.m == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept(3)">月</button></div>
-        <div class ="repttop1"><button [disabled]="disControl()" ion-button  round clear class ="sel-btn-set"
+        <div class ="repttop1"><button  ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.y == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept(4)">年</button></div>
       </ion-row>
@@ -158,7 +150,7 @@ import {BsModel} from "../../service/restful/out/bs.model";
               </div>
               <div>
                 <ion-buttons>
-                  <button [hidden]="disControl()" ion-button icon-only (click)="goShare()" color="light">发送
+                  <button  ion-button icon-only (click)="goShare()" color="light">发送
                     
                   </button>
                 </ion-buttons>
@@ -199,12 +191,12 @@ export class TdcPage {
               private tdcServ :TdcService,private util:UtilService,
               private tddjServ :TddjService,private  tddiServ : TddiService,
               public actionSheetCtrl: ActionSheetController,
-              public modalCtrl: ModalController,public pickerCtl:PickerController
+              public modalCtrl: ModalController,
               ) {
 
   }
 
-  //画面状态：0：新建 ，1：本人修改 ，2：受邀人修改
+  //画面状态：0：新建 ，1：本人修改
   pagestate : string ="0";
   //画面数据
   scd :ScdData = new ScdData();
@@ -273,19 +265,12 @@ export class TdcPage {
 
         this.clickwake(parseInt(this.scd.tx));
 
-        //受邀人修改的场合初始化
-        if (bs.data.gs == "0"){
-          this.pagestate = "2";
-        }
 
         //本人修改的场合初始化
         if (bs.data.gs == "1"){
           this.pagestate = "1";
         }
       })
-
-
-
       return;
     }
 
@@ -476,15 +461,6 @@ export class TdcPage {
         }
       })
     }
-    //他人创建
-    if (this.pagestate =="2"){
-      //归属 他人创建
-      this.scd.gs = '0';
-      this.tddiServ.updateDetail(this.scd).then(data=>{
-        this.util.toast("保存成功",2000);
-
-      })
-    }
 
 
   }
@@ -503,14 +479,6 @@ export class TdcPage {
       this.navCtrl.push(DataConfig.PAGE._FS_PAGE,{addType:'rc',tpara:this.scd.si});
     })
 
-  }
-
-  disControl():boolean{
-    if (this.pagestate == "0" || this.pagestate =="1"){
-      return false;
-    }else{
-      return true;
-    }
   }
 
   presentActionSheet() {
@@ -570,6 +538,23 @@ export class TdcPage {
     }
   }
 
+  getDtPickerSel(evt){
+
+    let el = document.getElementsByClassName("picker-opt-selected")
+
+    if (el && el.length==3){
+      this.scd.sd = el[0].textContent + "-" +el[1].textContent +"-" +el[2].textContent;
+    }
+  }
+
+  getHmPickerSel(evt){
+
+    let el = document.getElementsByClassName("picker-opt-selected")
+
+    if (el && el.length==2){
+      this.scd.st = el[0].textContent + ":" +el[1].textContent;
+    }
+  }
   /*async openPicker(){
     let picker = await this.pickerCtl.create({
       columns: this.cols,
