@@ -80,7 +80,7 @@ export class DTbl implements ITbl {
 
   inT(): string {
     let sq = 'insert into gtd_d ' +
-      '( pi ,si ,ai ,wtt) values("' + this.pi + '","' + this.si + ' ","' + this.ai + '",' + moment().unix() + ');';
+      '( pi ,si ,ai ,wtt) values("' + this.pi + '","' + this.si + '","' + this.ai + '",' + moment().unix() + ');';
 
     return sq;
   }

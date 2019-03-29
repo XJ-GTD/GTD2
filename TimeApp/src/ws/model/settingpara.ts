@@ -11,10 +11,11 @@ export class SettingPara {
   //设置VALUE
   v:boolean;
 
-  fs:[{
-    id:string,
-    n:string,
-    m:string,
-    p:string
-  }]
+  //联系从processRS中获取
+  // fs:[{
+  //   id:string,
+  //   n:string,
+  //   m:string,
+  //   p:string
+  // }]
 }

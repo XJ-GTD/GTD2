@@ -30,7 +30,7 @@ page-lp {
     font-size: 2.4rem;
     font-weight: bold;
     letter-spacing: 1px;
-    padding-top: 20vmin;
+    padding-top: 85px;
   }
 
   ion-input{
@@ -39,17 +39,18 @@ page-lp {
   }
 
   .login-tel{
-    margin-top: 10vmin;
+    margin-top: 30px;
   }
 
   .login-pwd{
-    margin-bottom: 5vmin;
+    margin-top: 10px;
+    margin-bottom: 20px;
   }
 
   .login-div{
-    margin-top: 3vmin;
+    margin-top: 12px;
     font-size: 1.5rem;
-    width: 50vmin;
+    width: 140px;
     font-weight: 900;
   }
 
@@ -59,20 +60,20 @@ page-lp {
   }
 
   .img-content-enter{
-    width: 4vmin;
-    height: 4vmin;
+    width: 17px;
+    height: 15px;
   }
 
   .show {
-    width: 12vmin;
-    height: 12vmin;
+    width: 45px;
+    height: 45px;
     background-color:#429A81;
     opacity: 0.4;
   }
 
   .show-true{
-    width: 12vmin;
-    height: 12vmin;
+    width: 45px;
+    height: 45px;
     background-color:#429A81;
   }
 
@@ -88,7 +89,7 @@ page-lp {
   }
 
   .scroll-content{
-    margin-left: 6vmin;
+    margin-left: 25px;
     overflow-x: hidden;
     overflow-y: hidden;
   }

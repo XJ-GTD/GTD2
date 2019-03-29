@@ -66,10 +66,10 @@ export class SsPage {
 
   constructor(private navCtrl: NavController,
               public ssService:SsService,) {
-    this.h = UserConfig.settins.get("H");
-    this.t = UserConfig.settins.get("T");
-    this.b = UserConfig.settins.get("B");
-    this.z = UserConfig.settins.get("Z");
+    this.h = UserConfig.settins.get(DataConfig.SYS_H);
+    this.t = UserConfig.settins.get(DataConfig.SYS_T);
+    this.b = UserConfig.settins.get(DataConfig.SYS_B);
+    this.z = UserConfig.settins.get(DataConfig.SYS_Z);
 
     /*console.log(this.h.value+"1");
     console.log(this.t.value+"2");
@@ -98,7 +98,7 @@ export class SsPage {
     set.yt = setting.typeB; //偏好设置类型
     set.yn = setting.name;//偏好设置名称
     set.yk = setting.type ;//偏好设置key
-    set.yv = setting.value == true ? "1":"0";//偏好设置value
+    set.yv = setting.value ? "1":"0";//偏好设置value
 
     this.ssService.save(set);
   }

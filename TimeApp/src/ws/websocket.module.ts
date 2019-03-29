@@ -13,6 +13,8 @@ import {OptionProcess} from "./process/option.process";
 import {ContextProcess} from "./process/context.process";
 import {ReceiveProcess} from "./process/receive.process";
 import {SettingProcess} from "./process/setting.process";
+import {SsService} from "../pages/ss/ss.service";
+import {FdService} from "../pages/fd/fd.service";
 
 
 /**
@@ -28,7 +30,8 @@ import {SettingProcess} from "./process/setting.process";
     SpeechProcess, ThirdProcess,
     DefaultProcess, FindProcess,
     OptionProcess, ContextProcess,
-    ReceiveProcess,SettingProcess
+    ReceiveProcess,SettingProcess,
+    SsService,FdService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
