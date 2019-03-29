@@ -19,7 +19,7 @@ import {TdcService} from "../tdc/tdc.service";
 
 @IonicPage()
 @Component({
-  selector: 'page-tdc',
+  selector: 'page-tddi',
   providers: [],
   template:`<ion-header no-border class="header-set">
     <ion-toolbar>
@@ -169,7 +169,7 @@ import {TdcService} from "../tdc/tdc.service";
   `
 
 })
-export class TdcPage {
+export class TddiPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private tdcServ :TdcService,private util:UtilService,private  tddiServ : TddiService,
