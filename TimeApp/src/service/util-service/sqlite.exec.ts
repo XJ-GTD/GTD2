@@ -148,6 +148,7 @@ export class SqliteExec {
       for (var j = 0, len = sqlist.length; j < len; j++) {
         sql = sql + sqlist[j];
       }
+      console.log("start bat insert*****************************")
       return this.sqlitePorter.importSqlToDb(this.sqlliteConfig.database, sql)
 
     } else {

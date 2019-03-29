@@ -4,7 +4,7 @@ import {UserConfig} from "../../service/config/user.config";
 import {BsModel} from "../../service/restful/out/bs.model";
 import * as moment from "moment";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
-import {fsData, ScdData} from "../../service/pagecom/pgbusi.service";
+import {FsData, ScdData} from "../../service/pagecom/pgbusi.service";
 
 @Injectable()
 export class TdlService {
@@ -45,7 +45,7 @@ export class TdlService {
             }else if(sc.sd == day){
               let dt = new DTbl();
               dt.si = sc.si;
-              let fsL = await this.sqlExce.getList<fsData>(dt);
+              let fsL = await this.sqlExce.getList<FsData>(dt);
               sc.fss = fsL;
               Object.assign(sc.fs,rclL.rows.item(j));
               Object.assign(sc.p,rclL.rows.item(j));
@@ -98,7 +98,7 @@ export class TdlService {
             }else if(sc.sd == day){
               let dt = new DTbl();
               dt.si = sc.si;
-              let fsL = await this.sqlExce.getList<fsData>(dt);
+              let fsL = await this.sqlExce.getList<FsData>(dt);
               sc.fss = fsL;
 
               Object.assign(sc.fs,rcnL.rows.item(j));
