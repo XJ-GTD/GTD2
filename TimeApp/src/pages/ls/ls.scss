@@ -30,7 +30,7 @@ page-ls {
     font-size: 2.4rem;
     font-weight: bold;
     letter-spacing: 1px;
-    padding-top: 20vmin;
+    padding-top: 85px;
   }
 
   ion-input{
@@ -39,18 +39,28 @@ page-ls {
   }
 
   .login-tel{
-    margin-top: 10vmin;
+    margin-top: 30px;
   }
 
   .login-code{
-    margin-bottom: 5vmin;
+    margin-top: 10px;
+    margin-bottom: 20px;
   }
 
   .login-div{
-    margin-top: 3vmin;
+    margin-top: 12px;
     font-size: 1.5rem;
-    width: 50vmin;
+    width: 140px;
     font-weight: 900;
+  }
+
+  .login-send{
+    margin-right: 105px;
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: #429A81;
+    border: 1px solid #429A81;
+    background-color: white;
   }
 
   .login-enter{
@@ -59,29 +69,20 @@ page-ls {
   }
 
   .img-content-enter{
-    width: 4vmin;
-    height: 4vmin;
-  }
-
-  .login-send{
-    margin-right: 25vmin;
-    margin-top: -5vmin;
-    font-size: 1.2rem;
-    color: #429A81;
-    border: 1px solid #429A81;
-    background-color: white;
+    width: 17px;
+    height: 15px;
   }
 
   .show {
-    width: 12vmin;
-    height: 12vmin;
+    width: 45px;
+    height: 45px;
     background-color:#429A81;
     opacity: 0.4;
   }
 
   .show-true{
-    width: 12vmin;
-    height: 12vmin;
+    width: 45px;
+    height: 45px;
     background-color:#429A81;
   }
 
@@ -97,7 +98,7 @@ page-ls {
   }
 
   .scroll-content{
-    margin-left: 6vmin;
+    margin-left: 25px;
     overflow-x: hidden;
     overflow-y: hidden;
   }

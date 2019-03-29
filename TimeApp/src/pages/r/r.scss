@@ -30,7 +30,7 @@ page-r {
     font-size: 2.4rem;
     font-weight: bold;
     letter-spacing: 1px;
-    padding-top: 20vmin;
+    padding-top: 85px;
   }
 
   ion-input{
@@ -39,27 +39,22 @@ page-r {
   }
 
   .register-name{
-    margin-top: 10vmin;
+    margin-top: 30px;
   }
 
   .register-pwd{
-    margin-bottom: 5vmin;
+    margin-bottom: 20px;
   }
 
   .register-div{
-    margin-top: 3vmin;
+    margin-top: 12px;
     font-size: 1.5rem;
-    width: 50vmin;
+    width: 150px;
     font-weight: 900;
   }
 
-  .img-content-enter{
-    width: 4vmin;
-    height: 4vmin;
-  }
-
   .register-send{
-    margin-right: 25vmin;
+    margin-right: 105px;
     margin-top: 0;
     font-size: 1.2rem;
     color: #429A81;
@@ -67,16 +62,21 @@ page-r {
     background-color: white;
   }
 
+  .img-content-enter{
+    width: 17px;
+    height: 15px;
+  }
+
   .show {
-    width: 12vmin;
-    height: 12vmin;
+    width: 45px;
+    height: 45px;
     background-color:#429A81;
     opacity: 0.4;
   }
 
   .show-true{
-    width: 12vmin;
-    height: 12vmin;
+    width: 45px;
+    height: 45px;
     background-color:#429A81;
   }
 
@@ -92,7 +92,7 @@ page-r {
   }
 
   .scroll-content{
-    margin-left: 6vmin;
+    margin-left: 25px;
     overflow-x: hidden;
     overflow-y: hidden;
   }
