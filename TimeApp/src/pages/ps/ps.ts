@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams, Navbar} from 'ionic-angular';
+import {IonicPage, LoadingController, NavController, NavParams, Navbar, ActionSheetController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {PageUData, PsService} from "./ps.service";
 import {UtilService} from "../../service/util-service/util.service";
@@ -16,66 +16,56 @@ import {UtilService} from "../../service/util-service/util.service";
   selector: 'page-ps',
   providers: [],
   template:`<ion-header> 
-    <ion-navbar> 
-      <ion-title></ion-title> 
-      <ion-buttons right> 
-        <button ion-button ion-only *ngIf="state == false" (click)="edit()" style="padding-right: 10px;"> 
-          编辑 
-        </button> 
-        <button ion-button ion-only *ngIf="state == true" (click)="confirm(uo)" style="padding-right: 10px;"> 
-          确定 
-        </button> 
-      </ion-buttons> 
-    </ion-navbar> 
+    <ion-toolbar>
+      <ion-buttons left>
+        <button ion-button icon-only (click)="goBack()" color="danger">
+          <ion-icon name="arrow-back"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar> 
   </ion-header> 
   <ion-content padding class="page-backgroud-color"> 
-    <ion-item class="no-border"> 
-      <ion-label>昵称</ion-label> 
-      <ion-input type="text" *ngIf="this.state == true" [(ngModel)]="uo.user.name"></ion-input> 
-      <ion-input type="text" *ngIf="this.state == false" disabled="true" [(ngModel)]="uo.user.name"></ion-input> 
+    <ion-item class="no-border">
+      <ion-input type="text" style="font-size:36px" [(ngModel)]="uo.user.name" (ionBlur)="save()"></ion-input>
       <ion-avatar item-end> 
         <img src="./assets/imgs/headImg.jpg" style="width: 60px;height: 60px"> 
       </ion-avatar> 
-    </ion-item> 
-    <button ion-item margin-top *ngIf="this.state == false" class="rowCss"> 
-      <ion-label item-start>性别</ion-label> 
-      <ion-label item-end text-end *ngIf="uo.user.sex == 0">无</ion-label> 
-      <ion-label item-end text-end *ngIf="uo.user.sex == 1">男</ion-label> 
-      <ion-label item-end text-end *ngIf="uo.user.sex == 2">女</ion-label> 
+    </ion-item>
+    <button ion-item margin-top  class="rowCss" (click)="selectSex()"> 
+      <ion-label>性别</ion-label>
+      <ion-label  item-end text-end >{{sex}}</ion-label>
+      <!--<ion-input type="text" [(ngModel)]="sex"></ion-input>-->
+      <!--<ion-select  item-end [(ngModel)]="uo.user.sex"> style="text-align: right;"-->
+        <!--<ion-option value="0">无</ion-option> -->
+        <!--<ion-option value="1">男</ion-option> -->
+        <!--<ion-option value="2">女</ion-option> -->
+      <!--</ion-select> -->
     </button> 
-    <ion-item margin-top *ngIf="this.state == true" class="rowCss"> 
-      <ion-label>性别</ion-label> 
-      <ion-select  item-end [(ngModel)]="uo.user.sex"> 
-        <ion-option value="0">无</ion-option> 
-        <ion-option value="1">男</ion-option> 
-        <ion-option value="2">女</ion-option> 
-      </ion-select> 
-    </ion-item> 
-    <button ion-item class="rowCss no-border"> 
-      <ion-label>生日</ion-label> 
-      <ion-label item-end text-end *ngIf="this.state == false">{{uo.user.bothday}}</ion-label> 
-      <ion-datetime displayFormat="YYYY-MM-DD" *ngIf="this.state == true" item-end text-end float-end [(ngModel)]="uo.user.bothday"></ion-datetime> 
-    </button> 
-    <button ion-item margin-top *ngIf="this.state == false" class="rowCss no-border"> 
-      <ion-label>手机号</ion-label> 
-      <ion-label item-end text-end >{{uo.user.No}}</ion-label> 
-    </button> 
-    <button ion-item margin-top  *ngIf="this.state == true" class="rowCss no-border noborder"> 
-      <ion-label>手机号</ion-label> 
-      <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.No"></ion-input> 
+    <button ion-item class="rowCss"> 
+      <ion-label>生日</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" item-end text-end [(ngModel)]="bothday"
+                    min="1949-01-01" max="2039-12-31"  (ionCancel)="getDtPickerSel($event)"></ion-datetime> 
+    </button>
+    <button ion-item class="rowCss">
+      <ion-label>身份证</ion-label>
+      <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.No" (ionBlur)="save()"></ion-input>
+    </button>
+    <button ion-item class="rowCss"> 
+      <ion-label>联系方式</ion-label> 
+      <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.contact" (ionBlur)="save()"></ion-input> 
     </button>
   </ion-content>`,
 })
 export class PsPage {
 
-  @ViewChild(Navbar) navBar: Navbar;
-
-  //编辑控制
-  state:any = false;
+  sex:string='';
+  bothday:string='';
   uo:PageUData = new PageUData();
+  olduo:PageUData = new PageUData();
 
   constructor(public navCtrl: NavController,
               private psService:PsService,
+              public actionSheetController: ActionSheetController,
               public navParams: NavParams,
               private util: UtilService) {
   }
@@ -83,8 +73,6 @@ export class PsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad UcPage');
     this.init();
-    this.navBar.backButtonClick = this.backButtonClick;
-    this.navBar.setBackButtonText("");
   }
 
   backButtonClick = (e: UIEvent) => {
@@ -96,52 +84,85 @@ export class PsPage {
     this.psService.getUser().then(data=>{
       if(data && data.user){
         this.uo = data;
+        this.olduo=data;
+        this.bothday = this.uo.user.bothday.replace(new RegExp('/','g'),'-');
+        if(this.uo.user.sex=='0'){
+          this.sex = '男';
+        }else if(this.uo.user.sex=='1'){
+          this.sex = '女';
+        }
+
       }
     })
-    // this.uo = DataConfig.uInfo;
-    // console.log("uc 获取用户信息："+JSON.stringify(this.uo))
   }
 
-  updateUserInfo() {
-
+  goBack() {
+    console.log('=======跳转:' + DataConfig.PAGE._H_PAGE);
+    // this.navCtrl.push(DataConfig.PAGE._M_PAGE);
+    //this.navCtrl.setRoot(DataConfig.PAGE._H_PAGE);
+    this.navCtrl.pop();
   }
 
-  relation() {
-    console.log("UcPage跳转PaPage");
-    this.navCtrl.push("PaPage");
-  }
-
-  edit(){
-    this.state = true;
-  }
 
   save(){
-    this.psService.saveUser(this.uo).then(data=>{
-      if(data.code ==0){
-        this.util.toast('保存成功！',2000);
-      }
-    })
+    let isUpd = false;
+    if(this.olduo.user.sex != this.uo.user.sex){
+      isUpd = true;
+    }
+    if(this.olduo.user.bothday != this.uo.user.bothday){
+      isUpd = true;
+    }
+    if(this.olduo.user.contact != this.uo.user.contact){
+      isUpd = true;
+    }
+    if(this.olduo.user.name != this.uo.user.name){
+      isUpd = true;
+    }
+    if(this.olduo.user.No != this.uo.user.No){
+      isUpd = true;
+    }
+    if(isUpd){
+      this.psService.saveUser(this.uo).then(data=>{
+        if(data.code ==0){
+          this.util.toast('保存成功！',2000);
+        }else{
+          this.util.toast(data.message,2000);
+        }
+      })
+    }
+
   }
+  getDtPickerSel(evt){
 
-  confirm(){
-    // this.userService.upu(uo.uI,uo.uN,uo.hIU,uo.biy,uo.rn,uo.iC,uo.uS, uo.uCt).then(data=>{
-    //   if(data.code == 0){
-    //     this.state = false;
-    //     console.log("修改信息成功");
-    //     this.userService.getUo().then(data=>{
-    //       if(data.code == 0){
-    //
-    //       }
-    //     })
-    //   }else{
-    //     this.state = true;
-    //     console.log("修改信息失败")
-    //   }
-    // }).catch(reason => {
-    //   this.state = true;
-    //   console.log("修改信息失败")
-    // })
+    let el = document.getElementsByClassName("picker-opt-selected")
 
+    if (el && el.length==3){
+      this.bothday = el[0].textContent + "-" +el[1].textContent +"-" +el[2].textContent;
+      this.uo.user.bothday = this.bothday.replace(new RegExp('-','g'),'/');
+      this.save();
+    }
+
+  }
+  async selectSex() {
+    const actionSheet = await this.actionSheetController.create({
+      buttons: [ {
+        text: '男',
+        handler: () => {
+          console.log('男');
+          this.sex = '男';
+          this.uo.user.sex='0';
+          this.save();
+        }
+      }, {
+        text: '女',
+        handler: () => {
+          this.sex = '女';
+          this.uo.user.sex='0';
+          this.save();
+        }
+      }]
+    });
+    await actionSheet.present();
   }
 
 }

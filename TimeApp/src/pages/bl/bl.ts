@@ -73,7 +73,8 @@ export class BlPage {
   }
   goBack(){
     //this.navCtrl.push(DataConfig.PAGE._M_PAGE);
-    this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
+    // this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
+    this.navCtrl.pop();
   }
 
   toAdd(){
