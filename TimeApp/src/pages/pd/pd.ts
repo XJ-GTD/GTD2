@@ -111,7 +111,9 @@ export class PdPage {
           text: '分享',
           role: 'share',
           handler: () => {
-            console.log('share clicked');
+            this.pdService.sharePlan(this.plan).then(data=>{
+              alert("分享地址是："+JSON.stringify(data.data.psurl))
+            })
           }
         },
         {
