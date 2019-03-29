@@ -1,84 +1,4 @@
 page-ls {
-  //background-color: #000;
-
-  @font-face {
-    font-family: 'PingFang-Regular';
-    src: url('../../assets/fonts/PingFang Regular.ttf');
-  }
-
-  ion-content{
-    font-family: PingFang-Regular;
-  }
-
-  h1{
-    font-size: 2.4rem;
-    margin-block-start: 0em;
-    margin-block-end: 0em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    font-weight: bold;
-    margin-top:85px;
-    word-spacing: 1px;
-  }
-
-  ion-input{
-    font-size: 1.5rem;
-    width:85%;
-  }
-
-  .login-tel{
-    margin-top: 30px;
-  }
-
-  .login-code{
-    font-size: 1.5rem;
-    margin-top: 10px;
-    margin-bottom: 20px;
-  }
-
-  .login-enter{
-    margin-right: 30px;
-    margin-top: 35px;
-  }
-
-  .login-div{
-    margin-top: 12px;
-    font-size: 1.5rem;
-    word-spacing: 1px;
-    width: 140px;
-    //font-weight:bold;
-  }
-
-  .img-content-enter{
-    width: 17px;
-    height: 15px;
-  }
-
-  .show {
-    width: 45px;
-    height: 45px;
-    background-color:#429A81;
-    opacity: 0.4;
-  }
-
-  .show-true{
-    width: 45px;
-    height: 45px;
-    background-color:#429A81;
-  }
-
-  .login-send{
-    margin-right: 145px;
-    margin-top: 0;
-    font-size: 1.2rem;
-    color: #429A81;
-    border: 1px solid #429A81;
-    background-color: white;
-  }
-
-  .grid-login-basic {
-    width: 100%;
-  }
 
   .w-auto {
     flex: 1;
@@ -86,10 +6,6 @@ page-ls {
 
   .grid-login-basic {
     width: 100%;
-  }
-
-  .w-auto {
-    flex: 1;
   }
 
   .no-padding {
@@ -106,6 +22,69 @@ page-ls {
     margin-right: 0;
   }
 
+  h1{
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-size: 2.4rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding-top: 20vmin;
+  }
+
+  ion-input{
+    font-size: 1.5rem;
+    width:85%;
+  }
+
+  .login-tel{
+    margin-top: 10vmin;
+  }
+
+  .login-code{
+    margin-bottom: 5vmin;
+  }
+
+  .login-div{
+    margin-top: 3vmin;
+    font-size: 1.5rem;
+    width: 50vmin;
+    font-weight: 900;
+  }
+
+  .login-enter{
+    margin-right: 30px;
+    margin-top: 35px;
+  }
+
+  .img-content-enter{
+    width: 4vmin;
+    height: 4vmin;
+  }
+
+  .login-send{
+    margin-right: 25vmin;
+    margin-top: -5vmin;
+    font-size: 1.2rem;
+    color: #429A81;
+    border: 1px solid #429A81;
+    background-color: white;
+  }
+
+  .show {
+    width: 12vmin;
+    height: 12vmin;
+    background-color:#429A81;
+    opacity: 0.4;
+  }
+
+  .show-true{
+    width: 12vmin;
+    height: 12vmin;
+    background-color:#429A81;
+  }
+
   .text-anchor {
     color: #429A81;
     text-decoration: none;
@@ -118,10 +97,7 @@ page-ls {
   }
 
   .scroll-content{
-    margin-left: 25px;
-  }
-
-  .scroll-content{
+    margin-left: 6vmin;
     overflow-x: hidden;
     overflow-y: hidden;
   }
