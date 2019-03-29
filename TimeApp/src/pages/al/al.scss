@@ -1,9 +1,8 @@
 page-al {
-  background: black;
-  * {
-    box-sizing: border-box;
-  }
-
+  background-image:url('../assets/imgs/alback.jpg');
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  -moz-background-size:100% 100%;
 
   .cf:before,
   .cf:after {
@@ -50,7 +49,9 @@ page-al {
     color: #bbb;
   }
   .text{
-    text-align:center;
+    text-align: center;
     color: #FFFFFF;
+    position: relative;
+    margin-top: calc(100% + 50%);
   }
 }
