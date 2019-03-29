@@ -86,8 +86,8 @@ page-tdc {
     font-size: 16px;
     margin-top: 6px;
     margin-left: 8px;
-    width: 205px;
-
+    width: 240px;
+    letter-spacing: 1px;
   }
   .arrow1{
     font-size: 16px;
@@ -113,7 +113,7 @@ page-tdc {
 
   .sel-btn-unsel{
     background-color:#96162d;
-    color:#FFFFFF;
+    color:rgba(255,255,255,0.5);
     font-size: 11px;
   }
 
@@ -197,6 +197,7 @@ page-tdc {
     margin-top: 0px;
     margin-left: -17px;
     height:20px;
+    letter-spacing: 1px;
   }
 
   .tog-set{
@@ -229,15 +230,6 @@ page-tdc {
   }
   .footer-md .toolbar-md:first-child .toolbar-background-md{
     border-width:0px;
-  }
-
-  .picker-ios .picker-toolbar::before {
-    height: 0px;
-    border: 0px;
-  }
-  .picker-md .picker-toolbar {
-    height: 0px;
-    border: 0px;
   }
 
 
