@@ -51,9 +51,9 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
       <ion-row >
         <div class="date-set">
           <ion-item>
-          <ion-datetime  displayFormat="YYYY年MM月DD日 DDDD"
+          <ion-datetime  displayFormat="YYYY年M月DD日 DDDD"
                         pickerFormat = "YYYY MM DD" color="light"
-                        [(ngModel)]="scd.sd" dayNames="周日,周一,周二,周三,周四,周五,周六"
+                        [(ngModel)]="scd.sd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                         min="1999-01-01" max="2039-12-31"  (ionCancel)="getDtPickerSel($event)"
                         ></ion-datetime>
           </ion-item> 
@@ -253,6 +253,12 @@ export class TdcPage {
         let bs : BsModel<ScdData> = data;
         Object.assign(this.scd,bs.data);
 
+        //全天的场合
+        if (this.scd.et == "99:99") {
+          this.alld = true;
+        } else {
+          this.alld = false;
+        }
 
         this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
         this.scd.st = moment().format("HH:mm");
