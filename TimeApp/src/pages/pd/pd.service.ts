@@ -1,14 +1,12 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {ShaeRestful, ShareData} from "../../service/restful/shaesev";
-import {AgdPro, ContactPerPro} from "../../service/restful/agdsev";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {ETbl} from "../../service/sqlite/tbl/e.tbl";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
-import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
-import {ScdData} from "../../service/pagecom/pgbusi.service";
+import {AgdPro} from "../../service/restful/agdsev";
 
 @Injectable()
 export class PdService {
@@ -28,28 +26,29 @@ export class PdService {
     // 获取计划管理日程（重复日程处理等）
     let sql = 'select * from gtd_c  where ji ="'+ pid +'" order by sd';
 
-    sql = 'select gc.si,gc.sn,gc.bz,sp.sd,sp.st from gtd_c gc ' +
+    sql = 'select gc.si,gc.sn,gc.bz,gc.ji,gc.rt,gc.sr,sp.sd,sp.st,sp.et,sp.ed from gtd_c gc ' +
       'left join gtd_sp sp on sp.si = gc.si ' +
       'where gc.ji = "'+ pid + '" order by sp.sd,sp.st desc';
     let cs = new  Array<CTbl>();
     cs = await this.sqlExce.getExtList<CTbl>(sql);
 
-    let paList:Array<ScdData> = Array<ScdData>();
+    let paList:Array<AgdPro> = Array<AgdPro>();
     if(cs.length>0){
       console.log('---------- PdService getPlan 获取计划日程开始 ----------------');
       //获取计划日程
       for(let jhc of cs){
-        let pa:ScdData = new ScdData();
-        pa.si = jhc.si;//日程ID
-        pa.sn = jhc.sn;//主题
-        pa.sd = jhc.sd;//时间(YYYY/MM/DD HH:mm)
-        pa.st = jhc.st;//开始时间
+        let pa:AgdPro = new AgdPro();
+
+        pa.ai = jhc.si;//日程ID
+        pa.at = jhc.sn;//主题
+        pa.adt = jhc.sd +" "+ jhc.st ;//时间(YYYY/MM/DD HH:mm)
+        pa.st = jhc.st;
         pa.et = jhc.et;//结束日期
         pa.ed = jhc.ed;//结束时间
-        pa.ji = jhc.ji;//计划
-        pa.rt = jhc.rt;//重复
-        pa.sn = jhc.sn;//提醒
-        pa.bz = jhc.bz;//备注
+        pa.ap = jhc.ji;//计划
+        pa.ar = jhc.rt;//重复
+        pa.aa = jhc.sr;//提醒
+        pa.am = jhc.bz;//备注
         paList.push(pa);
       }
       console.log('---------- PlService getPlan 获取计划日程结束 ----------------');
@@ -146,4 +145,5 @@ export class PagePDPro{
 
   js: number = 0; //日程数量
   jtd: string = "0"; //系统计划区别是否下载
+  pt: string = "";//计划名  计划分享使用
 }

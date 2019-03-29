@@ -167,6 +167,7 @@ export class PlService {
         let cs = await this.sqlExce.getExtList<CTbl>(sql);
         jhc.js = cs.length;
 
+        jhc.pt = jhc.jn; // 计划分享使用
         if(jhc.jtd == null || jhc.jtd == ""){
           jhc.jtd = "0";
         }
