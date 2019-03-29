@@ -54,6 +54,7 @@ import {TddiService} from "../pages/tddi/tddi.service";
 import {PgBusiService} from "../service/pagecom/pgbusi.service";
 import {TdcService} from "../pages/tdc/tdc.service";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
+import {ContactsService} from "../service/cordova/contacts.service";
 
 @NgModule({
   declarations: [
@@ -89,6 +90,7 @@ import {ScreenOrientation} from "@ionic-native/screen-orientation";
     Vibration,
     NativeAudio,
     Keyboard,
+    ContactsService,
     ScreenOrientation,
     LocalNotifications,
     SQLite,
