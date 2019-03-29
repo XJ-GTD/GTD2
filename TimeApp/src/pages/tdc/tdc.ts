@@ -266,7 +266,6 @@ export class TdcPage {
         this.scd.st = moment().format("HH:mm");
 
         this.clickrept(this.scd.rt);
-
         this.clickwake(this.scd.tx);
 
 

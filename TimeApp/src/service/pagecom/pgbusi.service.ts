@@ -256,10 +256,7 @@ export class PgBusiService {
     await  this.sqlExce.update(c);
 
     //更新提醒时间
-    let e = new ETbl();
-    Object.assign(e,scd.r);
-    await this.sqlExce.update(e);
-
+    await this.saveOrUpdTx(c);
 
     if (type == "1") {
       if (bs.data.sd != c.sd || bs.data.rt != c.rt){
