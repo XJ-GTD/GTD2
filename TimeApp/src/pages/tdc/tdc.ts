@@ -191,7 +191,7 @@ export class TdcPage {
               private tdcServ :TdcService,private util:UtilService,
               private tddjServ :TddjService,private  tddiServ : TddiService,
               public actionSheetCtrl: ActionSheetController,
-              public modalCtrl: ModalController,
+              public modalCtrl: ModalController,private busi
               ) {
 
   }

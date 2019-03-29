@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {ActionSheetController, AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
-import {PagePDPro, PdService, ScdData} from "./pd.service";
+import {PagePDPro, PdService} from "./pd.service";
+import {ScdData} from "../../service/pagecom/pgbusi.service";
 
 /**
  * Generated class for the 计划展示 page.
@@ -41,16 +42,16 @@ import {PagePDPro, PdService, ScdData} from "./pd.service";
           </ion-card>
           <div padding></div>
         </ion-row>
-        <ion-row *ngFor="let agenda of plan.pa; let i = index" [ngClass]="{'agenda-card-past': today > agenda.adt, 'agenda-card': today <= agenda.adt}" justify-content-center>
+        <ion-row *ngFor="let agenda of plan.pa; let i = index" [ngClass]="{'agenda-card-past': today > agenda.sd, 'agenda-card': today <= agenda.sd}" justify-content-center>
           <ion-grid>
-            <ion-row *ngIf="(i === 0) || (agenda.adt.slice(0,4) !== plan.pa[i - 1]['adt'].slice(0,4))" justify-content-start>
-              <h3 class="plan-year">{{agenda.adt.slice(0,4)}}</h3>
+            <ion-row *ngIf="(i === 0) || (agenda.sd.slice(0,4) !== plan.pa[i - 1]['sd'].slice(0,4))" justify-content-start>
+              <h3 class="plan-year">{{agenda.sd.slice(0,4)}}</h3>
             </ion-row>
             <ion-row justify-content-center align-items-start>
-              <div *ngIf="(i === 0) || (agenda.adt.slice(0,10) !== plan.pa[i - 1]['adt'].slice(0,10))" class="agenda-col-date left-off right-off" justify-content-start>
-                <p class="app-agenda-day">{{agenda.adt.slice(5,10)}}</p>
+              <div *ngIf="(i === 0) || (agenda.sd.slice(0,10) !== plan.pa[i - 1]['sd'].slice(0,10))" class="agenda-col-date left-off right-off" justify-content-start>
+                <p class="app-agenda-day">{{agenda.sd.slice(5,10)}}</p>
               </div>
-              <div *ngIf="(i !== 0) && (agenda.adt.slice(0,10) === plan.pa[i - 1]['adt'].slice(0,10))" class="agenda-col-date left-off right-off" justify-content-start>
+              <div *ngIf="(i !== 0) && (agenda.sd.slice(0,10) === plan.pa[i - 1]['sd'].slice(0,10))" class="agenda-col-date left-off right-off" justify-content-start>
               </div>
               <div class="agenda-col-time right-off left-off" justify-content-between>
                 <div class="time-slot">
@@ -58,7 +59,7 @@ import {PagePDPro, PdService, ScdData} from "./pd.service";
                 </div>
                 <div class="pointer-slot"><span class="plan-color-pointer"><div class="color-dot" [ngStyle]="{'background-color': plan.pn.jc }"></div></span></div>
               </div>
-              <div class="agenda-col-content right-off left-off" [ngClass]="{'agenda-content': ((i + 1) === plan.pa.length)? false : (agenda.adt.slice(0, 10) === plan.pa[i + 1]['adt'].slice(0, 10))}" justify-content-start>
+              <div class="agenda-col-content right-off left-off" [ngClass]="{'agenda-content': ((i + 1) === plan.pa.length)? false : (agenda.sd.slice(0, 10) === plan.pa[i + 1]['sd'].slice(0, 10))}" justify-content-start>
                 <p class="text-left app-agenda-title">{{agenda.sn}}</p>
                 <p class="app-user-text text-left">{{agenda.bz}}</p>
               </div>

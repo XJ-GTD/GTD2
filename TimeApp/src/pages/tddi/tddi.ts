@@ -1,14 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import {
-  ActionSheetController, Events, IonicPage, ModalController, NavController, NavParams,
+  ActionSheetController,  IonicPage, ModalController, NavController, NavParams,
 } from 'ionic-angular';
-import {ScdData} from "../tdl/tdl.service";
 import * as moment from "moment";
 import {TddiService} from "./tddi.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {TdcService} from "../tdc/tdc.service";
+import { ScdData} from "../../service/pagecom/pgbusi.service";
 
 /**
  * Generated class for the 日程详情（受邀） page.
