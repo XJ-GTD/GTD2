@@ -35,6 +35,7 @@ export class MyApp {
       // set to landscape
       if (this.util.isMobile())
       this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+      this.speechService.speakText("好气人啊");
 
       //跳转页面（过渡页面）
       this.nav.setRoot(DataConfig.PAGE._AL_PAGE);
