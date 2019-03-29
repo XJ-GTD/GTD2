@@ -1,11 +1,14 @@
 package com.xiaoji.duan.xfy;
 
+import java.net.URLEncoder;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import io.vertx.amqpbridge.AmqpBridge;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.MultiMap;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.MessageConsumer;
@@ -145,28 +148,32 @@ public class MainVerticle extends AbstractVerticle {
 			        
 		        	param.append("{");
 		        	param.append("\"engine_type\":\"");
-		        	param.append(config().getString("xfyun.openapi.engine_type", "sms8k"));
+		        	param.append(config().getString("xfyun.openapi.engine_type", "sms16k"));
 		        	param.append("\"");
 		        	param.append(",\"aue\":\"");
 		        	param.append(config().getString("xfyun.openapi.aue", "raw"));
-		        	param.append("\",");
-		        	param.append("\"speex_size\":\"");
-		        	param.append(config().getString("xfyun.openapi.speex_size", "60"));
-		        	param.append("\",");
-		        	param.append("\"vad_eos\":\"");
-		        	param.append(config().getString("xfyun.openapi.vad_eos", "1800"));
-		        	param.append("\",");
-		        	param.append("\"scene\":\"");
-		        	param.append(config().getString("xfyun.openapi.scene", "main"));
+//		        	param.append("\",");
+//		        	param.append("\"speex_size\":\"");
+//		        	param.append(config().getString("xfyun.openapi.speex_size", "60"));
+//		        	param.append("\",");
+//		        	param.append("\"auth_id\":\"");
+//		        	param.append(config().getString("xfyun.openapi.authid"));
+//		        	param.append("\",");
+//		        	param.append("\"vad_eos\":\"");
+//		        	param.append(config().getString("xfyun.openapi.vad_eos", "1800"));
+//		        	param.append("\",");
+//		        	param.append("\"scene\":\"");
+//		        	param.append(config().getString("xfyun.openapi.scene", "main"));
 		        	param.append("\"");
 		        	param.append("}");
 		        	
 			        String paramBase64 = new String(Base64.encodeBase64(param.toString().getBytes("UTF-8")));
-			        String checkSum = DigestUtils.md5Hex(config().getString("xfyun.openapi.apikey") + curTime + paramBase64);
+			        String checkSum = DigestUtils.md5Hex(config().getString("xfyun.openapi.iat.apikey", "0d1a450c0cfea7945686b49f2fb0c81c") + curTime + paramBase64);
 			
-			        Buffer body = Buffer.buffer();
-			        
-		        	body = Buffer.buffer(Base64.decodeBase64(content.substring(content.indexOf(",") + 1)));
+			        String codec = content.substring(content.indexOf(",") + 1);
+			        System.out.println("codec " + codec.length());
+			        MultiMap body = MultiMap.caseInsensitiveMultiMap();
+			        body.add("audio", codec);
 			        
 			        iat(consumer, deviceId, userId, context, body, paramBase64, curTime, checkSum, next, 1);
 				} catch (Exception e) {
@@ -195,20 +202,22 @@ public class MainVerticle extends AbstractVerticle {
 
 	}
 	
-	private void iat(String consumer, String deviceId, String userId, JsonObject context, Buffer body, String paramBase64, String curTime, String checkSum, String nextTask, Integer retry) {
+	private void iat(String consumer, String deviceId, String userId, JsonObject context, MultiMap body, String paramBase64, String curTime, String checkSum, String nextTask, Integer retry) {
 		System.out.println("X-Param: " + paramBase64);
 		System.out.println("X-CurTime: " + curTime);
 		System.out.println("X-CheckSum: " + checkSum);
 		System.out.println("X-Appid: " + config().getString("xfyun.openapi.appid"));
-		
+		System.out.println("iat process");
+
 		try {
-			client.headAbs(config().getString("xfyun.openapi.aiui", "http://api.xfyun.cn/v1/service/v1/iat"))
+			client.headAbs(config().getString("xfyun.openapi.iat", "http://api.xfyun.cn/v1/service/v1/iat"))
 			.method(HttpMethod.POST)
+			.putHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8")
 			.putHeader("X-Param", paramBase64)
 			.putHeader("X-CurTime", curTime)
 			.putHeader("X-CheckSum", checkSum)
 			.putHeader("X-Appid", config().getString("xfyun.openapi.appid"))
-			.sendBuffer(body, handler -> {
+			.sendForm(body, handler -> {
 				if (handler.succeeded()) {
 					HttpResponse<Buffer> response = handler.result();
 	
@@ -253,7 +262,8 @@ public class MainVerticle extends AbstractVerticle {
 		System.out.println("X-CurTime: " + curTime);
 		System.out.println("X-CheckSum: " + checkSum);
 		System.out.println("X-Appid: " + config().getString("xfyun.openapi.appid"));
-		
+		System.out.println("nlp process");
+
 		try {
 			client.headAbs(config().getString("xfyun.openapi.aiui", "http://openapi.xfyun.cn/v2/aiui"))
 			.method(HttpMethod.POST)

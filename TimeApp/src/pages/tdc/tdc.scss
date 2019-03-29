@@ -22,7 +22,7 @@ page-tdc {
 
   .allday .toggle-icon::before {
     content: "全天";
-    color: white;
+    color: rgba(255,255,255,0.5);
     font-size: 11px;
     text-align: right;
     transform: scale3d(1, 1, 1);
@@ -241,7 +241,6 @@ page-tdc {
     margin-top: 100%;
 
     ion-list{
-      margin: 0;
       width: 100%
     }
 

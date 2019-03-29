@@ -27,7 +27,7 @@ import {PageY, SsService} from "./ss.service";
       </ion-toolbar>
     </ion-header>
 
-    <ion-content>
+    <ion-content padding>
       <ion-grid>
         <ion-row>
           <ion-list no-lines>

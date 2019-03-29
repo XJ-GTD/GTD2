@@ -81,40 +81,40 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
         <div class ="reptlbl repttop"><ion-label>重复</ion-label></div>
         <div class ="repttop1"><button  ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.close == 1?'sel-btn-seled':'sel-btn-unsel'"  
-                     (click)="clickrept(0)">关</button></div>
+                     (click)="clickrept('0')">关</button></div>
         <div class ="repttop1"><button  ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.d == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickrept(1)">天</button></div>
+                     (click)="clickrept('1')">天</button></div>
         <div class ="repttop1"><button  ion-button  round  clear class ="sel-btn-set"
                      [ngClass]="rept.w == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickrept(2)">周</button></div>
+                     (click)="clickrept('2')">周</button></div>
         <div class ="repttop1"><button  ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.m == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickrept(3)">月</button></div>
+                     (click)="clickrept('3')">月</button></div>
         <div class ="repttop1"><button  ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.y == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickrept(4)">年</button></div>
+                     (click)="clickrept('4')">年</button></div>
       </ion-row>
       <ion-row >
         <div class ="reptlbl txtop"><ion-label>提醒</ion-label></div>
         <div class ="txtop1"><button ion-button  round clear class ="sel-btn-set"
                      [ngClass]="wake.close == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(0)">关</button></div>
+                     (click)="clickwake('0')">关</button></div>
         <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.tenm == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(1)">10分钟</button></div>
+                     (click)="clickwake('1')">10分钟</button></div>
         <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.thirm == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(2)">30分钟</button></div>
+                     (click)="clickwake('2')">30分钟</button></div>
         <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.oh == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(3)">1小时</button></div>
+                     (click)="clickwake('3')">1小时</button></div>
         <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.foh == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(4)">4小时</button></div>
+                     (click)="clickwake('4')">4小时</button></div>
         <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.od == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(5)">1天</button></div>
+                     (click)="clickwake('5')">1天</button></div>
       </ion-row>
       <ion-row >
         <div class = "memo-set">
@@ -199,7 +199,7 @@ export class TdcPage {
   b:boolean = true;
 
   rept = {
-    close:1,
+    close:0,
     d:0,
     w:0,
     m:0,
@@ -207,7 +207,7 @@ export class TdcPage {
   };
 
   wake = {
-    close:1,
+    close:0,
     tenm:0,
     thirm:0,
     oh:0,
@@ -244,6 +244,8 @@ export class TdcPage {
       this.scd.rt = "0";
       this.scd.tx = "0";
       this.pagestate = "0";
+      this.rept.close = 1;
+      this.wake.close = 1;
       return ;
     }
 
@@ -263,9 +265,9 @@ export class TdcPage {
         this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
         this.scd.st = moment().format("HH:mm");
 
-        this.clickrept(parseInt(this.scd.rt));
+        this.clickrept(this.scd.rt);
 
-        this.clickwake(parseInt(this.scd.tx));
+        this.clickwake(this.scd.tx);
 
 
         //本人修改的场合初始化
@@ -283,35 +285,35 @@ export class TdcPage {
     this.scd.rt = type;
 
     switch (type){
-      case 0:
+      case "0":
         this.rept.close = 1;
         this.rept.d = 0;
         this.rept.w = 0;
         this.rept.m = 0;
         this.rept.y = 0;
         break;
-      case 1:
+      case "1":
         this.rept.close = 0;
         this.rept.d = 1;
         this.rept.w = 0;
         this.rept.m = 0;
         this.rept.y = 0;
         break;
-      case 2:
+      case "2":
         this.rept.close = 0;
         this.rept.d = 0;
         this.rept.w = 1;
         this.rept.m = 0;
         this.rept.y = 0;
         break;
-      case 3:
+      case "3":
         this.rept.close = 0;
         this.rept.d = 0;
         this.rept.w = 0;
         this.rept.m = 1;
         this.rept.y = 0;
         break;
-      case 4:
+      case "4":
         this.rept.close = 0;
         this.rept.d = 0;
         this.rept.w = 0;
@@ -334,7 +336,7 @@ export class TdcPage {
     this.scd.tx = type;
 
     switch (type){
-      case 0:
+      case "0":
         this.wake.close = 1;
         this.wake.tenm = 0;
         this.wake.thirm = 0;
@@ -342,7 +344,7 @@ export class TdcPage {
         this.wake.foh = 0;
         this.wake.od=0;
         break;
-      case 1:
+      case "1":
         this.wake.close = 0;
         this.wake.tenm = 1;
         this.wake.thirm = 0;
@@ -350,7 +352,7 @@ export class TdcPage {
         this.wake.foh = 0;
         this.wake.od=0;
         break;
-      case 2:
+      case "2":
         this.wake.close = 0;
         this.wake.tenm = 0;
         this.wake.thirm = 1;
@@ -358,7 +360,7 @@ export class TdcPage {
         this.wake.foh = 0;
         this.wake.od=0;
         break;
-      case 3:
+      case "3":
         this.wake.close = 0;
         this.wake.tenm = 0;
         this.wake.thirm = 0;
@@ -366,7 +368,7 @@ export class TdcPage {
         this.wake.foh = 0;
         this.wake.od=0;
         break;
-      case 4:
+      case "4":
         this.wake.close = 0;
         this.wake.tenm = 0;
         this.wake.thirm = 0;
@@ -374,7 +376,7 @@ export class TdcPage {
         this.wake.foh = 1;
         this.wake.od=0;
         break;
-      case 5:
+      case "5":
         this.wake.close = 0;
         this.wake.tenm = 0;
         this.wake.thirm = 0;
@@ -442,14 +444,15 @@ export class TdcPage {
       this.tdcServ.save(this.scd).then(data=>{
         let ctbl = data.data;
         this.scd.si = ctbl.si;
-        this.pagestate =="1";
+        this.pagestate ="1";
         this.util.toast("保存成功",2000);
         if(typeof(eval(share))=="function")
         {
           share();
         }
-
+        return;
       });
+
     }
     //本人创建
     if (this.pagestate =="1") {
@@ -461,7 +464,9 @@ export class TdcPage {
         {
           share();
         }
+        return ;
       })
+
     }
 
 
