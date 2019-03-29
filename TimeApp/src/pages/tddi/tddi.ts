@@ -36,60 +36,30 @@ import { ScdData} from "../../service/pagecom/pgbusi.service";
     <ion-grid>
       <ion-row >
         <div class = "input-set">
-          <ion-input type="text" [(ngModel)]="scd.sn" [disabled]="true"  placeholder="我想..."></ion-input>
+          <ion-label >{{scd.sn}}</ion-label>
         </div>
       </ion-row>
       <ion-row >
         <div >
-            <button [disabled]="true" (click)="toPlanChoose()" ion-button  round class ="btn-jh">添加计划</button>
+            <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">添加计划</button>
         </div>
       </ion-row>
       <ion-row >
-        <div class="date-set">
-          <ion-item>
-          <ion-datetime [disabled]="true" displayFormat="YYYY年MM月DD日 DDDD"
-                        pickerFormat = "YYYY MM DD" color="light"
-                        [(ngModel)]="scd.sd" dayNames="周日,周一,周二,周三,周四,周五,周六"
-                        min="1999-01-01" max="2039-12-31"  (ionCancel)="getDtPickerSel($event)"
-                        ></ion-datetime>
-          </ion-item> 
-        </div>
-         <div class="arrow1">
-           <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
-         </div>
-      </ion-row>
-      <ion-row >
-        <div class = "tog-set"><ion-item>
-                <ion-toggle  [(ngModel)]="alld"  [class.allday]="b"></ion-toggle>
-            </ion-item>
-        </div>
-          <div class = "tm-set" [hidden]="alld">
+          <div class="dt-set">
             <ion-item>
-                <ion-datetime  displayFormat="HH:mm" [(ngModel)]="scd.st"
-                              pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)"></ion-datetime>
-              </ion-item>
+                <ion-label >{{scd.sd | formatedate : "CYYYY/M/DD"}}</ion-label>
+            </ion-item>
           </div>
-        <div class = "arrow2" [hidden]="alld">
-          <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
-        </div>
+          <div class="week-set">
+            <ion-label >{{scd.sd | formatedate : "CWEEK" }}</ion-label>
+          </div>
+          <div class="tm-set">
+            <ion-label >{{alldshow}}</ion-label>
+          </div>
       </ion-row>
       <ion-row >
         <div class ="reptlbl repttop"><ion-label>重复</ion-label></div>
-        <div class ="repttop1"><button [disabled]="true" ion-button  round clear class ="sel-btn-set"
-                     [ngClass]="rept.close == 1?'sel-btn-seled':'sel-btn-unsel'"  
-                     (click)="clickrept(0)">关</button></div>
-        <div class ="repttop1"><button [disabled]="true" ion-button  round clear class ="sel-btn-set"
-                     [ngClass]="rept.d == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickrept(1)">天</button></div>
-        <div class ="repttop1"><button [disabled]="true" ion-button  round  clear class ="sel-btn-set"
-                     [ngClass]="rept.w == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickrept(2)">周</button></div>
-        <div class ="repttop1"><button [disabled]="true" ion-button  round clear class ="sel-btn-set"
-                     [ngClass]="rept.m == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickrept(3)">月</button></div>
-        <div class ="repttop1"><button [disabled]="true" ion-button  round clear class ="sel-btn-set"
-                     [ngClass]="rept.y == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickrept(4)">年</button></div>
+        <div class ="repttop1"><ion-label>{{reptshow}}</ion-label></div>
       </ion-row>
       <ion-row >
         <div class ="reptlbl txtop"><ion-label>提醒</ion-label></div>
@@ -183,13 +153,7 @@ export class TddiPage {
   scd :ScdData = new ScdData();
   b:boolean = true;
 
-  rept = {
-    close:1,
-    d:0,
-    w:0,
-    m:0,
-    y:0
-  };
+  reptshow:string ="";
 
   wake = {
     close:1,
@@ -201,7 +165,7 @@ export class TddiPage {
   };
 
   //全天
-  alld:boolean = false;
+  alldshow:string = "";
 
   isShowPlan: boolean = false;
   IsShowCover: boolean = false;
@@ -226,70 +190,41 @@ export class TddiPage {
       let bs : BsModel<ScdData> = data;
       Object.assign(this.scd,bs.data);
 
+      //全天的场合
+      if (this.scd.et == "99:99") {
+        this.alldshow = "全天";
+      } else {
+        this.alldshow = this.scd.et;
+      }
+
+      switch (this.scd.rt){
+        case "0":
+          this.reptshow="关";
+          break;
+        case "1":
+          this.reptshow="每日";
+          break;
+        case "2":
+          this.reptshow="每周";
+          break;
+        case "3":
+          this.reptshow="每月";
+          break;
+        case "4":
+          this.reptshow="每年";
+          break;
+        default:
+          this.reptshow="关闭";
+      }
 
       this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
       this.scd.st = moment().format("HH:mm");
 
-      this.clickrept(parseInt(this.scd.rt));
 
       this.clickwake(parseInt(this.scd.tx));
 
 
     })
-
-
-
-
-  }
-
-  //重复按钮显示控制
-  clickrept(type){
-    this.scd.rt = type;
-
-    switch (type){
-      case 0:
-        this.rept.close = 1;
-        this.rept.d = 0;
-        this.rept.w = 0;
-        this.rept.m = 0;
-        this.rept.y = 0;
-        break;
-      case 1:
-        this.rept.close = 0;
-        this.rept.d = 1;
-        this.rept.w = 0;
-        this.rept.m = 0;
-        this.rept.y = 0;
-        break;
-      case 2:
-        this.rept.close = 0;
-        this.rept.d = 0;
-        this.rept.w = 1;
-        this.rept.m = 0;
-        this.rept.y = 0;
-        break;
-      case 3:
-        this.rept.close = 0;
-        this.rept.d = 0;
-        this.rept.w = 0;
-        this.rept.m = 1;
-        this.rept.y = 0;
-        break;
-      case 4:
-        this.rept.close = 0;
-        this.rept.d = 0;
-        this.rept.w = 0;
-        this.rept.m = 0;
-        this.rept.y = 1;
-        break;
-      default:
-        this.rept.close = 1;
-        this.rept.d = 0;
-        this.rept.w = 0;
-        this.rept.m = 0;
-        this.rept.y = 0;
-        this.scd.rt = "0";
-    }
   }
 
   //提醒按钮显示控制
@@ -442,25 +377,5 @@ export class TddiPage {
       console.log("check:"+this.scd.ji);
     }
   }
-
-  getDtPickerSel(evt){
-
-    let el = document.getElementsByClassName("picker-opt-selected")
-
-    if (el && el.length==3){
-      this.scd.sd = el[0].textContent + "-" +el[1].textContent +"-" +el[2].textContent;
-    }
-  }
-
-  getHmPickerSel(evt){
-
-    let el = document.getElementsByClassName("picker-opt-selected")
-
-    if (el && el.length==2){
-      this.scd.st = el[0].textContent + ":" +el[1].textContent;
-    }
-  }
-
-
 
 }
