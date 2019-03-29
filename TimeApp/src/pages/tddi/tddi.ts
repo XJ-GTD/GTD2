@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   ActionSheetController,  IonicPage, ModalController, NavController, NavParams,
 } from 'ionic-angular';
