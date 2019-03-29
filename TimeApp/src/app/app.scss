@@ -80,3 +80,45 @@
   background:transparent;
 }
 
+.picker-ios .picker-wrapper {
+  height: 260px;
+  border-top: 1px solid #c8c7cc;
+  background: #95042b;
+}
+.picker-md .picker-wrapper {
+  height: 260px;
+  border-top: 1px solid #c8c7cc;
+  background: #95042b;
+}
+.picker-ios .picker-toolbar {
+  height: 0px;
+  border: 0px;
+}
+
+.picker-md .picker-toolbar {
+  height: 0px;
+  border: 0px;
+}
+
+.picker-ios .picker-above-highlight {
+  background: rgba(149,3,43,0.7);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.picker-md .picker-above-highlight {
+  background: rgba(149,3,43,0.7);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.picker-ios .picker-below-highlight {
+  background: rgba(149,3,43,0.7);
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+.picker-md .picker-below-highlight {
+  background: rgba(149,3,43,0.7);
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+.picker-ios .picker-opt{
+  color: white;
+}
+.picker-md .picker-opt{
+  color: white;
+}

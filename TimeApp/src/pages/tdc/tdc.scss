@@ -196,6 +196,7 @@ page-tdc {
   .tm-set{
     margin-top: 0px;
     margin-left: -17px;
+    height:20px;
   }
 
   .tog-set{
@@ -226,9 +227,98 @@ page-tdc {
   .footer-ios .toolbar-ios:first-child .toolbar-background-ios{
     border-width:0px;
   }
-  .footer-md .toolbar-ios:first-child .toolbar-background-md{
+  .footer-md .toolbar-md:first-child .toolbar-background-md{
     border-width:0px;
   }
 
+  .picker-ios .picker-toolbar::before {
+    height: 0px;
+    border: 0px;
+  }
+  .picker-md .picker-toolbar {
+    height: 0px;
+    border: 0px;
+  }
 
+
+  .select-plan{
+    position: absolute;
+    width: 100%;
+    height: 80vmin;
+    z-index: 1000;
+    margin-top: 100%;
+
+    ion-list{
+      margin: 0;
+      width: 100%
+    }
+
+    ion-item ion-label{
+      font-size: 1.5rem;
+    }
+
+    .item-block{
+      min-height: 3rem;
+    }
+
+    .color-dot {
+      width: 2vmin;
+      height: 2vmin;
+      background-color: #fff;
+      border-radius: 50%;
+    }
+
+    .color-palm {
+      background-color: rgb(155,94,70);
+    }
+
+    .color-sunflower {
+      background-color: rgb(135,106,41);
+    }
+
+    .color-aurantia {
+      background-color: rgb(207,68,37);
+    }
+
+    .color-orange {
+      background-color: rgb(175,43,36);
+    }
+
+    .color-pink {
+      background-color: rgb(173,131,135);
+    }
+
+    .color-lavender {
+      background-color: rgb(192,119,219);
+    }
+
+    .color-fuchsia {
+      background-color: rgb(69,59,147);
+    }
+
+    .color-sky {
+      background-color: rgb(81,170,242);
+    }
+
+    .color-blue {
+      background-color: rgb(53,145,165);
+    }
+
+    .color-daphnite {
+      background-color: rgb(48,129,88);
+    }
+  }
+
+  .shade{
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index:999;
+    -moz-opacity: 0.3;
+    opacity:.30;
+    filter: alpha(opacity=30);
+  }
 }

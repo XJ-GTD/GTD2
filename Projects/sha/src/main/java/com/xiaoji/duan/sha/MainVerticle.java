@@ -17,12 +17,14 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
@@ -198,12 +200,38 @@ public class MainVerticle extends AbstractVerticle {
 		agenda.put("_sharetime", System.currentTimeMillis());
 		agenda.put("_expiretime", 7 * 24 * 60 * 60 * 1000L);
 		
+		List<Future<JsonObject>> futures = new LinkedList<>();
+		
+		Future<JsonObject> lessfuture = Future.future();
+		futures.add(lessfuture);
+		
+		client.postAbs("https://www.guobaa.com/sho/linkless")
+		.sendJsonObject(new JsonObject()
+				.put("type", "default")
+				.put("src", "https://pluto.guobaa.com/sha/agenda/share/" + shareId),
+				handler -> {
+			if (handler.succeeded()) {
+				HttpResponse<Buffer> resp = handler.result();
+				System.out.println(resp.bodyAsString());
+				JsonObject su = resp.bodyAsJsonObject();
+				
+				lessfuture.complete(su);
+			} else {
+				lessfuture.complete(new JsonObject());
+			}
+		});
+		
+		Future<JsonObject> saveFuture = Future.future();
+		futures.add(saveFuture);
+		
 		mongodb.save("sha_agenda", agenda, save -> {
 			if (save.succeeded()) {
 				JsonObject retdata = new JsonObject();
 				retdata.put("asurl", "https://pluto.guobaa.com/sha/agenda/share/" + shareId);
 				
 				ret.put("d", retdata);
+				
+				saveFuture.complete(retdata);
 				
 				// 创建压缩字体
 				client.getAbs("https://www.guobaa.com/mif/sha/agenda/share/" + shareId).send(compress -> {
@@ -214,7 +242,35 @@ public class MainVerticle extends AbstractVerticle {
 					}
 				});
 				
+			} else {
+				
+				saveFuture.fail(save.cause());
+			}
+		});
+		
+		CompositeFuture.all(Arrays.asList(futures.toArray(new Future[futures.size()])))
+		.map(v -> futures.stream().map(Future::result).collect(Collectors.toList()))
+		.setHandler(handler -> {
+			if (handler.succeeded()) {
+				List<JsonObject> results = handler.result();
+				
+				JsonObject less = null;
+				JsonObject retdata = null;
+				
+				for (JsonObject result : results) {
+					if (result.containsKey("asurl")) {
+						retdata = result;
+					} else {
+						less = result;
+					}
+				}
+				
+				retdata.put("asurl", less.getString("url", retdata.getString("asurl")));
+				
+				ret.put("d", retdata);
+				
 				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+
 			} else {
 				ret.put("rc", "-3");
 				ret.put("rm", "服务器异常, 分享失败!");
@@ -313,6 +369,28 @@ public class MainVerticle extends AbstractVerticle {
 		plan.put("_sharetime", System.currentTimeMillis());
 		plan.put("_expiretime", 365 * 24 * 60 * 60 * 1000L);
 		
+		List<Future<JsonObject>> futures = new LinkedList<>();
+		
+		Future<JsonObject> lessfuture = Future.future();
+		futures.add(lessfuture);
+		
+		client.postAbs("https://www.guobaa.com/sho/linkless")
+		.sendJsonObject(new JsonObject().put("type", "default").put("src", "https://pluto.guobaa.com/sha/plan/share/" + shareId),
+				handler -> {
+			if (handler.succeeded()) {
+				HttpResponse<Buffer> resp = handler.result();
+				System.out.println(resp.bodyAsString());
+				JsonObject su = resp.bodyAsJsonObject();
+				
+				lessfuture.complete(su);
+			} else {
+				lessfuture.complete(new JsonObject());
+			}
+		});
+		
+		Future<JsonObject> saveFuture = Future.future();
+		futures.add(saveFuture);
+		
 		mongodb.save("sha_plan", plan, save -> {
 			if (save.succeeded()) {
 				JsonObject retdata = new JsonObject();
@@ -320,6 +398,8 @@ public class MainVerticle extends AbstractVerticle {
 				
 				ret.put("d", retdata);
 				
+				saveFuture.complete(retdata);
+
 				// 创建压缩字体
 				client.getAbs("https://www.guobaa.com/mif/sha/plan/share/" + shareId).send(compress -> {
 					if (compress.succeeded()) {
@@ -329,7 +409,34 @@ public class MainVerticle extends AbstractVerticle {
 					}
 				});
 				
+			} else {
+				saveFuture.fail(save.cause());
+			}
+		});
+		
+		CompositeFuture.all(Arrays.asList(futures.toArray(new Future[futures.size()])))
+		.map(v -> futures.stream().map(Future::result).collect(Collectors.toList()))
+		.setHandler(handler -> {
+			if (handler.succeeded()) {
+				List<JsonObject> results = handler.result();
+				
+				JsonObject less = null;
+				JsonObject retdata = null;
+				
+				for (JsonObject result : results) {
+					if (result.containsKey("psurl")) {
+						retdata = result;
+					} else {
+						less = result;
+					}
+				}
+				
+				retdata.put("psurl", less.getString("url", retdata.getString("psurl")));
+				
+				ret.put("d", retdata);
+				
 				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+
 			} else {
 				ret.put("rc", "-3");
 				ret.put("rm", "服务器异常, 分享失败!");

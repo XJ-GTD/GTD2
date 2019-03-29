@@ -117,9 +117,14 @@ export class TdcService {
   //获取计划列表
   getPlans():Promise<any>{
     return new Promise((resolve, reject) => {
-
       //获取本地计划列表
-
+      let jhtbl:JhTbl = new JhTbl();
+      jhtbl.jt = "2";
+      this.sqlExce.getList<JhTbl>(jhtbl).then(data=>{
+        resolve(data)
+      }).catch(error=>{
+        resolve(error)
+      })
     });
   }
 
