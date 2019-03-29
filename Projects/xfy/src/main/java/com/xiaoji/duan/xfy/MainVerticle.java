@@ -141,7 +141,7 @@ public class MainVerticle extends AbstractVerticle {
 			}
 		} else {
 			if ("audio".equals(dataType)) {
-				// ÓïÒôµÄÊ±ºò,µ÷ÓÃÑ¸·ÉÓïÒôÌýÐ´½Ó¿Ú×ªÎÄ×Ö
+				// è¯­éŸ³çš„æ—¶å€™,è°ƒç”¨è¿…é£žè¯­éŸ³å¬å†™æŽ¥å£è½¬æ–‡å­—
 				try {
 			        String curTime = System.currentTimeMillis() / 1000L + "";
 			        StringBuffer param = new StringBuffer();
@@ -180,7 +180,7 @@ public class MainVerticle extends AbstractVerticle {
 					e.printStackTrace();
 				}
 			} else {
-				// ÎÄ±¾µÄÊ±ºò,Ö±½Ó·µ»Ø
+				// æ–‡æœ¬çš„æ—¶å€™,ç›´æŽ¥è¿”å›ž
 				JsonObject result = new JsonObject();
 				result.put("code", "0");
 				result.put("data", content);
@@ -250,6 +250,23 @@ public class MainVerticle extends AbstractVerticle {
 			e.printStackTrace();
 			if (retry > 3) {
 				System.out.println("Xunfei yun iat retried over 3 times with follow error:");
+				// æ–‡æœ¬çš„æ—¶å€™,ç›´æŽ¥è¿”å›ž
+				JsonObject result = new JsonObject();
+				result.put("code", "0");
+				result.put("data", "");
+				result.put("sid", "simulated");
+				result.put("desc", "success");
+				
+				JsonObject nextctx = new JsonObject()
+						.put("context", new JsonObject()
+								.put("xunfeiyun", result
+										.put("_context", context
+												.put("userId", userId)
+												.put("deviceId", deviceId))));
+				
+				MessageProducer<JsonObject> producer = bridge.createProducer(nextTask);
+				producer.send(new JsonObject().put("body", nextctx));
+				System.out.println("Consumer " + consumer + " send to [" + nextTask + "] result [" + nextctx.encode() + "]");
 			} else {
 				iat(consumer, deviceId, userId, context, body, paramBase64, curTime, checkSum, nextTask, retry + 1);
 			}
