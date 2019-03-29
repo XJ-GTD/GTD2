@@ -36,33 +36,38 @@ export class InputComponent {
 
   ngOnInit() {
 
+    this._renderer.setStyle(this.el.nativeElement, "height", window.innerHeight + "px");
+
+    this._renderer.setStyle(this.el.nativeElement, "width", window.innerWidth + "px");
+
+    this._renderer.setStyle(this.el.nativeElement, "top", (window.innerHeight* -1) + "px");
     this.keyboard.onKeyboardHide().subscribe(next => {
+      this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(9999px)");
       setTimeout(()=>{
         this._renderer.setStyle(this.el.nativeElement, "display", "none");
-        this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(-9999px)");
-      },300);
+      },500);
       this.input.setBlur();
 
     }, error1 => {
+      this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(9999px)");
       setTimeout(()=>{
         this._renderer.setStyle(this.el.nativeElement, "display", "none");
-        this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(-9999px)");
-      },300);
+      },500);
       this.input.setBlur();
 
     });
     this.input.blur.subscribe(next => {
-      this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(-9999px)");
+      this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(9999px)");
       setTimeout(()=>{
         this._renderer.setStyle(this.el.nativeElement, "display", "none");
-      },300);
+      },500);
       this.input.setBlur();
 
     }, error1 => {
-      this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(-9999px)");
+      this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(9999px)");
       setTimeout(()=>{
         this._renderer.setStyle(this.el.nativeElement, "display", "none");
-      },300);
+      },500);
       this.input.setBlur();
 
     });
@@ -71,7 +76,7 @@ export class InputComponent {
 
   inputStart() {
     this._renderer.setStyle(this.el.nativeElement, "display", "block");
-    this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(-0px)");
+    this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(0px)");
     this.input.clearTextInput();
     this.input.setFocus();
   }
