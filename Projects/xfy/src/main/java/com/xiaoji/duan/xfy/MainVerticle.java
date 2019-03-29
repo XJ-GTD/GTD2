@@ -65,6 +65,8 @@ public class MainVerticle extends AbstractVerticle {
 		System.out.println("Consumer " + consumer + " received [" + received.body().encode() + "]");
 		JsonObject data = received.body().getJsonObject("body");
 
+		String accessType = data.getJsonObject("context").getString("accessType", "nlp");
+		
 		String deviceId = data.getJsonObject("context").getString("deviceId", "default");
 		String clientIp = data.getJsonObject("context").getString("clientIp", "");
 		String userId = data.getJsonObject("context").getString("userId", "default");
@@ -73,65 +75,175 @@ public class MainVerticle extends AbstractVerticle {
 		JsonObject context = data.getJsonObject("context").getJsonObject("context", new JsonObject());
 		String next = data.getJsonObject("context").getString("next");
 
-		try {
-	        String curTime = System.currentTimeMillis() / 1000L + "";
-	        StringBuffer param = new StringBuffer();
-	        
-	        if ("text".equals(dataType)) {
-	        	param.append("{");
-	        	param.append("\"auth_id\":\"");
-	        	param.append(config().getString("xfyun.openapi.authid"));
-	        	param.append("\",");
-	        	param.append("\"data_type\":\"");
-	        	param.append(dataType);
-	        	param.append("\",");
-	        	if (!"".equals(clientIp)) {
-		        	param.append("\"client_ip\":\"");
-		        	param.append(clientIp);
+		if ("nlp".equals(accessType)) {
+			try {
+		        String curTime = System.currentTimeMillis() / 1000L + "";
+		        StringBuffer param = new StringBuffer();
+		        
+		        if ("text".equals(dataType)) {
+		        	param.append("{");
+		        	param.append("\"auth_id\":\"");
+		        	param.append(config().getString("xfyun.openapi.authid"));
 		        	param.append("\",");
-	        	}
-	        	param.append("\"scene\":\"");
-	        	param.append(config().getString("xfyun.openapi.scene", "main"));
-	        	param.append("\"");
-	        	param.append("}");
-	        } else {
-	        	param.append("{");
-	        	param.append("\"aue\":\"");
-	        	param.append(config().getString("xfyun.openapi.aue", "raw"));
-	        	param.append("\"");
-	        	param.append(",\"sample_rate\":\"");
-	        	param.append(config().getString("xfyun.openapi.samplerate", "16000"));
-	        	param.append("\",");
-	        	param.append("\"auth_id\":\"");
-	        	param.append(config().getString("xfyun.openapi.authid"));
-	        	param.append("\",");
-	        	param.append("\"data_type\":\"");
-	        	param.append(dataType);
-	        	param.append("\",");
-	        	if (!"".equals(clientIp)) {
-		        	param.append("\"client_ip\":\"");
-		        	param.append(clientIp);
+		        	param.append("\"data_type\":\"");
+		        	param.append(dataType);
 		        	param.append("\",");
-	        	}
-	        	param.append("\"scene\":\"");
-	        	param.append(config().getString("xfyun.openapi.scene", "main"));
-	        	param.append("\"");
-	        	param.append("}");
-	        }
-	        String paramBase64 = new String(Base64.encodeBase64(param.toString().getBytes("UTF-8")));
-	        String checkSum = DigestUtils.md5Hex(config().getString("xfyun.openapi.apikey") + curTime + paramBase64);
+		        	if (!"".equals(clientIp)) {
+			        	param.append("\"client_ip\":\"");
+			        	param.append(clientIp);
+			        	param.append("\",");
+		        	}
+		        	param.append("\"scene\":\"");
+		        	param.append(config().getString("xfyun.openapi.scene", "main"));
+		        	param.append("\"");
+		        	param.append("}");
+		        } else {
+		        	param.append("{");
+		        	param.append("\"aue\":\"");
+		        	param.append(config().getString("xfyun.openapi.aue", "raw"));
+		        	param.append("\"");
+		        	param.append(",\"sample_rate\":\"");
+		        	param.append(config().getString("xfyun.openapi.samplerate", "16000"));
+		        	param.append("\",");
+		        	param.append("\"auth_id\":\"");
+		        	param.append(config().getString("xfyun.openapi.authid"));
+		        	param.append("\",");
+		        	param.append("\"data_type\":\"");
+		        	param.append(dataType);
+		        	param.append("\",");
+		        	if (!"".equals(clientIp)) {
+			        	param.append("\"client_ip\":\"");
+			        	param.append(clientIp);
+			        	param.append("\",");
+		        	}
+		        	param.append("\"scene\":\"");
+		        	param.append(config().getString("xfyun.openapi.scene", "main"));
+		        	param.append("\"");
+		        	param.append("}");
+		        }
+		        String paramBase64 = new String(Base64.encodeBase64(param.toString().getBytes("UTF-8")));
+		        String checkSum = DigestUtils.md5Hex(config().getString("xfyun.openapi.apikey") + curTime + paramBase64);
+		
+		        Buffer body = Buffer.buffer();
+		        
+		        if ("text".equals(dataType)) {
+		        	body = Buffer.buffer(content.getBytes());
+		        } else {
+		        	body = Buffer.buffer(Base64.decodeBase64(content.substring(content.indexOf(",") + 1)));
+		        }
+		        
+		        nlp(consumer, deviceId, userId, context, body, paramBase64, curTime, checkSum, next, 1);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			if ("audio".equals(dataType)) {
+				// 语音的时候,调用迅飞语音听写接口转文字
+				try {
+			        String curTime = System.currentTimeMillis() / 1000L + "";
+			        StringBuffer param = new StringBuffer();
+			        
+		        	param.append("{");
+		        	param.append("\"engine_type\":\"");
+		        	param.append(config().getString("xfyun.openapi.engine_type", "sms8k"));
+		        	param.append("\"");
+		        	param.append(",\"aue\":\"");
+		        	param.append(config().getString("xfyun.openapi.aue", "raw"));
+		        	param.append("\",");
+		        	param.append("\"speex_size\":\"");
+		        	param.append(config().getString("xfyun.openapi.speex_size", "60"));
+		        	param.append("\",");
+		        	param.append("\"vad_eos\":\"");
+		        	param.append(config().getString("xfyun.openapi.vad_eos", "1800"));
+		        	param.append("\",");
+		        	param.append("\"scene\":\"");
+		        	param.append(config().getString("xfyun.openapi.scene", "main"));
+		        	param.append("\"");
+		        	param.append("}");
+		        	
+			        String paramBase64 = new String(Base64.encodeBase64(param.toString().getBytes("UTF-8")));
+			        String checkSum = DigestUtils.md5Hex(config().getString("xfyun.openapi.apikey") + curTime + paramBase64);
+			
+			        Buffer body = Buffer.buffer();
+			        
+		        	body = Buffer.buffer(Base64.decodeBase64(content.substring(content.indexOf(",") + 1)));
+			        
+			        iat(consumer, deviceId, userId, context, body, paramBase64, curTime, checkSum, next, 1);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				// 文本的时候,直接返回
+				JsonObject result = new JsonObject();
+				result.put("code", "0");
+				result.put("data", content);
+				result.put("sid", "simulated");
+				result.put("desc", "success");
+				
+				JsonObject nextctx = new JsonObject()
+						.put("context", new JsonObject()
+								.put("xunfeiyun", result
+										.put("_context", context
+												.put("userId", userId)
+												.put("deviceId", deviceId))));
+				
+				MessageProducer<JsonObject> producer = bridge.createProducer(next);
+				producer.send(new JsonObject().put("body", nextctx));
+				System.out.println("Consumer " + consumer + " send to [" + next + "] result [" + nextctx.encode() + "]");
+			}
+		}
+
+	}
 	
-	        Buffer body = Buffer.buffer();
-	        
-	        if ("text".equals(dataType)) {
-	        	body = Buffer.buffer(content.getBytes());
-	        } else {
-	        	body = Buffer.buffer(Base64.decodeBase64(content.substring(content.indexOf(",") + 1)));
-	        }
-	        
-	        nlp(consumer, deviceId, userId, context, body, paramBase64, curTime, checkSum, next, 1);
+	private void iat(String consumer, String deviceId, String userId, JsonObject context, Buffer body, String paramBase64, String curTime, String checkSum, String nextTask, Integer retry) {
+		System.out.println("X-Param: " + paramBase64);
+		System.out.println("X-CurTime: " + curTime);
+		System.out.println("X-CheckSum: " + checkSum);
+		System.out.println("X-Appid: " + config().getString("xfyun.openapi.appid"));
+		
+		try {
+			client.headAbs(config().getString("xfyun.openapi.aiui", "http://api.xfyun.cn/v1/service/v1/iat"))
+			.method(HttpMethod.POST)
+			.putHeader("X-Param", paramBase64)
+			.putHeader("X-CurTime", curTime)
+			.putHeader("X-CheckSum", checkSum)
+			.putHeader("X-Appid", config().getString("xfyun.openapi.appid"))
+			.sendBuffer(body, handler -> {
+				if (handler.succeeded()) {
+					HttpResponse<Buffer> response = handler.result();
+	
+					if (200 == response.statusCode()) {
+						JsonObject result = response.bodyAsJsonObject();
+	
+						JsonObject nextctx = new JsonObject()
+								.put("context", new JsonObject()
+										.put("xunfeiyun", result
+												.put("_context", context
+														.put("userId", userId)
+														.put("deviceId", deviceId))));
+						
+						MessageProducer<JsonObject> producer = bridge.createProducer(nextTask);
+						producer.send(new JsonObject().put("body", nextctx));
+						System.out.println("Consumer " + consumer + " send to [" + nextTask + "] result [" + nextctx.encode() + "]");
+					} else {
+						System.out.println("Xunfei yun access error with " + response.statusCode() + " " + response.statusMessage());
+					}
+				} else {
+					handler.cause().printStackTrace();
+					if (retry > 3) {
+						System.out.println("Xunfei yun iat retried over 3 times with follow error:");
+					} else {
+						iat(consumer, deviceId, userId, context, body, paramBase64, curTime, checkSum, nextTask, retry + 1);
+					}
+				}
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
+			if (retry > 3) {
+				System.out.println("Xunfei yun iat retried over 3 times with follow error:");
+			} else {
+				iat(consumer, deviceId, userId, context, body, paramBase64, curTime, checkSum, nextTask, retry + 1);
+			}
 		}
 	}
 	
