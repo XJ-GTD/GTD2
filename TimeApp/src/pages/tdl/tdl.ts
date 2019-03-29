@@ -4,10 +4,11 @@ import {
   ViewController
 } from 'ionic-angular';
 import * as moment from "moment";
-import {fsData, ScdData, ScdlData, TdlService} from "./tdl.service";
+import {  ScdlData, TdlService} from "./tdl.service";
 import {TddjService} from "../tddj/tddj.service";
 import {TddiService} from "../tddi/tddi.service";
 import {DataConfig} from "../../service/config/data.config";
+import {ScdData} from "../../service/pagecom/pgbusi.service";
 
 /**
  * Generated class for the 日程列表 page.

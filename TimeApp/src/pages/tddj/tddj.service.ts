@@ -1,157 +1,23 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UserConfig} from "../../service/config/user.config";
-import {CTbl} from "../../service/sqlite/tbl/c.tbl";
-import {fsData, ScdData, SpecScdData} from "../tdl/tdl.service";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
-import {ETbl} from "../../service/sqlite/tbl/e.tbl";
-import * as moment from "moment";
 import {UtilService} from "../../service/util-service/util.service";
 import {AgdPro, AgdRestful, ContactPerPro} from "../../service/restful/agdsev";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
-import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
+import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 
 @Injectable()
 export class TddjService {
   constructor(private sqlExce: SqliteExec,private userConfig: UserConfig,
-              private util :UtilService,private agdful : AgdRestful) {
+              private util :UtilService,private agdful : AgdRestful,
+              private pgbusiServ : PgBusiService) {
   }
 
 
-  //删除日程 type：1 删除当前以后所有 ，2 删除所有
-  async delete(rcId:string,type :string,d:string){
-    let agdPro:AgdPro = new AgdPro();
-    let ctbl:CTbl =new CTbl();
 
-    //日程Id
-    ctbl.si = rcId;
-
-
-    if (type =="2"){
-      let etbl:ETbl =new ETbl();
-      etbl.si = ctbl.si;
-      await this.sqlExce.delete(etbl);//本地删除提醒
-      let dtbl:DTbl =new DTbl();
-      dtbl.si = ctbl.si;
-      await this.sqlExce.delete(dtbl);//本地删除日程参与人
-
-      await this.sqlExce.delete(ctbl); //本地删除日程表
-
-      let sptbl = new SpTbl();
-      sptbl.si = rcId;
-      await this.sqlExce.delete(sptbl);//本地删除日程子表
-
-      //restFul 删除日程
-      let a:AgdPro = new AgdPro();
-      a.ai = ctbl.si;//日程ID
-      await this.agdful.remove(a);
-
-    }else{
-      let sql ="delete from gtd_sp where si = '"+ rcId +"' and sd>= '"+ d +"'";
-      await this.sqlExce.execSql(sql);
-
-      ctbl.sd = d;
-      await this.sqlExce.update(ctbl);
-
-      let a = new AgdPro();
-      a.ai = ctbl.si;//日程ID
-      a.adt = d;
-      await this.agdful.save(a);
-    }
-
-  }
-
-  /*async delete(dt:string,type: string,rcId:string){
-    let agdPro:AgdPro = new AgdPro();
-    let ctbl:CTbl =new CTbl();
-    //日程Id
-    ctbl.si = rcId;
-    let cData = await this.sqlExce.getOne(ctbl);
-
-    ctbl = cData[0];
-    agdPro.ai = ctbl.si;//日程ID
-    agdPro.at = ctbl.sn;//主题
-    agdPro.fc = ctbl.ui;//日程发送人用户ID 创建者
-    agdPro.adt = ctbl.sd;//开始日期
-    agdPro.st = ctbl.st;//开始时间
-    //agdPro.ed = ctbl.ed;//结束日期
-    agdPro.et = ctbl.et;//结束时间
-    agdPro.ar = ctbl.rt;//重复
-    agdPro.ap = ctbl.ji;//计划
-    agdPro.aa = ctbl.tx;//提醒
-    agdPro.am = ctbl.bz;//备注
-    agdPro.pni = ctbl.pni;//重复类型日程的父ID
-
-    if(type == "1"){
-      //点击删除今天及以后所有日程  将当前数据的结束日期改为昨天
-      ctbl.ed = moment(dt).subtract(1, 'days').format('YYYY/MM/DD'); // 日期转型  昨天 1
-      await this.sqlExce.update(ctbl);//本地修改结束日程
-
-      //restFul修改日程
-      await this.agdful.save(agdPro);
-    }else{
-      // 非重复日程 直接删除
-      let etbl:ETbl =new ETbl();
-      etbl.si = ctbl.si;
-      await this.sqlExce.delete(etbl);//本地删除提醒
-      let dtbl:DTbl =new DTbl();
-      dtbl.si = ctbl.si;
-      await this.sqlExce.delete(dtbl);//本地删除日程参与人
-      await this.sqlExce.delete(ctbl); //本地删除日程表
-      //restFul 删除日程
-      let a:AgdPro = new AgdPro();
-      a.ai = ctbl.si;//日程ID
-      await this.agdful.remove(a);
-    }
-  }*/
-
-  //修改本地日程详情
-  async updateDetail(scd:ScdData){
-
-
-    //更新日程
-    let c = new CTbl();
-    Object.assign(c,scd);
-    //消息设为已读
-    c.du = "1";
-    await  this.sqlExce.update(c);
-
-    //更新提醒时间
-    let e = new ETbl();
-    Object.assign(e,scd.r);
-    await this.sqlExce.update(c);
-
-    //restful用参数
-    let agd = new AgdPro();
-    this.setAdgPro(agd,c);
-    await this.agdful.save(agd);
-  }
-
-  //添加本地日程详情
-  async addDetail(scd:ScdData){
-
-
-    //更新日程
-    let c = new CTbl();
-    Object.assign(c,scd);
-    //消息设为已读
-    c.du = "1";
-    //本人创建
-    c.gs = "1";
-    await  this.sqlExce.save(c);
-
-    //更新提醒时间
-    let e = new ETbl();
-    Object.assign(e,scd.r);
-    await this.sqlExce.save(c);
-
-    //restful用参数
-    let agd = new AgdPro();
-    this.setAdgPro(agd,c);
-    await this.agdful.save(agd);
-  }
 
   //修改本地日程参与人
   async updateContact(scd:ScdData){
@@ -181,29 +47,7 @@ export class TddjService {
     await this.agdful.save(agd);
   }
 
-  private setAdgPro(agd:AgdPro,c :CTbl){
-    //关联日程ID
-    agd.rai = c.sr;
-    //日程发送人用户ID
-    agd.fc = c.ui;
-    //日程ID
-    agd.ai = c.si;
-    //主题
-    agd.at = c.sn;
-    //时间(YYYY/MM/DD)
-    agd.adt = c.sd;
-    agd.st = c.st;
-    agd.ed = c.ed;
-    agd.et = c.et;
-    //计划
-    agd.ap = c.ji;
-    //重复
-    agd.ar = c.rt;
-    //提醒
-    agd.aa = c.tx;
-    //备注
-    agd.am = c.bz;
-  }
+
 
   private async setAdgContactPro(cp:ContactPerPro,d :DTbl){
 

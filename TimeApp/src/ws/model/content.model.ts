@@ -8,6 +8,6 @@ import {WsModel} from "./ws.model";
 export class WsContent {
   option: string = "";
   parameters: any;
-  thisContent:WsModel;
+  thisContext:WsModel;
 }
 

@@ -1,16 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import {
-  ActionSheetController, Events, IonicPage, ModalController, NavController, NavParams,
+  ActionSheetController,  IonicPage, ModalController, NavController, NavParams,
 } from 'ionic-angular';
-import {ScdData} from "../tdl/tdl.service";
 import * as moment from "moment";
 import {TdcService} from "./tdc.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
-import {TddjService} from "../tddj/tddj.service";
-import {TddiService} from "../tddi/tddi.service";
 import {BsModel} from "../../service/restful/out/bs.model";
+import {ScdData} from "../../service/pagecom/pgbusi.service";
 
 /**
  * Generated class for the 新建日程 page.
@@ -53,9 +51,9 @@ import {BsModel} from "../../service/restful/out/bs.model";
       <ion-row >
         <div class="date-set">
           <ion-item>
-          <ion-datetime  displayFormat="YYYY年MM月DD日 DDDD"
+          <ion-datetime  displayFormat="YYYY年M月DD日 DDDD"
                         pickerFormat = "YYYY MM DD" color="light"
-                        [(ngModel)]="scd.sd" dayNames="周日,周一,周二,周三,周四,周五,周六"
+                        [(ngModel)]="scd.sd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                         min="1999-01-01" max="2039-12-31"  (ionCancel)="getDtPickerSel($event)"
                         ></ion-datetime>
           </ion-item> 
@@ -189,10 +187,8 @@ export class TdcPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private tdcServ :TdcService,private util:UtilService,
-              private tddjServ :TddjService,private  tddiServ : TddiService,
               public actionSheetCtrl: ActionSheetController,
-              public modalCtrl: ModalController,
-              ) {
+              public modalCtrl: ModalController              ) {
 
   }
 
@@ -203,7 +199,7 @@ export class TdcPage {
   b:boolean = true;
 
   rept = {
-    close:1,
+    close:0,
     d:0,
     w:0,
     m:0,
@@ -211,7 +207,7 @@ export class TdcPage {
   };
 
   wake = {
-    close:1,
+    close:0,
     tenm:0,
     thirm:0,
     oh:0,
@@ -248,6 +244,8 @@ export class TdcPage {
       this.scd.rt = "0";
       this.scd.tx = "0";
       this.pagestate = "0";
+      this.rept.close = 1;
+      this.wake.close = 1;
       return ;
     }
 
@@ -257,6 +255,12 @@ export class TdcPage {
         let bs : BsModel<ScdData> = data;
         Object.assign(this.scd,bs.data);
 
+        //全天的场合
+        if (this.scd.et == "99:99") {
+          this.alld = true;
+        } else {
+          this.alld = false;
+        }
 
         this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
         this.scd.st = moment().format("HH:mm");
@@ -440,26 +444,29 @@ export class TdcPage {
       this.tdcServ.save(this.scd).then(data=>{
         let ctbl = data.data;
         this.scd.si = ctbl.si;
-        this.pagestate =="1";
+        this.pagestate ="1";
         this.util.toast("保存成功",2000);
         if(typeof(eval(share))=="function")
         {
           share();
         }
-
+        return;
       });
+
     }
     //本人创建
     if (this.pagestate =="1") {
 
-      this.tddjServ.updateDetail(this.scd).then(data =>{
+      this.tdcServ.updateDetail(this.scd).then(data =>{
 
         this.util.toast("保存成功",2000);
         if(typeof(eval(share))=="function")
         {
           share();
         }
+        return ;
       })
+
     }
 
 
@@ -492,7 +499,7 @@ export class TdcPage {
             role: 'destructive',
             cssClass:'btn-del',
             handler: () => {
-              this.tddjServ.delete(this.scd.si,"1",d).then(data=>{
+              this.tdcServ.delete(this.scd.si,"1",d).then(data=>{
                 this.cancel();
               });
             }
@@ -500,7 +507,7 @@ export class TdcPage {
             text: '删除所有日程',
             cssClass:'btn-delall',
             handler: () => {
-              this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
+              this.tdcServ.delete(this.scd.si,"2",d).then(data=>{
                 this.cancel();
               });
             }
@@ -517,7 +524,7 @@ export class TdcPage {
       actionSheet.present();
     }else{
       //非重复日程删除
-      this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
+      this.tdcServ.delete(this.scd.si,"2",d).then(data=>{
         this.cancel();
       });
     }

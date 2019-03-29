@@ -103,4 +103,5 @@
     <engine name="ios" spec="^4.4.0" />
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="6.4.0" />
+    <plugin name="cordova-plugin-screen-orientation" spec="3.0.1" />
 </widget>

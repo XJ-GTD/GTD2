@@ -41,7 +41,7 @@ import {GlService} from "../gl/gl.service";
         <!--</ion-item>-->
       <!--</div>-->
       <div class="name-input w-auto">
-        <ion-input type="text" placeholder="请输入手机号" [(ngModel)]="tel"  text-center></ion-input>
+        <ion-input type="text" placeholder="请输入手机号" (ionBlur)="getContacts()" [(ngModel)]="tel"  text-center></ion-input>
       </div>
       <ion-grid>
         <ion-row>

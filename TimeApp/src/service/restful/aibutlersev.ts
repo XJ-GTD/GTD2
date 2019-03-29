@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {BsModel} from "./out/bs.model";
+import * as moment from 'moment';
+import {ContextModel, WsModel} from "../../ws/model/ws.model";
 
 
 
@@ -63,19 +65,18 @@ export class AibutlerRestful{
 //音频入参
 export class AudioPro{
   //上下文
-  c : any = {};
+  c : ContextModel = new ContextModel();
   d : AudioProSub = new AudioProSub();
 }
 export class AudioProSub{
   //Base64编码语音
   vb64 : string="";
-
 }
 
 //文本入参
 export class TextPro{
   //上下文
-  c : any = {};
+  c : ContextModel = new ContextModel();
   d : TextProSub = new TextProSub();
 }
 export class TextProSub{

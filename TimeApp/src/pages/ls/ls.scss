@@ -1,24 +1,36 @@
 page-ls {
-  //background-color: #000;
 
-  @font-face {
-    font-family: 'PingFang-Regular';
-    src: url('../../assets/fonts/PingFang Regular.ttf');
+  .w-auto {
+    flex: 1;
   }
 
-  ion-content{
-    font-family: PingFang-Regular;
+  .grid-login-basic {
+    width: 100%;
+  }
+
+  .no-padding {
+    padding: 0;
+  }
+
+  .no-padding-lr {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .no-margin-lr {
+    margin-left: 0;
+    margin-right: 0;
   }
 
   h1{
-    font-size: 2.4rem;
     margin-block-start: 0em;
     margin-block-end: 0em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
+    font-size: 2.4rem;
     font-weight: bold;
-    margin-top:85px;
-    word-spacing: 1px;
+    letter-spacing: 1px;
+    padding-top: 85px;
   }
 
   ion-input{
@@ -31,22 +43,29 @@ page-ls {
   }
 
   .login-code{
-    font-size: 1.5rem;
     margin-top: 10px;
     margin-bottom: 20px;
-  }
-
-  .login-enter{
-    margin-right: 30px;
-    margin-top: 35px;
   }
 
   .login-div{
     margin-top: 12px;
     font-size: 1.5rem;
-    word-spacing: 1px;
     width: 140px;
-    //font-weight:bold;
+    font-weight: 900;
+  }
+
+  .login-send{
+    margin-right: 105px;
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: #429A81;
+    border: 1px solid #429A81;
+    background-color: white;
+  }
+
+  .login-enter{
+    margin-right: 30px;
+    margin-top: 35px;
   }
 
   .img-content-enter{
@@ -67,45 +86,6 @@ page-ls {
     background-color:#429A81;
   }
 
-  .login-send{
-    margin-right: 145px;
-    margin-top: 0;
-    font-size: 1.2rem;
-    color: #429A81;
-    border: 1px solid #429A81;
-    background-color: white;
-  }
-
-  .grid-login-basic {
-    width: 100%;
-  }
-
-  .w-auto {
-    flex: 1;
-  }
-
-  .grid-login-basic {
-    width: 100%;
-  }
-
-  .w-auto {
-    flex: 1;
-  }
-
-  .no-padding {
-    padding: 0;
-  }
-
-  .no-padding-lr {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .no-margin-lr {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
   .text-anchor {
     color: #429A81;
     text-decoration: none;
@@ -119,9 +99,6 @@ page-ls {
 
   .scroll-content{
     margin-left: 25px;
-  }
-
-  .scroll-content{
     overflow-x: hidden;
     overflow-y: hidden;
   }

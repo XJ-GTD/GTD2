@@ -117,6 +117,7 @@ export class PersonRestful {
     let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIU");
+      url.url = url.url.replace("{unionid}",personData.unionid);
       this.request.put(url,personData).then(data => {
         //处理返回结果
         bsModel.code = data.errcode;
@@ -141,6 +142,7 @@ export class PersonRestful {
     let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("MP");
+      url.url = url.url.replace("{unionid}",personData.unionid);
       this.request.put(url, personData).then(data => {
         //处理返回结果
         bsModel.code = data.errcode;

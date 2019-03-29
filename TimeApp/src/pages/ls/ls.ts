@@ -15,22 +15,22 @@ import {UtilService} from "../../service/util-service/util.service";
   selector: 'page-ls',
   template:
   `
-  <ion-content>
+  <ion-content padding>
     <h1>验证码登录</h1>
     <ion-grid class="grid-login-basic no-padding-lr">
       <ion-row justify-content-start align-items-center>
         <div class="w-auto">
           <ion-input class="login-tel" type="tel" placeholder="开始输入手机号" [(ngModel)]="lsData.mobile" (ionBlur)="checkPhone()"></ion-input>
         </div>
-        <div class="login-enter">
-          <button ion-fab color="success" (click)="signIn()" [ngClass]="{'show': inputBoolean == false , 'show-true': inputBoolean == true}">
-            <img class="img-content-enter" src="../../assets/imgs/xyb.png">
+        <div>
+          <button ion-fab class="login-enter" (click)="signIn()" [ngClass]="{'show': inputBoolean == false , 'show-true': inputBoolean == true}">
+            <img class="img-content-enter" src="./assets/imgs/xyb.png">
           </button>
         </div>
       </ion-row>
       <ion-row justify-content-between align-items-center>
         <div class="w-auto">
-          <ion-input class="login-code" type="tel" placeholder="验证码" [(ngModel)]="lsData.authCode" (ionBlur)="checkCode()"></ion-input>
+          <ion-input class="login-code"  type="number" placeholder="短信验证码" [(ngModel)]="lsData.authCode" (ionBlur)="checkCode()"></ion-input>
         </div>
         <div>
           <button ion-button class="login-send" (click)="sendMsg()">{{timeText}}</button>
@@ -145,13 +145,13 @@ export class LsPage {
     this.errorPhone = this.util.checkPhone(this.lsData.mobile);
     this.check();
 
-    if(this.errorPhone == 0){  //判断手机号是否为空
+    /*if(this.errorPhone == 0){  //判断手机号是否为空
       this.util.toast("手机号不能为空",1500);
     }else if(this.errorPhone == 1){
       this.util.toast("手机号长度小于11位",1500);
     }else if(this.errorPhone == 2){
       this.util.toast("手机号格式错误",1500);
-    }
+    }*/
   }
 
   checkCode(){
@@ -162,9 +162,9 @@ export class LsPage {
     }
     this.check();
 
-    if(this.errorCode == 0){ //判断密码是否为空
+    /*if(this.errorCode == 0){ //判断密码是否为空
       this.util.toast("验证码不能为空",1500);
-    }
+    }*/
   }
 
   // ionViewDidLoad(){

@@ -1,31 +1,77 @@
 import {MQProcess} from "../interface.process";
 import {WsContent} from "../model/content.model";
-import {ProcessFactory} from "../process.factory";
-import {EmitService} from "../../service/util-service/emit.service";
+import {FriendEmData, ScdEmData} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
 import {CudscdPara} from "../model/cudscd.para";
 import {ProcesRs} from "../model/proces.rs";
+import {DataConfig} from "../../service/config/data.config";
+import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 
 /**
  * 日历修改处理
  *
- * create by wzy on 2018/11/30.
+ * create by zhangjy on 2019/03/28.
  */
 @Injectable()
 export class CudscdProcess implements MQProcess{
-  constructor(private emitService:EmitService) {
+  constructor() {
   }
 
 
   go(content: WsContent,processRs:ProcesRs):Promise<ProcesRs> {
     return new Promise<ProcesRs>(resolve => {
-      //处理区分
-      content.option
+
       //处理所需要参数
       let cudPara:CudscdPara = content.parameters;
       //处理结果
       //emit
-      //this.emitService.emitDatas(processRs);
+      let prv:ProcesRs = content.thisContext.context.client.cxt;
+      if (prv) prv = processRs;
+
+      if (prv.scd.length == 0){
+        let ctbl:CTbl = new CTbl();
+        prv.scd.push(ctbl);
+      }
+
+      for (let c of prv.scd){
+        c.sd = cudPara.d == null?c.sd:cudPara.d;
+        c.sn = cudPara.ti == null?c.sn:cudPara.ti;
+        c.st = cudPara.t == null?c.st:cudPara.t;
+      }
+
+      //TODO 缺少元素提醒
+      //处理区分
+     // content.option
+     //  "检查日程缺失项目
+     //  检查内容（日期，时间，主题）（提示缺少元素）"	SS.C
+     //
+     //  "修改时候检查
+     //  是否被共享(提示不能修改)
+     //  是否重复日程提醒（提示更新今天，还是以后）"	SS.U
+     //  删除日程	SS.D
+
+
+      //保存上下文
+      DataConfig.putWsContext(prv);
+      DataConfig.putWsOpt(content.option);
+
+
+      //配置页面显示用数据
+      let scdEmData:ScdEmData = new ScdEmData();
+      scdEmData.id = prv.scd[0].si;
+      scdEmData.ti = prv.scd[0].sn;
+      scdEmData.d = prv.scd[0].sd;
+      scdEmData.t = prv.scd[0].st;
+      for (let p of prv.fs){
+        let b:FriendEmData = new FriendEmData();
+        b.a = p.hiu;
+        b.id = p.pwi;
+        b.m = p.rc;
+        b.n = p.ran;
+        b.p = p.ranpy;
+        scdEmData.datas.push(b);
+      }
+      // this.emitService.emitScd(scdEmData);
     })
   }
 

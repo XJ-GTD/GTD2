@@ -19,21 +19,21 @@ import {Location} from '@angular/common';
   template: `
    <div class="container">
     <div class="progress-wrapper">
-      <div class="current" [ngStyle]="getOverlayStyle()">{{ current }}/{{ max }}</div>
-      <round-progress
-        [current]="current"
-        [max]="max"
-        [stroke]="stroke"
-        [radius]="radius"
-        [semicircle]="semicircle"
-        [rounded]="rounded"
-        [responsive]="responsive"
-        [clockwise]="clockwise"
-        [color]="gradient ? \'url(#gradient)\' : color"
-        [background]="background"
-        [duration]="duration"
-        [animation]="animation"
-        [animationDelay]="animationDelay"></round-progress>
+      <!--<div class="current" [ngStyle]="getOverlayStyle()">{{ current }}/{{ max }}</div>-->
+      <!--<round-progress-->
+        <!--[current]="current"-->
+        <!--[max]="max"-->
+        <!--[stroke]="stroke"-->
+        <!--[radius]="radius"-->
+        <!--[semicircle]="semicircle"-->
+        <!--[rounded]="rounded"-->
+        <!--[responsive]="responsive"-->
+        <!--[clockwise]="clockwise"-->
+        <!--[color]="gradient ? \'url(#gradient)\' : color"-->
+        <!--[background]="background"-->
+        <!--[duration]="duration"-->
+        <!--[animation]="animation"-->
+        <!--[animationDelay]="animationDelay"></round-progress>-->
     </div>
     <div class="text">{{ alData.text }}</div>
   </div>
@@ -42,21 +42,21 @@ import {Location} from '@angular/common';
 })
 export class AlPage {
 
-  current: number = 0;
-  max: number = 100;
-  stroke: number = 10;
-  radius: number = 80;
-  semicircle: boolean = false;
-  rounded: boolean = false;
-  responsive: boolean = false;
-  clockwise: boolean = true;
-  color: string = '#45ccce';
-  background: string = '#eaeaea';
-  duration: number = 800;
-  animation: string = 'easeOutCubic';
-  animationDelay: number = 50
-  animations: string[] = [];
-  gradient: boolean = false;
+  // current: number = 0;
+  // max: number = 100;
+  // stroke: number = 10;
+  // radius: number = 80;
+  // semicircle: boolean = false;
+  // rounded: boolean = false;
+  // responsive: boolean = false;
+  // clockwise: boolean = true;
+  // color: string = '#45ccce';
+  // background: string = '#eaeaea';
+  // duration: number = 800;
+  // animation: string = 'easeOutCubic';
+  // animationDelay: number = 50
+  // animations: string[] = [];
+  // gradient: boolean = false;
   alData:AlData = new AlData();
   constructor(private alService: AlService,
               private _ease: RoundProgressEase,
@@ -67,25 +67,25 @@ export class AlPage {
 
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.alinit();
   }
 
   async alinit(){
 
     this.alData = await this.alService.checkAllPermissions();
-    this.increment(20);
+    //this.increment(20);
     this.alData = await this.alService.createDB();
-    this.increment(10);
+    //this.increment(10);
     this.alData = await this.alService.checkSystem();
-    this.increment(10);
+    //this.increment(10);
     if (!this.alData.checkSystem){
       this.alData = await this.alService.createSystemData();
     }
 
-    this.increment(20);
+    //this.increment(20);
     this.alData = await this.alService.setSetting();
-    this.increment(20);
+    //this.increment(20);
     this.alData = await this.alService.checkUserInfo();
 
     //缓存测试
@@ -100,23 +100,23 @@ export class AlPage {
     }
   }
 
-  increment(amount = 1) {
-    this.current += amount;
-  }
+  // increment(amount = 1) {
+  //   this.current += amount;
+  // }
 
-  getOverlayStyle() {
-    let isSemi = this.semicircle;
-    let transform = (isSemi ? '' : 'translateY(-50%) ') + 'translateX(-50%)';
-
-    return {
-      'top': isSemi ? 'auto' : '50%',
-      'bottom': isSemi ? '5%' : 'auto',
-      'left': '50%',
-      'transform': transform,
-      '-moz-transform': transform,
-      '-webkit-transform': transform,
-      'font-size': this.radius / 3.5 + 'px'
-    };
-  }
+  // getOverlayStyle() {
+  //   let isSemi = this.semicircle;
+  //   let transform = (isSemi ? '' : 'translateY(-50%) ') + 'translateX(-50%)';
+  //
+  //   return {
+  //     'top': isSemi ? 'auto' : '50%',
+  //     'bottom': isSemi ? '5%' : 'auto',
+  //     'left': '50%',
+  //     'transform': transform,
+  //     '-moz-transform': transform,
+  //     '-webkit-transform': transform,
+  //     'font-size': this.radius / 3.5 + 'px'
+  //   };
+  // }
 
 }

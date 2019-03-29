@@ -1,5 +1,7 @@
 import {WsHeader} from "./header.model";
 import {WsContent} from "./content.model";
+import * as moment from "moment";
+import {ProcesRs} from "./proces.rs";
 
 /**
  * MQ接收数据类
@@ -15,6 +17,6 @@ export class WsModel {
 }
 
 export class ContextModel {
-  client:{time:0, context:WsModel;};
-  server:any;
+  client = {time: moment().unix(), cxt: new ProcesRs(),option:""};
+  server = {time: moment().unix(), cxt: new ProcesRs(),option:""};
 }

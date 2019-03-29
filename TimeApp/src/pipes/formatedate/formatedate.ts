@@ -18,31 +18,34 @@ export class FormatedatePipe implements PipeTransform {
       if (args[0] == "CYYYY/MM/DD"){
         return moment(value).format("YYYY年MM月DD日");
       }
+      if (args[0] == "CYYYY/M/DD"){
+        return moment(value).format("YYYY年M月DD日");
+      }
       if (args[0] == "CWEEK"){
         let d =  moment(value).format("d");
         let ret = "";
 
         switch (d) {
           case "1":
-            ret = "周一";
+            ret = "星期一";
             break;
           case "2":
-            ret =  "周二";
+            ret =  "星期二";
             break;
           case "3":
-            ret =  "周三";
+            ret =  "星期三";
             break;
           case "4":
-            ret =  "周四";
+            ret =  "星期四";
             break;
           case "5":
-            ret =  "周五";
+            ret =  "星期五";
             break;
           case "6":
-            ret =  "周六";
+            ret =  "星期六";
             break;
           default:
-            ret =  "周日";
+            ret =  "星期日";
         };
 
         return ret;
