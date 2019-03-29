@@ -280,7 +280,7 @@ export class TdcPage {
   }
 
   //重复按钮显示控制
-  clickrept(type){
+  clickrept(type:string){
     this.scd.rt = type;
 
     switch (type){
@@ -330,7 +330,7 @@ export class TdcPage {
   }
 
   //提醒按钮显示控制
-  clickwake(type){
+  clickwake(type:string){
 
     this.scd.tx = type;
 

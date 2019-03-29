@@ -65,22 +65,22 @@ import { ScdData} from "../../service/pagecom/pgbusi.service";
         <div class ="reptlbl txtop"><ion-label>提醒</ion-label></div>
         <div class ="txtop1"><button ion-button  round clear class ="sel-btn-set"
                      [ngClass]="wake.close == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(0)">关</button></div>
+                     (click)="clickwake('0')">关</button></div>
         <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.tenm == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(1)">10分钟</button></div>
+                     (click)="clickwake('1')">10分钟</button></div>
         <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.thirm == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(2)">30分钟</button></div>
+                     (click)="clickwake('2')">30分钟</button></div>
         <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.oh == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(3)">1小时</button></div>
+                     (click)="clickwake('3')">1小时</button></div>
         <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.foh == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(4)">4小时</button></div>
+                     (click)="clickwake('4')">4小时</button></div>
         <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.od == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake(5)">1天</button></div>
+                     (click)="clickwake('5'')">1天</button></div>
       </ion-row>
       <ion-row >
         <div class = "memo-set">
@@ -214,26 +214,26 @@ export class TddiPage {
           this.reptshow="每年";
           break;
         default:
-          this.reptshow="关闭";
+          this.reptshow="关";
       }
 
       this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
       this.scd.st = moment().format("HH:mm");
 
 
-      this.clickwake(parseInt(this.scd.tx));
+      this.clickwake(this.scd.tx);
 
 
     })
   }
 
   //提醒按钮显示控制
-  clickwake(type){
+  clickwake(type:string){
 
     this.scd.tx = type;
 
     switch (type){
-      case 0:
+      case '0':
         this.wake.close = 1;
         this.wake.tenm = 0;
         this.wake.thirm = 0;
@@ -241,7 +241,7 @@ export class TddiPage {
         this.wake.foh = 0;
         this.wake.od=0;
         break;
-      case 1:
+      case '1':
         this.wake.close = 0;
         this.wake.tenm = 1;
         this.wake.thirm = 0;
@@ -249,7 +249,7 @@ export class TddiPage {
         this.wake.foh = 0;
         this.wake.od=0;
         break;
-      case 2:
+      case '2':
         this.wake.close = 0;
         this.wake.tenm = 0;
         this.wake.thirm = 1;
@@ -257,7 +257,7 @@ export class TddiPage {
         this.wake.foh = 0;
         this.wake.od=0;
         break;
-      case 3:
+      case '3':
         this.wake.close = 0;
         this.wake.tenm = 0;
         this.wake.thirm = 0;
@@ -265,7 +265,7 @@ export class TddiPage {
         this.wake.foh = 0;
         this.wake.od=0;
         break;
-      case 4:
+      case '4':
         this.wake.close = 0;
         this.wake.tenm = 0;
         this.wake.thirm = 0;
@@ -273,7 +273,7 @@ export class TddiPage {
         this.wake.foh = 1;
         this.wake.od=0;
         break;
-      case 5:
+      case '5':
         this.wake.close = 0;
         this.wake.tenm = 0;
         this.wake.thirm = 0;
