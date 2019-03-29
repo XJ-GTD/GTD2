@@ -116,33 +116,13 @@ export class PgBusiService {
         let ct = new CTbl();
         Object.assign(ct,rc);
         ct.si = this.util.getUuid();
-        let et = new ETbl();//提醒表
-        et.si = ct.si;
         //保存本地日程
         this.sqlExce.save(ct).then(data=>{
           //添加特殊事件表
           return this.saveSp(ct);
         }).then(data=>{
           //保存本地提醒表
-          if(rc.tx != '0'){
-            et.wi = this.util.getUuid();
-            et.wt = '0';
-            let time = 10; //分钟
-            if(rc.tx == "2"){
-              time = 30;
-            }else if(rc.tx == "3"){
-              time = 60;
-            }else if(rc.tx == "4"){
-              time = 240;
-            }else if(rc.tx == "5"){
-              time = 360;
-            }
-            let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD HH:mm");
-            et.wd=date.substr(0,10);
-            et.st = date.substr(11,5);
-            return this.sqlExce.save(et);
-          }
-
+          return this.saveOrUpdTx(ct);
         }).then(data=>{
           let adgPro:AgdPro = new AgdPro();
           adgPro.ai=ct.si; //日程ID
@@ -203,6 +183,37 @@ export class PgBusiService {
     //保存特殊表
     return this.sqlExce.batExecSql(sql);
 
+  }
+
+  /**
+   * 保存提醒方式
+   * @param {CTbl} rc 日程详情
+   * @returns {Promise<Promise<any> | number>}
+   */
+  private async saveOrUpdTx(rc:CTbl):Promise<any>{
+    let et = new ETbl();//提醒表
+    et.si = rc.si;
+    let result = await this.sqlExce.delete(et);
+    if(rc.tx != '0'){
+      et.wi = this.util.getUuid();
+      et.wt = '0';
+      let time = 10; //分钟
+      if(rc.tx == "2"){
+        time = 30;
+      }else if(rc.tx == "3"){
+        time = 60;
+      }else if(rc.tx == "4"){
+        time = 240;
+      }else if(rc.tx == "5"){
+        time = 360;
+      }
+      let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD HH:mm");
+      et.wd=date.substr(0,10);
+      et.st = date.substr(11,5);
+      console.log('-------- 插入提醒表 --------');
+      result = await this.sqlExce.save(et);
+    }
+    return result;
   }
   /**
    * 日程校验
