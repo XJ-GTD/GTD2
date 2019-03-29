@@ -8,11 +8,12 @@
 #import "BDSTTSEventManager.h"
 
 @interface XjBaiduTts : CDVPlugin<BDSSpeechSynthesizerDelegate> {
-  // Member variables go here.@property (nonatomic, strong) NSString* callbackId;
+    // Member variables go here.@property (nonatomic, strong) NSString* callbackId;
 }
 
 @property (nonatomic, strong) NSString* callbackId;
 - (void)speak:(CDVInvokedUrlCommand*)command;
+- (void)stop:(CDVInvokedUrlCommand*)command;
 @end
 
 
@@ -69,20 +70,18 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     self.callbackId = command.callbackId;
     sentenceID =  [[BDSSpeechSynthesizer sharedInstance] speakSentence:(string) withError:(&err)];
     if(err != nil){
-       NSLog(@"Did finish synth, %ld", err);
+        NSLog(@"Did finish synth, %ld", err);
     }
 }
 
-- (void)stop:()command
+- (void)stop:(CDVInvokedUrlCommand*)command
 {
     NSInteger sentenceID;
     NSError* err = nil;
     [[BDSSpeechSynthesizer sharedInstance] setSynthesizerDelegate:self];
     self.callbackId = command.callbackId;
-    sentenceID =  [[BDSSpeechSynthesizer sharedInstance] cancel:() withError:(&err)];
-    if(err != nil){
-       NSLog(@"Did finish synth, %ld", err);
-    }
+    [[BDSSpeechSynthesizer sharedInstance] cancel];
+
 }
 
 #pragma mark - implement BDSSpeechSynthesizerDelegate
@@ -100,11 +99,11 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 - (void)synthesizerSpeechEndSentence:(NSInteger)SpeakSentence{
     NSLog(@"Did synthesizerSpeechEndSentence speak %ld", SpeakSentence);
-   if (self.callbackId) {
-       CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-       [result setKeepCallbackAsBool:YES];
-       [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
-   }
+    if (self.callbackId) {
+        CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [result setKeepCallbackAsBool:YES];
+        [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
+    }
 }
 
 - (void)synthesizerNewDataArrived:(NSData *)newData
@@ -123,6 +122,7 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 - (void)synthesizerdidPause{
     NSLog(@"Did synthesizerdidPause speak");
 }
+
 
 - (void)synthesizerResumed{
     NSLog(@"Did synthesizerResumed");
