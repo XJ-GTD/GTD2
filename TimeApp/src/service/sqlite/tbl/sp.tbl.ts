@@ -78,6 +78,9 @@ export class SpTbl  implements ITbl {
     if(this.spi != null && this.spi!=""){
       sq = sq + 'and  spi ="' + this.spi +'"';
     }
+    if(this.si != null && this.si!=""){
+      sq = sq + 'and  si ="' + this.si +'"';
+    }
     sq = sq + ';'
     return sq;
   }

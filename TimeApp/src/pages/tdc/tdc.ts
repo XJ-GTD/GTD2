@@ -199,7 +199,7 @@ export class TdcPage {
   b:boolean = true;
 
   rept = {
-    close:1,
+    close:0,
     d:0,
     w:0,
     m:0,
@@ -207,7 +207,7 @@ export class TdcPage {
   };
 
   wake = {
-    close:1,
+    close:0,
     tenm:0,
     thirm:0,
     oh:0,
@@ -244,6 +244,8 @@ export class TdcPage {
       this.scd.rt = "0";
       this.scd.tx = "0";
       this.pagestate = "0";
+      this.rept.close = 1;
+      this.wake.close = 1;
       return ;
     }
 
@@ -442,14 +444,15 @@ export class TdcPage {
       this.tdcServ.save(this.scd).then(data=>{
         let ctbl = data.data;
         this.scd.si = ctbl.si;
-        this.pagestate =="1";
+        this.pagestate ="1";
         this.util.toast("保存成功",2000);
         if(typeof(eval(share))=="function")
         {
           share();
         }
-
+        return;
       });
+
     }
     //本人创建
     if (this.pagestate =="1") {
@@ -461,7 +464,9 @@ export class TdcPage {
         {
           share();
         }
+        return ;
       })
+
     }
 
 

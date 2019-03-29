@@ -245,17 +245,25 @@ export class PgBusiService {
     //更新提醒时间
     let e = new ETbl();
     Object.assign(e,scd.r);
-    await this.sqlExce.update(c);
+    await this.sqlExce.update(e);
 
 
     if (type == "1") {
       //特殊表操作
-      let bs :BsModel<ScdData> = await this.get(scd.si);
-      if (bs.data.sd != scd.sd || bs.data.rt != scd.rt){
+      let bs :BsModel<ScdData> = await this.get(c.si);
 
+      if (bs.data.sd != c.sd || bs.data.rt != c.rt){
+        //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
+        let sptbl = new SpTbl();
+        sptbl.si = c.si;
+        await this.sqlExce.delete(sptbl);
+
+        await this.saveSp(c);
       }else{
+        //如果只是修改重复时间，则更新重复子表所有时间
         if (bs.data.st != scd.st){
-
+          let sq = "update gtd_sp set st = '"+ c.st +"' where si = '"+ c.si +"'";
+          await this.sqlExce.execSql(sq);
         }
       }
       //restful用参数

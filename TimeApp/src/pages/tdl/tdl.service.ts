@@ -22,7 +22,7 @@ export class TdlService {
     if(next != null && next !=""){
 
       //获取本地日程jn jg jc jt
-      let sqll="select gc.si,gc.sn,gc.ui,sp.sd,sp.st," +
+      let sqll="select gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st," +
         "jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
         "inner join gtd_sp sp on sp.si = gc.si " +
         "left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji  " +
@@ -75,7 +75,7 @@ export class TdlService {
 
     if(next != null && next !=""){
       //正序查出比当前日期大的日程
-      let sql="select gc.si,gc.sn,gc.ui,sp.sd,sp.st," +
+      let sql="select gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st," +
         "jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
         "inner join gtd_sp sp on sp.si = gc.si " +
         "left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji  " +
@@ -126,7 +126,7 @@ export class TdlService {
     if(next != null && next !=""){
 
       //获取本地日程jn jg jc jt
-      let sqll="select gc.si,gc.sn,gc.ui,sp.sd,sp.st," +
+      let sqll="select gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st," +
         "jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
         "inner join gtd_sp sp on sp.si = gc.si " +
         "left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji  " +
@@ -168,7 +168,7 @@ export class TdlService {
       mpL.reverse()
       //mpL.sort();
       //正序查出比当前日期大的日程
-      let sql="select gc.si,gc.sn,gc.ui,sp.sd,sp.st," +
+      let sql="select gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st," +
         "jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
         "inner join gtd_sp sp on sp.si = gc.si " +
         "left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji " +
@@ -222,7 +222,7 @@ export class TdlService {
    */
   getOneDayRc(day:string):Promise<BsModel<any>>{
     return new Promise((resolve, reject) => {
-      let sql = 'select si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,tx from gtd_c gc  ' +
+      let sql = 'select si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,tx,gs from gtd_c gc  ' +
         'where (gc.sd <="' + day +'" and gc.ed is null ) or (gc.sd <="' + day +'" and gc.ed>='+day+'")';
       let bs = new BsModel<Array<ScdData>>();
       this.sqlExce.execSql(sql).then(data=>{
