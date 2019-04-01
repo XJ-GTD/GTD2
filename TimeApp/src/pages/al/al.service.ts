@@ -438,9 +438,9 @@ export class AlService {
       ss.push("看过不良人吗");
       ss.push("周末加班");
 
-      for (let i = 0; i < 4000; i++) {
-        start = moment('2019/03/01');
-        let r = this.util.randInt(-365 * 20, 365 * 20);
+      for (let i = 0; i < 400; i++) {
+        start = moment('2019/01/01');
+        let r = this.util.randInt(-365 * 10, 365 * 10);
         let t = this.util.randInt(0, 24);
         let jh_i = this.util.randInt(0, 20);
         let jh_id = "";
