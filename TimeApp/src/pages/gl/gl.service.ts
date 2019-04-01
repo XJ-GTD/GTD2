@@ -28,6 +28,26 @@ export class GlService {
     }
     return gld;
   }
+
+  //获取本地群列表
+  async getGroupl(name:string) {
+    let gld = new PageGlData();
+    //获取本地群列表
+    let sql = 'select * from gtd_g where gn like "'+name+'%"';
+    let dcl: Array<PageDcData> = await this.sqlExce.getExtList<PageDcData>(sql);
+    if(dcl.length>0){
+      //和单群人数
+      for(let dc of dcl){
+        let bx = new BxTbl();
+        bx.bi = dc.gi;
+        let fsl:Array<any> = await this.sqlExce.getList<PageFsData>(bx);
+        dc.gc = fsl.length;
+        dc.fsl = fsl;
+      }
+      gld.gl = dcl;
+    }
+    return gld;
+  }
 }
 
 export class PageGlData {

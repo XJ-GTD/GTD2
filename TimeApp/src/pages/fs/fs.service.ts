@@ -16,10 +16,9 @@ export class FsService {
     return new Promise<Array<PageFsData>>((resolve, reject)=>{
       //获取本地参与人
       let fsList =  new Array<PageFsData>();
-      let bt = new BTbl();
-      Object.assign(bt,fs);
-      console.log('---------- getfriend 根据条件查询参与人 条件:'+ JSON.stringify(bt));
-      this.sqlite.getList<PageFsData>(bt).then(data=>{
+      let sql = 'select * from gtd_b where rc like "'+fs.rc+'%" or rn like "%'+fs.rn+ '%" or ran like "%'+fs.ran+'%"';
+      console.log('---------- getfriend 根据条件查询参与人 条件:'+ JSON.stringify(sql));
+      this.sqlite.getExtList<PageFsData>(sql).then(data=>{
         fsList = data;
         console.log('---------- getfriend 根据条件查询参与人 结果:'+ JSON.stringify(data));
         resolve(fsList);
