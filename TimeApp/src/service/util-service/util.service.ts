@@ -113,6 +113,10 @@ export class UtilService {
     return true;
   }
 
+  public hasCordova():boolean{
+    return this.wins.cordova?true:false;
+  }
+
   /**
    * 是否真机环境
    * @return {boolean}

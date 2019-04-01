@@ -168,18 +168,18 @@ export class AiComponent {
 
 
     this.aiData1.scdList = new ScdLsAiData();
-    this.aiData1.scdList.desc = "查询了您的行程啊啊";
-    this.aiData1.scdList.datas = new Array<ScdAiData>();
+    this.aiData1.scdList.desc = datas.desc;
 
-    let scd1: ScdAiData = new ScdAiData();
-    scd1.d = "2019/3/21";
-    scd1.t = "15:30";
-    scd1.ti = "天气这么好，晒太阳去";
-    this.aiData1.scdList.datas.push(scd1);
-    this.aiData1.scdList.datas.push(scd1);
-    this.aiData1.scdList.datas.push(scd1);
-    this.aiData1.scdList.datas.push(scd1);
-    this.aiData1.scdList.datas.push(scd1);
+    for (let scdEmData of datas.datas){
+      let aiData:ScdAiData = new ScdAiData();
+      aiData.ti = scdEmData.ti;
+      aiData.d = scdEmData.d;
+      aiData.t = scdEmData.t
+      aiData.id = scdEmData.id;
+      this.aiData1.scdList.datas.push(aiData);
+
+    }
+
 
     setTimeout(() => {
       this.calcheight();

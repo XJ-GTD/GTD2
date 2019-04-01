@@ -16,7 +16,7 @@ export class RestfulClient {
   }
 
   init(){
-    if (this.util.isMobile()){
+    if (this.util.hasCordova()){
       this.http.setDataSerializer("json");
       this.http.setSSLCertMode("nocheck").then(data=>{
         console.log("----------- BsRestful setSSLCertMode Success : "  +  JSON.stringify(data));
@@ -27,7 +27,7 @@ export class RestfulClient {
   post(url:UrlEntity, body:any):Promise<any> {
     return new Promise((resolve, reject) => {
       let header = this.restConfig.createHeader();
-        if(this.util.isMobile()){
+        if(this.util.hasCordova()){
           return this.http.post(url.url,body,header).then(data=>{
             // console.log(data.status);
             // console.log(data.data); // data received by server
@@ -55,7 +55,7 @@ export class RestfulClient {
   get(url:UrlEntity):Promise<any> {
     return new Promise((resolve, reject) => {
       let header = this.restConfig.createHeader();
-        if(this.util.isMobile()){
+        if(this.util.hasCordova()){
           return this.http.get(url.url,{},header).then(data=>{
             console.log(data.status);
             console.log(data.data); // data received by server
@@ -83,7 +83,7 @@ export class RestfulClient {
   put(url:UrlEntity, body:any):Promise<any> {
     return new Promise((resolve, reject) => {
       let header = this.restConfig.createHeader();
-        if(this.util.isMobile()){
+        if(this.util.hasCordova()){
           return this.http.put(url.url,body,header).then(data=>{
             console.log(data.status);
             console.log(data.data); // data received by server
@@ -116,7 +116,7 @@ export class RestfulClient {
    */
   specPost(url:string,header:RestFulHeader,body:any):Promise<any> {
     return new Promise((resolve, reject) => {
-        if(this.util.isMobile()){
+        if(this.util.hasCordova()){
           return this.http.post(url,body,header).then(data=>{
             resolve(JSON.parse(data.data));
           }).catch(e=>{

@@ -33,7 +33,7 @@ export class MyApp {
       this.registerBackButtonAction();
       this.restfulClient.init();
       // set to landscape
-      if (this.util.isMobile())
+      if (this.util.hasCordova())
       this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
       this.speechService.speakText("好气人啊");
 

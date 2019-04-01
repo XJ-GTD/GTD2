@@ -27,11 +27,11 @@ export class FindProcess implements MQProcess {
       //处理所需要参数
       let findData: FindPara = content.parameters;
       //查找联系人
-      processRs.fs = await this.findfs(findData);
+      processRs.fs = await this.findfs(findData.fs);
 
       //处理区分
       if (content.option == F.C) {
-        processRs.scd = await this.findScd(findData);
+        processRs.scd = await this.findScd(findData.scd);
       }
 
       //处理结果
@@ -40,11 +40,11 @@ export class FindProcess implements MQProcess {
     })
   }
 
-  private findfs(findData: FindPara): Promise<Array<BTbl>> {
+  private findfs(ns: Array<any>): Promise<Array<BTbl>> {
     return new Promise<Array<BTbl>>(async resolve => {
 
       let res: Array<BTbl> = new Array<BTbl>();
-      if (findData.fs || findData.fs.length == 0) {
+      if (ns || ns.length == 0) {
         resolve(res);
         return res;
       }
@@ -56,7 +56,7 @@ export class FindProcess implements MQProcess {
       let gTbl: GTbl = new GTbl();
       let gs: Array<GTbl> = await this.sqliteExec.getList<GTbl>(gTbl);
       //循环参数中的pingy数组
-      for (let n of findData.fs) {
+      for (let n of ns) {
         let piny = n.n;
         //首先查找群组
         for (let g of gs) {
@@ -79,7 +79,7 @@ export class FindProcess implements MQProcess {
       //获取联系人列表
       let bTbl: BTbl = new BTbl();
       let bs: Array<BTbl> = await this.sqliteExec.getList<BTbl>(bTbl);
-      for (let n of findData.fs) {
+      for (let n of ns) {
         let piny = n.n;
         //首先查找群组
         for (let b3 of bs) {
@@ -96,14 +96,14 @@ export class FindProcess implements MQProcess {
     })
   }
 
-  private findScd(findData: FindPara): Promise<Array<CTbl>> {
+  private findScd(scd:any): Promise<Array<CTbl>> {
     return new Promise<Array<CTbl>>(async resolve => {
       let res: Array<CTbl> = new Array<CTbl>();
-      if (findData.de ||
-        findData.ds ||
-        findData.te ||
-        findData.ti ||
-        findData.ts) {
+      if (scd.de ||
+        scd.ds ||
+        scd.te ||
+        scd.ti ||
+        scd.ts) {
         let sql: string = `select distinct sp.spi as si,
                                            c.sn,
                                            c.ui,
@@ -125,24 +125,24 @@ export class FindProcess implements MQProcess {
                                   join gtd_d d on d.si = c.si
                            where 1 = 1`
 
-        if (findData.ti) {
-          sql = sql + ` and c.sn like '% ${findData.ti}%'`;
+        if (scd.ti) {
+          sql = sql + ` and c.sn like '% ${scd.ti}%'`;
         }
-        if (findData.ds) {
-          sql = sql + ` and sp.sd >= '${findData.ds}'`;
+        if (scd.ds) {
+          sql = sql + ` and sp.sd >= '${scd.ds}'`;
         } else {
           sql = sql + ` and sp.sd >= '${moment().subtract(30, 'd').format('YYYY/MM/DD')}%'`;
         }
-        if (findData.de) {
-          sql = sql + ` and sp.sd >= '${findData.de}'`;
+        if (scd.de) {
+          sql = sql + ` and sp.sd <= '${scd.de}'`;
         } else {
           sql = sql + ` and sp.sd <= '${moment().add(30, 'd').format('YYYY/MM/DD')}%'`;
         }
-        if (findData.ts) {
-          sql = sql + ` and sp.sd >= '${findData.ts}'`;
+        if (scd.ts) {
+          sql = sql + ` and sp.st >= '${scd.ts}'`;
         }
-        if (findData.te) {
-          sql = sql + ` and sp.sd <= '${findData.te}'`;
+        if (scd.te) {
+          sql = sql + ` and sp.st <= '${scd.te}'`;
         }
         res = await this.sqliteExec.getExtList<CTbl>(sql);
       }
