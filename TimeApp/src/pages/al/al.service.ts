@@ -20,10 +20,11 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {UserConfig} from "../../service/config/user.config";
 import {AgdRestful} from "../../service/restful/agdsev";
 import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
-import {DurationInputArg2} from "moment";
 import {unitOfTime} from "moment";
-import DurationAs = moment.unitOfTime.DurationAs;
 import {StTbl} from "../../service/sqlite/tbl/st.tbl";
+import {ContactsService} from "../../service/cordova/contacts.service";
+import {BhTbl} from "../../service/sqlite/tbl/bh.tbl";
+import {DataConfig} from "../../service/config/data.config";
 
 @Injectable()
 export class AlService {
@@ -37,7 +38,8 @@ export class AlService {
               private wsserivce: WebsocketService,
               private feekback: FeedbackService,
               private userConfig: UserConfig,
-              private agdRestful: AgdRestful) {
+              private agdRestful: AgdRestful,
+              private contactsService:ContactsService) {
   }
 
 //权限申请
@@ -65,6 +67,7 @@ export class AlService {
 //判断是否初始化完成
   checkSystem(): Promise<AlData> {
     return new Promise((resolve, reject) => {
+
       let alData: AlData = new AlData();
       let yTbl: YTbl = new YTbl();
       yTbl.yt = "FI";
@@ -96,11 +99,10 @@ export class AlService {
     return new Promise(async (resolve, reject) => {
 
       let alData: AlData = new AlData();
-      alData.text
       //创建表结构
-      let count = await this.sqlLiteInit.createTables();
+     await this.sqlLiteInit.createTables();
 
-      await this.sqlLiteInit.initData();
+     await this.sqlLiteInit.initData();
       let yTbl: YTbl = new YTbl();
       yTbl.yi = this.util.getUuid();
       yTbl.yt = "FI";
@@ -110,10 +112,14 @@ export class AlService {
 
       await this.createTestData();
 
+      await this.contactsService.asyncPhoneContacts();
+
       alData.text = "系统初始化完成";
       resolve(alData);
     })
   }
+
+
 
 //连接webSocket
   connWebSocket(): Promise<AlData> {
@@ -278,6 +284,7 @@ export class AlService {
       //参与人
       let btbls: Array<BTbl> = [];
       let btbl: BTbl = new BTbl();
+      let  bhtbl = new BhTbl();
       btbl.pwi = this.util.getUuid();
       btbl.ran = '小胖子';
       btbl.ranpy = 'xiaopangzi';
@@ -289,6 +296,12 @@ export class AlService {
       btbl.ui = btbl.pwi;
       sqls.push(btbl.inT());
       btbls.push(btbl);
+
+      bhtbl = new BhTbl();
+      bhtbl.bhi = this.util.getUuid();
+      bhtbl.pwi =  btbl.pwi;
+      bhtbl.hiu = DataConfig.HUIBASE64;
+      sqls.push(bhtbl.inT());
 
       btbl = new BTbl();
       btbl.pwi = this.util.getUuid();
@@ -303,6 +316,13 @@ export class AlService {
       sqls.push(btbl.inT());
       btbls.push(btbl);
 
+
+      bhtbl = new BhTbl();
+      bhtbl.bhi = this.util.getUuid();
+      bhtbl.pwi =  btbl.pwi;
+      bhtbl.hiu = DataConfig.HUIBASE64;
+      sqls.push(bhtbl.inT());
+
       btbl = new BTbl();
       btbl.pwi = this.util.getUuid();
       btbl.ran = '小楞子';
@@ -315,6 +335,12 @@ export class AlService {
       btbl.ui = btbl.pwi;
       sqls.push(btbl.inT());
       btbls.push(btbl);
+
+      bhtbl = new BhTbl();
+      bhtbl.bhi = this.util.getUuid();
+      bhtbl.pwi =  btbl.pwi;
+      bhtbl.hiu = DataConfig.HUIBASE64;
+      sqls.push(bhtbl.inT());
 
       btbl = new BTbl();
       btbl.pwi = this.util.getUuid();
@@ -329,6 +355,12 @@ export class AlService {
       sqls.push(btbl.inT());
       btbls.push(btbl);
 
+      bhtbl = new BhTbl();
+      bhtbl.bhi = this.util.getUuid();
+      bhtbl.pwi =  btbl.pwi;
+      bhtbl.hiu = DataConfig.HUIBASE64;
+      sqls.push(bhtbl.inT());
+
       btbl = new BTbl();
       btbl.pwi = this.util.getUuid();
       btbl.ran = '飞飞飞';
@@ -341,6 +373,12 @@ export class AlService {
       btbl.ui = btbl.pwi;
       sqls.push(btbl.inT());
       btbls.push(btbl);
+
+      bhtbl = new BhTbl();
+      bhtbl.bhi = this.util.getUuid();
+      bhtbl.pwi =  btbl.pwi;
+      bhtbl.hiu = DataConfig.HUIBASE64;
+      sqls.push(bhtbl.inT());
 
       btbl = new BTbl();
       btbl.pwi = this.util.getUuid();
@@ -355,6 +393,12 @@ export class AlService {
       sqls.push(btbl.inT());
       btbls.push(btbl);
 
+      bhtbl = new BhTbl();
+      bhtbl.bhi = this.util.getUuid();
+      bhtbl.pwi =  btbl.pwi;
+      bhtbl.hiu = DataConfig.HUIBASE64;
+      sqls.push(bhtbl.inT());
+
       btbl = new BTbl();
       btbl.pwi = this.util.getUuid();
       btbl.ran = '牛牛';
@@ -367,6 +411,12 @@ export class AlService {
       btbl.ui = btbl.pwi;
       sqls.push(btbl.inT());
       btbls.push(btbl);
+
+      bhtbl = new BhTbl();
+      bhtbl.bhi = this.util.getUuid();
+      bhtbl.pwi =  btbl.pwi;
+      bhtbl.hiu = DataConfig.HUIBASE64;
+      sqls.push(bhtbl.inT());
 
       //群组
       let gtbl: GTbl = new GTbl();
@@ -438,9 +488,9 @@ export class AlService {
       ss.push("看过不良人吗");
       ss.push("周末加班");
 
-      for (let i = 0; i < 500; i++) {
-        start = moment('2019/03/01');
-        let r = this.util.randInt(-365 * 3, 365 * 3);
+      for (let i = 0; i < 100; i++) {
+        start = moment('2019/01/01');
+        let r = this.util.randInt(-365 * 10, 365 * 10);
         let t = this.util.randInt(0, 24);
         let jh_i = this.util.randInt(0, 20);
         let jh_id = "";
@@ -575,14 +625,14 @@ export class AlService {
     })
   }
 
-  async createCachefromserver() {
-    const ctbl: CTbl = new CTbl();
-    // ctbl.sd = '2019/01/01';
-    // ctbl.rt = "0";
-    let ds = await this.sqlExce.getList<CTbl>(ctbl);
-
-    let dd = await this.agdRestful.cachefromserver(ds)
-  }
+  // async createCachefromserver() {
+  //   const ctbl: CTbl = new CTbl();
+  //   // ctbl.sd = '2019/01/01';
+  //   // ctbl.rt = "0";
+  //   let ds = await this.sqlExce.getList<CTbl>(ctbl);
+  //
+  //   let dd = await this.agdRestful.cachefromserver(ds)
+  // }
 
   // //测试用
   // private _testMap: Map<moment.Moment, Array<CTbl>> = new Map<moment.Moment, Array<CTbl>>();

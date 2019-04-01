@@ -5,11 +5,13 @@ import {BsModel} from "../../service/restful/out/bs.model";
 import * as moment from "moment";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {FsData, ScdData} from "../../service/pagecom/pgbusi.service";
+import {ReadlocalService} from "../../service/pagecom/readlocal.service";
 
 @Injectable()
 export class TdlService {
   constructor(
     private sqlExce: SqliteExec,
+    private readlocal:ReadlocalService,
     private userConfig: UserConfig) {
   }
   /**
@@ -19,6 +21,7 @@ export class TdlService {
    */
   async down(next:string,maxn){
     let mpL = new Array<ScdlData>();
+
     if(next != null && next !=""){
 
       //获取本地日程jn jg jc jt
@@ -28,6 +31,8 @@ export class TdlService {
         "left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji  " +
         "where sp.sd<='"+ next+"' order by sp.sd desc limit 300";
       let rclL = await this.sqlExce.execSql(sqll);
+      let lastyear = moment(next).subtract(1,'y').toDate();
+      let localL = await this.readlocal.findEventRc('',lastyear,new Date(next));
       if(rclL && rclL.rows && rclL.rows.length>0){
         let len = rclL.rows.length-1;
         let i=0;
@@ -45,10 +50,20 @@ export class TdlService {
             }else if(sc.sd == day){
               let dt = new DTbl();
               dt.si = sc.si;
-              let fsL = await this.sqlExce.getList<FsData>(dt);
-              sc.fss = fsL;
+              // let fsL = await this.sqlExce.getList<FsData>(dt);
+              // sc.fss = fsL;
               Object.assign(sc.fs,rclL.rows.item(j));
               Object.assign(sc.p,rclL.rows.item(j));
+              mp.scdl.push(sc);
+              i++;
+            }
+          }
+          for(let h=0;h<localL.length;h++) {
+            let sc: ScdData = localL[h];
+            if (moment(day).isAfter(sc.sd)) {
+              break;
+            } else if (sc.sd == day) {
+              console.log("=============== 本地日历："+JSON.stringify(sc));
               mp.scdl.push(sc);
               i++;
             }
@@ -81,6 +96,8 @@ export class TdlService {
         "left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji  " +
         "where sp.sd>='"+ next+"' order by sp.sd,sp.st asc limit 300";
       let rcnL = await this.sqlExce.execSql(sql);
+      let lastyear = moment(next).add(1,'y').toDate();
+      let localL = await this.readlocal.findEventRc('',new Date(next),lastyear);
       if(rcnL && rcnL.rows && rcnL.rows.length>0){
         let len = rcnL.rows.length-1;
         let i=0;
@@ -98,11 +115,21 @@ export class TdlService {
             }else if(sc.sd == day){
               let dt = new DTbl();
               dt.si = sc.si;
-              let fsL = await this.sqlExce.getList<FsData>(dt);
-              sc.fss = fsL;
+             // let fsL = await this.sqlExce.getList<FsData>(dt);
+             //  sc.fss = fsL;
 
               Object.assign(sc.fs,rcnL.rows.item(j));
               Object.assign(sc.p,rcnL.rows.item(j));
+              mp.scdl.push(sc);
+              i++;
+            }
+          }
+          for(let h=0;h<localL.length;h++) {
+            let sc: ScdData = localL[h];
+            if (moment(sc.sd).isAfter(day)) {
+              break;
+            } else if (sc.sd == day) {
+              console.log("=============== 本地日历："+JSON.stringify(sc));
               mp.scdl.push(sc);
               i++;
             }

@@ -54,6 +54,8 @@ import {TddiService} from "../pages/tddi/tddi.service";
 import {PgBusiService} from "../service/pagecom/pgbusi.service";
 import {TdcService} from "../pages/tdc/tdc.service";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
+import {ContactsService} from "../service/cordova/contacts.service";
+import {ReadlocalService} from "../service/pagecom/readlocal.service";
 
 @NgModule({
   declarations: [
@@ -89,6 +91,7 @@ import {ScreenOrientation} from "@ionic-native/screen-orientation";
     Vibration,
     NativeAudio,
     Keyboard,
+    ContactsService,
     ScreenOrientation,
     LocalNotifications,
     SQLite,
@@ -124,6 +127,7 @@ import {ScreenOrientation} from "@ionic-native/screen-orientation";
     TddiService,
     PgBusiService,
     TdcService,
+    ReadlocalService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG,useClass: HammerDIRECTIONALLConfig }
   ]

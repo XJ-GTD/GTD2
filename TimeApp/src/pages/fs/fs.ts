@@ -41,7 +41,7 @@ import {GlService} from "../gl/gl.service";
         <!--</ion-item>-->
       <!--</div>-->
       <div class="name-input w-auto">
-        <ion-input type="text" placeholder="请输入手机号" (ionBlur)="getContacts()" [(ngModel)]="tel"  text-center></ion-input>
+        <ion-input type="text" placeholder="请输入手机号或名称" (ionChange)="getContacts()" [(ngModel)]="tel"  text-center></ion-input>
       </div>
       <ion-grid>
         <ion-row>
@@ -56,8 +56,8 @@ import {GlService} from "../gl/gl.service";
           <ion-list no-lines>
             <ion-item class="plan-list-item"  *ngFor="let g of fsl">
               <ion-avatar item-start>
-                <!--<img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">-->
-                <ion-icon name="contact"  style="font-size: 3.0em;color: red;"></ion-icon>
+                <img [src]="g.hiu">
+                <!--<ion-icon name="contact"  style="font-size: 3.0em;color: red;"></ion-icon>-->
               </ion-avatar>
               <ion-label>
                 {{g.rn}}
@@ -94,9 +94,12 @@ export class FsPage {
     console.log('ionViewDidLoad FsPage');
     this.addType = this.navParams.get('addType');
     this.tpara = this.navParams.get('tpara');
-    this.getFdl(new PageFsData());
-  }
 
+  }
+  ionViewDidEnter(){
+    console.log("3.0 ionViewDidEnter 当进入页面时触发");
+    //this.getFdl(new PageFsData());
+  }
   save(){
     if(this.selFsl.size>0){
       let list = [];
@@ -197,7 +200,7 @@ export class FsPage {
 
   getFdl(fs:PageFsData){
     if(this.addType=='rc'){
-      this.glService.getGroups().then(data=>{
+      this.glService.getGroupl(fs.rc).then(data=>{
         if(data && data.gl){
           this.gl = data.gl;
         }
@@ -214,6 +217,8 @@ export class FsPage {
   getContacts(){
     let fs = new PageFsData();
     fs.rc = this.tel;
+    fs.rn = this.tel;
+    fs.ran = this.tel;
     this.getFdl(fs);
   }
   toAddGroupMember(){}

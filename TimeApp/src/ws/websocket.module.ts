@@ -15,6 +15,7 @@ import {ReceiveProcess} from "./process/receive.process";
 import {SettingProcess} from "./process/setting.process";
 import {SsService} from "../pages/ss/ss.service";
 import {FdService} from "../pages/fd/fd.service";
+import {FsService} from "../pages/fs/fs.service";
 
 
 /**
@@ -31,7 +32,7 @@ import {FdService} from "../pages/fd/fd.service";
     DefaultProcess, FindProcess,
     OptionProcess, ContextProcess,
     ReceiveProcess,SettingProcess,
-    SsService,FdService
+    SsService,FdService,FsService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

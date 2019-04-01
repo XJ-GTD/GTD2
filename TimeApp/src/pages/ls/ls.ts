@@ -20,17 +20,17 @@ import {UtilService} from "../../service/util-service/util.service";
     <ion-grid class="grid-login-basic no-padding-lr">
       <ion-row justify-content-start align-items-center>
         <div class="w-auto">
-          <ion-input class="login-tel" type="tel" placeholder="开始输入手机号" [(ngModel)]="lsData.mobile" (ionBlur)="checkPhone()"></ion-input>
+          <ion-input class="login-tel" type="tel" placeholder="开始输入手机号" [(ngModel)]="lsData.mobile" (input)="format()"></ion-input>
         </div>
         <div>
-          <button ion-fab class="login-enter" (click)="signIn()" [ngClass]="{'show': inputBoolean == false , 'show-true': inputBoolean == true}">
+          <button ion-fab class="login-enter" (click)="signIn()" [ngClass]="{'show': enter == false , 'show-true': enter == true}">
             <img class="img-content-enter" src="./assets/imgs/xyb.png">
           </button>
         </div>
       </ion-row>
       <ion-row justify-content-between align-items-center>
         <div class="w-auto">
-          <ion-input class="login-code"  type="number" placeholder="短信验证码" [(ngModel)]="lsData.authCode" (ionBlur)="checkCode()"></ion-input>
+          <ion-input class="login-code"  type="number" placeholder="短信验证码" [(ngModel)]="lsData.authCode"></ion-input>
         </div>
         <div>
           <button ion-button class="login-send" (click)="sendMsg()">{{timeText}}</button>
@@ -48,9 +48,7 @@ import {UtilService} from "../../service/util-service/util.service";
 export class LsPage {
 
   lsData:PageLsData = new PageLsData();
-  errorPhone:number = 0; // 0：初始化（输入为空） 1：手机号长度小于11位 2：手机号格式错误 3：手机号正确
-  errorCode:number = 0; // 0：初始化；1：验证码输入
-  inputBoolean:boolean = false;  // false： show ; true show-true
+  enter:boolean = false;
   timeText:any = "获取验证码";
   timer:any;
 
@@ -80,12 +78,11 @@ export class LsPage {
   }
 
   sendMsg(){
-    if(this.errorPhone == 3){
+    if(this.checkPhone()){
       this.lsService.getSMSCode(this.lsData.mobile).then(data => {
         //console.log("短信发送成功" + JSON.stringify(data));
         //短信验证码KEY 赋值给验证码登录信息
         this.lsData.verifykey = data.data.verifykey;
-        //this.alert("短信发送成功");
         this.util.toast("短信发送成功",1500);
 
       }).catch(error => {
@@ -109,9 +106,13 @@ export class LsPage {
   }
 
   signIn() {
-    if(this.inputBoolean) {
-      console.log("手机验证码登录被点击");
-      if(this.lsData.verifykey != null && this.lsData.verifykey != "" && this.lsData.verifykey != undefined){
+    if(this.checkPhone()) {
+      if (this.lsData.authCode == null || this.lsData.authCode == "" || this.lsData.authCode == undefined) {     //判断验证码是否为空
+        this.util.toast("验证码不能为空",1500);
+      }else if(this.lsData.verifykey == null || this.lsData.verifykey == "" || this.lsData.verifykey == undefined){
+        this.util.toast("请发送短信并填写正确的短信验证码",1500);
+      }else{
+        console.log("手机验证码登录被点击");
         this.util.loadingStart();
         this.lsService.login(this.lsData).then(data=> {
           if (data.code != 0)
@@ -124,47 +125,25 @@ export class LsPage {
         }).catch(error=>{
           console.log("手机验证码登录失败"+JSON.stringify(error));
           this.util.loadingEnd();
-          //this.alert(error.message);
-          this.util.toast("手机验证码登录失败",1500);
+          this.util.toast(error.message,1500);
         });
-      }else{
-        this.util.toast("请发送短信并填写正确的短信验证码",1500);
       }
     }
   }
 
-  check(){
-    if (this.errorPhone == 3 && this.errorCode == 1){
-      this.inputBoolean = true;
-    }else {
-      this.inputBoolean = false;
+  checkPhone():boolean {
+    if (!this.util.checkPhone(this.lsData.mobile)){
+      this.util.toast("请填写正确的手机号",1500);
     }
+    return this.util.checkPhone(this.lsData.mobile);
   }
 
-  checkPhone() {
-    this.errorPhone = this.util.checkPhone(this.lsData.mobile);
-    this.check();
-
-    /*if(this.errorPhone == 0){  //判断手机号是否为空
-      this.util.toast("手机号不能为空",1500);
-    }else if(this.errorPhone == 1){
-      this.util.toast("手机号长度小于11位",1500);
-    }else if(this.errorPhone == 2){
-      this.util.toast("手机号格式错误",1500);
-    }*/
-  }
-
-  checkCode(){
-    if (this.lsData.authCode != null && this.lsData.authCode != "" && this.lsData.authCode != undefined){     //判断验证码是否为空
-      this.errorCode = 1;
+  format(){
+    if(this.lsData.mobile.length==11){
+      this.enter = this.checkPhone();
     }else {
-      this.errorCode = 0;
+      this.enter = false;
     }
-    this.check();
-
-    /*if(this.errorCode == 0){ //判断密码是否为空
-      this.util.toast("验证码不能为空",1500);
-    }*/
   }
 
   // ionViewDidLoad(){

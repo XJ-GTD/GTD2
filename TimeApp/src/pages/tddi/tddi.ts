@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   ActionSheetController,  IonicPage, ModalController, NavController, NavParams,
 } from 'ionic-angular';
@@ -41,7 +41,7 @@ import { ScdData} from "../../service/pagecom/pgbusi.service";
       </ion-row>
       <ion-row >
         <div >
-            <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">添加计划</button>
+            <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">{{scd.p.jn==""?"添加计划":scd.p.jn}}</button>
         </div>
       </ion-row>
       <ion-row >
@@ -120,11 +120,11 @@ import { ScdData} from "../../service/pagecom/pgbusi.service";
     <ion-grid>
       <ion-row>
 
-        <ion-list  no-lines  radio-group [(ngModel)]="scd.ji">
+        <ion-list  no-lines  radio-group [(ngModel)]="scd.p">
           <ion-item class="plan-list-item" *ngFor="let option of jhs">
             <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
             <ion-label>{{option.jn}}</ion-label>
-            <ion-radio value="{{option.ji}}" [ngStyle]="{'checked': option.ji == scd.ji , 'none': option.ji != scd.ji}"></ion-radio>
+            <ion-radio [value]="option" [ngStyle]="{'checked': option.ji == scd.ji , 'none': option.ji != scd.ji}"></ion-radio>
           </ion-item>
         </ion-list>
 
@@ -308,7 +308,7 @@ export class TddiPage {
     //开始时间格式转换
     this.scd.sd = moment(this.scd.sd).format("YYYY/MM/DD");
 
-    //他人创建
+    this.scd.ji = this.scd.p.ji;
 
     //归属 他人创建
     this.scd.gs = '0';

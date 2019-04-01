@@ -41,7 +41,7 @@ export class SqliteConfig {
         });
       } else {
         //H5数据库存储
-        this._database = this._win.openDatabase("mingWX.db", '1.0', 'database', 5 * 1024 * 1024);//声明H5 数据库大小
+        this._database = this._win.openDatabase("mingWX.db", '1.0', 'database', 20 * 1024 * 1024);//声明H5 数据库大小
         console.log(" create H5 Db success");
         resolve()
       }

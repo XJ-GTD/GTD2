@@ -73,6 +73,10 @@ export class BTbl implements ITbl{
     if(this.pwi != null && this.pwi!=""){
       sq = sq + 'and  pwi ="' + this.pwi +'"';
     }
+    if(this.rc != null && this.rc!=""){
+      sq = sq + 'and  rc ="' + this.rc +'"';
+    }
+
     sq = sq + ';';
     return sq;
   }

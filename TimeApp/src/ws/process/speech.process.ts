@@ -40,9 +40,9 @@ export class SpeechProcess implements MQProcess {
         //   speakText = speakText.replace("{" + key + "}", value);
         // });
         //TODO 变量替换不全
-        speakText = speakText.replace("{" + count + "}", count.toString());
+        speakText = speakText.replace("{count}", count.toString());
 
-        if (processRs.scd.length = 1){
+        if (processRs.scd.length == 1){
           let scdEm:ScdEmData = new ScdEmData();
           scdEm.id = processRs.scd[0].si;
           scdEm.d = processRs.scd[0].sd;
@@ -61,7 +61,7 @@ export class SpeechProcess implements MQProcess {
           }
           this.emitService.emitScd(scdEm);
 
-        }else if (processRs.scd.length > 1){
+        }else{
           let cscdLS:ScdLsEmData = new ScdLsEmData();
           cscdLS.desc = speakText;
           for (let scd of processRs.scd){

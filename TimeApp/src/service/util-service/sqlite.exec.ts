@@ -143,25 +143,32 @@ export class SqliteExec {
   }
 
   async batExecSql(sqlist: Array<string>) {
+
     if (this.util.isMobile()) {
-      let sql: string ="";
-      for (var j = 0, len = sqlist.length; j < len; j++) {
-        sql = sql + sqlist[j];
-      }
-      console.log("start bat insert*****************************")
-      return this.sqlitePorter.importSqlToDb(this.sqlliteConfig.database, sql)
+      return await this.sqlliteConfig.database.sqlBatch(sqlist)
 
     } else {
-      let count = 0;
-      for (var j = 0, len = sqlist.length; j < len; j++) {
-        if (sqlist[j] != null && sqlist[j] != '') {
-          count++;
-          await this.execSql(sqlist[j]);
-        } else {
-          //console.error("sqls["+i+"]: ("+sqls[i]+ "） ;sqlAll:"+sql);
+
+      if (this.util.hasCordova()) {
+        let sql: string = "";
+        for (var j = 0, len = sqlist.length; j < len; j++) {
+          sql = sql + sqlist[j];
         }
+        return this.sqlitePorter.importSqlToDb(this.sqlliteConfig.database, sql);
+
+      } else {
+        let count = 0;
+        for (var j = 0, len = sqlist.length; j < len; j++) {
+          if (sqlist[j] != null && sqlist[j] != '') {
+            count++;
+            await this.execSql(sqlist[j]);
+          } else {
+            //console.error("sqls["+i+"]: ("+sqls[i]+ "） ;sqlAll:"+sql);
+          }
+
+        }
+        return count;
       }
-      return count;
     }
   }
 
