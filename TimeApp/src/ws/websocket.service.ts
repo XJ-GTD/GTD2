@@ -38,8 +38,8 @@ export class WebsocketService {
       //获取websocte  queue
       this.queue = UserConfig.account.mq;
       //呼吸
-      this.client.heartbeat.outgoing = 2000;
-      this.client.heartbeat.incoming = 2000;
+      //this.client.heartbeat.outgoing = 2000;
+      //this.client.heartbeat.incoming = 2000;
 
       resolve();
     })
@@ -63,7 +63,7 @@ export class WebsocketService {
           });
         }, error => {
           console.log('错误回调webSocket error! :' + error);
-          //this.connect();
+          this.close();
 
         }, event => {
           console.log('关闭回调socket close!' + event);
