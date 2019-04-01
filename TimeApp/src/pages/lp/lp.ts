@@ -20,7 +20,7 @@ import {UtilService} from "../../service/util-service/util.service";
     <ion-grid class="grid-login-basic no-padding-lr">
       <ion-row justify-content-start align-items-center>
         <div class="w-auto">
-          <ion-input class="login-tel" type="tel" placeholder="开始输入账号" [(ngModel)]="lpData.mobile" (ionBlur)="checkPhone()"></ion-input>
+          <ion-input class="login-tel" type="tel" placeholder="开始输入账号" [(ngModel)]="lpData.mobile" ></ion-input>
         </div>
         <div>
           <button ion-fab class="login-enter" (click)="signIn()" [ngClass]="{'show': inputBoolean == false , 'show-true': inputBoolean == true}">
@@ -30,7 +30,7 @@ import {UtilService} from "../../service/util-service/util.service";
       </ion-row>
       <ion-row justify-content-between align-items-center>
         <div class="w-auto">
-          <ion-input class="login-pwd" type="password" placeholder="密码" [(ngModel)]="lpData.password" (ionBlur)="checkPwd()"></ion-input>
+          <ion-input class="login-pwd" type="password" placeholder="密码" [(ngModel)]="lpData.password"></ion-input>
         </div>
       </ion-row>
     </ion-grid>
@@ -44,9 +44,6 @@ import {UtilService} from "../../service/util-service/util.service";
 export class LpPage {
 
   lpData:PageLpData = new PageLpData();
-  isPhone:boolean = false; // 0：初始化（输入为空） 1：手机号长度小于11位 2：手机号格式错误 3：手机号正确
-  errorPwd:number = 0; // 0：初始化；1：密码输入
-  inputBoolean:boolean = false;  // false： show ; true show-true
 
   constructor(public navCtrl: NavController,
               private util:UtilService,
@@ -74,7 +71,7 @@ export class LpPage {
   }
 
   signIn() {
-    if(this.inputBoolean){
+    if (this.checkPhone()){
       console.log("手机密码登录按钮被点击");
       this.util.loadingStart();
       this.lpService.login(this.lpData).then(data=> {
@@ -90,20 +87,17 @@ export class LpPage {
         //this.alert(error.message);
         this.util.toast("手机密码登录失败",1500);
       });
+
     }
   }
 
-  check(){
-    if (this.isPhone && this.errorPwd == 1){
-      this.inputBoolean = true;
-    }else {
-      this.inputBoolean = false;
-    }
-  }
 
-  checkPhone() {
-    this.isPhone = this.util.checkPhone(this.lpData.mobile);
-    this.check();
+  checkPhone():boolean {
+  if (!this.util.checkPhone(this.lpData.mobile)){
+    this.util.toast("手机号格式错误",1500);
+  }
+    return this.util.checkPhone(this.lpData.mobile);
+
 
     /*if(this.errorPhone == 0){  //判断手机号是否为空
       this.util.toast("手机号不能为空",1500);
@@ -111,19 +105,6 @@ export class LpPage {
       this.util.toast("手机号长度小于11位",1500);
     }else if(this.errorPhone == 2){
       this.util.toast("手机号格式错误",1500);
-    }*/
-  }
-
-  checkPwd(){
-    if (this.lpData.password != null && this.lpData.password != "" && this.lpData.password != undefined){     //判断密码是否为空
-      this.errorPwd = 1;
-    }else {
-      this.errorPwd = 0;
-    }
-    this.check();
-
-    /*if(this.errorPwd == 0){ //判断密码是否为空
-      this.util.toast("密码不能为空",1500);
     }*/
   }
 
