@@ -20,10 +20,10 @@ import {UtilService} from "../../service/util-service/util.service";
     <ion-grid class="grid-login-basic no-padding-lr">
       <ion-row justify-content-start align-items-center>
         <div class="w-auto">
-          <ion-input class="login-tel" type="tel" placeholder="开始输入账号" [(ngModel)]="lpData.mobile" ></ion-input>
+          <ion-input class="login-tel" type="tel" placeholder="开始输入账号" [(ngModel)]="lpData.mobile" (input)="format()"></ion-input>
         </div>
         <div>
-          <button ion-fab class="login-enter" (click)="signIn()" [ngClass]="{'show': inputBoolean == false , 'show-true': inputBoolean == true}">
+          <button ion-fab class="login-enter" (click)="signIn()" [ngClass]="{'show': enter == false , 'show-true': enter == true}">
             <img class="img-content-enter" src="./assets/imgs/xyb.png">
           </button>
         </div>
@@ -44,6 +44,7 @@ import {UtilService} from "../../service/util-service/util.service";
 export class LpPage {
 
   lpData:PageLpData = new PageLpData();
+  enter:boolean = false;
 
   constructor(public navCtrl: NavController,
               private util:UtilService,
@@ -72,40 +73,41 @@ export class LpPage {
 
   signIn() {
     if (this.checkPhone()){
-      console.log("手机密码登录按钮被点击");
-      this.util.loadingStart();
-      this.lpService.login(this.lpData).then(data=> {
-        if (data.code != 0)
-          throw  data;
+      if (this.lpData.password == null || this.lpData.password == "" || this.lpData.password == undefined) {     //判断密码是否为空
+        this.util.toast("密码不能为空",1500);
+      }else{
+        console.log("手机密码登录按钮被点击");
+        this.util.loadingStart();
+        this.lpService.login(this.lpData).then(data=> {
+          if (data.code != 0)
+            throw  data;
 
-        console.log("手机密码登录成功"+ JSON.stringify(data));
-        this.util.loadingEnd();
-        this.navCtrl.setRoot('MPage');
-      }).catch(error=>{
-        console.log("手机密码登录失败"+JSON.stringify(error));
-        this.util.loadingEnd();
-        //this.alert(error.message);
-        this.util.toast("手机密码登录失败",1500);
-      });
-
+          console.log("手机密码登录成功"+ JSON.stringify(data));
+          this.util.loadingEnd();
+          this.navCtrl.setRoot('MPage');
+        }).catch(error=>{
+          console.log("手机密码登录失败"+JSON.stringify(error));
+          this.util.loadingEnd();
+          this.util.toast(error.message,1500);
+        });
+      }
     }
   }
 
 
   checkPhone():boolean {
-  if (!this.util.checkPhone(this.lpData.mobile)){
-    this.util.toast("手机号格式错误",1500);
-  }
+    if (!this.util.checkPhone(this.lpData.mobile)){
+      this.util.toast("请填写正确的手机号",1500);
+    }
     return this.util.checkPhone(this.lpData.mobile);
+  }
 
-
-    /*if(this.errorPhone == 0){  //判断手机号是否为空
-      this.util.toast("手机号不能为空",1500);
-    }else if(this.errorPhone == 1){
-      this.util.toast("手机号长度小于11位",1500);
-    }else if(this.errorPhone == 2){
-      this.util.toast("手机号格式错误",1500);
-    }*/
+  format(){
+    if(this.lpData.mobile.length==11){
+      this.enter = this.checkPhone();
+    }else {
+      this.enter = false;
+    }
   }
 
 }
