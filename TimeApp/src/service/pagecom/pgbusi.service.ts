@@ -104,7 +104,7 @@ export class PgBusiService {
    * @param {PageRcData} rc 日程信息
    * @returns {Promise<BsModel<any>>}
    */
-  save(rc : ScdData):Promise<BsModel<any>>{
+  save(rc : ScdData):Promise<BsModel<CTbl>>{
     return new Promise((resolve, reject) => {
       let bs = new BsModel<any>();
       let str =this.checkRc(rc);

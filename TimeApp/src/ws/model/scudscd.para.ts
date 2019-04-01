@@ -5,7 +5,7 @@
  *
  * create by zhangjy on 2019/03/12.
  */
-export class CudscdPara {
+export class ScudscdPara {
   //日程ID
   id:string;
 }

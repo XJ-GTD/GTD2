@@ -5,8 +5,12 @@ import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
 import {CudscdPara} from "../model/cudscd.para";
 import {ProcesRs} from "../model/proces.rs";
-import {O} from "../model/ws.enum";
+import {O, SS} from "../model/ws.enum";
 import {DataConfig} from "../../service/config/data.config";
+import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
+import {BsModel} from "../../service/restful/out/bs.model";
+import {CTbl} from "../../service/sqlite/tbl/c.tbl";
+import {FsService, PageFsData} from "../../pages/fs/fs.service";
 
 /**
  * 确认操作
@@ -15,19 +19,45 @@ import {DataConfig} from "../../service/config/data.config";
  */
 @Injectable()
 export class OptionProcess implements MQProcess{
-  constructor(private emitService:EmitService) {
+  constructor(private emitService:EmitService,private busiService:PgBusiService,private fsServer:FsService) {
   }
 
 
   go(content: WsContent,processRs:ProcesRs):Promise<ProcesRs> {
-    return new Promise<ProcesRs>(resolve => {
+    return new Promise<ProcesRs>(async resolve => {
       //处理区分
       let opt = content.option;
       //处理所需要参数
-      let cudPara:CudscdPara = content.parameters
+      let cudPara:CudscdPara = content.parameters;
+      let prvOpt:string =  content.thisContext.context.client.option;
 
       if (opt == O.O){
         //确认操作
+        for (let c of processRs.scd){
+          let rc : ScdData = new ScdData();
+          rc.sn = c.sn;
+          rc.sd = c.sd;
+          rc.st = c.st;
+          rc.si = c.si;
+
+          if (prvOpt == SS.C){
+           let bsM:BsModel<CTbl> = await this.busiService.save(rc);
+            rc.si = bsM.data.si;
+          }else if (prvOpt == SS.U){
+            await this.busiService.updateDetail(rc,"1");
+          }else{
+            await this.busiService.delete( rc.si,"2", rc.sd);
+          }
+
+          let pfs:Array<PageFsData> = new Array<PageFsData>();
+          for(let fs of processRs.fs){
+            let p:PageFsData = new PageFsData();
+            Object.assign(p,fs);
+            pfs.push(p);
+          }
+          this.fsServer.sharefriend(rc.si,pfs);
+
+        }
 
       }else if(opt == O.S){
         //追问操作
@@ -37,6 +67,8 @@ export class OptionProcess implements MQProcess{
         DataConfig.clearWsOpts();
         DataConfig.clearWsContext();
       }
+      resolve();
+      return;
     })
   }
 

@@ -99,7 +99,6 @@ export class ContactsService {
       this.getContacts4Btbl().then(async data => {
         let bsqls: Array<string> = new Array<string>();
         for (let b of data) {
-          console.log("开始插入联系人================>1111" + data.length);
           let bt: BTbl = await this.sqlExce.getOne<BTbl>(b);
           if (bt == null) {
             bt = new BTbl();
@@ -115,17 +114,13 @@ export class ContactsService {
             bsqls.push(bt.inT());
           }
         }
-        console.log("开始插入联系人================>" + bsqls.length);
         return await this.sqlExce.batExecSql(bsqls);
       }).then(data => {
         //同步服务器联系人信息
-        //this.personRestful.get()
-        console.log("开始插入联系人================>结束"  );
+       // this.personRestful.get()
         resolve(true);
 
       }).catch(error=>{
-
-        console.log("开始插入联系人================>" + error);
       })
     })
   }
