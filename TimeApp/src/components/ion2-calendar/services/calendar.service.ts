@@ -11,11 +11,13 @@ import {
 import * as moment from 'moment';
 import {defaults, pickModes} from "../config";
 import {SqliteExec} from "../../../service/util-service/sqlite.exec";
+import {UtilService} from "../../../service/util-service/util.service";
+import {ReadlocalService} from "../../../service/pagecom/readlocal.service";
 
 @Injectable()
 export class CalendarService {
 
-  constructor(private sqlite:SqliteExec) {}
+  constructor(private sqlite:SqliteExec,private readlocal:ReadlocalService) {}
 
   safeOpt(calendarOptions: any): CalendarModalOptions {
     const _disableWeeks: number[] = [];
@@ -272,14 +274,36 @@ export class CalendarService {
 
 
 
-  getMonthData(month:CalendarMonth){
+  async getMonthData(month:CalendarMonth){
 
     let _start = new Date(month.original.time);
     let _startMonth = moment(moment(_start).format("YYYY/MM/") + "1");
     let _endMonth = moment(moment(_start).format("YYYY/MM/") + _startMonth.daysInMonth());
 
     let sql:string = "select sd,count(*) scds,sum(itx) news from gtd_sp where sd>='" + moment(_startMonth).format("YYYY/MM/DD")+ "' and sd<='" +  moment(_endMonth).format("YYYY/MM/DD") + "' group by sd";
+    let date = new Date(month+'/01');
+    let sd = UtilService.getCurrentMonthFirst(date);
+    let ed = UtilService.getCurrentMonthLast(date);
+    ed = new Date(ed.getTime() + 23*59*60*1000);
+    let local = await this.readlocal.findEventRc('',sd,ed);
     this.sqlite.getExtList<MonthData>(sql).then(data=>{
+      for(let lo of local){
+        let isExsit = false;
+        for (let d of data){
+          if(d.sd == lo.sd){
+            d.scds +=1;
+            isExsit = true;
+            break;
+          }
+        }
+        if(!isExsit){
+          let md = new MonthData();
+          md.sd=lo.sd;
+          md.scds=1;
+          md.news=0;
+          data.push(md)
+        }
+      }
       for (let d of data){
         let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
 

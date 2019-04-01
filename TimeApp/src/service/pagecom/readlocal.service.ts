@@ -37,52 +37,52 @@ export class ReadlocalService {
   }
 
   /**
-   * 查询本地日历所有日程
-   * @returns {Promise<any>}
-   */
-  findEventRc(tit:string,sd:Date,ed:Date):Promise<Array<ScdData>>{
-    return new Promise((resolve, reject) => {
-      console.log("执行查询本地日历");
-      let rco = new Array<ScdData>();
-      if(this.util.isMobile()){
-        console.log("查询本地日历开始时间："+ sd+ ",结束时间:"+ed);
-        this.calendar.findEvent(tit, "", "", sd, ed).then(
-          (msg) => {
-            console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg));
-            console.log("getCalendarOptions::"+ JSON.stringify(this.calendar.getCalendarOptions()));
-            if(msg.length>0){
-              for(let i=0;i<msg.length;i++) {
-                let rc:ScdData = new ScdData();
-                rc.ui = UserConfig.account.id;
-                rc.sn = msg[i].title;
-                console.log("查询本地日历是否全天：" + msg[i].allday);
-                if (msg[i].allday) {
-                  rc.sd = msg[i].startDate.substr(0, 10);
-                  rc.st = "00:01";
-                  rc.ed = msg[i].endDate.substr(0, 10);
-                  rc.et =  "23:59";
-                } else {
-                  rc.sd = msg[i].startDate.substr(0, 10);
-                  rc.st = msg[i].startDate.substr(11, 5);
-                  rc.ed = msg[i].endDate.substr(0, 10);
-                  rc.et = msg[i].endDate.substr(11, 5);
+     * 查询本地日历所有日程
+     * @returns {Promise<any>}
+     */
+    findEventRc(tit:string,sd:Date,ed:Date):Promise<Array<ScdData>>{
+      return new Promise((resolve, reject) => {
+        console.log("执行查询本地日历");
+        let rco = new Array<ScdData>();
+        if(this.util.isMobile()){
+          console.log("查询本地日历开始时间："+ sd+ ",结束时间:"+ed);
+          this.calendar.findEvent(tit, "", "", sd, ed).then(
+            (msg) => {
+              console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg));
+              console.log("getCalendarOptions::"+ JSON.stringify(this.calendar.getCalendarOptions()));
+              if(msg.length>0){
+                for(let i=0;i<msg.length;i++) {
+                  let rc:ScdData = new ScdData();
+                  rc.ui = UserConfig.account.id;
+                  rc.sn = msg[i].title;
+                  console.log("查询本地日历是否全天：" + msg[i].allday);
+                  if (msg[i].allday) {
+                    rc.sd = msg[i].startDate.substr(0, 10).replace(new RegExp('-','g'),'/');
+                    rc.st = "00:01";
+                    rc.ed = msg[i].endDate.substr(0, 10).replace(new RegExp('-','g'),'/');
+                    rc.et =  "23:59";
+                  } else {
+                    rc.sd = msg[i].startDate.substr(0, 10).replace(new RegExp('-','g'),'/');
+                    rc.st = msg[i].startDate.substr(11, 5);
+                    rc.ed = msg[i].endDate.substr(0, 10).replace(new RegExp('-','g'),'/');
+                    rc.et = msg[i].endDate.substr(11, 5);
+                  }
+                  console.log("查询本地日历开始时间：" + rc.sd + ",结束时间:" + rc.ed);
+                  console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg[i]));
+                  rc.ib = '1';
+                  rco.push(rc);
                 }
-                console.log("查询本地日历开始时间：" + rc.sd + ",结束时间:" + rc.ed);
-                console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg[i]));
-                rc.ib = '1';
-                rco.push(rc);
               }
-            }
-            resolve(rco);
-          },
-          (err) => {
-            console.log("执行查询本地日历结束 err ::" + JSON.stringify(err));
-            reject(rco);
-          });
-      }else{
-        resolve(rco);
-      }
-    })
+              resolve(rco);
+            },
+            (err) => {
+              console.log("执行查询本地日历结束 err ::" + JSON.stringify(err));
+              reject(rco);
+            });
+        }else{
+          resolve(rco);
+        }
+      })
 
   }
 
