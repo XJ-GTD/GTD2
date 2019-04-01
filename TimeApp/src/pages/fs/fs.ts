@@ -56,8 +56,8 @@ import {GlService} from "../gl/gl.service";
           <ion-list no-lines>
             <ion-item class="plan-list-item"  *ngFor="let g of fsl">
               <ion-avatar item-start>
-                <!--<img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">-->
-                <ion-icon name="contact"  style="font-size: 3.0em;color: red;"></ion-icon>
+                <img [src]="g.hiu">
+                <!--<ion-icon name="contact"  style="font-size: 3.0em;color: red;"></ion-icon>-->
               </ion-avatar>
               <ion-label>
                 {{g.rn}}

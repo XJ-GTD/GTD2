@@ -5,10 +5,15 @@ import {AgdPro, AgdRestful, ContactPerPro} from "../../service/restful/agdsev";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {UtilService} from "../../service/util-service/util.service";
+import {PersonInData, PersonRestful} from "../../service/restful/personsev";
+import {DataConfig} from "../../service/config/data.config";
 
 @Injectable()
 export class FsService {
-  constructor(private sqlite:SqliteExec, private agdRest : AgdRestful, private util : UtilService) {
+  constructor(private sqlite:SqliteExec,
+              private agdRest : AgdRestful,
+              private perRest : PersonRestful,
+              private util : UtilService) {
   }
 
   //根据条件查询参与人
@@ -20,6 +25,18 @@ export class FsService {
       console.log('---------- getfriend 根据条件查询参与人 条件:'+ JSON.stringify(sql));
       this.sqlite.getExtList<PageFsData>(sql).then(data=>{
         fsList = data;
+        for(let fs of fsList){
+          if(!fs.hiu || fs.hiu == null || fs.hiu == ''){
+            fs.hiu=DataConfig.HUIBASE64;
+            let per = new PersonInData();
+            this.perRest.getavatar(per).then(datar=>{
+              if(datar.code==0){
+                fs.hiu=datar.data.a;
+              }
+            })
+          }
+
+        }
         console.log('---------- getfriend 根据条件查询参与人 结果:'+ JSON.stringify(data));
         resolve(fsList);
       }).catch(e=>{
@@ -117,7 +134,18 @@ export class FsService {
       this.sqlite.execSql(sql).then(data=>{
         if(data && data.rows && data.rows.length>0){
           for(let i=0,len =data.rows.length;i<len;i++ ){
-            fsList.push(data.rows.item(i))
+            fsList.push(data.rows.item(i));
+          }
+          for(let fs of fsList) {
+            if (!fs.hiu || fs.hiu == null || fs.hiu == '') {
+              fs.hiu = DataConfig.HUIBASE64;
+              let per = new PersonInData();
+              this.perRest.getavatar(per).then(datar => {
+                if (datar.code == 0) {
+                  fs.hiu = datar.data.a;
+                }
+              })
+            }
           }
         }
         console.log('---------- getfriend4group 查询群组中的参与人 结果:'+ JSON.stringify(fsList));
