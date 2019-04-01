@@ -50,25 +50,26 @@ public class AgdAgendaController {
     	AgdAgenda agd = agendaService.findById(blacklist.getAi());
     	boolean isDef = false; 
 		if(agd != null){
-			if(!agd.getTitle().equals(blacklist.getAt())){
+			log.info("---- 服务器日程获取获取参数  -----" + JSONObject.toJSONString(agd));
+			if(agd.getAgendaTime() != null && !agd.getTitle().equals(blacklist.getAt())){
 				isDef = true;
 			}
-			if(!agd.getAgendaDate().equals(blacklist.getAdt())){
+			if(agd.getAgendaTime() != null && !agd.getAgendaDate().equals(blacklist.getAdt())){
 				isDef = true;
 			}
-			if(!agd.getAgendaTime().equals(blacklist.getSt())){
+			if(agd.getAgendaTime() != null && !agd.getAgendaTime().equals(blacklist.getSt())){
 				isDef = true;
 			}
-			if(!agd.getEndDate().equals(blacklist.getEd())){
+			if(agd.getAgendaTime() != null && !agd.getEndDate().equals(blacklist.getEd())){
 				isDef = true;
 			}
-			if(!agd.getEndTime().equals(blacklist.getEt())){
+			if(agd.getAgendaTime() != null && !agd.getEndTime().equals(blacklist.getEt())){
 				isDef = true;
 			}
-			if(!agd.getRemindFlag().equals(blacklist.getAa())){
+			if(agd.getAgendaTime() != null && !agd.getRemindFlag().equals(blacklist.getAa())){
 				isDef = true;
 			}
-			if(!agd.getRepeatType().equals(blacklist.getAr())){
+			if(agd.getAgendaTime() != null && !agd.getRepeatType().equals(blacklist.getAr())){
 				isDef = true;
 			}
 		}else{

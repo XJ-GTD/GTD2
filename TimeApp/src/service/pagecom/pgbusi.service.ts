@@ -377,6 +377,7 @@ export class ScdData {
   wtt: number;//时间戳
   du:string ="";//消息读取状态
   gs:string ="";//归属
+  ib:string ="0"; //0：非本地日历;1：本地日历
   fssshow:string ="";//参与人画面显示用
   cbkcolor:string ="";//每个日程颜色画面显示用
   anchorid:string ="";//scroll锚点

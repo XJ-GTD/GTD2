@@ -55,7 +55,7 @@ public class IContactsServiceImpl implements IContactsService {
 			List<AgdContactsDto> acList = inDto.getAc();
 			//获取日程详情
 			AgdAgenda agenL = null;
-			log.info("------- 开始获取日程详情 ------- ");
+			log.info("------- 开始获取日程详情 ------- ID:" + inDto.getAi());
 			Optional<AgdAgenda> agen = agdAgendaRep.findById(inDto.getAi());
 			
 			if(agen.isPresent()){
