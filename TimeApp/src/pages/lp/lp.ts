@@ -44,7 +44,7 @@ import {UtilService} from "../../service/util-service/util.service";
 export class LpPage {
 
   lpData:PageLpData = new PageLpData();
-  errorPhone:number = 0; // 0：初始化（输入为空） 1：手机号长度小于11位 2：手机号格式错误 3：手机号正确
+  isPhone:boolean = false; // 0：初始化（输入为空） 1：手机号长度小于11位 2：手机号格式错误 3：手机号正确
   errorPwd:number = 0; // 0：初始化；1：密码输入
   inputBoolean:boolean = false;  // false： show ; true show-true
 
@@ -94,7 +94,7 @@ export class LpPage {
   }
 
   check(){
-    if (this.errorPhone == 3 && this.errorPwd == 1){
+    if (this.isPhone && this.errorPwd == 1){
       this.inputBoolean = true;
     }else {
       this.inputBoolean = false;
@@ -102,7 +102,7 @@ export class LpPage {
   }
 
   checkPhone() {
-    this.errorPhone = this.util.checkPhone(this.lpData.mobile);
+    this.isPhone = this.util.checkPhone(this.lpData.mobile);
     this.check();
 
     /*if(this.errorPhone == 0){  //判断手机号是否为空

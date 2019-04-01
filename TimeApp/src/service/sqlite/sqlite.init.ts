@@ -15,6 +15,7 @@ import {SqliteExec} from "../util-service/sqlite.exec";
 import {UtilService} from "../util-service/util.service";
 import {SyncRestful} from "../restful/syncsev";
 import {StTbl} from "./tbl/st.tbl";
+import {BhTbl} from "./tbl/bh.tbl";
 
 /**
  * create by on 2019/3/5
@@ -32,86 +33,61 @@ export class SqliteInit {
    * @returns {Promise<any>}
    */
   async createTables() {
-    let count = 0;
-    count++;
     let a: ATbl = new ATbl();
     await this.sqlexec.drop(a);
-    count++;
     await this.sqlexec.create(a);
-    count++;
 
     let b: BTbl = new BTbl();
     await this.sqlexec.drop(b);
-    count++;
     await this.sqlexec.create(b);
-    count++;
 
     let bx: BxTbl = new BxTbl();
     await this.sqlexec.drop(bx);
-    count++;
     await this.sqlexec.create(bx);
-    count++;
 
     let c: CTbl = new CTbl();
     await this.sqlexec.drop(c);
-    count++;
     await this.sqlexec.create(c);
-    count++;
 
     let d: DTbl = new DTbl();
     await this.sqlexec.drop(d);
-    count++;
     await this.sqlexec.create(d);
-    count++;
 
     let e: ETbl = new ETbl();
     await this.sqlexec.drop(e);
-    count++;
     await this.sqlexec.create(e);
-    count++;
 
     let g: GTbl = new GTbl();
     await this.sqlexec.drop(g);
-    count++;
     await this.sqlexec.create(g);
-    count++;
 
     let jh: JhTbl = new JhTbl();
     await this.sqlexec.drop(jh);
-    count++;
     await this.sqlexec.create(jh);
-    count++;
 
     let s: STbl = new STbl();
     await this.sqlexec.drop(s);
-    count++;
     await this.sqlexec.create(s);
-    count++;
 
     let sp: SpTbl = new SpTbl();
     await this.sqlexec.drop(sp);
-    count++;
     await this.sqlexec.create(sp);
-    count++;
 
     let u: UTbl = new UTbl();
     await this.sqlexec.drop(u);
-    count++;
     await this.sqlexec.create(u);
-    count++;
 
     let y: YTbl = new YTbl();
     await this.sqlexec.drop(y);
-    count++;
     await this.sqlexec.create(y);
-    count++;
 
     let st: StTbl = new StTbl();
     await this.sqlexec.drop(st);
-    count++;
     await this.sqlexec.create(st);
-    count++;
-    return count;
+
+    let bh: BhTbl = new BhTbl();
+    await this.sqlexec.drop(bh);
+    await this.sqlexec.create(bh);
 
   }
 

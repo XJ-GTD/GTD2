@@ -59,7 +59,7 @@ import {UtilService} from "../../service/util-service/util.service";
 export class RPage {
 
   rData: PageRData = new PageRData();
-  errorPhone:number = 0; // 0：初始化（输入为空） 1：手机号长度小于11位 2：手机号格式错误 3：手机号正确
+  isPhone:boolean = false; // 0：初始化（输入为空） 1：手机号长度小于11位 2：手机号格式错误 3：手机号正确
   errorCode:number = 0; // 0：初始化；1：验证码输入
   errorPwd:number = 0; // 0：初始化；1：密码输入
   errorName:number = 0; // 0：初始化；1：用户名输入
@@ -93,7 +93,7 @@ export class RPage {
   }
 
   sendMsg(){
-    if(this.errorPhone == 3){
+    if(this.isPhone){
       this.rService.sc(this.rData).then(data => {
         //console.log("短信发送成功" + JSON.stringify(data));
         //短信验证码KEY 赋值给验证码登录信息
@@ -147,7 +147,7 @@ export class RPage {
   }
 
   check(){
-    if (this.errorPhone == 3 && this.errorCode == 1 && this.errorPwd == 1 && this.errorName){
+    if (this.isPhone && this.errorCode == 1 && this.errorPwd == 1 && this.errorName){
       this.inputBoolean = true;
     }else {
       this.inputBoolean = false;
@@ -155,7 +155,8 @@ export class RPage {
   }
 
   checkPhone() {
-    this.errorPhone = this.util.checkPhone(this.rData.mobile);
+    this.isPhone = this.util.checkPhone(this.rData.mobile);
+    if (!this.isPhone) this.util.toast("手机号格式错误",1500);
     this.check();
 
     /*if(this.errorPhone == 0){  //判断手机号是否为空

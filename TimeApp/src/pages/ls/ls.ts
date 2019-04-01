@@ -48,7 +48,7 @@ import {UtilService} from "../../service/util-service/util.service";
 export class LsPage {
 
   lsData:PageLsData = new PageLsData();
-  errorPhone:number = 0; // 0：初始化（输入为空） 1：手机号长度小于11位 2：手机号格式错误 3：手机号正确
+  isPhone:boolean = false; // 0：初始化（输入为空） 1：手机号长度小于11位 2：手机号格式错误 3：手机号正确
   errorCode:number = 0; // 0：初始化；1：验证码输入
   inputBoolean:boolean = false;  // false： show ; true show-true
   timeText:any = "获取验证码";
@@ -80,7 +80,7 @@ export class LsPage {
   }
 
   sendMsg(){
-    if(this.errorPhone == 3){
+    if(this.isPhone){
       this.lsService.getSMSCode(this.lsData.mobile).then(data => {
         //console.log("短信发送成功" + JSON.stringify(data));
         //短信验证码KEY 赋值给验证码登录信息
@@ -134,7 +134,7 @@ export class LsPage {
   }
 
   check(){
-    if (this.errorPhone == 3 && this.errorCode == 1){
+    if (this.isPhone && this.errorCode == 1){
       this.inputBoolean = true;
     }else {
       this.inputBoolean = false;
@@ -142,7 +142,7 @@ export class LsPage {
   }
 
   checkPhone() {
-    this.errorPhone = this.util.checkPhone(this.lsData.mobile);
+    this.isPhone = this.util.checkPhone(this.lsData.mobile);
     this.check();
 
     /*if(this.errorPhone == 0){  //判断手机号是否为空
