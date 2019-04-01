@@ -40,7 +40,7 @@ export class SpeechProcess implements MQProcess {
         //   speakText = speakText.replace("{" + key + "}", value);
         // });
         //TODO 变量替换不全
-        speakText = speakText.replace("{" + count + "}", count.toString());
+        speakText = speakText.replace("{count}", count.toString());
 
         if (processRs.scd.length == 1){
           let scdEm:ScdEmData = new ScdEmData();

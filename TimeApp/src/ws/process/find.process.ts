@@ -37,6 +37,7 @@ export class FindProcess implements MQProcess {
       //处理结果
       processRs.sucess = true;
       resolve(processRs);
+      return;
     })
   }
 
@@ -46,7 +47,7 @@ export class FindProcess implements MQProcess {
       let res: Array<BTbl> = new Array<BTbl>();
       if (ns || ns.length == 0) {
         resolve(res);
-        return res;
+        return;
       }
       let rsbs: Map<string, BTbl> = new Map<string, BTbl>();
 
