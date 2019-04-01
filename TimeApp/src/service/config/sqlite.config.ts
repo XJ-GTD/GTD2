@@ -27,7 +27,7 @@ export class SqliteConfig {
   generateDb(): Promise<any> {
     return new Promise((resolve, reject) => {
       console.log(" start create Db mingWX.db")
-      // if (this.util.isMobile()) {
+      if (this.util.isMobile()) {
         this.sqlite.create({
           name: 'mingWX.db',
           location: 'default'
@@ -39,12 +39,12 @@ export class SqliteConfig {
           console.log(" create Db fail：" + e.message)
           reject();
         });
-      // } else {
+      } else {
         //H5数据库存储
-        // this._database = this._win.openDatabase("mingWX.db", '1.0', 'database', 20 * 1024 * 1024);//声明H5 数据库大小
-        // console.log(" create H5 Db success");
-        // resolve()
-      // }
+        this._database = this._win.openDatabase("mingWX.db", '1.0', 'database', 20 * 1024 * 1024);//声明H5 数据库大小
+        console.log(" create H5 Db success");
+        resolve()
+      }
     });
   }
 }
