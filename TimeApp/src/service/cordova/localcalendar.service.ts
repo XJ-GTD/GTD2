@@ -56,9 +56,9 @@ export class LocalcalendarService {
                 console.log("查询本地日历是否全天：" + msg[i].allday);
                 if (msg[i].allday) {
                   rc.sd = msg[i].startDate.substr(0, 10).replace(new RegExp('-','g'),'/');
-                  rc.st = "00:01";
+                  rc.st = "00:00";
                   rc.ed = msg[i].endDate.substr(0, 10).replace(new RegExp('-','g'),'/');
-                  rc.et =  "23:59";
+                  rc.et =  "24:00";
                 } else {
                   rc.sd = msg[i].startDate.substr(0, 10).replace(new RegExp('-','g'),'/');
                   rc.st = msg[i].startDate.substr(11, 5);

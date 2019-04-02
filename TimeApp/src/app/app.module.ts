@@ -56,6 +56,8 @@ import {TdcService} from "../pages/tdc/tdc.service";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {ContactsService} from "../service/cordova/contacts.service";
 import {LocalcalendarService} from "../service/cordova/localcalendar.service";
+import {NotificationsService} from "../service/cordova/notifications.service";
+import {Badge} from "@ionic-native/badge";
 
 @NgModule({
   declarations: [
@@ -102,6 +104,7 @@ import {LocalcalendarService} from "../service/cordova/localcalendar.service";
     UtilService,
     SqliteConfig,
     SqliteExec,
+    Badge,
     RestFulConfig,
     PermissionsService,
     AibutlerRestful,
@@ -128,6 +131,7 @@ import {LocalcalendarService} from "../service/cordova/localcalendar.service";
     PgBusiService,
     TdcService,
     LocalcalendarService,
+    NotificationsService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG,useClass: HammerDIRECTIONALLConfig }
   ]

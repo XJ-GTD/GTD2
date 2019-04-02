@@ -26,14 +26,7 @@ export class AlarmService {
   constructor(private localNotifications: LocalNotifications,
               private vibration: Vibration,
               private nativeAudio: NativeAudio){
-    //id为音频文件的唯一ID
-    //assetPath音频资产的相对路径或绝对URL（包括http：//）
-    //官网还有更多的配置，这里只需要两个参数就行了，后面的回调记得带上
-    this.nativeAudio.preloadSimple("schedule1", "assets/audio/alarm.mp3").then(success => {
-      console.log("音频执行成功");
-    }, error => {
-      console.log("音频执行失败");
-    });
+
 
     this.localNotifications.on('click').subscribe(success => {
       console.log("点击消息通知关闭了闹钟");

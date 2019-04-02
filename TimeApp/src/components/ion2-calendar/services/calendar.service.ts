@@ -287,18 +287,14 @@ export class CalendarService {
     let local = await this.readlocal.findEventRc('',sd,ed);
     console.log(moment(sd).format("YYYY/MM/DD") +','+ moment(ed).format("YYYY/MM/DD") +'==============查询当月日历：'+ local.length+", ");
     this.sqlite.getExtList<MonthData>(sql).then(data=>{
-      for(let lo of local){
-        let isExsit = false;
 
-        for (let d of data){
-          if(d.sd == lo.sd){
-            d.scds +=1;
-            isExsit = true;
-            break;
-          }
-        }
-        if(!isExsit){
-          let md = new MonthData();
+      //本地日历加入主页日历显示中
+      for(let lo of local){
+        let md:MonthData = data.find((n) => moment(lo.sd).isSame(moment(n.sd), 'day'));
+        if (!md){
+          md.scds = md.scds + 1;
+        }else{
+          md = new MonthData();
           md.sd=lo.sd;
           md.scds=1;
           md.news=0;
@@ -313,7 +309,7 @@ export class CalendarService {
         calendarDay.busysometing = d.scds >= 3;
         calendarDay.newmessage = d.news
         calendarDay.hasting = d.scds > 0;
-        calendarDay.subTitle = d.news > 0? `\u2022`: "";
+        //calendarDay.subTitle = d.news > 0? `\u2022`: "";
         calendarDay.marked = false;
       }
     })
