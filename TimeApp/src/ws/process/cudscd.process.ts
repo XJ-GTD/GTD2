@@ -18,15 +18,14 @@ export class CudscdProcess implements MQProcess{
   }
 
 
-  go(content: WsContent,processRs:ProcesRs):Promise<ProcesRs> {
-    return new Promise<ProcesRs>(resolve => {
+  async go(content: WsContent,processRs:ProcesRs) {
 
       //处理所需要参数
       let cudPara:CudscdPara = content.parameters;
       //处理结果
       //emit
       let prv:ProcesRs = content.thisContext.context.client.cxt;
-      if (prv) prv = processRs;
+      if (!prv) prv = processRs;
 
       if (prv.scd.length == 0){
         let ctbl:CTbl = new CTbl();
@@ -71,8 +70,8 @@ export class CudscdProcess implements MQProcess{
         b.p = p.ranpy;
         scdEmData.datas.push(b);
       }
-      // this.emitService.emitScd(scdEmData);
-    })
+      //this.emitService.emitScd(scdEmData);
+      return prv;
   }
 
 }
