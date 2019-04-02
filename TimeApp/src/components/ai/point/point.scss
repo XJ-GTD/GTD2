@@ -14,7 +14,7 @@ pointcomponent {
     height: 58px;
     position: fixed;
     top: calc(100% - 87px);
-    left: calc(50% - 27px);
+    left: calc(50%);
     border-radius: 100%;
     //border: .05px solid #3583d7;
     animation: pulse 1.4s linear infinite;
@@ -39,16 +39,16 @@ pointcomponent {
   }
   .speaking.danger {
     border-color: #3583d7;
-    box-shadow: 0 0 20px 6px #3583d7;
+    box-shadow: 0 0 23px 7px #3583d7;
     animation: none;
   }
   .speaking.danger:before {
     border-color: #3583d7;
     opacity: 0;
-    width: 10em;
-    height: 10em;
-    margin-left: -5em;
-    margin-top: -5em;
+    width: 100px;
+    height: 100px;
+    margin-left: -50px;
+    margin-top: -50px;
   }
 
   @keyframes rotate {
@@ -97,13 +97,14 @@ pointcomponent {
     width: 64px;
     height: 64px;
     top: calc(100% - 90px);
-    left: calc(50% - 30px);
+    left: calc(50% - 3px);
     border-radius: 50%;
   }
 
   .spinner:before {
     z-index: -1;
     background: conic-gradient(#8c83bd, #8556a0, #a057b4);
+    background: linear-gradient(right top, #2b657b 0%,#8556a0 500%,#a057b4 100%);
     animation: r 2s linear infinite;
     content: '';
   }

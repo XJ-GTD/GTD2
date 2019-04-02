@@ -6,6 +6,8 @@ import {
   LocalNotifications
 } from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
+import {CTbl} from "../sqlite/tbl/c.tbl";
+import {ScdData} from "../pagecom/pgbusi.service";
 
 /**
  * 系统设置方法类
@@ -17,7 +19,7 @@ export class NotificationsService {
 
   private index: number;
 
-  constructor(private localNotifications: LocalNotifications) {
+  constructor(private localNotifications: LocalNotifications,private badge:Badge) {
 
 
     this.localNotifications.on('click').subscribe((next: ILocalNotification) => {
@@ -41,7 +43,7 @@ export class NotificationsService {
   }
 
 
-  public newSms(text: string) {
+  public newSms(text: string,scd:ScdData) {
     //铃声启动
     // this.feedback.audioSms().then(success => {
     //   console.log("闹钟铃声播放成功");
@@ -52,11 +54,12 @@ export class NotificationsService {
     //通知栏消息
     let notif: MwxNotification = new MwxNotification();
     notif.id = this.index++;
-    notif.badge = this.index;
     notif.trigger = {at: new Date(new Date().getTime())};
     notif.text = text;
+    notif.data = scd;
 
     this.localNotifications.schedule(notif);
+    this.badge.increase(1);
 
   }
 }
@@ -71,7 +74,7 @@ class MwxNotification implements ILocalNotification {
   color: string;
   data: any;
   defaults: number;
-  foreground: boolean;
+  foreground: boolean = true;
   group: string = "冥王星新消息提醒"
   groupSummary: boolean = true;
   icon: string = "assets/icon/drawable-icon.png";

@@ -58,18 +58,12 @@ export class HPage {
 
   constructor(private hService: HService,
               private navController: NavController,
-              private modalCtr: ModalController,
-              private notificationsService:NotificationsService) {
+              private modalCtr: ModalController) {
     this.hdata = new HData();
 
   }
 
   ngOnInit() {
-    this.notificationsService.newSms("这是一个测试");
-    this.notificationsService.newSms("这是一个测试");
-    this.notificationsService.newSms("这是一个测试");
-    this.notificationsService.newSms("这是一个测试");
-    this.notificationsService.newSms("这是一个测试");
   }
 
   onPress(pressDay) {
