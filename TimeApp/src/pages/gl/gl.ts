@@ -31,8 +31,8 @@ import {DataConfig} from "../../service/config/data.config";
         <ion-title>群组</ion-title>
         <ion-buttons right>
           <button ion-button (click)="toGroupCreate()" color="danger">
-            <ion-icon name="add"></ion-icon>
-            <!--<img class="img-header-left" src="../../assets/imgs/tj.png">-->
+            <!--<ion-icon name="add"></ion-icon>-->
+            <img class="img-header-right" src="../../assets/imgs/qtj.png">
           </button>
         </ion-buttons>
       </ion-toolbar>
@@ -47,7 +47,7 @@ import {DataConfig} from "../../service/config/data.config";
                 {{g.gn}}({{g.gc}})
               </ion-label>
               <button ion-button color="danger" (click)="delGroup(g)" clear item-end>
-                <img class="content-gc" src="./assets/imgs/del_group.png">
+                <img class="content-gc" src="./assets/imgs/sc.png">
               </button>
             </ion-item>
           </ion-list>

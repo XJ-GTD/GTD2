@@ -122,7 +122,7 @@ export class RPage {
         this.util.toast("用户名不能为空",1500);
       }else if (this.rData.authCode == null || this.rData.authCode == "" || this.rData.authCode == undefined) {     //判断验证码是否为空
         this.util.toast("验证码不能为空",1500);
-      }else if (this.rData.password != null && this.rData.password != "" && this.rData.password != undefined) {     //判断密码是否为空
+      }else if (this.rData.password == null || this.rData.password == "" || this.rData.password == undefined) {     //判断密码是否为空
         this.util.toast("密码不能为空",1500);
       }else if(this.rData.verifykey == null || this.rData.verifykey == "" || this.rData.verifykey == undefined){
         this.util.toast("请发送短信并填写正确的短信验证码",1500);
