@@ -28,7 +28,7 @@ import {UtilService} from "../../service/util-service/util.service";
     <ion-item class="no-border">
       <ion-input type="text" style="font-size:36px" [(ngModel)]="uo.user.name" (ionBlur)="save()"></ion-input>
       <ion-avatar item-end> 
-        <img src="./assets/imgs/headImg.jpg" style="width: 60px;height: 60px"> 
+        <img [src]="uo.user.aevter" style="width: 60px;height: 60px"> 
       </ion-avatar> 
     </ion-item>
     <button ion-item margin-top  class="rowCss" (click)="selectSex()"> 

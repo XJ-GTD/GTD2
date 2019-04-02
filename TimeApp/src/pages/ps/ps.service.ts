@@ -8,6 +8,7 @@ import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {UserConfig} from "../../service/config/user.config";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
+import {DataConfig} from "../../service/config/data.config";
 
 @Injectable()
 export class PsService {
@@ -29,6 +30,10 @@ export class PsService {
       this.sqlExce.execSql('select * from gtd_u').then(data =>{
         if(data && data.rows && data.rows.length){
           data = data.rows.item(0);
+          if (!data.hiu || data.hiu == null || data.hiu == '') {
+            data.hiu = DataConfig.HUIBASE64;
+            let per = new PersonInData();
+          }
           pu.user.id = data.ui;
           pu.user.name=data.un;
           pu.user.realname = data.rn;
@@ -53,6 +58,7 @@ export class PsService {
           pu.account.mq=data.aq;
           UserConfig.account = pu.account;
         }
+
         resolve(pu);
       }).catch(e=>{
         resolve(pu);

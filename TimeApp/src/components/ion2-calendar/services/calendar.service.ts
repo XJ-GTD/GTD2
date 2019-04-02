@@ -11,13 +11,12 @@ import {
 import * as moment from 'moment';
 import {defaults, pickModes} from "../config";
 import {SqliteExec} from "../../../service/util-service/sqlite.exec";
-import {UtilService} from "../../../service/util-service/util.service";
-import {ReadlocalService} from "../../../service/pagecom/readlocal.service";
+import {LocalcalendarService} from "../../../service/cordova/localcalendar.service";
 
 @Injectable()
 export class CalendarService {
 
-  constructor(private sqlite:SqliteExec,private readlocal:ReadlocalService) {}
+  constructor(private sqlite:SqliteExec,private readlocal:LocalcalendarService) {}
 
   safeOpt(calendarOptions: any): CalendarModalOptions {
     const _disableWeeks: number[] = [];
@@ -281,14 +280,16 @@ export class CalendarService {
     let _endMonth = moment(moment(_start).format("YYYY/MM/") + _startMonth.daysInMonth());
 
     let sql:string = "select sd,count(*) scds,sum(itx) news from gtd_sp where sd>='" + moment(_startMonth).format("YYYY/MM/DD")+ "' and sd<='" +  moment(_endMonth).format("YYYY/MM/DD") + "' group by sd";
-    let date = new Date(month+'/01');
-    let sd = UtilService.getCurrentMonthFirst(date);
-    let ed = UtilService.getCurrentMonthLast(date);
+
+    let sd = new Date(moment(_startMonth).format("YYYY/MM/DD"));
+    let ed = new Date(moment(_endMonth).format("YYYY/MM/DD"));
     ed = new Date(ed.getTime() + 23*59*60*1000);
     let local = await this.readlocal.findEventRc('',sd,ed);
+    console.log(moment(sd).format("YYYY/MM/DD") +','+ moment(ed).format("YYYY/MM/DD") +'==============查询当月日历：'+ local.length+", ");
     this.sqlite.getExtList<MonthData>(sql).then(data=>{
       for(let lo of local){
         let isExsit = false;
+
         for (let d of data){
           if(d.sd == lo.sd){
             d.scds +=1;
@@ -301,7 +302,7 @@ export class CalendarService {
           md.sd=lo.sd;
           md.scds=1;
           md.news=0;
-          data.push(md)
+          data.push(md);
         }
       }
       for (let d of data){
