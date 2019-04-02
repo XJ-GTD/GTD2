@@ -170,7 +170,7 @@ public class MainVerticle extends AbstractVerticle {
 			        String paramBase64 = new String(Base64.encodeBase64(param.toString().getBytes("UTF-8")));
 			        String checkSum = DigestUtils.md5Hex(config().getString("xfyun.openapi.iat.apikey", "0d1a450c0cfea7945686b49f2fb0c81c") + curTime + paramBase64);
 			
-			        String codec = content.substring(content.indexOf(",") + 1);
+			        String codec = content.substring(content.indexOf(",") + 1).replaceAll(" ", "");
 			        System.out.println("codec " + codec.length());
 			        MultiMap body = MultiMap.caseInsensitiveMultiMap();
 			        body.add("audio", codec);
@@ -241,6 +241,23 @@ public class MainVerticle extends AbstractVerticle {
 					handler.cause().printStackTrace();
 					if (retry > 3) {
 						System.out.println("Xunfei yun iat retried over 3 times with follow error:");
+						// 文本的时候,直接返回
+						JsonObject result = new JsonObject();
+						result.put("code", "0");
+						result.put("data", "");
+						result.put("sid", "simulated");
+						result.put("desc", "success");
+						
+						JsonObject nextctx = new JsonObject()
+								.put("context", new JsonObject()
+										.put("xunfeiyun", result
+												.put("_context", context
+														.put("userId", userId)
+														.put("deviceId", deviceId))));
+						
+						MessageProducer<JsonObject> producer = bridge.createProducer(nextTask);
+						producer.send(new JsonObject().put("body", nextctx));
+						System.out.println("Consumer " + consumer + " send to [" + nextTask + "] result [" + nextctx.encode() + "]");
 					} else {
 						iat(consumer, deviceId, userId, context, body, paramBase64, curTime, checkSum, nextTask, retry + 1);
 					}

@@ -245,7 +245,7 @@ public class MainVerticle extends AbstractVerticle {
 	private void sendMQMessages(String exchange, String routingkey, JsonObject content) {
 		rabbitmq.basicPublish(exchange, routingkey, new JsonObject().put("body", content.encode()), resultHandler -> {
 			if (resultHandler.succeeded()) {
-				System.out.println("Send rabbit mq message successed.");
+				System.out.println("Send rabbit mq message successed. [" + content.encode() + "]");
 			} else {
 				System.out.println("Send rabbit mq message failed with " + resultHandler.cause().getMessage());
 			}

@@ -356,8 +356,8 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   swipeEvent($event: any): void {
 
     let nextan: boolean = false;
-    if (45 < $event.angle && $event.angle < 135) nextan = true;
-    if (-45 > $event.angle && $event.angle > -135) nextan = false;
+    if (80 < $event.angle && $event.angle < 100) nextan = true;
+    if (-80 > $event.angle && $event.angle > -100) nextan = false;
     this.nextArray.push(nextan);
   }
 

@@ -55,7 +55,7 @@ import {PgBusiService} from "../service/pagecom/pgbusi.service";
 import {TdcService} from "../pages/tdc/tdc.service";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {ContactsService} from "../service/cordova/contacts.service";
-import {ReadlocalService} from "../service/pagecom/readlocal.service";
+import {LocalcalendarService} from "../service/cordova/localcalendar.service";
 
 @NgModule({
   declarations: [
@@ -127,7 +127,7 @@ import {ReadlocalService} from "../service/pagecom/readlocal.service";
     TddiService,
     PgBusiService,
     TdcService,
-    ReadlocalService,
+    LocalcalendarService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG,useClass: HammerDIRECTIONALLConfig }
   ]

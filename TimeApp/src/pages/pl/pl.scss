@@ -1,15 +1,6 @@
 page-pl {
   background-color: #000;
 
-  @font-face {
-    font-family: 'PingFang-Regular';
-    src: url('../../assets/fonts/PingFang Regular.ttf');
-  }
-
-  ion-content{
-    font-family: PingFang-Regular;
-  }
-
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
     background-color: #000;
   }
