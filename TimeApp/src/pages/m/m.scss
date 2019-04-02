@@ -19,8 +19,17 @@ page-m {
       font-size: 17px;
       letter-spacing:1px
     }
+    h2{
+      width: 140px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     p{
       color: #fff;
+      opacity: 0.5;
+      margin-top: 1px;
+      font-size: 1.3vmin;
     }
 
   }
