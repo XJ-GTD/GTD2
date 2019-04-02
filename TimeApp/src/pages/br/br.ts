@@ -33,7 +33,7 @@ import {BrService} from "./br.service";
               <ion-label>备份</ion-label>
             </ion-item>
 
-            <ion-item class="plan-list-item" >
+            <ion-item class="plan-list-item" (click)="recover()">
               <ion-label>恢复</ion-label>
             </ion-item>
 
@@ -57,10 +57,20 @@ export class BrPage {
   }
 
   backup(){
-    this.brService.backup().then(d=>{
+    this.brService.backup().then(data=>{
       console.log(("备份完成"));
     })
 
+  }
+
+  recover(){
+    this.brService.getLastDt().then(data=>{
+
+      this.brService.recover(Number(data.data.bts)).then(data=>{
+        console.log(("recover 恢复成功"));
+      })
+
+    })
   }
 
 }
