@@ -1,13 +1,14 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {AuthRestful, LoginData} from "../../service/restful/authsev";
-import {PersonRestful} from "../../service/restful/personsev";
+import {PersonInData, PersonRestful} from "../../service/restful/personsev";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {WebsocketService} from "../../ws/websocket.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {BrService} from "../br/br.service";
 import {AlService} from "../al/al.service";
+import {UserConfig} from "../../service/config/user.config";
 
 @Injectable()
 export class LpService {
@@ -30,12 +31,14 @@ export class LpService {
 
       let aTbl:ATbl = new ATbl();
       let uTbl:UTbl = new UTbl();
+      let unionId = "";
       // 验证用户名密码
       this.authRestful.loginbypass(loginData).then(data => {
         if (data.code != 0)
           throw  data;
 
-        //获得token，放入头部header登录码
+        unionId = data.data.unionid;
+        //获得token，放入头部header登录
         let code = data.data.code;
         return this.personRestful.getToken(code);
       }).then(data=>{
@@ -44,7 +47,7 @@ export class LpService {
         //账户表赋值
         aTbl.an = data.nickname;
         aTbl.am = data.openid;
-        aTbl.ae = "";
+        aTbl.ae = this.util.deviceId();
         aTbl.at = data.access_token;
         aTbl.aq = data.cmq;
 
@@ -58,6 +61,13 @@ export class LpService {
         uTbl.us = data.sex;
         uTbl.uct = "";
 
+        let personInData:PersonInData = new PersonInData();
+        personInData.phoneno = loginData.phoneno;
+        personInData.unionid = unionId;
+        return this.personRestful.getself(personInData);
+      }).then(data=>{
+        uTbl.hiu = data.data.avatarbase64;//头像
+
         //查询账户表
         let aTbl1:ATbl = new ATbl();
         return this.sqlExce.getList<ATbl>(aTbl1);
@@ -66,9 +76,11 @@ export class LpService {
 
         if (atbls.length > 0 ){//更新账户表
           aTbl.ai = atbls[0].ai;
+          uTbl.ai = aTbl.ai;
           return this.sqlExce.update(aTbl);
         }else{//保存账户表
           aTbl.ai = this.util.getUuid();
+          uTbl.ai = aTbl.ai;
           return this.sqlExce.save(aTbl);
         }
 
