@@ -15,9 +15,9 @@ export class PersonRestful {
 
 
   //token信息获取，头部登录码 get
-  getToken(code:string): Promise<PersonTokenData> {
+  getToken(code:string): Promise<PersonOutData> {
 
-    let personData:PersonTokenData = new PersonTokenData();
+    let personData:PersonOutData = new PersonOutData();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AAT");
       url.url = url.url + '?appid=d3d3Lmd1b2JhYS5jb20&secret=c2VjcmV0QHd3dy5ndW9iYWEuY29t&code='+ code +'&grant_type=any';
@@ -87,9 +87,9 @@ export class PersonRestful {
   }
 
   //获取个人信息	AIU	获取个人信息 get
-  getself(personData:PersonInData): Promise<BsModel<any>> {
+  getself(personData:PersonInData): Promise<BsModel<PersonOutData>> {
 
-    let bsModel = new BsModel();
+    let bsModel = new BsModel<PersonOutData>();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIU");
       url.url = url.url.replace("{unionid}",personData.unionid);
@@ -209,7 +209,7 @@ export class PersonInData{
   country: string = "";
 }
 
-export class PersonTokenData{
+export class PersonOutData{
   _id:string = "";
   phoneno  :string = "";
   verifykey  :string = "";
@@ -224,6 +224,7 @@ export class PersonTokenData{
   city: string = "";
   country: string = "";
   avatar: string = "";     //头像
+  avatarbase64: string = "";     //头像//
   privilege:object;
   code:string = "";
   state:string = "";
