@@ -173,13 +173,45 @@ public class MainVerticle extends AbstractVerticle {
 
         			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         		} else {
-        			ret.put("data", new JsonObject()
-        					.put("phoneno", userinfo.getString("phoneno"))
-        					.put("nickname", userinfo.getString("nickname"))
-        					.put("avatar", userinfo.getString("avatar"))
-        					);
-        			
-        			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+        			if (!userinfo.containsKey("avatarbase64") || StringUtils.isEmpty(userinfo.getString("avatarbase64"))) {
+        				String username = userinfo.getString("nickname");
+						String avatarurl = getAvatarUrl(username);
+
+						client.getAbs(avatarurl).send(handler -> {
+							if (handler.succeeded()) {
+								HttpResponse<Buffer> avatarresult = handler.result();
+								String avatarbase64 = avatarresult.bodyAsString();
+								
+								userinfo.put("avatarbase64", avatarbase64);
+
+			        			ret.put("data", new JsonObject()
+			        					.put("phoneno", userinfo.getString("phoneno"))
+			        					.put("nickname", userinfo.getString("nickname"))
+			        					.put("avatar", userinfo.getString("avatar"))
+			        					.put("avatarbase64", avatarbase64)
+			        					);
+			        			
+			        			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+							} else {
+			        			ret.put("data", new JsonObject()
+			        					.put("phoneno", userinfo.getString("phoneno"))
+			        					.put("nickname", userinfo.getString("nickname"))
+			        					.put("avatar", userinfo.getString("avatar"))
+			        					);
+			        			
+			        			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+							}
+						});
+        			} else {
+            			ret.put("data", new JsonObject()
+            					.put("phoneno", userinfo.getString("phoneno"))
+            					.put("nickname", userinfo.getString("nickname"))
+            					.put("avatar", userinfo.getString("avatar"))
+            					);
+            			
+            			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+        			}
+
         		}
         	} else {
 				ret.put("errcode", "-3");
@@ -254,9 +286,31 @@ public class MainVerticle extends AbstractVerticle {
 
         			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         		} else {
-        			ret.put("data", userinfo);
-        			
-        			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+        			if (!userinfo.containsKey("avatarbase64") || StringUtils.isEmpty(userinfo.getString("avatarbase64"))) {
+        				String username = userinfo.getString("nickname");
+						String avatarurl = getAvatarUrl(username);
+
+						client.getAbs(avatarurl).send(handler -> {
+							if (handler.succeeded()) {
+								HttpResponse<Buffer> avatarresult = handler.result();
+								String avatarbase64 = avatarresult.bodyAsString();
+								
+								userinfo.put("avatarbase64", avatarbase64);
+
+								ret.put("data", userinfo);
+		            			
+		            			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+							} else {
+		            			ret.put("data", userinfo);
+		            			
+		            			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+							}
+						});
+        			} else {
+            			ret.put("data", userinfo);
+            			
+            			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+        			}
         		}
         	} else {
 				ret.put("errcode", "-3");
@@ -285,9 +339,31 @@ public class MainVerticle extends AbstractVerticle {
 
         			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         		} else {
-        			ret.put("data", userinfo);
-        			
-        			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+        			if (!userinfo.containsKey("avatarbase64") || StringUtils.isEmpty(userinfo.getString("avatarbase64"))) {
+        				String username = userinfo.getString("nickname");
+						String avatarurl = getAvatarUrl(username);
+
+						client.getAbs(avatarurl).send(handler -> {
+							if (handler.succeeded()) {
+								HttpResponse<Buffer> avatarresult = handler.result();
+								String avatarbase64 = avatarresult.bodyAsString();
+								
+								userinfo.put("avatarbase64", avatarbase64);
+
+								ret.put("data", userinfo);
+		            			
+		            			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+							} else {
+		            			ret.put("data", userinfo);
+		            			
+		            			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+							}
+						});
+        			} else {
+            			ret.put("data", userinfo);
+            			
+            			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+        			}
         		}
         	} else {
 				ret.put("errcode", "-3");
@@ -566,7 +642,14 @@ public class MainVerticle extends AbstractVerticle {
 												JsonObject userinfo = findOneUser.result() == null ? new JsonObject() : findOneUser.result();
 												
 												if (userinfo.isEmpty()) {
-													userinfo
+													String avatarurl = getAvatarUrl(username);
+
+													client.getAbs(avatarurl).send(handler -> {
+														if (handler.succeeded()) {
+															HttpResponse<Buffer> avatarresult = handler.result();
+															String avatarbase64 = avatarresult.bodyAsString();
+															
+															userinfo
 															.put("_id", Base64.encodeBase64URLSafeString(UUID.randomUUID().toString().getBytes()))
 															.put("openid", phoneno)
 															.put("nickname", username)
@@ -576,24 +659,57 @@ public class MainVerticle extends AbstractVerticle {
 															.put("province", "")
 															.put("city", "")
 															.put("country", "")
-															.put("avatar", getAvatarUrl(username))
+															.put("avatar", avatarurl)
+															.put("avatarbase64", avatarbase64)
 															.put("privilege", new JsonArray());
-													mongodb.save("aup_user_info", userinfo, save -> {
-														if (save.succeeded()) {
-															JsonObject res = userinfo.copy();
-															res.remove("password");
-
-															ret.mergeIn(res);
-															ret.put("data", res);
-															
-															ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+															mongodb.save("aup_user_info", userinfo, save -> {
+																if (save.succeeded()) {
+																	JsonObject res = userinfo.copy();
+																	res.remove("password");
+			
+																	ret.mergeIn(res);
+																	ret.put("data", res);
+																	
+																	ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+																} else {
+																	ret.put("errcode", "-3");
+																	ret.put("errmsg", "服务器异常, 用户注册失败!");
+			
+																	ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+																}
+															});
 														} else {
-															ret.put("errcode", "-3");
-															ret.put("errmsg", "服务器异常, 用户注册失败!");
-
-															ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+															userinfo
+																.put("_id", Base64.encodeBase64URLSafeString(UUID.randomUUID().toString().getBytes()))
+																.put("openid", phoneno)
+																.put("nickname", username)
+																.put("password", DigestUtils.md5Hex(password))
+																.put("unionid", UUID.randomUUID().toString())
+																.put("sex", "0")
+																.put("province", "")
+																.put("city", "")
+																.put("country", "")
+																.put("avatar", getAvatarUrl(username))
+																.put("privilege", new JsonArray());
+															mongodb.save("aup_user_info", userinfo, save -> {
+																if (save.succeeded()) {
+																	JsonObject res = userinfo.copy();
+																	res.remove("password");
+			
+																	ret.mergeIn(res);
+																	ret.put("data", res);
+																	
+																	ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+																} else {
+																	ret.put("errcode", "-3");
+																	ret.put("errmsg", "服务器异常, 用户注册失败!");
+			
+																	ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+																}
+															});
 														}
 													});
+
 												} else {
 													ret.put("errcode", "10020");
 													ret.put("errmsg", "该手机号已注册, 注册失败!");
@@ -925,7 +1041,7 @@ public class MainVerticle extends AbstractVerticle {
         				JsonObject app = findOne.result();
         				
         				if (app == null || app.isEmpty()) {
-            				ctx.response().end(new JsonObject().put("errcode", 10001).put("errmsg", "Access Token取得失败").encode());
+        					ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10001).put("errmsg", "Access Token取得失败").encode());
         				} else {
         					
         					mongodb.findOne("aup_user_access",
@@ -950,6 +1066,7 @@ public class MainVerticle extends AbstractVerticle {
         									retaccess.remove("password");
         									retaccess.remove("code");
         									retaccess.remove("state");
+        									retaccess.put("scope", "snsapi_login, snsapi_userinfo");
 
         									String deviceId = Base64.encodeBase64URLSafeString((req.getHeader("di") == null || "".equals(req.getHeader("di"))) ? req.getHeader("x-real-ip").getBytes() : req.getHeader("di").getBytes());
         									String queue = retaccess.getString("openid") + "." + deviceId;
@@ -1005,15 +1122,15 @@ public class MainVerticle extends AbstractVerticle {
         									
         									System.out.println("Exist user login " + retaccess.encode());
 
-        									ctx.response().end(retaccess.encode());
+        									ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(retaccess.encode());
         								} else {
-        		            				ctx.response().end(new JsonObject().put("errcode", 10001).put("errmsg", "Access Token取得失败").encode());
+        									ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10001).put("errmsg", "Access Token取得失败").encode());
         								}
         							}
         					);
         				}
         			} else {
-        				ctx.response().end(new JsonObject().put("errcode", 10001).put("errmsg", "Access Token取得失败").encode());
+        				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10001).put("errmsg", "Access Token取得失败").encode());
         			}
         		});
 	}
@@ -1042,7 +1159,7 @@ public class MainVerticle extends AbstractVerticle {
 							
 							if (expiresIn != 0 && System.currentTimeMillis() <= accessTime + (expiresIn * 1000)) {
 						        System.out.println("Refresh token get failed for expired.");
-		        				ctx.response().end(new JsonObject().put("errcode", 10004).put("errmsg", "登录已失效,请重新登录.").encode());
+						        ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10004).put("errmsg", "登录已失效,请重新登录.").encode());
 							} else {
 								refreshTokenUser.remove("_id");
 								refreshTokenUser.remove("phoneno");
@@ -1050,16 +1167,16 @@ public class MainVerticle extends AbstractVerticle {
 								refreshTokenUser.remove("code");
 								refreshTokenUser.remove("password");
 								
-								ctx.response().end(refreshTokenUser.encode());
+								ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(refreshTokenUser.encode());
 							}
 							
 						} else {
 					        System.out.println("Refresh token get failed for no matched user access.");
-	        				ctx.response().end(new JsonObject().put("errcode", 10003).put("errmsg", "Refresh token取得失败").encode());
+					        ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10003).put("errmsg", "Refresh token取得失败").encode());
 						}
 					} else {
 				        System.out.println("Refresh token get failed for query error.");
-        				ctx.response().end(new JsonObject().put("errcode", 10003).put("errmsg", "Refresh token取得失败").encode());
+				        ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10003).put("errmsg", "Refresh token取得失败").encode());
 					}
 				});        
 	}
@@ -1070,6 +1187,8 @@ public class MainVerticle extends AbstractVerticle {
         String openId = req.getParam("openid");
         String accessToken = req.getParam("access_token");
         
+        System.out.println("Userinfo openId:" + openId + ", accessToken:" + accessToken);
+
 		mongodb.findOne("aup_user_access",
 				new JsonObject()
 				.put("openid", openId)
@@ -1080,6 +1199,8 @@ public class MainVerticle extends AbstractVerticle {
 						JsonObject access = findOne.result();
 						
 						if (access != null && !access.isEmpty()) {
+							System.out.println("accessinfo " + access.encode());
+
 							mongodb.findOne("aup_user_info",
 									new JsonObject().put("unionid", access.getString("unionid")),
 									new JsonObject(),
@@ -1087,24 +1208,26 @@ public class MainVerticle extends AbstractVerticle {
 										if (findUser.succeeded()) {
 											JsonObject userinfo = findUser.result();
 											
-											userinfo.remove("password");
-											userinfo.remove("_id");
+											System.out.println("userinfo " + userinfo);
 											
 											if (userinfo != null && !userinfo.isEmpty()) {
-												ctx.response().end(userinfo.encode());
+												userinfo.remove("password");
+												userinfo.remove("_id");
+												
+												ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(userinfo.encode());
 											} else {
-						        				ctx.response().end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfo取得失败").encode());
+												ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfo取得失败").encode());
 											}
 										} else {
-					        				ctx.response().end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfo取得失败").encode());
+											ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfo取得失败").encode());
 										}
 									}
 							);
 						} else {
-	        				ctx.response().end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfo取得失败").encode());
+							ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfo取得失败").encode());
 						}
 					} else {
-        				ctx.response().end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfo取得失败").encode());
+						ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfo取得失败").encode());
 					}
 				}
 		);

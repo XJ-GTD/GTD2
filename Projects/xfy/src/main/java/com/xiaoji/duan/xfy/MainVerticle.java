@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.digest.Md5Crypt;
 
 import io.vertx.amqpbridge.AmqpBridge;
 import io.vertx.core.AbstractVerticle;
@@ -64,6 +65,30 @@ public class MainVerticle extends AbstractVerticle {
 		consumer.handler(vertxMsg -> this.process(trigger, vertxMsg));
 	}
 	
+	public static String get32Id(String userId, String deviceId) {
+		StringBuffer id32 = new StringBuffer();
+		
+		for (int i = 0; i < 32; i ++) {
+			int pos = (int) Math.floor(i/2);
+			
+			if (Math.floorMod(i, 2) == 0) {
+				if (pos > (userId.length() - 1)) {
+					id32.append(userId.charAt(pos - userId.length()));
+				} else {
+					id32.append(userId.charAt(pos));
+				}
+			} else {
+				if (pos > (deviceId.length() - 1)) {
+					id32.append(deviceId.charAt(pos - deviceId.length()));
+				} else {
+					id32.append(deviceId.charAt(pos));
+				}
+			}
+		}
+		
+		return id32.toString().toLowerCase();
+	}
+
 	private void process(String consumer, Message<JsonObject> received) {
 		System.out.println("Consumer " + consumer + " received [" + received.body().encode() + "]");
 		JsonObject data = received.body().getJsonObject("body");
@@ -82,11 +107,12 @@ public class MainVerticle extends AbstractVerticle {
 			try {
 		        String curTime = System.currentTimeMillis() / 1000L + "";
 		        StringBuffer param = new StringBuffer();
-		        
+
 		        if ("text".equals(dataType)) {
 		        	param.append("{");
 		        	param.append("\"auth_id\":\"");
-		        	param.append(config().getString("xfyun.openapi.authid"));
+		        	//param.append(config().getString("xfyun.openapi.authid"));
+		        	param.append(get32Id(userId, deviceId));
 		        	param.append("\",");
 		        	param.append("\"data_type\":\"");
 		        	param.append(dataType);
@@ -109,7 +135,8 @@ public class MainVerticle extends AbstractVerticle {
 		        	param.append(config().getString("xfyun.openapi.samplerate", "16000"));
 		        	param.append("\",");
 		        	param.append("\"auth_id\":\"");
-		        	param.append(config().getString("xfyun.openapi.authid"));
+		        	//param.append(config().getString("xfyun.openapi.authid"));
+		        	param.append(get32Id(userId, deviceId));
 		        	param.append("\",");
 		        	param.append("\"data_type\":\"");
 		        	param.append(dataType);
