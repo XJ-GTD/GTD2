@@ -1,13 +1,6 @@
 page-pd {
 
-  @font-face {
-    font-family: 'PingFang-Regular';
-    src: url('../../assets/fonts/PingFang Regular.ttf');
-  }
-
-  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: #000;
-  }
+  background-color: #000;
 
   ion-content ion-card-content {
     height: 20vmin;

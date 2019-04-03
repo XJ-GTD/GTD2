@@ -15,45 +15,46 @@ import {UtilService} from "../../service/util-service/util.service";
 @Component({
   selector: 'page-ps',
   providers: [],
-  template:`<ion-header> 
+  template:`
+  <ion-header> 
     <ion-toolbar>
       <ion-buttons left>
         <button ion-button icon-only (click)="goBack()" color="danger">
-          <ion-icon name="arrow-back"></ion-icon>
+          <!--<ion-icon name="arrow-back"></ion-icon>-->
+          <img class="img-header-left" src="./assets/imgs/fh2.png">
         </button>
       </ion-buttons>
     </ion-toolbar> 
   </ion-header> 
   <ion-content padding class="page-backgroud-color"> 
     <ion-item class="no-border">
-      <ion-input type="text" style="font-size:36px" [(ngModel)]="uo.user.name" (ionBlur)="save()"></ion-input>
-      <ion-avatar item-end> 
-        <img src="./assets/imgs/headImg.jpg" style="width: 60px;height: 60px"> 
-      </ion-avatar> 
-    </ion-item>
-    <button ion-item margin-top  class="rowCss" (click)="selectSex()"> 
-      <ion-label>性别</ion-label>
-      <ion-label  item-end text-end >{{sex}}</ion-label>
-      <!--<ion-input type="text" [(ngModel)]="sex"></ion-input>-->
-      <!--<ion-select  item-end [(ngModel)]="uo.user.sex"> style="text-align: right;"-->
-        <!--<ion-option value="0">无</ion-option> -->
-        <!--<ion-option value="1">男</ion-option> -->
-        <!--<ion-option value="2">女</ion-option> -->
-      <!--</ion-select> -->
-    </button> 
-    <button ion-item class="rowCss"> 
-      <ion-label>生日</ion-label>
-      <ion-datetime displayFormat="YYYY-MM-DD" item-end text-end [(ngModel)]="bothday"
-                    min="1949-01-01" max="2039-12-31"  (ionCancel)="getDtPickerSel($event)"></ion-datetime> 
-    </button>
-    <button ion-item class="rowCss">
-      <ion-label>身份证</ion-label>
-      <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.No" (ionBlur)="save()"></ion-input>
-    </button>
-    <button ion-item class="rowCss"> 
-      <ion-label>联系方式</ion-label> 
-      <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.contact" (ionBlur)="save()"></ion-input> 
-    </button>
+    <ion-input type="text" style="font-size: 23px;" [(ngModel)]="uo.user.name" (ionBlur)="save()"></ion-input>
+    <ion-avatar item-end>
+      <img [src]="uo.user.aevter" style="width: 60px;height: 60px">
+    </ion-avatar>
+  </ion-item>
+    
+    <ion-list>
+      
+      <button ion-item (click)="selectSex()">
+        <ion-label>性别</ion-label>
+        <ion-label  item-end text-end >{{sex}}</ion-label>
+      </button>
+      <button ion-item>
+        <ion-label>生日</ion-label>
+        <ion-datetime displayFormat="YYYY-MM-DD" item-end text-end [(ngModel)]="bothday"
+                      min="1949-01-01" max="2039-12-31"  (ionCancel)="getDtPickerSel($event)"></ion-datetime>
+      </button>
+      <button ion-item>
+        <ion-label>身份证</ion-label>
+        <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.No" (ionBlur)="save()"></ion-input>
+      </button>
+      <button ion-item>
+        <ion-label>联系方式</ion-label>
+        <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.contact" (ionBlur)="save()"></ion-input>
+      </button>
+      
+    </ion-list>
   </ion-content>`,
 })
 export class PsPage {

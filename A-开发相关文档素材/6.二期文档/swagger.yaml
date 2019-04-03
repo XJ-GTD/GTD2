@@ -1180,6 +1180,55 @@ paths:
                 type: integer
               expires_in:
                 type: integer
+  /aba/user/mwxing/access:
+    get:
+      tags:
+        - account service
+      summary: 登录令牌获取(统一登录入口获取令牌)
+      description: '获取登录令牌需要提供appid和secret, 这两个参数可以在客户端写死, 测试用appid:d3d3Lmd1b2JhYS5jb20, secret:c2VjcmV0QHd3dy5ndW9iYWEuY29t'
+      produces:
+        - application/json
+      parameters:
+        - name: appid
+          in: query
+          type: string
+          description: 授权应用ID
+          required: true
+        - name: secret
+          in: query
+          type: string
+          description: 授权应用密钥
+          required: true
+        - name: code
+          in: query
+          type: string
+          description: 登录授权码
+          required: true
+        - name: grant_type
+          in: query
+          type: string
+          description: 授权方式
+          required: true
+      responses:
+        '200':
+          description: 登录令牌获取成功
+          schema:
+            type: object
+            properties:
+              errcode:
+                type: integer
+              errmsg:
+                type: string
+              data:
+                type: object
+              access_token:
+                type: string
+              refresh_token:
+                type: string
+              access_time:
+                type: integer
+              expires_in:
+                type: integer
   /aup/api/refresh_token:
     get:
       tags:

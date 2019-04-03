@@ -5,13 +5,13 @@ import {BsModel} from "../../service/restful/out/bs.model";
 import * as moment from "moment";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {FsData, ScdData} from "../../service/pagecom/pgbusi.service";
-import {ReadlocalService} from "../../service/pagecom/readlocal.service";
+import {LocalcalendarService} from "../../service/cordova/localcalendar.service";
 
 @Injectable()
 export class TdlService {
   constructor(
     private sqlExce: SqliteExec,
-    private readlocal:ReadlocalService,
+    private readlocal:LocalcalendarService,
     private userConfig: UserConfig) {
   }
   /**

@@ -67,6 +67,7 @@ export class PointComponent {
   async speakstart() {
     this.speed = 0.004;
     this._renderer.removeClass(this.light.nativeElement, "danger");
+
     this.assistantService.listenAudio().then(data=>{
       this._renderer.addClass(this.light.nativeElement, "danger");
 

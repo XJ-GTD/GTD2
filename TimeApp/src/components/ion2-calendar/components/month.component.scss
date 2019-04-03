@@ -40,7 +40,10 @@
     position: absolute;
     width: 4px;
     height: 4px;
-    background: conic-gradient(#8c83bd, #8556a0, #a057b4);
+    background: -webkit-linear-gradient(left, rgb(149, 58, 139), rgb(86, 82, 222)); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, rgb(149, 58, 139), rgb(86, 82, 222)); /* 标准的语法（必须放在最后） */
     border-radius: 4px;
   }
   .days .today p {

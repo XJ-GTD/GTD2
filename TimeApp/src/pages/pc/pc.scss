@@ -1,15 +1,6 @@
 page-pc {
   background-color: #000;
 
-  @font-face {
-    font-family: 'PingFang-Regular';
-    src: url('../../assets/fonts/PingFang Regular.ttf');
-  }
-
-  ion-content{
-    font-family: PingFang-Regular;
-  }
-
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
     background-color: #000;
   }
@@ -80,8 +71,8 @@ page-pc {
   }
 
   .name-input {
-    margin-top: 2vmin;
-    margin-bottom: 8vmin;
+    margin-top: 10px;
+    margin-bottom: 40px;
   }
 
   .grid .row {

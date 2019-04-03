@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
-import { IonicPage, ModalController, NavController} from 'ionic-angular';
+import {IonicPage, ModalController, NavController} from 'ionic-angular';
 import {
   CalendarComponentOptions
 } from "../../components/ion2-calendar";
 import {DataConfig} from "../../service/config/data.config";
 import {HData, HService} from "./h.service";
+import {NotificationsService} from "../../service/cordova/notifications.service";
 
 /**
  * Generated class for the 首页 page.
@@ -61,17 +62,8 @@ export class HPage {
     this.hdata = new HData();
 
   }
-  ngOnInit(){
 
-   // this.hService.configDay().then(data=>{
-   //   this.options.daysConfig.push(...data);
-   //   //
-   //   // setTimeout(()=>{
-   //   //   console.log("********************" + data.length);
-   //   //   this.options.daysConfig.splice(0,this.options.daysConfig.length);
-   //   //   //this.options.daysConfig.push(...data);
-   //   // },2000);
-   // })
+  ngOnInit() {
   }
 
   onPress(pressDay) {
@@ -88,14 +80,11 @@ export class HPage {
 
   //查询当天日程
   onSelect(selectDay) {
-    console.log("**********************************1111");
-
     this.hService.centerShow(selectDay).then(d => {
       //双机进入列表
       if (this.hdata.selectDay == selectDay && selectDay) {
         this.gotolist();
       }
-
       this.hdata = d;
     })
   }

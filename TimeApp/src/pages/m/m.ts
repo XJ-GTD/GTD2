@@ -1,6 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, Tabs} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
+import {PageUData, PsService} from "../ps/ps.service";
 
 /**
  * Generated class for the 菜单 page.
@@ -16,51 +17,66 @@ import {DataConfig} from "../../service/config/data.config";
   template: `
     <ion-menu [content]="ha" side="right" swipeEnabled="true" type="scalePush">
       <ion-content>
-
-        <ion-list>
-          <ion-list-header>
-            <ion-item>
-              <ion-avatar item-start>
-                <img [src]="imgurl" class="img_size">
-              </ion-avatar>
-              <!--<h2>{{UserConfig.user.name}}</h2>-->
-              <h2>小冥星</h2>
-              <p (click)="goPsPage()"><u>改变信息</u></p>
-            </ion-item>
-          </ion-list-header>
-          <ion-item (click)="goGlPage()">
-            <h1>冥王星</h1>
-          </ion-item>
-          <ion-item (click)="goGlPage()">
-            <h3>朋友群</h3>
-          </ion-item>
-          <ion-item (click)="goPlPage()">
-            <h3>活动群</h3>
-          </ion-item>
-          <ion-item (click)="goBlPage()">
-            <h3>禁止分享人</h3>
-          </ion-item>
-          <ion-item (click)="goSsPage()">
-            <h3>系统设置</h3>
-          </ion-item>
-          <ion-item (click)="goBrPage()">
-            <h3>备份恢复</h3>
-          </ion-item>
-        </ion-list>
+        <ion-grid>
+          <ion-row>
+            <ion-list>
+              <ion-list-header>
+                <ion-item  (click)="goPsPage()">
+                  <ion-avatar item-start>
+                    <img [src]="avatar" class="img_size">
+                  </ion-avatar>
+                  <h2>{{uo.user.name}}</h2>
+                  <p>{{uo.account.phone}}</p>
+                </ion-item>
+              </ion-list-header>
+              <ion-item (click)="goGlPage()">
+                <h1>冥王星</h1>
+              </ion-item>
+              <ion-item (click)="goGlPage()">
+                <h3>朋友群</h3>
+              </ion-item>
+              <ion-item (click)="goPlPage()">
+                <h3>活动群</h3>
+              </ion-item>
+              <ion-item (click)="goBlPage()">
+                <h3>禁止分享人</h3>
+              </ion-item>
+              <ion-item (click)="goSsPage()">
+                <h3>系统设置</h3>
+              </ion-item>
+              <ion-item (click)="goBrPage()">
+                <h3>备份恢复</h3>
+              </ion-item>
+            </ion-list>
+          </ion-row>
+        </ion-grid>
       </ion-content>
     </ion-menu>
     <ion-nav #ha [root]="hPage"></ion-nav>`
 })
 export class MPage {
   hPage: any = DataConfig.PAGE._H_PAGE;
-  imgurl: any;
+  avatar: any;
+  uo:PageUData = new PageUData();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private psService:PsService) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MPage');
-    this.imgurl = "./assets/imgs/headImg.jpg";
+    this.avatar = DataConfig.HUIBASE64;
+
+    this.psService.getUser().then(data=>{
+      if(data && data.user){
+        Object.assign(this.uo,data);
+
+        console.log("this.uo.user.aevter :"+this.uo.user.aevter);
+        if(this.uo.user.aevter !=null && this.uo.user.aevter != '' && this.uo.user.aevter != undefined){
+          this.avatar = this.uo.user.aevter;
+        }
+
+      }
+    })
   }
 
   //计划
@@ -70,19 +86,16 @@ export class MPage {
 
   //系统设置
   goSsPage() {
-
     this.navCtrl.push(DataConfig.PAGE._SS_PAGE);
   }
 
   //备份
   goBrPage() {
-
     this.navCtrl.push(DataConfig.PAGE._BR_PAGE);
   }
 
   // 群组列表
   goGlPage() {
-
     this.navCtrl.push(DataConfig.PAGE._GL_PAGE);
   }
 
