@@ -168,7 +168,7 @@ public class MainVerticle extends AbstractVerticle {
 							sendShortMessages(openid, sms);
 
 						} else {
-							String routingkey = "mwxing." + unionId + "." + openId;
+							String routingkey = "mwxing." + unionId;
 							System.out.println("announce by mwxing message to " + routingkey);
 							sendMQMessages(config().getString("exchange.mwxing.direct", "exchange.mwxing.direct"), routingkey, announceContent.getJsonObject("mwxing"));
 						}
