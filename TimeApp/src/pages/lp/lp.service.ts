@@ -9,6 +9,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {BrService} from "../br/br.service";
 import {AlService} from "../al/al.service";
 import {UserConfig} from "../../service/config/user.config";
+import {BsModel} from "../../service/restful/out/bs.model";
 
 @Injectable()
 export class LpService {
@@ -23,7 +24,7 @@ export class LpService {
   }
 
   //登录
-  login(lpdata: PageLpData): Promise<PageLpData> {
+  login(lpdata: PageLpData): Promise<any> {
     return new Promise((resolve, reject) => {
       let loginData: LoginData = new LoginData();
       loginData.phoneno = lpdata.mobile;
@@ -38,6 +39,7 @@ export class LpService {
           throw  data;
 
         unionId = data.data.unionid;
+
         //获得token，放入头部header登录
         let code = data.data.code;
         return this.personRestful.getToken(code);
@@ -52,22 +54,16 @@ export class LpService {
         aTbl.aq = data.cmq;
 
         //用户表赋值
-        uTbl.ai = aTbl.ai;
         uTbl.un = data.nickname; //用户名
         uTbl.hiu = data.avatar;
-        uTbl.biy = "";
         uTbl.rn = data.nickname; //真实姓名
-        uTbl.ic = "";
         uTbl.us = data.sex;
-        uTbl.uct = "";
 
         let personInData:PersonInData = new PersonInData();
-        personInData.phoneno = loginData.phoneno;
         personInData.unionid = unionId;
         return this.personRestful.getself(personInData);
       }).then(data=>{
         uTbl.hiu = data.data.avatarbase64;//头像
-
         //查询账户表
         let aTbl1:ATbl = new ATbl();
         return this.sqlExce.getList<ATbl>(aTbl1);
@@ -92,10 +88,10 @@ export class LpService {
         let utbls:Array<UTbl> = data;
 
         if (utbls.length > 0 ){//更新用户表
-          uTbl.ui = utbls[0].ai;
+          uTbl.ui = utbls[0].ui;
           return this.sqlExce.update(uTbl);
         }else{//保存用户表
-          uTbl.ui = this.util.getUuid();
+          uTbl.ui = unionId;
           return this.sqlExce.save(uTbl);
         }
       }).then(data=>{
@@ -104,12 +100,9 @@ export class LpService {
         //建立websoct连接（调用websoctService）
         return this.websocketService.connect();
       }).then(data=>{
-        // 同步数据（调用brService方法恢复数据）
-        //return this.brService.recover(0);
-        //建立websoct连接（调用websoctService）
         return this.alService.setSetting();
       }).then(data=>{
-        resolve(lpdata)
+        resolve(data)
 
       }).catch(error=>{
         resolve(error)
@@ -122,6 +115,4 @@ export class LpService {
 export class PageLpData {
   mobile: string = "";
   password: string = "";
-  code: number = 0;
-  message: string = "";
 }

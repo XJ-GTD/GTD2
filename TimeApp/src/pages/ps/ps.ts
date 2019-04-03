@@ -3,6 +3,7 @@ import {IonicPage, LoadingController, NavController, NavParams, Navbar, ActionSh
 import {DataConfig} from "../../service/config/data.config";
 import {PageUData, PsService} from "./ps.service";
 import {UtilService} from "../../service/util-service/util.service";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the 个人设置 page.
@@ -30,7 +31,7 @@ import {UtilService} from "../../service/util-service/util.service";
     <ion-item class="no-border">
     <ion-input type="text" style="font-size: 23px;" [(ngModel)]="uo.user.name" (ionBlur)="save()"></ion-input>
     <ion-avatar item-end>
-      <img [src]="uo.user.aevter" style="width: 60px;height: 60px">
+      <img [src]="uo.user.avatar" style="width: 60px;height: 60px">
     </ion-avatar>
   </ion-item>
     
@@ -73,7 +74,19 @@ export class PsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UcPage');
-    this.init();
+    //this.init();
+
+    Object.assign(this.uo.user,UserConfig.user);
+
+    if (UserConfig.user.sex != undefined && UserConfig.user.sex != null && UserConfig.user.sex != '') {
+      if( UserConfig.user.sex == "0"){
+        this.sex = "未知";
+      }else {
+        this.sex = UserConfig.user.sex == "1" ? "男":"女";
+      }
+    }
+
+    this.uo.user.bothday = this.uo.user.bothday.replace(new RegExp('/','g'),'-');
   }
 
   backButtonClick = (e: UIEvent) => {
@@ -81,7 +94,7 @@ export class PsPage {
     this.navCtrl.pop();
   };
 
-  init() {
+  /*init() {
     this.psService.getUser().then(data=>{
       if(data && data.user){
         Object.assign(this.uo,data);
@@ -95,15 +108,11 @@ export class PsPage {
 
       }
     })
-  }
+  }*/
 
   goBack() {
-    console.log('=======跳转:' + DataConfig.PAGE._H_PAGE);
-    // this.navCtrl.push(DataConfig.PAGE._M_PAGE);
-    //this.navCtrl.setRoot(DataConfig.PAGE._H_PAGE);
     this.navCtrl.pop();
   }
-
 
   save(){
     let isUpd = false;
@@ -146,19 +155,20 @@ export class PsPage {
   }
   async selectSex() {
     const actionSheet = await this.actionSheetController.create({
-      buttons: [ {
+      buttons: [{
         text: '男',
         handler: () => {
-          console.log('男');
-          this.sex = '男';
-          this.uo.user.sex='0';
+          this.uo.user.sex = '1';
+          console.log("男:" + this.uo.user.sex);
+          this.sex = this.uo.user.sex == "1" ? "男" : "女";
           this.save();
         }
       }, {
         text: '女',
         handler: () => {
-          this.sex = '女';
-          this.uo.user.sex='0';
+          this.uo.user.sex = '2';
+          console.log("女:" + this.uo.user.sex);
+          this.sex = this.uo.user.sex == "1" ? "男" : "女";
           this.save();
         }
       }]

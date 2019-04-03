@@ -111,8 +111,6 @@ export class RPage {
           this.timeText = "发送验证码"
         }
       }, 1000)
-    }else {
-      this.util.toast("请填写正确的手机号",1500);
     }
   }
 
@@ -140,7 +138,7 @@ export class RPage {
         }).catch(error=>{
           console.log("注册失败"+JSON.stringify(error));
           this.util.loadingEnd();
-          this.util.toast("注册失败",1500);
+          this.util.toast(error.message,1500);
         });
       }
     }

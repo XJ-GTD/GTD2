@@ -100,8 +100,6 @@ export class LsPage {
           this.timeText = "发送验证码"
         }
       }, 1000)
-    }else {
-      this.util.toast("请填写正确的手机号",1500);
     }
   }
 
