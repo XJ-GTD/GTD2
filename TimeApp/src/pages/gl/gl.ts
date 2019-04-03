@@ -83,6 +83,9 @@ export class GlPage {
 
   toGroupCreate(){
     let profileModal = this.modalCtrl.create(DataConfig.PAGE._GA_PAGE);
+    profileModal.onDidDismiss((data)=>{
+        this.getGroups();
+      });
     profileModal.present();
   }
 
