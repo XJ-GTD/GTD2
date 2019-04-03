@@ -5,7 +5,6 @@ import {
 } from "../../components/ion2-calendar";
 import {DataConfig} from "../../service/config/data.config";
 import {HData, HService} from "./h.service";
-import {NotificationsService} from "../../service/cordova/notifications.service";
 
 /**
  * Generated class for the 首页 page.
