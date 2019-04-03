@@ -69,13 +69,13 @@ export class BhTbl implements ITbl{
   }
 
   inT():string {
-    let sq =`insert into gtd_bh (bhi ,pwi ,hiu,  wtt) values( '${this.bhi}','${this.pwi}','${this.hiu}', ${moment().unix()})`;
+    let sq =`insert into gtd_bh (bhi ,pwi ,hiu,  wtt) values( '${this.bhi}','${this.pwi}','${this.hiu}', ${moment().unix()});`;
 
     return sq;
   }
 
   rpT():string {
-    let sq =`replace into gtd_bh (bhi ,pwi ,hiu,  wtt) values( '${this.bhi}','${this.pwi}','${this.hiu}', ${moment().unix()})`;
+    let sq =`replace into gtd_bh (bhi ,pwi ,hiu,  wtt) values( '${this.bhi}','${this.pwi}','${this.hiu}', ${moment().unix()});`;
 
     return sq;
   }

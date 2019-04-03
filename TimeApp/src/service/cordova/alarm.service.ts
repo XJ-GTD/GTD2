@@ -23,25 +23,9 @@ export class AlarmService {
   private hour: number;
   private minute: number;
 
-  constructor(private localNotifications: LocalNotifications,
-              private vibration: Vibration,
+  constructor(private vibration: Vibration,
               private nativeAudio: NativeAudio){
 
-
-    this.localNotifications.on('click').subscribe(success => {
-      console.log("点击消息通知关闭了闹钟");
-      this.nativeAudio.stop("schedule1");
-    }, error => {
-
-    });
-    this.localNotifications.on('clear').subscribe(success => {
-      console.log("清除消息通知关闭了闹钟");
-      this.nativeAudio.stop("schedule1");
-    }, error => {
-
-    });
-
-    this.index = 1;
   }
 
   public setAlarmClock(date: string, scheduleName: string) {
@@ -54,53 +38,53 @@ export class AlarmService {
 
     console.log("开始设定闹钟");
     // set wakeup timer
-    cordova.plugins.xjalarmclock.wakeup( result => {
-        if (result.type==='wakeup') {
-          console.log("检测到闹钟 启动成功: " + result.extra);
-
-          //铃声启动
-          this.nativeAudio.play('schedule1').then(success => {
-            console.log("闹钟铃声播放成功");
-          }, error => {
-            console.log("闹钟铃声播放失败：" + error.toString());
-          });
-
-          //通知栏消息
-          this.localNotifications.schedule({
-            id: this.index,//将来清除，取消，更新或检索本地通知所需的唯一标识符默认值：0
-            icon: '../resources/android/icon/drawable-icon.png',
-            title:"闹钟提醒",
-            text: "来自日程["+ scheduleName + "]",
-            trigger: {at: new Date(new Date().getTime())},//何时触发通知
-            //声音设置了无效
-            sound: null,//显示警报时包含播放声音的文件的Uri默认值：res：// platform_default
-            launch:true,
-            //在我手机上也是无效的
-            lockscreen:true//仅限ANDROID如果设置为true，则通知将在所有锁定屏幕上完整显示。如果设置为false，则不会在安全锁屏上显示。
-          });
-
-          this.index++;
-
-        } else if(result.type==='set'){
-          console.log("检测到闹钟 设定: " + result);
-        } else {
-          console.log('检测到未处理的类型 ( '+ result + '|' + result.type + ')');
-        }
-
-      },
-      error => {
-        console.log("闹钟设定失败: " + error.toString());
-      },
-      // a list of alarms to set
-      {
-        alarms : [{
-          type : 'onetime',
-          time : { year: this.year, month: this.month, day: this.day, hour : this.hour, minute : this.minute },
-          extra : { message : '来自日程[' + scheduleName + ']' },
-          message : '闹钟已经过时！'
-        }]
-      }
-    );
+    // cordova.plugins.xjalarmclock.wakeup( result => {
+    //     if (result.type==='wakeup') {
+    //       console.log("检测到闹钟 启动成功: " + result.extra);
+    //
+    //       //铃声启动
+    //       this.nativeAudio.play('schedule1').then(success => {
+    //         console.log("闹钟铃声播放成功");
+    //       }, error => {
+    //         console.log("闹钟铃声播放失败：" + error.toString());
+    //       });
+    //
+    //       //通知栏消息
+    //       this.localNotifications.schedule({
+    //         id: this.index,//将来清除，取消，更新或检索本地通知所需的唯一标识符默认值：0
+    //         icon: '../resources/android/icon/drawable-icon.png',
+    //         title:"闹钟提醒",
+    //         text: "来自日程["+ scheduleName + "]",
+    //         trigger: {at: new Date(new Date().getTime())},//何时触发通知
+    //         //声音设置了无效
+    //         sound: null,//显示警报时包含播放声音的文件的Uri默认值：res：// platform_default
+    //         launch:true,
+    //         //在我手机上也是无效的
+    //         lockscreen:true//仅限ANDROID如果设置为true，则通知将在所有锁定屏幕上完整显示。如果设置为false，则不会在安全锁屏上显示。
+    //       });
+    //
+    //       this.index++;
+    //
+    //     } else if(result.type==='set'){
+    //       console.log("检测到闹钟 设定: " + result);
+    //     } else {
+    //       console.log('检测到未处理的类型 ( '+ result + '|' + result.type + ')');
+    //     }
+    //
+    //   },
+    //   error => {
+    //     console.log("闹钟设定失败: " + error.toString());
+    //   },
+    //   // a list of alarms to set
+    //   {
+    //     alarms : [{
+    //       type : 'onetime',
+    //       time : { year: this.year, month: this.month, day: this.day, hour : this.hour, minute : this.minute },
+    //       extra : { message : '来自日程[' + scheduleName + ']' },
+    //       message : '闹钟已经过时！'
+    //     }]
+    //   }
+    // );
 
   }
 
