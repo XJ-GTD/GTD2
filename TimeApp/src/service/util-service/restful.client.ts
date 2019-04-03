@@ -36,6 +36,7 @@ export class RestfulClient {
             resolve(jsonData);
           }).catch(e=>{
             this.util.toast("服务" + url.desc + "访问失败" + e.error,2000);
+            console.error("服务" + url.desc + "访问失败"+JSON.stringify(e));
             reject(e);
           })
         }else{
@@ -46,6 +47,7 @@ export class RestfulClient {
             resolve(data);
           },err => {
             this.util.toast("服务" + url.desc + "访问失败",2000);
+            console.error("服务" + url.desc + "访问失败"+JSON.stringify(err));
             reject(err)
           })
         }
@@ -64,6 +66,7 @@ export class RestfulClient {
             resolve(jsonData);
           }).catch(e=>{
             this.util.toast("服务" + url.desc + "访问失败",2000);
+            console.error("服务" + url.desc + "访问失败"+JSON.stringify(e));
             reject(e);
           })
         }else{
@@ -74,6 +77,7 @@ export class RestfulClient {
             resolve(data);
           },err => {
             this.util.toast("服务" + url.desc + "访问失败",2000);
+            console.error("服务" + url.desc + "访问失败"+JSON.stringify(err))
             reject(err)
           })
         }

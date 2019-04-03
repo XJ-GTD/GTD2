@@ -7,10 +7,10 @@ import {CudscdPara} from "../model/cudscd.para";
 import {ProcesRs} from "../model/proces.rs";
 import {O, SS} from "../model/ws.enum";
 import {DataConfig} from "../../service/config/data.config";
-import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
+import {FsData, PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
-import {FsService, PageFsData} from "../../pages/fs/fs.service";
+import {FsService} from "../../pages/fs/fs.service";
 
 /**
  * 确认操作
@@ -49,9 +49,9 @@ export class OptionProcess implements MQProcess{
             await this.busiService.delete( rc.si,"2", rc.sd);
           }
 
-          let pfs:Array<PageFsData> = new Array<PageFsData>();
+          let pfs:Array<FsData> = new Array<FsData>();
           for(let fs of processRs.fs){
-            let p:PageFsData = new PageFsData();
+            let p:FsData = new FsData();
             Object.assign(p,fs);
             pfs.push(p);
           }

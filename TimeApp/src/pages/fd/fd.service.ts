@@ -76,7 +76,7 @@ export class FdService {
          bla.ai=fd.ui;
          bla.mpn= fd.rc;
          bla.n= fd.rn;
-         bla.a= fd.hiu;
+         //bla.a= fd.hiu;
          bla.s='';
          bla.bd= '';
        }
