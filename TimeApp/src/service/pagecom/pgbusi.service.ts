@@ -380,7 +380,6 @@ export class ScdData {
   ib:string ="0"; //0：非本地日历;1：本地日历
   fssshow:string ="";//参与人画面显示用
   cbkcolor:string ="";//每个日程颜色画面显示用
-  anchorid:string ="";//scroll锚点
   morecolor:string ="#FFFFFF";//more颜色画面显示
 
 
@@ -437,7 +436,9 @@ export class FsData {
   rc: string = "";  //联系人联系方式
   rel: string = ""; //系类型 1是个人，2是群，0未注册用户
   ui: string = "";  //数据归属人ID
-
+  bhiu:string="";//base64图片
+  pi: string=""; //日程参与人表ID
+  si: string=""; //日程事件ID
 }
 
 

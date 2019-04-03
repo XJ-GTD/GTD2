@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {IonicPageModule} from 'ionic-angular';
 import {MPage} from './m';
 import {CalendarModule} from "../../components/ion2-calendar";
-import {PsService} from "../ps/ps.service";
 
 @NgModule({
   declarations: [
@@ -16,7 +15,6 @@ import {PsService} from "../ps/ps.service";
     MPage,
   ],
   providers: [
-    PsService,
   ],
 })
 export class MPageModule {}

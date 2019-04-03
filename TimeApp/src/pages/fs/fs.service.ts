@@ -7,35 +7,43 @@ import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {UtilService} from "../../service/util-service/util.service";
 import {PersonInData, PersonRestful} from "../../service/restful/personsev";
 import {DataConfig} from "../../service/config/data.config";
+import {ContactsService} from "../../service/cordova/contacts.service";
+import {FsData} from "../../service/pagecom/pgbusi.service";
+import {BhTbl} from "../../service/sqlite/tbl/bh.tbl";
 
 @Injectable()
 export class FsService {
   constructor(private sqlite:SqliteExec,
               private agdRest : AgdRestful,
               private perRest : PersonRestful,
+              private contacts:ContactsService,
               private util : UtilService) {
   }
 
   //根据条件查询参与人
-  getfriend(fs:PageFsData):Promise<Array<PageFsData>>{
-    return new Promise<Array<PageFsData>>((resolve, reject)=>{
+  getfriend(fs:FsData):Promise<Array<FsData>>{
+    return new Promise<Array<FsData>>((resolve, reject)=>{
       //获取本地参与人
-      let fsList =  new Array<PageFsData>();
-      let sql = 'select * from gtd_b where rc like "'+fs.rc+'%" or rn like "%'+fs.rn+ '%" or ran like "%'+fs.ran+'%"';
+      let fsList =  new Array<FsData>();
+      let sql = 'select gb.*,bh.hiu from gtd_b gb left join gtd_bh bh on bh.pwi = gb.ui';
+      if(fs.rc != null && fs.rc != ''){
+        sql = sql + 'where rc like "'+fs.rc+'%" or rn like "%'+fs.rn+ '%" or ran like "%'+fs.ran+'%"';
+      }
       console.log('---------- getfriend 根据条件查询参与人 条件:'+ JSON.stringify(sql));
-      this.sqlite.getExtList<PageFsData>(sql).then(data=>{
+      this.sqlite.getExtList<FsData>(sql).then(data=>{
         fsList = data;
         for(let fs of fsList){
-          if(!fs.hiu || fs.hiu == null || fs.hiu == ''){
+          if(!fs.bhiu || fs.bhiu == null || fs.bhiu == ''){
             fs.hiu=DataConfig.HUIBASE64;
-            let per = new PersonInData();
-            this.perRest.getavatar(per).then(datar=>{
-              if(datar.code==0){
-                fs.hiu=datar.data.a;
-              }
-            })
+            // let per = new PersonInData();
+            // this.perRest.getavatar(per).then(datar=>{
+            //   if(datar.code==0){
+            //     fs.hiu=datar.data.a;
+            //   }
+            // })
+          }else{
+            fs.hiu = fs.bhiu;
           }
-
         }
         console.log('---------- getfriend 根据条件查询参与人 结果:'+ JSON.stringify(data));
         resolve(fsList);
@@ -50,12 +58,12 @@ export class FsService {
   /**
    * 获取分享日程的参与人
    * @param {string} calId 日程ID
-   * @returns {Promise<Array<PageFsData>>}
+   * @returns {Promise<Array<FsData>>}
    */
-  getCalfriend(calId:string):Promise<Array<PageFsData>>{
-    return new Promise<Array<PageFsData>>((resolve, reject)=>{
+  getCalfriend(calId:string):Promise<Array<FsData>>{
+    return new Promise<Array<FsData>>((resolve, reject)=>{
       let sql ='select gd.pi,gd.si,gb.* from gtd_d gd inner join gtd_b gb on gb.pwi = gd.ai where si="'+calId+'"';
-      let fsList =  new Array<PageFsData>();
+      let fsList =  new Array<FsData>();
       console.log('---------- getCalfriend 获取分享日程的参与人 sql:'+ sql);
       this.sqlite.execSql(sql).then(data=>{
         if(data && data.rows && data.rows.length>0){
@@ -75,10 +83,10 @@ export class FsService {
   /**
    * 分享给参与人操作
    * @param {string} si 日程ID
-   * @param {Array<PageFsData>} fsList 日程参与人列表
-   * @returns {Promise<Array<PageFsData>>}
+   * @param {Array<FsData>} fsList 日程参与人列表
+   * @returns {Promise<Array<FsData>>}
    */
-  sharefriend(si:string,fsList:Array<PageFsData>):Promise<BsModel<any>>{
+  sharefriend(si:string,fsList:Array<FsData>):Promise<BsModel<any>>{
     return new Promise<BsModel<any>>((resolve, reject)=>{
       let bs = new BsModel<any>();
       //restFul 通知参与人
@@ -125,11 +133,11 @@ export class FsService {
   }
 
   //查询群组中的参与人
-  getfriendgroup(groupId:string):Promise<Array<PageFsData>>{
-    return new Promise<Array<PageFsData>>((resolve, reject)=>{
+  getfriendgroup(groupId:string):Promise<Array<FsData>>{
+    return new Promise<Array<FsData>>((resolve, reject)=>{
       //查询本地群组中的参与人
       let sql ='select gb.* from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi where gbx.bi="'+groupId+'"';
-      let fsList =  new Array<PageFsData>();
+      let fsList =  new Array<FsData>();
       console.log('---------- getfriend4group 查询群组中的参与人 sql:'+ sql);
       this.sqlite.execSql(sql).then(data=>{
         if(data && data.rows && data.rows.length>0){
@@ -139,12 +147,8 @@ export class FsService {
           for(let fs of fsList) {
             if (!fs.hiu || fs.hiu == null || fs.hiu == '') {
               fs.hiu = DataConfig.HUIBASE64;
-              let per = new PersonInData();
-              this.perRest.getavatar(per).then(datar => {
-                if (datar.code == 0) {
-                  fs.hiu = datar.data.a;
-                }
-              })
+            }else{
+              fs.hiu = fs.bhiu;
             }
           }
         }
@@ -156,22 +160,100 @@ export class FsService {
       })
     })
   }
+
+  /**
+   * 更新联系人
+   * @returns {Promise<void>}
+   */
+  async updateFs(){
+    let fsList:Array<FsData> =  await this.getfriend(new FsData());
+    let btbls: Array<BTbl> = await this.contacts.getContacts4Btbl();
+    let map:Map<string,BTbl>  = new Map<string,BTbl>();
+    for(let bt of btbls){
+      //添加/更新头像表
+      let per = new PersonInData();
+      per.phoneno = bt.rc;
+      let pred = await this.perRest.getavatar(per);
+      let hiu = JSON.stringify(pred.data);
+      if (hiu != '') {
+        bt.hiu = pred.data;
+      }
+      map.set(bt.rc,bt);
+    }
+    let bsqls: Array<string> = new Array<string>();
+    if(fsList.length>0){
+      for(let fs of fsList){
+        let bl = map.get(fs.rc);
+        let bhiu = '';
+        if(bl){
+          fs.ran = bl.ran;
+          fs.ranpy = this.util.chineseToPinYin(bl.ran);
+          if(bl.hiu != null && bl.hiu != ''){
+            bhiu = bl.hiu;
+          }
+          map.delete(fs.rc);
+        }else{
+          bl = new BTbl();
+          let per = new PersonInData();
+          let pred = await this.perRest.getavatar(per);
+          let hiu = JSON.stringify(pred.data);
+          if (hiu != '') {
+            bhiu = pred.data;
+          }
+        }
+
+        Object.assign(bl,fs);
+        //更新联系人表
+        bsqls.push(bl.upT());
+        let bh = new BhTbl();
+        bh.pwi = fs.pwi;
+        bh.hiu = bhiu;
+        //添加/更新头像表
+        if(fs.bhiu != null){
+          bsqls.push(bh.upT());
+        }else{
+          bh.bhi = this.util.getUuid();
+          bsqls.push(bh.inT());
+        }
+
+      }
+    }
+    if(map.size>0){
+      map.forEach((value , key) =>{
+        let bt = value;
+        bt.pwi = this.util.getUuid();
+        bt.ranpy = this.util.chineseToPinYin(bt.ran);
+        bt.hiu = DataConfig.HUIBASE64;
+        bt.rnpy = this.util.chineseToPinYin(bt.rn);
+        bt.rel = '0';
+        bsqls.push(bt.inT());
+        let bh = new BhTbl();
+        bh.pwi = bt.pwi;
+        bh.hiu = bt.hiu;
+        bh.bhi = this.util.getUuid();
+        bsqls.push(bh.inT());
+      })
+    }
+    return await this.sqlite.batExecSql(bsqls);
+  }
+
 }
 
 /**
  * 联系人视图
  */
-export class PageFsData {
-  pi: string=""; //日程参与人表ID
-  si: string=""; //日程事件ID
-  pwi: string=""; //授权表主键
-  ran: string=""; //被授权联系人别称
-  ranpy: string=""; //被授权联系人别称拼音
-  hiu: string="";  // 被授权联系人头像
-  rn: string="";  // 被授权联系人名称
-  rnpy: string="";  //被授权联系人名称拼音
-  rc: string="";  //被授权联系人联系方式
-  rel: string=""; //授权联系类型 1是个人，2是群，0未注册用户
-  ui: string="";  //数据归属人ID
-}
+// export class FsData {
+//   pi: string=""; //日程参与人表ID
+//   si: string=""; //日程事件ID
+//   pwi: string=""; //授权表主键
+//   ran: string=""; //被授权联系人别称
+//   ranpy: string=""; //被授权联系人别称拼音
+//   hiu: string="";  // 被授权联系人头像
+//   rn: string="";  // 被授权联系人名称
+//   rnpy: string="";  //被授权联系人名称拼音
+//   rc: string="";  //被授权联系人联系方式
+//   rel: string=""; //授权联系类型 1是个人，2是群，0未注册用户
+//   ui: string="";  //数据归属人ID
+//   bhiu:string="";//base64图片
+// }
 

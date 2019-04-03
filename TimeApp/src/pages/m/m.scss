@@ -55,19 +55,25 @@ page-m {
 
   .list-header {
     border-bottom: 0px;
-    //width: 245px;
-    //margin: 0 auto;
+    width: 245px;
+    margin: 0 auto;
     .item-ios {
       height: 65px;
       background: #3c909b;
       border-radius: 9px;
-
-      h2 {
-        font-size: 18px;
-        color: #fff;
-      }
     }
-
+    h2{
+      width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    p{
+      color: #fff;
+      opacity: 0.5;
+      margin-top: 1px;
+      font-size: 12px;
+    }
     ion-avatar {
       width: 44px;
       height: 44px;

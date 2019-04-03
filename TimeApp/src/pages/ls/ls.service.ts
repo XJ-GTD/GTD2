@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {PersonRestful} from "../../service/restful/personsev";
+import {PersonInData, PersonRestful} from "../../service/restful/personsev";
 import {InData, SmsRestful} from "../../service/restful/smssev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
@@ -51,12 +51,14 @@ export class LsService {
 
       let aTbl:ATbl = new ATbl();
       let uTbl:UTbl = new UTbl();
+      let unionId = "";
 
       // 验证手机号及验证码
       this.authRestful.loginbycode(loginData).then(data => {
         if (data.code != 0)
           throw  data;
 
+        unionId = data.data.unionid;
         //获得token，放入头部header登录码
         let code = data.data.code;
         return this.personRestful.getToken(code);
@@ -66,7 +68,7 @@ export class LsService {
         //账户表赋值
         aTbl.an = data.nickname;
         aTbl.am = data.openid;
-        aTbl.ae = "";
+        aTbl.ae = this.util.deviceId();
         aTbl.at = data.access_token;
         aTbl.aq = data.cmq;
 
@@ -80,6 +82,13 @@ export class LsService {
         uTbl.us = data.sex;
         uTbl.uct = "";
 
+        let personInData:PersonInData = new PersonInData();
+        personInData.phoneno = loginData.phoneno;
+        personInData.unionid = unionId;
+        return this.personRestful.getself(personInData);
+      }).then(data=>{
+        uTbl.hiu = data.data.avatarbase64;//头像
+
         //查询账户表
         let aTbl1:ATbl = new ATbl();
         return this.sqlExce.getList<ATbl>(aTbl1);
@@ -88,9 +97,11 @@ export class LsService {
 
         if (atbls.length > 0 ){//更新账户表
           aTbl.ai = atbls[0].ai;
+          uTbl.ai = aTbl.ai;
           return this.sqlExce.update(aTbl);
         }else{//保存账户表
           aTbl.ai = this.util.getUuid();
+          uTbl.ai = aTbl.ai;
           return this.sqlExce.save(aTbl);
         }
 

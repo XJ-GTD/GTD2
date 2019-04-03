@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import {Events, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
-import {FsService, PageFsData} from "./fs.service";
+import {FsService} from "./fs.service";
 import {GcService, PageDcData} from "../gc/gc.service";
 import {DataConfig} from "../../service/config/data.config";
 import {FdData, FdService} from "../fd/fd.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {GlService} from "../gl/gl.service";
+import {FsData} from "../../service/pagecom/pgbusi.service";
 
 /**
  * Generated class for the 参与人选择 page.
@@ -75,7 +76,7 @@ import {GlService} from "../gl/gl.service";
 })
 export class FsPage {
   tel:any;//手机号
-  fsl:Array<PageFsData> = new Array<PageFsData>();
+  fsl:Array<FsData> = new Array<FsData>();
   gl:Array<PageDcData> = new Array<PageDcData>();
   addType:string = ''; // 群组成员gc,日程共享rc,bl黑名单
   tpara:any = null; //跳转传参
@@ -98,7 +99,7 @@ export class FsPage {
   }
   ionViewDidEnter(){
     console.log("3.0 ionViewDidEnter 当进入页面时触发");
-    //this.getFdl(new PageFsData());
+    //this.getFdl(new FsData());
   }
   save(){
     if(this.selFsl.size>0){
@@ -198,7 +199,7 @@ export class FsPage {
 
   }
 
-  getFdl(fs:PageFsData){
+  getFdl(fs:FsData){
     if(this.addType=='rc'){
       this.glService.getGroupl(fs.rc).then(data=>{
         if(data && data.gl){
@@ -215,7 +216,7 @@ export class FsPage {
   }
 
   getContacts(){
-    let fs = new PageFsData();
+    let fs = new FsData();
     fs.rc = this.tel;
     fs.rn = this.tel;
     fs.ran = this.tel;
