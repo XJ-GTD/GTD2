@@ -128,9 +128,6 @@ export class RPage {
         console.log("注册被点击");
         this.util.loadingStart();
         this.rService.signup(this.rData).then(data => {
-          if (data.code != 0)
-            throw  data;
-
           console.log("注册并密码登录成功"+ JSON.stringify(data));
           clearTimeout(this.timer);
           this.util.loadingEnd();
