@@ -187,7 +187,7 @@ export class TdlPage {
         this.downorup = 0;
       }
 
-      /*if ($event.scrollTop > this.startScrolltop  ){
+      if ($event.scrollTop > this.startScrolltop  ){
         console.log("上滑");
         //如果上滑的数据正在获取中，则上滑不在获取新的数据操作
         if (this.upingdata){
@@ -199,14 +199,7 @@ export class TdlPage {
         this.tdlServ.up(condi,30).then(data =>{
           console.log("上滑获取数据量："+data.length);
 
-          this.upoffset = $event.scrollTop;
-
-
-
           if (data.length >0 ) {
-
-            //上滑获取数据
-            this.upgetdata = true;
 
             for (let j = 0, len = data.length; j < len; j++) {
               let tmpscdl = data[j];
@@ -253,14 +246,10 @@ export class TdlPage {
         this.tdlServ.down(condi,30).then(data =>{
           console.log("下滑获取数据量："+data.length);
 
-          this.downoffset = $event.scrollTop;
-
-
 
           if (data.length > 0){
 
             //下滑获取数据
-            this.downgetdata = true;
 
             for (let  len = data.length, j = len -1; j >= 0; j--) {
               let tmpscdl = data[j];
@@ -292,7 +281,7 @@ export class TdlPage {
           //获取数据结束
           this.downingdata = false;
         })
-      }*/
+      }
 
 
     })
