@@ -28,6 +28,7 @@ export class RestfulClient {
     return new Promise((resolve, reject) => {
       let header = this.restConfig.createHeader();
         if(this.util.hasCordova()){
+          console.log("请求服务名：" + url.desc + "，地址："+url.url +',消息Head：'+ JSON.stringify(header) +',消息Body：'+ JSON.stringify(body));
           return this.http.post(url.url,body,header).then(data=>{
             // console.log(data.status);
             // console.log(data.data); // data received by server
@@ -36,6 +37,7 @@ export class RestfulClient {
             resolve(jsonData);
           }).catch(e=>{
             this.util.toast("服务" + url.desc + "访问失败" + e.error,2000);
+            console.error("服务" + url.desc + "访问失败"+JSON.stringify(e));
             reject(e);
           })
         }else{
@@ -46,6 +48,7 @@ export class RestfulClient {
             resolve(data);
           },err => {
             this.util.toast("服务" + url.desc + "访问失败",2000);
+            console.error("服务" + url.desc + "访问失败"+JSON.stringify(err));
             reject(err)
           })
         }
@@ -56,6 +59,7 @@ export class RestfulClient {
     return new Promise((resolve, reject) => {
       let header = this.restConfig.createHeader();
         if(this.util.hasCordova()){
+          console.log("请求服务名：" + url.desc + "，地址："+url.url +',消息Head：'+ JSON.stringify(header) );
           return this.http.get(url.url,{},header).then(data=>{
             console.log(data.status);
             console.log(data.data); // data received by server
@@ -64,6 +68,7 @@ export class RestfulClient {
             resolve(jsonData);
           }).catch(e=>{
             this.util.toast("服务" + url.desc + "访问失败",2000);
+            console.error("服务" + url.desc + "访问失败"+JSON.stringify(e));
             reject(e);
           })
         }else{
@@ -74,6 +79,7 @@ export class RestfulClient {
             resolve(data);
           },err => {
             this.util.toast("服务" + url.desc + "访问失败",2000);
+            console.error("服务" + url.desc + "访问失败"+JSON.stringify(err))
             reject(err)
           })
         }

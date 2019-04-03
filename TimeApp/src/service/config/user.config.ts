@@ -13,12 +13,14 @@ export class UserConfig {
 
 
   static user = {
-    //账户ID
+    //用户ID
     id: "",
+    //账户ID
+    aid: "",
     //用户名
     name: "",
     //用户头像
-    aevter: "",
+    avatar: "",
     //出生日期
     bothday: "",
     //真实姓名
@@ -29,7 +31,7 @@ export class UserConfig {
     sex: "",
     //联系方式
     contact: "",
-  }
+  };
 
   static account = {
     // 账户ID
@@ -44,7 +46,7 @@ export class UserConfig {
     token: "",
     // 账户消息队列
     mq: "",
-  }
+  };
 
   static settins: Map<string, Setting> = new Map<string, Setting>();
 
@@ -84,9 +86,10 @@ export class UserConfig {
       let uTbl: UTbl = new UTbl();
       return this.sqlliteExec.getList<UTbl>(uTbl).then(rows=>{
         if (rows.length >0){
-          UserConfig.user.id = rows[0].ai
+          UserConfig.user.id = rows[0].ui;
+          UserConfig.user.aid = rows[0].ai;
           UserConfig.user.name = rows[0].un;
-          UserConfig.user.aevter = rows[0].hiu;
+          UserConfig.user.avatar = rows[0].hiu;
           UserConfig.user.bothday = rows[0].biy;
           UserConfig.user.No = rows[0].ic;
           UserConfig.user.realname = rows[0].rn;
@@ -114,8 +117,6 @@ export class UserConfig {
         UserConfig.account.device = this.util.deviceId();
         UserConfig.account.token = "";
         UserConfig.account.mq = "";
-
-
       }
     });
   }

@@ -2,8 +2,9 @@ import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, Navbar, ModalController, ToastController} from 'ionic-angular';
 
 import {GcService, PageDcData} from "./gc.service";
-import {FsService, PageFsData} from "../fs/fs.service";
+import {FsService} from "../fs/fs.service";
 import {DataConfig} from "../../service/config/data.config";
+import {FsData} from "../../service/pagecom/pgbusi.service";
 
 /**
  * Generated class for the 群组编辑 page.
@@ -63,7 +64,7 @@ import {DataConfig} from "../../service/config/data.config";
 })
 export class GcPage {
   dc:PageDcData = new PageDcData();
-  fsl:Array<PageFsData> = new Array<PageFsData>();
+  fsl:Array<FsData> = new Array<FsData>();
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private toastCtrl: ToastController,
@@ -109,7 +110,7 @@ export class GcPage {
 
   }
 
-  delete(g:PageFsData) {
+  delete(g:FsData) {
    this.gcService.deleteBx(this.dc.gi,g.pwi).then(data=>{
      if(data.code == 0){
        this.getData();
@@ -131,7 +132,7 @@ export class GcPage {
   /**
    * 人员详情
    */
-  // toMemberInfo(g:PageFsData){
+  // toMemberInfo(g:FsData){
   //   let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{pwi:g.pwi});
   //   modal.onDidDismiss((data)=>{
   //     console.log(JSON.stringify(data));

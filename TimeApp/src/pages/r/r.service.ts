@@ -13,7 +13,7 @@ export class RService {
   }
 
   //注册
-  signup(rdata: PageRData): Promise<PageRData> {
+  signup(rdata: PageRData): Promise<any> {
 
     return new Promise((resolve, reject) => {
       //restful 注册用户
@@ -34,7 +34,7 @@ export class RService {
         return this.lpService.login(lpdata);
 
       }).then(data => {
-        resolve(rdata)
+        resolve(data)
       }).catch(err => {
         reject(err);
       })
@@ -44,7 +44,7 @@ export class RService {
 
 
 //短信验证码
-  sc(rdata: PageRData): Promise<BsModel<any>> {
+  sc(rdata: PageRData): Promise<any> {
 
     return new Promise((resolve, reject) => {
       let inData:InData = new InData();
@@ -66,6 +66,4 @@ export class PageRData {
   authCode : string = "";
   verifykey : string = "";
   username : string = "";
-  code : number = 0;
-  message : string = "";
 }

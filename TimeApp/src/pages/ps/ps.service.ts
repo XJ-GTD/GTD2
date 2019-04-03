@@ -17,53 +17,8 @@ export class PsService {
               private sqlExce: SqliteExec,
               private util: UtilService,
               private restfulConfig: RestFulConfig,
+              private userConfig:UserConfig
   ) {
-  }
-
-  //获取用户信息
-  getUser():Promise<PageUData>{
-    return new Promise<PageUData>((resolve, reject) => {
-      //获取本地用户信息（系统静态变量获取）
-      let pu = new PageUData();
-      let u = new UTbl();
-      u.ui=UserConfig.user.id;
-      this.sqlExce.execSql('select * from gtd_u').then(data =>{
-        if(data && data.rows && data.rows.length){
-          data = data.rows.item(0);
-          if (!data.hiu || data.hiu == null || data.hiu == '') {
-            data.hiu = DataConfig.HUIBASE64;
-            let per = new PersonInData();
-          }
-          pu.user.id = data.ui;
-          pu.user.name=data.un;
-          pu.user.realname = data.rn;
-          pu.user.aevter=data.hiu;
-          pu.user.bothday = data.biy;
-          pu.user.No=data.ic;
-          pu.user.sex = data.us;
-          pu.user.contact=data.uct;
-          UserConfig.user = pu.user;
-          let a = new ATbl();
-          a.ai=UserConfig.account.id;
-          return this.sqlExce.execSql('select * from gtd_a')
-        }
-      }).then(data=>{
-        if(data && data.rows && data.rows.length){
-          data = data.rows.item(0);
-          pu.account.id = data.ai;
-          pu.account.name=data.an;
-          pu.account.phone = data.am;
-          pu.account.device=data.ae;
-          pu.account.token = data.at;
-          pu.account.mq=data.aq;
-          UserConfig.account = pu.account;
-        }
-
-        resolve(pu);
-      }).catch(e=>{
-        resolve(pu);
-      })
-    })
   }
 
   //保存用户信息
@@ -75,7 +30,7 @@ export class PsService {
       u.ui = pu.user.id;
       u.un = pu.user.name;
       u.rn =  pu.user.realname;
-      u.hiu = pu.user.aevter;
+      u.hiu = pu.user.avatar;
       u.biy = pu.user.bothday;
       u.ic = pu.user.No;
       u.us = pu.user.sex;
@@ -90,7 +45,9 @@ export class PsService {
         return this.personRestful.updateself(per)
       }).then(data=>{
         //刷新系统全局用户静态变量
-        UserConfig.user = pu.user;
+        //UserConfig.user = pu.user;
+        //刷新用户静态变量设置
+        this.userConfig.RefreshUTbl();
         resolve(bs);
       }).catch(e=>{
         bs.code = -99;
@@ -128,7 +85,7 @@ export class PageUData{
     //用户名
     name: "",
     //用户头像
-    aevter: "",
+    avatar: "",
     //出生日期
     bothday: "",
     //真实姓名

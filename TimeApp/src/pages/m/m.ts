@@ -68,8 +68,8 @@ export class MPage {
     this.phone = UserConfig.account.phone;
     this.name = UserConfig.user.name;
 
-    if (UserConfig.user.aevter != undefined && UserConfig.user.aevter != null && UserConfig.user.aevter != '') {
-      this.avatar = UserConfig.user.aevter;
+    if (UserConfig.user.avatar != undefined && UserConfig.user.avatar != null && UserConfig.user.avatar != '') {
+      this.avatar = UserConfig.user.avatar;
     }
   }
 
