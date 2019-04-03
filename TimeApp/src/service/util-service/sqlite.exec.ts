@@ -154,7 +154,9 @@ export class SqliteExec {
         for (var j = 0, len = sqlist.length; j < len; j++) {
           sql = sql + sqlist[j];
         }
-        return this.sqlitePorter.importSqlToDb(this.sqlliteConfig.database, sql);
+        return this.sqlitePorter.importSqlToDb(this.sqlliteConfig.database, sql).catch(error=>{
+          console.log("error=====================" + error);
+        })
 
       } else {
         let count = 0;

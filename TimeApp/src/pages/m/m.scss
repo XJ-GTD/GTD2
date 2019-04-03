@@ -1,8 +1,15 @@
 page-m {
+  ion-menu {
+    background: #96162d;
 
-//  background: #96162d;
+    .content-ios {
+      background:  #96162d;
+    }
+  }
 
-    background: #000;
+  //  background: #96162d;
+
+  background: #000;
 
   .content-ios {
     color: #fff;
@@ -12,20 +19,24 @@ page-m {
   .item-ios {
     background: transparent;
     color: #fff;
-    h1{
+
+    h1 {
       font-size: 24px;
     }
-    h3{
+
+    h3 {
       font-size: 17px;
-      letter-spacing:1px
+      letter-spacing: 1px
     }
-    h2{
+
+    h2 {
       width: 140px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    p{
+
+    p {
       color: #fff;
       opacity: 0.5;
       margin-top: 1px;
@@ -34,7 +45,7 @@ page-m {
 
   }
 
-   .list-ios {
+  .list-ios {
     margin: 60px 32px;
 
     .item-block:last-child {
@@ -44,19 +55,25 @@ page-m {
 
   .list-header {
     border-bottom: 0px;
-    //width: 245px;
-    //margin: 0 auto;
+    width: 245px;
+    margin: 0 auto;
     .item-ios {
       height: 65px;
       background: #3c909b;
       border-radius: 9px;
-
-      h2 {
-        font-size: 18px;
-        color: #fff;
-      }
     }
-
+    h2{
+      width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    p{
+      color: #fff;
+      opacity: 0.5;
+      margin-top: 1px;
+      font-size: 12px;
+    }
     ion-avatar {
       width: 44px;
       height: 44px;

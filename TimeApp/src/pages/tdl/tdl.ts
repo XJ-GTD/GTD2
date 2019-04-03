@@ -1,7 +1,8 @@
-import {Component, ViewChild, ElementRef, Input, Renderer2} from '@angular/core';
 import {
-  ActionSheetController, App, Content, Events, IonicPage, ModalController, NavController, NavParams, Scroll,
-  ViewController
+  Component, ViewChild
+} from '@angular/core';
+import {
+  ActionSheetController,  Content, Events, IonicPage, ModalController, NavController, NavParams,
 } from 'ionic-angular';
 import * as moment from "moment";
 import {  ScdlData, TdlService} from "./tdl.service";
@@ -37,18 +38,18 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
   </ion-header>
   <ion-content #contentD class="content-set">
       <ion-grid>
-        <ion-row *ngFor="let sdl of scdlDataList">
+        <ion-row id="{{sdl.d}}"  *ngFor="let sdl of scdlDataList;" class = "anch">
           <div class="daynav">
-            <div class ="dayheader w-auto">
-              <div class="ym-fsize text-center">{{sdl.d | formatedate:"YYYY"}}</div>
+            <div class ="dayheader w-auto" >
+              <div class="ym-fsize text-center ">{{sdl.d | formatedate:"YYYY"}}</div>
               <div class="d-fsize text-center">{{sdl.d | formatedate :"MM-DD"}}</div>
             </div>
           </div>
           <div class="dayagendas w-auto" >
-            <div  class="dayagenda row" *ngFor ="let scd of sdl.scdl;let idx = index" 
-                 [ngStyle]="{'background-color':idx/2==0?'#96162D':'#8E172B'}" (click)="toDetail(scd.si,sdl.d,scd.gs)">
-              <div class="dayagendacontent w-auto" [ngStyle]="{'background-color':idx/2==0?'#96162D':'#8E172B'}">
-                <div class ="agendaline1 row">{{this.pageLoadOver(scd.anchorid)}}
+            <div  class="dayagenda row" *ngFor ="let scd of sdl.scdl;" 
+                 [ngStyle]="{'background-color':scd.cbkcolor}" (click)="toDetail(scd.si,sdl.d,scd.gs)">
+              <div class="dayagendacontent w-auto" [ngStyle]="{'background-color':scd.cbkcolor}">
+                <div class ="agendaline1 row">
                   <div class="agenda-st">{{scd.st}}</div>
                   <div class="dot-set " [ngStyle]="{'background-color':scd.p.jc}" ></div>
                   <div class ="agenda-sn">{{scd.sn}}</div>
@@ -60,13 +61,14 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
                 <ion-icon ios="ios-more" md="md-more" [ngStyle]="{'color':scd.morecolor}" ></ion-icon>
               </div>-->
             </div>
+            {{pageLoadOver(sdl.d)}}
           </div>
         </ion-row>
       </ion-grid>
-<!--    <ion-fab center  bottom>
+<ion-fab center  bottom>
       <button *ngIf="downorup == 2" ion-fab  color="light" (click)="backtoTop();"><ion-icon name="arrow-up" color="danger" isActive="true"></ion-icon></button>
       <button *ngIf="downorup == 1" ion-fab  color="light" (click)="backtoTop();"><ion-icon name="arrow-down" color="danger" isActive="true"></ion-icon></button>
-    </ion-fab>-->
+    </ion-fab>
   </ion-content>`
 
 })
@@ -76,19 +78,21 @@ export class TdlPage {
               private tddjServ : TddjService,private tddiServ : TddiService,
               private modalCtr: ModalController) {
 
-  /*  //初始化锚点位置
+    //初始化锚点位置
     events.subscribe('po', (data) => {
 
       if (data !="" && data !=null){
         //画面scroll至锚点
         let el = document.getElementById(data.toString());
+        console.log("el****:"+JSON.stringify(el));
         el.scrollIntoView(true);
+
       }
 
       //设置锚点会触发scrollstart,scrollend事件，在2事件内处理相应初始化内容
       this.initanchor  = true;
 
-    });*/
+    });
   }
 
   headershow :boolean =false;
@@ -107,14 +111,11 @@ export class TdlPage {
   dtanchor : string ="";
   //是否正在初始化锚点
   initanchor : boolean = false;
-  //记住初始化scroll位置
-  initscrolltop : number =0;
 
   //向上或向下按钮显示控制 0：两个都不显示 ，1：显示up，2：显示down
   downorup:number = 0;
 
-  //记住滑动结束的scrolltop
-  //endScrolltop:number=0;
+
   //记住滑动结束的scrolltop
   startScrolltop:number=0;
 
@@ -133,17 +134,35 @@ export class TdlPage {
   //下滑的取数据进行过程中，再次下滑不再获取数据
   downingdata:boolean = false;
 
-  //处于上滑取数据状态，后续自动触发scrollend，scrollstart事件中使用，重新设定初始scrollTop
-  upgetdata :boolean = false;
-  //处于下滑取数据状态，后续自动触发scrollend，scrollstart事件中使用，重新设定初始scrollTop
-  downgetdata:boolean = false;
-
-  //记住上滑加载数据自动触发scroll事件后，与初始srolltop的偏移量
-  upoffset :number = 0;
-  //记住下滑滑加载数据自动触发scroll事件后，与初始srolltop的偏移量
-  downoffset:number = 0;
 
   @ViewChild('contentD') contentD: Content;
+
+  //获取当前日期的锚点的scrollheight
+  private getAnchorScrollH():number{
+    let totalh = 0;
+
+    let els = document.getElementsByClassName("anch");
+    for (let j = 0, len = els.length; j < len; j++) {
+      if (els.item(j).id == this.dtanchor) {
+        break;
+      }
+      totalh = totalh + els.item(j).scrollHeight;
+    }
+    return totalh;
+  }
+
+  //滑动回初始位置
+  backtoTop(){
+    let totalh = this.getAnchorScrollH();
+
+    this.contentD.scrollTo(0,totalh).then(data=>{
+
+      this.downorup =0;
+
+    });
+
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad AgendaListPage');
 
@@ -158,22 +177,16 @@ export class TdlPage {
         return;
       }
 
-      /*在异步获取数据，添加到显示list内时，会自动触发scrollstart，scroolend，
-      并且此时开始的srcolltop与结束的scrolltop一致
-      由于新的数据添加到了显示list，这种场合需要的处理，重新设定initscrolltop的值*/
-      console.log("initscrolltop:" + this.initscrolltop);
-      if ($event.scrollTop == this.startScrolltop && this.upgetdata) {
-        this.initscrolltop = this.initscrolltop - $event.scrollTop + this.upoffset;
-        this.upgetdata = false;
-      }
-      if ($event.scrollTop == this.startScrolltop && this.downgetdata) {
-        this.initscrolltop = $event.scrollTop + this.initscrolltop - this.downoffset;
-        console.log("do initscrolltop:" + this.initscrolltop);
-        this.downgetdata = false;
+      let totalh = this.getAnchorScrollH();
+      //设置向上或向下按钮显隐控制
+      if ($event.scrollTop > totalh  ){
+        this.downorup = 2;
+      }else if($event.scrollTop < totalh){
+        this.downorup = 1;
+      }else{
+        this.downorup = 0;
       }
 
-      console.log("startScrolltop:"+this.startScrolltop);
-      console.log("endscrollTop:"+$event.scrollTop);
       if ($event.scrollTop > this.startScrolltop  ){
         console.log("上滑");
         //如果上滑的数据正在获取中，则上滑不在获取新的数据操作
@@ -186,14 +199,7 @@ export class TdlPage {
         this.tdlServ.up(condi,30).then(data =>{
           console.log("上滑获取数据量："+data.length);
 
-          this.upoffset = $event.scrollTop;
-
-
-
           if (data.length >0 ) {
-
-            //上滑获取数据
-            this.upgetdata = true;
 
             for (let j = 0, len = data.length; j < len; j++) {
               let tmpscdl = data[j];
@@ -240,14 +246,10 @@ export class TdlPage {
         this.tdlServ.down(condi,30).then(data =>{
           console.log("下滑获取数据量："+data.length);
 
-          this.downoffset = $event.scrollTop;
-
-
 
           if (data.length > 0){
 
             //下滑获取数据
-            this.downgetdata = true;
 
             for (let  len = data.length, j = len -1; j >= 0; j--) {
               let tmpscdl = data[j];
@@ -291,23 +293,6 @@ export class TdlPage {
       //记住滑动开始时的scrolltop，以便在滑动结束时判断是上滑还是下滑
       this.startScrolltop  = $event.scrollTop;
 
-
-      if (this.initanchor){
-        //获取初始化锚点的scrolltop
-        this.initscrolltop  = $event.scrollTop;
-      }else{
-        //设置向上或向下按钮显隐控制
-        if ($event.scrollTop > this.initscrolltop  ){
-          this.downorup = 1;
-          console.log("相对初始位置向下滑动");
-        }else if($event.scrollTop < this.initscrolltop){
-          this.downorup = 2;
-          console.log("相对初始位置向上滑动");
-        }else{
-          this.downorup = 0;
-        }
-      }
-
     });
   }
 
@@ -334,9 +319,17 @@ export class TdlPage {
 
         this.scdlDataList = this.scdlDataList.concat(dwdata,data);
         let flag = 0;
-        let anchorid = 1;
+
         for (let j = 0, len = this.scdlDataList.length; j < len; j++) {
           let tmpscdl = this.scdlDataList[j];
+
+
+          //设置离传入日期最近的一个日期锚点为画面初始锚点
+          if ((moment(tmpscdl.d).isAfter(condi)  || moment(tmpscdl.d).isSame(condi)) &&
+             (this.dtanchor ==null || this.dtanchor =="")){
+            this.dtanchor = tmpscdl.d;
+          }
+
 
           // 设定日程的交替背景色
           for (let k = 0, len = tmpscdl.scdl.length; k < len; k++) {
@@ -348,18 +341,6 @@ export class TdlPage {
               tmpscd.cbkcolor = this.cbkcolor2;
               flag =0
             }
-            //设置日程锚点
-            anchorid = anchorid +1;
-            tmpscd.anchorid = "anchorid" + anchorid;
-
-            //如果是初始化则进行
-            if (condi != ""){
-              //设置离传入日期最近的一个日期的第一个日程锚点为画面初始锚点
-              if ((moment(tmpscdl.d).isAfter(condi)  || moment(tmpscdl.d).isSame(condi)) &&
-                k==0 && (this.dtanchor ==null || this.dtanchor =="")){
-                this.dtanchor = tmpscd.anchorid;
-              }
-            }
 
             //设置参与人画面显示内容
             //tmpscd.fssshow = this.getFssshow(tmpscd);
@@ -368,7 +349,7 @@ export class TdlPage {
 
         //如果传入日期大于查询结果日期，锚点设为数据list的最后一个日期
         if (this.dtanchor == "" && this.scdlDataList.length >0 ){
-          this.dtanchor = this.scdlDataList[this.scdlDataList.length-1].scdl[0].anchorid;
+          this.dtanchor = this.scdlDataList[this.scdlDataList.length-1].d;
         }
 
         if (this.scdlDataList.length >0){
@@ -413,9 +394,8 @@ export class TdlPage {
     }
     if (this.scdlDataList.length >0 ){
       let a = this.scdlDataList;
-      let b = a[a.length-1].scdl;
       //当画面传入的anchorid与数据中的最后一个锚点一致时，表示加载结束
-      if (anchorid == b[b.length-1].anchorid){
+      if (anchorid == a[a.length-1].d){
         this.pageLoaded = true;
         this.events.publish('po',this.dtanchor);
       }
@@ -428,12 +408,7 @@ export class TdlPage {
     this.navCtrl.pop();
   }
 
-  //滑动回初始位置
-  backtoTop(){
-    this.contentD.scrollTo(0,this.initscrolltop).then(data =>{
-      this.downorup = 0;
-    });
-  }
+
 
   //从显示list中移除删除的日程
   private removeListEl(scd :ScdData){

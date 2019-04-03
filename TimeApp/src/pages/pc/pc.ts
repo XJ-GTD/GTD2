@@ -17,7 +17,7 @@ import {PagePcPro, PcService} from "./pc.service";
   <ion-toolbar>
     <ion-buttons left>
       <button ion-button icon-only (click)="goBack()" color="danger">
-        <img class="img-header-left" src="../../assets/imgs/fh2.png">
+        <img class="img-header-left" src="./assets/imgs/fh2.png">
       </button>
     </ion-buttons>
 

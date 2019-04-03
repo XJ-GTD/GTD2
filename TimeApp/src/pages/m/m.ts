@@ -1,7 +1,7 @@
-import {Component, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams, Tabs} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
-import {PageUData, PsService} from "../ps/ps.service";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the 菜单 page.
@@ -25,8 +25,8 @@ import {PageUData, PsService} from "../ps/ps.service";
                   <ion-avatar item-start>
                     <img [src]="avatar" class="img_size">
                   </ion-avatar>
-                  <h2>{{uo.user.name}}</h2>
-                  <p>{{uo.account.phone}}</p>
+                  <h2>{{name}}</h2>
+                  <p>{{phone}}</p>
                 </ion-item>
               </ion-list-header>
               <ion-item (click)="goGlPage()">
@@ -56,27 +56,21 @@ import {PageUData, PsService} from "../ps/ps.service";
 })
 export class MPage {
   hPage: any = DataConfig.PAGE._H_PAGE;
-  avatar: any;
-  uo:PageUData = new PageUData();
+  name:any;
+  phone:any;
+  avatar:any = DataConfig.HUIBASE64;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private psService:PsService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MPage');
-    this.avatar = DataConfig.HUIBASE64;
+    this.phone = UserConfig.account.phone;
+    this.name = UserConfig.user.name;
 
-    this.psService.getUser().then(data=>{
-      if(data && data.user){
-        Object.assign(this.uo,data);
-
-        console.log("this.uo.user.aevter :"+this.uo.user.aevter);
-        if(this.uo.user.aevter !=null && this.uo.user.aevter != '' && this.uo.user.aevter != undefined){
-          this.avatar = this.uo.user.aevter;
-        }
-
-      }
-    })
+    if (UserConfig.user.avatar != undefined && UserConfig.user.avatar != null && UserConfig.user.avatar != '') {
+      this.avatar = UserConfig.user.avatar;
+    }
   }
 
   //计划
