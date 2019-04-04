@@ -291,7 +291,7 @@ export class AlService {
       btbl.hiu = '';
       btbl.rn = '张金洋';
       btbl.rnpy = 'zhangjinyang';
-      btbl.rc = '18602150145';
+      btbl.rc = '15821947260';
       btbl.rel = '1';
       btbl.ui = btbl.pwi;
       sqls.push(btbl.inT());
@@ -310,7 +310,7 @@ export class AlService {
       btbl.hiu = '';
       btbl.rn = '许赵平';
       btbl.rnpy = 'xuzhaopin';
-      btbl.rc = '18602150145';
+      btbl.rc = '13661617252';
       btbl.rel = '0';
       btbl.ui = btbl.pwi;
       sqls.push(btbl.inT());
@@ -330,7 +330,7 @@ export class AlService {
       btbl.hiu = '';
       btbl.rn = '席理加';
       btbl.rnpy = 'xilijia';
-      btbl.rc = '18602150145';
+      btbl.rc = '13585820972';
       btbl.rel = '1';
       btbl.ui = btbl.pwi;
       sqls.push(btbl.inT());
@@ -349,7 +349,7 @@ export class AlService {
       btbl.hiu = '';
       btbl.rn = '漕屏';
       btbl.rnpy = 'caoping';
-      btbl.rc = '18602150145';
+      btbl.rc = '16670129762';
       btbl.rel = '0';
       btbl.ui = btbl.pwi;
       sqls.push(btbl.inT());
@@ -368,7 +368,7 @@ export class AlService {
       btbl.hiu = '';
       btbl.rn = '罗建飞';
       btbl.rnpy = 'luojianfei';
-      btbl.rc = '18602150145';
+      btbl.rc = '13564242673';
       btbl.rel = '1';
       btbl.ui = btbl.pwi;
       sqls.push(btbl.inT());
@@ -387,7 +387,7 @@ export class AlService {
       btbl.hiu = '';
       btbl.rn = '丁朝辉';
       btbl.rnpy = 'dingchaohui';
-      btbl.rc = '18602150145';
+      btbl.rc = '15737921611';
       btbl.rel = '1';
       btbl.ui = btbl.pwi;
       sqls.push(btbl.inT());
