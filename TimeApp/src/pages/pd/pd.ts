@@ -35,7 +35,7 @@ import {AgdPro} from "../../service/restful/agdsev";
     <ion-content padding>
       <ion-grid>
         <ion-row>
-          <ion-card [ngStyle]="{'background-color': plan.pn.jc }">
+          <ion-card>
             <ion-card-content text-center>
               <div>{{plan.pn.jn}}</div>
             </ion-card-content>
