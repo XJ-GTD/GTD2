@@ -285,13 +285,12 @@ export class CalendarService {
     let ed = new Date(moment(_endMonth).format("YYYY/MM/DD"));
     ed = new Date(ed.getTime() + 23*59*60*1000);
     let local = await this.readlocal.findEventRc('',sd,ed);
-    console.log(moment(sd).format("YYYY/MM/DD") +','+ moment(ed).format("YYYY/MM/DD") +'==============查询当月日历：'+ local.length+", ");
     this.sqlite.getExtList<MonthData>(sql).then(data=>{
 
       //本地日历加入主页日历显示中
       for(let lo of local){
         let md:MonthData = data.find((n) => moment(lo.sd).isSame(moment(n.sd), 'day'));
-        if (!md){
+        if (md){
           md.scds = md.scds + 1;
         }else{
           md = new MonthData();

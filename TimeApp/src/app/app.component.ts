@@ -29,6 +29,7 @@ export class MyApp {
       this.util.loadingEnd();
       //允许进入后台模式
       this.backgroundMode.enable();
+      this.backgroundMode.configure({silent:true,hidden:true});
       //设置返回键盘（android）
       this.registerBackButtonAction();
       this.restfulClient.init();
