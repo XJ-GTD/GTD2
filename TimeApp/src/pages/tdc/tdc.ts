@@ -526,8 +526,12 @@ export class TdcPage {
 
   }
   toPlanChoose(){
-    this.isShowPlan = true;
-    this.IsShowCover = true;
+    if(this.jhs.length > 0){
+      this.isShowPlan = true;
+      this.IsShowCover = true;
+    }else {
+      this.util.toast("请先去计划页面创建计划",1500);
+    }
   }
 
   closeDialog() {

@@ -59,6 +59,7 @@ export class BrPage {
   backup(){
     this.brService.backup().then(data=>{
       console.log(("备份完成"));
+      alert("备份完成")
     })
 
   }
@@ -66,9 +67,12 @@ export class BrPage {
   recover(){
     this.brService.getLastDt().then(data=>{
 
-      this.brService.recover(Number(data.data.bts)).then(data=>{
-        console.log(("recover 恢复成功"));
-      })
+      if(data.data.bts){
+        this.brService.recover(Number(data.data.bts)).then(data=>{
+          console.log(("recover 恢复成功"));
+          alert("恢复成功")
+        })
+      }
 
     })
   }

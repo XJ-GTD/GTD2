@@ -2,8 +2,10 @@ import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UserConfig} from "../../service/config/user.config";
 import {YTbl} from "../../service/sqlite/tbl/y.tbl";
+
 @Injectable()
 export class SsService {
+
   constructor(
     private sqlExce: SqliteExec,
     private userConfig:UserConfig) {
