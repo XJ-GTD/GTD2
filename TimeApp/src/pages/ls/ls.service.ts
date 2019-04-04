@@ -8,7 +8,6 @@ import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {WebsocketService} from "../../ws/websocket.service";
 import {AlService} from "../al/al.service";
-import {BsModel} from "../../service/restful/out/bs.model";
 
 @Injectable()
 export class LsService {
@@ -50,7 +49,7 @@ export class LsService {
       let uTbl:UTbl = new UTbl();
       let unionId = "";
 
-      // 验证用户名验证码
+      // 验证手机号及验证码
       this.authRestful.loginbypass(loginData).then(data => {
         if (data.code != 0)
           throw  data;
@@ -61,8 +60,6 @@ export class LsService {
         let code = data.data.code;
         return this.personRestful.getToken(code);
       }).then(data=>{
-        //更新账户表
-
         //账户表赋值
         aTbl.an = data.nickname;
         aTbl.am = data.openid;
@@ -111,15 +108,16 @@ export class LsService {
           uTbl.ui = unionId;
           return this.sqlExce.save(uTbl);
         }
+
+      }).then(data=>{
+        return this.alService.setSetting();
       }).then(data=>{
         // 同步数据（调用brService方法恢复数据）
         //return this.brService.recover(0);
         //建立websoct连接（调用websoctService）
         return this.websocketService.connect();
       }).then(data=>{
-        return this.alService.setSetting();
-      }).then(data=>{
-        resolve(data)
+        resolve(data);
 
       }).catch(error=>{
         resolve(error)

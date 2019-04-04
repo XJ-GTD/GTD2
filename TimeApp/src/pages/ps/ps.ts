@@ -1,6 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams, Navbar, ActionSheetController} from 'ionic-angular';
-import {DataConfig} from "../../service/config/data.config";
+import {Component} from '@angular/core';
+import {ActionSheetController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {PageUData, PsService} from "./ps.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
@@ -74,9 +73,12 @@ export class PsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UcPage');
-    //this.init();
 
     Object.assign(this.uo.user,UserConfig.user);
+    Object.assign(this.uo.account,UserConfig.account);
+
+    Object.assign(this.olduo.user,UserConfig.user);
+    Object.assign(this.olduo.account,UserConfig.account);
 
     if (UserConfig.user.sex != undefined && UserConfig.user.sex != null && UserConfig.user.sex != '') {
       if( UserConfig.user.sex == "0"){
@@ -88,27 +90,6 @@ export class PsPage {
 
     this.uo.user.bothday = this.uo.user.bothday.replace(new RegExp('/','g'),'-');
   }
-
-  backButtonClick = (e: UIEvent) => {
-    // 重写返回方法
-    this.navCtrl.pop();
-  };
-
-  /*init() {
-    this.psService.getUser().then(data=>{
-      if(data && data.user){
-        Object.assign(this.uo,data);
-        this.olduo.user = JSON.parse(JSON.stringify(data));
-        this.bothday = this.uo.user.bothday.replace(new RegExp('/','g'),'-');
-        if(this.uo.user.sex=='0'){
-          this.sex = '男';
-        }else if(this.uo.user.sex=='1'){
-          this.sex = '女';
-        }
-
-      }
-    })
-  }*/
 
   goBack() {
     this.navCtrl.pop();

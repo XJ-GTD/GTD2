@@ -20,7 +20,7 @@ import {PagePDPro} from "../pd/pd.service";
       <ion-toolbar>
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="../../assets/imgs/fh2.png">
+            <img class="img-header-left" src="./assets/imgs/fh2.png">
           </button>
         </ion-buttons>
         <ion-title>计划</ion-title>
@@ -38,30 +38,32 @@ import {PagePDPro} from "../pd/pd.service";
           <ion-list no-lines>
             <ion-list-header class="plan-list-item" (click)="change()">
               全部计划
-              <img class="img-content-plan" src="../../assets/imgs/{{picture}}">
+              <img class="img-content-plan" src="./assets/imgs/{{picture}}">
             </ion-list-header>
-            <div *ngFor="let jh of jhs" [ngClass]="{'div-show-true': show == true , 'div-show-false': show == false}">
-              <ion-item class="plan-list-item" (click)="toPd(jh)" *ngIf="jh.jt=='2'">
-                <div class="color-dot" [ngStyle]="{'background-color': jh.jc }" item-start></div>
-                {{jh.jn}}({{jh.js}})
+            <div *ngFor="let option of zdyJhs" [ngClass]="{'div-show-true': show == true , 'div-show-false': show == false}">
+              <ion-item class="plan-list-item" (click)="toPd(option)">
+                <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
+                {{option.jn}}({{option.js}})
               </ion-item>
             </div>
+            <div [ngStyle]="{'display': zdyDisplay }"> 无计划</div>
             <ion-list-header class="plan-list-item">
               <div>系统计划</div><small>长按系统计划可清除</small>
             </ion-list-header>
-            <div *ngFor="let jh of jhs">
-              <ion-item class="plan-list-item" *ngIf="jh.jt=='1'" (press)="delPlan(jh)" >
-                <div (click)="toPd(jh)">{{jh.jn}}({{jh.js}})</div>
-                <button ion-button clear item-end (click)="download(jh)" >
-                  <div *ngIf="jh.jtd == '0'" class="content-download">
+            <div *ngFor="let option of xtJhs">
+              <ion-item class="plan-list-item"(press)="delPlan(option)" >
+                <div (click)="toPd(option)">{{option.jn}}({{option.js}})</div>
+                <button ion-button clear item-end (click)="download(option)" >
+                  <div *ngIf="option.jtd == '0'" class="content-download">
                     下载
                   </div>
-                  <div *ngIf="jh.jtd=='1'">
-                    <img class="img-content-refresh" src="../../assets/imgs/sx.png">
+                  <div *ngIf="option.jtd=='1'">
+                    <img class="img-content-refresh" src="./assets/imgs/sx.png">
                   </div>
                 </button>
               </ion-item>
             </div>
+            <div [ngStyle]="{'display': xtDisplay }"> 系统无计划</div>
           </ion-list>
         </ion-row>
       </ion-grid>
@@ -70,9 +72,12 @@ import {PagePDPro} from "../pd/pd.service";
 })
 export class PlPage {
 
-  jhs:any;
+  xtJhs:any;
+  zdyJhs:any;
   show:any = true;
   picture:any = "xl.png" ;
+  zdyDisplay = "none";
+  xtDisplay = "none";
 
   constructor(private navCtrl: NavController,
               private alertCtrl: AlertController,
@@ -89,7 +94,16 @@ export class PlPage {
 
   getAllJh(){
     this.plService.getPlan().then(data=>{
-      this.jhs = data.pl;
+      this.xtJhs = data.xtJh;
+      this.zdyJhs = data.zdyJh;
+
+      if(this.zdyJhs.length == 0){
+        this.zdyDisplay = "block";
+      }
+
+      if(this.xtJhs.length == 0){
+        this.xtDisplay = "block";
+      }
     }).catch(res=>{
       console.log("获取计划失败" + JSON.stringify(res));
     });

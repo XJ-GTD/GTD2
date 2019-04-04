@@ -25,9 +25,9 @@ export class FsService {
     return new Promise<Array<FsData>>((resolve, reject)=>{
       //获取本地参与人
       let fsList =  new Array<FsData>();
-      let sql = 'select gb.*,bh.hiu from gtd_b gb left join gtd_bh bh on bh.pwi = gb.ui';
+      let sql = 'select gb.*,bh.hiu bhiu from gtd_b gb left join gtd_bh bh on bh.pwi = gb.ui';
       if(fs.rc != null && fs.rc != ''){
-        sql = sql + 'where rc like "'+fs.rc+'%" or rn like "%'+fs.rn+ '%" or ran like "%'+fs.ran+'%"';
+        sql = sql + ' where gb.rc like "%'+fs.rc+'%" or gb.rn like "%'+fs.rn+ '%" or gb.ran like "%'+fs.ran+'%"';
       }
       console.log('---------- getfriend 根据条件查询参与人 条件:'+ JSON.stringify(sql));
       this.sqlite.getExtList<FsData>(sql).then(data=>{

@@ -113,9 +113,6 @@ export class LsPage {
         console.log("手机验证码登录被点击");
         this.util.loadingStart();
         this.lsService.login(this.lsData).then(data=> {
-          if (data.code != 0)
-            throw  data;
-
           console.log("手机验证码登录成功"+ JSON.stringify(data));
           clearTimeout(this.timer);
           this.util.loadingEnd();

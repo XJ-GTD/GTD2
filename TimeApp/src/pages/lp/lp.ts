@@ -79,9 +79,6 @@ export class LpPage {
         console.log("手机密码登录按钮被点击");
         this.util.loadingStart();
         this.lpService.login(this.lpData).then(data=> {
-          if (data.code != 0)
-            throw  data;
-
           console.log("手机密码登录成功"+ JSON.stringify(data));
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
