@@ -58,6 +58,7 @@ import {ContactsService} from "../service/cordova/contacts.service";
 import {LocalcalendarService} from "../service/cordova/localcalendar.service";
 import {NotificationsService} from "../service/cordova/notifications.service";
 import {Badge} from "@ionic-native/badge";
+import {RemindService} from "../service/util-service/remind.service";
 
 @NgModule({
   declarations: [
@@ -132,6 +133,7 @@ import {Badge} from "@ionic-native/badge";
     TdcService,
     LocalcalendarService,
     NotificationsService,
+    RemindService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG,useClass: HammerDIRECTIONALLConfig }
   ]

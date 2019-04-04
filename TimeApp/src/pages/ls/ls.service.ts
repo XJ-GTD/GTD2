@@ -45,21 +45,27 @@ export class LsService {
       loginData.verifycode = lsData.authCode;
       loginData.verifykey = lsData.verifykey;
 
-      let aTbl:ATbl = new ATbl();
-      let uTbl:UTbl = new UTbl();
-      let unionId = "";
-
       // 验证手机号及验证码
       this.authRestful.loginbypass(loginData).then(data => {
         if (data.code != 0)
           throw  data;
 
-        unionId = data.data.unionid;
+        resolve(data);
+      }).catch(error=>{
+        resolve(error)
+      })
+    });
+  }
 
-        //获得token，放入头部header登录
-        let code = data.data.code;
-        return this.personRestful.getToken(code);
-      }).then(data=>{
+  get(data:any):Promise<any>{
+    return new Promise((resolve, reject) => {
+      let aTbl:ATbl = new ATbl();
+      let uTbl:UTbl = new UTbl();
+      let unionId = data.data.unionid;
+
+      //获得token，放入头部header登录
+      let code = data.data.code;
+      this.personRestful.getToken(code).then(data=>{
         //账户表赋值
         aTbl.an = data.nickname;
         aTbl.am = data.openid;
@@ -117,12 +123,12 @@ export class LsService {
         //建立websoct连接（调用websoctService）
         return this.websocketService.connect();
       }).then(data=>{
-        resolve(data);
+        resolve(data)
 
       }).catch(error=>{
         resolve(error)
       })
-    });
+    })
   }
 
 }

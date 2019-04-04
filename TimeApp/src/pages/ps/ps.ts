@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ActionSheetController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {ActionSheetController, IonicPage, NavController} from 'ionic-angular';
 import {PageUData, PsService} from "./ps.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
@@ -58,6 +58,8 @@ import {UserConfig} from "../../service/config/user.config";
   </ion-content>`,
 })
 export class PsPage {
+  // 判断是否有模态框弹出
+  public actionSheet;
 
   sex:string='';
   bothday:string='';
@@ -66,14 +68,15 @@ export class PsPage {
 
   constructor(public navCtrl: NavController,
               private psService:PsService,
-              public actionSheetController: ActionSheetController,
-              public navParams: NavParams,
+              private actionSheetController: ActionSheetController,
               private util: UtilService) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UcPage');
+  }
 
+  ionViewDidEnter(){
     Object.assign(this.uo.user,UserConfig.user);
     Object.assign(this.uo.account,UserConfig.account);
 
@@ -88,11 +91,17 @@ export class PsPage {
       }
     }
 
-    this.uo.user.bothday = this.uo.user.bothday.replace(new RegExp('/','g'),'-');
+    this.bothday = UserConfig.user.bothday.replace(new RegExp('/','g'),'-');
   }
 
   goBack() {
     this.navCtrl.pop();
+  }
+
+  ionViewWillLeave() {
+    if (this.actionSheet !== undefined) {
+      this.actionSheet.dismiss();
+    }
   }
 
   save(){
@@ -112,10 +121,19 @@ export class PsPage {
     if(this.olduo.user.No != this.uo.user.No){
       isUpd = true;
     }
+
+    if(this.uo.user.name == ""){
+      isUpd = false;
+      this.util.toast("用户名不能为空",1500);
+      this.uo.user.name = this.olduo.user.name;
+    }
+
     if(isUpd){
       this.psService.saveUser(this.uo).then(data=>{
         if(data.code ==0){
           this.util.toast('保存成功！',2000);
+
+          Object.assign(this.olduo.user,this.uo.user);  //替换旧数据
         }else{
           this.util.toast(data.message,2000);
         }
@@ -134,8 +152,9 @@ export class PsPage {
     }
 
   }
+
   async selectSex() {
-    const actionSheet = await this.actionSheetController.create({
+    this.actionSheet = await this.actionSheetController.create({
       buttons: [{
         text: '男',
         handler: () => {
@@ -154,7 +173,7 @@ export class PsPage {
         }
       }]
     });
-    await actionSheet.present();
+    await this.actionSheet.present();
   }
 
 }

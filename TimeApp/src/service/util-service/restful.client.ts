@@ -36,8 +36,11 @@ export class RestfulClient {
             let jsonData = JSON.parse(data.data);
             resolve(jsonData);
           }).catch(e=>{
-            this.util.toast("服务" + url.desc + "访问失败" + e.error,2000);
-            console.error("服务" + url.desc + "访问失败"+JSON.stringify(e));
+            this.util.toast("服务" + url.desc + "访问失败" + e.message,2000);
+            console.error("服务" + url.desc + "访问失败"+JSON.stringify(e.message));
+            // console.error("服务" + url.desc + "访问失败"+JSON.stringify(e,Object.getOwnPropertyNames(e)));
+            // JSON.stringify(e,Object.getOwnPropertyNames(e))
+
             reject(e);
           })
         }else{
@@ -49,6 +52,7 @@ export class RestfulClient {
           },err => {
             this.util.toast("服务" + url.desc + "访问失败",2000);
             console.error("服务" + url.desc + "访问失败"+JSON.stringify(err));
+            // console.error("服务" + url.desc + "访问失败"+JSON.stringify(err,Object.getOwnPropertyNames(err)));
             reject(err)
           })
         }

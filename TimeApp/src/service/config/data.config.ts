@@ -74,6 +74,8 @@ export class DataConfig {
   public static RMSCD: string = "1";
   //2：无关联日程提醒
   public static RMNONESCD: string = "2";
+
+  public static REINTERVAL:number = 60;
   /*========== 设置提醒区分 =========*/
 
 

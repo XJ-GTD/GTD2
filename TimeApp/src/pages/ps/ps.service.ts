@@ -1,24 +1,15 @@
 import {Injectable} from "@angular/core";
 import {PersonInData, PersonRestful} from "../../service/restful/personsev";
-import {SmsRestful} from "../../service/restful/smssev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {UtilService} from "../../service/util-service/util.service";
-import {RestFulConfig} from "../../service/config/restful.config";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {UserConfig} from "../../service/config/user.config";
-import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
-import {DataConfig} from "../../service/config/data.config";
 
 @Injectable()
 export class PsService {
   constructor(private personRestful: PersonRestful,
-              private smsRestful: SmsRestful,
               private sqlExce: SqliteExec,
-              private util: UtilService,
-              private restfulConfig: RestFulConfig,
-              private userConfig:UserConfig
-  ) {
+              private userConfig:UserConfig) {
   }
 
   //保存用户信息
