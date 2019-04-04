@@ -107,18 +107,29 @@ export class FsService {
         bs = data;
         console.log('---------- sharefriend 分享给参与人操作 结果:'+ JSON.stringify(data));
         if(bs.code == 0){
-          let sq = 'delete from gtd_d where si = "' +si +'";';
-          console.log('---------- sharefriend 分享给参与人操作 删除原参与人 ---------');
-          return this.sqlite.execSql(sq);
+          // let sq = 'delete from gtd_d where si = "' +si +'";';
+          // console.log('---------- sharefriend 分享给参与人操作 删除原参与人 ---------');
+
         }
+        return this.getCalfriend(si);
       }).then(data=>{
         let dtList = new Array<string>();
         for(let fs of fsList){
-          let dt = new DTbl();
-          dt.pi = this.util.getUuid();
-          dt.ai = fs.pwi;
-          dt.si = si;
-          dtList.push(dt.inT());
+          //去除重复的参与人
+          let is:boolean = false;
+          for(let ofs of data){
+            if(ofs.pwi == fs.pwi){
+              is = true;
+              break;
+            }
+          }
+          if(!is){
+            let dt = new DTbl();
+            dt.pi = this.util.getUuid();
+            dt.ai = fs.pwi;
+            dt.si = si;
+            dtList.push(dt.inT());
+          }
         }
         console.log('---------- sharefriend 分享给参与人操作 保存参与人 ---------'+ JSON.stringify(data));
         return this.sqlite.batExecSql(dtList);

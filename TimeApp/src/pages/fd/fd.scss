@@ -4,16 +4,21 @@ page-fd {
   }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: #000;
+    background-color: #96162d;
   }
   ion-header {
     top: 10px;
   }
   ion-content.content {
-    background-color: #000;
+    background-color: #96162d;
     color: #fff;
   }
-
+ gird{
+   padding:0px;
+ }
+  .button{
+    background-color: #96162d;
+  }
   ion-content .plan-list-item {
     background-color: #000;
     color: #fff;

@@ -104,13 +104,17 @@ export class SqliteExec {
    */
   getExtList<T>(sql: string): Promise<Array<T>> {
     return new Promise((resolve, reject) => {
+      let arr : Array<T> = new Array<T>();
+      console.log("getExtList执行SQL："+sql);
       this.execSql(sql).then(data => {
-        let arr : Array<T> = new Array<T>();
         if (data.rows && data.rows.length > 0 ){
           for (let j = 0, len = data.rows.length; j < len; j++) {
             arr.push(data.rows.item(j))
           }
         }
+        resolve(arr);
+      }).catch(e=>{
+        console.error("getExtList执行SQL报错："+JSON.stringify(e));
         resolve(arr);
       })
     })
@@ -145,8 +149,8 @@ export class SqliteExec {
   async batExecSql(sqlist: Array<string>) {
 
     if (this.util.isMobile()) {
+      console.log("========= 批量出入SQL："+sqlist)
       return await this.sqlliteConfig.database.sqlBatch(sqlist)
-
     } else {
 
       if (this.util.hasCordova()) {

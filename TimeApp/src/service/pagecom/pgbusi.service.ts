@@ -121,6 +121,11 @@ export class PgBusiService {
           //添加特殊事件表
           return this.saveSp(ct);
         }).then(data=>{
+          let sql = 'select * from gtd_sp where si="'+ct.si+'"';
+          this.sqlExce.getExtList<SpTbl>(sql).then(da=>{
+            console.log("===== 特殊事件："+JSON.stringify(da));
+          })
+        }).then(data=>{
           let adgPro:AgdPro = new AgdPro();
           adgPro.ai=ct.si; //日程ID
           adgPro.rai=rc.sr;//日程发送人用户ID
@@ -474,6 +479,7 @@ export class FsData {
   bhiu:string="";//base64图片
   pi: string=""; //日程参与人表ID
   si: string=""; //日程事件ID
+  isbla:boolean=false; //默认非黑名单
 }
 
 
