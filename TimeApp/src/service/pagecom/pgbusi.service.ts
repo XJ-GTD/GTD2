@@ -474,6 +474,7 @@ export class FsData {
   bhiu:string="";//base64图片
   pi: string=""; //日程参与人表ID
   si: string=""; //日程事件ID
+  isbla:boolean=false; //默认非黑名单
 }
 
 

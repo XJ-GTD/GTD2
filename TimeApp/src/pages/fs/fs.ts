@@ -3,7 +3,7 @@ import {Events, IonicPage, NavController, NavParams, ViewController} from 'ionic
 import {FsService} from "./fs.service";
 import {GcService, PageDcData} from "../gc/gc.service";
 import {DataConfig} from "../../service/config/data.config";
-import {FdData, FdService} from "../fd/fd.service";
+import {FdService} from "../fd/fd.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {GlService} from "../gl/gl.service";
 import {FsData} from "../../service/pagecom/pgbusi.service";
@@ -142,7 +142,7 @@ export class FsPage {
           this.util.toast('每次只能添加一人',2000);
           return;
         }
-        let fd:FdData = new FdData();
+        let fd:FsData = new FsData();
         Object.assign(fd,list[0]);
         this.fdService.putBlack(fd).then(data=>{
           if(data.code==0){
@@ -178,13 +178,14 @@ export class FsPage {
 
   goBack(page:string,para:any) {
     console.log('PfPage跳转PaPage');
-    if(this.addType == 'rc'){
-      this.navCtrl.push(DataConfig.PAGE._H_PAGE);
-    }else if(page != ''){
-      this.navCtrl.push(page,para);
-    }else{
-      this.navCtrl.pop();
-    }
+    this.navCtrl.pop();
+    // if(this.addType == 'rc'){
+    //   this.navCtrl.push(DataConfig.PAGE._H_PAGE);
+    // }else if(page != ''){
+    //   this.navCtrl.push(page,para);
+    // }else{
+    //   this.navCtrl.pop();
+    // }
 
 
 /*      let popindex ;

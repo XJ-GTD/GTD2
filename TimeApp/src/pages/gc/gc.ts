@@ -46,7 +46,7 @@ import {FsData} from "../../service/pagecom/pgbusi.service";
                    <!--{{g.rn}} <span>{{g.rc}}</span>-->
                  <!--</ion-item>-->
                
-               <ion-label>
+               <ion-label (click)="toMemberInfo(g)">
                  {{g.rn}} 
                  <span style="font-size:14px;color:rgb(102,102,102);">
                    {{g.rc}}
@@ -106,7 +106,7 @@ export class GcPage {
     //   console.log(JSON.stringify(data));
     //   this.qcy = data;
     // });
-    // modal.present();
+    //modal.present();
 
   }
 
@@ -132,13 +132,13 @@ export class GcPage {
   /**
    * 人员详情
    */
-  // toMemberInfo(g:FsData){
-  //   let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{pwi:g.pwi});
-  //   modal.onDidDismiss((data)=>{
-  //     console.log(JSON.stringify(data));
-  //   });
-  //   modal.present();
-  // }
+  toMemberInfo(g:FsData){
+    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{pwi:g.pwi});
+    modal.onDidDismiss((data)=>{
+      console.log(JSON.stringify(data));
+    });
+    modal.present();
+  }
 
   // ionViewDidLoad(){
   //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");

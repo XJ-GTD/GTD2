@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
-import {FdData, FdService} from "./fd.service";
+import { FdService} from "./fd.service";
+import {FsData} from "../../service/pagecom/pgbusi.service";
 
 /**
  * Generated class for the 参与人详情 page.
@@ -27,8 +28,8 @@ import {FdData, FdService} from "./fd.service";
     <ion-grid  style="text-align:center;margin-top:20%;line-height: 50px; ">
       <ion-row>
         <ion-avatar item-start style="width: 100%;">
-          <img  style="border-radius: 50%;width: 80px;height: 80px;display: unset;" 
-            src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">
+          <img  style="border-radius: 50%;width: 80px;height: 80px;display: unset;"
+           [src]="g.hiu">
         </ion-avatar>
       </ion-row>
       <ion-row>
@@ -54,7 +55,7 @@ import {FdData, FdService} from "./fd.service";
   </ion-content>`,
 })
 export class FdPage {
-  fd:FdData = new FdData();
+  fd:FsData = new FsData();
   pwi:string;
   constructor(public navCtrl: NavController,
               public fdService: FdService,

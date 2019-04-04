@@ -5,6 +5,7 @@ import {BxTbl} from "../../service/sqlite/tbl/bx.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData} from "../../service/pagecom/pgbusi.service";
+import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 
 @Injectable()
 export class GcService {
@@ -17,15 +18,31 @@ export class GcService {
       let bs = new BsModel<any>();
       console.log('---------- GcService save 添加/编辑群名称(添加群成员) 入参:'+ JSON.stringify(dc));
       if(dc.gi != null &&dc.gi != '' && dc.fsl.length>0){
-         let bxL = new Array<string>();
-         for(let fs of dc.fsl){
-           let bx = new BxTbl();
-           bx.bi = dc.gi;
-           bx.bmi = fs.pwi;
-           bxL.push(bx.rpT());
-         }
-         console.log('---------- GcService save 编辑群名称(添加群成员) sql:'+ JSON.stringify(bxL));
-         this.sqlExce.batExecSql(bxL).then(data=>{
+        let bxL = new Array<string>();
+        let sql = 'select gb.* from gtd_b gb inner join gtd_b_x bx on bx.bmi = gb.pwi where bx.bi = "' + dc.gi+'"';
+        this.sqlExce.getExtList<BTbl>(sql).then(data=>{
+          for(let fs of dc.fsl){
+            let bx = new BxTbl();
+            bx.bi = dc.gi;
+            bx.bmi = fs.pwi;
+            let  ie = false;
+            for(let bt of data){
+              if(bt.pwi == fs.pwi){
+                ie = true;
+                break;
+              }
+            }
+            if(!ie){
+              let bx = new BxTbl();
+              bx.bi = dc.gi;
+              bx.bmi = fs.pwi;
+              bxL.push(bx.inT());
+            }
+          }
+          console.log('---------- GcService save 添加群成员 sql:'+ JSON.stringify(bxL));
+          return  this.sqlExce.batExecSql(bxL);
+        })
+        .then(data=>{
            console.log('---------- GcService save 编辑群名称(添加群成员) 结果:'+ JSON.stringify(data));
            bs.data = data;
            resolve(bs);
