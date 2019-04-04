@@ -173,6 +173,16 @@ export class TdlPage {
         return;
       }
 
+      let a = this.getAnchorScrollH();
+      //设置向上或向下按钮显隐控制
+      if ($event.scrollTop > a  ){
+        this.downorup = 2;
+      }else if($event.scrollTop < a){
+        this.downorup = 1;
+      }else{
+        this.downorup = 0;
+      }
+
       //显示当前顶部滑动日期
       let totalh =0;
       for (let j = 0, len = this.scdlDataList.length; j < len; j++) {
@@ -194,7 +204,11 @@ export class TdlPage {
           return;
         }
         totalh = totalh + el.scrollHeight;
+
+
       }
+
+
     })
 
     this.contentD.ionScrollEnd.subscribe(($event: any) => {
@@ -204,15 +218,7 @@ export class TdlPage {
 
 
 
-      let totalh = this.getAnchorScrollH();
-      //设置向上或向下按钮显隐控制
-      if ($event.scrollTop > totalh  ){
-        this.downorup = 2;
-      }else if($event.scrollTop < totalh){
-        this.downorup = 1;
-      }else{
-        this.downorup = 0;
-      }
+
 
       if ($event.scrollTop > this.startScrolltop  ){
         console.log("上滑");
