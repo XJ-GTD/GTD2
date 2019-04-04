@@ -62,7 +62,7 @@ export class BlaRestful{
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("BLG");
       let bs = new BsModel<Array<BlaReq>>();
-      this.request.post(url, null).then(data => {
+      this.request.post(url, {}).then(data => {
         //处理返回结果
         bs.code = data.rc;
         bs.message = data.rm;
