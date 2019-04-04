@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {PersonRestful, SignData} from "../../service/restful/personsev";
 import {InData, SmsRestful} from "../../service/restful/smssev";
-import {BsModel} from "../../service/restful/out/bs.model";
 import {LpService, PageLpData} from "../lp/lp.service";
 
 @Injectable()
