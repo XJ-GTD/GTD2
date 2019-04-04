@@ -8,6 +8,9 @@ import {UtilService} from "../../service/util-service/util.service";
 import {BlaReq, BlaRestful} from "../../service/restful/blasev";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {ViewController} from "ionic-angular";
+import {FsData} from "../../service/pagecom/pgbusi.service";
+import {DataConfig} from "../../service/config/data.config";
+import {BhTbl} from "../../service/sqlite/tbl/bh.tbl";
 
 @Injectable()
 export class FdService {
@@ -20,19 +23,22 @@ export class FdService {
   /**
    * 获取个人详情
    * @param {String} id
-   * @returns {Promise<FdData>}
+   * @returns {Promise<FsData>}
    */
-  get(id:string):Promise<FdData>{
+  get(id:string):Promise<FsData>{
 
-    return new Promise<FdData>((resolve, reject)=>{
-      let fd:FdData = new FdData();
+    return new Promise<FsData>((resolve, reject)=>{
+      let fd:FsData = new FsData();
       let bTbl = new BTbl();
       bTbl.pwi = id;
+      let sql = 'select gb.*,bh.hiu bhiu from gtd_b gb left join gtd_bh bh on bh.pwi = gb.ui ' +
+        'where gb.pwi ="'+id+'"';
       //获取本地参与人信息
-      this.sqlite.getOne(bTbl).then(data=>{
-        if(data != null){
-          Object.assign(bTbl,data);
-          Object.assign(fd,data);
+      this.sqlite.getExtList<FsData>(sql).then(data=>{
+        if(data != null && data.length>0){
+          Object.assign(bTbl,data[0]);
+          Object.assign(fd,data[0]);
+
           //rest获取用户信息（包括头像）
           let personData:PersonInData = new PersonInData();
           personData.phoneno=bTbl.rc;
@@ -50,17 +56,53 @@ export class FdService {
           return this.sqlite.replaceT(bTbl)
         }
       }).then(data=>{
+        //rest获取用户头像
+        let personData:PersonInData = new PersonInData();
+        personData.phoneno=bTbl.rc;
+        return this.personRes.getavatar(personData);
+      })
+        .then(data=>{
+        //更新/添加用户头像
+        if(fd.bhiu == null || fd.bhiu ==''){
+          fd.hiu=DataConfig.HUIBASE64;
+        }else{
+          fd.hiu=fd.bhiu;
+        }
+
+        let str:string = '';
+        if(data && !data.code){
+            str = data.data;
+          fd.hiu = str;
+          if(fd.bhiu == null || fd.bhiu ==''){
+            let bh = new BhTbl();
+            bh.bhi=this.util.getUuid();
+            bh.pwi=fd.pwi;
+            bh.hiu = str;
+            return this.sqlite.save(bh);
+          }else{
+            let sql = 'update gtd_bh set hiu ="' + str + '" where pwi = "'+ fd.pwi +'";';
+            return this.sqlite.execSql(sql);
+          }
+        }
+      })
+        .then(data=>{
         //restFul查询是否是黑名单
         return this.blasev.list();
-      }).then(data=>{
+      })
+        .then(data=>{
         Object.assign(fd,bTbl);
-        if(data.data.length>0){
+        if(data.data && data.data.length>0){
           for(let bla of data.data){
             if(bla.mpn == bTbl.rc){
               fd.isbla = true; //是黑名单；
               break;
             }
           }
+        }
+        if(fd.bhiu == null || fd.bhiu ==''){
+          fd.hiu=fd.bhiu;
+        }else{
+          fd.hiu=DataConfig.HUIBASE64;
         }
         resolve(fd);
       })
@@ -69,8 +111,8 @@ export class FdService {
   }
 
   //restFul 加入黑名单
-  putBlack(fd:FdData):Promise<BsModel<FdData>>{
-    return new Promise<BsModel<FdData>>((resolve, reject)=>{
+  putBlack(fd:FsData):Promise<BsModel<FsData>>{
+    return new Promise<BsModel<FsData>>((resolve, reject)=>{
       let bla = new BlaReq();
        if(fd && fd.rc){
          bla.ai=fd.ui;
@@ -80,7 +122,7 @@ export class FdService {
          bla.s='';
          bla.bd= '';
        }
-       let bs = new BsModel<FdData>();
+       let bs = new BsModel<FsData>();
       this.blasev.add(bla).then(data=>{
         bs.code = data.code;
         bs.message = data.message;
@@ -112,20 +154,5 @@ export class FdService {
   }
 }
 
-export class FdData {
-  pwi: string="";
-  ran: string="";
-  ranpy: string="";
-  ri: string="";
-  hiu: string="";
-  rn: string="";
-  rnpy: string="";
-  rc: string="";
-  rf: string="";
-  ot: string="";
-  rel: string="";
-  ui: string="";
-  isbla:boolean=false; //默认非黑名单
-}
 
 

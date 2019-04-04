@@ -6,10 +6,7 @@ import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {WebsocketService} from "../../ws/websocket.service";
 import {UtilService} from "../../service/util-service/util.service";
-import {BrService} from "../br/br.service";
 import {AlService} from "../al/al.service";
-import {UserConfig} from "../../service/config/user.config";
-import {BsModel} from "../../service/restful/out/bs.model";
 
 @Injectable()
 export class LpService {
@@ -30,22 +27,27 @@ export class LpService {
       loginData.phoneno = lpdata.mobile;
       loginData.userpassword = lpdata.password;
 
-      let aTbl:ATbl = new ATbl();
-      let uTbl:UTbl = new UTbl();
-      let unionId = "";
       // 验证用户名密码
       this.authRestful.loginbypass(loginData).then(data => {
         if (data.code != 0)
           throw  data;
 
-        unionId = data.data.unionid;
+        resolve(data)
+      }).catch(error=>{
+        resolve(error)
+      })
+    });
+  }
 
-        //获得token，放入头部header登录
-        let code = data.data.code;
-        return this.personRestful.getToken(code);
-      }).then(data=>{
-        //更新账户表
+  get(data:any):Promise<any>{
+    return new Promise((resolve, reject) => {
+      let aTbl:ATbl = new ATbl();
+      let uTbl:UTbl = new UTbl();
+      let unionId = data.data.unionid;
 
+      //获得token，放入头部header登录
+      let code = data.data.code;
+      this.personRestful.getToken(code).then(data=>{
         //账户表赋值
         aTbl.an = data.nickname;
         aTbl.am = data.openid;
@@ -94,20 +96,21 @@ export class LpService {
           uTbl.ui = unionId;
           return this.sqlExce.save(uTbl);
         }
+
+      }).then(data=>{
+        return this.alService.setSetting();
       }).then(data=>{
         // 同步数据（调用brService方法恢复数据）
         //return this.brService.recover(0);
         //建立websoct连接（调用websoctService）
         return this.websocketService.connect();
       }).then(data=>{
-        return this.alService.setSetting();
-      }).then(data=>{
         resolve(data)
 
       }).catch(error=>{
         resolve(error)
       })
-    });
+    })
   }
 
 }

@@ -355,10 +355,12 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
 
   swipeEvent($event: any): void {
 
-    let nextan: boolean = false;
-    if (80 < $event.angle && $event.angle < 100) nextan = true;
-    if (-80 > $event.angle && $event.angle > -100) nextan = false;
-    this.nextArray.push(nextan);
+    if ((50 < $event.angle && $event.angle < 130) || (-50 > $event.angle && $event.angle > -130)){
+      let nextan: boolean = false;
+      if (50 < $event.angle && $event.angle < 130) nextan = false;
+      if (-50 > $event.angle && $event.angle > -130) nextan = true;
+      this.nextArray.push(nextan);
+    }
   }
 
   startSwipe() {

@@ -5,7 +5,6 @@ import {AlData, AlService} from "./al.service";
 import {SyncRestful} from "../../service/restful/syncsev";
 import {DataConfig} from "../../service/config/data.config";
 import {Location} from '@angular/common';
-import {NotificationsService} from "../../service/cordova/notifications.service";
 
 /**
  * Generated class for the AlPage page.
@@ -63,15 +62,15 @@ export class AlPage {
               private _ease: RoundProgressEase,
               private syncRestful:SyncRestful,
               private nav: Nav,
-              private location: Location,private notificationsService:NotificationsService) {
+              private location: Location) {
     this.alData.text="正在初始化";
 
   }
 
   ionViewDidEnter() {
-    this.notificationsService.schedule(); this.notificationsService.keeplive();
-
-    this.notificationsService.badgeDecrease();
+    // this.notificationsService.schedule(); this.notificationsService.keeplive();
+    //
+    // this.notificationsService.badgeDecrease();
     this.alinit();
   }
 

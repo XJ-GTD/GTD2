@@ -12,20 +12,7 @@ import {DataConfig} from "../config/data.config";
 @Injectable()
 export class FeedbackService {
 
-  private vibration: Vibration;
-  private audio: NativeAudio;
-
-  constructor() {
-
-    //uniqueId1为音频文件的唯一ID
-
-    //assetPath音频资产的相对路径或绝对URL（包括http：//）
-
-    //官网还有更多的配置，这里只需要两个参数就行了，后面的回调记得带上
-    this.audio = new NativeAudio();
-    this.vibration = new Vibration();
-
-  }
+  constructor(private vibration: Vibration, private audio: NativeAudio) { }
 
 
   async initAudio() {

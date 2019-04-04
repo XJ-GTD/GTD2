@@ -6,7 +6,8 @@ import {SY} from "../model/ws.enum";
 import {PageY, SsService} from "../../pages/ss/ss.service";
 import {Setting, UserConfig} from "../../service/config/user.config";
 import {SettingPara} from "../model/settingpara";
-import {FdData, FdService} from "../../pages/fd/fd.service";
+import {FdService} from "../../pages/fd/fd.service";
+import {FsData} from "../../service/pagecom/pgbusi.service";
 
 /**
  * 设置
@@ -42,7 +43,7 @@ export class SettingProcess implements MQProcess {
       }
       //用户黑名单
       else if (content.option = SY.B) {
-        let fdData: FdData = new FdData();
+        let fdData: FsData = new FsData();
         for (let btbl of processRs.fs) {
           fdData.ui = btbl.ui;
           fdData.rc = btbl.rc;

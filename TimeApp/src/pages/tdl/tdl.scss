@@ -63,7 +63,7 @@ page-tdl {
   }
 
   .h-auto {
-    height: 44px;
+    height: 61px;
   }
 
   .ym-fsize {
@@ -185,26 +185,64 @@ page-tdl {
     padding: 0px;
     padding-left: 0px;
     padding-right: 0px;
-    height: 44px;
+    height: 61px;
   }
 
   .spacediv-set {
-    height: 44px;
+    height: 61px;
   }
   .backbtn-set{
     padding-top: 7px;
     padding-left: 24px;
+    float: right;
+    margin-right: 24px;
+    margin-top: 8px;
+    font-size: 18px;
+    width: 41px;
   }
   .content-set {
     position: relative;
-    padding-top: 44px;
   }
 
+  .header-set{
+    height: 61px;
+    background-color: #662233;
+    opacity: 0.95;
+  }
+
+  .dobtn-set{
+    width: 100%;
+    text-align: center;
+    background-color: #662233;
+    opacity: 0.95;
+  }
+
+  .nullbtn-set{
+    float: left;
+  }
+  .headerdate{
+    font-size: 18px;
+    color: white;
+    margin-top: 24px;
+    margin-left: 61px;
+  }
+  .subheight{
+    height: 100%;
+  }
+  .contmargin{
+    margin-top: 61px;
+  }
+
+  .headerleft{
+    float: left;
+  }
+  .fab-set{
+    margin-bottom: 30px;
+  }
 }
 .zm-action-button {
   .btn-share {
     font-size: 20px;
-    color:red;
   }
   .btn-del {
     font-size: 20px;
@@ -224,3 +262,4 @@ page-tdl {
 .toolbar-background-md {
   background:none;
 }
+
