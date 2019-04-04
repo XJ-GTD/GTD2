@@ -25,7 +25,7 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
       <ion-grid>
         <ion-row >
           <div class="dobtn-set h-auto">
-            <div style="float:left">
+            <div class = "headerleft">
               
             </div>
             <div >
@@ -56,13 +56,13 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
             <div  class="dayagenda row " [ngStyle]="{'background-color':scd.cbkcolor}"  [ngClass]="{'subheight':sdl.scdl.length == 1}"
                   *ngFor ="let scd of sdl.scdl;"  (click)="toDetail(scd.si,sdl.d,scd.gs)" >
               <div class="dayagendacontent w-auto" >
-                <div class ="agendaline1 row">
+                <div class="agendaline1" *ngIf="scd.gs == '1'">来自：{{scd.fs.rn}}</div>
+                <div class="agendaline1" *ngIf="scd.gs == '0'">参与事件：{{scd.fss.length}}人</div>
+                <div class ="agendaline2 row">
                   <div class="agenda-st">{{scd.st}}</div>
                   <div class="dot-set " [ngStyle]="{'background-color':scd.p.jc}" ></div>
                   <div class ="agenda-sn">{{scd.sn}}</div>
                 </div>
-                <div class="agendaline2" *ngIf="scd.gs == '1'">{{scd.fssshow}}</div>
-                <div class="agendaline2" *ngIf="scd.gs == '0'">{{scd.fs.rn==""||scd.fs.rn ==null ?scd.fs.rc:scd.fs.rn}}</div>
               </div>
               <!--<div class = "dayagendaoperation" (click)="presentActionSheet(scd);">
                 <ion-icon ios="ios-more" md="md-more" [ngStyle]="{'color':scd.morecolor}" ></ion-icon>
@@ -72,7 +72,7 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
           </div>
         </ion-row>
       </ion-grid>
-    <ion-fab center  bottom>
+    <ion-fab center  bottom class="fab-set">
       <button *ngIf="downorup == 2" ion-fab  color="light" (click)="backtoTop();"><ion-icon name="arrow-up" color="danger" isActive="true"></ion-icon></button>
       <button *ngIf="downorup == 1" ion-fab  color="light" (click)="backtoTop();"><ion-icon name="arrow-down" color="danger" isActive="true"></ion-icon></button>
     </ion-fab>
@@ -142,7 +142,7 @@ export class TdlPage {
       if (els.item(j).id == this.dtanchor) {
         break;
       }
-      if (els.item(j).scrollHeight) {
+      if (els.item(j) && els.item(j).scrollHeight) {
         totalh = totalh + els.item(j).scrollHeight;
       }
     }
