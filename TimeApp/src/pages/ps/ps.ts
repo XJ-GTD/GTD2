@@ -3,6 +3,7 @@ import {ActionSheetController, IonicPage, NavController} from 'ionic-angular';
 import {PageUData, PsService} from "./ps.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 个人设置 page.
@@ -30,7 +31,7 @@ import {UserConfig} from "../../service/config/user.config";
     <ion-item class="no-border">
     <ion-input type="text" style="font-size: 23px;" [(ngModel)]="uo.user.name" (ionBlur)="save()"></ion-input>
     <ion-avatar item-end>
-      <img [src]="uo.user.avatar" style="width: 60px;height: 60px">
+      <img [src]="avatar" style="width: 60px;height: 60px">
     </ion-avatar>
   </ion-item>
     
@@ -63,6 +64,7 @@ export class PsPage {
 
   sex:string='';
   bothday:string='';
+  avatar:any = DataConfig.HUIBASE64;
   uo:PageUData = new PageUData();
   olduo:PageUData = new PageUData();
 
@@ -74,14 +76,14 @@ export class PsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UcPage');
-  }
 
-  ionViewDidEnter(){
     Object.assign(this.uo.user,UserConfig.user);
     Object.assign(this.uo.account,UserConfig.account);
 
     Object.assign(this.olduo.user,UserConfig.user);
     Object.assign(this.olduo.account,UserConfig.account);
+
+    this.avatar = UserConfig.user.avatar;
 
     if (UserConfig.user.sex != undefined && UserConfig.user.sex != null && UserConfig.user.sex != '') {
       if( UserConfig.user.sex == "0"){

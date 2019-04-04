@@ -36,9 +36,9 @@ import {HData, HService} from "./h.service";
             添加新事件</a></p>
         </ng-template>
       </div>
-      <div class="rightm">
-        &nbsp;
-      </div>
+      <!--<div class="rightm">-->
+        <!--&nbsp;-->
+      <!--</div>-->
       <BackComponent></BackComponent>
       <AiComponent class="animated fadeInUpBig"></AiComponent>
     </ion-content>

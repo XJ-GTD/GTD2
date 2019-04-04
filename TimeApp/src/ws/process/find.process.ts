@@ -21,9 +21,8 @@ export class FindProcess implements MQProcess {
   constructor(private sqliteExec: SqliteExec,) {
   }
 
-  go(content: WsContent, processRs: ProcesRs): Promise<ProcesRs> {
+  async go(content: WsContent,processRs:ProcesRs){
 
-    return new Promise<ProcesRs>(async resolve => {
       //处理所需要参数
       let findData: FindPara = content.parameters;
       //查找联系人
@@ -35,17 +34,17 @@ export class FindProcess implements MQProcess {
       }
 
       //处理结果
+      processRs.option4Speech = content.option;
+
       processRs.sucess = true;
-      resolve(processRs);
-      return;
-    })
+      return processRs;
   }
 
   private findfs(ns: Array<any>): Promise<Array<BTbl>> {
     return new Promise<Array<BTbl>>(async resolve => {
 
       let res: Array<BTbl> = new Array<BTbl>();
-      if (ns || ns.length == 0) {
+      if (!ns || ns.length == 0) {
         resolve(res);
         return;
       }
@@ -61,7 +60,7 @@ export class FindProcess implements MQProcess {
         let piny = n.n;
         //首先查找群组
         for (let g of gs) {
-          if (g.gnpy.indexOf(piny) > -1) {
+          if (piny.indexOf(g.gnpy) > -1) {
             piny = piny.replace(g.gnpy, "");
             let bxs: BxTbl = new BxTbl();
             bxs.bi = g.gi;
@@ -84,7 +83,7 @@ export class FindProcess implements MQProcess {
         let piny = n.n;
         //首先查找群组
         for (let b3 of bs) {
-          if (b3.ranpy.indexOf(piny) > -1 || b3.rnpy.indexOf(piny) > -1) {
+          if (piny.indexOf(b3.ranpy) > -1 || piny.indexOf(b3.rnpy) > -1) {
             piny = piny.replace(b3.ranpy, "").replace(b3.rnpy, "");
             rsbs.set(b3.ranpy, b3);
           }

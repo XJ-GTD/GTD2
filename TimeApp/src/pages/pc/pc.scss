@@ -1,6 +1,26 @@
 page-pc {
   background-color: #000;
 
+  .w-auto {
+    flex: 1;
+  }
+
+  .grid {
+    padding: 0;
+  }
+
+  .grid .row {
+    height: 100%;
+  }
+
+  .list {
+    width: 100%;
+  }
+
+  .list-header, .list-header-md, .list-header-ios {
+    border: 0;
+  }
+
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
     background-color: #000;
   }
@@ -15,13 +35,39 @@ page-pc {
     color: #fff;
   }
 
+  ion-header{
+    padding: 4px 20px;
+  }
+
+  .img-header-left{
+    width: 4vmin;
+    height: 4vmin;
+  }
+
   ion-list-header.plan-list-item {
     color: rgb(153,153,153);
   }
 
+  .scroll-content{
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  .bar-button-ios{
+    font-size: 1.3rem;
+  }
+
+  ion-item ion-label{
+    font-size: 1.5rem;
+  }
+
+  .item-block{
+    min-height: 9vmin;
+  }
+
   .color-dot {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     background-color: #fff;
     border-radius: 50%;
   }
@@ -64,49 +110,5 @@ page-pc {
 
   .color-daphnite {
     background-color: rgb(48,129,88);
-  }
-
-  .w-auto {
-    flex: 1;
-  }
-
-  .name-input {
-    margin-top: 10px;
-    margin-bottom: 40px;
-  }
-
-  .grid .row {
-    height: 100%;
-  }
-
-  .list {
-    width: 100%;
-  }
-
-  .list-header, .list-header-md, .list-header-ios {
-    border: 0;
-  }
-
-  .scroll-content{
-    overflow-x: hidden;
-    overflow-y: hidden;
-  }
-
-  .bar-button-ios{
-    font-size: 1.3rem;
-  }
-
-  ion-item ion-label{
-    font-size: 1.5rem;
-  }
-
-  .item-block{
-    min-height: 9vmin;
-  }
-
-  .img-header-left{
-    width: 4vmin;
-    height: 4vmin;
-    margin-left: 5vmin;
   }
 }

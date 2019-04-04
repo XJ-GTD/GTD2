@@ -26,9 +26,11 @@ export class MyApp {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
     this.platform.ready().then(() => {
-      this.util.loadingEnd();
+      //this.util.loadingEnd();
       //允许进入后台模式
-      this.backgroundMode.enable();
+      this.backgroundMode.setDefaults({silent:true,hidden:true}).then(d=>{
+        this.backgroundMode.enable();
+      })
       //设置返回键盘（android）
       this.registerBackButtonAction();
       this.restfulClient.init();

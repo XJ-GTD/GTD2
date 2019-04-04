@@ -121,6 +121,11 @@ export class PgBusiService {
           //添加特殊事件表
           return this.saveSp(ct);
         }).then(data=>{
+          let sql = 'select * from gtd_sp where si="'+ct.si+'"';
+          this.sqlExce.getExtList<SpTbl>(sql).then(da=>{
+            console.log("===== 特殊事件："+JSON.stringify(da));
+          })
+        }).then(data=>{
           let adgPro:AgdPro = new AgdPro();
           adgPro.ai=ct.si; //日程ID
           adgPro.rai=rc.sr;//日程发送人用户ID
@@ -341,7 +346,7 @@ export class PgBusiService {
   }
 
   //响应MQ消息，从服务器获取最新日程
-  async pullAgd(si : string){
+  async pullAgd(si : string) {
     let agd = new AgdPro();
     agd.ai = si;
     let bs = new BsModel<AgdPro>();
@@ -363,6 +368,7 @@ export class PgBusiService {
       newc.tx = c.tx;
       await this.sqlExce.replaceT(newc);
     }
+    return bs.data;
 
   }
 

@@ -17,13 +17,10 @@ export class ContextProcess implements MQProcess{
   }
 
 
-  go(content: WsContent,processRs:ProcesRs):Promise<ProcesRs> {
-    return new Promise<ProcesRs>(resolve => {
+  async go(content: WsContent,processRs:ProcesRs){
       processRs.scd = content.thisContext.context.client.cxt.scd;
       processRs.fs = content.thisContext.context.client.cxt.fs;
       processRs.sucess = true;
-      resolve(processRs);
-      return;
-    })
+      return processRs;
   }
 }

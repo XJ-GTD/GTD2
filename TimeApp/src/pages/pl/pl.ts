@@ -3,6 +3,7 @@ import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "./pl.service";
 import {PagePDPro} from "../pd/pd.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the PlPage page.
@@ -46,9 +47,10 @@ import {PagePDPro} from "../pd/pd.service";
                 {{option.jn}}({{option.js}})
               </ion-item>
             </div>
-            <div [ngStyle]="{'display': zdyDisplay }"> 无计划</div>
+            <div [ngStyle]="{'display': zdyDisplay }" class="plan-none"> 无计划</div>
+            <div style="height: 60px"></div>
             <ion-list-header class="plan-list-item">
-              <div>系统计划</div><small>长按系统计划可清除</small>
+              <div style="float: left;color: white">系统计划</div><small>（长按系统计划可清除）</small>
             </ion-list-header>
             <div *ngFor="let option of xtJhs">
               <ion-item class="plan-list-item"(press)="delPlan(option)" >
@@ -63,7 +65,6 @@ import {PagePDPro} from "../pd/pd.service";
                 </button>
               </ion-item>
             </div>
-            <div [ngStyle]="{'display': xtDisplay }"> 系统无计划</div>
           </ion-list>
         </ion-row>
       </ion-grid>
@@ -77,11 +78,11 @@ export class PlPage {
   show:any = true;
   picture:any = "xl.png" ;
   zdyDisplay = "none";
-  xtDisplay = "none";
 
   constructor(private navCtrl: NavController,
               private alertCtrl: AlertController,
-              private plService:PlService) {
+              private plService:PlService,
+              private util: UtilService) {
   }
 
   ionViewDidLoad() {
@@ -99,10 +100,9 @@ export class PlPage {
 
       if(this.zdyJhs.length == 0){
         this.zdyDisplay = "block";
-      }
-
-      if(this.xtJhs.length == 0){
-        this.xtDisplay = "block";
+        this.picture = "xlr.png";
+      }else {
+        this.zdyDisplay = "none";
       }
     }).catch(res=>{
       console.log("获取计划失败" + JSON.stringify(res));
@@ -133,12 +133,7 @@ export class PlPage {
 
   delPlan(jh:PagePDPro){
     if(jh.jtd == '0') { //下载
-      let alert = this.alertCtrl.create({
-        title:'',
-        subTitle: '请先下载系统计划：' + jh.jn,
-        buttons:['确定']
-      });
-      alert.present();
+      this.util.toast('请先下载系统计划：' + jh.jn,1500);
     }else{
       let alert = this.alertCtrl.create({
         title: '',
@@ -150,6 +145,7 @@ export class PlPage {
             handler: () => {
               this.plService.delete(jh);
               jh.jtd = '0';
+              jh.js = 0;
             }
           }]
       });
@@ -165,12 +161,9 @@ export class PlPage {
       this.plService.upPlan(jh);//系统计划 jtd 变更
     }
     this.plService.downloadPlan(jh.ji).then(data=>{
-      let alert = this.alertCtrl.create({
-        title:'',
-        subTitle: message,
-        buttons:['确定']
-      });
-      alert.present();
+      jh.js = data.data == "" ? "0":data.data;
+
+      this.util.toast(message,1500);
     })
   }
 }

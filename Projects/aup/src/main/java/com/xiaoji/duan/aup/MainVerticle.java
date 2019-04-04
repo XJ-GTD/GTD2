@@ -532,19 +532,19 @@ public class MainVerticle extends AbstractVerticle {
 		ctx.next();
 	}
 	
-	private String getAvatarUrl(String username) {
+	public static String getAvatarUrl(String username) {
 		StringBuffer url = new StringBuffer("https://www.guobaa.com/aaf/base64/aup/256/avatar.png?name=");
-		
-		if (username.matches("[a-zA-Z0-9]+.*"))
+
+		if (username.matches("[a-zA-Z0-9]+.*")) {
 			url.append(username.charAt(0));
-		else if (username.length() > 2)
-			url.append(username.substring(username.length() - 3));
+		} else if (username.length() > 2)
+			url.append(username.substring(username.length() - 2));
 		else
 			url.append(username);
 		
 		return url.toString();
 	}
-	
+
 	private void doRegister(RoutingContext ctx) {
 		System.out.println("headers: " + ctx.request().headers());
 		System.out.println("body: " + ctx.getBodyAsString());

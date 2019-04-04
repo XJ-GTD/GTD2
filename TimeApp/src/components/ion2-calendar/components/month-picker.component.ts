@@ -50,12 +50,10 @@ export class MonthPickerComponent {
   }
 
   _onMonthSelect(month: number): void {
-    console.log(month)
     this.onMonthSelect.emit(month);
   }
 
   _onYearSelect(year: number): void {
-    console.log(year)
     this.onYearSelect.emit(year);
   }
 }

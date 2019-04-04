@@ -57,10 +57,6 @@ export class LsPage {
               private lsService: LsService,) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LsPage');
-  }
-
   goBack() {
     this.navCtrl.pop();
   }

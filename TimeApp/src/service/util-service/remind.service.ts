@@ -15,9 +15,9 @@ export class RemindService {
 
   public getRemindLs():Promise<Array<ETbl>>{
     let wd = moment().format("YYYY/MM/DD");
-    let wt = moment().add(DataConfig.REINTERVAL,"m").format("HH:SS");
-   // let sql:string = `select * from gtd_e where wd = '${wd}' and wt <= '${wt}';`
-    let sql:string = `select * from gtd_e where wd = '${wd}';`
+    let wt = moment().add(DataConfig.REINTERVAL,"m").format("HH:mm");
+    let sql:string = `select * from gtd_e where wd = '${wd}' and wt <= '${wt}';`
+   // let sql:string = `select * from gtd_e where wd = '${wd}';`
     console.log("localNotification*******************************"+sql);
 
     return this.sqlite.getExtList<ETbl>(sql);

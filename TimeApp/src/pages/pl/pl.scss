@@ -1,8 +1,47 @@
 page-pl {
   background-color: #000;
 
+  .w-auto {
+    flex: 1;
+  }
+
+  .grid {
+    padding: 0;
+  }
+
+  .grid .row {
+    height: 100%;
+  }
+
+  .list {
+    width: 100%;
+  }
+
+  .list-header, .list-header-md, .list-header-ios {
+    border: 0;
+  }
+
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
     background-color: #000;
+  }
+
+  ion-content.content {
+    background-color: #000;
+    color: #fff;
+  }
+
+  ion-content .plan-list-item {
+    background-color: #000;
+    color: #fff;
+  }
+
+  ion-header{
+     padding: 4px 20px;
+  }
+
+  .img-header-left{
+    width: 4vmin;
+    height: 4vmin;
   }
 
   ion-content.content {
@@ -26,45 +65,15 @@ page-pl {
   }
 
   .color-dot {
-    width: 3vmin;
-    height: 3vmin;
+    width: 2.5vmin;
+    height: 2.5vmin;
     background-color: #fff;
     border-radius: 50%;
-  }
-
-  .color-pink {
-    background-color: rgb(192,119,219);
-  }
-
-  .color-blue {
-    background-color: rgb(81,170,242);
-  }
-
-  .w-auto {
-    flex: 1;
-  }
-
-  .grid .row {
-    height: 100%;
-  }
-
-  .list {
-    width: 100%;
-  }
-
-  .list-header, .list-header-md, .list-header-ios {
-    border: 0;
   }
 
   .scroll-content{
     overflow-x: auto;
     overflow-y: auto;
-  }
-
-  .img-header-left{
-    width: 4vmin;
-    height: 4vmin;
-    margin-left: 5vmin;
   }
 
   .img-content-plan{
@@ -102,4 +111,12 @@ page-pl {
   .div-show-false{
     display: none;
   }
+
+  .plan-none{
+    margin-left: 16px;
+    font-size: 11px;
+    opacity: 0.4;
+    letter-spacing: 1px;
+  }
+
 }

@@ -152,9 +152,9 @@ export class AlService {
       });
 
       //提醒定时
-      //this.notificationsService.schedule();
+      this.notificationsService.schedule();
       //保持后台运行
-      //this.notificationsService.keeplive();
+      this.notificationsService.keeplive();
 
       //用户设置信息初始化
       await this.userConfig.init();
@@ -497,9 +497,9 @@ export class AlService {
       ss.push("看过不良人吗");
       ss.push("周末加班");
 
-      for (let i = 0; i < 4000; i++) {
+      for (let i = 0; i < 400; i++) {
         start = moment('2019/01/01');
-        let r = this.util.randInt(-365 * 2, 365 * 2);
+        let r = this.util.randInt(-365 * 20, 365 * 20);
         let t = this.util.randInt(0, 24);
         let jh_i = this.util.randInt(0, 20);
         let jh_id = "";
@@ -519,7 +519,7 @@ export class AlService {
         c.si = this.util.getUuid();
         c.sn = ss[r_i];
         c.sd = d.format('YYYY/MM/DD');
-        c.st = d.format('hh:mm');
+        c.st = d.format('HH:mm');
         if (c_r3 == 1){
           c.ed = moment(c.sd).add(1,"y").format("YYYY/MM/DD");
           c.rt = "1";
@@ -592,7 +592,7 @@ export class AlService {
           sp.st = c.st;
           let rem = moment(sp.sd + " " + sp.st).add(5,"m");
           eTbl.wd = rem.format("YYYY/MM/DD");
-          eTbl.wt = rem.format("hh:ss");
+          eTbl.wt = rem.format("HH:mm");
           if (c.rt=='0')
           sp.itx = 1;
           else

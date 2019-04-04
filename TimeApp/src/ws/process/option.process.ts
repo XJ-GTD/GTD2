@@ -23,12 +23,11 @@ export class OptionProcess implements MQProcess{
   }
 
 
-  go(content: WsContent,processRs:ProcesRs):Promise<ProcesRs> {
-    return new Promise<ProcesRs>(async resolve => {
+  async go(content: WsContent,processRs:ProcesRs) {
       //处理区分
       let opt = content.option;
-      //处理所需要参数
-      let cudPara:CudscdPara = content.parameters;
+      //处理所需要参数追问时才需要参数，追问暂时不做
+      //let cudPara:CudscdPara = content.parameters;
       let prvOpt:string =  content.thisContext.context.client.option;
 
       if (opt == O.O){
@@ -67,9 +66,10 @@ export class OptionProcess implements MQProcess{
         DataConfig.clearWsOpts();
         DataConfig.clearWsContext();
       }
-      resolve();
-      return;
-    })
+
+      processRs.option4Speech = content.option;
+      processRs.sucess = true;
+      return processRs;
   }
 
 }

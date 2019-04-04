@@ -27,6 +27,15 @@ export class CudscdProcess implements MQProcess{
       let prv:ProcesRs = content.thisContext.context.client.cxt;
       if (!prv) prv = processRs;
 
+      if (processRs.fs.length > 0){
+        prv.fs = processRs.fs;
+      }
+      if (processRs.scd.length > 0){
+
+        prv.scd = processRs.scd;
+      }
+
+
       if (prv.scd.length == 0){
         let ctbl:CTbl = new CTbl();
         prv.scd.push(ctbl);
@@ -49,29 +58,36 @@ export class CudscdProcess implements MQProcess{
      //  是否重复日程提醒（提示更新今天，还是以后）"	SS.U
      //  删除日程	SS.D
 
+      // SS.C
+      // SS.U
+      // SS.D
+      prv.option4Speech = content.option;
 
       //保存上下文
       DataConfig.putWsContext(prv);
       DataConfig.putWsOpt(content.option);
 
 
-      //配置页面显示用数据
-      let scdEmData:ScdEmData = new ScdEmData();
-      scdEmData.id = prv.scd[0].si;
-      scdEmData.ti = prv.scd[0].sn;
-      scdEmData.d = prv.scd[0].sd;
-      scdEmData.t = prv.scd[0].st;
-      for (let p of prv.fs){
-        let b:FriendEmData = new FriendEmData();
-        b.a = p.hiu;
-        b.id = p.pwi;
-        b.m = p.rc;
-        b.n = p.ran;
-        b.p = p.ranpy;
-        scdEmData.datas.push(b);
-      }
-      //this.emitService.emitScd(scdEmData);
+
       return prv;
+
+
+      //配置页面显示用数据
+      // let scdEmData:ScdEmData = new ScdEmData();
+      // scdEmData.id = prv.scd[0].si;
+      // scdEmData.ti = prv.scd[0].sn;
+      // scdEmData.d = prv.scd[0].sd;
+      // scdEmData.t = prv.scd[0].st;
+      // for (let p of prv.fs){
+      //   let b:FriendEmData = new FriendEmData();
+      //   b.a = p.hiu;
+      //   b.id = p.pwi;
+      //   b.m = p.rc;
+      //   b.n = p.ran;
+      //   b.p = p.ranpy;
+      //   scdEmData.datas.push(b);
+      // }
+      //this.emitService.emitScd(scdEmData);
   }
 
 }

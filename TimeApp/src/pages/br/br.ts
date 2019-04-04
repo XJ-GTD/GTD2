@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, NavController} from 'ionic-angular';
 import {BrService} from "./br.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 备份恢复 page.
@@ -45,7 +46,9 @@ import {BrService} from "./br.service";
 })
 export class BrPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private brService:BrService) {
+  constructor(public navCtrl: NavController,
+              private brService:BrService,
+              private util: UtilService) {
   }
 
   ionViewDidLoad() {
@@ -58,19 +61,18 @@ export class BrPage {
 
   backup(){
     this.brService.backup().then(data=>{
-      console.log(("备份完成"));
-      alert("备份完成")
+      this.util.toast("备份完成",1500)
     })
 
   }
 
   recover(){
     this.brService.getLastDt().then(data=>{
-
+      console.log("recover" + JSON.stringify(data));
       if(data.data.bts){
         this.brService.recover(Number(data.data.bts)).then(data=>{
-          console.log(("recover 恢复成功"));
-          alert("恢复成功")
+
+          this.util.toast("恢复成功",1500)
         })
       }
 
