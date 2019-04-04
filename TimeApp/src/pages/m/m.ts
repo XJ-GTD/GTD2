@@ -65,6 +65,9 @@ export class MPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MPage');
+  }
+
+  ionViewDidEnter(){
     this.phone = UserConfig.account.phone;
     this.name = UserConfig.user.name;
 
