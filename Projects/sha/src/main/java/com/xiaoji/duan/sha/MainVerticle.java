@@ -528,7 +528,7 @@ public class MainVerticle extends AbstractVerticle {
 		Future<JsonObject> buildin = Future.future();
 		futures.add(buildin);
 		
-		mongodb.findOne("sha_plan_buildin", new JsonObject().put("planid", buildinplan), new JsonObject(), findOne -> {
+		mongodb.findOne("sha_plan_buildin", new JsonObject().put("pi", buildinplan), new JsonObject(), findOne -> {
 			System.out.println("Find build-in plan returned.");
 			if (findOne.succeeded()) {
 				buildin.complete(new JsonObject().put("name", "plan").put("value", findOne.result()));
@@ -540,7 +540,7 @@ public class MainVerticle extends AbstractVerticle {
 		Future<JsonObject> buildinagendas = Future.future();
 		futures.add(buildinagendas);
 
-		mongodb.find("sha_plan_buildin_agendas", new JsonObject().put("planid", buildinplan), find -> {
+		mongodb.find("sha_plan_buildin_agendas", new JsonObject().put("pi", buildinplan), find -> {
 			System.out.println("Find agendas returned.");
 			if (find.succeeded()) {
 				buildinagendas.complete(new JsonObject().put("name", "agendas").put("value", find.result()));
