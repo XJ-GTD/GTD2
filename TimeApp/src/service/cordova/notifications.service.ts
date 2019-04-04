@@ -11,6 +11,11 @@ import {CTbl} from "../sqlite/tbl/c.tbl";
 import {ScdData} from "../pagecom/pgbusi.service";
 import * as moment from "moment";
 import {UtilService} from "../util-service/util.service";
+import {AssistantService} from "./assistant.service";
+import {RemindService} from "../util-service/remind.service";
+import {DataConfig} from "../config/data.config";
+import {ETbl} from "../sqlite/tbl/e.tbl";
+import {File} from "@ionic-native/file";
 
 /**
  * 系统设置方法类
@@ -20,102 +25,141 @@ import {UtilService} from "../util-service/util.service";
 @Injectable()
 export class NotificationsService {
 
-  private index: number;
+  private index: number = 0;
 
-  constructor(private localNotifications: LocalNotifications,private badge:Badge,private util:UtilService) {
+  constructor(private localNotifications: LocalNotifications, private badge: Badge, private util: UtilService, private remindService: RemindService,private file: File) {
 
-    if (util.isMobile()){
+
+    if (util.isMobile()) {
+      //提醒回馈处理 5分钟
+      this.localNotifications.on('five').subscribe((next: ILocalNotification) => {
+        let etbl: Array<ETbl> = next.data.val;
+        let reDate: moment.Moment = moment().add(5, "m");
+        this.remind(etbl);
+        this.remindService.delRemin(next.data.val);
+        this.localNotifications.clear(next.id);
+        this.localNotifications.cancel(next.id);
+      });
+      //提醒回馈处理 10分钟
+      this.localNotifications.on('ten').subscribe((next: ILocalNotification) => {
+        let etbl: Array<ETbl> = next.data.val;
+        let reDate: moment.Moment = moment().add(10, "m");
+        this.remind(etbl);
+        this.remindService.delRemin(next.data.val);
+        this.localNotifications.clear(next.id);
+        this.localNotifications.cancel(next.id);
+      });
+
+      //提醒回馈处理 10分钟
+      this.localNotifications.on('close').subscribe((next: ILocalNotification) => {
+        this.remindService.delRemin(next.data.val.wi);
+        this.localNotifications.clear(next.id);
+        this.localNotifications.cancel(next.id);
+      });
       this.localNotifications.on('click').subscribe((next: ILocalNotification) => {
         //跳转到界面处理
         this.localNotifications.clear(next.id);
         this.localNotifications.cancel(next.id);
-        this.index--;
       });
       this.localNotifications.on('clear').subscribe((next: ILocalNotification) => {
         this.localNotifications.clear(next.id);
         this.localNotifications.cancel(next.id);
-        this.index--;
       });
       this.localNotifications.on('clearAll').subscribe((next: ILocalNotification) => {
         this.localNotifications.clearAll();
         this.localNotifications.cancelAll();
-        this.index = 0;
       });
 
       this.localNotifications.on('trigger').subscribe((next: ILocalNotification) => {
-        console.log("******************************定时器是否启用");
-
-        if (next.data.type == "schedule"){
+        if (next.data.type == "schedule") {
           this.schedule();
-          this.newSms(moment().format("dddd, MMMM Do YYYY, h:mm:ss a"),new ScdData());
+          console.log("localNotifications====================trigger》===next.data.type" + next.data.type + "===>id:" + next.id);
+          this.localNotifications.clear(next.id);
+          this.localNotifications.cancel(next.id);
+          this.remindService.getRemindLs().then(data => {
+            console.log("localNotifications====================getRemindLs》" + data.length);
+            if (data.length == 0) return;
+            this.remind(data);
+
+          })
         }
-        if (next.data.type == "keeplive"){
+
+        //自定定时启动防止后台js不执行
+        if (next.data.type == "keeplive") {
+          console.log("localNotifications====================trigger》===next.data.type" + next.data.type + "===>id:" + next.id);
+          this.localNotifications.clear(next.id);
+          this.localNotifications.cancel(next.id);
           this.keeplive();
         }
-        // if (next.text == "111"){
-        //   this.newSms("这是一个测试",new ScdData());
-        // }
-        console.log("******************************定时器是否启用是的");
 
+        //自定remind
+        if (next.data.type == "remind") {
+          console.log("localNotifications====================trigger》===next.data.type" + next.data.type + "===>id:" + next.id);
+        }
+        if (this.index > 99999) this.index = 0;
       });
+
+
     }
-
-
-
-    this.index = 0;
   }
 
-  public badgeDecrease(){
+  public badgeDecrease() {
 
     if (this.util.isMobile())
       this.badge.increase(-1);
   }
 
 
-  public newSms(text: string,scd:ScdData) {
-    //铃声启动
-    // this.feedback.audioSms().then(success => {
-    //   console.log("闹钟铃声播放成功");
-    // }, error => {
-    //   console.log("闹钟铃声播放失败：" + error.toString());
-    // });
-
+  public newSms(scd: ScdData) {
     //通知栏消息
     let notif: MwxNewMessage = new MwxNewMessage();
     notif.id = this.index++;
-    notif.text = text;
+    notif.text = scd.sn;
     notif.data = scd;
     if (this.util.isMobile())
-    this.localNotifications.schedule(notif);
-
+      this.localNotifications.schedule(notif);
   }
 
 
   public schedule() {
     let notif: MwxSchedule = new MwxSchedule();
     notif.id = this.index++;
-    notif.trigger =  {in: 3,unit: ELocalNotificationTriggerUnit.SECOND};
-    notif.data ={type:"schedule"};
-
+    notif.trigger = {in: DataConfig.REINTERVAL, unit: ELocalNotificationTriggerUnit.SECOND};
+    notif.data = {type: "schedule"};
+    console.log("localNotifications===============create》===next.data.type" + notif.data.type + "===>id:" + notif.id);
     this.localNotifications.schedule(notif);
   }
 
   public keeplive() {
     let notif: MwxSchedule = new MwxSchedule();
     notif.id = this.index++;
-    notif.trigger =  {in: 3,unit: ELocalNotificationTriggerUnit.SECOND};
-    notif.data ={type:"keeplive"};
+    notif.trigger = {in: 7, unit: ELocalNotificationTriggerUnit.SECOND};
+    notif.data = {type: "keeplive"};
+    console.log("localNotifications===============create》===next.data.type" + notif.data.type + "===>id:" + notif.id);
 
     this.localNotifications.schedule(notif);
   }
 
 
-  public remind() {
-    let notif: MwxSchedule = new MwxSchedule();
-    notif.data ={str:"this test"};
+  public remind(reData: Array<ETbl>) {
+    let notif: MwxRemind = new MwxRemind();
+    notif.id = this.index++;
+    notif.data = {type: "remind", val: reData};
+    let text:Array<string> = new Array<string>();
+    for(let e of reData){
+      text.push(e.st);
+    }
+    notif.sound ="assets/www/assets/feedback/remind.mp3";
+    notif.text = text;
+    notif.actions = [
+      {id: 'close', title: '关闭'},
+      {id: 'five', title: '5分钟后'},
+      {id: 'ten', title: '10分钟后'}
+    ];
+    console.log("localNotifications===============create》===next.data.type" + notif.data.type + "===>id:" + notif.id);
 
     if (this.util.isMobile())
-    this.localNotifications.schedule(notif);
+      this.localNotifications.schedule(notif);
   }
 
 }
@@ -126,7 +170,7 @@ class MwxNewMessage implements ILocalNotification {
   autoClear: boolean = true;
   badge: number;
   channel: string;
-  clock: boolean | string = true;
+  clock: boolean | string;
   color: string;
   data: any;
   defaults: number;
@@ -161,7 +205,7 @@ class MwxRemind implements ILocalNotification {
   autoClear: boolean = true;
   badge: number;
   channel: string;
-  clock: boolean | string = true;
+  clock: boolean | string;
   color: string;
   data: any;
   defaults: number;
@@ -197,14 +241,14 @@ class MwxSchedule implements ILocalNotification {
   autoClear: boolean = false;
   badge: number;
   channel: string;
-  clock: boolean | string = false;
+  clock: boolean | string;
   color: string;
   data: any;
   defaults: number;
   foreground: boolean = true;
   group: string;
   groupSummary: boolean = false;
-  icon: string;
+  icon: string = "assets/icon/drawable-icon.png";
   id: number;
   launch: boolean = true;
   led: { color: string; on: number; off: number } | any[] | boolean | string;
@@ -220,7 +264,7 @@ class MwxSchedule implements ILocalNotification {
   summary: string;
   text: string | string[];
   timeoutAfter: number | false;
-  title: string ;
+  title: string;
   trigger: ILocalNotificationTrigger;
   vibrate: boolean = false;
   wakeup: boolean = false;

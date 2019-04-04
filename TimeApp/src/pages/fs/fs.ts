@@ -99,7 +99,7 @@ export class FsPage {
   }
   ionViewDidEnter(){
     console.log("3.0 ionViewDidEnter 当进入页面时触发");
-    //this.getFdl(new FsData());
+    this.getFdl(new FsData());
   }
   save(){
     if(this.selFsl.size>0){
@@ -216,11 +216,14 @@ export class FsPage {
   }
 
   getContacts(){
-    let fs = new FsData();
-    fs.rc = this.tel;
-    fs.rn = this.tel;
-    fs.ran = this.tel;
-    this.getFdl(fs);
+    if(this.tel && this.tel != null && this.tel !=''){
+      let fs = new FsData();
+      fs.rc = this.tel;
+      fs.rn = this.tel;
+      fs.ran = this.tel;
+      this.getFdl(fs);
+    }
+
   }
   toAddGroupMember(){}
 }

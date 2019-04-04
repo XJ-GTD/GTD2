@@ -20,18 +20,22 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
 @IonicPage()
 @Component({
   selector: 'page-tdl',
-  template: `<ion-header no-border *ngIf="headershow" >
+  template: `<ion-header no-border *ngIf="headershow" class="header-set">
     <ion-toolbar>
       <ion-grid>
         <ion-row >
-          <div class="daynav h-auto">
-            <ion-buttons left class ="backbtn-set">
-              <button  ion-button icon-only (click)="goBack()" color="danger">
-                <ion-icon name="arrow-back"></ion-icon>
-              </button>
-            </ion-buttons>
+          <div class="dobtn-set h-auto">
+            <div class ="cancelbtn-set">
+              <ion-buttons left class ="backbtn-set">
+                <button  ion-button icon-only (click)="goBack()" color="danger">
+                  <ion-icon name="arrow-back"></ion-icon>
+                </button>
+              </ion-buttons>
+            </div>
+            <div class="headerdate">
+              <ion-label>{{headerDate}}</ion-label>
+            </div>
           </div>
-          <div class="dayagendas w-auto h-auto"></div>
         </ion-row>
       </ion-grid>
     </ion-toolbar>
@@ -45,9 +49,9 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
               <div class="d-fsize text-center">{{sdl.d | formatedate :"MM-DD"}}</div>
             </div>
           </div>
-          <div class="dayagendas w-auto" >
-            <div  class="dayagenda row" *ngFor ="let scd of sdl.scdl;" 
-                 [ngStyle]="{'background-color':scd.cbkcolor}" (click)="toDetail(scd.si,sdl.d,scd.gs)">
+          <div class="dayagendas w-auto " >
+            <div  class="dayagenda row " *ngFor ="let scd of sdl.scdl;" 
+                 [ngStyle]="{'background-color':scd.cbkcolor}" (click)="toDetail(scd.si,sdl.d,scd.gs)" >
               <div class="dayagendacontent w-auto" [ngStyle]="{'background-color':scd.cbkcolor}">
                 <div class ="agendaline1 row">
                   <div class="agenda-st">{{scd.st}}</div>
@@ -65,7 +69,7 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
           </div>
         </ion-row>
       </ion-grid>
-<ion-fab center  bottom>
+    <ion-fab center  bottom>
       <button *ngIf="downorup == 2" ion-fab  color="light" (click)="backtoTop();"><ion-icon name="arrow-up" color="danger" isActive="true"></ion-icon></button>
       <button *ngIf="downorup == 1" ion-fab  color="light" (click)="backtoTop();"><ion-icon name="arrow-down" color="danger" isActive="true"></ion-icon></button>
     </ion-fab>
@@ -84,16 +88,14 @@ export class TdlPage {
       if (data !="" && data !=null){
         //画面scroll至锚点
         let el = document.getElementById(data.toString());
-        console.log("el****:"+JSON.stringify(el));
-        el.scrollIntoView(true);
+        el.scrollIntoView(true,);
 
       }
-
-      //设置锚点会触发scrollstart,scrollend事件，在2事件内处理相应初始化内容
-      this.initanchor  = true;
-
     });
   }
+
+  //位移与头部高度一致
+  offsetHeader:number = 69;
 
   headershow :boolean =false;
   //画面数据List
@@ -109,8 +111,6 @@ export class TdlPage {
 
   //初始锚点，仅为初始化使用
   dtanchor : string ="";
-  //是否正在初始化锚点
-  initanchor : boolean = false;
 
   //向上或向下按钮显示控制 0：两个都不显示 ，1：显示up，2：显示down
   downorup:number = 0;
@@ -134,6 +134,8 @@ export class TdlPage {
   //下滑的取数据进行过程中，再次下滑不再获取数据
   downingdata:boolean = false;
 
+  //头部显示日期
+  headerDate:string;
 
   @ViewChild('contentD') contentD: Content;
 
@@ -155,8 +157,8 @@ export class TdlPage {
   backtoTop(){
     let totalh = this.getAnchorScrollH();
 
-    this.contentD.scrollTo(0,totalh).then(data=>{
-
+    this.contentD.scrollTo(0,totalh- this.offsetHeader).then(data=>{
+      this.headerDate = this.dtanchor;
       this.downorup =0;
 
     });
@@ -166,26 +168,57 @@ export class TdlPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad AgendaListPage');
 
+    this.contentD.ionScroll.subscribe(($event:any)=>{
+      if ($event == null) {
+        return;
+      }
+
+      let a = this.getAnchorScrollH();
+      //设置向上或向下按钮显隐控制
+      if ($event.scrollTop > a  ){
+        this.downorup = 2;
+      }else if($event.scrollTop < a){
+        this.downorup = 1;
+      }else{
+        this.downorup = 0;
+      }
+
+      //显示当前顶部滑动日期
+      let totalh =0;
+      for (let j = 0, len = this.scdlDataList.length; j < len; j++) {
+        let el = document.getElementById(this.scdlDataList[j].d);
+        if ($event.scrollTop < totalh - this.offsetHeader ){
+          let k =0;
+          if (j == 0 ){
+            k = j;
+          }else{
+            k = j - 1;
+          }
+          this.headerDate = this.scdlDataList[k].d;
+          console.log("this.scdlDataList[j].d*****:"+this.scdlDataList[k].d)
+          console.log("totalh*****:"+totalh)
+          console.log("ionScroll*****:"+$event.scrollTop)
+          break;
+        }
+        if (el.scrollHeight == null){
+          return;
+        }
+        totalh = totalh + el.scrollHeight;
+
+
+      }
+
+
+    })
+
     this.contentD.ionScrollEnd.subscribe(($event: any) => {
       if ($event == null) {
         return;
       }
 
-      //设置初始化结束标志
-      if (this.initanchor) {
-        this.initanchor = false;
-        return;
-      }
 
-      let totalh = this.getAnchorScrollH();
-      //设置向上或向下按钮显隐控制
-      if ($event.scrollTop > totalh  ){
-        this.downorup = 2;
-      }else if($event.scrollTop < totalh){
-        this.downorup = 1;
-      }else{
-        this.downorup = 0;
-      }
+
+
 
       if ($event.scrollTop > this.startScrolltop  ){
         console.log("上滑");
@@ -351,7 +384,7 @@ export class TdlPage {
         if (this.dtanchor == "" && this.scdlDataList.length >0 ){
           this.dtanchor = this.scdlDataList[this.scdlDataList.length-1].d;
         }
-
+        this.headerDate = this.dtanchor;
         if (this.scdlDataList.length >0){
 
           let a = this.scdlDataList[this.scdlDataList.length-1];

@@ -25,6 +25,9 @@ import {StTbl} from "../../service/sqlite/tbl/st.tbl";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {BhTbl} from "../../service/sqlite/tbl/bh.tbl";
 import {DataConfig} from "../../service/config/data.config";
+import {Location} from "@angular/common";
+import {NotificationsService} from "../../service/cordova/notifications.service";
+import {ETbl} from "../../service/sqlite/tbl/e.tbl";
 
 @Injectable()
 export class AlService {
@@ -39,7 +42,8 @@ export class AlService {
               private feekback: FeedbackService,
               private userConfig: UserConfig,
               private agdRestful: AgdRestful,
-              private contactsService:ContactsService) {
+              private contactsService:ContactsService,
+               private notificationsService:NotificationsService) {
   }
 
 //权限申请
@@ -146,6 +150,11 @@ export class AlService {
 
       await this.feekback.initAudio().catch(e => {
       });
+
+      //提醒定时
+      //this.notificationsService.schedule();
+      //保持后台运行
+      //this.notificationsService.keeplive();
 
       //用户设置信息初始化
       await this.userConfig.init();
@@ -488,9 +497,9 @@ export class AlService {
       ss.push("看过不良人吗");
       ss.push("周末加班");
 
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 4000; i++) {
         start = moment('2019/01/01');
-        let r = this.util.randInt(-365 * 10, 365 * 10);
+        let r = this.util.randInt(-365 * 2, 365 * 2);
         let t = this.util.randInt(0, 24);
         let jh_i = this.util.randInt(0, 20);
         let jh_id = "";
@@ -573,15 +582,23 @@ export class AlService {
         let sql=new Array<string>();
         for(let i=0;i<len;i++){
           let sp = new SpTbl();
-          sp.spi = this.util.getUuid()
+          let eTbl:ETbl = new ETbl();
+          sp.spi = this.util.getUuid();
+          eTbl.wi = this.util.getUuid();
           sp.si = c.si;
+          eTbl.si = sp.spi;
+          eTbl.st = c.sn;
           sp.sd = moment(c.sd).add(i,add).format("YYYY/MM/DD");
           sp.st = c.st;
+          let rem = moment(sp.sd + " " + sp.st).add(5,"m");
+          eTbl.wd = rem.format("YYYY/MM/DD");
+          eTbl.wt = rem.format("hh:ss");
           if (c.rt=='0')
           sp.itx = 1;
           else
             sp.itx = 0;
           sqls.push(sp.inT());
+          sqls.push(eTbl.inT());
           // if (!stMap.get(sp.sd)){
           //   let st:StTbl = new StTbl();
           //   st.c = 0;
@@ -620,6 +637,10 @@ export class AlService {
       // })
 
       this.sqlExce.batExecSql(sqls).then(c => {
+
+        let sql:string =`delete from gtd_e where wd <= '${moment().subtract(1,"d").format("YYYY/MM/DD")}';`
+        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" + sql);
+        this.sqlExce.execSql(sql);
         resolve(true);
       });
     })

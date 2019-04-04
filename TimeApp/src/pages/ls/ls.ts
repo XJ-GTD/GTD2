@@ -100,8 +100,6 @@ export class LsPage {
           this.timeText = "发送验证码"
         }
       }, 1000)
-    }else {
-      this.util.toast("请填写正确的手机号",1500);
     }
   }
 
@@ -114,15 +112,18 @@ export class LsPage {
       }else{
         console.log("手机验证码登录被点击");
         this.util.loadingStart();
+
         this.lsService.login(this.lsData).then(data=> {
-          if (data.code != 0)
+          if (data.code && data.code != 0)
             throw  data;
 
+          return this.lsService.get(data);
+        }).then(data=>{
           console.log("手机验证码登录成功"+ JSON.stringify(data));
           clearTimeout(this.timer);
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
-        }).catch(error=>{
+          }).catch(error=>{
           console.log("手机验证码登录失败"+JSON.stringify(error));
           this.util.loadingEnd();
           this.util.toast(error.message,1500);

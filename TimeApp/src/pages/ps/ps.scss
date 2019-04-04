@@ -3,6 +3,8 @@ page-ps {
     padding-left: 0 !important;
     padding-right: 0 !important;
     padding-bottom: 0 !important;
+    overflow-x: hidden;
+    overflow-y: hidden;
   }
 
   .item-inner{
@@ -16,6 +18,8 @@ page-ps {
     width: 94%;
     margin-left: 3%;
   }
+
+  background-color: #000;
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
     background-color: #000;
@@ -53,9 +57,6 @@ page-ps {
 
   .list-header, .list-header-md, .list-header-ios {
     border: 0;
-  }
-  .toolbar-title-ios{
-    color:#ffffff;
   }
 
   .img-header-left{

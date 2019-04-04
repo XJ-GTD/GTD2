@@ -1,5 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import {IonicPage, Navbar, NavController} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, NavController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
 import {PageY, SsService} from "./ss.service";
@@ -20,7 +20,7 @@ import {PageY, SsService} from "./ss.service";
       <ion-toolbar>
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="../../assets/imgs/fh2.png">
+            <img class="img-header-left" src="./assets/imgs/fh2.png">
           </button>
         </ion-buttons>
         <ion-title>设置</ion-title>

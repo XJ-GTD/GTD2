@@ -19,13 +19,13 @@ import {AgdPro} from "../../service/restful/agdsev";
       <ion-toolbar>
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="../../assets/imgs/fh2.png">
+            <img class="img-header-left" src="./assets/imgs/fh2.png">
           </button>
         </ion-buttons>
 
         <ion-buttons right>
           <button ion-button color="danger" (click)="more(jh)">
-            <img class="img-header-right" src="../../assets/imgs/more.png">
+            <img class="img-header-right" src="./assets/imgs/more.png">
             <!--<ion-icon name="remove-circle-outline"></ion-icon>-->
           </button>
         </ion-buttons>
@@ -90,7 +90,6 @@ export class PdPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PdPage');
-
   }
 
   ionViewDidEnter(){

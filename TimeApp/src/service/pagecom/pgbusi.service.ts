@@ -121,9 +121,6 @@ export class PgBusiService {
           //添加特殊事件表
           return this.saveSp(ct);
         }).then(data=>{
-          //保存本地提醒表
-          return this.saveOrUpdTx(ct);
-        }).then(data=>{
           let adgPro:AgdPro = new AgdPro();
           adgPro.ai=ct.si; //日程ID
           adgPro.rai=rc.sr;//日程发送人用户ID
@@ -176,7 +173,11 @@ export class PgBusiService {
       // sp.sd = moment(rc.sd).add(i,'d').format("YYYY/MM/DD");
       sp.sd = moment(rc.sd).add(i,add).format("YYYY/MM/DD");
       sp.st = rc.st;
+      sp.tx = rc.tx;
       sql.push(sp.inT());
+      if(sp.tx>'0'){
+        sql.push(this.getTxEtbl(rc,sp.spi).rpT());
+      }
     }
 
     console.log('-------- 插入重复表 --------');
@@ -184,19 +185,18 @@ export class PgBusiService {
     return this.sqlExce.batExecSql(sql);
 
   }
-
   /**
-   * 保存提醒方式
+   *获取提醒表sql
    * @param {CTbl} rc 日程详情
+   * @param {string} tsId 特殊表Id
    * @returns {Promise<Promise<any> | number>}
    */
-  private async saveOrUpdTx(rc:CTbl):Promise<any>{
+   getTxEtbl(rc:CTbl,tsId:string):ETbl{
     let et = new ETbl();//提醒表
-    et.si = rc.si;
-    let result = await this.sqlExce.delete(et);
+    et.si = tsId;
     if(rc.tx != '0'){
-      et.wi = this.util.getUuid();
-      et.wt = '0';
+      et.wi = tsId;
+      et.st = rc.sn;
       let time = 10; //分钟
       if(rc.tx == "2"){
         time = 30;
@@ -209,11 +209,42 @@ export class PgBusiService {
       }
       let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD HH:mm");
       et.wd=date.substr(0,10);
-      et.st = date.substr(11,5);
+      et.wt = date.substr(11,5);
       console.log('-------- 插入提醒表 --------');
-      result = await this.sqlExce.save(et);
+      return et;
     }
-    return result;
+    return null;
+  }
+  /**
+   * 保存更新指定特殊表提醒方式
+   * @param {CTbl} rc 日程详情
+   * @param {string} tsId 特殊表Id
+   * @returns {Promise<Promise<any> | number>}
+   */
+  private saveOrUpdTx(rc:CTbl,tsId:string):Promise<any>{
+    let et = new ETbl();//提醒表
+    et.si = rc.si;
+    //let result = await this.sqlExce.delete(et);
+    if(rc.tx != '0'){
+      et.wi = tsId;
+      et.st = rc.sn;
+      let time = 10; //分钟
+      if(rc.tx == "2"){
+        time = 30;
+      }else if(rc.tx == "3"){
+        time = 60;
+      }else if(rc.tx == "4"){
+        time = 240;
+      }else if(rc.tx == "5"){
+        time = 360;
+      }
+      let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD HH:mm");
+      et.wd=date.substr(0,10);
+      et.wt = date.substr(11,5);
+      console.log('-------- 插入提醒表 --------');
+      return this.sqlExce.replaceT(et);
+    }
+    return null;
   }
   /**
    * 日程校验
@@ -256,15 +287,19 @@ export class PgBusiService {
     await  this.sqlExce.update(c);
 
     //更新提醒时间
-    await this.saveOrUpdTx(c);
+    //await this.saveOrUpdTx(c);
 
     if (type == "1") {
       if (bs.data.sd != c.sd || bs.data.rt != c.rt){
         //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
         let sptbl = new SpTbl();
         sptbl.si = c.si;
+        //删除提醒
+        let sql = 'delete from gtd_e ge inner join gtd_sp sp on sp.spi = ge.si where sp.si="'+ c.si+'"';
+        await this.sqlExce.execSql(sql);
+        //删除特殊表
         await this.sqlExce.delete(sptbl);
-
+        //保存特殊表
         await this.saveSp(c);
       }else{
         //如果只是修改重复时间，则更新重复子表所有时间
