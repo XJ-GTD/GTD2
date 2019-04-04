@@ -159,6 +159,10 @@ export class PlService {
     let jhCtbl: Array<PagePDPro> = await this.sqlExce.getList<PagePDPro>(jhtbl);
     if(jhCtbl.length > 0){
       //console.log('---------- PlService getPlan 获取计划日程数量开始 ----------------');
+
+      let xtJh: Array<PagePDPro> = new  Array<PagePDPro>();
+      let zdyJh: Array<PagePDPro> = new  Array<PagePDPro>();
+
       //获取计划日程数量
       for(let jhc of jhCtbl){
         let sql = 'select gc.si from gtd_c gc ' +
@@ -171,8 +175,16 @@ export class PlService {
         if(jhc.jtd == null || jhc.jtd == ""){
           jhc.jtd = "0";
         }
+
+        if(jhc.jt == "2"){  // 本地计划
+          zdyJh.push(jhc);
+        }else{
+          xtJh.push(jhc);
+        }
       }
-      pld.pl = jhCtbl;
+      pld.xtJh = xtJh;
+      pld.zdyJh = zdyJh;
+
       console.log('---------- PlService getPlan 获取计划日程数量结束 ----------------');
     }
     console.log('---------- PlService getPlan 获取计划结束 ----------------');
@@ -183,6 +195,8 @@ export class PlService {
 
 export class PagePlData {
 
-  pl:Array<PagePDPro> = new Array<PagePDPro>(); //计划列表
+  xtJh:Array<PagePDPro> = new Array<PagePDPro>(); //本地计划
+
+  zdyJh:Array<PagePDPro> = new Array<PagePDPro>(); //自定义计划列表
 
 }

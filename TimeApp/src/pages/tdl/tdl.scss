@@ -63,7 +63,7 @@ page-tdl {
   }
 
   .h-auto {
-    height: 44px;
+    height: 69px;
   }
 
   .ym-fsize {
@@ -185,11 +185,11 @@ page-tdl {
     padding: 0px;
     padding-left: 0px;
     padding-right: 0px;
-    height: 44px;
+    height: 69px;
   }
 
   .spacediv-set {
-    height: 44px;
+    height: 69px;
   }
   .backbtn-set{
     padding-top: 7px;
@@ -197,14 +197,12 @@ page-tdl {
   }
   .content-set {
     position: relative;
-    padding-top: 44px;
   }
 
 }
 .zm-action-button {
   .btn-share {
     font-size: 20px;
-    color:red;
   }
   .btn-del {
     font-size: 20px;
@@ -223,4 +221,25 @@ page-tdl {
 }
 .toolbar-background-md {
   background:none;
+}
+
+.header-set{
+  height: 69px;
+  background-color: rgb(142,23,43);
+  opacity: 0.95;
+}
+
+.dobtn-set{
+  width: 100%;
+  text-align: center;
+  background-color: rgb(142,23,43);
+  opacity: 0.95;
+}
+
+.cancelbtn-set{
+  float: left;
+}
+.headerdate{
+  font-size: 18px;
+  color: white;
 }

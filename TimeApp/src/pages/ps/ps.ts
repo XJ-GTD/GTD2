@@ -1,8 +1,8 @@
-import {Component, ViewChild} from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams, Navbar, ActionSheetController} from 'ionic-angular';
-import {DataConfig} from "../../service/config/data.config";
+import {Component} from '@angular/core';
+import {ActionSheetController, IonicPage, NavController} from 'ionic-angular';
 import {PageUData, PsService} from "./ps.service";
 import {UtilService} from "../../service/util-service/util.service";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the 个人设置 page.
@@ -30,7 +30,7 @@ import {UtilService} from "../../service/util-service/util.service";
     <ion-item class="no-border">
     <ion-input type="text" style="font-size: 23px;" [(ngModel)]="uo.user.name" (ionBlur)="save()"></ion-input>
     <ion-avatar item-end>
-      <img [src]="uo.user.aevter" style="width: 60px;height: 60px">
+      <img [src]="uo.user.avatar" style="width: 60px;height: 60px">
     </ion-avatar>
   </ion-item>
     
@@ -58,6 +58,8 @@ import {UtilService} from "../../service/util-service/util.service";
   </ion-content>`,
 })
 export class PsPage {
+  // 判断是否有模态框弹出
+  public actionSheet;
 
   sex:string='';
   bothday:string='';
@@ -66,44 +68,41 @@ export class PsPage {
 
   constructor(public navCtrl: NavController,
               private psService:PsService,
-              public actionSheetController: ActionSheetController,
-              public navParams: NavParams,
+              private actionSheetController: ActionSheetController,
               private util: UtilService) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UcPage');
-    this.init();
   }
 
-  backButtonClick = (e: UIEvent) => {
-    // 重写返回方法
-    this.navCtrl.pop();
-  };
+  ionViewDidEnter(){
+    Object.assign(this.uo.user,UserConfig.user);
+    Object.assign(this.uo.account,UserConfig.account);
 
-  init() {
-    this.psService.getUser().then(data=>{
-      if(data && data.user){
-        Object.assign(this.uo,data);
-        this.olduo.user = JSON.parse(JSON.stringify(data));
-        this.bothday = this.uo.user.bothday.replace(new RegExp('/','g'),'-');
-        if(this.uo.user.sex=='0'){
-          this.sex = '男';
-        }else if(this.uo.user.sex=='1'){
-          this.sex = '女';
-        }
+    Object.assign(this.olduo.user,UserConfig.user);
+    Object.assign(this.olduo.account,UserConfig.account);
 
+    if (UserConfig.user.sex != undefined && UserConfig.user.sex != null && UserConfig.user.sex != '') {
+      if( UserConfig.user.sex == "0"){
+        this.sex = "未知";
+      }else {
+        this.sex = UserConfig.user.sex == "1" ? "男":"女";
       }
-    })
+    }
+
+    this.bothday = UserConfig.user.bothday.replace(new RegExp('/','g'),'-');
   }
 
   goBack() {
-    console.log('=======跳转:' + DataConfig.PAGE._H_PAGE);
-    // this.navCtrl.push(DataConfig.PAGE._M_PAGE);
-    //this.navCtrl.setRoot(DataConfig.PAGE._H_PAGE);
     this.navCtrl.pop();
   }
 
+  ionViewWillLeave() {
+    if (this.actionSheet !== undefined) {
+      this.actionSheet.dismiss();
+    }
+  }
 
   save(){
     let isUpd = false;
@@ -122,10 +121,19 @@ export class PsPage {
     if(this.olduo.user.No != this.uo.user.No){
       isUpd = true;
     }
+
+    if(this.uo.user.name == ""){
+      isUpd = false;
+      this.util.toast("用户名不能为空",1500);
+      this.uo.user.name = this.olduo.user.name;
+    }
+
     if(isUpd){
       this.psService.saveUser(this.uo).then(data=>{
         if(data.code ==0){
           this.util.toast('保存成功！',2000);
+
+          Object.assign(this.olduo.user,this.uo.user);  //替换旧数据
         }else{
           this.util.toast(data.message,2000);
         }
@@ -144,26 +152,28 @@ export class PsPage {
     }
 
   }
+
   async selectSex() {
-    const actionSheet = await this.actionSheetController.create({
-      buttons: [ {
+    this.actionSheet = await this.actionSheetController.create({
+      buttons: [{
         text: '男',
         handler: () => {
-          console.log('男');
-          this.sex = '男';
-          this.uo.user.sex='0';
+          this.uo.user.sex = '1';
+          console.log("男:" + this.uo.user.sex);
+          this.sex = this.uo.user.sex == "1" ? "男" : "女";
           this.save();
         }
       }, {
         text: '女',
         handler: () => {
-          this.sex = '女';
-          this.uo.user.sex='0';
+          this.uo.user.sex = '2';
+          console.log("女:" + this.uo.user.sex);
+          this.sex = this.uo.user.sex == "1" ? "男" : "女";
           this.save();
         }
       }]
     });
-    await actionSheet.present();
+    await this.actionSheet.present();
   }
 
 }

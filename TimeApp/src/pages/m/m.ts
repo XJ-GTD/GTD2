@@ -33,19 +33,19 @@ import {UserConfig} from "../../service/config/user.config";
                 <h1>冥王星</h1>
               </ion-item>
               <ion-item (click)="goGlPage()">
-                <h3>朋友群</h3>
+                <h3>群组</h3>
               </ion-item>
               <ion-item (click)="goPlPage()">
-                <h3>活动群</h3>
+                <h3>活动计划</h3>
               </ion-item>
               <ion-item (click)="goBlPage()">
-                <h3>禁止分享人</h3>
+                <h3>黑名单</h3>
               </ion-item>
               <ion-item (click)="goSsPage()">
-                <h3>系统设置</h3>
+                <h3>设置</h3>
               </ion-item>
               <ion-item (click)="goBrPage()">
-                <h3>备份恢复</h3>
+                <h3>备份与恢复</h3>
               </ion-item>
             </ion-list>
           </ion-row>
@@ -65,11 +65,14 @@ export class MPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MPage');
+  }
+
+  ionViewDidEnter(){
     this.phone = UserConfig.account.phone;
     this.name = UserConfig.user.name;
 
-    if (UserConfig.user.aevter != undefined && UserConfig.user.aevter != null && UserConfig.user.aevter != '') {
-      this.avatar = UserConfig.user.aevter;
+    if (UserConfig.user.avatar != undefined && UserConfig.user.avatar != null && UserConfig.user.avatar != '') {
+      this.avatar = UserConfig.user.avatar;
     }
   }
 
