@@ -91,7 +91,7 @@ export class BrService {
       this.bacRestful.getlastest().then(data => {
         bsModel.data = new PageBrDataPro();
         bsModel.data.bts = data.data.bts;
-        bsModel.data.dt = this.util.tranDate(bsModel.data.bts, "YYYY/MM/DD hh:mm")
+        bsModel.data.dt = this.util.tranDate(bsModel.data.bts, "YYYY/MM/DD HH:mm")
         resolve(bsModel)
       })
     })
@@ -104,9 +104,9 @@ export class BrService {
 
     let recoverPro: RecoverPro = new RecoverPro();
     //操作账户ID
-    recoverPro.oai = "a13661617252"
+    recoverPro.oai = UserConfig.account.id;
     //操作手机号码
-    recoverPro.ompn = "13661617252";
+    recoverPro.ompn = UserConfig.account.phone;
     recoverPro.d.bts = bts;
     // 设定恢复指定表
     // recoverPro.d.rdn=[];

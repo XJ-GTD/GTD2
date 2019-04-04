@@ -37,7 +37,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
 
         <div class="title">
           <ng-template [ngIf]="_showMonthPicker" [ngIfElse]="title">
-            <div float-left>
+            <div float-left (click)="switchView()" >
               <p><b [class.thisM]="_thisMonth">{{_showMonth}}</b></p>
               <p float-left no-margin>
                 <span [class.thisM]="_thisMonth">{{monthOpt.original.year}}</span>
@@ -45,7 +45,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
 
               <ion-icon class="arrow-dropdown"
                         [name]="_view === 'days' ? 'md-arrow-dropright' : 'md-arrow-dropdown'"
-                        (click)="switchView()" [class.thisM]="_thisMonth"></ion-icon>
+                        [class.thisM]="_thisMonth"></ion-icon>
             </div>
             <div float-right *ngIf="!_thisMonth" (click)="gotoToday()">
               <img src="./assets/imgs/fhby.png"/>

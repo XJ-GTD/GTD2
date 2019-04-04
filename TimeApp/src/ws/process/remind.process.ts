@@ -20,14 +20,13 @@ import {DataConfig} from "../../service/config/data.config";
 @Injectable()
 export class RemindProcess implements MQProcess {
   constructor(private utitl: UtilService,
-              private sqliteExec: SqliteExec,
-              private speechProcess: SpeechProcess) {
+              private sqliteExec: SqliteExec) {
   }
 
-  go(content: WsContent, processRs: ProcesRs): Promise<ProcesRs> {
-    return new Promise<ProcesRs>(async resolve => {
+  async  go(content: WsContent, processRs: ProcesRs){
       //处理所需要参数
       let rdData: RemindPara = content.parameters;
+      processRs.option4Speech = content.option;
 
       //处理区分
       //闹铃设置无日程
@@ -41,16 +40,14 @@ export class RemindProcess implements MQProcess {
         }
       }
 
-      //内部调用process
-      let inner: WsContent = new WsContent();
-      inner.option = S.P;
-      inner.parameters = {
-        //替换提醒语音Type
-        t: DataConfig.GG
-      }
-      return await this.speechProcess.go(inner, processRs);
-
-    })
+      // //内部调用process
+      // let inner: WsContent = new WsContent();
+      // inner.option = S.P;
+      // inner.parameters = {
+      //   //替换提醒语音Type
+      //   t: DataConfig.GG
+      // }
+      return processRs;
   }
 
   //保存提醒表无日程管理
@@ -81,7 +78,7 @@ export class RemindProcess implements MQProcess {
     if (rdData.s != null) {
       let tmp = moment(ctbl.sd + "T" + ctbl.st).add(parseInt(rdData.s), 'h');
       etbl.wd = tmp.format("YYYY/MM/DD");
-      etbl.wt = tmp.format("HH:mm:ss")
+      etbl.wt = tmp.format("HH:mm")
     }
 
     await this.sqliteExec.save(etbl);

@@ -613,7 +613,7 @@ export class UtilService {
    * @returns {string}
    */
   dateFormatI(inDate: string) {
-    let outDate = moment(new Date(inDate).getTime() - 8 * 60 * 60 * 1000).format("YYYY/MM/DD hh:mm:ss");
+    let outDate = moment(new Date(inDate).getTime() - 8 * 60 * 60 * 1000).format("YYYY/MM/DD HH:mm:ss");
     return outDate;
   }
 
@@ -623,7 +623,7 @@ export class UtilService {
    * @returns {string}
    */
   dateFormatA(inDate: string) {
-    let outDate = moment(new Date(inDate).getTime() - 8 * 60 * 60 * 1000).format("YYYY-MM-DD hh:mm:ss");
+    let outDate = moment(new Date(inDate).getTime() - 8 * 60 * 60 * 1000).format("YYYY/MM/DD HH:mm:ss");
     return outDate;
   }
 

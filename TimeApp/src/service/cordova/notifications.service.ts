@@ -36,9 +36,8 @@ export class NotificationsService {
         let etbl: Array<ETbl> = next.data.val;
         let reDate: moment.Moment = moment().add(5, "m");
         this.remind(etbl);
-        this.remindService.delRemin(next.data.val);
-        this.localNotifications.clear(next.id);
-        this.localNotifications.cancel(next.id);
+        //this.localNotifications.clear(next.id);
+        //this.localNotifications.cancel(next.id);
       });
       //提醒回馈处理 10分钟
       this.localNotifications.on('ten').subscribe((next: ILocalNotification) => {
@@ -46,36 +45,27 @@ export class NotificationsService {
         let reDate: moment.Moment = moment().add(10, "m");
         this.remind(etbl);
         this.remindService.delRemin(next.data.val);
-        this.localNotifications.clear(next.id);
-        this.localNotifications.cancel(next.id);
+        //this.localNotifications.clear(next.id);
+        //this.localNotifications.cancel(next.id);
       });
 
-      //提醒回馈处理 10分钟
+      //提醒回馈处理 关闭
       this.localNotifications.on('close').subscribe((next: ILocalNotification) => {
         this.remindService.delRemin(next.data.val.wi);
-        this.localNotifications.clear(next.id);
-        this.localNotifications.cancel(next.id);
+        this.remindService.delRemin(next.data.val);
       });
       this.localNotifications.on('click').subscribe((next: ILocalNotification) => {
         //跳转到界面处理
-        this.localNotifications.clear(next.id);
-        this.localNotifications.cancel(next.id);
       });
       this.localNotifications.on('clear').subscribe((next: ILocalNotification) => {
-        this.localNotifications.clear(next.id);
-        this.localNotifications.cancel(next.id);
       });
       this.localNotifications.on('clearAll').subscribe((next: ILocalNotification) => {
-        this.localNotifications.clearAll();
-        this.localNotifications.cancelAll();
       });
 
       this.localNotifications.on('trigger').subscribe((next: ILocalNotification) => {
         if (next.data.type == "schedule") {
           this.schedule();
           console.log("localNotifications====================trigger》===next.data.type" + next.data.type + "===>id:" + next.id);
-          this.localNotifications.clear(next.id);
-          this.localNotifications.cancel(next.id);
           this.remindService.getRemindLs().then(data => {
             console.log("localNotifications====================getRemindLs》" + data.length);
             if (data.length == 0) return;
@@ -87,8 +77,6 @@ export class NotificationsService {
         //自定定时启动防止后台js不执行
         if (next.data.type == "keeplive") {
           console.log("localNotifications====================trigger》===next.data.type" + next.data.type + "===>id:" + next.id);
-          this.localNotifications.clear(next.id);
-          this.localNotifications.cancel(next.id);
           this.keeplive();
         }
 
@@ -145,12 +133,12 @@ export class NotificationsService {
     let notif: MwxRemind = new MwxRemind();
     notif.id = this.index++;
     notif.data = {type: "remind", val: reData};
-    let text:Array<string> = new Array<string>();
-    for(let e of reData){
-      text.push(e.st);
-    }
-    notif.sound ="assets/www/assets/feedback/remind.mp3";
-    notif.text = text;
+    // let text:[3] =
+    // for(let e of reData){
+    //   text[0] = e.st;
+    // }
+    notif.sound ="file://assets/feedback/sms.mp3";
+    notif.text = "test";
     notif.actions = [
       {id: 'close', title: '关闭'},
       {id: 'five', title: '5分钟后'},
@@ -212,7 +200,7 @@ class MwxRemind implements ILocalNotification {
   foreground: boolean = true;
   group: string = "冥王星提醒"
   groupSummary: boolean = true;
-  icon: string = "assets/icon/drawable-icon.png";
+  icon: string;
   id: number;
   launch: boolean = true;
   led: { color: string; on: number; off: number } | any[] | boolean | string;
@@ -238,7 +226,7 @@ class MwxRemind implements ILocalNotification {
 class MwxSchedule implements ILocalNotification {
   actions: string | ILocalNotificationAction[];
   attachments: string[];
-  autoClear: boolean = false;
+  autoClear: boolean = true;
   badge: number;
   channel: string;
   clock: boolean | string;

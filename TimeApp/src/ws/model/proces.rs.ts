@@ -14,5 +14,7 @@ export class ProcesRs{
   //日程
   scd:Array<CTbl>=[];
 
+  option4Speech = "";
+
   sucess:boolean;
 }

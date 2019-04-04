@@ -13,14 +13,12 @@ export class DefaultProcess implements MQProcess{
   constructor() {
   }
 
-  go(content: WsContent,processRs:ProcesRs):Promise<ProcesRs> {
-    return new Promise<ProcesRs>(resolve => {
+  async go(content: WsContent,processRs:ProcesRs){
       console.log("测试消息content******************************"+ JSON.stringify(content));
       console.log("测试消息processRs******************************"+ JSON.stringify(content));
       console.log("测试消息processRs******************************"+ JSON.stringify(content));
       processRs.sucess = true;
-      resolve(processRs);
-    })
+      return processRs;
   }
 
 }

@@ -20,10 +20,10 @@ export class SettingProcess implements MQProcess {
   }
 
 
-  go(content: WsContent, processRs: ProcesRs): Promise<ProcesRs> {
-    return new Promise<ProcesRs>(resolve => {
+  async go(content: WsContent, processRs: ProcesRs) {
       //处理区分
       //系统的用户偏好设置
+      processRs.option4Speech = content.option;
       if (content.option == SY.S) {
         //处理所需要参数
         let setPara: SettingPara = content.parameters;
@@ -55,7 +55,6 @@ export class SettingProcess implements MQProcess {
       //处理结果
       processRs.sucess = true;
       return processRs;
-    })
   }
 
 }
