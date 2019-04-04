@@ -149,8 +149,8 @@ export class SqliteExec {
   async batExecSql(sqlist: Array<string>) {
 
     if (this.util.isMobile()) {
+      console.log("========= 批量出入SQL："+sqlist)
       return await this.sqlliteConfig.database.sqlBatch(sqlist)
-
     } else {
 
       if (this.util.hasCordova()) {
