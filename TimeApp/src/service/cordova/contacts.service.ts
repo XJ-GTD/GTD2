@@ -22,7 +22,7 @@ export class ContactsService {
 
 
   /**
-   * 所有联系人
+   * 所有联系人 未使用
    * @returns {Promise<any>}
    */
   getContacts(): Promise<Array<Contact>> {
@@ -33,12 +33,12 @@ export class ContactsService {
         multiple: true,
         desiredFields: ["displayName", "phoneNumbers", 'name']
       }).then(data => {
-        console.log("contacts data :: " + JSON.stringify(data));
         for (let contact of data) {
           for (let i = 0; contact.phoneNumbers != null && i < contact.phoneNumbers.length; i++) {
             //去除手机号中的空格
-            contact.phoneNumbers[i].value = contact.phoneNumbers[i].value.replace(/\s/g, '');
-            if (this.utilService.checkPhone(contact.phoneNumbers[i].value)) {
+            contact.phoneNumbers[i].value = contact.phoneNumbers[i].value.replace(/\s/g, '')
+              .replace('-', '').replace('+86', '').replace('0086', '');
+            if (!this.utilService.checkPhone(contact.phoneNumbers[i].value)) {
               break;
             }
           }
@@ -67,12 +67,14 @@ export class ContactsService {
         multiple: true,
         desiredFields: ["displayName", "phoneNumbers", 'name']
       }).then(data => {
-        console.log("contacts data :: " + JSON.stringify(data));
-        for (let contact of data) {
+        let contact:any;
+        for (contact of data) {
+          if (contact._objectInstance) contact = contact._objectInstance;
           for (let i = 0; contact.phoneNumbers != null && i < contact.phoneNumbers.length; i++) {
             //去除手机号中的空格
-            contact.phoneNumbers[i].value = contact.phoneNumbers[i].value.replace(/\s/g, '');
-            if (this.utilService.checkPhone(contact.phoneNumbers[i].value)) {
+            contact.phoneNumbers[i].value = contact.phoneNumbers[i].value.replace(/\s/g, '')
+              .replace('-', '').replace('+86', '').replace('0086', '');
+            if (!this.utilService.checkPhone(contact.phoneNumbers[i].value)) {
               break;
             } else {
 
