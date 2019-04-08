@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {ActionSheetController, AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {PagePDPro, PdService} from "./pd.service";
 import {AgdPro} from "../../service/restful/agdsev";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 计划展示 page.
@@ -68,6 +69,19 @@ import {AgdPro} from "../../service/restful/agdsev";
         </ion-row>
       </ion-grid>
     </ion-content>
+
+    <div class="div-content" *ngIf="IsShowDiv">
+      <div class="div-text">
+        <span>{{text}}</span>
+      </div>
+      <div class="div-btn">
+        <div (click)="closeDialog()">取消</div>
+        <div (click)="TwoBtnSure()">确定</div>
+      </div>
+    </div>
+      
+    <!--遮罩层-->
+    <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>
   `,
 })
 export class PdPage {
@@ -78,11 +92,15 @@ export class PdPage {
     "pn": {},
     "pa":new Array<AgdPro>(),
   };
+  IsShowDiv: boolean = false;
+  IsShowCover: boolean = false;
+  text:any;
 
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
               private alertCtrl: AlertController,
               private actionSheetCtrl: ActionSheetController,
+              private util: UtilService,
               private pdService:PdService) {
     this.jh = this.navParams.get("jh");
     this.plan.pn = this.jh;
@@ -95,11 +113,20 @@ export class PdPage {
   ionViewDidEnter(){
     this.pdService.getPlan(this.jh.ji).then(data=>{
       this.plan.pa = data.data;
-    })
+    }).catch(res=>{
+      console.log("获取计划列表失败" + JSON.stringify(res));
+    });
   }
 
   goBack() {
     this.navCtrl.pop();
+  }
+
+  closeDialog() {
+    if (this.IsShowDiv) {
+      this.IsShowDiv = false;
+      this.IsShowCover = false;
+    }
   }
 
   more(jh:PagePDPro){
@@ -111,8 +138,14 @@ export class PdPage {
           role: 'share',
           handler: () => {
             this.pdService.sharePlan(this.plan).then(data=>{
-              alert("分享地址是："+JSON.stringify(data.data.psurl))
-            })
+              //alert("分享地址是："+JSON.stringify(data.data.psurl))
+
+              this.text = data.data.psurl;
+              this.IsShowDiv = true;
+              this.IsShowCover = true;
+            }).catch(res=>{
+              this.util.toast('分享失败',1500);
+            });
           }
         },
         {
@@ -138,7 +171,9 @@ export class PdPage {
                   handler: () => {
                     this.pdService.delete(jh.ji).then(data=>{
                       this.navCtrl.pop();
-                    })
+                    }).catch(res=>{
+                      this.util.toast('删除计划失败',1500);
+                    });
                   }
                 }]
               });

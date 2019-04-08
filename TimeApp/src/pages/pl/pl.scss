@@ -25,18 +25,8 @@ page-pl {
     background-color: #000;
   }
 
-  ion-content.content {
-    background-color: #000;
-    color: #fff;
-  }
-
-  ion-content .plan-list-item {
-    background-color: #000;
-    color: #fff;
-  }
-
   ion-header{
-     padding: 4px 20px;
+    padding: 4px 20px;
   }
 
   .img-header-left{
@@ -44,6 +34,16 @@ page-pl {
     height: 4vmin;
   }
 
+  .toolbar-title{
+    color: white;
+    letter-spacing: 0.5vmin;
+    font-size: 1.5rem;
+  }
+
+  .bar-button-ios{
+    font-size: 1.3rem;
+  }
+
   ion-content.content {
     background-color: #000;
     color: #fff;
@@ -52,7 +52,9 @@ page-pl {
   ion-content .plan-list-item {
     background-color: #000;
     color: #fff;
+    padding-left: 8px;
     font-size: 1.4rem;
+    min-height: 9vmin;
   }
 
   ion-list-header.plan-list-item {
@@ -71,11 +73,6 @@ page-pl {
     border-radius: 50%;
   }
 
-  .scroll-content{
-    overflow-x: auto;
-    overflow-y: auto;
-  }
-
   .img-content-plan{
     width: 2vmin;
     height: 2vmin;
@@ -84,32 +81,16 @@ page-pl {
   .img-content-refresh{
     width: 3.5vmin;
     height: 3vmin;
+    margin-left: 0;
   }
 
   .content-download{
     color: white;
+    margin-left: 0;
   }
 
-  .toolbar-title{
-    color: white;
-    letter-spacing: 0.5vmin;
-    font-size: 1.5rem;
-  }
-
-  .bar-button-ios{
-    font-size: 1.3rem;
-  }
-
-  .item-block{
-    min-height: 9vmin;
-  }
-
-  .div-show-true{
-    display: block;
-  }
-
-  .div-show-false{
-    display: none;
+  .item-ios .item-button {
+    margin-right: 0;
   }
 
   .plan-none{
@@ -119,4 +100,8 @@ page-pl {
     letter-spacing: 1px;
   }
 
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
+  }
 }

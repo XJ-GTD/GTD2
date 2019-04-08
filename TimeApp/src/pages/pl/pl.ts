@@ -41,21 +41,21 @@ import {UtilService} from "../../service/util-service/util.service";
               全部计划
               <img class="img-content-plan" src="./assets/imgs/{{picture}}">
             </ion-list-header>
-            <div *ngFor="let option of zdyJhs" [ngClass]="{'div-show-true': show == true , 'div-show-false': show == false}">
+            <div *ngFor="let option of zdyJhs" [ngStyle]="{'display': show }">
               <ion-item class="plan-list-item" (click)="toPd(option)">
                 <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
                 {{option.jn}}({{option.js}})
               </ion-item>
             </div>
-            <div [ngStyle]="{'display': zdyDisplay }" class="plan-none"> 无计划</div>
+            <div [ngStyle]="{'display': zdyDisplay }" class="plan-none"> 暂无计划</div>
             <div style="height: 60px"></div>
             <ion-list-header class="plan-list-item">
-              <div style="float: left;color: white">系统计划</div><small>（长按系统计划可清除）</small>
+              <div style="float: left;">系统计划</div><small>（长按系统计划可清除）</small>
             </ion-list-header>
             <div *ngFor="let option of xtJhs">
               <ion-item class="plan-list-item"(press)="delPlan(option)" >
                 <div (click)="toPd(option)">{{option.jn}}({{option.js}})</div>
-                <button ion-button clear item-end (click)="download(option)" >
+                <button ion-button clear item-end (click)="download(option)">
                   <div *ngIf="option.jtd == '0'" class="content-download">
                     下载
                   </div>
@@ -75,9 +75,9 @@ export class PlPage {
 
   xtJhs:any;
   zdyJhs:any;
-  show:any = true;
   picture:any = "xl.png" ;
-  zdyDisplay = "none";
+  zdyDisplay:any = "none";
+  show:any = "block";
 
   constructor(private navCtrl: NavController,
               private alertCtrl: AlertController,
@@ -118,15 +118,24 @@ export class PlPage {
   }
 
   toPd(jh:PagePDPro){
-    this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{"jh":jh});
+    let go:any = true;
+    if(jh.jt = "1"){
+      if(jh.jtd = "0"){
+        go = false;
+        this.util.toast('系统计划：' + jh.jn + "未下载",1500);
+      }
+    }
+    if(go){
+      this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{"jh":jh});
+    }
   }
 
   change(){
-    if(this.show){
-      this.show = false;
+    if(this.show == "block"){
+      this.show = "none";
       this.picture = "xlr.png";
     }else{
-      this.show = true;
+      this.show = "block";
       this.picture = "xl.png";
     }
   }
@@ -143,9 +152,13 @@ export class PlPage {
           }, {
             text: '确定',
             handler: () => {
-              this.plService.delete(jh);
-              jh.jtd = '0';
-              jh.js = 0;
+              this.plService.delete(jh).then(data=>{
+                jh.jtd = '0';
+                jh.js = 0;
+              }).catch(res=>{
+                this.util.toast('删除计划“' + jh.jn + "失败",1500);
+              });
+
             }
           }]
       });
@@ -154,16 +167,23 @@ export class PlPage {
   }
 
   download(jh:PagePDPro){
-    let message = "刷新成功";
-    if(jh.jtd == '0'){ //下载
-      jh.jtd = '1';
-      message = "下载成功";
-      this.plService.upPlan(jh);//系统计划 jtd 变更
+    let message:any;
+    if(jh.jtd == '0'){
+      message = "下载";
+    }else {
+      message = "刷新";
     }
     this.plService.downloadPlan(jh.ji).then(data=>{
-      jh.js = data.data == "" ? "0":data.data;
+      jh.js = data.data == null ? "0":data.data;
 
-      this.util.toast(message,1500);
-    })
+      this.util.toast(message + "成功",1500);
+    }).then(data=>{
+      if(jh.jtd == '0'){ //下载
+        jh.jtd = '1';
+        this.plService.upPlan(jh);//系统计划 jtd 变更
+      }
+    }).catch(res=>{
+      this.util.toast(message + "失败",1500);
+    });
   }
 }

@@ -187,18 +187,16 @@ export class PlService {
     let pld = new PagePlData();
     //获取本地计划
     let jhtbl:JhTbl = new JhTbl();
-    let jhCtbl: Array<PagePDPro> = await this.sqlExce.getList<PagePDPro>(jhtbl);
+    let jhSql = "select * from gtd_j_h order by wtt desc";
+    let jhCtbl: Array<PagePDPro> = await this.sqlExce.getExtList<PagePDPro>(jhSql);
     if(jhCtbl.length > 0){
-      //console.log('---------- PlService getPlan 获取计划日程数量开始 ----------------');
-
+      console.log('---------- PlService getPlan 获取计划日程数量开始 ----------------');
       let xtJh: Array<PagePDPro> = new  Array<PagePDPro>();
       let zdyJh: Array<PagePDPro> = new  Array<PagePDPro>();
 
       //获取计划日程数量
       for(let jhc of jhCtbl){
-        let sql = 'select gc.si from gtd_c gc ' +
-         'left join gtd_sp sp on sp.si = gc.si ' +
-         'where gc.ji = "'+ jhc.ji + '"';
+        let sql = 'select c.si from gtd_c c left join gtd_sp sp on sp.si = c.si where c.ji = "'+ jhc.ji + '"';
         let cs = await this.sqlExce.getExtList<CTbl>(sql);
         jhc.js = cs.length;
 
