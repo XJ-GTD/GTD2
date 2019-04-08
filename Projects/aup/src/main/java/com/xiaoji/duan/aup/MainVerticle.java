@@ -169,7 +169,7 @@ public class MainVerticle extends AbstractVerticle {
         		
         		if (userinfo == null || userinfo.isEmpty()) {
         			ret.put("errcode", "10041");
-        			ret.put("errmsg", "ÓÃ»§²»´æÔÚ!");
+        			ret.put("errmsg", "ç”¨æˆ·ä¸å­˜åœ¨!");
 
         			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         		} else {
@@ -215,7 +215,7 @@ public class MainVerticle extends AbstractVerticle {
         		}
         	} else {
 				ret.put("errcode", "-3");
-				ret.put("errmsg", "·şÎñÆ÷Òì³£, ÓÃ»§»ñÈ¡Ê§°Ü!");
+				ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, ç”¨æˆ·è·å–å¤±è´¥!");
 
 				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         	}
@@ -239,7 +239,7 @@ public class MainVerticle extends AbstractVerticle {
         		
         		if (userinfo == null || userinfo.isEmpty()) {
         			ret.put("errcode", "10041");
-        			ret.put("errmsg", "ÓÃ»§²»´æÔÚ!");
+        			ret.put("errmsg", "ç”¨æˆ·ä¸å­˜åœ¨!");
 
         			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         		} else {
@@ -258,7 +258,7 @@ public class MainVerticle extends AbstractVerticle {
         		}
         	} else {
 				ret.put("errcode", "-3");
-				ret.put("errmsg", "·şÎñÆ÷Òì³£, ÓÃ»§»ñÈ¡Ê§°Ü!");
+				ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, ç”¨æˆ·è·å–å¤±è´¥!");
 
 				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         	}
@@ -282,7 +282,7 @@ public class MainVerticle extends AbstractVerticle {
         		
         		if (userinfo == null || userinfo.isEmpty()) {
         			ret.put("errcode", "10041");
-        			ret.put("errmsg", "ÓÃ»§²»´æÔÚ!");
+        			ret.put("errmsg", "ç”¨æˆ·ä¸å­˜åœ¨!");
 
         			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         		} else {
@@ -314,7 +314,7 @@ public class MainVerticle extends AbstractVerticle {
         		}
         	} else {
 				ret.put("errcode", "-3");
-				ret.put("errmsg", "·şÎñÆ÷Òì³£, ÓÃ»§»ñÈ¡Ê§°Ü!");
+				ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, ç”¨æˆ·è·å–å¤±è´¥!");
 
 				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         	}
@@ -335,7 +335,7 @@ public class MainVerticle extends AbstractVerticle {
         		
         		if (userinfo == null || userinfo.isEmpty()) {
         			ret.put("errcode", "10041");
-        			ret.put("errmsg", "ÓÃ»§²»´æÔÚ!");
+        			ret.put("errmsg", "ç”¨æˆ·ä¸å­˜åœ¨!");
 
         			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         		} else {
@@ -367,13 +367,13 @@ public class MainVerticle extends AbstractVerticle {
         		}
         	} else {
 				ret.put("errcode", "-3");
-				ret.put("errmsg", "·şÎñÆ÷Òì³£, ÓÃ»§»ñÈ¡Ê§°Ü!");
+				ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, ç”¨æˆ·è·å–å¤±è´¥!");
 
 				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         	}
         });
 	}
-	
+
 	private void updateUserInfo(RoutingContext ctx) {
 		System.out.println("headers: " + ctx.request().headers());
 		System.out.println("body: " + ctx.getBodyAsString());
@@ -388,19 +388,20 @@ public class MainVerticle extends AbstractVerticle {
 		
 		if (req == null || req.isEmpty()) {
 			ret.put("errcode", "-1");
-			ret.put("errmsg", "ÇëÇó²ÎÊı²»´æÔÚ, ·Ç·¨ÇëÇó!");
+			ret.put("errmsg", "è¯·æ±‚å‚æ•°ä¸å­˜åœ¨, éæ³•è¯·æ±‚!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
 		}
 
+		System.out.println("request unionid " + unionid);
 		mongodb.findOne("aup_user_info", new JsonObject().put("unionid", unionid), new JsonObject(), findOne -> {
         	if (findOne.succeeded()) {
         		JsonObject userinfo = findOne.result();
         		
         		if (userinfo == null || userinfo.isEmpty()) {
         			ret.put("errcode", "10041");
-        			ret.put("errmsg", "ÓÃ»§²»´æÔÚ!");
+        			ret.put("errmsg", "ç”¨æˆ·ä¸å­˜åœ¨!");
 
         			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         		} else {
@@ -412,8 +413,13 @@ public class MainVerticle extends AbstractVerticle {
         			data.remove("openid");
         			data.remove("unionid");
         			
-        			if (data.containsKey("password")) {
-        				data.put("password", DigestUtils.md5Hex(req.getString("password")));
+        			if (data.containsKey("password") && !"".equals(data.getString("password"))) {
+        				String password = req.getString("password");
+        				String md5password = DigestUtils.md5Hex(password);
+        				
+        				System.out.println("request id " + unionid + " with " + md5password + " to do update.");
+
+        				data.put("password", md5password);
         			}
         			
         			JsonObject updateuserinfo = userinfo.copy().mergeIn(data);
@@ -424,7 +430,7 @@ public class MainVerticle extends AbstractVerticle {
         					ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         				} else {
         					ret.put("errcode", "-3");
-        					ret.put("errmsg", "·şÎñÆ÷Òì³£, ÓÃ»§ĞÅÏ¢¸üĞÂÊ§°Ü!");
+        					ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, ç”¨æˆ·ä¿¡æ¯æ›´æ–°å¤±è´¥!");
 
         					ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         				}
@@ -432,7 +438,7 @@ public class MainVerticle extends AbstractVerticle {
         		}
         	} else {
 				ret.put("errcode", "-3");
-				ret.put("errmsg", "·şÎñÆ÷Òì³£, ÓÃ»§»ñÈ¡Ê§°Ü!");
+				ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, ç”¨æˆ·è·å–å¤±è´¥!");
 
 				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
         	}
@@ -451,7 +457,7 @@ public class MainVerticle extends AbstractVerticle {
 		
 		if (req == null || req.isEmpty()) {
 			ret.put("errcode", "-1");
-			ret.put("errmsg", "ÇëÇó²ÎÊı²»´æÔÚ, ·Ç·¨ÇëÇó!");
+			ret.put("errmsg", "è¯·æ±‚å‚æ•°ä¸å­˜åœ¨, éæ³•è¯·æ±‚!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
@@ -461,7 +467,7 @@ public class MainVerticle extends AbstractVerticle {
 		
 		if (phoneno == null || StringUtils.isEmpty(phoneno)) {
 			ret.put("errcode", "-1");
-			ret.put("errmsg", "ÊÖ»úºÅÂë²ÎÊı²»´æÔÚ, ·Ç·¨ÇëÇó!");
+			ret.put("errmsg", "æ‰‹æœºå·ç å‚æ•°ä¸å­˜åœ¨, éæ³•è¯·æ±‚!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
@@ -469,7 +475,7 @@ public class MainVerticle extends AbstractVerticle {
 		
 		if (!StringUtils.isNumeric(phoneno) || phoneno.length() != 11) {
 			ret.put("errcode", "10010");
-			ret.put("errmsg", "ÊÖ»úºÅÂë²»ÕıÈ·, ÇëÖØĞÂÊäÈë!");
+			ret.put("errmsg", "æ‰‹æœºå·ç ä¸æ­£ç¡®, è¯·é‡æ–°è¾“å…¥!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
@@ -487,7 +493,7 @@ public class MainVerticle extends AbstractVerticle {
 		.addQueryParam("platformType", "*")
 		.addQueryParam("mobile", phoneno)
 		.addQueryParam("sendType", config().getString("sms.service.template.verifycode", "v94vW2"))
-		.addQueryParam("sendContent", new JsonObject().put("code", code).put("time", (config().getLong("sms.expiretime", 10 * 60L) / 60) + "·ÖÖÓ").encode())
+		.addQueryParam("sendContent", new JsonObject().put("code", code).put("time", (config().getLong("sms.expiretime", 10 * 60L) / 60) + "åˆ†é’Ÿ").encode())
 		.send(handler -> {
 				if (handler.succeeded()) {
 					System.out.println("sms response " + handler.result().statusCode() + " " + handler.result().bodyAsString());
@@ -519,7 +525,7 @@ public class MainVerticle extends AbstractVerticle {
 						ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 					} else {
 						ret.put("errcode", "-3");
-						ret.put("errmsg", "·şÎñÆ÷Òì³£, ÑéÖ¤Âë»ñÈ¡Ê§°Ü!");
+						ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, éªŒè¯ç è·å–å¤±è´¥!");
 
 						ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 					}
@@ -557,7 +563,7 @@ public class MainVerticle extends AbstractVerticle {
 		
 		if (req == null || req.isEmpty()) {
 			ret.put("errcode", "-1");
-			ret.put("errmsg", "ÇëÇó²ÎÊı²»´æÔÚ, ·Ç·¨ÇëÇó!");
+			ret.put("errmsg", "è¯·æ±‚å‚æ•°ä¸å­˜åœ¨, éæ³•è¯·æ±‚!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
@@ -567,7 +573,7 @@ public class MainVerticle extends AbstractVerticle {
 		
 		if (phoneno == null || StringUtils.isEmpty(phoneno)) {
 			ret.put("errcode", "-1");
-			ret.put("errmsg", "ÊÖ»úºÅÂë²ÎÊı²»´æÔÚ, ·Ç·¨ÇëÇó!");
+			ret.put("errmsg", "æ‰‹æœºå·ç å‚æ•°ä¸å­˜åœ¨, éæ³•è¯·æ±‚!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
@@ -575,7 +581,7 @@ public class MainVerticle extends AbstractVerticle {
 		
 		if (!StringUtils.isNumeric(phoneno) || phoneno.length() != 11) {
 			ret.put("errcode", "10010");
-			ret.put("errmsg", "ÊÖ»úºÅÂë²»ÕıÈ·, ÇëÖØĞÂÊäÈë!");
+			ret.put("errmsg", "æ‰‹æœºå·ç ä¸æ­£ç¡®, è¯·é‡æ–°è¾“å…¥!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
@@ -585,7 +591,7 @@ public class MainVerticle extends AbstractVerticle {
 		
 		if (verifykey == null || StringUtils.isEmpty(verifykey)) {
 			ret.put("errcode", "-1");
-			ret.put("errmsg", "ÑéÖ¤Âëkey²ÎÊı²»´æÔÚ, ·Ç·¨ÇëÇó!");
+			ret.put("errmsg", "éªŒè¯ç keyå‚æ•°ä¸å­˜åœ¨, éæ³•è¯·æ±‚!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
@@ -595,7 +601,7 @@ public class MainVerticle extends AbstractVerticle {
 		
 		if (verifycode == null || StringUtils.isEmpty(verifycode)) {
 			ret.put("errcode", "-1");
-			ret.put("errmsg", "ÑéÖ¤Âëkey²ÎÊı²»´æÔÚ, ·Ç·¨ÇëÇó!");
+			ret.put("errmsg", "éªŒè¯ç keyå‚æ•°ä¸å­˜åœ¨, éæ³•è¯·æ±‚!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
@@ -605,7 +611,7 @@ public class MainVerticle extends AbstractVerticle {
 		
 		if (password == null || StringUtils.isEmpty(password)) {
 			ret.put("errcode", "-1");
-			ret.put("errmsg", "ÃÜÂë²ÎÊı²»´æÔÚ, ·Ç·¨ÇëÇó!");
+			ret.put("errmsg", "å¯†ç å‚æ•°ä¸å­˜åœ¨, éæ³•è¯·æ±‚!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
@@ -615,7 +621,7 @@ public class MainVerticle extends AbstractVerticle {
 		
 		if (username == null || StringUtils.isEmpty(username)) {
 			ret.put("errcode", "-1");
-			ret.put("errmsg", "ĞÕÃû²ÎÊı²»´æÔÚ, ·Ç·¨ÇëÇó!");
+			ret.put("errmsg", "å§“åå‚æ•°ä¸å­˜åœ¨, éæ³•è¯·æ±‚!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
@@ -673,7 +679,7 @@ public class MainVerticle extends AbstractVerticle {
 																	ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 																} else {
 																	ret.put("errcode", "-3");
-																	ret.put("errmsg", "·şÎñÆ÷Òì³£, ÓÃ»§×¢²áÊ§°Ü!");
+																	ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, ç”¨æˆ·æ³¨å†Œå¤±è´¥!");
 			
 																	ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 																}
@@ -702,7 +708,7 @@ public class MainVerticle extends AbstractVerticle {
 																	ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 																} else {
 																	ret.put("errcode", "-3");
-																	ret.put("errmsg", "·şÎñÆ÷Òì³£, ÓÃ»§×¢²áÊ§°Ü!");
+																	ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, ç”¨æˆ·æ³¨å†Œå¤±è´¥!");
 			
 																	ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 																}
@@ -712,13 +718,13 @@ public class MainVerticle extends AbstractVerticle {
 
 												} else {
 													ret.put("errcode", "10020");
-													ret.put("errmsg", "¸ÃÊÖ»úºÅÒÑ×¢²á, ×¢²áÊ§°Ü!");
+													ret.put("errmsg", "è¯¥æ‰‹æœºå·å·²æ³¨å†Œ, æ³¨å†Œå¤±è´¥!");
 
 													ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 												}
 											} else {
 												ret.put("errcode", "-3");
-												ret.put("errmsg", "·şÎñÆ÷Òì³£, ÓÃ»§×¢²áÊ§°Ü!");
+												ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, ç”¨æˆ·æ³¨å†Œå¤±è´¥!");
 
 												ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 											}
@@ -727,19 +733,19 @@ public class MainVerticle extends AbstractVerticle {
 								
 							} else {
 								ret.put("errcode", "10021");
-								ret.put("errmsg", "ÑéÖ¤Âë´íÎó»òÒÑÊ§Ğ§, ×¢²áÊ§°Ü!");
+								ret.put("errmsg", "éªŒè¯ç é”™è¯¯æˆ–å·²å¤±æ•ˆ, æ³¨å†Œå¤±è´¥!");
 
 								ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 							}
 						} else {
 							ret.put("errcode", "10021");
-							ret.put("errmsg", "ÑéÖ¤Âë´íÎó»òÒÑÊ§Ğ§, ×¢²áÊ§°Ü!");
+							ret.put("errmsg", "éªŒè¯ç é”™è¯¯æˆ–å·²å¤±æ•ˆ, æ³¨å†Œå¤±è´¥!");
 
 							ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 						}
 					} else {
 						ret.put("errcode", "-3");
-						ret.put("errmsg", "·şÎñÆ÷Òì³£, ÓÃ»§×¢²áÊ§°Ü!");
+						ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, ç”¨æˆ·æ³¨å†Œå¤±è´¥!");
 
 						ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 					}
@@ -759,7 +765,7 @@ public class MainVerticle extends AbstractVerticle {
 		
 		if (req == null || req.isEmpty()) {
 			ret.put("errcode", "-1");
-			ret.put("errmsg", "ÇëÇó²ÎÊı²»´æÔÚ, ·Ç·¨ÇëÇó!");
+			ret.put("errmsg", "è¯·æ±‚å‚æ•°ä¸å­˜åœ¨, éæ³•è¯·æ±‚!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
@@ -769,7 +775,7 @@ public class MainVerticle extends AbstractVerticle {
 		
 		if (phoneno == null || StringUtils.isEmpty(phoneno)) {
 			ret.put("errcode", "-1");
-			ret.put("errmsg", "ÊÖ»úºÅÂë²ÎÊı²»´æÔÚ, ·Ç·¨ÇëÇó!");
+			ret.put("errmsg", "æ‰‹æœºå·ç å‚æ•°ä¸å­˜åœ¨, éæ³•è¯·æ±‚!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
@@ -777,7 +783,7 @@ public class MainVerticle extends AbstractVerticle {
 		
 		if (!StringUtils.isNumeric(phoneno) || phoneno.length() != 11) {
 			ret.put("errcode", "10010");
-			ret.put("errmsg", "ÊÖ»úºÅÂë²»ÕıÈ·, ÇëÖØĞÂÊäÈë!");
+			ret.put("errmsg", "æ‰‹æœºå·ç ä¸æ­£ç¡®, è¯·é‡æ–°è¾“å…¥!");
 
 			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 			return;
@@ -790,7 +796,7 @@ public class MainVerticle extends AbstractVerticle {
 		if (StringUtils.isEmpty(password)) {
 			if (verifykey == null || StringUtils.isEmpty(verifykey)) {
 				ret.put("errcode", "-1");
-				ret.put("errmsg", "ÑéÖ¤Âëkey²ÎÊı²»´æÔÚ, ·Ç·¨ÇëÇó!");
+				ret.put("errmsg", "éªŒè¯ç keyå‚æ•°ä¸å­˜åœ¨, éæ³•è¯·æ±‚!");
 	
 				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 				return;
@@ -799,7 +805,7 @@ public class MainVerticle extends AbstractVerticle {
 			
 			if (verifycode == null || StringUtils.isEmpty(verifycode)) {
 				ret.put("errcode", "-1");
-				ret.put("errmsg", "ÑéÖ¤Âëkey²ÎÊı²»´æÔÚ, ·Ç·¨ÇëÇó!");
+				ret.put("errmsg", "éªŒè¯ç keyå‚æ•°ä¸å­˜åœ¨, éæ³•è¯·æ±‚!");
 	
 				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 				return;
@@ -808,7 +814,7 @@ public class MainVerticle extends AbstractVerticle {
 			System.out.println(DigestUtils.md5Hex(password));
 			if (password == null || StringUtils.isEmpty(password)) {
 				ret.put("errcode", "-1");
-				ret.put("errmsg", "ÃÜÂë²ÎÊı²»´æÔÚ, ·Ç·¨ÇëÇó!");
+				ret.put("errmsg", "å¯†ç å‚æ•°ä¸å­˜åœ¨, éæ³•è¯·æ±‚!");
 	
 				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 				return;
@@ -817,7 +823,7 @@ public class MainVerticle extends AbstractVerticle {
 		
 		String state = req.getString("state", "");
 
-		// ¶ÌĞÅµÇÂ¼
+		// çŸ­ä¿¡ç™»å½•
 		if (StringUtils.isEmpty(password)) {
 			mongodb.findOne("aup_verifycode_cache", new JsonObject()
 				.put("verifykey", verifykey)
@@ -859,7 +865,7 @@ public class MainVerticle extends AbstractVerticle {
 															ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 														} else {
 															ret.put("errcode", "-3");
-															ret.put("errmsg", "·şÎñÆ÷Òì³£, ÓÃ»§µÇÂ¼Ê§°Ü!");
+															ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, ç”¨æˆ·ç™»å½•å¤±è´¥!");
 
 															ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 														}
@@ -867,13 +873,13 @@ public class MainVerticle extends AbstractVerticle {
 													
 												} else {
 													ret.put("errcode", "10031");
-													ret.put("errmsg", "ÃÜÂë´íÎó»òÓÃ»§²»´æÔÚ, µÇÂ¼Ê§°Ü!");
+													ret.put("errmsg", "å¯†ç é”™è¯¯æˆ–ç”¨æˆ·ä¸å­˜åœ¨, ç™»å½•å¤±è´¥!");
 
 													ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 												}
 											} else {
 												ret.put("errcode", "-3");
-												ret.put("errmsg", "·şÎñÆ÷Òì³£, ÓÃ»§µÇÂ¼Ê§°Ü!");
+												ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, ç”¨æˆ·ç™»å½•å¤±è´¥!");
 
 												ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 											}
@@ -881,19 +887,19 @@ public class MainVerticle extends AbstractVerticle {
 								
 							} else {
 								ret.put("errcode", "10021");
-								ret.put("errmsg", "ÑéÖ¤Âë´íÎó»òÒÑÊ§Ğ§, µÇÂ¼Ê§°Ü!");
+								ret.put("errmsg", "éªŒè¯ç é”™è¯¯æˆ–å·²å¤±æ•ˆ, ç™»å½•å¤±è´¥!");
 
 								ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 							}
 						} else {
 							ret.put("errcode", "10021");
-							ret.put("errmsg", "ÑéÖ¤Âë´íÎó»òÒÑÊ§Ğ§, µÇÂ¼Ê§°Ü!");
+							ret.put("errmsg", "éªŒè¯ç é”™è¯¯æˆ–å·²å¤±æ•ˆ, ç™»å½•å¤±è´¥!");
 
 							ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 						}
 					} else {
 						ret.put("errcode", "-3");
-						ret.put("errmsg", "·şÎñÆ÷Òì³£, ÓÃ»§µÇÂ¼Ê§°Ü!");
+						ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, ç”¨æˆ·ç™»å½•å¤±è´¥!");
 
 						ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 					}
@@ -901,7 +907,7 @@ public class MainVerticle extends AbstractVerticle {
 		} else {
 			String md5password = DigestUtils.md5Hex(password);
 			System.out.println("request id " + phoneno + " with " + md5password + " to do login.");
-			// ÃÜÂëµÇÂ¼
+			// å¯†ç ç™»å½•
 			mongodb.findOne("aup_user_info",
 				new JsonObject()
 				.put("openid", phoneno)
@@ -930,7 +936,7 @@ public class MainVerticle extends AbstractVerticle {
 									ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 								} else {
 									ret.put("errcode", "-3");
-									ret.put("errmsg", "·şÎñÆ÷Òì³£, ÓÃ»§µÇÂ¼Ê§°Ü!");
+									ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, ç”¨æˆ·ç™»å½•å¤±è´¥!");
 
 									ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 								}
@@ -938,13 +944,13 @@ public class MainVerticle extends AbstractVerticle {
 							
 						} else {
 							ret.put("errcode", "10031");
-							ret.put("errmsg", "ÃÜÂë´íÎó»òÓÃ»§²»´æÔÚ, µÇÂ¼Ê§°Ü!");
+							ret.put("errmsg", "å¯†ç é”™è¯¯æˆ–ç”¨æˆ·ä¸å­˜åœ¨, ç™»å½•å¤±è´¥!");
 
 							ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 						}
 					} else {
 						ret.put("errcode", "-3");
-						ret.put("errmsg", "·şÎñÆ÷Òì³£, ÓÃ»§µÇÂ¼Ê§°Ü!");
+						ret.put("errmsg", "æœåŠ¡å™¨å¼‚å¸¸, ç”¨æˆ·ç™»å½•å¤±è´¥!");
 
 						ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
 					}
@@ -1000,10 +1006,10 @@ public class MainVerticle extends AbstractVerticle {
 		        			ctx.put("oauth", oauth.mapTo(Map.class));
 		        			ctx.next();
 		        		} else {
-		        			ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/plain;charset=utf-8").end("·Ç·¨AppId»òÍøÕ¾ÇëÇó!");
+		        			ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/plain;charset=utf-8").end("éæ³•AppIdæˆ–ç½‘ç«™è¯·æ±‚!");
 		        		}
 		        	} else {
-		    			ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/plain;charset=utf-8").end("·Ç·¨AppId»òÍøÕ¾ÇëÇó!");
+		    			ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/plain;charset=utf-8").end("éæ³•AppIdæˆ–ç½‘ç«™è¯·æ±‚!");
 		        	}
 		        });
 	        }
@@ -1042,7 +1048,7 @@ public class MainVerticle extends AbstractVerticle {
         				JsonObject app = findOne.result();
         				
         				if (app == null || app.isEmpty()) {
-        					ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10001).put("errmsg", "Access TokenÈ¡µÃÊ§°Ü").encode());
+        					ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10001).put("errmsg", "Access Tokenå–å¾—å¤±è´¥").encode());
         				} else {
         					
         					mongodb.findOne("aup_user_access",
@@ -1057,7 +1063,7 @@ public class MainVerticle extends AbstractVerticle {
                 							.put("access_token", Base64.encodeBase64URLSafeString(UUID.randomUUID().toString().getBytes()))
                 							.put("refresh_token", Base64.encodeBase64URLSafeString(UUID.randomUUID().toString().getBytes()))
                 							.put("access_time", System.currentTimeMillis())
-                							.put("expires_in", 0);	// 0±íÊ¾ÓÀ²»¹ıÆÚ, Ò»¸öÔÂ¹ıÆÚÉèÖÃ 60 * 60 * 24 * 31
+                							.put("expires_in", 0);	// 0è¡¨ç¤ºæ°¸ä¸è¿‡æœŸ, ä¸€ä¸ªæœˆè¿‡æœŸè®¾ç½® 60 * 60 * 24 * 31
         									
         									mongodb.save("aup_user_access", access, updateAT -> {});
         									
@@ -1125,13 +1131,13 @@ public class MainVerticle extends AbstractVerticle {
 
         									ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(retaccess.encode());
         								} else {
-        									ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10001).put("errmsg", "Access TokenÈ¡µÃÊ§°Ü").encode());
+        									ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10001).put("errmsg", "Access Tokenå–å¾—å¤±è´¥").encode());
         								}
         							}
         					);
         				}
         			} else {
-        				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10001).put("errmsg", "Access TokenÈ¡µÃÊ§°Ü").encode());
+        				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10001).put("errmsg", "Access Tokenå–å¾—å¤±è´¥").encode());
         			}
         		});
 	}
@@ -1160,7 +1166,7 @@ public class MainVerticle extends AbstractVerticle {
 							
 							if (expiresIn != 0 && System.currentTimeMillis() <= accessTime + (expiresIn * 1000)) {
 						        System.out.println("Refresh token get failed for expired.");
-						        ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10004).put("errmsg", "µÇÂ¼ÒÑÊ§Ğ§,ÇëÖØĞÂµÇÂ¼.").encode());
+						        ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10004).put("errmsg", "ç™»å½•å·²å¤±æ•ˆ,è¯·é‡æ–°ç™»å½•.").encode());
 							} else {
 								refreshTokenUser.remove("_id");
 								refreshTokenUser.remove("phoneno");
@@ -1173,11 +1179,11 @@ public class MainVerticle extends AbstractVerticle {
 							
 						} else {
 					        System.out.println("Refresh token get failed for no matched user access.");
-					        ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10003).put("errmsg", "Refresh tokenÈ¡µÃÊ§°Ü").encode());
+					        ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10003).put("errmsg", "Refresh tokenå–å¾—å¤±è´¥").encode());
 						}
 					} else {
 				        System.out.println("Refresh token get failed for query error.");
-				        ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10003).put("errmsg", "Refresh tokenÈ¡µÃÊ§°Ü").encode());
+				        ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10003).put("errmsg", "Refresh tokenå–å¾—å¤±è´¥").encode());
 					}
 				});        
 	}
@@ -1217,18 +1223,18 @@ public class MainVerticle extends AbstractVerticle {
 												
 												ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(userinfo.encode());
 											} else {
-												ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfoÈ¡µÃÊ§°Ü").encode());
+												ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfoå–å¾—å¤±è´¥").encode());
 											}
 										} else {
-											ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfoÈ¡µÃÊ§°Ü").encode());
+											ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfoå–å¾—å¤±è´¥").encode());
 										}
 									}
 							);
 						} else {
-							ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfoÈ¡µÃÊ§°Ü").encode());
+							ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfoå–å¾—å¤±è´¥").encode());
 						}
 					} else {
-						ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfoÈ¡µÃÊ§°Ü").encode());
+						ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(new JsonObject().put("errcode", 10002).put("errmsg", "userinfoå–å¾—å¤±è´¥").encode());
 					}
 				}
 		);
