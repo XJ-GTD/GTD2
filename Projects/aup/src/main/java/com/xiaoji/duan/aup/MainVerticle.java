@@ -899,12 +899,13 @@ public class MainVerticle extends AbstractVerticle {
 					}
 				});
 		} else {
-
+			String md5password = DigestUtils.md5Hex(password);
+			System.out.println("request id " + phoneno + " with " + md5password + " to do login.");
 			// ÃÜÂëµÇÂ¼
 			mongodb.findOne("aup_user_info",
 				new JsonObject()
 				.put("openid", phoneno)
-				.put("password", DigestUtils.md5Hex(password)),
+				.put("password", md5password),
 				new JsonObject(),
 				findOneUser -> {
 					if (findOneUser.succeeded()) {
