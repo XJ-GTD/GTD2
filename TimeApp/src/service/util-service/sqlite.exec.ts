@@ -155,7 +155,7 @@ export class SqliteExec {
 
       if (this.util.hasCordova()) {
         let sql: string = "";
-        for (var j = 0, len = sqlist.length; j < len; j++) {
+        for (let j = 0, len = sqlist.length; j < len; j++) {
           sql = sql + sqlist[j];
         }
         return this.sqlitePorter.importSqlToDb(this.sqlliteConfig.database, sql).catch(error=>{
@@ -164,7 +164,7 @@ export class SqliteExec {
 
       } else {
         let count = 0;
-        for (var j = 0, len = sqlist.length; j < len; j++) {
+        for (let j = 0, len = sqlist.length; j < len; j++) {
           if (sqlist[j] != null && sqlist[j] != '') {
             count++;
             await this.execSql(sqlist[j]);

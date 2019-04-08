@@ -166,6 +166,7 @@ export class PlService {
       await this.sqlExce.delete(ctbl);
 
       //更新系统计划jdt数据
+      jh.jtd = "0";
       await this.upPlan(jh);
 
       // TODO restful删除分享计划
@@ -201,14 +202,14 @@ export class PlService {
         jhc.js = cs.length;
 
         jhc.pt = jhc.jn; // 计划分享使用
-        if(jhc.jtd == null || jhc.jtd == ""){
-          jhc.jtd = "0";
-        }
 
         if(jhc.jt == "2"){  // 本地计划
           zdyJh.push(jhc);
         }else{
           xtJh.push(jhc);
+          if(jhc.jtd == null || jhc.jtd == ""){
+            jhc.jtd = "0";
+          }
         }
       }
       pld.xtJh = xtJh;
