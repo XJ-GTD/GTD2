@@ -264,7 +264,11 @@ export class TdcPage {
         }
 
         this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
-        this.scd.st = moment().format("HH:mm");
+        if (this.scd.st) {
+          this.scd.st = moment(this.scd.sd + " " + this.scd.st).format("HH:mm");
+        } else {
+          this.scd.st = moment().format("HH:mm");
+        }
 
         this.clickrept(this.scd.rt);
         this.clickwake(this.scd.tx);
