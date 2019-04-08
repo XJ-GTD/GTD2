@@ -29,7 +29,7 @@ import {DataConfig} from "../../service/config/data.config";
   </ion-header> 
   <ion-content padding class="page-backgroud-color"> 
     <ion-item class="no-border">
-    <ion-input type="text" style="font-size: 23px;" [(ngModel)]="uo.user.name" (ionBlur)="save()"></ion-input>
+    <ion-input type="text" style="font-size: 23px;" [(ngModel)]="uo.user.name" (ionBlur)="save('name')"></ion-input>
     <ion-avatar item-end>
       <img [src]="avatar" style="width: 60px;height: 60px">
     </ion-avatar>
@@ -48,11 +48,11 @@ import {DataConfig} from "../../service/config/data.config";
       </button>
       <button ion-item>
         <ion-label>身份证</ion-label>
-        <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.No" (ionBlur)="save()"></ion-input>
+        <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.No" (ionBlur)="save('ic')"></ion-input>
       </button>
       <button ion-item>
         <ion-label>联系方式</ion-label>
-        <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.contact" (ionBlur)="save()"></ion-input>
+        <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.contact" (ionBlur)="save('contact')"></ion-input>
       </button>
       
     </ion-list>
@@ -106,7 +106,7 @@ export class PsPage {
     }
   }
 
-  save(){
+  save(type){
     let isUpd = false;
     if(this.olduo.user.sex != this.uo.user.sex){
       isUpd = true;
@@ -131,7 +131,7 @@ export class PsPage {
     }
 
     if(isUpd){
-      this.psService.saveUser(this.uo).then(data=>{
+      this.psService.saveUser(this.uo,type).then(data=>{
         if(data.code ==0){
           this.util.toast('保存成功！',2000);
 
@@ -150,7 +150,7 @@ export class PsPage {
     if (el && el.length==3){
       this.bothday = el[0].textContent + "-" +el[1].textContent +"-" +el[2].textContent;
       this.uo.user.bothday = this.bothday.replace(new RegExp('-','g'),'/');
-      this.save();
+      this.save("both");
     }
 
   }
@@ -163,7 +163,7 @@ export class PsPage {
           this.uo.user.sex = '1';
           console.log("男:" + this.uo.user.sex);
           this.sex = this.uo.user.sex == "1" ? "男" : "女";
-          this.save();
+          this.save("sex");
         }
       }, {
         text: '女',
@@ -171,7 +171,7 @@ export class PsPage {
           this.uo.user.sex = '2';
           console.log("女:" + this.uo.user.sex);
           this.sex = this.uo.user.sex == "1" ? "男" : "女";
-          this.save();
+          this.save("sex");
         }
       }]
     });

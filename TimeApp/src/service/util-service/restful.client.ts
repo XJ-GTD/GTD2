@@ -108,7 +108,7 @@ export class RestfulClient {
           //浏览器测试使用
           let warHeader:any={};
           warHeader.headers = header;
-          this.httpClient.put(url.url,warHeader).subscribe(data=>{
+          this.httpClient.put(url.url,body,warHeader).subscribe(data=>{
             resolve(data);
           },err => {
             this.util.toast("服务" + url.desc + "访问失败",2000);

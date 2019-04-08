@@ -170,10 +170,9 @@ export class PfService {
     return new Promise<BsModel<any>>((resolve, reject) => {
       //restFul更新用户密码（服务器更新token并返回，清空该用户服务其他token）
       let bs = new BsModel<any>();
-      let per = new PersonInData();
+      let per = new PagePfPwd();
       per.password = pw;
-      per.unionid = unionid;
-      this.personRestful.updatepass(per).then(data=>{
+      this.personRestful.updatepass(per,unionid).then(data=>{
         //刷新用户静态变量设置
         this.userConfig.RefreshUTbl();
         resolve(bs);
@@ -192,4 +191,8 @@ export class PagePfData {
   authCode: string = "";
   verifykey:string = "";
   password:string = "";
+}
+
+export class PagePfPwd{
+  password: string = "";   //密码
 }
