@@ -14,6 +14,7 @@ import {PipesModule} from "../../pipes/pipes.module";
   providers: [
     TdlService,
   ],
+  exports:[TdlPage]
 })
 export class TdlPageModule {
 }

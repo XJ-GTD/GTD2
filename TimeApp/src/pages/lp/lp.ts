@@ -15,26 +15,27 @@ import {UtilService} from "../../service/util-service/util.service";
   selector: 'page-lp',
   template:
   `
-  <ion-content padding>
+  <ion-content>
     <h1>账号登录</h1>
     <ion-grid class="grid-login-basic no-padding-lr">
       <ion-row justify-content-start align-items-center>
         <div class="w-auto">
           <ion-input class="login-tel" type="tel" placeholder="开始输入账号" [(ngModel)]="lpData.mobile" (input)="format()"></ion-input>
         </div>
-        <div>
-          <button ion-fab class="login-enter" (click)="signIn()" [ngClass]="{'show': enter == false , 'show-true': enter == true}">
-            <img class="img-content-enter" src="./assets/imgs/xyb.png">
-          </button>
-        </div>
       </ion-row>
       <ion-row justify-content-between align-items-center>
         <div class="w-auto">
-          <ion-input class="login-pwd" type="password" placeholder="密码" [(ngModel)]="lpData.password"></ion-input>
+          <ion-input class="login-pwd" type="password" placeholder="密码" [(ngModel)]="lpData.password" (input)="format()"></ion-input>
         </div>
+       <div>
+         <button ion-fab class="login-enter" [ngStyle]="{'opacity': opa }" (click)="signIn()">
+           <img class="img-content-enter" src="./assets/imgs/xyb.png">
+         </button>
+       </div>
       </ion-row>
     </ion-grid>
-    
+
+    <div class="login-div" (click)="toPf()">忘记密码?</div>
     <div class="login-div" (click)="toLs()">改为用短信登录</div>
     <div class="login-div" (click)="toR()">没有账号，立即注册</div>
 
@@ -44,7 +45,7 @@ import {UtilService} from "../../service/util-service/util.service";
 export class LpPage {
 
   lpData:PageLpData = new PageLpData();
-  enter:boolean = false;
+  opa:any = "0.4";
 
   constructor(public navCtrl: NavController,
               private util:UtilService,
@@ -61,6 +62,10 @@ export class LpPage {
 
   userAgreement() {
     this.navCtrl.push('PPage');
+  }
+
+  toPf(){
+    this.navCtrl.push('PfPage');
   }
 
   toR() {
@@ -106,9 +111,11 @@ export class LpPage {
 
   format(){
     if(this.lpData.mobile.length==11){
-      this.enter = this.checkPhone();
-    }else {
-      this.enter = false;
+      if(this.checkPhone() && this.lpData.password !=""){
+        this.opa = "1";
+      }else {
+        this.opa = "0.4";
+      }
     }
   }
 

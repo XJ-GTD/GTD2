@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {IonicPageModule} from 'ionic-angular';
 import {MPage} from './m';
-import {CalendarModule} from "../../components/ion2-calendar";
+import {TdlPageModule} from "../tdl/tdl.module";
 
 @NgModule({
   declarations: [
@@ -9,12 +9,11 @@ import {CalendarModule} from "../../components/ion2-calendar";
   ],
   imports: [
     IonicPageModule.forChild(MPage),
-    CalendarModule
+    TdlPageModule
   ],
   entryComponents: [
     MPage,
   ],
-  providers: [
-  ],
 })
-export class MPageModule {}
+export class MPageModule {
+}

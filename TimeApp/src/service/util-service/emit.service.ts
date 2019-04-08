@@ -1,4 +1,6 @@
 import {EventEmitter, Injectable} from "@angular/core";
+import {Moment} from "moment";
+import * as moment from "moment";
 
 /**
  * 数据传递广播处理类
@@ -14,6 +16,28 @@ export class EmitService {
   private speechEm: EventEmitter<SpeechEmData> = new EventEmitter<SpeechEmData>();
   //新建修改删除 （语音界面使用）
   private scdEm: EventEmitter<ScdEmData> = new EventEmitter<ScdEmData>();
+  //主页选择时间后，Ls更新
+  private selectDate: EventEmitter<moment.Moment> = new EventEmitter<moment.Moment>();
+
+  registerSelectDate(callback) {
+    if (this.selectDate.closed) {
+      this.selectDate = new EventEmitter<moment.Moment>();
+    }
+    this.selectDate.subscribe(($data: moment.Moment) => {
+      callback($data);
+    });
+  };
+
+  emitSelectDate($data: moment.Moment) {
+    if (!this.selectDate.isStopped) {
+      this.selectDate.emit($data);
+    }
+  }
+
+  destroySelectDate(emit: EventEmitter<moment.Moment>) {
+    this.selectDate.unsubscribe();
+  }
+
 
   registerScded(callback) {
     if (this.scdedEm.closed) {

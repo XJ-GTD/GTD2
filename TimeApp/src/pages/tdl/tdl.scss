@@ -1,13 +1,4 @@
 page-tdl {
-  @font-face {
-    font-family: 'PingFang-Regular';
-    src: url('../../assets/fonts/PingFang Regular.ttf');
-  }
-
-
-  ion-content {
-    font-family: "PingFang-Regular";
-  }
 
   ion-content.content-ios, ion-content.content-md {
     background-color: #96162D;
@@ -198,7 +189,7 @@ page-tdl {
   .backbtn-set{
     padding-top: 7px;
     padding-left: 24px;
-    float: right;
+    float: left;
     margin-right: 24px;
     margin-top: 8px;
     font-size: 18px;

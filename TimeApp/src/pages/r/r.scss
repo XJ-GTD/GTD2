@@ -38,11 +38,20 @@ page-r {
     width:85%;
   }
 
+  .register-tel{
+    margin-top: 40px;
+  }
+
+  .register-code{
+    margin-top: 10px;
+  }
+
   .register-name{
-    margin-top: 30px;
+    margin-top: 10px;
   }
 
   .register-pwd{
+    margin-top: 10px;
     margin-bottom: 20px;
   }
 
@@ -53,31 +62,16 @@ page-r {
     font-weight: 600;
   }
 
-  .register-send{
-    margin-right: 105px;
-    margin-top: 0;
-    font-size: 1.2rem;
-    color: #429A81;
-    border: 1px solid #429A81;
-    background-color: white;
+  .login-enter{
+    margin-right: 24px;
+    width: 45px;
+    height: 45px;
+    background-color:#429A81;
   }
 
   .img-content-enter{
     width: 17px;
     height: 15px;
-  }
-
-  .show {
-    width: 45px;
-    height: 45px;
-    background-color:#429A81;
-    opacity: 0.4;
-  }
-
-  .show-true{
-    width: 45px;
-    height: 45px;
-    background-color:#429A81;
   }
 
   .text-anchor {
@@ -89,6 +83,16 @@ page-r {
   .text-agreement {
     margin-top: 20px;
     font-size: 1.2rem;
+  }
+
+  .send-sms{
+    width: 90px;
+    margin-right: 24px;
+    margin-top: 44px;
+    font-size: 1.2rem;
+    color: #429A81;
+    border: 1px solid #429A81;
+    background-color: white;
   }
 
   .scroll-content{
