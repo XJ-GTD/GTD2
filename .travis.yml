@@ -53,8 +53,6 @@ before_install:
   - cd TimeApp
 before_script:
   - pwd
-  - cordova platform remove android
-  - cordova platform add android@7.1.4
   - ionic cordova plugin add $TRAVIS_BUILD_DIR/BaiduSpeechAndTTS
   - ionic cordova plugin add cordova-sqlite-storage cordova-plugin-statusbar uk.co.workingedge.cordova.plugin.sqliteporter cordova-sqlite-storage cordova-plugin-whitelist com.telerik.plugins.nativepagetransitions cordova-plugin-nativeaudio cordova-plugin-vibration cordova-plugin-file-transfer cordova-plugin-local-notification cordova-plugin-ionic-webview cordova-plugin-splashscreen ionic-plugin-keyboard cordova-plugin-device cordova-plugin-console cordova-plugin-file cordova-plugin-calendar cordova-plugin-advanced-http cordova-plugin-android-permissions cordova-plugin-background-mode cordova-plugin-contacts cordova-plugin-network-information cordova-plugin-screen-orientation
 script:
@@ -64,6 +62,8 @@ script:
   - yarn install
   - npm run clean
   - npm run build
+  - cordova platform remove android
+  - cordova platform add android@7.1.4
   - ionic cordova build android
 after_script:
   - fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk -T $FIR_TOKEN
