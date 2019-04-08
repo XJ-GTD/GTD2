@@ -1,13 +1,13 @@
-import {Component} from '@angular/core';
-import {IonicPage, MenuController, ModalController, NavController} from 'ionic-angular';
+import {Component, ComponentRef, ElementRef, Renderer2, TemplateRef, ViewChild} from '@angular/core';
+import {IonicPage, NavController} from 'ionic-angular';
 import {
   CalendarComponentOptions
 } from "../../components/ion2-calendar";
 import {DataConfig} from "../../service/config/data.config";
 import {HData, HService} from "./h.service";
 import  * as Hammer from 'hammerjs'
-import {createElementCssSelector} from "@angular/compiler";
 import * as moment from "moment";
+import {AiComponent} from "../../components/ai/answer/ai";
 
 /**
  * Generated class for the 首页 page.
@@ -20,9 +20,9 @@ import * as moment from "moment";
 @Component({
   selector: 'page-h',
   template: `
-    <ion-content #ha  (swipe)="swipeEvent($event)">
+    <ion-content>
       <div class="haContent" >
-        <div class="haCalendar" class="animated fadeInDownBig">
+        <div #calendarDiv class="haCalendar" class="animated fadeInDownBig" >
           <ion-calendar [options]="options"
                         (onSelect)="onSelect($event)"
                         (onPress)="onPress($event)">
@@ -43,11 +43,16 @@ import * as moment from "moment";
         <!--&nbsp;-->
       <!--</div>-->
       <BackComponent></BackComponent>
-      <AiComponent class="animated fadeInUpBig"></AiComponent>
+      <AiComponent #aiDiv class="animated fadeInUpBig" ></AiComponent>
     </ion-content>
     `,
 })
 export class HPage {
+
+  @ViewChild('calendarDiv')
+  calendarDiv: ElementRef;
+  @ViewChild('aiDiv')
+  aiDiv: AiComponent;
 
   hdata: HData;
   options: CalendarComponentOptions = {
@@ -60,9 +65,20 @@ export class HPage {
 
   constructor(private hService: HService,
               private navController: NavController,
-              private menuController:MenuController) {
+              private renderer2:Renderer2) {
     this.hdata = new HData();
+  }
 
+  ionViewDidLoad() {
+    this.calendarDiv.nativeElement
+
+    this.calendarDiv.nativeElement.addEventListener("webkitAnimationEnd", () => {
+      this.renderer2.removeClass(this.calendarDiv.nativeElement, "fadeInDownBig");
+    });
+
+    this.aiDiv.elementRef.nativeElement.addEventListener("webkitAnimationEnd", () => {
+      this.renderer2.removeClass(this.aiDiv.elementRef.nativeElement, "fadeInUpBig");
+    });
   }
 
   ngOnInit() {
@@ -92,10 +108,7 @@ export class HPage {
   }
 
   gotolist() {
-    this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: this.hdata.selectDay.time}, {
-      direction: "back",
-      animation: "push"
-    });
+    this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: this.hdata.selectDay.time});
   }
 
   public swipeEvent($event:HammerInput){

@@ -56,7 +56,6 @@ export class ContactsService {
   getContacts4Btbl(): Promise<Array<BTbl>> {
     return new Promise<Array<BTbl>>(async (resolve, reject) => {
 
-
       let btbls: Array<BTbl> = new Array<BTbl>();
       if (!this.utilService.isMobile()){
         resolve(btbls);
@@ -89,6 +88,7 @@ export class ContactsService {
             }
           }
         }
+
         resolve(btbls);
         return;
       })
@@ -101,6 +101,9 @@ export class ContactsService {
       this.getContacts4Btbl().then(async data => {
         let bsqls: Array<string> = new Array<string>();
         for (let b of data) {
+
+          if (!b.rn) continue;
+          // TODO 效率低下
           let bt: BTbl = await this.sqlExce.getOne<BTbl>(b);
           if (bt == null) {
             bt = new BTbl();
@@ -123,6 +126,7 @@ export class ContactsService {
         resolve(true);
 
       }).catch(error=>{
+        resolve(false);
       })
     })
   }

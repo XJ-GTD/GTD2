@@ -53,7 +53,6 @@
     "buffer": "^5.2.1",
     "com.telerik.plugins.nativepagetransitions": "~0.6.5",
     "cordova": "^8.1.2",
-    "cordova-android": "~7.1.4",
     "cordova-browser": "^5.0.4",
     "cordova-ios": "^4.4.0",
     "cordova-js": "^4.2.2",
@@ -93,7 +92,8 @@
     "sw-toolbox": "3.6.0",
     "uk.co.workingedge.cordova.plugin.sqliteporter": "~1.1.0",
     "ws": "3.3.2",
-    "zone.js": "0.8.18"
+    "zone.js": "0.8.18",
+    "cordova-android": "~7.1.4"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.0",

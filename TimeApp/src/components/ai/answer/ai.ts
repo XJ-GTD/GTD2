@@ -144,8 +144,11 @@ export class AiComponent {
   //语音界面数据传递
   b: boolean;
 
-  constructor(public aiService: AiService, private _renderer: Renderer2, private util: UtilService, private emitService: EmitService, private assistantService: AssistantService) {
-
+  constructor(public aiService: AiService,
+              private _renderer: Renderer2,
+              private util: UtilService,
+              private emitService: EmitService,
+              public elementRef: ElementRef) {
 
   }
 
