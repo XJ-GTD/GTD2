@@ -55,15 +55,39 @@ export class LocalcalendarService {
                 rc.sn = msg[i].title;
                 console.log("查询本地日历是否全天：" + msg[i].allday);
                 if (msg[i].allday) {
-                  rc.sd = msg[i].startDate.substr(0, 10).replace(new RegExp('-','g'),'/');
-                  rc.st = "00:00";
-                  rc.ed = msg[i].endDate.substr(0, 10).replace(new RegExp('-','g'),'/');
-                  rc.et =  "24:00";
+                  if (msg[i].startDate) {
+                    rc.sd = msg[i].startDate.substr(0, 10).replace(new RegExp('-','g'),'/');
+                    rc.st = "00:00";
+                  }
+                  if (msg[i].endDate) {
+                    rc.ed = msg[i].endDate.substr(0, 10).replace(new RegExp('-','g'),'/');
+                    rc.et =  "24:00";
+                  }
+                  if (msg[i].startDate && !msg[i].endDate) {
+                    rc.ed = rc.sd;
+                    rc.et = "24:00";
+                  }
+                  if (!msg[i].startDate && msg[i].endDate) {
+                    rc.sd = rc.ed;
+                    rc.st = "00:00";
+                  }
                 } else {
-                  rc.sd = msg[i].startDate.substr(0, 10).replace(new RegExp('-','g'),'/');
-                  rc.st = msg[i].startDate.substr(11, 5);
-                  rc.ed = msg[i].endDate.substr(0, 10).replace(new RegExp('-','g'),'/');
-                  rc.et = msg[i].endDate.substr(11, 5);
+                  if (msg[i].startDate) {
+                    rc.sd = msg[i].startDate.substr(0, 10).replace(new RegExp('-','g'),'/');
+                    rc.st = msg[i].startDate.substr(11, 5);
+                  }
+                  if (msg[i].endDate) {
+                    rc.ed = msg[i].endDate.substr(0, 10).replace(new RegExp('-','g'),'/');
+                    rc.et = msg[i].endDate.substr(11, 5);
+                  }
+                  if (msg[i].startDate && !msg[i].endDate) {
+                    rc.ed = rc.sd;
+                    rc.et = "24:00";
+                  }
+                  if (!msg[i].startDate && msg[i].endDate) {
+                    rc.sd = rc.ed;
+                    rc.st = "00:00";
+                  }
                 }
                 console.log("查询本地日历开始时间：" + rc.sd + ",结束时间:" + rc.ed);
                 console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg[i]));
