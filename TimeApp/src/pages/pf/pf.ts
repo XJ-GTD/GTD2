@@ -36,7 +36,7 @@ import {PagePfData, PfService} from "./pf.service";
             <ion-input class="login-pwd" type="password" placeholder="密码" [(ngModel)]="pfData.password" (input)="format()"></ion-input>
           </div>
           <div>
-            <button ion-fab class="login-enter" [ngStyle]="{'opacity': opa }" (click)="register()">
+            <button ion-fab class="login-enter" [ngStyle]="{'opacity': opa }" (click)="signIn()">
               <img class="img-content-enter" src="./assets/imgs/xyb.png">
             </button>
           </div>
