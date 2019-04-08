@@ -7,6 +7,7 @@ import {DataConfig} from "../service/config/data.config";
 import {RestfulClient} from "../service/util-service/restful.client";
 import {UtilService} from "../service/util-service/util.service";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
+import {LsPushType} from "../components/menuType/LsPushType";
 
 @Component({
   template: `
@@ -25,6 +26,7 @@ export class MyApp {
               private screenOrientation: ScreenOrientation) {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
+    MenuController.registerType('lsPush', LsPushType);
     this.platform.ready().then(() => {
       //this.util.loadingEnd();
       //允许进入后台模式

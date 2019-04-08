@@ -1,5 +1,5 @@
 import {Component, ComponentRef, ElementRef, Renderer2, TemplateRef, ViewChild} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
+import {IonicPage, MenuController, ModalController, NavController} from 'ionic-angular';
 import {
   CalendarComponentOptions
 } from "../../components/ion2-calendar";
@@ -65,7 +65,9 @@ export class HPage {
 
   constructor(private hService: HService,
               private navController: NavController,
-              private renderer2:Renderer2) {
+              private renderer2:Renderer2,
+              private modalCtr:ModalController,
+              private menuController:MenuController) {
     this.hdata = new HData();
   }
 
@@ -93,7 +95,7 @@ export class HPage {
   }
 
   newcd() {
-    //this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {dateStr: this.hdata.selectDay.time}).present();
+    this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {dateStr: this.hdata.selectDay.time}).present();
   }
 
   //查询当天日程
@@ -108,30 +110,8 @@ export class HPage {
   }
 
   gotolist() {
-    this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: this.hdata.selectDay.time});
+    this.menuController.open("ls");
+    //this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: this.hdata.selectDay.time});
   }
-
-  public swipeEvent($event:HammerInput){
-    // let dir:number = $event.direction;
-    // if (dir == Hammer.DIRECTION_RIGHT){
-    //   if (!this.hdata.selectDay)
-    //     this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: moment().unix()}, {
-    //       direction: "back",
-    //       animation: "push",
-    //       isNavRoot:false,
-    //     });
-    //     else
-    //   this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: this.hdata.selectDay.time}, {
-    //     direction: "back",
-    //     animation: "push",
-    //     isNavRoot:false,
-    //   });
-    // }
-    //
-    // if (dir == Hammer.DIRECTION_LEFT)
-    //   this.menuController.open();
-
-  }
-
 }
 
