@@ -71,6 +71,9 @@ import {UtilService} from "../../service/util-service/util.service";
     </ion-content>
 
     <div class="div-content" *ngIf="IsShowDiv">
+      <div class="modal-header">
+        <button type="button" class="div-close" aria-hidden="true" (click)="closeDialog()">&times;</button>
+      </div>
       <div class="div-text">
         <span>{{text}}</span>
       </div>

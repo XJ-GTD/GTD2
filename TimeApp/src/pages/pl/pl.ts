@@ -59,7 +59,7 @@ import {UtilService} from "../../service/util-service/util.service";
                   <div *ngIf="option.jtd == '0'" class="content-download">
                     下载
                   </div>
-                  <div *ngIf="option.jtd=='1'">
+                  <div *ngIf="option.jtd =='1'">
                     <img class="img-content-refresh" src="./assets/imgs/sx.png">
                   </div>
                 </button>
@@ -119,8 +119,8 @@ export class PlPage {
 
   toPd(jh:PagePDPro){
     let go:any = true;
-    if(jh.jt = "1"){
-      if(jh.jtd = "0"){
+    if(jh.jt == "1"){
+      if(jh.jtd == "0"){
         go = false;
         this.util.toast('系统计划：' + jh.jn + "未下载",1500);
       }
@@ -152,10 +152,13 @@ export class PlPage {
           }, {
             text: '确定',
             handler: () => {
+              let count = jh.js;
               this.plService.delete(jh).then(data=>{
                 jh.jtd = '0';
                 jh.js = 0;
               }).catch(res=>{
+                jh.jtd = '1';
+                jh.js = count;
                 this.util.toast('删除计划“' + jh.jn + "失败",1500);
               });
 
