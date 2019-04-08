@@ -31,7 +31,7 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
             <div >
               <ion-buttons class ="backbtn-set">
                 <button  ion-button icon-only (click)="goBack()" >
-                  <img   src="../../assets/imgs/fanhui.png">
+                  <img class="img-header-left" src="./assets/imgs/fh2.png">
                 </button>
               </ion-buttons>
             </div>
