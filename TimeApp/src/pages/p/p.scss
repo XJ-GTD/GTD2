@@ -1,4 +1,29 @@
 page-p {
+
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: #000;
+  }
+
+  ion-header{
+    padding: 4px 20px;
+  }
+
+  .img-header-left{
+    width: 4vmin;
+    height: 4vmin;
+  }
+
+  .toolbar-title{
+    color: white;
+    letter-spacing: 0.5vmin;
+    font-size: 1.5rem;
+  }
+
+  ion-content.content {
+    background-color: #000;
+    color: #fff;
+  }
+
   .scroll-content{
     overflow-x: auto;
     overflow-y: auto;

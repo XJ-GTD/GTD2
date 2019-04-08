@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {BsModel} from "./out/bs.model";
+import {InDataPassword} from "../../pages/ps/ps.service";
 
 /**
  * 帐户 注册
@@ -112,12 +113,12 @@ export class PersonRestful {
   }
 
   //帐户信息更新	AIU	更新用户信息(包括密码) put
-  updateself(personData:PersonInData): Promise<BsModel<any>>  {
+  updateself(personData:any,unionid:string): Promise<BsModel<any>>  {
 
     let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIU");
-      url.url = url.url.replace("{unionid}",personData.unionid);
+      url.url = url.url.replace("{unionid}",unionid);
       this.request.put(url,personData).then(data => {
         //处理返回结果
         bsModel.code = data.errcode;
@@ -137,12 +138,12 @@ export class PersonRestful {
   }
 
   //修改密码 MP put
-  updatepass(personData:PersonInData): Promise<BsModel<any>> {
+  updatepass(personData:InDataPassword,unionid:string): Promise<BsModel<any>> {
 
     let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("MP");
-      url.url = url.url.replace("{unionid}",personData.unionid);
+      url.url = url.url.replace("{unionid}",unionid);
       this.request.put(url, personData).then(data => {
         //处理返回结果
         bsModel.code = data.errcode;

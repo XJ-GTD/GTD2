@@ -149,7 +149,10 @@ export class RPage {
 
   format(){
     if(this.rData.mobile.length==11){
-      if(this.checkPhone() && this.rData.authCode !="" && this.rData.username !="" && this.rData.password !=""){
+      if(this.checkPhone()
+        && this.rData.authCode !="" && this.rData.authCode.length == 6
+        && this.rData.username !="" && this.rData.username.length >= 2
+        && this.rData.password !="" && this.rData.password.length >= 4){
         this.opa = "1";
       }else {
         this.opa = "0.4";

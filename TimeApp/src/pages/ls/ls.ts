@@ -16,7 +16,7 @@ import {UtilService} from "../../service/util-service/util.service";
   template:
   `
   <ion-content>
-    <h1>验证码登录</h1>
+    <h1>短信登录</h1>
     <ion-grid class="grid-login-basic no-padding-lr">
       <ion-row justify-content-start align-items-center>
         <div class="w-auto">
@@ -137,7 +137,7 @@ export class LsPage {
 
   format(){
     if(this.lsData.mobile.length==11){
-      if(this.checkPhone() && this.lsData.authCode !=""){
+      if(this.checkPhone() && this.lsData.authCode !="" && this.lsData.authCode.length == 6){
         this.opa = "1";
       }else {
         this.opa = "0.4";
