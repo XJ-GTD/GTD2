@@ -360,6 +360,9 @@ export class PgBusiService {
       //插入日程表
       this.setCtbl(newc,bs.data);
       await this.sqlExce.save(newc);
+
+      //添加特殊事件表
+      await this.saveSp(newc);
     }else{
       //更新日程表
       this.setCtbl(newc,bs.data);
@@ -367,7 +370,10 @@ export class PgBusiService {
       newc.bz = c.bz;
       newc.tx = c.tx;
       await this.sqlExce.replaceT(newc);
+      
+      //TODO: 修改特殊事件表
     }
+
     return bs.data;
 
   }
