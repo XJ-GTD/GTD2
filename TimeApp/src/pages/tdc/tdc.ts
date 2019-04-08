@@ -237,7 +237,11 @@ export class TdcPage {
     if (this.navParams.get("dateStr")){
       this.scd.sd = this.navParams.get("dateStr");
       this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
-      this.scd.st = moment().format("HH:mm");
+      if (this.scd.st) {
+        this.scd.st = moment(this.scd.sd + " " + this.scd.st).format("HH:mm");
+      } else {
+        this.scd.st = moment().format("HH:mm");
+      }
       this.scd.rt = "0";
       this.scd.tx = "0";
       this.pagestate = "0";
@@ -260,7 +264,11 @@ export class TdcPage {
         }
 
         this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
-        this.scd.st = moment().format("HH:mm");
+        if (this.scd.st) {
+          this.scd.st = moment(this.scd.sd + " " + this.scd.st).format("HH:mm");
+        } else {
+          this.scd.st = moment().format("HH:mm");
+        }
 
         this.clickrept(this.scd.rt);
         this.clickwake(this.scd.tx);

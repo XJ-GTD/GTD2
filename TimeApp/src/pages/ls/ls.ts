@@ -15,7 +15,7 @@ import {UtilService} from "../../service/util-service/util.service";
   selector: 'page-ls',
   template:
   `
-  <ion-content padding>
+  <ion-content>
     <h1>验证码登录</h1>
     <ion-grid class="grid-login-basic no-padding-lr">
       <ion-row justify-content-start align-items-center>
@@ -23,17 +23,17 @@ import {UtilService} from "../../service/util-service/util.service";
           <ion-input class="login-tel" type="tel" placeholder="开始输入手机号" [(ngModel)]="lsData.mobile" (input)="format()"></ion-input>
         </div>
         <div>
-          <button ion-fab class="login-enter" (click)="signIn()" [ngClass]="{'show': enter == false , 'show-true': enter == true}">
-            <img class="img-content-enter" src="./assets/imgs/xyb.png">
-          </button>
+          <button ion-button class="send-sms" (click)="sendSms()">{{timeText}}</button>
         </div>
       </ion-row>
       <ion-row justify-content-between align-items-center>
         <div class="w-auto">
-          <ion-input class="login-code"  type="number" placeholder="短信验证码" [(ngModel)]="lsData.authCode"></ion-input>
+          <ion-input class="login-code"  type="number" placeholder="短信验证码" [(ngModel)]="lsData.authCode" (input)="format()"></ion-input>
         </div>
         <div>
-          <button ion-button class="login-send" (click)="sendMsg()">{{timeText}}</button>
+          <button ion-fab class="login-enter" [ngStyle]="{'opacity': opa }" (click)="signIn()">
+            <img class="img-content-enter" src="./assets/imgs/xyb.png">
+          </button>
         </div>
       </ion-row>
     </ion-grid>
@@ -48,9 +48,9 @@ import {UtilService} from "../../service/util-service/util.service";
 export class LsPage {
 
   lsData:PageLsData = new PageLsData();
-  enter:boolean = false;
   timeText:any = "获取验证码";
   timer:any;
+  opa:any = "0.4";
 
   constructor(public navCtrl: NavController,
               private util:UtilService,
@@ -73,7 +73,7 @@ export class LsPage {
     this.navCtrl.push('LpPage');
   }
 
-  sendMsg(){
+  sendSms(){
     if(this.checkPhone()){
       this.lsService.getSMSCode(this.lsData.mobile).then(data => {
         //console.log("短信发送成功" + JSON.stringify(data));
@@ -137,9 +137,11 @@ export class LsPage {
 
   format(){
     if(this.lsData.mobile.length==11){
-      this.enter = this.checkPhone();
-    }else {
-      this.enter = false;
+      if(this.checkPhone() && this.lsData.authCode !=""){
+        this.opa = "1";
+      }else {
+        this.opa = "0.4";
+      }
     }
   }
 

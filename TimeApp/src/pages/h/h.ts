@@ -1,13 +1,14 @@
 import {Component, ComponentRef, ElementRef, Renderer2, TemplateRef, ViewChild} from '@angular/core';
 import {IonicPage, MenuController, ModalController, NavController} from 'ionic-angular';
 import {
-  CalendarComponentOptions
+  CalendarComponentOptions, CalendarDay
 } from "../../components/ion2-calendar";
 import {DataConfig} from "../../service/config/data.config";
 import {HData, HService} from "./h.service";
 import  * as Hammer from 'hammerjs'
 import * as moment from "moment";
 import {AiComponent} from "../../components/ai/answer/ai";
+import {EmitService} from "../../service/util-service/emit.service";
 
 /**
  * Generated class for the 首页 page.
@@ -67,7 +68,8 @@ export class HPage {
               private navController: NavController,
               private renderer2:Renderer2,
               private modalCtr:ModalController,
-              private menuController:MenuController) {
+              private menuController:MenuController,
+              private emitService:EmitService) {
     this.hdata = new HData();
   }
 
@@ -99,7 +101,8 @@ export class HPage {
   }
 
   //查询当天日程
-  onSelect(selectDay) {
+  onSelect(selectDay:CalendarDay) {
+    if (selectDay)this.emitService.emitSelectDate(moment(selectDay.time));
     this.hService.centerShow(selectDay).then(d => {
       //双机进入列表
       if (this.hdata.selectDay == selectDay && selectDay) {

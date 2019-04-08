@@ -1,11 +1,20 @@
-import { Component, ViewChild} from '@angular/core';
-import {  ActionSheetController, Content, Events, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {
+  ActionSheetController,
+  Content,
+  Events,
+  IonicPage,
+  MenuController,
+  ModalController,
+  NavController,
+} from 'ionic-angular';
 import {ScdlData, TdlService} from "./tdl.service";
 import {TddjService} from "../tddj/tddj.service";
 import {TddiService} from "../tddi/tddi.service";
 import {DataConfig} from "../../service/config/data.config";
 import {ScdData} from "../../service/pagecom/pgbusi.service";
 import * as moment from "moment";
+import {EmitService} from "../../service/util-service/emit.service";
 
 /**
  * Generated class for the 日程列表 page.
@@ -17,7 +26,8 @@ import * as moment from "moment";
 @Component({
   selector: 'page-tdl',
   template:
-      `<ion-header no-border *ngIf="headershow" class="header-set">
+      `
+    <ion-header no-border *ngIf="headershow" class="header-set">
       <ion-toolbar>
         <ion-grid>
           <ion-row>
@@ -28,7 +38,7 @@ import * as moment from "moment";
               <div>
                 <ion-buttons class="backbtn-set">
                   <button ion-button icon-only (click)="goBack()">
-                    <img src="../../assets/imgs/fanhui.png">
+                    <img src="../../assets/imgs/fh2.png">
                   </button>
                 </ion-buttons>
               </div>
@@ -70,15 +80,16 @@ import * as moment from "moment";
           </div>
         </ion-row>
       </ion-grid>
-      <ion-fab center bottom class="fab-set">
-        <button *ngIf="downorup == 2" ion-fab color="light" (click)="backtoTop();">
-          <ion-icon name="arrow-up" color="danger" isActive="true"></ion-icon>
-        </button>
-        <button *ngIf="downorup == 1" ion-fab color="light" (click)="backtoTop();">
-          <ion-icon name="arrow-down" color="danger" isActive="true"></ion-icon>
-        </button>
-      </ion-fab>
-    </ion-content>`
+      <!--<ion-fab center bottom class="fab-set">-->
+        <!--<button *ngIf="downorup == 2" ion-fab color="light" (click)="backtoTop();">-->
+          <!--<ion-icon name="arrow-up" color="danger" isActive="true"></ion-icon>-->
+        <!--</button>-->
+        <!--<button *ngIf="downorup == 1" ion-fab color="light" (click)="backtoTop();">-->
+          <!--<ion-icon name="arrow-down" color="danger" isActive="true"></ion-icon>-->
+        <!--</button>-->
+      <!--</ion-fab>-->
+    <!--</ion-content>-->
+  `
 
 })
 export class TdlPage {
@@ -130,11 +141,13 @@ export class TdlPage {
   //头部显示日期
   headerDate: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private tdlServ: TdlService,
+  constructor(public navCtrl: NavController, private tdlServ: TdlService,
               public events: Events, public actionSheetCtrl: ActionSheetController,
               private tddjServ: TddjService, private tddiServ: TddiService,
-              private modalCtr: ModalController) {
-    console.log("****************************************************进入ls")
+              private modalCtr: ModalController,
+              private menuController: MenuController,
+              private emitService: EmitService,
+  ) {
 
   }
 
@@ -160,7 +173,7 @@ export class TdlPage {
     let totalh = this.getAnchorScrollH();
 
     this.contentD.scrollTo(0, totalh - this.offsetHeader).then(data => {
-      this.headerDate = this.dtanchor;
+      this.headerDate = moment(this.dtanchor).format("YYYY年MM月DD日");
       this.downorup = 0;
 
     });
@@ -168,7 +181,11 @@ export class TdlPage {
   }
 
   ngOnInit() {
-    console.log('ionViewDidLoad AgendaListPage');
+
+    this.emitService.registerSelectDate((selectDate: moment.Moment) => {
+      this.scdlDataList = new Array<ScdlData>();
+      this.createData(selectDate);
+    })
 
     //初始化锚点位置
     this.events.subscribe('po', (data) => {
@@ -212,7 +229,8 @@ export class TdlPage {
           } else {
             k = j - 1;
           }
-          this.headerDate = this.scdlDataList[k].d;
+          this.headerDate = moment(this.scdlDataList[k].d).format("YYYY年MM月DD日");
+          ;
           console.log("this.scdlDataList[j].d*****:" + this.scdlDataList[k].d)
           console.log("totalh*****:" + totalh)
           console.log("ionScroll*****:" + $event.scrollTop)
@@ -341,18 +359,17 @@ export class TdlPage {
       this.startScrolltop = $event.scrollTop;
 
     });
-    this.init();
+    this.createData(moment());
   }
+
   //初始化数据
-  init() {
+  createData(selectDate: moment.Moment) {
 
     this.contmargin = true;
     this.pageLoaded = false;
 
 
-    let sel = this.navParams.get("selectDay");
-    if (!sel) sel = moment();
-    let condi = moment(sel).format("YYYY/MM/DD");
+    let condi = selectDate.format("YYYY/MM/DD");
 
     //获取当前日期之前的30条记录
     this.tdlServ.down(condi, 30).then(dwdata => {
@@ -396,7 +413,7 @@ export class TdlPage {
         if (this.dtanchor == "" && this.scdlDataList.length > 0) {
           this.dtanchor = this.scdlDataList[this.scdlDataList.length - 1].d;
         }
-        this.headerDate = this.dtanchor;
+        this.headerDate = moment(this.dtanchor).format("YYYY年MM月DD日");
         if (this.scdlDataList.length > 0) {
 
           let a = this.scdlDataList[this.scdlDataList.length - 1];
@@ -450,12 +467,7 @@ export class TdlPage {
 
   //回主页
   goBack() {
-    this.navCtrl.pop({
-      direction: "forward",
-      animation: "push",
-      animate: true,
-      duration: 2
-    })
+    this.menuController.close("ls");
   }
 
 
