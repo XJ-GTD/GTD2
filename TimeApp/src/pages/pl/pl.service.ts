@@ -166,6 +166,7 @@ export class PlService {
       await this.sqlExce.delete(ctbl);
 
       //更新系统计划jdt数据
+      jh.jtd = "0";
       await this.upPlan(jh);
 
       // TODO restful删除分享计划
@@ -187,30 +188,28 @@ export class PlService {
     let pld = new PagePlData();
     //获取本地计划
     let jhtbl:JhTbl = new JhTbl();
-    let jhCtbl: Array<PagePDPro> = await this.sqlExce.getList<PagePDPro>(jhtbl);
+    let jhSql = "select * from gtd_j_h order by wtt desc";
+    let jhCtbl: Array<PagePDPro> = await this.sqlExce.getExtList<PagePDPro>(jhSql);
     if(jhCtbl.length > 0){
-      //console.log('---------- PlService getPlan 获取计划日程数量开始 ----------------');
-
+      console.log('---------- PlService getPlan 获取计划日程数量开始 ----------------');
       let xtJh: Array<PagePDPro> = new  Array<PagePDPro>();
       let zdyJh: Array<PagePDPro> = new  Array<PagePDPro>();
 
       //获取计划日程数量
       for(let jhc of jhCtbl){
-        let sql = 'select gc.si from gtd_c gc ' +
-         'left join gtd_sp sp on sp.si = gc.si ' +
-         'where gc.ji = "'+ jhc.ji + '"';
+        let sql = 'select c.si from gtd_c c left join gtd_sp sp on sp.si = c.si where c.ji = "'+ jhc.ji + '"';
         let cs = await this.sqlExce.getExtList<CTbl>(sql);
         jhc.js = cs.length;
 
         jhc.pt = jhc.jn; // 计划分享使用
-        if(jhc.jtd == null || jhc.jtd == ""){
-          jhc.jtd = "0";
-        }
 
         if(jhc.jt == "2"){  // 本地计划
           zdyJh.push(jhc);
         }else{
           xtJh.push(jhc);
+          if(jhc.jtd == null || jhc.jtd == ""){
+            jhc.jtd = "0";
+          }
         }
       }
       pld.xtJh = xtJh;

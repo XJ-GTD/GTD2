@@ -94,8 +94,7 @@ export class HPage {
   gotolist() {
     this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: this.hdata.selectDay.time}, {
       direction: "back",
-      animation: "push",
-      isNavRoot:false,
+      animation: "push"
     });
   }
 
