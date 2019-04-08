@@ -21,7 +21,7 @@ export class DispatchService {
     //消息格式化
     let model: WsModel = JSON.parse(message);
     // console.log(moment().unix() - model.context.client.time);
-    if (!model.context && !model.context.server)
+    if (model.context && model.context.server)
       DataConfig.wsServerContext = model.context.server;
     //循环处理消息
     let process: ProcesRs = new ProcesRs();
