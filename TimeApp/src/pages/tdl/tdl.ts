@@ -449,7 +449,12 @@ export class TdlPage {
 
   //回主页
   goBack(){
-    this.navCtrl.pop();
+    this.navCtrl.pop({
+      direction: "forward",
+      animation: "push",
+      animate:true,
+      duration:2
+    })
   }
 
 
