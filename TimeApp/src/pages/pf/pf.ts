@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
-import {PageRData, RService} from "./r.service";
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
+import {PagePfData, PfService} from "./pf.service";
 
 /**
- * Generated class for the 注册 page.
+ * Generated class for the PfPage 忘记密码 page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -12,15 +12,15 @@ import {UtilService} from "../../service/util-service/util.service";
 
 @IonicPage()
 @Component({
-  selector: 'page-r',
+  selector: 'page-pf',
   template:
-    `
+  `
     <ion-content>
-      <h1>注册账号</h1>
+      <h1>忘记密码</h1>
       <ion-grid class="grid-login-basic no-padding-lr">
         <ion-row justify-content-start align-items-center>
           <div class="w-auto">
-            <ion-input class="register-tel" type="tel" placeholder="开始输入电话号码" [(ngModel)]="rData.mobile" (input)="format()"></ion-input>
+            <ion-input class="login-tel" type="tel" placeholder="开始输入手机号" [(ngModel)]="pfData.mobile" (input)="format()"></ion-input>
           </div>
           <div>
             <button ion-button class="send-sms" (click)="sendSms()">{{timeText}}</button>
@@ -28,17 +28,12 @@ import {UtilService} from "../../service/util-service/util.service";
         </ion-row>
         <ion-row justify-content-between align-items-center>
           <div class="w-auto">
-            <ion-input class="register-code"  type="number" placeholder="短信验证码" [(ngModel)]="rData.authCode" (input)="format()"></ion-input>
+            <ion-input class="login-code"  type="number" placeholder="短信验证码" [(ngModel)]="pfData.authCode" (input)="format()"></ion-input>
           </div>
         </ion-row>
         <ion-row justify-content-between align-items-center>
           <div class="w-auto">
-            <ion-input class="register-name"  type="text" placeholder="您的尊称" [(ngModel)]="rData.username" (input)="format()"></ion-input>
-          </div>
-        </ion-row>
-        <ion-row justify-content-between align-items-center>
-          <div class="w-auto">
-            <ion-input class="register-pwd" type="password" placeholder="密码" [(ngModel)]="rData.password" (input)="format()"></ion-input>
+            <ion-input class="login-pwd" type="password" placeholder="密码" [(ngModel)]="pfData.password" (input)="format()"></ion-input>
           </div>
           <div>
             <button ion-fab class="login-enter" [ngStyle]="{'opacity': opa }" (click)="register()">
@@ -48,27 +43,25 @@ import {UtilService} from "../../service/util-service/util.service";
         </ion-row>
       </ion-grid>
 
-     <div class="register-div" (click)="toLp()">改为用账号登录</div>
-      <div class="register-div" (click)="toLs()">改为用短信验证码登录</div>
+      <div class="login-div" (click)="toLp()">改为用密码登录</div>
+      <div class="login-div" (click)="toR()">没有账号，立即注册</div>
 
       <p class="text-agreement">创建帐户即表示您同意我们的 <a class="text-anchor" (click)="userAgreement()">服务条款</a> 和 <a class="text-anchor" (click)="userAgreement()">隐私政策</a> 。</p>
     </ion-content>
   `,
 })
-export class RPage {
+export class PfPage {
 
-  rData: PageRData = new PageRData();
+  pfData:PagePfData = new PagePfData();
   timeText:any = "获取验证码";
   timer:any;
   opa:any = "0.4";
 
-  constructor(public navCtrl: NavController,
-              private util:UtilService,
-              private rService: RService,) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private util:UtilService,private pfService:PfService,) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RPage');
+    console.log('ionViewDidLoad PfPage');
   }
 
   goBack() {
@@ -79,20 +72,20 @@ export class RPage {
     this.navCtrl.push('PPage');
   }
 
+  toR() {
+    this.navCtrl.push('RPage');
+  }
+
   toLp() {
     this.navCtrl.push('LpPage');
   }
 
-  toLs() {
-    this.navCtrl.push('LsPage');
-  }
-
   sendSms(){
     if(this.checkPhone()){
-      this.rService.sc(this.rData).then(data => {
+      this.pfService.getSMSCode(this.pfData.mobile).then(data => {
         //console.log("短信发送成功" + JSON.stringify(data));
         //短信验证码KEY 赋值给验证码登录信息
-        this.rData.verifykey = data.data.verifykey;
+        this.pfData.verifykey = data.data.verifykey;
         this.util.toast("短信发送成功",1500);
 
       }).catch(error => {
@@ -113,43 +106,54 @@ export class RPage {
     }
   }
 
-  register() {
+  signIn() {
     if(this.checkPhone()) {
-      if (this.rData.username == null || this.rData.username == "" || this.rData.username == undefined) {           //判断用户名是否为空
-        this.util.toast("用户名不能为空",1500);
-      }else if (this.rData.authCode == null || this.rData.authCode == "" || this.rData.authCode == undefined) {     //判断验证码是否为空
+      if (this.pfData.authCode == null || this.pfData.authCode == "" || this.pfData.authCode == undefined) {     //判断验证码是否为空
         this.util.toast("验证码不能为空",1500);
-      }else if (this.rData.password == null || this.rData.password == "" || this.rData.password == undefined) {     //判断密码是否为空
+      }else if (this.pfData.password == null || this.pfData.password == "" || this.pfData.password == undefined) {     //判断密码是否为空
         this.util.toast("密码不能为空",1500);
-      }else if(this.rData.verifykey == null || this.rData.verifykey == "" || this.rData.verifykey == undefined){
+      }else if(this.pfData.verifykey == null || this.pfData.verifykey == "" || this.pfData.verifykey == undefined){
         this.util.toast("请发送短信并填写正确的短信验证码",1500);
-      }else {
-        console.log("注册被点击");
+      }else{
+        console.log("忘记密码被点击");
         this.util.loadingStart();
-        this.rService.signup(this.rData).then(data => {
-          console.log("注册并密码登录成功"+ JSON.stringify(data));
+
+        let union = "";
+        this.pfService.login(this.pfData).then(data=> {
+          if (data.code && data.code != 0)
+            throw  data;
+
+          union = data.data.unionid;
+          return this.pfService.get(data);
+        }).then(data=>{
+          console.log("忘记密码登录成功"+ JSON.stringify(data));
+
+          return this.pfService.editPass(this.pfData.password,union);
+        }).then(data=>{
+          this.util.toast("修改密码并成功登录",1500);
           clearTimeout(this.timer);
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
         }).catch(error=>{
-          console.log("注册失败"+JSON.stringify(error));
+          console.log("忘记密码登录失败"+JSON.stringify(error));
           this.util.loadingEnd();
           this.util.toast(error.message,1500);
+          this.pfService.del();
         });
       }
     }
   }
 
   checkPhone():boolean {
-    if (!this.util.checkPhone(this.rData.mobile)){
+    if (!this.util.checkPhone(this.pfData.mobile)){
       this.util.toast("请填写正确的手机号",1500);
     }
-    return this.util.checkPhone(this.rData.mobile);
+    return this.util.checkPhone(this.pfData.mobile);
   }
 
   format(){
-    if(this.rData.mobile.length==11){
-      if(this.checkPhone() && this.rData.authCode !="" && this.rData.username !="" && this.rData.password !=""){
+    if(this.pfData.mobile.length==11){
+      if(this.checkPhone() && this.pfData.authCode !=""){
         this.opa = "1";
       }else {
         this.opa = "0.4";

@@ -137,6 +137,7 @@ export class DataConfig {
     _TDDJ_PAGE: "TddjPage",      // 日程 - 日程详情
     _LP_PAGE: "LpPage",       // 登陆注册 - 登陆（密码）
     _LS_PAGE: "LsPage",       // 登陆注册 - 登录（验证码）
+    _PF_PAGE: "PfPage",       // 登陆注册 - 忘记密码
     _R_PAGE: "RPage",         // 登陆注册 - 注册
     _PP_PAGE: "PPage",        // 登陆注册 - 条款
     _M_PAGE: "MPage",         // 辅助功能 - 菜单
