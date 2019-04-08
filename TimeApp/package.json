@@ -134,7 +134,7 @@
     "platforms": [
       "ios",
       "browser",
-      "android"
+      "android@7.1.4"
     ]
   }
 }

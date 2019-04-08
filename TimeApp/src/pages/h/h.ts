@@ -1,10 +1,13 @@
 import {Component} from '@angular/core';
-import {IonicPage, ModalController, NavController} from 'ionic-angular';
+import {IonicPage, MenuController, ModalController, NavController} from 'ionic-angular';
 import {
   CalendarComponentOptions
 } from "../../components/ion2-calendar";
 import {DataConfig} from "../../service/config/data.config";
 import {HData, HService} from "./h.service";
+import  * as Hammer from 'hammerjs'
+import {createElementCssSelector} from "@angular/compiler";
+import * as moment from "moment";
 
 /**
  * Generated class for the 首页 page.
@@ -17,7 +20,7 @@ import {HData, HService} from "./h.service";
 @Component({
   selector: 'page-h',
   template: `
-    <ion-content #ha >
+    <ion-content #ha  (swipe)="swipeEvent($event)">
       <div class="haContent" >
         <div class="haCalendar" class="animated fadeInDownBig">
           <ion-calendar [options]="options"
@@ -57,7 +60,7 @@ export class HPage {
 
   constructor(private hService: HService,
               private navController: NavController,
-              private modalCtr: ModalController) {
+              private menuController:MenuController) {
     this.hdata = new HData();
 
   }
@@ -70,11 +73,11 @@ export class HPage {
       this.hdata = d;
       this.newcd();
     })
+
   }
 
   newcd() {
-    this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {dateStr: this.hdata.selectDay.time}).present();
-    ;
+    //this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {dateStr: this.hdata.selectDay.time}).present();
   }
 
   //查询当天日程
@@ -91,8 +94,31 @@ export class HPage {
   gotolist() {
     this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: this.hdata.selectDay.time}, {
       direction: "back",
-      animation: "push"
+      animation: "push",
+      isNavRoot:false,
     });
+  }
+
+  public swipeEvent($event:HammerInput){
+    // let dir:number = $event.direction;
+    // if (dir == Hammer.DIRECTION_RIGHT){
+    //   if (!this.hdata.selectDay)
+    //     this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: moment().unix()}, {
+    //       direction: "back",
+    //       animation: "push",
+    //       isNavRoot:false,
+    //     });
+    //     else
+    //   this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: this.hdata.selectDay.time}, {
+    //     direction: "back",
+    //     animation: "push",
+    //     isNavRoot:false,
+    //   });
+    // }
+    //
+    // if (dir == Hammer.DIRECTION_LEFT)
+    //   this.menuController.open();
+
   }
 
 }

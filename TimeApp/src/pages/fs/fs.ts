@@ -23,7 +23,7 @@ import {FsData} from "../../service/pagecom/pgbusi.service";
       <ion-toolbar>
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack('','')" color="danger">
-            <ion-icon name="arrow-back"></ion-icon>
+            <img class="img-header-left" src="./assets/imgs/fh2.png">
           </button>
         </ion-buttons>
         <ion-title>选择参与人</ion-title>

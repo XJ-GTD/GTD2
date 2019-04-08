@@ -1,0 +1,72 @@
+language: android
+android:
+  components:
+  - platform-tools
+  - tools
+  - build-tools-26.0.2
+  - android-27
+  - extra-google-google_play_services
+  - extra-google-m2repository
+  - extra-android-m2repository
+addons:
+  apt:
+    sources:
+    - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
+      key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
+    - sourceline: deb http://dl.google.com/linux/chrome/deb/ stable main
+      key_url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+    packages:
+    - oracle-java8-installer
+    - oracle-java8-set-default
+    - yarn
+    - jq
+    - gradle
+    - google-chrome-stable
+licenses:
+  - android-sdk-preview-license-.+
+  - android-sdk-license-.+
+  - google-gdk-license-.+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
+  - rm -rf $HOME/.gradle/caches/3.5/fileHashes/
+  - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+  - "$HOME/Library/Caches/Yarn/v1/"
+  - "$HOME/.cache/yarn/v1/"
+before_install:
+  - export LANG=zh_CN.UTF-8
+  - export CHROME_BIN=google-chrome
+  - export GRADLE_HOME=/usr/local/gradle
+  - export PATH=$GRADLE_HOME/bin:$PATH
+  - nvm install 8
+  - yarn global add ionic@4.1.2 phonegap plugman cordova@6.5.0
+  - mkdir -p $ANDROID_HOME/licenses
+  - echo -e "d56f5187479451eabf01fb78af6dfcb131a6481e" >> $ANDROID_HOME/licenses/android-sdk-license
+  - echo -e "84831b9409646a918e30573bab4c9c91346d8abd" >> $ANDROID_HOME/licenses/android-sdk-preview-license
+  - rvm install 2.1.5
+  - gem install byebug -v 9.0.6
+  - gem install fir-cli
+  - cd TimeApp
+before_script:
+  - pwd
+  - ionic cordova plugin add $TRAVIS_BUILD_DIR/BaiduSpeechAndTTS
+  - ionic cordova plugin add cordova-sqlite-storage cordova-plugin-statusbar uk.co.workingedge.cordova.plugin.sqliteporter cordova-sqlite-storage cordova-plugin-whitelist com.telerik.plugins.nativepagetransitions cordova-plugin-nativeaudio cordova-plugin-vibration cordova-plugin-file-transfer cordova-plugin-local-notification cordova-plugin-ionic-webview cordova-plugin-splashscreen ionic-plugin-keyboard cordova-plugin-device cordova-plugin-console cordova-plugin-file cordova-plugin-calendar cordova-plugin-advanced-http cordova-plugin-android-permissions cordova-plugin-background-mode cordova-plugin-contacts cordova-plugin-network-information cordova-plugin-screen-orientation
+script:
+  - gradle -version
+  - gradle wrapper --gradle-version 5.3.1 --distribution-type all
+  - ionic cordova plugin ls
+  - yarn install
+  - npm run clean
+  - npm run build
+  - cordova platform remove android
+  - cordova platform add android@7.1.4
+  - ionic cordova build android
+after_script:
+  - fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk -T $FIR_TOKEN
+env:
+  global:
+  - JAVA_HOME=/usr/lib/jvm/java-8-oracle

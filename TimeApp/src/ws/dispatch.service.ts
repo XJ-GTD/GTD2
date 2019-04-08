@@ -14,19 +14,22 @@ import {DataConfig} from "../service/config/data.config";
  */
 @Injectable()
 export class DispatchService {
-  constructor(private factory:ProcessFactory,  private emitService: EmitService,){}
+  constructor(private factory: ProcessFactory, private emitService: EmitService,) {
+  }
+
   async dispatch(message: string) {
     //消息格式化
     let model: WsModel = JSON.parse(message);
     // console.log(moment().unix() - model.context.client.time);
-    DataConfig.wsServerContext = model.context.server;
+    if (!model.context && !model.context.server)
+      DataConfig.wsServerContext = model.context.server;
     //循环处理消息
-    let process:ProcesRs = new ProcesRs();
+    let process: ProcesRs = new ProcesRs();
     for (let opt of model.header.describe) {
       let wsContent: WsContent = model.content[opt];
       //保存上下文
       wsContent.thisContext = model;
-      process = await this.factory.getProcess(opt).go(wsContent,process);
+      process = await this.factory.getProcess(opt).go(wsContent, process);
     }
     return;
   }

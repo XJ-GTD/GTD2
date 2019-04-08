@@ -24,8 +24,7 @@ import {DataConfig} from "../../service/config/data.config";
       <ion-toolbar>
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack()" color="danger">
-            <ion-icon name="arrow-back"></ion-icon>
-            <!--<img class="img-header-left" src="../../assets/imgs/fh2.png">-->
+            <img class="img-header-left" src="./assets/imgs/fh2.png">
           </button>
         </ion-buttons>
         <ion-title>群组</ion-title>
