@@ -220,7 +220,7 @@ export class TdcPage {
   jhs:any;
 
   ionViewDidLoad() {
-    console.log("test***"+moment("1999/12/31 99:99").format("YYYY/MM/DD"));
+
     console.log('ionViewDidLoad NewAgendaPage');
   }
 

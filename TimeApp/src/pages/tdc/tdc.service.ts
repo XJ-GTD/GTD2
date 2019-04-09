@@ -37,15 +37,6 @@ export class TdcService {
     return this.pgbusiServ.save(rc);
   }
 
-  /**
-   * 获取日程详情
-   * @param {string} si 日程id
-   * @returns {Promise<BsModel<ScdData>>}
-   */
-  async get(si:string){
-    return await this.pgbusiServ.get(si);
-  }
-
   //删除日程 type：1 删除当前以后所有 ，2 删除所有
   async delete(rcId:string){
     return await this.pgbusiServ.delete(rcId,"2","");
