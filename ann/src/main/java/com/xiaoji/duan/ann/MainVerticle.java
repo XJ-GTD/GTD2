@@ -188,6 +188,7 @@ public class MainVerticle extends AbstractVerticle {
 						System.out.println("announce by sms to " + openid);
 						// 缓存未注册用户数据, 用户注册登录后通知
 						JsonObject storage = new JsonObject();
+						storage.put("openid", openid);
 						storage.put("announceTo", new JsonArray().add(openid));
 						storage.put("announceType", announceType);
 						storage.put("announceContent", announceContent);
