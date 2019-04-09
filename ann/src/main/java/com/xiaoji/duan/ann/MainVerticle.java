@@ -65,7 +65,6 @@ public class MainVerticle extends AbstractVerticle {
 						subscribeTrigger(config().getString("amq.app.id", "ann"));
 					}
 				});
-		
 	}
 	
 	private void subscribeTrigger(String trigger) {
@@ -161,6 +160,17 @@ public class MainVerticle extends AbstractVerticle {
 						if (openId == null || StringUtils.isEmpty(openId)) {
 							System.out.println("announce by sms to " + openid);
 							
+							// 缓存未注册用户数据, 用户注册登录后通知
+							JsonObject storage = new JsonObject();
+							storage.put("openid", openid);
+							storage.put("announceTo", new JsonArray().add(openid));
+							storage.put("announceType", announceType);
+							storage.put("announceContent", announceContent);
+							
+							MessageProducer<JsonObject> producer = bridge.createProducer("aak");
+							producer.send(new JsonObject().put("body", storage));
+							
+							// 发送短信通知
 							JsonObject sms = announceContent.getJsonObject("sms");
 							
 							sms.put("templateid", sms.getJsonObject("template").getString("newuser"));
@@ -176,6 +186,16 @@ public class MainVerticle extends AbstractVerticle {
 					} else {
 						System.out.println("User info fetched error with " + handler.cause().getMessage());
 						System.out.println("announce by sms to " + openid);
+						// 缓存未注册用户数据, 用户注册登录后通知
+						JsonObject storage = new JsonObject();
+						storage.put("announceTo", new JsonArray().add(openid));
+						storage.put("announceType", announceType);
+						storage.put("announceContent", announceContent);
+						
+						MessageProducer<JsonObject> producer = bridge.createProducer("aak");
+						producer.send(new JsonObject().put("body", storage));
+
+						// 发送短信通知
 						JsonObject sms = announceContent.getJsonObject("sms");
 						
 						sms.put("templateid", sms.getJsonObject("template").getString("newuser"));
