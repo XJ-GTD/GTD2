@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
-import {PagePfData, PfService} from "./pf.service";
+import {LsService, PageLsData} from "../ls/ls.service";
+import {PsService} from "../ps/ps.service";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the PfPage 忘记密码 page.
@@ -52,12 +54,12 @@ import {PagePfData, PfService} from "./pf.service";
 })
 export class PfPage {
 
-  pfData:PagePfData = new PagePfData();
+  pfData:PageLsData = new PageLsData();
   timeText:any = "获取验证码";
   timer:any;
   opa:any = "0.4";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private util:UtilService,private pfService:PfService,) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private util:UtilService,private psService:PsService,private lsService:LsService) {
   }
 
   ionViewDidLoad() {
@@ -82,7 +84,7 @@ export class PfPage {
 
   sendSms(){
     if(this.checkPhone()){
-      this.pfService.getSMSCode(this.pfData.mobile).then(data => {
+      this.lsService.getSMSCode(this.pfData.mobile).then(data => {
         //console.log("短信发送成功" + JSON.stringify(data));
         //短信验证码KEY 赋值给验证码登录信息
         this.pfData.verifykey = data.data.verifykey;
@@ -118,17 +120,15 @@ export class PfPage {
         console.log("忘记密码被点击");
         this.util.loadingStart();
 
-        let union = "";
-        this.pfService.login(this.pfData).then(data=> {
+        this.lsService.login(this.pfData).then(data=> {
           if (data.code && data.code != 0)
             throw  data;
 
-          union = data.data.unionid;
-          return this.pfService.get(data);
+          return this.lsService.get(data);
         }).then(data=>{
           console.log("忘记密码登录成功"+ JSON.stringify(data));
 
-          return this.pfService.editPass(this.pfData.password,union);
+          return this.psService.editPass(this.pfData.password,UserConfig.user.id);
         }).then(data=>{
           this.util.toast("修改密码并成功登录",1500);
           clearTimeout(this.timer);
@@ -138,7 +138,7 @@ export class PfPage {
           console.log("忘记密码登录失败"+JSON.stringify(error));
           this.util.loadingEnd();
           this.util.toast(error.message,1500);
-          this.pfService.del();
+          this.psService.deleteUser();
         });
       }
     }

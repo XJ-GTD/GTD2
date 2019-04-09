@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { PfPage } from './pf';
-import {PfService} from "./pf.service";
+import {NgModule} from '@angular/core';
+import {IonicPageModule} from 'ionic-angular';
+import {PfPage} from './pf';
+import {LsService} from "../ls/ls.service";
+import {PsService} from "../ps/ps.service";
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import {PfService} from "./pf.service";
     IonicPageModule.forChild(PfPage),
   ],
   providers:[
-    PfService,
+    LsService,
+    PsService,
   ]
 })
 export class PfPageModule {}

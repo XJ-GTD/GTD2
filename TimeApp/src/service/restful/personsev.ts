@@ -217,15 +217,18 @@ export class PersonOutData{
   verifycode  :string = "";
   userpassword  :string = "";
   openid  :string = "";
-  nickname: string = "";   //姓名
   password:string = "";
   unionid:string = "";
-  sex:string = "";
   province:string = "";
   city: string = "";
   country: string = "";
-  avatar: string = "";     //头像
-  avatarbase64: string = "";     //头像//
+  nickname: string = "";   //姓名
+  name:string = "";   // 真实姓名
+  avatarbase64: string = "";     //头像64
+  sex:string = "";    //性别
+  birthday: string = "";  //出生日期
+  ic: string = "";  //身份证
+  contact: string = "";//  联系方式
   privilege:object;
   code:string = "";
   state:string = "";
