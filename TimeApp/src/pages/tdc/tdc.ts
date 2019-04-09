@@ -27,7 +27,7 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
         <ion-row right>
           <div class="h-auto " >
             <ion-buttons right>
-              <button [disabled]="pagestate == '0'?true:false" [hidden]="pagestate == '0'" ion-button icon-only (click)="presentActionSheet()" color="light">
+              <button  [hidden]="pagestate == '0'" ion-button icon-only (click)="presentActionSheet()" color="light">
                 <img  class="imgdel-set" src="../../assets/imgs/del.png">
               </button>
             </ion-buttons>
@@ -405,7 +405,7 @@ export class TdcPage {
     }
 
     //归属 本人创建
-    this.scd.gs = '1';
+    this.scd.gs = '0';
 
     this.scd.ji = this.scd.p.ji;
 
@@ -502,34 +502,6 @@ export class TdcPage {
       this.scd.st = el[0].textContent + ":" +el[1].textContent;
     }
   }
-  /*async openPicker(){
-    let picker = await this.pickerCtl.create({
-      columns: this.cols,
-    });
-    await picker.present();
-
-
-    picker .ionChange.subscribe((change) => {
-      let a =change;
-      console.log(JSON.stringify(a));
-      /!*if(change.Year.value !== yr) {
-      yr = change.Year.value;
-      this.updatePickerMonthOptions(yr);
-      picker.refresh();
-      }*!/
-    });
-  }*/
 
 
 }
-
-/*class col{
-  name :string ="";
-  options:Array<coloptions> = new Array<coloptions>();
-
-}
-
-class coloptions{
-  text : string ="";
-  value:string ="";
-}*/
