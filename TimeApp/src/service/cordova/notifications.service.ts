@@ -7,11 +7,9 @@ import {
   LocalNotifications
 } from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
-import {CTbl} from "../sqlite/tbl/c.tbl";
 import {ScdData} from "../pagecom/pgbusi.service";
 import * as moment from "moment";
 import {UtilService} from "../util-service/util.service";
-import {AssistantService} from "./assistant.service";
 import {RemindService} from "../util-service/remind.service";
 import {DataConfig} from "../config/data.config";
 import {ETbl} from "../sqlite/tbl/e.tbl";
@@ -153,7 +151,8 @@ class MwxNewMessage implements ILocalNotification {
   attachments: string[];
   autoClear: boolean = true;
   badge: number;
-  channel: string = "cn.sh.com.xj.timeApp.remind1";
+  //channel: string = "cn.sh.com.xj.timeApp.remind";
+  channel: string;
   clock: boolean | string;
   color: string;
   data: any;
@@ -188,7 +187,8 @@ class MwxRemind implements ILocalNotification {
   attachments: string[];
   autoClear: boolean = true;
   badge: number;
-  channel: string = "cn.sh.com.xj.timeApp.remind1";
+  //channel: string = "cn.sh.com.xj.timeApp.remind";
+  channel: string;
   clock: boolean | string;
   color: string;
   data: any;
