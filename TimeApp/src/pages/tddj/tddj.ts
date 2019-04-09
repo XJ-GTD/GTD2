@@ -236,7 +236,7 @@ export class TddjPage {
       this.tddjServ.get(this.navParams.get("si")).then(data=>{
         let bs : BsModel<ScdData> = data;
         Object.assign(this.scd,bs.data);
-
+        this.scd.ji = this.scd.p.ji;
         //重复日程不可以修改日期
         if (this.scd.rt != "0"){
           this.rept_flg = true;
