@@ -40,8 +40,8 @@ export class InputComponent {
 
     this._renderer.setStyle(this.el.nativeElement, "width", window.innerWidth + "px");
 
-    //this._renderer.setStyle(this.el.nativeElement, "top", (window.innerHeight* -1) + "px");
-    this._renderer.setStyle(this.el.nativeElement, "top",  "-6px");
+    this._renderer.setStyle(this.el.nativeElement, "top", (window.innerHeight* -1) + "px");
+    //this._renderer.setStyle(this.el.nativeElement, "top",  "-6px");
     this.keyboard.onKeyboardHide().subscribe(next => {
       this._renderer.setStyle(this.waperInput.nativeElement, "transform", "translateY(9999px)");
       setTimeout(()=>{
