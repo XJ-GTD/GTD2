@@ -281,10 +281,7 @@ export class CalendarService {
 
     let sql:string = "select sd,count(*) scds,sum(itx) news from gtd_sp where sd>='" + moment(_startMonth).format("YYYY/MM/DD")+ "' and sd<='" +  moment(_endMonth).format("YYYY/MM/DD") + "' group by sd";
 
-    let sd = new Date(moment(_startMonth).format("YYYY/MM/DD"));
-    let ed = new Date(moment(_endMonth).format("YYYY/MM/DD"));
-    ed = new Date(ed.getTime() + 23*59*60*1000);
-    let local = await this.readlocal.findEventRc('',sd,ed);
+    let local = await this.readlocal.findEventRc('',_startMonth,_endMonth);
     this.sqlite.getExtList<MonthData>(sql).then(data=>{
 
       //本地日历加入主页日历显示中
