@@ -47,14 +47,14 @@ export class TdcService {
   }
 
   //删除日程 type：1 删除当前以后所有 ，2 删除所有
-  async delete(rcId:string,type :string,d:string){
-    return await this.pgbusiServ.delete(rcId,type,d);
+  async delete(rcId:string){
+    return await this.pgbusiServ.delete(rcId,"2","");
   }
 
 
   //修改本地日程详情
   async updateDetail(scd:ScdData){
-    return this.pgbusiServ.updateDetail(scd,"1");
+    return this.pgbusiServ.updateDetail(scd);
   }
 
 }

@@ -497,17 +497,17 @@ export class TddjPage {
             role: 'destructive',
             cssClass:'btn-del',
             handler: () => {
-              this.tdcServ.delete(this.scd.si,"1",d).then(data=>{
+              /*this.tdcServ.delete(this.scd.si,"1",d).then(data=>{
                 this.cancel();
-              });
+              });*/
             }
           }, {
             text: '删除所有日程',
             cssClass:'btn-delall',
             handler: () => {
-              this.tdcServ.delete(this.scd.si,"2",d).then(data=>{
-                this.cancel();
-              });
+              // this.tdcServ.delete(this.scd.si,"2",d).then(data=>{
+              //   this.cancel();
+              // });
             }
           }, {
             text: '取消',
@@ -522,9 +522,9 @@ export class TddjPage {
       actionSheet.present();
     }else{
       //非重复日程删除
-      this.tdcServ.delete(this.scd.si,"2",d).then(data=>{
+      /*this.tdcServ.delete(this.scd.si,"2",d).then(data=>{
         this.cancel();
-      });
+      });*/
     }
 
 

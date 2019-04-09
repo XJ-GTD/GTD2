@@ -86,7 +86,8 @@ export class PgBusiService {
 
     }else{
 
-      let sql1 ="delete from gtd_e where si = '"+ rcId +"' and wd>= '"+ d +"'";
+      let sql1 ="delete from gtd_e where si = '"+ rcId +"' and " +
+        " wi in (select spi from gtd_sp where si = '"+ rcId +"' and sd>= '"+ d +"') ";
       await this.sqlExce.execSql(sql1);//本地删除提醒表
 
       let sql ="delete from gtd_sp where si = '"+ rcId +"' and sd>= '"+ d +"'";
@@ -224,6 +225,39 @@ export class PgBusiService {
     }
     return null;
   }
+
+  /**
+   * 保存更新指定特殊表提醒方式
+   * @param {CTbl} rc 日程详情
+   * @returns {Promise<Promise<any> | number>}
+   */
+  private updTx(rc:CTbl):Promise<any>{
+    let et = new ETbl();//提醒表
+    et.si = rc.si;
+
+    if(rc.tx != '0'){
+      et.st = rc.sn;
+      let time = 10; //分钟
+      if(rc.tx == "2"){
+        time = 30;
+      }else if(rc.tx == "3"){
+        time = 60;
+      }else if(rc.tx == "4"){
+        time = 240;
+      }else if(rc.tx == "5"){
+        time = 360;
+      }
+      let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD HH:mm");
+      et.wd=date.substr(0,10);
+      et.wt = date.substr(11,5);
+      let sql = "update gtd_e set wd = '"+  et.wd +"',wt = '"+  et.wt +"',st = '"+  et.st +"'" +
+        " where si = '"+  et.si +"' ";
+      console.log('-------- 更新提醒表 --------');
+      return this.sqlExce.execSql(sql);
+    }
+    return null;
+  }
+
   /**
    * 保存更新指定特殊表提醒方式
    * @param {CTbl} rc 日程详情
@@ -280,10 +314,9 @@ export class PgBusiService {
   /**
    *
    * @param {ScdData} scd
-   * @param {string} type 0：他人创建，1：本人创建
    * @returns {Promise<void>}
    */
-  async updateDetail(scd:ScdData,type :string){
+  async updateDetail(scd:ScdData){
 
     //特殊表操作
     let bs :BsModel<ScdData> = await this.get(scd.si);
@@ -295,36 +328,38 @@ export class PgBusiService {
     c.du = "1";
     await  this.sqlExce.update(c);
 
-    //更新提醒时间
-    //await this.saveOrUpdTx(c);
-
-    if (type == "1") {
-      if (bs.data.sd != c.sd || bs.data.rt != c.rt){
-        //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
-        let sptbl = new SpTbl();
-        sptbl.si = c.si;
-        //删除提醒
-        let sql = 'delete from gtd_e ge inner join gtd_sp sp on sp.spi = ge.si where sp.si="'+ c.si+'"';
-        await this.sqlExce.execSql(sql);
-        //删除特殊表
-        await this.sqlExce.delete(sptbl);
-        //保存特殊表及相应提醒表
-        await this.saveSp(c);
+    if (bs.data.sd != c.sd || bs.data.rt != c.rt){
+      //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
+      let sptbl = new SpTbl();
+      sptbl.si = c.si;
+      //删除提醒
+      let sql = 'delete from gtd_e ge inner join gtd_sp sp on sp.spi = ge.si where sp.si="'+ c.si+'"';
+      await this.sqlExce.execSql(sql);
+      //删除特殊表
+      await this.sqlExce.delete(sptbl);
+      //保存特殊表及相应提醒表
+      await this.saveSp(c);
 
 
-      }else{
-        //如果只是修改重复时间，则更新重复子表所有时间
-        if (bs.data.st != scd.st){
-          let sq = "update gtd_sp set st = '"+ c.st +"' where si = '"+ c.si +"'";
-          await this.sqlExce.execSql(sq);
-        }
+    }else{
+      //如果只是修改重复时间，则更新重复子表所有时间
+      if (bs.data.st != scd.st){
+        let sq = "update gtd_sp set st = '"+ c.st +"' where si = '"+ c.si +"'";
+        await this.sqlExce.execSql(sq);
       }
-      //restful用参数
-      let agd = new AgdPro();
-      this.setAdgPro(agd,c);
 
-      await this.agdRest.save(agd);
+      //如果只是修改提醒时间，则更新提醒表所有时间
+      //更新提醒时间
+      await this.updTx(c);
+
+
     }
+    //restful用参数
+    let agd = new AgdPro();
+    this.setAdgPro(agd,c);
+
+    await this.agdRest.save(agd);
+
   }
 
   private setAdgPro(agd:AgdPro,c :CTbl){
@@ -394,10 +429,10 @@ export class PgBusiService {
     //主题
     c.sn = agd.at  ;
     //时间(YYYY/MM/DD)
-    c.sd = agd.adt ;
-    c.st = agd.st  ;
-    c.ed = agd.ed  ;
-    c.et = agd.et  ;
+    c.sd = moment(agd.adt).format("YYYY/MM/DD") ;
+    c.st = moment(agd.adt).format("HH:mm")  ;
+    c.ed = moment(agd.adt).format("YYYY/MM/DD")  ;
+    c.et = moment(agd.adt).format("HH:mm")  ;
     //计划
     c.ji = agd.ap  ;
     //重复

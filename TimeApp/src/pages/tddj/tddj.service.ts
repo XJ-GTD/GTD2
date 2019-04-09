@@ -57,6 +57,6 @@ export class TddjService {
 
   //修改本地日程详情
   async updateDetail(scd:ScdData){
-    return this.pgbusiServ.updateDetail(scd,"1");
+    return this.pgbusiServ.updateDetail(scd);
   }
 }
