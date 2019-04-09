@@ -73,6 +73,10 @@ public class MainVerticle extends AbstractVerticle {
 		consumer.handler(vertxMsg -> this.process(trigger, vertxMsg));
 	}
 	
+	public static String getShortContent(String origin) {
+		return origin.length() > 512 ? origin.substring(0, 512) : origin;
+	}
+	
 	/**
 	 * 
 	 * 冥王星综合通知服务
@@ -97,9 +101,11 @@ public class MainVerticle extends AbstractVerticle {
 	 * @param received
 	 */
 	private void process(String consumer, Message<JsonObject> received) {
-		System.out.println("Consumer " + consumer + " received [" + received.body().encode() + "]");
+		System.out.println("Consumer " + consumer + " received [" + getShortContent(received.body().encode()) + "]");
 		JsonObject data = received.body().getJsonObject("body");
 
+		Boolean cachestore = Boolean.valueOf(data.getJsonObject("context").getString("cache", "true"));
+		
 		JsonArray announceTo = new JsonArray();
 		
 		if (data.getJsonObject("context").getValue("announceTo") != null) {
@@ -134,7 +140,7 @@ public class MainVerticle extends AbstractVerticle {
 			// 短应用内部通知
 			for (int pos = 0; pos < announceTo.size(); pos++) {
 				String address = announceTo.getString(pos);
-				System.out.println("Announced to " + address + " " + announceContent.encode());
+				System.out.println("Announced to " + address + " " + getShortContent(announceContent.encode()));
 
 				MessageProducer<JsonObject> producer = bridge.createProducer(address);
 				producer.send(new JsonObject()
@@ -153,22 +159,24 @@ public class MainVerticle extends AbstractVerticle {
 						JsonObject userinfo = handler.result();
 						
 						System.out.println("User info fetched with " + openid);
-						System.out.println(userinfo.encode());
+						System.out.println(getShortContent(userinfo.encode()));
 						String unionId = userinfo.getJsonObject("data").getString("unionid");
 						String openId = userinfo.getJsonObject("data").getString("openid");
 
 						if (openId == null || StringUtils.isEmpty(openId)) {
 							System.out.println("announce by sms to " + openid);
 							
-							// 缓存未注册用户数据, 用户注册登录后通知
-							JsonObject storage = new JsonObject();
-							storage.put("openid", openid);
-							storage.put("announceTo", new JsonArray().add(openid));
-							storage.put("announceType", announceType);
-							storage.put("announceContent", announceContent);
-							
-							MessageProducer<JsonObject> producer = bridge.createProducer("aak");
-							producer.send(new JsonObject().put("body", storage));
+							if (cachestore) {
+								// 缓存未注册用户数据, 用户注册登录后通知
+								JsonObject storage = new JsonObject();
+								storage.put("openid", openid);
+								storage.put("announceTo", new JsonArray().add(openid));
+								storage.put("announceType", announceType);
+								storage.put("announceContent", announceContent);
+								
+								MessageProducer<JsonObject> producer = bridge.createProducer("aak");
+								producer.send(new JsonObject().put("body", storage));
+							}
 							
 							// 发送短信通知
 							JsonObject sms = announceContent.getJsonObject("sms");
@@ -186,15 +194,18 @@ public class MainVerticle extends AbstractVerticle {
 					} else {
 						System.out.println("User info fetched error with " + handler.cause().getMessage());
 						System.out.println("announce by sms to " + openid);
-						// 缓存未注册用户数据, 用户注册登录后通知
-						JsonObject storage = new JsonObject();
-						storage.put("openid", openid);
-						storage.put("announceTo", new JsonArray().add(openid));
-						storage.put("announceType", announceType);
-						storage.put("announceContent", announceContent);
-						
-						MessageProducer<JsonObject> producer = bridge.createProducer("aak");
-						producer.send(new JsonObject().put("body", storage));
+
+						if (cachestore) {
+							// 缓存未注册用户数据, 用户注册登录后通知
+							JsonObject storage = new JsonObject();
+							storage.put("openid", openid);
+							storage.put("announceTo", new JsonArray().add(openid));
+							storage.put("announceType", announceType);
+							storage.put("announceContent", announceContent);
+							
+							MessageProducer<JsonObject> producer = bridge.createProducer("aak");
+							producer.send(new JsonObject().put("body", storage));
+						}
 
 						// 发送短信通知
 						JsonObject sms = announceContent.getJsonObject("sms");
@@ -225,7 +236,7 @@ public class MainVerticle extends AbstractVerticle {
 						JsonObject userinfo = handler.result();
 						
 						System.out.println("User info fetched with " + openid);
-						System.out.println(userinfo.encode());
+						System.out.println(getShortContent(userinfo.encode()));
 						String unionId = userinfo.getJsonObject("data").getString("unionid");
 						String openId = userinfo.getJsonObject("data").getString("openid");
 						
@@ -259,14 +270,14 @@ public class MainVerticle extends AbstractVerticle {
 		
 		MessageProducer<JsonObject> producer = bridge.createProducer(next);
 		producer.send(new JsonObject().put("body", nextctx));
-		System.out.println("Consumer " + consumer + " send to [" + next + "] result [" + nextctx.encode() + "]");
+		System.out.println("Consumer " + consumer + " send to [" + next + "] result [" + getShortContent(nextctx.encode()) + "]");
 
 	}
 
 	private void sendMQMessages(String exchange, String routingkey, JsonObject content) {
 		rabbitmq.basicPublish(exchange, routingkey, new JsonObject().put("body", content.encode()), resultHandler -> {
 			if (resultHandler.succeeded()) {
-				System.out.println("Send rabbit mq message successed. [" + content.encode() + "]");
+				System.out.println("Send rabbit mq message successed. [" + getShortContent(content.encode()) + "]");
 			} else {
 				System.out.println("Send rabbit mq message failed with " + resultHandler.cause().getMessage());
 			}
