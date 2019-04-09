@@ -59,6 +59,7 @@ export class AlService {
 
 //创建或连接数据库
   createDB(): Promise<AlData> {
+    console.log(moment().add(DataConfig.REINTERVAL,"s").format("YYYY/MM/DD HH:mm"));
     let alData: AlData = new AlData();
     return new Promise((resolve, reject) => {
       this.sqlLiteConfig.generateDb().then(data => {
@@ -497,9 +498,9 @@ export class AlService {
       ss.push("看过不良人吗");
       ss.push("周末加班");
 
-      for (let i = 0; i < 400; i++) {
+      for (let i = 0; i < 300; i++) {
         start = moment('2019/01/01');
-        let r = this.util.randInt(-365 * 3, 365 * 3);
+        let r = this.util.randInt(-365 * 10, 365 * 10);
         let t = this.util.randInt(0, 24);
         let jh_i = this.util.randInt(0, 20);
         let jh_id = "";

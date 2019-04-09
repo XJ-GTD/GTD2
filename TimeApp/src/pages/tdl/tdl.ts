@@ -110,11 +110,6 @@ export class TdlPage {
               private emitService: EmitService,
               private el: ElementRef
   ) {
-
-
-  }
-  ngAfterViewInit(){
-    console.log("***********************你有吗？");
   }
 
   ngOnInit() {
@@ -203,20 +198,23 @@ export class TdlPage {
     let updata = await this.tdlServ.after(moment(condi).add(1, 'd').format("YYYY/MM/DD"), 30);
     this.scdlDataList = this.scdlDataList.concat(dwdata, updata);
     this.headershow = true;
+    this.gotoEl(dwdata[dwdata.length-1]);
 
-    setTimeout(() => {
-      let d = dwdata[dwdata.length - 1];
-      if (!d) d = updata[0];
-      if (d) {
-        let c = this.el.nativeElement.querySelector("#day" + d.id);
-        this.gridHight = this.grid.nativeElement.clientHeight;
-        c.scrollIntoView({block: "center", inline: "center",});
 
-      }
-    }, 800);
   }
 
 
+  gotoEl(d){
+    setTimeout(() => {
+        let c = this.el.nativeElement.querySelector("#day" + d.id);
+        if (c){
+          this.gridHight = this.grid.nativeElement.clientHeight;
+          c.scrollIntoView({block: "center", inline: "center",});
+        }else{
+          this.gotoEl(d);
+        }
+    }, 800);
+  }
 
   //回主页
   goBack() {
