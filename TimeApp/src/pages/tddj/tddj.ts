@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import {ActionSheetController, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {BsModel} from "../../service/restful/out/bs.model";
-import {TdcService} from "../tdc/tdc.service";
 import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
 import {ScdData} from "../../service/pagecom/pgbusi.service";
+import {TddjService} from "./tddj.service";
 
 /**
  * Generated class for the 日程详情 page.
@@ -179,7 +179,7 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
 export class TddjPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private tdcServ :TdcService,private util:UtilService,
+              private tddjServ :TddjService,private util:UtilService,
               public actionSheetCtrl: ActionSheetController,
               public modalCtrl: ModalController              ) {
 
@@ -222,7 +222,7 @@ export class TddjPage {
 
   ionViewWillEnter() {
 
-    this.tdcServ.getPlans().then(data=>{
+    this.tddjServ.getPlans().then(data=>{
       this.jhs = data;
       //console.log("111" + JSON.stringify(this.jhs));
     }).catch(res=>{
@@ -248,7 +248,7 @@ export class TddjPage {
 
 
     if (this.navParams.get("si")){
-      this.tdcServ.get(this.navParams.get("si")).then(data=>{
+      this.tddjServ.get(this.navParams.get("si")).then(data=>{
         let bs : BsModel<ScdData> = data;
         Object.assign(this.scd,bs.data);
 
@@ -439,7 +439,7 @@ export class TddjPage {
 
     //新建数据
     if (this.pagestate =="0"){
-      this.tdcServ.save(this.scd).then(data=>{
+      this.tddjServ.save(this.scd).then(data=>{
         let ctbl = data.data;
         this.scd.si = ctbl.si;
         this.pagestate ="1";
@@ -455,7 +455,7 @@ export class TddjPage {
     //本人创建
     if (this.pagestate =="1") {
 
-      this.tdcServ.updateDetail(this.scd).then(data =>{
+      this.tddjServ.updateDetail(this.scd).then(data =>{
 
         this.util.toast("保存成功",2000);
         if(typeof(eval(share))=="function")
@@ -497,7 +497,7 @@ export class TddjPage {
             role: 'destructive',
             cssClass:'btn-del',
             handler: () => {
-              /*this.tdcServ.delete(this.scd.si,"1",d).then(data=>{
+              /*this.tddjServ.delete(this.scd.si,"1",d).then(data=>{
                 this.cancel();
               });*/
             }
@@ -505,7 +505,7 @@ export class TddjPage {
             text: '删除所有日程',
             cssClass:'btn-delall',
             handler: () => {
-              // this.tdcServ.delete(this.scd.si,"2",d).then(data=>{
+              // this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
               //   this.cancel();
               // });
             }
@@ -522,7 +522,7 @@ export class TddjPage {
       actionSheet.present();
     }else{
       //非重复日程删除
-      /*this.tdcServ.delete(this.scd.si,"2",d).then(data=>{
+      /*this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
         this.cancel();
       });*/
     }

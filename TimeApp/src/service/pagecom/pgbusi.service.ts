@@ -203,7 +203,7 @@ export class PgBusiService {
    */
    getTxEtbl(rc:CTbl,tsId:string):ETbl{
     let et = new ETbl();//提醒表
-    et.si = tsId;
+    et.si = rc.si;
     if(rc.tx != '0'){
       et.wi = tsId;
       et.st = rc.sn;
