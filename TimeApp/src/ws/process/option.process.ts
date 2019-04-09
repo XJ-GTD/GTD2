@@ -43,7 +43,7 @@ export class OptionProcess implements MQProcess{
            let bsM:BsModel<CTbl> = await this.busiService.save(rc);
             rc.si = bsM.data.si;
           }else if (prvOpt == SS.U){
-            await this.busiService.updateDetail(rc,"1");
+            await this.busiService.updateDetail(rc);
           }else{
             await this.busiService.delete( rc.si,"2", rc.sd);
           }

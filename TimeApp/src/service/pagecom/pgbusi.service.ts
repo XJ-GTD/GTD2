@@ -428,15 +428,25 @@ export class PgBusiService {
     c.si = agd.ai  ;
     //主题
     c.sn = agd.at  ;
-    //时间(YYYY/MM/DD)
-    c.sd = moment(agd.adt).format("YYYY/MM/DD") ;
-    c.st = moment(agd.adt).format("HH:mm")  ;
-    c.ed = moment(agd.adt).format("YYYY/MM/DD")  ;
-    c.et = moment(agd.adt).format("HH:mm")  ;
+
     //计划
     c.ji = agd.ap  ;
     //重复
     c.rt = agd.ar  ;
+
+    //时间(YYYY/MM/DD)
+    if (c.rt != '0'){
+      c.sd = agd.adt.split(" ")[0];
+      c.ed = "9999/12/31"  ;
+      c.st = agd.adt.split(" ")[1]  ;
+      c.et = agd.adt.split(" ")[1]  ;
+    }else{
+      c.sd = moment(agd.adt).format("YYYY/MM/DD") ;
+      c.st = moment(agd.adt).format("HH:mm")  ;
+      c.ed = moment(agd.adt).format("YYYY/MM/DD")  ;
+      c.et = moment(agd.adt).format("HH:mm")  ;
+    }
+
     //提醒
     c.tx = agd.aa  ;
     //备注

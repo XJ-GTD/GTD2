@@ -220,7 +220,7 @@ export class TdcPage {
   jhs:any;
 
   ionViewDidLoad() {
-
+    console.log("test***"+moment("1999/12/31 99:99").format("YYYY/MM/DD"));
     console.log('ionViewDidLoad NewAgendaPage');
   }
 
@@ -399,6 +399,7 @@ export class TdcPage {
     //结束时间设置
     //全天的场合
     if (this.alld) {
+      this.scd.st = "99:99";
       this.scd.et = "99:99";
     } else {
       this.scd.et = this.scd.st;
