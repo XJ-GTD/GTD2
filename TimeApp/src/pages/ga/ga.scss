@@ -1,89 +1,16 @@
 page-ga {
+  background-color: #000;
+
   ion-content {
     font-family: "PingFang-Regular";
-  }
-
-  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: #000;
-  }
-
-  ion-content.content {
-    background-color: #000;
-    color: #fff;
-  }
-
-  ion-content .plan-list-item {
-    background-color: #000;
-    color: #fff;
-  }
-  .img-header-left{
-    width: 4vmin;
-    height: 4vmin;
-    margin-left: 5vmin;
-  }
-
-  ion-item ion-label{
-    font-size: 15px;
-  }
-
-  ion-list-header.plan-list-item {
-    color: rgb(153,153,153);
-  }
-
-  .color-dot {
-    width: 3vmin;
-    height: 3vmin;
-    background-color: #fff;
-    border-radius: 50%;
-  }
-
-  .color-palm {
-    background-color: rgb(155,94,70);
-  }
-
-  .color-sunflower {
-    background-color: rgb(135,106,41);
-  }
-
-  .color-aurantia {
-    background-color: rgb(207,68,37);
-  }
-
-  .color-orange {
-    background-color: rgb(175,43,36);
-  }
-
-  .color-pink {
-    background-color: rgb(173,131,135);
-  }
-
-  .color-lavender {
-    background-color: rgb(192,119,219);
-  }
-
-  .color-fuchsia {
-    background-color: rgb(69,59,147);
-  }
-
-  .color-sky {
-    background-color: rgb(81,170,242);
-  }
-
-  .color-blue {
-    background-color: rgb(53,145,165);
-  }
-
-  .color-daphnite {
-    background-color: rgb(48,129,88);
   }
 
   .w-auto {
     flex: 1;
   }
 
-  .name-input {
-    margin-top: 2vmin;
-    margin-bottom: 8vmin;
+  .grid {
+    padding: 0;
   }
 
   .grid .row {
@@ -98,12 +25,34 @@ page-ga {
     border: 0;
   }
 
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: #000;
+  }
+
+  ion-header{
+    padding: 4px 20px;
+  }
+
+  .img-header-left{
+    width: 4vmin;
+    height: 4vmin;
+  }
+
+  .bar-button-ios{
+    font-size: 1.3rem;
+  }
+
+  ion-input{
+    font-size: 1.5rem;
+  }
+
+  ion-content.content {
+    background-color: #000;
+    color: #fff;
+  }
+
   .scroll-content{
     overflow-x: hidden;
     overflow-y: hidden;
-  }
-
-  .item-block{
-    min-height: 3.5rem;
   }
 }

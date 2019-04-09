@@ -111,7 +111,7 @@ export class LpPage {
 
   format(){
     if(this.lpData.mobile.length==11){
-      if(this.checkPhone() && this.lpData.password !=""){
+      if(this.checkPhone() && this.lpData.password !="" && this.lpData.password.length >= 4){ // TODO 登录密码暂定四位 测试用的都是四位
         this.opa = "1";
       }else {
         this.opa = "0.4";

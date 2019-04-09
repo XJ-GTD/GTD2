@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {BsModel} from "./out/bs.model";
+import {InDataPassword} from "../../pages/ps/ps.service";
 
 /**
  * 帐户 注册
@@ -112,12 +113,12 @@ export class PersonRestful {
   }
 
   //帐户信息更新	AIU	更新用户信息(包括密码) put
-  updateself(personData:PersonInData): Promise<BsModel<any>>  {
+  updateself(personData:any,unionid:string): Promise<BsModel<any>>  {
 
     let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIU");
-      url.url = url.url.replace("{unionid}",personData.unionid);
+      url.url = url.url.replace("{unionid}",unionid);
       this.request.put(url,personData).then(data => {
         //处理返回结果
         bsModel.code = data.errcode;
@@ -137,12 +138,12 @@ export class PersonRestful {
   }
 
   //修改密码 MP put
-  updatepass(personData:PersonInData): Promise<BsModel<any>> {
+  updatepass(personData:InDataPassword,unionid:string): Promise<BsModel<any>> {
 
     let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("MP");
-      url.url = url.url.replace("{unionid}",personData.unionid);
+      url.url = url.url.replace("{unionid}",unionid);
       this.request.put(url, personData).then(data => {
         //处理返回结果
         bsModel.code = data.errcode;
@@ -216,15 +217,18 @@ export class PersonOutData{
   verifycode  :string = "";
   userpassword  :string = "";
   openid  :string = "";
-  nickname: string = "";   //姓名
   password:string = "";
   unionid:string = "";
-  sex:string = "";
   province:string = "";
   city: string = "";
   country: string = "";
-  avatar: string = "";     //头像
-  avatarbase64: string = "";     //头像//
+  nickname: string = "";   //姓名
+  name:string = "";   // 真实姓名
+  avatarbase64: string = "";     //头像64
+  sex:string = "";    //性别
+  birthday: string = "";  //出生日期
+  ic: string = "";  //身份证
+  contact: string = "";//  联系方式
   privilege:object;
   code:string = "";
   state:string = "";

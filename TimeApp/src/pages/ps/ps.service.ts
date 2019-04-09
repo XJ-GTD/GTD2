@@ -4,36 +4,59 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {UserConfig} from "../../service/config/user.config";
 import {BsModel} from "../../service/restful/out/bs.model";
+import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 
 @Injectable()
 export class PsService {
   constructor(private personRestful: PersonRestful,
-              private sqlExce: SqliteExec,
+              private sqlExec: SqliteExec,
               private userConfig:UserConfig) {
   }
 
   //保存用户信息
-  saveUser(pu:PageUData):Promise<BsModel<any>>{
+  saveUser(pu:any,type:string):Promise<BsModel<any>>{
     return new Promise<BsModel<any>>((resolve, reject) => {
       let bs = new BsModel<any>();
       //保存本地用户信息
       let u = new UTbl();
       u.ui = pu.user.id;
-      u.un = pu.user.name;
-      u.rn =  pu.user.realname;
-      u.hiu = pu.user.avatar;
-      u.biy = pu.user.bothday;
-      u.ic = pu.user.No;
-      u.us = pu.user.sex;
-      u.uct = pu.user.contact;
-      this.sqlExce.update(u).then(data=>{
-        let per = new PersonInData();
-        Object.assign(per,pu.user);
-        per.unionid = pu.user.id;
-        per.nickname =pu.user.name;
-        per.phoneno = pu.user.contact;
+      if(type == "name"){
+        u.un = pu.user.name;
+      }else if(type == "both"){
+        u.biy = pu.user.bothday;
+      }else if(type == "ic"){
+        u.ic = pu.user.No;
+      }else if(type == "sex"){
+        u.us = pu.user.sex;
+      }else if(type == "contact") {
+        u.uct = pu.user.contact;
+      }
+      this.sqlExec.update(u).then(data=>{
+
+        let inDataName:InDataName = new InDataName();
+        let inDataSex:InDataSex = new InDataSex();
+        let inDataBoth:InDataBoth = new InDataBoth();
+        let inDataContact:InDataContact = new InDataContact();
+        let inDataIC:InDataIC = new InDataIC();
+
         //restFul保存用户信息
-        return this.personRestful.updateself(per)
+        //return this.personRestful.updateself(pu,pu.user.id);
+        if(type == "name"){
+          inDataName.nickname = pu.user.name;
+          return this.personRestful.updateself(inDataName,pu.user.id);
+        }else if(type == "both"){
+          inDataBoth.birthday = pu.user.bothday;
+          return this.personRestful.updateself(inDataBoth,pu.user.id);
+        }else if(type == "ic"){
+          inDataIC.ic = pu.user.No;
+          return this.personRestful.updateself(inDataIC,pu.user.id);
+        }else if(type == "sex"){
+          inDataSex.sex = pu.user.sex;
+          return this.personRestful.updateself(inDataSex,pu.user.id);
+        }else if(type == "contact") {
+          inDataContact.contact = pu.user.contact;
+          return this.personRestful.updateself(inDataContact,pu.user.id);
+        }
       }).then(data=>{
         //刷新系统全局用户静态变量
         //UserConfig.user = pu.user;
@@ -51,19 +74,50 @@ export class PsService {
   }
 
   //修改密码
-  editPass(pw : string):Promise<BsModel<any>>{
+  editPass(pw : string , unionid :string ):Promise<BsModel<any>>{
     return new Promise<BsModel<any>>((resolve, reject) => {
       //restFul更新用户密码（服务器更新token并返回，清空该用户服务其他token）
       let bs = new BsModel<any>();
-      let per = new PersonInData();
+      let per = new InDataPassword();
       per.password = pw;
-      this.personRestful.updatepass(per).then(data=>{
+      this.personRestful.updatepass(per,unionid).then(data=>{
         //刷新系统全局用户静态变量
         resolve(bs);
       }).catch(e=>{
         bs.code = -99;
         bs.message = e.message;
         resolve(bs);
+      })
+    })
+  }
+
+  // 清除账户信息和用户信息
+  deleteUser(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      //查询账户表
+      let aTbl1:ATbl = new ATbl();
+      this.sqlExec.getList<ATbl>(aTbl1).then(data=>{
+        let atbls:Array<ATbl> = data;
+
+        if (atbls.length > 0 ) {//清除账户表
+          let daSql = "delete from gtd_a";
+          this.sqlExec.execSql(daSql);
+        }
+
+        //查询用户表
+        let uTbl1:UTbl = new UTbl();
+        return this.sqlExec.getList<UTbl>(uTbl1);
+      }).then(data=>{
+        let utbls:Array<UTbl> = data;
+
+        if (utbls.length > 0 ) {//清除账户表
+          let duSql = "delete from gtd_u";
+          this.sqlExec.execSql(duSql);
+        }
+
+        resolve(data);
+      }).catch(error=>{
+        resolve(error);
       })
     })
   }
@@ -103,5 +157,34 @@ export class PageUData{
     mq: "",
   }
 }
+
+export class InDataName{
+  nickname: string = "";   //姓名
+}
+
+export class InDataPassword{
+  password: string = "";   //密码
+}
+
+export class InDataSex{
+  sex: "0";      //性别 0 未知, 1 男性, 2 女性 Enum: [ 0, 1, 2 ]
+}
+
+export class InDataIC{
+  ic: string = "";     //身份证号码
+}
+
+export class InDataAvatar{
+  avatarbase64: string = "";     //头像64
+}
+
+export class InDataBoth{
+  birthday: string = ""; //出生日期  2019-03-11
+}
+
+export class InDataContact{
+  contact: string = ""; //联系电话
+}
+
 
 

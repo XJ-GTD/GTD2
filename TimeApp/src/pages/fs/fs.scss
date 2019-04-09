@@ -1,52 +1,20 @@
 page-fs {
+  background-color: #000;
+
+  @font-face {
+    font-family: 'PingFang-Regular';
+    src: url('../../assets/fonts/PingFang Regular.ttf');
+  }
   ion-content {
     font-family: "PingFang-Regular";
   }
 
-  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: #000;
-  }
-  ion-header {
-    top: 10px;
-  }
-  ion-content.content {
-    background-color: #000;
-    color: #fff;
-  }
-  .img-header-left{
-    width: 4vmin;
-    height: 4vmin;
-    margin-left: 5vmin;
-  }
-
-  ion-content .plan-list-item {
-    background-color: #000;
-    color: #fff;
-  }
-
-  ion-list-header.plan-list-item {
-    color: rgb(153,153,153);
-  }
-  ion-item {
-    height: 60px;
-  }
-  .color-dot {
-    width: 2vmin;
-    height: 2vmin;
-    background-color: #fff;
-    border-radius: 50%;
-  }
-
-  .color-pink {
-    background-color: rgb(192,119,219);
-  }
-
-  .color-blue {
-    background-color: rgb(81,170,242);
-  }
-
   .w-auto {
     flex: 1;
+  }
+
+  .grid {
+    padding: 0;
   }
 
   .grid .row {
@@ -60,8 +28,59 @@ page-fs {
   .list-header, .list-header-md, .list-header-ios {
     border: 0;
   }
-  .toolbar-title-ios{
-    color:#ffffff;
+
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: #000;
+  }
+
+  ion-header{
+    padding: 4px 20px;
+  }
+
+  .img-header-left{
+    width: 4vmin;
+    height: 4vmin;
+  }
+
+  .toolbar-title{
+    color: white;
+    letter-spacing: 0.5vmin;
+    font-size: 1.5rem;
+  }
+
+  .bar-button-ios{
+    font-size: 1.3vmin;
+  }
+
+  ion-input{
+    font-size: 1.5rem;
+  }
+
+  ion-content.content {
+    background-color: #000;
+    color: #fff;
+  }
+
+  ion-content .plan-list-item {
+    background-color: #000;
+    color: #fff;
+    padding-left: 8px;
+    font-size: 1.5rem;
+    min-height: 9vmin;
+  }
+
+  .list-ios .item-block .item-inner {
+    padding-right: 0;
+  }
+
+  .content-gc{
+    width: 12px;
+    height: 15px;
+  }
+
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
   }
 
   ion-checkbox {
@@ -71,7 +90,7 @@ page-fs {
   .item.item-ios .checkbox-ios {
     position: relative;
     display: block;
-    margin: 0px;
+    margin: 0;
   }
 
   .item-inner{

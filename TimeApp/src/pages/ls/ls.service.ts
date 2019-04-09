@@ -13,11 +13,11 @@ import {AlService} from "../al/al.service";
 export class LsService {
   constructor(private personRestful: PersonRestful,
               private smsRestful: SmsRestful,
-              private sqlExce: SqliteExec,
+              private sqlExec: SqliteExec,
               private util: UtilService,
               private authRestful: AuthRestful,
               //private brService: BrService,
-              private websocketService:WebsocketService,
+              private webSocketService:WebsocketService,
               private alService:AlService
   ) {
   }
@@ -61,7 +61,6 @@ export class LsService {
     return new Promise((resolve, reject) => {
       let aTbl:ATbl = new ATbl();
       let uTbl:UTbl = new UTbl();
-      let unionId = data.data.unionid;
 
       //获得token，放入头部header登录
       let code = data.data.code;
@@ -74,45 +73,47 @@ export class LsService {
         aTbl.aq = data.cmq;
 
         //用户表赋值
-        uTbl.un = data.nickname; //用户名
-        uTbl.hiu = data.avatar;
-        uTbl.rn = data.nickname; //真实姓名
-        uTbl.us = data.sex;
+        uTbl.ui = data.unionid; //unionid
+        uTbl.un = data.nickname; //用户名（昵称）
+        uTbl.rn = data.name == "" ? data.nickname : data.name; //真实姓名
+        uTbl.us = data.sex == undefined ? "0" : data.sex; //性别
+        uTbl.biy = data.birthday == undefined ? "" : data.birthday;  //出生日期
+        uTbl.ic = data.ic == undefined ? "" : data.ic;  //身份证
+        uTbl.uct = data.contact== undefined ? "" : data.contact;//  联系方式
 
         let personInData:PersonInData = new PersonInData();
-        personInData.unionid = unionId;
+        personInData.unionid = data.unionid;
         return this.personRestful.getself(personInData);
       }).then(data=>{
         uTbl.hiu = data.data.avatarbase64;//头像
         //查询账户表
         let aTbl1:ATbl = new ATbl();
-        return this.sqlExce.getList<ATbl>(aTbl1);
+        return this.sqlExec.getList<ATbl>(aTbl1);
       }).then(data=>{
         let atbls:Array<ATbl> = data;
 
         if (atbls.length > 0 ){//更新账户表
           aTbl.ai = atbls[0].ai;
           uTbl.ai = aTbl.ai;
-          return this.sqlExce.update(aTbl);
+          return this.sqlExec.update(aTbl);
         }else{//保存账户表
           aTbl.ai = this.util.getUuid();
           uTbl.ai = aTbl.ai;
-          return this.sqlExce.save(aTbl);
+          return this.sqlExec.save(aTbl);
         }
 
       }).then(data=>{
         //查询用户表
         let uTbl1:UTbl = new UTbl();
-        return this.sqlExce.getList<UTbl>(uTbl1);
+        return this.sqlExec.getList<UTbl>(uTbl1);
       }).then(data=>{
         let utbls:Array<UTbl> = data;
 
         if (utbls.length > 0 ){//更新用户表
           uTbl.ui = utbls[0].ui;
-          return this.sqlExce.update(uTbl);
+          return this.sqlExec.update(uTbl);
         }else{//保存用户表
-          uTbl.ui = unionId;
-          return this.sqlExce.save(uTbl);
+          return this.sqlExec.save(uTbl);
         }
 
       }).then(data=>{
@@ -121,7 +122,7 @@ export class LsService {
         // 同步数据（调用brService方法恢复数据）
         //return this.brService.recover(0);
         //建立websoct连接（调用websoctService）
-        return this.websocketService.connect();
+        return this.webSocketService.connect();
       }).then(data=>{
         resolve(data)
 
@@ -136,4 +137,5 @@ export class PageLsData {
   mobile: string = "";
   authCode: string = "";
   verifykey:string = "";
+  password:string = "";
 }

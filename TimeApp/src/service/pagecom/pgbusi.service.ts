@@ -85,11 +85,15 @@ export class PgBusiService {
       await this.agdRest.remove(a);
 
     }else{
-      let sql ="delete from gtd_sp where si = '"+ rcId +"' and sd>= '"+ d +"'";
-      await this.sqlExce.execSql(sql);
 
-      ctbl.sd = d;
-      await this.sqlExce.update(ctbl);
+      let sql1 ="delete from gtd_e where si = '"+ rcId +"' and wd>= '"+ d +"'";
+      await this.sqlExce.execSql(sql1);//本地删除提醒表
+
+      let sql ="delete from gtd_sp where si = '"+ rcId +"' and sd>= '"+ d +"'";
+      await this.sqlExce.execSql(sql);//本地删除日程子表
+
+      ctbl.ed = moment(d).subtract(1,'d').format("YYYY/MM/DD");
+      await this.sqlExce.update(ctbl);//更新日程表
 
       let a = new AgdPro();
       a.ai = ctbl.si;//日程ID
@@ -304,8 +308,10 @@ export class PgBusiService {
         await this.sqlExce.execSql(sql);
         //删除特殊表
         await this.sqlExce.delete(sptbl);
-        //保存特殊表
+        //保存特殊表及相应提醒表
         await this.saveSp(c);
+
+
       }else{
         //如果只是修改重复时间，则更新重复子表所有时间
         if (bs.data.st != scd.st){
@@ -360,6 +366,9 @@ export class PgBusiService {
       //插入日程表
       this.setCtbl(newc,bs.data);
       await this.sqlExce.save(newc);
+
+      //添加特殊事件表
+      await this.saveSp(newc);
     }else{
       //更新日程表
       this.setCtbl(newc,bs.data);
@@ -367,7 +376,10 @@ export class PgBusiService {
       newc.bz = c.bz;
       newc.tx = c.tx;
       await this.sqlExce.replaceT(newc);
+
+      //TODO: 修改特殊事件表
     }
+
     return bs.data;
 
   }

@@ -186,7 +186,7 @@ export class CTbl implements  ITbl{
 
   rpT():string {
     let sq ='replace into gtd_c ' +
-      '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,bz,tx,wtt,pni) values("'+ this.si+'","'+ this.sn+'","'+this.ui+ '"' +
+      '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,bz,tx,wtt,pni,du,gs) values("'+ this.si+'","'+ this.sn+'","'+this.ui+ '"' +
       ',"'+this.sd+ '","'+this.st+ '","'+this.ed+ '","'+this.et+ '","'+this.rt+ '","'+this.ji+ '"' +
       ',"'+this.sr+ '","'+this.bz+ '","' + this.tx + '",'+  moment().unix() +',"'+this.pni+'","'+this.du+'"' +
       ',"'+this.gs+'");';
