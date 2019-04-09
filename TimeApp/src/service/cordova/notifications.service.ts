@@ -137,7 +137,7 @@ export class NotificationsService {
     notif.data = {type: "remind", val: reData};
     let text:string =";"
     for(let e of reData){
-      text = text + "["+ e.si + "]";
+      text = text + "["+ e.st + "]";
     }
     notif.sound ="file://assets/feedback/sms.mp3";
     notif.text = text;
