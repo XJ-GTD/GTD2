@@ -7,11 +7,9 @@ import {
   LocalNotifications
 } from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
-import {CTbl} from "../sqlite/tbl/c.tbl";
 import {ScdData} from "../pagecom/pgbusi.service";
 import * as moment from "moment";
 import {UtilService} from "../util-service/util.service";
-import {AssistantService} from "./assistant.service";
 import {RemindService} from "../util-service/remind.service";
 import {DataConfig} from "../config/data.config";
 import {ETbl} from "../sqlite/tbl/e.tbl";
@@ -27,10 +25,13 @@ export class NotificationsService {
 
   private index: number = 0;
 
-  constructor(private localNotifications: LocalNotifications, private badge: Badge, private util: UtilService, private remindService: RemindService,private file: File) {
+  constructor(private localNotifications: LocalNotifications, private badge: Badge, private util: UtilService, private remindService: RemindService, private file: File) {
 
 
-    if (util.isMobile()) {
+  }
+
+  ngOnInit() {
+    if (this.util.isMobile()) {
       //提醒回馈处理 5分钟
       this.localNotifications.on('five').subscribe((next: ILocalNotification) => {
         let etbl: Array<ETbl> = next.data.val;
@@ -65,31 +66,22 @@ export class NotificationsService {
       this.localNotifications.on('trigger').subscribe((next: ILocalNotification) => {
         if (next.data.type == "schedule") {
           this.schedule();
-          console.log("localNotifications====================trigger》===next.data.type" + next.data.type + "===>id:" + next.id);
+          console.log("************************开始闹铃");
           this.remindService.getRemindLs().then(data => {
-            console.log("localNotifications====================getRemindLs》" + data.length);
+            console.log("************************开始闹铃数据" + JSON.stringify(data));
             if (data.length == 0) return;
             this.remind(data);
-            this.remindService.delRemin(next.data.val.wi);
+            console.log("************************开始闹铃删除" + JSON.stringify(data));
             this.remindService.delRemin(next.data.val);
-
           })
         }
 
         //自定定时启动防止后台js不执行
         if (next.data.type == "keeplive") {
-          console.log("localNotifications====================trigger》===next.data.type" + next.data.type + "===>id:" + next.id);
           this.keeplive();
-        }
-
-        //自定remind
-        if (next.data.type == "remind") {
-          console.log("localNotifications====================trigger》===next.data.type" + next.data.type + "===>id:" + next.id);
         }
         if (this.index > 99999) this.index = 0;
       });
-
-
     }
   }
 
@@ -106,8 +98,12 @@ export class NotificationsService {
     notif.id = this.index++;
     notif.text = scd.sn;
     notif.data = scd;
-    if (this.util.isMobile())
+    this.badge.increase(-1);
+    if (this.util.isMobile()) {
+
+      this.badge.increase(1);
       this.localNotifications.schedule(notif);
+    }
   }
 
 
@@ -116,7 +112,6 @@ export class NotificationsService {
     notif.id = this.index++;
     notif.trigger = {in: DataConfig.REINTERVAL, unit: ELocalNotificationTriggerUnit.SECOND};
     notif.data = {type: "schedule"};
-    console.log("localNotifications===============create》===next.data.type" + notif.data.type + "===>id:" + notif.id);
     this.localNotifications.schedule(notif);
   }
 
@@ -125,7 +120,6 @@ export class NotificationsService {
     notif.id = this.index++;
     notif.trigger = {in: 60, unit: ELocalNotificationTriggerUnit.SECOND};
     notif.data = {type: "keeplive"};
-    console.log("localNotifications===============create》===next.data.type" + notif.data.type + "===>id:" + notif.id);
 
     this.localNotifications.schedule(notif);
   }
@@ -135,18 +129,16 @@ export class NotificationsService {
     let notif: MwxRemind = new MwxRemind();
     notif.id = this.index++;
     notif.data = {type: "remind", val: reData};
-    let text:string =";"
-    for(let e of reData){
-      text = text + "["+ e.st + "]";
+    let text: string = ";"
+    for (let e of reData) {
+      text = text + "[" + e.st + "]";
     }
-    notif.sound ="file://assets/feedback/sms.mp3";
     notif.text = text;
     notif.actions = [
       {id: 'close', title: '关闭'},
       {id: 'five', title: '5分钟后'},
       {id: 'ten', title: '10分钟后'}
     ];
-    console.log("localNotifications===============create》===next.data.type" + notif.data.type + "===>id:" + notif.id);
 
     if (this.util.isMobile())
       this.localNotifications.schedule(notif);
@@ -159,6 +151,7 @@ class MwxNewMessage implements ILocalNotification {
   attachments: string[];
   autoClear: boolean = true;
   badge: number;
+  //channel: string = "cn.sh.com.xj.timeApp.remind";
   channel: string;
   clock: boolean | string;
   color: string;
@@ -167,7 +160,7 @@ class MwxNewMessage implements ILocalNotification {
   foreground: boolean = true;
   group: string = "冥王星新日程"
   groupSummary: boolean = true;
-  icon: string = "assets/icon/drawable-icon.png";
+  icon: string = "file://assets/icon/drawable-icon.png";
   id: number;
   launch: boolean = true;
   led: { color: string; on: number; off: number } | any[] | boolean | string;
@@ -194,6 +187,7 @@ class MwxRemind implements ILocalNotification {
   attachments: string[];
   autoClear: boolean = true;
   badge: number;
+  //channel: string = "cn.sh.com.xj.timeApp.remind";
   channel: string;
   clock: boolean | string;
   color: string;
@@ -213,7 +207,7 @@ class MwxRemind implements ILocalNotification {
   progressBar: ILocalNotificationProgressBar | boolean;
   silent: boolean;
   smallIcon: string;
-  sound: string;
+  sound: string =  "file://assets/feedback/sms.mp3";
   sticky: boolean;
   summary: string;
   text: string | string[];
@@ -238,7 +232,7 @@ class MwxSchedule implements ILocalNotification {
   foreground: boolean = true;
   group: string;
   groupSummary: boolean = false;
-  icon: string = "assets/icon/drawable-icon.png";
+  icon: string = "file://assets/icon/drawable-icon.png";
   id: number;
   launch: boolean = true;
   led: { color: string; on: number; off: number } | any[] | boolean | string;
@@ -249,7 +243,7 @@ class MwxSchedule implements ILocalNotification {
   progressBar: ILocalNotificationProgressBar | boolean;
   silent: boolean = true;
   smallIcon: string;
-  sound: string;
+  sound: string = "file://assets/feedback/sms.mp3";
   sticky: boolean;
   summary: string;
   text: string | string[];

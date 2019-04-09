@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import {ActionSheetController, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {BsModel} from "../../service/restful/out/bs.model";
-import {TdcService} from "../tdc/tdc.service";
 import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
-import {ScdData} from "../../service/pagecom/pgbusi.service";
+import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
+import {TddjService} from "./tddj.service";
 
 /**
  * Generated class for the 日程详情 page.
@@ -24,7 +24,7 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
         <ion-row right>
           <div class="h-auto " >
             <ion-buttons right>
-              <button [disabled]="pagestate == '0'?true:false" [hidden]="pagestate == '0'" ion-button icon-only (click)="presentActionSheet()" color="light">
+              <button ion-button icon-only (click)="presentActionSheet()" color="light">
                 <img  class="imgdel-set" src="../../assets/imgs/del.png">
               </button>
             </ion-buttons>
@@ -37,7 +37,7 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
     <ion-grid>
       <ion-row >
         <div class = "input-set">
-          <ion-input type="text" [(ngModel)]="scd.sn"   placeholder="我想..."></ion-input>
+          <ion-input type="text" [(ngModel)]="scd.sn"  ></ion-input>
         </div>
       </ion-row>
       <ion-row >
@@ -45,7 +45,7 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
             <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">{{scd.p.jn==""?"添加计划":scd.p.jn}}</button>
         </div>
       </ion-row>
-      <ion-row >
+      <ion-row [disabled]="rept_flg?true:false">
         <div class="date-set">
           <ion-item>
           <ion-datetime  displayFormat="YYYY年M月DD日 DDDD"
@@ -179,17 +179,19 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
 export class TddjPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private tdcServ :TdcService,private util:UtilService,
+              private tddjServ :TddjService,private util:UtilService,
               public actionSheetCtrl: ActionSheetController,
-              public modalCtrl: ModalController              ) {
+              public modalCtrl: ModalController   , private  busiServ : PgBusiService           ) {
 
   }
 
-  //画面状态：0：新建 ，1：本人修改
-  pagestate : string ="0";
+
   //画面数据
   scd :ScdData = new ScdData();
   b:boolean = true;
+
+  //重复日程不可以修改日期
+  rept_flg :boolean = false;
 
   rept = {
     close:0,
@@ -222,58 +224,40 @@ export class TddjPage {
 
   ionViewWillEnter() {
 
-    this.tdcServ.getPlans().then(data=>{
+    this.busiServ.getPlans().then(data=>{
       this.jhs = data;
-      //console.log("111" + JSON.stringify(this.jhs));
     }).catch(res=>{
       console.log("获取计划失败" + JSON.stringify(res));
     });
 
-    //新建的场合初始化
-    if (this.navParams.get("dateStr")){
-      this.scd.sd = this.navParams.get("dateStr");
-      this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
-      if (this.scd.st) {
-        this.scd.st = moment(this.scd.sd + " " + this.scd.st).format("HH:mm");
-      } else {
-        this.scd.st = moment().format("HH:mm");
-      }
-      this.scd.rt = "0";
-      this.scd.tx = "0";
-      this.pagestate = "0";
-      this.rept.close = 1;
-      this.wake.close = 1;
-      return ;
-    }
-
 
     if (this.navParams.get("si")){
-      this.tdcServ.get(this.navParams.get("si")).then(data=>{
+      this.tddjServ.get(this.navParams.get("si")).then(data=>{
         let bs : BsModel<ScdData> = data;
         Object.assign(this.scd,bs.data);
 
+        //重复日程不可以修改日期
+        if (this.scd.rt != "0"){
+          this.rept_flg = true;
+        }
+
+        this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
+        if (this.scd.st) {
+          this.scd.st = this.scd.st
+        } else {
+          this.scd.st = moment().format("HH:mm");
+        }
+
         //全天的场合
-        if (this.scd.et == "99:99") {
+        if (this.scd.st == "99:99") {
           this.alld = true;
         } else {
           this.alld = false;
         }
 
-        this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
-        if (this.scd.st) {
-          this.scd.st = moment(this.scd.sd + " " + this.scd.st).format("HH:mm");
-        } else {
-          this.scd.st = moment().format("HH:mm");
-        }
-
         this.clickrept(this.scd.rt);
         this.clickwake(this.scd.tx);
 
-
-        //本人修改的场合初始化
-        if (bs.data.gs == "1"){
-          this.pagestate = "1";
-        }
       })
       return;
     }
@@ -432,40 +416,21 @@ export class TddjPage {
       this.scd.et = this.scd.st;
     }
 
-    //归属 本人创建
-    this.scd.gs = '1';
 
     this.scd.ji = this.scd.p.ji;
 
-    //新建数据
-    if (this.pagestate =="0"){
-      this.tdcServ.save(this.scd).then(data=>{
-        let ctbl = data.data;
-        this.scd.si = ctbl.si;
-        this.pagestate ="1";
-        this.util.toast("保存成功",2000);
-        if(typeof(eval(share))=="function")
-        {
-          share();
-        }
-        return;
-      });
 
-    }
-    //本人创建
-    if (this.pagestate =="1") {
+    this.tddjServ.updateDetail(this.scd).then(data =>{
 
-      this.tdcServ.updateDetail(this.scd).then(data =>{
+      this.util.toast("保存成功",2000);
+      if(typeof(eval(share))=="function")
+      {
+        share();
+      }
+      return ;
+    })
 
-        this.util.toast("保存成功",2000);
-        if(typeof(eval(share))=="function")
-        {
-          share();
-        }
-        return ;
-      })
 
-    }
 
 
   }
@@ -497,17 +462,17 @@ export class TddjPage {
             role: 'destructive',
             cssClass:'btn-del',
             handler: () => {
-              this.tdcServ.delete(this.scd.si,"1",d).then(data=>{
+              /*this.tddjServ.delete(this.scd.si,"1",d).then(data=>{
                 this.cancel();
-              });
+              });*/
             }
           }, {
             text: '删除所有日程',
             cssClass:'btn-delall',
             handler: () => {
-              this.tdcServ.delete(this.scd.si,"2",d).then(data=>{
-                this.cancel();
-              });
+              // this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
+              //   this.cancel();
+              // });
             }
           }, {
             text: '取消',
@@ -522,9 +487,9 @@ export class TddjPage {
       actionSheet.present();
     }else{
       //非重复日程删除
-      this.tdcServ.delete(this.scd.si,"2",d).then(data=>{
+      /*this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
         this.cancel();
-      });
+      });*/
     }
 
 

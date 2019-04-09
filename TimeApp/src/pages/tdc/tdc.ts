@@ -8,7 +8,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
 import {BsModel} from "../../service/restful/out/bs.model";
-import {ScdData} from "../../service/pagecom/pgbusi.service";
+import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 
 /**
  * Generated class for the 新建日程 page.
@@ -27,7 +27,7 @@ import {ScdData} from "../../service/pagecom/pgbusi.service";
         <ion-row right>
           <div class="h-auto " >
             <ion-buttons right>
-              <button [disabled]="pagestate == '0'?true:false" [hidden]="pagestate == '0'" ion-button icon-only (click)="presentActionSheet()" color="light">
+              <button  [hidden]="pagestate == '0'" ion-button icon-only (click)="presentActionSheet()" color="light">
                 <img  class="imgdel-set" src="../../assets/imgs/del.png">
               </button>
             </ion-buttons>
@@ -185,11 +185,11 @@ export class TdcPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private tdcServ :TdcService,private util:UtilService,
               public actionSheetCtrl: ActionSheetController,
-              public modalCtrl: ModalController              ) {
+              public modalCtrl: ModalController ,private busiServ :PgBusiService             ) {
 
   }
 
-  //画面状态：0：新建 ，1：本人修改
+  //画面状态：0：新建 ，1：未关闭直接修改
   pagestate : string ="0";
   //画面数据
   scd :ScdData = new ScdData();
@@ -226,7 +226,7 @@ export class TdcPage {
 
   ionViewWillEnter() {
 
-    this.tdcServ.getPlans().then(data=>{
+    this.busiServ.getPlans().then(data=>{
       this.jhs = data;
       //console.log("111" + JSON.stringify(this.jhs));
     }).catch(res=>{
@@ -248,38 +248,6 @@ export class TdcPage {
       this.rept.close = 1;
       this.wake.close = 1;
       return ;
-    }
-
-
-    if (this.navParams.get("si")){
-      this.tdcServ.get(this.navParams.get("si")).then(data=>{
-        let bs : BsModel<ScdData> = data;
-        Object.assign(this.scd,bs.data);
-
-        //全天的场合
-        if (this.scd.et == "99:99") {
-          this.alld = true;
-        } else {
-          this.alld = false;
-        }
-
-        this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
-        if (this.scd.st) {
-          this.scd.st = moment(this.scd.sd + " " + this.scd.st).format("HH:mm");
-        } else {
-          this.scd.st = moment().format("HH:mm");
-        }
-
-        this.clickrept(this.scd.rt);
-        this.clickwake(this.scd.tx);
-
-
-        //本人修改的场合初始化
-        if (bs.data.gs == "1"){
-          this.pagestate = "1";
-        }
-      })
-      return;
     }
 
   }
@@ -431,13 +399,14 @@ export class TdcPage {
     //结束时间设置
     //全天的场合
     if (this.alld) {
+      this.scd.st = "99:99";
       this.scd.et = "99:99";
     } else {
       this.scd.et = this.scd.st;
     }
 
     //归属 本人创建
-    this.scd.gs = '1';
+    this.scd.gs = '0';
 
     this.scd.ji = this.scd.p.ji;
 
@@ -456,7 +425,7 @@ export class TdcPage {
       });
 
     }
-    //本人创建
+    //未关闭直接修改
     if (this.pagestate =="1") {
 
       this.tdcServ.updateDetail(this.scd).then(data =>{
@@ -491,45 +460,10 @@ export class TdcPage {
   }
 
   presentActionSheet() {
-    let d = this.navParams.get("d");
-    if (this.scd.rt != "0" && this.scd.sd != d) {
-      //重复日程删除
-      const actionSheet = this.actionSheetCtrl.create({
-        buttons: [
-          {
-            text: '删除当前日期开始所有日程',
-            role: 'destructive',
-            cssClass:'btn-del',
-            handler: () => {
-              this.tdcServ.delete(this.scd.si,"1",d).then(data=>{
-                this.cancel();
-              });
-            }
-          }, {
-            text: '删除所有日程',
-            cssClass:'btn-delall',
-            handler: () => {
-              this.tdcServ.delete(this.scd.si,"2",d).then(data=>{
-                this.cancel();
-              });
-            }
-          }, {
-            text: '取消',
-            role: 'cancel',
-            cssClass:'btn-cancel',
-            handler: () => {
-
-            }
-          }
-        ]
-      });
-      actionSheet.present();
-    }else{
-      //非重复日程删除
-      this.tdcServ.delete(this.scd.si,"2",d).then(data=>{
-        this.cancel();
-      });
-    }
+    //日程删除
+    this.tdcServ.delete(this.scd.si).then(data=>{
+      this.cancel();
+    });
 
 
   }
@@ -569,34 +503,6 @@ export class TdcPage {
       this.scd.st = el[0].textContent + ":" +el[1].textContent;
     }
   }
-  /*async openPicker(){
-    let picker = await this.pickerCtl.create({
-      columns: this.cols,
-    });
-    await picker.present();
-
-
-    picker .ionChange.subscribe((change) => {
-      let a =change;
-      console.log(JSON.stringify(a));
-      /!*if(change.Year.value !== yr) {
-      yr = change.Year.value;
-      this.updatePickerMonthOptions(yr);
-      picker.refresh();
-      }*!/
-    });
-  }*/
 
 
 }
-
-/*class col{
-  name :string ="";
-  options:Array<coloptions> = new Array<coloptions>();
-
-}
-
-class coloptions{
-  text : string ="";
-  value:string ="";
-}*/

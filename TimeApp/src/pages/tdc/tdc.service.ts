@@ -13,21 +13,6 @@ export class TdcService {
   }
 
 
-
-  //获取计划列表
-  getPlans():Promise<any>{
-    return new Promise((resolve, reject) => {
-      //获取本地计划列表
-      let jhtbl:JhTbl = new JhTbl();
-      jhtbl.jt = "2";
-      this.sqlExce.getList<JhTbl>(jhtbl).then(data=>{
-        resolve(data)
-      }).catch(error=>{
-        resolve(error)
-      })
-    });
-  }
-
   /**
    * 日程添加
    * @param {PageRcData} rc 日程信息
@@ -37,24 +22,15 @@ export class TdcService {
     return this.pgbusiServ.save(rc);
   }
 
-  /**
-   * 获取日程详情
-   * @param {string} si 日程id
-   * @returns {Promise<BsModel<ScdData>>}
-   */
-  async get(si:string){
-    return await this.pgbusiServ.get(si);
-  }
-
   //删除日程 type：1 删除当前以后所有 ，2 删除所有
-  async delete(rcId:string,type :string,d:string){
-    return await this.pgbusiServ.delete(rcId,type,d);
+  async delete(rcId:string){
+    return await this.pgbusiServ.delete(rcId,"2","");
   }
 
 
   //修改本地日程详情
   async updateDetail(scd:ScdData){
-    return this.pgbusiServ.updateDetail(scd,"1");
+    return this.pgbusiServ.updateDetail(scd);
   }
 
 }

@@ -17,29 +17,6 @@ export class TddjService {
 
 
 
-  //获取计划列表
-  getPlans():Promise<any>{
-    return new Promise((resolve, reject) => {
-      //获取本地计划列表
-      let jhtbl:JhTbl = new JhTbl();
-      jhtbl.jt = "2";
-      this.sqlExce.getList<JhTbl>(jhtbl).then(data=>{
-        resolve(data)
-      }).catch(error=>{
-        resolve(error)
-      })
-    });
-  }
-
-  /**
-   * 日程添加
-   * @param {PageRcData} rc 日程信息
-   * @returns {Promise<BsModel<any>>}
-   */
-  save(rc : ScdData):Promise<BsModel<any>>{
-    return this.pgbusiServ.save(rc);
-  }
-
   /**
    * 获取日程详情
    * @param {string} si 日程id
@@ -57,6 +34,6 @@ export class TddjService {
 
   //修改本地日程详情
   async updateDetail(scd:ScdData){
-    return this.pgbusiServ.updateDetail(scd,"1");
+    return this.pgbusiServ.updateDetail(scd);
   }
 }

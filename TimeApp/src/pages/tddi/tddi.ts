@@ -8,7 +8,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {TdcService} from "../tdc/tdc.service";
-import { ScdData} from "../../service/pagecom/pgbusi.service";
+import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 
 /**
  * Generated class for the 日程详情（受邀） page.
@@ -80,7 +80,7 @@ import { ScdData} from "../../service/pagecom/pgbusi.service";
                      (click)="clickwake('4')">4小时</button></div>
         <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
                      [ngClass]="wake.od == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake('5'')">1天</button></div>
+                     (click)="clickwake('5')">1天</button></div>
       </ion-row>
       <ion-row >
         <div class = "memo-set">
@@ -142,9 +142,9 @@ import { ScdData} from "../../service/pagecom/pgbusi.service";
 export class TddiPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private tdcServ :TdcService,private util:UtilService,private  tddiServ : TddiService,
+              private util:UtilService,private  tddiServ : TddiService,
               public actionSheetCtrl: ActionSheetController,
-              public modalCtrl: ModalController,
+              public modalCtrl: ModalController,private  busiServ : PgBusiService
   ) {
 
   }
@@ -178,7 +178,7 @@ export class TddiPage {
 
   ionViewWillEnter() {
 
-    this.tdcServ.getPlans().then(data=>{
+    this.busiServ.getPlans().then(data=>{
       this.jhs = data;
       //console.log("111" + JSON.stringify(this.jhs));
     }).catch(res=>{
@@ -186,7 +186,7 @@ export class TddiPage {
     });
 
     //受邀人修改的场合初始化
-    this.tdcServ.get(this.navParams.get("si")).then(data=>{
+    this.tddiServ.get(this.navParams.get("si")).then(data=>{
       let bs : BsModel<ScdData> = data;
       Object.assign(this.scd,bs.data);
 

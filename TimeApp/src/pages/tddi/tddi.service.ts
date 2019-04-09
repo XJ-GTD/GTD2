@@ -46,7 +46,16 @@ export class TddiService {
 
   //修改本地日程详情
   async updateDetail(scd:ScdData){
-    return this.pgbusiServ.updateDetail(scd,"0");
+    return this.pgbusiServ.updateDetail(scd);
+  }
+
+  /**
+   * 获取日程详情
+   * @param {string} si 日程id
+   * @returns {Promise<BsModel<ScdData>>}
+   */
+  async get(si:string){
+    return await this.pgbusiServ.get(si);
   }
 }
 
