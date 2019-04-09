@@ -17,16 +17,6 @@ export class TddjService {
 
 
 
-
-  /**
-   * 日程添加
-   * @param {PageRcData} rc 日程信息
-   * @returns {Promise<BsModel<any>>}
-   */
-  save(rc : ScdData):Promise<BsModel<any>>{
-    return this.pgbusiServ.save(rc);
-  }
-
   /**
    * 获取日程详情
    * @param {string} si 日程id
