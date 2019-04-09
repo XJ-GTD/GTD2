@@ -44,7 +44,7 @@ import set = Reflect.set;
     </ion-header>
     <ion-content #contentD>
       <ion-grid #grid4Hight>
-        <ion-row *ngFor="let sdl of scdlDataList;let i = index;" class="anch" id="day{{sdl.id}}">
+        <ion-row *ngFor="let sdl of scdlDataList;let i = index;" class="anch" id="day{{sdl.id}}" >
           <div class="daynav">
             <div class="dayheader w-auto">
               <div class="ym-fsize text-center ">{{sdl.d | formatedate:"YYYY"}}</div>
@@ -112,6 +112,9 @@ export class TdlPage {
   ) {
 
 
+  }
+  ngAfterViewInit(){
+    console.log("***********************你有吗？");
   }
 
   ngOnInit() {
@@ -190,7 +193,7 @@ export class TdlPage {
 
   //初始化数据
   async createData(selectDate: moment.Moment) {
-    this.scdlDataList = [];
+    this.scdlDataList.slice(0,this.scdlDataList.length-1);
 
     let condi = selectDate.format("YYYY/MM/DD");
 
