@@ -186,7 +186,7 @@ export class PgBusiService {
       sp.tx = rc.tx;
       sql.push(sp.inT());
       if(sp.tx>'0'){
-        sql.push(this.getTxEtbl(rc,sp.spi).rpT());
+        sql.push(this.getTxEtbl(rc,sp).rpT());
       }
     }
 
@@ -201,11 +201,11 @@ export class PgBusiService {
    * @param {string} tsId 特殊表Id
    * @returns {Promise<Promise<any> | number>}
    */
-   getTxEtbl(rc:CTbl,tsId:string):ETbl{
+   getTxEtbl(rc:CTbl,sp:SpTbl):ETbl{
     let et = new ETbl();//提醒表
     et.si = rc.si;
     if(rc.tx != '0'){
-      et.wi = tsId;
+      et.wi = sp.spi;
       et.st = rc.sn;
       let time = 10; //分钟
       if(rc.tx == "2"){
@@ -215,45 +215,20 @@ export class PgBusiService {
       }else if(rc.tx == "4"){
         time = 240;
       }else if(rc.tx == "5"){
-        time = 360;
+        time = 1440;
       }
-      let date = moment(rc.sd+ " " + rc.st).subtract(time,'m').format("YYYY/MM/DD HH:mm");
-      et.wd=date.substr(0,10);
-      et.wt = date.substr(11,5);
+      let date ;
+      if (rc.st != "99:99"){
+        date = moment(sp.sd+ " " + rc.st).subtract(time,'m').format("YYYY/MM/DD HH:mm");
+
+      }else{
+        date = moment(sp.sd+ " " + "08:00").subtract(time,'m').format("YYYY/MM/DD HH:mm");
+
+      }
+      et.wd=moment(date).format("YYYY/MM/DD");
+      et.wt = moment(date).format("HH:mm");
       console.log('-------- 插入提醒表 --------');
       return et;
-    }
-    return null;
-  }
-
-  /**
-   * 保存更新指定特殊表提醒方式
-   * @param {CTbl} rc 日程详情
-   * @returns {Promise<Promise<any> | number>}
-   */
-  private updTx(rc:CTbl):Promise<any>{
-    let et = new ETbl();//提醒表
-    et.si = rc.si;
-
-    if(rc.tx != '0'){
-      et.st = rc.sn;
-      let time = 10; //分钟
-      if(rc.tx == "2"){
-        time = 30;
-      }else if(rc.tx == "3"){
-        time = 60;
-      }else if(rc.tx == "4"){
-        time = 240;
-      }else if(rc.tx == "5"){
-        time = 360;
-      }
-      let date = moment(rc.sd+ " " + rc.st).subtract(time,'m').format("YYYY/MM/DD HH:mm");
-      et.wd=date.substr(0,10);
-      et.wt = date.substr(11,5);
-      let sql = "update gtd_e set wd = '"+  et.wd +"',wt = '"+  et.wt +"',st = '"+  et.st +"'" +
-        " where si = '"+  et.si +"' ";
-      console.log('-------- 更新提醒表 --------');
-      return this.sqlExce.execSql(sql);
     }
     return null;
   }
@@ -264,12 +239,12 @@ export class PgBusiService {
    * @param {string} tsId 特殊表Id
    * @returns {Promise<Promise<any> | number>}
    */
-  private saveOrUpdTx(rc:CTbl,tsId:string):Promise<any>{
+  private saveOrUpdTx(rc:CTbl,sp:SpTbl):Promise<any>{
     let et = new ETbl();//提醒表
     et.si = rc.si;
     //let result = await this.sqlExce.delete(et);
     if(rc.tx != '0'){
-      et.wi = tsId;
+      et.wi = sp.spi;
       et.st = rc.sn;
       let time = 10; //分钟
       if(rc.tx == "2"){
@@ -279,11 +254,19 @@ export class PgBusiService {
       }else if(rc.tx == "4"){
         time = 240;
       }else if(rc.tx == "5"){
-        time = 360;
+        time = 1440;
       }
-      let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD HH:mm");
-      et.wd=date.substr(0,10);
-      et.wt = date.substr(11,5);
+      let date ;
+      if (rc.st != "99:99"){
+        date = moment(sp.sd+ " " + rc.st).subtract(time,'m').format("YYYY/MM/DD HH:mm");
+
+      }else{
+        date = moment(sp.sd+ " " + "08:00").subtract(time,'m').format("YYYY/MM/DD HH:mm");
+
+      }
+      et.wd=moment(date).format("YYYY/MM/DD");
+      et.wt = moment(date).format("HH:mm");
+
       console.log('-------- 插入提醒表 --------');
       return this.sqlExce.replaceT(et);
     }
@@ -348,12 +331,19 @@ export class PgBusiService {
         await this.sqlExce.execSql(sq);
       }
 
-      //如果只是修改提醒时间，则更新提醒表所有时间
+      //如果修改了提醒时间，则更新提醒表所有时间
       //更新提醒时间
-      if (bs.data.tx !='0'){
+      if (bs.data.tx != scd.tx){
+        let sp : SpTbl = new SpTbl();
+        sp.si = c.si;
+        let sps :Array<SpTbl> = new Array<SpTbl>();
+        sps = await this.sqlExce.getList<SpTbl>(sp);
+        for (let j = 0, len = sps.length; j < len; j++) {
+          await this.saveOrUpdTx(c,sps[j]);
+        }
 
       }
-      await this.updTx(c);
+
 
 
     }
