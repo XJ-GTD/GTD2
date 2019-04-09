@@ -217,7 +217,7 @@ export class PgBusiService {
       }else if(rc.tx == "5"){
         time = 360;
       }
-      let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD HH:mm");
+      let date = moment(rc.sd+ " " + rc.st).subtract(time,'m').format("YYYY/MM/DD HH:mm");
       et.wd=date.substr(0,10);
       et.wt = date.substr(11,5);
       console.log('-------- 插入提醒表 --------');
@@ -247,7 +247,7 @@ export class PgBusiService {
       }else if(rc.tx == "5"){
         time = 360;
       }
-      let date = moment(rc.sd+ " " + rc.st).add(time,'m').format("YYYY/MM/DD HH:mm");
+      let date = moment(rc.sd+ " " + rc.st).subtract(time,'m').format("YYYY/MM/DD HH:mm");
       et.wd=date.substr(0,10);
       et.wt = date.substr(11,5);
       let sql = "update gtd_e set wd = '"+  et.wd +"',wt = '"+  et.wt +"',st = '"+  et.st +"'" +
@@ -350,6 +350,9 @@ export class PgBusiService {
 
       //如果只是修改提醒时间，则更新提醒表所有时间
       //更新提醒时间
+      if (bs.data.tx !='0'){
+
+      }
       await this.updTx(c);
 
 
@@ -360,6 +363,20 @@ export class PgBusiService {
 
     await this.agdRest.save(agd);
 
+  }
+
+  //获取计划列表
+  getPlans():Promise<any>{
+    return new Promise((resolve, reject) => {
+      //获取本地计划列表
+      let jhtbl:JhTbl = new JhTbl();
+      jhtbl.jt = "2";
+      this.sqlExce.getList<JhTbl>(jhtbl).then(data=>{
+        resolve(data)
+      }).catch(error=>{
+        resolve(error)
+      })
+    });
   }
 
   private setAdgPro(agd:AgdPro,c :CTbl){

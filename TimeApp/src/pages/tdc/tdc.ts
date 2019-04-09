@@ -8,7 +8,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
 import {BsModel} from "../../service/restful/out/bs.model";
-import {ScdData} from "../../service/pagecom/pgbusi.service";
+import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 
 /**
  * Generated class for the 新建日程 page.
@@ -185,7 +185,7 @@ export class TdcPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private tdcServ :TdcService,private util:UtilService,
               public actionSheetCtrl: ActionSheetController,
-              public modalCtrl: ModalController              ) {
+              public modalCtrl: ModalController ,private busiServ :PgBusiService             ) {
 
   }
 
@@ -226,7 +226,7 @@ export class TdcPage {
 
   ionViewWillEnter() {
 
-    this.tdcServ.getPlans().then(data=>{
+    this.busiServ.getPlans().then(data=>{
       this.jhs = data;
       //console.log("111" + JSON.stringify(this.jhs));
     }).catch(res=>{

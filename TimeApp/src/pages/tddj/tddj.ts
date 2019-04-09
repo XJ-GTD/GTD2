@@ -5,7 +5,7 @@ import {BsModel} from "../../service/restful/out/bs.model";
 import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
-import {ScdData} from "../../service/pagecom/pgbusi.service";
+import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 import {TddjService} from "./tddj.service";
 
 /**
@@ -181,7 +181,7 @@ export class TddjPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private tddjServ :TddjService,private util:UtilService,
               public actionSheetCtrl: ActionSheetController,
-              public modalCtrl: ModalController              ) {
+              public modalCtrl: ModalController   , private  busiServ : PgBusiService           ) {
 
   }
 
@@ -222,7 +222,7 @@ export class TddjPage {
 
   ionViewWillEnter() {
 
-    this.tddjServ.getPlans().then(data=>{
+    this.busiServ.getPlans().then(data=>{
       this.jhs = data;
       //console.log("111" + JSON.stringify(this.jhs));
     }).catch(res=>{
