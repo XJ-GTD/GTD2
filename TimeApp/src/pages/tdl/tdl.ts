@@ -225,7 +225,7 @@ export class TdlPage {
   toDetail(si, d, gs) {
     if (gs == "1") {
       //本人画面
-      this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {si: si, d: d}).present();
+      this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, {si: si, d: d}).present();
     } else {
       //受邀人画面
       this.modalCtr.create(DataConfig.PAGE._TDDI_PAGE, {si: si, d: d}).present();
