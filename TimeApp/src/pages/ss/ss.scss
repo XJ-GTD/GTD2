@@ -5,18 +5,54 @@ page-ss {
     font-family: 'PingFang-Regular';
     src: url('../../assets/fonts/PingFang Regular.ttf');
   }
+  ion-content {
+    font-family: "PingFang-Regular";
+  }
 
-  ion-content{
-    font-family: PingFang-Regular;
+  .w-auto {
+    flex: 1;
+  }
+
+  .grid {
+    padding: 0;
+  }
+
+  .grid .row {
+    height: 100%;
+  }
+
+  .list {
+    width: 100%;
+  }
+
+  .list-header, .list-header-md, .list-header-ios {
+    border: 0;
   }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
     background-color: #000;
   }
 
+  ion-header{
+    padding: 4px 20px;
+  }
+
+  .img-header-left{
+    width: 4vmin;
+    height: 4vmin;
+  }
+
   .toolbar-title{
     color: white;
     letter-spacing: 0.5vmin;
+    font-size: 1.5rem;
+  }
+
+  .bar-button-ios{
+    font-size: 1.3vmin;
+  }
+
+  ion-input{
     font-size: 1.5rem;
   }
 
@@ -26,21 +62,36 @@ page-ss {
   }
 
   ion-content .plan-list-item {
-    width: 90vmin;
     background-color: #000;
     color: #fff;
-    font-size: 1.7rem;
-    font-weight: 200;
+    padding-left: 8px;
+    font-size: 1.5rem;
+    min-height: 9vmin;
   }
 
-  .img-header-left{
-    width: 4vmin;
-    height: 4vmin;
-    margin-left: 5vmin;
+  .list-ios .item-block .item-inner {
+    padding-right: 0;
   }
 
   .toggle-ios.toggle-checked .toggle-icon {
     background-color: rgb(60,144,155);
+    width: 43px;
+    height: 24px;
   }
 
+  .toggle-ios .toggle-icon {
+    width: 43px;
+    height: 24px;
+  }
+
+  .toggle-ios.toggle-checked .toggle-inner,
+  .toggle-ios .toggle-inner{
+    height: 20px;
+    width: 20px;
+  }
+
+  .scroll-content{
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
 }

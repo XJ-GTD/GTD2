@@ -53,7 +53,7 @@ import {FsData} from "../../service/pagecom/pgbusi.service";
                  </span>
                </ion-label>               
                <button ion-button color="danger" (click)="delete(g)" clear item-end>
-                 <img src="./assets/imgs/yc.png">
+                 <img class="img-content-del" src="./assets/imgs/yc.png">
                </button>
              </ion-item>
            </ion-list>
