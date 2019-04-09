@@ -31,7 +31,11 @@ export class RService {
         lpdata.mobile = rdata.mobile;
         lpdata.password = rdata.password;
         return this.lpService.login(lpdata);
+      }).then(data => {
+        if (data.code && data.code != 0)
+          throw  data;
 
+        return this.lpService.get(data);
       }).then(data => {
         resolve(data)
       }).catch(err => {
