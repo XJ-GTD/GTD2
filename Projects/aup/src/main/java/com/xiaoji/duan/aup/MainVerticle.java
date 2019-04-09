@@ -13,9 +13,11 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import io.vertx.amqpbridge.AmqpBridge;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.eventbus.MessageProducer;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerOptions;
@@ -41,11 +43,20 @@ public class MainVerticle extends AbstractVerticle {
 	private MongoClient mongodb = null;
 	private WebClient client = null;
 	private RabbitMQClient rabbitmq = null;
+	private AmqpBridge bridge = null;
 
 	@Override
 	public void start(Future<Void> startFuture) throws Exception {
 		client = WebClient.create(vertx);
 
+		bridge = AmqpBridge.create(vertx);
+
+		bridge.endHandler(handler -> {
+			connectStompServer();
+		});
+
+		connectStompServer();
+		
 		RabbitMQOptions rmqconfig = new RabbitMQOptions(config().getJsonObject("rabbitmq"));
 
 		rabbitmq = RabbitMQClient.create(vertx, rmqconfig);
@@ -1127,6 +1138,12 @@ public class MainVerticle extends AbstractVerticle {
         										}
         									});
         									
+        									// 发送未注册用户缓存消息
+        									MessageProducer<JsonObject> producer = bridge.createProducer("mwxing_agenda_notification_stored_activation");
+
+        									JsonObject body = new JsonObject().put("context", new JsonObject().put("openid", retaccess.getString("openid")));
+        									producer.send(new JsonObject().put("body", body));
+        									
         									System.out.println("Exist user login " + retaccess.encode());
 
         									ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(retaccess.encode());
@@ -1238,6 +1255,18 @@ public class MainVerticle extends AbstractVerticle {
 					}
 				}
 		);
+	}
+
+	private void connectStompServer() {
+		bridge.start(config().getString("stomp.server.host", "sa-amq"),
+				config().getInteger("stomp.server.port", 5672), res -> {
+					if (res.failed()) {
+						res.cause().printStackTrace();
+						connectStompServer();
+					} else {
+						System.out.println("Stomp server connected.");
+					}
+				});
 	}
 	
 	private void initDefaultApps() {

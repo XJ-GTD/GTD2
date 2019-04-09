@@ -14,7 +14,7 @@ pointcomponent {
     height: 58px;
     position: fixed;
     top: calc(100% - 87px);
-    left: calc(50%);
+    left: calc(50% - 29px);
     border-radius: 100%;
     //border: .05px solid #3583d7;
     animation: pulse 1.4s linear infinite;
@@ -97,7 +97,7 @@ pointcomponent {
     width: 64px;
     height: 64px;
     top: calc(100% - 90px);
-    left: calc(50% - 3px);
+    left: calc(50% - 3px - 29px);
     border-radius: 50%;
   }
 

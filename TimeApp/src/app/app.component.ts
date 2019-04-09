@@ -30,16 +30,18 @@ export class MyApp {
     this.platform.ready().then(() => {
       //this.util.loadingEnd();
       //允许进入后台模式
-      this.backgroundMode.setDefaults({silent:true,hidden:true}).then(d=>{
-        this.backgroundMode.enable();
-      })
-      //设置返回键盘（android）
-      this.registerBackButtonAction();
+      if (this.util.hasCordova()){
+        this.backgroundMode.setDefaults({silent:true,hidden:true}).then(d=>{
+          this.backgroundMode.enable();
+        })
+        //设置返回键盘（android）
+        this.registerBackButtonAction();
+
+        // set to landscape
+        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+
+      }
       this.restfulClient.init();
-      // set to landscape
-      if (this.util.hasCordova())
-      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
-      this.speechService.speakText("好气人啊");
 
       //跳转页面（过渡页面）
       this.nav.setRoot(DataConfig.PAGE._AL_PAGE);

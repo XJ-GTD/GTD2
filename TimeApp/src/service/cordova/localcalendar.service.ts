@@ -3,6 +3,7 @@ import { Calendar } from "@ionic-native/calendar";
 import {UtilService} from "../util-service/util.service";
 import {ScdData} from "../pagecom/pgbusi.service";
 import {UserConfig} from "../config/user.config";
+import * as moment from "moment";
 
 /**
  * 页面ts传值(Calendar)
@@ -38,13 +39,13 @@ export class LocalcalendarService {
    * 查询本地日历所有日程
    * @returns {Promise<any>}
    */
-  findEventRc(tit:string,sd:Date,ed:Date):Promise<Array<ScdData>>{
+  findEventRc(tit:string,sd:moment.Moment,ed:moment.Moment):Promise<Array<ScdData>>{
     return new Promise((resolve, reject) => {
       console.log("执行查询本地日历");
       let rco = new Array<ScdData>();
       if(this.util.isMobile()){
         console.log("查询本地日历开始时间："+ sd+ ",结束时间:"+ed);
-        this.calendar.findEvent(tit, "", "", sd, ed).then(
+        this.calendar.findEvent(tit, "", "", sd.toDate(), ed.toDate()).then(
           (msg) => {
             console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg));
             console.log("getCalendarOptions::"+ JSON.stringify(this.calendar.getCalendarOptions()));

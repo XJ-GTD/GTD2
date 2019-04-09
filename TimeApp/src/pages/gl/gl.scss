@@ -1,4 +1,6 @@
 page-gl {
+  background-color: #000;
+
   @font-face {
     font-family: 'PingFang-Regular';
     src: url('../../assets/fonts/PingFang Regular.ttf');
@@ -7,41 +9,12 @@ page-gl {
     font-family: "PingFang-Regular";
   }
 
-  ion-header ion-toolbar .toolbar-background, .toolbar-background-md, .toolbar-background-ios {
-    background-color: #000;
-  }
-
-  ion-header {
-    top: 10px;
-  }
-
-  .img-header-left{
-    width: 4vmin;
-    height: 4vmin;
-    margin-left: 5vmin;
-  }
-
-  .img-header-right{
-    width: 4vmin;
-    height: 4vmin;
-  }
-
-  ion-content.content {
-    background-color: #000;
-    color: #fff;
-  }
-
-  ion-content .plan-list-item {
-    background-color: #000;
-    color: #fff;
-  }
-
-  ion-list-header.plan-list-item {
-    color: rgb(153, 153, 153);
-  }
-
   .w-auto {
     flex: 1;
+  }
+
+  .grid {
+    padding: 0;
   }
 
   .grid .row {
@@ -56,27 +29,45 @@ page-gl {
     border: 0;
   }
 
-  .toolbar-title-ios {
-    color: #ffffff;
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: #000;
   }
 
-  .scroll-content{
-    overflow-x: auto;
-    overflow-y: auto;
+  ion-header{
+    padding: 4px 20px;
+  }
+
+  .img-header-left{
+    width: 4vmin;
+    height: 4vmin;
   }
 
   .toolbar-title{
     color: white;
-    letter-spacing: 3px;
-    //font-size: 1.5rem;
+    letter-spacing: 0.5vmin;
+    font-size: 1.5rem;
   }
 
   .bar-button-ios{
-    font-size: 1.3rem;
+    width: 25px;
+    height: 25px;
   }
 
-  .item-block{
-    height: 35px;
+  ion-content.content {
+    background-color: #000;
+    color: #fff;
+  }
+
+  ion-content .plan-list-item {
+    background-color: #000;
+    color: #fff;
+    padding-left: 8px;
+    font-size: 1.5rem;
+    min-height: 9vmin;
+  }
+
+  .list-ios .item-block .item-inner {
+    padding-right: 0;
   }
 
   .content-gc{
@@ -84,8 +75,9 @@ page-gl {
     height: 15px;
   }
 
-  ion-item ion-label{
-    font-size: 1.5rem;
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
   }
 
 }

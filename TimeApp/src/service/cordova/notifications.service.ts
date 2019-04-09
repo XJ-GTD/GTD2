@@ -70,6 +70,8 @@ export class NotificationsService {
             console.log("localNotifications====================getRemindLs》" + data.length);
             if (data.length == 0) return;
             this.remind(data);
+            this.remindService.delRemin(next.data.val.wi);
+            this.remindService.delRemin(next.data.val);
 
           })
         }
@@ -121,7 +123,7 @@ export class NotificationsService {
   public keeplive() {
     let notif: MwxSchedule = new MwxSchedule();
     notif.id = this.index++;
-    notif.trigger = {in: 7, unit: ELocalNotificationTriggerUnit.SECOND};
+    notif.trigger = {in: 60, unit: ELocalNotificationTriggerUnit.SECOND};
     notif.data = {type: "keeplive"};
     console.log("localNotifications===============create》===next.data.type" + notif.data.type + "===>id:" + notif.id);
 
@@ -133,12 +135,12 @@ export class NotificationsService {
     let notif: MwxRemind = new MwxRemind();
     notif.id = this.index++;
     notif.data = {type: "remind", val: reData};
-    // let text:[3] =
-    // for(let e of reData){
-    //   text[0] = e.st;
-    // }
+    let text:string =";"
+    for(let e of reData){
+      text = text + "["+ e.st + "]";
+    }
     notif.sound ="file://assets/feedback/sms.mp3";
-    notif.text = "test";
+    notif.text = text;
     notif.actions = [
       {id: 'close', title: '关闭'},
       {id: 'five', title: '5分钟后'},
