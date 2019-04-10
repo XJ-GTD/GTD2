@@ -98,7 +98,7 @@ export class Fs4gPage {
       this.gsService.save(dc).then(data=>{
         if(data.code==0){
           //alert("添加群组成员成功");
-          this.goBack(DataConfig.PAGE._GC_PAGE,{g:this.tpara});
+          this.goBack();
         }
       })
 
@@ -124,28 +124,10 @@ export class Fs4gPage {
     }
   }
 
-  goBack(page:any,para:any) {
+  goBack() {
     console.log('PfPage跳转PaPage');
     this.viewCtrl.dismiss();
-    // if(this.addType == 'rc'){
-    //   this.navCtrl.push(DataConfig.PAGE._H_PAGE);
-    // }else if(page != ''){
-    //   this.navCtrl.push(page,para);
-    // }else{
-    //   this.navCtrl.pop();
-    // }
-
-
-/*      let popindex ;
-      let viewArray:Array<ViewController> = this.navCtrl.getViews();
-      viewArray.forEach((value, index) => {
-        if (value.id == DataConfig.PAGE._H_PAGE){
-          popindex = index;
-        }
-      });*/
-
-    // this.navCtrl.push(DataConfig.PAGE._H_PAGE);
-
+    // this.navCtrl.pop();
   }
 
   getFdl(fs:FsData){

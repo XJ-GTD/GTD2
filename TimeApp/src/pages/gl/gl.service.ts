@@ -4,6 +4,7 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {GTbl} from "../../service/sqlite/tbl/g.tbl";
 import {BxTbl} from "../../service/sqlite/tbl/bx.tbl";
 import {FsData} from "../../service/pagecom/pgbusi.service";
+import {DataConfig} from "../../service/config/data.config";
 
 @Injectable()
 export class GlService {
@@ -23,6 +24,7 @@ export class GlService {
         let fsl:Array<any> = await this.sqlExce.getList<FsData>(bx);
         dc.gc = fsl.length;
         dc.fsl = fsl;
+        dc.gm = DataConfig.QZ_HUIBASE64;
       }
       gld.gl = dcl;
     }
