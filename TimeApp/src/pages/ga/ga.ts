@@ -1,7 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {GcService, PageDcData} from "../gc/gc.service";
-import {DataConfig} from "../../service/config/data.config";
 
 
 /**
@@ -45,7 +44,8 @@ import {DataConfig} from "../../service/config/data.config";
 })
 export class GaPage {
   tt:string;
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
               public viewCtrl: ViewController,
               private gcService:GcService,) {
   }

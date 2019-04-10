@@ -1,6 +1,4 @@
 import {Injectable} from "@angular/core";
-import {PersonRestful} from "../../service/restful/personsev";
-import {SmsRestful} from "../../service/restful/smssev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
@@ -8,8 +6,7 @@ import {BsModel} from "../../service/restful/out/bs.model";
 
 @Injectable()
 export class PcService {
-  constructor(private personRestful: PersonRestful,
-              private smsRestful: SmsRestful,
+  constructor(
               private sqlExce: SqliteExec,
               private util: UtilService,
   ) {

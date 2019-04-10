@@ -21,16 +21,14 @@ import {DataConfig} from "../../service/config/data.config";
             <img class="img-header-left" src="./assets/imgs/fh2.png">
         </button>
       </ion-buttons>
-      <ion-title>参与人详情</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <ion-content padding>
     <ion-grid  style="text-align:center; height: 100%;">
-      <ion-row>
+      <ion-row >
         <ion-avatar item-start style="width: 100%;">
-          <img  style="border-radius: 50%;width: 80px;height: 80px;display: unset;"
-           [src]="fd.hiu">
+          <img  class="img-hiu" [src]="fd.hiu">
         </ion-avatar>
       </ion-row>
       <ion-row>
@@ -68,14 +66,20 @@ export class FdPage {
     console.log('ionViewDidLoad FdPage');
     this.pwi = this.navParams.get('pwi');
     this.fd.hiu = DataConfig.HUIBASE64;
-    this.getd();
   }
 
-  getd(){
+  ionViewDidEnter(){
+    this.getDetail();
+  }
+
+  getDetail(){
     this.fdService.get(this.pwi).then(data=>{
       if(data){
         this.fd = data;
       }
+      return this.fdService.getBlack(this.fd.rc);
+    }).then(data=>{
+      this.fd.isbla = data;
     })
   }
 
@@ -89,7 +93,7 @@ export class FdPage {
   rbl(){
     this.fdService.removeBlack(this.fd.rc).then(data=>{
       if(data && data.code == 0){
-        this.getd();
+        this.getDetail();
         alert("移出成功")
       }
     })
@@ -101,7 +105,7 @@ export class FdPage {
   abl(){
     this.fdService.putBlack(this.fd).then(data=>{
       if(data && data.code == 0){
-        this.getd();
+        this.getDetail();
         alert("移入成功")
       }
     })
