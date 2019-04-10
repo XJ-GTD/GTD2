@@ -31,7 +31,7 @@ import {DataConfig} from "../../service/config/data.config";
           <img  class="img-hiu" [src]="fd.hiu">
         </ion-avatar>
       </ion-row>
-      <ion-row>
+      <ion-row id="fdname">
         <ion-label>
           {{fd.rn}}
         </ion-label>
@@ -42,11 +42,8 @@ import {DataConfig} from "../../service/config/data.config";
         </ion-label>
       </ion-row>
       <ion-buttons  style="border-top: 1px solid #871428;">
-        <button ion-button  *ngIf="fd.isbla" icon-only (click)="rbl()">
-          移出黑名单
-        </button>
-        <button ion-button  *ngIf="!fd.isbla" icon-only (click)="abl()">
-          移入黑名单
+        <button ion-button  icon-only (click)="black()">
+          {{buttonText}}
         </button>
       </ion-buttons>
     </ion-grid>
@@ -56,6 +53,7 @@ import {DataConfig} from "../../service/config/data.config";
 export class FdPage {
   fd:FsData = new FsData();
   pwi:string;
+  buttonText:string = '';
   constructor(public navCtrl: NavController,
               public fdService: FdService,
               public viewCtrl: ViewController,
@@ -66,10 +64,11 @@ export class FdPage {
     console.log('ionViewDidLoad FdPage');
     this.pwi = this.navParams.get('pwi');
     this.fd.hiu = DataConfig.HUIBASE64;
+    // this.getDetail();
   }
 
   ionViewDidEnter(){
-    this.getDetail();
+   this.getDetail();
   }
 
   getDetail(){
@@ -80,11 +79,24 @@ export class FdPage {
       return this.fdService.getBlack(this.fd.rc);
     }).then(data=>{
       this.fd.isbla = data;
+      if(this.fd.isbla){
+        this.buttonText = "移出黑名单";
+      }else{
+        this.buttonText = "移入黑名单";
+      }
     })
   }
 
   dismiss() {
     this.viewCtrl.dismiss();
+  }
+
+  black(){
+    if(this.fd.isbla){
+      this.rbl();
+    }else{
+      this.abl();
+    }
   }
 
   /**
@@ -94,7 +106,7 @@ export class FdPage {
     this.fdService.removeBlack(this.fd.rc).then(data=>{
       if(data && data.code == 0){
         this.getDetail();
-        alert("移出成功")
+        //alert("移出成功")
       }
     })
   }
@@ -106,7 +118,7 @@ export class FdPage {
     this.fdService.putBlack(this.fd).then(data=>{
       if(data && data.code == 0){
         this.getDetail();
-        alert("移入成功")
+        //alert("移入成功")
       }
     })
   }

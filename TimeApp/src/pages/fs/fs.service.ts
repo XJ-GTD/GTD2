@@ -62,13 +62,18 @@ export class FsService {
    */
   getCalfriend(calId:string):Promise<Array<FsData>>{
     return new Promise<Array<FsData>>((resolve, reject)=>{
-      let sql ='select gd.pi,gd.si,gb.* from gtd_d gd inner join gtd_b gb on gb.pwi = gd.ai where si="'+calId+'"';
+      let sql ='select gd.pi,gd.si,gb.*,bh.hiu bhiu from gtd_d gd inner join gtd_b gb on gb.pwi = gd.ai left join gtd_bh bh on gb.pwi = bh.pwi where si="'+calId+'"';
       let fsList =  new Array<FsData>();
       console.log('---------- getCalfriend 获取分享日程的参与人 sql:'+ sql);
       this.sqlite.execSql(sql).then(data=>{
         if(data && data.rows && data.rows.length>0){
           for(let i=0,len =data.rows.length;i<len;i++ ){
-            fsList.push(data.rows.item(i))
+            let fs = new FsData();
+            Object.assign(fs,data.rows.item(i));
+            if(!fs.bhiu || fs.bhiu == null || fs.bhiu == ''){
+              fs.bhiu=DataConfig.HUIBASE64;
+            }
+            fsList.push(fs);
           }
         }
         console.log('---------- getCalfriend 获取分享日程的参与人结果:'+ fsList.length/*JSON.stringify(fsList)*/);
@@ -147,7 +152,7 @@ export class FsService {
   getfriendgroup(groupId:string):Promise<Array<FsData>>{
     return new Promise<Array<FsData>>((resolve, reject)=>{
       //查询本地群组中的参与人
-      let sql ='select gb.*,bh.hiu bhiu from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi inner join gtd_bh bh on gb.pwi = bh.pwi where gbx.bi="'+groupId+'"';
+      let sql ='select gb.*,bh.hiu bhiu from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi left join gtd_bh bh on gb.pwi = bh.pwi where gbx.bi="'+groupId+'"';
       let fsList =  new Array<FsData>();
       console.log('---------- getfriend4group 查询群组中的参与人 sql:'+ sql);
       this.sqlite.execSql(sql).then(data=>{
@@ -167,7 +172,7 @@ export class FsService {
             }
           }
         }
-        console.log('---------- getfriend4group 查询群组中的参与人 结果:'+ fsList.length/*JSON.stringify(fsList)*/);
+        console.log('---------- getfriend4group 查询群组中的参与人 结果:'+ JSON.stringify(fsList));
         resolve(fsList);
       }).catch(e=>{
         console.error('---------- getfriend4group 查询群组中的参与人 出错:'+ e.message);
