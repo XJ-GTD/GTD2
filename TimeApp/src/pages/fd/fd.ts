@@ -33,7 +33,7 @@ import {DataConfig} from "../../service/config/data.config";
       </ion-row>
       <ion-row id="fdname">
         <ion-label>
-          {{fd.rn}}
+          {{fd.ran}}
         </ion-label>
       </ion-row>
       <ion-row>
@@ -75,6 +75,9 @@ export class FdPage {
     this.fdService.get(this.pwi).then(data=>{
       if(data){
         this.fd = data;
+        if(!this.fd.ran || this.fd.ran == null || this.fd.ran == ''){
+          this.fd.ran = this.fd.rn;
+        }
       }
       return this.fdService.getBlack(this.fd.rc);
     }).then(data=>{
