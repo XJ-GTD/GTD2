@@ -43,21 +43,21 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
         </div>
       </ion-row>
       <ion-row >
-          <div class="dt-set">
+          <div class="dtshow-set">
             <ion-item>
                 <ion-label >{{scd.sd | formatedate : "CYYYY/M/DD"}}</ion-label>
             </ion-item>
           </div>
-          <div class="week-set">
+          <div class="weekshow-set">
             <ion-label >{{scd.sd | formatedate : "CWEEK" }}</ion-label>
           </div>
-          <div class="tm-set">
+          <div class="tmshow-set">
             <ion-label >{{alldshow}}</ion-label>
           </div>
       </ion-row>
       <ion-row >
-        <div class ="reptlbl repttop"><ion-label>重复</ion-label></div>
-        <div class ="repttop1"><ion-label>{{reptshow}}</ion-label></div>
+        <div class ="reptlbl repttopshow"><ion-label>重复</ion-label></div>
+        <div class ="repttopshow1"><ion-label>{{reptshow}}</ion-label></div>
       </ion-row>
       <ion-row >
         <div class ="reptlbl txtop"><ion-label>提醒</ion-label></div>
@@ -187,7 +187,6 @@ export class TddiPage {
         for (let i=0;i<this.jhs.length;i++){
           if (this.jhs[i].ji == this.scd.ji){
             this.scd.p = this.jhs[i];
-            console.log("计划********" + this.jhs[i].ji);
           }
         }
       }).catch(res=>{
@@ -195,10 +194,10 @@ export class TddiPage {
       });
 
       //全天的场合
-      if (this.scd.et == "99:99") {
+      if (this.scd.st == "99:99") {
         this.alldshow = "全天";
       } else {
-        this.alldshow = this.scd.et;
+        this.alldshow = this.scd.st;
       }
 
       switch (this.scd.rt){
@@ -222,7 +221,6 @@ export class TddiPage {
       }
 
       this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
-      this.scd.st = moment().format("HH:mm");
 
 
       this.clickwake(this.scd.tx+'');
@@ -332,13 +330,20 @@ export class TddiPage {
       const actionSheet = this.actionSheetCtrl.create({
         buttons: [
           {
-            text: '删除当前日期开始所有日程',
+            text: '删除今后所有日程',
             role: 'destructive',
             cssClass:'btn-del',
             handler: () => {
-              this.tddiServ.delete(this.scd.si,"1",d).then(data=>{
-                this.cancel();
-              });
+              if (moment(d).format("YYYY/MM/DD") == moment(this.scd.sd).format("YYYY/MM/DD")){
+                //如果开始日与选择的当前日一样，就是删除所有
+                this.tddiServ.delete(this.scd.si,"2",d).then(data=>{
+                  this.cancel();
+                });
+              }else{
+                this.tddiServ.delete(this.scd.si,"1",d).then(data=>{
+                  this.cancel();
+                });
+              }
             }
           }, {
             text: '删除所有日程',
@@ -369,8 +374,12 @@ export class TddiPage {
 
   }
   toPlanChoose(){
-    this.isShowPlan = true;
-    this.IsShowCover = true;
+    if(this.jhs.length > 0){
+      this.isShowPlan = true;
+      this.IsShowCover = true;
+    }else {
+      this.util.toast("未创建计划",1500);
+    }
   }
 
   closeDialog() {

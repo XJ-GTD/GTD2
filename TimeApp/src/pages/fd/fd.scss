@@ -71,8 +71,16 @@ page-fd {
   }
 
   #fdname{
-    height: 40px;
-    border-bottom: 1px solid #fff;
-    margin:0px 30%;
+    padding: 10px;
+    margin: 40px 30% 5px 30%;
+    border-bottom: 1px solid #fff
+  }
+
+ .label-ios{
+    margin:5px;
+  }
+
+ .label-md{
+    margin:5px;
   }
 }

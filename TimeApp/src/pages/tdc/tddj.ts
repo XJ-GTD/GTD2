@@ -5,7 +5,7 @@ import {BsModel} from "../../service/restful/out/bs.model";
 import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
-import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
+import {FsData, PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 import {TdcService} from "./tdc.service";
 
 /**
@@ -112,9 +112,10 @@ import {TdcService} from "./tdc.service";
           <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-textarea>
         </div>
       </ion-row>
-      <ion-row justify-content-left>
-        <div   *ngFor ="let fss of scd.fss;">
-          <div >{{fss.ran}}</div>
+      <ion-row class="img-row">
+        <div class ="img-div"   *ngFor ="let fs of fssshow;">
+          <div><img class ="img-set" [src]="fs.bhiu"></div>
+          <div class ="img-rn">{{fs.rn}}</div>
         </div>
       </ion-row>
     </ion-grid>
@@ -183,6 +184,7 @@ export class TddjPage {
   //画面数据
   scd :ScdData = new ScdData();
   b:boolean = true;
+  fssshow : Array<FsData> =new Array<FsData>();
 
   //重复日程不可以修改日期
   rept_flg :boolean = false;
@@ -229,7 +231,7 @@ export class TddjPage {
           for (let i=0;i<this.jhs.length;i++){
             if (this.jhs[i].ji == this.scd.ji){
               this.scd.p = this.jhs[i];
-              console.log("计划********" + this.jhs[i].ji);
+              break;
             }
           }
         }).catch(res=>{
@@ -258,7 +260,13 @@ export class TddjPage {
         this.clickrept(this.scd.rt+'');
         this.clickwake(this.scd.tx + '');
 
-      })
+      });
+
+      //获取日程参与人表
+      this.tddjServ.getCalfriend(this.navParams.get("si")).then(data=>{
+        this.fssshow = data;
+      });
+
       return;
     }
 
@@ -463,7 +471,7 @@ export class TddjPage {
             role: 'destructive',
             cssClass:'btn-del',
             handler: () => {
-              if (moment(d).isSame(this.scd.sd)){
+              if (moment(d).format("YYYY/MM/DD") == moment(this.scd.sd).format("YYYY/MM/DD")){
                 //如果开始日与选择的当前日一样，就是删除所有
                 this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
                   this.cancel();
@@ -508,7 +516,7 @@ export class TddjPage {
       this.isShowPlan = true;
       this.IsShowCover = true;
     }else {
-      this.util.toast("请先去计划页面创建计划",1500);
+      this.util.toast("未创建计划",1500);
     }
   }
 
