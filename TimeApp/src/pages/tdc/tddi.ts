@@ -187,7 +187,6 @@ export class TddiPage {
         for (let i=0;i<this.jhs.length;i++){
           if (this.jhs[i].ji == this.scd.ji){
             this.scd.p = this.jhs[i];
-            console.log("计划********" + this.jhs[i].ji);
           }
         }
       }).catch(res=>{
@@ -369,8 +368,12 @@ export class TddiPage {
 
   }
   toPlanChoose(){
-    this.isShowPlan = true;
-    this.IsShowCover = true;
+    if(this.jhs.length > 0){
+      this.isShowPlan = true;
+      this.IsShowCover = true;
+    }else {
+      this.util.toast("未创建计划",1500);
+    }
   }
 
   closeDialog() {

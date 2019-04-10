@@ -104,6 +104,7 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
     font-size: 14px;
     margin-top: 22px;
     margin-left: 22px;
+    height: 60px;
   }
 
   .sel-btn-seled{
@@ -314,6 +315,18 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
     padding-right: 2px;
     letter-spacing: 1px;
   }
-
+  .img-set{
+    width: 37px;
+  }
+  .img-row{
+    margin-left: 17px;
+  }
+  .img-div{
+    margin-left: 5px;
+  }
+  .img-rn{
+    text-align: center;
+    margin-top: -6px;
+  }
 }
 

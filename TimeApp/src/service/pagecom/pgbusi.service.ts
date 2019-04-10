@@ -37,14 +37,8 @@ export class PgBusiService {
     Object.assign(scdData.p, jh);
 
     //获取日程参与人表
-
-    let ssql = "select b.* from gtd_d d ,gtd_b b where a.ai = b.pwi and d.si ='"+ si +"' " ;
-    let bList = await this.sqlExce.getExtList<BTbl>(ssql);
-    for (let j = 0, len = bList.length; j < len; j++) {
-      let fsd = new FsData();
-      Object.assign(fsd, bList[j]);
-      scdData.fss.push(fsd);
-    }
+    let  fslist :Array<FsData>   = await this.getCalfriend(si);
+    scdData.fss = fslist;
 
     //获取提醒时间
     let e = new ETbl();

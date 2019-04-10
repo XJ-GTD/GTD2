@@ -112,9 +112,10 @@ import {TdcService} from "./tdc.service";
           <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-textarea>
         </div>
       </ion-row>
-      <ion-row justify-content-left>
-        <div   *ngFor ="let fss of scd.fss;">
-          <div >{{fss.ran}}</div>
+      <ion-row class="img-row">
+        <div class ="img-div"   *ngFor ="let fss of scd.fss;">
+          <div><img class ="img-set" [src]="fss.bhiu"></div>
+          <div class ="img-rn">{{fss.rn}}</div>
         </div>
       </ion-row>
     </ion-grid>
@@ -508,7 +509,7 @@ export class TddjPage {
       this.isShowPlan = true;
       this.IsShowCover = true;
     }else {
-      this.util.toast("请先去计划页面创建计划",1500);
+      this.util.toast("未创建计划",1500);
     }
   }
 
