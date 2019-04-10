@@ -58,9 +58,6 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
                         ></ion-datetime>
           </ion-item> 
         </div>
-         <div class="arrow1">
-           <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
-         </div>
       </ion-row>
       <ion-row >
         <div class = "tog-set"><ion-item>
@@ -73,9 +70,6 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
                               pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)"></ion-datetime>
               </ion-item>
           </div>
-        <div class = "arrow2" [hidden]="alld">
-          <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
-        </div>
       </ion-row>
       <ion-row >
         <div class ="reptlbl repttop"><ion-label>重复</ion-label></div>

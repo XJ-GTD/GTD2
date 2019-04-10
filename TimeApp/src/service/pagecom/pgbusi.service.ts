@@ -564,5 +564,6 @@ export class PlData{
   jg: string="";//计划描述
   jc: string="";//计划颜色标记
   jt: string="";//计划类型
+  jtd: string="";
   wtt: Number;//创建时间戳
 }
