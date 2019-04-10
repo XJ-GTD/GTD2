@@ -15,21 +15,25 @@ aicomponent {
   //}
 
   .close {
+    webkit-transition: all 1.5s ease 0.2s;
     transition: all 1.5s ease 0.2s;
     display: block;
     font-size: 2.2em;
     position: absolute;
-    top: -95px;
-    right: 20px;
-    transform:translateY(-9999px);
+    top: -100px;
+    right: 10%;
+    -webkit-transform: translateY(-9999px);
+    transform: translateY(-9999px);
+    color: #fff;
   }
 
   .aiWarp {
     position: relative;
     overflow-y: auto;
-    opacity: .95;
+    opacity: .8;
     padding: 5px;
     width: 100%;
+    background-color: #000;
   }
 
   .scroll-content {
@@ -144,6 +148,7 @@ aicomponent {
 
   .item-ios {
     padding-left: 10px;
+    background-color:transparent;
   }
 }
 

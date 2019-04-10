@@ -189,10 +189,7 @@ export class AiComponent {
     }
 
 
-    setTimeout(() => {
-      this.calcheight();
-
-    }, 200);
+    this.calcheight();
   }
 
   callbackSpeech(datas: SpeechEmData) {
@@ -203,10 +200,7 @@ export class AiComponent {
     this.aiData1.speechAi.org = datas.org;
     this.aiData1.speechAi.an = datas.an;
 
-    setTimeout(() => {
-      this.calcheight();
-
-    }, 200);
+    this.calcheight();
   }
 
   callbackScd(data: ScdEmData) {
@@ -226,10 +220,7 @@ export class AiComponent {
 
     this.aiData1.scd = scd1;
 
-    setTimeout(() => {
-      this.calcheight();
-
-    }, 200);
+    this.calcheight();
   }
 
   closePage() {
