@@ -187,7 +187,6 @@ export class PlService {
     console.log('---------- PlService getPlan 获取计划开始 ----------------');
     let pld = new PagePlData();
     //获取本地计划
-    let jhtbl:JhTbl = new JhTbl();
     let jhSql = "select * from gtd_j_h order by wtt desc";
     let jhCtbl: Array<PagePDPro> = await this.sqlExce.getExtList<PagePDPro>(jhSql);
     if(jhCtbl.length > 0){

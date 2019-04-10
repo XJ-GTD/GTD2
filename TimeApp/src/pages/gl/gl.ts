@@ -1,12 +1,7 @@
 import {Component} from '@angular/core';
-import {
-  AlertController, IonicPage, ModalController, NavController, NavParams, Platform,
-  ViewController
-} from 'ionic-angular';
+import {AlertController, IonicPage, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {GlService} from "./gl.service";
 import {GcService, PageDcData} from "../gc/gc.service";
-import {GcPage} from "../gc/gc";
-import {DomSanitizer} from "@angular/platform-browser";
 import {DataConfig} from "../../service/config/data.config";
 
 /**

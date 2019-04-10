@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {Events, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {Events, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {FsService} from "./fs.service";
 import {GcService, PageDcData} from "../gc/gc.service";
 import {DataConfig} from "../../service/config/data.config";
@@ -26,7 +26,7 @@ import {FsData} from "../../service/pagecom/pgbusi.service";
             <img class="img-header-left" src="./assets/imgs/fh2.png">
           </button>
         </ion-buttons>
-        <ion-title>选择参与人</ion-title>
+        <ion-title>联系人</ion-title>
         <ion-buttons right>
           <button ion-button (click)="save()" color="danger">
             <!--<ion-icon name="add"></ion-icon>--> 确定
@@ -46,8 +46,11 @@ import {FsData} from "../../service/pagecom/pgbusi.service";
       </div>
       <ion-grid>
         <ion-row>
-          <ion-list *ngIf="addType=='rc'" no-lines>
+          <ion-list *ngIf="addType=='rc'" no-lines style="margin-bottom: 0">
             <ion-item class="plan-list-item" *ngFor="let g of gl">
+              <ion-avatar item-start>
+                <img src="./assets/imgs/headImg.jpg">
+              </ion-avatar>
               <ion-label>
                 {{g.gn}}({{g.gc}})
               </ion-label>

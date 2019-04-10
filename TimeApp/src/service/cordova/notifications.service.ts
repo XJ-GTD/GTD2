@@ -151,8 +151,8 @@ class MwxNewMessage implements ILocalNotification {
   attachments: string[];
   autoClear: boolean = true;
   badge: number;
-  //channel: string = "cn.sh.com.xj.timeApp.remind";
-  channel: string;
+  channel: string = "cn.sh.com.xj.timeApp.remind";
+  //channel: string;
   clock: boolean | string;
   color: string;
   data: any;
@@ -187,8 +187,8 @@ class MwxRemind implements ILocalNotification {
   attachments: string[];
   autoClear: boolean = true;
   badge: number;
-  //channel: string = "cn.sh.com.xj.timeApp.remind";
-  channel: string;
+  channel: string = "cn.sh.com.xj.timeApp.remind";
+  //channel: string;
   clock: boolean | string;
   color: string;
   data: any;

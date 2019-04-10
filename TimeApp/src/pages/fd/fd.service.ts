@@ -1,22 +1,19 @@
 import {Injectable} from "@angular/core";
-import {PageBlData} from "../bl/bl.service";
-import { PersonInData, PersonRestful} from "../../service/restful/personsev";
+import {PersonInData, PersonRestful} from "../../service/restful/personsev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {UtilService} from "../../service/util-service/util.service";
 import {BlaReq, BlaRestful} from "../../service/restful/blasev";
 import {BsModel} from "../../service/restful/out/bs.model";
-import {ViewController} from "ionic-angular";
 import {FsData} from "../../service/pagecom/pgbusi.service";
 import {DataConfig} from "../../service/config/data.config";
 import {BhTbl} from "../../service/sqlite/tbl/bh.tbl";
 
 @Injectable()
 export class FdService {
-  constructor(private personRes:PersonRestful,private blasev:BlaRestful,
+  constructor(private personRes:PersonRestful,
+              private blasev:BlaRestful,
               private util:UtilService,
-
               private sqlite:SqliteExec) {
   }
 
@@ -30,38 +27,36 @@ export class FdService {
     return new Promise<FsData>((resolve, reject)=>{
       let fd:FsData = new FsData();
       let bTbl = new BTbl();
-      bTbl.pwi = id;
-      let sql = 'select gb.*,bh.hiu bhiu from gtd_b gb left join gtd_bh bh on bh.pwi = gb.ui ' +
-        'where gb.pwi ="'+id+'"';
+      let sql = 'select gb.*,bh.hiu bhiu from gtd_b gb left join gtd_bh bh on bh.pwi = gb.ui where gb.pwi ="'+id+'"';
       //获取本地参与人信息
       this.sqlite.getExtList<FsData>(sql).then(data=>{
         if(data != null && data.length>0){
-          Object.assign(bTbl,data[0]);
           Object.assign(fd,data[0]);
 
           //rest获取用户信息（包括头像）
-          let personData:PersonInData = new PersonInData();
-          personData.phoneno=bTbl.rc;
-          return  this.personRes.get(personData);
+          return this.personRes.get(fd.rc);
         }
       }).then(data=>{
-        //更新本地用户信息
-        if(data && data.code == 0){
-          bTbl.hiu = data.data.avatar;
+        //更新本地联系人信息
+        Object.assign(bTbl,fd);
+        if(data && data.code == 0 && data.data && data.data.phoneno == fd.rc){
+          //bTbl.hiu = data.data.avatar;
+          //bTbl.rc = data.data.phoneno;
+          bTbl.rel = "1";   // 已注册
           bTbl.rn = data.data.nickname;
+          fd.rn =  data.data.nickname;
           if(bTbl.rn && bTbl.rn != null && bTbl.rn != ''){
             bTbl.rnpy = this.util.chineseToPinYin(bTbl.rn);
+            fd.rnpy = this.util.chineseToPinYin(bTbl.rn);
           }
-          bTbl.rc = data.data.phoneno;
-          return this.sqlite.replaceT(bTbl)
+        }else{
+          bTbl.rel = "0";   // 未注册用户
         }
+        return this.sqlite.replaceT(bTbl)
       }).then(data=>{
         //rest获取用户头像
-        let personData:PersonInData = new PersonInData();
-        personData.phoneno=bTbl.rc;
-        return this.personRes.getavatar(personData);
-      })
-        .then(data=>{
+        return this.personRes.getavatar(fd.rc);
+      }).then(data=>{
         //更新/添加用户头像
         if(fd.bhiu == null || fd.bhiu ==''){
           fd.hiu=DataConfig.HUIBASE64;
@@ -71,7 +66,7 @@ export class FdService {
 
         let str:string = '';
         if(data && !data.code){
-            str = data.data;
+          str = data.data;
           fd.hiu = str;
           if(fd.bhiu == null || fd.bhiu ==''){
             let bh = new BhTbl();
@@ -84,21 +79,14 @@ export class FdService {
             return this.sqlite.execSql(sql);
           }
         }
-      })
-        .then(data=>{
-        //restFul查询是否是黑名单
-        return this.blasev.list();
-      })
-        .then(data=>{
-        Object.assign(fd,bTbl);
-        if(data.data && data.data.length>0){
-          for(let bla of data.data){
-            if(bla.mpn == bTbl.rc){
-              fd.isbla = true; //是黑名单；
-              break;
-            }
-          }
+      }).then(data=>{
+        if(fd.bhiu == null || fd.bhiu ==''){
+          fd.hiu=fd.bhiu;
+        }else{
+          fd.hiu=DataConfig.HUIBASE64;
         }
+        resolve(fd);
+      }).catch(error=>{
         if(fd.bhiu == null || fd.bhiu ==''){
           fd.hiu=fd.bhiu;
         }else{
@@ -108,6 +96,27 @@ export class FdService {
       })
     })
 
+  }
+
+  getBlack(phoneno:string):Promise<boolean> {
+
+    return new Promise((resolve, reject)=>{
+      let isBlack:boolean = false;
+      //restFul查询是否是黑名单
+      this.blasev.list().then(data=>{
+        if(data.data && data.data.length>0){
+          for(let bla of data.data){
+            if(bla.mpn == phoneno){
+              isBlack = true; //是黑名单；
+              break;
+            }
+          }
+        }
+        resolve(isBlack);
+      }).catch(error=>{
+        resolve(isBlack);
+      })
+    })
   }
 
   //restFul 加入黑名单

@@ -5,7 +5,7 @@ import {AgdPro, AgdRestful, ContactPerPro} from "../../service/restful/agdsev";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {UtilService} from "../../service/util-service/util.service";
-import {PersonInData, PersonRestful} from "../../service/restful/personsev";
+import {PersonRestful} from "../../service/restful/personsev";
 import {DataConfig} from "../../service/config/data.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {FsData} from "../../service/pagecom/pgbusi.service";
@@ -45,7 +45,7 @@ export class FsService {
             fs.hiu = fs.bhiu;
           }
         }
-        console.log('---------- getfriend 根据条件查询参与人 结果:'+ JSON.stringify(data));
+        console.log('---------- getfriend 根据条件查询参与人 结果:'+ data.length/*JSON.stringify(data)*/);
         resolve(fsList);
       }).catch(e=>{
         console.log('---------- getfriend 根据条件查询参与人 错误:'+ e.message);
@@ -71,7 +71,7 @@ export class FsService {
             fsList.push(data.rows.item(i))
           }
         }
-        console.log('---------- getCalfriend 获取分享日程的参与人结果:'+ JSON.stringify(fsList));
+        console.log('---------- getCalfriend 获取分享日程的参与人结果:'+ fsList.length/*JSON.stringify(fsList)*/);
         resolve(fsList);
       }).catch(e=>{
         console.error('---------- getCalfriend 获取分享日程的参与人出错:'+ e.message);
@@ -147,7 +147,7 @@ export class FsService {
   getfriendgroup(groupId:string):Promise<Array<FsData>>{
     return new Promise<Array<FsData>>((resolve, reject)=>{
       //查询本地群组中的参与人
-      let sql ='select gb.* from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi where gbx.bi="'+groupId+'"';
+      let sql ='select gb.*,bh.hiu bhiu from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi inner join gtd_bh bh on gb.pwi = bh.pwi where gbx.bi="'+groupId+'"';
       let fsList =  new Array<FsData>();
       console.log('---------- getfriend4group 查询群组中的参与人 sql:'+ sql);
       this.sqlite.execSql(sql).then(data=>{
@@ -159,11 +159,15 @@ export class FsService {
             if (!fs.hiu || fs.hiu == null || fs.hiu == '') {
               fs.hiu = DataConfig.HUIBASE64;
             }else{
-              fs.hiu = fs.bhiu;
+              if (!fs.bhiu || fs.bhiu == null || fs.bhiu == '') {
+                fs.hiu = DataConfig.HUIBASE64;
+              }else {
+                fs.hiu = fs.bhiu;
+              }
             }
           }
         }
-        console.log('---------- getfriend4group 查询群组中的参与人 结果:'+ JSON.stringify(fsList));
+        console.log('---------- getfriend4group 查询群组中的参与人 结果:'+ fsList.length/*JSON.stringify(fsList)*/);
         resolve(fsList);
       }).catch(e=>{
         console.error('---------- getfriend4group 查询群组中的参与人 出错:'+ e.message);
@@ -182,9 +186,7 @@ export class FsService {
     let map:Map<string,BTbl>  = new Map<string,BTbl>();
     for(let bt of btbls){
       //添加/更新头像表
-      let per = new PersonInData();
-      per.phoneno = bt.rc;
-      let pred = await this.perRest.getavatar(per);
+      let pred = await this.perRest.getavatar(bt.rc);
       let hiu = JSON.stringify(pred.data);
       if (hiu != '') {
         bt.hiu = pred.data;
@@ -205,8 +207,7 @@ export class FsService {
           map.delete(fs.rc);
         }else{
           bl = new BTbl();
-          let per = new PersonInData();
-          let pred = await this.perRest.getavatar(per);
+          let pred = await this.perRest.getavatar("");
           let hiu = JSON.stringify(pred.data);
           if (hiu != '') {
             bhiu = pred.data;
