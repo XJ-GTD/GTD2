@@ -156,12 +156,11 @@ import {TddjService} from "./tddj.service";
     <ion-grid>
       <ion-row>
 
-        <ion-list  no-lines  radio-group [(ngModel)]="scd.p">
+        <ion-list  no-lines  radio-group [(ngModel)]="scd.p" >
           <ion-item class="plan-list-item" *ngFor="let option of jhs">
             <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
-            <ion-label>{{option.jn}}{{option.ji == scd.ji}}</ion-label>
-            <ion-radio *ngIf="option.ji == scd.ji" [value]="option" checked></ion-radio>
-            <ion-radio *ngIf="option.ji != scd.ji" [value]="option" ></ion-radio>
+            <ion-label>{{option.jn}}</ion-label>
+            <ion-radio  [value]="option" ></ion-radio>
           </ion-item>
         </ion-list>
 
@@ -230,6 +229,7 @@ export class TddjPage {
           this.jhs = data;
           for (let i=0;i<this.jhs.length;i++){
             if (this.jhs[i].ji == this.scd.ji){
+              this.scd.p = this.jhs[i];
               console.log("计划********" + this.jhs[i].ji);
             }
           }
