@@ -100,6 +100,7 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
   }
 
   .memo-set{
+    width: 85%;
     font-size: 14px;
     margin-top: 22px;
     margin-left: 22px;
@@ -311,5 +312,12 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
     opacity:.30;
     filter: alpha(opacity=30);
   }
+
+  .lbl-jh{
+    margin-top: 41px;
+    margin-left: 5px;
+    font-size: 14px;
+  }
+
 }
 

@@ -39,7 +39,10 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
       </ion-row>
       <ion-row >
         <div >
-            <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">{{scd.p.jn==""?"添加计划":scd.p.jn}}</button>
+            <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">添加计划</button>
+        </div>
+        <div>
+          <ion-label class ="lbl-jh">{{scd.p.jn}}</ion-label>
         </div>
       </ion-row>
       <ion-row >
@@ -82,7 +85,7 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
       </ion-row>
       <ion-row >
         <div class = "memo-set">
-          <ion-input type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-input>
+          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-textarea>
         </div>
       </ion-row>
     </ion-grid>
@@ -122,7 +125,7 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
           <ion-item class="plan-list-item" *ngFor="let option of jhs">
             <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
             <ion-label>{{option.jn}}</ion-label>
-            <ion-radio [value]="option" [ngStyle]="{'checked': option.ji == scd.ji , 'none': option.ji != scd.ji}"></ion-radio>
+            <ion-radio [value]="option" ></ion-radio>
           </ion-item>
         </ion-list>
 
@@ -176,17 +179,23 @@ export class TddiPage {
 
   ionViewWillEnter() {
 
-    this.busiServ.getPlans().then(data=>{
-      this.jhs = data;
-      //console.log("111" + JSON.stringify(this.jhs));
-    }).catch(res=>{
-      console.log("获取计划失败" + JSON.stringify(res));
-    });
 
     //受邀人修改的场合初始化
     this.tddiServ.get(this.navParams.get("si")).then(data=>{
       let bs : BsModel<ScdData> = data;
       Object.assign(this.scd,bs.data);
+
+      this.busiServ.getPlans().then(data=>{
+        this.jhs = data;
+        for (let i=0;i<this.jhs.length;i++){
+          if (this.jhs[i].ji == this.scd.ji){
+            this.scd.p = this.jhs[i];
+            console.log("计划********" + this.jhs[i].ji);
+          }
+        }
+      }).catch(res=>{
+        console.log("获取计划失败" + JSON.stringify(res));
+      });
 
       //全天的场合
       if (this.scd.et == "99:99") {
