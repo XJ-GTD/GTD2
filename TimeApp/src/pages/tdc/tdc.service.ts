@@ -31,6 +31,15 @@ export class TdcService {
     return await this.pgbusiServ.get(si);
   }
 
+  /**
+   * 获取日程参与人
+   * @param {string} si 日程id
+   * @returns {Promise<Array<FsData>>}
+   */
+  async getCalfriend(si: string) {
+    return await this.pgbusiServ.getCalfriend(si);
+  }
+
   //删除日程 type：1 删除当前以后所有 ，2 删除所有
   async delete(rcId: string, type: string, d: string) {
     return await this.pgbusiServ.delete(rcId, type, d);

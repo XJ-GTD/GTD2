@@ -36,10 +36,6 @@ export class PgBusiService {
     jh = await this.sqlExce.getOne<JhTbl>(jh);
     Object.assign(scdData.p, jh);
 
-    //获取日程参与人表
-    let  fslist :Array<FsData>   = await this.getCalfriend(si);
-    scdData.fss = fslist;
-
     //获取提醒时间
     let e = new ETbl();
     e.si = si;
