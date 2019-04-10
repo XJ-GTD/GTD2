@@ -11,6 +11,7 @@ import {UtilService} from "../util-service/util.service";
 import {SpTbl} from "../sqlite/tbl/sp.tbl";
 import {DTbl} from "../sqlite/tbl/d.tbl";
 import * as moment from "moment";
+import {DataConfig} from "../config/data.config";
 
 @Injectable()
 export class PgBusiService {
@@ -456,6 +457,36 @@ export class PgBusiService {
     c.gs = "1";
     //新消息未读
     c.du = "0";
+  }
+
+  /**
+   * 获取分享日程的参与人
+   * @param {string} calId 日程ID
+   * @returns {Promise<Array<FsData>>}
+   */
+  getCalfriend(calId:string):Promise<Array<FsData>>{
+    return new Promise<Array<FsData>>((resolve, reject)=>{
+      let sql ='select gd.pi,gd.si,gb.*,bh.hiu bhiu from gtd_d gd inner join gtd_b gb on gb.pwi = gd.ai left join gtd_bh bh on gb.pwi = bh.pwi where si="'+calId+'"';
+      let fsList =  new Array<FsData>();
+      console.log('---------- getCalfriend 获取分享日程的参与人 sql:'+ sql);
+      this.sqlExce.execSql(sql).then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          for(let i=0,len =data.rows.length;i<len;i++ ){
+            let fs = new FsData();
+            Object.assign(fs,data.rows.item(i));
+            if(!fs.bhiu || fs.bhiu == null || fs.bhiu == ''){
+              fs.bhiu=DataConfig.HUIBASE64;
+            }
+            fsList.push(fs);
+          }
+        }
+        console.log('---------- getCalfriend 获取分享日程的参与人结果:'+ fsList.length/*JSON.stringify(fsList)*/);
+        resolve(fsList);
+      }).catch(e=>{
+        console.error('---------- getCalfriend 获取分享日程的参与人出错:'+ e.message);
+        resolve(fsList);
+      })
+    })
   }
 }
 

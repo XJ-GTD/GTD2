@@ -8,7 +8,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {PersonRestful} from "../../service/restful/personsev";
 import {DataConfig} from "../../service/config/data.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
-import {FsData} from "../../service/pagecom/pgbusi.service";
+import {FsData, PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {BhTbl} from "../../service/sqlite/tbl/bh.tbl";
 
 @Injectable()
@@ -17,7 +17,8 @@ export class FsService {
               private agdRest : AgdRestful,
               private perRest : PersonRestful,
               private contacts:ContactsService,
-              private util : UtilService) {
+              private util : UtilService,
+              private busiServ : PgBusiService) {
   }
 
   //根据条件查询参与人
@@ -56,36 +57,6 @@ export class FsService {
   }
 
   /**
-   * 获取分享日程的参与人
-   * @param {string} calId 日程ID
-   * @returns {Promise<Array<FsData>>}
-   */
-  getCalfriend(calId:string):Promise<Array<FsData>>{
-    return new Promise<Array<FsData>>((resolve, reject)=>{
-      let sql ='select gd.pi,gd.si,gb.*,bh.hiu bhiu from gtd_d gd inner join gtd_b gb on gb.pwi = gd.ai left join gtd_bh bh on gb.pwi = bh.pwi where si="'+calId+'"';
-      let fsList =  new Array<FsData>();
-      console.log('---------- getCalfriend 获取分享日程的参与人 sql:'+ sql);
-      this.sqlite.execSql(sql).then(data=>{
-        if(data && data.rows && data.rows.length>0){
-          for(let i=0,len =data.rows.length;i<len;i++ ){
-            let fs = new FsData();
-            Object.assign(fs,data.rows.item(i));
-            if(!fs.bhiu || fs.bhiu == null || fs.bhiu == ''){
-              fs.bhiu=DataConfig.HUIBASE64;
-            }
-            fsList.push(fs);
-          }
-        }
-        console.log('---------- getCalfriend 获取分享日程的参与人结果:'+ fsList.length/*JSON.stringify(fsList)*/);
-        resolve(fsList);
-      }).catch(e=>{
-        console.error('---------- getCalfriend 获取分享日程的参与人出错:'+ e.message);
-        resolve(fsList);
-      })
-    })
-  }
-
-  /**
    * 分享给参与人操作
    * @param {string} si 日程ID
    * @param {Array<FsData>} fsList 日程参与人列表
@@ -116,7 +87,7 @@ export class FsService {
           // console.log('---------- sharefriend 分享给参与人操作 删除原参与人 ---------');
 
         }
-        return this.getCalfriend(si);
+        return this.busiServ.getCalfriend(si);
       }).then(data=>{
         let dtList = new Array<string>();
         for(let fs of fsList){
