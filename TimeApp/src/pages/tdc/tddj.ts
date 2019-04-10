@@ -464,7 +464,7 @@ export class TddjPage {
             role: 'destructive',
             cssClass:'btn-del',
             handler: () => {
-              if (moment(d).isSame(this.scd.sd)){
+              if (moment(d).format("YYYY/MM/DD") == moment(this.scd.sd).format("YYYY/MM/DD")){
                 //如果开始日与选择的当前日一样，就是删除所有
                 this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
                   this.cancel();
