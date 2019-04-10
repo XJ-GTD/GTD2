@@ -118,12 +118,13 @@ public class BlacklistController {
      */
     @RequestMapping(value="/list")
     @ResponseBody
-    public BaseOutDto getList(BlaBlacklistDto blacklist,HttpServletRequest request) {
+    public BaseOutDto getList(@RequestBody BlaBlacklistDto blacklist,HttpServletRequest request) {
     	
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
     	List<BlaBlacklistDto> dtoList = new ArrayList<BlaBlacklistDto>();
-    	if(!"".equals(relId) && relId != null){
+    	log.info("=====获取头部信息："+ relId);
+    	if(relId != null && !"".equals(relId)){
     		blacklist.setRelId(relId);
     		List<BlaBlacklist> xjList = blackService.findByRelId(relId);
     		for (BlaBlacklist bla : xjList) {
