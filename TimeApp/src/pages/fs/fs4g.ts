@@ -85,7 +85,7 @@ export class Fs4gPage {
   }
   ionViewDidEnter(){
     console.log("3.0 ionViewDidEnter 当进入页面时触发");
-    this.getFdl(new FsData());
+    this.getContacts();
   }
   save(){
     if(this.selFsl.size>0){
@@ -130,23 +130,7 @@ export class Fs4gPage {
     // this.navCtrl.pop();
   }
 
-  getFdl(fs:FsData){
-    this.fsService.getfriend(fs).then(data=>{
-      if(data){
-        this.fsl = data;
-        this.selFsl.clear();
-      }
-    })
-  }
-
-  getContacts(){
-    if(this.tel && this.tel != null && this.tel !=''){
-      let fs = new FsData();
-      fs.rc = this.tel;
-      fs.rn = this.tel;
-      fs.ran = this.tel;
-      this.getFdl(fs);
-    }
-
+  getContacts() {
+    this.fsl = this.fsService.getfriend(this.tel);
   }
 }

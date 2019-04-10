@@ -119,12 +119,8 @@ export class GcPage {
   }
 
   getData() {
-    this.fsService.getfriendgroup(this.dc.gi).then(data=>{
-      if(data && data != null){
-        this.fsl = data;
-        this.dc.gc = this.fsl.length;
-      }
-    })
+    this.fsl = this.fsService.getfriendgroup(this.dc.gi);
+    this.dc.gc = this.fsl.length;
   };
 
   /**

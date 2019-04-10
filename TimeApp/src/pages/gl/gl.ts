@@ -88,11 +88,7 @@ export class GlPage {
   }
 
   getGroups(){
-    this.glService.getGroups().then(data=>{
-      this.gl = data.gl;
-    }).catch(e=>{
-      alert(e.message);
-    })
+    this.gl = this.glService.getGroups(null);
   }
 
   goBack() {

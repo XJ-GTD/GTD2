@@ -4,6 +4,11 @@ import {SqliteExec} from "../util-service/sqlite.exec";
 import {ATbl} from "../sqlite/tbl/a.tbl";
 import {UTbl} from "../sqlite/tbl/u.tbl";
 import {UtilService} from "../util-service/util.service";
+import {FsData} from "../pagecom/pgbusi.service";
+import {DataConfig} from "./data.config";
+import {PageDcData} from "../../pages/gc/gc.service";
+import {BxTbl} from "../sqlite/tbl/bx.tbl";
+import {PageGlData} from "../../pages/gl/gl.service";
 
 /**
  * create by on 2019/3/5
@@ -50,74 +55,120 @@ export class UserConfig {
 
   static settins: Map<string, Setting> = new Map<string, Setting>();
 
+  static friends: Array<FsData> = new Array<FsData>();
 
-  constructor(private sqlliteExec: SqliteExec,private util:UtilService) {
+  static groups: Array<PageDcData> = new Array<PageDcData>();
+
+  constructor(private sqlliteExec: SqliteExec, private util: UtilService) {
   }
 
-  async init(){
+  async init() {
     await this.RefreshYTbl();
     await this.RefreshUTbl();
     await this.RefreshATbl();
+    await this.RefreshBTbl();
+    await this.RefreshGTbl();
   }
 
   getSetting(key: string) {
     return UserConfig.settins.get(key).value;
   }
 
-  RefreshYTbl():Promise<any> {
-      let yTbl: YTbl = new YTbl();
-      //获取偏好设置
-      return this.sqlliteExec.getList<YTbl>(yTbl).then(rows => {
-        for (let y of rows) {
-          let setting:Setting = new Setting();
-          setting.yi = y.yi;
-          setting.bname = y.ytn;
-          setting.typeB = y.yt;
-          setting.name = y.yn;
-          setting.type = y.yk;
-          setting.value = y.yv;
-          UserConfig.settins.set(setting.type,setting);
-        }
+  RefreshYTbl(): Promise<any> {
+    let yTbl: YTbl = new YTbl();
+    //获取偏好设置
+    return this.sqlliteExec.getList<YTbl>(yTbl).then(rows => {
+      for (let y of rows) {
+        let setting: Setting = new Setting();
+        setting.yi = y.yi;
+        setting.bname = y.ytn;
+        setting.typeB = y.yt;
+        setting.name = y.yn;
+        setting.type = y.yk;
+        setting.value = y.yv;
+        UserConfig.settins.set(setting.type, setting);
+      }
     })
   }
 
-  RefreshUTbl():Promise<any> {
-      //获取用户信息
-      let uTbl: UTbl = new UTbl();
-      return this.sqlliteExec.getList<UTbl>(uTbl).then(rows=>{
-        if (rows.length >0){
-          UserConfig.user.id = rows[0].ui;
-          UserConfig.user.aid = rows[0].ai;
-          UserConfig.user.name = rows[0].un;
-          UserConfig.user.avatar = rows[0].hiu;
-          UserConfig.user.bothday = rows[0].biy;
-          UserConfig.user.No = rows[0].ic;
-          UserConfig.user.realname = rows[0].rn;
-          UserConfig.user.sex = rows[0].us;
-          UserConfig.user.contact = rows[0].uct;
-        }
-      })
+  RefreshUTbl(): Promise<any> {
+    //获取用户信息
+    let uTbl: UTbl = new UTbl();
+    return this.sqlliteExec.getList<UTbl>(uTbl).then(rows => {
+      if (rows.length > 0) {
+        UserConfig.user.id = rows[0].ui;
+        UserConfig.user.aid = rows[0].ai;
+        UserConfig.user.name = rows[0].un;
+        UserConfig.user.avatar = rows[0].hiu;
+        UserConfig.user.bothday = rows[0].biy;
+        UserConfig.user.No = rows[0].ic;
+        UserConfig.user.realname = rows[0].rn;
+        UserConfig.user.sex = rows[0].us;
+        UserConfig.user.contact = rows[0].uct;
+      }
+    })
   }
 
-  RefreshATbl():Promise<any> {
-
+  RefreshATbl(): Promise<any> {
     //获取账号信息
     let aTbl: ATbl = new ATbl();
-    return this.sqlliteExec.getList<ATbl>(aTbl).then(rows=>{
-      if (rows.length >0){
+    return this.sqlliteExec.getList<ATbl>(aTbl).then(rows => {
+      if (rows.length > 0) {
         UserConfig.account.id = rows[0].ai;
         UserConfig.account.name = rows[0].an;
         UserConfig.account.phone = rows[0].am;
         UserConfig.account.device = rows[0].ae;
         UserConfig.account.token = rows[0].at;
         UserConfig.account.mq = rows[0].aq;
-      }else{
+      } else {
         UserConfig.account.name = "";
         UserConfig.account.phone = "";
         UserConfig.account.device = this.util.deviceId();
         UserConfig.account.token = "";
         UserConfig.account.mq = "";
       }
+    });
+  }
+
+  //参与人
+  RefreshBTbl(): Promise<any> {
+    //获取本地参与人
+    let sql = `select gb.*,bh.hiu bhiu
+               from gtd_b gb
+                      left join gtd_bh bh on bh.pwi = gb.ui;`;
+    UserConfig.friends.splice(0, UserConfig.friends.length - 1);
+
+    return this.sqlliteExec.getExtList<FsData>(sql).then(data => {
+      for (let fs of data) {
+        if (!fs.bhiu || fs.bhiu == null || fs.bhiu == '') {
+          fs.hiu = DataConfig.HUIBASE64;
+        } else {
+          fs.hiu = fs.bhiu;
+        }
+        UserConfig.friends.push(fs);
+      }
+    });
+  }
+
+  //群组
+  RefreshGTbl(): Promise<any> {
+    //获取本地群列表
+    let sql = 'select * from gtd_g where gn like "' + name + '%"';
+
+    UserConfig.groups.splice(0, UserConfig.groups.length - 1);
+    return this.sqlliteExec.getExtList<PageDcData>(sql).then(async (dcl) => {
+      if (dcl.length > 0) {
+        //和单群人数
+        for (let dc of dcl) {
+          let bx = new BxTbl();
+          bx.bi = dc.gi;
+          let fsl: Array<FsData> = await this.sqlliteExec.getList<FsData>(bx);
+          dc.gc = fsl.length;
+          dc.fsl = fsl;
+          UserConfig.groups.push(dc);
+        }
+      }
+
     });
   }
 }
