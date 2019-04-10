@@ -69,6 +69,10 @@ page-ss {
     padding-right: 0;
   }
 
+  .item-ios .toggle-ios{
+    padding: 6px 0 5px 16px;
+  }
+
   .toggle-ios.toggle-checked .toggle-icon {
     background-color: rgb(60,144,155);
     width: 43px;

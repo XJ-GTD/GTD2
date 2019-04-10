@@ -56,7 +56,7 @@ import {UtilService} from "../../service/util-service/util.service";
               </div>
               <div class="agenda-col-time right-off left-off" justify-content-between>
                 <div class="time-slot">
-                  <p class="app-agenda-time">{{(agenda.st != null && agenda.st.length === 0)? '全天' : agenda.st.slice(0, 5)}}</p>
+                  <p class="app-agenda-time">{{(agenda.st != null && agenda.st === "99:99")? '全天' : agenda.st.slice(0, 5)}}</p>
                 </div>
                 <div class="pointer-slot"><span class="plan-color-pointer"><div class="color-dot" [ngStyle]="{'background-color': plan.pn.jc }"></div></span></div>
               </div>
