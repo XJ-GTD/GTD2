@@ -152,7 +152,7 @@ export class TdlPage {
 
       if ($event.directionY == 'up') {
 
-        if ($event.scrollTop == 0) {
+        if ($event.scrollTop < 10) {
           let condi = moment(this.scdlDataList[0].d).subtract(1, "day").format("YYYY/MM/DD");
           this.tdlServ.before(condi, 30).then(data => {
             this.scdlDataList.unshift(...data)
@@ -213,7 +213,7 @@ export class TdlPage {
         }else{
           this.gotoEl(d);
         }
-    }, 800);
+    }, 100);
   }
 
   //回主页

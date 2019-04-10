@@ -15,7 +15,7 @@ import {UserConfig} from "../../service/config/user.config";
   selector: 'page-m',
   providers: [],
   template: `
-    <ion-menu [content]="ha" side="left" swipeEnabled="true" type="scalePush" >
+    <ion-menu [content]="ha" side="left" swipeEnabled="true" type="scalePush" class="menu" >
       <ion-content>
         <ion-grid>
           <ion-row>
