@@ -93,6 +93,7 @@ export class LocalcalendarService {
                 console.log("查询本地日历开始时间：" + rc.sd + ",结束时间:" + rc.ed);
                 console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg[i]));
                 rc.ib = '1';
+                rc.gs='2'
                 rco.push(rc);
               }
             }

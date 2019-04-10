@@ -26,13 +26,12 @@ import {DataConfig} from "../../service/config/data.config";
 
   <ion-content padding>
     <ion-grid  style="text-align:center; height: 100%;">
-      <ion-row >
-        <ion-avatar item-start style="width: 100%;">
-          <img  class="img-hiu" [src]="fd.hiu">
-        </ion-avatar>
-      </ion-row>
-      <ion-row id="fdname">
-        <ion-label>
+
+      <ion-row style="height: 80%;">
+      <ion-avatar item-start style="width: 100%;">
+        <img  class="img-hiu" [src]="fd.hiu">
+      </ion-avatar>
+        <ion-label id="fdname">
           {{fd.ran}}
         </ion-label>
       </ion-row>
@@ -79,6 +78,7 @@ export class FdPage {
           this.fd.ran = this.fd.rn;
         }
       }
+      console.log(' ========= fdPage=>：'+JSON.stringify(this.fd));
       return this.fdService.getBlack(this.fd.rc);
     }).then(data=>{
       this.fd.isbla = data;
@@ -87,6 +87,7 @@ export class FdPage {
       }else{
         this.buttonText = "移入黑名单";
       }
+      console.log(' ========= fdPage=>：'+JSON.stringify(this.fd));
     })
   }
 
