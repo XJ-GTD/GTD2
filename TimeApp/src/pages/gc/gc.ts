@@ -97,15 +97,14 @@ export class GcPage {
   toAddGroupMember() {
     console.log("PePage跳转PgPage");
     this.navCtrl.push(DataConfig.PAGE._FS4G_PAGE,{tpara:this.dc,addType:'gc'});
-    // this.navCtrl.push("PgPage",{callback:this.getData,sel:this.qcy});
-    //
-    // let modal = this.modalCtrl.create(PageConfig.PG_PAGE,{callback:this.getData,sel:this.qcy});
-    // modal.onDidDismiss((data)=>{
-    //   console.log(data === this.qcy);
-    //   console.log(JSON.stringify(data));
-    //   this.qcy = data;
-    // });
-    //modal.present();
+    this.navCtrl.push(DataConfig.PAGE._FS4G_PAGE,{tpara:this.dc});
+
+    let modal = this.modalCtrl.create(DataConfig.PAGE._FS4G_PAGE,{tpara:this.dc});
+    modal.onDidDismiss((data)=>{
+      console.log(JSON.stringify(data));
+      this.getData();
+    });
+    modal.present();
 
   }
 
