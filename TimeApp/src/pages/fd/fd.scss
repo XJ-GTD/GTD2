@@ -1,57 +1,12 @@
 page-fd {
-  ion-content {
-    font-family: "PingFang-Regular";
-  }
-
-  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: #96162d;
-  }
-  ion-header {
-    top: 10px;
-  }
-  ion-content.content {
-    background-color: #96162d;
-    color: #fff;
-  }
- gird{
-   padding:0px;
- }
-  .button{
-    background-color: #96162d;
-  }
-  ion-content .plan-list-item {
-    background-color: #000;
-    color: #fff;
-  }
-
-  ion-list-header.plan-list-item {
-    color: rgb(153,153,153);
-  }
-  ion-item {
-    height: 60px;
-  }
-  .color-dot {
-    width: 2vmin;
-    height: 2vmin;
-    background-color: #fff;
-    border-radius: 50%;
-  }
-  .img-header-left{
-    width: 4vmin;
-    height: 4vmin;
-    margin-left: 5vmin;
-  }
-
-  .color-pink {
-    background-color: rgb(192,119,219);
-  }
-
-  .color-blue {
-    background-color: rgb(81,170,242);
-  }
+  background-color: #000;
 
   .w-auto {
     flex: 1;
+  }
+
+  .grid {
+    padding: 0;
   }
 
   .grid .row {
@@ -65,7 +20,53 @@ page-fd {
   .list-header, .list-header-md, .list-header-ios {
     border: 0;
   }
-  .toolbar-title-ios{
-    color:#ffffff;
+
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: #96162d;
+  }
+
+  ion-header{
+    padding: 4px 20px;
+  }
+
+  .img-header-left{
+    width: 4vmin;
+    height: 4vmin;
+  }
+
+  .toolbar-title{
+    color: white;
+    letter-spacing: 0.5vmin;
+    font-size: 1.5rem;
+  }
+
+  .bar-button-ios{
+    font-size: 1.5rem;
+  }
+
+  ion-input{
+    font-size: 1.5rem;
+  }
+
+  ion-content.content {
+    background-color: #96162d;
+    color: #fff;
+  }
+
+  .img-hiu{
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    display: unset;
+  }
+
+  .button{
+    width: 100%;
+    background: #96162d;
+  }
+
+  .scroll-content{
+    overflow-x: hidden;
+    overflow-y: hidden;
   }
 }

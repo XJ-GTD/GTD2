@@ -107,29 +107,29 @@ public class IContactsServiceImpl implements IContactsService {
 					
 				}
 				log.info("------- 删除参与人："+ JSONObject.toJSONString(delList));
-				if(delList.size()>0){
-					List<AgdContactsDto> dels = new ArrayList<AgdContactsDto>();
-					for (AgdAgendaContacts agdAgendaContacts : delList) {
-						dels.add(BaseUtil.AgdToContactsDto(agdAgendaContacts));
-						agdContactsRep.deleteById(agdAgendaContacts.getRecId());
-						//TODO 发送删除日程消息
-					}
-					//TODO 生产消息MQ
-					Map<String,Object> map = new HashMap<String,Object>();
-					map.put("from", inDto.getFc());		// 发送人
-			        map.put("to", JSONObject.toJSON(dels));
-			        map.put("agenda", JSONObject.toJSON(inDto));
-			        map.put("notifyType", "delete");
-			        try{
-			        	Map<String,Object> map2 = new HashMap<String,Object>();
-			        	map2.put("context", map);
-			        	jmsMessagingTemplate.convertAndSend(destinationName, map2);
-			        	log.info("------- 删除日程发送成功  --------" + map.toString());
-			        }catch(Exception e){
-			        	log.error("------- 删除日程发送失败  --------" + map.toString());
-			        }
-			        
-				}
+//				if(delList.size()>0){
+//					List<AgdContactsDto> dels = new ArrayList<AgdContactsDto>();
+//					for (AgdAgendaContacts agdAgendaContacts : delList) {
+//						dels.add(BaseUtil.AgdToContactsDto(agdAgendaContacts));
+//						agdContactsRep.deleteById(agdAgendaContacts.getRecId());
+//						//TODO 发送删除日程消息
+//					}
+//					//TODO 生产消息MQ
+//					Map<String,Object> map = new HashMap<String,Object>();
+//					map.put("from", inDto.getFc());		// 发送人
+//			        map.put("to", JSONObject.toJSON(dels));
+//			        map.put("agenda", JSONObject.toJSON(inDto));
+//			        map.put("notifyType", "delete");
+//			        try{
+//			        	Map<String,Object> map2 = new HashMap<String,Object>();
+//			        	map2.put("context", map);
+//			        	jmsMessagingTemplate.convertAndSend(destinationName, map2);
+//			        	log.info("------- 删除日程发送成功  --------" + map.toString());
+//			        }catch(Exception e){
+//			        	log.error("------- 删除日程发送失败  --------" + map.toString());
+//			        }
+//			        
+//				}
 			}
 			
 		}

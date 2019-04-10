@@ -21,8 +21,12 @@ export class PersonRestful {
     let personData:PersonOutData = new PersonOutData();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AAT");
-      url.url = url.url + '?appid=d3d3Lmd1b2JhYS5jb20&secret=c2VjcmV0QHd3dy5ndW9iYWEuY29t&code='+ code +'&grant_type=any';
-      return this.request.get(url).then(data => {
+      let urlEntity: UrlEntity = new UrlEntity();
+      urlEntity.url = url.url;
+      urlEntity.key = url.key;
+      urlEntity.desc = url.desc;
+      urlEntity.url = urlEntity.url + '?appid=d3d3Lmd1b2JhYS5jb20&secret=c2VjcmV0QHd3dy5ndW9iYWEuY29t&code='+ code +'&grant_type=any';
+      return this.request.get(urlEntity).then(data => {
         //处理返回结果
         personData = data;
         resolve(personData);
@@ -38,13 +42,17 @@ export class PersonRestful {
   }
 
   //帐户信息获取	AIG get
-  get(personData:PersonInData): Promise<BsModel<any>> {
+  get(phoneno:string): Promise<BsModel<any>> {
 
     let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIG");
-      url.url = url.url.replace("{phoneno}",personData.phoneno);
-      this.request.get(url).then(data => {
+      let urlEntity: UrlEntity = new UrlEntity();
+      urlEntity.url = url.url;
+      urlEntity.key = url.key;
+      urlEntity.desc = url.desc;
+      urlEntity.url = urlEntity.url.replace("{phoneno}",phoneno);
+      this.request.get(urlEntity).then(data => {
         //处理返回结果
         bsModel.code = data.errcode;
         bsModel.message = data.errmsg;
@@ -63,13 +71,17 @@ export class PersonRestful {
   }
 
   //帐户头像获取	AAG get
-  getavatar(personData:PersonInData): Promise<BsModel<any>> {
+  getavatar(phoneno:string): Promise<BsModel<any>> {
 
     let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AAG");
-      url.url = url.url.replace("{phoneno}",personData.phoneno);
-      this.request.get(url).then(data => {
+      let urlEntity: UrlEntity = new UrlEntity();
+      urlEntity.url = url.url;
+      urlEntity.key = url.key;
+      urlEntity.desc = url.desc;
+      urlEntity.url = urlEntity.url.replace("{phoneno}",phoneno);
+      this.request.get(urlEntity).then(data => {
         //处理返回结果
         bsModel.code = data.errcode;
         bsModel.message = data.errmsg;
@@ -93,8 +105,12 @@ export class PersonRestful {
     let bsModel = new BsModel<PersonOutData>();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIU");
-      url.url = url.url.replace("{unionid}",personData.unionid);
-      this.request.get(url).then(data => {
+      let urlEntity: UrlEntity = new UrlEntity();
+      urlEntity.url = url.url;
+      urlEntity.key = url.key;
+      urlEntity.desc = url.desc;
+      urlEntity.url = urlEntity.url.replace("{unionid}",personData.unionid);
+      this.request.get(urlEntity).then(data => {
         //处理返回结果
         bsModel.code = data.errcode;
         bsModel.message = data.errmsg;
@@ -118,8 +134,12 @@ export class PersonRestful {
     let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIU");
-      url.url = url.url.replace("{unionid}",unionid);
-      this.request.put(url,personData).then(data => {
+      let urlEntity: UrlEntity = new UrlEntity();
+      urlEntity.url = url.url;
+      urlEntity.key = url.key;
+      urlEntity.desc = url.desc;
+      urlEntity.url = urlEntity.url.replace("{unionid}",unionid);
+      this.request.put(urlEntity,personData).then(data => {
         //处理返回结果
         bsModel.code = data.errcode;
         bsModel.message = data.errmsg;
@@ -143,8 +163,12 @@ export class PersonRestful {
     let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("MP");
-      url.url = url.url.replace("{unionid}",unionid);
-      this.request.put(url, personData).then(data => {
+      let urlEntity: UrlEntity = new UrlEntity();
+      urlEntity.url = url.url;
+      urlEntity.key = url.key;
+      urlEntity.desc = url.desc;
+      urlEntity.url = urlEntity.url.replace("{unionid}",unionid);
+      this.request.put(urlEntity, personData).then(data => {
         //处理返回结果
         bsModel.code = data.errcode;
         bsModel.message = data.errmsg;

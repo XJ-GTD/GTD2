@@ -1,5 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams, Navbar, ModalController, ToastController} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 
 import {GcService, PageDcData} from "./gc.service";
 import {FsService} from "../fs/fs.service";
@@ -67,7 +67,6 @@ export class GcPage {
   fsl:Array<FsData> = new Array<FsData>();
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private toastCtrl: ToastController,
               private gcService: GcService,
               private fsService:FsService,
               private modalCtrl: ModalController) {
@@ -136,6 +135,7 @@ export class GcPage {
     let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{pwi:g.pwi});
     modal.onDidDismiss((data)=>{
       console.log(JSON.stringify(data));
+      this.getData();
     });
     modal.present();
   }
