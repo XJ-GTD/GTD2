@@ -62,7 +62,7 @@ export class FsService {
    */
   getCalfriend(calId:string):Promise<Array<FsData>>{
     return new Promise<Array<FsData>>((resolve, reject)=>{
-      let sql ='select gd.pi,gd.si,gb.* from gtd_d gd inner join gtd_b gb on gb.pwi = gd.ai where si="'+calId+'"';
+      let sql ='select gd.pi,gd.si,gb.*,bh.hiu bhiu from gtd_d gd inner join gtd_b gb on gb.pwi = gd.ai left join gtd_bh bh on gb.pwi = bh.pwi where si="'+calId+'"';
       let fsList =  new Array<FsData>();
       console.log('---------- getCalfriend 获取分享日程的参与人 sql:'+ sql);
       this.sqlite.execSql(sql).then(data=>{
