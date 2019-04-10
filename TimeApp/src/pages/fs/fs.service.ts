@@ -147,7 +147,7 @@ export class FsService {
   getfriendgroup(groupId:string):Promise<Array<FsData>>{
     return new Promise<Array<FsData>>((resolve, reject)=>{
       //查询本地群组中的参与人
-      let sql ='select gb.*,bh.hiu bhiu from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi inner join gtd_bh bh on gb.pwi = bh.pwi where gbx.bi="'+groupId+'"';
+      let sql ='select gb.*,bh.hiu bhiu from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi left join gtd_bh bh on gb.pwi = bh.pwi where gbx.bi="'+groupId+'"';
       let fsList =  new Array<FsData>();
       console.log('---------- getfriend4group 查询群组中的参与人 sql:'+ sql);
       this.sqlite.execSql(sql).then(data=>{
@@ -167,7 +167,7 @@ export class FsService {
             }
           }
         }
-        console.log('---------- getfriend4group 查询群组中的参与人 结果:'+ fsList.length/*JSON.stringify(fsList)*/);
+        console.log('---------- getfriend4group 查询群组中的参与人 结果:'+ JSON.stringify(fsList));
         resolve(fsList);
       }).catch(e=>{
         console.error('---------- getfriend4group 查询群组中的参与人 出错:'+ e.message);
