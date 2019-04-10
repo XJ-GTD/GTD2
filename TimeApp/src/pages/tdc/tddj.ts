@@ -509,7 +509,7 @@ export class TddjPage {
       this.isShowPlan = true;
       this.IsShowCover = true;
     }else {
-      this.util.toast("请先去计划页面创建计划",1500);
+      this.util.toast("未创建计划",1500);
     }
   }
 
