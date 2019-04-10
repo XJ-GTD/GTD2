@@ -13,7 +13,7 @@ export class GlService {
   }
 
   //获取本地群列表
-  getGroups(name:string) {
+  getGroups(name:string):Array<PageDcData> {
     if (name)
     return UserConfig.groups.filter((value)=>{
       return value.gn.indexOf(name) > -1 || value.gnpy.indexOf(name) > -1

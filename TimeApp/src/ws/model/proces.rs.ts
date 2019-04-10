@@ -5,11 +5,12 @@
  */
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
+import {FsData} from "../../service/pagecom/pgbusi.service";
 
 
 export class ProcesRs{
   //参与人
-  fs:Array<BTbl>=[];
+  fs:Array<FsData>=[];
 
   //日程
   scd:Array<CTbl>=[];
