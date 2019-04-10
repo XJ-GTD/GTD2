@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Events, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {FsService} from "./fs.service";
 import {GcService, PageDcData} from "../gc/gc.service";
 import {DataConfig} from "../../service/config/data.config";
@@ -15,7 +15,6 @@ import {FsData} from "../../service/pagecom/pgbusi.service";
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-fs4c',
   template: `
@@ -176,7 +175,7 @@ export class Fs4cPage {
     }
   }
 
-  goBack(page:string,para:any) {
+  goBack(page:any,para:any) {
     console.log('PfPage跳转PaPage');
     this.navCtrl.pop();
   }

@@ -4,6 +4,32 @@
 import {ContextModel, WsModel} from "../../ws/model/ws.model";
 import {ProcesRs} from "../../ws/model/proces.rs";
 import {UserConfig} from "./user.config";
+import {Fs4cPage} from "../../pages/fs/fs4c";
+import {HPage} from "../../pages/h/h";
+import {TdlPage} from "../../pages/tdl/tdl";
+import {TdcPage} from "../../pages/tdc/tdc";
+import {TddiPage} from "../../pages/tdc/tddi";
+import {TddjPage} from "../../pages/tdc/tddj";
+import {LpPage} from "../../pages/lp/lp";
+import {LsPage} from "../../pages/ls/ls";
+import {PfPage} from "../../pages/pf/pf";
+import {PPage} from "../../pages/p/p";
+import {MPage} from "../../pages/m/m";
+import {RPage} from "../../pages/r/r";
+import {PlPage} from "../../pages/pl/pl";
+import {PcPage} from "../../pages/pc/pc";
+import {PdPage} from "../../pages/pd/pd";
+import {SsPage} from "../../pages/ss/ss";
+import {HlPage} from "../../pages/hl/hl";
+import {GlPage} from "../../pages/gl/gl";
+import {GcPage} from "../../pages/gc/gc";
+import {GaPage} from "../../pages/ga/ga";
+import {Fs4gPage} from "../../pages/fs/fs4g";
+import {FdPage} from "../../pages/fd/fd";
+import {BlPage} from "../../pages/bl/bl";
+import {PsPage} from "../../pages/ps/ps";
+import {BrPage} from "../../pages/br/br";
+import {AlPage} from "../../pages/al/al";
 
 export class DataConfig {
 
@@ -130,32 +156,32 @@ export class DataConfig {
   /* ============ 页面名字配置 ===============*/
   static PAGE = {
 
-    _H_PAGE: "HPage",        // 首页 - 首页
-    _TDL_PAGE: "TdlPage",        // 日程 - 日程列表
-    _TDC_PAGE: "TdcPage",        // 日程 - 日程详情新建
-    _TDDI_PAGE: "TddiPage",      // 日程 - 日程详情（受邀）
-    _TDDJ_PAGE: "TddjPage",      // 日程 - 日程详情
-    _LP_PAGE: "LpPage",       // 登陆注册 - 登陆（密码）
-    _LS_PAGE: "LsPage",       // 登陆注册 - 登录（验证码）
-    _PF_PAGE: "PfPage",       // 登陆注册 - 忘记密码
-    _R_PAGE: "RPage",         // 登陆注册 - 注册
-    _PP_PAGE: "PPage",        // 登陆注册 - 条款
-    _M_PAGE: "MPage",         // 辅助功能 - 菜单
-    _PL_PAGE: "PlPage",       // 辅助功能 - 计划
-    _PC_PAGE: "PcPage",       // 辅助功能 - 计划新建
-    _PD_PAGE: "PdPage",       // 辅助功能 - 计划展
-    _SS_PAGE: "SsPage",       // 辅助功能 - 系统设置
-    _HL_PAGE: "HlPage",       // 辅助功能 - 帮助及反馈
-    _GL_PAGE: "GlPage",       // 辅助功能 - 群组列表
-    _GC_PAGE: "GcPage",       // 辅助功能 - 群组编辑
-    _GA_PAGE: "GaPage",       // 辅助功能 - 群组添加
-    _FS4C_PAGE: "Fs4cPage",       // 辅助功能 - 选择参与人日程
-    _FS4G_PAGE: "Fs4gPage",       // 辅助功能 - 选择参与人群组
-    _FD_PAGE: "FdPage",       // 辅助功能 - 参与人详情
-    _PS_PAGE: "PsPage",       // 辅助功能 - 个人设置
-    _BL_PAGE: "BlPage",       // 辅助功能 - 黑名单
-    _BR_PAGE: "BrPage",       // 辅助功能 - 备份
-    _AL_PAGE: "AlPage"        //启动页
+    _H_PAGE: HPage,        // 首页 - 首页
+    _TDL_PAGE: TdlPage,        // 日程 - 日程列表
+    _TDC_PAGE: TdcPage,        // 日程 - 日程详情新建
+    _TDDI_PAGE: TddiPage,      // 日程 - 日程详情（受邀）
+    _TDDJ_PAGE: TddjPage,      // 日程 - 日程详情
+    _LP_PAGE: LpPage,       // 登陆注册 - 登陆（密码）
+    _LS_PAGE: LsPage,       // 登陆注册 - 登录（验证码）
+    _PF_PAGE: PfPage,       // 登陆注册 - 忘记密码
+    _R_PAGE: RPage,         // 登陆注册 - 注册
+    _PP_PAGE: PPage,        // 登陆注册 - 条款
+    _M_PAGE: MPage,         // 辅助功能 - 菜单
+    _PL_PAGE: PlPage,       // 辅助功能 - 计划
+    _PC_PAGE: PcPage,       // 辅助功能 - 计划新建
+    _PD_PAGE: PdPage,       // 辅助功能 - 计划展
+    _SS_PAGE: SsPage,       // 辅助功能 - 系统设置
+    _HL_PAGE: HlPage,       // 辅助功能 - 帮助及反馈
+    _GL_PAGE: GlPage,       // 辅助功能 - 群组列表
+    _GC_PAGE: GcPage,       // 辅助功能 - 群组编辑
+    _GA_PAGE: GaPage,       // 辅助功能 - 群组添加
+    _FS4C_PAGE: Fs4cPage,       // 辅助功能 - 选择参与人日程
+    _FS4G_PAGE: Fs4gPage,       // 辅助功能 - 选择参与人群组
+    _FD_PAGE: FdPage,       // 辅助功能 - 参与人详情
+    _PS_PAGE: PsPage,       // 辅助功能 - 个人设置
+    _BL_PAGE: BlPage,       // 辅助功能 - 黑名单
+    _BR_PAGE: BrPage,       // 辅助功能 - 备份
+    _AL_PAGE: AlPage        //启动页
   }
   /* ============ 页面名字配置 ===============*/
 

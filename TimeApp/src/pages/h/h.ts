@@ -9,6 +9,7 @@ import  * as Hammer from 'hammerjs'
 import * as moment from "moment";
 import {AiComponent} from "../../components/ai/answer/ai";
 import {EmitService} from "../../service/util-service/emit.service";
+import {TdcPage} from "../tdc/tdc";
 
 /**
  * Generated class for the 首页 page.
@@ -97,7 +98,7 @@ export class HPage {
   }
 
   newcd() {
-    this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {dateStr: this.hdata.selectDay.time}).present();
+    this.modalCtr.create(TdcPage, {dateStr: this.hdata.selectDay.time}).present();
   }
 
   //查询当天日程

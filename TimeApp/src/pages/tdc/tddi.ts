@@ -3,7 +3,6 @@ import {
   ActionSheetController,  IonicPage, ModalController, NavController, NavParams,
 } from 'ionic-angular';
 import * as moment from "moment";
-import {TddiService} from "./tddi.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {BsModel} from "../../service/restful/out/bs.model";
@@ -17,7 +16,6 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-tddi',
   providers: [],
@@ -142,7 +140,7 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 export class TddiPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private util:UtilService,private  tddiServ : TddiService,
+              private util:UtilService,private  tddiServ : TdcService,
               public actionSheetCtrl: ActionSheetController,
               public modalCtrl: ModalController,private  busiServ : PgBusiService
   ) {

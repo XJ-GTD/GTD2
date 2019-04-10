@@ -44,7 +44,7 @@ import set = Reflect.set;
     </ion-header>
     <ion-content #contentD>
       <ion-grid #grid4Hight>
-        <ion-row *ngFor="let sdl of scdlDataList;let i = index;" class="anch" id="day{{sdl.id}}" (mousedown)="test()">
+        <ion-row *ngFor="let sdl of scdlDataList;let i = index;" class="anch" id="day{{sdl.id}}">
           <div class="daynav">
             <div class="dayheader w-auto">
               <div class="ym-fsize text-center ">{{sdl.d | formatedate:"YYYY"}}</div>

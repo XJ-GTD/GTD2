@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
-import {
-  ActionSheetController,  IonicPage, ModalController, NavController, NavParams,
+import {IonicPage, ModalController, NavController, NavParams,
 } from 'ionic-angular';
 import * as moment from "moment";
 import {TdcService} from "./tdc.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
-import {BsModel} from "../../service/restful/out/bs.model";
 import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 
 /**
@@ -17,7 +15,6 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-tdc',
   providers: [],
@@ -454,7 +451,7 @@ export class TdcPage {
 
   presentActionSheet() {
     //日程删除
-    this.tdcServ.delete(this.scd.si).then(data=>{
+    this.tdcServ.delete(this.scd.si,"2","").then(data=>{
       this.cancel();
     });
 
@@ -496,6 +493,12 @@ export class TdcPage {
       this.scd.st = el[0].textContent + ":" +el[1].textContent;
     }
   }
+
+
+}
+
+export class PageTddIData{
+  tdl : ScdData = new ScdData();  //日程事件表信息
 
 
 }

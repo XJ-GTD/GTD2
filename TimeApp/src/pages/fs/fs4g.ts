@@ -15,7 +15,6 @@ import {FsData} from "../../service/pagecom/pgbusi.service";
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-fs4g',
   template: `
@@ -176,7 +175,7 @@ export class Fs4gPage {
     }
   }
 
-  goBack(page:string,para:any) {
+  goBack(page:any,para:any) {
     console.log('PfPage跳转PaPage');
     this.navCtrl.pop();
     // if(this.addType == 'rc'){

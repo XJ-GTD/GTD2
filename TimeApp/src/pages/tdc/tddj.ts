@@ -6,7 +6,7 @@ import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
 import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
-import {TddjService} from "./tddj.service";
+import {TdcService} from "./tdc.service";
 
 /**
  * Generated class for the 日程详情 page.
@@ -15,7 +15,6 @@ import {TddjService} from "./tddj.service";
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-tddj',
   template:`<ion-header no-border class="header-set">
@@ -174,7 +173,7 @@ import {TddjService} from "./tddj.service";
 export class TddjPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private tddjServ :TddjService,private util:UtilService,
+              private tddjServ :TdcService,private util:UtilService,
               public actionSheetCtrl: ActionSheetController,
               public modalCtrl: ModalController   , private  busiServ : PgBusiService           ) {
 
