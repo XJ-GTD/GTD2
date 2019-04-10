@@ -68,7 +68,12 @@ export class FsService {
       this.sqlite.execSql(sql).then(data=>{
         if(data && data.rows && data.rows.length>0){
           for(let i=0,len =data.rows.length;i<len;i++ ){
-            fsList.push(data.rows.item(i))
+            let fs = new FsData();
+            Object.assign(fs,data.rows.item(i));
+            if(!fs.bhiu || fs.bhiu == null || fs.bhiu == ''){
+              fs.bhiu=DataConfig.HUIBASE64;
+            }
+            fsList.push(fs);
           }
         }
         console.log('---------- getCalfriend 获取分享日程的参与人结果:'+ fsList.length/*JSON.stringify(fsList)*/);
