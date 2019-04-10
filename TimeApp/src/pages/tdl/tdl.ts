@@ -59,7 +59,7 @@ import set = Reflect.set;
                   <div class="agendaline1" *ngIf="scd.gs == '1'">来自：{{scd.fs.rn}}</div>
                   <div class="agendaline1" *ngIf="scd.gs == '0'">参与事件：{{scd.fss.length}}人</div>
                   <div class="agendaline2 row">
-                    <div class="agenda-st">{{scd.st=="99:99"?"全天":scd.st}}</div>
+                    <div class="agenda-st">{{scd.st=="99:99"?"全天":scd.st ==null?"":scd.st}}</div>
                     <div class="dot-set " [ngStyle]="{'background-color':scd.p.jc}"></div>
                     <div class="agenda-sn">{{scd.sn}}</div>
                   </div>
