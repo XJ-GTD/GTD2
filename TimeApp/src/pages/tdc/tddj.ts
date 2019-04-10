@@ -5,7 +5,7 @@ import {BsModel} from "../../service/restful/out/bs.model";
 import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
-import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
+import {FsData, PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 import {TdcService} from "./tdc.service";
 
 /**
@@ -113,9 +113,9 @@ import {TdcService} from "./tdc.service";
         </div>
       </ion-row>
       <ion-row class="img-row">
-        <div class ="img-div"   *ngFor ="let fss of scd.fss;">
-          <div><img class ="img-set" [src]="fss.bhiu"></div>
-          <div class ="img-rn">{{fss.rn}}</div>
+        <div class ="img-div"   *ngFor ="let fs of fssshow;">
+          <div><img class ="img-set" [src]="fs.bhiu"></div>
+          <div class ="img-rn">{{fs.rn}}</div>
         </div>
       </ion-row>
     </ion-grid>
@@ -184,6 +184,7 @@ export class TddjPage {
   //画面数据
   scd :ScdData = new ScdData();
   b:boolean = true;
+  fssshow : Array<FsData> =new Array<FsData>();
 
   //重复日程不可以修改日期
   rept_flg :boolean = false;
@@ -230,7 +231,7 @@ export class TddjPage {
           for (let i=0;i<this.jhs.length;i++){
             if (this.jhs[i].ji == this.scd.ji){
               this.scd.p = this.jhs[i];
-              console.log("计划********" + this.jhs[i].ji);
+              break;
             }
           }
         }).catch(res=>{
@@ -259,7 +260,13 @@ export class TddjPage {
         this.clickrept(this.scd.rt+'');
         this.clickwake(this.scd.tx + '');
 
-      })
+      });
+
+      //获取日程参与人表
+      this.tddjServ.getCalfriend(this.navParams.get("si")).then(data=>{
+        this.fssshow = data;
+      });
+
       return;
     }
 
