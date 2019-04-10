@@ -459,7 +459,7 @@ export class PgBusiService {
     //备注
     c.bz = agd.am  ;
     //他人创建
-    c.gs = "0";
+    c.gs = "1";
     //新消息未读
     c.du = "0";
   }

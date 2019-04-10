@@ -221,7 +221,7 @@ export class TddiPage {
       this.scd.st = moment().format("HH:mm");
 
 
-      this.clickwake(this.scd.tx);
+      this.clickwake(this.scd.tx+'');
 
 
     })

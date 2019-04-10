@@ -45,10 +45,10 @@ import {TddjService} from "./tddj.service";
             <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">{{scd.p.jn==""?"添加计划":scd.p.jn}}</button>
         </div>
       </ion-row>
-      <ion-row [disabled]="rept_flg?true:false">
-        <div class="date-set">
+      <ion-row >
+        <div class="date-set" >
           <ion-item>
-          <ion-datetime  displayFormat="YYYY年M月DD日 DDDD"
+          <ion-datetime [disabled]="rept_flg?true:false"  displayFormat="YYYY年M月DD日 DDDD"
                         pickerFormat = "YYYY MM DD" color="light"
                         [(ngModel)]="scd.sd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                         min="1999-01-01" max="2039-12-31"  (ionCancel)="getDtPickerSel($event)"
@@ -60,13 +60,14 @@ import {TddjService} from "./tddj.service";
          </div>
       </ion-row>
       <ion-row >
-        <div class = "tog-set"><ion-item>
-                <ion-toggle  [(ngModel)]="alld"  [class.allday]="b"></ion-toggle>
+        <div class = "tog-set">
+          <ion-item>
+                <ion-toggle [disabled]="rept_flg?true:false"  [(ngModel)]="alld"  [class.allday]="b"></ion-toggle>
             </ion-item>
         </div>
           <div class = "tm-set" [hidden]="alld">
             <ion-item>
-                <ion-datetime  displayFormat="HH:mm" [(ngModel)]="scd.st"
+                <ion-datetime [disabled]="rept_flg?true:false"  displayFormat="HH:mm" [(ngModel)]="scd.st"
                               pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)"></ion-datetime>
               </ion-item>
           </div>
@@ -76,19 +77,19 @@ import {TddjService} from "./tddj.service";
       </ion-row>
       <ion-row >
         <div class ="reptlbl repttop"><ion-label>重复</ion-label></div>
-        <div class ="repttop1"><button  ion-button  round clear class ="sel-btn-set"
+        <div class ="repttop1"><button [disabled]="rept_flg?true:false"  ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.close == 1?'sel-btn-seled':'sel-btn-unsel'"  
                      (click)="clickrept('0')">关</button></div>
-        <div class ="repttop1"><button  ion-button  round clear class ="sel-btn-set"
+        <div class ="repttop1"><button [disabled]="rept_flg?true:false"  ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.d == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept('1')">天</button></div>
-        <div class ="repttop1"><button  ion-button  round  clear class ="sel-btn-set"
+        <div class ="repttop1"><button [disabled]="rept_flg?true:false"  ion-button  round  clear class ="sel-btn-set"
                      [ngClass]="rept.w == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept('2')">周</button></div>
-        <div class ="repttop1"><button  ion-button  round clear class ="sel-btn-set"
+        <div class ="repttop1"><button [disabled]="rept_flg?true:false"  ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.m == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept('3')">月</button></div>
-        <div class ="repttop1"><button  ion-button  round clear class ="sel-btn-set"
+        <div class ="repttop1"><button [disabled]="rept_flg?true:false"  ion-button  round clear class ="sel-btn-set"
                      [ngClass]="rept.y == 1?'sel-btn-seled':'sel-btn-unsel'"
                      (click)="clickrept('4')">年</button></div>
       </ion-row>
@@ -235,7 +236,7 @@ export class TddjPage {
       this.tddjServ.get(this.navParams.get("si")).then(data=>{
         let bs : BsModel<ScdData> = data;
         Object.assign(this.scd,bs.data);
-
+        this.scd.ji = this.scd.p.ji;
         //重复日程不可以修改日期
         if (this.scd.rt != "0"){
           this.rept_flg = true;
@@ -255,8 +256,8 @@ export class TddjPage {
           this.alld = false;
         }
 
-        this.clickrept(this.scd.rt);
-        this.clickwake(this.scd.tx);
+        this.clickrept(this.scd.rt+'');
+        this.clickwake(this.scd.tx + '');
 
       })
       return;
@@ -411,6 +412,7 @@ export class TddjPage {
     //结束时间设置
     //全天的场合
     if (this.alld) {
+      this.scd.st = "99:99";
       this.scd.et = "99:99";
     } else {
       this.scd.et = this.scd.st;
