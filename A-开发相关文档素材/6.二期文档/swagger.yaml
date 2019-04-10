@@ -60,7 +60,7 @@ paths:
     post:
       tags:
         - caculate service
-      summary: 获取产品初始化参数
+      summary: 计算重复日程
       description: ''
       produces:
         - application/json
@@ -81,7 +81,7 @@ paths:
                 type: object
       responses:
         '200':
-          description: 获取初始化参数成功
+          description: 返回计算结果
           schema:
             type: object
             properties:
@@ -108,6 +108,40 @@ paths:
                     type: array
                     items:
                       type: object
+  /cdc/{flowid}/query/trigger:
+    post:
+      tags:
+        - caculate service
+      summary: 触发作业流
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: flowid
+          in: path
+          type: string
+          description: 作业流程ID
+          required: true
+        - name: from
+          in: query
+          description: 开始年份（获取香港天文台农历数据）
+          required: false
+        - name: to
+          in: query
+          description: 截止年份（获取香港天文台农历数据）
+          required: false
+      responses:
+        '200':
+          description: 作业流触发成功
+          schema:
+            type: object
+            properties:
+              rc:
+                type: integer
+              rm:
+                type: string
+              d:
+                type: object
   /ini/parameters:
     get:
       tags:

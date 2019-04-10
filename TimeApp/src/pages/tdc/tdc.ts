@@ -42,7 +42,10 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
       </ion-row>
       <ion-row >
         <div >
-            <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">{{scd.p.jn==""?"添加计划":scd.p.jn}}</button>
+            <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">添加计划 </button>
+        </div>
+        <div>
+          <ion-label class ="lbl-jh">{{scd.p.jn}}</ion-label>
         </div>
       </ion-row>
       <ion-row >
@@ -109,7 +112,7 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
       </ion-row>
       <ion-row >
         <div class = "memo-set">
-          <ion-input type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-input>
+          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-textarea>
         </div>
       </ion-row>
       <ion-row justify-content-left>
@@ -159,7 +162,7 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
           <ion-item class="plan-list-item" *ngFor="let option of jhs">
             <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
             <ion-label>{{option.jn}}</ion-label>
-            <ion-radio [value]="option"  [ngStyle]="{'checked': option.ji == scd.ji , 'none': option.ji != scd.ji}"></ion-radio>
+            <ion-radio [value]="option" ></ion-radio>
           </ion-item>
         </ion-list>
 

@@ -41,7 +41,10 @@ import {TdcService} from "./tdc.service";
       </ion-row>
       <ion-row >
         <div >
-            <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">{{scd.p.jn==""?"添加计划":scd.p.jn}}</button>
+            <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">添加计划</button>
+        </div>
+        <div>
+          <ion-label class ="lbl-jh">{{scd.p.jn}}</ion-label>
         </div>
       </ion-row>
       <ion-row >
@@ -109,7 +112,7 @@ import {TdcService} from "./tdc.service";
       </ion-row>
       <ion-row >
         <div class = "memo-set">
-          <ion-input type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-input>
+          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-textarea>
         </div>
       </ion-row>
       <ion-row justify-content-left>

@@ -37,6 +37,10 @@ import {DataConfig} from "../../service/config/data.config";
         <ion-row>
           <ion-list no-lines>
             <ion-item class="plan-list-item"  *ngFor="let g of gl">
+            <ion-avatar item-start>
+              <img [src]="g.gm">
+              <!--<ion-icon name="contact"  style="font-size: 3.0em;color: red;"></ion-icon>-->
+            </ion-avatar>
               <ion-label (click)="toGroupMember(g)" style="background-color: black;color:#ffffff">
                 {{g.gn}}({{g.gc}})
               </ion-label>

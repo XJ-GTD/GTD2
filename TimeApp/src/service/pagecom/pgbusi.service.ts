@@ -316,7 +316,7 @@ export class PgBusiService {
       let sptbl = new SpTbl();
       sptbl.si = c.si;
       //删除提醒
-      let sql = 'delete from gtd_e ge inner join gtd_sp sp on sp.spi = ge.si where sp.si="'+ c.si+'"';
+      let sql = 'delete from gtd_e  where si="'+ c.si+'"';
       await this.sqlExce.execSql(sql);
       //删除特殊表
       await this.sqlExce.delete(sptbl);
@@ -326,14 +326,11 @@ export class PgBusiService {
 
     }else{
       //如果只是修改重复时间，则更新重复子表所有时间
-      if (bs.data.st != scd.st){
+      //如果修改了提醒时间，则更新提醒表所有时间
+      if (bs.data.st != scd.st || bs.data.tx != scd.tx){
         let sq = "update gtd_sp set st = '"+ c.st +"' where si = '"+ c.si +"'";
         await this.sqlExce.execSql(sq);
-      }
 
-      //如果修改了提醒时间，则更新提醒表所有时间
-      //更新提醒时间
-      if (bs.data.tx != scd.tx){
         let sp : SpTbl = new SpTbl();
         sp.si = c.si;
         let sps :Array<SpTbl> = new Array<SpTbl>();
@@ -341,10 +338,7 @@ export class PgBusiService {
         for (let j = 0, len = sps.length; j < len; j++) {
           await this.saveOrUpdTx(c,sps[j]);
         }
-
       }
-
-
 
     }
     //restful用参数

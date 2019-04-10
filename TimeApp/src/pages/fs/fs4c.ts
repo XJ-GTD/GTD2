@@ -177,7 +177,7 @@ export class Fs4cPage {
     this.navCtrl.pop();
   }
   getContacts() {
-      this.gl = this.glService.getGroupl(this.tel);
+      this.gl = this.glService.getGroups(this.tel);
       this.fsl = this.fsService.getfriend(this.tel);
   }
 }

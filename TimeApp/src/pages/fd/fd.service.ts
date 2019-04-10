@@ -85,9 +85,10 @@ export class FdService {
         }else{
           fd.hiu=DataConfig.HUIBASE64;
         }
+        console.log("======== FdService参与人详情:"+JSON.stringify(fd));
         resolve(fd);
       }).catch(error=>{
-        if(fd.bhiu == null || fd.bhiu ==''){
+        if(fd.bhiu != null && fd.bhiu !=''){
           fd.hiu=fd.bhiu;
         }else{
           fd.hiu=DataConfig.HUIBASE64;

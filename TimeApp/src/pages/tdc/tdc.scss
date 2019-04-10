@@ -77,8 +77,8 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
 
   .sel-btn-set{
     font-size: 12px;
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     padding-left: 0px;
     padding-right: 0px;
   }
@@ -100,6 +100,7 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
   }
 
   .memo-set{
+    width: 85%;
     font-size: 14px;
     margin-top: 22px;
     margin-left: 22px;
@@ -194,14 +195,14 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
 
 
   .tm-set{
-    margin-top: 0px;
+    margin-top: 2px;
     margin-left: -17px;
     height:20px;
     letter-spacing: 1px;
   }
 
   .tog-set{
-    margin-top: -1px;
+    margin-top: 2px;
     margin-left: 6px;
   }
   .arrow2{
@@ -213,13 +214,13 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
     margin-left: 24px;
   }
   .repttop{
-    margin-top: 20px;
+    margin-top: 24px;
   }
   .repttop1{
     margin-top: 16px;
   }
   .txtop{
-    margin-top: 6px;
+    margin-top: 11px;
   }
   .txtop1{
     margin-top: 3px;
@@ -311,5 +312,12 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
     opacity:.30;
     filter: alpha(opacity=30);
   }
+
+  .lbl-jh{
+    margin-top: 41px;
+    margin-left: 5px;
+    font-size: 14px;
+  }
+
 }
 
