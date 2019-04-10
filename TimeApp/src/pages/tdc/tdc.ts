@@ -184,7 +184,6 @@ export class TdcPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private tdcServ :TdcService,private util:UtilService,
-              public actionSheetCtrl: ActionSheetController,
               public modalCtrl: ModalController ,private busiServ :PgBusiService             ) {
 
   }
