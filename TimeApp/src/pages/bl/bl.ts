@@ -79,7 +79,7 @@ export class BlPage {
   }
 
   toAdd(){
-    let profileModal = this.modalCtrl.create(DataConfig.PAGE._FS_PAGE,{addType:'bl'});
+    let profileModal = this.modalCtrl.create(DataConfig.PAGE._FS4G_PAGE,{addType:'bl'});
     profileModal.present();
   }
 

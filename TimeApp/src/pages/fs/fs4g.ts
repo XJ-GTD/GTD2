@@ -17,7 +17,7 @@ import {FsData} from "../../service/pagecom/pgbusi.service";
 
 @IonicPage()
 @Component({
-  selector: 'page-fs',
+  selector: 'page-fs4g',
   template: `
     <ion-header no-border>
       <ion-toolbar>
@@ -77,7 +77,7 @@ import {FsData} from "../../service/pagecom/pgbusi.service";
     </ion-content>
   `,
 })
-export class FsPage {
+export class Fs4gPage {
   tel:any;//手机号
   fsl:Array<FsData> = new Array<FsData>();
   gl:Array<PageDcData> = new Array<PageDcData>();
@@ -90,8 +90,7 @@ export class FsPage {
               private util:UtilService,
               private fdService:FdService,
               private glService:GlService,
-              private gsService : GcService,
-              private events :Events) {
+              private gsService : GcService) {
   }
 
   ionViewDidLoad() {
@@ -124,9 +123,7 @@ export class FsPage {
       if(this.addType == 'rc'){
         this.fsService.sharefriend(this.tpara,list).then(data=>{
           if(data.code==0){
-            //alert("共享享成功");
-            //this.goBack('','');
-            this.navCtrl.push(DataConfig.PAGE._H_PAGE);
+            this.navCtrl.popAll();
           }
         })
       }else if(this.addType == 'gc'){

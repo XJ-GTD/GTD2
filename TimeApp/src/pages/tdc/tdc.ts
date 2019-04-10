@@ -453,7 +453,7 @@ export class TdcPage {
   goShare(){
     //日程分享打开参与人选择rc日程类型
     this.save(()=>{
-      this.navCtrl.push(DataConfig.PAGE._FS_PAGE,{addType:'rc',tpara:this.scd.si});
+      this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE,{addType:'rc',tpara:this.scd.si});
     })
 
   }

@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { FsPage } from './fs';
 import {FsService} from "./fs.service";
 import {GcService} from "../gc/gc.service";
 import {FdService} from "../fd/fd.service";
 import {GlService} from "../gl/gl.service";
+import {Fs4cPage} from "./fs4c";
+import {Fs4gPage} from "./fs4g";
 
 @NgModule({
   declarations: [
-    FsPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(FsPage),
+    Fs4cPage,
+    Fs4gPage
   ],
   providers: [
     FsService,GcService,FdService,GlService
