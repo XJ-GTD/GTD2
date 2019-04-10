@@ -92,6 +92,7 @@ public class IContactsServiceImpl implements IContactsService {
 					}
 					//TODO 发送添加日程消息
 					Map<String,Object> map = new HashMap<String,Object>();
+					map.put("from", inDto.getFc());		// 发送人
 			        map.put("to", JSONObject.toJSON(addList));
 			        map.put("agenda", JSONObject.toJSON(inDto));
 			        map.put("notifyType", "add");
@@ -115,6 +116,7 @@ public class IContactsServiceImpl implements IContactsService {
 					}
 					//TODO 生产消息MQ
 					Map<String,Object> map = new HashMap<String,Object>();
+					map.put("from", inDto.getFc());		// 发送人
 			        map.put("to", JSONObject.toJSON(dels));
 			        map.put("agenda", JSONObject.toJSON(inDto));
 			        map.put("notifyType", "delete");
