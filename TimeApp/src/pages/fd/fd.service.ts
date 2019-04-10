@@ -32,55 +32,48 @@ export class FdService {
       this.sqlite.getExtList<FsData>(sql).then(data=>{
         if(data != null && data.length>0){
           Object.assign(fd,data[0]);
-
           //rest获取用户信息（包括头像）
-          return this.personRes.get(fd.rc);
+          //return this.personRes.get(fd.rc);
         }
       }).then(data=>{
         //更新本地联系人信息
-        Object.assign(bTbl,fd);
-        if(data && data.code == 0 && data.data && data.data.phoneno == fd.rc){
-          //bTbl.hiu = data.data.avatar;
-          //bTbl.rc = data.data.phoneno;
-          bTbl.rel = "1";   // 已注册
-          bTbl.rn = data.data.nickname;
-          fd.rn =  data.data.nickname;
-          if(bTbl.rn && bTbl.rn != null && bTbl.rn != ''){
-            bTbl.rnpy = this.util.chineseToPinYin(bTbl.rn);
-            fd.rnpy = this.util.chineseToPinYin(bTbl.rn);
-          }
-        }else{
-          bTbl.rel = "0";   // 未注册用户
-        }
-        return this.sqlite.replaceT(bTbl)
+        // Object.assign(bTbl,fd);
+        // if(data && data.code == 0 && data.data && data.data.phoneno == fd.rc){
+        //   //bTbl.hiu = data.data.avatar;
+        //   //bTbl.rc = data.data.phoneno;
+        //   bTbl.rel = "1";   // 已注册
+        //   bTbl.rn = data.data.nickname;
+        //   fd.rn =  data.data.nickname;
+        //   if(bTbl.rn && bTbl.rn != null && bTbl.rn != ''){
+        //     bTbl.rnpy = this.util.chineseToPinYin(bTbl.rn);
+        //     fd.rnpy = this.util.chineseToPinYin(bTbl.rn);
+        //   }
+        // }else{
+        //   bTbl.rel = "0";   // 未注册用户
+        // }
+        // return this.sqlite.replaceT(bTbl)
       }).then(data=>{
         //rest获取用户头像
-        return this.personRes.getavatar(fd.rc);
-      }).then(data=>{
-        //更新/添加用户头像
-        if(fd.bhiu == null || fd.bhiu ==''){
-          fd.hiu=DataConfig.HUIBASE64;
-        }else{
-          fd.hiu=fd.bhiu;
-        }
+       this.personRes.getavatar(fd.rc).then(data=>{
 
         let str:string = '';
         if(data && !data.code){
           str = data.data;
-          fd.hiu = str;
+          fd.bhiu = str;
           if(fd.bhiu == null || fd.bhiu ==''){
             let bh = new BhTbl();
             bh.bhi=this.util.getUuid();
             bh.pwi=fd.pwi;
             bh.hiu = str;
-            return this.sqlite.save(bh);
+             this.sqlite.save(bh);
           }else{
             let sql = 'update gtd_bh set hiu ="' + str + '" where pwi = "'+ fd.pwi +'";';
-            return this.sqlite.execSql(sql);
+             this.sqlite.execSql(sql);
           }
         }
+       })
       }).then(data=>{
-        if(fd.bhiu == null || fd.bhiu ==''){
+        if(fd.bhiu != null && fd.bhiu !=''){
           fd.hiu=fd.bhiu;
         }else{
           fd.hiu=DataConfig.HUIBASE64;
