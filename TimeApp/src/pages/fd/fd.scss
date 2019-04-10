@@ -72,11 +72,15 @@ page-fd {
 
   #fdname{
     padding: 10px;
-    margin: 30px 30% 5px 30%;
+    margin: 40px 30% 5px 30%;
     border-bottom: 1px solid #fff
   }
 
-  ion-label{
+ .label-ios{
+    margin:5px;
+  }
+
+ .label-md{
     margin:5px;
   }
 }
