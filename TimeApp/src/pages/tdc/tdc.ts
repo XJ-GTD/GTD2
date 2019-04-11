@@ -452,6 +452,7 @@ export class TdcPage {
   presentActionSheet() {
     //日程删除
     this.tdcServ.delete(this.scd.si,"2","").then(data=>{
+      this.util.toast("删除成功",1500);
       this.cancel();
     });
 
