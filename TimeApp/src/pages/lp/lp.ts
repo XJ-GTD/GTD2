@@ -95,7 +95,7 @@ export class LpPage {
 
           return this.lpService.getOther();
         }).then(data=>{
-          console.log("手机密码登录成功"+ JSON.stringify(data));
+          console.log("手机密码登录成功");
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
         }).catch(error=>{

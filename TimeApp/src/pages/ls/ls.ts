@@ -120,7 +120,7 @@ export class LsPage {
 
           return this.lsService.getOther();
         }).then(data=>{
-          console.log("手机验证码登录成功"+ JSON.stringify(data));
+          console.log("手机验证码登录成功");
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
         }).catch(error=>{
