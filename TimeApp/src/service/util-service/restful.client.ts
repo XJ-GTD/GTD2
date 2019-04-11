@@ -71,6 +71,7 @@ export class RestfulClient {
             let jsonData = JSON.parse(data.data);
             resolve(jsonData);
           }).catch(e=>{
+
             this.util.toast("服务" + url.desc + "访问失败",2000);
             console.error("服务" + url.desc + "访问失败"+JSON.stringify(e));
             reject(e);
@@ -144,6 +145,36 @@ export class RestfulClient {
             //reject(err)
           })
         }
+    });
+  }
+
+  /**
+   * http请求
+   * @param url
+   * @param header
+   * @param body
+   */
+  get4Text(url:string,header:RestFulHeader,body:any):Promise<any> {
+    return new Promise((resolve, reject) => {
+      header["Content-Type"] = "text/plain"
+      if(this.util.hasCordova()){
+        return this.http.get(url,body,header).then(data=>{
+          resolve(data.data);
+        }).catch(e=>{
+          this.util.toast("服务初始化数据访问失败",2000);
+          //reject(e);
+        })
+      }else{
+        //浏览器测试使用
+        let warHeader:any={};
+        warHeader.headers = header;
+        this.httpClient.get(url,warHeader).subscribe(data=>{
+          resolve(data);
+        },err => {
+          this.util.toast("服务初始化数据访问失败",2000);
+          //reject(err)
+        })
+      }
     });
   }
 }

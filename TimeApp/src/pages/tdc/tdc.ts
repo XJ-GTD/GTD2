@@ -17,57 +17,36 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 
 @Component({
   selector: 'page-tdc',
-  providers: [],
-  template:`<ion-header no-border class="header-set">
-    <ion-toolbar>
-      <ion-grid>
-        <ion-row right>
-          <div class="h-auto " >
-            <ion-buttons right>
-              <button  [hidden]="pagestate == '0'" ion-button icon-only (click)="presentActionSheet()" color="light">
-                <img  class="imgdel-set" src="../../assets/imgs/del.png">
-              </button>
-            </ion-buttons>
-          </div>
-        </ion-row>
-      </ion-grid>
-    </ion-toolbar>
-  </ion-header>
+  template:`
   <ion-content class ="content-set">
     <ion-grid>
+      <ion-row ngClass="header-set"></ion-row>
       <ion-row >
-        <div class = "input-set">
-          <ion-input type="text" [(ngModel)]="scd.sn"   placeholder="我想..."></ion-input>
-        </div>
+          <ion-textarea type="text" [(ngModel)]="scd.sn"   placeholder="我想..."></ion-textarea>
       </ion-row>
       <ion-row >
-        <div (click)="toPlanChoose()" class ="lbl-jh">
-          <ion-label class="lbl-jh2"  >{{scd.p.jn=="" || scd.p.jn==null?"添加计划":scd.p.jn}}</ion-label>
-        </div>
+          <div class="lbl-jh2" (click)="toPlanChoose()" >
+            {{scd.p.jn ==""?"添加计划":""}}
+          </div>
+          <div>{{scd.p.jn}}</div>
       </ion-row>
       <ion-row >
-        <div class="date-set">
-          <ion-item>
+        <div>
           <ion-datetime  displayFormat="YYYY年M月DD日 DDDD"
                         pickerFormat = "YYYY MM DD" color="light"
                         [(ngModel)]="scd.sd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                         min="1999-01-01" max="2039-12-31"  (ionCancel)="getDtPickerSel($event)"
                         ></ion-datetime>
-          </ion-item> 
         </div>
       </ion-row>
-      <ion-row >
-        <div class = "tog-set"><ion-item>
-                <ion-toggle  [(ngModel)]="alld"  [class.allday]="b"></ion-toggle>
-            </ion-item>
-        </div>
-          <div class = "tm-set" [hidden]="alld">
-            <ion-item>
-                <ion-datetime  displayFormat="HH:mm" [(ngModel)]="scd.st"
-                              pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)"></ion-datetime>
-              </ion-item>
+        <ion-row>
+          <ion-toggle [(ngModel)]="alld" [class.allday]="b"></ion-toggle>
+          <div>
+            <ion-datetime displayFormat="HH:mm" [(ngModel)]="scd.st"
+                          pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)" [hidden]="alld"></ion-datetime>
+
           </div>
-      </ion-row>
+        </ion-row>
       <ion-row >
         <div class ="reptlbl repttop"><ion-label>重复</ion-label></div>
         <div class ="repttop1"><button  ion-button  round clear class ="sel-btn-set"
@@ -118,57 +97,57 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
         </div>
       </ion-row>
     </ion-grid>
-    <ion-footer class ="foot-set">
-      <ion-toolbar>
-        <ion-grid>
-          <ion-row >
-            <div class="dobtn-set">
-              <div class ="cancelbtn-set">
-                <ion-buttons  >
-                  <button  ion-button icon-only (click)="cancel()" color="light">
-                    <ion-icon name="close"></ion-icon>
-                  </button>
-                </ion-buttons>
-              </div>
-              <div >
-                <ion-buttons class ="okbtn-set" >
-                  <button  ion-button icon-only (click)="save()" color="light">
-                    <ion-icon name="checkmark"></ion-icon>
-                  </button>
-                </ion-buttons>
-              </div>
-              <div>
-                <ion-buttons>
-                  <button  ion-button icon-only (click)="goShare()" color="light">发送
-                    
-                  </button>
-                </ion-buttons>
-              </div>
-            </div> 
-          </ion-row>
-        </ion-grid>
-      </ion-toolbar>
-    </ion-footer>
   </ion-content>
+  <!--<ion-footer class ="foot-set">-->
+    <!--<ion-toolbar>-->
+      <!--<ion-grid>-->
+        <!--<ion-row >-->
+          <!--<div class="dobtn-set">-->
+            <!--<div class ="cancelbtn-set">-->
+              <!--<ion-buttons  >-->
+                <!--<button  ion-button icon-only (click)="cancel()" color="light">-->
+                  <!--<ion-icon name="close"></ion-icon>-->
+                <!--</button>-->
+              <!--</ion-buttons>-->
+            <!--</div>-->
+            <!--<div >-->
+              <!--<ion-buttons class ="okbtn-set" >-->
+                <!--<button  ion-button icon-only (click)="save()" color="light">-->
+                  <!--<ion-icon name="checkmark"></ion-icon>-->
+                <!--</button>-->
+              <!--</ion-buttons>-->
+            <!--</div>-->
+            <!--<div>-->
+              <!--<ion-buttons>-->
+                <!--<button  ion-button icon-only (click)="goShare()" color="light">发送-->
 
-  <ion-content padding class="select-plan" *ngIf="isShowPlan">
-    <ion-grid>
-      <ion-row>
+                <!--</button>-->
+              <!--</ion-buttons>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</ion-row>-->
+      <!--</ion-grid>-->
+    <!--</ion-toolbar>-->
+  <!--</ion-footer>-->
 
-        <ion-list  no-lines  radio-group [(ngModel)]="scd.p">
-          <ion-item class="plan-list-item" *ngFor="let option of jhs">
-            <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
-            <ion-label>{{option.jn}}</ion-label>
-            <ion-radio [value]="option" ></ion-radio>
-          </ion-item>
-        </ion-list>
+  <!--<ion-content padding class="select-plan" *ngIf="isShowPlan">-->
+    <!--<ion-grid>-->
+      <!--<ion-row>-->
 
-      </ion-row>
-    </ion-grid>
-  </ion-content>
+        <!--<ion-list  no-lines  radio-group [(ngModel)]="scd.p">-->
+          <!--<ion-item class="plan-list-item" *ngFor="let option of jhs">-->
+            <!--<div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>-->
+            <!--<ion-label>{{option.jn}}</ion-label>-->
+            <!--<ion-radio [value]="option" ></ion-radio>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+
+      <!--</ion-row>-->
+    <!--</ion-grid>-->
+  <!--</ion-content>-->
 
   <!--遮罩层-->
-  <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>`
+  <!--<div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>-->`
 
 })
 export class TdcPage {
@@ -452,6 +431,7 @@ export class TdcPage {
   presentActionSheet() {
     //日程删除
     this.tdcServ.delete(this.scd.si,"2","").then(data=>{
+      this.util.toast("删除成功",1500);
       this.cancel();
     });
 

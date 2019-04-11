@@ -474,10 +474,12 @@ export class TddjPage {
               if (moment(d).format("YYYY/MM/DD") == moment(this.scd.sd).format("YYYY/MM/DD")){
                 //如果开始日与选择的当前日一样，就是删除所有
                 this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
+                  this.util.toast("删除成功",1500);
                   this.cancel();
                 });
               }else{
                 this.tddjServ.delete(this.scd.si,"1",d).then(data=>{
+                  this.util.toast("删除成功",1500);
                   this.cancel();
                 });
               }
@@ -488,6 +490,7 @@ export class TddjPage {
             cssClass:'btn-delall',
             handler: () => {
                this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
+                 this.util.toast("删除成功",1500);
                  this.cancel();
                });
             }
@@ -505,6 +508,7 @@ export class TddjPage {
     }else{
       //非重复日程删除
       this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
+        this.util.toast("删除成功",1500);
         this.cancel();
       });
     }
