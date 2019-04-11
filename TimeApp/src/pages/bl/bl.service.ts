@@ -22,16 +22,9 @@ export class BlService {
         for(let fs of blaList) {
           if (!fs.a || fs.a == null || fs.a == '') {
             fs.a = DataConfig.HUIBASE64;
-            // let per = new PersonInData();
-            // this.perRest.getavatar(per).then(datar => {
-            //   if (datar.code == 0) {
-            //     fs.a = datar.data.a;
-            //   }
-            // })
           }
         }
         resolve(blaList);
-
         this.util.loadingEnd();
       })
     })

@@ -68,7 +68,7 @@ export class TdlService {
     let sqll = `select sp.rowid rowid,gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st,
         jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn ,sp.itx du from gtd_c gc 
         inner join gtd_sp sp on sp.si = gc.si 
-        left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji 
+        left join gtd_b gb on gb.rc = gc.ui left join gtd_j_h jh on jh.ji = gc.ji 
         where sp.sd >= '${start}' and  sp.sd <= '${startAfter}' order by sp.sd,sp.st desc;`;
     let rclL = await this.sqlExce.getExtList(sqll);
     //本地日历加入
@@ -119,7 +119,7 @@ export class TdlService {
       let sqll = "select gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st," +
         "jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
         "inner join gtd_sp sp on sp.si = gc.si " +
-        "left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji  " +
+        "left join gtd_b gb on gb.rc = gc.ui left join gtd_j_h jh on jh.ji = gc.ji  " +
         "where sp.sd<'" + next + "' order by sp.sd,sp.st desc limit 300";
       let rclL = await this.sqlExce.execSql(sqll);
       if (rclL && rclL.rows && rclL.rows.length > 0) {

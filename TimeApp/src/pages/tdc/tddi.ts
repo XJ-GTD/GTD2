@@ -7,7 +7,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {TdcService} from "../tdc/tdc.service";
-import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
+import {FsData, PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 
 /**
  * Generated class for the 日程详情（受邀） page.
@@ -32,6 +32,10 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
   </ion-header>
   <ion-content class ="content-set">
     <ion-grid>
+      <ion-row class="img-row">
+          <div><img class ="img-set" [src]="fsshow.bhiu"></div>
+          <div class ="img-rnshow">{{fsshow.rn}}</div>
+      </ion-row>
       <ion-row >
         <div class = "input-set">
           <ion-label >{{scd.sn}}</ion-label>
@@ -150,6 +154,7 @@ export class TddiPage {
   //画面数据
   scd :ScdData = new ScdData();
   b:boolean = true;
+  fsshow:FsData =new FsData();
 
   reptshow:string ="";
 
@@ -226,7 +231,13 @@ export class TddiPage {
       this.clickwake(this.scd.tx+'');
 
 
-    })
+    });
+
+    //获取日程发起人信息
+    this.tddiServ.getCrMan(this.navParams.get("si")).then(data=>{
+      this.fsshow = data
+
+    });
   }
 
   //提醒按钮显示控制

@@ -478,7 +478,38 @@ export class PgBusiService {
       })
     })
   }
+
+  /**
+   * 日程创建人信息
+   * @param {string} calId
+   * @returns {Promise<FsData>}
+   */
+  getCrMan(calId:string):Promise<FsData>{
+
+    return new Promise<FsData>((resolve, reject)=>{
+      let sql ='select c.si,gb.*,bh.hiu bhiu from gtd_c c ' +
+        ' inner join gtd_b gb on gb.rc = c.ui ' +
+        ' left join gtd_bh bh on gb.pwi = bh.pwi where c.si="'+calId+'"';
+      let fs =  new FsData();
+
+      this.sqlExce.execSql(sql).then(data=>{
+        if(data && data.rows && data.rows.length>0){
+
+          Object.assign(fs,data.rows.item(0));
+          if(!fs.bhiu || fs.bhiu == null || fs.bhiu == ''){
+            fs.bhiu=DataConfig.HUIBASE64;
+          }
+
+        }
+        resolve(fs);
+      }).catch(e=>{
+        resolve(fs);
+      })
+    })
+  }
 }
+
+
 
 export class ScdData {
   si: string = "";//日程事件ID

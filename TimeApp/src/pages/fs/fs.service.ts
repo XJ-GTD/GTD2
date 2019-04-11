@@ -86,12 +86,14 @@ export class FsService {
       adgPro.ai = si;
       let ac: Array<ContactPerPro> = new Array<ContactPerPro>();
       for (let fs of fsList) {
-        let con = new ContactPerPro();
-        con.ai = fs.ui;
-        con.mpn = fs.rc;
-        con.a = fs.hiu;
-        con.n = fs.rn;
-        ac.push(con);
+        if(fs.rc != UserConfig.user.contact){
+          let con = new ContactPerPro();
+          con.ai = fs.ui;
+          con.mpn =fs.rc;
+          con.a = fs.hiu;
+          con.n = fs.rn;
+          ac.push(con);
+        }
       }
       adgPro.ac = ac;
       console.log('---------- sharefriend 分享给参与人操作 参数:' + JSON.stringify(adgPro));
@@ -115,7 +117,7 @@ export class FsService {
               break;
             }
           }
-          if (!is) {
+          if (!is && fs.rc != UserConfig.user.contact) {
             let dt = new DTbl();
             dt.pi = this.util.getUuid();
             dt.ai = fs.pwi;

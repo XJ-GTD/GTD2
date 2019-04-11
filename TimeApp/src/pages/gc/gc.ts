@@ -39,7 +39,7 @@ import {FsData} from "../../service/pagecom/pgbusi.service";
            <ion-list no-lines>
              <ion-item class="plan-list-item"  *ngFor="let g of fsl">
                <ion-avatar item-start >
-                 <img [src]="g.hiu">
+                 <img [src]="g.bhiu">
                  <!--<ion-icon name="contact"  style="font-size: 3.0em;color: red;"></ion-icon>-->
                </ion-avatar>
                  <!--<ion-item (click)="toGroupMember(g)" style="background-color: black;color:#ffffff;margin-left: -15px;">-->

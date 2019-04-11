@@ -101,9 +101,9 @@ export class LsPage {
 
   signIn() {
     if(this.checkPhone()) {
-      if (this.lsData.authCode == null || this.lsData.authCode == "" || this.lsData.authCode == undefined) {     //判断验证码是否为空
+      if (this.lsData.authCode == null || this.lsData.authCode == "") {     //判断验证码是否为空
         this.util.toast("验证码不能为空",1500);
-      }else if(this.lsData.verifykey == null || this.lsData.verifykey == "" || this.lsData.verifykey == undefined){
+      }else if(this.lsData.verifykey == null || this.lsData.verifykey == ""){
         this.util.toast("请发送短信并填写正确的短信验证码",1500);
       }else{
         console.log("手机验证码登录被点击");
@@ -113,13 +113,17 @@ export class LsPage {
           if (data.code && data.code != 0)
             throw  data;
 
-          return this.lsService.get(data);
+          return this.lsService.getPersonMessage(data);
+        }).then(data=>{
+          if (data.code && data.code != 0)
+            throw  data;
+
+          return this.lsService.getOther();
         }).then(data=>{
           console.log("手机验证码登录成功"+ JSON.stringify(data));
-          clearTimeout(this.timer);
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
-          }).catch(error=>{
+        }).catch(error=>{
           console.log("手机验证码登录失败"+JSON.stringify(error));
           this.util.loadingEnd();
           this.util.toast(error.message,1500);
