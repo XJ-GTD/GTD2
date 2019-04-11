@@ -71,6 +71,7 @@ export class RestfulClient {
             let jsonData = JSON.parse(data.data);
             resolve(jsonData);
           }).catch(e=>{
+
             this.util.toast("服务" + url.desc + "访问失败",2000);
             console.error("服务" + url.desc + "访问失败"+JSON.stringify(e));
             reject(e);
