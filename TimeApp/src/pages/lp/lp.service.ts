@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {AuthRestful, LoginData} from "../../service/restful/authsev";
-import {PersonInData, PersonRestful} from "../../service/restful/personsev";
+import {PersonRestful} from "../../service/restful/personsev";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {WebsocketService} from "../../ws/websocket.service";
@@ -15,10 +15,8 @@ export class LpService {
               private personRestful: PersonRestful,
               private webSocketService:WebsocketService,
               private util: UtilService,
-              private alService:AlService
               //private brService: BrService,
-              ) {
-  }
+              private alService:AlService,) {}
 
   //登录
   login(lpdata: PageLpData): Promise<any> {
@@ -39,14 +37,14 @@ export class LpService {
     });
   }
 
-  get(data:any):Promise<any>{
-    return new Promise((resolve, reject) => {
+  //账户用户信息
+  getPersonMessage(data:any):Promise<any>{
+    return new Promise((resolve ,reject) => {
       let aTbl:ATbl = new ATbl();
       let uTbl:UTbl = new UTbl();
 
       //获得token，放入头部header登录
-      let code = data.data.code;
-      this.personRestful.getToken(code).then(data=>{
+      this.personRestful.getToken(data.data.code).then(data=>{
         //账户表赋值
         aTbl.an = data.nickname;
         aTbl.am = data.openid;
@@ -63,9 +61,7 @@ export class LpService {
         uTbl.ic = data.ic == undefined ? "" : data.ic;  //身份证
         uTbl.uct = data.contact== undefined ? "" : data.contact;//  联系方式
 
-        let personInData:PersonInData = new PersonInData();
-        personInData.unionid = data.unionid;
-        return this.personRestful.getself(personInData);
+        return this.personRestful.getself(data.unionid);
       }).then(data=>{
         uTbl.hiu = data.data.avatarbase64;//头像
         //查询账户表
@@ -97,17 +93,24 @@ export class LpService {
         }else{//保存用户表
           return this.sqlExec.save(uTbl);
         }
+      }).then(data=>{
+        resolve(data)
+      }).catch(error=>{
+        resolve(error)
+      })
+    });
+  }
 
-      }).then(data=>{
-        return this.alService.setSetting();
-      }).then(data=>{
+  //设置备份信息
+  getOther():Promise<any>{
+    return new Promise((resolve, reject) => {
+      this.alService.setSetting().then(data=>{
         // 同步数据（调用brService方法恢复数据）
         //return this.brService.recover(0);
         //建立websoct连接（调用websoctService）
         return this.webSocketService.connect();
       }).then(data=>{
         resolve(data)
-
       }).catch(error=>{
         resolve(error)
       })

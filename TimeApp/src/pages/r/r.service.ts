@@ -35,7 +35,12 @@ export class RService {
         if (data.code && data.code != 0)
           throw  data;
 
-        return this.lpService.get(data);
+        return this.lpService.getPersonMessage(data);
+      }).then(data=>{
+        if (data.code && data.code != 0)
+          throw  data;
+
+        return this.lpService.getOther();
       }).then(data => {
         resolve(data)
       }).catch(err => {
