@@ -65,6 +65,8 @@ paths:
       summary: "图片转换成Base64图片格式"
       consumes:
       - multipart/form-data
+      produces:
+        - text/plain
       parameters:
         - in: formData
           name: imagefile
@@ -73,8 +75,10 @@ paths:
       responses:
         200:
           description: "转换成功"
-          schema:
-            type: string
+          content:
+            text/plain:
+              schema:
+                type: string
         400:
           description: "Invalid status value"
   /cdc/{caculateid}/starter:
