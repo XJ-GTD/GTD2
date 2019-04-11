@@ -59,7 +59,7 @@ import set = Reflect.set;
             </ng-template>
             <ng-template #noscd>
               <div class="dayagenda row subheight" (click)="toAdd(sdl.d)">
-                <div class="dayagendacontent w-auto agenda-none" >
+                <div class="dayagendacontent w-auto agenda-none" [class.none1] = "sdl.bc == 1" [class.none0] = "sdl.bc == 0">
                     没有活动(点击添加)
                 </div>
               </div>

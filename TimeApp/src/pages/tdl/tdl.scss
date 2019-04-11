@@ -8,6 +8,13 @@ page-tdl {
   .back0 {
     background: #8E172B;
   }
+  .none1{
+    background: #96545f;
+
+  }
+  .none0{
+    background: #a0656f;
+  }
 
   div {
 
@@ -75,8 +82,8 @@ page-tdl {
     position: relative;
     font-size: 10px;
     letter-spacing: 1px;
-    color: rgb(192, 146, 151);
     margin-bottom: 7px;
+    opacity: .6;
 
   }
 
@@ -140,8 +147,8 @@ page-tdl {
     letter-spacing: 1px;
     width: 40px;
     line-height: 20px;
-    background-color: #b6b6b6;
   }
+
 
 }
 
