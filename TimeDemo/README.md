@@ -79,6 +79,7 @@ https://www.guobaa.com/fdd/thymeleaf/9740/json/9741
   font-family: 'PingFang-Regular';
   src: url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.ttf') format('truetype'),
   url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.eot') format('embedded-opentype'),
-  url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.woff') format('woff')
+  url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.woff') format('woff'),
+  url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.svg') format('svg');
 }
 ```
