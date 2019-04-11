@@ -495,7 +495,6 @@ export class PgBusiService {
       this.sqlExce.execSql(sql).then(data=>{
         if(data && data.rows && data.rows.length>0){
 
-          let fs = new FsData();
           Object.assign(fs,data.rows.item(0));
           if(!fs.bhiu || fs.bhiu == null || fs.bhiu == ''){
             fs.bhiu=DataConfig.HUIBASE64;

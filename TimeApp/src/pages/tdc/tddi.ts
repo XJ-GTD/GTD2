@@ -32,6 +32,10 @@ import {FsData, PgBusiService, ScdData} from "../../service/pagecom/pgbusi.servi
   </ion-header>
   <ion-content class ="content-set">
     <ion-grid>
+      <ion-row class="img-row">
+          <div><img class ="img-set" [src]="fsshow.bhiu"></div>
+          <div class ="img-rnshow">{{fsshow.rn}}</div>
+      </ion-row>
       <ion-row >
         <div class = "input-set">
           <ion-label >{{scd.sn}}</ion-label>
@@ -229,9 +233,10 @@ export class TddiPage {
 
     });
 
-    //获取日程参与人表
+    //获取日程发起人信息
     this.tddiServ.getCrMan(this.navParams.get("si")).then(data=>{
-      this.fsshow = data;
+      this.fsshow = data
+
     });
   }
 
