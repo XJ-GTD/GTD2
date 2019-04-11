@@ -8,7 +8,6 @@ import {FsData} from "../pagecom/pgbusi.service";
 import {DataConfig} from "./data.config";
 import {PageDcData} from "../../pages/gc/gc.service";
 import {BxTbl} from "../sqlite/tbl/bx.tbl";
-import {PageGlData} from "../../pages/gl/gl.service";
 
 /**
  * create by on 2019/3/5
@@ -53,10 +52,15 @@ export class UserConfig {
     mq: "",
   };
 
+
+
+  //系统设置
   static settins: Map<string, Setting> = new Map<string, Setting>();
 
+  //参与人
   static friends: Array<FsData> = new Array<FsData>();
 
+  //群组
   static groups: Array<PageDcData> = new Array<PageDcData>();
 
   constructor(private sqlliteExec: SqliteExec, private util: UtilService) {
