@@ -36,8 +36,7 @@ import {UserConfig} from "../../service/config/user.config";
 
     <ion-content padding>
       <div class="name-input w-auto">
-        <ion-input type="text" placeholder="请输入手机号或名称" (ionChange)="getContacts()" [(ngModel)]="tel"
-                   text-center></ion-input>
+        <ion-input type="text" placeholder="请输入手机号或名称" (ionChange)="getContacts()" [(ngModel)]="tel"  text-center></ion-input>
       </div>
       <ion-grid>
         <ion-row>
@@ -179,9 +178,7 @@ export class Fs4cPage {
   }
 
   getContacts() {
-      this.gl = UserConfig.groups;
-      this.fsl = UserConfig.friends;
-      //this.gl = this.glService.getGroups(this.tel);
-      //this.fsl = this.fsService.getfriend(this.tel);
+    this.gl = this.glService.getGroups(this.tel);
+    this.fsl = this.fsService.getfriend(this.tel);
   }
 }
