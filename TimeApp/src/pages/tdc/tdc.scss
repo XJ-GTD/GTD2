@@ -1,18 +1,55 @@
 page-tdc ,page-tddi ,page-tddj ,page-tdds{
+  background-color: #96162d;
+  .scroll-content {
+    overflow-x: unset;
+    overflow-y: unset
+  }
+  .grid{
+    div{
+      position: relative;
+    }
+    height:100%;
+    letter-spacing: 1px;
+    .header-set{
+      height: 65px;
+      padding: 0px !important;
+    }
+    .row{
+      padding:2px 5px 20px 24px;
+        .text-input-ios{
+          color: #d1d1d1;
+          font-size: 24px;
+          margin:1px
+      }
+
+      .lbl-jh2{
+        border-radius:10px;
+        width: 70px;
+        height: 20px;
+        text-align: center;
+        background-color: #ffffff;
+        opacity: .8;
+        font-size: 12px;
+        color: rgb(201,138,149);
+        line-height: 20px;
+        margin-right: 12px;
+      }
+      .datetime-ios{
+        padding: 0px !important;
+      }
+      .datetime-text{
+        font-size: 16px;
+        line-height:32px;
+      }
+    }
+  }
+
   .allday.toggle-checked .toggle-icon {
     background-color: #3C909B;
   }
-
-  .allday .toggle-icon {
-    background-color: rgba(255,255,255,0.5);
-
-  }
-
-  .toggle-ios .toggle-inner ::before{
-    background-color: rgba(255,255,255,0.5);
-  }
   .allday {
     width: 75px;
+    margin-right: 15px;
 
   }
 
@@ -22,58 +59,33 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
 
   .allday .toggle-icon::before {
     content: "全天";
-    color: rgba(255,255,255,0.5);
-    font-size: 11px;
-    text-align: right;
+    font-size: 12px;
     transform: scale3d(1, 1, 1);
-    margin-top: 4px;
-    margin-right: 10px;
-    font-weight: 900;
+    line-height:25px;
     letter-spacing: 2px;
-    background-color: rgba(255,255,255,0.1);
+    background-color: transparent;
+    text-indent:35px;
 
   }
 
   .allday.toggle-checked .toggle-icon::before {
     content: "全天";
-    font-size: 11px;
-
-    font-weight: 900;
+    font-size: 12px;
     letter-spacing: 2px;
     text-align: left;
     transform: scale3d(1, 1, 1);
     background-color: #3C909B;
-    margin-left: 10px;
-    margin-top: 4px;
+    line-height:25px;
     color: #fff;
-  }
-
-  .allday.toggle-checked .toggle-icon {
-    content: "全天";
-    font-size: 11px;
-    text-align: left;
+    text-indent:10px;
 
   }
-  .toggle-ios.toggle-checked .toggle-inner,
-  .toggle-md.toggle-checked .toggle-inner {
-    background-color: rgb(255,255,255);
-  }
 
-  ion-toggle.toggle-ios .toggle-inner,
-  ion-toggle.toggle-md .toggle-inner {
-    background-color: rgba(255,255,255,0.5);
-  }
 
 
   ion-content.content {
     background-color: #96162d;
     color: #fff;
-  }
-
-  .input-set{
-    font-size: 24px;
-    margin-left: 26px;
-    min-width: 80%;
   }
 
   .sel-btn-set{
@@ -160,9 +172,6 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
     margin-right: 24px;
   }
 
-  .header-set{
-    background-color: #96162d;
-  }
   .btn-delall {
     font-size: 20px;
     color:#222222;
@@ -175,10 +184,6 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
     font-size: 20px;
     color:#35919C;
     font-weight:normal
-  }
-
-  .scroll-content{
-    background-color: #96162d;
   }
 
   .tm-set{
@@ -195,13 +200,6 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
 
   .reptlbl{
     font-size: 11px;
-    margin-left: 24px;
-  }
-  .repttop{
-    margin-top: 30px;
-  }
-  .repttop1{
-    margin-top: 23px;
   }
   .txtop{
     margin-top: 11px;
@@ -356,10 +354,6 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
     text-align: center;
     margin-top: 6px;
     margin-left: 4px;
-  }
-  .lbl-jh2{
-    margin-top: 3px;
-    margin-bottom: 5px;
   }
 }
 

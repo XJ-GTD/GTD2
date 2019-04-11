@@ -93,6 +93,7 @@ public class MainVerticle extends AbstractVerticle {
 		router.route("/sha/plan/share").handler(BodyHandler.create());
 		
 		router.route("/sha/plan/buildin/download").handler(BodyHandler.create());
+		router.route("/sha/plan/buildin/upload").handler(BodyHandler.create());
 
 		router.route("/sha/agendashare").handler(this::agendashare);
 		router.route("/sha/agenda/share/:shareid").handler(this::agendashareview);
@@ -101,6 +102,7 @@ public class MainVerticle extends AbstractVerticle {
 		router.route("/sha/plan/share/:shareid").handler(this::planshareview);
 		
 		router.route("/sha/plan/buildin/download").handler(this::buildinplandownload);
+		router.route("/sha/plan/buildin/upload").handler(this::buildinplanupload);
 
 		router.route("/sha/agenda/share/:shareid").handler(ctx -> {
 			thymeleaf.render(new JsonObject(ctx.data()), "/templates/agenda/share", res -> {
@@ -474,6 +476,49 @@ public class MainVerticle extends AbstractVerticle {
 	
 	}
 
+	private void buildinplanupload(RoutingContext ctx) {
+		System.out.println("body: " + ctx.getBodyAsString());
+
+		JsonObject ret = new JsonObject();
+		ret.put("rc", "0");
+		ret.put("rm", "");
+		ret.put("d", new JsonObject());
+		
+		JsonObject agenda = ctx.getBodyAsJson();
+		
+		if (agenda == null || agenda.isEmpty()) {
+			ret.put("rc", "-1");
+			ret.put("rm", "请求参数不存在, 非法请求!");
+
+			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+			return;
+		}
+		
+		String buildinplan = agenda.getString("pi");
+		
+		if (buildinplan == null || StringUtils.isEmpty(buildinplan)) {
+			ret.put("rc", "-1");
+			ret.put("rm", "内建计划数据不存在, 非法请求!");
+
+			ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+			return;
+		}
+		
+		agenda.put("pi", buildinplan).put("ap", buildinplan);
+		
+		mongodb.insert("sha_plan_buildin_agendas", agenda, insert -> {
+			if (insert.succeeded()) {
+				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+			} else {
+				System.out.println(insert.cause().getMessage());
+				ret.put("rc", "-3");
+				ret.put("rm", "系统异常, 请求失败!");
+
+				ctx.response().putHeader("Content-Type", "application/json;charset=UTF-8").end(ret.encode());
+			}
+		});
+	}
+	
 	private void buildinplandownload(RoutingContext ctx) {
 		System.out.println("headers: " + ctx.request().headers());
 		System.out.println("body: " + ctx.getBodyAsString());
