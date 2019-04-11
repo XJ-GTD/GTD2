@@ -1,13 +1,5 @@
-page-fs {
+page-fs4c ,page-fs4g{
   background-color: #000;
-
-  @font-face {
-    font-family: 'PingFang-Regular';
-    src: url('../../assets/fonts/PingFang Regular.ttf');
-  }
-  ion-content {
-    font-family: "PingFang-Regular";
-  }
 
   .w-auto {
     flex: 1;
@@ -86,15 +78,12 @@ page-fs {
   ion-checkbox {
     left: 75%;
   }
-
   .item.item-ios .checkbox-ios {
     position: relative;
     display: block;
     margin: 0;
   }
-
   .item-inner{
     margin-left: -30px;
   }
-
 }

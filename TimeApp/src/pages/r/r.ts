@@ -115,19 +115,19 @@ export class RPage {
 
   register() {
     if(this.checkPhone()) {
-      if (this.rData.username == null || this.rData.username == "" || this.rData.username == undefined) {           //判断用户名是否为空
+      if (this.rData.username == null || this.rData.username == "") {           //判断用户名是否为空
         this.util.toast("用户名不能为空",1500);
-      }else if (this.rData.authCode == null || this.rData.authCode == "" || this.rData.authCode == undefined) {     //判断验证码是否为空
+      }else if (this.rData.authCode == null || this.rData.authCode == "") {     //判断验证码是否为空
         this.util.toast("验证码不能为空",1500);
-      }else if (this.rData.password == null || this.rData.password == "" || this.rData.password == undefined) {     //判断密码是否为空
+      }else if (this.rData.password == null || this.rData.password == "") {     //判断密码是否为空
         this.util.toast("密码不能为空",1500);
-      }else if(this.rData.verifykey == null || this.rData.verifykey == "" || this.rData.verifykey == undefined){
+      }else if(this.rData.verifykey == null || this.rData.verifykey == ""){
         this.util.toast("请发送短信并填写正确的短信验证码",1500);
       }else {
         console.log("注册被点击");
         this.util.loadingStart();
         this.rService.signup(this.rData).then(data => {
-          console.log("注册并密码登录成功"+ JSON.stringify(data));
+          console.log("注册并密码登录成功");
           clearTimeout(this.timer);
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');

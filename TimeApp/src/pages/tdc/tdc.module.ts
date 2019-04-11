@@ -1,17 +1,35 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
 import { TdcPage } from './tdc';
 import {TdcService} from "./tdc.service";
+import {TddiPage} from "./tddi";
+import {TddjPage} from "./tddj";
+import {IonicModule} from "ionic-angular";
+import {PipesModule} from "../../pipes/pipes.module";
+import {TddsPage} from "./tdds";
 
 @NgModule({
   declarations: [
     TdcPage,
+    TddiPage,
+    TddjPage,TddsPage
   ],
   imports: [
-    IonicPageModule.forChild(TdcPage),
+      IonicModule,
+      PipesModule
   ],
   providers: [
     TdcService,
   ],
+  entryComponents:[
+    TdcPage,
+    TddiPage,
+    TddjPage,TddsPage
+  ],
+  exports:[
+    TdcPage,
+    TddiPage,
+    TddjPage,TddsPage
+
+  ]
 })
 export class TdcPageModule {}

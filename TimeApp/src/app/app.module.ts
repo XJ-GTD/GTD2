@@ -33,7 +33,6 @@ import {SqliteInit} from "../service/sqlite/sqlite.init";
 import {PersonRestful} from "../service/restful/personsev";
 import {SmsRestful} from "../service/restful/smssev";
 import {AuthRestful} from "../service/restful/authsev";
-import {LpService} from "../pages/lp/lp.service";
 import {AgdRestful} from "../service/restful/agdsev";
 import {AssistantService} from "../service/cordova/assistant.service";
 import {BlaRestful} from "../service/restful/blasev";
@@ -44,21 +43,39 @@ import {WebsocketModule} from "../ws/websocket.module";
 import {FeedbackService} from "../service/cordova/feedback.service";
 import {AlarmService} from "../service/cordova/alarm.service";
 import {UserConfig} from "../service/config/user.config";
-import {PipesModule} from "../pipes/pipes.module";
 import {HammerDIRECTIONALLConfig} from "./my-hammer.config";
 import {Keyboard} from "@ionic-native/keyboard";
-import {AiService} from "../components/ai/answer/ai.service";
-import {AlService} from "../pages/al/al.service";
-import {TddjService} from "../pages/tddj/tddj.service";
-import {TddiService} from "../pages/tddi/tddi.service";
 import {PgBusiService} from "../service/pagecom/pgbusi.service";
-import {TdcService} from "../pages/tdc/tdc.service";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {ContactsService} from "../service/cordova/contacts.service";
 import {LocalcalendarService} from "../service/cordova/localcalendar.service";
 import {NotificationsService} from "../service/cordova/notifications.service";
 import {Badge} from "@ionic-native/badge";
 import {RemindService} from "../service/util-service/remind.service";
+import {TdcPageModule} from "../pages/tdc/tdc.module";
+import {FsPageModule} from "../pages/fs/fs.module";
+import {AlPageModule} from "../pages/al/al.module";
+import {BlPageModule} from "../pages/bl/bl.module";
+import {BrPageModule} from "../pages/br/br.module";
+import {FdPageModule} from "../pages/fd/fd.module";
+import {GaPageModule} from "../pages/ga/ga.module";
+import {GcPageModule} from "../pages/gc/gc.module";
+import {GlPageModule} from "../pages/gl/gl.module";
+import {HPageModule} from "../pages/h/h.module";
+import {HlPageModule} from "../pages/hl/hl.module";
+import {LpPageModule} from "../pages/lp/lp.module";
+import {LsPageModule} from "../pages/ls/ls.module";
+import {MPageModule} from "../pages/m/m.module";
+import {PPageModule} from "../pages/p/p.module";
+import {PcPageModule} from "../pages/pc/pc.module";
+import {PdPageModule} from "../pages/pd/pd.module";
+import {PfPageModule} from "../pages/pf/pf.module";
+import {PlPageModule} from "../pages/pl/pl.module";
+import {PsPageModule} from "../pages/ps/ps.module";
+import {RPageModule} from "../pages/r/r.module";
+import {SsPageModule} from "../pages/ss/ss.module";
+import {TdlPageModule} from "../pages/tdl/tdl.module";
+import {PipesModule} from "../pipes/pipes.module";
 
 @NgModule({
   declarations: [
@@ -68,7 +85,6 @@ import {RemindService} from "../service/util-service/remind.service";
     BrowserModule,
     IonicModule.forRoot(MyApp, {
       tabsHideOnSubPages: 'true',
-
       //强制使用IOS风格
       mode: 'ios'
     }),
@@ -78,6 +94,29 @@ import {RemindService} from "../service/util-service/remind.service";
     RouterModule,
     WebsocketModule,
     PipesModule,
+    TdcPageModule,
+    FsPageModule,
+    AlPageModule,
+    BlPageModule,
+    BrPageModule,
+    FdPageModule,
+    GaPageModule,
+    GcPageModule,
+    GlPageModule,
+    HPageModule,
+    HlPageModule,
+    LpPageModule,
+    LsPageModule,
+    MPageModule,
+    PPageModule,
+    PcPageModule,
+    PdPageModule,
+    PfPageModule,
+    PlPageModule,
+    PsPageModule,
+    RPageModule,
+    SsPageModule,
+    TdlPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -115,27 +154,21 @@ import {RemindService} from "../service/util-service/remind.service";
     PersonRestful,
     SmsRestful,
     AuthRestful,
-    LpService,
     AgdRestful,
     BlaRestful,
     BacRestful,
     ShaeRestful,
-    AiService,
-    AlService,
     AssistantService,
     EmitService,
     FeedbackService,
     AlarmService,
     UserConfig,
-    TddjService,
-    TddiService,
     PgBusiService,
-    TdcService,
     LocalcalendarService,
     NotificationsService,
     RemindService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    {provide: HAMMER_GESTURE_CONFIG,useClass: HammerDIRECTIONALLConfig }
+    {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig}
   ]
 })
 export class AppModule {

@@ -3,12 +3,11 @@ import {
   ActionSheetController,  IonicPage, ModalController, NavController, NavParams,
 } from 'ionic-angular';
 import * as moment from "moment";
-import {TddiService} from "./tddi.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {TdcService} from "../tdc/tdc.service";
-import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
+import {FsData, PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 
 /**
  * Generated class for the 日程详情（受邀） page.
@@ -17,7 +16,6 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-tddi',
   providers: [],
@@ -26,7 +24,11 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
       <ion-grid>
         <ion-row right>
           <div class="h-auto " >
-            
+            <ion-buttons right>
+              <button ion-button icon-only (click)="presentActionSheet()" color="light">
+                <img  class="imgdel-set" src="../../assets/imgs/del.png">
+              </button>
+            </ion-buttons>
           </div>
         </ion-row>
       </ion-grid>
@@ -34,32 +36,36 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
   </ion-header>
   <ion-content class ="content-set">
     <ion-grid>
+      <ion-row class="img-row">
+          <div><img class ="img-set" [src]="fsshow.bhiu"></div>
+          <div class ="img-rnshow">{{fsshow.rn}}</div>
+      </ion-row>
       <ion-row >
         <div class = "input-set">
           <ion-label >{{scd.sn}}</ion-label>
         </div>
       </ion-row>
       <ion-row >
-        <div >
-            <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">{{scd.p.jn==""?"添加计划":scd.p.jn}}</button>
+        <div (click)="toPlanChoose()" class ="lbl-jh">
+          <ion-label class="lbl-jh2" >{{scd.p.jn=="" || scd.p.jn==null?"添加计划":scd.p.jn}}</ion-label>
         </div>
       </ion-row>
       <ion-row >
-          <div class="dt-set">
+          <div class="dtshow-set">
             <ion-item>
                 <ion-label >{{scd.sd | formatedate : "CYYYY/M/DD"}}</ion-label>
             </ion-item>
           </div>
-          <div class="week-set">
+          <div class="weekshow-set">
             <ion-label >{{scd.sd | formatedate : "CWEEK" }}</ion-label>
           </div>
-          <div class="tm-set">
+          <div class="tmshow-set">
             <ion-label >{{alldshow}}</ion-label>
           </div>
       </ion-row>
       <ion-row >
-        <div class ="reptlbl repttop"><ion-label>重复</ion-label></div>
-        <div class ="repttop1"><ion-label>{{reptshow}}</ion-label></div>
+        <div class ="reptlbl repttopshow"><ion-label>重复</ion-label></div>
+        <div class ="repttopshow1"><ion-label>{{reptshow}}</ion-label></div>
       </ion-row>
       <ion-row >
         <div class ="reptlbl txtop"><ion-label>提醒</ion-label></div>
@@ -84,7 +90,7 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
       </ion-row>
       <ion-row >
         <div class = "memo-set">
-          <ion-input type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-input>
+          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-textarea>
         </div>
       </ion-row>
     </ion-grid>
@@ -124,7 +130,7 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
           <ion-item class="plan-list-item" *ngFor="let option of jhs">
             <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
             <ion-label>{{option.jn}}</ion-label>
-            <ion-radio [value]="option" [ngStyle]="{'checked': option.ji == scd.ji , 'none': option.ji != scd.ji}"></ion-radio>
+            <ion-radio [value]="option" ></ion-radio>
           </ion-item>
         </ion-list>
 
@@ -142,7 +148,7 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 export class TddiPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private util:UtilService,private  tddiServ : TddiService,
+              private util:UtilService,private  tddiServ : TdcService,
               public actionSheetCtrl: ActionSheetController,
               public modalCtrl: ModalController,private  busiServ : PgBusiService
   ) {
@@ -152,6 +158,7 @@ export class TddiPage {
   //画面数据
   scd :ScdData = new ScdData();
   b:boolean = true;
+  fsshow:FsData =new FsData();
 
   reptshow:string ="";
 
@@ -178,23 +185,28 @@ export class TddiPage {
 
   ionViewWillEnter() {
 
-    this.busiServ.getPlans().then(data=>{
-      this.jhs = data;
-      //console.log("111" + JSON.stringify(this.jhs));
-    }).catch(res=>{
-      console.log("获取计划失败" + JSON.stringify(res));
-    });
 
     //受邀人修改的场合初始化
     this.tddiServ.get(this.navParams.get("si")).then(data=>{
       let bs : BsModel<ScdData> = data;
       Object.assign(this.scd,bs.data);
 
+      this.busiServ.getPlans().then(data=>{
+        this.jhs = data;
+        for (let i=0;i<this.jhs.length;i++){
+          if (this.jhs[i].ji == this.scd.ji){
+            this.scd.p = this.jhs[i];
+          }
+        }
+      }).catch(res=>{
+        console.log("获取计划失败" + JSON.stringify(res));
+      });
+
       //全天的场合
-      if (this.scd.et == "99:99") {
+      if (this.scd.st == "99:99") {
         this.alldshow = "全天";
       } else {
-        this.alldshow = this.scd.et;
+        this.alldshow = this.scd.st;
       }
 
       switch (this.scd.rt){
@@ -218,13 +230,18 @@ export class TddiPage {
       }
 
       this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
-      this.scd.st = moment().format("HH:mm");
 
 
       this.clickwake(this.scd.tx+'');
 
 
-    })
+    });
+
+    //获取日程发起人信息
+    this.tddiServ.getCrMan(this.navParams.get("si")).then(data=>{
+      this.fsshow = data
+
+    });
   }
 
   //提醒按钮显示控制
@@ -328,13 +345,20 @@ export class TddiPage {
       const actionSheet = this.actionSheetCtrl.create({
         buttons: [
           {
-            text: '删除当前日期开始所有日程',
+            text: '删除今后所有日程',
             role: 'destructive',
             cssClass:'btn-del',
             handler: () => {
-              this.tddiServ.delete(this.scd.si,"1",d).then(data=>{
-                this.cancel();
-              });
+              if (moment(d).format("YYYY/MM/DD") == moment(this.scd.sd).format("YYYY/MM/DD")){
+                //如果开始日与选择的当前日一样，就是删除所有
+                this.tddiServ.delete(this.scd.si,"2",d).then(data=>{
+                  this.cancel();
+                });
+              }else{
+                this.tddiServ.delete(this.scd.si,"1",d).then(data=>{
+                  this.cancel();
+                });
+              }
             }
           }, {
             text: '删除所有日程',
@@ -365,8 +389,12 @@ export class TddiPage {
 
   }
   toPlanChoose(){
-    this.isShowPlan = true;
-    this.IsShowCover = true;
+    if(this.jhs.length > 0){
+      this.isShowPlan = true;
+      this.IsShowCover = true;
+    }else {
+      this.util.toast("未创建计划",1500);
+    }
   }
 
   closeDialog() {

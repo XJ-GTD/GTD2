@@ -4,6 +4,7 @@ import {AlPage} from './al';
 import {RoundProgressModule} from 'angular-svg-round-progressbar';
 import {AlService} from "./al.service";
 import {BackComponentModule} from "../../components/backComponent/back.module";
+import {TdcPageModule} from "../tdc/tdc.module";
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import {BackComponentModule} from "../../components/backComponent/back.module";
   imports: [
     IonicPageModule.forChild(AlPage),
     RoundProgressModule,
-    BackComponentModule
+    BackComponentModule,
+    TdcPageModule,
   ],
   providers: [
     AlService,

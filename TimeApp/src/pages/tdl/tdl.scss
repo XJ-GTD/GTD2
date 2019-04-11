@@ -1,108 +1,51 @@
 page-tdl {
+  background-color: #96162D;
 
-  ion-content.content-ios, ion-content.content-md {
-    background-color: #96162D;
-  }
-
-  .back1{
+  .back1 {
     background: #96162D;
   }
-  .back2{
+
+  .back0 {
     background: #8E172B;
   }
+  .none1{
+    background: #96545f;
 
-
-  .img-header-left{
-    width: 4vmin;
-    height: 4vmin;
+  }
+  .none0{
+    background: #a0656f;
   }
 
-  .leftside {
-    background-color: #000;
-    color: #fff;
+  div {
+
+    position: relative;
   }
 
-  .rightside {
-    background-color: #96162D;
-    color: #fff;
-  }
-
-  div.text-rotate-90 {
-    width: 500px;
-    white-space: nowrap;
-    -moz-transform: rotate(270deg);
-    -webkit-transform: rotate(270deg);
-    -ms-transform: rotate(270deg);
-    -o-transform: rotate(270deg);
-  }
-
-  .week {
-    font-size: 2.2vmin;
-  }
-
-  .day {
-    font-size: 5.2vmin;
-  }
 
   .w-auto {
     flex: 1;
   }
 
-  ion-list .item {
-    background-color: transparent;
-    color: #fff;
-  }
-
-  .w-5 {
-    width: 5vmin;
-  }
-
-  .w-10 {
-    width: 10vmin;
-  }
-
-  .w-15 {
-    width: 15vmin;
-  }
-
-  .h-auto {
-    height: 61px;
-  }
 
   .ym-fsize {
+    font-size: 11px;
+  }
+
+  .d-fsize {
     font-size: 15px;
   }
-  .d-fsize {
-    font-size:11px;
-  }
-  ion-grid.grid ion-row.row {
-    height: 100%;
-  }
-  ion-grid.grid  {
+
+  ion-grid.grid {
     padding: 0px;
     background-color: #96162D;
   }
-  .leftpanding {
-    padding-bottom: 21px;
-    padding-top: 32px;
-    padding-left:18px ;
-    padding-right: 11px;
-  }
-  .rightpanding {
-    padding-bottom: 21px;
-    padding-top: 32px;
-    padding-left:17px ;
-    padding-right:15px ;
-  }
+
   .dot-set {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     background-color: #fff;
     border-radius: 50%;
-    margin-left: 4px;
-    margin-right: 4px;
-    margin-top: 6px;
-    font-size: 15px;
+    margin: 7px 3px 7px 3px;
   }
 
   .daynav {
@@ -119,31 +62,29 @@ page-tdl {
     padding: 0;
   }
 
-  .dayheader {
-    padding: 26px 0;
-  }
-
   .text-center {
     text-align: center;
   }
 
   .dayagenda {
-    padding: 26px 16px;
-  }
-
-  .dayagendaoperation{
-    position: relative;
-    width:12px;
+    min-height: 80px;
+    max-height: 160px;
   }
 
   .dayagendacontent {
-    display:flex;
+    display: flex;
     position: relative;
     flex-direction: column;
+    padding: 15px 15px 15px 20px;
   }
 
   .agendaline1 {
     position: relative;
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-bottom: 7px;
+    opacity: .6;
+
   }
 
   .agendaline2 {
@@ -152,118 +93,62 @@ page-tdl {
 
   .agenda-st {
     position: relative;
-    height: 2vmin;
+    font-size: 11px;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    width: 40px;
+    text-align: right;
+    line-height: 20px;
   }
 
   .agenda-sn {
     position: relative;
-    width: 50vmin;
+    width: 75%;
     text-overflow: clip;
+    font-size: 15px;
+    margin-left: 3px;
+    letter-spacing: 1px;
+    font-weight: 500;
   }
-  .detail-set {
-      padding-right: 19px;
+
+  .header-set {
+    background-color: #662233;
+    opacity: 0.9;
+
+    .headerdate {
+      margin-left: -15px;
+
+      .toolbar-title-ios {
+        font-size: 15px;
+        color: white;
+        letter-spacing: 2px;
+      }
     }
 
-  .title-set {
-    height: 2vmin;
+    .toolbar-background-ios {
+      background-color: transparent;
+    }
+
+    img {
+      width: 15px;
+      margin-left: 15px;
+    }
   }
-  .people-set {
-    height: 2vmin;
+
+
+  .newMessage {
+    font-weight: bold;
+    color: #378f9a;
+  }
+
+  .agenda-none {
     font-size: 11px;
-  }
-  .tm-set {
-    margin-top: 1px;
-    font-size: 11px;
-    height: 2vmin;
-  }
-  ion-scroll {
-   height: 100%;
-  }
-
-  .scroll-content{
-    margin-top: 0px;
-  }
-
-  .toolbar-ios {
-    padding: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
-    height: 61px;
-  }
-
-  .spacediv-set {
-    height: 61px;
-  }
-  .backbtn-set{
-    padding-top: 7px;
-    padding-left: 24px;
-    float: left;
-    margin-right: 24px;
-    margin-top: 8px;
-    font-size: 18px;
-    width: 41px;
-  }
-  .content-set {
-    position: relative;
-  }
-
-  .header-set{
-    height: 61px;
-    background-color: #662233;
-    opacity: 0.95;
-  }
-
-  .dobtn-set{
-    width: 100%;
-    text-align: center;
-    background-color: #662233;
-    opacity: 0.95;
-  }
-
-  .nullbtn-set{
-    float: left;
-  }
-  .headerdate{
-    font-size: 18px;
-    color: white;
-    margin-top: 24px;
-    margin-left: 61px;
-  }
-  .subheight{
-    height: 100%;
-    background: #A7162D;
-  }
-  .contmargin{
-    margin-top: 61px;
-  }
-
-  .headerleft{
-    float: left;
-  }
-  .fab-set{
-    margin-bottom: 30px;
-  }
-}
-.zm-action-button {
-  .btn-share {
-    font-size: 20px;
-  }
-  .btn-del {
-    font-size: 20px;
-    color:#222222;
-  }
-  .btn-cancel {
-    font-size: 20px;
-    color:#35919C;
-    font-weight:normal
+    color: rgb(192, 146, 151);
+    letter-spacing: 1px;
+    width: 40px;
+    line-height: 20px;
   }
 
 
-}
-.toolbar-background-ios {
-  background: none;
-}
-.toolbar-background-md {
-  background:none;
 }
 

@@ -5,17 +5,16 @@ import {BsModel} from "../../service/restful/out/bs.model";
 import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
-import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
-import {TddjService} from "./tddj.service";
+import {FsData, PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
+import {TdcService} from "./tdc.service";
 
 /**
- * Generated class for the 日程详情 page.
+ * Generated class for the 日程详情（发布人） page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-tddj',
   template:`<ion-header no-border class="header-set">
@@ -41,8 +40,8 @@ import {TddjService} from "./tddj.service";
         </div>
       </ion-row>
       <ion-row >
-        <div >
-            <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">{{scd.p.jn==""?"添加计划":scd.p.jn}}</button>
+        <div (click)="toPlanChoose()" class ="lbl-jh">
+          <ion-label class="lbl-jh2"  >{{scd.p.jn=="" || scd.p.jn==null?"添加计划":scd.p.jn}}</ion-label>
         </div>
       </ion-row>
       <ion-row >
@@ -55,9 +54,6 @@ import {TddjService} from "./tddj.service";
                         ></ion-datetime>
           </ion-item> 
         </div>
-         <div class="arrow1">
-           <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
-         </div>
       </ion-row>
       <ion-row >
         <div class = "tog-set">
@@ -71,9 +67,6 @@ import {TddjService} from "./tddj.service";
                               pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)"></ion-datetime>
               </ion-item>
           </div>
-        <div class = "arrow2" [hidden]="alld">
-          <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
-        </div>
       </ion-row>
       <ion-row >
         <div class ="reptlbl repttop"><ion-label>重复</ion-label></div>
@@ -116,12 +109,13 @@ import {TddjService} from "./tddj.service";
       </ion-row>
       <ion-row >
         <div class = "memo-set">
-          <ion-input type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-input>
+          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-textarea>
         </div>
       </ion-row>
-      <ion-row justify-content-left>
-        <div   *ngFor ="let fss of scd.fss;">
-          <div >{{fss.ran}}</div>
+      <ion-row class="img-row">
+        <div class ="img-div"   *ngFor ="let fs of fssshow;">
+          <div><img class ="img-set" [src]="fs.bhiu"></div>
+          <div class ="img-rn">{{fs.rn}}</div>
         </div>
       </ion-row>
     </ion-grid>
@@ -162,11 +156,11 @@ import {TddjService} from "./tddj.service";
     <ion-grid>
       <ion-row>
 
-        <ion-list  no-lines  radio-group [(ngModel)]="scd.p">
+        <ion-list  no-lines  radio-group [(ngModel)]="scd.p" >
           <ion-item class="plan-list-item" *ngFor="let option of jhs">
             <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
             <ion-label>{{option.jn}}</ion-label>
-            <ion-radio [value]="option"  [ngStyle]="{'checked': option.ji == scd.ji , 'none': option.ji != scd.ji}"></ion-radio>
+            <ion-radio  [value]="option" ></ion-radio>
           </ion-item>
         </ion-list>
 
@@ -180,7 +174,7 @@ import {TddjService} from "./tddj.service";
 export class TddjPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private tddjServ :TddjService,private util:UtilService,
+              private tddjServ :TdcService,private util:UtilService,
               public actionSheetCtrl: ActionSheetController,
               public modalCtrl: ModalController   , private  busiServ : PgBusiService           ) {
 
@@ -190,6 +184,7 @@ export class TddjPage {
   //画面数据
   scd :ScdData = new ScdData();
   b:boolean = true;
+  fssshow : Array<FsData> =new Array<FsData>();
 
   //重复日程不可以修改日期
   rept_flg :boolean = false;
@@ -225,18 +220,24 @@ export class TddjPage {
 
   ionViewWillEnter() {
 
-    this.busiServ.getPlans().then(data=>{
-      this.jhs = data;
-    }).catch(res=>{
-      console.log("获取计划失败" + JSON.stringify(res));
-    });
-
 
     if (this.navParams.get("si")){
       this.tddjServ.get(this.navParams.get("si")).then(data=>{
         let bs : BsModel<ScdData> = data;
         Object.assign(this.scd,bs.data);
-        this.scd.ji = this.scd.p.ji;
+
+        this.busiServ.getPlans().then(data=>{
+          this.jhs = data;
+          for (let i=0;i<this.jhs.length;i++){
+            if (this.jhs[i].ji == this.scd.ji){
+              this.scd.p = this.jhs[i];
+              break;
+            }
+          }
+        }).catch(res=>{
+          console.log("获取计划失败" + JSON.stringify(res));
+        });
+
         //重复日程不可以修改日期
         if (this.scd.rt != "0"){
           this.rept_flg = true;
@@ -259,7 +260,13 @@ export class TddjPage {
         this.clickrept(this.scd.rt+'');
         this.clickwake(this.scd.tx + '');
 
-      })
+      });
+
+      //获取日程参与人表
+      this.tddjServ.getCalfriend(this.navParams.get("si")).then(data=>{
+        this.fssshow = data;
+      });
+
       return;
     }
 
@@ -448,7 +455,7 @@ export class TddjPage {
   goShare(){
     //日程分享打开参与人选择rc日程类型
     this.save(()=>{
-      this.navCtrl.push(DataConfig.PAGE._FS_PAGE,{addType:'rc',tpara:this.scd.si});
+      this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE,{addType:'rc',tpara:this.scd.si});
     })
 
   }
@@ -460,21 +467,29 @@ export class TddjPage {
       const actionSheet = this.actionSheetCtrl.create({
         buttons: [
           {
-            text: '删除当前日期开始所有日程',
+            text: '删除今后所有日程',
             role: 'destructive',
             cssClass:'btn-del',
             handler: () => {
-              /*this.tddjServ.delete(this.scd.si,"1",d).then(data=>{
-                this.cancel();
-              });*/
+              if (moment(d).format("YYYY/MM/DD") == moment(this.scd.sd).format("YYYY/MM/DD")){
+                //如果开始日与选择的当前日一样，就是删除所有
+                this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
+                  this.cancel();
+                });
+              }else{
+                this.tddjServ.delete(this.scd.si,"1",d).then(data=>{
+                  this.cancel();
+                });
+              }
+
             }
           }, {
             text: '删除所有日程',
             cssClass:'btn-delall',
             handler: () => {
-              // this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
-              //   this.cancel();
-              // });
+               this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
+                 this.cancel();
+               });
             }
           }, {
             text: '取消',
@@ -489,9 +504,9 @@ export class TddjPage {
       actionSheet.present();
     }else{
       //非重复日程删除
-      /*this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
+      this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
         this.cancel();
-      });*/
+      });
     }
 
 
@@ -501,7 +516,7 @@ export class TddjPage {
       this.isShowPlan = true;
       this.IsShowCover = true;
     }else {
-      this.util.toast("请先去计划页面创建计划",1500);
+      this.util.toast("未创建计划",1500);
     }
   }
 

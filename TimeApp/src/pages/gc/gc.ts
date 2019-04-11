@@ -1,5 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams, Navbar, ModalController, ToastController} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 
 import {GcService, PageDcData} from "./gc.service";
 import {FsService} from "../fs/fs.service";
@@ -39,7 +39,7 @@ import {FsData} from "../../service/pagecom/pgbusi.service";
            <ion-list no-lines>
              <ion-item class="plan-list-item"  *ngFor="let g of fsl">
                <ion-avatar item-start >
-                 <img [src]="g.hiu">
+                 <img [src]="g.bhiu">
                  <!--<ion-icon name="contact"  style="font-size: 3.0em;color: red;"></ion-icon>-->
                </ion-avatar>
                  <!--<ion-item (click)="toGroupMember(g)" style="background-color: black;color:#ffffff;margin-left: -15px;">-->
@@ -67,7 +67,6 @@ export class GcPage {
   fsl:Array<FsData> = new Array<FsData>();
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private toastCtrl: ToastController,
               private gcService: GcService,
               private fsService:FsService,
               private modalCtrl: ModalController) {
@@ -97,16 +96,15 @@ export class GcPage {
   }
   toAddGroupMember() {
     console.log("PePage跳转PgPage");
-    this.navCtrl.push(DataConfig.PAGE._FS_PAGE,{tpara:this.dc,addType:'gc'});
-    // this.navCtrl.push("PgPage",{callback:this.getData,sel:this.qcy});
-    //
-    // let modal = this.modalCtrl.create(PageConfig.PG_PAGE,{callback:this.getData,sel:this.qcy});
-    // modal.onDidDismiss((data)=>{
-    //   console.log(data === this.qcy);
-    //   console.log(JSON.stringify(data));
-    //   this.qcy = data;
-    // });
-    //modal.present();
+    // this.navCtrl.push(DataConfig.PAGE._FS4G_PAGE,{tpara:this.dc,addType:'gc'});
+    // this.navCtrl.push(DataConfig.PAGE._FS4G_PAGE,{tpara:this.dc});
+
+    let modal = this.modalCtrl.create(DataConfig.PAGE._FS4G_PAGE,{tpara:this.dc});
+    modal.onDidDismiss((data)=>{
+      console.log(JSON.stringify(data));
+      this.getData();
+    });
+    modal.present();
 
   }
 
@@ -121,12 +119,8 @@ export class GcPage {
   }
 
   getData() {
-    this.fsService.getfriendgroup(this.dc.gi).then(data=>{
-      if(data && data != null){
-        this.fsl = data;
-        this.dc.gc = this.fsl.length;
-      }
-    })
+    this.fsl = this.fsService.getfriendgroup(this.dc.gi);
+    this.dc.gc = this.fsl.length;
   };
 
   /**
@@ -136,6 +130,7 @@ export class GcPage {
     let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{pwi:g.pwi});
     modal.onDidDismiss((data)=>{
       console.log(JSON.stringify(data));
+      this.getData();
     });
     modal.present();
   }

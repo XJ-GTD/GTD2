@@ -1,6 +1,6 @@
 import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {
-  Content, Grid,
+  Content, Grid, Header,
   MenuController,
   ModalController, ScrollEvent,
 } from 'ionic-angular';
@@ -20,59 +20,47 @@ import set = Reflect.set;
   selector: 'page-tdl',
   template:
       `
-    <ion-header no-border *ngIf="headershow" class="header-set">
-      <ion-toolbar>
-        <ion-grid>
-          <ion-row>
-            <div class="dobtn-set h-auto">
-              <div class="headerleft">
-              </div>
-              <div>
-                <ion-buttons class="backbtn-set">
-                  <button ion-button icon-only (click)="goBack()">
-                    <img src="../../assets/imgs/fh2.png">
-                  </button>
-                </ion-buttons>
-              </div>
-              <div class="headerdate">
-                <ion-label>{{headerDate}}</ion-label>
-              </div>
-            </div>
-          </ion-row>
-        </ion-grid>
+    <ion-header no-border>
+      <ion-toolbar class="header-set">
+        <ion-buttons start>
+          <button ion-button icon-only (click)="goBack()" class="backbtn-set">
+            <img src="../../assets/imgs/fh2.png"/>
+          </button>
+        </ion-buttons>
+        <ion-title class="headerdate">{{headerDate}}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content #contentD>
       <ion-grid #grid4Hight>
-        <ion-row *ngFor="let sdl of scdlDataList;let i = index;" class="anch" id="day{{sdl.id}}" >
+        <ion-row *ngFor="let sdl of scdlDataList;let i = index;" class="anch" id="day{{sdl.id}}">
           <div class="daynav">
             <div class="dayheader w-auto">
-              <div class="ym-fsize text-center ">{{sdl.d | formatedate:"YYYY"}}</div>
               <div class="d-fsize text-center">{{sdl.d | formatedate :"MM-DD"}}</div>
+              <div class="ym-fsize text-center ">{{sdl.d | formatedate:"YYYY"}}</div>
             </div>
           </div>
           <div class="dayagendas w-auto">
             <ng-template [ngIf]="sdl.scdl.length > 0" [ngIfElse]="noscd">
-              <div class="dayagenda row " [ngStyle]="{'background-color':scd.p.jc}"
+              <div class="dayagenda row " [class.back0]="scd.cbkcolor == 0" [class.back0]="scd.cbkcolor == 1"
                    *ngFor="let scd of sdl.scdl;" (click)="toDetail(scd.si,sdl.d,scd.gs)">
                 <div class="dayagendacontent w-auto">
-                  <div class="agendaline1" *ngIf="scd.gs == '1'">来自：{{scd.fs.rn}}</div>
-                  <div class="agendaline1" *ngIf="scd.gs == '0'">参与事件：{{scd.fss.length}}人</div>
+                  <div class="agendaline1" *ngIf="scd.gs == '1'">来自：{{scd.fs.rn}} </div>
+                  <!--<div class="agendaline1" *ngIf="scd.gs == '0'">参与事件：{{scd.fss.length}}人</div>-->
+                  <div class="agendaline1" *ngIf="scd.gs == '0'">&nbsp;</div>
+                  <div class="agendaline1" *ngIf="scd.gs == '2'">下载：{{scd.p.jn}}</div>
                   <div class="agendaline2 row">
-                    <div class="agenda-st">{{scd.st=="99:99"?"全天":scd.st}}</div>
+                    <div class="agenda-st"
+                         [class.newMessage]="scd.du == '1'">{{scd.st == "99:99" ? "全天" : scd.st == null ? "" : scd.st}}</div>
                     <div class="dot-set " [ngStyle]="{'background-color':scd.p.jc}"></div>
-                    <div class="agenda-sn">{{scd.sn}}</div>
+                    <div class="agenda-sn" [class.newMessage]="scd.du == '1'">{{scd.sn}}</div>
                   </div>
                 </div>
               </div>
             </ng-template>
             <ng-template #noscd>
               <div class="dayagenda row subheight" (click)="toAdd(sdl.d)">
-                <div class="dayagendacontent w-auto">
-                  <div class="agendaline1"></div>
-                  <div class="agendaline2 row">
-                    <div class="agenda-sn">无日程，点击添加</div>
-                  </div>
+                <div class="dayagendacontent w-auto agenda-none" [class.none1] = "sdl.bc == 1" [class.none0] = "sdl.bc == 0">
+                    没有活动(点击添加)
                 </div>
               </div>
             </ng-template>
@@ -88,15 +76,15 @@ export class TdlPage {
 
   @ViewChild('contentD') contentD: Content;
   @ViewChild('grid4Hight') grid: ElementRef;
+
+
+  //取底部数据
   gridHight: number = 0;
   gridHightsub: number = 0;
 
+  isgetData: boolean = false;
 
-  contmargin: boolean = false;
-  //位移与头部高度一致
-  offsetHeader: number = 61;
 
-  headershow: boolean = false;
   //画面数据List
   scdlDataList: Array<ScdlData> = new Array<ScdlData>();
 
@@ -117,103 +105,149 @@ export class TdlPage {
     // this.contentD.enableJsScroll();
 
     this.emitService.registerSelectDate((selectDate: moment.Moment) => {
-      this.scdlDataList = new Array<ScdlData>();
-      this.createData(selectDate);
+
+      this.createData(selectDate, 0,0).then(data => {
+        this.scdlDataList.push(...data);
+
+        this.isgetData = !this.isgetData;
+
+        this.gotoEl(selectDate.format("YYYYMMDD"));
+      }).catch(error => {
+        this.isgetData = !this.isgetData;
+      });
     })
 
 
     this.contentD.ionScroll.subscribe(($event: ScrollEvent) => {
 
-      if ($event == null) {
-        return;
-      }
-
-
       //显示当前顶部滑动日期
-      let totalh = 0;
-      for (let j = 0, len = this.scdlDataList.length; j < len; j++) {
-        let el = this.el.nativeElement.querySelector("#day" + this.scdlDataList[j].id);
-        if ($event.scrollTop < totalh - this.offsetHeader) {
-          let k = 0;
-          if (j == 0) {
-            k = j;
-          } else {
-            k = j - 1;
-          }
-          this.headerDate = moment(this.scdlDataList[k].d).format("YYYY年MM月DD日");
+      for (let scdlData of this.scdlDataList) {
+        let el = this.el.nativeElement.querySelector("#day" + scdlData.id);
+        if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
+          this.headerDate = moment(scdlData.d).format("YYYY-MM-DD");
           break;
         }
-        if (el.scrollHeight == null) {
-          return;
-        }
-        totalh = totalh + el.scrollHeight;
-
       }
 
       if ($event.directionY == 'up') {
 
-        if ($event.scrollTop == 0) {
-          let condi = moment(this.scdlDataList[0].d).subtract(1, "day").format("YYYY/MM/DD");
-          this.tdlServ.before(condi, 30).then(data => {
-            this.scdlDataList.unshift(...data)
-            setTimeout(() => {
-              this.gridHightsub = this.grid.nativeElement.clientHeight - this.gridHight;
-              this.gridHight = this.grid.nativeElement.clientHeight;
-              this.contentD.scrollTo(0, this.gridHightsub, 0).then(datza => {
-              })
+        if ($event.scrollTop < 10) {
 
+          let d = this.scdlDataList[0];
+          let scdd = d.d;
+          let scdId = d.id;
+          let condi = moment(scdd).subtract(1, "day");;
+          let last = 0;
+          if (d.scdl.length > 0){
+            last = d.scdl[0].cbkcolor;
+          }
+          this.createData(condi, 1,last).then(data => {
+            this.scdlDataList.unshift(...data);
+            this.isgetData = false;
+            this.gotoEl(scdId);
 
-            }, 50)
-          })
+          }).catch(error => {
+            this.isgetData = false;
+          });
         }
+
       }
 
       if ($event.directionY == 'down') {
-        if ($event.scrollTop == this.gridHight - $event.contentHeight) {
-          let condi = moment(this.scdlDataList[this.scdlDataList.length - 1].d).add(1, "day").format("YYYY/MM/DD");
-          this.tdlServ.after(condi, 30).then(data => {
-            this.scdlDataList.push(...data);
-            setTimeout(()=>{
-              this.gridHight = this.grid.nativeElement.clientHeight;
 
-            },50)
-          })
+        if ($event.scrollTop == this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
+          let d = this.scdlDataList[this.scdlDataList.length - 1];
+          let scdd = d.d;
+          let scdId = d.id;
+          let condi = moment(scdd).add(1, "day");
+          let last = 0;
+          if (d.scdl.length > 0){
+            last = d.scdl[d.scdl.length-1].cbkcolor;
+          }
+          this.createData(condi, 2,last).then(data => {
+            this.scdlDataList.push(...data);
+            this.isgetData = false;
+            this.gotoEl(scdId);
+
+          }).catch(error => {
+            this.isgetData = false;
+          });
         }
+
       }
 
 
     });
-    this.createData(moment());
+    let today = moment();
+    this.createData(today, 0,0).then(data => {
+
+      this.scdlDataList.push(...data);
+      this.isgetData = false;
+
+      this.gotoEl(today.format("YYYYMMDD"));
+    }).catch(error => {
+      this.isgetData = false;
+    });
   }
 
-  //初始化数据
-  async createData(selectDate: moment.Moment) {
-    this.scdlDataList.slice(0,this.scdlDataList.length-1);
+  //获取数据
+  async createData(selectDate: moment.Moment, type: number, lastcolor: number) {
+    //全部数据
+    let datas: Array<ScdlData> = new Array<ScdlData>();
+    if (!this.isgetData) {
+      this.isgetData = true;
+      if (type == 0) {
+        this.scdlDataList = new Array<ScdlData>();
+        let condi = selectDate.format("YYYY/MM/DD");
+        //获取当前日期之前的30条记录
+        let dwdata = await this.tdlServ.before(condi, 30);
+        //获取当前日期之后的30条记录
+        let updata = await this.tdlServ.after(moment(condi).add(1, 'd').format("YYYY/MM/DD"), 30);
+        datas = datas.concat(dwdata, updata);
 
-    let condi = selectDate.format("YYYY/MM/DD");
+      } else if (type == 1) {
+        datas = await this.tdlServ.before(selectDate.format("YYYY/MM/DD"), 30);
 
-    //获取当前日期之前的30条记录
-    let dwdata = await this.tdlServ.before(condi, 30);
-    //获取当前日期之后的30条记录
-    let updata = await this.tdlServ.after(moment(condi).add(1, 'd').format("YYYY/MM/DD"), 30);
-    this.scdlDataList = this.scdlDataList.concat(dwdata, updata);
-    this.headershow = true;
-    this.gotoEl(dwdata[dwdata.length-1]);
-
-
-  }
-
-
-  gotoEl(d){
-    setTimeout(() => {
-        let c = this.el.nativeElement.querySelector("#day" + d.id);
-        if (c){
-          this.gridHight = this.grid.nativeElement.clientHeight;
-          c.scrollIntoView({block: "center", inline: "center",});
-        }else{
-          this.gotoEl(d);
+      } else if (type == 2) {
+        datas = await this.tdlServ.after(selectDate.format("YYYY/MM/DD"), 30);
+      }
+      //替换交替颜色
+      if (type == 0 || type == 2)
+        for (let scdl of datas) {
+          for (let scd of scdl.scdl) {
+            lastcolor = (lastcolor + 1) % 2
+            scd.cbkcolor = lastcolor;
+          }
         }
-    }, 800);
+        if (type == 1){
+          let len = datas.length;
+          let len2 = 0;
+          for (let i = len-1; i>-1;i--) {
+            let scdl = datas[i].scdl;
+            let len2 = scdl.length;
+            for (let j = len2-1; j>-1;j--) {
+              lastcolor = (lastcolor + 1) % 2
+              scdl[j].cbkcolor = lastcolor;
+            }
+          }
+        }
+      return datas;
+    }
+  }
+
+
+  gotoEl(id) {
+    setTimeout(() => {
+      let el = this.el.nativeElement.querySelector("#day" + id);
+      if (el) {
+        this.gridHight = this.grid.nativeElement.clientHeight;
+        this.contentD.scrollTo(0, el.offsetTop + 2, 0).then(datza => {
+          this.gridHight = this.grid.nativeElement.clientHeight;
+        })
+      } else {
+        this.gotoEl(id);
+      }
+    }, 100);
   }
 
   //回主页
@@ -226,16 +260,18 @@ export class TdlPage {
     if (gs == "0") {
       //本人画面
       this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, {si: si, d: d}).present();
-    } else {
+    }else if(gs =="1") {
       //受邀人画面
       this.modalCtr.create(DataConfig.PAGE._TDDI_PAGE, {si: si, d: d}).present();
+    }else{
+      //系统画面
+      this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, {si: si, d: d}).present();
     }
 
   }
 
   toAdd(d) {
-      //本人画面
-      this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {d: d}).present();
+    this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {d: d}).present();
   }
 
 }

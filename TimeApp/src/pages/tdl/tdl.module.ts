@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
-import { IonicPageModule} from 'ionic-angular';
-import {TdlPage } from './tdl';
+import {IonicPageModule} from 'ionic-angular';
+import {TdlPage} from './tdl';
 import {TdlService} from "./tdl.service";
 import {PipesModule} from "../../pipes/pipes.module";
 
@@ -8,13 +8,14 @@ import {PipesModule} from "../../pipes/pipes.module";
   declarations: [
     TdlPage,
   ],
-  imports: [PipesModule,
+  imports: [
+    PipesModule,
     IonicPageModule.forChild(TdlPage),
   ],
   providers: [
     TdlService,
   ],
-  exports:[TdlPage]
+  exports: [TdlPage]
 })
 export class TdlPageModule {
 }

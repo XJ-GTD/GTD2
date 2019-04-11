@@ -9,7 +9,6 @@ import {
   ScdLsEmData,
   SpeechEmData
 } from "../../../service/util-service/emit.service";
-import {AssistantService} from "../../../service/cordova/assistant.service";
 
 /**
  * Generated class for the HbPage page.

@@ -22,6 +22,8 @@ tags:
     description: 智能服务
   - name: account service
     description: 帐户服务
+  - name: avatar service
+    description: 头像图片服务
   - name: caculate service
     description: 计算服务
   - name: agenda
@@ -56,11 +58,34 @@ paths:
             properties:
               function:
                 type: string
+  /aaf/convert/base64:
+    post:
+      tags:
+        - avatar service
+      summary: "图片转换成Base64图片格式"
+      consumes:
+      - multipart/form-data
+      produces:
+        - text/plain
+      parameters:
+        - in: formData
+          name: imagefile
+          type: file
+          description: 图片文件
+      responses:
+        200:
+          description: "转换成功"
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: "Invalid status value"
   /cdc/{caculateid}/starter:
     post:
       tags:
         - caculate service
-      summary: 获取产品初始化参数
+      summary: 计算重复日程
       description: ''
       produces:
         - application/json
@@ -81,7 +106,7 @@ paths:
                 type: object
       responses:
         '200':
-          description: 获取初始化参数成功
+          description: 返回计算结果
           schema:
             type: object
             properties:
@@ -108,6 +133,40 @@ paths:
                     type: array
                     items:
                       type: object
+  /cdc/{flowid}/query/trigger:
+    post:
+      tags:
+        - caculate service
+      summary: 触发作业流
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: flowid
+          in: path
+          type: string
+          description: 作业流程ID
+          required: true
+        - name: from
+          in: query
+          description: 开始年份（获取香港天文台农历数据）
+          required: false
+        - name: to
+          in: query
+          description: 截止年份（获取香港天文台农历数据）
+          required: false
+      responses:
+        '200':
+          description: 作业流触发成功
+          schema:
+            type: object
+            properties:
+              rc:
+                type: integer
+              rm:
+                type: string
+              d:
+                type: object
   /ini/parameters:
     get:
       tags:

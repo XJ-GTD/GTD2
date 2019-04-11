@@ -1,4 +1,4 @@
-page-tdc {
+page-tdc ,page-tddi ,page-tddj ,page-tdds{
   .allday.toggle-checked .toggle-icon {
     background-color: #3C909B;
   }
@@ -73,26 +73,24 @@ page-tdc {
   .input-set{
     font-size: 24px;
     margin-left: 26px;
+    min-width: 80%;
   }
 
   .sel-btn-set{
     font-size: 12px;
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     padding-left: 0px;
     padding-right: 0px;
   }
   .date-set{
     font-size: 16px;
-    margin-top: 6px;
+    margin-top: 5px;
     margin-left: 8px;
     width: 240px;
     letter-spacing: 1px;
   }
-  .arrow1{
-    font-size: 16px;
-    margin-top: 12px;
-  }
+
 
   .allday-set{
     background-color: #96162d;
@@ -100,9 +98,11 @@ page-tdc {
   }
 
   .memo-set{
+    width: 85%;
     font-size: 14px;
     margin-top: 22px;
     margin-left: 22px;
+    height: 60px;
   }
 
   .sel-btn-seled{
@@ -181,45 +181,30 @@ page-tdc {
     background-color: #96162d;
   }
 
-  .btn-jh{
-    margin-left: 24px;
-    margin-top: 40px;
-    font-size: 11px;
-    width: 70px;
-    height: 24px;
-    border-radius: 10px;
-    padding-bottom: 2px;
-    background-color: rgba(255,255,255,0.5);
-  }
-
-
   .tm-set{
-    margin-top: 0px;
+    margin-top: -5px;
     margin-left: -17px;
     height:20px;
     letter-spacing: 1px;
   }
 
   .tog-set{
-    margin-top: -1px;
+    margin-top: -6px;
     margin-left: 6px;
   }
-  .arrow2{
-    font-size: 17px;
-    margin-top: 5px;
-  }
+
   .reptlbl{
     font-size: 11px;
     margin-left: 24px;
   }
   .repttop{
-    margin-top: 20px;
+    margin-top: 30px;
   }
   .repttop1{
-    margin-top: 16px;
+    margin-top: 23px;
   }
   .txtop{
-    margin-top: 6px;
+    margin-top: 11px;
   }
   .txtop1{
     margin-top: 3px;
@@ -237,7 +222,7 @@ page-tdc {
     position: absolute;
     width: 100%;
     height: 80vmin;
-    z-index: 1000;
+    z-index: 13;
     margin-top: 100%;
 
     ion-list{
@@ -299,7 +284,6 @@ page-tdc {
       background-color: rgb(48,129,88);
     }
   }
-
   .shade{
     position: absolute;
     top: 0%;
@@ -307,9 +291,75 @@ page-tdc {
     width: 100%;
     height: 100%;
     background-color: black;
-    z-index:999;
+    z-index:12;
     -moz-opacity: 0.3;
     opacity:.30;
     filter: alpha(opacity=30);
   }
+
+  .lbl-jh{
+    margin-left: 24px;
+    margin-top: 36px;
+    font-size: 11px;
+    max-width: 80%;
+    min-height: 24px;
+    border-radius: 7px;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding-left: 8px;
+    padding-right: 2px;
+    letter-spacing: 1px;
+  }
+  .img-set{
+    width: 30px;
+  }
+  .img-row{
+    margin-left: 17px;
+  }
+  .img-div{
+    margin-left: 5px;
+    text-align: center;
+  }
+  .img-rn{
+    text-align: center;
+    margin-top: -5px;
+    font-size: 12px;
+  }
+  .dtshow-set{
+    letter-spacing: 1px;
+    font-size: 16px;
+    margin-top: 9px;
+    margin-left: 24px;
+
+  }
+  .weekshow-set{
+    font-size: 16px;
+    margin-top: 15px;
+    margin-left: 1px;
+    letter-spacing: 1px;
+  }
+
+  .tmshow-set{
+    font-size: 16px;
+    margin-top: 15px;
+    margin-left: 1px;
+    height: 20px;
+    letter-spacing: 1px;
+  }
+  .repttopshow1{
+    margin-top: 15px;
+    margin-left: 16px;
+  }
+  .repttopshow{
+    margin-top: 16px;
+  }
+  .img-rnshow{
+    text-align: center;
+    margin-top: 6px;
+    margin-left: 4px;
+  }
+  .lbl-jh2{
+    margin-top: 3px;
+    margin-bottom: 5px;
+  }
 }
+

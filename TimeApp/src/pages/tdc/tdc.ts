@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
-import {
-  ActionSheetController,  IonicPage, ModalController, NavController, NavParams,
+import {IonicPage, ModalController, NavController, NavParams,
 } from 'ionic-angular';
 import * as moment from "moment";
 import {TdcService} from "./tdc.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
-import {BsModel} from "../../service/restful/out/bs.model";
 import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 
 /**
@@ -17,7 +15,6 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-tdc',
   providers: [],
@@ -44,8 +41,8 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
         </div>
       </ion-row>
       <ion-row >
-        <div >
-            <button  (click)="toPlanChoose()" ion-button  round class ="btn-jh">{{scd.p.jn==""?"添加计划":scd.p.jn}}</button>
+        <div (click)="toPlanChoose()" class ="lbl-jh">
+          <ion-label class="lbl-jh2"  >{{scd.p.jn=="" || scd.p.jn==null?"添加计划":scd.p.jn}}</ion-label>
         </div>
       </ion-row>
       <ion-row >
@@ -58,9 +55,6 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
                         ></ion-datetime>
           </ion-item> 
         </div>
-         <div class="arrow1">
-           <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
-         </div>
       </ion-row>
       <ion-row >
         <div class = "tog-set"><ion-item>
@@ -73,9 +67,6 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
                               pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)"></ion-datetime>
               </ion-item>
           </div>
-        <div class = "arrow2" [hidden]="alld">
-          <ion-label><ion-icon name="arrow-forward" color="light"></ion-icon></ion-label>
-        </div>
       </ion-row>
       <ion-row >
         <div class ="reptlbl repttop"><ion-label>重复</ion-label></div>
@@ -118,7 +109,7 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
       </ion-row>
       <ion-row >
         <div class = "memo-set">
-          <ion-input type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-input>
+          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-textarea>
         </div>
       </ion-row>
       <ion-row justify-content-left>
@@ -168,7 +159,7 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
           <ion-item class="plan-list-item" *ngFor="let option of jhs">
             <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
             <ion-label>{{option.jn}}</ion-label>
-            <ion-radio [value]="option"  [ngStyle]="{'checked': option.ji == scd.ji , 'none': option.ji != scd.ji}"></ion-radio>
+            <ion-radio [value]="option" ></ion-radio>
           </ion-item>
         </ion-list>
 
@@ -184,7 +175,6 @@ export class TdcPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private tdcServ :TdcService,private util:UtilService,
-              public actionSheetCtrl: ActionSheetController,
               public modalCtrl: ModalController ,private busiServ :PgBusiService             ) {
 
   }
@@ -454,14 +444,14 @@ export class TdcPage {
   goShare(){
     //日程分享打开参与人选择rc日程类型
     this.save(()=>{
-      this.navCtrl.push(DataConfig.PAGE._FS_PAGE,{addType:'rc',tpara:this.scd.si});
+      this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE,{addType:'rc',tpara:this.scd.si});
     })
 
   }
 
   presentActionSheet() {
     //日程删除
-    this.tdcServ.delete(this.scd.si).then(data=>{
+    this.tdcServ.delete(this.scd.si,"2","").then(data=>{
       this.cancel();
     });
 
@@ -472,7 +462,7 @@ export class TdcPage {
       this.isShowPlan = true;
       this.IsShowCover = true;
     }else {
-      this.util.toast("请先去计划页面创建计划",1500);
+      this.util.toast("未创建计划",1500);
     }
   }
 
@@ -503,6 +493,12 @@ export class TdcPage {
       this.scd.st = el[0].textContent + ":" +el[1].textContent;
     }
   }
+
+
+}
+
+export class PageTddIData{
+  tdl : ScdData = new ScdData();  //日程事件表信息
 
 
 }

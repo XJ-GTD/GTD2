@@ -1,12 +1,7 @@
 import {Component} from '@angular/core';
-import {
-  AlertController, IonicPage, ModalController, NavController, NavParams, Platform,
-  ViewController
-} from 'ionic-angular';
+import {AlertController, IonicPage, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {GlService} from "./gl.service";
 import {GcService, PageDcData} from "../gc/gc.service";
-import {GcPage} from "../gc/gc";
-import {DomSanitizer} from "@angular/platform-browser";
 import {DataConfig} from "../../service/config/data.config";
 
 /**
@@ -42,6 +37,10 @@ import {DataConfig} from "../../service/config/data.config";
         <ion-row>
           <ion-list no-lines>
             <ion-item class="plan-list-item"  *ngFor="let g of gl">
+            <ion-avatar item-start>
+              <img [src]="g.gm">
+              <!--<ion-icon name="contact"  style="font-size: 3.0em;color: red;"></ion-icon>-->
+            </ion-avatar>
               <ion-label (click)="toGroupMember(g)" style="background-color: black;color:#ffffff">
                 {{g.gn}}({{g.gc}})
               </ion-label>
@@ -89,11 +88,7 @@ export class GlPage {
   }
 
   getGroups(){
-    this.glService.getGroups().then(data=>{
-      this.gl = data.gl;
-    }).catch(e=>{
-      alert(e.message);
-    })
+    this.gl = this.glService.getGroups(null);
   }
 
   goBack() {

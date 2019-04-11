@@ -2,7 +2,6 @@ import {Component, ViewChild} from '@angular/core';
 import {Platform, Nav, MenuController, IonicApp} from 'ionic-angular';
 import {MenuScalePushType} from "../components/menuType/customType";
 import {BackgroundMode} from '@ionic-native/background-mode';
-import {AssistantService} from "../service/cordova/assistant.service";
 import {DataConfig} from "../service/config/data.config";
 import {RestfulClient} from "../service/util-service/restful.client";
 import {UtilService} from "../service/util-service/util.service";
@@ -20,7 +19,6 @@ export class MyApp {
   constructor(private platform: Platform,
               private appCtrl: IonicApp,
               private backgroundMode: BackgroundMode,
-              private speechService: AssistantService,
               private restfulClient:RestfulClient,
               private util:UtilService,
               private screenOrientation: ScreenOrientation) {
@@ -56,7 +54,6 @@ export class MyApp {
       let activePortal = this.appCtrl._modalPortal.getActive();
       if (activePortal) {
         //语音停止
-        this.speechService.stopSpeak();
         activePortal.dismiss().catch(() => {
         });
         activePortal.onDidDismiss(() => {

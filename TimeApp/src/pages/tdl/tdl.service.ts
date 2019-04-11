@@ -30,12 +30,13 @@ export class TdlService {
       let scdl: ScdlData = new ScdlData();
       scdl.d = moment(start).subtract(n, 'd').format("YYYY/MM/DD");
       scdl.id = moment(start).subtract(n, 'd').format("YYYYMMDD");
+      scdl.bc = n%2;
       mpL.unshift(scdl);
       n++;
     }
     //获取本地日程jn jg jc jt
     let sqll = `select sp.rowid rowid,gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st,
-        jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc 
+        jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn,sp.itx du from gtd_c gc 
         inner join gtd_sp sp on sp.si = gc.si 
         left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji 
         where sp.sd <='${start}' and  sp.sd >= '${startBefore}' order by sp.sd,sp.st desc;`;
@@ -62,11 +63,12 @@ export class TdlService {
       scdl.d = moment(start).add(n, 'd').format("YYYY/MM/DD");
       scdl.id = moment(start).add(n, 'd').format("YYYYMMDD");
       mpL.push(scdl);
+      scdl.bc = n%2;
       n++;
     }
     //获取本地日程jn jg jc jt
     let sqll = `select sp.rowid rowid,gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st,
-        jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc 
+        jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn ,sp.itx du from gtd_c gc 
         inner join gtd_sp sp on sp.si = gc.si 
         left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji 
         where sp.sd >= '${start}' and  sp.sd <= '${startAfter}' order by sp.sd,sp.st desc;`;
@@ -119,7 +121,7 @@ export class TdlService {
       let sqll = "select gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st," +
         "jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
         "inner join gtd_sp sp on sp.si = gc.si " +
-        "left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji  " +
+        "left join gtd_b gb on gb.rc = gc.ui left join gtd_j_h jh on jh.ji = gc.ji  " +
         "where sp.sd<'" + next + "' order by sp.sd,sp.st desc limit 300";
       let rclL = await this.sqlExce.execSql(sqll);
       if (rclL && rclL.rows && rclL.rows.length > 0) {
@@ -281,6 +283,7 @@ export class TdlService {
 export class ScdlData {
   d: string;
   id: string;
+  bc:number;
   scdl: Array<ScdData> = new Array<ScdData>();
 
 }

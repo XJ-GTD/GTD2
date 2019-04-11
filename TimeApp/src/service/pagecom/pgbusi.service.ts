@@ -11,6 +11,7 @@ import {UtilService} from "../util-service/util.service";
 import {SpTbl} from "../sqlite/tbl/sp.tbl";
 import {DTbl} from "../sqlite/tbl/d.tbl";
 import * as moment from "moment";
+import {DataConfig} from "../config/data.config";
 
 @Injectable()
 export class PgBusiService {
@@ -34,16 +35,6 @@ export class PgBusiService {
     jh.ji = scdData.ji;
     jh = await this.sqlExce.getOne<JhTbl>(jh);
     Object.assign(scdData.p, jh);
-
-    //获取日程参与人表
-
-    let ssql = "select b.* from gtd_d d ,gtd_b b where a.ai = b.pwi and d.si ='"+ si +"' " ;
-    let bList = await this.sqlExce.getExtList<BTbl>(ssql);
-    for (let j = 0, len = bList.length; j < len; j++) {
-      let fsd = new FsData();
-      Object.assign(fsd, bList[j]);
-      scdData.fss.push(fsd);
-    }
 
     //获取提醒时间
     let e = new ETbl();
@@ -283,7 +274,7 @@ export class PgBusiService {
     if(rc.sn == ''){
       str += '标题不能为空;/n';
     }
-    if(rc.sn.length>20){
+    if(rc.sn.length>200){
       str += '标题文本长度必须下于20;/n';
     }
     if(rc.sd == ''){
@@ -316,7 +307,7 @@ export class PgBusiService {
       let sptbl = new SpTbl();
       sptbl.si = c.si;
       //删除提醒
-      let sql = 'delete from gtd_e ge inner join gtd_sp sp on sp.spi = ge.si where sp.si="'+ c.si+'"';
+      let sql = 'delete from gtd_e  where si="'+ c.si+'"';
       await this.sqlExce.execSql(sql);
       //删除特殊表
       await this.sqlExce.delete(sptbl);
@@ -326,14 +317,11 @@ export class PgBusiService {
 
     }else{
       //如果只是修改重复时间，则更新重复子表所有时间
-      if (bs.data.st != scd.st){
+      //如果修改了提醒时间，则更新提醒表所有时间
+      if (bs.data.st != scd.st || bs.data.tx != scd.tx){
         let sq = "update gtd_sp set st = '"+ c.st +"' where si = '"+ c.si +"'";
         await this.sqlExce.execSql(sq);
-      }
 
-      //如果修改了提醒时间，则更新提醒表所有时间
-      //更新提醒时间
-      if (bs.data.tx != scd.tx){
         let sp : SpTbl = new SpTbl();
         sp.si = c.si;
         let sps :Array<SpTbl> = new Array<SpTbl>();
@@ -341,10 +329,7 @@ export class PgBusiService {
         for (let j = 0, len = sps.length; j < len; j++) {
           await this.saveOrUpdTx(c,sps[j]);
         }
-
       }
-
-
 
     }
     //restful用参数
@@ -463,7 +448,68 @@ export class PgBusiService {
     //新消息未读
     c.du = "0";
   }
+
+  /**
+   * 获取分享日程的参与人
+   * @param {string} calId 日程ID
+   * @returns {Promise<Array<FsData>>}
+   */
+  getCalfriend(calId:string):Promise<Array<FsData>>{
+    return new Promise<Array<FsData>>((resolve, reject)=>{
+      let sql ='select gd.pi,gd.si,gb.*,bh.hiu bhiu from gtd_d gd inner join gtd_b gb on gb.pwi = gd.ai left join gtd_bh bh on gb.pwi = bh.pwi where si="'+calId+'"';
+      let fsList =  new Array<FsData>();
+      console.log('---------- getCalfriend 获取分享日程的参与人 sql:'+ sql);
+      this.sqlExce.execSql(sql).then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          for(let i=0,len =data.rows.length;i<len;i++ ){
+            let fs = new FsData();
+            Object.assign(fs,data.rows.item(i));
+            if(!fs.bhiu || fs.bhiu == null || fs.bhiu == ''){
+              fs.bhiu=DataConfig.HUIBASE64;
+            }
+            fsList.push(fs);
+          }
+        }
+        console.log('---------- getCalfriend 获取分享日程的参与人结果:'+ fsList.length/*JSON.stringify(fsList)*/);
+        resolve(fsList);
+      }).catch(e=>{
+        console.error('---------- getCalfriend 获取分享日程的参与人出错:'+ e.message);
+        resolve(fsList);
+      })
+    })
+  }
+
+  /**
+   * 日程创建人信息
+   * @param {string} calId
+   * @returns {Promise<FsData>}
+   */
+  getCrMan(calId:string):Promise<FsData>{
+
+    return new Promise<FsData>((resolve, reject)=>{
+      let sql ='select c.si,gb.*,bh.hiu bhiu from gtd_c c ' +
+        ' inner join gtd_b gb on gb.rc = c.ui ' +
+        ' left join gtd_bh bh on gb.pwi = bh.pwi where c.si="'+calId+'"';
+      let fs =  new FsData();
+
+      this.sqlExce.execSql(sql).then(data=>{
+        if(data && data.rows && data.rows.length>0){
+
+          Object.assign(fs,data.rows.item(0));
+          if(!fs.bhiu || fs.bhiu == null || fs.bhiu == ''){
+            fs.bhiu=DataConfig.HUIBASE64;
+          }
+
+        }
+        resolve(fs);
+      }).catch(e=>{
+        resolve(fs);
+      })
+    })
+  }
 }
+
+
 
 export class ScdData {
   si: string = "";//日程事件ID
@@ -484,7 +530,7 @@ export class ScdData {
   gs:string ="";//归属
   ib:string ="0"; //0：非本地日历;1：本地日历
   fssshow:string ="";//参与人画面显示用
-  cbkcolor:string ="";//每个日程颜色画面显示用
+  cbkcolor:number = 0;//每个日程颜色画面显示用
   morecolor:string ="#FFFFFF";//more颜色画面显示
 
 
@@ -564,5 +610,6 @@ export class PlData{
   jg: string="";//计划描述
   jc: string="";//计划颜色标记
   jt: string="";//计划类型
+  jtd: string="";
   wtt: Number;//创建时间戳
 }

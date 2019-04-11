@@ -10,6 +10,7 @@ import {PagePDPro} from "../pd/pd.service";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
 import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
+import {UserConfig} from "../../service/config/user.config";
 
 @Injectable()
 export class PlService {
@@ -74,7 +75,7 @@ export class PlService {
           let ctbl:CTbl =new CTbl();
           ctbl.si = this.util.getUuid();//日程ID
           ctbl.sn = pa.at;//主题
-          ctbl.ui = "sys";
+          ctbl.ui = UserConfig.user.id; //创建者  用户ID
           ctbl.sd = moment(pa.adt).format("YYYY/MM/DD");//开始日期(YYYY/MM/DD HH:mm)
           ctbl.st = pa.st;//时间(YYYY/MM/DD HH:mm)
           ctbl.ed = moment(pa.ed).format("YYYY/MM/DD");//结束日期(YYYY/MM/DD HH:mm)
@@ -82,6 +83,7 @@ export class PlService {
           ctbl.ji = pa.ap;//计划
           ctbl.rt = "0";//重复
           ctbl.bz = pa.am;//备注
+          ctbl.gs = "2";//归属
 
           //保存日程表数据
           await this.sqlExce.save(ctbl);
@@ -187,7 +189,6 @@ export class PlService {
     console.log('---------- PlService getPlan 获取计划开始 ----------------');
     let pld = new PagePlData();
     //获取本地计划
-    let jhtbl:JhTbl = new JhTbl();
     let jhSql = "select * from gtd_j_h order by wtt desc";
     let jhCtbl: Array<PagePDPro> = await this.sqlExce.getExtList<PagePDPro>(jhSql);
     if(jhCtbl.length > 0){

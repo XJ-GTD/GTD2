@@ -3,7 +3,6 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {LsService, PageLsData} from "../ls/ls.service";
 import {PsService} from "../ps/ps.service";
-import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the PfPage 忘记密码 page.
@@ -110,11 +109,11 @@ export class PfPage {
 
   signIn() {
     if(this.checkPhone()) {
-      if (this.pfData.authCode == null || this.pfData.authCode == "" || this.pfData.authCode == undefined) {     //判断验证码是否为空
+      if (this.pfData.authCode == null || this.pfData.authCode == "") {     //判断验证码是否为空
         this.util.toast("验证码不能为空",1500);
-      }else if (this.pfData.password == null || this.pfData.password == "" || this.pfData.password == undefined) {     //判断密码是否为空
+      }else if (this.pfData.password == null || this.pfData.password == "") {     //判断密码是否为空
         this.util.toast("密码不能为空",1500);
-      }else if(this.pfData.verifykey == null || this.pfData.verifykey == "" || this.pfData.verifykey == undefined){
+      }else if(this.pfData.verifykey == null || this.pfData.verifykey == ""){
         this.util.toast("请发送短信并填写正确的短信验证码",1500);
       }else{
         console.log("忘记密码被点击");
@@ -124,21 +123,20 @@ export class PfPage {
           if (data.code && data.code != 0)
             throw  data;
 
-          return this.lsService.get(data);
+          return this.lsService.getPersonMessage(data);
         }).then(data=>{
-          console.log("忘记密码登录成功"+ JSON.stringify(data));
+          if (data.code && data.code != 0)
+            throw  data;
 
-          return this.psService.editPass(this.pfData.password,UserConfig.user.id);
+          return this.lsService.getOther();
         }).then(data=>{
-          this.util.toast("修改密码并成功登录",1500);
-          clearTimeout(this.timer);
+          console.log("忘记密码----手机验证码登录成功");
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
         }).catch(error=>{
-          console.log("忘记密码登录失败"+JSON.stringify(error));
+          console.log("忘记密码----手机验证码登录失败"+JSON.stringify(error));
           this.util.loadingEnd();
           this.util.toast(error.message,1500);
-          this.psService.deleteUser();
         });
       }
     }

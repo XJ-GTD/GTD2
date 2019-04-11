@@ -24,12 +24,12 @@ import {DataConfig} from "../../service/config/data.config";
           </button>
         </ion-buttons>
         <ion-title>黑名单</ion-title>
-        <ion-buttons right>
-          <button ion-button color="danger" (click)="toAdd()">
-            <!--<ion-icon name="add"></ion-icon>-->
-            添加
-          </button>
-        </ion-buttons>
+        <!--<ion-buttons right>-->
+          <!--<button ion-button color="danger" (click)="toAdd()">-->
+            <!--&lt;!&ndash;<ion-icon name="add"></ion-icon>&ndash;&gt;-->
+            <!--添加-->
+          <!--</button>-->
+        <!--</ion-buttons>-->
       </ion-toolbar>
     </ion-header>
 
@@ -79,7 +79,7 @@ export class BlPage {
   }
 
   toAdd(){
-    let profileModal = this.modalCtrl.create(DataConfig.PAGE._FS_PAGE,{addType:'bl'});
+    let profileModal = this.modalCtrl.create(DataConfig.PAGE._FS4G_PAGE,{addType:'bl'});
     profileModal.present();
   }
 
