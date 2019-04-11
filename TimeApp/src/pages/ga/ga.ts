@@ -62,8 +62,7 @@ export class GaPage {
   }
 
   goBack(){
-    console.log('PaPage跳转PdPage');
-    //this.navCtrl.push(DataConfig.PAGE._GL_PAGE);
+    console.log('GaPage跳转GlPage');
     this.viewCtrl.dismiss();
   }
   save(){
@@ -75,7 +74,7 @@ export class GaPage {
     }
     this.gcService.save(dc).then(data=> {
       if (data.code == 0) {
-        this.goBack();
+        this.viewCtrl.dismiss();
       }
     })
   }

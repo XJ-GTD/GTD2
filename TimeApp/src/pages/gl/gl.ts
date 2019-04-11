@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {AlertController, IonicPage, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
-import {GlService} from "./gl.service";
 import {GcService, PageDcData} from "../gc/gc.service";
 import {DataConfig} from "../../service/config/data.config";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the 群组列表 page.
@@ -25,8 +25,7 @@ import {DataConfig} from "../../service/config/data.config";
         <ion-title>群组</ion-title>
         <ion-buttons right>
           <button ion-button (click)="toGroupCreate()" color="danger">
-            <!--<ion-icon name="add"></ion-icon>-->
-            <img class="img-header-right" src="../../assets/imgs/qtj.png">
+            <img class="img-header-right" src="./assets/imgs/qtj.png">
           </button>
         </ion-buttons>
       </ion-toolbar>
@@ -60,7 +59,6 @@ export class GlPage {
               public navParams: NavParams,
               public view: ViewController,
               private gcService:GcService,
-              private glService:GlService,
               public modalCtrl: ModalController,
               public alertCtrl: AlertController) {
 
@@ -71,101 +69,37 @@ export class GlPage {
   }
   ionViewDidEnter(){
     console.log("3.0 ionViewDidEnter 当进入页面时触发");
-    this.getGroups();
+    this.gl = UserConfig.groups;
   }
 
   toGroupMember(g){
-    console.log('=======跳转:' + DataConfig.PAGE._GC_PAGE);
+    console.log('GlPage =======跳转: GcPage');
     this.navCtrl.push(DataConfig.PAGE._GC_PAGE,{g:g});
   }
 
   toGroupCreate(){
     let profileModal = this.modalCtrl.create(DataConfig.PAGE._GA_PAGE);
     profileModal.onDidDismiss((data)=>{
-        this.getGroups();
-      });
+      this.getGroups();
+    });
     profileModal.present();
   }
 
   getGroups(){
-    this.gl = this.glService.getGroups(null);
+    this.gl = UserConfig.groups;
   }
 
   goBack() {
-    console.log('=======跳转:' + DataConfig.PAGE._H_PAGE);
-    // this.navCtrl.push(DataConfig.PAGE._M_PAGE);
-    //this.navCtrl.setRoot(DataConfig.PAGE._H_PAGE);
+    console.log('GlPage =======跳转: 返回上一页');
     this.navCtrl.pop();
   }
 
-  queryPerson(){
-
-  }
-
-  delPerson(u){
-
-  }
-
   delGroup(g:PageDcData){
-    this.gcService.delete(g.gi).then(data=>{
-      if(data.code==0){
-        this.getGroups();
-        console.log('delGroup ============== 删除成功')
-      }
-
+    this.gcService.delete(g.gi).then( async data=>{
+      this.getGroups();
+    }).catch(error=>{
+      console.log("error "+error)
     })
   }
-
-  queryGroup(){
-
-  }
-
-  ionViewWillEnter(){
-    // console.log("查询登陆用户");
-    // this.uo = DataConfig.uInfo;
-    // console.log("查询个人");
-    // this.queryPerson();
-    // console.log("查询群组");
-    // this.queryGroup();
-  }
-
-
-  // toGroupCreate(){
-  //   let alert = this.alertCtrl.create({
-  //     title: '新建群组',
-  //     cssClass:'gl-alert-top',
-  //     inputs: [
-  //       {
-  //         name: 'title',
-  //         placeholder: '群组名称'
-  //       },
-  //     ],
-  //     buttons: [
-  //       {
-  //         text: "√",
-  //         cssClass:'gl-alert-button',
-  //         handler: data => {
-  //           let tt = data.title;
-  //           // console.log('title:' + tt);
-  //           if(tt == null || tt ==""){
-  //             return false;
-  //             //this.toGroupCreate()
-  //           }else{
-  //             let dc:PageDcData = new PageDcData();
-  //             dc.gn = tt;
-  //             this.gcService.save(dc).then(data=>{
-  //               if(data.code == 0){
-  //                 this.getGroups();
-  //               }
-  //             })
-  //           }
-  //
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   alert.present();
-  // }
-
 }
 
