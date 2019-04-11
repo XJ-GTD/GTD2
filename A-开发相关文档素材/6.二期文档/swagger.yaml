@@ -22,6 +22,8 @@ tags:
     description: 智能服务
   - name: account service
     description: 帐户服务
+  - name: avatar service
+    description: 头像图片服务
   - name: caculate service
     description: 计算服务
   - name: agenda
@@ -56,6 +58,25 @@ paths:
             properties:
               function:
                 type: string
+  /aaf/convert/base64:
+    post:
+      tags:
+        - avatar service
+      summary: "图片转换成Base64图片格式"
+      consumes:
+      - multipart/form-data
+      parameters:
+        - in: formData
+          name: imagefile
+          type: file
+          description: 图片文件
+      responses:
+        200:
+          description: "转换成功"
+          schema:
+            type: string
+        400:
+          description: "Invalid status value"
   /cdc/{caculateid}/starter:
     post:
       tags:
