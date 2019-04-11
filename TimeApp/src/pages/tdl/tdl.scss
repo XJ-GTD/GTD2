@@ -14,29 +14,6 @@ page-tdl {
     position: relative;
   }
 
-  .img-header-left {
-    width: 4vmin;
-    height: 4vmin;
-  }
-
-  .leftside {
-    background-color: #000;
-    color: #fff;
-  }
-
-  .rightside {
-    background-color: #96162D;
-    color: #fff;
-  }
-
-  div.text-rotate-90 {
-    width: 500px;
-    white-space: nowrap;
-    -moz-transform: rotate(270deg);
-    -webkit-transform: rotate(270deg);
-    -ms-transform: rotate(270deg);
-    -o-transform: rotate(270deg);
-  }
 
   .w-auto {
     flex: 1;
@@ -84,10 +61,7 @@ page-tdl {
 
   .dayagenda {
     min-height: 80px;
-  }
-
-  .dayagendaoperation {
-    width: 12px;
+    max-height: 160px;
   }
 
   .dayagendacontent {
@@ -117,7 +91,7 @@ page-tdl {
     letter-spacing: 1px;
     width: 40px;
     text-align: right;
-    line-height:20px;
+    line-height: 20px;
   }
 
   .agenda-sn {
@@ -133,6 +107,7 @@ page-tdl {
   .header-set {
     background-color: #662233;
     opacity: 0.9;
+
     .headerdate {
       margin-left: -15px;
 
@@ -154,18 +129,19 @@ page-tdl {
   }
 
 
-  .newMessage{
+  .newMessage {
     font-weight: bold;
     color: #378f9a;
   }
-.agenda-none{
-  font-size: 11px;
-  color: rgb(192, 146, 151);
-  letter-spacing: 1px;
-  width: 40px;
-  line-height:20px;
-  background-color:#b6b6b6;
-}
+
+  .agenda-none {
+    font-size: 11px;
+    color: rgb(192, 146, 151);
+    letter-spacing: 1px;
+    width: 40px;
+    line-height: 20px;
+    background-color: #b6b6b6;
+  }
 
 }
 
