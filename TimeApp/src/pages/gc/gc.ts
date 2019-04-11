@@ -5,6 +5,7 @@ import {GcService, PageDcData} from "./gc.service";
 import {FsService} from "../fs/fs.service";
 import {DataConfig} from "../../service/config/data.config";
 import {FsData} from "../../service/pagecom/pgbusi.service";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the 群组编辑 page.
@@ -75,7 +76,6 @@ export class GcPage {
   ionViewDidLoad() {
     this.dc = this.navParams.get("g");
     console.log('ionViewDidLoad PePage');
-    //this.getData();
   }
   ionViewDidEnter(){
     console.log("3.0 ionViewDidEnter 当进入页面时触发");
@@ -101,7 +101,6 @@ export class GcPage {
 
     let modal = this.modalCtrl.create(DataConfig.PAGE._FS4G_PAGE,{tpara:this.dc});
     modal.onDidDismiss((data)=>{
-      console.log(JSON.stringify(data));
       this.getData();
     });
     modal.present();
@@ -109,10 +108,10 @@ export class GcPage {
   }
 
   delete(g:FsData) {
-   this.gcService.deleteBx(this.dc.gi,g.pwi).then(data=>{
+   this.gcService.deleteBx(this.dc.gi,g.pwi).then(async data=>{
      if(data.code == 0){
        this.getData();
-       alert("删除成功")
+       //this.util.toast("删除成功",1500);
      }
    })
 
