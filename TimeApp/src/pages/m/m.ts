@@ -33,7 +33,7 @@ import {UserConfig} from "../../service/config/user.config";
                   <p>{{phone}}</p>
                 </ion-item>
               </ion-list-header>
-              <ion-item (click)="goGlPage()">
+              <ion-item>
                 <h1>冥王星</h1>
               </ion-item>
               <ion-item (click)="goGlPage()">

@@ -100,7 +100,7 @@ export class PersonRestful {
   }
 
   //获取个人信息	AIU	获取个人信息 get
-  getself(personData:PersonInData): Promise<BsModel<PersonOutData>> {
+  getself(unionid:string): Promise<BsModel<PersonOutData>> {
 
     let bsModel = new BsModel<PersonOutData>();
     return new Promise((resolve, reject) => {
@@ -109,7 +109,7 @@ export class PersonRestful {
       urlEntity.url = url.url;
       urlEntity.key = url.key;
       urlEntity.desc = url.desc;
-      urlEntity.url = urlEntity.url.replace("{unionid}",personData.unionid);
+      urlEntity.url = urlEntity.url.replace("{unionid}",unionid);
       this.request.get(urlEntity).then(data => {
         //处理返回结果
         bsModel.code = data.errcode;
