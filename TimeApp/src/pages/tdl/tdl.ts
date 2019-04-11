@@ -240,9 +240,12 @@ export class TdlPage {
     if (gs == "0") {
       //本人画面
       this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, {si: si, d: d}).present();
-    } else {
+    }else if(gs =="1") {
       //受邀人画面
       this.modalCtr.create(DataConfig.PAGE._TDDI_PAGE, {si: si, d: d}).present();
+    }else{
+      //系统画面
+      this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, {si: si, d: d}).present();
     }
 
   }

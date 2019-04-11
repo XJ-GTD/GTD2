@@ -30,6 +30,7 @@ import {BlPage} from "../../pages/bl/bl";
 import {PsPage} from "../../pages/ps/ps";
 import {BrPage} from "../../pages/br/br";
 import {AlPage} from "../../pages/al/al";
+import {TddsPage} from "../../pages/tdc/tdds";
 
 export class DataConfig {
 
@@ -160,7 +161,8 @@ export class DataConfig {
     _TDL_PAGE: TdlPage,        // 日程 - 日程列表
     _TDC_PAGE: TdcPage,        // 日程 - 日程详情新建
     _TDDI_PAGE: TddiPage,      // 日程 - 日程详情（受邀）
-    _TDDJ_PAGE: TddjPage,      // 日程 - 日程详情
+    _TDDJ_PAGE: TddjPage,      // 日程 - 日程详情(发布人)
+    _TDDS_PAGE: TddsPage,      // 日程 - 日程详情（系统）
     _LP_PAGE: LpPage,       // 登陆注册 - 登陆（密码）
     _LS_PAGE: LsPage,       // 登陆注册 - 登录（验证码）
     _PF_PAGE: PfPage,       // 登陆注册 - 忘记密码

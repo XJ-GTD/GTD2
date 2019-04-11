@@ -9,7 +9,7 @@ import {FsData, PgBusiService, ScdData} from "../../service/pagecom/pgbusi.servi
 import {TdcService} from "./tdc.service";
 
 /**
- * Generated class for the 日程详情 page.
+ * Generated class for the 日程详情（发布人） page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
