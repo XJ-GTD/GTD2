@@ -6,10 +6,14 @@ import {BsModel} from "../../service/restful/out/bs.model";
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData} from "../../service/pagecom/pgbusi.service";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
+import {DataConfig} from "../../service/config/data.config";
+import {UserConfig} from "../../service/config/user.config";
 
 @Injectable()
 export class GcService {
-  constructor(  private sqlExce: SqliteExec,private util:UtilService) {
+  constructor(  private sqlExce: SqliteExec,
+                private userConfig:UserConfig,
+                private util:UtilService) {
   }
 
   //编辑群名称(添加群成员)
@@ -45,6 +49,7 @@ export class GcService {
         .then(data=>{
            console.log('---------- GcService save 编辑群名称(添加群成员) 结果:'+ JSON.stringify(data));
            bs.data = data;
+          this.userConfig.RefreshGTbl();
            resolve(bs);
          }).catch(e=>{
            console.error('---------- GcService save 编辑群名称(添加群成员) 错误:'+ JSON.stringify(e));
@@ -57,6 +62,7 @@ export class GcService {
         Object.assign(gc,dc);
         gc.gi = this.util.getUuid();
         gc.gnpy = this.util.chineseToPinYin(gc.gn);
+        gc.gm = DataConfig.QZ_HUIBASE64;
         console.log('---------- GcService save 添加群名称(添加群成员) 入参:'+ JSON.stringify(gc));
         this.sqlExce.save(gc).then(data=>{
           console.log('---------- GcService save 添加群名称 结果:'+ JSON.stringify(data));
@@ -68,10 +74,12 @@ export class GcService {
               bx.bmi = fs.pwi;
               bxL.push(bx.rpT());
             }
+            this.userConfig.RefreshGTbl();
             console.log('---------- GcService save 添加添加群成员 sql:'+ JSON.stringify(bxL));
             return this.sqlExce.batExecSql(bxL);
           }
         }).then(data=>{
+
           console.log('---------- GcService save 添加添加群成员 结果:'+ JSON.stringify(data));
           bs.data = data;
           resolve(bs);
@@ -104,6 +112,7 @@ export class GcService {
         this.sqlExce.delete(bx).then(data=>{
           console.log('---------- GcService deleteBx 删除群成员 结果:'+ JSON.stringify(data));
           bs.data = data;
+          this.userConfig.RefreshGTbl();
           resolve(bs);
         }).catch(e=>{
           console.error('---------- GcService deleteBx 删除群成员 错误:'+ JSON.stringify(e));
