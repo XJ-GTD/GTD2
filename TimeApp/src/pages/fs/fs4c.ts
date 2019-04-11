@@ -7,6 +7,7 @@ import {FdService} from "../fd/fd.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {GlService} from "../gl/gl.service";
 import {FsData} from "../../service/pagecom/pgbusi.service";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the 参与人选择 page.
@@ -43,7 +44,7 @@ import {FsData} from "../../service/pagecom/pgbusi.service";
           <ion-list *ngIf="addType=='rc'" no-lines style="margin-bottom: 0">
             <ion-item class="plan-list-item" *ngFor="let g of gl">
               <ion-avatar item-start>
-                <img src="./assets/imgs/headImg.jpg">
+                <img src={{g.gm}}>
               </ion-avatar>
               <ion-label>
                 {{g.gn}}({{g.gc}})
@@ -89,7 +90,7 @@ export class Fs4cPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad FsPage');
+    console.log('ionViewDidLoad Fs4cPage');
     this.addType = this.navParams.get('addType');
     this.tpara = this.navParams.get('tpara');
 
@@ -176,8 +177,11 @@ export class Fs4cPage {
   goBack(page: any, para: any) {
     this.navCtrl.pop();
   }
+
   getContacts() {
-      this.gl = this.glService.getGroups(this.tel);
-      this.fsl = this.fsService.getfriend(this.tel);
+      this.gl = UserConfig.groups;
+      this.fsl = UserConfig.friends;
+      //this.gl = this.glService.getGroups(this.tel);
+      //this.fsl = this.fsService.getfriend(this.tel);
   }
 }

@@ -130,11 +130,11 @@ export class PfPage {
 
           return this.lsService.getOther();
         }).then(data=>{
-          console.log("手机验证码登录成功"+ JSON.stringify(data));
+          console.log("忘记密码----手机验证码登录成功");
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
         }).catch(error=>{
-          console.log("手机验证码登录失败"+JSON.stringify(error));
+          console.log("忘记密码----手机验证码登录失败"+JSON.stringify(error));
           this.util.loadingEnd();
           this.util.toast(error.message,1500);
         });

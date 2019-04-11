@@ -34,7 +34,7 @@ import {UtilService} from "../../service/util-service/util.service";
               <ion-label>备份</ion-label>
             </ion-item>
 
-            <ion-item class="plan-list-item" (click)="recover()">
+            <ion-item class="plan-list-item" (click)="recover()" [ngStyle]="{'display': isRecover }">
               <ion-label>恢复</ion-label>
             </ion-item>
 
@@ -46,6 +46,9 @@ import {UtilService} from "../../service/util-service/util.service";
 })
 export class BrPage {
 
+  bts:any;
+  isRecover:any = "none";
+
   constructor(public navCtrl: NavController,
               private brService:BrService,
               private util: UtilService) {
@@ -53,6 +56,18 @@ export class BrPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad BrPage');
+  }
+
+  ionViewDidEnter(){
+    this.brService.getLastDt().then(data=>{
+      this.bts = data.data.bts;
+      if(this.bts && this.bts!=""){
+        this.isRecover = "block";
+      }
+      console.log("获取页面获取最后更新时间     ："+this.bts);
+    }).catch(res=>{
+      console.log("获取页面获取最后更新时间失败" + JSON.stringify(res));
+    });
   }
 
   goBack() {
@@ -63,20 +78,14 @@ export class BrPage {
     this.brService.backup().then(data=>{
       this.util.toast("备份完成",1500)
     })
-
   }
 
   recover(){
-    this.brService.getLastDt().then(data=>{
-      console.log("recover" + JSON.stringify(data));
-      if(data.data.bts){
-        this.brService.recover(Number(data.data.bts)).then(data=>{
-
-          this.util.toast("恢复成功",1500)
-        })
-      }
-
-    })
+    if(this.isRecover){
+      this.brService.recover(Number(this.bts)).then(data=>{
+        this.util.toast("恢复成功",1500)
+      })
+    }
   }
 
 }

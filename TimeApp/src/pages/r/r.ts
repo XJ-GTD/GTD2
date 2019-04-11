@@ -127,7 +127,7 @@ export class RPage {
         console.log("注册被点击");
         this.util.loadingStart();
         this.rService.signup(this.rData).then(data => {
-          console.log("注册并密码登录成功"+ JSON.stringify(data));
+          console.log("注册并密码登录成功");
           clearTimeout(this.timer);
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');

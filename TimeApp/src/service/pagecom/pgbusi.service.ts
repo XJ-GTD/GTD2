@@ -274,7 +274,7 @@ export class PgBusiService {
     if(rc.sn == ''){
       str += '标题不能为空;/n';
     }
-    if(rc.sn.length>20){
+    if(rc.sn.length>200){
       str += '标题文本长度必须下于20;/n';
     }
     if(rc.sd == ''){
@@ -530,7 +530,7 @@ export class ScdData {
   gs:string ="";//归属
   ib:string ="0"; //0：非本地日历;1：本地日历
   fssshow:string ="";//参与人画面显示用
-  cbkcolor:string ="";//每个日程颜色画面显示用
+  cbkcolor:number = 0;//每个日程颜色画面显示用
   morecolor:string ="#FFFFFF";//more颜色画面显示
 
 

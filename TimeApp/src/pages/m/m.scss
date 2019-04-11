@@ -62,12 +62,12 @@ page-m {
 
       .item-ios {
         height: 65px;
-        background: #3c909b;
+        background: #fff;
         border-radius: 9px;
       }
 
       ion-item ion-label{
-        margin: 11px 8px 11px 16px;
+        margin: 11px 8px 11px 10px;
       }
 
       h2 {
@@ -75,6 +75,9 @@ page-m {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        color: #222;
+        font-weight: 600;
+        opacity: 0.8;
       }
 
       p {
@@ -82,6 +85,7 @@ page-m {
         opacity: 0.5;
         margin-top: 1px;
         font-size: 12px;
+        color: #222;
       }
 
       ion-avatar {
