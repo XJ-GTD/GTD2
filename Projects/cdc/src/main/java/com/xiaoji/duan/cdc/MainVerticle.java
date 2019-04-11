@@ -1,6 +1,7 @@
 package com.xiaoji.duan.cdc;
 
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
@@ -8,6 +9,7 @@ import io.vertx.amqpbridge.AmqpBridge;
 import io.vertx.amqpbridge.AmqpBridgeOptions;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.MultiMap;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.eventbus.MessageProducer;
@@ -66,6 +68,9 @@ public class MainVerticle extends AbstractVerticle {
 		router.route("/cdc/:caculateid/starter").handler(BodyHandler.create());
 		router.route("/cdc/:caculateid/starter").consumes("application/json").produces("application/json").handler(this::caculatestarter);
 
+		router.route("/cdc/:flowid/query/trigger").handler(BodyHandler.create());
+		router.route("/cdc/:flowid/query/trigger").produces("application/json").handler(this::querytrigger);
+
 		HttpServerOptions option = new HttpServerOptions();
 		option.setCompressionSupported(true);
 
@@ -79,6 +84,42 @@ public class MainVerticle extends AbstractVerticle {
 		});
 	}
 
+	private void querytrigger(RoutingContext ctx) {
+		System.out.println("headers: " + ctx.request().headers());
+		String flowid = ctx.request().getParam("flowid");
+		MultiMap query = ctx.request().params();
+		
+		JsonObject parameters = new JsonObject();
+		
+		for (Entry<String, String> entry : query.entries()) {
+			parameters.put(entry.getKey(), entry.getValue());
+		}
+		
+		Future<JsonObject> future = Future.future();
+		
+		future.setHandler(handler -> {
+			System.out.println(flowid);
+			if (handler.succeeded()) {
+				JsonObject result = handler.result();
+				
+				if (result == null)
+					result = new JsonObject();
+				System.out.println("responsed " +result.size());
+				ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end(result.encode());
+			} else {
+				handler.cause().printStackTrace();
+				ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end("{}");
+			}
+		});
+
+		MessageProducer<JsonObject> producer = bridge.createProducer(flowid);
+		producer.send(new JsonObject()
+				.put("body", new JsonObject()
+						.put("context", parameters)));
+
+		future.complete(new JsonObject());
+	}
+	
 	private void caculatestarter(RoutingContext ctx) {
 		System.out.println("headers: " + ctx.request().headers());
 		//System.out.println("body: " + ctx.getBodyAsString());

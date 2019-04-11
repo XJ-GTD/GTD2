@@ -25,7 +25,7 @@ export class PlService {
   async downloadPlan(pid:string){
     // 出参
     let bs = new BsModel<any>();
-
+    this.util.loadingStart();
     console.log('---------- PlService downloadPlan 清除本地旧计划开始 ----------------');
     // 删除本地旧计划日程关联
     let dctbl:CTbl =new CTbl();
@@ -110,6 +110,7 @@ export class PlService {
       console.log('---------- PlService downloadPlan 系统计划无数据 ----------------');
     }
 
+    this.util.loadingEnd();
     bs.code = 0;
     return bs;
   }
