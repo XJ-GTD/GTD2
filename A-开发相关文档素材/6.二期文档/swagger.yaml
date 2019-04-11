@@ -1190,6 +1190,48 @@ paths:
                 type: string
               data:
                 type: object
+  '/aup/user/{phoneno}/avatar/json':
+    get:
+      tags:
+        - account service
+      summary: 通过手机查询帐户头像
+      description: '匹配到帐户时,返回包含base64编码图片的json,其它情况返回json格式错误信息'
+      produces:
+        - application/json
+        - application/json
+      parameters:
+        - name: phoneno
+          in: path
+          type: string
+          description: 手机号码
+          required: true
+      responses:
+        '200':
+          description: 头像取得返回
+          schema:
+            type: object
+            properties:
+              errcode:
+                type: integer
+              errmsg:
+                type: string
+              data:
+                type: object
+                properties:
+                  base64:
+                    type: string
+                    description: Base64格式的头像字符串
+        default:
+          description: 未知异常
+          schema:
+            type: object
+            properties:
+              errcode:
+                type: integer
+              errmsg:
+                type: string
+              data:
+                type: object
   /aup/api/access_token:
     get:
       tags:
