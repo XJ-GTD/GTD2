@@ -73,6 +73,7 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
   .input-set{
     font-size: 24px;
     margin-left: 26px;
+    min-width: 80%;
   }
 
   .sel-btn-set{
@@ -310,17 +311,19 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
     letter-spacing: 1px;
   }
   .img-set{
-    width: 37px;
+    width: 30px;
   }
   .img-row{
     margin-left: 17px;
   }
   .img-div{
     margin-left: 5px;
+    text-align: center;
   }
   .img-rn{
     text-align: center;
     margin-top: -5px;
+    font-size: 12px;
   }
   .dtshow-set{
     letter-spacing: 1px;
@@ -352,8 +355,12 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
   }
   .img-rnshow{
     text-align: center;
-    margin-top: 10px;
+    margin-top: 6px;
     margin-left: 4px;
+  }
+  .lbl-jh2{
+    margin-top: 3px;
+    margin-bottom: 5px;
   }
 }
 
