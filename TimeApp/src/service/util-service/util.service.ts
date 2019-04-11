@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
 import {Device} from "@ionic-native/device";
 import * as moment from "moment";
-import {Loading, LoadingController, ToastController} from "ionic-angular";
+import {Loading, LoadingController, PopoverController, ToastController} from "ionic-angular";
+import {ConfirmboxComponent} from "../../components/confirmbox/confirmbox";
 
 /**
  * 公共方法
@@ -11,7 +12,8 @@ import {Loading, LoadingController, ToastController} from "ionic-angular";
 @Injectable()
 export class UtilService {
   wins: any = window;//window对象
-  constructor(public device: Device, private toastCtrl: ToastController, private loadingCtrl: LoadingController) {
+  constructor(public device: Device, private toastCtrl: ToastController, private loadingCtrl: LoadingController,
+              private popoverCtrl: PopoverController) {
   }
 
   public rand(min, max): number {
@@ -739,5 +741,23 @@ export class UtilService {
       if (new RegExp("(" + k + ")").test(fmt))
         fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
+  }
+
+  /**
+   * 确认msgbox
+   * @param msg
+   * @param ev
+   */
+  popMsgbox(msg,okdo){
+    let popover = this.popoverCtrl.create(ConfirmboxComponent, {
+      msg: msg,
+    },{enableBackdropDismiss :false});
+    popover.onDidDismiss((data,role) =>{
+      //OK:0,cancel:1
+      if( data.ret == "0"){
+        okdo();
+      };
+    })
+    popover.present();
   }
 }
