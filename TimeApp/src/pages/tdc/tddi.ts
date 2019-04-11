@@ -24,7 +24,11 @@ import {FsData, PgBusiService, ScdData} from "../../service/pagecom/pgbusi.servi
       <ion-grid>
         <ion-row right>
           <div class="h-auto " >
-            
+            <ion-buttons right>
+              <button ion-button icon-only (click)="presentActionSheet()" color="light">
+                <img  class="imgdel-set" src="../../assets/imgs/del.png">
+              </button>
+            </ion-buttons>
           </div>
         </ion-row>
       </ion-grid>
