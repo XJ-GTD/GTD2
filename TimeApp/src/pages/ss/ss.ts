@@ -70,20 +70,20 @@ export class SsPage {
     this.t = UserConfig.settins.get(DataConfig.SYS_T);
     this.b = UserConfig.settins.get(DataConfig.SYS_B);
     this.z = UserConfig.settins.get(DataConfig.SYS_Z);
-
-    /*console.log(this.h.value+"1");
-    console.log(this.t.value+"2");
-    console.log(this.b.value+"3");
-    console.log(this.z.value+"4");*/
-
-    this.h.value = this.h.value == "1" ? "true":"false";
-    this.t.value = this.t.value == "1" ? "true":"false";
-    this.b.value = this.b.value == "1" ? "true":"false";
-    this.z.value = this.z.value == "1" ? "true":"false";
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SsPage');
+
+    /*console.log(this.h.value+"h");
+    console.log(this.t.value+"t");
+    console.log(this.b.value+"b");
+    console.log(this.z.value+"z");*/
+
+    this.h.value = this.h.value == "1" || this.h.value=="true" ? "true":"false";
+    this.t.value = this.t.value == "1" || this.t.value=="true" ? "true":"false";
+    this.b.value = this.b.value == "1" || this.b.value=="true" ? "true":"false";
+    this.z.value = this.z.value == "1" || this.z.value=="true" ? "true":"false";
   }
 
   goBack() {
