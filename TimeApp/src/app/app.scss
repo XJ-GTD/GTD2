@@ -42,7 +42,15 @@
 //  url('../assets/fonts/PingFang Medium.woff2') format('woff2'),
 //  url('../assets/fonts/PingFang Medium.svg') format('svg');
 //}
-*{font-family:PingFang-SC-Regular,PingFang-SC,"微软雅黑",Georgia}
+*{font-family:PingFang-Regular,PingFang-SC-Regular,PingFang-SC,"微软雅黑",Georgia}
+
+@font-face {
+  font-family: 'PingFang-Regular';
+  src: url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.ttf') format('truetype'),
+  url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.eot') format('embedded-opentype'),
+  url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.woff') format('woff'),
+  url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.svg') format('svg');
+}
 
 .ios .ion-page.show-page ~ .nav-decor{
   background: transparent;
