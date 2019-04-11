@@ -380,17 +380,21 @@ export class TdcPage {
     this.scd.ji = this.scd.p.ji;
 
     //新建数据
+    this.util.loadingStart();
     if (this.pagestate =="0"){
       this.tdcServ.save(this.scd).then(data=>{
         let ctbl = data.data;
         this.scd.si = ctbl.si;
         this.pagestate ="1";
         this.util.toast("保存成功",2000);
+        this.util.loadingEnd();
         if(typeof(eval(share))=="function")
         {
           share();
         }
         return;
+      }).catch(err =>{
+        this.util.loadingEnd();
       });
 
     }
@@ -400,11 +404,14 @@ export class TdcPage {
       this.tdcServ.updateDetail(this.scd).then(data =>{
 
         this.util.toast("保存成功",2000);
+        this.util.loadingEnd();
         if(typeof(eval(share))=="function")
         {
           share();
         }
         return ;
+      }).catch(err=>{
+        this.util.loadingEnd();
       })
 
     }
@@ -430,9 +437,13 @@ export class TdcPage {
 
   presentActionSheet() {
     //日程删除
+    this.util.loadingStart();
     this.tdcServ.delete(this.scd.si,"2","").then(data=>{
+      this.util.loadingEnd();
       this.util.toast("删除成功",1500);
       this.cancel();
+    }).catch(err=>{
+      this.util.loadingEnd();
     });
 
 
