@@ -1,237 +1,214 @@
-page-tdc ,page-tddi ,page-tddj ,page-tdds{
-  background-color: #96162d;
+page-tdc, page-tddi, page-tddj, page-tdds {
+
+  .footer-ios {
+    .toolbar-background-ios {
+      background-color: transparent;
+      border-color: red;
+      border-style: none;
+    }
+
+    .bar-button-ios {
+      color: #ffffff;
+      font-size: 15px;
+    }
+
+    .toolbar-content-ios {
+      text-align: center;
+    }
+
+    ion-buttons[padding-left] {
+      padding-left: 55px;
+    }
+
+    ion-buttons[padding-right] {
+      padding-right: 55px;
+    }
+  }
+
+
+  ion-content.content {
+    color: #fff;
+    background-color: #96162d;
+  }
+
+
   .scroll-content {
     overflow-x: unset;
     overflow-y: unset
   }
-  .grid{
-    div{
+
+  .grid {
+    div {
       position: relative;
     }
-    height:100%;
+
+    height: 100%;
     letter-spacing: 1px;
-    .header-set{
+
+    .header-set {
       height: 65px;
       padding: 0px !important;
     }
-    .row{
-      padding:2px 5px 20px 24px;
-        .text-input-ios{
-          color: #d1d1d1;
-          font-size: 24px;
-          margin:1px
+
+    .row {
+      padding: 2px 5px 20px 24px;
+
+      .allday.toggle-checked .toggle-icon {
+        background-color: #3C909B;
       }
 
-      .lbl-jh2{
-        border-radius:10px;
+      .toggle-ios .toggle-icon::before {
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+      }
+
+      .allday {
+        width: 75px;
+        margin-right: 15px;
+
+      }
+
+      .allday.toggle-checked .toggle-inner {
+        transform: translate3d(43px, 0, 0);
+      }
+
+      .allday .toggle-inner {
+        background-color: #999999
+      }
+
+      .allday.toggle-checked .toggle-inner {
+        background-color: #ffffff;
+      }
+
+
+      .allday .toggle-icon::before {
+        content: "全天";
+        font-size: 12px;
+        transform: scale3d(1, 1, 1);
+        line-height: 28px;
+        letter-spacing: 2px;
+        background-color: rgba(171, 69, 87, 8);
+        text-indent: 35px;
+        color: #999999;
+
+      }
+
+      .allday.toggle-checked .toggle-icon::before {
+        content: "全天";
+        font-size: 12px;
+        letter-spacing: 2px;
+        text-align: left;
+        transform: scale3d(1, 1, 1);
+        background-color: #3C909B;
+        line-height: 28px;
+        color: #fff;
+        text-indent: 10px;
+
+      }
+
+      .text-input-ios {
+        color: #d1d1d1;
+        font-size: 24px;
+        margin: 1px
+      }
+
+      .lbl-jh2 {
+        border-radius: 10px;
         width: 70px;
         height: 20px;
         text-align: center;
         background-color: #ffffff;
         opacity: .8;
         font-size: 12px;
-        color: rgb(201,138,149);
+        color: rgb(201, 138, 149);
         line-height: 20px;
         margin-right: 12px;
       }
-      .datetime-ios{
+
+      .datetime-ios {
         padding: 0px !important;
       }
-      .datetime-text{
+
+      .datetime-text {
         font-size: 16px;
-        line-height:32px;
+        line-height: 32px;
       }
+
+
+      .reptlbl, .reptlb2 {
+        font-size: 12px;
+        line-height: 35px;
+        float: left;
+        width: 40px;
+        display: inline-flex;
+        margin-right: 4px;
+
+        .sel-btn-set {
+          font-size: 12px;
+          width: 35px;
+          height: 35px;
+          border-radius: 35px;
+          padding: 0;
+          margin: 0 auto;
+          color: #999999;
+        }
+
+        .sel-btn-seled-close {
+          background-color: rgb(105, 83, 100);
+        }
+
+
+        .sel-btn-seled {
+          background-color: #3C909B;
+          color: #FFFFFF;
+          font-size: 12px;
+          font-weight: bold;
+        }
+      }
+
+      .reptlb2 {
+
+        width: 40px !important;
+      }
+
+
+      .memo-set {
+        .text-input-ios {
+          font-size: 14px;
+          letter-spacing: 1px;
+        }
+      }
+
     }
   }
 
-  .allday.toggle-checked .toggle-icon {
-    background-color: #3C909B;
-  }
-  .allday {
-    width: 75px;
-    margin-right: 15px;
 
-  }
+  .select-plan {
 
-  .allday.toggle-checked .toggle-inner {
-    transform: translate3d(43px, 0, 0);
-  }
+    .scroll-content {
+      overflow-x: unset;
+      overflow-y: auto
+    }
 
-  .allday .toggle-icon::before {
-    content: "全天";
-    font-size: 12px;
-    transform: scale3d(1, 1, 1);
-    line-height:25px;
-    letter-spacing: 2px;
-    background-color: transparent;
-    text-indent:35px;
+    .item-ios {
+      background-color: transparent;
+      color: #fff;
+    }
 
-  }
-
-  .allday.toggle-checked .toggle-icon::before {
-    content: "全天";
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-align: left;
-    transform: scale3d(1, 1, 1);
-    background-color: #3C909B;
-    line-height:25px;
-    color: #fff;
-    text-indent:10px;
-
-  }
-
-
-
-  ion-content.content {
-    background-color: #96162d;
-    color: #fff;
-  }
-
-  .sel-btn-set{
-    font-size: 12px;
-    width: 44px;
-    height: 44px;
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-  .date-set{
-    font-size: 16px;
-    margin-top: 5px;
-    margin-left: 8px;
-    width: 240px;
-    letter-spacing: 1px;
-  }
-
-
-  .allday-set{
-    background-color: #96162d;
-    width:120px;
-  }
-
-  .memo-set{
-    width: 85%;
-    font-size: 14px;
-    margin-top: 22px;
-    margin-left: 22px;
-    height: 60px;
-  }
-
-  .sel-btn-seled{
-    background-color:#3C909B;
-    color:#FFFFFF;
-    font-size: 13px;
-  }
-
-  .sel-btn-unsel{
-  background-color:transparent;
-    color:rgba(255,255,255,0.5);
-    font-size: 11px;
-  }
-
-  .foot-set{
-    background-color: #96162d;
-  }
-
-  .dobtn-set{
-    width: 100%;
-    text-align: center;
-  }
-  .okbtn-set{
-    float: right;
-    margin-right: 54px;
-  }
-  .cancelbtn-set{
-    float: left;
-    margin-left: 54px;
-  }
-
-  ion-item.item {
-    background-color: #96162d;
-    color: #fff;
-    padding: 0;
-  }
-  .item-ios.item-block .item-inner{
-    border: 0;
-  }
-
-  .item-md.item-block .item-inner{
-    border: 0;
-  }
-
-  .h-auto {
-    height: 44px;
-    text-align: right;
-    width: 100%;
-  }
-
-  .imgdel-set{
-    width: 15px;
-    height: 14.5px;
-    margin-top: 35px;
-    margin-right: 24px;
-  }
-
-  .btn-delall {
-    font-size: 20px;
-    color:#222222;
-  }
-  .btn-del {
-    font-size: 20px;
-    color:#222222;
-  }
-  .btn-cancel {
-    font-size: 20px;
-    color:#35919C;
-    font-weight:normal
-  }
-
-  .tm-set{
-    margin-top: -5px;
-    margin-left: -17px;
-    height:20px;
-    letter-spacing: 1px;
-  }
-
-  .tog-set{
-    margin-top: -6px;
-    margin-left: 6px;
-  }
-
-  .reptlbl{
-    font-size: 11px;
-  }
-  .txtop{
-    margin-top: 11px;
-  }
-  .txtop1{
-    margin-top: 3px;
-  }
-
-  .footer-ios .toolbar-ios:first-child .toolbar-background-ios{
-    border-width:0px;
-  }
-  .footer-md .toolbar-md:first-child .toolbar-background-md{
-    border-width:0px;
-  }
-
-
-  .select-plan{
     position: absolute;
     width: 100%;
     height: 80vmin;
     z-index: 13;
     margin-top: 100%;
 
-    ion-list{
-      width: 100%
-    }
 
-    ion-item ion-label{
+    ion-item ion-label {
       font-size: 1.5rem;
     }
 
-    .item-block{
+    .item-block {
       min-height: 3rem;
     }
 
@@ -243,59 +220,60 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
     }
 
     .color-palm {
-      background-color: rgb(155,94,70);
+      background-color: rgb(155, 94, 70);
     }
 
     .color-sunflower {
-      background-color: rgb(135,106,41);
+      background-color: rgb(135, 106, 41);
     }
 
     .color-aurantia {
-      background-color: rgb(207,68,37);
+      background-color: rgb(207, 68, 37);
     }
 
     .color-orange {
-      background-color: rgb(175,43,36);
+      background-color: rgb(175, 43, 36);
     }
 
     .color-pink {
-      background-color: rgb(173,131,135);
+      background-color: rgb(173, 131, 135);
     }
 
     .color-lavender {
-      background-color: rgb(192,119,219);
+      background-color: rgb(192, 119, 219);
     }
 
     .color-fuchsia {
-      background-color: rgb(69,59,147);
+      background-color: rgb(69, 59, 147);
     }
 
     .color-sky {
-      background-color: rgb(81,170,242);
+      background-color: rgb(81, 170, 242);
     }
 
     .color-blue {
-      background-color: rgb(53,145,165);
+      background-color: rgb(53, 145, 165);
     }
 
     .color-daphnite {
-      background-color: rgb(48,129,88);
+      background-color: rgb(48, 129, 88);
     }
   }
-  .shade{
+
+  .shade {
     position: absolute;
     top: 0%;
     left: 0%;
     width: 100%;
     height: 100%;
     background-color: black;
-    z-index:12;
+    z-index: 12;
     -moz-opacity: 0.3;
-    opacity:.30;
+    opacity: .30;
     filter: alpha(opacity=30);
   }
 
-  .lbl-jh{
+  .lbl-jh {
     margin-left: 24px;
     margin-top: 36px;
     font-size: 11px;
@@ -307,50 +285,59 @@ page-tdc ,page-tddi ,page-tddj ,page-tdds{
     padding-right: 2px;
     letter-spacing: 1px;
   }
-  .img-set{
+
+  .img-set {
     width: 30px;
   }
-  .img-row{
+
+  .img-row {
     margin-left: 17px;
   }
-  .img-div{
+
+  .img-div {
     margin-left: 5px;
     text-align: center;
   }
-  .img-rn{
+
+  .img-rn {
     text-align: center;
     margin-top: -5px;
     font-size: 12px;
   }
-  .dtshow-set{
+
+  .dtshow-set {
     letter-spacing: 1px;
     font-size: 16px;
     margin-top: 9px;
     margin-left: 24px;
 
   }
-  .weekshow-set{
+
+  .weekshow-set {
     font-size: 16px;
     margin-top: 15px;
     margin-left: 1px;
     letter-spacing: 1px;
   }
 
-  .tmshow-set{
+  .tmshow-set {
     font-size: 16px;
     margin-top: 15px;
     margin-left: 1px;
     height: 20px;
     letter-spacing: 1px;
   }
-  .repttopshow1{
+
+  .repttopshow1 {
     margin-top: 15px;
     margin-left: 16px;
   }
-  .repttopshow{
+
+  .repttopshow {
     margin-top: 16px;
   }
-  .img-rnshow{
+
+  .img-rnshow {
     text-align: center;
     margin-top: 6px;
     margin-left: 4px;
