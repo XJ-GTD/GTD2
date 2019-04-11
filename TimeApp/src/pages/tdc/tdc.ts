@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef, Renderer2} from '@angular/core';
 import {
   IonicPage, ModalController, NavController, NavParams,
 } from 'ionic-angular';
@@ -8,6 +8,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
 import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
+import {Keyboard} from "@ionic-native/keyboard";
 
 /**
  * Generated class for the 新建日程 page.
@@ -121,7 +122,7 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
           </div>
         </ion-row>
         <ion-row>
-          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set"></ion-textarea>
+          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set" (focus)="comentfocus()" (blur)="comentblur()"></ion-textarea>
         </ion-row>
         <ion-row justify-content-left>
           <div *ngFor="let fss of scd.fss;">
@@ -172,8 +173,21 @@ export class TdcPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private tdcServ: TdcService, private util: UtilService,
-              public modalCtrl: ModalController, private busiServ: PgBusiService) {
+              public modalCtrl: ModalController, private busiServ: PgBusiService,
+            private el: ElementRef,
+            private keyboard: Keyboard,private _renderer: Renderer2,) {
 
+  }
+
+  comentfocus(){
+    // this.keyboard.onKeyboardShow().subscribe(value=>{
+    //   this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(-300px)");
+    // })
+  }
+  comentblur(){
+    // this.keyboard.onKeyboardHide().subscribe(value=>{
+    //   this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(0px)");
+    // })
   }
 
   //画面状态：0：新建 ，1：未关闭直接修改
