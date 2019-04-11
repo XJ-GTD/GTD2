@@ -42,7 +42,7 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
       </ion-row>
       <ion-row >
         <div (click)="toPlanChoose()" class ="lbl-jh">
-          <ion-label  >{{scd.p.jn=="" || scd.p.jn==null?"添加计划":scd.p.jn}}</ion-label>
+          <ion-label class="lbl-jh2"  >{{scd.p.jn=="" || scd.p.jn==null?"添加计划":scd.p.jn}}</ion-label>
         </div>
       </ion-row>
       <ion-row >
