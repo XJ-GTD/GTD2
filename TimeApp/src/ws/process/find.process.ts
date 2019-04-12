@@ -28,7 +28,7 @@ export class FindProcess implements MQProcess {
     let findData: FindPara = content.parameters;
     //查找联系人
     processRs.fs = await this.findfs(findData.fs);
-
+    console.log("============ mq返回内容："+ JSON.stringify(content));
     //处理区分
     if (content.option == F.C) {
       processRs.scd = await this.findScd(findData.scd);
@@ -86,6 +86,7 @@ export class FindProcess implements MQProcess {
 
   private findScd(scd: any): Promise<Array<CTbl>> {
     return new Promise<Array<CTbl>>(async resolve => {
+      console.log("============ mq查询日程scd："+ JSON.stringify(scd));
       let res: Array<CTbl> = new Array<CTbl>();
       if (scd.de ||
         scd.ds ||
@@ -109,8 +110,8 @@ export class FindProcess implements MQProcess {
                                            c.du,
                                            c.gs
                            from gtd_sp sp
-                                  join gtd_c c on sp.si = c.si
-                                  join gtd_d d on d.si = c.si
+                                  inner join gtd_c c on sp.si = c.si
+                                  left join gtd_d d on d.si = c.si
                            where 1 = 1`
 
         if (scd.ti) {
@@ -132,6 +133,7 @@ export class FindProcess implements MQProcess {
         if (scd.te) {
           sql = sql + ` and sp.st <= '${scd.te}'`;
         }
+        console.log("============ mq查询日程："+ sql);
         res = await this.sqliteExec.getExtList<CTbl>(sql);
       }
       resolve(res);
