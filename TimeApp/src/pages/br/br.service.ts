@@ -53,6 +53,8 @@ export class BrService {
 
     //获取特殊日历
     let sp = new SpTbl();
+    let spsql = "select * from gtd_sp sp inner join " +
+      " ( select * from gtd_c where ji not in (select ji from gtd_j_h where jt ='1')) c on c.si = sp.si ";//系统计划的日程不备份
     backupPro.d.sp = await this.sqlexec.getList<SpTbl>(sp);
     ret = await this.bacRestful.backup(backupPro);
     backupPro.d.sp.length = 0;
@@ -168,9 +170,21 @@ export class BrService {
     // 设定恢复指定表
     // recoverPro.d.rdn=[];
     bsModel = await this.bacRestful.recover(recoverPro);
+
+    //插入特殊日历（插入前删除）
+    let spsql ="delete from gtd_sp where si in " +
+      " (select si from gtd_c where ji not in (select ji from gtd_j_h where jt ='1')) ";
+    await this.sqlexec.execSql(spsql);
+
+    for (let j = 0, len = bsModel.data.sp.length; j < len; j++) {
+      let spi = new SpTbl();
+      Object.assign(spi,bsModel.data.sp[j]) ;
+      await this.sqlexec.save(spi);
+    }
+
     //插入本地日历（插入前删除）
-    let c = new CTbl();
-    await this.sqlexec.delete(c);
+    let csql = "delete from gtd_c where ji not in (select ji from gtd_j_h where jt ='1'  ) ";
+    await this.sqlexec.execSql(csql);
 
     for (let j = 0, len = bsModel.data.c.length; j < len; j++) {
       let ci = new CTbl();
@@ -178,15 +192,7 @@ export class BrService {
       await this.sqlexec.save(ci);
     }
 
-    //插入特殊日历（插入前删除）
-    let sp = new SpTbl();
-    await this.sqlexec.delete(sp);
 
-    for (let j = 0, len = bsModel.data.sp.length; j < len; j++) {
-      let spi = new SpTbl();
-      Object.assign(spi,bsModel.data.sp[j]) ;
-      await this.sqlexec.save(spi);
-    }
     //插入提醒数据（插入前删除）
     let e = new ETbl();
     await this.sqlexec.delete(e);
@@ -236,7 +242,8 @@ export class BrService {
     }
     //插入本地计划（插入前删除）
     let jh = new JhTbl();
-    await this.sqlexec.delete(jh);
+    let jhsql = "delete from gtd_j_h where jt <> '1' ";//本地系统计划不删除
+    await this.sqlexec.execSql(jhsql);
 
     for (let j = 0, len = bsModel.data.jh.length; j < len; j++) {
       let jhi = new JhTbl();
@@ -252,16 +259,6 @@ export class BrService {
       let ui = new UTbl();
       Object.assign(ui,bsModel.data.u[j]) ;
       await this.sqlexec.save(ui);
-    }
-
-    //插入系统设置（插入前删除）
-    let s = new STbl();
-    await this.sqlexec.delete(s);
-
-    for (let j = 0, len = bsModel.data.s.length; j < len; j++) {
-      let si = new STbl();
-      Object.assign(si,bsModel.data.s[j]) ;
-      await this.sqlexec.save(si);
     }
 
     let ret = new BsModel();
