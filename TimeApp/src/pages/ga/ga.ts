@@ -75,7 +75,7 @@ export class GaPage {
       this.util.toast("群名称不能为空",2000);
       return;
     }
-    this.util.popMsgbox("1",()=>{
+    // this.util.popMsgbox("1",()=>{
       this.gcService.save(dc).then(data=> {
         if (data.code == 0) {
           this.viewCtrl.dismiss();
@@ -83,8 +83,7 @@ export class GaPage {
           this.util.toast("添加群名称失败",2000);
         }
       })
-    });
-
+    // });
   }
 
 

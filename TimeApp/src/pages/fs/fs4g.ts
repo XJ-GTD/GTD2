@@ -93,14 +93,14 @@ export class Fs4gPage {
       });
       let dc:PageDcData = this.tpara;
       dc.fsl = list;
-      this.util.popMsgbox("1",()=>{
+      //this.util.popMsgbox("1",()=>{
         this.gsService.save(dc).then(data=>{
           if(data.code==0){
             //alert("添加群组成员成功");
             this.goBack();
           }
         })
-      });
+     // });
 
     }else{
       alert("请先选择人员");

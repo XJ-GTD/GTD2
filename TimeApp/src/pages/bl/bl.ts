@@ -96,12 +96,13 @@ export class BlPage {
   }
   //删除黑名单
   delete(g:PageBlData){
-    this.util.popMsgbox("2",()=>{
+    //this.util.popMsgbox("2",()=>{
       this.fdService.removeBlack(g.mpn).then(data=>{
         if(data.code == 0){
           this.getBl();
+          this.util.toast('删除黑名单成功！',2000)
         }
-      })
+     // })
     });
 
   }
