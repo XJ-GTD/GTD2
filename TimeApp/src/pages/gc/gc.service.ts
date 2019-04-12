@@ -155,7 +155,6 @@ export class GcService {
   }
 
 }
-
 export class PageDcData {
 
   gi: string=""; //关系群组主键ID

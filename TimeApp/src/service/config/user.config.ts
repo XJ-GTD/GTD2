@@ -7,7 +7,6 @@ import {UtilService} from "../util-service/util.service";
 import {FsData} from "../pagecom/pgbusi.service";
 import {DataConfig} from "./data.config";
 import {PageDcData} from "../../pages/gc/gc.service";
-import {BxTbl} from "../sqlite/tbl/bx.tbl";
 
 /**
  * create by on 2019/3/5

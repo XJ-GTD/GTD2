@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {PersonInData, PersonRestful} from "../../service/restful/personsev";
+import {PersonRestful} from "../../service/restful/personsev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {UtilService} from "../../service/util-service/util.service";
