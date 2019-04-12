@@ -61,7 +61,7 @@ public class IAgendaServiceImpl implements IAgendaService {
 			List<AgdContactsDto> agdOList = new ArrayList<AgdContactsDto>();
 			for (AgdAgendaContacts agdAgendaContacts : agdList) {
 				agdOList.add(BaseUtil.AgdToContactsDto(agdAgendaContacts));
-				agdContactsRep.deleteById(agdAgendaContacts.getRecId());
+
 				//TODO 发送更新日程消息
 				Map<String,Object> map = new HashMap<String,Object>();
 				map.put("from", inDto.getFc());		// 发送人
