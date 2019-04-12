@@ -1,12 +1,12 @@
 page-m {
-  background: #000;
+  background: $allBackColor;
 
   ion-menu {
-    background: #96162d;
+    background: $masterColor;
   }
 
   .ls {
-    background: #000;
+    background: $allBackColor;
     display: block;
 
     .menu-inner {
@@ -16,7 +16,7 @@ page-m {
 
   .menu {
     .content-ios {
-      background: #96162d;
+      background: $masterColor;
     }
 
     .item-ios {
@@ -113,12 +113,12 @@ page-m {
 
   }
 
-  //  background: #96162d;
+  //  background: $masterColor;
 
 
   //.content-ios {
   //  color: #fff;
-  //  background-color: #000;
+  //  background-color: $allBackColor;
   //}
 
 

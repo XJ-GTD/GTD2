@@ -41,7 +41,7 @@ import {ScdPageParamter} from "../tdc/tdc.service";
           </div>
           <div class="dayagendas w-auto">
             <ng-template [ngIf]="sdl.scdl.length > 0" [ngIfElse]="noscd">
-              <div class="dayagenda row " [class.back0]="scd.cbkcolor == 0" [class.back0]="scd.cbkcolor == 1"
+              <div class="dayagenda row " [class.back0]="scd.cbkcolor == 0" [class.back1]="scd.cbkcolor == 1"
                    *ngFor="let scd of sdl.scdl;" (click)="toDetail(scd.si,sdl.d,scd.gs)">
                 <div class="dayagendacontent w-auto">
                   <div class="agendaline1" *ngIf="scd.gs == '1'">来自：{{scd.fs.rn}} </div>

@@ -9,13 +9,8 @@ ion-calendar {
     animation-duration: 1s
   }
 
-
-  $btn-width: 16px;
-
-  //padding: 10px 20px;
   box-sizing: border-box;
   display: inline-block;
-  //background-color: #fff;
   background-color: transparent;
   width: 100%;
   letter-spacing: -1px;
@@ -36,10 +31,9 @@ ion-calendar {
     padding: 0px;
   }
   .thisM{
-    color: #96162d;
+    color: $monthColor;
   }
   .title {
-    //padding: 0 $btn-width 0 $btn-width;
     overflow: hidden;
     height: 70px;
     font-weight: bold;
@@ -66,32 +60,6 @@ ion-calendar {
     .arrow-dropdown {
       padding-top: 10px;
       padding-left: 3px;
-    }
-    .back, .forward, .switch-btn {
-      display: block;
-      position: relative;
-      float: left;
-      min-height: 32px;
-      margin: 0;
-      padding: 0;
-      font-size: 15px;
-      border-bottom: black 1px solid;
-    }
-
-    .back, .forward {
-      color: #757575;
-    }
-
-    .back {
-      margin-left: -100%;
-      left: -$btn-width;
-      width: $btn-width;
-    }
-
-    .forward {
-      margin-left: -$btn-width;
-      right: -$btn-width;
-      width: $btn-width;
     }
 
     .switch-btn {
@@ -125,7 +93,6 @@ ion-calendar {
       }
     }
   }
-
   .animated.faster {
     animation-duration: .2s;
     -webkit-animation-duration: .2s;

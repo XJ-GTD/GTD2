@@ -1,10 +1,9 @@
 page-al {
-  background-color: #fff;
+  background-color: $allBackColor;
   background-image: url('../assets/imgs/alback.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   -moz-background-size: 100% 100%;
-
 
   .container {
     width: 100%;
@@ -13,49 +12,8 @@ page-al {
 
   .text {
     text-align: center;
-    color: #FFFFFF;
+    color: $mytest;
     position: relative;
     margin-top: calc(100% + 50%);
   }
-
-
-  .loading {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    font-size: 3em;
-    color: #bbb;
-  }
-  //
-  //.cf:before,
-  //.cf:after {
-  //  content: ' ';
-  //  display: table;
-  //}
-  //
-  //.cf:after {
-  //  clear: both;
-  //}
-  //
-  //.progress-wrapper {
-  //  position: relative;
-  //  margin: 50% auto;
-  //  font-size: 40px;
-  //}
-  //
-  //.current {
-  //  position: absolute;
-  //  color: #fff;
-  //  font-weight: 100;
-  //  line-height: 1;
-  //}
-  //
-  //round-progress {
-  //  margin: auto;
-  //  width: 100px;
-  //  height: 100px;
-  //}
 }

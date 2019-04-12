@@ -16,7 +16,7 @@
 
 ion-calendar-month-picker {
   scroll-select div.selected-circle > div{
-    background-color: #3c909b;
+    background-color: $selectColor;
     border: solid 0.75px #fff;
     height: 40px;
     width: 40px;
@@ -24,7 +24,7 @@ ion-calendar-month-picker {
 
   scroll-select div.option.option-7 {
     width: calc(100vmin / 7);
-    color: #999999;
+    color: $whitedown;
     font-size: 10px;
   }
 

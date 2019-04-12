@@ -49,7 +49,7 @@ aicomponent {
       border-radius: 12px 12px 12px 0px;
 
       .self {
-        color: #999999;
+        color: $whitedown;
         font-size: 12px;
       }
 
@@ -60,7 +60,7 @@ aicomponent {
 
       .scdList {
         .volume[item-end] {
-          color: #999999;
+          color: $whitedown;
           margin-left: 0;
           margin-top: 0px;
           margin-bottom: 0px;

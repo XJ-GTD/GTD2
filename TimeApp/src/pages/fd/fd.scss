@@ -1,5 +1,5 @@
 page-fd {
-  background-color: #000;
+  background-color: $allBackColor;
 
   .w-auto {
     flex: 1;
@@ -22,7 +22,7 @@ page-fd {
   }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: #96162d;
+    background-color: $masterColor;
   }
 
   ion-header{
@@ -49,7 +49,7 @@ page-fd {
   }
 
   ion-content.content {
-    background-color: #96162d;
+    background-color: $masterColor;
     color: #fff;
   }
 
@@ -62,7 +62,7 @@ page-fd {
 
   .button{
     width: 100%;
-    background: #96162d;
+    background: $masterColor;
   }
 
   .scroll-content{
