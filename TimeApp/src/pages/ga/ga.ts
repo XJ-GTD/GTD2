@@ -1,6 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {GcService, PageDcData} from "../gc/gc.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 
 /**
@@ -47,6 +48,7 @@ export class GaPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public viewCtrl: ViewController,
+              private util:UtilService,
               private gcService:GcService,) {
   }
   @ViewChild('nameInput') nameInput ;
@@ -65,18 +67,24 @@ export class GaPage {
     console.log('GaPage跳转GlPage');
     this.viewCtrl.dismiss();
   }
+  //保存群名称
   save(){
     let dc:PageDcData = new PageDcData();
     dc.gn = this.tt;
     if(!this.tt || this.tt == null || this.tt==''){
-      alert("名称不能为空");
+      this.util.toast("群名称不能为空",2000);
       return;
     }
-    this.gcService.save(dc).then(data=> {
-      if (data.code == 0) {
-        this.viewCtrl.dismiss();
-      }
-    })
+    this.util.popMsgbox("1",()=>{
+      this.gcService.save(dc).then(data=> {
+        if (data.code == 0) {
+          this.viewCtrl.dismiss();
+        }else{
+          this.util.toast("添加群名称失败",2000);
+        }
+      })
+    });
+
   }
 
 

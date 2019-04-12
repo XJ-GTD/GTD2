@@ -88,6 +88,8 @@ import {UtilService} from "../../service/util-service/util.service";
   `,
 })
 export class PdPage {
+  // 判断是否有模态框弹出 控制安卓物理返回键
+  actionSheet;
 
   jh:PagePDPro;
   today: string = new Date().toISOString();
@@ -121,6 +123,12 @@ export class PdPage {
     });
   }
 
+  ionViewWillLeave() {
+    if (this.actionSheet !== undefined) {
+      this.actionSheet.dismiss();
+    }
+  }
+
   goBack() {
     this.navCtrl.pop();
   }
@@ -133,7 +141,7 @@ export class PdPage {
   }
 
   more(jh:PagePDPro){
-    let actionSheet = this.actionSheetCtrl.create({
+    this.actionSheet = this.actionSheetCtrl.create({
       buttons: [
         {
           text: '分享',
@@ -169,7 +177,7 @@ export class PdPage {
         }
       ]
     });
-    actionSheet.present();
+    this.actionSheet.present();
   }
 
   delete(jh:PagePDPro){

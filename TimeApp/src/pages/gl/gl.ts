@@ -3,6 +3,7 @@ import {AlertController, IonicPage, ModalController, NavController, NavParams, V
 import {GcService, PageDcData} from "../gc/gc.service";
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 群组列表 page.
@@ -60,7 +61,7 @@ export class GlPage {
               public view: ViewController,
               private gcService:GcService,
               public modalCtrl: ModalController,
-              public alertCtrl: AlertController) {
+              public util: UtilService) {
 
   }
 
@@ -95,11 +96,15 @@ export class GlPage {
   }
 
   delGroup(g:PageDcData){
-    this.gcService.delete(g.gi).then( async data=>{
-      this.getGroups();
-    }).catch(error=>{
-      console.log("error "+error)
-    })
+    //删除群
+    this.util.popMsgbox("2",()=>{
+      this.gcService.delete(g.gi).then( async data=>{
+        this.getGroups();
+      }).catch(error=>{
+        console.log("error "+error)
+      })
+    });
+
   }
 }
 
