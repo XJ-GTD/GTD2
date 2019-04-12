@@ -39,45 +39,58 @@ export class BrService {
     let c = new CTbl();
     let csql = "select * from gtd_c where ji not in (select ji from gtd_j_h where jt ='1') ";//系统计划的日程不备份
     backupPro.d.c = await this.sqlexec.getExtList<CTbl>(csql);
+    //restFul上传
+    await this.bacRestful.backup(backupPro);
+    backupPro.d.c.length = 0;//清空数组 以防其他表备份时候此数据再被上传
 
     //获取特殊日历
     let sp = new SpTbl();
     backupPro.d.sp = await this.sqlexec.getList<SpTbl>(sp);
+    await this.bacRestful.backup(backupPro);
+    backupPro.d.sp.length = 0;
 
     //获取提醒数据
     let e = new ETbl();
     backupPro.d.e = await this.sqlexec.getList<ETbl>(e);
+    await this.bacRestful.backup(backupPro);
+    backupPro.d.e.length = 0;
 
     //获取日程参与人数据
     let d = new DTbl();
     backupPro.d.d = await this.sqlexec.getList<DTbl>(d);
+    await this.bacRestful.backup(backupPro);
+    backupPro.d.d.length = 0;
 
     //获取联系人信息
     let b = new BTbl();
     backupPro.d.b = await this.sqlexec.getList<BTbl>(b);
+    await this.bacRestful.backup(backupPro);
+    backupPro.d.b.length = 0;
 
     //获取群组信息
     let g = new GTbl();
     backupPro.d.g = await this.sqlexec.getList<GTbl>(g);
+    await this.bacRestful.backup(backupPro);
+    backupPro.d.g.length = 0;
 
     //获取群组人员信息
     let bx = new BxTbl();
     backupPro.d.bx = await this.sqlexec.getList<BxTbl>(bx);
+    await this.bacRestful.backup(backupPro);
+    backupPro.d.bx.length = 0;
 
     //获取本地计划
     let jhsql = "select * from  gtd_j_h where jt <> '1' "//系统计划不备份
     backupPro.d.jh = await this.sqlexec.getExtList<JhTbl>(jhsql);
+    await this.bacRestful.backup(backupPro);
+    backupPro.d.jh.length = 0;
 
     //获取用户偏好
     let u = new UTbl();
     backupPro.d.u = await this.sqlexec.getList<UTbl>(u);
-
-    //test
-    let s = new STbl();
-    backupPro.d.s = await this.sqlexec.getList<STbl>(s);
-
-    //restFul上传
     await this.bacRestful.backup(backupPro);
+    backupPro.d.u.length = 0;
+
 
     let ret = new BsModel();
     ret.code = 0;
