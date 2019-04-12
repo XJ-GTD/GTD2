@@ -118,13 +118,13 @@ export class Fs4cPage {
       });
 
       if (this.addType == 'rc') {
-        this.util.popMsgbox("1",()=>{
+        //this.util.popMsgbox("1",()=>{
           this.fsService.sharefriend(this.tpara, list).then(data => {
             if (data.code == 0) {
               this.navCtrl.popAll();
             }
           })
-        });
+       // });
       } else {
         this.goBack('', '');
       }
