@@ -163,9 +163,6 @@ export class UserConfig {
       if (dcl.length > 0) {
         //和单群人数
         for (let dc of dcl) {
-          // let bx = new BxTbl();
-          // bx.bi = dc.gi;
-          // let fsl: Array<FsData> = await this.sqlliteExec.getList<FsData>(bx);
           let sqlbx ='select gb.*,bh.hiu bhiu from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi' +
             ' left join gtd_bh bh on gb.pwi = bh.pwi where gbx.bi="'+dc.gi+'"';
           let fsl: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sqlbx);
@@ -178,8 +175,8 @@ export class UserConfig {
           dc.gm = DataConfig.QZ_HUIBASE64;
           dc.fsl = fsl;
         }
-        UserConfig.groups = dcl;
       }
+      UserConfig.groups = dcl;
     });
   }
 }
