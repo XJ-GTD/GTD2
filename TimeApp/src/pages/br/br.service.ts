@@ -52,10 +52,9 @@ export class BrService {
     }
 
     //获取特殊日历
-    let sp = new SpTbl();
     let spsql = "select * from gtd_sp sp inner join " +
       " ( select * from gtd_c where ji not in (select ji from gtd_j_h where jt ='1')) c on c.si = sp.si ";//系统计划的日程不备份
-    backupPro.d.sp = await this.sqlexec.getList<SpTbl>(sp);
+    backupPro.d.sp = await this.sqlexec.getExtList<SpTbl>(spsql);
     ret = await this.bacRestful.backup(backupPro);
     backupPro.d.sp.length = 0;
     if (ret.code == -99) {
