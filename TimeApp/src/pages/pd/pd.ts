@@ -164,9 +164,12 @@ export class PdPage {
               });
               alert.present();
             }else{
+
+              //this.util.popMsgbox('确定要删除计划“' + jh.jn +'”吗？',this.delete(jh.ji));
+
               let alert = this.alertCtrl.create({
                 title: '',
-                subTitle: '确定要删除计划“' + jh.jn +"”以及它的所有日程吗？",
+                subTitle: '确定要删除计划“' + jh.jn +"”吗？",
                 buttons: [{
                   text: '取消',
                 }, {
@@ -194,5 +197,13 @@ export class PdPage {
       ]
     });
     actionSheet.present();
+  }
+
+  delete(ji:string){
+    this.pdService.delete(ji).then(data=>{
+      this.navCtrl.pop();
+    }).catch(res=>{
+      this.util.toast('删除计划失败',1500);
+    })
   }
 }

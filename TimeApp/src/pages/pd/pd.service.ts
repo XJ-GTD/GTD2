@@ -97,7 +97,16 @@ export class PdService {
     //获取计划管理日程
     let ctbl:CTbl =new CTbl();
     ctbl.ji = jhTbl.ji;
-    let ctbls = await this.sqlExce.getList<CTbl>(ctbl);
+
+    //修改日程表 计划为 null
+    let sql ='update gtd_c set ji= null where ji = "'+ jhTbl.ji +'";';
+    this.sqlExce.execSql(sql);
+
+    //修改日程表 计划为 null
+    let spSql ='update gtd_sp set ji= null where ji = "'+ jhTbl.ji +'";';
+    this.sqlExce.execSql(spSql);
+
+    /*let ctbls = await this.sqlExce.getList<CTbl>(ctbl);
 
     if(ctbls.length > 0){
       for (let j = 0, len = ctbls.length; j < len; j++) {
@@ -116,7 +125,7 @@ export class PdService {
 
     }else{
       console.log('---------- PdService delete 计划管理日程无数据 ----------------');
-    }
+    }*/
 
     // 删除本地计划
     let tbl: JhTbl = new JhTbl();
@@ -143,7 +152,7 @@ export class PagePDPro{
   jc: string = "";//计划颜色标记
   jt: string = "";//计划类型
 
-  js: number = 0; //日程数量
+  js: any = 0; //日程数量
   jtd: string = "0"; //系统计划区别是否下载
   pt: string = "";//计划名  计划分享使用
 }

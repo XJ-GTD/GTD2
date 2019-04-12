@@ -203,7 +203,7 @@ body {
 </head>
 <body>
 <div th:fragment="time-agenda (time)" style="display:none;">
-<div class="time-slot" th:text="${time != null and #strings.length(time) == 10}? '全天' : ${#strings.substring(time,11,16)}"></div><div class="pointer-slot"><span class="plan-color-pointer"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
+<div class="time-slot" th:text="${time != null and #strings.length(time) == 10}? '全天' : (${#strings.substring(time,11,16) == '99:99'}? '全天' : ${#strings.substring(time,11,16)})"></div><div class="pointer-slot"><span class="plan-color-pointer"><i class="fa fa-circle" aria-hidden="true"></i></span></div>
 </div>
 <div class="full">
 <div class="main">

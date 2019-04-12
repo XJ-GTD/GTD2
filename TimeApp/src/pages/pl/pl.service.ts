@@ -42,6 +42,11 @@ export class PlService {
         ddtbl.si = jhc.si;
         await this.sqlExce.delete(ddtbl);
       }
+
+      // 删除日程附件表
+      let desp = new SpTbl();
+      desp.ji = pid;
+      await this.sqlExce.delete(desp);
     }
     //计划关联日程删除
     await this.sqlExce.delete(dctbl);
@@ -78,8 +83,8 @@ export class PlService {
           ctbl.ui = UserConfig.user.id; //创建者  用户ID
           ctbl.sd = moment(pa.adt).format("YYYY/MM/DD");//开始日期(YYYY/MM/DD HH:mm)
           ctbl.st = pa.st;//时间(YYYY/MM/DD HH:mm)
-          ctbl.ed = moment(pa.ed).format("YYYY/MM/DD");//结束日期(YYYY/MM/DD HH:mm)
-          ctbl.et = pa.et;//时间(YYYY/MM/DD HH:mm)
+          //ctbl.ed = moment(pa.ed).format("YYYY/MM/DD");//结束日期(YYYY/MM/DD HH:mm)
+          //ctbl.et = pa.et;//时间(YYYY/MM/DD HH:mm)
           ctbl.ji = pa.ap;//计划
           ctbl.rt = "0";//重复
           ctbl.bz = pa.am;//备注
@@ -94,8 +99,8 @@ export class PlService {
           sp.spn = ctbl.sn;
           sp.sd = ctbl.sd;
           sp.st = ctbl.st;
-          sp.ed = ctbl.ed;
-          sp.et = ctbl.et;
+          //sp.ed = ctbl.ed;
+          //sp.et = ctbl.et;
           sp.ji = ctbl.ji;
           sp.bz = ctbl.bz;
 
@@ -165,14 +170,18 @@ export class PlService {
         dtbl.si = ctbls[j].si;
         await this.sqlExce.delete(dtbl);
       }
+
+      // 删除日程附件表
+      let desp = new SpTbl();
+      desp.ji = jh.ji;
+      await this.sqlExce.delete(desp);
+
       //计划关联日程删除
       await this.sqlExce.delete(ctbl);
 
       //更新系统计划jdt数据
       jh.jtd = "0";
       await this.upPlan(jh);
-
-      // TODO restful删除分享计划
 
     }else {
       console.log('---------- PdService delete 不是系统计划表 ----------------');
@@ -209,8 +218,9 @@ export class PlService {
           zdyJh.push(jhc);
         }else{
           xtJh.push(jhc);
-          if(jhc.jtd == null || jhc.jtd == ""){
-            jhc.jtd = "0";
+          if(jhc.jtd == null || jhc.jtd == "" || jhc.jtd == '0'){
+            jhc.jtd = '0';
+            jhc.js = '?';
           }
         }
       }
