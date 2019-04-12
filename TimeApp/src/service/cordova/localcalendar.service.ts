@@ -42,6 +42,7 @@ export class LocalcalendarService {
   findEventRc(tit:string,sd:moment.Moment,ed:moment.Moment):Promise<Array<ScdData>>{
     return new Promise((resolve, reject) => {
       console.log("执行查询本地日历");
+      ed = ed.add(1,'d');
       let rco = new Array<ScdData>();
       if(this.util.isMobile()){
         console.log("查询本地日历开始时间："+ sd+ ",结束时间:"+ed);
