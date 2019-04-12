@@ -90,8 +90,12 @@ export class BrService {
       let bsModel = new BsModel<PageBrDataPro>();
       this.bacRestful.getlastest().then(data => {
         bsModel.data = new PageBrDataPro();
-        bsModel.data.bts = data.data.bts;
-        bsModel.data.dt = this.util.tranDate(bsModel.data.bts, "YYYY/MM/DD HH:mm")
+
+        if(data && data.data && data.data.bts){
+          bsModel.data.bts = data.data.bts;
+          bsModel.data.dt = this.util.tranDate(bsModel.data.bts, "YYYY/MM/DD HH:mm")
+        }
+
         resolve(bsModel)
       })
     })
