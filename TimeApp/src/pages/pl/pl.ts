@@ -155,11 +155,11 @@ export class PlPage {
               let count = jh.js;
               this.plService.delete(jh).then(data=>{
                 jh.jtd = '0';
-                jh.js = 0;
+                jh.js = '?';
               }).catch(res=>{
                 jh.jtd = '1';
                 jh.js = count;
-                this.util.toast('删除计划“' + jh.jn + "失败",1500);
+                this.util.toast('删除计划：' + jh.jn + " 失败",1500);
               });
 
             }

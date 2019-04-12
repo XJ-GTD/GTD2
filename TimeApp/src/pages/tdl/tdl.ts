@@ -1,6 +1,6 @@
-import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {
-  Content, Grid, Header,
+  Content,
   MenuController,
   ModalController, ScrollEvent,
 } from 'ionic-angular';
@@ -8,7 +8,7 @@ import {ScdlData, TdlService} from "./tdl.service";
 import {DataConfig} from "../../service/config/data.config";
 import * as moment from "moment";
 import {EmitService} from "../../service/util-service/emit.service";
-import set = Reflect.set;
+import {ScdPageParamter} from "../tdc/tdc.service";
 
 /**
  * Generated class for the 日程列表 page.
@@ -257,21 +257,28 @@ export class TdlPage {
 
 
   toDetail(si, d, gs) {
+
+    let p:ScdPageParamter = new ScdPageParamter();
+    p.si = si;
+    p.d = moment(d);
+
     if (gs == "0") {
       //本人画面
-      this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, {si: si, d: d}).present();
+      this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, p).present();
     }else if(gs =="1") {
       //受邀人画面
-      this.modalCtr.create(DataConfig.PAGE._TDDI_PAGE, {si: si, d: d}).present();
+      this.modalCtr.create(DataConfig.PAGE._TDDI_PAGE, p).present();
     }else{
       //系统画面
-      this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, {si: si, d: d}).present();
+      this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, p).present();
     }
 
   }
 
   toAdd(d) {
-    this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, {d: d}).present();
+    let p:ScdPageParamter = new ScdPageParamter();
+    p.d = moment(d);
+    this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, p).present();
   }
 
 }

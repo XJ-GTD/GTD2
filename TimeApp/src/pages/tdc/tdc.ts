@@ -1,9 +1,9 @@
-import {Component, ElementRef, Renderer2} from '@angular/core';
+import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {
   IonicPage, ModalController, NavController, NavParams,
 } from 'ionic-angular';
 import * as moment from "moment";
-import {TdcService} from "./tdc.service";
+import {ScdPageParamter, TdcService} from "./tdc.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
@@ -21,14 +21,14 @@ import {Keyboard} from "@ionic-native/keyboard";
   selector: 'page-tdc',
   template: `
     <ion-content class="content-set">
-      <ion-grid>
-        <ion-row ngClass="header-set"></ion-row>
+      <ion-grid #grid>
+        <ion-row class="header-set"></ion-row>
         <ion-row>
           <ion-textarea type="text" [(ngModel)]="scd.sn" placeholder="我想..."></ion-textarea>
         </ion-row>
         <ion-row>
-          <div class="lbl-jh2" (click)="toPlanChoose()">
-            {{scd.p.jn == "" ? "添加计划" : ""}}
+          <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh] = "scd.p.jn != ''" [ngStyle] ="{'background-color':scd.p.jc == '' ? '#fffff' : scd.p.jc}">
+            {{scd.p.jn == "" ? "添加计划" : "计划"}}
           </div>
           <div>{{scd.p.jn}}</div>
         </ion-row>
@@ -122,13 +122,14 @@ import {Keyboard} from "@ionic-native/keyboard";
           </div>
         </ion-row>
         <ion-row>
-          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set" (focus)="comentfocus()" (blur)="comentblur()"></ion-textarea>
+          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set" (focus)="comentfocus()"
+                        (blur)="comentblur()"></ion-textarea>
         </ion-row>
-        <ion-row justify-content-left>
-          <div *ngFor="let fss of scd.fss;">
-            <div>{{fss.ran}}</div>
-          </div>
-        </ion-row>
+        <!--<ion-row justify-content-left>-->
+        <!--<div *ngFor="let fss of scd.fss;">-->
+        <!--<div>{{fss.ran}}</div>-->
+        <!--</div>-->
+        <!--</ion-row>-->
       </ion-grid>
     </ion-content>
     <ion-footer class="foot-set">
@@ -174,20 +175,19 @@ export class TdcPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private tdcServ: TdcService, private util: UtilService,
               public modalCtrl: ModalController, private busiServ: PgBusiService,
-            private el: ElementRef,
-            private keyboard: Keyboard,private _renderer: Renderer2,) {
+              private keyboard: Keyboard, private _renderer: Renderer2,) {
 
   }
 
-  comentfocus(){
-    // this.keyboard.onKeyboardShow().subscribe(value=>{
-    //   this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(-300px)");
-    // })
+
+  comentfocus() {
+    if (this.keyboard){
+      this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(-300px)");
+    }
   }
-  comentblur(){
-    // this.keyboard.onKeyboardHide().subscribe(value=>{
-    //   this._renderer.setStyle(this.el.nativeElement, "transform", "translateY(0px)");
-    // })
+
+  comentblur() {
+    this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(0px)");
   }
 
   //画面状态：0：新建 ，1：未关闭直接修改
@@ -195,6 +195,8 @@ export class TdcPage {
   //画面数据
   scd: ScdData = new ScdData();
   b: boolean = true;
+  @ViewChild("grid")
+  grid: ElementRef;
 
   rept = {
     close: 0,
@@ -220,11 +222,6 @@ export class TdcPage {
   IsShowCover: boolean = false;
   jhs: any;
 
-  ionViewDidLoad() {
-
-    console.log('ionViewDidLoad NewAgendaPage');
-  }
-
   ionViewWillEnter() {
 
     this.busiServ.getPlans().then(data => {
@@ -235,22 +232,16 @@ export class TdcPage {
     });
 
     //新建的场合初始化
-    if (this.navParams.get("dateStr")) {
-      this.scd.sd = this.navParams.get("dateStr");
-      this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
-      if (this.scd.st) {
-        this.scd.st = moment(this.scd.sd + " " + this.scd.st).format("HH:mm");
-      } else {
-        this.scd.st = moment().format("HH:mm");
-      }
-      this.scd.rt = "0";
-      this.scd.tx = "0";
-      this.pagestate = "0";
-      this.rept.close = 1;
-      this.wake.close = 1;
-      return;
+    if (this.navParams) {
+      let paramter: ScdPageParamter = this.navParams.data;
+      this.scd.sd = paramter.d.format("YYYY-MM-DD");
+      this.scd.st = moment().add(1, "h").format("HH:00");
     }
-
+    this.scd.rt = "0";
+    this.scd.tx = "0";
+    this.pagestate = "0";
+    this.rept.close = 1;
+    this.wake.close = 1;
   }
 
   //重复按钮显示控制

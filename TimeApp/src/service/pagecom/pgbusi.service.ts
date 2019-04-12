@@ -534,6 +534,9 @@ export class ScdData {
   morecolor:string ="#FFFFFF";//more颜色画面显示
 
 
+  showSd: string = "";//画面显示特殊表开始日期
+
+
   //特殊日期日程
   specScds: Map<string, SpecScdData> = new Map<string, SpecScdData>();
 

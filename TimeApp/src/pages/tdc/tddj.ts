@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {ActionSheetController, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {BsModel} from "../../service/restful/out/bs.model";
@@ -6,7 +6,8 @@ import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
 import {FsData, PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
-import {TdcService} from "./tdc.service";
+import {ScdPageParamter, TdcService} from "./tdc.service";
+import {Keyboard} from "@ionic-native/keyboard";
 
 /**
  * Generated class for the 日程详情（发布人） page.
@@ -17,229 +18,236 @@ import {TdcService} from "./tdc.service";
 
 @Component({
   selector: 'page-tddj',
-  template:`<ion-header no-border class="header-set">
-    <ion-toolbar>
-      <ion-grid>
-        <ion-row right>
-          <div class="h-auto " >
-            <ion-buttons right>
-              <button ion-button icon-only (click)="presentActionSheet()" color="light">
-                <img  class="imgdel-set" src="../../assets/imgs/del.png">
-              </button>
-            </ion-buttons>
+  template: `
+    <ion-content class="content-set">
+      <ion-grid #grid>
+        <ion-row class="header-set"></ion-row>
+        <ion-row>
+          <ion-textarea type="text" [(ngModel)]="scd.sn" placeholder="我想..."></ion-textarea>
+        </ion-row>
+        <ion-row>
+          <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh] = "scd.p.jn != ''" [ngStyle] ="{'background-color':scd.p.jc == '' ? '#fffff' : scd.p.jc}">
+            {{scd.p.jn == "" ? "添加计划" : "计划"}}
+          </div>
+          <div>{{scd.p.jn}}</div>
+        </ion-row>
+        <ion-row>
+          <div>
+            <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
+                          pickerFormat="YYYY MM DD" color="light"
+                          [(ngModel)]="scd.showSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
+                          min="1999-01-01" max="2039-12-31" (ionCancel)="getDtPickerSel($event)"
+            ></ion-datetime>
+          </div>
+        </ion-row>
+        <ion-row>
+          <ion-toggle [(ngModel)]="alld" [class.allday]="b"></ion-toggle>
+          <div>
+            <ion-datetime displayFormat="HH:mm" [(ngModel)]="scd.st"
+                          pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)" [hidden]="alld"></ion-datetime>
+
+          </div>
+        </ion-row>
+        <ion-row>
+          <div class="reptlbl">重复</div>
+          <div class="reptlbl">
+            <button ion-button round clear class="sel-btn-set"
+                    [class.sel-btn-seled-close]="rept.close == 1"
+                    (click)="clickrept('0')">关
+            </button>
+          </div>
+          <div class="reptlbl">
+            <button ion-button round clear class="sel-btn-set"
+                    [class.sel-btn-seled]="rept.d== 1"
+                    (click)="clickrept('1')">天
+            </button>
+          </div>
+          <div class="reptlbl">
+            <button ion-button round clear class="sel-btn-set"
+                    [class.sel-btn-seled]="rept.w== 1"
+                    (click)="clickrept('2')">周
+            </button>
+          </div>
+          <div class="reptlbl">
+            <button ion-button round clear class="sel-btn-set"
+                    [class.sel-btn-seled]="rept.m== 1"
+                    (click)="clickrept('3')">月
+            </button>
+          </div>
+          <div class="reptlbl">
+            <button ion-button round clear class="sel-btn-set"
+                    [class.sel-btn-seled]="rept.y== 1"
+                    (click)="clickrept('4')">年
+            </button>
+          </div>
+        </ion-row>
+        <ion-row>
+          <div class="reptlb2 ">提醒</div>
+          <div class="reptlb2">
+            <button ion-button round clear class="sel-btn-set"
+                    [class.sel-btn-seled-close]="wake.close == 1"
+                    (click)="clickwake('0')">关
+            </button>
+          </div>
+          <div class="reptlb2">
+            <button ion-button round clear class="sel-btn-set"
+                    [class.sel-btn-seled]="wake.tenm == 1"
+                    (click)="clickwake('1')">10m
+            </button>
+          </div>
+          <div class="reptlb2">
+            <button ion-button round clear class="sel-btn-set"
+                    [class.sel-btn-seled]="wake.thirm == 1"
+                    (click)="clickwake('2')">30m
+            </button>
+          </div>
+          <div class="reptlb2">
+            <button ion-button round clear class="sel-btn-set"
+                    [class.sel-btn-seled]="wake.oh == 1"
+                    (click)="clickwake('3')">1h
+            </button>
+          </div>
+          <div class="reptlb2">
+            <button ion-button round clear class="sel-btn-set"
+                    [ngClass]="wake.foh == 1?'sel-btn-seled':'sel-btn-unsel'"
+                    (click)="clickwake('4')">4h
+            </button>
+          </div>
+          <div class="reptlb2">
+            <button ion-button round clear class="sel-btn-set"
+                    [ngClass]="wake.od == 1?'sel-btn-seled':'sel-btn-unsel'"
+                    (click)="clickwake('5')">1d
+            </button>
+          </div>
+        </ion-row>
+        <ion-row>
+          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set" (focus)="comentfocus()"
+                        (blur)="comentblur()"></ion-textarea>
+        </ion-row>
+        <ion-row justify-content-left>
+          <div *ngFor="let fss of scd.fss;">
+            <div>{{fss.ran}}</div>
           </div>
         </ion-row>
       </ion-grid>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content class ="content-set">
-    <ion-grid>
-      <ion-row >
-        <div class = "input-set">
-          <ion-input type="text" [(ngModel)]="scd.sn"  ></ion-input>
-        </div>
-      </ion-row>
-      <ion-row >
-        <div (click)="toPlanChoose()" class ="lbl-jh">
-          <ion-label class="lbl-jh2"  >{{scd.p.jn=="" || scd.p.jn==null?"添加计划":scd.p.jn}}</ion-label>
-        </div>
-      </ion-row>
-      <ion-row >
-        <div class="date-set" >
-          <ion-item>
-          <ion-datetime [disabled]="rept_flg?true:false"  displayFormat="YYYY年M月DD日 DDDD"
-                        pickerFormat = "YYYY MM DD" color="light"
-                        [(ngModel)]="scd.sd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
-                        min="1999-01-01" max="2039-12-31"  (ionCancel)="getDtPickerSel($event)"
-                        ></ion-datetime>
-          </ion-item> 
-        </div>
-      </ion-row>
-      <ion-row >
-        <div class = "tog-set">
-          <ion-item>
-                <ion-toggle [disabled]="rept_flg?true:false"  [(ngModel)]="alld"  [class.allday]="b"></ion-toggle>
-            </ion-item>
-        </div>
-          <div class = "tm-set" [hidden]="alld">
-            <ion-item>
-                <ion-datetime [disabled]="rept_flg?true:false"  displayFormat="HH:mm" [(ngModel)]="scd.st"
-                              pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)"></ion-datetime>
-              </ion-item>
-          </div>
-      </ion-row>
-      <ion-row >
-        <div class ="reptlbl repttop"><ion-label>重复</ion-label></div>
-        <div class ="repttop1"><button [disabled]="rept_flg?true:false"  ion-button  round clear class ="sel-btn-set"
-                     [ngClass]="rept.close == 1?'sel-btn-seled':'sel-btn-unsel'"  
-                     (click)="clickrept('0')">关</button></div>
-        <div class ="repttop1"><button [disabled]="rept_flg?true:false"  ion-button  round clear class ="sel-btn-set"
-                     [ngClass]="rept.d == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickrept('1')">天</button></div>
-        <div class ="repttop1"><button [disabled]="rept_flg?true:false"  ion-button  round  clear class ="sel-btn-set"
-                     [ngClass]="rept.w == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickrept('2')">周</button></div>
-        <div class ="repttop1"><button [disabled]="rept_flg?true:false"  ion-button  round clear class ="sel-btn-set"
-                     [ngClass]="rept.m == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickrept('3')">月</button></div>
-        <div class ="repttop1"><button [disabled]="rept_flg?true:false"  ion-button  round clear class ="sel-btn-set"
-                     [ngClass]="rept.y == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickrept('4')">年</button></div>
-      </ion-row>
-      <ion-row >
-        <div class ="reptlbl txtop"><ion-label>提醒</ion-label></div>
-        <div class ="txtop1"><button ion-button  round clear class ="sel-btn-set"
-                     [ngClass]="wake.close == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake('0')">关</button></div>
-        <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
-                     [ngClass]="wake.tenm == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake('1')">10分钟</button></div>
-        <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
-                     [ngClass]="wake.thirm == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake('2')">30分钟</button></div>
-        <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
-                     [ngClass]="wake.oh == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake('3')">1小时</button></div>
-        <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
-                     [ngClass]="wake.foh == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake('4')">4小时</button></div>
-        <div class ="txtop1"><button ion-button  round clear  class ="sel-btn-set"
-                     [ngClass]="wake.od == 1?'sel-btn-seled':'sel-btn-unsel'"
-                     (click)="clickwake('5')">1天</button></div>
-      </ion-row>
-      <ion-row >
-        <div class = "memo-set">
-          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz"></ion-textarea>
-        </div>
-      </ion-row>
-      <ion-row class="img-row">
-        <div class ="img-div"   *ngFor ="let fs of fssshow;">
-          <div><img class ="img-set" [src]="fs.bhiu"></div>
-          <div class ="img-rn">{{fs.rn}}</div>
-        </div>
-      </ion-row>
-    </ion-grid>
-    <ion-footer class ="foot-set">
+    </ion-content>
+    <ion-footer class="foot-set">
       <ion-toolbar>
-        <ion-grid>
-          <ion-row >
-            <div class="dobtn-set">
-              <div class ="cancelbtn-set">
-                <ion-buttons  >
-                  <button  ion-button icon-only (click)="cancel()" color="light">
-                    <ion-icon name="close"></ion-icon>
-                  </button>
-                </ion-buttons>
-              </div>
-              <div >
-                <ion-buttons class ="okbtn-set" >
-                  <button  ion-button icon-only (click)="save()" color="light">
-                    <ion-icon name="checkmark"></ion-icon>
-                  </button>
-                </ion-buttons>
-              </div>
-              <div>
-                <ion-buttons>
-                  <button  ion-button icon-only (click)="goShare()" color="light">发送
-                    
-                  </button>
-                </ion-buttons>
-              </div>
-            </div> 
-          </ion-row>
-        </ion-grid>
+        <ion-buttons start padding-left>
+          <button ion-button icon-only (click)="cancel()" start>
+            <ion-icon name="close"></ion-icon>
+          </button>
+        </ion-buttons>
+        <ion-buttons>
+          <button ion-button full (click)="goShare()">发送</button>
+        </ion-buttons>
+
+        <ion-buttons end padding-right>
+          <button ion-button icon-only (click)="save()" end>
+            <ion-icon name="checkmark"></ion-icon>
+          </button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-footer>
-  </ion-content>
+    <ion-content padding class="select-plan" *ngIf="isShowPlan">
+      <ion-grid>
+        <ion-row>
 
-  <ion-content padding class="select-plan" *ngIf="isShowPlan">
-    <ion-grid>
-      <ion-row>
+          <ion-list no-lines radio-group [(ngModel)]="scd.p">
+            <ion-item class="plan-list-item" *ngFor="let option of jhs">
+              <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
+              <ion-label>{{option.jn}}</ion-label>
+              <ion-radio [value]="option"></ion-radio>
+            </ion-item>
+          </ion-list>
 
-        <ion-list  no-lines  radio-group [(ngModel)]="scd.p" >
-          <ion-item class="plan-list-item" *ngFor="let option of jhs">
-            <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
-            <ion-label>{{option.jn}}</ion-label>
-            <ion-radio  [value]="option" ></ion-radio>
-          </ion-item>
-        </ion-list>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
 
-      </ion-row>
-    </ion-grid>
-  </ion-content>
+    <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>
 
-  <!--遮罩层-->
-  <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>`
+  `
 })
 export class TddjPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private tddjServ :TdcService,private util:UtilService,
+              private tddjServ: TdcService, private util: UtilService,
               public actionSheetCtrl: ActionSheetController,
-              public modalCtrl: ModalController   , private  busiServ : PgBusiService           ) {
+              public modalCtrl: ModalController, private  busiServ: PgBusiService,
+              private keyboard: Keyboard, private _renderer: Renderer2,) {
 
   }
 
 
   //画面数据
-  scd :ScdData = new ScdData();
-  b:boolean = true;
-  fssshow : Array<FsData> =new Array<FsData>();
+  scd: ScdData = new ScdData();
+  b: boolean = true;
+  fssshow: Array<FsData> = new Array<FsData>();
 
   //重复日程不可以修改日期
-  rept_flg :boolean = false;
+  rept_flg: boolean = false;
 
   rept = {
-    close:0,
-    d:0,
-    w:0,
-    m:0,
-    y:0
+    close: 0,
+    d: 0,
+    w: 0,
+    m: 0,
+    y: 0
   };
 
   wake = {
-    close:0,
-    tenm:0,
-    thirm:0,
-    oh:0,
-    foh:0,
-    od:0
+    close: 0,
+    tenm: 0,
+    thirm: 0,
+    oh: 0,
+    foh: 0,
+    od: 0
   };
 
   //全天
-  alld:boolean = false;
+  alld: boolean = false;
 
   isShowPlan: boolean = false;
   IsShowCover: boolean = false;
-  jhs:any;
+  jhs: any;
+  @ViewChild("grid")
+  grid: ElementRef;
 
-  ionViewDidLoad() {
-
-    console.log('ionViewDidLoad NewAgendaPage');
+  comentfocus() {
+    if (this.keyboard){
+      this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(-300px)");
+    }
   }
+
+  comentblur() {
+    this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(0px)");
+  }
+
 
   ionViewWillEnter() {
 
 
-    if (this.navParams.get("si")){
-      this.tddjServ.get(this.navParams.get("si")).then(data=>{
-        let bs : BsModel<ScdData> = data;
-        Object.assign(this.scd,bs.data);
+    let paramter: ScdPageParamter = this.navParams.data;
+    if (this.navParams.get("si")) {
+      this.tddjServ.get(paramter.si).then(data => {
+        let bs: BsModel<ScdData> = data;
+        Object.assign(this.scd, bs.data);
+        this.scd.showSd = paramter.d.format("YYYY-MM-DD");
 
-        this.busiServ.getPlans().then(data=>{
+        this.busiServ.getPlans().then(data => {
           this.jhs = data;
-          for (let i=0;i<this.jhs.length;i++){
-            if (this.jhs[i].ji == this.scd.ji){
+          for (let i = 0; i < this.jhs.length; i++) {
+            if (this.jhs[i].ji == this.scd.ji) {
               this.scd.p = this.jhs[i];
               break;
             }
           }
-        }).catch(res=>{
-          console.log("获取计划失败" + JSON.stringify(res));
+        }).catch(res => {
         });
 
         //重复日程不可以修改日期
-        if (this.scd.rt != "0"){
+        if (this.scd.rt != "0") {
           this.rept_flg = true;
         }
 
@@ -257,13 +265,13 @@ export class TddjPage {
           this.alld = false;
         }
 
-        this.clickrept(this.scd.rt+'');
+        this.clickrept(this.scd.rt + '');
         this.clickwake(this.scd.tx + '');
 
       });
 
       //获取日程参与人表
-      this.tddjServ.getCalfriend(this.navParams.get("si")).then(data=>{
+      this.tddjServ.getCalfriend(this.navParams.get("si")).then(data => {
         this.fssshow = data;
       });
 
@@ -273,10 +281,10 @@ export class TddjPage {
   }
 
   //重复按钮显示控制
-  clickrept(type:string){
+  clickrept(type: string) {
     this.scd.rt = type;
 
-    switch (type){
+    switch (type) {
       case "0":
         this.rept.close = 1;
         this.rept.d = 0;
@@ -323,18 +331,18 @@ export class TddjPage {
   }
 
   //提醒按钮显示控制
-  clickwake(type:string){
+  clickwake(type: string) {
 
     this.scd.tx = type;
 
-    switch (type){
+    switch (type) {
       case "0":
         this.wake.close = 1;
         this.wake.tenm = 0;
         this.wake.thirm = 0;
         this.wake.oh = 0;
         this.wake.foh = 0;
-        this.wake.od=0;
+        this.wake.od = 0;
         break;
       case "1":
         this.wake.close = 0;
@@ -342,7 +350,7 @@ export class TddjPage {
         this.wake.thirm = 0;
         this.wake.oh = 0;
         this.wake.foh = 0;
-        this.wake.od=0;
+        this.wake.od = 0;
         break;
       case "2":
         this.wake.close = 0;
@@ -350,7 +358,7 @@ export class TddjPage {
         this.wake.thirm = 1;
         this.wake.oh = 0;
         this.wake.foh = 0;
-        this.wake.od=0;
+        this.wake.od = 0;
         break;
       case "3":
         this.wake.close = 0;
@@ -358,7 +366,7 @@ export class TddjPage {
         this.wake.thirm = 0;
         this.wake.oh = 1;
         this.wake.foh = 0;
-        this.wake.od=0;
+        this.wake.od = 0;
         break;
       case "4":
         this.wake.close = 0;
@@ -366,7 +374,7 @@ export class TddjPage {
         this.wake.thirm = 0;
         this.wake.oh = 0;
         this.wake.foh = 1;
-        this.wake.od=0;
+        this.wake.od = 0;
         break;
       case "5":
         this.wake.close = 0;
@@ -374,7 +382,7 @@ export class TddjPage {
         this.wake.thirm = 0;
         this.wake.oh = 0;
         this.wake.foh = 0;
-        this.wake.od=1;
+        this.wake.od = 1;
         break;
       default:
         this.wake.close = 1;
@@ -382,19 +390,19 @@ export class TddjPage {
         this.wake.thirm = 0;
         this.wake.oh = 0;
         this.wake.foh = 0;
-        this.wake.od=0;
+        this.wake.od = 0;
         this.scd.tx = "0";
     }
   }
 
-  cancel(){
+  cancel() {
     this.navCtrl.pop();
 
   }
 
-  save(share){
+  save(share) {
 
-    if (!this.chkinput()){
+    if (!this.chkinput()) {
       return
     }
     //提醒内容设置
@@ -428,36 +436,36 @@ export class TddjPage {
 
     this.scd.ji = this.scd.p.ji;
 
+    //归属 本人创建
+    this.scd.gs = '0';
+
     this.util.loadingStart();
-    this.tddjServ.updateDetail(this.scd).then(data =>{
+    this.tddjServ.updateDetail(this.scd).then(data => {
       this.util.loadingEnd();
-      this.util.toast("保存成功",2000);
-      if(typeof(eval(share))=="function")
-      {
+      this.util.toast("保存成功", 2000);
+      if (typeof (eval(share)) == "function") {
         share();
       }
-      return ;
-    }).catch(err=>{
+      return;
+    }).catch(err => {
       this.util.loadingEnd();
     });
 
 
-
-
   }
 
-  chkinput():boolean{
-    if (this.scd.sn == ""){
-      this.util.toast("请输入主题",2000);
+  chkinput(): boolean {
+    if (this.scd.sn == "") {
+      this.util.toast("请输入主题", 2000);
       return false;
     }
     return true;
   }
 
-  goShare(){
+  goShare() {
     //日程分享打开参与人选择rc日程类型
-    this.save(()=>{
-      this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE,{addType:'rc',tpara:this.scd.si});
+    this.save(() => {
+      this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
     })
 
   }
@@ -471,26 +479,26 @@ export class TddjPage {
           {
             text: '删除今后所有日程',
             role: 'destructive',
-            cssClass:'btn-del',
+            cssClass: 'btn-del',
             handler: () => {
 
-              if (moment(d).format("YYYY/MM/DD") == moment(this.scd.sd).format("YYYY/MM/DD")){
+              if (moment(d).format("YYYY/MM/DD") == moment(this.scd.sd).format("YYYY/MM/DD")) {
                 //如果开始日与选择的当前日一样，就是删除所有
                 this.util.loadingStart();
-                this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
+                this.tddjServ.delete(this.scd.si, "2", d).then(data => {
                   this.util.loadingEnd();
-                  this.util.toast("删除成功",1500);
+                  this.util.toast("删除成功", 1500);
                   this.cancel();
-                }).catch(err=>{
+                }).catch(err => {
                   this.util.loadingEnd();
                 });
-              }else{
+              } else {
                 this.util.loadingStart();
-                this.tddjServ.delete(this.scd.si,"1",d).then(data=>{
+                this.tddjServ.delete(this.scd.si, "1", d).then(data => {
                   this.util.loadingEnd();
-                  this.util.toast("删除成功",1500);
+                  this.util.toast("删除成功", 1500);
                   this.cancel();
-                }).catch(err=>{
+                }).catch(err => {
                   this.util.loadingEnd();
                 });
               }
@@ -498,21 +506,21 @@ export class TddjPage {
             }
           }, {
             text: '删除所有日程',
-            cssClass:'btn-delall',
+            cssClass: 'btn-delall',
             handler: () => {
               this.util.loadingStart();
-               this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
-                 this.util.loadingEnd();
-                 this.util.toast("删除成功",1500);
-                 this.cancel();
-               }).catch(err=>{
-                 this.util.loadingEnd();
-               });
+              this.tddjServ.delete(this.scd.si, "2", d).then(data => {
+                this.util.loadingEnd();
+                this.util.toast("删除成功", 1500);
+                this.cancel();
+              }).catch(err => {
+                this.util.loadingEnd();
+              });
             }
           }, {
             text: '取消',
             role: 'cancel',
-            cssClass:'btn-cancel',
+            cssClass: 'btn-cancel',
             handler: () => {
 
             }
@@ -520,26 +528,27 @@ export class TddjPage {
         ]
       });
       actionSheet.present();
-    }else{
+    } else {
       //非重复日程删除
       this.util.loadingStart();
-      this.tddjServ.delete(this.scd.si,"2",d).then(data=>{
+      this.tddjServ.delete(this.scd.si, "2", d).then(data => {
         this.util.loadingEnd();
-        this.util.toast("删除成功",1500);
+        this.util.toast("删除成功", 1500);
         this.cancel();
-      }).catch(err=>{
+      }).catch(err => {
         this.util.loadingEnd();
       });
     }
 
 
   }
-  toPlanChoose(){
-    if(this.jhs.length > 0){
+
+  toPlanChoose() {
+    if (this.jhs.length > 0) {
       this.isShowPlan = true;
       this.IsShowCover = true;
-    }else {
-      this.util.toast("未创建计划",1500);
+    } else {
+      this.util.toast("未创建计划", 1500);
     }
   }
 
@@ -548,26 +557,26 @@ export class TddjPage {
       this.isShowPlan = false;
       this.IsShowCover = false;
 
-      console.log("check:"+this.scd.ji);
-      console.log("check1:"+this.scd.p.ji);
+      console.log("check:" + this.scd.ji);
+      console.log("check1:" + this.scd.p.ji);
     }
   }
 
-  getDtPickerSel(evt){
+  getDtPickerSel(evt) {
 
     let el = document.getElementsByClassName("picker-opt-selected")
 
-    if (el && el.length==3){
-      this.scd.sd = el[0].textContent + "-" +el[1].textContent +"-" +el[2].textContent;
+    if (el && el.length == 3) {
+      this.scd.sd = el[0].textContent + "-" + el[1].textContent + "-" + el[2].textContent;
     }
   }
 
-  getHmPickerSel(evt){
+  getHmPickerSel(evt) {
 
     let el = document.getElementsByClassName("picker-opt-selected")
 
-    if (el && el.length==2){
-      this.scd.st = el[0].textContent + ":" +el[1].textContent;
+    if (el && el.length == 2) {
+      this.scd.st = el[0].textContent + ":" + el[1].textContent;
     }
   }
 
