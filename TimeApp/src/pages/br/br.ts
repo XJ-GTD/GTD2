@@ -51,7 +51,7 @@ export class BrPage {
 
   constructor(public navCtrl: NavController,
               private brService:BrService,
-              private util: UtilService) {
+              private util: UtilService,) {
   }
 
   ionViewDidLoad() {
@@ -59,15 +59,18 @@ export class BrPage {
   }
 
   ionViewDidEnter(){
+    this.getLastDate();
+  }
+
+  getLastDate(){
     this.brService.getLastDt().then(data=>{
       this.bts = data.data.bts;
-      if(this.bts && this.bts!=""){
-        this.isRecover = "block";
+      if(this.bts && this.bts!=''){
+        this.isRecover = 'block';
       }
-
-      console.log("获取页面获取最后更新时间     ："+this.bts);
-    }).catch(res=>{
-      console.log("获取页面获取最后更新时间失败" + JSON.stringify(res));
+      console.log('获取最后更新时间：'+this.bts);
+    }).catch(error=>{
+      console.log('获取最后更新时间失败' + JSON.stringify(error));
     });
   }
 
@@ -76,15 +79,27 @@ export class BrPage {
   }
 
   backup(){
+    this.util.loadingStart();
     this.brService.backup().then(data=>{
-      this.util.toast("备份完成",1500)
+      this.util.toast('备份完成',1500)
+      this.getLastDate();
+      this.util.loadingEnd();
+    }).catch(error=>{
+      this.util.loadingEnd();
+      console.log('备份失败' + JSON.stringify(error));
     })
+
   }
 
   recover(){
     if(this.isRecover){
+      this.util.loadingStart();
       this.brService.recover(Number(this.bts)).then(data=>{
-        this.util.toast("恢复成功",1500)
+        this.util.toast('恢复成功',1500)
+        this.util.loadingEnd();
+      }).catch(error=>{
+        this.util.loadingEnd();
+        console.log('恢复失败' + JSON.stringify(error));
       })
     }
   }

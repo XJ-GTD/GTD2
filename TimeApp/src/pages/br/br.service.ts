@@ -37,7 +37,8 @@ export class BrService {
 
     //获取本地日历
     let c = new CTbl();
-    backupPro.d.c = await this.sqlexec.getList<CTbl>(c);
+    let csql = "select * from gtd_c where ji not in (select ji from gtd_j_h where jt ='1') ";//系统计划的日程不备份
+    backupPro.d.c = await this.sqlexec.getExtList<CTbl>(csql);
 
     //获取特殊日历
     let sp = new SpTbl();
@@ -64,8 +65,8 @@ export class BrService {
     backupPro.d.bx = await this.sqlexec.getList<BxTbl>(bx);
 
     //获取本地计划
-    let jh = new JhTbl();
-    backupPro.d.jh = await this.sqlexec.getList<JhTbl>(jh);
+    let jhsql = "select * from  gtd_j_h where jt <> '1' "//系统计划不备份
+    backupPro.d.jh = await this.sqlexec.getExtList<JhTbl>(jhsql);
 
     //获取用户偏好
     let u = new UTbl();

@@ -92,8 +92,8 @@ export class PdPage {
   jh:PagePDPro;
   today: string = new Date().toISOString();
   plan:any ={
-    "pn": {},
-    "pa":new Array<AgdPro>(),
+    'pn': {},
+    'pa':new Array<AgdPro>(),
   };
   IsShowDiv: boolean = false;
   IsShowCover: boolean = false;
@@ -105,7 +105,7 @@ export class PdPage {
               private actionSheetCtrl: ActionSheetController,
               private util: UtilService,
               private pdService:PdService) {
-    this.jh = this.navParams.get("jh");
+    this.jh = this.navParams.get('jh');
     this.plan.pn = this.jh;
   }
 
@@ -134,7 +134,6 @@ export class PdPage {
 
   more(jh:PagePDPro){
     let actionSheet = this.actionSheetCtrl.create({
-      //title: 'Modify your album',
       buttons: [
         {
           text: '分享',
