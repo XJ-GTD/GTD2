@@ -41,41 +41,41 @@ public class AgdAgendaController {
      */
     @RequestMapping(value="/agenda/save",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto add(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
+    public BaseOutDto add(@RequestBody AgdAgendaDto freshAgd,HttpServletRequest request) {
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
     	log.info("---- 保存日程获取头部ai  -----" + relId);
-    	log.info("---- 保存日程获取获取参数  -----" + JSONObject.toJSONString(blacklist));
+    	log.info("---- 保存日程获取获取参数  -----" + JSONObject.toJSONString(freshAgd));
     	
-    	AgdAgenda agd = agendaService.findById(blacklist.getAi());
+    	AgdAgenda agd = agendaService.findById(freshAgd.getAi());
     	boolean isDef = false; 
 		if(agd != null){
 			log.info("---- 服务器日程获取获取参数  -----" + JSONObject.toJSONString(agd));
-			if(agd.getTitle() == null || !agd.getTitle().equals(blacklist.getAt())){
-				log.info(agd.getTitle() + " => " + blacklist.getAt());
+			if(agd.getTitle() == null || !agd.getTitle().equals(freshAgd.getAt())){
+				log.info(agd.getTitle() + " => " + freshAgd.getAt());
 				isDef = true;
 			}
-			if(agd.getAgendaDate() == null || !agd.getAgendaDate().equals(blacklist.getAdt())){
-				log.info(agd.getAgendaDate() + " => " + blacklist.getAdt());
+			if(agd.getAgendaDate() == null || !agd.getAgendaDate().equals(freshAgd.getAdt())){
+				log.info(agd.getAgendaDate() + " => " + freshAgd.getAdt());
 				isDef = true;
 			}
-			if(agd.getAgendaTime() == null || !agd.getAgendaTime().equals(blacklist.getSt())){
-				log.info(agd.getAgendaTime() + " => " + blacklist.getSt());
+			if(agd.getAgendaTime() == null || !agd.getAgendaTime().equals(freshAgd.getSt())){
+				log.info(agd.getAgendaTime() + " => " + freshAgd.getSt());
 				isDef = true;
 			}
-			if(agd.getEndDate() == null || !agd.getEndDate().equals(blacklist.getEd())){
-				log.info(agd.getEndDate() + " => " + blacklist.getEd());
+			if(agd.getEndDate() == null || !agd.getEndDate().equals(freshAgd.getEd())){
+				log.info(agd.getEndDate() + " => " + freshAgd.getEd());
 				isDef = true;
 			}
-			if(agd.getEndTime() == null || !agd.getEndTime().equals(blacklist.getEt())){
-				log.info(agd.getEndTime() + " => " + blacklist.getEt());
+			if(agd.getEndTime() == null || !agd.getEndTime().equals(freshAgd.getEt())){
+				log.info(agd.getEndTime() + " => " + freshAgd.getEt());
 				isDef = true;
 			}
 //			if(agd.getRemindFlag() != null && !agd.getRemindFlag().equals(blacklist.getAa())){
 //				isDef = true;
 //			}
-			if(agd.getRepeatType() == null || !agd.getRepeatType().equals(blacklist.getAr())){
-				log.info(agd.getRepeatType() + " => " + blacklist.getAr());
+			if(agd.getRepeatType() == null || !agd.getRepeatType().equals(freshAgd.getAr())){
+				log.info(agd.getRepeatType() + " => " + freshAgd.getAr());
 				isDef = true;
 			}
 		}else{
@@ -87,9 +87,9 @@ public class AgdAgendaController {
 		}
 		
     	if(isDef && !"".equals(relId) && relId != null && 
-    			blacklist.getAi() != null &&!"".equals(blacklist.getAi())){
-    		blacklist.setFc(relId);
-    		AgdAgenda xj = agendaService.save(blacklist);
+    			freshAgd.getAi() != null &&!"".equals(freshAgd.getAi())){
+    		freshAgd.setFc(relId);
+    		AgdAgenda xj = agendaService.save(freshAgd);
     		out.setD(xj);
     		out.setRc(ReturnMessage.SUCCESS_CODE);
     		out.setRm(ReturnMessage.SUCCESS_MSG);
@@ -108,15 +108,15 @@ public class AgdAgendaController {
      */
     @RequestMapping(value="/agenda/info",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto getInfo(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
+    public BaseOutDto getInfo(@RequestBody AgdAgendaDto freshAgd,HttpServletRequest request) {
     	BaseOutDto out = new BaseOutDto();
     	
     	//String relId = request.getHeader("ai");
-    	log.info("---- 保存日程获取获取参数  -----" + JSONObject.toJSONString(blacklist));
-    	String agdId = blacklist.getAi();
+    	log.info("---- 保存日程获取获取参数  -----" + JSONObject.toJSONString(freshAgd));
+    	String agdId = freshAgd.getAi();
     	if(!"".equals(agdId) && agdId != null){
 //    		blacklist.setFc(relId);
-    		AgdAgenda agd = agendaService.findById(blacklist.getAi());
+    		AgdAgenda agd = agendaService.findById(freshAgd.getAi());
     		if(agd != null){
     			out.setD(BaseUtil.agdToDtoAgd(agd));
     		}
@@ -136,14 +136,14 @@ public class AgdAgendaController {
      */
     @RequestMapping(value="/agenda/remove",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto remove(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
+    public BaseOutDto remove(@RequestBody AgdAgendaDto freshAgd,HttpServletRequest request) {
     	
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
-    	log.info("---- 保存日程获取获取参数  -----" + JSONObject.toJSONString(blacklist));
-    	if(!"".equals(blacklist.getAi()) && blacklist.getAi() != null){
-    		blacklist.setFc(relId);
-    		agendaService.deleteById(blacklist);
+    	log.info("---- 保存日程获取获取参数  -----" + JSONObject.toJSONString(freshAgd));
+    	if(!"".equals(freshAgd.getAi()) && freshAgd.getAi() != null){
+    		freshAgd.setFc(relId);
+    		agendaService.deleteById(freshAgd);
     		out.setRc(ReturnMessage.SUCCESS_CODE);
     		out.setRm(ReturnMessage.SUCCESS_MSG);
     	}else{
@@ -160,13 +160,13 @@ public class AgdAgendaController {
      */
     @RequestMapping(value="/agendacontacts/save",method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutDto saveContacts(@RequestBody AgdAgendaDto blacklist,HttpServletRequest request) {
-    	log.info("---- 保存日程参与人获取获取参数  -----" + JSONObject.toJSONString(blacklist));
+    public BaseOutDto saveContacts(@RequestBody AgdAgendaDto freshAgd,HttpServletRequest request) {
+    	log.info("---- 保存日程参与人获取获取参数  -----" + JSONObject.toJSONString(freshAgd));
     	BaseOutDto out = new BaseOutDto();
     	String relId = request.getHeader("ai");
     	if(!"".equals(relId) && relId != null){
-    		blacklist.setFc(relId);
-    		contanctService.save(blacklist);
+    		freshAgd.setFc(relId);
+    		contanctService.save(freshAgd);
     		out.setRc(ReturnMessage.SUCCESS_CODE);
     		out.setRm(ReturnMessage.SUCCESS_MSG);
     	}else{
