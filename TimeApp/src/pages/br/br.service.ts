@@ -87,6 +87,7 @@ export class BrService {
 
     //获取用户偏好
     let u = new UTbl();
+    backupPro.d.commit =true;
     backupPro.d.u = await this.sqlexec.getList<UTbl>(u);
     await this.bacRestful.backup(backupPro);
     backupPro.d.u.length = 0;

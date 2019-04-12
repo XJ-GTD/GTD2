@@ -129,8 +129,9 @@ export class BackupProSub{
   jh:Array<JhTbl> = new Array<JhTbl>();
   //用户偏好
   u:Array<UTbl> = new Array<UTbl>();
-  //系统表（测试用）
-  s:Array<STbl> = new Array<STbl>();
+
+  //分批备份最后一次设为true
+  commit :boolean =false;
 
 }
 //备份出参
