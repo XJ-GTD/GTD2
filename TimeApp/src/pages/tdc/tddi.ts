@@ -122,7 +122,7 @@ import {Keyboard} from "@ionic-native/keyboard";
         </ion-buttons>
 
         <ion-buttons end padding-right>
-          <button ion-button icon-only (click)="save()" end>
+          <button ion-button icon-only (click)="toSave()" end>
             <ion-icon name="checkmark"></ion-icon>
           </button>
         </ion-buttons>
@@ -331,7 +331,12 @@ export class TddiPage {
 
   }
 
-  save(share) {
+  toSave(){
+    this.util.popMsgbox("1",()=>{
+      this.save();
+    });
+  }
+  save() {
 
     //提醒内容设置
     this.scd.ui = UserConfig.account.id;
@@ -369,8 +374,34 @@ export class TddiPage {
             role: 'destructive',
             cssClass: 'btn-del',
             handler: () => {
-              if (moment(d).format("YYYY/MM/DD") == moment(this.scd.sd).format("YYYY/MM/DD")) {
-                //如果开始日与选择的当前日一样，就是删除所有
+              this.util.popMsgbox("2",()=>{
+                if (moment(d).format("YYYY/MM/DD") == moment(this.scd.sd).format("YYYY/MM/DD")) {
+                  //如果开始日与选择的当前日一样，就是删除所有
+                  this.util.loadingStart();
+                  this.tddiServ.delete(this.scd.si, "2", d).then(data => {
+                    this.util.loadingEnd();
+                    this.util.toast("删除成功", 1500);
+                    this.cancel();
+                  }).catch(err => {
+                    this.util.loadingEnd();
+                  });
+                } else {
+                  this.util.loadingStart();
+                  this.tddiServ.delete(this.scd.si, "1", d).then(data => {
+                    this.util.loadingEnd();
+                    this.util.toast("删除成功", 1500);
+                    this.cancel();
+                  }).catch(err => {
+                    this.util.loadingEnd();
+                  });
+                }
+              });
+            }
+          }, {
+            text: '删除所有日程',
+            cssClass: 'btn-delall',
+            handler: () => {
+              this.util.popMsgbox("2",()=>{
                 this.util.loadingStart();
                 this.tddiServ.delete(this.scd.si, "2", d).then(data => {
                   this.util.loadingEnd();
@@ -379,29 +410,8 @@ export class TddiPage {
                 }).catch(err => {
                   this.util.loadingEnd();
                 });
-              } else {
-                this.util.loadingStart();
-                this.tddiServ.delete(this.scd.si, "1", d).then(data => {
-                  this.util.loadingEnd();
-                  this.util.toast("删除成功", 1500);
-                  this.cancel();
-                }).catch(err => {
-                  this.util.loadingEnd();
-                });
-              }
-            }
-          }, {
-            text: '删除所有日程',
-            cssClass: 'btn-delall',
-            handler: () => {
-              this.util.loadingStart();
-              this.tddiServ.delete(this.scd.si, "2", d).then(data => {
-                this.util.loadingEnd();
-                this.util.toast("删除成功", 1500);
-                this.cancel();
-              }).catch(err => {
-                this.util.loadingEnd();
-              });
+              })
+
             }
           }, {
             text: '取消',
@@ -416,14 +426,17 @@ export class TddiPage {
       actionSheet.present();
     } else {
       //非重复日程删除
-      this.util.loadingStart();
-      this.tddiServ.delete(this.scd.si, "2", d).then(data => {
-        this.util.loadingEnd();
-        this.util.toast("删除成功", 1500);
-        this.cancel();
-      }).catch(err => {
-        this.util.loadingEnd();
+      this.util.popMsgbox("2",()=>{
+        this.util.loadingStart();
+        this.tddiServ.delete(this.scd.si, "2", d).then(data => {
+          this.util.loadingEnd();
+          this.util.toast("删除成功", 1500);
+          this.cancel();
+        }).catch(err => {
+          this.util.loadingEnd();
+        });
       });
+
     }
 
 

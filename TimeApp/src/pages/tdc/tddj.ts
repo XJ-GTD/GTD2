@@ -143,7 +143,7 @@ import {Keyboard} from "@ionic-native/keyboard";
         </ion-buttons>
 
         <ion-buttons end padding-right>
-          <button ion-button icon-only (click)="save()" end>
+          <button ion-button icon-only (click)="toSave()" end>
             <ion-icon name="checkmark"></ion-icon>
           </button>
         </ion-buttons>
@@ -400,6 +400,12 @@ export class TddjPage {
 
   }
 
+  toSave(){
+    this.util.popMsgbox("1",()=>{
+      this.save("");
+    })
+  }
+
   save(share) {
 
     if (!this.chkinput()) {
@@ -464,10 +470,11 @@ export class TddjPage {
 
   goShare() {
     //日程分享打开参与人选择rc日程类型
-    this.save(() => {
-      this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
-    })
-
+    this.util.popMsgbox("3",()=>{
+      this.save(() => {
+        this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
+      })
+    });
   }
 
   presentActionSheet() {
