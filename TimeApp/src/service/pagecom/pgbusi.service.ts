@@ -427,16 +427,21 @@ export class PgBusiService {
     c.rt = agd.ar  ;
 
     //时间(YYYY/MM/DD)
+    let adt = agd.adt.split(" ");
+    c.sd = adt[0];
     if (c.rt != '0'){
-      c.sd = agd.adt.split(" ")[0];
       c.ed = "9999/12/31"  ;
-      c.st = agd.adt.split(" ")[1]  ;
-      c.et = agd.adt.split(" ")[1]  ;
     }else{
-      c.sd = moment(agd.adt).format("YYYY/MM/DD") ;
-      c.st = moment(agd.adt).format("HH:mm")  ;
-      c.ed = moment(agd.adt).format("YYYY/MM/DD")  ;
-      c.et = moment(agd.adt).format("HH:mm")  ;
+      c.ed = c.sd;
+    }
+
+    if (adt.length == 1 ){
+      //全天
+      c.st="99:99";
+      c.et="99:99"
+    }else{
+      c.st=adt[1];
+      c.et=adt[1];
     }
 
     //提醒

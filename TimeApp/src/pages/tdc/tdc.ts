@@ -144,7 +144,7 @@ import {Keyboard} from "@ionic-native/keyboard";
         </ion-buttons>
 
         <ion-buttons end padding-right>
-          <button ion-button icon-only (click)="save()" end>
+          <button ion-button icon-only (click)="toSave()" end>
             <ion-icon name="checkmark"></ion-icon>
           </button>
         </ion-buttons>
@@ -364,6 +364,10 @@ export class TdcPage {
 
   }
 
+  toSave(){
+    this.util.popMsgbox("1",()=>{this.save("")});
+  }
+
   save(share) {
 
     if (!this.chkinput()) {
@@ -404,7 +408,9 @@ export class TdcPage {
 
     //新建数据
     if (this.pagestate == "0") {
+      this.util.loadingStart();
       this.tdcServ.save(this.scd).then(data => {
+        this.util.loadingEnd();
         let ctbl = data.data;
         this.scd.si = ctbl.si;
         this.pagestate = "1";
@@ -413,20 +419,24 @@ export class TdcPage {
           share();
         }
         return;
+      }).catch(err=>{
+        this.util.loadingEnd();
       });
 
     }
     //未关闭直接修改
     if (this.pagestate == "1") {
-
+      this.util.loadingStart();
       this.tdcServ.updateDetail(this.scd).then(data => {
-
+        this.util.loadingEnd();
         this.util.toast("保存成功", 2000);
         if (typeof (eval(share)) == "function") {
           share();
         }
         return;
-      })
+      }).catch(err=>{
+        this.util.loadingEnd();
+      });
 
     }
 
@@ -443,18 +453,27 @@ export class TdcPage {
 
   goShare() {
     //日程分享打开参与人选择rc日程类型
-    this.save(() => {
-      this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
-    })
+    this.util.popMsgbox("3",()=>{
+      this.save(() => {
+        this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
+      })
+    });
 
   }
 
   presentActionSheet() {
-    //日程删除
-    this.tdcServ.delete(this.scd.si, "2", "").then(data => {
-      this.cancel();
-    });
+    this.util.popMsgbox("2",()=>{
 
+      //日程删除
+      this.util.loadingStart();
+      this.tdcServ.delete(this.scd.si, "2", "").then(data => {
+        this.util.loadingEnd();
+        this.cancel();
+      }).catch(err=>{
+        this.util.loadingEnd();
+      });
+
+    });
 
   }
 
