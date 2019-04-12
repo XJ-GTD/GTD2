@@ -751,7 +751,8 @@ export class UtilService {
   popMsgbox(msg,okdo){
     let popover = this.popoverCtrl.create(ConfirmboxComponent, {
       msg: msg,
-    },{enableBackdropDismiss :false});
+    },{enableBackdropDismiss :false,
+              cssClass:"a"});
     popover.onDidDismiss((data,role) =>{
       //OK:0,cancel:1
       if( data.ret == "0"){
