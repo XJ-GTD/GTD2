@@ -3,6 +3,47 @@
 
 // Font path is used to include ionicons,
 // roboto, and noto sans fonts
+
+
+//颜色变量
+//全局页面背景
+$allBackColor:#000;
+//页面主页颜色
+$masterColor:rgba(60,144,155,1);
+//页面次要颜色
+$secondColor:rgba(60,144,155,.9);
+//页面第三颜色
+$thirdColor:rgba(60,144,155,.6);
+//header不背景色
+$titleColor:rgba(62,109,119,1);
+//thisMonth
+$monthColor:rgba(98,186,204,1);
+//selectBackcolor
+$selectColor:rgba(62,109,119,1);
+//selectcolosecolor
+$selectCloseColor:rgba(62,109,119,.4);
+//白色不透名降低
+$whitedown:rgba(255,255,255,.3);
+
+
+//$secondaryColor:rgba(60,144,155,.5);
+//主要字体颜色
+$fontColor1:#ffffff;
+//次要字体颜色
+$fontColor2:#ffffff;
+//主页提示文字颜色
+$h-tip:rgba(60,144,155,1);
+//标题字号大小
+$font-size1:14px;
+//内容字号大小
+$font-size1:14px;
+
+//页面选择园大小
+//
+
+$mytest:rgba(255,255,255,.2);
+
+
 $font-path: "../assets/fonts";
 
 
@@ -40,7 +81,6 @@ $colors: (
   light:      #f4f4f4,
   dark:       #222,
   none:       transparent
-
 );
 
 //html backcolor set

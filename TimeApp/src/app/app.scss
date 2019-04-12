@@ -42,7 +42,9 @@
 //  url('../assets/fonts/PingFang Medium.woff2') format('woff2'),
 //  url('../assets/fonts/PingFang Medium.svg') format('svg');
 //}
-*{font-family:PingFang-Regular,PingFang-SC-Regular,PingFang-SC,"微软雅黑",Georgia}
+* {
+  font-family: PingFang-Regular, PingFang-SC-Regular, PingFang-SC, "微软雅黑", Georgia
+}
 
 @font-face {
   font-family: 'PingFang-Regular';
@@ -52,89 +54,80 @@
   url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.svg') format('svg');
 }
 
-.ios .ion-page.show-page ~ .nav-decor{
-  background: transparent;
-}
-
-//防止input框获取焦点抖动
-.input-cover{
-  position: static;
-}
-
-
-//时间选择
-.picker-ios .picker-toolbar{
-  border-top: 1px solid #dbdbdf;
-}
-
-
-.no-border{
-  border: none !important;
-}
-
-.toast-ios {
-  .toast-message {
-    font-size: 10px;
-    color: #fff;
-    padding: 1.5rem;
-  }
-  .toast-wrapper{
-    background:#1f2324;
-    width: 85%;
-  }
-}
-
-.loading-ios .loading-wrapper{
-  background:transparent;
-}
-
-.picker-ios .picker-wrapper {
-  height: 260px;
-  border-top: 1px solid #c8c7cc;
-  background: #95042b;
-}
-.picker-md .picker-wrapper {
-  height: 260px;
-  border-top: 1px solid #c8c7cc;
-  background: #95042b;
-}
-.picker-ios .picker-toolbar {
-  height: 0px;
-  border: 0px;
-}
-
-.picker-md .picker-toolbar {
-  height: 0px;
-  border: 0px;
-}
-
-.picker-ios .picker-above-highlight {
-  background: rgba(149,3,43,0.7);
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-}
-.picker-md .picker-above-highlight {
-  background: rgba(149,3,43,0.7);
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-}
-.picker-ios .picker-below-highlight {
-  background: rgba(149,3,43,0.7);
-  border-top: 1px solid rgba(0,0,0,0.1);
-}
-.picker-md .picker-below-highlight {
-  background: rgba(149,3,43,0.7);
-  border-top: 1px solid rgba(0,0,0,0.1);
-}
-.picker-ios .picker-opt{
-  color: white;
-}
-.picker-md .picker-opt{
-  color: white;
-}
 body {
   //background-image:url('../assets/imgs/alback.jpg');
   //background-repeat:no-repeat;
   //background-size:100% 100%;
   //-moz-background-size:100% 100%;
-  background: #000;
+  background: $allBackColor;
+
+
+  .ios .ion-page.show-page ~ .nav-decor {
+    background: transparent;
+  }
+
+  //防止input框获取焦点抖动
+  .input-cover {
+    position: static;
+  }
+
+
+  .no-border {
+    border: none !important;
+  }
+
+  .toast-ios {
+    .toast-message {
+      font-size: 10px;
+      color: #fff;
+      padding: 1.5rem;
+    }
+
+    .toast-wrapper {
+      background: #1f2324;
+      width: 85%;
+    }
+  }
+
+  .loading-ios .loading-wrapper {
+    background: transparent;
+  }
+
+  .picker-ios {
+    .picker-wrapper {
+      background: $selectColor;
+      border-top:0px;
+    }
+
+    .picker-toolbar {
+      background: $secondColor;
+      border-top:0px;
+      border-bottom:0px;
+    }
+
+    .picker-above-highlight {
+      background: $secondColor;
+      border-top:0px;
+      border-bottom:0px;
+    }
+
+    .picker-below-highlight {
+      background: $secondColor;
+      border-top:0px;
+      border-bottom:0px;
+    }
+
+    .picker-opt {
+      color: white;
+      font-size: 18px;
+    }
+
+    .picker-button {
+      color: #fff;
+      padding-right: 50px;
+      padding-left: 50px;
+      font-size: 16px;
+    }
+  }
 
 }

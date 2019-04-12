@@ -275,7 +275,7 @@ ion-calendar-month {
 
     .days {
       .hassometing {
-        background: #96162d;
+        background: $thirdColor;
 
         p {
           color: #ffffff;
@@ -283,7 +283,7 @@ ion-calendar-month {
       }
 
       .busysometing {
-        background: #5a0d1b;
+        background:  $masterColor;
 
         p {
           color: #ffffff;

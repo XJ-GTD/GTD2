@@ -1,5 +1,5 @@
 page-gc {
-  background-color: #000;
+  background-color: $allBackColor;
 
   ion-content {
     font-family: "PingFang-Regular";
@@ -26,7 +26,7 @@ page-gc {
   }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: #000;
+    background-color: $allBackColor;
   }
 
   ion-header{
@@ -49,12 +49,12 @@ page-gc {
   }
 
   ion-content.content {
-    background-color: #000;
+    background-color: $allBackColor;
     color: #fff;
   }
 
   ion-content .plan-list-item {
-    background-color: #000;
+    background-color: $allBackColor;
     color: #fff;
     padding-left: 8px;
     font-size: 1.5rem;

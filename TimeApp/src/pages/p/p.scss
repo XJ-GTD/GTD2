@@ -1,7 +1,7 @@
 page-p {
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: #000;
+    background-color: $allBackColor;
   }
 
   ion-header{
@@ -20,7 +20,7 @@ page-p {
   }
 
   ion-content.content {
-    background-color: #000;
+    background-color: $allBackColor;
     color: #fff;
   }
 
