@@ -53,6 +53,9 @@ public class IAgendaServiceImpl implements IAgendaService {
 	 * 保存日程
 	 */
 	public AgdAgenda save(AgdAgendaDto inDto) {
+		// 服务器adt规则 日期 + 时间 格式校正
+		inDto.setAdt(inDto.getAdt() + " " + inDto.getSt());
+
 		AgdAgenda agd = BaseUtil.dtoAgdToAgd(inDto);
 		log.info("------保存日程AgdAgenda: ------" + JSONObject.toJSONString(agd));
 		agd = agdAgenda.save(agd);
@@ -61,7 +64,7 @@ public class IAgendaServiceImpl implements IAgendaService {
 			List<AgdContactsDto> agdOList = new ArrayList<AgdContactsDto>();
 			for (AgdAgendaContacts agdAgendaContacts : agdList) {
 				agdOList.add(BaseUtil.AgdToContactsDto(agdAgendaContacts));
-				agdContactsRep.deleteById(agdAgendaContacts.getRecId());
+
 				//TODO 发送更新日程消息
 				Map<String,Object> map = new HashMap<String,Object>();
 				map.put("from", inDto.getFc());		// 发送人

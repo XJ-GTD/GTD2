@@ -35,7 +35,7 @@ import {UtilService} from "../../service/util-service/util.service";
             </ion-item>
 
             <ion-item class="plan-list-item" (click)="recover()" [ngStyle]="{'display': isRecover }">
-              <ion-label>恢复</ion-label>
+              <ion-label>恢复  <small>{{bts  * 1000 | date:"yyyy年MM月dd日 HH:mm:ss"}}</small></ion-label> 
             </ion-item>
 
           </ion-list>
@@ -46,7 +46,7 @@ import {UtilService} from "../../service/util-service/util.service";
 })
 export class BrPage {
 
-  bts:any;
+  bts:any = new Date().getTime()/1000 ;// 最后一次备份日期
   isRecover:any = "none";
 
   constructor(public navCtrl: NavController,
@@ -64,6 +64,7 @@ export class BrPage {
       if(this.bts && this.bts!=""){
         this.isRecover = "block";
       }
+
       console.log("获取页面获取最后更新时间     ："+this.bts);
     }).catch(res=>{
       console.log("获取页面获取最后更新时间失败" + JSON.stringify(res));

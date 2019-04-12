@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController} from 'ionic-angular';
+import {IonicPage, NavController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "./pl.service";
 import {PagePDPro} from "../pd/pd.service";
@@ -80,7 +80,6 @@ export class PlPage {
   show:any = "block";
 
   constructor(private navCtrl: NavController,
-              private alertCtrl: AlertController,
               private plService:PlService,
               private util: UtilService) {
   }
@@ -144,32 +143,24 @@ export class PlPage {
     if(jh.jtd == '0') { //下载
       this.util.toast('请先下载系统计划：' + jh.jn,1500);
     }else{
-      let alert = this.alertCtrl.create({
-        title: '',
-        subTitle: '确定要删除计划“' + jh.jn +"”?",
-        buttons: [{
-          text: '取消',
-          }, {
-            text: '确定',
-            handler: () => {
-              let count = jh.js;
-              this.plService.delete(jh).then(data=>{
-                jh.jtd = '0';
-                jh.js = '?';
-              }).catch(res=>{
-                jh.jtd = '1';
-                jh.js = count;
-                this.util.toast('删除计划：' + jh.jn + " 失败",1500);
-              });
-
-            }
-          }]
-      });
-      alert.present();
+      this.util.popMsgbox("2",()=>{this.delete(jh)});
     }
   }
 
+  delete(jh:PagePDPro){
+    let count = jh.js;
+    this.plService.delete(jh).then(data=>{
+      jh.jtd = '0';
+      jh.js = '?';
+    }).catch(res=>{
+      jh.jtd = '1';
+      jh.js = count;
+      this.util.toast('删除计划：' + jh.jn + " 失败",1500);
+    });
+  }
+
   download(jh:PagePDPro){
+    this.util.loadingStart();
     let message:any;
     if(jh.jtd == '0'){
       message = "下载";
@@ -185,7 +176,9 @@ export class PlPage {
         jh.jtd = '1';
         this.plService.upPlan(jh);//系统计划 jtd 变更
       }
+      this.util.loadingEnd();
     }).catch(res=>{
+      this.util.loadingEnd();
       this.util.toast(message + "失败",1500);
     });
   }

@@ -155,35 +155,9 @@ export class PdPage {
           text: '删除',
           handler: () => {
             if(jh.jt == "1"){
-              let alert = this.alertCtrl.create({
-                title: '',
-                subTitle: '系统计划请在计划一栏页面长按删除',
-                buttons: [{
-                  text: '取消',
-                }]
-              });
-              alert.present();
+              this.util.toast('系统计划请在计划一栏页面长按删除',500);
             }else{
-
-              //this.util.popMsgbox('确定要删除计划“' + jh.jn +'”吗？',this.delete(jh.ji));
-
-              let alert = this.alertCtrl.create({
-                title: '',
-                subTitle: '确定要删除计划“' + jh.jn +"”吗？",
-                buttons: [{
-                  text: '取消',
-                }, {
-                  text: '确定',
-                  handler: () => {
-                    this.pdService.delete(jh.ji).then(data=>{
-                      this.navCtrl.pop();
-                    }).catch(res=>{
-                      this.util.toast('删除计划失败',1500);
-                    });
-                  }
-                }]
-              });
-              alert.present();
+              this.util.popMsgbox("2",()=>{this.delete(jh)});
             }
           }
         },
@@ -199,8 +173,8 @@ export class PdPage {
     actionSheet.present();
   }
 
-  delete(ji:string){
-    this.pdService.delete(ji).then(data=>{
+  delete(jh:PagePDPro){
+    this.pdService.delete(jh).then(data=>{
       this.navCtrl.pop();
     }).catch(res=>{
       this.util.toast('删除计划失败',1500);
