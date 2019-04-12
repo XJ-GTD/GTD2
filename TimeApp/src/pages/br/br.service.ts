@@ -47,7 +47,7 @@ export class BrService {
     ret = await this.bacRestful.backup(backupPro);
     backupPro.d.c.length = 0;//清空数组 以防其他表备份时候此数据再被上传
 
-    if (ret.code = -99) {
+    if (ret.code == -99) {
       return ret;
     }
 
@@ -58,7 +58,7 @@ export class BrService {
     backupPro.d.sp = await this.sqlexec.getList<SpTbl>(sp);
     ret = await this.bacRestful.backup(backupPro);
     backupPro.d.sp.length = 0;
-    if (ret.code = -99) {
+    if (ret.code == -99) {
       return ret;
     }
 
@@ -68,7 +68,7 @@ export class BrService {
     ret = await this.bacRestful.backup(backupPro);
     backupPro.d.e.length = 0;
 
-    if (ret.code = -99) {
+    if (ret.code == -99) {
       return ret;
     }
 
@@ -78,7 +78,7 @@ export class BrService {
     ret = await this.bacRestful.backup(backupPro);
     backupPro.d.d.length = 0;
 
-    if (ret.code = -99) {
+    if (ret.code == -99) {
       return ret;
     }
 
@@ -88,7 +88,7 @@ export class BrService {
     ret = await this.bacRestful.backup(backupPro);
     backupPro.d.b.length = 0;
 
-    if (ret.code = -99) {
+    if (ret.code == -99) {
       return ret;
     }
 
@@ -98,7 +98,7 @@ export class BrService {
     ret = await this.bacRestful.backup(backupPro);
     backupPro.d.g.length = 0;
 
-    if (ret.code = -99) {
+    if (ret.code == -99) {
       return ret;
     }
 
@@ -108,7 +108,7 @@ export class BrService {
     ret = await this.bacRestful.backup(backupPro);
     backupPro.d.bx.length = 0;
 
-    if (ret.code = -99) {
+    if (ret.code == -99) {
       return ret;
     }
 
@@ -118,7 +118,7 @@ export class BrService {
     ret = await this.bacRestful.backup(backupPro);
     backupPro.d.jh.length = 0;
 
-    if (ret.code = -99) {
+    if (ret.code == -99) {
       return ret;
     }
 
@@ -129,7 +129,7 @@ export class BrService {
     ret = await this.bacRestful.backup(backupPro);
     backupPro.d.u.length = 0;
 
-    if (ret.code = -99) {
+    if (ret.code == -99) {
       return ret;
     }
 
