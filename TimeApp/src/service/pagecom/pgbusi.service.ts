@@ -123,16 +123,8 @@ export class PgBusiService {
           })
         }).then(data=>{
           let adgPro:AgdPro = new AgdPro();
-          adgPro.ai=ct.si; //日程ID
-          adgPro.rai=rc.sr;//日程发送人用户ID
-          adgPro.fc=rc.ui; //创建人
-          adgPro.at=rc.sn;//主题
-          adgPro.adt=rc.sd + " " + rc.st; //时间(YYYY/MM/DD HH:mm)
-          adgPro.ap=rc.ji;//计划
-          adgPro.ar=rc.rt;//重复
-          adgPro.aa=rc.tx;//提醒
-          adgPro.am=rc.bz;//备注
           //restFul保存日程
+          this.setAdgPro(adgPro,ct);
           return this.agdRest.save(adgPro)
         }).then(data=>{
           bs.data=ct;
