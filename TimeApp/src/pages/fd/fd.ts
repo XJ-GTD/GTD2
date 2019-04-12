@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular
 import { FdService} from "./fd.service";
 import {FsData} from "../../service/pagecom/pgbusi.service";
 import {DataConfig} from "../../service/config/data.config";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 参与人详情 page.
@@ -56,6 +57,7 @@ export class FdPage {
   constructor(public navCtrl: NavController,
               public fdService: FdService,
               public viewCtrl: ViewController,
+              private util : UtilService,
               public navParams: NavParams) {
   }
 
@@ -98,9 +100,15 @@ export class FdPage {
 
   black(){
     if(this.fd.isbla){
-      this.rbl();
+      this.util.popMsgbox("是否确认移出黑名单？",()=>{
+        this.rbl();
+      });
+
     }else{
-      this.abl();
+      this.util.popMsgbox("是否确认移入黑名单？",()=>{
+        this.abl();
+      });
+
     }
   }
 

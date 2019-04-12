@@ -88,12 +88,14 @@ import {UtilService} from "../../service/util-service/util.service";
   `,
 })
 export class PdPage {
+  // 判断是否有模态框弹出 控制安卓物理返回键
+  actionSheet;
 
   jh:PagePDPro;
   today: string = new Date().toISOString();
   plan:any ={
-    "pn": {},
-    "pa":new Array<AgdPro>(),
+    'pn': {},
+    'pa':new Array<AgdPro>(),
   };
   IsShowDiv: boolean = false;
   IsShowCover: boolean = false;
@@ -105,7 +107,7 @@ export class PdPage {
               private actionSheetCtrl: ActionSheetController,
               private util: UtilService,
               private pdService:PdService) {
-    this.jh = this.navParams.get("jh");
+    this.jh = this.navParams.get('jh');
     this.plan.pn = this.jh;
   }
 
@@ -121,6 +123,12 @@ export class PdPage {
     });
   }
 
+  ionViewWillLeave() {
+    if (this.actionSheet !== undefined) {
+      this.actionSheet.dismiss();
+    }
+  }
+
   goBack() {
     this.navCtrl.pop();
   }
@@ -133,8 +141,7 @@ export class PdPage {
   }
 
   more(jh:PagePDPro){
-    let actionSheet = this.actionSheetCtrl.create({
-      //title: 'Modify your album',
+    this.actionSheet = this.actionSheetCtrl.create({
       buttons: [
         {
           text: '分享',
@@ -155,35 +162,9 @@ export class PdPage {
           text: '删除',
           handler: () => {
             if(jh.jt == "1"){
-              let alert = this.alertCtrl.create({
-                title: '',
-                subTitle: '系统计划请在计划一栏页面长按删除',
-                buttons: [{
-                  text: '取消',
-                }]
-              });
-              alert.present();
+              this.util.toast('系统计划请在计划一栏页面长按删除',500);
             }else{
-
-              //this.util.popMsgbox('确定要删除计划“' + jh.jn +'”吗？',this.delete(jh.ji));
-
-              let alert = this.alertCtrl.create({
-                title: '',
-                subTitle: '确定要删除计划“' + jh.jn +"”吗？",
-                buttons: [{
-                  text: '取消',
-                }, {
-                  text: '确定',
-                  handler: () => {
-                    this.pdService.delete(jh.ji).then(data=>{
-                      this.navCtrl.pop();
-                    }).catch(res=>{
-                      this.util.toast('删除计划失败',1500);
-                    });
-                  }
-                }]
-              });
-              alert.present();
+              this.util.popMsgbox("2",()=>{this.delete(jh)});
             }
           }
         },
@@ -196,11 +177,11 @@ export class PdPage {
         }
       ]
     });
-    actionSheet.present();
+    this.actionSheet.present();
   }
 
-  delete(ji:string){
-    this.pdService.delete(ji).then(data=>{
+  delete(jh:PagePDPro){
+    this.pdService.delete(jh).then(data=>{
       this.navCtrl.pop();
     }).catch(res=>{
       this.util.toast('删除计划失败',1500);

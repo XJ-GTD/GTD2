@@ -90,7 +90,7 @@ export class FsService {
           let con = new ContactPerPro();
           con.ai = fs.ui;
           con.mpn =fs.rc;
-          con.a = fs.hiu;
+          //con.a = fs.hiu;
           con.n = fs.rn;
           ac.push(con);
         }

@@ -3,6 +3,7 @@ import { NavController, NavParams, ViewController} from 'ionic-angular';
 import {FsService} from "./fs.service";
 import {GcService, PageDcData} from "../gc/gc.service";
 import {FsData} from "../../service/pagecom/pgbusi.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 群组参与人选择 page.
@@ -71,6 +72,7 @@ export class Fs4gPage {
               public navParams: NavParams,
               private fsService:FsService,
               public viewCtrl: ViewController,
+              private util : UtilService,
               private gsService : GcService) {
   }
 
@@ -91,12 +93,14 @@ export class Fs4gPage {
       });
       let dc:PageDcData = this.tpara;
       dc.fsl = list;
-      this.gsService.save(dc).then(data=>{
-        if(data.code==0){
-          //alert("添加群组成员成功");
-          this.goBack();
-        }
-      })
+      //this.util.popMsgbox("1",()=>{
+        this.gsService.save(dc).then(data=>{
+          if(data.code==0){
+            //alert("添加群组成员成功");
+            this.goBack();
+          }
+        })
+     // });
 
     }else{
       alert("请先选择人员");

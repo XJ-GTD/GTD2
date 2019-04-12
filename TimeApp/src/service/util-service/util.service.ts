@@ -745,13 +745,14 @@ export class UtilService {
 
   /**
    * 确认msgbox
-   * @param msg
-   * @param ev
+   * @param msg:1,是否保存，2，是否删除，3，是否分享。其他为自定义
+   * @param okdo
    */
   popMsgbox(msg,okdo){
     let popover = this.popoverCtrl.create(ConfirmboxComponent, {
       msg: msg,
-    },{enableBackdropDismiss :false});
+    },{enableBackdropDismiss :false,
+              cssClass:"a"});
     popover.onDidDismiss((data,role) =>{
       //OK:0,cancel:1
       if( data.ret == "0"){

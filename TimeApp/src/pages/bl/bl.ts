@@ -3,6 +3,7 @@ import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angula
 import {BlService, PageBlData} from "./bl.service";
 import {FdService} from "../fd/fd.service";
 import {DataConfig} from "../../service/config/data.config";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 黑名单列表 page.
@@ -60,9 +61,12 @@ import {DataConfig} from "../../service/config/data.config";
 })
 export class BlPage {
   bls:Array<PageBlData>;
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              public blService : BlService,public fdService : FdService,
-              public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private blService : BlService,
+              private fdService : FdService,
+              private util : UtilService,
+              private modalCtrl: ModalController) {
   }
 
   ionViewDidLoad() {
@@ -90,13 +94,16 @@ export class BlPage {
       }
     })
   }
-
+  //删除黑名单
   delete(g:PageBlData){
-    this.fdService.removeBlack(g.mpn).then(data=>{
-      if(data.code == 0){
-        this.getBl();
-        alert("删除成功")
-      }
-    })
+    //this.util.popMsgbox("2",()=>{
+      this.fdService.removeBlack(g.mpn).then(data=>{
+        if(data.code == 0){
+          this.getBl();
+          this.util.toast('删除黑名单成功！',2000)
+        }
+     // })
+    });
+
   }
 }

@@ -6,6 +6,7 @@ import {FsService} from "../fs/fs.service";
 import {DataConfig} from "../../service/config/data.config";
 import {FsData} from "../../service/pagecom/pgbusi.service";
 import {UserConfig} from "../../service/config/user.config";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 群组编辑 page.
@@ -70,6 +71,7 @@ export class GcPage {
               public navParams: NavParams,
               private gcService: GcService,
               private fsService:FsService,
+              private util:UtilService,
               private modalCtrl: ModalController) {
   }
 
@@ -108,12 +110,15 @@ export class GcPage {
   }
 
   delete(g:FsData) {
-   this.gcService.deleteBx(this.dc.gi,g.pwi).then(async data=>{
-     if(data.code == 0){
-       this.getData();
-       //this.util.toast("删除成功",1500);
-     }
-   })
+    //删除群成员
+    this.util.popMsgbox("2",()=>{
+      this.gcService.deleteBx(this.dc.gi,g.pwi).then(async data=>{
+        if(data.code == 0){
+          this.getData();
+          //this.util.toast("删除成功",1500);
+        }
+      })
+    });
 
   }
 

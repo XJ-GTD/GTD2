@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {ActionSheetController, IonicPage, NavController} from 'ionic-angular';
+import {Component, ViewChildren} from '@angular/core';
+import {ActionSheetController, DateTime, IonicPage, NavController} from 'ionic-angular';
 import {PageUData, PsService} from "./ps.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
@@ -43,7 +43,7 @@ import {DataConfig} from "../../service/config/data.config";
       </button>
       <button ion-item>
         <ion-label>生日</ion-label>
-        <ion-datetime displayFormat="YYYY-MM-DD" item-end text-end [(ngModel)]="bothday"
+        <ion-datetime displayFormat="YYYY-MM-DD" item-end text-end [(ngModel)]="birthday"
                       min="1949-01-01" max="2039-12-31"  (ionCancel)="getDtPickerSel($event)"></ion-datetime>
       </button>
       <button ion-item>
@@ -59,11 +59,14 @@ import {DataConfig} from "../../service/config/data.config";
   </ion-content>`,
 })
 export class PsPage {
-  // 判断是否有模态框弹出
-  public actionSheet;
+
+  // 判断是否有模态框弹出 控制安卓物理返回键
+  @ViewChildren(DateTime) dateTimes: DateTime;
+  actionSheet;
+
 
   sex:string='';
-  bothday:string='';
+  birthday:string='';
   avatar:any = DataConfig.HUIBASE64;
   uo:PageUData = new PageUData();
   olduo:PageUData = new PageUData();
@@ -93,7 +96,7 @@ export class PsPage {
       }
     }
 
-    this.bothday = UserConfig.user.bothday.replace(new RegExp('/','g'),'-');
+    this.birthday = UserConfig.user.bothday.replace(new RegExp('/','g'),'-');
   }
 
   goBack() {
@@ -103,6 +106,9 @@ export class PsPage {
   ionViewWillLeave() {
     if (this.actionSheet !== undefined) {
       this.actionSheet.dismiss();
+    }
+    if(this.dateTimes._picker != undefined){
+      this.dateTimes._picker.dismiss();
     }
   }
 
@@ -148,8 +154,8 @@ export class PsPage {
     let el = document.getElementsByClassName("picker-opt-selected")
 
     if (el && el.length==3){
-      this.bothday = el[0].textContent + "-" +el[1].textContent +"-" +el[2].textContent;
-      this.uo.user.bothday = this.bothday.replace(new RegExp('-','g'),'/');
+      this.birthday = el[0].textContent + "-" +el[1].textContent +"-" +el[2].textContent;
+      this.uo.user.bothday = this.birthday.replace(new RegExp('-','g'),'/');
       this.save("both");
     }
 

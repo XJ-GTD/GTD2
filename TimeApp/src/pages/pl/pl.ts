@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController} from 'ionic-angular';
+import {IonicPage, NavController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "./pl.service";
 import {PagePDPro} from "../pd/pd.service";
@@ -75,12 +75,11 @@ export class PlPage {
 
   xtJhs:any;
   zdyJhs:any;
-  picture:any = "xl.png" ;
-  zdyDisplay:any = "none";
-  show:any = "block";
+  picture:any = 'xl.png' ;
+  zdyDisplay:any = 'none';
+  show:any = 'block';
 
   constructor(private navCtrl: NavController,
-              private alertCtrl: AlertController,
               private plService:PlService,
               private util: UtilService) {
   }
@@ -94,18 +93,22 @@ export class PlPage {
   }
 
   getAllJh(){
+    this.util.loadingStart();
     this.plService.getPlan().then(data=>{
       this.xtJhs = data.xtJh;
       this.zdyJhs = data.zdyJh;
 
       if(this.zdyJhs.length == 0){
-        this.zdyDisplay = "block";
-        this.picture = "xlr.png";
+        this.zdyDisplay = 'block';
+        this.picture = 'xlr.png';
       }else {
-        this.zdyDisplay = "none";
+        this.zdyDisplay = 'none';
       }
-    }).catch(res=>{
-      console.log("获取计划失败" + JSON.stringify(res));
+      this.util.loadingEnd();
+    }).catch(error=>{
+      console.log('获取计划失败' + JSON.stringify(error));
+      this.util.loadingEnd();
+      this.util.toast('获取计划失败',1500);
     });
   }
 
@@ -122,71 +125,66 @@ export class PlPage {
     if(jh.jt == "1"){
       if(jh.jtd == "0"){
         go = false;
-        this.util.toast('系统计划：' + jh.jn + "未下载",1500);
+        this.util.toast('系统计划：' + jh.jn + ' 未下载',1500);
       }
     }
     if(go){
-      this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{"jh":jh});
+      this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{'jh':jh});
     }
   }
 
   change(){
-    if(this.show == "block"){
-      this.show = "none";
-      this.picture = "xlr.png";
+    if(this.show == 'block'){
+      this.show = 'none';
+      this.picture = 'xlr.png';
     }else{
-      this.show = "block";
-      this.picture = "xl.png";
+      this.show = 'block';
+      this.picture = 'xl.png';
     }
   }
 
   delPlan(jh:PagePDPro){
     if(jh.jtd == '0') { //下载
-      this.util.toast('请先下载系统计划：' + jh.jn,1500);
+      this.util.toast('系统计划：' + jh.jn + ' 未下载',1500);
     }else{
-      let alert = this.alertCtrl.create({
-        title: '',
-        subTitle: '确定要删除计划“' + jh.jn +"”?",
-        buttons: [{
-          text: '取消',
-          }, {
-            text: '确定',
-            handler: () => {
-              let count = jh.js;
-              this.plService.delete(jh).then(data=>{
-                jh.jtd = '0';
-                jh.js = '?';
-              }).catch(res=>{
-                jh.jtd = '1';
-                jh.js = count;
-                this.util.toast('删除计划：' + jh.jn + " 失败",1500);
-              });
-
-            }
-          }]
-      });
-      alert.present();
+      this.util.popMsgbox('2',()=>{this.delete(jh)});
     }
   }
 
+  delete(jh:PagePDPro){
+    let count = jh.js;
+    this.plService.delete(jh).then(data=>{
+      jh.jtd = '0';
+      jh.js = '?';
+    }).catch(error=>{
+      jh.jtd = '1';
+      jh.js = count;
+      console.log( '删除系统计划失败' + JSON.stringify(error));
+      this.util.toast('删除系统计划：' + jh.jn + ' 失败',1500);
+    });
+  }
+
   download(jh:PagePDPro){
+    this.util.loadingStart();
     let message:any;
     if(jh.jtd == '0'){
-      message = "下载";
+      message = '下载';
     }else {
-      message = "刷新";
+      message = '刷新';
     }
     this.plService.downloadPlan(jh.ji).then(data=>{
       jh.js = data.data == null ? "0":data.data;
 
-      this.util.toast(message + "成功",1500);
-    }).then(data=>{
       if(jh.jtd == '0'){ //下载
         jh.jtd = '1';
         this.plService.upPlan(jh);//系统计划 jtd 变更
       }
-    }).catch(res=>{
-      this.util.toast(message + "失败",1500);
+      this.util.toast(message + "成功",1500);
+      this.util.loadingEnd();
+    }).catch(error=>{
+      console.log(message + '失败' + JSON.stringify(error));
+      this.util.loadingEnd();
+      this.util.toast(message + '失败',1500);
     });
   }
 }

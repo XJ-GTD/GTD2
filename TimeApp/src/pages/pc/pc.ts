@@ -1,6 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
-import {AlertController, IonicPage, NavController} from 'ionic-angular';
+import {IonicPage, NavController} from 'ionic-angular';
 import {PagePcPro, PcService} from "./pc.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 计划新建 page.
@@ -43,7 +44,7 @@ import {PagePcPro, PcService} from "./pc.service";
       </ion-list-header>
 
       <ion-item class="plan-list-item">
-      <div class="color-dot color-palm" item-start></div>
+        <div class="color-dot color-palm" item-start></div>
         <ion-label>
         牛皮棕
         </ion-label>
@@ -51,7 +52,7 @@ import {PagePcPro, PcService} from "./pc.service";
       </ion-item>
 
       <ion-item class="plan-list-item">
-      <div class="color-dot color-sunflower " item-start></div>
+        <div class="color-dot color-sunflower " item-start></div>
         <ion-label>
         向日葵黄
         </ion-label>
@@ -59,7 +60,7 @@ import {PagePcPro, PcService} from "./pc.service";
       </ion-item>
 
       <ion-item class="plan-list-item">
-      <div class="color-dot color-aurantia" item-start></div>
+        <div class="color-dot color-aurantia" item-start></div>
         <ion-label>
         橙黄
         </ion-label>
@@ -134,10 +135,8 @@ export class PcPage {
   jhcData:PagePcPro = new PagePcPro;
 
   constructor(private navCtrl: NavController,
-              private alertCtrl: AlertController,
-              private pcService:PcService) {
-    this.jhcData.jc = "#9B5E4B"; // 默认选中颜色  牛皮棕
-  }
+              private util: UtilService,
+              private pcService:PcService) {}
 
   ionViewDidLoad() {
   }
@@ -160,20 +159,11 @@ export class PcPage {
         }).catch(res=>{
         });
       }else{
-        this.alert("计划颜色不能为空");
+        this.util.toast('计划颜色不能为空',1500);
       }
     }else{
-      this.alert("计划名称不能为空");
+      this.util.toast('计划名称不能为空',1500);
     }
 
-  }
-
-  alert(message){
-    let alert = this.alertCtrl.create({
-      title:'',
-      subTitle: message,
-      buttons:['确定']
-    });
-    alert.present();
   }
 }

@@ -123,16 +123,8 @@ export class PgBusiService {
           })
         }).then(data=>{
           let adgPro:AgdPro = new AgdPro();
-          adgPro.ai=ct.si; //日程ID
-          adgPro.rai=rc.sr;//日程发送人用户ID
-          adgPro.fc=rc.ui; //创建人
-          adgPro.at=rc.sn;//主题
-          adgPro.adt=rc.sd + " " + rc.st; //时间(YYYY/MM/DD HH:mm)
-          adgPro.ap=rc.ji;//计划
-          adgPro.ar=rc.rt;//重复
-          adgPro.aa=rc.tx;//提醒
-          adgPro.am=rc.bz;//备注
           //restFul保存日程
+          this.setAdgPro(adgPro,ct);
           return this.agdRest.save(adgPro)
         }).then(data=>{
           bs.data=ct;
@@ -413,7 +405,7 @@ export class PgBusiService {
 
   private setCtbl(c :CTbl,agd:AgdPro){
     //关联日程ID
-    c.sr = agd.rai ;
+    c.sr = agd.rai?agd.rai:"" ;
     //日程发送人用户ID
     c.ui = agd.fc  ;
     //日程ID
@@ -427,16 +419,21 @@ export class PgBusiService {
     c.rt = agd.ar  ;
 
     //时间(YYYY/MM/DD)
+    let adt = agd.adt.split(" ");
+    c.sd = adt[0];
     if (c.rt != '0'){
-      c.sd = agd.adt.split(" ")[0];
       c.ed = "9999/12/31"  ;
-      c.st = agd.adt.split(" ")[1]  ;
-      c.et = agd.adt.split(" ")[1]  ;
     }else{
-      c.sd = moment(agd.adt).format("YYYY/MM/DD") ;
-      c.st = moment(agd.adt).format("HH:mm")  ;
-      c.ed = moment(agd.adt).format("YYYY/MM/DD")  ;
-      c.et = moment(agd.adt).format("HH:mm")  ;
+      c.ed = c.sd;
+    }
+
+    if (adt.length == 1 ){
+      //全天
+      c.st="99:99";
+      c.et="99:99"
+    }else{
+      c.st=adt[1];
+      c.et=adt[1];
     }
 
     //提醒

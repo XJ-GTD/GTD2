@@ -1,5 +1,6 @@
 import {Component,  OnInit} from '@angular/core';
 import {IonicPage, PopoverController, NavParams, ViewController} from 'ionic-angular';
+import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 
 /**
  * Generated class for the BackComponent page.
@@ -11,16 +12,13 @@ import {IonicPage, PopoverController, NavParams, ViewController} from 'ionic-ang
 @Component({
   selector: 'ConfirmboxComponent',
   template: `<ion-list >
-    <ion-list-header>提示</ion-list-header>
-    <ion-item >
-      <ion-label>{{msg}}</ion-label>
-    </ion-item>
+    <ion-list-header class="msg-lbl">{{msg}}</ion-list-header>
     <ion-row>
-      <ion-col class="col-al">
-        <button ion-button (click)="close()" >取消</button>
+      <ion-col class="col-al col-left">
+        <button ion-button clear (click)="close()" >取消</button>
       </ion-col>
       <ion-col class="col-al">
-        <button ion-button (click)="ok()">确定</button>
+        <button ion-button clear (click)="ok()">确定</button>
       </ion-col>
     </ion-row>
     </ion-list >`,
@@ -36,7 +34,8 @@ export class ConfirmboxComponent{
   ngOnInit() {
     if (this.navParams.data) {
       //this.msg = this.navParams.data.msg;
-      switch (this.navParams.data.msg){
+      let m = this.navParams.data.msg;
+      switch (m){
         case "1":
           this.msg ="是否保存？";
           break;
@@ -46,6 +45,8 @@ export class ConfirmboxComponent{
         case "3":
           this.msg ="是否分享？";
           break;
+        default :
+          this.msg = m;
       }
     }
   }
