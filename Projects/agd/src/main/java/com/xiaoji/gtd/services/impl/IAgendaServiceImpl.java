@@ -53,6 +53,9 @@ public class IAgendaServiceImpl implements IAgendaService {
 	 * 保存日程
 	 */
 	public AgdAgenda save(AgdAgendaDto inDto) {
+		// 服务器adt规则 日期 + 时间 格式校正
+		inDto.setAdt(inDto.getAdt() + " " + inDto.getSt());
+
 		AgdAgenda agd = BaseUtil.dtoAgdToAgd(inDto);
 		log.info("------保存日程AgdAgenda: ------" + JSONObject.toJSONString(agd));
 		agd = agdAgenda.save(agd);
