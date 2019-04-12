@@ -413,7 +413,7 @@ export class PgBusiService {
 
   private setCtbl(c :CTbl,agd:AgdPro){
     //关联日程ID
-    c.sr = agd.rai ;
+    c.sr = agd.rai?agd.rai:"" ;
     //日程发送人用户ID
     c.ui = agd.fc  ;
     //日程ID
