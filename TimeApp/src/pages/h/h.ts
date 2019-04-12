@@ -10,6 +10,7 @@ import * as moment from "moment";
 import {AiComponent} from "../../components/ai/answer/ai";
 import {EmitService} from "../../service/util-service/emit.service";
 import {TdcPage} from "../tdc/tdc";
+import {ScdPageParamter} from "../tdc/tdc.service";
 
 /**
  * Generated class for the 首页 page.
@@ -75,8 +76,6 @@ export class HPage {
   }
 
   ionViewDidLoad() {
-    this.calendarDiv.nativeElement
-
     this.calendarDiv.nativeElement.addEventListener("webkitAnimationEnd", () => {
       this.renderer2.removeClass(this.calendarDiv.nativeElement, "fadeInDownBig");
     });
@@ -98,7 +97,9 @@ export class HPage {
   }
 
   newcd() {
-    this.modalCtr.create(TdcPage, {dateStr: this.hdata.selectDay.time}).present();
+    let p:ScdPageParamter = new ScdPageParamter();
+    p.d = moment(this.hdata.selectDay.time);
+    this.modalCtr.create(TdcPage, p).present();
   }
 
   //查询当天日程

@@ -1,9 +1,7 @@
 page-tdc, page-tddi, page-tddj, page-tdds {
-
   .footer-ios {
     .toolbar-background-ios {
-      background-color: transparent;
-      border-color: red;
+      background-color: #2ec95c;
       border-style: none;
     }
 
@@ -31,25 +29,20 @@ page-tdc, page-tddi, page-tddj, page-tdds {
     background-color: #96162d;
   }
 
-
   .scroll-content {
     overflow-x: unset;
     overflow-y: unset
   }
 
   .grid {
-    div {
-      position: relative;
-    }
+
 
     height: 100%;
     letter-spacing: 1px;
-    min-height:736px;
+    min-height: 520px;
 
-
-    .header-set {
-      height: 65px;
-      padding: 0px !important;
+    div {
+      position: relative;
     }
 
     .row {
@@ -122,11 +115,13 @@ page-tdc, page-tddi, page-tddj, page-tdds {
         height: 20px;
         text-align: center;
         background-color: #ffffff;
-        opacity: .8;
         font-size: 12px;
-        color: rgb(201, 138, 149);
+        color: #ffffff;
         line-height: 20px;
         margin-right: 12px;
+      }
+      .hasjh{
+        width: 40px;
       }
 
       .datetime-ios {
@@ -138,6 +133,13 @@ page-tdc, page-tddi, page-tddj, page-tdds {
         line-height: 32px;
       }
 
+      .reptComm{
+        font-size: 12px;
+        line-height: 35px;
+        float: left;
+        display: inline-flex;
+        margin-right: 4px;
+      }
 
       .reptlbl, .reptlb2 {
         font-size: 12px;
@@ -184,6 +186,29 @@ page-tdc, page-tddi, page-tddj, page-tdds {
       }
 
     }
+
+
+    .header-set {
+      height: 65px;
+      padding: 0px !important;
+
+      .imgdel-set {
+        width: 15px;
+        height: 15px;
+      }
+
+      .toolbar-background-ios {
+        background-color: transparent;
+        border-style: none;
+      }
+    }
+
+
+    .avatar-set {
+      padding: 0px 5px 3px 24px;
+    }
+
+
   }
 
 
@@ -219,46 +244,6 @@ page-tdc, page-tddi, page-tddj, page-tdds {
       height: 2vmin;
       background-color: #fff;
       border-radius: 50%;
-    }
-
-    .color-palm {
-      background-color: rgb(155, 94, 70);
-    }
-
-    .color-sunflower {
-      background-color: rgb(135, 106, 41);
-    }
-
-    .color-aurantia {
-      background-color: rgb(207, 68, 37);
-    }
-
-    .color-orange {
-      background-color: rgb(175, 43, 36);
-    }
-
-    .color-pink {
-      background-color: rgb(173, 131, 135);
-    }
-
-    .color-lavender {
-      background-color: rgb(192, 119, 219);
-    }
-
-    .color-fuchsia {
-      background-color: rgb(69, 59, 147);
-    }
-
-    .color-sky {
-      background-color: rgb(81, 170, 242);
-    }
-
-    .color-blue {
-      background-color: rgb(53, 145, 165);
-    }
-
-    .color-daphnite {
-      background-color: rgb(48, 129, 88);
     }
   }
 
