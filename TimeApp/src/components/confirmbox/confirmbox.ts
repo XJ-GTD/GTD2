@@ -36,7 +36,8 @@ export class ConfirmboxComponent{
   ngOnInit() {
     if (this.navParams.data) {
       //this.msg = this.navParams.data.msg;
-      switch (this.navParams.data.msg){
+      let m = this.navParams.data.msg;
+      switch (m){
         case "1":
           this.msg ="是否保存？";
           break;
@@ -46,6 +47,8 @@ export class ConfirmboxComponent{
         case "3":
           this.msg ="是否分享？";
           break;
+        default :
+          this.msg = m;
       }
     }
   }
