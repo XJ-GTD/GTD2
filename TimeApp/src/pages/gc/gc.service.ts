@@ -20,7 +20,7 @@ export class GcService {
   save(dc:PageDcData): Promise<BsModel<any>> {
     return new Promise<BsModel<any>>((resolve, reject) => {
       let bs = new BsModel<any>();
-      console.log('---------- GcService save 添加/编辑群名称(添加群成员) 入参:'+ JSON.stringify(dc));
+      console.log('---------- GcService save 添加/编辑群名称(添加群成员) ');
       if(dc.gi != null &&dc.gi != '' && dc.fsl.length>0){
         let bxL = new Array<string>();
         let sql = 'select gb.* from gtd_b gb inner join gtd_b_x bx on bx.bmi = gb.pwi where bx.bi = "' + dc.gi+'"';
@@ -43,48 +43,32 @@ export class GcService {
               bxL.push(bx.inT());
             }
           }
-          console.log('---------- GcService save 添加群成员 sql:'+ JSON.stringify(bxL));
           return  this.sqlExce.batExecSql(bxL);
-        })
-        .then(data=>{
-           console.log('---------- GcService save 编辑群名称(添加群成员) 结果:'+ JSON.stringify(data));
-           bs.data = data;
+        }).then(data=>{
+          console.log('---------- GcService save 编辑群名称(添加群成员) 成功');
+          bs.data = data;
           this.userConfig.RefreshGTbl();
-           resolve(bs);
-         }).catch(e=>{
-           console.error('---------- GcService save 编辑群名称(添加群成员) 错误:'+ JSON.stringify(e));
-           bs.code=-99;
-           bs.message = e.message;
-           resolve(bs);
-         })
-      }else if(dc.gi == null || dc.gi == ''){
+          resolve(bs);
+        }).catch(e=>{
+          console.error('---------- GcService save 编辑群名称(添加群成员) 错误:'+ JSON.stringify(e));
+          bs.code=-99;
+          bs.message = e.message;
+          resolve(bs);
+        })
+      }else if(dc.gi == null || dc.gi == ''){ // 新建群
         let gc = new GTbl();
         Object.assign(gc,dc);
         gc.gi = this.util.getUuid();
         gc.gnpy = this.util.chineseToPinYin(gc.gn);
         gc.gm = DataConfig.QZ_HUIBASE64;
-        console.log('---------- GcService save 添加群名称(添加群成员) 入参:'+ JSON.stringify(gc));
+        console.log('---------- GcService save 添加群名称(新建群)');
         this.sqlExce.save(gc).then(data=>{
-          console.log('---------- GcService save 添加群名称 结果:'+ JSON.stringify(data));
-          if(dc.fsl.length>0){
-            let bxL = new Array<string>();
-            for(let fs of dc.fsl){
-              let bx = new BxTbl();
-              bx.bi = dc.gi;
-              bx.bmi = fs.pwi;
-              bxL.push(bx.rpT());
-            }
-            this.userConfig.RefreshGTbl();
-            console.log('---------- GcService save 添加添加群成员 sql:'+ JSON.stringify(bxL));
-            return this.sqlExce.batExecSql(bxL);
-          }
-        }).then(data=>{
-
-          console.log('---------- GcService save 添加添加群成员 结果:'+ JSON.stringify(data));
+          console.log('---------- GcService save 新建群 成功');
           bs.data = data;
+          this.userConfig.RefreshGTbl();
           resolve(bs);
         }).catch(e=>{
-          console.error('---------- GcService save 添加群名称(添加群成员) 错误:'+ JSON.stringify(e));
+          console.error('---------- GcService save 新建群 错误:'+ JSON.stringify(e));
           bs.code=-99;
           bs.message = e.message;
           resolve(bs);
@@ -103,16 +87,17 @@ export class GcService {
   deleteBx(gi:string , pwi:string): Promise<BsModel<any>> {
     return new Promise<BsModel<any>>((resolve, reject) => {
       let bs = new BsModel<any>();
-      console.log('---------- GcService deleteBx 删除群成员 入参gi:'+ gi + ',pwi:'+pwi);
+      console.log('---------- GcService deleteBx 删除群成员');
       if(gi != null &&gi != '' && pwi != null &&pwi != ''){
         let bx = new BxTbl();
         bx.bi = gi;
         bx.bmi = pwi;
-        console.log('---------- GcService deleteBx 删除群成员 sql:'+ bx.dT());
         this.sqlExce.delete(bx).then(data=>{
-          console.log('---------- GcService deleteBx 删除群成员 结果:'+ JSON.stringify(data));
+          console.log('---------- GcService deleteBx 删除群成员 成功');
           bs.data = data;
-          this.userConfig.RefreshGTbl();
+          //刷新群组表
+          return this.userConfig.RefreshGTbl();
+        }).then(data=>{
           resolve(bs);
         }).catch(e=>{
           console.error('---------- GcService deleteBx 删除群成员 错误:'+ JSON.stringify(e));
@@ -121,7 +106,6 @@ export class GcService {
           resolve(bs);
         })
       }
-      //保存群成员到本地
     })
   }
 
@@ -134,13 +118,17 @@ export class GcService {
       bx.bi = gId;
       console.log('---------- GcService delete 删除群开始 ----------------');
       this.sqlExce.delete(bx).then(data=>{
-        console.log('---------- GcService delete 删除群群成员 结果:'+ JSON.stringify(data));
+        console.log('---------- GcService delete 删除群群成员 成功');
         //删除本地群
         let gtbl:GTbl = new GTbl();
         gtbl.gi = gId;
         return this.sqlExce.delete(gtbl)
       }).then(data=>{
-        console.log('---------- GcService delete 删除群 结果:'+ JSON.stringify(data));
+        console.log('---------- GcService delete 删除群 成功');
+        bs.data = data;
+        //刷新群组表
+        return this.userConfig.RefreshGTbl();
+      }).then(data=>{
         resolve(bs);
       }).catch(e=>{
         console.log('---------- GcService delete 删除群 ERROR:'+ JSON.stringify(e));
@@ -167,7 +155,6 @@ export class GcService {
   }
 
 }
-
 export class PageDcData {
 
   gi: string=""; //关系群组主键ID

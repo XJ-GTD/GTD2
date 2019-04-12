@@ -78,16 +78,17 @@ export class FdPage {
           this.fd.ran = this.fd.rn;
         }
       }
-      console.log(' ========= fdPage=>：'+JSON.stringify(this.fd));
+      //console.log(' ========= fdPage=>：'+JSON.stringify(this.fd));
       return this.fdService.getBlack(this.fd.rc);
-    }).then(data=>{
+    }).then( data=>{
       this.fd.isbla = data;
       if(this.fd.isbla){
         this.buttonText = "移出黑名单";
       }else{
         this.buttonText = "移入黑名单";
       }
-      console.log(' ========= fdPage=>：'+JSON.stringify(this.fd));
+
+      //console.log(' ========= fdPage=>：'+JSON.stringify(this.fd));
     })
   }
 

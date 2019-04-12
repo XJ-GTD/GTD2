@@ -1,11 +1,7 @@
 import {Component} from '@angular/core';
-import {Events, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
+import { NavController, NavParams, ViewController} from 'ionic-angular';
 import {FsService} from "./fs.service";
 import {GcService, PageDcData} from "../gc/gc.service";
-import {DataConfig} from "../../service/config/data.config";
-import {FdService} from "../fd/fd.service";
-import {UtilService} from "../../service/util-service/util.service";
-import {GlService} from "../gl/gl.service";
 import {FsData} from "../../service/pagecom/pgbusi.service";
 
 /**

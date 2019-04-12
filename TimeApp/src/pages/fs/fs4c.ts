@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 import {FsService} from "./fs.service";
 import {GcService, PageDcData} from "../gc/gc.service";
 import {DataConfig} from "../../service/config/data.config";

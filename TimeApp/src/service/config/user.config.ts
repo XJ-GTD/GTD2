@@ -7,7 +7,6 @@ import {UtilService} from "../util-service/util.service";
 import {FsData} from "../pagecom/pgbusi.service";
 import {DataConfig} from "./data.config";
 import {PageDcData} from "../../pages/gc/gc.service";
-import {BxTbl} from "../sqlite/tbl/bx.tbl";
 
 /**
  * create by on 2019/3/5
@@ -159,14 +158,11 @@ export class UserConfig {
     //获取本地群列表
     let sql = 'select * from gtd_g where gn like "' + name + '%"';
 
-    UserConfig.groups.splice(0, UserConfig.groups.length - 1);
+    //UserConfig.groups.splice(0, UserConfig.groups.length - 1);
     return this.sqlliteExec.getExtList<PageDcData>(sql).then(async (dcl) => {
       if (dcl.length > 0) {
         //和单群人数
         for (let dc of dcl) {
-          // let bx = new BxTbl();
-          // bx.bi = dc.gi;
-          // let fsl: Array<FsData> = await this.sqlliteExec.getList<FsData>(bx);
           let sqlbx ='select gb.*,bh.hiu bhiu from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi' +
             ' left join gtd_bh bh on gb.pwi = bh.pwi where gbx.bi="'+dc.gi+'"';
           let fsl: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sqlbx);
@@ -178,10 +174,9 @@ export class UserConfig {
           dc.gc = fsl.length;
           dc.gm = DataConfig.QZ_HUIBASE64;
           dc.fsl = fsl;
-          UserConfig.groups.push(dc);
         }
       }
-
+      UserConfig.groups = dcl;
     });
   }
 }

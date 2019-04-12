@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {PersonInData, PersonRestful} from "../../service/restful/personsev";
+import {PersonRestful} from "../../service/restful/personsev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {UtilService} from "../../service/util-service/util.service";
@@ -8,13 +8,15 @@ import {BsModel} from "../../service/restful/out/bs.model";
 import {FsData} from "../../service/pagecom/pgbusi.service";
 import {DataConfig} from "../../service/config/data.config";
 import {BhTbl} from "../../service/sqlite/tbl/bh.tbl";
+import {UserConfig} from "../../service/config/user.config";
 
 @Injectable()
 export class FdService {
   constructor(private personRes:PersonRestful,
               private blasev:BlaRestful,
               private util:UtilService,
-              private sqlite:SqliteExec) {
+              private sqlite:SqliteExec,
+              private userConfig:UserConfig,) {
   }
 
   /**
@@ -26,6 +28,45 @@ export class FdService {
 
     return new Promise<FsData>((resolve, reject)=>{
       let fd:FsData = new FsData();
+      let bTbl = new BTbl();
+      let sql = 'select gb.*,bh.hiu bhiu from gtd_b gb left join gtd_bh bh on bh.pwi = gb.ui where gb.pwi ="'+id+'"';
+      //获取本地参与人信息
+      this.sqlite.getExtList<FsData>(sql).then(data=>{
+        if(data != null && data.length>0){
+          Object.assign(fd,data[0]);
+          //rest 获取头像
+          return this.personRes.getavatar(fd.rc);
+        }
+      }).then(data=>{
+        let str:string = '';
+        if(data && data.code == 0){
+          str = data.data.base64;
+          fd.bhiu = str;
+          if(fd.bhiu == null || fd.bhiu == ''){
+            let bh = new BhTbl();
+            bh.bhi=this.util.getUuid();
+            bh.pwi=fd.pwi;
+            bh.hiu = str;
+            this.sqlite.save(bh);
+          }else{
+            let sql = 'update gtd_bh set hiu ="' + str + '" where pwi = "'+ fd.pwi +'";';
+            this.sqlite.execSql(sql);
+          }
+        }
+
+        if(fd.bhiu != null && fd.bhiu !=''){
+          fd.hiu = fd.bhiu;
+          this.userConfig.RefreshGTbl();
+        }else{
+          fd.hiu=DataConfig.HUIBASE64;
+        }
+
+        resolve(fd);
+      }).catch(error=>{
+        resolve(error);
+      })
+
+      /*let fd:FsData = new FsData();
       let bTbl = new BTbl();
       let sql = 'select gb.*,bh.hiu bhiu from gtd_b gb left join gtd_bh bh on bh.pwi = gb.ui where gb.pwi ="'+id+'"';
       //获取本地参与人信息
@@ -54,40 +95,35 @@ export class FdService {
         // return this.sqlite.replaceT(bTbl)
       }).then(data=>{
         //rest获取用户头像
-       this.personRes.getavatar(fd.rc).then(data=>{
-
-        let str:string = '';
-        if(data && !data.code){
-          str = data.data;
-          fd.bhiu = str;
-          if(fd.bhiu == null || fd.bhiu ==''){
-            let bh = new BhTbl();
-            bh.bhi=this.util.getUuid();
-            bh.pwi=fd.pwi;
-            bh.hiu = str;
-             this.sqlite.save(bh);
-          }else{
-            let sql = 'update gtd_bh set hiu ="' + str + '" where pwi = "'+ fd.pwi +'";';
-             this.sqlite.execSql(sql);
+        this.personRes.getavatar(fd.rc).then(data=>{
+          let str:string = '';
+          if(data && data.code == 0){
+            str = data.data.base64;
+            fd.bhiu = str;
+            if(fd.bhiu == null || fd.bhiu == ''){
+              let bh = new BhTbl();
+              bh.bhi=this.util.getUuid();
+              bh.pwi=fd.pwi;
+              bh.hiu = str;
+              this.sqlite.save(bh);
+            }else{
+              let sql = 'update gtd_bh set hiu ="' + str + '" where pwi = "'+ fd.pwi +'";';
+              this.sqlite.execSql(sql);
+            }
           }
-        }
-       })
+        })
       }).then(data=>{
         if(fd.bhiu != null && fd.bhiu !=''){
-          fd.hiu=fd.bhiu;
+          fd.hiu = fd.bhiu;
+          console.log("update")
         }else{
           fd.hiu=DataConfig.HUIBASE64;
         }
-        console.log("======== FdService参与人详情:"+JSON.stringify(fd));
+        //console.log("======== FdService参与人详情:"+JSON.stringify(fd));
         resolve(fd);
       }).catch(error=>{
-        if(fd.bhiu != null && fd.bhiu !=''){
-          fd.hiu=fd.bhiu;
-        }else{
-          fd.hiu=DataConfig.HUIBASE64;
-        }
         resolve(fd);
-      })
+      })*/
     })
 
   }

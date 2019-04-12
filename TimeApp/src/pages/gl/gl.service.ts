@@ -1,15 +1,10 @@
 import {Injectable} from "@angular/core";
 import {PageDcData} from "../gc/gc.service";
-import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {GTbl} from "../../service/sqlite/tbl/g.tbl";
-import {BxTbl} from "../../service/sqlite/tbl/bx.tbl";
-import {FsData} from "../../service/pagecom/pgbusi.service";
 import {UserConfig} from "../../service/config/user.config";
-import {DataConfig} from "../../service/config/data.config";
 
 @Injectable()
 export class GlService {
-  constructor(private sqlExce: SqliteExec) {
+  constructor() {
   }
 
   //获取本地群列表
