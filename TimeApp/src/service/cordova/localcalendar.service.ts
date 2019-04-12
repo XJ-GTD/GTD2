@@ -42,6 +42,7 @@ export class LocalcalendarService {
   findEventRc(tit:string,sd:moment.Moment,ed:moment.Moment):Promise<Array<ScdData>>{
     return new Promise((resolve, reject) => {
       console.log("执行查询本地日历");
+      ed = ed.add(1,'d');
       let rco = new Array<ScdData>();
       if(this.util.isMobile()){
         console.log("查询本地日历开始时间："+ sd+ ",结束时间:"+ed);
@@ -58,19 +59,19 @@ export class LocalcalendarService {
                 if (msg[i].allday) {
                   if (msg[i].startDate) {
                     rc.sd = msg[i].startDate.substr(0, 10).replace(new RegExp('-','g'),'/');
-                    rc.st = "00:00";
+                    rc.st = "99:99";
                   }
                   if (msg[i].endDate) {
                     rc.ed = msg[i].endDate.substr(0, 10).replace(new RegExp('-','g'),'/');
-                    rc.et =  "24:00";
+                    rc.et =  "99:99";
                   }
                   if (msg[i].startDate && !msg[i].endDate) {
                     rc.ed = rc.sd;
-                    rc.et = "24:00";
+                    rc.et = "99:99";
                   }
                   if (!msg[i].startDate && msg[i].endDate) {
                     rc.sd = rc.ed;
-                    rc.st = "00:00";
+                    rc.st = "99:99";
                   }
                 } else {
                   if (msg[i].startDate) {
@@ -93,7 +94,7 @@ export class LocalcalendarService {
                 console.log("查询本地日历开始时间：" + rc.sd + ",结束时间:" + rc.ed);
                 console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg[i]));
                 rc.ib = '1';
-                rc.gs='2'
+                rc.gs='2';
                 rco.push(rc);
               }
             }
@@ -101,7 +102,7 @@ export class LocalcalendarService {
           },
           (err) => {
             console.log("执行查询本地日历结束 err ::" + JSON.stringify(err));
-            reject(rco);
+            resolve(rco);
           });
       }else{
         resolve(rco);
