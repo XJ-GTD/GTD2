@@ -52,24 +52,30 @@ public class AgdAgendaController {
 		if(agd != null){
 			log.info("---- 服务器日程获取获取参数  -----" + JSONObject.toJSONString(agd));
 			if(agd.getTitle() == null || !agd.getTitle().equals(blacklist.getAt())){
+				log.info(agd.getTitle() + " => " + blacklist.getAt());
 				isDef = true;
 			}
 			if(agd.getAgendaDate() == null || !agd.getAgendaDate().equals(blacklist.getAdt())){
+				log.info(agd.getAgendaDate() + " => " + blacklist.getAdt());
 				isDef = true;
 			}
 			if(agd.getAgendaTime() == null || !agd.getAgendaTime().equals(blacklist.getSt())){
+				log.info(agd.getAgendaTime() + " => " + blacklist.getSt());
 				isDef = true;
 			}
 			if(agd.getEndDate() == null || !agd.getEndDate().equals(blacklist.getEd())){
+				log.info(agd.getEndDate() + " => " + blacklist.getEd());
 				isDef = true;
 			}
 			if(agd.getEndTime() == null || !agd.getEndTime().equals(blacklist.getEt())){
+				log.info(agd.getEndTime() + " => " + blacklist.getEt());
 				isDef = true;
 			}
 //			if(agd.getRemindFlag() != null && !agd.getRemindFlag().equals(blacklist.getAa())){
 //				isDef = true;
 //			}
 			if(agd.getRepeatType() == null || !agd.getRepeatType().equals(blacklist.getAr())){
+				log.info(agd.getRepeatType() + " => " + blacklist.getAr());
 				isDef = true;
 			}
 		}else{
