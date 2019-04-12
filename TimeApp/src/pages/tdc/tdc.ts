@@ -37,7 +37,7 @@ import {Keyboard} from "@ionic-native/keyboard";
             <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
                           pickerFormat="YYYY MM DD" color="light"
                           [(ngModel)]="scd.sd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
-                          min="1999-01-01" max="2039-12-31" (ionCancel)="getDtPickerSel($event)"
+                          min="1999-01-01" max="2039-12-31"  cancelText="取消" doneText = "确认"
             ></ion-datetime>
           </div>
         </ion-row>
@@ -45,7 +45,7 @@ import {Keyboard} from "@ionic-native/keyboard";
           <ion-toggle [(ngModel)]="alld" [class.allday]="b"></ion-toggle>
           <div>
             <ion-datetime displayFormat="HH:mm" [(ngModel)]="scd.st"
-                          pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)" [hidden]="alld"></ion-datetime>
+                          pickerFormat="HH mm"  [hidden]="alld" cancelText="取消" doneText = "确认"></ion-datetime>
 
           </div>
         </ion-row>
@@ -144,7 +144,7 @@ import {Keyboard} from "@ionic-native/keyboard";
         </ion-buttons>
 
         <ion-buttons end padding-right>
-          <button ion-button icon-only (click)="toSave()" end>
+          <button ion-button icon-only (click)="save()" end>
             <ion-icon name="checkmark"></ion-icon>
           </button>
         </ion-buttons>
@@ -491,24 +491,6 @@ export class TdcPage {
 
       console.log("check:" + this.scd.ji);
       console.log("check1:" + this.scd.p.ji);
-    }
-  }
-
-  getDtPickerSel(evt) {
-
-    let el = document.getElementsByClassName("picker-opt-selected")
-
-    if (el && el.length == 3) {
-      this.scd.sd = el[0].textContent + "-" + el[1].textContent + "-" + el[2].textContent;
-    }
-  }
-
-  getHmPickerSel(evt) {
-
-    let el = document.getElementsByClassName("picker-opt-selected")
-
-    if (el && el.length == 2) {
-      this.scd.st = el[0].textContent + ":" + el[1].textContent;
     }
   }
 

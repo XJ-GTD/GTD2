@@ -103,7 +103,7 @@ export class TdlService {
       tmp.scdl = tmp.scdl.sort(
         (a, b) => {
           if (a.st < b.st) return -1;
-          if (a.st = b.st) return 0;
+          if (a.st == b.st) return 0;
           if (a.st > b.st) return 1;
         });
     }

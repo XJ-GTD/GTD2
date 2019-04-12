@@ -1,5 +1,5 @@
 page-pl {
-  background-color: #000;
+  background-color: $allBackColor;
 
   .w-auto {
     flex: 1;
@@ -22,7 +22,7 @@ page-pl {
   }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: #000;
+    background-color: $allBackColor;
   }
 
   ion-header{
@@ -45,12 +45,12 @@ page-pl {
   }
 
   ion-content.content {
-    background-color: #000;
+    background-color: $allBackColor;
     color: #fff;
   }
 
   ion-content .plan-list-item {
-    background-color: #000;
+    background-color: $allBackColor;
     color: #fff;
     padding-left: 8px;
     font-size: 1.4rem;
@@ -62,7 +62,7 @@ page-pl {
   }
 
   ion-content .plan-z{
-    background-color: #000;
+    background-color: $allBackColor;
     color: #fff;
   }
 

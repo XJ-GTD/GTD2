@@ -1,12 +1,11 @@
 page-tdl {
-  background-color: #96162D;
 
   .back1 {
-    background: #96162D;
+    background: $masterColor;
   }
 
   .back0 {
-    background: #8E172B;
+    background: $secondColor;
   }
   .none1{
     background: #96545f;
@@ -37,7 +36,6 @@ page-tdl {
 
   ion-grid.grid {
     padding: 0px;
-    background-color: #96162D;
   }
 
   .dot-set {
@@ -51,13 +49,12 @@ page-tdl {
   .daynav {
     position: relative;
     width: 75px;
-    background-color: #000;
+    background-color: $allBackColor;
     color: #fff;
   }
 
   .dayagendas {
     position: relative;
-    background-color: #96162D;
     color: #fff;
     padding: 0;
   }
@@ -112,8 +109,8 @@ page-tdl {
   }
 
   .header-set {
-    background-color: #662233;
-    opacity: 0.9;
+    background-color: $titleColor;
+    height:64px;
 
     .headerdate {
       margin-left: -15px;

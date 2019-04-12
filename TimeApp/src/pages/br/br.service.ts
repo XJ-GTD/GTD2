@@ -25,7 +25,11 @@ export class BrService {
 
   //备份方法，需要传入页面 ，画面显示备份进度条
   async backup() {
+
+    let ret = new BsModel();
+
     //定义上传信息JSSON List
+
 
     let backupPro: BackupPro = new BackupPro();
     //操作账户ID
@@ -40,61 +44,97 @@ export class BrService {
     let csql = "select * from gtd_c where ji not in (select ji from gtd_j_h where jt ='1') ";//系统计划的日程不备份
     backupPro.d.c = await this.sqlexec.getExtList<CTbl>(csql);
     //restFul上传
-    await this.bacRestful.backup(backupPro);
+    ret = await this.bacRestful.backup(backupPro);
     backupPro.d.c.length = 0;//清空数组 以防其他表备份时候此数据再被上传
+
+    if (ret.code = -99) {
+      return ret;
+    }
 
     //获取特殊日历
     let sp = new SpTbl();
+    let spsql = "select * from gtd_sp sp inner join " +
+      " ( select * from gtd_c where ji not in (select ji from gtd_j_h where jt ='1')) c on c.si = sp.si ";//系统计划的日程不备份
     backupPro.d.sp = await this.sqlexec.getList<SpTbl>(sp);
-    await this.bacRestful.backup(backupPro);
+    ret = await this.bacRestful.backup(backupPro);
     backupPro.d.sp.length = 0;
+    if (ret.code = -99) {
+      return ret;
+    }
 
     //获取提醒数据
     let e = new ETbl();
     backupPro.d.e = await this.sqlexec.getList<ETbl>(e);
-    await this.bacRestful.backup(backupPro);
+    ret = await this.bacRestful.backup(backupPro);
     backupPro.d.e.length = 0;
+
+    if (ret.code = -99) {
+      return ret;
+    }
 
     //获取日程参与人数据
     let d = new DTbl();
     backupPro.d.d = await this.sqlexec.getList<DTbl>(d);
-    await this.bacRestful.backup(backupPro);
+    ret = await this.bacRestful.backup(backupPro);
     backupPro.d.d.length = 0;
+
+    if (ret.code = -99) {
+      return ret;
+    }
 
     //获取联系人信息
     let b = new BTbl();
     backupPro.d.b = await this.sqlexec.getList<BTbl>(b);
-    await this.bacRestful.backup(backupPro);
+    ret = await this.bacRestful.backup(backupPro);
     backupPro.d.b.length = 0;
+
+    if (ret.code = -99) {
+      return ret;
+    }
 
     //获取群组信息
     let g = new GTbl();
     backupPro.d.g = await this.sqlexec.getList<GTbl>(g);
-    await this.bacRestful.backup(backupPro);
+    ret = await this.bacRestful.backup(backupPro);
     backupPro.d.g.length = 0;
+
+    if (ret.code = -99) {
+      return ret;
+    }
 
     //获取群组人员信息
     let bx = new BxTbl();
     backupPro.d.bx = await this.sqlexec.getList<BxTbl>(bx);
-    await this.bacRestful.backup(backupPro);
+    ret = await this.bacRestful.backup(backupPro);
     backupPro.d.bx.length = 0;
+
+    if (ret.code = -99) {
+      return ret;
+    }
 
     //获取本地计划
     let jhsql = "select * from  gtd_j_h where jt <> '1' "//系统计划不备份
     backupPro.d.jh = await this.sqlexec.getExtList<JhTbl>(jhsql);
-    await this.bacRestful.backup(backupPro);
+    ret = await this.bacRestful.backup(backupPro);
     backupPro.d.jh.length = 0;
+
+    if (ret.code = -99) {
+      return ret;
+    }
 
     //获取用户偏好
     let u = new UTbl();
     backupPro.d.commit =true;
     backupPro.d.u = await this.sqlexec.getList<UTbl>(u);
-    await this.bacRestful.backup(backupPro);
+    ret = await this.bacRestful.backup(backupPro);
     backupPro.d.u.length = 0;
 
+    if (ret.code = -99) {
+      return ret;
+    }
 
-    let ret = new BsModel();
     ret.code = 0;
+    ret.message="备份完成";
     return ret;
   }
 
@@ -130,9 +170,21 @@ export class BrService {
     // 设定恢复指定表
     // recoverPro.d.rdn=[];
     bsModel = await this.bacRestful.recover(recoverPro);
+
+    //插入特殊日历（插入前删除）
+    let spsql ="delete from gtd_sp where si in " +
+      " (select si from gtd_c where ji not in (select ji from gtd_j_h where jt ='1')) ";
+    await this.sqlexec.execSql(spsql);
+
+    for (let j = 0, len = bsModel.data.sp.length; j < len; j++) {
+      let spi = new SpTbl();
+      Object.assign(spi,bsModel.data.sp[j]) ;
+      await this.sqlexec.save(spi);
+    }
+
     //插入本地日历（插入前删除）
-    let c = new CTbl();
-    await this.sqlexec.delete(c);
+    let csql = "delete from gtd_c where ji not in (select ji from gtd_j_h where jt ='1'  ) ";
+    await this.sqlexec.execSql(csql);
 
     for (let j = 0, len = bsModel.data.c.length; j < len; j++) {
       let ci = new CTbl();
@@ -140,15 +192,7 @@ export class BrService {
       await this.sqlexec.save(ci);
     }
 
-    //插入特殊日历（插入前删除）
-    let sp = new SpTbl();
-    await this.sqlexec.delete(sp);
 
-    for (let j = 0, len = bsModel.data.sp.length; j < len; j++) {
-      let spi = new SpTbl();
-      Object.assign(spi,bsModel.data.sp[j]) ;
-      await this.sqlexec.save(spi);
-    }
     //插入提醒数据（插入前删除）
     let e = new ETbl();
     await this.sqlexec.delete(e);
@@ -198,7 +242,8 @@ export class BrService {
     }
     //插入本地计划（插入前删除）
     let jh = new JhTbl();
-    await this.sqlexec.delete(jh);
+    let jhsql = "delete from gtd_j_h where jt <> '1' ";//本地系统计划不删除
+    await this.sqlexec.execSql(jhsql);
 
     for (let j = 0, len = bsModel.data.jh.length; j < len; j++) {
       let jhi = new JhTbl();
@@ -214,16 +259,6 @@ export class BrService {
       let ui = new UTbl();
       Object.assign(ui,bsModel.data.u[j]) ;
       await this.sqlexec.save(ui);
-    }
-
-    //插入系统设置（插入前删除）
-    let s = new STbl();
-    await this.sqlexec.delete(s);
-
-    for (let j = 0, len = bsModel.data.s.length; j < len; j++) {
-      let si = new STbl();
-      Object.assign(si,bsModel.data.s[j]) ;
-      await this.sqlexec.save(si);
     }
 
     let ret = new BsModel();

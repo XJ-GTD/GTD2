@@ -122,7 +122,7 @@ import {Keyboard} from "@ionic-native/keyboard";
         </ion-buttons>
 
         <ion-buttons end padding-right>
-          <button ion-button icon-only (click)="toSave()" end>
+          <button ion-button icon-only (click)="save()" end>
             <ion-icon name="checkmark"></ion-icon>
           </button>
         </ion-buttons>
