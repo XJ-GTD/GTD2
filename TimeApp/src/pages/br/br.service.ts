@@ -45,7 +45,7 @@ export class BrService {
     backupPro.d.c = await this.sqlexec.getExtList<CTbl>(csql);
     //restFul上传
     ret = await this.bacRestful.backup(backupPro);
-    backupPro.d.c.length = 0;//清空数组 以防其他表备份时候此数据再被上传
+    if (backupPro.d.c) backupPro.d.c.length = 0;//清空数组 以防其他表备份时候此数据再被上传
 
     if (ret.code == -99) {
       return ret;
@@ -56,7 +56,8 @@ export class BrService {
       " ( select * from gtd_c where ji not in (select ji from gtd_j_h where jt ='1')) c on c.si = sp.si ";//系统计划的日程不备份
     backupPro.d.sp = await this.sqlexec.getExtList<SpTbl>(spsql);
     ret = await this.bacRestful.backup(backupPro);
-    backupPro.d.sp.length = 0;
+    if (backupPro.d.sp) backupPro.d.sp.length = 0;
+    
     if (ret.code == -99) {
       return ret;
     }
@@ -65,7 +66,7 @@ export class BrService {
     let e = new ETbl();
     backupPro.d.e = await this.sqlexec.getList<ETbl>(e);
     ret = await this.bacRestful.backup(backupPro);
-    backupPro.d.e.length = 0;
+    if (backupPro.d.e) backupPro.d.e.length = 0;
 
     if (ret.code == -99) {
       return ret;
@@ -75,7 +76,7 @@ export class BrService {
     let d = new DTbl();
     backupPro.d.d = await this.sqlexec.getList<DTbl>(d);
     ret = await this.bacRestful.backup(backupPro);
-    backupPro.d.d.length = 0;
+    if (backupPro.d.d) backupPro.d.d.length = 0;
 
     if (ret.code == -99) {
       return ret;
@@ -85,7 +86,7 @@ export class BrService {
     let b = new BTbl();
     backupPro.d.b = await this.sqlexec.getList<BTbl>(b);
     ret = await this.bacRestful.backup(backupPro);
-    backupPro.d.b.length = 0;
+    if (backupPro.d.b) backupPro.d.b.length = 0;
 
     if (ret.code == -99) {
       return ret;
@@ -95,7 +96,7 @@ export class BrService {
     let g = new GTbl();
     backupPro.d.g = await this.sqlexec.getList<GTbl>(g);
     ret = await this.bacRestful.backup(backupPro);
-    backupPro.d.g.length = 0;
+    if (backupPro.d.g) backupPro.d.g.length = 0;
 
     if (ret.code == -99) {
       return ret;
@@ -105,7 +106,7 @@ export class BrService {
     let bx = new BxTbl();
     backupPro.d.bx = await this.sqlexec.getList<BxTbl>(bx);
     ret = await this.bacRestful.backup(backupPro);
-    backupPro.d.bx.length = 0;
+    if (backupPro.d.bx) backupPro.d.bx.length = 0;
 
     if (ret.code == -99) {
       return ret;
@@ -115,7 +116,7 @@ export class BrService {
     let jhsql = "select * from  gtd_j_h where jt <> '1' "//系统计划不备份
     backupPro.d.jh = await this.sqlexec.getExtList<JhTbl>(jhsql);
     ret = await this.bacRestful.backup(backupPro);
-    backupPro.d.jh.length = 0;
+    if (backupPro.d.jh) backupPro.d.jh.length = 0;
 
     if (ret.code == -99) {
       return ret;
@@ -126,7 +127,7 @@ export class BrService {
     backupPro.d.commit =true;
     backupPro.d.u = await this.sqlexec.getList<UTbl>(u);
     ret = await this.bacRestful.backup(backupPro);
-    backupPro.d.u.length = 0;
+    if (backupPro.d.u) backupPro.d.u.length = 0;
 
     if (ret.code == -99) {
       return ret;
