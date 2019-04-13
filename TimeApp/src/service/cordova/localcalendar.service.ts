@@ -41,67 +41,60 @@ export class LocalcalendarService {
    */
   findEventRc(tit:string,sd:moment.Moment,ed:moment.Moment):Promise<Array<ScdData>>{
     return new Promise((resolve, reject) => {
-      console.log("执行查询本地日历");
-      ed = ed.add(1,'d');
+      //ed = ed.add(1,'d');
       let rco = new Array<ScdData>();
       if(this.util.isMobile()){
-        console.log("查询本地日历开始时间："+ sd+ ",结束时间:"+ed);
-        this.calendar.findEvent(tit, "", "", sd.toDate(), ed.toDate()).then(
+        this.calendar.findEvent(tit, "", "", sd.toDate(), ed.add(1,"d").toDate()).then(
           (msg) => {
-            console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg));
-            console.log("getCalendarOptions::"+ JSON.stringify(this.calendar.getCalendarOptions()));
-            if(msg.length>0){
-              for(let i=0;i<msg.length;i++) {
-                let rc:ScdData = new ScdData();
-                rc.ui = UserConfig.account.id;
-                rc.sn = msg[i].title;
-                console.log("查询本地日历是否全天：" + msg[i].allday);
-                if (msg[i].allday) {
-                  if (msg[i].startDate) {
-                    rc.sd = msg[i].startDate.substr(0, 10).replace(new RegExp('-','g'),'/');
-                    rc.st = "99:99";
-                  }
-                  if (msg[i].endDate) {
-                    rc.ed = msg[i].endDate.substr(0, 10).replace(new RegExp('-','g'),'/');
-                    rc.et =  "99:99";
-                  }
-                  if (msg[i].startDate && !msg[i].endDate) {
-                    rc.ed = rc.sd;
-                    rc.et = "99:99";
-                  }
-                  if (!msg[i].startDate && msg[i].endDate) {
-                    rc.sd = rc.ed;
-                    rc.st = "99:99";
-                  }
-                } else {
-                  if (msg[i].startDate) {
-                    rc.sd = msg[i].startDate.substr(0, 10).replace(new RegExp('-','g'),'/');
-                    rc.st = msg[i].startDate.substr(11, 5);
-                  }
-                  if (msg[i].endDate) {
-                    rc.ed = msg[i].endDate.substr(0, 10).replace(new RegExp('-','g'),'/');
-                    rc.et = msg[i].endDate.substr(11, 5);
-                  }
-                  if (msg[i].startDate && !msg[i].endDate) {
-                    rc.ed = rc.sd;
-                    rc.et = "24:00";
-                  }
-                  if (!msg[i].startDate && msg[i].endDate) {
-                    rc.sd = rc.ed;
-                    rc.st = "00:00";
-                  }
-                }
-                console.log("查询本地日历开始时间：" + rc.sd + ",结束时间:" + rc.ed);
-                console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg[i]));
-                rc.ib = '1';
-                rc.gs='2';
-                rco.push(rc);
-              }
-            }
+            //TODO 本地日历问题很多，先注释
+            // if(msg.length>0){
+            //   for(let i=0;i<msg.length;i++) {
+            //     let rc:ScdData = new ScdData();
+            //     rc.ui = UserConfig.account.id;
+            //     rc.sn = msg[i].title;
+            //     if (msg[i].allday) {
+            //       if (msg[i].startDate) {
+            //         rc.sd = msg[i].startDate.substr(0, 10).replace(new RegExp('-','g'),'/');
+            //         rc.st = "99:99";
+            //       }
+            //       if (msg[i].endDate) {
+            //         rc.ed = msg[i].endDate.substr(0, 10).replace(new RegExp('-','g'),'/');
+            //         rc.et =  "99:99";
+            //       }
+            //       if (msg[i].startDate && !msg[i].endDate) {
+            //         rc.ed = rc.sd;
+            //         rc.et = "99:99";
+            //       }
+            //       if (!msg[i].startDate && msg[i].endDate) {
+            //         rc.sd = rc.ed;
+            //         rc.st = "99:99";
+            //       }
+            //     } else {
+            //       if (msg[i].startDate) {
+            //         rc.sd = msg[i].startDate.substr(0, 10).replace(new RegExp('-','g'),'/');
+            //         rc.st = msg[i].startDate.substr(11, 5);
+            //       }
+            //       if (msg[i].endDate) {
+            //         rc.ed = msg[i].endDate.substr(0, 10).replace(new RegExp('-','g'),'/');
+            //         rc.et = msg[i].endDate.substr(11, 5);
+            //       }
+            //       if (msg[i].startDate && !msg[i].endDate) {
+            //         rc.ed = rc.sd;
+            //         rc.et = "24:00";
+            //       }
+            //       if (!msg[i].startDate && msg[i].endDate) {
+            //         rc.sd = rc.ed;
+            //         rc.st = "00:00";
+            //       }
+            //     }
+            //     rc.ib = '1';
+            //     rc.gs='2';
+            //     rco.push(rc);
+            //   }
+            // }
             resolve(rco);
           },
           (err) => {
-            console.log("执行查询本地日历结束 err ::" + JSON.stringify(err));
             resolve(rco);
           });
       }else{

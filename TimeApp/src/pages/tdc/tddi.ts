@@ -251,6 +251,8 @@ export class TddiPage {
 
       this.clickwake(this.scd.tx + '');
 
+      //TODO 清除消息把已读标志未读
+
 
     });
 

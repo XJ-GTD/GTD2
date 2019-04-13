@@ -19,6 +19,33 @@ export class EmitService {
   //主页选择时间后，Ls更新
   private selectDate: EventEmitter<moment.Moment> = new EventEmitter<moment.Moment>();
 
+  //新消息点击后
+  private newMessageClick: EventEmitter<ScdEmData> = new EventEmitter<ScdEmData>();
+
+  //TODO 新日程增加修改删除
+  private newUpdateScd: EventEmitter<ScdEmData> = new EventEmitter<ScdEmData>();
+
+  registerNewMessageClick(callback) {
+    if (this.newMessageClick.closed) {
+      this.newMessageClick = new EventEmitter<ScdEmData>();
+    }
+    this.newMessageClick.subscribe(($data: ScdEmData) => {
+      callback($data);
+    });
+  };
+
+  emitNewMessageClick($data: ScdEmData) {
+    if (!this.newMessageClick.isStopped) {
+      this.newMessageClick.emit($data);
+    }
+  }
+
+  destroyNewMessageClick(emit: EventEmitter<ScdEmData>) {
+    this.newMessageClick.unsubscribe();
+  }
+
+
+
   registerSelectDate(callback) {
     if (this.selectDate.closed) {
       this.selectDate = new EventEmitter<moment.Moment>();

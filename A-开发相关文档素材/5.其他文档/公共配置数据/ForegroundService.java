@@ -163,7 +163,7 @@ public class ForegroundService extends Service {
         Intent intent   = context.getPackageManager()
                 .getLaunchIntentForPackage(pkgName);
       String CHANNEL_ONE_ID = "cn.sh.com.xj.timeApp";
-      String CHANNEL_ONE_NAME = "Channel One";
+      String CHANNEL_ONE_NAME = "MingWX";
 
       NotificationChannel notificationChannel = null;
       if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

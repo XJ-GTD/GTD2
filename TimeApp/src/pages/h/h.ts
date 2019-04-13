@@ -11,6 +11,7 @@ import {AiComponent} from "../../components/ai/answer/ai";
 import {EmitService} from "../../service/util-service/emit.service";
 import {TdcPage} from "../tdc/tdc";
 import {ScdPageParamter} from "../tdc/tdc.service";
+import {TddiPage} from "../tdc/tddi";
 
 /**
  * Generated class for the 首页 page.
@@ -86,6 +87,12 @@ export class HPage {
   }
 
   ngOnInit() {
+    this.emitService.registerNewMessageClick((data)=>{
+      let p:ScdPageParamter = new ScdPageParamter();
+      p.d = data.id;
+      p.d = moment(data.d);
+      this.modalCtr.create(TddiPage, p).present();
+    })
   }
 
   onPress(pressDay) {

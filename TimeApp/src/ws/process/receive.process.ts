@@ -29,8 +29,11 @@ export class ReceiveProcess implements MQProcess {
 
     // TODO 需要处理消息提醒接收日程
     let scd:ScdData = new ScdData();
-    
+    scd.si = agd.ai;
     scd.sn = agd.at;
+    scd.st = agd.st;
+    scd.sd = agd.adt;
+    scd.fs.ran = agd.fc;
     
     this.notificationsService.newSms(scd);
     return processRs;

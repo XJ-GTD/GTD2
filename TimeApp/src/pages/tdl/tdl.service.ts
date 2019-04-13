@@ -42,7 +42,7 @@ export class TdlService {
         where sp.sd <='${start}' and  sp.sd >= '${startBefore}' order by sp.sd,sp.st desc;`;
     let rclL = await this.sqlExce.getExtList(sqll);
     //本地日历加入
-    let localL = await this.readlocal.findEventRc('', moment(start).subtract(days, 'd'), moment(start));
+    let localL = await this.readlocal.findEventRc('', moment(startBefore), moment(start));
     mpL = this.proceeLs(mpL, rclL, localL);
     return mpL;
   }
@@ -74,7 +74,7 @@ export class TdlService {
         where sp.sd >= '${start}' and  sp.sd <= '${startAfter}' order by sp.sd,sp.st desc;`;
     let rclL = await this.sqlExce.getExtList(sqll);
     //本地日历加入
-    let localL = await this.readlocal.findEventRc('', moment(start), moment(start).add(days, 'd'));
+    let localL = await this.readlocal.findEventRc('', moment(start), moment(startAfter));
     mpL = this.proceeLs(mpL, rclL, localL);
 
     return mpL;
@@ -88,13 +88,18 @@ export class TdlService {
       Object.assign(sc.fs, scd);
       Object.assign(sc.p, scd);
       let cd: string = sc.sd;
-      console.log(cd);
-      mpL.find((n) => cd == n.d).scdl.push(sc);
+      let tmp = mpL.find((n) => cd == n.d);
+      if (tmp){
+        tmp.scdl.push(sc);
+      }
     }
 
     for (let scd of localL) {
       let cd: string = scd.sd
-      mpL.find((n) => cd == n.d).scdl.push(scd)
+      let tmp = mpL.find((n) => cd == n.d);
+      if (tmp){
+        tmp.scdl.push(scd);
+      }
     }
 
     //排序一天日程 按时间

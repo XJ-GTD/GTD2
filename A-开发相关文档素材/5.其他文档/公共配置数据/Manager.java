@@ -54,10 +54,10 @@ import de.appplant.cordova.plugin.notification.util.*;
 public final class Manager {
 
     // TODO: temporary
-    static final String CHANNEL_ID = "default-channel-id";
+    static final String CHANNEL_ID = "cn.sh.com.xj.timeApp";
 
     // TODO: temporary
-    private static final CharSequence CHANNEL_NAME = "Default channel";
+    private static final CharSequence CHANNEL_NAME = "MingWX";
 
     // The application context
     private Context context;
@@ -116,7 +116,6 @@ public final class Manager {
         NotificationChannel channel = mgr.getNotificationChannel(CHANNEL_ID);
 
         if (channel == null){
-          System.out.println("*************不存在默认channel");
 
           channel = new NotificationChannel(
             CHANNEL_ID, CHANNEL_NAME, IMPORTANCE_DEFAULT);
@@ -125,18 +124,15 @@ public final class Manager {
 
         }
 
-
       String CHANNEL_REMIND_ID = "cn.sh.com.xj.timeApp.remind";
-      String CHANNEL_NAME_REMIND = "remind";
+      String CHANNEL_NAME_REMIND = "MingWXRemind";
       //设置闹铃Channel
       channel = mgr.getNotificationChannel(CHANNEL_REMIND_ID);
       if (channel == null){
-        System.out.println("cn.sh.com.xj.timeApp.remind1*************不存在默认channel");
         channel = new NotificationChannel(CHANNEL_REMIND_ID,
           CHANNEL_NAME_REMIND, NotificationManager.IMPORTANCE_HIGH);
-        channel.setSound(AssetUtil.getInstance(context).parse("file://assets/feedback/sms.mp3"),null);
+        channel.setSound(AssetUtil.getInstance(context).parse("file://assets/feedback/remind.mp3"),android.app.Notification.AUDIO_ATTRIBUTES_DEFAULT);
         mgr.createNotificationChannel(channel);
-
       }
     }
 

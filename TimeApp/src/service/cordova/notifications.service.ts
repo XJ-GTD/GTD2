@@ -14,6 +14,7 @@ import {RemindService} from "../util-service/remind.service";
 import {DataConfig} from "../config/data.config";
 import {ETbl} from "../sqlite/tbl/e.tbl";
 import {File} from "@ionic-native/file";
+import {EmitService, ScdEmData} from "../util-service/emit.service";
 
 /**
  * 系统设置方法类
@@ -25,7 +26,9 @@ export class NotificationsService {
 
   private index: number = 0;
 
-  constructor(private localNotifications: LocalNotifications, private badge: Badge, private util: UtilService, private remindService: RemindService, private file: File) {
+  constructor(private localNotifications: LocalNotifications, private badge: Badge,
+              private util: UtilService, private remindService: RemindService,
+              private emitService: EmitService) {
 
 
   }
@@ -45,18 +48,26 @@ export class NotificationsService {
         let etbl: Array<ETbl> = next.data.val;
         let reDate: moment.Moment = moment().add(10, "m");
         this.remind(etbl);
-        this.remindService.delRemin(next.data.val);
         //this.localNotifications.clear(next.id);
         //this.localNotifications.cancel(next.id);
       });
 
       //提醒回馈处理 关闭
       this.localNotifications.on('close').subscribe((next: ILocalNotification) => {
-        this.remindService.delRemin(next.data.val.wi);
-        this.remindService.delRemin(next.data.val);
+        // this.remindService.delRemin(next.data.val.wi);
+        // this.remindService.delRemin(next.data.val);
       });
       this.localNotifications.on('click').subscribe((next: ILocalNotification) => {
         //跳转到界面处理
+        if (next.data.type == "newSms") {
+          let scd:ScdData = new ScdData()
+          scd = next.data.val;
+          let emMessage:ScdEmData = new ScdEmData();
+          emMessage.id = scd.si;
+          emMessage.d = scd.sd;
+          this.emitService.emitNewMessageClick(emMessage);
+        }
+
       });
       this.localNotifications.on('clear').subscribe((next: ILocalNotification) => {
       });
@@ -66,12 +77,9 @@ export class NotificationsService {
       this.localNotifications.on('trigger').subscribe((next: ILocalNotification) => {
         if (next.data.type == "schedule") {
           this.schedule();
-          console.log("************************开始闹铃");
           this.remindService.getRemindLs().then(data => {
-            console.log("************************开始闹铃数据" + JSON.stringify(data));
             if (data.length == 0) return;
             this.remind(data);
-            console.log("************************开始闹铃删除" + JSON.stringify(data));
             this.remindService.delRemin(next.data.val);
           })
         }
@@ -96,11 +104,10 @@ export class NotificationsService {
     //通知栏消息
     let notif: MwxNewMessage = new MwxNewMessage();
     notif.id = this.index++;
-    notif.text = scd.sn;
-    notif.data = scd;
-    this.badge.increase(-1);
+    notif.title = moment(scd.sd).format("YYYY年MM月DD天") + scd.st
+    notif.text = scd.fs?scd.fs.ran + ":":"" + scd.sn;
+    notif.data = {type: "newSms",val:scd};
     if (this.util.isMobile()) {
-
       this.badge.increase(1);
       this.localNotifications.schedule(notif);
     }
@@ -129,7 +136,7 @@ export class NotificationsService {
     let notif: MwxRemind = new MwxRemind();
     notif.id = this.index++;
     notif.data = {type: "remind", val: reData};
-    let text: string = ";"
+    let text: string = "";
     for (let e of reData) {
       text = text + "[" + e.st + "]";
     }
@@ -151,14 +158,14 @@ class MwxNewMessage implements ILocalNotification {
   attachments: string[];
   autoClear: boolean = true;
   badge: number;
-  channel: string = "cn.sh.com.xj.timeApp.remind";
+  channel: string = "cn.sh.com.xj.timeApp";
   //channel: string;
-  clock: boolean | string;
+  clock: boolean | string = true;
   color: string;
   data: any;
   defaults: number;
   foreground: boolean = true;
-  group: string = "冥王星新日程"
+  group: string = "【冥王星】收到活动"
   groupSummary: boolean = true;
   icon: string = "file://assets/icon/drawable-icon.png";
   id: number;
@@ -171,12 +178,12 @@ class MwxNewMessage implements ILocalNotification {
   progressBar: ILocalNotificationProgressBar | boolean;
   silent: boolean;
   smallIcon: string;
-  sound: string;
+  sound: string ;
   sticky: boolean;
   summary: string;
   text: string | string[];
   timeoutAfter: number | false;
-  title: string = "收到新日程";
+  title: string;
   trigger: ILocalNotificationTrigger;
   vibrate: boolean = true;
   wakeup: boolean = true;
@@ -194,7 +201,7 @@ class MwxRemind implements ILocalNotification {
   data: any;
   defaults: number;
   foreground: boolean = true;
-  group: string = "冥王星提醒"
+  group: string = "【冥王星】活动提醒"
   groupSummary: boolean = true;
   icon: string;
   id: number;
@@ -207,12 +214,12 @@ class MwxRemind implements ILocalNotification {
   progressBar: ILocalNotificationProgressBar | boolean;
   silent: boolean;
   smallIcon: string;
-  sound: string =  "file://assets/feedback/sms.mp3";
+  sound: string = "file://assets/feedback/remind.mp3";
   sticky: boolean;
   summary: string;
   text: string | string[];
   timeoutAfter: number | false;
-  title: string = "活动提醒";
+  title: string;
   trigger: ILocalNotificationTrigger;
   vibrate: boolean = true;
   wakeup: boolean = true;
@@ -224,7 +231,7 @@ class MwxSchedule implements ILocalNotification {
   attachments: string[];
   autoClear: boolean = true;
   badge: number;
-  channel: string;
+  channel: string = "cn.sh.com.xj.timeApp";
   clock: boolean | string;
   color: string;
   data: any;
@@ -243,7 +250,7 @@ class MwxSchedule implements ILocalNotification {
   progressBar: ILocalNotificationProgressBar | boolean;
   silent: boolean = true;
   smallIcon: string;
-  sound: string = "file://assets/feedback/sms.mp3";
+  sound: string;
   sticky: boolean;
   summary: string;
   text: string | string[];

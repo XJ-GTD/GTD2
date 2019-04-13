@@ -153,9 +153,9 @@ export class AlService {
       });
 
       //提醒定时
-      this.notificationsService.schedule();
+      //this.notificationsService.schedule();
       //保持后台运行
-      this.notificationsService.keeplive();
+      //this.notificationsService.keeplive();
 
       //用户设置信息初始化
       await this.userConfig.init();

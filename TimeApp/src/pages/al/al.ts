@@ -2,6 +2,9 @@ import {Component} from '@angular/core';
 import {IonicPage, Nav} from 'ionic-angular';
 import {AlData, AlService} from "./al.service";
 import {DataConfig} from "../../service/config/data.config";
+import {NotificationsService} from "../../service/cordova/notifications.service";
+import {ScdData} from "../../service/pagecom/pgbusi.service";
+import {ETbl} from "../../service/sqlite/tbl/e.tbl";
 
 /**
  * Generated class for the AlPage page.
@@ -26,7 +29,8 @@ export class AlPage {
   alData: AlData = new AlData();
 
   constructor(private alService: AlService,
-              private nav: Nav,) {
+              private nav: Nav,
+              private dd:NotificationsService) {
     this.alData.text = "正在初始化";
 
   }
@@ -36,7 +40,13 @@ export class AlPage {
   }
 
   async alinit() {
-
+    // let scd:ScdData= new ScdData();
+    // scd.sn ="ddddddd";
+    // let reData: Array<ETbl> = new Array<ETbl>();
+    // let t:ETbl = new ETbl();
+    // t.st = "拉拉拉拉";
+    // reData.push(t);
+    // this.dd.remind(reData);
     this.alData = await this.alService.checkAllPermissions();
     this.alData = await this.alService.createDB();
     this.alData = await this.alService.checkSystem();
