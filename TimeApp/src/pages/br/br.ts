@@ -81,12 +81,12 @@ export class BrPage {
   backup(){
     this.util.loadingStart();
     this.brService.backup().then(data=>{
-      this.util.toast('备份完成',1500)
+      this.util.popoverStart('备份完成')
       this.getLastDate();
       this.util.loadingEnd();
     }).catch(error=>{
+      this.util.popoverStart('备份失败')
       this.util.loadingEnd();
-      console.log('备份失败' + JSON.stringify(error));
     })
 
   }
@@ -95,11 +95,11 @@ export class BrPage {
     if(this.isRecover){
       this.util.loadingStart();
       this.brService.recover(Number(this.bts)).then(data=>{
-        this.util.toast('恢复成功',1500)
+        this.util.popoverStart('恢复成功');
         this.util.loadingEnd();
       }).catch(error=>{
+        this.util.popoverStart('恢复失败');
         this.util.loadingEnd();
-        console.log('恢复失败' + JSON.stringify(error));
       })
     }
   }

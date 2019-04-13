@@ -365,7 +365,7 @@ export class TdcPage {
   }
 
   toSave(){
-    this.util.popMsgbox("1",()=>{this.save("")});
+    this.util.alterStart("1",()=>{this.save("")});
   }
 
   save(share) {
@@ -414,7 +414,6 @@ export class TdcPage {
         let ctbl = data.data;
         this.scd.si = ctbl.si;
         this.pagestate = "1";
-        this.util.toast("保存成功", 2000);
         if (typeof (eval(share)) == "function") {
           share();
         }
@@ -429,7 +428,6 @@ export class TdcPage {
       this.util.loadingStart();
       this.tdcServ.updateDetail(this.scd).then(data => {
         this.util.loadingEnd();
-        this.util.toast("保存成功", 2000);
         if (typeof (eval(share)) == "function") {
           share();
         }
@@ -445,7 +443,7 @@ export class TdcPage {
 
   chkinput(): boolean {
     if (this.scd.sn == "") {
-      this.util.toast("请输入主题", 2000);
+      this.util.popoverStart("请输入主题");
       return false;
     }
     return true;
@@ -460,7 +458,7 @@ export class TdcPage {
   }
 
   presentActionSheet() {
-    this.util.popMsgbox("2",()=>{
+    this.util.alterStart("2",()=>{
 
       //日程删除
       this.util.loadingStart();
@@ -480,7 +478,7 @@ export class TdcPage {
       this.isShowPlan = true;
       this.IsShowCover = true;
     } else {
-      this.util.toast("未创建计划", 1500);
+      this.util.toastStart("未创建计划",3000);
     }
   }
 

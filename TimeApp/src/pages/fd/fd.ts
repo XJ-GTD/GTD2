@@ -100,12 +100,12 @@ export class FdPage {
 
   black(){
     if(this.fd.isbla){
-      this.util.popMsgbox("是否确认移出黑名单？",()=>{
+      this.util.alterStart("是否确认移出黑名单？",()=>{
         this.rbl();
       });
 
     }else{
-      this.util.popMsgbox("是否确认移入黑名单？",()=>{
+      this.util.alterStart("是否确认移入黑名单？",()=>{
         this.abl();
       });
 

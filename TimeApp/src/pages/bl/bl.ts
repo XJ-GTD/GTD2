@@ -100,7 +100,7 @@ export class BlPage {
       this.fdService.removeBlack(g.mpn).then(data=>{
         if(data.code == 0){
           this.getBl();
-          this.util.toast('删除黑名单成功！',2000)
+          this.util.popoverStart('删除黑名单成功！')
         }
      // })
     });

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
+import {IonicPage, ModalController, NavController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 
@@ -64,7 +64,7 @@ export class MPage {
   phone:any;
   avatar:any = DataConfig.HUIBASE64;
 
-  constructor(public navCtrl: NavController,) {
+  constructor(public modalController: ModalController) {
   }
 
   ionViewDidLoad() {
@@ -82,34 +82,32 @@ export class MPage {
 
   //计划
   goPlPage() {
-    this.navCtrl.push(DataConfig.PAGE._PL_PAGE);
+     this.modalController.create(DataConfig.PAGE._PL_PAGE).present();
   }
 
   //系统设置
   goSsPage() {
-    this.navCtrl.push(DataConfig.PAGE._SS_PAGE);
+    this.modalController.create(DataConfig.PAGE._SS_PAGE).present();
   }
 
   //备份
   goBrPage() {
-    this.navCtrl.push(DataConfig.PAGE._BR_PAGE);
+    this.modalController.create(DataConfig.PAGE._BR_PAGE).present();
   }
 
   // 群组列表
   goGlPage() {
-    this.navCtrl.push(DataConfig.PAGE._GL_PAGE);
+    this.modalController.create(DataConfig.PAGE._GL_PAGE).present();
   }
 
   // 个人设置
   goPsPage() {
-    this.navCtrl.push(DataConfig.PAGE._PS_PAGE);
+    this.modalController.create(DataConfig.PAGE._PS_PAGE).present();
   }
 
 
   // 黑名单
   goBlPage() {
-    this.navCtrl.push(DataConfig.PAGE._BL_PAGE);
+    this.modalController.create(DataConfig.PAGE._BL_PAGE).present();
   }
-
-
 }

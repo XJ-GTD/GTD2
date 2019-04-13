@@ -24,15 +24,19 @@ $selectColor:rgba(62,109,119,1);
 $selectCloseColor:rgba(62,109,119,.4);
 //白色不透名降低
 $whitedown:rgba(255,255,255,.3);
+//主页提示文字颜色
+$h-tip:rgba(60,144,155,1);
+
+//所有提示的背景色
+$popBackColor:#000;
+
+//主要字体颜色
+$fontMasterColor:#ffffff;
 
 
 //$secondaryColor:rgba(60,144,155,.5);
-//主要字体颜色
-$fontColor1:#ffffff;
 //次要字体颜色
 $fontColor2:#ffffff;
-//主页提示文字颜色
-$h-tip:rgba(60,144,155,1);
 //标题字号大小
 $font-size1:14px;
 //内容字号大小
@@ -40,8 +44,6 @@ $font-size1:14px;
 
 //页面选择园大小
 //
-
-$mytest:rgba(255,255,255,.2);
 
 
 $font-path: "../assets/fonts";

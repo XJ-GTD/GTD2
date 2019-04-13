@@ -332,7 +332,7 @@ export class TddiPage {
   }
 
   toSave(){
-    this.util.popMsgbox("1",()=>{
+    this.util.alterStart("1",()=>{
       this.save();
     });
   }
@@ -354,7 +354,6 @@ export class TddiPage {
     this.util.loadingStart();
     this.tddiServ.updateDetail(this.scd).then(data => {
       this.util.loadingEnd();
-      this.util.toast("保存成功", 2000);
 
     }).catch(err => {
       this.util.loadingEnd();
@@ -374,13 +373,12 @@ export class TddiPage {
             role: 'destructive',
             cssClass: 'btn-del',
             handler: () => {
-              this.util.popMsgbox("2",()=>{
+              this.util.alterStart("2",()=>{
                 if (moment(d).format("YYYY/MM/DD") == moment(this.scd.sd).format("YYYY/MM/DD")) {
                   //如果开始日与选择的当前日一样，就是删除所有
                   this.util.loadingStart();
                   this.tddiServ.delete(this.scd.si, "2", d).then(data => {
                     this.util.loadingEnd();
-                    this.util.toast("删除成功", 1500);
                     this.cancel();
                   }).catch(err => {
                     this.util.loadingEnd();
@@ -389,7 +387,6 @@ export class TddiPage {
                   this.util.loadingStart();
                   this.tddiServ.delete(this.scd.si, "1", d).then(data => {
                     this.util.loadingEnd();
-                    this.util.toast("删除成功", 1500);
                     this.cancel();
                   }).catch(err => {
                     this.util.loadingEnd();
@@ -401,11 +398,10 @@ export class TddiPage {
             text: '删除所有日程',
             cssClass: 'btn-delall',
             handler: () => {
-              this.util.popMsgbox("2",()=>{
+              this.util.alterStart("2",()=>{
                 this.util.loadingStart();
                 this.tddiServ.delete(this.scd.si, "2", d).then(data => {
                   this.util.loadingEnd();
-                  this.util.toast("删除成功", 1500);
                   this.cancel();
                 }).catch(err => {
                   this.util.loadingEnd();
@@ -426,11 +422,10 @@ export class TddiPage {
       actionSheet.present();
     } else {
       //非重复日程删除
-      this.util.popMsgbox("2",()=>{
+      this.util.alterStart("2",()=>{
         this.util.loadingStart();
         this.tddiServ.delete(this.scd.si, "2", d).then(data => {
           this.util.loadingEnd();
-          this.util.toast("删除成功", 1500);
           this.cancel();
         }).catch(err => {
           this.util.loadingEnd();
@@ -447,7 +442,7 @@ export class TddiPage {
       this.isShowPlan = true;
       this.IsShowCover = true;
     } else {
-      this.util.toast("未创建计划", 1500);
+      this.util.toastStart("未创建计划",3000);
     }
   }
 

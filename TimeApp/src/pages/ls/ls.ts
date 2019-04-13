@@ -79,11 +79,10 @@ export class LsPage {
         //console.log("短信发送成功" + JSON.stringify(data));
         //短信验证码KEY 赋值给验证码登录信息
         this.lsData.verifykey = data.data.verifykey;
-        this.util.toast("短信发送成功",1500);
+        this.util.toastStart("短信发送成功",2000);
 
       }).catch(error => {
-        console.log("短信发送失败" + JSON.stringify(error));
-        this.util.toast("短信发送失败",1500);
+        this.util.toastStart("短信发送失败",2000);
       });
 
       this.timeText = 60;
@@ -102,11 +101,10 @@ export class LsPage {
   signIn() {
     if(this.checkPhone()) {
       if (this.lsData.authCode == null || this.lsData.authCode == "") {     //判断验证码是否为空
-        this.util.toast("验证码不能为空",1500);
+        this.util.popoverStart("验证码不能为空");
       }else if(this.lsData.verifykey == null || this.lsData.verifykey == ""){
-        this.util.toast("请发送短信并填写正确的短信验证码",1500);
+        this.util.popoverStart("请发送短信并填写正确的短信验证码");
       }else{
-        console.log("手机验证码登录被点击");
         this.util.loadingStart();
 
         this.lsService.login(this.lsData).then(data=> {
@@ -120,13 +118,11 @@ export class LsPage {
 
           return this.lsService.getOther();
         }).then(data=>{
-          console.log("手机验证码登录成功");
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
         }).catch(error=>{
-          console.log("手机验证码登录失败"+JSON.stringify(error));
+          this.util.popoverStart( "手机验证码登录失败");
           this.util.loadingEnd();
-          this.util.toast(error.message,1500);
         });
       }
     }
@@ -134,7 +130,7 @@ export class LsPage {
 
   checkPhone():boolean {
     if (!this.util.checkPhone(this.lsData.mobile)){
-      this.util.toast("请填写正确的手机号",1500);
+      this.util.popoverStart("请填写正确的手机号");
     }
     return this.util.checkPhone(this.lsData.mobile);
   }

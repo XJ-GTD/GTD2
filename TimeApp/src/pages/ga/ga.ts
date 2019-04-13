@@ -72,7 +72,7 @@ export class GaPage {
     let dc:PageDcData = new PageDcData();
     dc.gn = this.tt;
     if(!this.tt || this.tt == null || this.tt==''){
-      this.util.toast("群名称不能为空",2000);
+      this.util.popoverStart("群名称不能为空");
       return;
     }
     // this.util.popMsgbox("1",()=>{
@@ -80,7 +80,7 @@ export class GaPage {
         if (data.code == 0) {
           this.viewCtrl.dismiss();
         }else{
-          this.util.toast("添加群名称失败",2000);
+          this.util.popoverStart("添加群名称失败");
         }
       })
     // });

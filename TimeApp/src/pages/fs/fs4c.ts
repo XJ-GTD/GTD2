@@ -129,7 +129,7 @@ export class Fs4cPage {
         this.goBack('', '');
       }
     } else {
-      this.util.toast("请先选择人员",2000);
+      this.util.popoverStart("请先选择朋友");
     }
 
   }

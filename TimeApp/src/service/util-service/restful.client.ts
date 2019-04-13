@@ -36,8 +36,7 @@ export class RestfulClient {
             let jsonData = JSON.parse(data.data);
             resolve(jsonData);
           }).catch(e=>{
-            this.util.toast("服务" + url.desc + "访问失败" + e.message,2000);
-            console.error("服务" + url.desc + "访问失败"+JSON.stringify(e.message));
+            this.util.toastStart("服务" + url.desc + "访问失败" + e.message,2000);
             // console.error("服务" + url.desc + "访问失败"+JSON.stringify(e,Object.getOwnPropertyNames(e)));
             // JSON.stringify(e,Object.getOwnPropertyNames(e))
 
@@ -50,9 +49,7 @@ export class RestfulClient {
           this.httpClient.post(url.url,body,warHeader).subscribe(data=>{
             resolve(data);
           },err => {
-            this.util.toast("服务" + url.desc + "访问失败",2000);
-            console.error("服务" + url.desc + "访问失败"+JSON.stringify(err));
-            // console.error("服务" + url.desc + "访问失败"+JSON.stringify(err,Object.getOwnPropertyNames(err)));
+            this.util.toastStart("服务" + url.desc + "访问失败",2000);
             reject(err)
           })
         }
@@ -72,8 +69,7 @@ export class RestfulClient {
             resolve(jsonData);
           }).catch(e=>{
 
-            this.util.toast("服务" + url.desc + "访问失败",2000);
-            console.error("服务" + url.desc + "访问失败"+JSON.stringify(e));
+            this.util.toastStart("服务" + url.desc + "访问失败",2000);
             reject(e);
           })
         }else{
@@ -83,8 +79,7 @@ export class RestfulClient {
           this.httpClient.get(url.url,warHeader).subscribe(data=>{
             resolve(data);
           },err => {
-            this.util.toast("服务" + url.desc + "访问失败",2000);
-            console.error("服务" + url.desc + "访问失败"+JSON.stringify(err))
+            this.util.toastStart("服务" + url.desc + "访问失败",2000);
             reject(err)
           })
         }
@@ -102,7 +97,7 @@ export class RestfulClient {
             let jsonData = JSON.parse(data.data);
             resolve(jsonData);
           }).catch(e=>{
-            this.util.toast("服务" + url.desc + "访问失败",2000);
+            this.util.toastStart("服务" + url.desc + "访问失败",2000);
             reject(e);
           })
         }else{
@@ -112,7 +107,7 @@ export class RestfulClient {
           this.httpClient.put(url.url,body,warHeader).subscribe(data=>{
             resolve(data);
           },err => {
-            this.util.toast("服务" + url.desc + "访问失败",2000);
+            this.util.toastStart("服务" + url.desc + "访问失败",2000);
             reject(err)
           })
         }
@@ -131,7 +126,7 @@ export class RestfulClient {
           return this.http.post(url,body,header).then(data=>{
             resolve(JSON.parse(data.data));
           }).catch(e=>{
-            this.util.toast("服务初始化数据访问失败",2000);
+            this.util.toastStart("服务初始化数据访问失败",2000);
             //reject(e);
           })
         }else{
@@ -141,7 +136,7 @@ export class RestfulClient {
           this.httpClient.post(url,body,warHeader).subscribe(data=>{
             resolve(data);
           },err => {
-            this.util.toast("服务初始化数据访问失败",2000);
+            this.util.toastStart("服务初始化数据访问失败",2000);
             //reject(err)
           })
         }
@@ -161,7 +156,7 @@ export class RestfulClient {
         return this.http.get(url,body,header).then(data=>{
           resolve(data.data);
         }).catch(e=>{
-          this.util.toast("服务初始化数据访问失败",2000);
+          this.util.toastStart("服务初始化数据访问失败",2000);
           //reject(e);
         })
       }else{
@@ -171,7 +166,7 @@ export class RestfulClient {
         this.httpClient.get(url,warHeader).subscribe(data=>{
           resolve(data);
         },err => {
-          this.util.toast("服务初始化数据访问失败",2000);
+          this.util.toastStart("服务初始化数据访问失败",2000);
           //reject(err)
         })
       }

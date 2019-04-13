@@ -1,8 +1,17 @@
 import {Injectable} from "@angular/core";
 import {Device} from "@ionic-native/device";
-import * as moment from "moment";
-import {Loading, LoadingController, PopoverController, ToastController} from "ionic-angular";
+import {
+  Alert, AlertButton,
+  AlertController,
+  Loading,
+  LoadingController,
+  Popover,
+  PopoverController,
+  Toast,
+  ToastController
+} from "ionic-angular";
 import {ConfirmboxComponent} from "../../components/confirmbox/confirmbox";
+import {AlertInputOptions} from "ionic-angular/components/alert/alert-options";
 
 /**
  * 公共方法
@@ -12,9 +21,17 @@ import {ConfirmboxComponent} from "../../components/confirmbox/confirmbox";
 @Injectable()
 export class UtilService {
   wins: any = window;//window对象
-  constructor(public device: Device, private toastCtrl: ToastController, private loadingCtrl: LoadingController,
-              private popoverCtrl: PopoverController) {
+  constructor(public device: Device,
+              private toastCtrl: ToastController,
+              private loadingCtrl: LoadingController,
+              private popoverCtrl: PopoverController,
+              private alertCtrl: AlertController) {
   }
+
+  alter: Alert;
+  loading: Loading;
+  toast: Toast;
+  popover: Popover;
 
   public rand(min, max): number {
     return Math.random() * (max - min) + min;
@@ -83,7 +100,7 @@ export class UtilService {
    */
   public checkPhone(str): boolean {
     // "[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位
-    let regex =  /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+    let regex = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
 
     return regex.test(str);
   }
@@ -117,25 +134,6 @@ export class UtilService {
     let platform = "browser";
     if (this.device.platform != null) platform = this.device.platform + "|" + this.device.version + "|" + this.device.model;
     return platform;
-  }
-
-  /**
-   * 获取当前月的第一天
-   */
-  public static getCurrentMonthFirst(date: Date): Date {
-    date.setDate(1);
-    return date;
-  }
-
-  /**
-   * 获取当前月的最后一天
-   */
-  public static getCurrentMonthLast(date: Date): Date {
-    let currentMonth = date.getMonth();
-    let nextMonth = ++currentMonth;
-    let nextMonthFirstDay = new Date(date.getFullYear(), nextMonth, 1).getTime();
-    let oneDay = 1000 * 60 * 60 * 24;
-    return new Date(nextMonthFirstDay - oneDay);
   }
 
   /**
@@ -577,98 +575,6 @@ export class UtilService {
     return false;
   }
 
-  //首字母大写
-  ucfirst(l1: string) {
-    if (l1.length > 0) {
-      let first = l1.substr(0, 1).toUpperCase();
-      let space = l1.substr(1, l1.length);
-      return first + space;
-    }
-  }
-
-  // loading(text:string){
-  //   this.events.subscribe("loading",()=>{
-  //     let loading = this.loadCtrl.create({
-  //       content:text,
-  //       showBackdrop:false,
-  //       cssClass:"loadingcss",
-  //       dismissOnPageChange:true,
-  //     });
-  //     loading.present();
-  //     this.events.subscribe("unloading",()=>{
-  //       loading.dismiss();
-  //       this.events.unsubscribe("loading");
-  //       this.events.unsubscribe("unloading");
-  //     })
-  //   });
-  //
-  //   this.events.publish("loading");
-  // }
-  //
-  // unloading(){
-  //   this.events.publish("unloading");
-  // }
-
-  /**
-   * dateString to YYYY/MM/DD hh:mm:ss
-   * @param {string} inDate
-   * @returns {string}
-   */
-  dateFormatI(inDate: string) {
-    let outDate = moment(new Date(inDate).getTime() - 8 * 60 * 60 * 1000).format("YYYY/MM/DD HH:mm:ss");
-    return outDate;
-  }
-
-  /**
-   * dateString to YYYY-MM-DD hh:mm:ss
-   * @param {string} inDate
-   * @returns {string}
-   */
-  dateFormatA(inDate: string) {
-    let outDate = moment(new Date(inDate).getTime() - 8 * 60 * 60 * 1000).format("YYYY/MM/DD HH:mm:ss");
-    return outDate;
-  }
-
-  /**
-   * dateString to YYYY-MM-DDThh:mm:ss.000Z
-   * @param {string} inDate
-   * @returns {string}
-   */
-  dateFormatT(inDate: string) {
-    let outDate = moment(new Date(inDate).getTime() + 8 * 60 * 60 * 1000).toISOString();
-    return outDate;
-  }
-
-  telFormat(tel) {
-    let tmp = tel.toString();
-    let out = tmp.substr(0, 3) + " " + tmp.substr(3, 4) + " " + tmp.substr(7, 4);
-    return out.trim();
-  }
-
-  /**
-   * 手机号输入去除英文
-   * @param inStr
-   * @returns {String}
-   */
-  remo(inStr): string {
-    let tmp = inStr.replace(/[a-zA-Z]/g, '');
-    tmp = tmp.substr(0, 11);
-    return tmp;
-  }
-
-  // alert(msg:string){
-  //   let alert = this.alertCtrl.create({
-  //     subTitle: msg,
-  //     enableBackdropDismiss:true
-  //   });
-  //   setTimeout(()=>{
-  //     alert.dismiss();
-  //   },1000);
-  //   alert.present();
-  // }
-  //
-
-  loading: Loading;
 
   loadingStart() {
     this.loading = this.loadingCtrl.create({
@@ -679,68 +585,26 @@ export class UtilService {
   }
 
   loadingEnd() {
-    if (this.loading)
+    if (this.loading) {
       this.loading.dismissAll();
+      this.loading = null;
+    }
   }
 
-  toast(msg: string, long: number) {
-    let toast = this.toastCtrl.create({
+  toastStart(msg: string, long: number) {
+    this.toast = this.toastCtrl.create({
       message: msg,
       duration: long,
       position: 'top',
     });
-    toast.present();
+    this.toast.present();
   }
 
-  //时间戳转时间
-  tranDate(TimeNow, fmt) {
-
-    let date = new Date(TimeNow)
-
-    if (/(y+)/.test(fmt)) {
-      fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
+  toastEnd() {
+    if (this.toast) {
+      this.toast.dismissAll();
+      this.toast = null;
     }
-    let o = {
-      'M+': date.getMonth() + 1,
-      'd+': date.getDate(),
-      'h+': date.getHours(),
-      'm+': date.getMinutes(),
-      's+': date.getSeconds()
-    };
-
-    // 遍历这个对象
-    for (let k in o) {
-      if (new RegExp(`(${k})`).test(fmt)) {
-        // console.log(`${k}`)
-        console.log(RegExp.$1)
-        let str = o[k] + '';
-        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : this.padLeftZero(str));
-      }
-    }
-    return fmt;
-  };
-
-  private padLeftZero(str) {
-    return ('00' + str).substr(str.length);
-  }
-
-  //日期格式化
-  dateFtt(fmt, date) { //author: meizz
-    var o = {
-      "M+": date.getMonth() + 1,                 //月份
-      "d+": date.getDate(),                    //日
-      "h+": date.getHours(),                   //小时
-      "m+": date.getMinutes(),                 //分
-      "s+": date.getSeconds(),                 //秒
-      "q+": Math.floor((date.getMonth() + 3) / 3), //季度
-      "S": date.getMilliseconds()             //毫秒
-    };
-    if (/(y+)/.test(fmt))
-      fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o)
-      if (new RegExp("(" + k + ")").test(fmt))
-        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-    return fmt;
   }
 
   /**
@@ -748,17 +612,57 @@ export class UtilService {
    * @param msg:1,是否保存，2，是否删除，3，是否分享。其他为自定义
    * @param okdo
    */
-  popMsgbox(msg,okdo){
-    let popover = this.popoverCtrl.create(ConfirmboxComponent, {
+  popoverStart(msg) {
+    this.popover = this.popoverCtrl.create(ConfirmboxComponent, {
       msg: msg,
-    },{enableBackdropDismiss :false,
-              cssClass:"a"});
-    popover.onDidDismiss((data,role) =>{
-      //OK:0,cancel:1
-      if( data.ret == "0"){
-        okdo();
-      };
-    })
-    popover.present();
+    });
+    this.popover.present();
+  }
+
+  popoverEnd() {
+    if (this.popover) {
+      this.popover.dismiss();
+      this.popover = null;
+    }
+  }
+
+  /**
+   * 确认msgbox
+   * @param msg:1,是否保存，2，是否删除，3，是否分享。其他为自定义
+   * @param okdo
+   */
+  alterStart(msg:string, okdo:Function) {
+    let b1:AlertButton = new class implements AlertButton {
+      cssClass: string;
+      handler: (value: any) => (boolean | void);
+      role: string;
+      text: string = "否";
+    };
+    let b2:AlertButton = new class implements AlertButton {
+      cssClass: string;
+      handler: (value: any) => (boolean | void);
+      role: string;
+      text: string = "是";
+    };
+    b2.handler = (value)=>{
+      okdo();
+    };
+    //1,是否保存，2，是否删除，3，是否分享。其他为自定义
+    if (msg == "1") msg = "确认要保存吗?"
+    if (msg == "2") msg = "真的要删除吗?"
+    if (msg == "3") msg = "确认要分享吗?"
+    this.alter = this.alertCtrl.create({
+        message: msg,
+        buttons: [b1, b2],
+      }
+    );
+    this.alter.present();
+  }
+
+  alterEnd() {
+    if (this.alter) {
+      this.alter.dismiss();
+      this.alter = null;
+    }
   }
 }

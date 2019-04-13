@@ -132,18 +132,18 @@ export class PsPage {
 
     if(this.uo.user.name == ""){
       isUpd = false;
-      this.util.toast("用户名不能为空",1500);
+      this.util.popoverStart("用户名不能为空");
       this.uo.user.name = this.olduo.user.name;
     }
 
     if(isUpd){
       this.psService.saveUser(this.uo,type).then(data=>{
         if(data.code ==0){
-          this.util.toast('保存成功！',2000);
+          //this.util.popoverStart('保存成功！');
 
           Object.assign(this.olduo.user,this.uo.user);  //替换旧数据
         }else{
-          this.util.toast(data.message,2000);
+          this.util.popoverStart(data.message);
         }
       })
     }

@@ -154,7 +154,7 @@ export class PdPage {
               this.IsShowDiv = true;
               this.IsShowCover = true;
             }).catch(res=>{
-              this.util.toast('分享失败',1500);
+              this.util.popoverStart('分享失败');
             });
           }
         },
@@ -162,9 +162,9 @@ export class PdPage {
           text: '删除',
           handler: () => {
             if(jh.jt == "1"){
-              this.util.toast('系统计划请在计划一栏页面长按删除',500);
+              this.util.popoverStart('系统计划请在计划一栏页面长按删除');
             }else{
-              this.util.popMsgbox("2",()=>{this.delete(jh)});
+              this.util.alterStart("2",()=>{this.delete(jh)});
             }
           }
         },
@@ -184,7 +184,7 @@ export class PdPage {
     this.pdService.delete(jh).then(data=>{
       this.navCtrl.pop();
     }).catch(res=>{
-      this.util.toast('删除计划失败',1500);
+      this.util.popoverStart('删除计划失败');
     })
   }
 }

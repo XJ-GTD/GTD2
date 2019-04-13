@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {PageRData, RService} from "./r.service";
 import {UtilService} from "../../service/util-service/util.service";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 注册 page.
@@ -93,11 +94,11 @@ export class RPage {
         //console.log("短信发送成功" + JSON.stringify(data));
         //短信验证码KEY 赋值给验证码登录信息
         this.rData.verifykey = data.data.verifykey;
-        this.util.toast("短信发送成功",1500);
+        this.util.toastStart("短信发送成功",1500);
 
       }).catch(error => {
         console.log("短信发送失败" + JSON.stringify(error));
-        this.util.toast("短信发送失败",1500);
+        this.util.toastStart("短信发送失败",1500);
       });
 
       this.timeText = 60;
@@ -116,25 +117,22 @@ export class RPage {
   register() {
     if(this.checkPhone()) {
       if (this.rData.username == null || this.rData.username == "") {           //判断用户名是否为空
-        this.util.toast("用户名不能为空",1500);
+        this.util.popoverStart("用户名不能为空");
       }else if (this.rData.authCode == null || this.rData.authCode == "") {     //判断验证码是否为空
-        this.util.toast("验证码不能为空",1500);
+        this.util.popoverStart("验证码不能为空");
       }else if (this.rData.password == null || this.rData.password == "") {     //判断密码是否为空
-        this.util.toast("密码不能为空",1500);
+        this.util.popoverStart("密码不能为空");
       }else if(this.rData.verifykey == null || this.rData.verifykey == ""){
-        this.util.toast("请发送短信并填写正确的短信验证码",1500);
+        this.util.popoverStart("请发送短信并填写正确的短信验证码");
       }else {
-        console.log("注册被点击");
         this.util.loadingStart();
         this.rService.signup(this.rData).then(data => {
-          console.log("注册并密码登录成功");
           clearTimeout(this.timer);
           this.util.loadingEnd();
-          this.navCtrl.setRoot('MPage');
+          this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
         }).catch(error=>{
-          console.log("注册失败"+JSON.stringify(error));
           this.util.loadingEnd();
-          this.util.toast(error.message,1500);
+          this.util.popoverStart(error.message);
         });
       }
     }
@@ -142,7 +140,7 @@ export class RPage {
 
   checkPhone():boolean {
     if (!this.util.checkPhone(this.rData.mobile)){
-      this.util.toast("请填写正确的手机号",1500);
+      this.util.popoverStart("请填写正确的手机号");
     }
     return this.util.checkPhone(this.rData.mobile);
   }

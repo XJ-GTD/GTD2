@@ -1,4 +1,4 @@
-import {Component,  OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {IonicPage, PopoverController, NavParams, ViewController} from 'ionic-angular';
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 
@@ -11,50 +11,21 @@ import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 @IonicPage()
 @Component({
   selector: 'ConfirmboxComponent',
-  template: `<ion-list >
-    <ion-list-header class="msg-lbl">{{msg}}</ion-list-header>
-    <ion-row>
-      <ion-col class="col-al col-left">
-        <button ion-button clear (click)="close()" >取消</button>
-      </ion-col>
-      <ion-col class="col-al">
-        <button ion-button clear (click)="ok()">确定</button>
-      </ion-col>
-    </ion-row>
-    </ion-list >`,
+  template: `
+      <div class="msg-lbl">{{msg}}</div>
+  `,
 })
-export class ConfirmboxComponent{
+export class ConfirmboxComponent {
 
-  constructor(private navParams: NavParams,public viewCtrl: ViewController) {
+  constructor(private navParams: NavParams) {
 
   }
 
-  msg:string ="";
+  msg: string;
 
   ngOnInit() {
     if (this.navParams.data) {
-      //this.msg = this.navParams.data.msg;
-      let m = this.navParams.data.msg;
-      switch (m){
-        case "1":
-          this.msg ="是否保存？";
-          break;
-        case "2":
-          this.msg ="是否删除？";
-          break;
-        case "3":
-          this.msg ="是否分享？";
-          break;
-        default :
-          this.msg = m;
-      }
+      this.msg = this.navParams.data.msg;
     }
   }
-  ok() {
-    this.viewCtrl.dismiss({ret:"0"});
-  }
-  close() {
-    this.viewCtrl.dismiss({ret:"1"});
-  }
-
 }

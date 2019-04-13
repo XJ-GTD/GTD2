@@ -1,10 +1,7 @@
 import {Component} from '@angular/core';
 import {IonicPage, Nav} from 'ionic-angular';
-import {RoundProgressEase} from 'angular-svg-round-progressbar';
 import {AlData, AlService} from "./al.service";
-import {SyncRestful} from "../../service/restful/syncsev";
 import {DataConfig} from "../../service/config/data.config";
-import {Location} from '@angular/common';
 
 /**
  * Generated class for the AlPage page.
@@ -29,10 +26,7 @@ export class AlPage {
   alData: AlData = new AlData();
 
   constructor(private alService: AlService,
-              private _ease: RoundProgressEase,
-              private syncRestful: SyncRestful,
-              private nav: Nav,
-              private location: Location) {
+              private nav: Nav,) {
     this.alData.text = "正在初始化";
 
   }

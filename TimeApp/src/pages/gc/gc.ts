@@ -111,11 +111,10 @@ export class GcPage {
 
   delete(g:FsData) {
     //删除群成员
-    this.util.popMsgbox("2",()=>{
+    this.util.alterStart("2",()=>{
       this.gcService.deleteBx(this.dc.gi,g.pwi).then(async data=>{
         if(data.code == 0){
           this.getData();
-          //this.util.toast("删除成功",1500);
         }
       })
     });

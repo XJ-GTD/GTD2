@@ -159,10 +159,10 @@ export class PcPage {
         }).catch(res=>{
         });
       }else{
-        this.util.toast('计划颜色不能为空',1500);
+        this.util.popoverStart('计划颜色不能为空');
       }
     }else{
-      this.util.toast('计划名称不能为空',1500);
+      this.util.popoverStart('计划名称不能为空');
     }
 
   }

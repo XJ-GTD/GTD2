@@ -43,12 +43,13 @@
 //  url('../assets/fonts/PingFang Medium.svg') format('svg');
 //}
 * {
-  font-family: PingFang-Regular, PingFang-SC-Regular, PingFang-SC, "微软雅黑", Georgia
+  font-family: PingFang-Regular, PingFang-SC-Regular, PingFang-SC, "微软雅黑", Roboto
 }
 
 @font-face {
   font-family: 'PingFang-Regular';
-  src: url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.ttf') format('truetype'),
+  src: local("PingFang-Regular"),
+  url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.ttf') format('truetype'),
   url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.eot') format('embedded-opentype'),
   url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.woff') format('woff'),
   url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.svg') format('svg');
@@ -127,6 +128,25 @@ body {
       padding-right: 50px;
       padding-left: 50px;
       font-size: 16px;
+    }
+  }
+
+  .popover-ios .popover-content{
+    background-color:$popBackColor;
+    font-size: 14px;
+    min-width: 300px;
+    min-height: 130px;
+  }
+  .alert-ios {
+    .alert-wrapper{
+      background-color:$popBackColor;
+      color: $fontMasterColor;
+      font-size: 14px;
+    }
+    .alert-button{
+      border-top: 0px solid $secondColor;
+      color: $fontMasterColor;
+      border-right:0px solid $secondColor;
     }
   }
 

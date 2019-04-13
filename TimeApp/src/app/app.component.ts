@@ -19,8 +19,8 @@ export class MyApp {
   constructor(private platform: Platform,
               private appCtrl: IonicApp,
               private backgroundMode: BackgroundMode,
-              private restfulClient:RestfulClient,
-              private util:UtilService,
+              private restfulClient: RestfulClient,
+              private util: UtilService,
               private screenOrientation: ScreenOrientation) {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
@@ -28,8 +28,8 @@ export class MyApp {
     this.platform.ready().then(() => {
       //this.util.loadingEnd();
       //允许进入后台模式
-      if (this.util.hasCordova()){
-        this.backgroundMode.setDefaults({silent:true,hidden:true}).then(d=>{
+      if (this.util.hasCordova()) {
+        this.backgroundMode.setDefaults({silent: true, hidden: true}).then(d => {
           this.backgroundMode.enable();
         })
         //设置返回键盘（android）
@@ -48,24 +48,21 @@ export class MyApp {
 
   registerBackButtonAction(): void {
     this.platform.registerBackButtonAction(() => {
-      this.util.loadingEnd();
-      //如果想点击返回按钮隐藏toast或loading或Overlay就把下面加上
-      // this.appCtrl._toastPortal.getActive() || this.appCtrl._loadingPortal.getActive() || this.appCtrl._overlayPortal.getActive();
-      let activePortal = this.appCtrl._modalPortal.getActive();
-      if (activePortal) {
-        //语音停止
-        activePortal.dismiss().catch(() => {
-        });
-        activePortal.onDidDismiss(() => {
-        });
-        return;
+
+      if (this.util.toast || this.util.loading || this.util.popover || this.util.alter) {
+        if (this.util.toast) this.util.toastEnd();
+        if (this.util.loading) this.util.loadingEnd();
+        if (this.util.popover) this.util.popoverEnd();
+        if (this.util.alter) this.util.alterEnd();
+      } else {
+        if (this.appCtrl._modalPortal.length() > 0) {
+          this.appCtrl._modalPortal.pop();
+        } else {
+          this.backgroundMode.moveToBackground();
+        }
+
       }
 
-      if (this.nav.canGoBack()) {
-        this.nav.pop();
-      } else {
-        this.backgroundMode.moveToBackground();
-      }
 
     }, 1);
   }

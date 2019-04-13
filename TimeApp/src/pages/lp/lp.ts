@@ -79,9 +79,8 @@ export class LpPage {
   signIn() {
     if (this.checkPhone()){
       if (this.lpData.password == null || this.lpData.password == "") {     //判断密码是否为空
-        this.util.toast("密码不能为空",1500);
+        this.util.popoverStart("密码不能为空");
       }else{
-        console.log("手机密码登录按钮被点击");
         this.util.loadingStart();
 
         this.lpService.login(this.lpData).then(data=> {
@@ -95,13 +94,11 @@ export class LpPage {
 
           return this.lpService.getOther();
         }).then(data=>{
-          console.log("手机密码登录成功");
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
         }).catch(error=>{
-          console.log("手机密码登录失败"+JSON.stringify(error));
+          this.util.popoverStart(error.message +"手机密码登录失败");
           this.util.loadingEnd();
-          this.util.toast(error.message,1500);
         });
       }
     }
@@ -109,7 +106,7 @@ export class LpPage {
 
   checkPhone():boolean {
     if (!this.util.checkPhone(this.lpData.mobile)){
-      this.util.toast("请填写正确的手机号",1500);
+      this.util.popoverStart("请填写正确的手机号");
     }
     return this.util.checkPhone(this.lpData.mobile);
   }

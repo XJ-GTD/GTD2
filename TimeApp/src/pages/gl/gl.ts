@@ -91,17 +91,15 @@ export class GlPage {
   }
 
   goBack() {
-    console.log('GlPage =======跳转: 返回上一页');
     this.navCtrl.pop();
   }
 
   delGroup(g:PageDcData){
     //删除群
-    this.util.popMsgbox("2",()=>{
+    this.util.alterStart("2",()=>{
       this.gcService.delete(g.gi).then( async data=>{
         this.getGroups();
       }).catch(error=>{
-        console.log("error "+error)
       })
     });
 

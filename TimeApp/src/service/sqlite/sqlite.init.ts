@@ -98,7 +98,7 @@ export class SqliteInit {
    * @returns {Promise<any>}
    */
   initDataSub(): Promise<any> {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
       console.log("-------------------系统 ------------------");
 
@@ -137,7 +137,7 @@ export class SqliteInit {
 
           }
         )
-      }).catch(err=>{
+      }).catch(err => {
 
         resolve(err);
       })
@@ -153,7 +153,7 @@ export class SqliteInit {
    * @returns {Promise<any>}
    */
   initData(): Promise<any> {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
       console.log("-------------------BaseSqlite initData table  data to start ------------------");
 
@@ -200,7 +200,8 @@ export class SqliteInit {
         //服务器 用户偏好数据
         for (let dpfu of data.dpfu) {
           let ytbl = new YTbl();
-          ytbl.yi = this.util.getUuid();;
+          ytbl.yi = this.util.getUuid();
+          ;
           ytbl.yt = dpfu.name;
           ytbl.ytn = dpfu.desc;
           ytbl.yn = dpfu.desc;
@@ -210,13 +211,14 @@ export class SqliteInit {
         }
 
 
-
         //web端
         this.sqlexec.batExecSql(urlList).then(data => {
             resolve(data);
 
           }
         )
+      }).catch(error=>{
+        resolve(error);
       })
 
     })

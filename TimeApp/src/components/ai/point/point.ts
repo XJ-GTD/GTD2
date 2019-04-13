@@ -16,7 +16,7 @@ import {InputComponent} from "../input/input";
   template: `
     <div class="aitool" #aitool>
       <b class=" speaking  danger" #light>
-        <div class="spinner" (click)="speakstart()">
+        <div class="spinner" (click)="listenStart()">
           <canvas #canvas></canvas>
         </div>
       </b>
@@ -64,10 +64,10 @@ export class PointComponent {
     this.inputComponent.inputStart();
   }
 
-  async speakstart() {
+  async listenStart() {
     this.speed = 0.004;
     this._renderer.removeClass(this.light.nativeElement, "danger");
-
+    this.assistantService.stopSpeak();
     this.assistantService.listenAudio().then(data=>{
       this._renderer.addClass(this.light.nativeElement, "danger");
 

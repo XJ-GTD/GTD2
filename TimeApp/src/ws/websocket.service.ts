@@ -33,7 +33,6 @@ export class WebsocketService {
       this.login = "gtd_mq";
       this.password = "gtd_mq";
       //获取websocte 链接
-      console.log("开始连接webSocket")
       this.client = Stomp.client(this.RABBITMQ_WS_URL);
 
       //获取websocte  queue
@@ -54,20 +53,15 @@ export class WebsocketService {
       this.settingWs().then(data => {
         // 连接消息服务器
         this.client.connect(this.login, this.password, frame => {
-          console.log(this.client);
           resolve();
           this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
             //message.ack(message.headers);
             this.dispatchService.dispatch(message.body).then(data => {
-              console.log("webSocketmessage====>" + data + "=====>处理完毕");
             })
           });
         }, error => {
-          console.log('错误回调webSocket error! :' + error);
           this.close();
-
         }, event => {
-          console.log('关闭回调socket close!' + event);
           this.close();
         }, '/');
 
@@ -78,14 +72,8 @@ export class WebsocketService {
 
   public close() {
     // 连接消息服务器
-    console.log("开始关闭webSocket")
-    // this.subscription.unsubscribe({
-    //   login: this.login,
-    //   passcode: this.password
-    // });
     if (this.client.connected)
     this.client.disconnect(() => {
-      console.log("关闭webSocket成功开始重连")
       this.connect();
     }, {
       login: this.login,

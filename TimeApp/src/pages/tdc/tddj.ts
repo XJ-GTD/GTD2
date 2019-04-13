@@ -21,7 +21,15 @@ import {Keyboard} from "@ionic-native/keyboard";
   template: `
     <ion-content class="content-set">
       <ion-grid #grid>
-        <ion-row class="header-set"></ion-row>
+        <ion-row class="header-set">
+            <ion-toolbar>
+              <ion-buttons right padding-right>
+                <button ion-button icon-only (click)="presentActionSheet()">
+                  <img class="imgdel-set" src="../../assets/imgs/del.png">
+                </button>
+              </ion-buttons>
+            </ion-toolbar>
+        </ion-row>
         <ion-row>
           <ion-textarea type="text" [(ngModel)]="scd.sn" placeholder="我想..."></ion-textarea>
         </ion-row>
@@ -401,7 +409,7 @@ export class TddjPage {
   }
 
   toSave(){
-    this.util.popMsgbox("1",()=>{
+    this.util.alterStart("1",()=>{
       this.save("");
     })
   }
@@ -448,7 +456,6 @@ export class TddjPage {
     this.util.loadingStart();
     this.tddjServ.updateDetail(this.scd).then(data => {
       this.util.loadingEnd();
-      this.util.toast("保存成功", 2000);
       if (typeof (eval(share)) == "function") {
         share();
       }
@@ -462,7 +469,7 @@ export class TddjPage {
 
   chkinput(): boolean {
     if (this.scd.sn == "") {
-      this.util.toast("请输入主题", 2000);
+      this.util.popoverStart("请输入主题");
       return false;
     }
     return true;
@@ -492,7 +499,6 @@ export class TddjPage {
                 this.util.loadingStart();
                 this.tddjServ.delete(this.scd.si, "2", d).then(data => {
                   this.util.loadingEnd();
-                  this.util.toast("删除成功", 1500);
                   this.cancel();
                 }).catch(err => {
                   this.util.loadingEnd();
@@ -501,7 +507,6 @@ export class TddjPage {
                 this.util.loadingStart();
                 this.tddjServ.delete(this.scd.si, "1", d).then(data => {
                   this.util.loadingEnd();
-                  this.util.toast("删除成功", 1500);
                   this.cancel();
                 }).catch(err => {
                   this.util.loadingEnd();
@@ -516,7 +521,6 @@ export class TddjPage {
               this.util.loadingStart();
               this.tddjServ.delete(this.scd.si, "2", d).then(data => {
                 this.util.loadingEnd();
-                this.util.toast("删除成功", 1500);
                 this.cancel();
               }).catch(err => {
                 this.util.loadingEnd();
@@ -538,7 +542,6 @@ export class TddjPage {
       this.util.loadingStart();
       this.tddjServ.delete(this.scd.si, "2", d).then(data => {
         this.util.loadingEnd();
-        this.util.toast("删除成功", 1500);
         this.cancel();
       }).catch(err => {
         this.util.loadingEnd();
@@ -553,7 +556,7 @@ export class TddjPage {
       this.isShowPlan = true;
       this.IsShowCover = true;
     } else {
-      this.util.toast("未创建计划", 1500);
+      this.util.toastStart("未创建计划",3000);
     }
   }
 

@@ -1,14 +1,6 @@
 page-br {
   background-color: $allBackColor;
 
-  @font-face {
-    font-family: 'PingFang-Regular';
-    src: url('../../assets/fonts/PingFang Regular.ttf');
-  }
-  ion-content {
-    font-family: "PingFang-Regular";
-  }
-
   .w-auto {
     flex: 1;
   }
