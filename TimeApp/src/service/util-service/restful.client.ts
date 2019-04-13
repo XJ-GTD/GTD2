@@ -27,7 +27,7 @@ export class RestfulClient {
   post(url:UrlEntity, body:any):Promise<any> {
     return new Promise((resolve, reject) => {
       let header = this.restConfig.createHeader();
-        if(!this.util.hasCordova()){
+        if(this.util.hasCordova()){
           console.log("post请求服务名：" + url.desc + "，地址："+url.url +',消息Head：'+ JSON.stringify(header) +',消息Body：'+ JSON.stringify(body));
           return this.http.post(url.url,body,header).then(data=>{
             // console.log(data.status);
