@@ -47,6 +47,35 @@ export class PgBusiService {
     return bs;
   }
 
+    //获取日程详情
+  async getByRef(si: string){
+    let bs = new BsModel<ScdData>();
+    //获取本地日程
+
+    let scdData = new ScdData();
+
+    let ctbl = new CTbl();
+    ctbl.sr = si;
+    ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
+    Object.assign(scdData, ctbl);
+
+    //获取计划对应色标
+    let jh = new JhTbl();
+    jh.ji = scdData.ji;
+    jh = await this.sqlExce.getOne<JhTbl>(jh);
+    Object.assign(scdData.p, jh);
+
+    //获取提醒时间
+    let e = new ETbl();
+    e.si = ctbl.si;
+    e = await this.sqlExce.getOne<ETbl>(e);
+    Object.assign(scdData.r, e);
+
+    bs.code = 0;
+    bs.data = scdData;
+    return bs;
+  }
+
 //删除日程 type：1 删除当前以后所有 ，2 删除所有
   async delete(rcId:string,type :string,d:string){
     let agdPro:AgdPro = new AgdPro();

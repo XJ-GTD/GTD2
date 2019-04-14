@@ -33,6 +33,15 @@ export class TdcService {
   }
 
   /**
+   * 获取共享日程详情
+   * @param {string} si 日程id
+   * @returns {Promise<BsModel<ScdData>>}
+   */
+  async getByRef(si: string) {
+    return await this.pgbusiServ.getByRef(si);
+  }
+
+  /**
    * 获取日程参与人
    * @param {string} si 日程id
    * @returns {Promise<Array<FsData>>}

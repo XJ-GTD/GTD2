@@ -203,7 +203,7 @@ export class TddiPage {
 
     //受邀人修改的场合初始化
     let paramter: ScdPageParamter = this.navParams.data;
-    this.tddiServ.get(paramter.si).then(data => {
+    this.tddiServ.getByRef(paramter.si).then(data => {
       let bs: BsModel<ScdData> = data;
       Object.assign(this.scd, bs.data);
       this.scd.showSd = paramter.d.format("YYYY-MM-DD");
