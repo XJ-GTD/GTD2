@@ -116,7 +116,7 @@ export class NotificationsService {
       let scd:ScdData = new ScdData()
       scd = next.data.val;
       let emMessage:ScdEmData = new ScdEmData();
-      emMessage.id = scd.sr;
+      emMessage.id = scd.si;
       emMessage.d = scd.sd;
 
       this.emitService.emitNewMessageClick(emMessage);

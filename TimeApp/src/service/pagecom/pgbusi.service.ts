@@ -436,6 +436,9 @@ export class PgBusiService {
       //TODO: 修改特殊事件表
     }
 
+    bs.data.rai = si;
+    bs.data.ai = newc.si;
+    
     return bs.data;
 
   }
