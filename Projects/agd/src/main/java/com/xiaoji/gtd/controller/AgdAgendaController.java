@@ -55,7 +55,16 @@ public class AgdAgendaController {
 				log.info(agd.getTitle() + " => " + freshAgd.getAt());
 				isDef = true;
 			}
-			if(agd.getAgendaDate() == null || !agd.getAgendaDate().equals(freshAgd.getAdt())){
+			// 修正它系统全天标示不一致的问题
+			String adt = agd.getAgendaDate();
+			String freshAdt = freshAgd.getAdt();
+			if (adt != null && adt.endsWith("99:99")) {
+				adt = adt.substring(0, 10);
+			}
+			if (freshAdt != null && freshAdt.endsWith("99:99")) {
+				freshAdt = freshAdt.substring(0, 10);
+			}
+			if(adt == null || !adt.equals(freshAdt)){
 				log.info(agd.getAgendaDate() + " => " + freshAgd.getAdt());
 				isDef = true;
 			}
