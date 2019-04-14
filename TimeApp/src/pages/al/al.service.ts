@@ -115,7 +115,7 @@ export class AlService {
       yTbl.yv = "0";
       await this.sqlExce.replaceT(yTbl);
 
-      //await this.createTestData();
+     // await this.createTestData();
 
       await this.contactsService.asyncPhoneContacts();
 
@@ -153,7 +153,7 @@ export class AlService {
       });
 
       //提醒定时
-      //this.notificationsService.schedule();
+      this.notificationsService.schedule();
       //保持后台运行
       //this.notificationsService.keeplive();
 
@@ -498,7 +498,7 @@ export class AlService {
       ss.push("看过不良人吗");
       ss.push("周末加班");
 
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < 1; i++) {
         start = moment('2019/01/01');
         let r = this.util.randInt(-65 , 65);
         let t = this.util.randInt(0, 24);

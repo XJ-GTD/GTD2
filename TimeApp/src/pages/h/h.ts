@@ -88,8 +88,9 @@ export class HPage {
 
   ngOnInit() {
     this.emitService.registerNewMessageClick((data)=>{
+
       let p:ScdPageParamter = new ScdPageParamter();
-      p.d = data.id;
+      p.si= data.id;
       p.d = moment(data.d);
       this.modalCtr.create(TddiPage, p).present();
     })
