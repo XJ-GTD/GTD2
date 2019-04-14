@@ -117,6 +117,14 @@ export class CTbl implements  ITbl{
 
   sloT():string {
     let sq='select * from gtd_c where si = "'+ this.si +'";';
+
+    if (this.si && this.si != "") {
+      // 查询本地日程
+      sq='select * from gtd_c where si = "'+ this.si +'";';
+    } else if () {
+      // 查询接收到的共享日程
+      sq='select * from gtd_c where sr = "'+ this.sr +'";';
+    }
     return sq;
   }
 
