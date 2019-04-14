@@ -341,7 +341,8 @@ export class TddiPage {
   save() {
 
     //提醒内容设置
-    this.scd.ui = UserConfig.account.id;
+    // TODO:所属用户ID到底应该设置什么?
+    // this.scd.ui = UserConfig.account.id;
 
     //消息设为已读
     this.scd.du = "1";
