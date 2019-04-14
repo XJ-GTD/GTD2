@@ -24,8 +24,10 @@ export class RemindService {
   public async  delRemin(es:Array<ETbl>){
 
     for (let e of es){
-      await this.sqlite.delete(e);
+      let et:ETbl = new ETbl();
+      et.wi = e.wi;
+      await this.sqlite.delete(et);
     }
-    return
+    return;
   }
 }

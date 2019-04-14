@@ -30,7 +30,7 @@ plugins/
 plugins/android.json
 plugins/ios.json
 www/
-src/assets/fonts/
+# src/assets/fonts/
 $RECYCLE.BIN/
 
 .DS_Store
