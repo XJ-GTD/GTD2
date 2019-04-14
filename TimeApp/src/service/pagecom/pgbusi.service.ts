@@ -378,12 +378,16 @@ export class PgBusiService {
     bs = await this.agdRest.get(agd);
 
     let c = new CTbl();
-    c.si = si;
+    c.sr = si;
     c = await this.sqlExce.getOne<CTbl>(c);
     let newc = new CTbl();
     if (c == null){
       //插入日程表
       this.setCtbl(newc,bs.data);
+      //设置本地日程ID
+      newc.si = this.util.getUuid();
+      //设置关联日程ID
+      newc.sr = si;
       await this.sqlExce.save(newc);
 
       //添加特殊事件表
@@ -391,6 +395,10 @@ export class PgBusiService {
     }else{
       //更新日程表
       this.setCtbl(newc,bs.data);
+      //设置本地日程ID
+      newc.si = c.si;
+      //设置关联日程ID
+      newc.sr = si;
       //本地日程的备注和提醒不被更新
       newc.bz = c.bz;
       newc.tx = c.tx;
