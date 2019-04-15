@@ -19,7 +19,7 @@ import {UtilService} from "../../service/util-service/util.service";
     <ion-toolbar>
       <ion-buttons left>
         <button ion-button icon-only (click)="dismiss()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/fh2.png">
+            <img class="img-header-left" src="./assets/imgs/backfd.png">
         </button>
       </ion-buttons>
     </ion-toolbar>

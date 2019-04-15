@@ -26,7 +26,7 @@ import {FsData} from "../../service/pagecom/pgbusi.service";
         </ion-buttons>
         <ion-title>朋友</ion-title>
         <ion-buttons right>
-          <button ion-button (click)="save()"> 确定
+          <button ion-button class="button-header-right" (click)="save()"> 确定
           </button>
         </ion-buttons>
       </ion-toolbar>

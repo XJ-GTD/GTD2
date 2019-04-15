@@ -46,13 +46,15 @@ export class LpService {
       //获得token，放入头部header登录
       this.personRestful.getToken(data.data.code).then(data=>{
         //账户表赋值
+        uTbl.ai = data.openid;
         aTbl.an = data.nickname;
-        aTbl.am = data.openid;
+        aTbl.am = data.phoneno;
         aTbl.ae = this.util.deviceId();
         aTbl.at = data.access_token;
         aTbl.aq = data.cmq;
 
         //用户表赋值
+        uTbl.ai = aTbl.ai;
         uTbl.ui = data.unionid; //unionid
         uTbl.un = data.nickname; //用户名（昵称）
         uTbl.rn = data.name == "" ? data.nickname : data.name; //真实姓名
@@ -72,10 +74,8 @@ export class LpService {
 
         if (atbls.length > 0 ){//更新账户表
           aTbl.ai = atbls[0].ai;
-          uTbl.ai = aTbl.ai;
           return this.sqlExec.update(aTbl);
         }else{//保存账户表
-          aTbl.ai = this.util.getUuid();
           uTbl.ai = aTbl.ai;
           return this.sqlExec.save(aTbl);
         }

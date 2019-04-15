@@ -1,9 +1,5 @@
 page-gc {
 
-
-
-
-
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
     background-color: $allBackColor;
   }
@@ -23,14 +19,16 @@ page-gc {
     font-size: 1.5rem;
   }
 
-  .bar-button-ios{
+  .button-header-right{
     font-size: 1.5rem;
+    color: $masterColor;
   }
 
   ion-content.content {
     background-color: $allBackColor;
     color: #fff;
   }
+
   .grid {
     padding: 5px;
     .group{

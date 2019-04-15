@@ -24,7 +24,7 @@ import {UtilService} from "../../service/util-service/util.service";
         </ion-buttons>
         <ion-title>朋友</ion-title>
         <ion-buttons right>
-          <button ion-button (click)="save()" color="danger">
+          <button ion-button class="button-header-right" (click)="save()">
             <!--<ion-icon name="add"></ion-icon>--> 确定
           </button>
         </ion-buttons>
