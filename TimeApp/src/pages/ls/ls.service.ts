@@ -64,53 +64,35 @@ export class LsService {
       //获得token，放入头部header登录
       this.personRestful.getToken(data.data.code).then(data=>{
         //账户表赋值
+        aTbl.ai = data.openid;  //openid
         aTbl.an = data.nickname;
-        aTbl.am = data.openid;
+        aTbl.am = data.phoneno;
         aTbl.ae = this.util.deviceId();
         aTbl.at = data.access_token;
         aTbl.aq = data.cmq;
 
         //用户表赋值
+        uTbl.ai = data.openid;  //openid
         uTbl.ui = data.unionid; //unionid
         uTbl.un = data.nickname; //用户名（昵称）
-        uTbl.rn = data.name == "" ? data.nickname : data.name; //真实姓名
-        uTbl.us = data.sex == undefined ? "0" : data.sex; //性别
-        uTbl.biy = data.birthday == undefined ? "" : data.birthday;  //出生日期
-        uTbl.ic = data.ic == undefined ? "" : data.ic;  //身份证
-        uTbl.uct = data.contact== undefined ? "" : data.contact;//  联系方式
+        uTbl.rn = data.name == undefined || data.name == "" ? data.nickname : data.name; //真实姓名
+        uTbl.us = data.sex == undefined || data.sex == "" ? "0" : data.sex; //性别
+        uTbl.biy = data.birthday == undefined || data.birthday == "" ? "" : data.birthday;  //出生日期
+        uTbl.ic = data.ic == undefined || data.ic == "" ? "" : data.ic;  //身份证
+        uTbl.uct = data.contact== undefined || data.contact == "" ? "" : data.contact;//  联系方式
 
         return this.personRestful.getself(data.unionid);
       }).then(data=>{
         uTbl.hiu = data.data.avatarbase64;//头像
-        //查询账户表
-        let aTbl1:ATbl = new ATbl();
-        return this.sqlExec.getList<ATbl>(aTbl1);
+        //删除账户表
+        return this.sqlExec.delete(new ATbl());
       }).then(data=>{
-        let atbls:Array<ATbl> = data;
-
-        if (atbls.length > 0 ){//更新账户表
-          aTbl.ai = atbls[0].ai;
-          uTbl.ai = aTbl.ai;
-          return this.sqlExec.update(aTbl);
-        }else{//保存账户表
-          aTbl.ai = this.util.getUuid();
-          uTbl.ai = aTbl.ai;
-          return this.sqlExec.save(aTbl);
-        }
-
+        return this.sqlExec.save(aTbl);
       }).then(data=>{
-        //查询用户表
-        let uTbl1:UTbl = new UTbl();
-        return this.sqlExec.getList<UTbl>(uTbl1);
+        //删除用户表
+        return this.sqlExec.delete(new UTbl());
       }).then(data=>{
-        let utbls:Array<UTbl> = data;
-
-        if (utbls.length > 0 ){//更新用户表
-          uTbl.ui = utbls[0].ui;
-          return this.sqlExec.update(uTbl);
-        }else{//保存用户表
-          return this.sqlExec.save(uTbl);
-        }
+        return this.sqlExec.save(uTbl);
       }).then(data=>{
         resolve(data)
       }).catch(error=>{
