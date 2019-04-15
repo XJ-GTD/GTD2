@@ -57,7 +57,7 @@ export class BrService {
     backupPro.d.sp = await this.sqlexec.getExtList<SpTbl>(spsql);
     ret = await this.bacRestful.backup(backupPro);
     if (backupPro.d.sp) backupPro.d.sp.length = 0;
-    
+
     if (ret.code == -99) {
       return ret;
     }
@@ -117,17 +117,6 @@ export class BrService {
     backupPro.d.jh = await this.sqlexec.getExtList<JhTbl>(jhsql);
     ret = await this.bacRestful.backup(backupPro);
     if (backupPro.d.jh) backupPro.d.jh.length = 0;
-
-    if (ret.code == -99) {
-      return ret;
-    }
-
-    //获取用户偏好
-    let u = new UTbl();
-    backupPro.d.commit =true;
-    backupPro.d.u = await this.sqlexec.getList<UTbl>(u);
-    ret = await this.bacRestful.backup(backupPro);
-    if (backupPro.d.u) backupPro.d.u.length = 0;
 
     if (ret.code == -99) {
       return ret;
@@ -250,15 +239,6 @@ export class BrService {
       Object.assign(jhi,bsModel.data.jh[j]) ;
 
       await this.sqlexec.save(jhi);
-    }
-    //插入用户编好（插入前删除）
-    let u = new UTbl();
-    await this.sqlexec.delete(u);
-
-    for (let j = 0, len = bsModel.data.u.length; j < len; j++) {
-      let ui = new UTbl();
-      Object.assign(ui,bsModel.data.u[j]) ;
-      await this.sqlexec.save(ui);
     }
 
     let ret = new BsModel();
