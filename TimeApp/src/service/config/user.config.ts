@@ -136,7 +136,7 @@ export class UserConfig {
   }
 
   //参与人
-  RefreshBTbl(): Promise<any> {
+  private RefreshBTbl(): Promise<any> {
     //获取本地参与人
     let sql = `select gb.*,bh.hiu bhiu
                from gtd_b gb
@@ -156,7 +156,7 @@ export class UserConfig {
   }
 
   //群组
-  RefreshGTbl(): Promise<any> {
+  private RefreshGTbl(): Promise<any> {
     //获取本地群列表
     let sql = 'select * from gtd_g where gn like "' + name + '%"';
 
@@ -165,21 +165,36 @@ export class UserConfig {
       if (dcl.length > 0) {
         //和单群人数
         for (let dc of dcl) {
-          let sqlbx ='select gb.*,bh.hiu bhiu from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi' +
+          let sqlbx ='select gb.* from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi' +
             ' left join gtd_bh bh on gb.pwi = bh.pwi where gbx.bi="'+dc.gi+'"';
           let fsl: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sqlbx);
           for(let fs of fsl){
-            if(!fs.bhiu || fs.bhiu == null || fs.bhiu == ''){
-              fs.bhiu=DataConfig.HUIBASE64;
+            let fsd :FsData = this.GetOneBTbl(fs.pwi);
+            if (fsd){
+              dc.fsl.push(fsd);
             }
           }
-          dc.gc = fsl.length;
+          dc.gc = dc.fsl.length;
           dc.gm = DataConfig.QZ_HUIBASE64;
-          dc.fsl = fsl;
         }
       }
       UserConfig.groups = dcl;
     });
+  }
+
+  RefreshOneBTbl(fsData:FsData){
+    let fs:FsData;
+    fs = this.GetOneBTbl(fsData.pwi);
+    if (fs){
+      Object.assign(fs,fsData);
+    }
+
+  }
+
+  GetOneBTbl(id:string):FsData{
+    return UserConfig.friends.find(value=>{
+      return value.pwi == id;
+    })
   }
 }
 
