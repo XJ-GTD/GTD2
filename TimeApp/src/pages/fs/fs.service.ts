@@ -10,6 +10,8 @@ import {ContactsService} from "../../service/cordova/contacts.service";
 import {FsData} from "../../service/pagecom/pgbusi.service";
 import {UserConfig} from "../../service/config/user.config";
 import {PageDcData} from "../gc/gc.service";
+import {BhTbl} from "../../service/sqlite/tbl/bh.tbl";
+import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 
 @Injectable()
 export class FsService {
@@ -141,72 +143,77 @@ export class FsService {
    * @returns {Promise<void>}
    */
   async updateFs() {
-    // let fsList: Array<FsData> = await this.getfriend(new FsData());
-    // let btbls: Array<BTbl> = await this.contacts.getContacts4Btbl();
-    // let map: Map<string, BTbl> = new Map<string, BTbl>();
-    // for (let bt of btbls) {
-    //   //添加/更新头像表
-    //   let pred = await this.perRest.getavatar(bt.rc);
-    //   let hiu = JSON.stringify(pred.data);
-    //   if (hiu != '') {
-    //     bt.hiu = pred.data;
-    //   }
-    //   map.set(bt.rc, bt);
-    // }
-    // let bsqls: Array<string> = new Array<string>();
-    // if (fsList.length > 0) {
-    //   for (let fs of fsList) {
-    //     let bl = map.get(fs.rc);
-    //     let bhiu = '';
-    //     if (bl) {
-    //       fs.ran = bl.ran;
-    //       fs.ranpy = this.util.chineseToPinYin(bl.ran);
-    //       if (bl.hiu != null && bl.hiu != '') {
-    //         bhiu = bl.hiu;
-    //       }
-    //       map.delete(fs.rc);
-    //     } else {
-    //       bl = new BTbl();
-    //       let pred = await this.perRest.getavatar("");
-    //       let hiu = JSON.stringify(pred.data);
-    //       if (hiu != '') {
-    //         bhiu = pred.data;
-    //       }
-    //
-    //
-    //     Object.assign(bl, fs);
-    //     //更新联系人表
-    //     bsqls.push(bl.upT());
-    //     let bh = new BhTbl();
-    //     bh.pwi = fs.pwi;
-    //     bh.hiu = bhiu;
-    //     //添加/更新头像表
-    //     if (fs.bhiu != null) {
-    //       bsqls.push(bh.upT());
-    //     } else {
-    //       bh.bhi = this.util.getUuid();
-    //       bsqls.push(bh.inT());
-    //     }
-    //
-    //   }
-    // }
-    // if (map.size > 0) {
-    //   map.forEach((value, key) => {
-    //     let bt = value;
-    //     bt.pwi = this.util.getUuid();
-    //     bt.ranpy = this.util.chineseToPinYin(bt.ran);
-    //     bt.hiu = DataConfig.HUIBASE64;
-    //     bt.rnpy = this.util.chineseToPinYin(bt.rn);
-    //     bt.rel = '0';
-    //     bsqls.push(bt.inT());
-    //     let bh = new BhTbl();
-    //     bh.pwi = bt.pwi;
-    //     bh.hiu = bt.hiu;
-    //     bh.bhi = this.util.getUuid();
-    //     bsqls.push(bh.inT());
-    //   })
-    // }
-    // return await this.sqlite.batExecSql(bsqls);
+
+    //手机联系人
+    let btbls: Array<BTbl> = await this.contacts.getContacts4Btbl();
+    let map: Map<string, BTbl> = new Map<string, BTbl>();
+    //获取手机联系人头像
+    for (let bt of btbls) {
+      //添加/更新头像表
+      let pred = await this.perRest.getavatar(bt.rc); //获取头像
+      let hiu = JSON.stringify(pred.data);
+      if (hiu != '') {
+        bt.hiu = pred.data;
+      }
+      map.set(bt.rc, bt);
+    }
+    //当前联系人
+    let fsList: Array<FsData> = this.getfriend('');
+    let bsqls: Array<string> = new Array<string>();
+    if (fsList.length > 0) {
+      for (let fs of fsList) {
+        let bl = map.get(fs.rc);
+        let bhiu = '';
+        //手机联系人是否存在
+        if (bl) {
+          fs.ran = bl.ran;
+          fs.ranpy = this.util.chineseToPinYin(bl.ran);
+          if (bl.hiu != null && bl.hiu != '') {
+            bhiu = bl.hiu;
+          }
+          map.delete(fs.rc);
+        } else {
+          bl = new BTbl();
+          let pred = await this.perRest.getavatar(fs.rc);
+          let hiu = JSON.stringify(pred.data);
+          if (hiu != '') {
+            bhiu = pred.data;
+          }
+          Object.assign(bl, fs);
+          //更新联系人表
+          bsqls.push(bl.upT());
+          let bh = new BhTbl();
+          bh.pwi = fs.pwi;
+          bh.hiu = bhiu;
+          //添加/更新头像表
+          if (fs.bhiu != null) {
+            bsqls.push(bh.upT());
+          } else {
+            bh.bhi = this.util.getUuid();
+            bsqls.push(bh.inT());
+          }
+
+        }
+      }
+      //添加手机本地联系人
+      if (map.size > 0) {
+        map.forEach((value, key) => {
+          let bt = value;
+          bt.pwi = this.util.getUuid();
+          bt.ranpy = this.util.chineseToPinYin(bt.ran);
+          bt.hiu = DataConfig.HUIBASE64;
+          bt.rnpy = this.util.chineseToPinYin(bt.rn);
+          bt.rel = '0';
+          bsqls.push(bt.inT());
+          let bh = new BhTbl();
+          bh.pwi = bt.pwi;
+          bh.hiu = bt.hiu;
+          bh.bhi = this.util.getUuid();
+          bsqls.push(bh.inT());
+        })
+      }
+      return await this.sqlite.batExecSql(bsqls);
+    }
   }
 
 }
