@@ -58,10 +58,10 @@ public class AgdAgendaController {
 			// 修正它系统全天标示不一致的问题
 			String adt = agd.getAgendaDate();
 			String freshAdt = freshAgd.getAdt();
-			if (adt != null && adt.endsWith("99:99")) {
+			if (adt != null && adt.length() >= 10) {
 				adt = adt.substring(0, 10);
 			}
-			if (freshAdt != null && freshAdt.endsWith("99:99")) {
+			if (freshAdt != null && freshAdt.length() >= 10) {
 				freshAdt = freshAdt.substring(0, 10);
 			}
 			if(adt == null || !adt.equals(freshAdt)){
