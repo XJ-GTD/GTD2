@@ -110,7 +110,7 @@ export class ContactsService {
             bt.pwi = this.utilService.getUuid();
             bt.ran = b.ran;
             bt.ranpy = this.utilService.chineseToPinYin(bt.ran);
-            bt.hiu = DataConfig.HUIBASE64;
+            bt.hiu = "";
             bt.rn = b.rn;
             bt.rnpy = this.utilService.chineseToPinYin(bt.rn);
             bt.rc = b.rc;
@@ -121,7 +121,7 @@ export class ContactsService {
         }
         return await this.sqlExce.batExecSql(bsqls);
       }).then(data => {
-        //同步服务器联系人信息
+        //TODO 异步步服务器联系人信息
        // this.personRestful.get()
         resolve(true);
 

@@ -62,6 +62,8 @@ export class UserConfig {
   //群组
   static groups: Array<PageDcData> = new Array<PageDcData>();
 
+  //TODO 添加刷新单个联系人方法信息
+
   constructor(private sqlliteExec: SqliteExec, private util: UtilService) {
   }
 

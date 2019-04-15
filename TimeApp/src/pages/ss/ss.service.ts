@@ -26,6 +26,22 @@ export class SsService {
       resolve();
     });
   }
+
+  //TODO 刷新联系人功能
+  save2(py: PageY):Promise<any>{
+    return new Promise((resolve, reject) => {
+
+      //保存设置到本地用户偏好表
+      let y = new YTbl();
+      Object.assign(y,py);
+      this.sqlExce.update(y);
+
+      //刷新本地用户偏好设置
+      this.userConfig.RefreshYTbl();
+
+      resolve();
+    });
+  }
 }
 
 export class PageY{

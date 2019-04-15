@@ -44,6 +44,8 @@ export class LpService {
       let uTbl:UTbl = new UTbl();
 
       //获得token，放入头部header登录
+
+      //TODO 修改openId相关程序
       this.personRestful.getToken(data.data.code).then(data=>{
         //账户表赋值
         uTbl.ai = data.openid;

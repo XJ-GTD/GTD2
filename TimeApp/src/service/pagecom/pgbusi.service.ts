@@ -442,7 +442,7 @@ export class PgBusiService {
 
     bs.data.rai = si;
     bs.data.ai = newc.si;
-    
+
     return bs.data;
 
   }
@@ -635,6 +635,7 @@ export class FsData {
   pi: string=""; //日程参与人表ID
   si: string=""; //日程事件ID
   isbla:boolean=false; //默认非黑名单
+  //TODO 头像返回字段，空的时候返回系统默认头像 判断 this.hiu
 }
 
 
