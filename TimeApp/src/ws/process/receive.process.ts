@@ -23,8 +23,12 @@ export class ReceiveProcess implements MQProcess {
   async go(content: WsContent, processRs: ProcesRs) {
     //处理区分
     if (content.option == SH.D) {
-      let scd:ScdData = await this.busiService.getByRef(scudPara.id);
-      await this.busiService.delete(scd.si, 2);
+      //处理所需要参数
+      let scudPara: ScudscdPara = content.parameters;
+      let bs :BsModel<ScdData> = await this.busiService.getByRef(scudPara.id);
+      if (bs.data && bs.data.si) {
+        await this.busiService.delete(bs.data.si, 2, '');
+      }
     }
     
     if (content.option == SH.C || content.option == SH.U) {
