@@ -158,15 +158,14 @@ export class UserConfig {
   //群组
   private RefreshGTbl(): Promise<any> {
     //获取本地群列表
-    let sql = 'select * from gtd_g where gn like "' + name + '%"';
+    let sql = 'select * from gtd_g;';
 
     //UserConfig.groups.splice(0, UserConfig.groups.length - 1);
     return this.sqlliteExec.getExtList<PageDcData>(sql).then(async (dcl) => {
       if (dcl.length > 0) {
         //和单群人数
         for (let dc of dcl) {
-          let sqlbx ='select gb.* from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi' +
-            ' left join gtd_bh bh on gb.pwi = bh.pwi where gbx.bi="'+dc.gi+'"';
+          let sqlbx ='select gb.* from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi where gbx.bi="'+dc.gi+'";';
           let fsl: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sqlbx);
           for(let fs of fsl){
             let fsd :FsData = this.GetOneBTbl(fs.pwi);
