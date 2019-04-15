@@ -30,7 +30,8 @@ export enum SC {
 
 //日程更新，新建，删除（被分享）
 export enum SH {
-  C = "SH.C ",  //新建,修改
+  U = "SH.U",  //修改
+  C = "SH.C",  //新建
   D = "SH.D",  //删除
 }
 
