@@ -1,25 +1,8 @@
 page-gc {
-  background-color: $allBackColor;
 
-  .w-auto {
-    flex: 1;
-  }
 
-  .grid {
-    padding: 0;
-  }
 
-  .grid .row {
-    height: 100%;
-  }
 
-  .list {
-    width: 100%;
-  }
-
-  .list-header, .list-header-md, .list-header-ios {
-    border: 0;
-  }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
     background-color: $allBackColor;
@@ -48,26 +31,44 @@ page-gc {
     background-color: $allBackColor;
     color: #fff;
   }
+  .grid {
+    padding: 5px;
+    .group{
+      background-color: $secondColor;
+    }
+    .row {
+      height: 50px;
+      ion-checkbox {
+        position: relative;
+        margin: auto;
+      }
 
-  ion-content .plan-list-item {
-    background-color: $allBackColor;
-    color: #fff;
-    padding-left: 8px;
-    font-size: 1.5rem;
-    min-height: 9vmin;
+      ion-avatar{
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        margin-right: 15px;
+      }
+      .label-ios{
+        font-weight: bold;
+        letter-spacing: 1px;
+        span{
+          font-weight: 100;
+          margin-right: 30px;
+          float: right;
+        }
+      }
+
+    }
+    .img-content-del{
+      width: 12px;
+      height: 12px;
+    }
   }
 
-  .list-ios .item-block .item-inner {
-    padding-right: 0;
-  }
-
-  .img-content-del{
-    width: 12px;
-    height: 12px;
-  }
 
   .scroll-content{
-    overflow-x: auto;
+    overflow-x: unset;
     overflow-y: auto;
   }
 }

@@ -60,7 +60,7 @@ export class GcService {
         Object.assign(gc,dc);
         gc.gi = this.util.getUuid();
         gc.gnpy = this.util.chineseToPinYin(gc.gn);
-        gc.gm = DataConfig.QZ_HUIBASE64;
+        //gc.gm = DataConfig.QZ_HUIBASE64;
         console.log('---------- GcService save 添加群名称(新建群)');
         this.sqlExce.save(gc).then(data=>{
           console.log('---------- GcService save 新建群 成功');

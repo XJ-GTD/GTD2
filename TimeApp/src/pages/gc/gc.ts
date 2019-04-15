@@ -37,9 +37,7 @@ import {UtilService} from "../../service/util-service/util.service";
      
      <ion-content padding>
        <ion-grid>
-         <ion-row>
-           <ion-list no-lines>
-             <ion-item class="plan-list-item"  *ngFor="let g of fsl">
+         <ion-row  *ngFor="let g of fsl">
                <ion-avatar item-start >
                  <img [src]="g.bhiu">
                  <!--<ion-icon name="contact"  style="font-size: 3.0em;color: red;"></ion-icon>-->
@@ -50,15 +48,13 @@ import {UtilService} from "../../service/util-service/util.service";
                
                <ion-label (click)="toMemberInfo(g)">
                  {{g.rn}} 
-                 <span style="font-size:14px;color:rgb(102,102,102);">
+                 <span>
                    {{g.rc}}
                  </span>
                </ion-label>               
                <button ion-button color="danger" (click)="delete(g)" clear item-end>
                  <img class="img-content-del" src="./assets/imgs/yc.png">
                </button>
-             </ion-item>
-           </ion-list>
          </ion-row>
        </ion-grid>
      </ion-content>

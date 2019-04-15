@@ -13,7 +13,6 @@ import {UtilService} from "../util-service/util.service";
 import {RemindService} from "../util-service/remind.service";
 import {DataConfig} from "../config/data.config";
 import {ETbl} from "../sqlite/tbl/e.tbl";
-import {File} from "@ionic-native/file";
 import {EmitService, ScdEmData} from "../util-service/emit.service";
 
 /**
