@@ -9,6 +9,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {FsData} from "../../service/pagecom/pgbusi.service";
 import {UserConfig} from "../../service/config/user.config";
+import {PageDcData} from "../gc/gc.service";
 
 @Injectable()
 export class FsService {
@@ -213,18 +214,11 @@ export class FsService {
 /**
  * 联系人视图
  */
-// export class FsData {
-//   pi: string=""; //日程参与人表ID
-//   si: string=""; //日程事件ID
-//   pwi: string=""; //授权表主键
-//   ran: string=""; //被授权联系人别称
-//   ranpy: string=""; //被授权联系人别称拼音
-//   hiu: string="";  // 被授权联系人头像
-//   rn: string="";  // 被授权联系人名称
-//   rnpy: string="";  //被授权联系人名称拼音
-//   rc: string="";  //被授权联系人联系方式
-//   rel: string=""; //授权联系类型 1是个人，2是群，0未注册用户
-//   ui: string="";  //数据归属人ID
-//   bhiu:string="";//base64图片
-// }
+export class FsPageData extends  FsData{
+  checked:boolean = false;
+}
+
+export class PageGroupData extends  PageDcData{
+  checked:boolean = false;
+}
 
