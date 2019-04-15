@@ -127,8 +127,7 @@ export class BackupProSub{
   bx:Array<BxTbl> = new Array<BxTbl>();
   //获取本地计划
   jh:Array<JhTbl> = new Array<JhTbl>();
-  //用户偏好
-  u:Array<UTbl> = new Array<UTbl>();
+
 
   //分批备份最后一次设为true
   commit :boolean =false;
@@ -163,7 +162,7 @@ export class RecoverProSub{
 
   bts :Number=0;
   //恢复表的名称
-  rdn:Array<string> = ["c","sp","e","d","b","g","bx","jh","s","u"] ;
+  rdn:Array<string> = ["c","sp","e","d","b","g","bx","jh"] ;
 }
 //恢复出参
 export class OutRecoverPro{
