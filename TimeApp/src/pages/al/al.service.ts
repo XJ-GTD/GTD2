@@ -159,6 +159,7 @@ export class AlService {
 
       //用户设置信息初始化
       await this.userConfig.init();
+
       alData.text = "系统设置完成";
       resolve(alData)
 
