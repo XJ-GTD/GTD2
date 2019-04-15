@@ -8,6 +8,7 @@ import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
 import {ScudscdPara} from "../model/scudscd.para";
 import {NotificationsService} from "../../service/cordova/notifications.service";
 import {AgdPro} from "../../service/restful/agdsev";
+import {BsModel} from "../../service/restful/out/bs.model";
 
 /**
  * 日程修改（获取上下文中）
@@ -27,7 +28,7 @@ export class ReceiveProcess implements MQProcess {
       let scudPara: ScudscdPara = content.parameters;
       let bs :BsModel<ScdData> = await this.busiService.getByRef(scudPara.id);
       if (bs.data && bs.data.si) {
-        await this.busiService.delete(bs.data.si, 2, '');
+        await this.busiService.delete(bs.data.si, '2', '');
       }
     }
     
