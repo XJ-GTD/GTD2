@@ -431,9 +431,13 @@ export class PgBusiService {
       //本地日程的备注和提醒不被更新
       newc.bz = c.bz;
       newc.tx = c.tx;
-      await this.sqlExce.replaceT(newc);
+
+      let scdData = new ScdData();
+
+      Object.assign(scdData, newc);
 
       //TODO: 修改特殊事件表
+      await this.updateDetail(scdData);
     }
 
     bs.data.rai = si;
