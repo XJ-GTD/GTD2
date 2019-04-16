@@ -138,6 +138,23 @@ export class SqliteExec {
   }
 
   /**
+   * 根据ID查询
+   * @param t
+   * @returns {Promise<T>}
+   */
+  getExtOne<T>(sql: string): Promise<T> {
+    return new Promise((resolve, reject) => {
+      return this.execSql(sql).then(data=>{
+        if (data.rows && data.rows.length > 0 ){
+          resolve(data.rows.item(0));
+        }else{
+          resolve(null);
+        }
+      });
+    })
+  }
+
+  /**
    * 表数据替换
    * @param t
    * @returns {Promise<T>}

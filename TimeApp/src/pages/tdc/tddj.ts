@@ -133,8 +133,9 @@ import {Keyboard} from "@ionic-native/keyboard";
                         (blur)="comentblur()"></ion-textarea>
         </ion-row>
         <ion-row justify-content-left>
-          <div *ngFor="let fss of scd.fss;">
-            <div>{{fss.ran}}</div>
+          <div *ngFor="let fs of scd.fss;">
+            <div><img class ="img-set" [src]="fs.getFaceImg()"></div>
+            <div class ="img-rn">{{fs.ran}}</div>
           </div>
         </ion-row>
       </ion-grid>
@@ -243,7 +244,6 @@ export class TddjPage {
         Object.assign(this.scd, bs.data);
         this.scd.showSd = paramter.d.format("YYYY-MM-DD");
 
-        //TODO 缓存中循环取得联系人信息
 
         this.busiServ.getPlans().then(data => {
           this.jhs = data;
