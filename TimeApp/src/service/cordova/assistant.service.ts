@@ -24,6 +24,7 @@ export class AssistantService {
   private mp3Path: string;
   private mp3Name: string;
   private wakeuping:boolean;
+  private listening:boolean;
 
   constructor(private file: File,
               private aibutlerRestful: AibutlerRestful,
@@ -34,6 +35,7 @@ export class AssistantService {
     this.mp3Path = this.file.cacheDirectory;
     this.mp3Name = "iat.pcm";
     this.wakeuping = false;
+    this.listening = false;
   }
 
 
@@ -109,7 +111,6 @@ export class AssistantService {
       return ""
     }
     this.stopListenAudio();
-    this.stopWakeUp();
     this.emitService.emitSpeak(true);
 
     setTimeout(() => {
@@ -150,6 +151,7 @@ export class AssistantService {
    * 停止监听
    */
   public stopListenAudio() {
+    this.listening = false;
     if (!this.utilService.isMobile()) return;
     cordova.plugins.XjBaiduSpeech.stopListen();
     this.startWakeUp();
@@ -161,10 +163,11 @@ export class AssistantService {
    * 语音助手录音录入 AUDIO
    */
   async listenAudio() {
-
+    if (this.listening) return;
     if (!this.utilService.isMobile()) {
       return;
     }
+    this.listening = true;
     this.stopSpeak(false);
     this.stopWakeUp();
     this.emitService.emitListener(true);
@@ -182,6 +185,7 @@ export class AssistantService {
       await this.aibutlerRestful.postaudio(audioPro)
       return result;
     }, async error => {
+      this.stopListenAudio();
       setTimeout(async () => {
         let text = await this.getSpeakText(DataConfig.FF);
         this.speakText(text);
