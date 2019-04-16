@@ -15,11 +15,12 @@ import {UtilService} from "../../service/util-service/util.service";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
+import {ContactsService} from "../../service/cordova/contacts.service";
 
 @Injectable()
 export class BrService {
   constructor(private bacRestful: BacRestful, private sqlexec: SqliteExec,
-              private util: UtilService) {
+              private util: UtilService,private contactsServ :ContactsService) {
 
   }
 
@@ -243,8 +244,8 @@ export class BrService {
     }
 
 
-    //TODO 联系人的更新信息操作
-
+    //联系人的更新信息操作
+    await this.contactsServ.updateFs();
 
     let ret = new BsModel();
     ret.code = 0
