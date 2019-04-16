@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
@@ -28,9 +28,11 @@ import {PageY, SsService} from "./ss.service";
     </ion-header>
 
     <ion-content padding>
-      <ion-grid>
-        <ion-row>
           <ion-list no-lines>
+            <ion-list-header>
+              <ion-label>系统设置</ion-label>
+            </ion-list-header>
+            
             <ion-item class="plan-list-item" >
               <ion-label>语音唤醒</ion-label>
               <ion-toggle [(ngModel)]="h.value" (ionChange)="save(h)"></ion-toggle>
@@ -50,10 +52,19 @@ import {PageY, SsService} from "./ss.service";
               <ion-label>新消息提醒</ion-label>
               <ion-toggle [(ngModel)]="t.value" (ionChange)="save(t)"></ion-toggle>
             </ion-item>
-          </ion-list>
-        </ion-row>
-      </ion-grid>
 
+            <ion-list-header>
+              <ion-label>其他</ion-label>
+            </ion-list-header>
+            <ion-item class="plan-list-item" >
+              <ion-label>刷新朋友</ion-label>
+              <button ion-button clear item-end  (click)="resfriend()">
+                <div #resfri>
+                  <img class="img-content-refresh" src="./assets/imgs/sx.png" />
+                </div>
+              </button>
+            </ion-item>
+          </ion-list>
     </ion-content>
   `,
 })
@@ -63,9 +74,12 @@ export class SsPage {
   t:Setting;//新消息提醒
   b:Setting;//语音播报
   z:Setting;//振动
+  @ViewChild("resfri")
+  resfri:ElementRef;
 
   constructor(private navCtrl: NavController,
-              public ssService:SsService,) {
+              public ssService:SsService,
+              private _renderer: Renderer2 ) {
     this.h = UserConfig.settins.get(DataConfig.SYS_H);
     this.t = UserConfig.settins.get(DataConfig.SYS_T);
     this.b = UserConfig.settins.get(DataConfig.SYS_B);
@@ -74,11 +88,6 @@ export class SsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SsPage');
-
-    /*console.log(this.h.value+"h");
-    console.log(this.t.value+"t");
-    console.log(this.b.value+"b");
-    console.log(this.z.value+"z");*/
 
     this.h.value = this.h.value == "1" || this.h.value=="true" ? "true":"false";
     this.t.value = this.t.value == "1" || this.t.value=="true" ? "true":"false";
@@ -101,6 +110,14 @@ export class SsPage {
     set.yv = setting.value ? "1":"0";//偏好设置value
 
     this.ssService.save(set);
+  }
+
+  resfriend(){
+    this._renderer.addClass(this.resfri.nativeElement,"spinanimation");
+
+    this.ssService.resfriend().then(d=>{
+      this._renderer.removeClass(this.resfri.nativeElement,"spinanimation");
+    })
   }
 }
 

@@ -60,7 +60,7 @@ import {UtilService} from "../../service/util-service/util.service";
                     下载
                   </div>
                   <div *ngIf="option.jtd =='1'">
-                    <img class="img-content-refresh" src="./assets/imgs/sx.png">
+                    <img class="img-content-refresh" src="./assets/imgs/sx.png" />
                   </div>
                 </button>
               </ion-item>
