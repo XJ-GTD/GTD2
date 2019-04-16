@@ -18,7 +18,7 @@ export class ContactsService {
 
   static contactTel: Array<string> = new Array<string>();
 
-  constructor(private contacts: Contacts, private utilService: UtilService,
+  constructor(private contacts: Contacts, private utilService: UtilService, private userConfig: UserConfig,
               private sqlExce: SqliteExec, private personRestful: PersonRestful) {
 
   }
@@ -118,7 +118,7 @@ export class ContactsService {
             bt.rnpy = this.utilService.chineseToPinYin(bt.rn);
             bt.rc = b.rc;
             bt.rel = '0';
-            bt.ui = bt.pwi;
+            bt.ui = '';
             bsqls.push(bt.inT());
           }
         }
@@ -212,9 +212,125 @@ export class ContactsService {
   //
   // }
 
-
   /**
+   *
+   * 更新单个联系人信息和头像
+   * id: OpenId或者手机号
+   *
+   * @returns {Promise<FsData>}
+   */
+  async updateOneFs(id : string) {
+    let bsqls: Array<string> = new Array<string>();
+    let bt = new BTbl();
+    let bh = new BhTbl();
+
+    let exists : FsData = null;
+
+    //获取本地参与人
+    let sql = 'select gb.*, bh.bhi bhi, bh.hiu bhiu '
+            + ' from gtd_b gb '
+            + '       left join gtd_bh bh on bh.pwi = gb.pwi '
+            + ' where gb.ui = "' + id + '"'
+            + ' or gb.rc = "' + id + '";';
+    // 能够适应使用ui和rc查询是否存在BTbl记录
+    let data: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
+    
+    if (data.length > 0) {
+      exists = data[0];
+    }
+    
+    if (exists) {
+      Object.assign(bt, exists);
+    } else {
+      // 不存在联系人，本地联系人中不存在共享日程的发送人
+      bt.pwi = this.utilService.getUuid();
+      bt.hiu = "";
+      bt.rel = '0';
+    }
+    
+    let userinfo = await this.personRestful.get(id);
+    let hasAvatar : boolean = false;
+    
+    if (userinfo && userinfo.data) {
+      bh.pwi = exists.pwi;
+
+      // 用户OpenId
+      if (userinfo.data.openid && userinfo.data.openid != '') {
+        bt.ui = userinfo.data.openid;
+      }
+
+      // 用户头像
+      if (userinfo.data.avatarbase64 && userinfo.data.avatarbase64 != '') {
+        bh.hiu = userinfo.data.avatarbase64;
+        hasAvatar = true;
+        bt.rel = '1'; // 注册用户
+      } else {
+        bh.hiu = DataConfig.HUIBASE64;
+      }
+
+      // 用户姓名
+      if (userinfo.data.nickname && userinfo.data.nickname != '') {
+        // 不存在本地联系人
+        if (!exists) {
+          bt.ran = userinfo.data.nickname;
+          bt.ranpy = this.utilService.chineseToPinYin(userinfo.data.nickname);
+        }
+        
+        bt.rn = userinfo.data.nickname;
+        bt.rnpy = this.utilService.chineseToPinYin(userinfo.data.nickname);
+      }
+
+      // 用户手机号
+      if (userinfo.data.phoneno && userinfo.data.phoneno != '') {
+        bt.rc = userinfo.data.phoneno;
+      }
+
+      if (exists) {
+        bsqls.push(bt.upT());
+      } else {
+        bsqls.push(bt.inT());
+      }
+      
+      if (!exists || !exists.bhi || exists.bhi == null || exists.bhi == '') {
+        // 注册用户需要加入头像表, 默认头像不入库
+        if (hasAvatar) {
+          bh.bhi = this.utilService.getUuid();
+          // 新增BH数据
+          bsqls.push(bh.inT());
+        }
+      } else {
+        bh.bhi = exists.bhi;
+        // 更新BH数据
+        bsqls.push(bh.upT());
+      }
+    }
+
+    await this.sqlExce.batExecSql(bsqls);
+
+    // 返回更新后参数
+    if (!exists) {
+      exists = new FsData();
+    }
+
+    exists.pwi      = bt.pwi;     //主键
+    exists.ran      = bt.ran;     //联系人别称
+    exists.ranpy    = bt.ranpy;   //联系人别称拼音
+    exists.hiu      = bt.hiu;     // 联系人头像
+    exists.rn       = bt.rn;      // 联系人名称
+    exists.rnpy     = bt.rnpy;    //联系人名称拼音
+    exists.rc       = bt.rc;      //联系人联系方式
+    exists.rel      = bt.rel;     //系类型 1是个人，2是群，0未注册用户
+    exists.ui       = bt.ui;      //数据归属人ID
+    exists.bhi      = bh.bhi;      //头像表ID 用于判断是否有头像记录
+    exists.bhiu     = bh.hiu;        //base64图片
+    
+    return exists;
+  }
+  
+  /**
+   *
    * 更新联系人信息和头像
+   *
    * @returns {Promise<void>}
    */
   async updateFs() {
@@ -226,7 +342,7 @@ export class ContactsService {
                from gtd_b gb
                       left join gtd_bh bh on bh.pwi = gb.pwi;`;
 
-    let data: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sql);
+    let data: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
     for (let fs of data) {
       let bt = new BTbl();
       Object.assign(bt, fs);
@@ -247,7 +363,7 @@ export class ContactsService {
         if (userinfo.data.avatarbase64 && userinfo.data.avatarbase64 != '') {
           bh.hiu = userinfo.data.avatarbase64;
           hasAvatar = true;
-          bt.rel = 1; // 注册用户
+          bt.rel = '1'; // 注册用户
         } else {
           bh.hiu = DataConfig.HUIBASE64;
         }
@@ -281,7 +397,7 @@ export class ContactsService {
     await this.sqlExce.batExecSql(bsqls);
 
     // 全部更新完成后刷新
-    UserConfig.RefreshFriend();
+    this.userConfig.RefreshFriend();
   }
 
 }
