@@ -45,27 +45,15 @@ export class ETbl implements ITbl {
   }
 
   dT(): string {
-    console.log("111111111111111111111");
     let sq = 'delete from gtd_e where 1=1 ';
 
-    console.log("111111111111111111112");
     if (this.wi != null && this.wi != "") {
-
-      console.log("111111111111111111113");
       sq = sq + 'and  wi ="' + this.wi + '"';
     }
-
-    console.log("111111111111111111114");
     if(this.si != null && this.si!=""){
-      console.log("111111111111111111115");
       sq = sq + 'and  si ="' + this.si +'"';
     }
-
-    console.log("111111111111111111116");
     sq = sq + ';'
-
-    console.log("111111111111111111117");
-    console.log(sq);
     return sq;
   }
 
