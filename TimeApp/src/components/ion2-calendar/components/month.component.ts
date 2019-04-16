@@ -42,7 +42,7 @@ export const MONTH_VALUE_ACCESSOR: any = {
                           [class.next-month-day]="day.isNextMonth"
                           [class.today]="day.isToday && !day.isLastMonth && !day.isNextMonth"
                           [disabled]="day.disable">
-                    <p>{{day.title}}</p>
+                    <p [class.repeatDay] = "!day.isLastMonth && !day.isNextMonth && !day.isToday ">{{day.title}}</p>
                     <small *ngIf="day.newmessage > 0"></small>
                   </button>
                 </div>
