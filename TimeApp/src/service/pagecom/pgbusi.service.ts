@@ -20,8 +20,15 @@ export class PgBusiService {
               private userConfig :UserConfig) {
   }
 
-  //获取日程详情
-  //TODO 完善方法， 传入所属ID 查询改日程的全部信息 ，主日程 特殊日程 发起人信息 共享人信息， 闹铃信息 计划信息
+
+
+  /**
+   * 获取日程详情,传入所属ID 查询改日程的全部信息 ，主日程 特殊日程
+   * 发起人信息 共享人信息， 闹铃信息 计划信息
+   * @param {string} si 日程id
+   * @param {string} sr 所属日程id（受邀）
+   * @returns {Promise<BsModel<ScdData>>}
+   */
   async get(si: string,sr?:string){
     let bs = new BsModel<ScdData>();
     //获取本地日程
@@ -91,35 +98,6 @@ export class PgBusiService {
       Object.assign(fs,this.userConfig.GetOneBTbl(dlst[j].ai));
       scdData.fss.push(fs);
     }
-
-    bs.code = 0;
-    bs.data = scdData;
-    return bs;
-  }
-
-    //获取日程详情
-  async getByRef(si: string){
-    let bs = new BsModel<ScdData>();
-    //获取本地日程
-
-    let scdData = new ScdData();
-
-    let ctbl = new CTbl();
-    ctbl.sr = si;
-    ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
-    Object.assign(scdData, ctbl);
-
-    //获取计划对应色标
-    let jh = new JhTbl();
-    jh.ji = scdData.ji;
-    jh = await this.sqlExce.getOne<JhTbl>(jh);
-    Object.assign(scdData.p, jh);
-
-    //获取提醒时间
-    let e = new ETbl();
-    e.si = ctbl.si;
-    e = await this.sqlExce.getOne<ETbl>(e);
-    Object.assign(scdData.r, e);
 
     bs.code = 0;
     bs.data = scdData;
@@ -490,11 +468,15 @@ export class PgBusiService {
 
       Object.assign(scdData, newc);
 
-      //TODO: 修改特殊事件表
+      //修改特殊事件表
       await this.updateDetail(scdData);
 
-      //TODO 联系存在判断 不存在获取更新 ，刷新本地缓存
+
+
     }
+
+    //TODO 联系存在判断 不存在获取更新 ，刷新本地缓存
+
 
     bs.data.rai = si;
     bs.data.ai = newc.si;
@@ -692,14 +674,6 @@ export class FsData {
   pi: string=""; //日程参与人表ID
   si: string=""; //日程事件ID
   isbla:boolean=false; //默认非黑名单
-  //TODO 头像返回字段，空的时候返回系统默认头像 判断 this.hiu
-  getFaceImg():string{
-    if (this.bhiu == ""){
-      return DataConfig.HUIBASE64;
-    }else{
-      return this.bhiu;
-    }
-  }
 }
 
 

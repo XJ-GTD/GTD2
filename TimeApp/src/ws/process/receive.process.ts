@@ -26,12 +26,12 @@ export class ReceiveProcess implements MQProcess {
     if (content.option == SH.D) {
       //处理所需要参数
       let scudPara: ScudscdPara = content.parameters;
-      let bs :BsModel<ScdData> = await this.busiService.getByRef(scudPara.id);
+      let bs :BsModel<ScdData> = await this.busiService.get("",scudPara.id);
       if (bs.data && bs.data.si) {
         await this.busiService.delete(bs.data.si, '2', '');
       }
     }
-    
+
     if (content.option == SH.C || content.option == SH.U) {
       //处理所需要参数
       let scudPara: ScudscdPara = content.parameters;
@@ -45,7 +45,7 @@ export class ReceiveProcess implements MQProcess {
       scd.st = agd.st;
       scd.sd = agd.adt;
       scd.fs.ran = agd.fc;
-      
+
       this.notificationsService.newSms(scd);
     }
     return processRs;

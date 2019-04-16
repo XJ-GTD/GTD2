@@ -35,7 +35,7 @@ import {Keyboard} from "@ionic-native/keyboard";
         <ion-row class="avatar-set">
           <ion-chip>
             <ion-avatar>
-              <img class="img-set" [src]="scd.fs.getFaceImg()">
+              <img class="img-set" [src]="scd.fs.bhiu">
             </ion-avatar>
             <ion-label>{{scd.fs.rn}}</ion-label>
           </ion-chip>
