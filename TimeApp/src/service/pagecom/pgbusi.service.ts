@@ -18,7 +18,7 @@ import {ContactsService} from "../cordova/contacts.service";
 @Injectable()
 export class PgBusiService {
   constructor(private sqlExce: SqliteExec, private util: UtilService, private agdRest: AgdRestful,
-              private contactsServ : ContactsService ,private userConfig :UserConfig ,
+              private userConfig :UserConfig ,
               ) {
   }
 
@@ -484,7 +484,7 @@ export class PgBusiService {
       ret.data.fs = fs;
     }else{
       //从服务器获取对象，放入本地库，刷新缓存
-      ret.data.fs = await this.contactsServ.updateOneFs(newc.ui);
+      //ret.data.fs = await this.contactsServ.updateOneFs(newc.ui);
     }
 
     return ret.data;
