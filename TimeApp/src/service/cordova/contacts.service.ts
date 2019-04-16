@@ -18,7 +18,7 @@ export class ContactsService {
 
   static contactTel: Array<string> = new Array<string>();
 
-  constructor(private contacts: Contacts, private utilService: UtilService,
+  constructor(private contacts: Contacts, private utilService: UtilService, private userConfig: UserConfig,
               private sqlExce: SqliteExec, private personRestful: PersonRestful) {
 
   }
@@ -219,11 +219,25 @@ export class ContactsService {
    *
    * @returns {Promise<FsData>}
    */
-  async updateOneFs(id : string) Promise<FsData> {
+  async updateOneFs(id : string) : Promise<FsData> {
+    let bsqls: Array<string> = new Array<string>();
     let bt = new BTbl();
 
-    let exists : FsData = UserConfig.GetOneBTbl(id); // 该方法需要能够适应使用ui和rc查询是否存在BTbl记录
+    let exists : FsData = null; // 该方法需要能够适应使用ui和rc查询是否存在BTbl记录
 
+    //获取本地参与人
+    let sql = 'select gb.*, bh.bhi bhi, bh.hiu bhiu '
+            + ' from gtd_b gb '
+            + '       left join gtd_bh bh on bh.pwi = gb.pwi '
+            + ' where gb.ui = "' + id + '"'
+            + ' or gb.rc = "' + id + '";';
+
+    let data: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
+    
+    if (data.length > 0) {
+      exists = data[0];
+    }
+    
     if (exists) {
       Object.assign(bt, exists);
     } else {
@@ -236,6 +250,9 @@ export class ContactsService {
     let hasAvatar : boolean = false;
     
     if (userinfo && userinfo.data) {
+      let bh = new BhTbl();
+      bh.pwi = fs.pwi;
+
       if (userinfo.data.openid && userinfo.data.openid != '') {
         bt.ui = userinfo.data.openid;
       }
@@ -249,6 +266,7 @@ export class ContactsService {
       }
 
       if (userinfo.data.nickname && userinfo.data.nickname != '') {
+        // 不存在本地联系人
         if (!exists) {
           bt.ran = userinfo.data.nickname;
           bt.ranpy = this.utilService.chineseToPinYin(userinfo.data.nickname);
@@ -262,9 +280,28 @@ export class ContactsService {
         bt.rc = userinfo.data.phoneno;
       }
 
-      bsqls.push(bt.upT());
-    }
+      if (exists) {
+        bsqls.push(bt.upT());
+      } else {
+        bsqls.push(bt.inT());
+      }
       
+      if (!exists || !exists.bhi || exists.bhi == null || exists.bhi == '') {
+        // 注册用户需要加入头像表, 默认头像不入库
+        if (hasAvatar) {
+          bh.bhi = this.utilService.getUuid();
+          // 新增BH数据
+          bsqls.push(bh.inT());
+        }
+      } else {
+        bh.bhi = fs.bhi;
+        // 更新BH数据
+        bsqls.push(bh.upT());
+      }
+    }
+
+    await this.sqlExce.batExecSql(bsqls);
+
     return exists;
   }
   
@@ -338,7 +375,7 @@ export class ContactsService {
     await this.sqlExce.batExecSql(bsqls);
 
     // 全部更新完成后刷新
-    UserConfig.RefreshFriend();
+    this.userConfig.RefreshFriend();
   }
 
 }
