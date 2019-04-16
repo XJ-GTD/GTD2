@@ -8,6 +8,7 @@ import {BsModel} from "../../service/restful/out/bs.model";
 import {FsData} from "../../service/pagecom/pgbusi.service";
 import {BhTbl} from "../../service/sqlite/tbl/bh.tbl";
 import {UserConfig} from "../../service/config/user.config";
+import {ContactsService} from "../../service/cordova/contacts.service";
 
 @Injectable()
 export class FdService {
@@ -15,7 +16,8 @@ export class FdService {
               private blasev:BlaRestful,
               private util:UtilService,
               private sqlite:SqliteExec,
-              private userConfig:UserConfig,) {
+              private userConfig:UserConfig,
+              private contact:ContactsService) {
   }
 
   /**
@@ -24,63 +26,9 @@ export class FdService {
    * @returns {Promise<FsData>}
    */
   get(fd:FsData):Promise<FsData>{
-
     return new Promise<FsData>((resolve, reject)=>{
-      let bTbl = new BTbl();
-      bTbl.pwi = fd.pwi;
-      //获取本地参与人信息
-      this.sqlite.getOne(bTbl).then(data=>{
-        Object.assign(fd,data);
-        //rest 获取用户信息（头像地址）
-        return this.personRes.get(fd.rc);
-      }).then(data=>{
-        //更新本地联系人信息
-        Object.assign(bTbl,fd);
-        if(data && data.code == 0 && data.data && data.data.phoneno == fd.rc){
-          bTbl.rel = "1";   // 已注册
-          bTbl.rn = data.data.nickname;
-          fd.rn =  data.data.nickname;
-          if(bTbl.rn && bTbl.rn != ''){
-            bTbl.rnpy = this.util.chineseToPinYin(bTbl.rn);
-            fd.rnpy = this.util.chineseToPinYin(bTbl.rn);
-          }
-
-          if(bTbl.hiu != data.data.avatar){
-            bTbl.hiu = data.data.avatar;
-            //rest 获取头像
-            //TODO 判断URL是否一致 ，不一致更新头像 ，更新联系人信息 非注册用户不能拉入黑名单
-            return this.personRes.getavatar(fd.rc);
-          }
-        }else{
-          bTbl.rel = "0";   // 未注册用户
-        }
-      }).then(data=>{
-
-         if(data && data.code == 0){
-           fd.bhiu = data.data.base64;
-           let bhTbl = new BhTbl();
-           bhTbl.pwi = fd.pwi;
-           this.sqlite.getOne(bhTbl).then(data=>{
-             Object.assign(bhTbl,data);
-             if(bhTbl.bhi == ''){
-               bhTbl.bhi=this.util.getUuid();
-               bhTbl.hiu = fd.bhiu;
-               this.sqlite.save(bhTbl);
-             }else {
-               bhTbl.hiu = fd.bhiu;
-               this.sqlite.update(bhTbl);
-             }
-           });
-         }
-
-      }).then(data=>{
-        return this.sqlite.update(bTbl);  // 修改联系人表
-      }).then(data=>{
-        this.userConfig.RefreshOneBTbl(fd); //刷新群组表
-
-        resolve(fd);
-      }).catch(error=>{
-        resolve(error);
+      this.contact.updateOneFs(fd.rc).then(data=>{
+        resolve(data);
       })
     })
   }
