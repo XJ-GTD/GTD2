@@ -224,6 +224,9 @@ export class ContactsService {
     let bt = new BTbl();
     let bh = new BhTbl();
 
+    let userinfo = await this.personRestful.get(id);
+    let hasAvatar : boolean = false;
+    
     let exists : FsData = null;
 
     //获取本地参与人
@@ -247,9 +250,6 @@ export class ContactsService {
       bt.hiu = "";
       bt.rel = '0';
     }
-    
-    let userinfo = await this.personRestful.get(id);
-    let hasAvatar : boolean = false;
     
     if (userinfo && userinfo.data) {
       if (exists)
