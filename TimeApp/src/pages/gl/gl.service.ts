@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
-import {PageDcData} from "../gc/gc.service";
 import {UserConfig} from "../../service/config/user.config";
+import {PageDcData} from "../../data.mapping";
 
 @Injectable()
 export class GlService {

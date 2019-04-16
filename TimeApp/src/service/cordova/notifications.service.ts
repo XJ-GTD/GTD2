@@ -7,13 +7,13 @@ import {
   LocalNotifications
 } from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
-import {ScdData} from "../pagecom/pgbusi.service";
 import * as moment from "moment";
 import {UtilService} from "../util-service/util.service";
 import {RemindService} from "../util-service/remind.service";
 import {DataConfig} from "../config/data.config";
 import {ETbl} from "../sqlite/tbl/e.tbl";
 import {EmitService, ScdEmData} from "../util-service/emit.service";
+import {ScdData} from "../../data.mapping";
 
 /**
  * 系统设置方法类

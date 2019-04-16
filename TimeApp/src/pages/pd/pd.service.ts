@@ -5,6 +5,7 @@ import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {AgdPro} from "../../service/restful/agdsev";
+import {PagePDPro} from "../../data.mapping";
 
 @Injectable()
 export class PdService {
@@ -138,17 +139,4 @@ export class PdService {
       return bs;
     }
   }
-}
-
-//页面项目
-export class PagePDPro{
-  ji: string = "";//计划ID
-  jn: string = "";//计划名
-  jg: string = "";//计划描述
-  jc: string = "";//计划颜色标记
-  jt: string = "";//计划类型
-
-  js: any = 0; //日程数量
-  jtd: string = "0"; //系统计划区别是否下载
-  pt: string = "";//计划名  计划分享使用
 }

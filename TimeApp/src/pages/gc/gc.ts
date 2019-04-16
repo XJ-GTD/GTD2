@@ -1,13 +1,11 @@
 import {Component} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 
-import {GcService, PageDcData} from "./gc.service";
+import {GcService} from "./gc.service";
 import {FsService} from "../fs/fs.service";
 import {DataConfig} from "../../service/config/data.config";
-import {FsData} from "../../service/pagecom/pgbusi.service";
-import {UserConfig} from "../../service/config/user.config";
 import {UtilService} from "../../service/util-service/util.service";
-
+import {FsData, PageDcData} from "../../data.mapping";
 /**
  * Generated class for the 群组编辑 page.
  *

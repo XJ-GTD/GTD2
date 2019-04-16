@@ -54,11 +54,11 @@ export class PsService {
       }
       this.sqlExec.update(u).then(data=>{
 
-        let inDataName:InDataName = new InDataName();
-        let inDataSex:InDataSex = new InDataSex();
-        let inDataBoth:InDataBoth = new InDataBoth();
-        let inDataContact:InDataContact = new InDataContact();
-        let inDataIC:InDataIC = new InDataIC();
+        let inDataName = {nickname:""};
+        let inDataSex = {sex:""};
+        let inDataBoth = {birthday:""};
+        let inDataContact = {contact:""};
+        let inDataIC = {ic:""};
 
         //restFul保存用户信息
         //return this.personRestful.updateself(pu,pu.user.id);
@@ -99,7 +99,7 @@ export class PsService {
     return new Promise<BsModel<any>>((resolve, reject) => {
       //restFul更新用户密码（服务器更新token并返回，清空该用户服务其他token）
       let bs = new BsModel<any>();
-      let per = new InDataPassword();
+      let per = {password:""};
       per.password = pw;
       this.personRestful.updatepass(per,unionid).then(data=>{
         //刷新系统全局用户静态变量
@@ -142,69 +142,6 @@ export class PsService {
       })
     })
   }
-}
-
-export class PageUData{
-  user = {
-    //账户ID
-    id: "",
-    //用户名
-    name: "",
-    //用户头像
-    avatar: "",
-    //出生日期
-    bothday: "",
-    //真实姓名
-    realname: "",
-    //身份证
-    No: "",
-    //性别
-    sex: "",
-    //联系方式
-    contact: "",
-  };
-  account = {
-    // 账户ID
-    id: "",
-    // 账户名
-    name: "",
-    // 手机号
-    phone: "",
-    // 设备号
-    device: "",
-    // token
-    token: "",
-    // 账户消息队列
-    mq: "",
-  }
-}
-
-export class InDataName{
-  nickname: string = "";   //姓名
-}
-
-export class InDataPassword{
-  password: string = "";   //密码
-}
-
-export class InDataSex{
-  sex: "0";      //性别 0 未知, 1 男性, 2 女性 Enum: [ 0, 1, 2 ]
-}
-
-export class InDataIC{
-  ic: string = "";     //身份证号码
-}
-
-export class InDataAvatar{
-  avatarbase64: string = "";     //头像64
-}
-
-export class InDataBoth{
-  birthday: string = ""; //出生日期  2019-03-11
-}
-
-export class InDataContact{
-  contact: string = ""; //联系电话
 }
 
 

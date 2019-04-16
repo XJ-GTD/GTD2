@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
-import {ITbl} from "../sqlite/tbl/itbl";
-import {ATbl} from "../sqlite/tbl/a.tbl";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {SpTbl} from "../sqlite/tbl/sp.tbl";
 import {ETbl} from "../sqlite/tbl/e.tbl";
@@ -10,7 +8,6 @@ import {GTbl} from "../sqlite/tbl/g.tbl";
 import {JhTbl} from "../sqlite/tbl/jh.tbl";
 import {BsModel} from "./out/bs.model";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
-import {OutSharePro} from "./agdsev";
 import {CTbl} from "../sqlite/tbl/c.tbl";
 import {BxTbl} from "../sqlite/tbl/bx.tbl";
 import {YTbl} from "../sqlite/tbl/y.tbl";

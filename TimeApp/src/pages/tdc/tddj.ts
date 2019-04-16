@@ -1,13 +1,14 @@
 import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
-import {ActionSheetController, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {ActionSheetController, ModalController, NavController, NavParams} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
-import {FsData, PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
-import {ScdPageParamter, TdcService} from "./tdc.service";
+import {PgBusiService} from "../../service/pagecom/pgbusi.service";
+import { TdcService} from "./tdc.service";
 import {Keyboard} from "@ionic-native/keyboard";
+import {FsData, ScdData, ScdPageParamter} from "../../data.mapping";
 
 /**
  * Generated class for the 日程详情（发布人） page.
@@ -238,7 +239,7 @@ export class TddjPage {
 
 
     let paramter: ScdPageParamter = this.navParams.data;
-    if (this.navParams.get("si")) {
+    if (paramter.si) {
       this.tddjServ.get(paramter.si).then(data => {
         let bs: BsModel<ScdData> = data;
         Object.assign(this.scd, bs.data);

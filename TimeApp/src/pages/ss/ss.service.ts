@@ -3,6 +3,7 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UserConfig} from "../../service/config/user.config";
 import {YTbl} from "../../service/sqlite/tbl/y.tbl";
 import {ContactsService} from "../../service/cordova/contacts.service";
+import {PageY} from "../../data.mapping";
 
 @Injectable()
 export class SsService {
@@ -35,18 +36,4 @@ export class SsService {
   }
 }
 
-export class PageY{
-  //偏好主键ID
-  yi : string ="";
-  //偏好设置类型
-  yt : string ="";
-  //偏好设置类型名称
-  ytn : string ="";
-  //偏好设置名称
-  yn : string ="";
-  //偏好设置key
-  yk : string ="";
-  //偏好设置value
-  yv : string ="";
 
-}

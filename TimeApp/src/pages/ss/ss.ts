@@ -2,7 +2,8 @@ import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
-import {PageY, SsService} from "./ss.service";
+import {SsService} from "./ss.service";
+import {PageY} from "../../data.mapping";
 
 /**
  * Generated class for the 设置画面 page.

@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
-import {LsService, PageLsData} from "./ls.service";
+import {LsService} from "./ls.service";
 import {UtilService} from "../../service/util-service/util.service";
+import {PageLsData} from "../../data.mapping";
 
 /**
  * Generated class for the 登陆（短信） page.

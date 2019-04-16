@@ -1,7 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
-import {GcService, PageDcData} from "../gc/gc.service";
+import {GcService} from "../gc/gc.service";
 import {UtilService} from "../../service/util-service/util.service";
+import {PageDcData} from "../../data.mapping";
 
 
 /**

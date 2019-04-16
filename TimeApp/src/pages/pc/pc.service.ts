@@ -3,6 +3,7 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
+import {PagePcPro} from "../../data.mapping";
 
 @Injectable()
 export class PcService {
@@ -31,13 +32,4 @@ export class PcService {
     })
   }
 
-}
-//页面项目
-export class PagePcPro{
-  //计划名
-  jn:string="";
-  //计划描述
-  jg:string="";
-  //计划颜色标记
-  jc:string="";
 }

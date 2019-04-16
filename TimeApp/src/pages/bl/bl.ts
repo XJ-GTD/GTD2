@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {BlService, PageBlData} from "./bl.service";
+import {BlService} from "./bl.service";
 import {FdService} from "../fd/fd.service";
 import {DataConfig} from "../../service/config/data.config";
 import {UtilService} from "../../service/util-service/util.service";
+import {PageBlData} from "../../data.mapping";
 
 /**
  * Generated class for the 黑名单列表 page.

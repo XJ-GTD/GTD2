@@ -27,7 +27,7 @@ import {BhTbl} from "../../service/sqlite/tbl/bh.tbl";
 import {DataConfig} from "../../service/config/data.config";
 import {NotificationsService} from "../../service/cordova/notifications.service";
 import {ETbl} from "../../service/sqlite/tbl/e.tbl";
-import {AssistantService} from "../../service/cordova/assistant.service";
+import {AlData} from "../../data.mapping";
 
 @Injectable()
 export class AlService {
@@ -648,10 +648,4 @@ export class AlService {
     })
   }
 
-}
-
-export class AlData {
-  text: string;
-  checkSystem: boolean;
-  islogin: boolean;
 }

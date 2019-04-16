@@ -1,14 +1,12 @@
 import {Injectable} from "@angular/core";
 import {PersonRestful} from "../../service/restful/personsev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {UtilService} from "../../service/util-service/util.service";
 import {BlaReq, BlaRestful} from "../../service/restful/blasev";
 import {BsModel} from "../../service/restful/out/bs.model";
-import {FsData} from "../../service/pagecom/pgbusi.service";
-import {BhTbl} from "../../service/sqlite/tbl/bh.tbl";
 import {UserConfig} from "../../service/config/user.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
+import {FsData} from "../../data.mapping";
 
 @Injectable()
 export class FdService {

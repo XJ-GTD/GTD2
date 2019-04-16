@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
 import {IonicPage, Nav} from 'ionic-angular';
-import {AlData, AlService} from "./al.service";
+import {AlService} from "./al.service";
 import {DataConfig} from "../../service/config/data.config";
 import {NotificationsService} from "../../service/cordova/notifications.service";
-import {ScdData} from "../../service/pagecom/pgbusi.service";
-import {ETbl} from "../../service/sqlite/tbl/e.tbl";
+import {AlData} from "../../data.mapping";
 
 /**
  * Generated class for the AlPage page.

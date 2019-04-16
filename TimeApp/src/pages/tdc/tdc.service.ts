@@ -3,8 +3,8 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {UtilService} from "../../service/util-service/util.service";
 import {AgdRestful} from "../../service/restful/agdsev";
-import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
-import * as moment from "moment";
+import {PgBusiService} from "../../service/pagecom/pgbusi.service";
+import {ScdData} from "../../data.mapping";
 
 @Injectable()
 export class TdcService {
@@ -70,15 +70,4 @@ export class TdcService {
     return this.pgbusiServ.updateDetail(scd);
   }
 
-}
-
-export class ScdPageParamter{
-  //本地日历ID
-  si:string = ""
-  //特殊表ID
-  spid:string="";
-  //传入时间
-  d:moment.Moment;
-  //原归属ID
-  gs:string="";
 }

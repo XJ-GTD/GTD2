@@ -1,7 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
-import {PagePcPro, PcService} from "./pc.service";
+import {PcService} from "./pc.service";
 import {UtilService} from "../../service/util-service/util.service";
+import {PagePcPro} from "../../data.mapping";
 
 /**
  * Generated class for the 计划新建 page.
@@ -132,7 +133,7 @@ export class PcPage {
 
   @ViewChild('input') input;
 
-  jhcData:PagePcPro = new PagePcPro;
+  jhcData:PagePcPro = new PagePcPro();
 
   constructor(private navCtrl: NavController,
               private util: UtilService,

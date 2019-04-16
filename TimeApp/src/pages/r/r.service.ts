@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
 import {PersonRestful, SignData} from "../../service/restful/personsev";
 import {InData, SmsRestful} from "../../service/restful/smssev";
-import {LpService, PageLpData} from "../lp/lp.service";
+import {LpService} from "../lp/lp.service";
+import {PageLpData} from "../../data.mapping";
 
 @Injectable()
 export class RService {

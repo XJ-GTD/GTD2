@@ -1,9 +1,8 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import {Injectable } from '@angular/core';
 import { Calendar } from "@ionic-native/calendar";
 import {UtilService} from "../util-service/util.service";
-import {ScdData} from "../pagecom/pgbusi.service";
-import {UserConfig} from "../config/user.config";
 import * as moment from "moment";
+import {ScdData} from "../../data.mapping";
 
 /**
  * 页面ts传值(Calendar)

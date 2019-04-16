@@ -1,9 +1,10 @@
 import {Component, ViewChildren, QueryList} from '@angular/core';
 import {ActionSheetController, DateTime, IonicPage, NavController} from 'ionic-angular';
-import {PageUData, PsService} from "./ps.service";
+import {PsService} from "./ps.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
+import {PageUData} from "../../data.mapping";
 
 /**
  * Generated class for the 个人设置 page.

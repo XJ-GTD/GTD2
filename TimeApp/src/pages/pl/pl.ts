@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "./pl.service";
-import {PagePDPro} from "../pd/pd.service";
 import {UtilService} from "../../service/util-service/util.service";
+import {PagePDPro} from "../../data.mapping";
 
 /**
  * Generated class for the PlPage page.

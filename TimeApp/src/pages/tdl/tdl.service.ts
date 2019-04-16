@@ -4,8 +4,8 @@ import {UserConfig} from "../../service/config/user.config";
 import {BsModel} from "../../service/restful/out/bs.model";
 import * as moment from "moment";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
-import {ScdData} from "../../service/pagecom/pgbusi.service";
 import {LocalcalendarService} from "../../service/cordova/localcalendar.service";
+import {ScdData, ScdlData} from "../../data.mapping";
 
 @Injectable()
 export class TdlService {
@@ -284,15 +284,6 @@ export class TdlService {
   }
 
 }
-
-export class ScdlData {
-  d: string;
-  id: string;
-  bc:number;
-  scdl: Array<ScdData> = new Array<ScdData>();
-
-}
-
 
 
 

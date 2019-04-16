@@ -4,9 +4,8 @@ import {SqliteExec} from "../util-service/sqlite.exec";
 import {ATbl} from "../sqlite/tbl/a.tbl";
 import {UTbl} from "../sqlite/tbl/u.tbl";
 import {UtilService} from "../util-service/util.service";
-import {FsData} from "../pagecom/pgbusi.service";
 import {DataConfig} from "./data.config";
-import {PageDcData} from "../../pages/gc/gc.service";
+import {FsData, PageDcData} from "../../data.mapping";
 
 /**
  * create by on 2019/3/5

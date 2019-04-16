@@ -1,16 +1,15 @@
 import {MQProcess} from "../interface.process";
 import {WsContent} from "../model/content.model";
-import {ProcessFactory} from "../process.factory";
 import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
-import {CudscdPara} from "../model/cudscd.para";
 import {ProcesRs} from "../model/proces.rs";
 import {O, SS} from "../model/ws.enum";
 import {DataConfig} from "../../service/config/data.config";
-import {FsData, PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
+import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {FsService} from "../../pages/fs/fs.service";
+import {FsData, ScdData} from "../../data.mapping";
 
 /**
  * 确认操作

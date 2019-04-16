@@ -4,11 +4,11 @@ import {SH} from "../model/ws.enum";
 import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
 import {ProcesRs} from "../model/proces.rs";
-import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
+import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {ScudscdPara} from "../model/scudscd.para";
 import {NotificationsService} from "../../service/cordova/notifications.service";
-import {AgdPro} from "../../service/restful/agdsev";
 import {BsModel} from "../../service/restful/out/bs.model";
+import {ScdData} from "../../data.mapping";
 
 /**
  * 日程修改（获取上下文中）
