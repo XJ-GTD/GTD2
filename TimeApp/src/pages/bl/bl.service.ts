@@ -21,7 +21,9 @@ export class BlService {
         let blaList:Array<PageBlData> = data.data;
         for(let fs of blaList) {
           if (!fs.a || fs.a == null || fs.a == '') {
+            //TODO 返回的openid 获取本地联系人信息 如果本地没有的话，获取联系人信息，插入本地
             fs.a = DataConfig.HUIBASE64;
+
           }
         }
         resolve(blaList);

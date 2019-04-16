@@ -208,6 +208,8 @@ export class TddiPage {
       Object.assign(this.scd, bs.data);
       this.scd.showSd = paramter.d.format("YYYY-MM-DD");
 
+      //TODO 缓存里后获取发送信息
+
       this.busiServ.getPlans().then(data => {
         this.jhs = data;
         for (let i = 0; i < this.jhs.length; i++) {
@@ -257,10 +259,10 @@ export class TddiPage {
     });
 
     //获取日程发起人信息
-    this.tddiServ.getCrMan(this.navParams.get("si")).then(data => {
-      this.fsshow = data
-
-    });
+   //this.tddiServ.getCrMan(this.navParams.get("si")).then(data => {
+   //   this.fsshow = data
+//
+//    });
   }
 
   //提醒按钮显示控制

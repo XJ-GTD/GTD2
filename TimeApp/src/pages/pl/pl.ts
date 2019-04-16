@@ -26,7 +26,7 @@ import {UtilService} from "../../service/util-service/util.service";
         </ion-buttons>
         <ion-title>计划</ion-title>
         <ion-buttons right>
-          <button ion-button color="danger" (click)="newPlan()">
+          <button ion-button class="button-header-right" (click)="newPlan()">
             添加
           </button>
         </ion-buttons>

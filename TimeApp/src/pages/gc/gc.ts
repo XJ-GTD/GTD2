@@ -28,7 +28,7 @@ import {UtilService} from "../../service/util-service/util.service";
          </ion-buttons>
          <ion-title>{{dc.gn}}({{dc.gc}})</ion-title>
          <ion-buttons right>
-           <button ion-button (click)="toAddGroupMember()" color="danger">
+           <button ion-button class="button-header-right" (click)="toAddGroupMember()">
              <!--<ion-icon name="add"></ion-icon>--> 添加
            </button>
          </ion-buttons>

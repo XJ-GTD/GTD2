@@ -25,7 +25,7 @@ import {UtilService} from "../../service/util-service/util.service";
       </ion-buttons>
   
       <ion-buttons right>
-        <button ion-button color="danger" (click)="save()">
+        <button ion-button class="button-header-right" (click)="save()">
           保存
         </button>
       </ion-buttons>

@@ -35,6 +35,7 @@ export class FdService {
         if(data != null && data.length>0){
           Object.assign(fd,data[0]);
           //rest 获取头像
+          //TODO 判断URL是否一致 ，不一致更新头像 ，更新联系人信息 非注册用户不能拉入黑名单
           return this.personRes.getavatar(fd.rc);
         }
       }).then(data=>{

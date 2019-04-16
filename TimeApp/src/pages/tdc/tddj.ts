@@ -243,6 +243,8 @@ export class TddjPage {
         Object.assign(this.scd, bs.data);
         this.scd.showSd = paramter.d.format("YYYY-MM-DD");
 
+        //TODO 缓存中循环取得联系人信息
+
         this.busiServ.getPlans().then(data => {
           this.jhs = data;
           for (let i = 0; i < this.jhs.length; i++) {
@@ -279,9 +281,9 @@ export class TddjPage {
       });
 
       //获取日程参与人表
-      this.tddjServ.getCalfriend(this.navParams.get("si")).then(data => {
-        this.fssshow = data;
-      });
+     // this.tddjServ.getCalfriend(this.navParams.get("si")).then(data => {
+     //   this.fssshow = data;
+     // });
 
       return;
     }

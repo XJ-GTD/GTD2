@@ -239,8 +239,13 @@ export class BrService {
       Object.assign(jhi,bsModel.data.jh[j]) ;
 
       await this.sqlexec.save(jhi);
+
     }
 
+
+    //TODO 联系人的更新信息操作
+
+    
     let ret = new BsModel();
     ret.code = 0
     return ret;

@@ -19,6 +19,7 @@ export class PgBusiService {
   }
 
   //获取日程详情
+  //TODO 完善方法， 传入所属ID 查询改日程的全部信息 ，主日程 特殊日程 发起人信息 共享人信息， 闹铃信息 计划信息
   async get(si: string){
     let bs = new BsModel<ScdData>();
     //获取本地日程
@@ -438,11 +439,13 @@ export class PgBusiService {
 
       //TODO: 修改特殊事件表
       await this.updateDetail(scdData);
+
+      //TODO 联系存在判断 不存在获取更新 ，刷新本地缓存
     }
 
     bs.data.rai = si;
     bs.data.ai = newc.si;
-    
+
     return bs.data;
 
   }
@@ -635,6 +638,7 @@ export class FsData {
   pi: string=""; //日程参与人表ID
   si: string=""; //日程事件ID
   isbla:boolean=false; //默认非黑名单
+  //TODO 头像返回字段，空的时候返回系统默认头像 判断 this.hiu
 }
 
 

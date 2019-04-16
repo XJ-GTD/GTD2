@@ -44,6 +44,11 @@ page-pc {
     height: 4vmin;
   }
 
+  .button-header-right{
+    font-size: 1.5rem;
+    color: $masterColor;
+  }
+
   ion-list-header.plan-list-item {
     color: rgb(153,153,153);
   }

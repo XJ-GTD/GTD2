@@ -1,4 +1,4 @@
-import {Component, ViewChildren} from '@angular/core';
+import {Component, ViewChildren, QueryList} from '@angular/core';
 import {ActionSheetController, DateTime, IonicPage, NavController} from 'ionic-angular';
 import {PageUData, PsService} from "./ps.service";
 import {UtilService} from "../../service/util-service/util.service";
@@ -61,12 +61,12 @@ import {DataConfig} from "../../service/config/data.config";
 export class PsPage {
 
   // 判断是否有模态框弹出 控制安卓物理返回键
-  @ViewChildren(DateTime) dateTimes: DateTime;
+  @ViewChildren(DateTime) dateTimes: QueryList<DateTime>;
   actionSheet;
 
 
-  sex:string='';
-  birthday:string='';
+  sex:string = '';
+  birthday:string = '';
   avatar:any = DataConfig.HUIBASE64;
   uo:PageUData = new PageUData();
   olduo:PageUData = new PageUData();
@@ -88,7 +88,7 @@ export class PsPage {
 
     this.avatar = UserConfig.user.avatar;
 
-    if (UserConfig.user.sex != undefined && UserConfig.user.sex != null && UserConfig.user.sex != '') {
+    if (UserConfig.user.sex != undefined && UserConfig.user.sex != '') {
       if( UserConfig.user.sex == "0"){
         this.sex = "未知";
       }else {
@@ -107,8 +107,11 @@ export class PsPage {
     if (this.actionSheet !== undefined) {
       this.actionSheet.dismiss();
     }
-    if(this.dateTimes._picker != undefined){
-      this.dateTimes._picker.dismiss();
+    console.log(this.dateTimes.toArray());
+    for(let i = 0;i<this.dateTimes.toArray().length;i++){
+      if(this.dateTimes.toArray()[i]._picker != undefined){
+        this.dateTimes.toArray()[i]._picker.dismiss();
+      }
     }
   }
 

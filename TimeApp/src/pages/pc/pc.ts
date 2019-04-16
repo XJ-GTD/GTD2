@@ -23,7 +23,7 @@ import {UtilService} from "../../service/util-service/util.service";
     </ion-buttons>
 
     <ion-buttons right>
-      <button ion-button color="danger" (click)="save()">
+      <button ion-button class="button-header-right" (click)="save()">
         保存
       </button>
     </ion-buttons>
@@ -136,7 +136,9 @@ export class PcPage {
 
   constructor(private navCtrl: NavController,
               private util: UtilService,
-              private pcService:PcService) {}
+              private pcService:PcService) {
+    this.jhcData.jc = "#9B5E4B"; // 默认选中颜色  牛皮棕
+  }
 
   ionViewDidLoad() {
   }
