@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {BsModel} from "./out/bs.model";
-import {InDataPassword} from "../../pages/ps/ps.service";
 
 /**
  * 帐户 注册
@@ -158,7 +157,7 @@ export class PersonRestful {
   }
 
   //修改密码 MP put
-  updatepass(personData:InDataPassword,unionid:string): Promise<BsModel<any>> {
+  updatepass(personData:any,unionid:string): Promise<BsModel<any>> {
 
     let bsModel = new BsModel();
     return new Promise((resolve, reject) => {

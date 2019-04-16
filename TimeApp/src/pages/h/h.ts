@@ -3,15 +3,14 @@ import {IonicPage, MenuController, ModalController, NavController} from 'ionic-a
 import {
   CalendarComponentOptions, CalendarDay
 } from "../../components/ion2-calendar";
-import {DataConfig} from "../../service/config/data.config";
-import {HData, HService} from "./h.service";
+import {HService} from "./h.service";
 import  * as Hammer from 'hammerjs'
 import * as moment from "moment";
 import {AiComponent} from "../../components/ai/answer/ai";
 import {EmitService} from "../../service/util-service/emit.service";
 import {TdcPage} from "../tdc/tdc";
-import {ScdPageParamter} from "../tdc/tdc.service";
 import {TddiPage} from "../tdc/tddi";
+import {HData, ScdPageParamter} from "../../data.mapping";
 
 /**
  * Generated class for the 首页 page.

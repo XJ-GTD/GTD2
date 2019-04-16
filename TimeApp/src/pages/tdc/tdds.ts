@@ -5,8 +5,8 @@ import {
 import * as moment from "moment";
 import {UtilService} from "../../service/util-service/util.service";
 import {BsModel} from "../../service/restful/out/bs.model";
-import {ScdPageParamter, TdcService} from "../tdc/tdc.service";
-import {ScdData} from "../../service/pagecom/pgbusi.service";
+import {TdcService} from "../tdc/tdc.service";
+import {ScdData, ScdPageParamter} from "../../data.mapping";
 
 /**
  * Generated class for the 日程详情（系统） page.

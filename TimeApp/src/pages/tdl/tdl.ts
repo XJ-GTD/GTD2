@@ -4,11 +4,11 @@ import {
   MenuController,
   ModalController, ScrollEvent,
 } from 'ionic-angular';
-import {ScdlData, TdlService} from "./tdl.service";
+import {TdlService} from "./tdl.service";
 import {DataConfig} from "../../service/config/data.config";
 import * as moment from "moment";
 import {EmitService} from "../../service/util-service/emit.service";
-import {ScdPageParamter} from "../tdc/tdc.service";
+import {ScdlData, ScdPageParamter} from "../../data.mapping";
 
 /**
  * Generated class for the 日程列表 page.

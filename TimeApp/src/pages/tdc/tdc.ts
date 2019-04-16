@@ -1,14 +1,15 @@
 import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {
-  IonicPage, ModalController, NavController, NavParams,
+  ModalController, NavController, NavParams,
 } from 'ionic-angular';
 import * as moment from "moment";
-import {ScdPageParamter, TdcService} from "./tdc.service";
+import {TdcService} from "./tdc.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
-import {PgBusiService, ScdData} from "../../service/pagecom/pgbusi.service";
+import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
+import {ScdData, ScdPageParamter} from "../../data.mapping";
 
 /**
  * Generated class for the 新建日程 page.

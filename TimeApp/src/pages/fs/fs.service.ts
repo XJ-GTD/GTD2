@@ -7,11 +7,8 @@ import {UtilService} from "../../service/util-service/util.service";
 import {PersonRestful} from "../../service/restful/personsev";
 import {DataConfig} from "../../service/config/data.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
-import {FsData} from "../../service/pagecom/pgbusi.service";
 import {UserConfig} from "../../service/config/user.config";
-import {PageDcData} from "../gc/gc.service";
-import {BhTbl} from "../../service/sqlite/tbl/bh.tbl";
-import {BTbl} from "../../service/sqlite/tbl/b.tbl";
+import {FsData} from "../../data.mapping";
 
 @Injectable()
 export class FsService {
@@ -138,16 +135,5 @@ export class FsService {
     })
   }
 
-}
-
-/**
- * 联系人视图
- */
-export class FsPageData extends  FsData{
-  checked:boolean = false;
-}
-
-export class PageGroupData extends  PageDcData{
-  checked:boolean = false;
 }
 

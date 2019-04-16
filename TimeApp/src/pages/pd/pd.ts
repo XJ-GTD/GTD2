@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
 import {ActionSheetController, AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
-import {PagePDPro, PdService} from "./pd.service";
+import {PdService} from "./pd.service";
 import {AgdPro} from "../../service/restful/agdsev";
 import {UtilService} from "../../service/util-service/util.service";
+import {PagePDPro} from "../../data.mapping";
 
 /**
  * Generated class for the 计划展示 page.

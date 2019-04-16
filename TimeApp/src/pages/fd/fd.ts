@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import { FdService} from "./fd.service";
-import {FsData} from "../../service/pagecom/pgbusi.service";
-import {DataConfig} from "../../service/config/data.config";
 import {UtilService} from "../../service/util-service/util.service";
+import {FsData} from "../../data.mapping";
 
 /**
  * Generated class for the 参与人详情 page.

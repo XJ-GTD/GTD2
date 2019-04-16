@@ -3,8 +3,8 @@ import {BlaRestful} from "../../service/restful/blasev";
 import {UtilService} from "../../service/util-service/util.service";
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
-import {FsData} from "../../service/pagecom/pgbusi.service";
 import {ContactsService} from "../../service/cordova/contacts.service";
+import {FsData, PageBlData} from "../../data.mapping";
 
 @Injectable()
 export class BlService {
@@ -38,18 +38,3 @@ export class BlService {
   }
 }
 
-export class PageBlData{
-  //帐户ID
-  ai: string;
-  //手机号码
-  mpn: string;
-  //姓名
-  n: string;
-  //头像
-  a: string;
-  //性别
-  s: string;
-  //生日
-  bd: string;
-
-}

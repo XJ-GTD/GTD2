@@ -3,9 +3,8 @@
  *
  * create by zhangjy on 2019/03/12.
  */
-import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
-import {FsData} from "../../service/pagecom/pgbusi.service";
+import {FsData} from "../../data.mapping";
 
 
 export class ProcesRs{

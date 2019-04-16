@@ -41,10 +41,10 @@
 
 @font-face {
   font-family: 'PingFang-Regular';
-  src: url('../assets/fonts/PingFang Regular.ttf') format('truetype'),
-  url('../assets/fonts/PingFang Regular.eot') format('embedded-opentype'),
-  url('../assets/fonts/PingFang Regular.woff') format('woff'),
-  url('../assets/fonts//PingFang Regular.svg') format('svg');
+  src: url('../assets/fonts/PingFangRegular.ttf') format('truetype'),
+  url('../assets/fonts/PingFangRegular.eot') format('embedded-opentype'),
+  url('../assets/fonts/PingFangRegular.woff') format('woff'),
+  url('../assets/fonts/PingFangRegular.svg') format('svg');
 }
 //@font-face {
 //  font-family: 'PingFang-Regular';
@@ -151,4 +151,22 @@ body {
     }
   }
 
+}
+
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

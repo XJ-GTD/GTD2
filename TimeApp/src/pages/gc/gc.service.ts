@@ -4,10 +4,9 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {BxTbl} from "../../service/sqlite/tbl/bx.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {UtilService} from "../../service/util-service/util.service";
-import {FsData} from "../../service/pagecom/pgbusi.service";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
-import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
+import {PageDcData} from "../../data.mapping";
 
 @Injectable()
 export class GcService {
@@ -93,15 +92,4 @@ export class GcService {
     //刷新群组表
     await this.userConfig.RefreshFriend();
   }
-}
-
-export class PageDcData {
-
-  gi: string = ""; //关系群组主键ID
-  gn: string = "";//组名
-  gnpy: string = "";//组名拼音
-  gm: string = ""; //备注
-  gc: number = 0; //群组人数
-  fsl: Array<FsData> = new Array<FsData>(); //群组成员
-
 }

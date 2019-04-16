@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
-import {LpService, PageLpData} from "./lp.service";
+import {LpService} from "./lp.service";
 import {UtilService} from "../../service/util-service/util.service";
+import {PageLpData} from "../../data.mapping";
 
 /**
  * Generated class for the 登陆（密码） page.

@@ -6,11 +6,11 @@ import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {ETbl} from "../../service/sqlite/tbl/e.tbl";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
-import {PagePDPro} from "../pd/pd.service";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
 import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
 import {UserConfig} from "../../service/config/user.config";
+import {PagePDPro, PagePlData} from "../../data.mapping";
 
 @Injectable()
 export class PlService {
@@ -228,13 +228,5 @@ export class PlService {
     console.log('---------- PlService getPlan 获取计划结束 ----------------');
     return pld;
   }
-
-}
-
-export class PagePlData {
-
-  xtJh:Array<PagePDPro> = new Array<PagePDPro>(); //本地计划
-
-  zdyJh:Array<PagePDPro> = new Array<PagePDPro>(); //自定义计划列表
 
 }

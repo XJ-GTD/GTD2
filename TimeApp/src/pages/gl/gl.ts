@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
-import {GcService, PageDcData} from "../gc/gc.service";
+import {IonicPage, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
+import {GcService} from "../gc/gc.service";
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 import {UtilService} from "../../service/util-service/util.service";
+import {PageDcData} from "../../data.mapping";
 
 /**
  * Generated class for the 群组列表 page.

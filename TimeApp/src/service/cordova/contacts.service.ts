@@ -6,8 +6,8 @@ import {SqliteExec} from "../util-service/sqlite.exec";
 import {DataConfig} from "../config/data.config";
 import {PersonRestful} from "../restful/personsev";
 import {UserConfig} from "../../service/config/user.config";
-import {FsData} from "../pagecom/pgbusi.service";
 import {BhTbl} from "../sqlite/tbl/bh.tbl";
+import {FsData} from "../../data.mapping";
 
 /**
  * 本地联系人读取

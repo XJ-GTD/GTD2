@@ -4,7 +4,6 @@ import {AiService} from "./ai.service";
 import {UtilService} from "../../../service/util-service/util.service";
 import {
   EmitService,
-  FriendEmData,
   ScdEmData,
   ScdLsEmData,
   SpeechEmData

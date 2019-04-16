@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams, ViewController} from 'ionic-angular';
-import {FsPageData, FsService, PageGroupData} from "./fs.service";
-import {GcService, PageDcData} from "../gc/gc.service";
-import {FsData} from "../../service/pagecom/pgbusi.service";
+import {FsService} from "./fs.service";
+import {GcService} from "../gc/gc.service";
 import {UtilService} from "../../service/util-service/util.service";
+import {FsData, FsPageData, PageDcData} from "../../data.mapping";
 
 /**
  * Generated class for the 群组参与人选择 page.

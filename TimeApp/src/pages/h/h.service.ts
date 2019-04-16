@@ -3,6 +3,7 @@ import * as moment from "moment";
 import {CalendarDay} from "../../components/ion2-calendar";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
+import {HData} from "../../data.mapping";
 
 @Injectable()
 export class HService {
@@ -74,13 +75,4 @@ export class HService {
     return str;
   }
 
-}
-
-export class HData {
-  isShow: boolean = false;
-  showDay: string = "";
-  showDay2: string = "";
-  newmessge: number = 0;
-  things: number = 0;
-  selectDay: CalendarDay;
 }

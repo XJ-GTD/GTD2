@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "./pl.service";
-import {PagePDPro} from "../pd/pd.service";
 import {UtilService} from "../../service/util-service/util.service";
+import {PagePDPro} from "../../data.mapping";
 
 /**
  * Generated class for the PlPage page.
@@ -60,7 +60,7 @@ import {UtilService} from "../../service/util-service/util.service";
                     下载
                   </div>
                   <div *ngIf="option.jtd =='1'">
-                    <img class="img-content-refresh" src="./assets/imgs/sx.png">
+                    <img class="img-content-refresh" src="./assets/imgs/sx.png" />
                   </div>
                 </button>
               </ion-item>

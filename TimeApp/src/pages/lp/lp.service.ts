@@ -7,6 +7,7 @@ import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {WebsocketService} from "../../ws/websocket.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {AlService} from "../al/al.service";
+import {PageLpData} from "../../data.mapping";
 
 @Injectable()
 export class LpService {
@@ -99,9 +100,4 @@ export class LpService {
     })
   }
 
-}
-
-export class PageLpData {
-  mobile: string = "";
-  password: string = "";
 }

@@ -223,12 +223,25 @@ ion-calendar-month {
 
   button.days-btn p {
     font-size: 12px;
-    color: #ffffff;
-    letter-spacing: -1px;
+    color: $fontMasterColor;
+    letter-spacing: 0px;
+    width: 24px;
+    height: 24px;
+    margin: auto;
+    border-radius: 24px;
+    text-align: center;
+    line-height: 22px;
+  }
+
+  button.days-btn .repeatDay{
+    border-width: 1px;
+    border-color: $thirdColor;
+    border-style: solid;
+    background-color: $thirdColor;
   }
 
   button.someting p{
-    color: #ffffff;
+    color: $fontMasterColor;
   }
 
   button.days-btn.on-selected small {

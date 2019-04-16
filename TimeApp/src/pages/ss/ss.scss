@@ -1,24 +1,14 @@
 page-ss {
   background-color: $allBackColor;
-
-  .w-auto {
-    flex: 1;
+  .spinanimation{
+    animation: spin 1s linear infinite;
   }
-
-  .grid {
-    padding: 0;
+  .img-content-refresh{
+    width: 25px;
   }
-
-  .grid .row {
-    height: 100%;
-  }
-
-  .list {
-    width: 100%;
-  }
-
   .list-header, .list-header-md, .list-header-ios {
     border: 0;
+    color: $masterColor;
   }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
@@ -87,3 +77,4 @@ page-ss {
     overflow-y: hidden;
   }
 }
+

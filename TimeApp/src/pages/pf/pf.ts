@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
-import {LsService, PageLsData} from "../ls/ls.service";
+import {LsService} from "../ls/ls.service";
 import {PsService} from "../ps/ps.service";
 import {DataConfig} from "../../service/config/data.config";
+import {PageLsData} from "../../data.mapping";
 
 /**
  * Generated class for the PfPage 忘记密码 page.

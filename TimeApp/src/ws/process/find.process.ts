@@ -7,10 +7,9 @@ import {FindPara} from "../model/find.para";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import * as moment from "moment";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
-import {FsData} from "../../service/pagecom/pgbusi.service";
 import {FsService} from "../../pages/fs/fs.service";
 import {GlService} from "../../pages/gl/gl.service";
-import {PageDcData} from "../../pages/gc/gc.service";
+import {FsData, PageDcData} from "../../data.mapping";
 
 /**
  * 查询联系人和日历

@@ -3,11 +3,11 @@ import {WsContent} from "../model/content.model";
 import {Injectable} from "@angular/core";
 import {ProcesRs} from "../model/proces.rs";
 import {SY} from "../model/ws.enum";
-import {PageY, SsService} from "../../pages/ss/ss.service";
+import {SsService} from "../../pages/ss/ss.service";
 import {Setting, UserConfig} from "../../service/config/user.config";
 import {SettingPara} from "../model/settingpara";
 import {FdService} from "../../pages/fd/fd.service";
-import {FsData} from "../../service/pagecom/pgbusi.service";
+import {FsData, PageY} from "../../data.mapping";
 
 /**
  * 设置
