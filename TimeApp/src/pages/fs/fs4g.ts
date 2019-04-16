@@ -57,6 +57,18 @@ import {UtilService} from "../../service/util-service/util.service";
           </ion-label>
           <ion-checkbox (click)="addsel(g)" [(ngModel)]="g.checked"></ion-checkbox>
         </ion-row>
+                <ion-row *ngFor="let g of pageFsl">
+          <ion-avatar item-start>
+            <img [src]="g.bhiu">
+          </ion-avatar>
+          <ion-label>
+            {{g.rn}}
+            <span>
+                   {{g.rc}}
+                 </span>
+          </ion-label>
+          <ion-checkbox (click)="addsel(g)" [(ngModel)]="g.checked"></ion-checkbox>
+        </ion-row>
       </ion-grid>
     </ion-content>
   `,
