@@ -219,7 +219,7 @@ export class ContactsService {
    *
    * @returns {Promise<FsData>}
    */
-  async updateOneFs(id : string) : Promise<FsData> {
+  async updateOneFs(id : string) {
     let bsqls: Array<string> = new Array<string>();
     let bt = new BTbl();
 
@@ -251,7 +251,7 @@ export class ContactsService {
     
     if (userinfo && userinfo.data) {
       let bh = new BhTbl();
-      bh.pwi = fs.pwi;
+      bh.pwi = exists.pwi;
 
       if (userinfo.data.openid && userinfo.data.openid != '') {
         bt.ui = userinfo.data.openid;
@@ -294,7 +294,7 @@ export class ContactsService {
           bsqls.push(bh.inT());
         }
       } else {
-        bh.bhi = fs.bhi;
+        bh.bhi = exists.bhi;
         // 更新BH数据
         bsqls.push(bh.upT());
       }
