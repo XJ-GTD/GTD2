@@ -30,7 +30,7 @@ import {UtilService} from "../../service/util-service/util.service";
 
       <ion-row style="height: 80%;">
       <ion-avatar item-start style="width: 100%;">
-        <img  class="img-hiu" [src]="fd.hiu">
+        <img  class="img-hiu" [src]="fd.bhiu">
       </ion-avatar>
         <ion-label id="fdname">
           {{fd.ran}}
@@ -63,9 +63,7 @@ export class FdPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FdPage');
-    this.pwi = this.navParams.get('pwi');
-    this.fd.hiu = DataConfig.HUIBASE64;
-    // this.getDetail();
+    this.fd = this.navParams.get('fsData');
   }
 
   ionViewDidEnter(){
@@ -73,10 +71,10 @@ export class FdPage {
   }
 
   getDetail(){
-    this.fdService.get(this.pwi).then(data=>{
+    this.fdService.get(this.fd).then(data=>{
       if(data){
         this.fd = data;
-        if(!this.fd.ran || this.fd.ran == null || this.fd.ran == ''){
+        if(!this.fd.ran || this.fd.ran == ''){
           this.fd.ran = this.fd.rn;
         }
       }

@@ -214,80 +214,70 @@ export class ContactsService {
 
 
   /**
-   * 更新联系人
+   * 更新联系人信息和头像
    * @returns {Promise<void>}
    */
   async updateFs() {
 
-    //手机联系人
-    let btbls: Array<BTbl> = await this.getContacts4Btbl();
-    let map: Map<string, BTbl> = new Map<string, BTbl>();
-    //获取手机联系人头像
-    for (let bt of btbls) {
-      //添加/更新头像表
-      let pred = await this.personRestful.getavatar(bt.rc); //获取头像
-      let hiu = JSON.stringify(pred.data);
-      if (hiu != '') {
-        bt.hiu = pred.data;
-      }
-      map.set(bt.rc, bt);
-    }
-    //当前联系人
-    let fsList: Array<FsData> = UserConfig.friends;
     let bsqls: Array<string> = new Array<string>();
-    if (fsList.length > 0) {
-      for (let fs of fsList) {
-        let bl = map.get(fs.rc);
-        let bhiu = '';
-        //手机联系人是否存在
-        if (bl) {
-          fs.ran = bl.ran;
-          fs.ranpy = this.utilService.chineseToPinYin(bl.ran);
-          if (bl.hiu != null && bl.hiu != '') {
-            bhiu = bl.hiu;
-          }
-          map.delete(fs.rc);
-        } else {
-          bl = new BTbl();
-          let pred = await this.personRestful.getavatar(fs.rc);
-          let hiu = JSON.stringify(pred.data);
-          if (hiu != '') {
-            bhiu = pred.data;
-          }
-          Object.assign(bl, fs);
-          //更新联系人表
-          bsqls.push(bl.upT());
-          let bh = new BhTbl();
-          bh.pwi = fs.pwi;
-          bh.hiu = bhiu;
-          //添加/更新头像表
-          if (fs.bhiu != null) {
-            bsqls.push(bh.upT());
-          } else {
-            bh.bhi = this.utilService.getUuid();
-            bsqls.push(bh.inT());
-          }
 
+    //获取本地参与人
+    let sql = `select gb.*, bh.bhi bhi, bh.hiu bhiu
+               from gtd_b gb
+                      left join gtd_bh bh on bh.pwi = gb.pwi;`;
+
+    let data: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sql);
+    for (let fs of data) {
+      let bt = new BTbl();
+      Object.assign(bt, fs);
+
+      let bh = new BhTbl();
+      bh.pwi = fs.pwi;
+      let hasAvatar : boolean = false;
+      
+      let userinfo = await this.personRestful.get(fs.ui);
+
+      if (userinfo && userinfo.data) {
+        if (userinfo.data.avatarbase64 && userinfo.data.avatarbase64 != '') {
+          bh.hiu = userinfo.data.avatarbase64;
+          hasAvatar = true;
+          bt.rel = 1; // 注册用户
+        } else {
+          bh.hiu = DataConfig.HUIBASE64;
         }
+
+        if (userinfo.data.nickname && userinfo.data.nickname != '') {
+          bt.rn = userinfo.data.nickname;
+          bt.rnpy = this.utilService.chineseToPinYin(userinfo.data.nickname);
+        }
+
+        if (userinfo.data.phoneno && userinfo.data.phoneno != '') {
+          bt.rc = userinfo.data.phoneno;
+        }
+
+        bsqls.push(bt.upT());
       }
-      //添加手机本地联系人
-      if (map.size > 0) {
-        map.forEach((value, key) => {
-          let bt = value;
-          bt.pwi = this.utilService.getUuid();
-          bt.ranpy = this.utilService.chineseToPinYin(bt.ran);
-          bt.hiu = DataConfig.HUIBASE64;
-          bt.rnpy = this.utilService.chineseToPinYin(bt.rn);
-          bt.rel = '0';
-          bsqls.push(bt.inT());
-          let bh = new BhTbl();
-          bh.pwi = bt.pwi;
-          bh.hiu = bt.hiu;
+
+      if (!fs.bhi || fs.bhi == null || fs.bhi == '') {
+        // 注册用户需要加入头像表, 默认头像不入库
+        if (hasAvatar) {
           bh.bhi = this.utilService.getUuid();
+          // 新增BH数据
           bsqls.push(bh.inT());
-        })
+        }
+      } else {
+        bh.bhi = fs.bhi;
+        // 更新BH数据
+        bsqls.push(bh.upT());
       }
-      return await this.sqlExce.batExecSql(bsqls);
+    }
+
+    await this.sqlExce.batExecSql(bsqls);
+
+    // 全部更新完成后刷新
+    let freshData: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sql);
+    for (let fs of freshData) {
+      UserConfig.friends.push(fs);
     }
   }
 
