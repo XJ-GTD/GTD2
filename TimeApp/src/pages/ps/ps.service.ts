@@ -5,6 +5,7 @@ import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {UserConfig} from "../../service/config/user.config";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
+import {PageUData} from "../../data.mapping";
 
 @Injectable()
 export class PsService {
@@ -35,23 +36,21 @@ export class PsService {
   }
 
   //保存用户信息
-  saveUser(pu:any,type:string):Promise<BsModel<any>>{
+  saveUser(pu:PageUData,type:string):Promise<any>{
     return new Promise<BsModel<any>>((resolve, reject) => {
       let bs = new BsModel<any>();
       //保存本地用户信息
       let u = new UTbl();
-      u.ui = pu.user.id;
-      if(type == "name"){
-        u.un = pu.user.name;
-      }else if(type == "both"){
-        u.biy = pu.user.bothday;
-      }else if(type == "ic"){
-        u.ic = pu.user.No == "" ? null :pu.user.No;
-      }else if(type == "sex"){
-        u.us = pu.user.sex;
-      }else if(type == "contact") {
-        u.uct = pu.user.contact == "" ? null : pu.user.contact;
-      }
+      Object.assign(u,pu.user);
+      u.ui = pu.user.id;            //用户ID
+      u.ai = pu.user.aid;           //账户ID
+      u.un = pu.user.name;          //用户名
+      u.hiu = pu.user.avatar;       //用户头像
+      u.biy = pu.user.bothday;      //出生日期
+      u.rn = pu.user.realname;      //真实姓名
+      u.ic = pu.user.No;            //身份证
+      u.us = pu.user.sex;           //性别
+      u.uct = pu.user.contact;      //联系方式
       this.sqlExec.update(u).then(data=>{
 
         let inDataName = {nickname:""};
@@ -79,8 +78,6 @@ export class PsService {
           return this.personRestful.updateself(inDataContact,pu.user.id);
         }
       }).then(data=>{
-        //刷新系统全局用户静态变量
-        //UserConfig.user = pu.user;
         //刷新用户静态变量设置
         this.userConfig.RefreshUTbl();
         resolve(bs);
