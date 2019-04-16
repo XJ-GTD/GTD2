@@ -16,6 +16,7 @@ import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
 import {ContactsService} from "../../service/cordova/contacts.service";
+import {YTbl} from "../../service/sqlite/tbl/y.tbl";
 
 @Injectable()
 export class BrService {
@@ -123,6 +124,19 @@ export class BrService {
       return ret;
     }
 
+    //最后一次备份前置true
+    backupPro.d.commit =true;
+
+    //获取用户偏好
+    let y = new YTbl();
+    backupPro.d.y = await this.sqlexec.getList<YTbl>(y);
+    ret = await this.bacRestful.backup(backupPro);
+    if (backupPro.d.y) backupPro.d.y.length = 0;
+
+    if (ret.code == -99) {
+      return ret;
+    }
+
     ret.code = 0;
     ret.message="备份完成";
     return ret;
@@ -161,6 +175,8 @@ export class BrService {
     // recoverPro.d.rdn=[];
     bsModel = await this.bacRestful.recover(recoverPro);
 
+    let sqls=new Array<string>();
+
     //插入特殊日历（插入前删除）
     let spsql ="delete from gtd_sp where si in " +
       " (select si from gtd_c where ji not in (select ji from gtd_j_h where jt ='1')) ";
@@ -169,8 +185,10 @@ export class BrService {
     for (let j = 0, len = bsModel.data.sp.length; j < len; j++) {
       let spi = new SpTbl();
       Object.assign(spi,bsModel.data.sp[j]) ;
-      await this.sqlexec.save(spi);
+      sqls.push(spi.inT());
+      await this.sqlexec.batExecSql(sqls);
     }
+    sqls.length = 0;
 
     //插入本地日历（插入前删除）
     let csql = "delete from gtd_c where ji not in (select ji from gtd_j_h where jt ='1'  ) ";
@@ -179,9 +197,10 @@ export class BrService {
     for (let j = 0, len = bsModel.data.c.length; j < len; j++) {
       let ci = new CTbl();
       Object.assign(ci,bsModel.data.c[j]) ;
-      await this.sqlexec.save(ci);
+      sqls.push(ci.inT());
+      await this.sqlexec.batExecSql(sqls);
     }
-
+    sqls.length = 0;
 
     //插入提醒数据（插入前删除）
     let e = new ETbl();
@@ -190,8 +209,10 @@ export class BrService {
     for (let j = 0, len = bsModel.data.e.length; j < len; j++) {
       let ei = new ETbl();
       Object.assign(ei,bsModel.data.e[j]) ;
-      await this.sqlexec.save(ei);
+      sqls.push(ei.inT());
+      await this.sqlexec.batExecSql(sqls);
     }
+    sqls.length = 0;
 
     //插入日程参与人信息（插入前删除）
     let d = new DTbl();
@@ -200,8 +221,10 @@ export class BrService {
     for (let j = 0, len = bsModel.data.d.length; j < len; j++) {
       let di = new DTbl();
       Object.assign(di,bsModel.data.d[j]) ;
-      await this.sqlexec.save(di);
+      sqls.push(di.inT());
+      await this.sqlexec.batExecSql(sqls);
     }
+    sqls.length = 0;
 
     //插入联系人信息（插入前删除）
     let b = new BTbl();
@@ -210,8 +233,11 @@ export class BrService {
     for (let j = 0, len = bsModel.data.b.length; j < len; j++) {
       let bi = new BTbl();
       Object.assign(bi,bsModel.data.b[j]) ;
-      await this.sqlexec.save(bi);
+      sqls.push(bi.inT());
+      await this.sqlexec.batExecSql(sqls);
     }
+    sqls.length = 0;
+
     //插入群组信息（插入前删除）
     let g = new GTbl();
     await this.sqlexec.delete(g);
@@ -219,8 +245,11 @@ export class BrService {
     for (let j = 0, len = bsModel.data.g.length; j < len; j++) {
       let gi = new GTbl();
       Object.assign(gi,bsModel.data.g[j]) ;
-      await this.sqlexec.save(gi);
+      sqls.push(gi.inT());
+      await this.sqlexec.batExecSql(sqls);
     }
+    sqls.length = 0;
+
     //插入本地参与人（插入前删除 ）
     let bx = new BxTbl();
     await this.sqlexec.delete(bx);
@@ -228,8 +257,11 @@ export class BrService {
     for (let j = 0, len = bsModel.data.bx.length; j < len; j++) {
       let bxi = new BxTbl();
       Object.assign(bxi,bsModel.data.bx[j]) ;
-      await this.sqlexec.save(bxi);
+      sqls.push(bxi.inT());
+      await this.sqlexec.batExecSql(sqls);
     }
+    sqls.length = 0;
+
     //插入本地计划（插入前删除）
     let jh = new JhTbl();
     let jhsql = "delete from gtd_j_h where jt <> '1' ";//本地系统计划不删除
@@ -238,11 +270,23 @@ export class BrService {
     for (let j = 0, len = bsModel.data.jh.length; j < len; j++) {
       let jhi = new JhTbl();
       Object.assign(jhi,bsModel.data.jh[j]) ;
-
-      await this.sqlexec.save(jhi);
-
+      sqls.push(jhi.inT());
+      await this.sqlexec.batExecSql(sqls);
     }
+    sqls.length = 0;
 
+
+    //插入用户偏好（插入前删除）
+    let y = new YTbl();
+    await this.sqlexec.delete(y);
+
+    for (let j = 0, len = bsModel.data.y.length; j < len; j++) {
+      let yi = new YTbl();
+      Object.assign(yi,bsModel.data.y[j]) ;
+      sqls.push(yi.inT());
+      await this.sqlexec.batExecSql(sqls);
+    }
+    sqls.length = 0;
 
     //联系人的更新信息操作
     await this.contactsServ.updateFs();

@@ -13,8 +13,7 @@ import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {OutSharePro} from "./agdsev";
 import {CTbl} from "../sqlite/tbl/c.tbl";
 import {BxTbl} from "../sqlite/tbl/bx.tbl";
-import {STbl} from "../sqlite/tbl/s.tbl";
-import {UTbl} from "../sqlite/tbl/u.tbl";
+import {YTbl} from "../sqlite/tbl/y.tbl";
 
 
 
@@ -127,7 +126,8 @@ export class BackupProSub{
   bx:Array<BxTbl> = new Array<BxTbl>();
   //获取本地计划
   jh:Array<JhTbl> = new Array<JhTbl>();
-
+  //获取用户偏好
+  y:Array<YTbl> = new Array<YTbl>();
 
   //分批备份最后一次设为true
   commit :boolean =false;
@@ -162,7 +162,7 @@ export class RecoverProSub{
 
   bts :Number=0;
   //恢复表的名称
-  rdn:Array<string> = ["c","sp","e","d","b","g","bx","jh"] ;
+  rdn:Array<string> = ["c","sp","e","d","b","g","bx","jh","y"] ;
 }
 //恢复出参
 export class OutRecoverPro{
@@ -184,7 +184,5 @@ export class OutRecoverPro{
   //获取本地计划
   jh:Array<JhTbl> = new Array<JhTbl>();
   //用户偏好
-  u:Array<UTbl> = new Array<UTbl>();
-  //系统表（测试用）
-  s:Array<STbl> = new Array<STbl>();
+  y:Array<YTbl> = new Array<YTbl>();
 }
