@@ -222,6 +222,7 @@ export class ContactsService {
   async updateOneFs(id : string) {
     let bsqls: Array<string> = new Array<string>();
     let bt = new BTbl();
+    let bh = new BhTbl();
 
     let exists : FsData = null;
 
@@ -251,7 +252,6 @@ export class ContactsService {
     let hasAvatar : boolean = false;
     
     if (userinfo && userinfo.data) {
-      let bh = new BhTbl();
       bh.pwi = exists.pwi;
 
       // 用户OpenId
@@ -307,6 +307,26 @@ export class ContactsService {
 
     await this.sqlExce.batExecSql(bsqls);
 
+    // 返回更新后参数
+    if (!exists) {
+      exists = new FsData();
+    }
+
+    exists.pwi      = bt.pwi;     //主键
+    exists.ran      = bt.ran;     //联系人别称
+    exists.ranpy    = bt.ranpy;   //联系人别称拼音
+    exists.hiu      = bt.hiu;     // 联系人头像
+    exists.rn       = bt.rn;      // 联系人名称
+    exists.rnpy     = bt.rnpy;    //联系人名称拼音
+    exists.rc       = bt.rc;      //联系人联系方式
+    exists.rel      = bt.rel;     //系类型 1是个人，2是群，0未注册用户
+    exists.ui       = bt.ui;      //数据归属人ID
+    exists.bhi      = bh.bhi;      //头像表ID 用于判断是否有头像记录
+    exists.bhiu     = bh.hiu;        //base64图片
+    exists.pi       = bt.pi;      //日程参与人表ID
+    exists.si       = bt.si;      //日程事件ID
+    exists.isbla    = bt.isbla;   //默认非黑名单
+    
     return exists;
   }
   
