@@ -165,7 +165,7 @@ export class UserConfig {
     //获取本地群列表
     let sql = 'select * from gtd_g;';
 
-    //UserConfig.groups.splice(0, UserConfig.groups.length - 1);
+    UserConfig.groups.splice(0, UserConfig.groups.length - 1);
     let dcl: Array<PageDcData> = await this.sqlliteExec.getExtList<PageDcData>(sql)
     if (dcl.length > 0) {
       //和单群人数
@@ -181,9 +181,9 @@ export class UserConfig {
         }
         dc.gc = dc.fsl.length;
         dc.gm = DataConfig.QZ_HUIBASE64;
+        UserConfig.groups.push(dc);
       }
     }
-    UserConfig.groups = dcl;
     return;
   }
 
