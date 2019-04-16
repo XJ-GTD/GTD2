@@ -12,22 +12,30 @@ import {SpTbl} from "../sqlite/tbl/sp.tbl";
 import {DTbl} from "../sqlite/tbl/d.tbl";
 import * as moment from "moment";
 import {DataConfig} from "../config/data.config";
+import {UserConfig} from "../config/user.config";
 
 @Injectable()
 export class PgBusiService {
-  constructor(private sqlExce: SqliteExec, private util: UtilService, private agdRest: AgdRestful) {
+  constructor(private sqlExce: SqliteExec, private util: UtilService, private agdRest: AgdRestful,
+              private userConfig :UserConfig) {
   }
 
   //获取日程详情
   //TODO 完善方法， 传入所属ID 查询改日程的全部信息 ，主日程 特殊日程 发起人信息 共享人信息， 闹铃信息 计划信息
-  async get(si: string){
+  async get(si: string,sr?:string){
     let bs = new BsModel<ScdData>();
     //获取本地日程
 
     let scdData = new ScdData();
 
     let ctbl = new CTbl();
-    ctbl.si = si;
+    if (si !=""){
+      ctbl.si = si;
+    }
+    if (sr && sr != ""){
+      ctbl.sr = sr;
+    }
+
     ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
     Object.assign(scdData, ctbl);
 
@@ -37,11 +45,52 @@ export class PgBusiService {
     jh = await this.sqlExce.getOne<JhTbl>(jh);
     Object.assign(scdData.p, jh);
 
-    //获取提醒时间
-    let e = new ETbl();
-    e.si = si;
-    e = await this.sqlExce.getOne<ETbl>(e);
-    Object.assign(scdData.r, e);
+    //获取特殊日程子表及提醒对象
+    let spsql = "select sp.spi, " +
+      "sp.si," +
+      "sp.spn," +
+      "sp.sd," +
+      "sp.st," +
+      "sp.ed," +
+      "sp.et," +
+      "sp.ji," +
+      "sp.bz," +
+      "sp.sta," +
+      "sp.wtt," +
+      "sp.itx ,e.wi ewi,e.si esi,e.st est ,e.wd ewd,e.wt ewt,e.wtt ewtt " +
+      " from gtd_sp sp inner join gtd_e e on sp.spi = e.wi and " +
+      "sp.si = e.si and sp.si = '"+ ctbl.si +"' ";
+    let lst:Array<any> =new Array<any>();
+    lst = await this.sqlExce.getExtList<any>(spsql);
+    for (let j = 0, len = lst.length; j < len; j++) {
+      let sp : SpecScdData = new SpecScdData();
+      Object.assign(sp,lst[j]);
+
+      sp.remindData.wi  = lst[j].ewi;
+      sp.remindData.si  = lst[j].esi;
+      sp.remindData.st  = lst[j].est;
+      sp.remindData.wd  = lst[j].ewd;
+      sp.remindData.wt  = lst[j].ewt;
+      sp.remindData.wtt  = lst[j].ewtt;
+      scdData.specScds.set(sp.sd,sp);
+    }
+
+    //发起人信息
+    let b:BTbl = new  BTbl();
+    let bsql = "select * from gtd_b where ui = '"+  ctbl.ui +"'" ;
+    b = await this.sqlExce.getExtOne<BTbl>(bsql);
+    if (b) {
+      Object.assign(scdData.fs, this.userConfig.GetOneBTbl(b.pwi));
+    }
+    //共享人信息
+    let dlst:Array<DTbl>= new Array<DTbl>();
+    let dlstsql ="select * from gtd_d where si = '"+ ctbl.si +"' ";
+    dlst = await this.sqlExce.getExtList<DTbl>(dlstsql);
+    for (let j = 0, len = dlst.length; j < len; j++) {
+      let fs : FsData = new FsData();
+      Object.assign(fs,this.userConfig.GetOneBTbl(dlst[j].ai));
+      scdData.fss.push(fs);
+    }
 
     bs.code = 0;
     bs.data = scdData;
@@ -197,6 +246,10 @@ export class PgBusiService {
       sp.sd = moment(rc.sd).add(i,add).format("YYYY/MM/DD");
       sp.st = rc.st;
       sp.tx = rc.tx;
+      //新消息提醒默认加到第一条上
+      if(i==0 && rc.gs=='1'){
+        sp.itx = 1;
+      }
       sql.push(sp.inT());
       if(sp.tx>'0'){
         sql.push(this.getTxEtbl(rc,sp).rpT());
@@ -621,6 +674,7 @@ export class SpecScdData {
   tx: string = ""//提醒方式
   wtt: number;//时间戳
   gs:string;//归属
+  remindData:RemindData = new RemindData();//对应提醒时间
 }
 
 //参与人
@@ -639,6 +693,13 @@ export class FsData {
   si: string=""; //日程事件ID
   isbla:boolean=false; //默认非黑名单
   //TODO 头像返回字段，空的时候返回系统默认头像 判断 this.hiu
+  getFaceImg():string{
+    if (this.bhiu == ""){
+      return DataConfig.HUIBASE64;
+    }else{
+      return this.bhiu;
+    }
+  }
 }
 
 
