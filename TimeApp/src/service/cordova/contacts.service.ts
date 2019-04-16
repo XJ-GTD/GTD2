@@ -70,6 +70,8 @@ export class ContactsService {
         desiredFields: ["displayName", "phoneNumbers", 'name']
       }).then(data => {
         let contact:any;
+        let uniquePhones: Array<string> = new Array<string>();
+        
         for (contact of data) {
           if (contact._objectInstance) contact = contact._objectInstance;
           for (let i = 0; contact.phoneNumbers != null && i < contact.phoneNumbers.length; i++) {
@@ -77,9 +79,10 @@ export class ContactsService {
             contact.phoneNumbers[i].value = contact.phoneNumbers[i].value.replace(/\s/g, '')
               .replace('-', '').replace('+86', '').replace('0086', '');
             if (!this.utilService.checkPhone(contact.phoneNumbers[i].value)) {
-              break;
+              continue;
             } else {
-
+              if (uniquePhones.includes(contact.phoneNumbers[i].value)) continue;
+              
               let btbl: BTbl = new BTbl();
 
               //联系人别称
@@ -87,6 +90,7 @@ export class ContactsService {
               //名称
               btbl.rn = contact.displayName;
               btbl.rc = contact.phoneNumbers[i].value;
+              uniquePhones.push(contact.phoneNumbers[i].value);
               btbls.push(btbl);
             }
           }
