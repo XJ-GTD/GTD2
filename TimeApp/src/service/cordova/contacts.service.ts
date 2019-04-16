@@ -81,7 +81,7 @@ export class ContactsService {
             if (!this.utilService.checkPhone(contact.phoneNumbers[i].value)) {
               continue;
             } else {
-              if (uniquePhones.includes(contact.phoneNumbers[i].value)) continue;
+              if (uniquePhones.indexOf(contact.phoneNumbers[i].value) > -1) continue;
               
               let btbl: BTbl = new BTbl();
 
