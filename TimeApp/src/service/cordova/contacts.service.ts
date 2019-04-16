@@ -275,10 +275,7 @@ export class ContactsService {
     await this.sqlExce.batExecSql(bsqls);
 
     // 全部更新完成后刷新
-    let freshData: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sql);
-    for (let fs of freshData) {
-      UserConfig.friends.push(fs);
-    }
+    UserConfig.RefreshFriend();
   }
 
 }
