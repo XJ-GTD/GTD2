@@ -222,8 +222,9 @@ export class ContactsService {
   async updateOneFs(id : string) {
     let bsqls: Array<string> = new Array<string>();
     let bt = new BTbl();
+    let bh = new BhTbl();
 
-    let exists : FsData = null; // 该方法需要能够适应使用ui和rc查询是否存在BTbl记录
+    let exists : FsData = null;
 
     //获取本地参与人
     let sql = 'select gb.*, bh.bhi bhi, bh.hiu bhiu '
@@ -231,7 +232,7 @@ export class ContactsService {
             + '       left join gtd_bh bh on bh.pwi = gb.pwi '
             + ' where gb.ui = "' + id + '"'
             + ' or gb.rc = "' + id + '";';
-
+    // 能够适应使用ui和rc查询是否存在BTbl记录
     let data: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
     
     if (data.length > 0) {
@@ -241,6 +242,7 @@ export class ContactsService {
     if (exists) {
       Object.assign(bt, exists);
     } else {
+      // 不存在联系人，本地联系人中不存在共享日程的发送人
       bt.pwi = this.utilService.getUuid();
       bt.hiu = "";
       bt.rel = '0';
@@ -250,13 +252,14 @@ export class ContactsService {
     let hasAvatar : boolean = false;
     
     if (userinfo && userinfo.data) {
-      let bh = new BhTbl();
       bh.pwi = exists.pwi;
 
+      // 用户OpenId
       if (userinfo.data.openid && userinfo.data.openid != '') {
         bt.ui = userinfo.data.openid;
       }
 
+      // 用户头像
       if (userinfo.data.avatarbase64 && userinfo.data.avatarbase64 != '') {
         bh.hiu = userinfo.data.avatarbase64;
         hasAvatar = true;
@@ -265,6 +268,7 @@ export class ContactsService {
         bh.hiu = DataConfig.HUIBASE64;
       }
 
+      // 用户姓名
       if (userinfo.data.nickname && userinfo.data.nickname != '') {
         // 不存在本地联系人
         if (!exists) {
@@ -276,6 +280,7 @@ export class ContactsService {
         bt.rnpy = this.utilService.chineseToPinYin(userinfo.data.nickname);
       }
 
+      // 用户手机号
       if (userinfo.data.phoneno && userinfo.data.phoneno != '') {
         bt.rc = userinfo.data.phoneno;
       }
@@ -302,6 +307,23 @@ export class ContactsService {
 
     await this.sqlExce.batExecSql(bsqls);
 
+    // 返回更新后参数
+    if (!exists) {
+      exists = new FsData();
+    }
+
+    exists.pwi      = bt.pwi;     //主键
+    exists.ran      = bt.ran;     //联系人别称
+    exists.ranpy    = bt.ranpy;   //联系人别称拼音
+    exists.hiu      = bt.hiu;     // 联系人头像
+    exists.rn       = bt.rn;      // 联系人名称
+    exists.rnpy     = bt.rnpy;    //联系人名称拼音
+    exists.rc       = bt.rc;      //联系人联系方式
+    exists.rel      = bt.rel;     //系类型 1是个人，2是群，0未注册用户
+    exists.ui       = bt.ui;      //数据归属人ID
+    exists.bhi      = bh.bhi;      //头像表ID 用于判断是否有头像记录
+    exists.bhiu     = bh.hiu;        //base64图片
+    
     return exists;
   }
   
