@@ -30,7 +30,7 @@ import {PageUData} from "../../data.mapping";
   </ion-header> 
   <ion-content padding class="page-backgroud-color"> 
     <ion-item class="no-border">
-    <ion-input type="text" style="font-size: 23px;" [(ngModel)]="uo.user.name" (ionBlur)="save('name')"></ion-input>
+    <ion-input type="text" style="font-size: 23px;" [(ngModel)]="uo.user.name" (ionBlur)="save()"></ion-input>
     <ion-avatar item-end>
       <img [src]="avatar" style="width: 60px;height: 60px">
     </ion-avatar>
@@ -49,11 +49,11 @@ import {PageUData} from "../../data.mapping";
       </button>
       <button ion-item>
         <ion-label>身份证</ion-label>
-        <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.No" (ionBlur)="save('ic')"></ion-input>
+        <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.No" (ionBlur)="save()"></ion-input>
       </button>
       <button ion-item>
         <ion-label>联系方式</ion-label>
-        <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.contact" (ionBlur)="save('contact')"></ion-input>
+        <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.contact" (ionBlur)="save()"></ion-input>
       </button>
       
     </ion-list>
@@ -100,11 +100,14 @@ export class PsPage {
   }
 
   ionViewDidEnter(){
+    this.getData();
+  }
+
+  getData(){
     this.psService.findPerson(UserConfig.user.id).then(data=>{
       this.uo.user = UserConfig.user;
 
       this.avatar = this.uo.user.avatar;
-
       if (this.uo.user.sex != undefined && this.uo.user.sex != '') {
         if( this.uo.user.sex == "0"){
           this.sex = "未知";
@@ -112,7 +115,6 @@ export class PsPage {
           this.sex = this.uo.user.sex == "1" ? "男":"女";
         }
       }
-
       this.birthday = this.uo.user.bothday.replace(new RegExp('/','g'),'-');
     });
   }
@@ -133,22 +135,28 @@ export class PsPage {
     }
   }
 
-  save(type){
+  save(){
+    let inData:any;
     let isUpd = false;
     if(this.olduo.user.sex != this.uo.user.sex){
       isUpd = true;
+      inData = {sex:this.uo.user.sex};
     }
     if(this.olduo.user.bothday != this.uo.user.bothday){
       isUpd = true;
+      inData = {birthday:this.uo.user.bothday};
     }
     if(this.olduo.user.contact != this.uo.user.contact){
       isUpd = true;
+      inData = {contact:this.uo.user.contact};
     }
     if(this.olduo.user.name != this.uo.user.name){
       isUpd = true;
+      inData = {nickname:this.uo.user.name};
     }
     if(this.olduo.user.No != this.uo.user.No){
       isUpd = true;
+      inData = {ic:this.uo.user.No};
     }
 
     if(this.uo.user.name == ""){
@@ -158,10 +166,10 @@ export class PsPage {
     }
 
     if(isUpd){
-      this.psService.saveUser(this.uo,type).then(data=>{
+      this.psService.saveUser(this.uo.user.id,inData).then(data=>{
         if(data.code ==0){
           //this.util.popoverStart('保存成功！');
-
+          this.getData();
           Object.assign(this.olduo.user,this.uo.user);  //替换旧数据
         }else{
           this.util.popoverStart(data.message);
@@ -177,7 +185,7 @@ export class PsPage {
     if (el && el.length==3){
       this.birthday = el[0].textContent + "-" +el[1].textContent +"-" +el[2].textContent;
       this.uo.user.bothday = this.birthday.replace(new RegExp('-','g'),'/');
-      this.save("both");
+      this.save();
     }
 
   }
@@ -190,7 +198,7 @@ export class PsPage {
           this.uo.user.sex = '1';
           console.log("男:" + this.uo.user.sex);
           this.sex = this.uo.user.sex == "1" ? "男" : "女";
-          this.save("sex");
+          this.save();
         }
       }, {
         text: '女',
@@ -198,7 +206,7 @@ export class PsPage {
           this.uo.user.sex = '2';
           console.log("女:" + this.uo.user.sex);
           this.sex = this.uo.user.sex == "1" ? "男" : "女";
-          this.save("sex");
+          this.save();
         }
       }]
     });
