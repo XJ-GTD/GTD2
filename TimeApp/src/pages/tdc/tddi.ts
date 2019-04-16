@@ -35,9 +35,9 @@ import {Keyboard} from "@ionic-native/keyboard";
         <ion-row class="avatar-set">
           <ion-chip>
             <ion-avatar>
-              <img class="img-set" [src]="fsshow.bhiu">
+              <img class="img-set" [src]="scd.fs.getFaceImg()">
             </ion-avatar>
-            <ion-label>{{fsshow.rn}}</ion-label>
+            <ion-label>{{scd.fs.rn}}</ion-label>
           </ion-chip>
         </ion-row>
         <ion-row>
@@ -163,7 +163,7 @@ export class TddiPage {
   //画面数据
   scd: ScdData = new ScdData();
   b: boolean = true;
-  fsshow: FsData = new FsData();
+  //fsshow: FsData = new FsData();
 
   reptshow: string = "";
 
@@ -343,8 +343,6 @@ export class TddiPage {
   save() {
 
     //提醒内容设置
-    // TODO:所属用户ID到底应该设置什么?
-    // this.scd.ui = UserConfig.account.id;
 
     //消息设为已读
     this.scd.du = "1";
