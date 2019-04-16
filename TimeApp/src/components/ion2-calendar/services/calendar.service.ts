@@ -278,8 +278,12 @@ export class CalendarService {
     let _start = new Date(month.original.time);
     let _startMonth = moment(moment(_start).format("YYYY/MM/") + "1");
     let _endMonth = moment(moment(_start).format("YYYY/MM/") + _startMonth.daysInMonth());
+    //select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt  from gtd_sp sp left join gtd_c gc on gc.si = sp.si group by sp.sd
+    //let sql:string = "select sd,count(*) scds,sum(itx) news from gtd_sp where sd>='" + moment(_startMonth).format("YYYY/MM/DD")+ "' and sd<='" +  moment(_endMonth).format("YYYY/MM/DD") + "' group by sd";
 
-    let sql:string = "select sd,count(*) scds,sum(itx) news from gtd_sp where sd>='" + moment(_startMonth).format("YYYY/MM/DD")+ "' and sd<='" +  moment(_endMonth).format("YYYY/MM/DD") + "' group by sd";
+    let sql:string = "select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt from gtd_sp sp left join gtd_c gc on gc.si = sp.si " +
+      "where sp.sd>='" + moment(_startMonth).format("YYYY/MM/DD")+ "' and sp.sd<='" +  moment(_endMonth).format("YYYY/MM/DD") + "' group by sp.sd";
+
 
     let local = await this.readlocal.findEventRc('',_startMonth,_endMonth);
     this.sqlite.getExtList<MonthData>(sql).then(data=>{
@@ -300,6 +304,10 @@ export class CalendarService {
       for (let d of data){
         let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
 
+        //判断是否存在非重复类型  or 判断是否存在重复日期为开始日期
+        if(d.minrt == '0' || d.csd ==d.sd){
+
+        }
         calendarDay.things = d.scds;
         calendarDay.hassometing = d.scds < 3;
         calendarDay.busysometing = d.scds >= 3;
@@ -317,4 +325,6 @@ class MonthData{
  sd:string;
  scds:number;
  news:number;
+ minrt:string; //最小重复类型：0:无1:天2:周3:月4:年
+ csd : string;//日程开始时间
 }
