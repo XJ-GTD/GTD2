@@ -323,9 +323,6 @@ export class ContactsService {
     exists.ui       = bt.ui;      //数据归属人ID
     exists.bhi      = bh.bhi;      //头像表ID 用于判断是否有头像记录
     exists.bhiu     = bh.hiu;        //base64图片
-    exists.pi       = bt.pi;      //日程参与人表ID
-    exists.si       = bt.si;      //日程事件ID
-    exists.isbla    = bt.isbla;   //默认非黑名单
     
     return exists;
   }
