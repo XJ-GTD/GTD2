@@ -36,58 +36,13 @@ export class PsService {
   }
 
   //保存用户信息
-  saveUser(pu:PageUData,type:string):Promise<any>{
+  saveUser(id:string,inData:any):Promise<any>{
     return new Promise<BsModel<any>>((resolve, reject) => {
-      let bs = new BsModel<any>();
-      //保存本地用户信息
-      let u = new UTbl();
-      Object.assign(u,pu.user);
-      u.ui = pu.user.id;            //用户ID
-      u.ai = pu.user.aid;           //账户ID
-      u.un = pu.user.name;          //用户名
-      u.hiu = pu.user.avatar;       //用户头像
-      u.biy = pu.user.bothday;      //出生日期
-      u.rn = pu.user.realname;      //真实姓名
-      u.ic = pu.user.No;            //身份证
-      u.us = pu.user.sex;           //性别
-      u.uct = pu.user.contact;      //联系方式
-      this.sqlExec.update(u).then(data=>{
-
-        let inDataName = {nickname:""};
-        let inDataSex = {sex:""};
-        let inDataBoth = {birthday:""};
-        let inDataContact = {contact:""};
-        let inDataIC = {ic:""};
-
-        //restFul保存用户信息
-        //return this.personRestful.updateself(pu,pu.user.id);
-        if(type == "name"){
-          inDataName.nickname = pu.user.name;
-          return this.personRestful.updateself(inDataName,pu.user.id);
-        }else if(type == "both"){
-          inDataBoth.birthday = pu.user.bothday;
-          return this.personRestful.updateself(inDataBoth,pu.user.id);
-        }else if(type == "ic"){
-          inDataIC.ic = pu.user.No;
-          return this.personRestful.updateself(inDataIC,pu.user.id);
-        }else if(type == "sex"){
-          inDataSex.sex = pu.user.sex;
-          return this.personRestful.updateself(inDataSex,pu.user.id);
-        }else if(type == "contact") {
-          inDataContact.contact = pu.user.contact;
-          return this.personRestful.updateself(inDataContact,pu.user.id);
-        }
-      }).then(data=>{
-        //刷新用户静态变量设置
-        this.userConfig.RefreshUTbl();
-        resolve(bs);
-      }).catch(e=>{
-        bs.code = -99;
-        bs.message = e.message;
-        resolve(bs);
-      })
-
-
+      this.personRestful.updateself(inData,id).then(data=>{
+        resolve(data);
+      }).catch(error=>{
+        resolve(error);
+      });
     })
   }
 
