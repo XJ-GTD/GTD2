@@ -199,7 +199,7 @@ export class UserConfig {
 
   GetOneBTbl(id: string): FsData {
     return UserConfig.friends.find(value => {
-      return value.pwi == id;
+      return value.pwi == id || value.ui == id;
     })
   }
 }
