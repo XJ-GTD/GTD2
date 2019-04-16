@@ -212,7 +212,19 @@ export class ContactsService {
   //
   // }
 
+  /**
+   * 更新单个联系人信息和头像
+   * @returns {Promise<FsData>}
+   */
+  async updateOneFs(openid : string) Promise<FsData> {
+    let bt = new BTbl();
 
+    let exists : FsData = UserConfig.GetOneBTbl(openid);
+    
+    let userinfo = await this.personRestful.get(openid);
+
+  }
+  
   /**
    * 更新联系人信息和头像
    * @returns {Promise<void>}
@@ -226,7 +238,7 @@ export class ContactsService {
                from gtd_b gb
                       left join gtd_bh bh on bh.pwi = gb.pwi;`;
 
-    let data: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sql);
+    let data: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
     for (let fs of data) {
       let bt = new BTbl();
       Object.assign(bt, fs);
@@ -247,7 +259,7 @@ export class ContactsService {
         if (userinfo.data.avatarbase64 && userinfo.data.avatarbase64 != '') {
           bh.hiu = userinfo.data.avatarbase64;
           hasAvatar = true;
-          bt.rel = 1; // 注册用户
+          bt.rel = '1'; // 注册用户
         } else {
           bh.hiu = DataConfig.HUIBASE64;
         }
