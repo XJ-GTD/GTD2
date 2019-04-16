@@ -342,7 +342,9 @@ export class PgBusiService {
   async updateDetail(scd:ScdData){
 
     //特殊表操作
-    let bs :BsModel<ScdData> = await this.get(scd.si);
+    let oldc : CTbl =new CTbl();
+    oldc.si = scd.si;
+    oldc = await this.sqlExce.getOne<CTbl>(oldc);
 
     //更新日程
     let c = new CTbl();
@@ -351,7 +353,7 @@ export class PgBusiService {
     c.du = "1";
     await  this.sqlExce.update(c);
 
-    if (bs.data.sd != c.sd || bs.data.rt != c.rt){
+    if (oldc.sd != c.sd || oldc.rt != c.rt){
       //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
       let sptbl = new SpTbl();
       sptbl.si = c.si;
@@ -367,7 +369,7 @@ export class PgBusiService {
     }else{
       //如果只是修改重复时间，则更新重复子表所有时间
       //如果修改了提醒时间，则更新提醒表所有时间
-      if (bs.data.st != scd.st || bs.data.tx != scd.tx){
+      if (oldc.st != c.st || oldc.tx != c.tx){
         let sq = "update gtd_sp set st = '"+ c.st +"' where si = '"+ c.si +"'";
         await this.sqlExce.execSql(sq);
 
