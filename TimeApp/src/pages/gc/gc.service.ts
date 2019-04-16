@@ -47,7 +47,7 @@ export class GcService {
         }).then(data=>{
           console.log('---------- GcService save 编辑群名称(添加群成员) 成功');
           bs.data = data;
-          this.userConfig.RefreshGTbl();
+          this.userConfig.RefreshFriend();
           resolve(bs);
         }).catch(e=>{
           console.error('---------- GcService save 编辑群名称(添加群成员) 错误:'+ JSON.stringify(e));
@@ -65,7 +65,7 @@ export class GcService {
         this.sqlExce.save(gc).then(data=>{
           console.log('---------- GcService save 新建群 成功');
           bs.data = data;
-          this.userConfig.RefreshGTbl();
+          this.userConfig.RefreshFriend();
           resolve(bs);
         }).catch(e=>{
           console.error('---------- GcService save 新建群 错误:'+ JSON.stringify(e));
@@ -96,7 +96,7 @@ export class GcService {
           console.log('---------- GcService deleteBx 删除群成员 成功');
           bs.data = data;
           //刷新群组表
-          return this.userConfig.RefreshGTbl();
+          return this.userConfig.RefreshFriend();
         }).then(data=>{
           resolve(bs);
         }).catch(e=>{
@@ -127,7 +127,7 @@ export class GcService {
         console.log('---------- GcService delete 删除群 成功');
         bs.data = data;
         //刷新群组表
-        return this.userConfig.RefreshGTbl();
+        return this.userConfig.RefreshFriend();
       }).then(data=>{
         resolve(bs);
       }).catch(e=>{

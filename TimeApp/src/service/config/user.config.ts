@@ -175,6 +175,9 @@ export class UserConfig {
         let fsl: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sqlbx);
         for (let fs of fsl) {
           let fsd: FsData = this.GetOneBTbl(fs.pwi);
+          if (!dc.fsl) {
+            dc.fsl = new Array<FsData>(); //群组成员
+          }
           if (fsd) {
             dc.fsl.push(fsd);
           }

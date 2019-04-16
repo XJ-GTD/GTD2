@@ -57,7 +57,7 @@ export class FdService {
 
         if(fd.bhiu != null && fd.bhiu !=''){
           fd.hiu = fd.bhiu;
-          this.userConfig.RefreshGTbl();
+          this.userConfig.RefreshFriend();
         }else{
           fd.hiu=DataConfig.HUIBASE64;
         }
