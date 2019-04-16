@@ -18,7 +18,8 @@ import {ContactsService} from "../cordova/contacts.service";
 @Injectable()
 export class PgBusiService {
   constructor(private sqlExce: SqliteExec, private util: UtilService, private agdRest: AgdRestful,
-              private userConfig :UserConfig,private contactsServ :ContactsService) {
+              private contactsServ : ContactsService ,private userConfig :UserConfig ,
+              ) {
   }
 
 
