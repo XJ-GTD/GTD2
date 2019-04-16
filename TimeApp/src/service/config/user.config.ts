@@ -145,7 +145,7 @@ export class UserConfig {
     //获取本地参与人
     let sql = `select gb.*,bh.hiu bhiu
                from gtd_b gb
-                      left join gtd_bh bh on bh.pwi = gb.ui;`;
+                      left join gtd_bh bh on bh.pwi = gb.pwi;`;
     UserConfig.friends.splice(0, UserConfig.friends.length);
 
     let data: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sql);
