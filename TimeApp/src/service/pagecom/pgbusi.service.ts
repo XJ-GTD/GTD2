@@ -286,42 +286,24 @@ export class PgBusiService {
 
   /**
    * 保存更新指定特殊表提醒方式
-   * @param {CTbl} rc 日程详情
-   * @param {string} tsId 特殊表Id
+   * @param {CTbl} r 日程详情
    * @returns {Promise<Promise<any> | number>}
    */
-  private saveOrUpdTx(rc:CTbl,sp:SpTbl):Promise<any>{
-    let et = new ETbl();//提醒表
-    et.si = rc.si;
-    //let result = await this.sqlExce.delete(et);
-    if(rc.tx != '0'){
-      et.wi = sp.spi;
-      et.st = rc.sn;
-      let time = 10; //分钟
-      if(rc.tx == "2"){
-        time = 30;
-      }else if(rc.tx == "3"){
-        time = 60;
-      }else if(rc.tx == "4"){
-        time = 240;
-      }else if(rc.tx == "5"){
-        time = 1440;
+  async saveOrUpdTx(c:CTbl){
+    let condi : SpTbl = new SpTbl();
+    condi.si = c.si;
+    let sps :Array<SpTbl> = new Array<SpTbl>();
+    let sqls :Array<string> = new Array<string>();
+    sps = await this.sqlExce.getList<SpTbl>(condi);
+    if(c.tx != '0'){
+      for (let j = 0, len = sps.length; j < len; j++) {
+        let sp : SpTbl = new SpTbl();
+        sp = sps[j];
+        sqls.push(this.getTxEtbl(c, sp).rpT());
       }
-      let date ;
-      if (rc.st != "99:99"){
-        date = moment(sp.sd+ " " + rc.st).subtract(time,'m').format("YYYY/MM/DD HH:mm");
-
-      }else{
-        date = moment(sp.sd+ " " + "08:00").subtract(time,'m').format("YYYY/MM/DD HH:mm");
-
-      }
-      et.wd=moment(date).format("YYYY/MM/DD");
-      et.wt = moment(date).format("HH:mm");
-
-      console.log('-------- 插入提醒表 --------');
-      return this.sqlExce.replaceT(et);
     }
-    return null;
+    return this.sqlExce.batExecSql(sqls);
+
   }
   /**
    * 日程校验
@@ -384,13 +366,8 @@ export class PgBusiService {
         let sq = "update gtd_sp set st = '"+ c.st +"' where si = '"+ c.si +"'";
         await this.sqlExce.execSql(sq);
 
-        let sp : SpTbl = new SpTbl();
-        sp.si = c.si;
-        let sps :Array<SpTbl> = new Array<SpTbl>();
-        sps = await this.sqlExce.getList<SpTbl>(sp);
-        for (let j = 0, len = sps.length; j < len; j++) {
-          await this.saveOrUpdTx(c,sps[j]);
-        }
+        //保存提醒表
+        await this.saveOrUpdTx(c);
       }
 
     }
