@@ -148,8 +148,8 @@ export class Fs4cPage {
   }
 
   getContacts() {
-    this.pageGl.splice(0, this.pageGl.length - 1);
-    this.pageFsl.splice(0, this.pageFsl.length - 1);
+    this.pageGl.splice(0, this.pageGl.length);
+    this.pageFsl.splice(0, this.pageFsl.length);
     let gl = this.glService.getGroups(this.tel);
     let fsl = this.fsService.getfriend(this.tel);
     gl.forEach((value) => {

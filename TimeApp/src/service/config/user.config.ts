@@ -135,7 +135,7 @@ export class UserConfig {
 
   public async RefreshFriend() {
     await this.RefreshBTbl();
-    await this.RefreshGTbl;
+    await this.RefreshGTbl();
     return;
 
   }
@@ -145,15 +145,13 @@ export class UserConfig {
     //获取本地参与人
     let sql = `select gb.*,bh.hiu bhiu
                from gtd_b gb
-                      left join gtd_bh bh on bh.pwi = gb.ui;`;
-    UserConfig.friends.splice(0, UserConfig.friends.length - 1);
+                      left join gtd_bh bh on bh.pwi = gb.pwi;`;
+    UserConfig.friends.splice(0, UserConfig.friends.length);
 
     let data: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sql);
     for (let fs of data) {
-      if (!fs.bhiu || fs.bhiu == null || fs.bhiu == '') {
-        fs.hiu = DataConfig.HUIBASE64;
-      } else {
-        fs.hiu = fs.bhiu;
+      if (!fs.bhiu || fs.bhiu == '') {
+        fs.bhiu = DataConfig.HUIBASE64;
       }
       UserConfig.friends.push(fs);
     }
@@ -165,7 +163,7 @@ export class UserConfig {
     //获取本地群列表
     let sql = 'select * from gtd_g;';
 
-    UserConfig.groups.splice(0, UserConfig.groups.length - 1);
+    UserConfig.groups.splice(0, UserConfig.groups.length);
     let dcl: Array<PageDcData> = await this.sqlliteExec.getExtList<PageDcData>(sql)
     if (dcl.length > 0) {
       //和单群人数
@@ -201,7 +199,7 @@ export class UserConfig {
 
   GetOneBTbl(id: string): FsData {
     return UserConfig.friends.find(value => {
-      return value.pwi == id;
+      return value.pwi == id || value.ui == id;
     })
   }
 }
