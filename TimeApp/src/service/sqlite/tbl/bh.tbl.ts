@@ -42,8 +42,11 @@ export class BhTbl implements ITbl{
 
   sloT():string {
     let sq='select * from gtd_bh where 1=1 ';
-    if(this.pwi != null && this.pwi!=""){
+    if(this.bhi != null && this.bhi!=""){
       sq = sq + 'and  bhi ="' + this.bhi +'"';
+    }
+    if(this.pwi != null && this.pwi!=""){
+      sq = sq + 'and  pwi ="' + this.pwi +'"';
     }
     sq = sq + ';';
     return sq;

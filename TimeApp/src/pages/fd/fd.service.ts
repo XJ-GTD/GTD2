@@ -6,7 +6,6 @@ import {UtilService} from "../../service/util-service/util.service";
 import {BlaReq, BlaRestful} from "../../service/restful/blasev";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {FsData} from "../../service/pagecom/pgbusi.service";
-import {DataConfig} from "../../service/config/data.config";
 import {BhTbl} from "../../service/sqlite/tbl/bh.tbl";
 import {UserConfig} from "../../service/config/user.config";
 
@@ -24,109 +23,66 @@ export class FdService {
    * @param {String} id
    * @returns {Promise<FsData>}
    */
-  get(id:string):Promise<FsData>{
+  get(fd:FsData):Promise<FsData>{
 
     return new Promise<FsData>((resolve, reject)=>{
-      let fd:FsData = new FsData();
       let bTbl = new BTbl();
-      let sql = 'select gb.*,bh.hiu bhiu from gtd_b gb left join gtd_bh bh on bh.pwi = gb.ui where gb.pwi ="'+id+'"';
+      bTbl.pwi = fd.pwi;
       //获取本地参与人信息
-      this.sqlite.getExtList<FsData>(sql).then(data=>{
-        if(data != null && data.length>0){
-          Object.assign(fd,data[0]);
-          //rest 获取头像
-          //TODO 判断URL是否一致 ，不一致更新头像 ，更新联系人信息 非注册用户不能拉入黑名单
-          return this.personRes.getavatar(fd.rc);
+      this.sqlite.getOne(bTbl).then(data=>{
+        Object.assign(fd,data);
+        //rest 获取用户信息（头像地址）
+        return this.personRes.get(fd.rc);
+      }).then(data=>{
+        //更新本地联系人信息
+        Object.assign(bTbl,fd);
+        if(data && data.code == 0 && data.data && data.data.phoneno == fd.rc){
+          bTbl.rel = "1";   // 已注册
+          bTbl.rn = data.data.nickname;
+          fd.rn =  data.data.nickname;
+          if(bTbl.rn && bTbl.rn != ''){
+            bTbl.rnpy = this.util.chineseToPinYin(bTbl.rn);
+            fd.rnpy = this.util.chineseToPinYin(bTbl.rn);
+          }
+
+          if(bTbl.hiu != data.data.avatar){
+            bTbl.hiu = data.data.avatar;
+            //rest 获取头像
+            //TODO 判断URL是否一致 ，不一致更新头像 ，更新联系人信息 非注册用户不能拉入黑名单
+            return this.personRes.getavatar(fd.rc);
+          }
+        }else{
+          bTbl.rel = "0";   // 未注册用户
         }
       }).then(data=>{
-        let str:string = '';
-        if(data && data.code == 0){
-          str = data.data.base64;
-          fd.bhiu = str;
-          if(fd.bhiu == null || fd.bhiu == ''){
-            let bh = new BhTbl();
-            bh.bhi=this.util.getUuid();
-            bh.pwi=fd.pwi;
-            bh.hiu = str;
-            this.sqlite.save(bh);
-          }else{
-            let sql = 'update gtd_bh set hiu ="' + str + '" where pwi = "'+ fd.pwi +'";';
-            this.sqlite.execSql(sql);
-          }
-        }
 
-        if(fd.bhiu != null && fd.bhiu !=''){
-          fd.hiu = fd.bhiu;
-          this.userConfig.RefreshFriend();
-        }else{
-          fd.hiu=DataConfig.HUIBASE64;
-        }
+         if(data && data.code == 0){
+           fd.bhiu = data.data.base64;
+           let bhTbl = new BhTbl();
+           bhTbl.pwi = fd.pwi;
+           this.sqlite.getOne(bhTbl).then(data=>{
+             Object.assign(bhTbl,data);
+             if(bhTbl.bhi == ''){
+               bhTbl.bhi=this.util.getUuid();
+               bhTbl.hiu = fd.bhiu;
+               this.sqlite.save(bhTbl);
+             }else {
+               bhTbl.hiu = fd.bhiu;
+               this.sqlite.update(bhTbl);
+             }
+           });
+         }
+
+      }).then(data=>{
+        return this.sqlite.update(bTbl);  // 修改联系人表
+      }).then(data=>{
+        this.userConfig.RefreshOneBTbl(fd); //刷新群组表
 
         resolve(fd);
       }).catch(error=>{
         resolve(error);
       })
-
-      /*let fd:FsData = new FsData();
-      let bTbl = new BTbl();
-      let sql = 'select gb.*,bh.hiu bhiu from gtd_b gb left join gtd_bh bh on bh.pwi = gb.ui where gb.pwi ="'+id+'"';
-      //获取本地参与人信息
-      this.sqlite.getExtList<FsData>(sql).then(data=>{
-        if(data != null && data.length>0){
-          Object.assign(fd,data[0]);
-          //rest获取用户信息（包括头像）
-          //return this.personRes.get(fd.rc);
-        }
-      }).then(data=>{
-        //更新本地联系人信息
-        // Object.assign(bTbl,fd);
-        // if(data && data.code == 0 && data.data && data.data.phoneno == fd.rc){
-        //   //bTbl.hiu = data.data.avatar;
-        //   //bTbl.rc = data.data.phoneno;
-        //   bTbl.rel = "1";   // 已注册
-        //   bTbl.rn = data.data.nickname;
-        //   fd.rn =  data.data.nickname;
-        //   if(bTbl.rn && bTbl.rn != null && bTbl.rn != ''){
-        //     bTbl.rnpy = this.util.chineseToPinYin(bTbl.rn);
-        //     fd.rnpy = this.util.chineseToPinYin(bTbl.rn);
-        //   }
-        // }else{
-        //   bTbl.rel = "0";   // 未注册用户
-        // }
-        // return this.sqlite.replaceT(bTbl)
-      }).then(data=>{
-        //rest获取用户头像
-        this.personRes.getavatar(fd.rc).then(data=>{
-          let str:string = '';
-          if(data && data.code == 0){
-            str = data.data.base64;
-            fd.bhiu = str;
-            if(fd.bhiu == null || fd.bhiu == ''){
-              let bh = new BhTbl();
-              bh.bhi=this.util.getUuid();
-              bh.pwi=fd.pwi;
-              bh.hiu = str;
-              this.sqlite.save(bh);
-            }else{
-              let sql = 'update gtd_bh set hiu ="' + str + '" where pwi = "'+ fd.pwi +'";';
-              this.sqlite.execSql(sql);
-            }
-          }
-        })
-      }).then(data=>{
-        if(fd.bhiu != null && fd.bhiu !=''){
-          fd.hiu = fd.bhiu;
-          console.log("update")
-        }else{
-          fd.hiu=DataConfig.HUIBASE64;
-        }
-        //console.log("======== FdService参与人详情:"+JSON.stringify(fd));
-        resolve(fd);
-      }).catch(error=>{
-        resolve(fd);
-      })*/
     })
-
   }
 
   getBlack(phoneno:string):Promise<boolean> {

@@ -97,7 +97,7 @@ export class GlPage {
   delGroup(g:PageDcData){
     //删除群
     this.util.alterStart("2",()=>{
-      this.gcService.delete(g.gi).then( async data=>{
+      this.gcService.delete(g.gi).then( data=>{
         this.getGroups();
       }).catch(error=>{
       })
