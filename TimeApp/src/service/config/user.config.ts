@@ -150,10 +150,8 @@ export class UserConfig {
 
     let data: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sql);
     for (let fs of data) {
-      if (!fs.bhiu || fs.bhiu == null || fs.bhiu == '') {
-        fs.hiu = DataConfig.HUIBASE64;
-      } else {
-        fs.hiu = fs.bhiu;
+      if (!fs.bhiu || fs.bhiu == '') {
+        fs.bhiu = DataConfig.HUIBASE64;
       }
       UserConfig.friends.push(fs);
     }
