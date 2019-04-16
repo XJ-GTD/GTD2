@@ -118,7 +118,7 @@ export class ContactsService {
             bt.rnpy = this.utilService.chineseToPinYin(bt.rn);
             bt.rc = b.rc;
             bt.rel = '0';
-            bt.ui = bt.pwi;
+            bt.ui = '';
             bsqls.push(bt.inT());
           }
         }
@@ -213,20 +213,65 @@ export class ContactsService {
   // }
 
   /**
+   *
    * 更新单个联系人信息和头像
+   * id: OpenId或者手机号
+   *
    * @returns {Promise<FsData>}
    */
-  async updateOneFs(openid : string) Promise<FsData> {
+  async updateOneFs(id : string) Promise<FsData> {
     let bt = new BTbl();
 
-    let exists : FsData = UserConfig.GetOneBTbl(openid);
-    
-    let userinfo = await this.personRestful.get(openid);
+    let exists : FsData = UserConfig.GetOneBTbl(id); // 该方法需要能够适应使用ui和rc查询是否存在BTbl记录
 
+    if (exists) {
+      Object.assign(bt, exists);
+    } else {
+      bt.pwi = this.utilService.getUuid();
+      bt.hiu = "";
+      bt.rel = '0';
+    }
+    
+    let userinfo = await this.personRestful.get(id);
+    let hasAvatar : boolean = false;
+    
+    if (userinfo && userinfo.data) {
+      if (userinfo.data.openid && userinfo.data.openid != '') {
+        bt.ui = userinfo.data.openid;
+      }
+
+      if (userinfo.data.avatarbase64 && userinfo.data.avatarbase64 != '') {
+        bh.hiu = userinfo.data.avatarbase64;
+        hasAvatar = true;
+        bt.rel = '1'; // 注册用户
+      } else {
+        bh.hiu = DataConfig.HUIBASE64;
+      }
+
+      if (userinfo.data.nickname && userinfo.data.nickname != '') {
+        if (!exists) {
+          bt.ran = userinfo.data.nickname;
+          bt.ranpy = this.utilService.chineseToPinYin(userinfo.data.nickname);
+        }
+        
+        bt.rn = userinfo.data.nickname;
+        bt.rnpy = this.utilService.chineseToPinYin(userinfo.data.nickname);
+      }
+
+      if (userinfo.data.phoneno && userinfo.data.phoneno != '') {
+        bt.rc = userinfo.data.phoneno;
+      }
+
+      bsqls.push(bt.upT());
+    }
+      
+    return exists;
   }
   
   /**
+   *
    * 更新联系人信息和头像
+   *
    * @returns {Promise<void>}
    */
   async updateFs() {
