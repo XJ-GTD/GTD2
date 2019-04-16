@@ -18,7 +18,7 @@ export class ContactsService {
 
   static contactTel: Array<string> = new Array<string>();
 
-  constructor(private contacts: Contacts, private utilService: UtilService,
+  constructor(private contacts: Contacts, private utilService: UtilService, private userConfig: UserConfig,
               private sqlExce: SqliteExec, private personRestful: PersonRestful) {
 
   }
@@ -219,7 +219,7 @@ export class ContactsService {
    *
    * @returns {Promise<FsData>}
    */
-  async updateOneFs(id : string) Promise<FsData> {
+  async updateOneFs(id : string) : Promise<FsData> {
     let bsqls: Array<string> = new Array<string>();
     let bt = new BTbl();
 
@@ -266,6 +266,7 @@ export class ContactsService {
       }
 
       if (userinfo.data.nickname && userinfo.data.nickname != '') {
+        // 不存在本地联系人
         if (!exists) {
           bt.ran = userinfo.data.nickname;
           bt.ranpy = this.utilService.chineseToPinYin(userinfo.data.nickname);
@@ -374,7 +375,7 @@ export class ContactsService {
     await this.sqlExce.batExecSql(bsqls);
 
     // 全部更新完成后刷新
-    UserConfig.RefreshFriend();
+    this.userConfig.RefreshFriend();
   }
 
 }
