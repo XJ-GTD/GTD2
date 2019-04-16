@@ -13,11 +13,12 @@ import {DTbl} from "../sqlite/tbl/d.tbl";
 import * as moment from "moment";
 import {DataConfig} from "../config/data.config";
 import {UserConfig} from "../config/user.config";
+import {ContactsService} from "../cordova/contacts.service";
 
 @Injectable()
 export class PgBusiService {
   constructor(private sqlExce: SqliteExec, private util: UtilService, private agdRest: AgdRestful,
-              private userConfig :UserConfig) {
+              private userConfig :UserConfig,private contactsServ :ContactsService) {
   }
 
 
@@ -469,8 +470,6 @@ export class PgBusiService {
       //修改特殊事件表
       await this.updateDetail(scdData);
 
-
-
     }
 
     //获取当前日程详情及相关内容
@@ -484,9 +483,9 @@ export class PgBusiService {
       ret.data.fs = fs;
     }else{
       //从服务器获取对象，放入本地库，刷新缓存
-
+      fs = await this.contactsServ.updateOneFs(newc.ui);
     }
-
+    ret.data.fs = fs;
     return ret.data;
 
   }
