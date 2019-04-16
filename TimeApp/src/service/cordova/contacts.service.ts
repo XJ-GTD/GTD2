@@ -252,7 +252,10 @@ export class ContactsService {
     let hasAvatar : boolean = false;
     
     if (userinfo && userinfo.data) {
-      bh.pwi = exists.pwi;
+      if (exists)
+        bh.pwi = exists.pwi;
+      else
+        bh.pwi = bt.pwi;
 
       // 用户OpenId
       if (userinfo.data.openid && userinfo.data.openid != '') {
@@ -306,7 +309,10 @@ export class ContactsService {
     }
 
     await this.sqlExce.batExecSql(bsqls);
-
+    
+    // 全部更新完成后刷新
+    this.userConfig.RefreshFriend();
+    
     // 返回更新后参数
     if (!exists) {
       exists = new FsData();
@@ -321,9 +327,9 @@ export class ContactsService {
     exists.rc       = bt.rc;      //联系人联系方式
     exists.rel      = bt.rel;     //系类型 1是个人，2是群，0未注册用户
     exists.ui       = bt.ui;      //数据归属人ID
-    exists.bhi      = bh.bhi;      //头像表ID 用于判断是否有头像记录
-    exists.bhiu     = bh.hiu;        //base64图片
-    
+    exists.bhi      = bh.bhi;     //头像表ID 用于判断是否有头像记录
+    exists.bhiu     = bh.hiu;     //base64图片
+
     return exists;
   }
   
