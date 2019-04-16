@@ -1,5 +1,5 @@
 import {Component, ViewChildren, QueryList} from '@angular/core';
-import {ActionSheetController, DateTime, IonicPage, NavController} from 'ionic-angular';
+import {ActionSheetController, DateTime, IonicPage, NavController, ViewController} from 'ionic-angular';
 import {PsService} from "./ps.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
@@ -38,23 +38,23 @@ import {PageUData} from "../../data.mapping";
     
     <ion-list>
       
-      <button ion-item (click)="selectSex()">
+      <ion-item class="bg-right-img" (click)="selectSex()">
         <ion-label>性别</ion-label>
         <ion-label  item-end text-end >{{sex}}</ion-label>
-      </button>
-      <button ion-item>
+      </ion-item>
+      <ion-item class="bg-right-img">
         <ion-label>生日</ion-label>
         <ion-datetime displayFormat="YYYY-MM-DD" item-end text-end [(ngModel)]="birthday"
                       min="1949-01-01" max="2039-12-31"  (ionCancel)="getDtPickerSel($event)"></ion-datetime>
-      </button>
-      <button ion-item>
+      </ion-item>
+      <ion-item class="bg-right-img">
         <ion-label>身份证</ion-label>
         <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.No" (ionBlur)="save()"></ion-input>
-      </button>
-      <button ion-item>
+      </ion-item>
+      <ion-item class="bg-right-img">
         <ion-label>联系方式</ion-label>
-        <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.contact" (ionBlur)="save()"></ion-input>
-      </button>
+        <ion-input type="tel" text-end [(ngModel)]="uo.user.contact" (ionBlur)="save()"></ion-input>
+      </ion-item>
       
     </ion-list>
   </ion-content>`,
@@ -75,6 +75,7 @@ export class PsPage {
   constructor(public navCtrl: NavController,
               private psService:PsService,
               private actionSheetController: ActionSheetController,
+              public viewCtrl: ViewController,
               private util: UtilService) {
   }
 
@@ -120,7 +121,8 @@ export class PsPage {
   }
 
   goBack() {
-    this.navCtrl.pop();
+    //this.navCtrl.pop();
+    this.viewCtrl.dismiss();
   }
 
   ionViewWillLeave() {

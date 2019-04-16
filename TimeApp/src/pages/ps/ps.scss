@@ -53,6 +53,14 @@ page-ps {
     height: 60px;
   }
 
+  .bg-right-img {
+    background-image: url("../../assets/imgs/xlr.png");
+    background-repeat: no-repeat;
+    background-position: right calc(14px + env(safe-area-inset-right)) center;
+    background-size: 14px 14px;
+    padding-right: 32px;
+  }
+
   ion-list{
     padding-top: 50px;
   }
