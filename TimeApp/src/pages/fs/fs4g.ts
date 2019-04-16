@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import { NavController, NavParams, ViewController} from 'ionic-angular';
+import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {FsPageData, FsService, PageGroupData} from "./fs.service";
 import {GcService, PageDcData} from "../gc/gc.service";
 import {FsData} from "../../service/pagecom/pgbusi.service";
@@ -57,35 +57,24 @@ import {UtilService} from "../../service/util-service/util.service";
           </ion-label>
           <ion-checkbox (click)="addsel(g)" [(ngModel)]="g.checked"></ion-checkbox>
         </ion-row>
-                <ion-row *ngFor="let g of pageFsl">
-          <ion-avatar item-start>
-            <img [src]="g.bhiu">
-          </ion-avatar>
-          <ion-label>
-            {{g.rn}}
-            <span>
-                   {{g.rc}}
-                 </span>
-          </ion-label>
-          <ion-checkbox (click)="addsel(g)" [(ngModel)]="g.checked"></ion-checkbox>
-        </ion-row>
       </ion-grid>
     </ion-content>
   `,
 })
 export class Fs4gPage {
-  tel:any;//手机号
+  tel: any;//手机号
   pageFsl: Array<FsPageData> = new Array<FsPageData>();
   selFsl: Array<FsData> = new Array<FsData>();
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private fsService:FsService,
+              private fsService: FsService,
               public viewCtrl: ViewController,
-              private util : UtilService,
-              private gsService : GcService) {
+              private util: UtilService,
+              private gsService: GcService) {
   }
 
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     this.getContacts();
   }
 
@@ -98,10 +87,10 @@ export class Fs4gPage {
     this.checkedSet();
   }
 
-  save(){
+  save() {
     let list = this.selFsl;
     if (list.length > 0) {
-      let dc:PageDcData = this.navParams.get('tpara');
+      let dc: PageDcData = this.navParams.get('tpara');
       dc.fsl = list;
       this.gsService.save(dc).then(data => {
         if (data.code == 0) {
@@ -114,7 +103,7 @@ export class Fs4gPage {
 
   }
 
-  addsel(fs:any){
+  addsel(fs: any) {
     if (fs.checked) {
       this.selFsl.push(fs);
     } else {
@@ -130,7 +119,7 @@ export class Fs4gPage {
   }
 
   getContacts() {
-    this.pageFsl.splice(0, this.pageFsl.length - 1);
+    this.pageFsl.splice(0, this.pageFsl.length);
     let fsl = this.fsService.getfriend(this.tel);
     fsl.forEach((value) => {
       let fs: FsPageData = new FsPageData();
