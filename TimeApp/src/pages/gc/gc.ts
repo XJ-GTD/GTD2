@@ -108,7 +108,7 @@ export class GcPage {
   delete(g:FsData) {
     //删除群成员
     this.util.alterStart("2",()=>{
-      this.gcService.deleteBx(this.dc.gi,g.pwi).then(async data=>{
+      this.gcService.deleteBx(this.dc.gi,g.pwi).then(data=>{
         this.getData();
       })
     });
@@ -124,7 +124,7 @@ export class GcPage {
    * 人员详情
    */
   toMemberInfo(g:FsData){
-    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{pwi:g.pwi});
+    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{fsData:g});
     modal.onDidDismiss((data)=>{
       console.log(JSON.stringify(data));
       this.getData();

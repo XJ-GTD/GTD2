@@ -134,7 +134,7 @@ import {Keyboard} from "@ionic-native/keyboard";
         </ion-row>
         <ion-row justify-content-left>
           <div *ngFor="let fs of scd.fss;">
-            <div><img class ="img-set" [src]="fs.getFaceImg()"></div>
+            <div><img class ="img-set" [src]="fs.bhiu"></div>
             <div class ="img-rn">{{fs.ran}}</div>
           </div>
         </ion-row>
