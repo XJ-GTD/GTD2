@@ -102,6 +102,15 @@ export class PgBusiService {
     return bs;
   }
 
+  /**
+   * 未读消息更新已读状态
+   * @param {string} si
+   */
+  updateMsg(si:string){
+    let sql = 'update gtd_sp set itx = 0 where si="'+si+'"';
+    this.sqlExce.execSql(sql);
+  }
+
 //删除日程 type：1 删除当前以后所有 ，2 删除所有
   async delete(rcId:string,type :string,d:string){
     let agdPro:AgdPro = new AgdPro();

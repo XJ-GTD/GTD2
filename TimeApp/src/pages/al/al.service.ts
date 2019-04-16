@@ -119,6 +119,9 @@ export class AlService {
 
       await this.contactsService.asyncPhoneContacts();
 
+      //异步获取联系人信息
+      this.contactsService.updateFs();
+
       alData.text = "系统初始化完成";
       resolve(alData);
     })

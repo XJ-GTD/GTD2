@@ -24,7 +24,7 @@ import {FsData} from "../../data.mapping";
     </ion-toolbar>
   </ion-header>
 
-  <ion-content padding>
+  <ion-content>
     <ion-grid  style="text-align:center; height: 100%;">
 
       <ion-row style="height: 80%;">
@@ -40,7 +40,7 @@ import {FsData} from "../../data.mapping";
           {{fd.rc}}
         </ion-label>
       </ion-row>
-      <ion-buttons  style="border-top: 1px solid #871428;">
+      <ion-buttons  style="border-top: 1px solid #50b4b4;">
         <button ion-button  icon-only (click)="black()">
           {{buttonText}}
         </button>

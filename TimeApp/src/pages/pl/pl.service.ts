@@ -26,6 +26,7 @@ export class PlService {
     console.log('---------- PlService downloadPlan 清除本地旧计划开始 ----------------');
     // 删除本地旧计划日程关联
     let dctbl:CTbl =new CTbl();
+    let sqls:Array<string> = new Array<string>();
     dctbl.ji = pid;
     let dctbls = await this.sqlExec.getList<CTbl>(dctbl);//获取旧计划管理日程
     if(dctbls.length>0) {
@@ -33,17 +34,18 @@ export class PlService {
         //提醒删除
         let detbl: ETbl = new ETbl();
         detbl.si = jhc.si;
-        await this.sqlExec.delete(detbl);
+        sqls.push(detbl.dT());
         //日程参与人删除
         let ddtbl: DTbl = new DTbl();
         ddtbl.si = jhc.si;
-        await this.sqlExec.delete(ddtbl);
+        sqls.push(ddtbl.dT());
       }
 
       // 删除日程附件表
       let desp = new SpTbl();
       desp.ji = pid;
-      await this.sqlExec.delete(desp);
+      sqls.push(desp.dT());
+
     }
     //计划关联日程删除
     await this.sqlExec.delete(dctbl);
@@ -67,8 +69,7 @@ export class PlService {
       sjh.jg = br.data.pn.pd;
       sjh.jc = br.data.pn.pm;
       sjh.jt = "1";
-
-      await this.sqlExec.update(sjh);
+      sqls.push(sjh.upT());
       console.log('---------- PlService downloadPlan 新计划插入计划表 ----------------');
       //日程表
       if(br.data.pa.length>0) {
@@ -88,7 +89,7 @@ export class PlService {
           ctbl.gs = "2";//归属
 
           //保存日程表数据
-          await this.sqlExec.save(ctbl);
+          sqls.push(ctbl.inT());
 
           let sp = new SpTbl();
           sp.spi = this.util.getUuid();
@@ -102,16 +103,16 @@ export class PlService {
           sp.bz = ctbl.bz;
 
           //保存日程表数据
-          await this.sqlExec.save(sp);
+          sqls.push(sp.inT());
         }
 
-        bs.data = br.data.pa.length;
-        console.log('---------- PlService downloadPlan 新计划插入日程表结束 ----------------');
-      }
-    }else{
-      console.log('---------- PlService downloadPlan 系统计划无数据 ----------------');
-    }
 
+      }
+    }
+    let count:number = await this.sqlExec.batExecSql(sqls);
+
+    bs.data = count;
+    console.log('---------- PlService downloadPlan 新计划插入日程表结束 ----------------');
     bs.code = 0;
     return bs;
   }
