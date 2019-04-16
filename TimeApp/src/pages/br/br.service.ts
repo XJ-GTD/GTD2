@@ -184,8 +184,8 @@ export class BrService {
       let spi = new SpTbl();
       Object.assign(spi,bsModel.data.sp[j]) ;
       sqls.push(spi.inT());
-      await this.sqlexec.batExecSql(sqls);
     }
+    await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;
 
     //插入本地日历（插入前删除）
@@ -196,8 +196,8 @@ export class BrService {
       let ci = new CTbl();
       Object.assign(ci,bsModel.data.c[j]) ;
       sqls.push(ci.inT());
-      await this.sqlexec.batExecSql(sqls);
     }
+    await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;
 
     //插入提醒数据（插入前删除）
@@ -208,8 +208,8 @@ export class BrService {
       let ei = new ETbl();
       Object.assign(ei,bsModel.data.e[j]) ;
       sqls.push(ei.inT());
-      await this.sqlexec.batExecSql(sqls);
     }
+    await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;
 
     //插入日程参与人信息（插入前删除）
@@ -220,8 +220,8 @@ export class BrService {
       let di = new DTbl();
       Object.assign(di,bsModel.data.d[j]) ;
       sqls.push(di.inT());
-      await this.sqlexec.batExecSql(sqls);
     }
+    await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;
 
     //插入联系人信息（插入前删除）
@@ -232,8 +232,8 @@ export class BrService {
       let bi = new BTbl();
       Object.assign(bi,bsModel.data.b[j]) ;
       sqls.push(bi.inT());
-      await this.sqlexec.batExecSql(sqls);
     }
+    await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;
 
     //插入群组信息（插入前删除）
@@ -244,8 +244,8 @@ export class BrService {
       let gi = new GTbl();
       Object.assign(gi,bsModel.data.g[j]) ;
       sqls.push(gi.inT());
-      await this.sqlexec.batExecSql(sqls);
     }
+    await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;
 
     //插入本地参与人（插入前删除 ）
@@ -256,8 +256,8 @@ export class BrService {
       let bxi = new BxTbl();
       Object.assign(bxi,bsModel.data.bx[j]) ;
       sqls.push(bxi.inT());
-      await this.sqlexec.batExecSql(sqls);
     }
+    await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;
 
     //插入本地计划（插入前删除）
@@ -269,8 +269,8 @@ export class BrService {
       let jhi = new JhTbl();
       Object.assign(jhi,bsModel.data.jh[j]) ;
       sqls.push(jhi.inT());
-      await this.sqlexec.batExecSql(sqls);
     }
+    await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;
 
 
@@ -282,8 +282,8 @@ export class BrService {
       let yi = new YTbl();
       Object.assign(yi,bsModel.data.y[j]) ;
       sqls.push(yi.inT());
-      await this.sqlexec.batExecSql(sqls);
     }
+    await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;
 
     //联系人的更新信息操作
