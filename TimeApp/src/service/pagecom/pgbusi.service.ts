@@ -462,6 +462,12 @@ export class PgBusiService {
 
       //添加特殊事件表
       await this.saveSp(newc);
+
+      //保存受邀人日程到服务器
+      let a = new AgdPro();
+      this.setAdgPro(a,newc);
+      await this.agdRest.save(a);
+
     }else{
       //更新日程表
       this.setCtbl(newc,bs.data);
