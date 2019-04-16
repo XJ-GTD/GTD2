@@ -83,12 +83,8 @@ export class PgBusiService {
     }
 
     //发起人信息
-    let b:BTbl = new  BTbl();
-    let bsql = "select * from gtd_b where ui = '"+  ctbl.ui +"'" ;
-    b = await this.sqlExce.getExtOne<BTbl>(bsql);
-    if (b) {
-      Object.assign(scdData.fs, this.userConfig.GetOneBTbl(b.pwi));
-    }
+    Object.assign(scdData.fs, this.userConfig.GetOneBTbl(ctbl.ui));
+
     //共享人信息
     let dlst:Array<DTbl>= new Array<DTbl>();
     let dlstsql ="select * from gtd_d where si = '"+ ctbl.si +"' ";
@@ -432,14 +428,14 @@ export class PgBusiService {
   }
 
   //响应MQ消息，从服务器获取最新日程
-  async pullAgd(si : string) {
+  async pullAgd(sr : string) {
     let agd = new AgdPro();
-    agd.ai = si;
+    agd.ai = sr;
     let bs = new BsModel<AgdPro>();
     bs = await this.agdRest.get(agd);
 
     let c = new CTbl();
-    c.sr = si;
+    c.sr = sr;
     c = await this.sqlExce.getOne<CTbl>(c);
     let newc = new CTbl();
     if (c == null){
@@ -448,7 +444,7 @@ export class PgBusiService {
       //设置本地日程ID
       newc.si = this.util.getUuid();
       //设置关联日程ID
-      newc.sr = si;
+      newc.sr = sr;
       await this.sqlExce.save(newc);
 
       //添加特殊事件表
@@ -459,7 +455,7 @@ export class PgBusiService {
       //设置本地日程ID
       newc.si = c.si;
       //设置关联日程ID
-      newc.sr = si;
+      newc.sr = sr;
       //本地日程的备注和提醒不被更新
       newc.bz = c.bz;
       newc.tx = c.tx;
@@ -475,13 +471,21 @@ export class PgBusiService {
 
     }
 
-    //TODO 联系存在判断 不存在获取更新 ，刷新本地缓存
+    //获取当前日程详情及相关内容
+    let ret = new BsModel<ScdData>();
+    ret = await this.get("",sr);
 
+    //刷新联系人，联系人存在判断 不存在获取更新 ，刷新本地缓存
+    let fs :FsData = new FsData();
+    fs = this.userConfig.GetOneBTbl(newc.ui);
+    if (fs){
+      ret.data.fs = fs;
+    }else{
+      //从服务器获取对象，放入本地库，刷新缓存
 
-    bs.data.rai = si;
-    bs.data.ai = newc.si;
+    }
 
-    return bs.data;
+    return ret.data;
 
   }
 
