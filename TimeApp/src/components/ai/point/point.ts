@@ -3,6 +3,7 @@ import {IonicPage} from 'ionic-angular';
 import {UtilService} from "../../../service/util-service/util.service";
 import {AssistantService} from "../../../service/cordova/assistant.service";
 import {InputComponent} from "../input/input";
+import {EmitService} from "../../../service/util-service/emit.service";
 
 /**
  * Generated class for the Hb01Page page.
@@ -56,24 +57,42 @@ export class PointComponent {
 
   speed: number = 0.0004;
 
-  constructor(private utilService: UtilService, private assistantService: AssistantService, private _renderer: Renderer2) {
+  statusListener:boolean = false;
 
+  constructor(private utilService: UtilService,
+              private assistantService: AssistantService,
+              private _renderer: Renderer2,
+              private emitService:EmitService) {
+
+    this.assistantService.startWakeUp();
+    this.emitService.registerListener((b)=>{
+      this.statusListener = b;
+      if (b){
+        this.assistantService.stopWakeUp();
+        this.speed = 0.004;
+        this._renderer.removeClass(this.light.nativeElement, "danger");
+      }else{
+        this.assistantService.startWakeUp();
+        this._renderer.addClass(this.light.nativeElement, "danger");
+        this.speed = 0.0004;
+      }
+    });
+    this.emitService.registerSpeak((b)=>{
+      if (b){
+        this.assistantService.stopWakeUp();
+      }else{
+        this.assistantService.startWakeUp();
+      }
+    })
   }
 
   inputstart() {
     this.inputComponent.inputStart();
   }
 
-  async listenStart() {
-    this.speed = 0.004;
-    this._renderer.removeClass(this.light.nativeElement, "danger");
-    this.assistantService.stopSpeak();
-    this.assistantService.listenAudio().then(data=>{
-      this._renderer.addClass(this.light.nativeElement, "danger");
-
-      this.speed = 0.0004;
-
-    });
+   listenStart() {
+    if (!this.statusListener) this.assistantService.listenAudio();
+    else this.assistantService.stopListenAudio();
   }
 
   ngOnInit(): void {

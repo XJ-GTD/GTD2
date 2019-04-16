@@ -260,7 +260,7 @@ export class AiComponent {
     this._renderer.setStyle(this.close.nativeElement, "transform", "translateY(-0px)");
     let winhi = window.innerHeight;
     let aiWarpHi = winhi * 0.80;
-    let top = -105 - aiWarpHi;
+    let top = -150 - aiWarpHi;
     this._renderer.setStyle(this.aiWarp.nativeElement, "top", top + "px");
     this._renderer.setStyle(this.aiWarp.nativeElement, "height", aiWarpHi + "px");
     //this._renderer.

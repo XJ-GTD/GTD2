@@ -25,9 +25,9 @@ import {StTbl} from "../../service/sqlite/tbl/st.tbl";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {BhTbl} from "../../service/sqlite/tbl/bh.tbl";
 import {DataConfig} from "../../service/config/data.config";
-import {Location} from "@angular/common";
 import {NotificationsService} from "../../service/cordova/notifications.service";
 import {ETbl} from "../../service/sqlite/tbl/e.tbl";
+import {AssistantService} from "../../service/cordova/assistant.service";
 
 @Injectable()
 export class AlService {

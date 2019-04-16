@@ -9,6 +9,7 @@ import {SqliteExec} from "../util-service/sqlite.exec";
 import {UtilService} from "../util-service/util.service";
 import {SsService} from "../../pages/ss/ss.service";
 import {UserConfig} from "../config/user.config";
+import {EmitService} from "../util-service/emit.service";
 
 declare var cordova: any;
 
@@ -20,27 +21,29 @@ declare var cordova: any;
 @Injectable()
 export class AssistantService {
 
-  public isSpeaking: boolean;
-  public islistenAudioing: boolean;
-  public isWakeUp: boolean;
+  private mp3Path: string;
+  private mp3Name: string;
+
   constructor(private file: File,
               private aibutlerRestful: AibutlerRestful,
               private sqliteExec: SqliteExec,
-              private utilService: UtilService) {
+              private utilService: UtilService,
+              private emitService: EmitService) {
 
-    this.isSpeaking = false;
-    this.islistenAudioing = false;
+    this.mp3Path = this.file.cacheDirectory;
+    this.mp3Name = "iat.pcm";
   }
 
 
   /**
    * 停止语音播报
    */
-  public stopSpeak() {
-
+  public stopSpeak(emit:boolean) {
     if (!this.utilService.isMobile()) return;
     cordova.plugins.XjBaiduTts.speakStop();
-    this.isSpeaking = false;
+    if (emit){
+      this.emitService.emitSpeak(false);
+    }
   }
 
   /**
@@ -49,30 +52,19 @@ export class AssistantService {
   public stopListenAudio() {
 
     if (!this.utilService.isMobile()) return;
-
     cordova.plugins.XjBaiduSpeech.stopListen();
+    this.emitService.emitListener(false);
+
   }
 
   /**
    * 启动监听WakeUp
    */
   public startWakeUp() {
+    if (UserConfig.settins.get(DataConfig.SYS_H).value == "0") return;
     if (!this.utilService.isMobile()) return;
     cordova.plugins.XjBaiduWakeUp.wakeUpStart(async (result) => {
-      if (this.isSpeaking || this.islistenAudioing) {
-        this.stopWakeUp();
-        setTimeout(() => {
-          this.startWakeUp();
-        }, 2000);
-        return;
-      } else {
-        let text: string = await this.getSpeakText(DataConfig.HL);
-        await this.speakText(text);
-        this.listenAudio().then(data => {
-          this.startWakeUp();
-        })
-
-      }
+      this.listenAudio();
     }, error => {
       console.log("问题：" + error)
     });
@@ -84,6 +76,7 @@ export class AssistantService {
    */
   public stopWakeUp() {
     if (!this.utilService.isMobile()) return;
+    if (UserConfig.settins.get(DataConfig.SYS_H).value == "0") return;
     cordova.plugins.XjBaiduWakeUp.wakeUpStop();
   }
 
@@ -110,90 +103,80 @@ export class AssistantService {
    * 返回语音播报
    */
   async speakText(speechText: string) {
-    if  (!this.utilService.isMobile()) return "";
+    if (!this.utilService.isMobile()) return "";
 
-    if (UserConfig.settins.get(DataConfig.SYS_B).value == "0")  return "";
+    if (UserConfig.settins.get(DataConfig.SYS_B).value == "0") return "";
 
-    if (speechText == null || speechText == "" || this.islistenAudioing) {
+    if (speechText == null || speechText == "") {
       return ""
     }
+    this.emitService.emitSpeak(true);
 
     setTimeout(() => {
-      this.stopSpeak();
-      this.isSpeaking = true;
-      cordova.plugins.XjBaiduTts.startSpeak(result => {
-      this.isSpeaking = false;
-      return result;
-    }, error => {
-      this.isSpeaking = false;
-      return error;
-    }, speechText);
 
-    }, 50)
+      cordova.plugins.XjBaiduTts.startSpeak(result => {
+        this.stopSpeak(true);
+        return result;
+      }, error => {
+        this.stopSpeak(true);
+        return error;
+      }, speechText);
+
+    }, 100);
 
   }
-
 
 
   /**
    * 语音助手手动输入 TEXT
    */
-  putText(text:string):Promise<string>{
-    return new Promise<string>(async (resolve, reject) => {
+  async putText(text: string) {
 
-      let textPro = new TextPro();
-      textPro.d.text = text;
-      textPro.c.client.time = moment().unix();
-      textPro.c.client.cxt = DataConfig.getWsContext();
-      textPro.c.server = DataConfig.wsServerContext;
-      await this.aibutlerRestful.posttext(textPro)
-        .then(data => {
-          console.log("data code：" + data.code);
-          //接收Object JSON数据
-          resolve(text);
+    let textPro = new TextPro();
+    textPro.d.text = text;
+    textPro.c.client.time = moment().unix();
+    textPro.c.client.cxt = DataConfig.getWsContext();
+    textPro.c.server = DataConfig.wsServerContext;
+    await this.aibutlerRestful.posttext(textPro)
+      .then(data => {
+        console.log("data code：" + data.code);
+        //接收Object JSON数据
+        return text;
 
-        });
-    });
-
+      });
   }
-
-
 
 
   /**
    * 语音助手录音录入 AUDIO
    */
-   listenAudio():Promise<string>{
+  async listenAudio() {
 
-    return new Promise<string>(async (resolve, reject) => {
-      if (!this.utilService.isMobile()) {
-        resolve("");
-        return;
-      }
-      if (!this.isSpeaking && !this.islistenAudioing ) {
-        this.islistenAudioing = true;
+    if (!this.utilService.isMobile()) {
+      return;
+    }
+    this.stopSpeak(false);
+    this.emitService.emitListener(true);
+    await cordova.plugins.XjBaiduSpeech.startListen(async result => {
 
-        await cordova.plugins.XjBaiduSpeech.startListen(async result => {
-          this.islistenAudioing = false;
-
-          // 读取录音进行base64转码
-          let base64File: string = await this.file.readAsDataURL(this.file.cacheDirectory, "iat.pcm");
-          let audioPro = new AudioPro();
-          audioPro.d.vb64 = base64File;
-          audioPro.c.client.time = moment().unix();
-          audioPro.c.client.cxt = DataConfig.getWsContext();
-          audioPro.c.client.option = DataConfig.getWsOpt();
-          audioPro.c.server = DataConfig.wsServerContext;
-          await this.aibutlerRestful.postaudio(audioPro)
-          resolve(result);
-        }, async error => {
-          this.islistenAudioing = false;
-          let text = await this.getSpeakText(DataConfig.FF);
-          this.speakText(text);
-          resolve(text);
-        });
-      }
-    })
-
+      this.stopListenAudio();
+      // 读取录音进行base64转码
+      let base64File: string = await this.file.readAsDataURL(this.mp3Path, this.mp3Name);
+      let audioPro = new AudioPro();
+      audioPro.d.vb64 = base64File;
+      audioPro.c.client.time = moment().unix();
+      audioPro.c.client.cxt = DataConfig.getWsContext();
+      audioPro.c.client.option = DataConfig.getWsOpt();
+      audioPro.c.server = DataConfig.wsServerContext;
+      await this.aibutlerRestful.postaudio(audioPro)
+      return result;
+    }, async error => {
+      this.stopListenAudio();
+      setTimeout(async () => {
+        let text = await this.getSpeakText(DataConfig.FF);
+        this.speakText(text);
+        return text;
+      }, 100);
+    });
   }
 }

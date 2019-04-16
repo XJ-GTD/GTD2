@@ -17,52 +17,115 @@ export class EmitService {
   //新建修改删除 （语音界面使用）
   private scdEm: EventEmitter<ScdEmData> = new EventEmitter<ScdEmData>();
   //主页选择时间后，Ls更新
-  private selectDate: EventEmitter<moment.Moment> = new EventEmitter<moment.Moment>();
+  private selectDateEm: EventEmitter<moment.Moment> = new EventEmitter<moment.Moment>();
 
   //新消息点击后
-  private newMessageClick: EventEmitter<ScdEmData> = new EventEmitter<ScdEmData>();
+  private newMessageClickEm: EventEmitter<ScdEmData> = new EventEmitter<ScdEmData>();
 
   //TODO 新日程增加修改删除
-  private newUpdateScd: EventEmitter<ScdEmData> = new EventEmitter<ScdEmData>();
+  private updateScdEm: EventEmitter<ScdEmData> = new EventEmitter<ScdEmData>();
+
+  //语音播放或结束事件
+  private speakEm:EventEmitter<boolean> = new EventEmitter<boolean>();
+  //语音播放或结束事件
+  private listenerEm:EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  registerListener(callback) {
+    if (this.listenerEm.closed) {
+      this.listenerEm = new EventEmitter<boolean>();
+    }
+    this.listenerEm.subscribe(($data: boolean) => {
+      callback($data);
+    });
+  };
+
+  emitListener($data: boolean) {
+    if (!this.listenerEm.isStopped) {
+      this.listenerEm.emit($data);
+    }
+  }
+
+  destroyListener(emit: EventEmitter<boolean>) {
+    this.listenerEm.unsubscribe();
+  }
+
+
+  registerSpeak(callback) {
+    if (this.speakEm.closed) {
+      this.speakEm = new EventEmitter<boolean>();
+    }
+    this.speakEm.subscribe(($data: boolean) => {
+      callback($data);
+    });
+  };
+
+  emitSpeak($data: boolean) {
+    if (!this.speakEm.isStopped) {
+      this.speakEm.emit($data);
+    }
+  }
+
+  destroySpeak(emit: EventEmitter<boolean>) {
+    this.speakEm.unsubscribe();
+  }
+
+  registerUpdateScd(callback) {
+    if (this.updateScdEm.closed) {
+      this.updateScdEm = new EventEmitter<ScdEmData>();
+    }
+    this.updateScdEm.subscribe(($data: ScdEmData) => {
+      callback($data);
+    });
+  };
+
+  emitUpdateScd($data: ScdEmData) {
+    if (!this.updateScdEm.isStopped) {
+      this.updateScdEm.emit($data);
+    }
+  }
+
+  destroyUpdateScd(emit: EventEmitter<ScdEmData>) {
+    this.updateScdEm.unsubscribe();
+  }
 
   registerNewMessageClick(callback) {
-    if (this.newMessageClick.closed) {
-      this.newMessageClick = new EventEmitter<ScdEmData>();
+    if (this.newMessageClickEm.closed) {
+      this.newMessageClickEm = new EventEmitter<ScdEmData>();
     }
-    this.newMessageClick.subscribe(($data: ScdEmData) => {
+    this.newMessageClickEm.subscribe(($data: ScdEmData) => {
       callback($data);
     });
   };
 
   emitNewMessageClick($data: ScdEmData) {
-    if (!this.newMessageClick.isStopped) {
-      this.newMessageClick.emit($data);
+    if (!this.newMessageClickEm.isStopped) {
+      this.newMessageClickEm.emit($data);
     }
   }
 
   destroyNewMessageClick(emit: EventEmitter<ScdEmData>) {
-    this.newMessageClick.unsubscribe();
+    this.newMessageClickEm.unsubscribe();
   }
 
 
 
   registerSelectDate(callback) {
-    if (this.selectDate.closed) {
-      this.selectDate = new EventEmitter<moment.Moment>();
+    if (this.selectDateEm.closed) {
+      this.selectDateEm = new EventEmitter<moment.Moment>();
     }
-    this.selectDate.subscribe(($data: moment.Moment) => {
+    this.selectDateEm.subscribe(($data: moment.Moment) => {
       callback($data);
     });
   };
 
   emitSelectDate($data: moment.Moment) {
-    if (!this.selectDate.isStopped) {
-      this.selectDate.emit($data);
+    if (!this.selectDateEm.isStopped) {
+      this.selectDateEm.emit($data);
     }
   }
 
   destroySelectDate(emit: EventEmitter<moment.Moment>) {
-    this.selectDate.unsubscribe();
+    this.selectDateEm.unsubscribe();
   }
 
 
