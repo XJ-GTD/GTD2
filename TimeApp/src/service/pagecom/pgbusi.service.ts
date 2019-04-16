@@ -483,9 +483,9 @@ export class PgBusiService {
       ret.data.fs = fs;
     }else{
       //从服务器获取对象，放入本地库，刷新缓存
-      fs = await this.contactsServ.updateOneFs(newc.ui);
+      ret.data.fs = await this.contactsServ.updateOneFs(newc.ui);
     }
-    ret.data.fs = fs;
+
     return ret.data;
 
   }
