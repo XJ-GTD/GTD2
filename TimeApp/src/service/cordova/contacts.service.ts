@@ -6,6 +6,8 @@ import {SqliteExec} from "../util-service/sqlite.exec";
 import {DataConfig} from "../config/data.config";
 import {PersonRestful} from "../restful/personsev";
 import {UserConfig} from "../../service/config/user.config";
+import {FsData} from "../pagecom/pgbusi.service";
+import {BhTbl} from "../sqlite/tbl/bh.tbl";
 
 /**
  * 本地联系人读取
@@ -285,7 +287,7 @@ export class ContactsService {
           bsqls.push(bh.inT());
         })
       }
-      return await this.sqlite.batExecSql(bsqls);
+      return await this.sqlExce.batExecSql(bsqls);
     }
   }
 
