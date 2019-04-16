@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,7 @@ public class IContactsServiceImpl implements IContactsService {
 	/**
 	 * 保存日程参与人
 	 */
-	public AgdAgendaContacts save(AgdAgendaDto inDto) {
+	public AgdAgendaContacts save(AgdAgendaDto inDto,HttpServletRequest request) {
 		log.info("---- 传入保存日程参与人  -----" + JSONObject.toJSONString(inDto.getAc()));
 		if(inDto.getAc() != null && inDto.getAc().size()>0){
 			List<AgdAgendaContacts> agdList = agdContactsRep.findContactsByRelId(inDto.getAi());
@@ -63,6 +65,7 @@ public class IContactsServiceImpl implements IContactsService {
 				log.info("------- 获取日程详情信息："+ JSONObject.toJSONString(agenL));
 				
 				inDto = BaseUtil.agdToDtoAgd(agenL);
+				BaseUtil base = new BaseUtil();
 				//获取删除的参与人和新添加的参与人
 				if(agdList.size()>0){
 					for (AgdContactsDto add : acList) {
@@ -76,7 +79,15 @@ public class IContactsServiceImpl implements IContactsService {
 						}
 						//添加不存在的参与人
 						if(!isExsit){
-							addList.add(add); 
+							if(add.getAi() == null || "".equals(add.getAi())){
+								add.setAi(add.getMpn());
+							}
+							//判断是否存在于黑名单
+							boolean isbla = base.getBla(request.getHeader("ai"), add.getAi(), request);
+							if(!isbla){
+								addList.add(add);
+							}
+							 
 						}
 						
 					}
@@ -137,6 +148,7 @@ public class IContactsServiceImpl implements IContactsService {
 		
 		return null;
 	}
+	
 	
 	/**
 	 * 根据日程ID查询参与人
