@@ -38,7 +38,7 @@ export class TdcService {
    * @returns {Promise<BsModel<ScdData>>}
    */
   async getByRef(si: string) {
-    return await this.pgbusiServ.getByRef(si);
+    return await this.pgbusiServ.get("",si);
   }
 
   /**

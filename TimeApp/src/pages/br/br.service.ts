@@ -52,7 +52,7 @@ export class BrService {
     }
 
     //获取特殊日历
-    let spsql = "select * from gtd_sp sp inner join " +
+    let spsql = "select sp.* from gtd_sp sp inner join " +
       " ( select * from gtd_c where ji not in (select ji from gtd_j_h where jt ='1')) c on c.si = sp.si ";//系统计划的日程不备份
     backupPro.d.sp = await this.sqlexec.getExtList<SpTbl>(spsql);
     ret = await this.bacRestful.backup(backupPro);
@@ -245,7 +245,7 @@ export class BrService {
 
     //TODO 联系人的更新信息操作
 
-    
+
     let ret = new BsModel();
     ret.code = 0
     return ret;
