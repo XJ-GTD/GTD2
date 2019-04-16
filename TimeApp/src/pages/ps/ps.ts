@@ -79,7 +79,6 @@ export class PsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UcPage');
-
     Object.assign(this.uo.user,UserConfig.user);
     Object.assign(this.uo.account,UserConfig.account);
 
@@ -97,6 +96,24 @@ export class PsPage {
     }
 
     this.birthday = UserConfig.user.bothday.replace(new RegExp('/','g'),'-');
+  }
+
+  ionViewDidEnter(){
+    this.psService.findPerson(UserConfig.user.id).then(data=>{
+      this.uo.user = UserConfig.user;
+
+      this.avatar = this.uo.user.avatar;
+
+      if (this.uo.user.sex != undefined && this.uo.user.sex != '') {
+        if( this.uo.user.sex == "0"){
+          this.sex = "未知";
+        }else {
+          this.sex = this.uo.user.sex == "1" ? "男":"女";
+        }
+      }
+
+      this.birthday = this.uo.user.bothday.replace(new RegExp('/','g'),'-');
+    });
   }
 
   goBack() {

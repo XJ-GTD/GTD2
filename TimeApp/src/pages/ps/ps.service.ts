@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {PersonInData, PersonRestful} from "../../service/restful/personsev";
+import {PersonInData, PersonOutData, PersonRestful} from "../../service/restful/personsev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {UserConfig} from "../../service/config/user.config";
@@ -11,6 +11,27 @@ export class PsService {
   constructor(private personRestful: PersonRestful,
               private sqlExec: SqliteExec,
               private userConfig:UserConfig) {
+  }
+
+  async findPerson(uid :string ){
+
+    let data:BsModel<PersonOutData> = await this.personRestful.getself(uid);
+
+    let uTbl:UTbl = new UTbl();
+    uTbl.ai = data.data.openid;  //openid
+    uTbl.ui = data.data.unionid; //unionid
+    uTbl.un = data.data.nickname; //用户名（昵称）
+    uTbl.rn = data.data.name == undefined || data.data.name == "" ? data.data.nickname : data.data.name; //真实姓名
+    uTbl.us = data.data.sex == undefined || data.data.sex == "" ? "0" : data.data.sex; //性别
+    uTbl.biy = data.data.birthday == undefined || data.data.birthday == "" ? "" : data.data.birthday;  //出生日期
+    uTbl.ic = data.data.ic == undefined || data.data.ic == "" ? "" : data.data.ic;  //身份证
+    uTbl.uct = data.data.contact== undefined || data.data.contact == "" ? "" : data.data.contact;//  联系方式
+    uTbl.hiu = data.data.avatarbase64;//头像
+
+    await this.sqlExec.update(uTbl);
+
+    //刷新用户静态变量设置
+    await this.userConfig.RefreshUTbl();
   }
 
   //保存用户信息
@@ -25,11 +46,11 @@ export class PsService {
       }else if(type == "both"){
         u.biy = pu.user.bothday;
       }else if(type == "ic"){
-        u.ic = pu.user.No;
+        u.ic = pu.user.No == "" ? null :pu.user.No;
       }else if(type == "sex"){
         u.us = pu.user.sex;
       }else if(type == "contact") {
-        u.uct = pu.user.contact;
+        u.uct = pu.user.contact == "" ? null : pu.user.contact;
       }
       this.sqlExec.update(u).then(data=>{
 
