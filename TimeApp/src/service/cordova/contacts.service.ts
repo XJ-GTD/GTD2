@@ -235,7 +235,13 @@ export class ContactsService {
       bh.pwi = fs.pwi;
       let hasAvatar : boolean = false;
       
-      let userinfo = await this.personRestful.get(fs.ui);
+      let condid = fs.rc;
+      
+      if (fs.ui && fs.ui != '') {
+        condid = fs.ui;
+      }
+      
+      let userinfo = await this.personRestful.get(condid);
 
       if (userinfo && userinfo.data) {
         if (userinfo.data.avatarbase64 && userinfo.data.avatarbase64 != '') {
