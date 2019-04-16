@@ -252,7 +252,10 @@ export class ContactsService {
     let hasAvatar : boolean = false;
     
     if (userinfo && userinfo.data) {
-      bh.pwi = exists.pwi;
+      if (exists)
+        bh.pwi = exists.pwi;
+      else
+        bh.pwi = bt.pwi;
 
       // 用户OpenId
       if (userinfo.data.openid && userinfo.data.openid != '') {
