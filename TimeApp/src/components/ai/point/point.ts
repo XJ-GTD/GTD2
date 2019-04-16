@@ -68,22 +68,20 @@ export class PointComponent {
     this.emitService.registerListener((b)=>{
       this.statusListener = b;
       if (b){
-        this.assistantService.stopWakeUp();
         this.speed = 0.004;
         this._renderer.removeClass(this.light.nativeElement, "danger");
       }else{
-        this.assistantService.startWakeUp();
         this._renderer.addClass(this.light.nativeElement, "danger");
         this.speed = 0.0004;
       }
     });
-    this.emitService.registerSpeak((b)=>{
-      if (b){
-        this.assistantService.stopWakeUp();
-      }else{
-        this.assistantService.startWakeUp();
-      }
-    })
+    // this.emitService.registerSpeak((b)=>{
+    //   if (b){
+    //     this.assistantService.stopWakeUp();
+    //   }else{
+    //     this.assistantService.startWakeUp();
+    //   }
+    // })
   }
 
   inputstart() {
