@@ -115,7 +115,7 @@ export class FsService {
               break;
             }
           }
-          if (!is && fs.rc != UserConfig.user.contact) {
+          if (!is && fs.rc != UserConfig.account.phone) {
             let dt = new DTbl();
             dt.pi = this.util.getUuid();
             dt.ai = fs.pwi;
