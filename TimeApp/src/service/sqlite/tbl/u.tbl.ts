@@ -43,13 +43,13 @@ export class UTbl  implements ITbl{
     if(this.rn != null && this.rn!=""){
       sq = sq + ', rn="' + this.rn +'"';
     }
-    if(this.ic!=""){
+    if(this.ic != null){
       sq = sq + ', ic="' + this.ic +'"';
     }
     if(this.us != null && this.us!=""){
       sq = sq + ', us="' + this.us +'"';
     }
-    if(this.uct!=""){
+    if(this.uct != null){
       sq = sq + ', uct="' + this.uct +'"';
     }
     if (sq != null && sq != ""){
