@@ -182,10 +182,14 @@ export class PgBusiService {
           //添加特殊事件表
           return this.saveSp(ct);
         }).then(data=>{
+          if(data && data != ''){
+            ct.ed = data;
+          }
           let sql = 'select * from gtd_sp where si="'+ct.si+'"';
           this.sqlExce.getExtList<SpTbl>(sql).then(da=>{
             console.log("===== 特殊事件："+JSON.stringify(da));
-          })
+          });
+          return this.sqlExce.update(ct);
         }).then(data=>{
           let adgPro:AgdPro = new AgdPro();
           //restFul保存日程
@@ -208,7 +212,7 @@ export class PgBusiService {
    * @param {CTbl} rc 日程详情
    * @returns {Promise<Promise<any> | number>}
    */
-  private saveSp(rc:CTbl):Promise<any>{
+  private async saveSp(rc:CTbl){
     let len = 1;
     let add:any = 'd';
     if(rc.rt=='1'){
@@ -224,6 +228,7 @@ export class PgBusiService {
       add = 'y';
     }
     let sql=new Array<string>();
+    let ed = ''
     for(let i=0;i<len;i++){
       let sp = new SpTbl();
       sp.spi = this.util.getUuid();
@@ -232,6 +237,7 @@ export class PgBusiService {
       sp.sd = moment(rc.sd).add(i,add).format("YYYY/MM/DD");
       sp.st = rc.st;
       sp.tx = rc.tx;
+      ed = sp.sd;
       //新消息提醒默认加到第一条上
       if(i==0 && rc.gs=='1'){
         sp.itx = 1;
@@ -244,8 +250,8 @@ export class PgBusiService {
 
     console.log('-------- 插入重复表 --------');
     //保存特殊表
-    return this.sqlExce.batExecSql(sql);
-
+    await this.sqlExce.batExecSql(sql);
+    return ed;
   }
   /**
    *获取提醒表sql
