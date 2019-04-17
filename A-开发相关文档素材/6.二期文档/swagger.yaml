@@ -1159,6 +1159,37 @@ paths:
                 type: string
               data:
                 type: object
+  '/aup/user/usersinfo':
+    get:
+      tags:
+        - account service
+      summary: 通过多个手机批量查询帐户概要信息
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: 待查询手机号码/OpenId列表
+          required: true
+          schema:
+            type: object
+            properties:
+              phonenos:
+                type: array
+                description: 手机号/OpenId列表
+      responses:
+        '200':
+          description: 帐户概要信息取得成功
+          schema:
+            type: object
+            properties:
+              errcode:
+                type: integer
+              errmsg:
+                type: string
+              data:
+                type: object
   '/aup/user/{phoneno}/avatar':
     get:
       tags:
