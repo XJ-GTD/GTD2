@@ -384,12 +384,6 @@ export class TdcPage {
 
 
     //结束日期设置
-    //重复场合
-    if (this.scd.rt != "0") {
-      this.scd.ed = "9999/12/31";
-    } else {
-      this.scd.ed = this.scd.sd;
-    }
 
     //结束时间设置
     //全天的场合
@@ -406,9 +400,10 @@ export class TdcPage {
     this.scd.ji = this.scd.p.ji;
 
     //新建数据
-     let data =  await this.tdcServ.save(this.scd)
-      this.util.loadingEnd();
-     return data;
+    let data =  await this.tdcServ.save(this.scd);
+    this.util.loadingEnd();
+    this.cancel();
+    return data;
   }
 
   chkinput(): boolean {
@@ -422,7 +417,8 @@ export class TdcPage {
   goShare() {
     //日程分享打开参与人选择rc日程类型
       this.save().then(data=>{
-        this.cancel();
+        let ctbl = data.data;
+        this.scd.si = ctbl.si;
         this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
       });
 

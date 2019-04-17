@@ -334,13 +334,9 @@ export class TddiPage {
 
   }
 
-  toSave(){
-    this.util.alterStart("1",()=>{
-      this.save();
-    });
-  }
-  save() {
+  async save() {
 
+    this.util.loadingStart();
     //提醒内容设置
 
     //消息设为已读
@@ -353,15 +349,11 @@ export class TddiPage {
 
     //归属 他人创建
     this.scd.gs = '1';
-    this.util.loadingStart();
-    this.tddiServ.updateDetail(this.scd).then(data => {
-      this.util.loadingEnd();
 
-    }).catch(err => {
-      this.util.loadingEnd();
-    });
-
-
+    let data =await  this.tddiServ.updateDetail(this.scd);
+    this.util.loadingEnd();
+    this.cancel();
+    return data;
   }
 
   presentActionSheet() {
