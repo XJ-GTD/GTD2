@@ -64,7 +64,7 @@ page-br {
   ion-avatar{
     height: 67px;
     width: 67px;
-    margin-left: 50px;
+    margin-left: calc(calc(100% - 67px)/2);
   }
 
   ion-row:first-child{
