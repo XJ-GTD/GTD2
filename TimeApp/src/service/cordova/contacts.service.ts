@@ -108,6 +108,7 @@ export class ContactsService {
               btbl.rc = number;
               contactPhones.push(number);
               btbls.push(btbl);
+              console.log("===== 加入联系人清单：" + JSON.stringify(btbl));
             }
           }
         }
@@ -140,6 +141,7 @@ export class ContactsService {
             bt.rel = '0';
             bt.ui = '';
             bsqls.push(bt.inT());
+            console.log("===== 本地联系人入库：" + JSON.stringify(bt));
           }
         }
         return await this.sqlExce.batExecSql(bsqls);
