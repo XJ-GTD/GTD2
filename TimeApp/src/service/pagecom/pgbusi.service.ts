@@ -514,11 +514,6 @@ export class PgBusiService {
     //时间(YYYY/MM/DD)
     let adt = agd.adt.split(" ");
     c.sd = adt[0];
-    if (c.rt != '0'){
-      c.ed = "9999/12/31"  ;
-    }else{
-      c.ed = c.sd;
-    }
 
     if (adt.length == 1 ){
       //全天
