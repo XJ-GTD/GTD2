@@ -148,12 +148,13 @@ export class PgBusiService {
       let sql ="delete from gtd_sp where si = '"+ rcId +"' and sd>= '"+ d +"'";
       await this.sqlExce.execSql(sql);//本地删除日程子表
 
-      ctbl.ed = moment(d).subtract(1,'d').format("YYYY/MM/DD");
+      let ed =  moment(d).subtract(1,'d').format("YYYY/MM/DD");
+      ctbl.ed = ed;
       await this.sqlExce.update(ctbl);//更新日程表
 
       let a = new AgdPro();
       a.ai = ctbl.si;//日程ID
-      a.adt = d;
+      a.ed = ed;
       await this.agdRest.save(a);
     }
 
