@@ -62,7 +62,6 @@ export class ContactsService {
       let btbls: Array<BTbl> = new Array<BTbl>();
       if (!this.utilService.isMobile()){
         resolve(btbls);
-        return;
       }
       await this.contacts.find(['*'], {
         filter: '',
@@ -113,8 +112,8 @@ export class ContactsService {
           }
         }
 
+        console.log("===== 本地联系人处理结束 =====");
         resolve(btbls);
-        return;
       })
     })
   }
