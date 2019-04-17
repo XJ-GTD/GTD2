@@ -29,7 +29,7 @@ import {UtilService} from "../../service/util-service/util.service";
         
         <ion-row>
           <ion-thumbnail #resRef>
-            <img src="./assets/imgs/xz.png">
+            <img src="./assets/imgs/br-xz.png">
           </ion-thumbnail>
         </ion-row>
 
@@ -43,13 +43,13 @@ import {UtilService} from "../../service/util-service/util.service";
         <ion-row>
           <ion-col (click)="backup(isBackUp)" [ngStyle]="{'opacity': isBackUp ? 1 : 0.2 }">
             <ion-avatar item-start>
-              <img src="./assets/imgs/up.png">
+              <img src="./assets/imgs/br-up.png">
             </ion-avatar>
             <p>备份</p>
           </ion-col>
           <ion-col (click)="recover(isRecover)" [ngStyle]="{'opacity': isRecover ? 1 : 0.2 }">
             <ion-avatar item-start>
-              <img src="./assets/imgs/down.png">
+              <img src="./assets/imgs/br-down.png">
             </ion-avatar>
             <p>恢复</p>
           </ion-col>
