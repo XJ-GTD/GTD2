@@ -129,7 +129,7 @@ export class PsPage {
     if (this.actionSheet !== undefined) {
       this.actionSheet.dismiss();
     }
-    console.log(this.dateTimes.toArray());
+    //console.log(this.dateTimes.toArray());
     for(let i = 0;i<this.dateTimes.toArray().length;i++){
       if(this.dateTimes.toArray()[i]._picker != undefined){
         this.dateTimes.toArray()[i]._picker.dismiss();
