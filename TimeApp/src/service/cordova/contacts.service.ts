@@ -81,10 +81,9 @@ export class ContactsService {
               number = number + v;
 
             })
-            number= number.replace('+86', '')
+            number= number.replace(/\+86/g, '')
               .replace('0086', '')
               .replace(/\s/g,"");
-            console.log("SJ====》开始" + contact.name.formatted + "phone:" + number);
             if (!this.utilService.checkPhone(number)) {
               continue;
             } else {
@@ -97,7 +96,6 @@ export class ContactsService {
               btbl.rn = contact.name.formatted;
               btbl.rc = number;
               btbls.push(btbl);
-              console.log("SJ====》End" + JSON.stringify(btbl));
             }
           }
         }
