@@ -37,7 +37,7 @@ import {ScdData, ScdPageParamter} from "../../data.mapping";
           <div>
             <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
                           pickerFormat="YYYY MM DD" color="light"
-                          [(ngModel)]="scd.sd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
+                          [(ngModel)]="scd.showSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                           min="1999-01-01" max="2039-12-31"  cancelText="取消" doneText = "确认"
             ></ion-datetime>
           </div>
@@ -235,7 +235,7 @@ export class TdcPage {
     //新建的场合初始化
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
-      this.scd.sd = paramter.d.format("YYYY-MM-DD");
+      this.scd.showSd = paramter.d.format("YYYY-MM-DD");
       this.scd.st = moment().add(1, "h").format("HH:00");
     }
     this.scd.rt = "0";
@@ -362,18 +362,16 @@ export class TdcPage {
 
   cancel() {
     this.navCtrl.pop();
-
   }
 
-  toSave(){
-    this.util.alterStart("1",()=>{this.save("")});
-  }
 
-  save(share) {
+  async save() {
 
     if (!this.chkinput()) {
       return
     }
+
+    this.util.loadingStart();
     //提醒内容设置
     this.scd.ui = UserConfig.account.id;
 
@@ -382,16 +380,10 @@ export class TdcPage {
 
     //本人新建或修改时，下记画面项目可以修改
     //开始时间格式转换
-    this.scd.sd = moment(this.scd.sd).format("YYYY/MM/DD");
+    this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
 
 
     //结束日期设置
-    //重复场合
-    if (this.scd.rt != "0") {
-      this.scd.ed = "9999/12/31";
-    } else {
-      this.scd.ed = this.scd.sd;
-    }
 
     //结束时间设置
     //全天的场合
@@ -408,38 +400,10 @@ export class TdcPage {
     this.scd.ji = this.scd.p.ji;
 
     //新建数据
-    if (this.pagestate == "0") {
-      this.util.loadingStart();
-      this.tdcServ.save(this.scd).then(data => {
-        this.util.loadingEnd();
-        let ctbl = data.data;
-        this.scd.si = ctbl.si;
-        this.pagestate = "1";
-        if (typeof (eval(share)) == "function") {
-          share();
-        }
-        return;
-      }).catch(err=>{
-        this.util.loadingEnd();
-      });
-
-    }
-    //未关闭直接修改
-    if (this.pagestate == "1") {
-      this.util.loadingStart();
-      this.tdcServ.updateDetail(this.scd).then(data => {
-        this.util.loadingEnd();
-        if (typeof (eval(share)) == "function") {
-          share();
-        }
-        return;
-      }).catch(err=>{
-        this.util.loadingEnd();
-      });
-
-    }
-
-
+    let data =  await this.tdcServ.save(this.scd);
+    this.util.loadingEnd();
+    this.cancel();
+    return data;
   }
 
   chkinput(): boolean {
@@ -452,7 +416,7 @@ export class TdcPage {
 
   goShare() {
     //日程分享打开参与人选择rc日程类型
-      this.save(() => {
+      this.save().then(data=>{
         this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
       });
 

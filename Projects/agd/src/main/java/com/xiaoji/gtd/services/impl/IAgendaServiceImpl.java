@@ -97,7 +97,7 @@ public class IAgendaServiceImpl implements IAgendaService {
 				//查询是否存在未请求日程记录
 				List<AgdAgendaRecord> recList = this.agdRecordRep.
 						findRecordByAgdId(agd.getAgendaId(), agdAgendaContacts.getPhone());
-				if(recList.size()>0){
+				if(recList != null && recList.size()>0){
 					AgdAgendaRecord record = recList.get(0);
 					record.setRequestState(1);
 					this.agdRecordRep.save(record);
@@ -117,6 +117,9 @@ public class IAgendaServiceImpl implements IAgendaService {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("from", agd.getCreaterId()); // 发送人
 				map.put("to", JSONObject.toJSON(agdOList));
+				inDto.setAt(agd.getTitle());
+		        inDto.setFc(agd.getCreaterId());
+		        inDto.setAdt(agd.getAgendaDate());
 				map.put("agenda", JSONObject.toJSON(inDto));
 				map.put("notifyType", "update");
 				try {
@@ -189,6 +192,12 @@ public class IAgendaServiceImpl implements IAgendaService {
 					// 发送添加/更新日程消息
 					List<AgdContactsDto> dels = new ArrayList<AgdContactsDto>();
 					for (AgdAgendaContacts agdAgendaContacts : agdList) {
+						//查询是否存在未请求日程记录
+//						List<AgdAgendaRecord> recList = this.agdRecordRep.
+//								findRecordByAgdId(agd.getAgendaId(), agdAgendaContacts.getPhone());
+//						if(recList == null || recList.size() == 0){
+//							dels.add(BaseUtil.AgdToContactsDto(agdAgendaContacts));
+//						}
 						dels.add(BaseUtil.AgdToContactsDto(agdAgendaContacts));
 						agdContactsRep.deleteById(agdAgendaContacts.getRecId());
 						// TODO 发送删除日程消息
@@ -237,14 +246,15 @@ public class IAgendaServiceImpl implements IAgendaService {
 		//获取当前登录人手机号
 		BaseUtil base = new BaseUtil();
 		String phoneNo = base.getUserInfo(request.getHeader("ai"));
-		//查询是否存在未请求日程记录
-		List<AgdAgendaRecord> recList = this.agdRecordRep.
-				findRecordByAgdId(agd.getAgendaId(), phoneNo);
-		//存在则更新
-		if(recList.size()>0){
-			AgdAgendaRecord record = recList.get(0);
-			record.setRequestState(1);
-			this.agdRecordRep.save(record);
+		if(agd != null){
+			//查询是否存在未请求日程记录
+			List<AgdAgendaRecord> recList = this.agdRecordRep.findRecordByAgdId(agd.getAgendaId(), phoneNo);
+			//存在则更新
+			if(recList.size()>0){
+				AgdAgendaRecord record = recList.get(0);
+				record.setRequestState(1);
+				this.agdRecordRep.save(record);
+			}
 		}
 		return agd;
 		

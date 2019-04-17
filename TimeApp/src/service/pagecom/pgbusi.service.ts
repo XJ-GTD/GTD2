@@ -182,10 +182,14 @@ export class PgBusiService {
           //添加特殊事件表
           return this.saveSp(ct);
         }).then(data=>{
+          if(data && data != ''){
+            ct.ed = data;
+          }
           let sql = 'select * from gtd_sp where si="'+ct.si+'"';
           this.sqlExce.getExtList<SpTbl>(sql).then(da=>{
             console.log("===== 特殊事件："+JSON.stringify(da));
-          })
+          });
+          return this.sqlExce.update(ct);
         }).then(data=>{
           let adgPro:AgdPro = new AgdPro();
           //restFul保存日程
@@ -208,7 +212,7 @@ export class PgBusiService {
    * @param {CTbl} rc 日程详情
    * @returns {Promise<Promise<any> | number>}
    */
-  private saveSp(rc:CTbl):Promise<any>{
+  private async saveSp(rc:CTbl){
     let len = 1;
     let add:any = 'd';
     if(rc.rt=='1'){
@@ -224,6 +228,7 @@ export class PgBusiService {
       add = 'y';
     }
     let sql=new Array<string>();
+    let ed = ''
     for(let i=0;i<len;i++){
       let sp = new SpTbl();
       sp.spi = this.util.getUuid();
@@ -232,6 +237,7 @@ export class PgBusiService {
       sp.sd = moment(rc.sd).add(i,add).format("YYYY/MM/DD");
       sp.st = rc.st;
       sp.tx = rc.tx;
+      ed = sp.sd;
       //新消息提醒默认加到第一条上
       if(i==0 && rc.gs=='1'){
         sp.itx = 1;
@@ -244,8 +250,8 @@ export class PgBusiService {
 
     console.log('-------- 插入重复表 --------');
     //保存特殊表
-    return this.sqlExce.batExecSql(sql);
-
+    await this.sqlExce.batExecSql(sql);
+    return ed;
   }
   /**
    *获取提醒表sql
@@ -345,7 +351,7 @@ export class PgBusiService {
     Object.assign(c,scd);
     //消息设为已读
     c.du = "1";
-    await  this.sqlExce.update(c);
+
 
     if (oldc.sd != c.sd || oldc.rt != c.rt){
       //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
@@ -357,8 +363,9 @@ export class PgBusiService {
       //删除特殊表
       await this.sqlExce.delete(sptbl);
       //保存特殊表及相应提醒表
-      await this.saveSp(c);
-
+      let ed = await this.saveSp(c);
+      //结束日期使用sp表最后日期
+      c.ed = ed;
 
     }else{
       //如果只是修改重复时间，则更新重复子表所有时间
@@ -372,6 +379,8 @@ export class PgBusiService {
       }
 
     }
+    await  this.sqlExce.update(c);
+
     //restful用参数
     let agd = new AgdPro();
     this.setAdgPro(agd,c);
@@ -436,10 +445,13 @@ export class PgBusiService {
       newc.si = this.util.getUuid();
       //设置关联日程ID
       newc.sr = sr;
-      await this.sqlExce.save(newc);
+
 
       //添加特殊事件表
-      await this.saveSp(newc);
+      let ed = await this.saveSp(newc);
+      //结束日期使用sp表最后日期
+      newc.ed = ed;
+      await this.sqlExce.save(newc);
 
       //保存受邀人日程到服务器
       let a = new AgdPro();
