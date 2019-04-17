@@ -20,36 +20,12 @@ export class PlService {
               private util: UtilService,) {}
 
   //下载系统计划
-  async downloadPlan(pid:string){
+  async downloadPlan(jh:PagePDPro){
     // 出参
     let bs = new BsModel<any>();
-    console.log('---------- PlService downloadPlan 清除本地旧计划开始 ----------------');
-    // 删除本地旧计划日程关联
-    let dctbl:CTbl =new CTbl();
     let sqls:Array<string> = new Array<string>();
-    dctbl.ji = pid;
-    let dctbls = await this.sqlExec.getList<CTbl>(dctbl);//获取旧计划管理日程
-    if(dctbls.length>0) {
-      for(let jhc of dctbls){
-        //提醒删除
-        let detbl: ETbl = new ETbl();
-        detbl.si = jhc.si;
-        sqls.push(detbl.dT());
-        //日程参与人删除
-        let ddtbl: DTbl = new DTbl();
-        ddtbl.si = jhc.si;
-        sqls.push(ddtbl.dT());
-      }
-
-      // 删除日程附件表
-      let desp = new SpTbl();
-      desp.ji = pid;
-      sqls.push(desp.dT());
-
-    }
-    //计划关联日程删除
-    await this.sqlExec.delete(dctbl);
-    console.log('---------- PlService downloadPlan 清除本地旧计划结束 ----------------');
+    console.log('---------- PlService downloadPlan 清除本地旧计划 ----------------');
+    this.delete(jh);
 
     console.log('---------- PlService downloadPlan 下载系统计划开始 ----------------');
     //restful获取计划日程
@@ -57,18 +33,19 @@ export class PlService {
     bip.oai = "";
     bip.ompn = "";
     bip.c = "";
-    bip.d.pi = pid;
+    bip.d.pi = jh.ji;
     let br:BsModel<P> = new BsModel<P>();
     br = await this.shareRestful.downsysname(bip);
     //插入获取的日程到本地（系统日程需要有特别的表示）
     //计划表
     if(br.data.pn != null){
       let sjh = new JhTbl();
-      sjh.ji = pid;
+      sjh.ji = jh.ji;
       sjh.jn = br.data.pn.pt;
       sjh.jg = br.data.pn.pd;
       sjh.jc = br.data.pn.pm;
       sjh.jt = "1";
+      sjh.jtd = "1";
       sqls.push(sjh.upT());
       console.log('---------- PlService downloadPlan 新计划插入计划表 ----------------');
       //日程表
@@ -106,32 +83,24 @@ export class PlService {
           sqls.push(sp.inT());
         }
 
-
+        bs.data = br.data.pa.length;
       }
     }
-    let count:number = await this.sqlExec.batExecSql(sqls);
+    await this.sqlExec.batExecSql(sqls);
 
-    bs.data = count;
     console.log('---------- PlService downloadPlan 新计划插入日程表结束 ----------------');
     bs.code = 0;
     return bs;
   }
 
   //更新系统计划jdt数据
-  upPlan(jht:PagePDPro):Promise<BsModel<any>>{
+  upPlan(jh:PagePDPro):Promise<any>{
     return new Promise<any>((resolve, reject) => {
       //保存本地计划
-      let jh = new JhTbl();
-      jh.ji = jht.ji;
-      jh.jc = jht.jc;
-      jh.jg = jht.jg;
-      jh.jn = jht.jn;
-      jh.jt = jht.jt;
-      jh.jtd = jht.jtd;
-      this.sqlExec.update(jh).then(data =>{
-        let bsmodel = new BsModel();
-        bsmodel.code = 0;
-        resolve(bsmodel);
+      let jhTbl: JhTbl = new JhTbl();
+      Object.assign(jhTbl,jh);
+      this.sqlExec.update(jhTbl).then(data =>{
+        resolve(data);
       })
 
     })
@@ -139,78 +108,56 @@ export class PlService {
 
   //删除系统计划
   async delete(jh:PagePDPro){
-    console.log('---------- PlService delete 删除系统计划开始 ----------------');
     if(jh.jt == "1"){
-      //获取本地计划
-      let jhTbl: JhTbl = new JhTbl();
-      jhTbl.ji = jh.ji;
-      jhTbl.jn = jh.jn;
-      jhTbl.jg = jh.jg;
-      jhTbl.jc = jh.jc;
-      jhTbl.jt = jh.jt;
-      jhTbl.jtd = jh.jtd;
+      console.log('---------- PlService delete 删除系统计划开始 ----------------');
+      let sqls:Array<string> = new Array<string>();
+      // 删除本地系统表计划日程关联  获取系统计划管理日程
+      let cTbl:CTbl =new CTbl();
+      cTbl.ji = jh.ji;
+      let scTbl = await this.sqlExec.getList<CTbl>(cTbl);
+      if(scTbl.length>0) {
+        for (let j = 0, len = scTbl.length; j < len; j++) {
+          //提醒删除
+          let eTbl:ETbl =new ETbl();
+          eTbl.si = scTbl[j].si;
+          sqls.push(eTbl.dT());
 
-      // 删除本地系统表计划日程关联
-      //获取系统计划管理日程
-      let ctbl:CTbl =new CTbl();
-      ctbl.ji = jhTbl.ji;
-      let ctbls = await this.sqlExec.getList<CTbl>(ctbl);
-
-      for (let j = 0, len = ctbls.length; j < len; j++) {
-        //提醒删除
-        let etbl:ETbl =new ETbl();
-        etbl.si = ctbls[j].si;
-        await this.sqlExec.delete(etbl);
-
-        //日程参与人删除
-        let dtbl:DTbl =new DTbl();
-        dtbl.si = ctbls[j].si;
-        await this.sqlExec.delete(dtbl);
+          //日程参与人删除
+          let dTbl:DTbl =new DTbl();
+          dTbl.si = scTbl[j].si;
+          sqls.push(dTbl.dT());
+        }
+        // 删除日程附件表
+        let spTbl = new SpTbl();
+        spTbl.ji = jh.ji;
+        sqls.push(spTbl.dT());
       }
-
-      // 删除日程附件表
-      let desp = new SpTbl();
-      desp.ji = jh.ji;
-      await this.sqlExec.delete(desp);
-
       //计划关联日程删除
-      await this.sqlExec.delete(ctbl);
+      sqls.push(cTbl.dT());
 
-      //更新系统计划jdt数据
+      let jhTbl: JhTbl = new JhTbl();
+      Object.assign(jhTbl,jh);
       jh.jtd = "0";
-      await this.upPlan(jh);
+      sqls.push(jhTbl.upT());
 
-      // 返出参
-      let bs = new BsModel();
-      bs.code = 0;
-      return bs;
-    }else {
-      console.log('---------- PlService delete 不是系统计划表 ----------------');
+      await this.sqlExec.batExecSql(sqls);
+      console.log('---------- PlService delete 删除系统计划结束 ----------------');
     }
-    console.log('---------- PlService delete 删除系统计划结束 ----------------');
   }
 
   //获取计划
   async getPlan(){
-
     console.log('---------- PlService getPlan 获取计划开始 ----------------');
     let pld = new PagePlData();
     //获取本地计划
-    let jhSql = "select * from gtd_j_h order by wtt desc";
-    let jhCtbl: Array<PagePDPro> = await this.sqlExec.getExtList<PagePDPro>(jhSql);
-    if(jhCtbl.length > 0){
-      console.log('---------- PlService getPlan 获取计划日程数量开始 ----------------');
+    let jhSql = "select jh.*,COALESCE (gc.count, 0) js from gtd_j_h jh  left join ( select c.ji ji,count(c.ji) count from gtd_c c left join gtd_sp sp on sp.si = c.si group by c.ji) gc on jh.ji = gc.ji order by jh.wtt desc";
+    let jhTbl: Array<PagePDPro> = await this.sqlExec.getExtList<PagePDPro>(jhSql);
+    if(jhTbl.length > 0){
       let xtJh: Array<PagePDPro> = new  Array<PagePDPro>();
       let zdyJh: Array<PagePDPro> = new  Array<PagePDPro>();
 
       //获取计划日程数量
-      for(let jhc of jhCtbl){
-        let sql = 'select c.si from gtd_c c left join gtd_sp sp on sp.si = c.si where c.ji = "'+ jhc.ji + '"';
-        let cs = await this.sqlExec.getExtList<CTbl>(sql);
-        jhc.js = cs.length;
-
-        jhc.pt = jhc.jn; // 计划分享使用
-
+      for(let jhc of jhTbl){
         if(jhc.jt == "2"){  // 本地计划
           zdyJh.push(jhc);
         }else{
@@ -221,10 +168,9 @@ export class PlService {
           }
         }
       }
+
       pld.xtJh = xtJh;
       pld.zdyJh = zdyJh;
-
-      console.log('---------- PlService getPlan 获取计划日程数量结束 ----------------');
     }
     console.log('---------- PlService getPlan 获取计划结束 ----------------');
     return pld;

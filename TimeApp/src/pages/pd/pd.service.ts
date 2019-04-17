@@ -68,6 +68,7 @@ export class PdService {
       let shareData: ShareData = new ShareData();
       shareData.ompn = "";
       shareData.oai = "";
+      plan.pn.pt = plan.pn.jn; // pt 计划分享使用
       shareData.d.p.pn = plan.pn;
       shareData.d.p.pa = plan.pa;
 
@@ -99,31 +100,6 @@ export class PdService {
       //修改日程表 计划为 null
       let spSql = 'update gtd_sp set ji= null where ji = "' + jhTbl.ji + '";';
       this.sqlExec.execSql(spSql);
-
-      /*
-      //获取计划管理日程
-      let ctbl: CTbl = new CTbl();
-      ctbl.ji = jhTbl.ji;
-      let ctbls = await this.sqlExec.getList<CTbl>(ctbl);
-
-      if(ctbls.length > 0){
-        for (let j = 0, len = ctbls.length; j < len; j++) {
-          //提醒删除
-          let etbl:ETbl =new ETbl();
-          etbl.si = ctbls[j].si;
-          await this.sqlExec.delete(etbl);
-
-          //日程参与人删除
-          let dtbl:DTbl =new DTbl();
-          dtbl.si = ctbls[j].si;
-          await this.sqlExec.delete(dtbl);
-        }
-        //计划关联日程删除
-        await this.sqlExec.delete(ctbl);
-
-      }else{
-        console.log('---------- PdService delete 计划管理日程无数据 ----------------');
-      }*/
 
       // 删除本地计划
       let tbl: JhTbl = new JhTbl();
