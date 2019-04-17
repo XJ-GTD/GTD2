@@ -72,6 +72,9 @@ export class ContactsService {
         let contactPhones: Array<string> = new Array<string>();
         
         for (let contact of data) {
+          // XiaoMI 6X补丁
+          if (contact._objectInstance) contact = contact._objectInstance;
+
           if (!contact.phoneNumbers) continue;
           for (let phone of contact.phoneNumbers) {
             //去除手机号中的空格
