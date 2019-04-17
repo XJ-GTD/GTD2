@@ -150,8 +150,10 @@ export class ContactsService {
         }
         return await this.sqlExce.batExecSql(bsqls);
       }).then(data => {
-        //TODO 异步步服务器联系人信息
-       // this.personRestful.get()
+        // 在同步服务器联系人之前先全部更新完成后刷新
+        // 同步时间较长，会导致用户使用的时候选不到联系人
+        this.userConfig.RefreshFriend();
+
         resolve(true);
 
       }).catch(error=>{
