@@ -464,6 +464,7 @@ export class TddjPage {
     this.util.loadingStart();
     this.tddjServ.updateDetail(this.scd).then(data => {
       this.util.loadingEnd();
+      this.cancel();
       if (typeof (eval(share)) == "function") {
         share();
       }
