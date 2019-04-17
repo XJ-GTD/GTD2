@@ -44,7 +44,7 @@ import {FsData, ScdData, ScdPageParamter} from "../../data.mapping";
           <div>
             <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
                           pickerFormat="YYYY MM DD" color="light"
-                          [(ngModel)]="scd.showSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
+                          [(ngModel)]="scd.sd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                           min="1999-01-01" max="2039-12-31" (ionCancel)="getDtPickerSel($event)"
             ></ion-datetime>
           </div>
@@ -248,7 +248,7 @@ export class TddjPage {
       this.tddjServ.get(paramter.si).then(data => {
         let bs: BsModel<ScdData> = data;
         Object.assign(this.scd, bs.data);
-        this.scd.showSd = paramter.d.format("YYYY-MM-DD");
+        this.scd.sd = paramter.d.format("YYYY-MM-DD");
 
 
         this.busiServ.getPlans().then(data => {
