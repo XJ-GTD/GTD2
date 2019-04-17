@@ -117,6 +117,9 @@ public class IAgendaServiceImpl implements IAgendaService {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("from", agd.getCreaterId()); // 发送人
 				map.put("to", JSONObject.toJSON(agdOList));
+				inDto.setAt(agd.getTitle());
+		        inDto.setFc(agd.getCreaterId());
+		        inDto.setAdt(agd.getAgendaDate());
 				map.put("agenda", JSONObject.toJSON(inDto));
 				map.put("notifyType", "update");
 				try {
