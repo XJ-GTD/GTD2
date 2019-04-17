@@ -7,10 +7,10 @@ import {ETbl} from "../../service/sqlite/tbl/e.tbl";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {UtilService} from "../../service/util-service/util.service";
-import * as moment from "moment";
 import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
 import {UserConfig} from "../../service/config/user.config";
 import {PagePDPro, PagePlData} from "../../data.mapping";
+import * as moment from "moment";
 
 @Injectable()
 export class PlService {
@@ -25,7 +25,7 @@ export class PlService {
     let bs = new BsModel<any>();
     let sqls:Array<string> = new Array<string>();
     console.log('---------- PlService downloadPlan 清除本地旧计划 ----------------');
-    this.delete(jh);
+    await this.delete(jh);
 
     console.log('---------- PlService downloadPlan 下载系统计划开始 ----------------');
     //restful获取计划日程
@@ -34,8 +34,7 @@ export class PlService {
     bip.ompn = "";
     bip.c = "";
     bip.d.pi = jh.ji;
-    let br:BsModel<P> = new BsModel<P>();
-    br = await this.shareRestful.downsysname(bip);
+    let br:BsModel<P> = await this.shareRestful.downsysname(bip);
     //插入获取的日程到本地（系统日程需要有特别的表示）
     //计划表
     if(br.data.pn != null){
@@ -46,11 +45,9 @@ export class PlService {
       sjh.jc = br.data.pn.pm;
       sjh.jt = br.data.pn.pc;
       sjh.jtd = "1";
-      sqls.push(sjh.upT());
-      console.log('---------- PlService downloadPlan 新计划插入计划表 ----------------');
-      //日程表
+      sqls.push(sjh.upT()); // 系统计划修改计划表状态
+      //日程表 新计划插入日程表开始
       if(br.data.pa.length>0) {
-        console.log('---------- PlService downloadPlan 新计划插入日程表开始 ----------------');
         for (let pa of br.data.pa) {
           let ctbl:CTbl =new CTbl();
           ctbl.si = this.util.getUuid();//日程ID
@@ -91,19 +88,6 @@ export class PlService {
     console.log('---------- PlService downloadPlan 新计划插入日程表结束 ----------------');
     bs.code = 0;
     return bs;
-  }
-
-  //更新系统计划jdt数据
-  upPlan(jh:PagePDPro):Promise<any>{
-    return new Promise<any>((resolve, reject) => {
-      //保存本地计划
-      let jhTbl: JhTbl = new JhTbl();
-      Object.assign(jhTbl,jh);
-      this.sqlExec.update(jhTbl).then(data =>{
-        resolve(data);
-      })
-
-    })
   }
 
   //删除系统计划
@@ -150,8 +134,8 @@ export class PlService {
     console.log('---------- PlService getPlan 获取计划开始 ----------------');
     let pld = new PagePlData();
     //获取本地计划
-    let jhSql = "select jh.*,COALESCE (gc.count, 0) js from gtd_j_h jh  left join ( select c.ji ji,count(c.ji) count from gtd_c c left join gtd_sp sp on sp.si = c.si group by c.ji) gc on jh.ji = gc.ji order by jh.wtt desc";
-    let jhTbl: Array<PagePDPro> = await this.sqlExec.getExtList<PagePDPro>(jhSql);
+    let sql = "select jh.*,COALESCE (gc.count, 0) js from gtd_j_h jh  left join ( select c.ji ji,count(c.ji) count from gtd_c c left join gtd_sp sp on sp.si = c.si group by c.ji) gc on jh.ji = gc.ji order by jh.wtt desc";
+    let jhTbl: Array<PagePDPro> = await this.sqlExec.getExtList<PagePDPro>(sql);
     if(jhTbl.length > 0){
       let xtJh: Array<PagePDPro> = new  Array<PagePDPro>();
       let zdyJh: Array<PagePDPro> = new  Array<PagePDPro>();
