@@ -125,10 +125,12 @@ export class ContactsService {
       this.getContacts4Btbl().then(async data => {
         let bsqls: Array<string> = new Array<string>();
         for (let b of data) {
+          console.log("===== 本地联系人入参：" + JSON.stringify(b));
 
           if (!b.rn) continue;
           // TODO 效率低下
           let bt: BTbl = await this.sqlExce.getOne<BTbl>(b);
+          
           if (bt == null) {
             bt = new BTbl();
             bt.pwi = this.utilService.getUuid();
