@@ -188,7 +188,6 @@ export class TdcPage {
   }
 
   togChange(){
-    this.util.toastStart(this.alld+"",1000);
     if (!this.alld){
       this.scd.st = this.scd.st == "99:99"?"00:00":this.scd.st;
     }
