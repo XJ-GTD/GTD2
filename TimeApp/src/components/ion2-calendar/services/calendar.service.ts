@@ -12,11 +12,12 @@ import * as moment from 'moment';
 import {defaults, pickModes} from "../config";
 import {SqliteExec} from "../../../service/util-service/sqlite.exec";
 import {LocalcalendarService} from "../../../service/cordova/localcalendar.service";
+import {UtilService} from "../../../service/util-service/util.service";
 
 @Injectable()
 export class CalendarService {
 
-  constructor(private sqlite:SqliteExec,private readlocal:LocalcalendarService) {}
+  constructor(private sqlite:SqliteExec,private readlocal:LocalcalendarService,private util:UtilService) {}
 
   safeOpt(calendarOptions: any): CalendarModalOptions {
     const _disableWeeks: number[] = [];
@@ -145,11 +146,13 @@ export class CalendarService {
       title = opt.defaultTitle
     }
     let subTitle = '';
-    if (dayConfig && dayConfig.subTitle) {
-      subTitle = dayConfig.subTitle
-    } else if (opt.defaultSubtitle) {
-      subTitle = opt.defaultSubtitle
-    }
+    //被农历替换 2019/04/17 zhangjy
+    // if (dayConfig && dayConfig.subTitle) {
+    //   subTitle = dayConfig.subTitle
+    // } else if (opt.defaultSubtitle) {
+    //   subTitle = opt.defaultSubtitle
+    // }
+    subTitle = this.util.lunar(moment(time),"D");
 
     return {
       time,
