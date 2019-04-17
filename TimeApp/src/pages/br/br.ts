@@ -21,6 +21,7 @@ import {UtilService} from "../../service/util-service/util.service";
             <img class="img-header-left" src="./assets/imgs/fh2.png">
           </button>
         </ion-buttons>
+        <ion-title>备份恢复</ion-title>
       </ion-toolbar>
     </ion-header>
 
