@@ -212,6 +212,7 @@ public class BaseUtil {
 		if(json.containsKey("errcode") && json.getString("errcode").equals("0")){
 			json = json.getJSONObject("data");
 			npm = json.getString("phoneno");
+			json.remove("avatarbase64");
 		}
 		log.info("========获取人员信息：" + json.toString());
 		return npm;

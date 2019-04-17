@@ -71,6 +71,8 @@ public class IContactsServiceImpl implements IContactsService {
 				
 				inDto = BaseUtil.agdToDtoAgd(agenL);
 				BaseUtil base = new BaseUtil();
+				String phone =base.getUserInfo(request.getHeader("ai"));
+				log.info("------- 当前登录人手机号phone："+ phone);
 				//获取删除的参与人和新添加的参与人
 				if(agdList.size()>0){
 					for (AgdContactsDto add : acList) {
@@ -83,7 +85,7 @@ public class IContactsServiceImpl implements IContactsService {
 							}
 						}
 						//添加不存在的参与人
-						if(!isExsit){
+						if(!isExsit && !add.getMpn().equals(phone)){
 							if(add.getAi() == null || "".equals(add.getAi())){
 								add.setAi(add.getMpn());
 							}
@@ -103,7 +105,7 @@ public class IContactsServiceImpl implements IContactsService {
 						}
 						//先判断是否存在于黑名单
 						boolean isbla = base.getBla(request.getHeader("ai"), add.getAi(), request);
-						if(!isbla){
+						if(!isbla && !add.getMpn().equals(phone)){
 							//添加日程发送记录表
 							this.agdRecordServ.save(agenL, add.getMpn(), add.getAi());
 							addList.add(add);
