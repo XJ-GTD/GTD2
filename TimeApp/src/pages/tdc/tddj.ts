@@ -133,10 +133,15 @@ import {FsData, ScdData, ScdPageParamter} from "../../data.mapping";
           <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set" (focus)="comentfocus()"
                         (blur)="comentblur()"></ion-textarea>
         </ion-row>
-        <ion-row justify-content-left>
-          <div *ngFor="let fs of scd.fss;">
-            <div><img class ="img-set" [src]="fs.bhiu"></div>
-            <div class ="img-rn">{{fs.ran}}</div>
+        <ion-row>
+          <div class="reptlb2 ">朋友</div>
+          <div class="selected">
+            <ion-chip *ngFor="let fs of scd.fss" (click)="goTofsDetail(fs)">
+              <ion-avatar>
+                <img src={{fs.bhiu}}>
+              </ion-avatar>
+              <ion-label>{{fs.rn}}</ion-label>
+            </ion-chip>
           </div>
         </ion-row>
       </ion-grid>
@@ -589,6 +594,11 @@ export class TddjPage {
     if (el && el.length == 2) {
       this.scd.st = el[0].textContent + ":" + el[1].textContent;
     }
+  }
+
+  goTofsDetail(fs:FsData){
+    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{fsData:fs});
+    modal.present();
   }
 
 }

@@ -115,12 +115,7 @@ export class AlService {
       yTbl.yv = "0";
       await this.sqlExce.replaceT(yTbl);
 
-     // await this.createTestData();
-
-
-      await this.contactsService.asyncPhoneContacts();
-      //异步获取联系人信息
-      this.contactsService.updateFs();
+     //await this.createTestData();
 
       alData.text = "系统初始化完成";
       resolve(alData);
@@ -163,6 +158,11 @@ export class AlService {
       //用户设置信息初始化
       await this.userConfig.init();
 
+      //每次都先导入联系人
+      this.contactsService.asyncPhoneContacts().then(data=>{
+        //异步获取联系人信息
+        this.contactsService.updateFs();
+      })
       alData.text = "系统设置完成";
       resolve(alData)
 

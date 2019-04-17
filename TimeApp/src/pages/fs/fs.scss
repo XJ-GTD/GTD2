@@ -99,6 +99,7 @@ page-fs4c ,page-fs4g{
       margin: 8px;
       display: inline-block;
       min-height: 60px;
+      background-color:transparent;
       ion-avatar{
         border-radius: 50%;
         width: 32px;
@@ -107,6 +108,7 @@ page-fs4c ,page-fs4g{
       }
       ion-label{
         margin: 0 auto;
+        text-align: center;
       }
       ion-icon{
         background: transparent;

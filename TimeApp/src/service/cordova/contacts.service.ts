@@ -69,8 +69,11 @@ export class ContactsService {
         multiple: true,
         desiredFields: ["displayName", "phoneNumbers", 'name']
       }).then(data => {
+        let contactPhones: Array<string> = new Array<string>();
+        
         for (let contact of data) {
-
+          // XiaoMI 6X补丁
+          if (contact._objectInstance) contact = contact._objectInstance;
 
           if (!contact.phoneNumbers) continue;
           for (let phone of contact.phoneNumbers) {
@@ -81,14 +84,14 @@ export class ContactsService {
               number = number + v;
 
             })
-            number= number.replace('+86', '')
+            number= number.replace(/\+86/g, '')
               .replace('0086', '')
               .replace(/\s/g,"");
-            console.log("SJ====》开始" + contact.name.formatted + "phone:" + number);
             if (!this.utilService.checkPhone(number)) {
               continue;
             } else {
-
+              if (contactPhones.indexOf(number) > -1) continue;
+              
               let btbl: BTbl = new BTbl();
 
               //联系人别称
@@ -97,7 +100,6 @@ export class ContactsService {
               btbl.rn = contact.name.formatted;
               btbl.rc = number;
               btbls.push(btbl);
-              console.log("SJ====》End" + JSON.stringify(btbl));
             }
           }
         }
@@ -234,6 +236,9 @@ export class ContactsService {
     let bt = new BTbl();
     let bh = new BhTbl();
 
+    let userinfo = await this.personRestful.get(id);
+    let hasAvatar : boolean = false;
+    
     let exists : FsData = null;
 
     //获取本地参与人
@@ -257,9 +262,6 @@ export class ContactsService {
       bt.hiu = "";
       bt.rel = '0';
     }
-    
-    let userinfo = await this.personRestful.get(id);
-    let hasAvatar : boolean = false;
     
     if (userinfo && userinfo.data) {
       if (exists)

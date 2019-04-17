@@ -36,7 +36,6 @@ page-tdc, page-tddi, page-tddj, page-tdds {
 
   .grid {
 
-
     height: 100%;
     letter-spacing: 1px;
     min-height: 520px;
@@ -182,6 +181,13 @@ page-tdc, page-tddi, page-tddj, page-tdds {
         }
       }
 
+      .selected{
+        display: inline-flex;
+        overflow-x: auto;
+        width: 100%;
+        min-height: 65px;
+      }
+
     }
 
 
@@ -255,6 +261,33 @@ page-tdc, page-tddi, page-tddj, page-tdds {
     -moz-opacity: 0.3;
     opacity: .30;
     filter: alpha(opacity=30);
+  }
+
+  .chip-ios{
+    border-radius: 16px;
+    font-size: 12px;
+    color: #ffffff;
+    margin: 8px;
+    display: inline-block;
+    min-height: 60px;
+    background-color: transparent;
+    ion-avatar{
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      margin:  0 auto;
+    }
+    ion-label{
+      margin: 0 auto;
+    }
+    ion-icon{
+      background: transparent;
+      text-align: center;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 14px;
+    }
   }
 
 }

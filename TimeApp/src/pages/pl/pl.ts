@@ -106,7 +106,7 @@ export class PlPage {
       }
       this.util.loadingEnd();
     }).catch(error=>{
-      this.util.popoverStart('获取计划失败');
+      this.util.toastStart('获取计划失败',1500);
       this.util.loadingEnd();
     });
   }
@@ -149,14 +149,17 @@ export class PlPage {
   }
 
   delete(jh:PagePDPro){
+    this.util.loadingStart();
     let count = jh.js;
     this.plService.delete(jh).then(data=>{
-      jh.jtd = '0';
+      jh.jtd = '0';//系统计划 jtd 变更
       jh.js = '?';
+      this.util.loadingEnd();
     }).catch(error=>{
       jh.jtd = '1';
       jh.js = count;
-      this.util.popoverStart('删除系统计划：' + jh.jn + ' 失败');
+      this.util.toastStart('删除系统计划：' + jh.jn + ' 失败',1500);
+      this.util.loadingEnd();
     });
   }
 
@@ -168,16 +171,12 @@ export class PlPage {
     }else {
       message = '刷新';
     }
-    this.plService.downloadPlan(jh.ji).then(data=>{
+    this.plService.downloadPlan(jh).then(data=>{
       jh.js = data.data == null ? "0":data.data;
-
-      if(jh.jtd == '0'){ //下载
-        jh.jtd = '1';
-        this.plService.upPlan(jh);//系统计划 jtd 变更
-      }
+      jh.jtd = '1';
       this.util.loadingEnd();
     }).catch(error=>{
-      this.util.popoverStart(message + '失败');
+      this.util.toastStart(message + '失败',1500);
       this.util.loadingEnd();
     });
   }
