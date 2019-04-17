@@ -37,7 +37,7 @@ import {ScdData, ScdPageParamter} from "../../data.mapping";
           <div>
             <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
                           pickerFormat="YYYY MM DD" color="light"
-                          [(ngModel)]="scd.sd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
+                          [(ngModel)]="scd.showSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                           min="1999-01-01" max="2039-12-31"  cancelText="取消" doneText = "确认"
             ></ion-datetime>
           </div>
@@ -235,7 +235,7 @@ export class TdcPage {
     //新建的场合初始化
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
-      this.scd.sd = paramter.d.format("YYYY-MM-DD");
+      this.scd.showSd = paramter.d.format("YYYY-MM-DD");
       this.scd.st = moment().add(1, "h").format("HH:00");
     }
     this.scd.rt = "0";
@@ -382,7 +382,7 @@ export class TdcPage {
 
     //本人新建或修改时，下记画面项目可以修改
     //开始时间格式转换
-    this.scd.sd = moment(this.scd.sd).format("YYYY/MM/DD");
+    this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
 
 
     //结束日期设置
