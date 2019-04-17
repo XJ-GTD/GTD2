@@ -44,7 +44,7 @@ export class PlService {
       sjh.jn = br.data.pn.pt;
       sjh.jg = br.data.pn.pd;
       sjh.jc = br.data.pn.pm;
-      sjh.jt = "1";
+      sjh.jt = br.data.pn.pc;
       sjh.jtd = "1";
       sqls.push(sjh.upT());
       console.log('---------- PlService downloadPlan 新计划插入计划表 ----------------');
@@ -137,7 +137,7 @@ export class PlService {
 
       let jhTbl: JhTbl = new JhTbl();
       Object.assign(jhTbl,jh);
-      jh.jtd = "0";
+      jhTbl.jtd = "0";
       sqls.push(jhTbl.upT());
 
       await this.sqlExec.batExecSql(sqls);
