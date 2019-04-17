@@ -137,9 +137,13 @@ public class AgdAgendaController {
 			AgdAgenda agd = agendaService.getAgdAgendaInfo(agdId,request);
 			if (agd != null) {
 				out.setD(BaseUtil.agdToDtoAgd(agd));
+				out.setRc(ReturnMessage.SUCCESS_CODE);
+				out.setRm(ReturnMessage.SUCCESS_MSG);
+			}else{
+				out.setRc(ReturnMessage.NULL_CODE);
+				out.setRm(ReturnMessage.NULL_MSG);
 			}
-			out.setRc(ReturnMessage.SUCCESS_CODE);
-			out.setRm(ReturnMessage.SUCCESS_MSG);
+			
 		} else {
 			out.setRc(ReturnMessage.ERROR_CODE);
 			out.setRm(ReturnMessage.ERROR_MSG);
