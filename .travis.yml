@@ -15,8 +15,6 @@ addons:
     - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
       key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
     packages:
-    - oracle-java8-installer
-    - oracle-java8-set-default
     - yarn
     - jq
     - gradle
@@ -71,3 +69,5 @@ after_script:
 env:
   global:
   - JAVA_HOME=/usr/lib/jvm/java-8-oracle
+jdk:
+  - oraclejdk8
