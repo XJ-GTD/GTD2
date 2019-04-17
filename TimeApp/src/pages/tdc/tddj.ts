@@ -50,7 +50,7 @@ import {FsData, ScdData, ScdPageParamter} from "../../data.mapping";
           </div>
         </ion-row>
         <ion-row>
-          <ion-toggle [(ngModel)]="alld" [class.allday]="b"></ion-toggle>
+          <ion-toggle [(ngModel)]="alld" [class.allday]="b" (ionChange)="togChange()"></ion-toggle>
           <div>
             <ion-datetime displayFormat="HH:mm" [(ngModel)]="scd.st"
                           pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)" [hidden]="alld"></ion-datetime>
@@ -232,6 +232,13 @@ export class TddjPage {
   comentfocus() {
     if (this.keyboard){
       this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(-300px)");
+    }
+  }
+
+  togChange(){
+    this.util.toastStart(this.alld+"",1000);
+    if (!this.alld){
+      this.scd.st = this.scd.st == "99:99"?"00:00":this.scd.st;
     }
   }
 
