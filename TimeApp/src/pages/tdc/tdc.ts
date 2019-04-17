@@ -406,9 +406,10 @@ export class TdcPage {
     this.scd.ji = this.scd.p.ji;
 
     //新建数据
-     let data =  await this.tdcServ.save(this.scd)
-      this.util.loadingEnd();
-     return data;
+    let data =  await this.tdcServ.save(this.scd);
+    this.util.loadingEnd();
+    this.cancel();
+    return data;
   }
 
   chkinput(): boolean {
@@ -422,7 +423,6 @@ export class TdcPage {
   goShare() {
     //日程分享打开参与人选择rc日程类型
       this.save().then(data=>{
-        this.cancel();
         this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
       });
 
