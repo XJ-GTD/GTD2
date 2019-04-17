@@ -1,29 +1,19 @@
 package com.xiaoji.gtd.controller;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xiaoji.gtd.dto.AgdAgendaDto;
 import com.xiaoji.gtd.dto.AgdContactsDto;
@@ -62,7 +52,7 @@ public class AgdAgendaController {
 		String relId = request.getHeader("ai");
 		log.info("---- 保存日程获取头部ai  -----" + relId);
 		log.info("---- 保存日程获取获取参数  -----" + JSONObject.toJSONString(freshAgd));
-
+		freshAgd.setSerCreaterId(relId);
 		AgdAgenda agd = agendaService.findById(freshAgd.getAi());
 		boolean isDef = false;
 		if (agd != null) {
@@ -144,13 +134,16 @@ public class AgdAgendaController {
 		log.info("---- 保存日程获取获取参数  -----" + JSONObject.toJSONString(freshAgd));
 		String agdId = freshAgd.getAi();
 		if (!"".equals(agdId) && agdId != null) {
-			// blacklist.setFc(relId);
-			AgdAgenda agd = agendaService.findById(freshAgd.getAi());
+			AgdAgenda agd = agendaService.getAgdAgendaInfo(agdId,request);
 			if (agd != null) {
 				out.setD(BaseUtil.agdToDtoAgd(agd));
+				out.setRc(ReturnMessage.SUCCESS_CODE);
+				out.setRm(ReturnMessage.SUCCESS_MSG);
+			}else{
+				out.setRc(ReturnMessage.NULL_CODE);
+				out.setRm(ReturnMessage.NULL_MSG);
 			}
-			out.setRc(ReturnMessage.SUCCESS_CODE);
-			out.setRm(ReturnMessage.SUCCESS_MSG);
+			
 		} else {
 			out.setRc(ReturnMessage.ERROR_CODE);
 			out.setRm(ReturnMessage.ERROR_MSG);

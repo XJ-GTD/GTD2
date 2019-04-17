@@ -62,21 +62,54 @@ public class BaseUtil {
 	 * @param inDto
 	 * @return
 	 */
-	public static AgdAgenda dtoAgdToAgd(AgdAgendaDto inDto) {
-		AgdAgenda agd = new AgdAgenda();
-		agd.setAgendaId(inDto.getAi()); // 日程主键
-		agd.setRelAgendaId(inDto.getRai());// 关联日程主键
-		agd.setTitle(inDto.getAt());// 标题
-		agd.setAgendaDate(inDto.getAdt());// 开始日期
-		agd.setAgendaTime(inDto.getSt()); //开始时间
-		agd.setEndDate(inDto.getEd());// 结束日期
-		agd.setEndTime(inDto.getEt());//结束时间
-		agd.setRepeatType(inDto.getAr()); // 重复
-		agd.setCreaterId(inDto.getFc());// 来自于谁（创建人）
-		agd.setPlanFlag(inDto.getAp()); // 计划
-		agd.setRemindFlag(inDto.getAa());// 提醒方式
-		agd.setRemarks(inDto.getAm());// 备注
-		agd.setWtt(inDto.getWtt());// 创建时间戳
+	public static AgdAgenda dtoAgdToAgd(AgdAgendaDto inDto,AgdAgenda agd) {
+		if(agd == null){
+			agd = new AgdAgenda();
+		}
+		agd.setServerCreaterId(inDto.getSerCreaterId());
+		if(inDto.getAi() != null && !"".equals(inDto.getAi())){
+			agd.setAgendaId(inDto.getAi()); // 日程主键
+		}
+		if(inDto.getRai() != null && !"".equals(inDto.getRai())){
+			agd.setRelAgendaId(inDto.getRai());// 关联日程主键
+		}
+		if(inDto.getAt() != null && !"".equals(inDto.getAt())){
+			agd.setTitle(inDto.getAt());// 标题
+		}
+		if(inDto.getAdt() != null && !"".equals(inDto.getAdt())){
+			agd.setAgendaDate(inDto.getAdt());// 开始日期
+		}
+		if(inDto.getSt() != null && !"".equals(inDto.getSt())){
+			agd.setAgendaTime(inDto.getSt()); //开始时间
+		}
+		
+		if(inDto.getEd() != null && !"".equals(inDto.getEd())){
+			agd.setEndDate(inDto.getEd());// 结束日期
+		}
+		if(inDto.getEt() != null && !"".equals(inDto.getEt())){
+			agd.setEndTime(inDto.getEt());//结束时间
+		}
+		if(inDto.getAr() != null && !"".equals(inDto.getAr())){
+			agd.setRepeatType(inDto.getAr()); // 重复
+		}
+		
+		if(inDto.getFc() != null && !"".equals(inDto.getFc())){
+			agd.setCreaterId(inDto.getFc());// 来自于谁（创建人）
+		}
+		
+		if(inDto.getAp() != null && !"".equals(inDto.getAp())){
+			agd.setPlanFlag(inDto.getAp()); // 计划
+		}
+		if(inDto.getAa() != null && !"".equals(inDto.getAa())){
+			agd.setRemindFlag(inDto.getAa());// 提醒方式
+		}	
+		if(inDto.getAm() != null && !"".equals(inDto.getAm())){
+			agd.setRemarks(inDto.getAm());// 备注
+		}	
+		if(inDto.getWtt() != null && !"".equals(inDto.getWtt())){
+			agd.setWtt(inDto.getWtt());// 创建时间戳
+		}
+		agd.setTimeStamp(System.currentTimeMillis());
 		return agd;
 	}
 
@@ -113,7 +146,8 @@ public class BaseUtil {
 	 * @return
 	 */
 	public boolean getBla(String openId, String relId,HttpServletRequest request) {
-		String url = "http://sa-bla:8080/bla/getOne";
+		String url = "https://www.guobaa.com/bla/getOne";
+		log.info("========获取黑名单：mpn" + openId+",relId:"+relId);
 		// 设置参数
 		Map<String, Object> hashMap = new LinkedHashMap<String, Object>();
 		hashMap.put("mpn", openId);
@@ -168,7 +202,7 @@ public class BaseUtil {
 	 */
 	public String getUserInfo(String unionid) {
 		String npm = "";
-		String url = "http://sa-aup:8080/aup/user/" + unionid + "/userinfo";
+		String url = "https://www.guobaa.com/aup/user/" + unionid + "/userinfo";
 		log.info("========url获取返回信息：" + url);
 		// 设置参数
 //		JSONObject json = this.httpReq(url, hashMap, "GET", request);
@@ -178,6 +212,7 @@ public class BaseUtil {
 		if(json.containsKey("errcode") && json.getString("errcode").equals("0")){
 			json = json.getJSONObject("data");
 			npm = json.getString("phoneno");
+			json.remove("avatarbase64");
 		}
 		log.info("========获取人员信息：" + json.toString());
 		return npm;

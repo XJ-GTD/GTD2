@@ -251,6 +251,7 @@ export class TddjPage {
         this.scd.showSd = paramter.d.format("YYYY-MM-DD");
 
 
+
         this.busiServ.getPlans().then(data => {
           this.jhs = data;
           for (let i = 0; i < this.jhs.length; i++) {
@@ -267,7 +268,6 @@ export class TddjPage {
           this.rept_flg = true;
         }
 
-        this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
         if (this.scd.st) {
           this.scd.st = this.scd.st
         } else {
@@ -435,7 +435,7 @@ export class TddjPage {
 
     //本人新建或修改时，下记画面项目可以修改
     //开始时间格式转换
-    this.scd.sd = moment(this.scd.sd).format("YYYY/MM/DD");
+    this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
 
 
     //结束日期设置
@@ -491,7 +491,8 @@ export class TddjPage {
   }
 
   presentActionSheet() {
-    let d = this.navParams.get("d");
+    let paramter: ScdPageParamter = this.navParams.data;
+    let d = paramter.d.format("YYYY/MM/DD");
     if (this.scd.rt != "0" && this.scd.sd != d) {
       //重复日程删除
       const actionSheet = this.actionSheetCtrl.create({
@@ -501,17 +502,7 @@ export class TddjPage {
             role: 'destructive',
             cssClass: 'btn-del',
             handler: () => {
-
-              if (moment(d).format("YYYY/MM/DD") == moment(this.scd.sd).format("YYYY/MM/DD")) {
-                //如果开始日与选择的当前日一样，就是删除所有
-                this.util.loadingStart();
-                this.tddjServ.delete(this.scd.si, "2", d).then(data => {
-                  this.util.loadingEnd();
-                  this.cancel();
-                }).catch(err => {
-                  this.util.loadingEnd();
-                });
-              } else {
+              this.util.alterStart("2",()=> {
                 this.util.loadingStart();
                 this.tddjServ.delete(this.scd.si, "1", d).then(data => {
                   this.util.loadingEnd();
@@ -519,19 +510,20 @@ export class TddjPage {
                 }).catch(err => {
                   this.util.loadingEnd();
                 });
-              }
-
+              });
             }
           }, {
             text: '删除所有日程',
             cssClass: 'btn-delall',
             handler: () => {
-              this.util.loadingStart();
-              this.tddjServ.delete(this.scd.si, "2", d).then(data => {
-                this.util.loadingEnd();
-                this.cancel();
-              }).catch(err => {
-                this.util.loadingEnd();
+              this.util.alterStart("2",()=> {
+                this.util.loadingStart();
+                this.tddjServ.delete(this.scd.si, "2", d).then(data => {
+                  this.util.loadingEnd();
+                  this.cancel();
+                }).catch(err => {
+                  this.util.loadingEnd();
+                });
               });
             }
           }, {
@@ -547,12 +539,14 @@ export class TddjPage {
       actionSheet.present();
     } else {
       //非重复日程删除
-      this.util.loadingStart();
-      this.tddjServ.delete(this.scd.si, "2", d).then(data => {
-        this.util.loadingEnd();
-        this.cancel();
-      }).catch(err => {
-        this.util.loadingEnd();
+      this.util.alterStart("2",()=> {
+        this.util.loadingStart();
+        this.tddjServ.delete(this.scd.si, "2", d).then(data => {
+          this.util.loadingEnd();
+          this.cancel();
+        }).catch(err => {
+          this.util.loadingEnd();
+        });
       });
     }
 

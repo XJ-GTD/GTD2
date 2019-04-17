@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,11 @@ import com.xiaoji.gtd.dto.AgdAgendaDto;
 import com.xiaoji.gtd.dto.AgdContactsDto;
 import com.xiaoji.gtd.entity.AgdAgenda;
 import com.xiaoji.gtd.entity.AgdAgendaContacts;
+import com.xiaoji.gtd.entity.AgdAgendaRecord;
 import com.xiaoji.gtd.repositorys.AgdAgendaRepository;
 import com.xiaoji.gtd.repositorys.AgdContactsRepository;
+import com.xiaoji.gtd.repositorys.AgdRecordRepository;
+import com.xiaoji.gtd.services.IAgdRecordService;
 import com.xiaoji.gtd.services.IAgendaService;
 import com.xiaoji.gtd.util.BaseUtil;
 
@@ -40,7 +45,13 @@ public class IAgendaServiceImpl implements IAgendaService {
 
 	@Autowired
 	private AgdContactsRepository agdContactsRep;
+	
+	@Autowired
+	private AgdRecordRepository agdRecordRep;
 
+	@Autowired
+	private IAgdRecordService agdRecordServ;
+	
 	@Autowired
 	private JmsMessagingTemplate jmsMessagingTemplate;
 
@@ -58,7 +69,8 @@ public class IAgendaServiceImpl implements IAgendaService {
 		if (inDto.getAdt() != null && inDto.getAdt().length() == 10) {
 			inDto.setAdt(inDto.getAdt() + (inDto.getSt() == null ? " 99:99" : (" " + inDto.getSt())));
 		}
-		AgdAgenda agd = BaseUtil.dtoAgdToAgd(inDto);
+		AgdAgenda agd = this.findById(inDto.getAi());
+		agd = BaseUtil.dtoAgdToAgd(inDto,agd);
 		log.info("------保存日程AgdAgenda: ------" + JSONObject.toJSONString(agd));
 		agd = agdAgenda.save(agd);
 		return agd;
@@ -74,20 +86,40 @@ public class IAgendaServiceImpl implements IAgendaService {
 		if (inDto.getAdt() != null && inDto.getAdt().length() == 10) {
 			inDto.setAdt(inDto.getAdt() + (inDto.getSt() == null ? " 99:99" : (" " + inDto.getSt())));
 		}
-
-		AgdAgenda agd = BaseUtil.dtoAgdToAgd(inDto);
+		AgdAgenda agd = this.findById(inDto.getAi());
+		agd = BaseUtil.dtoAgdToAgd(inDto,agd);
 		log.info("------保存日程AgdAgenda: ------" + JSONObject.toJSONString(agd));
 		agd = agdAgenda.save(agd);
 		List<AgdAgendaContacts> agdList = agdContactsRep.findContactsByRelId(inDto.getAi());
 		if (agdList != null && agdList.size() > 0) {
 			List<AgdContactsDto> agdOList = new ArrayList<AgdContactsDto>();
 			for (AgdAgendaContacts agdAgendaContacts : agdList) {
-				agdOList.add(BaseUtil.AgdToContactsDto(agdAgendaContacts));
-
+				//查询是否存在未请求日程记录
+				List<AgdAgendaRecord> recList = this.agdRecordRep.
+						findRecordByAgdId(agd.getAgendaId(), agdAgendaContacts.getPhone());
+				if(recList != null && recList.size()>0){
+					AgdAgendaRecord record = recList.get(0);
+					record.setRequestState(1);
+					this.agdRecordRep.save(record);
+					record.setRecId(null);
+					record.setRequestState(0);
+					record.setTimeStamp(agd.getTimeStamp());
+					this.agdRecordRep.save(record);
+				}else{
+					//不存在则发送消息
+					this.agdRecordServ.save(agd, agdAgendaContacts.getPhone(), agdAgendaContacts.getAccountId());
+					agdOList.add(BaseUtil.AgdToContactsDto(agdAgendaContacts));					
+				}
+				
+			}
+			if(agdOList.size()>0){
 				// TODO 发送更新日程消息
 				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("from", inDto.getFc()); // 发送人
+				map.put("from", agd.getCreaterId()); // 发送人
 				map.put("to", JSONObject.toJSON(agdOList));
+				inDto.setAt(agd.getTitle());
+		        inDto.setFc(agd.getCreaterId());
+		        inDto.setAdt(agd.getAgendaDate());
 				map.put("agenda", JSONObject.toJSON(inDto));
 				map.put("notifyType", "update");
 				try {
@@ -100,6 +132,7 @@ public class IAgendaServiceImpl implements IAgendaService {
 					log.error("------- 发送失败  --------" + e.getMessage());
 				}
 			}
+			
 		}
 		// if(inDto.getAc() != null && inDto.getAc().size()>0){
 		// //发送添加/更新日程消息
@@ -144,6 +177,7 @@ public class IAgendaServiceImpl implements IAgendaService {
 			//如果是被分享日程则删除参与人
 			if (agd.getCreaterId() != null && !"".equals(agd.getCreaterId())
 					&& !agd.getCreaterId().equals(openId)) {
+				//获取当前登录人手机号
 				BaseUtil base = new BaseUtil();
 				String phoneNo = base.getUserInfo(openId);
 				log.info("======== 获取openId的phoneNo："+phoneNo);
@@ -158,13 +192,19 @@ public class IAgendaServiceImpl implements IAgendaService {
 					// 发送添加/更新日程消息
 					List<AgdContactsDto> dels = new ArrayList<AgdContactsDto>();
 					for (AgdAgendaContacts agdAgendaContacts : agdList) {
+						//查询是否存在未请求日程记录
+//						List<AgdAgendaRecord> recList = this.agdRecordRep.
+//								findRecordByAgdId(agd.getAgendaId(), agdAgendaContacts.getPhone());
+//						if(recList == null || recList.size() == 0){
+//							dels.add(BaseUtil.AgdToContactsDto(agdAgendaContacts));
+//						}
 						dels.add(BaseUtil.AgdToContactsDto(agdAgendaContacts));
 						agdContactsRep.deleteById(agdAgendaContacts.getRecId());
 						// TODO 发送删除日程消息
 					}
 					// 生产删除消息MQ
 					Map<String, Object> map = new HashMap<String, Object>();
-					map.put("from", inDto.getFc()); // 发送人
+					map.put("from", agd.getCreaterId()); // 发送人
 					map.put("to", JSONObject.toJSON(dels));
 					inDto = BaseUtil.agdToDtoAgd(agd);
 					map.put("agenda", JSONObject.toJSON(inDto));
@@ -178,17 +218,14 @@ public class IAgendaServiceImpl implements IAgendaService {
 						log.error("------- 发送失败  --------" + map.toString());
 					}
 				}
-			}
-
-			
-
+			}	
 		}
 
 		return 0;
 	}
 
 	/**
-	 * 根据日程ID查询日程
+	 * 获取日程信息，并更新发送日程消息记录状态为已获取
 	 */
 	public AgdAgenda findById(String agendaId) {
 		Optional<AgdAgenda> ageno = agdAgenda.findById(agendaId);
@@ -198,6 +235,31 @@ public class IAgendaServiceImpl implements IAgendaService {
 		}
 		return agenL;
 	}
+	
+	/**
+	 * 获取日程信息，并更新发送日程消息记录状态为已获取
+	 * @param agendaId
+	 * @return
+	 */
+	public AgdAgenda getAgdAgendaInfo(String agendaId,HttpServletRequest request){
+		AgdAgenda agd = this.findById(agendaId);
+		//获取当前登录人手机号
+		BaseUtil base = new BaseUtil();
+		String phoneNo = base.getUserInfo(request.getHeader("ai"));
+		if(agd != null){
+			//查询是否存在未请求日程记录
+			List<AgdAgendaRecord> recList = this.agdRecordRep.findRecordByAgdId(agd.getAgendaId(), phoneNo);
+			//存在则更新
+			if(recList.size()>0){
+				AgdAgendaRecord record = recList.get(0);
+				record.setRequestState(1);
+				this.agdRecordRep.save(record);
+			}
+		}
+		return agd;
+		
+	}
+	
 
 	/**
 	 * 查询所有日程

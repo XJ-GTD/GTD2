@@ -147,13 +147,15 @@ public class BlacklistController {
      */
     @RequestMapping(value="/getOne")
     @ResponseBody
-    public BaseOutDto getOne(BlaBlacklistDto blacklist,HttpServletRequest request) {
+    public BaseOutDto getOne(@RequestBody BlaBlacklistDto blacklist,HttpServletRequest request) {
     	BaseOutDto out = new BaseOutDto();
     	String relId = blacklist.getRelId();
     	String mobile = blacklist.getMpn();
+    	log.info("查询黑名单relId:"+relId+"mobile:"+mobile);
     	if(relId != null && !"".equals(relId) && mobile != null &&!"".equals(mobile)){
     		blacklist.setRelId(relId);
     		List<BlaBlacklist> xjList = blackService.findBlacklist(relId, mobile);
+    		log.info("查询黑名单返回结果:"+JSONObject.toJSONString(xjList));
     		Map<String, Object> map = new HashMap<String, Object>();
     		map.put("mpn", mobile);
 			map.put("relId", relId);

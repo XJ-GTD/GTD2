@@ -57,6 +57,29 @@ page-br {
     min-height: 9vmin;
   }
 
+  ion-row ion-col{
+    text-align: center;
+  }
+
+  ion-avatar{
+    height: 67px;
+    width: 67px;
+    margin-left: calc(calc(100% - 67px)/2);
+  }
+
+  ion-row:first-child{
+    margin-bottom: 50px;
+  }
+
+  ion-row:nth-child(3){
+    margin-bottom: 20px;
+  }
+
+  ion-row div{
+    text-align: center;
+    width: 100%;
+  }
+
   .scroll-content{
     overflow-x: hidden;
     overflow-y: hidden;

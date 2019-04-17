@@ -27,6 +27,7 @@ public class AgdAgendaDto implements Serializable {
 	private String am;	//	备注
 	private String wtt; // 创建时间戳
 	private List<AgdContactsDto> ac;	//	参与人
+	private String serCreaterId; // 服务器创建人
 	public String getRai() {
 		return rai;
 	}
@@ -110,6 +111,12 @@ public class AgdAgendaDto implements Serializable {
 	}
 	public void setWtt(String wtt) {
 		this.wtt = wtt;
+	}
+	public String getSerCreaterId() {
+		return serCreaterId;
+	}
+	public void setSerCreaterId(String serCreaterId) {
+		this.serCreaterId = serCreaterId;
 	}
 	
 }

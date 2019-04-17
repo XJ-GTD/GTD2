@@ -32,6 +32,8 @@ public class AgdAgenda implements Serializable {
 	private String remindFlag;	//	提醒
 	private String remarks;	//	备注
 	private String wtt; //创建时间戳
+	private Long timeStamp; //服务器时间戳
+	private String serverCreaterId; //服务器创建人ID
 	public String getAgendaId() {
 		return agendaId;
 	}
@@ -110,6 +112,17 @@ public class AgdAgenda implements Serializable {
 	public void setWtt(String wtt) {
 		this.wtt = wtt;
 	}
+	public Long getTimeStamp() {
+		return timeStamp;
+	}
+	public void setTimeStamp(Long timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+	public String getServerCreaterId() {
+		return serverCreaterId;
+	}
+	public void setServerCreaterId(String serverCreaterId) {
+		this.serverCreaterId = serverCreaterId;
+	}
 	
-
 }
