@@ -2,6 +2,8 @@ package com.xiaoji.gtd.services;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.xiaoji.gtd.dto.AgdAgendaDto;
 import com.xiaoji.gtd.entity.AgdAgenda;
 
@@ -41,4 +43,13 @@ public interface IAgendaService {
 	 * @return
 	 */
 	AgdAgenda findById(String agendaId);
+	
+	/**
+	 * 获取日程信息，并更新发送日程消息记录状态为已获取
+	 * @param agendaId
+	 * @return
+	 */
+	AgdAgenda getAgdAgendaInfo(String agendaId,HttpServletRequest request);
+	
+	
 }
