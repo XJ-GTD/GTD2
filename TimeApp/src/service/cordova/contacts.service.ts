@@ -69,6 +69,7 @@ export class ContactsService {
         multiple: true,
         desiredFields: ["displayName", "phoneNumbers", 'name']
       }).then(data => {
+        console.log("===== 获取本地联系人：" + JSON.stringify(data));
         let contactPhones: Array<string> = new Array<string>();
         let contact:any;
         
