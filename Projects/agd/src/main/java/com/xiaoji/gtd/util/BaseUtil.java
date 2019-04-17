@@ -113,7 +113,7 @@ public class BaseUtil {
 	 * @return
 	 */
 	public boolean getBla(String openId, String relId,HttpServletRequest request) {
-		String url = "https://www.guobaa.com/bla/getOne";
+		String url = "http://sa-bla:8080/bla/getOne";
 		// 设置参数
 		Map<String, Object> hashMap = new LinkedHashMap<String, Object>();
 		hashMap.put("mpn", openId);
@@ -168,7 +168,7 @@ public class BaseUtil {
 	 */
 	public String getUserInfo(String unionid) {
 		String npm = "";
-		String url = "https://www.guobaa.com/aup/user/" + unionid + "/userinfo";
+		String url = "http://sa-aup:8080/aup/user/" + unionid + "/userinfo";
 		log.info("========url获取返回信息：" + url);
 		// 设置参数
 //		JSONObject json = this.httpReq(url, hashMap, "GET", request);
