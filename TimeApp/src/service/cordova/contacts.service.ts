@@ -70,8 +70,9 @@ export class ContactsService {
         desiredFields: ["displayName", "phoneNumbers", 'name']
       }).then(data => {
         let contactPhones: Array<string> = new Array<string>();
+        let contact:any;
         
-        for (let contact of data) {
+        for (contact of data) {
           // XiaoMI 6X补丁
           if (contact._objectInstance) contact = contact._objectInstance;
 
