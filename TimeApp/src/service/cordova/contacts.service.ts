@@ -78,6 +78,9 @@ export class ContactsService {
           if (contact._objectInstance) contact = contact._objectInstance;
 
           if (!contact.phoneNumbers) continue;
+          // 可能存在没有姓名的联系人
+          if (!contact.name) continue;
+          
           for (let phone of contact.phoneNumbers) {
             //去除手机号中的空格
             let phonenumber = phone.value;
