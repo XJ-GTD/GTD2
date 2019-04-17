@@ -151,6 +151,10 @@ body {
     }
   }
 
+  .spinanimation{
+    animation: spin 1s linear infinite;
+  }
+
 }
 
 @-webkit-keyframes spin {

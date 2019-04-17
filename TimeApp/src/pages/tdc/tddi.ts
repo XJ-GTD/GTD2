@@ -249,8 +249,6 @@ export class TddiPage {
           this.reptshow = "关";
       }
 
-      this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
-
 
       this.clickwake(this.scd.tx + '');
 
@@ -349,7 +347,7 @@ export class TddiPage {
     this.scd.du = "1";
 
     //开始时间格式转换
-    this.scd.sd = moment(this.scd.sd).format("YYYY/MM/DD");
+    this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
 
     this.scd.ji = this.scd.p.ji;
 
@@ -367,7 +365,8 @@ export class TddiPage {
   }
 
   presentActionSheet() {
-    let d = this.navParams.get("d");
+    let paramter: ScdPageParamter = this.navParams.data;
+    let d = paramter.d.format("YYYY/MM/DD");
     if (this.scd.rt != "0" && this.scd.sd != d) {
       //重复日程删除
       const actionSheet = this.actionSheetCtrl.create({
@@ -378,16 +377,7 @@ export class TddiPage {
             cssClass: 'btn-del',
             handler: () => {
               this.util.alterStart("2",()=>{
-                if (moment(d).format("YYYY/MM/DD") == moment(this.scd.sd).format("YYYY/MM/DD")) {
-                  //如果开始日与选择的当前日一样，就是删除所有
-                  this.util.loadingStart();
-                  this.tddiServ.delete(this.scd.si, "2", d).then(data => {
-                    this.util.loadingEnd();
-                    this.cancel();
-                  }).catch(err => {
-                    this.util.loadingEnd();
-                  });
-                } else {
+
                   this.util.loadingStart();
                   this.tddiServ.delete(this.scd.si, "1", d).then(data => {
                     this.util.loadingEnd();
@@ -395,7 +385,7 @@ export class TddiPage {
                   }).catch(err => {
                     this.util.loadingEnd();
                   });
-                }
+
               });
             }
           }, {
