@@ -434,12 +434,7 @@ export class TddjPage {
 
 
     //结束日期设置
-    //重复场合
-    if (this.scd.rt != "0") {
-      this.scd.ed = "9999/12/31";
-    } else {
-      this.scd.ed = this.scd.sd;
-    }
+
 
     //结束时间设置
     //全天的场合

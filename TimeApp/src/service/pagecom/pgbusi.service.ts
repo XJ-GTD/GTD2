@@ -351,7 +351,7 @@ export class PgBusiService {
     Object.assign(c,scd);
     //消息设为已读
     c.du = "1";
-    await  this.sqlExce.update(c);
+
 
     if (oldc.sd != c.sd || oldc.rt != c.rt){
       //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
@@ -363,8 +363,9 @@ export class PgBusiService {
       //删除特殊表
       await this.sqlExce.delete(sptbl);
       //保存特殊表及相应提醒表
-      await this.saveSp(c);
-
+      let ed = await this.saveSp(c);
+      //结束日期使用sp表最后日期
+      c.ed = ed;
 
     }else{
       //如果只是修改重复时间，则更新重复子表所有时间
@@ -378,6 +379,8 @@ export class PgBusiService {
       }
 
     }
+    await  this.sqlExce.update(c);
+
     //restful用参数
     let agd = new AgdPro();
     this.setAdgPro(agd,c);
@@ -442,10 +445,13 @@ export class PgBusiService {
       newc.si = this.util.getUuid();
       //设置关联日程ID
       newc.sr = sr;
-      await this.sqlExce.save(newc);
+
 
       //添加特殊事件表
-      await this.saveSp(newc);
+      let ed = await this.saveSp(newc);
+      //结束日期使用sp表最后日期
+      newc.ed = ed;
+      await this.sqlExce.save(newc);
 
       //保存受邀人日程到服务器
       let a = new AgdPro();
