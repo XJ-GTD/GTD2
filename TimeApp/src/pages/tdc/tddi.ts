@@ -8,7 +8,8 @@ import {BsModel} from "../../service/restful/out/bs.model";
 import {TdcService} from "../tdc/tdc.service";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
-import {ScdData, ScdPageParamter} from "../../data.mapping";
+import {FsData, ScdData, ScdPageParamter} from "../../data.mapping";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 日程详情（受邀） page.
@@ -34,7 +35,7 @@ import {ScdData, ScdPageParamter} from "../../data.mapping";
         </ion-row>
         <ion-row class="avatar-set">
           <ion-chip>
-            <ion-avatar>
+            <ion-avatar (click)="goTofsDetail(scd.fs)">
               <img class="img-set" [src]="scd.fs.bhiu">
             </ion-avatar>
             <ion-label>{{scd.fs.rn}}</ion-label>
@@ -457,5 +458,10 @@ export class TddiPage {
       console.log("check:" + this.scd.ji);
     }
   }
+  goTofsDetail(fs:FsData){
+    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{fsData:fs});
+    modal.present();
+  }
+
 
 }

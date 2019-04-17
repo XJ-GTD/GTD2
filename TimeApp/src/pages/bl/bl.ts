@@ -4,7 +4,7 @@ import {BlService} from "./bl.service";
 import {FdService} from "../fd/fd.service";
 import {DataConfig} from "../../service/config/data.config";
 import {UtilService} from "../../service/util-service/util.service";
-import {PageBlData} from "../../data.mapping";
+import {FsData} from "../../data.mapping";
 
 /**
  * Generated class for the 黑名单列表 page.
@@ -40,14 +40,14 @@ import {PageBlData} from "../../data.mapping";
         <ion-row>
           <ion-list no-lines>
             <ion-item class="plan-list-item"  *ngFor="let g of bls">
-              <ion-avatar item-start >
+              <ion-avatar item-start  (click)="goTofsDetail(g)" >
                 <!--<img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">-->
-                <img [src]="g.a">
+                <img [src]="g.bhiu">
               </ion-avatar>
               <ion-label>
-                {{g.n}}
+                {{g.ran}}
                 <span style="font-size:14px;color:rgb(102,102,102);">
-                   {{g.mpn}}
+                   {{g.rc}}
                  </span>
               </ion-label>
               <button ion-button color="danger" (click)="delete(g)" clear item-end>
@@ -61,7 +61,7 @@ import {PageBlData} from "../../data.mapping";
   `
 })
 export class BlPage {
-  bls:Array<PageBlData>;
+  bls:Array<FsData>;
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private blService : BlService,
@@ -96,9 +96,9 @@ export class BlPage {
     })
   }
   //删除黑名单
-  delete(g:PageBlData){
+  delete(g:FsData){
     //this.util.popMsgbox("2",()=>{
-      this.fdService.removeBlack(g.mpn).then(data=>{
+      this.fdService.removeBlack(g.ui).then(data=>{
         if(data.code == 0){
           this.getBl();
           this.util.popoverStart('删除黑名单成功！')
@@ -106,5 +106,10 @@ export class BlPage {
      // })
     });
 
+  }
+
+  goTofsDetail(fs:FsData){
+    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{fsData:fs});
+    modal.present();
   }
 }

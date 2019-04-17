@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, ViewController} from 'ionic-angular';
+import {ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {FsService} from "./fs.service";
 import {GcService} from "../gc/gc.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData, FsPageData, PageDcData} from "../../data.mapping";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 群组参与人选择 page.
@@ -46,7 +47,7 @@ import {FsData, FsPageData, PageDcData} from "../../data.mapping";
     <ion-content padding>
       <ion-grid>
         <ion-row *ngFor="let g of pageFsl">
-          <ion-avatar item-start>
+          <ion-avatar item-start >
             <img [src]="g.bhiu">
           </ion-avatar>
           <ion-label>
@@ -54,6 +55,7 @@ import {FsData, FsPageData, PageDcData} from "../../data.mapping";
             <span>
                    {{g.rc}}
                  </span>
+            <span  *ngIf="g.rel ==1">注册</span>
           </ion-label>
           <ion-checkbox (click)="addsel(g)" [(ngModel)]="g.checked"></ion-checkbox>
         </ion-row>
@@ -71,7 +73,8 @@ export class Fs4gPage {
               private fsService: FsService,
               public viewCtrl: ViewController,
               private util: UtilService,
-              private gsService: GcService) {
+              private gsService: GcService,
+              private  modalCtrl:ModalController) {
   }
 
   ionViewDidEnter() {
@@ -141,5 +144,9 @@ export class Fs4gPage {
       });
       if (t) t.checked = true;
     }
+  }
+  goTofsDetail(fs:FsData){
+    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{fsData:fs});
+    modal.present();
   }
 }
