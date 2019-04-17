@@ -5,6 +5,7 @@ import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {UserConfig} from "../../service/config/user.config";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
+import {PageUData} from "../../data.mapping";
 
 @Injectable()
 export class PsService {
@@ -35,62 +36,13 @@ export class PsService {
   }
 
   //保存用户信息
-  saveUser(pu:any,type:string):Promise<BsModel<any>>{
+  saveUser(id:string,inData:any):Promise<any>{
     return new Promise<BsModel<any>>((resolve, reject) => {
-      let bs = new BsModel<any>();
-      //保存本地用户信息
-      let u = new UTbl();
-      u.ui = pu.user.id;
-      if(type == "name"){
-        u.un = pu.user.name;
-      }else if(type == "both"){
-        u.biy = pu.user.bothday;
-      }else if(type == "ic"){
-        u.ic = pu.user.No == "" ? null :pu.user.No;
-      }else if(type == "sex"){
-        u.us = pu.user.sex;
-      }else if(type == "contact") {
-        u.uct = pu.user.contact == "" ? null : pu.user.contact;
-      }
-      this.sqlExec.update(u).then(data=>{
-
-        let inDataName = {nickname:""};
-        let inDataSex = {sex:""};
-        let inDataBoth = {birthday:""};
-        let inDataContact = {contact:""};
-        let inDataIC = {ic:""};
-
-        //restFul保存用户信息
-        //return this.personRestful.updateself(pu,pu.user.id);
-        if(type == "name"){
-          inDataName.nickname = pu.user.name;
-          return this.personRestful.updateself(inDataName,pu.user.id);
-        }else if(type == "both"){
-          inDataBoth.birthday = pu.user.bothday;
-          return this.personRestful.updateself(inDataBoth,pu.user.id);
-        }else if(type == "ic"){
-          inDataIC.ic = pu.user.No;
-          return this.personRestful.updateself(inDataIC,pu.user.id);
-        }else if(type == "sex"){
-          inDataSex.sex = pu.user.sex;
-          return this.personRestful.updateself(inDataSex,pu.user.id);
-        }else if(type == "contact") {
-          inDataContact.contact = pu.user.contact;
-          return this.personRestful.updateself(inDataContact,pu.user.id);
-        }
-      }).then(data=>{
-        //刷新系统全局用户静态变量
-        //UserConfig.user = pu.user;
-        //刷新用户静态变量设置
-        this.userConfig.RefreshUTbl();
-        resolve(bs);
-      }).catch(e=>{
-        bs.code = -99;
-        bs.message = e.message;
-        resolve(bs);
-      })
-
-
+      this.personRestful.updateself(inData,id).then(data=>{
+        resolve(data);
+      }).catch(error=>{
+        resolve(error);
+      });
     })
   }
 

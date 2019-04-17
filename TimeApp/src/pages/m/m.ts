@@ -72,10 +72,14 @@ export class MPage {
   }
 
   ionViewDidEnter(){
+    this.getData();
+  }
+
+  getData(){
     this.phone = UserConfig.account.phone;
     this.name = UserConfig.user.name;
 
-    if (UserConfig.user.avatar != undefined && UserConfig.user.avatar != null && UserConfig.user.avatar != '') {
+    if (UserConfig.user.avatar != undefined && UserConfig.user.avatar != '') {
       this.avatar = UserConfig.user.avatar;
     }
   }
@@ -102,7 +106,12 @@ export class MPage {
 
   // 个人设置
   goPsPage() {
-    this.modalController.create(DataConfig.PAGE._PS_PAGE).present();
+    //this.modalController.create(DataConfig.PAGE._PS_PAGE).present();
+    let modal = this.modalController.create(DataConfig.PAGE._PS_PAGE);
+    modal.onDidDismiss((data)=>{
+      this.getData();
+    });
+    modal.present();
   }
 
 

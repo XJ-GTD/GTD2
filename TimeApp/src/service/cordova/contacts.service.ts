@@ -64,7 +64,6 @@ export class ContactsService {
         resolve(btbls);
         return;
       }
-      let match ="[^0-9]";
       await this.contacts.find(['*'], {
         filter: '',
         multiple: true,
@@ -72,15 +71,27 @@ export class ContactsService {
       }).then(data => {
         for (let contact of data) {
 
-          console.log("SJ====》开始");
+
+          console.log("1SJ====》开始" + JSON.stringify(contact));
+          if (!contact.phoneNumbers) continue;
           for (let phone of contact.phoneNumbers) {
             //去除手机号中的空格
             let phonenumber = phone.value;
-            phonenumber = phonenumber.match(match).input;
-            phonenumber= phonenumber.replace('86', '').replace('0086', '');
-            if (!this.utilService.checkPhone(phonenumber)) {
-              break;
+            let number="";
+            console.log("2SJ====》开始" + phonenumber);
+            phonenumber.match(/\d+/g).forEach(v=>{
+              number = number + v;
+
+            })
+            console.log("3SJ====》开始" + number);
+            number= number.replace('+86', '')
+              .replace('0086', '')
+              .replace(/\s/g,"");
+            console.log("4SJ====》开始" + phonenumber);
+            if (!this.utilService.checkPhone(number)) {
+              continue;
             } else {
+              console.log("5SJ====》开始" + number);
 
               let btbl: BTbl = new BTbl();
 
@@ -88,9 +99,8 @@ export class ContactsService {
               btbl.ran = contact.name.formatted;
               //名称
               btbl.rn = contact.name.formatted;
-              btbl.rc = phonenumber;
+              btbl.rc = number;
               btbls.push(btbl);
-              console.log("SJ====》" + JSON.stringify(btbl));
             }
           }
         }

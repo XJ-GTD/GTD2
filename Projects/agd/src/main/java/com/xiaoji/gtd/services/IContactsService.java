@@ -2,6 +2,8 @@ package com.xiaoji.gtd.services;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.xiaoji.gtd.dto.AgdAgendaDto;
 import com.xiaoji.gtd.entity.AgdAgendaContacts;
 
@@ -15,7 +17,7 @@ public interface IContactsService {
 	 * 保存参与人
 	 * @param blacklist
 	 */
-	AgdAgendaContacts save(AgdAgendaDto inDto);
+	AgdAgendaContacts save(AgdAgendaDto inDto,HttpServletRequest request);
 	
 	/**
 	 * 删除参与人

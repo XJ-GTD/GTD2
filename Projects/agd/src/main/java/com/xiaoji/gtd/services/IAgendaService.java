@@ -18,10 +18,16 @@ public interface IAgendaService {
 	AgdAgenda save(AgdAgendaDto inDto);
 	
 	/**
+	 * 保存日程并发送消息
+	 * @param blacklist
+	 */
+	AgdAgenda saveAndSend(AgdAgendaDto inDto);
+	
+	/**
 	 * 删除日程
 	 * @param blacklist
 	 */
-	int deleteById(AgdAgendaDto inDto);
+	int deleteById(AgdAgendaDto inDto,String openId);
 	
 	/**
 	 * 查询所有日程

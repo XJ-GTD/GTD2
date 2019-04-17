@@ -113,8 +113,10 @@ export class PlData{
 
 export class PageUData{
   user = {
-    //账户ID
+    //用户ID
     id: "",
+    //账户ID
+    aid: "",
     //用户名
     name: "",
     //用户头像

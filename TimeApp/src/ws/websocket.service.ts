@@ -34,6 +34,7 @@ export class WebsocketService {
       this.password = "gtd_mq";
       //获取websocte 链接
       this.client = Stomp.client(this.RABBITMQ_WS_URL);
+      this.client.reconnect_delay = 1000;
 
       //获取websocte  queue
       this.queue = UserConfig.account.mq;
