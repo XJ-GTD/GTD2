@@ -23,6 +23,7 @@ import com.xiaoji.gtd.entity.AgdAgenda;
 import com.xiaoji.gtd.entity.AgdAgendaContacts;
 import com.xiaoji.gtd.repositorys.AgdAgendaRepository;
 import com.xiaoji.gtd.repositorys.AgdContactsRepository;
+import com.xiaoji.gtd.services.IAgdRecordService;
 import com.xiaoji.gtd.services.IContactsService;
 import com.xiaoji.gtd.util.BaseUtil;
 
@@ -39,6 +40,10 @@ public class IContactsServiceImpl implements IContactsService {
 	private AgdContactsRepository agdContactsRep;
 	@Autowired
 	private AgdAgendaRepository agdAgendaRep;
+
+	@Autowired
+	private IAgdRecordService agdRecordServ;
+	
 	@Autowired
     private JmsMessagingTemplate jmsMessagingTemplate;
 	@Value("${active.destinationName}")
@@ -66,6 +71,8 @@ public class IContactsServiceImpl implements IContactsService {
 				
 				inDto = BaseUtil.agdToDtoAgd(agenL);
 				BaseUtil base = new BaseUtil();
+				String phone =base.getUserInfo(request.getHeader("ai"));
+				log.info("------- 当前登录人手机号phone："+ phone);
 				//获取删除的参与人和新添加的参与人
 				if(agdList.size()>0){
 					for (AgdContactsDto add : acList) {
@@ -78,7 +85,7 @@ public class IContactsServiceImpl implements IContactsService {
 							}
 						}
 						//添加不存在的参与人
-						if(!isExsit){
+						if(!isExsit && !add.getMpn().equals(phone)){
 							if(add.getAi() == null || "".equals(add.getAi())){
 								add.setAi(add.getMpn());
 							}
@@ -92,7 +99,18 @@ public class IContactsServiceImpl implements IContactsService {
 						
 					}
 				}else{
-					addList.addAll(acList);
+					for (AgdContactsDto add : acList) {
+						if(add.getAi() == null || "".equals(add.getAi())){
+							add.setAi(add.getMpn());
+						}
+						//先判断是否存在于黑名单
+						boolean isbla = base.getBla(request.getHeader("ai"), add.getAi(), request);
+						if(!isbla && !add.getMpn().equals(phone)){
+							//添加日程发送记录表
+							this.agdRecordServ.save(agenL, add.getMpn(), add.getAi());
+							addList.add(add);
+						}
+					}
 				}
 				log.info("------- 添加参与人："+ JSONObject.toJSONString(addList));
 				if(addList.size()>0){
@@ -103,7 +121,7 @@ public class IContactsServiceImpl implements IContactsService {
 					}
 					//TODO 发送添加日程消息
 					Map<String,Object> map = new HashMap<String,Object>();
-					map.put("from", inDto.getFc());		// 发送人
+					map.put("from", agenL.getCreaterId());		// 发送人
 			        map.put("to", JSONObject.toJSON(addList));
 			        map.put("agenda", JSONObject.toJSON(inDto));
 			        map.put("notifyType", "add");
@@ -117,7 +135,7 @@ public class IContactsServiceImpl implements IContactsService {
 			        }
 					
 				}
-				log.info("------- 删除参与人："+ JSONObject.toJSONString(delList));
+//				log.info("------- 删除参与人："+ JSONObject.toJSONString(delList));
 //				if(delList.size()>0){
 //					List<AgdContactsDto> dels = new ArrayList<AgdContactsDto>();
 //					for (AgdAgendaContacts agdAgendaContacts : delList) {

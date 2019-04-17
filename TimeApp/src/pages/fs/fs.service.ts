@@ -84,7 +84,7 @@ export class FsService {
       adgPro.ai = si;
       let ac: Array<ContactPerPro> = new Array<ContactPerPro>();
       for (let fs of fsList) {
-        if(fs.rc != UserConfig.user.contact){
+        if(fs.rc != UserConfig.account.phone){
           let con = new ContactPerPro();
           con.ai = fs.ui;
           con.mpn =fs.rc;
@@ -115,7 +115,7 @@ export class FsService {
               break;
             }
           }
-          if (!is && fs.rc != UserConfig.user.contact) {
+          if (!is && fs.rc != UserConfig.account.phone) {
             let dt = new DTbl();
             dt.pi = this.util.getUuid();
             dt.ai = fs.pwi;

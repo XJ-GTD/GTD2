@@ -15,19 +15,9 @@ export class PdService {
   //获取计划 计划详情
   async getPlan(pid: string) {
     console.log('---------- PdService getPlan 获取计划开始 ----------------');
-    //获取本地计划
-    let jh: JhTbl = new JhTbl();
-    jh.ji = pid;
-    jh = await this.sqlExec.getOne<JhTbl>(jh);
-
     // 获取计划管理日程（重复日程处理等）
-    let sql = 'select * from gtd_c  where ji ="' + pid + '" order by sd';
-
-    sql = 'select gc.si,gc.sn,gc.bz,gc.ji,gc.rt,gc.sr,sp.sd,sp.st,sp.et,sp.ed from gtd_c gc ' +
-      'left join gtd_sp sp on sp.si = gc.si ' +
-      'where gc.ji = "' + pid + '" order by sp.sd,sp.st desc';
-    let cs = new Array<CTbl>();
-    cs = await this.sqlExec.getExtList<CTbl>(sql);
+    let  sql = 'select gc.si,gc.sn,gc.bz,gc.ji,gc.rt,gc.sr,sp.sd,sp.st,sp.et,sp.ed from gtd_c gc left join gtd_sp sp on sp.si = gc.si where gc.ji = "' + pid + '" order by sp.sd,sp.st desc';
+    let  cs = await this.sqlExec.getExtList<CTbl>(sql);
 
     let paList: Array<AgdPro> = Array<AgdPro>();
     if (cs.length > 0) {
@@ -68,6 +58,7 @@ export class PdService {
       let shareData: ShareData = new ShareData();
       shareData.ompn = "";
       shareData.oai = "";
+      plan.pn.pt = plan.pn.jn; // pt 计划分享使用
       shareData.d.p.pn = plan.pn;
       shareData.d.p.pa = plan.pa;
 
@@ -83,60 +74,24 @@ export class PdService {
   }
 
   //删除系统计划
-  async delete(jh: PagePDPro): Promise<BsModel<any>> {
-    console.log('---------- PdService delete 删除计划开始 ----------------');
+  async delete(jh: PagePDPro) {
     if (jh.jt == "2") {
-      //获取本地计划
+      console.log('---------- PdService delete 删除计划开始 ----------------');
+      let sqls:Array<string> = new Array<string>();
+      // 删除计划日程关联  获取计划管理日程
       let jhTbl: JhTbl = new JhTbl();
       jhTbl.ji = jh.ji;
-      jhTbl = await this.sqlExec.getOne<JhTbl>(jhTbl);
 
       // 本地计划日程关联
-      //修改日程表 计划为 null
-      let sql = 'update gtd_c set ji= null where ji = "' + jhTbl.ji + '";';
-      this.sqlExec.execSql(sql);
+      //修改日程表 计划 ji 去除
+      sqls.push('update gtd_c set ji = null where ji = "' + jhTbl.ji + '";');
+      //修改日程表 计划 ji 去除
+      sqls.push('update gtd_sp set ji = null where ji = "' + jhTbl.ji + '";');
 
-      //修改日程表 计划为 null
-      let spSql = 'update gtd_sp set ji= null where ji = "' + jhTbl.ji + '";';
-      this.sqlExec.execSql(spSql);
+      sqls.push(jhTbl.dT());
 
-      /*
-      //获取计划管理日程
-      let ctbl: CTbl = new CTbl();
-      ctbl.ji = jhTbl.ji;
-      let ctbls = await this.sqlExec.getList<CTbl>(ctbl);
-
-      if(ctbls.length > 0){
-        for (let j = 0, len = ctbls.length; j < len; j++) {
-          //提醒删除
-          let etbl:ETbl =new ETbl();
-          etbl.si = ctbls[j].si;
-          await this.sqlExec.delete(etbl);
-
-          //日程参与人删除
-          let dtbl:DTbl =new DTbl();
-          dtbl.si = ctbls[j].si;
-          await this.sqlExec.delete(dtbl);
-        }
-        //计划关联日程删除
-        await this.sqlExec.delete(ctbl);
-
-      }else{
-        console.log('---------- PdService delete 计划管理日程无数据 ----------------');
-      }*/
-
-      // 删除本地计划
-      let tbl: JhTbl = new JhTbl();
-      tbl.ji = jhTbl.ji;
-      await this.sqlExec.delete(tbl);
-
-      // TODO restful删除分享计划
+      await this.sqlExec.batExecSql(sqls);
       console.log('---------- PdService delete 删除计划结束 ----------------');
-
-      // 返出参
-      let bs = new BsModel();
-      bs.code = 0;
-      return bs;
     }
   }
 }

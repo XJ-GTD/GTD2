@@ -8,7 +8,8 @@ import {BsModel} from "../../service/restful/out/bs.model";
 import {TdcService} from "../tdc/tdc.service";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
-import {ScdData, ScdPageParamter} from "../../data.mapping";
+import {FsData, ScdData, ScdPageParamter} from "../../data.mapping";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 日程详情（受邀） page.
@@ -34,7 +35,7 @@ import {ScdData, ScdPageParamter} from "../../data.mapping";
         </ion-row>
         <ion-row class="avatar-set">
           <ion-chip>
-            <ion-avatar>
+            <ion-avatar (click)="goTofsDetail(scd.fs)">
               <img class="img-set" [src]="scd.fs.bhiu">
             </ion-avatar>
             <ion-label>{{scd.fs.rn}}</ion-label>
@@ -248,8 +249,6 @@ export class TddiPage {
           this.reptshow = "关";
       }
 
-      this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
-
 
       this.clickwake(this.scd.tx + '');
 
@@ -335,38 +334,31 @@ export class TddiPage {
 
   }
 
-  toSave(){
-    this.util.alterStart("1",()=>{
-      this.save();
-    });
-  }
-  save() {
+  async save() {
 
+    this.util.loadingStart();
     //提醒内容设置
 
     //消息设为已读
     this.scd.du = "1";
 
     //开始时间格式转换
-    this.scd.sd = moment(this.scd.sd).format("YYYY/MM/DD");
+    this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
 
     this.scd.ji = this.scd.p.ji;
 
     //归属 他人创建
     this.scd.gs = '1';
-    this.util.loadingStart();
-    this.tddiServ.updateDetail(this.scd).then(data => {
-      this.util.loadingEnd();
 
-    }).catch(err => {
-      this.util.loadingEnd();
-    });
-
-
+    let data =await  this.tddiServ.updateDetail(this.scd);
+    this.util.loadingEnd();
+    this.cancel();
+    return data;
   }
 
   presentActionSheet() {
-    let d = this.navParams.get("d");
+    let paramter: ScdPageParamter = this.navParams.data;
+    let d = paramter.d.format("YYYY/MM/DD");
     if (this.scd.rt != "0" && this.scd.sd != d) {
       //重复日程删除
       const actionSheet = this.actionSheetCtrl.create({
@@ -377,16 +369,7 @@ export class TddiPage {
             cssClass: 'btn-del',
             handler: () => {
               this.util.alterStart("2",()=>{
-                if (moment(d).format("YYYY/MM/DD") == moment(this.scd.sd).format("YYYY/MM/DD")) {
-                  //如果开始日与选择的当前日一样，就是删除所有
-                  this.util.loadingStart();
-                  this.tddiServ.delete(this.scd.si, "2", d).then(data => {
-                    this.util.loadingEnd();
-                    this.cancel();
-                  }).catch(err => {
-                    this.util.loadingEnd();
-                  });
-                } else {
+
                   this.util.loadingStart();
                   this.tddiServ.delete(this.scd.si, "1", d).then(data => {
                     this.util.loadingEnd();
@@ -394,7 +377,7 @@ export class TddiPage {
                   }).catch(err => {
                     this.util.loadingEnd();
                   });
-                }
+
               });
             }
           }, {
@@ -457,5 +440,10 @@ export class TddiPage {
       console.log("check:" + this.scd.ji);
     }
   }
+  goTofsDetail(fs:FsData){
+    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{fsData:fs});
+    modal.present();
+  }
+
 
 }

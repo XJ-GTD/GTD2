@@ -133,10 +133,15 @@ import {FsData, ScdData, ScdPageParamter} from "../../data.mapping";
           <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set" (focus)="comentfocus()"
                         (blur)="comentblur()"></ion-textarea>
         </ion-row>
-        <ion-row justify-content-left>
-          <div *ngFor="let fs of scd.fss;">
-            <div><img class ="img-set" [src]="fs.bhiu"></div>
-            <div class ="img-rn">{{fs.ran}}</div>
+        <ion-row>
+          <div class="reptlb2 ">朋友</div>
+          <div class="selected">
+            <ion-chip *ngFor="let fs of scd.fss" (click)="goTofsDetail(fs)">
+              <ion-avatar>
+                <img src={{fs.bhiu}}>
+              </ion-avatar>
+              <ion-label>{{fs.rn}}</ion-label>
+            </ion-chip>
           </div>
         </ion-row>
       </ion-grid>
@@ -246,6 +251,7 @@ export class TddjPage {
         this.scd.showSd = paramter.d.format("YYYY-MM-DD");
 
 
+
         this.busiServ.getPlans().then(data => {
           this.jhs = data;
           for (let i = 0; i < this.jhs.length; i++) {
@@ -262,7 +268,6 @@ export class TddjPage {
           this.rept_flg = true;
         }
 
-        this.scd.sd = moment(this.scd.sd).format("YYYY-MM-DD");
         if (this.scd.st) {
           this.scd.st = this.scd.st
         } else {
@@ -411,17 +416,12 @@ export class TddjPage {
 
   }
 
-  toSave(){
-    this.util.alterStart("1",()=>{
-      this.save("");
-    })
-  }
-
-  save(share) {
+  async save() {
 
     if (!this.chkinput()) {
       return
     }
+    this.util.loadingStart();
     //提醒内容设置
     this.scd.ui = UserConfig.account.id;
 
@@ -430,7 +430,7 @@ export class TddjPage {
 
     //本人新建或修改时，下记画面项目可以修改
     //开始时间格式转换
-    this.scd.sd = moment(this.scd.sd).format("YYYY/MM/DD");
+    this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
 
 
     //结束日期设置
@@ -456,17 +456,10 @@ export class TddjPage {
     //归属 本人创建
     this.scd.gs = '0';
 
-    this.util.loadingStart();
-    this.tddjServ.updateDetail(this.scd).then(data => {
-      this.util.loadingEnd();
-      if (typeof (eval(share)) == "function") {
-        share();
-      }
-      return;
-    }).catch(err => {
-      this.util.loadingEnd();
-    });
-
+    let data = await this.tddjServ.updateDetail(this.scd);
+    this.util.loadingEnd();
+    this.cancel();
+    return data;
 
   }
 
@@ -480,13 +473,16 @@ export class TddjPage {
 
   goShare() {
     //日程分享打开参与人选择rc日程类型
-      this.save(() => {
-        this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
-      });
+    this.save().then(data=>{
+
+      this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
+    });
+
   }
 
   presentActionSheet() {
-    let d = this.navParams.get("d");
+    let paramter: ScdPageParamter = this.navParams.data;
+    let d = paramter.d.format("YYYY/MM/DD");
     if (this.scd.rt != "0" && this.scd.sd != d) {
       //重复日程删除
       const actionSheet = this.actionSheetCtrl.create({
@@ -496,17 +492,7 @@ export class TddjPage {
             role: 'destructive',
             cssClass: 'btn-del',
             handler: () => {
-
-              if (moment(d).format("YYYY/MM/DD") == moment(this.scd.sd).format("YYYY/MM/DD")) {
-                //如果开始日与选择的当前日一样，就是删除所有
-                this.util.loadingStart();
-                this.tddjServ.delete(this.scd.si, "2", d).then(data => {
-                  this.util.loadingEnd();
-                  this.cancel();
-                }).catch(err => {
-                  this.util.loadingEnd();
-                });
-              } else {
+              this.util.alterStart("2",()=> {
                 this.util.loadingStart();
                 this.tddjServ.delete(this.scd.si, "1", d).then(data => {
                   this.util.loadingEnd();
@@ -514,19 +500,20 @@ export class TddjPage {
                 }).catch(err => {
                   this.util.loadingEnd();
                 });
-              }
-
+              });
             }
           }, {
             text: '删除所有日程',
             cssClass: 'btn-delall',
             handler: () => {
-              this.util.loadingStart();
-              this.tddjServ.delete(this.scd.si, "2", d).then(data => {
-                this.util.loadingEnd();
-                this.cancel();
-              }).catch(err => {
-                this.util.loadingEnd();
+              this.util.alterStart("2",()=> {
+                this.util.loadingStart();
+                this.tddjServ.delete(this.scd.si, "2", d).then(data => {
+                  this.util.loadingEnd();
+                  this.cancel();
+                }).catch(err => {
+                  this.util.loadingEnd();
+                });
               });
             }
           }, {
@@ -542,12 +529,14 @@ export class TddjPage {
       actionSheet.present();
     } else {
       //非重复日程删除
-      this.util.loadingStart();
-      this.tddjServ.delete(this.scd.si, "2", d).then(data => {
-        this.util.loadingEnd();
-        this.cancel();
-      }).catch(err => {
-        this.util.loadingEnd();
+      this.util.alterStart("2",()=> {
+        this.util.loadingStart();
+        this.tddjServ.delete(this.scd.si, "2", d).then(data => {
+          this.util.loadingEnd();
+          this.cancel();
+        }).catch(err => {
+          this.util.loadingEnd();
+        });
       });
     }
 
@@ -589,6 +578,11 @@ export class TddjPage {
     if (el && el.length == 2) {
       this.scd.st = el[0].textContent + ":" + el[1].textContent;
     }
+  }
+
+  goTofsDetail(fs:FsData){
+    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{fsData:fs});
+    modal.present();
   }
 
 }

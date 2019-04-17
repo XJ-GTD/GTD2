@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {ModalController, NavController, NavParams} from 'ionic-angular';
 import {FsService} from "./fs.service";
 import {FdService} from "../fd/fd.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {GlService} from "../gl/gl.service";
 import {FsData, FsPageData, PageGroupData} from "../../data.mapping";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 参与人选择 page.
@@ -43,7 +44,7 @@ import {FsData, FsPageData, PageGroupData} from "../../data.mapping";
       </div>
     </ion-header>
 
-    <ion-content padding> 
+    <ion-content padding>
       <ion-grid>
         <ion-row *ngFor="let g of pageGl" class="group">
           <ion-avatar item-start>
@@ -55,12 +56,13 @@ import {FsData, FsPageData, PageGroupData} from "../../data.mapping";
           <ion-checkbox (click)="addgl(g)" [(ngModel)]="g.checked"></ion-checkbox>
         </ion-row>
         <ion-row *ngFor="let g of pageFsl">
-          <ion-avatar item-start>
+          <ion-avatar item-start (click)="goTofsDetail(g)">
             <img [src]="g.bhiu">
           </ion-avatar>
           <ion-label>
             {{g.rn}}
             <span> {{g.rc}}</span>
+            <span *ngIf="g.rel ==1">注册</span>
           </ion-label>
           <ion-checkbox (click)="addsel(g)" [(ngModel)]="g.checked"></ion-checkbox>
         </ion-row>
@@ -79,7 +81,8 @@ export class Fs4cPage {
               private fsService: FsService,
               private util: UtilService,
               private fdService: FdService,
-              private glService: GlService) {
+              private glService: GlService,
+              private  modalCtrl: ModalController) {
   }
 
   ionViewDidEnter() {
@@ -177,5 +180,10 @@ export class Fs4cPage {
       });
       if (t) t.checked = true;
     }
+  }
+
+  goTofsDetail(fs: FsData) {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE, {fsData: fs});
+    modal.present();
   }
 }

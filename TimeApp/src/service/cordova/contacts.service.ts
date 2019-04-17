@@ -62,33 +62,45 @@ export class ContactsService {
       let btbls: Array<BTbl> = new Array<BTbl>();
       if (!this.utilService.isMobile()){
         resolve(btbls);
-        return;
       }
       await this.contacts.find(['*'], {
         filter: '',
         multiple: true,
         desiredFields: ["displayName", "phoneNumbers", 'name']
       }).then(data => {
-        for (let contact of data) {
-
+        console.log("===== 获取本地联系人：" + JSON.stringify(data));
+        let contactPhones: Array<string> = new Array<string>();
+        let contact:any;
+        
+        for (contact of data) {
+          console.log("===== 本地联系人：" + JSON.stringify(contact));
+          // XiaoMI 6X补丁
+          if (contact._objectInstance) contact = contact._objectInstance;
 
           if (!contact.phoneNumbers) continue;
+          // 可能存在没有姓名的联系人
+          if (!contact.name) continue;
+          
           for (let phone of contact.phoneNumbers) {
             //去除手机号中的空格
             let phonenumber = phone.value;
             let number="";
+
             phonenumber.match(/\d+/g).forEach(v=>{
               number = number + v;
-
-            })
-            number= number.replace('+86', '')
+            });
+            
+            number= number.replace(/\+86/g, '')
               .replace('0086', '')
               .replace(/\s/g,"");
-            console.log("SJ====》开始" + contact.name.formatted + "phone:" + number);
+            
+            console.log("===== 电话号码：" + number);
+            
             if (!this.utilService.checkPhone(number)) {
               continue;
             } else {
-
+              if (contactPhones.indexOf(number) > -1) continue;
+              
               let btbl: BTbl = new BTbl();
 
               //联系人别称
@@ -96,14 +108,15 @@ export class ContactsService {
               //名称
               btbl.rn = contact.name.formatted;
               btbl.rc = number;
+              contactPhones.push(number);
               btbls.push(btbl);
-              console.log("SJ====》End" + JSON.stringify(btbl));
+              console.log("===== 加入联系人清单：" + JSON.stringify(btbl));
             }
           }
         }
 
+        console.log("===== 本地联系人处理结束 =====");
         resolve(btbls);
-        return;
       })
     })
   }
@@ -114,10 +127,12 @@ export class ContactsService {
       this.getContacts4Btbl().then(async data => {
         let bsqls: Array<string> = new Array<string>();
         for (let b of data) {
+          console.log("===== 本地联系人入参：" + JSON.stringify(b));
 
           if (!b.rn) continue;
           // TODO 效率低下
           let bt: BTbl = await this.sqlExce.getOne<BTbl>(b);
+          
           if (bt == null) {
             bt = new BTbl();
             bt.pwi = this.utilService.getUuid();
@@ -130,6 +145,7 @@ export class ContactsService {
             bt.rel = '0';
             bt.ui = '';
             bsqls.push(bt.inT());
+            console.log("===== 本地联系人入库：" + JSON.stringify(bt));
           }
         }
         return await this.sqlExce.batExecSql(bsqls);
@@ -234,6 +250,9 @@ export class ContactsService {
     let bt = new BTbl();
     let bh = new BhTbl();
 
+    let userinfo = await this.personRestful.get(id);
+    let hasAvatar : boolean = false;
+    
     let exists : FsData = null;
 
     //获取本地参与人
@@ -257,9 +276,6 @@ export class ContactsService {
       bt.hiu = "";
       bt.rel = '0';
     }
-    
-    let userinfo = await this.personRestful.get(id);
-    let hasAvatar : boolean = false;
     
     if (userinfo && userinfo.data) {
       if (exists)
