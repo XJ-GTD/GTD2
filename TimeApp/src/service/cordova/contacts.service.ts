@@ -337,9 +337,9 @@ export class ContactsService {
     }
 
     await this.sqlExce.batExecSql(bsqls);
-    
+
     // 全部更新完成后刷新
-    this.userConfig.RefreshFriend();
+    this.userConfig.GetOneBTbl(bt.pwi);
     
     // 返回更新后参数
     if (!exists) {
