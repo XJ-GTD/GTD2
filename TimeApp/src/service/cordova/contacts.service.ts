@@ -102,7 +102,7 @@ export class ContactsService {
               if (contactPhones.indexOf(number) > -1) continue;
               
               // 增加人名显示逻辑
-              let displayname = getLocalContactsName(contact.displayName, contact.name.familyName, contact.name.givenName, contact.name.formatted);
+              let displayname = this.getLocalContactsName(contact.displayName, contact.name.familyName, contact.name.givenName, contact.name.formatted);
               
               let btbl: BTbl = new BTbl();
 
