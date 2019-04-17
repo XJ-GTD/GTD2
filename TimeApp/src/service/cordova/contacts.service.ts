@@ -69,9 +69,9 @@ export class ContactsService {
         multiple: true,
         desiredFields: ["displayName", "phoneNumbers", 'name']
       }).then(data => {
+        let contactPhones: Array<string> = new Array<string>();
+        
         for (let contact of data) {
-
-
           if (!contact.phoneNumbers) continue;
           for (let phone of contact.phoneNumbers) {
             //去除手机号中的空格
@@ -87,7 +87,8 @@ export class ContactsService {
             if (!this.utilService.checkPhone(number)) {
               continue;
             } else {
-
+              if (contactPhones.indexOf(number) > -1) continue;
+              
               let btbl: BTbl = new BTbl();
 
               //联系人别称
@@ -232,6 +233,9 @@ export class ContactsService {
     let bt = new BTbl();
     let bh = new BhTbl();
 
+    let userinfo = await this.personRestful.get(id);
+    let hasAvatar : boolean = false;
+    
     let exists : FsData = null;
 
     //获取本地参与人
@@ -255,9 +259,6 @@ export class ContactsService {
       bt.hiu = "";
       bt.rel = '0';
     }
-    
-    let userinfo = await this.personRestful.get(id);
-    let hasAvatar : boolean = false;
     
     if (userinfo && userinfo.data) {
       if (exists)
