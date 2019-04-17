@@ -101,12 +101,15 @@ export class ContactsService {
             } else {
               if (contactPhones.indexOf(number) > -1) continue;
               
+              // 增加人名显示逻辑
+              let displayname = getLocalContactsName(contact.displayName, contact.name.familyName, contact.name.givenName, contact.name.formatted);
+              
               let btbl: BTbl = new BTbl();
 
               //联系人别称
-              btbl.ran = contact.name.formatted;
+              btbl.ran = displayname;
               //名称
-              btbl.rn = contact.name.formatted;
+              btbl.rn = displayname;
               btbl.rc = number;
               contactPhones.push(number);
               btbls.push(btbl);
@@ -121,6 +124,20 @@ export class ContactsService {
     })
   }
 
+  getLocalContactsName(displayName, familyName, givenName, formatted) {
+    if (displayName) return displayName;
+
+    if (familyName && givenName) return familyName + ' ' + givenName;
+
+    if (familyName && !givenName) return familyName;
+
+    if (!familyName && givenName) return givenName;
+
+    if (formatted) return formatted;
+
+    return "";
+  }
+  
   asyncPhoneContacts(): Promise<boolean> {
     return new Promise<boolean>(async (resolve, reject) => {
       //异步获取联系人信息入库等操作
