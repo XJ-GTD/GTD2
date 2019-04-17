@@ -32,7 +32,8 @@ export class SsService {
 
   //TODO 刷新联系人功能
   async resfriend(){
-    return await this.contactsService.updateFs()
+    await this.contactsService.asyncPhoneContacts();
+    return this.contactsService.updateFs()
   }
 }
 
