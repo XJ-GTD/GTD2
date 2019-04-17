@@ -64,30 +64,33 @@ export class ContactsService {
         resolve(btbls);
         return;
       }
+      let match ="[^0-9]";
       await this.contacts.find(['*'], {
         filter: '',
         multiple: true,
         desiredFields: ["displayName", "phoneNumbers", 'name']
       }).then(data => {
-        let contact:any;
-        for (contact of data) {
-          if (contact._objectInstance) contact = contact._objectInstance;
-          for (let i = 0; contact.phoneNumbers != null && i < contact.phoneNumbers.length; i++) {
+        for (let contact of data) {
+
+          console.log("SJ====》开始");
+          for (let phone of contact.phoneNumbers) {
             //去除手机号中的空格
-            contact.phoneNumbers[i].value = contact.phoneNumbers[i].value.replace(/\s/g, '')
-              .replace('-', '').replace('+86', '').replace('0086', '');
-            if (!this.utilService.checkPhone(contact.phoneNumbers[i].value)) {
+            let phonenumber = phone.value;
+            phonenumber = phonenumber.match(match).input;
+            phonenumber= phonenumber.replace('86', '').replace('0086', '');
+            if (!this.utilService.checkPhone(phonenumber)) {
               break;
             } else {
 
               let btbl: BTbl = new BTbl();
 
               //联系人别称
-              btbl.ran = contact.displayName;
+              btbl.ran = contact.name.formatted;
               //名称
-              btbl.rn = contact.displayName;
-              btbl.rc = contact.phoneNumbers[i].value;
+              btbl.rn = contact.name.formatted;
+              btbl.rc = phonenumber;
               btbls.push(btbl);
+              console.log("SJ====》" + JSON.stringify(btbl));
             }
           }
         }
