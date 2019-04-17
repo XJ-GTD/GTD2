@@ -71,7 +71,7 @@ export class AlService {
 
 //判断是否初始化完成
   checkSystem(): Promise<AlData> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
 
       let alData: AlData = new AlData();
       let yTbl: YTbl = new YTbl();
@@ -117,8 +117,8 @@ export class AlService {
 
      // await this.createTestData();
 
-      await this.contactsService.asyncPhoneContacts();
 
+      await this.contactsService.asyncPhoneContacts();
       //异步获取联系人信息
       this.contactsService.updateFs();
 

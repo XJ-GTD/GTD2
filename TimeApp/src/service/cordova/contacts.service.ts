@@ -69,28 +69,37 @@ export class ContactsService {
         multiple: true,
         desiredFields: ["displayName", "phoneNumbers", 'name']
       }).then(data => {
-        let contact:any;
-        let uniquePhones: Array<string> = new Array<string>();
-        
-        for (contact of data) {
-          if (contact._objectInstance) contact = contact._objectInstance;
-          for (let i = 0; contact.phoneNumbers != null && i < contact.phoneNumbers.length; i++) {
+        for (let contact of data) {
+
+
+          console.log("1SJ====》开始" + JSON.stringify(contact));
+          if (!contact.phoneNumbers) continue;
+          for (let phone of contact.phoneNumbers) {
             //去除手机号中的空格
-            contact.phoneNumbers[i].value = contact.phoneNumbers[i].value.replace(/\s/g, '')
-              .replace('-', '').replace('+86', '').replace('0086', '');
-            if (!this.utilService.checkPhone(contact.phoneNumbers[i].value)) {
+            let phonenumber = phone.value;
+            let number="";
+            console.log("2SJ====》开始" + phonenumber);
+            phonenumber.match(/\d+/g).forEach(v=>{
+              number = number + v;
+
+            })
+            console.log("3SJ====》开始" + number);
+            number= number.replace('+86', '')
+              .replace('0086', '')
+              .replace(/\s/g,"");
+            console.log("4SJ====》开始" + phonenumber);
+            if (!this.utilService.checkPhone(number)) {
               continue;
             } else {
-              if (uniquePhones.indexOf(contact.phoneNumbers[i].value) > -1) continue;
-              
+              console.log("5SJ====》开始" + number);
+
               let btbl: BTbl = new BTbl();
 
               //联系人别称
-              btbl.ran = contact.displayName;
+              btbl.ran = contact.name.formatted;
               //名称
-              btbl.rn = contact.displayName;
-              btbl.rc = contact.phoneNumbers[i].value;
-              uniquePhones.push(contact.phoneNumbers[i].value);
+              btbl.rn = contact.name.formatted;
+              btbl.rc = number;
               btbls.push(btbl);
             }
           }
@@ -228,9 +237,6 @@ export class ContactsService {
     let bt = new BTbl();
     let bh = new BhTbl();
 
-    let userinfo = await this.personRestful.get(id);
-    let hasAvatar : boolean = false;
-    
     let exists : FsData = null;
 
     //获取本地参与人
@@ -254,6 +260,9 @@ export class ContactsService {
       bt.hiu = "";
       bt.rel = '0';
     }
+    
+    let userinfo = await this.personRestful.get(id);
+    let hasAvatar : boolean = false;
     
     if (userinfo && userinfo.data) {
       if (exists)
