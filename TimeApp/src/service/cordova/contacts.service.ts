@@ -74,6 +74,7 @@ export class ContactsService {
         let contact:any;
         
         for (contact of data) {
+          console.log("===== 本地联系人：" + JSON.stringify(contact));
           // XiaoMI 6X补丁
           if (contact._objectInstance) contact = contact._objectInstance;
 
@@ -82,13 +83,17 @@ export class ContactsService {
             //去除手机号中的空格
             let phonenumber = phone.value;
             let number="";
+
             phonenumber.match(/\d+/g).forEach(v=>{
               number = number + v;
-
-            })
+            });
+            
             number= number.replace(/\+86/g, '')
               .replace('0086', '')
               .replace(/\s/g,"");
+            
+            console.log("===== 电话号码：" + number);
+            
             if (!this.utilService.checkPhone(number)) {
               continue;
             } else {
@@ -101,6 +106,7 @@ export class ContactsService {
               //名称
               btbl.rn = contact.name.formatted;
               btbl.rc = number;
+              contactPhones.push(number);
               btbls.push(btbl);
             }
           }
