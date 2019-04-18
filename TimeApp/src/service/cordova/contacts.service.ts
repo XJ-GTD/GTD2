@@ -463,6 +463,10 @@ export class ContactsService {
 
     // 全部更新完成后刷新
     this.userConfig.RefreshFriend();
+
+    // 重新打开同步本地联系人
+    UserConfig.setTroubleStop('contactsservice.asyncphonecontacts.lastlaunch', 0);
+
   }
 
 }
