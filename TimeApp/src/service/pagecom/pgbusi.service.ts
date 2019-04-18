@@ -14,11 +14,12 @@ import {DataConfig} from "../config/data.config";
 import {UserConfig} from "../config/user.config";
 import {ContactsService} from "../cordova/contacts.service";
 import {FsData, ScdData, SpecScdData} from "../../data.mapping";
+import {FsService} from "../../pages/fs/fs.service";
 
 @Injectable()
 export class PgBusiService {
   constructor(private sqlExce: SqliteExec, private util: UtilService, private agdRest: AgdRestful,
-              private contactsServ: ContactsService, private userConfig: UserConfig,
+              private contactsServ: ContactsService, private userConfig: UserConfig,private fsService:FsService
   ) {
   }
 
@@ -84,7 +85,13 @@ export class PgBusiService {
     }
 
     //发起人信息
-    Object.assign(scdData.fs, this.userConfig.GetOneBTbl(ctbl.ui));
+    let crfs :FsData = new FsData();
+    crfs.bhiu = DataConfig.HUIBASE64;
+    let tmp  = this.userConfig.GetOneBTbl(ctbl.ui);
+    if (tmp){
+      Object.assign(crfs, tmp);
+    }
+    scdData.fs = crfs;
 
     //共享人信息
     let dlst: Array<DTbl> = new Array<DTbl>();
@@ -149,6 +156,7 @@ export class PgBusiService {
 
       let ed = moment(d).subtract(1, 'd').format("YYYY/MM/DD");
       ctbl.ed = ed;
+      ctbl.bz = null;
       await this.sqlExce.update(ctbl);//更新日程表
 
       let a = new AgdPro();
@@ -204,19 +212,17 @@ export class PgBusiService {
   async save4ai(rc: ScdData) {
 
 
-    this.pgBusiService.save(dbscd).then(data=>{
+    return await this.save(rc).then(data=>{
       let fs:Array<FsData> = new Array<FsData>();
-      for( let f of scd.friends){
+      for( let f of rc.fss){
         let ff:FsData = new FsData();
-        ff.ui = f.uid;
-        ff.rc = f.m;
-        ff.rn = f.n;
+        ff.ui = f.ui;
+        ff.rc = f.rc;
+        ff.rn = f.rn;
       }
 
       this.fsService.sharefriend(data.data.si,fs);
-    })
-
-    return await this.save(rc);
+    });
   }
 
   /**
@@ -539,9 +545,9 @@ export class PgBusiService {
     }
 
     //提醒
-    c.tx = agd.aa;
+    c.tx = agd.aa  ;
     //备注
-    c.bz = agd.am;
+    c.bz = agd.am  ;
     //他人创建
     c.gs = "1";
     //新消息未读
@@ -553,26 +559,26 @@ export class PgBusiService {
    * @param {string} calId 日程ID
    * @returns {Promise<Array<FsData>>}
    */
-  getCalfriend(calId: string): Promise<Array<FsData>> {
-    return new Promise<Array<FsData>>((resolve, reject) => {
-      let sql = 'select gd.pi,gd.si,gb.*,bh.hiu bhiu from gtd_d gd inner join gtd_b gb on gb.pwi = gd.ai left join gtd_bh bh on gb.pwi = bh.pwi where si="' + calId + '"';
-      let fsList = new Array<FsData>();
-      console.log('---------- getCalfriend 获取分享日程的参与人 sql:' + sql);
-      this.sqlExce.execSql(sql).then(data => {
-        if (data && data.rows && data.rows.length > 0) {
-          for (let i = 0, len = data.rows.length; i < len; i++) {
+  getCalfriend(calId:string):Promise<Array<FsData>>{
+    return new Promise<Array<FsData>>((resolve, reject)=>{
+      let sql ='select gd.pi,gd.si,gb.*,bh.hiu bhiu from gtd_d gd inner join gtd_b gb on gb.pwi = gd.ai left join gtd_bh bh on gb.pwi = bh.pwi where si="'+calId+'"';
+      let fsList =  new Array<FsData>();
+      console.log('---------- getCalfriend 获取分享日程的参与人 sql:'+ sql);
+      this.sqlExce.execSql(sql).then(data=>{
+        if(data && data.rows && data.rows.length>0){
+          for(let i=0,len =data.rows.length;i<len;i++ ){
             let fs = new FsData();
-            Object.assign(fs, data.rows.item(i));
-            if (!fs.bhiu || fs.bhiu == null || fs.bhiu == '') {
-              fs.bhiu = DataConfig.HUIBASE64;
+            Object.assign(fs,data.rows.item(i));
+            if(!fs.bhiu || fs.bhiu == null || fs.bhiu == ''){
+              fs.bhiu=DataConfig.HUIBASE64;
             }
             fsList.push(fs);
           }
         }
-        console.log('---------- getCalfriend 获取分享日程的参与人结果:' + fsList.length/*JSON.stringify(fsList)*/);
+        console.log('---------- getCalfriend 获取分享日程的参与人结果:'+ fsList.length/*JSON.stringify(fsList)*/);
         resolve(fsList);
-      }).catch(e => {
-        console.error('---------- getCalfriend 获取分享日程的参与人出错:' + e.message);
+      }).catch(e=>{
+        console.error('---------- getCalfriend 获取分享日程的参与人出错:'+ e.message);
         resolve(fsList);
       })
     })
@@ -583,25 +589,25 @@ export class PgBusiService {
    * @param {string} calId
    * @returns {Promise<FsData>}
    */
-  getCrMan(calId: string): Promise<FsData> {
+  getCrMan(calId:string):Promise<FsData>{
 
-    return new Promise<FsData>((resolve, reject) => {
-      let sql = 'select c.si,gb.*,bh.hiu bhiu from gtd_c c ' +
+    return new Promise<FsData>((resolve, reject)=>{
+      let sql ='select c.si,gb.*,bh.hiu bhiu from gtd_c c ' +
         ' inner join gtd_b gb on gb.rc = c.ui ' +
-        ' left join gtd_bh bh on gb.pwi = bh.pwi where c.si="' + calId + '"';
-      let fs = new FsData();
+        ' left join gtd_bh bh on gb.pwi = bh.pwi where c.si="'+calId+'"';
+      let fs =  new FsData();
 
-      this.sqlExce.execSql(sql).then(data => {
-        if (data && data.rows && data.rows.length > 0) {
+      this.sqlExce.execSql(sql).then(data=>{
+        if(data && data.rows && data.rows.length>0){
 
-          Object.assign(fs, data.rows.item(0));
-          if (!fs.bhiu || fs.bhiu == null || fs.bhiu == '') {
-            fs.bhiu = DataConfig.HUIBASE64;
+          Object.assign(fs,data.rows.item(0));
+          if(!fs.bhiu || fs.bhiu == null || fs.bhiu == ''){
+            fs.bhiu=DataConfig.HUIBASE64;
           }
 
         }
         resolve(fs);
-      }).catch(e => {
+      }).catch(e=>{
         resolve(fs);
       })
     })

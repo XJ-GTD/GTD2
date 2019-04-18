@@ -137,6 +137,8 @@ public class BlacklistController {
     		out.setRc(ReturnMessage.ERROR_CODE);
     		out.setRm(ReturnMessage.ERROR_MSG);
     	}
+    	
+    	log.info(out.toString());
         return out;
     }
     

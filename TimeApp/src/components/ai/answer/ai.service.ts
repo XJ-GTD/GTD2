@@ -47,6 +47,15 @@ export class AiService {
     dbscd.du = "1";
     dbscd.tx = "0";
     dbscd.rt = "0";
+    for (let f of scd.friends){
+      let fs:FsData = new FsData();
+      fs.ui = f.uid;
+      fs.ran = f.n;
+      fs.pwi = f.id;
+      fs.rc = f.m;
+      fs.ranpy = f.p;
+      dbscd.fss.push(fs);
+    }
     this.pgBusiService.save4ai(dbscd);
   }
 

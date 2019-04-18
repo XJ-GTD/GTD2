@@ -1,5 +1,6 @@
-import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import {
+  DateTime,
   ModalController, NavController, NavParams,
 } from 'ionic-angular';
 import * as moment from "moment";
@@ -43,7 +44,7 @@ import {ScdData, ScdPageParamter} from "../../data.mapping";
           </div>
         </ion-row>
         <ion-row>
-          <ion-toggle [(ngModel)]="alld" [class.allday]="b"></ion-toggle>
+          <ion-toggle [(ngModel)]="alld" [class.allday]="b" (ionChange)="togChange()"></ion-toggle>
           <div>
             <ion-datetime displayFormat="HH:mm" [(ngModel)]="scd.st"
                           pickerFormat="HH mm"  [hidden]="alld" cancelText="取消" doneText = "确认"></ion-datetime>
@@ -126,11 +127,6 @@ import {ScdData, ScdPageParamter} from "../../data.mapping";
           <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set" (focus)="comentfocus()"
                         (blur)="comentblur()"></ion-textarea>
         </ion-row>
-        <!--<ion-row justify-content-left>-->
-        <!--<div *ngFor="let fss of scd.fss;">-->
-        <!--<div>{{fss.ran}}</div>-->
-        <!--</div>-->
-        <!--</ion-row>-->
       </ion-grid>
     </ion-content>
     <ion-footer class="foot-set">
@@ -187,9 +183,17 @@ export class TdcPage {
     }
   }
 
+  togChange(){
+    if (!this.alld){
+      this.scd.st = this.scd.st == "99:99"?"00:00":this.scd.st;
+    }
+  }
+
   comentblur() {
     this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(0px)");
   }
+
+  @ViewChildren(DateTime) dateTimes: QueryList<DateTime>;
 
   //画面状态：0：新建 ，1：未关闭直接修改
   pagestate: string = "0";
@@ -294,6 +298,15 @@ export class TdcPage {
         this.rept.m = 0;
         this.rept.y = 0;
         this.scd.rt = "0";
+    }
+  }
+
+  ionViewWillLeave() {
+
+    for(let i = 0;i<this.dateTimes.toArray().length;i++){
+      if(this.dateTimes.toArray()[i]._picker ){
+        this.dateTimes.toArray()[i]._picker.dismiss();
+      }
     }
   }
 

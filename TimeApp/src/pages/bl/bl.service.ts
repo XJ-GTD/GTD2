@@ -23,11 +23,13 @@ export class BlService {
     let blaList:Array<PageBlData>  = bs.data;
       for(let fs of blaList) {
         //TODO 返回的openid 获取本地联系人信息 如果本地没有的话，获取联系人信息，插入本地
-        let fsData:FsData = UserConfig.friends.find((value)=>value.ui == fs.ai);
-        if(!fsData){
-          fsData = await this.contacts.updateOneFs(fs.ai);
+        if (fs.ai && fs.ai != '') {
+          let fsData:FsData = UserConfig.friends.find((value)=>value.ui == fs.ai);
+          if(!fsData){
+            fsData = await this.contacts.updateOneFs(fs.ai);
+          }
+          blfss.push(fsData);
         }
-        blfss.push(fsData);
       }
     this.util.loadingEnd();
     return blfss;

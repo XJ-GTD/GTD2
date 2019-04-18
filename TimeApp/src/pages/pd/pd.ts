@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import {ActionSheetController, AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {ActionSheetController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {Clipboard} from '@ionic-native/clipboard';
 import {PdService} from "./pd.service";
 import {AgdPro} from "../../service/restful/agdsev";
 import {UtilService} from "../../service/util-service/util.service";
@@ -70,22 +71,6 @@ import {PagePDPro} from "../../data.mapping";
         </ion-row>
       </ion-grid>
     </ion-content>
-
-    <div class="div-content" *ngIf="IsShowDiv">
-      <div class="modal-header">
-        <button type="button" class="div-close" aria-hidden="true" (click)="closeDialog()">&times;</button>
-      </div>
-      <div class="div-text">
-        <span>{{text}}</span>
-      </div>
-      <div class="div-btn">
-        <div (click)="closeDialog()">取消</div>
-        <div (click)="TwoBtnSure()">确定</div>
-      </div>
-    </div>
-      
-    <!--遮罩层-->
-    <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>
   `,
 })
 export class PdPage {
@@ -98,16 +83,13 @@ export class PdPage {
     'pn': {},
     'pa':new Array<AgdPro>(),
   };
-  IsShowDiv: boolean = false;
-  IsShowCover: boolean = false;
-  text:any;
 
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
-              private alertCtrl: AlertController,
               private actionSheetCtrl: ActionSheetController,
               private util: UtilService,
-              private pdService:PdService) {
+              private pdService:PdService,
+              private clipboard: Clipboard,) {
     this.jh = this.navParams.get('jh');
     this.plan.pn = this.jh;
   }
@@ -134,12 +116,6 @@ export class PdPage {
     this.navCtrl.pop();
   }
 
-  closeDialog() {
-    if (this.IsShowDiv) {
-      this.IsShowDiv = false;
-      this.IsShowCover = false;
-    }
-  }
 
   more(jh:PagePDPro){
     this.actionSheet = this.actionSheetCtrl.create({
@@ -149,11 +125,9 @@ export class PdPage {
           role: 'share',
           handler: () => {
             this.pdService.sharePlan(this.plan).then(data=>{
-              //alert("分享地址是："+JSON.stringify(data.data.psurl))
-
-              this.text = data.data.psurl;
-              this.IsShowDiv = true;
-              this.IsShowCover = true;
+              console.log("分享地址是："+JSON.stringify(data.data.psurl));
+              this.clipboard.copy(data.data.psurl);
+              this.util.popoverStart("复制成功");
             }).catch(res=>{
               this.util.popoverStart('分享失败');
             });
