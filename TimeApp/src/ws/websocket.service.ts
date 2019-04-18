@@ -53,7 +53,10 @@ export class WebsocketService {
    */
   public connect(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      let delay = 1000 * ((this.failedtimes > 59 ? 59 : this.failedtimes) + 1);
+      let delay = 1000 * Math.pow(2, this.failedtimes);
+      
+      // 最长等待5分钟再连接
+      delay = (delay > 1000 * 60 * 5) ? (1000 * 60 * 5) : delay;
       
       if (this.timer) clearTimeout(this.timer);
       
