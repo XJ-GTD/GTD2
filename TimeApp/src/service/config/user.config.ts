@@ -208,6 +208,7 @@ export class UserConfig {
   }
 
   GetOneBTbl(id: string): FsData {
+    console.log('GetOneBTbl with id ' + id);
     return UserConfig.friends.find(value => {
       return value.pwi == id || value.ui == id;
     })
