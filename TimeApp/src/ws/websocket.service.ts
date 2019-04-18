@@ -54,8 +54,6 @@ export class WebsocketService {
     return new Promise<any>((resolve, reject) => {
       let delay = 1000 * ((this.failedtimes > 59 ? 59 : this.failedtimes) + 1);
       
-      this.client.reconnect_delay = delay;
-
       // 延迟重连动作,防止重连死循环
       setTimeout(()=>{
         this.settingWs().then(data => {
