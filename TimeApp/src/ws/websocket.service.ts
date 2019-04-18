@@ -22,6 +22,7 @@ export class WebsocketService {
   private queue: string;
   private subscription: StompSubscription;
   private failedtimes: number = 0;
+  private timer: number = 0;
 
   constructor(private dispatchService: DispatchService) {
   }
@@ -54,8 +55,10 @@ export class WebsocketService {
     return new Promise<any>((resolve, reject) => {
       let delay = 1000 * ((this.failedtimes > 59 ? 59 : this.failedtimes) + 1);
       
+      if (this.timer) clearTimeout(this.timer);
+      
       // 延迟重连动作,防止重连死循环
-      setTimeout(()=>{
+      this.timer = setInterval(()=>{
         this.settingWs().then(data => {
           // 连接消息服务器
           this.client.connect(this.login, this.password, frame => {
