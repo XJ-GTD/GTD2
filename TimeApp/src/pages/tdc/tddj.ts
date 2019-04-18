@@ -1,5 +1,5 @@
-import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
-import {ActionSheetController, ModalController, NavController, NavParams} from 'ionic-angular';
+import {Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
+import {ActionSheetController, DateTime, ModalController, NavController, NavParams} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {UserConfig} from "../../service/config/user.config";
@@ -193,7 +193,8 @@ export class TddjPage {
               private keyboard: Keyboard, private _renderer: Renderer2,) {
 
   }
-
+  @ViewChildren(DateTime) dateTimes: QueryList<DateTime>;
+  actionSheet;
 
   //画面数据
   scd: ScdData = new ScdData();
@@ -300,6 +301,18 @@ export class TddjPage {
       return;
     }
 
+  }
+
+  ionViewWillLeave() {
+    if (this.actionSheet) {
+      this.actionSheet.dismiss();
+    }
+    //console.log(this.dateTimes.toArray());
+    for(let i = 0;i<this.dateTimes.toArray().length;i++){
+      if(this.dateTimes.toArray()[i]._picker ){
+        this.dateTimes.toArray()[i]._picker.dismiss();
+      }
+    }
   }
 
   //重复按钮显示控制
@@ -486,7 +499,7 @@ export class TddjPage {
     let d = paramter.d.format("YYYY/MM/DD");
     if (this.scd.rt != "0" && this.scd.sd != d) {
       //重复日程删除
-      const actionSheet = this.actionSheetCtrl.create({
+      this.actionSheet = this.actionSheetCtrl.create({
         buttons: [
           {
             text: '删除今后所有日程',
@@ -527,7 +540,7 @@ export class TddjPage {
           }
         ]
       });
-      actionSheet.present();
+      this.actionSheet.present();
     } else {
       //非重复日程删除
       this.util.alterStart("2",()=> {
