@@ -20,7 +20,8 @@ export class WebsocketService {
   private password: string;
   private client: Stomp.Client;
   private queue: string;
-  private subscription: StompSubscription
+  private subscription: StompSubscription;
+  private failedtimes: number = 0;
 
   constructor(private dispatchService: DispatchService) {
   }
@@ -39,8 +40,8 @@ export class WebsocketService {
       //获取websocte  queue
       this.queue = UserConfig.account.mq;
       //呼吸
-      this.client.heartbeat.outgoing = 0;
-      this.client.heartbeat.incoming = 0;
+      this.client.heartbeat.outgoing = 1000 * 5;
+      this.client.heartbeat.incoming = 1000 * 60;
 
       resolve();
     })
@@ -51,9 +52,12 @@ export class WebsocketService {
    */
   public connect(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
+      this.client.reconnect_delay = 1000 * ((this.failedtimes > 59 ? 59 : this.failedtimes) + 1);
+
       this.settingWs().then(data => {
         // 连接消息服务器
         this.client.connect(this.login, this.password, frame => {
+          this.failedtimes = 0;
           resolve();
           this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
             //message.ack(message.headers);
@@ -61,6 +65,7 @@ export class WebsocketService {
             })
           });
         }, error => {
+          this.failedtimes++;
           this.close();
         }, event => {
           this.close();
