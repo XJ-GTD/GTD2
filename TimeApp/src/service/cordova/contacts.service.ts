@@ -429,6 +429,7 @@ export class ContactsService {
       
       if (usersinforet && usersinforet.data) {
         for (let userinfo of usersinforet.data) {
+          console.log('Get ' + userinfo.openid + "'s userinfo.");
           usersinfo.set(userinfo.openid, userinfo);
         }
       }
