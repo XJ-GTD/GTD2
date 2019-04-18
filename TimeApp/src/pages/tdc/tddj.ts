@@ -449,7 +449,7 @@ export class TddjPage {
 
     //本人新建或修改时，下记画面项目可以修改
     //开始时间格式转换
-    this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
+    //this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
 
 
     //结束日期设置
