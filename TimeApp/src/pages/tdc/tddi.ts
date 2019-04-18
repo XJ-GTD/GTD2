@@ -1,6 +1,6 @@
-import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import {
-  ActionSheetController, ModalController, NavController, NavParams,
+  ActionSheetController, DateTime, ModalController, NavController, NavParams,
 } from 'ionic-angular';
 import * as moment from "moment";
 import {UtilService} from "../../service/util-service/util.service";
@@ -160,6 +160,7 @@ export class TddiPage {
   ) {
 
   }
+  actionSheet;
 
   //画面数据
   scd: ScdData = new ScdData();
@@ -201,7 +202,7 @@ export class TddiPage {
 
   ionViewWillEnter() {
 
-
+    this.scd.fs.bhiu = DataConfig.HUIBASE64;
     //受邀人修改的场合初始化
     let paramter: ScdPageParamter = this.navParams.data;
     this.tddiServ.get(paramter.si).then(data => {
@@ -262,6 +263,12 @@ export class TddiPage {
    //   this.fsshow = data
 //
 //    });
+  }
+
+  ionViewWillLeave() {
+    if (this.actionSheet) {
+      this.actionSheet.dismiss();
+    }
   }
 
   //提醒按钮显示控制
@@ -361,7 +368,7 @@ export class TddiPage {
     let d = paramter.d.format("YYYY/MM/DD");
     if (this.scd.rt != "0" && this.scd.sd != d) {
       //重复日程删除
-      const actionSheet = this.actionSheetCtrl.create({
+      this.actionSheet = this.actionSheetCtrl.create({
         buttons: [
           {
             text: '删除今后所有日程',
@@ -405,7 +412,7 @@ export class TddiPage {
           }
         ]
       });
-      actionSheet.present();
+      this.actionSheet.present();
     } else {
       //非重复日程删除
       this.util.alterStart("2",()=>{
