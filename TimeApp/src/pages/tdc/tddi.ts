@@ -350,7 +350,7 @@ export class TddiPage {
     this.scd.du = "1";
 
     //开始时间格式转换
-    this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
+    //this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
 
     this.scd.ji = this.scd.p.ji;
 

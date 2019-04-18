@@ -161,6 +161,7 @@ export class PgBusiService {
 
       let ed =  moment(d).subtract(1,'d').format("YYYY/MM/DD");
       ctbl.ed = ed;
+      ctbl.bz = null;
       await this.sqlExce.update(ctbl);//更新日程表
 
       let a = new AgdPro();
