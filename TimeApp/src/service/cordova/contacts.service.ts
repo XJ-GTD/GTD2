@@ -297,7 +297,7 @@ export class ContactsService {
     // 能够适应使用ui和rc查询是否存在BTbl记录
     let data: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
     
-    if (data.length > 0) {
+    if (data && data.length > 0) {
       exists = data[0];
     }
     
