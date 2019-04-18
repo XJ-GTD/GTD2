@@ -427,9 +427,9 @@ export class ContactsService {
     if (phonenos.length > 0) {
       let usersinforet = await this.personRestful.getMultis(phonenos);
       
-      if (usersinforet && usersinforet.data) {
+      if (usersinforet && usersinforet.data && usersinforet.data.registusers) {
         console.log(JSON.stringify(usersinforet.data));
-        for (let userinfo of usersinforet.data) {
+        for (let userinfo of usersinforet.data.registusers) {
           console.log('Get ' + userinfo.openid + "'s userinfo.");
           usersinfo.set(userinfo.openid, userinfo);
         }
