@@ -22,7 +22,7 @@ export class WebsocketService {
   private queue: string;
   private subscription: StompSubscription;
   private failedtimes: number = 0;
-  private timer: number = 0;
+  private timer: any;
 
   constructor(private dispatchService: DispatchService) {
   }
