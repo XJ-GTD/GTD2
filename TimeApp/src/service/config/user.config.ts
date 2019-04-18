@@ -78,11 +78,11 @@ export class UserConfig {
     return UserConfig.settins.get(key).value;
   }
 
-  getTroubleStop(key: string) {
-    return UserConfig.troublestop.get(key).value;
+  static getTroubleStop(key: string) {
+    return UserConfig.troublestop.get(key);
   }
   
-  setTroubleStop(key: string, value: any) {
+  static setTroubleStop(key: string, value: any) {
     UserConfig.troublestop.set(key, value);
   }
   
@@ -208,6 +208,7 @@ export class UserConfig {
   }
 
   GetOneBTbl(id: string): FsData {
+    console.log('GetOneBTbl with id ' + id);
     return UserConfig.friends.find(value => {
       return value.pwi == id || value.ui == id;
     })

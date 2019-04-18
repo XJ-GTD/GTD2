@@ -18,6 +18,7 @@ import {Network} from "@ionic-native/network";
 import {Contacts} from "@ionic-native/contacts";
 import {Vibration} from "@ionic-native/vibration";
 import {NativeAudio} from "@ionic-native/native-audio";
+import {Clipboard} from '@ionic-native/clipboard';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {RouterModule} from '@angular/router'
 import {MyApp} from './app.component';
@@ -135,6 +136,7 @@ import {ConfirmboxComponentModule} from "../components/confirmbox/confirmbox.mod
     Vibration,
     NativeAudio,
     Keyboard,
+    Clipboard,
     ContactsService,
     ScreenOrientation,
     LocalNotifications,

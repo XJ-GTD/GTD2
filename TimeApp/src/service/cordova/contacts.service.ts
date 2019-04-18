@@ -141,14 +141,18 @@ export class ContactsService {
   
   asyncPhoneContacts(): Promise<boolean> {
     return new Promise<boolean>(async (resolve, reject) => {
-      let lastlaunch: number = this.userConfig.getTroubleStop('contactsservice.asyncphonecontacts.lastlaunch');
+      console.log('异步获取联系人函数开始...');
+      let lastlaunch: number = UserConfig.getTroubleStop('contactsservice.asyncphonecontacts.lastlaunch');
       let thislaunch: number = moment().unix();
-      
-      if (lastlaunch && (thislaunch - lastlaunch > (60 * 30))) {
+
+      if (lastlaunch && ((thislaunch - lastlaunch) > (60 * 30))) {
+        console.log('异步获取联系人30分钟以内调用, 忽略...');
         // 30分钟以内调用, 忽略
         resolve(true);
       } else {
-        this.userConfig.setTroubleStop('contactsservice.asyncphonecontacts.lastlaunch', thislaunch);
+        console.log('异步获取联系人非30分钟以内调用, 开始...');
+        UserConfig.setTroubleStop('contactsservice.asyncphonecontacts.lastlaunch', thislaunch);
+        
         //异步获取联系人信息入库等操作
         this.getContacts4Btbl().then(async data => {
           let bsqls: Array<string> = new Array<string>();
@@ -459,6 +463,10 @@ export class ContactsService {
 
     // 全部更新完成后刷新
     this.userConfig.RefreshFriend();
+
+    // 重新打开同步本地联系人
+    UserConfig.setTroubleStop('contactsservice.asyncphonecontacts.lastlaunch', 0);
+
   }
 
 }
