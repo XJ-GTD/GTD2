@@ -202,7 +202,7 @@ export class TddiPage {
 
   ionViewWillEnter() {
 
-
+    this.scd.fs.bhiu = DataConfig.HUIBASE64;
     //受邀人修改的场合初始化
     let paramter: ScdPageParamter = this.navParams.data;
     this.tddiServ.get(paramter.si).then(data => {
