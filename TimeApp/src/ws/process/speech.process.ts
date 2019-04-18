@@ -70,6 +70,7 @@ export class SpeechProcess implements MQProcess {
             scdEm.d = scd.sd;
             scdEm.t = scd.st;
             scdEm.ti = scd.sn;
+            scdEm.gs = scd.gs;
             cscdLS.datas.push(scdEm);
           }
           this.emitService.emitScdLs(cscdLS);
@@ -84,14 +85,16 @@ export class SpeechProcess implements MQProcess {
           scdEm.d = processRs.scd[0].sd;
           scdEm.t = processRs.scd[0].st;
           scdEm.ti = processRs.scd[0].sn;
+          scdEm.gs = processRs.scd[0].gs;
 
           for (let btbl of processRs.fs){
             let fri:FriendEmData = new FriendEmData();
             fri.id = btbl.pwi;
             fri.p = btbl.ranpy;
             fri.m = btbl.rc;
-            fri.a = btbl.hiu;
+            fri.a = btbl.bhiu;
             fri.n = btbl.ran;
+            fri.uid = btbl.ui;
 
             scdEm.datas.push(fri);
           }

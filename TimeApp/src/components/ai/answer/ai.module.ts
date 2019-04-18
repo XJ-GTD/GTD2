@@ -3,26 +3,31 @@ import { IonicPageModule } from 'ionic-angular';
 import { AiComponent } from './ai';
 import {AiService} from "./ai.service";
 import {PointComponentModule} from "../point/point.module";
+import {PipesModule} from "../../../pipes/pipes.module";
+import {AiChildenComponent} from "./ai.childen";
+import {PgBusiService} from "../../../service/pagecom/pgbusi.service";
+import {FsService} from "../../../pages/fs/fs.service";
 
 @NgModule({
   declarations: [
     AiComponent,
+    AiChildenComponent,
   ],
   imports: [
     IonicPageModule.forChild(AiComponent),
+    IonicPageModule.forChild(AiChildenComponent),
     PointComponentModule,
+    PipesModule
   ],
   providers: [
-    AiService
+    AiService,
+    PgBusiService,
+    FsService
   ],
   exports: [
     AiComponent,
+    AiChildenComponent,
   ],
 })
 export class AiComponentModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: AiComponent
-    };
-  }
 }

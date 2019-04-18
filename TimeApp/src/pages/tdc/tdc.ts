@@ -236,7 +236,9 @@ export class TdcPage {
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
       this.scd.showSd = paramter.d.format("YYYY-MM-DD");
-      this.scd.st = moment().add(1, "h").format("HH:00");
+      if(paramter.t) this.scd.st = paramter.t;
+      else this.scd.st = moment().add(1, "h").format("HH:00");
+      if (paramter.sn) this.scd.sn = paramter.sn;
     }
     this.scd.rt = "0";
     this.scd.tx = "0";
@@ -459,11 +461,5 @@ export class TdcPage {
     }
   }
 
-
 }
 
-export class PageTddIData {
-  tdl: ScdData = new ScdData();  //日程事件表信息
-
-
-}

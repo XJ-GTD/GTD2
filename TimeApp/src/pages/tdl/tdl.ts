@@ -35,8 +35,8 @@ import {ScdlData, ScdPageParamter} from "../../data.mapping";
         <ion-row *ngFor="let sdl of scdlDataList;let i = index;" class="anch" id="day{{sdl.id}}">
           <div class="daynav">
             <div class="dayheader w-auto">
-              <div class="d-fsize text-center">{{sdl.d | formatedate :"MM-DD"}}</div>
-              <div class="ym-fsize text-center ">{{sdl.d | formatedate:"YYYY"}}</div>
+              <div class="d-fsize text-center">{{sdl.d | formatedate :"CWEEK"}}</div>
+              <div class="ym-fsize text-center ">{{sdl.d | formatedate:"DD"}}</div>
             </div>
           </div>
           <div class="dayagendas w-auto">
@@ -60,7 +60,6 @@ import {ScdlData, ScdPageParamter} from "../../data.mapping";
             <ng-template #noscd>
               <div class="dayagenda row subheight" (click)="toAdd(sdl.d)">
                 <div class="dayagendacontent w-auto agenda-none" [class.none1] = "sdl.bc == 1" [class.none0] = "sdl.bc == 0">
-                    没有活动(点击添加)
                 </div>
               </div>
             </ng-template>
@@ -124,7 +123,7 @@ export class TdlPage {
       for (let scdlData of this.scdlDataList) {
         let el = this.el.nativeElement.querySelector("#day" + scdlData.id);
         if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
-          this.headerDate = moment(scdlData.d).format("YYYY-MM-DD");
+          this.headerDate = moment(scdlData.d).format("YYYY年MM月DD日");
           break;
         }
       }

@@ -138,7 +138,7 @@ import {FsData, ScdData, ScdPageParamter} from "../../data.mapping";
           <div class="selected">
             <ion-chip *ngFor="let fs of scd.fss" (click)="goTofsDetail(fs)">
               <ion-avatar>
-                <img src={{fs.bhiu}}>
+                <img [src]="fs.bhiu" />
               </ion-avatar>
               <ion-label>{{fs.rn}}</ion-label>
             </ion-chip>

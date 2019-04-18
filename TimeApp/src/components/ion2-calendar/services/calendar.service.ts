@@ -172,6 +172,7 @@ export class CalendarService {
       newmessage: dayConfig ? dayConfig.newmessage || 0 : 0,
       hassometing: dayConfig ? dayConfig.hassometing || false : false,
       busysometing: dayConfig ? dayConfig.busysometing || false : false,
+      allsometing: dayConfig ? dayConfig.allsometing || false : false,
     }
   }
 
@@ -312,8 +313,9 @@ export class CalendarService {
 
         }
         calendarDay.things = d.scds;
-        calendarDay.hassometing = d.scds < 3;
-        calendarDay.busysometing = d.scds >= 3;
+        calendarDay.hassometing = d.scds == 2;
+        calendarDay.busysometing = d.scds >= 4;
+        calendarDay.allsometing = d.scds >= 8;
         calendarDay.newmessage = d.news
         calendarDay.hasting = d.scds > 0;
         //calendarDay.subTitle = d.news > 0? `\u2022`: "";

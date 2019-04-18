@@ -56,16 +56,16 @@ import {DataConfig} from "../../service/config/data.config";
                         [(ngModel)]="scd.showSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                         min="1999-01-01" max="2039-12-31" disabled
           ></ion-datetime>
+          <div class="reptlbl">{{alldshow}}</div>
         </ion-row>
         <ion-row>
-          <div>{{alldshow}}</div>
         </ion-row>
         <ion-row>
           <div class="reptlbl">重复</div>
 
-          <div class="reptComm" *ngIf="this.scd.rt == 1">{{reptshow}}</div>
+          <div class="reptComm" *ngIf="this.scd.rt == 0">{{reptshow}}</div>
 
-          <div class="reptComm" *ngIf="this.scd.rt != 1">{{reptshow}} {{scd.sd | formatedate:'CYYYY/MM/DD'}}
+          <div class="reptComm" *ngIf="this.scd.rt != 0">{{reptshow}} {{scd.sd | formatedate:'CYYYY/MM/DD'}}
             -{{scd.ed | formatedate:'CYYYY/MM/DD'}}</div>
         </ion-row>
         <ion-row>

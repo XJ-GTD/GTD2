@@ -9,7 +9,7 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {BsModel} from "../../service/restful/out/bs.model";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {FsService} from "../../pages/fs/fs.service";
-import {FsData, ScdData} from "../../data.mapping";
+import {ScdData} from "../../data.mapping";
 
 /**
  * 确认操作
@@ -38,23 +38,27 @@ export class OptionProcess implements MQProcess{
           rc.st = c.st;
           rc.si = c.si;
 
+
+          //tx rt
+          let dbscd:ScdData = new ScdData();
+          dbscd.sn = c.sn;
+          dbscd.st = c.st;
+          dbscd.sd = c.sd;
+          dbscd.si = c.si;
+          dbscd.gs = "0";
+          dbscd.du = "1";
+          dbscd.tx = "0";
+          dbscd.rt = "0";
+
           if (prvOpt == SS.C){
-           let bsM:BsModel<CTbl> = await this.busiService.save(rc);
-            rc.si = bsM.data.si;
+           let bsM:BsModel<CTbl> = await this.busiService.save4ai(rc);
           }else if (prvOpt == SS.U){
+            //TODO 需要修改update 方法
             await this.busiService.updateDetail(rc);
           }else{
+            //TODO 需要修改delete 方法
             await this.busiService.delete( rc.si,"2", rc.sd);
           }
-
-          let pfs:Array<FsData> = new Array<FsData>();
-          for(let fs of processRs.fs){
-            let p:FsData = new FsData();
-            Object.assign(p,fs);
-            pfs.push(p);
-          }
-          this.fsServer.sharefriend(rc.si,pfs);
-
         }
 
       }else if(opt == O.S){

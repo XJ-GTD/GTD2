@@ -5,14 +5,143 @@ aicomponent {
   width: 100%;
   height: auto;
 
-  //.backspace {
-  //  display: block;
-  //  font-size: 1.2em;
-  //  position: absolute;
-  //  top: -205px;
-  //  right: 20px;
-  //
-  //}
+  .card {
+    background: $aiBackColor;
+    position: relative;
+    margin: 8px 0px 8px 15px;
+    width: 85%;
+    border-radius: 12px 12px 12px 0px;
+
+    .self {
+      color: $fontSecondColor;
+      font-size: 12px;
+    }
+
+    .aiAn {
+      color: $fontMasterColor;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .scdList {
+      .volume[item-end] {
+        color: $adornColor;
+      }
+
+      .date {
+        color: $selectColor;
+        font-size: 12px;
+        letter-spacing: 1px;
+      }
+
+      .ti {
+        color: $fontSecondColor;
+        font-size: 14px;
+        margin-left: 6px;
+
+      }
+
+    }
+
+    .scd {
+      span {
+        color: $fontMasterColor;
+      }
+
+      .friend{
+        display: inline-flex;
+        overflow-x: auto;
+        width: 100%;
+        .chip-ios {
+          display: inline-block;
+          min-height: 58px;
+          background-color: transparent;
+          padding-right: 4px;
+          min-width:40px;
+          ion-avatar{
+            width: 25px;
+            height: 25px;
+            min-width: 25px;
+            min-height: 25px;
+            margin: 0 auto;
+            img{
+              width: 25px;
+              height: 25px;
+            }
+          }
+          span {
+            color: $fontSecondColor;
+            font-size: 10px;
+            display: inline-block;
+            line-height: 20px;
+            width: 38px;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+
+      .friend {
+        //
+        //display: inline-flex;
+        //overflow-x: auto;
+        //width: 100%;
+        //min-height: 65px;
+        //.chip-ios {
+        //  display: flex;
+        //  min-height: 40px;
+        //  background-color: transparent;
+        //}
+
+      }
+
+      .scdTip {
+        color: $fontThirdColor;
+        font-size: 12px;
+      }
+
+      button {
+        color: $adornColor;
+        background-color: transparent;
+        font-size: 14px;
+        letter-spacing: 1px;
+        margin-right: 0px;
+        margin-left: 5px;
+      }
+
+      .date {
+        color: $fontSecondColor;
+        font-size: 12px;
+      }
+
+      .ti {
+        color: $fontMasterColor;
+        font-size: 14px;
+        font-weight: bold;
+      }
+    }
+
+
+  }
+
+  .card-ios {
+    .list-ios {
+      margin: 0px !important;
+    }
+  }
+
+
+  ion-label {
+    white-space: normal;
+  }
+
+  .label-ios {
+    margin: 6px auto;
+  }
+
+  .item-ios {
+    padding-left: 15px;
+    background-color: transparent;
+  }
 
   .close {
     webkit-transition: all 1.5s ease 0.2s;
@@ -30,126 +159,27 @@ aicomponent {
   .aiWarp {
     position: relative;
     overflow-y: auto;
-    opacity: .8;
+    opacity: 1;
     padding: 5px;
     width: 100%;
-    background-color: #000;
+  }
+  .aiWarpBack {
+    position: relative;
+    overflow-y: auto;
+    opacity: 1;
+    padding: 5px;
+    width: 100%;
+    background-color: $baseBackColor;
+    z-index: -1;
+    opacity: .6;
   }
 
   .scroll-content {
     .item-block, .item-inner {
       min-height: 0px;
     }
-
-    .card {
-      background: #2b3340;
-      position: relative;
-      margin: 8px 0px 8px 15px;
-      width: 85%;
-      border-radius: 12px 12px 12px 0px;
-
-      .self {
-        color: $whitedown;
-        font-size: 12px;
-      }
-
-      .aiAn {
-        color: #fff;
-        font-size: 14px;
-      }
-
-      .scdList {
-        .volume[item-end] {
-          color: $whitedown;
-          margin-left: 0;
-          margin-top: 0px;
-          margin-bottom: 0px;
-          margin-right: 0px;
-          font-size: 2.5rem;
-          min-height: 0px;
-        }
-
-        .date {
-          color: #666666;
-          font-size: 12px;
-        }
-
-        .ti {
-          color: #ffffff;
-          font-size: 14px;
-
-        }
-
-      }
-
-      .scd {
-        span{
-          float: left;
-          padding-right:10px ;
-        }
-        .friend{
-          .avatar{
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-          }
-          .fn{
-            color: #FFFFFF;
-            font-size: 10px;
-            white-space:nowrap;
-            width: 30px;
-            text-align: center;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-        }
-        .scdTip{
-
-        }
-        button {
-          color: #348e99;
-          background-color: transparent;
-          font-size: 14px;
-          letter-spacing: 1px;
-          margin-right: 0px;
-          margin-left: 5px;
-        }
-
-        .date {
-          color: #666666;
-          font-size: 12px;
-        }
-
-        .ti {
-          color: #ffffff;
-          font-size: 14px;
-        }
-      }
-
-
-    }
-
-    .card-ios {
-      .list-ios {
-        margin: 0px !important;
-      }
-
-    }
-
   }
 
-  ion-label {
-    white-space: normal;
-  }
-
-  .label-ios {
-    margin: 6px auto;
-  }
-
-  .item-ios {
-    padding-left: 10px;
-    background-color:transparent;
-  }
 }
 
 

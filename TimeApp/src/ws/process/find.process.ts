@@ -27,7 +27,7 @@ export class FindProcess implements MQProcess {
     let findData: FindPara = content.parameters;
     //查找联系人
     processRs.fs = await this.findfs(findData.fs);
-    console.log("============ mq返回内容："+ JSON.stringify(content));
+    //console.log("============ mq返回内容："+ JSON.stringify(content));
     //处理区分
     if (content.option == F.C) {
       processRs.scd = await this.findScd(findData.scd);
@@ -44,7 +44,7 @@ export class FindProcess implements MQProcess {
     let res: Array<FsData> = new Array<FsData>();
     let rsbs: Map<string, FsData> = new Map<string, FsData>();
     if (!ns || ns.length == 0) {
-      return;
+      return new Array<FsData>();
     }
 
     //TODO 联系人和群组是否要放入环境中，每次取性能有影响

@@ -1,5 +1,5 @@
 page-ss {
-  background-color: $allBackColor;
+  background-color: $baseBackColor;
   .spinanimation{
     animation: spin 1s linear infinite;
   }
@@ -12,7 +12,7 @@ page-ss {
   }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: $allBackColor;
+    background-color: $baseBackColor;
   }
 
   ion-header{
@@ -35,12 +35,12 @@ page-ss {
   }
 
   ion-content.content {
-    background-color: $allBackColor;
+    background-color: $baseBackColor;
     color: #fff;
   }
 
   ion-content .plan-list-item {
-    background-color: $allBackColor;
+    background-color: $baseBackColor;
     color: #fff;
     padding-left: 8px;
     font-size: 1.5rem;

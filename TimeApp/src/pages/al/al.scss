@@ -1,5 +1,5 @@
 page-al {
-  background-color: $allBackColor;
+  background-color: $baseBackColor;
   background-image: url('../assets/imgs/alback.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -12,7 +12,7 @@ page-al {
 
   .text {
     text-align: center;
-    color: $whitedown;
+    color: $fontSecondColor;
     position: relative;
     margin-top: calc(100% + 50%);
   }
