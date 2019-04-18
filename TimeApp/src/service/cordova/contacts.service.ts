@@ -452,7 +452,10 @@ export class ContactsService {
       // 使用批量下载代替
       // let userinfo = await this.personRestful.get(condid);
       let userinfo = usersinfo.get(condid);
-
+      console.log('userinfo ' + userinfo.openid);
+      console.log('userinfo ' + userinfo.nickname);
+      console.log('userinfo ' + userinfo.phoneno);
+      
       if (userinfo) {
         if (userinfo.avatarbase64 && userinfo.avatarbase64 != '') {
           bh.hiu = userinfo.avatarbase64;
