@@ -78,11 +78,11 @@ export class UserConfig {
     return UserConfig.settins.get(key).value;
   }
 
-  getTroubleStop(key: string) {
+  static getTroubleStop(key: string) {
     return UserConfig.troublestop.get(key);
   }
   
-  setTroubleStop(key: string, value: any) {
+  static setTroubleStop(key: string, value: any) {
     UserConfig.troublestop.set(key, value);
   }
   
