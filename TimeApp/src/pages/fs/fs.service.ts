@@ -94,6 +94,10 @@ export class FsService {
         }
       }
       adgPro.ac = ac;
+      if (ac.length ==0) {
+        resolve(bs);
+        return ;
+      }
       console.log('---------- sharefriend 分享给参与人操作 参数:' + JSON.stringify(adgPro));
       this.agdRest.contactssave(adgPro).then(data => {
         bs = data;

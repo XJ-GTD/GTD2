@@ -85,7 +85,13 @@ export class PgBusiService {
     }
 
     //发起人信息
-    Object.assign(scdData.fs, this.userConfig.GetOneBTbl(ctbl.ui));
+    let crfs :FsData = new FsData();
+    crfs.bhiu = DataConfig.HUIBASE64;
+    let tmp  = this.userConfig.GetOneBTbl(ctbl.ui);
+    if (tmp){
+      Object.assign(crfs, tmp);
+    }
+    scdData.fs = crfs;
 
     //共享人信息
     let dlst:Array<DTbl>= new Array<DTbl>();
@@ -93,7 +99,12 @@ export class PgBusiService {
     dlst = await this.sqlExce.getExtList<DTbl>(dlstsql);
     for (let j = 0, len = dlst.length; j < len; j++) {
       let fs : FsData = new FsData();
-      Object.assign(fs,this.userConfig.GetOneBTbl(dlst[j].ai));
+      fs.bhiu = DataConfig.HUIBASE64;
+
+      let tmp2 = this.userConfig.GetOneBTbl(dlst[j].ai);
+      if (tmp2){
+        Object.assign(fs,tmp2);
+      }
       scdData.fss.push(fs);
     }
 
