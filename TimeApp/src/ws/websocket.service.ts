@@ -52,26 +52,31 @@ export class WebsocketService {
    */
   public connect(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      this.client.reconnect_delay = 1000 * ((this.failedtimes > 59 ? 59 : this.failedtimes) + 1);
+      let delay = 1000 * ((this.failedtimes > 59 ? 59 : this.failedtimes) + 1);
+      
+      this.client.reconnect_delay = delay;
 
-      this.settingWs().then(data => {
-        // 连接消息服务器
-        this.client.connect(this.login, this.password, frame => {
-          this.failedtimes = 0;
-          resolve();
-          this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
-            //message.ack(message.headers);
-            this.dispatchService.dispatch(message.body).then(data => {
-            })
-          });
-        }, error => {
-          this.failedtimes++;
-          this.close();
-        }, event => {
-          this.close();
-        }, '/');
+      // 延迟重连动作,防止重连死循环
+      setTimeout(()=>{
+        this.settingWs().then(data => {
+          // 连接消息服务器
+          this.client.connect(this.login, this.password, frame => {
+            this.failedtimes = 0;
+            resolve();
+            this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
+              //message.ack(message.headers);
+              this.dispatchService.dispatch(message.body).then(data => {
+              })
+            });
+          }, error => {
+            this.failedtimes++;
+            this.close();
+          }, event => {
+            this.close();
+          }, '/');
 
-      })
+        });
+      }, delay);
     })
 
   }
