@@ -144,7 +144,7 @@ export class ContactsService {
       console.log('异步获取联系人函数开始...');
       let lastlaunch: number = this.userConfig.getTroubleStop('contactsservice.asyncphonecontacts.lastlaunch');
       let thislaunch: number = moment().unix();
-      
+
       if (lastlaunch && ((thislaunch - lastlaunch) > (60 * 30))) {
         console.log('异步获取联系人30分钟以内调用, 忽略...');
         // 30分钟以内调用, 忽略

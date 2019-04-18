@@ -79,7 +79,7 @@ export class UserConfig {
   }
 
   getTroubleStop(key: string) {
-    return UserConfig.troublestop.get(key).value;
+    return UserConfig.troublestop.get(key);
   }
   
   setTroubleStop(key: string, value: any) {
