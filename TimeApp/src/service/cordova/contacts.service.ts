@@ -428,6 +428,7 @@ export class ContactsService {
       let usersinforet = await this.personRestful.getMultis(phonenos);
       
       if (usersinforet && usersinforet.data) {
+        console.log(JSON.stringify(usersinforet.data));
         for (let userinfo of usersinforet.data) {
           console.log('Get ' + userinfo.openid + "'s userinfo.");
           usersinfo.set(userinfo.openid, userinfo);
@@ -452,11 +453,12 @@ export class ContactsService {
       // 使用批量下载代替
       // let userinfo = await this.personRestful.get(condid);
       let userinfo = usersinfo.get(condid);
-      console.log('userinfo ' + userinfo.openid);
-      console.log('userinfo ' + userinfo.nickname);
-      console.log('userinfo ' + userinfo.phoneno);
       
       if (userinfo) {
+        console.log('userinfo ' + userinfo.openid);
+        console.log('userinfo ' + userinfo.nickname);
+        console.log('userinfo ' + userinfo.phoneno);
+
         if (userinfo.avatarbase64 && userinfo.avatarbase64 != '') {
           bh.hiu = userinfo.avatarbase64;
           hasAvatar = true;
