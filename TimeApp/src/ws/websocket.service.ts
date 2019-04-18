@@ -63,6 +63,7 @@ export class WebsocketService {
             resolve();
             this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
               //message.ack(message.headers);
+              console.log('Received a message from ' + this.queue);
               this.dispatchService.dispatch(message.body).then(data => {
               })
             });
@@ -70,6 +71,7 @@ export class WebsocketService {
             this.failedtimes++;
             this.close();
           }, event => {
+            console.log('Stomp websocket closed with code ' + event.code + ', reason ' + event.reason);
             this.close();
           }, '/');
 
