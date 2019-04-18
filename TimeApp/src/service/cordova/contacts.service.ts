@@ -8,6 +8,7 @@ import {PersonRestful} from "../restful/personsev";
 import {UserConfig} from "../../service/config/user.config";
 import {BhTbl} from "../sqlite/tbl/bh.tbl";
 import {FsData} from "../../data.mapping";
+import * as moment from "moment";
 
 /**
  * 本地联系人读取
@@ -140,42 +141,51 @@ export class ContactsService {
   
   asyncPhoneContacts(): Promise<boolean> {
     return new Promise<boolean>(async (resolve, reject) => {
-      //异步获取联系人信息入库等操作
-      this.getContacts4Btbl().then(async data => {
-        let bsqls: Array<string> = new Array<string>();
-        for (let b of data) {
-          console.log("===== 本地联系人入参：" + JSON.stringify(b));
-
-          if (!b.rn) continue;
-          // TODO 效率低下
-          let bt: BTbl = await this.sqlExce.getOne<BTbl>(b);
-          
-          if (bt == null) {
-            bt = new BTbl();
-            bt.pwi = this.utilService.getUuid();
-            bt.ran = b.ran;
-            bt.ranpy = this.utilService.chineseToPinYin(bt.ran);
-            bt.hiu = "";
-            bt.rn = b.rn;
-            bt.rnpy = this.utilService.chineseToPinYin(bt.rn);
-            bt.rc = b.rc;
-            bt.rel = '0';
-            bt.ui = '';
-            bsqls.push(bt.inT());
-            console.log("===== 本地联系人入库：" + JSON.stringify(bt));
-          }
-        }
-        return await this.sqlExce.batExecSql(bsqls);
-      }).then(data => {
-        // 在同步服务器联系人之前先全部更新完成后刷新
-        // 同步时间较长，会导致用户使用的时候选不到联系人
-        this.userConfig.RefreshFriend();
-
+      let lastlaunch: number = this.userConfig.getTroubleStop('contactsservice.asyncphonecontacts.lastlaunch');
+      let thislaunch: number = moment().unix();
+      
+      if (lastlaunch && (thislaunch - lastlaunch > (60 * 30))) {
+        // 30分钟以内调用, 忽略
         resolve(true);
+      } else {
+        this.userConfig.setTroubleStop('contactsservice.asyncphonecontacts.lastlaunch', thislaunch);
+        //异步获取联系人信息入库等操作
+        this.getContacts4Btbl().then(async data => {
+          let bsqls: Array<string> = new Array<string>();
+          for (let b of data) {
+            console.log("===== 本地联系人入参：" + JSON.stringify(b));
 
-      }).catch(error=>{
-        resolve(false);
-      })
+            if (!b.rn) continue;
+            // TODO 效率低下
+            let bt: BTbl = await this.sqlExce.getOne<BTbl>(b);
+            
+            if (bt == null) {
+              bt = new BTbl();
+              bt.pwi = this.utilService.getUuid();
+              bt.ran = b.ran;
+              bt.ranpy = this.utilService.chineseToPinYin(bt.ran);
+              bt.hiu = "";
+              bt.rn = b.rn;
+              bt.rnpy = this.utilService.chineseToPinYin(bt.rn);
+              bt.rc = b.rc;
+              bt.rel = '0';
+              bt.ui = '';
+              bsqls.push(bt.inT());
+              console.log("===== 本地联系人入库：" + JSON.stringify(bt));
+            }
+          }
+          return await this.sqlExce.batExecSql(bsqls);
+        }).then(data => {
+          // 在同步服务器联系人之前先全部更新完成后刷新
+          // 同步时间较长，会导致用户使用的时候选不到联系人
+          this.userConfig.RefreshFriend();
+
+          resolve(true);
+
+        }).catch(error=>{
+          resolve(false);
+        });
+      }
     })
   }
 
