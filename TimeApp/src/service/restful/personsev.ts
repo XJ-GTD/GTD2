@@ -69,6 +69,34 @@ export class PersonRestful {
 
   }
 
+  //批量帐户信息获取	AIGS post
+  getMultis(phonenos:Array<string>): Promise<BsModel<any>> {
+
+    let bsModel = new BsModel();
+    return new Promise((resolve, reject) => {
+      let url: UrlEntity = this.config.getRestFulUrl("AIGS");
+      let urlEntity: UrlEntity = new UrlEntity();
+      urlEntity.url = url.url;
+      urlEntity.key = url.key;
+      urlEntity.desc = url.desc;
+      this.request.post(urlEntity, {phonenos: phonenos}).then(data => {
+        //处理返回结果
+        bsModel.code = data.errcode;
+        bsModel.message = data.errmsg;
+        bsModel.data = data.data;
+        resolve(bsModel);
+
+      }).catch(error => {
+        //处理返回错误
+        bsModel.code = -99;
+        bsModel.message = "处理出错";
+        reject(bsModel);
+
+      })
+    });
+
+  }
+
   //帐户头像获取	AAG get
   getavatar(phoneno:string): Promise<BsModel<any>> {
 

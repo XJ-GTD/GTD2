@@ -62,5 +62,13 @@ public class BlaBlacklistDto implements Serializable {
 	public void setBls(List<BlaBlacklistDto> bls) {
 		this.bls = bls;
 	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("BlaBlacklistDto [Id=").append(Id).append(", mpn=").append(mpn).append(", ai=").append(ai)
+				.append(", a=").append(a).append(", n=").append(n).append(", relId=").append(relId).append(", bls=")
+				.append(bls).append("]");
+		return builder.toString();
+	}
 	
 }

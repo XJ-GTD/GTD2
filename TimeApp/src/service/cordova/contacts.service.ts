@@ -408,6 +408,34 @@ export class ContactsService {
                       left join gtd_bh bh on bh.pwi = gb.pwi;`;
 
     let data: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
+    
+    // 批量获取用户信息
+    let phonenos: Array<string> = new Array<string>();
+    
+    for (let fs of data) {
+      let condid = fs.rc;
+      
+      if (fs.ui && fs.ui != '') {
+        condid = fs.ui;
+      }
+      
+      phonenos.push(condid);
+    }
+    
+    let usersinfo: Map<string, any> = new Map<string, any>();
+
+    if (phonenos.length > 0) {
+      let usersinforet = await this.personRestful.getMultis(phonenos);
+      
+      if (usersinforet && usersinforet.data && usersinforet.data.registusers) {
+        console.log(JSON.stringify(usersinforet.data));
+        for (let userinfo of usersinforet.data.registusers) {
+          console.log('Get ' + userinfo.openid + "'s userinfo.");
+          usersinfo.set(userinfo.openid, userinfo);
+        }
+      }
+    }
+    
     for (let fs of data) {
       let bt = new BTbl();
       Object.assign(bt, fs);
@@ -422,24 +450,30 @@ export class ContactsService {
         condid = fs.ui;
       }
       
-      let userinfo = await this.personRestful.get(condid);
+      // 使用批量下载代替
+      // let userinfo = await this.personRestful.get(condid);
+      let userinfo = usersinfo.get(condid);
+      
+      if (userinfo) {
+        console.log('userinfo ' + userinfo.openid);
+        console.log('userinfo ' + userinfo.nickname);
+        console.log('userinfo ' + userinfo.phoneno);
 
-      if (userinfo && userinfo.data) {
-        if (userinfo.data.avatarbase64 && userinfo.data.avatarbase64 != '') {
-          bh.hiu = userinfo.data.avatarbase64;
+        if (userinfo.avatarbase64 && userinfo.avatarbase64 != '') {
+          bh.hiu = userinfo.avatarbase64;
           hasAvatar = true;
           bt.rel = '1'; // 注册用户
         } else {
           bh.hiu = DataConfig.HUIBASE64;
         }
 
-        if (userinfo.data.nickname && userinfo.data.nickname != '') {
-          bt.rn = userinfo.data.nickname;
-          bt.rnpy = this.utilService.chineseToPinYin(userinfo.data.nickname);
+        if (userinfo.nickname && userinfo.nickname != '') {
+          bt.rn = userinfo.nickname;
+          bt.rnpy = this.utilService.chineseToPinYin(userinfo.nickname);
         }
 
-        if (userinfo.data.phoneno && userinfo.data.phoneno != '') {
-          bt.rc = userinfo.data.phoneno;
+        if (userinfo.phoneno && userinfo.phoneno != '') {
+          bt.rc = userinfo.phoneno;
         }
 
         bsqls.push(bt.upT());
