@@ -26,7 +26,7 @@
     "@ionic-native/background-mode": "^4.18.0",
     "@ionic-native/badge": "^4.18.0",
     "@ionic-native/calendar": "^4.18.0",
-    "@ionic-native/clipboard": "^5.4.0",
+    "@ionic-native/clipboard": "^4.2.0",
     "@ionic-native/contacts": "^4.18.0",
     "@ionic-native/core": "^4.11.0",
     "@ionic-native/device": "^4.18.0",
