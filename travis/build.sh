@@ -11,4 +11,9 @@ else
 fi
 
 cp -rf $TRAVIS_BUILD_DIR/TimeAppPatch/platforms/* $TRAVIS_BUILD_DIR/TimeApp/platforms
-ionic cordova build android
+
+if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+  ionic cordova build ios
+else
+  ionic cordova build android
+fi
