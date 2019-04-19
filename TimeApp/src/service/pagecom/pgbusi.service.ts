@@ -184,13 +184,13 @@ export class PgBusiService {
     //保存本地日程
     if (!ct.ui) ct.ui = ct.si;
     if (!ct.st) ct.st = "99:99";
-    await this.sqlExce.save(ct)
+    await this.sqlExce.save(ct);
 
     let adgPro: AgdPro = new AgdPro();
     //restFul保存日程
     this.setAdgPro(adgPro, ct);
     this.agdRest.save(adgPro);
-    return ct;
+    return rc;
   }
 
 
