@@ -30,13 +30,7 @@ matrix:
       - google-gdk-license-.+
   - os: osx
     language: objective-c
-    osx_image: xcode8.3
-    addons:
-      apt:
-        packages:
-        - yarn
-        - jq
-        - gradle
+    osx_image: xcode10.2
   allow_failures:
     - os: osx
 before_cache:
@@ -55,10 +49,7 @@ before_install:
   - export GRADLE_HOME=/usr/local/gradle
   - export PATH=$GRADLE_HOME/bin:$PATH
   - nvm install 8
-  - yarn global add ionic@4.1.2 phonegap plugman cordova@6.5.0
-  - mkdir -p $ANDROID_HOME/licenses
-  - echo -e "d56f5187479451eabf01fb78af6dfcb131a6481e" >> $ANDROID_HOME/licenses/android-sdk-license
-  - echo -e "84831b9409646a918e30573bab4c9c91346d8abd" >> $ANDROID_HOME/licenses/android-sdk-preview-license
+  - sh $TRAVIS_BUILD_DIR/travis/preinstall.sh
   - rvm install 2.1.5
   - gem install byebug -v 9.0.6
   - gem install fir-cli
