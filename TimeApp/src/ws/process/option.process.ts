@@ -6,10 +6,8 @@ import {ProcesRs} from "../model/proces.rs";
 import {O, SS} from "../model/ws.enum";
 import {DataConfig} from "../../service/config/data.config";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
-import {BsModel} from "../../service/restful/out/bs.model";
-import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {FsService} from "../../pages/fs/fs.service";
-import {FsData, ScdData} from "../../data.mapping";
+import {ScdData} from "../../data.mapping";
 
 /**
  * 确认操作
@@ -32,29 +30,30 @@ export class OptionProcess implements MQProcess{
       if (opt == O.O){
         //确认操作
         for (let c of processRs.scd){
-          let rc : ScdData = new ScdData();
-          rc.sn = c.sn;
-          rc.sd = c.sd;
-          rc.st = c.st;
-          rc.si = c.si;
+          //tx rt
+          let dbscd:ScdData = new ScdData();
+          dbscd.sn = c.sn;
+          dbscd.st = c.st;
+          dbscd.sd = c.sd;
+          dbscd.si = c.si;
+          dbscd.gs = "0";
+          dbscd.du = "1";
+          dbscd.tx = "0";
+          dbscd.rt = "0";
+
+          for (let f of processRs.fs){
+            dbscd.fss.push(f);
+          }
 
           if (prvOpt == SS.C){
-           let bsM:BsModel<CTbl> = await this.busiService.save(rc);
-            rc.si = bsM.data.si;
+           await this.busiService.save4ai(dbscd);
           }else if (prvOpt == SS.U){
-            await this.busiService.updateDetail(rc);
+            //TODO 需要修改update 方法
+            await this.busiService.updateDetail(dbscd);
           }else{
-            await this.busiService.delete( rc.si,"2", rc.sd);
+            //TODO 需要修改delete 方法
+            await this.busiService.delete( dbscd.si,"2", dbscd.sd);
           }
-
-          let pfs:Array<FsData> = new Array<FsData>();
-          for(let fs of processRs.fs){
-            let p:FsData = new FsData();
-            Object.assign(p,fs);
-            pfs.push(p);
-          }
-          this.fsServer.sharefriend(rc.si,pfs);
-
         }
 
       }else if(opt == O.S){

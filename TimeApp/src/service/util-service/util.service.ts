@@ -12,6 +12,8 @@ import {
 } from "ionic-angular";
 import {ConfirmboxComponent} from "../../components/confirmbox/confirmbox";
 import {AlertInputOptions} from "ionic-angular/components/alert/alert-options";
+import {ChineseLunar} from "./chinese.lunar";
+import * as moment from "moment";
 
 /**
  * 公共方法
@@ -21,11 +23,14 @@ import {AlertInputOptions} from "ionic-angular/components/alert/alert-options";
 @Injectable()
 export class UtilService {
   wins: any = window;//window对象
+  private chineseLunar:ChineseLunar;
   constructor(public device: Device,
               private toastCtrl: ToastController,
               private loadingCtrl: LoadingController,
               private popoverCtrl: PopoverController,
               private alertCtrl: AlertController) {
+
+    this.chineseLunar = new ChineseLunar();
   }
 
   alter: Alert;
@@ -664,5 +669,9 @@ export class UtilService {
       this.alter.dismiss();
       this.alter = null;
     }
+  }
+
+  public lunar(d:moment.Moment,format?:string):string{
+    return this.chineseLunar.solarToLunar(moment(d.format("YYYY/MM/DD")).toDate(),format);
   }
 }

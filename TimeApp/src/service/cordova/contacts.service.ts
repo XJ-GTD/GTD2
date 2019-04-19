@@ -8,6 +8,7 @@ import {PersonRestful} from "../restful/personsev";
 import {UserConfig} from "../../service/config/user.config";
 import {BhTbl} from "../sqlite/tbl/bh.tbl";
 import {FsData} from "../../data.mapping";
+import * as moment from "moment";
 
 /**
  * 本地联系人读取
@@ -101,12 +102,15 @@ export class ContactsService {
             } else {
               if (contactPhones.indexOf(number) > -1) continue;
               
+              // 增加人名显示逻辑
+              let displayname = this.getLocalContactsName(contact.displayName, contact.name.familyName, contact.name.givenName, contact.name.formatted);
+              
               let btbl: BTbl = new BTbl();
 
               //联系人别称
-              btbl.ran = contact.name.formatted;
+              btbl.ran = displayname;
               //名称
-              btbl.rn = contact.name.formatted;
+              btbl.rn = displayname;
               btbl.rc = number;
               contactPhones.push(number);
               btbls.push(btbl);
@@ -121,42 +125,71 @@ export class ContactsService {
     })
   }
 
+  getLocalContactsName(displayName, familyName, givenName, formatted) {
+    if (displayName) return displayName;
+
+    if (familyName && givenName) return familyName + ' ' + givenName;
+
+    if (familyName && !givenName) return familyName;
+
+    if (!familyName && givenName) return givenName;
+
+    if (formatted) return formatted;
+
+    return "";
+  }
+  
   asyncPhoneContacts(): Promise<boolean> {
     return new Promise<boolean>(async (resolve, reject) => {
-      //异步获取联系人信息入库等操作
-      this.getContacts4Btbl().then(async data => {
-        let bsqls: Array<string> = new Array<string>();
-        for (let b of data) {
-          console.log("===== 本地联系人入参：" + JSON.stringify(b));
+      console.log('异步获取联系人函数开始...');
+      let lastlaunch: number = UserConfig.getTroubleStop('contactsservice.asyncphonecontacts.lastlaunch');
+      let thislaunch: number = moment().unix();
 
-          if (!b.rn) continue;
-          // TODO 效率低下
-          let bt: BTbl = await this.sqlExce.getOne<BTbl>(b);
-          
-          if (bt == null) {
-            bt = new BTbl();
-            bt.pwi = this.utilService.getUuid();
-            bt.ran = b.ran;
-            bt.ranpy = this.utilService.chineseToPinYin(bt.ran);
-            bt.hiu = "";
-            bt.rn = b.rn;
-            bt.rnpy = this.utilService.chineseToPinYin(bt.rn);
-            bt.rc = b.rc;
-            bt.rel = '0';
-            bt.ui = '';
-            bsqls.push(bt.inT());
-            console.log("===== 本地联系人入库：" + JSON.stringify(bt));
-          }
-        }
-        return await this.sqlExce.batExecSql(bsqls);
-      }).then(data => {
-        //TODO 异步步服务器联系人信息
-       // this.personRestful.get()
+      if (lastlaunch && ((thislaunch - lastlaunch) > (60 * 30))) {
+        console.log('异步获取联系人30分钟以内调用, 忽略...');
+        // 30分钟以内调用, 忽略
         resolve(true);
+      } else {
+        console.log('异步获取联系人非30分钟以内调用, 开始...');
+        UserConfig.setTroubleStop('contactsservice.asyncphonecontacts.lastlaunch', thislaunch);
+        
+        //异步获取联系人信息入库等操作
+        this.getContacts4Btbl().then(async data => {
+          let bsqls: Array<string> = new Array<string>();
+          for (let b of data) {
+            console.log("===== 本地联系人入参：" + JSON.stringify(b));
 
-      }).catch(error=>{
-        resolve(false);
-      })
+            if (!b.rn) continue;
+            // TODO 效率低下
+            let bt: BTbl = await this.sqlExce.getOne<BTbl>(b);
+            
+            if (bt == null) {
+              bt = new BTbl();
+              bt.pwi = this.utilService.getUuid();
+              bt.ran = b.ran;
+              bt.ranpy = this.utilService.chineseToPinYin(bt.ran);
+              bt.hiu = "";
+              bt.rn = b.rn;
+              bt.rnpy = this.utilService.chineseToPinYin(bt.rn);
+              bt.rc = b.rc;
+              bt.rel = '0';
+              bt.ui = '';
+              bsqls.push(bt.inT());
+              console.log("===== 本地联系人入库：" + JSON.stringify(bt));
+            }
+          }
+          return await this.sqlExce.batExecSql(bsqls);
+        }).then(data => {
+          // 在同步服务器联系人之前先全部更新完成后刷新
+          // 同步时间较长，会导致用户使用的时候选不到联系人
+          this.userConfig.RefreshFriend();
+
+          resolve(true);
+
+        }).catch(error=>{
+          resolve(false);
+        });
+      }
     })
   }
 
@@ -264,7 +297,7 @@ export class ContactsService {
     // 能够适应使用ui和rc查询是否存在BTbl记录
     let data: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
     
-    if (data.length > 0) {
+    if (data && data.length > 0) {
       exists = data[0];
     }
     
@@ -277,20 +310,20 @@ export class ContactsService {
       bt.rel = '0';
     }
     
-    if (userinfo && userinfo.data) {
+    if (userinfo) {
       if (exists)
         bh.pwi = exists.pwi;
       else
         bh.pwi = bt.pwi;
 
       // 用户OpenId
-      if (userinfo.data.openid && userinfo.data.openid != '') {
-        bt.ui = userinfo.data.openid;
+      if (userinfo.openid && userinfo.openid != '') {
+        bt.ui = userinfo.openid;
       }
 
       // 用户头像
-      if (userinfo.data.avatarbase64 && userinfo.data.avatarbase64 != '') {
-        bh.hiu = userinfo.data.avatarbase64;
+      if (userinfo.avatarbase64 && userinfo.avatarbase64 != '') {
+        bh.hiu = userinfo.avatarbase64;
         hasAvatar = true;
         bt.rel = '1'; // 注册用户
       } else {
@@ -298,20 +331,20 @@ export class ContactsService {
       }
 
       // 用户姓名
-      if (userinfo.data.nickname && userinfo.data.nickname != '') {
+      if (userinfo.nickname && userinfo.nickname != '') {
         // 不存在本地联系人
         if (!exists) {
-          bt.ran = userinfo.data.nickname;
-          bt.ranpy = this.utilService.chineseToPinYin(userinfo.data.nickname);
+          bt.ran = userinfo.nickname;
+          bt.ranpy = this.utilService.chineseToPinYin(userinfo.nickname);
         }
         
-        bt.rn = userinfo.data.nickname;
-        bt.rnpy = this.utilService.chineseToPinYin(userinfo.data.nickname);
+        bt.rn = userinfo.nickname;
+        bt.rnpy = this.utilService.chineseToPinYin(userinfo.nickname);
       }
 
       // 用户手机号
-      if (userinfo.data.phoneno && userinfo.data.phoneno != '') {
-        bt.rc = userinfo.data.phoneno;
+      if (userinfo.phoneno && userinfo.phoneno != '') {
+        bt.rc = userinfo.phoneno;
       }
 
       if (exists) {
@@ -320,7 +353,7 @@ export class ContactsService {
         bsqls.push(bt.inT());
       }
       
-      if (!exists || !exists.bhi || exists.bhi == null || exists.bhi == '') {
+      if (!exists || !exists.bhi || exists.bhi == '') {
         // 注册用户需要加入头像表, 默认头像不入库
         if (hasAvatar) {
           bh.bhi = this.utilService.getUuid();
@@ -335,9 +368,9 @@ export class ContactsService {
     }
 
     await this.sqlExce.batExecSql(bsqls);
-    
+
     // 全部更新完成后刷新
-    this.userConfig.RefreshFriend();
+    this.userConfig.GetOneBTbl(bt.pwi);
     
     // 返回更新后参数
     if (!exists) {
@@ -375,6 +408,34 @@ export class ContactsService {
                       left join gtd_bh bh on bh.pwi = gb.pwi;`;
 
     let data: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
+    
+    // 批量获取用户信息
+    let phonenos: Array<string> = new Array<string>();
+    
+    for (let fs of data) {
+      let condid = fs.rc;
+      
+      if (fs.ui && fs.ui != '') {
+        condid = fs.ui;
+      }
+      
+      phonenos.push(condid);
+    }
+    
+    let usersinfo: Map<string, any> = new Map<string, any>();
+
+    if (phonenos.length > 0) {
+      let usersinforet = await this.personRestful.getMultis(phonenos);
+      
+      if (usersinforet && usersinforet.data && usersinforet.data.registusers) {
+        console.log(JSON.stringify(usersinforet.data));
+        for (let userinfo of usersinforet.data.registusers) {
+          console.log('Get ' + userinfo.openid + "'s userinfo.");
+          usersinfo.set(userinfo.openid, userinfo);
+        }
+      }
+    }
+    
     for (let fs of data) {
       let bt = new BTbl();
       Object.assign(bt, fs);
@@ -389,24 +450,30 @@ export class ContactsService {
         condid = fs.ui;
       }
       
-      let userinfo = await this.personRestful.get(condid);
+      // 使用批量下载代替
+      // let userinfo = await this.personRestful.get(condid);
+      let userinfo = usersinfo.get(condid);
+      
+      if (userinfo) {
+        console.log('userinfo ' + userinfo.openid);
+        console.log('userinfo ' + userinfo.nickname);
+        console.log('userinfo ' + userinfo.phoneno);
 
-      if (userinfo && userinfo.data) {
-        if (userinfo.data.avatarbase64 && userinfo.data.avatarbase64 != '') {
-          bh.hiu = userinfo.data.avatarbase64;
+        if (userinfo.avatarbase64 && userinfo.avatarbase64 != '') {
+          bh.hiu = userinfo.avatarbase64;
           hasAvatar = true;
           bt.rel = '1'; // 注册用户
         } else {
           bh.hiu = DataConfig.HUIBASE64;
         }
 
-        if (userinfo.data.nickname && userinfo.data.nickname != '') {
-          bt.rn = userinfo.data.nickname;
-          bt.rnpy = this.utilService.chineseToPinYin(userinfo.data.nickname);
+        if (userinfo.nickname && userinfo.nickname != '') {
+          bt.rn = userinfo.nickname;
+          bt.rnpy = this.utilService.chineseToPinYin(userinfo.nickname);
         }
 
-        if (userinfo.data.phoneno && userinfo.data.phoneno != '') {
-          bt.rc = userinfo.data.phoneno;
+        if (userinfo.phoneno && userinfo.phoneno != '') {
+          bt.rc = userinfo.phoneno;
         }
 
         bsqls.push(bt.upT());
@@ -430,6 +497,10 @@ export class ContactsService {
 
     // 全部更新完成后刷新
     this.userConfig.RefreshFriend();
+
+    // 重新打开同步本地联系人
+    UserConfig.setTroubleStop('contactsservice.asyncphonecontacts.lastlaunch', 0);
+
   }
 
 }

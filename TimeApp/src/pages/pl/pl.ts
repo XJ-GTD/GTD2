@@ -21,10 +21,10 @@ import {PagePDPro} from "../../data.mapping";
       <ion-toolbar>
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/fh2.png">
+            <img class="img-header-left" src="./assets/imgs/back.png">
           </button>
         </ion-buttons>
-        <ion-title>计划</ion-title>
+        <ion-title>日历</ion-title>
         <ion-buttons right>
           <button ion-button class="button-header-right" (click)="newPlan()">
             添加
@@ -38,7 +38,7 @@ import {PagePDPro} from "../../data.mapping";
         <ion-row>
           <ion-list no-lines>
             <ion-list-header class="plan-list-item" (click)="change()">
-              全部计划
+              自定义日历
               <img class="img-content-plan" src="./assets/imgs/{{picture}}">
             </ion-list-header>
             <div *ngFor="let option of zdyJhs" [ngStyle]="{'display': show }">
@@ -50,7 +50,7 @@ import {PagePDPro} from "../../data.mapping";
             <div [ngStyle]="{'display': zdyDisplay }" class="plan-none"> 暂无计划</div>
             <div style="height: 60px"></div>
             <ion-list-header class="plan-list-item">
-              <div style="float: left;">系统计划</div><small>（长按系统计划可清除）</small>
+              <div style="float: left;">日历</div><small>（长按日历可清除）</small>
             </ion-list-header>
             <div *ngFor="let option of xtJhs">
               <ion-item class="plan-list-item"(press)="delPlan(option)" >
@@ -172,7 +172,7 @@ export class PlPage {
       message = '刷新';
     }
     this.plService.downloadPlan(jh).then(data=>{
-      jh.js = data.data == null ? "0":data.data;
+      jh.js = data == null || data == 0 ? 0:data;
       jh.jtd = '1';
       this.util.loadingEnd();
     }).catch(error=>{

@@ -1,22 +1,21 @@
 page-tdl {
 
   .back1 {
-    background: $masterColor;
+    background: $lsback1;
   }
 
   .back0 {
-    background: $secondColor;
+    background: $lsback0;
   }
   .none1{
-    background: #96545f;
+    background:$lsnback1;
 
   }
   .none0{
-    background: #a0656f;
+    background: $lsnback0;
   }
 
   div {
-
     position: relative;
   }
 
@@ -27,11 +26,11 @@ page-tdl {
 
 
   .ym-fsize {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .d-fsize {
-    font-size: 15px;
+    font-size: 12px;
   }
 
   ion-grid.grid {
@@ -49,7 +48,7 @@ page-tdl {
   .daynav {
     position: relative;
     width: 75px;
-    background-color: $allBackColor;
+    background-color: $baseBackColor;
     color: #fff;
   }
 
@@ -109,7 +108,7 @@ page-tdl {
   }
 
   .header-set {
-    background-color: $titleColor;
+    background-color: $lstitleColor;
     height:64px;
 
     .headerdate {
@@ -135,12 +134,12 @@ page-tdl {
 
   .newMessage {
     font-weight: bold;
-    color: #378f9a;
+    color:  $adornColor;
   }
 
   .agenda-none {
     font-size: 11px;
-    color: rgb(192, 146, 151);
+    color: $adornColor;
     letter-spacing: 1px;
     width: 40px;
     line-height: 20px;

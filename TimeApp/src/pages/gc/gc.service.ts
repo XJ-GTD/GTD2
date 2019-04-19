@@ -2,7 +2,6 @@ import {Injectable} from "@angular/core";
 import {GTbl} from "../../service/sqlite/tbl/g.tbl";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {BxTbl} from "../../service/sqlite/tbl/bx.tbl";
-import {BsModel} from "../../service/restful/out/bs.model";
 import {UtilService} from "../../service/util-service/util.service";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {UserConfig} from "../../service/config/user.config";
@@ -17,7 +16,7 @@ export class GcService {
 
   //编辑群名称(添加群成员)
   async save(dc: PageDcData) {
-    let bs = new BsModel<any>();
+    let ret:boolean = false;
     console.log('---------- GcService save 添加/编辑群名称(添加群成员) ');
     if (dc.gi != null && dc.gi != '' && dc.fsl.length > 0) {
       let bxL = new Array<string>();
@@ -42,7 +41,7 @@ export class GcService {
         }
       }
       await this.sqlExce.batExecSql(bxL);
-      bs.data = data;
+      ret = true;
     } else if (dc.gi == null || dc.gi == '') { // 新建群
       let gc = new GTbl();
       Object.assign(gc, dc);
@@ -50,11 +49,11 @@ export class GcService {
       gc.gnpy = this.util.chineseToPinYin(gc.gn);
       //gc.gm = DataConfig.QZ_HUIBASE64;
       console.log('---------- GcService save 添加群名称(新建群)');
-      let data = await this.sqlExce.save(gc)
-      bs.data = data;
+      let data = await this.sqlExce.save(gc);
+      ret = true;
     }
     await this.userConfig.RefreshFriend();
-    return bs;
+    return ret;
   }
 
   /**
@@ -64,7 +63,6 @@ export class GcService {
    * @returns {Promise<BsModel<any>>}
    */
   async deleteBx(gi: string, pwi: string) {
-    let bs = new BsModel<any>();
     if (gi != null && gi != '' && pwi != null && pwi != '') {
       let bx = new BxTbl();
       bx.bi = gi;
@@ -79,7 +77,6 @@ export class GcService {
 
 //删除群
   async delete(gId: string) {
-    let bs = new BsModel<any>();
     //删除本地群成员
     let bx = new BxTbl();
     bx.bi = gId;

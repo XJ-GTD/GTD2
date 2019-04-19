@@ -1,5 +1,5 @@
 page-ga {
-  background-color: $allBackColor;
+  background-color: $baseBackColor;
 
   .w-auto {
     flex: 1;
@@ -22,7 +22,7 @@ page-ga {
   }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: $allBackColor;
+    background-color: $baseBackColor;
   }
 
   ion-header{
@@ -36,7 +36,7 @@ page-ga {
 
   .button-header-right{
     font-size: 1.5rem;
-    color: $masterColor;
+    color: $adornColor;
   }
 
   ion-input{
@@ -44,7 +44,7 @@ page-ga {
   }
 
   ion-content.content {
-    background-color: $allBackColor;
+    background-color: $baseBackColor;
     color: #fff;
   }
 

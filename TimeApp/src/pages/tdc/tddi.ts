@@ -2,14 +2,13 @@ import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {
   ActionSheetController, ModalController, NavController, NavParams,
 } from 'ionic-angular';
-import * as moment from "moment";
 import {UtilService} from "../../service/util-service/util.service";
-import {BsModel} from "../../service/restful/out/bs.model";
-import {TdcService} from "../tdc/tdc.service";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
 import {FsData, ScdData, ScdPageParamter} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
+import {PlService} from "../pl/pl.service";
+import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 
 /**
  * Generated class for the 日程详情（受邀） page.
@@ -45,7 +44,8 @@ import {DataConfig} from "../../service/config/data.config";
           <ion-textarea type="text" [(ngModel)]="scd.sn" placeholder="我想..." readonly="true"></ion-textarea>
         </ion-row>
         <ion-row>
-          <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh] = "scd.p.jn != ''" [ngStyle] ="{'background-color':scd.p.jc == '' ? '#fffff' : scd.p.jc}">
+          <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh]="scd.p.jn != ''"
+               [ngStyle]="{'background-color':scd.p.jc == '' ? '#fffff' : scd.p.jc}">
             {{scd.p.jn == "" ? "添加计划" : "计划"}}
           </div>
           <div>{{scd.p.jn}}</div>
@@ -56,16 +56,16 @@ import {DataConfig} from "../../service/config/data.config";
                         [(ngModel)]="scd.showSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                         min="1999-01-01" max="2039-12-31" disabled
           ></ion-datetime>
+          <div class="reptlbl">{{alldshow}}</div>
         </ion-row>
         <ion-row>
-          <div>{{alldshow}}</div>
         </ion-row>
         <ion-row>
           <div class="reptlbl">重复</div>
 
-          <div class="reptComm" *ngIf="this.scd.rt == 1">{{reptshow}}</div>
+          <div class="reptComm" *ngIf="this.scd.rt == 0">{{reptshow}}</div>
 
-          <div class="reptComm" *ngIf="this.scd.rt != 1">{{reptshow}} {{scd.sd | formatedate:'CYYYY/MM/DD'}}
+          <div class="reptComm" *ngIf="this.scd.rt != 0">{{reptshow}} {{scd.sd | formatedate:'CYYYY/MM/DD'}}
             -{{scd.ed | formatedate:'CYYYY/MM/DD'}}</div>
         </ion-row>
         <ion-row>
@@ -110,7 +110,7 @@ import {DataConfig} from "../../service/config/data.config";
         <ion-row>
           <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set" (focus)="comentfocus()"
                         (blur)="comentblur()"
-                       ></ion-textarea>
+          ></ion-textarea>
         </ion-row>
       </ion-grid>
     </ion-content>
@@ -153,13 +153,16 @@ import {DataConfig} from "../../service/config/data.config";
 export class TddiPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private util: UtilService, private  tddiServ: TdcService,
+              private util: UtilService,
               public actionSheetCtrl: ActionSheetController,
               public modalCtrl: ModalController, private  busiServ: PgBusiService,
               private keyboard: Keyboard, private _renderer: Renderer2,
+              private plsevice: PlService
   ) {
 
   }
+
+  actionSheet;
 
   //画面数据
   scd: ScdData = new ScdData();
@@ -186,11 +189,11 @@ export class TddiPage {
 
   isShowPlan: boolean = false;
   IsShowCover: boolean = false;
-  jhs: any;
+  jhs: Array<JhTbl>;
 
 
   comentfocus() {
-    if (this.keyboard){
+    if (this.keyboard) {
       this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(-300px)");
     }
   }
@@ -199,29 +202,30 @@ export class TddiPage {
     this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(0px)");
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
 
-
+    this.scd.fs.bhiu = DataConfig.HUIBASE64;
     //受邀人修改的场合初始化
     let paramter: ScdPageParamter = this.navParams.data;
-    this.tddiServ.get(paramter.si).then(data => {
-      let bs: BsModel<ScdData> = data;
-      Object.assign(this.scd, bs.data);
+
+
+      this.scd = await this.busiServ.get(paramter.si);
+
+      this.clickwake(this.scd.tx + '');
+
+      //TODO 清除消息把已读标志未读
+      this.busiServ.updateMsg(this.scd.si);
+
       this.scd.showSd = paramter.d.format("YYYY-MM-DD");
 
       //TODO 缓存里后获取发送信息
 
-      this.busiServ.getPlans().then(data => {
-        this.jhs = data;
-        for (let i = 0; i < this.jhs.length; i++) {
-          if (this.jhs[i].ji == this.scd.ji) {
-            this.scd.p = this.jhs[i];
-          }
+      this.jhs = await this.plsevice.getPlanCus();
+      for (let i = 0; i < this.jhs.length; i++) {
+        if (this.jhs[i].ji == this.scd.ji) {
+          this.scd.p = this.jhs[i];
         }
-      }).catch(res => {
-        console.log("获取计划失败" + JSON.stringify(res));
-      });
-
+      }
       //全天的场合
       if (this.scd.st == "99:99") {
         this.alldshow = "全天";
@@ -249,22 +253,22 @@ export class TddiPage {
           this.reptshow = "关";
       }
 
-
-      this.clickwake(this.scd.tx + '');
-
-      //TODO 清除消息把已读标志未读
-      this.busiServ.updateMsg(this.scd.si);
-
-    });
-
-    //获取日程发起人信息
-   //this.tddiServ.getCrMan(this.navParams.get("si")).then(data => {
-   //   this.fsshow = data
-//
-//    });
   }
 
-  //提醒按钮显示控制
+
+//获取日程发起人信息
+//this.tddiServ.getCrMan(this.navParams.get("si")).then(data => {
+//   this.fsshow = data
+//
+//    });
+
+  ionViewWillLeave() {
+    if (this.actionSheet) {
+      this.actionSheet.dismiss();
+    }
+  }
+
+//提醒按钮显示控制
   clickwake(type: string) {
 
     this.scd.tx = type;
@@ -336,24 +340,26 @@ export class TddiPage {
 
   async save() {
 
-    this.util.loadingStart();
-    //提醒内容设置
+      this.util.loadingStart();
+      //提醒内容设置
 
-    //消息设为已读
-    this.scd.du = "1";
+      //消息设为已读
+      this.scd.du = "1";
 
-    //开始时间格式转换
-    this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
+      //开始时间格式转换
+      //this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
 
-    this.scd.ji = this.scd.p.ji;
+      this.scd.ji = this.scd.p.ji;
 
-    //归属 他人创建
-    this.scd.gs = '1';
+      //归属 他人创建
+      this.scd.gs = '1';
 
-    let data =await  this.tddiServ.updateDetail(this.scd);
-    this.util.loadingEnd();
-    this.cancel();
-    return data;
+      await this.busiServ.updateDetail(this.scd);
+
+      this.util.loadingEnd();
+
+      this.cancel();
+
   }
 
   presentActionSheet() {
@@ -361,22 +367,22 @@ export class TddiPage {
     let d = paramter.d.format("YYYY/MM/DD");
     if (this.scd.rt != "0" && this.scd.sd != d) {
       //重复日程删除
-      const actionSheet = this.actionSheetCtrl.create({
+      this.actionSheet = this.actionSheetCtrl.create({
         buttons: [
           {
             text: '删除今后所有日程',
             role: 'destructive',
             cssClass: 'btn-del',
             handler: () => {
-              this.util.alterStart("2",()=>{
+              this.util.alterStart("2", () => {
 
-                  this.util.loadingStart();
-                  this.tddiServ.delete(this.scd.si, "1", d).then(data => {
-                    this.util.loadingEnd();
-                    this.cancel();
-                  }).catch(err => {
-                    this.util.loadingEnd();
-                  });
+                this.util.loadingStart();
+                this.busiServ.delete(this.scd.si, "1", d).then(data => {
+                  this.util.loadingEnd();
+                  this.cancel();
+                }).catch(err => {
+                  this.util.loadingEnd();
+                });
 
               });
             }
@@ -384,9 +390,9 @@ export class TddiPage {
             text: '删除所有日程',
             cssClass: 'btn-delall',
             handler: () => {
-              this.util.alterStart("2",()=>{
+              this.util.alterStart("2", () => {
                 this.util.loadingStart();
-                this.tddiServ.delete(this.scd.si, "2", d).then(data => {
+                this.busiServ.delete(this.scd.si, "2", d).then(data => {
                   this.util.loadingEnd();
                   this.cancel();
                 }).catch(err => {
@@ -405,12 +411,12 @@ export class TddiPage {
           }
         ]
       });
-      actionSheet.present();
+      this.actionSheet.present();
     } else {
       //非重复日程删除
-      this.util.alterStart("2",()=>{
+      this.util.alterStart("2", () => {
         this.util.loadingStart();
-        this.tddiServ.delete(this.scd.si, "2", d).then(data => {
+        this.busiServ.delete(this.scd.si, "2", d).then(data => {
           this.util.loadingEnd();
           this.cancel();
         }).catch(err => {
@@ -428,7 +434,7 @@ export class TddiPage {
       this.isShowPlan = true;
       this.IsShowCover = true;
     } else {
-      this.util.toastStart("未创建计划",3000);
+      this.util.toastStart("未创建计划", 3000);
     }
   }
 
@@ -440,8 +446,9 @@ export class TddiPage {
       console.log("check:" + this.scd.ji);
     }
   }
-  goTofsDetail(fs:FsData){
-    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{fsData:fs});
+
+  goTofsDetail(fs: FsData) {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE, {fsData: fs});
     modal.present();
   }
 

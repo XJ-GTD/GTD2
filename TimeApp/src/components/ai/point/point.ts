@@ -91,10 +91,21 @@ export class PointComponent {
    listenStart() {
     if (!this.statusListener) this.assistantService.listenAudio();
     else this.assistantService.stopListenAudio();
+     //
+     // if (this.statusListener){
+     //   this.speed = 0.004;
+     //   this._renderer.removeClass(this.light.nativeElement, "danger");
+     //   this.statusListener = !this.statusListener;
+     // }else {
+     //   this._renderer.addClass(this.light.nativeElement, "danger");
+     //   this.speed = 0.0004;
+     //   this.statusListener = !this.statusListener;
+     //
+     // }
   }
 
   ngOnInit(): void {
-    this._renderer.setStyle(this.aitool.nativeElement, "top", window.innerHeight);
+    //this._renderer.setStyle(this.aitool.nativeElement, "top", window.innerHeight);
     this.ctx = this.canvas.nativeElement.getContext('2d');
     this.width = this.canvas.nativeElement.width;
     this.height = this.canvas.nativeElement.height;

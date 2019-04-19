@@ -217,6 +217,7 @@ export class ScdEmData {
   d: string = "";
   t: string = "";
   ti: string = "";
+  gs:string = ""
   datas: Array<FriendEmData> = new Array<FriendEmData>();
 }
 
@@ -226,6 +227,7 @@ export class FriendEmData {
   m: string = "";
   p: string = "";
   a: string = "";
+  uid: string = "";
 }
 
 export class SpeechEmData {

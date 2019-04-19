@@ -4,9 +4,8 @@ import {
 } from 'ionic-angular';
 import * as moment from "moment";
 import {UtilService} from "../../service/util-service/util.service";
-import {BsModel} from "../../service/restful/out/bs.model";
-import {TdcService} from "../tdc/tdc.service";
 import {ScdData, ScdPageParamter} from "../../data.mapping";
+import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 
 /**
  * Generated class for the 日程详情（系统） page.
@@ -71,7 +70,7 @@ import {ScdData, ScdPageParamter} from "../../data.mapping";
 export class TddsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private util: UtilService, private  tddiServ: TdcService,
+              private util: UtilService,private  busiServ: PgBusiService,
   ) {
 
   }
@@ -87,9 +86,9 @@ export class TddsPage {
 
     //受邀人修改的场合初始化
     let paramter: ScdPageParamter = this.navParams.data;
-    this.tddiServ.get(paramter.si).then(data => {
-      let bs: BsModel<ScdData> = data;
-      Object.assign(this.scd, bs.data);
+    this.busiServ.get(paramter.si).then(data => {
+      let bs: ScdData = data;
+      Object.assign(this.scd, bs);
 
       this.scd.showSd = paramter.d.format("YYYY-MM-DD");
       this.scd.st = moment().format("HH:mm");

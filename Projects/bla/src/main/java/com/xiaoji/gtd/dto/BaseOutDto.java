@@ -22,5 +22,8 @@ public class BaseOutDto {
 	public void setD(Object d) {
 		this.d = d;
 	}
-	
+	@Override
+	public String toString() {
+		return "Return [" + rc + ", " + rm + ", " + d + "]";
+	}
 }

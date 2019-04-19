@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UserConfig} from "../../service/config/user.config";
-import {BsModel} from "../../service/restful/out/bs.model";
 import * as moment from "moment";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {LocalcalendarService} from "../../service/cordova/localcalendar.service";
@@ -217,27 +216,23 @@ export class TdlService {
    * @param {string} day  YYYY/MM/DD
    * @returns {Promise<BsModel<any>>}
    */
-  getOneDayRc(day: string): Promise<BsModel<any>> {
+  getOneDayRc(day: string): Promise<Array<ScdData>> {
     return new Promise((resolve, reject) => {
       let sql = 'select si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,tx,gs from gtd_c gc  ' +
         'where (gc.sd <="' + day + '" and gc.ed is null ) or (gc.sd <="' + day + '" and gc.ed>=' + day + '")';
-      let bs = new BsModel<Array<ScdData>>();
+      let spl = new Array<ScdData>();
       this.sqlExce.execSql(sql).then(data => {
         if (data && data.rows && data.rows.length > 0) {
-          let spl = new Array<ScdData>();
           for (let i = 0, len = data.rows.length; i < len; i++) {
             let sp: ScdData = data.rows.item(i);
             if (this.isymwd(sp.rt, day, sp.sd, sp.ed)) {
               spl.push(sp);
             }
           }
-          bs.data = spl;
         }
-        resolve(bs);
+        resolve(spl);
       }).catch(e => {
-        bs.code = -99;
-        bs.message = e.message;
-        resolve(bs);
+        resolve(spl);
       })
     })
   }

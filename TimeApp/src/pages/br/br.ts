@@ -18,9 +18,10 @@ import {UtilService} from "../../service/util-service/util.service";
       <ion-toolbar>
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/fh2.png">
+            <img class="img-header-left" src="./assets/imgs/back.png">
           </button>
         </ion-buttons>
+        <ion-title>备份恢复</ion-title>
       </ion-toolbar>
     </ion-header>
 
@@ -41,13 +42,13 @@ import {UtilService} from "../../service/util-service/util.service";
         </ion-row>
         
         <ion-row>
-          <ion-col (click)="backup(isBackUp)" [ngStyle]="{'opacity': isBackUp ? 1 : 0.2 }">
+          <ion-col (click)="backup(is)" [ngStyle]="{'opacity': is ? 1 : 0.2 }">
             <ion-avatar item-start>
               <img src="./assets/imgs/br-up.png">
             </ion-avatar>
             <p>备份</p>
           </ion-col>
-          <ion-col (click)="recover(isRecover)" [ngStyle]="{'opacity': isRecover ? 1 : 0.2 }">
+          <ion-col (click)="recover(isRecover,is)" [ngStyle]="{'opacity': isRecover && is ? 1 : 0.2 }">
             <ion-avatar item-start>
               <img src="./assets/imgs/br-down.png">
             </ion-avatar>
@@ -63,9 +64,9 @@ export class BrPage {
   @ViewChild("resRef")
   resRef:ElementRef;
 
-  bts:any = new Date().getTime()/1000 ;// 最后一次备份日期
-  isRecover:any = false;
-  isBackUp:any = true;
+  bts:string;// 最后一次备份日期
+  isRecover:boolean = false;
+  is:any = true;
 
   constructor(public navCtrl: NavController,
               private brService:BrService,
@@ -83,7 +84,7 @@ export class BrPage {
 
   getLastDate(){
     this.brService.getLastDt().then(data=>{
-      this.bts = data.data.bts;
+      this.bts = data.bts;
       if(this.bts && this.bts!=''){
         this.isRecover = true;
       }
@@ -98,33 +99,33 @@ export class BrPage {
   }
 
   backup(){
-    if(this.isBackUp) {
-      this.isBackUp = false;
+    if(this.is) {
+      this.is = false;
       this._renderer.addClass(this.resRef.nativeElement, "spinanimation");
       this.brService.backup().then(data => {
         this.util.toastStart('备份完成', 1500);
         this.getLastDate();
-        this.isBackUp = true;
+        this.is = true;
         this._renderer.removeClass(this.resRef.nativeElement, "spinanimation");
       }).catch(error => {
         this.util.toastStart('备份失败', 1500);
-        this.isBackUp = true;
+        this.is = true;
         this._renderer.removeClass(this.resRef.nativeElement, "spinanimation");
       })
     }
   }
 
   recover(){
-    if(this.isRecover){
-      this.isRecover = false;
+    if(this.isRecover && this.is){
+      this.is = false;
       this._renderer.addClass(this.resRef.nativeElement,"spinanimation");
       this.brService.recover(Number(this.bts)).then(data=>{
         this.util.toastStart('恢复成功',1500);
-        this.isRecover = true;
+        this.is = true;
         this._renderer.removeClass(this.resRef.nativeElement,"spinanimation");
       }).catch(error=>{
         this.util.toastStart('恢复失败',1500);
-        this.isRecover = true;
+        this.is = true;
         this._renderer.removeClass(this.resRef.nativeElement,"spinanimation");
       })
     }

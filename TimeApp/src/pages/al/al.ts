@@ -28,8 +28,7 @@ export class AlPage {
   alData: AlData = new AlData();
 
   constructor(private alService: AlService,
-              private nav: Nav,
-              private dd:NotificationsService) {
+              private nav: Nav) {
     this.alData.text = "正在初始化";
 
   }

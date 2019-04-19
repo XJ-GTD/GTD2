@@ -115,8 +115,11 @@ export class AlService {
       yTbl.yv = "0";
       await this.sqlExce.replaceT(yTbl);
 
-     //await this.createTestData();
-
+      // 在浏览器测试时使用测试数据
+      if (!this.util.isMobile()) {
+        await this.createTestData();
+      }
+      
       alData.text = "系统初始化完成";
       resolve(alData);
     })
@@ -307,7 +310,7 @@ export class AlService {
       btbl.rnpy = 'zhangjinyang';
       btbl.rc = '15821947260';
       btbl.rel = '1';
-      btbl.ui = btbl.pwi;
+      btbl.ui = btbl.rc;
       sqls.push(btbl.inT());
       btbls.push(btbl);
 
@@ -326,7 +329,7 @@ export class AlService {
       btbl.rnpy = 'xuzhaopin';
       btbl.rc = '13661617252';
       btbl.rel = '0';
-      btbl.ui = btbl.pwi;
+      btbl.ui = btbl.rc;
       sqls.push(btbl.inT());
       btbls.push(btbl);
 
@@ -346,7 +349,7 @@ export class AlService {
       btbl.rnpy = 'xilijia';
       btbl.rc = '13585820972';
       btbl.rel = '1';
-      btbl.ui = btbl.pwi;
+      btbl.ui = btbl.rc;
       sqls.push(btbl.inT());
       btbls.push(btbl);
 
@@ -365,7 +368,7 @@ export class AlService {
       btbl.rnpy = 'caoping';
       btbl.rc = '16670129762';
       btbl.rel = '0';
-      btbl.ui = btbl.pwi;
+      btbl.ui = btbl.rc;
       sqls.push(btbl.inT());
       btbls.push(btbl);
 
@@ -384,7 +387,7 @@ export class AlService {
       btbl.rnpy = 'luojianfei';
       btbl.rc = '13564242673';
       btbl.rel = '1';
-      btbl.ui = btbl.pwi;
+      btbl.ui = btbl.rc;
       sqls.push(btbl.inT());
       btbls.push(btbl);
 
@@ -403,7 +406,7 @@ export class AlService {
       btbl.rnpy = 'dingchaohui';
       btbl.rc = '15737921611';
       btbl.rel = '1';
-      btbl.ui = btbl.pwi;
+      btbl.ui = btbl.rc;
       sqls.push(btbl.inT());
       btbls.push(btbl);
 
@@ -422,7 +425,7 @@ export class AlService {
       btbl.rnpy = 'xuezhenyang';
       btbl.rc = '18602150145';
       btbl.rel = '1';
-      btbl.ui = btbl.pwi;
+      btbl.ui = btbl.rc;
       sqls.push(btbl.inT());
       btbls.push(btbl);
 

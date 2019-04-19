@@ -1,10 +1,11 @@
-import {Component, ViewChildren, QueryList} from '@angular/core';
-import {ActionSheetController, DateTime, IonicPage, NavController, ViewController} from 'ionic-angular';
+import {Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
+import {ActionSheetController, DateTime, IonicPage, NavController} from 'ionic-angular';
 import {PsService} from "./ps.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
 import {PageUData} from "../../data.mapping";
+import {Keyboard} from "@ionic-native/keyboard";
 
 /**
  * Generated class for the 个人设置 page.
@@ -23,40 +24,42 @@ import {PageUData} from "../../data.mapping";
       <ion-buttons left>
         <button ion-button icon-only (click)="goBack()" color="danger">
           <!--<ion-icon name="arrow-back"></ion-icon>-->
-          <img class="img-header-left" src="./assets/imgs/fh2.png">
+          <img class="img-header-left" src="./assets/imgs/back.png">
         </button>
       </ion-buttons>
     </ion-toolbar> 
   </ion-header> 
-  <ion-content padding class="page-backgroud-color"> 
-    <ion-item class="no-border">
-    <ion-input type="text" style="font-size: 23px;" [(ngModel)]="uo.user.name" (ionBlur)="save()"></ion-input>
-    <ion-avatar item-end>
-      <img [src]="avatar" style="width: 60px;height: 60px">
-    </ion-avatar>
-  </ion-item>
+  <ion-content padding class="page-backgroud-color">
+    <ion-grid #grid>
+      <ion-item class="no-border">
+        <ion-input type="text" style="font-size: 23px;" [(ngModel)]="uo.user.name" (ionBlur)="save()"></ion-input>
+        <ion-avatar item-end>
+          <img [src]="avatar" style="width: 60px;height: 60px">
+        </ion-avatar>
+      </ion-item>
     
-    <ion-list>
-      
-      <ion-item class="bg-right-img" (click)="selectSex()">
-        <ion-label>性别</ion-label>
-        <ion-label  item-end text-end >{{sex}}</ion-label>
-      </ion-item>
-      <ion-item class="bg-right-img">
-        <ion-label>生日</ion-label>
-        <ion-datetime displayFormat="YYYY-MM-DD" item-end text-end [(ngModel)]="birthday"
-                      min="1949-01-01" max="2039-12-31"  (ionCancel)="getDtPickerSel($event)"></ion-datetime>
-      </ion-item>
-      <ion-item class="bg-right-img">
-        <ion-label>身份证</ion-label>
-        <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.No" (ionBlur)="save()"></ion-input>
-      </ion-item>
-      <ion-item class="bg-right-img">
-        <ion-label>联系方式</ion-label>
-        <ion-input type="tel" text-end [(ngModel)]="uo.user.contact" (ionBlur)="save()"></ion-input>
-      </ion-item>
-      
-    </ion-list>
+      <ion-list>
+        
+        <ion-item class="bg-right-img" (click)="selectSex()">
+          <ion-label>性别</ion-label>
+          <ion-label  item-end text-end >{{sex}}</ion-label>
+        </ion-item>
+        <ion-item class="bg-right-img">
+          <ion-label>生日</ion-label>
+          <ion-datetime displayFormat="YYYY-MM-DD" item-end text-end [(ngModel)]="birthday"
+                        min="1949-01-01" max="2039-12-31"  cancelText="取消" doneText = "确认" (ionCancel)="getDtPickerSel($event)"></ion-datetime>
+        </ion-item>
+        <ion-item class="bg-right-img">
+          <ion-label>身份证</ion-label>
+          <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.No" (ionBlur)="save()"></ion-input>
+        </ion-item>
+        <ion-item class="bg-right-img">
+          <ion-label>联系方式</ion-label>
+          <ion-input type="tel" text-end [(ngModel)]="uo.user.contact" (ionBlur)="save()" (focus)="commentFocus()" (blur)="commentBlur()"></ion-input>
+        </ion-item>
+        
+      </ion-list>
+    </ion-grid>
   </ion-content>`,
 })
 export class PsPage {
@@ -65,7 +68,10 @@ export class PsPage {
   @ViewChildren(DateTime) dateTimes: QueryList<DateTime>;
   actionSheet;
 
+  @ViewChild("grid")
+  grid: ElementRef;
 
+  today: any = new Date();
   sex:string = '';
   birthday:string = '';
   avatar:any = DataConfig.HUIBASE64;
@@ -75,8 +81,19 @@ export class PsPage {
   constructor(public navCtrl: NavController,
               private psService:PsService,
               private actionSheetController: ActionSheetController,
-              public viewCtrl: ViewController,
-              private util: UtilService) {
+              private util: UtilService,
+              private keyboard: Keyboard,
+              private _renderer: Renderer2,) {
+  }
+
+  commentFocus() {
+    if (this.keyboard){
+      this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(-80px)");
+    }
+  }
+
+  commentBlur() {
+    this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(0px)");
   }
 
   ionViewDidLoad() {
@@ -121,15 +138,14 @@ export class PsPage {
   }
 
   goBack() {
-    //this.navCtrl.pop();
-    this.viewCtrl.dismiss();
+    this.navCtrl.pop();
   }
 
   ionViewWillLeave() {
     if (this.actionSheet !== undefined) {
       this.actionSheet.dismiss();
     }
-    console.log(this.dateTimes.toArray());
+    //console.log(this.dateTimes.toArray());
     for(let i = 0;i<this.dateTimes.toArray().length;i++){
       if(this.dateTimes.toArray()[i]._picker != undefined){
         this.dateTimes.toArray()[i]._picker.dismiss();
@@ -169,13 +185,10 @@ export class PsPage {
 
     if(isUpd){
       this.psService.saveUser(this.uo.user.id,inData).then(data=>{
-        if(data.code ==0){
-          //this.util.popoverStart('保存成功！');
-          this.getData();
-          Object.assign(this.olduo.user,this.uo.user);  //替换旧数据
-        }else{
-          this.util.popoverStart(data.message);
-        }
+        this.getData();
+        Object.assign(this.olduo.user,this.uo.user);  //替换旧数据
+      }).catch(error=>{
+        this.util.popoverStart(error);
       })
     }
 

@@ -81,7 +81,7 @@ export class CTbl implements  ITbl{
     if(this.sr != null && this.sr!=""){
       sq = sq + ', sr="' + this.sr +'"';
     }
-    if(this.bz != null && this.bz!=""){
+    if(this.bz != null ){
       sq = sq + ', bz="' + this.bz +'"';
     }
     if(this.tx != null && this.tx!=""){
@@ -186,7 +186,7 @@ export class CTbl implements  ITbl{
     let sq ='insert into gtd_c ' +
       '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,bz,tx,wtt,pni,du,gs) values("'+ this.si+'","'+ this.sn+'","'+this.ui+ '"' +
       ',"'+this.sd+ '","'+this.st+ '","'+this.ed+ '","'+this.et+ '","'+this.rt+ '","'+this.ji+ '"' +
-      ',"'+this.sr+ '","'+this.bz+  '","'+this.tx+'",'+  moment().unix() + ',"'+this.pni+'","'+this.du+'"' +
+      ',"'+this.sr+ '","'+this.nll2str(this.bz)+  '","'+this.nll2str(this.tx)+'",'+  moment().unix() + ',"'+this.pni+'","'+this.du+'"' +
       ',"'+this.gs+'");';
 
     return sq;
@@ -196,11 +196,17 @@ export class CTbl implements  ITbl{
     let sq ='replace into gtd_c ' +
       '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,bz,tx,wtt,pni,du,gs) values("'+ this.si+'","'+ this.sn+'","'+this.ui+ '"' +
       ',"'+this.sd+ '","'+this.st+ '","'+this.ed+ '","'+this.et+ '","'+this.rt+ '","'+this.ji+ '"' +
-      ',"'+this.sr+ '","'+this.bz+ '","' + this.tx + '",'+  moment().unix() +',"'+this.pni+'","'+this.du+'"' +
+      ',"'+this.sr+ '","'+this.nll2str(this.bz)+ '","' + this.nll2str(this.tx) + '",'+  moment().unix() +',"'+this.pni+'","'+this.du+'"' +
       ',"'+this.gs+'");';
     return sq;
   }
-
+  nll2str(ob):any{
+    if (ob == null || !ob ){
+      return "";
+    }else{
+      return ob;
+    }
+  }
 }
 
 

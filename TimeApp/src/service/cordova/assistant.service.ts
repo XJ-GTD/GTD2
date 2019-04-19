@@ -103,9 +103,9 @@ export class AssistantService {
    * 返回语音播报
    */
   async speakText(speechText: string) {
-    if (!this.utilService.isMobile()) return "";
+    if (!this.utilService.isMobile()) return ;
 
-    if (UserConfig.settins.get(DataConfig.SYS_B).value == "0") return "";
+    if (UserConfig.settins.get(DataConfig.SYS_B).value == "0") return;
 
     if (speechText == null || speechText == "") {
       return ""

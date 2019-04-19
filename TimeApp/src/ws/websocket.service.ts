@@ -20,7 +20,9 @@ export class WebsocketService {
   private password: string;
   private client: Stomp.Client;
   private queue: string;
-  private subscription: StompSubscription
+  private subscription: StompSubscription;
+  private failedtimes: number = 0;
+  private timer: any;
 
   constructor(private dispatchService: DispatchService) {
   }
@@ -39,8 +41,8 @@ export class WebsocketService {
       //获取websocte  queue
       this.queue = UserConfig.account.mq;
       //呼吸
-      this.client.heartbeat.outgoing = 0;
-      this.client.heartbeat.incoming = 0;
+      this.client.heartbeat.outgoing = 1000 * 30;
+      this.client.heartbeat.incoming = 1000 * 60 * 5;
 
       resolve();
     })
@@ -51,22 +53,39 @@ export class WebsocketService {
    */
   public connect(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      this.settingWs().then(data => {
-        // 连接消息服务器
-        this.client.connect(this.login, this.password, frame => {
-          resolve();
-          this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
-            //message.ack(message.headers);
-            this.dispatchService.dispatch(message.body).then(data => {
-            })
-          });
-        }, error => {
-          this.close();
-        }, event => {
-          this.close();
-        }, '/');
+      let delay = 1000 * Math.pow(2, this.failedtimes);
+      
+      // 最长等待5分钟再连接
+      delay = (delay > 1000 * 60 * 5) ? (1000 * 60 * 5) : delay;
+      
+      if (this.timer) clearTimeout(this.timer);
+      
+      // 延迟重连动作,防止重连死循环
+      this.timer = setTimeout(()=>{
+        this.settingWs().then(data => {
+          // 连接消息服务器
+          this.client.connect(this.login, this.password, frame => {
 
-      })
+            // 连接成功,取消所有重连请求
+            if (this.timer) clearTimeout(this.timer);
+            this.failedtimes = 0;
+            resolve();
+            this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
+              //message.ack(message.headers);
+              console.log('Received a message from ' + this.queue);
+              this.dispatchService.dispatch(message.body).then(data => {
+              })
+            });
+          }, error => {
+            this.failedtimes++;
+            this.close();
+          }, event => {
+            console.log('Stomp websocket closed with code ' + event.code + ', reason ' + event.reason);
+            this.close();
+          }, '/');
+
+        });
+      }, delay);
     })
 
   }
@@ -74,12 +93,12 @@ export class WebsocketService {
   public close() {
     // 连接消息服务器
     if (this.client.connected)
-    this.client.disconnect(() => {
-      this.connect();
-    }, {
-      login: this.login,
-      passcode: this.password
-    });
+      this.client.disconnect(() => {
+        this.connect();
+      }, {
+        login: this.login,
+        passcode: this.password
+      });
     else
       this.connect();
   }

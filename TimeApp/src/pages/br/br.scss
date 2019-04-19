@@ -1,5 +1,5 @@
 page-br {
-  background-color: $allBackColor;
+  background-color: $baseBackColor;
 
   .w-auto {
     flex: 1;
@@ -22,7 +22,7 @@ page-br {
   }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: $allBackColor;
+    background-color: $baseBackColor;
   }
 
   ion-header{
@@ -45,12 +45,12 @@ page-br {
   }
 
   ion-content.content {
-    background-color: $allBackColor;
+    background-color: $baseBackColor;
     color: #fff;
   }
 
   ion-content .plan-list-item {
-    background-color: $allBackColor;
+    background-color: $baseBackColor;
     color: #fff;
     padding-left: 8px;
     font-size: 1.5rem;

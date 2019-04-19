@@ -1,15 +1,18 @@
-import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import {
+  DateTime,
   ModalController, NavController, NavParams,
 } from 'ionic-angular';
 import * as moment from "moment";
-import {TdcService} from "./tdc.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
 import {ScdData, ScdPageParamter} from "../../data.mapping";
+import {CTbl} from "../../service/sqlite/tbl/c.tbl";
+import {PlService} from "../pl/pl.service";
+import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 
 /**
  * Generated class for the 新建日程 page.
@@ -28,7 +31,8 @@ import {ScdData, ScdPageParamter} from "../../data.mapping";
           <ion-textarea type="text" [(ngModel)]="scd.sn" placeholder="我想..."></ion-textarea>
         </ion-row>
         <ion-row>
-          <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh] = "scd.p.jn != ''" [ngStyle] ="{'background-color':scd.p.jc == '' ? '#fffff' : scd.p.jc}">
+          <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh]="scd.p.jn != ''"
+               [ngStyle]="{'background-color':scd.p.jc == '' ? '#fffff' : scd.p.jc}">
             {{scd.p.jn == "" ? "添加计划" : "计划"}}
           </div>
           <div>{{scd.p.jn}}</div>
@@ -38,15 +42,15 @@ import {ScdData, ScdPageParamter} from "../../data.mapping";
             <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
                           pickerFormat="YYYY MM DD" color="light"
                           [(ngModel)]="scd.showSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
-                          min="1999-01-01" max="2039-12-31"  cancelText="取消" doneText = "确认"
+                          min="1999-01-01" max="2039-12-31" cancelText="取消" doneText="确认"
             ></ion-datetime>
           </div>
         </ion-row>
         <ion-row>
-          <ion-toggle [(ngModel)]="alld" [class.allday]="b"></ion-toggle>
+          <ion-toggle [(ngModel)]="alld" [class.allday]="b" (ionChange)="togChange()"></ion-toggle>
           <div>
             <ion-datetime displayFormat="HH:mm" [(ngModel)]="scd.st"
-                          pickerFormat="HH mm"  [hidden]="alld" cancelText="取消" doneText = "确认"></ion-datetime>
+                          pickerFormat="HH mm" [hidden]="alld" cancelText="取消" doneText="确认"></ion-datetime>
 
           </div>
         </ion-row>
@@ -126,11 +130,6 @@ import {ScdData, ScdPageParamter} from "../../data.mapping";
           <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set" (focus)="comentfocus()"
                         (blur)="comentblur()"></ion-textarea>
         </ion-row>
-        <!--<ion-row justify-content-left>-->
-        <!--<div *ngFor="let fss of scd.fss;">-->
-        <!--<div>{{fss.ran}}</div>-->
-        <!--</div>-->
-        <!--</ion-row>-->
       </ion-grid>
     </ion-content>
     <ion-footer class="foot-set">
@@ -173,23 +172,31 @@ import {ScdData, ScdPageParamter} from "../../data.mapping";
 })
 export class TdcPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              private tdcServ: TdcService, private util: UtilService,
+  constructor(public navCtrl: NavController, public navParams: NavParams, private util: UtilService,
               public modalCtrl: ModalController, private busiServ: PgBusiService,
-              private keyboard: Keyboard, private _renderer: Renderer2,) {
+              private keyboard: Keyboard, private _renderer: Renderer2,
+              private plsevice: PlService) {
 
   }
 
 
   comentfocus() {
-    if (this.keyboard){
+    if (this.keyboard) {
       this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(-300px)");
+    }
+  }
+
+  togChange() {
+    if (!this.alld) {
+      this.scd.st = this.scd.st == "99:99" ? "00:00" : this.scd.st;
     }
   }
 
   comentblur() {
     this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(0px)");
   }
+
+  @ViewChildren(DateTime) dateTimes: QueryList<DateTime>;
 
   //画面状态：0：新建 ，1：未关闭直接修改
   pagestate: string = "0";
@@ -221,22 +228,21 @@ export class TdcPage {
 
   isShowPlan: boolean = false;
   IsShowCover: boolean = false;
-  jhs: any;
+  jhs: Array<JhTbl>;
 
   ionViewWillEnter() {
 
-    this.busiServ.getPlans().then(data => {
+    this.plsevice.getPlanCus().then(data => {
       this.jhs = data;
-      //console.log("111" + JSON.stringify(this.jhs));
-    }).catch(res => {
-      console.log("获取计划失败" + JSON.stringify(res));
-    });
+    })
 
     //新建的场合初始化
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
       this.scd.showSd = paramter.d.format("YYYY-MM-DD");
-      this.scd.st = moment().add(1, "h").format("HH:00");
+      if (paramter.t) this.scd.st = paramter.t;
+      else this.scd.st = moment().add(1, "h").format("HH:00");
+      if (paramter.sn) this.scd.sn = paramter.sn;
     }
     this.scd.rt = "0";
     this.scd.tx = "0";
@@ -292,6 +298,15 @@ export class TdcPage {
         this.rept.m = 0;
         this.rept.y = 0;
         this.scd.rt = "0";
+    }
+  }
+
+  ionViewWillLeave() {
+
+    for (let i = 0; i < this.dateTimes.toArray().length; i++) {
+      if (this.dateTimes.toArray()[i]._picker) {
+        this.dateTimes.toArray()[i]._picker.dismiss();
+      }
     }
   }
 
@@ -365,52 +380,52 @@ export class TdcPage {
   }
 
 
-  async save() {
+  save(): Promise<CTbl> {
 
-    if (!this.chkinput()) {
-      return
-    }
+    return new Promise<CTbl>(async (resolve, reject) => {
+      if (!this.chkinput()) {
+        resolve();
+      }
 
-    this.util.loadingStart();
-    //提醒内容设置
-    this.scd.ui = UserConfig.account.id;
+      this.util.loadingStart();
+      //提醒内容设置
 
-    //消息设为已读
-    this.scd.du = "1";
+      //提醒内容设置
+      this.scd.ui = UserConfig.account.id;
 
-    //本人新建或修改时，下记画面项目可以修改
-    //开始时间格式转换
-    this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
+      //消息设为已读
+      this.scd.du = "1";
+
+      //本人新建或修改时，下记画面项目可以修改
+      //开始时间格式转换
+      this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
+
+      //结束时间设置
+      //全天的场合
+      if (this.alld) {
+        this.scd.st = "99:99";
+        this.scd.et = "99:99";
+      } else {
+        this.scd.et = this.scd.st;
+      }
+
+      //归属 本人创建
+      this.scd.gs = '0';
+
+      this.scd.ji = this.scd.p.ji;
 
 
-    //结束日期设置
-    //重复场合
-    if (this.scd.rt != "0") {
-      this.scd.ed = "9999/12/31";
-    } else {
-      this.scd.ed = this.scd.sd;
-    }
+      let data = await this.busiServ.save(this.scd);
 
-    //结束时间设置
-    //全天的场合
-    if (this.alld) {
-      this.scd.st = "99:99";
-      this.scd.et = "99:99";
-    } else {
-      this.scd.et = this.scd.st;
-    }
+      this.util.loadingEnd();
 
-    //归属 本人创建
-    this.scd.gs = '0';
+      this.cancel();
+      resolve(data);
+      return;
+    })
 
-    this.scd.ji = this.scd.p.ji;
-
-    //新建数据
-    let data =  await this.tdcServ.save(this.scd);
-    this.util.loadingEnd();
-    this.cancel();
-    return data;
   }
+
 
   chkinput(): boolean {
     if (this.scd.sn == "") {
@@ -420,36 +435,21 @@ export class TdcPage {
     return true;
   }
 
-  goShare() {
+  async goShare() {
     //日程分享打开参与人选择rc日程类型
-      this.save().then(data=>{
-        this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
-      });
-
+      let ctbl: CTbl = await this.save();
+      this.scd.si = ctbl.si;
+      this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
+      return;
   }
 
-  presentActionSheet() {
-    this.util.alterStart("2",()=>{
-
-      //日程删除
-      this.util.loadingStart();
-      this.tdcServ.delete(this.scd.si, "2", "").then(data => {
-        this.util.loadingEnd();
-        this.cancel();
-      }).catch(err=>{
-        this.util.loadingEnd();
-      });
-
-    });
-
-  }
 
   toPlanChoose() {
     if (this.jhs.length > 0) {
       this.isShowPlan = true;
       this.IsShowCover = true;
     } else {
-      this.util.toastStart("未创建计划",3000);
+      this.util.toastStart("未创建计划", 3000);
     }
   }
 
@@ -463,11 +463,5 @@ export class TdcPage {
     }
   }
 
-
 }
 
-export class PageTddIData {
-  tdl: ScdData = new ScdData();  //日程事件表信息
-
-
-}

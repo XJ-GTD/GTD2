@@ -182,6 +182,10 @@ export class ScdPageParamter{
   spid:string="";
   //传入时间
   d:moment.Moment;
+  //传入时间
+  t:string;
+  //主题
+  sn:string;
   //原归属ID
   gs:string="";
 }

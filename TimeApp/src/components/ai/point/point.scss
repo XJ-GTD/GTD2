@@ -7,16 +7,12 @@ pointcomponent {
 
   .speaking {
     cursor: pointer;
-    font-size: 0.5em;
-    color: white;
-    font-weight: 100;
-    width: 58px;
-    height: 58px;
+    width: $speakerSize;
+    height: $speakerSize;
     position: fixed;
-    top: calc(100% - 87px);
-    left: calc(50% - 29px);
+    top: $speakertop;
+    left: $speakerleft;
     border-radius: 100%;
-    //border: .05px solid #3583d7;
     animation: pulse 1.4s linear infinite;
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
@@ -30,10 +26,10 @@ pointcomponent {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 4em;
-    height: 4em;
-    margin-left: -2em;
-    margin-top: -2em;
+    width: $speakerSize / 2 ;
+    height: $speakerSize / 2;
+    margin-left: $speakerSize * -1 / 4;
+    margin-top: $speakerSize * -1 / 4;
     border-top: 1px solid #3583d7;
     border-bottom: 1px solid #3583d7;
   }
@@ -83,21 +79,21 @@ pointcomponent {
   //#
 
     display: block;
-    width: 58px;
-    height: 58px;
+    width: $canvasSize;
+    height:$canvasSize;
     border-radius: 50%;
     margin: 0 auto;
-    margin-top: 3px;
+    margin-top: $canvastop;
 
   }
 
 
   .spinner, .spinner:before {
     position: fixed;
-    width: 64px;
-    height: 64px;
-    top: calc(100% - 90px);
-    left: calc(50% - 3px - 29px);
+    width: $spinnerSize;
+    height: $spinnerSize;
+    top: $spinnertop;
+    left: $spinnerleft;
     border-radius: 50%;
   }
 
@@ -111,15 +107,14 @@ pointcomponent {
 
   .inputioc{
     position: fixed;
-    width: 62px;
-    height: 62px;
-    top: calc(100% - 90px);
-    left: 15%;
+    width:$inputiocsize;
+    height: $inputiocsize;
+    top: $inputioctop;
+    left: $inputiocleft;
     border-radius: 50%;
 
     img{
-      width: 28px;
-      margin: 17px 20%;
+      width: $inputiocsize;
     }
   }
 

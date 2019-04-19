@@ -19,7 +19,7 @@ import {PagePcPro} from "../../data.mapping";
   <ion-toolbar>
     <ion-buttons left>
       <button ion-button icon-only (click)="goBack()" color="danger">
-        <img class="img-header-left" src="./assets/imgs/fh2.png">
+        <img class="img-header-left" src="./assets/imgs/back.png">
       </button>
     </ion-buttons>
 
@@ -35,7 +35,7 @@ import {PagePcPro} from "../../data.mapping";
 <ion-grid>
   <ion-row justify-content-center>
     <div class="name-input w-auto">
-    <ion-input #input type="text" placeholder="输入计划名称" [(ngModel)]="jhcData.jn" text-center></ion-input>
+    <ion-input #input type="text" placeholder="输入日历名称" [(ngModel)]="jhcData.jn" text-center></ion-input>
     </div>
   </ion-row>
   <ion-row>
@@ -162,10 +162,10 @@ export class PcPage {
         }).catch(res=>{
         });
       }else{
-        this.util.popoverStart('计划颜色不能为空');
+        this.util.popoverStart('日历颜色不能为空');
       }
     }else{
-      this.util.popoverStart('计划名称不能为空');
+      this.util.popoverStart('日历名称不能为空');
     }
 
   }

@@ -30,28 +30,30 @@
   .days .today p {
     //color: bindColors($background-color);
   }
-  button.days-btn small{
+  button.days-btn small {
     overflow: hidden;
     display: block;
-    left: calc(50% - 2px);
+    left: 0;
     right: 0;
-    top: 75%;
-    bottom: 0;
+    bottom: 4px;
     position: absolute;
-    width: 4px;
-    height: 4px;
-    background: -webkit-linear-gradient(left, rgb(149, 58, 139), rgb(86, 82, 222)); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to right, rgb(149, 58, 139), rgb(86, 82, 222)); /* 标准的语法（必须放在最后） */
-    border-radius: 4px;
+    z-index: 0;
+    text-align: center;
+    /* font-weight: 200; */
+    color: $fontThirdColor;
+    font-size: 10px;
+    //background: -webkit-linear-gradient(left, rgb(149, 58, 139), rgb(86, 82, 222)); /* Safari 5.1 - 6.0 */
+    //background: -o-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Opera 11.1 - 12.0 */
+    //background: -moz-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Firefox 3.6 - 15 */
+    //background: linear-gradient(to right, rgb(149, 58, 139), rgb(86, 82, 222)); /* 标准的语法（必须放在最后） */
+    //border-radius: 4px;
   }
   .days .today p {
     //font-weight: 700;
   }
   .days .last-month-day p,
   .days .next-month-day p {
-    color: #2c2c2c;
+    color: $fontThirdColor;
   }
   .days .today.on-selected p,
   .days .marked.on-selected p {
@@ -68,108 +70,7 @@
   //
   //  color: $color;
   //}
-  .startSelection {
-    position: relative;
 
-    &:after {
-      height: 34px;
-      width: 50%;
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      display: block;
-      background-color: lighten(bindColors($background-color), 12%);
-    }
-  }
-  .endSelection {
-    position: relative;
-
-    &:after {
-      height: 34px;
-      width: 50%;
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      display: block;
-      background-color: lighten(bindColors($background-color), 12%);
-    }
-  }
-  .startSelection.endSelection {
-    &:after {
-      background-color: transparent;
-    }
-  }
-  .startSelection button.days-btn {
-    border-radius: 50%
-  }
-  .between button.days-btn {
-    background-color: lighten(bindColors($background-color), 12%);
-    width: 100%;
-    border-radius: 0;
-
-    p {
-      color: $color;
-    }
-  }
-  .endSelection button.days-btn {
-    border-radius: 50%;
-
-    p {
-      color: $color;
-    }
-  }
-
-  .days.startSelection:nth-child(7n):after,
-  .days.between:nth-child(7n) button.days-btn,
-  button.days-btn.is-last {
-    border-radius: 0 34px 34px 0;
-
-    &.on-selected {
-      border-radius: 50%
-    }
-  }
-
-  .days.endSelection:nth-child(7n+1):after,
-  .days.between:nth-child(7n+1) button.days-btn,
-  button.days-btn.is-first {
-    border-radius: 34px 0 0 34px;
-  }
-
-  .startSelection button.days-btn.is-first,
-  .endSelection button.days-btn.is-first,
-  button.days-btn.is-first.on-selected,
-  button.days-btn.is-last.on-selected,
-  .startSelection button.days-btn.is-last,
-  .endSelection button.days-btn.is-last {
-    border-radius: 50%
-  }
-
-  .startSelection.is-last-wrap {
-    &::after {
-      border-radius: 0 34px 34px 0;
-    }
-  }
-
-  .endSelection.is-first-wrap {
-    &::after {
-      border-radius: 34px 0 0 34px;
-    }
-  }
-
-  //.days .on-selected p {
-  //      color: $color;
-  //  }
-  .startSelection,
-  .endSelection,
-  .between {
-    button.days-btn {
-      @include transition-property(background-color);
-      @include transition-duration(180ms);
-      @include transition-timing-function(ease-out);
-    }
-  }
 }
 
 ion-calendar-month {
@@ -197,14 +98,6 @@ ion-calendar-month {
     font-weight: 100;
   }
 
-  .days .on-selected {
-    border: none;
-
-    p {
-      font-size: 12px;
-    }
-  }
-
   button.days-btn {
     border-radius: 34px;
     width: 34px;
@@ -227,28 +120,28 @@ ion-calendar-month {
     letter-spacing: 0px;
     width: 24px;
     height: 24px;
-    margin: auto;
+    margin: -16px auto;
     border-radius: 24px;
     text-align: center;
     line-height: 22px;
   }
 
-  button.days-btn .repeatDay{
+  button.days-btn .repeatDay {
     border-width: 1px;
     border-color: $thirdColor;
     border-style: solid;
     background-color: $thirdColor;
   }
 
-  button.someting p{
+  button.someting p {
     color: $fontMasterColor;
   }
 
-  button.days-btn.on-selected small {
-    transition: bottom .3s;
-    bottom: -14px;
+  .on-selected{
+    button.days-btn small {
+      color: $fontSecondColor;
+    }
   }
-
   button.days-btn small {
     overflow: hidden;
     display: block;
@@ -257,8 +150,8 @@ ion-calendar-month {
     bottom: 0;
     position: absolute;
     text-align: center;
-    font-size: 5px;
-    font-weight: 100;
+    font-size: 10px;
+    //font-weight: 100;
   }
 
   .cal-color {
@@ -275,39 +168,62 @@ ion-calendar-month {
     }
 
     .on-selected {
-      border-color: #fff;
-      //border-image: -webkit-linear-gradient(left,#953a8b, #5652de) 5 5;
-      //border-image: -moz-linear-gradient(left,#953a8b, #5652de) 5 5;
-      //border-image: linear-gradient(left,#953a8b, #5652de) 5 5;
-      p {
-        color: #fff;
-        font-weight: 700;
+      border-color: $fontMasterColor;
+
+      button.days-btn small {
+        color: $fontMasterColor;
       }
     }
 
 
     .days {
       .hassometing {
-        background: $thirdColor;
+        background: $hassometing;
 
         p {
-          color: #ffffff;
+          color: $fontMasterColor;
+        }
+
+
+        small {
+          color: $fontMasterColor;
+
         }
       }
 
       .busysometing {
-        background:  $masterColor;
+        background: $busysometing;
 
         p {
-          color: #ffffff;
+          color: $fontMasterColor;
+        }
+
+
+        small {
+          color: $fontMasterColor;
+
+        }
+      }
+
+      .allsometing {
+        background: $allsometing;
+
+        p {
+          color: $fontMasterColor;
+        }
+
+
+        small {
+          color: $fontMasterColor;
+
         }
       }
 
       .today {
-        background: -webkit-linear-gradient(left, rgb(149, 58, 139), rgb(86, 82, 222)); /* Safari 5.1 - 6.0 */
-        background: -o-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Opera 11.1 - 12.0 */
-        background: -moz-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Firefox 3.6 - 15 */
-        background: linear-gradient(to right, rgb(149, 58, 139), rgb(86, 82, 222)); /* 标准的语法（必须放在最后） */
+        background: -webkit-linear-gradient(left, $spcColorf, $spcColort); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(right, $spcColorf, $spcColort); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(right, $spcColorf, $spcColort); /* Firefox 3.6 - 15 */
+        background: linear-gradient(to right, $spcColorf, $spcColort); /* 标准的语法（必须放在最后） */
 
       }
 

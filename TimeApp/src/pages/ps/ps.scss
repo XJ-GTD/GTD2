@@ -1,6 +1,6 @@
 page-ps {
 
-  background-color: $allBackColor;
+  background-color: $baseBackColor;
 
   .w-auto {
     flex: 1;
@@ -23,16 +23,16 @@ page-ps {
   }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: $allBackColor;
+    background-color: $baseBackColor;
   }
 
   ion-content.content {
-    background-color: $allBackColor;
+    background-color: $baseBackColor;
     color: #fff;
   }
 
   ion-content .plan-list-item {
-    background-color: $allBackColor;
+    background-color: $baseBackColor;
     color: #fff;
   }
 
@@ -56,7 +56,7 @@ page-ps {
   .bg-right-img {
     background-image: url("../../assets/imgs/xlr.png");
     background-repeat: no-repeat;
-    background-position: right calc(14px + env(safe-area-inset-right)) center;
+    background-position: right 14px center;
     background-size: 14px 14px;
     padding-right: 32px;
   }
@@ -97,7 +97,7 @@ page-ps {
 
   .item-block {
     border-bottom: 1px solid #545454 ;
-    background-color: $allBackColor;
+    background-color: $baseBackColor;
     color:#FFF;
     width: 94%;
     margin-left: 3%;

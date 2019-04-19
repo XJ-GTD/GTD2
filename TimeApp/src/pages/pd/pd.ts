@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
-import {ActionSheetController, AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {ActionSheetController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {Clipboard} from '@ionic-native/clipboard';
 import {PdService} from "./pd.service";
-import {AgdPro} from "../../service/restful/agdsev";
 import {UtilService} from "../../service/util-service/util.service";
 import {PagePDPro} from "../../data.mapping";
+import {PlanPa} from "../../service/restful/shaesev";
 
 /**
  * Generated class for the 计划展示 page.
@@ -21,7 +22,7 @@ import {PagePDPro} from "../../data.mapping";
       <ion-toolbar>
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/fh2.png">
+            <img class="img-header-left" src="./assets/imgs/back.png">
           </button>
         </ion-buttons>
 
@@ -57,7 +58,7 @@ import {PagePDPro} from "../../data.mapping";
               </div>
               <div class="agenda-col-time right-off left-off" justify-content-between>
                 <div class="time-slot">
-                  <p class="app-agenda-time">{{(agenda.st != null && agenda.st === "99:99")? '全天' : agenda.st.slice(0, 5)}}</p>
+                  <p class="app-agenda-time">{{(agenda.st == null || agenda.st == '' || agenda.st === "99:99")? '全天' : agenda.st.slice(0, 5)}}</p>
                 </div>
                 <div class="pointer-slot"><span class="plan-color-pointer"><div class="color-dot" [ngStyle]="{'background-color': plan.pn.jc }"></div></span></div>
               </div>
@@ -70,22 +71,6 @@ import {PagePDPro} from "../../data.mapping";
         </ion-row>
       </ion-grid>
     </ion-content>
-
-    <div class="div-content" *ngIf="IsShowDiv">
-      <div class="modal-header">
-        <button type="button" class="div-close" aria-hidden="true" (click)="closeDialog()">&times;</button>
-      </div>
-      <div class="div-text">
-        <span>{{text}}</span>
-      </div>
-      <div class="div-btn">
-        <div (click)="closeDialog()">取消</div>
-        <div (click)="TwoBtnSure()">确定</div>
-      </div>
-    </div>
-      
-    <!--遮罩层-->
-    <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>
   `,
 })
 export class PdPage {
@@ -96,18 +81,15 @@ export class PdPage {
   today: string = new Date().toISOString();
   plan:any ={
     'pn': {},
-    'pa':new Array<AgdPro>(),
+    'pa':new Array<PlanPa>(),
   };
-  IsShowDiv: boolean = false;
-  IsShowCover: boolean = false;
-  text:any;
 
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
-              private alertCtrl: AlertController,
               private actionSheetCtrl: ActionSheetController,
               private util: UtilService,
-              private pdService:PdService) {
+              private pdService:PdService,
+              private clipboard: Clipboard,) {
     this.jh = this.navParams.get('jh');
     this.plan.pn = this.jh;
   }
@@ -118,7 +100,7 @@ export class PdPage {
 
   ionViewDidEnter(){
     this.pdService.getPlan(this.jh.ji).then(data=>{
-      this.plan.pa = data.data;
+      this.plan.pa = data;
     }).catch(res=>{
       console.log("获取计划列表失败" + JSON.stringify(res));
     });
@@ -134,12 +116,6 @@ export class PdPage {
     this.navCtrl.pop();
   }
 
-  closeDialog() {
-    if (this.IsShowDiv) {
-      this.IsShowDiv = false;
-      this.IsShowCover = false;
-    }
-  }
 
   more(jh:PagePDPro){
     this.actionSheet = this.actionSheetCtrl.create({
@@ -149,11 +125,9 @@ export class PdPage {
           role: 'share',
           handler: () => {
             this.pdService.sharePlan(this.plan).then(data=>{
-              //alert("分享地址是："+JSON.stringify(data.data.psurl))
-
-              this.text = data.data.psurl;
-              this.IsShowDiv = true;
-              this.IsShowCover = true;
+              console.log("分享地址是："+JSON.stringify(data.psurl));
+              this.clipboard.copy(data.psurl);
+              this.util.popoverStart("复制成功");
             }).catch(res=>{
               this.util.popoverStart('分享失败');
             });

@@ -60,7 +60,7 @@ body {
   //background-repeat:no-repeat;
   //background-size:100% 100%;
   //-moz-background-size:100% 100%;
-  background: $allBackColor;
+  background: $baseBackColor;
 
 
   .ios .ion-page.show-page ~ .nav-decor {
@@ -80,7 +80,7 @@ body {
   .toast-ios {
     .toast-message {
       font-size: 10px;
-      color: #fff;
+      color: $fontMasterColor;
       padding: 1.5rem;
     }
 
@@ -108,26 +108,33 @@ body {
 
     .picker-above-highlight {
       background: $secondColor;
-      border-top:0px;
-      border-bottom:0px;
+      z-index: -1;
+      color: $fontSecondColor;
+      height: calc(50% - 20px);
     }
 
     .picker-below-highlight {
       background: $secondColor;
-      border-top:0px;
-      border-bottom:0px;
+      z-index: -1;
+      color: $fontSecondColor;
+      height: calc(50% - 20px);
+      top: 120px;
     }
 
     .picker-opt {
-      color: white;
-      font-size: 18px;
+      color: $fontThirdColor;
+      font-size: 16px;
+    }
+    .picker-opt-selected{
+      color: $fontMasterColor;
+
     }
 
     .picker-button {
-      color: #fff;
+      color: $fontMasterColor;
       padding-right: 50px;
       padding-left: 50px;
-      font-size: 16px;
+      font-size: 14px;
     }
   }
 
@@ -136,25 +143,30 @@ body {
     font-size: 14px;
     min-width: 300px;
     min-height: 130px;
-    color: $fontMasterColor;
+    color: $masterColor;
   }
   .alert-ios {
     .alert-wrapper{
       background-color:$popBackColor;
-      color: $fontMasterColor;
-      font-size: 14px;
+      color: $masterColor;
+      .alert-message{
+        font-size: 16px;
+      }
     }
     .alert-button{
-      border-top: 0px solid $secondColor;
-      color: $fontMasterColor;
-      border-right:0px solid $secondColor;
+      border-top: 0px solid $popBackColor;
+      color: $masterColor;
+      border-right:0px solid $popBackColor;
+      font-size: 16px;
     }
   }
 
   .spinanimation{
     animation: spin 1s linear infinite;
   }
-
+  .datetime-disabled{
+    opacity: 1;
+  }
 }
 
 @-webkit-keyframes spin {

@@ -56,6 +56,9 @@ export class UserConfig {
 
   //参与人
   static friends: Array<FsData> = new Array<FsData>();
+  
+  //重复调用防止
+  static troublestop: Map<string, any> = new Map<string, any>();
 
   //群组
   static groups: Array<PageDcData> = new Array<PageDcData>();
@@ -75,6 +78,14 @@ export class UserConfig {
     return UserConfig.settins.get(key).value;
   }
 
+  static getTroubleStop(key: string) {
+    return UserConfig.troublestop.get(key);
+  }
+  
+  static setTroubleStop(key: string, value: any) {
+    UserConfig.troublestop.set(key, value);
+  }
+  
   public async RefreshYTbl() {
     let yTbl: YTbl = new YTbl();
     //获取偏好设置
@@ -197,6 +208,7 @@ export class UserConfig {
   }
 
   GetOneBTbl(id: string): FsData {
+    console.log('GetOneBTbl with id ' + id);
     return UserConfig.friends.find(value => {
       return value.pwi == id || value.ui == id;
     })

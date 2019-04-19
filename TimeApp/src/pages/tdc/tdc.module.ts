@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { TdcPage } from './tdc';
-import {TdcService} from "./tdc.service";
 import {TddiPage} from "./tddi";
 import {TddjPage} from "./tddj";
 import {IonicModule} from "ionic-angular";
@@ -18,7 +17,6 @@ import {TddsPage} from "./tdds";
       PipesModule
   ],
   providers: [
-    TdcService,
   ],
   entryComponents:[
     TdcPage,

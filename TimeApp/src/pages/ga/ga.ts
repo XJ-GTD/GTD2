@@ -21,7 +21,7 @@ import {PageDcData} from "../../data.mapping";
     <ion-toolbar>
       <ion-buttons left>
         <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/fh2.png">
+            <img class="img-header-left" src="./assets/imgs/back.png">
         </button>
       </ion-buttons>
   
@@ -78,7 +78,7 @@ export class GaPage {
     }
     // this.util.popMsgbox("1",()=>{
       this.gcService.save(dc).then(data=> {
-        if (data.code == 0) {
+        if (data) {
           this.viewCtrl.dismiss();
         }else{
           this.util.popoverStart("添加群名称失败");

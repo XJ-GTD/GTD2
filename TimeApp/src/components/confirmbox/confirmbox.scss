@@ -2,8 +2,10 @@ ConfirmboxComponent {
   margin: 10px;
   .msg-lbl{
     margin-top: 23px;
-    font-size: 14px;
+    font-size: 16px;
     text-align: center;
+    color: $masterColor;
+    font-weight: 500;
   }
 
 }

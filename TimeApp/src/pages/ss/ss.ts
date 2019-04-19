@@ -21,7 +21,7 @@ import {PageY} from "../../data.mapping";
       <ion-toolbar>
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/fh2.png">
+            <img class="img-header-left" src="./assets/imgs/back.png">
           </button>
         </ion-buttons>
         <ion-title>设置</ion-title>
