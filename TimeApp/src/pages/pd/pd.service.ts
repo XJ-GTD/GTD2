@@ -1,9 +1,8 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {ShaeRestful, ShareData} from "../../service/restful/shaesev";
+import {PlanPa, ShaeRestful, ShareData} from "../../service/restful/shaesev";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
-import {AgdPro} from "../../service/restful/agdsev";
 import {PagePDPro} from "../../data.mapping";
 
 @Injectable()
@@ -18,12 +17,12 @@ export class PdService {
     let  sql = 'select gc.* from gtd_c gc left join gtd_sp sp on gc.si = sp.si where gc.ji = "' + pid + '"  order by gc.sd,gc.st desc';
     let  cs = await this.sqlExec.getExtList<CTbl>(sql);
 
-    let paList: Array<AgdPro> = Array<AgdPro>();
+    let paList: Array<PlanPa> = Array<PlanPa>();
     if (cs.length > 0) {
       console.log('---------- PdService getPlan 获取计划日程开始 ----------------');
       //获取计划日程
       for (let jhc of cs) {
-        let pa: AgdPro = new AgdPro();
+        let pa: PlanPa = new PlanPa();
 
         pa.ai = jhc.si;//日程ID
         pa.at = jhc.sn;//主题
