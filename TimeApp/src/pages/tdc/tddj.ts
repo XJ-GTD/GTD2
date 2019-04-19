@@ -5,9 +5,9 @@ import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
-import { TdcService} from "./tdc.service";
 import {Keyboard} from "@ionic-native/keyboard";
 import {FsData, ScdData, ScdPageParamter} from "../../data.mapping";
+import {PlService} from "../pl/pl.service";
 
 /**
  * Generated class for the 日程详情（发布人） page.
@@ -22,19 +22,20 @@ import {FsData, ScdData, ScdPageParamter} from "../../data.mapping";
     <ion-content class="content-set">
       <ion-grid #grid>
         <ion-row class="header-set">
-            <ion-toolbar>
-              <ion-buttons right padding-right>
-                <button ion-button icon-only (click)="presentActionSheet()">
-                  <img class="imgdel-set" src="../../assets/imgs/del.png">
-                </button>
-              </ion-buttons>
-            </ion-toolbar>
+          <ion-toolbar>
+            <ion-buttons right padding-right>
+              <button ion-button icon-only (click)="presentActionSheet()">
+                <img class="imgdel-set" src="../../assets/imgs/del.png">
+              </button>
+            </ion-buttons>
+          </ion-toolbar>
         </ion-row>
         <ion-row>
           <ion-textarea type="text" [(ngModel)]="scd.sn" placeholder="我想..."></ion-textarea>
         </ion-row>
         <ion-row>
-          <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh] = "scd.p.jn != ''" [ngStyle] ="{'background-color':scd.p.jc == '' ? '#fffff' : scd.p.jc}">
+          <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh]="scd.p.jn != ''"
+               [ngStyle]="{'background-color':scd.p.jc == '' ? '#fffff' : scd.p.jc}">
             {{scd.p.jn == "" ? "添加计划" : "计划"}}
           </div>
           <div>{{scd.p.jn}}</div>
@@ -137,7 +138,7 @@ import {FsData, ScdData, ScdPageParamter} from "../../data.mapping";
           <div class="selected">
             <ion-chip *ngFor="let fs of scd.fss" (click)="goTofsDetail(fs)">
               <ion-avatar>
-                <img [src]="fs.bhiu" />
+                <img [src]="fs.bhiu"/>
               </ion-avatar>
               <ion-label>{{fs.rn}}</ion-label>
             </ion-chip>
@@ -186,12 +187,15 @@ import {FsData, ScdData, ScdPageParamter} from "../../data.mapping";
 export class TddjPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private tddjServ: TdcService, private util: UtilService,
+              private util: UtilService,
               public actionSheetCtrl: ActionSheetController,
               public modalCtrl: ModalController, private  busiServ: PgBusiService,
-              private keyboard: Keyboard, private _renderer: Renderer2,) {
+              private keyboard: Keyboard, private _renderer: Renderer2,
+              private plsevice: PlService
+  ) {
 
   }
+
   @ViewChildren(DateTime) dateTimes: QueryList<DateTime>;
   actionSheet;
 
@@ -230,14 +234,14 @@ export class TddjPage {
   grid: ElementRef;
 
   comentfocus() {
-    if (this.keyboard){
+    if (this.keyboard) {
       this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(-300px)");
     }
   }
 
-  togChange(){
-    if (!this.alld){
-      this.scd.st = this.scd.st == "99:99"?"00:00":this.scd.st;
+  togChange() {
+    if (!this.alld) {
+      this.scd.st = this.scd.st == "99:99" ? "00:00" : this.scd.st;
     }
   }
 
@@ -246,29 +250,27 @@ export class TddjPage {
   }
 
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
 
 
     let paramter: ScdPageParamter = this.navParams.data;
     if (paramter.si) {
-      this.tddjServ.get(paramter.si).then(data => {
-        let bs: ScdData = data;
-        Object.assign(this.scd, bs);
+        this.scd = await this.busiServ.get(paramter.si);
+
+
+        //TODO 清除消息把已读标志未读
+        this.busiServ.updateMsg(this.scd.si);
+
         this.scd.showSd = paramter.d.format("YYYY-MM-DD");
 
+        //TODO 缓存里后获取发送信息
 
-
-        this.busiServ.getPlans().then(data => {
-          this.jhs = data;
-          for (let i = 0; i < this.jhs.length; i++) {
-            if (this.jhs[i].ji == this.scd.ji) {
-              this.scd.p = this.jhs[i];
-              break;
-            }
+        this.jhs = await this.plsevice.getPlanCus();
+        for (let i = 0; i < this.jhs.length; i++) {
+          if (this.jhs[i].ji == this.scd.ji) {
+            this.scd.p = this.jhs[i];
           }
-        }).catch(res => {
-        });
-
+        }
         //重复日程不可以修改日期
         if (this.scd.rt != "0") {
           this.rept_flg = true;
@@ -289,16 +291,7 @@ export class TddjPage {
 
         this.clickrept(this.scd.rt + '');
         this.clickwake(this.scd.tx + '');
-
-      });
-
-      //获取日程参与人表
-     // this.tddjServ.getCalfriend(this.navParams.get("si")).then(data => {
-     //   this.fssshow = data;
-     // });
-
-      return;
-    }
+      }
 
   }
 
@@ -307,8 +300,8 @@ export class TddjPage {
       this.actionSheet.dismiss();
     }
     //console.log(this.dateTimes.toArray());
-    for(let i = 0;i<this.dateTimes.toArray().length;i++){
-      if(this.dateTimes.toArray()[i]._picker ){
+    for (let i = 0; i < this.dateTimes.toArray().length; i++) {
+      if (this.dateTimes.toArray()[i]._picker) {
         this.dateTimes.toArray()[i]._picker.dismiss();
       }
     }
@@ -469,7 +462,7 @@ export class TddjPage {
     //归属 本人创建
     this.scd.gs = '0';
 
-    let data = await this.tddjServ.updateDetail(this.scd);
+    let data = await this.busiServ.updateDetail(this.scd);
     this.util.loadingEnd();
     this.cancel();
     return data;
@@ -486,7 +479,7 @@ export class TddjPage {
 
   goShare() {
     //日程分享打开参与人选择rc日程类型
-    this.save().then(data=>{
+    this.save().then(data => {
 
       this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
     });
@@ -505,9 +498,9 @@ export class TddjPage {
             role: 'destructive',
             cssClass: 'btn-del',
             handler: () => {
-              this.util.alterStart("2",()=> {
+              this.util.alterStart("2", () => {
                 this.util.loadingStart();
-                this.tddjServ.delete(this.scd.si, "1", d).then(data => {
+                this.busiServ.delete(this.scd.si, "1", d).then(data => {
                   this.util.loadingEnd();
                   this.cancel();
                 }).catch(err => {
@@ -519,9 +512,9 @@ export class TddjPage {
             text: '删除所有日程',
             cssClass: 'btn-delall',
             handler: () => {
-              this.util.alterStart("2",()=> {
+              this.util.alterStart("2", () => {
                 this.util.loadingStart();
-                this.tddjServ.delete(this.scd.si, "2", d).then(data => {
+                this.busiServ.delete(this.scd.si, "2", d).then(data => {
                   this.util.loadingEnd();
                   this.cancel();
                 }).catch(err => {
@@ -542,9 +535,9 @@ export class TddjPage {
       this.actionSheet.present();
     } else {
       //非重复日程删除
-      this.util.alterStart("2",()=> {
+      this.util.alterStart("2", () => {
         this.util.loadingStart();
-        this.tddjServ.delete(this.scd.si, "2", d).then(data => {
+        this.busiServ.delete(this.scd.si, "2", d).then(data => {
           this.util.loadingEnd();
           this.cancel();
         }).catch(err => {
@@ -561,7 +554,7 @@ export class TddjPage {
       this.isShowPlan = true;
       this.IsShowCover = true;
     } else {
-      this.util.toastStart("未创建计划",3000);
+      this.util.toastStart("未创建计划", 3000);
     }
   }
 
@@ -593,8 +586,8 @@ export class TddjPage {
     }
   }
 
-  goTofsDetail(fs:FsData){
-    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{fsData:fs});
+  goTofsDetail(fs: FsData) {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE, {fsData: fs});
     modal.present();
   }
 

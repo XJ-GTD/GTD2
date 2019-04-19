@@ -178,4 +178,17 @@ export class PlService {
     return pld;
   }
 
+  //获取计划
+  getPlanCus():Promise<Array<JhTbl>>{
+
+    return new Promise<Array<JhTbl>>(async (resolve, reject) => {
+      //获取本地计划
+      let j:JhTbl = new JhTbl();
+      j.jt = "2";
+      let jhTbl: Array<JhTbl> = await this.sqlExec.getList<JhTbl>(j);
+      resolve(jhTbl);
+      return;
+    })
+
+  }
 }

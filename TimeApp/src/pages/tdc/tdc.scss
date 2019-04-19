@@ -187,9 +187,13 @@ page-tdc, page-tddi, page-tddj, page-tdds {
         width: 100%;
         min-height: 65px;
         .chip-ios {
-          display: flex;
-          min-height: 40px;
+          display: inline-block;
+          min-height: 48px;
           background-color: transparent;
+          ion-label{
+            text-align: center;
+            text-overflow: ellipsis;
+          }
         }
       }
 
