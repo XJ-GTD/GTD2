@@ -117,7 +117,7 @@ export class PgBusiService {
     });
   }
 
-  //删除日程 type：1 删除当前以后所有 ，2 删除所有
+  //MQ删除日程
   pullDel(srId: string): Promise<CTbl> {
     return new Promise<any>(async (resolve, reject) => {
       let ctbl: CTbl = new CTbl();
@@ -125,25 +125,7 @@ export class PgBusiService {
       ctbl.sr = srId;
       ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
 
-      let etbl: ETbl = new ETbl();
-      etbl.si = ctbl.si;
-      await this.sqlExce.delete(etbl);//本地删除提醒
-      let dtbl: DTbl = new DTbl();
-      dtbl.si = ctbl.si;
-      await this.sqlExce.delete(dtbl);//本地删除日程参与人
-
-      let c :CTbl =new CTbl();
-      c.si = ctbl.si;
-      await this.sqlExce.delete(c); //本地删除日程表
-
-      let sptbl = new SpTbl();
-      sptbl.si = ctbl.si;
-      await this.sqlExce.delete(sptbl);//本地删除日程子表
-
-      //restFul 删除日程
-      let a: AgdPro = new AgdPro();
-      a.ai = ctbl.si;//日程ID
-      await this.agdRest.remove(a);
+      await this.delete(ctbl.si,"2","");
 
       resolve(ctbl);
 
@@ -196,9 +178,8 @@ export class PgBusiService {
         a.ai = ctbl.si;//日程ID
         a.ed = ed;
         await this.agdRest.save(a);
-        resolve(ctbl);
-        return;
       }
+      resolve(ctbl);
     });
 
 
@@ -538,22 +519,30 @@ export class PgBusiService {
         await this.agdRest.save(a);
 
       } else {
+
         //更新日程表
         this.setCtbl(newc, agd);
-        //设置本地日程ID
-        newc.si = c.si;
-        //设置关联日程ID
-        newc.sr = sr;
-        //本地日程的备注和提醒不被更新
-        newc.bz = c.bz;
-        newc.tx = c.tx;
 
-        let scdData = new ScdData();
+        //拉下来的重复日程不变且为重复日程，结束日少于原来的结束日，则为部分日程删除动作
+        if (newc.rt == c.rt && c.rt !="0" && newc.ed < c.ed ){
+          await  this.delete(c.si, "1",moment(newc.ed).add(1, 'd').format("YYYY/MM/DD"));
+        }else{
+          //更新日程
+          //设置本地日程ID
+          newc.si = c.si;
+          //设置关联日程ID
+          newc.sr = sr;
+          //本地日程的备注和提醒不被更新
+          newc.bz = c.bz;
+          newc.tx = c.tx;
 
-        Object.assign(scdData, newc);
+          let scdData = new ScdData();
 
-        //修改特殊事件表
-        await this.updateDetail(scdData);
+          Object.assign(scdData, newc);
+
+          //修改特殊事件表
+          await this.updateDetail(scdData);
+        }
 
       }
 
@@ -598,6 +587,7 @@ export class PgBusiService {
     //时间(YYYY/MM/DD)
     let adt = agd.adt.split(" ");
     c.sd = adt[0];
+    c.ed = agd.ed;
 
     if (adt.length == 1) {
       //全天
