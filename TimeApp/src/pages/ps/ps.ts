@@ -185,13 +185,10 @@ export class PsPage {
 
     if(isUpd){
       this.psService.saveUser(this.uo.user.id,inData).then(data=>{
-        if(data.code ==0){
-          //this.util.popoverStart('保存成功！');
-          this.getData();
-          Object.assign(this.olduo.user,this.uo.user);  //替换旧数据
-        }else{
-          this.util.popoverStart(data.message);
-        }
+        this.getData();
+        Object.assign(this.olduo.user,this.uo.user);  //替换旧数据
+      }).catch(error=>{
+        this.util.popoverStart(error);
       })
     }
 
