@@ -132,7 +132,9 @@ export class PgBusiService {
       dtbl.si = ctbl.si;
       await this.sqlExce.delete(dtbl);//本地删除日程参与人
 
-      await this.sqlExce.delete(ctbl); //本地删除日程表
+      let c :CTbl =new CTbl();
+      c.si = ctbl.si;
+      await this.sqlExce.delete(c); //本地删除日程表
 
       let sptbl = new SpTbl();
       sptbl.si = ctbl.si;
