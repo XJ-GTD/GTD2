@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {AgdPro} from "./agdsev";
-import {BsModel} from "./out/bs.model";
 
 /**
  * 计划
@@ -13,23 +12,17 @@ export class ShaeRestful{
               private config: RestFulConfig) {
   }
   //计划	计划上传	PU
-  share(shaeData : ShareData):Promise<BsModel<PSurl>> {
+  share(shaeData : ShareData):Promise<PSurl> {
 
-    let bsModel = new BsModel<PSurl>();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("PU");
       this.request.post(url, shaeData).then(data => {
         //处理返回结果
-        bsModel.code = data.rc;
-        bsModel.message = data.rm;
-        bsModel.data = data.d;
-        resolve(bsModel);
+        resolve( data.d);
 
       }).catch(error => {
         //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        resolve(bsModel);
+        resolve();
 
       })
     });
@@ -37,23 +30,17 @@ export class ShaeRestful{
 
 
   //内建计划下载	BIPD
-  downsysname(shareData : BipdshaeData):Promise<BsModel<P>> {
+  downsysname(shareData : BipdshaeData):Promise<P> {
 
-    let bsModel = new BsModel<P>();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("BIPD");
       this.request.post(url, shareData).then(data => {
         //处理返回结果
-        bsModel.code = data.rc;
-        bsModel.message = data.rm;
-        bsModel.data = data.d;
-        resolve(bsModel);
+        resolve(data.d);
 
       }).catch(error => {
         //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        resolve(bsModel);
+        resolve();
 
       })
     });

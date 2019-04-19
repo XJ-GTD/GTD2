@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
-import {BsModel} from "./out/bs.model";
 
 /**
  * 帐户 注册
@@ -41,9 +40,8 @@ export class PersonRestful {
   }
 
   //帐户信息获取	AIG get
-  get(phoneno:string): Promise<BsModel<any>> {
+  get(phoneno:string): Promise<any> {
 
-    let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIG");
       let urlEntity: UrlEntity = new UrlEntity();
@@ -53,16 +51,14 @@ export class PersonRestful {
       urlEntity.url = urlEntity.url.replace("{phoneno}",phoneno);
       this.request.get(urlEntity).then(data => {
         //处理返回结果
-        bsModel.code = data.errcode;
-        bsModel.message = data.errmsg;
-        bsModel.data = data.data;
-        resolve(bsModel);
+        // bsModel.code = data.errcode;
+        // bsModel.message = data.errmsg;
+        // bsModel.data = data.data;
+        resolve(data.data);
 
       }).catch(error => {
         //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        reject(bsModel);
+        reject();
 
       })
     });
@@ -70,9 +66,8 @@ export class PersonRestful {
   }
 
   //批量帐户信息获取	AIGS post
-  getMultis(phonenos:Array<string>): Promise<BsModel<any>> {
+  getMultis(phonenos:Array<string>): Promise<any> {
 
-    let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIGS");
       let urlEntity: UrlEntity = new UrlEntity();
@@ -81,16 +76,11 @@ export class PersonRestful {
       urlEntity.desc = url.desc;
       this.request.post(urlEntity, {phonenos: phonenos}).then(data => {
         //处理返回结果
-        bsModel.code = data.errcode;
-        bsModel.message = data.errmsg;
-        bsModel.data = data.data;
-        resolve(bsModel);
+        resolve(data.data);
 
       }).catch(error => {
         //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        reject(bsModel);
+        reject();
 
       })
     });
@@ -98,9 +88,8 @@ export class PersonRestful {
   }
 
   //帐户头像获取	AAG get
-  getavatar(phoneno:string): Promise<BsModel<any>> {
+  getavatar(phoneno:string): Promise<any> {
 
-    let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AAG");
       let urlEntity: UrlEntity = new UrlEntity();
@@ -110,16 +99,11 @@ export class PersonRestful {
       urlEntity.url = urlEntity.url.replace("{phoneno}",phoneno);
       this.request.get(urlEntity).then(data => {
         //处理返回结果
-        bsModel.code = data.errcode;
-        bsModel.message = data.errmsg;
-        bsModel.data = data.data;
-        resolve(bsModel);
+        resolve(data.data);
 
       }).catch(error => {
         //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        reject(bsModel);
+        reject();
 
       })
     });
@@ -127,9 +111,8 @@ export class PersonRestful {
   }
 
   //获取个人信息	AIU	获取个人信息 get
-  getself(unionid:string): Promise<BsModel<PersonOutData>> {
+  getself(unionid:string): Promise<PersonOutData> {
 
-    let bsModel = new BsModel<PersonOutData>();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIU");
       let urlEntity: UrlEntity = new UrlEntity();
@@ -139,16 +122,11 @@ export class PersonRestful {
       urlEntity.url = urlEntity.url.replace("{unionid}",unionid);
       this.request.get(urlEntity).then(data => {
         //处理返回结果
-        bsModel.code = data.errcode;
-        bsModel.message = data.errmsg;
-        bsModel.data = data.data;
-        resolve(bsModel);
+        resolve(data.data);
 
       }).catch(error => {
         //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        reject(bsModel);
+        reject();
 
       })
     });
@@ -156,9 +134,8 @@ export class PersonRestful {
   }
 
   //帐户信息更新	AIU	更新用户信息(包括密码) put
-  updateself(personData:any,unionid:string): Promise<BsModel<any>>  {
+  updateself(personData:any,unionid:string): Promise<any>  {
 
-    let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIU");
       let urlEntity: UrlEntity = new UrlEntity();
@@ -168,16 +145,11 @@ export class PersonRestful {
       urlEntity.url = urlEntity.url.replace("{unionid}",unionid);
       this.request.put(urlEntity,personData).then(data => {
         //处理返回结果
-        bsModel.code = data.errcode;
-        bsModel.message = data.errmsg;
-        bsModel.data = data.data;
-        resolve(bsModel);
+        resolve(data.data);
 
       }).catch(error => {
         //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        reject(bsModel);
+        reject();
 
       })
     });
@@ -185,9 +157,8 @@ export class PersonRestful {
   }
 
   //修改密码 MP put
-  updatepass(personData:any,unionid:string): Promise<BsModel<any>> {
+  updatepass(personData:any,unionid:string): Promise<any> {
 
-    let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("MP");
       let urlEntity: UrlEntity = new UrlEntity();
@@ -197,16 +168,11 @@ export class PersonRestful {
       urlEntity.url = urlEntity.url.replace("{unionid}",unionid);
       this.request.put(urlEntity, personData).then(data => {
         //处理返回结果
-        bsModel.code = data.errcode;
-        bsModel.message = data.errmsg;
-        bsModel.data = data.data;
-        resolve(bsModel);
+        resolve(data.data);
 
       }).catch(error => {
         //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        reject(bsModel);
+        reject();
 
       })
     });
@@ -214,23 +180,17 @@ export class PersonRestful {
   }
 
   //注册帐户	RA post
-  signup(signData: SignData): Promise<BsModel<any>> {
+  signup(signData: SignData): Promise<any> {
 
-    let bsModel = new BsModel();
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("RA");
       this.request.post(url, signData).then(data => {
         //处理返回结果
-        bsModel.code = data.errcode;
-        bsModel.message = data.errmsg;
-        bsModel.data = data.data;
-        resolve(bsModel);
+        resolve(data.data);
 
       }).catch(error => {
         //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        reject(bsModel);
+        reject();
 
       })
     });

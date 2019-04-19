@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
-import {BsModel} from "./out/bs.model";
 import {CTbl} from "../sqlite/tbl/c.tbl";
 
 
@@ -16,23 +15,16 @@ export class AgdRestful{
 
 
   //日程保存 AS
-  save(adgPro:AgdPro):Promise<BsModel<any>> {
-
+  save(adgPro:AgdPro):Promise<any> {
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AS");
-      let bsModel = new BsModel<any>();
       this.request.post(url, adgPro).then(data => {
         //处理返回结果
-        bsModel.code = data.rc;
-        bsModel.message = data.rm;
-        bsModel.data = data.d;
-        resolve(bsModel);
+        resolve(data.d);
 
       }).catch(error => {
         //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        resolve(bsModel);
+        resolve();
 
       })
     });
@@ -40,67 +32,48 @@ export class AgdRestful{
   }
 
   //日程参与人保存 ACS
-  contactssave(adgPro : AgdPro):Promise<BsModel<any>> {
+  contactssave(adgPro : AgdPro):Promise<any> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("ACS");
-      let bsModel = new BsModel<any>();
       this.request.post(url, adgPro).then(data => {
         //处理返回结果
-        bsModel.code = data.rc;
-        bsModel.message = data.rm;
-        bsModel.data = data.d;
-        resolve(bsModel);
+        resolve(data.d);
 
       }).catch(error => {
-        //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        resolve(bsModel);
+        resolve();
 
       })
     });
   }
   //日程获取 AG
-  get(adgPro : AgdPro):Promise<BsModel<AgdPro>> {
+  get(adgPro : AgdPro):Promise<AgdPro> {
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AG");
-      let bsModel = new BsModel<AgdPro>();
       this.request.post(url, adgPro).then(data => {
         //处理返回结果
-        bsModel.code = data.rc;
-        bsModel.message = data.rm;
-        bsModel.data = data.d;
-        resolve(bsModel);
+        resolve(data.d);
 
       }).catch(error => {
         //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        resolve(bsModel);
+        resolve();
 
       })
     });
   }
 
   //日程删除 AR
-  remove(adgPro : AgdPro):Promise<BsModel<any>> {
+  remove(adgPro : AgdPro):Promise<any> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AR");
-      let bsModel = new BsModel<any>();
       this.request.post(url, adgPro).then(data => {
         //处理返回结果
-        bsModel.code = data.rc;
-        bsModel.message = data.rm;
-        bsModel.data = data.d;
-        resolve(bsModel);
+        resolve(data.d);
 
       }).catch(error => {
         //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        resolve(bsModel);
+        resolve();
 
       })
     });
@@ -108,22 +81,19 @@ export class AgdRestful{
 
 
   //日程转发(分享)上传 ASU
-  share(sharePro : SharePro):Promise<BsModel<OutSharePro>> {
+  share(sharePro : SharePro):Promise<OutSharePro> {
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("ASU");
-      let bsModel = new BsModel<OutSharePro>();
       this.request.post(url, sharePro).then(data => {
         //处理返回结果
-        bsModel.code = data.rc;
-        bsModel.message = data.rm;
-        bsModel.data = data.d;
-        resolve(bsModel);
+        // bsModel.code = data.rc;
+        // bsModel.message = data.rm;
+        // bsModel.data = data.d;
+        resolve(data.d);
 
       }).catch(error => {
         //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        resolve(bsModel);
+        resolve();
 
       })
     });
@@ -133,25 +103,19 @@ export class AgdRestful{
 
   //测试缓存
   //日程转发(分享)上传 ASU
-  cachefromserver(ctbl:Array<CTbl>):Promise<BsModel<OutSharePro>> {
+  cachefromserver(ctbl:Array<CTbl>):Promise<OutSharePro> {
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("CC");
-      let bsModel = new BsModel<OutSharePro>();
       let ag:any = {};
       ag.d = ctbl;
 
       this.request.post(url, ag).then(data => {
         //处理返回结果
-        bsModel.code = data.rc;
-        bsModel.message = data.rm;
-        bsModel.data = data.d;
-        resolve(bsModel);
+        resolve(data.d);
 
       }).catch(error => {
         //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        resolve(bsModel);
+        resolve();
 
       })
     });
@@ -222,15 +186,10 @@ export class SharePro{
 }
 
 export class ShareProSub{
-
   a :AgdPro = new AgdPro();
-
-
 }
 
 
 export class OutSharePro{
-
   asurl :string="";
-
 }

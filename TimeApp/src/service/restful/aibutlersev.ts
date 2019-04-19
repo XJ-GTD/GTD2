@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
-import {BsModel} from "./out/bs.model";
-import * as moment from 'moment';
 import {ContextModel, WsModel} from "../../ws/model/ws.model";
 
 
@@ -16,23 +14,17 @@ export class AibutlerRestful{
   }
 
   //语音上传 VU
-  postaudio(audioPro:AudioPro):Promise<BsModel<any>> {
+  postaudio(audioPro:AudioPro):Promise<any> {
 
     return new Promise((resolve, reject) => {
         let url: UrlEntity = this.config.getRestFulUrl("VU");
-        let bsModel = new BsModel<any>();
         this.request.post(url, audioPro).then(data => {
           //处理返回结果
-          bsModel.code = data.rc;
-          bsModel.message = data.rm;
-          bsModel.data = data.d;
-          resolve(bsModel);
+          resolve(data.d);
 
         }).catch(error => {
           //处理返回错误
-          bsModel.code = -99;
-          bsModel.message = "处理出错";
-          resolve(bsModel);
+          resolve();
 
         })
     });
@@ -43,19 +35,13 @@ export class AibutlerRestful{
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("TU");
-      let bsModel = new BsModel<any>();
       this.request.post(url, textPro).then(data => {
         //处理返回结果
-        bsModel.code = data.rc;
-        bsModel.message = data.rm;
-        bsModel.data = data.d;
-        resolve(bsModel);
+        resolve(data.d);
 
       }).catch(error => {
         //处理返回错误
-        bsModel.code = -99;
-        bsModel.message = "处理出错";
-        resolve(bsModel);
+        resolve();
 
       })
     });
