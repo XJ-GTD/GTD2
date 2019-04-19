@@ -187,8 +187,8 @@ public class AgdAgendaController {
 	public BaseOutDto saveContacts(@RequestBody AgdAgendaDto freshAgd, HttpServletRequest request) {
 		log.info("---- 保存日程参与人获取获取参数  -----" + JSONObject.toJSONString(freshAgd));
 		BaseOutDto out = new BaseOutDto();
-		String relId = request.getHeader("ai");
-		if (!"".equals(relId) && relId != null) {
+		if (freshAgd.getAc() != null && freshAgd.getAc().size()>0 
+				&& freshAgd.getAi() != null && !"".equals(freshAgd.getAi())) {
 			List<AgdContactsDto> acL = freshAgd.getAc();
 			if(acL != null && acL.size()>0){
 				contanctService.save(freshAgd,request);
@@ -198,7 +198,8 @@ public class AgdAgendaController {
 			out.setRm(ReturnMessage.SUCCESS_MSG);
 		} else {
 			out.setRc(ReturnMessage.ERROR_CODE);
-			out.setRm(ReturnMessage.ERROR_MSG);
+			out.setRm("传入保存日程参与人信息不全");
+			log.error("======== 传入保存日程参与人信息不全：" + JSONObject.toJSONString(freshAgd));
 		}
 		return out;
 	}
