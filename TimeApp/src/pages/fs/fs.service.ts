@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {AgdPro, AgdRestful, ContactPerPro} from "../../service/restful/agdsev";
-import {BsModel} from "../../service/restful/out/bs.model";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {UtilService} from "../../service/util-service/util.service";
 import {PersonRestful} from "../../service/restful/personsev";
@@ -76,9 +75,8 @@ export class FsService {
    * @param {Array<FsData>} fsList 日程参与人列表
    * @returns {Promise<Array<FsData>>}
    */
-  sharefriend(si: string, fsList: Array<FsData>): Promise<BsModel<any>> {
-    return new Promise<BsModel<any>>((resolve, reject) => {
-      let bs = new BsModel<any>();
+  sharefriend(si: string, fsList: Array<FsData>): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
       //restFul 通知参与人
       let adgPro: AgdPro = new AgdPro();
       adgPro.ai = si;
@@ -95,18 +93,12 @@ export class FsService {
       }
       adgPro.ac = ac;
       if (ac.length ==0) {
-        resolve(bs);
+        resolve(true);
         return ;
       }
       console.log('---------- sharefriend 分享给参与人操作 参数:' + JSON.stringify(adgPro));
       this.agdRest.contactssave(adgPro).then(data => {
-        bs = data;
         console.log('---------- sharefriend 分享给参与人操作 结果:' + JSON.stringify(data));
-        if (bs.code == 0) {
-          // let sq = 'delete from gtd_d where si = "' +si +'";';
-          // console.log('---------- sharefriend 分享给参与人操作 删除原参与人 ---------');
-
-        }
         return this.getCalfriend(si);
       }).then(data => {
         let dtList = new Array<string>();
@@ -131,10 +123,10 @@ export class FsService {
         return this.sqlite.batExecSql(dtList);
       }).then(data => {
         console.log('---------- sharefriend 分享给参与人操作 保存参与人结束 ---------' + JSON.stringify(data));
-        resolve(bs);
+        resolve(true);
       }).catch(e => {
         console.error('---------- sharefriend 分享给参与人操作 保存参与人错误 ---------' + e.message);
-        resolve(bs);
+        resolve(false);
       })
     })
   }
