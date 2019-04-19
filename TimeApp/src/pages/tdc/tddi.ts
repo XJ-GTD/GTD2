@@ -4,7 +4,6 @@ import {
 } from 'ionic-angular';
 import * as moment from "moment";
 import {UtilService} from "../../service/util-service/util.service";
-import {BsModel} from "../../service/restful/out/bs.model";
 import {TdcService} from "../tdc/tdc.service";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
@@ -206,8 +205,8 @@ export class TddiPage {
     //受邀人修改的场合初始化
     let paramter: ScdPageParamter = this.navParams.data;
     this.tddiServ.get(paramter.si).then(data => {
-      let bs: BsModel<ScdData> = data;
-      Object.assign(this.scd, bs.data);
+      let bs: ScdData = data;
+      Object.assign(this.scd, bs);
       this.scd.showSd = paramter.d.format("YYYY-MM-DD");
 
       //TODO 缓存里后获取发送信息

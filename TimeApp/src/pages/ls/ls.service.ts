@@ -84,7 +84,7 @@ export class LsService {
 
         return this.personRestful.getself(data.unionid);
       }).then(data=>{
-        uTbl.hiu = data.data.avatarbase64;//头像
+        uTbl.hiu = data.avatarbase64;//头像
         //删除账户表
         return this.sqlExec.delete(new ATbl());
       }).then(data=>{

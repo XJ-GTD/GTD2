@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {BsModel} from "../../service/restful/out/bs.model";
 import {UtilService} from "../../service/util-service/util.service";
 import {AgdRestful} from "../../service/restful/agdsev";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
@@ -18,7 +17,7 @@ export class TdcService {
    * @param {PageRcData} rc 日程信息
    * @returns {Promise<BsModel<any>>}
    */
-  save(rc: ScdData): Promise<BsModel<any>> {
+  save(rc: ScdData): Promise<any> {
     return this.pgbusiServ.save(rc);
   }
 
