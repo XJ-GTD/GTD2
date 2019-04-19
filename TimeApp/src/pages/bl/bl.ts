@@ -99,10 +99,8 @@ export class BlPage {
   delete(g:FsData){
     //this.util.popMsgbox("2",()=>{
       this.fdService.removeBlack(g.ui).then(data=>{
-        if(data.code == 0){
           this.getBl();
           this.util.popoverStart('删除黑名单成功！')
-        }
      // })
     });
 
