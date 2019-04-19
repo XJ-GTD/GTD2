@@ -115,8 +115,11 @@ export class AlService {
       yTbl.yv = "0";
       await this.sqlExce.replaceT(yTbl);
 
-      //await this.createTestData();
-
+      // 在浏览器测试时使用测试数据
+      if (!this.util.isMobile()) {
+        await this.createTestData();
+      }
+      
       alData.text = "系统初始化完成";
       resolve(alData);
     })
