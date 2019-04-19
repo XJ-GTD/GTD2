@@ -65,6 +65,9 @@ export class WebsocketService {
         this.settingWs().then(data => {
           // 连接消息服务器
           this.client.connect(this.login, this.password, frame => {
+
+            // 连接成功,取消所有重连请求
+            if (this.timer) clearTimeout(this.timer);
             this.failedtimes = 0;
             resolve();
             this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
