@@ -63,7 +63,6 @@ before_script:
   - cp -rf ../TimeAppPatch/plugins/* ./plugins
   - ls -la ./plugins/cordova-plugin-local-notification/src/android/notification
 script:
-  - gradle -version
   - ionic cordova plugin ls
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then yarn install ; else npm install ; fi
   - npm run clean
