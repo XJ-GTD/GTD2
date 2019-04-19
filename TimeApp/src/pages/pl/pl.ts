@@ -172,7 +172,7 @@ export class PlPage {
       message = '刷新';
     }
     this.plService.downloadPlan(jh).then(data=>{
-      jh.js = data.data == null ? "0":data.data;
+      jh.js = data == null || data == 0 ? 0:data;
       jh.jtd = '1';
       this.util.loadingEnd();
     }).catch(error=>{

@@ -1,7 +1,6 @@
 //获取日程
 import {CTbl} from "../sqlite/tbl/c.tbl";
 import {ETbl} from "../sqlite/tbl/e.tbl";
-import {BsModel} from "../restful/out/bs.model";
 import {JhTbl} from "../sqlite/tbl/jh.tbl";
 import {AgdPro, AgdRestful} from "../restful/agdsev";
 import {Injectable} from "@angular/core";
@@ -32,9 +31,7 @@ export class PgBusiService {
    * @returns {Promise<BsModel<ScdData>>}
    */
   async get(si: string, sr?: string) {
-    let bs = new BsModel<ScdData>();
     //获取本地日程
-
     let scdData = new ScdData();
 
     let ctbl = new CTbl();
@@ -102,10 +99,7 @@ export class PgBusiService {
       Object.assign(fs, this.userConfig.GetOneBTbl(dlst[j].ai));
       scdData.fss.push(fs);
     }
-
-    bs.code = 0;
-    bs.data = scdData;
-    return bs;
+    return scdData;
   }
 
   /**
@@ -173,12 +167,10 @@ export class PgBusiService {
    * @returns {Promise<BsModel<any>>}
    */
   async save(rc: ScdData) {
-    let bs = new BsModel<any>();
     let str = this.checkRc(rc);
+    //TODO  返回错误信息
     if (str != '') {
-      bs.code = 1;
-      bs.message = str;
-      return bs;
+      return null;
     }
     let ct = new CTbl();
     Object.assign(ct, rc);
@@ -198,9 +190,7 @@ export class PgBusiService {
     //restFul保存日程
     this.setAdgPro(adgPro, ct);
     this.agdRest.save(adgPro);
-    bs.code = 0;
-    bs.data = ct;
-    return bs;
+    return ct;
   }
 
 
@@ -221,7 +211,7 @@ export class PgBusiService {
         ff.rn = f.rn;
       }
 
-      this.fsService.sharefriend(data.data.si,fs);
+      this.fsService.sharefriend(data.si,fs);
     });
   }
 
@@ -451,8 +441,7 @@ export class PgBusiService {
   async pullAgd(sr: string) {
     let agd = new AgdPro();
     agd.ai = sr;
-    let bs = new BsModel<AgdPro>();
-    bs = await this.agdRest.get(agd);
+    agd = await this.agdRest.get(agd);
 
     let c = new CTbl();
     c.sr = sr;
@@ -460,12 +449,11 @@ export class PgBusiService {
     let newc = new CTbl();
     if (c == null) {
       //插入日程表
-      this.setCtbl(newc, bs.data);
+      this.setCtbl(newc, agd);
       //设置本地日程ID
       newc.si = this.util.getUuid();
       //设置关联日程ID
       newc.sr = sr;
-
 
       //添加特殊事件表
       let ed = await this.saveSp(newc);
@@ -480,7 +468,7 @@ export class PgBusiService {
 
     } else {
       //更新日程表
-      this.setCtbl(newc, bs.data);
+      this.setCtbl(newc, agd);
       //设置本地日程ID
       newc.si = c.si;
       //设置关联日程ID
@@ -499,20 +487,20 @@ export class PgBusiService {
     }
 
     //获取当前日程详情及相关内容
-    let ret = new BsModel<ScdData>();
+    let ret = new ScdData();
     ret = await this.get("", sr);
 
     //刷新联系人，联系人存在判断 不存在获取更新 ，刷新本地缓存
     let fs: FsData = new FsData();
     fs = this.userConfig.GetOneBTbl(newc.ui);
     if (fs) {
-      ret.data.fs = fs;
+      ret.fs = fs;
     } else {
       //从服务器获取对象，放入本地库，刷新缓存
-      ret.data.fs = await this.contactsServ.updateOneFs(newc.ui);
+      ret.fs = await this.contactsServ.updateOneFs(newc.ui);
     }
 
-    return ret.data;
+    return ret;
 
   }
 

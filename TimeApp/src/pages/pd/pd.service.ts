@@ -3,7 +3,6 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {ShaeRestful, ShareData} from "../../service/restful/shaesev";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
-import {BsModel} from "../../service/restful/out/bs.model";
 import {AgdPro} from "../../service/restful/agdsev";
 import {PagePDPro} from "../../data.mapping";
 
@@ -43,10 +42,7 @@ export class PdService {
     //显示处理
     console.log('---------- PdService getPlan 获取计划结束 ----------------');
     // 返出参
-    let bs = new BsModel();
-    bs.code = 0;
-    bs.data = paList;
-    return bs;
+    return paList;
   }
 
   //分享计划

@@ -9,7 +9,6 @@ import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {GTbl} from "../../service/sqlite/tbl/g.tbl";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {BxTbl} from "../../service/sqlite/tbl/bx.tbl";
-import {BsModel} from "../../service/restful/out/bs.model";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
@@ -25,11 +24,7 @@ export class BrService {
 
   //备份方法，需要传入页面 ，画面显示备份进度条
   async backup() {
-
-    let ret = new BsModel();
-
     //定义上传信息JSSON List
-
 
     let backupPro: BackupPro = new BackupPro();
     //操作账户ID
@@ -44,83 +39,59 @@ export class BrService {
     let csql = "select * from gtd_c where ji not in (select ji from gtd_j_h where jt ='1') ";//系统计划的日程不备份
     backupPro.d.c = await this.sqlexec.getExtList<CTbl>(csql);
     //restFul上传
-    ret = await this.bacRestful.backup(backupPro);
+    await this.bacRestful.backup(backupPro);
     if (backupPro.d.c) backupPro.d.c.length = 0;//清空数组 以防其他表备份时候此数据再被上传
 
-    if (ret.code == -99) {
-      return ret;
-    }
 
     //获取特殊日历
     let spsql = "select sp.* from gtd_sp sp inner join " +
       " ( select * from gtd_c where ji not in (select ji from gtd_j_h where jt ='1')) c on c.si = sp.si ";//系统计划的日程不备份
     backupPro.d.sp = await this.sqlexec.getExtList<SpTbl>(spsql);
-    ret = await this.bacRestful.backup(backupPro);
+    await this.bacRestful.backup(backupPro);
     if (backupPro.d.sp) backupPro.d.sp.length = 0;
 
-    if (ret.code == -99) {
-      return ret;
-    }
 
     //获取提醒数据
     let e = new ETbl();
     backupPro.d.e = await this.sqlexec.getList<ETbl>(e);
-    ret = await this.bacRestful.backup(backupPro);
+    await this.bacRestful.backup(backupPro);
     if (backupPro.d.e) backupPro.d.e.length = 0;
-
-    if (ret.code == -99) {
-      return ret;
-    }
 
     //获取日程参与人数据
     let d = new DTbl();
     backupPro.d.d = await this.sqlexec.getList<DTbl>(d);
-    ret = await this.bacRestful.backup(backupPro);
+    await this.bacRestful.backup(backupPro);
     if (backupPro.d.d) backupPro.d.d.length = 0;
 
-    if (ret.code == -99) {
-      return ret;
-    }
 
     //获取联系人信息
     let b = new BTbl();
     backupPro.d.b = await this.sqlexec.getList<BTbl>(b);
-    ret = await this.bacRestful.backup(backupPro);
+     await this.bacRestful.backup(backupPro);
     if (backupPro.d.b) backupPro.d.b.length = 0;
 
-    if (ret.code == -99) {
-      return ret;
-    }
 
     //获取群组信息
     let g = new GTbl();
     backupPro.d.g = await this.sqlexec.getList<GTbl>(g);
-    ret = await this.bacRestful.backup(backupPro);
+     await this.bacRestful.backup(backupPro);
     if (backupPro.d.g) backupPro.d.g.length = 0;
 
-    if (ret.code == -99) {
-      return ret;
-    }
+
 
     //获取群组人员信息
     let bx = new BxTbl();
     backupPro.d.bx = await this.sqlexec.getList<BxTbl>(bx);
-    ret = await this.bacRestful.backup(backupPro);
+    await this.bacRestful.backup(backupPro);
     if (backupPro.d.bx) backupPro.d.bx.length = 0;
 
-    if (ret.code == -99) {
-      return ret;
-    }
 
     //获取本地计划
     let jhsql = "select * from  gtd_j_h where jt <> '1' "//系统计划不备份
     backupPro.d.jh = await this.sqlexec.getExtList<JhTbl>(jhsql);
-    ret = await this.bacRestful.backup(backupPro);
+    await this.bacRestful.backup(backupPro);
     if (backupPro.d.jh) backupPro.d.jh.length = 0;
 
-    if (ret.code == -99) {
-      return ret;
-    }
 
     //最后一次备份前置true
     backupPro.d.commit =true;
@@ -128,41 +99,29 @@ export class BrService {
     //获取用户偏好
     let y = new YTbl();
     backupPro.d.y = await this.sqlexec.getList<YTbl>(y);
-    ret = await this.bacRestful.backup(backupPro);
+    await this.bacRestful.backup(backupPro);
     if (backupPro.d.y) backupPro.d.y.length = 0;
-
-    if (ret.code == -99) {
-      return ret;
-    }
-
-    ret.code = 0;
-    ret.message="备份完成";
-    return ret;
+    return ;
   }
 
   //页面获取最后更新时间
-  getLastDt(): Promise<BsModel<PageBrDataPro>> {
+  getLastDt(): Promise<PageBrDataPro> {
     //restFul 获取服务器 日历条数
     return new Promise((resolve, reject) => {
-      let bsModel = new BsModel<PageBrDataPro>();
       this.bacRestful.getlastest().then(data => {
-        bsModel.data = new PageBrDataPro();
+        let pageBrDataPro = new PageBrDataPro();
 
-        if(data && data.data && data.data.bts){
-          bsModel.data.bts = data.data.bts;
-          bsModel.data.dt = moment(bsModel.data.bts).format("YYYY-MM-DD HH:mm")
+        if(data){
+          pageBrDataPro.bts = data.bts;
+          pageBrDataPro.dt = moment(data.bts).format("YYYY-MM-DD HH:mm")
         }
-
-        resolve(bsModel)
+        resolve(pageBrDataPro)
       })
     })
   }
 
   //恢复
   async recover(bts: Number) {
-
-    let bsModel = new BsModel<OutRecoverPro>();
-
     let recoverPro: RecoverPro = new RecoverPro();
     //操作账户ID
     recoverPro.oai = UserConfig.account.id;
@@ -171,7 +130,7 @@ export class BrService {
     recoverPro.d.bts = bts;
     // 设定恢复指定表
     // recoverPro.d.rdn=[];
-    bsModel = await this.bacRestful.recover(recoverPro);
+     let outRecoverPro:OutRecoverPro = await this.bacRestful.recover(recoverPro);
 
     let sqls=new Array<string>();
 
@@ -180,9 +139,9 @@ export class BrService {
       " (select si from gtd_c where ji not in (select ji from gtd_j_h where jt ='1')) ";
     await this.sqlexec.execSql(spsql);
 
-    for (let j = 0, len = bsModel.data.sp.length; j < len; j++) {
+    for (let j = 0, len = outRecoverPro.sp.length; j < len; j++) {
       let spi = new SpTbl();
-      Object.assign(spi,bsModel.data.sp[j]) ;
+      Object.assign(spi,outRecoverPro.sp[j]) ;
       sqls.push(spi.inT());
     }
     await this.sqlexec.batExecSql(sqls);
@@ -192,9 +151,9 @@ export class BrService {
     let csql = "delete from gtd_c where ji not in (select ji from gtd_j_h where jt ='1'  ) ";
     await this.sqlexec.execSql(csql);
 
-    for (let j = 0, len = bsModel.data.c.length; j < len; j++) {
+    for (let j = 0, len = outRecoverPro.c.length; j < len; j++) {
       let ci = new CTbl();
-      Object.assign(ci,bsModel.data.c[j]) ;
+      Object.assign(ci,outRecoverPro.c[j]) ;
       sqls.push(ci.inT());
     }
     await this.sqlexec.batExecSql(sqls);
@@ -204,9 +163,9 @@ export class BrService {
     let e = new ETbl();
     await this.sqlexec.delete(e);
 
-    for (let j = 0, len = bsModel.data.e.length; j < len; j++) {
+    for (let j = 0, len = outRecoverPro.e.length; j < len; j++) {
       let ei = new ETbl();
-      Object.assign(ei,bsModel.data.e[j]) ;
+      Object.assign(ei,outRecoverPro.e[j]) ;
       sqls.push(ei.inT());
     }
     await this.sqlexec.batExecSql(sqls);
@@ -216,9 +175,9 @@ export class BrService {
     let d = new DTbl();
     await this.sqlexec.delete(d);
 
-    for (let j = 0, len = bsModel.data.d.length; j < len; j++) {
+    for (let j = 0, len = outRecoverPro.d.length; j < len; j++) {
       let di = new DTbl();
-      Object.assign(di,bsModel.data.d[j]) ;
+      Object.assign(di,outRecoverPro.d[j]) ;
       sqls.push(di.inT());
     }
     await this.sqlexec.batExecSql(sqls);
@@ -228,9 +187,9 @@ export class BrService {
     let b = new BTbl();
     await this.sqlexec.delete(b);
 
-    for (let j = 0, len = bsModel.data.b.length; j < len; j++) {
+    for (let j = 0, len = outRecoverPro.b.length; j < len; j++) {
       let bi = new BTbl();
-      Object.assign(bi,bsModel.data.b[j]) ;
+      Object.assign(bi,outRecoverPro.b[j]) ;
       sqls.push(bi.inT());
     }
     await this.sqlexec.batExecSql(sqls);
@@ -240,9 +199,9 @@ export class BrService {
     let g = new GTbl();
     await this.sqlexec.delete(g);
 
-    for (let j = 0, len = bsModel.data.g.length; j < len; j++) {
+    for (let j = 0, len =outRecoverPro.g.length; j < len; j++) {
       let gi = new GTbl();
-      Object.assign(gi,bsModel.data.g[j]) ;
+      Object.assign(gi,outRecoverPro.g[j]) ;
       sqls.push(gi.inT());
     }
     await this.sqlexec.batExecSql(sqls);
@@ -252,9 +211,9 @@ export class BrService {
     let bx = new BxTbl();
     await this.sqlexec.delete(bx);
 
-    for (let j = 0, len = bsModel.data.bx.length; j < len; j++) {
+    for (let j = 0, len = outRecoverPro.bx.length; j < len; j++) {
       let bxi = new BxTbl();
-      Object.assign(bxi,bsModel.data.bx[j]) ;
+      Object.assign(bxi,outRecoverPro.bx[j]) ;
       sqls.push(bxi.inT());
     }
     await this.sqlexec.batExecSql(sqls);
@@ -265,9 +224,9 @@ export class BrService {
     let jhsql = "delete from gtd_j_h where jt <> '1' ";//本地系统计划不删除
     await this.sqlexec.execSql(jhsql);
 
-    for (let j = 0, len = bsModel.data.jh.length; j < len; j++) {
+    for (let j = 0, len = outRecoverPro.jh.length; j < len; j++) {
       let jhi = new JhTbl();
-      Object.assign(jhi,bsModel.data.jh[j]) ;
+      Object.assign(jhi,outRecoverPro.jh[j]) ;
       sqls.push(jhi.inT());
     }
     await this.sqlexec.batExecSql(sqls);
@@ -278,9 +237,9 @@ export class BrService {
     let y = new YTbl();
     await this.sqlexec.delete(y);
 
-    for (let j = 0, len = bsModel.data.y.length; j < len; j++) {
+    for (let j = 0, len = outRecoverPro.y.length; j < len; j++) {
       let yi = new YTbl();
-      Object.assign(yi,bsModel.data.y[j]) ;
+      Object.assign(yi,outRecoverPro.y[j]) ;
       sqls.push(yi.inT());
     }
     await this.sqlexec.batExecSql(sqls);
@@ -289,9 +248,7 @@ export class BrService {
     //联系人的更新信息操作
     await this.contactsServ.updateFs();
 
-    let ret = new BsModel();
-    ret.code = 0
-    return ret;
+    return ;
   }
 }
 

@@ -64,8 +64,8 @@ export class BrPage {
   @ViewChild("resRef")
   resRef:ElementRef;
 
-  bts:any = new Date().getTime()/1000 ;// 最后一次备份日期
-  isRecover:any = false;
+  bts:string;// 最后一次备份日期
+  isRecover:boolean = false;
   is:any = true;
 
   constructor(public navCtrl: NavController,
@@ -84,7 +84,7 @@ export class BrPage {
 
   getLastDate(){
     this.brService.getLastDt().then(data=>{
-      this.bts = data.data.bts;
+      this.bts = data.bts;
       if(this.bts && this.bts!=''){
         this.isRecover = true;
       }
