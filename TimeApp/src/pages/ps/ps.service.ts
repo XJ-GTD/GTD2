@@ -1,11 +1,9 @@
 import {Injectable} from "@angular/core";
-import {PersonInData, PersonOutData, PersonRestful} from "../../service/restful/personsev";
+import {PersonOutData, PersonRestful} from "../../service/restful/personsev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {UserConfig} from "../../service/config/user.config";
-import {BsModel} from "../../service/restful/out/bs.model";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
-import {PageUData} from "../../data.mapping";
 
 @Injectable()
 export class PsService {
@@ -16,18 +14,18 @@ export class PsService {
 
   async findPerson(uid :string ){
 
-    let data:BsModel<PersonOutData> = await this.personRestful.getself(uid);
+    let data:PersonOutData = await this.personRestful.getself(uid);
 
     let uTbl:UTbl = new UTbl();
-    uTbl.ai = data.data.openid;  //openid
-    uTbl.ui = data.data.unionid; //unionid
-    uTbl.un = data.data.nickname; //用户名（昵称）
-    uTbl.rn = data.data.name == undefined || data.data.name == "" ? data.data.nickname : data.data.name; //真实姓名
-    uTbl.us = data.data.sex == undefined || data.data.sex == "" ? "0" : data.data.sex; //性别
-    uTbl.biy = data.data.birthday == undefined || data.data.birthday == "" ? "" : data.data.birthday;  //出生日期
-    uTbl.ic = data.data.ic == undefined || data.data.ic == "" ? "" : data.data.ic;  //身份证
-    uTbl.uct = data.data.contact== undefined || data.data.contact == "" ? "" : data.data.contact;//  联系方式
-    uTbl.hiu = data.data.avatarbase64;//头像
+    uTbl.ai = data.openid;  //openid
+    uTbl.ui = data.unionid; //unionid
+    uTbl.un = data.nickname; //用户名（昵称）
+    uTbl.rn = data.name == undefined || data.name == "" ? data.nickname : data.name; //真实姓名
+    uTbl.us = data.sex == undefined || data.sex == "" ? "0" : data.sex; //性别
+    uTbl.biy = data.birthday == undefined || data.birthday == "" ? "" : data.birthday;  //出生日期
+    uTbl.ic = data.ic == undefined || data.ic == "" ? "" : data.ic;  //身份证
+    uTbl.uct = data.contact== undefined || data.contact == "" ? "" : data.contact;//  联系方式
+    uTbl.hiu = data.avatarbase64;//头像
 
     await this.sqlExec.update(uTbl);
 
@@ -37,7 +35,7 @@ export class PsService {
 
   //保存用户信息
   saveUser(id:string,inData:any):Promise<any>{
-    return new Promise<BsModel<any>>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.personRestful.updateself(inData,id).then(data=>{
         resolve(data);
       }).catch(error=>{
@@ -47,19 +45,14 @@ export class PsService {
   }
 
   //修改密码
-  editPass(pw : string , unionid :string ):Promise<BsModel<any>>{
-    return new Promise<BsModel<any>>((resolve, reject) => {
+  editPass(pw : string , unionid :string ):Promise<any>{
+    return new Promise((resolve, reject) => {
       //restFul更新用户密码（服务器更新token并返回，清空该用户服务其他token）
-      let bs = new BsModel<any>();
       let per = {password:""};
       per.password = pw;
       this.personRestful.updatepass(per,unionid).then(data=>{
         //刷新系统全局用户静态变量
-        resolve(bs);
-      }).catch(e=>{
-        bs.code = -99;
-        bs.message = e.message;
-        resolve(bs);
+        resolve(data);
       })
     })
   }
