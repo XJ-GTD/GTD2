@@ -31,13 +31,19 @@ export class AuthRestful {
     });
   }
 
-  loginbypass(loginData: LoginData): Promise<OutData> {
+  loginbypass(loginData: LoginData): Promise<Out> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("PL");
       this.request.post(url, loginData).then(data => {
+        let out = new Out();
+        out.code = data.errcode;
+        out.msg = data.errmsg;
+        out.data = data.data;
+        resolve(out);
+
         //处理返回结果
-        resolve(data.data);
+        resolve(out);
 
       }).catch(error => {
         //处理返回错误
@@ -54,6 +60,12 @@ export class LoginData{
   userpassword:string = "";
   verifykey:string = "";
   verifycode:string = "";
+}
+
+export class Out {
+  code:number = 0;
+  msg:string = "";
+  data:OutData = new OutData();
 }
 
 export class OutData{

@@ -3,7 +3,6 @@ import {PersonRestful} from "../../service/restful/personsev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
 import {BlaReq, BlaRestful} from "../../service/restful/blasev";
-import {BsModel} from "../../service/restful/out/bs.model";
 import {UserConfig} from "../../service/config/user.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {FsData} from "../../data.mapping";
@@ -37,8 +36,8 @@ export class FdService {
       let isBlack:boolean = false;
       //restFul查询是否是黑名单
       this.blasev.list().then(data=>{
-        if(data.data && data.data.length>0){
-          for(let bla of data.data){
+        if(data && data.length>0){
+          for(let bla of data){
             if(bla.mpn == phoneno){
               isBlack = true; //是黑名单；
               break;
@@ -53,8 +52,8 @@ export class FdService {
   }
 
   //restFul 加入黑名单
-  putBlack(fd:FsData):Promise<BsModel<FsData>>{
-    return new Promise<BsModel<FsData>>((resolve, reject)=>{
+  putBlack(fd:FsData):Promise<boolean>{
+    return new Promise<boolean>((resolve, reject)=>{
       let bla = new BlaReq();
        if(fd && fd.rc){
          bla.ai=fd.ui;
@@ -64,15 +63,10 @@ export class FdService {
          bla.s='';
          bla.bd= '';
        }
-       let bs = new BsModel<FsData>();
       this.blasev.add(bla).then(data=>{
-        bs.code = data.code;
-        bs.message = data.message;
-        resolve(bs);
+        resolve(true);
       }).catch(e=>{
-        bs.code = -99;
-        bs.message = e.message;
-        resolve(bs);
+        resolve(false);
       })
     })
   }
@@ -82,14 +76,14 @@ export class FdService {
    * @param {string} mpn 手机号
    * @returns {Promise<BsModel<BlaReq>>}
    */
-  removeBlack(mpn:string):Promise<BsModel<any>>{
-    return new Promise<BsModel<any>>((resolve, reject)=>{
+  removeBlack(mpn:string):Promise<boolean>{
+    return new Promise<boolean>((resolve, reject)=>{
       let bla = new BlaReq();
-      let bs = new BsModel<any>();
       bla.mpn = mpn;
       this.blasev.remove(bla).then(data=>{
-        bs = data;
-        resolve(bs);
+        resolve(true);
+      }).catch(e=>{
+        resolve(false);
       })
     })
 

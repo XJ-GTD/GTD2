@@ -20,7 +20,7 @@ import {DataConfig} from "../../service/config/data.config";
       <ion-toolbar>
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/fh2.png">
+            <img class="img-header-left" src="./assets/imgs/back.png">
           </button>
         </ion-buttons>
         <ion-title>朋友</ion-title>
@@ -96,9 +96,8 @@ export class Fs4gPage {
       let dc: PageDcData = this.navParams.get('tpara');
       dc.fsl = list;
       this.gsService.save(dc).then(data => {
-        if (data.code == 0) {
           this.goBack();
-        }
+          //TODO 错误提示
       });
     } else {
       this.util.popoverStart("请先选择朋友");
