@@ -61,7 +61,7 @@ export class WebsocketService {
       if (this.timer) clearTimeout(this.timer);
       
       // 延迟重连动作,防止重连死循环
-      this.timer = setInterval(()=>{
+      this.timer = setTimeout(()=>{
         this.settingWs().then(data => {
           // 连接消息服务器
           this.client.connect(this.login, this.password, frame => {
@@ -90,12 +90,12 @@ export class WebsocketService {
   public close() {
     // 连接消息服务器
     if (this.client.connected)
-    this.client.disconnect(() => {
-      this.connect();
-    }, {
-      login: this.login,
-      passcode: this.password
-    });
+      this.client.disconnect(() => {
+        this.connect();
+      }, {
+        login: this.login,
+        passcode: this.password
+      });
     else
       this.connect();
   }

@@ -26,6 +26,7 @@
     "@ionic-native/background-mode": "^4.18.0",
     "@ionic-native/badge": "^4.18.0",
     "@ionic-native/calendar": "^4.18.0",
+    "@ionic-native/clipboard": "^4.2.0",
     "@ionic-native/contacts": "^4.18.0",
     "@ionic-native/core": "^4.11.0",
     "@ionic-native/device": "^4.18.0",
@@ -56,6 +57,7 @@
     "cordova-browser": "^5.0.4",
     "cordova-ios": "^4.4.0",
     "cordova-js": "^4.2.2",
+    "cordova-clipboard": "1.2.1",
     "cordova-plugin-BaiduSpeechAndTTS": "../BaiduSpeechAndTTS",
     "cordova-plugin-advanced-http": "~2.0.2",
     "cordova-plugin-android-permissions": "~1.0.0",
@@ -127,7 +129,8 @@
       "cordova-plugin-BaiduSpeechAndTTS": {},
       "cordova-plugin-network-information": {},
       "cordova-plugin-screen-orientation": {},
-      "cordova-plugin-contacts": {}
+      "cordova-plugin-contacts": {},
+      "cordova-clipboard": {}
     },
     "platforms": [
       "ios",

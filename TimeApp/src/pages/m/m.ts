@@ -40,7 +40,7 @@ import {UserConfig} from "../../service/config/user.config";
                 <h3>群组</h3>
               </ion-item>
               <ion-item (click)="goPlPage()">
-                <h3>活动计划</h3>
+                <h3>活动日历</h3>
               </ion-item>
               <ion-item (click)="goBlPage()">
                 <h3>黑名单</h3>
