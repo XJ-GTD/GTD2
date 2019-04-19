@@ -35,13 +35,13 @@
     display: block;
     left: 0;
     right: 0;
-    bottom: 4px;
+    bottom: 5px;
     position: absolute;
     z-index: 0;
     text-align: center;
-    /* font-weight: 200; */
     color: $fontThirdColor;
     font-size: 10px;
+    text-overflow: ellipsis;
     //background: -webkit-linear-gradient(left, rgb(149, 58, 139), rgb(86, 82, 222)); /* Safari 5.1 - 6.0 */
     //background: -o-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Opera 11.1 - 12.0 */
     //background: -moz-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Firefox 3.6 - 15 */
@@ -118,19 +118,23 @@ ion-calendar-month {
     font-size: 12px;
     color: $fontMasterColor;
     letter-spacing: 0px;
-    width: 24px;
-    height: 24px;
-    margin: -16px auto;
-    border-radius: 24px;
+    width: auto;
+    height: auto;
+    margin: -12px auto;
     text-align: center;
-    line-height: 22px;
+    line-height: 12px;
   }
 
   button.days-btn .repeatDay {
-    border-width: 1px;
-    border-color: $thirdColor;
-    border-style: solid;
-    background-color: $thirdColor;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAFCAYAAAAkG+5xAAAAkklEQVQokcXSsQpBARgF4O/mFg+hKINHkLKw3TyIyaCUwSsY7LyByS73OQw2g0dgYkD96Sq3lDOd099/zunvT3rLlR+giSkaOGCB8zeLKUbolwzcYR30DPUnb2OMeZhP0CnwyVNkqJQsMAwFqiH8hVbgNQw++GQpNh4XSL4Mv2Ef9BWntxLHwC/Yolvgkyf//oE78isZElZ6OD4AAAAASUVORK5CYII=) no-repeat ;
+    height: 1px;
+    width: 9px;
+    margin: 0;
+    display: inline-block;
+    position: relative;
+    top: 18px;
+    background-size: 100%;
+    line-height: 1px;
   }
 
   button.someting p {
@@ -141,17 +145,6 @@ ion-calendar-month {
     button.days-btn small {
       color: $fontSecondColor;
     }
-  }
-  button.days-btn small {
-    overflow: hidden;
-    display: block;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    position: absolute;
-    text-align: center;
-    font-size: 10px;
-    //font-weight: 100;
   }
 
   .cal-color {
@@ -177,6 +170,18 @@ ion-calendar-month {
 
 
     .days {
+
+
+      .message{
+        background-color: red;
+        width: 4px;
+        height: 4px;
+        margin-bottom: 20px;
+        margin-left: 25px;
+        border-radius: 3px;
+      }
+
+
       .hassometing {
         background: $hassometing;
 
@@ -184,10 +189,8 @@ ion-calendar-month {
           color: $fontMasterColor;
         }
 
-
         small {
-          color: $fontMasterColor;
-
+          color: $fontSecondColor;
         }
       }
 
@@ -200,7 +203,7 @@ ion-calendar-month {
 
 
         small {
-          color: $fontMasterColor;
+          color: $fontSecondColor;
 
         }
       }
@@ -214,7 +217,7 @@ ion-calendar-month {
 
 
         small {
-          color: $fontMasterColor;
+          color: $fontSecondColor;
 
         }
       }
@@ -225,11 +228,17 @@ ion-calendar-month {
         background: -moz-linear-gradient(right, $spcColorf, $spcColort); /* Firefox 3.6 - 15 */
         background: linear-gradient(to right, $spcColorf, $spcColort); /* 标准的语法（必须放在最后） */
 
+        p {
+          color: $fontMasterColor;
+        }
+
+        small {
+          color: $fontSecondColor;
+        }
       }
 
     }
 
   }
-
 
 }

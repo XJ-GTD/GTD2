@@ -36,17 +36,17 @@ export const MONTH_VALUE_ACCESSOR: any = {
                           [class.marked]="day.marked"
                           [class.hassometing]="day.hassometing && !day.isLastMonth && !day.isNextMonth"
                           [class.busysometing]="day.busysometing && !day.isLastMonth && !day.isNextMonth"
-                          [class.busysometing]="day.allsometing && !day.isLastMonth && !day.isNextMonth"
+                          [class.allsometing]="day.allsometing && !day.isLastMonth && !day.isNextMonth"
                           (click)="onSelected(day)"
                           (press)="onPressed(day)"
                           [class.last-month-day]="day.isLastMonth"
                           [class.next-month-day]="day.isNextMonth"
                           [class.today]="day.isToday && !day.isLastMonth && !day.isNextMonth"
                           [disabled]="day.disable">
-                    <!--<p [class.repeatDay] = "!day.isLastMonth && !day.isNextMonth && !day.isToday ">{{day.title}}</p>-->
                     <p>{{day.title}}</p>
                     <small>{{day.subTitle}}</small>
-                    <small *ngIf="day.newmessage > 0"></small>
+                    <small *ngIf="day.newmessage > 0" class = "message"></small>
+                    <p [class.repeatDay] = "!day.isLastMonth && !day.isNextMonth && !day.isToday && day.onlyRepeat"></p>
                   </button>
                 </div>
               </ng-container>

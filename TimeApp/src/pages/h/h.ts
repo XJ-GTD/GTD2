@@ -25,7 +25,7 @@ import {HData, ScdPageParamter} from "../../data.mapping";
   template: `
     <ion-content>
       <div class="haContent" >
-        <div #calendarDiv class="haCalendar" class="animated fadeInDownBig" >
+        <div #calendarDiv class="haCalendar">
           <ion-calendar [options]="options"
                         (onSelect)="onSelect($event)"
                         (onPress)="onPress($event)">
@@ -46,7 +46,7 @@ import {HData, ScdPageParamter} from "../../data.mapping";
         <!--&nbsp;-->
       <!--</div>-->
       <BackComponent></BackComponent>
-      <AiComponent #aiDiv class="animated fadeInUpBig" ></AiComponent>
+      <AiComponent #aiDiv></AiComponent>
     </ion-content>
     `,
 })
@@ -76,13 +76,6 @@ export class HPage {
   }
 
   ionViewDidLoad() {
-    this.calendarDiv.nativeElement.addEventListener("webkitAnimationEnd", () => {
-      this.renderer2.removeClass(this.calendarDiv.nativeElement, "fadeInDownBig");
-    });
-
-    this.aiDiv.elementRef.nativeElement.addEventListener("webkitAnimationEnd", () => {
-      this.renderer2.removeClass(this.aiDiv.elementRef.nativeElement, "fadeInUpBig");
-    });
   }
 
   ngOnInit() {
