@@ -19,8 +19,7 @@ export class BlService {
     let blfss:Array<FsData> = new Array<FsData>();
     this.util.loadingStart();
       //rest获取黑名单
-      let bs = await this.blaRes.list();
-    let blaList:Array<PageBlData>  = bs.data;
+    let blaList:Array<PageBlData> = await this.blaRes.list();
       for(let fs of blaList) {
         //TODO 返回的openid 获取本地联系人信息 如果本地没有的话，获取联系人信息，插入本地
         if (fs.ai && fs.ai != '') {
