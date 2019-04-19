@@ -72,7 +72,7 @@ export class ContactsService {
         console.log("===== 获取本地联系人：" + JSON.stringify(data));
         let contactPhones: Array<string> = new Array<string>();
         let contact:any;
-        
+
         for (contact of data) {
           console.log("===== 本地联系人：" + JSON.stringify(contact));
           // XiaoMI 6X补丁
@@ -81,7 +81,7 @@ export class ContactsService {
           if (!contact.phoneNumbers) continue;
           // 可能存在没有姓名的联系人
           if (!contact.name) continue;
-          
+
           for (let phone of contact.phoneNumbers) {
             //去除手机号中的空格
             let phonenumber = phone.value;
@@ -90,21 +90,21 @@ export class ContactsService {
             phonenumber.match(/\d+/g).forEach(v=>{
               number = number + v;
             });
-            
+
             number= number.replace(/\+86/g, '')
               .replace('0086', '')
               .replace(/\s/g,"");
-            
+
             console.log("===== 电话号码：" + number);
-            
+
             if (!this.utilService.checkPhone(number)) {
               continue;
             } else {
               if (contactPhones.indexOf(number) > -1) continue;
-              
+
               // 增加人名显示逻辑
               let displayname = this.getLocalContactsName(contact.displayName, contact.name.familyName, contact.name.givenName, contact.name.formatted);
-              
+
               let btbl: BTbl = new BTbl();
 
               //联系人别称
@@ -138,7 +138,7 @@ export class ContactsService {
 
     return "";
   }
-  
+
   asyncPhoneContacts(): Promise<boolean> {
     return new Promise<boolean>(async (resolve, reject) => {
       console.log('异步获取联系人函数开始...');
@@ -152,7 +152,7 @@ export class ContactsService {
       } else {
         console.log('异步获取联系人非30分钟以内调用, 开始...');
         UserConfig.setTroubleStop('contactsservice.asyncphonecontacts.lastlaunch', thislaunch);
-        
+
         //异步获取联系人信息入库等操作
         this.getContacts4Btbl().then(async data => {
           let bsqls: Array<string> = new Array<string>();
@@ -162,7 +162,7 @@ export class ContactsService {
             if (!b.rn) continue;
             // TODO 效率低下
             let bt: BTbl = await this.sqlExce.getOne<BTbl>(b);
-            
+
             if (bt == null) {
               bt = new BTbl();
               bt.pwi = this.utilService.getUuid();
@@ -285,7 +285,7 @@ export class ContactsService {
 
     let userinfo = await this.personRestful.get(id);
     let hasAvatar : boolean = false;
-    
+
     let exists : FsData = null;
 
     //获取本地参与人
@@ -296,11 +296,11 @@ export class ContactsService {
             + ' or gb.rc = "' + id + '";';
     // 能够适应使用ui和rc查询是否存在BTbl记录
     let data: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
-    
+
     if (data && data.length > 0) {
       exists = data[0];
     }
-    
+
     if (exists) {
       Object.assign(bt, exists);
     } else {
@@ -309,7 +309,7 @@ export class ContactsService {
       bt.hiu = "";
       bt.rel = '0';
     }
-    
+
     if (userinfo) {
       if (exists)
         bh.pwi = exists.pwi;
@@ -337,7 +337,7 @@ export class ContactsService {
           bt.ran = userinfo.nickname;
           bt.ranpy = this.utilService.chineseToPinYin(userinfo.nickname);
         }
-        
+
         bt.rn = userinfo.nickname;
         bt.rnpy = this.utilService.chineseToPinYin(userinfo.nickname);
       }
@@ -352,7 +352,7 @@ export class ContactsService {
       } else {
         bsqls.push(bt.inT());
       }
-      
+
       if (!exists || !exists.bhi || exists.bhi == '') {
         // 注册用户需要加入头像表, 默认头像不入库
         if (hasAvatar) {
@@ -368,7 +368,7 @@ export class ContactsService {
     }
 
     await this.sqlExce.batExecSql(bsqls);
-    
+
     // 返回更新后参数
     if (!exists) {
       exists = new FsData();
@@ -391,7 +391,7 @@ export class ContactsService {
 
     return exists;
   }
-  
+
   /**
    *
    * 更新联系人信息和头像
@@ -408,34 +408,34 @@ export class ContactsService {
                       left join gtd_bh bh on bh.pwi = gb.pwi;`;
 
     let data: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
-    
+
     // 批量获取用户信息
     let phonenos: Array<string> = new Array<string>();
-    
+
     for (let fs of data) {
       let condid = fs.rc;
-      
+
       if (fs.ui && fs.ui != '') {
         condid = fs.ui;
       }
-      
+
       phonenos.push(condid);
     }
-    
+
     let usersinfo: Map<string, any> = new Map<string, any>();
 
     if (phonenos.length > 0) {
       let usersinforet = await this.personRestful.getMultis(phonenos);
-      
-      if (usersinforet && usersinforet.data && usersinforet.data.registusers) {
-        console.log(JSON.stringify(usersinforet.data));
-        for (let userinfo of usersinforet.data.registusers) {
+
+      if (usersinforet) {
+        console.log(JSON.stringify(usersinforet));
+        for (let userinfo of usersinforet) {
           console.log('Get ' + userinfo.openid + "'s userinfo.");
           usersinfo.set(userinfo.openid, userinfo);
         }
       }
     }
-    
+
     for (let fs of data) {
       let bt = new BTbl();
       Object.assign(bt, fs);
@@ -443,17 +443,17 @@ export class ContactsService {
       let bh = new BhTbl();
       bh.pwi = fs.pwi;
       let hasAvatar : boolean = false;
-      
+
       let condid = fs.rc;
-      
+
       if (fs.ui && fs.ui != '') {
         condid = fs.ui;
       }
-      
+
       // 使用批量下载代替
       // let userinfo = await this.personRestful.get(condid);
       let userinfo = usersinfo.get(condid);
-      
+
       if (userinfo) {
         console.log('userinfo ' + userinfo.openid);
         console.log('userinfo ' + userinfo.nickname);
