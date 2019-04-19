@@ -143,6 +143,7 @@ export class PgBusiService {
       a.ai = ctbl.si;//日程ID
       await this.agdRest.remove(a);
 
+      resolve(ctbl);
 
     });
 

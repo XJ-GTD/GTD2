@@ -27,7 +27,7 @@ export class ReceiveProcess implements MQProcess {
       let scudPara: ScudscdPara = content.parameters;
       let bs :ScdData = await this.busiService.get("",scudPara.id);
       if (bs && bs.si) {
-        await this.busiService.delete(bs.si, '2', '');
+        await this.busiService.pullDel(bs.si);
       }
     }
 
