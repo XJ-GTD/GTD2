@@ -100,7 +100,7 @@ export class PdPage {
 
   ionViewDidEnter(){
     this.pdService.getPlan(this.jh.ji).then(data=>{
-      this.plan.pa = data.data;
+      this.plan.pa = data;
     }).catch(res=>{
       console.log("获取计划列表失败" + JSON.stringify(res));
     });
