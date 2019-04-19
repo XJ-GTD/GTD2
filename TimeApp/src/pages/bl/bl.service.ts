@@ -4,6 +4,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {FsData, PageBlData} from "../../data.mapping";
+import {DataConfig} from "../../service/config/data.config";
 
 @Injectable()
 export class BlService {
@@ -26,6 +27,18 @@ export class BlService {
           let fsData:FsData = UserConfig.friends.find((value)=>value.ui == fs.ai);
           if(!fsData){
             fsData = await this.contacts.updateOneFs(fs.ai);
+          }
+          if(!fsData.ui || fsData.ui == null || fsData.ui == ''){
+            fsData.ui =fs.ai;
+          }
+          if(!fsData.rc || fsData.rc == null || fsData.rc == ''){
+            fsData.rc =fs.mpn;
+          }
+          if(!fsData.rn || fsData.rn == null || fsData.rn == ''){
+            fsData.rn =fs.n;
+          }
+          if(!fsData.bhiu || fsData.bhiu == null || fsData.bhiu == ''){
+            fsData.bhiu = DataConfig.HUIBASE64;
           }
           blfss.push(fsData);
         }
