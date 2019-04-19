@@ -7,7 +7,6 @@ import {ProcesRs} from "../model/proces.rs";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {ScudscdPara} from "../model/scudscd.para";
 import {NotificationsService} from "../../service/cordova/notifications.service";
-import {BsModel} from "../../service/restful/out/bs.model";
 import {ScdData} from "../../data.mapping";
 
 /**
@@ -26,9 +25,9 @@ export class ReceiveProcess implements MQProcess {
     if (content.option == SH.D) {
       //处理所需要参数
       let scudPara: ScudscdPara = content.parameters;
-      let bs :BsModel<ScdData> = await this.busiService.get("",scudPara.id);
-      if (bs.data && bs.data.si) {
-        await this.busiService.delete(bs.data.si, '2', '');
+      let bs :ScdData = await this.busiService.get("",scudPara.id);
+      if (bs && bs.si) {
+        await this.busiService.delete(bs.si, '2', '');
       }
     }
 
