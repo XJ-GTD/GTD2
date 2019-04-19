@@ -64,6 +64,7 @@ export class AiService {
     let p: ScdPageParamter = new ScdPageParamter();
     p.si = scd.id;
     p.d = moment(scd.d);
+    p.gs = scd.gs;
     let gs = scd.gs
 
     if (gs == "0") {
