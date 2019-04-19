@@ -117,6 +117,38 @@ export class PgBusiService {
     });
   }
 
+  //删除日程 type：1 删除当前以后所有 ，2 删除所有
+  pullDel(srId: string): Promise<CTbl> {
+    return new Promise<any>(async (resolve, reject) => {
+      let ctbl: CTbl = new CTbl();
+      //日程Id
+      ctbl.sr = srId;
+      ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
+
+      let etbl: ETbl = new ETbl();
+      etbl.si = ctbl.si;
+      await this.sqlExce.delete(etbl);//本地删除提醒
+      let dtbl: DTbl = new DTbl();
+      dtbl.si = ctbl.si;
+      await this.sqlExce.delete(dtbl);//本地删除日程参与人
+
+      await this.sqlExce.delete(ctbl); //本地删除日程表
+
+      let sptbl = new SpTbl();
+      sptbl.si = ctbl.si;
+      await this.sqlExce.delete(sptbl);//本地删除日程子表
+
+      //restFul 删除日程
+      let a: AgdPro = new AgdPro();
+      a.ai = ctbl.si;//日程ID
+      await this.agdRest.remove(a);
+
+
+    });
+
+
+  }
+
 //删除日程 type：1 删除当前以后所有 ，2 删除所有
   delete(rcId: string, type: string, d: string): Promise<CTbl> {
     return new Promise<any>(async (resolve, reject) => {
