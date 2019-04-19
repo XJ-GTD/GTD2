@@ -24,7 +24,7 @@ import {ScdlData, ScdPageParamter} from "../../data.mapping";
       <ion-toolbar class="header-set">
         <ion-buttons start>
           <button ion-button icon-only (click)="goBack()" class="backbtn-set">
-            <img src="../../assets/imgs/backfd.png"/>
+            <img src="../../assets/imgs/back-white.png"/>
           </button>
         </ion-buttons>
         <ion-title class="headerdate">{{headerDate}}</ion-title>

@@ -21,7 +21,7 @@ import {DataConfig} from "../../service/config/data.config";
       <ion-toolbar>
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/backfd.png">
+            <img class="img-header-left" src="./assets/imgs/back-white.png">
           </button>
         </ion-buttons>
         <ion-title>朋友</ion-title>
