@@ -114,10 +114,8 @@ export class FdPage {
    */
   rbl(){
     this.fdService.removeBlack(this.fd.rc).then(data=>{
-      if(data && data.code == 0){
         this.getDetail();
         //alert("移出成功")
-      }
     })
   }
 
@@ -126,10 +124,8 @@ export class FdPage {
    */
   abl(){
     this.fdService.putBlack(this.fd).then(data=>{
-      if(data && data.code == 0){
         this.getDetail();
         //alert("移入成功")
-      }
     })
   }
 }
