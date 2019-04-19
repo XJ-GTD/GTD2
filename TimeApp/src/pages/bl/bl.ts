@@ -22,7 +22,7 @@ import {FsData} from "../../data.mapping";
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack()" color="danger">
             <!--<ion-icon name="arrow-back"></ion-icon>-->
-            <img class="img-header-left" src="./assets/imgs/fh2.png">
+            <img class="img-header-left" src="./assets/imgs/back.png">
           </button>
         </ion-buttons>
         <ion-title>黑名单</ion-title>

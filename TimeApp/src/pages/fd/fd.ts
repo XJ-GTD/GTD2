@@ -18,7 +18,7 @@ import {FsData} from "../../data.mapping";
     <ion-toolbar>
       <ion-buttons left>
         <button ion-button icon-only (click)="dismiss()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/backfd.png">
+            <img class="img-header-left" src="./assets/imgs/back-white.png">
         </button>
       </ion-buttons>
     </ion-toolbar>
