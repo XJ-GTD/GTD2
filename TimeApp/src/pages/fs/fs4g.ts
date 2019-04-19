@@ -96,9 +96,8 @@ export class Fs4gPage {
       let dc: PageDcData = this.navParams.get('tpara');
       dc.fsl = list;
       this.gsService.save(dc).then(data => {
-        if (data.code == 0) {
           this.goBack();
-        }
+          //TODO 错误提示
       });
     } else {
       this.util.popoverStart("请先选择朋友");

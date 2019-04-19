@@ -101,9 +101,8 @@ export class Fs4cPage {
     let list = this.selFsl;
     if (list.length > 0) {
       this.fsService.sharefriend(this.navParams.get('tpara'), list).then(data => {
-        if (data.code == 0) {
-          this.navCtrl.popAll();
-        }
+        this.navCtrl.popAll();
+        //TODO 错误提示
       });
     } else {
       this.util.popoverStart("请先选择朋友");

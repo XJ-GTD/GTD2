@@ -78,7 +78,7 @@ export class GaPage {
     }
     // this.util.popMsgbox("1",()=>{
       this.gcService.save(dc).then(data=> {
-        if (data.code == 0) {
+        if (data) {
           this.viewCtrl.dismiss();
         }else{
           this.util.popoverStart("添加群名称失败");
