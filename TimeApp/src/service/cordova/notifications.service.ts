@@ -85,7 +85,6 @@ export class NotificationsService {
       });
       this.localNotifications.on('clear').subscribe((next: ILocalNotification) => {
         //跳转到界面处理
-        this.emitPage(next);
         this.localNotifications.clear(next.id);
       });
       this.localNotifications.on('clearAll').subscribe((next: ILocalNotification) => {

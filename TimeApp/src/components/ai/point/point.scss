@@ -1,5 +1,5 @@
 pointcomponent {
-  .aitool{
+  .aitool {
     position: relative;
     display: block;
   }
@@ -17,6 +17,7 @@ pointcomponent {
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
   }
+
   .speaking:before {
     box-sizing: border-box;
     content: "";
@@ -26,18 +27,20 @@ pointcomponent {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: $speakerSize / 2 ;
+    width: $speakerSize / 2;
     height: $speakerSize / 2;
     margin-left: $speakerSize * -1 / 4;
     margin-top: $speakerSize * -1 / 4;
     border-top: 1px solid #3583d7;
     border-bottom: 1px solid #3583d7;
   }
+
   .speaking.danger {
     border-color: #3583d7;
     box-shadow: 0 0 23px 7px #3583d7;
     animation: none;
   }
+
   .speaking.danger:before {
     border-color: #3583d7;
     opacity: 0;
@@ -72,15 +75,15 @@ pointcomponent {
 
   canvas {
 
-    //background: -moz-linear-gradient(top, #2b657b 0%, #1f2857 100%);
-    //background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2b657b), color-stop(100%,#1f2857));
-    //background: -webkit-linear-gradient(top, #2b657b 0%,#1f2857 100%);
-    background: linear-gradient(right top, #843094 0%,#25134f 30%,#1b1148 60%,#1f2857 90%,#2b657b 100%);
-  //#
+    background: -webkit-linear-gradient(right top, #843094 0%, #25134f 30%, #1b1148 60%, #1f2857 90%, #2b657b 100%); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right top, #843094 0%, #25134f 30%, #1b1148 60%, #1f2857 90%, #2b657b 100%); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right top,#843094 0%, #25134f 30%, #1b1148 60%, #1f2857 90%, #2b657b 100%); /* Firefox 3.6 - 15 */
+    background: linear-gradient(right top, #843094 0%, #25134f 30%, #1b1148 60%, #1f2857 90%, #2b657b 100%);
+    //#
 
     display: block;
     width: $canvasSize;
-    height:$canvasSize;
+    height: $canvasSize;
     border-radius: 50%;
     margin: 0 auto;
     margin-top: $canvastop;
@@ -99,21 +102,25 @@ pointcomponent {
 
   .spinner:before {
     z-index: -1;
-    background: conic-gradient(#8c83bd, #8556a0, #a057b4);
-    background: linear-gradient(right top, #2b657b 0%,#8556a0 500%,#a057b4 100%);
+    //background: conic-gradient(#8c83bd, #8556a0, #a057b4);
+    //  background-color: bindColors($background-color);
+    background: -webkit-linear-gradient(right top, #2b657b 0%, #8556a0 500%, #a057b4 100%); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right top, #2b657b 0%, #8556a0 500%, #a057b4 100%); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right top, #2b657b 0%, #8556a0 500%, #a057b4 100%); /* Firefox 3.6 - 15 */
+    background: linear-gradient(right top, #2b657b 0%, #8556a0 500%, #a057b4 100%);
     animation: r 2s linear infinite;
     content: '';
   }
 
-  .inputioc{
+  .inputioc {
     position: fixed;
-    width:$inputiocsize;
+    width: $inputiocsize;
     height: $inputiocsize;
     top: $inputioctop;
     left: $inputiocleft;
     border-radius: 50%;
 
-    img{
+    img {
       width: $inputiocsize;
     }
   }

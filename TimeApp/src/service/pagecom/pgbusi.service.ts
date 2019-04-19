@@ -571,6 +571,8 @@ export class PgBusiService {
         ret.fs = await this.contactsServ.updateOneFs(newc.ui);
       }
 
+      resolve(ret);
+
       return ret;
 
     });
