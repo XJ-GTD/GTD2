@@ -294,6 +294,11 @@ export class PgBusiService {
         sp.sd = moment(rc.sd).add(i, add).format("YYYY/MM/DD");
         sp.st = rc.st;
         sp.tx = rc.tx;
+        sp.ji = rc.ji;
+        sp.spn = rc.sn;
+        sp.bz = rc.bz;
+        sp.ed = sp.sd;
+        sp.et = sp.st;
         ed = sp.sd;
         //新消息提醒默认加到第一条上
         if (i == 0 && rc.gs == '1') {

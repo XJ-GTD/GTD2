@@ -310,20 +310,20 @@ export class ContactsService {
       bt.rel = '0';
     }
     
-    if (userinfo && userinfo.data) {
+    if (userinfo) {
       if (exists)
         bh.pwi = exists.pwi;
       else
         bh.pwi = bt.pwi;
 
       // 用户OpenId
-      if (userinfo.data.openid && userinfo.data.openid != '') {
-        bt.ui = userinfo.data.openid;
+      if (userinfo.openid && userinfo.openid != '') {
+        bt.ui = userinfo.openid;
       }
 
       // 用户头像
-      if (userinfo.data.avatarbase64 && userinfo.data.avatarbase64 != '') {
-        bh.hiu = userinfo.data.avatarbase64;
+      if (userinfo.avatarbase64 && userinfo.avatarbase64 != '') {
+        bh.hiu = userinfo.avatarbase64;
         hasAvatar = true;
         bt.rel = '1'; // 注册用户
       } else {
@@ -331,20 +331,20 @@ export class ContactsService {
       }
 
       // 用户姓名
-      if (userinfo.data.nickname && userinfo.data.nickname != '') {
+      if (userinfo.nickname && userinfo.nickname != '') {
         // 不存在本地联系人
         if (!exists) {
-          bt.ran = userinfo.data.nickname;
-          bt.ranpy = this.utilService.chineseToPinYin(userinfo.data.nickname);
+          bt.ran = userinfo.nickname;
+          bt.ranpy = this.utilService.chineseToPinYin(userinfo.nickname);
         }
         
-        bt.rn = userinfo.data.nickname;
-        bt.rnpy = this.utilService.chineseToPinYin(userinfo.data.nickname);
+        bt.rn = userinfo.nickname;
+        bt.rnpy = this.utilService.chineseToPinYin(userinfo.nickname);
       }
 
       // 用户手机号
-      if (userinfo.data.phoneno && userinfo.data.phoneno != '') {
-        bt.rc = userinfo.data.phoneno;
+      if (userinfo.phoneno && userinfo.phoneno != '') {
+        bt.rc = userinfo.phoneno;
       }
 
       if (exists) {
@@ -353,7 +353,7 @@ export class ContactsService {
         bsqls.push(bt.inT());
       }
       
-      if (!exists || !exists.bhi || exists.bhi == null || exists.bhi == '') {
+      if (!exists || !exists.bhi || exists.bhi == '') {
         // 注册用户需要加入头像表, 默认头像不入库
         if (hasAvatar) {
           bh.bhi = this.utilService.getUuid();

@@ -53,7 +53,8 @@ public class IContactsServiceImpl implements IContactsService {
 	 */
 	public AgdAgendaContacts save(AgdAgendaDto inDto,HttpServletRequest request) {
 		log.info("---- 传入保存日程参与人  -----" + JSONObject.toJSONString(inDto.getAc()));
-		if(inDto.getAc() != null && inDto.getAc().size()>0){
+		if(inDto.getAc() != null && inDto.getAc().size()>0 
+				&& inDto.getAi() != null && !"".equals(inDto.getAi())){
 			List<AgdAgendaContacts> agdList = agdContactsRep.findContactsByRelId(inDto.getAi());
 			log.info("---- 查询已有日程参与人  -----" + JSONObject.toJSONString(agdList));
 			List<AgdContactsDto> addList = new ArrayList<AgdContactsDto>(); //入参：参与人
@@ -161,6 +162,8 @@ public class IContactsServiceImpl implements IContactsService {
 //				}
 			}
 			
+		}else{
+			log.error("======== 传入保存日程参与人信息不全：" + JSONObject.toJSONString(inDto));
 		}
 		
 		
