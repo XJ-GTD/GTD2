@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {IonicPageModule} from 'ionic-angular';
 import {MPage} from './m';
 import {TdlPageModule} from "../tdl/tdl.module";
+import {BackComponentModule} from "../../components/backComponent/back.module";
 
 @NgModule({
   declarations: [
@@ -9,7 +10,8 @@ import {TdlPageModule} from "../tdl/tdl.module";
   ],
   imports: [
     IonicPageModule.forChild(MPage),
-    TdlPageModule
+    TdlPageModule,
+    BackComponentModule
   ],
   entryComponents: [
     MPage,

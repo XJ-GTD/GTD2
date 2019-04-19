@@ -45,7 +45,6 @@ import {HData, ScdPageParamter} from "../../data.mapping";
       <!--<div class="rightm">-->
         <!--&nbsp;-->
       <!--</div>-->
-      <BackComponent></BackComponent>
       <AiComponent #aiDiv></AiComponent>
     </ion-content>
     `,
