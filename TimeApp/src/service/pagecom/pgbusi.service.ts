@@ -178,9 +178,8 @@ export class PgBusiService {
         a.ai = ctbl.si;//日程ID
         a.ed = ed;
         await this.agdRest.save(a);
-        resolve(ctbl);
-        return;
       }
+      resolve(ctbl);
     });
 
 
@@ -560,6 +559,8 @@ export class PgBusiService {
         //从服务器获取对象，放入本地库，刷新缓存
         ret.fs = await this.contactsServ.updateOneFs(newc.ui);
       }
+
+      resolve(ret);
 
       return ret;
 

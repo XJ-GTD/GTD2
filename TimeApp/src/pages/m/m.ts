@@ -16,6 +16,8 @@ import {UserConfig} from "../../service/config/user.config";
   providers: [],
   template: `
 
+    <BackComponent></BackComponent>
+    
     <ion-menu [content]="ha" side="right" swipeEnabled="true" type="lsPush" class="ls" id="ls">
       <page-tdl></page-tdl>
     </ion-menu>
@@ -56,7 +58,9 @@ import {UserConfig} from "../../service/config/user.config";
         </ion-grid>
       </ion-content>
     </ion-menu>
-    <ion-nav #ha [root]="hPage"></ion-nav>`
+
+    <ion-nav #ha [root]="hPage"></ion-nav>
+  `
 })
 export class MPage {
   hPage: any = DataConfig.PAGE._H_PAGE;

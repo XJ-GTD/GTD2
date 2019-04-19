@@ -31,6 +31,7 @@ export interface CalendarDay {
   hassometing:boolean;
   busysometing:boolean;
   allsometing:boolean;
+  onlyRepeat:boolean;
 }
 
 export class CalendarMonth {
@@ -52,6 +53,7 @@ export interface DayConfig {
   hassometing:boolean;
   busysometing:boolean;
   allsometing:boolean;
+  onlyRepeat :boolean;
 }
 
 export interface ModalOptions {

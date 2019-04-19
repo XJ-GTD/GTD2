@@ -173,6 +173,7 @@ export class CalendarService {
       hassometing: dayConfig ? dayConfig.hassometing || false : false,
       busysometing: dayConfig ? dayConfig.busysometing || false : false,
       allsometing: dayConfig ? dayConfig.allsometing || false : false,
+      onlyRepeat:dayConfig ? dayConfig.onlyRepeat || false : false,
     }
   }
 
@@ -285,8 +286,8 @@ export class CalendarService {
     //select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt  from gtd_sp sp left join gtd_c gc on gc.si = sp.si group by sp.sd
     //let sql:string = "select sd,count(*) scds,sum(itx) news from gtd_sp where sd>='" + moment(_startMonth).format("YYYY/MM/DD")+ "' and sd<='" +  moment(_endMonth).format("YYYY/MM/DD") + "' group by sd";
 
-    let sql:string = "select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt from gtd_sp sp left join gtd_c gc on gc.si = sp.si " +
-      "where sp.sd>='" + moment(_startMonth).format("YYYY/MM/DD")+ "' and sp.sd<='" +  moment(_endMonth).format("YYYY/MM/DD") + "' group by sp.sd";
+    let sql:string = "select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt from gtd_c gc join gtd_sp sp on gc.si = sp.si " +
+      "where sp.sd>='" + moment(_startMonth).format("YYYY/MM/DD")+ "' and sp.sd<='" +  moment(_endMonth).format("YYYY/MM/DD") + "' group by sp.sd ,gc.sd";
 
 
     let local = await this.readlocal.findEventRc('',_startMonth,_endMonth);
@@ -310,12 +311,14 @@ export class CalendarService {
 
         //判断是否存在非重复类型  or 判断是否存在重复日期为开始日期
         if(d.minrt == '0' || d.csd ==d.sd){
-
+          calendarDay.onlyRepeat = false;
+        }else {
+          calendarDay.onlyRepeat = true;
         }
         calendarDay.things = d.scds;
-        calendarDay.hassometing = d.scds == 2;
-        calendarDay.busysometing = d.scds >= 4;
-        calendarDay.allsometing = d.scds >= 8;
+        calendarDay.hassometing = d.scds > 0 && !calendarDay.onlyRepeat ;
+        calendarDay.busysometing = d.scds >= 4 && !calendarDay.onlyRepeat ;
+        calendarDay.allsometing = d.scds >= 8 && !calendarDay.onlyRepeat ;
         calendarDay.newmessage = d.news
         calendarDay.hasting = d.scds > 0;
         //calendarDay.subTitle = d.news > 0? `\u2022`: "";

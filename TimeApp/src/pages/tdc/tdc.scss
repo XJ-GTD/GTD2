@@ -6,7 +6,7 @@ page-tdc, page-tddi, page-tddj, page-tdds {
     }
 
     .bar-button-ios {
-      color: #ffffff;
+      color: $adornColor;
       font-size: 15px;
     }
 
@@ -15,11 +15,14 @@ page-tdc, page-tddi, page-tddj, page-tdds {
     }
 
     ion-buttons[padding-left] {
-      padding-left: 55px;
+      padding-left: 50px;
     }
 
     ion-buttons[padding-right] {
-      padding-right: 55px;
+      padding-right: 50px;
+    }
+    [icon-only] ion-icon{
+      color: $adornColor;
     }
   }
 
