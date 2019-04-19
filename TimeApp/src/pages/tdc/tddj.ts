@@ -1,7 +1,6 @@
 import {Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import {ActionSheetController, DateTime, ModalController, NavController, NavParams} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
-import {BsModel} from "../../service/restful/out/bs.model";
 import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
@@ -253,8 +252,8 @@ export class TddjPage {
     let paramter: ScdPageParamter = this.navParams.data;
     if (paramter.si) {
       this.tddjServ.get(paramter.si).then(data => {
-        let bs: BsModel<ScdData> = data;
-        Object.assign(this.scd, bs.data);
+        let bs: ScdData = data;
+        Object.assign(this.scd, bs);
         this.scd.showSd = paramter.d.format("YYYY-MM-DD");
 
 
