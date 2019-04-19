@@ -41,8 +41,8 @@ export class WebsocketService {
       //获取websocte  queue
       this.queue = UserConfig.account.mq;
       //呼吸
-      this.client.heartbeat.outgoing = 1000 * 5;
-      this.client.heartbeat.incoming = 1000 * 60;
+      this.client.heartbeat.outgoing = 1000 * 30;
+      this.client.heartbeat.incoming = 1000 * 60 * 5;
 
       resolve();
     })
