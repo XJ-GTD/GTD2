@@ -368,9 +368,6 @@ export class ContactsService {
     }
 
     await this.sqlExce.batExecSql(bsqls);
-
-    // 全部更新完成后刷新
-    this.userConfig.GetOneBTbl(bt.pwi);
     
     // 返回更新后参数
     if (!exists) {
@@ -388,6 +385,9 @@ export class ContactsService {
     exists.ui       = bt.ui;      //数据归属人ID
     exists.bhi      = bh.bhi;     //头像表ID 用于判断是否有头像记录
     exists.bhiu     = bh.hiu;     //base64图片
+
+    // 全部更新完成后刷新
+    await this.userConfig.RefreshOneBTbl(exists);
 
     return exists;
   }
