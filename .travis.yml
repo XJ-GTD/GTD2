@@ -28,10 +28,11 @@ matrix:
       - android-sdk-preview-license-.+
       - android-sdk-license-.+
       - google-gdk-license-.+
-  allow_failures:
   - os: osx
     language: objective-c
     osx_image: xcode8.3
+  allow_failures:
+    - os: osx
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
