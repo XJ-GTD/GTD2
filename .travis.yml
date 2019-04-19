@@ -65,7 +65,7 @@ before_script:
 script:
   - gradle -version
   - ionic cordova plugin ls
-  - yarn install
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then yarn install ; else npm install ; fi
   - npm run clean
   - npm run build
   - sh $TRAVIS_BUILD_DIR/travis/build.sh
