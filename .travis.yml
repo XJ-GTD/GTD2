@@ -31,6 +31,12 @@ matrix:
   - os: osx
     language: objective-c
     osx_image: xcode8.3
+    addons:
+      apt:
+        packages:
+        - yarn
+        - jq
+        - gradle
   allow_failures:
     - os: osx
 before_cache:
