@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
-import {AgdPro} from "./agdsev";
 
 /**
  * 计划
@@ -30,7 +29,7 @@ export class ShaeRestful{
 
 
   //内建计划下载	BIPD
-  downsysname(shareData : BipdshaeData):Promise<P> {
+  downsysname(shareData : BipdshaeData):Promise<Plan> {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("BIPD");
@@ -60,13 +59,42 @@ export  class ShareData{
 }
 
 export class D{
-  p:P = new P();
+  p:Plan = new Plan();
 }
 
-export class P{
+export class Plan{
   pn :any;
   // 计划内日程，复用日程分享实体
-  pa :Array<AgdPro> =new Array<AgdPro>();
+  pa :Array<PlanPa> =new Array<PlanPa>();
+}
+
+//日程
+export class PlanPa{
+  //关联日程ID
+  rai: string;
+  //日程发送人用户ID
+  fc: string;
+  //日程ID
+  ai: string;
+  //主题
+  at: string;
+  //时间(YYYY/MM/DD)
+  adt: string;
+  //开始时间
+  st:string;
+  //结束日期
+  ed:string;
+  //结束时间
+  et:string;
+  //计划
+  ap: string;
+  //重复
+  ar: string;
+  //提醒
+  aa: string;
+  //备注
+  am: string;
+  px: number; //优先级
 }
 
 //计划上传出参
