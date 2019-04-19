@@ -70,7 +70,7 @@ script:
   - npm run build
   - sh $TRAVIS_BUILD_DIR/travis/build.sh
 after_script:
-  - fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk -T $FIR_TOKEN
+  - sh $TRAVIS_BUILD_DIR/travis/fir.sh
 env:
   global:
   - JAVA_HOME=/usr/lib/jvm/java-8-oracle
