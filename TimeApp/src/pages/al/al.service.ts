@@ -115,7 +115,7 @@ export class AlService {
       yTbl.yv = "0";
       await this.sqlExce.replaceT(yTbl);
 
-     //await this.createTestData();
+     await this.createTestData();
 
       alData.text = "系统初始化完成";
       resolve(alData);

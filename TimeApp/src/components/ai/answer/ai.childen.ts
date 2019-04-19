@@ -28,7 +28,7 @@ import {FsService} from "../../../pages/fs/fs.service";
         <ion-list no-lines>
           <ion-item><p class="ti">{{aiData.scd.ti}}</p></ion-item>
           <ion-item><p class="date">{{aiData.scd.d | formatedate:"CYYYY/MM/DD"}}</p></ion-item>
-          <ion-item><p class="date">{{aiData.scd.t}}  {{aiData.scd.friends.length}}</p></ion-item>
+          <ion-item><p class="date">{{aiData.scd.t}}</p></ion-item>
           <ion-item>
             <div class="friend">
               <ion-chip *ngFor="let fs of aiData.scd.friends">
@@ -40,8 +40,8 @@ import {FsService} from "../../../pages/fs/fs.service";
             </div>
           </ion-item>
           <ion-item><p class="scdTip">语音请说确认</p>
-            <button item-end on-hold="go2tdc(aiData.scd)">编辑</button>
-            <button item-end on-hold="confirmScd(aiData.scd)">确认</button>
+            <button item-end (click)="go2tdc(aiData.scd)">编辑</button>
+            <button item-end (click)="confirmScd(aiData.scd)">确认</button>
           </ion-item>
         </ion-list>
       </div>
@@ -50,9 +50,9 @@ import {FsService} from "../../../pages/fs/fs.service";
       <ion-list no-lines class="scdList">
         <ion-item on-hold="speakScd(aiData.scdList)" class="aiAn">
           {{aiData.scdList.desc}}
-          <ion-icon name="volume-up" item-end class="volume" on-hold="speakScd(aiData.scdList)"></ion-icon>
+          <ion-icon name="volume-up" item-end class="volume" (click)="speakScd(aiData.scdList)"></ion-icon>
         </ion-item>
-        <ion-item *ngFor="let scd of aiData.scdList.datas" on-hold="showScd(scd)">
+        <ion-item *ngFor="let scd of aiData.scdList.datas" (click)="showScd(scd)">
           <p class="date">{{scd.d | formatedate :"CYYYY/MM/DD"}} {{scd.t}}</p>
           <p class="ti">{{scd.ti}}</p>
         </ion-item>
@@ -77,7 +77,7 @@ export class AiChildenComponent {
     this.aiService.go2tdc(scd);
   }
 
-  createScd(scd: ScdAiData) {
+  confirmScd(scd: ScdAiData) {
 
     this.aiService.createScd(scd);
   }
