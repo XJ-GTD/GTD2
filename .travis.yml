@@ -63,14 +63,13 @@ before_script:
   - cp -rf ../TimeAppPatch/plugins/* ./plugins
   - ls -la ./plugins/cordova-plugin-local-notification/src/android/notification
 script:
-  - gradle -version
   - ionic cordova plugin ls
-  - yarn install
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then yarn install ; else npm install ; fi
   - npm run clean
   - npm run build
   - sh $TRAVIS_BUILD_DIR/travis/build.sh
 after_script:
-  - fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk -T $FIR_TOKEN
+  - sh $TRAVIS_BUILD_DIR/travis/fir.sh
 env:
   global:
   - JAVA_HOME=/usr/lib/jvm/java-8-oracle
