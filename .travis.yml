@@ -60,6 +60,8 @@ before_script:
   - ionic cordova plugin add $TRAVIS_BUILD_DIR/BaiduSpeechAndTTS
   - ionic cordova plugin add $TRAVIS_BUILD_DIR/xjalarmclock
   - ionic cordova plugin add cordova-sqlite-storage cordova-plugin-statusbar uk.co.workingedge.cordova.plugin.sqliteporter cordova-sqlite-storage cordova-plugin-whitelist com.telerik.plugins.nativepagetransitions cordova-plugin-nativeaudio cordova-plugin-vibration cordova-plugin-file-transfer cordova-plugin-local-notification cordova-plugin-ionic-webview cordova-plugin-splashscreen ionic-plugin-keyboard cordova-plugin-device cordova-plugin-console cordova-plugin-file cordova-plugin-calendar cordova-plugin-advanced-http cordova-plugin-android-permissions cordova-plugin-background-mode cordova-plugin-contacts cordova-clipboard cordova-plugin-network-information cordova-plugin-screen-orientation
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl https://github.com/leonxi/largefiles/raw/master/cordova/plugins/baidutts/ios/libBaiduTTSSDK.a -o ./plugins/cordova-plugin-BaiduSpeechAndTTS/src/ios/BDSClientLib/libBaiduTTSSDK.a ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl https://github.com/leonxi/largefiles/raw/master/cordova/plugins/baidutts/ios/libBaiduASRSDK.a -o ./plugins/cordova-plugin-BaiduSpeechAndTTS/src/ios/BDSClientLib/libBaiduASRSDK.a ; fi
   - cp -rf ../TimeAppPatch/plugins/* ./plugins
   - ls -la ./plugins/cordova-plugin-local-notification/src/android/notification
 script:
@@ -73,5 +75,8 @@ after_script:
 env:
   global:
   - JAVA_HOME=/usr/lib/jvm/java-8-oracle
+  - IOS_APP_NAME="冥王星"
+  - 'IOS_DEVELOPER_NAME=""'
+  - IOS_PROFILE_NAME="TravisExample_Ad_Hoc"
 jdk:
   - oraclejdk8

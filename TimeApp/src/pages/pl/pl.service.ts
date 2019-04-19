@@ -1,16 +1,16 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {BipdshaeData, P, ShaeRestful} from "../../service/restful/shaesev";
+import {BipdshaeData, Plan, ShaeRestful} from "../../service/restful/shaesev";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {ETbl} from "../../service/sqlite/tbl/e.tbl";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
-import {UtilService} from "../../service/util-service/util.service";
+import {JtTbl} from "../../service/sqlite/tbl/jt.tbl";
 import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
+import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {PagePDPro, PagePlData} from "../../data.mapping";
 import * as moment from "moment";
-import {JtTbl} from "../../service/sqlite/tbl/jt.tbl";
 
 @Injectable()
 export class PlService {
@@ -34,7 +34,7 @@ export class PlService {
     bip.ompn = "";
     bip.c = "";
     bip.d.pi = jh.ji;
-    let plan:P = await this.shareRestful.downsysname(bip);
+    let plan:Plan = await this.shareRestful.downsysname(bip);
     //插入获取的日程到本地（系统日程需要有特别的表示）
     //计划表
     if(plan.pn != null){
@@ -43,22 +43,22 @@ export class PlService {
       sjh.jn = plan.pn.pt;
       sjh.jg = plan.pn.pd;
       sjh.jc = plan.pn.pm;
-      sjh.jt = plan.pn.pc;
+      sjh.jt = "1"; // 系统计划
       sjh.jtd = "1";
       sqls.push(sjh.upT()); // 系统计划修改计划表状态
       //日程表 新计划插入日程表开始
       if(plan.pa.length>0) {
 
-        if(sjh.jt == "1"){
+        if(plan.pn.pc == "1"){
           for (let pa of plan.pa) {
             let ctbl:CTbl =new CTbl();
             ctbl.si = this.util.getUuid();//日程ID
             ctbl.sn = pa.at;//主题
             ctbl.ui = UserConfig.user.id; //创建者  用户ID
-            ctbl.sd = moment(pa.adt).format("YYYY/MM/DD");//开始日期(YYYY/MM/DD HH:mm)
-            ctbl.st = pa.st;//时间(YYYY/MM/DD HH:mm)
-            //ctbl.ed = moment(pa.ed).format("YYYY/MM/DD");//结束日期(YYYY/MM/DD HH:mm)
-            //ctbl.et = pa.et;//时间(YYYY/MM/DD HH:mm)
+            ctbl.sd = moment(pa.adt).format("YYYY/MM/DD");//开始日期(YYYY/MM/DD)
+            ctbl.st = pa.st;//时间(HH:mm)
+            //ctbl.ed = moment(pa.ed).format("YYYY/MM/DD");//结束日期(YYYY/MM/DD)
+            //ctbl.et = pa.et;//时间(HH:mm)
             ctbl.ji = pa.ap;//计划
             ctbl.rt = "0";//重复
             ctbl.bz = pa.am;//备注
@@ -82,17 +82,17 @@ export class PlService {
             sqls.push(sp.inT());
           }
 
-        }else{
+        }else if(plan.pn.pc == "0"){
           for (let pa of plan.pa) {
             let jt = new JtTbl();
             jt.jti = this.util.getUuid();// 日程ID
-            jt.ji = pa.ap;//计划
+            jt.ji = pa.ap;//计划ID
             jt.spn = pa.at;//主题
-            jt.sd = moment(pa.adt).format("YYYY/MM/DD");//开始日期(YYYY/MM/DD HH:mm)
-            jt.st = pa.st;//时间(YYYY/MM/DD HH:mm)
-            jt.ed = moment(pa.ed).format("YYYY/MM/DD");//结束日期(YYYY/MM/DD HH:mm)
-            jt.et = pa.et;//时间(YYYY/MM/DD HH:mm)
-            jt.px = 1;  // 优先级
+            jt.sd = moment(pa.adt).format("YYYY/MM/DD");//开始日期(YYYY/MM/DD)
+            jt.st = pa.st;//时间(HH:mm)
+            jt.ed = moment(pa.ed).format("YYYY/MM/DD");//结束日期(YYYY/MM/DD)
+            jt.et = pa.et;//时间(HH:mm)
+            jt.px = pa.px;  // 优先级
             jt.bz = pa.am;//备注
 
             //保存日程表数据
@@ -129,16 +129,17 @@ export class PlService {
           dTbl.si = scTbl[j].si;
           sqls.push(dTbl.dT());
         }
-        // 删除日程附件表
-        let spTbl = new SpTbl();
-        spTbl.ji = jh.ji;
-        sqls.push(spTbl.dT());
       }
+      // 删除日程附件表
+      let spTbl = new SpTbl();
+      spTbl.ji = jh.ji;
+      sqls.push(spTbl.dT());
+
       //计划关联日程删除
       sqls.push(cTbl.dT());
 
       let jhTbl: JhTbl = new JhTbl();
-      Object.assign(jhTbl,jh);
+      //Object.assign(jhTbl,jh);
       jhTbl.jtd = "0";
       sqls.push(jhTbl.upT());
 

@@ -2,9 +2,9 @@ import {Component} from '@angular/core';
 import {ActionSheetController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Clipboard} from '@ionic-native/clipboard';
 import {PdService} from "./pd.service";
-import {AgdPro} from "../../service/restful/agdsev";
 import {UtilService} from "../../service/util-service/util.service";
 import {PagePDPro} from "../../data.mapping";
+import {PlanPa} from "../../service/restful/shaesev";
 
 /**
  * Generated class for the 计划展示 page.
@@ -58,7 +58,7 @@ import {PagePDPro} from "../../data.mapping";
               </div>
               <div class="agenda-col-time right-off left-off" justify-content-between>
                 <div class="time-slot">
-                  <p class="app-agenda-time">{{(agenda.st != null && agenda.st === "99:99")? '全天' : agenda.st.slice(0, 5)}}</p>
+                  <p class="app-agenda-time">{{(agenda.st == null || agenda.st == '' || agenda.st === "99:99")? '全天' : agenda.st.slice(0, 5)}}</p>
                 </div>
                 <div class="pointer-slot"><span class="plan-color-pointer"><div class="color-dot" [ngStyle]="{'background-color': plan.pn.jc }"></div></span></div>
               </div>
@@ -81,7 +81,7 @@ export class PdPage {
   today: string = new Date().toISOString();
   plan:any ={
     'pn': {},
-    'pa':new Array<AgdPro>(),
+    'pa':new Array<PlanPa>(),
   };
 
   constructor(private navCtrl: NavController,

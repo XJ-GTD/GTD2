@@ -25,10 +25,10 @@ export class ReceiveProcess implements MQProcess {
     if (content.option == SH.D) {
       //处理所需要参数
       let scudPara: ScudscdPara = content.parameters;
-      let bs :ScdData = await this.busiService.get("",scudPara.id);
-      if (bs && bs.si) {
-        await this.busiService.pullDel(scudPara.id);
-      }
+      ///let bs :ScdData = await this.busiService.get("",scudPara.id);
+      //if (bs && bs.si) {
+      await this.busiService.pullDel(scudPara.id);
+      //}
     }
 
     if (content.option == SH.C || content.option == SH.U) {
