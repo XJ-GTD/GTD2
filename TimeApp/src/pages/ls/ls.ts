@@ -109,9 +109,6 @@ export class LsPage {
         this.util.loadingStart();
 
         this.lsService.login(this.lsData).then(data=> {
-          if (data.code && data.code != 0)
-            throw  data;
-
           return this.lsService.getPersonMessage(data);
         }).then(data=>{
           if (data.code && data.code != 0)

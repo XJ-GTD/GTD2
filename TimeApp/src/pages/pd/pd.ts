@@ -125,8 +125,8 @@ export class PdPage {
           role: 'share',
           handler: () => {
             this.pdService.sharePlan(this.plan).then(data=>{
-              console.log("分享地址是："+JSON.stringify(data.data.psurl));
-              this.clipboard.copy(data.data.psurl);
+              console.log("分享地址是："+JSON.stringify(data.psurl));
+              this.clipboard.copy(data.psurl);
               this.util.popoverStart("复制成功");
             }).catch(res=>{
               this.util.popoverStart('分享失败');

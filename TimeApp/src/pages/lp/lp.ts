@@ -85,9 +85,6 @@ export class LpPage {
         this.util.loadingStart();
 
         this.lpService.login(this.lpData).then(data=> {
-          if (data.code && data.code != 0)
-            throw  data;
-
           return this.lpService.getPersonMessage(data);
         }).then(data=>{
           if (data.code && data.code != 0)
