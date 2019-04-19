@@ -11,6 +11,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
 import {ScdData, ScdPageParamter} from "../../data.mapping";
+import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 
 /**
  * Generated class for the 新建日程 page.
@@ -432,7 +433,7 @@ export class TdcPage {
   goShare() {
     //日程分享打开参与人选择rc日程类型
       this.save().then(data=>{
-        let ctbl = data.data;
+        let ctbl:CTbl = data;
         this.scd.si = ctbl.si;
         this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
       });

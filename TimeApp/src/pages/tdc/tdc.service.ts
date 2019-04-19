@@ -1,10 +1,10 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {BsModel} from "../../service/restful/out/bs.model";
 import {UtilService} from "../../service/util-service/util.service";
 import {AgdRestful} from "../../service/restful/agdsev";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
-import {ScdData} from "../../data.mapping";
+import {FsData, ScdData} from "../../data.mapping";
+import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 
 @Injectable()
 export class TdcService {
@@ -18,7 +18,7 @@ export class TdcService {
    * @param {PageRcData} rc 日程信息
    * @returns {Promise<BsModel<any>>}
    */
-  save(rc: ScdData): Promise<BsModel<any>> {
+  save(rc: ScdData): Promise<CTbl> {
     return this.pgbusiServ.save(rc);
   }
 
@@ -28,8 +28,8 @@ export class TdcService {
    * @param {string} si 日程id
    * @returns {Promise<BsModel<ScdData>>}
    */
-  async get(si: string) {
-    return await this.pgbusiServ.get(si);
+   get(si: string):Promise<ScdData> {
+    return  this.pgbusiServ.get(si);
   }
 
   /**
@@ -37,8 +37,8 @@ export class TdcService {
    * @param {string} si 日程id
    * @returns {Promise<BsModel<ScdData>>}
    */
-  async getByRef(si: string) {
-    return await this.pgbusiServ.get("",si);
+   getByRef(si: string):Promise<ScdData> {
+    return  this.pgbusiServ.get("",si);
   }
 
   /**
@@ -46,8 +46,8 @@ export class TdcService {
    * @param {string} si 日程id
    * @returns {Promise<Array<FsData>>}
    */
-  async getCalfriend(si: string) {
-    return await this.pgbusiServ.getCalfriend(si);
+   getCalfriend(si: string): Promise<Array<FsData>>{
+    return  this.pgbusiServ.getCalfriend(si);
   }
 
   /**
@@ -55,18 +55,18 @@ export class TdcService {
    * @param {string} si 日程id
    * @returns {Promise<Array<FsData>>}
    */
-  async getCrMan(si: string) {
-    return await this.pgbusiServ.getCrMan(si);
+   getCrMan(si: string): Promise<FsData>{
+    return  this.pgbusiServ.getCrMan(si);
   }
 
   //删除日程 type：1 删除当前以后所有 ，2 删除所有
-  async delete(rcId: string, type: string, d: string) {
-    return await this.pgbusiServ.delete(rcId, type, d);
+   delete(rcId: string, type: string, d: string): Promise<CTbl>  {
+    return  this.pgbusiServ.delete(rcId, type, d);
   }
 
 
   //修改本地日程详情
-  async updateDetail(scd: ScdData) {
+   updateDetail(scd: ScdData):Promise<ScdData> {
     return this.pgbusiServ.updateDetail(scd);
   }
 
