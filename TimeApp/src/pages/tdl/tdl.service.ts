@@ -122,7 +122,7 @@ export class TdlService {
     if (next != null && next != "") {
 
       //获取本地日程jn jg jc jt
-      let sqll = "select gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st," +
+      let sqll = "select gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st,sp.spi," +
         "jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
         "inner join gtd_sp sp on sp.si = gc.si " +
         "left join gtd_b gb on gb.rc = gc.ui left join gtd_j_h jh on jh.ji = gc.ji  " +
@@ -164,7 +164,7 @@ export class TdlService {
       mpL.reverse()
       //mpL.sort();
       //正序查出比当前日期大的日程
-      let sql = "select gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st," +
+      let sql = "select gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st,sp.spi," +
         "jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn from gtd_c gc " +
         "inner join gtd_sp sp on sp.si = gc.si " +
         "left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji " +

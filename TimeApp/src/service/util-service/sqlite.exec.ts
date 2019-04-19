@@ -75,6 +75,7 @@ export class SqliteExec {
    * @returns {Promise<any>}
    */
   delete(itbl: ITbl): Promise<number> {
+    console.log("delete执行SQL："+itbl.dT());
     return this.execSql(itbl.dT())
   }
 
