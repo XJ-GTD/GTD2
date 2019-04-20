@@ -23,6 +23,7 @@ export class WebsocketService {
   private subscription: StompSubscription;
   private failedtimes: number = 0;
   private timer: any;
+  private connections: number = 0;
 
   constructor(private dispatchService: DispatchService) {
   }
@@ -67,7 +68,8 @@ export class WebsocketService {
           this.client.connect(this.login, this.password, frame => {
 
             // 连接成功,取消所有重连请求
-            if (this.timer) clearTimeout(this.timer);
+            //if (this.timer) clearTimeout(this.timer);
+            this.connections++;
             this.failedtimes = 0;
             resolve();
             this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
@@ -77,10 +79,12 @@ export class WebsocketService {
               })
             });
           }, error => {
+            this.connections--;
             this.failedtimes++;
             this.close();
           }, event => {
             console.log('Stomp websocket closed with code ' + event.code + ', reason ' + event.reason);
+            this.connections--;
             this.close();
           }, '/');
 
