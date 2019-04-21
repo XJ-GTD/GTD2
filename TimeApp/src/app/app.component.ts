@@ -7,6 +7,7 @@ import {RestfulClient} from "../service/util-service/restful.client";
 import {UtilService} from "../service/util-service/util.service";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {LsPushType} from "../components/menuType/LsPushType";
+import {StatusBar} from "@ionic-native/status-bar";
 
 @Component({
   template: `
@@ -21,10 +22,15 @@ export class MyApp {
               private backgroundMode: BackgroundMode,
               private restfulClient: RestfulClient,
               private util: UtilService,
-              private screenOrientation: ScreenOrientation) {
+              private screenOrientation: ScreenOrientation,private statusBar: StatusBar) {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
     MenuController.registerType('lsPush', LsPushType);
+    // let status bar overlay webview
+    statusBar.overlaysWebView(true);
+
+// set status bar to white
+    statusBar.backgroundColorByHexString('#000000');
     this.platform.ready().then(() => {
       //this.util.loadingEnd();
       //允许进入后台模式
