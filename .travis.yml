@@ -78,6 +78,6 @@ env:
   - JAVA_HOME=/usr/lib/jvm/java-8-oracle
   - IOS_APP_NAME="冥王星"
   - 'IOS_DEVELOPER_NAME=""'
-  - IOS_PROFILE_NAME="TravisExample_Ad_Hoc"
+  - IOS_PROFILE_NAME="iOS_Distribution_001"
 jdk:
   - oraclejdk8
