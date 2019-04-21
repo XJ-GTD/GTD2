@@ -14,11 +14,13 @@ import {UserConfig} from "../config/user.config";
 import {ContactsService} from "../cordova/contacts.service";
 import {FsData, ScdData, SpecScdData} from "../../data.mapping";
 import {FsService} from "../../pages/fs/fs.service";
+import {PlService} from "../../pages/pl/pl.service";
+import {EmitService} from "../util-service/emit.service";
 
 @Injectable()
 export class PgBusiService {
   constructor(private sqlExce: SqliteExec, private util: UtilService, private agdRest: AgdRestful,
-              private contactsServ: ContactsService, private userConfig: UserConfig, private fsService: FsService
+              private contactsServ: ContactsService, private userConfig: UserConfig, private fsService: FsService,private emitService:EmitService
   ) {
   }
 
@@ -113,7 +115,10 @@ export class PgBusiService {
   updateMsg(si: string): Promise<any> {
     return new Promise<any>(async (resolve, reject) => {
       let sql = 'update gtd_sp set itx = 0 where si="' + si + '"';
-      return this.sqlExce.execSql(sql);
+
+      await this.sqlExce.execSql(sql);
+      this.emitService.emitRef(si);
+      resolve();
     });
   }
 
@@ -126,6 +131,8 @@ export class PgBusiService {
       ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
 
       await this.delete(ctbl.si,"2","");
+
+      this.emitService.emitRef(srId);
 
       resolve(ctbl);
 
@@ -179,6 +186,8 @@ export class PgBusiService {
         a.ed = ed;
         await this.agdRest.save(a);
       }
+
+      this.emitService.emitRef(rcId);
       resolve(ctbl);
     });
 
@@ -217,6 +226,8 @@ export class PgBusiService {
       this.setAdgPro(adgPro, ct);
       this.agdRest.save(adgPro);
       resolve(ct);
+
+      this.emitService.emitRef(ct.sd);
       return;
     });
 
@@ -443,6 +454,7 @@ export class PgBusiService {
 
       await this.agdRest.save(agd);
 
+      this.emitService.emitRef(scd.sd);
       resolve(scd);
       return;
     });

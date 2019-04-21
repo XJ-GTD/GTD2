@@ -20,10 +20,10 @@ export class EmitService {
   private selectDateEm: EventEmitter<moment.Moment> = new EventEmitter<moment.Moment>();
 
   //新消息点击后
-  private newMessageClickEm: EventEmitter<ScdEmData> = new EventEmitter<ScdEmData>();
+  private newMessageClickEm: EventEmitter<moment.Moment> = new EventEmitter<moment.Moment>();
 
-  //TODO 新日程增加修改删除
-  private updateScdEm: EventEmitter<ScdEmData> = new EventEmitter<ScdEmData>();
+  //新日程增加修改删除信息消息刷新
+  private refEm: EventEmitter<string> = new EventEmitter<string>();
 
   //语音播放或结束事件
   private speakEm:EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -69,41 +69,41 @@ export class EmitService {
     this.speakEm.unsubscribe();
   }
 
-  registerUpdateScd(callback) {
-    if (this.updateScdEm.closed) {
-      this.updateScdEm = new EventEmitter<ScdEmData>();
+  registerRef(callback) {
+    if (this.refEm.closed) {
+      this.refEm = new EventEmitter<string>();
     }
-    this.updateScdEm.subscribe(($data: ScdEmData) => {
+    this.refEm.subscribe(($data: string) => {
       callback($data);
     });
   };
 
-  emitUpdateScd($data: ScdEmData) {
-    if (!this.updateScdEm.isStopped) {
-      this.updateScdEm.emit($data);
+  emitRef($data: string) {
+    if (!this.refEm.isStopped) {
+      this.refEm.emit($data);
     }
   }
 
-  destroyUpdateScd(emit: EventEmitter<ScdEmData>) {
-    this.updateScdEm.unsubscribe();
+  destroyRef(emit: EventEmitter<string>) {
+    this.refEm.unsubscribe();
   }
 
   registerNewMessageClick(callback) {
     if (this.newMessageClickEm.closed) {
-      this.newMessageClickEm = new EventEmitter<ScdEmData>();
+      this.newMessageClickEm = new EventEmitter<moment.Moment>();
     }
-    this.newMessageClickEm.subscribe(($data: ScdEmData) => {
+    this.newMessageClickEm.subscribe(($data: moment.Moment) => {
       callback($data);
     });
   };
 
-  emitNewMessageClick($data: ScdEmData) {
+  emitNewMessageClick($data: moment.Moment) {
     if (!this.newMessageClickEm.isStopped) {
       this.newMessageClickEm.emit($data);
     }
   }
 
-  destroyNewMessageClick(emit: EventEmitter<ScdEmData>) {
+  destroyNewMessageClick(emit: EventEmitter<moment.Moment>) {
     this.newMessageClickEm.unsubscribe();
   }
 

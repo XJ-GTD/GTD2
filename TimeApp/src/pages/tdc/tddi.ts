@@ -59,8 +59,6 @@ import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
           <div class="reptlbl">{{alldshow}}</div>
         </ion-row>
         <ion-row>
-        </ion-row>
-        <ion-row>
           <div class="reptlbl">重复</div>
 
           <div class="reptComm" *ngIf="this.scd.rt == 0">{{reptshow}}</div>
