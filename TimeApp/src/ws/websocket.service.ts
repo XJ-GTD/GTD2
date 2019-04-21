@@ -68,7 +68,7 @@ export class WebsocketService {
           this.client.connect(this.login, this.password, frame => {
 
             // 连接成功,取消所有重连请求
-            //if (this.timer) clearTimeout(this.timer);
+            if (this.timer) clearTimeout(this.timer);
             this.connections++;
             this.failedtimes = 0;
             resolve();
