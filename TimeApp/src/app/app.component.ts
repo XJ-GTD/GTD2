@@ -27,10 +27,10 @@ export class MyApp {
     MenuController.registerType('scalePush', MenuScalePushType);
     MenuController.registerType('lsPush', LsPushType);
     // let status bar overlay webview
-    statusBar.overlaysWebView(true);
+    // statusBar.overlaysWebView(true);
 
 // set status bar to white
-    statusBar.backgroundColorByHexString('#000000');
+//     statusBar.backgroundColorByHexString('#000000');
     this.platform.ready().then(() => {
       //this.util.loadingEnd();
       //允许进入后台模式
