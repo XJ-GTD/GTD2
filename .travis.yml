@@ -73,6 +73,7 @@ script:
   - sh $TRAVIS_BUILD_DIR/travis/build.sh
 after_script:
   - sh $TRAVIS_BUILD_DIR/travis/fir.sh
+  - sh $TRAVIS_BUILD_DIR/travis/remove-keys.sh
 env:
   global:
   - JAVA_HOME=/usr/lib/jvm/java-8-oracle
