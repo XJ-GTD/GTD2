@@ -98,18 +98,17 @@ pointcomponent {
     top: $spinnertop;
     left: $spinnerleft;
     border-radius: 50%;
+    z-index: -1;
   }
 
   .spinner:before {
-    z-index: -1;
-    //background: conic-gradient(#8c83bd, #8556a0, #a057b4);
+    content: '';
     //  background-color: bindColors($background-color);
-    background: -webkit-linear-gradient(right top, #2b657b 0%, #8556a0 500%, #a057b4 100%); /* Safari 5.1 - 6.0 */
+    background: linear-gradient(right top, #2b657b 0%, #8556a0 500%, #a057b4 100%);
     background: -o-linear-gradient(right top, #2b657b 0%, #8556a0 500%, #a057b4 100%); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(right top, #2b657b 0%, #8556a0 500%, #a057b4 100%); /* Firefox 3.6 - 15 */
-    background: linear-gradient(right top, #2b657b 0%, #8556a0 500%, #a057b4 100%);
+    background: -webkit-gradient(linear, right top, left bottom, from(#2b657b), color-stop(500%, #8556a0), to(#a057b4)); /* Safari 5.1 - 6.0 */
     animation: r 2s linear infinite;
-    content: '';
   }
 
   .inputioc {

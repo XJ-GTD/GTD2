@@ -102,7 +102,7 @@ ion-calendar-month {
     border-radius: 34px;
     width: 34px;
     display: block;
-    margin: 2px auto;
+    margin: 1px auto;
     padding: 0;
     height: 34px;
     background-color: transparent;
@@ -152,8 +152,8 @@ ion-calendar-month {
     @include month-color(cal-color, #222222);
 
     .borderDiv {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       margin: 4px auto;
       border: 1px double #000;
       border-radius: 40px;
