@@ -1,5 +1,15 @@
 page-tdl {
 
+  padding-top: constant(safe-area-inset-top);
+  padding-right: constant(safe-area-inset-right);
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-left: constant(safe-area-inset-left);
+  padding-top: evn(safe-area-inset-top);
+  padding-right: evn(safe-area-inset-right);
+  padding-bottom: evn(safe-area-inset-bottom);
+  padding-left: evn(safe-area-inset-left);
+
+
   .back1 {
     background: $lsback1;
   }
