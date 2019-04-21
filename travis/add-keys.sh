@@ -29,5 +29,5 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
   # Put the provisioning profile in place
   mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
   #cp "./scripts/profile/team.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
-  cp "$TRAVIS_BUILD_DIRtravis/profiles/ios/$IOS_PROFILE_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
+  cp "$TRAVIS_BUILD_DIR/travis/profiles/ios/$IOS_PROFILE_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
 fi
