@@ -9,6 +9,7 @@ import {DataConfig} from "../../service/config/data.config";
 import * as moment from "moment";
 import {EmitService} from "../../service/util-service/emit.service";
 import {ScdlData, ScdPageParamter} from "../../data.mapping";
+import {FeedbackService} from "../../service/cordova/feedback.service";
 
 /**
  * Generated class for the 日程列表 page.
@@ -84,12 +85,15 @@ export class TdlPage {
   isgetData: boolean = false;
 
 
+
+
   //画面数据List
   scdlDataList: Array<ScdlData> = new Array<ScdlData>();
 
 
   //头部显示日期
   headerDate: string;
+  headerMoment:moment.Moment;
 
   constructor(private tdlServ: TdlService,
               private modalCtr: ModalController,
@@ -101,7 +105,7 @@ export class TdlPage {
 
   ngOnInit() {
 
-    // this.contentD.enableJsScroll();
+    //this.contentD.enableJsScroll();
 
     this.emitService.registerSelectDate((selectDate: moment.Moment) => {
 
@@ -111,6 +115,18 @@ export class TdlPage {
         this.isgetData = !this.isgetData;
 
         this.gotoEl(selectDate.format("YYYYMMDD"));
+      }).catch(error => {
+        this.isgetData = !this.isgetData;
+      });
+    });
+
+    this.emitService.registerRef((data) =>{
+      this.createData(this.headerMoment, 0,0).then(data => {
+        this.scdlDataList.push(...data);
+
+        this.isgetData = !this.isgetData;
+
+        this.gotoEl(this.headerMoment.format("YYYYMMDD"));
       }).catch(error => {
         this.isgetData = !this.isgetData;
       });
@@ -124,6 +140,7 @@ export class TdlPage {
         let el = this.el.nativeElement.querySelector("#day" + scdlData.id);
         if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
           this.headerDate = moment(scdlData.d).format("YYYY年MM月DD日");
+          this.headerMoment = moment(scdlData.d);
           break;
         }
       }

@@ -44,16 +44,8 @@ export class PointComponent {
   width: number;
   height: number;
   rotation = 0;
-  dots = [];
+  dots:Array<Dot>;
   DOTS_AMOUNT = 1000;
-  GLOBE_RADIUS: number;
-  GLOBE_CENTER_Z: number;
-
-  PROJECTION_CENTER_X: number;
-  PROJECTION_CENTER_Y: number;
-  FIELD_OF_VIEW: number;
-
-  DOT_RADIUS = 4;
 
   speed: number = 0.0004;
 
@@ -106,15 +98,12 @@ export class PointComponent {
 
   ngOnInit(): void {
     //this._renderer.setStyle(this.aitool.nativeElement, "top", window.innerHeight);
-    this.ctx = this.canvas.nativeElement.getContext('2d');
-    this.width = this.canvas.nativeElement.width;
-    this.height = this.canvas.nativeElement.height;
-    this.GLOBE_RADIUS = this.width * 0.7;
-    this.GLOBE_CENTER_Z = this.GLOBE_RADIUS * -1;
-    this.PROJECTION_CENTER_X = this.width / 2;
-    this.PROJECTION_CENTER_Y = this.height / 2;
-    this.FIELD_OF_VIEW = this.width;
 
+    this.ctx = this.canvas.nativeElement.getContext('2d');
+    this.dots= new Array<Dot>();
+
+    this.width = this.canvas.nativeElement.width ;
+    this.height = this.canvas.nativeElement.height;
 
 // Populate the dots array with random dots
     this.createDots();
@@ -129,25 +118,33 @@ export class PointComponent {
 
   createDots() {
     // Empty the array of dots
-    this.dots = [];
+    let GLOBE_RADIUS = this.width * 0.8;
+    let GLOBE_CENTER_Z = GLOBE_RADIUS * -1;
+    let PROJECTION_CENTER_X = this.width / 2;
+    let PROJECTION_CENTER_Y = this.height / 2;
+    let FIELD_OF_VIEW = this.width;
 
     // Create a new dot based on the amount needed
     for (let i = 0; i < this.DOTS_AMOUNT; i++) {
       const theta = Math.random() * 2 * Math.PI; // Random value between [0, 2PI]
       const phi = Math.acos((Math.random() * 2) - 1); // Random value between [-1, 1];
-      let a = this.utilService.rand(0.1, 1);
+      let a = this.utilService.rand(0.5, 1.1);
+      let rad = this.utilService.rand(1, 7);
       let rgba = "";
-      if (this.utilService.randInt(0, 10) > 5) {
-        rgba = "rgba(132,48,148," + a + ")"
-      } else {
+      let color = this.utilService.randInt(0, 10)
+      if (color < 6) {
         rgba = "rgba(102,200,201," + a + ")"
+      } else if (color < 9 && color >6){
+        rgba = "rgba(132,48,148," + a + ")"
+      }else{
+        rgba = "rgba(219,74,57," + a + ")"
       }
 
       // Calculate the [x, y, z] coordinates of the dot along the globe
-      const x = this.GLOBE_RADIUS * Math.sin(phi) * Math.cos(theta);
-      const y = this.GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta);
-      const z = (this.GLOBE_RADIUS * Math.cos(phi)) + this.GLOBE_CENTER_Z;
-      this.dots.push(new Dot(x, y, z, this.ctx, this.GLOBE_CENTER_Z, this.FIELD_OF_VIEW, this.PROJECTION_CENTER_X, this.PROJECTION_CENTER_Y, this.DOT_RADIUS, rgba));
+      const x = GLOBE_RADIUS * Math.sin(phi) * Math.cos(theta);
+      const y = GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta);
+      const z = (GLOBE_RADIUS * Math.cos(phi)) + GLOBE_CENTER_Z;
+      this.dots.push(new Dot(x, y, z,this.ctx, GLOBE_CENTER_Z, FIELD_OF_VIEW, PROJECTION_CENTER_X, PROJECTION_CENTER_Y, rad, rgba));
     }
   }
 

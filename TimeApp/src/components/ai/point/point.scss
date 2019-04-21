@@ -98,18 +98,23 @@ pointcomponent {
     top: $spinnertop;
     left: $spinnerleft;
     border-radius: 50%;
+    z-index: -1;
   }
 
   .spinner:before {
-    z-index: -1;
-    //background: conic-gradient(#8c83bd, #8556a0, #a057b4);
+    content: '';
     //  background-color: bindColors($background-color);
-    background: -webkit-linear-gradient(right top, #2b657b 0%, #8556a0 500%, #a057b4 100%); /* Safari 5.1 - 6.0 */
     background: -o-linear-gradient(right top, #2b657b 0%, #8556a0 500%, #a057b4 100%); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(right top, #2b657b 0%, #8556a0 500%, #a057b4 100%); /* Firefox 3.6 - 15 */
     background: linear-gradient(right top, #2b657b 0%, #8556a0 500%, #a057b4 100%);
+    background: -webkit-linear-gradient(right top, #2b657b 10%, #8556a0 40%, #a057b4 100%);
+
+    //background: -webkit-linear-gradient(left, $spcColorf, $spcColort); /* Safari 5.1 - 6.0 */
+    //background: -o-linear-gradient(right, $spcColorf, $spcColort); /* Opera 11.1 - 12.0 */
+    //background: -moz-linear-gradient(right, $spcColorf, $spcColort); /* Firefox 3.6 - 15 */
+    //background: linear-gradient(to right, $spcColorf, $spcColort); /* 标准的语法（必须放在最后） */
+
     animation: r 2s linear infinite;
-    content: '';
   }
 
   .inputioc {

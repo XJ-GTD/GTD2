@@ -13,11 +13,14 @@ import {defaults, pickModes} from "../config";
 import {SqliteExec} from "../../../service/util-service/sqlite.exec";
 import {LocalcalendarService} from "../../../service/cordova/localcalendar.service";
 import {UtilService} from "../../../service/util-service/util.service";
+import {EmitService} from "../../../service/util-service/emit.service";
 
 @Injectable()
 export class CalendarService {
 
-  constructor(private sqlite:SqliteExec,private readlocal:LocalcalendarService,private util:UtilService) {}
+  constructor(private sqlite:SqliteExec,private readlocal:LocalcalendarService,private util:UtilService) {
+
+  }
 
   safeOpt(calendarOptions: any): CalendarModalOptions {
     const _disableWeeks: number[] = [];
@@ -291,6 +294,51 @@ export class CalendarService {
 
 
     let local = await this.readlocal.findEventRc('',_startMonth,_endMonth);
+    this.sqlite.getExtList<MonthData>(sql).then(data=>{
+
+      //本地日历加入主页日历显示中
+      for(let lo of local){
+        let md:MonthData = data.find((n) => moment(lo.sd).isSame(moment(n.sd), 'day'));
+        if (md){
+          md.scds = md.scds + 1;
+        }else{
+          md = new MonthData();
+          md.sd=lo.sd;
+          md.scds=1;
+          md.news=0;
+          data.push(md);
+        }
+      }
+      for (let d of data){
+        let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
+
+        //判断是否存在非重复类型  or 判断是否存在重复日期为开始日期
+        if(d.minrt == '0' || d.csd ==d.sd){
+          calendarDay.onlyRepeat = false;
+        }else {
+          calendarDay.onlyRepeat = true;
+        }
+        calendarDay.things = d.scds;
+        calendarDay.hassometing = d.scds > 0 && !calendarDay.onlyRepeat ;
+        calendarDay.busysometing = d.scds >= 4 && !calendarDay.onlyRepeat ;
+        calendarDay.allsometing = d.scds >= 8 && !calendarDay.onlyRepeat ;
+        calendarDay.newmessage = d.news
+        calendarDay.hasting = d.scds > 0;
+        //calendarDay.subTitle = d.news > 0? `\u2022`: "";
+        calendarDay.marked = false;
+      }
+    })
+  }
+
+  async refSpcDay(start:moment.Moment,month:CalendarMonth){
+
+    let starts = start.format("YYYY/MM/DD");
+
+    let sql:string = `select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt from gtd_c gc join gtd_sp sp on gc.si = sp.si 
+      where sp.sd = '${starts}' group by sp.sd ,gc.sd`;
+
+
+    let local = await this.readlocal.findEventRc('',start,start);
     this.sqlite.getExtList<MonthData>(sql).then(data=>{
 
       //本地日历加入主页日历显示中

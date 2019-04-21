@@ -116,8 +116,6 @@ export class NotificationsService {
       let emMessage:ScdEmData = new ScdEmData();
       emMessage.id = scd.si;
       emMessage.d = scd.sd;
-
-      this.emitService.emitNewMessageClick(emMessage);
       this.localNotifications.clear(next.id);
     }
   }
@@ -140,7 +138,7 @@ export class NotificationsService {
     if (this.util.isMobile()) {
       this.badge.increase(1);
       this.localNotifications.schedule(notif);
-
+      this.emitService.emitRef(scd.sd);
     }
   }
 

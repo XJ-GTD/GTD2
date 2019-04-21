@@ -75,7 +75,7 @@ class Circle
    drawCircle(ctx) {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.r, 0, 360);
-    ctx.fillStyle = 'rgba(255,255,255, 0.2)';
+    ctx.fillStyle = 'rgba(218,71,57, 0.2)';
     ctx.fill();
   }
 
@@ -96,7 +96,7 @@ class Circle
       ctx.beginPath();
       ctx.moveTo(this.x, this.y);//起点
       ctx.lineTo(_circle.x, _circle.y);//终点
-      ctx.strokeStyle = 'rgba(211,39,70, 0.1)';
+      ctx.strokeStyle = 'rgba(0,0,0, 0.1)';
       ctx.stroke();
     }
   }
