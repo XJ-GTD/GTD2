@@ -1,6 +1,7 @@
 #!/bin/bash
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+  brew install git-lfs
   npm install -g ionic@4.1.2 phonegap plugman cordova@6.5.0
 else
   yarn global add ionic@4.1.2 phonegap plugman cordova@6.5.0
