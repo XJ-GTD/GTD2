@@ -225,11 +225,7 @@ export class TddiPage {
         }
       }
       //全天的场合
-      if (this.scd.st == "99:99") {
-        this.alldshow = "全天";
-      } else {
-        this.alldshow = this.scd.st;
-      }
+    this.alldshow = this.util.adStrShow(this.scd.st);
 
       switch (this.scd.rt) {
         case "0":

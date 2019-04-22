@@ -93,11 +93,8 @@ export class TddsPage {
       this.scd.showSd = paramter.d.format("YYYY-MM-DD");
       this.scd.st = moment().format("HH:mm");
 
-      if (this.scd.st == "99:99") {
-        this.alldshow = "全天";
-      } else {
-        this.alldshow = this.scd.st;
-      }
+      this.alldshow = this.util.adStrShow(this.scd.st);
+
     })
   }
 
