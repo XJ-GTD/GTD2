@@ -384,7 +384,7 @@ export class TdcPage {
 
     return new Promise<CTbl>(async (resolve, reject) => {
       if (!this.chkinput()) {
-        resolve();
+        resolve(null);
       }
 
       this.util.loadingStart();
@@ -438,6 +438,9 @@ export class TdcPage {
   async goShare() {
     //日程分享打开参与人选择rc日程类型
       let ctbl: CTbl = await this.save();
+      if (ctbl == null){
+        return;
+      }
       this.scd.si = ctbl.si;
       this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
       return;
