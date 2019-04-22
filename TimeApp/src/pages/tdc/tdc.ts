@@ -385,6 +385,7 @@ export class TdcPage {
     return new Promise<CTbl>(async (resolve, reject) => {
       if (!this.chkinput()) {
         resolve(null);
+        return;
       }
 
       this.util.loadingStart();
