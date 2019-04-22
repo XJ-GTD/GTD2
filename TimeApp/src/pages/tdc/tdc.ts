@@ -404,8 +404,8 @@ export class TdcPage {
       //结束时间设置
       //全天的场合
       if (this.alld) {
-        this.scd.st = this.util.adToDb();
-        this.scd.et = this.util.adToDb();
+        this.scd.st = this.util.adToDb("");
+        this.scd.et = this.util.adToDb("");
       } else {
         this.scd.et = this.scd.st;
       }
