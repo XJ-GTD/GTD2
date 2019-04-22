@@ -123,19 +123,28 @@ export class PfPage {
       }else{
         this.util.loadingStart();
 
+        let unionid;
         this.lsService.login(this.login).then(data=> {
           if (data.code != 0)
+            throw  data;
+
+          unionid = data.data.unionid;
+          if (unionid == "")
             throw  data;
 
           return this.lsService.getPersonMessage(data);
         }).then(data=>{
           return this.lsService.getOther();
         }).then(data=>{
+          return this.psService.editPass(this.login.userpassword,unionid);
+        }).then(data=>{
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
+          this.util.popoverStart( "忘记密码修改成功");
         }).catch(error=>{
-          this.util.popoverStart( "手机验证码登录失败");
           this.util.loadingEnd();
+          this.psService.deleteUser();
+          this.util.popoverStart( "忘记密码修改失败");
         });
 
       }
