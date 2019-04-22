@@ -1,13 +1,13 @@
 import {Injectable} from "@angular/core";
-import {PersonRestful, SignData} from "../../service/restful/personsev";
 import {InData, SmsRestful} from "../../service/restful/smssev";
 import {LpService} from "../lp/lp.service";
 import {PageLoginData} from "../../data.mapping";
+import {AuthRestful,LoginData} from "../../service/restful/authsev";
 
 @Injectable()
 export class RService {
 
-  constructor(private personRestful: PersonRestful,
+  constructor(private authRestful: AuthRestful,
               private smsRestful: SmsRestful,
               private lpService: LpService,) {
   }
@@ -16,13 +16,13 @@ export class RService {
   register(rdata: PageLoginData): Promise<any> {
     return new Promise((resolve, reject) => {
       //restful 注册用户
-      let restData: SignData = new SignData();
+      let restData: LoginData = new LoginData();
       restData.phoneno = rdata.mobile;
       restData.verifycode = rdata.authCode;
       restData.userpassword = rdata.password;
       restData.verifykey = rdata.verifykey;
       restData.username = rdata.username;
-      return this.personRestful.signup(restData).then(data => {
+      return this.authRestful.signup(restData).then(data => {
         if (data.code != 0)
           throw  data;
 
@@ -37,9 +37,6 @@ export class RService {
 
         return this.lpService.getPersonMessage(data);
       }).then(data=>{
-        if (data.code && data.code != 0)
-          throw  data;
-
         return this.lpService.getOther();
       }).then(data => {
         resolve(data)
