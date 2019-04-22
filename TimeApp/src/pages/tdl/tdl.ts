@@ -10,6 +10,7 @@ import * as moment from "moment";
 import {EmitService} from "../../service/util-service/emit.service";
 import {ScdlData, ScdPageParamter} from "../../data.mapping";
 import {FeedbackService} from "../../service/cordova/feedback.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 日程列表 page.
@@ -51,7 +52,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
                   <div class="agendaline1" *ngIf="scd.gs == '2'">下载：{{scd.p.jn}}</div>
                   <div class="agendaline2 row">
                     <div class="agenda-st"
-                         [class.newMessage]="scd.du == '1'">{{scd.st == "99:99" ? "全天" : scd.st == null ? "" : scd.st}}</div>
+                         [class.newMessage]="scd.du == '1'">{{this.util.adStrShow(scd.st)}}</div>
                     <div class="dot-set " [ngStyle]="{'background-color':scd.p.jc}"></div>
                     <div class="agenda-sn" [class.newMessage]="scd.du == '1'">{{scd.sn}}</div>
                   </div>
@@ -99,7 +100,8 @@ export class TdlPage {
               private modalCtr: ModalController,
               private menuController: MenuController,
               private emitService: EmitService,
-              private el: ElementRef
+              private el: ElementRef,
+              private util:UtilService
   ) {
   }
 
