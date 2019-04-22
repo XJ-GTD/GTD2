@@ -198,7 +198,7 @@ export class PgBusiService {
   /**
    * 语音保存日程更新
    */
-  async ynSave(rc : RcInParam){
+  async saveOne(rc : RcInParam){
     if(rc.si != null){
       this.getCtbl(rc.si);
     }else{
@@ -210,20 +210,48 @@ export class PgBusiService {
     }
   }
 
-  selectBySi(){
+  /**
+   * 批量保存日程更新
+   */
+  async saveBatch(rcL : Array<RcInParam>){
 
   }
 
-  selectOneRc(){
+  /**
+   * 根据日程Id获取日程详情
+   * @param {string} si
+   */
+  selectBySi(si:string){
 
   }
 
-  selectList(){}
-
-  selectHome(){
+  /**
+   * 根据(日程Id和日期)或(子表ID)获取日程详情
+   * @param {string} si
+   * @param {string} date
+   * @param {string} subSi
+   */
+  selectOneRc(si:string,date:string,subSi:string){
 
   }
 
+  /**
+   * 条件查询
+   * @param {RcInParam} rc
+   */
+  selectList(rc : RcInParam){}
+
+  /**
+   * 首页查询
+   * @param {string} month
+   */
+  selectHome(month:string){
+
+  }
+
+  /**
+   * 一览查询
+   */
   selectYl(){
 
 }
