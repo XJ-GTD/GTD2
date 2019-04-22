@@ -700,7 +700,10 @@ export class UtilService {
     }
   }
 
-  adToDb() :string{
-    return this.aday;
+  adToDb(t:string) :string{
+    if (t ==null || t ==""  ){
+      return this.aday;
+    }
+    return t;
   }
 }
