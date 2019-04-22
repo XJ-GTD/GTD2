@@ -71,6 +71,9 @@ public class MainVerticle extends AbstractVerticle {
 		router.route("/cdc/:flowid/query/trigger").handler(BodyHandler.create());
 		router.route("/cdc/:flowid/query/trigger").produces("application/json").handler(this::querytrigger);
 
+		router.route("/cdc/:flowid/json/trigger").handler(BodyHandler.create());
+		router.route("/cdc/:flowid/json/trigger").produces("application/json").handler(this::jsontrigger);
+
 		HttpServerOptions option = new HttpServerOptions();
 		option.setCompressionSupported(true);
 
@@ -117,6 +120,39 @@ public class MainVerticle extends AbstractVerticle {
 				.put("body", new JsonObject()
 						.put("context", parameters)));
 
+		future.complete(new JsonObject());
+	}
+	
+	private void jsontrigger(RoutingContext ctx) {
+		System.out.println("headers: " + ctx.request().headers());
+		System.out.println("body: " + ctx.getBodyAsString());
+		String flowid = ctx.request().getParam("flowid");
+		JsonObject query = ctx.getBodyAsJson();
+		
+		Future<JsonObject> future = Future.future();
+		
+		future.setHandler(handler -> {
+			System.out.println(flowid);
+			if (handler.succeeded()) {
+				JsonObject result = handler.result();
+				
+				if (result == null)
+					result = new JsonObject();
+				System.out.println("responsed " +result.size());
+				ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end(result.encode());
+			} else {
+				handler.cause().printStackTrace();
+				ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end("{}");
+			}
+		});
+
+		MessageProducer<JsonObject> producer = bridge.createProducer(flowid);
+		producer.send(new JsonObject()
+				.put("body", new JsonObject()
+						.put("context", query)));
+
+		System.out.println("Send context [" + query.encode() + "]");
+		
 		future.complete(new JsonObject());
 	}
 	
