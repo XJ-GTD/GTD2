@@ -33,6 +33,7 @@ pointcomponent {
     margin-top: $speakerSize * -1 / 4;
     border-top: 1px solid #3583d7;
     border-bottom: 1px solid #3583d7;
+    z-index: -1;
   }
 
   .speaking.danger {
@@ -48,6 +49,7 @@ pointcomponent {
     height: 100px;
     margin-left: -50px;
     margin-top: -50px;
+    z-index: -1
   }
 
   @keyframes rotate {
