@@ -430,7 +430,7 @@ export class TddjPage {
   async save() {
 
     if (!this.chkinput()) {
-      return
+      return null;
     }
     this.util.loadingStart();
     //提醒内容设置
@@ -480,7 +480,9 @@ export class TddjPage {
   goShare() {
     //日程分享打开参与人选择rc日程类型
     this.save().then(data => {
-
+      if (data == null){
+        return;
+      }
       this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
     });
 
