@@ -83,7 +83,7 @@ export class PointComponent {
    listenStart() {
     if (!this.statusListener) this.assistantService.listenAudio();
     else this.assistantService.stopListenAudio();
-     //
+
      // if (this.statusListener){
      //   this.speed = 0.004;
      //   this._renderer.removeClass(this.light.nativeElement, "danger");
