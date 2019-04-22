@@ -255,6 +255,9 @@ export class TdlPage {
   gotoEl(id) {
     setTimeout(() => {
       let el = this.el.nativeElement.querySelector("#day" + id);
+
+      this.headerDate = moment(id).format("YYYY年MM月DD日");
+      this.headerMoment = moment(id);
       if (el) {
         this.gridHight = this.grid.nativeElement.clientHeight;
         this.contentD.scrollTo(0, el.offsetTop + 2, 0).then(datza => {
