@@ -22,12 +22,13 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
   security list-keychains
   echo " ****** "
    
-  echo "find indentities keychains: "
-  security find-identity -p codesigning  ~/Library/Keychains/ios-build.keychain
-  echo " ****** "
-
   # Put the provisioning profile in place
   mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
   #cp "./scripts/profile/team.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
   cp "$TRAVIS_BUILD_DIR/travis/profiles/ios/$IOS_PROFILE_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
+
+  echo "find indentities keychains: "
+  security find-identity -p codesigning  ~/Library/Keychains/ios-build.keychain
+  echo " ****** "
+
 fi
