@@ -188,7 +188,7 @@ export class TdcPage {
 
   togChange() {
     if (!this.alld) {
-      this.scd.st = this.scd.st == "99:99" ? "00:00" : this.scd.st;
+      this.scd.st = this.util.adCtrlShow(this.scd.st);
     }
   }
 
@@ -384,7 +384,8 @@ export class TdcPage {
 
     return new Promise<CTbl>(async (resolve, reject) => {
       if (!this.chkinput()) {
-        resolve();
+        resolve(null);
+        return;
       }
 
       this.util.loadingStart();
@@ -403,8 +404,8 @@ export class TdcPage {
       //结束时间设置
       //全天的场合
       if (this.alld) {
-        this.scd.st = "99:99";
-        this.scd.et = "99:99";
+        this.scd.st = this.util.adToDb("");
+        this.scd.et = this.util.adToDb("");
       } else {
         this.scd.et = this.scd.st;
       }
@@ -438,6 +439,9 @@ export class TdcPage {
   async goShare() {
     //日程分享打开参与人选择rc日程类型
       let ctbl: CTbl = await this.save();
+      if (ctbl == null){
+        return;
+      }
       this.scd.si = ctbl.si;
       this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
       return;

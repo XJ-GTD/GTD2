@@ -149,7 +149,7 @@ export class SpTbl  implements ITbl {
 
   rpT():string {
     let sq ='replace into gtd_sp ' +
-      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx,wtt) values("'+ this.spi+'","'+ this.si+'","'+this.spn+ '"' +
+      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx,wtt,itx) values("'+ this.spi+'","'+ this.si+'","'+this.spn+ '"' +
       ',"'+this.sd+ '","'+this.st+ '","'+this.ed+ '","'+this.et+ '","'+this.ji+ '","'+this.bz+ '",' +
       '"'+this.sta+ '","'+this.tx+'",'+  moment().unix()+','+this.itx+');';
 

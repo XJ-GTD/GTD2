@@ -6,7 +6,7 @@ import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
-import {FsData, ScdData, ScdPageParamter} from "../../data.mapping";
+import {FsData, ScdData, ScdPageParamter, SpecScdData} from "../../data.mapping";
 import {PlService} from "../pl/pl.service";
 
 /**
@@ -140,7 +140,7 @@ import {PlService} from "../pl/pl.service";
               <ion-avatar>
                 <img [src]="fs.bhiu"/>
               </ion-avatar>
-              <ion-label>{{fs.rn}}</ion-label>
+              <ion-label>{{fs.ran}}</ion-label>
             </ion-chip>
           </div>
         </ion-row>
@@ -202,7 +202,7 @@ export class TddjPage {
   //画面数据
   scd: ScdData = new ScdData();
   b: boolean = true;
-  fssshow: Array<FsData> = new Array<FsData>();
+  sp:SpecScdData = new SpecScdData();
 
   //重复日程不可以修改日期
   rept_flg: boolean = false;
@@ -241,7 +241,7 @@ export class TddjPage {
 
   togChange() {
     if (!this.alld) {
-      this.scd.st = this.scd.st == "99:99" ? "00:00" : this.scd.st;
+      this.scd.st = this.util.adCtrlShow(this.scd.st);
     }
   }
 
@@ -255,43 +255,44 @@ export class TddjPage {
 
     let paramter: ScdPageParamter = this.navParams.data;
     if (paramter.si) {
-        this.scd = await this.busiServ.get(paramter.si);
+      this.scd = await this.busiServ.get(paramter.si);
 
 
-        //TODO 清除消息把已读标志未读
-        this.busiServ.updateMsg(this.scd.si);
+      //TODO 清除消息把已读标志未读
+      this.busiServ.updateMsg(this.scd.si);
 
-        this.scd.showSd = paramter.d.format("YYYY-MM-DD");
+      this.scd.showSd = paramter.d.format("YYYY-MM-DD");
+      this.sp = this.scd.specScd(paramter.d.format("YYYY-MM-DD"));
 
-        //TODO 缓存里后获取发送信息
+      //TODO 缓存里后获取发送信息
 
-        this.jhs = await this.plsevice.getPlanCus();
-        for (let i = 0; i < this.jhs.length; i++) {
-          if (this.jhs[i].ji == this.scd.ji) {
-            this.scd.p = this.jhs[i];
-          }
+      this.jhs = await this.plsevice.getPlanCus();
+      for (let i = 0; i < this.jhs.length; i++) {
+        if (this.jhs[i].ji == this.scd.ji) {
+          this.scd.p = this.jhs[i];
         }
-        //重复日程不可以修改日期
-        if (this.scd.rt != "0") {
-          this.rept_flg = true;
-        }
-
-        if (this.scd.st) {
-          this.scd.st = this.scd.st
-        } else {
-          this.scd.st = moment().format("HH:mm");
-        }
-
-        //全天的场合
-        if (this.scd.st == "99:99") {
-          this.alld = true;
-        } else {
-          this.alld = false;
-        }
-
-        this.clickrept(this.scd.rt + '');
-        this.clickwake(this.scd.tx + '');
       }
+      //重复日程不可以修改日期
+      if (this.scd.rt != "0") {
+        this.rept_flg = true;
+      }
+
+      if (this.scd.st) {
+        this.scd.st = this.scd.st
+      } else {
+        this.scd.st = moment().format("HH:mm");
+      }
+
+      //全天的场合
+      if (this.util.isAday(this.scd.st)) {
+        this.alld = true;
+      } else {
+        this.alld = false;
+      }
+
+      this.clickrept(this.scd.rt + '');
+      this.clickwake(this.scd.tx + '');
+    }
 
   }
 
@@ -430,7 +431,7 @@ export class TddjPage {
   async save() {
 
     if (!this.chkinput()) {
-      return
+      return null;
     }
     this.util.loadingStart();
     //提醒内容设置
@@ -450,8 +451,8 @@ export class TddjPage {
     //结束时间设置
     //全天的场合
     if (this.alld) {
-      this.scd.st = "99:99";
-      this.scd.et = "99:99";
+      this.scd.st = this.util.adToDb("");
+      this.scd.et = this.util.adToDb("");
     } else {
       this.scd.et = this.scd.st;
     }
@@ -480,7 +481,9 @@ export class TddjPage {
   goShare() {
     //日程分享打开参与人选择rc日程类型
     this.save().then(data => {
-
+      if (data == null){
+        return;
+      }
       this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
     });
 

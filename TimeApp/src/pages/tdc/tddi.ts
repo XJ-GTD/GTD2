@@ -37,7 +37,7 @@ import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
             <ion-avatar (click)="goTofsDetail(scd.fs)">
               <img class="img-set" [src]="scd.fs.bhiu">
             </ion-avatar>
-            <ion-label>{{scd.fs.rn}}</ion-label>
+            <ion-label>{{scd.fs.ran}}</ion-label>
           </ion-chip>
         </ion-row>
         <ion-row>
@@ -225,11 +225,7 @@ export class TddiPage {
         }
       }
       //全天的场合
-      if (this.scd.st == "99:99") {
-        this.alldshow = "全天";
-      } else {
-        this.alldshow = this.scd.st;
-      }
+    this.alldshow = this.util.adStrShow(this.scd.st);
 
       switch (this.scd.rt) {
         case "0":

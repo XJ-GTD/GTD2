@@ -51,7 +51,7 @@ import {DataConfig} from "../../service/config/data.config";
             <img [src]="g.bhiu">
           </ion-avatar>
           <ion-label>
-            {{g.rn}}
+            {{g.ran}}
             <span>
                    {{g.rc}}
                  </span>

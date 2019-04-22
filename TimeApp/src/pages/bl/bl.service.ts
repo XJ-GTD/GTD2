@@ -34,8 +34,8 @@ export class BlService {
           if(!fsData.rc || fsData.rc == null || fsData.rc == ''){
             fsData.rc =fs.mpn;
           }
-          if(!fsData.rn || fsData.rn == null || fsData.rn == ''){
-            fsData.rn =fs.n;
+          if(!fsData.ran || fsData.ran == null || fsData.ran == ''){
+            fsData.ran =fs.n;
           }
           if(!fsData.bhiu || fsData.bhiu == null || fsData.bhiu == ''){
             fsData.bhiu = DataConfig.HUIBASE64;

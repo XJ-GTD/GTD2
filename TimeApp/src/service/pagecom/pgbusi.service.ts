@@ -66,6 +66,7 @@ export class PgBusiService {
         "sp.ji," +
         "sp.bz," +
         "sp.sta," +
+        "sp.tx," +
         "sp.wtt," +
         "sp.itx ,e.wi ewi,e.si esi,e.st est ,e.wd ewd,e.wt ewt,e.wtt ewtt " +
         " from gtd_sp sp inner join gtd_e e on sp.spi = e.wi and " +
@@ -218,7 +219,7 @@ export class PgBusiService {
       }
       //保存本地日程
       if (!ct.ui) ct.ui = ct.si;
-      if (!ct.st) ct.st = "99:99";
+      if (!ct.st) ct.st = this.util.adToDb("");
       await this.sqlExce.save(ct)
 
       let adgPro: AgdPro = new AgdPro();
@@ -337,7 +338,7 @@ export class PgBusiService {
         time = 1440;
       }
       let date;
-      if (rc.st != "99:99") {
+      if (!this.util.isAday(rc.st)) {
         date = moment(sp.sd + " " + rc.st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
       } else {
@@ -603,8 +604,8 @@ export class PgBusiService {
 
     if (adt.length == 1) {
       //全天
-      c.st = "99:99";
-      c.et = "99:99"
+      c.st = this.util.adToDb("");
+      c.et = this.util.adToDb("");
     } else {
       c.st = adt[1];
       c.et = adt[1];

@@ -8,6 +8,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {ProcesRs} from "../model/proces.rs";
 import {EmitService, FriendEmData, ScdEmData, ScdLsEmData, SpeechEmData} from "../../service/util-service/emit.service";
 import {F, SS} from "../model/ws.enum";
+import * as moment from "moment";
 
 /**
  * 播报类型处理
@@ -27,6 +28,7 @@ export class SpeechProcess implements MQProcess {
     return new Promise<ProcesRs>(async resolve => {
 
       //处理所需要参数
+      let ti = moment().valueOf() - content.thisContext.context.client.time;
       let spData: SpeechPara = content.parameters;
       //默认语音
       let speakText = spData.an;
@@ -47,7 +49,7 @@ export class SpeechProcess implements MQProcess {
 
       //通知页面显示播报文本
       let emspeech:SpeechEmData = new SpeechEmData();
-      emspeech.an = speakText;
+      emspeech.an = speakText + "#" + ti + "#";
       emspeech.org = content.thisContext.original;
       this.emitService.emitSpeech(emspeech);
 
