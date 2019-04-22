@@ -32,8 +32,8 @@ export class ScdData {
   specScds: Map<string, SpecScdData> = new Map<string, SpecScdData>();
 
   //当天关联的特殊日程
-  specScd(): SpecScdData {
-    return this.specScds.get(this.sd);
+  specScd(d:string): SpecScdData {
+    return this.specScds.get(d);
   }
 
   //参与人
