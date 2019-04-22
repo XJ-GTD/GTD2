@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {LpService} from "./lp.service";
 import {UtilService} from "../../service/util-service/util.service";
-import {PageLpData} from "../../data.mapping";
+import {PageLoginData} from "../../data.mapping";
 
 /**
  * Generated class for the 登陆（密码） page.
@@ -45,7 +45,7 @@ import {PageLpData} from "../../data.mapping";
 })
 export class LpPage {
 
-  lpData:PageLpData = new PageLpData();
+  lpData:PageLoginData = new PageLoginData();
   opa:any = "0.4";
 
   constructor(public navCtrl: NavController,
@@ -87,9 +87,6 @@ export class LpPage {
         this.lpService.login(this.lpData).then(data=> {
           return this.lpService.getPersonMessage(data);
         }).then(data=>{
-          if (data.code && data.code != 0)
-            throw  data;
-
           return this.lpService.getOther();
         }).then(data=>{
           this.util.loadingEnd();
@@ -111,7 +108,7 @@ export class LpPage {
 
   format(){
     if(this.lpData.mobile.length==11){
-      if(this.checkPhone() && this.lpData.password !="" && this.lpData.password.length >= 4){ // TODO 登录密码暂定四位 测试用的都是四位
+      if(this.checkPhone() && this.lpData.password !="" && this.lpData.password.length >= 4){
         this.opa = "1";
       }else {
         this.opa = "0.4";

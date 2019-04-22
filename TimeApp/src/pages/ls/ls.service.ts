@@ -8,7 +8,7 @@ import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
 import {WebsocketService} from "../../ws/websocket.service";
 import {AlService} from "../al/al.service";
-import {PageLsData} from "../../data.mapping";
+import {PageLoginData} from "../../data.mapping";
 
 @Injectable()
 export class LsService {
@@ -36,7 +36,7 @@ export class LsService {
   }
 
   //登陆
-  login(lsData:PageLsData):  Promise<any> {
+  login(lsData:PageLoginData):  Promise<any> {
     return new Promise((resolve, reject) => {
       //参考lp登陆方法
       let loginData: LoginData = new LoginData();

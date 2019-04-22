@@ -732,6 +732,140 @@ paths:
       security:
         - mwxing_auth:
             - any
+  /mix/starter/audio:
+    post:
+      tags:
+        - inteligence service
+      summary: 智能音频语音服务(阿里云前置)
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: false
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
+        - name: ai
+          in: header
+          type: string
+          description: 帐户ID
+          required: true
+        - name: body
+          in: body
+          description: 语音服务请求数据
+          required: true
+          schema:
+            type: object
+            properties:
+              c:
+                type: object
+                description: 上下文
+              d:
+                type: object
+                properties:
+                  vb64:
+                    type: string
+                    description: Base64编码语音
+      responses:
+        '200':
+          description: 语音服务请求成功
+          schema:
+            type: object
+            properties:
+              rc:
+                type: integer
+              rm:
+                type: string
+              d:
+                type: object
+  /mix/starter/text:
+    post:
+      tags:
+        - inteligence service
+      summary: 智能文本语音服务(阿里云前置)
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: lt
+          in: header
+          type: string
+          description: 登录令牌
+          required: false
+        - name: pi
+          in: header
+          type: string
+          description: 产品ID
+          required: true
+        - name: pv
+          in: header
+          type: string
+          description: 产品版本
+          required: true
+        - name: di
+          in: header
+          type: string
+          description: 设备ID
+          required: true
+        - name: dt
+          in: header
+          type: string
+          description: 设备类型
+          required: true
+        - name: ai
+          in: header
+          type: string
+          description: 帐户ID
+          required: true
+        - name: body
+          in: body
+          description: 语音服务请求数据
+          required: true
+          schema:
+            type: object
+            properties:
+              c:
+                type: object
+                description: 上下文
+              d:
+                type: object
+                properties:
+                  text:
+                    type: string
+                    description: 文本文字
+      responses:
+        '200':
+          description: 语音服务请求成功
+          schema:
+            type: object
+            properties:
+              rc:
+                type: integer
+              rm:
+                type: string
+              d:
+                type: object
   /ias/starter/audio:
     post:
       tags:

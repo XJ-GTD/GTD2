@@ -179,32 +179,6 @@ export class PersonRestful {
 
   }
 
-  //注册帐户	RA post
-  signup(signData: SignData): Promise<any> {
-
-    return new Promise((resolve, reject) => {
-      let url: UrlEntity = this.config.getRestFulUrl("RA");
-      this.request.post(url, signData).then(data => {
-        //处理返回结果
-        resolve(data.data);
-
-      }).catch(error => {
-        //处理返回错误
-        reject();
-
-      })
-    });
-
-  }
-
-}
-
-export class SignData{
-  phoneno:string = "";//手机号码
-  verifykey:string = "";//短信验证码KEY
-  verifycode:string = "";//短信验证码
-  username:string = "";//真实姓名
-  userpassword:string = "";//帐户密码
 }
 
 export class PersonInData{
