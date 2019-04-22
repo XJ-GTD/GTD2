@@ -241,7 +241,7 @@ export class TddjPage {
 
   togChange() {
     if (!this.alld) {
-      this.scd.st = this.scd.st == "99:99" ? "00:00" : this.scd.st;
+      this.scd.st = this.util.adCtrlShow(this.scd.st);
     }
   }
 
@@ -284,7 +284,7 @@ export class TddjPage {
       }
 
       //全天的场合
-      if (this.scd.st == "99:99") {
+      if (this.util.isAday(this.scd.st)) {
         this.alld = true;
       } else {
         this.alld = false;
@@ -451,8 +451,8 @@ export class TddjPage {
     //结束时间设置
     //全天的场合
     if (this.alld) {
-      this.scd.st = "99:99";
-      this.scd.et = "99:99";
+      this.scd.st = this.util.adToDb();
+      this.scd.et = this.util.adToDb();
     } else {
       this.scd.et = this.scd.st;
     }

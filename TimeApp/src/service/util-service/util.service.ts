@@ -24,6 +24,7 @@ import * as moment from "moment";
 export class UtilService {
   wins: any = window;//window对象
   private chineseLunar:ChineseLunar;
+  private aday :string;
   constructor(public device: Device,
               private toastCtrl: ToastController,
               private loadingCtrl: LoadingController,
@@ -31,6 +32,7 @@ export class UtilService {
               private alertCtrl: AlertController) {
 
     this.chineseLunar = new ChineseLunar();
+    this.aday = "99:99";
   }
 
   alter: Alert;
@@ -673,5 +675,32 @@ export class UtilService {
 
   public lunar(d:moment.Moment,format?:string):string{
     return this.chineseLunar.solarToLunar(moment(d.format("YYYY/MM/DD")).toDate(),format);
+  }
+
+
+  isAday(t:string) : boolean{
+    if (t ==null || t =="" || t == this.aday ){
+      return true;
+    }
+    return false;
+  }
+
+  adStrShow(t:string ):string{
+    if (t ==null || t =="" || t == this.aday){
+      return "全天";
+    }else{
+      return t;
+    }
+  }
+  adCtrlShow(t:string ):string{
+    if (t ==null || t =="" || t == this.aday){
+      return "00:00";
+    }else{
+      return t;
+    }
+  }
+
+  adToDb() :string{
+    return this.aday;
   }
 }
