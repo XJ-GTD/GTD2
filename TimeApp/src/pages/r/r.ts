@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
-import {PageRData, RService} from "./r.service";
+import {RService} from "./r.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {DataConfig} from "../../service/config/data.config";
+import {PageLoginData} from "../../data.mapping";
 
 /**
  * Generated class for the 注册 page.
@@ -58,7 +59,7 @@ import {DataConfig} from "../../service/config/data.config";
 })
 export class RPage {
 
-  rData: PageRData = new PageRData();
+  rData: PageLoginData = new PageLoginData();
   timeText:any = "获取验证码";
   timer:any;
   opa:any = "0.4";
@@ -93,7 +94,7 @@ export class RPage {
       this.rService.sc(this.rData).then(data => {
         //console.log("短信发送成功" + JSON.stringify(data));
         //短信验证码KEY 赋值给验证码登录信息
-        this.rData.verifykey = data.data.verifykey;
+        this.rData.verifykey = data.verifykey;
         this.util.toastStart("短信发送成功",1500);
 
       }).catch(error => {
@@ -126,7 +127,7 @@ export class RPage {
         this.util.popoverStart("请发送短信并填写正确的短信验证码");
       }else {
         this.util.loadingStart();
-        this.rService.signup(this.rData).then(data => {
+        this.rService.register(this.rData).then(data => {
           clearTimeout(this.timer);
           this.util.loadingEnd();
           this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);

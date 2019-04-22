@@ -3,8 +3,7 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {LsService} from "../ls/ls.service";
 import {PsService} from "../ps/ps.service";
-import {DataConfig} from "../../service/config/data.config";
-import {PageLsData} from "../../data.mapping";
+import {PageLoginData} from "../../data.mapping";
 
 /**
  * Generated class for the PfPage 忘记密码 page.
@@ -55,12 +54,16 @@ import {PageLsData} from "../../data.mapping";
 })
 export class PfPage {
 
-  pfData:PageLsData = new PageLsData();
+  pfData:PageLoginData = new PageLoginData();
   timeText:any = "获取验证码";
   timer:any;
   opa:any = "0.4";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private util:UtilService,private psService:PsService,private lsService:LsService) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private util:UtilService,
+              private psService:PsService,
+              private lsService:LsService) {
   }
 
   ionViewDidLoad() {
@@ -85,25 +88,27 @@ export class PfPage {
 
   sendSms(){
     if(this.checkPhone()){
+
       this.lsService.getSMSCode(this.pfData.mobile).then(data => {
         //短信验证码KEY 赋值给验证码登录信息
-        this.pfData.verifykey = data.data.verifykey;
+        this.pfData.verifykey = data.verifykey;
         this.util.toastStart("短信发送成功",2000);
+
+        this.timeText = 60;
+        console.log("开始" + this.timeText + "定时器");
+        this.timer = setInterval(() => {
+          this.timeText--;
+          if (this.timeText <= 0) {
+            clearTimeout(this.timer);
+            console.log("清除定时器");
+            this.timeText = "发送验证码"
+          }
+        }, 1000)
 
       }).catch(error => {
         this.util.toastStart("短信发送失败",2000);
       });
 
-      this.timeText = 60;
-      console.log("开始" + this.timeText + "定时器");
-      this.timer = setInterval(() => {
-        this.timeText--;
-        if (this.timeText <= 0) {
-          clearTimeout(this.timer);
-          console.log("清除定时器");
-          this.timeText = "发送验证码"
-        }
-      }, 1000)
     }
   }
 
@@ -119,22 +124,17 @@ export class PfPage {
         this.util.loadingStart();
 
         this.lsService.login(this.pfData).then(data=> {
-          if (data.code && data.code != 0)
-            throw  data;
-
           return this.lsService.getPersonMessage(data);
         }).then(data=>{
-          if (data.code && data.code != 0)
-            throw  data;
-
           return this.lsService.getOther();
         }).then(data=>{
           this.util.loadingEnd();
-          this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
+          this.navCtrl.setRoot('MPage');
         }).catch(error=>{
+          this.util.popoverStart( "手机验证码登录失败");
           this.util.loadingEnd();
-          this.util.popoverStart(error.message);
         });
+
       }
     }
   }
@@ -148,7 +148,7 @@ export class PfPage {
 
   format(){
     if(this.pfData.mobile.length==11){
-      if(this.checkPhone() && this.pfData.authCode !=""){
+      if(this.checkPhone() && this.pfData.authCode !="" && this.pfData.authCode.length == 6){
         this.opa = "1";
       }else {
         this.opa = "0.4";
