@@ -66,6 +66,7 @@ export class PgBusiService {
         "sp.ji," +
         "sp.bz," +
         "sp.sta," +
+        "sp.tx," +
         "sp.wtt," +
         "sp.itx ,e.wi ewi,e.si esi,e.st est ,e.wd ewd,e.wt ewt,e.wtt ewtt " +
         " from gtd_sp sp inner join gtd_e e on sp.spi = e.wi and " +
