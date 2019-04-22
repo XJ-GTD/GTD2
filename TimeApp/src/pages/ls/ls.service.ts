@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {PersonRestful} from "../../service/restful/personsev";
-import {InData, SmsRestful} from "../../service/restful/smssev";
+import {SmsRestful} from "../../service/restful/smssev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
 import {AuthRestful, LoginData} from "../../service/restful/authsev";
@@ -23,11 +23,8 @@ export class LsService {
 
   //获取验证码
   getSMSCode(mobile:string):  Promise<any> {
-
     return new Promise((resolve, reject) => {
-      let inData:InData = new InData();
-      inData.phoneno = mobile;
-      this.smsRestful.getcode(inData).then(data => {
+      this.smsRestful.getcode(mobile).then(data => {
         resolve(data)
       }).catch(err => {
         reject(err);
@@ -38,17 +35,14 @@ export class LsService {
   //登陆
   login(lsData:PageLoginData):  Promise<any> {
     return new Promise((resolve, reject) => {
-      //参考lp登陆方法
+      //参考lp登陆方法 忘记密码会调用
       let loginData: LoginData = new LoginData();
-      loginData.phoneno = lsData.mobile;
-      loginData.verifycode = lsData.authCode;
+      loginData.phoneno = lsData.phoneno;
+      loginData.verifycode = lsData.verifycode;
       loginData.verifykey = lsData.verifykey;
 
       // 验证手机号及验证码
       this.authRestful.loginbypass(loginData).then(data => {
-        if (data.code != 0)
-          throw  data;
-
         resolve(data);
       }).catch(error=>{
         resolve(error)

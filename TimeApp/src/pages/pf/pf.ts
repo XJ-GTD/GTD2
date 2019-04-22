@@ -22,7 +22,7 @@ import {PageLoginData} from "../../data.mapping";
       <ion-grid class="grid-login-basic no-padding-lr">
         <ion-row justify-content-start align-items-center>
           <div class="w-auto">
-            <ion-input class="login-tel" type="tel" placeholder="开始输入手机号" [(ngModel)]="pfData.mobile" (input)="format()"></ion-input>
+            <ion-input class="login-tel" type="tel" placeholder="开始输入手机号" [(ngModel)]="login.phoneno" (input)="format()"></ion-input>
           </div>
           <div>
             <button ion-button class="send-sms" (click)="sendSms()">{{timeText}}</button>
@@ -30,12 +30,12 @@ import {PageLoginData} from "../../data.mapping";
         </ion-row>
         <ion-row justify-content-between align-items-center>
           <div class="w-auto">
-            <ion-input class="login-code"  type="number" placeholder="短信验证码" [(ngModel)]="pfData.authCode" (input)="format()"></ion-input>
+            <ion-input class="login-code"  type="number" placeholder="短信验证码" [(ngModel)]="login.verifycode" (input)="format()"></ion-input>
           </div>
         </ion-row>
         <ion-row justify-content-between align-items-center>
           <div class="w-auto">
-            <ion-input class="login-pwd" type="password" placeholder="密码" [(ngModel)]="pfData.password" (input)="format()"></ion-input>
+            <ion-input class="login-pwd" type="password" placeholder="密码" [(ngModel)]="login.userpassword" (input)="format()"></ion-input>
           </div>
           <div>
             <button ion-fab class="login-enter" [ngStyle]="{'opacity': opa }" (click)="signIn()">
@@ -54,7 +54,7 @@ import {PageLoginData} from "../../data.mapping";
 })
 export class PfPage {
 
-  pfData:PageLoginData = new PageLoginData();
+  login:PageLoginData = new PageLoginData();
   timeText:any = "获取验证码";
   timer:any;
   opa:any = "0.4";
@@ -89,9 +89,9 @@ export class PfPage {
   sendSms(){
     if(this.checkPhone()){
 
-      this.lsService.getSMSCode(this.pfData.mobile).then(data => {
+      this.lsService.getSMSCode(this.login.phoneno).then(data => {
         //短信验证码KEY 赋值给验证码登录信息
-        this.pfData.verifykey = data.verifykey;
+        this.login.verifykey = data.verifykey;
         this.util.toastStart("短信发送成功",2000);
 
         this.timeText = 60;
@@ -114,16 +114,19 @@ export class PfPage {
 
   signIn() {
     if(this.checkPhone()) {
-      if (this.pfData.authCode == null || this.pfData.authCode == "") {     //判断验证码是否为空
+      if (this.login.verifycode == null || this.login.verifycode == "") {     //判断验证码是否为空
         this.util.popoverStart("验证码不能为空");
-      }else if (this.pfData.password == null || this.pfData.password == "") {     //判断密码是否为空
+      }else if (this.login.userpassword == null || this.login.userpassword == "") {     //判断密码是否为空
         this.util.popoverStart("密码不能为空");
-      }else if(this.pfData.verifykey == null || this.pfData.verifykey == ""){
+      }else if(this.login.verifykey == null || this.login.verifykey == ""){
         this.util.popoverStart("请发送短信并填写正确的短信验证码");
       }else{
         this.util.loadingStart();
 
-        this.lsService.login(this.pfData).then(data=> {
+        this.lsService.login(this.login).then(data=> {
+          if (data.code != 0)
+            throw  data;
+
           return this.lsService.getPersonMessage(data);
         }).then(data=>{
           return this.lsService.getOther();
@@ -140,15 +143,15 @@ export class PfPage {
   }
 
   checkPhone():boolean {
-    if (!this.util.checkPhone(this.pfData.mobile)){
+    if (!this.util.checkPhone(this.login.phoneno)){
       this.util.popoverStart("请填写正确的手机号");
     }
-    return this.util.checkPhone(this.pfData.mobile);
+    return this.util.checkPhone(this.login.phoneno);
   }
 
   format(){
-    if(this.pfData.mobile.length==11){
-      if(this.checkPhone() && this.pfData.authCode !="" && this.pfData.authCode.length == 6){
+    if(this.login.phoneno.length==11){
+      if(this.checkPhone() && this.login.verifycode !="" && this.login.verifycode.length == 6 && this.login.userpassword !="" && this.login.userpassword.length >= 4){
         this.opa = "1";
       }else {
         this.opa = "0.4";
