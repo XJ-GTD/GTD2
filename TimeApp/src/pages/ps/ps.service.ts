@@ -53,6 +53,8 @@ export class PsService {
       this.personRestful.updatepass(per,unionid).then(data=>{
         //刷新系统全局用户静态变量
         resolve(data);
+      }).catch(error=>{
+        reject(error);
       })
     })
   }
@@ -60,27 +62,10 @@ export class PsService {
   // 清除账户信息和用户信息
   deleteUser(): Promise<any> {
     return new Promise((resolve, reject) => {
-      //查询账户表
-      let aTbl1:ATbl = new ATbl();
-      this.sqlExec.getList<ATbl>(aTbl1).then(data=>{
-        let atbls:Array<ATbl> = data;
-
-        if (atbls.length > 0 ) {//清除账户表
-          let daSql = "delete from gtd_a";
-          this.sqlExec.execSql(daSql);
-        }
-
-        //查询用户表
-        let uTbl1:UTbl = new UTbl();
-        return this.sqlExec.getList<UTbl>(uTbl1);
+      //清除账户表
+      this.sqlExec.delete(new ATbl()).then(data=>{
+        return this.sqlExec.delete(new UTbl())//清除用户表
       }).then(data=>{
-        let utbls:Array<UTbl> = data;
-
-        if (utbls.length > 0 ) {//清除账户表
-          let duSql = "delete from gtd_u";
-          this.sqlExec.execSql(duSql);
-        }
-
         resolve(data);
       }).catch(error=>{
         resolve(error);

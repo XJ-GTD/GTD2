@@ -7,23 +7,22 @@ import {RestFulConfig, UrlEntity} from "../config/restful.config";
  */
 @Injectable()
 export class SmsRestful {
-  constructor(private request: RestfulClient,
-              private config: RestFulConfig,) {
+  constructor(private request: RestfulClient,private config: RestFulConfig,) {
   }
 
   //发送短信验证码 SSMIC
-  getcode(smsData:InData): Promise<Key> {
+  getcode(phoneno:string): Promise<OutData> {
 
     return new Promise((resolve, reject) => {
+      let smsData = new InData();
+      smsData.phoneno = phoneno;
       let url: UrlEntity = this.config.getRestFulUrl("SSMIC");
       this.request.post(url, smsData).then(data => {
         //处理返回结果
         resolve(data.data);
-
       }).catch(error => {
         //处理返回错误
-        reject();
-
+        reject(error);
       })
     });
 
@@ -36,6 +35,6 @@ export class InData{
   timeOut:any = 0;
 }
 
-export class Key{
+export class OutData{
   verifykey:string;
 }

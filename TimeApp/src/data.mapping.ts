@@ -243,9 +243,9 @@ export class HData {
 }
 
 export class PageLoginData {
-  mobile : string = "";
-  password : string = "";
-  authCode : string = "";
+  phoneno : string = "";
+  userpassword : string = "";
+  verifycode : string = "";
   verifykey : string = "";
   username : string = "";
 }

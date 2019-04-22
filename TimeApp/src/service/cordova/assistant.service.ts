@@ -134,7 +134,7 @@ export class AssistantService {
 
     let textPro = new TextPro();
     textPro.d.text = text;
-    textPro.c.client.time = moment().unix();
+    textPro.c.client.time = moment().valueOf();
     textPro.c.client.cxt = DataConfig.getWsContext();
     textPro.c.server = DataConfig.wsServerContext;
     await this.aibutlerRestful.posttext(textPro)
@@ -178,7 +178,7 @@ export class AssistantService {
       let base64File: string = await this.file.readAsDataURL(this.mp3Path, this.mp3Name);
       let audioPro = new AudioPro();
       audioPro.d.vb64 = base64File;
-      audioPro.c.client.time = moment().unix();
+      audioPro.c.client.time = moment().valueOf();
       audioPro.c.client.cxt = DataConfig.getWsContext();
       audioPro.c.client.option = DataConfig.getWsOpt();
       audioPro.c.server = DataConfig.wsServerContext;
