@@ -166,7 +166,7 @@ export class ContactsService {
             if (bt == null) {
               bt = new BTbl();
               bt.pwi = this.utilService.getUuid();
-              bt.ran = b.ran;
+              bt.ran = b.ran == null || b.ran ==""?bt.rn:bt.ran;
               bt.ranpy = this.utilService.chineseToPinYin(bt.ran);
               bt.hiu = "";
               bt.rn = b.rn;
@@ -347,6 +347,8 @@ export class ContactsService {
         bt.rc = userinfo.phoneno;
       }
 
+      //ran不存在使用rn值
+      bt.ran = bt.ran == null || bt.ran == ""?bt.rn : bt.ran;
       if (exists) {
         bsqls.push(bt.upT());
       } else {
@@ -375,7 +377,7 @@ export class ContactsService {
     }
 
     exists.pwi      = bt.pwi;     //主键
-    exists.ran      = bt.ran;     //联系人别称
+    exists.ran      = bt.ran ;     //联系人别称
     exists.ranpy    = bt.ranpy;   //联系人别称拼音
     exists.hiu      = bt.hiu;     // 联系人头像
     exists.rn       = bt.rn;      // 联系人名称
@@ -475,7 +477,8 @@ export class ContactsService {
         if (userinfo.phoneno && userinfo.phoneno != '') {
           bt.rc = userinfo.phoneno;
         }
-
+        //ran不存在使用rn值
+        bt.ran = bt.ran == null || bt.ran == ""?bt.rn : bt.ran;
         bsqls.push(bt.upT());
       }
 

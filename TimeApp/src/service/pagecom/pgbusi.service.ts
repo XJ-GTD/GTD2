@@ -262,7 +262,7 @@ export class PgBusiService {
       }
       //保存本地日程
       if (!ct.ui) ct.ui = ct.si;
-      if (!ct.st) ct.st = this.util.adToDb();
+      if (!ct.st) ct.st = this.util.adToDb("");
       await this.sqlExce.save(ct)
 
       let adgPro: AgdPro = new AgdPro();
@@ -647,8 +647,8 @@ export class PgBusiService {
 
     if (adt.length == 1) {
       //全天
-      c.st = this.util.adToDb();
-      c.et = this.util.adToDb();
+      c.st = this.util.adToDb("");
+      c.et = this.util.adToDb("");
     } else {
       c.st = adt[1];
       c.et = adt[1];
