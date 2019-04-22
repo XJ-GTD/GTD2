@@ -2,8 +2,8 @@
   "ios": {
     "debug": {
       "codeSignIdentity": "iPhone Distribution: Jinyang Zhang (D5A8L43W8A)",
-      "developmentTeam": "D5A8L43W8A",
-      "packageType": "development",
+      "provisioningProfile": "e05525bd-93e1-45da-bcf5-e1d7c04ddbdc",
+      "packageType": "ad-hoc",
       "automaticProvisioning": true,
       "buildFlag": [
           "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
