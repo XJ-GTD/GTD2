@@ -32,8 +32,8 @@ export class ScdData {
   specScds: Map<string, SpecScdData> = new Map<string, SpecScdData>();
 
   //当天关联的特殊日程
-  specScd(): SpecScdData {
-    return this.specScds.get(this.sd);
+  specScd(d:string): SpecScdData {
+    return this.specScds.get(d);
   }
 
   //参与人
@@ -190,15 +190,6 @@ export class ScdPageParamter{
   gs:string="";
 }
 
-
-export class PageRData {
-  mobile : string = "";
-  password : string = "";
-  authCode : string = "";
-  verifykey : string = "";
-  username : string = "";
-}
-
 export class PagePlData {
 
   xtJh:Array<PagePDPro> = new Array<PagePDPro>(); //本地计划
@@ -251,18 +242,12 @@ export class HData {
   selectDay: CalendarDay;
 }
 
-
-
-export class PageLsData {
-  mobile: string = "";
-  authCode: string = "";
-  verifykey:string = "";
-  password:string = "";
-}
-
-export class PageLpData {
-  mobile: string = "";
-  password: string = "";
+export class PageLoginData {
+  phoneno : string = "";
+  userpassword : string = "";
+  verifycode : string = "";
+  verifykey : string = "";
+  username : string = "";
 }
 
 

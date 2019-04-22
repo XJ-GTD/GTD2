@@ -179,24 +179,6 @@ export class PersonRestful {
 
   }
 
-  //注册帐户	RA post
-  signup(signData: SignData): Promise<any> {
-
-    return new Promise((resolve, reject) => {
-      let url: UrlEntity = this.config.getRestFulUrl("RA");
-      this.request.post(url, signData).then(data => {
-        //处理返回结果
-        resolve(data.data);
-
-      }).catch(error => {
-        //处理返回错误
-        reject();
-
-      })
-    });
-
-  }
-
 }
 
 export class SignData{

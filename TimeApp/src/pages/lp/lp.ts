@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {LpService} from "./lp.service";
 import {UtilService} from "../../service/util-service/util.service";
-import {PageLpData} from "../../data.mapping";
+import {PageLoginData} from "../../data.mapping";
 
 /**
  * Generated class for the 登陆（密码） page.
@@ -21,12 +21,12 @@ import {PageLpData} from "../../data.mapping";
     <ion-grid class="grid-login-basic no-padding-lr">
       <ion-row justify-content-start align-items-center>
         <div class="w-auto">
-          <ion-input class="login-tel" type="tel" placeholder="开始输入账号" [(ngModel)]="lpData.mobile" (input)="format()"></ion-input>
+          <ion-input class="login-tel" type="tel" placeholder="开始输入账号" [(ngModel)]="login.phoneno" (input)="format()"></ion-input>
         </div>
       </ion-row>
       <ion-row justify-content-between align-items-center>
         <div class="w-auto">
-          <ion-input class="login-pwd" type="password" placeholder="密码" [(ngModel)]="lpData.password" (input)="format()"></ion-input>
+          <ion-input class="login-pwd" type="password" placeholder="密码" [(ngModel)]="login.userpassword" (input)="format()"></ion-input>
         </div>
        <div>
          <button ion-fab class="login-enter" [ngStyle]="{'opacity': opa }" (click)="signIn()">
@@ -45,7 +45,7 @@ import {PageLpData} from "../../data.mapping";
 })
 export class LpPage {
 
-  lpData:PageLpData = new PageLpData();
+  login:PageLoginData = new PageLoginData();
   opa:any = "0.4";
 
   constructor(public navCtrl: NavController,
@@ -79,17 +79,17 @@ export class LpPage {
 
   signIn() {
     if (this.checkPhone()){
-      if (this.lpData.password == null || this.lpData.password == "") {     //判断密码是否为空
+      if (this.login.userpassword == null || this.login.userpassword == "") {     //判断密码是否为空
         this.util.popoverStart("密码不能为空");
       }else{
         this.util.loadingStart();
 
-        this.lpService.login(this.lpData).then(data=> {
-          return this.lpService.getPersonMessage(data);
-        }).then(data=>{
-          if (data.code && data.code != 0)
+        this.lpService.login(this.login).then(data=> {
+          if (data.code != 0)
             throw  data;
 
+          return this.lpService.getPersonMessage(data);
+        }).then(data=>{
           return this.lpService.getOther();
         }).then(data=>{
           this.util.loadingEnd();
@@ -103,15 +103,15 @@ export class LpPage {
   }
 
   checkPhone():boolean {
-    if (!this.util.checkPhone(this.lpData.mobile)){
+    if (!this.util.checkPhone(this.login.phoneno)){
       this.util.popoverStart("请填写正确的手机号");
     }
-    return this.util.checkPhone(this.lpData.mobile);
+    return this.util.checkPhone(this.login.phoneno);
   }
 
   format(){
-    if(this.lpData.mobile.length==11){
-      if(this.checkPhone() && this.lpData.password !="" && this.lpData.password.length >= 4){ // TODO 登录密码暂定四位 测试用的都是四位
+    if(this.login.phoneno.length==11){
+      if(this.checkPhone() && this.login.userpassword !="" && this.login.userpassword.length >= 4){
         this.opa = "1";
       }else {
         this.opa = "0.4";

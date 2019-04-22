@@ -37,7 +37,7 @@ import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
             <ion-avatar (click)="goTofsDetail(scd.fs)">
               <img class="img-set" [src]="scd.fs.bhiu">
             </ion-avatar>
-            <ion-label>{{scd.fs.rn}}</ion-label>
+            <ion-label>{{scd.fs.ran}}</ion-label>
           </ion-chip>
         </ion-row>
         <ion-row>

@@ -169,9 +169,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
 
 
   constructor(public calSvc: CalendarService, public feekback: FeedbackService,private emitService:EmitService) {
-    this.emitService.registerRef((data:string) =>{
-      this.createMonth(this.monthOpt.original.time);
-    });
+
   }
 
 
@@ -205,6 +203,9 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     });
     this.initOpt();
     this.createMonth(new Date().getTime());
+    this.emitService.registerRef((data:string) =>{
+      this.createMonth(this.monthOpt.original.time);
+    });
   }
 
   getViewDate() {

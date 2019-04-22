@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {LsService} from "./ls.service";
 import {UtilService} from "../../service/util-service/util.service";
-import {PageLsData} from "../../data.mapping";
+import {PageLoginData} from "../../data.mapping";
 
 /**
  * Generated class for the 登陆（短信） page.
@@ -21,7 +21,7 @@ import {PageLsData} from "../../data.mapping";
     <ion-grid class="grid-login-basic no-padding-lr">
       <ion-row justify-content-start align-items-center>
         <div class="w-auto">
-          <ion-input class="login-tel" type="tel" placeholder="开始输入手机号" [(ngModel)]="lsData.mobile" (input)="format()"></ion-input>
+          <ion-input class="login-tel" type="tel" placeholder="开始输入手机号" [(ngModel)]="login.phoneno" (input)="format()"></ion-input>
         </div>
         <div>
           <button ion-button class="send-sms" (click)="sendSms()">{{timeText}}</button>
@@ -29,7 +29,7 @@ import {PageLsData} from "../../data.mapping";
       </ion-row>
       <ion-row justify-content-between align-items-center>
         <div class="w-auto">
-          <ion-input class="login-code"  type="number" placeholder="短信验证码" [(ngModel)]="lsData.authCode" (input)="format()"></ion-input>
+          <ion-input class="login-code"  type="number" placeholder="短信验证码" [(ngModel)]="login.verifycode" (input)="format()"></ion-input>
         </div>
         <div>
           <button ion-fab class="login-enter" [ngStyle]="{'opacity': opa }" (click)="signIn()">
@@ -48,7 +48,7 @@ import {PageLsData} from "../../data.mapping";
 })
 export class LsPage {
 
-  lsData:PageLsData = new PageLsData();
+  login:PageLoginData = new PageLoginData();
   timeText:any = "获取验证码";
   timer:any;
   opa:any = "0.4";
@@ -76,44 +76,45 @@ export class LsPage {
 
   sendSms(){
     if(this.checkPhone()){
-      this.lsService.getSMSCode(this.lsData.mobile).then(data => {
-        //console.log("短信发送成功" + JSON.stringify(data));
+
+      this.lsService.getSMSCode(this.login.phoneno).then(data => {
+        console.log("短信发送成功" + JSON.stringify(data));
         //短信验证码KEY 赋值给验证码登录信息
-        this.lsData.verifykey = data.data.verifykey;
+        this.login.verifykey = data.verifykey;
         this.util.toastStart("短信发送成功",2000);
 
+        this.timeText = 60;
+        console.log("开始" + this.timeText + "定时器");
+        this.timer = setInterval(() => {
+          this.timeText--;
+          if (this.timeText <= 0) {
+            clearTimeout(this.timer);
+            console.log("清除定时器");
+            this.timeText = "发送验证码"
+          }
+        }, 1000)
       }).catch(error => {
         this.util.toastStart("短信发送失败",2000);
       });
 
-      this.timeText = 60;
-      console.log("开始" + this.timeText + "定时器");
-      this.timer = setInterval(() => {
-        this.timeText--;
-        if (this.timeText <= 0) {
-          clearTimeout(this.timer);
-          console.log("清除定时器");
-          this.timeText = "发送验证码"
-        }
-      }, 1000)
     }
   }
 
   signIn() {
     if(this.checkPhone()) {
-      if (this.lsData.authCode == null || this.lsData.authCode == "") {     //判断验证码是否为空
+      if (this.login.verifycode == null || this.login.verifycode == "") {     //判断验证码是否为空
         this.util.popoverStart("验证码不能为空");
-      }else if(this.lsData.verifykey == null || this.lsData.verifykey == ""){
+      }else if(this.login.verifykey == null || this.login.verifykey == ""){
         this.util.popoverStart("请发送短信并填写正确的短信验证码");
       }else{
         this.util.loadingStart();
 
-        this.lsService.login(this.lsData).then(data=> {
-          return this.lsService.getPersonMessage(data);
-        }).then(data=>{
-          if (data.code && data.code != 0)
+        this.lsService.login(this.login).then(data=> {
+          if (data.code != 0)
             throw  data;
 
+          return this.lsService.getPersonMessage(data);
+        }).then(data=>{
           return this.lsService.getOther();
         }).then(data=>{
           this.util.loadingEnd();
@@ -122,51 +123,25 @@ export class LsPage {
           this.util.popoverStart( "手机验证码登录失败");
           this.util.loadingEnd();
         });
+        
       }
     }
   }
 
   checkPhone():boolean {
-    if (!this.util.checkPhone(this.lsData.mobile)){
+    if (!this.util.checkPhone(this.login.phoneno)){
       this.util.popoverStart("请填写正确的手机号");
     }
-    return this.util.checkPhone(this.lsData.mobile);
+    return this.util.checkPhone(this.login.phoneno);
   }
 
   format(){
-    if(this.lsData.mobile.length==11){
-      if(this.checkPhone() && this.lsData.authCode !="" && this.lsData.authCode.length == 6){
+    if(this.login.phoneno.length==11){
+      if(this.checkPhone() && this.login.verifycode !="" && this.login.verifycode.length == 6){
         this.opa = "1";
       }else {
         this.opa = "0.4";
       }
     }
   }
-
-  // ionViewDidLoad(){
-  //   console.log("1.0 ionViewDidLoad 当页面加载的时候触发，仅在页面创建的时候触发一次，如果被缓存了，那么下次再打开这个页面则不会触发");
-  // }
-  // ionViewWillEnter(){
-  //   console.log("2.0 ionViewWillEnter 顾名思义，当将要进入页面时触发");
-  // }
-  // ionViewDidEnter(){
-  //   console.log("3.0 ionViewDidEnter 当进入页面时触发");
-  // }
-  // ionViewWillLeave(){
-  //   console.log("4.0 ionViewWillLeave 当将要从页面离开时触发");
-  // }
-  // ionViewDidLeave(){
-  //   console.log("5.0 ionViewDidLeave 离开页面时触发");
-  // }
-  // ionViewWillUnload(){
-  //   console.log("6.0 ionViewWillUnload 当页面将要销毁同时页面上元素移除时触发");
-  // }
-  //
-  // ionViewCanEnter(){
-  //   console.log("ionViewCanEnter");
-  // }
-  //
-  // ionViewCanLeave(){
-  //   console.log("ionViewCanLeave");
-  // }
 }

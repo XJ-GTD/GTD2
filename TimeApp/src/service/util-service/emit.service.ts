@@ -20,7 +20,7 @@ export class EmitService {
   private selectDateEm: EventEmitter<moment.Moment> = new EventEmitter<moment.Moment>();
 
   //新消息点击后
-  private newMessageClickEm: EventEmitter<moment.Moment> = new EventEmitter<moment.Moment>();
+  private newMessageClickEm: EventEmitter<ScdEmData> = new EventEmitter<ScdEmData>();
 
   //新日程增加修改删除信息消息刷新
   private refEm: EventEmitter<string> = new EventEmitter<string>();
@@ -90,14 +90,14 @@ export class EmitService {
 
   registerNewMessageClick(callback) {
     if (this.newMessageClickEm.closed) {
-      this.newMessageClickEm = new EventEmitter<moment.Moment>();
+      this.newMessageClickEm = new EventEmitter<ScdEmData>();
     }
-    this.newMessageClickEm.subscribe(($data: moment.Moment) => {
+    this.newMessageClickEm.subscribe(($data:ScdEmData) => {
       callback($data);
     });
   };
 
-  emitNewMessageClick($data: moment.Moment) {
+  emitNewMessageClick($data:ScdEmData) {
     if (!this.newMessageClickEm.isStopped) {
       this.newMessageClickEm.emit($data);
     }
