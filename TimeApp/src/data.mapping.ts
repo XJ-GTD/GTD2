@@ -286,3 +286,39 @@ export class PageBlData{
   bd: string;
 
 }
+
+/**
+ * 日程添加入参
+ */
+export class RcInParam{
+  si: string = "";//日程事件ID
+  sn: string = "";//日程事件主题  必传
+  ui: string = "";//创建者
+  sd: string = "";//开始日期      必传
+  st: string = "";//开始时间
+  ed: string = "";//结束日期
+  et: string = "";//结束时间
+  rt: string = "0";//重复类型
+  ji: string = "";//计划ID
+  sr: string = "";//日程关联ID
+  bz: string = "";//备注
+  tx: string = "0";//提醒方式
+  gs:string ="0";//归属
+  px:number; //排序
+  //参与人
+  fss: Array<FsData> =new Array<FsData>();
+
+  /**
+   * 设置ed、et等其他参数
+   */
+  setParam(){
+    if(this.ed=''){
+      this.ed = this.sd;
+    }
+    if(this.et=''){
+      this.et = this.st;
+    }
+  }
+
+
+}

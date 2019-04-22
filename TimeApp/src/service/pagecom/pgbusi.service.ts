@@ -12,7 +12,7 @@ import * as moment from "moment";
 import {DataConfig} from "../config/data.config";
 import {UserConfig} from "../config/user.config";
 import {ContactsService} from "../cordova/contacts.service";
-import {FsData, ScdData, SpecScdData} from "../../data.mapping";
+import {FsData, RcInParam, ScdData, SpecScdData} from "../../data.mapping";
 import {FsService} from "../../pages/fs/fs.service";
 import {PlService} from "../../pages/pl/pl.service";
 import {EmitService} from "../util-service/emit.service";
@@ -195,6 +195,49 @@ export class PgBusiService {
 
   }
 
+  /**
+   * 语音保存日程更新
+   */
+  async ynSave(rc : RcInParam){
+    if(rc.si != null){
+      this.getCtbl(rc.si);
+    }else{
+      rc.setParam();
+      rc.ui = UserConfig.account.id;
+      let scd = new ScdData();
+      Object.assign(scd,rc);
+      this.save(scd);
+    }
+  }
+
+  selectBySi(){
+
+  }
+
+  selectOneRc(){
+
+  }
+
+  selectList(){}
+
+  selectHome(){
+
+  }
+
+  selectYl(){
+
+}
+
+  /**
+   * 获取ctbl表信息
+   * @param si
+   */
+  private async getCtbl(si){
+    let c = new CTbl();
+    c.si = si;
+    c = await this.sqlExce.getOne<CTbl>(c);
+    return c;
+  }
   /**
    * 日程添加
    * @param {PageRcData} rc 日程信息
