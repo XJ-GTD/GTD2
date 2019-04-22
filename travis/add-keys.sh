@@ -29,10 +29,10 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
   # Put the provisioning profile in place
   mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
   #cp "./scripts/profile/team.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
-  cp "$TRAVIS_BUILD_DIR/travis/profiles/ios/$IOS_PROFILE_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
+  cp "$TRAVIS_BUILD_DIR/travis/profiles/ios/iOS_Distribution_001.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
 
   echo "show provision uuid: "
-  security cms -D -i "$TRAVIS_BUILD_DIR/travis/profiles/ios/$IOS_PROFILE_NAME.mobileprovision"
+  security cms -D -i "$TRAVIS_BUILD_DIR/travis/profiles/ios/iOS_Distribution_001.mobileprovision"
   echo " ****** "
   
 fi
