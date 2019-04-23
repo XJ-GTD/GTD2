@@ -1,6 +1,12 @@
 import {CalendarDay} from "./components/ion2-calendar";
 import * as moment from "moment";
 
+/**
+ * 继承类
+ */
+export class BaseData{
+
+}
 
 export class ScdData {
   si: string = "";//日程事件ID
@@ -18,7 +24,7 @@ export class ScdData {
   pni:string = "";//日程原始ID
   wtt: number;//时间戳
   du:string ="";//消息读取状态
-  gs:string ="";//归属
+  gs:string ="";//归属 0：本人创建，1：他人创建，2：系统,3:系统计划3类型
   ib:string ="0"; //0：非本地日历;1：本地日历
   fssshow:string ="";//参与人画面显示用
   cbkcolor:number = 0;//每个日程颜色画面显示用
@@ -52,9 +58,61 @@ export class ScdData {
 
 }
 
+/**
+ * 日程出参
+ */
+export class ScdOutata {
+  si: string = "";//日程事件ID
+  sn: string = "";//日程事件主题
+  ui: string = "";//创建者
+  sd: string = "";//开始日期
+  st: string = "";//开始时间
+  ed: string = "";//结束日期
+  et: string = "";//结束时间
+  rt: string = "";//重复类型
+  ji: string = "";//计划ID
+  sr: string = "";//日程关联ID
+  bz: string = "";//备注
+  tx: string = "";//提醒方式
+  pni:string = "";//日程原始ID
+  wtt: number;//时间戳
+  du:string ="";//消息读取状态
+  gs:string ="";//归属
+  ib:string ="0"; //0：非本地日历;1：本地日历
+  fssshow:string ="";//参与人画面显示用
+  cbkcolor:number = 0;//每个日程颜色画面显示用
+  morecolor:string ="#FFFFFF";//more颜色画面显示
+
+
+  showSd: string = "";//画面显示特殊表开始日期
+
+
+  //特殊日期日程
+  specScds: Map<string, BaseData> = new Map<string, BaseData>();
+
+  //当天关联的特殊日程
+  specScd(d:string): BaseData {
+    return this.specScds.get(d);
+  }
+  baseData : BaseData;
+  //参与人
+  fss: Array<FsData> =new Array<FsData>();
+
+  //发起人
+  fs: FsData =new FsData();
+
+
+  //提醒设置
+  r: RemindData = new RemindData();
+
+  //所属计划
+  p:PlData = new PlData();
+
+
+}
 
 //特殊事件
-export class SpecScdData {
+export class SpecScdData extends BaseData{
   spi: string = "" //日程特殊事件ID
   si: string = ""//日程事件ID
   spn: string = ""//日程特殊事件主题
@@ -71,6 +129,21 @@ export class SpecScdData {
   remindData:RemindData = new RemindData();//对应提醒时间
 }
 
+/**
+ * 系统特殊计划表
+ */
+export class JtData extends BaseData {
+  jti: string = "";//主键ID
+  si: string = ""//日程事件ID
+  ji: string = "";//计划ID
+  spn: string = "";//主题
+  sd: string = ""//开始日期
+  st: string = ""//开始时间
+  ed: string = ""//结束时间
+  et: string = ""//结束时间
+  px: Number = 0; //排序
+  bz: string = ""; //备注
+}
 //参与人
 export class FsData {
   pwi: string = ""; //主键
@@ -303,11 +376,10 @@ export class RcInParam{
   sr: string = "";//日程关联ID
   bz: string = "";//备注
   tx: string = "0";//提醒方式
-  gs:string ="0";//归属
-  px:number; //排序
+  gs:string ="0";//归属 0：本人创建，1：他人创建，2：系统本地日历,3:系统计划3优先级类型（入JtTbl表），4：系统计划无优先级
+  px:number = 0; //排序
   //参与人
   fss: Array<FsData> =new Array<FsData>();
-
   /**
    * 设置ed、et等其他参数
    */
@@ -320,5 +392,12 @@ export class RcInParam{
     }
   }
 
+}
 
+export class MonthData{
+  sd:string;
+  scds:number;
+  news:number;
+  minrt:string; //最小重复类型：0:无1:天2:周3:月4:年
+  csd : string;//日程开始时间
 }

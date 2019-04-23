@@ -8,6 +8,7 @@ import * as moment from "moment";
 export class JtTbl  implements ITbl {
 
   jti: string="";
+  si:string="";
   ji: string="";
   spn: string="";
   sd: string="";
@@ -21,7 +22,7 @@ export class JtTbl  implements ITbl {
   cT():string {
 
     let sq =' create table if not exists gtd_jt(jti varchar(50) primary key ,' +
-      'ji varchar(50)  ,spn varchar(50)  ,sd varchar(20)' +
+      'si varchar(50)  ,ji varchar(50)  ,spn varchar(50)  ,sd varchar(20)' +
       ' ,st varchar(20)  ,ed varchar(20)  ,et varchar(20),px integer,bz varchar(50)  ,' +
       'wtt integer);';
 
@@ -51,6 +52,9 @@ export class JtTbl  implements ITbl {
     if(this.ji != null && this.ji!=""){
       sq = sq + ', ji="' + this.ji +'"';
     }
+    if(this.si!=null && this.si!=""){
+      sq=sq+', si="' + this.si +'"';
+    }
     if(this.bz != null && this.bz!=""){
       sq = sq + ', bz="' + this.bz +'"';
     }
@@ -71,6 +75,9 @@ export class JtTbl  implements ITbl {
     }
     if(this.ji != null && this.ji!=""){
       sq = sq + 'and  ji ="' + this.ji +'"';
+    }
+    if(this.si != null && this.si!=""){
+      sq = sq + 'and  si ="' + this.si +'"';
     }
     sq = sq + ';'
     return sq;
@@ -102,6 +109,9 @@ export class JtTbl  implements ITbl {
     if(this.ji != null && this.ji!=""){
       sq = sq + ' and ji="' + this.ji +'"';
     }
+    if(this.si != null && this.si!=""){
+      sq = sq + ' and si="' + this.si +'"';
+    }
     if(this.bz != null && this.bz!=""){
       sq = sq + ' and bz="' + this.bz +'"';
     }
@@ -120,7 +130,7 @@ export class JtTbl  implements ITbl {
 
   inT():string {
     let sq ='insert into gtd_jt ' +
-      '( jti ,ji ,spn ,sd ,st ,ed ,et ,px ,bz ,wtt) values("'+ this.jti+'","'+ this.ji+'","'+this.spn+ '"' +
+      '( jti ,si , ji ,spn ,sd ,st ,ed ,et ,px ,bz ,wtt) values("'+ this.jti+'","'+ this.si+'","'+ this.ji+'","'+this.spn+ '"' +
       ',"'+this.sd+ '","'+this.st+ '","'+this.ed+ '","'+this.et+ '",'+this.px+ ',"'+this.bz+ '",' +  moment().unix() +');';
 
     return sq;
@@ -128,7 +138,7 @@ export class JtTbl  implements ITbl {
 
   rpT():string {
     let sq ='replace into gtd_jt ' +
-      '( jti ,ji ,spn ,sd ,st ,ed ,et ,px ,bz ,wtt) values("'+ this.jti+'","'+ this.ji+'","'+this.spn+ '"' +
+      '( jti ,si ,ji ,spn ,sd ,st ,ed ,et ,px ,bz ,wtt) values("'+ this.jti+'","'+ this.si+'","'+ this.ji+'","'+this.spn+ '"' +
       ',"'+this.sd+ '","'+this.st+ '","'+this.ed+ '","'+this.et+ '",'+this.px+ ',"'+this.bz+ '",' +  moment().unix() +');';
 
 

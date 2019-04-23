@@ -6,10 +6,6 @@ page-fs4c{
   ion-content.content {
     background-color: $masterColor !important;
   }
-
-  .bar-button-ios{
-    color: $fontMasterColor !important;
-  }
 }
 page-fs4c ,page-fs4g{
 
@@ -67,9 +63,10 @@ page-fs4c ,page-fs4g{
     font-size: 1.5rem;
   }
 
-  /*.bar-button-ios{
+  .button-header-right{
     font-size: 1.5rem;
-  }*/
+    color: $adornColor;
+  }
 
   ion-input{
     font-size: 1.5rem;

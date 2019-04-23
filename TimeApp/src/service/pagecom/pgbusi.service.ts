@@ -12,10 +12,12 @@ import * as moment from "moment";
 import {DataConfig} from "../config/data.config";
 import {UserConfig} from "../config/user.config";
 import {ContactsService} from "../cordova/contacts.service";
-import {FsData, RcInParam, ScdData, SpecScdData} from "../../data.mapping";
+import {BaseData, FsData, JtData, RcInParam, ScdData, ScdOutata, SpecScdData,MonthData} from "../../data.mapping";
 import {FsService} from "../../pages/fs/fs.service";
-import {PlService} from "../../pages/pl/pl.service";
 import {EmitService} from "../util-service/emit.service";
+import {BTbl} from "../sqlite/tbl/b.tbl";
+import {JtTbl} from "../sqlite/tbl/jt.tbl";
+import {CalendarDay, CalendarMonth} from "../../components/ion2-calendar/calendar.model";
 
 @Injectable()
 export class PgBusiService {
@@ -196,68 +198,406 @@ export class PgBusiService {
   }
 
   /**
-   * 语音保存日程更新
+   * 日程保存或日程更新  dch
    */
-  async saveOne(rc : RcInParam){
-    if(rc.si != null){
-      this.getCtbl(rc.si);
-    }else{
-      rc.setParam();
-      rc.ui = UserConfig.account.id;
-      let scd = new ScdData();
-      Object.assign(scd,rc);
-      this.save(scd);
-    }
+   saveOrUpdate(rc : RcInParam):Promise<ScdData>{
+     return new Promise<ScdData>(async (resolve, reject) => {
+       if (rc.si != null) {
+         let scd = new ScdData();
+         Object.assign(scd, rc);
+         scd = await this.updateDetail(scd);
+         resolve(scd)
+       } else {
+         rc.setParam();
+         rc.ui = UserConfig.account.id;
+         let scd = new ScdData();
+         Object.assign(scd, rc);
+         scd = await this.save(scd);
+         resolve(scd)
+       }
+     })
   }
 
   /**
-   * 批量保存日程更新
+   * 批量保存日程更新  dch
    */
   async saveBatch(rcL : Array<RcInParam>){
-
+    let sqL = new Array<string>();
+    let len = sqL.length;
+    if(rcL.length>0){
+      for(let rc of rcL){
+        let rcn = new CTbl();
+        rc.setParam();
+        Object.assign(rcn,rc);
+        rcn.si = this.util.getUuid();
+        rcn.ui = UserConfig.account.id;
+        sqL.push(rcn.inT());
+        if(rc.gs == '3'){
+          let jt = new JtTbl();
+          Object.assign(jt,rc);
+          jt.si = rcn.si;
+          jt.jti = this.util.getUuid();
+          sqL.push(jt.inT());
+        }else{
+          let sp = new SpTbl();
+          Object.assign(sp,rc);
+          sp.spi = this.util.getUuid();
+          sp.si = rcn.si;
+          sqL.push(sp.inT());
+        }
+      }
+      if(sqL.length>0){
+         len = await this.sqlExce.batExecSql(sqL);
+      }
+    }
+    return len;
   }
 
   /**
-   * 根据日程Id获取日程详情
+   * 根据日程Id获取日程详情  dch
    * @param {string} si
    */
-  selectBySi(si:string){
+  getBySi(si:string): Promise<ScdOutata> {
+      return new Promise<ScdOutata>(async (resolve, reject) => {
+        //获取本地日程
+        let scdData = new ScdOutata();
+        let ctbl = await this.getCtbl(si);
+        if(ctbl != null){
+          Object.assign(scdData, ctbl);
+          //获取计划对应色标
+          let jh = new JhTbl();
+          jh.ji = scdData.ji;
+          jh = await this.sqlExce.getOne<JhTbl>(jh);
+          Object.assign(scdData.p, jh);
+          //获取特殊日程子表详情
+          if(scdData.gs != '3'){
+            scdData.specScds = await this.getSpData('',scdData.si,'');
+          }else{
+            scdData.specScds = await this.getJtData('',scdData.si,'');
+          }
+          if(scdData.gs == '0'){
+            //共享人信息
+            scdData.fss = await this.getFsDataBySi(ctbl.si);
+          }
 
+          if(scdData.gs == '1'){
+            //发起人信息
+            scdData.fs = await this.getFsDataByUi(ctbl.ui);
+          }
+          resolve(scdData);
+        }
+      });
   }
 
   /**
-   * 根据(日程Id和日期)或(子表ID)获取日程详情
-   * @param {string} si
-   * @param {string} date
-   * @param {string} subSi
+   * 根据(日程Id和日期)或(子表ID)获取日程详情  dch
+   * @param {string} si  日程Id
+   * @param {string} date 日期
+   * @param {string} subSi 子表ID
    */
-  selectOneRc(si:string,date:string,subSi:string){
+  async getOneRc(si:string,date:string,subSi:string){
+    let scdData = new ScdOutata();
 
+     if(si != '' && date == '' && subSi == ''){
+       //只传si
+       scdData = await this.getBySi(si);
+     }else if(si != '' && date != '' && subSi == ''){
+       //传si和date
+       scdData = await this.getBySi(si);
+       if(scdData != null){
+         scdData.baseData = scdData.specScd(date);
+       }
+     }else if(si == '' && date == '' && subSi != ''){
+       //只传subSi
+       scdData.specScds = await this.getSpData(subSi,'','');
+       if(scdData.specScds.size>0){
+         scdData.specScds.forEach((value) => {
+           let sp:SpecScdData = new SpecScdData();
+           Object.assign(sp,value);
+           si = sp.si;
+         });
+       }else{
+         scdData.specScds = await this.getJtData('',scdData.si,'');
+         scdData.specScds.forEach((value) => {
+           let sp:JtData = new JtData();
+           Object.assign(sp,value);
+           si = sp.si;
+         });
+       }
+       if(si != ''){
+         let ctbl = await this.getCtbl(si);
+         if(ctbl != null){
+           Object.assign(scdData, ctbl);
+           //获取计划对应色标
+           let jh = new JhTbl();
+           jh.ji = scdData.ji;
+           jh = await this.sqlExce.getOne<JhTbl>(jh);
+           Object.assign(scdData.p, jh);
+           if(scdData.gs == '0'){
+             //共享人信息
+             scdData.fss = await this.getFsDataBySi(ctbl.si);
+           }
+
+           if(scdData.gs == '1'){
+             //发起人信息
+             scdData.fs = await this.getFsDataByUi(ctbl.ui);
+           }
+         }
+       }
+     }
+    return scdData;
   }
 
   /**
-   * 条件查询
+   * 条件查询  dch
    * @param {RcInParam} rc
    */
-  selectList(rc : RcInParam){}
+  getList(rc : RcInParam): Promise<Array<CTbl>> {
+    return new Promise<Array<CTbl>>(async resolve => {
+      console.log("============ mq查询日程scd："+ JSON.stringify(rc));
+      let res: Array<CTbl> = new Array<CTbl>();
+      if (rc.ed ||
+        rc.et ||
+        rc.sd ||
+        rc.st ||
+        rc.sn) {
+        let sql: string = `select distinct sp.spi as si,
+                                           c.sn,
+                                           c.ui,
+                                           sp.sd     sd,
+                                           c.st,
+                                           c.ed,
+                                           c.et,
+                                           c.rt,
+                                           c.ji,
+                                           c.sr,
+                                           c.bz,
+                                           sp.wtt    wtt,
+                                           c.tx,
+                                           c.pni,
+                                           c.du,
+                                           c.gs
+                           from gtd_sp sp
+                                  inner join gtd_c c on sp.si = c.si
+                                  left join gtd_d d on d.si = c.si
+                           where 1 = 1`
 
-  /**
-   * 首页查询
-   * @param {string} month
-   */
-  selectHome(month:string){
-
+        if (rc.sn) {
+          sql = sql + ` and c.sn like '% ${rc.sn}%'`;
+        }
+        if (rc.sd) {
+          sql = sql + ` and sp.sd >= '${rc.sd}'`;
+        } else {
+          sql = sql + ` and sp.sd >= '${moment().subtract(30, 'd').format('YYYY/MM/DD')}%'`;
+        }
+        if (rc.ed) {
+          sql = sql + ` and sp.sd <= '${rc.ed}'`;
+        } else {
+          sql = sql + ` and sp.sd <= '${moment().add(30, 'd').format('YYYY/MM/DD')}%'`;
+        }
+        if (rc.st) {
+          sql = sql + ` and sp.st >= '${rc.st}'`;
+        }
+        if (rc.et) {
+          sql = sql + ` and sp.st <= '${rc.et}'`;
+        }
+        console.log("============ mq查询日程："+ sql);
+        res = await this.sqlExce.getExtList<CTbl>(sql);
+      }
+      resolve(res);
+    })
   }
 
   /**
-   * 一览查询
+   * 首页月份查询  dch
+   * @param {CalendarMonth} month
+   */
+  async getMonthData(month:CalendarMonth){
+    let _start = new Date(month.original.time);
+    let _startMonth = moment(moment(_start).format("YYYY/MM/") + "1");
+    let _endMonth = moment(moment(_start).format("YYYY/MM/") + _startMonth.daysInMonth());
+    let sql:string = "select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt from gtd_c gc join gtd_sp sp on gc.si = sp.si " +
+      "where sp.sd>='" + moment(_startMonth).format("YYYY/MM/DD")+ "' and sp.sd<='" +  moment(_endMonth).format("YYYY/MM/DD") + "' group by sp.sd ,gc.sd";
+    this.sqlExce.getExtList<MonthData>(sql).then(data=>{
+      for (let d of data){
+        let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
+        //判断是否存在非重复类型  or 判断是否存在重复日期为开始日期
+        if(d.minrt == '0' || d.csd ==d.sd){
+          calendarDay.onlyRepeat = false;
+        }else {
+          calendarDay.onlyRepeat = true;
+        }
+        calendarDay.things = d.scds;
+        calendarDay.hassometing = d.scds > 0 && !calendarDay.onlyRepeat ;
+        calendarDay.busysometing = d.scds >= 4 && !calendarDay.onlyRepeat ;
+        calendarDay.allsometing = d.scds >= 8 && !calendarDay.onlyRepeat ;
+        calendarDay.newmessage = d.news
+        calendarDay.hasting = d.scds > 0;
+        //calendarDay.subTitle = d.news > 0? `\u2022`: "";
+        calendarDay.marked = false;
+      }
+    })
+  }
+
+  /**
+   * 一览查询  dch
    */
   selectYl(){
 
-}
+  }
 
   /**
-   * 获取ctbl表信息
+   * 根据日程ID删除  dch
+   * @param {string} si
+   */
+  deleteBySi(si:string,){
+
+  }
+
+  /**
+   *删除日程   dch
+   * @param {string} si
+   * @param {string} ed
+   * @param {string} ji
+   */
+  deleteByInfo(si:string,ed:string,ji:string){
+
+  }
+
+  /**
+   * 获取系统计划3特殊表详情  dch
+   * @param {string} jti
+   * @param {string} si
+   * @returns {Promise<Array<JtData>>}
+   */
+  async getJtData(jti:string,si:string,sd:string){
+    let baseL = new Map<string, BaseData>();
+    let jt = new JtTbl();
+    jt.px = null;
+    if(jti != ''){
+      jt.jti = jti;
+    }
+    if(si != ''){
+      jt.si = si;
+    }
+    if(sd != ''){
+      jt.sd = sd;
+    }
+    let jtL = await this.sqlExce.getList<JtData>(jt);
+    for (let j = 0, len = jtL.length; j < len; j++) {
+      baseL.set(jtL[j].sd, jtL[j]);
+    }
+    return baseL;
+  }
+
+  /**
+   * 获取日程特殊表详情  dch
+   * @param {string} spi
+   * @param {string} si
+   * @param {string} sd
+   * @returns {Promise<Array<JtData>>}
+   */
+  async getSpData(spi:string,si:string,sd:string){
+    let baseL = new Map<string, BaseData>();
+    //获取特殊日程子表及提醒对象
+    let spsql = "select sp.spi, " +
+      "sp.si," +
+      "sp.spn," +
+      "sp.sd," +
+      "sp.st," +
+      "sp.ed," +
+      "sp.et," +
+      "sp.ji," +
+      "sp.bz," +
+      "sp.sta," +
+      "sp.tx," +
+      "sp.wtt," +
+      "sp.itx ,e.wi ewi,e.si esi,e.st est ,e.wd ewd,e.wt ewt,e.wtt ewtt " +
+      " from gtd_sp sp left join gtd_e e on sp.spi = e.wi and " +
+      "sp.si = e.si ";
+    if(si != ''){
+      spsql =spsql +  "and sp.si = '" + si + "' "
+    }
+    if(sd != ''){
+      spsql =spsql +  "and sp.sd = '" + sd + "' "
+    }
+    if(spi != ''){
+      spsql =spsql +  "and sp.spi = '" + spi + "' "
+    }
+    let lst: Array<any> = new Array<any>();
+    lst = await this.sqlExce.getExtList<any>(spsql);
+    for (let j = 0, len = lst.length; j < len; j++) {
+      let sp: SpecScdData = new SpecScdData();
+      Object.assign(sp, lst[j]);
+
+      sp.remindData.wi = lst[j].ewi;
+      sp.remindData.si = lst[j].esi;
+      sp.remindData.st = lst[j].est;
+      sp.remindData.wd = lst[j].ewd;
+      sp.remindData.wt = lst[j].ewt;
+      sp.remindData.wtt = lst[j].ewtt;
+      baseL.set(sp.sd, sp);
+    }
+    return baseL;
+  }
+
+  /**
+   * 根据日程Id获取联系人信息  dch
+   * @returns {Promise<Array<FsData>>}
+   */
+  private async getFsDataBySi(si:string){
+    let fss: Array<FsData> =new Array<FsData>();
+    //共享人信息
+    let dlst: Array<DTbl> = new Array<DTbl>();
+    let dlstsql = "select * from gtd_d where si = '" + si + "' ";
+    dlst = await this.sqlExce.getExtList<DTbl>(dlstsql);
+    for (let j = 0, len = dlst.length; j < len; j++) {
+      let fs: FsData = this.userConfig.GetOneBTbl(dlst[j].ai);
+      if(fs && fs != null){
+        fss.push(fs);
+      }
+    }
+    return fss;
+  }
+
+  /**
+   * 根据用户Id获取联系人信息  dch
+   * @returns {Promise<Array<FsData>>}
+   */
+  private async getFsDataByUi(ui:string){
+    let fs = new FsData();
+    //发起人信息
+    let tmp = this.userConfig.GetOneBTbl(ui);
+    if (tmp) {
+      fs = tmp;
+    }else{
+      //不存在查询数据库
+      let b = await this.getBtcl(ui);
+      if(b != null){
+        Object.assign(fs, b);
+        fs.bhiu = DataConfig.HUIBASE64;
+      }else{
+        console.error("=======PgbusiService 获取发起人失败 =======")
+      }
+    }
+    return fs;
+  }
+
+  /**
+   * 根据openId查询联系人信息  dch
+   * @param ui
+   * @returns {Promise<BTbl>}
+   */
+  async getBtcl(ui){
+    //不存在查询数据库
+    let b = new BTbl();
+    b.ui = ui;
+    b = await this.sqlExce.getExtOne<BTbl>(b.slT());
+    return b;
+  }
+
+  /**
+   * 获取ctbl表信息  dch
    * @param si
    */
   private async getCtbl(si){
@@ -271,9 +611,9 @@ export class PgBusiService {
    * @param {PageRcData} rc 日程信息
    * @returns {Promise<BsModel<any>>}
    */
-  save(rc: ScdData): Promise<CTbl> {
+  save(rc: ScdData): Promise<ScdData> {
 
-    return new Promise<CTbl>(async (resolve, reject) => {
+    return new Promise<ScdData>(async (resolve, reject) => {
       let str = this.checkRc(rc);
       //TODO  返回错误信息
       if (str != '') {
@@ -297,10 +637,9 @@ export class PgBusiService {
       //restFul保存日程
       this.setAdgPro(adgPro, ct);
       this.agdRest.save(adgPro);
-      resolve(ct);
+      resolve(rc);
 
       this.emitService.emitRef(ct.sd);
-      return;
     });
 
   }
@@ -315,7 +654,7 @@ export class PgBusiService {
 
 
     return new Promise<ScdData>(async (resolve, reject) => {
-      let ct: CTbl = await this.save(rc);
+      let ct: ScdData = await this.save(rc);
       rc.si = ct.si;
       let fs: Array<FsData> = new Array<FsData>();
       for (let f of rc.fss) {
@@ -528,7 +867,6 @@ export class PgBusiService {
 
       this.emitService.emitRef(scd.sd);
       resolve(scd);
-      return;
     });
 
   }
