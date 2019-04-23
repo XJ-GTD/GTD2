@@ -240,6 +240,7 @@ page-tdc, page-tddi, page-tddj, page-tdds {
       display: inherit;
       overflow: hidden;
       overflow-y: auto;
+      background-color: $masterColor;
 
       .item-block {
         min-height: 3rem;
