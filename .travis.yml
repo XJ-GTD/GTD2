@@ -66,7 +66,7 @@ before_script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sh $TRAVIS_BUILD_DIR/travis/add-keys.sh ; fi
 script:
   - ionic cordova plugin ls
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then yarn install ; else npm install ; fi
+  - yarn install
   - npm run clean
   - npm run build
   - sh $TRAVIS_BUILD_DIR/travis/build.sh
