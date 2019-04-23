@@ -394,3 +394,10 @@ export class RcInParam{
 
 }
 
+export class MonthData{
+  sd:string;
+  scds:number;
+  news:number;
+  minrt:string; //最小重复类型：0:无1:天2:周3:月4:年
+  csd : string;//日程开始时间
+}

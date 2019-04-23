@@ -12,11 +12,12 @@ import * as moment from "moment";
 import {DataConfig} from "../config/data.config";
 import {UserConfig} from "../config/user.config";
 import {ContactsService} from "../cordova/contacts.service";
-import {BaseData, FsData, JtData, RcInParam, ScdData, ScdOutata, SpecScdData} from "../../data.mapping";
+import {BaseData, FsData, JtData, RcInParam, ScdData, ScdOutata, SpecScdData,MonthData} from "../../data.mapping";
 import {FsService} from "../../pages/fs/fs.service";
 import {EmitService} from "../util-service/emit.service";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {JtTbl} from "../sqlite/tbl/jt.tbl";
+import {CalendarDay, CalendarMonth} from "../../components/ion2-calendar/calendar.model";
 
 @Injectable()
 export class PgBusiService {
@@ -256,16 +257,12 @@ export class PgBusiService {
    * 根据日程Id获取日程详情
    * @param {string} si
    */
-  selectBySi(si:string): Promise<ScdOutata> {
+  getBySi(si:string): Promise<ScdOutata> {
       return new Promise<ScdOutata>(async (resolve, reject) => {
         //获取本地日程
         let scdData = new ScdOutata();
-        let ctbl = new CTbl();
+        let ctbl = await this.getCtbl(si);
         if(ctbl != null){
-          if (si != "") {
-            ctbl.si = si;
-          }
-          ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
           Object.assign(scdData, ctbl);
           //获取计划对应色标
           let jh = new JhTbl();
@@ -294,17 +291,106 @@ export class PgBusiService {
 
   /**
    * 根据(日程Id和日期)或(子表ID)获取日程详情
-   * @param {string} si
-   * @param {string} date
-   * @param {string} subSi
+   * @param {string} si  日程Id
+   * @param {string} date 日期
+   * @param {string} subSi 子表ID
    */
-  async selectOneRc(si:string,date:string,subSi:string){
+  async getOneRc(si:string,date:string,subSi:string){
     let scdData = new ScdOutata();
-     if(si != '' && date == '' && subSi == ''){
-       scdData = await this.selectBySi(si);
-     }else if(si != '' && date != '' && subSi == ''){
 
+     if(si != '' && date == '' && subSi == ''){
+       //只传si
+       scdData = await this.getBySi(si);
+     }else if(si != '' && date != '' && subSi == ''){
+       //传si和date
+       scdData = await this.getBySi(si);
+       if(scdData != null){
+         scdData.baseData = scdData.specScd(date);
+       }
+     }else if(si == '' && date == '' && subSi != ''){
+       //只传subSi
+       scdData.specScds = await this.getSpData(subSi,'','');
+       if(scdData.specScds.size>0){
+         scdData.specScds.forEach((value) => {
+           let sp:SpecScdData = new SpecScdData();
+           Object.assign(sp,value);
+           si = sp.si;
+         });
+       }else{
+         scdData.specScds = await this.getJtData('',scdData.si,'');
+         scdData.specScds.forEach((value) => {
+           let sp:JtData = new JtData();
+           Object.assign(sp,value);
+           si = sp.si;
+         });
+       }
+       if(si != ''){
+         let ctbl = await this.getCtbl(si);
+         if(ctbl != null){
+           Object.assign(scdData, ctbl);
+           //获取计划对应色标
+           let jh = new JhTbl();
+           jh.ji = scdData.ji;
+           jh = await this.sqlExce.getOne<JhTbl>(jh);
+           Object.assign(scdData.p, jh);
+           if(scdData.gs == '0'){
+             //共享人信息
+             scdData.fss = await this.getFsDataBySi(ctbl.si);
+           }
+
+           if(scdData.gs == '1'){
+             //发起人信息
+             scdData.fs = await this.getFsDataByUi(ctbl.ui);
+           }
+         }
+       }
      }
+    return scdData;
+  }
+
+  /**
+   * 条件查询
+   * @param {RcInParam} rc
+   */
+  getList(rc : RcInParam){
+
+  }
+
+  /**
+   * 首页月份查询
+   * @param {CalendarMonth} month
+   */
+  async getMonthData(month:CalendarMonth){
+    let _start = new Date(month.original.time);
+    let _startMonth = moment(moment(_start).format("YYYY/MM/") + "1");
+    let _endMonth = moment(moment(_start).format("YYYY/MM/") + _startMonth.daysInMonth());
+    let sql:string = "select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt from gtd_c gc join gtd_sp sp on gc.si = sp.si " +
+      "where sp.sd>='" + moment(_startMonth).format("YYYY/MM/DD")+ "' and sp.sd<='" +  moment(_endMonth).format("YYYY/MM/DD") + "' group by sp.sd ,gc.sd";
+    this.sqlExce.getExtList<MonthData>(sql).then(data=>{
+      for (let d of data){
+        let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
+        //判断是否存在非重复类型  or 判断是否存在重复日期为开始日期
+        if(d.minrt == '0' || d.csd ==d.sd){
+          calendarDay.onlyRepeat = false;
+        }else {
+          calendarDay.onlyRepeat = true;
+        }
+        calendarDay.things = d.scds;
+        calendarDay.hassometing = d.scds > 0 && !calendarDay.onlyRepeat ;
+        calendarDay.busysometing = d.scds >= 4 && !calendarDay.onlyRepeat ;
+        calendarDay.allsometing = d.scds >= 8 && !calendarDay.onlyRepeat ;
+        calendarDay.newmessage = d.news
+        calendarDay.hasting = d.scds > 0;
+        //calendarDay.subTitle = d.news > 0? `\u2022`: "";
+        calendarDay.marked = false;
+      }
+    })
+  }
+
+  /**
+   * 一览查询
+   */
+  selectYl(){
 
   }
 
@@ -439,27 +525,6 @@ export class PgBusiService {
     b = await this.sqlExce.getExtOne<BTbl>(b.slT());
     return b;
   }
-
-  /**
-   * 条件查询
-   * @param {RcInParam} rc
-   */
-  selectList(rc : RcInParam){}
-
-  /**
-   * 首页查询
-   * @param {string} month
-   */
-  selectHome(month:string){
-
-  }
-
-  /**
-   * 一览查询
-   */
-  selectYl(){
-
-}
 
   /**
    * 获取ctbl表信息
