@@ -15,9 +15,9 @@ export class PdService {
     // 获取计划管理日程（重复日程处理等）
     let  sql = "";
     if(jt == "0"){
-      sql = 'select gc.si,gc.sn,gc.bz,gc.ji,gc.rt,gc.sr,jt.sd,jt.st,jt.et,jt.ed from gtd_c gc left join gtd_jt jt on gc.si = jt.si where gc.ji = "' + pid + '"  order by jt.sd,jt.st desc';
+      sql = 'select gc.si,gc.sn,gc.bz,gc.ji,gc.rt,gc.sr,jt.sd,jt.st,jt.et,jt.ed from gtd_c gc left join gtd_jt jt on gc.si = jt.si where gc.ji = "' + pid + '"  order by jt.sd';
     }else {
-      sql = 'select gc.si,gc.sn,gc.bz,gc.ji,gc.rt,gc.sr,sp.sd,sp.st,sp.et,sp.ed from gtd_c gc left join gtd_sp sp on gc.si = sp.si where gc.ji = "' + pid + '"  order by sp.sd,sp.st desc';
+      sql = 'select gc.si,gc.sn,gc.bz,gc.ji,gc.rt,gc.sr,sp.sd,sp.st,sp.et,sp.ed from gtd_c gc left join gtd_sp sp on gc.si = sp.si where gc.ji = "' + pid + '"  order by sp.sd';
     }
 
     let  cs = await this.sqlExec.getExtList<CTbl>(sql);
