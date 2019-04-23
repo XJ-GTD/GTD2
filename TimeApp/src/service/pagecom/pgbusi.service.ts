@@ -235,10 +235,12 @@ export class PgBusiService {
           let jt = new JtTbl();
           Object.assign(jt,rc);
           jt.si = rcn.si;
+          jt.jti = this.util.getUuid();
           sqL.push(jt.inT());
         }else{
           let sp = new SpTbl();
           Object.assign(sp,rc);
+          sp.spi = this.util.getUuid();
           sp.si = rcn.si;
           sqL.push(sp.inT());
         }
@@ -276,15 +278,34 @@ export class PgBusiService {
           }else{
             scdData.specScds = await this.getJtData('',scdData.si,'');
           }
+          if(scdData.gs == '0'){
+            //共享人信息
+            scdData.fss = await this.getFsDataBySi(ctbl.si);
+          }
 
-          //发起人信息
-          scdData.fs = await this.getFsDataByUi(ctbl.ui);
-
-          //共享人信息
-          scdData.fss = await this.getFsDataBySi(ctbl.si);
+          if(scdData.gs == '1'){
+            //发起人信息
+            scdData.fs = await this.getFsDataByUi(ctbl.ui);
+          }
           resolve(scdData);
         }
       });
+  }
+
+  /**
+   * 根据(日程Id和日期)或(子表ID)获取日程详情
+   * @param {string} si
+   * @param {string} date
+   * @param {string} subSi
+   */
+  async selectOneRc(si:string,date:string,subSi:string){
+    let scdData = new ScdOutata();
+     if(si != '' && date == '' && subSi == ''){
+       scdData = await this.selectBySi(si);
+     }else if(si != '' && date != '' && subSi == ''){
+
+     }
+
   }
 
   /**
@@ -362,16 +383,6 @@ export class PgBusiService {
       baseL.set(sp.sd, sp);
     }
     return baseL;
-  }
-
-  /**
-   * 根据(日程Id和日期)或(子表ID)获取日程详情
-   * @param {string} si
-   * @param {string} date
-   * @param {string} subSi
-   */
-  selectOneRc(si:string,date:string,subSi:string){
-
   }
 
   /**
