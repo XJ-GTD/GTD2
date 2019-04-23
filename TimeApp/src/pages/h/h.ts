@@ -1,10 +1,10 @@
 import {Component, ComponentRef, ElementRef, Renderer2, TemplateRef, ViewChild} from '@angular/core';
 import {IonicPage, MenuController, ModalController, NavController} from 'ionic-angular';
 import {
+  CalendarComponent,
   CalendarComponentOptions, CalendarDay
 } from "../../components/ion2-calendar";
 import {HService} from "./h.service";
-import  * as Hammer from 'hammerjs'
 import * as moment from "moment";
 import {AiComponent} from "../../components/ai/answer/ai";
 import {EmitService} from "../../service/util-service/emit.service";
@@ -26,7 +26,8 @@ import {HData, ScdPageParamter} from "../../data.mapping";
     <ion-content>
       <div class="haContent" >
         <div #calendarDiv class="haCalendar">
-          <ion-calendar [options]="options"
+          <ion-calendar #calendar
+                        [options]="options"
                         (onSelect)="onSelect($event)"
                         (onPress)="onPress($event)">
           </ion-calendar>
@@ -55,6 +56,8 @@ export class HPage {
   calendarDiv: ElementRef;
   @ViewChild('aiDiv')
   aiDiv: AiComponent;
+  @ViewChild('calendar')
+  calendar: CalendarComponent;
 
   hdata: HData;
   options: CalendarComponentOptions = {
@@ -84,7 +87,11 @@ export class HPage {
       p.si= data.id;
       p.d = moment(data.d);
       this.modalCtr.create(TddiPage, p).present();
-    })
+    });
+
+    this.emitService.registerRef(data =>{
+      this.calendar.createMonth(this.calendar.monthOpt.original.time);
+    });
   }
 
   onPress(pressDay) {
