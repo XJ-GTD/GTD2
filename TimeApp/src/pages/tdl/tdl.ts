@@ -10,6 +10,7 @@ import * as moment from "moment";
 import {EmitService} from "../../service/util-service/emit.service";
 import {ScdlData, ScdPageParamter} from "../../data.mapping";
 import {UtilService} from "../../service/util-service/util.service";
+import {FeedbackService} from "../../service/cordova/feedback.service";
 
 /**
  * Generated class for the 日程列表 page.
@@ -100,7 +101,8 @@ export class TdlPage {
               private menuController: MenuController,
               private emitService: EmitService,
               private el: ElementRef,
-              private util:UtilService
+              private util:UtilService,
+              private feedback:FeedbackService
   ) {
   }
 
@@ -142,6 +144,7 @@ export class TdlPage {
         if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
           this.headerDate = moment(scdlData.d).format("YYYY年MM月DD日");
           this.headerMoment = moment(scdlData.d);
+          //this.feedback.audioTrans();
           break;
         }
       }
@@ -282,6 +285,7 @@ export class TdlPage {
     p.si = si;
     p.d = moment(d);
 
+    this.feedback.audioClick();
     if (gs == "0") {
       //本人画面
       this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, p).present();
@@ -298,6 +302,7 @@ export class TdlPage {
   toAdd(d) {
     let p:ScdPageParamter = new ScdPageParamter();
     p.d = moment(d);
+    this.feedback.audioClick();
     this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, p).present();
   }
 
