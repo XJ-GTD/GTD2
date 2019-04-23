@@ -380,9 +380,9 @@ export class TdcPage {
   }
 
 
-  save(): Promise<CTbl> {
+  save(): Promise<ScdData> {
 
-    return new Promise<CTbl>(async (resolve, reject) => {
+    return new Promise<ScdData>(async (resolve, reject) => {
       if (!this.chkinput()) {
         resolve(null);
         return;
@@ -438,11 +438,11 @@ export class TdcPage {
 
   async goShare() {
     //日程分享打开参与人选择rc日程类型
-      let ctbl: CTbl = await this.save();
-      if (ctbl == null){
+      let scdData: ScdData = await this.save();
+      if (scdData == null){
         return;
       }
-      this.scd.si = ctbl.si;
+      this.scd.si = scdData.si;
       this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
       return;
   }
