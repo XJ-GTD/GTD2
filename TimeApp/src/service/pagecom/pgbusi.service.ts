@@ -352,8 +352,60 @@ export class PgBusiService {
    * 条件查询  dch
    * @param {RcInParam} rc
    */
-  getList(rc : RcInParam){
+  getList(rc : RcInParam): Promise<Array<CTbl>> {
+    return new Promise<Array<CTbl>>(async resolve => {
+      console.log("============ mq查询日程scd："+ JSON.stringify(rc));
+      let res: Array<CTbl> = new Array<CTbl>();
+      if (rc.ed ||
+        rc.et ||
+        rc.sd ||
+        rc.st ||
+        rc.sn) {
+        let sql: string = `select distinct sp.spi as si,
+                                           c.sn,
+                                           c.ui,
+                                           sp.sd     sd,
+                                           c.st,
+                                           c.ed,
+                                           c.et,
+                                           c.rt,
+                                           c.ji,
+                                           c.sr,
+                                           c.bz,
+                                           sp.wtt    wtt,
+                                           c.tx,
+                                           c.pni,
+                                           c.du,
+                                           c.gs
+                           from gtd_sp sp
+                                  inner join gtd_c c on sp.si = c.si
+                                  left join gtd_d d on d.si = c.si
+                           where 1 = 1`
 
+        if (rc.sn) {
+          sql = sql + ` and c.sn like '% ${rc.sn}%'`;
+        }
+        if (rc.sd) {
+          sql = sql + ` and sp.sd >= '${rc.sd}'`;
+        } else {
+          sql = sql + ` and sp.sd >= '${moment().subtract(30, 'd').format('YYYY/MM/DD')}%'`;
+        }
+        if (rc.ed) {
+          sql = sql + ` and sp.sd <= '${rc.ed}'`;
+        } else {
+          sql = sql + ` and sp.sd <= '${moment().add(30, 'd').format('YYYY/MM/DD')}%'`;
+        }
+        if (rc.st) {
+          sql = sql + ` and sp.st >= '${rc.st}'`;
+        }
+        if (rc.et) {
+          sql = sql + ` and sp.st <= '${rc.et}'`;
+        }
+        console.log("============ mq查询日程："+ sql);
+        res = await this.sqlExce.getExtList<CTbl>(sql);
+      }
+      resolve(res);
+    })
   }
 
   /**
