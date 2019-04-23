@@ -39,7 +39,6 @@ export class AlService {
               private util: UtilService,
               private restfulConfig: RestFulConfig,
               private wsserivce: WebsocketService,
-              private feekback: FeedbackService,
               private userConfig: UserConfig,
               private agdRestful: AgdRestful,
               private contactsService:ContactsService,
@@ -150,8 +149,6 @@ export class AlService {
       // TODO 系统设置 restHttps设置 用户偏好设置 用户信息 。。。
       await this.restfulConfig.init();
 
-      await this.feekback.initAudio().catch(e => {
-      });
 
       //提醒定时
       this.notificationsService.schedule();
@@ -162,10 +159,12 @@ export class AlService {
       await this.userConfig.init();
 
       //每次都先导入联系人
-      this.contactsService.asyncPhoneContacts().then(data=>{
-        //异步获取联系人信息
-        this.contactsService.updateFs();
-      })
+      if (this.util.isMobile()) {
+        await  this.contactsService.asyncPhoneContacts().then(data=>{
+          //异步获取联系人信息
+          this.contactsService.updateFs();
+        })
+      }
       alData.text = "系统设置完成";
       resolve(alData)
 

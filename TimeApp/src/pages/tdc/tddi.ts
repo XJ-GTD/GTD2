@@ -9,6 +9,7 @@ import {FsData, ScdData, ScdOutata, ScdPageParamter} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "../pl/pl.service";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
+import {FeedbackService} from "../../service/cordova/feedback.service";
 
 /**
  * Generated class for the 日程详情（受邀） page.
@@ -155,7 +156,7 @@ export class TddiPage {
               public actionSheetCtrl: ActionSheetController,
               public modalCtrl: ModalController, private  busiServ: PgBusiService,
               private keyboard: Keyboard, private _renderer: Renderer2,
-              private plsevice: PlService
+              private plsevice: PlService,private feekback:FeedbackService
   ) {
 
   }
@@ -351,6 +352,7 @@ export class TddiPage {
       //await this.busiServ.updateDetail(this.scd);
 
       this.util.loadingEnd();
+      this.feekback.audioSave();
 
       this.cancel();
 
@@ -372,6 +374,7 @@ export class TddiPage {
 
                 this.util.loadingStart();
                 this.busiServ.delete(this.scd.si, "1", d).then(data => {
+                  this.feekback.audioDelete();
                   this.util.loadingEnd();
                   this.cancel();
                 }).catch(err => {
@@ -387,6 +390,7 @@ export class TddiPage {
               this.util.alterStart("2", () => {
                 this.util.loadingStart();
                 this.busiServ.delete(this.scd.si, "2", d).then(data => {
+                  this.feekback.audioDelete();
                   this.util.loadingEnd();
                   this.cancel();
                 }).catch(err => {
@@ -411,6 +415,7 @@ export class TddiPage {
       this.util.alterStart("2", () => {
         this.util.loadingStart();
         this.busiServ.delete(this.scd.si, "2", d).then(data => {
+          this.feekback.audioDelete();
           this.util.loadingEnd();
           this.cancel();
         }).catch(err => {

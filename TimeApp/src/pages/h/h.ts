@@ -11,6 +11,7 @@ import {EmitService} from "../../service/util-service/emit.service";
 import {TdcPage} from "../tdc/tdc";
 import {TddiPage} from "../tdc/tddi";
 import {HData, ScdPageParamter} from "../../data.mapping";
+import {FeedbackService} from "../../service/cordova/feedback.service";
 
 /**
  * Generated class for the 首页 page.
@@ -73,7 +74,8 @@ export class HPage {
               private renderer2:Renderer2,
               private modalCtr:ModalController,
               private menuController:MenuController,
-              private emitService:EmitService) {
+              private emitService:EmitService,
+              private feedback:FeedbackService) {
     this.hdata = new HData();
   }
 
@@ -105,11 +107,13 @@ export class HPage {
   newcd() {
     let p:ScdPageParamter = new ScdPageParamter();
     p.d = moment(this.hdata.selectDay.time);
+    this.feedback.audioPress();
     this.modalCtr.create(TdcPage, p).present();
   }
 
   //查询当天日程
   onSelect(selectDay:CalendarDay) {
+    this.feedback.audioClick();
     if (selectDay)this.emitService.emitSelectDate(moment(selectDay.time));
     this.hService.centerShow(selectDay).then(d => {
       //双机进入列表

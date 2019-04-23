@@ -13,6 +13,7 @@ import {RcInParam, ScdData, ScdPageParamter} from "../../data.mapping";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {PlService} from "../pl/pl.service";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
+import {FeedbackService} from "../../service/cordova/feedback.service";
 
 /**
  * Generated class for the 新建日程 page.
@@ -175,7 +176,7 @@ export class TdcPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private util: UtilService,
               public modalCtrl: ModalController, private busiServ: PgBusiService,
               private keyboard: Keyboard, private _renderer: Renderer2,
-              private plsevice: PlService) {
+              private plsevice: PlService,private feekback:FeedbackService) {
 
   }
 
@@ -422,7 +423,7 @@ export class TdcPage {
 
 
       this.util.loadingEnd();
-
+      this.feekback.audioSave();
       this.cancel();
       resolve(data);
       return;

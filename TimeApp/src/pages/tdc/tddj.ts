@@ -8,6 +8,7 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
 import {FsData, RcInParam, ScdData, ScdOutata, ScdPageParamter, SpecScdData} from "../../data.mapping";
 import {PlService} from "../pl/pl.service";
+import {FeedbackService} from "../../service/cordova/feedback.service";
 
 /**
  * Generated class for the 日程详情（发布人） page.
@@ -191,7 +192,7 @@ export class TddjPage {
               public actionSheetCtrl: ActionSheetController,
               public modalCtrl: ModalController, private  busiServ: PgBusiService,
               private keyboard: Keyboard, private _renderer: Renderer2,
-              private plsevice: PlService
+              private plsevice: PlService,private feekback:FeedbackService
   ) {
 
   }
@@ -454,6 +455,7 @@ export class TddjPage {
     Object.assign(rcin.specScd,this.sp);
     let data = await this.busiServ.saveOrUpdate(rcin);
     this.util.loadingEnd();
+    this.feekback.audioSave();
     this.cancel();
     return data;
 
@@ -493,6 +495,7 @@ export class TddjPage {
               this.util.alterStart("2", () => {
                 this.util.loadingStart();
                 this.busiServ.delete(this.scd.si, "1", d).then(data => {
+                  this.feekback.audioDelete();
                   this.util.loadingEnd();
                   this.cancel();
                 }).catch(err => {
@@ -507,6 +510,7 @@ export class TddjPage {
               this.util.alterStart("2", () => {
                 this.util.loadingStart();
                 this.busiServ.delete(this.scd.si, "2", d).then(data => {
+                  this.feekback.audioDelete();
                   this.util.loadingEnd();
                   this.cancel();
                 }).catch(err => {
@@ -530,6 +534,7 @@ export class TddjPage {
       this.util.alterStart("2", () => {
         this.util.loadingStart();
         this.busiServ.delete(this.scd.si, "2", d).then(data => {
+          this.feekback.audioDelete();
           this.util.loadingEnd();
           this.cancel();
         }).catch(err => {

@@ -6,6 +6,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {GlService} from "../gl/gl.service";
 import {FsData, FsPageData, PageGroupData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
+import {FeedbackService} from "../../service/cordova/feedback.service";
 
 /**
  * Generated class for the 参与人选择 page.
@@ -82,7 +83,7 @@ export class Fs4cPage {
               private util: UtilService,
               private fdService: FdService,
               private glService: GlService,
-              private  modalCtrl: ModalController) {
+              private  modalCtrl: ModalController,private feedback:FeedbackService) {
   }
 
   ionViewDidEnter() {
@@ -101,6 +102,8 @@ export class Fs4cPage {
     let list = this.selFsl;
     if (list.length > 0) {
       this.fsService.sharefriend(this.navParams.get('tpara'), list).then(data => {
+        this.feedback.audioSend();
+
         this.navCtrl.popAll();
         //TODO 错误提示
       });
