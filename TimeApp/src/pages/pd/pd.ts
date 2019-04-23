@@ -5,6 +5,7 @@ import {PdService} from "./pd.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {PagePDPro} from "../../data.mapping";
 import {PlanPa} from "../../service/restful/shaesev";
+import * as moment from "moment";
 
 /**
  * Generated class for the 计划展示 page.
@@ -78,7 +79,7 @@ export class PdPage {
   actionSheet;
 
   jh:PagePDPro;
-  today: any = new Date().toISOString();
+  today:any = moment().format("YYYY/MM/DD HH:mm");
   plan:any ={
     'pn': {},
     'pa':new Array<PlanPa>(),

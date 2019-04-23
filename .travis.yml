@@ -75,6 +75,7 @@ after_script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sh $TRAVIS_BUILD_DIR/travis/remove-keys.sh ; fi
 env:
   global:
+  - LANG=zh_CN.UTF-8
   - JAVA_HOME=/usr/lib/jvm/java-8-oracle
   - IOS_APP_NAME="冥王星"
   - 'IOS_DEVELOPER_NAME="iPhone Distribution: Jinyang Zhang (D5A8L43W8A)"'
