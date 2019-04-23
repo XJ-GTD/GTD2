@@ -1,14 +1,11 @@
 import {Injectable} from "@angular/core";
 import * as moment from "moment";
 import {CalendarDay} from "../../components/ion2-calendar";
-import {FeedbackService} from "../../service/cordova/feedback.service";
-import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {HData} from "../../data.mapping";
 
 @Injectable()
 export class HService {
-  constructor(private feekback: FeedbackService,private sqliteExec:SqliteExec
-  ) {
+  constructor() {
     moment.locale('zh-cn');
   }
 
@@ -28,11 +25,7 @@ export class HService {
         hdata.newmessge = select.newmessage;
         hdata.things = select.things;
       }
-      this.feekback.audioBass().then(d => {
-        resolve(hdata);
-      }).catch(e=>{
-        resolve(hdata);
-      })
+      resolve(hdata);
     })
 
   }

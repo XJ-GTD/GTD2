@@ -2,107 +2,60 @@ import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {BipdshaeData, Plan, ShaeRestful} from "../../service/restful/shaesev";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
-import {CTbl} from "../../service/sqlite/tbl/c.tbl";
-import {ETbl} from "../../service/sqlite/tbl/e.tbl";
-import {DTbl} from "../../service/sqlite/tbl/d.tbl";
-import {JtTbl} from "../../service/sqlite/tbl/jt.tbl";
-import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
-import {UtilService} from "../../service/util-service/util.service";
-import {UserConfig} from "../../service/config/user.config";
-import {PagePDPro, PagePlData} from "../../data.mapping";
+import {PagePDPro, PagePlData, RcInParam} from "../../data.mapping";
 import * as moment from "moment";
+import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 
 @Injectable()
 export class PlService {
 
   constructor(private sqlExec: SqliteExec,
               private shareRestful:ShaeRestful,
-              private util: UtilService,) {}
+              private pgService:PgBusiService,) {}
 
   //下载系统计划
   async downloadPlan(jh:PagePDPro){
     // 出参
     let count = 0;
-    let sqls:Array<string> = new Array<string>();
     console.log('---------- PlService downloadPlan 清除本地旧计划 ----------------');
     await this.delete(jh);
-
-    console.log('---------- PlService downloadPlan 下载系统计划开始 ----------------');
     //restful获取计划日程
     let bip = new BipdshaeData();
-    bip.oai = "";
-    bip.ompn = "";
-    bip.c = "";
     bip.d.pi = jh.ji;
     let plan:Plan = await this.shareRestful.downsysname(bip);
     //插入获取的日程到本地（系统日程需要有特别的表示）
     //计划表
-    if(plan.pn != null){
-      let sjh = new JhTbl();
-      sjh.ji = jh.ji;
+    let sjh = new JhTbl();
+    sjh.ji = jh.ji;
+    sjh.jtd = "1";
+    if( plan!= undefined && plan.pn != null){
       sjh.jn = plan.pn.pt;
       sjh.jg = plan.pn.pd;
       sjh.jc = plan.pn.pm;
-      sjh.jt = "1"; // 系统计划
-      sjh.jtd = "1";
-      sqls.push(sjh.upT()); // 系统计划修改计划表状态
+      sjh.jt = plan.pn.pc; // 系统计划
       //日程表 新计划插入日程表开始
+      let rcArray:Array<RcInParam> = new Array<RcInParam>();
       if(plan.pa.length>0) {
-
-        if(plan.pn.pc == "1"){
-          for (let pa of plan.pa) {
-            let ctbl:CTbl =new CTbl();
-            ctbl.si = this.util.getUuid();//日程ID
-            ctbl.sn = pa.at;//主题
-            ctbl.ui = UserConfig.user.id; //创建者  用户ID
-            ctbl.sd = moment(pa.adt).format("YYYY/MM/DD");//开始日期(YYYY/MM/DD)
-            ctbl.st = pa.st;//时间(HH:mm)
-            //ctbl.ed = moment(pa.ed).format("YYYY/MM/DD");//结束日期(YYYY/MM/DD)
-            //ctbl.et = pa.et;//时间(HH:mm)
-            ctbl.ji = pa.ap;//计划
-            ctbl.rt = "0";//重复
-            ctbl.bz = pa.am;//备注
-            ctbl.gs = "4";//归属
-
-            //保存日程表数据
-            sqls.push(ctbl.inT());
-
-            let sp = new SpTbl();
-            sp.spi = this.util.getUuid();
-            sp.si = ctbl.si;
-            sp.spn = ctbl.sn;
-            sp.sd = ctbl.sd;
-            sp.st = ctbl.st;
-            //sp.ed = ctbl.ed;
-            //sp.et = ctbl.et;
-            sp.ji = ctbl.ji;
-            sp.bz = ctbl.bz;
-
-            //保存日程表数据
-            sqls.push(sp.inT());
+        for (let pa of plan.pa) {
+          let rc:RcInParam = new RcInParam();
+          rc.sn = pa.at;//日程事件主题  必传
+          rc.sd = moment(pa.adt).format("YYYY/MM/DD");//开始日期      必传
+          rc.st = pa.st;//开始时间
+          rc.ji = pa.ap;//计划ID
+          rc.bz = pa.am;//备注
+          if(plan.pn.pc == "1"){
+            rc.gs = "4";//归属
+          }else if(plan.pn.pc == "0"){
+            rc.gs = "3";//归属
+            rc.px = plan.pn.px; //排序
           }
-
-        }else if(plan.pn.pc == "0"){
-          for (let pa of plan.pa) {
-            let jt = new JtTbl();
-            jt.jti = this.util.getUuid();// 日程ID
-            jt.ji = pa.ap;//计划ID
-            jt.spn = pa.at;//主题
-            jt.sd = moment(pa.adt).format("YYYY/MM/DD");//开始日期(YYYY/MM/DD)
-            jt.st = pa.st;//时间(HH:mm)
-            jt.ed = moment(pa.ed).format("YYYY/MM/DD");//结束日期(YYYY/MM/DD)
-            jt.et = pa.et;//时间(HH:mm)
-            jt.px = pa.px;  // 优先级
-            jt.bz = pa.am;//备注
-
-            //保存日程表数据
-            sqls.push(jt.inT());
-          }
+          rcArray.push(rc);
         }
         count = plan.pa.length;
+        this.pgService.saveBatch(rcArray);
       }
     }
-    await this.sqlExec.batExecSql(sqls);
+    this.sqlExec.update(sjh);
 
     console.log('---------- PlService downloadPlan 新计划插入日程表结束 ----------------');
     return count;
@@ -110,42 +63,25 @@ export class PlService {
 
   //删除系统计划
   async delete(jh:PagePDPro){
-    if(jh.jt == "1"){
-      console.log('---------- PlService delete 删除系统计划开始 ----------------');
-      let sqls:Array<string> = new Array<string>();
-      // 删除本地系统表计划日程关联  获取系统计划管理日程
-      let cTbl:CTbl =new CTbl();
-      cTbl.ji = jh.ji;
-      let scTbl = await this.sqlExec.getList<CTbl>(cTbl);
-      if(scTbl.length>0) {
-        for (let j = 0, len = scTbl.length; j < len; j++) {
-          //提醒删除
-          let eTbl:ETbl =new ETbl();
-          eTbl.si = scTbl[j].si;
-          sqls.push(eTbl.dT());
-
-          //日程参与人删除
-          let dTbl:DTbl =new DTbl();
-          dTbl.si = scTbl[j].si;
-          sqls.push(dTbl.dT());
-        }
-      }
+    console.log('---------- PlService delete 删除系统计划开始 ----------------');
+    let sqls:Array<string> = new Array<string>();
+    if(jh.jt == "1" && jh.ji != ""){
       // 删除日程附件表
-      let spTbl = new SpTbl();
-      spTbl.ji = jh.ji;
-      sqls.push(spTbl.dT());
-
-      //计划关联日程删除
-      sqls.push(cTbl.dT());
-
-      let jhTbl: JhTbl = new JhTbl();
-      //Object.assign(jhTbl,jh);
-      jhTbl.jtd = "0";
-      sqls.push(jhTbl.upT());
-
-      await this.sqlExec.batExecSql(sqls);
-      console.log('---------- PlService delete 删除系统计划结束 ----------------');
+      sqls.push('delete from gtd_sp where ji = "' + jh.ji + '";');
+    }else if(jh.jt == "0" && jh.ji != ""){
+      //删除日程表
+      sqls.push('delete from gtd_jt where ji = "' + jh.ji + '";');
     }
+
+    //删除日程表
+    sqls.push('delete from gtd_c where ji = "' + jh.ji + '";');
+
+    //计划 jtd 修改
+    sqls.push('update gtd_j_h set jtd = null where ji = "' + jh.ji + '";');
+
+    await this.sqlExec.batExecSql(sqls);
+
+    console.log('---------- PlService delete 删除系统计划结束 ----------------');
   }
 
   //获取计划
@@ -153,7 +89,12 @@ export class PlService {
     console.log('---------- PlService getPlan 获取计划开始 ----------------');
     let pld = new PagePlData();
     //获取本地计划
-    let sql = "select jh.*,COALESCE (gc.count, 0) js from gtd_j_h jh  left join ( select c.ji ji,count(c.ji) count from gtd_c c left join gtd_sp sp on sp.si = c.si group by c.ji) gc on jh.ji = gc.ji order by jh.wtt desc";
+    let sql = "select jh.*,COALESCE (gc.count, 0) js from gtd_j_h jh" +
+      " left join " +
+      "( select c.ji ji,count(c.ji) count from gtd_c c left join gtd_sp sp on sp.si = c.si group by c.ji) gc on jh.ji = gc.ji" +
+      " left join" +
+      "( select c.ji ji,count(c.ji) count from gtd_c c left join gtd_jt jt on jt.si = c.si group by c.ji) jt on jh.ji = jt.ji" +
+      " order by jh.wtt desc";
     let jhTbl: Array<PagePDPro> = await this.sqlExec.getExtList<PagePDPro>(sql);
     if(jhTbl.length > 0){
       let xtJh: Array<PagePDPro> = new  Array<PagePDPro>();
@@ -181,7 +122,6 @@ export class PlService {
 
   //获取计划
   getPlanCus():Promise<Array<JhTbl>>{
-
     return new Promise<Array<JhTbl>>(async (resolve, reject) => {
       //获取本地计划
       let j:JhTbl = new JhTbl();
@@ -190,6 +130,5 @@ export class PlService {
       resolve(jhTbl);
       return;
     })
-
   }
 }

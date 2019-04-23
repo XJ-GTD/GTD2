@@ -45,7 +45,7 @@ import {PageY} from "../../data.mapping";
             </ion-item>
 
             <ion-item class="plan-list-item" >
-              <ion-label>振动</ion-label>
+              <ion-label>震动音效</ion-label>
               <ion-toggle [(ngModel)]="z.value" (ionChange)="save(z)"></ion-toggle>
             </ion-item>
 

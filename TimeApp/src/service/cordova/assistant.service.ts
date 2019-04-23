@@ -43,7 +43,7 @@ export class AssistantService {
    * 启动监听WakeUp
    */
   public startWakeUp() {
-    if (UserConfig.settins.get(DataConfig.SYS_H).value == "0") return;
+    if (!UserConfig.getSetting(DataConfig.SYS_H)) return;
     if (!this.utilService.isMobile()) return;
     if  (this.wakeuping) return ;
     this.wakeuping = true;
@@ -61,7 +61,7 @@ export class AssistantService {
   public stopWakeUp() {
     this.wakeuping = false;
     if (!this.utilService.isMobile()) return;
-    if (UserConfig.settins.get(DataConfig.SYS_H).value == "0") return;
+    if (!UserConfig.getSetting(DataConfig.SYS_H)) return;
     cordova.plugins.XjBaiduWakeUp.wakeUpStop();
   }
 
@@ -105,7 +105,7 @@ export class AssistantService {
   async speakText(speechText: string) {
     if (!this.utilService.isMobile()) return ;
 
-    if (UserConfig.settins.get(DataConfig.SYS_B).value == "0") return;
+    if (!UserConfig.getSetting(DataConfig.SYS_H)) return;
 
     if (speechText == null || speechText == "") {
       return ""

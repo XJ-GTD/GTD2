@@ -5,10 +5,11 @@ import {
 import {UtilService} from "../../service/util-service/util.service";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
-import {FsData, ScdData, ScdPageParamter} from "../../data.mapping";
+import {FsData, ScdData, ScdOutata, ScdPageParamter} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "../pl/pl.service";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
+import {FeedbackService} from "../../service/cordova/feedback.service";
 
 /**
  * Generated class for the 日程详情（受邀） page.
@@ -155,7 +156,7 @@ export class TddiPage {
               public actionSheetCtrl: ActionSheetController,
               public modalCtrl: ModalController, private  busiServ: PgBusiService,
               private keyboard: Keyboard, private _renderer: Renderer2,
-              private plsevice: PlService
+              private plsevice: PlService,private feekback:FeedbackService
   ) {
 
   }
@@ -163,7 +164,7 @@ export class TddiPage {
   actionSheet;
 
   //画面数据
-  scd: ScdData = new ScdData();
+  scd: ScdOutata = new ScdOutata();
   b: boolean = true;
   //fsshow: FsData = new FsData();
 
@@ -207,7 +208,7 @@ export class TddiPage {
     let paramter: ScdPageParamter = this.navParams.data;
 
 
-      this.scd = await this.busiServ.get(paramter.si);
+      this.scd = await this.busiServ.getOneRc(paramter.si,paramter.d.format("YYYY/MM/DD"),"");
 
       this.clickwake(this.scd.tx + '');
 
@@ -348,9 +349,10 @@ export class TddiPage {
       //归属 他人创建
       this.scd.gs = '1';
 
-      await this.busiServ.updateDetail(this.scd);
+      //await this.busiServ.updateDetail(this.scd);
 
       this.util.loadingEnd();
+      this.feekback.audioSave();
 
       this.cancel();
 
@@ -372,6 +374,7 @@ export class TddiPage {
 
                 this.util.loadingStart();
                 this.busiServ.delete(this.scd.si, "1", d).then(data => {
+                  this.feekback.audioDelete();
                   this.util.loadingEnd();
                   this.cancel();
                 }).catch(err => {
@@ -387,6 +390,7 @@ export class TddiPage {
               this.util.alterStart("2", () => {
                 this.util.loadingStart();
                 this.busiServ.delete(this.scd.si, "2", d).then(data => {
+                  this.feekback.audioDelete();
                   this.util.loadingEnd();
                   this.cancel();
                 }).catch(err => {
@@ -411,6 +415,7 @@ export class TddiPage {
       this.util.alterStart("2", () => {
         this.util.loadingStart();
         this.busiServ.delete(this.scd.si, "2", d).then(data => {
+          this.feekback.audioDelete();
           this.util.loadingEnd();
           this.cancel();
         }).catch(err => {

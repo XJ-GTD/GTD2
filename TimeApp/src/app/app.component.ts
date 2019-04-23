@@ -8,6 +8,7 @@ import {UtilService} from "../service/util-service/util.service";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {LsPushType} from "../components/menuType/LsPushType";
 import {StatusBar} from "@ionic-native/status-bar";
+import {FeedbackService} from "../service/cordova/feedback.service";
 
 @Component({
   template: `
@@ -22,7 +23,7 @@ export class MyApp {
               private backgroundMode: BackgroundMode,
               private restfulClient: RestfulClient,
               private util: UtilService,
-              private screenOrientation: ScreenOrientation,private statusBar: StatusBar) {
+              private screenOrientation: ScreenOrientation,private feekback: FeedbackService) {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
     MenuController.registerType('lsPush', LsPushType);
@@ -43,9 +44,11 @@ export class MyApp {
 
         // set to landscape
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+        this.feekback.initAudio();
 
       }
       this.restfulClient.init();
+
 
       //跳转页面（过渡页面）
       this.nav.setRoot(DataConfig.PAGE._AL_PAGE);

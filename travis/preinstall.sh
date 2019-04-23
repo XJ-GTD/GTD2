@@ -1,6 +1,13 @@
 #!/bin/bash
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+  brew install git-lfs
+  git clone --depth=50 --branch=master https://github.com/leonxi/largefiles.git $HOME/build/leonxi/largefiles
+  pwd
+  cd $HOME/build/leonxi/largefiles
+  git lfs install
+  git lfs pull
+  cd $TRAVIS_BUILD_DIR
   npm install -g ionic@4.1.2 phonegap plugman cordova@6.5.0
 else
   yarn global add ionic@4.1.2 phonegap plugman cordova@6.5.0

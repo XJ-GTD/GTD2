@@ -4,7 +4,7 @@ import {
 } from 'ionic-angular';
 import * as moment from "moment";
 import {UtilService} from "../../service/util-service/util.service";
-import {ScdData, ScdPageParamter} from "../../data.mapping";
+import {ScdData, ScdOutata, ScdPageParamter} from "../../data.mapping";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 
 /**
@@ -86,8 +86,8 @@ export class TddsPage {
 
     //受邀人修改的场合初始化
     let paramter: ScdPageParamter = this.navParams.data;
-    this.busiServ.get(paramter.si).then(data => {
-      let bs: ScdData = data;
+    this.busiServ.getOneRc(paramter.si,"","").then(data => {
+      let bs: ScdOutata = data;
       Object.assign(this.scd, bs);
 
       this.scd.showSd = paramter.d.format("YYYY-MM-DD");

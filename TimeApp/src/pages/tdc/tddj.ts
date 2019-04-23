@@ -6,8 +6,9 @@ import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
-import {FsData, ScdData, ScdPageParamter, SpecScdData} from "../../data.mapping";
+import {FsData, ScdData, ScdOutata, ScdPageParamter, SpecScdData} from "../../data.mapping";
 import {PlService} from "../pl/pl.service";
+import {FeedbackService} from "../../service/cordova/feedback.service";
 
 /**
  * Generated class for the 日程详情（发布人） page.
@@ -34,25 +35,25 @@ import {PlService} from "../pl/pl.service";
           <ion-textarea type="text" [(ngModel)]="scd.sn" placeholder="我想..."></ion-textarea>
         </ion-row>
         <ion-row>
-          <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh]="scd.p.jn != ''"
-               [ngStyle]="{'background-color':scd.p.jc == '' ? '#fffff' : scd.p.jc}">
-            {{scd.p.jn == "" ? "添加计划" : "计划"}}
+          <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh]="sp.p.jn != ''"
+               [ngStyle]="{'background-color':sp.p.jc == '' ? '#fffff' : sp.p.jc}">
+            {{sp.p.jn == "" ? "添加计划" : "计划"}}
           </div>
-          <div>{{scd.p.jn}}</div>
+          <div>{{sp.p.jn}}</div>
         </ion-row>
         <ion-row>
           <div>
             <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
                           pickerFormat="YYYY MM DD" color="light"
                           [(ngModel)]="scd.showSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
-                          min="1999-01-01" max="2039-12-31" (ionCancel)="getDtPickerSel($event)"
+                          min="1999-01-01" max="2039-12-31" (ionCancel)="getDtPickerSel($event)" disabled
             ></ion-datetime>
           </div>
         </ion-row>
         <ion-row>
           <ion-toggle [(ngModel)]="alld" [class.allday]="b" (ionChange)="togChange()"></ion-toggle>
           <div>
-            <ion-datetime displayFormat="HH:mm" [(ngModel)]="scd.st"
+            <ion-datetime displayFormat="HH:mm" [(ngModel)]="sp.st"
                           pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)" [hidden]="alld"></ion-datetime>
 
           </div>
@@ -62,31 +63,31 @@ import {PlService} from "../pl/pl.service";
           <div class="reptlbl">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled-close]="rept.close == 1"
-                    (click)="clickrept('0')">关
+                    (click)="clickrept('0')" disabled>关
             </button>
           </div>
           <div class="reptlbl">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled]="rept.d== 1"
-                    (click)="clickrept('1')">天
+                    (click)="clickrept('1')" disabled>天
             </button>
           </div>
           <div class="reptlbl">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled]="rept.w== 1"
-                    (click)="clickrept('2')">周
+                    (click)="clickrept('2')" disabled>周
             </button>
           </div>
           <div class="reptlbl">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled]="rept.m== 1"
-                    (click)="clickrept('3')">月
+                    (click)="clickrept('3')" disabled>月
             </button>
           </div>
           <div class="reptlbl">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled]="rept.y== 1"
-                    (click)="clickrept('4')">年
+                    (click)="clickrept('4')" disabled>年
             </button>
           </div>
         </ion-row>
@@ -130,7 +131,7 @@ import {PlService} from "../pl/pl.service";
           </div>
         </ion-row>
         <ion-row>
-          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set" (focus)="comentfocus()"
+          <ion-textarea type="text" placeholder="备注" [(ngModel)]="sp.bz" class="memo-set" (focus)="comentfocus()"
                         (blur)="comentblur()"></ion-textarea>
         </ion-row>
         <ion-row>
@@ -168,7 +169,7 @@ import {PlService} from "../pl/pl.service";
       <ion-grid>
         <ion-row>
 
-          <ion-list no-lines radio-group [(ngModel)]="scd.p">
+          <ion-list no-lines radio-group [(ngModel)]="sp.p">
             <ion-item class="plan-list-item" *ngFor="let option of jhs">
               <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
               <ion-label>{{option.jn}}</ion-label>
@@ -191,7 +192,7 @@ export class TddjPage {
               public actionSheetCtrl: ActionSheetController,
               public modalCtrl: ModalController, private  busiServ: PgBusiService,
               private keyboard: Keyboard, private _renderer: Renderer2,
-              private plsevice: PlService
+              private plsevice: PlService,private feekback:FeedbackService
   ) {
 
   }
@@ -200,12 +201,10 @@ export class TddjPage {
   actionSheet;
 
   //画面数据
-  scd: ScdData = new ScdData();
+  scd: ScdOutata = new ScdOutata();
   b: boolean = true;
   sp:SpecScdData = new SpecScdData();
 
-  //重复日程不可以修改日期
-  rept_flg: boolean = false;
 
   rept = {
     close: 0,
@@ -255,43 +254,36 @@ export class TddjPage {
 
     let paramter: ScdPageParamter = this.navParams.data;
     if (paramter.si) {
-      this.scd = await this.busiServ.get(paramter.si);
-
+      this.scd = await this.busiServ.getOneRc(paramter.si,paramter.d.format("YYYY/MM/DD"),"");
+      Object.assign(this.sp , this.scd.baseData);
 
       //TODO 清除消息把已读标志未读
-      this.busiServ.updateMsg(this.scd.si);
+      this.busiServ.updateMsg(this.sp.si);
 
       this.scd.showSd = paramter.d.format("YYYY-MM-DD");
-      this.sp = this.scd.specScd(paramter.d.format("YYYY-MM-DD"));
-
-      //TODO 缓存里后获取发送信息
 
       this.jhs = await this.plsevice.getPlanCus();
       for (let i = 0; i < this.jhs.length; i++) {
-        if (this.jhs[i].ji == this.scd.ji) {
-          this.scd.p = this.jhs[i];
+        if (this.jhs[i].ji == this.sp.ji) {
+          this.sp.p = this.jhs[i];
         }
       }
-      //重复日程不可以修改日期
-      if (this.scd.rt != "0") {
-        this.rept_flg = true;
-      }
 
-      if (this.scd.st) {
-        this.scd.st = this.scd.st
+      if (this.sp.st) {
+        this.sp.st = this.sp.st
       } else {
-        this.scd.st = moment().format("HH:mm");
+        this.sp.st = moment().format("HH:mm");
       }
 
       //全天的场合
-      if (this.util.isAday(this.scd.st)) {
+      if (this.util.isAday(this.sp.st)) {
         this.alld = true;
       } else {
         this.alld = false;
       }
 
       this.clickrept(this.scd.rt + '');
-      this.clickwake(this.scd.tx + '');
+      this.clickwake(this.sp.tx + '');
     }
 
   }
@@ -463,8 +455,9 @@ export class TddjPage {
     //归属 本人创建
     this.scd.gs = '0';
 
-    let data = await this.busiServ.updateDetail(this.scd);
+    let data //= await this.busiServ.updateDetail(this.scd);
     this.util.loadingEnd();
+    this.feekback.audioSave();
     this.cancel();
     return data;
 
@@ -504,6 +497,7 @@ export class TddjPage {
               this.util.alterStart("2", () => {
                 this.util.loadingStart();
                 this.busiServ.delete(this.scd.si, "1", d).then(data => {
+                  this.feekback.audioDelete();
                   this.util.loadingEnd();
                   this.cancel();
                 }).catch(err => {
@@ -518,6 +512,7 @@ export class TddjPage {
               this.util.alterStart("2", () => {
                 this.util.loadingStart();
                 this.busiServ.delete(this.scd.si, "2", d).then(data => {
+                  this.feekback.audioDelete();
                   this.util.loadingEnd();
                   this.cancel();
                 }).catch(err => {
@@ -541,6 +536,7 @@ export class TddjPage {
       this.util.alterStart("2", () => {
         this.util.loadingStart();
         this.busiServ.delete(this.scd.si, "2", d).then(data => {
+          this.feekback.audioDelete();
           this.util.loadingEnd();
           this.cancel();
         }).catch(err => {
@@ -566,8 +562,6 @@ export class TddjPage {
       this.isShowPlan = false;
       this.IsShowCover = false;
 
-      console.log("check:" + this.scd.ji);
-      console.log("check1:" + this.scd.p.ji);
     }
   }
 
@@ -585,7 +579,7 @@ export class TddjPage {
     let el = document.getElementsByClassName("picker-opt-selected")
 
     if (el && el.length == 2) {
-      this.scd.st = el[0].textContent + ":" + el[1].textContent;
+      this.sp.st = el[0].textContent + ":" + el[1].textContent;
     }
   }
 

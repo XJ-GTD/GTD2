@@ -14,6 +14,7 @@ import {ConfirmboxComponent} from "../../components/confirmbox/confirmbox";
 import {AlertInputOptions} from "ionic-angular/components/alert/alert-options";
 import {ChineseLunar} from "./chinese.lunar";
 import * as moment from "moment";
+import {FeedbackService} from "../cordova/feedback.service";
 
 /**
  * 公共方法

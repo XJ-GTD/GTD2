@@ -6,6 +6,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {GlService} from "../gl/gl.service";
 import {FsData, FsPageData, PageGroupData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
+import {FeedbackService} from "../../service/cordova/feedback.service";
 
 /**
  * Generated class for the 参与人选择 page.
@@ -31,7 +32,7 @@ import {DataConfig} from "../../service/config/data.config";
         </ion-buttons>
       </ion-toolbar>
       <div class="name-input w-auto">
-        <ion-input type="text" placeholder="请输入手机号或名称" (ionChange)="getContacts()" [(ngModel)]="tel"
+        <ion-input type="text" placeholder="手机号 姓名" (ionChange)="getContacts()" [(ngModel)]="tel"
                    text-center></ion-input>
       </div>
       <div class="selected">
@@ -39,7 +40,7 @@ import {DataConfig} from "../../service/config/data.config";
           <ion-avatar>
             <img src={{g.bhiu}}>
           </ion-avatar>
-          <ion-label>{{g.rn}}</ion-label>
+          <ion-label>{{g.ran}}</ion-label>
         </ion-chip>
       </div>
     </ion-header>
@@ -82,7 +83,7 @@ export class Fs4cPage {
               private util: UtilService,
               private fdService: FdService,
               private glService: GlService,
-              private  modalCtrl: ModalController) {
+              private  modalCtrl: ModalController,private feedback:FeedbackService) {
   }
 
   ionViewDidEnter() {
@@ -101,6 +102,8 @@ export class Fs4cPage {
     let list = this.selFsl;
     if (list.length > 0) {
       this.fsService.sharefriend(this.navParams.get('tpara'), list).then(data => {
+        this.feedback.audioSend();
+
         this.navCtrl.popAll();
         //TODO 错误提示
       });

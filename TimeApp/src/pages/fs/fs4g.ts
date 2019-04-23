@@ -31,7 +31,7 @@ import {DataConfig} from "../../service/config/data.config";
         </ion-buttons>
       </ion-toolbar>
       <div class="name-input w-auto">
-        <ion-input type="text" placeholder="请输入手机号或名称" (ionChange)="getContacts()" [(ngModel)]="tel"
+        <ion-input type="text" placeholder="手机号 姓名" (ionChange)="getContacts()" [(ngModel)]="tel"
                    text-center></ion-input>
       </div>
       <div class="selected">
@@ -39,7 +39,7 @@ import {DataConfig} from "../../service/config/data.config";
           <ion-avatar>
             <img src={{g.bhiu}}>
           </ion-avatar>
-          <ion-label>{{g.rn}}</ion-label>
+          <ion-label>{{g.ran}}</ion-label>
         </ion-chip>
       </div>
     </ion-header>

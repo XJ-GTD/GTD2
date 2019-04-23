@@ -74,8 +74,8 @@ export class UserConfig {
     await this.RefreshGTbl();
   }
 
-  getSetting(key: string) {
-    return UserConfig.settins.get(key).value;
+  static getSetting(key: string):boolean {
+    return UserConfig.settins.get(key).value == "1";
   }
 
   static getTroubleStop(key: string) {
