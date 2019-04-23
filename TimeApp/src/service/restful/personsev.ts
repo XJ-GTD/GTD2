@@ -181,6 +181,14 @@ export class PersonRestful {
 
 }
 
+export class SignData{
+  phoneno:string = "";//手机号码
+  verifykey:string = "";//短信验证码KEY
+  verifycode:string = "";//短信验证码
+  username:string = "";//真实姓名
+  userpassword:string = "";//帐户密码
+}
+
 export class PersonInData{
   phoneno: string = "";
   unionid: string = "";

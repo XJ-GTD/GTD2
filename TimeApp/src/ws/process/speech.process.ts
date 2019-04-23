@@ -28,7 +28,7 @@ export class SpeechProcess implements MQProcess {
     return new Promise<ProcesRs>(async resolve => {
 
       //处理所需要参数
-      let ti = moment().unix() - content.thisContext.context.client.time;
+      let ti = moment().valueOf() - content.thisContext.context.client.time;
       let spData: SpeechPara = content.parameters;
       //默认语音
       let speakText = spData.an;

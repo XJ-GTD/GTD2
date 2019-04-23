@@ -12,7 +12,7 @@ import * as moment from "moment";
 import {DataConfig} from "../config/data.config";
 import {UserConfig} from "../config/user.config";
 import {ContactsService} from "../cordova/contacts.service";
-import {FsData, ScdData, SpecScdData} from "../../data.mapping";
+import {FsData, RcInParam, ScdData, SpecScdData} from "../../data.mapping";
 import {FsService} from "../../pages/fs/fs.service";
 import {PlService} from "../../pages/pl/pl.service";
 import {EmitService} from "../util-service/emit.service";
@@ -66,6 +66,7 @@ export class PgBusiService {
         "sp.ji," +
         "sp.bz," +
         "sp.sta," +
+        "sp.tx," +
         "sp.wtt," +
         "sp.itx ,e.wi ewi,e.si esi,e.st est ,e.wd ewd,e.wt ewt,e.wtt ewtt " +
         " from gtd_sp sp inner join gtd_e e on sp.spi = e.wi and " +
@@ -195,6 +196,77 @@ export class PgBusiService {
   }
 
   /**
+   * 语音保存日程更新
+   */
+  async saveOne(rc : RcInParam){
+    if(rc.si != null){
+      this.getCtbl(rc.si);
+    }else{
+      rc.setParam();
+      rc.ui = UserConfig.account.id;
+      let scd = new ScdData();
+      Object.assign(scd,rc);
+      this.save(scd);
+    }
+  }
+
+  /**
+   * 批量保存日程更新
+   */
+  async saveBatch(rcL : Array<RcInParam>){
+
+  }
+
+  /**
+   * 根据日程Id获取日程详情
+   * @param {string} si
+   */
+  selectBySi(si:string){
+
+  }
+
+  /**
+   * 根据(日程Id和日期)或(子表ID)获取日程详情
+   * @param {string} si
+   * @param {string} date
+   * @param {string} subSi
+   */
+  selectOneRc(si:string,date:string,subSi:string){
+
+  }
+
+  /**
+   * 条件查询
+   * @param {RcInParam} rc
+   */
+  selectList(rc : RcInParam){}
+
+  /**
+   * 首页查询
+   * @param {string} month
+   */
+  selectHome(month:string){
+
+  }
+
+  /**
+   * 一览查询
+   */
+  selectYl(){
+
+}
+
+  /**
+   * 获取ctbl表信息
+   * @param si
+   */
+  private async getCtbl(si){
+    let c = new CTbl();
+    c.si = si;
+    c = await this.sqlExce.getOne<CTbl>(c);
+    return c;
+  }
+  /**
    * 日程添加
    * @param {PageRcData} rc 日程信息
    * @returns {Promise<BsModel<any>>}
@@ -218,7 +290,7 @@ export class PgBusiService {
       }
       //保存本地日程
       if (!ct.ui) ct.ui = ct.si;
-      if (!ct.st) ct.st = "99:99";
+      if (!ct.st) ct.st = this.util.adToDb("");
       await this.sqlExce.save(ct)
 
       let adgPro: AgdPro = new AgdPro();
@@ -337,7 +409,7 @@ export class PgBusiService {
         time = 1440;
       }
       let date;
-      if (rc.st != "99:99") {
+      if (!this.util.isAday(rc.st)) {
         date = moment(sp.sd + " " + rc.st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
       } else {
@@ -603,8 +675,8 @@ export class PgBusiService {
 
     if (adt.length == 1) {
       //全天
-      c.st = "99:99";
-      c.et = "99:99"
+      c.st = this.util.adToDb("");
+      c.et = this.util.adToDb("");
     } else {
       c.st = adt[1];
       c.et = adt[1];

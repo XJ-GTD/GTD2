@@ -20,17 +20,13 @@ export class LpService {
               private alService:AlService,) {}
 
   //登录
-  login(lpdata: PageLoginData): Promise<any> {
+  login(lpData: PageLoginData): Promise<any> {
     return new Promise((resolve, reject) => {
       let loginData: LoginData = new LoginData();
-      loginData.phoneno = lpdata.mobile;
-      loginData.userpassword = lpdata.password;
+      Object.assign(loginData,lpData);
 
       // 验证用户名密码
       this.authRestful.loginbypass(loginData).then(data => {
-        if (data.code != 0)
-          throw  data;
-
         resolve(data)
       }).catch(error=>{
         resolve(error)
