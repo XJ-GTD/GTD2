@@ -198,7 +198,7 @@ export class PgBusiService {
   }
 
   /**
-   * 日程保存或日程更新
+   * 日程保存或日程更新  dch
    */
    saveOrUpdate(rc : RcInParam):Promise<ScdData>{
      return new Promise<ScdData>(async (resolve, reject) => {
@@ -219,7 +219,7 @@ export class PgBusiService {
   }
 
   /**
-   * 批量保存日程更新
+   * 批量保存日程更新  dch
    */
   async saveBatch(rcL : Array<RcInParam>){
     let sqL = new Array<string>();
@@ -254,7 +254,7 @@ export class PgBusiService {
   }
 
   /**
-   * 根据日程Id获取日程详情
+   * 根据日程Id获取日程详情  dch
    * @param {string} si
    */
   getBySi(si:string): Promise<ScdOutata> {
@@ -290,7 +290,7 @@ export class PgBusiService {
   }
 
   /**
-   * 根据(日程Id和日期)或(子表ID)获取日程详情
+   * 根据(日程Id和日期)或(子表ID)获取日程详情  dch
    * @param {string} si  日程Id
    * @param {string} date 日期
    * @param {string} subSi 子表ID
@@ -349,7 +349,7 @@ export class PgBusiService {
   }
 
   /**
-   * 条件查询
+   * 条件查询  dch
    * @param {RcInParam} rc
    */
   getList(rc : RcInParam){
@@ -357,7 +357,7 @@ export class PgBusiService {
   }
 
   /**
-   * 首页月份查询
+   * 首页月份查询  dch
    * @param {CalendarMonth} month
    */
   async getMonthData(month:CalendarMonth){
@@ -388,14 +388,32 @@ export class PgBusiService {
   }
 
   /**
-   * 一览查询
+   * 一览查询  dch
    */
   selectYl(){
 
   }
 
   /**
-   * 获取系统计划3特殊表详情
+   * 根据日程ID删除  dch
+   * @param {string} si
+   */
+  deleteBySi(si:string,){
+
+  }
+
+  /**
+   *删除日程   dch
+   * @param {string} si
+   * @param {string} ed
+   * @param {string} ji
+   */
+  deleteByInfo(si:string,ed:string,ji:string){
+
+  }
+
+  /**
+   * 获取系统计划3特殊表详情  dch
    * @param {string} jti
    * @param {string} si
    * @returns {Promise<Array<JtData>>}
@@ -421,7 +439,7 @@ export class PgBusiService {
   }
 
   /**
-   * 获取日程特殊表详情
+   * 获取日程特殊表详情  dch
    * @param {string} spi
    * @param {string} si
    * @param {string} sd
@@ -472,7 +490,7 @@ export class PgBusiService {
   }
 
   /**
-   * 根据日程Id获取联系人信息
+   * 根据日程Id获取联系人信息  dch
    * @returns {Promise<Array<FsData>>}
    */
   private async getFsDataBySi(si:string){
@@ -491,7 +509,7 @@ export class PgBusiService {
   }
 
   /**
-   * 根据用户Id获取联系人信息
+   * 根据用户Id获取联系人信息  dch
    * @returns {Promise<Array<FsData>>}
    */
   private async getFsDataByUi(ui:string){
@@ -514,7 +532,7 @@ export class PgBusiService {
   }
 
   /**
-   * 根据openId查询联系人信息
+   * 根据openId查询联系人信息  dch
    * @param ui
    * @returns {Promise<BTbl>}
    */
@@ -527,7 +545,7 @@ export class PgBusiService {
   }
 
   /**
-   * 获取ctbl表信息
+   * 获取ctbl表信息  dch
    * @param si
    */
   private async getCtbl(si){
