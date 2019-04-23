@@ -380,7 +380,7 @@ export class RcInParam{
   tx: string = "0";//提醒方式
   gs:string ="0";//归属 0：本人创建，1：他人创建，2：系统本地日历,3:系统计划3优先级类型（入JtTbl表），4：系统计划无优先级
   px:number = 0; //排序
-  specScd: BaseData = new  BaseData();//sp内容
+  specScdUpd: BaseData = new  BaseData();//sp内容
   //参与人
   fss: Array<FsData> =new Array<FsData>();
   /**

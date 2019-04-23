@@ -168,7 +168,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 
     <div padding class="div-content" *ngIf="isShowPlan">
       <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>
-      <ion-list no-lines radio-group [(ngModel)]="scd.p" class="plan-list">
+      <ion-list no-lines radio-group [(ngModel)]="sp.p" class="plan-list">
         <ion-item *ngFor="let option of jhs">
           <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
           <ion-label>{{option.jn}}</ion-label>
@@ -445,7 +445,7 @@ export class TddjPage {
     //日程数据
     Object.assign(rcin,this.scd);
     //日程子数据
-    Object.assign(rcin.specScd,this.sp);
+    Object.assign(rcin.specScdUpd,this.sp);
     let data = await this.busiServ.saveOrUpdate(rcin);
     this.util.loadingEnd();
     this.feekback.audioSave();
