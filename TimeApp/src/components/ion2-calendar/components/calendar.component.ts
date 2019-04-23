@@ -19,8 +19,6 @@ import * as moment from 'moment';
 import {defaults, pickModes} from "../config";
 import {FeedbackService} from "../../../service/cordova/feedback.service";
 import {Card} from "ionic-angular";
-import {UtilService} from "../../../service/util-service/util.service";
-import {EmitService, ScdEmData} from "../../../service/util-service/emit.service";
 
 export const ION_CAL_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
@@ -168,7 +166,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
 
-  constructor(public calSvc: CalendarService, public feekback: FeedbackService,private emitService:EmitService) {
+  constructor(public calSvc: CalendarService, public feekback: FeedbackService) {
 
   }
 
@@ -393,13 +391,9 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
             this.backMonth();
           }
 
-          this.feekback.audioBass().then(d => {
-            this.onSelect.emit();
+          this.feekback.audioTrans();
+            //this.onSelect.emit();
 
-          }, e => {
-            this.onSelect.emit();
-
-          });
         }
       }
       resolve(true);

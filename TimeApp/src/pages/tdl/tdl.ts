@@ -9,7 +9,6 @@ import {DataConfig} from "../../service/config/data.config";
 import * as moment from "moment";
 import {EmitService} from "../../service/util-service/emit.service";
 import {ScdlData, ScdPageParamter} from "../../data.mapping";
-import {FeedbackService} from "../../service/cordova/feedback.service";
 import {UtilService} from "../../service/util-service/util.service";
 
 /**

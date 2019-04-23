@@ -113,7 +113,7 @@ export class DataConfig {
   public static SYS_T: string = "T";
   //语音播报
   public static SYS_B: string = "B";
-  //震动
+  //震动和音效
   public static SYS_Z: string = "Z";
   /*========== 系统设置区分 =========*/
 

@@ -12,7 +12,8 @@ import {DataConfig} from "../config/data.config";
 @Injectable()
 export class FeedbackService {
 
-  constructor(private vibration: Vibration, private audio: NativeAudio) { }
+  constructor(private vibration: Vibration, private audio: NativeAudio) {
+  }
 
 
   async initAudio() {
@@ -20,7 +21,9 @@ export class FeedbackService {
     //id为音频文件的唯一ID
     //assetPath音频资产的相对路径或绝对URL（包括http：//）
     //官网还有更多的配置，这里只需要两个参数就行了，后面的回调记得带上
-    var items = ['snare', 'highhat', 'bongo', 'bass', 'snare','remind',"sms"];
+
+
+    var items = ['click', 'delete', 'press', 'save', 'send', 'trans', 'warning'];
     for (var i = 0; i < items.length; i++) {
       var asset = 'assets/feedback/' + items[i] + '.mp3';
       await this.audio.preloadSimple(items[i], asset);
@@ -28,55 +31,79 @@ export class FeedbackService {
     return;
   }
 
-  stopSms(){
-    return this.audio.stop("sms")
+  // public audioRemind() {
+  //   return this.audio.play('remind').then(d => {
+  //     if (UserConfig.getSetting(DataConfig.SYS_Z)) return;
+  //     this.vibration.vibrate(200);
+  //   });
+  // }
+  //
+  // public audioSms() {
+  //   if (UserConfig.settins.get(DataConfig.SYS_T).value == "0") return;
+  //   return this.audio.play('sms').then(d => {
+  //
+  //     if (UserConfig.getSetting(DataConfig.SYS_Z)) return;
+  //     this.vibration.vibrate(200);
+  //   });
+  // }
+  public audioWarning() {
+
+    if (UserConfig.getSetting(DataConfig.SYS_Z)) {
+      this.audio.play('warning');
+      this.vibration.vibrate(600);
+    }
+    return;
+  }
+  public audioTrans() {
+
+    if (UserConfig.getSetting(DataConfig.SYS_Z)) {
+      this.audio.play('trans');
+      this.vibration.vibrate(100);
+    }
+    return;
+  }
+  public audioSend() {
+
+    if (UserConfig.getSetting(DataConfig.SYS_Z)) {
+      this.audio.play('send');
+      this.vibration.vibrate(200);
+    }
+    return;
   }
 
-  public audioRemind():Promise<any> {
-    return this.audio.play('remind').then(d => {
-      if (UserConfig.settins.get(DataConfig.SYS_Z).value == "0")  return ;
-      this.vibration.vibrate(200);
-    });
+  public audioSave() {
+
+    if (UserConfig.getSetting(DataConfig.SYS_Z)) {
+      this.audio.play('save');
+      this.vibration.vibrate(300);
+    }
+    return;
   }
 
-  public audioSms():Promise<any> {
-    if (UserConfig.settins.get(DataConfig.SYS_T).value == "0")  return ;
-    return this.audio.play('sms').then(d => {
+  public audioPress() {
 
-      if (UserConfig.settins.get(DataConfig.SYS_Z).value == "0")  return ;
-      this.vibration.vibrate(200);
-    });
+    if (UserConfig.getSetting(DataConfig.SYS_Z)) {
+      this.audio.play('press');
+      this.vibration.vibrate(400);
+    }
+    return;
   }
 
+  public audioDelete() {
 
-  public audioBass():Promise<any> {
-    return this.audio.play('bass').then(d => {
-
-      if (UserConfig.settins.get(DataConfig.SYS_Z).value == "0")  return ;
-      this.vibration.vibrate(200);
-    });
+    if (UserConfig.getSetting(DataConfig.SYS_Z)) {
+      this.audio.play('delete');
+      this.vibration.vibrate(300);
+    }
+    return;
   }
 
-  public audioSnare():Promise<any> {
-    return this.audio.play('snare').then(d => {
-      if (UserConfig.settins.get(DataConfig.SYS_Z).value == "0")  return ;
+  public audioClick() {
+
+    if (UserConfig.getSetting(DataConfig.SYS_Z)) {
+      this.audio.play('click');
       this.vibration.vibrate(200);
-    });
-  }
-
-  public audioHighhat():Promise<any> {
-
-    return this.audio.play('highhat').then(d => {
-      if (UserConfig.settins.get(DataConfig.SYS_Z).value == "0")  return ;
-      this.vibration.vibrate(200);
-    });
-  }
-
-  public audioBongo():Promise<any> {
-
-    return this.audio.play('bongo').then(d => {
-      if (UserConfig.settins.get(DataConfig.SYS_Z).value == "0")  return ;
-      this.vibration.vibrate(200);
-    });
+    }
+    return;
   }
 }
