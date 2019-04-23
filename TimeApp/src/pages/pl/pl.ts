@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
+import {IonicPage, ModalController, NavController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "./pl.service";
 import {UtilService} from "../../service/util-service/util.service";
@@ -54,6 +54,7 @@ import {PagePDPro} from "../../data.mapping";
             </ion-list-header>
             <div *ngFor="let option of xtJhs">
               <ion-item class="plan-list-item"(press)="delPlan(option)" >
+                <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
                 <div (click)="toPd(option)">{{option.jn}}({{option.js}})</div>
                 <button ion-button clear item-end (click)="download(option)">
                   <div *ngIf="option.jtd == '0'" class="content-download">
@@ -81,7 +82,8 @@ export class PlPage {
 
   constructor(private navCtrl: NavController,
               private plService:PlService,
-              private util: UtilService) {
+              private util: UtilService,
+              public modalController: ModalController,) {
   }
 
   ionViewDidLoad() {
@@ -116,7 +118,7 @@ export class PlPage {
   }
 
   newPlan(){
-    this.navCtrl.push(DataConfig.PAGE._PC_PAGE,{});
+    this.modalController.create(DataConfig.PAGE._PC_PAGE).present();
   }
 
   toPd(jh:PagePDPro){
@@ -127,7 +129,7 @@ export class PlPage {
       }
     }
     if(go){
-      this.navCtrl.push(DataConfig.PAGE._PD_PAGE,{'jh':jh});
+      this.modalController.create(DataConfig.PAGE._PD_PAGE,{'jh':jh}).present();
     }
   }
 
