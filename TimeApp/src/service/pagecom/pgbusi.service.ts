@@ -34,7 +34,7 @@ export class PgBusiService {
    * @param {string} sr 所属日程id（受邀）
    * @returns {Promise<BsModel<ScdData>>}
    */
-  get(si: string, sr?: string): Promise<ScdData> {
+  private get(si: string, sr?: string): Promise<ScdData> {
 
     return new Promise<ScdData>(async (resolve, reject) => {
       //获取本地日程
@@ -257,7 +257,7 @@ export class PgBusiService {
    * 根据日程Id获取日程详情  dch
    * @param {string} si
    */
-  getBySi(si:string): Promise<ScdOutata> {
+  private getBySi(si:string): Promise<ScdOutata> {
       return new Promise<ScdOutata>(async (resolve, reject) => {
         //获取本地日程
         let scdData = new ScdOutata();
@@ -324,27 +324,27 @@ export class PgBusiService {
            si = sp.si;
          });
        }
-       if(si != ''){
-         let ctbl = await this.getCtbl(si);
-         if(ctbl != null){
-           Object.assign(scdData, ctbl);
-           //获取计划对应色标
-           let jh = new JhTbl();
-           jh.ji = scdData.ji;
-           jh = await this.sqlExce.getOne<JhTbl>(jh);
-           Object.assign(scdData.p, jh);
-           if(scdData.gs == '0'){
-             //共享人信息
-             scdData.fss = await this.getFsDataBySi(ctbl.si);
-           }
-
-           if(scdData.gs == '1'){
-             //发起人信息
-             scdData.fs = await this.getFsDataByUi(ctbl.ui);
-           }
-         }
-       }
      }
+    if(si != ''){
+      let ctbl = await this.getCtbl(si);
+      if(ctbl != null){
+        Object.assign(scdData, ctbl);
+        //获取计划对应色标
+        let jh = new JhTbl();
+        jh.ji = scdData.ji;
+        jh = await this.sqlExce.getOne<JhTbl>(jh);
+        Object.assign(scdData.p, jh);
+        if(scdData.gs == '0'){
+          //共享人信息
+          scdData.fss = await this.getFsDataBySi(ctbl.si);
+        }
+
+        if(scdData.gs == '1'){
+          //发起人信息
+          scdData.fs = await this.getFsDataByUi(ctbl.ui);
+        }
+      }
+    }
     return scdData;
   }
 
@@ -470,7 +470,7 @@ export class PgBusiService {
    * @param {string} si
    * @returns {Promise<Array<JtData>>}
    */
-  async getJtData(jti:string,si:string,sd:string){
+  private async getJtData(jti:string,si:string,sd:string){
     let baseL = new Map<string, BaseData>();
     let jt = new JtTbl();
     jt.px = null;
@@ -497,7 +497,7 @@ export class PgBusiService {
    * @param {string} sd
    * @returns {Promise<Array<JtData>>}
    */
-  async getSpData(spi:string,si:string,sd:string){
+  private async getSpData(spi:string,si:string,sd:string){
     let baseL = new Map<string, BaseData>();
     //获取特殊日程子表及提醒对象
     let spsql = "select sp.spi, " +
@@ -514,7 +514,7 @@ export class PgBusiService {
       "sp.wtt," +
       "sp.itx ,e.wi ewi,e.si esi,e.st est ,e.wd ewd,e.wt ewt,e.wtt ewtt " +
       " from gtd_sp sp left join gtd_e e on sp.spi = e.wi and " +
-      "sp.si = e.si ";
+      "sp.si = e.si  where 1=1 ";
     if(si != ''){
       spsql =spsql +  "and sp.si = '" + si + "' "
     }
@@ -552,7 +552,8 @@ export class PgBusiService {
     let dlstsql = "select * from gtd_d where si = '" + si + "' ";
     dlst = await this.sqlExce.getExtList<DTbl>(dlstsql);
     for (let j = 0, len = dlst.length; j < len; j++) {
-      let fs: FsData = this.userConfig.GetOneBTbl(dlst[j].ai);
+      let fs: FsData = new FsData();
+      fs = this.userConfig.GetOneBTbl(dlst[j].ai);
       if(fs && fs != null){
         fss.push(fs);
       }
@@ -637,6 +638,8 @@ export class PgBusiService {
       //restFul保存日程
       this.setAdgPro(adgPro, ct);
       this.agdRest.save(adgPro);
+
+      Object.assign(rc,ct);
       resolve(rc);
 
       this.emitService.emitRef(ct.sd);
@@ -731,7 +734,7 @@ export class PgBusiService {
    * @param {string} tsId 特殊表Id
    * @returns {Promise<Promise<any> | number>}
    */
-  getTxEtbl(rc: CTbl, sp: SpTbl): ETbl {
+  private getTxEtbl(rc: CTbl, sp: SpTbl): ETbl {
     let et = new ETbl();//提醒表
     et.si = rc.si;
     if (rc.tx != '0') {
@@ -768,7 +771,7 @@ export class PgBusiService {
    * @param {CTbl} r 日程详情
    * @returns {Promise<Promise<any> | number>}
    */
-  saveOrUpdTx(c: CTbl): Promise<CTbl> {
+  private saveOrUpdTx(c: CTbl): Promise<CTbl> {
     return new Promise<CTbl>(async (resolve, reject) => {
       let condi: SpTbl = new SpTbl();
       condi.si = c.si;

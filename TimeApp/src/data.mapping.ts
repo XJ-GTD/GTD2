@@ -127,6 +127,8 @@ export class SpecScdData extends BaseData{
   wtt: number;//时间戳
   gs:string;//归属
   remindData:RemindData = new RemindData();//对应提醒时间
+  //所属计划
+  p:PlData = new PlData();
 }
 
 /**
