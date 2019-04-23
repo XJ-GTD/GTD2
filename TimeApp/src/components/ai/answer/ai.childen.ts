@@ -27,8 +27,7 @@ import {FsService} from "../../../pages/fs/fs.service";
       <div class="scd">
         <ion-list no-lines>
           <ion-item><p class="ti">{{aiData.scd.ti}}</p></ion-item>
-          <ion-item><p class="date">{{aiData.scd.d | formatedate:"CYYYY/MM/DD"}}</p></ion-item>
-          <ion-item><p class="date">{{aiData.scd.t}}</p></ion-item>
+          <ion-item><span class="date">{{aiData.scd.d | formatedate:"CYYYY/MM/DD"}}</span><span class="date">{{aiData.scd.t}}</span></ion-item>
           <ion-item>
             <div class="friend">
               <ion-chip *ngFor="let fs of aiData.scd.friends">
@@ -39,9 +38,13 @@ import {FsService} from "../../../pages/fs/fs.service";
               </ion-chip>
             </div>
           </ion-item>
-          <ion-item><p class="scdTip">语音请说确认</p>
-            <button item-end (click)="go2tdc(aiData.scd)">编辑</button>
-            <button item-end (click)="confirmScd(aiData.scd)">确认</button>
+          <ion-item *ngIf="!aiData.scd.saved">
+              <p class="scdTip">语音说确认</p>
+              <button item-end (click)="showScd(aiData.scd)" >编辑</button>
+              <button item-end (click)="confirmScd(aiData.scd)">确认</button>
+          </ion-item>
+          <ion-item *ngIf="aiData.scd.saved">
+            <p class="scdTip">保存成功</p>
           </ion-item>
         </ion-list>
       </div>
@@ -73,17 +76,13 @@ export class AiChildenComponent {
 
   }
 
-  go2tdc(scd: ScdAiData) {
-    this.aiService.go2tdc(scd);
-  }
-
   confirmScd(scd: ScdAiData) {
-
+    this.aiData.scd.saved = true;
     this.aiService.createScd(scd);
   }
 
   showScd(scd: ScdAiData) {
-
+    this.aiData.scd.saved = true;
     this.aiService.showScd(scd);
   }
 }

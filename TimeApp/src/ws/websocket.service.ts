@@ -30,10 +30,7 @@ export class WebsocketService {
 
   constructor(private dispatchService: DispatchService) {
     this.workqueue = async.queue( ({message,index},callback) =>{
-      console.log("接收到消息=====>" + index);
       this.dispatchService.dispatch(message).then(data=>{
-        console.log("处理了接收到消息=====>" + message);
-        console.log("我没有return你怎么知道走完了=====>" + message);
         callback();
       }).catch(data=>{
         console.log(data);
@@ -93,11 +90,9 @@ export class WebsocketService {
             this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
               //message.ack(message.headers);
               console.log('Received a message from ' + this.queue);
-              for(let i = 0;i < 10; i++){
-                this.workqueue.push({message:message.body,index:i},()=>{
-                  console.log(i+ "次完成了");
+                this.workqueue.push({message:message.body,index:this.messages++},()=>{
+                  if (this.messages >9999) this.messages = 0;
                 });
-              }
 
             });
           }, error => {

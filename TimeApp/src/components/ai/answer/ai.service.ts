@@ -37,7 +37,7 @@ export class AiService {
     this.modalController.create(DataConfig.PAGE._TDC_PAGE, paramter).present();
   }
 
-  createScd(scd: ScdAiData) {
+  async createScd(scd: ScdAiData) {
     //tx rt
     let dbscd:ScdData = new ScdData();
     dbscd.sn = scd.ti;
@@ -56,7 +56,7 @@ export class AiService {
       fs.ranpy = f.p;
       dbscd.fss.push(fs);
     }
-    this.pgBusiService.save4ai(dbscd);
+    return await this.pgBusiService.save4ai(dbscd);
   }
 
   showScd(scd: ScdAiData) {
@@ -66,6 +66,10 @@ export class AiService {
     p.d = moment(scd.d);
     p.gs = scd.gs;
     let gs = scd.gs
+    if (!scd.id) {
+      this.go2tdc(scd);
+      return;
+    }
 
     if (gs == "0") {
       //本人画面
@@ -110,6 +114,7 @@ export class ScdAiData {
   t: string = "";
   ti: string = "";
   gs: string = "";
+  saved:boolean = false;
   friends: Array<FriendAiData> = new Array<FriendAiData>();
 }
 
