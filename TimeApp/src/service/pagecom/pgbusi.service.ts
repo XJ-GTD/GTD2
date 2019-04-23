@@ -219,7 +219,33 @@ export class PgBusiService {
    * 批量保存日程更新
    */
   async saveBatch(rcL : Array<RcInParam>){
-
+    let sqL = new Array<string>();
+    let len = sqL.length;
+    if(rcL.length>0){
+      for(let rc of rcL){
+        let rcn = new CTbl();
+        rc.setParam();
+        Object.assign(rcn,rc);
+        sqL.push(rcn.inT());
+        rc.si = this.util.getUuid();
+        rc.ui = UserConfig.account.id;
+        if(rc.gs == '3'){
+          let jt = new JtTbl();
+          Object.assign(jt,rc);
+          jt.si = rc.si;
+          sqL.push(jt.inT());
+        }else{
+          let sp = new SpTbl();
+          Object.assign(sp,rc);
+          sp.si = rc.si;
+          sqL.push(sp.inT());
+        }
+      }
+      if(sqL.length>0){
+         len = await this.sqlExce.batExecSql(sqL);
+      }
+    }
+    return len;
   }
 
   /**
