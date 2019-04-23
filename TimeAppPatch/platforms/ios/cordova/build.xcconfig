@@ -21,7 +21,7 @@
 // Settings are overridden by configuration-level .xcconfig file (build-release/build-debug).
 //
 HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/local/lib/include" "$(OBJROOT)/UninstalledProducts/include" "$(OBJROOT)/UninstalledProducts/$(PLATFORM_NAME)/include" "$(BUILT_PRODUCTS_DIR)"
-OTHER_LDFLAGS = -ObjC
+OTHER_LDFLAGS = -ObjC -liconv
 // Type of signing identity used for codesigning, resolves to first match of given type.
 // "iPhone Developer": Development builds (default, local only; iOS Development certificate) or "iPhone Distribution": Distribution builds (Adhoc/In-House/AppStore; iOS Distribution certificate)
 CODE_SIGN_IDENTITY = iPhone Distribution: Jinyang Zhang (D5A8L43W8A)
