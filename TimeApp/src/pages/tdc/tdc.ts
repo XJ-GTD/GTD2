@@ -9,7 +9,7 @@ import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
-import {ScdData, ScdPageParamter} from "../../data.mapping";
+import {RcInParam, ScdData, ScdPageParamter} from "../../data.mapping";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {PlService} from "../pl/pl.service";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
@@ -392,6 +392,7 @@ export class TdcPage {
       //提醒内容设置
 
       //提醒内容设置
+
       this.scd.ui = UserConfig.account.id;
 
       //消息设为已读
@@ -415,8 +416,10 @@ export class TdcPage {
 
       this.scd.ji = this.scd.p.ji;
 
+      let rcin :RcInParam = new RcInParam();
+      Object.assign(rcin,this.scd);
+      let data = await this.busiServ.saveOrUpdate(rcin);
 
-      let data = await this.busiServ.save(this.scd);
 
       this.util.loadingEnd();
 
@@ -438,11 +441,11 @@ export class TdcPage {
 
   async goShare() {
     //日程分享打开参与人选择rc日程类型
-      let scdData: ScdData = await this.save();
-      if (scdData == null){
+      let newscd: ScdData = await this.save();
+      if (newscd == null){
         return;
       }
-      this.scd.si = scdData.si;
+      this.scd.si = newscd.si;
       this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
       return;
   }

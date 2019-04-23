@@ -45,7 +45,7 @@ import {FsData, PageDcData} from "../../data.mapping";
                  <!--</ion-item>-->
                
                <ion-label (click)="toMemberInfo(g)">
-                 {{g.rn}} 
+                 {{g.ran}} 
                  <span>
                    {{g.rc}}
                  </span>
