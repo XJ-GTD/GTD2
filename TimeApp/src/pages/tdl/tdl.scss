@@ -110,9 +110,11 @@ page-tdl {
   .header-set {
     background-color: $lstitleColor;
     height:64px;
+    padding: 0px;
 
     .headerdate {
-      margin-left: -15px;
+      margin: 0px;
+      padding: 0px;
 
       .toolbar-title-ios {
         font-size: 15px;
@@ -128,6 +130,15 @@ page-tdl {
     img {
       width: 15px;
       margin-left: 15px;
+    }
+    .bar-buttons-ios{
+      margin: 0px;
+    }
+    .backbtn-set{
+      width: 75px;
+      background: $baseBackColor;
+      height: 64px;
+      border-radius: 0px;
     }
   }
 

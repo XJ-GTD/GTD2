@@ -13,7 +13,6 @@ import {defaults, pickModes} from "../config";
 import {SqliteExec} from "../../../service/util-service/sqlite.exec";
 import {LocalcalendarService} from "../../../service/cordova/localcalendar.service";
 import {UtilService} from "../../../service/util-service/util.service";
-import {EmitService} from "../../../service/util-service/emit.service";
 
 @Injectable()
 export class CalendarService {

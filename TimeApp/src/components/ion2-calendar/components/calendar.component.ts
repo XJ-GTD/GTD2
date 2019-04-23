@@ -203,9 +203,11 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     });
     this.initOpt();
     this.createMonth(new Date().getTime());
-    this.emitService.registerRef((data:string) =>{
-      this.createMonth(this.monthOpt.original.time);
-    });
+    // this.emitService.registerRef(data =>{
+    //   console.log("######" + data);
+    //   console.log("######this.monthOpt.original.time" + this.monthOpt.original.time);
+    //   this.createMonth(this.monthOpt.original.time);
+    // });
   }
 
   getViewDate() {

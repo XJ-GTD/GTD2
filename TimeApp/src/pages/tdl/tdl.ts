@@ -25,7 +25,7 @@ import {UtilService} from "../../service/util-service/util.service";
     <ion-header no-border>
       <ion-toolbar class="header-set">
         <ion-buttons start>
-          <button ion-button icon-only (click)="goBack()" class="backbtn-set">
+          <button ion-button (click)="goBack()" class="backbtn-set">
             <img src="../../assets/imgs/back-white.png"/>
           </button>
         </ion-buttons>

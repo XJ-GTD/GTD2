@@ -38,7 +38,7 @@ import {PlanPa} from "../../service/restful/shaesev";
     <ion-content padding>
       <ion-grid>
         <ion-row>
-          <ion-card>
+          <ion-card [ngStyle]="{'background-color': plan.pn.jc }">
             <ion-card-content text-center>
               <div>{{plan.pn.jn}}</div>
             </ion-card-content>
@@ -78,7 +78,7 @@ export class PdPage {
   actionSheet;
 
   jh:PagePDPro;
-  today: string = new Date().toISOString();
+  today: any = new Date().toISOString();
   plan:any ={
     'pn': {},
     'pa':new Array<PlanPa>(),
@@ -99,7 +99,7 @@ export class PdPage {
   }
 
   ionViewDidEnter(){
-    this.pdService.getPlan(this.jh.ji).then(data=>{
+    this.pdService.getPlan(this.jh.ji,this.jh.jt).then(data=>{
       this.plan.pa = data;
     }).catch(res=>{
       console.log("获取计划列表失败" + JSON.stringify(res));

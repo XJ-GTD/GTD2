@@ -3,6 +3,7 @@ import Stomp, {Message, StompSubscription} from "@stomp/stompjs";
 import {DispatchService} from "./dispatch.service";
 import {Injectable, NgModule} from "@angular/core";
 import {UserConfig} from "../service/config/user.config";
+import * as async from "async/dist/async.js"
 
 
 /**
@@ -24,9 +25,23 @@ export class WebsocketService {
   private failedtimes: number = 0;
   private timer: any;
   private connections: number = 0;
+  workqueue:any;
+  message:number;
 
   constructor(private dispatchService: DispatchService) {
+    this.workqueue = async.queue( ({message,index},callback) =>{
+      this.dispatchService.dispatch(message).then(data=>{
+        callback();
+      }).catch(data=>{
+        console.log(data);
+        callback();
+      })
+    });
+    this.messages = 0;
   }
+
+  messages:number = 0;
+
 
 
   private settingWs(): Promise<any> {
@@ -75,8 +90,10 @@ export class WebsocketService {
             this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
               //message.ack(message.headers);
               console.log('Received a message from ' + this.queue);
-              this.dispatchService.dispatch(message.body).then(data => {
-              })
+                this.workqueue.push({message:message.body,index:this.messages++},()=>{
+                  if (this.messages >9999) this.messages = 0;
+                });
+
             });
           }, error => {
             this.connections--;
