@@ -50,7 +50,7 @@ before_install:
   - export PATH=$GRADLE_HOME/bin:$PATH
   - nvm install 8
   - sh $TRAVIS_BUILD_DIR/travis/preinstall.sh
-  - rvm install 2.1.5
+  - rvm install 2.3.0
   - gem install byebug -v 9.0.6
   - gem install fir-cli
   - cp $TRAVIS_BUILD_DIR/config/build.gradle $TRAVIS_BUILD_DIR/TimeApp/build.gradle
