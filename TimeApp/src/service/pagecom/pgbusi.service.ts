@@ -12,10 +12,11 @@ import * as moment from "moment";
 import {DataConfig} from "../config/data.config";
 import {UserConfig} from "../config/user.config";
 import {ContactsService} from "../cordova/contacts.service";
-import {FsData, RcInParam, ScdData, SpecScdData} from "../../data.mapping";
+import {BaseData, FsData, JtData, RcInParam, ScdData, ScdOutata, SpecScdData} from "../../data.mapping";
 import {FsService} from "../../pages/fs/fs.service";
-import {PlService} from "../../pages/pl/pl.service";
 import {EmitService} from "../util-service/emit.service";
+import {BTbl} from "../sqlite/tbl/b.tbl";
+import {JtTbl} from "../sqlite/tbl/jt.tbl";
 
 @Injectable()
 export class PgBusiService {
@@ -196,18 +197,22 @@ export class PgBusiService {
   }
 
   /**
-   * 语音保存日程更新
+   * 日程保存或日程更新
    */
-  async saveOne(rc : RcInParam){
-    if(rc.si != null){
-      this.getCtbl(rc.si);
-    }else{
-      rc.setParam();
-      rc.ui = UserConfig.account.id;
-      let scd = new ScdData();
-      Object.assign(scd,rc);
-      this.save(scd);
-    }
+   saveOne(rc : RcInParam):Promise<ScdData>{
+     return new Promise<ScdData>(async (resolve, reject) => {
+       if (rc.si != null) {
+           let scd = new ScdData();
+           Object.assign(scd, rc);
+            this.updateDetail(scd);
+       } else {
+         rc.setParam();
+         rc.ui = UserConfig.account.id;
+         let scd = new ScdData();
+         Object.assign(scd, rc);
+         this.save(scd);
+       }
+     })
   }
 
   /**
@@ -221,8 +226,114 @@ export class PgBusiService {
    * 根据日程Id获取日程详情
    * @param {string} si
    */
-  selectBySi(si:string){
+  selectBySi(si:string): Promise<ScdOutata> {
+      return new Promise<ScdOutata>(async (resolve, reject) => {
+        //获取本地日程
+        let scdData = new ScdOutata();
+        let ctbl = new CTbl();
+        if(ctbl != null){
+          if (si != "") {
+            ctbl.si = si;
+          }
+          ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
+          Object.assign(scdData, ctbl);
+          //获取计划对应色标
+          let jh = new JhTbl();
+          jh.ji = scdData.ji;
+          jh = await this.sqlExce.getOne<JhTbl>(jh);
+          Object.assign(scdData.p, jh);
+          //获取特殊日程子表详情
+          if(scdData.gs != '3'){
+            scdData.specScds = await this.getSpData('',scdData.si,'');
+          }else{
+            scdData.specScds = await this.getJtData('',scdData.si,'');
+          }
 
+          //发起人信息
+          scdData.fs = await this.getFsDataByUi(ctbl.ui);
+
+          //共享人信息
+          scdData.fss = await this.getFsDataBySi(ctbl.si);
+          resolve(scdData);
+        }
+      });
+  }
+
+  /**
+   * 获取系统计划3特殊表详情
+   * @param {string} jti
+   * @param {string} si
+   * @returns {Promise<Array<JtData>>}
+   */
+  async getJtData(jti:string,si:string,sd:string){
+    let baseL = new Map<string, BaseData>();
+    let jt = new JtTbl();
+    jt.px = null;
+    if(jti != ''){
+      jt.jti = jti;
+    }
+    if(si != ''){
+      jt.si = si;
+    }
+    if(sd != ''){
+      jt.sd = sd;
+    }
+    let jtL = await this.sqlExce.getList<JtData>(jt);
+    for (let j = 0, len = jtL.length; j < len; j++) {
+      baseL.set(jtL[j].sd, jtL[j]);
+    }
+    return baseL;
+  }
+
+  /**
+   * 获取日程特殊表详情
+   * @param {string} spi
+   * @param {string} si
+   * @param {string} sd
+   * @returns {Promise<Array<JtData>>}
+   */
+  async getSpData(spi:string,si:string,sd:string){
+    let baseL = new Map<string, BaseData>();
+    //获取特殊日程子表及提醒对象
+    let spsql = "select sp.spi, " +
+      "sp.si," +
+      "sp.spn," +
+      "sp.sd," +
+      "sp.st," +
+      "sp.ed," +
+      "sp.et," +
+      "sp.ji," +
+      "sp.bz," +
+      "sp.sta," +
+      "sp.tx," +
+      "sp.wtt," +
+      "sp.itx ,e.wi ewi,e.si esi,e.st est ,e.wd ewd,e.wt ewt,e.wtt ewtt " +
+      " from gtd_sp sp left join gtd_e e on sp.spi = e.wi and " +
+      "sp.si = e.si ";
+    if(si != ''){
+      spsql =spsql +  "and sp.si = '" + si + "' "
+    }
+    if(sd != ''){
+      spsql =spsql +  "and sp.sd = '" + sd + "' "
+    }
+    if(spi != ''){
+      spsql =spsql +  "and sp.spi = '" + spi + "' "
+    }
+    let lst: Array<any> = new Array<any>();
+    lst = await this.sqlExce.getExtList<any>(spsql);
+    for (let j = 0, len = lst.length; j < len; j++) {
+      let sp: SpecScdData = new SpecScdData();
+      Object.assign(sp, lst[j]);
+
+      sp.remindData.wi = lst[j].ewi;
+      sp.remindData.si = lst[j].esi;
+      sp.remindData.st = lst[j].est;
+      sp.remindData.wd = lst[j].ewd;
+      sp.remindData.wt = lst[j].ewt;
+      sp.remindData.wtt = lst[j].ewtt;
+      baseL.set(sp.sd, sp);
+    }
+    return baseL;
   }
 
   /**
@@ -233,6 +344,61 @@ export class PgBusiService {
    */
   selectOneRc(si:string,date:string,subSi:string){
 
+  }
+
+  /**
+   * 根据日程Id获取联系人信息
+   * @returns {Promise<Array<FsData>>}
+   */
+  private async getFsDataBySi(si:string){
+    let fss: Array<FsData> =new Array<FsData>();
+    //共享人信息
+    let dlst: Array<DTbl> = new Array<DTbl>();
+    let dlstsql = "select * from gtd_d where si = '" + si + "' ";
+    dlst = await this.sqlExce.getExtList<DTbl>(dlstsql);
+    for (let j = 0, len = dlst.length; j < len; j++) {
+      let fs: FsData = this.userConfig.GetOneBTbl(dlst[j].ai);
+      if(fs && fs != null){
+        fss.push(fs);
+      }
+    }
+    return fss;
+  }
+
+  /**
+   * 根据用户Id获取联系人信息
+   * @returns {Promise<Array<FsData>>}
+   */
+  private async getFsDataByUi(ui:string){
+    let fs = new FsData();
+    //发起人信息
+    let tmp = this.userConfig.GetOneBTbl(ui);
+    if (tmp) {
+      fs = tmp;
+    }else{
+      //不存在查询数据库
+      let b = await this.getBtcl(ui);
+      if(b != null){
+        Object.assign(fs, b);
+        fs.bhiu = DataConfig.HUIBASE64;
+      }else{
+        console.error("=======PgbusiService 获取发起人失败 =======")
+      }
+    }
+    return fs;
+  }
+
+  /**
+   * 根据openId查询联系人信息
+   * @param ui
+   * @returns {Promise<BTbl>}
+   */
+  async getBtcl(ui){
+    //不存在查询数据库
+    let b = new BTbl();
+    b.ui = ui;
+    b = await this.sqlExce.getExtOne<BTbl>(b.slT());
+    return b;
   }
 
   /**
@@ -271,9 +437,9 @@ export class PgBusiService {
    * @param {PageRcData} rc 日程信息
    * @returns {Promise<BsModel<any>>}
    */
-  save(rc: ScdData): Promise<CTbl> {
+  save(rc: ScdData): Promise<ScdData> {
 
-    return new Promise<CTbl>(async (resolve, reject) => {
+    return new Promise<ScdData>(async (resolve, reject) => {
       let str = this.checkRc(rc);
       //TODO  返回错误信息
       if (str != '') {
@@ -297,10 +463,9 @@ export class PgBusiService {
       //restFul保存日程
       this.setAdgPro(adgPro, ct);
       this.agdRest.save(adgPro);
-      resolve(ct);
+      resolve(rc);
 
       this.emitService.emitRef(ct.sd);
-      return;
     });
 
   }
@@ -315,7 +480,7 @@ export class PgBusiService {
 
 
     return new Promise<ScdData>(async (resolve, reject) => {
-      let ct: CTbl = await this.save(rc);
+      let ct: ScdData = await this.save(rc);
       rc.si = ct.si;
       let fs: Array<FsData> = new Array<FsData>();
       for (let f of rc.fss) {
@@ -528,7 +693,6 @@ export class PgBusiService {
 
       this.emitService.emitRef(scd.sd);
       resolve(scd);
-      return;
     });
 
   }
