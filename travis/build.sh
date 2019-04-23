@@ -4,8 +4,8 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     # Build on macOS
     cordova platform remove ios
     cordova platform add ios
-    ls $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/cordova
-    cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/cordova/build.xcconfig
+    #ls $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/cordova
+    #cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/cordova/build.xcconfig
 else
     # Build on Linux
     cordova platform remove android
