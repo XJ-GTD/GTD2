@@ -35,4 +35,6 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
   security cms -D -i "$TRAVIS_BUILD_DIR/travis/profiles/ios/iOS_Distribution_001.mobileprovision"
   echo " ****** "
   
+  security set-key-partition-list -S apple-tool:,apple: -s -k travis ios-build.keychain
+
 fi
