@@ -37,7 +37,7 @@ import {UtilService} from "../../service/util-service/util.service";
         <ion-row>
           <div>日程/联系人/群组/计划/提醒/设置</div>
         </ion-row>
-        <ion-row>
+        <ion-row [ngStyle]="{'visibility': isRecover ? 'visible':'hidden' }">
           <div>上次备份时间：<small>{{bts  * 1000 | date:"yyyy年MM月dd日 HH:mm:ss"}}</small></div>
         </ion-row>
         
