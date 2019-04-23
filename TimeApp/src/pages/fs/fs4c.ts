@@ -39,7 +39,7 @@ import {DataConfig} from "../../service/config/data.config";
           <ion-avatar>
             <img src={{g.bhiu}}>
           </ion-avatar>
-          <ion-label>{{g.rn}}</ion-label>
+          <ion-label>{{g.ran}}</ion-label>
         </ion-chip>
       </div>
     </ion-header>

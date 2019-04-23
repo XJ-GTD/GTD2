@@ -202,7 +202,7 @@ export class PgBusiService {
    */
    saveOrUpdate(rc : RcInParam):Promise<ScdData>{
      return new Promise<ScdData>(async (resolve, reject) => {
-       if (rc.si != null) {
+       if (rc.si != null && rc.si !="") {
          let scd = new ScdData();
          Object.assign(scd, rc);
          scd = await this.updateDetail(scd);
