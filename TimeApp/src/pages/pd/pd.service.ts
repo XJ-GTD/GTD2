@@ -14,7 +14,7 @@ export class PdService {
   async getPlan(pid: string) {
     console.log('---------- PdService getPlan 获取计划开始 ----------------');
     // 获取计划管理日程（重复日程处理等）
-    let  sql = 'select gc.* from gtd_c gc left join gtd_sp sp on gc.si = sp.si where gc.ji = "' + pid + '"  order by gc.sd,gc.st desc';
+    let  sql = 'select gc.si,gc.sn,gc.bz,gc.ji,gc.rt,gc.sr,sp.sd,sp.st,sp.et,sp.ed from gtd_c gc left join gtd_sp sp on gc.si = sp.si where gc.ji = "' + pid + '"  order by sp.sd,sp.st desc';
     let  cs = await this.sqlExec.getExtList<CTbl>(sql);
 
     let paList: Array<PlanPa> = Array<PlanPa>();
