@@ -415,6 +415,7 @@ export class TddiPage {
       this.util.alterStart("2", () => {
         this.util.loadingStart();
         this.busiServ.delete(this.scd.si, "2", d).then(data => {
+          this.feekback.audioDelete();
           this.util.loadingEnd();
           this.cancel();
         }).catch(err => {
