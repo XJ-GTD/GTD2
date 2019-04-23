@@ -205,6 +205,13 @@ export class PgBusiService {
        if (rc.si != null && rc.si !="") {
          let scd = new ScdData();
          Object.assign(scd, rc);
+
+         //设置sp表值
+         let specScd :SpecScdData =new SpecScdData();
+         Object.assign(specScd,rc.specScd);
+         scd.specScds.set(specScd.sd,specScd);
+         scd.showSd = specScd.sd;
+
          scd = await this.updateDetail(scd);
          resolve(scd)
        } else {
@@ -849,15 +856,21 @@ export class PgBusiService {
         c.ed = ed;
 
       } else {
-        //如果只是修改重复时间，则更新重复子表所有时间
-        //如果修改了提醒时间，则更新提醒表所有时间
-        if (oldc.st != c.st || oldc.tx != c.tx) {
-          let sq = "update gtd_sp set st = '" + c.st + "' where si = '" + c.si + "'";
-          await this.sqlExce.execSql(sq);
+        //更新子表数据
+        //if (oldc.st != c.st || oldc.tx != c.tx) {
+        let sqls :Array<string> = new Array<string>();
+
+        //更新日程表title
+        let sq = "update gtd_ set sn = '" + c.sn + "' where si = '" + c.si + "'";
+        sqls.push(sq);
+
+        sq = "update gtd_sp set st = '" + c.st + "' where si = '" + c.si + "'";
+
+        await this.sqlExce.execSql(sq);
 
           //保存提醒表
           await this.saveOrUpdTx(c);
-        }
+        //}
 
       }
       await this.sqlExce.update(c);

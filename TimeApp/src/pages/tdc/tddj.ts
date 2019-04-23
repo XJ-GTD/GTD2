@@ -6,7 +6,7 @@ import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
-import {FsData, ScdData, ScdOutata, ScdPageParamter, SpecScdData} from "../../data.mapping";
+import {FsData, RcInParam, ScdData, ScdOutata, ScdPageParamter, SpecScdData} from "../../data.mapping";
 import {PlService} from "../pl/pl.service";
 
 /**
@@ -239,7 +239,7 @@ export class TddjPage {
 
   togChange() {
     if (!this.alld) {
-      this.scd.st = this.util.adCtrlShow(this.scd.st);
+      this.sp.st = this.util.adCtrlShow(this.sp.st);
     }
   }
 
@@ -352,7 +352,7 @@ export class TddjPage {
   //提醒按钮显示控制
   clickwake(type: string) {
 
-    this.scd.tx = type;
+    this.sp.tx = type;
 
     switch (type) {
       case "0":
@@ -410,7 +410,7 @@ export class TddjPage {
         this.wake.oh = 0;
         this.wake.foh = 0;
         this.wake.od = 0;
-        this.scd.tx = "0";
+        this.sp.tx = "0";
     }
   }
 
@@ -425,8 +425,6 @@ export class TddjPage {
       return null;
     }
     this.util.loadingStart();
-    //提醒内容设置
-    this.scd.ui = UserConfig.account.id;
 
     //消息设为已读
     this.scd.du = "1";
@@ -435,26 +433,26 @@ export class TddjPage {
     //开始时间格式转换
     //this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
 
-
-    //结束日期设置
-
-
     //结束时间设置
     //全天的场合
     if (this.alld) {
-      this.scd.st = this.util.adToDb("");
-      this.scd.et = this.util.adToDb("");
+      this.sp.st = this.util.adToDb("");
+      this.sp.et = this.util.adToDb("");
     } else {
-      this.scd.et = this.scd.st;
+      this.sp.et = this.sp.st;
     }
 
 
-    this.scd.ji = this.scd.p.ji;
+    this.sp.ji = this.sp.p.ji;
 
     //归属 本人创建
     this.scd.gs = '0';
-
-    let data //= await this.busiServ.updateDetail(this.scd);
+    let rcin :RcInParam = new RcInParam();
+    //日程数据
+    Object.assign(rcin,this.scd);
+    //日程子数据
+    Object.assign(rcin.specScd,this.sp);
+    let data = await this.busiServ.saveOrUpdate(rcin);
     this.util.loadingEnd();
     this.cancel();
     return data;
