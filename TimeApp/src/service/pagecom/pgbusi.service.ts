@@ -199,18 +199,20 @@ export class PgBusiService {
   /**
    * 日程保存或日程更新
    */
-   saveOne(rc : RcInParam):Promise<ScdData>{
+   saveOrUpdate(rc : RcInParam):Promise<ScdData>{
      return new Promise<ScdData>(async (resolve, reject) => {
        if (rc.si != null) {
-           let scd = new ScdData();
-           Object.assign(scd, rc);
-            this.updateDetail(scd);
+         let scd = new ScdData();
+         Object.assign(scd, rc);
+         scd = await this.updateDetail(scd);
+         resolve(scd)
        } else {
          rc.setParam();
          rc.ui = UserConfig.account.id;
          let scd = new ScdData();
          Object.assign(scd, rc);
-         this.save(scd);
+         scd = await this.save(scd);
+         resolve(scd)
        }
      })
   }
@@ -227,17 +229,17 @@ export class PgBusiService {
         rc.setParam();
         Object.assign(rcn,rc);
         sqL.push(rcn.inT());
-        rc.si = this.util.getUuid();
-        rc.ui = UserConfig.account.id;
+        rcn.si = this.util.getUuid();
+        rcn.ui = UserConfig.account.id;
         if(rc.gs == '3'){
           let jt = new JtTbl();
           Object.assign(jt,rc);
-          jt.si = rc.si;
+          jt.si = rcn.si;
           sqL.push(jt.inT());
         }else{
           let sp = new SpTbl();
           Object.assign(sp,rc);
-          sp.si = rc.si;
+          sp.si = rcn.si;
           sqL.push(sp.inT());
         }
       }
