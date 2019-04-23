@@ -228,9 +228,9 @@ export class PgBusiService {
         let rcn = new CTbl();
         rc.setParam();
         Object.assign(rcn,rc);
-        sqL.push(rcn.inT());
         rcn.si = this.util.getUuid();
         rcn.ui = UserConfig.account.id;
+        sqL.push(rcn.inT());
         if(rc.gs == '3'){
           let jt = new JtTbl();
           Object.assign(jt,rc);
