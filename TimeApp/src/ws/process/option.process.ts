@@ -52,7 +52,7 @@ export class OptionProcess implements MQProcess{
             await this.busiService.updateDetail(dbscd);
           }else{
             //TODO 需要修改delete 方法
-            await this.busiService.delete( dbscd.si,"2", dbscd.sd);
+            await this.busiService.delRcBySiAndSd( dbscd.si, dbscd.sd);
           }
         }
 
