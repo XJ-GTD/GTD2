@@ -35,7 +35,7 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
         <ion-row>
           <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
                         pickerFormat="YYYY MM DD" color="light"
-                        [(ngModel)]="scd.showSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
+                        [(ngModel)]="scd.showSpSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                         min="1999-01-01" max="2039-12-31" disabled
           ></ion-datetime>
         </ion-row>
@@ -90,7 +90,7 @@ export class TddsPage {
       let bs: ScdOutata = data;
       Object.assign(this.scd, bs);
 
-      this.scd.showSd = paramter.d.format("YYYY-MM-DD");
+      this.scd.showSpSd = paramter.d.format("YYYY-MM-DD");
       this.scd.st = moment().format("HH:mm");
 
       this.alldshow = this.util.adStrShow(this.scd.st);

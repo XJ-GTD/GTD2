@@ -55,7 +55,7 @@ import {NotificationsService} from "../../service/cordova/notifications.service"
         <ion-row>
           <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
                         pickerFormat="YYYY MM DD" color="light"
-                        [(ngModel)]="scd.showSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
+                        [(ngModel)]="scd.showSpSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                         min="1999-01-01" max="2039-12-31" disabled
           ></ion-datetime>
           <div class="reptlbl">{{alldshow}}</div>
@@ -212,7 +212,7 @@ export class TddiPage {
     if (this.scd.du == "1"){
       this.busiServ.updateMsg(this.scd.si);
     }
-    this.scd.showSd = paramter.d.format("YYYY-MM-DD");
+    this.scd.showSpSd = paramter.d.format("YYYY-MM-DD");
 
     //TODO 缓存里后获取发送信息
 

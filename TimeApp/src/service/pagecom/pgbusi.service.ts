@@ -212,10 +212,10 @@ export class PgBusiService {
          Object.assign(scd, rc);
 
          //设置sp表值
-         let specScd :SpecScdData =new SpecScdData();
-         Object.assign(specScd,rc.specScdUpd);
-         scd.specScds.set(specScd.sd,specScd);
-         scd.showSd = specScd.sd;
+         let sp :SpecScdData =new SpecScdData();
+         Object.assign(sp,rc.specScdUpd);
+         scd.specScds.set(sp.sd,sp);
+         scd.showSpSd = sp.sd;
 
          scd = await this.updateDetail(scd);
          resolve(scd)
@@ -820,7 +820,7 @@ export class PgBusiService {
       //c.du = "0";
 
 
-      if (oldc.sd != scd.showSd || oldc.rt != scd.rt) {
+      if (oldc.sd != scd.showSpSd || oldc.rt != scd.rt) {
         //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
         let sptbl = new SpTbl();
         sptbl.si = c.si;
@@ -843,7 +843,7 @@ export class PgBusiService {
         await this.sqlExce.execSql(sq);
 
         let sp:SpTbl = new SpTbl();
-        Object.assign(sp,scd.specScd(scd.showSd));
+        Object.assign(sp,scd.specScd(scd.showSpSd));
         await this.sqlExce.update(sp);
 
 

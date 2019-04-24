@@ -45,7 +45,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           <div>
             <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
                           pickerFormat="YYYY MM DD" color="light"
-                          [(ngModel)]="scd.showSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
+                          [(ngModel)]="scd.showSpSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                           min="1999-01-01" max="2039-12-31" (ionCancel)="getDtPickerSel($event)" disabled
             ></ion-datetime>
           </div>
@@ -253,7 +253,7 @@ export class TddjPage {
       //TODO 清除消息把已读标志未读
       this.busiServ.updateMsg(this.sp.si);
 
-      this.scd.showSd = paramter.d.format("YYYY-MM-DD");
+      this.scd.showSpSd = paramter.d.format("YYYY-MM-DD");
 
       this.jhs = await this.plsevice.getPlanCus();
       for (let i = 0; i < this.jhs.length; i++) {
@@ -425,7 +425,6 @@ export class TddjPage {
 
     //本人新建或修改时，下记画面项目可以修改
     //开始时间格式转换
-    //this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
 
     //结束时间设置
     //全天的场合
