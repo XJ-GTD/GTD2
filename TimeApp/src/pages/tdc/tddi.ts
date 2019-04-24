@@ -47,7 +47,7 @@ import {NotificationsService} from "../../service/cordova/notifications.service"
         </ion-row>
         <ion-row>
           <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh]="sp.p.jn != ''"
-               [ngStyle]="{'background-color':sp.p.jc == '' ? '#fffff' : scd.p.jc}">
+               [ngStyle]="{'background-color':sp.p.jc == '' ? '#fffff' : sp.p.jc}">
             {{sp.p.jn == "" ? "添加计划" : "计划"}}
           </div>
           <div>{{sp.p.jn}}</div>
