@@ -46,11 +46,11 @@ import {NotificationsService} from "../../service/cordova/notifications.service"
           <ion-textarea type="text" [(ngModel)]="scd.sn" placeholder="我想..." readonly="true"></ion-textarea>
         </ion-row>
         <ion-row>
-          <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh]="scd.p.jn != ''"
-               [ngStyle]="{'background-color':scd.p.jc == '' ? '#fffff' : scd.p.jc}">
-            {{scd.p.jn == "" ? "添加计划" : "计划"}}
+          <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh]="sp.p.jn != ''"
+               [ngStyle]="{'background-color':sp.p.jc == '' ? '#fffff' : scd.p.jc}">
+            {{sp.p.jn == "" ? "添加计划" : "计划"}}
           </div>
-          <div>{{scd.p.jn}}</div>
+          <div>{{sp.p.jn}}</div>
         </ion-row>
         <ion-row>
           <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
@@ -108,7 +108,7 @@ import {NotificationsService} from "../../service/cordova/notifications.service"
           </div>
         </ion-row>
         <ion-row>
-          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set" (focus)="comentfocus()"
+          <ion-textarea type="text" placeholder="备注" [(ngModel)]="sp.bz" class="memo-set" (focus)="comentfocus()"
                         (blur)="comentblur()"
           ></ion-textarea>
         </ion-row>
@@ -132,7 +132,7 @@ import {NotificationsService} from "../../service/cordova/notifications.service"
 
     <div padding class="div-content" *ngIf="isShowPlan">
       <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>
-      <ion-list no-lines radio-group [(ngModel)]="scd.p" class="plan-list">
+      <ion-list no-lines radio-group [(ngModel)]="sp.p" class="plan-list">
         <ion-item *ngFor="let option of jhs">
           <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
           <ion-label>{{option.jn}}</ion-label>
