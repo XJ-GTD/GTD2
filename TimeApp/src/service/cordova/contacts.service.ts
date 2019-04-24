@@ -166,7 +166,7 @@ export class ContactsService {
             if (bt == null) {
               bt = new BTbl();
               bt.pwi = this.utilService.getUuid();
-              bt.ran = b.ran == null || b.ran ==""?bt.rn:bt.ran;
+              bt.ran = b.ran ;
               bt.ranpy = this.utilService.chineseToPinYin(bt.ran);
               bt.hiu = "";
               bt.rn = b.rn;
@@ -347,8 +347,6 @@ export class ContactsService {
         bt.rc = userinfo.phoneno;
       }
 
-      //ran不存在使用rn值
-      bt.ran = bt.ran == null || bt.ran == ""?bt.rn : bt.ran;
       if (exists) {
         bsqls.push(bt.upT());
       } else {
@@ -477,8 +475,7 @@ export class ContactsService {
         if (userinfo.phoneno && userinfo.phoneno != '') {
           bt.rc = userinfo.phoneno;
         }
-        //ran不存在使用rn值
-        bt.ran = bt.ran == null || bt.ran == ""?bt.rn : bt.ran;
+
         bsqls.push(bt.upT());
       }
 

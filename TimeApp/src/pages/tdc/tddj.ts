@@ -6,7 +6,7 @@ import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
-import {FsData, ScdData, ScdOutata, ScdPageParamter, SpecScdData} from "../../data.mapping";
+import {FsData, RcInParam, ScdData, ScdOutata, ScdPageParamter, SpecScdData} from "../../data.mapping";
 import {PlService} from "../pl/pl.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 
@@ -165,24 +165,17 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
         </ion-buttons>
       </ion-toolbar>
     </ion-footer>
-    <ion-content padding class="select-plan" *ngIf="isShowPlan">
-      <ion-grid>
-        <ion-row>
 
-          <ion-list no-lines radio-group [(ngModel)]="sp.p">
-            <ion-item class="plan-list-item" *ngFor="let option of jhs">
-              <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
-              <ion-label>{{option.jn}}</ion-label>
-              <ion-radio [value]="option"></ion-radio>
-            </ion-item>
-          </ion-list>
-
-        </ion-row>
-      </ion-grid>
-    </ion-content>
-
-    <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>
-
+    <div padding class="div-content" *ngIf="isShowPlan">
+      <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>
+      <ion-list no-lines radio-group [(ngModel)]="sp.p" class="plan-list">
+        <ion-item *ngFor="let option of jhs">
+          <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
+          <ion-label>{{option.jn}}</ion-label>
+          <ion-radio [value]="option"></ion-radio>
+        </ion-item>
+      </ion-list>
+    </div>
   `
 })
 export class TddjPage {
@@ -240,7 +233,7 @@ export class TddjPage {
 
   togChange() {
     if (!this.alld) {
-      this.scd.st = this.util.adCtrlShow(this.scd.st);
+      this.sp.st = this.util.adCtrlShow(this.sp.st);
     }
   }
 
@@ -353,7 +346,7 @@ export class TddjPage {
   //提醒按钮显示控制
   clickwake(type: string) {
 
-    this.scd.tx = type;
+    this.sp.tx = type;
 
     switch (type) {
       case "0":
@@ -411,7 +404,7 @@ export class TddjPage {
         this.wake.oh = 0;
         this.wake.foh = 0;
         this.wake.od = 0;
-        this.scd.tx = "0";
+        this.sp.tx = "0";
     }
   }
 
@@ -426,8 +419,6 @@ export class TddjPage {
       return null;
     }
     this.util.loadingStart();
-    //提醒内容设置
-    this.scd.ui = UserConfig.account.id;
 
     //消息设为已读
     this.scd.du = "1";
@@ -436,26 +427,26 @@ export class TddjPage {
     //开始时间格式转换
     //this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
 
-
-    //结束日期设置
-
-
     //结束时间设置
     //全天的场合
     if (this.alld) {
-      this.scd.st = this.util.adToDb("");
-      this.scd.et = this.util.adToDb("");
+      this.sp.st = this.util.adToDb("");
+      this.sp.et = this.util.adToDb("");
     } else {
-      this.scd.et = this.scd.st;
+      this.sp.et = this.sp.st;
     }
 
 
-    this.scd.ji = this.scd.p.ji;
+    this.sp.ji = this.sp.p.ji;
 
     //归属 本人创建
     this.scd.gs = '0';
-
-    let data //= await this.busiServ.updateDetail(this.scd);
+    let rcin :RcInParam = new RcInParam();
+    //日程数据
+    Object.assign(rcin,this.scd);
+    //日程子数据
+    Object.assign(rcin.specScdUpd,this.sp);
+    let data = await this.busiServ.saveOrUpdate(rcin);
     this.util.loadingEnd();
     this.feekback.audioSave();
     this.cancel();

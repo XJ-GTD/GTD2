@@ -205,6 +205,13 @@ export class PgBusiService {
        if (rc.si != null && rc.si !="") {
          let scd = new ScdData();
          Object.assign(scd, rc);
+
+         //设置sp表值
+         let specScd :SpecScdData =new SpecScdData();
+         Object.assign(specScd,rc.specScdUpd);
+         scd.specScds.set(specScd.sd,specScd);
+         scd.showSd = specScd.sd;
+
          scd = await this.updateDetail(scd);
          resolve(scd)
        } else {
@@ -715,7 +722,7 @@ export class PgBusiService {
         }
         sql.push(sp.inT());
         if (sp.tx > '0') {
-          sql.push(this.getTxEtbl(rc, sp).rpT());
+          sql.push(this.getTxEtbl(sp).rpT());
         }
       }
 
@@ -734,25 +741,25 @@ export class PgBusiService {
    * @param {string} tsId 特殊表Id
    * @returns {Promise<Promise<any> | number>}
    */
-  private getTxEtbl(rc: CTbl, sp: SpTbl): ETbl {
+  private getTxEtbl(sp: SpTbl): ETbl {
     let et = new ETbl();//提醒表
-    et.si = rc.si;
-    if (rc.tx != '0') {
+    et.si = sp.si;
+    if (sp.tx != '0') {
       et.wi = sp.spi;
-      et.st = rc.sn;
+      et.st = sp.spn;
       let time = 10; //分钟
-      if (rc.tx == "2") {
+      if (sp.tx == "2") {
         time = 30;
-      } else if (rc.tx == "3") {
+      } else if (sp.tx == "3") {
         time = 60;
-      } else if (rc.tx == "4") {
+      } else if (sp.tx == "4") {
         time = 240;
-      } else if (rc.tx == "5") {
+      } else if (sp.tx == "5") {
         time = 1440;
       }
       let date;
-      if (!this.util.isAday(rc.st)) {
-        date = moment(sp.sd + " " + rc.st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+      if (!this.util.isAday(sp.st)) {
+        date = moment(sp.sd + " " + sp.st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
       } else {
         date = moment(sp.sd + " " + "08:00").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
@@ -764,33 +771,6 @@ export class PgBusiService {
       return et;
     }
     return null;
-  }
-
-  /**
-   * 保存更新指定特殊表提醒方式
-   * @param {CTbl} r 日程详情
-   * @returns {Promise<Promise<any> | number>}
-   */
-  private saveOrUpdTx(c: CTbl): Promise<CTbl> {
-    return new Promise<CTbl>(async (resolve, reject) => {
-      let condi: SpTbl = new SpTbl();
-      condi.si = c.si;
-      let sps: Array<SpTbl> = new Array<SpTbl>();
-      let sqls: Array<string> = new Array<string>();
-      sps = await this.sqlExce.getList<SpTbl>(condi);
-      if (c.tx != '0') {
-        for (let j = 0, len = sps.length; j < len; j++) {
-          let sp: SpTbl = new SpTbl();
-          sp = sps[j];
-          sqls.push(this.getTxEtbl(c, sp).rpT());
-        }
-      }
-      await this.sqlExce.batExecSql(sqls);
-      resolve(c);
-      return;
-    });
-
-
   }
 
   /**
@@ -849,15 +829,22 @@ export class PgBusiService {
         c.ed = ed;
 
       } else {
-        //如果只是修改重复时间，则更新重复子表所有时间
-        //如果修改了提醒时间，则更新提醒表所有时间
-        if (oldc.st != c.st || oldc.tx != c.tx) {
-          let sq = "update gtd_sp set st = '" + c.st + "' where si = '" + c.si + "'";
-          await this.sqlExce.execSql(sq);
+        //更新子表数据
+        //if (oldc.st != c.st || oldc.tx != c.tx) {
 
-          //保存提醒表
-          await this.saveOrUpdTx(c);
-        }
+        //更新sp日程表title
+        let sq = "update gtd_sp set spn = '" + c.sn + "' where si = '" + c.si + "'";
+        await this.sqlExce.execSql(sq);
+
+        let sp:SpTbl = new SpTbl();
+        Object.assign(sp,scd.specScd(scd.showSd));
+        await this.sqlExce.update(sp);
+
+
+        //保存提醒表
+        let sq2 = this.getTxEtbl(sp).rpT();
+        await this.sqlExce.execSql(sq2);
+        //}
 
       }
       await this.sqlExce.update(c);

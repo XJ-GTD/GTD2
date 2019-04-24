@@ -227,53 +227,54 @@ page-tdc, page-tddi, page-tddj, page-tdds {
   }
 
 
-  .select-plan {
+  .div-content {
+    .plan-list{
+      position: absolute;
+      width: 100%;
+      height: 260px;
+      z-index: 13;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      display: inherit;
+      overflow: hidden;
+      overflow-y: auto;
+      background-color: $masterColor;
 
-    .scroll-content {
-      overflow-x: unset;
-      overflow-y: auto
+      .item-block {
+        min-height: 3rem;
+        background-color: $masterColor;
+        color: $fontMasterColor;
+
+        ion-label {
+          font-size: 1.5rem;
+        }
+      }
+
+      .color-dot {
+        width: 2vmin;
+        height: 2vmin;
+        background-color: #fff;
+        border-radius: 50%;
+      }
     }
 
-    .item-ios {
-      background-color: transparent;
-      color: $fontMasterColor;
-    }
-
-    position: absolute;
-    width: 100%;
-    height: 80vmin;
-    z-index: 13;
-    margin-top: 100%;
-
-
-    ion-item ion-label {
-      font-size: 1.5rem;
-    }
-
-    .item-block {
-      min-height: 3rem;
-    }
-
-    .color-dot {
-      width: 2vmin;
-      height: 2vmin;
-      background-color: #fff;
-      border-radius: 50%;
+    .shade {
+      position: absolute;
+      top: 0%;
+      left: 0%;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      z-index: 12;
+      -moz-opacity: 0.3;
+      opacity: .30;
+      filter: alpha(opacity=30);
     }
   }
 
-  .shade {
-    position: absolute;
-    top: 0%;
-    left: 0%;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-    z-index: 12;
-    -moz-opacity: 0.3;
-    opacity: .30;
-    filter: alpha(opacity=30);
-  }
+
 
   .chip-ios{
     border-radius: 16px;

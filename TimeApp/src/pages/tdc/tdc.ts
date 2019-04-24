@@ -151,23 +151,17 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
         </ion-buttons>
       </ion-toolbar>
     </ion-footer>
-    <ion-content padding class="select-plan" *ngIf="isShowPlan">
-      <ion-grid>
-        <ion-row>
 
-          <ion-list no-lines radio-group [(ngModel)]="scd.p">
-            <ion-item class="plan-list-item" *ngFor="let option of jhs">
-              <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
-              <ion-label>{{option.jn}}</ion-label>
-              <ion-radio [value]="option"></ion-radio>
-            </ion-item>
-          </ion-list>
-
-        </ion-row>
-      </ion-grid>
-    </ion-content>
-
-    <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>
+    <div padding class="div-content" *ngIf="isShowPlan">
+      <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>
+      <ion-list no-lines radio-group [(ngModel)]="scd.p" class="plan-list">
+        <ion-item *ngFor="let option of jhs">
+          <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
+          <ion-label>{{option.jn}}</ion-label>
+          <ion-radio [value]="option"></ion-radio>
+        </ion-item>
+      </ion-list>
+    </div>
   `
 
 })
