@@ -46,7 +46,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
               <div class="dayagenda row " [class.back0]="scd.cbkcolor == 0" [class.back1]="scd.cbkcolor == 1"
                    *ngFor="let scd of sdl.scdl;" (click)="toDetail(scd.si,sdl.d,scd.gs)">
                 <div class="dayagendacontent w-auto">
-                  <div class="agendaline1" *ngIf="scd.gs == '1'">来自：{{scd.fs.rn}} </div>
+                  <div class="agendaline1" *ngIf="scd.gs == '1'">来自：{{scd.fs.ran}} </div>
                   <!--<div class="agendaline1" *ngIf="scd.gs == '0'">参与事件：{{scd.fss.length}}人</div>-->
                   <div class="agendaline1" *ngIf="scd.gs == '0'">&nbsp;</div>
                   <div class="agendaline1" *ngIf="scd.gs == '2'">下载：{{scd.p.jn}}</div>

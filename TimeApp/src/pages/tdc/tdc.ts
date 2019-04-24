@@ -42,7 +42,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           <div>
             <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
                           pickerFormat="YYYY MM DD" color="light"
-                          [(ngModel)]="scd.showSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
+                          [(ngModel)]="scd.showSpSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                           min="1999-01-01" max="2039-12-31" cancelText="取消" doneText="确认"
             ></ion-datetime>
           </div>
@@ -234,7 +234,7 @@ export class TdcPage {
     //新建的场合初始化
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
-      this.scd.showSd = paramter.d.format("YYYY-MM-DD");
+      this.scd.showSpSd = paramter.d.format("YYYY-MM-DD");
       if (paramter.t) this.scd.st = paramter.t;
       else this.scd.st = moment().add(1, "h").format("HH:00");
       if (paramter.sn) this.scd.sn = paramter.sn;
@@ -395,7 +395,7 @@ export class TdcPage {
 
       //本人新建或修改时，下记画面项目可以修改
       //开始时间格式转换
-      this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
+      this.scd.sd = moment(this.scd.showSpSd).format("YYYY/MM/DD");
 
       //结束时间设置
       //全天的场合

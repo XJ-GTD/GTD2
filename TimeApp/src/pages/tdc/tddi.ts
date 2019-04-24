@@ -5,7 +5,7 @@ import {
 import {UtilService} from "../../service/util-service/util.service";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
-import {FsData, RcInParam, ScdData, ScdOutata, ScdPageParamter, SpecScdData} from "../../data.mapping";
+import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "../pl/pl.service";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
@@ -46,16 +46,16 @@ import {NotificationsService} from "../../service/cordova/notifications.service"
           <ion-textarea type="text" [(ngModel)]="scd.sn" placeholder="我想..." readonly="true"></ion-textarea>
         </ion-row>
         <ion-row>
-          <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh]="scd.p.jn != ''"
-               [ngStyle]="{'background-color':scd.p.jc == '' ? '#fffff' : scd.p.jc}">
-            {{scd.p.jn == "" ? "添加计划" : "计划"}}
+          <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh]="sp.p.jn != ''"
+               [ngStyle]="{'background-color':sp.p.jc == '' ? '#fffff' : sp.p.jc}">
+            {{sp.p.jn == "" ? "添加计划" : "计划"}}
           </div>
-          <div>{{scd.p.jn}}</div>
+          <div>{{sp.p.jn}}</div>
         </ion-row>
         <ion-row>
           <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
                         pickerFormat="YYYY MM DD" color="light"
-                        [(ngModel)]="scd.showSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
+                        [(ngModel)]="scd.showSpSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                         min="1999-01-01" max="2039-12-31" disabled
           ></ion-datetime>
           <div class="reptlbl">{{alldshow}}</div>
@@ -108,7 +108,7 @@ import {NotificationsService} from "../../service/cordova/notifications.service"
           </div>
         </ion-row>
         <ion-row>
-          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set" (focus)="comentfocus()"
+          <ion-textarea type="text" placeholder="备注" [(ngModel)]="sp.bz" class="memo-set" (focus)="comentfocus()"
                         (blur)="comentblur()"
           ></ion-textarea>
         </ion-row>
@@ -132,7 +132,7 @@ import {NotificationsService} from "../../service/cordova/notifications.service"
 
     <div padding class="div-content" *ngIf="isShowPlan">
       <div class="shade" *ngIf="IsShowCover" (click)="closeDialog()"></div>
-      <ion-list no-lines radio-group [(ngModel)]="scd.p" class="plan-list">
+      <ion-list no-lines radio-group [(ngModel)]="sp.p" class="plan-list">
         <ion-item *ngFor="let option of jhs">
           <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
           <ion-label>{{option.jn}}</ion-label>
@@ -158,7 +158,7 @@ export class TddiPage {
   actionSheet;
 
   //画面数据
-  scd: ScdOutata = new ScdOutata();
+  scd: ScdData = new ScdData();
   b: boolean = true;
   sp:SpecScdData = new SpecScdData();
 
@@ -202,7 +202,7 @@ export class TddiPage {
     let paramter: ScdPageParamter = this.navParams.data;
 
 
-    this.scd = await this.busiServ.getOneRc(paramter.si,paramter.d.format("YYYY/MM/DD"),"");
+    this.scd = await this.busiServ.getRcBySiAndSd(paramter.si,paramter.d.format("YYYY/MM/DD"));
     Object.assign(this.sp , this.scd.baseData);
 
     this.clickwake(this.sp.tx + '');
@@ -212,7 +212,7 @@ export class TddiPage {
     if (this.scd.du == "1"){
       this.busiServ.updateMsg(this.scd.si);
     }
-    this.scd.showSd = paramter.d.format("YYYY-MM-DD");
+    this.scd.showSpSd = paramter.d.format("YYYY-MM-DD");
 
     //TODO 缓存里后获取发送信息
 
@@ -363,7 +363,7 @@ export class TddiPage {
               this.util.alterStart("2", () => {
 
                 this.util.loadingStart();
-                this.busiServ.delete(this.scd.si, "1", d).then(data => {
+                this.busiServ.delRcBySiAndSd(this.scd.si, d).then(data => {
                   this.feekback.audioDelete();
                   this.util.loadingEnd();
                   this.cancel();
@@ -379,7 +379,7 @@ export class TddiPage {
             handler: () => {
               this.util.alterStart("2", () => {
                 this.util.loadingStart();
-                this.busiServ.delete(this.scd.si, "2", d).then(data => {
+                this.busiServ.delRcBySi(this.scd.si).then(data => {
                   this.feekback.audioDelete();
                   this.util.loadingEnd();
                   this.cancel();
@@ -404,7 +404,7 @@ export class TddiPage {
       //非重复日程删除
       this.util.alterStart("2", () => {
         this.util.loadingStart();
-        this.busiServ.delete(this.scd.si, "2", d).then(data => {
+        this.busiServ.delRcBySi(this.scd.si).then(data => {
           this.feekback.audioDelete();
           this.util.loadingEnd();
           this.cancel();

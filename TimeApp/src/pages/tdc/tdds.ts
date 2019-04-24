@@ -4,7 +4,7 @@ import {
 } from 'ionic-angular';
 import * as moment from "moment";
 import {UtilService} from "../../service/util-service/util.service";
-import {ScdData, ScdOutata, ScdPageParamter} from "../../data.mapping";
+import {ScdData, ScdPageParamter, SpecScdData} from "../../data.mapping";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 
 /**
@@ -27,15 +27,15 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
         </ion-row>
         <ion-row>
 
-          <div class="lbl-jh2 hasjh" [ngStyle]="{'background-color':scd.p.jc == '' ? '#fffff' : scd.p.jc}">
+          <div class="lbl-jh2 hasjh" [ngStyle]="{'background-color':sp.p.jc == '' ? '#fffff' : sp.p.jc}">
             下载
           </div>
-          <div>{{scd.p.jn}}</div>
+          <div>{{sp.p.jn}}</div>
         </ion-row>
         <ion-row>
           <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
                         pickerFormat="YYYY MM DD" color="light"
-                        [(ngModel)]="scd.showSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
+                        [(ngModel)]="scd.showSpSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                         min="1999-01-01" max="2039-12-31" disabled
           ></ion-datetime>
         </ion-row>
@@ -44,7 +44,7 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
         </ion-row>
 
         <ion-row>
-          <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set"
+          <ion-textarea type="text" placeholder="备注" [(ngModel)]="sp.bz" class="memo-set"
                         readonly="true"></ion-textarea>
         </ion-row>
       </ion-grid>
@@ -77,25 +77,23 @@ export class TddsPage {
 
   //画面数据
   scd: ScdData = new ScdData();
+  sp:SpecScdData = new SpecScdData();
   //全天
   alldshow: string = "";
 
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
 
 
     //受邀人修改的场合初始化
     let paramter: ScdPageParamter = this.navParams.data;
-    this.busiServ.getOneRc(paramter.si,"","").then(data => {
-      let bs: ScdOutata = data;
-      Object.assign(this.scd, bs);
+    this.scd = await this.busiServ.getRcBySiAndSd(paramter.si,paramter.d.format("YYYY/MM/DD"));
+    Object.assign(this.sp , this.scd.baseData);
 
-      this.scd.showSd = paramter.d.format("YYYY-MM-DD");
-      this.scd.st = moment().format("HH:mm");
+    this.scd.showSpSd = paramter.d.format("YYYY-MM-DD");
 
-      this.alldshow = this.util.adStrShow(this.scd.st);
+    this.alldshow = this.util.adStrShow(this.sp.st);
 
-    })
   }
 
 
