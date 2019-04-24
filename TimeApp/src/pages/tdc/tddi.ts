@@ -5,7 +5,7 @@ import {
 import {UtilService} from "../../service/util-service/util.service";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
-import {FsData, RcInParam, ScdData, ScdOutata, ScdPageParamter, SpecScdData} from "../../data.mapping";
+import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "../pl/pl.service";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
@@ -158,7 +158,7 @@ export class TddiPage {
   actionSheet;
 
   //画面数据
-  scd: ScdOutata = new ScdOutata();
+  scd: ScdData = new ScdData();
   b: boolean = true;
   sp:SpecScdData = new SpecScdData();
 

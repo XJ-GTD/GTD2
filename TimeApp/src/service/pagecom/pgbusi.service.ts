@@ -12,7 +12,7 @@ import * as moment from "moment";
 import {DataConfig} from "../config/data.config";
 import {UserConfig} from "../config/user.config";
 import {ContactsService} from "../cordova/contacts.service";
-import {BaseData, FsData, JtData, RcInParam, ScdData, ScdOutata, SpecScdData,MonthData} from "../../data.mapping";
+import {BaseData, FsData, JtData, RcInParam, ScdData, SpecScdData,MonthData} from "../../data.mapping";
 import {FsService} from "../../pages/fs/fs.service";
 import {EmitService} from "../util-service/emit.service";
 import {BTbl} from "../sqlite/tbl/b.tbl";
@@ -26,91 +26,6 @@ export class PgBusiService {
               private contactsServ: ContactsService, private userConfig: UserConfig, private fsService: FsService,private emitService:EmitService
               ,private notificationsService:NotificationsService
   ) {
-  }
-
-
-  /**
-   * 获取日程详情,传入所属ID 查询改日程的全部信息 ，主日程 特殊日程
-   * 发起人信息 共享人信息， 闹铃信息 计划信息
-   * @param {string} si 日程id
-   * @param {string} sr 所属日程id（受邀）
-   * @returns {Promise<BsModel<ScdData>>}
-   */
-  private get(si: string, sr?: string): Promise<ScdData> {
-
-    return new Promise<ScdData>(async (resolve, reject) => {
-      //获取本地日程
-      let scdData = new ScdData();
-
-      let ctbl = new CTbl();
-      if (si != "") {
-        ctbl.si = si;
-      }
-      if (sr && sr != "") {
-        ctbl.sr = sr;
-      }
-
-      ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
-      Object.assign(scdData, ctbl);
-
-      //获取计划对应色标
-      let jh = new JhTbl();
-      jh.ji = scdData.ji;
-      jh = await this.sqlExce.getOne<JhTbl>(jh);
-      Object.assign(scdData.p, jh);
-
-      //获取特殊日程子表及提醒对象
-      let spsql = "select sp.spi, " +
-        "sp.si," +
-        "sp.spn," +
-        "sp.sd," +
-        "sp.st," +
-        "sp.ed," +
-        "sp.et," +
-        "sp.ji," +
-        "sp.bz," +
-        "sp.sta," +
-        "sp.tx," +
-        "sp.wtt," +
-        "sp.itx ,e.wi ewi,e.si esi,e.st est ,e.wd ewd,e.wt ewt,e.wtt ewtt " +
-        " from gtd_sp sp inner join gtd_e e on sp.spi = e.wi and " +
-        "sp.si = e.si and sp.si = '" + ctbl.si + "' ";
-      let lst: Array<any> = new Array<any>();
-      lst = await this.sqlExce.getExtList<any>(spsql);
-      for (let j = 0, len = lst.length; j < len; j++) {
-        let sp: SpecScdData = new SpecScdData();
-        Object.assign(sp, lst[j]);
-
-        sp.remindData.wi = lst[j].ewi;
-        sp.remindData.si = lst[j].esi;
-        sp.remindData.st = lst[j].est;
-        sp.remindData.wd = lst[j].ewd;
-        sp.remindData.wt = lst[j].ewt;
-        sp.remindData.wtt = lst[j].ewtt;
-        scdData.specScds.set(sp.sd, sp);
-      }
-
-      //发起人信息
-      let crfs: FsData = new FsData();
-      crfs.bhiu = DataConfig.HUIBASE64;
-      let tmp = this.userConfig.GetOneBTbl(ctbl.ui);
-      if (tmp) {
-        Object.assign(crfs, tmp);
-      }
-      scdData.fs = crfs;
-
-      //共享人信息
-      let dlst: Array<DTbl> = new Array<DTbl>();
-      let dlstsql = "select * from gtd_d where si = '" + ctbl.si + "' ";
-      dlst = await this.sqlExce.getExtList<DTbl>(dlstsql);
-      for (let j = 0, len = dlst.length; j < len; j++) {
-        let fs: FsData = new FsData();
-        Object.assign(fs, this.userConfig.GetOneBTbl(dlst[j].ai));
-        scdData.fss.push(fs);
-      }
-      resolve(scdData);
-      return;
-    });
   }
 
   /**
@@ -268,10 +183,10 @@ export class PgBusiService {
    * 根据日程Id获取日程详情  dch
    * @param {string} si
    */
-   getRcBySi(si:string): Promise<ScdOutata> {
-      return new Promise<ScdOutata>(async (resolve, reject) => {
+   getRcBySi(si:string): Promise<ScdData> {
+      return new Promise<ScdData>(async (resolve, reject) => {
         //获取本地日程
-        let scdData = new ScdOutata();
+        let scdData = new ScdData();
         let ctbl = await this.getCtbl(si);
         if(ctbl != null){
           Object.assign(scdData, ctbl);
@@ -309,9 +224,9 @@ export class PgBusiService {
    * @param {string} si  日程Id
    * @param {string} date 日期
    */
-  getRcBySiAndSd(si:string,sd:string): Promise<ScdOutata> {
-    return new Promise<ScdOutata>(async (resolve, reject) => {
-      let scdData = new ScdOutata();
+  getRcBySiAndSd(si:string,sd:string): Promise<ScdData> {
+    return new Promise<ScdData>(async (resolve, reject) => {
+      let scdData = new ScdData();
       //传si和date
       scdData = await this.getRcBySi(si);
       if (scdData != null) {
@@ -329,9 +244,9 @@ export class PgBusiService {
    * 根据子表ID查询日程
    * @param {string} subSi 子表ID
    */
-  getRcBySubSi(subSi:string): Promise<ScdOutata> {
-    return new Promise<ScdOutata>(async (resolve, reject) => {
-      let scdData = new ScdOutata();
+  getRcBySubSi(subSi:string): Promise<ScdData> {
+    return new Promise<ScdData>(async (resolve, reject) => {
+      let scdData = new ScdData();
       scdData.specScds = await this.getSpData(subSi,'','');
       if(scdData.specScds.size>0){
         scdData.specScds.forEach((value) => {
@@ -358,6 +273,31 @@ export class PgBusiService {
       }
     })
   }
+
+  /**
+   * 根据日程所属ID查询日程
+   * @param {string} sr 日程所属ID
+   * @returns {Promise<ScdData>}
+   */
+  getRcBySr(sr: string): Promise<ScdData> {
+    return new Promise<ScdData>(async (resolve, reject) => {
+      //获取本地日程
+      let scdData = new ScdData();
+      let ctbl = new CTbl();
+      if (sr && sr != "") {
+        ctbl.sr = sr;
+      }
+      ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
+      if(ctbl != null){
+        scdData = await this.getRcBySi(ctbl.si)
+      }
+      if(scdData != null && scdData.si != ''){
+        resolve(scdData);
+      }else{
+        resolve(null);
+      }
+    })
+  }
   /**
    * 根据(日程Id和日期)或(子表ID)获取日程详情  dch
    * @param {string} si  日程Id
@@ -365,7 +305,7 @@ export class PgBusiService {
    * @param {string} subSi 子表ID
    */
   private async getOneRc(si:string,date:string,subSi:string){
-    let scdData = new ScdOutata();
+    let scdData = new ScdData();
 
      if(si != '' && date == '' && subSi == ''){
        //只传si
@@ -1036,7 +976,7 @@ export class PgBusiService {
 
       //获取当前日程详情及相关内容
       let ret = new ScdData();
-      ret = await this.get("", sr);
+      ret = await this.getRcBySr(sr);
 
       //刷新联系人，联系人存在判断 不存在获取更新 ，刷新本地缓存
       let fs: FsData = new FsData();
@@ -1053,7 +993,6 @@ export class PgBusiService {
       return ret;
 
     });
-
 
   }
 
@@ -1164,4 +1103,89 @@ export class PgBusiService {
       })
     })
   }
+
+  /**
+   * 获取日程详情,传入所属ID 查询改日程的全部信息 ，主日程 特殊日程
+   * 发起人信息 共享人信息， 闹铃信息 计划信息
+   * @param {string} si 日程id
+   * @param {string} sr 所属日程id（受邀）
+   * @returns {Promise<BsModel<ScdData>>}
+   */
+  private get(si: string, sr?: string): Promise<ScdData> {
+
+    return new Promise<ScdData>(async (resolve, reject) => {
+      //获取本地日程
+      let scdData = new ScdData();
+
+      let ctbl = new CTbl();
+      if (si != "") {
+        ctbl.si = si;
+      }
+      if (sr && sr != "") {
+        ctbl.sr = sr;
+      }
+
+      ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
+      Object.assign(scdData, ctbl);
+
+      //获取计划对应色标
+      let jh = new JhTbl();
+      jh.ji = scdData.ji;
+      jh = await this.sqlExce.getOne<JhTbl>(jh);
+      Object.assign(scdData.p, jh);
+
+      //获取特殊日程子表及提醒对象
+      let spsql = "select sp.spi, " +
+        "sp.si," +
+        "sp.spn," +
+        "sp.sd," +
+        "sp.st," +
+        "sp.ed," +
+        "sp.et," +
+        "sp.ji," +
+        "sp.bz," +
+        "sp.sta," +
+        "sp.tx," +
+        "sp.wtt," +
+        "sp.itx ,e.wi ewi,e.si esi,e.st est ,e.wd ewd,e.wt ewt,e.wtt ewtt " +
+        " from gtd_sp sp inner join gtd_e e on sp.spi = e.wi and " +
+        "sp.si = e.si and sp.si = '" + ctbl.si + "' ";
+      let lst: Array<any> = new Array<any>();
+      lst = await this.sqlExce.getExtList<any>(spsql);
+      for (let j = 0, len = lst.length; j < len; j++) {
+        let sp: SpecScdData = new SpecScdData();
+        Object.assign(sp, lst[j]);
+
+        sp.remindData.wi = lst[j].ewi;
+        sp.remindData.si = lst[j].esi;
+        sp.remindData.st = lst[j].est;
+        sp.remindData.wd = lst[j].ewd;
+        sp.remindData.wt = lst[j].ewt;
+        sp.remindData.wtt = lst[j].ewtt;
+        scdData.specScds.set(sp.sd, sp);
+      }
+
+      //发起人信息
+      let crfs: FsData = new FsData();
+      crfs.bhiu = DataConfig.HUIBASE64;
+      let tmp = this.userConfig.GetOneBTbl(ctbl.ui);
+      if (tmp) {
+        Object.assign(crfs, tmp);
+      }
+      scdData.fs = crfs;
+
+      //共享人信息
+      let dlst: Array<DTbl> = new Array<DTbl>();
+      let dlstsql = "select * from gtd_d where si = '" + ctbl.si + "' ";
+      dlst = await this.sqlExce.getExtList<DTbl>(dlstsql);
+      for (let j = 0, len = dlst.length; j < len; j++) {
+        let fs: FsData = new FsData();
+        Object.assign(fs, this.userConfig.GetOneBTbl(dlst[j].ai));
+        scdData.fss.push(fs);
+      }
+      resolve(scdData);
+      return;
+    });
+  }
+
 }

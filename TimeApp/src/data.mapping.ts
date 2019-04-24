@@ -8,6 +8,59 @@ export class BaseData{
 
 }
 
+// export class ScdData {
+//   si: string = "";//日程事件ID
+//   sn: string = "";//日程事件主题
+//   ui: string = "";//创建者
+//   sd: string = "";//开始日期
+//   st: string = "";//开始时间
+//   ed: string = "";//结束日期
+//   et: string = "";//结束时间
+//   rt: string = "";//重复类型
+//   ji: string = "";//计划ID
+//   sr: string = "";//日程关联ID
+//   bz: string = "";//备注
+//   tx: string = "";//提醒方式
+//   pni:string = "";//日程原始ID
+//   wtt: number;//时间戳
+//   du:string ="";//消息读取状态
+//   gs:string ="";//归属 0：本人创建，1：他人创建，2：系统本地日历,3:系统计划3优先级类型，4：系统计划无优先级
+//   ib:string ="0"; //0：非本地日历;1：本地日历
+//   fssshow:string ="";//参与人画面显示用
+//   cbkcolor:number = 0;//每个日程颜色画面显示用
+//   morecolor:string ="#FFFFFF";//more颜色画面显示
+//
+//
+//   showSpSd: string = "";//画面显示特殊表开始日期
+//
+//
+//   //特殊日期日程
+//   specScds: Map<string, SpecScdData> = new Map<string, SpecScdData>();
+//
+//   //当天关联的特殊日程
+//   specScd(d:string): SpecScdData {
+//     return this.specScds.get(d);
+//   }
+//
+//   //参与人
+//   fss: Array<FsData> =new Array<FsData>();
+//
+//   //发起人
+//   fs: FsData =new FsData();
+//
+//
+//   //提醒设置
+//   r: RemindData = new RemindData();
+//
+//   //所属计划
+//   p:PlData = new PlData();
+//
+//
+// }
+
+/**
+ * 日程出参
+ */
 export class ScdData {
   si: string = "";//日程事件ID
   sn: string = "";//日程事件主题
@@ -24,60 +77,7 @@ export class ScdData {
   pni:string = "";//日程原始ID
   wtt: number;//时间戳
   du:string ="";//消息读取状态
-  gs:string ="";//归属 0：本人创建，1：他人创建，2：系统,3:系统计划3类型
-  ib:string ="0"; //0：非本地日历;1：本地日历
-  fssshow:string ="";//参与人画面显示用
-  cbkcolor:number = 0;//每个日程颜色画面显示用
-  morecolor:string ="#FFFFFF";//more颜色画面显示
-
-
-  showSpSd: string = "";//画面显示特殊表开始日期
-
-
-  //特殊日期日程
-  specScds: Map<string, SpecScdData> = new Map<string, SpecScdData>();
-
-  //当天关联的特殊日程
-  specScd(d:string): SpecScdData {
-    return this.specScds.get(d);
-  }
-
-  //参与人
-  fss: Array<FsData> =new Array<FsData>();
-
-  //发起人
-  fs: FsData =new FsData();
-
-
-  //提醒设置
-  r: RemindData = new RemindData();
-
-  //所属计划
-  p:PlData = new PlData();
-
-
-}
-
-/**
- * 日程出参
- */
-export class ScdOutata {
-  si: string = "";//日程事件ID
-  sn: string = "";//日程事件主题
-  ui: string = "";//创建者
-  sd: string = "";//开始日期
-  st: string = "";//开始时间
-  ed: string = "";//结束日期
-  et: string = "";//结束时间
-  rt: string = "";//重复类型
-  ji: string = "";//计划ID
-  sr: string = "";//日程关联ID
-  bz: string = "";//备注
-  tx: string = "";//提醒方式
-  pni:string = "";//日程原始ID
-  wtt: number;//时间戳
-  du:string ="";//消息读取状态
-  gs:string ="";//归属
+  gs:string ="";//归属 0：本人创建，1：他人创建，2：系统本地日历,3:系统计划3优先级类型，4：系统计划无优先级
   ib:string ="0"; //0：非本地日历;1：本地日历
   fssshow:string ="";//参与人画面显示用
   cbkcolor:number = 0;//每个日程颜色画面显示用

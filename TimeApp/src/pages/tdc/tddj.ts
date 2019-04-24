@@ -6,7 +6,7 @@ import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
-import {FsData, RcInParam, ScdData, ScdOutata, ScdPageParamter, SpecScdData} from "../../data.mapping";
+import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../data.mapping";
 import {PlService} from "../pl/pl.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 
@@ -194,7 +194,7 @@ export class TddjPage {
   actionSheet;
 
   //画面数据
-  scd: ScdOutata = new ScdOutata();
+  scd: ScdData = new ScdData();
   b: boolean = true;
   sp:SpecScdData = new SpecScdData();
 
