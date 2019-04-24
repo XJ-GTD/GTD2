@@ -843,21 +843,23 @@ export class PgBusiService {
         sq = "update gtd_e set st = '" + c.sn + "' where si = '" + c.si + "'";
         await this.sqlExce.execSql(sq);
 
+        //受邀人pull则不更新sp
+        if (scd.specScd(scd.showSpSd)){
+          let sp:SpTbl = new SpTbl();
+          Object.assign(sp,scd.specScd(scd.showSpSd));
+          await this.sqlExce.update(sp);
 
-        let sp:SpTbl = new SpTbl();
-        Object.assign(sp,scd.specScd(scd.showSpSd));
-        await this.sqlExce.update(sp);
 
-
-        //保存提醒表
-        let sq2 = "";
-        if (sp.tx !="0" ){
-          sq2 = this.getTxEtbl(sp).rpT();
-        }else{
-          sq2 = this.getTxEtbl(sp).dT();
+          //保存提醒表
+          let sq2 = "";
+          if (sp.tx !="0" ){
+            sq2 = this.getTxEtbl(sp).rpT();
+          }else{
+            sq2 = this.getTxEtbl(sp).dT();
+          }
+          await this.sqlExce.execSql(sq2);
         }
 
-        await this.sqlExce.execSql(sq2);
         //}
 
       }
