@@ -19,12 +19,13 @@ import {BTbl} from "../sqlite/tbl/b.tbl";
 import {JtTbl} from "../sqlite/tbl/jt.tbl";
 import {CalendarDay, CalendarMonth} from "../../components/ion2-calendar/calendar.model";
 import {NotificationsService} from "../cordova/notifications.service";
+import {LocalcalendarService} from "../cordova/localcalendar.service";
 
 @Injectable()
 export class PgBusiService {
   constructor(private sqlExce: SqliteExec, private util: UtilService, private agdRest: AgdRestful,
               private contactsServ: ContactsService, private userConfig: UserConfig, private fsService: FsService,private emitService:EmitService
-    ,private notificationsService:NotificationsService
+    ,private notificationsService:NotificationsService,private readlocal:LocalcalendarService
   ) {
   }
 
@@ -319,6 +320,51 @@ export class PgBusiService {
     })
   }
 
+  async refSpcDay(start:moment.Moment,month:CalendarMonth){
+
+    let starts = start.format("YYYY/MM/DD");
+
+    let sql:string = `select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt from gtd_c gc left join gtd_sp sp on gc.si = sp.si 
+    left join (select sd,jti,spn,si,min(px) minpx from gtd_jt group by sd) jt on jt.sd = sp.sd
+      where sp.sd = '${starts}' group by sp.sd ,gc.sd`;
+
+    let local = await this.readlocal.findEventRc('',start,start);
+    this.sqlExce.getExtList<MonthData>(sql).then(data=>{
+
+      //本地日历加入主页日历显示中
+      for(let lo of local){
+        let md:MonthData = data.find((n) => moment(lo.sd).isSame(moment(n.sd), 'day'));
+        if (md){
+          md.scds = md.scds + 1;
+        }else{
+          md = new MonthData();
+          md.sd=lo.sd;
+          md.scds=1;
+          md.news=0;
+          data.push(md);
+        }
+      }
+      for (let d of data){
+        let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
+
+        //判断是否存在非重复类型  or 判断是否存在重复日期为开始日期
+        if(d.minrt == '0' || d.csd ==d.sd){
+          calendarDay.onlyRepeat = false;
+        }else {
+          calendarDay.onlyRepeat = true;
+        }
+        calendarDay.things = d.scds;
+        calendarDay.hassometing = d.scds > 0 && !calendarDay.onlyRepeat ;
+        calendarDay.busysometing = d.scds >= 4 && !calendarDay.onlyRepeat ;
+        calendarDay.allsometing = d.scds >= 8 && !calendarDay.onlyRepeat ;
+        calendarDay.newmessage = d.news
+        calendarDay.hasting = d.scds > 0;
+        //calendarDay.subTitle = d.news > 0? `\u2022`: "";
+        calendarDay.marked = false;
+      }
+    })
+  }
+
   /**
    * 一览查询  dch
    */
@@ -381,6 +427,8 @@ export class PgBusiService {
    */
   async delRcBySiAndSd(si:string,sd:string){
     let ctbl: CTbl = new CTbl();
+    //日程Id
+    ctbl.si = si;
     let sql1 = "delete from gtd_e where si = '" + si + "' and " +
       " wi in (select spi from gtd_sp where si = '" + si + "' and sd>= '" + sd + "') ";
     await this.sqlExce.execSql(sql1);//本地删除提醒表
