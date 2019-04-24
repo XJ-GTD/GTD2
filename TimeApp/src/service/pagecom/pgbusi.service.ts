@@ -744,8 +744,8 @@ export class PgBusiService {
   private getTxEtbl(sp: SpTbl): ETbl {
     let et = new ETbl();//提醒表
     et.si = sp.si;
+    et.wi = sp.spi;
     if (sp.tx != '0') {
-      et.wi = sp.spi;
       et.st = sp.spn;
       let time = 10; //分钟
       if (sp.tx == "2") {
@@ -768,9 +768,10 @@ export class PgBusiService {
       et.wd = moment(date).format("YYYY/MM/DD");
       et.wt = moment(date).format("HH:mm");
       console.log('-------- 插入提醒表 --------');
-      return et;
+
     }
-    return null;
+
+    return et;
   }
 
   /**
@@ -814,7 +815,7 @@ export class PgBusiService {
       c.du = "1";
 
 
-      if (oldc.sd != c.sd || oldc.rt != c.rt) {
+      if (oldc.sd != scd.showSd || oldc.rt != scd.rt) {
         //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
         let sptbl = new SpTbl();
         sptbl.si = c.si;
@@ -842,7 +843,13 @@ export class PgBusiService {
 
 
         //保存提醒表
-        let sq2 = this.getTxEtbl(sp).rpT();
+        let sq2 = "";
+        if (sp.tx !="0" ){
+          sq2 = this.getTxEtbl(sp).rpT();
+        }else{
+          sq2 = this.getTxEtbl(sp).dT();
+        }
+
         await this.sqlExce.execSql(sq2);
         //}
 
