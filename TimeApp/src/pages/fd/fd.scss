@@ -61,6 +61,11 @@ page-fd {
     background: $masterColor;
   }
 
+  .button-ios.activated{
+    width: 100%;
+    background-color: $masterColor;
+  }
+
   .scroll-content{
     overflow-x: hidden;
     overflow-y: hidden;
