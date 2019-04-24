@@ -293,30 +293,32 @@ export class PgBusiService {
    * 首页月份查询  dch
    * @param {CalendarMonth} month
    */
-  async getHomeMonthData(month:CalendarMonth){
-    let _start = new Date(month.original.time);
-    let _startMonth = moment(moment(_start).format("YYYY/MM/") + "1");
-    let _endMonth = moment(moment(_start).format("YYYY/MM/") + _startMonth.daysInMonth());
-    let sql:string = "select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt from gtd_c gc join gtd_sp sp on gc.si = sp.si " +
-      "where sp.sd>='" + moment(_startMonth).format("YYYY/MM/DD")+ "' and sp.sd<='" +  moment(_endMonth).format("YYYY/MM/DD") + "' group by sp.sd ,gc.sd";
-    this.sqlExce.getExtList<MonthData>(sql).then(data=>{
-      for (let d of data){
-        let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
-        //判断是否存在非重复类型  or 判断是否存在重复日期为开始日期
-        if(d.minrt == '0' || d.csd ==d.sd){
-          calendarDay.onlyRepeat = false;
-        }else {
-          calendarDay.onlyRepeat = true;
-        }
-        calendarDay.things = d.scds;
-        calendarDay.hassometing = d.scds > 0 && !calendarDay.onlyRepeat ;
-        calendarDay.busysometing = d.scds >= 4 && !calendarDay.onlyRepeat ;
-        calendarDay.allsometing = d.scds >= 8 && !calendarDay.onlyRepeat ;
-        calendarDay.newmessage = d.news
-        calendarDay.hasting = d.scds > 0;
-        //calendarDay.subTitle = d.news > 0? `\u2022`: "";
-        calendarDay.marked = false;
-      }
+  async getHomeMonthData(month:CalendarMonth):Promise<Array<MonthData>> {
+    return new Promise<Array<MonthData>>(async (resolve, reject) => {
+      let _start = new Date(month.original.time);
+      let _startMonth = moment(moment(_start).format("YYYY/MM/") + "1");
+      let _endMonth = moment(moment(_start).format("YYYY/MM/") + _startMonth.daysInMonth());
+      let sql:string = `select jt.spn,jt.si,jt.minpx,gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt
+      from gtd_c gc join gtd_sp sp on gc.si = sp.si left join (select sd,jti,spn,si,min(px) minpx  
+      from gtd_jt group by sd) jt on jt.sd = sp.sd where sp.sd>='${moment(_startMonth).format("YYYY/MM/DD")}'  
+      and sp.sd<='${moment(_endMonth).format("YYYY/MM/DD")}' group by sp.sd ,gc.sd;`;
+      let list = await this.sqlExce.getExtList<MonthData>(sql);
+
+      // //本地日历加入主页日历显示中
+      // let local = await this.readlocal.findEventRc('',_startMonth,_endMonth);
+      // for(let lo of local){
+      //   let md:MonthData = data.find((n) => moment(lo.sd).isSame(moment(n.sd), 'day'));
+      //   if (md){
+      //     md.scds = md.scds + 1;
+      //   }else{
+      //     md = new MonthData();
+      //     md.sd=lo.sd;
+      //     md.scds=1;
+      //     md.news=0;
+      //     list.push(md);
+      //   }
+      // }
+      resolve(list);
     })
   }
 
