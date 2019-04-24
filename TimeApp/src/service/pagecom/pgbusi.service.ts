@@ -862,13 +862,12 @@ export class PgBusiService {
 
       }
       await this.sqlExce.update(c);
-
-      //restful用参数
-      let agd = new AgdPro();
-      this.setAdgPro(agd, c);
-
-      await this.agdRest.save(agd);
-
+      if(c.rt=="0" || (c.rt != "0" && c.sn != oldc.sn)){
+        //restful用参数
+        let agd = new AgdPro();
+        this.setAdgPro(agd, c);
+        await this.agdRest.save(agd);
+      }
       this.emitService.emitRef(scd.sd);
       resolve(scd);
     });
