@@ -486,7 +486,7 @@ export class TddjPage {
             handler: () => {
               this.util.alterStart("2", () => {
                 this.util.loadingStart();
-                this.busiServ.delete(this.scd.si, "1", d).then(data => {
+                this.busiServ.delRcBySiAndSd(this.scd.si, d).then(data => {
                   this.feekback.audioDelete();
                   this.util.loadingEnd();
                   this.cancel();
@@ -501,7 +501,7 @@ export class TddjPage {
             handler: () => {
               this.util.alterStart("2", () => {
                 this.util.loadingStart();
-                this.busiServ.delete(this.scd.si, "2", d).then(data => {
+                this.busiServ.delRcBySi(this.scd.si).then(data => {
                   this.feekback.audioDelete();
                   this.util.loadingEnd();
                   this.cancel();
@@ -525,7 +525,7 @@ export class TddjPage {
       //非重复日程删除
       this.util.alterStart("2", () => {
         this.util.loadingStart();
-        this.busiServ.delete(this.scd.si, "2", d).then(data => {
+        this.busiServ.delRcBySi(this.scd.si).then(data => {
           this.feekback.audioDelete();
           this.util.loadingEnd();
           this.cancel();
