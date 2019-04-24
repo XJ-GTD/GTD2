@@ -123,11 +123,13 @@ export class PlPage {
 
   toPd(jh:PagePDPro){
     let go:any = true;
-    if(jh.jt == "1"){
+
+    if(jh.jt == "1" || jh.jt == "0"){
       if(jh.jtd == "0"){
         go = false;
       }
     }
+
     if(go){
       this.modalController.create(DataConfig.PAGE._PD_PAGE,{'jh':jh}).present();
     }
