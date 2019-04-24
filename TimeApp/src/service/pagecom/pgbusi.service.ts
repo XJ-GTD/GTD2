@@ -194,7 +194,6 @@ export class PgBusiService {
         a.ed = ed;
         await this.agdRest.save(a);
       }
-
       this.emitService.emitRef(rcId);
       resolve(ctbl);
     });
@@ -216,8 +215,8 @@ export class PgBusiService {
          Object.assign(sp,rc.specScdUpd);
          scd.specScds.set(sp.sd,sp);
          scd.showSpSd = sp.sd;
-
          scd = await this.updateDetail(scd);
+
          resolve(scd)
        } else {
          rc.setParam();
@@ -269,7 +268,7 @@ export class PgBusiService {
    * 根据日程Id获取日程详情  dch
    * @param {string} si
    */
-  private getBySi(si:string): Promise<ScdOutata> {
+   getRcBySi(si:string): Promise<ScdOutata> {
       return new Promise<ScdOutata>(async (resolve, reject) => {
         //获取本地日程
         let scdData = new ScdOutata();
@@ -296,26 +295,84 @@ export class PgBusiService {
             //发起人信息
             scdData.fs = await this.getFsDataByUi(ctbl.ui);
           }
-          resolve(scdData);
+          if(scdData.si == ''){
+            resolve(null);
+          }else{
+            resolve(scdData);
+          }
+
         }
       });
   }
+  /**
+   * 根据(日程Id和日期)获取日程详情  dch
+   * @param {string} si  日程Id
+   * @param {string} date 日期
+   */
+  getRcBySiAndSd(si:string,sd:string): Promise<ScdOutata> {
+    return new Promise<ScdOutata>(async (resolve, reject) => {
+      let scdData = new ScdOutata();
+      //传si和date
+      scdData = await this.getRcBySi(si);
+      if (scdData != null) {
+        scdData.baseData = scdData.specScd(sd);
+      }
+      if(scdData.si == ''){
+        resolve(null);
+      }else{
+        resolve(scdData);
+      }
+    })
+  }
 
+  /**
+   * 根据子表ID查询日程
+   * @param {string} subSi 子表ID
+   */
+  getRcBySubSi(subSi:string): Promise<ScdOutata> {
+    return new Promise<ScdOutata>(async (resolve, reject) => {
+      let scdData = new ScdOutata();
+      scdData.specScds = await this.getSpData(subSi,'','');
+      if(scdData.specScds.size>0){
+        scdData.specScds.forEach((value) => {
+          let sp:SpecScdData = new SpecScdData();
+          Object.assign(sp,value);
+          scdData.si = sp.si;
+          scdData.showSpSd = sp.sd;
+        });
+      }else{
+        scdData.specScds = await this.getJtData(subSi,'','');
+        scdData.specScds.forEach((value) => {
+          let sp:JtData = new JtData();
+          Object.assign(sp,value);
+          scdData.si = sp.si;
+          scdData.showSpSd = sp.sd;
+        });
+      }
+      if(scdData.si != '') {
+        scdData = await this.getRcBySi(scdData.si);
+        scdData.baseData = scdData.specScd(scdData.showSpSd);
+        resolve(scdData);
+      }else{
+        resolve(null);
+      }
+    })
+  }
   /**
    * 根据(日程Id和日期)或(子表ID)获取日程详情  dch
    * @param {string} si  日程Id
    * @param {string} date 日期
    * @param {string} subSi 子表ID
    */
-  async getOneRc(si:string,date:string,subSi:string){
+  private async getOneRc(si:string,date:string,subSi:string){
     let scdData = new ScdOutata();
 
      if(si != '' && date == '' && subSi == ''){
        //只传si
-       scdData = await this.getBySi(si);
+       scdData = await this.getRcBySi(si);
      }else if(si != '' && date != '' && subSi == ''){
        //传si和date
-       scdData = await this.getBySi(si);
+       scdData = await this.getRcBySi(si);
        if(scdData != null){
          scdData.baseData = scdData.specScd(date);
        }
@@ -806,7 +863,7 @@ export class PgBusiService {
    * @param {ScdData} scd
    * @returns {Promise<void>}
    */
-  updateDetail(scd: ScdData): Promise<ScdData> {
+  private updateDetail(scd: ScdData): Promise<ScdData> {
     return new Promise<ScdData>(async (resolve, reject) => {
       //特殊表操作
       let oldc: CTbl = new CTbl();

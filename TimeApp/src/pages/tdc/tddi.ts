@@ -202,7 +202,7 @@ export class TddiPage {
     let paramter: ScdPageParamter = this.navParams.data;
 
 
-    this.scd = await this.busiServ.getOneRc(paramter.si,paramter.d.format("YYYY/MM/DD"),"");
+    this.scd = await this.busiServ.getRcBySiAndSd(paramter.si,paramter.d.format("YYYY/MM/DD"));
     Object.assign(this.sp , this.scd.baseData);
 
     this.clickwake(this.sp.tx + '');

@@ -86,7 +86,7 @@ export class TddsPage {
 
     //受邀人修改的场合初始化
     let paramter: ScdPageParamter = this.navParams.data;
-    this.busiServ.getOneRc(paramter.si,"","").then(data => {
+    this.busiServ.getRcBySiAndSd(paramter.si,"").then(data => {
       let bs: ScdOutata = data;
       Object.assign(this.scd, bs);
 

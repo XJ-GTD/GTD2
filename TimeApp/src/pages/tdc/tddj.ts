@@ -247,7 +247,7 @@ export class TddjPage {
 
     let paramter: ScdPageParamter = this.navParams.data;
     if (paramter.si) {
-      this.scd = await this.busiServ.getOneRc(paramter.si,paramter.d.format("YYYY/MM/DD"),"");
+      this.scd = await this.busiServ.getRcBySiAndSd(paramter.si,paramter.d.format("YYYY/MM/DD"));
       Object.assign(this.sp , this.scd.baseData);
 
       //TODO 清除消息把已读标志未读
