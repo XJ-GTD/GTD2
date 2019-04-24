@@ -91,7 +91,6 @@ export class TddsPage {
     Object.assign(this.sp , this.scd.baseData);
 
     this.scd.showSpSd = paramter.d.format("YYYY-MM-DD");
-    this.scd.st = moment().format("HH:mm");
 
     this.alldshow = this.util.adStrShow(this.sp.st);
 
