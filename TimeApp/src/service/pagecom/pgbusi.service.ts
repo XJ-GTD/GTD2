@@ -24,7 +24,7 @@ import {NotificationsService} from "../cordova/notifications.service";
 export class PgBusiService {
   constructor(private sqlExce: SqliteExec, private util: UtilService, private agdRest: AgdRestful,
               private contactsServ: ContactsService, private userConfig: UserConfig, private fsService: FsService,private emitService:EmitService
-              ,private notificationsService:NotificationsService
+    ,private notificationsService:NotificationsService
   ) {
   }
 
@@ -45,103 +45,32 @@ export class PgBusiService {
     });
   }
 
-  //MQ删除日程
-  pullDel(srId: string): Promise<CTbl> {
-    return new Promise<any>(async (resolve, reject) => {
-      let ctbl: CTbl = new CTbl();
-      //日程Id
-      ctbl.sr = srId;
-      ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
-
-      await this.delete(ctbl.si,"2","");
-
-      this.emitService.emitRef(srId);
-
-      resolve(ctbl);
-
-    });
-
-
-  }
-
-//删除日程 type：1 删除当前以后所有 ，2 删除所有
-  delete(rcId: string, type: string, d: string): Promise<CTbl> {
-    return new Promise<any>(async (resolve, reject) => {
-      let ctbl: CTbl = new CTbl();
-      //日程Id
-      ctbl.si = rcId;
-
-      if (type == "2") {
-        let etbl: ETbl = new ETbl();
-        etbl.si = ctbl.si;
-        await this.sqlExce.delete(etbl);//本地删除提醒
-        let dtbl: DTbl = new DTbl();
-        dtbl.si = ctbl.si;
-        await this.sqlExce.delete(dtbl);//本地删除日程参与人
-
-        await this.sqlExce.delete(ctbl); //本地删除日程表
-
-        let sptbl = new SpTbl();
-        sptbl.si = rcId;
-        await this.sqlExce.delete(sptbl);//本地删除日程子表
-
-        //restFul 删除日程
-        let a: AgdPro = new AgdPro();
-        a.ai = ctbl.si;//日程ID
-        await this.agdRest.remove(a);
-
-      } else {
-
-        let sql1 = "delete from gtd_e where si = '" + rcId + "' and " +
-          " wi in (select spi from gtd_sp where si = '" + rcId + "' and sd>= '" + d + "') ";
-        await this.sqlExce.execSql(sql1);//本地删除提醒表
-
-        let sql = "delete from gtd_sp where si = '" + rcId + "' and sd>= '" + d + "'";
-        await this.sqlExce.execSql(sql);//本地删除日程子表
-
-        let ed = moment(d).subtract(1, 'd').format("YYYY/MM/DD");
-        ctbl.ed = ed;
-        ctbl.bz = null;
-        await this.sqlExce.update(ctbl);//更新日程表
-
-        let a = new AgdPro();
-        a.ai = ctbl.si;//日程ID
-        a.ed = ed;
-        await this.agdRest.save(a);
-      }
-      this.emitService.emitRef(rcId);
-      resolve(ctbl);
-    });
-
-
-  }
-
   /**
    * 日程保存或日程更新  dch
    */
-   saveOrUpdate(rc : RcInParam):Promise<ScdData>{
-     return new Promise<ScdData>(async (resolve, reject) => {
-       if (rc.si != null && rc.si !="") {
-         let scd = new ScdData();
-         Object.assign(scd, rc);
+  saveOrUpdate(rc : RcInParam):Promise<ScdData>{
+    return new Promise<ScdData>(async (resolve, reject) => {
+      if (rc.si != null && rc.si !="") {
+        let scd = new ScdData();
+        Object.assign(scd, rc);
 
-         //设置sp表值
-         let sp :SpecScdData =new SpecScdData();
-         Object.assign(sp,rc.specScdUpd);
-         scd.specScds.set(sp.sd,sp);
-         scd.showSpSd = sp.sd;
-         scd = await this.updateDetail(scd);
+        //设置sp表值
+        let sp :SpecScdData =new SpecScdData();
+        Object.assign(sp,rc.specScdUpd);
+        scd.specScds.set(sp.sd,sp);
+        scd.showSpSd = sp.sd;
+        scd = await this.updateDetail(scd);
 
-         resolve(scd)
-       } else {
-         rc.setParam();
-         rc.ui = UserConfig.account.id;
-         let scd = new ScdData();
-         Object.assign(scd, rc);
-         scd = await this.save(scd);
-         resolve(scd)
-       }
-     })
+        resolve(scd)
+      } else {
+        rc.setParam();
+        rc.ui = UserConfig.account.id;
+        let scd = new ScdData();
+        Object.assign(scd, rc);
+        scd = await this.save(scd);
+        resolve(scd)
+      }
+    })
   }
 
   /**
@@ -173,7 +102,7 @@ export class PgBusiService {
         }
       }
       if(sqL.length>0){
-         len = await this.sqlExce.batExecSql(sqL);
+        len = await this.sqlExce.batExecSql(sqL);
       }
     }
     return len;
@@ -183,41 +112,41 @@ export class PgBusiService {
    * 根据日程Id获取日程详情  dch
    * @param {string} si
    */
-   getRcBySi(si:string): Promise<ScdData> {
-      return new Promise<ScdData>(async (resolve, reject) => {
-        //获取本地日程
-        let scdData = new ScdData();
-        let ctbl = await this.getCtbl(si);
-        if(ctbl != null){
-          Object.assign(scdData, ctbl);
-          //获取计划对应色标
-          let jh = new JhTbl();
-          jh.ji = scdData.ji;
-          jh = await this.sqlExce.getOne<JhTbl>(jh);
-          Object.assign(scdData.p, jh);
-          //获取特殊日程子表详情
-          if(scdData.gs != '3'){
-            scdData.specScds = await this.getSpData('',scdData.si,'');
-          }else{
-            scdData.specScds = await this.getJtData('',scdData.si,'');
-          }
-          if(scdData.gs == '0'){
-            //共享人信息
-            scdData.fss = await this.getFsDataBySi(ctbl.si);
-          }
-
-          if(scdData.gs == '1'){
-            //发起人信息
-            scdData.fs = await this.getFsDataByUi(ctbl.ui);
-          }
-          if(scdData.si == ''){
-            resolve(null);
-          }else{
-            resolve(scdData);
-          }
-
+  getRcBySi(si:string): Promise<ScdData> {
+    return new Promise<ScdData>(async (resolve, reject) => {
+      //获取本地日程
+      let scdData = new ScdData();
+      let ctbl = await this.getCtbl(si);
+      if(ctbl != null){
+        Object.assign(scdData, ctbl);
+        //获取计划对应色标
+        let jh = new JhTbl();
+        jh.ji = scdData.ji;
+        jh = await this.sqlExce.getOne<JhTbl>(jh);
+        Object.assign(scdData.p, jh);
+        //获取特殊日程子表详情
+        if(scdData.gs != '3'){
+          scdData.specScds = await this.getSpData('',scdData.si,'');
+        }else{
+          scdData.specScds = await this.getJtData('',scdData.si,'');
         }
-      });
+        if(scdData.gs == '0'){
+          //共享人信息
+          scdData.fss = await this.getFsDataBySi(ctbl.si);
+        }
+
+        if(scdData.gs == '1'){
+          //发起人信息
+          scdData.fs = await this.getFsDataByUi(ctbl.ui);
+        }
+        if(scdData.si == ''){
+          resolve(null);
+        }else{
+          resolve(scdData);
+        }
+
+      }
+    });
   }
   /**
    * 根据(日程Id和日期)获取日程详情  dch
@@ -297,64 +226,6 @@ export class PgBusiService {
         resolve(null);
       }
     })
-  }
-  /**
-   * 根据(日程Id和日期)或(子表ID)获取日程详情  dch
-   * @param {string} si  日程Id
-   * @param {string} date 日期
-   * @param {string} subSi 子表ID
-   */
-  private async getOneRc(si:string,date:string,subSi:string){
-    let scdData = new ScdData();
-
-     if(si != '' && date == '' && subSi == ''){
-       //只传si
-       scdData = await this.getRcBySi(si);
-     }else if(si != '' && date != '' && subSi == ''){
-       //传si和date
-       scdData = await this.getRcBySi(si);
-       if(scdData != null){
-         scdData.baseData = scdData.specScd(date);
-       }
-     }else if(si == '' && date == '' && subSi != ''){
-       //只传subSi
-       scdData.specScds = await this.getSpData(subSi,'','');
-       if(scdData.specScds.size>0){
-         scdData.specScds.forEach((value) => {
-           let sp:SpecScdData = new SpecScdData();
-           Object.assign(sp,value);
-           si = sp.si;
-         });
-       }else{
-         scdData.specScds = await this.getJtData('',scdData.si,'');
-         scdData.specScds.forEach((value) => {
-           let sp:JtData = new JtData();
-           Object.assign(sp,value);
-           si = sp.si;
-         });
-       }
-     }
-    if(si != ''){
-      let ctbl = await this.getCtbl(si);
-      if(ctbl != null){
-        Object.assign(scdData, ctbl);
-        //获取计划对应色标
-        let jh = new JhTbl();
-        jh.ji = scdData.ji;
-        jh = await this.sqlExce.getOne<JhTbl>(jh);
-        Object.assign(scdData.p, jh);
-        if(scdData.gs == '0'){
-          //共享人信息
-          scdData.fss = await this.getFsDataBySi(ctbl.si);
-        }
-
-        if(scdData.gs == '1'){
-          //发起人信息
-          scdData.fs = await this.getFsDataByUi(ctbl.ui);
-        }
-      }
-    }
-    return scdData;
   }
 
   /**
@@ -454,23 +325,154 @@ export class PgBusiService {
   selectYl(){
 
   }
-
   /**
-   * 根据日程ID删除  dch
-   * @param {string} si
+   * MQ删除日程
    */
-  deleteBySi(si:string,){
+  pullDel(srId: string): Promise<CTbl> {
+    return new Promise<any>(async (resolve, reject) => {
+      let ctbl: CTbl = new CTbl();
+      //日程Id
+      ctbl.sr = srId;
+      ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
+
+      await this.delete(ctbl.si,"2","");
+
+      this.emitService.emitRef(srId);
+
+      resolve(ctbl);
+
+    });
 
   }
 
   /**
-   *删除日程   dch
-   * @param {string} si
-   * @param {string} ed
-   * @param {string} ji
+   * 删除日程
+   * @param {string} rcId 日程ID
+   * @param {string} type 1 删除当前以后所有 ;2 删除所有;不传删除所有
+   * @param {string} d
+   * @returns {Promise<CTbl>}
    */
-  deleteByInfo(si:string,ed:string,ji:string){
+  delete(rcId: string, type: string, d: string): Promise<CTbl> {
+    return new Promise<any>(async (resolve, reject) => {
+      if (type == "1") {
+        await this.delRcBySiAndSd(rcId,d);
+      } else {
+        await this.delRcBySi(rcId);
+      }
+      resolve(true);
+    });
+  }
+  /**
+   * 根据日程ID删除  dch
+   * @param {string} si 日程ID删除
+   */
+  async delRcBySi(si:string){
+    let ctbl: CTbl = new CTbl();
+    //日程Id
+    ctbl.si = si;
+    let etbl: ETbl = new ETbl();
+    etbl.si = ctbl.si;
+    await this.sqlExce.delete(etbl);//本地删除提醒
+    let dtbl: DTbl = new DTbl();
+    dtbl.si = ctbl.si;
+    await this.sqlExce.delete(dtbl);//本地删除日程参与人
 
+    await this.sqlExce.delete(ctbl); //本地删除日程表
+
+    let sptbl = new SpTbl();
+    sptbl.si = si;
+    await this.sqlExce.delete(sptbl);//本地删除日程子表
+
+    //restFul 删除日程
+    let a: AgdPro = new AgdPro();
+    a.ai = ctbl.si;//日程ID
+    await this.agdRest.remove(a);
+    this.emitService.emitRef(si);
+    return true;
+  }
+
+  /**
+   *  删除开始时间以后的日程   dch
+   * @param {string} si 日程ID
+   * @param {string} sd 开始时间
+   */
+  async delRcBySiAndSd(si:string,sd:string){
+    let ctbl: CTbl = new CTbl();
+    let sql1 = "delete from gtd_e where si = '" + si + "' and " +
+      " wi in (select spi from gtd_sp where si = '" + si + "' and sd>= '" + sd + "') ";
+    await this.sqlExce.execSql(sql1);//本地删除提醒表
+
+    let sql = "delete from gtd_sp where si = '" + si + "' and sd>= '" + sd + "'";
+    await this.sqlExce.execSql(sql);//本地删除日程子表
+
+    let ed = moment(sd).subtract(1, 'd').format("YYYY/MM/DD");
+    ctbl.ed = ed;
+    ctbl.bz = null;
+    await this.sqlExce.update(ctbl);//更新日程表
+
+    let a = new AgdPro();
+    a.ai = ctbl.si;//日程ID
+    a.ed = ed;
+    await this.agdRest.save(a);
+    this.emitService.emitRef(si);
+    return true;
+  }
+
+  /**
+   *  根据计划ID删除日程   dch
+   * @param {string} ji 计划ID
+   * @param {number} type 计划类型 0:自定义;1系统
+   */
+  async delRcByJi(ji:string){
+    let jh = new JhTbl();
+    jh.ji = ji;
+    jh = await this.sqlExce.getOne<JhTbl>(jh);
+    if(jh != null){
+      await this.delRcBySiAndSd(ji,jh.jt);
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   *  根据计划ID和计划类型删除日程   dch
+   * @param {string} ji 计划ID
+   * @param {number} jt 计划类型
+   */
+  async delRcByJiAndJt(ji:string,jt:string){
+    let sqls:Array<string> = new Array<string>();
+    if(jt == '2'){
+      //删除自定义计划
+      console.log('---------- PdService delete 删除计划开始 ----------------');
+      // 本地计划日程关联
+      //修改日程表 计划 ji 去除
+      sqls.push('update gtd_c set ji = null where ji = "' + ji + '";');
+      //修改日程表 计划 ji 去除
+      sqls.push('update gtd_sp set ji = null where ji = "' + ji + '";');
+      // 删除计划
+      sqls.push('delete from gtd_j_h where ji = "' + ji + '";');
+      await this.sqlExce.batExecSql(sqls);
+      console.log('---------- PdService delete 删除计划结束 ----------------');
+    }else{
+      //删除系统计划
+      console.log('---------- PlService delete 删除系统计划开始 ----------------');
+      if(jt == "1"){
+        // 删除日程附件表
+        sqls.push('delete from gtd_sp where ji = "' + ji + '";');
+      }else if(jt == "0"){
+        //删除系统特殊计划日程数据
+        sqls.push('delete from gtd_jt where ji = "' + ji + '";');
+      }
+      //删除日程表
+      sqls.push('delete from gtd_c where ji = "' + ji + '";');
+
+      //计划 jtd 修改
+      sqls.push('update gtd_j_h set jtd = null where ji = "' + ji + '";');
+
+      await this.sqlExce.batExecSql(sqls);
+      console.log('---------- PlService delete 删除系统计划结束 ----------------');
+    }
+    return true;
   }
 
   /**
@@ -598,7 +600,7 @@ export class PgBusiService {
    * @param ui
    * @returns {Promise<BTbl>}
    */
-  async getBtcl(ui){
+  private async getBtcl(ui){
     //不存在查询数据库
     let b = new BTbl();
     b.ui = ui;
@@ -803,7 +805,7 @@ export class PgBusiService {
    * @param {ScdData} scd
    * @returns {Promise<void>}
    */
-  private updateDetail(scd: ScdData): Promise<ScdData> {
+  updateDetail(scd: ScdData): Promise<ScdData> {
     return new Promise<ScdData>(async (resolve, reject) => {
       //特殊表操作
       let oldc: CTbl = new CTbl();
@@ -1188,5 +1190,62 @@ export class PgBusiService {
       return;
     });
   }
+  /**
+   * 根据(日程Id和日期)或(子表ID)获取日程详情  dch
+   * @param {string} si  日程Id
+   * @param {string} date 日期
+   * @param {string} subSi 子表ID
+   */
+  private async getOneRc(si:string,date:string,subSi:string){
+    let scdData = new ScdData();
 
+    if(si != '' && date == '' && subSi == ''){
+      //只传si
+      scdData = await this.getRcBySi(si);
+    }else if(si != '' && date != '' && subSi == ''){
+      //传si和date
+      scdData = await this.getRcBySi(si);
+      if(scdData != null){
+        scdData.baseData = scdData.specScd(date);
+      }
+    }else if(si == '' && date == '' && subSi != ''){
+      //只传subSi
+      scdData.specScds = await this.getSpData(subSi,'','');
+      if(scdData.specScds.size>0){
+        scdData.specScds.forEach((value) => {
+          let sp:SpecScdData = new SpecScdData();
+          Object.assign(sp,value);
+          si = sp.si;
+        });
+      }else{
+        scdData.specScds = await this.getJtData('',scdData.si,'');
+        scdData.specScds.forEach((value) => {
+          let sp:JtData = new JtData();
+          Object.assign(sp,value);
+          si = sp.si;
+        });
+      }
+    }
+    if(si != ''){
+      let ctbl = await this.getCtbl(si);
+      if(ctbl != null){
+        Object.assign(scdData, ctbl);
+        //获取计划对应色标
+        let jh = new JhTbl();
+        jh.ji = scdData.ji;
+        jh = await this.sqlExce.getOne<JhTbl>(jh);
+        Object.assign(scdData.p, jh);
+        if(scdData.gs == '0'){
+          //共享人信息
+          scdData.fss = await this.getFsDataBySi(ctbl.si);
+        }
+
+        if(scdData.gs == '1'){
+          //发起人信息
+          scdData.fs = await this.getFsDataByUi(ctbl.ui);
+        }
+      }
+    }
+    return scdData;
+  }
 }

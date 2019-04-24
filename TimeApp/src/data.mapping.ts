@@ -279,7 +279,7 @@ export class PagePDPro{
   jn: string = "";//计划名
   jg: string = "";//计划描述
   jc: string = "";//计划颜色标记
-  jt: string = "";//计划类型
+  jt: string = "";//计划类型 0,系统特殊计划;1系统计划;2自定义
 
   js: any = 0; //日程数量
   jtd: string = "0"; //系统计划区别是否下载

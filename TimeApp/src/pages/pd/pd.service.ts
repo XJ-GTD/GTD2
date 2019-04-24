@@ -3,11 +3,12 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {PlanPa, ShaeRestful, ShareData} from "../../service/restful/shaesev";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {PagePDPro} from "../../data.mapping";
+import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 
 @Injectable()
 export class PdService {
   constructor(private sqlExec: SqliteExec,
-              private shareRestful: ShaeRestful,) {}
+              private shareRestful: ShaeRestful,private pgBusi: PgBusiService) {}
 
   //获取计划 计划详情
   async getPlan(pid: string,jt:string) {
@@ -77,17 +78,18 @@ export class PdService {
   async delete(jh: PagePDPro) {
     if (jh.jt == "2" && jh.ji != "") {
       console.log('---------- PdService delete 删除计划开始 ----------------');
-      let sqls:Array<string> = new Array<string>();
-
-      // 本地计划日程关联
-      //修改日程表 计划 ji 去除
-      sqls.push('update gtd_c set ji = null where ji = "' + jh.ji + '";');
-      //修改日程表 计划 ji 去除
-      sqls.push('update gtd_sp set ji = null where ji = "' + jh.ji + '";');
-      // 删除计划
-      sqls.push('delete from gtd_j_h where ji = "' + jh.ji + '";');
-
-      await this.sqlExec.batExecSql(sqls);
+      // let sqls:Array<string> = new Array<string>();
+      //
+      // // 本地计划日程关联
+      // //修改日程表 计划 ji 去除
+      // sqls.push('update gtd_c set ji = null where ji = "' + jh.ji + '";');
+      // //修改日程表 计划 ji 去除
+      // sqls.push('update gtd_sp set ji = null where ji = "' + jh.ji + '";');
+      // // 删除计划
+      // sqls.push('delete from gtd_j_h where ji = "' + jh.ji + '";');
+      //
+      // await this.sqlExec.batExecSql(sqls);
+      this.pgBusi.delRcBySiAndSd(jh.ji,jh.jt);
       console.log('---------- PdService delete 删除计划结束 ----------------');
     }
   }
