@@ -10,6 +10,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "../pl/pl.service";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {FeedbackService} from "../../service/cordova/feedback.service";
+import {NotificationsService} from "../../service/cordova/notifications.service";
 
 /**
  * Generated class for the 日程详情（受邀） page.
@@ -207,8 +208,10 @@ export class TddiPage {
     this.clickwake(this.sp.tx + '');
 
     //TODO 清除消息把已读标志未读
-    this.busiServ.updateMsg(this.scd.si);
 
+    if (this.scd.du == "1"){
+      this.busiServ.updateMsg(this.scd.si);
+    }
     this.scd.showSd = paramter.d.format("YYYY-MM-DD");
 
     //TODO 缓存里后获取发送信息

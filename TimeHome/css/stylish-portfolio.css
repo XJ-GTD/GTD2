@@ -3,6 +3,22 @@
  * Copyright 2013-2019 [object Object]
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-stylish-portfolio/blob/master/LICENSE)
  */
+* {
+  font-family: PingFang-Regular, PingFang-SC-Regular, PingFang-SC, "微软雅黑", Roboto
+}
+.content-container{
+  background: #244259;
+  padding: 40px;
+  opacity:1;
+}
+
+@font-face {
+  font-family: 'PingFang-Regular';
+  src: url('../fonts/PingFangRegular.ttf') format('truetype'),
+  url('../fonts/PingFangRegular.eot') format('embedded-opentype'),
+  url('../fonts/PingFangRegular.woff') format('woff'),
+  url('../fonts/PingFangRegular.svg') format('svg');
+}
 
 body,
 html {
@@ -11,14 +27,14 @@ html {
 }
 
 body {
-  font-family: PingFang-Regular, PingFang-SC-Regular, PingFang-SC, "微软雅黑", Roboto;
-  background: #000;
-  color: #fff;
-  background: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0.1)), to(rgba(255, 255, 255, 0.1))), url("../img/screen.png");
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%), url("../img/screen.png");
-  background-attachment: fixed;
+}
+.pagewrap{
+  background:url("../img/screen.png");
   background-repeat: no-repeat;
   background-size: cover;
+  background-position:center;
+  color: #fff;
+  font-family: PingFang-Regular, PingFang-SC-Regular, PingFang-SC, "微软雅黑", Roboto;
 
 }
 
@@ -104,15 +120,15 @@ img{
   height: auto;
   padding-top: 8rem;
   padding-bottom: 8rem;
-  background: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0.1)), to(rgba(255, 255, 255, 0.1))), url("../img/bg-masthead.jpg");
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%), url("../img/bg-masthead.jpg");
+  /*background: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0.1)), to(rgba(255, 255, 255, 0.1))), url("../img/bg-masthead.jpg");*/
+  /*background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%), url("../img/bg-masthead.jpg");*/
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 .masthead h1 {
-  font-size: 4rem;
+  font-size: 40px;
   margin: 0;
   padding: 0;
 }
@@ -215,8 +231,8 @@ img{
   background: #343a40;
 }
 
-.service-icon {
-  background-color: #fff;
+.service-icon1 {
+  background-color: transparent;
   color: #1D809F;
   height: 7rem;
   width: 7rem;
@@ -225,12 +241,63 @@ img{
   font-size: 2.25rem;
   -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+  background-image:url("../img/1.png");
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position:center;
 }
+
+.service-icon2 {
+  background-color: transparent;
+  color: #1D809F;
+  height: 7rem;
+  width: 7rem;
+  display: block;
+  line-height: 7.5rem;
+  font-size: 2.25rem;
+  -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+  background-image:url("../img/2.png");
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position:center;
+}
+.service-icon3 {
+  background-color: transparent;
+  color: #1D809F;
+  height: 7rem;
+  width: 7rem;
+  display: block;
+  line-height: 7.5rem;
+  font-size: 2.25rem;
+  -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+  background-image:url("../img/3.png");
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position:center;
+}
+.service-icon4 {
+  background-color: transparent;
+  color: #1D809F;
+  height: 7rem;
+  width: 7rem;
+  display: block;
+  line-height: 7.5rem;
+  font-size: 2.25rem;
+  -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+  background-image:url("../img/4.png");
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position:center;
+}
+
 
 .callout {
   padding: 15rem 0;
-  background: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0.1)), to(rgba(255, 255, 255, 0.1))), url("../img/bg-callout.jpg");
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%), url("../img/bg-callout.jpg");
+  /*background: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0.1)), to(rgba(255, 255, 255, 0.1))), url("../img/bg-callout.jpg");*/
+  /*background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%), url("../img/bg-callout.jpg");*/
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -248,7 +315,7 @@ img{
   position: relative;
   overflow: hidden;
   max-width: 530px;
-  margin: auto auto 1rem;
+  margin: 20px;
 }
 
 .portfolio-item .caption {
@@ -282,7 +349,7 @@ img{
 @media (min-width: 992px) {
   .portfolio-item {
     max-width: none;
-    margin: 0;
+    margin: 20px;
   }
   .portfolio-item .caption {
     -webkit-transition: -webkit-clip-path 0.25s ease-out, background-color 0.7s;
@@ -300,6 +367,7 @@ img{
     -webkit-transition: -webkit-clip-path 0.25s ease-out;
     -webkit-clip-path: inset(-1px);
     clip-path: inset(-1px);
+    width: 100%;
   }
   .portfolio-item:hover img {
     -webkit-clip-path: inset(2rem);

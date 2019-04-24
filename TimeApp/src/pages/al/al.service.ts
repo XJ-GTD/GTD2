@@ -114,6 +114,16 @@ export class AlService {
       yTbl.yv = "0";
       await this.sqlExce.replaceT(yTbl);
 
+      this.notificationsService.badgeClear();
+
+      //每次都先导入联系人
+      if (this.util.isMobile()) {
+        await  this.contactsService.asyncPhoneContacts().then(data=>{
+          //异步获取联系人信息
+          this.contactsService.updateFs();
+        })
+      }
+
       // 在浏览器测试时使用测试数据
       if (!this.util.isMobile()) {
         await this.createTestData();
@@ -158,13 +168,6 @@ export class AlService {
       //用户设置信息初始化
       await this.userConfig.init();
 
-      //每次都先导入联系人
-      if (this.util.isMobile()) {
-        await  this.contactsService.asyncPhoneContacts().then(data=>{
-          //异步获取联系人信息
-          this.contactsService.updateFs();
-        })
-      }
       alData.text = "系统设置完成";
       resolve(alData)
 

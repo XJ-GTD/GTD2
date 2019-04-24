@@ -31,7 +31,6 @@ export class NotificationsService {
     if (this.util.isMobile()) {
       //提醒回馈处理 5分钟
       this.localNotifications.on('five').subscribe((next: ILocalNotification) => {
-        console.log("*************************five*******************************" );
         this.localNotifications.get(next.id).then(notifi=>{
           let reDate: moment.Moment = moment().add(5, "m");
           notifi.trigger = {at:reDate.toDate()}
@@ -42,7 +41,6 @@ export class NotificationsService {
       });
       //提醒回馈处理 10分钟
       this.localNotifications.on('ten').subscribe((next: ILocalNotification) => {
-        console.log("*************************ten*******************************" );
         this.localNotifications.get(next.id).then(notifi=>{
           let reDate: moment.Moment = moment().add(10, "m");
           notifi.trigger = {at:reDate.toDate()}
@@ -51,8 +49,7 @@ export class NotificationsService {
       });
 
       //提醒回馈处理 15分钟
-      this.localNotifications.on('ten').subscribe((next: ILocalNotification) => {
-        console.log("*************************ten*******************************" );
+      this.localNotifications.on('tenfive').subscribe((next: ILocalNotification) => {
         this.localNotifications.get(next.id).then(notifi=>{
           let reDate: moment.Moment = moment().add(15, "m");
           notifi.trigger = {at:reDate.toDate()}
@@ -84,7 +81,6 @@ export class NotificationsService {
 
       });
       this.localNotifications.on('clear').subscribe((next: ILocalNotification) => {
-        //跳转到界面处理
         this.localNotifications.clear(next.id);
       });
       this.localNotifications.on('clearAll').subscribe((next: ILocalNotification) => {
@@ -127,6 +123,13 @@ export class NotificationsService {
       this.badge.increase(-1);
   }
 
+  public badgeClear() {
+
+    if (this.util.isMobile()){
+      this.badge.clear();
+      this.localNotifications.clearAll();
+    }
+  }
 
   public newSms(scd: ScdData) {
     //通知栏消息
@@ -135,13 +138,14 @@ export class NotificationsService {
     notif.title = moment(scd.sd).format("YYYY年MM月DD日 ") + scd.st
     notif.text = (scd.fs?scd.fs.ran + ":":"") + scd.sn;
     notif.data = {type: "newSms",val:scd};
-    notif.trigger = {at:new Date()}
+    //notif.trigger = {at:new Date()}
     if (this.util.isMobile()) {
       this.badge.increase(1);
       this.localNotifications.schedule(notif);
       this.emitService.emitRef(scd.sd);
     }
   }
+
 
 
   public schedule() {
@@ -176,7 +180,7 @@ export class NotificationsService {
       {id: 'close', title: '知道了'},
       {id: 'five', title: '5分钟后'},
       {id: 'ten', title: '10分钟后'},
-      {id: 'temfive', title: '15分钟后'}
+      {id: 'tenfive', title: '15分钟后'}
     ];
 
     if (this.util.isMobile())
@@ -187,7 +191,7 @@ export class NotificationsService {
 class MwxNewMessage implements ILocalNotification {
   actions: string | ILocalNotificationAction[];
   attachments: string[];
-  autoClear: boolean = false;
+  autoClear: boolean = true;
   badge: number;
   channel: string = "cn.sh.com.xj.timeApp";
   clock: boolean | string = true;

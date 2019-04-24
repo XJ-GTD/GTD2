@@ -18,11 +18,13 @@ import {EmitService} from "../util-service/emit.service";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {JtTbl} from "../sqlite/tbl/jt.tbl";
 import {CalendarDay, CalendarMonth} from "../../components/ion2-calendar/calendar.model";
+import {NotificationsService} from "../cordova/notifications.service";
 
 @Injectable()
 export class PgBusiService {
   constructor(private sqlExce: SqliteExec, private util: UtilService, private agdRest: AgdRestful,
               private contactsServ: ContactsService, private userConfig: UserConfig, private fsService: FsService,private emitService:EmitService
+              ,private notificationsService:NotificationsService
   ) {
   }
 
@@ -118,8 +120,11 @@ export class PgBusiService {
   updateMsg(si: string): Promise<any> {
     return new Promise<any>(async (resolve, reject) => {
       let sql = 'update gtd_sp set itx = 0 where si="' + si + '"';
-
       await this.sqlExce.execSql(sql);
+      sql = 'update gtd_c set du = "0" where si="' + si + '"';
+      await this.sqlExce.execSql(sql);
+
+      this.notificationsService.badgeDecrease();
       this.emitService.emitRef(si);
       resolve();
     });
@@ -812,7 +817,7 @@ export class PgBusiService {
       let c = new CTbl();
       Object.assign(c, scd);
       //消息设为已读
-      c.du = "1";
+      //c.du = "0";
 
 
       if (oldc.sd != scd.showSd || oldc.rt != scd.rt) {
@@ -918,6 +923,8 @@ export class PgBusiService {
       c.sr = sr;
       c = await this.sqlExce.getOne<CTbl>(c);
       let newc = new CTbl();
+      //新消息总是未读
+      newc.du = "1";
       if (c == null) {
         //插入日程表
         this.setCtbl(newc, agd);
@@ -1024,7 +1031,7 @@ export class PgBusiService {
     //他人创建
     c.gs = "1";
     //新消息未读
-    c.du = "0";
+    //c.du = "0";
   }
 
   /**
