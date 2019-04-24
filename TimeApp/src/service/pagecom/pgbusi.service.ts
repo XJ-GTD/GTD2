@@ -842,6 +842,11 @@ export class PgBusiService {
         let sq = "update gtd_sp set spn = '" + c.sn + "' where si = '" + c.si + "'";
         await this.sqlExce.execSql(sq);
 
+        //更新e表title
+        sq = "update gtd_e set st = '" + c.sn + "' where si = '" + c.si + "'";
+        await this.sqlExce.execSql(sq);
+
+
         let sp:SpTbl = new SpTbl();
         Object.assign(sp,scd.specScd(scd.showSpSd));
         await this.sqlExce.update(sp);
@@ -1006,7 +1011,12 @@ export class PgBusiService {
     c.sn = agd.at;
 
     //计划
-    c.ji = agd.ap;
+    if (agd.ap == null || !agd.ap){
+      c.ji = "";
+    }else{
+      c.ji = agd.ap;
+    }
+
     //重复
     c.rt = agd.ar;
 
@@ -1027,7 +1037,12 @@ export class PgBusiService {
     //提醒
     c.tx = agd.aa;
     //备注
-    c.bz = agd.am;
+    if (agd.am == null || !agd.am){
+      c.bz = "";
+    }else{
+      c.bz = agd.am;
+    }
+
     //他人创建
     c.gs = "1";
     //新消息未读
