@@ -820,7 +820,7 @@ export class PgBusiService {
       //c.du = "0";
 
 
-      if (oldc.sd != scd.showSpSd || oldc.rt != scd.rt) {
+      if (oldc.sd != scd.sd || oldc.rt != scd.rt) {
         //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
         let sptbl = new SpTbl();
         sptbl.si = c.si;
