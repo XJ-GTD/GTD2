@@ -56,7 +56,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
                   <div class="agendaline1" *ngIf="scd.gs == '1'">
                     <ion-chip>
                       <ion-avatar>
-                        <img [src]="scd.fs.bhiu"/>
+                        <img src="{{scd.fs.bhiu}}"/>
                       </ion-avatar>
                       <ion-label>{{scd.fs.ran}}</ion-label>
                     </ion-chip>
@@ -231,19 +231,19 @@ export class TdlPage {
       if (type == 0) {
         this.scdlDataList = new Array<ScdlData>();
         let condi = selectDate.format("YYYY/MM/DD");
-         //获取当前日期之前的30条记录
-         let dwdata = await this.tdlServ.before(condi, 30);
-         //获取当前日期之后的30条记录
-         let updata = await this.tdlServ.after(moment(condi).add(1, 'd').format("YYYY/MM/DD"), 30);
-        datas = datas.concat(dwdata, updata);
-        //datas= await this.tdlServ.getL(moment(condi).add(1, 'd').format("YYYY/MM/DD"),'0', 30);
+        //  //获取当前日期之前的30条记录
+        //  let dwdata = await this.tdlServ.before(condi, 30);
+        //  //获取当前日期之后的30条记录
+        //  let updata = await this.tdlServ.after(moment(condi).add(1, 'd').format("YYYY/MM/DD"), 30);
+        // datas = datas.concat(dwdata, updata);
+        datas= await this.tdlServ.getL(moment(condi).add(1, 'd').format("YYYY/MM/DD"),'0', 30);
       } else if (type == 1) {
-        datas = await this.tdlServ.before(selectDate.format("YYYY/MM/DD"), 30);
-        //datas = await this.tdlServ.getL(selectDate.format("YYYY/MM/DD"),'1', 30);
+        // datas = await this.tdlServ.before(selectDate.format("YYYY/MM/DD"), 30);
+        datas = await this.tdlServ.getL(selectDate.format("YYYY/MM/DD"),'1', 30);
 
       } else if (type == 2) {
-        datas = await this.tdlServ.after(selectDate.format("YYYY/MM/DD"), 30);
-        //datas = await this.tdlServ.getL(selectDate.format("YYYY/MM/DD"),'2', 30);
+        // datas = await this.tdlServ.after(selectDate.format("YYYY/MM/DD"), 30);
+        datas = await this.tdlServ.getL(selectDate.format("YYYY/MM/DD"),'2', 30);
       }
       //替换交替颜色
       if (type == 0 || type == 2)

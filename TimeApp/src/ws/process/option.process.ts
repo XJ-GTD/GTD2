@@ -35,7 +35,10 @@ export class OptionProcess implements MQProcess{
           rcIn.sn = c.sn;
           rcIn.st = c.st;
           rcIn.sd = c.sd;
-          rcIn.si = c.si;
+          if(c.si && c.si != null && c.si != ''){
+            rcIn.si = c.si;
+          }
+
           for (let f of  processRs.fs){
             rcIn.fss.push(f);
           }
