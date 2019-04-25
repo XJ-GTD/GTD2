@@ -12,7 +12,7 @@ import * as moment from "moment";
 import {DataConfig} from "../config/data.config";
 import {UserConfig} from "../config/user.config";
 import {ContactsService} from "../cordova/contacts.service";
-import {BaseData, FsData, JtData, RcInParam, ScdData, SpecScdData,MonthData} from "../../data.mapping";
+import {BaseData, FsData, JtData, RcInParam, ScdData, SpecScdData,MonthData, DayData} from "../../data.mapping";
 import {FsService} from "../../pages/fs/fs.service";
 import {EmitService} from "../util-service/emit.service";
 import {BTbl} from "../sqlite/tbl/b.tbl";
@@ -66,9 +66,14 @@ export class PgBusiService {
       } else {
         rc.setParam();
         rc.ui = UserConfig.account.id;
+        rc.si = this.util.getUuid();
         let scd = new ScdData();
         Object.assign(scd, rc);
         scd = await this.save(scd);
+        //如果存在参与人则发送共享消息
+        if(rc.fss.length){
+          await this.fsService.sharefriend(rc.si, rc.fss);
+        }
         resolve(scd)
       }
     })
@@ -325,6 +330,44 @@ export class PgBusiService {
       //   }
       // }
       resolve(list);
+    })
+  }
+
+  /**
+   * 首页按天查询  dch
+   * @param {CalendarMonth} month
+   */
+  async getHomDayData(start:moment.Moment):Promise<DayData> {
+    return new Promise<DayData>(async (resolve, reject) => {
+      //查询当天日程
+      let starts = start.format("YYYY/MM/DD");
+      let sqlOne:string = `select sp.sd,count(*) scds,sum(itx) news from gtd_sp sp where sp.sd = '${starts}' group by sd`;
+      let day = new DayData();
+      let data = await this.sqlExce.getExtOne<DayData>(sqlOne);
+      day.sd = starts;
+      if(data ! = null){
+        Object.assign(day,data);
+      }
+      //查询计划特殊表
+      let sqlJtL:string = `select jt.* from gtd_jt jt where jt.sd = '${starts}' order by jt.px asc`;
+      let jtL = await this.sqlExce.getExtList<JtData>(sqlJtL);
+      day.jtL = jtL;
+
+      // //本地日历加入主页日历显示中
+      // let local = await this.readlocal.findEventRc('',start,start);
+      // for(let lo of local){
+      //   let md:MonthData = data.find((n) => moment(lo.sd).isSame(moment(n.sd), 'day'));
+      //   if (md){
+      //     md.scds = md.scds + 1;
+      //   }else{
+      //     md = new MonthData();
+      //     md.sd=lo.sd;
+      //     md.scds=1;
+      //     md.news=0;
+      //     data.push(md);
+      //   }
+      // }
+      resolve(day);
     })
   }
 
