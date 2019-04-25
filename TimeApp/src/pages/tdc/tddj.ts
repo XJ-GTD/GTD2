@@ -260,8 +260,8 @@ export class TddjPage {
       this.scd = await this.busiServ.getRcBySiAndSd(paramter.si,paramter.d.format("YYYY/MM/DD"));
       Object.assign(this.sp , this.scd.baseData);
 
-      //TODO 清除消息把已读标志未读
-      this.busiServ.updateMsg(this.sp.si);
+      //清除消息把已读标志未读自己发起的暂时不会有新消息
+      //this.busiServ.updateMsg(this.sp.si);
 
       this.scd.showSpSd = paramter.d.format("YYYY-MM-DD");
 
