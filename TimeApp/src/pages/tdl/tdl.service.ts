@@ -26,9 +26,10 @@ export class TdlService {
     let startBefore = today;
     let startAfter = today;
     let n = 0;
-    let sql = 'select sp.rowid rowid,gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st,' +
-      'jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn ,sp.itx du from gtd_c gc ' +
-      'inner join gtd_sp sp on sp.si = gc.si left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji ';
+    let sql = `select sp.rowid rowid,gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st,
+      jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn ,sp.itx du,bh.hiu bhiu from gtd_c gc 
+      inner join gtd_sp sp on sp.si = gc.si left join gtd_b gb on gb.ui = gc.ui 
+      left join gtd_bh bh on bh.pwi = gb.pwi left join gtd_j_h jh on jh.ji = gc.ji `;
     // 如果action为1，插入过去日期空数据
     if(action =='1' || action != '2'){
       startBefore = moment(today).subtract(days-1, 'd').format("YYYY/MM/DD");
