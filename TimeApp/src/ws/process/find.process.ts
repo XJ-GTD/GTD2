@@ -132,6 +132,9 @@ export class FindProcess implements MQProcess {
         if (scd.te) {
           sql = sql + ` and sp.st <= '${scd.te}'`;
         }
+        if (scd.ts && scd.te) {
+          sql = sql + ` or sp.st = '99:99'`;
+        }
         console.log("============ mq查询日程："+ sql);
         res = await this.sqliteExec.getExtList<CTbl>(sql);
       }
