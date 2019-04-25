@@ -135,7 +135,7 @@ export class NotificationsService {
     //通知栏消息
     let notif: MwxNewMessage = new MwxNewMessage();
     notif.id = this.index++;
-    notif.title = moment(scd.sd).format("YYYY年MM月DD日 ") + scd.st
+    notif.title = moment(scd.sd).format("YYYY-MM-DD ") + " " + this.util.adStrShow(scd.st);
     notif.text = (scd.fs?scd.fs.ran + ":":"") + scd.sn;
     notif.data = {type: "newSms",val:scd};
     //notif.trigger = {at:new Date()}
