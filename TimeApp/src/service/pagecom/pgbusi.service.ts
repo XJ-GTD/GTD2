@@ -64,13 +64,12 @@ export class PgBusiService {
       } else {
         rc.setParam();
         rc.ui = UserConfig.account.id;
-        rc.si = this.util.getUuid();
         Object.assign(scd, rc);
         scd = await this.save(scd);
       }
       //如果存在参与人则发送共享消息
-      if(rc.fss != null && rc.fss.length){
-        await this.fsService.sharefriend(rc.si, rc.fss);
+      if(rc.fss != null && rc.fss.length>0){
+        await this.fsService.sharefriend(scd.si, rc.fss);
       }
       resolve(scd)
     })
