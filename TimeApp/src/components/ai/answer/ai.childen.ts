@@ -40,8 +40,8 @@ import {FsService} from "../../../pages/fs/fs.service";
           </ion-item>
           <ion-item *ngIf="!aiData.scd.saved">
               <p class="scdTip">语音说确认</p>
-              <button item-end (click)="showScd(aiData.scd)" >编辑</button>
-              <button item-end (click)="confirmScd(aiData.scd)">确认</button>
+              <!--<button item-end (click)="showScd(aiData.scd)" >编辑</button>-->
+              <!--<button item-end (click)="confirmScd(aiData.scd)">确认</button>-->
           </ion-item>
           <ion-item *ngIf="aiData.scd.saved">
             <p class="scdTip">保存成功</p>

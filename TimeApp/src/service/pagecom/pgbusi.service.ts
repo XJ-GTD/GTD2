@@ -308,9 +308,9 @@ export class PgBusiService {
    * 首页月份查询  dch
    * @param {CalendarMonth} month
    */
-  async getHomeMonthData(month:CalendarMonth):Promise<Array<MonthData>> {
+  async getHomeMonthData(time:number):Promise<Array<MonthData>> {
     return new Promise<Array<MonthData>>(async (resolve, reject) => {
-      let _start = new Date(month.original.time);
+      let _start = new Date(time);
       let _startMonth = moment(moment(_start).format("YYYY/MM/") + "1");
       let _endMonth = moment(moment(_start).format("YYYY/MM/") + _startMonth.daysInMonth());
       let sql:string = `select jt.spn,jt.si,jt.minpx,gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt

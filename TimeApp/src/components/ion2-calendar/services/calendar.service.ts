@@ -286,7 +286,7 @@ export class CalendarService {
 
 
   async getMonthData(month:CalendarMonth){
-    let data:Array<MonthData> = await this.busiServ.getHomeMonthData(month);
+    let data:Array<MonthData> = await this.busiServ.getHomeMonthData(month.original.time);
     for (let d of data){
       let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
 
@@ -302,7 +302,8 @@ export class CalendarService {
       calendarDay.allsometing = d.scds >= 8 && !calendarDay.onlyRepeat ;
       calendarDay.newmessage = d.news
       calendarDay.hasting = d.scds > 0;
-      //calendarDay.subTitle = d.news > 0? `\u2022`: "";
+      calendarDay.subTitle = d.spn ? d.spn: calendarDay.subTitle;
+
       calendarDay.marked = false;
     }
 
