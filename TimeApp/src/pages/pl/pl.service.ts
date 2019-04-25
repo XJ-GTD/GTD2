@@ -11,7 +11,7 @@ export class PlService {
 
   constructor(private sqlExec: SqliteExec,
               private shareRestful:ShaeRestful,
-              private pgService:PgBusiService,) {}
+              private pgService:PgBusiService) {}
 
   //下载系统计划
   async downloadPlan(jh:PagePDPro){
@@ -63,25 +63,7 @@ export class PlService {
 
   //删除系统计划
   async delete(jh:PagePDPro){
-    console.log('---------- PlService delete 删除系统计划开始 ----------------');
-    let sqls:Array<string> = new Array<string>();
-    if(jh.jt == "1" && jh.ji != ""){
-      // 删除日程附件表
-      sqls.push('delete from gtd_sp where ji = "' + jh.ji + '";');
-    }else if(jh.jt == "0" && jh.ji != ""){
-      //删除日程表
-      sqls.push('delete from gtd_jt where ji = "' + jh.ji + '";');
-    }
-
-    //删除日程表
-    sqls.push('delete from gtd_c where ji = "' + jh.ji + '";');
-
-    //计划 jtd 修改
-    sqls.push('update gtd_j_h set jtd = null where ji = "' + jh.ji + '";');
-
-    await this.sqlExec.batExecSql(sqls);
-
-    console.log('---------- PlService delete 删除系统计划结束 ----------------');
+    return this.pgService.delRcByJiAndJt(jh.ji,jh.jt);
   }
 
   //获取计划

@@ -6,7 +6,7 @@ import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
-import {FsData, RcInParam, ScdData, ScdOutata, ScdPageParamter, SpecScdData} from "../../data.mapping";
+import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../data.mapping";
 import {PlService} from "../pl/pl.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 
@@ -45,7 +45,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           <div>
             <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
                           pickerFormat="YYYY MM DD" color="light"
-                          [(ngModel)]="scd.showSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
+                          [(ngModel)]="scd.showSpSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                           min="1999-01-01" max="2039-12-31" (ionCancel)="getDtPickerSel($event)" disabled
             ></ion-datetime>
           </div>
@@ -194,7 +194,7 @@ export class TddjPage {
   actionSheet;
 
   //画面数据
-  scd: ScdOutata = new ScdOutata();
+  scd: ScdData = new ScdData();
   b: boolean = true;
   sp:SpecScdData = new SpecScdData();
 
@@ -247,13 +247,13 @@ export class TddjPage {
 
     let paramter: ScdPageParamter = this.navParams.data;
     if (paramter.si) {
-      this.scd = await this.busiServ.getOneRc(paramter.si,paramter.d.format("YYYY/MM/DD"),"");
+      this.scd = await this.busiServ.getRcBySiAndSd(paramter.si,paramter.d.format("YYYY/MM/DD"));
       Object.assign(this.sp , this.scd.baseData);
 
       //TODO 清除消息把已读标志未读
       this.busiServ.updateMsg(this.sp.si);
 
-      this.scd.showSd = paramter.d.format("YYYY-MM-DD");
+      this.scd.showSpSd = paramter.d.format("YYYY-MM-DD");
 
       this.jhs = await this.plsevice.getPlanCus();
       for (let i = 0; i < this.jhs.length; i++) {
@@ -425,7 +425,6 @@ export class TddjPage {
 
     //本人新建或修改时，下记画面项目可以修改
     //开始时间格式转换
-    //this.scd.sd = moment(this.scd.showSd).format("YYYY/MM/DD");
 
     //结束时间设置
     //全天的场合
@@ -487,7 +486,7 @@ export class TddjPage {
             handler: () => {
               this.util.alterStart("2", () => {
                 this.util.loadingStart();
-                this.busiServ.delete(this.scd.si, "1", d).then(data => {
+                this.busiServ.delRcBySiAndSd(this.scd.si, d).then(data => {
                   this.feekback.audioDelete();
                   this.util.loadingEnd();
                   this.cancel();
@@ -502,7 +501,7 @@ export class TddjPage {
             handler: () => {
               this.util.alterStart("2", () => {
                 this.util.loadingStart();
-                this.busiServ.delete(this.scd.si, "2", d).then(data => {
+                this.busiServ.delRcBySi(this.scd.si).then(data => {
                   this.feekback.audioDelete();
                   this.util.loadingEnd();
                   this.cancel();
@@ -526,7 +525,7 @@ export class TddjPage {
       //非重复日程删除
       this.util.alterStart("2", () => {
         this.util.loadingStart();
-        this.busiServ.delete(this.scd.si, "2", d).then(data => {
+        this.busiServ.delRcBySi(this.scd.si).then(data => {
           this.feekback.audioDelete();
           this.util.loadingEnd();
           this.cancel();

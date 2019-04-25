@@ -54,7 +54,7 @@ export class SpTbl  implements ITbl {
     if(this.ji != null && this.ji!=""){
       sq = sq + ', ji="' + this.ji +'"';
     }
-    if(this.bz != null && this.bz!=""){
+    if(this.bz != null ){
       sq = sq + ', bz="' + this.bz +'"';
     }
     if(this.sta != null && this.sta!=""){
