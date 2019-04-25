@@ -245,7 +245,7 @@ export class ScdlData {
   id: string;
   bc:number;
   scdl: Array<ScdData> = new Array<ScdData>();
-
+  jtl: Array<JtData> = new Array<JtData>();
 }
 
 
