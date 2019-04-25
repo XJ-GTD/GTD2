@@ -61,7 +61,7 @@ import * as moment from "moment";
                 <div class="time-slot">
                   <p class="app-agenda-time">{{this.util.adStrShow(agenda.st)}}</p>
                 </div>
-                <div class="pointer-slot"><span class="plan-color-pointer"><div class="color-dot" [ngStyle]="{'background-color': plan.pn.jc }"></div></span></div>
+                <div class="pointer-slot"><span class="plan-color-pointer"><div class="color-dot"></div></span></div>
               </div>
               <div class="agenda-col-content right-off left-off" [ngClass]="{'agenda-content': ((i + 1) === plan.pa.length)? false : (agenda.adt.slice(0, 10) === plan.pa[i + 1]['adt'].slice(0, 10))}" justify-content-start>
                 <p class="text-left app-agenda-title">{{agenda.at}}</p>
