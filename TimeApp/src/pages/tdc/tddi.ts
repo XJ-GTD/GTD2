@@ -73,37 +73,37 @@ import {NotificationsService} from "../../service/cordova/notifications.service"
           <div class="reptlb2">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled-close]="wake.close == 1"
-                    (click)="clickwake('0')">关
+                    (click)="clickwake('0',true)">关
             </button>
           </div>
           <div class="reptlb2">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled]="wake.tenm == 1"
-                    (click)="clickwake('1')">10m
+                    (click)="clickwake('1',true)">10m
             </button>
           </div>
           <div class="reptlb2">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled]="wake.thirm == 1"
-                    (click)="clickwake('2')">30m
+                    (click)="clickwake('2',true)">30m
             </button>
           </div>
           <div class="reptlb2">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled]="wake.oh == 1"
-                    (click)="clickwake('3')">1h
+                    (click)="clickwake('3',true)">1h
             </button>
           </div>
           <div class="reptlb2">
             <button ion-button round clear class="sel-btn-set"
                     [ngClass]="wake.foh == 1?'sel-btn-seled':'sel-btn-unsel'"
-                    (click)="clickwake('4')">4h
+                    (click)="clickwake('4',true)">4h
             </button>
           </div>
           <div class="reptlb2">
             <button ion-button round clear class="sel-btn-set"
                     [ngClass]="wake.od == 1?'sel-btn-seled':'sel-btn-unsel'"
-                    (click)="clickwake('5')">1d
+                    (click)="clickwake('5',true)">1d
             </button>
           </div>
         </ion-row>
@@ -145,6 +145,8 @@ import {NotificationsService} from "../../service/cordova/notifications.service"
 })
 export class TddiPage {
 
+  focuscomm:boolean = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private util: UtilService,
               public actionSheetCtrl: ActionSheetController,
@@ -152,7 +154,22 @@ export class TddiPage {
               private keyboard: Keyboard, private _renderer: Renderer2,
               private plsevice: PlService,private feekback:FeedbackService
   ) {
+    this.keyboard.onKeyboardShow().subscribe(d =>{
+    if (this.focuscomm){
+      this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(-300px)");
+    }
+  });
+    this.keyboard.onKeyboardHide().subscribe(d =>{
+      this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(0px)");
+    });
 
+  }
+  comentblur() {
+    this.focuscomm = false;
+  }
+
+  comentfocus() {
+    this.focuscomm = true;
   }
 
   actionSheet;
@@ -185,16 +202,6 @@ export class TddiPage {
   jhs: Array<JhTbl>;
 
 
-  comentfocus() {
-    if (this.keyboard) {
-      this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(-300px)");
-    }
-  }
-
-  comentblur() {
-    this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(0px)");
-  }
-
   async ionViewWillEnter() {
 
     this.scd.fs.bhiu = DataConfig.HUIBASE64;
@@ -209,7 +216,7 @@ export class TddiPage {
 
     //TODO 清除消息把已读标志未读
 
-    if (this.scd.du == "1"){
+    if (this.scd.du != "" && parseInt(this.scd.du) >= 1){
       this.busiServ.updateMsg(this.scd.si);
     }
     this.scd.showSpSd = paramter.d.format("YYYY-MM-DD");
@@ -254,8 +261,8 @@ export class TddiPage {
   }
 
 //提醒按钮显示控制
-  clickwake(type: string) {
-
+  clickwake(type: string,audio?:boolean) {
+    if (audio) this.feekback.audioOption();
     this.sp.tx = type;
 
     switch (type) {

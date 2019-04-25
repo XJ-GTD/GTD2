@@ -1,10 +1,10 @@
 ConfirmboxComponent {
   margin: 10px;
   .msg-lbl{
-    margin-top: 23px;
-    font-size: 16px;
+    font-size: 15px;
+    letter-spacing: 1px;
     text-align: center;
-    color: $masterColor;
+    color: $fontMasterColor;
     font-weight: 500;
   }
 

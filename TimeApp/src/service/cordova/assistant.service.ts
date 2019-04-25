@@ -137,6 +137,7 @@ export class AssistantService {
     textPro.c.client.time = moment().valueOf();
     textPro.c.client.cxt = DataConfig.getWsContext();
     textPro.c.server = DataConfig.wsServerContext;
+    textPro.c.client.option = DataConfig.getWsOpt();
     await this.aibutlerRestful.posttext(textPro)
       .then(data => {
         console.log("data code：" + data.code);

@@ -37,7 +37,8 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
 
         <div class="title">
           <ng-template [ngIf]="_showMonthPicker" [ngIfElse]="title">
-            <div float-left (click)="switchView()" >
+            <div float-left >
+              <!--<div float-left (click)="switchView()" >-->
               <p><b [class.thisM]="_thisMonth">{{_showMonth}}</b></p>
               <p float-left no-margin>
                 <span [class.thisM]="_thisMonth">{{monthOpt.original.year}}</span>
@@ -57,7 +58,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
             </button>
             <button type='button' ion-button clear class="forward" [disabled]="!canNext()" (click)="next()">
               <ion-icon name="ios-arrow-forward"></ion-icon>
-            </button>?.dsa
+            </button>
           </ng-template>
         </div>
       </ion-card-header>

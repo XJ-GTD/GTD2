@@ -57,14 +57,14 @@ export class DTbl implements ITbl {
   slT(): string {
     let sq = 'select * from  gtd_d where  1=1 ';
 
-    if (this.pi != null) {
+    if (this.pi != null && this.pi != "") {
       sq = sq + ' and pi="' + this.pi + '"';
     }
 
-    if (this.si != null) {
+    if (this.si != null && this.si != "") {
       sq = sq + ' and si="' + this.si + '"';
     }
-    if (this.ai != null) {
+    if (this.ai != null && this.ai != "") {
       sq = sq + ' and ai="' + this.ai + '"';
     }
 

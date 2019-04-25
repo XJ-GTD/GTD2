@@ -603,7 +603,8 @@ export class UtilService {
     this.toast = this.toastCtrl.create({
       message: msg,
       duration: long,
-      position: 'top',
+      position: 'bottom',
+      cssClass:'toast'
     });
     this.toast.present();
   }

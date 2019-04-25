@@ -44,11 +44,12 @@ import {FsData} from "../../data.mapping";
                 <!--<img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">-->
                 <img [src]="g.bhiu">
               </ion-avatar>
-              <ion-label>
+              <ion-label (click)="goTofsDetail(g)" >
                 {{g.ran}}
-                <span style="font-size:14px;color:rgb(102,102,102);">
-                   {{g.rc}}
-                 </span>
+                <!--<span style="font-size:14px;color:rgb(102,102,102);">-->
+                   <!--{{g.rc}}-->
+                 <!--</span>-->
+                <span *ngIf="g.rel ==1">注册</span>
               </ion-label>
               <button ion-button color="danger" (click)="delete(g)" clear item-end>
                 <img class="img-delete"  src="./assets/imgs/yc.png">

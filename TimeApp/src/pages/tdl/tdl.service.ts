@@ -4,7 +4,7 @@ import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {LocalcalendarService} from "../../service/cordova/localcalendar.service";
-import {ScdData, ScdlData} from "../../data.mapping";
+import {JtData, ScdData, ScdlData} from "../../data.mapping";
 
 @Injectable()
 export class TdlService {
@@ -13,7 +13,6 @@ export class TdlService {
     private readlocal: LocalcalendarService,
     private userConfig: UserConfig) {
   }
-
 
   /**
    * 获取日程 （每次返回30条数据，下拉返回日期之前，上推返回日期之后）
@@ -24,14 +23,16 @@ export class TdlService {
    */
   async getL(today: string,action:string,days: number) {
     let mpL = new Array<ScdlData>();
-    let startBefore = moment(today).subtract(days-1, 'd').format("YYYY/MM/DD");
+    let startBefore = today;
+    let startAfter = today;
     let n = 0;
-    let sql = 'select sp.rowid rowid,gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st,' +
-      'jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn ,sp.itx du from gtd_c gc ' +
-      'inner join gtd_sp sp on sp.si = gc.si left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji ';
-    let before ='';
-    let after ='';
+    let sql = `select sp.rowid rowid,gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st,
+      jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn ,sp.itx du,bh.hiu bhiu from gtd_c gc 
+      inner join gtd_sp sp on sp.si = gc.si left join gtd_b gb on gb.ui = gc.ui 
+      left join gtd_bh bh on bh.pwi = gb.pwi left join gtd_j_h jh on jh.ji = gc.ji `;
+    // 如果action为1，插入过去日期空数据
     if(action =='1' || action != '2'){
+      startBefore = moment(today).subtract(days-1, 'd').format("YYYY/MM/DD");
       //插入无日程天
       while (days > n) {
         let scdl: ScdlData = new ScdlData();
@@ -41,12 +42,11 @@ export class TdlService {
         mpL.unshift(scdl);
         n++;
       }
-      //获取本地日程jn jg jc jt
-      before = sql + ` where sp.sd <='${today}' and  sp.sd >= '${startBefore}'`;
     }
+    //插入未来日期空数据
     if(action =='2' || action != '1') {
-      let startAfter = moment(today).add(days, 'd').format("YYYY/MM/DD");
-      n = 0;
+      startAfter = moment(today).add(days, 'd').format("YYYY/MM/DD");
+      n = 1;
       //插入无日程天
       while (days >= n) {
         let scdl: ScdlData = new ScdlData();
@@ -56,26 +56,32 @@ export class TdlService {
         scdl.bc = n % 2;
         n++;
       }
-      //获取本地日程jn jg jc jt
-      after = sql + ` where sp.sd > '${today}' and  sp.sd <= '${startAfter}'`;
     }
-
-    if(action !='1' && action != '2'){
-      sql = 'select * from ('+ before + ' union ' + after + ') order by sd,st asc;'
-    }else if(action =='1'){
-      sql = before + 'order by sp.sd,sp.st asc;'
-    }else if(action =='2'){
-      sql =  after + ' order by sp.sd,sp.st asc;'
-    }
+    //查询日程
+    sql = sql + ` where sp.sd >= '${startBefore}' and  sp.sd <= '${startAfter}'`;
     let rclL = await this.sqlExce.getExtList(sql);
     //本地日历加入
     //let localL = await this.readlocal.findEventRc('', moment(startBefore), moment(start));
-    mpL = this.proceeLs(mpL, rclL, new Array<ScdData>());
+    let jtl:Array<JtData> = await this.getJtL(startBefore,startAfter);
+    mpL = this.proceeLs(mpL, rclL, new Array<ScdData>(),jtl);
     return mpL;
   }
 
+  /**
+   * 根据日期段查询系统计划3
+   * @param {string} sd 开始日期
+   * @param {string} ed 结束日期
+   * @returns {Promise<void>}
+   */
+  private async getJtL(sd:string,ed:string): Promise<Array<JtData>>{
+    return new Promise<Array<JtData>>(async (resolve, reject) => {
+      let sql = `select * from gtd_jt where sd>='${sd}' and sd<='${ed}' order by px asc`;
+      let data = await this.sqlExce.getExtList<JtData>(sql);
+      resolve(data);
+    })
+  }
 
-  private proceeLs(mpL: Array<ScdlData>, rclL: Array<any>, localL: Array<ScdData>): Array<ScdlData> {
+  private proceeLs(mpL: Array<ScdlData>, rclL: Array<any>, localL: Array<ScdData>,jtl:Array<JtData>): Array<ScdlData> {
     //循环获取数据并放入list
     for (let scd of rclL) {
       let sc: ScdData = new ScdData();
@@ -90,13 +96,20 @@ export class TdlService {
     }
 
     for (let scd of localL) {
-      let cd: string = scd.sd
+      let cd: string = scd.sd;
       let tmp = mpL.find((n) => cd == n.d);
       if (tmp){
         tmp.scdl.push(scd);
       }
     }
-
+    //循环获取计划3数据并放入list
+    for (let jt of jtl) {
+      let cd: string = jt.sd;
+      let tmp = mpL.find((n) => cd == n.d);
+      if (tmp){
+        tmp.jtl.push(jt);
+      }
+    }
     //排序一天日程 按时间
 
     for (let tmp of mpL) {
@@ -111,71 +124,6 @@ export class TdlService {
 
   }
 
-
-  // /**
-  //  * （每次返回30条数据，下拉返回日期之前，包含当前选中日期日期）
-  //  * @param {string} next
-  //  * @returns {Promise<ScdlData[]>}
-  //  */
-  // async before(start: string, days: number) {
-  //   let mpL = new Array<ScdlData>();
-  //   let startBefore = moment(start).subtract(days-1, 'd').format("YYYY/MM/DD");
-  //   let n = 0;
-  //
-  //   //插入无日程天
-  //   while (days > n) {
-  //     let scdl: ScdlData = new ScdlData();
-  //     scdl.d = moment(start).subtract(n, 'd').format("YYYY/MM/DD");
-  //     scdl.id = moment(start).subtract(n, 'd').format("YYYYMMDD");
-  //     scdl.bc = n%2;
-  //     mpL.unshift(scdl);
-  //     n++;
-  //   }
-  //   //获取本地日程jn jg jc jt
-  //   let sqll = `select sp.rowid rowid,gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st,
-  //       jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn,sp.itx du from gtd_c gc
-  //       inner join gtd_sp sp on sp.si = gc.si
-  //       left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji
-  //       where sp.sd <='${start}' and  sp.sd >= '${startBefore}' order by sp.sd,sp.st desc;`;
-  //   let rclL = await this.sqlExce.getExtList(sqll);
-  //   //本地日历加入
-  //   let localL = await this.readlocal.findEventRc('', moment(startBefore), moment(start));
-  //   mpL = this.proceeLs(mpL, rclL, localL);
-  //   return mpL;
-  // }
-  //
-  // /**
-  //  * （每次返回30天数据，上推返回日期之后,包含当前日期）
-  //  * @param {string} next
-  //  * @returns {Promise<ScdlData[]>}
-  //  */
-  // async after(start: string, days: number) {
-  //   let mpL = new Array<ScdlData>();
-  //   let startAfter = moment(start).add(days, 'd').format("YYYY/MM/DD");
-  //   let n = 0;
-  //
-  //   //插入无日程天
-  //   while (days >= n) {
-  //     let scdl: ScdlData = new ScdlData();
-  //     scdl.d = moment(start).add(n, 'd').format("YYYY/MM/DD");
-  //     scdl.id = moment(start).add(n, 'd').format("YYYYMMDD");
-  //     mpL.push(scdl);
-  //     scdl.bc = n%2;
-  //     n++;
-  //   }
-  //   //获取本地日程jn jg jc jt
-  //   let sqll = `select sp.rowid rowid,gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st,
-  //       jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn ,sp.itx du from gtd_c gc
-  //       inner join gtd_sp sp on sp.si = gc.si
-  //       left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji
-  //       where sp.sd >= '${start}' and  sp.sd <= '${startAfter}' order by sp.sd,sp.st desc;`;
-  //   let rclL = await this.sqlExce.getExtList(sqll);
-  //   //本地日历加入
-  //   let localL = await this.readlocal.findEventRc('', moment(start), moment(startAfter));
-  //   mpL = this.proceeLs(mpL, rclL, localL);
-  //
-  //   return mpL;
-  // }
 
 }
 

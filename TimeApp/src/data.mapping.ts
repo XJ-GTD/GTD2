@@ -408,3 +408,10 @@ export class MonthData{
   si:string; //特殊系统计划标题日程ID
   minpx:number; //特殊系统计划最小排序
 }
+
+export class DayData{
+  sd:string;
+  scds:number = 0;
+  news:number = 0;
+  jtL : Array<JtData>;
+}

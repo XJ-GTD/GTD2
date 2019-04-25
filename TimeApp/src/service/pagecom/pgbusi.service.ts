@@ -12,7 +12,7 @@ import * as moment from "moment";
 import {DataConfig} from "../config/data.config";
 import {UserConfig} from "../config/user.config";
 import {ContactsService} from "../cordova/contacts.service";
-import {BaseData, FsData, JtData, RcInParam, ScdData, SpecScdData,MonthData} from "../../data.mapping";
+import {BaseData, FsData, JtData, RcInParam, ScdData, SpecScdData,MonthData, DayData} from "../../data.mapping";
 import {FsService} from "../../pages/fs/fs.service";
 import {EmitService} from "../util-service/emit.service";
 import {BTbl} from "../sqlite/tbl/b.tbl";
@@ -35,13 +35,21 @@ export class PgBusiService {
    */
   updateMsg(si: string): Promise<any> {
     return new Promise<any>(async (resolve, reject) => {
-      let sql = 'update gtd_sp set itx = 0 where si="' + si + '"';
-      await this.sqlExce.execSql(sql);
-      sql = 'update gtd_c set du = "0" where si="' + si + '"';
-      await this.sqlExce.execSql(sql);
+      let c :CTbl =new CTbl();
+      c.si = si;
+      c = await this.sqlExce.getOne<CTbl>(c);
+      if (c.du != ""){
+        let n :number= parseInt(c.du);
+        for (let j = 0, len = n; j < len; j++) {
+          this.notificationsService.badgeDecrease();
+        }
+        let sql = 'update gtd_sp set itx = 0 where si="' + si + '"';
+        await this.sqlExce.execSql(sql);
+        sql = 'update gtd_c set du = "0" where si="' + si + '"';
+        await this.sqlExce.execSql(sql);
 
-      this.notificationsService.badgeDecrease();
-      this.emitService.emitRef(si);
+        this.emitService.emitRef(si);
+      }
       resolve();
     });
   }
@@ -51,8 +59,8 @@ export class PgBusiService {
    */
   saveOrUpdate(rc : RcInParam):Promise<ScdData>{
     return new Promise<ScdData>(async (resolve, reject) => {
+      let scd = new ScdData();
       if (rc.si != null && rc.si !="") {
-        let scd = new ScdData();
         Object.assign(scd, rc);
 
         //设置sp表值
@@ -61,16 +69,17 @@ export class PgBusiService {
         scd.specScds.set(sp.sd,sp);
         scd.showSpSd = sp.sd;
         scd = await this.updateDetail(scd);
-
-        resolve(scd)
       } else {
         rc.setParam();
         rc.ui = UserConfig.account.id;
-        let scd = new ScdData();
         Object.assign(scd, rc);
         scd = await this.save(scd);
-        resolve(scd)
       }
+      //如果存在参与人则发送共享消息
+      if(rc.fss != null && rc.fss.length>0){
+        await this.fsService.sharefriend(scd.si, rc.fss);
+      }
+      resolve(scd)
     })
   }
 
@@ -329,6 +338,44 @@ export class PgBusiService {
   }
 
   /**
+   * 首页按天查询  dch
+   * @param {CalendarMonth} month
+   */
+  async getHomDayData(start:moment.Moment):Promise<DayData> {
+    return new Promise<DayData>(async (resolve, reject) => {
+      //查询当天日程
+      let starts = start.format("YYYY/MM/DD");
+      let sqlOne:string = `select sp.sd,count(*) scds,sum(itx) news from gtd_sp sp where sp.sd = '${starts}' group by sd`;
+      let day = new DayData();
+      let data = await this.sqlExce.getExtOne<DayData>(sqlOne);
+      day.sd = starts;
+      if(data ! = null){
+        Object.assign(day,data);
+      }
+      //查询计划特殊表
+      let sqlJtL:string = `select jt.* from gtd_jt jt where jt.sd = '${starts}' order by jt.px asc`;
+      let jtL = await this.sqlExce.getExtList<JtData>(sqlJtL);
+      day.jtL = jtL;
+
+      // //本地日历加入主页日历显示中
+      // let local = await this.readlocal.findEventRc('',start,start);
+      // for(let lo of local){
+      //   let md:MonthData = data.find((n) => moment(lo.sd).isSame(moment(n.sd), 'day'));
+      //   if (md){
+      //     md.scds = md.scds + 1;
+      //   }else{
+      //     md = new MonthData();
+      //     md.sd=lo.sd;
+      //     md.scds=1;
+      //     md.news=0;
+      //     data.push(md);
+      //   }
+      // }
+      resolve(day);
+    })
+  }
+
+  /**
    * 一览查询  dch
    * @param {string} d 日期
    * @param {number} action 0:next , 1
@@ -346,7 +393,13 @@ export class PgBusiService {
       //日程Id
       ctbl.sr = srId;
       ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
-
+      //提醒角标消减
+      if (ctbl.du != "") {
+        let n: number = parseInt(ctbl.du);
+        for (let j = 0, len = n; j < len; j++) {
+          this.notificationsService.badgeDecrease();
+        }
+      }
       await this.delRcBySi(ctbl.si);
 
       this.emitService.emitRef(srId);
@@ -667,14 +720,7 @@ export class PgBusiService {
     return new Promise<ScdData>(async (resolve, reject) => {
       let ct: ScdData = await this.save(rc);
       rc.si = ct.si;
-      let fs: Array<FsData> = new Array<FsData>();
-      for (let f of rc.fss) {
-        let ff: FsData = new FsData();
-        ff.ui = f.ui;
-        ff.rc = f.rc;
-        ff.rn = f.rn;
-      }
-      this.fsService.sharefriend(ct.si, fs);
+      this.fsService.sharefriend(ct.si, rc.fss);
       resolve(rc);
       return;
     });
@@ -812,8 +858,6 @@ export class PgBusiService {
       //更新日程
       let c = new CTbl();
       Object.assign(c, scd);
-      //消息设为已读
-      //c.du = "0";
 
 
       if (oldc.sd != scd.sd || oldc.rt != scd.rt) {
@@ -925,8 +969,8 @@ export class PgBusiService {
       c.sr = sr;
       c = await this.sqlExce.getOne<CTbl>(c);
       let newc = new CTbl();
-      //新消息总是未读
-      newc.du = "1";
+
+
       if (c == null) {
         //插入日程表
         this.setCtbl(newc, agd);
@@ -939,6 +983,10 @@ export class PgBusiService {
         let ed = await this.saveSp(newc);
         //结束日期使用sp表最后日期
         newc.ed = ed;
+
+        //新消息+1
+        newc.du = "1";
+
         await this.sqlExce.save(newc);
 
         //保存受邀人日程到服务器
@@ -954,6 +1002,17 @@ export class PgBusiService {
         //拉下来的重复日程不变且为重复日程，结束日少于原来的结束日，则为部分日程删除动作
         if (newc.rt == c.rt && c.rt !="0" && newc.ed < c.ed ){
           await  this.delRcBySiAndSd(c.si,moment(newc.ed).add(1, 'd').format("YYYY/MM/DD"));
+          //更新消息
+          let cm : CTbl =new CTbl();
+          cm.si = c.si;
+          //新消息+1
+          if (c.du ==""){
+            cm.du = "1";
+          }else{
+            cm.du = (parseInt(c.du) + 1).toString() ;
+          }
+          await this.sqlExce.save(cm);
+
         }else{
           //更新日程
           //设置本地日程ID
@@ -963,6 +1022,13 @@ export class PgBusiService {
           //本地日程的备注和提醒不被更新
           newc.bz = c.bz;
           newc.tx = c.tx;
+
+          //新消息+1
+          if (c.du ==""){
+            newc.du = "1";
+          }else{
+            newc.du = (parseInt(c.du) + 1).toString() ;
+          }
 
           let scdData = new ScdData();
 

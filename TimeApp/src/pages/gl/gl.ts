@@ -37,12 +37,12 @@ import {PageDcData} from "../../data.mapping";
       <ion-grid>
         <ion-row>
           <ion-list no-lines>
-            <ion-item class="plan-list-item"  *ngFor="let g of gl">
-            <ion-avatar item-start>
+            <ion-item class="plan-list-item"  *ngFor="let g of gl" >
+            <ion-avatar item-start (click)="toGroupMember(g)">
               <img [src]="g.gm">
               <!--<ion-icon name="contact"  style="font-size: 3.0em;color: red;"></ion-icon>-->
             </ion-avatar>
-              <ion-label (click)="toGroupMember(g)" style="background-color: black;color:#ffffff">
+              <ion-label  style="background-color: black;color:#ffffff" (click)="toGroupMember(g)">
                 {{g.gn}}({{g.gc}})
               </ion-label>
               <button ion-button color="danger" (click)="delGroup(g)" clear item-end>

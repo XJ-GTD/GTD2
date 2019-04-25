@@ -7,7 +7,7 @@ import {O, SS} from "../model/ws.enum";
 import {DataConfig} from "../../service/config/data.config";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {FsService} from "../../pages/fs/fs.service";
-import {ScdData} from "../../data.mapping";
+import {FsData, RcInParam, ScdData} from "../../data.mapping";
 
 /**
  * 确认操作
@@ -31,38 +31,35 @@ export class OptionProcess implements MQProcess{
         //确认操作
         for (let c of processRs.scd){
           //tx rt
-          let dbscd:ScdData = new ScdData();
-          dbscd.sn = c.sn;
-          dbscd.st = c.st;
-          dbscd.sd = c.sd;
-          dbscd.si = c.si;
-          dbscd.gs = "0";
-          dbscd.du = "1";
-          dbscd.tx = "0";
-          dbscd.rt = "0";
+          let rcIn:RcInParam = new RcInParam();
+          rcIn.sn = c.sn;
+          rcIn.st = c.st;
+          rcIn.sd = c.sd;
+          if(c.si && c.si != null && c.si != ''){
+            rcIn.si = c.si;
+          }
 
-          for (let f of processRs.fs){
-            dbscd.fss.push(f);
+          for (let f of  processRs.fs){
+            rcIn.fss.push(f);
           }
 
           if (prvOpt == SS.C){
-           await this.busiService.save4ai(dbscd);
+              await this.busiService.saveOrUpdate(rcIn);
           }else if (prvOpt == SS.U){
-            //TODO 需要修改update 方法
-            await this.busiService.updateDetail(dbscd);
+            await this.busiService.saveOrUpdate(rcIn);
           }else{
-            //TODO 需要修改delete 方法
-            await this.busiService.delRcBySiAndSd( dbscd.si, dbscd.sd);
+            await this.busiService.delRcBySiAndSd( rcIn.si, rcIn.sd);
           }
         }
+        //取消操作 清除上下文
+        DataConfig.clearWsOpts();
+        DataConfig.clearWsContext();
 
       }else if(opt == O.S){
         //追问操作
 
       }else{
-        //取消操作 清除上下文
-        DataConfig.clearWsOpts();
-        DataConfig.clearWsContext();
+
       }
 
       processRs.option4Speech = content.option;

@@ -18,7 +18,14 @@ page-tdl {
   div {
     position: relative;
   }
-
+  .chip-ios{
+    background-color: transparent;
+  }
+  .chip-ios > ion-label {
+    margin: 2px;
+    font-size: 10px;
+    color: $fontSecondColor;
+  }
 
   .w-auto {
     flex: 1;
@@ -71,20 +78,22 @@ page-tdl {
     display: flex;
     position: relative;
     flex-direction: column;
-    padding: 15px 15px 15px 20px;
+    padding: 15px 5px 5px 5px;
   }
 
   .agendaline1 {
     position: relative;
     font-size: 10px;
     letter-spacing: 1px;
-    margin-bottom: 7px;
-    opacity: .6;
-
+    //margin-bottom: 5px;
+    margin-right: 15px;
+    color:$fontSecondColor;
+    text-align: right;
   }
 
   .agendaline2 {
     position: relative;
+    margin-bottom: 5px;
   }
 
   .agenda-st {
@@ -144,8 +153,9 @@ page-tdl {
 
 
   .newMessage {
-    font-weight: bold;
-    color:  $adornColor;
+    //font-weight: bold;
+    //color:  $adornColor;
+    background-color:$adornColor; ;
   }
 
   .agenda-none {

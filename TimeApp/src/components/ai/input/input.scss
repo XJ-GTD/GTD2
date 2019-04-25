@@ -2,11 +2,23 @@
 inputcomponent {
   z-index: 100;
   display: none;
+  .help{
+    display: inline-block;
+    position: fixed;
+    top: 20px;
+    color: $fontSecondColor;
+    padding:20px;
+    font-size: 16px;
+    .row{
+      margin: 20px;
+    }
+
+  }
   .waper{
     transform: translateY(-9999px);
     transition: all 1s ease-in-out 0s;
     position: absolute;
-    bottom: 0px;
+    bottom: 10px;
     width: 100%;
     //z-index:100;
     button{
