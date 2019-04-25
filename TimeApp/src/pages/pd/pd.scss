@@ -74,16 +74,15 @@ page-pd {
   }
 
   .agenda-content::before {
-     content: '';
-     position: absolute;
-     top: 0;
-     bottom: 0;
-     width: 0.3vmin;
-     background: $adornColor	;
-     margin-left: -3vmin;
-     margin-top: 3vmin;
-     margin-bottom: -3vmin;
-    height: calc(100% + 4px);
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0.5vmin;
+    background: $adornColor;
+    margin-left: -3.4vmin;
+    margin-top: 3vmin;
+    margin-bottom: -4vmin;
    }
 
   .agenda-card-past {
