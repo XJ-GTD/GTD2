@@ -18,7 +18,8 @@ import {YTbl} from "../../service/sqlite/tbl/y.tbl";
 @Injectable()
 export class BrService {
   constructor(private bacRestful: BacRestful, private sqlexec: SqliteExec,
-              private util: UtilService,private contactsServ :ContactsService) {
+              private util: UtilService,private contactsServ :ContactsService,
+              private userConfig: UserConfig) {
 
   }
 
@@ -247,6 +248,10 @@ export class BrService {
 
     //联系人的更新信息操作
     await this.contactsServ.updateFs();
+
+    //刷新缓存数据
+    await this.userConfig.RefreshYTbl();
+    await this.userConfig.RefreshFriend();
 
     return ;
   }
