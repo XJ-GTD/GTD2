@@ -55,14 +55,15 @@ export class OptionProcess implements MQProcess{
             await this.busiService.delRcBySiAndSd( dbscd.si, dbscd.sd);
           }
         }
+        //取消操作 清除上下文
+        DataConfig.clearWsOpts();
+        DataConfig.clearWsContext();
 
       }else if(opt == O.S){
         //追问操作
 
       }else{
-        //取消操作 清除上下文
-        DataConfig.clearWsOpts();
-        DataConfig.clearWsContext();
+
       }
 
       processRs.option4Speech = content.option;

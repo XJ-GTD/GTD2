@@ -68,7 +68,7 @@ export class RemindProcess implements MQProcess {
     let etbl: ETbl = new ETbl();
     etbl.wi = this.utitl.getUuid();
     etbl.si = ctbl.si;
-    etbl.st =  DataConfig.RMNONESCD;
+    etbl.st =  ctbl.sn;
     etbl.wd = rdData.d;
     etbl.wt = rdData.t;
 
