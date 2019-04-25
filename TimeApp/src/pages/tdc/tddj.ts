@@ -54,7 +54,8 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           <ion-toggle [(ngModel)]="alld" [class.allday]="b" (ionChange)="togChange()"></ion-toggle>
           <div>
             <ion-datetime displayFormat="HH:mm" [(ngModel)]="sp.st"
-                          pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)" [hidden]="alld"></ion-datetime>
+                          pickerFormat="HH mm" (ionCancel)="getHmPickerSel($event)" [hidden]="alld"
+                          cancelText="取消" doneText="确认"></ion-datetime>
 
           </div>
         </ion-row>
