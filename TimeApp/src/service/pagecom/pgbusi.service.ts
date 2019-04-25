@@ -467,7 +467,15 @@ export class PgBusiService {
     this.emitService.emitRef(si);
     return true;
   }
-
+  /**
+   *  语音删除
+   * @param {string} si 日程ID
+   * @param {string} sd 开始时间
+   */
+  async YuYinDelRc(si:string,sd:string){
+    await this.delRcBySi(si);
+    return true;
+  }
   /**
    *  根据计划ID删除日程   dch
    * @param {string} ji 计划ID

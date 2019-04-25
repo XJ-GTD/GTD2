@@ -48,7 +48,7 @@ export class OptionProcess implements MQProcess{
           }else if (prvOpt == SS.U){
             await this.busiService.saveOrUpdate(rcIn);
           }else{
-            await this.busiService.delRcBySiAndSd( rcIn.si, rcIn.sd);
+            await this.busiService.YuYinDelRc( rcIn.si, rcIn.sd);
           }
         }
         //取消操作 清除上下文
