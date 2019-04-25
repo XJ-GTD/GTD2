@@ -245,7 +245,7 @@ export class ScdlData {
   id: string;
   bc:number;
   scdl: Array<ScdData> = new Array<ScdData>();
-
+  jtl: Array<JtData> = new Array<JtData>();
 }
 
 
@@ -403,5 +403,8 @@ export class MonthData{
   news:number;
   minrt:string; //最小重复类型：0:无1:天2:周3:月4:年
   csd : string;//日程开始时间
-  jti:string;
+  jti:string; //特殊系统计划主键ID
+  spn:string; //特殊系统计划标题
+  si:string; //特殊系统计划标题日程ID
+  minpx:number; //特殊系统计划最小排序
 }

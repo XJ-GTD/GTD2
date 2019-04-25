@@ -233,57 +233,63 @@ export class PgBusiService {
    * 条件查询  dch
    * @param {RcInParam} rc
    */
-  getList(rc : RcInParam): Promise<Array<CTbl>> {
-    return new Promise<Array<CTbl>>(async resolve => {
+  getList(rc : RcInParam): Promise<Array<ScdData>> {
+    return new Promise<Array<ScdData>>(async resolve => {
       console.log("============ mq查询日程scd："+ JSON.stringify(rc));
-      let res: Array<CTbl> = new Array<CTbl>();
-      if (rc.ed ||
-        rc.et ||
-        rc.sd ||
-        rc.st ||
-        rc.sn) {
-        let sql: string = `select distinct sp.spi as si,
-                                           c.sn,
-                                           c.ui,
-                                           sp.sd     sd,
-                                           c.st,
-                                           c.ed,
-                                           c.et,
-                                           c.rt,
-                                           c.ji,
-                                           c.sr,
-                                           c.bz,
-                                           sp.wtt    wtt,
-                                           c.tx,
-                                           c.pni,
-                                           c.du,
-                                           c.gs
-                           from gtd_sp sp
-                                  inner join gtd_c c on sp.si = c.si
-                                  left join gtd_d d on d.si = c.si
-                           where 1 = 1`
+      let res: Array<ScdData> = new Array<ScdData>();
+      if (rc.ed ||rc.et ||rc.sd ||rc.st || rc.sn || rc.fss.length>0) {
+        let sql: string = `select * from (
+                           select distinct c.si,c.sn,c.ui,c.st,c.ed,c.et,c.rt,c.ji,c.sr,c.tx,c.pni,c.du,c.gs,
+                           sp.spn,sp.sd,sp.st,c.bz
+                           from gtd_sp sp inner join gtd_c c on sp.si = c.si
+                                    left join gtd_d d on d.si = c.si 
+                                    left join gtd_b b on b.pwi = d.ai`;
+        if(rc.fss.length>0){
+          sql = sql + 'where b.ranpy in (';
+          for(let i=0;i<rc.fss.length;i++){
+            if(i== rc.fss.length-1){
+              sql = sql + '"' +rc.fss[i].ranpy+'"';
+            }else{
+              sql = sql + '"' +rc.fss[i].ranpy+'",';
+            }
+          }
+          sql = sql +') ';
+          sql = sql + ' or b.rnpy in (';
+          for(let i=0;i<rc.fss.length;i++){
+            if(i== rc.fss.length-1){
+              sql = sql + '"' +rc.fss[i].rnpy+'"';
+            }else{
+              sql = sql + '"' +rc.fss[i].rnpy+'",';
+            }
+          }
+          sql = sql +') ';
+        }
+        sql = sql + ` union
+        select  c.si,c.sn,c.ui,c.st,c.ed,c.et,c.rt,c.ji,c.sr,c.tx,c.pni,c.du,c.gs,
+          jt.spn,jt.sd,jt.st,jt.bz
+        from gtd_jt jt inner join gtd_c c on jt.si = c.si)`;
 
         if (rc.sn) {
-          sql = sql + ` and c.sn like '% ${rc.sn}%'`;
+          sql = sql + ` and (sn like '% ${rc.sn}%' or bz like '% ${rc.sn}%')`;
         }
         if (rc.sd) {
-          sql = sql + ` and sp.sd >= '${rc.sd}'`;
+          sql = sql + ` and sd >= '${rc.sd}'`;
         } else {
-          sql = sql + ` and sp.sd >= '${moment().subtract(30, 'd').format('YYYY/MM/DD')}%'`;
+          sql = sql + ` and sd >= '${moment().subtract(30, 'd').format('YYYY/MM/DD')}%'`;
         }
         if (rc.ed) {
-          sql = sql + ` and sp.sd <= '${rc.ed}'`;
+          sql = sql + ` and sd <= '${rc.ed}'`;
         } else {
-          sql = sql + ` and sp.sd <= '${moment().add(30, 'd').format('YYYY/MM/DD')}%'`;
+          sql = sql + ` and sd <= '${moment().add(30, 'd').format('YYYY/MM/DD')}%'`;
         }
         if (rc.st) {
-          sql = sql + ` and sp.st >= '${rc.st}'`;
+          sql = sql + ` and st >= '${rc.st}'`;
         }
         if (rc.et) {
-          sql = sql + ` and sp.st <= '${rc.et}'`;
+          sql = sql + ` and st <= '${rc.et}'`;
         }
         console.log("============ mq查询日程："+ sql);
-        res = await this.sqlExce.getExtList<CTbl>(sql);
+        res = await this.sqlExce.getExtList<ScdData>(sql);
       }
       resolve(res);
     })
@@ -293,82 +299,42 @@ export class PgBusiService {
    * 首页月份查询  dch
    * @param {CalendarMonth} month
    */
-  async getHomeMonthData(month:CalendarMonth){
-    let _start = new Date(month.original.time);
-    let _startMonth = moment(moment(_start).format("YYYY/MM/") + "1");
-    let _endMonth = moment(moment(_start).format("YYYY/MM/") + _startMonth.daysInMonth());
-    let sql:string = "select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt from gtd_c gc join gtd_sp sp on gc.si = sp.si " +
-      "where sp.sd>='" + moment(_startMonth).format("YYYY/MM/DD")+ "' and sp.sd<='" +  moment(_endMonth).format("YYYY/MM/DD") + "' group by sp.sd ,gc.sd";
-    this.sqlExce.getExtList<MonthData>(sql).then(data=>{
-      for (let d of data){
-        let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
-        //判断是否存在非重复类型  or 判断是否存在重复日期为开始日期
-        if(d.minrt == '0' || d.csd ==d.sd){
-          calendarDay.onlyRepeat = false;
-        }else {
-          calendarDay.onlyRepeat = true;
-        }
-        calendarDay.things = d.scds;
-        calendarDay.hassometing = d.scds > 0 && !calendarDay.onlyRepeat ;
-        calendarDay.busysometing = d.scds >= 4 && !calendarDay.onlyRepeat ;
-        calendarDay.allsometing = d.scds >= 8 && !calendarDay.onlyRepeat ;
-        calendarDay.newmessage = d.news
-        calendarDay.hasting = d.scds > 0;
-        //calendarDay.subTitle = d.news > 0? `\u2022`: "";
-        calendarDay.marked = false;
-      }
-    })
-  }
+  async getHomeMonthData(month:CalendarMonth):Promise<Array<MonthData>> {
+    return new Promise<Array<MonthData>>(async (resolve, reject) => {
+      let _start = new Date(month.original.time);
+      let _startMonth = moment(moment(_start).format("YYYY/MM/") + "1");
+      let _endMonth = moment(moment(_start).format("YYYY/MM/") + _startMonth.daysInMonth());
+      let sql:string = `select jt.spn,jt.si,jt.minpx,gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt
+      from gtd_c gc join gtd_sp sp on gc.si = sp.si left join (select sd,jti,spn,si,min(px) minpx  
+      from gtd_jt group by sd) jt on jt.sd = sp.sd where sp.sd>='${moment(_startMonth).format("YYYY/MM/DD")}'  
+      and sp.sd<='${moment(_endMonth).format("YYYY/MM/DD")}' group by sp.sd ,gc.sd;`;
+      let list = await this.sqlExce.getExtList<MonthData>(sql);
 
-  async refSpcDay(start:moment.Moment,month:CalendarMonth){
-
-    let starts = start.format("YYYY/MM/DD");
-
-    let sql:string = `select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt from gtd_c gc left join gtd_sp sp on gc.si = sp.si 
-    left join (select sd,jti,spn,si,min(px) minpx from gtd_jt group by sd) jt on jt.sd = sp.sd
-      where sp.sd = '${starts}' group by sp.sd ,gc.sd`;
-
-    let local = await this.readlocal.findEventRc('',start,start);
-    this.sqlExce.getExtList<MonthData>(sql).then(data=>{
-
-      //本地日历加入主页日历显示中
-      for(let lo of local){
-        let md:MonthData = data.find((n) => moment(lo.sd).isSame(moment(n.sd), 'day'));
-        if (md){
-          md.scds = md.scds + 1;
-        }else{
-          md = new MonthData();
-          md.sd=lo.sd;
-          md.scds=1;
-          md.news=0;
-          data.push(md);
-        }
-      }
-      for (let d of data){
-        let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
-
-        //判断是否存在非重复类型  or 判断是否存在重复日期为开始日期
-        if(d.minrt == '0' || d.csd ==d.sd){
-          calendarDay.onlyRepeat = false;
-        }else {
-          calendarDay.onlyRepeat = true;
-        }
-        calendarDay.things = d.scds;
-        calendarDay.hassometing = d.scds > 0 && !calendarDay.onlyRepeat ;
-        calendarDay.busysometing = d.scds >= 4 && !calendarDay.onlyRepeat ;
-        calendarDay.allsometing = d.scds >= 8 && !calendarDay.onlyRepeat ;
-        calendarDay.newmessage = d.news
-        calendarDay.hasting = d.scds > 0;
-        //calendarDay.subTitle = d.news > 0? `\u2022`: "";
-        calendarDay.marked = false;
-      }
+      // //本地日历加入主页日历显示中
+      // let local = await this.readlocal.findEventRc('',_startMonth,_endMonth);
+      // for(let lo of local){
+      //   let md:MonthData = data.find((n) => moment(lo.sd).isSame(moment(n.sd), 'day'));
+      //   if (md){
+      //     md.scds = md.scds + 1;
+      //   }else{
+      //     md = new MonthData();
+      //     md.sd=lo.sd;
+      //     md.scds=1;
+      //     md.news=0;
+      //     list.push(md);
+      //   }
+      // }
+      resolve(list);
     })
   }
 
   /**
    * 一览查询  dch
+   * @param {string} d 日期
+   * @param {number} action 0:next , 1
+   * @param {number} count
    */
-  selectYl(){
+  getRcYL(d:string,action:number,count:number){
 
   }
   /**
