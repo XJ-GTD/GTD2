@@ -216,7 +216,7 @@ export class TddiPage {
 
     //TODO 清除消息把已读标志未读
 
-    if (this.scd.du == "1"){
+    if (this.scd.du != "" && parseInt(this.scd.du) >= 1){
       this.busiServ.updateMsg(this.scd.si);
     }
     this.scd.showSpSd = paramter.d.format("YYYY-MM-DD");
