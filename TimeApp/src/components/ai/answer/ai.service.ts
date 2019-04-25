@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import * as moment from "moment";
-import {FsData, ScdData, ScdPageParamter} from "../../../data.mapping";
+import {FsData, RcInParam, ScdData, ScdPageParamter} from "../../../data.mapping";
 import {DataConfig} from "../../../service/config/data.config";
 import {ModalController} from "ionic-angular";
 import {AssistantService} from "../../../service/cordova/assistant.service";
@@ -39,14 +39,10 @@ export class AiService {
 
   async createScd(scd: ScdAiData) {
     //tx rt
-    let dbscd:ScdData = new ScdData();
-    dbscd.sn = scd.ti;
-    dbscd.st = scd.t;
-    dbscd.sd = scd.d;
-    dbscd.gs = "0";
-    dbscd.du = "1";
-    dbscd.tx = "0";
-    dbscd.rt = "0";
+    let rcIn:RcInParam = new RcInParam();
+    rcIn.sn = scd.ti;
+    rcIn.st = scd.t;
+    rcIn.sd = scd.d;
     for (let f of scd.friends){
       let fs:FsData = new FsData();
       fs.ui = f.uid;
@@ -54,9 +50,9 @@ export class AiService {
       fs.pwi = f.id;
       fs.rc = f.m;
       fs.ranpy = f.p;
-      dbscd.fss.push(fs);
+      rcIn.fss.push(fs);
     }
-    return await this.pgBusiService.save4ai(dbscd);
+    return await this.pgBusiService.saveOrUpdate(rcIn);
   }
 
   showScd(scd: ScdAiData) {

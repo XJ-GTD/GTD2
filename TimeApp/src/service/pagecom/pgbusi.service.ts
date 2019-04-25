@@ -667,14 +667,7 @@ export class PgBusiService {
     return new Promise<ScdData>(async (resolve, reject) => {
       let ct: ScdData = await this.save(rc);
       rc.si = ct.si;
-      let fs: Array<FsData> = new Array<FsData>();
-      for (let f of rc.fss) {
-        let ff: FsData = new FsData();
-        ff.ui = f.ui;
-        ff.rc = f.rc;
-        ff.rn = f.rn;
-      }
-      this.fsService.sharefriend(ct.si, fs);
+      this.fsService.sharefriend(ct.si, rc.fss);
       resolve(rc);
       return;
     });
