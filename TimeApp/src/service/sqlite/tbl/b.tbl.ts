@@ -64,7 +64,11 @@ export class BTbl implements ITbl{
   }
 
   dT():string {
-    let sq = 'delete from gtd_b where pwi = "' + this.pwi +'";';
+    let sq = 'delete from gtd_b where 1=1 ';
+    if(this.pwi != null && this.pwi!=""){
+      sq = sq + ' and  pwi ="' + this.pwi +'"';
+    }
+
     return sq;
   }
 

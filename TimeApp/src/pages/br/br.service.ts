@@ -135,26 +135,14 @@ export class BrService {
     let sqls=new Array<string>();
 
     //插入特殊日历（插入前删除）
-    let spsql ="delete from gtd_sp where si in " +
-      " (select si from gtd_c where ji not in (select ji from gtd_j_h where jt ='1')) ";
+    let spsql ="delete from gtd_sp where si not in " +
+      " (select si from gtd_c where ji in (select ji from gtd_j_h where jt ='1')) ";
     await this.sqlexec.execSql(spsql);
 
     for (let j = 0, len = outRecoverPro.sp.length; j < len; j++) {
       let spi = new SpTbl();
       Object.assign(spi,outRecoverPro.sp[j]) ;
       sqls.push(spi.inT());
-    }
-    await this.sqlexec.batExecSql(sqls);
-    sqls.length = 0;
-
-    //插入本地日历（插入前删除）
-    let csql = "delete from gtd_c where ji not in (select ji from gtd_j_h where jt ='1'  ) ";
-    await this.sqlexec.execSql(csql);
-
-    for (let j = 0, len = outRecoverPro.c.length; j < len; j++) {
-      let ci = new CTbl();
-      Object.assign(ci,outRecoverPro.c[j]) ;
-      sqls.push(ci.inT());
     }
     await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;
@@ -183,6 +171,18 @@ export class BrService {
     await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;
 
+    //插入本地日历（插入前删除）
+    let csql = "delete from gtd_c where ji not in (select ji from gtd_j_h where jt ='1'  ) ";
+    await this.sqlexec.execSql(csql);
+
+    for (let j = 0, len = outRecoverPro.c.length; j < len; j++) {
+      let ci = new CTbl();
+      Object.assign(ci,outRecoverPro.c[j]) ;
+      sqls.push(ci.inT());
+    }
+    await this.sqlexec.batExecSql(sqls);
+    sqls.length = 0;
+
     //插入联系人信息（插入前删除）
     let b = new BTbl();
     await this.sqlexec.delete(b);
@@ -207,7 +207,7 @@ export class BrService {
     await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;
 
-    //插入本地参与人（插入前删除 ）
+    //插入参与人组关系（插入前删除 ）
     let bx = new BxTbl();
     await this.sqlexec.delete(bx);
 
