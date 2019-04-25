@@ -101,11 +101,13 @@ export class PgBusiService {
           let jt = new JtTbl();
           Object.assign(jt,rc);
           jt.si = rcn.si;
+          jt.spn = rc.sn;
           jt.jti = this.util.getUuid();
           sqL.push(jt.inT());
         }else{
           let sp = new SpTbl();
           Object.assign(sp,rc);
+          sp.spn = rc.sn;
           sp.spi = this.util.getUuid();
           sp.si = rcn.si;
           sqL.push(sp.inT());
