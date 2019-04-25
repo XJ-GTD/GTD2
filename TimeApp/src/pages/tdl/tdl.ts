@@ -56,7 +56,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
                   <div class="agendaline1" *ngIf="scd.gs == '1'">
                     <ion-chip>
                       <ion-avatar>
-                        <img [src]="scd.fs.bhiu"/>
+                        <img src="{{scd.fs.bhiu}}"/>
                       </ion-avatar>
                       <ion-label>{{scd.fs.ran}}</ion-label>
                     </ion-chip>
