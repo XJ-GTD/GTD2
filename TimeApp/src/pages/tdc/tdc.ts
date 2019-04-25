@@ -167,29 +167,37 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 })
 export class TdcPage {
 
+  focuscomm:boolean = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private util: UtilService,
               public modalCtrl: ModalController, private busiServ: PgBusiService,
               private keyboard: Keyboard, private _renderer: Renderer2,
               private plsevice: PlService,private feekback:FeedbackService) {
+    this.keyboard.onKeyboardShow().subscribe(d =>{
+      if (this.focuscomm){
+        this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(-300px)");
+      }
+    });
+    this.keyboard.onKeyboardHide().subscribe(d =>{
+      this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(0px)");
+    });
 
   }
-
+  comentblur() {
+    this.focuscomm = false;
+  }
 
   comentfocus() {
-    if (this.keyboard) {
-      this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(-300px)");
-    }
+    this.focuscomm = true;
   }
 
   togChange() {
+    this.feekback.audioOption();
     if (!this.alld) {
       this.scd.st = this.util.adCtrlShow(this.scd.st);
     }
   }
 
-  comentblur() {
-    this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(0px)");
-  }
 
   @ViewChildren(DateTime) dateTimes: QueryList<DateTime>;
 
@@ -248,6 +256,7 @@ export class TdcPage {
 
   //重复按钮显示控制
   clickrept(type: string) {
+    this.feekback.audioOption();
     this.scd.rt = type;
 
     switch (type) {
@@ -307,7 +316,7 @@ export class TdcPage {
 
   //提醒按钮显示控制
   clickwake(type: string) {
-
+    this.feekback.audioOption();
     this.scd.tx = type;
 
     switch (type) {

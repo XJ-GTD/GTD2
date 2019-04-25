@@ -23,7 +23,7 @@ export class FeedbackService {
     //官网还有更多的配置，这里只需要两个参数就行了，后面的回调记得带上
 
 
-    var items = ['click', 'delete', 'press', 'save', 'send', 'trans', 'warning'];
+    var items = ['click', 'delete', 'press', 'save', 'send', 'trans', 'warning','option'];
     for (var i = 0; i < items.length; i++) {
       var asset = 'assets/feedback/' + items[i] + '.mp3';
       await this.audio.preloadSimple(items[i], asset);
@@ -51,6 +51,15 @@ export class FeedbackService {
     if (UserConfig.getSetting(DataConfig.SYS_Z)) {
       this.audio.play('warning');
       this.vibration.vibrate(600);
+    }
+    return;
+  }
+
+  public audioOption() {
+
+    if (UserConfig.getSetting(DataConfig.SYS_Z)) {
+      this.audio.play('option');
+      //this.vibration.vibrate(600);
     }
     return;
   }

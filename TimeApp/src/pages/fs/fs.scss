@@ -8,10 +8,13 @@ page-fs4c{
   }
 }
 page-fs4c ,page-fs4g{
+  .searchbar-ios{
+    background-color: transparent;
+  }
 
   .grid {
     padding: 5px;
-    background-color: $secondColor;
+    //background-color: $secondColor;
     .row {
       height: 50px;
       ion-checkbox {
@@ -85,7 +88,10 @@ page-fs4c ,page-fs4g{
     display: inline-flex;
     overflow-x: auto;
     width: 100%;
-    min-height: 65px;
+    //min-height: 80px;
+    background-color: rgba(0,0,0,.1);
+    border-radius: 10px 10px 0 0;
+    margin-bottom: 5px;
 
     .chip-ios{
       border-radius: 16px;

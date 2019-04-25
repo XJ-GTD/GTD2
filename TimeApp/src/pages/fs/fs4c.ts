@@ -32,9 +32,12 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
         </ion-buttons>
       </ion-toolbar>
       <div class="name-input w-auto">
-        <ion-input type="text" placeholder="手机号 姓名" (ionChange)="getContacts()" [(ngModel)]="tel"
-                   text-center></ion-input>
+        <ion-searchbar type="text" placeholder="手机号 姓名" (ionChange)="getContacts()" [(ngModel)]="tel"
+                   text-center></ion-searchbar>
       </div>
+    </ion-header>
+
+    <ion-content padding>
       <div class="selected">
         <ion-chip *ngFor="let g of selFsl" (click)="rmSelected(g)">
           <ion-avatar>
@@ -43,9 +46,6 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           <ion-label>{{g.ran}}</ion-label>
         </ion-chip>
       </div>
-    </ion-header>
-
-    <ion-content padding>
       <ion-grid>
         <ion-row *ngFor="let g of pageGl" class="group">
           <ion-avatar item-start>
@@ -60,9 +60,9 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           <ion-avatar item-start (click)="goTofsDetail(g)">
             <img [src]="g.bhiu">
           </ion-avatar>
-          <ion-label>
+          <ion-label (click)="goTofsDetail(g)">
             {{g.ran}}
-            <span> {{g.rc}}</span>
+            <!--<span> {{g.rc}}</span>-->
             <span *ngIf="g.rel ==1">注册</span>
           </ion-label>
           <ion-checkbox (click)="addsel(g)" [(ngModel)]="g.checked"></ion-checkbox>

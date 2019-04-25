@@ -35,9 +35,9 @@ export class TdlService {
     }
     //获取本地日程jn jg jc jt
     let sqll = `select sp.rowid rowid,gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st,
-        jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn,sp.itx du from gtd_c gc 
+        jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,bg.hiu bhiu,gb.rn,sp.itx du from gtd_c gc 
         inner join gtd_sp sp on sp.si = gc.si 
-        left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji 
+        left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji left join gtd_bh bg on bg.pwi = gb.pwi
         where sp.sd <='${start}' and  sp.sd >= '${startBefore}' order by sp.sd,sp.st desc;`;
     let rclL = await this.sqlExce.getExtList(sqll);
     //本地日历加入
@@ -67,9 +67,9 @@ export class TdlService {
     }
     //获取本地日程jn jg jc jt
     let sqll = `select sp.rowid rowid,gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st,
-        jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn ,sp.itx du from gtd_c gc 
+        jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,bg.hiu bhiu,gb.rn ,sp.itx du from gtd_c gc 
         inner join gtd_sp sp on sp.si = gc.si 
-        left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji 
+        left join gtd_b gb on gb.ui = gc.ui left join gtd_j_h jh on jh.ji = gc.ji left join gtd_bh bg on bg.pwi = gb.pwi
         where sp.sd >= '${start}' and  sp.sd <= '${startAfter}' order by sp.sd,sp.st desc;`;
     let rclL = await this.sqlExce.getExtList(sqll);
     //本地日历加入

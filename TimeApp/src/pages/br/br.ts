@@ -29,9 +29,9 @@ import {UtilService} from "../../service/util-service/util.service";
       <ion-grid>
         
         <ion-row>
-          <ion-thumbnail #resRef>
-            <img src="./assets/imgs/br-xz.png">
-          </ion-thumbnail>
+          <div #resRef >
+            <ion-img src="./assets/imgs/br-xz.png" class="img"></ion-img>
+          </div>
         </ion-row>
 
         <ion-row>
@@ -41,22 +41,29 @@ import {UtilService} from "../../service/util-service/util.service";
           <div>上次备份时间：<small>{{bts  * 1000 | date:"yyyy年MM月dd日 HH:mm:ss"}}</small></div>
         </ion-row>
         
-        <ion-row>
-          <ion-col (click)="backup(is)" [ngStyle]="{'opacity': is ? 1 : 0.2 }">
-            <ion-avatar item-start>
-              <img src="./assets/imgs/br-up.png">
-            </ion-avatar>
-            <p>备份</p>
-          </ion-col>
-          <ion-col (click)="recover(isRecover,is)" [ngStyle]="{'opacity': isRecover && is ? 1 : 0.2 }">
-            <ion-avatar item-start>
-              <img src="./assets/imgs/br-down.png">
-            </ion-avatar>
-            <p>恢复</p>
-          </ion-col>
-        </ion-row>
+       
       </ion-grid>
     </ion-content>
+    <ion-footer>
+        <ion-toolbar>
+          <ion-buttons start padding>
+            <button (click)="backup(is)" [ngStyle]="{'opacity': is ? 1 : 0.2 }">
+              <ion-avatar item-start>
+                <img src="./assets/imgs/br-up.png">
+              </ion-avatar>
+              <p>备份</p>
+            </button>
+          </ion-buttons>
+          <ion-buttons end padding>
+            <button (click)="recover(isRecover,is)" [ngStyle]="{'opacity': isRecover && is ? 1 : 0.2 }">
+              <ion-avatar item-start>
+                <img src="./assets/imgs/br-down.png">
+              </ion-avatar>
+              <p>恢复</p>
+            </button>
+          </ion-buttons>
+        </ion-toolbar>
+    </ion-footer>
   `,
 })
 export class BrPage {

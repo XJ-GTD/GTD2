@@ -25,29 +25,29 @@ import {FsData} from "../../data.mapping";
   </ion-header>
 
   <ion-content>
-    <ion-grid  style="text-align:center; height: 100%;">
+    <ion-grid>
 
-      <ion-row style="height: 80%;">
-      <ion-avatar item-start style="width: 100%;">
+      <ion-row>
+      <ion-avatar item-start>
         <img  class="img-hiu" [src]="fd.bhiu">
       </ion-avatar>
-        <ion-label id="fdname">
+        <ion-label class="fdname">
           {{fd.ran}}
         </ion-label>
       </ion-row>
       <ion-row>
-        <ion-label>
-          {{fd.rc}}
-        </ion-label>
+        <span >{{fd.rn}}</span>  <span >{{fd.rc}}</span> 
       </ion-row>
-      <ion-buttons  style="border-top: 1px solid #50b4b4;">
-        <button ion-button  icon-only (click)="black()">
-          {{buttonText}}
-        </button>
-      </ion-buttons>
     </ion-grid>
+  </ion-content>
+  <ion-footer>
+    <ion-buttons>
+      <button ion-button  icon-only (click)="black()">
+        {{buttonText}}
+      </button>
+    </ion-buttons>
     
-  </ion-content>`,
+  </ion-footer>`,
 })
 export class FdPage {
   fd:FsData = new FsData();

@@ -1,24 +1,16 @@
 page-br {
   background-color: $baseBackColor;
 
-  .w-auto {
-    flex: 1;
-  }
-
-  .grid {
-    padding: 0;
-  }
-
-  .grid .row {
-    height: 100%;
-  }
-
-  .list {
-    width: 100%;
-  }
 
   .list-header, .list-header-md, .list-header-ios {
     border: 0;
+  }
+  .img{
+    width: 80%;
+    contain:none;
+    margin: 0 auto;
+    background-color: transparent;
+
   }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
@@ -59,6 +51,10 @@ page-br {
 
   ion-row ion-col{
     text-align: center;
+  }
+  ion-buttons button{
+    background: transparent;
+    color: $fontMasterColor;
   }
 
   ion-avatar{

@@ -35,8 +35,8 @@ import {FsData, PageDcData} from "../../data.mapping";
      
      <ion-content padding>
        <ion-grid>
-         <ion-row  *ngFor="let g of fsl">
-               <ion-avatar item-start >
+         <ion-row  *ngFor="let g of fsl" >
+               <ion-avatar item-start (click)="toMemberInfo(g)">
                  <img [src]="g.bhiu">
                  <!--<ion-icon name="contact"  style="font-size: 3.0em;color: red;"></ion-icon>-->
                </ion-avatar>
@@ -44,11 +44,13 @@ import {FsData, PageDcData} from "../../data.mapping";
                    <!--{{g.rn}} <span>{{g.rc}}</span>-->
                  <!--</ion-item>-->
                
-               <ion-label (click)="toMemberInfo(g)">
+               <ion-label (click)="toMemberInfo(g)" >
                  {{g.ran}} 
-                 <span>
-                   {{g.rc}}
-                 </span>
+                 <!--<span>-->
+                   <!--{{g.rc}}-->
+                 <!--</span>-->
+
+                 <span *ngIf="g.rel ==1">注册</span>
                </ion-label>               
                <button ion-button color="danger" (click)="delete(g)" clear item-end>
                  <img class="img-content-del" src="./assets/imgs/yc.png">

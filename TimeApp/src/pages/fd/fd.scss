@@ -1,24 +1,17 @@
 page-fd {
   background-color: $baseBackColor;
 
-  .w-auto {
-    flex: 1;
-  }
 
   .grid {
     padding: 0;
-  }
-
-  .grid .row {
-    height: 100%;
-  }
-
-  .list {
-    width: 100%;
-  }
-
-  .list-header, .list-header-md, .list-header-ios {
-    border: 0;
+    text-align:center;
+    .row{
+      color: $fontMasterColor;
+      text-align: center;
+      display: inline-block;
+      font-size: 14px;
+      margin: 15px;
+    }
   }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
@@ -33,20 +26,13 @@ page-fd {
     width: 4vmin;
     height: 4vmin;
   }
-
-  .toolbar-title{
-    color: white;
-    letter-spacing: 0.5vmin;
-    font-size: 1.5rem;
+  ion-avatar{
+    width: 100%;
   }
 
-  ion-input{
-    font-size: 1.5rem;
-  }
 
   ion-content.content {
     background-color: $masterColor;
-    color: #fff;
   }
 
   .img-hiu{
@@ -55,15 +41,19 @@ page-fd {
     height: 150px;
     display: unset;
   }
+  .rel{
+    color: $adornColor;
+    font-size: 13px;
+  }
 
   .button{
     width: 100%;
-    background: $masterColor;
+    background:transparent;
+    margin: 0;
+    border-radius: 0;
   }
-
-  .button-ios.activated{
-    width: 100%;
-    background-color: $masterColor;
+  ion-buttons{
+    margin: 0;
   }
 
   .scroll-content{
@@ -71,17 +61,12 @@ page-fd {
     overflow-y: hidden;
   }
 
-  #fdname{
+  .fdname{
     padding: 10px;
     margin: 40px 30% 5px 30%;
-    border-bottom: 1px solid #fff
+    color: $fontMasterColor;
+    font-size: 18px;
+    font-weight: bold;
   }
 
- .label-ios{
-    margin:5px;
-  }
-
- .label-md{
-    margin:5px;
-  }
 }

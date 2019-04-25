@@ -63,31 +63,31 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           <div class="reptlbl">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled-close]="rept.close == 1"
-                    (click)="clickrept('0')" disabled>关
+                    (click)="clickrept('0',true)" disabled>关
             </button>
           </div>
           <div class="reptlbl">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled]="rept.d== 1"
-                    (click)="clickrept('1')" disabled>天
+                    (click)="clickrept('1',true)" disabled>天
             </button>
           </div>
           <div class="reptlbl">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled]="rept.w== 1"
-                    (click)="clickrept('2')" disabled>周
+                    (click)="clickrept('2',true)" disabled>周
             </button>
           </div>
           <div class="reptlbl">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled]="rept.m== 1"
-                    (click)="clickrept('3')" disabled>月
+                    (click)="clickrept('3',true)" disabled>月
             </button>
           </div>
           <div class="reptlbl">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled]="rept.y== 1"
-                    (click)="clickrept('4')" disabled>年
+                    (click)="clickrept('4',true)" disabled>年
             </button>
           </div>
         </ion-row>
@@ -96,37 +96,37 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           <div class="reptlb2">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled-close]="wake.close == 1"
-                    (click)="clickwake('0')">关
+                    (click)="clickwake('0',true)">关
             </button>
           </div>
           <div class="reptlb2">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled]="wake.tenm == 1"
-                    (click)="clickwake('1')">10m
+                    (click)="clickwake('1',true)">10m
             </button>
           </div>
           <div class="reptlb2">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled]="wake.thirm == 1"
-                    (click)="clickwake('2')">30m
+                    (click)="clickwake('2',true)">30m
             </button>
           </div>
           <div class="reptlb2">
             <button ion-button round clear class="sel-btn-set"
                     [class.sel-btn-seled]="wake.oh == 1"
-                    (click)="clickwake('3')">1h
+                    (click)="clickwake('3',true)">1h
             </button>
           </div>
           <div class="reptlb2">
             <button ion-button round clear class="sel-btn-set"
                     [ngClass]="wake.foh == 1?'sel-btn-seled':'sel-btn-unsel'"
-                    (click)="clickwake('4')">4h
+                    (click)="clickwake('4',true)">4h
             </button>
           </div>
           <div class="reptlb2">
             <button ion-button round clear class="sel-btn-set"
                     [ngClass]="wake.od == 1?'sel-btn-seled':'sel-btn-unsel'"
-                    (click)="clickwake('5')">1d
+                    (click)="clickwake('5',true)">1d
             </button>
           </div>
         </ion-row>
@@ -180,6 +180,8 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 })
 export class TddjPage {
 
+  focuscomm:boolean = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private util: UtilService,
               public actionSheetCtrl: ActionSheetController,
@@ -188,6 +190,22 @@ export class TddjPage {
               private plsevice: PlService,private feekback:FeedbackService
   ) {
 
+    this.keyboard.onKeyboardShow().subscribe(d =>{
+      if (this.focuscomm){
+        this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(-300px)");
+      }
+    });
+    this.keyboard.onKeyboardHide().subscribe(d =>{
+      this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(0px)");
+    });
+
+  }
+  comentblur() {
+    this.focuscomm = false;
+  }
+
+  comentfocus() {
+    this.focuscomm = true;
   }
 
   @ViewChildren(DateTime) dateTimes: QueryList<DateTime>;
@@ -225,22 +243,13 @@ export class TddjPage {
   @ViewChild("grid")
   grid: ElementRef;
 
-  comentfocus() {
-    if (this.keyboard) {
-      this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(-300px)");
-    }
-  }
 
   togChange() {
+    this.feekback.audioOption();
     if (!this.alld) {
       this.sp.st = this.util.adCtrlShow(this.sp.st);
     }
   }
-
-  comentblur() {
-    this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(0px)");
-  }
-
 
   async ionViewWillEnter() {
 
@@ -294,7 +303,10 @@ export class TddjPage {
   }
 
   //重复按钮显示控制
-  clickrept(type: string) {
+  clickrept(type: string,audio?:boolean) {
+
+    if (audio)this.feekback.audioOption();
+
     this.scd.rt = type;
 
     switch (type) {
@@ -344,8 +356,8 @@ export class TddjPage {
   }
 
   //提醒按钮显示控制
-  clickwake(type: string) {
-
+  clickwake(type: string,audio?:boolean) {
+    if (audio)this.feekback.audioOption();
     this.sp.tx = type;
 
     switch (type) {
