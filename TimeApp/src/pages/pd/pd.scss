@@ -73,13 +73,13 @@ page-pd {
     font-size: 1.8rem;
   }
 
-  .agenda-content:before {
+  .agenda-content::before {
      content: '';
      position: absolute;
      top: 0;
      bottom: 0;
      width: 0.3vmin;
-     background: #F5F5DC	;
+     background: $adornColor	;
      margin-left: -3vmin;
      margin-top: 3vmin;
      margin-bottom: -3vmin;
@@ -202,7 +202,7 @@ page-pd {
   .color-dot {
     width: 1.7vmin;
     height: 1.7vmin;
-    background-color: #fff;
+    background-color: $adornColor;
     border-radius: 50%;
   }
 
