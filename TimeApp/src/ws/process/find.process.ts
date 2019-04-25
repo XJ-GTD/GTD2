@@ -114,7 +114,7 @@ export class FindProcess implements MQProcess {
                            where 1 = 1`
 
         if (scd.ti) {
-          sql = sql + ` and c.sn like '% ${scd.ti}%'`;
+          sql = sql + ` and c.sn like '%${scd.ti}%'`;
         }
         if (scd.ds) {
           sql = sql + ` and sp.sd >= '${scd.ds}'`;

@@ -51,8 +51,8 @@ export class PgBusiService {
    */
   saveOrUpdate(rc : RcInParam):Promise<ScdData>{
     return new Promise<ScdData>(async (resolve, reject) => {
+      let scd = new ScdData();
       if (rc.si != null && rc.si !="") {
-        let scd = new ScdData();
         Object.assign(scd, rc);
 
         //设置sp表值
@@ -61,21 +61,17 @@ export class PgBusiService {
         scd.specScds.set(sp.sd,sp);
         scd.showSpSd = sp.sd;
         scd = await this.updateDetail(scd);
-
-        resolve(scd)
       } else {
         rc.setParam();
         rc.ui = UserConfig.account.id;
-        rc.si = this.util.getUuid();
-        let scd = new ScdData();
         Object.assign(scd, rc);
         scd = await this.save(scd);
-        //如果存在参与人则发送共享消息
-        if(rc.fss.length){
-          await this.fsService.sharefriend(rc.si, rc.fss);
-        }
-        resolve(scd)
       }
+      //如果存在参与人则发送共享消息
+      if(rc.fss != null && rc.fss.length>0){
+        await this.fsService.sharefriend(scd.si, rc.fss);
+      }
+      resolve(scd)
     })
   }
 
