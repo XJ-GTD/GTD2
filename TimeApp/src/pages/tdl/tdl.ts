@@ -39,8 +39,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           <div class="dayagendas w-auto">
             <ng-template [ngIf]="sdl.scdl.length > 0" [ngIfElse]="noscd">
               <div class="dayagenda row " [class.back0]="scd.cbkcolor == 0" [class.back1]="scd.cbkcolor == 1"
-                   *ngFor="let scd of sdl.scdl;" (click)="toDetail(scd.si,sdl.d,scd.gs)"
-                   [class.newMessage]="scd.du == '1'">
+                   *ngFor="let scd of sdl.scdl;" (click)="toDetail(scd.si,sdl.d,scd.gs)" >
                 <div class="dayagendacontent w-auto">
                   <div class="agendaline2 row">
                     <div class="agenda-st">{{this.util.adStrShow(scd.st)}}</div>
@@ -49,11 +48,11 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
                   </div>
 
                   <div class="agendaline1" *ngIf="scd.gs == '1'">
-                    <ion-chip>
+                    <ion-chip >
                       <ion-avatar>
                         <img src="{{scd.fs.bhiu}}"/>
                       </ion-avatar>
-                      <ion-label>{{scd.fs.ran}}</ion-label>
+                      <ion-label [class.newMessage]="scd.du != '0'">{{scd.fs.ran}}</ion-label>
                     </ion-chip>
                   </div>
                   <!--<div class="agendaline1" *ngIf="scd.gs == '0'">参与事件：{{scd.fss.length}}人</div>-->
