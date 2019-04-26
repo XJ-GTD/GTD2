@@ -27,8 +27,13 @@ export class HService {
           hdata.showDay2 = this.countDay(select.time);
           hdata.newmessge = data.news;
           hdata.things = data.scds;
-          hdata.jtl = data.jtL;
-        })
+          let bk:number = 0;
+          for (let jt of data.jtL) {
+            hdata.jtl.push(jt);
+            if (bk > 2) break;
+            bk++;
+          }
+        });
       }
       resolve(hdata);
     })

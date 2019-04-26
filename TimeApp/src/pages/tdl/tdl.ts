@@ -39,6 +39,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
             <div class="dayheader w-auto">
               <div class="d-fsize text-center">{{sdl.d | formatedate :"CWEEK"}}</div>
               <div class="ym-fsize text-center ">{{sdl.d | formatedate:"DD"}}</div>
+              <div class="ym-fsize text-center " *ngFor="let jt of sdl.jtl" (click)="toDetail(jt.si,jt.sd,'3')">{{jt.sd}}</div>
             </div>
           </div>
           <div class="dayagendas w-auto">
@@ -302,6 +303,7 @@ export class TdlPage {
     let p: ScdPageParamter = new ScdPageParamter();
     p.si = si;
     p.d = moment(d);
+    p.gs = gs;
 
     this.feedback.audioClick();
     if (gs == "0") {

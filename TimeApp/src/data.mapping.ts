@@ -412,7 +412,7 @@ export class MonthData{
 
 export class DayData{
   sd:string;
-  scds:number = 0;
-  news:number = 0;
+  scds:number;
+  news:number;
   jtL : Array<JtData>;
 }

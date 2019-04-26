@@ -23,7 +23,7 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
         <ion-row class="header-set">
         </ion-row>
         <ion-row>
-          <ion-textarea type="text" [(ngModel)]="scd.sn" placeholder="我想..." readonly="true"></ion-textarea>
+          <ion-textarea type="text" [(ngModel)]="scd.sn" readonly="true"></ion-textarea>
         </ion-row>
         <ion-row>
 
@@ -33,11 +33,7 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
           <div>{{sp.p.jn}}</div>
         </ion-row>
         <ion-row>
-          <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
-                        pickerFormat="YYYY MM DD" color="light"
-                        [(ngModel)]="scd.showSpSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
-                        min="1999-01-01" max="2039-12-31" disabled
-          ></ion-datetime>
+          {{scd.showSpSd}}
         </ion-row>
         <ion-row>
           <div>{{alldshow}}</div>
@@ -51,15 +47,9 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
     </ion-content>
     <ion-footer class="foot-set">
       <ion-toolbar>
-        <ion-buttons start padding-left>
+        <ion-buttons>
           <button ion-button icon-only (click)="cancel()" start>
             <ion-icon name="close"></ion-icon>
-          </button>
-        </ion-buttons>
-
-        <ion-buttons end padding-right>
-          <button ion-button icon-only (click)="cancel()" end>
-            <ion-icon name="checkmark"></ion-icon>
           </button>
         </ion-buttons>
       </ion-toolbar>
@@ -84,13 +74,11 @@ export class TddsPage {
 
   async ionViewWillEnter() {
 
-
-    //受邀人修改的场合初始化
     let paramter: ScdPageParamter = this.navParams.data;
     this.scd = await this.busiServ.getRcBySiAndSd(paramter.si,paramter.d.format("YYYY/MM/DD"));
     Object.assign(this.sp , this.scd.baseData);
 
-    this.scd.showSpSd = paramter.d.format("YYYY-MM-DD");
+    this.scd.showSpSd = paramter.d.format("YYYY年MM月DD日");
 
     this.alldshow = this.util.adStrShow(this.sp.st);
 

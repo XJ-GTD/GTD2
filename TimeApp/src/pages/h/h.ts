@@ -12,6 +12,7 @@ import {TdcPage} from "../tdc/tdc";
 import {TddiPage} from "../tdc/tddi";
 import {HData, ScdPageParamter} from "../../data.mapping";
 import {FeedbackService} from "../../service/cordova/feedback.service";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 首页 page.
@@ -37,11 +38,11 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           <p class="tipDay">
             <span class="showDay">{{hdata.showDay}}</span>
             <span class="showDay2">{{hdata.showDay2}}</span>
-            <span class="showDay2" *ngFor="let jt of hdata.jtl">{{jt.spn}}</span>
+            <span class="showDay2" *ngFor="let jt of hdata.jtl" (click)="gotojt(jt)">{{jt.px}}</span>
           </p>
-          <p class="tipDay"><a class="cls" (click)="gotolist()">
+          <p class="tipDay" *ngIf="hdata.things > 0"><a class="cls" (click)="gotolist()">
             <ion-icon name="done-all"></ion-icon>
-            {{hdata.things}} 个事件,{{hdata.newmessge}}条新消息</a></p>
+            {{hdata.things}} 个活动,{{hdata.newmessge}}条新消息</a></p>
           <p class="tipDay"><a class="cls" (click)="newcd()">
             <ion-icon name="add"></ion-icon>
             添加新事件</a></p>
@@ -130,6 +131,15 @@ export class HPage {
   gotolist() {
     this.menuController.open("ls");
     //this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: this.hdata.selectDay.time});
+  }
+
+  gotojt(jt){
+    let p: ScdPageParamter = new ScdPageParamter();
+    p.si = jt.si;
+    p.d = moment(jt.sd);
+    p.gs = "3";
+
+    this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, p).present();
   }
 }
 

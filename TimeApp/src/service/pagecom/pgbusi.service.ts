@@ -367,8 +367,9 @@ export class PgBusiService {
       let day = new DayData();
       let data = await this.sqlExce.getExtOne<DayData>(sqlOne);
       day.sd = starts;
-      if(data ! = null){
-        Object.assign(day,data);
+      if (data){
+        day.scds = data.scds;
+        day.news = data.news;
       }
       //查询计划特殊表
       let sqlJtL:string = `select jt.* from gtd_jt jt where jt.sd = '${starts}' order by jt.px asc`;
