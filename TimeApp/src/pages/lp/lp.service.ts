@@ -27,6 +27,9 @@ export class LpService {
 
       // 验证用户名密码
       this.authRestful.loginbypass(loginData).then(data => {
+        if (data.code != 0)
+          throw  data;
+
         resolve(data)
       }).catch(error=>{
         resolve(error)
@@ -60,11 +63,19 @@ export class LpService {
         uTbl.ic = data.ic == undefined || data.ic == "" ? "" : data.ic;  //身份证
         uTbl.uct = data.contact== undefined || data.contact == "" ? "" : data.contact;//  联系方式
 
-        return this.personRestful.getself(data.unionid);
+        if(data && data.unionid != undefined && data.unionid != null && data.unionid != ""){
+          return this.personRestful.getself(data.unionid);
+        }else{
+          throw  data;
+        }
       }).then(data=>{
-        uTbl.hiu = data.avatarbase64;//头像
-        //删除账户表
-        return this.sqlExec.delete(new ATbl());
+        if(data && data.avatarbase64 != undefined && data.avatarbase64 != null && data.avatarbase64 != ""){
+          uTbl.hiu = data.avatarbase64;//头像
+          //删除账户表
+          return this.sqlExec.delete(new ATbl());
+        }else{
+          throw  data;
+        }
       }).then(data=>{
         return this.sqlExec.save(aTbl);
       }).then(data=>{

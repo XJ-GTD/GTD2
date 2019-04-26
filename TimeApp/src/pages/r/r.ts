@@ -97,34 +97,37 @@ export class RPage {
         this.login.verifykey = data.verifykey;
         this.util.toastStart("短信发送成功",1500);
 
+        this.timeText = 60;
+        console.log("开始" + this.timeText + "定时器");
+        this.timer = setInterval(() => {
+          this.timeText--;
+          if (this.timeText <= 0) {
+            clearTimeout(this.timer);
+            console.log("清除定时器");
+            this.timeText = "发送验证码"
+          }
+        }, 1000)
+
       }).catch(error => {
         console.log("短信发送失败" + JSON.stringify(error));
-        this.util.toastStart("短信发送失败",1500);
+        clearTimeout(this.timer);
+        this.timeText = "发送验证码";
+        //this.util.toastStart("短信发送失败",1500);
       });
 
-      this.timeText = 60;
-      console.log("开始" + this.timeText + "定时器");
-      this.timer = setInterval(() => {
-        this.timeText--;
-        if (this.timeText <= 0) {
-          clearTimeout(this.timer);
-          console.log("清除定时器");
-          this.timeText = "发送验证码"
-        }
-      }, 1000)
     }
   }
 
   register() {
     if(this.checkPhone()) {
-      if (this.login.username == null || this.login.username == "") {           //判断用户名是否为空
-        this.util.popoverStart("用户名不能为空");
-      }else if (this.login.verifycode == null || this.login.verifycode == "") {     //判断验证码是否为空
-        this.util.popoverStart("验证码不能为空");
+      if (this.login.verifycode == null || this.login.verifycode == "") {     //判断验证码是否为空
+        this.util.toastStart("短信验证码不能为空",1500);
+      }else if (this.login.username == null || this.login.username == "") {           //判断用户名是否为空
+        this.util.toastStart("用户名不能为空",1500);
       }else if (this.login.userpassword == null || this.login.userpassword == "") {     //判断密码是否为空
-        this.util.popoverStart("密码不能为空");
+        this.util.toastStart("密码不能为空",1500);
       }else if(this.login.verifykey == null || this.login.verifykey == ""){
-        this.util.popoverStart("请发送短信并填写正确的短信验证码");
+        this.util.toastStart("请发送短信并填写正确的短信验证码",1500);
       }else {
         this.util.loadingStart();
         this.rService.register(this.login).then(data => {
@@ -133,7 +136,7 @@ export class RPage {
           this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
         }).catch(error=>{
           this.util.loadingEnd();
-          this.util.popoverStart(error.message);
+          this.util.toastStart(error.message,1500);
         });
       }
     }
@@ -141,7 +144,7 @@ export class RPage {
 
   checkPhone():boolean {
     if (!this.util.checkPhone(this.login.phoneno)){
-      this.util.popoverStart("请填写正确的手机号");
+      this.util.toastStart("请填写正确的手机号",1500);
     }
     return this.util.checkPhone(this.login.phoneno);
   }

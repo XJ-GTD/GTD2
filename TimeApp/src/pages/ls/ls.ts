@@ -93,8 +93,11 @@ export class LsPage {
             this.timeText = "发送验证码"
           }
         }, 1000)
+
       }).catch(error => {
-        this.util.toastStart("短信发送失败",2000);
+        clearTimeout(this.timer);
+        this.timeText = "发送验证码";
+        //this.util.toastStart("短信发送失败",2000);
       });
 
     }
@@ -103,9 +106,9 @@ export class LsPage {
   signIn() {
     if(this.checkPhone()) {
       if (this.login.verifycode == null || this.login.verifycode == "") {     //判断验证码是否为空
-        this.util.popoverStart("验证码不能为空");
+        this.util.toastStart("验证码不能为空",1500);
       }else if(this.login.verifykey == null || this.login.verifykey == ""){
-        this.util.popoverStart("请发送短信并填写正确的短信验证码");
+        this.util.toastStart("请发送短信并填写正确的短信验证码",1500);
       }else{
         this.util.loadingStart();
 
@@ -120,8 +123,12 @@ export class LsPage {
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
         }).catch(error=>{
-          this.util.popoverStart( "手机验证码登录失败");
           this.util.loadingEnd();
+          if(error && error.message != undefined && error.message != null && error.message != ""){
+            this.util.toastStart(error.message,1500);
+          }else{
+            this.util.toastStart("手机验证码登录失败",1500);
+          }
         });
         
       }

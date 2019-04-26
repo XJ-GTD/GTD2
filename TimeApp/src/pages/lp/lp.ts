@@ -85,7 +85,7 @@ export class LpPage {
         this.util.loadingStart();
 
         this.lpService.login(this.login).then(data=> {
-          if (data.code != 0)
+          if(data == undefined)
             throw  data;
 
           return this.lpService.getPersonMessage(data);
@@ -95,8 +95,13 @@ export class LpPage {
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
         }).catch(error=>{
-          this.util.popoverStart(error.message +"手机密码登录失败");
+          console.log("手机密码登录失败");
           this.util.loadingEnd();
+          if(error && error.message != undefined && error.message != null && error.message != ""){
+            this.util.toastStart(error.message,1500);
+          }else{
+            this.util.toastStart("手机密码登录失败",1500);
+          }
         });
       }
     }
