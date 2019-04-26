@@ -1,5 +1,7 @@
 page-tdl {
-
+  ion-header{
+    width: auto;
+  }
   .back1 {
     background: $lsback1;
   }
@@ -34,6 +36,11 @@ page-tdl {
 
   .ym-fsize {
     font-size: 12px;
+  }
+
+  .ys-fsize {
+    font-size: 10px;
+    color: $adornColor;
   }
 
   .d-fsize {
@@ -117,45 +124,52 @@ page-tdl {
   }
 
   .header-set {
-    background-color: $lstitleColor;
+    background-color: $baseBackColor;
     height:64px;
     padding: 0px;
+    position: absolute;
+    width: 75px;
+    z-index: 10;
+    text-align: center;
+    box-shadow: 0px 0px 10px 0px $baseBackColor;
 
-    .headerdate {
-      margin: 0px;
-      padding: 0px;
-
-      .toolbar-title-ios {
-        font-size: 15px;
-        color: white;
-        letter-spacing: 2px;
-      }
+    .headerY {
+      font-size: 10px;
+      color: white;
+      letter-spacing: 0px;
+      display: inline-block;
+      float: left;
+      margin-top: 10px;
+      margin-left: 10px;
+      color: $fontSecondColor;
     }
-
-    .toolbar-background-ios {
-      background-color: transparent;
-    }
-
-    img {
-      width: 15px;
-      margin-left: 15px;
-    }
-    .bar-buttons-ios{
-      margin: 0px;
-    }
-    .backbtn-set{
-      width: 75px;
-      background: $baseBackColor;
-      height: 64px;
-      border-radius: 0px;
+    .headerMD {
+      margin: 5px auto;
+      font-size: 14px;
+      color: $fontMasterColor;
+      letter-spacing: 1px;
+      display: inline-block;
     }
   }
 
-
+  .backdrop{
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    background-color: $adornColor;
+    top: 50%;
+    border-radius: 35px;
+    right: -18px;
+    img {
+      width: 15px;
+      margin: 10px;
+      margin-left: 6px;
+    }
+  }
   .newMessage {
     //font-weight: bold;
     //color:  $adornColor;
-    background-color:$adornColor; ;
+    background-color:$allsometing; ;
   }
 
   .agenda-none {

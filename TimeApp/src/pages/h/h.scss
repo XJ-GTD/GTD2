@@ -17,7 +17,7 @@ page-h {
 
   .haContent {
     position: absolute;
-    width: calc(100% - 14px);
+    //width: calc(100% - 14px);
     margin-top: 33px;
   }
 
@@ -44,8 +44,18 @@ page-h {
     .showDay2 {
       margin-left: 5px;
       font-size: 10px;
-      color: #727272;
+      color: $fontSecondColor;
     }
+
+    .showDay3 {
+      margin-left: 5px;
+      font-size: 10px;
+      color: $fontMasterColor;
+      background: $selectColor;
+      border-radius: 15px;
+      padding: 1px 4px;
+    }
+
 
   }
 

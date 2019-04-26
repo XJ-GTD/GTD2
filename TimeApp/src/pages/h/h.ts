@@ -38,7 +38,7 @@ import {DataConfig} from "../../service/config/data.config";
           <p class="tipDay">
             <span class="showDay">{{hdata.showDay}}</span>
             <span class="showDay2">{{hdata.showDay2}}</span>
-            <span class="showDay2" *ngFor="let jt of hdata.jtl" (click)="gotojt(jt)">{{jt.px}}</span>
+            <span class="showDay3" *ngFor="let jt of hdata.jtl" (click)="gotojt(jt)">{{jt.spn}}</span>
           </p>
           <p class="tipDay" *ngIf="hdata.things > 0"><a class="cls" (click)="gotolist()">
             <ion-icon name="done-all"></ion-icon>

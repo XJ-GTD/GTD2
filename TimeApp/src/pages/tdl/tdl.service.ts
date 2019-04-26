@@ -103,15 +103,13 @@ export class TdlService {
       }
     }
     //循环获取计划3数据并放入list
-    let bk:number = 0;
     for (let jt of jtl) {
       let cd: string = jt.sd;
       let tmp = mpL.find((n) => cd == n.d);
       if (tmp){
-        tmp.jtl.push(jt);
+        if (tmp.jtl.length <3)
+          tmp.jtl.push(jt);
       }
-      if (bk > 2) break;
-      bk ++;
     }
     //排序一天日程 按时间
 

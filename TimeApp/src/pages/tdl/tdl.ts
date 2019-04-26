@@ -22,16 +22,10 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
   selector: 'page-tdl',
   template:
       `
-    <ion-header no-border>
-      <ion-toolbar class="header-set">
-        <ion-buttons start>
-          <button ion-button (click)="goBack()" class="backbtn-set">
-            <img src="../../assets/imgs/back-white.png"/>
-          </button>
-        </ion-buttons>
-        <ion-title class="headerdate">{{headerDate}}</ion-title>
-      </ion-toolbar>
-    </ion-header>
+    <div class="header-set">
+            <span class="headerY">{{headerDate| formatedate:"YYYY"}}</span>
+            <span class="headerMD">{{headerDate| formatedate:"CMM/DD"}} </span>
+    </div>
     <ion-content #contentD>
       <ion-grid #grid4Hight>
         <ion-row *ngFor="let sdl of scdlDataList;let i = index;" class="anch" id="day{{sdl.id}}">
@@ -39,7 +33,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
             <div class="dayheader w-auto">
               <div class="d-fsize text-center">{{sdl.d | formatedate :"CWEEK"}}</div>
               <div class="ym-fsize text-center ">{{sdl.d | formatedate:"DD"}}</div>
-              <div class="ym-fsize text-center " *ngFor="let jt of sdl.jtl" (click)="toDetail(jt.si,jt.sd,'3')">{{jt.sd}}</div>
+              <div class="ys-fsize text-center " *ngFor="let jt of sdl.jtl" (click)="toDetail(jt.si,jt.sd,'3')">{{jt.spn}}</div>
             </div>
           </div>
           <div class="dayagendas w-auto">
@@ -79,6 +73,10 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
         </ion-row>
       </ion-grid>
     </ion-content>
+
+    <div class="backdrop" (click)="goBack()">
+      <img src="../../assets/imgs/xll.png"/>
+    </div>
   `
 
 
@@ -151,7 +149,7 @@ export class TdlPage {
         for (let scdlData of this.scdlDataList) {
           let el = this.el.nativeElement.querySelector("#day" + scdlData.id);
           if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
-            this.headerDate = moment(scdlData.d).format("YYYY年MM月DD日");
+            this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
             this.headerMoment = moment(scdlData.d);
             //this.feedback.audioTrans();
             break;
@@ -276,7 +274,7 @@ export class TdlPage {
       try {
         let el = this.el.nativeElement.querySelector("#day" + id);
 
-        this.headerDate = moment(id).format("YYYY年MM月DD日");
+        this.headerDate = moment(id).format("YYYY/MM/DD");
         this.headerMoment = moment(id);
         if (el) {
           this.gridHight = this.grid.nativeElement.clientHeight;
