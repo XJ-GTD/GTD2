@@ -5,13 +5,15 @@ import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {PagePDPro, PagePlData, RcInParam} from "../../data.mapping";
 import * as moment from "moment";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
+import {EmitService} from "../../service/util-service/emit.service";
 
 @Injectable()
 export class PlService {
 
   constructor(private sqlExec: SqliteExec,
               private shareRestful:ShaeRestful,
-              private pgService:PgBusiService) {}
+              private pgService:PgBusiService,
+              private emitService:EmitService) {}
 
   //下载系统计划
   async downloadPlan(jh:PagePDPro){
@@ -52,10 +54,12 @@ export class PlService {
           rcArray.push(rc);
         }
         count = plan.pa.length;
-        this.pgService.saveBatch(rcArray);
+        await this.pgService.saveBatch(rcArray);
+
+        this.emitService.emitRef("");
       }
     }
-    this.sqlExec.update(sjh);
+    await this.sqlExec.update(sjh);
 
     console.log('---------- PlService downloadPlan 新计划插入日程表结束 ----------------');
     return count;
