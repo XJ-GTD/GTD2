@@ -92,7 +92,7 @@ export class FindProcess implements MQProcess {
         scd.te ||
         scd.ti ||
         scd.ts) {
-        let sql: string = `select distinct sp.spi as si,
+        let sql: string = `select distinct c.si,
                                            c.sn,
                                            c.ui,
                                            sp.sd     sd,
@@ -127,13 +127,10 @@ export class FindProcess implements MQProcess {
           sql = sql + ` and sp.sd <= '${moment().add(30, 'd').format('YYYY/MM/DD')}%'`;
         }
         if (scd.ts) {
-          sql = sql + ` and sp.st >= '${scd.ts}'`;
+          sql = sql + ` and (sp.st >= '${scd.ts}' or sp.st = '99:99')`;
         }
         if (scd.te) {
-          sql = sql + ` and sp.st <= '${scd.te}'`;
-        }
-        if (scd.ts && scd.te) {
-          sql = sql + ` or sp.st = '99:99'`;
+          sql = sql + ` and (sp.st <= '${scd.te}' or sp.st = '99:99')`;
         }
         console.log("============ mq查询日程："+ sql);
         res = await this.sqliteExec.getExtList<CTbl>(sql);

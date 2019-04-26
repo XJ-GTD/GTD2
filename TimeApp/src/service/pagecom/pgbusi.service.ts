@@ -101,11 +101,13 @@ export class PgBusiService {
           let jt = new JtTbl();
           Object.assign(jt,rc);
           jt.si = rcn.si;
+          jt.spn = rc.sn;
           jt.jti = this.util.getUuid();
           sqL.push(jt.inT());
         }else{
           let sp = new SpTbl();
           Object.assign(sp,rc);
+          sp.spn = rc.sn;
           sp.spi = this.util.getUuid();
           sp.si = rcn.si;
           sqL.push(sp.inT());
@@ -483,7 +485,15 @@ export class PgBusiService {
     this.emitService.emitRef(si);
     return true;
   }
-
+  /**
+   *  语音删除
+   * @param {string} si 日程ID
+   * @param {string} sd 开始时间
+   */
+  async YuYinDelRc(si:string,sd:string){
+    await this.delRcBySi(si);
+    return true;
+  }
   /**
    *  根据计划ID删除日程   dch
    * @param {string} ji 计划ID
