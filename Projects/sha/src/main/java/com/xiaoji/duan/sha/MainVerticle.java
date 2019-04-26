@@ -20,6 +20,7 @@ import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.Router;
@@ -573,27 +574,81 @@ public class MainVerticle extends AbstractVerticle {
 		Future<JsonObject> buildin = Future.future();
 		futures.add(buildin);
 		
-		mongodb.findOne("sha_plan_buildin", new JsonObject().put("pi", buildinplan), new JsonObject(), findOne -> {
-			System.out.println("Find build-in plan returned.");
-			if (findOne.succeeded()) {
-				buildin.complete(new JsonObject().put("name", "plan").put("value", findOne.result()));
-			} else {
-				buildin.fail(findOne.cause());
-			}
-		});
+		if ("file".equals(config().getString("source", "mongodb"))) {
+			String path = config().getString("source-path", "/opt/duan/sha");
+			vertx.fileSystem().readFile(path + "/plan/" + buildinplan + ".json", handler ->{
+				if (handler.succeeded()) {
+					Buffer result = handler.result();
+					
+					JsonObject plan = null;
+					
+					try {
+						plan = result.toJsonObject();
+					} catch(Exception e) {
+						e.printStackTrace();
+					} finally {
+						if (plan == null) {
+							plan = new JsonObject();
+						}
+						
+						buildin.complete(new JsonObject().put("name", "plan").put("value", plan));
+					}
+				} else {
+					buildin.fail(handler.cause());
+				}
+			});
+		}
+		
+		if ("mongodb".equals(config().getString("source", "mongodb"))) {
+			mongodb.findOne("sha_plan_buildin", new JsonObject().put("pi", buildinplan), new JsonObject(), findOne -> {
+				System.out.println("Find build-in plan returned.");
+				if (findOne.succeeded()) {
+					buildin.complete(new JsonObject().put("name", "plan").put("value", findOne.result()));
+				} else {
+					buildin.fail(findOne.cause());
+				}
+			});
+		}
 		
 		Future<JsonObject> buildinagendas = Future.future();
 		futures.add(buildinagendas);
 
-		mongodb.find("sha_plan_buildin_agendas", new JsonObject().put("pi", buildinplan), find -> {
-			System.out.println("Find agendas returned.");
-			if (find.succeeded()) {
-				buildinagendas.complete(new JsonObject().put("name", "agendas").put("value", find.result()));
-			} else {
-				buildinagendas.fail(find.cause());
-			}
-		});
-
+		if ("file".equals(config().getString("source", "mongodb"))) {
+			String path = config().getString("source-path", "/opt/duan/sha");
+			vertx.fileSystem().readFile(path + "/plan-agendas/" + buildinplan + ".json", handler ->{
+				if (handler.succeeded()) {
+					Buffer result = handler.result();
+					
+					JsonArray agendas = null;
+					
+					try {
+						agendas = result.toJsonArray();
+					} catch(Exception e) {
+						e.printStackTrace();
+					} finally {
+						if (agendas == null) {
+							agendas = new JsonArray();
+						}
+						
+						buildinagendas.complete(new JsonObject().put("name", "agendas").put("value", agendas));
+					}
+				} else {
+					buildinagendas.fail(handler.cause());
+				}
+			});
+		}
+		
+		if ("mongodb".equals(config().getString("source", "mongodb"))) {
+			mongodb.find("sha_plan_buildin_agendas", new JsonObject().put("pi", buildinplan), find -> {
+				System.out.println("Find agendas returned.");
+				if (find.succeeded()) {
+					buildinagendas.complete(new JsonObject().put("name", "agendas").put("value", find.result()));
+				} else {
+					buildinagendas.fail(find.cause());
+				}
+			});
+		}
+		
 		CompositeFuture.all(Arrays.asList(futures.toArray(new Future[futures.size()])))
 		.map(v -> futures.stream().map(Future::result).collect(Collectors.toList()))
 		.setHandler(handler -> {
