@@ -313,16 +313,32 @@ export class PgBusiService {
       let _start = new Date(time);
       let _startMonth = moment(moment(_start).format("YYYY/MM/") + "1");
       let _endMonth = moment(moment(_start).format("YYYY/MM/") + _startMonth.daysInMonth());
-      let sql:string = `select jt.spn,jt.si,jt.minpx,gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt
-      from gtd_c gc join gtd_sp sp on gc.si = sp.si left join (select sd,jti,spn,si,min(px) minpx  
-      from gtd_jt group by sd) jt on jt.sd = sp.sd where sp.sd>='${moment(_startMonth).format("YYYY/MM/DD")}'  
-      and sp.sd<='${moment(_endMonth).format("YYYY/MM/DD")}' group by sp.sd ,gc.sd;`;
-      let list = await this.sqlExce.getExtList<MonthData>(sql);
+      let list =[];
+      let sql: string = ` select sum(scds) scds,sum(news) news, sd,max(csd) csd,max(spn) spn 
+                          from (
+                                 select count(sp.si) scds,sum(sp.itx) news,sp.sd sd,max(gc.sd) csd,'' spn
+                                    from gtd_sp sp join gtd_c gc on gc.si = sp.si
+                                         where sp.sd>='${moment(_startMonth).format("YYYY/MM/DD")}'  
+                                              and sp.sd<='${moment(_endMonth).format("YYYY/MM/DD")}'
+                                    group by sp.sd  
+                          union all
+                                  select 0 scds,0 news,jt.sd sd ,'' csd, gc.sn spn   
+                                      from gtd_c gc join (select si,min(px),sd from gtd_jt  
+                                          where sd>='${moment(_startMonth).format("YYYY/MM/DD")}'  
+                                              and sd<='${moment(_endMonth).format("YYYY/MM/DD")}' group by sd ) jt 
+                              on jt.si = gc.si 
+                               ) group by sd; `;
+
+
+
+       list = await this.sqlExce.getExtList<MonthData>(sql);
+
+
 
       // //本地日历加入主页日历显示中
       // let local = await this.readlocal.findEventRc('',_startMonth,_endMonth);
       // for(let lo of local){
-      //   let md:MonthData = data.find((n) => moment(lo.sd).isSame(moment(n.sd), 'day'));
+      //   let md:MonthData = list.find((n) => moment(lo.sd).isSame(moment(n.sd), 'day'));
       //   if (md){
       //     md.scds = md.scds + 1;
       //   }else{

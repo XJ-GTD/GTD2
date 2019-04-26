@@ -25,7 +25,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
   selector: 'page-h',
   template: `
     <ion-content>
-      <div class="haContent" >
+      <div class="haContent">
         <div #calendarDiv class="haCalendar">
           <ion-calendar #calendar
                         [options]="options"
@@ -34,8 +34,11 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           </ion-calendar>
         </div>
         <ng-template [ngIf]="hdata.isShow">
-          <p class="tipDay"><span class="showDay">{{hdata.showDay}}</span><span
-            class="showDay2">{{hdata.showDay2}}</span></p>
+          <p class="tipDay">
+            <span class="showDay">{{hdata.showDay}}</span>
+            <span class="showDay2">{{hdata.showDay2}}</span>
+            <span class="showDay2" *ngFor="let jt of hdata.jtl">{{jt.spn}}</span>
+          </p>
           <p class="tipDay"><a class="cls" (click)="gotolist()">
             <ion-icon name="done-all"></ion-icon>
             {{hdata.things}} 个事件,{{hdata.newmessge}}条新消息</a></p>
@@ -45,11 +48,11 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
         </ng-template>
       </div>
       <!--<div class="rightm">-->
-        <!--&nbsp;-->
+      <!--&nbsp;-->
       <!--</div>-->
       <AiComponent #aiDiv></AiComponent>
     </ion-content>
-    `,
+  `,
 })
 export class HPage {
 
@@ -71,11 +74,11 @@ export class HPage {
 
   constructor(private hService: HService,
               private navController: NavController,
-              private renderer2:Renderer2,
-              private modalCtr:ModalController,
-              private menuController:MenuController,
-              private emitService:EmitService,
-              private feedback:FeedbackService) {
+              private renderer2: Renderer2,
+              private modalCtr: ModalController,
+              private menuController: MenuController,
+              private emitService: EmitService,
+              private feedback: FeedbackService) {
     this.hdata = new HData();
   }
 
@@ -83,15 +86,15 @@ export class HPage {
   }
 
   ngOnInit() {
-    this.emitService.registerNewMessageClick((data)=>{
+    this.emitService.registerNewMessageClick((data) => {
 
-      let p:ScdPageParamter = new ScdPageParamter();
-      p.si= data.id;
+      let p: ScdPageParamter = new ScdPageParamter();
+      p.si = data.id;
       p.d = moment(data.d);
       this.modalCtr.create(TddiPage, p).present();
     });
 
-    this.emitService.registerRef(data =>{
+    this.emitService.registerRef(data => {
       this.calendar.createMonth(this.calendar.monthOpt.original.time);
     });
   }
@@ -105,16 +108,16 @@ export class HPage {
   }
 
   newcd() {
-    let p:ScdPageParamter = new ScdPageParamter();
+    let p: ScdPageParamter = new ScdPageParamter();
     p.d = moment(this.hdata.selectDay.time);
     this.feedback.audioPress();
     this.modalCtr.create(TdcPage, p).present();
   }
 
   //查询当天日程
-  onSelect(selectDay:CalendarDay) {
+  onSelect(selectDay: CalendarDay) {
     this.feedback.audioClick();
-    if (selectDay)this.emitService.emitSelectDate(moment(selectDay.time));
+    if (selectDay) this.emitService.emitSelectDate(moment(selectDay.time));
     this.hService.centerShow(selectDay).then(d => {
       //双机进入列表
       if (this.hdata.selectDay == selectDay && selectDay) {

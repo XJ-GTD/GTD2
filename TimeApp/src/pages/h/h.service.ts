@@ -2,10 +2,11 @@ import {Injectable} from "@angular/core";
 import * as moment from "moment";
 import {CalendarDay} from "../../components/ion2-calendar";
 import {HData} from "../../data.mapping";
+import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 
 @Injectable()
 export class HService {
-  constructor() {
+  constructor(private pgservice:PgBusiService) {
     moment.locale('zh-cn');
   }
 
@@ -20,10 +21,14 @@ export class HService {
         hdata.isShow = false;
       } else {
         hdata.isShow = true;
-        hdata.showDay = moment(select.time).format('dddd MM月DD日');
-        hdata.showDay2 = this.countDay(select.time)
-        hdata.newmessge = select.newmessage;
-        hdata.things = select.things;
+
+        this.pgservice.getHomDayData(moment(select.time)).then(data=>{
+          hdata.showDay =  moment(data.sd).format('dddd MM月DD日');
+          hdata.showDay2 = this.countDay(select.time);
+          hdata.newmessge = data.news;
+          hdata.things = data.scds;
+          hdata.jtl = data.jtL;
+        })
       }
       resolve(hdata);
     })

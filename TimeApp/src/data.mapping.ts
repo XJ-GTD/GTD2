@@ -315,6 +315,7 @@ export class HData {
   newmessge: number = 0;
   things: number = 0;
   selectDay: CalendarDay;
+  jtl:Array<JtData> = new Array<JtData>();
 }
 
 export class PageLoginData {

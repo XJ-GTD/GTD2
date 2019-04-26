@@ -291,10 +291,10 @@ export class CalendarService {
       let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
 
       //判断是否存在非重复类型  or 判断是否存在重复日期为开始日期
-      if(d.minrt == '0' || d.csd ==d.sd){
-        calendarDay.onlyRepeat = false;
-      }else {
+      if(d.csd !=d.sd && d.scds > 0){
         calendarDay.onlyRepeat = true;
+      }else {
+        calendarDay.onlyRepeat = false;
       }
       calendarDay.things = d.scds;
       calendarDay.hassometing = d.scds > 0 && !calendarDay.onlyRepeat ;
@@ -303,7 +303,6 @@ export class CalendarService {
       calendarDay.newmessage = d.news
       calendarDay.hasting = d.scds > 0;
       calendarDay.subTitle = d.spn ? d.spn: calendarDay.subTitle;
-
       calendarDay.marked = false;
     }
 
