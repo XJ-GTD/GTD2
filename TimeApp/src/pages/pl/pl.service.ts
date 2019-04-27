@@ -75,12 +75,24 @@ export class PlService {
     console.log('---------- PlService getPlan 获取计划开始 ----------------');
     let pld = new PagePlData();
     //获取本地计划
+    //最新日程和日程特殊表保存规则修改
+    //计划修改只修改日程特殊表的计划ID,计划所属日程数量统计需要调整 4/28 席理加
+    //let sql = "select jh.*,COALESCE (gc.count, 0) js from gtd_j_h jh" +
+    //  " left join " +
+    //  "( select c.ji ji,count(c.ji) count from gtd_c c left join gtd_sp sp on sp.si = c.si group by c.ji) gc on jh.ji = gc.ji" +
+    //  " left join" +
+    //  "( select c.ji ji,count(c.ji) count from gtd_c c left join gtd_jt jt on jt.si = c.si group by c.ji) jt on jh.ji = jt.ji" +
+    //  " order by jh.wtt desc";
+    //修改后
     let sql = "select jh.*,COALESCE (gc.count, 0) js from gtd_j_h jh" +
       " left join " +
-      "( select c.ji ji,count(c.ji) count from gtd_c c left join gtd_sp sp on sp.si = c.si group by c.ji) gc on jh.ji = gc.ji" +
-      " left join" +
-      "( select c.ji ji,count(c.ji) count from gtd_c c left join gtd_jt jt on jt.si = c.si group by c.ji) jt on jh.ji = jt.ji" +
+      " ( " +
+      "( select sp.ji ji,count(sp.ji) count from gtd_sp sp group by sp.ji)" +
+      " union " +
+      "( select c.ji ji,count(c.ji) count from gtd_c c left join gtd_jt jt on jt.si = c.si group by c.ji)" +
+      " ) gc on jh.ji = gc.ji " +
       " order by jh.wtt desc";
+    //修改结束 4/28 席理加
     let jhTbl: Array<PagePDPro> = await this.sqlExec.getExtList<PagePDPro>(sql);
     if(jhTbl.length > 0){
       let xtJh: Array<PagePDPro> = new  Array<PagePDPro>();

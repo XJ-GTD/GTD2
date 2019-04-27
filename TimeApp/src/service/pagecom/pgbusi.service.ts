@@ -523,6 +523,7 @@ export class PgBusiService {
       console.log('---------- PdService delete 删除计划开始 ----------------');
       // 本地计划日程关联
       //修改日程表 计划 ji 去除
+      //TODO: 这个地方删除计划有问题,重复日程SP表可以定义多个归属计划，SP不会被干净的删除
       sqls.push('update gtd_c set ji = null where ji = "' + ji + '";');
       //修改日程表 计划 ji 去除
       sqls.push('update gtd_sp set ji = null where ji = "' + ji + '";');

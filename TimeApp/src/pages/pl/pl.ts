@@ -38,7 +38,7 @@ import {PagePDPro} from "../../data.mapping";
         <ion-row>
           <ion-list no-lines>
             <ion-list-header class="plan-list-item" (click)="change()">
-              自定义日历
+              自定义
               <img class="img-content-plan" src="./assets/imgs/{{picture}}">
             </ion-list-header>
             <div *ngFor="let option of zdyJhs" [ngStyle]="{'display': show }">
@@ -47,10 +47,10 @@ import {PagePDPro} from "../../data.mapping";
                 {{option.jn}}({{option.js}})
               </ion-item>
             </div>
-            <div [ngStyle]="{'display': zdyDisplay }" class="plan-none"> 暂无计划</div>
+            <div [ngStyle]="{'display': zdyDisplay }" class="plan-none"> 暂无自定义日历</div>
             <div style="height: 60px"></div>
             <ion-list-header class="plan-list-item">
-              <div style="float: left;">日历</div><small>（长按日历可清除）</small>
+              <div style="float: left;">日历</div><small>（长按日历名称可清除）</small>
             </ion-list-header>
             <div *ngFor="let option of xtJhs">
               <ion-item class="plan-list-item"(press)="delPlan(option)" >
