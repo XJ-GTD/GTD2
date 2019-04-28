@@ -36,22 +36,22 @@ import {PageY} from "../../data.mapping";
             
             <ion-item class="plan-list-item" >
               <ion-label>语音唤醒</ion-label>
-              <ion-toggle [(ngModel)]="h.value" (ionChange)="save(h)"></ion-toggle>
+              <ion-toggle [(ngModel)]="bh" (ionChange)="save(h, bh)"></ion-toggle>
             </ion-item>
 
             <ion-item class="plan-list-item" >
               <ion-label>语音播报</ion-label>
-              <ion-toggle [(ngModel)]="b.value" (ionChange)="save(b)"></ion-toggle>
+              <ion-toggle [(ngModel)]="bb" (ionChange)="save(b, bb)"></ion-toggle>
             </ion-item>
 
             <ion-item class="plan-list-item" >
               <ion-label>震动音效</ion-label>
-              <ion-toggle [(ngModel)]="z.value" (ionChange)="save(z)"></ion-toggle>
+              <ion-toggle [(ngModel)]="bz" (ionChange)="save(z, bz)"></ion-toggle>
             </ion-item>
 
             <ion-item class="plan-list-item" >
               <ion-label>新消息提醒</ion-label>
-              <ion-toggle [(ngModel)]="t.value" (ionChange)="save(t)"></ion-toggle>
+              <ion-toggle [(ngModel)]="bt" (ionChange)="save(t, bt)"></ion-toggle>
             </ion-item>
 
             <ion-list-header>
@@ -75,6 +75,10 @@ export class SsPage {
   t:Setting;//新消息提醒
   b:Setting;//语音播报
   z:Setting;//振动
+  bh:string;//唤醒 页面显示和修改
+  bt:string;//新消息提醒 页面显示和修改
+  bb:string;//语音播报 页面显示和修改
+  bz:string;//振动 页面显示和修改
   @ViewChild("resfri")
   resfri:ElementRef;
 
@@ -90,17 +94,17 @@ export class SsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad SsPage');
 
-    this.h.value = this.h.value == "1" || this.h.value=="true" ? "true":"false";
-    this.t.value = this.t.value == "1" || this.t.value=="true" ? "true":"false";
-    this.b.value = this.b.value == "1" || this.b.value=="true" ? "true":"false";
-    this.z.value = this.z.value == "1" || this.z.value=="true" ? "true":"false";
+    this.bh = (this.h.value == "1") ? "true":"false";
+    this.bt = (this.t.value == "1") ? "true":"false";
+    this.bb = (this.b.value == "1") ? "true":"false";
+    this.bz = (this.z.value == "1") ? "true":"false";
   }
 
   goBack() {
     this.navCtrl.pop();
   }
 
-  save(setting){
+  save(setting, value){
 
     let set:PageY = new PageY();
     set.yi = setting.yi;//偏好主键ID
@@ -108,7 +112,7 @@ export class SsPage {
     set.yt = setting.typeB; //偏好设置类型
     set.yn = setting.name;//偏好设置名称
     set.yk = setting.type ;//偏好设置key
-    set.yv = setting.value ? "1":"0";//偏好设置value
+    set.yv = (value == "true") ? "1":"0";//偏好设置value
 
     this.ssService.save(set);
   }
