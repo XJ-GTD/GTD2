@@ -105,7 +105,7 @@ export class AssistantService {
   async speakText(speechText: string) {
     if (!this.utilService.isMobile()) return ;
 
-    if (!UserConfig.getSetting(DataConfig.SYS_H)) return;
+    if (!UserConfig.getSetting(DataConfig.SYS_B)) return;
 
     if (speechText == null || speechText == "") {
       return ""
