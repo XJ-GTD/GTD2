@@ -86,7 +86,7 @@ export class PlService {
     //修改后
     let sql = "select jh.*,COALESCE (gc.count, 0) js from gtd_j_h jh" +
       " left join " +
-      " ( " +
+      " select gc.* from ( " +
       "( select sp.ji ji,count(sp.ji) count from gtd_sp sp group by sp.ji)" +
       " union " +
       "( select c.ji ji,count(c.ji) count from gtd_c c left join gtd_jt jt on jt.si = c.si group by c.ji)" +
