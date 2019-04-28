@@ -14,7 +14,7 @@ import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {YTbl} from "../../service/sqlite/tbl/y.tbl";
-import {EmitService} from "../../util-service/emit.service";
+import {EmitService} from "../../service/util-service/emit.service";
 
 @Injectable()
 export class BrService {
