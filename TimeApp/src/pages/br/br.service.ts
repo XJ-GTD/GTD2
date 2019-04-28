@@ -37,7 +37,7 @@ export class BrService {
 
     //获取本地日历
     let c = new CTbl();
-    let csql = "select * from gtd_c where ji not in (select ji from gtd_j_h where jt ='1') ";//系统计划的日程不备份
+    let csql = "select * from gtd_c where ji not in (select ji from gtd_j_h where jt ='1' or jt='3' ) ";//系统计划的日程不备份
     backupPro.d.c = await this.sqlexec.getExtList<CTbl>(csql);
     //restFul上传
     await this.bacRestful.backup(backupPro);
@@ -45,8 +45,7 @@ export class BrService {
 
 
     //获取特殊日历
-    let spsql = "select sp.* from gtd_sp sp inner join " +
-      " ( select * from gtd_c where ji not in (select ji from gtd_j_h where jt ='1')) c on c.si = sp.si ";//系统计划的日程不备份
+    let spsql = "select * from gtd_sp where ji not in (select ji from gtd_j_h where jt ='1' or jt ='3') ";//系统计划的日程不备份
     backupPro.d.sp = await this.sqlexec.getExtList<SpTbl>(spsql);
     await this.bacRestful.backup(backupPro);
     if (backupPro.d.sp) backupPro.d.sp.length = 0;
@@ -88,7 +87,7 @@ export class BrService {
 
 
     //获取本地计划
-    let jhsql = "select * from  gtd_j_h where jt <> '1' "//系统计划不备份
+    let jhsql = "select * from  gtd_j_h where jt <> '1' and jt <>'3' "//系统计划不备份
     backupPro.d.jh = await this.sqlexec.getExtList<JhTbl>(jhsql);
     await this.bacRestful.backup(backupPro);
     if (backupPro.d.jh) backupPro.d.jh.length = 0;
@@ -136,8 +135,7 @@ export class BrService {
     let sqls=new Array<string>();
 
     //插入特殊日历（插入前删除）
-    let spsql ="delete from gtd_sp where si not in " +
-      " (select si from gtd_c where ji in (select ji from gtd_j_h where jt ='1')) ";
+    let spsql ="delete from gtd_sp where ji not in (select ji from gtd_j_h where jt ='1' or jt='3') ";
     await this.sqlexec.execSql(spsql);
 
     for (let j = 0, len = outRecoverPro.sp.length; j < len; j++) {
@@ -173,7 +171,7 @@ export class BrService {
     sqls.length = 0;
 
     //插入本地日历（插入前删除）
-    let csql = "delete from gtd_c where ji not in (select ji from gtd_j_h where jt ='1'  ) ";
+    let csql = "delete from gtd_c where ji not in (select ji from gtd_j_h where jt ='1' or jt='3' ) ";
     await this.sqlexec.execSql(csql);
 
     for (let j = 0, len = outRecoverPro.c.length; j < len; j++) {
@@ -222,7 +220,7 @@ export class BrService {
 
     //插入本地计划（插入前删除）
     let jh = new JhTbl();
-    let jhsql = "delete from gtd_j_h where jt <> '1' ";//本地系统计划不删除
+    let jhsql = "delete from gtd_j_h where jt <> '1' and jt<>'3' ";//本地系统计划不删除
     await this.sqlexec.execSql(jhsql);
 
     for (let j = 0, len = outRecoverPro.jh.length; j < len; j++) {
