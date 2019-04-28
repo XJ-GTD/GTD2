@@ -86,11 +86,9 @@ export class PlService {
     //修改后
     let sql = "select jh.*,COALESCE (gc.count, 0) js from gtd_j_h jh" +
       " left join " +
-      " select gc.* from ( " +
-      "( select sp.ji ji,count(sp.ji) count from gtd_sp sp group by sp.ji)" +
-      " union " +
-      "( select c.ji ji,count(c.ji) count from gtd_c c left join gtd_jt jt on jt.si = c.si group by c.ji)" +
-      " ) gc on jh.ji = gc.ji " +
+      "( select sp.ji ji,count(sp.ji) count from gtd_sp sp group by sp.ji) gc on jh.ji = gc.ji" +
+      " left join " +
+      "( select c.ji ji,count(c.ji) count from gtd_c c left join gtd_jt jt on jt.si = c.si group by c.ji) jt on jh.ji = jt.ji" +
       " order by jh.wtt desc";
     //修改结束 4/28 席理加
     let jhTbl: Array<PagePDPro> = await this.sqlExec.getExtList<PagePDPro>(sql);
