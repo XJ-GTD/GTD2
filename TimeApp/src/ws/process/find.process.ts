@@ -111,7 +111,7 @@ export class FindProcess implements MQProcess {
                            from gtd_sp sp
                                   inner join gtd_c c on sp.si = c.si
                                   left join gtd_d d on d.si = c.si
-                           where 1 = 1`
+                           where 1 = 1 and (c.gs = '0' or c.gs = '1' or c.gs = '2')`
 
         if (scd.ti) {
           sql = sql + ` and c.sn like '%${scd.ti}%'`;
