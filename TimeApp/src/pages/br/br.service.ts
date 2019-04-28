@@ -14,12 +14,13 @@ import {UserConfig} from "../../service/config/user.config";
 import * as moment from "moment";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {YTbl} from "../../service/sqlite/tbl/y.tbl";
+import {EmitService} from "../util-service/emit.service";
 
 @Injectable()
 export class BrService {
   constructor(private bacRestful: BacRestful, private sqlexec: SqliteExec,
-              private util: UtilService,private contactsServ :ContactsService,
-              private userConfig: UserConfig) {
+              private util: UtilService, private contactsServ :ContactsService,
+              private userConfig: UserConfig, private emitService: EmitService) {
 
   }
 
@@ -254,6 +255,9 @@ export class BrService {
     //刷新缓存数据
     await this.userConfig.RefreshYTbl();
     await this.userConfig.RefreshFriend();
+
+    // 刷新日历和一览
+    this.emitService.emitRef('');
 
     return ;
   }
