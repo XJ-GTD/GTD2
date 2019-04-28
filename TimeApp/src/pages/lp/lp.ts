@@ -90,6 +90,9 @@ export class LpPage {
 
           return this.lpService.getPersonMessage(data);
         }).then(data=>{
+          if (data == "-1"){
+            throw data;
+          }
           return this.lpService.getOther();
         }).then(data=>{
           this.util.loadingEnd();

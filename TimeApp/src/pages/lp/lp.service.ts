@@ -66,7 +66,7 @@ export class LpService {
         if(data && data.unionid != undefined && data.unionid != null && data.unionid != ""){
           return this.personRestful.getself(data.unionid);
         }else{
-          throw  data;
+          throw  "-1";
         }
       }).then(data=>{
         if(data && data.avatarbase64 != undefined && data.avatarbase64 != null && data.avatarbase64 != ""){
@@ -74,7 +74,7 @@ export class LpService {
           //删除账户表
           return this.sqlExec.delete(new ATbl());
         }else{
-          throw  data;
+          throw  "-1";
         }
       }).then(data=>{
         return this.sqlExec.save(aTbl);
