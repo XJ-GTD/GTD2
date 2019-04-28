@@ -75,10 +75,10 @@ export class SsPage {
   t:Setting;//新消息提醒
   b:Setting;//语音播报
   z:Setting;//振动
-  bh:string;//唤醒 页面显示和修改
-  bt:string;//新消息提醒 页面显示和修改
-  bb:string;//语音播报 页面显示和修改
-  bz:string;//振动 页面显示和修改
+  bh:boolean;//唤醒 页面显示和修改
+  bt:boolean;//新消息提醒 页面显示和修改
+  bb:boolean;//语音播报 页面显示和修改
+  bz:boolean;//振动 页面显示和修改
   @ViewChild("resfri")
   resfri:ElementRef;
 
@@ -94,10 +94,10 @@ export class SsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad SsPage');
 
-    this.bh = (this.h.value == "1") ? "true":"false";
-    this.bt = (this.t.value == "1") ? "true":"false";
-    this.bb = (this.b.value == "1") ? "true":"false";
-    this.bz = (this.z.value == "1") ? "true":"false";
+    this.bh = (this.h.value == "1") ? true : false;
+    this.bt = (this.t.value == "1") ? true : false;
+    this.bb = (this.b.value == "1") ? true : false;
+    this.bz = (this.z.value == "1") ? true : false;
   }
 
   goBack() {
@@ -112,7 +112,7 @@ export class SsPage {
     set.yt = setting.typeB; //偏好设置类型
     set.yn = setting.name;//偏好设置名称
     set.yk = setting.type ;//偏好设置key
-    set.yv = (value == "true") ? "1":"0";//偏好设置value
+    set.yv = (value) ? "1":"0";//偏好设置value
 
     this.ssService.save(set);
   }
