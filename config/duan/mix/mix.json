@@ -1,0 +1,17 @@
+{
+  "debug": true,
+  "mwxing.inteligence.trigger.remote": "mwxing_inteligence_service_remote_start",
+  "xfyun.openapi.aiui": "http://openapi.xfyun.cn/v2/aiui",
+  "xfyun.openapi.appid": "5ca026c2",
+  "xfyun.openapi.appid2": "5cc18e86",
+  "xfyun.openapi.authid": "0fbe81537bc0827a09a2203a3267616b",
+  "xfyun.openapi.authid2": "bd7745cc6e396de57390865983615640",
+  "xfyun.openapi.aue": "raw",
+  "xfyun.openapi.samplerate": "16000",
+  "xfyun.openapi.scene": "main",
+  "xfyun.openapi.apikey2": "50e4d6745cb0481fe093b845ca498dee",
+  "xfyun.openapi.apikey": "4a5c9eac3e30a912a60e82cfb511260d",
+  "xfyun.openapi.iat.apikey": "4661b2c6e0f2d23bc9b18a0b0aea84b1",
+  "xfyun.openapi.iat": "http://api.xfyun.cn/v1/service/v1/iat",
+  "xfyun.openapi.engine_type": "sms16k"
+}
