@@ -5,7 +5,7 @@
           "storePassword": "Xj123456*",
           "alias": "mwxing_debug.keystore",
           "password" : "Xj123456*",
-          "keystoreType": "RSA"
+          "keystoreType": "JKS"
       }
   },
   "ios": {
