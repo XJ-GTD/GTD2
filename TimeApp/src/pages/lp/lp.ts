@@ -90,20 +90,21 @@ export class LpPage {
 
           return this.lpService.getPersonMessage(data);
         }).then(data=>{
-          if (data == "-1"){
+          if (data == "-1")
             throw data;
-          }
+
           return this.lpService.getOther();
         }).then(data=>{
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
         }).catch(error=>{
-          console.log("手机密码登录失败");
           this.util.loadingEnd();
-          if(error && error.message != undefined && error.message != null && error.message != ""){
+          if(error && error.code && error.message != undefined && error.message != null && error.message != ""){
+            console.log(error.message);
             this.util.toastStart(error.message,1500);
           }else{
-            this.util.toastStart("手机密码登录失败",1500);
+            console.log("手机密码登录失败");
+            this.util.toastStart("网络异常",1500);
           }
         });
       }
