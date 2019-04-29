@@ -31,8 +31,11 @@ import {PsPage} from "../../pages/ps/ps";
 import {BrPage} from "../../pages/br/br";
 import {AlPage} from "../../pages/al/al";
 import {TddsPage} from "../../pages/tdc/tdds";
+import {LogPage} from "../../pages/log/log";
 
 export class DataConfig {
+  public static isdebug: boolean  = true;
+
 
 
   /*----===== WS上下文环境使用 =====----- */
@@ -183,7 +186,8 @@ export class DataConfig {
     _PS_PAGE: PsPage,       // 辅助功能 - 个人设置
     _BL_PAGE: BlPage,       // 辅助功能 - 黑名单
     _BR_PAGE: BrPage,       // 辅助功能 - 备份
-    _AL_PAGE: AlPage        //启动页
+    _AL_PAGE: AlPage,       //启动页
+    _LOG_PAGE: LogPage,       // 辅助功能 - 备份
   }
   /* ============ 页面名字配置 ===============*/
 

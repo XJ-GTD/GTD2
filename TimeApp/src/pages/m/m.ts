@@ -53,6 +53,9 @@ import {UserConfig} from "../../service/config/user.config";
               <ion-item (click)="goBrPage()">
                 <h3>备份与恢复</h3>
               </ion-item>
+              <ion-item (click)="gologPage()">
+                <h3>日志</h3>
+              </ion-item>
             </ion-list>
           </ion-row>
         </ion-grid>
@@ -67,11 +70,13 @@ export class MPage {
   name:any;
   phone:any;
   avatar:any = DataConfig.HUIBASE64;
+  isdebug:boolean;
 
   constructor(public modalController: ModalController) {
   }
 
   ionViewDidLoad() {
+    this.isdebug = DataConfig.isdebug;
     console.log('ionViewDidLoad MPage');
   }
 
@@ -103,6 +108,7 @@ export class MPage {
     this.modalController.create(DataConfig.PAGE._BR_PAGE).present();
   }
 
+
   // 群组列表
   goGlPage() {
     this.modalController.create(DataConfig.PAGE._GL_PAGE).present();
@@ -122,5 +128,11 @@ export class MPage {
   // 黑名单
   goBlPage() {
     this.modalController.create(DataConfig.PAGE._BL_PAGE).present();
+  }
+
+
+  //日志
+  gologPage() {
+    this.modalController.create(DataConfig.PAGE._LOG_PAGE).present();
   }
 }

@@ -78,6 +78,7 @@ import {SsPageModule} from "../pages/ss/ss.module";
 import {TdlPageModule} from "../pages/tdl/tdl.module";
 import {PipesModule} from "../pipes/pipes.module";
 import {ConfirmboxComponentModule} from "../components/confirmbox/confirmbox.module";
+import {LogPageModule} from "../pages/log/log.module";
 
 @NgModule({
   declarations: [
@@ -119,6 +120,7 @@ import {ConfirmboxComponentModule} from "../components/confirmbox/confirmbox.mod
     RPageModule,
     SsPageModule,
     TdlPageModule,
+    LogPageModule,
     ConfirmboxComponentModule
   ],
   bootstrap: [IonicApp],
