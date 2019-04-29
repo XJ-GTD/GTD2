@@ -22,7 +22,7 @@ export class SqliteExec {
   /**
    * 执行语句
    */
-  execSql(sql: string,nolog:boolean): Promise<any> {
+  private execSqllog(sql: string,nolog:boolean): Promise<any> {
     return new Promise((resolve, reject) => {
 
       let log:LogTbl = new LogTbl();
@@ -52,12 +52,19 @@ export class SqliteExec {
   }
 
   /**
+   * 执行语句
+   */
+  execSql(sql: string): Promise<any> {
+    return this.execSqllog(sql,false);
+  }
+
+  /**
    * 创建表
    * @param et 对应实体类
    * @returns {Promise<any>}
    */
   create(itbl: ITbl): Promise<any> {
-    return this.execSql(itbl.cT(),false);
+    return this.execSql(itbl.cT());
   }
 
   /**
@@ -66,7 +73,7 @@ export class SqliteExec {
    * @returns {Promise<any>}
    */
   drop(itbl: ITbl): Promise<any> {
-    return this.execSql(itbl.drT(),false)
+    return this.execSql(itbl.drT())
   }
 
   /**
@@ -75,14 +82,14 @@ export class SqliteExec {
    * @returns {Promise<any>}
    */
   save(itbl: ITbl): Promise<any> {
-    return this.execSql(itbl.inT(),false)
+    return this.execSql(itbl.inT())
   }
 
   /**
    * 更新
    */
   update(itbl: ITbl): Promise<any> {
-    return this.execSql(itbl.upT(),false)
+    return this.execSql(itbl.upT())
 
   }
 
@@ -92,7 +99,7 @@ export class SqliteExec {
    * @returns {Promise<any>}
    */
   delete(itbl: ITbl): Promise<number> {
-    return this.execSql(itbl.dT(),false)
+    return this.execSql(itbl.dT())
   }
 
   /**
@@ -102,7 +109,7 @@ export class SqliteExec {
    */
   getList<T>(itbl: ITbl): Promise<Array<T>> {
     return new Promise((resolve, reject) => {
-      this.execSql(itbl.slT(),false).then(data => {
+      this.execSql(itbl.slT()).then(data => {
         let arr : Array<T> = new Array<T>();
         if (data.rows && data.rows.length > 0 ){
           for (let j = 0, len = data.rows.length; j < len; j++) {
@@ -123,7 +130,7 @@ export class SqliteExec {
     return new Promise((resolve, reject) => {
       let arr : Array<T> = new Array<T>();
       console.log("getExtList执行SQL："+sql);
-      this.execSql(sql,false).then(data => {
+      this.execSql(sql).then(data => {
         if (data.rows && data.rows.length > 0 ){
           for (let j = 0, len = data.rows.length; j < len; j++) {
             arr.push(data.rows.item(j))
@@ -144,7 +151,7 @@ export class SqliteExec {
    */
   getOne<T>(itbl: ITbl): Promise<T> {
     return new Promise((resolve, reject) => {
-      return this.execSql(itbl.sloT(),false).then(data=>{
+      return this.execSql(itbl.sloT()).then(data=>{
         if (data.rows && data.rows.length > 0 ){
           resolve(data.rows.item(0));
         }else{
@@ -161,7 +168,7 @@ export class SqliteExec {
    */
   getExtOne<T>(sql: string): Promise<T> {
     return new Promise((resolve, reject) => {
-      return this.execSql(sql,false).then(data=>{
+      return this.execSql(sql).then(data=>{
         if (data.rows && data.rows.length > 0 ){
           resolve(data.rows.item(0));
         }else{
@@ -177,7 +184,7 @@ export class SqliteExec {
    * @returns {Promise<T>}
    */
   replaceT(itbl: ITbl): Promise<any> {
-    return this.execSql(itbl.rpT(),false)
+    return this.execSql(itbl.rpT())
   }
 
   async batExecSql(sqlist: Array<string>) {
@@ -201,7 +208,7 @@ export class SqliteExec {
         for (let j = 0, len = sqlist.length; j < len; j++) {
           if (sqlist[j] != null && sqlist[j] != '') {
             count++;
-            await this.execSql(sqlist[j],false);
+            await this.execSql(sqlist[j]);
           } else {
             //console.error("sqls["+i+"]: ("+sqls[i]+ "） ;sqlAll:"+sql);
           }
@@ -243,7 +250,7 @@ export class SqliteExec {
   //插入日志
    noteLog(log:LogTbl){
     if (DataConfig.isdebug){
-      this.execSql(log.inT(),true)
+      this.execSqllog(log.inT(),true);
     }
   }
 
@@ -275,7 +282,7 @@ export class SqliteExec {
 
       sql = sql + ` order by wtt desc`;
 
-      this.execSql(sql,true).then(data=>{
+      this.execSqllog(sql,true).then(data=>{
         let arr : Array<LogTbl> = new Array<LogTbl>();
         if (data.rows && data.rows.length > 0 ){
           for (let j = 0, len = data.rows.length; j < len; j++) {
