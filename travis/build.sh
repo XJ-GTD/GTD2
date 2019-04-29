@@ -26,5 +26,5 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
   ls $TRAVIS_BUILD_DIR/build/debug
   xcodebuild -exportArchive -archivePath $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.xcarchive -exportPath $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.ipa -exportOptionsPlist $TRAVIS_BUILD_DIR/travis/profiles/ios/exportOptions.plist | xcpretty
 else
-  ionic cordova build android
+  ionic cordova build android --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
 fi
