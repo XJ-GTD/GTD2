@@ -78,13 +78,12 @@ function clean(datasource)
     title: agenda['at'],
     url: 'http://u3v.cn/4sUKl3'
   }};
-  output['sms'] = sms;
   
   var standardnext = {};
   
   standardnext.announceTo = to;
   standardnext.announceType = 'agenda_from_share';
-  standardnext.announceContent = {mwxing:output};
+  standardnext.announceContent = {mwxing:output,sms:sms};
   
   print(standardnext);
   
