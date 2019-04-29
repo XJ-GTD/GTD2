@@ -1,7 +1,7 @@
 {
   "android": {
       "debug": {
-          "keystore": "./mwxing_debug.keystore",
+          "keystore": "../android/mwxing_debug.keystore",
           "storePassword": "Xj123456*",
           "alias": "mwxing_debug.keystore",
           "password" : "Xj123456*",
