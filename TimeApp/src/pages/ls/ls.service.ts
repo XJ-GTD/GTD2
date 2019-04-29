@@ -43,12 +43,12 @@ export class LsService {
 
       // 验证手机号及验证码
       this.authRestful.loginbypass(loginData).then(data => {
-        if (data.code != 0)
+        if(!data || data.code != 0)
           throw  data;
 
         resolve(data);
       }).catch(error=>{
-        resolve(error)
+        reject(error)
       })
     });
   }
@@ -61,28 +61,28 @@ export class LsService {
 
       //获得token，放入头部header登录
       this.personRestful.getToken(data.data.code).then(data=>{
-        //账户表赋值
-        aTbl.ai = data.openid;  //openid
-        aTbl.an = data.nickname;
-        aTbl.am = data.phoneno;
-        aTbl.ae = this.util.deviceId();
-        aTbl.at = data.access_token;
-        aTbl.aq = data.cmq;
-
-        //用户表赋值
-        uTbl.ai = data.openid;  //openid
-        uTbl.ui = data.unionid; //unionid
-        uTbl.un = data.nickname; //用户名（昵称）
-        uTbl.rn = data.name == undefined || data.name == "" ? data.nickname : data.name; //真实姓名
-        uTbl.us = data.sex == undefined || data.sex == "" ? "0" : data.sex; //性别
-        uTbl.biy = data.birthday == undefined || data.birthday == "" ? "" : data.birthday;  //出生日期
-        uTbl.ic = data.ic == undefined || data.ic == "" ? "" : data.ic;  //身份证
-        uTbl.uct = data.contact== undefined || data.contact == "" ? "" : data.contact;//  联系方式
-
         if(data && data.unionid != undefined && data.unionid != null && data.unionid != ""){
+          //账户表赋值
+          aTbl.ai = data.openid;  //openid
+          aTbl.an = data.nickname;
+          aTbl.am = data.phoneno;
+          aTbl.ae = this.util.deviceId();
+          aTbl.at = data.access_token;
+          aTbl.aq = data.cmq;
+
+          //用户表赋值
+          uTbl.ai = data.openid;  //openid
+          uTbl.ui = data.unionid; //unionid
+          uTbl.un = data.nickname; //用户名（昵称）
+          uTbl.rn = data.name == undefined || data.name == "" ? data.nickname : data.name; //真实姓名
+          uTbl.us = data.sex == undefined || data.sex == "" ? "0" : data.sex; //性别
+          uTbl.biy = data.birthday == undefined || data.birthday == "" ? "" : data.birthday;  //出生日期
+          uTbl.ic = data.ic == undefined || data.ic == "" ? "" : data.ic;  //身份证
+          uTbl.uct = data.contact== undefined || data.contact == "" ? "" : data.contact;//  联系方式
+
           return this.personRestful.getself(data.unionid);
         }else{
-          throw  data;
+          throw  "-1";
         }
       }).then(data=>{
         if(data && data.avatarbase64 != undefined && data.avatarbase64 != null && data.avatarbase64 != ""){
@@ -90,7 +90,7 @@ export class LsService {
           //删除账户表
           return this.sqlExec.delete(new ATbl());
         }else{
-          throw  data;
+          throw  "-1";
         }
       }).then(data=>{
         return this.sqlExec.save(aTbl);
@@ -102,7 +102,7 @@ export class LsService {
       }).then(data=>{
         resolve(data)
       }).catch(error=>{
-        resolve(error)
+        reject(error)
       })
     });
   }
@@ -118,7 +118,7 @@ export class LsService {
       }).then(data=>{
         resolve(data)
       }).catch(error=>{
-        resolve(error)
+        reject(error)
       })
     })
   }

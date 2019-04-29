@@ -25,11 +25,14 @@ export class RService {
         //登陆(密码)service登陆逻辑
         return this.lpService.login(rdata);
       }).then(data => {
-        if (data.code != 0)
+        if(!data || data.code != 0)
           throw  data;
 
         return this.lpService.getPersonMessage(data);
       }).then(data=>{
+        if (data == "-1")
+          throw data;
+
         return this.lpService.getOther();
       }).then(data => {
         resolve(data)
