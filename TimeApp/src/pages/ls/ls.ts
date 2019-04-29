@@ -81,7 +81,7 @@ export class LsPage {
         console.log("短信发送成功" + JSON.stringify(data));
         //短信验证码KEY 赋值给验证码登录信息
         this.login.verifykey = data.verifykey;
-        this.util.toastStart("短信发送成功",2000);
+        this.util.toastStart("短信发送成功",1500);
 
         this.timeText = 60;
         console.log("开始" + this.timeText + "定时器");
@@ -97,7 +97,7 @@ export class LsPage {
       }).catch(error => {
         clearTimeout(this.timer);
         this.timeText = "发送验证码";
-        //this.util.toastStart("短信发送失败",2000);
+        this.util.toastStart("短信发送失败",1500);
       });
 
     }
@@ -113,21 +113,26 @@ export class LsPage {
         this.util.loadingStart();
 
         this.lsService.login(this.login).then(data=> {
-          if (data.code != 0)
+          if(!data || data.code != 0)
             throw  data;
 
           return this.lsService.getPersonMessage(data);
         }).then(data=>{
+          if (data == "-1")
+            throw data;
+
           return this.lsService.getOther();
         }).then(data=>{
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
         }).catch(error=>{
           this.util.loadingEnd();
-          if(error && error.message != undefined && error.message != null && error.message != ""){
+          if(error && error.code && error.message != undefined && error.message != null && error.message != ""){
+            console.log(error.message);
             this.util.toastStart(error.message,1500);
           }else{
-            this.util.toastStart("手机验证码登录失败",1500);
+            console.log("手机验证码登录失败");
+            this.util.toastStart("网络异常",1500);
           }
         });
         

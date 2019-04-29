@@ -254,7 +254,7 @@ export class BrService {
 
     //刷新缓存数据
     await this.userConfig.RefreshYTbl();
-    await this.userConfig.RefreshFriend();
+    //await this.userConfig.RefreshFriend();
 
     // 刷新日历和一览
     this.emitService.emitRef('');

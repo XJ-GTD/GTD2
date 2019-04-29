@@ -22,7 +22,7 @@ export class PdService {
       //计划修改只修改日程特殊表的计划ID,计划所属日程数量统计需要调整 4/28 席理加
       //sql = 'select gc.si,gc.sn,gc.bz,gc.ji,gc.rt,gc.sr,sp.sd,sp.st,sp.et,sp.ed from gtd_c gc left join gtd_sp sp on gc.si = sp.si where gc.ji = "' + pid + '"  order by sp.sd';
       //修改后
-      sql = 'select gc.si,gc.sn,gc.bz,sp.ji ji,gc.rt,gc.sr,sp.sd,sp.st,sp.et,sp.ed from gtd_c gc left join gtd_sp sp on gc.si = sp.si where sp.ji = "' + pid + '"  order by sp.sd';
+      sql = 'select gc.si,gc.sn,sp.bz,sp.ji ji,gc.rt,gc.sr,sp.sd,sp.st,sp.et,sp.ed from gtd_c gc left join gtd_sp sp on gc.si = sp.si where sp.ji = "' + pid + '"  order by sp.sd';
       //修改结束 4/28 席理加
     }
 

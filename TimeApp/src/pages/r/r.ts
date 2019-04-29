@@ -136,7 +136,13 @@ export class RPage {
           this.navCtrl.setRoot(DataConfig.PAGE._M_PAGE);
         }).catch(error=>{
           this.util.loadingEnd();
-          this.util.toastStart(error.message,1500);
+          if(error && error.code && error.message != undefined && error.message != null && error.message != ""){
+            console.log(error.message);
+            this.util.toastStart(error.message,1500);
+          }else{
+            console.log("注册以及密码登录失败");
+            this.util.toastStart("网络异常",1500);
+          }
         });
       }
     }
