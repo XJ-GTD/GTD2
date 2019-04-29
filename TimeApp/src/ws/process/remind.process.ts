@@ -54,7 +54,7 @@ export class RemindProcess implements MQProcess {
   private async saveETbl1(rdData: RemindPara) {
     let etbl: ETbl = new ETbl();
     etbl.wi = this.utitl.getUuid();
-    etbl.st = DataConfig.RMNONESCD;
+    etbl.st = "闹铃";
     etbl.wd = rdData.d;
     etbl.wt = rdData.t;
 
