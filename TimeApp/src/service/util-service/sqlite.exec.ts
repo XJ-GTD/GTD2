@@ -3,6 +3,9 @@ import {SQLitePorter} from "@ionic-native/sqlite-porter";
 import {UtilService} from "../util-service/util.service";
 import {SqliteConfig} from "../config/sqlite.config";
 import {ITbl} from "../sqlite/tbl/itbl";
+import {LogTbl} from "../sqlite/tbl/log.tbl";
+import * as moment from "moment";
+import {DataConfig} from "../config/data.config";
 
 /**
  * create by on 2019/3/5
@@ -19,14 +22,28 @@ export class SqliteExec {
   /**
    * 执行语句
    */
-  execSql(sql: string): Promise<any> {
+  execSql(sql: string,nolog:boolean): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.sqlliteConfig.database.transaction(function (tx) {
+
+      let log:LogTbl = new LogTbl();
+      log.id = this.util.getUuid();
+      log.su = sql;
+      log.ss = new Date().valueOf();
+      log.t = 0;
+      this.sqlliteConfig.database.transaction( (tx)=> {
         tx.executeSql(sql, [], (tx, res) => {
+          if (!nolog){
+            log.ss = new Date().valueOf() - log.ss;
+            log.st = true;
+            this.noteLog(log);
+          }
           resolve(res);
         }, (tx, err) => {
-          console.log('error: ' + err.message);
-          console.log("sql: " + sql);
+          if (!nolog){
+            log.ss = new Date().valueOf() - log.ss;
+            log.st = true;
+            this.noteLog(log);
+          }
           resolve(err);
         });
       });
@@ -40,7 +57,7 @@ export class SqliteExec {
    * @returns {Promise<any>}
    */
   create(itbl: ITbl): Promise<any> {
-    return this.execSql(itbl.cT());
+    return this.execSql(itbl.cT(),false);
   }
 
   /**
@@ -49,7 +66,7 @@ export class SqliteExec {
    * @returns {Promise<any>}
    */
   drop(itbl: ITbl): Promise<any> {
-    return this.execSql(itbl.drT())
+    return this.execSql(itbl.drT(),false)
   }
 
   /**
@@ -58,14 +75,14 @@ export class SqliteExec {
    * @returns {Promise<any>}
    */
   save(itbl: ITbl): Promise<any> {
-    return this.execSql(itbl.inT())
+    return this.execSql(itbl.inT(),false)
   }
 
   /**
    * 更新
    */
   update(itbl: ITbl): Promise<any> {
-    return this.execSql(itbl.upT())
+    return this.execSql(itbl.upT(),false)
 
   }
 
@@ -75,8 +92,7 @@ export class SqliteExec {
    * @returns {Promise<any>}
    */
   delete(itbl: ITbl): Promise<number> {
-    console.log("delete执行SQL："+itbl.dT());
-    return this.execSql(itbl.dT())
+    return this.execSql(itbl.dT(),false)
   }
 
   /**
@@ -86,7 +102,7 @@ export class SqliteExec {
    */
   getList<T>(itbl: ITbl): Promise<Array<T>> {
     return new Promise((resolve, reject) => {
-      this.execSql(itbl.slT()).then(data => {
+      this.execSql(itbl.slT(),false).then(data => {
         let arr : Array<T> = new Array<T>();
         if (data.rows && data.rows.length > 0 ){
           for (let j = 0, len = data.rows.length; j < len; j++) {
@@ -107,7 +123,7 @@ export class SqliteExec {
     return new Promise((resolve, reject) => {
       let arr : Array<T> = new Array<T>();
       console.log("getExtList执行SQL："+sql);
-      this.execSql(sql).then(data => {
+      this.execSql(sql,false).then(data => {
         if (data.rows && data.rows.length > 0 ){
           for (let j = 0, len = data.rows.length; j < len; j++) {
             arr.push(data.rows.item(j))
@@ -128,7 +144,7 @@ export class SqliteExec {
    */
   getOne<T>(itbl: ITbl): Promise<T> {
     return new Promise((resolve, reject) => {
-      return this.execSql(itbl.sloT()).then(data=>{
+      return this.execSql(itbl.sloT(),false).then(data=>{
         if (data.rows && data.rows.length > 0 ){
           resolve(data.rows.item(0));
         }else{
@@ -145,7 +161,7 @@ export class SqliteExec {
    */
   getExtOne<T>(sql: string): Promise<T> {
     return new Promise((resolve, reject) => {
-      return this.execSql(sql).then(data=>{
+      return this.execSql(sql,false).then(data=>{
         if (data.rows && data.rows.length > 0 ){
           resolve(data.rows.item(0));
         }else{
@@ -161,7 +177,7 @@ export class SqliteExec {
    * @returns {Promise<T>}
    */
   replaceT(itbl: ITbl): Promise<any> {
-    return this.execSql(itbl.rpT())
+    return this.execSql(itbl.rpT(),false)
   }
 
   async batExecSql(sqlist: Array<string>) {
@@ -185,7 +201,7 @@ export class SqliteExec {
         for (let j = 0, len = sqlist.length; j < len; j++) {
           if (sqlist[j] != null && sqlist[j] != '') {
             count++;
-            await this.execSql(sqlist[j]);
+            await this.execSql(sqlist[j],false);
           } else {
             //console.error("sqls["+i+"]: ("+sqls[i]+ "） ;sqlAll:"+sql);
           }
@@ -202,26 +218,74 @@ export class SqliteExec {
    * @param {Array<string>} sqlist
    * @returns {Promise<any[]>}
    */
-  batchPromiseSql(arrLen,sqlist: Array<string>){
-    let pro:Array<Promise<any>> = new Array<Promise<any>>();
-    if(sqlist.length>arrLen){
-      let len = sqlist.length/arrLen;
-      len =Number(len.toString().split('.')[0]);
-      for(let i=0;i<arrLen;i++){
-        let sqla = new Array<string>();
-        if(i==arrLen-1){
-          sqla = sqlist.slice(i*len,sqlist.length);
-        }else{
-          sqla = sqlist.slice(i*len,i*len+len);
-        }
-        pro.push(this.batExecSql(sqla));
-      }
+  // batchPromiseSql(arrLen,sqlist: Array<string>){
+  //   let pro:Array<Promise<any>> = new Array<Promise<any>>();
+  //   if(sqlist.length>arrLen){
+  //     let len = sqlist.length/arrLen;
+  //     len =Number(len.toString().split('.')[0]);
+  //     for(let i=0;i<arrLen;i++){
+  //       let sqla = new Array<string>();
+  //       if(i==arrLen-1){
+  //         sqla = sqlist.slice(i*len,sqlist.length);
+  //       }else{
+  //         sqla = sqlist.slice(i*len,i*len+len);
+  //       }
+  //       pro.push(this.batExecSql(sqla));
+  //     }
+  //   }
+  //   return Promise.all(pro).then(values =>{
+  //       // 返回的values由 promiseX 与 promiseY返回的值所构成的数组。
+  //       console.log('batchPromiseSql:'+JSON.stringify(values));
+  //     })
+  // }
+
+
+  //插入日志
+   noteLog(log:LogTbl){
+    if (DataConfig.isdebug){
+      this.execSql(log.inT(),true)
     }
-    return Promise.all(pro).then(values =>{
-        // 返回的values由 promiseX 与 promiseY返回的值所构成的数组。
-        console.log('batchPromiseSql:'+JSON.stringify(values));
-      })
   }
 
+  //查看日志
+
+  getLogs(log:LogTbl):Promise<Array<LogTbl>>{
+    return new Promise<Array<LogTbl>>((resolve, reject) => {
+
+      let sql:string = `select id,su,ss,t,st,er,wtt from gtd_log where 1 = 1 `;
+      if (log.su){
+        sql = sql + ` and su = '${log.su}'`;
+      }
+      if (log.ss){
+        sql = sql + ` and ss > ${log.ss}`;
+      }
+
+      if (log.t){
+        sql = sql + ` and t >= ${log.t}`;
+      }
+      sql = sql + ` and st = ${log.st?1:0}`;
+
+      if (log.searchs){
+        sql = sql + ` and wtt >= ${log.searchs}`;
+      }
+
+      if (log.searche){
+        sql = sql + ` and wtt <= ${log.searchs}`;
+      }
+
+      sql = sql + ` order by wtt desc`;
+
+      this.execSql(sql,true).then(data=>{
+        let arr : Array<LogTbl> = new Array<LogTbl>();
+        if (data.rows && data.rows.length > 0 ){
+          for (let j = 0, len = data.rows.length; j < len; j++) {
+            arr.push(data.rows.item(j))
+          }
+        }
+        resolve(arr);
+      })
+    })
+
+  }
 
 }

@@ -17,6 +17,7 @@ import {SyncRestful} from "../restful/syncsev";
 import {StTbl} from "./tbl/st.tbl";
 import {BhTbl} from "./tbl/bh.tbl";
 import {JtTbl} from "./tbl/jt.tbl";
+import {LogTbl} from "./tbl/log.tbl";
 
 /**
  * create by on 2019/3/5
@@ -93,6 +94,10 @@ export class SqliteInit {
     let jt: JtTbl = new JtTbl();
     await this.sqlexec.drop(jt);
     await this.sqlexec.create(jt);
+
+    let log: LogTbl = new LogTbl();
+    await this.sqlexec.drop(log);
+    await this.sqlexec.create(log);
   }
 
 

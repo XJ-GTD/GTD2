@@ -6,6 +6,9 @@ import {ProcesRs} from "./model/proces.rs";
 import {EmitService} from "../service/util-service/emit.service";
 import * as moment from 'moment';
 import {DataConfig} from "../service/config/data.config";
+import {LogTbl} from "../service/sqlite/tbl/log.tbl";
+import {UtilService} from "../service/util-service/util.service";
+import {SqliteExec} from "../service/util-service/sqlite.exec";
 
 /**
  * 消息处理分发
@@ -14,11 +17,18 @@ import {DataConfig} from "../service/config/data.config";
  */
 @Injectable()
 export class DispatchService {
-  constructor(private factory: ProcessFactory, private emitService: EmitService,) {
+  constructor(private factory: ProcessFactory, private util: UtilService,private sqlite:SqliteExec) {
   }
 
   async dispatch(message: string) {
     //消息格式化
+
+    let log:LogTbl = new LogTbl();
+    log.id = this.util.getUuid();
+    log.su = message
+    log.ss = new Date().valueOf();
+    log.t = 2;
+
     let model: WsModel = JSON.parse(message);
     // console.log(moment().unix() - model.context.client.time);
     if (model.context && model.context.server)
@@ -31,6 +41,10 @@ export class DispatchService {
       wsContent.thisContext = model;
       process = await this.factory.getProcess(opt).go(wsContent, process);
     }
+
+    log.ss = new Date().valueOf() - log.ss;
+    log.st = true;
+    this.sqlite.noteLog(log);
     return;
   }
 }
