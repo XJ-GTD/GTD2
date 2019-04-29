@@ -41,8 +41,8 @@ export class AlService {
               private wsserivce: WebsocketService,
               private userConfig: UserConfig,
               private agdRestful: AgdRestful,
-              private contactsService:ContactsService,
-               private notificationsService:NotificationsService) {
+              private contactsService: ContactsService,
+              private notificationsService: NotificationsService) {
   }
 
 //权限申请
@@ -58,7 +58,7 @@ export class AlService {
 
 //创建或连接数据库
   createDB(): Promise<AlData> {
-    console.log(moment().add(DataConfig.REINTERVAL,"s").format("YYYY/MM/DD HH:mm"));
+    console.log(moment().add(DataConfig.REINTERVAL, "s").format("YYYY/MM/DD HH:mm"));
     let alData: AlData = new AlData();
     return new Promise((resolve, reject) => {
       this.sqlLiteConfig.generateDb().then(data => {
@@ -68,6 +68,8 @@ export class AlService {
     })
   }
 
+  version: number = -1;
+
 //判断是否初始化完成
   checkSystem(): Promise<AlData> {
     return new Promise(async (resolve, reject) => {
@@ -75,23 +77,21 @@ export class AlService {
       let alData: AlData = new AlData();
       let yTbl: YTbl = new YTbl();
       yTbl.yt = "FI";
-      this.sqlExce.getList<STbl>(yTbl).then(data => {
+      this.sqlExce.getList<YTbl>(yTbl).then(data => {
 
-        let stbls: Array<STbl> = data;
-        if (stbls.length > 0 && stbls[0].yv == "0") {
+        let stbls: Array<YTbl> = data;
+        if (stbls.length > 0) {
+          this.version = Number(stbls[0].yv);
 
           alData.text = "系统完成初始化";
-          alData.checkSystem = true;
           resolve(alData);
         } else {
           alData.text = "系统开始初始化";
-          alData.checkSystem = false;
           resolve(alData);
         }
 
       }).catch(err => {
         alData.text = "系统开始初始化";
-        alData.checkSystem = false;
         resolve(alData);
       })
     })
@@ -104,36 +104,56 @@ export class AlService {
 
       let alData: AlData = new AlData();
       //创建表结构
-     await this.sqlLiteInit.createTables();
+      if (this.version == -1) {
+        await this.sqlLiteInit.createTables();
 
-     await this.sqlLiteInit.initData();
-      let yTbl: YTbl = new YTbl();
-      yTbl.yi = this.util.getUuid();
-      yTbl.yt = "FI";
-      yTbl.yk = "FI";
-      yTbl.yv = "0";
-      await this.sqlExce.replaceT(yTbl);
+        //每次都先导入联系人
+        if (this.util.isMobile()) {
+          await this.contactsService.asyncPhoneContacts().then(data => {
+            //异步获取联系人信息
+            this.contactsService.updateFs();
+          })
+        }
 
-      this.notificationsService.badgeClear();
+        let yTbl: YTbl = new YTbl();
+        yTbl.yi = this.util.getUuid();
+        yTbl.yt = "FI";
+        yTbl.yk = "FI";
+        yTbl.yv = "0";
+        await this.sqlExce.save(yTbl);
+        this.version = 0;
 
-      //每次都先导入联系人
-      if (this.util.isMobile()) {
-        await  this.contactsService.asyncPhoneContacts().then(data=>{
-          //异步获取联系人信息
-          this.contactsService.updateFs();
-        })
+        await this.sqlLiteInit.initData();
+
+        this.notificationsService.badgeClear();
       }
+
+
+      //patch 修改DataConfig的version版本，只能改大，然后方法中例如createTablespath追加patch
+
+      while (DataConfig.version > this.version) {
+
+        await this.sqlLiteInit.createTablespath(this.version);
+        let yTbl: YTbl = new YTbl();
+        yTbl.yt = "FI";
+        let stbls: Array<YTbl> = await this.sqlExce.getList<YTbl>(yTbl);
+        yTbl.yi = stbls[0].yi;
+        yTbl.yv = (++this.version).toString();
+        await this.sqlExce.replaceT(yTbl);
+
+      }
+
 
       // 在浏览器测试时使用测试数据
       if (!this.util.isMobile()) {
         await this.createTestData();
       }
-      
+
       alData.text = "系统初始化完成";
+
       resolve(alData);
     })
   }
-
 
 
 //连接webSocket
@@ -205,7 +225,7 @@ export class AlService {
 
       let start = moment('2019/04/01');
       let sqls = [];
-      let stMap:Map<string,StTbl> = new Map<string,StTbl>();
+      let stMap: Map<string, StTbl> = new Map<string, StTbl>();
 
       //计划
       let jhs: Array<JhTbl> = [];
@@ -303,7 +323,7 @@ export class AlService {
       //参与人
       let btbls: Array<BTbl> = [];
       let btbl: BTbl = new BTbl();
-      let  bhtbl = new BhTbl();
+      let bhtbl = new BhTbl();
       btbl.pwi = this.util.getUuid();
       btbl.ran = '小胖子';
       btbl.ranpy = 'xiaopangzi';
@@ -318,7 +338,7 @@ export class AlService {
 
       bhtbl = new BhTbl();
       bhtbl.bhi = this.util.getUuid();
-      bhtbl.pwi =  btbl.pwi;
+      bhtbl.pwi = btbl.pwi;
       bhtbl.hiu = DataConfig.HUIBASE64;
       sqls.push(bhtbl.inT());
 
@@ -338,7 +358,7 @@ export class AlService {
 
       bhtbl = new BhTbl();
       bhtbl.bhi = this.util.getUuid();
-      bhtbl.pwi =  btbl.pwi;
+      bhtbl.pwi = btbl.pwi;
       bhtbl.hiu = DataConfig.HUIBASE64;
       sqls.push(bhtbl.inT());
 
@@ -357,7 +377,7 @@ export class AlService {
 
       bhtbl = new BhTbl();
       bhtbl.bhi = this.util.getUuid();
-      bhtbl.pwi =  btbl.pwi;
+      bhtbl.pwi = btbl.pwi;
       bhtbl.hiu = DataConfig.HUIBASE64;
       sqls.push(bhtbl.inT());
 
@@ -376,7 +396,7 @@ export class AlService {
 
       bhtbl = new BhTbl();
       bhtbl.bhi = this.util.getUuid();
-      bhtbl.pwi =  btbl.pwi;
+      bhtbl.pwi = btbl.pwi;
       bhtbl.hiu = DataConfig.HUIBASE64;
       sqls.push(bhtbl.inT());
 
@@ -395,7 +415,7 @@ export class AlService {
 
       bhtbl = new BhTbl();
       bhtbl.bhi = this.util.getUuid();
-      bhtbl.pwi =  btbl.pwi;
+      bhtbl.pwi = btbl.pwi;
       bhtbl.hiu = DataConfig.HUIBASE64;
       sqls.push(bhtbl.inT());
 
@@ -414,7 +434,7 @@ export class AlService {
 
       bhtbl = new BhTbl();
       bhtbl.bhi = this.util.getUuid();
-      bhtbl.pwi =  btbl.pwi;
+      bhtbl.pwi = btbl.pwi;
       bhtbl.hiu = DataConfig.HUIBASE64;
       sqls.push(bhtbl.inT());
 
@@ -433,7 +453,7 @@ export class AlService {
 
       bhtbl = new BhTbl();
       bhtbl.bhi = this.util.getUuid();
-      bhtbl.pwi =  btbl.pwi;
+      bhtbl.pwi = btbl.pwi;
       bhtbl.hiu = DataConfig.HUIBASE64;
       sqls.push(bhtbl.inT());
 
@@ -509,7 +529,7 @@ export class AlService {
 
       for (let i = 0; i < 1; i++) {
         start = moment('2019/01/01');
-        let r = this.util.randInt(-65 , 65);
+        let r = this.util.randInt(-65, 65);
         let t = this.util.randInt(0, 24);
         let jh_i = this.util.randInt(0, 20);
         let jh_id = "";
@@ -530,24 +550,20 @@ export class AlService {
         c.sn = ss[r_i];
         c.sd = d.format('YYYY/MM/DD');
         c.st = d.format('HH:mm');
-        if (c_r3 == 1){
-          c.ed = moment(c.sd).add(1,"y").format("YYYY/MM/DD");
+        if (c_r3 == 1) {
+          c.ed = moment(c.sd).add(1, "y").format("YYYY/MM/DD");
           c.rt = "1";
-        }
-        else if (c_r3 == 2){
-          c.ed = moment(c.sd).add(1,"y").format("YYYY/MM/DD");
+        } else if (c_r3 == 2) {
+          c.ed = moment(c.sd).add(1, "y").format("YYYY/MM/DD");
           c.rt = "2";
-        }
-        else if (c_r3 == 3){
-          c.ed = moment(c.sd).add(3,"y").format("YYYY/MM/DD");
+        } else if (c_r3 == 3) {
+          c.ed = moment(c.sd).add(3, "y").format("YYYY/MM/DD");
           c.rt = "3";
 
-        }
-        else if (c_r3 == 4){
-          c.ed = moment(c.sd).add(20,"y").format("YYYY/MM/DD");
+        } else if (c_r3 == 4) {
+          c.ed = moment(c.sd).add(20, "y").format("YYYY/MM/DD");
           c.rt = "4";
-        }
-        else {
+        } else {
           c.ed = c.sd;
           c.rt = "0";
         }
@@ -570,41 +586,41 @@ export class AlService {
         sqls.push(c.inT());
 
         let len = 0;
-        let add:unitOfTime.DurationConstructor;
+        let add: unitOfTime.DurationConstructor;
 
-        if(c.rt=='1'){
+        if (c.rt == '1') {
           len = 365;
-          add ='d';
+          add = 'd';
 
-        }else if(c.rt=='2'){
+        } else if (c.rt == '2') {
           len = 53;
           add = "w";
-        }else if(c.rt=='3'){
+        } else if (c.rt == '3') {
           len = 36;
           add = "M"
-        }else if(c.rt=='4'){
+        } else if (c.rt == '4') {
           len = 30;
           add = "y"
-        }else if(c.rt=='0'){
+        } else if (c.rt == '0') {
           len = 1;
           add = "d"
         }
-        let sql=new Array<string>();
-        for(let i=0;i<len;i++){
+        let sql = new Array<string>();
+        for (let i = 0; i < len; i++) {
           let sp = new SpTbl();
-          let eTbl:ETbl = new ETbl();
+          let eTbl: ETbl = new ETbl();
           sp.spi = this.util.getUuid();
           eTbl.wi = this.util.getUuid();
           sp.si = c.si;
           eTbl.si = sp.spi;
           eTbl.st = c.sn;
-          sp.sd = moment(c.sd).add(i,add).format("YYYY/MM/DD");
+          sp.sd = moment(c.sd).add(i, add).format("YYYY/MM/DD");
           sp.st = c.st;
-          let rem = moment(sp.sd + " " + sp.st).add(5,"m");
+          let rem = moment(sp.sd + " " + sp.st).add(5, "m");
           eTbl.wd = rem.format("YYYY/MM/DD");
           eTbl.wt = rem.format("HH:mm");
-          if (c.rt=='0')
-          sp.itx = 1;
+          if (c.rt == '0')
+            sp.itx = 1;
           else
             sp.itx = 0;
           sqls.push(sp.inT());
@@ -648,7 +664,7 @@ export class AlService {
 
       this.sqlExce.batExecSql(sqls).then(c => {
 
-        let sql:string =`delete from gtd_e where wd <= '${moment().subtract(1,"d").format("YYYY/MM/DD")}';`
+        let sql: string = `delete from gtd_e where wd <= '${moment().subtract(1, "d").format("YYYY/MM/DD")}';`
         console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" + sql);
         this.sqlExce.execSql(sql);
         resolve(true);

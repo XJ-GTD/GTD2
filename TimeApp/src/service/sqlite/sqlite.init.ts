@@ -27,6 +27,11 @@ export class SqliteInit {
 
 
   constructor(private sqlexec: SqliteExec, private util: UtilService, private syncRestful: SyncRestful) {
+    console.log("ha ha hah ha aha ha ")
+  }
+  ngOnInit(){
+    console.log("ha ha hah ha aha ha ")
+
   }
 
   /**
@@ -95,9 +100,19 @@ export class SqliteInit {
     await this.sqlexec.drop(jt);
     await this.sqlexec.create(jt);
 
-    let log: LogTbl = new LogTbl();
-    await this.sqlexec.drop(log);
-    await this.sqlexec.create(log);
+  }
+
+  /**
+   * 创建/更新表
+   * @param {string} updateSql 更新SQL
+   * @returns {Promise<any>}
+   */
+  async createTablespath(version:number) {
+    if (version == 0 ){
+      let log: LogTbl = new LogTbl();
+      await this.sqlexec.drop(log);
+      await this.sqlexec.create(log);
+    }
   }
 
 

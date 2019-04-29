@@ -48,9 +48,7 @@ export class AlPage {
     this.alData = await this.alService.checkAllPermissions();
     this.alData = await this.alService.createDB();
     this.alData = await this.alService.checkSystem();
-    if (!this.alData.checkSystem) {
-      this.alData = await this.alService.createSystemData();
-    }
+    this.alData = await this.alService.createSystemData();
     this.alData = await this.alService.setSetting();
     this.alData = await this.alService.checkUserInfo();
     if (!this.alData.islogin) {

@@ -35,6 +35,8 @@ import {LogPage} from "../../pages/log/log";
 
 export class DataConfig {
   public static isdebug: boolean  = true;
+  //2019/04/29
+  public static version:number = 1;
 
 
 

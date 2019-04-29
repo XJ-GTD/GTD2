@@ -342,7 +342,6 @@ export class PageGroupData extends  PageDcData{
 
 export class AlData {
   text: string;
-  checkSystem: boolean;
   islogin: boolean;
 }
 
