@@ -1,0 +1,302 @@
+{
+    "_id": ObjectID("5cc2e16b5913a8000756cc05"),
+    "name": "冥王星语音服务自然语言解析处理流短流程",
+    "trigger": "mwxing_inteligence_service_remote_start",
+    "parameters": [
+        "deviceId",
+        "userId",
+        "xunfeiyun"
+    ],
+    "follows": [
+        {
+            "name": "语义分析和人名处理都完成后处理",
+            "type": "composite",
+            "composite_with": [
+                "xfy_nlp_end",
+                "xfy_iat_end"
+            ],
+            "task": {
+                "name": "数据清洗与转换 整合迅飞语音和人名识别的结果",
+                "trigger": "acj",
+                "parameters": [
+                    "ruleid;MWXING_XUNFEI_C0005_V1_1",
+                    "datasource;$.parent.outputs"
+                ],
+                "outputs": [
+                    "cleaned"
+                ],
+                "next": [
+                    {
+                        "name": "中文拼音转换参与人姓名",
+                        "trigger": "pin",
+                        "parameters": [
+                            "type;IN_DATA_COVERAGE",
+                            "data;$.parent.outputs.cleaned",
+                            "text-paths;json-path.announceContent.mwxing.content..parameters.fs[*].n"
+                        ],
+                        "outputs": [
+                            "pinyin"
+                        ],
+                        "next": [
+                            {
+                                "name": "冥王星通知服务",
+                                "trigger": "ann",
+                                "parameters": [
+                                    "announceTo;$.parent.outputs.pinyin.announceTo",
+                                    "announceType;$.parent.outputs.pinyin.announceType",
+                                    "announceContent;$.parent.outputs.pinyin.announceContent"
+                                ],
+                                "outputs": [
+                                    "result"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "when": {
+                "d$and": [
+                {
+                  "d$.parent.parameters.xunfeiyun": {
+                      "data": {
+                          "d$exists": true
+                      }
+                  }
+                },
+                {
+                  "d$.parent.parameters.xunfeiyun.data": {
+                      "d$length": {
+                          "d$gt": 0
+                      }
+                  }
+                },
+                {
+                  "d$or": [
+                      {
+                          "d$.parent.parameters.xunfeiyun.data[0]": {
+                              "text": {
+                                  "d$exists": true
+                              }
+                          }
+                      },
+                      {
+                          "d$.parent.parameters.xunfeiyun.data[0].intent": {
+                              "text": {
+                                  "d$exists": true
+                              }
+                          }
+                      }
+                  ]
+                }]
+            },
+            "name": "取得文本中的中文人名",
+            "trigger": "nlp",
+            "parameters": [
+                "function;NlpAnalysis",
+                "text;$.parent.parameters.xunfeiyun.data[0].text;$.parent.parameters.xunfeiyun.data[0].intent.text"
+            ],
+            "outputs": [
+                "function",
+                "text",
+                "parsed"
+            ],
+            "next": [
+                {
+                    "type": "forward",
+                    "forward_with": [
+                        "xfy_iat_end"
+                    ]
+                }
+            ]
+        },
+        {
+            "when": {
+            "d$or" : [
+                    {
+                      "d$.parent.parameters.xunfeiyun": {
+                          "data": {
+                              "d$exists": false
+                          }
+                      }
+                    },
+                    {
+                      "d$.parent.parameters.xunfeiyun.data": {
+                          "d$length": {
+                              "d$lte": 0
+                          }
+                      }
+                    },
+                {"d$and": [
+                    {
+                        "d$.parent.parameters.xunfeiyun.data[0]": {
+                            "text": {
+                                "d$exists": false
+                            }
+                        }
+                    },
+                    {
+                        "d$.parent.parameters.xunfeiyun.data[0].intent": {
+                            "text": {
+                                "d$exists": false
+                            }
+                        }
+                    }
+                ]}
+                ]
+            },
+            "name": "取得文本中的中文人名",
+            "trigger": "nlp",
+            "parameters": [
+                "function;NlpAnalysis",
+                "text; "
+            ],
+            "outputs": [
+                "function",
+                "text",
+                "parsed"
+            ],
+            "next": [
+                {
+                    "type": "forward",
+                    "forward_with": [
+                        "xfy_iat_end"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "数据清洗与转换 迅飞返回结果格式整理",
+            "trigger": "acj",
+            "parameters": [
+                "datasource;$.parent.parameters.xunfeiyun"
+            ],
+            "outputs": [
+                "cleaned"
+            ],
+            "next": [
+                {
+                    "when": {
+                        "d$.parent.outputs.cleaned": {
+                            "function": {
+                                "d$exists": false
+                            }
+                        }
+                    },
+                    "type": "forward",
+                    "forward_with": [
+                        "xfy_nlp_end"
+                    ]
+                },
+                {
+                    "when": {
+                        "d$and": [
+                            {
+                                "d$.parent.outputs.cleaned": {
+                                    "d$and": [
+                                        {
+                                            "function": {
+                                                "d$exists": true
+                                            }
+                                        },
+                                        {
+                                            "function": {
+                                                "d$ne": "summary"
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "d$.parent.outputs.cleaned": {
+                                    "hasnotask": {
+                                        "d$eq": false
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "name": "借贷处理返回结果转换",
+                    "trigger": "acj",
+                    "parameters": [
+                        "ruleid;MWXING_XUNFEI_L0005_V1_1",
+                        "datasource;$.parent.outputs.cleaned"
+                    ],
+                    "outputs": [
+                        "cleaned"
+                    ],
+                    "next": [
+                        {
+                            "type": "forward",
+                            "forward_with": [
+                                "xfy_nlp_end"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "when": {
+                        "d$and": [
+                            {
+                                "d$.parent.outputs.cleaned": {
+                                    "function": {
+                                        "d$exists": true
+                                    }
+                                }
+                            },
+                            {
+                                "d$.parent.outputs.cleaned": {
+                                    "d$or": [
+                                        {
+                                            "hasnotask": {
+                                                "d$eq": true
+                                            }
+                                        },
+                                        {
+                                            "function": {
+                                                "d$eq": "summary"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    "name": "借贷处理",
+                    "trigger": "bal",
+                    "parameters": [
+                        "accountid;$.parent.outputs.cleaned.accountid",
+                        "function;$.parent.outputs.cleaned.function",
+                        "_context;$.parent.outputs.cleaned._context",
+                        "data;$.parent.outputs.cleaned.data"
+                    ],
+                    "outputs": [
+                        "debtsandclaims"
+                    ],
+                    "next": [
+                        {
+                            "name": "借贷处理返回结果转换",
+                            "trigger": "acj",
+                            "parameters": [
+                                "ruleid;MWXING_XUNFEI_L0005_V1_1",
+                                "datasource;$.parent.outputs.debtsandclaims"
+                            ],
+                            "outputs": [
+                                "cleaned"
+                            ],
+                            "next": [
+                                {
+                                    "type": "forward",
+                                    "forward_with": [
+                                        "xfy_nlp_end"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -4,6 +4,7 @@ import {DispatchService} from "./dispatch.service";
 import {Injectable, NgModule} from "@angular/core";
 import {UserConfig} from "../service/config/user.config";
 import * as async from "async/dist/async.js"
+import {RestFulConfig} from "../service/config/restful.config";
 
 
 /**
@@ -14,8 +15,8 @@ import * as async from "async/dist/async.js"
 @Injectable()
 @NgModule()
 export class WebsocketService {
-  RABBITMQ_WS_URL: string = "wss://www.guobaa.com/ws";
-
+  // RABBITMQ_WS_URL: string = "wss://www.guobaa.com/ws";
+  RABBITMQ_WS_URL: string = "";
   //登陆账户
   private login: string;
   private password: string;
@@ -28,7 +29,7 @@ export class WebsocketService {
   workqueue:any;
   message:number;
 
-  constructor(private dispatchService: DispatchService) {
+  constructor(private dispatchService: DispatchService,private config: RestFulConfig) {
     this.workqueue = async.queue( ({message,index},callback) =>{
       this.dispatchService.dispatch(message).then(data=>{
         callback();
@@ -50,6 +51,8 @@ export class WebsocketService {
 
       this.login = "gtd_mq";
       this.password = "gtd_mq";
+      //获取webSocket连接地址
+      this.RABBITMQ_WS_URL = this.config.getRestFulUrl("WSA").url;
       //获取websocte 链接
       this.client = Stomp.client(this.RABBITMQ_WS_URL);
       this.client.reconnect_delay = 1000;
@@ -70,12 +73,12 @@ export class WebsocketService {
   public connect(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       let delay = 1000 * Math.pow(2, this.failedtimes);
-      
+
       // 最长等待5分钟再连接
       delay = (delay > 1000 * 60 * 5) ? (1000 * 60 * 5) : delay;
-      
+
       if (this.timer) clearTimeout(this.timer);
-      
+
       // 延迟重连动作,防止重连死循环
       this.timer = setTimeout(()=>{
         this.settingWs().then(data => {

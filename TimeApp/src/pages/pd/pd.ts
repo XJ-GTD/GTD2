@@ -6,6 +6,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {PagePDPro} from "../../data.mapping";
 import {PlanPa} from "../../service/restful/shaesev";
 import * as moment from "moment";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the 计划展示 page.
@@ -127,8 +128,9 @@ export class PdPage {
           handler: () => {
             this.pdService.sharePlan(this.plan).then(data=>{
               console.log("分享地址是："+JSON.stringify(data.psurl));
-              this.clipboard.copy(data.psurl);
-              this.util.popoverStart("复制成功");
+              let sharecontent = "【冥王星】" + UserConfig.user.name + "分享了" + this.plan.jn + "\n\r" + data.psurl;
+              this.clipboard.copy(sharecontent);
+              this.util.popoverStart("分享地址已复制到剪贴板,粘贴到手机浏览器查看,或直接粘贴到微信、QQ与朋友分享。");
             }).catch(res=>{
               this.util.popoverStart('分享失败');
             });

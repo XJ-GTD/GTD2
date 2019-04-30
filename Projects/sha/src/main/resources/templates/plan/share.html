@@ -215,7 +215,7 @@ body {
   <h1 class="text-center" th:text="${plan.pn.getString('pt')}">分享计划</h1>
   </div>
 
-  <div th:each="agenda,iterStat : ${plan.pa}" class="d-flex flex-row justify-content-center mt-2" th:classappend="${(#calendars.format(today,'yyyy-MM-dd') > #strings.substring(agenda.getString('adt'),0,10))? 'agenda-card-past' : 'agenda-card'}">
+  <div th:each="agenda,iterStat : ${plan.pa}" class="d-flex flex-row justify-content-center mt-2" th:classappend="${(#calendars.format(today,'yyyy/MM/dd') > #strings.substring(agenda.getString('adt'),0,10))? 'agenda-card-past' : 'agenda-card'}">
   <div class="container-fluid">
     <div th:if="${(iterStat.index == 0) or (#strings.substring(agenda.getString('adt'),0,4) != #strings.substring(plan.pa.getJsonObject(iterStat.index - 1).getString('adt'),0,4))}" class="d-flex flex-row justify-content-start mb-2">
       <h3 style="color: #666666;" th:text="${#strings.substring(agenda.getString('adt'),0,4)}">1900</h3>

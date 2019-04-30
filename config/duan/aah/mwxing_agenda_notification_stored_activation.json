@@ -1,0 +1,44 @@
+{
+    "_id": ObjectID("5cc2e1b85913a8000756cc07"),
+    "name": "冥王星共享日程通知缓存激活处理流",
+    "trigger": "mwxing_agenda_notification_stored_activation",
+    "parameters": [
+        "openid"
+    ],
+    "follows": [
+        {
+            "name": "查询缓存的激活参数",
+            "trigger": "aak",
+            "parameters": [
+                "operation;fetch",
+                "saprefix;ann",
+                "collection;stored_for_register",
+                "query;$.parent.parameters"
+            ],
+            "outputs": [
+                "stored"
+            ],
+            "next": [
+                {
+                    "type": "loop",
+                    "variable": "image;$.parent.outputs.stored[*]",
+                    "start": "0",
+                    "end": "size",
+                    "task": {
+                        "name": "冥王星通知服务",
+                        "trigger": "ann",
+                        "parameters": [
+                            "cache;false",
+                            "announceTo;$.parent.outputs.stored[##announceTo_value##].announceTo",
+                            "announceType;$.parent.outputs.stored[##announceType_value##].announceType",
+                            "announceContent;$.parent.outputs.stored[##announceContent_value##].announceContent"
+                        ],
+                        "outputs": [
+                            "result"
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

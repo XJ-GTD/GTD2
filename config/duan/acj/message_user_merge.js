@@ -25,9 +25,9 @@ function clean(datasource)
   print(JSON.stringify(userinfo));
 
   if (userinfo && userinfo['type'] === 'JsonObject' && userinfo['response'] && userinfo['response']['data'] && userinfo['response']['data']['name']) {
-    message['announceContent']['mwxing']['sms']['template']['name'] = userinfo['response']['data']['name'];
+    message['announceContent']['sms']['template']['name'] = userinfo['response']['data']['name'];
   } else {
-    message['announceContent']['mwxing']['sms']['template']['name'] = '冥王星用户';
+    message['announceContent']['sms']['template']['name'] = '冥王星用户';
   }
   
   print(JSON.stringify(message));

@@ -47,7 +47,7 @@ import {Keyboard} from "@ionic-native/keyboard";
         <ion-item class="bg-right-img">
           <ion-label>生日</ion-label>
           <ion-datetime displayFormat="YYYY-MM-DD" item-end text-end [(ngModel)]="birthday"
-                        min="1949-01-01" max="2039-12-31"  cancelText="取消" doneText = "确认" (ionCancel)="getDtPickerSel($event)"></ion-datetime>
+                        min="1949-01-01" max="2039-12-31"  cancelText="取消" doneText = "确认" (ionChange)="getDtPickerSel($event)"></ion-datetime>
         </ion-item>
         <ion-item class="bg-right-img">
           <ion-label>身份证</ion-label>
