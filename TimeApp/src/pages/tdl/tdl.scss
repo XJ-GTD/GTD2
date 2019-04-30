@@ -154,6 +154,7 @@ page-tdl {
     text-align: center;
     box-shadow: 0px 0px 10px 0px $baseBackColor;
     padding-top: constant(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
 
     .headerY {
       font-size: 10px;
