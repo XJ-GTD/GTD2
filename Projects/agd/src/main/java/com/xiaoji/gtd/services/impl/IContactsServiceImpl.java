@@ -160,6 +160,8 @@ public class IContactsServiceImpl implements IContactsService {
 //			        }
 //			        
 //				}
+			}else{
+				log.error("======== 日程信息不全：" + JSONObject.toJSONString(inDto));
 			}
 			
 		}else{

@@ -80,7 +80,7 @@ export class PersonRestful {
 
       }).catch(error => {
         //处理返回错误
-        reject();
+        reject(error);
 
       })
     });
@@ -103,7 +103,7 @@ export class PersonRestful {
 
       }).catch(error => {
         //处理返回错误
-        reject();
+        reject(error);
 
       })
     });
@@ -126,7 +126,7 @@ export class PersonRestful {
 
       }).catch(error => {
         //处理返回错误
-        reject();
+        reject(error);
 
       })
     });
@@ -149,7 +149,7 @@ export class PersonRestful {
 
       }).catch(error => {
         //处理返回错误
-        reject();
+        reject(error);
 
       })
     });
@@ -172,7 +172,7 @@ export class PersonRestful {
 
       }).catch(error => {
         //处理返回错误
-        reject();
+        reject(error);
 
       })
     });
