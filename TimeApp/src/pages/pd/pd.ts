@@ -127,7 +127,8 @@ export class PdPage {
           handler: () => {
             this.pdService.sharePlan(this.plan).then(data=>{
               console.log("分享地址是："+JSON.stringify(data.psurl));
-              this.clipboard.copy(data.psurl);
+              let sharecontent = "【冥王星】" + UserConfig.user.name + "分享了" + this.plan.jn + "\n\r" + data.psurl;
+              this.clipboard.copy(sharecontent);
               this.util.popoverStart("分享地址已复制到剪贴板,粘贴到手机浏览器查看,或直接粘贴到微信、QQ与朋友分享。");
             }).catch(res=>{
               this.util.popoverStart('分享失败');
