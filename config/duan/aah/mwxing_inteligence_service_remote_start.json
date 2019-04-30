@@ -56,11 +56,101 @@
             }
         },
         {
+            "when": {
+                "d$and": [
+                {
+                  "d$.parent.parameters.xunfeiyun": {
+                      "data": {
+                          "d$exists": true
+                      }
+                  }
+                },
+                {
+                  "d$.parent.parameters.xunfeiyun.data": {
+                      "d$length": {
+                          "d$gt": 0
+                      }
+                  }
+                },
+                {
+                  "d$or": [
+                      {
+                          "d$.parent.parameters.xunfeiyun.data[0]": {
+                              "text": {
+                                  "d$exists": true
+                              }
+                          }
+                      },
+                      {
+                          "d$.parent.parameters.xunfeiyun.data[0].intent": {
+                              "text": {
+                                  "d$exists": true
+                              }
+                          }
+                      }
+                  ]
+                }]
+            },
             "name": "取得文本中的中文人名",
             "trigger": "nlp",
             "parameters": [
                 "function;NlpAnalysis",
                 "text;$.parent.parameters.xunfeiyun.data[0].text;$.parent.parameters.xunfeiyun.data[0].intent.text"
+            ],
+            "outputs": [
+                "function",
+                "text",
+                "parsed"
+            ],
+            "next": [
+                {
+                    "type": "forward",
+                    "forward_with": [
+                        "xfy_iat_end"
+                    ]
+                }
+            ]
+        },
+        {
+            "when": {
+            "d$or" : [
+                    {
+                      "d$.parent.parameters.xunfeiyun": {
+                          "data": {
+                              "d$exists": false
+                          }
+                      }
+                    },
+                    {
+                      "d$.parent.parameters.xunfeiyun.data": {
+                          "d$length": {
+                              "d$lte": 0
+                          }
+                      }
+                    },
+                {"d$and": [
+                    {
+                        "d$.parent.parameters.xunfeiyun.data[0]": {
+                            "text": {
+                                "d$exists": false
+                            }
+                        }
+                    },
+                    {
+                        "d$.parent.parameters.xunfeiyun.data[0].intent": {
+                            "text": {
+                                "d$exists": false
+                            }
+                        }
+                    }
+                ]}
+                ]
+            },
+            "name": "取得文本中的中文人名",
+            "trigger": "nlp",
+            "parameters": [
+                "function;NlpAnalysis",
+                "text; "
             ],
             "outputs": [
                 "function",
