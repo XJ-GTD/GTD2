@@ -27,11 +27,6 @@ export class SqliteInit {
 
 
   constructor(private sqlexec: SqliteExec, private util: UtilService, private syncRestful: SyncRestful) {
-    console.log("ha ha hah ha aha ha ")
-  }
-  ngOnInit(){
-    console.log("ha ha hah ha aha ha ")
-
   }
 
   /**

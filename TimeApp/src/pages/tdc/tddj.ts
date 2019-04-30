@@ -480,7 +480,8 @@ export class TddjPage {
       if (data == null){
         return;
       }
-      this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
+      this.modalCtrl.create(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si}).present();
+      //this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
     });
 
   }

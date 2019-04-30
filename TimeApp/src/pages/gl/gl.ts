@@ -76,7 +76,7 @@ export class GlPage {
 
   toGroupMember(g){
     console.log('GlPage =======跳转: GcPage');
-    this.navCtrl.push(DataConfig.PAGE._GC_PAGE,{g:g});
+    this.modalCtrl.create(DataConfig.PAGE._GC_PAGE,{g:g}).present();
   }
 
   toGroupCreate(){

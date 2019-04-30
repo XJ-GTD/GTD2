@@ -450,7 +450,7 @@ export class TdcPage {
         return;
       }
       this.scd.si = newscd.si;
-      this.navCtrl.push(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si});
+      this.modalCtrl.create(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si}).present();
       return;
   }
 
