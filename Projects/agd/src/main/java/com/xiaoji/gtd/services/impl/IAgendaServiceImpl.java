@@ -91,6 +91,7 @@ public class IAgendaServiceImpl implements IAgendaService {
 		log.info("------保存日程AgdAgenda: ------" + JSONObject.toJSONString(agd));
 		agd = agdAgenda.save(agd);
 		List<AgdAgendaContacts> agdList = agdContactsRep.findContactsByRelId(inDto.getAi());
+		log.info("------日程参与人: ------" + JSONObject.toJSONString(agdList));
 		if (agdList != null && agdList.size() > 0) {
 			List<AgdContactsDto> agdOList = new ArrayList<AgdContactsDto>();
 			for (AgdAgendaContacts agdAgendaContacts : agdList) {
