@@ -4,6 +4,9 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     # fir on macOS
     #fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/app/build/outputs/apk/debug/app-debug.apk -T $FIR_TOKEN
     ls -la $TRAVIS_BUILD_DIR/build/debug
+    cat ./DistributionSummary.plist
+    cat ./ExportOptions.plist
+    cat ./Packaging.log
     fir publish $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.ipa -T $FIR_TOKEN
 else
     # fir on Linux
