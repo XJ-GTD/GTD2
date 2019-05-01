@@ -24,7 +24,7 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
   mkdir -p $TRAVIS_BUILD_DIR/build/debug
   xcodebuild archive -archivePath $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.xcarchive -workspace $IOS_APP_NAME.xcworkspace -scheme $IOS_APP_NAME build -sdk iphoneos -configuration Debug CODE_SIGN_RESOURCE_RULES_PATH='$(PROJECT_DIR)/$(PROJECT_NAME)/Entitlements-$(CONFIGURATION).plist' CODE_SIGN_IDENTITY="$IOS_DEVELOPER_NAME" PROVISIONING_PROFILE="$IOS_PROFILE_NAME" ONLY_ACTIVE_ARCH=NO | xcpretty
   ls $TRAVIS_BUILD_DIR/build/debug
-  xcodebuild -exportArchive -archivePath $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.xcarchive -exportPath $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.ipa -exportOptionsPlist $TRAVIS_BUILD_DIR/travis/profiles/ios/exportOptions.plist | xcpretty
+  xcodebuild -exportArchive -archivePath $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.xcarchive -exportPath $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.ipa -exportOptionsPlist '$(PROJECT_DIR)/$(PROJECT_NAME)/Entitlements-$(CONFIGURATION).plist' | xcpretty
 else
   ionic cordova build android --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
 fi
