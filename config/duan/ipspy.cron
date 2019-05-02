@@ -1,1 +1,1 @@
-*/10 * * * * root bash /opt/duan/ipspy.sh
+*/1 * * * * /bin/bash /opt/duan/ipspy.sh
