@@ -1,0 +1,102 @@
+version: "3.3"
+services:
+  sa-amq:
+    image: 192.168.0.158:5000/xiaoji-sa-amq
+    hostname: sa-amq
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+  sa-cdc:
+    image: 192.168.0.158:5000/xiaoji-sa-cdc
+    hostname: sa-cdc
+    configs:
+      - source: cdc_config
+        target: /usr/verticles/cdc.json
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+  sa-aah:
+    image: 192.168.0.158:5000/xiaoji-sa-aah
+    hostname: sa-aah
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+  sa-acj:
+    image: 192.168.0.158:5000/xiaoji-sa-acj
+    hostname: sa-acj
+    configs:
+      - source: acj_config
+        target: /usr/verticles/acj.json
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+  sa-nlp:
+    image: 192.168.0.158:5000/xiaoji-sa-nlp
+    hostname: sa-nlp
+    configs:
+      - source: nlp_config
+        target: /usr/verticles/nlp.json
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+  sa-pin:
+    image: 192.168.0.158:5000/xiaoji-sa-pin
+    hostname: sa-pin
+    configs:
+      - source: pin_config
+        target: /usr/verticles/pin.json
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+  sa-ann:
+    image: 192.168.0.158:5000/xiaoji-sa-ann
+    hostname: sa-ann
+    configs:
+      - source: ann_config
+        target: /usr/verticles/ann.json
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+configs:
+  cdc_config:
+    file: ./cdc/cdc.json
+  nlp_config:
+    file: ./nlp/nlp.json
+  acj_config:
+    file: ./acj/acj.json
+  ann_config:
+    file: ./ann/ann.json
+  pin_config:
+    file: ./pin/pin.json
+
+networks:
+  mwxing-network-overlay:
+    external: true
