@@ -16,6 +16,8 @@ services:
     configs:
       - source: cdc_config
         target: /usr/verticles/cdc.json
+    depends_on:
+      - sa-amq
 
     networks:
       - mwxing-network-overlay
@@ -26,6 +28,8 @@ services:
   sa-aah:
     image: 192.168.0.158:5000/xiaoji-sa-aah
     hostname: sa-aah
+    depends_on:
+      - sa-amq
 
     networks:
       - mwxing-network-overlay
@@ -39,6 +43,8 @@ services:
     configs:
       - source: acj_config
         target: /usr/verticles/acj.json
+    depends_on:
+      - sa-amq
 
     networks:
       - mwxing-network-overlay
@@ -52,6 +58,8 @@ services:
     configs:
       - source: nlp_config
         target: /usr/verticles/nlp.json
+    depends_on:
+      - sa-amq
 
     networks:
       - mwxing-network-overlay
@@ -65,6 +73,8 @@ services:
     configs:
       - source: pin_config
         target: /usr/verticles/pin.json
+    depends_on:
+      - sa-amq
 
     networks:
       - mwxing-network-overlay
@@ -78,6 +88,8 @@ services:
     configs:
       - source: ann_config
         target: /usr/verticles/ann.json
+    depends_on:
+      - sa-amq
 
     networks:
       - mwxing-network-overlay

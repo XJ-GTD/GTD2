@@ -29,6 +29,18 @@ services:
       placement:
         constraints: [node.labels.func == vmcos110]
 
+  amq-nginx:
+    image: 192.168.0.158:5000/xiaoji-amq-nginx
+    hostname: amq-nginx
+    ports:
+      - 8161:80
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.labels.func == vmcos110]
+
   zuulserver:
     image: 192.168.0.158:5000/xiaoji-zuulserver
     hostname: zuulserver

@@ -25,7 +25,7 @@
 {"name":"PU", "value":"https://pluto.guobaa.com/sha/planshare", "desc":"计划上传"},
 {"name":"PEW", "value":"https://pluto.guobaa.com/sha/plan/share/{shareid}", "desc":"计划网页浏览"},
 {"name":"BIPD", "value":"https://pluto.guobaa.com/sha/plan/buildin/download", "desc":"内建计划下载"},
-{"name":"WSA", "value":"ws://pluto.guobaa.com/ws", "desc":"WebSocket地址"},
+{"name":"WSA", "value":"wss://pluto.guobaa.com/ws", "desc":"WebSocket地址"},
 {"name":"POW", "value":"https://pluto.guobaa.com/cal/index", "desc":"产品官网"},
 {"name":"PP", "value":"https://pluto.guobaa.com/cal/doc/privatepolicy", "desc":"隐私政策"},
 {"name":"UP", "value":"https://pluto.guobaa.com/cal/doc/userproxy", "desc":"使用协议"},
