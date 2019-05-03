@@ -24,10 +24,10 @@ export class PersonRestful {
       urlEntity.key = url.key;
       urlEntity.desc = url.desc;
       // 根据请求URL判断使用不同的AppId和Secret
-      if (url.url.indexOf(this.config.MWXING_SERVICE_WWW_SITE) > 0) {
-        urlEntity.url = urlEntity.url + '?appid=' + this.config.MWXING_SERVICE_WWW_APPID + '&secret=' + this.config.MWXING_SERVICE_WWW_SECRET + '&code='+ code +'&grant_type=any';
+      if (url.url.indexOf(RestFulConfig.MWXING_SERVICE_WWW_SITE) > 0) {
+        urlEntity.url = urlEntity.url + '?appid=' + RestFulConfig.MWXING_SERVICE_WWW_APPID + '&secret=' + RestFulConfig.MWXING_SERVICE_WWW_SECRET + '&code='+ code +'&grant_type=any';
       } else {
-        urlEntity.url = urlEntity.url + '?appid=' + this.config.MWXING_SERVICE_PLUTO_APPID + '&secret=' + this.config.MWXING_SERVICE_PLUTO_SECRET + '&code='+ code +'&grant_type=any';
+        urlEntity.url = urlEntity.url + '?appid=' + RestFulConfig.MWXING_SERVICE_PLUTO_APPID + '&secret=' + RestFulConfig.MWXING_SERVICE_PLUTO_SECRET + '&code='+ code +'&grant_type=any';
       }
       return this.request.get(urlEntity).then(data => {
         //处理返回结果
