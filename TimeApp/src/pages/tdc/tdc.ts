@@ -145,7 +145,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           <button ion-button block icon-only (click)="save()" end>
             <ion-icon name="checkmark"></ion-icon>
           </button>
-
+        </ion-buttons>
       </ion-toolbar>
     </ion-footer>
 
