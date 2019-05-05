@@ -9,7 +9,8 @@ import {UtilService} from "../util-service/util.service";
  */
 @Injectable()
 export class SyncRestful {
-  private initDataUrl: string = "https://www.guobaa.com/ini/parameters?debug=true";
+  //private initDataUrl: string = "https://www.guobaa.com/ini/parameters?debug=true";
+  private initDataUrl: string = "https://www.guobaa.com/ini/parameters";
 
   constructor(private request: RestfulClient, private uitl: UtilService) {
   }
