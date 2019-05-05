@@ -665,7 +665,6 @@ export class AlService {
       this.sqlExce.batExecSql(sqls).then(c => {
 
         let sql: string = `delete from gtd_e where wd <= '${moment().subtract(1, "d").format("YYYY/MM/DD")}';`
-        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" + sql);
         this.sqlExce.execSql(sql);
         resolve(true);
       });
