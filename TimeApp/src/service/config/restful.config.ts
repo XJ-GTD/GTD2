@@ -62,6 +62,16 @@ export class RestFulConfig {
   // private static REQUEST_URL: UrlEntity = new UrlEntity("http://192.168.99.21:8080/gtd",false);//连接本地数据库
   // private static REQUEST_URL: UrlEntity = new UrlEntity("https://www.guobaa.com/gtd",false);
 
+  /* 短应用服务APPID,SECRET for www.guobaa.com */
+  public static MWXING_SERVICE_WWW_SITE = "www.guobaa.com";
+  public static MWXING_SERVICE_WWW_APPID = "d3d3Lmd1b2JhYS5jb20";
+  public static MWXING_SERVICE_WWW_SECRET = "c2VjcmV0QHd3dy5ndW9iYWEuY29t";
+  
+  /* 短应用服务APPID,SECRET for pluto.guobaa.com */
+  public static MWXING_SERVICE_PLUTO_SITE = "pluto.guobaa.com";
+  public static MWXING_SERVICE_PLUTO_APPID = "cGx1dG8uZ3VvYmFhLmNvbQ";
+  public static MWXING_SERVICE_PLUTO_SECRET = "c2VjcmV0QHBsdXRvLmd1b2JhYS5jb20";
+
   /* RabbitMq WebSocket */
   public static RABBITMQ_WS_URL: string = "wss://www.guobaa.com/ws";
   //public static RABBITMQ_WS_URL: string = "ws://192.168.0.146:15674/ws";

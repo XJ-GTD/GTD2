@@ -1,0 +1,59 @@
+{
+  "rabbit_version":"3.6.3",
+  "users": [
+    {
+      "name":"gtd_mq",
+      "password_hash":"CZQgz9r6j9nmYBiYVhTbNdRXu7D0JmInh+v8D8e3PVxksmuV",
+      "hashing_algorithm":"rabbit_password_hashing_sha256",
+      "tags":"administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name":"/"
+    }
+  ],
+  "permissions":[
+    {
+      "user":"gtd_mq",
+      "vhost":"/",
+      "configure":".*",
+      "write":".*",
+      "read":".*"
+    }
+  ],
+  "parameters":[],
+  "policies":[
+    {"vhost":"/","name":"ha","pattern":"", "definition":{"ha-mode":"all","ha-sync-mode":"automatic","ha-sync-batch-size":5}}
+  ],
+  "queues":[
+    {
+      "name":"q.user.created",
+      "vhost":"/",
+      "durable":true,
+      "auto_delete":true,
+      "arguments":{}
+    }
+  ],
+  "exchanges":[
+    {
+      "name":"e.user.created",
+      "vhost":"/",
+      "type":"topic",
+      "durable":true,
+      "auto_delete":false,
+      "internal":false,
+      "arguments":{}
+    }
+  ],
+  "bindings":[
+    {
+      "source":"e.user.created",
+      "vhost":"/",
+      "destination":"q.user.created",
+      "destination_type":"queue",
+      "routing_key":"user.created",
+      "arguments":{}
+    }
+  ]
+}
