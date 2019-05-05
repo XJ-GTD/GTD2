@@ -9,6 +9,10 @@ page-tdc, page-tddi, page-tddj, page-tdds {
       background-color:$aiBackColor;
     }
 
+    button[block] {
+      width: 30vmin;
+    }
+    
     .bar-button-ios {
       color: $adornColor;
       font-size: 15px;
