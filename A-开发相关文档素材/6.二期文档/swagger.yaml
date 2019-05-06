@@ -9,7 +9,7 @@ info:
   license:
     name: 效吉软件版权所有
     url: 'http://pluto.guobaa.com/LICENSE-1.0.html'
-host: www.guobaa.com
+host: pluto.guobaa.com
 basePath: /
 tags:
   - name: share
