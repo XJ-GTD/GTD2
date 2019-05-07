@@ -140,7 +140,6 @@ import {LogPageModule} from "../pages/log/log.module";
     Keyboard,
     Clipboard,
     ContactsService,
-    StringSimilarity,
     ScreenOrientation,
     LocalNotifications,
     SQLite,
