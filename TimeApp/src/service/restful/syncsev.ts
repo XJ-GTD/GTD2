@@ -9,9 +9,12 @@ import {UtilService} from "../util-service/util.service";
  */
 @Injectable()
 export class SyncRestful {
-  private initDataUrl: string = "https://www.guobaa.com/ini/parameters?tag=mwxing";
+  // 预览版
+  private initDataUrl: string = "https://www.guobaa.com/ini/parameters";
+  // 内网测试版
   //private initDataUrl: string = "https://www.guobaa.com/ini/parameters?debug=true";
-  //private initDataUrl: string = "https://www.guobaa.com/ini/parameters";
+  // 开发版
+  //private initDataUrl: string = "https://www.guobaa.com/ini/parameters?tag=mwxing";
 
   constructor(private request: RestfulClient, private uitl: UtilService) {
   }
