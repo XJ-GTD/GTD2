@@ -11,10 +11,8 @@ import {
   ToastController
 } from "ionic-angular";
 import {ConfirmboxComponent} from "../../components/confirmbox/confirmbox";
-import {AlertInputOptions} from "ionic-angular/components/alert/alert-options";
 import {ChineseLunar} from "./chinese.lunar";
 import * as moment from "moment";
-import {FeedbackService} from "../cordova/feedback.service";
 
 /**
  * 公共方法
@@ -710,5 +708,85 @@ export class UtilService {
       return this.aday;
     }
     return t;
+  }
+
+  compareTwoStrings(first:string, second:string) {
+    first = first.replace(/\s+/g, '')
+    second = second.replace(/\s+/g, '')
+
+    if (!first.length && !second.length) return 1;                   // if both are empty strings
+    if (!first.length || !second.length) return 0;                   // if only one is empty string
+    if (first === second) return 1;       							 // identical
+    if (first.length === 1 && second.length === 1) return 0;         // both are 1-letter strings
+    if (first.length < 2 || second.length < 2) return 0;			 // if either is a 1-letter string
+
+    let firstBigrams = new Map();
+    for (let i = 0; i < first.length - 1; i++) {
+      const bigram = first.substr(i, 2);
+      const count = firstBigrams.has(bigram)
+        ? firstBigrams.get(bigram) + 1
+        : 1;
+
+      firstBigrams.set(bigram, count);
+    };
+
+    let intersectionSize = 0;
+    for (let i = 0; i < second.length - 1; i++) {
+      const bigram = second.substr(i, 2);
+      const count = firstBigrams.has(bigram)
+        ? firstBigrams.get(bigram)
+        : 0;
+
+      if (count > 0) {
+        firstBigrams.set(bigram, count - 1);
+        intersectionSize++;
+      }
+    }
+
+    return (2.0 * intersectionSize) / (first.length + second.length - 2);
+  }
+
+   findBestMatch(mainString:string, targetStrings:Array<string>) {
+    if (!this.areArgsValid(mainString, targetStrings)) throw new Error('Bad arguments: First argument should be a string, second should be an array of strings');
+
+    const ratings = [];
+    let bestMatchIndex = 0;
+
+    for (let i = 0; i < targetStrings.length; i++) {
+      const currentTargetString = targetStrings[i];
+      const currentRating = this.compareTwoStrings(mainString, currentTargetString)
+      ratings.push({target: currentTargetString, rating: currentRating})
+      if (currentRating > ratings[bestMatchIndex].rating) {
+        bestMatchIndex = i
+      }
+    }
+
+
+    const bestMatch = ratings[bestMatchIndex]
+
+    return { ratings, bestMatch, bestMatchIndex };
+  }
+
+  private flattenDeep(arr:any) {
+    return Array.isArray(arr) ? arr.reduce((a, b) => a.concat(this.flattenDeep(b)), []) : [arr];
+  }
+
+  private areArgsValid(mainString:string, targetStrings:Array<string>) {
+    if (typeof mainString !== 'string') return false;
+    if (!Array.isArray(targetStrings)) return false;
+    if (!targetStrings.length) return false;
+    if (targetStrings.find(s => typeof s !== 'string')) return false;
+    return true;
+  }
+
+  private letterPairs(str:string) {
+    const pairs = [];
+    for (let i = 0, max = str.length - 1; i < max; i++) pairs[i] = str.substring(i, i + 2);
+    return pairs;
+  }
+
+  private wordLetterPairs(str:String) {
+    const pairs = str.toUpperCase().split(' ').map(this.letterPairs);
+    return this.flattenDeep(pairs);
   }
 }

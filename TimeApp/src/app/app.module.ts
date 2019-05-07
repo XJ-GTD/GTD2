@@ -21,7 +21,6 @@ import {NativeAudio} from "@ionic-native/native-audio";
 import {Clipboard} from '@ionic-native/clipboard';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule} from '@angular/router';
-import {StringSimilarity} from 'string-similarity';
 import {MyApp} from './app.component';
 import {SqliteExec} from "../service/util-service/sqlite.exec";
 import {PermissionsService} from "../service/cordova/permissions.service";
