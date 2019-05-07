@@ -31,6 +31,7 @@ export class FindProcess implements MQProcess {
     //console.log("============ mq返回内容："+ JSON.stringify(content));
     //处理区分
     if (content.option == F.C) {
+      // TODO 增加根据人查询日程
       processRs.scd = await this.findScd(findData.scd);
     }
 

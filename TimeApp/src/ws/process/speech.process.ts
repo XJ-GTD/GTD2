@@ -30,22 +30,37 @@ export class SpeechProcess implements MQProcess {
       //处理所需要参数
       let ti = moment().valueOf() - content.thisContext.context.client.time;
       let spData: SpeechPara = content.parameters;
+      let prvOpt:string =  content.thisContext.context.client.option;
       let openListener: boolean = false;
       //默认语音
       let speakText = spData.an;
+      let type = 'NONE';
       //处理区分
       if (spData.t) {
 
         //替换参数变量
         let count = processRs.scd.length;
+
+        if (processRs.option4Speech == SS.C 
+          || processRs.option4Speech == SS.U 
+          || processRs.option4Speech == SS.D
+          || processRs.option4Speech == F.C) {
+           if (count == 0)  type= 'NONE';
+           if (count == 1) type= 'ONE';
+           if (count > 1) type= 'MULTI';
+
+        } else if (processRs.option4Speech == O.O) {
+          if (prvOpt){
+            type = prvOpt;
+          }
+        }
+
         // spData.forEach((value, key) => {
         //   speakText = speakText.replace("{" + key + "}", value);
         // });
         //TODO 0的时候包含了不需要判断0的场合，需要区分出来
         let stbl: STbl = new STbl();
-        if (count == 0) stbl = await this.assistant.getSpeakTextObject(spData.t, 'NONE'); 
-        if (count == 1) stbl = await this.assistant.getSpeakTextObject(spData.t, 'ONE');
-        if (count > 1) stbl = await this.assistant.getSpeakTextObject(spData.t, 'MULTI');
+        stbl = await this.assistant.getSpeakTextObject(spData.t, type); 
         
         speakText = stbl.yv;
         openListener = stbl.open;
