@@ -5,6 +5,14 @@ page-tdc, page-tddi, page-tddj, page-tdds {
       border-style: none;
     }
 
+    .button-full-ios {
+      background-color:$aiBackColor;
+    }
+
+    button[block] {
+      width: 30vmin;
+    }
+    
     .bar-button-ios {
       color: $adornColor;
       font-size: 15px;
@@ -22,6 +30,7 @@ page-tdc, page-tddi, page-tddj, page-tdds {
       padding-right: 50px;
     }
     [icon-only] ion-icon{
+      background-color:$aiBackColor;
       color: $fontMasterColor;
     }
   }

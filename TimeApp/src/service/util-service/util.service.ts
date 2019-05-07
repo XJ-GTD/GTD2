@@ -96,7 +96,10 @@ export class UtilService {
     let deviceId = this.device.uuid;
     if (deviceId && deviceId != null && deviceId != '') {
     } else {
-      deviceId = '';
+      // 非Android和iOS真机状态下，固定使用platform
+      let devicePlatform = this.device.platform;
+      if (devicePlatform == null) devicePlatform = "browser";
+      deviceId = devicePlatform.replace(/\s/g, "");
     }
     return deviceId;
   }

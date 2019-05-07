@@ -70,13 +70,13 @@ export class AssistantService {
   /**
    * 停止语音播报
    */
-  public stopSpeak(emit:boolean) {
+  public stopSpeak(emit:boolean, open?:boolean) {
     if (!this.utilService.isMobile()) return;
     cordova.plugins.XjBaiduTts.speakStop();
     if (emit){
       this.emitService.emitSpeak(false);
     }
-    //this.listenAudio();
+    if (open) this.listenAudio();
   }
 
 

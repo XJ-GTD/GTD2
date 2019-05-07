@@ -135,17 +135,14 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
     </ion-content>
     <ion-footer class="foot-set">
       <ion-toolbar>
-        <ion-buttons start padding-left>
-          <button ion-button icon-only (click)="cancel()" start>
+        <ion-buttons full>
+          <button ion-button block icon-only (click)="cancel()" start>
             <ion-icon name="close"></ion-icon>
           </button>
-        </ion-buttons>
-        <ion-buttons>
-          <button ion-button full (click)="goShare()">发送</button>
-        </ion-buttons>
 
-        <ion-buttons end padding-right>
-          <button ion-button icon-only (click)="save()" end>
+          <button ion-button block (click)="goShare()">发送</button>
+
+          <button ion-button block icon-only (click)="save()" end>
             <ion-icon name="checkmark"></ion-icon>
           </button>
         </ion-buttons>

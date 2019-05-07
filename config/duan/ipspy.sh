@@ -20,6 +20,15 @@ mkdir -p .ip/
 touch .ip/ip.txt
 
 DEFAULTDOMAIN=vpn730273091.v4.sedns.cn
+IPSPYLOCK="./.ip/ipspy.lock"
+
+if [ ! -f "${IPSPYLOCK}" ]; then
+  echo "ipspy cron can go..."
+  touch $IPSPYLOCK
+else
+  echo "preview ipspy cron still running..."
+  exit 0
+fi
 
 if [[ $* = 1 ]] ; then
   IPADDRESS=$(gethostip $1)
@@ -36,7 +45,11 @@ echo $OLDIP
 if [[ $IPADDRESS == $OLDIP ]] ; then
   echo "`date -u` not changed"
 else
+  service nginx stop
+  sleep 10s
   echo $IPADDRESS > .ip/ip.txt
-  service nginx restart
+  service nginx start
+  sleep 10s
 fi
 
+rm -f $IPSPYLOCK

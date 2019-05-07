@@ -17,7 +17,7 @@ function shouldclean(datasource)
         for (var sei in semantics) {
           var semantic = semantics[sei];
 
-          if (semantic['intent'] === 'MyAgenda' || semantic['intent'] === 'TheirAgenda') {
+          if (semantic['intent'] === 'MyAgenda' || semantic['intent'] === 'TheirAgenda' || semantic['intent'] === 'WithTheirAgenda') {
             return true;
           }
         }
@@ -213,7 +213,7 @@ function clean(datasource)
     if (confirm === '好的，已取消') {
       // 取消
       output.content['O'] = {
-        option: 'O.O',
+        option: 'O.C',
         parameters: {}
       };
   
