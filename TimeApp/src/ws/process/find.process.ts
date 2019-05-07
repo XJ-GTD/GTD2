@@ -6,6 +6,7 @@ import {F} from "../model/ws.enum";
 import {FindPara} from "../model/find.para";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import * as moment from "moment";
+import {StringSimilarity} from 'string-similarity'
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {FsService} from "../../pages/fs/fs.service";
 import {GlService} from "../../pages/gl/gl.service";
@@ -26,7 +27,7 @@ export class FindProcess implements MQProcess {
     //处理所需要参数
     let findData: FindPara = content.parameters;
     //查找联系人
-    processRs.fs = await this.findfs(findData.fs);
+    processRs.fs = await this.findsimilarityfs(findData.fs);
     //console.log("============ mq返回内容："+ JSON.stringify(content));
     //处理区分
     if (content.option == F.C) {
@@ -73,6 +74,50 @@ export class FindProcess implements MQProcess {
       for (let b3 of bs) {
         if (piny.indexOf(b3.ranpy) > -1 || piny.indexOf(b3.rnpy) > -1) {
           piny = piny.replace(b3.ranpy, "").replace(b3.rnpy, "");
+          rsbs.set(b3.ranpy, b3);
+        }
+      }
+    }
+    rsbs.forEach((value, key, map) => {
+      res.push(value);
+    })
+    return res;
+  }
+
+  // 根据相似性匹配本地联系人
+  private findsimilarityfs(ns: Array<any>): Array<FsData> {
+    let res: Array<FsData> = new Array<FsData>();
+    let rsbs: Map<string, FsData> = new Map<string, FsData>();
+    if (!ns || ns.length == 0) {
+      return new Array<FsData>();
+    }
+
+    //TODO 联系人和群组是否要放入环境中，每次取性能有影响
+
+    //获取群组列表
+    let gs: Array<PageDcData> = this.glService.getGroups(null);
+    //循环参数中的pingy数组
+    for (let n of ns) {
+      let piny = n.n;
+      //首先查找群组
+      for (let g of gs) {
+        if (StringSimilarity.compareTwoStrings(piny, g.gnpy) > 0.8) {
+          //piny = piny.replace(g.gnpy, "");
+          for (let b1 of g.fsl) {
+            rsbs.set(b1.ranpy, b1);
+          }
+        }
+      }
+    }
+
+    //获取联系人列表
+    let bs: Array<FsData> = this.fsService.getfriend(null);
+    for (let n of ns) {
+      let piny = n.n;
+      //首先查找群组
+      for (let b3 of bs) {
+        if (StringSimilarity.compareTwoStrings(piny, g.gnpy) > 0.8) {
+          //piny = piny.replace(b3.ranpy, "").replace(b3.rnpy, "");
           rsbs.set(b3.ranpy, b3);
         }
       }
