@@ -13,7 +13,7 @@ function shouldclean(datasource)
           for (var sei in semantics) {
             var semantic = semantics[sei];
 
-            if (semantic['intent'] === 'FindByTime' || semantic['intent'] === 'FindBySomething') {
+            if (semantic['intent'] === 'FindByTime' || semantic['intent'] === 'FindBySomething' || semantic['intent'] === 'FindBySomebody') {
               return true;
             }
           }
@@ -51,6 +51,7 @@ function clean(datasource)
   var clientcontext = input['_context']['client'];
   var servercontext = input['_context']['server'];
   var text = data['intent']['text'];
+  var contacts = new Array();
   var date = '';
   var sdate = '';
   var edate = '';
@@ -135,6 +136,11 @@ function clean(datasource)
         }
       }
       
+      // 取出关联联系人结果
+      if (slot['name'] === 'whotodo') {
+        contacts.push({n:slot['normValue']});
+      }
+      
       // 取出涉及日程标题
       if (slot['name'] === 'whattodo') {
         title = slot['normValue'];
@@ -159,7 +165,7 @@ function clean(datasource)
     option: 'F.C',
     parameters: {
       scd: {},
-      fs: []
+      fs: contacts
     }
   };
   

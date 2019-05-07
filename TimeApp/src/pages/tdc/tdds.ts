@@ -47,11 +47,9 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
     </ion-content>
     <ion-footer class="foot-set">
       <ion-toolbar>
-        <ion-buttons>
-          <button ion-button icon-only (click)="cancel()" start>
-            <ion-icon name="close"></ion-icon>
-          </button>
-        </ion-buttons>
+        <button ion-button icon-only (click)="cancel()" full>
+          <ion-icon name="close"></ion-icon>
+        </button>
       </ion-toolbar>
     </ion-footer>
   `

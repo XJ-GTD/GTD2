@@ -25,6 +25,18 @@ services:
       replicas: 1
       endpoint_mode: dnsrr
 
+  sa-sho:
+    image: 192.168.0.158:5000/xiaoji-sa-sho
+    hostname: sa-sho
+    depends_on:
+      - sa-amq
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
   sa-aah:
     image: 192.168.0.158:5000/xiaoji-sa-aah
     hostname: sa-aah

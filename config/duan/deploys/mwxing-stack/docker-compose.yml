@@ -39,6 +39,16 @@ services:
       replicas: 1
       endpoint_mode: dnsrr
 
+  sa-mif:
+    image: 192.168.0.158:5000/xiaoji-sa-mif
+    hostname: sa-mif
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
   sa-bla:
     image: 192.168.0.158:5000/xiaoji-sa-bla
     hostname: sa-bla

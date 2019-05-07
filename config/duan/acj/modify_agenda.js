@@ -58,6 +58,7 @@ function clean(datasource)
   var shouldEndSession = data['intent']['shouldEndSession'];
   var answer = data['intent']['answer']['text'];
   var text = data['intent']['text'];
+  var contacts = new Array();
   var date = '';
   var sdate = '';
   var edate = '';
@@ -75,6 +76,11 @@ function clean(datasource)
     
     for (var si in slots) {
       var slot = slots[si];
+      
+      // 取出关联联系人结果
+      if (slot['name'] === 'whotodo') {
+        contacts.push({n:slot['normValue']});
+      }
       
       // 取出涉及时间结果
       if (slot['name'] === 'whentodo') {
@@ -179,7 +185,7 @@ function clean(datasource)
       option: 'F.C',
       parameters: {
         scd: {},
-        fs: []
+        fs: contacts
       }
     };
     
