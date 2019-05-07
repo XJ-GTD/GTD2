@@ -30,12 +30,36 @@ export class CudscdProcess implements MQProcess{
       if (processRs.fs.length > 0){
         prv.fs = processRs.fs;
       }
+      
+      // F处理返回的结果
       if (processRs.scd.length > 0){
 
         prv.scd = processRs.scd;
       }
 
 
+      //处理区分
+      // 创建日程
+      if (content.option == SS.C) {
+        // 查询没有日程
+        // 查询有日程
+      }
+
+      // 修改日程
+      if (content.option == SS.U) {
+        // 查询没有日程
+        // 查询有1个日程
+        // 查询有1个被共享日程
+        // 查询有多个日程
+      }
+
+      // 删除日程
+      if (content.option == SS.D) {
+        // 查询没有日程
+        // 查询有1个日程
+        // 查询有多个日程
+      }
+      
       if (prv.scd.length == 0){
         let ctbl:CTbl = new CTbl();
         prv.scd.push(ctbl);

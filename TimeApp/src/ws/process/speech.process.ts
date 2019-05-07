@@ -30,26 +30,34 @@ export class SpeechProcess implements MQProcess {
       //处理所需要参数
       let ti = moment().valueOf() - content.thisContext.context.client.time;
       let spData: SpeechPara = content.parameters;
+      let openListener: boolean = false;
       //默认语音
       let speakText = spData.an;
       //处理区分
       if (spData.t) {
-
-        speakText = await this.assistant.getSpeakText(spData.t);
 
         //替换参数变量
         let count = processRs.scd.length;
         // spData.forEach((value, key) => {
         //   speakText = speakText.replace("{" + key + "}", value);
         // });
-        //TODO 变量替换不全
+        //TODO 0的时候包含了不需要判断0的场合，需要区分出来
+        let stbl: STbl = new STbl();
+        if (count == 0) stbl = await this.assistant.getSpeakTextObject(spData.t, 'NONE'); 
+        if (count == 1) stbl = await this.assistant.getSpeakTextObject(spData.t, 'ONE');
+        if (count > 1) stbl = await this.assistant.getSpeakTextObject(spData.t, 'MULTI');
+        
+        speakText = stbl.yv;
+        openListener = stbl.open;
+        
+        //TODO 变量替换不全，当前用户UserConfig
         speakText = speakText.replace("{count}", count.toString());
 
       }
 
       //通知页面显示播报文本
       let emspeech:SpeechEmData = new SpeechEmData();
-      emspeech.an = speakText + "#" + ti + "#";
+      emspeech.an = speakText + " #" + ti + "#";
       emspeech.org = content.thisContext.original;
       this.emitService.emitSpeech(emspeech);
 
@@ -59,6 +67,10 @@ export class SpeechProcess implements MQProcess {
         processRs.sucess = true;
         resolve(processRs);
 
+        // 播报后启动语音监听
+        if (openListener) {
+          this.assistant.listenAudio();
+        }
       });
 
 
