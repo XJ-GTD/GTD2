@@ -113,6 +113,10 @@ export class AlService {
             //异步获取联系人信息
             this.contactsService.updateFs();
           })
+        }else{
+          // 在浏览器测试时使用测试数据
+          await this.createTestData();
+
         }
 
         let yTbl: YTbl = new YTbl();
@@ -126,6 +130,9 @@ export class AlService {
         await this.sqlLiteInit.initData();
 
         this.notificationsService.badgeClear();
+
+
+
       }
 
 
@@ -144,10 +151,6 @@ export class AlService {
       }
 
 
-      // 在浏览器测试时使用测试数据
-      if (!this.util.isMobile()) {
-        await this.createTestData();
-      }
 
       alData.text = "系统初始化完成";
 
