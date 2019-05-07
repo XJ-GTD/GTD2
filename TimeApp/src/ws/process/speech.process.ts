@@ -3,6 +3,7 @@ import {MQProcess} from "../interface.process";
 import {Injectable} from "@angular/core";
 import {AssistantService} from "../../service/cordova/assistant.service";
 import {SpeechPara} from "../model/speech.para";
+import {STbl} from "../../service/sqlite/tbl/s.tbl";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
 import {ProcesRs} from "../model/proces.rs";
