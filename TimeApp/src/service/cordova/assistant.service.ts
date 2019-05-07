@@ -88,8 +88,8 @@ export class AssistantService {
     stbl.yk = t;
 
     // TODO:播报内容类型 NONE, ONE, MULTI
-    if (type) stbl.yt = type;
-    
+    //if (type) stbl.yt = type;
+
     //获取本地回答语音文本
     let datas = await this.sqliteExec.getList<STbl>(stbl);
     //回答语音list
@@ -108,8 +108,8 @@ export class AssistantService {
     stbl.yk = t;
 
     // TODO:播报内容类型 NONE, ONE, MULTI
-    if (type) stbl.yt = type;
-    
+    //if (type) stbl.yt = type;
+
     //获取本地回答语音文本
     let datas = await this.sqliteExec.getList<STbl>(stbl);
     //回答语音list
