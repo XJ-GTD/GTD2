@@ -6,7 +6,7 @@ import {F} from "../model/ws.enum";
 import {FindPara} from "../model/find.para";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import * as moment from "moment";
-import {StringSimilarity} from 'string-similarity'
+import {StringSimilarity} from 'string-similarity';
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {FsService} from "../../pages/fs/fs.service";
 import {GlService} from "../../pages/gl/gl.service";
@@ -19,7 +19,7 @@ import {FsData, PageDcData} from "../../data.mapping";
  */
 @Injectable()
 export class FindProcess implements MQProcess {
-  constructor(private sqliteExec: SqliteExec, private fsService: FsService, private glService: GlService, private stringSimilarity: StringSimilarity) {
+  constructor(private sqliteExec: SqliteExec, private fsService: FsService, private glService: GlService) {
   }
 
   async go(content: WsContent, processRs: ProcesRs) {
@@ -101,7 +101,7 @@ export class FindProcess implements MQProcess {
       let piny = n.n;
       //首先查找群组
       for (let g of gs) {
-        if (stringSimilarity.compareTwoStrings(piny, b3.ranpy) > 0.8) {
+        if (StringSimilarity.compareTwoStrings(piny, b3.ranpy) > 0.8) {
           //piny = piny.replace(g.gnpy, "");
           for (let b1 of g.fsl) {
             rsbs.set(b1.ranpy, b1);
@@ -116,7 +116,7 @@ export class FindProcess implements MQProcess {
       let piny = n.n;
       //首先查找群组
       for (let b3 of bs) {
-        if (stringSimilarity.compareTwoStrings(piny, g.gnpy) > 0.8) {
+        if (StringSimilarity.compareTwoStrings(piny, g.gnpy) > 0.8) {
           //piny = piny.replace(b3.ranpy, "").replace(b3.rnpy, "");
           rsbs.set(b3.ranpy, b3);
         }
