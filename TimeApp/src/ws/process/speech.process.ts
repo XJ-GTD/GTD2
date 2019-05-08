@@ -89,7 +89,7 @@ export class SpeechProcess implements MQProcess {
         }
       });
 
-      if (processRs.option4Speech == F.C || (processRs.option4Speech == SS.U && type == 'MULTI')){
+      if (processRs.option4Speech == F.C || (processRs.option4Speech == SS.U && type == 'MULTI') || (processRs.option4Speech == SS.D && (type == 'ONE' || type == 'MULTI'))){
         if  (processRs.scd.length > 0){
           let cscdLS:ScdLsEmData = new ScdLsEmData();
           cscdLS.desc = speakText;
