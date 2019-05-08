@@ -60,7 +60,14 @@ export class CudscdProcess implements MQProcess{
         // 查询没有日程
         if (prv.scd.length == 0){}
         // 查询有1个日程
-        if (prv.scd.length == 1){}
+        if (prv.scd.length == 1){
+          // 设置修改后内容
+          for (let c of prv.scd){
+            c.sd = (cudPara.d == null || cudPara.d == '')? c.sd:cudPara.d;
+            c.sn = (cudPara.ti == null || cudPara.ti == '')?c.sn:cudPara.ti;
+            c.st = (cudPara.t == null || cudPara.t == '')?c.st:cudPara.t;
+          }
+        }
         // 查询有1个被共享日程
         if (prv.scd.length == 1){}
         // 查询有多个日程

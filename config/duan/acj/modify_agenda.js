@@ -56,7 +56,7 @@ function clean(datasource)
   var clientcontext = input['_context']['client'];
   var servercontext = input['_context']['server'];
   var shouldEndSession = data['intent']['shouldEndSession'];
-  var answer = data['intent']['answer']['text'];
+  var answer = (data['intent']['answer'] ? data['intent']['answer']['text'] : '');
   var text = data['intent']['text'];
   var contacts = new Array();
   var date = '';
@@ -65,7 +65,14 @@ function clean(datasource)
   var time = '';
   var stime = '';
   var etime = '';
+  var datechangeto = '';
+  var sdatechangeto = '';
+  var edatechangeto = '';
+  var timechangeto = '';
+  var stimechangeto = '';
+  var etimechangeto = '';
   var title = '';
+  var titlechangeto = '';
   
   var semantics = data['intent']['semantic'];
   
@@ -148,9 +155,80 @@ function clean(datasource)
         }
       }
       
+      // 取出涉及时间结果
+      if (slot['name'] === 'whenchangeto') {
+        var value = slot['normValue'];
+        
+        if (value && value !== undefined && value !== '') {
+          var normValue = JSON.parse(value);
+          var suggestDatetime = normValue['suggestDatetime'];
+          
+          print('suggestDatetime: ' + suggestDatetime);
+          
+          if (suggestDatetime.indexOf('/') < 0) {
+            // 包含时间
+            var reg = /^(\d+)-(\d{1,2})-(\d{1,2})T(\d{1,2}):(\d{1,2}):(\d{1,2})$/;
+            var r = suggestDatetime.match(reg);
+            
+            if (r) {
+              datechangeto = r[1] + '/' + r[2] + '/' + r[3];
+              timechangeto = r[4] + ':' + r[5] + ':' + r[6];
+            }
+            
+            // 没有时间
+            var regd = /^(\d+)-(\d{1,2})-(\d{1,2})$/;
+            var rd = suggestDatetime.match(regd);
+            
+            if (rd) {
+              datechangeto = rd[1] + '/' + rd[2] + '/' + rd[3];
+            }
+          } else {
+            // 包含期间
+            var suggestDatetimerange = suggestDatetime.split('/');
+            
+            // 包含时间 开始
+            var reg = /^(\d+)-(\d{1,2})-(\d{1,2})T(\d{1,2}):(\d{1,2}):(\d{1,2})$/;
+            var r = suggestDatetimerange[0].match(reg);
+            
+            if (r) {
+              sdatechangeto = r[1] + '/' + r[2] + '/' + r[3];
+              stimechangeto = r[4] + ':' + r[5] + ':' + r[6];
+            }
+            
+            // 没有时间 开始
+            var regd = /^(\d+)-(\d{1,2})-(\d{1,2})$/;
+            var rd = suggestDatetimerange[0].match(regd);
+            
+            if (rd) {
+              sdatechangeto = rd[1] + '/' + rd[2] + '/' + rd[3];
+            }
+            
+            // 包含时间 结束
+            var re = suggestDatetimerange[1].match(reg);
+            
+            if (re) {
+              edatechangeto = re[1] + '/' + re[2] + '/' + re[3];
+              etimechangeto = re[4] + ':' + re[5] + ':' + re[6];
+            }
+            
+            // 没有时间 结束
+            var rde = suggestDatetimerange[1].match(regd);
+            
+            if (rde) {
+              edatechangeto = rde[1] + '/' + rde[2] + '/' + rde[3];
+            }
+          }
+        }
+      }
+      
       // 取出涉及日程标题
       if (slot['name'] === 'whattodo') {
         title = slot['normValue'];
+      }
+
+      // 取出涉及日程标题
+      if (slot['name'] === 'whatchangeto') {
+        titlechangeto = slot['normValue'];
       }
     }
   }
@@ -197,72 +275,109 @@ function clean(datasource)
       }
     };
     
+    if (datechangeto && datechangeto !== '') {
+      
+      output['content']['SS']['parameters']['d'] = datechangeto;
+      output['content']['SS']['parameters']['scd']['ds'] = datechangeto;
+      output['content']['SS']['parameters']['scd']['de'] = datechangeto;
+    }
+    
     if (date && date !== '') {
-      output['content']['SS']['parameters']['d'] = date;
-      output['content']['SS']['parameters']['scd']['ds'] = date;
-      output['content']['SS']['parameters']['scd']['de'] = date;
 
       output['content']['F']['parameters']['scd']['ds'] = date;
       output['content']['F']['parameters']['scd']['de'] = date;
     }
     
+    if (sdatechangeto && sdatechangeto !== '') {
+      
+      output['content']['SS']['parameters']['d'] = sdatechangeto;
+      output['content']['SS']['parameters']['scd']['ds'] = sdatechangeto;
+    }
+    
     if (sdate && sdate !== '') {
-      output['content']['SS']['parameters']['d'] = sdate;
-      output['content']['SS']['parameters']['scd']['ds'] = sdate;
 
       output['content']['F']['parameters']['scd']['ds'] = sdate;
     }
 
+    if (edatechangeto && edatechangeto !== '') {
+      
+      output['content']['SS']['parameters']['scd']['de'] = edatechangeto;
+    }
+    
     if (edate && edate !== '') {
-      output['content']['SS']['parameters']['scd']['de'] = edate;
 
       output['content']['F']['parameters']['scd']['de'] = edate;
     }
 
+    if (timechangeto && timechangeto !== '') {
+      
+      output['content']['SS']['parameters']['t'] = timechangeto;
+      output['content']['SS']['parameters']['scd']['ts'] = timechangeto;
+      output['content']['SS']['parameters']['scd']['te'] = timechangeto;
+    } else {
+      
+      output['content']['SS']['parameters']['t'] = '99:99';
+      output['content']['SS']['parameters']['scd']['ts'] = '00:00';
+      output['content']['SS']['parameters']['scd']['te'] = '23:59';
+    }
+    
     if (time && time !== '') {
-      output['content']['SS']['parameters']['t'] = time;
-      output['content']['SS']['parameters']['scd']['ts'] = time;
-      output['content']['SS']['parameters']['scd']['te'] = time;
 
       output['content']['F']['parameters']['scd']['ts'] = time;
       output['content']['F']['parameters']['scd']['te'] = time;
     } else {
-      output['content']['SS']['parameters']['t'] = '99:99';
-      output['content']['SS']['parameters']['scd']['ts'] = '00:00';
-      output['content']['SS']['parameters']['scd']['te'] = '23:59';
 
       output['content']['F']['parameters']['scd']['ts'] = '00:00';
       output['content']['F']['parameters']['scd']['te'] = '23:59';
     }
    
+    if (stimechangeto && stimechangeto !== '') {
+      
+      output['content']['SS']['parameters']['t'] = stimechangeto;
+      output['content']['SS']['parameters']['scd']['ts'] = stimechangeto;
+    } else {
+      
+      output['content']['SS']['parameters']['t'] = '00:00';
+      output['content']['SS']['parameters']['scd']['ts'] = '00:00';
+    }
+    
     if (stime && stime !== '') {
-      output['content']['SS']['parameters']['t'] = stime;
-      output['content']['SS']['parameters']['scd']['ts'] = stime;
 
       output['content']['F']['parameters']['scd']['ts'] = stime;
     } else {
-      output['content']['SS']['parameters']['t'] = '00:00';
-      output['content']['SS']['parameters']['scd']['ts'] = '00:00';
 
       output['content']['F']['parameters']['scd']['ts'] = '00:00';
     }
 
+    if (etimechangeto && etimechangeto !== '') {
+      
+      output['content']['SS']['parameters']['scd']['te'] = etimechangeto;
+    } else {
+      
+      output['content']['SS']['parameters']['scd']['te'] = '23:59';
+    }
+    
     if (etime && etime !== '') {
-      output['content']['SS']['parameters']['scd']['te'] = etime;
 
       output['content']['F']['parameters']['scd']['te'] = etime;
     } else {
-      output['content']['SS']['parameters']['scd']['te'] = '23:59';
 
       output['content']['F']['parameters']['scd']['te'] = '23:59';
     }
 
+    if (titlechangeto && titlechangeto !== '') {
+      
+      output['content']['SS']['parameters']['ti'] = titlechangeto;
+      output['content']['SS']['parameters']['scd']['ti'] = titlechangeto;
+    } else {
+      
+      output['content']['SS']['parameters']['scd']['ti'] = '';
+    }
+    
     if (title && title !== '') {
-      output['content']['SS']['parameters']['scd']['ti'] = title;
 
       output['content']['F']['parameters']['scd']['ti'] = title;
     } else {
-      output['content']['SS']['parameters']['scd']['ti'] = '';
 
       output['content']['F']['parameters']['scd']['ti'] = '';
     }

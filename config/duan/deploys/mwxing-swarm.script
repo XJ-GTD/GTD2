@@ -1,0 +1,51 @@
+docker node update --label-add func=vmcos110 vmcos110
+docker node update --label-add func=vmcos111 vmcos111
+
+docker service rm sa-mysql
+docker service create --replicas 1 --name sa-mysql \
+                      --network mwxing-network-overlay \
+                      --endpoint-mode=dnsrr \
+                      --env LANG=C.UTF-8 \
+                      --mount type=bind,src=/opt/mysql-mwxing,dst=/var/lib/mysql \
+                      --constraint 'node.labels.func == vmcos111' 192.168.0.158:5000/xiaoji-mysql --lower_case_table_names=1
+docker service logs -f sa-mysql
+
+docker service rm mysqladmin
+docker service create --replicas 1 --name mysqladmin \
+     --network mwxing-network-overlay \
+     --publish 81:80 \
+     --env PMA_HOST=sa-mysql \
+     --env PMA_ABSOLUTE_URI=http://192.168.0.12:81/ \
+     192.168.0.158:5000/xiaoji-mysqladmin
+docker service logs -f mysqladmin
+
+docker node update --label-add func=vmcos115 vmcos115
+
+docker service rm mongodb
+docker service create --replicas 1 --name mongodb --network mwxing-network-overlay \
+     --constraint 'node.labels.func == vmcos115' \
+     --mount type=bind,src=/opt/mongodb,dst=/data/db \
+     192.168.0.158:5000/xiaoji-mongodb
+docker service logs -f mongodb
+
+docker service rm mongoexpress
+docker service create --replicas 1 \
+     --name mongoexpress \
+     --publish 82:8080 \
+     --env ME_CONFIG_SITE_BASEURL=/ \
+     --env ME_CONFIG_SITE_GRIDFS_ENABLED=true \
+     --network mwxing-network-overlay \
+     192.168.0.158:5000/xiaoji-mongoexpress
+docker service logs -f mongoexpress
+
+docker node update --label-add func=vmcos117 vmcos117
+
+docker service rm nginx
+docker service create --replicas 1 --name nginx \
+      --network mwxing-network-overlay \
+      --publish 80:80 \
+      --publish 61613:61613 \
+      --publish 5672:5672 \
+      --constraint 'node.labels.func == vmcos117' \
+      192.168.0.158:5000/xiaoji-nginx
+docker service logs -f nginx
