@@ -129,13 +129,13 @@ export class FindProcess implements MQProcess {
       let simularyranrs = this.util.findBestMatch(piny, b3ran);
       let simularyrnrs = this.util.findBestMatch(piny, b3rn);
 
-      if (simularyranrs.bestMatch > 0.5) {
-        console.log(piny + ' <=> ' + b3ran[simularyranrs.bestMatchIndex] + ' distance ' + simularyranrs.bestMatch);
+      if (simularyranrs.bestMatch.rating > 0.5) {
+        console.log(piny + ' <=> ' + b3ran[simularyranrs.bestMatchIndex] + ' distance ' + simularyranrs.bestMatch.rating);
         rsbs.set(b3ran[simularyranrs.bestMatchIndex], bs[simularyranrs.bestMatchIndex]);
       }
       
-      if (simularyrnrs.bestMatch > 0.5) {
-        console.log(piny + ' <=> ' + b3rn[simularyrnrs.bestMatchIndex] + ' distance ' + simularyrnrs.bestMatch);
+      if (simularyrnrs.bestMatch.rating > 0.5) {
+        console.log(piny + ' <=> ' + b3rn[simularyrnrs.bestMatchIndex] + ' distance ' + simularyrnrs.bestMatch.rating);
         rsbs.set(b3ran[simularyrnrs.bestMatchIndex], bs[simularyrnrs.bestMatchIndex]);
       }
 
