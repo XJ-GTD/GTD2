@@ -8,7 +8,7 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
 import {ProcesRs} from "../model/proces.rs";
 import {EmitService, FriendEmData, ScdEmData, ScdLsEmData, SpeechEmData} from "../../service/util-service/emit.service";
-import {F, SS} from "../model/ws.enum";
+import {O, F, SS} from "../model/ws.enum";
 import * as moment from "moment";
 
 /**
