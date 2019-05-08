@@ -102,7 +102,9 @@ export class FindProcess implements MQProcess {
       let piny = n.n;
       //首先查找群组
       for (let g of gs) {
-        if (this.util.compareTwoStrings(piny, g.gnpy) > 0.8) {
+        let simulary = this.util.compareTwoStrings(piny, g.gnpy);
+        console.log(piny + ' <=> ' + g.gnpy + ' distance ' + simulary);
+        if (simulary > 0.8) {
           //piny = piny.replace(g.gnpy, "");
           for (let b1 of g.fsl) {
             rsbs.set(b1.ranpy, b1);
@@ -117,7 +119,11 @@ export class FindProcess implements MQProcess {
       let piny = n.n;
       //首先查找群组
       for (let b3 of bs) {
-        if (this.util.compareTwoStrings(piny, b3.ranpy) > 0.8 || this.util.compareTwoStrings(piny, b3.rnpy) > 0.8) {
+        let simularyran = this.util.compareTwoStrings(piny, b3.ranpy);
+        let simularyrn = this.util.compareTwoStrings(piny, b3.rnpy);
+        console.log(piny + ' <=> ' + b3.ranpy + ' distance ' + simularyran);
+        console.log(piny + ' <=> ' + b3.rnpy + ' distance ' + simularyrn);
+        if (simularyran > 0.8 || simularyrn > 0.8) {
           //piny = piny.replace(b3.ranpy, "").replace(b3.rnpy, "");
           rsbs.set(b3.ranpy, b3);
         }
