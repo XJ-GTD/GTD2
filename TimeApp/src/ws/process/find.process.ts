@@ -102,7 +102,9 @@ export class FindProcess implements MQProcess {
       let piny = n.n;
       //首先查找群组
       for (let g of gs) {
-        if (this.util.compareTwoStrings(piny, g.gnpy) > 0.8) {
+        let simulary = this.util.compareTwoStrings(piny, g.gnpy);
+        console.log(piny + ' <=> ' + g.gnpy + ' distance ' + simulary);
+        if (simulary > 0.8) {
           //piny = piny.replace(g.gnpy, "");
           for (let b1 of g.fsl) {
             rsbs.set(b1.ranpy, b1);
@@ -113,13 +115,39 @@ export class FindProcess implements MQProcess {
 
     //获取联系人列表
     let bs: Array<FsData> = this.fsService.getfriend(null);
+    let b3ran: Array<string> = new Array();
+    let b3rn: Array<string> = new Array();
+    
+    for (let b3 of bs) {
+      b3ran.push(b3.ranpy);
+      b3rn.push(b3.rnpy);
+    }
+    
     for (let n of ns) {
       let piny = n.n;
-      //首先查找群组
-      for (let b3 of bs) {
-        if (this.util.compareTwoStrings(piny, b3.ranpy) > 0.8 || this.util.compareTwoStrings(piny, b3.rnpy) > 0.8) {
-          //piny = piny.replace(b3.ranpy, "").replace(b3.rnpy, "");
-          rsbs.set(b3.ranpy, b3);
+      //查找联系人
+      let simularyranrs = this.util.findBestMatch(piny, b3ran);
+      let simularyrnrs = this.util.findBestMatch(piny, b3rn);
+
+      if (simularyranrs.bestMatch.rating > 0.5) {
+        let index = 0;
+        for (let rating of simularyranrs.ratings) {
+          if (rating.rating > 0.5) {
+            console.log(piny + ' <=> ' + b3ran[index] + ' distance ' + rating.rating);
+            rsbs.set(b3ran[index], bs[index]);
+          }
+          index++;
+        }
+      }
+      
+      if (simularyrnrs.bestMatch.rating > 0.5) {
+        let index = 0;
+        for (let rating of simularyrnrs.ratings) {
+          if (rating.rating > 0.5) {
+            console.log(piny + ' <=> ' + b3rn[index] + ' distance ' + rating.rating);
+            rsbs.set(b3ran[index], bs[index]);
+          }
+          index++;
         }
       }
     }
