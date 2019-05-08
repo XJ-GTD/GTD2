@@ -121,6 +121,8 @@ export class ContactsService {
 
         console.log("===== 本地联系人处理结束 =====");
         resolve(btbls);
+      }).catch(err=>{
+        resolve(btbls);
       })
     })
   }

@@ -109,14 +109,12 @@ export class AlService {
 
         //每次都先导入联系人
         if (this.util.isMobile()) {
-          await this.contactsService.asyncPhoneContacts().then(data => {
+          await this.contactsService.asyncPhoneContacts()
             //异步获取联系人信息
-            this.contactsService.updateFs();
-          })
+          this.contactsService.updateFs();
         }else{
           // 在浏览器测试时使用测试数据
           await this.createTestData();
-
         }
 
         let yTbl: YTbl = new YTbl();
@@ -130,8 +128,6 @@ export class AlService {
         await this.sqlLiteInit.initData();
 
         this.notificationsService.badgeClear();
-
-
 
       }
 
@@ -149,8 +145,6 @@ export class AlService {
         await this.sqlExce.replaceT(yTbl);
 
       }
-
-
 
       alData.text = "系统初始化完成";
 
