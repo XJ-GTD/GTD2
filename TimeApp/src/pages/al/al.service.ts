@@ -109,7 +109,7 @@ export class AlService {
 
         //每次都先导入联系人
         if (this.util.isMobile()) {
-          await this.contactsService.asyncPhoneContacts()
+          await this.contactsService.asyncPhoneContacts();
             //异步获取联系人信息
           this.contactsService.updateFs();
         }else{
