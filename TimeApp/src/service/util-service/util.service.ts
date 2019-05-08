@@ -98,6 +98,7 @@ export class UtilService {
       let devicePlatform = this.device.platform;
       if (devicePlatform == null) devicePlatform = "browser";
       deviceId = devicePlatform.replace(/\s/g, "");
+      if (deviceId == '') deviceId = "browser";
     }
     return deviceId;
   }

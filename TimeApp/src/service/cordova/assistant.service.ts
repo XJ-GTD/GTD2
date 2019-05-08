@@ -81,11 +81,14 @@ export class AssistantService {
 
 
 
-  public async getSpeakText(t: string) {
+  public async getSpeakText(t: string, type?: string) {
 
     let stbl: STbl = new STbl();
     stbl.st = DataConfig.SPEECH;
     stbl.yk = t;
+
+    // TODO:播报内容类型 NONE, ONE, MULTI
+    //if (type) stbl.yt = type;
 
     //获取本地回答语音文本
     let datas = await this.sqliteExec.getList<STbl>(stbl);
@@ -96,6 +99,26 @@ export class AssistantService {
     let an: STbl = datas[rand];
 
     return an.yv;
+  }
+
+  public async getSpeakTextObject(t: string, type?: string) {
+
+    let stbl: STbl = new STbl();
+    stbl.st = DataConfig.SPEECH;
+    stbl.yk = t;
+
+    // TODO:播报内容类型 NONE, ONE, MULTI
+    //if (type) stbl.yt = type;
+
+    //获取本地回答语音文本
+    let datas = await this.sqliteExec.getList<STbl>(stbl);
+    //回答语音list
+    let len = datas.length;
+    //随机选取一条
+    let rand = this.utilService.randInt(0, len - 1);
+    let an: STbl = datas[rand];
+
+    return an;
   }
 
 
