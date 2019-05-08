@@ -3,7 +3,7 @@ import {File} from "@ionic-native/file";
 import {AibutlerRestful, AudioPro, TextPro} from "../restful/aibutlersev";
 import * as moment from 'moment';
 import {WsModel} from "../../ws/model/ws.model";
-import {STbl} from "../sqlite/tbl/s.tbl";
+import {SuTbl} from "../sqlite/tbl/su.tbl";
 import {DataConfig} from "../config/data.config";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {UtilService} from "../util-service/util.service";
@@ -83,40 +83,42 @@ export class AssistantService {
 
   public async getSpeakText(t: string, type?: string) {
 
-    let stbl: STbl = new STbl();
-    stbl.st = DataConfig.SPEECH;
-    stbl.yk = t;
+    let sutbl: SuTbl = new SuTbl();
+    //sutbl.st = DataConfig.SPEECH;
+    sutbl.subt = t;
+    if (type) sutbl.sust = type; else sutbl.sust = 'NONE';
 
     // TODO:播报内容类型 NONE, ONE, MULTI
-    //if (type) stbl.yt = type;
+    //if (type) sutbl.yt = type;
 
     //获取本地回答语音文本
-    let datas = await this.sqliteExec.getList<STbl>(stbl);
+    let datas = await this.sqliteExec.getList<SuTbl>(sutbl);
     //回答语音list
     let len = datas.length;
     //随机选取一条
     let rand = this.utilService.randInt(0, len - 1);
-    let an: STbl = datas[rand];
+    let an: SuTbl = datas[rand];
 
-    return an.yv;
+    return an.suc;
   }
 
   public async getSpeakTextObject(t: string, type?: string) {
 
-    let stbl: STbl = new STbl();
-    stbl.st = DataConfig.SPEECH;
-    stbl.yk = t;
+    let sutbl: SuTbl = new SuTbl();
+    //sutbl.st = DataConfig.SPEECH;
+    sutbl.subt = t;
+    if (type) sutbl.sust = type; else sutbl.sust = 'NONE';
 
     // TODO:播报内容类型 NONE, ONE, MULTI
-    //if (type) stbl.yt = type;
+    //if (type) sutbl.yt = type;
 
     //获取本地回答语音文本
-    let datas = await this.sqliteExec.getList<STbl>(stbl);
+    let datas = await this.sqliteExec.getList<SuTbl>(sutbl);
     //回答语音list
     let len = datas.length;
     //随机选取一条
     let rand = this.utilService.randInt(0, len - 1);
-    let an: STbl = datas[rand];
+    let an: SuTbl = datas[rand];
 
     return an;
   }

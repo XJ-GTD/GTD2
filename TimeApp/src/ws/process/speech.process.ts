@@ -3,7 +3,7 @@ import {MQProcess} from "../interface.process";
 import {Injectable} from "@angular/core";
 import {AssistantService} from "../../service/cordova/assistant.service";
 import {SpeechPara} from "../model/speech.para";
-import {STbl} from "../../service/sqlite/tbl/s.tbl";
+import {SuTbl} from "../../service/sqlite/tbl/su.tbl";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
 import {ProcesRs} from "../model/proces.rs";
@@ -60,11 +60,11 @@ export class SpeechProcess implements MQProcess {
         //   speakText = speakText.replace("{" + key + "}", value);
         // });
         //TODO 0的时候包含了不需要判断0的场合，需要区分出来
-        let stbl: STbl = new STbl();
-        stbl = await this.assistant.getSpeakTextObject(spData.t, type); 
+        let sutbl: SuTbl = new SuTbl();
+        sutbl = await this.assistant.getSpeakTextObject(spData.t, type); 
         
-        speakText = stbl.yv;
-        openListener = stbl.open;
+        speakText = sutbl.suc;
+        openListener = (sutbl.sus == 'true' ? true : false);
         
         //TODO 变量替换不全，当前用户UserConfig
         speakText = speakText.replace("{count}", count.toString());

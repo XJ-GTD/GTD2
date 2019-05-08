@@ -38,38 +38,43 @@ export class CudscdProcess implements MQProcess{
         prv.scd = processRs.scd;
       }
 
-
       //处理区分
       // 创建日程
       if (content.option == SS.C) {
         // 查询没有日程
         // 查询有日程
+        if (prv.scd.length > 0){}
+
+        let ctbl:CTbl = new CTbl();
+        prv.scd.push(ctbl);
+
+        for (let c of prv.scd){
+          c.sd = cudPara.d == null?c.sd:cudPara.d;
+          c.sn = cudPara.ti == null?c.sn:cudPara.ti;
+          c.st = cudPara.t == null?c.st:cudPara.t;
+        }
       }
 
       // 修改日程
       if (content.option == SS.U) {
         // 查询没有日程
+        if (prv.scd.length == 0){}
         // 查询有1个日程
+        if (prv.scd.length == 1){}
         // 查询有1个被共享日程
+        if (prv.scd.length == 1){}
         // 查询有多个日程
+        if (prv.scd.length > 1){}
       }
 
       // 删除日程
       if (content.option == SS.D) {
         // 查询没有日程
+        if (prv.scd.length == 0){}
         // 查询有1个日程
+        if (prv.scd.length == 1){}
         // 查询有多个日程
-      }
-      
-      if (prv.scd.length == 0){
-        let ctbl:CTbl = new CTbl();
-        prv.scd.push(ctbl);
-      }
-
-      for (let c of prv.scd){
-        c.sd = cudPara.d == null?c.sd:cudPara.d;
-        c.sn = cudPara.ti == null?c.sn:cudPara.ti;
-        c.st = cudPara.t == null?c.st:cudPara.t;
+        if (prv.scd.length > 1){}
       }
 
       //TODO 缺少元素提醒

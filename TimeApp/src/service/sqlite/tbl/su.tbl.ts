@@ -5,8 +5,8 @@ import {ITbl} from "./itbl";
  */
 export class SuTbl implements ITbl   {
 
-  private sui: string;
-  private subt: string;
+  private sui: string;      // 主键
+  private subt: string;     // 
   private subtsn: string;
   private sust: string;
   private sustsn: string;
