@@ -115,19 +115,40 @@ export class FindProcess implements MQProcess {
 
     //获取联系人列表
     let bs: Array<FsData> = this.fsService.getfriend(null);
+    let b3ran: Array<string> = new Array();
+    let b3rn: Array<string> = new Array();
+    
+    for (let b3 of bs) {
+      b3ran.push(b3.ranpy);
+      b3rn.push(b3.rnpy);
+    }
+    
     for (let n of ns) {
       let piny = n.n;
-      //首先查找群组
-      for (let b3 of bs) {
-        let simularyran = this.util.compareTwoStrings(piny, b3.ranpy);
-        let simularyrn = this.util.compareTwoStrings(piny, b3.rnpy);
-        console.log(piny + ' <=> ' + b3.ranpy + ' distance ' + simularyran);
-        console.log(piny + ' <=> ' + b3.rnpy + ' distance ' + simularyrn);
-        if (simularyran > 0.8 || simularyrn > 0.8) {
-          //piny = piny.replace(b3.ranpy, "").replace(b3.rnpy, "");
-          rsbs.set(b3.ranpy, b3);
-        }
+      //查找联系人
+      let simularyranrs = this.util.findBestMatch(piny, b3ran);
+      let simularyrnrs = this.util.findBestMatch(piny, b3rn);
+
+      if (simularyranrs.bestMatch > 0.5) {
+        console.log(piny + ' <=> ' + b3ran[simularyranrs.bestMatchIndex] + ' distance ' + simularyranrs.bestMatch);
+        rsbs.set(b3ran[simularyranrs.bestMatchIndex], bs[simularyranrs.bestMatchIndex]);
       }
+      
+      if (simularyrnrs.bestMatch > 0.5) {
+        console.log(piny + ' <=> ' + b3rn[simularyrnrs.bestMatchIndex] + ' distance ' + simularyrnrs.bestMatch);
+        rsbs.set(b3ran[simularyrnrs.bestMatchIndex], bs[simularyrnrs.bestMatchIndex]);
+      }
+
+      //for (let b3 of bs) {
+      //  let simularyran = this.util.compareTwoStrings(piny, b3.ranpy);
+      //  let simularyrn = this.util.compareTwoStrings(piny, b3.rnpy);
+      //  console.log(piny + ' <=> ' + b3.ranpy + ' distance ' + simularyran);
+      //  console.log(piny + ' <=> ' + b3.rnpy + ' distance ' + simularyrn);
+      //  if (simularyran > 0.8 || simularyrn > 0.8) {
+      //    //piny = piny.replace(b3.ranpy, "").replace(b3.rnpy, "");
+      //    rsbs.set(b3.ranpy, b3);
+      //  }
+      //}
     }
     rsbs.forEach((value, key, map) => {
       res.push(value);
