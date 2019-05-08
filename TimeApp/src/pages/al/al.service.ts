@@ -50,7 +50,11 @@ export class AlService {
     let alData: AlData = new AlData();
     return new Promise((resolve, reject) => {
       this.permissionsService.checkAllPermissions().then(data => {
+
         alData.text = "权限申请完成"
+        resolve(alData);
+      }).catch(err =>{
+        alData.text = "权限申请失败"
         resolve(alData);
       });
     });
@@ -64,7 +68,10 @@ export class AlService {
       this.sqlLiteConfig.generateDb().then(data => {
         alData.text = "数据库初始化完成"
         resolve(alData);
-      })
+      }).catch(err =>{
+        alData.text = "数据库初始化失败"
+        resolve(alData);
+      });
     })
   }
 
@@ -99,58 +106,63 @@ export class AlService {
 
 //创建数据库表,初始化系统数据,初始化数据完成写入
   createSystemData(): Promise<AlData> {
-
+    let alData: AlData = new AlData();
     return new Promise(async (resolve, reject) => {
+      try {
 
-      let alData: AlData = new AlData();
-      //创建表结构
-      if (this.version == -1) {
-        await this.sqlLiteInit.createTables();
+        //创建表结构
+        if (this.version == -1) {
+          await this.sqlLiteInit.createTables();
 
-        //每次都先导入联系人
-        if (this.util.isMobile()) {
-          await this.contactsService.asyncPhoneContacts();
-            //异步获取联系人信息
-          this.contactsService.updateFs();
-        }else{
-          // 在浏览器测试时使用测试数据
-          await this.createTestData();
+          //每次都先导入联系人
+          if (this.util.isMobile()) {
+            await this.contactsService.asyncPhoneContacts();
+              //异步获取联系人信息
+            this.contactsService.updateFs();
+          }else{
+            // 在浏览器测试时使用测试数据
+            await this.createTestData();
+          }
+
+          let yTbl: YTbl = new YTbl();
+          yTbl.yi = this.util.getUuid();
+          yTbl.yt = "FI";
+          yTbl.yk = "FI";
+          yTbl.yv = "0";
+          await this.sqlExce.save(yTbl);
+          this.version = 0;
+
+          await this.sqlLiteInit.initData();
+
+          this.notificationsService.badgeClear();
+
         }
 
-        let yTbl: YTbl = new YTbl();
-        yTbl.yi = this.util.getUuid();
-        yTbl.yt = "FI";
-        yTbl.yk = "FI";
-        yTbl.yv = "0";
-        await this.sqlExce.save(yTbl);
-        this.version = 0;
 
-        await this.sqlLiteInit.initData();
+        //patch 修改DataConfig的version版本，只能改大，然后方法中例如createTablespath追加patch
 
-        this.notificationsService.badgeClear();
+        while (DataConfig.version > this.version) {
 
+          await this.sqlLiteInit.createTablespath(this.version);
+          let yTbl: YTbl = new YTbl();
+          yTbl.yt = "FI";
+          let stbls: Array<YTbl> = await this.sqlExce.getList<YTbl>(yTbl);
+          yTbl.yi = stbls[0].yi;
+          yTbl.yv = (++this.version).toString();
+          await this.sqlExce.replaceT(yTbl);
+
+        }
+
+
+
+        alData.text = "系统数据初始化完成";
+
+        resolve(alData);
+      }catch (e){
+        alData.text = "系统数据初始化失败";
+
+        resolve(alData);
       }
-
-
-      //patch 修改DataConfig的version版本，只能改大，然后方法中例如createTablespath追加patch
-
-      while (DataConfig.version > this.version) {
-
-        await this.sqlLiteInit.createTablespath(this.version);
-        let yTbl: YTbl = new YTbl();
-        yTbl.yt = "FI";
-        let stbls: Array<YTbl> = await this.sqlExce.getList<YTbl>(yTbl);
-        yTbl.yi = stbls[0].yi;
-        yTbl.yv = (++this.version).toString();
-        await this.sqlExce.replaceT(yTbl);
-
-      }
-
-
-
-      alData.text = "系统初始化完成";
-
-      resolve(alData);
     })
   }
 
@@ -175,20 +187,27 @@ export class AlService {
     this.sqlLiteInit.initDataSub()
 
     return new Promise(async (resolve, reject) => {
-      // TODO 系统设置 restHttps设置 用户偏好设置 用户信息 。。。
-      await this.restfulConfig.init();
+      try {
+
+        // TODO 系统设置 restHttps设置 用户偏好设置 用户信息 。。。
+        await this.restfulConfig.init();
 
 
-      //提醒定时
-      this.notificationsService.schedule();
-      //保持后台运行
-      //this.notificationsService.keeplive();
+        //提醒定时
+        this.notificationsService.schedule();
+        //保持后台运行
+        //this.notificationsService.keeplive();
 
-      //用户设置信息初始化
-      await this.userConfig.init();
+        //用户设置信息初始化
+        await this.userConfig.init();
 
-      alData.text = "系统设置完成";
-      resolve(alData)
+        alData.text = "系统设置完成";
+        resolve(alData)
+      }
+      catch(e){
+        alData.text = "系统设置失败";
+        resolve(alData)
+      }
 
     })
   }
