@@ -94,7 +94,6 @@ export class SqliteInit {
     let jt: JtTbl = new JtTbl();
     await this.sqlexec.drop(jt);
     await this.sqlexec.create(jt);
-
   }
 
   /**
