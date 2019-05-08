@@ -232,6 +232,9 @@ export class SqliteInit {
         }
 
 
+        let su: SuTbl = new SuTbl();
+        await this.sqlexec.drop(su);
+        await this.sqlexec.create(su);
         //服务器 语音数据
         for (let vrs of data.vrs) {
           //v2版本
