@@ -16,7 +16,7 @@ function shouldclean(datasource)
           for (var sei in semantics) {
             var semantic = semantics[sei];
 
-            if (semantic['intent'] === 'ChangeTime' || semantic['intent'] === 'AddContacts' || semantic['intent'] === 'MoveContacts') {
+            if (semantic['intent'] === 'ChangeTime' || semantic['intent'] === 'ChangeMultiTime' || semantic['intent'] === 'AddContacts' || semantic['intent'] === 'MoveContacts') {
               return true;
             }
           }
