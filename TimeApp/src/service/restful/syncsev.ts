@@ -64,6 +64,8 @@ export class Dpfu {
 }
 
 export class Vrs {
+  type:string;
+  needAnswer:string;
   desc: string;
   name: string;
   value: string;

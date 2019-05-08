@@ -5,15 +5,15 @@ import {ITbl} from "./itbl";
  */
 export class SuTbl implements ITbl   {
 
-  private sui: string;      // 主键
-  private subt: string;     // 
-  private subtsn: string;
-  private sust: string;
-  private sustsn: string;
-  private suc: string;
-  private sut: string;
-  private sus: string;
-  private sum: string;
+  sui: string;      // 主键
+  subt: string;     //
+  subtsn: string;
+  sust: string;
+  sustsn: string;
+  suc: string;
+  sut: string;
+  sus: string;
+  sum: string;
 
 
 

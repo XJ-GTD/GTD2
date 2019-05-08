@@ -18,6 +18,7 @@ import {StTbl} from "./tbl/st.tbl";
 import {BhTbl} from "./tbl/bh.tbl";
 import {JtTbl} from "./tbl/jt.tbl";
 import {LogTbl} from "./tbl/log.tbl";
+import {SuTbl} from "./tbl/su.tbl";
 
 /**
  * create by on 2019/3/5
@@ -94,6 +95,10 @@ export class SqliteInit {
     let jt: JtTbl = new JtTbl();
     await this.sqlexec.drop(jt);
     await this.sqlexec.create(jt);
+
+    let su: SuTbl = new SuTbl();
+    await this.sqlexec.drop(su);
+    await this.sqlexec.create(su);
   }
 
   /**
@@ -137,16 +142,26 @@ export class SqliteInit {
           urlList.push(stbl.inT());
         }
 
+        let su: SuTbl = new SuTbl();
+        await this.sqlexec.drop(su);
+        await this.sqlexec.create(su);
+
         //服务器 语音数据
         for (let vrs of data.vrs) {
-          let stbl = new STbl();
-          stbl.si = this.util.getUuid();
-          stbl.st = "SPEECH";
-          stbl.stn = "语音";
-          stbl.sn = vrs.desc;
-          stbl.yk = vrs.name;
-          stbl.yv = vrs.value;
-          urlList.push(stbl.inT());
+          //v2版本
+          if (vrs.needAnswer) {
+            let sutbl = new SuTbl();
+            sutbl.sui = this.util.getUuid();
+            sutbl.subt = vrs.name;
+            sutbl.sust = vrs.type;
+            sutbl.sus = vrs.needAnswer;
+            sutbl.suc = vrs.value;
+            sutbl.sum = vrs.desc;
+            sutbl.subtsn = "";
+            sutbl.sustsn = "";
+            sutbl.sut = "";
+            urlList.push(sutbl.inT());
+          }
         }
 
         //web端
@@ -192,18 +207,6 @@ export class SqliteInit {
           urlList.push(stbl.inT());
         }
 
-        //服务器 语音数据
-        for (let vrs of data.vrs) {
-          let stbl = new STbl();
-          stbl.si = this.util.getUuid();
-          stbl.st = "SPEECH";
-          stbl.stn = "语音";
-          stbl.sn = vrs.desc;
-          stbl.yk = vrs.name;
-          stbl.yv = vrs.value;
-          urlList.push(stbl.inT());
-        }
-
         //服务器 计划数据
         for (let bipl of data.bipl) {
           let jhtbl = new JhTbl();
@@ -229,6 +232,26 @@ export class SqliteInit {
         }
 
 
+        let su: SuTbl = new SuTbl();
+        await this.sqlexec.drop(su);
+        await this.sqlexec.create(su);
+        //服务器 语音数据
+        for (let vrs of data.vrs) {
+          //v2版本
+          if (vrs.needAnswer){
+            let sutbl = new SuTbl();
+            sutbl.sui = this.util.getUuid();
+            sutbl.subt = vrs.name;
+            sutbl.sust = vrs.type;
+            sutbl.sus = vrs.needAnswer;
+            sutbl.suc = vrs.value;
+            sutbl.sum = vrs.desc;
+            sutbl.subtsn = "";
+            sutbl.sustsn = "";
+            sutbl.sut = "";
+            urlList.push(sutbl.inT());
+          }
+        }
         //web端
         this.sqlexec.batExecSql(urlList).then(data => {
             resolve(data);
