@@ -96,8 +96,9 @@ export class UtilService {
     } else {
       // 非Android和iOS真机状态下，固定使用platform
       let devicePlatform = this.device.platform;
-      if (devicePlatform == null || devicePlatform == '') devicePlatform = "browser";
+      if (devicePlatform == null) devicePlatform = "browser";
       deviceId = devicePlatform.replace(/\s/g, "");
+      if (deviceId == '') deviceId = "browser";
     }
     return deviceId;
   }
