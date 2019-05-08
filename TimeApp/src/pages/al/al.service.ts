@@ -146,6 +146,8 @@ export class AlService {
 
       }
 
+
+
       alData.text = "系统初始化完成";
 
       resolve(alData);
