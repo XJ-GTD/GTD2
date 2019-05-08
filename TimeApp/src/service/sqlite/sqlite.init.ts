@@ -95,6 +95,10 @@ export class SqliteInit {
     let jt: JtTbl = new JtTbl();
     await this.sqlexec.drop(jt);
     await this.sqlexec.create(jt);
+
+    let su: SuTbl = new SuTbl();
+    await this.sqlexec.drop(su);
+    await this.sqlexec.create(su);
   }
 
   /**
@@ -138,19 +142,26 @@ export class SqliteInit {
           urlList.push(stbl.inT());
         }
 
+        let su: SuTbl = new SuTbl();
+        await this.sqlexec.drop(su);
+        await this.sqlexec.create(su);
+
         //服务器 语音数据
         for (let vrs of data.vrs) {
-          let sutbl = new SuTbl();
-          sutbl.sui = this.util.getUuid();
-          sutbl.subt = vrs.name;
-          sutbl.sust = vrs.type;
-          sutbl.sus = vrs.needAnswer;
-          sutbl.suc = vrs.value;
-          sutbl.sum = vrs.desc;
-          sutbl.subtsn = "";
-          sutbl.sustsn = "";
-          sutbl.sut = "";
-          urlList.push(sutbl.inT());
+          //v2版本
+          if (vrs.needAnswer) {
+            let sutbl = new SuTbl();
+            sutbl.sui = this.util.getUuid();
+            sutbl.subt = vrs.name;
+            sutbl.sust = vrs.type;
+            sutbl.sus = vrs.needAnswer;
+            sutbl.suc = vrs.value;
+            sutbl.sum = vrs.desc;
+            sutbl.subtsn = "";
+            sutbl.sustsn = "";
+            sutbl.sut = "";
+            urlList.push(sutbl.inT());
+          }
         }
 
         //web端
@@ -223,17 +234,20 @@ export class SqliteInit {
 
         //服务器 语音数据
         for (let vrs of data.vrs) {
-          let sutbl = new SuTbl();
-          sutbl.sui = this.util.getUuid();
-          sutbl.subt = vrs.name;
-          sutbl.sust = vrs.type;
-          sutbl.sus = vrs.needAnswer;
-          sutbl.suc = vrs.value;
-          sutbl.sum = vrs.desc;
-          sutbl.subtsn = "";
-          sutbl.sustsn = "";
-          sutbl.sut = "";
-          urlList.push(sutbl.inT());
+          //v2版本
+          if (vrs.needAnswer){
+            let sutbl = new SuTbl();
+            sutbl.sui = this.util.getUuid();
+            sutbl.subt = vrs.name;
+            sutbl.sust = vrs.type;
+            sutbl.sus = vrs.needAnswer;
+            sutbl.suc = vrs.value;
+            sutbl.sum = vrs.desc;
+            sutbl.subtsn = "";
+            sutbl.sustsn = "";
+            sutbl.sut = "";
+            urlList.push(sutbl.inT());
+          }
         }
         //web端
         this.sqlexec.batExecSql(urlList).then(data => {
