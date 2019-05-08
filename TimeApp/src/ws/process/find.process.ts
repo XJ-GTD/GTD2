@@ -150,17 +150,6 @@ export class FindProcess implements MQProcess {
           index++;
         }
       }
-
-      //for (let b3 of bs) {
-      //  let simularyran = this.util.compareTwoStrings(piny, b3.ranpy);
-      //  let simularyrn = this.util.compareTwoStrings(piny, b3.rnpy);
-      //  console.log(piny + ' <=> ' + b3.ranpy + ' distance ' + simularyran);
-      //  console.log(piny + ' <=> ' + b3.rnpy + ' distance ' + simularyrn);
-      //  if (simularyran > 0.8 || simularyrn > 0.8) {
-      //    //piny = piny.replace(b3.ranpy, "").replace(b3.rnpy, "");
-      //    rsbs.set(b3.ranpy, b3);
-      //  }
-      //}
     }
     rsbs.forEach((value, key, map) => {
       res.push(value);
