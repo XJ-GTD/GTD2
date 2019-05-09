@@ -107,14 +107,16 @@ export class SqliteInit {
    * @returns {Promise<any>}
    */
   async createTablespath(version:number) {
-    if (version == 0 ){
+    if (version  == 1 ){
       let log: LogTbl = new LogTbl();
       await this.sqlexec.drop(log);
       await this.sqlexec.create(log);
-    }else if (version == 1){
+    }else if (version == 2){
       let su: SuTbl = new SuTbl();
       await this.sqlexec.drop(su);
       await this.sqlexec.create(su);
+
+
     }
   }
 

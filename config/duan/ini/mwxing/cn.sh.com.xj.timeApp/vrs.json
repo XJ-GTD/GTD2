@@ -51,6 +51,7 @@
 {"version": "v2", "type": "SS.U", "needAnswer": "false", "name":"UAA", "value":"已经帮您修改,您还有什么吩咐？", "desc":"修改确认回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "name":"BB", "value":"好的,本次操作已取消", "desc":"取消操作后回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "name":"BB", "value":"好的,已取消。", "desc":"取消操作后回答"},
+{"version": "v2", "type": "NONE", "needAnswer": "false", "name":"CBB", "value":"好的,本次操作已取消。", "desc":"取消放弃回答"},
 {"version": "v2", "type": "SS.D", "needAnswer": "false", "name":"CBB", "value":"好的,本次操作已取消。", "desc":"取消放弃回答"},
 {"version": "v2", "type": "SS.U", "needAnswer": "false", "name":"UBB", "value":"好的,修改已放弃。", "desc":"修改放弃回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "name":"UBB", "value":"好的,修改已放弃。", "desc":"修改放弃回答"},

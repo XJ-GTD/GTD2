@@ -143,7 +143,7 @@ export class AlService {
 
         while (DataConfig.version > this.version) {
 
-          await this.sqlLiteInit.createTablespath(this.version);
+          await this.sqlLiteInit.createTablespath(this.version + 1);
           let yTbl: YTbl = new YTbl();
           yTbl.yt = "FI";
           let stbls: Array<YTbl> = await this.sqlExce.getList<YTbl>(yTbl);

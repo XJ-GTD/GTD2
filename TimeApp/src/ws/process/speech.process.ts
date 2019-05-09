@@ -89,7 +89,8 @@ export class SpeechProcess implements MQProcess {
         }
       });
 
-      if (processRs.option4Speech == F.C || (processRs.option4Speech == SS.U && type == 'MULTI') || (processRs.option4Speech == SS.D && (type == 'ONE' || type == 'MULTI'))){
+      // 多个日程操作显示
+      if (processRs.option4Speech == F.C || (processRs.option4Speech == SS.U && type == 'MULTI') || (processRs.option4Speech == SS.D && type == 'MULTI')){
         if  (processRs.scd.length > 0){
           let cscdLS:ScdLsEmData = new ScdLsEmData();
           cscdLS.desc = speakText;
@@ -106,7 +107,8 @@ export class SpeechProcess implements MQProcess {
         }
       }
 
-      if (processRs.option4Speech == SS.C || processRs.option4Speech == SS.U || processRs.option4Speech == SS.D){
+      // 单个日程操作显示
+      if (processRs.option4Speech == SS.C || (processRs.option4Speech == SS.U && type == 'ONE') || (processRs.option4Speech == SS.D && type == 'ONE')){
 
         if  (processRs.scd.length == 1){
           let scdEm:ScdEmData = new ScdEmData();
