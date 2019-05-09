@@ -132,7 +132,7 @@ export class FindProcess implements MQProcess {
       if (simularyranrs.bestMatch.rating > 0.5) {
         let index = 0;
         for (let rating of simularyranrs.ratings) {
-          if (rating.rating > 0.5) {
+          if (rating.rating > 0.8) {
             console.log(piny + ' <=> ' + b3ran[index] + ' distance ' + rating.rating);
             rsbs.set(b3ran[index], bs[index]);
           }
@@ -143,7 +143,7 @@ export class FindProcess implements MQProcess {
       if (simularyrnrs.bestMatch.rating > 0.5) {
         let index = 0;
         for (let rating of simularyrnrs.ratings) {
-          if (rating.rating > 0.5) {
+          if (rating.rating > 0.8) {
             console.log(piny + ' <=> ' + b3rn[index] + ' distance ' + rating.rating);
             rsbs.set(b3ran[index], bs[index]);
           }
