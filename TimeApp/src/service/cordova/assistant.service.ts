@@ -127,28 +127,28 @@ export class AssistantService {
   /**
    * 返回语音播报
    */
-  async speakText(speechText: string) {
-    if (!this.utilService.isMobile()) return ;
+  speakText(speechText: string):Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      if (!this.utilService.isMobile()) resolve() ;
+      if (speechText == null || speechText == "") {
+        resolve();
+      }
+      if (!UserConfig.getSetting(DataConfig.SYS_B))  resolve();
 
-    if (!UserConfig.getSetting(DataConfig.SYS_B)) return;
+      this.stopListenAudio();
+      this.emitService.emitSpeak(true);
 
-    if (speechText == null || speechText == "") {
-      return ""
-    }
-    this.stopListenAudio();
-    this.emitService.emitSpeak(true);
+      setTimeout(() => {
+        cordova.plugins.XjBaiduTts.startSpeak(result => {
+          this.stopSpeak(true);
+          resolve();
+        }, error => {
+          this.stopSpeak(true);
+          resolve(error);
+        }, speechText);
 
-    setTimeout(() => {
-      cordova.plugins.XjBaiduTts.startSpeak(result => {
-        this.stopSpeak(true);
-        return result;
-      }, error => {
-        this.stopSpeak(true);
-        return error;
-      }, speechText);
-
-    }, 100);
-
+      }, 100);
+    });
   }
 
 

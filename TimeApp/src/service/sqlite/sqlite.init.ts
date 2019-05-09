@@ -111,6 +111,10 @@ export class SqliteInit {
       let log: LogTbl = new LogTbl();
       await this.sqlexec.drop(log);
       await this.sqlexec.create(log);
+    }else if (version == 1){
+      let su: SuTbl = new SuTbl();
+      await this.sqlexec.drop(su);
+      await this.sqlexec.create(su);
     }
   }
 
@@ -142,10 +146,10 @@ export class SqliteInit {
           urlList.push(stbl.inT());
         }
 
+
         let su: SuTbl = new SuTbl();
         await this.sqlexec.drop(su);
         await this.sqlexec.create(su);
-
         //服务器 语音数据
         for (let vrs of data.vrs) {
           //v2版本

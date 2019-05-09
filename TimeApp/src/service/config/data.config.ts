@@ -35,8 +35,10 @@ import {LogPage} from "../../pages/log/log";
 
 export class DataConfig {
   public static isdebug: boolean  = true;
-  //2019/04/29
-  public static version:number = 1;
+  //2019/04/29 增加日志表操作
+  //public static version:number = 1;
+  //2019/05/09 增加语音回答表
+  public static version:number = 2;
 
 
 
