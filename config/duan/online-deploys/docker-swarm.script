@@ -1,0 +1,60 @@
+#正式环境
+docker swarm init --advertise-addr 192.168.0.30
+
+docker swarm join --token SWMTKN-1-1lwxll8gwlvljki9fra2ayx2d0sbm7ohh2ne9nek81zh9mp124-5e4661m5pqhdgz46rcto5jcoj 192.168.0.30:2377
+
+docker swarm join-token manager
+
+docker swarm join --token SWMTKN-1-1lwxll8gwlvljki9fra2ayx2d0sbm7ohh2ne9nek81zh9mp124-6uznvpcr9ud6qkptw8ol1xfak 192.168.0.30:2377
+
+docker node update --label-add func=vmcos130 vmcos130
+docker node update --label-add func=vmcos131 vmcos131
+docker node update --label-add func=vmcos132 vmcos132
+docker node update --label-add func=vmcos133 vmcos133
+docker node update --label-add func=vmcos134 vmcos134
+docker node update --label-add func=vmcos135 vmcos135
+docker node update --label-add func=vmcos136 vmcos136
+docker node update --label-add func=vmcos137 vmcos137
+docker node update --label-add func=vmcos138 vmcos138
+
+docker network rm mwxing-network-overlay
+docker network create --driver overlay --subnet=10.12.0.0/24 --gateway=10.12.0.2 mwxing-network-overlay
+
+# 部署实例
+docker service rm sa-mysql
+docker service create --replicas 1 --name sa-mysql \
+                      --network mwxing-network-overlay \
+                      --endpoint-mode=dnsrr \
+                      --env LANG=C.UTF-8 \
+                      --mount type=bind,src=/opt/mysql-mwxing,dst=/var/lib/mysql \
+                      --constraint 'node.labels.func == vmcos131' 192.168.0.158:5000/xiaoji-mysql --lower_case_table_names=1
+docker service logs -f sa-mysql
+
+docker service rm mysqladmin
+docker service create --replicas 1 --name mysqladmin \
+     --network mwxing-network-overlay \
+     --publish 81:80 \
+     --constraint 'node.labels.func == vmcos132' \
+     --env PMA_HOST=sa-mysql \
+     --env PMA_ABSOLUTE_URI=http://192.168.0.32:81/ \
+     192.168.0.158:5000/xiaoji-mysqladmin
+docker service logs -f mysqladmin
+
+docker service rm mongodb
+docker service create --replicas 1 --name mongodb --network mwxing-network-overlay \
+     --constraint 'node.labels.func == vmcos135' \
+     --mount type=bind,src=/opt/mongodb,dst=/data/db \
+     192.168.0.158:5000/xiaoji-mongodb
+docker service logs -f mongodb
+
+docker service rm mongoexpress
+docker service create --replicas 1 \
+     --name mongoexpress \
+     --publish 82:8080 \
+     --env ME_CONFIG_SITE_BASEURL=/ \
+     --env ME_CONFIG_SITE_GRIDFS_ENABLED=true \
+     --network mwxing-network-overlay \
+     192.168.0.158:5000/xiaoji-mongoexpress
+docker service logs -f mongoexpress
+
+# 待rabbitmq集群启动后启动

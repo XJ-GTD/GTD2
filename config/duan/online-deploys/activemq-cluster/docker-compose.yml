@@ -1,0 +1,15 @@
+version: "3.3"
+services:
+  sa-amq:
+    image: 192.168.0.158:5000/xiaoji-sa-amq
+    hostname: sa-amq
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+networks:
+  mwxing-network-overlay:
+    external: true
