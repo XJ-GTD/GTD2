@@ -129,11 +129,18 @@ export class AssistantService {
    */
   speakText(speechText: string):Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      if (!this.utilService.isMobile()) resolve() ;
+      if (!this.utilService.isMobile()) {
+        resolve() ;
+        return;
+      }
       if (speechText == null || speechText == "") {
         resolve();
+        return;
       }
-      if (!UserConfig.getSetting(DataConfig.SYS_B))  resolve();
+      if (!UserConfig.getSetting(DataConfig.SYS_B)) {
+        resolve();
+        return;
+      }
 
       this.stopListenAudio();
       this.emitService.emitSpeak(true);
