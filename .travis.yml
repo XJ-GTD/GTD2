@@ -1,7 +1,6 @@
 branches:
   only:
   - develop
-  - preview
 matrix:
   include:
   - os: linux
