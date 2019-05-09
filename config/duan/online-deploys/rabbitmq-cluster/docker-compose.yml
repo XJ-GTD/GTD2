@@ -1,0 +1,73 @@
+version: "3.3"
+services:
+  rabbit1:
+    image: 192.168.0.158:5000/xiaoji-sa-rmq
+    hostname: rabbit1
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "secret string"
+      RABBITMQ_NODENAME: rabbit
+    depends_on:
+      - rabbit3
+
+    configs:
+      - source: rabbitmq_config
+        target: /etc/rabbitmq/rabbitmq.config
+      - source: definitons_json
+        target: /etc/rabbitmq/definitions.json
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+  rabbit2:
+    image: 192.168.0.158:5000/xiaoji-sa-rmq
+    hostname: rabbit2
+
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "secret string"
+      RABBITMQ_NODENAME: rabbit
+    depends_on:
+      - rabbit3
+    configs:
+      - source: rabbitmq_config
+        target: /etc/rabbitmq/rabbitmq.config
+      - source: definitons_json
+        target: /etc/rabbitmq/definitions.json
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+    
+  rabbit3:
+    image: 192.168.0.158:5000/xiaoji-sa-rmq
+    hostname: rabbit3
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "secret string"
+      RABBITMQ_NODENAME: rabbit
+
+    configs:
+      - source: rabbitmq_config
+        target: /etc/rabbitmq/rabbitmq.config
+      - source: definitons_json
+        target: /etc/rabbitmq/definitions.json
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+configs:
+  rabbitmq_config:
+    file: ./rabbitmq.config
+  definitons_json:
+    file: ./definitions.json
+
+networks:
+  mwxing-network-overlay:
+    external: true
+
