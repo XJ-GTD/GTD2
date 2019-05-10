@@ -124,12 +124,14 @@ export class AlService {
             await this.createTestData();
           }
 
-          let yTbl: YTbl = new YTbl();
-          yTbl.yi = this.util.getUuid();
-          yTbl.yt = "FI";
-          yTbl.yk = "FI";
-          yTbl.yv = "0";
-          await this.sqlExce.save(yTbl);
+          // 设置客户端初始化版本号
+          let verTbl: YTbl = new YTbl();
+          verTbl.yi = this.util.getUuid();
+          verTbl.yt = "FI";
+          verTbl.yk = "FI";
+          verTbl.yv = "0";
+          await this.sqlExce.save(verTbl);
+
           this.version = 0;
 
           await this.sqlLiteInit.initData();
@@ -146,6 +148,7 @@ export class AlService {
           await this.sqlLiteInit.createTablespath(this.version + 1);
           let yTbl: YTbl = new YTbl();
           yTbl.yt = "FI";
+          yTbl.yk = "FI";
           let stbls: Array<YTbl> = await this.sqlExce.getList<YTbl>(yTbl);
           yTbl.yi = stbls[0].yi;
           yTbl.yv = (++this.version).toString();

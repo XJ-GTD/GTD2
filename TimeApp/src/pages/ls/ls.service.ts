@@ -3,6 +3,7 @@ import {PersonRestful} from "../../service/restful/personsev";
 import {SmsRestful} from "../../service/restful/smssev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
+import {UserConfig} from "../../service/config/user.config";
 import {AuthRestful, LoginData} from "../../service/restful/authsev";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
@@ -17,9 +18,10 @@ export class LsService {
               private sqlExec: SqliteExec,
               private util: UtilService,
               private authRestful: AuthRestful,
+              private userConfig: UserConfig,
               //private brService: BrService,
               private webSocketService:WebsocketService,
-              private alService:AlService,) {}
+              private alService:AlService) {}
 
   //获取验证码
   getSMSCode(mobile:string):  Promise<any> {
@@ -66,7 +68,7 @@ export class LsService {
           aTbl.ai = data.openid;  //openid
           aTbl.an = data.nickname;
           aTbl.am = data.phoneno;
-          aTbl.ae = this.util.deviceId();
+          aTbl.ae = UserConfig.getDeviceId();
           aTbl.at = data.access_token;
           aTbl.aq = data.cmq;
 

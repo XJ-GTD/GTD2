@@ -13,7 +13,7 @@ function shouldclean(datasource)
           for (var sei in semantics) {
             var semantic = semantics[sei];
 
-            if (semantic['intent'] === 'FindByTime' || semantic['intent'] === 'FindBySomething' || semantic['intent'] === 'FindBySomebody') {
+            if (semantic['intent'] === 'FindByTime' || semantic['intent'] === 'FindByTAndS' || semantic['intent'] === 'FindByTAndSB' || semantic['intent'] === 'FindBySBAndS' || semantic['intent'] === 'FindBySomething' || semantic['intent'] === 'FindBySomebody') {
               return true;
             }
           }
@@ -59,6 +59,21 @@ function clean(datasource)
   var stime = '';
   var etime = '';
   var title = '';
+
+  var findYearS = false;
+  var findMonthS = false;
+  var findDayS = false;
+  var findAMPMS = false;
+  var findTimeS = false;
+  
+  var findYearE = false;
+  var findMonthE = false;
+  var findDayE = false;
+  var findAMPME = false;
+  var findTimeE = false;
+  
+  var ampmS = '';
+  var ampmE = '';
   
   var semantics = data['intent']['semantic'];
   
@@ -76,10 +91,192 @@ function clean(datasource)
         
         if (value && value !== undefined && value !== '') {
           var normValue = JSON.parse(value);
+          // 可能值 2019, 2019-01, 2019-05-10, TEAM/TAM/TMID/TPM/TNI/TLNI, 2019-05-10TAM, T15:00:00, 2019-05-10T15:00:00
+          // TEAM 01:00 ~ 05:59 5小时
+          // TAM  06:00 ~ 11:59 6小时
+          // TMID 12:00 ~ 12:59 1小时
+          // TPM  13:00 ~ 19:59 7小时
+          // TNI  20:00 ~ 21:59 2小时
+          // TLNI 22:00 ~ 23:59 2小时
+          var datetime = normValue['datetime'];
           var suggestDatetime = normValue['suggestDatetime'];
           
-          print('suggestDatetime: ' + suggestDatetime);
+          print('datetime: ' + datetime + ' => suggestDatetime: ' + suggestDatetime);
           
+          // 识别原始条件判断查找范围
+          if (datetime.indexOf('/') < 0) {
+            // 包含时间
+            var reg = /^(\d+)-(\d{1,2})-(\d{1,2})T(\d{1,2}):(\d{1,2}):(\d{1,2})$/;
+            var r = datetime.match(reg);
+            
+            if (r) {
+              findDayS = true;
+              findTimeS = true;
+
+              findDayE = true;
+              findTimeE = true;
+            }
+            
+            // 只有时间(上午下午范围)
+            var regapo = /^T(EAM|AM|MID|PM|NI|LNI)$/;
+            var rapo = datetime.match(regapo);
+            
+            if (rapo) {
+              findAMPMS = true;
+              ampmS = rapo[1];
+              findAMPME = true;
+              ampmE = rapo[1];
+            }
+
+            // 没有时间(上午下午范围)
+            var regap = /^(\d+)-(\d{1,2})-(\d{1,2})T(EAM|AM|MID|PM|NI|LNI)$/;
+            var rap = datetime.match(regap);
+            
+            if (rap) {
+              findDayS = true;
+              findAMPMS = true;
+              ampmS = rap[4];
+              findDayE = true;
+              findAMPME = true;
+              ampmE = rap[4];
+            }
+
+            // 没有时间
+            var regd = /^(\d+)-(\d{1,2})-(\d{1,2})$/;
+            var rd = datetime.match(regd);
+            
+            if (rd) {
+              findDayS = true;
+              findDayE = true;
+            }
+
+            // 没有天
+            var regm = /^(\d+)-(\d{1,2})$/;
+            var rm = datetime.match(regm);
+            
+            if (rm) {
+              findMonthS = true;
+              findMonthE = true;
+            }
+
+            // 没有月
+            var regy = /^(\d+)$/;
+            var ry = datetime.match(regy);
+            
+            if (ry) {
+              findYearS = true;
+              findYearE = true;
+            }
+          } else {
+            // 包含期间
+            var datetimerange = datetime.split('/');
+            // 包含时间
+            var reg = /^(\d+)-(\d{1,2})-(\d{1,2})T(\d{1,2}):(\d{1,2}):(\d{1,2})$/;
+            var r = datetimerange[0].match(reg);
+            
+            if (r) {
+              findDayS = true;
+              findTimeS = true;
+            }
+            
+            // 只有时间(上午下午范围)
+            var regapo = /^T(EAM|AM|MID|PM|NI|LNI)$/;
+            var rapo = datetime.match(regapo);
+            
+            if (rapo) {
+              findAMPMS = true;
+              ampmS = rapo[1];
+            }
+
+            // 没有时间(上午下午范围)
+            var regap = /^(\d+)-(\d{1,2})-(\d{1,2})T(EAM|AM|MID|PM|NI|LNI)$/;
+            var rap = datetimerange[0].match(regap);
+            
+            if (rap) {
+              findDayS = true;
+              findAMPMS = true;
+              ampmS = rap[4];
+            }
+
+            // 没有时间
+            var regd = /^(\d+)-(\d{1,2})-(\d{1,2})$/;
+            var rd = datetimerange[0].match(regd);
+            
+            if (rd) {
+              findDayS = true;
+            }
+
+            // 没有天
+            var regm = /^(\d+)-(\d{1,2})$/;
+            var rm = datetimerange[0].match(regm);
+            
+            if (rm) {
+              findMonthS = true;
+            }
+
+            // 没有月
+            var regy = /^(\d+)$/;
+            var ry = datetimerange[0].match(regy);
+            
+            if (ry) {
+              findYearS = true;
+            }
+            
+            // 期间结束条件
+            // 包含时间
+            var rege = /^(\d+)-(\d{1,2})-(\d{1,2})T(\d{1,2}):(\d{1,2}):(\d{1,2})$/;
+            var re = datetimerange[1].match(rege);
+            
+            if (re) {
+              findDayE = true;
+              findTimeE = true;
+            }
+            
+            // 只有时间(上午下午范围)
+            var regapoe = /^T(EAM|AM|MID|PM|NI|LNI)$/;
+            var rapoe = datetimerange[1].match(regapoe);
+            
+            if (rapoe) {
+              findAMPME = true;
+              ampmE = rapoe[1];
+            }
+
+            // 没有时间(上午下午范围)
+            var regape = /^(\d+)-(\d{1,2})-(\d{1,2})T(EAM|AM|MID|PM|NI|LNI)$/;
+            var rape = datetimerange[1].match(regape);
+            
+            if (rape) {
+              findDayE = true;
+              findAMPME = true;
+              ampmE = rape[4];
+            }
+
+            // 没有时间
+            var regde = /^(\d+)-(\d{1,2})-(\d{1,2})$/;
+            var rde = datetimerange[1].match(regde);
+            
+            if (rde) {
+              findDayE = true;
+            }
+
+            // 没有天
+            var regme = /^(\d+)-(\d{1,2})$/;
+            var rme = datetimerange[1].match(regme);
+            
+            if (rme) {
+              findMonthE = true;
+            }
+
+            // 没有月
+            var regye = /^(\d+)$/;
+            var rye = datetimerange[1].match(regye);
+            
+            if (rye) {
+              findYearE = true;
+            }
+          }
+          
+          // 取得讯飞预判结果
           if (suggestDatetime.indexOf('/') < 0) {
             // 包含时间
             var reg = /^(\d+)-(\d{1,2})-(\d{1,2})T(\d{1,2}):(\d{1,2}):(\d{1,2})$/;
@@ -170,29 +367,104 @@ function clean(datasource)
   };
   
   if (date && date !== '') {
-    output['content']['F']['parameters']['scd']['ds'] = date;
-    output['content']['F']['parameters']['scd']['de'] = date;
+    if (findYearS) {
+      output['content']['F']['parameters']['scd']['ds'] = date.substring(0, 4) + '/01/01';
+    } 
+
+    if (findYearE) {
+      output['content']['F']['parameters']['scd']['de'] = date.substring(0, 4) + '/12/31';
+    } 
+
+    if (findMonthS) {
+      output['content']['F']['parameters']['scd']['ds'] = date.substring(0, 7) + '/01';
+    }
+    
+    if (findMonthE) {
+      output['content']['F']['parameters']['scd']['de'] = date.substring(0, 7) + '/31';
+    }
+    
+    // 以上情况不匹配的时候
+    if (!output['content']['F']['parameters']['scd']['ds']) {
+      output['content']['F']['parameters']['scd']['ds'] = date;
+    }
+    
+    if (!output['content']['F']['parameters']['scd']['de']) {
+      output['content']['F']['parameters']['scd']['de'] = date;
+    }
   }
   
   if (sdate && sdate !== '') {
-    output['content']['F']['parameters']['scd']['ds'] = sdate;
+    if (findYearS) {
+      output['content']['F']['parameters']['scd']['ds'] = date.substring(0, 4) + '/01/01';
+    } 
+
+    if (findMonthS) {
+      output['content']['F']['parameters']['scd']['ds'] = date.substring(0, 7) + '/01';
+    }
+    
+    if (!output['content']['F']['parameters']['scd']['ds']) {
+      output['content']['F']['parameters']['scd']['ds'] = sdate;
+    }
   }
 
   if (edate && edate !== '') {
-    output['content']['F']['parameters']['scd']['de'] = edate;
+    if (findYearE) {
+      output['content']['F']['parameters']['scd']['de'] = date.substring(0, 4) + '/12/31';
+    } 
+
+    if (findMonthE) {
+      output['content']['F']['parameters']['scd']['de'] = date.substring(0, 7) + '/31';
+    }
+    
+    // 以上情况不匹配的时候
+    if (!output['content']['F']['parameters']['scd']['de']) {
+      output['content']['F']['parameters']['scd']['de'] = edate;
+    }
   }
 
+  // TEAM 01:00 ~ 05:59 5小时
+  // TAM  06:00 ~ 11:59 6小时
+  // TMID 12:00 ~ 12:59 1小时
+  // TPM  13:00 ~ 19:59 7小时
+  // TNI  20:00 ~ 21:59 2小时
+  // TLNI 22:00 ~ 23:59 2小时
   if (time && time !== '') {
-    output['content']['F']['parameters']['scd']['ts'] = time;
-    output['content']['F']['parameters']['scd']['te'] = time;
+    if (findAMPMS) {
+      output['content']['F']['parameters']['scd']['ts'] = (ampmS == 'EAM'? '01:00' : (ampmS == 'AM'? '06:00' : (ampmS == 'MID'? '12:00' : (ampmS == 'PM'? '13:00' : (ampmS == 'NI'? '20:00' : (ampmS == 'LNI'? '22:00' : '00:00'))))));
+    }
+
+    if (findAMPME) {
+      output['content']['F']['parameters']['scd']['te'] = (ampmE == 'EAM'? '05:59' : (ampmE == 'AM'? '11:59' : (ampmE == 'MID'? '12:59' : (ampmE == 'PM'? '19:59' : (ampmE == 'NI'? '21:59' : (ampmE == 'LNI'? '23:59' : '23:59'))))));
+    }
+
+    // 以上情况不匹配的时候
+    if (!output['content']['F']['parameters']['scd']['ts']) {
+      output['content']['F']['parameters']['scd']['ts'] = time;
+    }
+
+    if (!output['content']['F']['parameters']['scd']['te']) {
+      output['content']['F']['parameters']['scd']['te'] = time;
+    }
   }
  
   if (stime && stime !== '') {
-    output['content']['F']['parameters']['scd']['ts'] = stime;
+    if (findAMPMS) {
+      output['content']['F']['parameters']['scd']['ts'] = (ampmS == 'EAM'? '01:00' : (ampmS == 'AM'? '06:00' : (ampmS == 'MID'? '12:00' : (ampmS == 'PM'? '13:00' : (ampmS == 'NI'? '20:00' : (ampmS == 'LNI'? '22:00' : '00:00'))))));
+    }
+
+    if (!output['content']['F']['parameters']['scd']['ts']) {
+      output['content']['F']['parameters']['scd']['ts'] = stime;
+    }
   }
 
   if (etime && etime !== '') {
-    output['content']['F']['parameters']['scd']['te'] = etime;
+    if (findAMPME) {
+      output['content']['F']['parameters']['scd']['te'] = (ampmE == 'EAM'? '05:59' : (ampmE == 'AM'? '11:59' : (ampmE == 'MID'? '12:59' : (ampmE == 'PM'? '19:59' : (ampmE == 'NI'? '21:59' : (ampmE == 'LNI'? '23:59' : '23:59'))))));
+    }
+
+    if (!output['content']['F']['parameters']['scd']['te']) {
+      output['content']['F']['parameters']['scd']['te'] = etime;
+    }
   }
 
   if (title && title !== '') {

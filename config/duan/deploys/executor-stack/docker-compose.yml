@@ -33,6 +33,19 @@ services:
       replicas: 1
       endpoint_mode: dnsrr
 
+  sa-exc:
+    image: 192.168.0.158:5000/xiaoji-sa-exc
+    hostname: sa-exc
+    configs:
+      - source: exc_config
+        target: /usr/verticles/exc.json
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
   sa-acj:
     image: 192.168.0.158:5000/xiaoji-sa-acj
     hostname: sa-acj
@@ -90,6 +103,8 @@ configs:
     file: ./cdc/cdc.json
   nlp_config:
     file: ./nlp/nlp.json
+  exc_config:
+    file: ./exc/exc.json
   acj_config:
     file: ./acj/acj.json
   ann_config:

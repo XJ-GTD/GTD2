@@ -38,7 +38,9 @@ export class DataConfig {
   //2019/04/29 增加日志表操作
   //public static version:number = 1;
   //2019/05/09 增加语音回答表
-  public static version:number = 2;
+  //public static version:number = 2;
+  //2019/05/10 修改设备ID缓存到数据库,防止应用升级时获取设备ID被改变
+  public static version:number = 3;
 
 
 

@@ -32,6 +32,9 @@ export class FindProcess implements MQProcess {
     //处理区分
     if (content.option == F.C) {
       // TODO 增加根据人查询日程
+      if (processRs.fs) {
+        findData.scd.fs = processRs.fs;
+      }
       processRs.scd = await this.findScd(findData.scd);
     }
 
@@ -165,7 +168,8 @@ export class FindProcess implements MQProcess {
         scd.ds ||
         scd.te ||
         scd.ti ||
-        scd.ts) {
+        scd.ts ||
+        (scd.fs && scd.fs.length > 0)) {
         let sql: string = `select distinct c.si,
                                            c.sn,
                                            c.ui,
@@ -205,6 +209,15 @@ export class FindProcess implements MQProcess {
         }
         if (scd.te) {
           sql = sql + ` and (sp.st <= '${scd.te}' or sp.st = '99:99')`;
+        }
+        // 根据人物查询
+        if (scd.fs && scd.fs.length > 0) {
+          sql = sql + ` and ( 1 > 1 `;
+          for (let onefs of scd.fs) {
+            sql = sql + ` or c.ui = '${onefs.ui}'`;
+            sql = sql + ` or d.ai = '${onefs.pwi}'`;
+          }
+          sql = sql + ` )`;
         }
         console.log("============ mq查询日程："+ sql);
         res = await this.sqliteExec.getExtList<CTbl>(sql);

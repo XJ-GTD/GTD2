@@ -21,5 +21,7 @@ export class FindPara{
     te:string;
     //主题
     ti:string;
+    //人物查询
+    fs:Array<any>;
   }
 }

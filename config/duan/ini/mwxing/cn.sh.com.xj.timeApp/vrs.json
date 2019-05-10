@@ -90,7 +90,13 @@
 {"version": "v2", "type": "NONE", "needAnswer": "false", "name":"RM", "value":"闹铃已设好,届时我将提醒您", "desc":"闹铃设置回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "name":"HL", "value":"安排日程,您可以说:今天下午和老婆去八百伴购物。", "desc":"问候语"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "name":"LH", "value":"您可以按照以下步骤来做", "desc":"进入教程"},
+{"version": "v2", "type": "ONE", "needAnswer": "false", "name":"UNKNOWN", "value":"这可能超出了我目前的能力范围。", "desc":"异常回答"},
+{"version": "v2", "type": "ONE", "needAnswer": "false", "name":"UNKNOWN", "value":"对不起,我没听懂。", "desc":"异常回答"},
+{"version": "v2", "type": "ONE", "needAnswer": "false", "name":"UNKNOWN", "value":"我不是很明白,您能讲得更清楚一些吗?", "desc":"异常回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "name":"UNKNOWN", "value":"这可能超出了我目前的能力范围。", "desc":"异常回答"},
+{"version": "v2", "type": "MULTI", "needAnswer": "false", "name":"UNKNOWN", "value":"对不起,我没听懂。", "desc":"异常回答"},
+{"version": "v2", "type": "MULTI", "needAnswer": "false", "name":"UNKNOWN", "value":"我不是很明白,您能讲得更清楚一些吗?", "desc":"异常回答"},
+{"version": "v2", "type": "MULTI", "needAnswer": "false", "name":"UNKNOWN", "value":"这可能超出了我目前的能力范围。", "desc":"异常回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "name":"UNKNOWN", "value":"对不起,我没听懂。", "desc":"异常回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "name":"UNKNOWN", "value":"我不是很明白,您能讲得更清楚一些吗?", "desc":"异常回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "name":"UNKNOWN", "value":"目前还无法处理您的要求,请换个方式告诉我", "desc":"异常回答"}

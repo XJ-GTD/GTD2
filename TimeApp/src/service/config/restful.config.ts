@@ -11,7 +11,8 @@ export class RestFulConfig {
 
   private urlLs: Map<string, UrlEntity>;
 
-  constructor(private sqlitexec: SqliteExec,private util:UtilService) {
+  constructor(private sqlitexec: SqliteExec,
+              private util:UtilService) {
     //this.init();
   }
 
@@ -22,7 +23,7 @@ export class RestFulConfig {
     // //帐户ID
     header.ai = UserConfig.account.phone;
     //设备ID
-    header.di = this.util.deviceId();
+    header.di = UserConfig.getDeviceId();
     // //设别类型
     header.dt = this.util.deviceType();
     // //登录码
