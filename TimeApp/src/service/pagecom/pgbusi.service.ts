@@ -726,7 +726,9 @@ export class PgBusiService {
       let adgPro: AgdPro = new AgdPro();
       //restFul保存日程
       this.setAdgPro(adgPro, ct);
-      this.agdRest.save(adgPro);
+      // 语音创建的时候，如果不同步，会导致服务器还没有保存完日程，保存联系人的请求就来了，导致查不到日程无法触发共享联系人动作
+      // 必须增加await，否则，页面创建和语音创建方法必须分开
+      await this.agdRest.save(adgPro);
 
       Object.assign(rc,ct);
       resolve(rc);
