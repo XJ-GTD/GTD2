@@ -51,4 +51,4 @@
 
 ## ionic cordova plugin add cordova-sqlite-storage cordova-plugin-statusbar uk.co.workingedge.cordova.plugin.sqliteporter cordova-sqlite-storage cordova-plugin-whitelist com.telerik.plugins.nativepagetransitions cordova-plugin-nativeaudio cordova-plugin-vibration cordova-plugin-file-transfer cordova-plugin-local-notification cordova-plugin-ionic-webview cordova-plugin-splashscreen ionic-plugin-keyboard cordova-plugin-device cordova-plugin-console cordova-plugin-file cordova-plugin-calendar cordova-plugin-advanced-http cordova-plugin-android-permissions cordova-plugin-background-mode ../BaiduSpeechAndTTS cordova-plugin-contacts cordova-plugin-network-information cordova-plugin-screen-orientation
 
-
+## release 打包命令 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore mwxing-release.keystore -signedjar mwx.apk app-release-unsigned.apk mwxing-release
