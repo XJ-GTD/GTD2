@@ -168,7 +168,8 @@ export class FindProcess implements MQProcess {
         scd.ds ||
         scd.te ||
         scd.ti ||
-        scd.ts) {
+        scd.ts ||
+        (scd.fs && scd.fs.length > 0)) {
         let sql: string = `select distinct c.si,
                                            c.sn,
                                            c.ui,
