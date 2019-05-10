@@ -52,7 +52,7 @@ export class LpService {
           aTbl.ai = data.openid;  //openid
           aTbl.an = data.nickname;
           aTbl.am = data.phoneno;
-          aTbl.ae = this.userConfig.getDeviceId();
+          aTbl.ae = UserConfig.getDeviceId();
           aTbl.at = data.access_token;
           aTbl.aq = data.cmq;
 
