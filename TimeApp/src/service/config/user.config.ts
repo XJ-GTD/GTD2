@@ -78,6 +78,14 @@ export class UserConfig {
     return UserConfig.settins.get(key).value == "1";
   }
 
+  // 2019/05/10
+  // 席理加
+  // 设置客户端设备ID,版本更新时不同机型会产生不同的设备ID,需要缓存保证一致
+  // 在系统初始化前访问时,无法获得缓存的设备ID,需要直接获取,所产生的差异不会影响后续功能
+  static getDeviceId():string {
+    return UserConfig.settins.get("DI")? UserConfig.settins.get("DI").value : "No device Id";
+  }
+
   static getTroubleStop(key: string) {
     return UserConfig.troublestop.get(key);
   }
@@ -136,7 +144,7 @@ export class UserConfig {
     } else {
       UserConfig.account.name = "";
       UserConfig.account.phone = "";
-      UserConfig.account.device = this.util.deviceId();
+      UserConfig.account.device = UserConfig.getDeviceId();
       UserConfig.account.token = "";
       UserConfig.account.mq = "";
     }

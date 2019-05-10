@@ -137,6 +137,8 @@ page-tdl {
   .agenda-sn {
     position: relative;
     width: 75%;
+    word-wrap: break-word;
+    word-break: break-word;
     text-overflow: clip;
     font-size: 15px;
     margin-left: 3px;

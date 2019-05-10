@@ -20,9 +20,17 @@ export class AiService {
     let speak: string = "";
     let i = 0;
 
+    let prevdate = '';
     for (i = 0; i < scds.datas.length; i++) {
       let scd: ScdAiData = scds.datas[i];
-      speak = speak + "第" + (i + 1) + "个活动" + moment(scd.d).format("YYYY年MM月DD日") + scd.t + scd.ti;
+      let currdate = moment(scd.d).format("YYYY年MM月DD日");
+      let broadcast = false;
+      
+      if (prevdate == '' || currdate != prevdate) {
+        prevdate = currdate;
+        broadcast = true;
+      }
+      speak = speak + "第" + (i + 1) + "个活动 " + (broadcast? currdate : '') + (scd.t == '99:99'? ' ' : scd.t) + scd.ti;
     }
 
     this.assistantService.speakText(speak);
