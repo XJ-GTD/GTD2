@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {AuthRestful, LoginData} from "../../service/restful/authsev";
+import {UserConfig} from "../../service/config/user.config";
 import {PersonRestful} from "../../service/restful/personsev";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
@@ -16,8 +17,9 @@ export class LpService {
               private personRestful: PersonRestful,
               private webSocketService:WebsocketService,
               private util: UtilService,
+              private userConfig: UserConfig,
               //private brService: BrService,
-              private alService:AlService,) {}
+              private alService:AlService) {}
 
   //登录
   login(lpData: PageLoginData): Promise<any> {
@@ -50,7 +52,7 @@ export class LpService {
           aTbl.ai = data.openid;  //openid
           aTbl.an = data.nickname;
           aTbl.am = data.phoneno;
-          aTbl.ae = this.util.deviceId();
+          aTbl.ae = this.userConfig.getDeviceId();
           aTbl.at = data.access_token;
           aTbl.aq = data.cmq;
 

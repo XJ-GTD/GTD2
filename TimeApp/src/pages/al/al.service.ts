@@ -124,12 +124,24 @@ export class AlService {
             await this.createTestData();
           }
 
-          let yTbl: YTbl = new YTbl();
-          yTbl.yi = this.util.getUuid();
-          yTbl.yt = "FI";
-          yTbl.yk = "FI";
-          yTbl.yv = "0";
-          await this.sqlExce.save(yTbl);
+          // 设置客户端初始化版本号
+          let verTbl: YTbl = new YTbl();
+          verTbl.yi = this.util.getUuid();
+          verTbl.yt = "FI";
+          verTbl.yk = "FI";
+          verTbl.yv = "0";
+          await this.sqlExce.save(verTbl);
+
+          // 2019/05/10
+          // 席理加
+          // 设置客户端设备ID,版本更新时不同机型会产生不同的设备ID,需要缓存保证一致
+          let deviceUUIDTbl: YTbl = new YTbl();
+          deviceUUIDTbl.yi = this.util.getUuid();
+          deviceUUIDTbl.yt = "DI";
+          deviceUUIDTbl.yk = "DI";
+          deviceUUIDTbl.yv = this.util.deviceId();
+          await this.sqlExce.save(deviceUUIDTbl);
+
           this.version = 0;
 
           await this.sqlLiteInit.initData();

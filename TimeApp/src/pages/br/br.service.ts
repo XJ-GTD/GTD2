@@ -238,14 +238,32 @@ export class BrService {
 
 
     //插入用户偏好（插入前删除）
+    // 备份客户端版本参数和设备ID
+    let verYTbl = new YTbl();
+    verYTbl.yt = "FI";
+    verYTbl.yk = "FI";
+    verYTbl = await this.sqlexec.getExtOne<YTbl>(verYTbl.slT());
+
+    let deviceUUIDYTbl = new YTbl();
+    deviceUUIDYTbl.yt = "DI";
+    deviceUUIDYTbl.yk = "DI";
+    deviceUUIDYTbl = await this.sqlexec.getExtOne<YTbl>(deviceUUIDYTbl.slT());
+
     let y = new YTbl();
     await this.sqlexec.delete(y);
 
     for (let j = 0, len = outRecoverPro.y.length; j < len; j++) {
       let yi = new YTbl();
       Object.assign(yi,outRecoverPro.y[j]) ;
+      // 忽略备份数据中的客户端版本参数和设备ID,备份的时候不需要过滤这两个数据
+      if (yi.yk == "FI" || yi.yk == "DI") continue;
       sqls.push(yi.inT());
     }
+    
+    // 恢复客户端版本参数和设备ID
+    if (verYTbl) sqls.push(verYTbl.inT());
+    if (deviceUUIDYTbl) sqls.push(deviceUUIDYTbl.inT());
+    
     await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;
 

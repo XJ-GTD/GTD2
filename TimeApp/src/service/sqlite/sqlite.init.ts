@@ -115,8 +115,16 @@ export class SqliteInit {
       let su: SuTbl = new SuTbl();
       await this.sqlexec.drop(su);
       await this.sqlexec.create(su);
-
-
+    } else if (version == 3) {
+      // 2019/05/10
+      // 席理加
+      // 设置客户端设备ID,版本更新时不同机型会产生不同的设备ID,需要缓存保证一致
+      let deviceUUIDTbl: YTbl = new YTbl();
+      deviceUUIDTbl.yi = this.util.getUuid();
+      deviceUUIDTbl.yt = "DI";
+      deviceUUIDTbl.yk = "DI";
+      deviceUUIDTbl.yv = this.util.deviceId();
+      await this.sqlexec.save(deviceUUIDTbl);
     }
   }
 
