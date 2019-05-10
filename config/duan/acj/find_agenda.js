@@ -13,7 +13,7 @@ function shouldclean(datasource)
           for (var sei in semantics) {
             var semantic = semantics[sei];
 
-            if (semantic['intent'] === 'FindByTime' || semantic['intent'] === 'FindByTAndS' || semantic['intent'] === 'FindBySomething' || semantic['intent'] === 'FindBySomebody') {
+            if (semantic['intent'] === 'FindByTime' || semantic['intent'] === 'FindByTAndS' || semantic['intent'] === 'FindByTAndSB' || semantic['intent'] === 'FindBySBAndS' || semantic['intent'] === 'FindBySomething' || semantic['intent'] === 'FindBySomebody') {
               return true;
             }
           }
