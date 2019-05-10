@@ -43,7 +43,10 @@ export class CudscdProcess implements MQProcess{
       if (content.option == SS.C) {
         // 查询没有日程
         // 查询有日程
-        if (prv.scd.length > 0){}
+        if (prv.scd.length > 0){
+          // 清空
+          prv.scd.length = 0;
+        }
 
         let ctbl:CTbl = new CTbl();
         prv.scd.push(ctbl);
