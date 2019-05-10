@@ -83,7 +83,7 @@ export class UserConfig {
   // 设置客户端设备ID,版本更新时不同机型会产生不同的设备ID,需要缓存保证一致
   // 在系统初始化前访问时,无法获得缓存的设备ID,需要直接获取,所产生的差异不会影响后续功能
   static getDeviceId():string {
-    return UserConfig.settins.get("DI")? UserConfig.settins.get("DI").value : this.util.deviceId();
+    return UserConfig.settins.get("DI")? UserConfig.settins.get("DI").value : "No device Id";
   }
 
   static getTroubleStop(key: string) {
