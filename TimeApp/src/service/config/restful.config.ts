@@ -63,6 +63,13 @@ export class RestFulConfig {
   // private static REQUEST_URL: UrlEntity = new UrlEntity("http://192.168.99.21:8080/gtd",false);//连接本地数据库
   // private static REQUEST_URL: UrlEntity = new UrlEntity("https://www.guobaa.com/gtd",false);
 
+  // 预览版
+  //public static INIT_DATA_URL: string = "https://www.guobaa.com/ini/parameters";
+  // 内网测试版
+  //public static INIT_DATA_URL: string = "https://www.guobaa.com/ini/parameters?debug=true";
+  // 开发版
+  public static INIT_DATA_URL: string = "https://www.guobaa.com/ini/parameters?tag=mwxing";
+
   /* 短应用服务APPID,SECRET for www.guobaa.com */
   public static MWXING_SERVICE_WWW_SITE = "www.guobaa.com";
   public static MWXING_SERVICE_WWW_APPID = "d3d3Lmd1b2JhYS5jb20";

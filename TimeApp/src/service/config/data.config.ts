@@ -32,6 +32,7 @@ import {BrPage} from "../../pages/br/br";
 import {AlPage} from "../../pages/al/al";
 import {TddsPage} from "../../pages/tdc/tdds";
 import {LogPage} from "../../pages/log/log";
+import {AtPage} from "../../pages/at/at";
 
 export class DataConfig {
   public static isdebug: boolean  = true;
@@ -194,6 +195,7 @@ export class DataConfig {
     _BR_PAGE: BrPage,       // 辅助功能 - 备份
     _AL_PAGE: AlPage,       //启动页
     _LOG_PAGE: LogPage,       // 辅助功能 - 备份
+    _AT_PAGE: AtPage,       // 关于
   }
   /* ============ 页面名字配置 ===============*/
 

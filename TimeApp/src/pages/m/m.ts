@@ -56,6 +56,9 @@ import {UserConfig} from "../../service/config/user.config";
               <ion-item (click)="gologPage()">
                 <h3>日志</h3>
               </ion-item>
+              <ion-item (click)="goatPage()">
+                <h3>关于</h3>
+              </ion-item>
             </ion-list>
           </ion-row>
         </ion-grid>
@@ -134,5 +137,10 @@ export class MPage {
   //日志
   gologPage() {
     this.modalController.create(DataConfig.PAGE._LOG_PAGE).present();
+  }
+
+  //日志
+  goatPage() {
+    this.modalController.create(DataConfig.PAGE._AT_PAGE).present();
   }
 }

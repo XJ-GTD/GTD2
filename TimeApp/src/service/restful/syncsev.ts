@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
-import {RestFulHeader} from "../config/restful.config";
+import {RestFulHeader, RestFulConfig} from "../config/restful.config";
 import {UtilService} from "../util-service/util.service";
 
 
@@ -29,7 +29,7 @@ export class SyncRestful {
       header.di = this.uitl.deviceId();
       header.dt = this.uitl.deviceType();
       //设别类型
-      this.request.specPost(this.initDataUrl, header, {}).then(reps => {
+      this.request.specPost(RestFulConfig.INIT_DATA_URL, header, {}).then(reps => {
         let data: SybcData = reps.d;
         resolve(data);
       });
