@@ -150,7 +150,7 @@ export class AlService {
           yTbl.yt = "FI";
           yTbl.yk = "FI";
           let stbls: Array<YTbl> = await this.sqlExce.getList<YTbl>(yTbl);
-          yTbl.yi = stbls[0].yi;
+          if (stbls.length > 0) yTbl.yi = stbls[0].yi; else yTbl.yi = this.util.getUuid();
           yTbl.yv = (++this.version).toString();
           await this.sqlExce.replaceT(yTbl);
 
