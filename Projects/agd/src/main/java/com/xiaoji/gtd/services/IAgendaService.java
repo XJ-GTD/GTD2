@@ -23,13 +23,13 @@ public interface IAgendaService {
 	 * 保存日程并发送消息
 	 * @param blacklist
 	 */
-	AgdAgenda saveAndSend(AgdAgendaDto inDto);
+	AgdAgenda saveAndSend(AgdAgendaDto inDto, HttpServletRequest request);
 	
 	/**
 	 * 删除日程
 	 * @param blacklist
 	 */
-	int deleteById(AgdAgendaDto inDto,String openId);
+	int deleteById(AgdAgendaDto inDto, String openId, HttpServletRequest request);
 	
 	/**
 	 * 查询所有日程

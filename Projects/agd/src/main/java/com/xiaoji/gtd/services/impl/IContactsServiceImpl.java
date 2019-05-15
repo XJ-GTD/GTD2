@@ -46,12 +46,25 @@ public class IContactsServiceImpl implements IContactsService {
 	
 	@Autowired
     private JmsMessagingTemplate jmsMessagingTemplate;
+	
 	@Value("${active.destinationName}")
 	private String destinationName;
+
+	@Value("${active.destinationName.v2}")
+	private String destinationNamev2;
+
 	/**
 	 * 保存日程参与人
 	 */
-	public AgdAgendaContacts save(AgdAgendaDto inDto,HttpServletRequest request) {
+	public AgdAgendaContacts save(AgdAgendaDto inDto, HttpServletRequest request) {
+
+		String productId = request.getHeader("pi");
+		if (productId == null || productId == "") productId = "cn.sh.com.xj.timeApp";
+		String productVersion = request.getHeader("pv");
+		if (productVersion == null || productVersion == "") productVersion = "v1";
+		String deviceId = request.getHeader("di");
+		if (deviceId == null || deviceId == "") deviceId = "browser";
+		
 		log.info("---- 传入保存日程参与人  -----" + JSONObject.toJSONString(inDto.getAc()));
 		if(inDto.getAc() != null && inDto.getAc().size()>0 
 				&& inDto.getAi() != null && !"".equals(inDto.getAi())){
@@ -120,8 +133,15 @@ public class IContactsServiceImpl implements IContactsService {
 						agd.setRelAgendaId(agenL.getAgendaId());
 						agd = agdContactsRep.save(agd);
 					}
+					
+					JSONObject context = new JSONObject();
+					context.put("productId", productId);
+					context.put("productVersion", productVersion);
+					context.put("deviceId", deviceId);
+					
 					//TODO 发送添加日程消息
 					Map<String,Object> map = new HashMap<String,Object>();
+					map.put("_context", context);
 					map.put("from", agenL.getCreaterId());		// 发送人
 			        map.put("to", JSONObject.toJSON(addList));
 			        map.put("agenda", JSONObject.toJSON(inDto));
@@ -129,7 +149,11 @@ public class IContactsServiceImpl implements IContactsService {
 			        try{
 			        	Map<String,Object> map2 = new HashMap<String,Object>();
 			        	map2.put("context", map);
-			        	jmsMessagingTemplate.convertAndSend(destinationName, map2);
+			        	if ("v1".equals(productVersion)) {
+				        	jmsMessagingTemplate.convertAndSend(destinationName, map2);
+			        	} else {
+				        	jmsMessagingTemplate.convertAndSend(destinationNamev2, map2);
+			        	}
 			        	log.info("------- 添加日程发送成功  --------" + map.toString());
 			        }catch(Exception e){
 			        	log.error("------- 添加日程发送失败  --------" + map.toString());

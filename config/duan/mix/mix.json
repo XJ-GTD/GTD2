@@ -1,6 +1,7 @@
 {
   "debug": true,
   "mwxing.inteligence.trigger.remote": "mwxing_inteligence_service_remote_start",
+  "mwxing.inteligence.trigger.remote.v2": "mwxing_inteligence_service_remote_start_v2",
   "xfyun.openapi.aiui": "http://openapi.xfyun.cn/v2/aiui",
   "xfyun.openapi.appid": "5ca026c2",
   "xfyun.openapi.appid2": "5cc18e86",
