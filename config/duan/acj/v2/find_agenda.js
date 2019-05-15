@@ -4,7 +4,7 @@ function shouldclean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
 
-  if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion !== 'v1') return false;
+  if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion === 'v1') return false;
   
   if (input.data && input.data[0] !== undefined) {
     for (var di in input.data) {
@@ -349,7 +349,7 @@ function clean(datasource)
   
   // 返回消息头部
   output.header = {
-  	version: 'V1.0',
+  	version: 'V1.1',
     sender: 'xunfei',
     datetime: formatDateTime(new Date()),
     describe: ['F','S']
@@ -360,7 +360,8 @@ function clean(datasource)
   output.content = {};
   
   // 查询联系人指示
-  output.content['F'] = {
+  output.content['0'] = {
+    processor: 'F',
     option: 'F.C',
     parameters: {
       scd: {},
@@ -370,57 +371,57 @@ function clean(datasource)
   
   if (date && date !== '') {
     if (findYearS) {
-      output['content']['F']['parameters']['scd']['ds'] = date.substring(0, 4) + '/01/01';
+      output['content']['0']['parameters']['scd']['ds'] = date.substring(0, 4) + '/01/01';
     } 
 
     if (findYearE) {
-      output['content']['F']['parameters']['scd']['de'] = date.substring(0, 4) + '/12/31';
+      output['content']['0']['parameters']['scd']['de'] = date.substring(0, 4) + '/12/31';
     } 
 
     if (findMonthS) {
-      output['content']['F']['parameters']['scd']['ds'] = date.substring(0, 7) + '/01';
+      output['content']['0']['parameters']['scd']['ds'] = date.substring(0, 7) + '/01';
     }
     
     if (findMonthE) {
-      output['content']['F']['parameters']['scd']['de'] = date.substring(0, 7) + '/31';
+      output['content']['0']['parameters']['scd']['de'] = date.substring(0, 7) + '/31';
     }
     
     // 以上情况不匹配的时候
-    if (!output['content']['F']['parameters']['scd']['ds']) {
-      output['content']['F']['parameters']['scd']['ds'] = date;
+    if (!output['content']['0']['parameters']['scd']['ds']) {
+      output['content']['0']['parameters']['scd']['ds'] = date;
     }
     
-    if (!output['content']['F']['parameters']['scd']['de']) {
-      output['content']['F']['parameters']['scd']['de'] = date;
+    if (!output['content']['0']['parameters']['scd']['de']) {
+      output['content']['0']['parameters']['scd']['de'] = date;
     }
   }
   
   if (sdate && sdate !== '') {
     if (findYearS) {
-      output['content']['F']['parameters']['scd']['ds'] = date.substring(0, 4) + '/01/01';
+      output['content']['0']['parameters']['scd']['ds'] = date.substring(0, 4) + '/01/01';
     } 
 
     if (findMonthS) {
-      output['content']['F']['parameters']['scd']['ds'] = date.substring(0, 7) + '/01';
+      output['content']['0']['parameters']['scd']['ds'] = date.substring(0, 7) + '/01';
     }
     
-    if (!output['content']['F']['parameters']['scd']['ds']) {
-      output['content']['F']['parameters']['scd']['ds'] = sdate;
+    if (!output['content']['0']['parameters']['scd']['ds']) {
+      output['content']['0']['parameters']['scd']['ds'] = sdate;
     }
   }
 
   if (edate && edate !== '') {
     if (findYearE) {
-      output['content']['F']['parameters']['scd']['de'] = date.substring(0, 4) + '/12/31';
+      output['content']['0']['parameters']['scd']['de'] = date.substring(0, 4) + '/12/31';
     } 
 
     if (findMonthE) {
-      output['content']['F']['parameters']['scd']['de'] = date.substring(0, 7) + '/31';
+      output['content']['0']['parameters']['scd']['de'] = date.substring(0, 7) + '/31';
     }
     
     // 以上情况不匹配的时候
-    if (!output['content']['F']['parameters']['scd']['de']) {
-      output['content']['F']['parameters']['scd']['de'] = edate;
+    if (!output['content']['0']['parameters']['scd']['de']) {
+      output['content']['0']['parameters']['scd']['de'] = edate;
     }
   }
 
@@ -432,45 +433,45 @@ function clean(datasource)
   // TLNI 22:00 ~ 23:59 2小时
   if (time && time !== '') {
     if (findAMPMS) {
-      output['content']['F']['parameters']['scd']['ts'] = (ampmS == 'EAM'? '01:00' : (ampmS == 'AM'? '06:00' : (ampmS == 'MID'? '12:00' : (ampmS == 'PM'? '13:00' : (ampmS == 'NI'? '20:00' : (ampmS == 'LNI'? '22:00' : '00:00'))))));
+      output['content']['0']['parameters']['scd']['ts'] = (ampmS == 'EAM'? '01:00' : (ampmS == 'AM'? '06:00' : (ampmS == 'MID'? '12:00' : (ampmS == 'PM'? '13:00' : (ampmS == 'NI'? '20:00' : (ampmS == 'LNI'? '22:00' : '00:00'))))));
     }
 
     if (findAMPME) {
-      output['content']['F']['parameters']['scd']['te'] = (ampmE == 'EAM'? '05:59' : (ampmE == 'AM'? '11:59' : (ampmE == 'MID'? '12:59' : (ampmE == 'PM'? '19:59' : (ampmE == 'NI'? '21:59' : (ampmE == 'LNI'? '23:59' : '23:59'))))));
+      output['content']['0']['parameters']['scd']['te'] = (ampmE == 'EAM'? '05:59' : (ampmE == 'AM'? '11:59' : (ampmE == 'MID'? '12:59' : (ampmE == 'PM'? '19:59' : (ampmE == 'NI'? '21:59' : (ampmE == 'LNI'? '23:59' : '23:59'))))));
     }
 
     // 以上情况不匹配的时候
-    if (!output['content']['F']['parameters']['scd']['ts']) {
-      output['content']['F']['parameters']['scd']['ts'] = time;
+    if (!output['content']['0']['parameters']['scd']['ts']) {
+      output['content']['0']['parameters']['scd']['ts'] = time;
     }
 
-    if (!output['content']['F']['parameters']['scd']['te']) {
-      output['content']['F']['parameters']['scd']['te'] = time;
+    if (!output['content']['0']['parameters']['scd']['te']) {
+      output['content']['0']['parameters']['scd']['te'] = time;
     }
   }
  
   if (stime && stime !== '') {
     if (findAMPMS) {
-      output['content']['F']['parameters']['scd']['ts'] = (ampmS == 'EAM'? '01:00' : (ampmS == 'AM'? '06:00' : (ampmS == 'MID'? '12:00' : (ampmS == 'PM'? '13:00' : (ampmS == 'NI'? '20:00' : (ampmS == 'LNI'? '22:00' : '00:00'))))));
+      output['content']['0']['parameters']['scd']['ts'] = (ampmS == 'EAM'? '01:00' : (ampmS == 'AM'? '06:00' : (ampmS == 'MID'? '12:00' : (ampmS == 'PM'? '13:00' : (ampmS == 'NI'? '20:00' : (ampmS == 'LNI'? '22:00' : '00:00'))))));
     }
 
-    if (!output['content']['F']['parameters']['scd']['ts']) {
-      output['content']['F']['parameters']['scd']['ts'] = stime;
+    if (!output['content']['0']['parameters']['scd']['ts']) {
+      output['content']['0']['parameters']['scd']['ts'] = stime;
     }
   }
 
   if (etime && etime !== '') {
     if (findAMPME) {
-      output['content']['F']['parameters']['scd']['te'] = (ampmE == 'EAM'? '05:59' : (ampmE == 'AM'? '11:59' : (ampmE == 'MID'? '12:59' : (ampmE == 'PM'? '19:59' : (ampmE == 'NI'? '21:59' : (ampmE == 'LNI'? '23:59' : '23:59'))))));
+      output['content']['0']['parameters']['scd']['te'] = (ampmE == 'EAM'? '05:59' : (ampmE == 'AM'? '11:59' : (ampmE == 'MID'? '12:59' : (ampmE == 'PM'? '19:59' : (ampmE == 'NI'? '21:59' : (ampmE == 'LNI'? '23:59' : '23:59'))))));
     }
 
-    if (!output['content']['F']['parameters']['scd']['te']) {
-      output['content']['F']['parameters']['scd']['te'] = etime;
+    if (!output['content']['0']['parameters']['scd']['te']) {
+      output['content']['0']['parameters']['scd']['te'] = etime;
     }
   }
 
   if (title && title !== '') {
-    output['content']['F']['parameters']['scd']['ti'] = title;
+    output['content']['0']['parameters']['scd']['ti'] = title;
   }
   
   output.context = {};
@@ -479,7 +480,8 @@ function clean(datasource)
   	output.context['client'] = clientcontext;
   }
   
-  output.content['S'] = {
+  output.content['1'] = {
+    processor: 'S',
     option: 'S.P',
     parameters: {
       t: 'CC'

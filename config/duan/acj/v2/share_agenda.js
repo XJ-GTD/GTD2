@@ -4,7 +4,7 @@ function shouldclean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
 
-  if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion !== 'v1') return false;
+  if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion === 'v1') return false;
   
   if (input !== undefined && input['from'] && input['to'] && input['agenda'] && input['notifyType']) {
     return true;
@@ -45,7 +45,7 @@ function clean(datasource)
 
   // 返回消息头部
   output.header = {
-  	version: 'V1.0',
+  	version: 'V1.1',
     sender: 'xunfei',
     datetime: formatDateTime(new Date()),
     describe: ['SH']
@@ -54,7 +54,8 @@ function clean(datasource)
   output.content = {};
   
   // 日程共享操作类型设置
-  output.content['SH'] = {
+  output.content['0'] = {
+    processor: 'SH',
     option: 'SH.C',
     parameters: {
       id: agenda['ai']
@@ -62,15 +63,15 @@ function clean(datasource)
   };
   
   if (notifyType === 'add') {
-    output.content['SH']['option'] = 'SH.C';
+    output.content['0']['option'] = 'SH.C';
   }
   
   if (notifyType === 'update') {
-    output.content['SH']['option'] = 'SH.U';
+    output.content['0']['option'] = 'SH.U';
   }
   
   if (notifyType === 'delete') {
-    output.content['SH']['option'] = 'SH.D';
+    output.content['0']['option'] = 'SH.D';
   }
   
   // 设置未注册用户短信通知模板

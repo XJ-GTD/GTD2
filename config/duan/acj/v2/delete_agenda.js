@@ -4,26 +4,26 @@ function shouldclean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
 
-  if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion !== 'v1') return false;
+  if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion === 'v1') return false;
   
   if (input.data && input.data[0] !== undefined) {
-  for (var di in input.data) {
-	var data = input.data[di];
-  	if (data['sub'] === 'nlp' && data['intent']['service'] === 'OS6981162467.CancelAgenda' && data['intent']['intentType'] === 'custom' && data['intent']['shouldEndSession']) {
-      // 存在意图确认, 意图确认结果返回
-      return true;
-    } else if (data['sub'] === 'nlp' && data['intent']['service'] === 'OS6981162467.CancelAgenda' && data['intent']['intentType'] === 'custom' && data['intent']['semantic']) {
+    for (var di in input.data) {
+      var data = input.data[di];
+      if (data['sub'] === 'nlp' && data['intent']['service'] === 'OS6981162467.CancelAgenda' && data['intent']['intentType'] === 'custom' && data['intent']['shouldEndSession']) {
+        // 存在意图确认, 意图确认结果返回
+        return true;
+      } else if (data['sub'] === 'nlp' && data['intent']['service'] === 'OS6981162467.CancelAgenda' && data['intent']['intentType'] === 'custom' && data['intent']['semantic']) {
         var semantics = data['intent']['semantic'];
   
         for (var sei in semantics) {
           var semantic = semantics[sei];
 
           if (semantic['intent'] === 'CancelAll' || semantic['intent'] === 'CancelContacts' || semantic['intent'] === 'CancelSomething') {
-          	return true;
+            return true;
           }
         }
+      }
     }
-  }
   }
   
   // filter source code here end
@@ -166,7 +166,7 @@ function clean(datasource)
   if (!shouldEndSession) {
     // 确认前
     output.header = {
-      version: 'V1.0',
+      version: 'V1.1',
       sender: 'xunfei',
       datetime: formatDateTime(new Date()),
       describe: ['F', 'SS', 'S']
@@ -174,7 +174,7 @@ function clean(datasource)
   } else {
     // 确认后
     output.header = {
-      version: 'V1.0',
+      version: 'V1.1',
       sender: 'xunfei',
       datetime: formatDateTime(new Date()),
       describe: ['SC', 'O', 'S']
@@ -188,7 +188,8 @@ function clean(datasource)
   if (!shouldEndSession) {
     // 确认前
     // 查询联系人指示
-    output.content['F'] = {
+    output.content['0'] = {
+      processor: 'F',
       option: 'F.C',
       parameters: {
         scd: {},
@@ -197,53 +198,55 @@ function clean(datasource)
     };
     
     if (date && date !== '') {
-      output['content']['F']['parameters']['scd']['ds'] = date;
-      output['content']['F']['parameters']['scd']['de'] = date;
+      output['content']['0']['parameters']['scd']['ds'] = date;
+      output['content']['0']['parameters']['scd']['de'] = date;
     }
     
     if (sdate && sdate !== '') {
-      output['content']['F']['parameters']['scd']['ds'] = sdate;
+      output['content']['0']['parameters']['scd']['ds'] = sdate;
     }
 
     if (edate && edate !== '') {
-      output['content']['F']['parameters']['scd']['de'] = edate;
+      output['content']['0']['parameters']['scd']['de'] = edate;
     }
 
     if (time && time !== '') {
-      output['content']['F']['parameters']['scd']['ts'] = time;
-      output['content']['F']['parameters']['scd']['te'] = time;
+      output['content']['0']['parameters']['scd']['ts'] = time;
+      output['content']['0']['parameters']['scd']['te'] = time;
     } else {
-      output['content']['F']['parameters']['scd']['ts'] = '00:00';
-      output['content']['F']['parameters']['scd']['te'] = '23:59';
+      output['content']['0']['parameters']['scd']['ts'] = '00:00';
+      output['content']['0']['parameters']['scd']['te'] = '23:59';
     }
    
     if (stime && stime !== '') {
-      output['content']['F']['parameters']['scd']['ts'] = stime;
+      output['content']['0']['parameters']['scd']['ts'] = stime;
     } else {
-      output['content']['F']['parameters']['scd']['ts'] = '00:00';
+      output['content']['0']['parameters']['scd']['ts'] = '00:00';
     }
 
     if (etime && etime !== '') {
-      output['content']['F']['parameters']['scd']['te'] = etime;
+      output['content']['0']['parameters']['scd']['te'] = etime;
     } else {
-      output['content']['F']['parameters']['scd']['te'] = '23:59';
+      output['content']['0']['parameters']['scd']['te'] = '23:59';
     }
 
     if (title && title !== '') {
-      output['content']['F']['parameters']['scd']['ti'] = title;
+      output['content']['0']['parameters']['scd']['ti'] = title;
     } else {
-      output['content']['F']['parameters']['scd']['ti'] = '';
+      output['content']['0']['parameters']['scd']['ti'] = '';
     }
 
     // 删除日程指示
-    output.content['SS'] = {
+    output.content['1'] = {
+      processor: 'SS',
       option: 'SS.D',
       parameters: {
       }
     };
 
     // 播报
-    output.content['S'] = {
+    output.content['2'] = {
+      processor: 'S',
       option: 'S.P',
       parameters: {
         t: 'ED'
@@ -253,7 +256,8 @@ function clean(datasource)
     // 确认后
     // 删除日程指示
     // 读取上下文指示
-    output.content['SC'] = {
+    output.content['0'] = {
+      processor: 'SC',
       option: 'SC.T',
       parameters: {}
     };
@@ -265,13 +269,15 @@ function clean(datasource)
     }
     
     if (confirm === '好的，已确认') {
-      // 确认    
-      output.content['O'] = {
+      // 确认
+      output.content['1'] = {
+        processor: 'O',
         option: 'O.O',
         parameters: {}
       };
   
-      output.content['S'] = {
+      output.content['2'] = {
+        processor: 'S',
         option: 'S.P',
         parameters: {
           t: 'CAA'
@@ -281,12 +287,14 @@ function clean(datasource)
 
     if (confirm === '好的，已取消') {
       // 取消
-      output.content['O'] = {
+      output.content['1'] = {
+        processor: 'O',
         option: 'O.C',
         parameters: {}
       };
   
-      output.content['S'] = {
+      output.content['2'] = {
+        processor: 'S',
         option: 'S.P',
         parameters: {
           t: 'CBB'

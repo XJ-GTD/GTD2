@@ -4,6 +4,8 @@ function shouldclean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
 
+  if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion !== 'v1') return false;
+  
   if (input.data && input.data[0] !== undefined) {
     for (var di in input.data) {
       var data = input.data[di];
