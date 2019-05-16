@@ -8,7 +8,7 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
 import {ProcesRs} from "../model/proces.rs";
 import {EmitService, FriendEmData, ScdEmData, ScdLsEmData, SpeechEmData} from "../../service/util-service/emit.service";
-import {O, F, SS} from "../model/ws.enum";
+import {O, F, SS,S} from "../model/ws.enum";
 import * as moment from "moment";
 import {FsData} from "../../data.mapping";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
@@ -54,76 +54,85 @@ export class SpeechProcess implements MQProcess {
       let speakText = spData.an;
       let type = 'NONE';
 
-      //上下文内获取日程查询结果
-      let agendas:Array<CTbl> = new Array<CTbl>();
-      if (content.input && (content.input.agendas || content.input.agendas == "")){
-        if (content.input.agendas != "") agendas = contextRetMap.get(content.input.agendas);
-      }else {
-        agendas = contextRetMap.get("scd");
-      }
+      let agendas: Array<CTbl> = new Array<CTbl>();
+      let showagendas: Array<CTbl> = new Array<CTbl>();
+      let showcontacts: Array<FsData> = new Array<FsData>();
 
-      let showagendas:Array<CTbl> = new Array<CTbl>();
-      if (content.input && (content.input.showagendas || content.input.showagendas =="")){
-        if (content.input.showagendas != "") showagendas = contextRetMap.get(content.input.showagendas);
-      }else {
-        showagendas = contextRetMap.get("scd");
-      }
+      //日常语音直接播报
+      if (content.option != S.AN) {
 
-      let showcontacts:Array<FsData> = new Array<FsData>();
-      if (content.input && (content.input.showcontacts || content.input.showcontacts =="")){
-        if (content.input.showcontacts != "") showcontacts = contextRetMap.get(content.input.showcontacts);
-      }else {
-        showcontacts = contextRetMap.get("fs");
-      }
 
-      if(content.input && (content.input.type || content.input.type=="")){
-        if (content.input.type == ""){
-          type = "EMPTY";
-        }else{
-          if (content.input.type.startsWith("function")){
-            let tfun = eval("(" + content.input.type + ")");
-            type = tfun(agendas, showagendas, user);
-          }else{
-            type = content.input.type;
-          }
+        //上下文内获取日程查询结果
 
+        if (content.input && (content.input.agendas || content.input.agendas == "")) {
+          if (content.input.agendas != "") agendas = contextRetMap.get(content.input.agendas);
+        } else {
+          agendas = contextRetMap.get("scd");
         }
-      }else{
-        let count = agendas.length;
-        if (count == 0)  type= 'NONE';
-        if (count == 1) type= 'ONE';
-        if (count > 1) type= 'MULTI';
-      }
 
-      //处理区分
-      if (spData.t) {
 
-        //TODO 0的时候包含了不需要判断0的场合，需要区分出来
-        let sutbl: SuTbl = new SuTbl();
-        sutbl = await this.assistant.getSpeakTextObject(spData.t, type);
+        if (content.input && (content.input.showagendas || content.input.showagendas == "")) {
+          if (content.input.showagendas != "") showagendas = contextRetMap.get(content.input.showagendas);
+        } else {
+          showagendas = contextRetMap.get("scd");
+        }
 
-        speakText = sutbl.suc;
-        openListener = (sutbl.sus == 'true' ? true : false);
 
-        //TODO 变量替换不全，当前用户UserConfig
-        if (content.input && content.input.textvariables){
-          for (let txt of content.input.textvariables) {
-            let expvalue :string = "";
-            if (txt.value){
-              expvalue = txt.value;
+        if (content.input && (content.input.showcontacts || content.input.showcontacts == "")) {
+          if (content.input.showcontacts != "") showcontacts = contextRetMap.get(content.input.showcontacts);
+        } else {
+          showcontacts = contextRetMap.get("fs");
+        }
+
+        if (content.input && (content.input.type || content.input.type == "")) {
+          if (content.input.type == "") {
+            type = "EMPTY";
+          } else {
+            if (content.input.type.startsWith("function")) {
+              let tfun = eval("(" + content.input.type + ")");
+              type = tfun(agendas, showagendas, user);
+            } else {
+              type = content.input.type;
             }
-            if (txt.expression){
-              expvalue = eval(txt.expression);
-              if (!expvalue){
+
+          }
+        } else {
+          let count = agendas.length;
+          if (count == 0) type = 'NONE';
+          if (count == 1) type = 'ONE';
+          if (count > 1) type = 'MULTI';
+        }
+
+        //处理区分
+        if (spData.t) {
+
+          //TODO 0的时候包含了不需要判断0的场合，需要区分出来
+          let sutbl: SuTbl = new SuTbl();
+          sutbl = await this.assistant.getSpeakTextObject(spData.t, type);
+
+          speakText = sutbl.suc;
+          openListener = (sutbl.sus == 'true' ? true : false);
+
+          //TODO 变量替换不全，当前用户UserConfig
+          if (content.input && content.input.textvariables) {
+            for (let txt of content.input.textvariables) {
+              let expvalue: string = "";
+              if (txt.value) {
+                expvalue = txt.value;
+              }
+              if (txt.expression) {
+                expvalue = eval(txt.expression);
+                if (!expvalue) {
+                  expvalue = txt.default;
+                }
+              } else {
                 expvalue = txt.default;
               }
-            }else{
-              expvalue = txt.default;
+              speakText = speakText.replace("{" + txt.name + "}", expvalue);
             }
-            speakText = speakText.replace("{" + txt.name + "}", expvalue);
           }
-        }
 
+        }
       }
 
       //通知页面显示播报文本
@@ -145,49 +154,48 @@ export class SpeechProcess implements MQProcess {
       });
 
       // 多个日程操作显示
-      if (type == 'MULTI'){
-        if  (showagendas.length > 0){
-          let cscdLS:ScdLsEmData = new ScdLsEmData();
-          cscdLS.desc = speakText;
-          for (let scd of showagendas){
-            let scdEm:ScdEmData = new ScdEmData();
-            scdEm.id = scd.si;
-            scdEm.d = scd.sd;
-            scdEm.t = scd.st;
-            scdEm.ti = scd.sn;
-            scdEm.gs = scd.gs;
-            cscdLS.datas.push(scdEm);
-          }
-          this.emitService.emitScdLs(cscdLS);
+      if  (showagendas && showagendas.length > 0){
+        let cscdLS:ScdLsEmData = new ScdLsEmData();
+        cscdLS.desc = speakText;
+        for (let scd of showagendas){
+          let scdEm:ScdEmData = new ScdEmData();
+          scdEm.id = scd.si;
+          scdEm.d = scd.sd;
+          scdEm.t = scd.st;
+          scdEm.ti = scd.sn;
+          scdEm.gs = scd.gs;
+          cscdLS.datas.push(scdEm);
         }
+        this.emitService.emitScdLs(cscdLS);
       }
+
 
       // 单个日程操作显示
-      if (type == 'ONE'){
 
-        if  (showagendas.length == 1){
-          let scdEm:ScdEmData = new ScdEmData();
-          scdEm.id = showagendas[0].si;
-          scdEm.d = showagendas[0].sd;
-          scdEm.t = showagendas[0].st;
-          scdEm.ti = showagendas[0].sn;
-          scdEm.gs = showagendas[0].gs;
 
-          for (let btbl of showcontacts){
-            let fri:FriendEmData = new FriendEmData();
-            fri.id = btbl.pwi;
-            fri.p = btbl.ranpy;
-            fri.m = btbl.rc;
-            fri.a = btbl.bhiu;
-            fri.n = btbl.ran;
-            fri.uid = btbl.ui;
+      if  (showagendas && showagendas.length == 1){
+        let scdEm:ScdEmData = new ScdEmData();
+        scdEm.id = showagendas[0].si;
+        scdEm.d = showagendas[0].sd;
+        scdEm.t = showagendas[0].st;
+        scdEm.ti = showagendas[0].sn;
+        scdEm.gs = showagendas[0].gs;
 
-            scdEm.datas.push(fri);
-          }
-          this.emitService.emitScd(scdEm);
+        for (let btbl of showcontacts){
+          let fri:FriendEmData = new FriendEmData();
+          fri.id = btbl.pwi;
+          fri.p = btbl.ranpy;
+          fri.m = btbl.rc;
+          fri.a = btbl.bhiu;
+          fri.n = btbl.ran;
+          fri.uid = btbl.ui;
+
+          scdEm.datas.push(fri);
         }
-
+        this.emitService.emitScd(scdEm);
       }
+
+
     })
   }
 
