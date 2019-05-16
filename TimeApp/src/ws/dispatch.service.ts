@@ -33,15 +33,30 @@ export class DispatchService {
     // console.log(moment().unix() - model.context.client.time);
     if (model.context && model.context.server)
       DataConfig.wsServerContext = model.context.server;
-    //循环处理消息
-    let process: ProcesRs = new ProcesRs();
-    for (let opt of model.header.describe) {
-      let wsContent: WsContent = model.content[opt];
-      //保存上下文
-      wsContent.thisContext = model;
-      process = await this.factory.getProcess(opt).go(wsContent, process);
-    }
 
+    //版本升级
+    if (model.header.version =="V1.0") {
+      //循环处理消息
+      let process: ProcesRs = new ProcesRs();
+      for (let opt of model.header.describe) {
+        let wsContent: WsContent = model.content[opt];
+        //保存上下文
+        wsContent.thisContext = model;
+        process = await this.factory.getProcess(opt).go(wsContent, process);
+      }
+    }else{
+    //循环处理消息
+      //保存上下文操作的各种结果
+      let contextRetMap: Map<string,any> = new Map<string, any>();
+      //按序获取describe对应的操作
+      for (let i = 0, len = model.header.describe.length; i < len; i++) {
+        let opt = model.header.describe[i];
+        let wsContent: WsContent = model.content[i];
+        //保存上下文
+        wsContent.thisContext = model;
+        contextRetMap = await this.factory.getProcess(opt).gowhen(wsContent, contextRetMap);
+      }
+    }
     log.ss = new Date().valueOf() - log.ss;
     log.st = true;
     this.sqlite.noteLog(log);

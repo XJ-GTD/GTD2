@@ -9,5 +9,8 @@ export class WsContent {
   option: string = "";
   parameters: any;
   thisContext:WsModel;
+  when:string ="";
+  input:any;
+  output:any;
 }
 

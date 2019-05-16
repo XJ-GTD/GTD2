@@ -19,6 +19,18 @@ export class ReceiveProcess implements MQProcess {
   constructor(private emitService: EmitService, private busiService: PgBusiService,private notificationsService:NotificationsService) {
   }
 
+  async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
+    //process处理符合条件则执行
+    if (content.when && content.when !=""){
+      let fun = eval("("+content.when+")");
+      if (!fun()){
+        return contextRetMap;
+      }
+    }
+
+    return contextRetMap
+  }
+
 
   async go(content: WsContent, processRs: ProcesRs) {
     //处理区分

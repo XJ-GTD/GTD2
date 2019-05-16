@@ -18,6 +18,17 @@ export class CudscdProcess implements MQProcess{
   constructor() {
   }
 
+  async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
+    //process处理符合条件则执行
+    if (content.when && content.when !=""){
+      let fun = eval("("+content.when+")");
+      if (!fun()){
+        return contextRetMap;
+      }
+    }
+
+    return contextRetMap
+  }
 
   async go(content: WsContent,processRs:ProcesRs) {
 
@@ -31,7 +42,7 @@ export class CudscdProcess implements MQProcess{
       if (processRs.fs.length > 0){
         prv.fs = processRs.fs;
       }
-      
+
       // F处理返回的结果
       if (processRs.scd.length > 0){
 

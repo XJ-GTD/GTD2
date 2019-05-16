@@ -19,6 +19,17 @@ export class OptionProcess implements MQProcess{
   constructor(private emitService:EmitService,private busiService:PgBusiService,private fsServer:FsService) {
   }
 
+  async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
+    //process处理符合条件则执行
+    if (content.when && content.when !=""){
+      let fun = eval("("+content.when+")");
+      if (!fun()){
+        return contextRetMap;
+      }
+    }
+
+    return contextRetMap
+  }
 
   async go(content: WsContent,processRs:ProcesRs) {
       //处理区分

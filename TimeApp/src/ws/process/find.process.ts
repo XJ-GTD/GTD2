@@ -19,7 +19,47 @@ import {UtilService} from "../../service/util-service/util.service";
  */
 @Injectable()
 export class FindProcess implements MQProcess {
-  constructor(private sqliteExec: SqliteExec, private fsService: FsService, private glService: GlService, private util:UtilService) {
+  constructor(private sqliteExec: SqliteExec, private fsService: FsService,
+              private glService: GlService, private util:UtilService) {
+  }
+
+  async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
+
+    //process处理符合条件则执行
+    if (content.when && content.when !=""){
+      let fun = eval("("+content.when+")");
+      if (!fun()){
+        return contextRetMap;
+      }
+    }
+
+    //处理所需要参数
+    let findData: FindPara = content.parameters;
+    //查找联系人
+    let fs :Array<FsData> = new Array<FsData>();
+    fs = await this.findsimilarityfs(findData.fs);
+    //console.log("============ mq返回内容："+ JSON.stringify(content));
+    //处理区分
+    let scd:Array<CTbl> = new Array<CTbl>();
+    if (content.option == F.C) {
+      // TODO 增加根据人查询日程
+      if (fs) {
+        findData.scd.fs = fs;
+      }
+      scd = await this.findScd(findData.scd);
+    }
+
+    //服务器要求上下文内放置日程查询结果
+    if (content.output && content.output.agendas){
+      contextRetMap.set(content.output.agendas,scd);
+    }
+
+    //服务器要求上下文内放置日程人员信息
+    if (content.output && content.output.contacts){
+      contextRetMap.set(content.output.contacts,fs);
+    }
+
+    return contextRetMap;
   }
 
   async go(content: WsContent, processRs: ProcesRs) {
@@ -120,12 +160,12 @@ export class FindProcess implements MQProcess {
     let bs: Array<FsData> = this.fsService.getfriend(null);
     let b3ran: Array<string> = new Array();
     let b3rn: Array<string> = new Array();
-    
+
     for (let b3 of bs) {
       b3ran.push(b3.ranpy);
       b3rn.push(b3.rnpy);
     }
-    
+
     for (let n of ns) {
       let piny = n.n;
       //查找联系人
@@ -142,7 +182,7 @@ export class FindProcess implements MQProcess {
           index++;
         }
       }
-      
+
       if (simularyrnrs.bestMatch.rating > 0.5) {
         let index = 0;
         for (let rating of simularyrnrs.ratings) {

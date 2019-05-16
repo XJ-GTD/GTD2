@@ -16,6 +16,17 @@ export class ContextProcess implements MQProcess{
   constructor() {
   }
 
+  async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
+    //process处理符合条件则执行
+    if (content.when && content.when !=""){
+      let fun = eval("("+content.when+")");
+      if (!fun()){
+        return contextRetMap;
+      }
+    }
+
+    return contextRetMap
+  }
 
   async go(content: WsContent,processRs:ProcesRs){
       processRs.scd = content.thisContext.context.client.cxt.scd;

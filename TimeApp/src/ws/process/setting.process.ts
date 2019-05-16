@@ -19,6 +19,18 @@ export class SettingProcess implements MQProcess {
   constructor(private ssService: SsService, private fdService: FdService) {
   }
 
+  async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
+    //process处理符合条件则执行
+    if (content.when && content.when !=""){
+      let fun = eval("("+content.when+")");
+      if (!fun()){
+        return contextRetMap;
+      }
+    }
+
+    return contextRetMap
+  }
+
 
   async go(content: WsContent, processRs: ProcesRs) {
       //处理区分

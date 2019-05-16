@@ -23,6 +23,18 @@ export class RemindProcess implements MQProcess {
               private sqliteExec: SqliteExec) {
   }
 
+  async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
+    //process处理符合条件则执行
+    if (content.when && content.when !=""){
+      let fun = eval("("+content.when+")");
+      if (!fun()){
+        return contextRetMap;
+      }
+    }
+
+    return contextRetMap
+  }
+
   async  go(content: WsContent, processRs: ProcesRs){
       //处理所需要参数
       let rdData: RemindPara = content.parameters;

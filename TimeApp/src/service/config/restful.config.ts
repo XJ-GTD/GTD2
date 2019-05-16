@@ -74,7 +74,7 @@ export class RestFulConfig {
   public static MWXING_SERVICE_WWW_SITE = "www.guobaa.com";
   public static MWXING_SERVICE_WWW_APPID = "d3d3Lmd1b2JhYS5jb20";
   public static MWXING_SERVICE_WWW_SECRET = "c2VjcmV0QHd3dy5ndW9iYWEuY29t";
-  
+
   /* 短应用服务APPID,SECRET for pluto.guobaa.com */
   public static MWXING_SERVICE_PLUTO_SITE = "pluto.guobaa.com";
   public static MWXING_SERVICE_PLUTO_APPID = "cGx1dG8uZ3VvYmFhLmNvbQ";
@@ -189,7 +189,7 @@ export class RestFulHeader {
   lt: string = "";//登录码
   ai: string = "";//帐户ID
   pi: string = "cn.sh.com.xj.timeApp";//产品ID
-  pv: string = "v1";//产品版本
+  pv: string = "v2";//产品版本
   di: string = "";//设备ID
   dt: string = "";//设别类型
 }

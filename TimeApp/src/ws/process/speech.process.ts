@@ -24,6 +24,136 @@ export class SpeechProcess implements MQProcess {
               private utilService: UtilService, private emitService: EmitService) {
   }
 
+  async gowhen(content: WsContent, processRsMap: Map<string,any>) {
+
+    return new Promise<Map<string,ProcesRs>>(async resolve => {
+
+
+      //process处理符合条件则执行
+      if (content.when && content.when !=""){
+        let fun = eval("("+content.when+")");
+        if (!fun()){
+          resolve(processRsMap);
+          return;
+        }
+      }
+
+      //获取关联process
+      let processRs: ProcesRs = new ProcesRs();
+      if (content.input && content.input.a){
+        processRs = processRsMap.get(content.input.a);
+      }
+
+
+      //处理所需要参数
+      let ti = moment().valueOf() - content.thisContext.context.client.time;
+      let spData: SpeechPara = content.parameters;
+      let prvOpt:string =  content.thisContext.context.client.option;
+      let openListener: boolean = false;
+      //默认语音
+      let speakText = spData.an;
+      let type = 'NONE';
+      //处理区分
+      if (spData.t) {
+
+        //替换参数变量
+        let count = processRs.scd.length;
+
+        if (processRs.option4Speech == SS.C
+          || processRs.option4Speech == SS.U
+          || processRs.option4Speech == SS.D
+          || processRs.option4Speech == F.C) {
+          if (count == 0)  type= 'NONE';
+          if (count == 1) type= 'ONE';
+          if (count > 1) type= 'MULTI';
+
+        } else if (processRs.option4Speech == O.O) {
+          if (prvOpt){
+            type = prvOpt;
+          }
+        }
+
+        // spData.forEach((value, key) => {
+        //   speakText = speakText.replace("{" + key + "}", value);
+        // });
+        //TODO 0的时候包含了不需要判断0的场合，需要区分出来
+        let sutbl: SuTbl = new SuTbl();
+        sutbl = await this.assistant.getSpeakTextObject(spData.t, type);
+
+        speakText = sutbl.suc;
+        openListener = (sutbl.sus == 'true' ? true : false);
+
+        //TODO 变量替换不全，当前用户UserConfig
+        speakText = speakText.replace("{count}", count.toString());
+
+      }
+
+      //通知页面显示播报文本
+      let emspeech:SpeechEmData = new SpeechEmData();
+      emspeech.an = speakText + " #" + ti + "#";
+      emspeech.org = content.thisContext.original;
+      this.emitService.emitSpeech(emspeech);
+
+
+      this.assistant.speakText(speakText).then((data) => {
+        //处理结果
+        processRs.sucess = true;
+        resolve(processRsMap);
+
+        // 播报后启动语音监听
+        if (openListener) {
+          this.assistant.listenAudio();
+        }
+      });
+
+      // 多个日程操作显示
+      if (processRs.option4Speech == F.C || (processRs.option4Speech == SS.U && type == 'MULTI') || (processRs.option4Speech == SS.D && type == 'MULTI')){
+        if  (processRs.scd.length > 0){
+          let cscdLS:ScdLsEmData = new ScdLsEmData();
+          cscdLS.desc = speakText;
+          for (let scd of processRs.scd){
+            let scdEm:ScdEmData = new ScdEmData();
+            scdEm.id = scd.si;
+            scdEm.d = scd.sd;
+            scdEm.t = scd.st;
+            scdEm.ti = scd.sn;
+            scdEm.gs = scd.gs;
+            cscdLS.datas.push(scdEm);
+          }
+          this.emitService.emitScdLs(cscdLS);
+        }
+      }
+
+      // 单个日程操作显示
+      if (processRs.option4Speech == SS.C || (processRs.option4Speech == SS.U && type == 'ONE') || (processRs.option4Speech == SS.D && type == 'ONE')){
+
+        if  (processRs.scd.length == 1){
+          let scdEm:ScdEmData = new ScdEmData();
+          scdEm.id = processRs.scd[0].si;
+          scdEm.d = processRs.scd[0].sd;
+          scdEm.t = processRs.scd[0].st;
+          scdEm.ti = processRs.scd[0].sn;
+          scdEm.gs = processRs.scd[0].gs;
+
+          for (let btbl of processRs.fs){
+            let fri:FriendEmData = new FriendEmData();
+            fri.id = btbl.pwi;
+            fri.p = btbl.ranpy;
+            fri.m = btbl.rc;
+            fri.a = btbl.bhiu;
+            fri.n = btbl.ran;
+            fri.uid = btbl.ui;
+
+            scdEm.datas.push(fri);
+          }
+          this.emitService.emitScd(scdEm);
+        }
+
+      }
+    })
+  }
+
+
   go(content: WsContent,processRs:ProcesRs): Promise<ProcesRs> {
 
     return new Promise<ProcesRs>(async resolve => {
@@ -42,8 +172,8 @@ export class SpeechProcess implements MQProcess {
         //替换参数变量
         let count = processRs.scd.length;
 
-        if (processRs.option4Speech == SS.C 
-          || processRs.option4Speech == SS.U 
+        if (processRs.option4Speech == SS.C
+          || processRs.option4Speech == SS.U
           || processRs.option4Speech == SS.D
           || processRs.option4Speech == F.C) {
            if (count == 0)  type= 'NONE';
@@ -61,11 +191,11 @@ export class SpeechProcess implements MQProcess {
         // });
         //TODO 0的时候包含了不需要判断0的场合，需要区分出来
         let sutbl: SuTbl = new SuTbl();
-        sutbl = await this.assistant.getSpeakTextObject(spData.t, type); 
-        
+        sutbl = await this.assistant.getSpeakTextObject(spData.t, type);
+
         speakText = sutbl.suc;
         openListener = (sutbl.sus == 'true' ? true : false);
-        
+
         //TODO 变量替换不全，当前用户UserConfig
         speakText = speakText.replace("{count}", count.toString());
 
