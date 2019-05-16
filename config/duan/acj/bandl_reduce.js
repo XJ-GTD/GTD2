@@ -21,7 +21,11 @@ function clean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
   var output = {};
-
+  
+  var formatDateTime = function(date) {
+    return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+  }
+  
   var userId = input['_context']['userId'];
   var deviceId = input['_context']['deviceId'];
   var clientcontext = input['_context']['client'];

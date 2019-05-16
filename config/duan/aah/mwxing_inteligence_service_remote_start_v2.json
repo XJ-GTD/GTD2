@@ -19,7 +19,7 @@
                 "name": "数据清洗与转换 整合迅飞语音和人名识别的结果",
                 "trigger": "acj",
                 "parameters": [
-                    "ruleid;MWXING_XUNFEI_C0005_V1_2",
+                    "ruleid;MWXING_XUNFEI_C0005_V1_1",
                     "datasource;$.parent.outputs"
                 ],
                 "outputs": [
