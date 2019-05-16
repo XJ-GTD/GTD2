@@ -48,7 +48,7 @@ export class SettingProcess implements MQProcess {
     }
 
     //用户黑名单
-    if (content.option = SY.B) {
+    if (content.option == SY.B) {
       //上下文内获取人员信息
       let fs :Array<FsData> = new Array<FsData>();
       if (content.input && (content.input.contacts || content.input.contacts =="")){
@@ -94,7 +94,7 @@ export class SettingProcess implements MQProcess {
 
       }
       //用户黑名单
-      else if (content.option = SY.B) {
+      else if (content.option == SY.B) {
         let fdData: FsData = new FsData();
         for (let btbl of processRs.fs) {
           fdData.ui = btbl.ui;
