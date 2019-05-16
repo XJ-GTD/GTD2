@@ -32,6 +32,31 @@ export class RemindProcess implements MQProcess {
       }
     }
 
+    //处理所需要参数
+    let rdData: RemindPara = content.parameters;
+
+    //上下文内获取日程查询结果
+    let scd:Array<CTbl> = new Array<CTbl>();
+    if (content.input && content.input.agendas){
+      if (content.input.agendas != "") scd = contextRetMap.get(content.input.agendas);
+    } else {
+      scd = contextRetMap.get("scd");
+    }
+
+    //处理区分
+    //闹铃设置无日程
+    if (content.option == R.N) {
+      await this.saveETbl1(rdData);
+
+    } else if (content.option == R.C) {
+      // 设置日程提醒
+      if (scd != null && scd.length > 0) {
+        for (let eachscd of scd) {
+          await this.saveETbl2(rdData, eachscd);
+        }
+      }
+    }
+
     return contextRetMap
   }
 
