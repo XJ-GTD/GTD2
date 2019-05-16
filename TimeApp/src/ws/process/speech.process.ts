@@ -56,7 +56,7 @@ export class SpeechProcess implements MQProcess {
 
       //上下文内获取日程查询结果
       let agendas:Array<CTbl> = new Array<CTbl>();
-      if (content.input && content.input.agendas){
+      if (content.input && (content.input.agendas || content.input.agendas == "")){
         if (content.input.agendas != "") agendas = contextRetMap.get(content.input.agendas);
       }else {
         agendas = contextRetMap.get("scd");

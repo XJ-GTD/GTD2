@@ -214,6 +214,9 @@ function clean(datasource)
         option: 'S.P',
         parameters: {
           t: 'AA'
+        },
+        input: {
+          showagendas: ""
         }
       };
     }
@@ -230,6 +233,9 @@ function clean(datasource)
         option: 'S.P',
         parameters: {
           t: 'BB'
+        },
+        input: {
+          showagendas: ""
         }
       };
     }
