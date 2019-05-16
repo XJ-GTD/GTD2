@@ -97,7 +97,11 @@ export class SpeechProcess implements MQProcess {
 
           }
         } else {
-          let count = agendas.length;
+          let count = 0;
+          if (agendas){
+            count = agendas.length;
+          }
+
           if (count == 0) type = 'NONE';
           if (count == 1) type = 'ONE';
           if (count > 1) type = 'MULTI';
