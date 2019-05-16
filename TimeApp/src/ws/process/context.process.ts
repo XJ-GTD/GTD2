@@ -29,14 +29,14 @@ export class ContextProcess implements MQProcess{
     if (!prv) prv = new ProcesRs();
 
     //服务器要求上下文内放置语音上下文日程
-    if (content.output && content.output.agendas){
+    if (content.output && (content.output.agendas ||content.output.agendas =="")){
       if (content.output.agendas != "") contextRetMap.set(content.output.agendas, prv.scd);
     } else {
       contextRetMap.set("scd", prv.scd);
     }
 
     //服务器要求上下文内放置日程人员信息
-    if (content.output && content.output.contacts){
+    if (content.output && (content.output.contacts || content.output.contacts =="")){
       // 名称设置为空字符串表示不需要往处理上下文中输出
       if (content.output.contacts != "") contextRetMap.set(content.output.contacts, prv.fs);
     } else {

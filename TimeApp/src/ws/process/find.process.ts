@@ -50,7 +50,7 @@ export class FindProcess implements MQProcess {
     }
 
     //服务器要求上下文内放置日程查询结果
-    if (content.output && content.output.agendas){
+    if (content.output && (content.output.agendas || content.output.agendas =="")){
       // 名称设置为空字符串表示不需要往处理上下文中输出
       if (content.output.agendas != "") contextRetMap.set(content.output.agendas,scd);
     } else {
@@ -59,7 +59,7 @@ export class FindProcess implements MQProcess {
     }
 
     //服务器要求上下文内放置日程人员信息
-    if (content.output && content.output.contacts){
+    if (content.output && (content.output.contacts || content.output.contacts == "")){
       // 名称设置为空字符串表示不需要往处理上下文中输出
       if (content.output.contacts != "") contextRetMap.set(content.output.contacts,fs);
     } else {

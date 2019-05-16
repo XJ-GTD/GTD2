@@ -37,7 +37,7 @@ export class RemindProcess implements MQProcess {
 
     //上下文内获取日程查询结果
     let scd:Array<CTbl> = new Array<CTbl>();
-    if (content.input && content.input.agendas){
+    if (content.input && (content.input.agendas || content.input.agendas =="")){
       if (content.input.agendas != "") scd = contextRetMap.get(content.input.agendas);
     } else {
       scd = contextRetMap.get("scd");
