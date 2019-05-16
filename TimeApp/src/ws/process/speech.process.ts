@@ -63,14 +63,14 @@ export class SpeechProcess implements MQProcess {
       }
 
       let showagendas:Array<CTbl> = new Array<CTbl>();
-      if (content.input && content.input.showagendas){
+      if (content.input && (content.input.showagendas || content.input.showagendas =="")){
         if (content.input.showagendas != "") showagendas = contextRetMap.get(content.input.showagendas);
       }else {
         showagendas = contextRetMap.get("scd");
       }
 
       let showcontacts:Array<FsData> = new Array<FsData>();
-      if (content.input && content.input.showcontacts){
+      if (content.input && (content.input.showcontacts || content.input.showcontacts =="")){
         if (content.input.showcontacts != "") showcontacts = contextRetMap.get(content.input.showcontacts);
       }else {
         showcontacts = contextRetMap.get("fs");

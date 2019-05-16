@@ -116,6 +116,13 @@ export class AssistantService {
     let datas = await this.sqliteExec.getList<SuTbl>(sutbl);
     //回答语音list
     let len = datas.length;
+    console.log("播报内容参数*******************t=" +sutbl.sust +";type="+sutbl.sust);
+    if (len == 0){
+      let an: SuTbl = new SuTbl();
+      an.suc= "数据缺失";
+      an.sus="false";
+      return an;
+    }
     //随机选取一条
     let rand = this.utilService.randInt(0, len - 1);
     let an: SuTbl = datas[rand];

@@ -51,7 +51,7 @@ export class SettingProcess implements MQProcess {
     if (content.option = SY.B) {
       //上下文内获取人员信息
       let fs :Array<FsData> = new Array<FsData>();
-      if (content.input && content.input.contacts){
+      if (content.input && (content.input.contacts || content.input.contacts =="")){
         if (content.input.contacts != "") fs = contextRetMap.get(content.input.contacts);
       } else {
         fs = contextRetMap.get("fs");
@@ -67,7 +67,7 @@ export class SettingProcess implements MQProcess {
         this.fdService.putBlack(fdData);
       }
     }
-    
+
     return contextRetMap
   }
 
