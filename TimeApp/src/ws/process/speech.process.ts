@@ -10,6 +10,9 @@ import {ProcesRs} from "../model/proces.rs";
 import {EmitService, FriendEmData, ScdEmData, ScdLsEmData, SpeechEmData} from "../../service/util-service/emit.service";
 import {O, F, SS} from "../model/ws.enum";
 import * as moment from "moment";
+import {FsData} from "../../data.mapping";
+import {CTbl} from "../../service/sqlite/tbl/c.tbl";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * 播报类型处理
@@ -24,26 +27,23 @@ export class SpeechProcess implements MQProcess {
               private utilService: UtilService, private emitService: EmitService) {
   }
 
-  async gowhen(content: WsContent, processRsMap: Map<string,any>) {
+  async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
 
-    return new Promise<Map<string,ProcesRs>>(async resolve => {
+    return new Promise<Map<string,any>>(async resolve => {
 
 
       //process处理符合条件则执行
       if (content.when && content.when !=""){
         let fun = eval("("+content.when+")");
-        if (!fun()){
-          resolve(processRsMap);
+        if (!fun(content,contextRetMap)){
+          resolve(contextRetMap);
           return;
         }
       }
 
-      //获取关联process
-      let processRs: ProcesRs = new ProcesRs();
-      if (content.input && content.input.a){
-        processRs = processRsMap.get(content.input.a);
-      }
+      //获取上下文结果
 
+      let user = UserConfig.user;
 
       //处理所需要参数
       let ti = moment().valueOf() - content.thisContext.context.client.time;
@@ -53,29 +53,39 @@ export class SpeechProcess implements MQProcess {
       //默认语音
       let speakText = spData.an;
       let type = 'NONE';
+
+      //上下文内获取日程查询结果
+      let agendas:Array<CTbl> = new Array<CTbl>();
+      if (content.input && content.input.agendas){
+        agendas = contextRetMap.get(content.input.agendas);
+      }
+
+      let showagendas:Array<CTbl> = new Array<CTbl>();
+      if (content.input && content.input.showagendas){
+        showagendas = contextRetMap.get(content.input.showagendas);
+      }
+
+      let showcontacts:Array<FsData> = new Array<FsData>();
+      if (content.input && content.input.showcontacts){
+        showcontacts = contextRetMap.get(content.input.showcontacts);
+      }
+
+      if(!content.input.type){
+        let count = agendas.length;
+        if (count == 0)  type= 'NONE';
+        if (count == 1) type= 'ONE';
+        if (count > 1) type= 'MULTI';
+
+      }else if (content.input.type == ""){
+        type = "EMPTY";
+      }else if (content.input.type != ""){
+        let tfun = eval("("+content.input.type+")");
+        type = tfun(agendas,showagendas,user);
+      }
+
       //处理区分
       if (spData.t) {
 
-        //替换参数变量
-        let count = processRs.scd.length;
-
-        if (processRs.option4Speech == SS.C
-          || processRs.option4Speech == SS.U
-          || processRs.option4Speech == SS.D
-          || processRs.option4Speech == F.C) {
-          if (count == 0)  type= 'NONE';
-          if (count == 1) type= 'ONE';
-          if (count > 1) type= 'MULTI';
-
-        } else if (processRs.option4Speech == O.O) {
-          if (prvOpt){
-            type = prvOpt;
-          }
-        }
-
-        // spData.forEach((value, key) => {
-        //   speakText = speakText.replace("{" + key + "}", value);
-        // });
         //TODO 0的时候包含了不需要判断0的场合，需要区分出来
         let sutbl: SuTbl = new SuTbl();
         sutbl = await this.assistant.getSpeakTextObject(spData.t, type);
@@ -84,7 +94,23 @@ export class SpeechProcess implements MQProcess {
         openListener = (sutbl.sus == 'true' ? true : false);
 
         //TODO 变量替换不全，当前用户UserConfig
-        speakText = speakText.replace("{count}", count.toString());
+        if (content.input && content.input.textvariables){
+          for (let txt of content.input.textvariables) {
+            let expvalue :string = "";
+            if (txt.value){
+              expvalue = txt.value;
+            }
+            if (txt.expression){
+              expvalue = eval(txt.expression);
+              if (!expvalue){
+                expvalue = txt.default;
+              }
+            }else{
+              expvalue = txt.default;
+            }
+            speakText = speakText.replace("{" + txt.name + "}", expvalue);
+          }
+        }
 
       }
 
@@ -97,8 +123,8 @@ export class SpeechProcess implements MQProcess {
 
       this.assistant.speakText(speakText).then((data) => {
         //处理结果
-        processRs.sucess = true;
-        resolve(processRsMap);
+
+        resolve(contextRetMap);
 
         // 播报后启动语音监听
         if (openListener) {
@@ -107,11 +133,11 @@ export class SpeechProcess implements MQProcess {
       });
 
       // 多个日程操作显示
-      if (processRs.option4Speech == F.C || (processRs.option4Speech == SS.U && type == 'MULTI') || (processRs.option4Speech == SS.D && type == 'MULTI')){
-        if  (processRs.scd.length > 0){
+      if (type == 'MULTI'){
+        if  (showagendas.length > 0){
           let cscdLS:ScdLsEmData = new ScdLsEmData();
           cscdLS.desc = speakText;
-          for (let scd of processRs.scd){
+          for (let scd of showagendas){
             let scdEm:ScdEmData = new ScdEmData();
             scdEm.id = scd.si;
             scdEm.d = scd.sd;
@@ -125,17 +151,17 @@ export class SpeechProcess implements MQProcess {
       }
 
       // 单个日程操作显示
-      if (processRs.option4Speech == SS.C || (processRs.option4Speech == SS.U && type == 'ONE') || (processRs.option4Speech == SS.D && type == 'ONE')){
+      if (type == 'ONE'){
 
-        if  (processRs.scd.length == 1){
+        if  (showagendas.length == 1){
           let scdEm:ScdEmData = new ScdEmData();
-          scdEm.id = processRs.scd[0].si;
-          scdEm.d = processRs.scd[0].sd;
-          scdEm.t = processRs.scd[0].st;
-          scdEm.ti = processRs.scd[0].sn;
-          scdEm.gs = processRs.scd[0].gs;
+          scdEm.id = showagendas[0].si;
+          scdEm.d = showagendas[0].sd;
+          scdEm.t = showagendas[0].st;
+          scdEm.ti = showagendas[0].sn;
+          scdEm.gs = showagendas[0].gs;
 
-          for (let btbl of processRs.fs){
+          for (let btbl of showcontacts){
             let fri:FriendEmData = new FriendEmData();
             fri.id = btbl.pwi;
             fri.p = btbl.ranpy;
