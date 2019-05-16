@@ -76,12 +76,17 @@ export class SpeechProcess implements MQProcess {
         showcontacts = contextRetMap.get("fs");
       }
 
-      if(content.input && content.input.type){
+      if(content.input && (content.input.type || content.input.type=="")){
         if (content.input.type == ""){
           type = "EMPTY";
         }else{
-          let tfun = eval("(" + content.input.type + ")");
-          type = tfun(agendas, showagendas, user);
+          if (content.input.type.startsWith("function")){
+            let tfun = eval("(" + content.input.type + ")");
+            type = tfun(agendas, showagendas, user);
+          }else{
+            type = content.input.type;
+          }
+
         }
       }else{
         let count = agendas.length;
