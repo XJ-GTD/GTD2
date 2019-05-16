@@ -423,6 +423,9 @@ function clean(datasource)
         option: 'S.P',
         parameters: {
           t: 'UAA'
+        },
+        input: {
+          showagendas: ""
         }
       };
     }
@@ -440,6 +443,9 @@ function clean(datasource)
         option: 'S.P',
         parameters: {
           t: 'UBB'
+        },
+        input: {
+          showagendas: ""
         }
       };
     }

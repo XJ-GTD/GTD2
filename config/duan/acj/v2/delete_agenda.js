@@ -281,6 +281,9 @@ function clean(datasource)
         option: 'S.P',
         parameters: {
           t: 'CAA'
+        },
+        input: {
+          showagendas: ""
         }
       };
     }
@@ -298,6 +301,9 @@ function clean(datasource)
         option: 'S.P',
         parameters: {
           t: 'CBB'
+        },
+        input: {
+          showagendas: ""
         }
       };
     }
