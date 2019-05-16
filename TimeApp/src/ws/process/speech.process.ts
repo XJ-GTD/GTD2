@@ -154,7 +154,7 @@ export class SpeechProcess implements MQProcess {
       });
 
       // 多个日程操作显示
-      if  (showagendas && showagendas.length > 0){
+      if  (showagendas && showagendas.length > 1){
         let cscdLS:ScdLsEmData = new ScdLsEmData();
         cscdLS.desc = speakText;
         for (let scd of showagendas){
