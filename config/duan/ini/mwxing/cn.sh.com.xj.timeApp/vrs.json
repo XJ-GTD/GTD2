@@ -58,7 +58,7 @@
 {"version": "v2", "type": "ONE", "needAnswer": "false", "name":"BB", "value":"好的,本次操作已取消", "desc":"取消操作后回答"},
 {"version": "v2", "type": "ONE", "needAnswer": "false", "name":"BB", "value":"好的,已取消。", "desc":"取消操作后回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "name":"CBB", "value":"好的,本次操作已取消。", "desc":"取消放弃回答"},
-{"version": "v2", "type": "SS.D", "needAnswer": "false", "name":"CBB", "value":"好的,本次操作已取消。", "desc":"取消放弃回答"},
+{"version": "v2", "type": "ONE", "needAnswer": "false", "name":"CBB", "value":"好的,本次操作已取消。", "desc":"取消放弃回答"},
 {"version": "v2", "type": "SS.U", "needAnswer": "false", "name":"UBB", "value":"好的,修改已放弃。", "desc":"修改放弃回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "name":"UBB", "value":"好的,修改已放弃。", "desc":"修改放弃回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "name":"EE", "value":"正在创建以下安排,确认创建吗？", "desc":"确认取消回答"},
