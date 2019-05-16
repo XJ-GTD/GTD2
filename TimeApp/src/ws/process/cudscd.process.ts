@@ -126,6 +126,10 @@ export class CudscdProcess implements MQProcess{
     DataConfig.putWsContext(prv);
     DataConfig.putWsOpt(content.option);
 
+    //服务器要求上下文内放置日程查询结果
+    if (content.output && content.output.agendas){
+      contextRetMap.set(content.output.agendas,prv.scd);
+    }
 
     return contextRetMap;
   }
