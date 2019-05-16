@@ -5,7 +5,7 @@ function shouldclean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
 
-  if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion !== 'v1') return false;
+  if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion === 'v1') return false;
   
   if (input.data && input.data[0] !== undefined) {
     for (var di in input.data) {
@@ -124,7 +124,7 @@ function clean(datasource)
   if (!shouldEndSession) {
     // 确认前
     output.header = {
-      version: 'V1.0',
+      version: 'V1.1',
       sender: 'xunfei',
       datetime: formatDateTime(new Date()),
       describe: ['F', 'SS', 'S']
@@ -132,7 +132,7 @@ function clean(datasource)
   } else {
     // 确认后
     output.header = {
-      version: 'V1.0',
+      version: 'V1.1',
       sender: 'xunfei',
       datetime: formatDateTime(new Date()),
       describe: ['SC', 'O', 'S']
@@ -146,7 +146,8 @@ function clean(datasource)
   if (!shouldEndSession) {
     // 确认前
     // 查询联系人指示
-    output.content['F'] = {
+    output.content['0'] = {
+      processor: 'F',
       option: 'F.C',
       parameters: {
         scd: {},
@@ -155,7 +156,8 @@ function clean(datasource)
     };
     
     // 创建日程指示
-    output.content['SS'] = {
+    output.content['1'] = {
+      processor: 'SS',
       option: 'SS.C',
       parameters: {
         ti: title,
@@ -166,18 +168,19 @@ function clean(datasource)
     };
 
     if (date && date !== '') {
-      output['content']['SS']['parameters']['d'] = date;
-      output['content']['SS']['parameters']['scd']['sd'] = date;
-      output['content']['SS']['parameters']['scd']['ed'] = date;
+      output['content']['1']['parameters']['d'] = date;
+      output['content']['1']['parameters']['scd']['sd'] = date;
+      output['content']['1']['parameters']['scd']['ed'] = date;
     }
     
     if (time && time !== '') {
-      output['content']['SS']['parameters']['t'] = time;
-      output['content']['SS']['parameters']['scd']['st'] = time;
-      output['content']['SS']['parameters']['scd']['et'] = time;
+      output['content']['1']['parameters']['t'] = time;
+      output['content']['1']['parameters']['scd']['st'] = time;
+      output['content']['1']['parameters']['scd']['et'] = time;
     }
   
-    output.content['S'] = {
+    output.content['2'] = {
+      processor: 'S',
       option: 'S.P',
       parameters: {
         t: 'EE'
@@ -186,7 +189,8 @@ function clean(datasource)
   } else {
     // 确认后
     // 读取上下文指示
-    output.content['SC'] = {
+    output.content['0'] = {
+      processor: 'SC',
       option: 'SC.T',
       parameters: {}
     };
@@ -199,12 +203,14 @@ function clean(datasource)
     
     if (confirm === '好的，已确认') {
       // 确认    
-      output.content['O'] = {
+      output.content['1'] = {
+        processor: 'O',
         option: 'O.O',
         parameters: {}
       };
   
-      output.content['S'] = {
+      output.content['2'] = {
+        processor: 'S',
         option: 'S.P',
         parameters: {
           t: 'AA'
@@ -214,12 +220,13 @@ function clean(datasource)
 
     if (confirm === '好的，已取消') {
       // 取消
-      output.content['O'] = {
+      output.content['1'] = {
+        processor: 'O',
         option: 'O.C',
         parameters: {}
       };
   
-      output.content['S'] = {
+      output.content['2'] = {
         option: 'S.P',
         parameters: {
           t: 'BB'

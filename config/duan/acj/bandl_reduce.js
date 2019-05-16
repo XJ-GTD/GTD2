@@ -4,6 +4,8 @@ function shouldclean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
 
+  if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion !== 'v1') return false;
+  
   if (input['function'] && (input['function'] === 'summary' || input['function'] === 'lend' || input['function'] === 'borrow')) {
       print('冥王星 迅飞借贷功能处理结果转换 V1.1 [MWXING_XUNFEI_L0005_V1_1] Go...');
       return true;
@@ -19,7 +21,11 @@ function clean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
   var output = {};
-
+  
+  var formatDateTime = function(date) {
+    return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+  }
+  
   var userId = input['_context']['userId'];
   var deviceId = input['_context']['deviceId'];
   var clientcontext = input['_context']['client'];

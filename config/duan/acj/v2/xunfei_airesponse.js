@@ -4,7 +4,7 @@ function shouldclean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
 
- if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion !== 'v1') return false;
+ if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion === 'v1') return false;
   
  if (input.data && input.data[0] !== undefined) {
     for (var di in input.data) {
@@ -61,7 +61,7 @@ function clean(datasource)
   
   // 返回消息头部
   output.header = {
-  	version: 'V1.0',
+  	version: 'V1.1',
     sender: 'xunfei',
     datetime: formatDateTime(new Date()),
     describe: ['S']
@@ -72,14 +72,16 @@ function clean(datasource)
 
   // 智能回答
   if (answer && answer !== '') {
-    output.content['S'] = {
+    output.content['0'] = {
+      processor: 'S',
       option: 'S.AN',
       parameters: {
         an: answer
       }
     };
   } else {
-    output.content['S'] = {
+    output.content['0'] = {
+      processor: 'S',
       option: 'S.P',
       parameters: {
         t: 'UNKONWN'

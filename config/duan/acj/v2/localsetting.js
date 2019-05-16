@@ -3,19 +3,19 @@ function shouldclean(datasource)
   var result = {};
   // filter source code here start
   var input = JSON.parse(datasource);
-  
-  if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion !== 'v1') return false;
+
+  if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion === 'v1') return false;
   
   if (input.data && input.data[0] !== undefined) {
     for (var di in input.data) {
       var data = input.data[di];
-      if (data['sub'] === 'nlp' && data['intent']['service'] === 'OS6981162467.SomethingAlert' && data['intent']['intentType'] === 'custom' && data['intent']['semantic']) {
+      if (data['sub'] === 'nlp' && data['intent']['service'] === 'OS6981162467.LocalSetting' && data['intent']['intentType'] === 'custom' && data['intent']['semantic']) {
           var semantics = data['intent']['semantic'];
-    
+
           for (var sei in semantics) {
             var semantic = semantics[sei];
 
-            if (semantic['intent'] === 'Alarm' || semantic['intent'] === 'AlertBefore' || semantic['intent'] === 'AlertOthers' || semantic['intent'] === 'AlertMe') {
+            if (semantic['intent'] === 'SettingVoiceActivation' || semantic['intent'] === 'SettingVoiceBroadcast' || semantic['intent'] === 'SettingVibration' || semantic['intent'] === 'SettingNewMessageAlert') {
               return true;
             }
           }
@@ -34,10 +34,10 @@ function clean(datasource)
   print(datasource);
   // filter source code here start
   var input = JSON.parse(datasource);
-  var data = input.data[0];
+  var data = input.data;
   for (var di in input.data) {
     var dt = input.data[di];
-    if (dt['sub'] === 'nlp' && dt['intent']['service'] === 'OS6981162467.SomethingAlert' && dt['intent']['intentType'] === 'custom' && dt['intent']['semantic']) {
+    if (dt['sub'] === 'nlp' && dt['intent']['service'] === 'OS6981162467.LocalSetting' && dt['intent']['intentType'] === 'custom' && dt['intent']['semantic']) {
       data = dt;
     }
   }
@@ -53,83 +53,72 @@ function clean(datasource)
   var clientcontext = input['_context']['client'];
   var servercontext = input['_context']['server'];
   var text = data['intent']['text'];
-  var contacts = new Array();
-  var date = '';
-  var time = '';
-  var title = '';
+  var cmd = '';
+  var key = 'UNKNOWN';
   
   var semantics = data['intent']['semantic'];
   
   for (var sei in semantics) {
     var semantic = semantics[sei];
 
+    key = semantic['intent'];
     var slots = semantic['slots'];
     
     for (var si in slots) {
       var slot = slots[si];
-
-      // 取出涉及时间结果
-      if (slot['name'] === 'whentodo') {
-        var value = slot['normValue'];
-        
-        if (value && value !== undefined && value !== '') {
-          var normValue = JSON.parse(value);
-          var suggestDatetime = normValue['suggestDatetime'];
-          
-          print('suggestDatetime: ' + suggestDatetime);
-          // 包含时间
-          var reg = /^(\d+)-(\d{1,2})-(\d{1,2})T(\d{1,2}):(\d{1,2}):(\d{1,2})$/;
-          var r = suggestDatetime.match(reg);
-          
-          if (r) {
-            date = r[1] + '/' + r[2] + '/' + r[3];
-            //time = r[4] + ':' + r[5] + ':' + r[6];
-            time = r[4] + ':' + r[5];
-          }
-          
-          // 没有时间
-          var regd = /^(\d+)-(\d{1,2})-(\d{1,2})$/;
-          var rd = suggestDatetime.match(regd);
-          
-          if (rd) {
-            date = rd[1] + '/' + rd[2] + '/' + rd[3];
-            time = '08:00'; // 默认设置全天
-          }
-        }
+      
+      // 取出涉及日程标题
+      if (slot['name'] === 'actioncmd') {
+        cmd = slot['normValue'];
       }
-
     }
   }
-
-  var output = {};
+  
+  var docmd = true;
+  
+  if (cmd === '打开') {
+    docmd = true;
+  }
+  
+  if (cmd === '关闭') {
+    docmd = false;
+  }
+  
+  if (key === 'SettingVoiceActivation') {
+    key = 'H';
+  }
+  
+  if (key === 'SettingVoiceBroadcast') {
+    key = 'B';
+  }
+  
+  if (key === 'SettingVibration') {
+    key = 'Z';
+  }
+  
+  if (key === 'SettingNewMessageAlert') {
+    key = 'T';
+  }
   
   // 返回消息头部
-  // 确认前
   output.header = {
-    version: 'V1.0',
+  	version: 'V1.1',
     sender: 'xunfei',
     datetime: formatDateTime(new Date()),
-    describe: ['R', 'S']
+    describe: ['SY','S']
   };
   
   output.original = text;
   
   output.content = {};
   
-  // 确认前
   // 查询联系人指示
-  output.content['R'] = {
-    option: 'R.N',
+  output.content['0'] = {
+    processor: 'SY',
+    option: 'SY.S',
     parameters: {
-      d: date,
-      t: time
-    }
-  };
-  
-  output.content['S'] = {
-    option: 'S.P',
-    parameters: {
-      t: 'RM'
+      k: key,
+      v: docmd
     }
   };
   
@@ -139,13 +128,21 @@ function clean(datasource)
   	output.context['client'] = clientcontext;
   }
   
+  output.content['1'] = {
+    processor: 'S',
+    option: 'S.P',
+    parameters: {
+      t: 'DD'
+    }
+  };
+  
   var standardnext = {};
   
   standardnext.announceTo = [userId + ';' + deviceId];
   standardnext.announceType = 'inteligence_mix';
   standardnext.announceContent = {mwxing:output};
   
-  print(JSON.stringify(standardnext));
+  print(standardnext);
   
   // filter source code here end
   return JSON.stringify(standardnext);

@@ -1,0 +1,85 @@
+{
+    "_id": ObjectID("5cdbb41294dd450007e44dbd"),
+    "name": "冥王星共享日程通知处理流V2",
+    "trigger": "mwxing_agenda_notification_start_v2",
+    "parameters": [
+        "_context",
+        "from",
+        "to",
+        "agenda",
+        "notifyType"
+    ],
+    "follows": [
+        {
+            "name": "发送人信息和格式转换处理都完成后处理",
+            "type": "composite",
+            "composite_with": [
+                "acj_formatchange_end",
+                "exc_userinfo_end"
+            ],
+            "task": {
+                "name": "合并发送人信息",
+                "trigger": "acj",
+                "parameters": [
+                    "ruleid;MWXING_ANNOUNCE_A0005_V1_2",
+                    "datasource;$.parent.outputs"
+                ],
+                "outputs": [
+                    "cleaned"
+                ],
+                "next": [
+                    {
+                        "name": "冥王星通知服务",
+                        "trigger": "ann",
+                        "parameters": [
+                            "announceTo;$.parent.outputs.cleaned.announceTo",
+                            "announceType;$.parent.outputs.cleaned.announceType",
+                            "announceContent;$.parent.outputs.cleaned.announceContent"
+                        ],
+                        "outputs": [
+                            "result"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "转换通知内容为通知服务格式",
+            "trigger": "acj",
+            "parameters": [
+                "datasource;$.parent.parameters"
+            ],
+            "outputs": [
+                "cleaned"
+            ],
+            "next": [
+                {
+                    "type": "forward",
+                    "forward_with": [
+                        "acj_formatchange_end"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "获取发送人帐户信息",
+            "trigger": "exc",
+            "parameters": [
+                "method;get",
+                "urlabs;http://sa-aba:8080/aba/user/#{from}/info",
+                "params;$.parent.parameters"
+            ],
+            "outputs": [
+                "executed"
+            ],
+            "next": [
+                {
+                    "type": "forward",
+                    "forward_with": [
+                        "exc_userinfo_end"
+                    ]
+                }
+            ]
+        }
+    ]
+}
