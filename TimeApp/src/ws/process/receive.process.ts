@@ -28,6 +28,24 @@ export class ReceiveProcess implements MQProcess {
       }
     }
 
+    //处理区分
+    if (content.option == SH.D) {
+      //处理所需要参数
+      let scudPara: ScudscdPara = content.parameters;
+
+      await this.busiService.pullDel(scudPara.id);
+    }
+
+    if (content.option == SH.C || content.option == SH.U) {
+      //处理所需要参数
+      let scudPara: ScudscdPara = content.parameters;
+
+      let scd:ScdData = new ScdData();
+      scd = await this.busiService.pullAgd(scudPara.id);
+
+      this.notificationsService.newSms(scd);
+    }
+    
     return contextRetMap
   }
 
