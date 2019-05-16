@@ -33,40 +33,37 @@ export class CudscdProcess implements MQProcess{
     //处理结果
     //emit
     let prv:ProcesRs = content.thisContext.context.client.cxt;
-    if (!prv) prv = new  ProcesRs();
+    if (!prv) prv = new ProcesRs();
 
     //上下文内获取日程查询结果
     let scd:Array<CTbl> = new Array<CTbl>();
     if (content.input && content.input.agendas){
-      scd = contextRetMap.get(content.input.agendas);
+      if (content.input.agendas != "") scd = contextRetMap.get(content.input.agendas);
+    } else {
+      scd = contextRetMap.get("scd");
     }
 
     //上下文内获取日程人员信息
     let fs :Array<FsData> = new Array<FsData>();
     if (content.input && content.input.contacts){
-      fs = contextRetMap.get(content.input.contacts);
-    }
-
-    if (fs.length > 0){
-      prv.fs = fs;
-    }
-
-    // F处理返回的结果
-    if (scd.length > 0){
-
-      prv.scd = scd;
+      if (content.input.contacts != "") fs = contextRetMap.get(content.input.contacts);
+    } else {
+      fs = contextRetMap.get("fs");
     }
 
     //处理区分
     // 创建日程
     if (content.option == SS.C) {
-      // 查询没有日程
-      // 查询有日程
-      if (prv.scd.length > 0){
-        // 清空
-        prv.scd.length = 0;
+      if (fs.length > 0){
+        prv.fs = fs;
       }
 
+      // F处理返回的结果
+      if (scd.length > 0){
+      }
+
+      // 查询没有日程
+      // 查询有日程
       let ctbl:CTbl = new CTbl();
       prv.scd.push(ctbl);
 
@@ -79,6 +76,15 @@ export class CudscdProcess implements MQProcess{
 
     // 修改日程
     if (content.option == SS.U) {
+      if (fs.length > 0){
+        prv.fs = fs;
+      }
+
+      // F处理返回的结果
+      if (scd.length > 0){
+        prv.scd = scd;
+      }
+
       // 查询没有日程
       if (prv.scd.length == 0){}
       // 查询有1个日程
@@ -98,6 +104,15 @@ export class CudscdProcess implements MQProcess{
 
     // 删除日程
     if (content.option == SS.D) {
+      if (fs.length > 0){
+        prv.fs = fs;
+      }
+
+      // F处理返回的结果
+      if (scd.length > 0){
+        prv.scd = scd;
+      }
+
       // 查询没有日程
       if (prv.scd.length == 0){}
       // 查询有1个日程
@@ -128,7 +143,9 @@ export class CudscdProcess implements MQProcess{
 
     //服务器要求上下文内放置日程查询结果
     if (content.output && content.output.agendas){
-      contextRetMap.set(content.output.agendas,prv.scd);
+      if (content.output.agendas != "") contextRetMap.set(content.output.agendas,prv.scd);
+    } else {
+      contextRetMap.set("scd", prv.scd);
     }
 
     return contextRetMap;
