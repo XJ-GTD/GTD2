@@ -28,7 +28,7 @@ export class FindProcess implements MQProcess {
     //process处理符合条件则执行
     if (content.when && content.when !=""){
       let fun = eval("("+content.when+")");
-      if (!fun()){
+      if (!fun(content,contextRetMap)){
         return contextRetMap;
       }
     }
