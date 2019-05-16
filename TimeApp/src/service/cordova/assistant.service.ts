@@ -116,7 +116,7 @@ export class AssistantService {
     let datas = await this.sqliteExec.getList<SuTbl>(sutbl);
     //回答语音list
     let len = datas.length;
-    console.log("播报内容参数*******************t=" +sutbl.sust +";type="+sutbl.sust);
+    console.log("播报内容参数*******************t=" +sutbl.subt +";type="+sutbl.sust);
     if (len == 0){
       let an: SuTbl = new SuTbl();
       an.suc= "数据缺失";
