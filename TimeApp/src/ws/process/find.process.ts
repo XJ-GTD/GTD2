@@ -51,12 +51,20 @@ export class FindProcess implements MQProcess {
 
     //服务器要求上下文内放置日程查询结果
     if (content.output && content.output.agendas){
-      contextRetMap.set(content.output.agendas,scd);
+      // 名称设置为空字符串表示不需要往处理上下文中输出
+      if (content.output.agendas != "") contextRetMap.set(content.output.agendas,scd);
+    } else {
+      // 输出未设置表示向处理上下文使用默认名称输出
+      contextRetMap.set("scd",scd);
     }
 
     //服务器要求上下文内放置日程人员信息
     if (content.output && content.output.contacts){
-      contextRetMap.set(content.output.contacts,fs);
+      // 名称设置为空字符串表示不需要往处理上下文中输出
+      if (content.output.contacts != "") contextRetMap.set(content.output.contacts,fs);
+    } else {
+      // 输出未设置表示向处理上下文使用默认名称输出
+      contextRetMap.set("fs",fs);
     }
 
     return contextRetMap;
