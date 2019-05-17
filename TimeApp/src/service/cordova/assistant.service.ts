@@ -119,7 +119,7 @@ export class AssistantService {
     console.log("播报内容参数*******************t=" +sutbl.subt +";type="+sutbl.sust);
     if (len == 0){
       let an: SuTbl = new SuTbl();
-      an.suc= "数据缺失";
+      an.suc= "您交代的事情已经办好了, 我正在学习怎么更准确的告诉您";
       an.sus="false";
       return an;
     }
