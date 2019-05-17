@@ -8,6 +8,7 @@ import {Setting, UserConfig} from "../../service/config/user.config";
 import {SettingPara} from "../model/settingpara";
 import {FdService} from "../../pages/fd/fd.service";
 import {FsData, PageY} from "../../data.mapping";
+import {WsDataConfig} from "../wsdata.config";
 
 /**
  * 设置
@@ -54,7 +55,7 @@ export class SettingProcess implements MQProcess {
       if (content.input && (content.input.contacts || content.input.contacts =="")){
         if (content.input.contacts != "") fs = contextRetMap.get(content.input.contacts);
       } else {
-        fs = contextRetMap.get("fs");
+        fs = contextRetMap.get(WsDataConfig.FS);
       }
 
       let fdData: FsData = new FsData();

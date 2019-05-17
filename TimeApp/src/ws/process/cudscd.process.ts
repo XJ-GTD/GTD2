@@ -8,6 +8,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {SS} from "../model/ws.enum";
 import {FsData} from "../../data.mapping";
+import {WsDataConfig} from "../wsdata.config";
 
 /**
  * 日历修改处理
@@ -21,15 +22,15 @@ export class CudscdProcess implements MQProcess{
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
 
-    let option = contextRetMap.get("option4Speech");
-    let processor = contextRetMap.get("processor4Speech");
+    let option = contextRetMap.get(WsDataConfig.OPTION4SPEECH);
+    let processor = contextRetMap.get(WsDataConfig.PROCESSOR4SPEECH);
 
     //上下文内获取日程查询结果
     let scd:Array<CTbl> = new Array<CTbl>();
     if (content.input && (content.input.agendas || content.input.agendas =="")){
       if (content.input.agendas != "") scd = contextRetMap.get(content.input.agendas);
     } else {
-      scd = contextRetMap.get("scd");
+      scd = contextRetMap.get(WsDataConfig.SCD);
     }
 
     //上下文内获取查询条件用日程人员或创建的日程人员
@@ -37,7 +38,7 @@ export class CudscdProcess implements MQProcess{
     if (content.input && (content.input.contacts || content.input.contacts =="")){
       if (content.input.contacts != "") fs = contextRetMap.get(content.input.contacts);
     } else {
-      fs = contextRetMap.get("fs");
+      fs = contextRetMap.get(WsDataConfig.FS);
     }
 
     //process处理符合条件则执行
@@ -62,13 +63,13 @@ export class CudscdProcess implements MQProcess{
     if (content.output && (content.output.agendas || content.output.agendas =="")){
       if (content.output.agendas != "") contextRetMap.set(content.output.agendas,prv.scd);
     } else {
-      contextRetMap.set("scd", prv.scd);
+      contextRetMap.set(WsDataConfig.SCD, prv.scd);
     }
     //上下文内放置创建的或修改的日程联系人
     if (content.output && (content.output.contacts || content.output.contacts =="")){
       if (content.output.contacts != "") contextRetMap.set(content.output.contacts,prv.fs);
     } else {
-      contextRetMap.set("fs", prv.fs);
+      contextRetMap.set(WsDataConfig.FS, prv.fs);
     }
 
     return contextRetMap;
