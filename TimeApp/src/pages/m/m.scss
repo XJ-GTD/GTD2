@@ -46,19 +46,10 @@ page-m {
         font-size: 1.3vmin;
       }
     }
-
-    @mixin middle-menu($margin-top, $var) {
-      margin-top: 0;
-      
-      @if $var > 668 {
-        margin-top: $margin-top;
-      }
-      
-    }
     
     .margin-for-middle > .list-ios {
       $vmax: vmax;
-      @include middle-menu(calc(50vmax - calc(calc(259px / 2) + calc(100%))), $vmax);
+      margin-top: calc(50vmax - calc(calc(259px / 2) + calc(100%)));
     }
     
     .list-ios {
