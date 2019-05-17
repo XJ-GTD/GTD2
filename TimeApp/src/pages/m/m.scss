@@ -58,7 +58,7 @@ page-m {
     }
     
     .margin-for-middle > .list-ios {
-      --margintop: calc(50vmax - calc(calc(259px / 2) + calc(100%)));
+      $margintop: calc(50vmax - calc(calc(259px / 2) + calc(100%)));
       margin-top: minus2zero($margintop);
     }
     
