@@ -56,7 +56,7 @@ export class SpeechProcess implements MQProcess {
 
       let agendas: Array<CTbl> = new Array<CTbl>();
       let showagendas: Array<CTbl> = new Array<CTbl>();
-      let showcontacts: Array<FsData> = new Array<FsData>();
+      let contacts: Array<FsData> = new Array<FsData>();
 
       let sutbl: SuTbl = new SuTbl();
 
@@ -79,10 +79,10 @@ export class SpeechProcess implements MQProcess {
         }
 
         //获取上下文内人员信息
-        if (content.input && (content.input.showcontacts || content.input.showcontacts == "")) {
-          if (content.input.showcontacts != "") showcontacts = contextRetMap.get(content.input.showcontacts);
+        if (content.input && (content.input.contacts || content.input.contacts == "")) {
+          if (content.input.contacts != "") contacts = contextRetMap.get(content.input.contacts);
         } else {
-          showcontacts = contextRetMap.get("fs");
+          contacts = contextRetMap.get("fs");
         }
 
         //获取上下文前动作信息
@@ -202,7 +202,7 @@ export class SpeechProcess implements MQProcess {
         scdEm.scdTip = sutbl.sut;
 
 
-        for (let btbl of showcontacts){
+        for (let btbl of contacts){
           let fri:FriendEmData = new FriendEmData();
           fri.id = btbl.pwi;
           fri.p = btbl.ranpy;
