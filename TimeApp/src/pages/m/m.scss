@@ -47,8 +47,10 @@ page-m {
       }
     }
 
-    .margin-for-middle > .list-ios {
-      margin-top: calc(50vmax - calc(calc(259px / 2) + calc(100%)));
+    @media only screen and (max-height: 668px) {
+      .margin-for-middle > .list-ios {
+        margin-top: calc(50vmax - calc(calc(259px / 2) + calc(100%)));
+      }
     }
     
     .list-ios {
