@@ -47,11 +47,18 @@ page-m {
       }
     }
 
-    .margin-for-middle > .list-ios {
-      margin-top: 0px;
-      @media screen and (max-height: 668px) {
-        margin-top: calc(50vmax - calc(calc(259px / 2) + calc(100%)));
+    @function minus2zero($var) {
+      $result: 0;
+      
+      @if $var > 0 {
+        $result: $var;
       }
+      
+      @return $result;
+    }
+    
+    .margin-for-middle > .list-ios {
+      margin-top: minus2zero(calc(50vmax - calc(calc(259px / 2) + calc(100%))));
     }
     
     .list-ios {
