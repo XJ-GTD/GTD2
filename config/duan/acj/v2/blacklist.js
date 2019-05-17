@@ -119,7 +119,11 @@ function clean(datasource)
     processor: 'S',
     option: 'S.P',
     parameters: {
-      t: 'DD'
+      t: 'BDD'
+    },
+    input: {
+      agendas: "",
+      showagendas: ""
     }
   };
   
