@@ -10,6 +10,7 @@ import {FsService} from "../../pages/fs/fs.service";
 import {FsData, RcInParam, ScdData} from "../../data.mapping";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {OptProcessFactory} from "../optprocess.factory";
+import {WsDataConfig} from "../wsdata.config";
 
 /**
  * 确认操作
@@ -36,7 +37,7 @@ export class OptionProcess implements MQProcess{
     if (content.input && (content.input.prvoption ||content.input.prvoption =="")){
       if (content.input.prvoption != "") prvOpt = contextRetMap.get(content.input.prvoption );
     } else {
-      prvOpt = contextRetMap.get("prvoption");
+      prvOpt = contextRetMap.get(WsDataConfig.PRVOPTION);
     }
 
     //获取上下文前动作信息
@@ -44,7 +45,7 @@ export class OptionProcess implements MQProcess{
     if (content.input && (content.input.prvprocessor ||content.input.prvprocessor =="")){
       if (content.input.prvprocessor != "") prvprocessor = contextRetMap.get(content.input.prvprocessor );
     } else {
-      prvprocessor = contextRetMap.get("prvprocessor");
+      prvprocessor = contextRetMap.get(WsDataConfig.PRVPROCESSOR);
     }
 
     //上下文内获取日程查询结果
@@ -52,7 +53,7 @@ export class OptionProcess implements MQProcess{
     if (content.input && (content.input.agendas || content.input.agendas == "")){
       if (content.input.agendas != "") scd = contextRetMap.get(content.input.agendas);
     } else {
-      scd = contextRetMap.get("scd");
+      scd = contextRetMap.get(WsDataConfig.SCD);
     }
 
     //上下文内获取日程人员信息
@@ -60,7 +61,7 @@ export class OptionProcess implements MQProcess{
     if (content.input && (content.input.contacts || content.input.contacts == "")){
       if (content.input.contacts != "") fs = contextRetMap.get(content.input.contacts);
     } else {
-      fs = contextRetMap.get("fs");
+      fs = contextRetMap.get(WsDataConfig.FS);
     }
 
     //process处理符合条件则执行

@@ -11,6 +11,7 @@ import {SpeechProcess} from "./speech.process";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import * as moment from 'moment';
 import {DataConfig} from "../../service/config/data.config";
+import {WsDataConfig} from "../wsdata.config";
 
 /**
  * 提醒设置
@@ -40,7 +41,7 @@ export class RemindProcess implements MQProcess {
     if (content.input && (content.input.agendas || content.input.agendas =="")){
       if (content.input.agendas != "") scd = contextRetMap.get(content.input.agendas);
     } else {
-      scd = contextRetMap.get("scd");
+      scd = contextRetMap.get(WsDataConfig.SCD);
     }
 
     //处理区分

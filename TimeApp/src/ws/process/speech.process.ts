@@ -13,6 +13,7 @@ import * as moment from "moment";
 import {FsData} from "../../data.mapping";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {UserConfig} from "../../service/config/user.config";
+import {WsDataConfig} from "../wsdata.config";
 
 /**
  * 播报类型处理
@@ -58,33 +59,33 @@ export class SpeechProcess implements MQProcess {
         if (content.input && (content.input.agendas || content.input.agendas == "")) {
           if (content.input.agendas != "") agendas = contextRetMap.get(content.input.agendas);
         } else {
-          agendas = contextRetMap.get("scd");
+          agendas = contextRetMap.get(WsDataConfig.SCD);
         }
 
         //获取上下文内日程查询结果
         if (content.input && (content.input.showagendas || content.input.showagendas == "")) {
           if (content.input.showagendas != "") showagendas = contextRetMap.get(content.input.showagendas);
         } else {
-          showagendas = contextRetMap.get("scd");
+          showagendas = contextRetMap.get(WsDataConfig.SCD);
         }
 
         //获取上下文内人员信息
         if (content.input && (content.input.contacts || content.input.contacts == "")) {
           if (content.input.contacts != "") contacts = contextRetMap.get(content.input.contacts);
         } else {
-          contacts = contextRetMap.get("fs");
+          contacts = contextRetMap.get(WsDataConfig.FS);
         }
 
         //获取上下文前动作信息
         if (content.input && (content.input.prvoption ||content.input.prvoption =="")){
           if (content.input.prvoption != "") prvOpt = contextRetMap.get(content.input.prvoption );
         } else {
-          prvOpt = contextRetMap.get("prvoption");
+          prvOpt = contextRetMap.get(WsDataConfig.PRVOPTION);
         }
 
         if (content.input && (content.input.type || content.input.type == "")) {
           if (content.input.type == "") {
-            type = "EMPTY";
+            type = WsDataConfig.TYPE_EMPTY;
           } else {
             if (content.input.type.startsWith("function")) {
               let tfun = eval("(" + content.input.type + ")");
@@ -100,9 +101,9 @@ export class SpeechProcess implements MQProcess {
             count = agendas.length;
           }
 
-          if (count == 0) type = 'NONE';
-          if (count == 1) type = 'ONE';
-          if (count > 1) type = 'MULTI';
+          if (count == 0) type = WsDataConfig.TYPE_NONE;
+          if (count == 1) type = WsDataConfig.TYPE_ONE;
+          if (count > 1) type = WsDataConfig.TYPE_MULTI;
         }
         //处理区分
 
