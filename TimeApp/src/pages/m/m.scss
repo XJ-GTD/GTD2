@@ -47,19 +47,18 @@ page-m {
       }
     }
 
-    @function minus2zero($var) {
-      $result: 0;
+    @mixin middle-menu($margin-top, $var) {
+      margin-top: 0;
       
       @if $var > 668 {
-        $result: $var;
+        margin-top: $margin-top;
       }
       
-      @return $result;
     }
     
     .margin-for-middle > .list-ios {
       $vmax: vmax;
-      margin-top: calc(50vmax - calc(calc(259px / 2) + calc(100%)));
+      @include middle-menu(calc(50vmax - calc(calc(259px / 2) + calc(100%))), $vmax);
     }
     
     .list-ios {
