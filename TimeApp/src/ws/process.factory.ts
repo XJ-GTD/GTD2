@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {MQProcess, OptProcess} from "./interface.process";
+import {MQProcess} from "./interface.process";
 import {CudscdProcess} from "./process/cudscd.process";
 import {RemindProcess} from "./process/remind.process";
 import {ThirdProcess} from "./process/third.process";
@@ -20,7 +20,6 @@ import {AgendasProcess} from "./process/agendas.process";
 @Injectable()
 export class ProcessFactory {
   private factory: Map<string, MQProcess> = new Map<string, MQProcess>();
-  private factoryOpt: Map<string, OptProcess> = new Map<string, OptProcess>();
 
   constructor(private cudscdProcess: CudscdProcess,
               private remindProcess: RemindProcess,
@@ -45,17 +44,10 @@ export class ProcessFactory {
     this.factory.set("SH", this.receiveProcess);
     this.factory.set("SY", this.settingProcess);
     this.factory.set("AG", this.agendasProcess);
-    this.factoryOpt.set("AG", this.agendasProcess);
   }
 
   getProcess(processKey: string): MQProcess {
     let process: MQProcess = this.factory.get(processKey);
-    if (process == null) return this.defaultProcess;
-    return process;
-  }
-
-  getOptProcess(processKey: string): OptProcess {
-    let process: OptProcess = this.factoryOpt.get(processKey);
     if (process == null) return this.defaultProcess;
     return process;
   }
