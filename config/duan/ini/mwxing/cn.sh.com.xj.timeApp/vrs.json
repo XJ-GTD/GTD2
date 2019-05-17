@@ -93,6 +93,7 @@
 {"version": "v2", "type": "MULTI", "needAnswer": "false", "tips":"", "name":"CC", "value":"我正在努力地查询,请稍等。", "desc":"查询后回答（数量）"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"DD", "value":"本次设置已生效", "desc":"设置后回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"BDD", "value":"黑名单设置已生效", "desc":"设置黑名单后回答"},
+{"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"BDN", "value":"联系人中没有找到{targetname}", "desc":"设置黑名单后回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"FF", "value":"有点小问题,您可以换个方式问我", "desc":"异常回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"FF", "value":"我有点小麻烦,稍等片刻,马上回来", "desc":"异常回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"RM", "value":"已帮您设好闹铃", "desc":"闹铃设置回答"},

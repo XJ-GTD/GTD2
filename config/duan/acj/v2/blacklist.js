@@ -56,6 +56,7 @@ function clean(datasource)
   var cmd = '';
   var key = 'UNKNOWN';
   var contacts = new Array();
+  var contactsnames = new Array();
 
   var semantics = data['intent']['semantic'];
   
@@ -71,6 +72,7 @@ function clean(datasource)
       // 取出关联联系人结果
       if (slot['name'] === 'whotodo') {
         contacts.push({n:slot['normValue']});
+        contactsnames.push(slot['normValue']);
       }
       
       // 取出涉及日程标题
@@ -85,7 +87,7 @@ function clean(datasource)
   	version: 'V1.1',
     sender: 'xunfei',
     datetime: formatDateTime(new Date()),
-    describe: ['F','SY','S']
+    describe: ['F','SY','S','S']
   };
   
   output.original = text;
@@ -116,12 +118,29 @@ function clean(datasource)
   }
   
   output.content['2'] = {
+    when: 'function(agendas, showagendas, contacts) { if (contacts && contacts.length > 0) { return true; } else { return false; }}',
     processor: 'S',
     option: 'S.P',
     parameters: {
       t: 'BDD'
     },
     input: {
+      agendas: "",
+      showagendas: ""
+    }
+  };
+  
+  output.content['3'] = {
+    when: 'function(agendas, showagendas, contacts) { if (contacts && contacts.length > 0) { return false; } else { return true; }}',
+    processor: 'S',
+    option: 'S.P',
+    parameters: {
+      t: 'BDN'
+    },
+    input: {
+      textvariables: [
+        {name: "targetname", value: (contactsnames.join() + "")}
+      ],
       agendas: "",
       showagendas: ""
     }
