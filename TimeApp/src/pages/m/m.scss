@@ -48,9 +48,9 @@ page-m {
     }
     
     .margin-for-middle > .list-ios {
-      margin-top: calc(50vmax - calc(calc(259px) + calc(50%)));
-      @media screen and (max-height: 960px) {
         margin-top: 0px;
+      @media screen and (min-height: 960px) {
+        margin-top: calc(50vmax - calc(calc(259px) + calc(50%)));
       }
     }
     
