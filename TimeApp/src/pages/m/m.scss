@@ -47,8 +47,8 @@ page-m {
       }
     }
 
-    .margin-for-middle {
-      
+    .margin-for-middle > .list-ios {
+      margin-top: calc(50vmax - calc(259px / 2) - calc(height / 2));
     }
     
     .list-ios {
