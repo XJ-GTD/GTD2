@@ -217,7 +217,8 @@ export class ScdEmData {
   d: string = "";
   t: string = "";
   ti: string = "";
-  gs:string = ""
+  gs:string = "";
+  scdTip:string ="";
   datas: Array<FriendEmData> = new Array<FriendEmData>();
 }
 

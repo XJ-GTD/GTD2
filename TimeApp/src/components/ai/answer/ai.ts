@@ -133,6 +133,7 @@ export class AiComponent {
     scd1.d = data.d;
     scd1.t = data.t;
     scd1.ti = data.ti;
+    scd1.scdTip = data.scdTip;
 
     for (let femd of  data.datas){
       let ff:FriendAiData = new FriendAiData();

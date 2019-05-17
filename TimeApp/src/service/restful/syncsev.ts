@@ -69,5 +69,5 @@ export class Vrs {
   desc: string;
   name: string;
   value: string;
-
+  tips:string;
 }

@@ -173,7 +173,7 @@ export class SqliteInit {
             sutbl.sum = vrs.desc;
             sutbl.subtsn = "";
             sutbl.sustsn = "";
-            sutbl.sut = "";
+            sutbl.sut = vrs.tips?vrs.tips:"";
             urlList.push(sutbl.inT());
           }
         }
@@ -262,7 +262,7 @@ export class SqliteInit {
             sutbl.sum = vrs.desc;
             sutbl.subtsn = "";
             sutbl.sustsn = "";
-            sutbl.sut = "";
+            sutbl.sut = vrs.tips?vrs.tips:"";
             urlList.push(sutbl.inT());
           }
         }
