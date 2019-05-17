@@ -47,7 +47,7 @@
 {"version": "v2", "type": "ONE", "needAnswer": "false", "tips":"", "name":"AA", "value":"好的。已创建该日程。", "desc":"确认操作后回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"CAA", "value":"没有需要取消的日程", "desc":"取消确认回答"},
 {"version": "v2", "type": "SS.D", "needAnswer": "false", "tips":"", "name":"CAA", "value":"好的,以上日程已帮您取消。", "desc":"取消确认回答"},
-{"version": "v2", "type": "SS.D", "needAnswer": "false", "tips":"", "name":"CAA", "value":"好的,已为你取消。", "desc":"取消确认回答"},
+{"version": "v2", "type": "ONE", "needAnswer": "false", "tips":"", "name":"CAA", "value":"好的,已为你取消。", "desc":"取消确认回答"},
 {"version": "v2", "type": "SS.D", "needAnswer": "false", "tips":"", "name":"CAA", "value":"好的,那需要为您安排其它日程吗。", "desc":"取消确认回答"},
 {"version": "v2", "type": "MULTI", "needAnswer": "false", "tips":"", "name":"CAA", "value":"好的,以上日程已帮您取消。", "desc":"取消确认回答"},
 {"version": "v2", "type": "MULTI", "needAnswer": "false", "tips":"", "name":"CAA", "value":"好的,已为你取消。", "desc":"取消确认回答"},
