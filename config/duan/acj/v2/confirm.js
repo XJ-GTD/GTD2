@@ -111,7 +111,7 @@ function clean(datasource)
         t: 'AA'
       },
       input: {
-        type: "prvoption",
+        type: "function(agds, showagds, prvopt, user) { if (agds && agds.length <= 0) return 'NONE'; else return prvopt; }",
         showagendas: ""
       }
     };
@@ -131,7 +131,7 @@ function clean(datasource)
         t: 'BB'
       },
       input: {
-        type: "prvoption",
+        type: "function(agds, showagds, prvopt, user) { if (agds && agds.length <= 0) return 'NONE'; else return prvopt; }",
         showagendas: ""
       }
     };
