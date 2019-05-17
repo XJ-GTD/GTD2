@@ -25,7 +25,7 @@ export class AiService {
       let scd: ScdAiData = scds.datas[i];
       let currdate = moment(scd.d).format("YYYY年MM月DD日");
       let broadcast = false;
-      
+
       if (prevdate == '' || currdate != prevdate) {
         prevdate = currdate;
         broadcast = true;
@@ -119,6 +119,7 @@ export class ScdAiData {
   ti: string = "";
   gs: string = "";
   saved:boolean = false;
+  scdTip:string = "";
   friends: Array<FriendAiData> = new Array<FriendAiData>();
 }
 

@@ -58,6 +58,8 @@ export class SpeechProcess implements MQProcess {
       let showagendas: Array<CTbl> = new Array<CTbl>();
       let showcontacts: Array<FsData> = new Array<FsData>();
 
+      let sutbl: SuTbl = new SuTbl();
+
       //日常语音直接播报
       if (content.option != S.AN) {
 
@@ -108,10 +110,11 @@ export class SpeechProcess implements MQProcess {
         }
 
         //处理区分
+
         if (spData.t) {
 
           //TODO 0的时候包含了不需要判断0的场合，需要区分出来
-          let sutbl: SuTbl = new SuTbl();
+
           sutbl = await this.assistant.getSpeakTextObject(spData.t, type);
 
           speakText = sutbl.suc;
@@ -184,6 +187,9 @@ export class SpeechProcess implements MQProcess {
         scdEm.t = showagendas[0].st;
         scdEm.ti = showagendas[0].sn;
         scdEm.gs = showagendas[0].gs;
+
+        scdEm.scdTip = sutbl.sut;
+
 
         for (let btbl of showcontacts){
           let fri:FriendEmData = new FriendEmData();
