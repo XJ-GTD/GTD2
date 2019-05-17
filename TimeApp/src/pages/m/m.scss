@@ -59,7 +59,7 @@ page-m {
     
     .margin-for-middle > .list-ios {
       $vmax: vmax;
-      margin-top: calc(50vmax - calc(calc(259px / 2) + calc(100%))) + minus2zero(#{$vmax});
+      margin-top: calc(50vmax - calc(calc(259px / 2) + calc(100%)));
     }
     
     .list-ios {
