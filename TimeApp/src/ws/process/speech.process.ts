@@ -48,7 +48,7 @@ export class SpeechProcess implements MQProcess {
       //处理所需要参数
       let ti = moment().valueOf() - content.thisContext.context.client.time;
       let spData: SpeechPara = content.parameters;
-      let prvOpt:string =  content.thisContext.context.client.option;
+      let prvOpt:string =  "";
       let openListener: boolean = false;
       //默认语音
       let speakText = spData.an;
@@ -83,6 +83,13 @@ export class SpeechProcess implements MQProcess {
           if (content.input.showcontacts != "") showcontacts = contextRetMap.get(content.input.showcontacts);
         } else {
           showcontacts = contextRetMap.get("fs");
+        }
+
+        //获取上下文前动作信息
+        if (content.input && (content.input.prvoption ||content.input.prvoption =="")){
+          if (content.input.prvoption != "") prvOpt = contextRetMap.get(content.input.prvoption );
+        } else {
+          prvOpt = contextRetMap.get("prvoption");
         }
 
         if (content.input && (content.input.type || content.input.type == "")) {

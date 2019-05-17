@@ -28,6 +28,14 @@ export class ContextProcess implements MQProcess{
     let prv:ProcesRs = content.thisContext.context.client.cxt;
     if (!prv) prv = new ProcesRs();
 
+    //服务器要求上下文内放置语音上下文前动作标志
+    let prvOpt = content.thisContext.context.client.option;
+    if (content.output && (content.output.prvoption ||content.output.prvoption =="")){
+      if (content.output.prvoption != "") contextRetMap.set(content.output.prvoption,prvOpt );
+    } else {
+      contextRetMap.set("prvoption",prvOpt );
+    }
+
     //服务器要求上下文内放置语音上下文日程
     if (content.output && (content.output.agendas ||content.output.agendas =="")){
       if (content.output.agendas != "") contextRetMap.set(content.output.agendas, prv.scd);

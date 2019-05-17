@@ -33,8 +33,13 @@ export class OptionProcess implements MQProcess{
     let opt = content.option;
     //处理所需要参数追问时才需要参数，追问暂时不做
     //let cudPara:CudscdPara = content.parameters;
-    let prvOpt:string =  content.thisContext.context.client.option;
-
+    let prvOpt:string =  "";
+  //获取上下文前动作信息
+    if (content.input && (content.input.prvoption ||content.input.prvoption =="")){
+      if (content.input.prvoption != "") prvOpt = contextRetMap.get(content.input.prvoption );
+    } else {
+      prvOpt = contextRetMap.get("prvoption");
+    }
     //上下文内获取日程查询结果
     let scd:Array<CTbl> = new Array<CTbl>();
     if (content.input && (content.input.agendas || content.input.agendas == "")){
