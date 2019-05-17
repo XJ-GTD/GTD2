@@ -38,6 +38,10 @@ import {UserConfig} from "../../service/config/user.config";
               <ion-item>
                 <h1>冥王星</h1>
               </ion-item>
+            </ion-list>
+          </ion-row>
+          <ion-row class="margin-for-middle">
+            <ion-list>
               <ion-item (click)="goGlPage()">
                 <h3>群组</h3>
               </ion-item>
