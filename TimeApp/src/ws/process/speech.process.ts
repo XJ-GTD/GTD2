@@ -31,16 +31,6 @@ export class SpeechProcess implements MQProcess {
 
     return new Promise<Map<string,any>>(async resolve => {
 
-
-      //process处理符合条件则执行
-      if (content.when && content.when !=""){
-        let fun = eval("("+content.when+")");
-        if (!fun(content,contextRetMap)){
-          resolve(contextRetMap);
-          return;
-        }
-      }
-
       //获取上下文结果
 
       let user = UserConfig.user;
@@ -114,7 +104,6 @@ export class SpeechProcess implements MQProcess {
           if (count == 1) type = 'ONE';
           if (count > 1) type = 'MULTI';
         }
-
         //处理区分
 
         if (spData.t) {
@@ -132,8 +121,7 @@ export class SpeechProcess implements MQProcess {
               let expvalue: string = "";
               if (txt.value) {
                 expvalue = txt.value;
-              }
-              if (txt.expression) {
+              }else if (txt.expression) {
                 expvalue = eval(txt.expression);
                 if (!expvalue) {
                   expvalue = txt.default;
@@ -150,6 +138,15 @@ export class SpeechProcess implements MQProcess {
             }
           }
 
+        }
+      }
+
+      //process处理符合条件则执行
+      if (content.when && content.when !=""){
+        let fun = eval("("+content.when+")");
+        if (!fun(agendas,showagendas,contacts)){
+          resolve(contextRetMap);
+          return;
         }
       }
 
