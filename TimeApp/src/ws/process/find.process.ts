@@ -58,7 +58,7 @@ export class FindProcess implements MQProcess {
       contextRetMap.set("scd",scd);
     }
 
-    //服务器要求上下文内放置日程人员信息
+    //服务器要求上下文内放置日程的创建人员信息或查询条件用的人员信息
     if (content.output && (content.output.contacts || content.output.contacts == "")){
       // 名称设置为空字符串表示不需要往处理上下文中输出
       if (content.output.contacts != "") contextRetMap.set(content.output.contacts,fs);

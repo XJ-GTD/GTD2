@@ -64,22 +64,21 @@ export class SpeechProcess implements MQProcess {
       if (content.option != S.AN) {
 
 
-        //上下文内获取日程查询结果
-
+        //获取上下文内日程创建结果
         if (content.input && (content.input.agendas || content.input.agendas == "")) {
           if (content.input.agendas != "") agendas = contextRetMap.get(content.input.agendas);
         } else {
           agendas = contextRetMap.get("scd");
         }
 
-
+        //获取上下文内日程查询结果
         if (content.input && (content.input.showagendas || content.input.showagendas == "")) {
           if (content.input.showagendas != "") showagendas = contextRetMap.get(content.input.showagendas);
         } else {
           showagendas = contextRetMap.get("scd");
         }
 
-
+        //获取上下文内人员信息
         if (content.input && (content.input.showcontacts || content.input.showcontacts == "")) {
           if (content.input.showcontacts != "") showcontacts = contextRetMap.get(content.input.showcontacts);
         } else {

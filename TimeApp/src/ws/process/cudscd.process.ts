@@ -43,7 +43,7 @@ export class CudscdProcess implements MQProcess{
       scd = contextRetMap.get("scd");
     }
 
-    //上下文内获取日程人员信息
+    //上下文内获取查询条件用日程人员或创建的日程人员
     let fs :Array<FsData> = new Array<FsData>();
     if (content.input && (content.input.contacts || content.input.contacts =="")){
       if (content.input.contacts != "") fs = contextRetMap.get(content.input.contacts);
@@ -141,7 +141,7 @@ export class CudscdProcess implements MQProcess{
     DataConfig.putWsContext(prv);
     DataConfig.putWsOpt(content.option);
 
-    //服务器要求上下文内放置日程查询结果
+    //服务器要求上下文内放置创建的或修改的日程结果
     if (content.output && (content.output.agendas || content.output.agendas =="")){
       if (content.output.agendas != "") contextRetMap.set(content.output.agendas,prv.scd);
     } else {
