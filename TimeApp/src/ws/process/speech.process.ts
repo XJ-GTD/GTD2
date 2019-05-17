@@ -121,8 +121,7 @@ export class SpeechProcess implements MQProcess {
               let expvalue: string = "";
               if (txt.value) {
                 expvalue = txt.value;
-              }
-              if (txt.expression) {
+              }else if (txt.expression) {
                 expvalue = eval(txt.expression);
                 if (!expvalue) {
                   expvalue = txt.default;
