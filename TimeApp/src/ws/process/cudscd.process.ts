@@ -22,6 +22,7 @@ export class CudscdProcess implements MQProcess{
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
 
     let option = contextRetMap.get("option4Speech");
+    let processor = contextRetMap.get("processor4Speech");
 
     //上下文内获取日程查询结果
     let scd:Array<CTbl> = new Array<CTbl>();
@@ -38,8 +39,6 @@ export class CudscdProcess implements MQProcess{
     } else {
       fs = contextRetMap.get("fs");
     }
-
-    let processor :string = content.processor;
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){

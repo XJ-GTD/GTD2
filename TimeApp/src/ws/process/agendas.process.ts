@@ -88,6 +88,9 @@ export class AgendasProcess implements MQProcess,OptProcess{
     //记录当前option，为其后动作使用
     contextRetMap.set("option4Speech", content.option);
 
+    //记录当前processor，为其后动作使用
+    contextRetMap.set("processor4Speech", content.processor);
+
     //处理所需要参数
     let cudPara:CudscdPara = content.parameters;
     //处理结果
