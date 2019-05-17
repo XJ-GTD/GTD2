@@ -47,8 +47,9 @@ page-m {
       }
     }
 
-    @media only screen and (max-height: 668px) {
-      .margin-for-middle > .list-ios {
+    .margin-for-middle > .list-ios {
+      margin-top: 0px;
+      @media screen and (max-height: 668px) {
         margin-top: calc(50vmax - calc(calc(259px / 2) + calc(100%)));
       }
     }
