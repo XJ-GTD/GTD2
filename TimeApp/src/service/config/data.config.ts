@@ -91,7 +91,28 @@ export class DataConfig {
 
   private static _wsOpts:Array<string> = new Array<string>();
 
+//操作process
+  public static clearWsProcessor(){
+    this._wsProcessors.splice(0,this._wsProcessors.length);
+  }
 
+  public static putWsProcessor(_processor:string){
+    this._wsProcessors.push(_processor);
+  }
+
+  public static getWsProcessor():string{
+    return this._wsProcessors.shift();
+  }
+
+  public static get wsWsProcessor(): Array<string> {
+    return this._wsProcessors;
+  }
+
+  public static set wsWsProcessor(value: Array<string>) {
+    this._wsProcessors = value;
+  }
+
+  private static _wsProcessors:Array<string> = new Array<string>();
 
 
   public static get wsServerContext():any {

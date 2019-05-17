@@ -23,6 +23,13 @@ export enum SS {
   D = "SS.D",       // 查询日程
 }
 
+//日程处理（保存上下文）
+export enum AG {
+  C = "AG.C",  //新建日程
+  U = "AG.U",       // 更新日程
+  D = "AG.D",       // 删除日程
+}
+
 //日程修改（获取上下文中）
 export enum SC {
   T = "SC.T",  //

@@ -17,16 +17,18 @@ export class ContextProcess implements MQProcess{
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
-    //process处理符合条件则执行
-    if (content.when && content.when !=""){
-      let fun = eval("("+content.when+")");
-      if (!fun()){
-        return contextRetMap;
-      }
-    }
+
 
     let prv:ProcesRs = content.thisContext.context.client.cxt;
     if (!prv) prv = new ProcesRs();
+
+    //process处理符合条件则执行
+    if (content.when && content.when !=""){
+      let fun = eval("("+content.when+")");
+      if (!fun(content,prv.scd,prv.fs)){
+        return contextRetMap;
+      }
+    }
 
     //服务器要求上下文内放置语音上下文前动作标志
     let prvOpt = content.thisContext.context.client.option;
@@ -34,6 +36,14 @@ export class ContextProcess implements MQProcess{
       if (content.output.prvoption != "") contextRetMap.set(content.output.prvoption,prvOpt );
     } else {
       contextRetMap.set("prvoption",prvOpt );
+    }
+
+    //服务器要求上下文内放置语音上下文前process标志
+    let prvprocessor = content.thisContext.context.client.processor;
+    if (content.output && (content.output.prvprocessor ||content.output.prvprocessor =="")){
+      if (content.output.prvprocessor != "") contextRetMap.set(content.output.prvprocessor,prvprocessor );
+    } else {
+      contextRetMap.set("prvprocessor",prvprocessor );
     }
 
     //服务器要求上下文内放置语音上下文日程

@@ -6,6 +6,7 @@
 import {WsModel} from "./ws.model";
 
 export class WsContent {
+  processor:string ="";
   option: string = "";
   parameters: any;
   thisContext:WsModel;
