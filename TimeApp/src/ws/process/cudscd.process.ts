@@ -132,11 +132,6 @@ export class CudscdProcess implements MQProcess{
     //  是否重复日程提醒（提示更新今天，还是以后）"	SS.U
     //  删除日程	SS.D
 
-    // SS.C
-    // SS.U
-    // SS.D
-    prv.option4Speech = content.option;
-
     //保存上下文
     DataConfig.putWsContext(prv);
     DataConfig.putWsOpt(content.option);

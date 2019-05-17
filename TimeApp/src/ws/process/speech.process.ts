@@ -136,6 +136,11 @@ export class SpeechProcess implements MQProcess {
               }
               speakText = speakText.replace("{" + txt.name + "}", expvalue);
             }
+          }else{
+            if (agendas){
+              let count = agendas.length;
+              speakText = speakText.replace("{count}", count+"");
+            }
           }
 
         }
