@@ -48,8 +48,10 @@ page-m {
     }
     
     .margin-for-middle > .list-ios {
-      $vmax: vmax;
       margin-top: calc(50vmax - calc(calc(259px / 2) + calc(100%)));
+      @media screen and (max-height: 668px) {
+        margin-top: 0;
+      }
     }
     
     .list-ios {
