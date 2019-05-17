@@ -9,7 +9,7 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {FsService} from "../../pages/fs/fs.service";
 import {FsData, RcInParam, ScdData} from "../../data.mapping";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
-import {ProcessFactory} from "../process.factory";
+import {OptProcessFactory} from "../optprocess.factory";
 
 /**
  * 确认操作
@@ -19,7 +19,7 @@ import {ProcessFactory} from "../process.factory";
 @Injectable()
 export class OptionProcess implements MQProcess{
   constructor(private emitService:EmitService,private busiService:PgBusiService,
-              private fsServer:FsService,private factory: ProcessFactory,) {
+              private fsServer:FsService,private factoryOpt: OptProcessFactory,) {
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
@@ -72,7 +72,7 @@ export class OptionProcess implements MQProcess{
     }
 
     if (opt == O.O){
-      contextRetMap = await this.factory.getOptProcess(prvprocessor).do(content, contextRetMap);
+      contextRetMap = await this.factoryOpt.getOptProcess(prvprocessor).do(content, contextRetMap);
       //取消操作 清除上下文
       DataConfig.clearWsOpts();
       DataConfig.clearWsContext();

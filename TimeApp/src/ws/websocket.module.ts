@@ -16,6 +16,8 @@ import {SettingProcess} from "./process/setting.process";
 import {SsService} from "../pages/ss/ss.service";
 import {FdService} from "../pages/fd/fd.service";
 import {FsService} from "../pages/fs/fs.service";
+import {OptProcessFactory} from "./optprocess.factory";
+import {AgendasProcess} from "./process/agendas.process";
 
 
 /**
@@ -26,12 +28,14 @@ import {FsService} from "../pages/fs/fs.service";
 @NgModule({
   imports: [IonicModule],
   providers: [WebsocketService,
+    OptProcessFactory,
     ProcessFactory, DispatchService,
     CudscdProcess, RemindProcess,
     SpeechProcess, ThirdProcess,
     DefaultProcess, FindProcess,
     OptionProcess, ContextProcess,
     ReceiveProcess,SettingProcess,
+    AgendasProcess,
     SsService,FdService,FsService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
