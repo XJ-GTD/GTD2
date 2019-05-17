@@ -89,7 +89,7 @@ export class SpeechProcess implements MQProcess {
           } else {
             if (content.input.type.startsWith("function")) {
               let tfun = eval("(" + content.input.type + ")");
-              type = tfun(agendas, showagendas, user);
+              type = tfun(agendas, showagendas, prvOpt, user);
             } else {
               type = content.input.type;
             }
