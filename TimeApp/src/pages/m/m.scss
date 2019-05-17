@@ -50,7 +50,7 @@ page-m {
     @function minus2zero($var) {
       $result: 0;
       
-      @if $var > 0 {
+      @if $var > 668 {
         $result: $var;
       }
       
@@ -58,8 +58,8 @@ page-m {
     }
     
     .margin-for-middle > .list-ios {
-      $margintop: calc(50vmax - calc(calc(259px / 2) + calc(100%)));
-      margin-top: minus2zero($margintop);
+      $vmax: vmax;
+      margin-top: calc(50vmax - calc(calc(259px / 2) + calc(100%))) + minus2zero($vmax);
     }
     
     .list-ios {

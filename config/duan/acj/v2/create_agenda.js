@@ -127,7 +127,7 @@ function clean(datasource)
       version: 'V1.1',
       sender: 'xunfei',
       datetime: formatDateTime(new Date()),
-      describe: ['F', 'SS', 'S']
+      describe: ['F', 'AG', 'SS', 'S']
     };
   } else {
     // 确认后
@@ -157,8 +157,8 @@ function clean(datasource)
     
     // 创建日程指示
     output.content['1'] = {
-      processor: 'SS',
-      option: 'SS.C',
+      processor: 'AG',
+      option: 'AG.C',
       parameters: {
         ti: title,
         scd: {
@@ -178,8 +178,15 @@ function clean(datasource)
       output['content']['1']['parameters']['scd']['st'] = time;
       output['content']['1']['parameters']['scd']['et'] = time;
     }
-  
+
+    // 保存上下文指示
     output.content['2'] = {
+      processor: 'SS',
+      option: 'SS.C',
+      parameters: {}
+    };
+
+    output.content['3'] = {
       processor: 'S',
       option: 'S.P',
       parameters: {

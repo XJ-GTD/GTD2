@@ -169,7 +169,7 @@ function clean(datasource)
       version: 'V1.1',
       sender: 'xunfei',
       datetime: formatDateTime(new Date()),
-      describe: ['F', 'SS', 'S']
+      describe: ['F', 'AG', 'SS', 'S']
     };
   } else {
     // 确认后
@@ -238,6 +238,14 @@ function clean(datasource)
 
     // 删除日程指示
     output.content['1'] = {
+      processor: 'AG',
+      option: 'AG.D',
+      parameters: {
+      }
+    };
+
+    // 保存上下文指示
+    output.content['2'] = {
       processor: 'SS',
       option: 'SS.D',
       parameters: {
@@ -245,7 +253,7 @@ function clean(datasource)
     };
 
     // 播报
-    output.content['2'] = {
+    output.content['3'] = {
       processor: 'S',
       option: 'S.P',
       parameters: {
