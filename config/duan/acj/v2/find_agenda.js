@@ -352,7 +352,7 @@ function clean(datasource)
   	version: 'V1.1',
     sender: 'xunfei',
     datetime: formatDateTime(new Date()),
-    describe: ['F','S']
+    describe: ['F','SS','S']
   };
   
   output.original = text;
@@ -479,8 +479,15 @@ function clean(datasource)
   if (clientcontext && clientcontext !== undefined) {
   	output.context['client'] = clientcontext;
   }
-  
+
+  // 保存上下文指示
   output.content['1'] = {
+    processor: 'SS',
+    option: 'SS.F',
+    parameters: {}
+  };
+  
+  output.content['2'] = {
     processor: 'S',
     option: 'S.P',
     parameters: {

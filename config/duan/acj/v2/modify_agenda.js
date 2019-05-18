@@ -18,7 +18,7 @@ function shouldclean(datasource)
           for (var sei in semantics) {
             var semantic = semantics[sei];
 
-            if (semantic['intent'] === 'ChangeTime' || semantic['intent'] === 'ChangeMultiTime' || semantic['intent'] === 'AddContacts' || semantic['intent'] === 'MoveContacts') {
+            if (semantic['intent'] === 'ChangeTime' || semantic['intent'] === 'ChangeTimeWithFS' || semantic['intent'] === 'ChangeMultiTime' || semantic['intent'] === 'AddContacts' || semantic['intent'] === 'MoveContacts') {
               return true;
             }
           }
@@ -75,12 +75,14 @@ function clean(datasource)
   var etimechangeto = '';
   var title = '';
   var titlechangeto = '';
+  var motion = '';
   
   var semantics = data['intent']['semantic'];
   
   for (var sei in semantics) {
     var semantic = semantics[sei];
 
+    motion = semantic['intent'];
     var slots = semantic['slots'];
     
     for (var si in slots) {
@@ -237,13 +239,23 @@ function clean(datasource)
   
   // 返回消息头部
   if (!shouldEndSession) {
-    // 确认前
-    output.header = {
-      version: 'V1.1',
-      sender: 'xunfei',
-      datetime: formatDateTime(new Date()),
-      describe: ['F','AG','SS','S']
-    };
+    if (motion !== 'ChangeTimeWithFS') {
+      // 确认前
+      output.header = {
+        version: 'V1.1',
+        sender: 'xunfei',
+        datetime: formatDateTime(new Date()),
+        describe: ['F','AG','SS','S']
+      };
+    } else {
+      // 前序上下午确认前
+      output.header = {
+        version: 'V1.1',
+        sender: 'xunfei',
+        datetime: formatDateTime(new Date()),
+        describe: ['SC','AG','SS','S']
+      };
+    }
   } else {
     // 确认后
     output.header = {
@@ -259,16 +271,29 @@ function clean(datasource)
   output.content = {};
   
   if (!shouldEndSession) {
-    // 确认前
-    // 查询联系人指示
-    output.content['0'] = {
-      processor: 'F',
-      option: 'F.C',
-      parameters: {
-        scd: {},
-        fs: contacts
-      }
-    };
+    if (motion !== 'ChangeTimeWithFS') {
+      // 确认前
+      // 查询联系人指示
+      output.content['0'] = {
+        processor: 'F',
+        option: 'F.C',
+        parameters: {
+          scd: {},
+          fs: contacts
+        }
+      };
+    } else {
+      // 确认前
+      // 获取前序上下文
+      output.content['0'] = {
+        processor: 'SC',
+        option: 'SC.T',
+        parameters: {
+          scd: {},
+          fs: contacts
+        }
+      };
+    }
     
     // 查询修改日程指示
     output.content['1'] = {
