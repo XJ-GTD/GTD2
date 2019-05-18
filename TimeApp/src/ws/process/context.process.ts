@@ -42,14 +42,34 @@ export class ContextProcess implements MQProcess{
     //服务器要求上下文内放置语音上下文前process标志
     let prvprocessor = content.thisContext.context.client.processor;
     if (content.output && (content.output.prvprocessor ||content.output.prvprocessor =="")){
-      if (content.output.prvprocessor != "") contextRetMap.set(content.output.prvprocessor,prvprocessor );
+      if (content.output.prvprocessor != "") {
+        if (typeof content.output.prvprocessor == "string") {
+          contextRetMap.set(content.output.prvprocessor,prvprocessor );
+        } else {
+          // 使用过滤器对值进行转换
+          if (content.output.prvprocessor.name && content.output.prvprocessor.filter) {
+            let filter = eval("("+content.output.prvprocessor.filter+")");
+            contextRetMap.set(content.output.prvprocessor.name, filter(prvprocessor));
+          }
+        }
+      }
     } else {
       contextRetMap.set(WsDataConfig.PRVPROCESSOR,prvprocessor );
     }
 
     //服务器要求上下文内放置语音上下文日程
     if (content.output && (content.output.agendas ||content.output.agendas =="")){
-      if (content.output.agendas != "") contextRetMap.set(content.output.agendas, prv.scd);
+      if (content.output.agendas != "") {
+        if (typeof content.output.agendas == "string") {
+          contextRetMap.set(content.output.agendas, prv.scd);
+        } else {
+          // 使用过滤器对值进行转换
+          if (content.output.agendas.name && content.output.agendas.filter) {
+            let filter = eval("("+content.output.agendas.filter+")");
+            contextRetMap.set(content.output.agendas.name, filter(prv.scd));
+          }
+        }
+      }
     } else {
       contextRetMap.set(WsDataConfig.SCD, prv.scd);
     }

@@ -76,6 +76,7 @@ function clean(datasource)
   var title = '';
   var titlechangeto = '';
   var motion = '';
+  var whichtodo = '';
   
   var semantics = data['intent']['semantic'];
   
@@ -234,6 +235,11 @@ function clean(datasource)
       if (slot['name'] === 'whatchangeto') {
         titlechangeto = slot['normValue'];
       }
+
+      // 取出涉及日程标题
+      if (slot['name'] === 'whichtodo') {
+        whichtodo = slot['normValue'];
+      }
     }
   }
   
@@ -291,6 +297,12 @@ function clean(datasource)
         parameters: {
           scd: {},
           fs: contacts
+        },
+        output: {
+          agendas: {
+            name: 'scd',
+            filter: 'function(value) { let whichtodo = ' + (whichtodo? whichtodo : '0') + '; if (value && value.length > whichtodo) return value.slice(whichtodo-1, whichtodo); else return value; }'
+          }
         }
       };
     }
