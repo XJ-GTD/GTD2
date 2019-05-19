@@ -77,6 +77,7 @@ function clean(datasource)
   var titlechangeto = '';
   var motion = '';
   var whichtodo = '';
+  var lastwhichtodo = '';
   
   var semantics = data['intent']['semantic'];
   
@@ -236,9 +237,14 @@ function clean(datasource)
         titlechangeto = slot['normValue'];
       }
 
-      // 取出涉及日程标题
+      // 取出涉及上下文获取位置
       if (slot['name'] === 'whichtodo') {
         whichtodo = slot['normValue'];
+      }
+
+      // 取出涉及上下文获取位置
+      if (slot['name'] === 'lastwhichtodo') {
+        lastwhichtodo = slot['normValue'];
       }
     }
   }
@@ -301,7 +307,7 @@ function clean(datasource)
         output: {
           agendas: {
             name: 'scd',
-            filter: 'function(value) { let whichtodo = ' + (whichtodo? whichtodo : '0') + '; if (value && value.length > whichtodo) return value.slice(whichtodo-1, whichtodo); else return value; }'
+            filter: 'function(value) { let whichtodo = ' + (whichtodo? whichtodo : ('-' + (lastwhichtodo? lastwhichtodo : '0'))) + '; if (value && value.length >= (whichtodo > 0? whichtodo : (value.length + whichtodo + 1))) { whichtodo = (whichtodo > 0? whichtodo : (value.length + whichtodo + 1)); return value.slice(whichtodo-1, whichtodo); } else return value; }'
           }
         }
       };
