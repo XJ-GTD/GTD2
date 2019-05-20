@@ -12,6 +12,7 @@ import {GlService} from "../../pages/gl/gl.service";
 import {FsData, PageDcData} from "../../data.mapping";
 import {UtilService} from "../../service/util-service/util.service";
 import {WsDataConfig} from "../wsdata.config";
+import {BaseProcess} from "./base.process";
 
 /**
  * 查询联系人和日历
@@ -19,9 +20,10 @@ import {WsDataConfig} from "../wsdata.config";
  * create by wzy on 2018/11/30.
  */
 @Injectable()
-export class FindProcess implements MQProcess {
+export class FindProcess extends BaseProcess implements MQProcess {
   constructor(private sqliteExec: SqliteExec, private fsService: FsService,
               private glService: GlService, private util:UtilService) {
+    super();
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
@@ -51,22 +53,11 @@ export class FindProcess implements MQProcess {
     }
 
     //服务器要求上下文内放置日程查询结果
-    if (content.output && (content.output.agendas || content.output.agendas =="")){
-      // 名称设置为空字符串表示不需要往处理上下文中输出
-      if (content.output.agendas != "") contextRetMap.set(content.output.agendas,scd);
-    } else {
-      // 输出未设置表示向处理上下文使用默认名称输出
-      contextRetMap.set(WsDataConfig.SCD,scd);
-    }
+    this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, scd);
+
 
     //服务器要求上下文内放置日程的创建人员信息或查询条件用的人员信息
-    if (content.output && (content.output.contacts || content.output.contacts == "")){
-      // 名称设置为空字符串表示不需要往处理上下文中输出
-      if (content.output.contacts != "") contextRetMap.set(content.output.contacts,fs);
-    } else {
-      // 输出未设置表示向处理上下文使用默认名称输出
-      contextRetMap.set(WsDataConfig.FS,fs);
-    }
+    this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, fs);
 
     return contextRetMap;
   }

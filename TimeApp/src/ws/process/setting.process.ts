@@ -9,6 +9,7 @@ import {SettingPara} from "../model/settingpara";
 import {FdService} from "../../pages/fd/fd.service";
 import {FsData, PageY} from "../../data.mapping";
 import {WsDataConfig} from "../wsdata.config";
+import {BaseProcess} from "./base.process";
 
 /**
  * 设置
@@ -16,8 +17,9 @@ import {WsDataConfig} from "../wsdata.config";
  * create by wzy on 2018/11/30.
  */
 @Injectable()
-export class SettingProcess implements MQProcess {
+export class SettingProcess extends BaseProcess implements MQProcess {
   constructor(private ssService: SsService, private fdService: FdService) {
+    super();
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
@@ -52,11 +54,8 @@ export class SettingProcess implements MQProcess {
     if (content.option == SY.B) {
       //上下文内获取人员信息
       let fs :Array<FsData> = new Array<FsData>();
-      if (content.input && (content.input.contacts || content.input.contacts =="")){
-        if (content.input.contacts != "") fs = contextRetMap.get(content.input.contacts);
-      } else {
-        fs = contextRetMap.get(WsDataConfig.FS);
-      }
+      fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
+
 
       let fdData: FsData = new FsData();
       for (let btbl of fs) {

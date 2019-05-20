@@ -18,6 +18,7 @@ import {FdService} from "../pages/fd/fd.service";
 import {FsService} from "../pages/fs/fs.service";
 import {OptProcessFactory} from "./optprocess.factory";
 import {AgendasProcess} from "./process/agendas.process";
+import {BaseProcess} from "./process/base.process";
 
 
 /**
@@ -30,6 +31,7 @@ import {AgendasProcess} from "./process/agendas.process";
   providers: [WebsocketService,
     OptProcessFactory,
     ProcessFactory, DispatchService,
+    BaseProcess,
     CudscdProcess, RemindProcess,
     SpeechProcess, ThirdProcess,
     DefaultProcess, FindProcess,

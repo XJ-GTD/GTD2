@@ -12,6 +12,7 @@ import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import * as moment from 'moment';
 import {DataConfig} from "../../service/config/data.config";
 import {WsDataConfig} from "../wsdata.config";
+import {BaseProcess} from "./base.process";
 
 /**
  * 提醒设置
@@ -19,9 +20,10 @@ import {WsDataConfig} from "../wsdata.config";
  * create by zhangjy on 2019/03/14.
  */
 @Injectable()
-export class RemindProcess implements MQProcess {
+export class RemindProcess extends BaseProcess implements MQProcess {
   constructor(private utitl: UtilService,
               private sqliteExec: SqliteExec) {
+    super();
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
@@ -38,11 +40,8 @@ export class RemindProcess implements MQProcess {
 
     //上下文内获取日程查询结果
     let scd:Array<CTbl> = new Array<CTbl>();
-    if (content.input && (content.input.agendas || content.input.agendas =="")){
-      if (content.input.agendas != "") scd = contextRetMap.get(content.input.agendas);
-    } else {
-      scd = contextRetMap.get(WsDataConfig.SCD);
-    }
+    scd = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,scd);
+
 
     //处理区分
     //闹铃设置无日程

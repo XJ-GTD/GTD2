@@ -11,6 +11,7 @@ import {FsData, RcInParam, ScdData} from "../../data.mapping";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {OptProcessFactory} from "../optprocess.factory";
 import {WsDataConfig} from "../wsdata.config";
+import {BaseProcess} from "./base.process";
 
 /**
  * 确认操作
@@ -18,9 +19,10 @@ import {WsDataConfig} from "../wsdata.config";
  * create by wzy on 2018/11/30.
  */
 @Injectable()
-export class OptionProcess implements MQProcess{
+export class OptionProcess extends BaseProcess implements MQProcess{
   constructor(private emitService:EmitService,private busiService:PgBusiService,
               private fsServer:FsService,private factoryOpt: OptProcessFactory,) {
+    super();
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
@@ -34,35 +36,23 @@ export class OptionProcess implements MQProcess{
 
     //获取上下文前动作信息
     let prvOpt:string =  "";
-    if (content.input && (content.input.prvoption ||content.input.prvoption =="")){
-      if (content.input.prvoption != "") prvOpt = contextRetMap.get(content.input.prvoption );
-    } else {
-      prvOpt = contextRetMap.get(WsDataConfig.PRVOPTION);
-    }
+    prvOpt = this.input(content,contextRetMap,"prvoption",WsDataConfig.PRVOPTION,prvOpt);
+
 
     //获取上下文前动作信息
     let prvprocessor:string =  "";
-    if (content.input && (content.input.prvprocessor ||content.input.prvprocessor =="")){
-      if (content.input.prvprocessor != "") prvprocessor = contextRetMap.get(content.input.prvprocessor );
-    } else {
-      prvprocessor = contextRetMap.get(WsDataConfig.PRVPROCESSOR);
-    }
+    prvprocessor = this.input(content,contextRetMap,"prvprocessor",WsDataConfig.PRVPROCESSOR,prvprocessor);
+
 
     //上下文内获取日程查询结果
     let scd:Array<CTbl> = new Array<CTbl>();
-    if (content.input && (content.input.agendas || content.input.agendas == "")){
-      if (content.input.agendas != "") scd = contextRetMap.get(content.input.agendas);
-    } else {
-      scd = contextRetMap.get(WsDataConfig.SCD);
-    }
+    scd = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,scd);
+
 
     //上下文内获取日程人员信息
     let fs :Array<FsData> = new Array<FsData>();
-    if (content.input && (content.input.contacts || content.input.contacts == "")){
-      if (content.input.contacts != "") fs = contextRetMap.get(content.input.contacts);
-    } else {
-      fs = contextRetMap.get(WsDataConfig.FS);
-    }
+    fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
+
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){

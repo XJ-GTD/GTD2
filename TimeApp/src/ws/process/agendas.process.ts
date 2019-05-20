@@ -10,6 +10,7 @@ import {AG, O, SS} from "../model/ws.enum";
 import {FsData, RcInParam} from "../../data.mapping";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {WsDataConfig} from "../wsdata.config";
+import {BaseProcess} from "./base.process";
 
 /**
  * 日程处理
@@ -17,8 +18,9 @@ import {WsDataConfig} from "../wsdata.config";
  * create by zhangjy on 2019/03/28.
  */
 @Injectable()
-export class AgendasProcess implements MQProcess,OptProcess{
+export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
   constructor(private busiService:PgBusiService) {
+    super();
   }
 
   async do(content: WsContent, contextRetMap: Map<string,any>) {
@@ -28,26 +30,15 @@ export class AgendasProcess implements MQProcess,OptProcess{
     //let cudPara:CudscdPara = content.parameters;
     let prvOpt:string =  "";
     //获取上下文前动作信息
-    if (content.input && (content.input.prvoption ||content.input.prvoption =="")){
-      if (content.input.prvoption != "") prvOpt = contextRetMap.get(content.input.prvoption );
-    } else {
-      prvOpt = contextRetMap.get(WsDataConfig.PRVOPTION);
-    }
+    prvOpt = this.input(content,contextRetMap,"prvoption",WsDataConfig.PRVOPTION,prvOpt);
+
     //上下文内获取日程查询结果
     let scd:Array<CTbl> = new Array<CTbl>();
-    if (content.input && (content.input.agendas || content.input.agendas == "")){
-      if (content.input.agendas != "") scd = contextRetMap.get(content.input.agendas);
-    } else {
-      scd = contextRetMap.get(WsDataConfig.SCD);
-    }
+    scd = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,scd);
 
     //上下文内获取日程人员信息
     let fs :Array<FsData> = new Array<FsData>();
-    if (content.input && (content.input.contacts || content.input.contacts == "")){
-      if (content.input.contacts != "") fs = contextRetMap.get(content.input.contacts);
-    } else {
-      fs = contextRetMap.get(WsDataConfig.FS);
-    }
+    fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){
@@ -99,19 +90,11 @@ export class AgendasProcess implements MQProcess,OptProcess{
 
     //上下文内获取日程查询结果
     let scd:Array<CTbl> = new Array<CTbl>();
-    if (content.input && (content.input.agendas || content.input.agendas =="")){
-      if (content.input.agendas != "") scd = contextRetMap.get(content.input.agendas);
-    } else {
-      scd = contextRetMap.get(WsDataConfig.SCD);
-    }
+    scd = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,scd);
 
     //上下文内获取查询条件用日程人员或创建的日程人员
     let fs :Array<FsData> = new Array<FsData>();
-    if (content.input && (content.input.contacts || content.input.contacts =="")){
-      if (content.input.contacts != "") fs = contextRetMap.get(content.input.contacts);
-    } else {
-      fs = contextRetMap.get(WsDataConfig.FS);
-    }
+    fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){
@@ -204,17 +187,10 @@ export class AgendasProcess implements MQProcess,OptProcess{
 
 
     //上下文内放置创建的或修改的日程更新内容
-    if (content.output && (content.output.agendas || content.output.agendas =="")){
-      if (content.output.agendas != "") contextRetMap.set(content.output.agendas,prv.scd);
-    } else {
-      contextRetMap.set(WsDataConfig.SCD, prv.scd);
-    }
+    this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, prv.scd);
+
     //上下文内放置创建的或修改的日程联系人
-    if (content.output && (content.output.contacts || content.output.contacts =="")){
-      if (content.output.contacts != "") contextRetMap.set(content.output.contacts,prv.fs);
-    } else {
-      contextRetMap.set(WsDataConfig.FS, prv.fs);
-    }
+    this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, prv.fs);
 
     return contextRetMap;
   }

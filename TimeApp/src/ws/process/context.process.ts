@@ -6,6 +6,7 @@ import {Injectable} from "@angular/core";
 import {CudscdPara} from "../model/cudscd.para";
 import {ProcesRs} from "../model/proces.rs";
 import {WsDataConfig} from "../wsdata.config";
+import {BaseProcess} from "./base.process";
 
 /**
  * 日程修改（获取上下文中） SC
@@ -13,28 +14,11 @@ import {WsDataConfig} from "../wsdata.config";
  * create by wzy on 2018/11/30.
  */
 @Injectable()
-export class ContextProcess implements MQProcess{
+export class ContextProcess extends BaseProcess implements MQProcess{
   constructor() {
+    super();
   }
 
-  async output(content: WsContent, contextRetMap: Map<string, any>, field: string, default: string, value: any) {
-    if (content.output && (content.output[field] || content.output[field] == "")){
-      if (content.output[field] != "") {
-        if (typeof content.output[field] == "string") {
-          contextRetMap.set(content.output[field], value);
-        } else {
-          // 使用过滤器对值进行转换
-          if (content.output[field].name && content.output[field].filter) {
-            let filter = eval("(" + content.output[field].filter + ")");
-            contextRetMap.set(content.output[field].name, filter(value));
-          }
-        }
-      }
-    } else {
-      contextRetMap.set(default, value);
-    }
-  }
-  
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
 
 
@@ -51,17 +35,17 @@ export class ContextProcess implements MQProcess{
 
     //服务器要求上下文内放置语音上下文前动作标志
     let prvOpt = content.thisContext.context.client.option;
-    output(content, contextRetMap, 'prvoption', WsDataConfig.PRVOPTION, prvOpt);
+    this.output(content, contextRetMap, 'prvoption', WsDataConfig.PRVOPTION, prvOpt);
 
     //服务器要求上下文内放置语音上下文前process标志
     let prvprocessor = content.thisContext.context.client.processor;
-    output(content, contextRetMap, 'prvprocessor', WsDataConfig.PRVPROCESSOR, prvprocessor);
+    this.output(content, contextRetMap, 'prvprocessor', WsDataConfig.PRVPROCESSOR, prvprocessor);
 
     //服务器要求上下文内放置语音上下文日程
-    output(content, contextRetMap, 'agendas', WsDataConfig.SCD, prv.scd);
+    this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, prv.scd);
 
     //服务器要求上下文内放置日程人员信息
-    output(content, contextRetMap, 'contacts', WsDataConfig.FS, prv.fs);
+    this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, prv.fs);
 
     return contextRetMap
   }

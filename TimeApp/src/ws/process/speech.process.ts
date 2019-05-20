@@ -14,6 +14,7 @@ import {FsData} from "../../data.mapping";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {UserConfig} from "../../service/config/user.config";
 import {WsDataConfig} from "../wsdata.config";
+import {BaseProcess} from "./base.process";
 
 /**
  * 播报类型处理
@@ -21,11 +22,12 @@ import {WsDataConfig} from "../wsdata.config";
  * create by wzy on 2018/11/30.
  */
 @Injectable()
-export class SpeechProcess implements MQProcess {
+export class SpeechProcess extends BaseProcess implements MQProcess {
 
   constructor(private assistant: AssistantService,
               private sqliteExec: SqliteExec,
               private utilService: UtilService, private emitService: EmitService) {
+    super();
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
@@ -56,32 +58,16 @@ export class SpeechProcess implements MQProcess {
 
 
         //获取上下文内日程创建结果
-        if (content.input && (content.input.agendas || content.input.agendas == "")) {
-          if (content.input.agendas != "") agendas = contextRetMap.get(content.input.agendas);
-        } else {
-          agendas = contextRetMap.get(WsDataConfig.SCD);
-        }
+        agendas = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,agendas);
 
         //获取上下文内日程查询结果
-        if (content.input && (content.input.showagendas || content.input.showagendas == "")) {
-          if (content.input.showagendas != "") showagendas = contextRetMap.get(content.input.showagendas);
-        } else {
-          showagendas = contextRetMap.get(WsDataConfig.SCD);
-        }
+        showagendas = this.input(content,contextRetMap,"showagendas",WsDataConfig.SCD,showagendas);
 
         //获取上下文内人员信息
-        if (content.input && (content.input.contacts || content.input.contacts == "")) {
-          if (content.input.contacts != "") contacts = contextRetMap.get(content.input.contacts);
-        } else {
-          contacts = contextRetMap.get(WsDataConfig.FS);
-        }
+        contacts = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,contacts);
 
         //获取上下文前动作信息
-        if (content.input && (content.input.prvoption ||content.input.prvoption =="")){
-          if (content.input.prvoption != "") prvOpt = contextRetMap.get(content.input.prvoption );
-        } else {
-          prvOpt = contextRetMap.get(WsDataConfig.PRVOPTION);
-        }
+        prvOpt = this.input(content,contextRetMap,"prvoption",WsDataConfig.PRVOPTION,prvOpt);
 
         if (content.input && (content.input.type || content.input.type == "")) {
           if (content.input.type == "") {

@@ -9,6 +9,7 @@ import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {SS} from "../model/ws.enum";
 import {FsData} from "../../data.mapping";
 import {WsDataConfig} from "../wsdata.config";
+import {BaseProcess} from "./base.process";
 
 /**
  * 日历修改处理
@@ -16,8 +17,9 @@ import {WsDataConfig} from "../wsdata.config";
  * create by zhangjy on 2019/03/28.
  */
 @Injectable()
-export class CudscdProcess implements MQProcess{
+export class CudscdProcess extends BaseProcess implements MQProcess{
   constructor() {
+    super();
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
@@ -27,19 +29,13 @@ export class CudscdProcess implements MQProcess{
 
     //上下文内获取日程查询结果
     let scd:Array<CTbl> = new Array<CTbl>();
-    if (content.input && (content.input.agendas || content.input.agendas =="")){
-      if (content.input.agendas != "") scd = contextRetMap.get(content.input.agendas);
-    } else {
-      scd = contextRetMap.get(WsDataConfig.SCD);
-    }
+    scd = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,scd);
+
 
     //上下文内获取查询条件用日程人员或创建的日程人员
     let fs :Array<FsData> = new Array<FsData>();
-    if (content.input && (content.input.contacts || content.input.contacts =="")){
-      if (content.input.contacts != "") fs = contextRetMap.get(content.input.contacts);
-    } else {
-      fs = contextRetMap.get(WsDataConfig.FS);
-    }
+    fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
+
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){
@@ -60,17 +56,11 @@ export class CudscdProcess implements MQProcess{
     DataConfig.putWsProcessor(processor);
 
     //上下文内放置创建的或修改的日程
-    if (content.output && (content.output.agendas || content.output.agendas =="")){
-      if (content.output.agendas != "") contextRetMap.set(content.output.agendas,prv.scd);
-    } else {
-      contextRetMap.set(WsDataConfig.SCD, prv.scd);
-    }
+    this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, prv.scd);
+
     //上下文内放置创建的或修改的日程联系人
-    if (content.output && (content.output.contacts || content.output.contacts =="")){
-      if (content.output.contacts != "") contextRetMap.set(content.output.contacts,prv.fs);
-    } else {
-      contextRetMap.set(WsDataConfig.FS, prv.fs);
-    }
+    this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, prv.fs);
+
 
     return contextRetMap;
   }
