@@ -17,6 +17,24 @@ export class ContextProcess implements MQProcess{
   constructor() {
   }
 
+  async output(content: WsContent, contextRetMap: Map<string, any>, field: string, default: string, value: any) {
+    if (content.output && (content.output[field] || content.output[field] == "")){
+      if (content.output[field] != "") {
+        if (typeof content.output[field] == "string") {
+          contextRetMap.set(content.output[field], value);
+        } else {
+          // 使用过滤器对值进行转换
+          if (content.output[field].name && content.output[field].filter) {
+            let filter = eval("(" + content.output[field].filter + ")");
+            contextRetMap.set(content.output[field].name, filter(value));
+          }
+        }
+      }
+    } else {
+      contextRetMap.set(default, value);
+    }
+  }
+  
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
 
 
@@ -33,55 +51,17 @@ export class ContextProcess implements MQProcess{
 
     //服务器要求上下文内放置语音上下文前动作标志
     let prvOpt = content.thisContext.context.client.option;
-    if (content.output && (content.output.prvoption ||content.output.prvoption =="")){
-      if (content.output.prvoption != "") contextRetMap.set(content.output.prvoption,prvOpt );
-    } else {
-      contextRetMap.set(WsDataConfig.PRVOPTION,prvOpt );
-    }
+    output(content, contextRetMap, 'prvoption', WsDataConfig.PRVOPTION, prvOpt);
 
     //服务器要求上下文内放置语音上下文前process标志
     let prvprocessor = content.thisContext.context.client.processor;
-    if (content.output && (content.output.prvprocessor ||content.output.prvprocessor =="")){
-      if (content.output.prvprocessor != "") {
-        if (typeof content.output.prvprocessor == "string") {
-          contextRetMap.set(content.output.prvprocessor,prvprocessor );
-        } else {
-          // 使用过滤器对值进行转换
-          if (content.output.prvprocessor.name && content.output.prvprocessor.filter) {
-            let filter = eval("("+content.output.prvprocessor.filter+")");
-            contextRetMap.set(content.output.prvprocessor.name, filter(prvprocessor));
-          }
-        }
-      }
-    } else {
-      contextRetMap.set(WsDataConfig.PRVPROCESSOR,prvprocessor );
-    }
+    output(content, contextRetMap, 'prvprocessor', WsDataConfig.PRVPROCESSOR, prvprocessor);
 
     //服务器要求上下文内放置语音上下文日程
-    if (content.output && (content.output.agendas ||content.output.agendas =="")){
-      if (content.output.agendas != "") {
-        if (typeof content.output.agendas == "string") {
-          contextRetMap.set(content.output.agendas, prv.scd);
-        } else {
-          // 使用过滤器对值进行转换
-          if (content.output.agendas.name && content.output.agendas.filter) {
-            let filter = eval("("+content.output.agendas.filter+")");
-            contextRetMap.set(content.output.agendas.name, filter(prv.scd));
-          }
-        }
-      }
-    } else {
-      contextRetMap.set(WsDataConfig.SCD, prv.scd);
-    }
+    output(content, contextRetMap, 'agendas', WsDataConfig.SCD, prv.scd);
 
     //服务器要求上下文内放置日程人员信息
-    if (content.output && (content.output.contacts || content.output.contacts =="")){
-      // 名称设置为空字符串表示不需要往处理上下文中输出
-      if (content.output.contacts != "") contextRetMap.set(content.output.contacts, prv.fs);
-    } else {
-      // 输出未设置表示向处理上下文使用默认名称输出
-      contextRetMap.set(WsDataConfig.FS, prv.fs);
-    }
+    output(content, contextRetMap, 'contacts', WsDataConfig.FS, prv.fs);
 
     return contextRetMap
   }
