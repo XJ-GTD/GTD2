@@ -124,6 +124,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         c.sd = cudPara.d == null?c.sd:cudPara.d;
         c.sn = cudPara.ti == null?c.sn:cudPara.ti;
         c.st = cudPara.t == null?c.st:cudPara.t;
+        c.fss = fs;
       }
     }
 
@@ -147,6 +148,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
           c.sd = (cudPara.d == null || cudPara.d == '')? c.sd:cudPara.d;
           c.sn = (cudPara.ti == null || cudPara.ti == '')?c.sn:cudPara.ti;
           c.st = (cudPara.t == null || cudPara.t == '')?c.st:cudPara.t;
+          c.fss = fs;
         }
       }
       // 查询有1个被共享日程
@@ -169,7 +171,11 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
       // 查询没有日程
       if (prv.scd.length == 0){}
       // 查询有1个日程
-      if (prv.scd.length == 1){}
+      if (prv.scd.length == 1){
+        for (let c of prv.scd) {
+          c.fss = fs;
+        }
+      }
       // 查询有多个日程
       if (prv.scd.length > 1){}
     }

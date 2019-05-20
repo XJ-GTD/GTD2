@@ -189,8 +189,10 @@ export class FindProcess extends BaseProcess implements MQProcess {
   private async findScdFss(si: string): Promise<Array<FsData>> {
 
     let res: Array<FsData> = new Array<FsData>();
-    let sql = "select b.pwi ,b.ran ,b.ranpy  ,b.hiu ,b.rn ,b.rnpy ,b.rc   ,b.rel ,b.ui,b.wtt " +
-      " from gtd_d d inner join gtd_b b on d.si = '"+ si +"' and d.ai = b.pwi  "
+    let sql = "select b.pwi ,b.ran ,b.ranpy  ,b.hiu ,b.rn ,b.rnpy ,b.rc   ," +
+      " b.rel ,b.ui,b.wtt,bh.hiu bhiu " +
+      " from gtd_d d inner join gtd_b b on d.si = '"+ si +"' and d.ai = b.pwi" +
+      " left join gtd_bh bh on b.pwi = bh.pwi  "
     let fss :Array<BTbl> = new Array<BTbl>();
     fss = await this.sqliteExec.getExtList<BTbl>(sql);
     Object.assign(res,fss);
