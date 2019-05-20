@@ -2,7 +2,7 @@ import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
-import {RestFulConfig} from "../../service/config/restful.config";
+import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import * as moment from "moment";
 
@@ -60,13 +60,13 @@ import * as moment from "moment";
             <span class="app-profiles">版本</span> 
           </ion-row>
           <ion-row justify-content-center>
-            <span class="app-profiles">mwxing-client-v{{client.version}}</span> 
-          </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-profiles">mwxing-server-v{{server.version}}</span> 
+            <span class="app-profiles">{{client.mainversion}}.{{client.version}}</span> 
           </ion-row>
           <ion-row justify-content-center>
             <span class="app-profiles">{{server.datacenter}}</span> 
+          </ion-row>
+          <ion-row justify-content-center>
+            <span class="app-profiles">v{{server.version}}</span> 
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -91,7 +91,7 @@ import * as moment from "moment";
 })
 export class AtPage {
 
-  client:any = {version: '1'};
+  client:any = {mainversion: 'v1', version: '1'};
   server:any = {version: '1', datacenter: ''};
   
   constructor(public navCtrl: NavController,
@@ -99,7 +99,10 @@ export class AtPage {
   }
 
   ionViewDidLoad() {
+    let restfulHeader = new RestFulHeader();
+    this.client.mainversion = restfulHeader.pv;
     this.client.version = UserConfig.getClientVersion();
+
     if (RestFulConfig.INIT_DATA_URL.indexOf('tag=mwxing') > 0) this.server.datacenter += '开发';
     if (RestFulConfig.INIT_DATA_URL.indexOf('debug=true') > 0) this.server.datacenter += '内部';
     if (RestFulConfig.INIT_DATA_URL.indexOf('?') < 0) this.server.datacenter += '公测';
