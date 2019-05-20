@@ -60,7 +60,7 @@ import * as moment from "moment";
             <span class="app-profiles">版本</span> 
           </ion-row>
           <ion-row justify-content-center>
-            <span class="app-profiles">{{client.mainversion}}-{{client.version}}</span> 
+            <span class="app-profiles">{{client.mainversion}}.{{client.version}}</span> 
           </ion-row>
           <ion-row justify-content-center>
             <span class="app-profiles">{{server.datacenter}}</span> 
@@ -95,11 +95,12 @@ export class AtPage {
   server:any = {version: '1', datacenter: ''};
   
   constructor(public navCtrl: NavController,
-              private sqlite:SqliteExec) {
+              private sqlite:SqliteExec,
+              private restfulHeader:RestFulHeader) {
   }
 
   ionViewDidLoad() {
-    this.client.mainversion = RestFulHeader.pv;
+    this.client.mainversion = this.restfulHeader.pv;
     this.client.version = UserConfig.getClientVersion();
 
     if (RestFulConfig.INIT_DATA_URL.indexOf('tag=mwxing') > 0) this.server.datacenter += '开发';
