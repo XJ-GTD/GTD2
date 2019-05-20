@@ -15,6 +15,10 @@ export class WsDataConfig {
   //前动作process本地
   public static PROCESSOR4SPEECH:string = "processor4Speech";
 
+  public static BRANCHCODE:string = "branchcode";
+
+  public static BRANCHTYPE:string = "branchtype";
+
 
   /*========== 语音类型 =========*/
   public static TYPE_NONE:string = "NONE";
