@@ -36,12 +36,4 @@ export class DefaultProcess implements MQProcess,OptProcess{
     return contextRetMap
   }
 
-  async go(content: WsContent,processRs:ProcesRs){
-      console.log("测试消息content******************************"+ JSON.stringify(content));
-      console.log("测试消息processRs******************************"+ JSON.stringify(content));
-      console.log("测试消息processRs******************************"+ JSON.stringify(content));
-      processRs.sucess = true;
-      return processRs;
-  }
-
 }

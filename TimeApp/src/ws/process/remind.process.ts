@@ -13,6 +13,8 @@ import * as moment from 'moment';
 import {DataConfig} from "../../service/config/data.config";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
+import {ScdAiData} from "../../components/ai/answer/ai.service";
+import {ScdData} from "../../data.mapping";
 
 /**
  * 提醒设置
@@ -39,7 +41,7 @@ export class RemindProcess extends BaseProcess implements MQProcess {
     let rdData: RemindPara = content.parameters;
 
     //上下文内获取日程查询结果
-    let scd:Array<CTbl> = new Array<CTbl>();
+    let scd:Array<ScdData> = new Array<ScdData>();
     scd = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,scd);
 
 
@@ -60,33 +62,6 @@ export class RemindProcess extends BaseProcess implements MQProcess {
     return contextRetMap
   }
 
-  async  go(content: WsContent, processRs: ProcesRs){
-      //处理所需要参数
-      let rdData: RemindPara = content.parameters;
-      processRs.option4Speech = content.option;
-
-      //处理区分
-      //闹铃设置无日程
-      if (content.option == R.N) {
-        await this.saveETbl1(rdData);
-
-      } else if (content.option == R.C) {
-        if (processRs == null) return;
-        for (let scd of processRs.scd) {
-          await this.saveETbl2(rdData, scd);
-        }
-      }
-
-      // //内部调用process
-      // let inner: WsContent = new WsContent();
-      // inner.option = S.P;
-      // inner.parameters = {
-      //   //替换提醒语音Type
-      //   t: DataConfig.GG
-      // }
-      return processRs;
-  }
-
   //保存提醒表无日程管理
   private async saveETbl1(rdData: RemindPara) {
     let etbl: ETbl = new ETbl();
@@ -99,13 +74,13 @@ export class RemindProcess extends BaseProcess implements MQProcess {
   }
 
   //保存提醒表管理日程
-  private async saveETbl2(rdData: RemindPara, ctbl: CTbl) {
+  private async saveETbl2(rdData: RemindPara, c: ScdData) {
 
     //需要删除之前的提醒数据
     let etbl: ETbl = new ETbl();
     etbl.wi = this.utitl.getUuid();
-    etbl.si = ctbl.si;
-    etbl.st =  ctbl.sn;
+    etbl.si = c.si;
+    etbl.st =  c.sn;
     etbl.wd = rdData.d;
     etbl.wt = rdData.t;
 
@@ -113,7 +88,7 @@ export class RemindProcess extends BaseProcess implements MQProcess {
 
     //提前延后时间设置
     if (rdData.s != null) {
-      let tmp = moment(ctbl.sd + "T" + ctbl.st).add(parseInt(rdData.s), 'h');
+      let tmp = moment(c.sd + "T" + c.st).add(parseInt(rdData.s), 'h');
       etbl.wd = tmp.format("YYYY/MM/DD");
       etbl.wt = tmp.format("HH:mm")
     }

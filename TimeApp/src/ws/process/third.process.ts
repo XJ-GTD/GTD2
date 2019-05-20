@@ -25,14 +25,4 @@ export class ThirdProcess implements MQProcess {
     return contextRetMap
   }
 
-  go(content: WsContent, procesRs: ProcesRs): Promise<ProcesRs> {
-    return new Promise<ProcesRs>(resolve => {
-
-      //处理区分
-      content.option
-      //处理所需要参数
-      content.parameters
-    })
-  }
-
 }

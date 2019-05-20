@@ -45,43 +45,8 @@ export class ReceiveProcess implements MQProcess {
 
       this.notificationsService.newSms(scd);
     }
-    
+
     return contextRetMap
-  }
-
-
-  async go(content: WsContent, processRs: ProcesRs) {
-    //处理区分
-    if (content.option == SH.D) {
-      //处理所需要参数
-      let scudPara: ScudscdPara = content.parameters;
-      ///let bs :ScdData = await this.busiService.get("",scudPara.id);
-      //if (bs && bs.si) {
-      await this.busiService.pullDel(scudPara.id);
-      //}
-    }
-
-    if (content.option == SH.C || content.option == SH.U) {
-      //处理所需要参数
-      let scudPara: ScudscdPara = content.parameters;
-      processRs.option4Speech = content.option;
-
-      let scd:ScdData = new ScdData();
-      scd = await this.busiService.pullAgd(scudPara.id);
-
-      // TODO 需要处理消息提醒接收日程
-      /*scd.si = agd.ai;
-      scd.sn = agd.at;
-      scd.st = agd.st;
-      scd.sd = agd.adt;
-      scd.fs.ran = agd.fc;*/
-
-      this.notificationsService.newSms(scd);
-    }
-    return processRs;
-    //处理结果
-    //emit
-    //this.emitService.emitDatas(processRs);
   }
 
 }

@@ -45,7 +45,7 @@ export class OptionProcess extends BaseProcess implements MQProcess{
 
 
     //上下文内获取日程查询结果
-    let scd:Array<CTbl> = new Array<CTbl>();
+    let scd:Array<ScdData> = new Array<ScdData>();
     scd = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,scd);
 
 
@@ -78,53 +78,6 @@ export class OptionProcess extends BaseProcess implements MQProcess{
 
 
     return contextRetMap;
-  }
-
-  async go(content: WsContent,processRs:ProcesRs) {
-      //处理区分
-      let opt = content.option;
-      //处理所需要参数追问时才需要参数，追问暂时不做
-      //let cudPara:CudscdPara = content.parameters;
-      let prvOpt:string =  content.thisContext.context.client.option;
-
-      if (opt == O.O){
-        //确认操作
-        for (let c of processRs.scd){
-          //tx rt
-          let rcIn:RcInParam = new RcInParam();
-          rcIn.sn = c.sn;
-          rcIn.st = c.st;
-          rcIn.sd = c.sd;
-          if(c.si && c.si != null && c.si != ''){
-            rcIn.si = c.si;
-          }
-
-          for (let f of  processRs.fs){
-            rcIn.fss.push(f);
-          }
-
-          if (prvOpt == SS.C){
-              await this.busiService.saveOrUpdate(rcIn);
-          }else if (prvOpt == SS.U){
-            await this.busiService.saveOrUpdate(rcIn);
-          }else{
-            await this.busiService.YuYinDelRc( rcIn.si, rcIn.sd);
-          }
-        }
-        //取消操作 清除上下文
-        DataConfig.clearWsOpts();
-        DataConfig.clearWsContext();
-
-      }else if(opt == O.S){
-        //追问操作
-
-      }else{
-
-      }
-
-      processRs.option4Speech = content.option;
-      processRs.sucess = true;
-      return processRs;
   }
 
 }
