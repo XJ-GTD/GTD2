@@ -124,6 +124,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         c.sd = cudPara.d == null?c.sd:cudPara.d;
         c.sn = cudPara.ti == null?c.sn:cudPara.ti;
         c.st = cudPara.t == null?c.st:cudPara.t;
+        //显示本次创建的人
         c.fss = fs;
       }
     }
@@ -148,6 +149,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
           c.sd = (cudPara.d == null || cudPara.d == '')? c.sd:cudPara.d;
           c.sn = (cudPara.ti == null || cudPara.ti == '')?c.sn:cudPara.ti;
           c.st = (cudPara.t == null || cudPara.t == '')?c.st:cudPara.t;
+          //显示本次添加的人
           c.fss = fs;
         }
       }
