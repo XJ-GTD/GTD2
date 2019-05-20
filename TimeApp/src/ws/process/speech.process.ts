@@ -15,6 +15,7 @@ import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {UserConfig} from "../../service/config/user.config";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * 播报类型处理
@@ -186,7 +187,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
         scdEm.scdTip = sutbl.sut;
 
 
-        for (let btbl of contacts){
+        for (let btbl of showagendas[0].fss){
           let fri:FriendEmData = new FriendEmData();
           fri.id = btbl.pwi;
           fri.p = btbl.ranpy;
