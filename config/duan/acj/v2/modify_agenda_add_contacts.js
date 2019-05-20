@@ -18,7 +18,7 @@ function shouldclean(datasource)
           for (var sei in semantics) {
             var semantic = semantics[sei];
 
-            if (semantic['intent'] === 'ChangeTime' || semantic['intent'] === 'ChangeTimeWithFS' || semantic['intent'] === 'ChangeMultiTime' || semantic['intent'] === 'AddContacts' || semantic['intent'] === 'MoveContacts') {
+            if (semantic['intent'] === 'AddContactsWithFS') {
               return true;
             }
           }
@@ -251,31 +251,13 @@ function clean(datasource)
   
   // 返回消息头部
   if (!shouldEndSession) {
-    if (motion === 'AddContactsWithFS') {
       // 前序上下文确认前
       output.header = {
         version: 'V1.1',
         sender: 'xunfei',
         datetime: formatDateTime(new Date()),
-        describe: ['F','SC','AG','SS','S']
+        describe: ['SC','F','AG','SS','S']
       };
-    } else if (motion === 'ChangeTimeWithFS') {
-      // 前序上下文确认前
-      output.header = {
-        version: 'V1.1',
-        sender: 'xunfei',
-        datetime: formatDateTime(new Date()),
-        describe: ['SC','AG','SS','S']
-      };
-    } else {
-      // 确认前
-      output.header = {
-        version: 'V1.1',
-        sender: 'xunfei',
-        datetime: formatDateTime(new Date()),
-        describe: ['F','AG','SS','S']
-      };
-    }
   } else {
     // 确认后
     output.header = {
@@ -291,39 +273,35 @@ function clean(datasource)
   output.content = {};
   
   if (!shouldEndSession) {
-    if (motion === 'AddContactsWithFS') {
-    } else if (motion === 'ChangeTimeWithFS') {
-      // 确认前
-      // 获取前序上下文
-      output.content['0'] = {
-        processor: 'SC',
-        option: 'SC.T',
-        parameters: {
-          scd: {},
-          fs: contacts
-        },
-        output: {
-          agendas: {
-            name: 'scd',
-            filter: 'function(value) { let whichtodo = ' + (whichtodo? whichtodo : ('-' + (lastwhichtodo? lastwhichtodo : '0'))) + '; if (value && value.length >= (whichtodo > 0? whichtodo : (value.length + whichtodo + 1))) { whichtodo = (whichtodo > 0? whichtodo : (value.length + whichtodo + 1)); return value.slice(whichtodo-1, whichtodo); } else return value; }'
-          }
+    // 确认前
+    // 获取前序上下文
+    output.content['0'] = {
+      processor: 'SC',
+      option: 'SC.T',
+      parameters: {},
+      output: {
+        agendas: {
+          name: 'scd',
+          filter: 'function(value) { let whichtodo = ' + (whichtodo? whichtodo : ('-' + (lastwhichtodo? lastwhichtodo : '0'))) + '; if (value && value.length >= (whichtodo > 0? whichtodo : (value.length + whichtodo + 1))) { whichtodo = (whichtodo > 0? whichtodo : (value.length + whichtodo + 1)); return value.slice(whichtodo-1, whichtodo); } else return value; }'
         }
-      };
-    } else {
-      // 确认前
-      // 查询联系人指示
-      output.content['0'] = {
-        processor: 'F',
-        option: 'F.C',
-        parameters: {
-          scd: {},
-          fs: contacts
-        }
-      };
-    }
+      }
+    };
+
+    // 查询联系人指示
+    output.content['1'] = {
+      processor: 'F',
+      option: 'F.C',
+      parameters: {
+        scd: {},
+        fs: contacts
+      },
+      output: {
+        agendas: ""
+      }
+    };
     
     // 查询修改日程指示
-    output.content['1'] = {
+    output.content['2'] = {
       processor: 'AG',
       option: 'AG.U',
       parameters: {
@@ -331,122 +309,15 @@ function clean(datasource)
       }
     };
     
-    if (datechangeto && datechangeto !== '') {
-      
-      output['content']['1']['parameters']['d'] = datechangeto;
-      output['content']['1']['parameters']['scd']['ds'] = datechangeto;
-      output['content']['1']['parameters']['scd']['de'] = datechangeto;
-    }
-    
-    if (date && date !== '') {
-
-      output['content']['0']['parameters']['scd']['ds'] = date;
-      output['content']['0']['parameters']['scd']['de'] = date;
-    }
-    
-    if (sdatechangeto && sdatechangeto !== '') {
-      
-      output['content']['1']['parameters']['d'] = sdatechangeto;
-      output['content']['1']['parameters']['scd']['ds'] = sdatechangeto;
-    }
-    
-    if (sdate && sdate !== '') {
-
-      output['content']['0']['parameters']['scd']['ds'] = sdate;
-    }
-
-    if (edatechangeto && edatechangeto !== '') {
-      
-      output['content']['1']['parameters']['scd']['de'] = edatechangeto;
-    }
-    
-    if (edate && edate !== '') {
-
-      output['content']['0']['parameters']['scd']['de'] = edate;
-    }
-
-    if (timechangeto && timechangeto !== '') {
-      
-      output['content']['1']['parameters']['t'] = timechangeto;
-      output['content']['1']['parameters']['scd']['ts'] = timechangeto;
-      output['content']['1']['parameters']['scd']['te'] = timechangeto;
-    } else {
-      
-      output['content']['1']['parameters']['t'] = '99:99';
-      output['content']['1']['parameters']['scd']['ts'] = '00:00';
-      output['content']['1']['parameters']['scd']['te'] = '23:59';
-    }
-    
-    if (time && time !== '') {
-
-      output['content']['0']['parameters']['scd']['ts'] = time;
-      output['content']['0']['parameters']['scd']['te'] = time;
-    } else {
-
-      output['content']['0']['parameters']['scd']['ts'] = '00:00';
-      output['content']['0']['parameters']['scd']['te'] = '23:59';
-    }
-   
-    if (stimechangeto && stimechangeto !== '') {
-      
-      output['content']['1']['parameters']['t'] = stimechangeto;
-      output['content']['1']['parameters']['scd']['ts'] = stimechangeto;
-    } else {
-      
-      output['content']['1']['parameters']['t'] = '00:00';
-      output['content']['1']['parameters']['scd']['ts'] = '00:00';
-    }
-    
-    if (stime && stime !== '') {
-
-      output['content']['0']['parameters']['scd']['ts'] = stime;
-    } else {
-
-      output['content']['0']['parameters']['scd']['ts'] = '00:00';
-    }
-
-    if (etimechangeto && etimechangeto !== '') {
-      
-      output['content']['1']['parameters']['scd']['te'] = etimechangeto;
-    } else {
-      
-      output['content']['1']['parameters']['scd']['te'] = '23:59';
-    }
-    
-    if (etime && etime !== '') {
-
-      output['content']['0']['parameters']['scd']['te'] = etime;
-    } else {
-
-      output['content']['0']['parameters']['scd']['te'] = '23:59';
-    }
-
-    if (titlechangeto && titlechangeto !== '') {
-      
-      output['content']['1']['parameters']['ti'] = titlechangeto;
-      output['content']['1']['parameters']['scd']['ti'] = titlechangeto;
-    } else {
-      
-      output['content']['1']['parameters']['scd']['ti'] = '';
-    }
-    
-    if (title && title !== '') {
-
-      output['content']['0']['parameters']['scd']['ti'] = title;
-    } else {
-
-      output['content']['0']['parameters']['scd']['ti'] = '';
-    }
-    
     // 查询修改日程指示
-    output.content['2'] = {
+    output.content['3'] = {
       processor: 'SS',
       option: 'SS.U',
       parameters: {}
     };
     
     // 播报
-    output.content['3'] = {
+    output.content['4'] = {
       processor: 'S',
       option: 'S.P',
       parameters: {
