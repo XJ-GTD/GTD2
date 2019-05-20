@@ -95,12 +95,12 @@ export class AtPage {
   server:any = {version: '1', datacenter: ''};
   
   constructor(public navCtrl: NavController,
-              private sqlite:SqliteExec,
-              private restfulHeader:RestFulHeader) {
+              private sqlite:SqliteExec) {
   }
 
   ionViewDidLoad() {
-    this.client.mainversion = this.restfulHeader.pv;
+    let restfulHeader = new RestFulHeader();
+    this.client.mainversion = restfulHeader.pv;
     this.client.version = UserConfig.getClientVersion();
 
     if (RestFulConfig.INIT_DATA_URL.indexOf('tag=mwxing') > 0) this.server.datacenter += '开发';
