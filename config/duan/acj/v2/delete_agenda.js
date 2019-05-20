@@ -211,7 +211,7 @@ function clean(datasource)
   
   if (!shouldEndSession) {
     // 确认前
-    if (motion !== 'ChangeTimeWithFS') {
+    if (motion !== 'CancelWithFS') {
       // 查询联系人指示
       output.content['0'] = {
         processor: 'F',
