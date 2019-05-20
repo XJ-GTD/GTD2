@@ -131,6 +131,18 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
 
     // 修改日程
     if (content.option == AG.U) {
+
+      if (prv.scd.length == 1) {
+        if (scd[0].gs != "0" && (scd[0].sd != cudPara.d || scd[0].sn != cudPara.ti ||
+            scd[0].st != cudPara.t  )) {
+          //出错记录
+          this.output(content, contextRetMap, 'branchcode', WsDataConfig.BRANCHCODE, "E");
+
+          //出错记录
+          this.output(content, contextRetMap, 'branchtype', WsDataConfig.BRANCHTYPE, "NODO");
+        }
+      }
+
       if (fs.length > 0){
         prv.fs = fs;
       }
