@@ -74,6 +74,12 @@ public class MainVerticle extends AbstractVerticle {
 		router.route("/cdc/:flowid/json/trigger").handler(BodyHandler.create());
 		router.route("/cdc/:flowid/json/trigger").produces("application/json").handler(this::jsontrigger);
 
+		router.route("/cdc/:flowid/query/synctrigger").handler(BodyHandler.create());
+		router.route("/cdc/:flowid/query/synctrigger").produces("application/json").handler(this::syncquerytrigger);
+
+		router.route("/cdc/:flowid/json/synctrigger").handler(BodyHandler.create());
+		router.route("/cdc/:flowid/json/synctrigger").produces("application/json").handler(this::syncjsontrigger);
+
 		HttpServerOptions option = new HttpServerOptions();
 		option.setCompressionSupported(true);
 
@@ -156,6 +162,85 @@ public class MainVerticle extends AbstractVerticle {
 		future.complete(new JsonObject());
 	}
 	
+	private void syncquerytrigger(RoutingContext ctx) {
+		System.out.println("headers: " + ctx.request().headers());
+		String flowid = ctx.request().getParam("flowid");
+		MultiMap query = ctx.request().params();
+		
+		JsonObject parameters = new JsonObject();
+		
+		for (Entry<String, String> entry : query.entries()) {
+			parameters.put(entry.getKey(), entry.getValue());
+		}
+		
+		Future<JsonObject> future = Future.future();
+		
+		future.setHandler(handler -> {
+			System.out.println(flowid);
+			if (handler.succeeded()) {
+				JsonObject result = handler.result();
+				
+				if (result == null)
+					result = new JsonObject();
+				System.out.println("responsed " +result.size());
+				ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end(result.encode());
+			} else {
+				handler.cause().printStackTrace();
+				ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end("{}");
+			}
+		});
+
+		String address = config().getString("amq.app.id", "cdc") + "." + UUID.randomUUID().toString();
+		subscribeTrigger(future, address);
+
+		JsonObject message = new JsonObject();
+		message.put("callback", new JsonArray().add(address));
+		message.put("query", parameters);
+		
+		MessageProducer<JsonObject> producer = bridge.createProducer(flowid);
+		producer.send(new JsonObject()
+				.put("body", new JsonObject()
+						.put("context", message)));
+	}
+	
+	private void syncjsontrigger(RoutingContext ctx) {
+		System.out.println("headers: " + ctx.request().headers());
+		System.out.println("body: " + ctx.getBodyAsString());
+		String flowid = ctx.request().getParam("flowid");
+		JsonObject query = ctx.getBodyAsJson();
+		
+		Future<JsonObject> future = Future.future();
+		
+		future.setHandler(handler -> {
+			System.out.println(flowid);
+			if (handler.succeeded()) {
+				JsonObject result = handler.result();
+				
+				if (result == null)
+					result = new JsonObject();
+				System.out.println("responsed " +result.size());
+				ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end(result.encode());
+			} else {
+				handler.cause().printStackTrace();
+				ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end("{}");
+			}
+		});
+
+		String address = config().getString("amq.app.id", "cdc") + "." + UUID.randomUUID().toString();
+		subscribeTrigger(future, address);
+
+		JsonObject message = new JsonObject();
+		message.put("callback", new JsonArray().add(address));
+		message.put("query", query);
+		
+		MessageProducer<JsonObject> producer = bridge.createProducer(flowid);
+		producer.send(new JsonObject()
+				.put("body", new JsonObject()
+						.put("context", message)));
+
+		System.out.println("Send context [" + query.encode() + "]");
+	}
+	
 	private void caculatestarter(RoutingContext ctx) {
 		System.out.println("headers: " + ctx.request().headers());
 		//System.out.println("body: " + ctx.getBodyAsString());
@@ -226,6 +311,5 @@ public class MainVerticle extends AbstractVerticle {
 						System.out.println("Stomp server connected.");
 					}
 				});
-		
 	}
 }
