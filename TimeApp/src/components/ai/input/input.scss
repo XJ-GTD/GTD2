@@ -4,7 +4,7 @@ inputcomponent {
   display: none;
   .help{
     display: inline-block;
-    position: fixed;
+    position:absolute;
     top: 20px;
     color: $fontSecondColor;
     padding:20px;
