@@ -142,10 +142,10 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
           this.output(content, contextRetMap, 'branchtype', WsDataConfig.BRANCHTYPE, WsDataConfig.BRANCHTYPE_FORBIDDEN);
 
           //上下文内放置创建的或修改的日程更新内容
-          this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, new Array<ScdData>());
+          this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, scd);
 
           //上下文内放置创建的或修改的日程联系人
-          this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, new Array<FsData>());
+          this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, fs);
 
           return contextRetMap;
         }
