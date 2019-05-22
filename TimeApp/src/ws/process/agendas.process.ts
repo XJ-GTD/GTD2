@@ -85,8 +85,6 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
 
     //处理所需要参数
     let cudPara:CudscdPara = content.parameters;
-    //处理结果
-    let prv : ProcesRs = new ProcesRs();
 
     //上下文内获取日程查询结果
     let scd:Array<ScdData> = new Array<ScdData>();
@@ -108,7 +106,6 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
     // 创建日程
     if (content.option == AG.C) {
       if (fs.length > 0){
-        prv.fs = fs;
       }
 
       // F处理返回的结果
@@ -118,9 +115,9 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
       // 查询没有日程
       // 查询有日程
       let c:ScdData = new ScdData();
-      prv.scd.push(c);
+      scd.push(c);
 
-      for (let c of prv.scd){
+      for (let c of scd){
         c.sd = cudPara.d == null?c.sd:cudPara.d;
         c.sn = cudPara.ti == null?c.sn:cudPara.ti;
         c.st = cudPara.t == null?c.st:cudPara.t;
@@ -132,7 +129,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
     // 修改日程
     if (content.option == AG.U) {
 
-      if (prv.scd.length == 1) {
+      if (scd.length == 1) {
         if (scd[0].gs != "0" && (scd[0].sd != cudPara.d || scd[0].sn != cudPara.ti ||
             scd[0].st != cudPara.t  )) {
           //出错记录
@@ -153,20 +150,18 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
       }
 
       if (fs.length > 0){
-        prv.fs = fs;
       }
 
       // F处理返回的结果
       if (scd.length > 0){
-        prv.scd = scd;
       }
 
       // 查询没有日程
-      if (prv.scd.length == 0){}
+      if (scd.length == 0){}
       // 查询有1个日程
-      if (prv.scd.length == 1){
+      if (scd.length == 1){
         // 设置修改后内容
-        for (let c of prv.scd){
+        for (let c of scd){
           c.sd = (cudPara.d == null || cudPara.d == '')? c.sd:cudPara.d;
           c.sn = (cudPara.ti == null || cudPara.ti == '')?c.sn:cudPara.ti;
           c.st = (cudPara.t == null || cudPara.t == '')?c.st:cudPara.t;
@@ -175,32 +170,30 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         }
       }
       // 查询有1个被共享日程
-      if (prv.scd.length == 1){}
+      if (scd.length == 1){}
       // 查询有多个日程
-      if (prv.scd.length > 1){}
+      if (scd.length > 1){}
     }
 
     // 删除日程
     if (content.option == AG.D) {
       if (fs.length > 0){
-        prv.fs = fs;
       }
 
       // F处理返回的结果
       if (scd.length > 0){
-        prv.scd = scd;
       }
 
       // 查询没有日程
-      if (prv.scd.length == 0){}
+      if (scd.length == 0){}
       // 查询有1个日程
-      if (prv.scd.length == 1){
-        for (let c of prv.scd) {
+      if (scd.length == 1){
+        for (let c of scd) {
           c.fss = fs;
         }
       }
       // 查询有多个日程
-      if (prv.scd.length > 1){}
+      if (scd.length > 1){}
     }
 
     //TODO 缺少元素提醒
@@ -216,10 +209,10 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
 
 
     //上下文内放置创建的或修改的日程更新内容
-    this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, prv.scd);
+    this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, scd);
 
     //上下文内放置创建的或修改的日程联系人
-    this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, prv.fs);
+    this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, fs);
 
     return contextRetMap;
   }
