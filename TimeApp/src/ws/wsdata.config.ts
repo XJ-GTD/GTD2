@@ -28,4 +28,10 @@ export class WsDataConfig {
   public static TYPE_MULTI:string = "MULTI";
 
   public static TYPE_EMPTY:string = "EMPTY";
+
+  /*========== 语音处理出错类型 =========*/
+  public static BRANCHTYPE_FORBIDDEN:string = "FORBIDDEN";
+
+  /*========== 语音处理出错代码 =========*/
+  public static BRANCHCODE_E0001:string = "E0001";
 }
