@@ -51,7 +51,7 @@ import {FsService} from "../../../pages/fs/fs.service";
           <ion-icon name="volume-up" item-end class="volume" (click)="speakScd(aiData.scdList)"></ion-icon>
         </ion-item>
         <ion-item *ngFor="let scd of aiData.scdList.datas" (click)="showScdInList(scd)">
-          <p class="date">{{scd.d | formatedate :"CYYYY/MM/DD"}} {{scd.t=='99:99'?'全天':scd.t}}</p>
+          <p class="date">{{countDay(scd.d) | formatedate :"CYYYY/MM/DD"}} {{scd.t=='99:99'?'全天':scd.t}}</p>
           <p class="ti">{{scd.ti}}</p>
         </ion-item>
       </ion-list>
@@ -79,6 +79,10 @@ export class AiChildenComponent {
   showScd(scd: ScdAiData) {
     this.aiData.scd.saved = true;
     this.aiService.showScd(scd);
+  }
+
+  countDay(d :string){
+    return this.aiService.countDay(d);
   }
 
   showScdInList(scd: ScdAiData) {
