@@ -136,10 +136,10 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         if (scd[0].gs != "0" && (scd[0].sd != cudPara.d || scd[0].sn != cudPara.ti ||
             scd[0].st != cudPara.t  )) {
           //出错记录
-          this.output(content, contextRetMap, 'branchcode', WsDataConfig.BRANCHCODE, "E");
+          this.output(content, contextRetMap, 'branchcode', WsDataConfig.BRANCHCODE, "E0001");
 
           //出错记录
-          this.output(content, contextRetMap, 'branchtype', WsDataConfig.BRANCHTYPE, "NODO");
+          this.output(content, contextRetMap, 'branchtype', WsDataConfig.BRANCHTYPE, "FORBIDDEN");
 
           //上下文内放置创建的或修改的日程更新内容
           this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, new Array<ScdData>());
