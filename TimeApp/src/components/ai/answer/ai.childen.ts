@@ -54,6 +54,9 @@ import {FsService} from "../../../pages/fs/fs.service";
           <p class="date">{{countDay(scd.d) | formatedate :"CYYYY/MM/DD"}} {{scd.t=='99:99'?'全天':scd.t}}</p>
           <p class="ti">{{scd.ti}}</p>
         </ion-item>
+        <ion-item >
+          <p class="scdTip">{{aiData.scdList.scdTip}}</p>
+        </ion-item>
       </ion-list>
     </ng-template>
   `,

@@ -130,6 +130,7 @@ export class AiData {
 
 export class ScdLsAiData {
   desc: string = "";
+  scdTip:string = "";
   datas: Array<ScdAiData> = new Array<ScdAiData>();
 }
 

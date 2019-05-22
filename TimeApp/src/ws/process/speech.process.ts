@@ -176,6 +176,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
           scdEm.gs = scd.gs;
           cscdLS.datas.push(scdEm);
         }
+        cscdLS.scdTip = sutbl.sut;
         this.emitService.emitScdLs(cscdLS);
       }
 
