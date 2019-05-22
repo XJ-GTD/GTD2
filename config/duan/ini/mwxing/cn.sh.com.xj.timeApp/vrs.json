@@ -68,6 +68,7 @@
 {"version": "v2", "type": "ONE", "needAnswer": "true", "tips":"说确认/取消", "name":"EE", "value":"正在为您创建以下安排,请确认是否创建？", "desc":"确认取消回答"},
 {"version": "v2", "type": "ONE", "needAnswer": "true", "tips":"说确认/取消", "name":"EE", "value":"你正在创建日程,要保存到日历吗？", "desc":"确认取消回答"},
 {"version": "v2", "type": "MULTI", "needAnswer": "false", "tips":"", "name":"EE", "value":"您有这些安排", "desc":"确认取消回答"},
+{"version": "v2", "type": "E0001", "needAnswer": "false", "tips":"", "name":"EU", "value":"该日程来自他人, 无法修改", "desc":"确认修改回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"EU", "value":"没有安排可以修改", "desc":"确认修改回答"},
 {"version": "v2", "type": "ONE", "needAnswer": "true", "tips":"说确认/取消", "name":"EU", "value":"您正在修改日程,确定修改吗？", "desc":"确认修改回答"},
 {"version": "v2", "type": "MULTI", "needAnswer": "false", "tips":"", "name":"EU", "value":"您有这些安排", "desc":"确认修改回答"},
