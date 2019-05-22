@@ -257,7 +257,7 @@ function clean(datasource)
         version: 'V1.1',
         sender: 'xunfei',
         datetime: formatDateTime(new Date()),
-        describe: ['SC','AG','SS','S']
+        describe: ['SC','AG','SS','S','S']
       };
     } else {
       // 确认前
@@ -265,7 +265,7 @@ function clean(datasource)
         version: 'V1.1',
         sender: 'xunfei',
         datetime: formatDateTime(new Date()),
-        describe: ['F','AG','SS','S']
+        describe: ['F','AG','SS','S','S']
       };
     }
   } else {
