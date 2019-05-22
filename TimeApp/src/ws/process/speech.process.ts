@@ -48,15 +48,22 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       let speakText = spData.an;
       let type = 'NONE';
 
+      let branchcode: string = '';
+      let branchtype: string = '';
       let agendas: Array<ScdData> = new Array<ScdData>();
       let showagendas: Array<ScdData> = new Array<ScdData>();
       let contacts: Array<FsData> = new Array<FsData>();
 
       let sutbl: SuTbl = new SuTbl();
 
+      //获取上下文前处理分支代码 (由各处理自定义)
+      branchcode = this.input(content, contextRetMap, "branchcode", WsDataConfig.BRANCHCODE, branchcode);
+
+      //获取上下文前处理分支类型 (由各处理自定义)
+      branchtype = this.input(content, contextRetMap, "branchtype", WsDataConfig.BRANCHTYPE, branchtype);
+
       //日常语音直接播报
       if (content.option != S.AN) {
-
 
         //获取上下文内日程创建结果
         agendas = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,agendas);
@@ -132,7 +139,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       //process处理符合条件则执行
       if (content.when && content.when !=""){
         let fun = eval("("+content.when+")");
-        if (!fun(agendas,showagendas,contacts)){
+        if (!fun(agendas, showagendas, contacts, branchtype, branchcode)){
           resolve(contextRetMap);
           return;
         }
@@ -205,4 +212,3 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     })
   }
 }
-
