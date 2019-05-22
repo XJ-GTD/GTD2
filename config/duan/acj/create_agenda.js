@@ -59,7 +59,7 @@ function clean(datasource)
   var clientcontext = input['_context']['client'];
   var servercontext = input['_context']['server'];
   var shouldEndSession = data['intent']['shouldEndSession'];
-  var answer = data['intent']['answer']['text'];
+  var answer = data['intent']['answer']? data['intent']['answer']['text'] : '';
   var text = data['intent']['text'];
   var contacts = new Array();
   var date = '';

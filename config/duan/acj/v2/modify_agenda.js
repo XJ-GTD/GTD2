@@ -251,15 +251,7 @@ function clean(datasource)
   
   // 返回消息头部
   if (!shouldEndSession) {
-    if (motion === 'AddContactsWithFS') {
-      // 前序上下文确认前
-      output.header = {
-        version: 'V1.1',
-        sender: 'xunfei',
-        datetime: formatDateTime(new Date()),
-        describe: ['F','SC','AG','SS','S']
-      };
-    } else if (motion === 'ChangeTimeWithFS') {
+    if (motion === 'ChangeTimeWithFS') {
       // 前序上下文确认前
       output.header = {
         version: 'V1.1',
@@ -291,8 +283,7 @@ function clean(datasource)
   output.content = {};
   
   if (!shouldEndSession) {
-    if (motion === 'AddContactsWithFS') {
-    } else if (motion === 'ChangeTimeWithFS') {
+    if (motion === 'ChangeTimeWithFS') {
       // 确认前
       // 获取前序上下文
       output.content['0'] = {
@@ -445,8 +436,17 @@ function clean(datasource)
       parameters: {}
     };
     
-    // 播报
+    // 播报 正常情况
     output.content['3'] = {
+      processor: 'S',
+      option: 'S.P',
+      parameters: {
+        t: 'EU'
+      }
+    };
+
+    // 播报 无法修改（被共享日程）
+    output.content['4'] = {
       processor: 'S',
       option: 'S.P',
       parameters: {
