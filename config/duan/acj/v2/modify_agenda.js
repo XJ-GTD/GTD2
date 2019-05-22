@@ -1,11 +1,11 @@
-function shouldclean(datasource) 
+function shouldclean(datasource)
 {
   var result = {};
   // filter source code here start
   var input = JSON.parse(datasource);
-  
+
   if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion === 'v1') return false;
-  
+
   if (input.data && input.data[0] !== undefined) {
     for (var di in input.data) {
       var data = input.data[di];
@@ -14,7 +14,7 @@ function shouldclean(datasource)
         return true;
       } else if (data['sub'] === 'nlp' && data['intent']['service'] === 'OS6981162467.AgendaModify' && data['intent']['intentType'] === 'custom' && data['intent']['semantic']) {
           var semantics = data['intent']['semantic'];
-    
+
           for (var sei in semantics) {
             var semantic = semantics[sei];
 
@@ -25,12 +25,12 @@ function shouldclean(datasource)
       }
     }
   }
-  
+
   // filter source code here end
   return false;
 }
 
-function clean(datasource) 
+function clean(datasource)
 {
   var result = {};
   print('Start Nashorn Javascript processing...');
@@ -51,7 +51,7 @@ function clean(datasource)
   var formatDateTime = function(date) {
     return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
   }
-  
+
   // 取得迅飞语音消息内容
   var userId = input['_context']['userId'];
   var deviceId = input['_context']['deviceId'];
@@ -78,155 +78,155 @@ function clean(datasource)
   var motion = '';
   var whichtodo = '';
   var lastwhichtodo = '';
-  
+
   var semantics = data['intent']['semantic'];
-  
+
   for (var sei in semantics) {
     var semantic = semantics[sei];
 
     motion = semantic['intent'];
     var slots = semantic['slots'];
-    
+
     for (var si in slots) {
       var slot = slots[si];
-      
+
       // 取出关联联系人结果
       if (slot['name'] === 'whotodo') {
         contacts.push({n:slot['normValue']});
       }
-      
+
       // 取出涉及时间结果
       if (slot['name'] === 'whentodo') {
         var value = slot['normValue'];
-        
+
         if (value && value !== undefined && value !== '') {
           var normValue = JSON.parse(value);
           var suggestDatetime = normValue['suggestDatetime'];
-          
+
           print('suggestDatetime: ' + suggestDatetime);
-          
+
           if (suggestDatetime.indexOf('/') < 0) {
             // 包含时间
             var reg = /^(\d+)-(\d{1,2})-(\d{1,2})T(\d{1,2}):(\d{1,2}):(\d{1,2})$/;
             var r = suggestDatetime.match(reg);
-            
+
             if (r) {
               date = r[1] + '/' + r[2] + '/' + r[3];
               time = r[4] + ':' + r[5] + ':' + r[6];
             }
-            
+
             // 没有时间
             var regd = /^(\d+)-(\d{1,2})-(\d{1,2})$/;
             var rd = suggestDatetime.match(regd);
-            
+
             if (rd) {
               date = rd[1] + '/' + rd[2] + '/' + rd[3];
             }
           } else {
             // 包含期间
             var suggestDatetimerange = suggestDatetime.split('/');
-            
+
             // 包含时间 开始
             var reg = /^(\d+)-(\d{1,2})-(\d{1,2})T(\d{1,2}):(\d{1,2}):(\d{1,2})$/;
             var r = suggestDatetimerange[0].match(reg);
-            
+
             if (r) {
               sdate = r[1] + '/' + r[2] + '/' + r[3];
               stime = r[4] + ':' + r[5] + ':' + r[6];
             }
-            
+
             // 没有时间 开始
             var regd = /^(\d+)-(\d{1,2})-(\d{1,2})$/;
             var rd = suggestDatetimerange[0].match(regd);
-            
+
             if (rd) {
               sdate = rd[1] + '/' + rd[2] + '/' + rd[3];
             }
-            
+
             // 包含时间 结束
             var re = suggestDatetimerange[1].match(reg);
-            
+
             if (re) {
               edate = re[1] + '/' + re[2] + '/' + re[3];
               etime = re[4] + ':' + re[5] + ':' + re[6];
             }
-            
+
             // 没有时间 结束
             var rde = suggestDatetimerange[1].match(regd);
-            
+
             if (rde) {
               edate = rde[1] + '/' + rde[2] + '/' + rde[3];
             }
           }
         }
       }
-      
+
       // 取出涉及时间结果
       if (slot['name'] === 'whenchangeto') {
         var value = slot['normValue'];
-        
+
         if (value && value !== undefined && value !== '') {
           var normValue = JSON.parse(value);
           var suggestDatetime = normValue['suggestDatetime'];
-          
+
           print('suggestDatetime: ' + suggestDatetime);
-          
+
           if (suggestDatetime.indexOf('/') < 0) {
             // 包含时间
             var reg = /^(\d+)-(\d{1,2})-(\d{1,2})T(\d{1,2}):(\d{1,2}):(\d{1,2})$/;
             var r = suggestDatetime.match(reg);
-            
+
             if (r) {
               datechangeto = r[1] + '/' + r[2] + '/' + r[3];
               timechangeto = r[4] + ':' + r[5] + ':' + r[6];
             }
-            
+
             // 没有时间
             var regd = /^(\d+)-(\d{1,2})-(\d{1,2})$/;
             var rd = suggestDatetime.match(regd);
-            
+
             if (rd) {
               datechangeto = rd[1] + '/' + rd[2] + '/' + rd[3];
             }
           } else {
             // 包含期间
             var suggestDatetimerange = suggestDatetime.split('/');
-            
+
             // 包含时间 开始
             var reg = /^(\d+)-(\d{1,2})-(\d{1,2})T(\d{1,2}):(\d{1,2}):(\d{1,2})$/;
             var r = suggestDatetimerange[0].match(reg);
-            
+
             if (r) {
               sdatechangeto = r[1] + '/' + r[2] + '/' + r[3];
               stimechangeto = r[4] + ':' + r[5] + ':' + r[6];
             }
-            
+
             // 没有时间 开始
             var regd = /^(\d+)-(\d{1,2})-(\d{1,2})$/;
             var rd = suggestDatetimerange[0].match(regd);
-            
+
             if (rd) {
               sdatechangeto = rd[1] + '/' + rd[2] + '/' + rd[3];
             }
-            
+
             // 包含时间 结束
             var re = suggestDatetimerange[1].match(reg);
-            
+
             if (re) {
               edatechangeto = re[1] + '/' + re[2] + '/' + re[3];
               etimechangeto = re[4] + ':' + re[5] + ':' + re[6];
             }
-            
+
             // 没有时间 结束
             var rde = suggestDatetimerange[1].match(regd);
-            
+
             if (rde) {
               edatechangeto = rde[1] + '/' + rde[2] + '/' + rde[3];
             }
           }
         }
       }
-      
+
       // 取出涉及日程标题
       if (slot['name'] === 'whattodo') {
         title = slot['normValue'];
@@ -248,7 +248,7 @@ function clean(datasource)
       }
     }
   }
-  
+
   // 返回消息头部
   if (!shouldEndSession) {
     if (motion === 'ChangeTimeWithFS') {
@@ -277,11 +277,11 @@ function clean(datasource)
       describe: ['SC','O','S']
     };
   }
-  
+
   output.original = text;
-  
+
   output.content = {};
-  
+
   if (!shouldEndSession) {
     if (motion === 'ChangeTimeWithFS') {
       // 确认前
@@ -312,7 +312,7 @@ function clean(datasource)
         }
       };
     }
-    
+
     // 查询修改日程指示
     output.content['1'] = {
       processor: 'AG',
@@ -321,53 +321,53 @@ function clean(datasource)
         scd: {}
       }
     };
-    
+
     if (datechangeto && datechangeto !== '') {
-      
+
       output['content']['1']['parameters']['d'] = datechangeto;
       output['content']['1']['parameters']['scd']['ds'] = datechangeto;
       output['content']['1']['parameters']['scd']['de'] = datechangeto;
     }
-    
+
     if (date && date !== '') {
 
       output['content']['0']['parameters']['scd']['ds'] = date;
       output['content']['0']['parameters']['scd']['de'] = date;
     }
-    
+
     if (sdatechangeto && sdatechangeto !== '') {
-      
+
       output['content']['1']['parameters']['d'] = sdatechangeto;
       output['content']['1']['parameters']['scd']['ds'] = sdatechangeto;
     }
-    
+
     if (sdate && sdate !== '') {
 
       output['content']['0']['parameters']['scd']['ds'] = sdate;
     }
 
     if (edatechangeto && edatechangeto !== '') {
-      
+
       output['content']['1']['parameters']['scd']['de'] = edatechangeto;
     }
-    
+
     if (edate && edate !== '') {
 
       output['content']['0']['parameters']['scd']['de'] = edate;
     }
 
     if (timechangeto && timechangeto !== '') {
-      
+
       output['content']['1']['parameters']['t'] = timechangeto;
       output['content']['1']['parameters']['scd']['ts'] = timechangeto;
       output['content']['1']['parameters']['scd']['te'] = timechangeto;
     } else {
-      
+
       output['content']['1']['parameters']['t'] = '99:99';
       output['content']['1']['parameters']['scd']['ts'] = '00:00';
       output['content']['1']['parameters']['scd']['te'] = '23:59';
     }
-    
+
     if (time && time !== '') {
 
       output['content']['0']['parameters']['scd']['ts'] = time;
@@ -377,17 +377,17 @@ function clean(datasource)
       output['content']['0']['parameters']['scd']['ts'] = '00:00';
       output['content']['0']['parameters']['scd']['te'] = '23:59';
     }
-   
+
     if (stimechangeto && stimechangeto !== '') {
-      
+
       output['content']['1']['parameters']['t'] = stimechangeto;
       output['content']['1']['parameters']['scd']['ts'] = stimechangeto;
     } else {
-      
+
       output['content']['1']['parameters']['t'] = '00:00';
       output['content']['1']['parameters']['scd']['ts'] = '00:00';
     }
-    
+
     if (stime && stime !== '') {
 
       output['content']['0']['parameters']['scd']['ts'] = stime;
@@ -397,13 +397,13 @@ function clean(datasource)
     }
 
     if (etimechangeto && etimechangeto !== '') {
-      
+
       output['content']['1']['parameters']['scd']['te'] = etimechangeto;
     } else {
-      
+
       output['content']['1']['parameters']['scd']['te'] = '23:59';
     }
-    
+
     if (etime && etime !== '') {
 
       output['content']['0']['parameters']['scd']['te'] = etime;
@@ -413,14 +413,14 @@ function clean(datasource)
     }
 
     if (titlechangeto && titlechangeto !== '') {
-      
+
       output['content']['1']['parameters']['ti'] = titlechangeto;
       output['content']['1']['parameters']['scd']['ti'] = titlechangeto;
     } else {
-      
+
       output['content']['1']['parameters']['scd']['ti'] = '';
     }
-    
+
     if (title && title !== '') {
 
       output['content']['0']['parameters']['scd']['ti'] = title;
@@ -428,16 +428,17 @@ function clean(datasource)
 
       output['content']['0']['parameters']['scd']['ti'] = '';
     }
-    
+
     // 查询修改日程指示
     output.content['2'] = {
       processor: 'SS',
       option: 'SS.U',
       parameters: {}
     };
-    
+
     // 播报 正常情况
     output.content['3'] = {
+      when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (branchtype && branchcode) { return false; } else { return true; }}',
       processor: 'S',
       option: 'S.P',
       parameters: {
@@ -447,10 +448,14 @@ function clean(datasource)
 
     // 播报 无法修改（被共享日程）
     output.content['4'] = {
+      when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (branchtype && branchtype == "FORBIDDEN" && branchcode) { return true; } else { return false; }}',
       processor: 'S',
       option: 'S.P',
       parameters: {
         t: 'EU'
+      },
+      input: {
+        type: 'function(agendas, showagendas, prvOpt, user, branchtype, branchcode) { return branchcode; }'
       }
     };
   } else {
@@ -464,19 +469,19 @@ function clean(datasource)
     };
 
     var confirm = '好的，已取消';
-    
+
     if (data['intent'] && data['intent']['answer'] && data['intent']['answer']['text']) {
       confirm = data['intent']['answer']['text'];
     }
-    
+
     if (confirm === '好的，已确认') {
-      // 确认    
+      // 确认
       output.content['1'] = {
         processor: 'O',
         option: 'O.O',
         parameters: {}
       };
-  
+
       output.content['2'] = {
         processor: 'S',
         option: 'S.P',
@@ -488,7 +493,7 @@ function clean(datasource)
         }
       };
     }
-    
+
     if (confirm === '好的，已取消') {
       // 取消
       output.content['1'] = {
@@ -496,7 +501,7 @@ function clean(datasource)
         option: 'O.C',
         parameters: {}
       };
-  
+
       output.content['2'] = {
         processor: 'S',
         option: 'S.P',
@@ -509,21 +514,21 @@ function clean(datasource)
       };
     }
   }
-  
+
   output.context = {};
-  
+
   if (clientcontext && clientcontext !== undefined) {
   	output.context['client'] = clientcontext;
   }
-  
+
   var standardnext = {};
-  
+
   standardnext.announceTo = [userId + ';' + deviceId];
   standardnext.announceType = 'inteligence_mix';
   standardnext.announceContent = {mwxing:output};
-  
+
   print(standardnext);
-  
+
   // filter source code here end
   return JSON.stringify(standardnext);
 }
