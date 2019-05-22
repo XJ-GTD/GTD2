@@ -46,7 +46,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       let openListener: boolean = false;
       //默认语音
       let speakText = spData.an;
-      let type = 'NONE';
+      let type = WsDataConfig.TYPE_NONE;
 
       let branchcode: string = '';
       let branchtype: string = '';
