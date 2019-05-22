@@ -27,7 +27,7 @@ import {FsService} from "../../../pages/fs/fs.service";
       <div class="scd">
         <ion-list no-lines>
           <ion-item><p class="ti">{{aiData.scd.ti}}</p></ion-item>
-          <ion-item><span class="date">{{aiData.scd.d | formatedate:"CYYYY/MM/DD"}}</span><span class="date">{{aiData.scd.t=='99:99'?'全天':aiData.scd.t}}</span></ion-item>
+          <ion-item><span class="date">{{aiData.scd.d | formatedate:"CYYYY/MM/DD"}}</span> <span class="date">{{aiData.scd.t=='99:99'?'全天':aiData.scd.t}}</span></ion-item>
           <ion-item>
             <div class="friend">
               <ion-chip *ngFor="let fs of aiData.scd.friends">
