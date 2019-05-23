@@ -58,7 +58,7 @@ export class TdlService {
       }
     }
     //查询日程
-    sql = sql + ` where sp.sd >= '${startBefore}' and  sp.sd <= '${startAfter}'`;
+    sql = sql + ` where sp.sd >= "${startBefore}" and  sp.sd <= "${startAfter}"`;
     let rclL = await this.sqlExce.getExtList(sql);
     //本地日历加入
     //let localL = await this.readlocal.findEventRc('', moment(startBefore), moment(start));

@@ -41,8 +41,9 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
     fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
 
     //process处理符合条件则执行
+    console.log("******************agendas do when")
     if (content.when && content.when !=""){
-
+      console.log("******************agendas do when in " + content.when)
       let rf :boolean = false;
       try {
         let fun = eval("("+content.when+")");
@@ -73,12 +74,13 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
       if (prvOpt == AG.C){
         await this.busiService.saveOrUpdate(rcIn);
       }else if (prvOpt == AG.U){
+        console.log("******************agendas do AG.U")
         await this.busiService.saveOrUpdate(rcIn);
       }else{
         await this.busiService.YuYinDelRc( rcIn.si, rcIn.sd);
       }
     }
-
+    console.log("******************agendas do end")
     return contextRetMap;
   }
 
