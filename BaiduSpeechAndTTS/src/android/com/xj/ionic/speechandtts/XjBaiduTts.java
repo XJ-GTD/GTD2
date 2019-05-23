@@ -46,7 +46,7 @@ public class XjBaiduTts extends CordovaPlugin {
         try {
             ApplicationInfo info = this.cordova.getActivity().getPackageManager().getApplicationInfo(this.cordova.getActivity().getPackageName(),
                     PackageManager.GET_META_DATA);
-            String  API_KEY =   String.valueOf(info.metaData.getInt("com.baidu.speech.API_KEY"));
+            String  API_KEY =   info.metaData.getString("com.baidu.speech.API_KEY");
             String  SECRET_KEY = info.metaData.getString("com.baidu.speech.SECRET_KEY");
             String APP_ID  =  info.metaData.getString("com.baidu.speech.APP_ID");
             if (SECRET_KEY != null) this.secretKey = SECRET_KEY;
