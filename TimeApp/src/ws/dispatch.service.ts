@@ -45,6 +45,7 @@ export class DispatchService {
       let wsContent: WsContent = model.content[i];
       //保存上下文
       wsContent.thisContext = model;
+      console.log("******************dispatch  " + JSON.stringify(model.content[i]) +";process:"+opt);
       contextRetMap = await this.factory.getProcess(opt).gowhen(wsContent, contextRetMap);
     }
 
