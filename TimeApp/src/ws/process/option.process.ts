@@ -70,7 +70,9 @@ export class OptionProcess extends BaseProcess implements MQProcess{
     }
 
     if (opt == O.O){
+      console.log("******************option do ok")
       contextRetMap = await this.factoryOpt.getOptProcess(prvprocessor).do(content, contextRetMap);
+
       //取消操作 清除上下文
       DataConfig.clearWsOpts();
       DataConfig.clearWsContext();
