@@ -30,7 +30,9 @@ export class WebsocketService {
   message:number;
 
   constructor(private dispatchService: DispatchService,private config: RestFulConfig) {
+
     this.workqueue = async.queue( ({message,index},callback) =>{
+      console.log("******************ws  queue:");
       this.dispatchService.dispatch(message).then(data=>{
         callback();
       }).catch(data=>{
