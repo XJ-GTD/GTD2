@@ -159,7 +159,10 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
 
       //通知页面显示播报文本
       let emspeech:SpeechEmData = new SpeechEmData();
-      emspeech.an = speakText + " #" + ti + "#";
+      if (DataConfig.isdebug)
+        emspeech.an = speakText + " #" + ti + "#";
+      else
+        emspeech.an = speakText;
       emspeech.org = content.thisContext.original;
       this.emitService.emitSpeech(emspeech);
 
