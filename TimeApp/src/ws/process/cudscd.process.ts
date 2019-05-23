@@ -39,8 +39,15 @@ export class CudscdProcess extends BaseProcess implements MQProcess{
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){
-      let fun = eval("("+content.when+")");
-      if (!fun(content,scd,fs)){
+
+      let rf :boolean = false;
+      try {
+        let fun = eval("("+content.when+")");
+        rf = fun(content,scd,fs);
+      }catch (e){
+        rf = false;
+      }
+      if (!rf){
         return contextRetMap;
       }
     }
