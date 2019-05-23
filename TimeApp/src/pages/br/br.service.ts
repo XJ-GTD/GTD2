@@ -259,11 +259,19 @@ export class BrService {
       if (yi.yk == "FI" || yi.yk == "DI") continue;
       sqls.push(yi.inT());
     }
-    
+
     // 恢复客户端版本参数和设备ID
-    if (verYTbl) sqls.push(verYTbl.inT());
-    if (deviceUUIDYTbl) sqls.push(deviceUUIDYTbl.inT());
-    
+    let bkVerY : YTbl = new YTbl();
+    if (verYTbl) {
+      Object.assign(bkVerY,verYTbl);
+      sqls.push(bkVerY.inT());
+    }
+    let bkUUIDY : YTbl = new YTbl();
+    if (deviceUUIDYTbl) {
+      Object.assign(bkUUIDY,deviceUUIDYTbl);
+      sqls.push(bkUUIDY.inT());
+    }
+
     await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;
 

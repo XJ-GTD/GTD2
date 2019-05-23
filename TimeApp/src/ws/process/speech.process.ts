@@ -46,7 +46,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       let openListener: boolean = false;
       //默认语音
       let speakText = spData.an;
-      let type = WsDataConfig.TYPE_NONE;
+      let type = WsDataConfig.TYPE_EMPTY;
 
       let branchcode: string = '';
       let branchtype: string = '';
@@ -82,8 +82,14 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
             type = WsDataConfig.TYPE_EMPTY;
           } else {
             if (content.input.type.startsWith("function")) {
-              let tfun = eval("(" + content.input.type + ")");
-              type = tfun(agendas, showagendas, prvOpt, user, branchtype, branchcode);
+
+              try {
+                let tfun = eval("(" + content.input.type + ")");
+                type = tfun(agendas, showagendas, prvOpt, user, branchtype, branchcode);
+              }catch (e){
+                type = WsDataConfig.TYPE_EMPTY;
+              };
+
             } else {
               type = content.input.type;
             }
@@ -138,8 +144,14 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
 
       //process处理符合条件则执行
       if (content.when && content.when !=""){
-        let fun = eval("("+content.when+")");
-        if (!fun(agendas, showagendas, contacts, branchtype, branchcode)){
+        let rf :boolean = false;
+        try {
+          let fun = eval("("+content.when+")");
+          rf = fun(agendas, showagendas, contacts, branchtype, branchcode);
+        }catch (e){
+          rf = false;
+        };
+        if (!rf){
           resolve(contextRetMap);
           return;
         }
