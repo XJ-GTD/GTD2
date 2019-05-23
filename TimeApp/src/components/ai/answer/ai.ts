@@ -90,6 +90,7 @@ export class AiComponent {
 
     this.aiData1.scdList = new ScdLsAiData();
     this.aiData1.scdList.desc = datas.desc;
+    this.aiData1.scdList.scdTip = datas.scdTip;
 
     for (let scdEmData of datas.datas) {
       let aiData: ScdAiData = new ScdAiData();

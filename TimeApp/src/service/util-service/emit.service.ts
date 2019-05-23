@@ -209,6 +209,7 @@ export class EmitService {
 
 export class ScdLsEmData {
   desc: string = "";
+  scdTip : string ="";
   datas: Array<ScdEmData> = new Array<ScdEmData>();
 }
 

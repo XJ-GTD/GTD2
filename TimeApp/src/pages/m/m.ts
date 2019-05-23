@@ -17,7 +17,7 @@ import {UserConfig} from "../../service/config/user.config";
   template: `
 
     <BackComponent></BackComponent>
-    
+
     <ion-menu [content]="ha" side="right" swipeEnabled="true" type="lsPush" class="ls" id="ls">
       <page-tdl></page-tdl>
     </ion-menu>
@@ -57,7 +57,7 @@ import {UserConfig} from "../../service/config/user.config";
               <ion-item (click)="goBrPage()">
                 <h3>备份与恢复</h3>
               </ion-item>
-              <ion-item (click)="gologPage()">
+              <ion-item [ngIf]="isdebug" (click)="gologPage()">
                 <h3>日志</h3>
               </ion-item>
               <ion-item (click)="goatPage()">

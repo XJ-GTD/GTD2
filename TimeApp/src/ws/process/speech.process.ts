@@ -46,17 +46,24 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       let openListener: boolean = false;
       //默认语音
       let speakText = spData.an;
-      let type = 'NONE';
+      let type = WsDataConfig.TYPE_EMPTY;
 
+      let branchcode: string = '';
+      let branchtype: string = '';
       let agendas: Array<ScdData> = new Array<ScdData>();
       let showagendas: Array<ScdData> = new Array<ScdData>();
       let contacts: Array<FsData> = new Array<FsData>();
 
       let sutbl: SuTbl = new SuTbl();
 
+      //获取上下文前处理分支代码 (由各处理自定义)
+      branchcode = this.input(content, contextRetMap, "branchcode", WsDataConfig.BRANCHCODE, branchcode);
+
+      //获取上下文前处理分支类型 (由各处理自定义)
+      branchtype = this.input(content, contextRetMap, "branchtype", WsDataConfig.BRANCHTYPE, branchtype);
+
       //日常语音直接播报
       if (content.option != S.AN) {
-
 
         //获取上下文内日程创建结果
         agendas = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,agendas);
@@ -75,8 +82,14 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
             type = WsDataConfig.TYPE_EMPTY;
           } else {
             if (content.input.type.startsWith("function")) {
-              let tfun = eval("(" + content.input.type + ")");
-              type = tfun(agendas, showagendas, prvOpt, user);
+
+              try {
+                let tfun = eval("(" + content.input.type + ")");
+                type = tfun(agendas, showagendas, prvOpt, user, branchtype, branchcode);
+              }catch (e){
+                type = WsDataConfig.TYPE_EMPTY;
+              };
+
             } else {
               type = content.input.type;
             }
@@ -131,8 +144,14 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
 
       //process处理符合条件则执行
       if (content.when && content.when !=""){
-        let fun = eval("("+content.when+")");
-        if (!fun(agendas,showagendas,contacts)){
+        let rf :boolean = false;
+        try {
+          let fun = eval("("+content.when+")");
+          rf = fun(agendas, showagendas, contacts, branchtype, branchcode);
+        }catch (e){
+          rf = false;
+        };
+        if (!rf){
           resolve(contextRetMap);
           return;
         }
@@ -169,6 +188,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
           scdEm.gs = scd.gs;
           cscdLS.datas.push(scdEm);
         }
+        cscdLS.scdTip = sutbl.sut;
         this.emitService.emitScdLs(cscdLS);
       }
 
@@ -205,4 +225,3 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     })
   }
 }
-

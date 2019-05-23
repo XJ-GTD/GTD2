@@ -27,7 +27,7 @@ import {FsService} from "../../../pages/fs/fs.service";
       <div class="scd">
         <ion-list no-lines>
           <ion-item><p class="ti">{{aiData.scd.ti}}</p></ion-item>
-          <ion-item><span class="date">{{aiData.scd.d | formatedate:"CYYYY/MM/DD"}}</span><span class="date">{{aiData.scd.t=='99:99'?'全天':aiData.scd.t}}</span></ion-item>
+          <ion-item><span class="date">{{aiData.scd.d | formatedate:"CYYYY/MM/DD"}}</span> <span class="date">{{aiData.scd.t=='99:99'?'全天':aiData.scd.t}}</span></ion-item>
           <ion-item>
             <div class="friend">
               <ion-chip *ngFor="let fs of aiData.scd.friends">
@@ -51,8 +51,11 @@ import {FsService} from "../../../pages/fs/fs.service";
           <ion-icon name="volume-up" item-end class="volume" (click)="speakScd(aiData.scdList)"></ion-icon>
         </ion-item>
         <ion-item *ngFor="let scd of aiData.scdList.datas" (click)="showScdInList(scd)">
-          <p class="date">{{scd.d | formatedate :"CYYYY/MM/DD"}} {{scd.t=='99:99'?'全天':scd.t}}</p>
+          <p class="date">{{countDay(scd.d) | formatedate :"CYYYY/MM/DD"}} {{scd.t=='99:99'?'全天':scd.t}}</p>
           <p class="ti">{{scd.ti}}</p>
+        </ion-item>
+        <ion-item >
+          <p class="scdTip">{{aiData.scdList.scdTip}}</p>
         </ion-item>
       </ion-list>
     </ng-template>
@@ -79,6 +82,10 @@ export class AiChildenComponent {
   showScd(scd: ScdAiData) {
     this.aiData.scd.saved = true;
     this.aiService.showScd(scd);
+  }
+
+  countDay(d :string){
+    return this.aiService.countDay(d);
   }
 
   showScdInList(scd: ScdAiData) {

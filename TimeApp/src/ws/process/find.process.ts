@@ -14,6 +14,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * 查询联系人和日历
@@ -23,7 +24,8 @@ import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 @Injectable()
 export class FindProcess extends BaseProcess implements MQProcess {
   constructor(private sqliteExec: SqliteExec, private fsService: FsService,
-              private glService: GlService, private util:UtilService) {
+              private glService: GlService, private util:UtilService,
+              private userConfig: UserConfig) {
     super();
   }
 
@@ -31,8 +33,15 @@ export class FindProcess extends BaseProcess implements MQProcess {
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){
-      let fun = eval("("+content.when+")");
-      if (!fun(content,contextRetMap)){
+      let rf :boolean = false;
+      try {
+        let fun = eval("("+content.when+")");
+        rf = fun(content,contextRetMap);
+      }catch (e){
+        rf = false;
+      }
+
+      if (!rf){
         return contextRetMap;
       }
     }
@@ -53,9 +62,13 @@ export class FindProcess extends BaseProcess implements MQProcess {
       }
       let ctbls = await this.findScd(findData.scd);
       for (let j = 0, len = ctbls.length; j < len; j++) {
-        let fss : Array<FsData> = await this.findScdFss(ctbls[j].si);
+        let fss : Array<FsData> = new Array<FsData>();
+        fss = await this.findScdFss(ctbls[j].si);
+        let fs :FsData = new FsData();
+        fs = this.userConfig.GetOneBTbl(ctbls[j].ui);
         let c :ScdData = new ScdData();
         Object.assign(c,ctbls[j]);
+        c.fs = fs;
         c.fss = fss;
         scd.push(c);
       }

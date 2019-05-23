@@ -14,7 +14,7 @@ export class SyncRestful {
   // 内网测试版
   //private initDataUrl: string = "https://www.guobaa.com/ini/parameters?debug=true";
   // 开发版
-  private initDataUrl: string = "https://www.guobaa.com/ini/parameters?tag=mwxing";
+  //private initDataUrl: string = "https://www.guobaa.com/ini/parameters?tag=mwxing";
 
   constructor(private request: RestfulClient, private uitl: UtilService) {
   }
