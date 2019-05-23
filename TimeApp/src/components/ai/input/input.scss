@@ -5,12 +5,12 @@ inputcomponent {
   .help{
     display: inline-block;
     position:absolute;
-    top: 20px;
+    bottom: 180px;
     color: $fontSecondColor;
-    padding:20px;
+    padding:10px;
     font-size: 16px;
     .row{
-      margin: 20px;
+      margin: 10px;
     }
 
   }
