@@ -38,6 +38,10 @@ import {UserConfig} from "../../service/config/user.config";
               <ion-item>
                 <h1>冥王星</h1>
               </ion-item>
+            </ion-list>
+          </ion-row>
+          <ion-row class="margin-for-middle">
+            <ion-list>
               <ion-item (click)="goGlPage()">
                 <h3>群组</h3>
               </ion-item>
@@ -55,6 +59,9 @@ import {UserConfig} from "../../service/config/user.config";
               </ion-item>
               <ion-item (click)="gologPage()">
                 <h3>日志</h3>
+              </ion-item>
+              <ion-item (click)="goatPage()">
+                <h3>关于</h3>
               </ion-item>
             </ion-list>
           </ion-row>
@@ -134,5 +141,10 @@ export class MPage {
   //日志
   gologPage() {
     this.modalController.create(DataConfig.PAGE._LOG_PAGE).present();
+  }
+
+  //日志
+  goatPage() {
+    this.modalController.create(DataConfig.PAGE._AT_PAGE).present();
   }
 }

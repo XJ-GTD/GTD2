@@ -58,6 +58,9 @@ public class IAgendaServiceImpl implements IAgendaService {
 	@Value("${active.destinationName}")
 	private String destinationName;
 
+	@Value("${active.destinationName.v2}")
+	private String destinationNamev2;
+
 	@Value("${spring.activemq.broker-url}")
 	private String mqurl;
 
@@ -81,7 +84,15 @@ public class IAgendaServiceImpl implements IAgendaService {
 	 * 
 	 * @param blacklist
 	 */
-	public AgdAgenda saveAndSend(AgdAgendaDto inDto) {
+	public AgdAgenda saveAndSend(AgdAgendaDto inDto, HttpServletRequest request) {
+
+		String productId = request.getHeader("pi");
+		if (productId == null || productId == "") productId = "cn.sh.com.xj.timeApp";
+		String productVersion = request.getHeader("pv");
+		if (productVersion == null || productVersion == "") productVersion = "v1";
+		String deviceId = request.getHeader("di");
+		if (deviceId == null || deviceId == "") deviceId = "browser";
+		
 		// 服务器adt规则 日期 + 时间 格式校正
 		if (inDto.getAdt() != null && inDto.getAdt().length() == 10) {
 			inDto.setAdt(inDto.getAdt() + (inDto.getSt() == null ? " 99:99" : (" " + inDto.getSt())));
@@ -114,8 +125,14 @@ public class IAgendaServiceImpl implements IAgendaService {
 				
 			}
 			if(agdOList.size()>0){
+				JSONObject context = new JSONObject();
+				context.put("productId", productId);
+				context.put("productVersion", productVersion);
+				context.put("deviceId", deviceId);
+				
 				// TODO 发送更新日程消息
 				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("_context", context);
 				map.put("from", agd.getCreaterId()); // 发送人
 				map.put("to", JSONObject.toJSON(agdOList));
 				inDto.setAt(agd.getTitle());
@@ -126,7 +143,11 @@ public class IAgendaServiceImpl implements IAgendaService {
 				try {
 					Map<String, Object> map2 = new HashMap<String, Object>();
 					map2.put("context", map);
-					jmsMessagingTemplate.convertAndSend(destinationName, map2);
+		        	if ("v1".equals(productVersion)) {
+			        	jmsMessagingTemplate.convertAndSend(destinationName, map2);
+		        	} else {
+			        	jmsMessagingTemplate.convertAndSend(destinationNamev2, map2);
+		        	}
 					System.out.println("map发送成功");
 					log.info(destinationName + ",url" + mqurl + ":------- 更新日程发送成功  --------" + map.toString());
 				} catch (Exception e) {
@@ -164,7 +185,15 @@ public class IAgendaServiceImpl implements IAgendaService {
 	/**
 	 * 删除日程
 	 */
-	public int deleteById(AgdAgendaDto inDto,String openId) {
+	public int deleteById(AgdAgendaDto inDto, String openId, HttpServletRequest request) {
+
+		String productId = request.getHeader("pi");
+		if (productId == null || productId == "") productId = "cn.sh.com.xj.timeApp";
+		String productVersion = request.getHeader("pv");
+		if (productVersion == null || productVersion == "") productVersion = "v1";
+		String deviceId = request.getHeader("di");
+		if (deviceId == null || deviceId == "") deviceId = "browser";
+		
 		AgdAgenda agenL = null;
 		Optional<AgdAgenda> agen = agdAgenda.findById(inDto.getAi());
 		if (agen.isPresent()) {
@@ -203,8 +232,15 @@ public class IAgendaServiceImpl implements IAgendaService {
 						agdContactsRep.deleteById(agdAgendaContacts.getRecId());
 						// TODO 发送删除日程消息
 					}
+
+					JSONObject context = new JSONObject();
+					context.put("productId", productId);
+					context.put("productVersion", productVersion);
+					context.put("deviceId", deviceId);
+					
 					// 生产删除消息MQ
 					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("_context", context);
 					map.put("from", agd.getCreaterId()); // 发送人
 					map.put("to", JSONObject.toJSON(dels));
 					inDto = BaseUtil.agdToDtoAgd(agd);
@@ -213,7 +249,11 @@ public class IAgendaServiceImpl implements IAgendaService {
 					try {
 						Map<String, Object> map2 = new HashMap<String, Object>();
 						map2.put("context", map);
-						jmsMessagingTemplate.convertAndSend(destinationName, map2);
+			        	if ("v1".equals(productVersion)) {
+				        	jmsMessagingTemplate.convertAndSend(destinationName, map2);
+			        	} else {
+				        	jmsMessagingTemplate.convertAndSend(destinationNamev2, map2);
+			        	}
 						log.info(destinationName + ":------- 删除日程发送成功  --------" + map.toString());
 					} catch (Exception e) {
 						log.error("------- 发送失败  --------" + map.toString());

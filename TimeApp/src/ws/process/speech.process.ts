@@ -8,8 +8,14 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
 import {ProcesRs} from "../model/proces.rs";
 import {EmitService, FriendEmData, ScdEmData, ScdLsEmData, SpeechEmData} from "../../service/util-service/emit.service";
-import {O, F, SS} from "../model/ws.enum";
+import {O, F, SS,S} from "../model/ws.enum";
 import * as moment from "moment";
+import {FsData, ScdData} from "../../data.mapping";
+import {CTbl} from "../../service/sqlite/tbl/c.tbl";
+import {UserConfig} from "../../service/config/user.config";
+import {WsDataConfig} from "../wsdata.config";
+import {BaseProcess} from "./base.process";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * 播报类型处理
@@ -17,58 +23,126 @@ import * as moment from "moment";
  * create by wzy on 2018/11/30.
  */
 @Injectable()
-export class SpeechProcess implements MQProcess {
+export class SpeechProcess extends BaseProcess implements MQProcess {
 
   constructor(private assistant: AssistantService,
               private sqliteExec: SqliteExec,
               private utilService: UtilService, private emitService: EmitService) {
+    super();
   }
 
-  go(content: WsContent,processRs:ProcesRs): Promise<ProcesRs> {
+  async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
 
-    return new Promise<ProcesRs>(async resolve => {
+    return new Promise<Map<string,any>>(async resolve => {
+
+      //获取上下文结果
+
+      let user = UserConfig.user;
 
       //处理所需要参数
       let ti = moment().valueOf() - content.thisContext.context.client.time;
       let spData: SpeechPara = content.parameters;
-      let prvOpt:string =  content.thisContext.context.client.option;
+      let prvOpt:string =  "";
       let openListener: boolean = false;
       //默认语音
       let speakText = spData.an;
-      let type = 'NONE';
-      //处理区分
-      if (spData.t) {
+      let type = WsDataConfig.TYPE_NONE;
 
-        //替换参数变量
-        let count = processRs.scd.length;
+      let branchcode: string = '';
+      let branchtype: string = '';
+      let agendas: Array<ScdData> = new Array<ScdData>();
+      let showagendas: Array<ScdData> = new Array<ScdData>();
+      let contacts: Array<FsData> = new Array<FsData>();
 
-        if (processRs.option4Speech == SS.C 
-          || processRs.option4Speech == SS.U 
-          || processRs.option4Speech == SS.D
-          || processRs.option4Speech == F.C) {
-           if (count == 0)  type= 'NONE';
-           if (count == 1) type= 'ONE';
-           if (count > 1) type= 'MULTI';
+      let sutbl: SuTbl = new SuTbl();
 
-        } else if (processRs.option4Speech == O.O) {
-          if (prvOpt){
-            type = prvOpt;
+      //获取上下文前处理分支代码 (由各处理自定义)
+      branchcode = this.input(content, contextRetMap, "branchcode", WsDataConfig.BRANCHCODE, branchcode);
+
+      //获取上下文前处理分支类型 (由各处理自定义)
+      branchtype = this.input(content, contextRetMap, "branchtype", WsDataConfig.BRANCHTYPE, branchtype);
+
+      //日常语音直接播报
+      if (content.option != S.AN) {
+
+        //获取上下文内日程创建结果
+        agendas = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,agendas);
+
+        //获取上下文内日程查询结果
+        showagendas = this.input(content,contextRetMap,"showagendas",WsDataConfig.SCD,showagendas);
+
+        //获取上下文内人员信息
+        contacts = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,contacts);
+
+        //获取上下文前动作信息
+        prvOpt = this.input(content,contextRetMap,"prvoption",WsDataConfig.PRVOPTION,prvOpt);
+
+        if (content.input && (content.input.type || content.input.type == "")) {
+          if (content.input.type == "") {
+            type = WsDataConfig.TYPE_EMPTY;
+          } else {
+            if (content.input.type.startsWith("function")) {
+              let tfun = eval("(" + content.input.type + ")");
+              type = tfun(agendas, showagendas, prvOpt, user, branchtype, branchcode);
+            } else {
+              type = content.input.type;
+            }
+
           }
+        } else {
+          let count = 0;
+          if (agendas){
+            count = agendas.length;
+          }
+
+          if (count == 0) type = WsDataConfig.TYPE_NONE;
+          if (count == 1) type = WsDataConfig.TYPE_ONE;
+          if (count > 1) type = WsDataConfig.TYPE_MULTI;
         }
+        //处理区分
 
-        // spData.forEach((value, key) => {
-        //   speakText = speakText.replace("{" + key + "}", value);
-        // });
-        //TODO 0的时候包含了不需要判断0的场合，需要区分出来
-        let sutbl: SuTbl = new SuTbl();
-        sutbl = await this.assistant.getSpeakTextObject(spData.t, type); 
-        
-        speakText = sutbl.suc;
-        openListener = (sutbl.sus == 'true' ? true : false);
-        
-        //TODO 变量替换不全，当前用户UserConfig
-        speakText = speakText.replace("{count}", count.toString());
+        if (spData.t) {
 
+          //TODO 0的时候包含了不需要判断0的场合，需要区分出来
+
+          sutbl = await this.assistant.getSpeakTextObject(spData.t, type);
+
+          speakText = sutbl.suc;
+          openListener = (sutbl.sus == 'true' ? true : false);
+
+          //TODO 变量替换不全，当前用户UserConfig
+          if (content.input && content.input.textvariables) {
+            for (let txt of content.input.textvariables) {
+              let expvalue: string = "";
+              if (txt.value) {
+                expvalue = txt.value;
+              }else if (txt.expression) {
+                expvalue = eval(txt.expression);
+                if (!expvalue) {
+                  expvalue = txt.default;
+                }
+              } else {
+                expvalue = txt.default;
+              }
+              speakText = speakText.replace("{" + txt.name + "}", expvalue);
+            }
+          }else{
+            if (agendas){
+              let count = agendas.length;
+              speakText = speakText.replace("{count}", count+"");
+            }
+          }
+
+        }
+      }
+
+      //process处理符合条件则执行
+      if (content.when && content.when !=""){
+        let fun = eval("("+content.when+")");
+        if (!fun(agendas, showagendas, contacts, branchtype, branchcode)){
+          resolve(contextRetMap);
+          return;
+        }
       }
 
       //通知页面显示播报文本
@@ -80,8 +154,8 @@ export class SpeechProcess implements MQProcess {
 
       this.assistant.speakText(speakText).then((data) => {
         //处理结果
-        processRs.sucess = true;
-        resolve(processRs);
+
+        resolve(contextRetMap);
 
         // 播报后启动语音监听
         if (openListener) {
@@ -90,50 +164,52 @@ export class SpeechProcess implements MQProcess {
       });
 
       // 多个日程操作显示
-      if (processRs.option4Speech == F.C || (processRs.option4Speech == SS.U && type == 'MULTI') || (processRs.option4Speech == SS.D && type == 'MULTI')){
-        if  (processRs.scd.length > 0){
-          let cscdLS:ScdLsEmData = new ScdLsEmData();
-          cscdLS.desc = speakText;
-          for (let scd of processRs.scd){
-            let scdEm:ScdEmData = new ScdEmData();
-            scdEm.id = scd.si;
-            scdEm.d = scd.sd;
-            scdEm.t = scd.st;
-            scdEm.ti = scd.sn;
-            scdEm.gs = scd.gs;
-            cscdLS.datas.push(scdEm);
-          }
-          this.emitService.emitScdLs(cscdLS);
+      if  (showagendas && showagendas.length > 1){
+        let cscdLS:ScdLsEmData = new ScdLsEmData();
+        cscdLS.desc = speakText;
+        for (let scd of showagendas){
+          let scdEm:ScdEmData = new ScdEmData();
+          scdEm.id = scd.si;
+          scdEm.d = scd.sd;
+          scdEm.t = scd.st;
+          scdEm.ti = scd.sn;
+          scdEm.gs = scd.gs;
+          cscdLS.datas.push(scdEm);
         }
+        cscdLS.scdTip = sutbl.sut;
+        this.emitService.emitScdLs(cscdLS);
       }
+
 
       // 单个日程操作显示
-      if (processRs.option4Speech == SS.C || (processRs.option4Speech == SS.U && type == 'ONE') || (processRs.option4Speech == SS.D && type == 'ONE')){
 
-        if  (processRs.scd.length == 1){
-          let scdEm:ScdEmData = new ScdEmData();
-          scdEm.id = processRs.scd[0].si;
-          scdEm.d = processRs.scd[0].sd;
-          scdEm.t = processRs.scd[0].st;
-          scdEm.ti = processRs.scd[0].sn;
-          scdEm.gs = processRs.scd[0].gs;
 
-          for (let btbl of processRs.fs){
-            let fri:FriendEmData = new FriendEmData();
-            fri.id = btbl.pwi;
-            fri.p = btbl.ranpy;
-            fri.m = btbl.rc;
-            fri.a = btbl.bhiu;
-            fri.n = btbl.ran;
-            fri.uid = btbl.ui;
+      if  (showagendas && showagendas.length == 1){
+        let scdEm:ScdEmData = new ScdEmData();
+        scdEm.id = showagendas[0].si;
+        scdEm.d = showagendas[0].sd;
+        scdEm.t = showagendas[0].st;
+        scdEm.ti = showagendas[0].sn;
+        scdEm.gs = showagendas[0].gs;
 
-            scdEm.datas.push(fri);
-          }
-          this.emitService.emitScd(scdEm);
+        scdEm.scdTip = sutbl.sut;
+
+
+        for (let btbl of showagendas[0].fss){
+          let fri:FriendEmData = new FriendEmData();
+          fri.id = btbl.pwi;
+          fri.p = btbl.ranpy;
+          fri.m = btbl.rc;
+          fri.a = btbl.bhiu;
+          fri.n = btbl.ran;
+          fri.uid = btbl.ui;
+
+          scdEm.datas.push(fri);
         }
-
+        this.emitService.emitScd(scdEm);
       }
+
+
     })
   }
 }
-

@@ -63,11 +63,18 @@ export class RestFulConfig {
   // private static REQUEST_URL: UrlEntity = new UrlEntity("http://192.168.99.21:8080/gtd",false);//连接本地数据库
   // private static REQUEST_URL: UrlEntity = new UrlEntity("https://www.guobaa.com/gtd",false);
 
+  // 预览版
+  //public static INIT_DATA_URL: string = "https://www.guobaa.com/ini/parameters";
+  // 内网测试版
+  //public static INIT_DATA_URL: string = "https://www.guobaa.com/ini/parameters?debug=true";
+  // 开发版
+  public static INIT_DATA_URL: string = "https://www.guobaa.com/ini/parameters?tag=mwxing";
+
   /* 短应用服务APPID,SECRET for www.guobaa.com */
   public static MWXING_SERVICE_WWW_SITE = "www.guobaa.com";
   public static MWXING_SERVICE_WWW_APPID = "d3d3Lmd1b2JhYS5jb20";
   public static MWXING_SERVICE_WWW_SECRET = "c2VjcmV0QHd3dy5ndW9iYWEuY29t";
-  
+
   /* 短应用服务APPID,SECRET for pluto.guobaa.com */
   public static MWXING_SERVICE_PLUTO_SITE = "pluto.guobaa.com";
   public static MWXING_SERVICE_PLUTO_APPID = "cGx1dG8uZ3VvYmFhLmNvbQ";
@@ -182,7 +189,7 @@ export class RestFulHeader {
   lt: string = "";//登录码
   ai: string = "";//帐户ID
   pi: string = "cn.sh.com.xj.timeApp";//产品ID
-  pv: string = "v1";//产品版本
+  pv: string = "v2";//产品版本
   di: string = "";//设备ID
   dt: string = "";//设别类型
 }

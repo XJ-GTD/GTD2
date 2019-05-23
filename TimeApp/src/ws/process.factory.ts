@@ -10,6 +10,7 @@ import {OptionProcess} from "./process/option.process";
 import {ContextProcess} from "./process/context.process";
 import {ReceiveProcess} from "./process/receive.process";
 import {SettingProcess} from "./process/setting.process";
+import {AgendasProcess} from "./process/agendas.process";
 
 /**
  * webSocket公用处理方法
@@ -29,7 +30,8 @@ export class ProcessFactory {
               private optionProcess:OptionProcess,
               private contextProcess:ContextProcess,
               private receiveProcess:ReceiveProcess,
-              private settingProcess:SettingProcess
+              private settingProcess:SettingProcess,
+              private agendasProcess:AgendasProcess
   ) {
 
     this.factory.set("S", this.speechProcess);
@@ -41,6 +43,7 @@ export class ProcessFactory {
     this.factory.set("SC", this.contextProcess);
     this.factory.set("SH", this.receiveProcess);
     this.factory.set("SY", this.settingProcess);
+    this.factory.set("AG", this.agendasProcess);
   }
 
   getProcess(processKey: string): MQProcess {

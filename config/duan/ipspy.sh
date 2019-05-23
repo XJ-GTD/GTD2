@@ -45,11 +45,10 @@ echo $OLDIP
 if [[ $IPADDRESS == $OLDIP ]] ; then
   echo "`date -u` not changed"
 else
-  service nginx stop
-  sleep 10s
-  echo $IPADDRESS > .ip/ip.txt
-  service nginx start
-  sleep 10s
+  service nginx restart
+  if [[ $? -eq 0 ]] ; then
+    echo $IPADDRESS > .ip/ip.txt
+  fi
 fi
 
 rm -f $IPSPYLOCK

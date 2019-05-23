@@ -14,6 +14,10 @@ export class FormatedatePipe implements PipeTransform {
    * Takes a value and makes it lowercase.
    */
   transform(value: string, ...args) {
+    if (moment(value)+"" == "NaN"){
+      return value;
+    }
+
     if (args.length ==1 ){
       if (args[0] == "CYYYY/MM/DD"){
         return moment(value).format("YYYY年MM月DD日");

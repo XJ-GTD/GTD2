@@ -107,7 +107,7 @@ public class AgdAgendaController {
 		}
 
 		if (isDef && !"".equals(relId) && relId != null && freshAgd.getAi() != null && !"".equals(freshAgd.getAi())) {
-			AgdAgenda xj = agendaService.saveAndSend(freshAgd);
+			AgdAgenda xj = agendaService.saveAndSend(freshAgd, request);
 			out.setD(xj);
 			out.setRc(ReturnMessage.SUCCESS_CODE);
 			out.setRm(ReturnMessage.SUCCESS_MSG);
@@ -166,7 +166,7 @@ public class AgdAgendaController {
 		String openId = request.getHeader("ai");
 		log.info("---- 保存日程获取获取参数  -----" + JSONObject.toJSONString(freshAgd));
 		if (!"".equals(freshAgd.getAi()) && freshAgd.getAi() != null) {
-			agendaService.deleteById(freshAgd,openId);
+			agendaService.deleteById(freshAgd, openId, request);
 			out.setRc(ReturnMessage.SUCCESS_CODE);
 			out.setRm(ReturnMessage.SUCCESS_MSG);
 		} else {

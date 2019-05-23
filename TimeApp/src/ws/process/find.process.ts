@@ -9,8 +9,12 @@ import * as moment from "moment";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {FsService} from "../../pages/fs/fs.service";
 import {GlService} from "../../pages/gl/gl.service";
-import {FsData, PageDcData} from "../../data.mapping";
+import {FsData, PageDcData, ScdData} from "../../data.mapping";
 import {UtilService} from "../../service/util-service/util.service";
+import {WsDataConfig} from "../wsdata.config";
+import {BaseProcess} from "./base.process";
+import {BTbl} from "../../service/sqlite/tbl/b.tbl";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * 查询联系人和日历
@@ -18,31 +22,59 @@ import {UtilService} from "../../service/util-service/util.service";
  * create by wzy on 2018/11/30.
  */
 @Injectable()
-export class FindProcess implements MQProcess {
-  constructor(private sqliteExec: SqliteExec, private fsService: FsService, private glService: GlService, private util:UtilService) {
+export class FindProcess extends BaseProcess implements MQProcess {
+  constructor(private sqliteExec: SqliteExec, private fsService: FsService,
+              private glService: GlService, private util:UtilService,
+              private userConfig: UserConfig) {
+    super();
   }
 
-  async go(content: WsContent, processRs: ProcesRs) {
+  async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
+
+    //process处理符合条件则执行
+    if (content.when && content.when !=""){
+      let fun = eval("("+content.when+")");
+      if (!fun(content,contextRetMap)){
+        return contextRetMap;
+      }
+    }
 
     //处理所需要参数
     let findData: FindPara = content.parameters;
     //查找联系人
-    processRs.fs = await this.findsimilarityfs(findData.fs);
+    let fs :Array<FsData> = new Array<FsData>();
+    fs = await this.findsimilarityfs(findData.fs);
     //console.log("============ mq返回内容："+ JSON.stringify(content));
     //处理区分
+    let ctbls:Array<CTbl> = new Array<CTbl>();
+    let scd:Array<ScdData> = new Array<ScdData>();
     if (content.option == F.C) {
       // TODO 增加根据人查询日程
-      if (processRs.fs) {
-        findData.scd.fs = processRs.fs;
+      if (fs) {
+        findData.scd.fs = fs;
       }
-      processRs.scd = await this.findScd(findData.scd);
+      let ctbls = await this.findScd(findData.scd);
+      for (let j = 0, len = ctbls.length; j < len; j++) {
+        let fss : Array<FsData> = new Array<FsData>();
+        fss = await this.findScdFss(ctbls[j].si);
+        let fs :FsData = new FsData();
+        fs = this.userConfig.GetOneBTbl(ctbls[j].ui);
+        let c :ScdData = new ScdData();
+        Object.assign(c,ctbls[j]);
+        c.fs = fs;
+        c.fss = fss;
+        scd.push(c);
+      }
     }
 
-    //处理结果
-    processRs.option4Speech = content.option;
+    //服务器要求上下文内放置日程查询结果
+    this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, scd);
 
-    processRs.sucess = true;
-    return processRs;
+
+    //服务器要求上下文内放置日程的创建人员信息或查询条件用的人员信息
+    this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, fs);
+
+    return contextRetMap;
   }
 
   private findfs(ns: Array<any>): Array<FsData> {
@@ -120,12 +152,12 @@ export class FindProcess implements MQProcess {
     let bs: Array<FsData> = this.fsService.getfriend(null);
     let b3ran: Array<string> = new Array();
     let b3rn: Array<string> = new Array();
-    
+
     for (let b3 of bs) {
       b3ran.push(b3.ranpy);
       b3rn.push(b3.rnpy);
     }
-    
+
     for (let n of ns) {
       let piny = n.n;
       //查找联系人
@@ -142,7 +174,7 @@ export class FindProcess implements MQProcess {
           index++;
         }
       }
-      
+
       if (simularyrnrs.bestMatch.rating > 0.5) {
         let index = 0;
         for (let rating of simularyrnrs.ratings) {
@@ -160,6 +192,18 @@ export class FindProcess implements MQProcess {
     return res;
   }
 
+  private async findScdFss(si: string): Promise<Array<FsData>> {
+
+    let res: Array<FsData> = new Array<FsData>();
+    let sql = "select b.pwi ,b.ran ,b.ranpy  ,b.hiu ,b.rn ,b.rnpy ,b.rc   ," +
+      " b.rel ,b.ui,b.wtt,bh.hiu bhiu " +
+      " from gtd_d d inner join gtd_b b on d.si = '"+ si +"' and d.ai = b.pwi" +
+      " left join gtd_bh bh on b.pwi = bh.pwi  "
+    let fss :Array<BTbl> = new Array<BTbl>();
+    fss = await this.sqliteExec.getExtList<BTbl>(sql);
+    Object.assign(res,fss);
+    return res;
+  }
   private findScd(scd: any): Promise<Array<CTbl>> {
     return new Promise<Array<CTbl>>(async resolve => {
       console.log("============ mq查询日程scd："+ JSON.stringify(scd));

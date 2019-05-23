@@ -13,14 +13,16 @@ export class ThirdProcess implements MQProcess {
   constructor() {
   }
 
-  go(content: WsContent, procesRs: ProcesRs): Promise<ProcesRs> {
-    return new Promise<ProcesRs>(resolve => {
+  async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
+    //process处理符合条件则执行
+    if (content.when && content.when !=""){
+      let fun = eval("("+content.when+")");
+      if (!fun()){
+        return contextRetMap;
+      }
+    }
 
-      //处理区分
-      content.option
-      //处理所需要参数
-      content.parameters
-    })
+    return contextRetMap
   }
 
 }

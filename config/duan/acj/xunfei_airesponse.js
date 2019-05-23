@@ -4,7 +4,9 @@ function shouldclean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
 
-  if (input.data && input.data[0] !== undefined) {
+ if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion !== 'v1') return false;
+  
+ if (input.data && input.data[0] !== undefined) {
     for (var di in input.data) {
       var data = input.data[di];
       if (data['sub'] === 'nlp' && data['intent']['service']) {
@@ -42,7 +44,7 @@ function clean(datasource)
   var output = {};
   
   var formatDateTime = function(date) {
-    return date.getFullYear() + '/' + date.getMonth()+1 + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+    return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
   }
   
   // 取得迅飞语音消息内容

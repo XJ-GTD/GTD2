@@ -86,6 +86,13 @@ export class UserConfig {
     return UserConfig.settins.get("DI")? UserConfig.settins.get("DI").value : "No device Id";
   }
 
+  // 2019/05/11
+  // 席理加
+  // 用于关于页面显示当前客户端版本号
+  static getClientVersion():string {
+    return UserConfig.settins.get("FI")? UserConfig.settins.get("FI").value : "1";
+  }
+
   static getTroubleStop(key: string) {
     return UserConfig.troublestop.get(key);
   }

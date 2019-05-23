@@ -25,7 +25,7 @@ export class AiService {
       let scd: ScdAiData = scds.datas[i];
       let currdate = moment(scd.d).format("YYYY年MM月DD日");
       let broadcast = false;
-      
+
       if (prevdate == '' || currdate != prevdate) {
         prevdate = currdate;
         broadcast = true;
@@ -87,6 +87,27 @@ export class AiService {
     }
   }
 
+  countDay(day: string): string {
+    let date = moment(day);
+    let str = '今天';
+    let nowDate = moment(moment(new Date()).format("YYYY/MM/DD"));
+    let days = date.diff(nowDate, 'days');
+    if (days == 0) {
+      str = '今天';
+    } else if (days == 1) {
+      str = '明天';
+    } else if (days == 2) {
+      str = '后天';
+    } else if (days == -1) {
+      str = '昨天';
+    } else if (days == -2) {
+      str = '前天';
+    } else if (days <= -3) {
+      str = 'day';
+    }
+    return str;
+  }
+
 }
 
 
@@ -109,6 +130,7 @@ export class AiData {
 
 export class ScdLsAiData {
   desc: string = "";
+  scdTip:string = "";
   datas: Array<ScdAiData> = new Array<ScdAiData>();
 }
 
@@ -119,6 +141,7 @@ export class ScdAiData {
   ti: string = "";
   gs: string = "";
   saved:boolean = false;
+  scdTip:string = "";
   friends: Array<FriendAiData> = new Array<FriendAiData>();
 }
 

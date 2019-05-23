@@ -90,6 +90,7 @@ export class AiComponent {
 
     this.aiData1.scdList = new ScdLsAiData();
     this.aiData1.scdList.desc = datas.desc;
+    this.aiData1.scdList.scdTip = datas.scdTip;
 
     for (let scdEmData of datas.datas) {
       let aiData: ScdAiData = new ScdAiData();
@@ -133,6 +134,7 @@ export class AiComponent {
     scd1.d = data.d;
     scd1.t = data.t;
     scd1.ti = data.ti;
+    scd1.scdTip = data.scdTip;
 
     for (let femd of  data.datas){
       let ff:FriendAiData = new FriendAiData();

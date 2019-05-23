@@ -116,6 +116,13 @@ export class AssistantService {
     let datas = await this.sqliteExec.getList<SuTbl>(sutbl);
     //回答语音list
     let len = datas.length;
+    console.log("播报内容参数*******************t=" +sutbl.subt +";type="+sutbl.sust);
+    if (len == 0){
+      let an: SuTbl = new SuTbl();
+      an.suc= "您交代的事情已经办好了, 我正在学习怎么更准确的告诉您";
+      an.sus="false";
+      return an;
+    }
     //随机选取一条
     let rand = this.utilService.randInt(0, len - 1);
     let an: SuTbl = datas[rand];
@@ -170,6 +177,7 @@ export class AssistantService {
     textPro.c.client.cxt = DataConfig.getWsContext();
     textPro.c.server = DataConfig.wsServerContext;
     textPro.c.client.option = DataConfig.getWsOpt();
+    textPro.c.client.processor = DataConfig.getWsProcessor();
     await this.aibutlerRestful.posttext(textPro)
       .then(data => {
         console.log("data code：" + data.code);
@@ -214,6 +222,7 @@ export class AssistantService {
       audioPro.c.client.time = moment().valueOf();
       audioPro.c.client.cxt = DataConfig.getWsContext();
       audioPro.c.client.option = DataConfig.getWsOpt();
+      audioPro.c.client.processor = DataConfig.getWsProcessor();
       audioPro.c.server = DataConfig.wsServerContext;
       await this.aibutlerRestful.postaudio(audioPro)
       return result;
