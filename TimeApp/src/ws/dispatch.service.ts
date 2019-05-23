@@ -22,7 +22,7 @@ export class DispatchService {
 
   async dispatch(message: string) {
     //消息格式化
-
+    console.log("******************dispatch  message:"+message);
     let log:LogTbl = new LogTbl();
     log.id = this.util.getUuid();
     log.su = message
@@ -30,6 +30,7 @@ export class DispatchService {
     log.t = 2;
 
     let model: WsModel = JSON.parse(message);
+
     // console.log(moment().unix() - model.context.client.time);
     if (model.context && model.context.server)
       DataConfig.wsServerContext = model.context.server;
