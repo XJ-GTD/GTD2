@@ -27,7 +27,7 @@ export class OptionProcess extends BaseProcess implements MQProcess{
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
 
-
+    console.log("******************option gowhen start")
     //处理区分
     let opt = content.option;
     //处理所需要参数追问时才需要参数，追问暂时不做
@@ -68,9 +68,9 @@ export class OptionProcess extends BaseProcess implements MQProcess{
         return contextRetMap;
       }
     }
-
+    console.log("******************option  opt " + opt)
     if (opt == O.O){
-      console.log("******************option do ok")
+      console.log("******************option  ok")
       contextRetMap = await this.factoryOpt.getOptProcess(prvprocessor).do(content, contextRetMap);
 
       //取消操作 清除上下文
