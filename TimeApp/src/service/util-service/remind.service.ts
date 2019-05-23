@@ -16,7 +16,7 @@ export class RemindService {
   public getRemindLs():Promise<Array<ETbl>>{
     let wd = moment().format("YYYY/MM/DD");
     let wt = moment().add(DataConfig.REINTERVAL,"s").format("HH:mm");
-    let sql:string = `select * from gtd_e where wd = '${wd}' and wt <= '${wt}';`
+    let sql:string = 'select * from gtd_e where wd = "'+ wd +'" and wt <= "'+wt+'";'
 
     return this.sqlite.getExtList<ETbl>(sql);
   }
