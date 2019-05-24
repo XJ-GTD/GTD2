@@ -31,7 +31,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     super();
   }
 
-  async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
+   gowhen(content: WsContent, contextRetMap: Map<string,any>) {
 
     return new Promise<Map<string,any>>(async resolve => {
 
@@ -171,11 +171,11 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       emspeech.org = content.thisContext.original;
       this.emitService.emitSpeech(emspeech);
 
+      //处理结果
+      resolve(contextRetMap);
 
       this.assistant.speakText(speakText).then((data) => {
-        //处理结果
 
-        resolve(contextRetMap);
 
         // 播报后启动语音监听
         if (openListener) {
