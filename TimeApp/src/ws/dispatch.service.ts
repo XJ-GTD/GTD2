@@ -47,7 +47,13 @@ export class DispatchService {
       //保存上下文
       wsContent.thisContext = model;
       console.log("******************dispatch  process:"+opt);
-      contextRetMap = await this.factory.getProcess(opt).gowhen(wsContent, contextRetMap);
+      // 当处理异常时，跳出循环
+      try {
+        contextRetMap = await this.factory.getProcess(opt).gowhen(wsContent, contextRetMap);
+      } catch (e) {
+        console.log(e);
+        break;
+      }
     }
 
     log.ss = new Date().valueOf() - log.ss;
