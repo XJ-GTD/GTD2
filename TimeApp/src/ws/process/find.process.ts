@@ -64,13 +64,13 @@ export class FindProcess extends BaseProcess implements MQProcess {
       for (let j = 0, len = ctbls.length; j < len; j++) {
         let fss : Array<FsData> = new Array<FsData>();
         fss = await this.findScdFss(ctbls[j].si);
-        let fs :FsData = new FsData();
-        fs = this.userConfig.GetOneBTbl(ctbls[j].ui);
+        let cfs :FsData = new FsData();
+        cfs = this.userConfig.GetOneBTbl(ctbls[j].ui);
         //防止在服务器与客户端交互时，因图像太大而出错
-        fs.bhiu = "";
+        cfs.bhiu = "";
         let c :ScdData = new ScdData();
         Object.assign(c,ctbls[j]);
-        c.fs = fs;
+        c.fs = cfs;
         c.fss = fss;
         scd.push(c);
       }
