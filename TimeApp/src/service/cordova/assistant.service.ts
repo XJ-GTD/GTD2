@@ -70,7 +70,7 @@ export class AssistantService {
   /**
    * 停止语音播报
    */
-  public stopSpeak(emit:boolean, open?:boolean = false) {
+  public stopSpeak(emit:boolean, open:boolean = false) {
     if (!this.utilService.isMobile()) return;
     cordova.plugins.XjBaiduTts.speakStop();
     if (emit){
@@ -81,7 +81,7 @@ export class AssistantService {
 
 
 
-  public async getSpeakText(t: string, type?: string = '') {
+  public async getSpeakText(t: string, type: string = '') {
 
     let sutbl: SuTbl = new SuTbl();
     //sutbl.st = DataConfig.SPEECH;
@@ -102,7 +102,7 @@ export class AssistantService {
     return an.suc;
   }
 
-  public async getSpeakTextObject(t: string, type?: string = '') {
+  public async getSpeakTextObject(t: string, type: string = '') {
 
     let sutbl: SuTbl = new SuTbl();
     //sutbl.st = DataConfig.SPEECH;
