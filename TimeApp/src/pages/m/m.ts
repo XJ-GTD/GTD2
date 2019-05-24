@@ -57,7 +57,7 @@ import {UserConfig} from "../../service/config/user.config";
               <ion-item (click)="goBrPage()">
                 <h3>备份与恢复</h3>
               </ion-item>
-              <ion-item [ngIf]="isdebug" (click)="gologPage()">
+              <ion-item *ngIf="isdebug" (click)="gologPage()">
                 <h3>日志</h3>
               </ion-item>
               <ion-item (click)="goatPage()">

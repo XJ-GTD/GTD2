@@ -74,7 +74,7 @@ export class LogTbl implements ITbl {
   }
 
   inT():string {
-    let sq =`insert into gtd_log (id,su,ss,st,t,er,wtt) values('${this.id}','${this.su}',${this.ss},${this.st},${this.t},'${this.er?this.er:""}',${moment().valueOf()});`
+    let sq =`insert into gtd_log (id,su,ss,st,t,er,wtt) values("${this.id}","${this.su}",${this.ss},${this.st},${this.t},"${this.er?this.er:""}",${moment().valueOf()});`
 
     return sq;
   }

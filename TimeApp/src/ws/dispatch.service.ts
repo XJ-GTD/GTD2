@@ -22,7 +22,7 @@ export class DispatchService {
 
   async dispatch(message: string) {
     //消息格式化
-
+    console.log("******************dispatch  message:"+message);
     let log:LogTbl = new LogTbl();
     log.id = this.util.getUuid();
     log.su = message
@@ -30,6 +30,7 @@ export class DispatchService {
     log.t = 2;
 
     let model: WsModel = JSON.parse(message);
+
     // console.log(moment().unix() - model.context.client.time);
     if (model.context && model.context.server)
       DataConfig.wsServerContext = model.context.server;
@@ -45,7 +46,14 @@ export class DispatchService {
       let wsContent: WsContent = model.content[i];
       //保存上下文
       wsContent.thisContext = model;
-      contextRetMap = await this.factory.getProcess(opt).gowhen(wsContent, contextRetMap);
+      console.log("******************dispatch  process:"+opt);
+      // 当处理异常时，跳出循环
+      try {
+        contextRetMap = await this.factory.getProcess(opt).gowhen(wsContent, contextRetMap);
+      } catch (e) {
+        console.log('\r\n', e, '\r\n', e.stack);
+        break;
+      }
     }
 
     log.ss = new Date().valueOf() - log.ss;

@@ -7,6 +7,7 @@ import {DataConfig} from "../../../service/config/data.config";
 import {AssistantService} from "../../../service/cordova/assistant.service";
 import {PgBusiService} from "../../../service/pagecom/pgbusi.service";
 import {FsService} from "../../../pages/fs/fs.service";
+import {UserConfig} from "../../../service/config/user.config";
 
 /**
  * Generated class for the HbPage page.
@@ -32,7 +33,7 @@ import {FsService} from "../../../pages/fs/fs.service";
             <div class="friend">
               <ion-chip *ngFor="let fs of aiData.scd.friends">
                 <ion-avatar>
-                  <img [src]="fs.a"/>
+                  <img [src]="GetOneBhiu(fs.uid)"/>
                 </ion-avatar>
                 <span>{{fs.n}}</span>
               </ion-chip>
@@ -66,7 +67,7 @@ export class AiChildenComponent {
 
   @Input("aiData") aiData: AiData;
 
-  constructor(public aiService: AiService) {
+  constructor(public aiService: AiService,private userConfig :UserConfig) {
   }
 
   speakScd(scds: ScdLsAiData) {
@@ -86,6 +87,10 @@ export class AiChildenComponent {
 
   countDay(d :string){
     return this.aiService.countDay(d);
+  }
+
+  GetOneBhiu(id){
+      return this.userConfig.GetOneBhiu(id);
   }
 
   showScdInList(scd: ScdAiData) {

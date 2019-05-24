@@ -58,7 +58,7 @@ export class TdlService {
       }
     }
     //查询日程
-    sql = sql + ` where sp.sd >= '${startBefore}' and  sp.sd <= '${startAfter}'`;
+    sql = sql + ` where sp.sd >= "${startBefore}" and  sp.sd <= "${startAfter}"`;
     let rclL = await this.sqlExce.getExtList(sql);
     //本地日历加入
     //let localL = await this.readlocal.findEventRc('', moment(startBefore), moment(start));
@@ -75,7 +75,7 @@ export class TdlService {
    */
   private async getJtL(sd:string,ed:string): Promise<Array<JtData>>{
     return new Promise<Array<JtData>>(async (resolve, reject) => {
-      let sql = `select * from gtd_jt where sd>='${sd}' and sd<='${ed}' order by px asc`;
+      let sql = `select * from gtd_jt where sd>="${sd}" and sd<="${ed}" order by px asc`;
       let data = await this.sqlExce.getExtList<JtData>(sql);
       resolve(data);
     })

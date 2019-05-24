@@ -64,11 +64,18 @@ export class FindProcess extends BaseProcess implements MQProcess {
       for (let j = 0, len = ctbls.length; j < len; j++) {
         let fss : Array<FsData> = new Array<FsData>();
         fss = await this.findScdFss(ctbls[j].si);
-        let fs :FsData = new FsData();
-        fs = this.userConfig.GetOneBTbl(ctbls[j].ui);
+        let cfs :FsData = new FsData();
+        cfs = this.userConfig.GetOneBTbl(ctbls[j].ui);
+        //防止在服务器与客户端交互时，因图像太大而出错
+        if (cfs){
+          cfs.bhiu = "";
+        }else{
+          cfs  = new FsData();
+        }
+
         let c :ScdData = new ScdData();
         Object.assign(c,ctbls[j]);
-        c.fs = fs;
+        c.fs = cfs;
         c.fss = fss;
         scd.push(c);
       }
@@ -203,9 +210,8 @@ export class FindProcess extends BaseProcess implements MQProcess {
 
     let res: Array<FsData> = new Array<FsData>();
     let sql = "select b.pwi ,b.ran ,b.ranpy  ,b.hiu ,b.rn ,b.rnpy ,b.rc   ," +
-      " b.rel ,b.ui,b.wtt,bh.hiu bhiu " +
-      " from gtd_d d inner join gtd_b b on d.si = '"+ si +"' and d.ai = b.pwi" +
-      " left join gtd_bh bh on b.pwi = bh.pwi  "
+      " b.rel ,b.ui,b.wtt " +
+      " from gtd_d d inner join gtd_b b on d.si = '"+ si +"' and d.ai = b.pwi"
     let fss :Array<BTbl> = new Array<BTbl>();
     fss = await this.sqliteExec.getExtList<BTbl>(sql);
     Object.assign(res,fss);
@@ -243,30 +249,30 @@ export class FindProcess extends BaseProcess implements MQProcess {
                            where 1 = 1 and (c.gs = '0' or c.gs = '1' or c.gs = '2')`
 
         if (scd.ti) {
-          sql = sql + ` and c.sn like '%${scd.ti}%'`;
+          sql = sql + ` and c.sn like "%${scd.ti}%"`;
         }
         if (scd.ds) {
-          sql = sql + ` and sp.sd >= '${scd.ds}'`;
+          sql = sql + ` and sp.sd >= "${scd.ds}"`;
         } else {
-          sql = sql + ` and sp.sd >= '${moment().subtract(30, 'd').format('YYYY/MM/DD')}%'`;
+          sql = sql + ` and sp.sd >= "${moment().subtract(30, 'd').format('YYYY/MM/DD')}"`;
         }
         if (scd.de) {
-          sql = sql + ` and sp.sd <= '${scd.de}'`;
+          sql = sql + ` and sp.sd <= "${scd.de}"`;
         } else {
-          sql = sql + ` and sp.sd <= '${moment().add(30, 'd').format('YYYY/MM/DD')}%'`;
+          sql = sql + ` and sp.sd <= "${moment().add(30, 'd').format('YYYY/MM/DD')}"`;
         }
         if (scd.ts) {
-          sql = sql + ` and (sp.st >= '${scd.ts}' or sp.st = '99:99')`;
+          sql = sql + ` and (sp.st >= "${scd.ts}" or sp.st = '99:99')`;
         }
         if (scd.te) {
-          sql = sql + ` and (sp.st <= '${scd.te}' or sp.st = '99:99')`;
+          sql = sql + ` and (sp.st <= "${scd.te}" or sp.st = '99:99')`;
         }
         // 根据人物查询
         if (scd.fs && scd.fs.length > 0) {
           sql = sql + ` and ( 1 > 1 `;
           for (let onefs of scd.fs) {
-            sql = sql + ` or c.ui = '${onefs.ui}'`;
-            sql = sql + ` or d.ai = '${onefs.pwi}'`;
+            sql = sql + ` or c.ui = "${onefs.ui}"`;
+            sql = sql + ` or d.ai = "${onefs.pwi}"`;
           }
           sql = sql + ` )`;
         }

@@ -56,7 +56,7 @@ export class UserConfig {
 
   //参与人
   static friends: Array<FsData> = new Array<FsData>();
-  
+
   //重复调用防止
   static troublestop: Map<string, any> = new Map<string, any>();
 
@@ -96,11 +96,11 @@ export class UserConfig {
   static getTroubleStop(key: string) {
     return UserConfig.troublestop.get(key);
   }
-  
+
   static setTroubleStop(key: string, value: any) {
     UserConfig.troublestop.set(key, value);
   }
-  
+
   public async RefreshYTbl() {
     let yTbl: YTbl = new YTbl();
     //获取偏好设置
@@ -224,9 +224,36 @@ export class UserConfig {
 
   GetOneBTbl(id: string): FsData {
     console.log('GetOneBTbl with id ' + id);
-    return UserConfig.friends.find(value => {
+    let fs : FsData = new FsData();
+    fs =  UserConfig.friends.find(value => {
       return value.pwi == id || value.ui == id;
-    })
+    });
+
+    if  (fs){
+      if (fs.bhiu == ""){
+        fs.bhiu  = DataConfig.HUIBASE64;
+      }
+    }
+    return fs;
+  }
+
+  GetOneBhiu(id: string): string {
+    let bhiu :string = "";
+    let fs : FsData = new FsData();
+    fs  = UserConfig.friends.find(value => {
+      return value.pwi == id || value.ui == id;
+    });
+    if  (fs){
+      if (fs.bhiu == ""){
+        bhiu  = DataConfig.HUIBASE64;
+      }else{
+        bhiu  = fs.bhiu;
+      }
+
+    }else{
+      bhiu = DataConfig.HUIBASE64;
+    }
+    return bhiu;
   }
 }
 
