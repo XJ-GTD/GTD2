@@ -98,7 +98,7 @@ export class WebsocketService {
               try {
                 this.workqueue.push({message:message.body,index:this.messages++},(err)=>{
                   if (err) {
-                    console.log("work queue process error happenned. " + err);
+                    console.log("work queue process error happenned. ", err, '\r\n', err.stack);
                     this.workqueue.kill();
                     this.messages = 0;
                   } else {
@@ -107,7 +107,7 @@ export class WebsocketService {
                 });
               } catch (e) {
                 // message异常时捕获并不让程序崩溃
-                console.log("work queue push error : " + e);
+                console.log("work queue push error : ", e, '\r\n', e.stack);
               }
             });
           }, error => {

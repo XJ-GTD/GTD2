@@ -51,7 +51,7 @@ export class DispatchService {
       try {
         contextRetMap = await this.factory.getProcess(opt).gowhen(wsContent, contextRetMap);
       } catch (e) {
-        console.log(e);
+        console.log('\r\n', e, '\r\n', e.stack);
         break;
       }
     }
