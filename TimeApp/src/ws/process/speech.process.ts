@@ -123,7 +123,12 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
               if (txt.value) {
                 expvalue = txt.value;
               }else if (txt.expression) {
-                expvalue = eval(txt.expression);
+                try {
+                  expvalue = eval(txt.expression);
+                }catch (e){
+                  expvalue = txt.default;
+                }
+
                 if (!expvalue) {
                   expvalue = txt.default;
                 }
