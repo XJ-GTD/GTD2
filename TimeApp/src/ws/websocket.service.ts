@@ -96,8 +96,14 @@ export class WebsocketService {
               //message.ack(message.headers);
               console.log('Received a message from ' + this.queue);
               try {
-                this.workqueue.push({message:message.body,index:this.messages++},()=>{
-                  if (this.messages >9999) this.messages = 0;
+                this.workqueue.push({message:message.body,index:this.messages++},(err)=>{
+                  if (err) {
+                    console.log("work queue process error happenned. " + err);
+                    this.workqueue.kill();
+                    this.messages = 0;
+                  } else {
+                    if (this.messages >9999) this.messages = 0;
+                  }
                 });
               } catch (e) {
                 // message异常时捕获并不让程序崩溃
