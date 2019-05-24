@@ -64,11 +64,11 @@ export class RestFulConfig {
   // private static REQUEST_URL: UrlEntity = new UrlEntity("https://www.guobaa.com/gtd",false);
 
   // 预览版
-  //public static INIT_DATA_URL: string = "https://www.guobaa.com/ini/parameters";
+  public static INIT_DATA_URL: string = "https://www.guobaa.com/ini/parameters";
   // 内网测试版
   //public static INIT_DATA_URL: string = "https://www.guobaa.com/ini/parameters?debug=true";
   // 开发版
-  public static INIT_DATA_URL: string = "https://www.guobaa.com/ini/parameters?tag=mwxing";
+  //public static INIT_DATA_URL: string = "https://www.guobaa.com/ini/parameters?tag=mwxing";
 
   /* 短应用服务APPID,SECRET for www.guobaa.com */
   public static MWXING_SERVICE_WWW_SITE = "www.guobaa.com";
