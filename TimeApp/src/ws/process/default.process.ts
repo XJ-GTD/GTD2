@@ -15,8 +15,14 @@ export class DefaultProcess implements MQProcess,OptProcess{
   async do(content: WsContent, contextRetMap: Map<string,any>) {
     //process处理符合条件则执行
     if (content.when && content.when !=""){
-      let fun = eval("("+content.when+")");
-      if (!fun(content,contextRetMap)){
+      let rf :boolean = false;
+      try {
+        let fun = eval("("+content.when+")");
+        rf = fun(content,contextRetMap);
+      }catch (e){
+        rf = false;
+      };
+      if (!rf){
         return contextRetMap;
       }
     }

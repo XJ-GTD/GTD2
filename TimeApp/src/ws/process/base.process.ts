@@ -23,8 +23,12 @@ export class BaseProcess {
         } else {
           // 使用过滤器对值进行转换
           if (content.output[field].name && content.output[field].filter) {
-            let filter = eval("(" + content.output[field].filter + ")");
-            contextRetMap.set(content.output[field].name, filter(value));
+            try{
+              let filter = eval("(" + content.output[field].filter + ")");
+              contextRetMap.set(content.output[field].name, filter(value));
+            }catch (e){
+              contextRetMap.set(content.output[field].name, value);
+            }
           }
         }
       }
