@@ -224,9 +224,17 @@ export class UserConfig {
 
   GetOneBTbl(id: string): FsData {
     console.log('GetOneBTbl with id ' + id);
-    return UserConfig.friends.find(value => {
+    let fs : FsData = new FsData();
+    fs =  UserConfig.friends.find(value => {
       return value.pwi == id || value.ui == id;
-    })
+    });
+
+    if  (fs){
+      if (fs.bhiu == ""){
+        fs.bhiu  = DataConfig.HUIBASE64;
+      }
+    }
+    return fs;
   }
 
   GetOneBhiu(id: string): string {
