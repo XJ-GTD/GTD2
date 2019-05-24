@@ -101,7 +101,7 @@ export class WebsocketService {
                 });
               } catch (e) {
                 // message异常时捕获并不让程序崩溃
-                console.log(e.toString());
+                console.log("work queue push error : " + e);
               }
             });
           }, error => {
