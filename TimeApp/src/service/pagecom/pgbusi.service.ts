@@ -281,23 +281,23 @@ export class PgBusiService {
         from gtd_jt jt inner join gtd_c c on jt.si = c.si)`;
 
         if (rc.sn) {
-          sql = sql + ` and (sn like '% ${rc.sn}%' or bz like '% ${rc.sn}%')`;
+          sql = sql + ` and (sn like "% ${rc.sn}%" or bz like "% ${rc.sn}%")`;
         }
         if (rc.sd) {
-          sql = sql + ` and sd >= '${rc.sd}'`;
+          sql = sql + ` and sd >= "${rc.sd}"`;
         } else {
-          sql = sql + ` and sd >= '${moment().subtract(30, 'd').format('YYYY/MM/DD')}%'`;
+          sql = sql + ` and sd >= "${moment().subtract(30, 'd').format('YYYY/MM/DD')}%"`;
         }
         if (rc.ed) {
-          sql = sql + ` and sd <= '${rc.ed}'`;
+          sql = sql + ` and sd <= "${rc.ed}"`;
         } else {
-          sql = sql + ` and sd <= '${moment().add(30, 'd').format('YYYY/MM/DD')}%'`;
+          sql = sql + ` and sd <= "${moment().add(30, 'd').format('YYYY/MM/DD')}%"`;
         }
         if (rc.st) {
-          sql = sql + ` and st >= '${rc.st}'`;
+          sql = sql + ` and st >= "${rc.st}"`;
         }
         if (rc.et) {
-          sql = sql + ` and st <= '${rc.et}'`;
+          sql = sql + ` and st <= "${rc.et}"`;
         }
         console.log("============ mq查询日程："+ sql);
         res = await this.sqlExce.getExtList<ScdData>(sql);
@@ -320,14 +320,14 @@ export class PgBusiService {
                           from (
                                  select count(sp.si) scds,sum(sp.itx) news,sp.sd sd,max(gc.sd) csd,'' spn
                                     from gtd_sp sp join gtd_c gc on gc.si = sp.si
-                                         where sp.sd>='${moment(_startMonth).format("YYYY/MM/DD")}'  
-                                              and sp.sd<='${moment(_endMonth).format("YYYY/MM/DD")}'
+                                         where sp.sd>="${moment(_startMonth).format("YYYY/MM/DD")}"  
+                                              and sp.sd<="${moment(_endMonth).format("YYYY/MM/DD")}"
                                     group by sp.sd  
                           union all
                                   select 0 scds,0 news,jt.sd sd ,'' csd, gc.sn spn   
                                       from gtd_c gc join (select si,min(px),sd from gtd_jt  
-                                          where sd>='${moment(_startMonth).format("YYYY/MM/DD")}'  
-                                              and sd<='${moment(_endMonth).format("YYYY/MM/DD")}' group by sd ) jt 
+                                          where sd>="${moment(_startMonth).format("YYYY/MM/DD")}"  
+                                              and sd<="${moment(_endMonth).format("YYYY/MM/DD")}" group by sd ) jt 
                               on jt.si = gc.si 
                                ) group by sd; `;
 
@@ -363,7 +363,7 @@ export class PgBusiService {
     return new Promise<DayData>(async (resolve, reject) => {
       //查询当天日程
       let starts = start.format("YYYY/MM/DD");
-      let sqlOne:string = `select sp.sd,count(*) scds,sum(itx) news from gtd_sp sp where sp.sd = '${starts}' group by sd`;
+      let sqlOne:string = `select sp.sd,count(*) scds,sum(itx) news from gtd_sp sp where sp.sd = "${starts}" group by sd`;
       let day = new DayData();
       let data = await this.sqlExce.getExtOne<DayData>(sqlOne);
       day.sd = starts;
@@ -372,7 +372,7 @@ export class PgBusiService {
         day.news = data.news;
       }
       //查询计划特殊表
-      let sqlJtL:string = `select jt.* from gtd_jt jt where jt.sd = '${starts}' order by jt.px asc`;
+      let sqlJtL:string = `select jt.* from gtd_jt jt where jt.sd = "${starts}" order by jt.px asc`;
       let jtL = await this.sqlExce.getExtList<JtData>(sqlJtL);
       day.jtL = jtL;
 

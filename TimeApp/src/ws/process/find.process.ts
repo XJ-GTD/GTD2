@@ -243,30 +243,30 @@ export class FindProcess extends BaseProcess implements MQProcess {
                            where 1 = 1 and (c.gs = '0' or c.gs = '1' or c.gs = '2')`
 
         if (scd.ti) {
-          sql = sql + ` and c.sn like '%${scd.ti}%'`;
+          sql = sql + ` and c.sn like "%${scd.ti}%"`;
         }
         if (scd.ds) {
-          sql = sql + ` and sp.sd >= '${scd.ds}'`;
+          sql = sql + ` and sp.sd >= "${scd.ds}"`;
         } else {
-          sql = sql + ` and sp.sd >= '${moment().subtract(30, 'd').format('YYYY/MM/DD')}%'`;
+          sql = sql + ` and sp.sd >= "${moment().subtract(30, 'd').format('YYYY/MM/DD')}%"`;
         }
         if (scd.de) {
-          sql = sql + ` and sp.sd <= '${scd.de}'`;
+          sql = sql + ` and sp.sd <= "${scd.de}"`;
         } else {
-          sql = sql + ` and sp.sd <= '${moment().add(30, 'd').format('YYYY/MM/DD')}%'`;
+          sql = sql + ` and sp.sd <= "${moment().add(30, 'd').format('YYYY/MM/DD')}%"`;
         }
         if (scd.ts) {
-          sql = sql + ` and (sp.st >= '${scd.ts}' or sp.st = '99:99')`;
+          sql = sql + ` and (sp.st >= "${scd.ts}" or sp.st = '99:99')`;
         }
         if (scd.te) {
-          sql = sql + ` and (sp.st <= '${scd.te}' or sp.st = '99:99')`;
+          sql = sql + ` and (sp.st <= "${scd.te}" or sp.st = '99:99')`;
         }
         // 根据人物查询
         if (scd.fs && scd.fs.length > 0) {
           sql = sql + ` and ( 1 > 1 `;
           for (let onefs of scd.fs) {
-            sql = sql + ` or c.ui = '${onefs.ui}'`;
-            sql = sql + ` or d.ai = '${onefs.pwi}'`;
+            sql = sql + ` or c.ui = "${onefs.ui}"`;
+            sql = sql + ` or d.ai = "${onefs.pwi}"`;
           }
           sql = sql + ` )`;
         }

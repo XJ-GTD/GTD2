@@ -261,7 +261,7 @@ export class SqliteExec {
 
       let sql:string = `select id,su,ss,t,st,er,wtt from gtd_log where 1 = 1 `;
       if (log.su){
-        sql = sql + ` and su = '${log.su}'`;
+        sql = sql + ` and su = "${log.su}"`;
       }
       if (log.ss){
         sql = sql + ` and ss > ${log.ss}`;
