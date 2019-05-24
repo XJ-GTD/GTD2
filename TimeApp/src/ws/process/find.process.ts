@@ -66,6 +66,8 @@ export class FindProcess extends BaseProcess implements MQProcess {
         fss = await this.findScdFss(ctbls[j].si);
         let fs :FsData = new FsData();
         fs = this.userConfig.GetOneBTbl(ctbls[j].ui);
+        //防止在服务器与客户端交互时，因图像太大而出错
+        fs.bhiu = "";
         let c :ScdData = new ScdData();
         Object.assign(c,ctbls[j]);
         c.fs = fs;
@@ -203,9 +205,8 @@ export class FindProcess extends BaseProcess implements MQProcess {
 
     let res: Array<FsData> = new Array<FsData>();
     let sql = "select b.pwi ,b.ran ,b.ranpy  ,b.hiu ,b.rn ,b.rnpy ,b.rc   ," +
-      " b.rel ,b.ui,b.wtt,bh.hiu bhiu " +
-      " from gtd_d d inner join gtd_b b on d.si = '"+ si +"' and d.ai = b.pwi" +
-      " left join gtd_bh bh on b.pwi = bh.pwi  "
+      " b.rel ,b.ui,b.wtt " +
+      " from gtd_d d inner join gtd_b b on d.si = '"+ si +"' and d.ai = b.pwi"
     let fss :Array<BTbl> = new Array<BTbl>();
     fss = await this.sqliteExec.getExtList<BTbl>(sql);
     Object.assign(res,fss);
