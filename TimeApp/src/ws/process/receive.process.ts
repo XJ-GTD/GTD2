@@ -49,7 +49,10 @@ export class ReceiveProcess implements MQProcess {
       let scd:ScdData = new ScdData();
       scd = await this.busiService.pullAgd(scudPara.id);
 
-      this.notificationsService.newSms(scd);
+      if (scd != null){
+        this.notificationsService.newSms(scd);
+      }
+
     }
 
     return contextRetMap

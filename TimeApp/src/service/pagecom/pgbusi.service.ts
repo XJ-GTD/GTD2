@@ -995,6 +995,11 @@ export class PgBusiService {
       agd.ai = sr;
       agd = await this.agdRest.get(agd);
 
+      if (!agd){
+        resolve(null);
+        return null;
+      }
+
       let c = new CTbl();
       c.sr = sr;
       c = await this.sqlExce.getOne<CTbl>(c);
