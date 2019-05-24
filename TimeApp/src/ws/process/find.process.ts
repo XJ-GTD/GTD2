@@ -254,12 +254,12 @@ export class FindProcess extends BaseProcess implements MQProcess {
         if (scd.ds) {
           sql = sql + ` and sp.sd >= "${scd.ds}"`;
         } else {
-          sql = sql + ` and sp.sd >= "${moment().subtract(30, 'd').format('YYYY/MM/DD')}%"`;
+          sql = sql + ` and sp.sd >= "${moment().subtract(30, 'd').format('YYYY/MM/DD')}"`;
         }
         if (scd.de) {
           sql = sql + ` and sp.sd <= "${scd.de}"`;
         } else {
-          sql = sql + ` and sp.sd <= "${moment().add(30, 'd').format('YYYY/MM/DD')}%"`;
+          sql = sql + ` and sp.sd <= "${moment().add(30, 'd').format('YYYY/MM/DD')}"`;
         }
         if (scd.ts) {
           sql = sql + ` and (sp.st >= "${scd.ts}" or sp.st = '99:99')`;

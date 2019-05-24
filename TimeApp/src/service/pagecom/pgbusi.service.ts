@@ -286,12 +286,12 @@ export class PgBusiService {
         if (rc.sd) {
           sql = sql + ` and sd >= "${rc.sd}"`;
         } else {
-          sql = sql + ` and sd >= "${moment().subtract(30, 'd').format('YYYY/MM/DD')}%"`;
+          sql = sql + ` and sd >= "${moment().subtract(30, 'd').format('YYYY/MM/DD')}"`;
         }
         if (rc.ed) {
           sql = sql + ` and sd <= "${rc.ed}"`;
         } else {
-          sql = sql + ` and sd <= "${moment().add(30, 'd').format('YYYY/MM/DD')}%"`;
+          sql = sql + ` and sd <= "${moment().add(30, 'd').format('YYYY/MM/DD')}"`;
         }
         if (rc.st) {
           sql = sql + ` and st >= "${rc.st}"`;
