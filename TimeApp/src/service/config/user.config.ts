@@ -236,7 +236,12 @@ export class UserConfig {
       return value.pwi == id || value.ui == id;
     });
     if  (fs){
-      bhiu  = fs.bhiu;
+      if (fs.bhiu == ""){
+        bhiu  = DataConfig.HUIBASE64;
+      }else{
+        bhiu  = fs.bhiu;
+      }
+
     }else{
       bhiu = DataConfig.HUIBASE64;
     }
