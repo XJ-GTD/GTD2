@@ -7,6 +7,7 @@ import {CudscdPara} from "../model/cudscd.para";
 import {ProcesRs} from "../model/proces.rs";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * 日程修改（获取上下文中） SC
@@ -22,8 +23,12 @@ export class ContextProcess extends BaseProcess implements MQProcess{
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
 
     console.log("******************sc gowhen start")
-    let prv:ProcesRs = content.thisContext.context.client.cxt;
-    if (!prv) prv = new ProcesRs();
+    DataConfig.wsContext = content.thisContext.context.client.cxt;
+    let prv :ProcesRs = new ProcesRs();
+    if (DataConfig.wsContext && DataConfig.wsContext.length >0 ){
+      prv = DataConfig.wsContext.splice(DataConfig.wsContext.length - 1,1 )[0];
+    }
+
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){
@@ -41,11 +46,19 @@ export class ContextProcess extends BaseProcess implements MQProcess{
     }
 
     //服务器要求上下文内放置语音上下文前动作标志
-    let prvOpt = content.thisContext.context.client.option;
+    DataConfig.wsWsOpt = content.thisContext.context.client.option;
+    let prvOpt :string  = "";
+    if (DataConfig.wsWsOpt && DataConfig.wsWsOpt.length >0 ){
+      prvOpt = DataConfig.wsWsOpt.splice(DataConfig.wsWsOpt.length - 1,1 )[0];
+    }
     this.output(content, contextRetMap, 'prvoption', WsDataConfig.PRVOPTION, prvOpt);
 
     //服务器要求上下文内放置语音上下文前process标志
-    let prvprocessor = content.thisContext.context.client.processor;
+    DataConfig.wsWsProcessor = content.thisContext.context.client.processor;
+    let prvprocessor :string  = "";
+    if (DataConfig.wsWsProcessor && DataConfig.wsWsProcessor.length >0 ){
+      prvprocessor = DataConfig.wsWsProcessor.splice(DataConfig.wsWsProcessor.length - 1,1 )[0];
+    }
     this.output(content, contextRetMap, 'prvprocessor', WsDataConfig.PRVPROCESSOR, prvprocessor);
 
     //服务器要求上下文内放置语音上下文日程
@@ -55,12 +68,5 @@ export class ContextProcess extends BaseProcess implements MQProcess{
     this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, prv.fs);
     console.log("******************sc gowhen end" )
     return contextRetMap
-  }
-
-  async go(content: WsContent,processRs:ProcesRs){
-      processRs.scd = content.thisContext.context.client.cxt.scd;
-      processRs.fs = content.thisContext.context.client.cxt.fs;
-      processRs.sucess = true;
-      return processRs;
   }
 }

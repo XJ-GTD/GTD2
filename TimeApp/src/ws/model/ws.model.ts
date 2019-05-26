@@ -17,6 +17,9 @@ export class WsModel {
 }
 
 export class ContextModel {
-  client = {time: moment().unix(), cxt: new ProcesRs(),option:"",processor:""};
+  client = {time: moment().unix(),
+            cxt: new Array<ProcesRs>() ,
+            option:new Array<string>(),
+            processor:new Array<string>()};
   server = {};
 }

@@ -174,10 +174,10 @@ export class AssistantService {
     let textPro = new TextPro();
     textPro.d.text = text;
     textPro.c.client.time = moment().valueOf();
-    textPro.c.client.cxt = DataConfig.getWsContext();
+    textPro.c.client.cxt = DataConfig.wsContext;
     textPro.c.server = DataConfig.wsServerContext;
-    textPro.c.client.option = DataConfig.getWsOpt();
-    textPro.c.client.processor = DataConfig.getWsProcessor();
+    textPro.c.client.option = DataConfig.wsWsOpt;
+    textPro.c.client.processor = DataConfig.wsWsProcessor;
     await this.aibutlerRestful.posttext(textPro)
       .then(data => {
         console.log("data code：" + data.code);
@@ -220,9 +220,9 @@ export class AssistantService {
       let audioPro = new AudioPro();
       audioPro.d.vb64 = base64File;
       audioPro.c.client.time = moment().valueOf();
-      audioPro.c.client.cxt = DataConfig.getWsContext();
-      audioPro.c.client.option = DataConfig.getWsOpt();
-      audioPro.c.client.processor = DataConfig.getWsProcessor();
+      audioPro.c.client.cxt = DataConfig.wsContext;
+      audioPro.c.client.option = DataConfig.wsWsOpt;
+      audioPro.c.client.processor = DataConfig.wsWsProcessor;
       audioPro.c.server = DataConfig.wsServerContext;
       await this.aibutlerRestful.postaudio(audioPro)
       return result;
