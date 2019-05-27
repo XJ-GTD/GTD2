@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, ModalController} from 'ionic-angular';
+import {IonicPage, ModalController, Platform } from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 
@@ -18,10 +18,10 @@ import {UserConfig} from "../../service/config/user.config";
 
     <BackComponent></BackComponent>
 
-    <ion-menu [content]="ha" side="right" swipeEnabled="true" maxEdgeStart="250" type="lsPush" class="ls" id="ls">
+    <ion-menu [content]="ha" side="right" swipeEnabled="true" [maxEdgeStart]="maxEdgeStart" type="lsPush" class="ls" id="ls">
       <page-tdl></page-tdl>
     </ion-menu>
-    <ion-menu [content]="ha" side="left" swipeEnabled="true" maxEdgeStart="250" type="scalePush" class="menu" >
+    <ion-menu [content]="ha" side="left" swipeEnabled="true" [maxEdgeStart]="maxEdgeStart" type="scalePush" class="menu" >
       <ion-content>
         <ion-grid>
           <ion-row>
@@ -78,12 +78,15 @@ export class MPage {
   phone:any;
   avatar:any = DataConfig.HUIBASE64;
   isdebug:boolean;
+  maxEdgeStart:any = 150;
 
-  constructor(public modalController: ModalController) {
+  constructor(public modalController: ModalController,
+              public plt: Platform) {
   }
 
   ionViewDidLoad() {
     this.isdebug = DataConfig.isdebug;
+    this.maxEdgeStart = this.plt.width() / 2;
     console.log('ionViewDidLoad MPage');
   }
 
