@@ -1230,7 +1230,7 @@ export class PgBusiService {
       }
 
       let sql = new Array<string>();
-      sql.push(mk.rpt());
+      sql.push(mk.rpT());
 
       await this.sqlExce.batExecSql(sql);
 
