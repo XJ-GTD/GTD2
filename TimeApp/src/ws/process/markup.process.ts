@@ -35,7 +35,7 @@ export class MarkupProcess implements MQProcess {
 
     if (markupPara.mks && markupPara.mks.length > 0) {
       for (let mk of markupPara.mks) {
-        await this.busiService.markup(mk.si, mk.mkl, mk.mkt);
+        await this.busiService.markup(mk.id, mk.mkl, mk.mkt);
       }
     }
 
