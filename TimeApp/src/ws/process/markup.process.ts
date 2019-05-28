@@ -3,6 +3,7 @@ import {WsContent} from "../model/content.model";
 import {MK} from "../model/ws.enum";
 import {Injectable} from "@angular/core";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
+import {MarkupPara} from "../model/markup.para";
 
 /**
  * 标注日程语义标签
@@ -29,5 +30,15 @@ export class MarkupProcess implements MQProcess {
       }
     }
 
+    //处理所需要参数
+    let markupPara: MarkupPara = content.parameters;
+
+    if (markupPara.mks && markupPara.mks.length > 0) {
+      for (let mk of markupPara.mks) {
+        await this.busiService.markup(mk.si, mk.mkl, mk.mkt);
+      }
+    }
+
+    return contextRetMap;
   }
 }
