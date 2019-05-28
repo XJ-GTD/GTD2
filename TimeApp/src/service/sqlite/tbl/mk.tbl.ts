@@ -60,6 +60,9 @@ export class MkTbl implements ITbl{
     if(this.si!=null && this.si!=""){
       sq=sq+' and si="' + this.si +'"';
     }
+    if(this.mkt!=null && this.mkt!=""){
+      sq=sq+' and mkt="' + this.mkt +'"';
+    }
 
     sq = sq +';';
     return sq;
