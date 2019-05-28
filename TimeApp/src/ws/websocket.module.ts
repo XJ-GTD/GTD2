@@ -19,7 +19,7 @@ import {FsService} from "../pages/fs/fs.service";
 import {OptProcessFactory} from "./optprocess.factory";
 import {AgendasProcess} from "./process/agendas.process";
 import {BaseProcess} from "./process/base.process";
-
+import {MarkupProcess} from "./process/markup.process";
 
 /**
  * WebSocket组件
@@ -36,9 +36,9 @@ import {BaseProcess} from "./process/base.process";
     SpeechProcess, ThirdProcess,
     DefaultProcess, FindProcess,
     OptionProcess, ContextProcess,
-    ReceiveProcess,SettingProcess,
-    AgendasProcess,
-    SsService,FdService,FsService
+    ReceiveProcess, SettingProcess,
+    AgendasProcess, MarkupProcess,
+    SsService, FdService, FsService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
