@@ -42,6 +42,11 @@ export enum SH {
   D = "SH.D",  //删除
 }
 
+//日程标签
+export enum MK {
+  U = "MK.U"  //标注日程语义标签
+}
+
 //设置
 export enum SY {
   S = "SY.S",  //系统设置
@@ -64,8 +69,3 @@ export enum O {
 //第三方接口或技能
 export enum T {
 }
-
-
-
-
-

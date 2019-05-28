@@ -9,8 +9,8 @@ export class MkTbl implements ITbl{
   mki: string;
   si: string;
   mkl: string;
-  mkt: string;
-  wtt: number=0;
+  mkt: string = "default";
+  wtt: number = 0;
 
   cT():string {
 

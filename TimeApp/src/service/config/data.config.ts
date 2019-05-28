@@ -41,9 +41,9 @@ export class DataConfig {
   //2019/05/09 增加语音回答表
   //public static version:number = 2;
   //2019/05/10 修改设备ID缓存到数据库,防止应用升级时获取设备ID被改变
-  public static version:number = 3;
-
-
+  //public static version:number = 3;
+  //2019/05/28 增加日程语义标签标注表
+  public static version:number = 4;
 
   /*----===== WS上下文环境使用 =====----- */
   public static clearWsContext(){

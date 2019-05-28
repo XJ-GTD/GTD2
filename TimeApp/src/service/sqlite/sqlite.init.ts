@@ -19,6 +19,7 @@ import {BhTbl} from "./tbl/bh.tbl";
 import {JtTbl} from "./tbl/jt.tbl";
 import {LogTbl} from "./tbl/log.tbl";
 import {SuTbl} from "./tbl/su.tbl";
+import {MkTbl} from "./tbl/mk.tbl";
 
 /**
  * create by on 2019/3/5
@@ -99,6 +100,10 @@ export class SqliteInit {
     let su: SuTbl = new SuTbl();
     await this.sqlexec.drop(su);
     await this.sqlexec.create(su);
+
+    let mk: MkTbl = new MkTbl();
+    await this.sqlexec.drop(mk);
+    await this.sqlexec.create(mk);
   }
 
   /**
@@ -125,6 +130,13 @@ export class SqliteInit {
       deviceUUIDTbl.yk = "DI";
       deviceUUIDTbl.yv = this.util.deviceId();
       await this.sqlexec.save(deviceUUIDTbl);
+    } else if (version == 4) {
+      // 2019/05/28
+      // 席理加
+      // 增加日程语义标签标注表
+      let mk: MkTbl = new MkTbl();
+      await this.sqlexec.drop(mk);
+      await this.sqlexec.create(mk);
     }
   }
 
