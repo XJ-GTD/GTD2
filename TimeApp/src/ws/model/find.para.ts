@@ -23,5 +23,7 @@ export class FindPara{
     ti:string;
     //人物查询
     fs:Array<any>;
+    //标签查询
+    marks:Array<string>;
   }
 }

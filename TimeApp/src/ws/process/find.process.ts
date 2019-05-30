@@ -217,6 +217,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
     Object.assign(res,fss);
     return res;
   }
+
   private findScd(scd: any): Promise<Array<CTbl>> {
     return new Promise<Array<CTbl>>(async resolve => {
       console.log("============ mq查询日程scd："+ JSON.stringify(scd));
@@ -249,7 +250,18 @@ export class FindProcess extends BaseProcess implements MQProcess {
                            where 1 = 1 and (c.gs = '0' or c.gs = '1' or c.gs = '2')`
 
         if (scd.ti) {
-          sql = sql + ` and c.sn like "%${scd.ti}%"`;
+          // 增加标签查找
+          if (scd.marks && scd.marks.length > 0) {
+            sql = sql + ` and (c.sn like "%${scd.ti}%" or c.si in (select mk.si from gtd_mk mk where 1=1`;
+
+            for (let mark of scd.marks) {
+              sql = sql + ` and mk.mkl like "%${mark}%"`;
+            }
+
+            sql = sql + `)`;
+          } else {
+            sql = sql + ` and c.sn like "%${scd.ti}%"`;
+          }
         }
         if (scd.ds) {
           sql = sql + ` and sp.sd >= "${scd.ds}"`;
