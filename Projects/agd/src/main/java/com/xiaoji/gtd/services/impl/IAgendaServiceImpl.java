@@ -76,6 +76,10 @@ public class IAgendaServiceImpl implements IAgendaService {
 		agd = BaseUtil.dtoAgdToAgd(inDto,agd);
 		log.info("------保存日程AgdAgenda: ------" + JSONObject.toJSONString(agd));
 		agd = agdAgenda.save(agd);
+		
+		// 增加日程分类处理
+		classifyAgenda(agd);
+
 		return agd;
 	}
 
@@ -101,6 +105,10 @@ public class IAgendaServiceImpl implements IAgendaService {
 		agd = BaseUtil.dtoAgdToAgd(inDto,agd);
 		log.info("------保存日程AgdAgenda: ------" + JSONObject.toJSONString(agd));
 		agd = agdAgenda.save(agd);
+		
+		// 增加日程分类处理
+		classifyAgenda(agd);
+		
 		List<AgdAgendaContacts> agdList = agdContactsRep.findContactsByRelId(inDto.getAi());
 		log.info("------日程参与人: ------" + JSONObject.toJSONString(agdList));
 		if (agdList != null && agdList.size() > 0) {
@@ -182,6 +190,18 @@ public class IAgendaServiceImpl implements IAgendaService {
 		return agd;
 	}
 
+	private void classifyAgenda(AgdAgenda agd) {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		map.put("owner", agd.getServerCreaterId());
+		map.put("agenda", JSONObject.toJSON(agd));
+		
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		map2.put("context", map);
+		
+		jmsMessagingTemplate.convertAndSend("mwxing_agenda_classify_start", map2);
+	}
+	
 	/**
 	 * 删除日程
 	 */
