@@ -65,6 +65,8 @@ services:
     configs:
       - source: nlp_config
         target: /usr/verticles/nlp.json
+      - source: nlp_markup
+        target: /usr/verticles/userdefined.json
 
     networks:
       - mwxing-network-overlay
@@ -103,6 +105,8 @@ configs:
     file: ./cdc/cdc.json
   nlp_config:
     file: ./nlp/nlp.json
+  nlp_markup:
+    file: ./nlp/userdefined.json
   exc_config:
     file: ./exc/exc.json
   acj_config:

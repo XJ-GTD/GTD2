@@ -1,0 +1,84 @@
+{
+  "_id": ObjectID("5cefb1cda9f7cb0008b50a5a")
+    "name": "冥王星日程语义标注处理流",
+    "trigger": "mwxing_agenda_classify_start",
+    "parameters": [
+      "owner",
+      "agenda"
+    ],
+    "follows": [
+        {
+            "name": "创建人信息和语义标注都完成后处理",
+            "type": "composite",
+            "composite_with": [
+                "nlp_markup_end",
+                "acj_agendainfo_end"
+            ],
+            "task": {
+                "name": "合并日程、语义标注和创建人信息",
+                "trigger": "acj",
+                "parameters": [
+                    "ruleid;MWXING_MERGE_M0001_V1_2",
+                    "datasource;$.parent.outputs"
+                ],
+                "outputs": [
+                    "cleaned"
+                ],
+                "next": [
+                    {
+                        "name": "冥王星通知服务",
+                        "trigger": "ann",
+                        "parameters": [
+                            "announceTo;$.parent.outputs.cleaned.announceTo",
+                            "announceType;$.parent.outputs.cleaned.announceType",
+                            "announceContent;$.parent.outputs.cleaned.announceContent"
+                        ],
+                        "outputs": [
+                            "result"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "日程语义标注",
+            "trigger": "nlp",
+            "parameters": [
+              "function;MarkupAnalysis",
+              "text;$.parent.parameters.agenda.title"
+            ],
+            "outputs": [
+              "function",
+              "text",
+              "parsed"
+            ],
+            "next": [
+                {
+                    "type": "forward",
+                    "forward_with": [
+                        "nlp_markup_end"
+                    ]
+                }
+            ]
+        },
+        {
+          "name": "日程信息获取",
+          "trigger": "acj",
+          "parameters": [
+            "ruleid;MWXING_CLASSIFY_F0001_V1_2",
+            "datasource;$.parent.parameters"
+          ],
+          "outputs": [
+              "cleaned"
+          ],
+          "next": [
+              {
+                  "type": "forward",
+                  "forward_with": [
+                      "acj_agendainfo_end"
+                  ]
+              }
+          ]
+        }
+    ]
+}
