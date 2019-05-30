@@ -193,7 +193,7 @@ public class IAgendaServiceImpl implements IAgendaService {
 	private void classifyAgenda(AgdAgenda agd) {
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		map.put("owner", agd.getServerCreaterId());
+		map.put("owner", agd.getCreaterId());
 		map.put("agenda", JSONObject.toJSON(agd));
 		
 		Map<String, Object> map2 = new HashMap<String, Object>();
