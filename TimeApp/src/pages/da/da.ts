@@ -40,8 +40,9 @@ import { ScdData } from "../../data.mapping";
       <ion-row class="h100" align-items-center>
         <ion-grid>
           <ion-row justify-content-center>
-            日程
-            <ion-card *ngFor="let scd of scdlist">
+            当天
+            <ng-container *ngFor="let scd of scdlist">
+            <ion-card *ngIf="scd.gs == '3' || scd.gs == '4'">
               <div class="card-title">{{scd.sn}}</div>
               <div *ngIf="scd.bz" class="card-subtitle">{{scd.bz}}</div>
               <div *ngIf="scd.st && scd.st != '99:99'" class="card-subtitle">{{scd.st}}</div>
@@ -50,6 +51,21 @@ import { ScdData } from "../../data.mapping";
                 <div class="color-dot" [ngStyle]="{'background-color': scd.p.jc }"></div>
               </div>
             </ion-card>
+            </ng-container>
+          </ion-row>
+          <ion-row justify-content-center>
+            日程
+            <ng-container *ngFor="let scd of scdlist">
+            <ion-card *ngIf="scd.gs != '3' || scd.gs != '4'">
+              <div class="card-title">{{scd.sn}}</div>
+              <div *ngIf="scd.bz" class="card-subtitle">{{scd.bz}}</div>
+              <div *ngIf="scd.st && scd.st != '99:99'" class="card-subtitle">{{scd.st}}</div>
+              <div *ngIf="scd.st && scd.st == '99:99'" class="card-subtitle">全天</div>
+              <div *ngIf="scd.p && scd.p.jc" class="card-subtitle">
+                <div class="color-dot" [ngStyle]="{'background-color': scd.p.jc }"></div>
+              </div>
+            </ion-card>
+            </ng-container>
           </ion-row>
         </ion-grid>
       </ion-row>
