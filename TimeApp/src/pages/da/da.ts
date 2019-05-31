@@ -56,7 +56,7 @@ import { ScdData } from "../../data.mapping";
           <ion-row justify-content-center>
             <small>日程</small>
             <ng-container *ngFor="let scd of scdlist">
-            <ion-card *ngIf="scd.gs != '3' || scd.gs != '4'">
+            <ion-card *ngIf="scd.gs != '3' && scd.gs != '4'">
               <div class="card-title">{{scd.sn}}</div>
               <div *ngIf="scd.bz" class="card-subtitle">{{scd.bz}}</div>
               <div *ngIf="scd.st && scd.st != '99:99'" class="card-subtitle">{{scd.st}}</div>
