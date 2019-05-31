@@ -36,7 +36,7 @@ function clean(datasource)
     }
 
     if (nlp && nlp['announceContent'] && nlp['announceContent']['mwxing'] && nlp['announceContent']['mwxing']['header'] && nlp['announceContent']['mwxing']['header']['describe']) {
-      if (nlp['announceContent']['mwxing']['header']['describe'].contains('F')) {
+      if (nlp['announceContent']['mwxing']['header']['describe'].indexOf('F') >= 0) {
         for (var pid in nlp['announceContent']['mwxing']['header']['describe']) {
           if (nlp['announceContent']['mwxing']['header']['describe'][pid] === 'F') {
             nlp['announceContent']['mwxing']['content'][(pid + '')]['parameters']['fs'] = names;
@@ -48,10 +48,10 @@ function clean(datasource)
 
   if (markup && markup['markup']) {
     if (nlp && nlp['announceContent'] && nlp['announceContent']['mwxing'] && nlp['announceContent']['mwxing']['header'] && nlp['announceContent']['mwxing']['header']['describe']) {
-      if (nlp['announceContent']['mwxing']['header']['describe'].contains('F')) {
+      if (nlp['announceContent']['mwxing']['header']['describe'].indexOf('F') >= 0) {
         for (var pid in nlp['announceContent']['mwxing']['header']['describe']) {
           if (nlp['announceContent']['mwxing']['header']['describe'][pid] === 'F') {
-            nlp['announceContent']['mwxing']['content'][(pid + '')]['parameters']['marks'] = markup['markup'];
+            nlp['announceContent']['mwxing']['content'][(pid + '')]['parameters']['scd']['marks'] = markup['markup'];
           }
         }
       }
