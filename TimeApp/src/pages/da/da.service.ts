@@ -15,6 +15,7 @@ export class DaService {
       let query: RcInParam = new RcInParam();
 
       query.sd = moment(select.time).format('YYYY/MM/DD');
+      query.ed = moment(select.time).format('YYYY/MM/DD');
 
       this.pgservice.getList(query).then(data => {
         resolve(data);

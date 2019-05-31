@@ -281,6 +281,8 @@ export class PgBusiService {
           jt.spn,jt.sd,jt.st,jt.bz
         from gtd_jt jt inner join gtd_c c on jt.si = c.si)`;
 
+        sql = sql + ` where 1=1`;
+
         if (rc.sn) {
           sql = sql + ` and (sn like "% ${rc.sn}%" or bz like "% ${rc.sn}%")`;
         }
