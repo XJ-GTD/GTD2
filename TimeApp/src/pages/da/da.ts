@@ -1,5 +1,5 @@
 import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
@@ -24,7 +24,7 @@ import * as moment from "moment";
             <img class="img-header-left" src="./assets/imgs/back.png">
           </button>
         </ion-buttons>
-        <ion-title>关于</ion-title>
+        <ion-title>{{currentdayshow}}</ion-title>
         <ion-buttons right>
           <button ion-button icon-only color="danger">
           </button>
@@ -93,9 +93,16 @@ export class DaPage {
 
   client:any = {mainversion: 'v1', version: '1'};
   server:any = {version: '1', datacenter: ''};
+  currentday: CalendarDay;
+  currentdayshow: string = moment().format('MM月DD日');
 
-  constructor(public navCtrl: NavController,
+  constructor(public navCtrl: NavController, public navParams: NavParams,
               private sqlite:SqliteExec) {
+  }
+
+  async ionViewWillEnter() {
+    this.currentday = this.navParams.data;
+    this.currentdayshow = this.currentday.format('MM月DD日');
   }
 
   ionViewDidLoad() {

@@ -40,7 +40,7 @@ import {DataConfig} from "../../service/config/data.config";
             <span class="showDay2">{{hdata.showDay2}}</span>
             <span class="showDay3" *ngFor="let jt of hdata.jtl" (click)="gotojt(jt)">{{jt.spn}}</span>
           </p>
-          <p class="tipDay" *ngIf="hdata.things > 0"><a class="cls" (click)="gotolist()">
+          <p class="tipDay" *ngIf="hdata.things > 0"><a class="cls" (click)="gotodaily()">
             <ion-icon name="done-all"></ion-icon>
             {{hdata.things}} 个活动,{{hdata.newmessge}}条新消息</a></p>
           <p class="tipDay"><a class="cls" (click)="newcd()">
@@ -128,6 +128,12 @@ export class HPage {
     })
   }
 
+  gotodaily() {
+    let selectDay: CalendarDay = this.hdata.selectDay;
+    
+    this.modalCtr.create(DataConfig.PAGE._DA_PAGE, selectDay).present();
+  }
+
   gotolist() {
     this.menuController.open("ls");
     //this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: this.hdata.selectDay.time});
@@ -142,4 +148,3 @@ export class HPage {
     this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, p).present();
   }
 }
-
