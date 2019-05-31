@@ -40,7 +40,7 @@ import { ScdData } from "../../data.mapping";
       <ion-row class="h100" align-items-center>
         <ion-grid>
           <ion-row justify-content-center>
-            当天
+            <small>当天</small>
             <ng-container *ngFor="let scd of scdlist">
             <ion-card *ngIf="scd.gs == '3' || scd.gs == '4'">
               <div class="card-title">{{scd.sn}}</div>
@@ -54,7 +54,7 @@ import { ScdData } from "../../data.mapping";
             </ng-container>
           </ion-row>
           <ion-row justify-content-center>
-            日程
+            <small>日程</small>
             <ng-container *ngFor="let scd of scdlist">
             <ion-card *ngIf="scd.gs != '3' || scd.gs != '4'">
               <div class="card-title">{{scd.sn}}</div>
