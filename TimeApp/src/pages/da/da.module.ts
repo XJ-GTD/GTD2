@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { DaPage } from "./da";
+import { DaService } from "./da.service";
 
 @NgModule({
   declarations: [
@@ -10,6 +11,7 @@ import { DaPage } from "./da";
     IonicPageModule.forChild(DaPage),
   ],
   providers: [
+    DaService
   ],
 })
 export class DaPageModule {}
