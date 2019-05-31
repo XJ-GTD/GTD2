@@ -10,7 +10,7 @@ import { DaService } from "./da.service";
 import { ScdData } from "../../data.mapping";
 
 /**
- * Generated class for the 关于冥王星 page.
+ * Generated class for the 每天日程一览 page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -76,13 +76,10 @@ export class DaPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private daService: DaService, private sqlite:SqliteExec) {
-  }
-
-  async ionViewWillEnter() {
     this.currentday = this.navParams.data;
     this.currentdayshow = moment(this.currentday.time).format('MM月DD日');
   }
-
+  
   ionViewDidLoad() {
     let restfulHeader = new RestFulHeader();
     this.client.mainversion = restfulHeader.pv? restfulHeader.pv.replace(/v/, 'v0.') : 'v0.0';
