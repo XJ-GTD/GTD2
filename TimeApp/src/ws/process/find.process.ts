@@ -258,7 +258,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
               sql = sql + ` and mk.mkl like "%${mark}%"`;
             }
 
-            sql = sql + `)`;
+            sql = sql + `))`;
           } else {
             sql = sql + ` and c.sn like "%${scd.ti}%"`;
           }
