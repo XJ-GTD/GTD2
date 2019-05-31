@@ -44,7 +44,8 @@ import { ScdData } from "../../data.mapping";
             <ion-card *ngFor="let scd of scdlist">
               <div class="card-title">{{scd.sn}}</div>
               <div *ngIf="scd.bz" class="card-subtitle">{{scd.bz}}</div>
-              <div *ngIf="scd.st" class="card-subtitle">{{UtilService.adStrShow(scd.st)}}</div>
+              <div *ngIf="scd.st && scd.st != '99:99'" class="card-subtitle">{{scd.st}}</div>
+              <div *ngIf="scd.st && scd.st == '99:99'" class="card-subtitle">全天</div>
               <div *ngIf="scd.p && scd.p.jc" class="card-subtitle">
                 <div class="color-dot" [ngStyle]="{'background-color': scd.p.jc }"></div>
               </div>
