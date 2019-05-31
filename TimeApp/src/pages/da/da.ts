@@ -103,7 +103,7 @@ export class DaPage {
 
   async ionViewWillEnter() {
     this.currentday = this.navParams.data;
-    this.currentdayshow = this.currentday.format('MM月DD日');
+    this.currentdayshow = moment(this.currentday.time).format('MM月DD日');
   }
 
   ionViewDidLoad() {
