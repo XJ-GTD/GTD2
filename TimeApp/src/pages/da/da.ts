@@ -24,7 +24,7 @@ import { ScdData } from "../../data.mapping";
       <ion-toolbar>
         <ion-buttons left>
           <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/back.png">
+            <img class="img-header-left" src="./assets/imgs/back-white.png">
           </button>
         </ion-buttons>
         <ion-title>{{currentdayshow}}</ion-title>
