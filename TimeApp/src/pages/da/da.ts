@@ -48,23 +48,7 @@ import { ScdData } from "../../data.mapping";
         </ion-grid>
       </ion-row>
     </ion-grid>
-    </ion-content>
-
-    <ion-footer>
-      <ion-toolbar>
-        <ion-buttons left>
-          <button ion-button icon-only (click)="userAgreement()" color="danger">
-            服务条款
-          </button>
-        </ion-buttons>
-
-        <ion-buttons right>
-          <button ion-button icon-only (click)="userAgreement()" color="danger">
-            隐私政策
-          </button>
-        </ion-buttons>
-      </ion-toolbar>
-  </ion-footer>`
+    </ion-content>`
 })
 export class DaPage {
 
@@ -79,7 +63,7 @@ export class DaPage {
     this.currentday = this.navParams.data;
     this.currentdayshow = moment(this.currentday.time).format('MM月DD日');
   }
-  
+
   ionViewDidLoad() {
     let restfulHeader = new RestFulHeader();
     this.client.mainversion = restfulHeader.pv? restfulHeader.pv.replace(/v/, 'v0.') : 'v0.0';
