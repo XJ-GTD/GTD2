@@ -1,0 +1,147 @@
+page-da {
+  background-color: $baseBackColor;
+  .typegroup,.status{
+    display: flex;
+  }
+  .label-ios{
+    margin: 0 0 0 0 ;
+  }
+  .radio-ios{
+    margin: 0 15px;
+  }
+
+  .w-auto {
+    flex: 1;
+  }
+
+  .grid {
+    padding: 0;
+  }
+
+  .grid .row {
+    height: 100%;
+  }
+
+  ion-grid.h70 {
+    height: 70vmax;
+  }
+
+  ion-row.h100 {
+    height: 100%;
+  }
+
+  .img-logo {
+    width: 30vmin;
+    height: 30vmin;
+    border-radius: 15px;
+  }
+
+  h1.app-title {
+    font-size: 24px;
+  }
+
+  h3.app-description {
+    font-size: 17px;
+    letter-spacing: 1px;
+    color: #666666;
+  }
+
+  span.app-profiles {
+    color: #666666;
+  }
+
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: $baseBackColor;
+  }
+
+  ion-header{
+    padding: 4px 20px;
+  }
+
+  ion-footer ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: $baseBackColor;
+  }
+
+  ion-footer {
+    padding: 4px 20px;
+  }
+
+  .img-header-left{
+    width: 4vmin;
+    height: 4vmin;
+  }
+
+  .toolbar-title{
+    color: white;
+    letter-spacing: 0.5vmin;
+    font-size: 1.5rem;
+  }
+
+  .button-header-right{
+    font-size: 1.5rem;
+    color: $adornColor;
+  }
+
+  ion-content.content {
+    background-color: $baseBackColor;
+    color: #fff;
+  }
+
+  ion-content .plan-list-item {
+    background-color: $baseBackColor;
+    color: #fff;
+    padding-left: 8px;
+    font-size: 1.4rem;
+    min-height: 9vmin;
+  }
+
+  ion-list-header.plan-list-item {
+    color: rgb(153,153,153);
+  }
+
+  ion-content .plan-z{
+    background-color: $baseBackColor;
+    color: #fff;
+  }
+
+  .color-dot {
+    width: 2.5vmin;
+    height: 2.5vmin;
+    background-color: #fff;
+    border-radius: 50%;
+  }
+  list list-ios{
+    overflow-y: auto;
+  }
+  .img-content-plan{
+    width: 2vmin;
+    height: 2vmin;
+  }
+
+  .img-content-refresh{
+    width: 3.5vmin;
+    height: 3vmin;
+    margin-left: 0;
+  }
+
+  .content-download{
+    color: white;
+    margin-left: 0;
+  }
+
+  .item-ios .item-button {
+    margin-right: 0;
+  }
+
+  .plan-none{
+    margin-left: 16px;
+    font-size: 11px;
+    opacity: 0.4;
+    letter-spacing: 1px;
+  }
+
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+}

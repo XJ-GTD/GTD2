@@ -80,6 +80,7 @@ import {PipesModule} from "../pipes/pipes.module";
 import {ConfirmboxComponentModule} from "../components/confirmbox/confirmbox.module";
 import {LogPageModule} from "../pages/log/log.module";
 import {AtPageModule} from "../pages/at/at.module";
+import {DaPageModule} from "../pages/da/da.module";
 
 @NgModule({
   declarations: [
@@ -123,6 +124,7 @@ import {AtPageModule} from "../pages/at/at.module";
     TdlPageModule,
     LogPageModule,
     AtPageModule,
+    DaPageModule,
     ConfirmboxComponentModule
   ],
   bootstrap: [IonicApp],
