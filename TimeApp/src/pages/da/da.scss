@@ -1,8 +1,8 @@
 page-da {
-  background-color: $lsback0;
+  background-color: $lsback1;
 
   ion-card {
-    background-color: $lsback0;
+    background-color: $lsback1;
     position: relative;
     text-align: center;
   }
@@ -75,7 +75,7 @@ page-da {
   }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: $lsback0;
+    background-color: $lsback1;
   }
 
   ion-header{
@@ -103,7 +103,7 @@ page-da {
   }
 
   ion-content.content {
-    background-color: $lsback0;
+    background-color: $lsback1;
     color: #fff;
   }
 
