@@ -93,7 +93,7 @@ export class DaPage {
     if (RestFulConfig.INIT_DATA_URL.indexOf('?') < 0) this.server.datacenter += '公测';
     this.server.datacenter += '数据中心';
 
-    this.daService.currentShow(selectDay).then(d => {
+    this.daService.currentShow(this.currentday).then(d => {
       if (d) this.scdlist = d;
     });
   }
