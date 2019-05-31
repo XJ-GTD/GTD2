@@ -12,7 +12,7 @@ import * as moment from "moment";
 import {DataConfig} from "../config/data.config";
 import {UserConfig} from "../config/user.config";
 import {ContactsService} from "../cordova/contacts.service";
-import {BaseData, FsData, JtData, RcInParam, ScdData, SpecScdData,MonthData, DayData} from "../../data.mapping";
+import {BaseData, FsData, JtData, RcInParam, ScdData, PlData, SpecScdData,MonthData, DayData} from "../../data.mapping";
 import {FsService} from "../../pages/fs/fs.service";
 import {EmitService} from "../util-service/emit.service";
 import {BTbl} from "../sqlite/tbl/b.tbl";
@@ -323,8 +323,7 @@ export class PgBusiService {
         if (res && res.length > 0) {
           for (let scd of res) {
             if (scd.ji) {
-              PlData pl = await this.getPlanById(scd.ji);
-
+              let pl: PlData = await this.getPlanById(scd.ji);
               scd.p = pl;
             }
           }
