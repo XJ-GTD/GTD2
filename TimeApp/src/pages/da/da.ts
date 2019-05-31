@@ -6,6 +6,8 @@ import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config"
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import * as moment from "moment";
 import { CalendarDay } from "../../components/ion2-calendar";
+import { DaService } from "./da.service";
+import { ScdData } from "../../data.mapping";
 
 /**
  * Generated class for the 关于冥王星 page.
@@ -37,37 +39,11 @@ import { CalendarDay } from "../../components/ion2-calendar";
     <ion-grid class="h70">
       <ion-row class="h100" align-items-center>
         <ion-grid>
-          <ion-row justify-content-center>
-            <ion-avatar>
-              <img class="img-logo" src="./assets/imgs/logo.png">
-            </ion-avatar>
-          </ion-row>
-          <ion-row justify-content-center>
-            <p></p>
-          </ion-row>
-          <ion-row justify-content-center>
-            <h1 class="app-title">冥王星</h1>
-          </ion-row>
-          <ion-row justify-content-center>
-            <h3 class="app-description">人工智能接触生活、工作与梦想</h3>
-          </ion-row>
-          <ion-row justify-content-center>
-            <h3 class="app-description">迸发出的火花</h3>
-          </ion-row>
-          <ion-row justify-content-center>
-            <p></p>
-          </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-profiles">版本</span>
-          </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-profiles">{{client.mainversion}}.{{client.version}}</span>
-          </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-profiles">{{server.datacenter}}</span>
-          </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-profiles">v{{server.version}}</span>
+          <ion-row *ngFor="let scd of scdlist" justify-content-center>
+            <ion-card>
+              <div class="card-title">{{scd.sn}}</div>
+              <div *ngIf="scd.bz" class="card-subtitle">{{scd.bz}}</div>
+            </ion-card>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -96,9 +72,10 @@ export class DaPage {
   server:any = {version: '1', datacenter: ''};
   currentday: CalendarDay;
   currentdayshow: string = moment().format('MM月DD日');
+  scdlist: Array<ScdData> = new Array<ScdData>();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private sqlite:SqliteExec) {
+              private daService: DaService, private sqlite:SqliteExec) {
   }
 
   async ionViewWillEnter() {
@@ -115,6 +92,10 @@ export class DaPage {
     if (RestFulConfig.INIT_DATA_URL.indexOf('debug=true') > 0) this.server.datacenter += '内部';
     if (RestFulConfig.INIT_DATA_URL.indexOf('?') < 0) this.server.datacenter += '公测';
     this.server.datacenter += '数据中心';
+
+    this.daService.currentShow(selectDay).then(d => {
+      if (d) this.scdlist = d;
+    });
   }
 
   userAgreement() {
