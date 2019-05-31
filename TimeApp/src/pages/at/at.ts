@@ -100,7 +100,7 @@ export class AtPage {
 
   ionViewDidLoad() {
     let restfulHeader = new RestFulHeader();
-    this.client.mainversion = restfulHeader.pv? restfulHeader.pv.replace(/v/, 'v0.');
+    this.client.mainversion = restfulHeader.pv? restfulHeader.pv.replace(/v/, 'v0.') : 'v0.0';
     this.client.version = UserConfig.getClientVersion();
 
     if (RestFulConfig.INIT_DATA_URL.indexOf('tag=mwxing') > 0) this.server.datacenter += '开发';
