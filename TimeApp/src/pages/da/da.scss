@@ -5,23 +5,25 @@ page-da {
     background-color: $lsback0;
     position: relative;
     text-align: center;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    box-shadow: 0;
+    -moz-box-shadow: 0;
+    -webkit-box-shadow: 0;
   }
 
   .card-title {
     position: relative;
     background-color: $lsback0;
-    top: 36%;
-    font-size: 2.0em;
+    font-size: 8vmin;
     width: 100%;
-    font-weight: bold;
     color: #fff;
   }
 
   .card-subtitle {
     background-color: $lsback0;
-    font-size: 1.0em;
+    font-size: 4vmin;
     position: relative;
-    top: 52%;
     width: 100%;
     color: #fff;
   }
