@@ -27,7 +27,7 @@ import { ScdData } from "../../data.mapping";
             <img class="img-header-left" src="./assets/imgs/back-white.png">
           </button>
         </ion-buttons>
-        <ion-title>{{currentdayshow}}</ion-title>
+        <ion-title>{{currentdayofweek}}<br/><small>{{currentdayshow}}</small></ion-title>
         <ion-buttons right>
           <button ion-button icon-only color="danger">
           </button>
@@ -61,7 +61,8 @@ export class DaPage {
   client:any = {mainversion: 'v1', version: '1'};
   server:any = {version: '1', datacenter: ''};
   currentday: CalendarDay;
-  currentdayshow: string = moment().format('dddd') + '\r\n' + moment().format('MMMM D');
+  currentdayofweek: string = moment().format('dddd');
+  currentdayshow: string = moment().format('MMMM D');
   scdlist: Array<ScdData> = new Array<ScdData>();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -69,7 +70,8 @@ export class DaPage {
     moment.locale('zh-cn');
 
     this.currentday = this.navParams.data;
-    this.currentdayshow = moment(this.currentday.time).format('dddd') + '\r\n' + moment(this.currentday.time).format('MMMM D');
+    this.currentdayofweek = moment(this.currentday.time).format('dddd');
+    this.currentdayshow = moment(this.currentday.time).format('MMMM D');
   }
 
   ionViewDidLoad() {
