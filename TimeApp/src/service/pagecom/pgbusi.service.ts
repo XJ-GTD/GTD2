@@ -242,6 +242,21 @@ export class PgBusiService {
   }
 
   /**
+   * 查询计划
+   */
+  getPlanById(ji: string): Promise<PlData> {
+    return new Promise<PlData>(async resolve => {
+      let sql: string = `select * from gtd_j_h where ji = "${ji}"`;
+
+      let res: PlData = new PlData();
+
+      res = await this.sqlExce.getExtOne<PlData>(sql);
+
+      resolve(res);
+    });
+  }
+
+  /**
    * 条件查询  dch
    * @param {RcInParam} rc
    */
@@ -304,6 +319,16 @@ export class PgBusiService {
         }
         console.log("============ mq查询日程："+ sql);
         res = await this.sqlExce.getExtList<ScdData>(sql);
+
+        if (res && res.length > 0) {
+          for (let scd of res) {
+            if (scd.ji) {
+              PlData pl = await this.getPlanById(scd.ji);
+
+              scd.p = pl;
+            }
+          }
+        }
       }
       resolve(res);
     })
