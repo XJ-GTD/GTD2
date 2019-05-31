@@ -8,7 +8,8 @@ page-da {
   }
 
   .card-title {
-    position: absolute;
+    position: relative;
+    background-color: $lsback0;
     top: 36%;
     font-size: 2.0em;
     width: 100%;
@@ -17,8 +18,9 @@ page-da {
   }
 
   .card-subtitle {
+    background-color: $lsback0;
     font-size: 1.0em;
-    position: absolute;
+    position: relative;
     top: 52%;
     width: 100%;
     color: #fff;
