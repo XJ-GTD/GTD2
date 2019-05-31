@@ -61,13 +61,15 @@ export class DaPage {
   client:any = {mainversion: 'v1', version: '1'};
   server:any = {version: '1', datacenter: ''};
   currentday: CalendarDay;
-  currentdayshow: string = moment().format('MM月DD日');
+  currentdayshow: string = moment().format('dddd') + '\r\n' + moment().format('MMMM D');
   scdlist: Array<ScdData> = new Array<ScdData>();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private daService: DaService, private sqlite:SqliteExec) {
+    moment.locale('zh-cn');
+
     this.currentday = this.navParams.data;
-    this.currentdayshow = moment(this.currentday.time).format('MM月DD日');
+    this.currentdayshow = moment(this.currentday.time).format('dddd') + '\r\n' + moment(this.currentday.time).format('MMMM D');
   }
 
   ionViewDidLoad() {
