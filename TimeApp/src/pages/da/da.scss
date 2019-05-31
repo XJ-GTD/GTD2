@@ -7,22 +7,22 @@ page-da {
     text-align: center;
     padding-top: 8px;
     padding-bottom: 8px;
-    box-shadow: 0;
-    -moz-box-shadow: 0;
-    -webkit-box-shadow: 0;
+    box-shadow: 0 0 0;
+    -moz-box-shadow: 0 0 0;
+    -webkit-box-shadow: 0 0 0;
   }
 
   .card-title {
     position: relative;
     background-color: $lsback0;
-    font-size: 8vmin;
+    font-size: 1.4em;
     width: 100%;
     color: #fff;
   }
 
   .card-subtitle {
     background-color: $lsback0;
-    font-size: 4vmin;
+    font-size: 1.0em;
     position: relative;
     width: 100%;
     color: #fff;
