@@ -13,7 +13,8 @@
             "type": "composite",
             "composite_with": [
                 "xfy_nlp_end",
-                "xfy_iat_end"
+                "xfy_iat_end",
+                "markup_nlp_end"
             ],
             "task": {
                 "name": "数据清洗与转换 整合迅飞语音和人名识别的结果",
@@ -159,6 +160,71 @@
                 "function",
                 "text",
                 "parsed"
+            ],
+            "next": [
+                {
+                    "type": "forward",
+                    "forward_with": [
+                        "markup_nlp_end"
+                    ]
+                }
+            ]
+        },
+        {
+            "when": {
+                "d$or": [
+                    {
+                        "d$.parent.parameters.xunfeiyun": {
+                            "data": {
+                                "d$exists": false
+                            }
+                        }
+                    },
+                    {
+                        "d$.parent.parameters.xunfeiyun.data": {
+                            "d$length": {
+                                "d$lte": 0
+                            }
+                        }
+                    },
+                    {
+                        "d$and": [
+                            {
+                                "d$.parent.parameters.xunfeiyun.data[0]": {
+                                    "text": {
+                                        "d$exists": false
+                                    }
+                                }
+                            },
+                            {
+                                "d$.parent.parameters.xunfeiyun.data[0].intent": {
+                                    "text": {
+                                        "d$exists": false
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "name": "标注短句的语义标签空字符串",
+            "trigger": "nlp",
+            "parameters": [
+                "function;MarkupAnalysis",
+                "text; "
+            ],
+            "outputs": [
+                "function",
+                "text",
+                "parsed"
+            ],
+            "next": [
+                {
+                    "type": "forward",
+                    "forward_with": [
+                        "markup_nlp_end"
+                    ]
+                }
             ]
         },
         {
