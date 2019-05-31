@@ -5,6 +5,7 @@ import {UserConfig} from "../../service/config/user.config";
 import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import * as moment from "moment";
+import { CalendarDay } from "../../components/ion2-calendar";
 
 /**
  * Generated class for the 关于冥王星 page.
