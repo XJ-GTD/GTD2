@@ -1,6 +1,6 @@
 import {MQProcess} from "../interface.process";
 import {WsContent} from "../model/content.model";
-import {SH} from "../model/ws.enum";
+import {PN} from "../model/ws.enum";
 import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
 import {ProcesRs} from "../model/proces.rs";
