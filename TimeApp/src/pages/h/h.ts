@@ -98,6 +98,11 @@ export class HPage {
     this.emitService.registerRef(data => {
       this.calendar.createMonth(this.calendar.monthOpt.original.time);
     });
+
+    //每日简报消息回调
+    this.emitService.register('on.dailyreport.message.click', (data) => {
+      this.gotodaily();
+    });
   }
 
   onPress(pressDay) {
@@ -130,7 +135,7 @@ export class HPage {
 
   gotodaily() {
     let selectDay: CalendarDay = this.hdata.selectDay;
-    
+
     this.modalCtr.create(DataConfig.PAGE._DA_PAGE, selectDay).present();
   }
 

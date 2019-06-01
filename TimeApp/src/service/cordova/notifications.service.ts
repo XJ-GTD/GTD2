@@ -115,6 +115,14 @@ export class NotificationsService {
       this.emitService.emitNewMessageClick(emMessage);
       this.localNotifications.clear(next.id);
     }
+
+    if (next.data.type == "newMessage") {
+      let data: any = next.data.val;
+      let eventhandler: string = data.eventhandler;
+
+      this.emitService.emit(eventhandler, data);
+      this.localNotifications.clear(next.id);
+    }
   }
 
   public badgeDecrease() {
@@ -146,7 +154,19 @@ export class NotificationsService {
     }
   }
 
+  public newMessage(title: string, text: string, data: any) {
+    //非日程通知栏消息
+    let notif: MwxNewMessage = new MwxNewMessage();
+    notif.id = this.index++;
+    notif.title = title;
+    notif.text = text;
+    notif.data = {type: "newMessage", val: data};
 
+    if (this.util.isMobile()) {
+      this.badge.increase(1);
+      this.localNotifications.schedule(notif);
+    }
+  }
 
   public schedule() {
     let notif: MwxSchedule = new MwxSchedule();
