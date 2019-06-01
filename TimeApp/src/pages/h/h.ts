@@ -102,7 +102,17 @@ export class HPage {
     //每日简报消息回调
     this.emitService.register('on.dailyreport.message.click', (data) => {
 
-      this.gotodaily({time: moment().unix(), isToday: false});
+      this.gotodaily({
+        time: moment().unix(),
+        isToday: false,
+        selected: false,
+        disable: false,
+        cssClass: '',
+        hassometing: false,
+        busysometing: false,
+        allsometing: false,
+        onlyRepeat: false
+      });
     });
   }
 
