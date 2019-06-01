@@ -101,8 +101,8 @@ export class HPage {
 
     //每日简报消息回调
     this.emitService.register('on.dailyreport.message.click', (data) => {
-      let currentday: CalendarDay = {time: moment().unix()};
-      this.gotodaily(currentday);
+
+      this.gotodaily({time: moment().unix()});
     });
   }
 
