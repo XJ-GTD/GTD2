@@ -101,7 +101,8 @@ export class HPage {
 
     //每日简报消息回调
     this.emitService.register('on.dailyreport.message.click', (data) => {
-      this.gotodaily();
+      let currentday: CalendarDay = {time: moment().unix()};
+      this.gotodaily(currentday);
     });
   }
 
@@ -133,8 +134,8 @@ export class HPage {
     })
   }
 
-  gotodaily() {
-    let selectDay: CalendarDay = this.hdata.selectDay;
+  gotodaily(day?: CalendarDay) {
+    let selectDay: CalendarDay = day? day : this.hdata.selectDay;
 
     this.modalCtr.create(DataConfig.PAGE._DA_PAGE, selectDay).present();
   }
