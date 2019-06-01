@@ -35,7 +35,7 @@ export class EmitService {
 
   //冥王星内建事件订阅
   register(handler: string, callback) {
-    ee: EventEmitter<any> = this.buildinEvents.get(handler);
+    let ee: EventEmitter<any> = this.buildinEvents.get(handler);
 
     //事件不存在，创建并加入管理
     if (!ee) {
@@ -57,7 +57,7 @@ export class EmitService {
 
   //冥王星内建事件触发
   emit(handler: string, $data: any) {
-    ee: EventEmitter<any> = this.buildinEvents.get(handler);
+    let ee: EventEmitter<any> = this.buildinEvents.get(handler);
 
     //事件不存在直接返回
     if (!ee) {
@@ -70,7 +70,7 @@ export class EmitService {
   }
 
   destroy(handler: string) {
-    ee: EventEmitter<any> = this.buildinEvents.get(handler);
+    let ee: EventEmitter<any> = this.buildinEvents.get(handler);
 
     //事件不存在直接返回
     if (!ee) {
