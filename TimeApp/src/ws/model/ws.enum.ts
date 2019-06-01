@@ -42,6 +42,11 @@ export enum SH {
   D = "SH.D",  //删除
 }
 
+//推送通知
+export enum PN {
+  DR = "PN.DR"  //每日简报通知推送
+}
+
 //日程标签
 export enum MK {
   U = "MK.U"  //标注日程语义标签
