@@ -39,7 +39,7 @@ export class NotificationProcess implements MQProcess {
 
       //处理所需要参数
       let dailySummary: any = content.parameters;
-      let title: string = '';
+      let title: string = '每日简报';
       let text: string = '';
       let data: any = {eventhandler: 'on.dailyreport.message.click'};
 
