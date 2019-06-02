@@ -118,9 +118,12 @@ export class NotificationsService {
 
     if (next.data.type == "newMessage") {
       let data: any = next.data.val;
-      let eventhandler: string = data.eventhandler;
+      let eventhandler: string = data? data.eventhandler : "";
 
-      this.emitService.emit(eventhandler, data);
+      if (eventhandler) {
+        this.emitService.emit(eventhandler, data);
+      }
+
       this.localNotifications.clear(next.id);
     }
   }
