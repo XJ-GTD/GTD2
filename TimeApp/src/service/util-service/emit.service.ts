@@ -69,6 +69,7 @@ export class EmitService {
     }
   }
 
+  //冥王星内建时间注销
   destroy(handler: string) {
     let ee: EventEmitter<any> = EmitService.buildinEvents.get(handler);
 
