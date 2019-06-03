@@ -62,7 +62,7 @@ import {PageY} from "../../data.mapping";
               <ion-label>联系人</ion-label>
             </ion-list-header>
 
-            <button ion-item class="plan-list-item" [attr.detail-none]="lfsloading" [attr.detail-push]="!lfsloading" (click)="resfriend()">
+            <button ion-item class="plan-list-item" [attr.detail-none]="!lfsloading" [attr.detail-push]="lfsloading" (click)="resfriend()">
               <ion-label>本地联系人</ion-label>
               <ion-note *ngIf="!lfsloading" item-end>{{localfriends}}</ion-note>
               <ion-spinner *ngIf="lfsloading" icon="circles" item-end></ion-spinner>
