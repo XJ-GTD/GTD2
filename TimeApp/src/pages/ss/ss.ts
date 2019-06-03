@@ -99,23 +99,12 @@ export class SsPage {
               private navCtrl: NavController,
               public ssService:SsService,
               private _renderer: Renderer2 ) {
-    this.h = UserConfig.settins.get(DataConfig.SYS_H);
-    this.t = UserConfig.settins.get(DataConfig.SYS_T);
-    this.b = UserConfig.settins.get(DataConfig.SYS_B);
-    this.z = UserConfig.settins.get(DataConfig.SYS_Z);
-    this.dr = UserConfig.settins.get(DataConfig.SYS_DR);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SsPage');
 
-    this.bh = (this.h.value == "1") ? true : false;
-    this.bt = (this.t.value == "1") ? true : false;
-    this.bb = (this.b.value == "1") ? true : false;
-    this.bz = (this.z.value == "1") ? true : false;
-    this.bdr = (this.dr.value == "1") ? true : false;
-
-    this.localfriends = UserConfig.friends? UserConfig.friends.length : 0;
+    this.getData();
   }
 
   goBack() {
@@ -145,7 +134,19 @@ export class SsPage {
   }
 
   private getData() {
+    this.h = UserConfig.settins.get(DataConfig.SYS_H);
+    this.t = UserConfig.settins.get(DataConfig.SYS_T);
+    this.b = UserConfig.settins.get(DataConfig.SYS_B);
+    this.z = UserConfig.settins.get(DataConfig.SYS_Z);
+    this.dr = UserConfig.settins.get(DataConfig.SYS_DR);
 
+    this.bh = (this.h.value == "1") ? true : false;
+    this.bt = (this.t.value == "1") ? true : false;
+    this.bb = (this.b.value == "1") ? true : false;
+    this.bz = (this.z.value == "1") ? true : false;
+    this.bdr = (this.dr.value == "1") ? true : false;
+
+    this.localfriends = UserConfig.friends? UserConfig.friends.length : 0;
   }
 
   //刷新本地联系人
