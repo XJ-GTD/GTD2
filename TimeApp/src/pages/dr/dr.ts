@@ -37,7 +37,10 @@ import * as moment from "moment";
               获得每天的日程安排摘要
             </ion-row>
             <ion-row align-items-center justify-content-center>
-              <h1></h1>
+              <p></p>
+            </ion-row>
+            <ion-row align-items-center justify-content-center>
+              <p></p>
             </ion-row>
             <ion-row align-items-center justify-content-center>
               <h1 class="h1-danger">{{notifytime| formatedate:"HH:mm"}} <small>{{notifytime| formatedate:"A"}}</small></h1>
@@ -48,7 +51,7 @@ import * as moment from "moment";
             <ion-row align-items-center justify-content-center>
               <ion-list>
                 <ion-item class="bg-transparent no-border" no-margin>
-                  <ion-range [(ngModel)]="notifytime" [min]="min" [max]="max" pin="false" dualKnobs="false" snaps="false"></ion-range>
+                  <ion-range [(ngModel)]="notifytime" [min]="min" [max]="max" [step]="step" pin="false" dualKnobs="false" snaps="false"></ion-range>
                 </ion-item>
               </ion-list>
             </ion-row>
@@ -64,7 +67,7 @@ import * as moment from "moment";
 export class DrPage {
   min: number = moment('2019/6/3 00:00:00').unix() * 1000;
   max: number = moment('2019/6/3 23:59:59').unix() * 1000;
-  step: number = 15 * 60 * 1000; //15分钟
+  step: number = 5 * 60 * 1000; //15分钟
   notifytime: number = moment('2019/6/3 08:30:00').unix() * 1000;
 
   constructor(public navCtrl: NavController,
