@@ -40,8 +40,8 @@ import { ScdData } from "../../data.mapping";
       <ion-row class="h100" align-items-center>
         <ion-grid>
           <ion-row justify-content-center>
-            <small>当天</small>
-            <ng-container *ngFor="let scd of scdlist">
+            <small *ngIf="todaylist && todaylist.length > 0">当天</small>
+            <ng-container *ngFor="let scd of todaylist">
             <ion-card *ngIf="scd.gs == '3' || scd.gs == '4'">
               <div class="card-title">{{scd.sn}}</div>
               <div *ngIf="scd.bz" class="card-subtitle">{{scd.bz}}</div>
@@ -54,7 +54,7 @@ import { ScdData } from "../../data.mapping";
             </ng-container>
           </ion-row>
           <ion-row justify-content-center>
-            <small>日程</small>
+            <small *ngIf="scdlist && scdlist.length > 0">日程</small>
             <ng-container *ngFor="let scd of scdlist">
             <ion-card *ngIf="scd.gs != '3' && scd.gs != '4'">
               <div class="card-title">{{scd.sn}}</div>
@@ -79,6 +79,7 @@ export class DaPage {
   currentday: CalendarDay;
   currentdayofweek: string = moment().format('dddd');
   currentdayshow: string = moment().format('MMMM D');
+  todaylist: Array<ScdData> = new Array<ScdData>();
   scdlist: Array<ScdData> = new Array<ScdData>();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -101,7 +102,15 @@ export class DaPage {
     this.server.datacenter += '数据中心';
 
     this.daService.currentShow(this.currentday).then(d => {
-      if (d) this.scdlist = d;
+      if (d) {
+        for (let line of d) {
+          if (line.gs == '3' || line.gs == '4') {
+            this.todaylist.push(line);
+          } else {
+            this.scdlist.push(line);
+          }
+        }
+      }
     });
   }
 
