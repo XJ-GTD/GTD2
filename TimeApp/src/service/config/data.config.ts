@@ -34,6 +34,7 @@ import {TddsPage} from "../../pages/tdc/tdds";
 import {LogPage} from "../../pages/log/log";
 import {AtPage} from "../../pages/at/at";
 import {DaPage} from "../../pages/da/da";
+import {DrPage} from "../../pages/dr/dr";
 
 export class DataConfig {
   public static isdebug: boolean  = true;
@@ -221,6 +222,7 @@ export class DataConfig {
     _LOG_PAGE: LogPage,       // 辅助功能 - 备份
     _AT_PAGE: AtPage,       // 关于
     _DA_PAGE: DaPage,       // 日程 - 每日日程
+    _DR_PAGE: DrPage,       // 每日简报设置 - 智能提醒
   }
   /* ============ 页面名字配置 ===============*/
 

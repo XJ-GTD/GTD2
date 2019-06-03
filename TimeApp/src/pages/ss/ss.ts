@@ -1,5 +1,5 @@
 import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
+import {IonicPage, NavController, ModalController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
 import {SsService} from "./ss.service";
@@ -95,7 +95,8 @@ export class SsPage {
   lfsloading: boolean = false;//导入本地联系人处理状态
   localfriends: number = 0;//本地联系人导入数
 
-  constructor(private navCtrl: NavController,
+  constructor(public modalController: ModalController,
+              private navCtrl: NavController,
               public ssService:SsService,
               private _renderer: Renderer2 ) {
     this.h = UserConfig.settins.get(DataConfig.SYS_H);
@@ -134,6 +135,20 @@ export class SsPage {
     this.ssService.save(set);
   }
 
+  //智能提醒 每日简报设置
+  gotodrsetting() {
+    let modal = this.modalController.create(DataConfig.PAGE._DR_PAGE);
+    modal.onDidDismiss((data)=>{
+      this.getData();
+    });
+    modal.present();
+  }
+
+  private getData() {
+
+  }
+
+  //刷新本地联系人
   resfriend(){
     this.lfsloading = true;
 

@@ -81,6 +81,7 @@ import {ConfirmboxComponentModule} from "../components/confirmbox/confirmbox.mod
 import {LogPageModule} from "../pages/log/log.module";
 import {AtPageModule} from "../pages/at/at.module";
 import {DaPageModule} from "../pages/da/da.module";
+import {DrPageModule} from "../pages/dr/dr.module";
 
 @NgModule({
   declarations: [
@@ -125,6 +126,7 @@ import {DaPageModule} from "../pages/da/da.module";
     LogPageModule,
     AtPageModule,
     DaPageModule,
+    DrPageModule,
     ConfirmboxComponentModule
   ],
   bootstrap: [IonicApp],

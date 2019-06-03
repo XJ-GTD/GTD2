@@ -1,0 +1,74 @@
+page-dr {
+  background-color: $baseBackColor;
+
+  .w-auto {
+    flex: 1;
+  }
+
+  .grid {
+    padding: 0;
+  }
+
+  .grid .row {
+    height: 100%;
+  }
+
+  .list {
+    width: 100%;
+  }
+
+  .list-header, .list-header-md, .list-header-ios {
+    border: 0;
+  }
+
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: $baseBackColor;
+  }
+
+  ion-header{
+    padding: 4px 20px;
+    letter-spacing: 6px;
+  }
+
+  .img-header-left{
+    width: 4vmin;
+    height: 4vmin;
+  }
+
+  .toolbar-title{
+    color: white;
+    letter-spacing: 0.5vmin;
+    font-size: 1.5rem;
+  }
+
+  .bar-button-ios{
+    font-size: 1.5rem;
+  }
+
+  ion-input{
+    font-size: 1.5rem;
+  }
+
+  ion-content.content {
+    background-color: $baseBackColor;
+    color: #fff;
+  }
+
+  ion-content .plan-list-item {
+    background-color: $baseBackColor;
+    color: #fff;
+    padding-left: 8px;
+    font-size: 1.5rem;
+    min-height: 9vmin;
+  }
+
+  .img-delete{
+    width: 12px;
+    height: 12px;
+  }
+
+  .scroll-content{
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+}
