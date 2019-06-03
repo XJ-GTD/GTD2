@@ -65,7 +65,7 @@ export class DrPage {
   min: number = moment('2019/6/3 00:00:00').unix() * 1000;
   max: number = moment('2019/6/3 23:59:59').unix() * 1000;
   step: number = 15 * 60 * 1000; //15分钟
-  notifytime: number = moment('2019/6/3 08:30:00').unix();
+  notifytime: number = moment('2019/6/3 08:30:00').unix() * 1000;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
