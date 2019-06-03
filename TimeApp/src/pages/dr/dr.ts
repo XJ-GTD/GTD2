@@ -53,7 +53,7 @@ import {PageY} from "../../data.mapping";
             <ion-row align-items-center justify-content-center>
               <ion-list>
                 <ion-item class="bg-transparent no-border" no-margin>
-                  <ion-range [(ngModel)]="notifytime" (ionChange)="save(defaultnotifytime, moment.unix(notifytime / 1000).format('HH:mm'))" debounce="1000" [min]="min" [max]="max" [step]="step" pin="false" dualKnobs="false" snaps="false"></ion-range>
+                  <ion-range [(ngModel)]="notifytime" (ionChange)="save(defaultnotifytime, getTime(notifytime))" debounce="1000" [min]="min" [max]="max" [step]="step" pin="false" dualKnobs="false" snaps="false"></ion-range>
                 </ion-item>
               </ion-list>
             </ion-row>
@@ -94,6 +94,10 @@ export class DrPage {
 
   ionViewDidEnter(){
     console.log("3.0 ionViewDidEnter 当进入页面时触发");
+  }
+
+  getTime(selecttime: number): string {
+    return moment(selecttime).unix().format('HH:mm');
   }
 
   save(setting, value){
