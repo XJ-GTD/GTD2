@@ -47,13 +47,13 @@ import * as moment from "moment";
             </ion-row>
             <ion-row align-items-center justify-content-center>
               <ion-list no-padding no-margin>
-                <ion-item class="bg-transparent" no-margin no-border>
+                <ion-item class="bg-transparent no-border" no-margin>
                   <ion-range [(ngModel)]="notifytime" [min]="min" [max]="max" [step]="step" pin="false" dualKnobs="false" snaps="true" no-padding></ion-range>
                 </ion-item>
               </ion-list>
             </ion-row>
             <ion-row align-items-center justify-content-center>
-              <button ion-button full outline no-border>关闭</button>
+              <button ion-button full outline class="no-border">关闭</button>
             </ion-row>
           </ion-grid>
         </ion-row>
