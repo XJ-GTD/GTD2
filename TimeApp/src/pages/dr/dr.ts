@@ -108,7 +108,10 @@ export class DrPage {
     set.yt = setting.typeB; //偏好设置类型
     set.yn = setting.name;//偏好设置名称
     set.yk = setting.type ;//偏好设置key
-    set.yv = (value) ? "1":"0";//偏好设置value
+    if (typeof value === "boolean")
+      set.yv = (value) ? "1":"0";//偏好设置value
+    else
+      set.yv = value;//偏好设置value
 
     this.ssService.save(set);
 
