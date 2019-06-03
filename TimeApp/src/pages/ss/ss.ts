@@ -62,14 +62,15 @@ import {PageY} from "../../data.mapping";
               <ion-label>联系人</ion-label>
             </ion-list-header>
 
-            <button ion-item class="plan-list-item" >
+            <button ion-item class="plan-list-item" (click)="resfriend()">
               <ion-label>本地联系人</ion-label>
-              <ion-note item-end>{{localfriends}}</ion-note>
+              <ion-note *ngIf="!lfsloading" item-end>{{localfriends}}</ion-note>
+              <ion-spinner *ngIf="lfsloading" name="lines-small"></ion-spinner>
             </button>
 
             <ion-item class="plan-list-item" >
               <ion-label>本地联系人</ion-label>
-              <button ion-button clear item-end  (click)="resfriend()">
+              <button ion-button clear item-end >
                 <div #resfri>
                   <img class="img-content-refresh" src="./assets/imgs/sx.png" />
                 </div>
@@ -89,8 +90,7 @@ export class SsPage {
   bt:boolean;//新消息提醒 页面显示和修改
   bb:boolean;//语音播报 页面显示和修改
   bz:boolean;//振动 页面显示和修改
-  @ViewChild("resfri")
-  resfri:ElementRef;
+  lfsloading: boolean = false;
   localfriends: number = 0;
 
   constructor(private navCtrl: NavController,
@@ -131,10 +131,10 @@ export class SsPage {
   }
 
   resfriend(){
-    this._renderer.addClass(this.resfri.nativeElement,"spinanimation");
+    this.lfsloading = true;
 
     this.ssService.resfriend().then(d=>{
-      this._renderer.removeClass(this.resfri.nativeElement,"spinanimation");
+      this.lfsloading = false;
     })
   }
 }
