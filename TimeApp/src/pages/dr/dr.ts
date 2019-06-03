@@ -39,7 +39,7 @@ import {FsData} from "../../data.mapping";
               <hr>
             </ion-row>
             <ion-row align-items-center justify-content-center>
-              <h1>7:00 <small>上午</small></h1>
+              <h1>{{notifytime| formatedate('HH:mm')}} <small>{{notifytime| formatedate('A')}}</small></h1>
             </ion-row>
             <ion-row align-items-center justify-content-center>
               每天
@@ -47,7 +47,7 @@ import {FsData} from "../../data.mapping";
             <ion-row align-items-center justify-content-center>
               <ion-list>
                 <ion-item>
-                  <ion-range [(ngModel)]="brightness" [min]="min" [max]="max" [step]="step" pin="false" dualKnobs="false" snaps="true"></ion-range>
+                  <ion-range [(ngModel)]="notifytime" [min]="min" [max]="max" [step]="step" pin="false" dualKnobs="false" snaps="true"></ion-range>
                 </ion-item>
               </ion-list>
             </ion-row>
@@ -64,6 +64,7 @@ export class DrPage {
   min: number = moment('2019/6/3 00:00:00').unix();
   max: number = moment('2019/6/3 23:59:59').unix();
   step: number = 15 * 60; //15分钟
+  notifytime: number = moment('2019/6/3 08:30:00').unix();
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
