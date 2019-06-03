@@ -39,7 +39,7 @@ import {FsData} from "../../data.mapping";
               <hr>
             </ion-row>
             <ion-row align-items-center justify-content-center>
-              <h1>{{notifytime| formatedate('HH:mm')}} <small>{{notifytime| formatedate('A')}}</small></h1>
+              <h1>{{notifytime| formatedate:"HH:mm"}} <small>{{notifytime| formatedate:"A"}}</small></h1>
             </ion-row>
             <ion-row align-items-center justify-content-center>
               每天
