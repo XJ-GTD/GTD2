@@ -43,7 +43,7 @@ import * as moment from "moment";
               <h1 class="h1-danger">{{notifytime| formatedate:"HH:mm"}} <small>{{notifytime| formatedate:"A"}}</small></h1>
             </ion-row>
             <ion-row align-items-center justify-content-center class="golden-margin">
-              每天
+              <small>每天</small>
             </ion-row>
             <ion-row align-items-center justify-content-center>
               <ion-list>
