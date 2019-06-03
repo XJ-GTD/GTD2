@@ -31,9 +31,9 @@ import {PageY} from "../../data.mapping";
     <ion-content padding>
           <ion-list no-lines>
             <ion-list-header>
-              <ion-label>系统设置</ion-label>
+              <ion-label>语音</ion-label>
             </ion-list-header>
-            
+
             <ion-item class="plan-list-item" >
               <ion-label>语音唤醒</ion-label>
               <ion-toggle [(ngModel)]="bh" (ionChange)="save(h, bh)"></ion-toggle>
@@ -49,16 +49,21 @@ import {PageY} from "../../data.mapping";
               <ion-toggle [(ngModel)]="bz" (ionChange)="save(z, bz)"></ion-toggle>
             </ion-item>
 
+            <ion-list-header>
+              <ion-label>新消息</ion-label>
+            </ion-list-header>
+
             <ion-item class="plan-list-item" >
               <ion-label>新消息提醒</ion-label>
               <ion-toggle [(ngModel)]="bt" (ionChange)="save(t, bt)"></ion-toggle>
             </ion-item>
 
             <ion-list-header>
-              <ion-label>其他</ion-label>
+              <ion-label>联系人</ion-label>
             </ion-list-header>
+
             <ion-item class="plan-list-item" >
-              <ion-label>刷新朋友</ion-label>
+              <ion-label>本地联系人</ion-label>
               <button ion-button clear item-end  (click)="resfriend()">
                 <div #resfri>
                   <img class="img-content-refresh" src="./assets/imgs/sx.png" />
@@ -125,4 +130,3 @@ export class SsPage {
     })
   }
 }
-
