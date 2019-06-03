@@ -2,5 +2,6 @@
 {"name":"H", "value":"0", "desc":"唤醒"},
 {"name":"T", "value":"1", "desc":"新消息提醒"},
 {"name":"B", "value":"1", "desc":"语音播报"},
-{"name":"Z", "value":"1", "desc":"震动音效"}
+{"name":"Z", "value":"1", "desc":"震动音效"},
+{"name":"DR", "value":"1", "desc":"每日简报"}
 ]

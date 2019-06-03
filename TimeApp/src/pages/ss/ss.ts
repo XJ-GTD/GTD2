@@ -31,6 +31,15 @@ import {PageY} from "../../data.mapping";
     <ion-content padding>
           <ion-list no-lines>
             <ion-list-header>
+              <ion-label>新消息</ion-label>
+            </ion-list-header>
+
+            <ion-item class="plan-list-item" >
+              <ion-label>新消息提醒</ion-label>
+              <ion-toggle [(ngModel)]="bt" (ionChange)="save(t, bt)"></ion-toggle>
+            </ion-item>
+
+            <ion-list-header>
               <ion-label>语音</ion-label>
             </ion-list-header>
 
@@ -50,15 +59,6 @@ import {PageY} from "../../data.mapping";
             </ion-item>
 
             <ion-list-header>
-              <ion-label>新消息</ion-label>
-            </ion-list-header>
-
-            <ion-item class="plan-list-item" >
-              <ion-label>新消息提醒</ion-label>
-              <ion-toggle [(ngModel)]="bt" (ionChange)="save(t, bt)"></ion-toggle>
-            </ion-item>
-
-            <ion-list-header>
               <ion-label>联系人</ion-label>
             </ion-list-header>
 
@@ -68,6 +68,14 @@ import {PageY} from "../../data.mapping";
               <ion-spinner *ngIf="lfsloading" icon="circles" item-end></ion-spinner>
             </button>
 
+            <ion-list-header>
+              <ion-label>智能提醒</ion-label>
+            </ion-list-header>
+
+            <button ion-item class="plan-list-item" detail-push (click)="gotodrsetting()">
+              <ion-label>每日简报</ion-label>
+              <ion-note item-end>{{bdr? '打开' : '关闭'}}</ion-note>
+            </button>
           </ion-list>
     </ion-content>
   `,
@@ -78,12 +86,14 @@ export class SsPage {
   t:Setting;//新消息提醒
   b:Setting;//语音播报
   z:Setting;//振动
+  dr:Setting;//每日简报 智能提醒
   bh:boolean;//唤醒 页面显示和修改
   bt:boolean;//新消息提醒 页面显示和修改
   bb:boolean;//语音播报 页面显示和修改
   bz:boolean;//振动 页面显示和修改
-  lfsloading: boolean = false;
-  localfriends: number = 0;
+  bdr:boolean;//每日简报 页面显示和修改
+  lfsloading: boolean = false;//导入本地联系人处理状态
+  localfriends: number = 0;//本地联系人导入数
 
   constructor(private navCtrl: NavController,
               public ssService:SsService,
@@ -92,6 +102,7 @@ export class SsPage {
     this.t = UserConfig.settins.get(DataConfig.SYS_T);
     this.b = UserConfig.settins.get(DataConfig.SYS_B);
     this.z = UserConfig.settins.get(DataConfig.SYS_Z);
+    this.dr = UserConfig.settins.get(DataConfig.SYS_DR);
   }
 
   ionViewDidLoad() {
@@ -101,6 +112,7 @@ export class SsPage {
     this.bt = (this.t.value == "1") ? true : false;
     this.bb = (this.b.value == "1") ? true : false;
     this.bz = (this.z.value == "1") ? true : false;
+    this.bdr = (this.dr.value == "1") ? true : false;
 
     this.localfriends = UserConfig.friends? UserConfig.friends.length : 0;
   }
