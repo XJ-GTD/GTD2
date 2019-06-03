@@ -53,7 +53,7 @@ import {PageY} from "../../data.mapping";
             <ion-row align-items-center justify-content-center>
               <ion-list>
                 <ion-item class="bg-transparent no-border" no-margin>
-                  <ion-range [(ngModel)]="notifytime" [min]="min" [max]="max" [step]="step" pin="false" dualKnobs="false" snaps="false"></ion-range>
+                  <ion-range [(ngModel)]="notifytime" (ionChange)="save(defaultnotifytime, moment(notifytime).format('HH:mm'))" debounce="1000" [min]="min" [max]="max" [step]="step" pin="false" dualKnobs="false" snaps="false"></ion-range>
                 </ion-item>
               </ion-list>
             </ion-row>
@@ -75,17 +75,21 @@ export class DrPage {
   dr:Setting;//每日简报 智能提醒
   bdr:boolean;//每日简报 页面显示和修改
 
+  defaultnotifytime: Setting;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public ssService: SsService,
               private util : UtilService,
               private modalCtrl: ModalController) {
     this.dr = UserConfig.settins.get(DataConfig.SYS_DR);
+    this.defaultnotifytime = UserConfig.settins.get(DataConfig.SYS_DRP1);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DrPage');
     this.bdr = (this.dr.value == "1") ? true : false;
+    this.notifytime = moment('2019/6/3 ' + (this.defaultnotifytime? this.defaultnotifytime.value : '08:30') + ':00').unix() * 1000;
   }
 
   ionViewDidEnter(){

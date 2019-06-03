@@ -152,6 +152,7 @@ export class DataConfig {
   public static SYS_Z: string = "Z";
   //每日简报
   public static SYS_DR: string = "DR";
+  public static SYS_DRP1: string = "DRP1";
   /*========== 系统设置区分 =========*/
 
 

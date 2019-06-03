@@ -149,6 +149,16 @@ export class SqliteInit {
       dailyReportTbl.yn = "每日简报";
       dailyReportTbl.yv = "1";
       await this.sqlexec.save(dailyReportTbl);
+
+      // 每日简报 - 提醒时间
+      let dailyReportParamTbl: YTbl = new YTbl();
+      dailyReportParamTbl.yi = this.util.getUuid();
+      dailyReportParamTbl.yt = "DRP1";
+      dailyReportParamTbl.yk = "DRP1";
+      dailyReportParamTbl.ytn = "每日简报";
+      dailyReportParamTbl.yn = "每日简报 通知时间";
+      dailyReportParamTbl.yv = "08:30";
+      await this.sqlexec.save(dailyReportParamTbl);
     }
   }
 
