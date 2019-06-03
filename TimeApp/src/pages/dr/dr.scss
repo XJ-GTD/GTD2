@@ -29,6 +29,10 @@ page-dr {
     border: 0;
   }
 
+  .golden-margin {
+    margin-bottom: 40vmax;
+  }
+
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
     background-color: $baseBackColor;
   }

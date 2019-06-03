@@ -37,12 +37,12 @@ import * as moment from "moment";
               获得每天的日程安排摘要
             </ion-row>
             <ion-row align-items-center justify-content-center>
-              <hr>
+              <p></p>
             </ion-row>
             <ion-row align-items-center justify-content-center>
-              <h1>{{notifytime| formatedate:"HH:mm"}} <small>{{notifytime| formatedate:"A"}}</small></h1>
+              <h1 color="danger">{{notifytime| formatedate:"HH:mm"}} <small>{{notifytime| formatedate:"A"}}</small></h1>
             </ion-row>
-            <ion-row align-items-center justify-content-center>
+            <ion-row align-items-center justify-content-center class="golden-margin">
               每天
             </ion-row>
             <ion-row align-items-center justify-content-center>
@@ -53,7 +53,7 @@ import * as moment from "moment";
               </ion-list>
             </ion-row>
             <ion-row align-items-center justify-content-center>
-              <button ion-button full outline class="no-border">关闭</button>
+              <button ion-button full outline class="no-border" color="danger">关闭</button>
             </ion-row>
           </ion-grid>
         </ion-row>
