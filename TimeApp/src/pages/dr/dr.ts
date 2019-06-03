@@ -37,7 +37,7 @@ import * as moment from "moment";
               获得每天的日程安排摘要
             </ion-row>
             <ion-row align-items-center justify-content-center>
-              <p></p>
+              <h1></h1>
             </ion-row>
             <ion-row align-items-center justify-content-center>
               <h1 class="h1-danger">{{notifytime| formatedate:"HH:mm"}} <small>{{notifytime| formatedate:"A"}}</small></h1>
