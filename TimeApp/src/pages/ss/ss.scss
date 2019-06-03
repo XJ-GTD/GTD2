@@ -47,6 +47,10 @@ page-ss {
     min-height: 9vmin;
   }
 
+  .plan-list-item > ion-note {
+    padding-right: 25px;
+  }
+
   .list-ios .item-block .item-inner {
     padding-right: 0;
   }
@@ -77,4 +81,3 @@ page-ss {
     overflow-y: hidden;
   }
 }
-
