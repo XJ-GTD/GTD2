@@ -126,7 +126,7 @@ export class SsPage {
     this.lfsloading = true;
 
     this.ssService.resfriend().then(d=>{
-      this.lfsloading = true;
+      this.lfsloading = false;
     })
   }
 }
