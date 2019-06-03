@@ -141,7 +141,7 @@ export class SqliteInit {
       // 2019/06/03
       // 席理加
       // 增加智能提醒 - 每日简报 参数
-      if (from > 0) {
+      if (from > 0 && from < 5) {
         let dailyReportTbl: YTbl = new YTbl();
         dailyReportTbl.yi = this.util.getUuid();
         dailyReportTbl.yt = "DR";
