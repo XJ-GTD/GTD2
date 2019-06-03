@@ -25,6 +25,10 @@ page-dr {
     background-color: transparent;
   }
 
+  .no-border {
+    border: 0;
+  }
+
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
     background-color: $baseBackColor;
   }
