@@ -142,10 +142,11 @@ export class AlService {
 
 
         //patch 修改DataConfig的version版本，只能改大，然后方法中例如createTablespath追加patch
+        let fromversion = this.version;
 
         while (DataConfig.version > this.version) {
 
-          await this.sqlLiteInit.createTablespath(this.version + 1);
+          await this.sqlLiteInit.createTablespath(this.version + 1, fromversion);
           let yTbl: YTbl = new YTbl();
           yTbl.yt = "FI";
           yTbl.yk = "FI";

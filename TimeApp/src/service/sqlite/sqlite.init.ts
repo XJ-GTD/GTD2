@@ -111,7 +111,7 @@ export class SqliteInit {
    * @param {string} updateSql 更新SQL
    * @returns {Promise<any>}
    */
-  async createTablespath(version:number) {
+  async createTablespath(version: number, from: number) {
     if (version  == 1 ){
       let log: LogTbl = new LogTbl();
       await this.sqlexec.drop(log);
@@ -141,14 +141,16 @@ export class SqliteInit {
       // 2019/06/03
       // 席理加
       // 增加智能提醒 - 每日简报 参数
-      let dailyReportTbl: YTbl = new YTbl();
-      dailyReportTbl.yi = this.util.getUuid();
-      dailyReportTbl.yt = "DR";
-      dailyReportTbl.yk = "DR";
-      dailyReportTbl.ytn = "每日简报";
-      dailyReportTbl.yn = "每日简报";
-      dailyReportTbl.yv = "1";
-      await this.sqlexec.save(dailyReportTbl);
+      if (from > -1) {
+        let dailyReportTbl: YTbl = new YTbl();
+        dailyReportTbl.yi = this.util.getUuid();
+        dailyReportTbl.yt = "DR";
+        dailyReportTbl.yk = "DR";
+        dailyReportTbl.ytn = "每日简报";
+        dailyReportTbl.yn = "每日简报";
+        dailyReportTbl.yv = "1";
+        await this.sqlexec.save(dailyReportTbl);
+      }
 
       // 每日简报 - 提醒时间
       let dailyReportParamTbl: YTbl = new YTbl();
