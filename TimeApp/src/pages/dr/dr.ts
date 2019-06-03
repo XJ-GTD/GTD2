@@ -113,7 +113,7 @@ export class DrPage {
     else
       set.yv = value;//偏好设置value
 
-    await this.ssService.save(set);
+    this.ssService.save(set);
 
     if (set.yk == DataConfig.SYS_DR) {
       // 改变画面显示
