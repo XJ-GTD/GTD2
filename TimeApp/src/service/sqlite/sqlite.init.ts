@@ -137,6 +137,18 @@ export class SqliteInit {
       let mk: MkTbl = new MkTbl();
       await this.sqlexec.drop(mk);
       await this.sqlexec.create(mk);
+    } else if (version == 5) {
+      // 2019/06/03
+      // 席理加
+      // 增加智能提醒 - 每日简报 参数
+      let dailyReportTbl: YTbl = new YTbl();
+      dailyReportTbl.yi = this.util.getUuid();
+      dailyReportTbl.yt = "DR";
+      dailyReportTbl.yk = "DR";
+      dailyReportTbl.ytn = "每日简报";
+      dailyReportTbl.yn = "每日简报";
+      dailyReportTbl.yv = "1";
+      await this.sqlexec.save(dailyReportTbl);
     }
   }
 
