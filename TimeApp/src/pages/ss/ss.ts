@@ -64,7 +64,7 @@ import {PageY} from "../../data.mapping";
 
             <button ion-item class="plan-list-item" >
               <ion-label>本地联系人</ion-label>
-              <ion-note item-end>721</ion-note>
+              <ion-note item-end>{{localfriends}}</ion-note>
             </button>
 
             <ion-item class="plan-list-item" >
@@ -91,6 +91,7 @@ export class SsPage {
   bz:boolean;//振动 页面显示和修改
   @ViewChild("resfri")
   resfri:ElementRef;
+  localfriends: number = 0;
 
   constructor(private navCtrl: NavController,
               public ssService:SsService,
@@ -108,6 +109,8 @@ export class SsPage {
     this.bt = (this.t.value == "1") ? true : false;
     this.bb = (this.b.value == "1") ? true : false;
     this.bz = (this.z.value == "1") ? true : false;
+
+    this.localfriends = UserConfig.friends? UserConfig.friends.length : 0;
   }
 
   goBack() {
