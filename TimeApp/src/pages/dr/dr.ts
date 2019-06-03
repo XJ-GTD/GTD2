@@ -32,26 +32,27 @@ import {FsData} from "../../data.mapping";
       <ion-grid>
         <ion-row>
           <ion-grid>
-            <ion-row>
+            <ion-row align-items-center>
               获得每天的日程安排摘要
             </ion-row>
-            <ion-row>
-              此处有分割线
+            <ion-row align-items-center>
+              <hr>
             </ion-row>
-            <ion-row>
-              7:00 上午
+            <ion-row align-items-center>
+              <h1>7:00<small>上午</small></h1>
             </ion-row>
-            <ion-row>
+            <ion-row align-items-center>
               每天
             </ion-row>
-            <ion-row>
-              <ion-range [(ngModel)]="brightness">
-                <ion-icon range-left small name="sunny"></ion-icon>
-                <ion-icon range-right name="sunny"></ion-icon>
-              </ion-range>
+            <ion-row align-items-center>
+              <ion-list>
+                <ion-item>
+                  <ion-range [(ngModel)]="brightness" min="0" max="1440" step="15" pin="true" dualKnobs="false" snaps="true"></ion-range>
+                </ion-item>
+              </ion-list>
             </ion-row>
-            <ion-row>
-              关闭
+            <ion-row align-items-center>
+              <button ion-button full outline>关闭</button>
             </ion-row>
           </ion-grid>
         </ion-row>
