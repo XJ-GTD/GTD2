@@ -1,10 +1,12 @@
 import {Component} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {SsService} from "../ss/ss.service";
+import {Setting, UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData} from "../../data.mapping";
 import * as moment from "moment";
+import {PageY} from "../../data.mapping";
 
 /**
  * Generated class for the 每日简报设置 page.
