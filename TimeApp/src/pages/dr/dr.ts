@@ -4,6 +4,7 @@ import {DrService} from "./dr.service";
 import {DataConfig} from "../../service/config/data.config";
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData} from "../../data.mapping";
+import * as moment from "moment";
 
 /**
  * Generated class for the 每日简报设置 page.
