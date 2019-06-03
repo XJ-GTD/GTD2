@@ -53,7 +53,7 @@ import {PageY} from "../../data.mapping";
             <ion-row align-items-center justify-content-center>
               <ion-list>
                 <ion-item class="bg-transparent no-border" no-margin>
-                  <ion-range [(ngModel)]="notifytime" (ionChange)="save(defaultnotifytime, moment(notifytime).format('HH:mm'))" debounce="1000" [min]="min" [max]="max" [step]="step" pin="false" dualKnobs="false" snaps="false"></ion-range>
+                  <ion-range [(ngModel)]="notifytime" (ionChange)="save(defaultnotifytime, moment.unix(notifytime / 1000).format('HH:mm'))" debounce="1000" [min]="min" [max]="max" [step]="step" pin="false" dualKnobs="false" snaps="false"></ion-range>
                 </ion-item>
               </ion-list>
             </ion-row>
