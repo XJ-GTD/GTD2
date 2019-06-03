@@ -101,6 +101,9 @@ export class DrPage {
     set.yv = (value) ? "1":"0";//偏好设置value
 
     this.ssService.save(set);
+
+    // 改变画面显示
+    this.bdr = value;
   }
 
   goBack(){
