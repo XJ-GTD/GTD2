@@ -62,10 +62,10 @@ import {PageY} from "../../data.mapping";
               <ion-label>联系人</ion-label>
             </ion-list-header>
 
-            <ion-item class="plan-list-item" >
+            <button ion-item class="plan-list-item" >
               <ion-label>本地联系人</ion-label>
               <ion-note item-end>721</ion-note>
-            </ion-item>
+            </button>
 
             <ion-item class="plan-list-item" >
               <ion-label>本地联系人</ion-label>
