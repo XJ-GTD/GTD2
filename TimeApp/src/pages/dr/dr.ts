@@ -46,9 +46,9 @@ import * as moment from "moment";
               每天
             </ion-row>
             <ion-row align-items-center justify-content-center>
-              <ion-list>
-                <ion-item>
-                  <ion-range [(ngModel)]="notifytime" [min]="min" [max]="max" [step]="step" pin="false" dualKnobs="false" snaps="true"></ion-range>
+              <ion-list no-padding no-margin>
+                <ion-item class="bg-transparent" no-padding no-margin>
+                  <ion-range [(ngModel)]="notifytime" [min]="min" [max]="max" [step]="step" pin="false" dualKnobs="false" snaps="true" no-padding></ion-range>
                 </ion-item>
               </ion-list>
             </ion-row>
