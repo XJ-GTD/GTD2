@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {DrService} from "./dr.service";
+import {SsService} from "../ss/ss.service";
 import {DataConfig} from "../../service/config/data.config";
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData} from "../../data.mapping";
@@ -56,7 +56,7 @@ import * as moment from "moment";
               </ion-list>
             </ion-row>
             <ion-row align-items-center justify-content-center>
-              <button ion-button full outline class="no-border" color="danger">关闭</button>
+              <button ion-button full outline class="no-border" color="danger" (click)="save(dr, !bdr)">{{bdr? '关闭' : '打开'}}</button>
             </ion-row>
           </ion-grid>
         </ion-row>
@@ -70,19 +70,37 @@ export class DrPage {
   step: number = 5 * 60 * 1000; //15分钟
   notifytime: number = moment('2019/6/3 08:30:00').unix() * 1000;
 
+  dr:Setting;//每日简报 智能提醒
+  bdr:boolean;//每日简报 页面显示和修改
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private drService : DrService,
+              public ssService: SsService,
               private util : UtilService,
               private modalCtrl: ModalController) {
+    this.dr = UserConfig.settins.get(DataConfig.SYS_DR);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DrPage');
+    this.bdr = (this.dr.value == "1") ? true : false;
   }
 
   ionViewDidEnter(){
     console.log("3.0 ionViewDidEnter 当进入页面时触发");
+  }
+
+  save(setting, value){
+
+    let set:PageY = new PageY();
+    set.yi = setting.yi;//偏好主键ID
+    set.ytn = setting.bname; //偏好设置类型名称
+    set.yt = setting.typeB; //偏好设置类型
+    set.yn = setting.name;//偏好设置名称
+    set.yk = setting.type ;//偏好设置key
+    set.yv = (value) ? "1":"0";//偏好设置value
+
+    this.ssService.save(set);
   }
 
   goBack(){
