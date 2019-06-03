@@ -97,7 +97,7 @@ export class DrPage {
   }
 
   getTime(selecttime: number): string {
-    return moment(selecttime).unix().format('HH:mm');
+    return moment(selecttime).format('HH:mm');
   }
 
   save(setting, value){
