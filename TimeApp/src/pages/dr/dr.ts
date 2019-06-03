@@ -62,9 +62,9 @@ import * as moment from "moment";
   `
 })
 export class DrPage {
-  min: number = moment('2019/6/3 00:00:00').unix();
-  max: number = moment('2019/6/3 23:59:59').unix();
-  step: number = 15 * 60; //15分钟
+  min: number = moment('2019/6/3 00:00:00').unix() * 1000;
+  max: number = moment('2019/6/3 23:59:59').unix() * 1000;
+  step: number = 15 * 60 * 1000; //15分钟
   notifytime: number = moment('2019/6/3 08:30:00').unix();
 
   constructor(public navCtrl: NavController,
