@@ -75,11 +75,7 @@ export class TdlService {
    */
   private async getJtL(sd:string,ed:string): Promise<Array<JtData>>{
     return new Promise<Array<JtData>>(async (resolve, reject) => {
-      //转义符转换
-      let espsd = this.sqlExce.sqliteEscape(sd);
-      let esped = this.sqlExce.sqliteEscape(ed);
-
-      let sql = `select * from gtd_jt where sd>="${espsd}" and sd<="${esped}" order by px asc`;
+      let sql = `select * from gtd_jt where sd>="${sd}" and sd<="${ed}" order by px asc`;
       let data = await this.sqlExce.getExtList<JtData>(sql);
       resolve(data);
     })
