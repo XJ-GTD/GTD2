@@ -3,7 +3,8 @@
     "name": "冥王星每日简报处理流",
     "trigger": "mwxing_daily_summary_start",
     "parameters": [
-      "userId"
+      "userId",
+      "event"
     ],
     "follows": [
         {
