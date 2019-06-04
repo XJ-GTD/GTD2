@@ -16,7 +16,7 @@ export class SsService {
 
   //保存设置
   save(py: PageY):Promise<any>{
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
 
       //保存设置到本地用户偏好表
       let y = new YTbl();
@@ -36,5 +36,3 @@ export class SsService {
     return this.contactsService.updateFs()
   }
 }
-
-
