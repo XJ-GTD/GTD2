@@ -33,6 +33,19 @@ services:
       replicas: 1
       endpoint_mode: dnsrr
 
+  sa-aag:
+    image: 192.168.0.158:5000/xiaoji-sa-aag
+    hostname: sa-aag
+    configs:
+      - source: aag_config
+        target: /usr/verticles/aag.json
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
   sa-exc:
     image: 192.168.0.158:5000/xiaoji-sa-exc
     hostname: sa-exc
@@ -115,6 +128,8 @@ configs:
     file: ./ann/ann.json
   pin_config:
     file: ./pin/pin.json
+  aag_config:
+    file: ./aag/aag.json
 
 networks:
   mwxing-network-overlay:

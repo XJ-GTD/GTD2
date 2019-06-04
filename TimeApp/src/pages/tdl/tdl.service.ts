@@ -75,7 +75,7 @@ export class TdlService {
    */
   private async getJtL(sd:string,ed:string): Promise<Array<JtData>>{
     return new Promise<Array<JtData>>(async (resolve, reject) => {
-      let sql = `select * from gtd_jt where sd>="` + sd + `" and sd<="` + ed + `" order by px asc;`;
+      let sql = 'select * from gtd_jt where sd>="' + sd + '" and sd<="' + ed + '" order by px asc;';
       let data = await this.sqlExce.getExtList<JtData>(sql);
       resolve(data);
     })
