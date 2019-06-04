@@ -118,7 +118,10 @@ export class DrPage {
     if (set.yk == DataConfig.SYS_DR) {
       // 改变画面显示
       this.bdr = value;
+      // 返回前页
+      this.navCtrl.pop();
     }
+
   }
 
   goBack(){
