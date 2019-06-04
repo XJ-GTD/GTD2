@@ -312,8 +312,8 @@ export class CalendarService {
 
     let starts = start.format("YYYY/MM/DD");
 
-    let sql:string = `select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt from gtd_c gc join gtd_sp sp on gc.si = sp.si 
-      where sp.sd = "${starts}" group by sp.sd ,gc.sd`;
+    let sql:string = `select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt from gtd_c gc join gtd_sp sp on gc.si = sp.si
+      where sp.sd = "` + starts + `" group by sp.sd ,gc.sd`;
 
 
     let local = await this.readlocal.findEventRc('',start,start);

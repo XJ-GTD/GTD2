@@ -399,7 +399,7 @@ export class PgBusiService {
         day.news = data.news;
       }
       //查询计划特殊表
-      let sqlJtL:string = `select jt.* from gtd_jt jt where jt.sd = "${starts}" order by jt.px asc`;
+      let sqlJtL:string = `select jt.* from gtd_jt jt where jt.sd = "` + starts + `" order by jt.px asc`;
       let jtL = await this.sqlExce.getExtList<JtData>(sqlJtL);
       day.jtL = jtL;
 
