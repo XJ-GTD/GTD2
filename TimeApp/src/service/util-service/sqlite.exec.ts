@@ -295,4 +295,7 @@ export class SqliteExec {
 
   }
 
+  sqliteEscape(keyword: string) {
+    return keyword.replace(/\//g, '//');
+  }
 }
