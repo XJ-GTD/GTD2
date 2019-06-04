@@ -1,0 +1,35 @@
+{
+  "_id": ObjectID("5cf64757a9f7cb0008b50a5c"),
+    "name": "冥王星每日简报处理流",
+    "trigger": "mwxing_daily_summary_start",
+    "parameters": [
+      "userId"
+    ],
+    "follows": [
+        {
+            "name": "每日简报",
+            "trigger": "acj",
+            "parameters": [
+                "ruleid;MWXING_DAILYSUMMARY_DR001_V1_2",
+                "datasource;$.parent.parameters"
+            ],
+            "outputs": [
+                "cleaned"
+            ],
+            "next": [
+                {
+                    "name": "冥王星通知服务",
+                    "trigger": "ann",
+                    "parameters": [
+                        "announceTo;$.parent.outputs.cleaned.announceTo",
+                        "announceType;$.parent.outputs.cleaned.announceType",
+                        "announceContent;$.parent.outputs.cleaned.announceContent"
+                    ],
+                    "outputs": [
+                        "result"
+                    ]
+                }
+            ]
+        }
+    ]
+}

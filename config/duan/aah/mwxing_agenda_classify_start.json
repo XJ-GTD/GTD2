@@ -1,5 +1,5 @@
 {
-  "_id": ObjectID("5cefb1cda9f7cb0008b50a5a")
+  "_id": ObjectID("5cefb1cda9f7cb0008b50a5a"),
     "name": "冥王星日程语义标注处理流",
     "trigger": "mwxing_agenda_classify_start",
     "parameters": [
