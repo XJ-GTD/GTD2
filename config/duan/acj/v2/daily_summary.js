@@ -5,7 +5,7 @@ function shouldclean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
 
-  if (input !== undefined && input['userId'] && !input['deviceId'] && !input['xunfeiyun']) {
+  if (input !== undefined && input['userId'] && input['event'] && !input['deviceId'] && !input['xunfeiyun']) {
     return true;
   }
 
@@ -22,6 +22,7 @@ function clean(datasource)
   var input = JSON.parse(datasource);
 
   var userId = input['userId'];
+  var event = input['event'];
   var to = new Array();
 
   var output = {};
@@ -47,6 +48,7 @@ function clean(datasource)
     processor: 'PN',
     option: 'PN.DR',
     parameters: {
+      timestamp: event['trigger_time']
     }
   };
 

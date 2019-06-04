@@ -101,9 +101,14 @@ export class HPage {
 
     //每日简报消息回调
     this.emitService.register('on.dailyreport.message.click', (data) => {
+      let timestamp: number = data.eventdata? data.eventdata['timestamp'] : (moment().unix() * 1000);
+
+      if (!timestamp) {
+        timestamp = moment().unix() * 1000;
+      }
 
       this.gotodaily({
-        time: moment().unix(),
+        time: timestamp,
         isToday: false,
         selected: false,
         disable: false,

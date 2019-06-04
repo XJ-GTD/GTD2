@@ -41,7 +41,7 @@ export class NotificationProcess implements MQProcess {
       let dailySummary: any = content.parameters;
       let title: string = '每日简报';
       let text: string = '';
-      let data: any = {eventhandler: 'on.dailyreport.message.click'};
+      let data: any = {eventhandler: 'on.dailyreport.message.click', eventdata: dailySummary};
 
       this.notificationsService.newMessage(title, text, data);
     }
