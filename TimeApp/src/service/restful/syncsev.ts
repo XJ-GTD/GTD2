@@ -32,7 +32,7 @@ export class SyncRestful {
       task.taskType = "QUARTZ";
       task.taskName = "每日简报";
 
-      let choosetime = moment.unix(timestamp);
+      let choosetime = moment(timestamp);
 
       let taskRunAt = {
         eventId: "QUARTZ_CRON_5M",
