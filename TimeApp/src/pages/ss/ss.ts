@@ -4,6 +4,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
 import {SsService} from "./ss.service";
 import {PageY} from "../../data.mapping";
+import * as moment from "moment";
 
 /**
  * Generated class for the 设置画面 page.
@@ -131,11 +132,11 @@ export class SsPage {
       this.getData();
 
       let setNotifyTime = UserConfig.settins.get(DataConfig.SYS_DRP1);
-      setNotifyTime = setNotifyTime? "08:30" : setNotifyTime;
+      let setNotifyTimeHHmm = setNotifyTime? (setNotifyTime.value? setNotifyTime.value : "08:30") : "08:30";
 
       this.ssService.putDailySummary(
         UserConfig.account.id,
-        moment('2019/6/3 ' + setNotifyTime + ':00').unix() * 1000,
+        moment('2019/6/3 ' + setNotifyTimeHHmm + ':00').unix() * 1000,
         this.dr
       );
     });
