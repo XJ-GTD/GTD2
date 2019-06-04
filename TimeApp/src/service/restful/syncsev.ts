@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulHeader, RestFulConfig} from "../config/restful.config";
 import {UtilService} from "../util-service/util.service";
-
+import * as moment from "moment";
 
 /**
  * 系统
@@ -40,7 +40,7 @@ export class SyncRestful {
         ]
       };
 
-      task.taskRunAt = taskRunAt.stringify();
+      task.taskRunAt = JSON.stringify(taskRunAt);
 
       let taskRunWith = {
         url: "https://pluto.guobaa.com/cdc/mwxing_daily_summary_start/json/trigger",
@@ -49,7 +49,7 @@ export class SyncRestful {
         }
       };
 
-      task.taskRunWith = taskRunWith.stringify();
+      task.taskRunWith = JSON.stringify(taskRunWith);
 
       let url: UrlEntity = this.config.getRestFulUrl("EDTTS");
       this.request.post(url, task).then(data => {
