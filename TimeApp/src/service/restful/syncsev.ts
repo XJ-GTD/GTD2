@@ -38,7 +38,7 @@ export class SyncRestful {
         eventId: "QUARTZ_CRON_5M",
         filters: [
           {name: "HH", value: choosetime.format("HH")},
-          {name: "ss", value: choosetime.format("ss")}
+          {name: "mm", value: choosetime.format("mm")}
         ]
       };
 
