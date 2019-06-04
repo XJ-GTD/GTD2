@@ -100,7 +100,7 @@ export class DrPage {
     return moment(selecttime).format('HH:mm');
   }
 
-  save(setting, value){
+  async save(setting, value) {
 
     let set:PageY = new PageY();
     set.yi = setting.yi;//偏好主键ID
