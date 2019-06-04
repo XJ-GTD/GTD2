@@ -22,7 +22,7 @@ export class SyncRestful {
   }
 
   //智能提醒 每日简报
-  putDailySummary(userId: string, timestamp: number): Promise<string> {
+  putDailySummary(userId: string, timestamp: number, active: boolean): Promise<string> {
     return new Promise((resolve, reject) => {
       let task = new TriggerTask();
 
@@ -41,6 +41,12 @@ export class SyncRestful {
           {name: "ss", value: choosetime.format("ss")}
         ]
       };
+
+      if (!active) {
+        taskRunAt.filters.push({
+          name: "active", value: "false"
+        });
+      }
 
       task.taskRunAt = JSON.stringify(taskRunAt);
 

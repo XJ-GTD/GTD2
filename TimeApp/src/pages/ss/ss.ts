@@ -129,6 +129,15 @@ export class SsPage {
     let modal = this.modalController.create(DataConfig.PAGE._DR_PAGE);
     modal.onDidDismiss((data)=>{
       this.getData();
+
+      let setNotifyTime = UserConfig.settins.get(DataConfig.SYS_DRP1);
+      setNotifyTime = setNotifyTime? "08:30" : setNotifyTime;
+
+      this.ssService.putDailySummary(
+        UserConfig.account.id,
+        moment('2019/6/3 ' + setNotifyTime + ':00').unix() * 1000,
+        this.dr
+      );
     });
     modal.present();
   }

@@ -4,14 +4,21 @@ import {UserConfig} from "../../service/config/user.config";
 import {YTbl} from "../../service/sqlite/tbl/y.tbl";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {PageY} from "../../data.mapping";
+import {SyncRestful} from "../../service/restful/syncsev";
 
 @Injectable()
 export class SsService {
 
   constructor(
     private sqlExce: SqliteExec,
+    private syncRestful:SyncRestful,
     private userConfig:UserConfig,
     private contactsService: ContactsService) {
+  }
+
+  //设置每日简报时间/事件
+  putDailySummary(userId: string, timestamp: number, active: boolean) {
+    this.syncRestful.putDailySummary(userId, timestamp, active);
   }
 
   //保存设置
