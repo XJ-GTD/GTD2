@@ -137,7 +137,7 @@ export class SsPage {
       this.ssService.putDailySummary(
         UserConfig.account.id,
         moment('2019/6/3 ' + setNotifyTimeHHmm + ':00').unix() * 1000,
-        this.dr
+        this.bdr
       );
     });
     modal.present();
