@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
-import {RestFulHeader, RestFulConfig} from "../config/restful.config";
+import {RestFulHeader, UrlEntity, RestFulConfig} from "../config/restful.config";
 import {UtilService} from "../util-service/util.service";
 import * as moment from "moment";
 
@@ -16,7 +16,9 @@ export class SyncRestful {
   // 开发版
   //private initDataUrl: string = "https://www.guobaa.com/ini/parameters?tag=mwxing";
 
-  constructor(private request: RestfulClient, private uitl: UtilService) {
+  constructor(private request: RestfulClient,
+     private config: RestFulConfig,
+     private uitl: UtilService) {
   }
 
   //智能提醒 每日简报
