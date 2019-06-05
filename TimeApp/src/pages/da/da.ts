@@ -71,12 +71,12 @@ import {EmitService} from "../../service/util-service/emit.service";
         </ion-grid>
       </ion-row>
     </ion-grid>
-    <ion-grid>
+    <ion-grid *ngIf="isMobile">
       <ion-row justify-content-center>
-        <button ion-button *ngIf="!speaking" large icon-only clear (click)="play()">
+        <button ion-button *ngIf="isMobile && !speaking" large icon-only clear (click)="play()">
           <ion-icon name="play" color="white"></ion-icon>
         </button>
-        <button ion-button *ngIf="speaking" large icon-only clear (click)="pause()">
+        <button ion-button *ngIf="isMobile && speaking" large icon-only clear (click)="pause()">
           <ion-icon name="pause" color="white"></ion-icon>
         </button>
       </ion-row>
@@ -91,6 +91,7 @@ export class DaPage {
   todaylist: Array<ScdData> = new Array<ScdData>();
   scdlist: Array<ScdData> = new Array<ScdData>();
   speaking: boolean = false;
+  isMobile: boolean = UtilService.isMobile();
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
