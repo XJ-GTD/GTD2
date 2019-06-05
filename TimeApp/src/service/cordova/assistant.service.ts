@@ -77,6 +77,9 @@ export class AssistantService {
       this.emitService.emitSpeak(false);
     }
     if (open) this.listenAudio();
+
+    //增加通用事件响应
+    this.emitService.emit("on.speak.finished", "");
   }
 
 

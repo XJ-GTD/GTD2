@@ -8,6 +8,7 @@ import * as moment from "moment";
 import { CalendarDay } from "../../components/ion2-calendar";
 import { DaService } from "./da.service";
 import { ScdData } from "../../data.mapping";
+import {EmitService} from "../../service/util-service/emit.service";
 
 /**
  * Generated class for the 每天日程一览 page.
@@ -91,8 +92,11 @@ export class DaPage {
   scdlist: Array<ScdData> = new Array<ScdData>();
   speaking: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              private daService: DaService, private sqlite:SqliteExec) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private emitService: EmitService,
+              private daService: DaService,
+              private sqlite:SqliteExec) {
     moment.locale('zh-cn');
 
     this.currentday = this.navParams.data;
@@ -119,6 +123,12 @@ export class DaPage {
 
   play() {
     this.speaking = true;
+
+    //每日简报消息回调
+    this.emitService.register('on.speak.finished', (data) => {
+      this.pause();
+    });
+
     if (this.scdlist && this.scdlist.length > 0)
       this.daService.speakDailySummary(moment(this.currentday.time), this.scdlist);
     else
@@ -126,7 +136,7 @@ export class DaPage {
   }
 
   pause() {
-    this.speaking = false;
+    this.daService.stopSpeak();
   }
 
   goBack() {

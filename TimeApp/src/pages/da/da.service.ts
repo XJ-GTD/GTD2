@@ -48,6 +48,10 @@ export class DaService {
     this.assistantService.speakText(speak);
   }
 
+  stopSpeak() {
+    this.assistantService.stopSpeak(false);
+  }
+
   /**
    * 显示选中日期对应类型
    * @param {string} day 格式（YYYY-MM-DD）
