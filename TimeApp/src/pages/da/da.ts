@@ -149,7 +149,7 @@ export class DaPage {
 
     //每日简报消息回调
     this.emitService.register('on.speak.finished', (data) => {
-      this.pause();
+      this.speaking = false;
     });
 
     if (this.scdlist && this.scdlist.length > 0)
