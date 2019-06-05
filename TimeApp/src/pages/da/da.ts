@@ -99,10 +99,11 @@ export class DaPage {
               private modalCtr: ModalController,
               private emitService: EmitService,
               private daService: DaService,
+              private util: UtilService,
               private sqlite:SqliteExec) {
     moment.locale('zh-cn');
 
-    this.isMobile = UtilService.isMobile();
+    this.isMobile = this.util.isMobile();
     this.currentday = this.navParams.data;
     this.currentdayofweek = moment(this.currentday.time).format('dddd');
     this.currentdayshow = moment(this.currentday.time).format('MMMM D');
