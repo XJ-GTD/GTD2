@@ -74,8 +74,8 @@ export class LogTbl implements ITbl {
   }
 
   inT():string {
-    let su = sqliteEscape(this.su);
-    let er = sqliteEscape(this.er);
+    let su = this.sqliteEscape(this.su);
+    let er = this.sqliteEscape(this.er);
 
     let sq =`insert into gtd_log (id,su,ss,st,t,er,wtt) values("${this.id}","${su}",${this.ss},${this.st},${this.t},"${er?er:""}",${moment().valueOf()});`
 
