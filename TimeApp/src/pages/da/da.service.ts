@@ -27,8 +27,24 @@ export class DaService {
 
   }
 
-  speakDailySummary(scd: ScdData) {
-    let speak = "今天 6月5日 星期二 天气晴";
+  speakDailySummary(currentday: Moment, scdlist: Array<ScdData>) {
+    let currentdaystring = currentday.format("yyyy/MM/dd");
+    let speak = currentday.format("M月d日");
+    speak = speak + " " + currentday.format('dddd') + "。";
+
+    let timeRange = "";
+    for (let scd of scdlist) {
+      let scdtime = moment(currentdaystring + (scd.st == "99:99"? "00:00" : scd.st) + ":00");
+      let scdtimeA = (scd.st != "99:99"? scdtime.format("A") : "");
+
+      if (timeRange != (scdtimeA + scd.st)) {
+        speak = speak + " " + scdtime + " " + (scd.st == "99:99"? "" : scdtime.format("h:m"));
+      }
+      speak = speak + " " + scd.sn;
+
+      timeRange = (scdtimeA + scd.st);
+    }
+
     this.assistantService.speakText(speak);
   }
 

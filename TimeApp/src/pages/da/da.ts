@@ -73,10 +73,10 @@ import { ScdData } from "../../data.mapping";
     <ion-grid>
       <ion-row justify-content-center>
         <button ion-button *ngIf="!speaking" large icon-only clear (click)="play()">
-          <ion-icon name="play" color="danger"></ion-icon>
+          <ion-icon name="play"></ion-icon>
         </button>
-        <button ion-button *ngIf="speaking" large icon-only clear (click)="pause()">
-          <ion-icon name="pause" color="danger"></ion-icon>
+        <button ion-button *ngIf="speaking" large icon-only clear (click)="stop()">
+          <ion-icon name="square"></ion-icon>
         </button>
       </ion-row>
     </ion-grid>
@@ -84,8 +84,6 @@ import { ScdData } from "../../data.mapping";
 })
 export class DaPage {
 
-  client:any = {mainversion: 'v1', version: '1'};
-  server:any = {version: '1', datacenter: ''};
   currentday: CalendarDay;
   currentdayofweek: string = moment().format('dddd');
   currentdayshow: string = moment().format('MMMM D');
@@ -103,15 +101,6 @@ export class DaPage {
   }
 
   ionViewDidLoad() {
-    let restfulHeader = new RestFulHeader();
-    this.client.mainversion = restfulHeader.pv? restfulHeader.pv.replace(/v/, 'v0.') : 'v0.0';
-    this.client.version = UserConfig.getClientVersion();
-
-    if (RestFulConfig.INIT_DATA_URL.indexOf('tag=mwxing') > 0) this.server.datacenter += '开发';
-    if (RestFulConfig.INIT_DATA_URL.indexOf('debug=true') > 0) this.server.datacenter += '内部';
-    if (RestFulConfig.INIT_DATA_URL.indexOf('?') < 0) this.server.datacenter += '公测';
-    this.server.datacenter += '数据中心';
-
     this.daService.currentShow(this.currentday).then(d => {
       if (d) {
         for (let line of d) {
@@ -126,14 +115,17 @@ export class DaPage {
   }
 
   gotoDetail(scd: ScdData) {
-    this.daService.speakDailySummary(scd);
   }
 
   play() {
     this.speaking = true;
+    if (this.scdlist && this.scdlist.length > 0)
+      this.daService.speakDailySummary(moment(this.currentday.time), this.scdlist);
+    else
+      this.daService.speakDailySummary(moment(this.currentday.time), this.todaylist);
   }
 
-  pause() {
+  stop() {
     this.speaking = false;
   }
 
