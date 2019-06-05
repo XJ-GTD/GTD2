@@ -3,10 +3,12 @@ import * as moment from "moment";
 import {CalendarDay} from "../../components/ion2-calendar";
 import { RcInParam, ScdData } from "../../data.mapping";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
+import {AssistantService} from "../../service/cordova/assistant.service";
 
 @Injectable()
 export class DaService {
-  constructor(private pgservice:PgBusiService) {
+  constructor(private pgservice:PgBusiService,
+              private assistantService: AssistantService) {
     moment.locale('zh-cn');
   }
 
@@ -23,6 +25,11 @@ export class DaService {
 
     })
 
+  }
+
+  speakDailySummary(scd: ScdData) {
+    let speak = "今天 6月5日 星期二 天气晴";
+    this.assistantService.speakText(speak);
   }
 
   /**

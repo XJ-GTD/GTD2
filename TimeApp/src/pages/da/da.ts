@@ -42,7 +42,7 @@ import { ScdData } from "../../data.mapping";
           <ion-row justify-content-center>
             <small *ngIf="todaylist && todaylist.length > 0">当天</small>
             <ng-container *ngFor="let scd of todaylist">
-            <ion-card *ngIf="scd.gs == '3' || scd.gs == '4'">
+            <ion-card *ngIf="scd.gs == '3' || scd.gs == '4'" (click)="gotoDetail(scd)">
               <div class="card-title">{{scd.sn}}</div>
               <div *ngIf="scd.bz" class="card-subtitle">{{scd.bz}}</div>
               <div *ngIf="scd.st && scd.st != '99:99'" class="card-subtitle">{{scd.st}}</div>
@@ -56,7 +56,7 @@ import { ScdData } from "../../data.mapping";
           <ion-row justify-content-center>
             <small *ngIf="scdlist && scdlist.length > 0">日程</small>
             <ng-container *ngFor="let scd of scdlist">
-            <ion-card *ngIf="scd.gs != '3' && scd.gs != '4'">
+            <ion-card *ngIf="scd.gs != '3' && scd.gs != '4'" (click)="gotoDetail(scd)">
               <div class="card-title">{{scd.sn}}</div>
               <div *ngIf="scd.bz" class="card-subtitle">{{scd.bz}}</div>
               <div *ngIf="scd.st && scd.st != '99:99'" class="card-subtitle">{{scd.st}}</div>
@@ -114,8 +114,8 @@ export class DaPage {
     });
   }
 
-  userAgreement() {
-    this.navCtrl.push('PPage');
+  gotoDetail(scd: ScdData) {
+    this.daService.speakDailySummary(scd);
   }
 
   goBack() {
