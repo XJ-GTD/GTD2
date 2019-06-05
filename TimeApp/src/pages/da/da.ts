@@ -72,11 +72,11 @@ import { ScdData } from "../../data.mapping";
     </ion-grid>
     <ion-grid>
       <ion-row justify-content-center>
-        <button ion-button *ngIf="!speaking" color="danger" icon-only round (click)="play()">
-          <ion-icon name="play"></ion-icon>
+        <button ion-button *ngIf="!speaking" icon-only (click)="play()">
+          <ion-icon name="play" color="danger"></ion-icon>
         </button>
-        <button ion-button *ngIf="speaking" color="danger" icon-only round (click)="pause()">
-          <ion-icon name="pause"></ion-icon>
+        <button ion-button *ngIf="speaking" icon-only (click)="pause()">
+          <ion-icon name="pause" color="danger"></ion-icon>
         </button>
       </ion-row>
     </ion-grid>
