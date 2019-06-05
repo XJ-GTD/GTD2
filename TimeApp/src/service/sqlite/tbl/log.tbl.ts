@@ -91,6 +91,6 @@ export class LogTbl implements ITbl {
   }
 
   private sqliteEscape(keyword: string) {
-    if (keyword) return keyword.replace(/"/g, '\"').replace(/'/g, "\'"); else return keyword;
+    if (keyword) return keyword.replace(/"/g, '""').replace(/'/g, "''"); else return keyword;
   }
 }
