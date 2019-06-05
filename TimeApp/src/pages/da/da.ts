@@ -130,10 +130,10 @@ export class DaPage {
     p.gs = scd.gs;
 
     this.feedback.audioClick();
-    if (gs == "0") {
+    if (scd.gs == "0") {
       //本人画面
       this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, p).present();
-    } else if (gs == "1") {
+    } else if (scd.gs == "1") {
       //受邀人画面
       this.modalCtr.create(DataConfig.PAGE._TDDI_PAGE, p).present();
     } else {
