@@ -10,6 +10,7 @@ import { DaService } from "./da.service";
 import { ScdData, ScdPageParamter } from "../../data.mapping";
 import {EmitService} from "../../service/util-service/emit.service";
 import {DataConfig} from "../../service/config/data.config";
+import {FeedbackService} from "../../service/cordova/feedback.service";
 
 /**
  * Generated class for the 每天日程一览 page.
@@ -100,6 +101,7 @@ export class DaPage {
               private emitService: EmitService,
               private daService: DaService,
               private util: UtilService,
+              private feedback: FeedbackService,
               private sqlite:SqliteExec) {
     moment.locale('zh-cn');
 
