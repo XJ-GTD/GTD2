@@ -29,7 +29,7 @@ export class DaService {
 
   speakDailySummary(currentday: moment.Moment, scdlist: Array<ScdData>) {
     let currentdaystring = currentday.format("YYYY/MM/DD");
-    let speak = currentday.format("M月d日");
+    let speak = currentday.format("M月D日");
     speak = speak + " " + currentday.format('dddd') + "。";
 
     let timeRange = "";
