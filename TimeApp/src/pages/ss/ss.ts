@@ -75,7 +75,7 @@ import * as moment from "moment";
 
             <button ion-item class="plan-list-item" detail-push (click)="gotodrsetting()">
               <ion-label>每日简报</ion-label>
-              <ion-note item-end>{{bdr? '打开' : '关闭'}}</ion-note>
+              <ion-note item-end>{{bdr? sdrp1 : '关闭'}}</ion-note>
             </button>
           </ion-list>
     </ion-content>
@@ -88,11 +88,15 @@ export class SsPage {
   b:Setting;//语音播报
   z:Setting;//振动
   dr:Setting;//每日简报 智能提醒
+  drp1:Setting;//每日简报 提醒时间
+
   bh:boolean;//唤醒 页面显示和修改
   bt:boolean;//新消息提醒 页面显示和修改
   bb:boolean;//语音播报 页面显示和修改
   bz:boolean;//振动 页面显示和修改
   bdr:boolean;//每日简报 页面显示和修改
+  sdrp1:string;//每日简报 提醒时间
+
   lfsloading: boolean = false;//导入本地联系人处理状态
   localfriends: number = 0;//本地联系人导入数
 
@@ -131,12 +135,9 @@ export class SsPage {
     modal.onDidDismiss((data)=>{
       this.getData();
 
-      let setNotifyTime = UserConfig.settins.get(DataConfig.SYS_DRP1);
-      let setNotifyTimeHHmm = setNotifyTime? (setNotifyTime.value? setNotifyTime.value : "08:30") : "08:30";
-
       this.ssService.putDailySummary(
         UserConfig.account.id,
-        moment('2019/6/3 ' + setNotifyTimeHHmm + ':00').unix() * 1000,
+        moment('2019/6/3 ' + this.sdrp1 + ':00').unix() * 1000,
         this.bdr
       );
     });
@@ -149,12 +150,14 @@ export class SsPage {
     this.b = UserConfig.settins.get(DataConfig.SYS_B);
     this.z = UserConfig.settins.get(DataConfig.SYS_Z);
     this.dr = UserConfig.settins.get(DataConfig.SYS_DR);
+    this.drp1 = UserConfig.settins.get(DataConfig.SYS_DRP1);
 
     this.bh = (this.h.value == "1") ? true : false;
     this.bt = (this.t.value == "1") ? true : false;
     this.bb = (this.b.value == "1") ? true : false;
     this.bz = (this.z.value == "1") ? true : false;
     this.bdr = (this.dr.value == "1") ? true : false;
+    this.sdrp1 = (this.drp1 && this.drp1.value) ? this.drp1.value : "08:30";
 
     this.localfriends = UserConfig.friends? UserConfig.friends.length : 0;
   }
