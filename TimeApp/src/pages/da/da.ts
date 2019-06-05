@@ -92,7 +92,7 @@ export class DaPage {
   todaylist: Array<ScdData> = new Array<ScdData>();
   scdlist: Array<ScdData> = new Array<ScdData>();
   speaking: boolean = false;
-  isMobile: boolean = UtilService.isMobile();
+  isMobile: boolean = false;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -102,6 +102,7 @@ export class DaPage {
               private sqlite:SqliteExec) {
     moment.locale('zh-cn');
 
+    this.isMobile = UtilService.isMobile();
     this.currentday = this.navParams.data;
     this.currentdayofweek = moment(this.currentday.time).format('dddd');
     this.currentdayshow = moment(this.currentday.time).format('MMMM D');
