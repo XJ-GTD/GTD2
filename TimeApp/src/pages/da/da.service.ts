@@ -28,7 +28,7 @@ export class DaService {
   }
 
   speakDailySummary(currentday: moment.Moment, scdlist: Array<ScdData>) {
-    let currentdaystring = currentday.format("yyyy/MM/dd");
+    let currentdaystring = currentday.format("YYYY/MM/DD");
     let speak = currentday.format("M月d日");
     speak = speak + " " + currentday.format('dddd') + "。";
 
