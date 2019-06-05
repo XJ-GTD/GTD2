@@ -168,6 +168,32 @@ export class AssistantService {
     });
   }
 
+  /**
+   * 返回纯语音播报
+   */
+  pureSpeakText(speechText: string):Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      if (!this.utilService.isMobile()) {
+        resolve() ;
+        return;
+      }
+      if (speechText == null || speechText == "") {
+        resolve();
+        return;
+      }
+
+      setTimeout(() => {
+        cordova.plugins.XjBaiduTts.startSpeak(result => {
+          this.stopSpeak(false);
+          resolve();
+        }, error => {
+          this.stopSpeak(false);
+          resolve(error);
+        }, speechText);
+
+      }, 100);
+    });
+  }
 
   /**
    * 语音助手手动输入 TEXT

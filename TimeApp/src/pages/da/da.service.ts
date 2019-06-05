@@ -45,7 +45,7 @@ export class DaService {
       timeRange = (scdtimeA + scd.st);
     }
 
-    this.assistantService.speakText(speak);
+    this.assistantService.pureSpeakText(speak);
   }
 
   stopSpeak() {
