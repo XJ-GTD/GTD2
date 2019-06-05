@@ -74,7 +74,10 @@ export class LogTbl implements ITbl {
   }
 
   inT():string {
-    let sq =`insert into gtd_log (id,su,ss,st,t,er,wtt) values("${this.id}","${this.su}",${this.ss},${this.st},${this.t},"${this.er?this.er:""}",${moment().valueOf()});`
+    let su = sqliteEscape(this.su);
+    let er = sqliteEscape(this.er);
+
+    let sq =`insert into gtd_log (id,su,ss,st,t,er,wtt) values("${this.id}","${su}",${this.ss},${this.st},${this.t},"${er?er:""}",${moment().valueOf()});`
 
     return sq;
   }
@@ -87,5 +90,7 @@ export class LogTbl implements ITbl {
     return sq;
   }
 
+  private sqliteEscape(keyword: string) {
+    if (keyword) return keyword.replace(/"/g, '\"').replace(/'/g, "\'"); else return keyword;
+  }
 }
-
