@@ -34,7 +34,7 @@ export class DaService {
 
     let timeRange = "";
     for (let scd of scdlist) {
-      let scdtime = moment(currentdaystring + (scd.st == "99:99"? "00:00" : scd.st) + ":00");
+      let scdtime = moment(currentdaystring + " " + (scd.st == "99:99"? "00:00" : scd.st) + ":00");
       let scdtimeA = (scd.st != "99:99"? scdtime.format("A") : "");
 
       if (timeRange != (scdtimeA + scd.st)) {

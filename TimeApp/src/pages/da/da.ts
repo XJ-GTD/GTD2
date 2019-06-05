@@ -75,8 +75,8 @@ import { ScdData } from "../../data.mapping";
         <button ion-button *ngIf="!speaking" large icon-only clear (click)="play()">
           <ion-icon name="play"></ion-icon>
         </button>
-        <button ion-button *ngIf="speaking" large icon-only clear (click)="stop()">
-          <ion-icon name="square"></ion-icon>
+        <button ion-button *ngIf="speaking" large icon-only clear (click)="pause()">
+          <ion-icon name="pause"></ion-icon>
         </button>
       </ion-row>
     </ion-grid>
@@ -125,7 +125,7 @@ export class DaPage {
       this.daService.speakDailySummary(moment(this.currentday.time), this.todaylist);
   }
 
-  stop() {
+  pause() {
     this.speaking = false;
   }
 
