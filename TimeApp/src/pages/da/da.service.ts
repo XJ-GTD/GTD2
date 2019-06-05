@@ -38,9 +38,9 @@ export class DaService {
       let scdtimeA = (scd.st != "99:99"? scdtime.format("A") : "");
 
       if (timeRange != (scdtimeA + scd.st)) {
-        speak = speak + " " + scdtimeA + " " + (scd.st == "99:99"? "" : scdtime.format("h:m"));
+        speak = speak + " " + scdtimeA + " " + (scd.st == "99:99"? "" : scdtime.format("h:m")) + "，";
       }
-      speak = speak + "， " + scd.sn;
+      speak = speak + " " + scd.sn + "。";
 
       timeRange = (scdtimeA + scd.st);
     }
