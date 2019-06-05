@@ -105,7 +105,6 @@ export class DaPage {
               private sqlite:SqliteExec) {
     moment.locale('zh-cn');
 
-    this.isMobile = this.util.isMobile();
     this.currentday = this.navParams.data;
     this.currentdayofweek = moment(this.currentday.time).format('dddd');
     this.currentdayshow = moment(this.currentday.time).format('MMMM D');
@@ -113,7 +112,7 @@ export class DaPage {
 
   ionViewDidLoad() {
     this.daService.currentShow(this.currentday).then(d => {
-      if (d) {
+      if (d && d.length > 0) {
         for (let line of d) {
           if (line.gs == '3' || line.gs == '4') {
             this.todaylist.push(line);
@@ -121,6 +120,9 @@ export class DaPage {
             this.scdlist.push(line);
           }
         }
+
+        //没有日程的时候，不显示语音播报按钮
+        this.isMobile = this.util.isMobile();
       }
     });
   }
