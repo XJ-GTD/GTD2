@@ -1,5 +1,5 @@
 import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, NavController, ModalController, NavParams} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
@@ -7,8 +7,9 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import * as moment from "moment";
 import { CalendarDay } from "../../components/ion2-calendar";
 import { DaService } from "./da.service";
-import { ScdData } from "../../data.mapping";
+import { ScdData, ScdPageParamter } from "../../data.mapping";
 import {EmitService} from "../../service/util-service/emit.service";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 每天日程一览 page.
@@ -95,6 +96,7 @@ export class DaPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              private modalCtr: ModalController,
               private emitService: EmitService,
               private daService: DaService,
               private sqlite:SqliteExec) {
@@ -120,6 +122,22 @@ export class DaPage {
   }
 
   gotoDetail(scd: ScdData) {
+    let p: ScdPageParamter = new ScdPageParamter();
+    p.si = scd.si;
+    p.d = moment(scd.sd);
+    p.gs = scd.gs;
+
+    this.feedback.audioClick();
+    if (gs == "0") {
+      //本人画面
+      this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, p).present();
+    } else if (gs == "1") {
+      //受邀人画面
+      this.modalCtr.create(DataConfig.PAGE._TDDI_PAGE, p).present();
+    } else {
+      //系统画面
+      this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, p).present();
+    }
   }
 
   play() {
