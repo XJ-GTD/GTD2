@@ -70,6 +70,16 @@ import { ScdData } from "../../data.mapping";
         </ion-grid>
       </ion-row>
     </ion-grid>
+    <ion-grid>
+      <ion-row justify-content-center>
+        <button ion-button *ngIf="!speaking" color="danger" round (click)="play()">
+          <ion-icon name="play"></ion-icon>
+        </button>
+        <button ion-button *ngIf="speaking" color="danger" round (click)="pause()">
+          <ion-icon name="pause"></ion-icon>
+        </button>
+      </ion-row>
+    </ion-grid>
     </ion-content>`
 })
 export class DaPage {
@@ -81,6 +91,7 @@ export class DaPage {
   currentdayshow: string = moment().format('MMMM D');
   todaylist: Array<ScdData> = new Array<ScdData>();
   scdlist: Array<ScdData> = new Array<ScdData>();
+  speaking: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private daService: DaService, private sqlite:SqliteExec) {
@@ -116,6 +127,14 @@ export class DaPage {
 
   gotoDetail(scd: ScdData) {
     this.daService.speakDailySummary(scd);
+  }
+
+  play() {
+    this.speaking = true;
+  }
+
+  pause() {
+    this.speaking = false;
   }
 
   goBack() {
