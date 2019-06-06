@@ -111,7 +111,7 @@ export class DaPage {
   }
 
   ionViewDidLoad() {
-    getData();
+    this.getData();
   }
 
   getData() {
@@ -143,7 +143,7 @@ export class DaPage {
       let modal = this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, p).present();
 
       modal.onDidDismiss((data)=>{
-        getData();
+        this.getData();
       });
     } else if (scd.gs == "1") {
       //受邀人画面
