@@ -117,6 +117,10 @@ export class DaPage {
   getData() {
     this.daService.currentShow(this.currentday).then(d => {
       if (d && d.length > 0) {
+        // 清空原有数据
+        this.todaylist.length = 0;
+        this.scdlist.length = 0;
+
         for (let line of d) {
           if (line.gs == '3' || line.gs == '4') {
             this.todaylist.push(line);
