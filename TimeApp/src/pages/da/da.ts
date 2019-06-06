@@ -32,7 +32,8 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
         </ion-buttons>
         <ion-title>{{currentdayofweek}}<br/><small>{{currentdayshow}}</small></ion-title>
         <ion-buttons right>
-          <button ion-button icon-only color="danger">
+          <button ion-button icon-only (click)="goNew()" color="danger">
+          <img class="img-header-right" src="./assets/imgs/qtj.png">
           </button>
         </ion-buttons>
       </ion-toolbar>
@@ -177,6 +178,18 @@ export class DaPage {
 
   pause() {
     this.daService.stopSpeak();
+  }
+
+  goNew() {
+    let p: ScdPageParamter = new ScdPageParamter();
+    p.d = moment(this.currentday.time);
+    this.feedback.audioPress();
+
+    let modal = this.modalCtr.create(TdcPage, p);
+    modal.onDidDismiss((data)=>{
+      this.getData();
+    });
+    modal.present();
   }
 
   goBack() {
