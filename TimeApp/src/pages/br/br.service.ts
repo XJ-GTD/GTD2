@@ -249,6 +249,19 @@ export class BrService {
     deviceUUIDYTbl.yk = "DI";
     deviceUUIDYTbl = await this.sqlexec.getExtOne<YTbl>(deviceUUIDYTbl.slT());
 
+    // 增加版本5个性化参数恢复前备份
+    let hasDR = false;
+    let drYTbl = new YTbl();
+    drYTbl.yt = "DR";
+    drYTbl.yk = "DR";
+    drYTbl = await this.sqlexec.getExtOne<YTbl>(drYTbl.slT());
+
+    let hasDRP1 = false;
+    let drp1YTbl = new YTbl();
+    drp1YTbl.yt = "DRP1";
+    drp1YTbl.yk = "DRP1";
+    drp1YTbl = await this.sqlexec.getExtOne<YTbl>(drp1YTbl.slT());
+
     let y = new YTbl();
     await this.sqlexec.delete(y);
 
@@ -257,6 +270,9 @@ export class BrService {
       Object.assign(yi,outRecoverPro.y[j]) ;
       // 忽略备份数据中的客户端版本参数和设备ID,备份的时候不需要过滤这两个数据
       if (yi.yk == "FI" || yi.yk == "DI") continue;
+      if (yi.yk == "DR") hasDR = true;
+      if (yi.yk == "DRP1") hasDRP1 = true;
+
       sqls.push(yi.inT());
     }
 
@@ -270,6 +286,19 @@ export class BrService {
     if (deviceUUIDYTbl) {
       Object.assign(bkUUIDY,deviceUUIDYTbl);
       sqls.push(bkUUIDY.inT());
+    }
+
+    // 恢复版本5未备份个性化参数
+    if (!hasDR) {
+      let bkDRY: YTbl = new YTbl();
+      Object.assign(bkDRY, drYTbl);
+      sqls.push(bkDRY.inT());
+    }
+
+    if (!hasDRP1) {
+      let bkDRP1Y: YTbl = new YTbl();
+      Object.assign(bkDRP1Y, drp1YTbl);
+      sqls.push(bkDRP1Y.inT());
     }
 
     await this.sqlexec.batExecSql(sqls);
