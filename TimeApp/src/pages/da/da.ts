@@ -185,7 +185,7 @@ export class DaPage {
     p.d = moment(this.currentday.time);
     this.feedback.audioPress();
 
-    let modal = this.modalCtr.create(TdcPage, p);
+    let modal = this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, p);
     modal.onDidDismiss((data)=>{
       this.getData();
     });
