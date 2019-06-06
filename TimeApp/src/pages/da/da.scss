@@ -96,12 +96,12 @@ page-da {
 
   .footer-ios {
     .toolbar-background-ios {
-      background-color:$aiBackColor;
+      background-color:$lsback1;
       border-style: none;
     }
 
     .button-full-ios {
-      background-color:$aiBackColor;
+      background-color:$lsback1;
     }
 
     button[block] {
@@ -125,7 +125,7 @@ page-da {
       padding-right: 50px;
     }
     [icon-only] ion-icon{
-      background-color:$aiBackColor;
+      background-color:$lsback1;
       color: $fontMasterColor;
     }
   }
