@@ -60,6 +60,14 @@ export class BrService {
     await this.bacRestful.backup(backupPro);
     if (backupPro.d.e) backupPro.d.e.length = 0;
 
+    //2019/06/06
+    //席理加
+    //获取备忘表数据
+    let mo = new MoTbl();
+    backupPro.d.mo = await this.sqlexec.getList<MoTbl>(mo);
+    await this.bacRestful.backup(backupPro);
+    if (backupPro.d.mo) backupPro.d.mo.length = 0;
+
     //获取日程参与人数据
     let d = new DTbl();
     backupPro.d.d = await this.sqlexec.getList<DTbl>(d);
@@ -158,6 +166,20 @@ export class BrService {
       let ei = new ETbl();
       Object.assign(ei,outRecoverPro.e[j]) ;
       sqls.push(ei.inT());
+    }
+    await this.sqlexec.batExecSql(sqls);
+    sqls.length = 0;
+
+    //2019/06/06
+    //席理加
+    //插入备忘表数据（插入前删除）
+    let mo = new MoTbl();
+    await this.sqlexec.delete(mo);
+
+    for (let j = 0, len = outRecoverPro.mo.length; j < len; j++) {
+      let moi = new MoTbl();
+      Object.assign(moi,outRecoverPro.mo[j]) ;
+      sqls.push(moi.inT());
     }
     await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;

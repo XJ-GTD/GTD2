@@ -20,6 +20,7 @@ import {JtTbl} from "./tbl/jt.tbl";
 import {LogTbl} from "./tbl/log.tbl";
 import {SuTbl} from "./tbl/su.tbl";
 import {MkTbl} from "./tbl/mk.tbl";
+import {MoTbl} from "./tbl/mo.tbl";
 
 /**
  * create by on 2019/3/5
@@ -104,6 +105,10 @@ export class SqliteInit {
     let mk: MkTbl = new MkTbl();
     await this.sqlexec.drop(mk);
     await this.sqlexec.create(mk);
+
+    let mo: MoTbl = new MoTbl();
+    await this.sqlexec.drop(mo);
+    await this.sqlexec.create(mo);
   }
 
   /**
@@ -161,6 +166,13 @@ export class SqliteInit {
         dailyReportParamTbl.yv = "08:30";
         await this.sqlexec.save(dailyReportParamTbl);
       }
+
+      // 2019/06/06
+      // 席理加
+      // 增加备忘表
+      let mo: MoTbl = new MoTbl();
+      await this.sqlexec.drop(mo);
+      await this.sqlexec.create(mo);
     }
   }
 
