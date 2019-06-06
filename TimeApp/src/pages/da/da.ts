@@ -140,11 +140,13 @@ export class DaPage {
     this.feedback.audioClick();
     if (scd.gs == "0") {
       //本人画面
-      let modal = this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, p).present();
+      let modal = this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, p);
 
       modal.onDidDismiss((data)=>{
         this.getData();
       });
+
+      modal.present();
     } else if (scd.gs == "1") {
       //受邀人画面
       this.modalCtr.create(DataConfig.PAGE._TDDI_PAGE, p).present();
