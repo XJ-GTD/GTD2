@@ -4,6 +4,7 @@ import {BackupPro, BacRestful, OutRecoverPro, RecoverPro} from "../../service/re
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {SpTbl} from "../../service/sqlite/tbl/sp.tbl";
 import {ETbl} from "../../service/sqlite/tbl/e.tbl";
+import {MoTbl} from "../../service/sqlite/tbl/mo.tbl";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {DTbl} from "../../service/sqlite/tbl/d.tbl";
 import {GTbl} from "../../service/sqlite/tbl/g.tbl";
