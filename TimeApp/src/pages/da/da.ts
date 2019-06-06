@@ -73,17 +73,18 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
         </ion-grid>
       </ion-row>
     </ion-grid>
-    <ion-grid *ngIf="isMobile">
-      <ion-row justify-content-center>
-        <button ion-button *ngIf="isMobile && !speaking" large icon-only clear (click)="play()">
-          <ion-icon name="play" color="white"></ion-icon>
-        </button>
-        <button ion-button *ngIf="isMobile && speaking" large icon-only clear (click)="pause()">
-          <ion-icon name="pause" color="white"></ion-icon>
-        </button>
-      </ion-row>
-    </ion-grid>
-    </ion-content>`
+    </ion-content>
+    <ion-footer class="foot-set" *ngIf="isMobile">
+      <ion-toolbar>
+      <button ion-button *ngIf="isMobile && !speaking" icon-only full (click)="play()">
+        <ion-icon name="play" color="white"></ion-icon>
+      </button>
+      <button ion-button *ngIf="isMobile && speaking" icon-only full (click)="pause()">
+        <ion-icon name="pause" color="white"></ion-icon>
+      </button>
+      </ion-toolbar>
+    </ion-footer>
+    `
 })
 export class DaPage {
 
