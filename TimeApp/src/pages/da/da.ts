@@ -33,7 +33,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
         <ion-title>{{currentdayofweek}}<br/><small>{{currentdayshow}}</small></ion-title>
         <ion-buttons right>
           <button ion-button icon-only (click)="goNew()" color="danger">
-          <img class="img-header-right" src="./assets/imgs/qtj.png">
+          <img class="img-header-right" src="./assets/imgs/qtj-white.png">
           </button>
         </ion-buttons>
       </ion-toolbar>
