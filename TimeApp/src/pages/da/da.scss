@@ -94,6 +94,42 @@ page-da {
     padding: 4px 20px;
   }
 
+  .footer-ios {
+    .toolbar-background-ios {
+      background-color:$aiBackColor;
+      border-style: none;
+    }
+
+    .button-full-ios {
+      background-color:$aiBackColor;
+    }
+
+    button[block] {
+      width: 30vmin;
+    }
+
+    .bar-button-ios {
+      color: $adornColor;
+      font-size: 15px;
+    }
+
+    .toolbar-content-ios {
+      text-align: center;
+    }
+
+    ion-buttons[padding-left] {
+      padding-left: 50px;
+    }
+
+    ion-buttons[padding-right] {
+      padding-right: 50px;
+    }
+    [icon-only] ion-icon{
+      background-color:$aiBackColor;
+      color: $fontMasterColor;
+    }
+  }
+
   .img-header-left{
     width: 4vmin;
     height: 4vmin;
