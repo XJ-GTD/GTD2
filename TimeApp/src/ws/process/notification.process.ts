@@ -8,6 +8,7 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {ScudscdPara} from "../model/scudscd.para";
 import {NotificationsService} from "../../service/cordova/notifications.service";
 import {ScdData} from "../../data.mapping";
+import * as moment from "moment";
 
 /**
  * 通知
@@ -41,6 +42,12 @@ export class NotificationProcess implements MQProcess {
       let dailySummary: any = content.parameters;
       let title: string = '每日简报';
       let text: string = '';
+
+      if (dailySummary && dailySummary.timestamp) {
+        let day = moment(dailySummary.timestamp);
+        text = day.format("M月D日 dddd")
+      }
+
       let data: any = {eventhandler: 'on.dailyreport.message.click', eventdata: dailySummary};
 
       this.notificationsService.newMessage(title, text, data);
