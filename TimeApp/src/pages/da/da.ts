@@ -83,8 +83,6 @@ export class DaPage {
     moment.locale('zh-cn');
 
     this.currentday = this.navParams.data;
-    this.currentdayofweek = moment(this.currentday.time).format('dddd');
-    this.currentdayshow = moment(this.currentday.time).format('MMMM D');
 
     let preday = moment(this.currentday.time).subtract(1, "days");
     let day = moment(this.currentday.time);
@@ -93,6 +91,9 @@ export class DaPage {
     this.days.push(preday.unix() * 1000);
     this.days.push(day.unix() * 1000);
     this.days.push(nextday.unix() * 1000);
+
+    this.currentdayofweek = day.format('dddd');
+    this.currentdayshow = day.format('MMMM D');
   }
 
   ionViewDidLoad() {
@@ -150,6 +151,10 @@ export class DaPage {
   slideChanged() {
     let currentIndex = this.slides.getActiveIndex();
 
+    let day = this.days[currentIndex];
+
+    this.currentdayofweek = day.format('dddd');
+    this.currentdayshow = day.format('MMMM D');
   }
 
   play() {
