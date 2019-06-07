@@ -151,7 +151,7 @@ export class DaPage {
   slideChanged() {
     let currentIndex = this.slides.getActiveIndex();
 
-    let day = this.days[currentIndex];
+    let day = moment(this.days[currentIndex]);
 
     this.currentdayofweek = day.format('dddd');
     this.currentdayshow = day.format('MMMM D');
