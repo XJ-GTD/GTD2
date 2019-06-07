@@ -47,7 +47,7 @@ import {CardListComponent} from "../../components/card-list/card-list";
       </ion-slide>
     </ion-slides>
     </ion-content>
-    <ion-footer class="foot-set" *ngIf="isMobile">
+    <ion-footer class="foot-set" *ngIf="isMobile && hasContents">
       <ion-toolbar>
       <button ion-button *ngIf="isMobile && !speaking" icon-only full (click)="play()">
         <ion-icon name="play" color="white"></ion-icon>
@@ -68,6 +68,7 @@ export class DaPage {
   scdlist: Array<ScdData> = new Array<ScdData>();
   speaking: boolean = false;
   isMobile: boolean = false;
+  hasContents: boolean = false;
   cardlist: CardListComponent;
   @ViewChild(Slides) slides: Slides;
   @ViewChildren("cardlist") cardlists: QueryList<CardListComponent>;
@@ -102,6 +103,12 @@ export class DaPage {
   ionViewDidLoad() {
     let currentIndex = this.slides.getActiveIndex();
     this.cardlist = this.cardlists.toArray()[currentIndex];
+
+    if (this.cardlist.scdlist.length > 0 || this.cardlist.todaylist.length > 0) {
+      this.hasContents = true;
+    } else {
+      this.hasContents = false;
+    }
   }
 
   getData(target: any, day: number) {
@@ -141,6 +148,12 @@ export class DaPage {
 
       modal.onDidDismiss((data)=>{
         target.refresh();
+
+        if (target.scdlist.length > 0 || target.todaylist.length > 0) {
+          this.hasContents = true;
+        } else {
+          this.hasContents = false;
+        }
       });
 
       modal.present();
@@ -161,6 +174,12 @@ export class DaPage {
 
     this.currentdayofweek = this.day.format('dddd');
     this.currentdayshow = this.day.format('MMMM D');
+
+    if (this.cardlist.scdlist.length > 0 || this.cardlist.todaylist.length > 0) {
+      this.hasContents = true;
+    } else {
+      this.hasContents = false;
+    }
   }
 
   play() {
@@ -189,6 +208,12 @@ export class DaPage {
     let modal = this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, p);
     modal.onDidDismiss((data)=>{
       this.cardlist.refresh();
+
+      if (this.cardlist.scdlist.length > 0 || this.cardlist.todaylist.length > 0) {
+        this.hasContents = true;
+      } else {
+        this.hasContents = false;
+      }
     });
     modal.present();
   }
