@@ -40,7 +40,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
         </ion-row>
         <ion-row>
           <div>
-            <ion-datetime displayFormat="YYYY年M月DD日 DDDD"
+            <ion-datetime displayFormat="YYYY年MM月DD日 DDDD"
                           pickerFormat="YYYY MM DD" color="light"
                           [(ngModel)]="scd.showSpSd" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                           min="1999-01-01" max="2039-12-31" cancelText="取消" doneText="确认"
@@ -472,4 +472,3 @@ export class TdcPage {
   }
 
 }
-
