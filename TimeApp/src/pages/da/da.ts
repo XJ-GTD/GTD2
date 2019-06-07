@@ -86,10 +86,13 @@ export class DaPage {
     this.currentdayofweek = moment(this.currentday.time).format('dddd');
     this.currentdayshow = moment(this.currentday.time).format('MMMM D');
 
+    let preday = moment(this.currentday.time).subtract(1, "days");
     let day = moment(this.currentday.time);
-    this.days.push(day.subtract(1, "days").unix() * 1000);
+    let nextday = moment(this.currentday.time).add(1, "days");
+
+    this.days.push(preday.unix() * 1000);
     this.days.push(day.unix() * 1000);
-    this.days.push(day.add(1, "days").unix() * 1000);
+    this.days.push(nextday.unix() * 1000);
   }
 
   ionViewDidLoad() {
