@@ -82,6 +82,7 @@ import {LogPageModule} from "../pages/log/log.module";
 import {AtPageModule} from "../pages/at/at.module";
 import {DaPageModule} from "../pages/da/da.module";
 import {DrPageModule} from "../pages/dr/dr.module";
+import {CardListComponentModule} from "../components/card-list/card-list.module";
 
 @NgModule({
   declarations: [
@@ -127,7 +128,8 @@ import {DrPageModule} from "../pages/dr/dr.module";
     AtPageModule,
     DaPageModule,
     DrPageModule,
-    ConfirmboxComponentModule
+    ConfirmboxComponentModule,
+    CardListComponentModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
