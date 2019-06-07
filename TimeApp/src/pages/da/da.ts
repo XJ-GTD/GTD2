@@ -171,10 +171,10 @@ export class DaPage {
       this.speaking = false;
     });
 
-    if (this.scdlist && this.scdlist.length > 0)
-      this.daService.speakDailySummary(moment(this.currentday.time), this.scdlist);
+    if (this.cardlist.scdlist && this.cardlist.scdlist.length > 0)
+      this.daService.speakDailySummary(this.day, this.cardlist.scdlist);
     else
-      this.daService.speakDailySummary(moment(this.currentday.time), this.todaylist);
+      this.daService.speakDailySummary(this.day, this.cardlist.todaylist);
   }
 
   pause() {
