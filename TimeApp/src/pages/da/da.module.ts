@@ -10,6 +10,7 @@ import {CardListComponentModule} from "../../components/card-list/card-list.modu
   ],
   imports: [
     IonicPageModule.forChild(DaPage),
+    CardListComponentModule
   ],
   providers: [
     DaService

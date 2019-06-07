@@ -19,9 +19,4 @@ import { CardListComponent } from './card-list';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CardListComponentModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule:CardListComponent
-    };
-  }
 }
