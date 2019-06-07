@@ -173,6 +173,10 @@ export class DaPage {
   slideChanged() {
     let currentIndex = this.slides.getActiveIndex();
 
+    if (currentIndex >= this.days.length) {
+      return;
+    }
+
     this.day = moment(this.days[currentIndex]);
     this.cardlist = this.cardlists.toArray()[currentIndex];
 
