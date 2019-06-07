@@ -6,9 +6,6 @@ import { CardListComponent } from './card-list';
   declarations: [
     CardListComponent,
   ],
-  exports: [
-    CardListComponent,
-  ],
   entryComponents: [
     CardListComponent,
   ],
