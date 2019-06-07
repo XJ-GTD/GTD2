@@ -43,7 +43,7 @@ import {CardListComponent} from "../../components/card-list/card-list";
     <ion-content padding>
     <ion-slides>
       <ion-slide *ngFor="let day of days">
-        <card-list (onStartLoad)="getData(day)" (onCardClick)="gotoDetail($event)" #cardlist></card-list>
+        <card-list (onStartLoad)="getData($target, day)" (onCardClick)="gotoDetail($event)" #cardlist></card-list>
       </ion-slide>
     </ion-slides>
     </ion-content>
@@ -95,7 +95,7 @@ export class DaPage {
   ionViewDidLoad() {
   }
 
-  getData(day: number) {
+  getData(target: any, day: number) {
     this.daService.currentShow(day).then(d => {
       if (d && d.length > 0) {
         // 清空原有数据
