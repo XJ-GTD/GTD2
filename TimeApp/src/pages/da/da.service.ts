@@ -12,12 +12,12 @@ export class DaService {
     moment.locale('zh-cn');
   }
 
-  currentShow(select: CalendarDay): Promise<Array<ScdData>> {
+  currentShow(select: number): Promise<Array<ScdData>> {
     return new Promise<Array<ScdData>>((resolve, reject) => {
       let query: RcInParam = new RcInParam();
 
-      query.sd = moment(select.time).format('YYYY/MM/DD');
-      query.ed = moment(select.time).format('YYYY/MM/DD');
+      query.sd = moment(select).format('YYYY/MM/DD');
+      query.ed = moment(select).format('YYYY/MM/DD');
 
       this.pgservice.getList(query).then(data => {
         resolve(data);

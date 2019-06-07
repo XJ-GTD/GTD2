@@ -41,7 +41,11 @@ import {CardListComponent} from "../../components/card-list/card-list";
     </ion-header>
 
     <ion-content padding>
-      <card-list (onStartLoad)="getData()" (onCardClick)="gotoDetail($event)" #cardlist></card-list>
+    <ion-slides>
+      <ion-slide *ngFor="let day of days">
+        <card-list (onStartLoad)="getData(day)" (onCardClick)="gotoDetail($event)" #cardlist></card-list>
+      </ion-slide>
+    </ion-slides>
     </ion-content>
     <ion-footer class="foot-set" *ngIf="isMobile">
       <ion-toolbar>
@@ -65,6 +69,8 @@ export class DaPage {
   speaking: boolean = false;
   isMobile: boolean = false;
   @ViewChild("cardlist") cardlist: CardListComponent;
+  @ViewChild(Slides) slides: Slides;
+  days: Array<number> = new Array<number>();
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -79,14 +85,19 @@ export class DaPage {
     this.currentday = this.navParams.data;
     this.currentdayofweek = moment(this.currentday.time).format('dddd');
     this.currentdayshow = moment(this.currentday.time).format('MMMM D');
+
+    let day = moment(this.currentday.time);
+    this.days.push(day.subtract(1, "days").unix() * 1000);
+    this.days.push(day.unix() * 1000);
+    this.days.push(day.add(1, "days").unix() * 1000);
   }
 
   ionViewDidLoad() {
     this.getData();
   }
 
-  getData() {
-    this.daService.currentShow(this.currentday).then(d => {
+  getData(day: number) {
+    this.daService.currentShow(day).then(d => {
       if (d && d.length > 0) {
         // 清空原有数据
         this.cardlist.todaylist.length = 0;
