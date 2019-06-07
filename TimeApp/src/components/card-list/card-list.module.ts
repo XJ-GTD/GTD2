@@ -6,6 +6,12 @@ import { CardListComponent } from './card-list';
   declarations: [
     CardListComponent,
   ],
+  exports: [
+    CardListComponent,
+  ],
+  entryComponents: [
+    CardListComponent,
+  ],
   imports: [
     IonicPageModule.forChild(CardListComponent)
   ],
