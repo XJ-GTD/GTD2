@@ -60,4 +60,8 @@ export class CardListComponent {
   gotoDetail(scd: any) {
     this.onCardClick.emit(scd);
   }
+
+  refresh() {
+    this.onStartLoad.emit(this);
+  }
 }
