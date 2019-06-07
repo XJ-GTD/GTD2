@@ -166,7 +166,7 @@ export class DaPage {
 
     let modal = this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, p);
     modal.onDidDismiss((data)=>{
-      this.getData();
+      this.cardlist.refresh();
     });
     modal.present();
   }
