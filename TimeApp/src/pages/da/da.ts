@@ -1,4 +1,4 @@
-import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import {IonicPage, NavController, ModalController, NavParams, Slides} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
@@ -43,7 +43,7 @@ import {CardListComponent} from "../../components/card-list/card-list";
     <ion-content padding>
     <ion-slides initialSlide="1" (ionSlideDidChange)="slideChanged()">
       <ion-slide *ngFor="let day of days">
-        <card-list (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" #cardlist></card-list>
+        <card-list #cardlist (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" #cardlist></card-list>
       </ion-slide>
     </ion-slides>
     </ion-content>
@@ -70,6 +70,7 @@ export class DaPage {
   isMobile: boolean = false;
   cardlist: CardListComponent;
   @ViewChild(Slides) slides: Slides;
+  @ViewChildren("cardlist") cardlists: QueryList<CardListComponent>;
 
   days: Array<number> = new Array<number>();
   day: moment.Moment;
@@ -99,6 +100,8 @@ export class DaPage {
   }
 
   ionViewDidLoad() {
+    let currentIndex = this.slides.getActiveIndex();
+    this.cardlist = this.cardlists.toArray()[currentIndex];
   }
 
   getData(target: any, day: number) {
@@ -154,6 +157,7 @@ export class DaPage {
     let currentIndex = this.slides.getActiveIndex();
 
     this.day = moment(this.days[currentIndex]);
+    this.cardlist = this.cardlists.toArray()[currentIndex];
 
     this.currentdayofweek = this.day.format('dddd');
     this.currentdayshow = this.day.format('MMMM D');
