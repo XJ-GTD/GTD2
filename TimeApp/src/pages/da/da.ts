@@ -68,9 +68,11 @@ export class DaPage {
   scdlist: Array<ScdData> = new Array<ScdData>();
   speaking: boolean = false;
   isMobile: boolean = false;
-  @ViewChild("cardlist") cardlist: CardListComponent;
+  cardlist: CardListComponent;
   @ViewChild(Slides) slides: Slides;
+
   days: Array<number> = new Array<number>();
+  day: moment.Moment;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -85,15 +87,15 @@ export class DaPage {
     this.currentday = this.navParams.data;
 
     let preday = moment(this.currentday.time).subtract(1, "days");
-    let day = moment(this.currentday.time);
+    this.day = moment(this.currentday.time);
     let nextday = moment(this.currentday.time).add(1, "days");
 
     this.days.push(preday.unix() * 1000);
-    this.days.push(day.unix() * 1000);
+    this.days.push(this.day.unix() * 1000);
     this.days.push(nextday.unix() * 1000);
 
-    this.currentdayofweek = day.format('dddd');
-    this.currentdayshow = day.format('MMMM D');
+    this.currentdayofweek = this.day.format('dddd');
+    this.currentdayshow = this.day.format('MMMM D');
   }
 
   ionViewDidLoad() {
@@ -151,10 +153,10 @@ export class DaPage {
   slideChanged() {
     let currentIndex = this.slides.getActiveIndex();
 
-    let day = moment(this.days[currentIndex]);
+    this.day = moment(this.days[currentIndex]);
 
-    this.currentdayofweek = day.format('dddd');
-    this.currentdayshow = day.format('MMMM D');
+    this.currentdayofweek = this.day.format('dddd');
+    this.currentdayshow = this.day.format('MMMM D');
   }
 
   play() {
@@ -177,7 +179,7 @@ export class DaPage {
 
   goNew() {
     let p: ScdPageParamter = new ScdPageParamter();
-    p.d = moment(this.currentday.time);
+    p.d = this.day;
     this.feedback.audioPress();
 
     let modal = this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, p);
