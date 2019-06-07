@@ -41,8 +41,8 @@ import {CardListComponent} from "../../components/card-list/card-list";
     </ion-header>
 
     <ion-content padding>
-    <ion-slides>
-      <ion-slide *ngFor="let day of days">
+    <ion-slides initialSlide="1">
+      <ion-slide *ngFor="let day of days" (ionSlideDidChange)="slideChanged()">
         <card-list (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" #cardlist></card-list>
       </ion-slide>
     </ion-slides>
@@ -145,6 +145,11 @@ export class DaPage {
       //系统画面
       this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, p).present();
     }
+  }
+
+  slideChanged() {
+    let currentIndex = this.slides.getActiveIndex();
+
   }
 
   play() {
