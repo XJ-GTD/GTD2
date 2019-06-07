@@ -1,5 +1,5 @@
 import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
-import {IonicPage, NavController, ModalController, NavParams} from 'ionic-angular';
+import {IonicPage, NavController, ModalController, NavParams, Slides} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
@@ -11,6 +11,7 @@ import { ScdData, ScdPageParamter } from "../../data.mapping";
 import {EmitService} from "../../service/util-service/emit.service";
 import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
+import {CardListComponent} from "../../components/card-list/card-list";
 
 /**
  * Generated class for the 每天日程一览 page.
@@ -40,40 +41,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
     </ion-header>
 
     <ion-content padding>
-    <ion-grid class="h70">
-      <ion-row class="h100" align-items-center>
-        <ion-grid>
-          <ion-row justify-content-center>
-            <small *ngIf="todaylist && todaylist.length > 0">当天</small>
-            <ng-container *ngFor="let scd of todaylist">
-            <ion-card *ngIf="scd.gs == '3' || scd.gs == '4'" (click)="gotoDetail(scd)">
-              <div class="card-title">{{scd.sn}}</div>
-              <div *ngIf="scd.bz" class="card-subtitle">{{scd.bz}}</div>
-              <div *ngIf="scd.st && scd.st != '99:99'" class="card-subtitle">{{scd.st}}</div>
-              <div *ngIf="scd.st && scd.st == '99:99'" class="card-subtitle">全天</div>
-              <div *ngIf="scd.p && scd.p.jc" class="card-subtitle">
-                <div class="color-dot" [ngStyle]="{'background-color': scd.p.jc }"></div>
-              </div>
-            </ion-card>
-            </ng-container>
-          </ion-row>
-          <ion-row justify-content-center>
-            <small *ngIf="scdlist && scdlist.length > 0">日程</small>
-            <ng-container *ngFor="let scd of scdlist">
-            <ion-card *ngIf="scd.gs != '3' && scd.gs != '4'" (click)="gotoDetail(scd)">
-              <div class="card-title">{{scd.sn}}</div>
-              <div *ngIf="scd.bz" class="card-subtitle">{{scd.bz}}</div>
-              <div *ngIf="scd.st && scd.st != '99:99'" class="card-subtitle">{{scd.st}}</div>
-              <div *ngIf="scd.st && scd.st == '99:99'" class="card-subtitle">全天</div>
-              <div *ngIf="scd.p && scd.p.jc" class="card-subtitle">
-                <div class="color-dot" [ngStyle]="{'background-color': scd.p.jc }"></div>
-              </div>
-            </ion-card>
-            </ng-container>
-          </ion-row>
-        </ion-grid>
-      </ion-row>
-    </ion-grid>
+      <card-list (onStartLoad)="getData()" (onCardClick)="gotoDetail($event)" #cardlist></card-list>
     </ion-content>
     <ion-footer class="foot-set" *ngIf="isMobile">
       <ion-toolbar>
@@ -96,6 +64,7 @@ export class DaPage {
   scdlist: Array<ScdData> = new Array<ScdData>();
   speaking: boolean = false;
   isMobile: boolean = false;
+  @ViewChild("cardlist") cardlist: CardListComponent;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -120,14 +89,14 @@ export class DaPage {
     this.daService.currentShow(this.currentday).then(d => {
       if (d && d.length > 0) {
         // 清空原有数据
-        this.todaylist.length = 0;
-        this.scdlist.length = 0;
+        this.cardlist.todaylist.length = 0;
+        this.cardlist.scdlist.length = 0;
 
         for (let line of d) {
           if (line.gs == '3' || line.gs == '4') {
-            this.todaylist.push(line);
+            this.cardlist.todaylist.push(line);
           } else {
-            this.scdlist.push(line);
+            this.cardlist.scdlist.push(line);
           }
         }
 
