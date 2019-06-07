@@ -1,4 +1,4 @@
-import { Output, EventEmitter } from "@angular/core";
+import { Component, Output, EventEmitter } from "@angular/core";
 
 @Component({
   selector: 'card-list',
@@ -42,22 +42,22 @@ import { Output, EventEmitter } from "@angular/core";
 export class CardListComponent {
 
   @Output()
-  private onStartLoad: EventEmitter = new EventEmitter();
+  private onStartLoad: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
   private onCardClick: EventEmitter<any> = new EventEmitter<any>();
 
-  todaylist: Array<ScdData> = new Array<ScdData>();
-  scdlist: Array<ScdData> = new Array<ScdData>();
+  todaylist: Array<any> = new Array<any>();
+  scdlist: Array<any> = new Array<any>();
 
   constructor() {
   }
 
   ngOnInit() {
-    this.onStartLoad.emit();
+    this.onStartLoad.emit(this);
   }
 
-  gotoDetail(scd) {
+  gotoDetail(scd: any) {
     this.onCardClick.emit(scd);
   }
 }
