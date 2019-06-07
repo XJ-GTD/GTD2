@@ -99,14 +99,14 @@ export class DaPage {
     this.daService.currentShow(day).then(d => {
       if (d && d.length > 0) {
         // 清空原有数据
-        this.cardlist.todaylist.length = 0;
-        this.cardlist.scdlist.length = 0;
+        target.todaylist.length = 0;
+        target.scdlist.length = 0;
 
         for (let line of d) {
           if (line.gs == '3' || line.gs == '4') {
-            this.cardlist.todaylist.push(line);
+            target.todaylist.push(line);
           } else {
-            this.cardlist.scdlist.push(line);
+            target.scdlist.push(line);
           }
         }
 
@@ -116,7 +116,10 @@ export class DaPage {
     });
   }
 
-  gotoDetail(scd: ScdData) {
+  gotoDetail(data: any) {
+    let target: CardListComponent = data.target;
+    let scd: ScdData = data.value;
+
     let p: ScdPageParamter = new ScdPageParamter();
     p.si = scd.si;
     p.d = moment(scd.sd);
@@ -128,7 +131,7 @@ export class DaPage {
       let modal = this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, p);
 
       modal.onDidDismiss((data)=>{
-        this.cardlist.refresh();
+        target.refresh();
       });
 
       modal.present();

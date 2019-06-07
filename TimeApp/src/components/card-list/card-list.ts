@@ -58,7 +58,7 @@ export class CardListComponent {
   }
 
   gotoDetail(scd: any) {
-    this.onCardClick.emit(scd);
+    this.onCardClick.emit({target: this, value: scd});
   }
 
   refresh() {
