@@ -13,6 +13,7 @@ import { CardListComponent } from './card-list';
   exports: [
     CardListComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CardListComponentModule {
 }
