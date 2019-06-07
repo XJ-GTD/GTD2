@@ -101,17 +101,11 @@ export class DaPage {
   }
 
   ionViewDidLoad() {
-    let currentIndex = this.slides.getActiveIndex();
-    this.cardlist = this.cardlists.toArray()[currentIndex];
-
-    if (this.cardlist.scdlist.length > 0 || this.cardlist.todaylist.length > 0) {
-      this.hasContents = true;
-    } else {
-      this.hasContents = false;
-    }
   }
 
   getData(target: any, day: number) {
+    let currentIndex = this.slides.getActiveIndex();
+
     this.daService.currentShow(day).then(d => {
       if (d && d.length > 0) {
         // 清空原有数据
@@ -123,6 +117,16 @@ export class DaPage {
             target.todaylist.push(line);
           } else {
             target.scdlist.push(line);
+          }
+        }
+
+        if (day == this.days[currentIndex]) {
+          this.cardlist = this.cardlists.toArray()[currentIndex];
+
+          if (this.cardlist.scdlist.length > 0 || this.cardlist.todaylist.length > 0) {
+            this.hasContents = true;
+          } else {
+            this.hasContents = false;
           }
         }
 
