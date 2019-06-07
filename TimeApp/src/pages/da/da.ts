@@ -41,8 +41,8 @@ import {CardListComponent} from "../../components/card-list/card-list";
     </ion-header>
 
     <ion-content padding>
-    <ion-slides initialSlide="1">
-      <ion-slide *ngFor="let day of days" (ionSlideDidChange)="slideChanged()">
+    <ion-slides initialSlide="1" (ionSlideDidChange)="slideChanged()">
+      <ion-slide *ngFor="let day of days">
         <card-list (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" #cardlist></card-list>
       </ion-slide>
     </ion-slides>
