@@ -1,4 +1,4 @@
-import {ModuleWithProviders, NgModule} from '@angular/core';
+import {ModuleWithProviders, NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { CardListComponent } from './card-list';
 
