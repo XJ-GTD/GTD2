@@ -206,7 +206,7 @@ export class DaPage {
     let currentIndex = this.slides.getActiveIndex();
 
     //可以获取得到当前日期索引
-    if (currentIndex || currentIndex == 0) {
+    if (currentIndex) {
       //当前日期在下半段
       if (currentIndex > this.INIT_SLIDE_DAY) {
 
@@ -236,7 +236,7 @@ export class DaPage {
     let currentIndex = this.slides.getActiveIndex();
 
     //可以获取得到当前日期索引
-    if (currentIndex) {
+    if (currentIndex || currentIndex == 0) {
       //当前日期在上半段
       if (currentIndex < this.INIT_SLIDE_DAY) {
 
