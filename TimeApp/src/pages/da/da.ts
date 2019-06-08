@@ -41,7 +41,7 @@ import {CardListComponent} from "../../components/card-list/card-list";
     </ion-header>
 
     <ion-content padding>
-    <ion-slides initialSlide="1" (ionSlideDidChange)="slideChanged()">
+    <ion-slides initialSlide="1" (ionSlideDidChange)="slideChanged()" (ionSlideNextEnd)="slideNextEnd()" (ionSlidePrevEnd)="slidePrevEnd()">
       <ion-slide *ngFor="let day of days">
         <card-list #cardlist (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" #cardlist></card-list>
       </ion-slide>
@@ -73,6 +73,8 @@ export class DaPage {
   @ViewChild(Slides) slides: Slides;
   @ViewChildren("cardlist") cardlists: QueryList<CardListComponent>;
 
+  MIN_SLIDE_DAYS: number = 5; // 初始化日期数量,必须是奇数
+  MAX_SLIDE_DAYS: number = 9; // 最大日期数量,必须是奇数
   days: Array<number> = new Array<number>();
   day: moment.Moment;
 
@@ -88,13 +90,20 @@ export class DaPage {
 
     this.currentday = this.navParams.data;
 
-    let preday = moment(this.currentday.time).subtract(1, "days");
-    this.day = moment(this.currentday.time);
-    let nextday = moment(this.currentday.time).add(1, "days");
+    //初始化当前选中日期之前的日期
+    for (let i = (this.MIN_SLIDE_DAYS / 2); i > 0; i--) {
+      let preday = moment(this.currentday.time).subtract(i, "days");
+      this.days.push(preday.unix() * 1000);
+    }
 
-    this.days.push(preday.unix() * 1000);
+    this.day = moment(this.currentday.time);
     this.days.push(this.day.unix() * 1000);
-    this.days.push(nextday.unix() * 1000);
+
+    //初始化当前选中日期之后的日期
+    for (let i = 1; i <= (this.MIN_SLIDE_DAYS / 2); i++) {
+      let nextday = moment(this.currentday.time).add(i, "days");
+      this.days.push(nextday.unix() * 1000);
+    }
 
     this.currentdayofweek = this.day.format('dddd');
     this.currentdayshow = this.day.format('MMMM D');
@@ -190,6 +199,16 @@ export class DaPage {
     } else {
       this.hasContents = false;
     }
+  }
+
+  slideNextEnd() {
+    let currentIndex = this.slides.getActiveIndex();
+
+  }
+
+  slidePrevEnd() {
+    let currentIndex = this.slides.getActiveIndex();
+
   }
 
   play() {
