@@ -33,7 +33,7 @@ import { Component, Output, EventEmitter } from "@angular/core";
             </div>
           </ion-card>
           </ng-container>
-          <ion-card *ngIf="!scdlist || scdlist.length <= 0" (click)="gotoNew()">
+          <ion-card *ngIf="(!todaylist || todaylist.length <= 0) && (!scdlist || scdlist.length <= 0)" (click)="gotoNew()">
             <div class="card-subtitle">添加新事件</div>
           </ion-card>
         </ion-row>
