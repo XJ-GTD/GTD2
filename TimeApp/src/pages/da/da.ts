@@ -105,6 +105,8 @@ export class DaPage {
 
   getData(target: any, day: number) {
     let currentIndex = this.slides.getActiveIndex();
+    // 初始化的时候获取不到当前索引，使用默认索引号
+    currentIndex = currentIndex? currentIndex : 1;
 
     this.daService.currentShow(day).then(d => {
       // 清空原有数据
