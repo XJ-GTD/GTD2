@@ -73,9 +73,9 @@ export class DaPage {
   @ViewChild(Slides) slides: Slides;
   @ViewChildren("cardlist") cardlists: QueryList<CardListComponent>;
 
-  MIN_SLIDE_DAYS: number = 5; // 初始化日期数量,必须是奇数
-  INIT_SLIDE_DAY: number = 2; // 初始化当前选择日期位置
-  MAX_SLIDE_DAYS: number = 9; // 最大日期数量,必须是奇数
+  MIN_SLIDE_DAYS: number = 7; // 初始化日期数量,必须是奇数
+  INIT_SLIDE_DAY: number = 3; // 初始化当前选择日期位置
+  MAX_SLIDE_DAYS: number = 7; // 最大日期数量,必须是奇数
   days: Array<number> = new Array<number>();
   day: moment.Moment;
 
