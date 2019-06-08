@@ -41,7 +41,7 @@ import {CardListComponent} from "../../components/card-list/card-list";
     </ion-header>
 
     <ion-content padding>
-    <ion-slides initialSlide="1" (ionSlideDidChange)="slideChanged()" (ionSlideNextEnd)="slideNextEnd()" (ionSlidePrevEnd)="slidePrevEnd()">
+    <ion-slides [initialSlide]="INIT_SLIDE_DAY" (ionSlideDidChange)="slideChanged()" (ionSlideNextEnd)="slideNextEnd()" (ionSlidePrevEnd)="slidePrevEnd()">
       <ion-slide *ngFor="let day of days">
         <card-list #cardlist (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" #cardlist></card-list>
       </ion-slide>
@@ -74,6 +74,7 @@ export class DaPage {
   @ViewChildren("cardlist") cardlists: QueryList<CardListComponent>;
 
   MIN_SLIDE_DAYS: number = 5; // 初始化日期数量,必须是奇数
+  INIT_SLIDE_DAY: number = 3; // 初始化当前选择日期位置
   MAX_SLIDE_DAYS: number = 9; // 最大日期数量,必须是奇数
   days: Array<number> = new Array<number>();
   day: moment.Moment;
@@ -91,7 +92,7 @@ export class DaPage {
     this.currentday = this.navParams.data;
 
     //初始化当前选中日期之前的日期
-    for (let i = parseInt((this.MIN_SLIDE_DAYS / 2).toFixed()); i > 0; i--) {
+    for (let i = Math.floor(this.MIN_SLIDE_DAYS / 2); i > 0; i--) {
       let preday = moment(this.currentday.time).subtract(i, "days");
       this.days.push(preday.unix() * 1000);
     }
@@ -100,7 +101,7 @@ export class DaPage {
     this.days.push(this.day.unix() * 1000);
 
     //初始化当前选中日期之后的日期
-    for (let i = 1; i <= parseInt((this.MIN_SLIDE_DAYS / 2).toFixed()); i++) {
+    for (let i = 1; i <= Math.floor(this.MIN_SLIDE_DAYS / 2); i++) {
       let nextday = moment(this.currentday.time).add(i, "days");
       this.days.push(nextday.unix() * 1000);
     }
@@ -115,7 +116,7 @@ export class DaPage {
   getData(target: any, day: number) {
     let currentIndex = this.slides.getActiveIndex();
     // 初始化的时候获取不到当前索引，使用默认索引号
-    currentIndex = currentIndex? currentIndex : 1;
+    currentIndex = currentIndex? currentIndex : this.INIT_SLIDE_DAY;
 
     this.daService.currentShow(day).then(d => {
       // 清空原有数据
