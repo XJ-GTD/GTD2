@@ -91,7 +91,7 @@ export class DaPage {
     this.currentday = this.navParams.data;
 
     //初始化当前选中日期之前的日期
-    for (let i = parseInt(this.MIN_SLIDE_DAYS / 2); i > 0; i--) {
+    for (let i = parseInt((this.MIN_SLIDE_DAYS / 2).toFixed()); i > 0; i--) {
       let preday = moment(this.currentday.time).subtract(i, "days");
       this.days.push(preday.unix() * 1000);
     }
@@ -100,7 +100,7 @@ export class DaPage {
     this.days.push(this.day.unix() * 1000);
 
     //初始化当前选中日期之后的日期
-    for (let i = 1; i <= parseInt(this.MIN_SLIDE_DAYS / 2); i++) {
+    for (let i = 1; i <= parseInt((this.MIN_SLIDE_DAYS / 2).toFixed()); i++) {
       let nextday = moment(this.currentday.time).add(i, "days");
       this.days.push(nextday.unix() * 1000);
     }
