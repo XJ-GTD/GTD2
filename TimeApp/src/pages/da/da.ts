@@ -218,7 +218,7 @@ export class DaPage {
 
           //去掉第一天
           this.days.shift();
-          this.slidePrev(0, false);
+          this.slides.slidePrev(0, false);
         } else {
           //当前缓存数据还没有达到最大
           //在最后增加一天
