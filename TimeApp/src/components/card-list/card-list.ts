@@ -21,7 +21,7 @@ import { Component, Output, EventEmitter } from "@angular/core";
           </ng-container>
         </ion-row>
         <ion-row justify-content-center>
-          <small *ngIf="scdlist && scdlist.length > 0">日程</small>
+          <small>日程</small>
           <ng-container *ngFor="let scd of scdlist">
           <ion-card *ngIf="scd.gs != '3' && scd.gs != '4'" (click)="gotoDetail(scd)">
             <div class="card-title">{{scd.sn}}</div>
@@ -33,6 +33,9 @@ import { Component, Output, EventEmitter } from "@angular/core";
             </div>
           </ion-card>
           </ng-container>
+          <ion-card *ngIf="!scdlist || scdlist.length <= 0" (click)="gotoNew()">
+            <div class="card-title">添加事件</div>
+          </ion-card>
         </ion-row>
       </ion-grid>
     </ion-row>
@@ -47,6 +50,9 @@ export class CardListComponent {
   @Output()
   private onCardClick: EventEmitter<any> = new EventEmitter<any>();
 
+  @Output()
+  private onCreateNew: EventEmitter<any> = new EventEmitter<any>();
+
   todaylist: Array<any> = new Array<any>();
   scdlist: Array<any> = new Array<any>();
 
@@ -59,6 +65,10 @@ export class CardListComponent {
 
   gotoDetail(scd: any) {
     this.onCardClick.emit({target: this, value: scd});
+  }
+
+  gotoNew() {
+    this.onCreateNew.emit(this);
   }
 
   refresh() {
