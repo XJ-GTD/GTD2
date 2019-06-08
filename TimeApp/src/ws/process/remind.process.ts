@@ -56,6 +56,26 @@ export class RemindProcess extends BaseProcess implements MQProcess {
     if (content.option == R.N) {
       await this.saveETbl1(rdData);
 
+    } else if (content.option == R.T) {
+      let rightnow = moment();
+
+      if (rdData.h) {
+        rightnow.add(rdData.h, "hours");
+      }
+
+      if (rdData.m) {
+        rightnow.add(rdData.m, "minutes");
+      }
+
+      if (rdData.s) {
+        rightnow.add(rdData.s, "seconds");
+      }
+
+      rdData.d = rightnow.format("YYYY/MM/DD");
+      rdData.t = rightnow.format("HH:mm:ss")
+
+      await this.saveETbl1(rdData);
+
     } else if (content.option == R.C) {
       // 设置日程提醒
       if (scd != null && scd.length > 0) {

@@ -15,7 +15,7 @@ function shouldclean(datasource)
           for (var sei in semantics) {
             var semantic = semantics[sei];
 
-            if (semantic['intent'] === 'Alarm') {
+            if (semantic['intent'] === 'Timer') {
               return true;
             }
           }
@@ -57,6 +57,9 @@ function clean(datasource)
   var date = '';
   var time = '';
   var title = '';
+  var seconds = 0;
+  var minutes = 0;
+  var hours = 0;
 
   var semantics = data['intent']['semantic'];
 
@@ -67,6 +70,21 @@ function clean(datasource)
 
     for (var si in slots) {
       var slot = slots[si];
+
+      // 取出涉及按秒计时
+      if (slot['name'] === 'seconds') {
+        seconds = slot['normValue'];
+      }
+
+      // 取出涉及按分钟计时
+      if (slot['name'] === 'minutes') {
+        minutes = slot['normValue'];
+      }
+
+      // 取出涉及按小时计时
+      if (slot['name'] === 'hours') {
+        hours = slot['normValue'];
+      }
 
       // 取出涉及时间结果
       if (slot['name'] === 'whentodo') {
@@ -120,10 +138,11 @@ function clean(datasource)
   // 查询联系人指示
   output.content['0'] = {
     processor: 'R',
-    option: 'R.N',
+    option: 'R.T',
     parameters: {
-      d: date,
-      t: time
+      h: hours,
+      m: minutes,
+      s: seconds
     }
   };
 
