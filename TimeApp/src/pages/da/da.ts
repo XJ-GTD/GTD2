@@ -107,11 +107,11 @@ export class DaPage {
     let currentIndex = this.slides.getActiveIndex();
 
     this.daService.currentShow(day).then(d => {
-      if (d && d.length > 0) {
-        // 清空原有数据
-        target.todaylist.length = 0;
-        target.scdlist.length = 0;
+      // 清空原有数据
+      target.todaylist.length = 0;
+      target.scdlist.length = 0;
 
+      if (d && d.length > 0) {
         for (let line of d) {
           if (line.gs == '3' || line.gs == '4') {
             target.todaylist.push(line);
@@ -119,20 +119,20 @@ export class DaPage {
             target.scdlist.push(line);
           }
         }
-
-        if (day == this.days[currentIndex]) {
-          this.cardlist = this.cardlists.toArray()[currentIndex];
-
-          if (this.cardlist.scdlist.length > 0 || this.cardlist.todaylist.length > 0) {
-            this.hasContents = true;
-          } else {
-            this.hasContents = false;
-          }
-        }
-
-        //没有日程的时候，不显示语音播报按钮
-        this.isMobile = this.util.isMobile();
       }
+
+      //没有日程的时候，不显示语音播报按钮
+      if (day == this.days[currentIndex]) {
+        this.cardlist = this.cardlists.toArray()[currentIndex];
+
+        if (this.cardlist.scdlist.length > 0 || this.cardlist.todaylist.length > 0) {
+          this.hasContents = true;
+        } else {
+          this.hasContents = false;
+        }
+      }
+
+      this.isMobile = this.util.isMobile();
     });
   }
 
