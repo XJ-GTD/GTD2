@@ -248,7 +248,6 @@ export class DaPage {
 
           //去掉最后一天
           this.days.pop();
-          this.slides.slideNext(0, false);
         } else {
           //当前缓存数据还没有达到最大
           //在最前增加一天
@@ -257,6 +256,7 @@ export class DaPage {
         }
 
         //更新画面显示
+        this.slides.slideNext(0, false);
         this.slides.update();
       }
     }
