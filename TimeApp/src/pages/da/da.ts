@@ -205,6 +205,31 @@ export class DaPage {
   slideNextEnd() {
     let currentIndex = this.slides.getActiveIndex();
 
+    //可以获取得到当前日期索引
+    if (currentIndex) {
+      //当前日期在下半段
+      if (currentIndex > this.INIT_SLIDE_DAY) {
+
+        if (this.days.length >= this.MAX_SLIDE_DAYS) {
+          //当前缓存数据已经达到最大
+          //在最后增加一天
+          let lastday: number = this.days[this.days.length - 1];
+          this.days.push(moment(lastday).add(1, "days").unix() * 1000);
+
+          //去掉第一天
+          this.days.shift();
+
+        } else {
+          //当前缓存数据还没有达到最大
+          //在最后增加一天
+          let lastday: number = this.days[this.days.length - 1];
+          this.days.push(moment(lastday).add(1, "days").unix() * 1000);
+        }
+
+        //更新画面显示
+        this.slides.update();
+      }
+    }
   }
 
   slidePrevEnd() {
