@@ -42,7 +42,7 @@ import {CardListComponent} from "../../components/card-list/card-list";
 
     <ion-content padding>
     <ion-slides [initialSlide]="INIT_SLIDE_DAY" (ionSlideDidChange)="slideChanged()" (ionSlideNextEnd)="slideNextEnd()" (ionSlidePrevEnd)="slidePrevEnd()">
-      <ion-slide *ngFor="let day of days">
+      <ion-slide *ngFor="let day of days" class="scroll-y">
         <card-list #cardlist (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" #cardlist></card-list>
       </ion-slide>
     </ion-slides>
