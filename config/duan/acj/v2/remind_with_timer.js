@@ -150,9 +150,30 @@ function clean(datasource)
     processor: 'S',
     option: 'S.P',
     parameters: {
-      t: 'RM'
+      t: 'TM'
+    },
+    input: {
+      textvariables: []
     }
   };
+
+  if (hours) {
+    output.content['1']['input']['textvariables'].push({name: 'hours', value: hours + '小时'});
+  } else {
+    output.content['1']['input']['textvariables'].push({name: 'hours', value: ''});
+  }
+
+  if (minutes) {
+    output.content['1']['input']['textvariables'].push({name: 'minutes', value: minutes + '分钟'});
+  } else {
+    output.content['1']['input']['textvariables'].push({name: 'minutes', value: ''});
+  }
+
+  if (seconds) {
+    output.content['1']['input']['textvariables'].push({name: 'seconds', value: seconds + '秒'});
+  } else {
+    output.content['1']['input']['textvariables'].push({name: 'seconds', value: ''});
+  }
 
   output.context = {};
 
