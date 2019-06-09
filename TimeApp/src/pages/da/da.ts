@@ -133,6 +133,8 @@ export class DaPage {
         }
       }
 
+      target.hasLoaded = true;
+
       //没有日程的时候，不显示语音播报按钮
       if (day == this.days[currentIndex]) {
         this.cardlist = this.cardlists.toArray()[currentIndex];
@@ -170,6 +172,8 @@ export class DaPage {
         } else {
           this.hasContents = false;
         }
+
+        target.hasLoaded = true;
       });
 
       modal.present();
