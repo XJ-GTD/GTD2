@@ -7,6 +7,9 @@ import { Component, Output, EventEmitter } from "@angular/core";
     <ion-row class="h100" align-items-center>
       <ion-grid>
         <ion-row justify-content-center>
+          <p></p>
+          <p></p>
+          <p></p>
           <small *ngIf="todaylist && todaylist.length > 0">当天</small>
           <ng-container *ngFor="let scd of todaylist">
           <ion-card *ngIf="scd.gs == '3' || scd.gs == '4'" (click)="gotoDetail(scd)">
@@ -37,6 +40,9 @@ import { Component, Output, EventEmitter } from "@angular/core";
             <div class="card-subtitle">添加新事件</div>
           </ion-card>
           <ion-spinner *ngIf="!hasLoaded" name="bubbles"></ion-spinner>
+          <p></p>
+          <p></p>
+          <p></p>
         </ion-row>
       </ion-grid>
     </ion-row>
