@@ -22,7 +22,17 @@ export class DaService {
       this.pgservice.getList(query).then(data => {
         //增加排序处理
         if (data && data.length > 1) {
-          let sortedData = data.sort((a, b) => a.st > b.st);
+          let sortedData = data.sort((a, b) => {
+            if (a.st > b.st) {
+              return 1;
+            }
+
+            if (a.st < b.st) {
+              return -1;
+            }
+
+            return 0;
+          });
         }
 
         resolve(data);
