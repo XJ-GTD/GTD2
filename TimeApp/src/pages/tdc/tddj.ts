@@ -135,7 +135,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           <ion-textarea type="text" placeholder="备注" [(ngModel)]="sp.bz" class="memo-set" (focus)="comentfocus()"
                         (blur)="comentblur()"></ion-textarea>
         </ion-row>
-        <ion-row>
+        <ion-row *ngIf="scd && scd.fss && scd.fss.length > 0">
           <div class="reptlb2 ">朋友</div>
           <div class="selected">
             <ion-chip *ngFor="let fs of scd.fss" (click)="goTofsDetail(fs)">
