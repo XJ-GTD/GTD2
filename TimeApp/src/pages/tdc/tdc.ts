@@ -34,7 +34,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
         <ion-row>
           <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh]="scd.p.jn != ''"
                [ngStyle]="{'background-color':scd.p.jc == '' ? '#fffff' : scd.p.jc}">
-            {{scd.p.jn == "" ? "添加计划" : "计划"}}
+            {{scd.p.jn == "" ? "添加日历" : "日历"}}
           </div>
           <div>{{scd.p.jn}}</div>
         </ion-row>
@@ -457,7 +457,7 @@ export class TdcPage {
       this.isShowPlan = true;
       this.IsShowCover = true;
     } else {
-      this.util.toastStart("未创建计划", 3000);
+      this.util.toastStart("未创建日历", 3000);
     }
   }
 
