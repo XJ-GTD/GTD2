@@ -39,7 +39,7 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
           <div>{{alldshow}}</div>
         </ion-row>
 
-        <ion-row>
+        <ion-row *ngIf="sp.bz">
           <ion-textarea type="text" placeholder="备注" [(ngModel)]="sp.bz" class="memo-set"
                         readonly="true"></ion-textarea>
         </ion-row>
