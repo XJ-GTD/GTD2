@@ -30,7 +30,7 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
           <div class="lbl-jh2 hasjh" [ngStyle]="{'background-color':sp.p.jc == '' ? '#fffff' : sp.p.jc}">
             下载
           </div>
-          <div>{{sp.p.jn}}</div>
+          <div>{{scd.p.jn}}</div>
         </ion-row>
         <ion-row>
           {{scd.showSpSd}}
