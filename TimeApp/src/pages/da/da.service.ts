@@ -20,6 +20,11 @@ export class DaService {
       query.ed = moment(select).format('YYYY/MM/DD');
 
       this.pgservice.getList(query).then(data => {
+        //增加排序处理
+        if (data && data.length > 1) {
+          let sortedData = data.sort((a, b) => a.st > b.st);
+        }
+
         resolve(data);
       });
 
