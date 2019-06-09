@@ -5,9 +5,8 @@ import { Component, Output, EventEmitter } from "@angular/core";
   template: `
   <ion-grid class="h70">
     <ion-row class="h100" align-items-center>
-      <p></p>
-      <p></p>
-      <p></p>
+      <p class="p15"></p>
+      <p class="p15"></p>
       <ion-grid>
         <ion-row justify-content-center>
           <small *ngIf="todaylist && todaylist.length > 0">当天</small>
@@ -42,9 +41,8 @@ import { Component, Output, EventEmitter } from "@angular/core";
           <ion-spinner *ngIf="!hasLoaded" name="bubbles"></ion-spinner>
         </ion-row>
       </ion-grid>
-      <p></p>
-      <p></p>
-      <p></p>
+      <p class="p15"></p>
+      <p class="p15"></p>
     </ion-row>
   </ion-grid>
   `
