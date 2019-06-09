@@ -6,7 +6,6 @@ import { Component, Output, EventEmitter } from "@angular/core";
   <ion-grid class="h70">
     <ion-row class="h100" align-items-center>
       <p class="p15"></p>
-      <p class="p15"></p>
       <ion-grid>
         <ion-row justify-content-center>
           <small *ngIf="todaylist && todaylist.length > 0">当天</small>
