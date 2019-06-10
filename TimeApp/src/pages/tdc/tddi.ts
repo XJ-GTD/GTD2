@@ -48,7 +48,7 @@ import {NotificationsService} from "../../service/cordova/notifications.service"
         <ion-row>
           <div class="lbl-jh2" (click)="toPlanChoose()" [class.hasjh]="sp.p.jn != ''"
                [ngStyle]="{'background-color':sp.p.jc == '' ? '#fffff' : sp.p.jc}">
-            {{sp.p.jn == "" ? "添加计划" : "计划"}}
+            {{sp.p.jn == "" ? "添加日历" : "日历"}}
           </div>
           <div>{{sp.p.jn}}</div>
         </ion-row>
@@ -430,7 +430,7 @@ export class TddiPage {
       this.isShowPlan = true;
       this.IsShowCover = true;
     } else {
-      this.util.toastStart("未创建计划", 3000);
+      this.util.toastStart("未创建日历", 3000);
     }
   }
 
