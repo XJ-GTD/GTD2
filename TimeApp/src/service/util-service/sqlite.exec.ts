@@ -131,7 +131,7 @@ export class SqliteExec {
       let arr : Array<T> = new Array<T>();
       console.log("getExtList执行SQL："+sql);
       this.execSql(sql).then(data => {
-        if (data.rows && data.rows.length > 0 ){
+        if (data && data.rows && data.rows.length > 0 ){
           for (let j = 0, len = data.rows.length; j < len; j++) {
             arr.push(data.rows.item(j))
           }
