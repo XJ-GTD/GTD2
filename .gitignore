@@ -40,3 +40,14 @@ target/
 
 # Node modules
 **/node_modules/
+
+**/.gitignore
+.gitignore
+
+/TimeDemo/
+
+**/.classpath
+**/.project
+**/.editorconfig
+**/target/
+**/.settings/
