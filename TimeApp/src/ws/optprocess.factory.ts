@@ -11,6 +11,8 @@ import {ContextProcess} from "./process/context.process";
 import {ReceiveProcess} from "./process/receive.process";
 import {SettingProcess} from "./process/setting.process";
 import {AgendasProcess} from "./process/agendas.process";
+import {MarkupProcess} from "./process/markup.process";
+import {NotificationProcess} from "./process/notification.process";
 
 /**
  * webSocket公用处理方法

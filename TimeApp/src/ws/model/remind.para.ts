@@ -6,10 +6,12 @@
  */
 export class RemindPara  {
   //日期
-  d:string
+  d:string;
   //时间
-  t:string
+  t:string;
   //相对时间
-  s:string
+  h:string; // 小时
+  m:string; // 分钟
+  s:string; // 秒
 
 }

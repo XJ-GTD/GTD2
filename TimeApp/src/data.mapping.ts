@@ -307,6 +307,10 @@ export class PageDcData {
   fsl: Array<FsData> = new Array<FsData>(); //群组成员
 }
 
+export class PageDaData {
+  currentDay: CalendarDay;
+  scdl: Array<ScdData> = new Array<ScdData>();  //当天日程列表
+}
 
 export class HData {
   isShow: boolean = false;

@@ -3,6 +3,7 @@ import {RestfulClient} from "../util-service/restful.client";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {SpTbl} from "../sqlite/tbl/sp.tbl";
 import {ETbl} from "../sqlite/tbl/e.tbl";
+import {MoTbl} from "../sqlite/tbl/mo.tbl";
 import {DTbl} from "../sqlite/tbl/d.tbl";
 import {GTbl} from "../sqlite/tbl/g.tbl";
 import {JhTbl} from "../sqlite/tbl/jh.tbl";
@@ -93,6 +94,8 @@ export class BackupProSub {
   sp: Array<SpTbl> = new Array<SpTbl>();
   //获取提醒数据
   e: Array<ETbl> = new Array<ETbl>();
+  //获取备忘表数据
+  mo: Array<MoTbl> = new Array<MoTbl>();
   //获取日程参与人信息
   d: Array<DTbl> = new Array<DTbl>();
   //本地联系人数据
@@ -140,7 +143,7 @@ export class RecoverProSub {
 
   bts: Number = 0;
   //恢复表的名称
-  rdn: Array<string> = ["c", "sp", "e", "d", "b", "g", "bx", "jh", "y"];
+  rdn: Array<string> = ["c", "sp", "e", "mo", "d", "b", "g", "bx", "jh", "y"];
 }
 
 //恢复出参
@@ -152,6 +155,8 @@ export class OutRecoverPro {
   sp: Array<SpTbl> = new Array<SpTbl>();
   //获取提醒数据
   e: Array<ETbl> = new Array<ETbl>();
+  //获取备忘数据
+  mo: Array<MoTbl> = new Array<MoTbl>();
   //获取日程参与人信息
   d: Array<DTbl> = new Array<DTbl>();
   //本地联系人数据

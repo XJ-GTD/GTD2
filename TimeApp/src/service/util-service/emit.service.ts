@@ -30,6 +30,60 @@ export class EmitService {
   //语音播放或结束事件
   private listenerEm:EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  //冥王星内建事件订阅/触发管理
+  private static buildinEvents: Map<string, EventEmitter<any>> = new Map<string, EventEmitter<any>>();
+
+  //冥王星内建事件订阅
+  register(handler: string, callback) {
+    let ee: EventEmitter<any> = EmitService.buildinEvents.get(handler);
+
+    //事件不存在，创建并加入管理
+    if (!ee) {
+      ee = new EventEmitter<any>();
+      EmitService.buildinEvents.set(handler, ee);
+    }
+
+    //事件已经关闭，重新创建并加入管理
+    if (ee.closed) {
+      ee = new EventEmitter<any>();
+      EmitService.buildinEvents.set(handler, ee);
+    }
+
+    //订阅事件回调
+    ee.subscribe(($data: any) => {
+      callback($data);
+    });
+  }
+
+  //冥王星内建事件触发
+  emit(handler: string, $data: any) {
+    let ee: EventEmitter<any> = EmitService.buildinEvents.get(handler);
+
+    //事件不存在直接返回
+    if (!ee) {
+      return;
+    }
+
+    if (!ee.isStopped) {
+      ee.emit($data);
+    }
+  }
+
+  //冥王星内建时间注销
+  destroy(handler: string) {
+    let ee: EventEmitter<any> = EmitService.buildinEvents.get(handler);
+
+    //事件不存在直接返回
+    if (!ee) {
+      return;
+    }
+
+    ee.unsubscribe();
+
+    //从管理中移除当前事件
+    EmitService.buildinEvents.delete(handler);
+  }
+
   registerListener(callback) {
     if (this.listenerEm.closed) {
       this.listenerEm = new EventEmitter<boolean>();

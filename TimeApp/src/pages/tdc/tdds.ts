@@ -30,7 +30,7 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
           <div class="lbl-jh2 hasjh" [ngStyle]="{'background-color':sp.p.jc == '' ? '#fffff' : sp.p.jc}">
             下载
           </div>
-          <div>{{sp.p.jn}}</div>
+          <div>{{scd.p.jn}}</div>
         </ion-row>
         <ion-row>
           {{scd.showSpSd}}
@@ -39,7 +39,7 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
           <div>{{alldshow}}</div>
         </ion-row>
 
-        <ion-row>
+        <ion-row *ngIf="sp.bz">
           <ion-textarea type="text" placeholder="备注" [(ngModel)]="sp.bz" class="memo-set"
                         readonly="true"></ion-textarea>
         </ion-row>

@@ -1,9 +1,10 @@
 import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
+import {IonicPage, NavController, ModalController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
 import {SsService} from "./ss.service";
 import {PageY} from "../../data.mapping";
+import * as moment from "moment";
 
 /**
  * Generated class for the 设置画面 page.
@@ -31,9 +32,18 @@ import {PageY} from "../../data.mapping";
     <ion-content padding>
           <ion-list no-lines>
             <ion-list-header>
-              <ion-label>系统设置</ion-label>
+              <ion-label>新消息</ion-label>
             </ion-list-header>
-            
+
+            <ion-item class="plan-list-item" >
+              <ion-label>新消息提醒</ion-label>
+              <ion-toggle [(ngModel)]="bt" (ionChange)="save(t, bt)"></ion-toggle>
+            </ion-item>
+
+            <ion-list-header>
+              <ion-label>语音</ion-label>
+            </ion-list-header>
+
             <ion-item class="plan-list-item" >
               <ion-label>语音唤醒</ion-label>
               <ion-toggle [(ngModel)]="bh" (ionChange)="save(h, bh)"></ion-toggle>
@@ -49,22 +59,24 @@ import {PageY} from "../../data.mapping";
               <ion-toggle [(ngModel)]="bz" (ionChange)="save(z, bz)"></ion-toggle>
             </ion-item>
 
-            <ion-item class="plan-list-item" >
-              <ion-label>新消息提醒</ion-label>
-              <ion-toggle [(ngModel)]="bt" (ionChange)="save(t, bt)"></ion-toggle>
-            </ion-item>
+            <ion-list-header>
+              <ion-label>联系人</ion-label>
+            </ion-list-header>
+
+            <button ion-item class="plan-list-item" [attr.detail-push]="lfsloading? null : ''" [attr.detail-none]="lfsloading? '' : null" (click)="resfriend()">
+              <ion-label>本地联系人</ion-label>
+              <ion-note *ngIf="!lfsloading" item-end>{{localfriends}}</ion-note>
+              <ion-spinner *ngIf="lfsloading" icon="circles" item-end></ion-spinner>
+            </button>
 
             <ion-list-header>
-              <ion-label>其他</ion-label>
+              <ion-label>智能提醒</ion-label>
             </ion-list-header>
-            <ion-item class="plan-list-item" >
-              <ion-label>刷新朋友</ion-label>
-              <button ion-button clear item-end  (click)="resfriend()">
-                <div #resfri>
-                  <img class="img-content-refresh" src="./assets/imgs/sx.png" />
-                </div>
-              </button>
-            </ion-item>
+
+            <button ion-item class="plan-list-item" detail-push (click)="gotodrsetting()">
+              <ion-label>每日简报</ion-label>
+              <ion-note item-end>{{bdr? sdrp1 : '关闭'}}</ion-note>
+            </button>
           </ion-list>
     </ion-content>
   `,
@@ -75,29 +87,29 @@ export class SsPage {
   t:Setting;//新消息提醒
   b:Setting;//语音播报
   z:Setting;//振动
+  dr:Setting;//每日简报 智能提醒
+  drp1:Setting;//每日简报 提醒时间
+
   bh:boolean;//唤醒 页面显示和修改
   bt:boolean;//新消息提醒 页面显示和修改
   bb:boolean;//语音播报 页面显示和修改
   bz:boolean;//振动 页面显示和修改
-  @ViewChild("resfri")
-  resfri:ElementRef;
+  bdr:boolean;//每日简报 页面显示和修改
+  sdrp1:string;//每日简报 提醒时间
 
-  constructor(private navCtrl: NavController,
+  lfsloading: boolean = false;//导入本地联系人处理状态
+  localfriends: number = 0;//本地联系人导入数
+
+  constructor(public modalController: ModalController,
+              private navCtrl: NavController,
               public ssService:SsService,
               private _renderer: Renderer2 ) {
-    this.h = UserConfig.settins.get(DataConfig.SYS_H);
-    this.t = UserConfig.settins.get(DataConfig.SYS_T);
-    this.b = UserConfig.settins.get(DataConfig.SYS_B);
-    this.z = UserConfig.settins.get(DataConfig.SYS_Z);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SsPage');
 
-    this.bh = (this.h.value == "1") ? true : false;
-    this.bt = (this.t.value == "1") ? true : false;
-    this.bb = (this.b.value == "1") ? true : false;
-    this.bz = (this.z.value == "1") ? true : false;
+    this.getData();
   }
 
   goBack() {
@@ -117,12 +129,45 @@ export class SsPage {
     this.ssService.save(set);
   }
 
+  //智能提醒 每日简报设置
+  gotodrsetting() {
+    let modal = this.modalController.create(DataConfig.PAGE._DR_PAGE);
+    modal.onDidDismiss((data)=>{
+      this.getData();
+
+      this.ssService.putDailySummary(
+        UserConfig.account.id,
+        moment('2019/6/3 ' + this.sdrp1 + ':00').unix() * 1000,
+        this.bdr
+      );
+    });
+    modal.present();
+  }
+
+  private getData() {
+    this.h = UserConfig.settins.get(DataConfig.SYS_H);
+    this.t = UserConfig.settins.get(DataConfig.SYS_T);
+    this.b = UserConfig.settins.get(DataConfig.SYS_B);
+    this.z = UserConfig.settins.get(DataConfig.SYS_Z);
+    this.dr = UserConfig.settins.get(DataConfig.SYS_DR);
+    this.drp1 = UserConfig.settins.get(DataConfig.SYS_DRP1);
+
+    this.bh = (this.h.value == "1") ? true : false;
+    this.bt = (this.t.value == "1") ? true : false;
+    this.bb = (this.b.value == "1") ? true : false;
+    this.bz = (this.z.value == "1") ? true : false;
+    this.bdr = (this.dr.value == "1") ? true : false;
+    this.sdrp1 = (this.drp1 && this.drp1.value) ? this.drp1.value : "08:30";
+
+    this.localfriends = UserConfig.friends? UserConfig.friends.length : 0;
+  }
+
+  //刷新本地联系人
   resfriend(){
-    this._renderer.addClass(this.resfri.nativeElement,"spinanimation");
+    this.lfsloading = true;
 
     this.ssService.resfriend().then(d=>{
-      this._renderer.removeClass(this.resfri.nativeElement,"spinanimation");
+      this.lfsloading = false;
     })
   }
 }
-

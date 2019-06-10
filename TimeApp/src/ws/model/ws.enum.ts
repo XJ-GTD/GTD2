@@ -30,6 +30,11 @@ export enum AG {
   D = "AG.D",       // 删除日程
 }
 
+//备忘处理（保存上下文）
+export enum MO {
+  C = "MO.C",  //新建备忘
+}
+
 //日程修改（获取上下文中）
 export enum SC {
   T = "SC.T",  //
@@ -42,6 +47,16 @@ export enum SH {
   D = "SH.D",  //删除
 }
 
+//推送通知
+export enum PN {
+  DR = "PN.DR"  //每日简报通知推送
+}
+
+//日程标签
+export enum MK {
+  U = "MK.U"  //标注日程语义标签
+}
+
 //设置
 export enum SY {
   S = "SY.S",  //系统设置
@@ -50,22 +65,18 @@ export enum SY {
 
 //闹铃设置
 export enum R {
-  N= "R.N",  //闹铃设置无日程
+  N = "R.N",  //闹铃设置无日程
+  T = "R.T",  //计时设置
   C = "R.C",  //闹铃设置关联日程
 }
 
 //操作
 export enum O {
-  O= "O.O",  //确认
+  O = "O.O",  //确认
   C = "O.C",  //取消
-  S= "O.S",  //追问(时间，主题)
+  S = "O.S",  //追问(时间，主题)
 }
 
 //第三方接口或技能
 export enum T {
 }
-
-
-
-
-

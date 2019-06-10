@@ -27,8 +27,8 @@ export class TdlService {
     let startAfter = today;
     let n = 0;
     let sql = `select sp.rowid rowid,gc.si,gc.sn,gc.ui,gc.gs,sp.sd,sp.st,
-      jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn ,sp.itx du,bh.hiu bhiu from gtd_c gc 
-      inner join gtd_sp sp on sp.si = gc.si left join gtd_b gb on gb.ui = gc.ui 
+      jh.jn,jh.jg,jh.jc,jh.jt,gb.pwi,gb.ran,gb.ranpy,gb.hiu,gb.rn ,sp.itx du,bh.hiu bhiu from gtd_c gc
+      inner join gtd_sp sp on sp.si = gc.si left join gtd_b gb on gb.ui = gc.ui
       left join gtd_bh bh on bh.pwi = gb.pwi left join gtd_j_h jh on jh.ji = gc.ji `;
     // 如果action为1，插入过去日期空数据
     if(action =='1' || action != '2'){
@@ -75,7 +75,7 @@ export class TdlService {
    */
   private async getJtL(sd:string,ed:string): Promise<Array<JtData>>{
     return new Promise<Array<JtData>>(async (resolve, reject) => {
-      let sql = `select * from gtd_jt where sd>="${sd}" and sd<="${ed}" order by px asc`;
+      let sql = 'select * from gtd_jt where sd>="' + sd + '" and sd<="' + ed + '" order by px asc;';
       let data = await this.sqlExce.getExtList<JtData>(sql);
       resolve(data);
     })
@@ -125,10 +125,4 @@ export class TdlService {
 
   }
 
-
 }
-
-
-
-
-

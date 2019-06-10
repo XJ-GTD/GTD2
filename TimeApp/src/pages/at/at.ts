@@ -45,28 +45,28 @@ import * as moment from "moment";
             <p></p>
           </ion-row>
           <ion-row justify-content-center>
-            <h1 class="app-title">冥王星</h1> 
+            <h1 class="app-title">冥王星</h1>
           </ion-row>
           <ion-row justify-content-center>
-            <h3 class="app-description">人工智能接触生活、工作与梦想</h3> 
+            <h3 class="app-description">人工智能接触生活、工作与梦想</h3>
           </ion-row>
           <ion-row justify-content-center>
-            <h3 class="app-description">迸发出的火花</h3> 
+            <h3 class="app-description">迸发出的火花</h3>
           </ion-row>
           <ion-row justify-content-center>
             <p></p>
           </ion-row>
           <ion-row justify-content-center>
-            <span class="app-profiles">版本</span> 
+            <span class="app-profiles">版本</span>
           </ion-row>
           <ion-row justify-content-center>
-            <span class="app-profiles">{{client.mainversion}}.{{client.version}}</span> 
+            <span class="app-profiles">{{client.mainversion}}.{{client.version}}</span>
           </ion-row>
           <ion-row justify-content-center>
-            <span class="app-profiles">{{server.datacenter}}</span> 
+            <span class="app-profiles">{{server.datacenter}}</span>
           </ion-row>
           <ion-row justify-content-center>
-            <span class="app-profiles">v{{server.version}}</span> 
+            <span class="app-profiles">v{{server.version}}</span>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -93,14 +93,14 @@ export class AtPage {
 
   client:any = {mainversion: 'v1', version: '1'};
   server:any = {version: '1', datacenter: ''};
-  
+
   constructor(public navCtrl: NavController,
               private sqlite:SqliteExec) {
   }
 
   ionViewDidLoad() {
     let restfulHeader = new RestFulHeader();
-    this.client.mainversion = restfulHeader.pv;
+    this.client.mainversion = restfulHeader.pv? restfulHeader.pv.replace(/v/, 'v0.') : 'v0.0';
     this.client.version = UserConfig.getClientVersion();
 
     if (RestFulConfig.INIT_DATA_URL.indexOf('tag=mwxing') > 0) this.server.datacenter += '开发';
@@ -117,4 +117,3 @@ export class AtPage {
     this.navCtrl.pop();
   }
 }
-

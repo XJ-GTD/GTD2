@@ -21,8 +21,10 @@ function clean(datasource)
   var input = JSON.parse(datasource);
   var iat = input['xfy_iat_end']['parsed'];
   var nlp = input['xfy_nlp_end']['cleaned'];
+  var markup = input['markup_nlp_end']? (input['markup_nlp_end']['parsed']? input['markup_nlp_end']['parsed'] : undefined) : undefined;
   print(JSON.stringify(iat));
   print(JSON.stringify(nlp));
+  print(JSON.stringify(markup));
 
   var names = new Array();
 
@@ -33,8 +35,26 @@ function clean(datasource)
       names.push({n: name});
     }
 
-    if (nlp && nlp['announceContent'] && nlp['announceContent']['mwxing'] && nlp['announceContent']['mwxing']['content'] && nlp['announceContent']['mwxing']['content']['F'] && nlp['announceContent']['mwxing']['content']['F']['parameters']) {
-      nlp['announceContent']['mwxing']['content']['F']['parameters']['fs'] = names;
+    if (nlp && nlp['announceContent'] && nlp['announceContent']['mwxing'] && nlp['announceContent']['mwxing']['header'] && nlp['announceContent']['mwxing']['header']['describe']) {
+      if (nlp['announceContent']['mwxing']['header']['describe'].indexOf('F') >= 0) {
+        for (var pid in nlp['announceContent']['mwxing']['header']['describe']) {
+          if (nlp['announceContent']['mwxing']['header']['describe'][pid] === 'F') {
+            nlp['announceContent']['mwxing']['content'][(pid + '')]['parameters']['fs'] = names;
+          }
+        }
+      }
+    }
+  }
+
+  if (markup && markup['markup']) {
+    if (nlp && nlp['announceContent'] && nlp['announceContent']['mwxing'] && nlp['announceContent']['mwxing']['header'] && nlp['announceContent']['mwxing']['header']['describe']) {
+      if (nlp['announceContent']['mwxing']['header']['describe'].indexOf('F') >= 0) {
+        for (var pid in nlp['announceContent']['mwxing']['header']['describe']) {
+          if (nlp['announceContent']['mwxing']['header']['describe'][pid] === 'F') {
+            nlp['announceContent']['mwxing']['content'][(pid + '')]['parameters']['scd']['marks'] = markup['markup'];
+          }
+        }
+      }
     }
   }
 

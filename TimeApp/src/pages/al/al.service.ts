@@ -142,10 +142,11 @@ export class AlService {
 
 
         //patch 修改DataConfig的version版本，只能改大，然后方法中例如createTablespath追加patch
+        let fromversion = this.version;
 
         while (DataConfig.version > this.version) {
 
-          await this.sqlLiteInit.createTablespath(this.version + 1);
+          await this.sqlLiteInit.createTablespath(this.version + 1, fromversion);
           let yTbl: YTbl = new YTbl();
           yTbl.yt = "FI";
           yTbl.yk = "FI";
@@ -685,7 +686,7 @@ export class AlService {
 
       this.sqlExce.batExecSql(sqls).then(c => {
 
-        let sql: string = `delete from gtd_e where wd <= "${moment().subtract(1, "d").format("YYYY/MM/DD")}";`
+        let sql: string = `delete from gtd_e where wd <= "` + moment().subtract(1, "d").format("YYYY/MM/DD") + `";`
         this.sqlExce.execSql(sql);
         resolve(true);
       });

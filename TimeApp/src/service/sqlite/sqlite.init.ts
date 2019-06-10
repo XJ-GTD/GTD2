@@ -19,6 +19,8 @@ import {BhTbl} from "./tbl/bh.tbl";
 import {JtTbl} from "./tbl/jt.tbl";
 import {LogTbl} from "./tbl/log.tbl";
 import {SuTbl} from "./tbl/su.tbl";
+import {MkTbl} from "./tbl/mk.tbl";
+import {MoTbl} from "./tbl/mo.tbl";
 
 /**
  * create by on 2019/3/5
@@ -99,6 +101,14 @@ export class SqliteInit {
     let su: SuTbl = new SuTbl();
     await this.sqlexec.drop(su);
     await this.sqlexec.create(su);
+
+    let mk: MkTbl = new MkTbl();
+    await this.sqlexec.drop(mk);
+    await this.sqlexec.create(mk);
+
+    let mo: MoTbl = new MoTbl();
+    await this.sqlexec.drop(mo);
+    await this.sqlexec.create(mo);
   }
 
   /**
@@ -106,7 +116,7 @@ export class SqliteInit {
    * @param {string} updateSql 更新SQL
    * @returns {Promise<any>}
    */
-  async createTablespath(version:number) {
+  async createTablespath(version: number, from: number) {
     if (version  == 1 ){
       let log: LogTbl = new LogTbl();
       await this.sqlexec.drop(log);
@@ -125,6 +135,44 @@ export class SqliteInit {
       deviceUUIDTbl.yk = "DI";
       deviceUUIDTbl.yv = this.util.deviceId();
       await this.sqlexec.save(deviceUUIDTbl);
+    } else if (version == 4) {
+      // 2019/05/28
+      // 席理加
+      // 增加日程语义标签标注表
+      let mk: MkTbl = new MkTbl();
+      await this.sqlexec.drop(mk);
+      await this.sqlexec.create(mk);
+    } else if (version == 5) {
+      // 2019/06/03
+      // 席理加
+      // 增加智能提醒 - 每日简报 参数
+      if (from > 0 && from < 5) {
+        let dailyReportTbl: YTbl = new YTbl();
+        dailyReportTbl.yi = this.util.getUuid();
+        dailyReportTbl.yt = "DR";
+        dailyReportTbl.yk = "DR";
+        dailyReportTbl.ytn = "每日简报";
+        dailyReportTbl.yn = "每日简报";
+        dailyReportTbl.yv = "1";
+        await this.sqlexec.save(dailyReportTbl);
+
+        // 每日简报 - 提醒时间
+        let dailyReportParamTbl: YTbl = new YTbl();
+        dailyReportParamTbl.yi = this.util.getUuid();
+        dailyReportParamTbl.yt = "DRP1";
+        dailyReportParamTbl.yk = "DRP1";
+        dailyReportParamTbl.ytn = "每日简报";
+        dailyReportParamTbl.yn = "每日简报 通知时间";
+        dailyReportParamTbl.yv = "08:30";
+        await this.sqlexec.save(dailyReportParamTbl);
+      }
+
+      // 2019/06/06
+      // 席理加
+      // 增加备忘表
+      let mo: MoTbl = new MoTbl();
+      await this.sqlexec.drop(mo);
+      await this.sqlexec.create(mo);
     }
   }
 

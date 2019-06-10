@@ -1,0 +1,9 @@
+{
+  "mysql.username": "duan",
+  "mysql.password": "1234",
+  "mysql.host": "sa-mysql",
+  "mysql.database": "duan",
+
+  "stomp.server.port": 5672,
+  "stomp.server.host": "sa-amq"
+}

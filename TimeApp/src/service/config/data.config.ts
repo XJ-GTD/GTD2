@@ -33,6 +33,8 @@ import {AlPage} from "../../pages/al/al";
 import {TddsPage} from "../../pages/tdc/tdds";
 import {LogPage} from "../../pages/log/log";
 import {AtPage} from "../../pages/at/at";
+import {DaPage} from "../../pages/da/da";
+import {DrPage} from "../../pages/dr/dr";
 
 export class DataConfig {
   public static isdebug: boolean  = false;
@@ -41,9 +43,11 @@ export class DataConfig {
   //2019/05/09 增加语音回答表
   //public static version:number = 2;
   //2019/05/10 修改设备ID缓存到数据库,防止应用升级时获取设备ID被改变
-  public static version:number = 3;
-
-
+  //public static version:number = 3;
+  //2019/05/28 增加日程语义标签标注表
+  //public static version:number = 4;
+  //2019/06/03 增加每日简报个性化参数
+  public static version:number = 5;
 
   /*----===== WS上下文环境使用 =====----- */
   public static clearWsContext(){
@@ -146,6 +150,9 @@ export class DataConfig {
   public static SYS_B: string = "B";
   //震动和音效
   public static SYS_Z: string = "Z";
+  //每日简报
+  public static SYS_DR: string = "DR";
+  public static SYS_DRP1: string = "DRP1";
   /*========== 系统设置区分 =========*/
 
 
@@ -217,6 +224,8 @@ export class DataConfig {
     _AL_PAGE: AlPage,       //启动页
     _LOG_PAGE: LogPage,       // 辅助功能 - 备份
     _AT_PAGE: AtPage,       // 关于
+    _DA_PAGE: DaPage,       // 日程 - 每日日程
+    _DR_PAGE: DrPage,       // 每日简报设置 - 智能提醒
   }
   /* ============ 页面名字配置 ===============*/
 

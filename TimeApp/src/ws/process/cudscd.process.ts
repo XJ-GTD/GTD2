@@ -59,8 +59,8 @@ export class CudscdProcess extends BaseProcess implements MQProcess{
     prv.fs = fs;
 
     DataConfig.putWsContext(prv);
-    DataConfig.putWsOpt(option);
-    DataConfig.putWsProcessor(processor);
+    DataConfig.putWsOpt(option?option:"");
+    DataConfig.putWsProcessor(processor?processor:"");
 
     //上下文内放置创建的或修改的日程
     this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, prv.scd);

@@ -12,7 +12,7 @@ import * as moment from "moment";
 import {DataConfig} from "../config/data.config";
 import {UserConfig} from "../config/user.config";
 import {ContactsService} from "../cordova/contacts.service";
-import {BaseData, FsData, JtData, RcInParam, ScdData, SpecScdData,MonthData, DayData} from "../../data.mapping";
+import {BaseData, FsData, JtData, RcInParam, ScdData, PlData, SpecScdData,MonthData, DayData} from "../../data.mapping";
 import {FsService} from "../../pages/fs/fs.service";
 import {EmitService} from "../util-service/emit.service";
 import {BTbl} from "../sqlite/tbl/b.tbl";
@@ -20,6 +20,7 @@ import {JtTbl} from "../sqlite/tbl/jt.tbl";
 import {CalendarDay, CalendarMonth} from "../../components/ion2-calendar/calendar.model";
 import {NotificationsService} from "../cordova/notifications.service";
 import {LocalcalendarService} from "../cordova/localcalendar.service";
+import {MkTbl} from "../sqlite/tbl/mk.tbl";
 
 @Injectable()
 export class PgBusiService {
@@ -241,6 +242,21 @@ export class PgBusiService {
   }
 
   /**
+   * 查询计划
+   */
+  getPlanById(ji: string): Promise<PlData> {
+    return new Promise<PlData>(async resolve => {
+      let sql: string = `select * from gtd_j_h where ji = "${ji}"`;
+
+      let res: PlData = new PlData();
+
+      res = await this.sqlExce.getExtOne<PlData>(sql);
+
+      resolve(res);
+    });
+  }
+
+  /**
    * 条件查询  dch
    * @param {RcInParam} rc
    */
@@ -250,10 +266,10 @@ export class PgBusiService {
       let res: Array<ScdData> = new Array<ScdData>();
       if (rc.ed ||rc.et ||rc.sd ||rc.st || rc.sn || rc.fss.length>0) {
         let sql: string = `select * from (
-                           select distinct c.si,c.sn,c.ui,c.st,c.ed,c.et,c.rt,c.ji,c.sr,c.tx,c.pni,c.du,c.gs,
+                           select distinct c.si,c.sn,c.ui,c.st,c.ed,c.et,c.rt,sp.ji,c.sr,c.tx,c.pni,c.du,c.gs,
                            sp.spn,sp.sd,sp.st,c.bz
                            from gtd_sp sp inner join gtd_c c on sp.si = c.si
-                                    left join gtd_d d on d.si = c.si 
+                                    left join gtd_d d on d.si = c.si
                                     left join gtd_b b on b.pwi = d.ai`;
         if(rc.fss.length>0){
           sql = sql + 'where b.ranpy in (';
@@ -280,6 +296,8 @@ export class PgBusiService {
           jt.spn,jt.sd,jt.st,jt.bz
         from gtd_jt jt inner join gtd_c c on jt.si = c.si)`;
 
+        sql = sql + ` where 1=1`;
+
         if (rc.sn) {
           sql = sql + ` and (sn like "% ${rc.sn}%" or bz like "% ${rc.sn}%")`;
         }
@@ -301,6 +319,15 @@ export class PgBusiService {
         }
         console.log("============ mq查询日程："+ sql);
         res = await this.sqlExce.getExtList<ScdData>(sql);
+
+        if (res && res.length > 0) {
+          for (let scd of res) {
+            if (scd.ji) {
+              let pl: PlData = await this.getPlanById(scd.ji);
+              scd.p = pl;
+            }
+          }
+        }
       }
       resolve(res);
     })
@@ -316,19 +343,19 @@ export class PgBusiService {
       let _startMonth = moment(moment(_start).format("YYYY/MM/") + "1");
       let _endMonth = moment(moment(_start).format("YYYY/MM/") + _startMonth.daysInMonth());
       let list =[];
-      let sql: string = ` select sum(scds) scds,sum(news) news, sd,max(csd) csd,max(spn) spn 
+      let sql: string = ` select sum(scds) scds,sum(news) news, sd,max(csd) csd,max(spn) spn
                           from (
                                  select count(sp.si) scds,sum(sp.itx) news,sp.sd sd,max(gc.sd) csd,'' spn
                                     from gtd_sp sp join gtd_c gc on gc.si = sp.si
-                                         where sp.sd>="${moment(_startMonth).format("YYYY/MM/DD")}"  
+                                         where sp.sd>="${moment(_startMonth).format("YYYY/MM/DD")}"
                                               and sp.sd<="${moment(_endMonth).format("YYYY/MM/DD")}"
-                                    group by sp.sd  
+                                    group by sp.sd
                           union all
-                                  select 0 scds,0 news,jt.sd sd ,'' csd, gc.sn spn   
-                                      from gtd_c gc join (select si,min(px),sd from gtd_jt  
-                                          where sd>="${moment(_startMonth).format("YYYY/MM/DD")}"  
-                                              and sd<="${moment(_endMonth).format("YYYY/MM/DD")}" group by sd ) jt 
-                              on jt.si = gc.si 
+                                  select 0 scds,0 news,jt.sd sd ,'' csd, gc.sn spn
+                                      from gtd_c gc join (select si,min(px),sd from gtd_jt
+                                          where sd>="${moment(_startMonth).format("YYYY/MM/DD")}"
+                                              and sd<="${moment(_endMonth).format("YYYY/MM/DD")}" group by sd ) jt
+                              on jt.si = gc.si
                                ) group by sd; `;
 
 
@@ -372,7 +399,7 @@ export class PgBusiService {
         day.news = data.news;
       }
       //查询计划特殊表
-      let sqlJtL:string = `select jt.* from gtd_jt jt where jt.sd = "${starts}" order by jt.px asc`;
+      let sqlJtL:string = `select jt.* from gtd_jt jt where jt.sd = "` + starts + `" order by jt.px asc`;
       let jtL = await this.sqlExce.getExtList<JtData>(sqlJtL);
       day.jtL = jtL;
 
@@ -1203,5 +1230,37 @@ export class PgBusiService {
         resolve(fs);
       })
     })
+  }
+
+  /**
+   * 标注日程语义标签
+   *
+   * @param {string} si
+   * @param {string} mkl
+   * @param {string} mkt
+   * @returns {Promise<string>}
+   */
+  markup(si: string, mkl: string, mkt: string = "default"): Promise<string> {
+    return new Promise<string>(async (resolve, reject) => {
+      let mk: MkTbl = new MkTbl();
+      mk.si = si;
+      mk.mkl = mkl;
+      mk.mkt = mkt;
+
+      let emk = await this.sqlExce.getExtOne<MkTbl>(mk.slT());
+
+      if (emk) {
+        mk.mki = emk.mki;
+      } else {
+        mk.mki = this.util.getUuid();
+      }
+
+      let sql = new Array<string>();
+      sql.push(mk.rpT());
+
+      await this.sqlExce.batExecSql(sql);
+
+      resolve(mk.mki);
+    });
   }
 }

@@ -13,7 +13,7 @@ export class FormatedatePipe implements PipeTransform {
   /**
    * Takes a value and makes it lowercase.
    */
-  transform(value: string, ...args) {
+  transform(value: any, ...args) {
     if (moment(value)+"" == "NaN"){
       return value;
     }
@@ -65,6 +65,12 @@ export class FormatedatePipe implements PipeTransform {
       }
       if (args[0] == "CMM/DD"){
         return moment(value).format("MM月DD");
+      }
+      if (args[0] == "HH:mm"){
+        return moment(value).format("HH:mm");
+      }
+      if (args[0] == "A"){
+        return moment(value).format("A");
       }
     }
     return value;

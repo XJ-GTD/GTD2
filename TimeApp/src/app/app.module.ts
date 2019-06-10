@@ -80,6 +80,9 @@ import {PipesModule} from "../pipes/pipes.module";
 import {ConfirmboxComponentModule} from "../components/confirmbox/confirmbox.module";
 import {LogPageModule} from "../pages/log/log.module";
 import {AtPageModule} from "../pages/at/at.module";
+import {DaPageModule} from "../pages/da/da.module";
+import {DrPageModule} from "../pages/dr/dr.module";
+import {CardListComponentModule} from "../components/card-list/card-list.module";
 
 @NgModule({
   declarations: [
@@ -123,7 +126,10 @@ import {AtPageModule} from "../pages/at/at.module";
     TdlPageModule,
     LogPageModule,
     AtPageModule,
-    ConfirmboxComponentModule
+    DaPageModule,
+    DrPageModule,
+    ConfirmboxComponentModule,
+    CardListComponentModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
