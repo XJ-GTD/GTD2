@@ -292,7 +292,7 @@ export class BrService {
       let yi = new YTbl();
       Object.assign(yi,outRecoverPro.y[j]) ;
       // 忽略备份数据中的客户端版本参数和设备ID,备份的时候不需要过滤这两个数据
-      if (yi.yk == "FI" || yi.yk == "DI") continue;
+      if (yi.yt == "FI" || yi.yk == "FI" || yi.yk == "DI") continue;
       if (yi.yk == "DR") hasDR = true;
       if (yi.yk == "DRP1") hasDRP1 = true;
 

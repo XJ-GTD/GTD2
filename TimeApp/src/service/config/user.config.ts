@@ -75,7 +75,7 @@ export class UserConfig {
   }
 
   static getSetting(key: string):boolean {
-    return UserConfig.settins.get(key).value == "1";
+    return UserConfig.settins.get(key)? (UserConfig.settins.get(key).value == "1") : false;
   }
 
   // 2019/05/10
