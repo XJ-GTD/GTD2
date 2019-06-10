@@ -57,6 +57,7 @@ import {PageY} from "../../data.mapping";
                 </ion-item>
               </ion-list>
             </ion-row>
+            <p class="p5"></p>
             <ion-row align-items-center justify-content-center>
               <button ion-button full outline small class="no-border" color="danger" (click)="save(dr, !bdr)">{{bdr? '关闭' : '打开'}}</button>
             </ion-row>

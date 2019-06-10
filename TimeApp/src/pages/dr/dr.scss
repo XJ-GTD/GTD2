@@ -1,6 +1,10 @@
 page-dr {
   background-color: $baseBackColor;
 
+  p.p5 {
+    padding: 5px;
+  }
+
   .w-auto {
     flex: 1;
   }
