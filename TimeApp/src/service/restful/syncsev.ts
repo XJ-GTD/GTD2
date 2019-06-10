@@ -49,9 +49,10 @@ export class SyncRestful {
       }
 
       task.taskRunAt = JSON.stringify(taskRunAt);
+      let triggerurl: UrlEntity = this.config.getRestFulUrl("DRT");
 
       let taskRunWith = {
-        url: "https://pluto.guobaa.com/cdc/mwxing_daily_summary_start/json/trigger",
+        url: triggerurl.url, // "https://pluto.guobaa.com/cdc/mwxing_daily_summary_start/json/trigger"
         payload: {
           userId: userId
         }

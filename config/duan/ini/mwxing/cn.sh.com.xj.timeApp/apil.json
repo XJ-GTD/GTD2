@@ -32,5 +32,6 @@
 {"name":"AAT", "value":"https://pluto.guobaa.com/aba/user/mwxing/access", "desc":"帐户登录令牌获取"},
 {"name":"CC", "value":"https://pluto.guobaa.com/cdc/calendar_caculate/starter", "desc":"日程计算"},
 {"name":"AIGS", "value":"https://pluto.guobaa.com/aup/user/multi/usersinfo", "desc":"批量帐户信息获取"},
-{"name":"EDTTS", "value":"https://pluto.guobaa.com/aag/register/tasks", "desc":"注册事件分发任务"}
+{"name":"EDTTS", "value":"https://pluto.guobaa.com/aag/register/tasks", "desc":"注册事件分发任务"},
+{"name":"DRT", "value":"https://pluto.guobaa.com/cdc/mwxing_daily_summary_start/json/trigger", "desc":"每日简报触发"}
 ]
