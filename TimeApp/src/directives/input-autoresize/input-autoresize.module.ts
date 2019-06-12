@@ -6,6 +6,7 @@ import { AutoresizeDirective } from './input-autoresize';
     AutoresizeDirective
   ],
   imports: [
+    AutoresizeDirective
   ],
   providers: [
     AutoresizeDirective
