@@ -3,6 +3,7 @@ import { AutoresizeDirective } from './input-autoresize';
 
 @NgModule({
   declarations: [
+    AutoresizeDirective
   ],
   imports: [
   ],
