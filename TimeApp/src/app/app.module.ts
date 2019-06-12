@@ -83,7 +83,7 @@ import {AtPageModule} from "../pages/at/at.module";
 import {DaPageModule} from "../pages/da/da.module";
 import {DrPageModule} from "../pages/dr/dr.module";
 import {CardListComponentModule} from "../components/card-list/card-list.module";
-import {AutoresizeDirectiveModule} from "../directives/input-autoresize/input-autoresize.module";
+import {DirectivesModule} from "../directives/directives.module";
 
 @NgModule({
   declarations: [
@@ -131,7 +131,7 @@ import {AutoresizeDirectiveModule} from "../directives/input-autoresize/input-au
     DrPageModule,
     ConfirmboxComponentModule,
     CardListComponentModule,
-    AutoresizeDirectiveModule
+    DirectivesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
