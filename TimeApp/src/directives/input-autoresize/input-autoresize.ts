@@ -1,7 +1,7 @@
 import { Directive, HostListener, ElementRef, Input } from "@angular/core";
 
 @Directive({
-  selector: 'ion-textarea[autoresize]'
+  selector: '[autoresize]'
 })
 export class AutoresizeDirective {
   @HostListener('input', ['$event.target'])
