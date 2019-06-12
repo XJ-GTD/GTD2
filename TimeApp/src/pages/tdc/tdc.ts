@@ -1,7 +1,7 @@
 import {Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import {
   DateTime,
-  ModalController, NavController, NavParams,
+  ModalController, NavController, NavParams, ActionSheetController
 } from 'ionic-angular';
 import * as moment from "moment";
 import {UtilService} from "../../service/util-service/util.service";
@@ -129,7 +129,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
         </ion-row>
         <ion-row>
           <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set" (focus)="comentfocus()"
-                        (blur)="comentblur()"></ion-textarea>
+                        (blur)="comentblur()" autoresize></ion-textarea>
         </ion-row>
       </ion-grid>
     </ion-content>
@@ -168,6 +168,7 @@ export class TdcPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private util: UtilService,
               public modalCtrl: ModalController, private busiServ: PgBusiService,
+              private actionSheetCtrl: ActionSheetController,
               private keyboard: Keyboard, private _renderer: Renderer2,
               private plsevice: PlService,private feekback:FeedbackService) {
     this.keyboard.onKeyboardShow().subscribe(d =>{
@@ -451,6 +452,32 @@ export class TdcPage {
       return;
   }
 
+  selectPlan() {
+    let actionSheetOption = {
+      title: "日历选择",
+      buttons: [
+        {
+          text: "取消",
+          role: "cancel",
+          handler: () => {
+            console.log("日历选择取消");
+          }
+        }
+      ]
+    };
+
+    for (let jh: JhTbl of this.jhs) {
+      actionSheetOption.buttons.unshift({
+        text: jh.jn,
+        handler: () => {
+
+        }
+      });
+    }
+
+    let actionSheet = this.actionSheetCtrl.create(actionSheetOption);
+    actionSheet.present();
+  }
 
   toPlanChoose() {
     if (this.jhs.length > 0) {
