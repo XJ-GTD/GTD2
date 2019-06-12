@@ -466,9 +466,10 @@ export class TdcPage {
       ]
     };
 
-    for (let jh: JhTbl of this.jhs) {
+    for (let jh of this.jhs) {
       actionSheetOption.buttons.unshift({
         text: jh.jn,
+        role: "select",
         handler: () => {
 
         }
