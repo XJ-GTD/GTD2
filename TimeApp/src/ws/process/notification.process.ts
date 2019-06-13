@@ -9,6 +9,7 @@ import {ScudscdPara} from "../model/scudscd.para";
 import {NotificationsService} from "../../service/cordova/notifications.service";
 import {FsData, ScdData} from "../../data.mapping";
 import {WsDataConfig} from "../wsdata.config";
+import {BaseProcess} from "./base.process";
 import * as moment from "moment";
 
 /**
