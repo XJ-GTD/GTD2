@@ -5,12 +5,15 @@ import {TddjPage} from "./tddj";
 import {IonicModule} from "ionic-angular";
 import {PipesModule} from "../../pipes/pipes.module";
 import {TddsPage} from "./tdds";
+import {Autosize} from "ng-autosize";
 
 @NgModule({
   declarations: [
     TdcPage,
     TddiPage,
-    TddjPage,TddsPage
+    TddjPage,
+    TddsPage,
+    Autosize
   ],
   imports: [
       IonicModule,
