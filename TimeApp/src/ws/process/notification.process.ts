@@ -20,6 +20,7 @@ import * as moment from "moment";
 @Injectable()
 export class NotificationProcess extends BaseProcess implements MQProcess {
   constructor(private emitService: EmitService, private busiService: PgBusiService,private notificationsService:NotificationsService) {
+    super();
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
