@@ -49,7 +49,8 @@ export enum SH {
 
 //推送通知
 export enum PN {
-  DR = "PN.DR"  //每日简报通知推送
+  DR = "PN.DR",   //每日简报通知推送
+  FB = "PN.FB"    //中断反馈通知推送
 }
 
 //日程标签

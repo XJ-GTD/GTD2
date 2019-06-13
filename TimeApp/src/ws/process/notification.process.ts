@@ -7,7 +7,8 @@ import {ProcesRs} from "../model/proces.rs";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {ScudscdPara} from "../model/scudscd.para";
 import {NotificationsService} from "../../service/cordova/notifications.service";
-import {ScdData} from "../../data.mapping";
+import {FsData, ScdData} from "../../data.mapping";
+import {WsDataConfig} from "../wsdata.config";
 import * as moment from "moment";
 
 /**
@@ -16,7 +17,7 @@ import * as moment from "moment";
  * create by xilj on 2019/6/1.
  */
 @Injectable()
-export class NotificationProcess implements MQProcess {
+export class NotificationProcess extends BaseProcess implements MQProcess {
   constructor(private emitService: EmitService, private busiService: PgBusiService,private notificationsService:NotificationsService) {
   }
 
