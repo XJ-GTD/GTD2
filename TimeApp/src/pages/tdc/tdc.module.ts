@@ -5,7 +5,7 @@ import {TddjPage} from "./tddj";
 import {IonicModule} from "ionic-angular";
 import {PipesModule} from "../../pipes/pipes.module";
 import {TddsPage} from "./tdds";
-import {Autosize} from "ng-autosize";
+import {Autosize} from "../../directives/ng-autosize/autosize.directive";
 
 @NgModule({
   declarations: [
