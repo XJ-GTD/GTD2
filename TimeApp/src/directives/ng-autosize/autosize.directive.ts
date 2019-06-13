@@ -71,7 +71,7 @@ export class Autosize implements AfterViewInit {
     let target = this.element.nativeElement.querySelector("textarea");
 
     if (target) {
-      target.style.overflow = 'hidden';
+      target.style.overflow = 'scroll';
       target.style.height = 'auto';
       target.style.height = this.el.scrollHeight + 'px';
     }

@@ -129,7 +129,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
         </ion-row>
         <ion-row>
           <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set" (focus)="comentfocus()"
-                        (blur)="comentblur()" autoresize maxHeight="100"></ion-textarea>
+                        (blur)="comentblur()" autosize maxHeight="100"></ion-textarea>
         </ion-row>
       </ion-grid>
     </ion-content>
