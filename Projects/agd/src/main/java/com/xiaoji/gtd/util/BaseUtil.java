@@ -145,8 +145,7 @@ public class BaseUtil {
 	 * @param request
 	 * @return
 	 */
-	public boolean getBla(String openId, String relId,HttpServletRequest request) {
-		String url = "https://www.guobaa.com/bla/getOne";
+	public boolean getBla(String openId, String relId, String url, HttpServletRequest request) {
 		log.info("========获取黑名单：mpn" + openId+",relId:"+relId);
 		// 设置参数
 		Map<String, Object> hashMap = new LinkedHashMap<String, Object>();

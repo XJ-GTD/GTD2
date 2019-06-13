@@ -56,6 +56,9 @@ public class IContactsServiceImpl implements IContactsService {
 	@Value("${blocked.destinationName}")
 	private String blockeddestinationName;
 	
+	@Value("${blacklist.getone}")
+	private String blacklistgetOne;
+	
 	/**
 	 * 保存日程参与人
 	 */
@@ -108,7 +111,7 @@ public class IContactsServiceImpl implements IContactsService {
 								add.setAi(add.getMpn());
 							}
 							//判断是否存在于黑名单
-							boolean isbla = base.getBla(request.getHeader("ai"), add.getAi(), request);
+							boolean isbla = base.getBla(request.getHeader("ai"), add.getAi(), blacklistgetOne, request);
 							if(!isbla){
 								addList.add(add);
 							} else {
@@ -124,7 +127,7 @@ public class IContactsServiceImpl implements IContactsService {
 							add.setAi(add.getMpn());
 						}
 						//先判断是否存在于黑名单
-						boolean isbla = base.getBla(request.getHeader("ai"), add.getAi(), request);
+						boolean isbla = base.getBla(request.getHeader("ai"), add.getAi(), blacklistgetOne, request);
 						if(!isbla && !add.getMpn().equals(phone)){
 							//添加日程发送记录表
 							this.agdRecordServ.save(agenL, add.getMpn(), add.getAi());
