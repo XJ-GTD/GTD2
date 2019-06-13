@@ -132,7 +132,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           </div>
         </ion-row>
         <ion-row>
-          <ion-textarea type="text" placeholder="备注" [(ngModel)]="sp.bz" class="memo-set" (focus)="comentfocus()"
+          <ion-textarea type="text" autosize placeholder="备注" [(ngModel)]="sp.bz" class="memo-set" (focus)="comentfocus()"
                         (blur)="comentblur()"></ion-textarea>
         </ion-row>
         <ion-row *ngIf="scd && scd.fss && scd.fss.length > 0">

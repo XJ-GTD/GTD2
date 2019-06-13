@@ -40,7 +40,7 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
         </ion-row>
 
         <ion-row *ngIf="sp.bz">
-          <ion-textarea type="text" placeholder="备注" [(ngModel)]="sp.bz" class="memo-set"
+          <ion-textarea type="text" autosize placeholder="备注" [(ngModel)]="sp.bz" class="memo-set"
                         readonly="true"></ion-textarea>
         </ion-row>
       </ion-grid>
