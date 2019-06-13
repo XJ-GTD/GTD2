@@ -108,9 +108,9 @@ import {NotificationsService} from "../../service/cordova/notifications.service"
           </div>
         </ion-row>
         <ion-row>
-          <ion-textarea type="text" autosize placeholder="备注" [(ngModel)]="sp.bz" class="memo-set" (focus)="comentfocus()"
+          <textarea type="text" autosize placeholder="备注" [(ngModel)]="sp.bz" class="memo-set" (focus)="comentfocus()"
                         (blur)="comentblur()"
-          ></ion-textarea>
+          ></textarea>
         </ion-row>
       </ion-grid>
     </ion-content>
