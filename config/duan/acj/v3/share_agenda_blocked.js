@@ -81,9 +81,14 @@ function clean(datasource)
     if (to && to.length == 1) {
       var tousername = to[0]['n'];
 
-      output.content['1']['parameters']['title'] = '{touser}已禁止接收您的共享日程';
-      output.content['1']['parameters']['text'] = '[' + agenda['adt'] + '] ' + agenda['at'];
+      output.content['1']['parameters']['title'] = '{touser}拒收日程[' + agenda['at'] + ']';
+      output.content['1']['parameters']['text'] = '频繁发送广告、推销等骚扰信息，一旦被认定，账户将被锁定，24小时内无法使用。';
       output.content['1']['parameters']['reason'] = 'IN_BLACKLIST';
+      output.content['1']['parameters']['scd'] = {
+        si: agenda['ai'],
+        sd: agenda['adt'].substring(0, 10),
+        gs: (agenda['fc'] === from? '0' : '1')
+      };
       output.content['1']['input']['textvariables'].push({
         name: 'touser', expression: 'contacts[0].ran', default: tousername
       });
@@ -93,9 +98,14 @@ function clean(datasource)
     if (to && to.length > 1) {
       var tousername = to[0]['n'];
 
-      output.content['1']['parameters']['title'] = '{touser}等' + to.length + '人已禁止接收您的共享日程';
-      output.content['1']['parameters']['text'] = '[' + agenda['adt'] + '] ' + agenda['at'];
+      output.content['1']['parameters']['title'] = '{touser}等' + to.length + '人拒收日程[' + agenda['at'] + ']';
+      output.content['1']['parameters']['text'] = '频繁发送广告、推销等骚扰信息，一旦被认定，账户将被锁定，24小时内无法使用。';
       output.content['1']['parameters']['reason'] = 'IN_BLACKLIST';
+      output.content['1']['parameters']['scd'] = {
+        si: agenda['ai'],
+        sd: agenda['adt'].substring(0, 10),
+        gs: (agenda['fc'] === from? '0' : '1')
+      };
       output.content['1']['input']['textvariables'].push({
         name: 'touser', expression: 'contacts[0].ran', default: tousername
       });

@@ -119,6 +119,14 @@ export class HPage {
         onlyRepeat: false
       });
     });
+
+    //操作反馈消息回调
+    this.emitService.register('on.feedback.message.click', (data) => {
+      let scd = data.eventdata? data.eventdata['scd'] : null;
+      if (scd) {
+        this.gotodetail(scd);
+      }
+    });
   }
 
   onPress(pressDay) {
@@ -167,5 +175,23 @@ export class HPage {
     p.gs = "3";
 
     this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, p).present();
+  }
+
+  gotodetail(scd) {
+    let p: ScdPageParamter = new ScdPageParamter();
+    p.si = scd.si;
+    p.d = moment(scd.sd);
+    p.gs = scd.gs;
+
+    if (scd.gs == "0") {
+      //本人画面
+      this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, p).present();
+    } else if (scd.gs == "1") {
+      //受邀人画面
+      this.modalCtr.create(DataConfig.PAGE._TDDI_PAGE, p).present();
+    } else {
+      //系统画面
+      this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, p).present();
+    }
   }
 }
