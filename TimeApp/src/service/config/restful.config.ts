@@ -189,7 +189,7 @@ export class RestFulHeader {
   lt: string = "";//登录码
   ai: string = "";//帐户ID
   pi: string = "cn.sh.com.xj.timeApp";//产品ID
-  pv: string = "v2";//产品版本
+  pv: string = "v3";//产品版本
   di: string = "";//设备ID
   dt: string = "";//设别类型
 }

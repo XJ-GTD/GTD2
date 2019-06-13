@@ -148,6 +148,9 @@ export class FindProcess extends BaseProcess implements MQProcess {
     let gs: Array<PageDcData> = this.glService.getGroups(null);
     //循环参数中的pingy数组
     for (let n of ns) {
+      //根据帐户id或者手机号查询时，不查询群组
+      if (!n.n && (n.ai || n.mpn)) continue;
+
       let piny = n.n;
       //首先查找群组
       for (let g of gs) {
@@ -173,33 +176,52 @@ export class FindProcess extends BaseProcess implements MQProcess {
     }
 
     for (let n of ns) {
-      let piny = n.n;
-      //查找联系人
-      let simularyranrs = this.util.findBestMatch(piny, b3ran);
-      let simularyrnrs = this.util.findBestMatch(piny, b3rn);
-
-      if (simularyranrs.bestMatch.rating > 0.5) {
-        let index = 0;
-        for (let rating of simularyranrs.ratings) {
-          if (rating.rating > 0.8) {
-            console.log(piny + ' <=> ' + b3ran[index] + ' distance ' + rating.rating);
-            rsbs.set(b3ran[index], bs[index]);
+      //根据帐户id或者手机号查询时，不查询群组
+      if (!n.n && (n.ai || n.mpn)) {
+        for (let b1 of bs) {
+          //注册用户存在用户ID
+          if (n.ai && b1.ui && n.ai == b1.ui) {
+            res.push(b1);
+            continue;
           }
-          index++;
+
+          //非注册用户不存在用户ID
+          if (n.mpn && b1.rc && n.mpn == b1.rc) {
+            res.push(b1);
+          }
         }
       }
 
-      if (simularyrnrs.bestMatch.rating > 0.5) {
-        let index = 0;
-        for (let rating of simularyrnrs.ratings) {
-          if (rating.rating > 0.8) {
-            console.log(piny + ' <=> ' + b3rn[index] + ' distance ' + rating.rating);
-            rsbs.set(b3ran[index], bs[index]);
+      if (n.n) {
+        let piny = n.n;
+        //查找联系人
+        let simularyranrs = this.util.findBestMatch(piny, b3ran);
+        let simularyrnrs = this.util.findBestMatch(piny, b3rn);
+
+        if (simularyranrs.bestMatch.rating > 0.5) {
+          let index = 0;
+          for (let rating of simularyranrs.ratings) {
+            if (rating.rating > 0.8) {
+              console.log(piny + ' <=> ' + b3ran[index] + ' distance ' + rating.rating);
+              rsbs.set(b3ran[index], bs[index]);
+            }
+            index++;
           }
-          index++;
+        }
+
+        if (simularyrnrs.bestMatch.rating > 0.5) {
+          let index = 0;
+          for (let rating of simularyrnrs.ratings) {
+            if (rating.rating > 0.8) {
+              console.log(piny + ' <=> ' + b3rn[index] + ' distance ' + rating.rating);
+              rsbs.set(b3ran[index], bs[index]);
+            }
+            index++;
+          }
         }
       }
     }
+
     rsbs.forEach((value, key, map) => {
       res.push(value);
     })

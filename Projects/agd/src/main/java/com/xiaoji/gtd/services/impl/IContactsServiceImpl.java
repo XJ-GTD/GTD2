@@ -53,6 +53,9 @@ public class IContactsServiceImpl implements IContactsService {
 	@Value("${active.destinationName.v2}")
 	private String destinationNamev2;
 
+	@Value("${blocked.destinationName}")
+	private String blockeddestinationName;
+	
 	/**
 	 * 保存日程参与人
 	 */
@@ -71,6 +74,7 @@ public class IContactsServiceImpl implements IContactsService {
 			List<AgdAgendaContacts> agdList = agdContactsRep.findContactsByRelId(inDto.getAi());
 			log.info("---- 查询已有日程参与人  -----" + JSONObject.toJSONString(agdList));
 			List<AgdContactsDto> addList = new ArrayList<AgdContactsDto>(); //入参：参与人
+			List<AgdContactsDto> blockedList = new ArrayList<AgdContactsDto>();	//黑名单禁止参与人
 			List<AgdAgendaContacts> delList = new ArrayList<AgdAgendaContacts>();
 			delList.addAll(agdList); //删除日程的参与人
 			List<AgdContactsDto> acList = inDto.getAc();
@@ -107,6 +111,8 @@ public class IContactsServiceImpl implements IContactsService {
 							boolean isbla = base.getBla(request.getHeader("ai"), add.getAi(), request);
 							if(!isbla){
 								addList.add(add);
+							} else {
+								blockedList.add(add);
 							}
 							 
 						}
@@ -123,6 +129,10 @@ public class IContactsServiceImpl implements IContactsService {
 							//添加日程发送记录表
 							this.agdRecordServ.save(agenL, add.getMpn(), add.getAi());
 							addList.add(add);
+						}
+						
+						if (isbla) {
+							blockedList.add(add);
 						}
 					}
 				}
@@ -159,6 +169,32 @@ public class IContactsServiceImpl implements IContactsService {
 			        	log.error("------- 添加日程发送失败  --------" + map.toString());
 			        }
 					
+				}
+				
+				// 反馈被黑名单阻止人员的消息
+				if (blockedList.size() > 0) {
+					JSONObject context = new JSONObject();
+					context.put("productId", productId);
+					context.put("productVersion", productVersion);
+					context.put("deviceId", deviceId);
+					
+					//TODO 发送添加日程消息
+					Map<String,Object> map = new HashMap<String,Object>();
+					map.put("_context", context);
+					map.put("from", agenL.getCreaterId());		// 发送人
+			        map.put("to", JSONObject.toJSON(addList));
+			        map.put("agenda", JSONObject.toJSON(inDto));
+			        map.put("blockType", "inblacklist");
+			        try{
+			        	Map<String,Object> map2 = new HashMap<String,Object>();
+			        	map2.put("context", map);
+			        	if (!"v1".equals(productVersion) && !"v2".equals(productVersion)) {
+				        	jmsMessagingTemplate.convertAndSend(blockeddestinationName, map2);
+			        	}
+			        	log.info("------- 黑名单禁止发送通知  --------" + map.toString());
+			        }catch(Exception e){
+			        	log.error("------- 黑名单禁止发送通知失败  --------" + map.toString());
+			        }
 				}
 //				log.info("------- 删除参与人："+ JSONObject.toJSONString(delList));
 //				if(delList.size()>0){

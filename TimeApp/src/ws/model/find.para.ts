@@ -8,7 +8,9 @@
 export class FindPara{
   //参与人
   fs:[{
-    n:string
+    n:string,
+    ai:string,
+    mpn:string
   }];
   scd:{
     //开始日期

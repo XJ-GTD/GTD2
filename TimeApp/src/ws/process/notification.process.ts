@@ -21,12 +21,20 @@ export class NotificationProcess implements MQProcess {
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
+    //上下文内获取日程查询结果
+    let agendas:Array<ScdData> = new Array<ScdData>();
+    agendas = this.input(content,contextRetMap, "agendas", WsDataConfig.SCD, agendas);
+
+    //上下文内获取日程人员信息
+    let contacts :Array<FsData> = new Array<FsData>();
+    contacts = this.input(content,contextRetMap, "contacts", WsDataConfig.FS, contacts);
+
     //process处理符合条件则执行
     if (content.when && content.when !=""){
       let rf :boolean = false;
       try {
         let fun = eval("("+content.when+")");
-        rf = fun(content);
+        rf = fun(content, contacts);
       }catch (e){
         rf = false;
       };
@@ -49,6 +57,43 @@ export class NotificationProcess implements MQProcess {
       }
 
       let data: any = {eventhandler: 'on.dailyreport.message.click', eventdata: dailySummary};
+
+      this.notificationsService.newMessage(title, text, data);
+    }
+
+    //反馈消息
+    if (content.option == PN.FB) {
+      //处理所需要参数
+      let feedback: any = content.parameters;
+      let title: string = feedback.title;
+      let text: string = feedback.text;
+
+      //参数替换
+      if (content.input && content.input.textvariables) {
+        for (let txt of content.input.textvariables) {
+          let expvalue: string = "";
+          if (txt.value || txt.value == "") {
+            expvalue = txt.value;
+          }else if (txt.expression) {
+            try {
+              expvalue = eval(txt.expression);
+            }catch (e){
+              expvalue = txt.default;
+            }
+
+            if (!expvalue) {
+              expvalue = txt.default;
+            }
+          } else {
+            expvalue = txt.default;
+          }
+
+          title = title.replace("{" + txt.name + "}", expvalue);
+          text = text.replace("{" + txt.name + "}", expvalue);
+        }
+      }
+
+      let data: any = {eventhandler: 'on.feedback.message.click', eventdata: feedback};
 
       this.notificationsService.newMessage(title, text, data);
     }
