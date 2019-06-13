@@ -1,7 +1,7 @@
 import { Input, AfterViewInit, ElementRef, HostListener, Directive } from '@angular/core';
 
 @Directive({
-  selector: 'textarea[autosize]'
+  selector: 'ion-textarea[autosize]'
 })
 
 export class Autosize implements AfterViewInit {
