@@ -84,7 +84,7 @@ function clean(datasource)
       output.content['1']['parameters']['title'] = '{touser}已禁止接收您的共享日程';
       output.content['1']['parameters']['text'] = '[' + agenda['adt'] + '] ' + agenda['at'];
       output.content['1']['parameters']['reason'] = 'IN_BLACKLIST';
-      output.content['1']['parameters']['textvariables'].push({
+      output.content['1']['input']['textvariables'].push({
         name: 'touser', expression: 'contacts[0].ran', default: tousername
       });
     }
@@ -96,7 +96,7 @@ function clean(datasource)
       output.content['1']['parameters']['title'] = '{touser}等' + to.length + '人已禁止接收您的共享日程';
       output.content['1']['parameters']['text'] = '[' + agenda['adt'] + '] ' + agenda['at'];
       output.content['1']['parameters']['reason'] = 'IN_BLACKLIST';
-      output.content['1']['parameters']['textvariables'].push({
+      output.content['1']['input']['textvariables'].push({
         name: 'touser', expression: 'contacts[0].ran', default: tousername
       });
     }
