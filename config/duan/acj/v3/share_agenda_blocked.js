@@ -69,7 +69,7 @@ function clean(datasource)
     processor: 'PN',
     option: 'PN.FB',
     parameters: {
-      timestamp: event['trigger_time']
+      timestamp: Date.parse(new Date())
     },
     input: {
       textvariables: []

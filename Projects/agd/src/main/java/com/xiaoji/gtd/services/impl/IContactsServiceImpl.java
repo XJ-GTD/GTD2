@@ -185,7 +185,7 @@ public class IContactsServiceImpl implements IContactsService {
 					Map<String,Object> map = new HashMap<String,Object>();
 					map.put("_context", context);
 					map.put("from", agenL.getCreaterId());		// 发送人
-			        map.put("to", JSONObject.toJSON(addList));
+			        map.put("to", JSONObject.toJSON(blockedList));
 			        map.put("agenda", JSONObject.toJSON(inDto));
 			        map.put("blockType", "inblacklist");
 			        try{
