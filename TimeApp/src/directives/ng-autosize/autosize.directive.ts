@@ -70,21 +70,29 @@ export class Autosize implements AfterViewInit {
 
     let target = this.element.nativeElement.querySelector("textarea");
 
-    target.style.overflow = 'hidden';
-    target.style.height = 'auto';
-    target.style.height = this.el.scrollHeight + 'px';
+    if (target) {
+      target.style.overflow = 'hidden';
+      target.style.height = 'auto';
+      target.style.height = this.el.scrollHeight + 'px';
+    }
   }
 
   updateMinHeight(): void {
     let target = this.element.nativeElement.querySelector("textarea");
-    // Set textarea min height if input defined
-    target.style.minHeight = this._minHeight + 'px';
+
+    if (target) {
+      // Set textarea min height if input defined
+      target.style.minHeight = this._minHeight + 'px';
+    }
   }
 
   updateMaxHeight(): void {
     let target = this.element.nativeElement.querySelector("textarea");
-    // Set textarea max height if input defined
-    target.style.maxHeight = this._maxHeight + 'px';
+
+    if (target) {
+      // Set textarea max height if input defined
+      target.style.maxHeight = this._maxHeight + 'px';
+    }
   }
 
 }
