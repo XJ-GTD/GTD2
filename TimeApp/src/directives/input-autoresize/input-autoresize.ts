@@ -5,17 +5,18 @@ import { Directive, HostListener, ElementRef, Input } from "@angular/core";
 })
 export class AutoresizeDirective {
   @HostListener('input', ['$event.target'])
-    onInput(textArea: HTMLTextAreaElement): void {
+  onInput(textArea: HTMLTextAreaElement): void {
         this.adjust();
   }
 
-  @Input('autoresize') maxHeight: number;
+  @Input('autoresize')
+  maxHeight: number;
 
   constructor(public element: ElementRef) {
   }
 
   ngOnInit(): void {
-    this.adjust();
+    setTimeout(() => this.adjust(), 0);
   }
 
   adjust(): void {
