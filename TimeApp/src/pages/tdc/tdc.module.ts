@@ -5,7 +5,7 @@ import {TddjPage} from "./tddj";
 import {IonicModule} from "ionic-angular";
 import {PipesModule} from "../../pipes/pipes.module";
 import {TddsPage} from "./tdds";
-import {AutoresizeDirective} from "../../directives/ng-autosize/autosize.directive";
+import {Autosize} from "../../directives/ng-autosize/autosize.directive";
 
 @NgModule({
   declarations: [
@@ -13,7 +13,7 @@ import {AutoresizeDirective} from "../../directives/ng-autosize/autosize.directi
     TddiPage,
     TddjPage,
     TddsPage,
-    AutoresizeDirective
+    Autosize
   ],
   imports: [
       IonicModule,
