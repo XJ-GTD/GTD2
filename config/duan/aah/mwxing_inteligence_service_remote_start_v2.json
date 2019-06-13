@@ -415,6 +415,31 @@
                     ]
                 }
             ]
+        },
+        {
+          "name": "讯飞返回异常通知运维",
+          "trigger": "acj",
+          "parameters": [
+              "ruleid;MWXING_XUNFEI_ERRCHECK_XEC001_V1_3",
+              "datasource;$.parent.parameters.xunfeiyun"
+          ],
+          "outputs": [
+              "cleaned"
+          ],
+          "next": [
+            {
+              "name": "运维通知",
+              "trigger": "exc",
+              "parameters": [
+                  "method;post",
+                  "urlabs;http://sa-cdc:8080/cdc/mwxing_maintain_notification_start/json/trigger",
+                  "params;$.parent.outputs.cleaned"
+              ],
+              "outputs": [
+                  "executed"
+              ]
+            }
+          ]
         }
     ]
 }
