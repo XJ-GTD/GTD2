@@ -82,7 +82,7 @@ function clean(datasource)
       var tousername = to[0]['n'];
 
       output.content['1']['parameters']['title'] = '{touser}拒收日程[' + agenda['at'] + ']';
-      output.content['1']['parameters']['text'] = '频繁发送广告、推销等骚扰信息，一旦被认定，账户将被锁定，24小时内无法使用。';
+      output.content['1']['parameters']['text'] = '{touser}：频繁发送广告、推销等骚扰信息，一旦被认定，账户将被锁定，24小时内无法使用。';
       output.content['1']['parameters']['reason'] = 'IN_BLACKLIST';
       output.content['1']['parameters']['scd'] = {
         si: agenda['ai'],
@@ -99,7 +99,7 @@ function clean(datasource)
       var tousername = to[0]['n'];
 
       output.content['1']['parameters']['title'] = '{touser}等' + to.length + '人拒收日程[' + agenda['at'] + ']';
-      output.content['1']['parameters']['text'] = '频繁发送广告、推销等骚扰信息，一旦被认定，账户将被锁定，24小时内无法使用。';
+      output.content['1']['parameters']['text'] = '{touser}：频繁发送广告、推销等骚扰信息，一旦被认定，账户将被锁定，24小时内无法使用。';
       output.content['1']['parameters']['reason'] = 'IN_BLACKLIST';
       output.content['1']['parameters']['scd'] = {
         si: agenda['ai'],
