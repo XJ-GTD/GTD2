@@ -417,6 +417,24 @@
             ]
         },
         {
+          "when": {
+              "d$and": [
+                  {
+                      "d$.parent.parameters.xunfeiyun": {
+                          "code": {
+                              "d$exists": true
+                          }
+                      }
+                  },
+                  {
+                      "d$.parent.parameters.xunfeiyun": {
+                          "code": {
+                              "d$gt": 0
+                          }
+                      }
+                  }
+              ]
+          },
           "name": "讯飞返回异常通知运维",
           "trigger": "acj",
           "parameters": [
