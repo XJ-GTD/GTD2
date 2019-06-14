@@ -23,6 +23,11 @@ function clean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
 
+  var userId = input['_context']['userId'];
+  var deviceId = input['_context']['deviceId'];
+  var clientcontext = input['_context']['client'];
+  var servercontext = input['_context']['server'];
+
   var formatDateTime = function(date) {
     return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
   }
@@ -42,6 +47,36 @@ function clean(datasource)
       }
     }
   };
+
+  //讯飞异常客户通知
+  var output = {};
+
+  output.header = {
+    version: 'V1.1',
+    sender: 'xunfei',
+    datetime: formatDateTime(new Date()),
+    describe: ['S']
+  };
+
+  output.original = "";
+  output.content = {};
+
+  output.content['0'] = {
+    option: 'S.AN',
+    parameters: {
+      an: '第三方语音服务故障, 请稍后再试'
+    }
+  };
+
+  output.context = {};
+
+  if (clientcontext && clientcontext !== undefined) {
+    output.context['client'] = clientcontext;
+  }
+
+  event.announceTo = [userId + ';' + deviceId];
+  event.announceType = 'inteligence_mix';
+  event.announceContent = {mwxing:output};
 
   print(JSON.stringify(event));
 

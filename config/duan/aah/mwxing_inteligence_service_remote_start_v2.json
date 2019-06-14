@@ -285,6 +285,13 @@
             ]
         },
         {
+          "when": {
+              "d$.parent.parameters.xunfeiyun": {
+                  "code": {
+                      "d$eq": "0"
+                  }
+              }
+          },
             "name": "数据清洗与转换 迅飞返回结果格式整理",
             "trigger": "acj",
             "parameters": [
@@ -451,11 +458,17 @@
               "parameters": [
                   "method;post",
                   "urlabs;http://sa-cdc:8080/cdc/mwxing_maintain_notification_start/json/trigger",
-                  "params;$.parent.outputs.cleaned"
+                  "data;$.parent.outputs.cleaned"
               ],
               "outputs": [
                   "executed"
               ]
+            },
+            {
+                "type": "forward",
+                "forward_with": [
+                    "xfy_nlp_end"
+                ]
             }
           ]
         }
