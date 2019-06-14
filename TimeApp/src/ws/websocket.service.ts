@@ -140,6 +140,7 @@ export class WebsocketService {
         passcode: this.password
       });
     } else {
+      this.emitService.emit("on.websocket.closed");
       this.connect();
     }
   }
