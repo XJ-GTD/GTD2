@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
 import {Network} from "@ionic-native/network";
-import {ToastController} from "ionic-angular";
 import {DataConfig} from "../config/data.config";
+import {UtilService} from "../util-service/util.service";
+import {EmitService} from "../util-service/emit.service";
 
 /**
  * 网络监控工具类
@@ -12,7 +13,8 @@ import {DataConfig} from "../config/data.config";
 export class NetworkService {
 
   constructor(private network: Network,
-              private toastCtrl: ToastController) { }
+              private util: UtilService,
+              private emitService: EmitService) { }
 
   /**
    * 返回当前网络连接类型
@@ -32,11 +34,6 @@ export class NetworkService {
    * 网络状态监控
    */
   public monitorNetwork() {
-    let toast = this.toastCtrl.create({
-      message: '',
-      duration: 1500,
-      position: 'top'
-    });
 
     // watch network for a disconnection
     let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
@@ -44,11 +41,8 @@ export class NetworkService {
       console.log('没有连接网络');
       DataConfig.IS_NETWORK_CONNECT = false;
 
-      toast.setMessage('当前无网络，请检查网络连接');
-      toast.onDidDismiss(() => {
-        console.log('Dismissed toast');
-      });
-      toast.present();
+      this.emitService.emit("on.network.disconnected");
+      this.util.toastStart("当前无网络，请检查网络连接",1500);
 
     });
 
@@ -58,11 +52,8 @@ export class NetworkService {
       console.log('网络成功连接');
       DataConfig.IS_NETWORK_CONNECT = true;
 
-      toast.setMessage('网络成功连接');
-      toast.onDidDismiss(() => {
-        console.log('Dismissed toast');
-      });
-      toast.present();
+      this.emitService.emit("on.network.connected");
+      //this.util.toastStart("网络成功连接",1500);
     });
 
   }

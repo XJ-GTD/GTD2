@@ -158,7 +158,7 @@ export class DataConfig {
 
 
   /*----===== 网络状态值 =====----- */
-  public static IS_NETWORK_CONNECT: boolean = true;
+  public static IS_NETWORK_CONNECT: boolean = false;
 
   /**
    * 0正常进入1首次进入2无数据3更新后进入
