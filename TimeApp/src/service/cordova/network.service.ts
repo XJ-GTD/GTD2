@@ -35,6 +35,11 @@ export class NetworkService {
    */
   public monitorNetwork() {
 
+    // 初始化的时候，网络状态设置
+    if (this.network.type === 'none') {
+      DataConfig.IS_NETWORK_CONNECT = false;
+    }
+
     // watch network for a disconnection
     let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
       console.log('network was disconnected :-(');
