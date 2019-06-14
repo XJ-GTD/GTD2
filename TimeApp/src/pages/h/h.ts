@@ -51,7 +51,7 @@ import {DataConfig} from "../../service/config/data.config";
       <!--<div class="rightm">-->
       <!--&nbsp;-->
       <!--</div>-->
-      <AiComponent #aiDiv></AiComponent>
+      <AiComponent [ready]="aiready" #aiDiv></AiComponent>
     </ion-content>
   `,
 })
@@ -63,6 +63,8 @@ export class HPage {
   aiDiv: AiComponent;
   @ViewChild('calendar')
   calendar: CalendarComponent;
+
+  aiready: boolean = false;
 
   hdata: HData;
   options: CalendarComponentOptions = {
@@ -87,6 +89,16 @@ export class HPage {
   }
 
   ngOnInit() {
+    // websocket连接成功消息回调
+    this.emitService.register("on.websocket.connected", () => {
+      this.aiready = true;
+    });
+
+    // websocket断开连接消息回调
+    this.emitService.register("on.websocket.closed", () => {
+      this.aiready = false;
+    });
+
     this.emitService.registerNewMessageClick((data) => {
 
       let p: ScdPageParamter = new ScdPageParamter();

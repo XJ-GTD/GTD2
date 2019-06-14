@@ -1,4 +1,4 @@
-import {Component, ElementRef, Output, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, Output, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage} from 'ionic-angular';
 import {AiData, AiService, FriendAiData, ScdAiData, ScdLsAiData, SpeechAiData} from "./ai.service";
 import {UtilService} from "../../../service/util-service/util.service";
@@ -37,7 +37,7 @@ import {
       <!--<ion-icon name="backspace" (click)="rad()" class="backspace"></ion-icon>-->
       <ion-icon name="close" (click)="closePage()" class="close" #close></ion-icon>
     </ion-content>
-    <PointComponent></PointComponent>
+    <PointComponent *ngIf="ready"></PointComponent>
   `,
 })
 export class AiComponent {
@@ -51,6 +51,9 @@ export class AiComponent {
   @ViewChild("card3") card3: ElementRef;
 
   @ViewChild("close") close: ElementRef;
+
+  @Input("ready")
+  ready: boolean = false;
 
   aiData1: AiData = new AiData();
   aiData2: AiData = new AiData();
@@ -202,4 +205,3 @@ export class AiComponent {
       this._renderer.setStyle(this.card3.nativeElement, "top", top + "px");
   }
 }
-

@@ -5,7 +5,7 @@ import {Injectable, NgModule} from "@angular/core";
 import {UserConfig} from "../service/config/user.config";
 import * as async from "async/dist/async.js"
 import {RestFulConfig} from "../service/config/restful.config";
-
+import {EmitService} from "../service/util-service/emit.service";
 
 /**
  * WebSocket连接Rabbitmq服务器
@@ -29,7 +29,7 @@ export class WebsocketService {
   workqueue:any;
   message:number;
 
-  constructor(private dispatchService: DispatchService,private config: RestFulConfig) {
+  constructor(private dispatchService: DispatchService, private emitService: EmitService, private config: RestFulConfig) {
 
     this.workqueue = async.queue( ({message,index},callback) =>{
       console.log("******************ws  queue:");
@@ -110,6 +110,9 @@ export class WebsocketService {
                 console.log("work queue push error : ", e, '\r\n', e.stack);
               }
             });
+
+            this.emitService.emit("on.websocket.connected");
+
           }, error => {
             this.connections--;
             this.failedtimes++;
@@ -128,15 +131,17 @@ export class WebsocketService {
 
   public close() {
     // 连接消息服务器
-    if (this.client.connected)
+    if (this.client.connected) {
       this.client.disconnect(() => {
+        this.emitService.emit("on.websocket.closed");
         this.connect();
       }, {
         login: this.login,
         passcode: this.password
       });
-    else
+    } else {
       this.connect();
+    }
   }
 
 }

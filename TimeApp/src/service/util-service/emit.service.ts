@@ -56,7 +56,7 @@ export class EmitService {
   }
 
   //冥王星内建事件触发
-  emit(handler: string, $data: any) {
+  emit(handler: string, $data: any = {}) {
     let ee: EventEmitter<any> = EmitService.buildinEvents.get(handler);
 
     //事件不存在直接返回
