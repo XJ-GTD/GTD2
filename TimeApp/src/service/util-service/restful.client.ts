@@ -52,7 +52,7 @@ export class RestfulClient {
             this.sqlitExc.noteLog(log);
             resolve(jsonData);
           }).catch(err=>{
-            this.util.toastStart("服务" + url.desc + "访问失败" ,2000);
+            this.util.toastStart("冥王星" + url.desc + "服务访问失败" ,2000);
             log.ss = new Date().valueOf() - log.ss;
             log.st = false;
             log.er = err;
@@ -75,7 +75,7 @@ export class RestfulClient {
             log.st = false;
             log.er = err;
             this.sqlitExc.noteLog(log);
-            this.util.toastStart("服务" + url.desc + "访问失败",2000);
+            this.util.toastStart("冥王星" + url.desc + "服务访问失败",2000);
             reject(err)
           })
         }
@@ -109,7 +109,7 @@ export class RestfulClient {
             log.st = false;
             log.er = err;
             this.sqlitExc.noteLog(log);
-            this.util.toastStart("服务" + url.desc + "访问失败",2000);
+            this.util.toastStart("冥王星" + url.desc + "服务访问失败",2000);
             reject(err);
           })
         }else{
@@ -128,7 +128,7 @@ export class RestfulClient {
             log.st = false;
             log.er = err;
             this.sqlitExc.noteLog(log);
-            this.util.toastStart("服务" + url.desc + "访问失败",2000);
+            this.util.toastStart("冥王星" + url.desc + "服务访问失败",2000);
             reject(err)
           })
         }
@@ -163,7 +163,7 @@ export class RestfulClient {
             log.st = false;
             log.er = err;
             this.sqlitExc.noteLog(log);
-            this.util.toastStart("服务" + url.desc + "访问失败",2000);
+            this.util.toastStart("冥王星" + url.desc + "服务访问失败",2000);
             reject(err);
           })
         }else{
@@ -181,7 +181,7 @@ export class RestfulClient {
             log.st = false;
             log.er = err;
             this.sqlitExc.noteLog(log);
-            this.util.toastStart("服务" + url.desc + "访问失败",2000);
+            this.util.toastStart("冥王星" + url.desc + "服务访问失败",2000);
             reject(err)
           })
         }
@@ -218,7 +218,7 @@ export class RestfulClient {
             log.st = false;
             log.er = err;
             this.sqlitExc.noteLog(log);
-            this.util.toastStart("服务初始化数据访问失败",2000);
+            this.util.toastStart("初始化数据获取失败",2000);
             resolve();
             //reject(e);
           })
@@ -236,7 +236,7 @@ export class RestfulClient {
             log.st = false;
             log.er = err;
             this.sqlitExc.noteLog(log);
-            this.util.toastStart("服务初始化数据访问失败",2000);
+            this.util.toastStart("初始化数据获取失败",2000);
             resolve();
           })
         }
@@ -274,7 +274,7 @@ export class RestfulClient {
           log.st = false;
           log.er = err;
           this.sqlitExc.noteLog(log);
-          this.util.toastStart("服务初始化数据访问失败",2000);
+          this.util.toastStart("初始化数据获取失败",2000);
           reject(err);
         })
       }else{
@@ -291,7 +291,7 @@ export class RestfulClient {
           log.st = false;
           log.er = err;
           this.sqlitExc.noteLog(log);
-          this.util.toastStart("服务初始化数据访问失败",2000);
+          this.util.toastStart("初始化数据获取失败",2000);
           reject(err)
         })
       }
