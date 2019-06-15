@@ -49,6 +49,7 @@ import {Keyboard} from "@ionic-native/keyboard";
 import {PgBusiService} from "../service/pagecom/pgbusi.service";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {ContactsService} from "../service/cordova/contacts.service";
+import {NetworkService} from "../service/cordova/network.service";
 import {LocalcalendarService} from "../service/cordova/localcalendar.service";
 import {NotificationsService} from "../service/cordova/notifications.service";
 import {Badge} from "@ionic-native/badge";
@@ -148,6 +149,7 @@ import {CardListComponentModule} from "../components/card-list/card-list.module"
     Keyboard,
     Clipboard,
     ContactsService,
+    NetworkService,
     ScreenOrientation,
     LocalNotifications,
     SQLite,
