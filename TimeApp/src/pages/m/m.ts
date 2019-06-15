@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, ModalController, Platform } from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * Generated class for the 菜单 page.
@@ -81,7 +82,8 @@ export class MPage {
   maxEdgeStart:any = 150;
 
   constructor(public modalController: ModalController,
-              public plt: Platform) {
+              public plt: Platform,
+              private util:UtilService) {
   }
 
   ionViewDidLoad() {
@@ -95,19 +97,11 @@ export class MPage {
   }
 
   getData(){
-    this.phone = mask(UserConfig.account.phone, 3, 4);
+    this.phone = this.util.mask(UserConfig.account.phone, 3, 4);
     this.name = UserConfig.user.name;
 
     if (UserConfig.user.avatar != undefined && UserConfig.user.avatar != '') {
       this.avatar = UserConfig.user.avatar;
-    }
-  }
-
-  private mask(s: string, start: number, len: number): string {
-    if (s && s.length > (start + len)) {
-      return s.substring(0, start) + ("*".repeat(len)) + s.substring(start + len, s.length);
-    } else {
-      return s;
     }
   }
 
