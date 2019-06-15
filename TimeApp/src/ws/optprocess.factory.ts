@@ -13,6 +13,7 @@ import {SettingProcess} from "./process/setting.process";
 import {AgendasProcess} from "./process/agendas.process";
 import {MarkupProcess} from "./process/markup.process";
 import {NotificationProcess} from "./process/notification.process";
+import {SpecialDataProcess} from "./process/specialdata.process";
 
 /**
  * webSocket公用处理方法

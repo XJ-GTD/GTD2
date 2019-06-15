@@ -21,6 +21,7 @@ import {AgendasProcess} from "./process/agendas.process";
 import {BaseProcess} from "./process/base.process";
 import {MarkupProcess} from "./process/markup.process";
 import {NotificationProcess} from "./process/notification.process";
+import {SpecialDataProcess} from "./process/specialdata.process";
 
 /**
  * WebSocket组件
@@ -38,7 +39,8 @@ import {NotificationProcess} from "./process/notification.process";
     DefaultProcess, FindProcess,
     OptionProcess, ContextProcess,
     ReceiveProcess, SettingProcess,
-    AgendasProcess, MarkupProcess, NotificationProcess,
+    AgendasProcess, MarkupProcess,
+    NotificationProcess, SpecialDataProcess,
     SsService, FdService, FsService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

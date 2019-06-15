@@ -53,6 +53,11 @@ export enum PN {
   FB = "PN.FB"    //中断反馈通知推送
 }
 
+//特殊数据（例如：天气等）
+export enum SD {
+  S = "SD.S"      //保存特殊数据
+}
+
 //日程标签
 export enum MK {
   U = "MK.U"  //标注日程语义标签

@@ -22,6 +22,14 @@ export class CTbl implements  ITbl{
   wtt: Number=0;
   pni: string ="";
   du:string="";
+  //归属(gs)
+  //0：本人创建
+  //1：他人创建
+  //2：系统本地日历
+  //3: 系统计划优先级类型(不显示在日程一览)
+  //4：系统计划无优先级(只显示在日程一览)
+  //5: 备忘
+  //6: 特殊数据（天气等,只在单日日程画面显示）
   gs:string = "";
 
 
@@ -208,5 +216,3 @@ export class CTbl implements  ITbl{
     }
   }
 }
-
-
