@@ -266,7 +266,7 @@ export class PgBusiService {
       let res: Array<ScdData> = new Array<ScdData>();
       if (rc.ed ||rc.et ||rc.sd ||rc.st || rc.sn || rc.fss.length>0) {
         let sql: string = `select * from (
-                           select distinct c.si,c.sn,c.ui,c.st,c.ed,c.et,c.rt,sp.ji,c.sr,c.tx,c.pni,c.du,c.gs,
+                           select distinct c.si,c.sn,c.ui,sp.st,c.ed,c.et,c.rt,sp.ji,c.sr,c.tx,c.pni,c.du,c.gs,
                            sp.spn,sp.sd,sp.st,sp.bz
                            from gtd_sp sp inner join gtd_c c on sp.si = c.si
                                     left join gtd_d d on d.si = c.si
