@@ -2,8 +2,10 @@ import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
+import {DataConfig} from "../../service/config/data.config";
 import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
+import {NetworkService} from "../../service/cordova/network.service";
 import * as moment from "moment";
 
 /**
@@ -68,6 +70,15 @@ import * as moment from "moment";
           <ion-row justify-content-center>
             <span class="app-profiles">v{{server.version}}</span>
           </ion-row>
+          <ion-row justify-content-center>
+            <p></p>
+          </ion-row>
+          <ion-row justify-content-center>
+            <span class="app-profiles">网络</span>
+          </ion-row>
+          <ion-row justify-content-center>
+            <span class="app-profiles">{{network.type}}.{{network.connected? "已连接" : "已断开"}}</span>
+          </ion-row>
         </ion-grid>
       </ion-row>
     </ion-grid>
@@ -94,14 +105,20 @@ export class AtPage {
   client:any = {mainversion: 'v1', version: '1'};
   server:any = {version: '1', datacenter: ''};
 
+  network: any = {type: '未知', connected: false};
+
   constructor(public navCtrl: NavController,
-              private sqlite:SqliteExec) {
+              private networkService: NetworkService,
+              private sqlite: SqliteExec) {
   }
 
   ionViewDidLoad() {
     let restfulHeader = new RestFulHeader();
     this.client.mainversion = restfulHeader.pv? restfulHeader.pv.replace(/v/, 'v0.') : 'v0.0';
     this.client.version = UserConfig.getClientVersion();
+
+    this.network.type = this.networkService.getNetworkType();
+    this.network.connected = DataConfig.IS_NETWORK_CONNECT;
 
     if (RestFulConfig.INIT_DATA_URL.indexOf('tag=mwxing') > 0) this.server.datacenter += '开发';
     if (RestFulConfig.INIT_DATA_URL.indexOf('debug=true') > 0) this.server.datacenter += '内部';
