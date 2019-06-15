@@ -1,4 +1,9 @@
 {
   "source": "file",
-  "source-path": "/opt/duan/sha"
+  "source-path": "/opt/duan/sha",
+  "link.linkless": "https://www.guobaa.com/sho/linkless",
+  "link.sharedagendas": "https://pluto.guobaa.com/sha/agenda/share/",
+  "link.sharedplans": "https://pluto.guobaa.com/sha/plan/share/",
+  "link.agenda.mif": "https://pluto.guobaa.com/mif/sha/agenda/share/",
+  "link.plan.mif": "https://pluto.guobaa.com/mif/sha/plan/share/"
 }

@@ -208,10 +208,10 @@ public class MainVerticle extends AbstractVerticle {
 		Future<JsonObject> lessfuture = Future.future();
 		futures.add(lessfuture);
 		
-		client.postAbs("https://www.guobaa.com/sho/linkless")
+		client.postAbs(config().getString("link.linkless", "https://www.guobaa.com/sho/linkless"))
 		.sendJsonObject(new JsonObject()
 				.put("type", "default")
-				.put("src", "https://pluto.guobaa.com/sha/agenda/share/" + shareId),
+				.put("src", config().getString("link.sharedagendas", "https://pluto.guobaa.com/sha/agenda/share/") + shareId),
 				handler -> {
 			if (handler.succeeded()) {
 				HttpResponse<Buffer> resp = handler.result();
@@ -230,14 +230,14 @@ public class MainVerticle extends AbstractVerticle {
 		mongodb.save("sha_agenda", agenda, save -> {
 			if (save.succeeded()) {
 				JsonObject retdata = new JsonObject();
-				retdata.put("asurl", "https://pluto.guobaa.com/sha/agenda/share/" + shareId);
+				retdata.put("asurl", config().getString("link.sharedagendas", "https://pluto.guobaa.com/sha/agenda/share/") + shareId);
 				
 				ret.put("d", retdata);
 				
 				saveFuture.complete(retdata);
 				
 				// 创建压缩字体
-				client.getAbs("https://www.guobaa.com/mif/sha/agenda/share/" + shareId).send(compress -> {
+				client.getAbs(config().getString("link.agenda.mif", "https://www.guobaa.com/mif/sha/agenda/share/") + shareId).send(compress -> {
 					if (compress.succeeded()) {
 						System.out.println("[mif] Webfont compress succeeded. " + compress.result().bodyAsString());
 					} else {
@@ -377,10 +377,10 @@ public class MainVerticle extends AbstractVerticle {
 		Future<JsonObject> lessfuture = Future.future();
 		futures.add(lessfuture);
 		
-		client.postAbs("https://www.guobaa.com/sho/linkless")
+		client.postAbs(config().getString("link.linkless", "https://www.guobaa.com/sho/linkless"))
 		.sendJsonObject(new JsonObject()
 				.put("type", "default")
-				.put("src", "https://pluto.guobaa.com/sha/plan/share/" + shareId),
+				.put("src", config().getString("link.sharedplans", "https://pluto.guobaa.com/sha/plan/share/") + shareId),
 				handler -> {
 			if (handler.succeeded()) {
 				HttpResponse<Buffer> resp = handler.result();
@@ -399,14 +399,14 @@ public class MainVerticle extends AbstractVerticle {
 		mongodb.save("sha_plan", plan, save -> {
 			if (save.succeeded()) {
 				JsonObject retdata = new JsonObject();
-				retdata.put("psurl", "https://pluto.guobaa.com/sha/plan/share/" + shareId);
+				retdata.put("psurl", config().getString("link.sharedplans", "https://pluto.guobaa.com/sha/plan/share/") + shareId);
 				
 				ret.put("d", retdata);
 				
 				saveFuture.complete(retdata);
 
 				// 创建压缩字体
-				client.getAbs("https://www.guobaa.com/mif/sha/plan/share/" + shareId).send(compress -> {
+				client.getAbs(config().getString("link.plan.mif", "https://www.guobaa.com/mif/sha/plan/share/") + shareId).send(compress -> {
 					if (compress.succeeded()) {
 						System.out.println("[mif] Webfont compress succeeded. " + compress.result().bodyAsString());
 					} else {

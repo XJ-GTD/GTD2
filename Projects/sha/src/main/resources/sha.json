@@ -1,4 +1,9 @@
 {
   "source": "mongodb",
-  "source-path": "/opt/duan/sha"
+  "source-path": "/opt/duan/sha",
+  "link.linkless": "https://www.guobaa.com/sho/linkless",
+  "link.sharedagendas": "https://www.guobaa.com/sha/agenda/share/",
+  "link.sharedplans": "https://pluto.guobaa.com/sha/plan/share/",
+  "link.agenda.mif": "https://www.guobaa.com/mif/sha/agenda/share/",
+  "link.plan.mif": "https://www.guobaa.com/mif/sha/plan/share/"
 }
