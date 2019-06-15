@@ -9,6 +9,7 @@ import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {LsPushType} from "../components/menuType/LsPushType";
 import {StatusBar} from "@ionic-native/status-bar";
 import {FeedbackService} from "../service/cordova/feedback.service";
+import {NetworkService} from "../service/cordova/network.service";
 
 @Component({
   template: `
@@ -21,6 +22,7 @@ export class MyApp {
   constructor(private platform: Platform,
               private appCtrl: IonicApp,
               private backgroundMode: BackgroundMode,
+              private networkService: NetworkService,
               private restfulClient: RestfulClient,
               private util: UtilService,
               private screenOrientation: ScreenOrientation,private feekback: FeedbackService) {
@@ -34,11 +36,17 @@ export class MyApp {
 //     statusBar.backgroundColorByHexString('#000000');
     this.platform.ready().then(() => {
       //this.util.loadingEnd();
+
       //允许进入后台模式
       if (this.util.hasCordova()) {
+
+        //全局网络监控
+        this.networkService.monitorNetwork();
+
         this.backgroundMode.setDefaults({silent: true, hidden: true}).then(d => {
           this.backgroundMode.enable();
         })
+
         //设置返回键盘（android）
         this.registerBackButtonAction();
 
