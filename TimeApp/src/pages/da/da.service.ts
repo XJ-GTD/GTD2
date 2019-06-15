@@ -23,6 +23,15 @@ export class DaService {
         //增加排序处理
         if (data && data.length > 1) {
           let sortedData = data.sort((a, b) => {
+
+            if (a.st != '99:99' && b.st == '99:99') {
+              return 1;
+            }
+
+            if (a.st == '99:99' && b.st != '99:99') {
+              return -1;
+            }
+
             if (a.st > b.st) {
               return 1;
             }

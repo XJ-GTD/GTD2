@@ -81,6 +81,30 @@ export class FindProcess extends BaseProcess implements MQProcess {
       }
     }
 
+    //增加排序处理
+    if (scd && scd.length > 1) {
+      let sortedData = scd.sort((a, b) => {
+
+        if (a.st != '99:99' && b.st == '99:99') {
+          return 1;
+        }
+
+        if (a.st == '99:99' && b.st != '99:99') {
+          return -1;
+        }
+
+        if (a.st > b.st) {
+          return 1;
+        }
+
+        if (a.st < b.st) {
+          return -1;
+        }
+
+        return 0;
+      });
+    }
+
     //服务器要求上下文内放置日程查询结果
     this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, scd);
 
