@@ -51,6 +51,7 @@
     "acorn": "6.0.0",
     "ajv": "^6.5.4",
     "angular-svg-round-progressbar": "^1.2.1",
+    "angular2-round-slider-custom": "0.0.2",
     "animate.css": "^3.7.0",
     "async": "^2.6.2",
     "buffer": "^5.2.1",
