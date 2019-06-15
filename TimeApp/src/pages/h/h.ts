@@ -135,7 +135,7 @@ export class HPage {
     //操作反馈消息回调
     this.emitService.register('on.feedback.message.click', (data) => {
       let scd = data.eventdata? data.eventdata['scd'] : null;
-      if (scd) {
+      if (scd && scd.si) {
         this.gotodetail(scd);
       }
     });
