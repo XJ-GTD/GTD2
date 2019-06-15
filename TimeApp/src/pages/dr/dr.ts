@@ -51,7 +51,7 @@ import {PageY} from "../../data.mapping";
               <small>每天</small>
             </ion-row>
             <ion-row align-items-center justify-content-center class="golden-margin">
-            <round-slider #sliderElem
+            <round-slider 
                 [width]="120"
                 [height]="120"
                 [radius]="45"
@@ -60,8 +60,6 @@ import {PageY} from "../../data.mapping";
                 [thick]="5"
                 [units]="X"
                 dragging="true"
-                [scentName]="lavender"
-                [scentColor]="#E6E6FA"
                 [imageUrl]="'https://www.organicspamagazine.com/wp-content/uploads/2016/12/relax.jpg'"
             ></round-slider>
             </ion-row>
