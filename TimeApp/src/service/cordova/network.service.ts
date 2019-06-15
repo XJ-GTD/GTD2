@@ -12,9 +12,20 @@ import {EmitService} from "../util-service/emit.service";
 @Injectable()
 export class NetworkService {
 
+  public NetworkType: Map<string, string> = new Map<string, string>();
+
   constructor(private network: Network,
               private util: UtilService,
-              private emitService: EmitService) { }
+              private emitService: EmitService) {
+                this.NetworkType.set("unknown", "未知网络");
+                this.NetworkType.set("ethernet", "有线网络");
+                this.NetworkType.set("eth", "有线网络");
+                this.NetworkType.set("wifi", "无线网络");
+                this.NetworkType.set("2g", "2G网络");
+                this.NetworkType.set("3g", "3G网络");
+                this.NetworkType.set("4g", "4G网络");
+                this.NetworkType.set("none", "");
+  }
 
   /**
    * 返回当前网络连接类型
@@ -28,6 +39,10 @@ export class NetworkService {
       console.log('we got a ' + this.network.type + ' connection, woohoo!');
     }
     return this.network.type;
+  }
+
+  public getNetworkTypeName(): string {
+    return this.NetworkType.get(this.network.type? this.network.type : "");
   }
 
   /**

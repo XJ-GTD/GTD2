@@ -77,7 +77,7 @@ import * as moment from "moment";
             <span class="app-profiles">网络</span>
           </ion-row>
           <ion-row justify-content-center>
-            <span class="app-profiles">{{network.type}}.{{network.connected? "已连接" : "已断开"}}</span>
+            <span class="app-profiles">{{network.type}} {{network.connected? "已连接" : "已断开"}}</span>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -117,7 +117,7 @@ export class AtPage {
     this.client.mainversion = restfulHeader.pv? restfulHeader.pv.replace(/v/, 'v0.') : 'v0.0';
     this.client.version = UserConfig.getClientVersion();
 
-    this.network.type = this.networkService.getNetworkType();
+    this.network.type = this.networkService.getNetworkTypeName();
     this.network.connected = DataConfig.IS_NETWORK_CONNECT;
 
     if (RestFulConfig.INIT_DATA_URL.indexOf('tag=mwxing') > 0) this.server.datacenter += '开发';
