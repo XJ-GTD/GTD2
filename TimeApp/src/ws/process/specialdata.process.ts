@@ -43,7 +43,7 @@ export class SpecialDataProcess extends BaseProcess implements MQProcess {
         let rc:RcInParam = new RcInParam();
 
         rc.sn = data.title;//日程事件主题  必传
-        rc.sd = data.atdate;//开始日期      必传
+        rc.sd = data.fordate;//开始日期      必传
         rc.st = "99:99";//开始时间
         rc.ji = "";//计划ID
         rc.bz = data.desc;//备注
