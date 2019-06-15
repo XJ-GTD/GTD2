@@ -58,12 +58,10 @@ import {PageY} from "../../data.mapping";
                 [max]="100"
                 [min]="0"
                 [thick]="5"
-                [units]="%"
+                [units]="X"
                 dragging="true"
                 [scentName]="lavender"
                 [scentColor]="#E6E6FA"
-                [(value)]="levelControlValue"
-                (onChangeEnd)="listenerEvent$.next(sliderElem.value)"
                 [imageUrl]="'https://www.organicspamagazine.com/wp-content/uploads/2016/12/relax.jpg'"
             ></round-slider>
             </ion-row>
