@@ -5,6 +5,7 @@ import {Injectable} from "@angular/core";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {SpecialDataPara} from "../model/specialdata.para";
 import {RcInParam} from "../../data.mapping";
+import {BaseProcess} from "./base.process";
 
 /**
  * 标注日程语义标签
@@ -14,6 +15,7 @@ import {RcInParam} from "../../data.mapping";
 @Injectable()
 export class SpecialDataProcess extends BaseProcess implements MQProcess {
   constructor(private busiService: PgBusiService) {
+    super();
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {

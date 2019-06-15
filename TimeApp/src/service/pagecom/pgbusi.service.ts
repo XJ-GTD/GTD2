@@ -1233,33 +1233,6 @@ export class PgBusiService {
   }
 
   /**
-   * 保存特殊数据(例如: 天气等)
-   *
-   * @param {Array<any>} datas
-   * @returns {Promise<string>}
-   */
-  specialdata(datas: Array<any>): Promise<string> {
-    return new promise<string>(async (resolve, reject) => {
-      let rcArray: Array<RcInParam> = new Array<RcInParam>();
-
-      for (let data of datas) {
-        let rc:RcInParam = new RcInParam();
-
-        rc.sn = data.at;//日程事件主题  必传
-        rc.sd = moment(data.adt).format("YYYY/MM/DD");//开始日期      必传
-        rc.st = data.st;//开始时间
-        rc.ji = data.ap;//计划ID
-        rc.bz = data.am;//备注
-        rc.gs = data.t;
-        rcArray.push(rc);
-      }
-
-      await this.saveBatch(rcArray);
-
-    });
-  }
-
-  /**
    * 标注日程语义标签
    *
    * @param {string} si
