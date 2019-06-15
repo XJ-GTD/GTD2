@@ -37,24 +37,22 @@ export class SpecialDataProcess extends BaseProcess implements MQProcess {
     let specialDataPara: SpecialDataPara = content.parameters;
 
     if (specialDataPara.datas && specialDataPara.datas.length > 0) {
+      let rcArray: Array<RcInParam> = new Array<RcInParam>();
+
       for (let data of specialDataPara.datas) {
-        let rcArray: Array<RcInParam> = new Array<RcInParam>();
+        let rc:RcInParam = new RcInParam();
 
-        for (let data of datas) {
-          let rc:RcInParam = new RcInParam();
+        rc.sn = data.title;//日程事件主题  必传
+        rc.sd = data.atdate;//开始日期      必传
+        rc.st = "99:99";//开始时间
+        rc.ji = "";//计划ID
+        rc.bz = data.desc;//备注
+        rc.gs = (data.type == "weather"? "6" : "6");
 
-          rc.sn = data.title;//日程事件主题  必传
-          rc.sd = data.atdate;//开始日期      必传
-          rc.st = "99:99";//开始时间
-          rc.ji = "";//计划ID
-          rc.bz = data.desc;//备注
-          rc.gs = (data.type == "weather"? "6" : "6");
-
-          rcArray.push(rc);
-        }
-
-        await this.busiService.saveBatch(rcArray);
+        rcArray.push(rc);
       }
+
+      await this.busiService.saveBatch(rcArray);
     }
 
     return contextRetMap;
