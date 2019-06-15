@@ -50,6 +50,23 @@ import {PageY} from "../../data.mapping";
             <ion-row align-items-center justify-content-center class="golden-margin">
               <small>每天</small>
             </ion-row>
+            <ion-row align-items-center justify-content-center class="golden-margin">
+            <round-slider #sliderElem
+                [width]="120"
+                [height]="120"
+                [radius]="45"
+                [max]="100"
+                [min]="0"
+                [thick]="5"
+                [units]="%"
+                dragging="true"
+                [scentName]="lavender"
+                [scentColor]="#E6E6FA"
+                [(value)]="levelControlValue"
+                (onChangeEnd)="listenerEvent$.next(sliderElem.value)"
+                [imageUrl]="'https://www.organicspamagazine.com/wp-content/uploads/2016/12/relax.jpg'"
+            ></round-slider>
+            </ion-row>
             <ion-row align-items-center justify-content-center>
               <ion-list>
                 <ion-item class="bg-transparent no-border" no-margin>
