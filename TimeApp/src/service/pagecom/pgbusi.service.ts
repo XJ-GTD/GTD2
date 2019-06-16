@@ -97,13 +97,29 @@ export class PgBusiService {
         Object.assign(rcn,rc);
         rcn.si = this.util.getUuid();
         rcn.ui = UserConfig.account.id;
-        sqL.push(rcn.inT());
-        if(rc.gs == '3' || rc.gs == '6'){
+
+        if (rc.gs == '6'){
+          sqL.push(`delete from gtd_c where gs = "${rcn.gs}" and sd = "${rcn.sd}"`);
+          sqL.push(rcn.inT());
+        } else {
+          sqL.push(rcn.inT());
+        }
+
+        if(rc.gs == '3'){
           let jt = new JtTbl();
           Object.assign(jt,rc);
           jt.si = rcn.si;
           jt.spn = rc.sn;
           jt.jti = this.util.getUuid();
+          sqL.push(jt.inT());
+        } else if (rc.gs == '6'){
+          let jt = new JtTbl();
+          Object.assign(jt,rc);
+          jt.si = rcn.si;
+          jt.spn = rc.sn;
+          jt.jti = this.util.getUuid();
+          jt.px = -1;
+          sqL.push(`delete from gtd_jt where px = -1 and sd = "${jt.sd}"`);
           sqL.push(jt.inT());
         }else{
           let sp = new SpTbl();
