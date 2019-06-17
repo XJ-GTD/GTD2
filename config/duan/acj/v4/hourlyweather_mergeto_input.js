@@ -415,14 +415,16 @@ function clean(datasource)
     {'name':'台中', 'code':'101340401'}
   ];
 
-  var locationstring = (location['data'] && location['data']['location'])? location['data']['location'] : '';
+  var locationstring = (location['data'] && location['data']['0']['location'])? location['data']['0']['location'] : '';
   var citycode = defaultcode;
 
   if (locationstring) {
+
     for (var cityindex in citycodes) {
       var city = citycodes[cityindex];
 
-      if (locationstring.indexOf(city.name)) {
+      if (locationstring.indexOf(city.name) >= 0) {
+        print(city.name + ' matched in ' + locationstring);
         citycode = city.code;
         break;
       }
