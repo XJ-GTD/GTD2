@@ -12,7 +12,7 @@ import { WeatherIconsModule } from 'ngx-icons';
   ],
   imports: [
     IonicPageModule.forChild(CardListComponent),
-    WeatherIcons
+    WeatherIconsModule
   ],
   providers: [],
   exports: [
