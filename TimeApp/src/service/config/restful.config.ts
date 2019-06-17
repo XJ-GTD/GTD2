@@ -4,6 +4,7 @@ import {SqliteExec} from "../util-service/sqlite.exec";
 import {Injectable} from "@angular/core";
 import {UserConfig} from "./user.config";
 import {UtilService} from "../util-service/util.service";
+import {EmitService} from "../util-service/emit.service";
 
 @Injectable()
 export class RestFulConfig {
@@ -12,6 +13,7 @@ export class RestFulConfig {
   private urlLs: Map<string, UrlEntity>;
 
   constructor(private sqlitexec: SqliteExec,
+              private emitService:EmitService,
               private util:UtilService) {
     //this.init();
   }
@@ -46,6 +48,8 @@ export class RestFulConfig {
         urlentity.desc = data.sn;
         this.urlLs.set(data.yk, urlentity);
       }
+
+      this.emitService.emit("on.mwxing.global.restful.flashed");
     })
   }
 

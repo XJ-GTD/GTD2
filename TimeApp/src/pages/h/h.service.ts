@@ -3,14 +3,19 @@ import * as moment from "moment";
 import {CalendarDay} from "../../components/ion2-calendar";
 import {HData} from "../../data.mapping";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
+import {SyncRestful} from "../../service/restful/syncsev";
 
 @Injectable()
 export class HService {
-  constructor(private pgservice:PgBusiService) {
+  constructor(private syncRestful:SyncRestful,
+              private pgservice:PgBusiService) {
     moment.locale('zh-cn');
   }
 
-
+  //更新每小时天气位置信息
+  putHourlyWeather(userId: string) {
+    this.syncRestful.putHourlyWeather(userId);
+  }
 
   centerShow(select: CalendarDay): Promise<HData> {
 

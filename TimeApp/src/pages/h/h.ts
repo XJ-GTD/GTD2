@@ -13,6 +13,7 @@ import {TddiPage} from "../tdc/tddi";
 import {HData, ScdPageParamter} from "../../data.mapping";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DataConfig} from "../../service/config/data.config";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the 首页 page.
@@ -109,6 +110,12 @@ export class HPage {
 
     this.emitService.registerRef(data => {
       this.calendar.createMonth(this.calendar.monthOpt.original.time);
+    });
+
+    //冥王星远程服务地址刷新完成
+    //更新每小时天气服务任务
+    this.emitService.register('on.mwxing.global.restful.flashed', () => {
+      this.hService.putHourlyWeather(UserConfig.account.id);
     });
 
     //每日简报消息回调
