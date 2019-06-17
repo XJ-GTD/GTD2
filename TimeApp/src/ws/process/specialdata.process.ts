@@ -49,7 +49,7 @@ export class SpecialDataProcess extends BaseProcess implements MQProcess {
         rc.bz = data.desc;//备注
         rc.fjt = data.type;
         rc.fjn = data.fordate;
-        rc.fj = JSON.stringify(data.ext).replace(/\"/g, """");
+        rc.fj = JSON.stringify(data.ext).replace(/\"/g, `""`);
         rc.gs = (data.type == "weather"? "6" : "6");
 
         rcArray.push(rc);
