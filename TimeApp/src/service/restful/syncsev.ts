@@ -32,8 +32,6 @@ export class SyncRestful {
       task.taskType = "QUARTZ";
       task.taskName = "每小时天气预报";
 
-      let choosetime = moment(timestamp);
-
       let taskRunAt = {
         eventId: "QUARTZ_CRON_1H",
         filters: []

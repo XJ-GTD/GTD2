@@ -176,7 +176,7 @@ export class SqliteInit {
     } else if (version == 6) {
       // JtTbl 增加附件相关3个字段
       if (from > 0 && from < 6) {
-        let Array<string> altercols = new Array<string>();
+        let altercols: Array<string> = new Array<string>();
 
         altercols.push(`alter table gtd_jt add column fjt varchar(20);`);
         altercols.push(`alter table gtd_jt add column fjn varchar(20);`);
