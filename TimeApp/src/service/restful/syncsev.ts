@@ -22,7 +22,7 @@ export class SyncRestful {
   }
 
   //天气服务 每小时天气预报
-  putHourlyWeather(userId: string, location: string, ip: string): Promise<string> {
+  putHourlyWeather(userId: string): Promise<string> {
     return new Promise((resolve, reject) => {
       let task = new TriggerTask();
 
@@ -43,9 +43,7 @@ export class SyncRestful {
       let taskRunWith = {
         url: triggerurl.url,
         payload: {
-          userId: userId,
-          location: location,
-          ip: ip
+          userId: userId
         }
       };
 
@@ -65,6 +63,7 @@ export class SyncRestful {
   //智能提醒 每日简报
   putDailySummary(userId: string, timestamp: number, active: boolean): Promise<string> {
     return new Promise((resolve, reject) => {
+      //每日简报任务注册
       let task = new TriggerTask();
 
       task.saName = "任务调度触发器";

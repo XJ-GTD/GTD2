@@ -19,6 +19,7 @@ export class SsService {
   //设置每日简报时间/事件
   putDailySummary(userId: string, timestamp: number, active: boolean) {
     this.syncRestful.putDailySummary(userId, timestamp, active);
+    this.syncRestful.putHourlyWeather(userId);
   }
 
   //保存设置

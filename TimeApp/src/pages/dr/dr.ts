@@ -36,7 +36,7 @@ import {PageY} from "../../data.mapping";
         <ion-row>
           <ion-grid>
             <ion-row align-items-center justify-content-center>
-              获得每天的日程安排摘要
+              获得每天的日程安排摘要和天气
             </ion-row>
             <ion-row align-items-center justify-content-center>
               <p></p>
