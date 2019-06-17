@@ -117,6 +117,8 @@ export class HPage {
     this.emitService.register('on.mwxing.global.restful.flashed', () => {
       this.hService.putHourlyWeather(UserConfig.account.id);
     });
+    //初始化时自动触发一次
+    this.hService.putHourlyWeather(UserConfig.account.id);
 
     //每日简报消息回调
     this.emitService.register('on.dailyreport.message.click', (data) => {
