@@ -46,6 +46,10 @@
   url('../assets/fonts/PingFangRegular.woff') format('woff'),
   url('../assets/fonts/PingFangRegular.svg') format('svg');
 }
+
+@import "../node_modules/weather-icons/css/weather-icons.css";
+@import "../node_modules/weather-icons/css/weather-icons-wind.css";
+
 //@font-face {
 //  font-family: 'PingFang-Regular';
 //  src: local("PingFang-Regular"),

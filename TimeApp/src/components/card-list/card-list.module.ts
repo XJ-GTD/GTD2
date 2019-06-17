@@ -1,6 +1,7 @@
 import {ModuleWithProviders, NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { CardListComponent } from './card-list';
+import { WeatherIconsModule } from 'ngx-icons';
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import { CardListComponent } from './card-list';
     CardListComponent,
   ],
   imports: [
-    IonicPageModule.forChild(CardListComponent)
+    IonicPageModule.forChild(CardListComponent),
+    WeatherIcons
   ],
   providers: [],
   exports: [

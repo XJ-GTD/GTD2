@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { DaPage } from "./da";
 import { DaService } from "./da.service";
 import {CardListComponentModule} from "../../components/card-list/card-list.module";
+import { WeatherIconsModule } from 'ngx-icons';
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import {CardListComponentModule} from "../../components/card-list/card-list.modu
   ],
   imports: [
     IonicPageModule.forChild(DaPage),
-    CardListComponentModule
+    CardListComponentModule,
+    WeatherIcons
   ],
   providers: [
     DaService
