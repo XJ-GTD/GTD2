@@ -415,8 +415,8 @@ export class PgBusiService {
         day.scds = data.scds;
         day.news = data.news;
       }
-      //查询计划特殊表
-      let sqlJtL:string = `select jt.* from gtd_jt jt where jt.sd = "` + starts + `" order by jt.px asc`;
+      //查询计划特殊表(px < 0的数据不在日历上显示)
+      let sqlJtL:string = `select jt.* from gtd_jt jt where jt.px > 0 and jt.sd = "` + starts + `" order by jt.px asc`;
       let jtL = await this.sqlExce.getExtList<JtData>(sqlJtL);
       day.jtL = jtL;
 
