@@ -66,6 +66,7 @@ export class DaPage {
   currentdayshow: string = moment().format('MMMM D');
   todaylist: Array<ScdData> = new Array<ScdData>();
   scdlist: Array<ScdData> = new Array<ScdData>();
+  weatherlist: Array<ScdData> = new Array<ScdData>();
   speaking: boolean = false;
   isMobile: boolean = false;
   hasContents: boolean = false;
@@ -122,10 +123,13 @@ export class DaPage {
       // 清空原有数据
       target.todaylist.length = 0;
       target.scdlist.length = 0;
+      target.weatherlist.length = 0;
 
       if (d && d.length > 0) {
         for (let line of d) {
-          if (line.gs == '3' || line.gs == '4') {
+          if (line.gs == '6') {
+            target.weatherlist.push(line);
+          } else if (line.gs == '3' || line.gs == '4') {
             target.todaylist.push(line);
           } else {
             target.scdlist.push(line);
@@ -139,7 +143,7 @@ export class DaPage {
       if (day == this.days[currentIndex]) {
         this.cardlist = this.cardlists.toArray()[currentIndex];
 
-        if (this.cardlist.scdlist.length > 0 || this.cardlist.todaylist.length > 0) {
+        if (this.cardlist.scdlist.length > 0 || this.cardlist.todaylist.length > 0 || this.cardlist.weatherlist.length > 0) {
           this.hasContents = true;
         } else {
           this.hasContents = false;
@@ -199,7 +203,7 @@ export class DaPage {
     this.currentdayofweek = this.day.format('dddd');
     this.currentdayshow = this.day.format('MMMM D');
 
-    if (this.cardlist.scdlist.length > 0 || this.cardlist.todaylist.length > 0) {
+    if (this.cardlist.scdlist.length > 0 || this.cardlist.todaylist.length > 0 || this.cardlist.weatherlist.length > 0) {
       this.hasContents = true;
     } else {
       this.hasContents = false;
@@ -293,7 +297,7 @@ export class DaPage {
     modal.onDidDismiss((data)=>{
       this.cardlist.refresh();
 
-      if (this.cardlist.scdlist.length > 0 || this.cardlist.todaylist.length > 0) {
+      if (this.cardlist.scdlist.length > 0 || this.cardlist.todaylist.length > 0 || this.cardlist.weatherlist.length > 0) {
         this.hasContents = true;
       } else {
         this.hasContents = false;

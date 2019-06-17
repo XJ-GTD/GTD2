@@ -39,6 +39,15 @@ import { Component, Output, EventEmitter } from "@angular/core";
           </ion-card>
           <ion-spinner *ngIf="!hasLoaded" name="bubbles"></ion-spinner>
         </ion-row>
+        <ion-row justify-content-center>
+          <small *ngIf="weatherlist && weatherlist.length > 0">天气</small>
+          <ng-container *ngFor="let scd of weatherlist">
+          <ion-card *ngIf="scd.gs == '6'">
+            <div class="card-title">{{scd.sn}}</div>
+            <div *ngIf="scd.bz" class="card-subtitle">{{scd.bz}}</div>
+          </ion-card>
+          </ng-container>
+        </ion-row>
       </ion-grid>
       <p class="p15"></p>
       <p class="p15"></p>
@@ -58,6 +67,7 @@ export class CardListComponent {
   private onCreateNew: EventEmitter<any> = new EventEmitter<any>();
 
   todaylist: Array<any> = new Array<any>();
+  weatherlist: Array<any> = new Array<any>();
   scdlist: Array<any> = new Array<any>();
   hasLoaded: boolean = false;
 
