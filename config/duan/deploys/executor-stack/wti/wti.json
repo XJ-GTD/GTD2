@@ -1,0 +1,11 @@
+{
+  "debug": true,
+  "mongo.host": "mongodb",
+  "mongo.port": 27017,
+  "mongo.keepalive": true,
+  "stomp.server.host": "sa-amq",
+  "stomp.server.port": 5672,
+  "amq.app.id": "wti",
+  "weather.uri.default": "http://www.weather.com.cn/data/sk/##locationid##.html",
+  "weather.uri.cityinfo": "http://www.weather.com.cn/data/cityinfo/##locationid##.html"
+}

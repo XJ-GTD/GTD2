@@ -1,0 +1,78 @@
+{
+  "_id": ObjectID("5d07005ea9f7cb0008b50a62"),
+    "name": "冥王星每小时天气预报处理流",
+    "trigger": "mwxing_hourly_weather_start",
+    "parameters": [
+      "userId",
+      "clientip",
+      "event"
+    ],
+    "follows": [
+      {
+        "name": "通过IP获取地理位置",
+        "trigger": "ips",
+        "parameters": [
+          "ip;$.parent.parameters.clientip"
+        ],
+        "outputs": [
+          "ip",
+          "location"
+        ],
+        "next": [
+          {
+              "name": "每小时天气预报 整合天气预报请求参数",
+              "trigger": "acj",
+              "parameters": [
+                  "ruleid;MWXING_HOURLYWEATHER_HW001_V1_4",
+                  "datasource;$.parent.outputs|$.root.parameters"
+              ],
+              "outputs": [
+                  "cleaned"
+              ],
+              "next": [
+                  {
+                    "name": "天气信息",
+                    "trigger": "wti",
+                    "parameters": [
+                      "locationid;$.parent.outputs.cleaned.locationid",
+                      "type;$.parent.outputs.cleaned.type",
+                      "date;$.parent.outputs.cleaned.date",
+                      "time;$.parent.outputs.cleaned.time"
+                    ],
+                    "outputs": [
+                      "weather"
+                    ],
+                    "next": [
+                      {
+                        "name": "天气转换为通知格式",
+                        "trigger": "acj",
+                        "parameters": [
+                          "ruleid;MWXING_HOURLYWEATHER_HW002_V1_4",
+                          "datasource;$.root.parameters|$.parent.outputs"
+                        ],
+                        "outputs": [
+                          "cleaned"
+                        ],
+                        "next": [
+                          {
+                            "name": "冥王星通知服务",
+                            "trigger": "ann",
+                            "parameters": [
+                                "announceTo;$.parent.outputs.cleaned.announceTo",
+                                "announceType;$.parent.outputs.cleaned.announceType",
+                                "announceContent;$.parent.outputs.cleaned.announceContent"
+                            ],
+                            "outputs": [
+                                "result"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+              ]
+          }
+        ]
+      }
+    ]
+}

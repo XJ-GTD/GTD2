@@ -72,6 +72,32 @@ services:
       replicas: 1
       endpoint_mode: dnsrr
 
+  sa-wti:
+    image: 192.168.0.158:5000/xiaoji-sa-wti
+    hostname: sa-wti
+    configs:
+      - source: wti_config
+        target: /usr/verticles/wti.json
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+  sa-ips:
+    image: 192.168.0.158:5000/xiaoji-sa-ips
+    hostname: sa-ips
+    configs:
+      - source: ips_config
+        target: /usr/verticles/ips.json
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
   sa-nlp:
     image: 192.168.0.158:5000/xiaoji-sa-nlp
     hostname: sa-nlp
@@ -124,6 +150,10 @@ configs:
     file: ./exc/exc.json
   acj_config:
     file: ./acj/acj.json
+  wti_config:
+    file: ./wti/wti.json
+  ips_config:
+    file: ./ips/ips.json
   ann_config:
     file: ./ann/ann.json
   pin_config:
