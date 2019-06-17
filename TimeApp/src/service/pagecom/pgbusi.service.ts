@@ -284,7 +284,7 @@ export class PgBusiService {
       if (rc.ed ||rc.et ||rc.sd ||rc.st || rc.sn || rc.fss.length>0) {
         let sql: string = `select * from (
                            select distinct c.si,c.sn,c.ui,sp.st,c.ed,c.et,c.rt,sp.ji,c.sr,c.tx,c.pni,c.du,c.gs,
-                           sp.spn,sp.sd,sp.st,sp.bz
+                           sp.spn,sp.sd,sp.st,sp.bz,'' fjt, '' fjn, '' fj
                            from gtd_sp sp inner join gtd_c c on sp.si = c.si
                                     left join gtd_d d on d.si = c.si
                                     left join gtd_b b on b.pwi = d.ai`;
@@ -310,7 +310,7 @@ export class PgBusiService {
         }
         sql = sql + ` union
         select  c.si,c.sn,c.ui,c.st,c.ed,c.et,c.rt,c.ji,c.sr,c.tx,c.pni,c.du,c.gs,
-          jt.spn,jt.sd,jt.st,jt.bz
+          jt.spn,jt.sd,jt.st,jt.bz,jt.fjt,jt.fjn,jt.fj
         from gtd_jt jt inner join gtd_c c on jt.si = c.si)`;
 
         sql = sql + ` where 1=1`;

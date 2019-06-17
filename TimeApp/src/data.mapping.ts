@@ -108,7 +108,10 @@ export class ScdData {
   //所属计划
   p:PlData = new PlData();
 
-
+  //特殊数据附件
+  fjt: string = '';
+  fjn: string = '';
+  fj: string = '';
 }
 
 //特殊事件
