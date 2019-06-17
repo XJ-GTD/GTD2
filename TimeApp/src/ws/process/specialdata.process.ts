@@ -8,9 +8,9 @@ import {RcInParam} from "../../data.mapping";
 import {BaseProcess} from "./base.process";
 
 /**
- * 标注日程语义标签
+ * 特殊数据接收
  *
- * create by xilj on 2019/05/28.
+ * create by xilj on 2019/06/16.
  */
 @Injectable()
 export class SpecialDataProcess extends BaseProcess implements MQProcess {

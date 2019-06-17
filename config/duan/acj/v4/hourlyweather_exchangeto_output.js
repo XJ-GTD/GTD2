@@ -44,6 +44,39 @@ function clean(datasource)
 
   output.content = {};
 
+  var weatherhead = "";
+  var weatherbody = "";
+
+  if (weather['weatherinfo'] && weather['weatherinfo']['weather']) {
+    weatherhead = weather['weatherinfo']['weather'];
+  }
+
+  if (weather['weatherinfo'] && weather['weatherinfo']['temp1'] && weather['weatherinfo']['temp2']) {
+    weatherbody += "气温 ";
+    weatherbody += weather['weatherinfo']['temp1'];
+    weatherbody += "~";
+    weatherbody += weather['weatherinfo']['temp2'];
+  }
+
+  if (weather['weatherinfo'] && weather['weatherinfo']['WD'] && weather['weatherinfo']['WS']) {
+    if (weatherbody) {
+      weatherbody += "，";
+    }
+
+    weatherbody += weather['weatherinfo']['WD'];
+    weatherbody += " ";
+    weatherbody += weather['weatherinfo']['WS'];
+  }
+
+  if (weather['weatherinfo'] && weather['weatherinfo']['SD']) {
+    if (weatherbody) {
+      weatherbody += "，";
+    }
+
+    weatherbody += "相对湿度 ";
+    weatherbody += weather['weatherinfo']['SD'];
+  }
+
   // 天气预报推送设置
   output.content['0'] = {
     processor: 'SD',
@@ -53,8 +86,8 @@ function clean(datasource)
         {
           type: 'weather',
           fordate: event['output']['yyyy'] + '/' + event['output']['MM'] + '/' + event['output']['dd'],
-          title: weather['weatherinfo']['weather'],
-          desc: '气温 ' + weather['weatherinfo']['temp1'] + '~' + weather['weatherinfo']['temp2'] + '，' + weather['weatherinfo']['WD'] + ' ' + weather['weatherinfo']['WS'] + '，相对湿度 ' + weather['weatherinfo']['SD'],
+          title: weatherhead,
+          desc: weatherbody,
           ext: weather['weatherinfo'],
           timestamp: event['trigger_time']
         }
