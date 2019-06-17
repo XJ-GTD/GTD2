@@ -173,9 +173,19 @@ export class SqliteInit {
       let mo: MoTbl = new MoTbl();
       await this.sqlexec.drop(mo);
       await this.sqlexec.create(mo);
+    } else if (version == 6) {
+      // JtTbl 增加附件相关3个字段
+      if (from > 0 && from < 6) {
+        let Array<string> altercols = new Array<string>();
+
+        altercols.push(`alter table gtd_jt add column fjt varchar(20);`);
+        altercols.push(`alter table gtd_jt add column fjn varchar(20);`);
+        altercols.push(`alter table gtd_jt add column fj varchar(50);`);
+
+        await this.sqlexec.batExecSql(altercols);
+      }
     }
   }
-
 
   /**
    * 初始化表数据

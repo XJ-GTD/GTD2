@@ -113,13 +113,14 @@ export class PgBusiService {
           jt.jti = this.util.getUuid();
           sqL.push(jt.inT());
         } else if (rc.gs == '6'){
+          //2019/6/17 增加特殊数据存储
           let jt = new JtTbl();
           Object.assign(jt,rc);
           jt.si = rcn.si;
           jt.spn = rc.sn;
           jt.jti = this.util.getUuid();
           jt.px = -1;
-          sqL.push(`delete from gtd_jt where px = -1 and sd = "${jt.sd}"`);
+          sqL.push(`delete from gtd_jt where px = -1 and sd = "${jt.sd}" and fjt = "${jt.fjt}" and fjn = "${jt.fjn}"`);
           sqL.push(jt.inT());
         }else{
           let sp = new SpTbl();

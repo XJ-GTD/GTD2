@@ -380,6 +380,9 @@ export class RcInParam{
   rt: string = "0";//重复类型
   ji: string = "";//计划ID
   sr: string = "";//日程关联ID
+  fjt: string ="";//附件类型 2019/6/17 增加
+  fjn: string ="";//附件名称/KEY 2019/6/17 增加
+  fj: string ="";//附件 2019/6/17 增加
   bz: string = "";//备注
   tx: string = "0";//提醒方式
   gs:string ="0";//归属 0：本人创建，1：他人创建，2：系统本地日历,3:系统计划3优先级类型（入JtTbl表），4：系统计划无优先级

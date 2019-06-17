@@ -47,6 +47,9 @@ export class SpecialDataProcess extends BaseProcess implements MQProcess {
         rc.st = "99:99";//开始时间
         rc.ji = "";//计划ID
         rc.bz = data.desc;//备注
+        rc.fjt = data.type;
+        rc.fjn = data.fordate;
+        rc.fj = JSON.stringify(data.ext);
         rc.gs = (data.type == "weather"? "6" : "6");
 
         rcArray.push(rc);

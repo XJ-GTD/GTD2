@@ -21,6 +21,49 @@ export class SyncRestful {
      private uitl: UtilService) {
   }
 
+  //天气服务 每小时天气预报
+  putHourlyWeather(userId: string, location: string, ip: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      let task = new TriggerTask();
+
+      task.saName = "任务调度触发器";
+      task.saPrefix = "cdc";
+      task.taskId = `pluto_${userId}_hourly_weather_notification`;
+      task.taskType = "QUARTZ";
+      task.taskName = "每小时天气预报";
+
+      let choosetime = moment(timestamp);
+
+      let taskRunAt = {
+        eventId: "QUARTZ_CRON_1H",
+        filters: []
+      };
+
+      task.taskRunAt = JSON.stringify(taskRunAt);
+      let triggerurl: UrlEntity = this.config.getRestFulUrl("HWT");
+
+      let taskRunWith = {
+        url: triggerurl.url,
+        payload: {
+          userId: userId,
+          location: location,
+          ip: ip
+        }
+      };
+
+      task.taskRunWith = JSON.stringify(taskRunWith);
+
+      let url: UrlEntity = this.config.getRestFulUrl("EDTTS");
+      this.request.post(url, task).then(data => {
+        //处理返回结果
+        resolve(data.data);
+      }).catch(error => {
+        //处理返回错误
+        reject(error);
+      })
+    });
+  }
+
   //智能提醒 每日简报
   putDailySummary(userId: string, timestamp: number, active: boolean): Promise<string> {
     return new Promise((resolve, reject) => {

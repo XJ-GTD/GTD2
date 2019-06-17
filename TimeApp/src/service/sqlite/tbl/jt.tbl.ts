@@ -17,13 +17,17 @@ export class JtTbl  implements ITbl {
   et: string="";
   px: Number=0;
   bz: string="";
+  fjt: string="";   //附件类型 2019/6/17 增加
+  fjn: string="";   //附件名称/KEY 2019/6/17 增加
+  fj: string="";    //附件 2019/6/17 增加
   wtt:Number=0;
 
   cT():string {
 
     let sq =' create table if not exists gtd_jt(jti varchar(50) primary key ,' +
       'si varchar(50)  ,ji varchar(50)  ,spn varchar(50)  ,sd varchar(20)' +
-      ' ,st varchar(20)  ,ed varchar(20)  ,et varchar(20),px integer,bz varchar(50)  ,' +
+      ' ,st varchar(20)  ,ed varchar(20)  ,et varchar(20),px integer,bz varchar(50), ' +
+      'fjt varchar(20), fjn varchar(20), fj varchar(50), ' +
       'wtt integer);';
 
     return sq;
@@ -57,6 +61,15 @@ export class JtTbl  implements ITbl {
     }
     if(this.bz != null && this.bz!=""){
       sq = sq + ', bz="' + this.bz +'"';
+    }
+    if(this.fjt != null && this.fjt!=""){
+      sq = sq + ', fjt="' + this.fjt +'"';
+    }
+    if(this.fjn != null && this.fjn!=""){
+      sq = sq + ', fjn="' + this.fjn +'"';
+    }
+    if(this.fj != null && this.fj!=""){
+      sq = sq + ', fj="' + this.fj +'"';
     }
     if(this.px != null){
       sq = sq + ', px="' + this.px +'"';
@@ -115,6 +128,12 @@ export class JtTbl  implements ITbl {
     if(this.bz != null && this.bz!=""){
       sq = sq + ' and bz="' + this.bz +'"';
     }
+    if(this.fjt != null && this.fjt!=""){
+      sq = sq + ' and fjt="' + this.fjt +'"';
+    }
+    if(this.fjn != null && this.fjn!=""){
+      sq = sq + ' and fjn="' + this.fjn +'"';
+    }
     if(this.jti != null && this.jti!=""){
       sq = sq + ' and jti="' + this.jti +'"';
     }
@@ -130,8 +149,8 @@ export class JtTbl  implements ITbl {
 
   inT():string {
     let sq ='insert into gtd_jt ' +
-      '( jti ,si , ji ,spn ,sd ,st ,ed ,et ,px ,bz ,wtt) values("'+ this.jti+'","'+ this.si+'","'+ this.ji+'","'+this.spn+ '"' +
-      ',"'+this.sd+ '","'+this.st+ '","'+this.ed+ '","'+this.et+ '",'+this.px+ ',"'+this.bz+ '",' +  moment().unix() +');';
+      '( jti ,si , ji ,spn ,sd ,st ,ed ,et ,px ,bz ,fjt ,fjn ,fj ,wtt) values("'+ this.jti+'","'+ this.si+'","'+ this.ji+'","'+this.spn+ '"' +
+      ',"'+this.sd+ '","'+this.st+ '","'+this.ed+ '","'+this.et+ '",'+this.px+ ',"'+this.bz+ '","' +this.fjt+ '","' +this.fjn+ '","' +this.fj+ '",' +  moment().unix() +');';
 
     return sq;
   }
@@ -139,11 +158,9 @@ export class JtTbl  implements ITbl {
   rpT():string {
     let sq ='replace into gtd_jt ' +
       '( jti ,si ,ji ,spn ,sd ,st ,ed ,et ,px ,bz ,wtt) values("'+ this.jti+'","'+ this.si+'","'+ this.ji+'","'+this.spn+ '"' +
-      ',"'+this.sd+ '","'+this.st+ '","'+this.ed+ '","'+this.et+ '",'+this.px+ ',"'+this.bz+ '",' +  moment().unix() +');';
+      ',"'+this.sd+ '","'+this.st+ '","'+this.ed+ '","'+this.et+ '",'+this.px+ ',"'+this.bz+ '","' +this.fjt+ '","' +this.fjn+ '","' +this.fj+ '",' +  moment().unix() +');';
 
 
     return sq;
   }
 }
-
-
