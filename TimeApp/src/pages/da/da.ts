@@ -128,6 +128,9 @@ export class DaPage {
       if (d && d.length > 0) {
         for (let line of d) {
           if (line.gs == '6') {
+            if (line.fj) {
+              line.fjo = JSON.parse(line.fj);
+            }
             target.weatherlist.push(line);
           } else if (line.gs == '3' || line.gs == '4') {
             target.todaylist.push(line);

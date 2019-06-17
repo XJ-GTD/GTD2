@@ -112,6 +112,7 @@ export class ScdData {
   fjt: string = '';
   fjn: string = '';
   fj: string = '';
+  fjo: any = {};
 }
 
 //特殊事件

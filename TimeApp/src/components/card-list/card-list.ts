@@ -45,6 +45,7 @@ import { Component, Output, EventEmitter } from "@angular/core";
           <ion-card *ngIf="scd.gs == '6'">
             <div class="card-title">{{scd.sn}}</div>
             <div *ngIf="scd.bz" class="card-subtitle">{{scd.bz}}</div>
+            <div *ngIf="scd.fjo && scd.fjo.city" class="card-subtitle">{{scd.fjo.city}}</div>
           </ion-card>
           </ng-container>
         </ion-row>
