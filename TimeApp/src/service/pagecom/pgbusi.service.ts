@@ -370,7 +370,7 @@ export class PgBusiService {
                           union all
                                   select 0 scds,0 news,jt.sd sd ,'' csd, gc.sn spn
                                       from gtd_c gc join (select si,min(px),sd from gtd_jt
-                                          where sd>="${moment(_startMonth).format("YYYY/MM/DD")}"
+                                          where px > 0 and sd>="${moment(_startMonth).format("YYYY/MM/DD")}"
                                               and sd<="${moment(_endMonth).format("YYYY/MM/DD")}" group by sd ) jt
                               on jt.si = gc.si
                                ) group by sd; `;
