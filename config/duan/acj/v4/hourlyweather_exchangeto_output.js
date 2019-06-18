@@ -83,7 +83,7 @@ function clean(datasource)
       AP: "",
       njd: "",
       WSE: "",
-      time: "",
+      time: "01:00",
       sm: "",
       isRadar: "0",
       Radar: "",
@@ -92,7 +92,7 @@ function clean(datasource)
       weather: "",
       img1: "",
       img2: "",
-      ptime: ""
+      ptime: "01:00"
     };
 
     if (data['wea']) {
@@ -127,6 +127,11 @@ function clean(datasource)
       weatherinfo['WS'] = data['win_speed'];
     }
 
+    if (updatetime && updatetime.indexOf(data['date']) >= 0) {
+      weatherinfo['time'] = updatetime.substring(11, 16);
+      weatherinfo['ptime'] = updatetime.substring(11, 16);
+    }
+
     var weatherhead = getWeatherHead(weatherinfo);
     var weatherbody = getWearherBody(weatherinfo);
 
@@ -138,6 +143,8 @@ function clean(datasource)
       ext: weatherinfo,
       timestamp: triggertime
     }
+
+    return output;
   }
 
   to.push(userId);
@@ -152,8 +159,8 @@ function clean(datasource)
 
   output.content = {};
 
-  var weatherhead = getWeatherHead(weatherinfo);
-  var weatherbody = getWearherBody(weatherinfo);
+  var weatherhead = getWeatherHead(weather['weatherinfo']);
+  var weatherbody = getWearherBody(weather['weatherinfo']);
 
   // 天气预报推送设置
   output.content['0'] = {
@@ -180,7 +187,12 @@ function clean(datasource)
     for (var oneday in weather['sevendays']['data']) {
       var onedayweather = weather['sevendays']['data'][oneday];
 
-      output.content['0']['parameters']['datas'].push(exchangeWeatherInfo(onedayweather));
+      output.content['0']['parameters']['datas'].push(exchangeWeatherInfo(
+        event['trigger_time'],
+        weather['weatherinfo']['city'],
+        weather['weatherinfo']['cityid'],
+        weather['sevendays']['update_time'],
+        onedayweather));
     }
   }
 
