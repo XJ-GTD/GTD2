@@ -84,6 +84,7 @@ import {AtPageModule} from "../pages/at/at.module";
 import {DaPageModule} from "../pages/da/da.module";
 import {DrPageModule} from "../pages/dr/dr.module";
 import {CardListComponentModule} from "../components/card-list/card-list.module";
+import { WeatherIconsModule } from 'ngx-icons';
 
 @NgModule({
   declarations: [
@@ -101,6 +102,7 @@ import {CardListComponentModule} from "../components/card-list/card-list.module"
     BrowserAnimationsModule,
     RouterModule,
     WebsocketModule,
+    WeatherIconsModule,
     PipesModule,
     TdcPageModule,
     FsPageModule,
