@@ -1,10 +1,16 @@
 import { NgModule } from '@angular/core';
 import { FormatedatePipe } from './formatedate/formatedate';
-@NgModule({
-	declarations: [FormatedatePipe],
-	imports: [
+import { FormatWeatherPipe } from './formatweather/formatweather';
 
-    ],
-	exports: [FormatedatePipe]
+@NgModule({
+	declarations: [
+		FormatedatePipe,
+		FormatWeatherPipe
+	],
+	imports: [],
+	exports: [
+		FormatedatePipe,
+		FormatWeatherPipe
+	]
 })
 export class PipesModule {}
