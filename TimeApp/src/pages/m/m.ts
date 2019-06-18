@@ -86,6 +86,7 @@ export class MPage {
               public plt: Platform,
               public jpush: JPush,
               private util:UtilService) {
+
   }
 
   ionViewDidLoad() {
