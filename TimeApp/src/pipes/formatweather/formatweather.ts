@@ -164,7 +164,7 @@ export class FormatWeatherPipe implements PipeTransform {
 
     //晴转多云
     if (value.indexOf("转") > 0) {
-      let first: string = value.spilt("转")[0];
+      let first: string = value.split("转")[0];
 
       let wiKey = this.WEATHER_FONT_MAP.get(first);
 
