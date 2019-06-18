@@ -44,9 +44,9 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
                 <span [class.thisM]="_thisMonth">{{monthOpt.original.year}}</span>
               </p>
 
-              <ion-icon class="arrow-dropdown"
+              <!--<ion-icon class="arrow-dropdown"
                         [name]="_view === 'days' ? 'md-arrow-dropright' : 'md-arrow-dropdown'"
-                        [class.thisM]="_thisMonth"></ion-icon>
+                        [class.thisM]="_thisMonth"></ion-icon>-->
             </div>
             <div float-right *ngIf="!_thisMonth" (click)="gotoToday()">
               <img src="./assets/imgs/fhby.png"/>
