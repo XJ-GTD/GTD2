@@ -59,6 +59,7 @@ before_script:
   - ionic cordova plugin add $TRAVIS_BUILD_DIR/BaiduSpeechAndTTS
   - ionic cordova plugin add $TRAVIS_BUILD_DIR/xjalarmclock
   - ionic cordova plugin add cordova-sqlite-storage cordova-plugin-statusbar uk.co.workingedge.cordova.plugin.sqliteporter cordova-sqlite-storage cordova-plugin-whitelist com.telerik.plugins.nativepagetransitions cordova-plugin-nativeaudio cordova-plugin-vibration cordova-plugin-file-transfer cordova-plugin-local-notification cordova-plugin-ionic-webview cordova-plugin-splashscreen ionic-plugin-keyboard cordova-plugin-device cordova-plugin-console cordova-plugin-file cordova-plugin-calendar cordova-plugin-advanced-http cordova-plugin-android-permissions cordova-plugin-background-mode cordova-plugin-contacts cordova-clipboard cordova-plugin-network-information cordova-plugin-screen-orientation
+  - ionic cordova plugin add https://github.com/apache/cordova-plugin-network-information#master --force
   - ionic cordova plugin add https://github.com/jpush/jpush-phonegap-plugin.git --variable APP_KEY=$JPUSH_API_KEY
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.a ./plugins/cordova-plugin-BaiduSpeechAndTTS/src/ios/BDSClientLib/libBaiduTTSSDK.a ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.a ./plugins/cordova-plugin-BaiduSpeechAndTTS/src/ios/BDSClientLib/libBaiduASRSDK.a ; fi
