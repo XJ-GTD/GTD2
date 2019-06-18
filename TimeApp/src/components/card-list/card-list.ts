@@ -43,8 +43,8 @@ import { Component, Output, EventEmitter } from "@angular/core";
           <small *ngIf="weatherlist && weatherlist.length > 0">天气</small>
           <ng-container *ngFor="let scd of weatherlist">
           <ion-card *ngIf="scd.gs == '6'">
-            <wi [name]="scd.fjo.weather| formatweather" direction="from" degree="78"></wi>
-            <div class="card-title">{{scd.sn}} {{scd.fjo.temp}}℃</div>
+            <wi [name]="scd.fjo.weather| formatweather:'winame'" direction="from" degree="78"></wi>
+            <div class="card-title">{{scd.sn}} {{scd.fjo.temp| formatweather:"centigrade"}}</div>
             <div *ngIf="scd.bz" class="card-subtitle">{{scd.bz}}</div>
             <div *ngIf="scd.fjo && scd.fjo.city" class="card-subtitle">{{scd.fjo.city}}</div>
           </ion-card>

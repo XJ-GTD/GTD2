@@ -162,20 +162,30 @@ export class FormatWeatherPipe implements PipeTransform {
       return "cloudy-windy";
     }
 
-    //晴转多云
-    if (value.indexOf("转") > 0) {
-      let first: string = value.split("转")[0];
-
-      let wiKey = this.WEATHER_FONT_MAP.get(first);
-
-      if (wiKey) {
-        return wiKey;
+    if (args.length == 1) {
+      if (args[0] == "centigrade") {
+        if (!value.contains("℃")) {
+          return value + "℃";
+        }
       }
-    } else {
-      let wiKey = this.WEATHER_FONT_MAP.get(value);
 
-      if (wiKey) {
-        return wiKey;
+      if (args[0] == "winame") {
+        //晴转多云
+        if (value.indexOf("转") > 0) {
+          let first: string = value.split("转")[0];
+
+          let wiKey = this.WEATHER_FONT_MAP.get(first);
+
+          if (wiKey) {
+            return wiKey;
+          }
+        } else {
+          let wiKey = this.WEATHER_FONT_MAP.get(value);
+
+          if (wiKey) {
+            return wiKey;
+          }
+        }
       }
     }
 
