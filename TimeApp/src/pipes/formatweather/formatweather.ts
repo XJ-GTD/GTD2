@@ -171,6 +171,12 @@ export class FormatWeatherPipe implements PipeTransform {
       if (wiKey) {
         return wiKey;
       }
+    } else {
+      let wiKey = this.WEATHER_FONT_MAP.get(value);
+
+      if (wiKey) {
+        return wiKey;
+      }
     }
 
     return "cloudy-windy";
