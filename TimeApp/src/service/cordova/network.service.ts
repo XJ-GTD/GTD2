@@ -46,7 +46,7 @@ export class NetworkService {
   }
 
   public isConnected(): boolean {
-    return (this.getNetworkTypeName() == "none"? false : true);
+    return ((this.getNetworkType() === "none")? false : true);
   }
 
   /**
