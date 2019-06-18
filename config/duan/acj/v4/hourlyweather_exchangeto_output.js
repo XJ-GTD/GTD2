@@ -32,6 +32,114 @@ function clean(datasource)
     return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
   }
 
+  var getWeatherHead = function(weatherinfo) {
+    if (weatherinfo && weatherinfo['weather']) {
+      return weatherinfo['weather'];
+    }
+
+    return "";
+  }
+
+  var getWearherBody = function(weatherinfo) {
+    var weatherbody = "";
+
+    if (weatherinfo && weatherinfo['temp1'] && weatherinfo['temp2']) {
+      weatherbody += "气温 ";
+      weatherbody += weatherinfo['temp1'];
+      weatherbody += "~";
+      weatherbody += weatherinfo['temp2'];
+    }
+
+    if (weatherinfo && weatherinfo['WD'] && weatherinfo['WS']) {
+      if (weatherbody) {
+        weatherbody += "，";
+      }
+
+      weatherbody += weatherinfo['WD'];
+      weatherbody += " ";
+      weatherbody += weatherinfo['WS'];
+    }
+
+    if (weatherinfo && weatherinfo['SD']) {
+      if (weatherbody) {
+        weatherbody += "，";
+      }
+
+      weatherbody += "相对湿度 ";
+      weatherbody += weatherinfo['SD'];
+    }
+
+    return weatherbody;
+  }
+
+  var exchangeWeatherInfo = function(triggertime, city, cityid, updatetime, data) {
+    var weatherinfo = {
+      city: city,
+      cityid: cityid,
+      temp: "",
+      WD: "",
+      WS: "",
+      SD: "",
+      AP: "",
+      njd: "",
+      WSE: "",
+      time: "",
+      sm: "",
+      isRadar: "0",
+      Radar: "",
+      temp1: "",
+      temp2: "",
+      weather: "",
+      img1: "",
+      img2: "",
+      ptime: ""
+    };
+
+    if (data['wea']) {
+      weatherinfo['weather'] = data['wea'];
+    }
+
+    if (data['tem1']) {
+      weatherinfo['temp2'] = data['tem1'];
+    }
+
+    if (data['tem2']) {
+      weatherinfo['temp1'] = data['tem2'];
+    }
+
+    if (data['tem']) {
+      weatherinfo['temp'] = data['tem'];
+    }
+
+    if (data['win'] && data['win'].length > 0) {
+      for (var windin in data['win']) {
+        var wind = data['win'][windin];
+
+        if (weatherinfo['WD']) {
+          weatherinfo['WD'] += "、";
+        }
+
+        weatherinfo['WD'] += wind;
+      }
+    }
+
+    if (data['win_speed']) {
+      weatherinfo['WS'] = data['win_speed'];
+    }
+
+    var weatherhead = getWeatherHead(weatherinfo);
+    var weatherbody = getWearherBody(weatherinfo);
+
+    var output = {
+      type: 'weather',
+      fordate: data['date'].replace(/-/g, "/"),
+      title: weatherhead,
+      desc: weatherbody,
+      ext: weatherinfo,
+      timestamp: triggertime
+    }
+  }
+
   to.push(userId);
 
   // 返回消息头部
@@ -44,38 +152,8 @@ function clean(datasource)
 
   output.content = {};
 
-  var weatherhead = "";
-  var weatherbody = "";
-
-  if (weather['weatherinfo'] && weather['weatherinfo']['weather']) {
-    weatherhead = weather['weatherinfo']['weather'];
-  }
-
-  if (weather['weatherinfo'] && weather['weatherinfo']['temp1'] && weather['weatherinfo']['temp2']) {
-    weatherbody += "气温 ";
-    weatherbody += weather['weatherinfo']['temp1'];
-    weatherbody += "~";
-    weatherbody += weather['weatherinfo']['temp2'];
-  }
-
-  if (weather['weatherinfo'] && weather['weatherinfo']['WD'] && weather['weatherinfo']['WS']) {
-    if (weatherbody) {
-      weatherbody += "，";
-    }
-
-    weatherbody += weather['weatherinfo']['WD'];
-    weatherbody += " ";
-    weatherbody += weather['weatherinfo']['WS'];
-  }
-
-  if (weather['weatherinfo'] && weather['weatherinfo']['SD']) {
-    if (weatherbody) {
-      weatherbody += "，";
-    }
-
-    weatherbody += "相对湿度 ";
-    weatherbody += weather['weatherinfo']['SD'];
-  }
+  var weatherhead = getWeatherHead(weatherinfo);
+  var weatherbody = getWearherBody(weatherinfo);
 
   // 天气预报推送设置
   output.content['0'] = {
@@ -94,6 +172,17 @@ function clean(datasource)
       ]
     }
   };
+
+  if (weather['sevendays'] && weather['sevendays']['data'] && weather['sevendays']['data'].length > 0) {
+    //去除中国天气网接口获取数据
+    output.content['0']['parameters']['datas'].shift();
+
+    for (var oneday in weather['sevendays']['data']) {
+      var onedayweather = weather['sevendays']['data'][oneday];
+
+      output.content['0']['parameters']['datas'].push(exchangeWeatherInfo(onedayweather));
+    }
+  }
 
   var standardnext = {};
 
